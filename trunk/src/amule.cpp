@@ -189,54 +189,95 @@ static void SetResourceLimits()
 int CamuleApp::OnExit()
 {
 
-	// Stop the Core Timer
-	delete core_timer;
+	if (core_timer) {
+		// Stop the Core Timer
+		delete core_timer;
+	}
 
-	printf("Now, exiting main app...\n");
+	if (m_app_state!=APP_STATE_STARTING) {
+		printf("Now, exiting main app...\n");
+	}
 
-	delete serverlist;
-	serverlist = NULL;
-	delete searchlist;
-	searchlist = NULL;
-	delete clientcredits;
-	clientcredits = NULL;
+	if (serverlist) {
+		delete serverlist;
+		serverlist = NULL;
+	}
+	
+	if (searchlist) {
+		delete searchlist;
+		searchlist = NULL;
+	}
+	
+	if (clientcredits) {
+		delete clientcredits;
+		clientcredits = NULL;
+	}
+	
 	// Destroying CDownloadQueue calls destructor for CPartFile
 	// calling CSharedFileList::SafeAddKFile occasally.
+	
+	if (sharedfiles) {
+		delete sharedfiles;
+		sharedfiles = NULL;
+	}
 
-	delete sharedfiles;
-	sharedfiles = NULL;
+	if (serverconnect) {
+		delete serverconnect;
+		serverconnect = NULL;
+	}
 
-	delete serverconnect;
-	serverconnect = NULL;
+	if (listensocket) {
+		delete listensocket;
+		listensocket = NULL;
+	}
 
-	delete listensocket;
-	listensocket = NULL;
+	if (knownfiles) {
+		delete knownfiles;
+		knownfiles = NULL;
+	}
 
-	delete knownfiles;
-	knownfiles = NULL;
+	if (clientlist) {
+		delete clientlist;
+		clientlist = NULL;
+	}
 
-	delete clientlist;
-	clientlist = NULL;
+	if (uploadqueue) {
+		delete uploadqueue;
+		uploadqueue = NULL;
+	}
 
-	delete uploadqueue;
-	uploadqueue = NULL;
-
-	delete downloadqueue;
-	downloadqueue = NULL;
+	if (downloadqueue) {
+		delete downloadqueue;
+		downloadqueue = NULL;
+	}
 
 	if (ipfilter) {
 		delete ipfilter;
+		ipfilter = NULL;
 	}
 
-	delete ECServerHandler;
+	if (ECServerHandler) {
+		delete ECServerHandler;
+		ECServerHandler = NULL;
+	}
 
-	delete glob_prefs;
-	glob_prefs = NULL;
+	if (glob_prefs) {
+		delete glob_prefs;
+		glob_prefs = NULL;
+	}
 
-	delete localserver;
-	delete mytimer;
+	if (localserver) {
+		delete localserver;
+		localserver = NULL;
+	}
+	
+	if (mytimer) {
+		delete mytimer;
+	}
 
-	printf("aMule shutdown completed.\n");
+	if (m_app_state!=APP_STATE_STARTING) {
+		printf("aMule shutdown completed.\n");
+	}
 
 	// Return 0 for succesful program termination
 	return 0;
@@ -309,15 +350,16 @@ bool CamuleApp::OnInit()
 	if ( cmdline.Found(wxT("version")) ) {
 		printf("aMule %s\n", VERSION);
 
-		return false;
+		return true;
 	}
 
 	if ( cmdline.Found(wxT("help")) ) {
 		cmdline.Usage();
 
-		return false;
+		return true;
 	}
 
+	
 	wxString geom_string;
 	if ( cmdline.Found(wxT("geometry"), &geom_string) ) {
 
@@ -418,6 +460,22 @@ bool CamuleApp::OnInit()
 	// If the connection failed, conn is NULL
 	if ( conn ) {
 		// An instance is already running!
+		
+		// This is very tricky. The most secure way to communicate is via ED2K links file
+		FILE *ed2kfile;
+		char filename[1024];
+
+		/* Link seemed ok, add it to file. */
+		sprintf(filename,"%s/.aMule/ED2KLinks",getenv("HOME"));
+		ed2kfile = fopen(filename,"a");
+		if (ed2kfile != NULL) {
+			fprintf(ed2kfile,"RAISE_DIALOG");
+			printf("Raised current running aMule\n");
+			fclose(ed2kfile);
+		} else {
+			printf("Error opening file %s.Cannot raise active aMule\n", filename);
+		}
+		
 		conn->Disconnect();
 		delete conn;
 		delete client;
@@ -2138,6 +2196,10 @@ void CamuleApp::NotifyEvent(GUIEvent event) {
 			if ( amuledlg->transferwnd ) {
 				amuledlg->transferwnd->UpdateCatTabTitles();
 			}
+			break;
+			
+		case SHOW_GUI:
+			amuledlg->Show_aMule(true);
 			break;
 			
 		// search window

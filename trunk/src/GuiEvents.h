@@ -71,6 +71,7 @@ enum GUI_Event_ID {
 	SHOW_CONN_STATE,
 	SHOW_QUEUE_COUNT,
 	SHOW_UPDATE_CAT_TABS,
+	SHOW_GUI,
 	// logging
 	ADDLOGLINE,
 	ADDDEBUGLOGLINE,
@@ -242,7 +243,7 @@ class GUIEvent {
 #define Notify_ShowConnState(val0, str, val1)       Notify_3_ValEvent(SHOW_CONN_STATE, val0, str, val1)
 #define Notify_ShowQueueCount(val)                  Notify_1_ValEvent(SHOW_QUEUE_COUNT, (uint32)val)
 #define Notify_ShowUpdateCatTabTitles()             Notify_0_ValEvent(SHOW_UPDATE_CAT_TABS)
-
+#define Notify_ShowGUI()             					Notify_0_ValEvent(SHOW_GUI)
 
 #define AddLogLineM(x,y); 			theApp.NotifyEvent(GUIEvent(ADDLOGLINE,x,y));
 #define AddDebugLogLineM(x,y); 	theApp.NotifyEvent(GUIEvent(ADDDEBUGLOGLINE,x,y));
