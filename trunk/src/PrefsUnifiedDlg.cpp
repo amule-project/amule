@@ -580,6 +580,10 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 
 	// Destory the dialog
 	Destroy();
+	
+#ifdef CLIENT_GUI
+	theApp.glob_prefs->SendToRemote();
+#endif
 }
 
 
