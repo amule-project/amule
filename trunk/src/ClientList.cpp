@@ -54,13 +54,11 @@ void CClientList::GetStatistics(uint32 &totalclient, uint32 stats[], clientmap16
 	if(clientVersionEMule)		clientVersionEMule->clear();
 	if(clientVersionEDonkeyHybrid)	clientVersionEDonkeyHybrid->clear();
 	if(clientVersionAMule)		clientVersionAMule->clear();
-	POSITION pos1, pos2;
 
 	for (int i=0;i<18;i++) stats[i]=0;
 
-	for (pos1 = list.GetHeadPosition();( pos2 = pos1 ) != NULL;){
-		list.GetNext(pos1);
-		CUpDownClient* cur_client =	list.GetAt(pos2);
+	for ( POSITION pos = list.GetHeadPosition(); pos != NULL; ){
+		CUpDownClient* cur_client =	list.GetNext(pos);
 		
 		if (cur_client->HasLowID()) {
 			stats[11]++;		
@@ -174,24 +172,20 @@ void CClientList::RemoveClient(CUpDownClient* toremove){
 void CClientList::DeleteAll(){
 	theApp.uploadqueue->DeleteAll();
 	theApp.downloadqueue->DeleteAll();
-	POSITION pos1, pos2;
-	for (pos1 = list.GetHeadPosition();( pos2 = pos1 ) != NULL;){
-		list.GetNext(pos1);
-		CUpDownClient* cur_client =	list.GetAt(pos2);
-		list.RemoveAt(pos2);
-		delete cur_client; // recursiv: this will call RemoveClient
+	while ( !list.IsEmpty() ) {
+		CUpDownClient* cur_src = list.GetTail();
+		list.RemoveTail();
+		delete cur_src; // recursiv: this will call RemoveClient
 	}
 }
 
 
 bool CClientList::AttachToAlreadyKnown(CUpDownClient** client, CClientReqSocket* sender){
-	POSITION pos1, pos2;
 	CUpDownClient* tocheck = (*client);
 	CUpDownClient* found_client = NULL;
 	CUpDownClient* found_client2 = NULL;
-	for (pos1 = list.GetHeadPosition();( pos2 = pos1 ) != NULL;){	//
-		list.GetNext(pos1);
-		CUpDownClient* cur_client =	list.GetAt(pos2);
+	for (POSITION pos = list.GetHeadPosition(); pos != NULL;){	//
+		CUpDownClient* cur_client =	list.GetNext(pos);
 		if (tocheck->Compare(cur_client,false)){ //matching userhash
 			found_client2 = cur_client;
 		}
@@ -239,10 +233,8 @@ bool CClientList::AttachToAlreadyKnown(CUpDownClient** client, CClientReqSocket*
 }
 
 CUpDownClient* CClientList::FindClientByIP(uint32 clientip,uint16 port){
-	POSITION pos1, pos2;
-	for (pos1 = list.GetHeadPosition();( pos2 = pos1 ) != NULL;){
-		list.GetNext(pos1);
-		CUpDownClient* cur_client =	list.GetAt(pos2);
+	for (POSITION pos = list.GetHeadPosition(); pos != NULL;){
+		CUpDownClient* cur_client =	list.GetNext(pos);
 		if (cur_client->GetIP() == clientip && cur_client->GetUserPort() == port)
 			return cur_client;
 	}

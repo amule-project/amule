@@ -287,13 +287,15 @@ void CServerListCtrl::RemoveAllServers(int state)
 void CServerListCtrl::RemoveDeadServer()
 {
 	if(theApp.glob_prefs->DeadServer()) {
-		for(POSITION pos = server_list->list.GetHeadPosition(); pos != NULL;server_list->list.GetNext(pos)) {
-			CServer* cur_server = server_list->list.GetAt(pos);
+		Freeze();
+		for(POSITION pos = server_list->list.GetHeadPosition(); pos != NULL; ) {
+			CServer* cur_server = server_list->list.GetNext(pos);
 			if(cur_server->GetFailedCount() > theApp.glob_prefs->GetDeadserverRetries()) {	// MAX_SERVERFAILCOUNT
 				RemoveServer(cur_server);
 				pos = server_list->list.GetHeadPosition();
 			}
 		}
+		Thaw();
 	}
 }
 

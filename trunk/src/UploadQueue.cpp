@@ -277,8 +277,8 @@ void CUploadQueue::Process()
 		return;
 	}
 	int16 clientsrdy = 0;
-	for (POSITION pos = uploadinglist.GetHeadPosition();pos != 0;uploadinglist.GetNext(pos)) {
-		CUpDownClient* cur_client = uploadinglist.GetAt(pos);
+	for (POSITION pos = uploadinglist.GetHeadPosition();pos != 0; ) {
+		CUpDownClient* cur_client = uploadinglist.GetNext(pos);
 		if ( (cur_client->socket) && (!cur_client->socket->IsBusy()) && cur_client->HasBlocks()) {
 			clientsrdy++;
 		}
@@ -293,10 +293,8 @@ void CUploadQueue::Process()
 	}
 	float	kBpsSendPerClient = kBpsEst/clientsrdy;
 	uint32	bytesSent = 0;
-	POSITION pos1,pos2;
-	for (pos1 = uploadinglist.GetHeadPosition();( pos2 = pos1 ) != NULL; ) {
-		uploadinglist.GetNext(pos1);
-		CUpDownClient* cur_client = uploadinglist.GetAt(pos2);
+	for (POSITION pos = uploadinglist.GetHeadPosition(); pos != NULL; ) {
+		CUpDownClient* cur_client = uploadinglist.GetNext(pos);
 		bytesSent += cur_client->SendBlockData(kBpsSendPerClient);
 	}
 	
@@ -367,19 +365,14 @@ CUpDownClient* CUploadQueue::GetWaitingClientByIP(uint32 dwIP)
 
 POSITION CUploadQueue::GetDownloadingClient(CUpDownClient* client)
 {
-	for (POSITION pos = uploadinglist.GetHeadPosition();pos != 0;uploadinglist.GetNext(pos)) {
-		if (client == uploadinglist.GetAt(pos)) {
-			return pos;
-		}
-	}
-	return 0;
+	return uploadinglist.Find( client );
 }
 
 void CUploadQueue::UpdateBanCount()
 {
 	int count=0;
-	for (POSITION pos = waitinglist.GetHeadPosition();pos != 0;waitinglist.GetNext(pos)) {
-		CUpDownClient* cur_client= waitinglist.GetAt(pos);
+	for (POSITION pos = waitinglist.GetHeadPosition();pos != 0; ) {
+		CUpDownClient* cur_client= waitinglist.GetNext(pos);
 		if(cur_client->IsBanned()) {
 			count++;
 		}
@@ -484,22 +477,21 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
 
 bool CUploadQueue::RemoveFromUploadQueue(CUpDownClient* client, bool updatewindow)
 {
-	for (POSITION pos = uploadinglist.GetHeadPosition();pos != 0;uploadinglist.GetNext(pos)) {
-		if (client == uploadinglist.GetAt(pos)) {
-			if (updatewindow) {
-				theApp.amuledlg->transferwnd->uploadlistctrl->RemoveClient(uploadinglist.GetAt(pos));
-			}
-			uploadinglist.RemoveAt(pos);
-			if( client->GetTransferedUp() ) {
-				successfullupcount++;
-				totaluploadtime += client->GetUpStartTimeDelay()/1000;
-			} else {
-				failedupcount++;
-			}
-			client->SetUploadState(US_NONE);
-			client->ClearUploadBlockRequests();
-			return true;
+	POSITION pos = uploadinglist.Find( client );
+	if ( pos != NULL ) {
+		if (updatewindow) {
+			theApp.amuledlg->transferwnd->uploadlistctrl->RemoveClient( client );
 		}
+		uploadinglist.RemoveAt(pos);
+		if( client->GetTransferedUp() ) {
+			successfullupcount++;
+			totaluploadtime += client->GetUpStartTimeDelay()/1000;
+		} else {
+			failedupcount++;
+		}
+		client->SetUploadState(US_NONE);
+		client->ClearUploadBlockRequests();
+		return true;
 	}
 	return false;
 }
@@ -524,8 +516,8 @@ bool CUploadQueue::CheckForTimeOver(CUpDownClient* client)
 			return true;
 		}
 	} else {
-		for (POSITION pos = waitinglist.GetHeadPosition();pos != 0;waitinglist.GetNext(pos)) {
-			if (client->GetScore(true,true) < waitinglist.GetAt(pos)->GetScore(true,false)) {
+		for (POSITION pos = waitinglist.GetHeadPosition();pos != 0; ) {
+			if (client->GetScore(true,true) < waitinglist.GetNext(pos)->GetScore(true,false)) {
 				return true;
 			}
 		}
@@ -546,8 +538,8 @@ uint16 CUploadQueue::GetWaitingPosition(CUpDownClient* client)
 	}
 	uint16 rank = 1;
 	uint32 myscore = client->GetScore(false);
-	for (POSITION pos = waitinglist.GetHeadPosition();pos != 0;waitinglist.GetNext(pos)) {
-		if (waitinglist.GetAt(pos)->GetScore(false) > myscore) {
+	for (POSITION pos = waitinglist.GetHeadPosition();pos != 0; ) {
+		if (waitinglist.GetNext(pos)->GetScore(false) > myscore) {
 			rank++;
 		}
 	}

@@ -460,15 +460,9 @@ void CServerConnect::DestroySocket(CServerSocket* pSck){
 	if (pSck == NULL)
 		return;
 	// remove socket from list of opened sockets
-	for( POSITION pos = m_lstOpenSockets.GetHeadPosition(); pos != NULL; )
-	{
-		POSITION posDel = pos;
-		CServerSocket* pTestSck = (CServerSocket*)m_lstOpenSockets.GetNext(pos);
-		if (pTestSck == pSck)
-		{
-			m_lstOpenSockets.RemoveAt(posDel);
-			break;
-		}
+	POSITION pos = m_lstOpenSockets.Find( pSck );
+	if ( pos != NULL ) {
+		m_lstOpenSockets.RemoveAt( pos );
 	}
 
 	pSck->Destroy();

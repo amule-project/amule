@@ -374,31 +374,27 @@ void CServerList::RemoveServer(CServer* out_server)
 			wxMessageBox(wxT("You are connected to the server you are trying to delete. please disconnect first."), wxT("Info"), wxOK);	
 	} else {
 	
-		for(POSITION pos = list.GetHeadPosition(); pos != NULL;) {
-			POSITION pos2 = pos;
-			CServer* test_server = list.GetNext(pos);
-			if (test_server == out_server) {
-				if (theApp.downloadqueue->cur_udpserver == out_server) {
-					theApp.downloadqueue->cur_udpserver = 0;
-				}	
-				list.RemoveAt(pos2);
-				delservercount++;
-				delete test_server;
-				return;
-			}
+		POSITION pos = list.Find( out_server );
+		if ( pos != NULL ) {
+			if (theApp.downloadqueue->cur_udpserver == out_server) {
+				theApp.downloadqueue->cur_udpserver = 0;
+			}	
+			list.RemoveAt(pos);
+			delservercount++;
+			delete out_server;
+			return;
 		}
 	}
 }
 
 void CServerList::RemoveAllServers()
 {
+	delservercount += list.GetSize();
 	// no connection, safely remove all servers
-	for(POSITION pos = list.GetHeadPosition(); pos != NULL; pos = list.GetHeadPosition()) {
-		delete list.GetAt(pos);
-		list.RemoveAt(pos);
-		delservercount++;
-	}	
-
+	while ( !list.IsEmpty() ) {
+		delete list.GetTail();
+		list.RemoveTail();
+	}
 }
 
 void CServerList::GetStatus(uint32 &total, uint32 &failed, uint32 &user, uint32 &file, uint32 &tuser, uint32 &tfile,float &occ)
@@ -414,8 +410,8 @@ void CServerList::GetStatus(uint32 &total, uint32 &failed, uint32 &user, uint32 
 	uint32 tuserk = 0;
 
 	CServer* curr;
-	for (POSITION pos = list.GetHeadPosition(); pos !=0;list.GetNext(pos)) {
-		curr = (CServer*)list.GetAt(pos);
+	for (POSITION pos = list.GetHeadPosition(); pos !=0; ) {
+		curr = (CServer*)list.GetNext(pos);
 		if( curr->GetFailedCount() ) {
 			failed++;
 		} else {
@@ -440,8 +436,8 @@ void CServerList::GetUserFileStatus(uint32 &user, uint32 &file)
 	user = 0;
 	file = 0;
 	CServer* curr;
-	for (POSITION pos = list.GetHeadPosition(); pos !=0;list.GetNext(pos)) {
-		curr = (CServer*)list.GetAt(pos);
+	for (POSITION pos = list.GetHeadPosition(); pos !=0; ) {
+		curr = (CServer*)list.GetNext(pos);
 		if( !curr->GetFailedCount() ) {
 			user += curr->GetUsers();
 			file += curr->GetFiles();
@@ -452,9 +448,9 @@ void CServerList::GetUserFileStatus(uint32 &user, uint32 &file)
 CServerList::~CServerList()
 {
 	SaveServermetToFile();
-	for(POSITION pos = list.GetHeadPosition(); pos != NULL; pos = list.GetHeadPosition()) {
-		delete list.GetAt(pos);
-		list.RemoveAt(pos);
+	while ( !list.IsEmpty() ) {
+		delete list.GetTail();
+		list.RemoveTail();
 	}
 	udp_timer.Stop();
 }
@@ -566,20 +562,10 @@ void CServerList::AddServersFromTextFile(wxString strFilename,bool isstaticserve
 
 void CServerList::MoveServerDown(CServer* aServer)
 {
-	POSITION pos1, pos2;
-	uint16 i = 0;
-	for( pos1 = list.GetHeadPosition(); (pos2 = pos1 ) != NULL;) {
-		list.GetNext(pos1);
-		CServer* cur_server = list.GetAt(pos2);
-		if (cur_server==aServer) {
-			list.AddTail(cur_server);
-			list.RemoveAt(pos2);
-			return;
-		}
-		i++;
-		if (i == list.GetCount()) {
-			break;
-		}
+	POSITION pos = list.Find( aServer );
+	if ( pos != NULL ) {
+		list.AddTail( aServer );
+		list.RemoveAt(pos);
 	}
 }
 
