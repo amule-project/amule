@@ -1147,7 +1147,6 @@ src/amule.h	\
 src/opcodes.h	\
 src/muuli_wdr.h	\
 src/PrefsUnifiedDlg.h	\
-src/aMule.xpm	\
 src/splash.xpm
 	$(compile_source)
 
