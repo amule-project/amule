@@ -318,6 +318,7 @@
 #define	CT_PORT					0x0f
 #define	CT_VERSION				0x11
 #define	CT_SERVER_FLAGS			0x20	// currently only used to inform a server about supported features
+#define	CT_EMULECOMPAT_OPTIONS	0xef
 #define	CT_EMULE_RESERVED1		0xf0
 #define	CT_EMULE_RESERVED2		0xf1
 #define	CT_EMULE_RESERVED3		0xf2
