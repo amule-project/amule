@@ -694,7 +694,7 @@ public:
 
     void OnPaint( wxPaintEvent &event );
 	void OnErase( wxEraseEvent& event ) {
-		event.Skip( !HasFlag(wxLC_OWNERDRAW) );
+		event.Skip( !HasFlag(wxLC_OWNERDRAW) || IsEmpty() );
 	}
 
     void DrawImage( int index, wxDC *dc, int x, int y );
