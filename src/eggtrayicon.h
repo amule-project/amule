@@ -25,13 +25,12 @@
 #ifndef EGGTRAYICON_H
 #define EGGTRAYICON_H
 
-#include "MuleTrayIcon.h"
+#include "gtkplugxembed.h"	// Needed for GtkPlugXEmbed
 
 #if !USE_WX_TRAY
 
 #ifdef __WXGTK__ // Uses GTK code, don't compile on other platforms.
 
-#include "gtkplugxembed.h"	// Needed for GtkPlugXEmbed
 #include <gdk/gdkx.h>		// Needed for Atom
 
 #ifdef __cplusplus
