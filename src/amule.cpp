@@ -350,13 +350,13 @@ bool CamuleApp::OnInit()
 	if ( cmdline.Found(wxT("version")) ) {
 		printf("aMule %s\n", VERSION);
 
-		return true;
+		return false;
 	}
 
 	if ( cmdline.Found(wxT("help")) ) {
 		cmdline.Usage();
 
-		return true;
+		return false;
 	}
 
 	
@@ -772,7 +772,7 @@ bool CamuleApp::OnInit()
 	// for measurements, always use the system clock [::GetTickCount()].
 	amuledlg->StartGuiTimer();
 	
-	return TRUE;
+	return true;
 }
 
 
