@@ -237,7 +237,7 @@ void CPartFile::Init()
 	transfered = 0;
 	m_iLastPausePurge = time(NULL);
 	
-	if(theApp.glob_prefs->GetNewAutoDown()) {
+	if(thePrefs::GetNewAutoDown()) {
 		m_iDownPriority = PR_HIGH;
 		m_bAutoDownPriority = true;
 	} else {
@@ -343,7 +343,7 @@ void CPartFile::CreatePartFile()
 	do { 
 		i++; 
 		m_partmetfilename = wxString::Format(wxT("%03i.part.met"), i);
-		m_fullname = theApp.glob_prefs->GetTempDir() + wxFileName::GetPathSeparator() + m_partmetfilename;
+		m_fullname = thePrefs::GetTempDir() + wxFileName::GetPathSeparator() + m_partmetfilename;
 	} while (wxFileName::FileExists(m_fullname));
 	
 	wxString strPartName = m_partmetfilename.Left( m_partmetfilename.Length() - 4);
@@ -367,7 +367,7 @@ void CPartFile::CreatePartFile()
 		SetPartFileStatus(PS_ERROR);
 	}
 	
-	if (theApp.glob_prefs->GetAllocFullPart()) {
+	if (thePrefs::GetAllocFullPart()) {
 		#warning Code for full file alloc - should be done on thread.
 	}
 	
@@ -815,7 +815,7 @@ bool CPartFile::SavePartFile(bool Initial)
 	
 	/* Don't write anything to disk if less than 5000 bytes of free space is left. */
 	wxLongLong total = 0, free = 0;
-	if (wxGetDiskSpace(theApp.glob_prefs->GetTempDir(), &total, &free) && free < 5000) {
+	if (wxGetDiskSpace(thePrefs::GetTempDir(), &total, &free) && free < 5000) {
 		return false;
 	}
 	
@@ -1459,7 +1459,7 @@ void CPartFile::DrawStatusBar( wxMemoryDC* dc, wxRect rect, bool bFlat )
 	s_ChunkBar.SetWidth(rect.width); 
 	s_ChunkBar.SetFileSize(m_nFileSize);
 	s_ChunkBar.Fill(crHave);
-	s_ChunkBar.Set3dDepth( theApp.glob_prefs->Get3DDepth() );
+	s_ChunkBar.Set3dDepth( thePrefs::Get3DDepth() );
 
 
 	if ( status == PS_COMPLETE || status == PS_COMPLETING ) {
@@ -1569,7 +1569,7 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 	DWORD dwCurTick = ::GetTickCount();
 
 	// If buffer size exceeds limit, or if not written within time limit, flush data
-	if ((m_nTotalBufferData > theApp.glob_prefs->GetFileBufferSize())  || (dwCurTick > (m_nLastBufferFlushTime + BUFFER_TIME_LIMIT))) {
+	if ((m_nTotalBufferData > thePrefs::GetFileBufferSize())  || (dwCurTick > (m_nLastBufferFlushTime + BUFFER_TIME_LIMIT))) {
 		// Avoid flushing while copying preview file
 		if (!m_bPreviewing) {
 			FlushBuffer();
@@ -1645,7 +1645,7 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 				case DS_LOWTOLOWIP: {
 					if ( cur_src->HasLowID() && theApp.serverconnect->IsLowID() ) {
 						//If we are almost maxed on sources, slowly remove these client to see if we can find a better source.
-						if( ((dwCurTick - lastpurgetime) > 30000) && (GetSourceCount() >= (theApp.glob_prefs->GetMaxSourcePerFile()*.8))) {
+						if( ((dwCurTick - lastpurgetime) > 30000) && (GetSourceCount() >= (thePrefs::GetMaxSourcePerFile()*.8))) {
 							RemoveSource( cur_src );
 							lastpurgetime = dwCurTick;
 							break;
@@ -1661,7 +1661,7 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 					if((dwCurTick - lastpurgetime) > 40000) {
 						if(!cur_src->SwapToAnotherFile(false , false, false , NULL)) {
 							//however we only delete them if reaching the limit
-							if (GetSourceCount() >= (theApp.glob_prefs->GetMaxSourcePerFile()*.8 )) {
+							if (GetSourceCount() >= (thePrefs::GetMaxSourcePerFile()*.8 )) {
 								RemoveSource(cur_src);
 								lastpurgetime = dwCurTick;
 								break; //Johnny-B - nothing more to do here (good eye!)
@@ -1683,7 +1683,7 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 				case DS_ONQUEUE: {
 					if( cur_src->IsRemoteQueueFull()) {
 						cur_src->SetValidSource(false);
-						if( ((dwCurTick - lastpurgetime) > 60000) && (GetSourceCount() >= (theApp.glob_prefs->GetMaxSourcePerFile()*.8 )) ){
+						if( ((dwCurTick - lastpurgetime) > 60000) && (GetSourceCount() >= (thePrefs::GetMaxSourcePerFile()*.8 )) ){
 							RemoveSource( cur_src );
 							lastpurgetime = dwCurTick;
 							break; //Johnny-B - nothing more to do here (good eye!)
@@ -1730,13 +1730,13 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 		/* eMule 0.30c implementation, i give it a try (Creteil) END ... */
 		// swap No needed partfiles if possible
 		/* Sources droping engine. Auto drop allowed type of sources at interval. */
-		if (dwCurTick > m_LastSourceDropTime + theApp.glob_prefs->GetAutoDropTimer() * 1000) {
+		if (dwCurTick > m_LastSourceDropTime + thePrefs::GetAutoDropTimer() * 1000) {
 			m_LastSourceDropTime = dwCurTick;
 			/* If all three are enabled, use CleanUpSources() function, will save us some CPU. */
 			
-			bool noNeeded  = theApp.glob_prefs->DropNoNeededSources();
-			bool fullQueue = theApp.glob_prefs->DropFullQueueSources();
-			bool highQueue = theApp.glob_prefs->DropHighQueueRankingSources();
+			bool noNeeded  = thePrefs::DropNoNeededSources();
+			bool fullQueue = thePrefs::DropFullQueueSources();
+			bool highQueue = thePrefs::DropHighQueueRankingSources();
 			
 			if ( noNeeded || fullQueue || highQueue )
 				CleanUpSources( noNeeded, fullQueue, highQueue );
@@ -1748,7 +1748,7 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 	
 		// check if we want new sources from server
 		if ( !m_bLocalSrcReqQueued && ((!lastsearchtime) || (dwCurTick - lastsearchtime) > SERVERREASKTIME) && theApp.serverconnect->IsConnected()
-		&& theApp.glob_prefs->GetMaxSourcePerFileSoft() > GetSourceCount() && !stopped ) {
+		&& thePrefs::GetMaxSourcePerFileSoft() > GetSourceCount() && !stopped ) {
 			m_bLocalSrcReqQueued = true;
 			theApp.downloadqueue->SendLocalSrcRequest(this);
 		}
@@ -1768,7 +1768,7 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 			UpdateCompletedInfos();
 		}
 		m_bPercentUpdated = false;
-		if (theApp.glob_prefs->ShowCatTabInfos()) {
+		if (thePrefs::ShowCatTabInfos()) {
 			Notify_ShowUpdateCatTabTitles();
 		}				
 	}
@@ -1787,7 +1787,7 @@ bool CPartFile::CanAddSource(uint32 userid, uint16 port, uint32 serverip, uint16
 	} else if (theApp.serverconnect->GetClientID() == userid) {
 #ifdef __DEBUG__
 		// It seems this can be used to test two amule's on one PC, using different ports --Aleric.
-		if (!theApp.serverconnect->IsLowID() && theApp.glob_prefs->GetPort() != port)
+		if (!theApp.serverconnect->IsLowID() && thePrefs::GetPort() != port)
 		  return true;
 #endif
 		return false;
@@ -1819,7 +1819,7 @@ void CPartFile::AddSources(CSafeMemFile* sources,uint32 serverip, uint16 serverp
 		
 		// "Filter LAN IPs" and "IPfilter" the received sources IP addresses
 		if (userid >= 16777216) {
-			if (theApp.glob_prefs->FilterBadIPs()) {
+			if (thePrefs::FilterBadIPs()) {
 				if (!IsGoodIP(userid)) { // check for 0-IP, localhost and optionally for LAN addresses
 					//AddDebugLogLineM(false, _T("Ignored source (IP=%s) received from server"), inet_ntoa(*(in_addr*)&userid));
 					continue;
@@ -1834,7 +1834,7 @@ void CPartFile::AddSources(CSafeMemFile* sources,uint32 serverip, uint16 serverp
 		if (!CanAddSource(userid, port, serverip, serverport, &debug_lowiddropped)) {
 			continue;
 		}
-		if(theApp.glob_prefs->GetMaxSourcePerFile() > GetSourceCount()) {
+		if(thePrefs::GetMaxSourcePerFile() > GetSourceCount()) {
 			debug_possiblesources++;
 			CUpDownClient* newsource = new CUpDownClient(port,userid,serverip,serverport,this);
 			theApp.downloadqueue->CheckAndAddSource(this,newsource);
@@ -2098,7 +2098,7 @@ bool CPartFile::GetNextRequestedBlock(CUpDownClient* sender, Requested_Block_Str
 
 				// Cache Preview state (Criterion 2)
 				FileType type = GetFiletype(GetFileName());
-				const bool isPreviewEnable = theApp.glob_prefs->GetPreviewPrio() && (type == ftArchive || type == ftVideo);
+				const bool isPreviewEnable = thePrefs::GetPreviewPrio() && (type == ftArchive || type == ftVideo);
 					
 				// Collect and calculate criteria for all chunks
 				for (POSITION pos = chunksList.GetHeadPosition(); pos != NULL; ) {
@@ -2268,7 +2268,7 @@ void CPartFile::CompleteFile(bool bIsHashingDone)
 		kBpsDown = 0.0;
 
 		wxString strPartFile = m_partmetfilename.Left( m_partmetfilename.Length() - 4 );
-		CAddFileThread::AddFile(theApp.glob_prefs->GetTempDir(), strPartFile, this );
+		CAddFileThread::AddFile(thePrefs::GetTempDir(), strPartFile, this );
 		return;
 	} else {
 		printf("HashDone\n");		
@@ -2285,7 +2285,7 @@ void CPartFile::CompleteFile(bool bIsHashingDone)
 
 	}
 	Notify_DownloadCtrlShowFilesCount();
-	if (theApp.glob_prefs->ShowCatTabInfos()) {
+	if (thePrefs::ShowCatTabInfos()) {
 		Notify_ShowUpdateCatTabTitles();
 	}			
 	UpdateDisplayedInfo(true);
@@ -2316,7 +2316,7 @@ void CPartFile::CompleteFileEnded(int completing_result, wxString* newname) {
 		if(wxFileName::DirExists(theApp.glob_prefs->GetCategory(GetCategory())->incomingpath)) {
 			m_strFilePath = theApp.glob_prefs->GetCategory(m_category)->incomingpath;
 		} else {
-			m_strFilePath = theApp.glob_prefs->GetIncomingDir();
+			m_strFilePath = thePrefs::GetIncomingDir();
 		}	
 	
 		SetPartFileStatus(PS_COMPLETE);
@@ -2402,7 +2402,7 @@ wxThread::ExitCode completingThread::Entry()
 	if(wxFileName::DirExists(theApp.glob_prefs->GetCategory(Completing_Category)->incomingpath)) {
 		(*newname) =  theApp.glob_prefs->GetCategory(Completing_Category)->incomingpath;
 	} else {
-		(*newname) =  theApp.glob_prefs->GetIncomingDir();
+		(*newname) =  thePrefs::GetIncomingDir();
 	}	
 	(*newname) += wxFileName::GetPathSeparator();
 	(*newname) += Completing_FileName;
@@ -2420,11 +2420,11 @@ wxThread::ExitCode completingThread::Entry()
 		do {
 			namecount++;
 			if (ext.IsEmpty()) {
-				strTestName = theApp.glob_prefs->GetIncomingDir(); 
+				strTestName = thePrefs::GetIncomingDir(); 
 				strTestName += wxFileName::GetPathSeparator();
 				strTestName += filename + wxString::Format(wxT("(%d)"), namecount);
 			} else {
-				strTestName = theApp.glob_prefs->GetIncomingDir(); 
+				strTestName = thePrefs::GetIncomingDir(); 
 				strTestName += wxFileName::GetPathSeparator();
 				strTestName += filename + wxString::Format(wxT("(%d)."), namecount);
 				strTestName += ext;
@@ -2838,10 +2838,10 @@ void CPartFile::PreviewFile()
 	wxString command;
 
 	// If no player set in preferences, use mplayer.
-	if (theApp.glob_prefs->GetVideoPlayer().IsEmpty()) {
+	if (thePrefs::GetVideoPlayer().IsEmpty()) {
 		command.Append(wxT("mplayer"));
 	} else {
-		command.Append(theApp.glob_prefs->GetVideoPlayer());
+		command.Append(thePrefs::GetVideoPlayer());
 	}
 	// Need to use quotes in case filename contains spaces.
 	command.Append(wxT(" \""));
@@ -2874,7 +2874,7 @@ bool CPartFile::PreviewAvailable()
 bool CPartFile::PreviewAvailable()
 {
 	wxLongLong free;
-	wxGetDiskSpace(theApp.glob_prefs->GetTempDir(), NULL, &free);
+	wxGetDiskSpace(thePrefs::GetTempDir(), NULL, &free);
 	printf("\nFree Space (wxLongLong): %s\n", unicode2char(free.ToString()));
 	typedef unsigned long long uint64;
 	uint64 space = free.GetValue();
@@ -2888,17 +2888,17 @@ bool CPartFile::PreviewAvailable()
 			return false;
 		}
 	}
-	if (theApp.glob_prefs->IsMoviePreviewBackup()) {
+	if (thePrefs::IsMoviePreviewBackup()) {
 		return !( (GetStatus() != PS_READY && GetStatus() != PS_PAUSED)
 		|| m_bPreviewing || GetPartCount() < 5 || !IsMovie() || (space + 100000000) < GetFileSize() 
 		|| ( !IsComplete(0,PARTSIZE-1) || !IsComplete(PARTSIZE*(GetPartCount()-1),GetFileSize()-1)));
 	} else {
 		TCHAR szVideoPlayerFileName[_MAX_FNAME];
-		_tsplitpath(theApp.glob_prefs->GetVideoPlayer(), NULL, NULL, szVideoPlayerFileName, NULL);
+		_tsplitpath(thePrefs::GetVideoPlayer(), NULL, NULL, szVideoPlayerFileName, NULL);
 
 		// enable the preview command if the according option is specified 'PreviewSmallBlocks' 
 		// or if VideoLAN client is specified
-		if (theApp.glob_prefs->GetPreviewSmallBlocks() || !_tcsicmp(szVideoPlayerFileName, _T("vlc"))) {
+		if (thePrefs::GetPreviewSmallBlocks() || !_tcsicmp(szVideoPlayerFileName, _T("vlc"))) {
 			if (m_bPreviewing) {
 				return false;
 			}
@@ -2909,7 +2909,7 @@ bool CPartFile::PreviewAvailable()
 			// default: check the ED2K file format to be of type audio, video or CD image. 
 			// but because this could disable the preview command for some file types which eMule does not know,
 			// this test can be avoided by specifying 'PreviewSmallBlocks=2'
-			if (theApp.glob_prefs->GetPreviewSmallBlocks() <= 1) {
+			if (thePrefs::GetPreviewSmallBlocks() <= 1) {
 				// check the file extension
 				EED2KFileType eFileType = GetED2KFileTypeID(GetFileName());
 				if (!(eFileType == ED2KFT_VIDEO || eFileType == ED2KFT_AUDIO || eFileType == ED2KFT_CDIMAGE)) {
@@ -3076,7 +3076,7 @@ void CPartFile::AddClientSources(CSafeMemFile* sources,uint8 sourceexchangeversi
 		} else if (dwID < 16777216) {
 			continue;
 		}
-		if(theApp.glob_prefs->GetMaxSourcePerFile() > GetSourceCount()) {
+		if(thePrefs::GetMaxSourcePerFile() > GetSourceCount()) {
 			CUpDownClient* newsource = new CUpDownClient(nPort,dwID,dwServerIP,nServerPort,this);
 			if (sourceexchangeversion > 1) {
 				newsource->SetUserHash(achUserHash);
@@ -3215,7 +3215,7 @@ void CPartFile::FlushBuffer(bool forcewait, bool bForceICH, bool bNoAICH)
 	add log line and abort flushing.
 	*/
 	wxLongLong total = 0, free = 0;
-	if (wxGetDiskSpace(theApp.glob_prefs->GetTempDir(), &total, &free) && free < PARTSIZE) {
+	if (wxGetDiskSpace(thePrefs::GetTempDir(), &total, &free) && free < PARTSIZE) {
 		AddLogLineM(true, _("ERROR: Cannot write to disk"));
 		PauseFile();
 		return;
@@ -3230,10 +3230,10 @@ void CPartFile::FlushBuffer(bool forcewait, bool bForceICH, bool bNoAICH)
 			changedPart[partNumber] = false;
 		}
 
-		bool bCheckDiskspace = theApp.glob_prefs->IsCheckDiskspaceEnabled() && theApp.glob_prefs->GetMinFreeDiskSpace() > 0;
+		bool bCheckDiskspace = thePrefs::IsCheckDiskspaceEnabled() && thePrefs::GetMinFreeDiskSpace() > 0;
 
 		wxLongLong total = 0, free = 0;
-		wxGetDiskSpace(theApp.glob_prefs->GetTempDir(), &total, &free);
+		wxGetDiskSpace(thePrefs::GetTempDir(), &total, &free);
 		
 		// Ensure file is big enough to write data to (the last item will be the furthest from the start)
 		PartFileBufferedData *item = m_BufferedData_list.GetTail();
@@ -3365,7 +3365,7 @@ void CPartFile::FlushBuffer(bool forcewait, bool bForceICH, bool bNoAICH)
 						}
 					}
 				}
-			} else if ( IsCorruptedPart(partNumber) && (theApp.glob_prefs->IsICHEnabled() || bForceICH)) {
+			} else if ( IsCorruptedPart(partNumber) && (thePrefs::IsICHEnabled() || bForceICH)) {
 				// Try to recover with minimal loss
 				if (HashSinglePart(partNumber)) {
 					m_iTotalPacketsSavedDueToICH++;
@@ -3420,10 +3420,10 @@ void CPartFile::FlushBuffer(bool forcewait, bool bForceICH, bool bNoAICH)
 						break;
 					default: {
 						wxLongLong total = 0, free = 0;
-						wxGetDiskSpace(theApp.glob_prefs->GetTempDir(), &total, &free);
+						wxGetDiskSpace(thePrefs::GetTempDir(), &total, &free);
 						typedef unsigned long long uint64;
 						uint64 GetFreeDiskSpaceX = free.GetValue();
-						if (GetFreeDiskSpaceX < (unsigned)theApp.glob_prefs->GetMinFreeDiskSpace()) {
+						if (GetFreeDiskSpaceX < (unsigned)thePrefs::GetMinFreeDiskSpace()) {
 							// Normal files: pause the file only if it would still grow
 							uint32 nSpaceToGrow = GetNeededSpace();
 							if (nSpaceToGrow) {
@@ -3686,7 +3686,7 @@ void CPartFile::CleanUpSources( bool noNeeded, bool fullQueue, bool highQueue )
 		
 		if ( client->GetDownloadState() == DS_ONQUEUE ) {
 			remove = remove || ( fullQueue && ( client->IsRemoteQueueFull() ) );
-			remove = remove || ( highQueue && ( client->GetRemoteQueueRank() > theApp.glob_prefs->HighQueueRanking() ) );
+			remove = remove || ( highQueue && ( client->GetRemoteQueueRank() > thePrefs::HighQueueRanking() ) );
 		}
 
 		if ( remove )
@@ -3717,7 +3717,7 @@ void CPartFile::SetPartFileStatus(uint8 newstatus)
 {
 	status=newstatus;
 	
-	if (theApp.glob_prefs->GetAllcatType()) {
+	if (thePrefs::GetAllcatType()) {
 		// lfroen - just notify gui that show-hide status is changing
 		Notify_DownloadCtrlShowHideFileStatus(this);
 		Notify_DownloadCtrlShowFilesCount();
@@ -3756,7 +3756,7 @@ void CPartFile::SetStatus(uint8 in)
 		if (theApp.IsRunning()) {
 			UpdateDisplayedInfo( true );
 		
-			if ( theApp.glob_prefs->ShowCatTabInfos() ) {
+			if ( thePrefs::ShowCatTabInfos() ) {
 				Notify_ShowUpdateCatTabTitles();
 			}
 		}
@@ -3771,7 +3771,7 @@ bool CPartFile::CheckShowItemInGivenCat(int inCategory)
 
 	IsInCat = ((inCategory==0) || (inCategory>0 && inCategory==GetCategory()));
 
-	switch (theApp.glob_prefs->GetAllcatType()) {
+	switch (thePrefs::GetAllcatType()) {
 		case 1:
 			IsNotFiltered = ((GetCategory()==0) || (inCategory>0));
 			break;

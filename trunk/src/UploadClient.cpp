@@ -202,7 +202,7 @@ bool CUpDownClient::CreateNextBlockPackage(){
 	// VQB Full Chunk Trans..
 	// If is a friendslot, don't kick
 	if ( !GetFriendSlot() ){
-		if (theApp.glob_prefs->TransferFullChunks()) {
+		if ( thePrefs::TransferFullChunks() ) {
 			// VQB to provide full chunk transfers (modified by Tarod)
 			if ( theApp.uploadqueue->CheckForTimeOver(this) || IsDifferentPartBlock()) {
 				SetWaitStartTime();

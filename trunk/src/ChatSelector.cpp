@@ -217,7 +217,7 @@ bool CChatSelector::SendMessage( const wxString& message )
 		packet->SetOpCode(OP_MESSAGE);
 		theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
 		if ( ci->m_client->SendPacket(packet, true, true) ) {
-			ci->AddText( theApp.glob_prefs->GetUserNick(), COLOR_GREEN );
+			ci->AddText( thePrefs::GetUserNick(), COLOR_GREEN );
 			ci->AddText( wxT(": ") + message + wxT("\n"), COLOR_BLACK );
 		}
 	} else {
@@ -275,7 +275,7 @@ void CChatSelector::ConnectionResult(CUpDownClient* sender, bool success)
 			packet->SetOpCode(OP_MESSAGE);
 			theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
 			if ( ci->m_client->SendPacket(packet, true, true) ) {
-				ci->AddText( theApp.glob_prefs->GetUserNick(), COLOR_GREEN );
+				ci->AddText( thePrefs::GetUserNick(), COLOR_GREEN );
 				ci->AddText( wxT(": ") + ci->m_pending + wxT("\n"), COLOR_BLACK );
 			
 				ci->m_pending.Clear();

@@ -83,9 +83,9 @@ ExternalConn::ExternalConn()
 {
 	m_ECServer = NULL;
 	// Are we allowed to accept External Connections?
-	if (theApp.glob_prefs->AcceptExternalConnections() &&
-	    theApp.glob_prefs->ECUseTCPPort()) {
-		int port = theApp.glob_prefs->ECPort();
+	if (thePrefs::AcceptExternalConnections() &&
+	    thePrefs::ECUseTCPPort()) {
+		int port = thePrefs::ECPort();
 		// Create the address - listen on localhost:ECPort
 		wxIPV4address addr;
 		addr.Service(port);
@@ -233,13 +233,13 @@ CECPacket *ExternalConn::Authenticate(const CECPacket *request)
 			EC_Version_t *proto_version = (EC_Version_t *)protocol->GetTagData();
 			if (proto_version->major == 0x02 && proto_version->minor == 0x00) {
 				if (passwd == NULL) {
-					if (theApp.glob_prefs->ECPassword().IsEmpty()) {
+					if (thePrefs::ECPassword().IsEmpty()) {
 						response = new CECPacket(EC_OP_AUTH_OK);
 					} else {
 						response = new CECPacket(EC_OP_AUTH_FAIL);
 						response->AddTag(CECTag(EC_TAG_STRING, _("Authentication failed.")));
 					}
-				} else if (passwd->GetTagString() == theApp.glob_prefs->ECPassword()) {
+				} else if (passwd->GetTagString() == thePrefs::ECPassword()) {
 					response = new CECPacket(EC_OP_AUTH_OK);
 				} else {
 					response = new CECPacket(EC_OP_AUTH_FAIL);
@@ -302,7 +302,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 	if (item == wxT("WEBPAGE HEADER")) {
 		// returns one string formatted as:
 		// %d\t%s\t%s\t%d\t%d\t%f\t%f\t%d\t%d
-		buffer = wxString() << theApp.glob_prefs->GetWebPageRefresh() << wxT("\t");		
+		buffer = wxString() << thePrefs::GetWebPageRefresh() << wxT("\t");		
 		if (theApp.serverconnect->IsConnected()) {
 			buffer += wxString(wxT("Connected\t"));
 		} else if (theApp.serverconnect->IsConnecting()) {
@@ -325,18 +325,18 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 		buffer += wxString::Format(wxT("%.1f\t%.1f\t%d\t%d\t"), 
 			theApp.uploadqueue->GetKBps(),
 			theApp.downloadqueue->GetKBps(),
-			theApp.glob_prefs->GetMaxUpload(),
-			theApp.glob_prefs->GetMaxDownload());
+			thePrefs::GetMaxUpload(),
+			thePrefs::GetMaxDownload());
 		return buffer;
 	}
 	if (item == wxT("WEBPAGE GETGRAPH")) {
 		//returns one string formatted as:
 		//%d\t%d\t%d\t%d
 		buffer = wxString::Format(wxT("%d\t%d\t%d\t%d"), 
-			theApp.glob_prefs->GetTrafficOMeterInterval(),
-			theApp.glob_prefs->GetMaxGraphDownloadRate(),
-			theApp.glob_prefs->GetMaxGraphUploadRate(),
-			theApp.glob_prefs->GetMaxConnections());
+			thePrefs::GetTrafficOMeterInterval(),
+			thePrefs::GetMaxGraphDownloadRate(),
+			thePrefs::GetMaxGraphUploadRate(),
+			thePrefs::GetMaxConnections());
 		return buffer;
 	}
 	if (item == wxT("WEBPAGE STATISTICS")) {
@@ -363,21 +363,21 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 	if (item == wxT("WEBPAGE GETPREFERENCES")) {
 		// returns one string formatted as:
 		// %d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d
-		theApp.glob_prefs->GetWebUseGzip() ?
+		thePrefs::GetWebUseGzip() ?
 			buffer += wxT("1\t") : buffer += wxT("0\t");
-		theApp.glob_prefs->GetPreviewPrio() ?
+		thePrefs::GetPreviewPrio() ?
 			buffer += wxT("1\t") : buffer += wxT("0\t");
-		theApp.glob_prefs->TransferFullChunks() ?
+		thePrefs::TransferFullChunks() ?
 			buffer += wxT("1\t") : buffer += wxT("0\t");
 		buffer += wxString::Format(wxT("%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d"),
-			theApp.glob_prefs->GetWebPageRefresh(),
-			theApp.glob_prefs->GetMaxSourcePerFile(),
-			theApp.glob_prefs->GetMaxConnections(),
-			theApp.glob_prefs->GetMaxConperFive(),
-			theApp.glob_prefs->GetMaxDownload(),
-			theApp.glob_prefs->GetMaxUpload(),
-			theApp.glob_prefs->GetMaxGraphDownloadRate(),
-			theApp.glob_prefs->GetMaxGraphUploadRate());
+			thePrefs::GetWebPageRefresh(),
+			thePrefs::GetMaxSourcePerFile(),
+			thePrefs::GetMaxConnections(),
+			thePrefs::GetMaxConperFive(),
+			thePrefs::GetMaxDownload(),
+			thePrefs::GetMaxUpload(),
+			thePrefs::GetMaxGraphDownloadRate(),
+			thePrefs::GetMaxGraphUploadRate());
 		return buffer;
 	}
 	sOp = wxT("WEBPAGE SETPREFERENCES");
@@ -387,39 +387,39 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			wxString prefList = item.Mid(nChars+1);
 			int brk = prefList.First(wxT("\t"));
 				
-			theApp.glob_prefs->SetWebUseGzip( StrToLong(prefList.Left(brk)) == 1 );
+			thePrefs::SetWebUseGzip( StrToLong(prefList.Left(brk)) == 1 );
 			prefList = prefList.Mid(brk+1); brk = prefList.First(wxT("\t"));
-			theApp.glob_prefs->SetWebPageRefresh( StrToLong(prefList.Left(brk)) );
+			thePrefs::SetWebPageRefresh( StrToLong(prefList.Left(brk)) );
 			prefList = prefList.Mid(brk+1); brk = prefList.First(wxT("\t"));
-			theApp.glob_prefs->SetMaxDownload( StrToLong(prefList.Left(brk)) );
+			thePrefs::SetMaxDownload( StrToLong(prefList.Left(brk)) );
 			prefList = prefList.Mid(brk+1); brk = prefList.First(wxT("\t"));
-			theApp.glob_prefs->SetMaxUpload( StrToLong(prefList.Left(brk)) );
+			thePrefs::SetMaxUpload( StrToLong(prefList.Left(brk)) );
 			prefList = prefList.Mid(brk+1); brk = prefList.First(wxT("\t"));
 			
 			// FIXME: this code must be moved away !
 #ifndef AMULE_DAEMON
-			if ((int32)StrToLong(prefList.Left(brk)) != theApp.glob_prefs->GetMaxGraphDownloadRate()) {
-				theApp.amuledlg->statisticswnd->SetARange(true, theApp.glob_prefs->GetMaxGraphDownloadRate());
+			if ((int32)StrToLong(prefList.Left(brk)) != thePrefs::GetMaxGraphDownloadRate()) {
+				theApp.amuledlg->statisticswnd->SetARange(true, thePrefs::GetMaxGraphDownloadRate());
 			}
-			theApp.glob_prefs->SetMaxGraphDownloadRate( StrToLong(prefList.Left(brk)) );
+			thePrefs::SetMaxGraphDownloadRate( StrToLong(prefList.Left(brk)) );
 			prefList = prefList.Mid(brk+1); brk = prefList.First(wxT("\t"));
 			
-			if ((int32)StrToLong(prefList.Left(brk)) != theApp.glob_prefs->GetMaxGraphUploadRate()) {
-				theApp.amuledlg->statisticswnd->SetARange(false, theApp.glob_prefs->GetMaxGraphUploadRate());
+			if ((int32)StrToLong(prefList.Left(brk)) != thePrefs::GetMaxGraphUploadRate()) {
+				theApp.amuledlg->statisticswnd->SetARange(false, thePrefs::GetMaxGraphUploadRate());
 			}
 #endif
-			theApp.glob_prefs->SetMaxGraphUploadRate( StrToLong(prefList.Left(brk)) );
+			thePrefs::SetMaxGraphUploadRate( StrToLong(prefList.Left(brk)) );
 			prefList=prefList.Mid(brk+1); brk=prefList.First(wxT("\t"));
 				
-			theApp.glob_prefs->SetMaxSourcesPerFile( StrToLong(prefList.Left(brk)) );
+			thePrefs::SetMaxSourcesPerFile( StrToLong(prefList.Left(brk)) );
 			prefList=prefList.Mid(brk+1); brk=prefList.First(wxT("\t"));
-			theApp.glob_prefs->SetMaxConnections( StrToLong(prefList.Left(brk)) );
+			thePrefs::SetMaxConnections( StrToLong(prefList.Left(brk)) );
 			prefList=prefList.Mid(brk+1); brk=prefList.First(wxT("\t"));
-			theApp.glob_prefs->SetMaxConsPerFive( StrToLong(prefList.Left(brk)) );
+			thePrefs::SetMaxConsPerFive( StrToLong(prefList.Left(brk)) );
 			prefList=prefList.Mid(brk+1); brk=prefList.First(wxT("\t"));
-			theApp.glob_prefs->SetTransferFullChunks( StrToLong(prefList.Left(brk)) );
+			thePrefs::SetTransferFullChunks( StrToLong(prefList.Left(brk)) );
 			prefList=prefList.Mid(brk+1);
-			theApp.glob_prefs->SetPreviewPrio( StrToLong(prefList) == 1 );
+			thePrefs::SetPreviewPrio( StrToLong(prefList) == 1 );
 		}
 		return wxEmptyString;
 	}
@@ -449,7 +449,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 	// PREFS
 	//---------------------------------------------------------------------
 	if (item == wxT("PREFS GETWEBUSEGZIP")) {
-		if (theApp.glob_prefs->GetWebUseGzip()) {
+		if (thePrefs::GetWebUseGzip()) {
 			buffer += wxT("1");
 		} else {
 			buffer += wxT("0");
@@ -460,13 +460,13 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 	nChars = sOp.Length();
 	if (item.Left(nChars) == sOp) {
 		wxString pwdHash = item.Mid(nChars+1);
-		if (pwdHash == theApp.glob_prefs->GetWSPass()) {
+		if (pwdHash == thePrefs::GetWSPass()) {
 			AddLogLineM(false, _("Webserver-Admin-Login"));
 			return wxT("AdminLogin");
 		} else if (
-		   theApp.glob_prefs->GetWSIsLowUserEnabled() && 
-		   !theApp.glob_prefs->GetWSLowPass().IsEmpty() && 
-		   pwdHash == theApp.glob_prefs->GetWSLowPass()) {
+		   thePrefs::GetWSIsLowUserEnabled() && 
+		   !thePrefs::GetWSLowPass().IsEmpty() && 
+		   pwdHash == thePrefs::GetWSLowPass()) {
 			AddLogLineM(false, _("Webserver-Guest-Login"));
 			return wxT("GuestLogin");
 		} else {
@@ -1098,8 +1098,8 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 		
 		if (item.Left(12) == wxT("SET IPFILTER")) {
 			wxString param = item.Mid(13).Strip(wxString::both).MakeLower();
-			theApp.glob_prefs->SetIPFilterOn(param == wxT("on"));
-			if (theApp.glob_prefs->GetIPFilterOn()) {
+			thePrefs::SetIPFilterOn(param == wxT("on"));
+			if (thePrefs::GetIPFilterOn()) {
 				theApp.clientlist->FilterQueues();
 			}
 			wxString msg = wxString::Format(_("IPFilter state set to '%s'."), unicode2char(param));
@@ -1107,18 +1107,18 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 		}
 
 		if (item == wxT("GETIPLEVEL") ) {
-			wxString msg = wxString::Format(_("aMule IP Filter level is %d."), theApp.glob_prefs->GetIPFilterLevel());
+			wxString msg = wxString::Format(_("aMule IP Filter level is %d."), thePrefs::GetIPFilterLevel());
 			return msg;
 		}
 
 		if (item.Left(10) == wxT("SETIPLEVEL") ) {
 			wxString args = item.Mid(11);
 			int32 level = StrToLong(args);
-			int32 oldLevel = theApp.glob_prefs->GetIPFilterLevel();
+			int32 oldLevel = thePrefs::GetIPFilterLevel();
 			wxString msg;
 			if ( level <= 255 ) {
 				if ( level != oldLevel ) {
-					theApp.glob_prefs->SetIPFilterLevel(level);
+					thePrefs::SetIPFilterLevel(level);
 					msg = wxString::Format(_("aMule IP Filter level changed from %d to %d."), oldLevel, level);
 				} else {
 					msg = wxString::Format(_("aMule IP Filter level was already %d. Nothing changed."), level);
@@ -1173,24 +1173,24 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 		// PREFERENCES
 		if (item.Left(11).Cmp(wxT("PREFERENCES")) == 0) {
 			if (item.Mid(12).Cmp(wxT("GETWSPORT")) == 0) {
-				return wxString::Format( wxT("%d"), theApp.glob_prefs->GetWSPort() );
+				return wxString::Format( wxT("%d"), thePrefs::GetWSPort() );
 			}
 			
 			if (item.Mid(12,17).Cmp(wxT("SETWEBPAGEREFRESH")) == 0) {
 				if ((item.Length() > 29) && item.Mid(30).IsNumber()) {
-					theApp.glob_prefs->SetWebPageRefresh( StrToLong(item.Mid(30)));
+					thePrefs::SetWebPageRefresh( StrToLong(item.Mid(30)));
 					return wxT("WebPageRefresh Saved");
 				}
 				return wxT("Bad SETWEBPAGEREFRESH request");
 			}
 
 			if (item.Mid(12).Cmp(wxT("GETWEBPAGEREFRESH")) == 0) {
-				return wxString::Format( wxT("%d"), theApp.glob_prefs->GetWebPageRefresh() );
+				return wxString::Format( wxT("%d"), thePrefs::GetWebPageRefresh() );
 			}
 						
 			if (item.Mid(12,13).Cmp(wxT("SETWEBUSEGZIP")) == 0) {
 				if ((item.Length() > 25) && item.Mid(26).IsNumber()) {
-					theApp.glob_prefs->SetWebUseGzip( StrToLong(item.Mid(26)));
+					thePrefs::SetWebUseGzip( StrToLong(item.Mid(26)));
 					return wxT("WebUseGzip Saved");
 				}
 				return wxT("Bad SETWEBUSEGZIP request");
@@ -1198,112 +1198,112 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			
 			if (item.Mid(12,14).Cmp(wxT("SETMAXDOWNLOAD")) == 0) {
 				if ((item.Length() > 26) && item.Mid(27).IsNumber()) {
-					theApp.glob_prefs->SetMaxDownload( StrToLong(item.Mid(27)) );
+					thePrefs::SetMaxDownload( StrToLong(item.Mid(27)) );
 					return wxT("MaxDownload Saved");
 				}
 				return wxT("Bad SETMAXDOWNLOAD request");
 			}
 
 			if (item.Mid(12).Cmp(wxT("GETMAXDOWNLOAD")) == 0) {
-				return wxString::Format( wxT("%d"), theApp.glob_prefs->GetMaxDownload() );
+				return wxString::Format( wxT("%d"), thePrefs::GetMaxDownload() );
 			}
 
 			if (item.Mid(12,12).Cmp(wxT("SETMAXUPLOAD")) == 0) {
 				if ((item.Length() > 24) && item.Mid(25).IsNumber()) {
-					theApp.glob_prefs->SetMaxUpload( StrToLong(item.Mid(25)) );
+					thePrefs::SetMaxUpload( StrToLong(item.Mid(25)) );
 					return wxT("MaxUpload Saved");
 				}
 				return wxT("Bad SETMAXUPLOAD request");
 			}
 
 			if (item.Mid(12).Cmp(wxT("GETMAXUPLOAD")) == 0) {
-				return wxString::Format( wxT("%d"), theApp.glob_prefs->GetMaxUpload() );
+				return wxString::Format( wxT("%d"), thePrefs::GetMaxUpload() );
 			}
 			
 			if (item.Mid(12,23).Cmp(wxT("SETMAXGRAPHDOWNLOADRATE")) == 0) {
 				if ((item.Length() > 35) && item.Mid(36).IsNumber()) {
-					theApp.glob_prefs->SetMaxGraphDownloadRate( StrToLong(item.Mid(36)) );
+					thePrefs::SetMaxGraphDownloadRate( StrToLong(item.Mid(36)) );
 					return wxT("MaxGraphDownload Saved");
 				}
 				return wxT("Bad SETMAXGRAPHDOWNLOADRATE request");
 			}
 
 			if (item.Mid(12).Cmp(wxT("GETMAXGRAPHDOWNLOADRATE")) == 0) {
-				return wxString::Format( wxT("%d"), theApp.glob_prefs->GetMaxGraphDownloadRate() );
+				return wxString::Format( wxT("%d"), thePrefs::GetMaxGraphDownloadRate() );
 			}
 
 
 			if (item.Mid(12,21).Cmp(wxT("SETMAXGRAPHUPLOADRATE")) == 0) {
 				if ((item.Length() > 33) && item.Mid(34).IsNumber()) {
-					theApp.glob_prefs->SetMaxGraphUploadRate( StrToLong(item.Mid(34)) );
+					thePrefs::SetMaxGraphUploadRate( StrToLong(item.Mid(34)) );
 					return wxT("MaxGraphUpload Saved");
 				}
 				return wxT("Bad SETMAXGRAPHUPLOADRATE request");
 			}
 
 			if (item.Mid(12).Cmp(wxT("GETMAXGRAPHUPLOADRATE")) == 0) {
-				return wxString::Format( wxT("%d"), theApp.glob_prefs->GetMaxGraphUploadRate() );
+				return wxString::Format( wxT("%d"), thePrefs::GetMaxGraphUploadRate() );
 			}
 
 			if (item.Mid(12,20).Cmp(wxT("SETMAXSOURCESPERFILE")) == 0) {
 				if ((item.Length() > 32) && item.Mid(33).IsNumber()) {
-					theApp.glob_prefs->SetMaxSourcesPerFile( StrToLong(item.Mid(33)) );
+					thePrefs::SetMaxSourcesPerFile( StrToLong(item.Mid(33)) );
 					return wxT("MaxSourcesPerFile Saved");
 				}
 				return wxT("Bad SETMAXSOURCESPERFILE request");
 			}
 
 			if (item.Mid(12).Cmp(wxT("GETMAXSOURCEPERFILE")) == 0) {
-				return wxString::Format( wxT("%d"), theApp.glob_prefs->GetMaxSourcePerFile() );
+				return wxString::Format( wxT("%d"), thePrefs::GetMaxSourcePerFile() );
 			}
 
 			if (item.Mid(12,17).Cmp(wxT("SETMAXCONNECTIONS")) == 0) {
 				if ((item.Length() > 29) && item.Mid(29).IsNumber()) {
-					theApp.glob_prefs->SetMaxConnections( StrToLong(item.Mid(30)) );
+					thePrefs::SetMaxConnections( StrToLong(item.Mid(30)) );
 					return wxT("MaxConnections Saved");
 				}
 				return wxT("Bad SETMAXCONNECTIONS request");
 			}
 
 			if (item.Mid(12).Cmp(wxT("GETMAXCONNECTIONS")) == 0) {
-				return wxString::Format( wxT("%d"), theApp.glob_prefs->GetMaxConnections() );
+				return wxString::Format( wxT("%d"), thePrefs::GetMaxConnections() );
 			}
 
 			if (item.Mid(12,17).Cmp(wxT("SETMAXCONSPERFIVE")) == 0) {
 				if ((item.Length() > 29) && item.Mid(30).IsNumber()) {
-					theApp.glob_prefs->SetMaxConsPerFive( StrToLong(item.Mid(30)) );
+					thePrefs::SetMaxConsPerFive( StrToLong(item.Mid(30)) );
 					return wxT("MaxConsPerFive Saved");
 				}
 				return wxT("Bad SETMAXCONSPERFIVE request");
 			}
 
 			if (item.Mid(12).Cmp(wxT("GETMAXCONPERFIVE")) == 0) {
-				return wxString::Format( wxT("%d"), theApp.glob_prefs->GetMaxConperFive() );
+				return wxString::Format( wxT("%d"), thePrefs::GetMaxConperFive() );
 			}
 
 			if (item.Mid(12,21).Cmp(wxT("SETTRANSFERFULLCHUNKS")) == 0) {
 				if ((item.Length() > 33) && item.Mid(34).IsNumber()) {
 					bool flag = StrToLong(item.Mid(34));
-					theApp.glob_prefs->SetTransferFullChunks(flag);
+					thePrefs::SetTransferFullChunks(flag);
 					return wxT("TransferFullChunks Saved");
 				}
 				return wxT("Bad SETTRANSFERFULLCHUNKS request");
 			}
 
 			if (item.Mid(12).Cmp(wxT("GETTRANSFERFULLCHUNKS")) == 0) {
-				return wxString::Format( wxT("%d"), theApp.glob_prefs->TransferFullChunks() );
+				return wxString::Format( wxT("%d"), thePrefs::TransferFullChunks() );
 			}
 			
 			if (item.Mid(12,14).Cmp(wxT("SETPREVIEWPRIO")) == 0) {
 				if ((item.Length() > 26) && item.Mid(27).IsNumber()) {
-					theApp.glob_prefs->SetTransferFullChunks( StrToLong(item.Mid(27)) );
+					thePrefs::SetTransferFullChunks( StrToLong(item.Mid(27)) );
 					return wxT("PreviewPrio Saved");
 				}
 				return wxT("Bad SETPREVIEWPRIO request");
 			}
 
 			if (item.Mid(12).Cmp(wxT("GETPREVIEWPRIO")) == 0) {
-				return wxString::Format( wxT("%d"), theApp.glob_prefs->GetPreviewPrio() );
+				return wxString::Format( wxT("%d"), thePrefs::GetPreviewPrio() );
 			}
 
 			return wxT("Bad PREFERENCES request");
@@ -1374,7 +1374,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 #else
 				if ((item.Length() > 22) && item.Mid(23).IsNumber()) {
 					bool flag = StrToLong(item.Mid(23));
-					theApp.amuledlg->statisticswnd->SetARange(flag,theApp.glob_prefs->GetMaxGraphUploadRate());
+					theApp.amuledlg->statisticswnd->SetARange(flag,thePrefs::GetMaxGraphUploadRate());
 					return wxT("SetARangeUL Saved");
 				}
 				return wxT("Bad SETARANGE request");
@@ -1387,7 +1387,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 #else
 				if ((item.Length() > 22) && item.Mid(23).IsNumber()) {
 					bool flag = StrToLong(item.Mid(23));
-					theApp.amuledlg->statisticswnd->SetARange(flag,theApp.glob_prefs->GetMaxGraphDownloadRate());
+					theApp.amuledlg->statisticswnd->SetARange(flag,thePrefs::GetMaxGraphDownloadRate());
 					return wxT("SetARangeDL Saved");
 				}
 				return wxT("Bad SETARANGE request");
@@ -1395,7 +1395,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			}
 
 			if (item.Mid(11).Cmp(wxT("GETTRAFFICOMETERINTERVAL")) == 0) {
-				return wxString::Format( wxT("%d"), theApp.glob_prefs->GetTrafficOMeterInterval() );
+				return wxString::Format( wxT("%d"), thePrefs::GetTrafficOMeterInterval() );
 			}
 			
 		} //end - STATISTICS
@@ -1657,9 +1657,9 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 		// MAX
 		if (item.Left(3).Cmp(wxT("MAX")) == 0) { //get max upload/download values
 			if (item.Mid(4).Cmp(wxT("UL")) == 0) { //upload
-				return wxString::Format( wxT("%i"), theApp.glob_prefs->GetMaxUpload() );
+				return wxString::Format( wxT("%i"), thePrefs::GetMaxUpload() );
 			} else if (item.Mid(4).Cmp(wxT("DL")) == 0) { //download
-				return wxString::Format( wxT("%i"), theApp.glob_prefs->GetMaxDownload() );
+				return wxString::Format( wxT("%i"), thePrefs::GetMaxDownload() );
 			} else {
 				return wxT("Wrong value requested");
 			}
@@ -2244,12 +2244,12 @@ wxString ExternalConn::GetDownloadFileInfo(const CPartFile* file)
 	
 	if ( file->lastseencomplete ) {
 		wxDateTime time = (time_t)file->lastseencomplete;
-		strLsc = time.Format( theApp.glob_prefs->GetDateTimeFormat() );
+		strLsc = time.Format( thePrefs::GetDateTimeFormat() );
 	}
 	
 	if ( file->GetFileDate() ) {
 		wxDateTime time = (time_t)file->GetFileDate();
-		strLastprogr = time.Format( theApp.glob_prefs->GetDateTimeFormat() );
+		strLastprogr = time.Format( thePrefs::GetDateTimeFormat() );
 	}
 
 	float availability = 0;

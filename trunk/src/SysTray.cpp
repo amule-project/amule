@@ -131,7 +131,7 @@ void set_dl_speed(GtkWidget* widget, GdkEventButton* WXUNUSED(event), gpointer W
 {
 	unsigned int temp = (unsigned int)gtk_object_get_data (GTK_OBJECT(widget), "label");
 	
-	theApp.glob_prefs->SetMaxDownload(temp);
+	thePrefs::SetMaxDownload(temp);
 }
 
 
@@ -140,7 +140,7 @@ void set_ul_speed(GtkWidget* widget, GdkEventButton* WXUNUSED(event), gpointer W
 {
 	unsigned int temp = (unsigned int)gtk_object_get_data (GTK_OBJECT(widget), "label");
 
-	theApp.glob_prefs->SetMaxUpload(temp);
+	thePrefs::SetMaxUpload(temp);
 }
 
 
@@ -164,7 +164,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 		label += _("\nSpeed Limits:\n");
 	
 		// Check for upload limits
-		unsigned int max_upload = theApp.glob_prefs->GetMaxUpload();
+		unsigned int max_upload = thePrefs::GetMaxUpload();
 		if ( max_upload == UNLIMITED ) {
 			label += wxString::Format( _("UL: None, "));
 		} else {
@@ -172,7 +172,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 		}
 	
 		// Check for download limits
-		unsigned int max_download = theApp.glob_prefs->GetMaxDownload();
+		unsigned int max_download = thePrefs::GetMaxDownload();
 		if ( max_download == UNLIMITED ) {
 			label += wxString::Format( _("DL: None"));
 		} else {
@@ -204,10 +204,10 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 	{
 		wxString temp = _("Nickname: ");
 			
-		if ( theApp.glob_prefs->GetUserNick().IsEmpty() )
+		if ( thePrefs::GetUserNick().IsEmpty() )
 			temp += _("No Nickname Selected!");
 		else
-			temp += theApp.glob_prefs->GetUserNick();
+			temp += thePrefs::GetUserNick();
 		
 		info_item = gtk_menu_item_new_with_label( StringToSystray( temp ) );
 		gtk_container_add(GTK_CONTAINER(info_menu), info_item);
@@ -271,8 +271,8 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 
 	// TCP PORT
 	{
-		if (theApp.glob_prefs->GetPort()) {
-			wxString temp = wxString::Format(wxT("%s%d"), _("TCP Port: "), theApp.glob_prefs->GetPort());
+		if (thePrefs::GetPort()) {
+			wxString temp = wxString::Format(wxT("%s%d"), _("TCP Port: "), thePrefs::GetPort());
 			info_item=gtk_menu_item_new_with_label( StringToSystray( temp ) );
 		} else
 			info_item=gtk_menu_item_new_with_label(StringToSystray(_("TCP Port: Not Ready")));
@@ -283,8 +283,8 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 
 	// UDP PORT
 	{
-		if (theApp.glob_prefs->GetUDPPort()) {
-			wxString temp = wxString::Format(wxT("%s%d"), _("UDP Port: "), theApp.glob_prefs->GetUDPPort());	
+		if (thePrefs::GetUDPPort()) {
+			wxString temp = wxString::Format(wxT("%s%d"), _("UDP Port: "), thePrefs::GetUDPPort());	
 			info_item=gtk_menu_item_new_with_label( StringToSystray( temp ) );
 		} else
 			info_item=gtk_menu_item_new_with_label(StringToSystray(_("UDP Port: Not Ready")));
@@ -295,7 +295,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 
 	// Online Signature
 	{
-		if (theApp.glob_prefs->IsOnlineSignatureEnabled())
+		if (thePrefs::IsOnlineSignatureEnabled())
 			info_item=gtk_menu_item_new_with_label(StringToSystray(_("Online Signature: Enabled")));
 		else
 			info_item=gtk_menu_item_new_with_label(StringToSystray(_("Online Signature: Disabled")));
@@ -331,7 +331,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 
 	// Total Downloaded
 	{
-		wxString temp = CastItoXBytes( theApp.stat_sessionReceivedBytes + theApp.glob_prefs->GetTotalDownloaded() );
+		wxString temp = CastItoXBytes( theApp.stat_sessionReceivedBytes + thePrefs::GetTotalDownloaded() );
 		temp = wxString(_("Total DL: ")) + temp;
 		info_item=gtk_menu_item_new_with_label( StringToSystray( temp ) );
 		gtk_container_add (GTK_CONTAINER (info_menu), info_item);
@@ -340,7 +340,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 
 	// Total Uploaded
 	{
-		wxString temp = CastItoXBytes( theApp.stat_sessionSentBytes + theApp.glob_prefs->GetTotalUploaded() );
+		wxString temp = CastItoXBytes( theApp.stat_sessionSentBytes + thePrefs::GetTotalUploaded() );
 		temp = wxString(_("Total UL: ")) + temp;
 		info_item=gtk_menu_item_new_with_label( StringToSystray( temp ) );
 		gtk_container_add (GTK_CONTAINER (info_menu), info_item);
@@ -366,7 +366,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 		gtk_signal_connect(GTK_OBJECT(up_item), "activate", GTK_SIGNAL_FUNC(set_ul_speed), up_item);
 
 	
-		uint32 max_ul_speed = theApp.glob_prefs->GetMaxGraphUploadRate();
+		uint32 max_ul_speed = thePrefs::GetMaxGraphUploadRate();
 		// If we dont have a frame of reference, then we'll just have to pull some numbers out our asses
 		if ( max_ul_speed == UNLIMITED )
 			max_ul_speed = 100;
@@ -400,7 +400,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 		gtk_container_add (GTK_CONTAINER (down_speed), dl_item);
 		gtk_signal_connect (GTK_OBJECT(dl_item), "activate",GTK_SIGNAL_FUNC (set_dl_speed),dl_item);
 
-		uint32 max_dl_speed = theApp.glob_prefs->GetMaxGraphDownloadRate();
+		uint32 max_dl_speed = thePrefs::GetMaxGraphDownloadRate();
 		// If we dont have a frame of reference, then we'll just have to pull some numbers out our asses
 		if ( max_dl_speed == UNLIMITED )
 			max_dl_speed = 100;

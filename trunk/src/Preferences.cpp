@@ -196,6 +196,7 @@ int			CPreferences::s_perms_dirs;
 bool 			CPreferences::s_AICHTrustEveryHash;
 bool 			CPreferences::s_IPFilterAutoLoad;
 wxString 	CPreferences::s_IPFilterURL;
+CMD4Hash	CPreferences::s_userhash;
 
 
 /**
@@ -565,7 +566,7 @@ CPreferences::CPreferences()
 			off_t read = preffile.Read( &prefsExt, sizeof(Preferences_Ext_Struct) );
 
 			if ( read == sizeof(Preferences_Ext_Struct) ) {
-				md4cpy(m_userhash, prefsExt.userhash);
+				md4cpy(s_userhash, prefsExt.userhash);
 			} else {
 				SetStandartValues();
 			}
@@ -602,8 +603,8 @@ CPreferences::CPreferences()
 		slistfile.Close();
 	}
 
-	m_userhash[5] = 14;
-	m_userhash[14] = 111;
+	s_userhash[5] = 14;
+	s_userhash[14] = 111;
 
 	if (!::wxDirExists(GetIncomingDir())) {
 		::wxMkdir( GetIncomingDir(), GetDirPermissions() );
@@ -613,11 +614,11 @@ CPreferences::CPreferences()
 		::wxMkdir( GetTempDir(), GetDirPermissions() );
 	}
 
-	if (m_userhash.IsEmpty()) {
+	if (s_userhash.IsEmpty()) {
 		CreateUserHash();
 	}
 	
-	printf("Userhash loaded: %s\n", unicode2char(m_userhash.Encode()));
+	printf("Userhash loaded: %s\n", unicode2char(s_userhash.Encode()));
 }
 
 
@@ -989,13 +990,13 @@ bool CPreferences::Save()
 		preffile.Create( fullpath );
 	
 	if ( preffile.Open(fullpath, CFile::read_write) ) {
-		printf("Saving userhash: %s\n", unicode2char(m_userhash.Encode()));
+		printf("Saving userhash: %s\n", unicode2char(s_userhash.Encode()));
 		
 		Preferences_Ext_Struct prefsExt;
 		memset( &prefsExt, 0, sizeof(Preferences_Ext_Struct) );
 		
 		prefsExt.version = PREFFILE_VERSION;
-		md4cpy( prefsExt.userhash, m_userhash.GetHash() );
+		md4cpy( prefsExt.userhash, s_userhash.GetHash() );
 		
 		off_t read = preffile.Write( &prefsExt, sizeof(Preferences_Ext_Struct) );
 
@@ -1032,11 +1033,11 @@ void CPreferences::CreateUserHash()
 {
 	for (int i = 0;i != 8; i++) {
 		uint16	random = rand();
-		memcpy(&m_userhash[i*2],&random,2);
+		memcpy(&s_userhash[i*2],&random,2);
 	}
 	// mark as emule client. that will be need in later version
-	m_userhash[5] = 14;
-	m_userhash[14] = 111;
+	s_userhash[5] = 14;
+	s_userhash[14] = 111;
 }
 
 

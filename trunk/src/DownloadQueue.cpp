@@ -456,7 +456,7 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender,CUpDownClient* source)
 {
 	// if we block loopbacks at this point it should prevent us from connecting to ourself
 	if ( source->HasValidHash() ) {
-		if ( source->GetUserHash() == theApp.glob_prefs->GetUserHash() ) {
+		if ( source->GetUserHash() == thePrefs::GetUserHash() ) {
 			AddDebugLogLineM(false, _("Tried to add source with matching hash to your own."));
 			source->Safe_Delete();
 			return;

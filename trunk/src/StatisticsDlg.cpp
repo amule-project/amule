@@ -128,11 +128,11 @@ void CStatisticsDlg::InitGraphs()
 	// called after preferences get initialised
 	for (int index=0; index<=10; index++)
 		ApplyStatsColor(index);
-	pscopeDL->SetRanges(0.0, (float)(theApp.glob_prefs->GetMaxGraphDownloadRate()+4));
+	pscopeDL->SetRanges(0.0, (float)(thePrefs::GetMaxGraphDownloadRate()+4));
 	pscopeDL->SetYUnits(_("kB/s"));
-	pscopeUL->SetRanges(0.0, (float)(theApp.glob_prefs->GetMaxGraphUploadRate()+4));
+	pscopeUL->SetRanges(0.0, (float)(thePrefs::GetMaxGraphUploadRate()+4));
 	pscopeUL->SetYUnits(_("kB/s"));
-	pscopeConn->SetRanges(0.0, (float)(theApp.glob_prefs->GetStatsMax()));
+	pscopeConn->SetRanges(0.0, (float)(thePrefs::GetStatsMax()));
 	pscopeConn->SetYUnits(wxEmptyString);
 }
 
@@ -224,7 +224,7 @@ void CStatisticsDlg::RecordHistory()
 	double		sCur = theApp.GetUptimeMsecs()/1000.0;
 	double		sTrans;
 	static double	sPrev;
-	float		sAvg = theApp.glob_prefs->GetStatsAverageMinutes()*60.0;
+	float		sAvg = thePrefs::GetStatsAverageMinutes()*60.0;
 	double		kBytesRec = theApp.stat_sessionReceivedBytes/1024.0;
 	double		kBytesSent = theApp.stat_sessionSentBytes/1024.0;
 	static double	kBytesRecPrev, kBytesSentPrev;
@@ -368,7 +368,7 @@ void CStatisticsDlg::ComputeAverages(
 {	
 	double		sCur = 0.0, sPrev, sTarget, sTrans, kBytesPrev, kBytesRun;
 	float		kBpsAvg;
-	float 		sAvg = (float)theApp.glob_prefs->GetStatsAverageMinutes()*60.0;
+	float 		sAvg = (float)thePrefs::GetStatsAverageMinutes()*60.0;
 	POSITION	posPrev = listHR.PrevAt(pos);
 	HR			*phr = &listHR.GetAt(pos);
 		
@@ -525,7 +525,7 @@ void CStatisticsDlg::UpdateStatGraphs(bool bStatsVisible)
 		savedMaxConns = peakconnections;
 		unsigned nMult, 
 		unsigned nDiv;
-		unsigned nMax = theApp.glob_prefs->GetStatsMax();
+		unsigned nMax = thePrefs::GetStatsMax();
 		float fUpperLimit;
 		if (savedMaxConns < nMax) {
 			nMult = nMax / savedMaxConns;
@@ -569,7 +569,7 @@ void CStatisticsDlg::UpdateStatGraphs(bool bStatsVisible)
 void CStatisticsDlg::SetUpdatePeriod()
 {
 	// this gets called after the value in Preferences/Statistics/Update delay has been changed
-	double sStep = theApp.glob_prefs->GetTrafficOMeterInterval();
+	double sStep = thePrefs::GetTrafficOMeterInterval();
 	if (sStep == 0.0) {
 	 	pscopeDL->Stop();
  		pscopeUL->Stop();
@@ -611,7 +611,7 @@ float CStatisticsDlg::GetMaxConperFiveModifier(){
 	if ( SpikeSize < 1 ) {
 		return 1;
 	}
-	float SpikeTolerance = 25*(float)theApp.glob_prefs->GetMaxConperFive()/(float)10;
+	float SpikeTolerance = 25*(float)thePrefs::GetMaxConperFive()/(float)10;
 	if ( SpikeSize > SpikeTolerance ) {
 		return 0;
 	}
@@ -742,7 +742,7 @@ void CStatisticsDlg::ShowStatistics()
 	uint64 DownOHTotalPackets = theApp.downloadqueue->GetDownDataOverheadFileRequestPackets() + theApp.downloadqueue->GetDownDataOverheadSourceExchangePackets() + theApp.downloadqueue->GetDownDataOverheadServerPackets() + theApp.downloadqueue->GetDownDataOverheadOtherPackets();
 	cbuffer.Printf(_("Uptime: "));
 	stattree->SetItemText(h_uptime, cbuffer);
-	cbuffer.Printf(_("Downloaded Data (Session (Total)): %s (%s)"),CastItoXBytes( theApp.stat_sessionReceivedBytes).GetData(),	CastItoXBytes( theApp.stat_sessionReceivedBytes+theApp.glob_prefs->GetTotalDownloaded()).GetData());
+	cbuffer.Printf(_("Downloaded Data (Session (Total)): %s (%s)"),CastItoXBytes( theApp.stat_sessionReceivedBytes).GetData(),	CastItoXBytes( theApp.stat_sessionReceivedBytes+thePrefs::GetTotalDownloaded()).GetData());
 	stattree->SetItemText(down1, cbuffer);
 	cbuffer.Printf(_("Total Overhead (Packets): %s (%s)"),	CastItoXBytes(DownOHTotal).GetData(), CastItoIShort(DownOHTotalPackets).GetData());
 	stattree->SetItemText(down2, cbuffer);
@@ -758,7 +758,7 @@ void CStatisticsDlg::ShowStatistics()
 	stattree->SetItemText(down7, cbuffer);
 	uint64 UpOHTotal = theApp.uploadqueue->GetUpDataOverheadFileRequest() + theApp.uploadqueue->GetUpDataOverheadSourceExchange() + theApp.uploadqueue->GetUpDataOverheadServer() + theApp.uploadqueue->GetUpDataOverheadOther();
 	uint64 UpOHTotalPackets = theApp.uploadqueue->GetUpDataOverheadFileRequestPackets() + theApp.uploadqueue->GetUpDataOverheadSourceExchangePackets() + theApp.uploadqueue->GetUpDataOverheadServerPackets() + theApp.uploadqueue->GetUpDataOverheadOtherPackets();
-	cbuffer.Printf(_("Uploaded Data (Session (Total)): %s (%s)"),CastItoXBytes( theApp.stat_sessionSentBytes).GetData(),CastItoXBytes( theApp.stat_sessionSentBytes+theApp.glob_prefs->GetTotalUploaded()).GetData());
+	cbuffer.Printf(_("Uploaded Data (Session (Total)): %s (%s)"),CastItoXBytes( theApp.stat_sessionSentBytes).GetData(),CastItoXBytes( theApp.stat_sessionSentBytes+thePrefs::GetTotalUploaded()).GetData());
 	stattree->SetItemText(up1, cbuffer);
 	cbuffer.Printf(_("Total Overhead (Packets): %s (%s)"), CastItoXBytes( UpOHTotal).GetData(), CastItoIShort(UpOHTotalPackets).GetData());
 	stattree->SetItemText(up2, cbuffer);
@@ -1227,7 +1227,7 @@ wxString CStatisticsDlg::GetHTML() {
 	wxString strBuffer=wxEmptyString;
 	wxTreeItemId item;
 
-	strBuffer.Printf(wxT("<font face=\"Verdana,Courier New,Helvetica\" size=\"2\">\r\n<b>aMule v%s %s [%s]</b>\r\n<br><br>\r\n"), PACKAGE_VERSION, _("Statistics"), theApp.glob_prefs->GetUserNick().c_str());
+	strBuffer.Printf(wxT("<font face=\"Verdana,Courier New,Helvetica\" size=\"2\">\r\n<b>aMule v%s %s [%s]</b>\r\n<br><br>\r\n"), PACKAGE_VERSION, _("Statistics"), thePrefs::GetUserNick().c_str());
 	// update it
 	ShowStatistics();
 

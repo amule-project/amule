@@ -603,7 +603,7 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 		throw wxString(wxT("Huh, socket failure. Avoided crash this time.\n"));
 	}
 	
-	if (theApp.glob_prefs->AddServersFromClient()) {
+	if (thePrefs::AddServersFromClient()) {
 		in_addr addhost;
 		addhost.s_addr = m_dwServerIP;
 		CServer* addsrv = new CServer(m_nServerPort, char2unicode(inet_ntoa(addhost)));
@@ -668,7 +668,7 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 	if ( !m_bGPLEvildoer ) {
 		// Added by BlackRat [xrmb: own hash detection]
 		if ( theApp.serverconnect->GetClientID() != GetUserID() 
-			 && m_UserHash == theApp.glob_prefs->GetUserHash() )
+			 && m_UserHash == thePrefs::GetUserHash() )
 		{
 			Ban();
  			m_bGPLEvildoer = true;
@@ -773,7 +773,7 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer) {
 	tag1.WriteTagToFile(data);
 	CTag tag2(ET_UDPVER,4);
 	tag2.WriteTagToFile(data);
-	CTag tag3(ET_UDPPORT,theApp.glob_prefs->GetUDPPort());
+	CTag tag3(ET_UDPPORT,thePrefs::GetUDPPort());
 	tag3.WriteTagToFile(data);
 	CTag tag4(ET_SOURCEEXCHANGE,2);
 	tag4.WriteTagToFile(data);
@@ -786,7 +786,7 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer) {
 	// Kry - Needs the preview code from eMule	
 	/*
 	// set 'Preview supported' only if 'View Shared Files' allowed
-	if (theApp.glob_prefs->CanSeeShares() != vsfaNobody) {
+	if (thePrefs::CanSeeShares() != vsfaNobody) {
 		dwTagValue |= 128;
 	}
 	*/
@@ -1013,9 +1013,9 @@ void CUpDownClient::SendHelloAnswer()
 
 void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
 {
-	data->WriteHash16(theApp.glob_prefs->GetUserHash());
+	data->WriteHash16(thePrefs::GetUserHash());
 	data->WriteUInt32(theApp.serverconnect->GetClientID());
-	data->WriteUInt16(theApp.glob_prefs->GetPort());
+	data->WriteUInt16(thePrefs::GetPort());
 
 	#ifdef __CVS__
 	// Kry - This is the tagcount!!! Be sure to update it!!
@@ -1025,7 +1025,7 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
 	#endif
 	
 	
-	CTag tagname(CT_NAME,unicode2char(theApp.glob_prefs->GetUserNick()));
+	CTag tagname(CT_NAME,unicode2char(thePrefs::GetUserNick()));
 	tagname.WriteTagToFile(data);
 	
 	CTag tagversion(CT_VERSION,EDONKEYVERSION);
@@ -1036,12 +1036,12 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
 	#ifdef __USE_KAD__
 	if(Kademlia::CKademlia::isConnected())
 	{
-		kadUDPPort = theApp.glob_prefs->GetUDPPort();
+		kadUDPPort = thePrefs::GetUDPPort();
 	}
 	#endif
 	CTag tagUdpPorts(CT_EMULE_UDPPORTS, 
 				(kadUDPPort									<< 16) |
-				((uint32)theApp.glob_prefs->GetUDPPort()         ) ); 
+				((uint32)thePrefs::GetUDPPort()         ) ); 
 	tagUdpPorts.WriteTagToFile(data);
 	
 	// aMule Version
@@ -1062,7 +1062,7 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
 	const UINT uSourceExchangeVer	= 2; //3; Kry - Our source exchange it type 2, TODO
 	const UINT uExtendedRequestsVer	= 2;
 	const UINT uAcceptCommentVer	= 1;
-	const UINT uNoViewSharedFiles	= (theApp.glob_prefs->CanSeeShares() == vsfaNobody) ? 1 : 0; // for backward compatibility this has to be a 'negative' flag
+	const UINT uNoViewSharedFiles	= (thePrefs::CanSeeShares() == vsfaNobody) ? 1 : 0; // for backward compatibility this has to be a 'negative' flag
 	const UINT uMultiPacket			= 1;
 	const UINT uSupportPreview		= 0; // No network preview at all.
 	const UINT uPeerCache			= 0; // No peercache for aMule, baby
@@ -2102,7 +2102,7 @@ bool CUpDownClient::CheckHandshakeFinished(UINT WXUNUSED(protocol), UINT WXUNUSE
 	if (m_bHelloAnswerPending){
 		//	throw CString(wxT("Handshake not finished")); // -> disconnect client
 		// this triggers way too often.. need more time to look at this -> only create a warning
-		if (theApp.glob_prefs->GetVerbose()) {
+		if (thePrefs::GetVerbose()) {
 			AddLogLineM(false, _("Handshake not finished while processing packet."));
 		}
 		return false;

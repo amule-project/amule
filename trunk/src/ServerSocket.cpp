@@ -297,28 +297,28 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				}
 				/* Add more from 0.30c (Creteil) END */
 				if (la->clientid == 0) {
-					uint8 state = theApp.glob_prefs->GetSmartIdState();
+					uint8 state = thePrefs::GetSmartIdState();
 					if ( state > 0 ) {
 						state++;
 						if(state > 3) {
-							theApp.glob_prefs->SetSmartIdState(0);
+							thePrefs::SetSmartIdState(0);
 						} else {
-							theApp.glob_prefs->SetSmartIdState(state);
+							thePrefs::SetSmartIdState(state);
 						}
 					}
 					break;
 				}
-				if(theApp.glob_prefs->GetSmartIdCheck()) {
+				if(thePrefs::GetSmartIdCheck()) {
 					if (la->clientid >= 16777216) {
-						theApp.glob_prefs->SetSmartIdState(1);
+						thePrefs::SetSmartIdState(1);
 					} else {
-						uint8 state = theApp.glob_prefs->GetSmartIdState();
+						uint8 state = thePrefs::GetSmartIdState();
 						if ( state > 0 ) {
 							state++;
 							if(state > 3) {
-								theApp.glob_prefs->SetSmartIdState(0);
+								thePrefs::SetSmartIdState(0);
 							} else {
-								theApp.glob_prefs->SetSmartIdState(state);
+								thePrefs::SetSmartIdState(state);
 							}
 							break;
 						}
@@ -561,7 +561,7 @@ void CServerSocket::ConnectToServer(CServer* server)
 
 void CServerSocket::OnError(wxSocketError nErrorCode)
 {
-	if (theApp.glob_prefs->GetVerbose()) {
+	if (thePrefs::GetVerbose()) {
 		AddLogLineM(false,_("Error in serversocket: ") + cur_server->GetListName() + wxT("(") + cur_server->GetFullIP() + wxString::Format(wxT(":%i): %u"),cur_server->GetPort(), (int)nErrorCode));
 	}
 	SetConnectionState(CS_DISCONNECTED);

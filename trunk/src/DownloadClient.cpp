@@ -78,7 +78,7 @@ void CUpDownClient::DrawStatusBar(wxMemoryDC* dc, const wxRect& rect, bool onlyg
 	s_StatusBar.SetHeight(rect.height - rect.y);
 	s_StatusBar.SetWidth(rect.width - rect.x);
 	s_StatusBar.Fill(crNeither);
-	s_StatusBar.Set3dDepth( theApp.glob_prefs->Get3DDepth() );
+	s_StatusBar.Set3dDepth( thePrefs::Get3DDepth() );
 
 	// Barry - was only showing one part from client, even when reserved bits from 2 parts
 	wxString gettingParts = ShowDownloadingParts();
@@ -173,7 +173,7 @@ bool CUpDownClient::IsSourceRequestAllowed()
 		// if client has the correct extended protocol
 		ExtProtocolAvailable() && m_bySourceExchangeVer >= 1 &&
 		// AND if we need more sources
-		theApp.glob_prefs->GetMaxSourcePerFileSoft() > uSources &&
+		thePrefs::GetMaxSourcePerFileSoft() > uSources &&
 		// AND if...
 		(
 		//source is not complete and file is very rare
@@ -523,12 +523,12 @@ void CUpDownClient::SetDownloadState(uint8 byNewState)
 			// -khaos--+++> Extended Statistics (Successful/Failed Download Sessions)
 			if (m_bTransferredDownMini && byNewState != DS_ERROR) {
 				// Increment our counters for successful sessions (Cumulative AND Session)
-				theApp.glob_prefs->Add2DownSuccessfulSessions();
+				thePrefs::Add2DownSuccessfulSessions();
 			} else {
 				// Increment our counters failed sessions (Cumulative AND Session)
-				theApp.glob_prefs->Add2DownFailedSessions();
+				thePrefs::Add2DownFailedSessions();
 			}
-			theApp.glob_prefs->Add2DownSAvgTime(GetDownTimeDifference()/1000);
+			thePrefs::Add2DownSAvgTime(GetDownTimeDifference()/1000);
 			// <-----khaos-
 			#endif
 
@@ -1071,7 +1071,7 @@ void CUpDownClient::UDPReaskForDownload()
 	//the line "m_bUDPPending = true;" use to be here
 
 	
-	if(m_nUDPPort != 0 && theApp.glob_prefs->GetUDPPort() != 0 &&
+	if(m_nUDPPort != 0 && thePrefs::GetUDPPort() != 0 &&
 	   !HasLowID() && !IsConnected())
 	{ 
 		// deadlake PROXYSUPPORT

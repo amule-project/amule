@@ -202,7 +202,7 @@ public:
 	static uint16		GetUDPPort()			{ return s_udpport; }
 	static const wxString&	GetIncomingDir()		{ return s_incomingdir; }
 	static const wxString&	GetTempDir()			{ return s_tempdir; }
-	const CMD4Hash&		GetUserHash()			{ return m_userhash; }
+	static const CMD4Hash&	GetUserHash()			{ return s_userhash; }
 	static uint16		GetMaxUpload()			{ return s_maxupload; }
 	static uint16		GetSlotAllocation()		{ return s_slotallocation; }
 	static bool		IsICHEnabled()			{ return s_ICH; }
@@ -441,7 +441,6 @@ protected:
 	CatList			m_CatList;
 
 private:
-	CMD4Hash m_userhash;
 
 	void LoadPreferences();
 	void SavePreferences();
@@ -449,6 +448,8 @@ private:
 protected:
 ////////////// USER
 	static wxString	s_nick;
+	
+	static CMD4Hash s_userhash;
 
 ////////////// CONNECTION
 	static uint16	s_maxupload;
