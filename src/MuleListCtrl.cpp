@@ -225,9 +225,9 @@ void CMuleListCtrl::SortList()
 
 #ifndef __WXMSW__
 	if ( sort_alt ) {
-		wxODListCtrl::SetSortArrow( GetSortColumn(), ( GetSortAsc() ? 3 : 4 ) );
+		wxODListCtrl::SetSortArrow( GetSortColumn(), ( GetSortAsc() ? 4 : 3 ) );
 	} else {
-		wxODListCtrl::SetSortArrow( GetSortColumn(), ( GetSortAsc() ? 1 : 2 ) );
+		wxODListCtrl::SetSortArrow( GetSortColumn(), ( GetSortAsc() ? 2 : 1 ) );
 	}
 #endif
 
