@@ -246,9 +246,11 @@ openbsd*)
 	;;
 *cygwin* | *mingw32*)
 	SYS=win32
-	if test "${WINDRES}" = "" ; then
-		AC_MSG_ERROR([Required resource tool 'windres' not found on PATH.])
-	fi
+	AC_MSG_ERROR([
+		"You are trying to compile aMule using configure under Windows.
+		This is not possible. Please use the provided MakefineWIN32 instead.
+		Just type make -f MakefineWIN32.
+	])
 	;;
 esac
 
@@ -271,15 +273,17 @@ case "$WXBASE24FOUND" in
 1)	HAVE_AMULECMD="yes"
 	WXBASE_CXXFLAGS="$WXBASE_CXXFLAGS -DWXBASE"
 	;;
-*)	if test "$WXBASE25FOUND" = "1"; then
-      	HAVE_AMULECMD="yes"
-      else
+*)	if test "$WXBASE25FOUND" = 1; then
+		HAVE_AMULECMD="yes"
+	else
 		WEB="no"
 		WEBGUI="no"
 		HAVE_AMULECMD="no"
 	fi
 	;;
 esac
+
+echo $WXBASE24FOUND $WXBASE25FOUND $WEB $WEBGUI $HAVE_AMULECMD
 
 case "$GDLIBFOUND" in
 1)	CAS_DEFS="-D__GD__"
@@ -386,8 +390,6 @@ AM_CONDITIONAL(HAVE_TRAY, test x$systray = xyes)
 AM_CONDITIONAL(HAVE_GTK, test x$gtk = xyes)
 AM_CONDITIONAL(VERBOSE_OUTPUT, test x$USE_DEBUG = xyes -a x$VERBOSE_OUTPUT = xyes)
 
-# Compilation of rc file with minGW
-AM_CONDITIONAL(USE_MINGW, test "${SYS}" = "win32")
 
 AC_SUBST(GTK_DEFS)
 AC_SUBST(TRAY_FLAGS)
