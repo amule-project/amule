@@ -40,6 +40,7 @@
 
 BEGIN_EVENT_TABLE(CFriendListCtrl,CMuleListCtrl)
 	EVT_RIGHT_DOWN(CFriendListCtrl::OnNMRclick)
+	EVT_LIST_ITEM_SELECTED(ID_FRIENDLIST, CFriendListCtrl::OnItemSelected) 
 END_EVENT_TABLE()
 
 //IMPLEMENT_DYNAMIC(CFriendListCtrl, CListCtrl)
@@ -99,6 +100,14 @@ void CFriendListCtrl::RefreshFriend(CFriend* toupdate)
 	} else {
 		image = 1;
 	}
+}
+
+void CFriendListCtrl::OnItemSelected(wxListEvent& evt)
+{
+	// Force the list to refresh. For some reason, Refresh() wont work on its own...
+	Freeze();
+	Refresh(true);
+	Thaw();
 }
 
 void CFriendListCtrl::OnNMRclick(wxMouseEvent& evt)
