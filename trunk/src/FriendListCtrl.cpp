@@ -39,6 +39,7 @@
 #include "EndianFix.h"
 #include "OtherFunctions.h"
 #include "muuli_wdr.h"
+#include "SafeFile.h"
 
 BEGIN_EVENT_TABLE(CFriendListCtrl, CMuleListCtrl)
 	EVT_RIGHT_DOWN(CFriendListCtrl::OnNMRclick)
