@@ -756,7 +756,7 @@ void PrefsUnifiedDlg::BuildItemList(Preferences_Struct *prefs, const char * appd
 	listRse.Append(new RseBool(IDC_AUTOCONNECTSTATICONLY, prefs->autoconnectstaticonly, "AutoConnectStaticOnly", false)); 
 	listRse.Append(new RseBool(IDC_AUTOTAKEED2KLINKS, prefs->autotakeed2klinks, "AutoTakeED2KLinks", true)); 
 	listRse.Append(new RseBool(IDC_ADDNEWFILESPAUSED, prefs->addnewfilespaused, "AddNewFilesPaused", false)); 
-	listRse.Append(new RseInt(IDC_3DDEPTH, prefs->depth3D, "3DDepth", 0));
+	listRse.Append(new RseInt(IDC_3DDEPTH, prefs->depth3D, "3DDepth", 10));
 
 	listRse.Append(new RseBool(IDC_CB_TBN_USESOUND, prefs->useSoundInNotifier, "NotifierUseSound", false));
 	listRse.Append(new RseBool(IDC_CB_TBN_ONLOG, prefs->useLogNotifier, "NotifyOnLog", false));

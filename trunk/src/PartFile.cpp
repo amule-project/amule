@@ -1427,6 +1427,7 @@ void CPartFile::DrawStatusBar(wxMemoryDC* dc, wxRect rect, bool bFlat)
 	s_ChunkBar.SetWidth(rect.width - rect.x); 
 	s_ChunkBar.SetFileSize(m_nFileSize);
 	s_ChunkBar.Fill(crHave);
+	s_ChunkBar.Set3dDepth( theApp.glob_prefs->Get3DDepth() );
 
 	uint32 allgaps = 0;
 
@@ -1487,6 +1488,7 @@ void CPartFile::DrawStatusBar(wxMemoryDC* dc, wxRect rect, bool bFlat)
 	gaprect.left = rect.x; //->left;
 
 	if(!bFlat) {
+		s_LoadBar.Set3dDepth( theApp.glob_prefs->Get3DDepth() );
 		s_LoadBar.SetWidth((int) ((m_nFileSize - allgaps) * blockpixel));
 		s_LoadBar.Fill(crProgress);
 		s_LoadBar.Draw(dc, gaprect.left, gaprect.top, false);
