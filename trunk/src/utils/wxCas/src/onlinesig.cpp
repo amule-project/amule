@@ -45,22 +45,22 @@
 OnLineSig::OnLineSig ()
 {
 
-  m_isRunning = "0";
-  m_serverName = "Unknown";
-  m_serverIP = "0.0.0.0";
-  m_serverPort = "00";
-  m_connexionID = "?";
-  m_DLRate = "0.00";
-  m_ULRate = "0.00";
-  m_queue = "0";
-  m_sharedFiles = "0";
-  m_user = "Unknown";
-  m_totalDL = "0";
-  m_totalUL = "0";
-  m_version = "0";
-  m_sessionDL = "0";
-  m_sessionUL = "0";
-  m_runTime = "0";
+  m_isRunning = _("0");
+  m_serverName = _("Unknown");
+  m_serverIP = _("0.0.0.0");
+  m_serverPort = _("00");
+  m_connexionID = _("?");
+  m_DLRate = _("0.00");
+  m_ULRate = _("0.00");
+  m_queue = _("0");
+  m_sharedFiles = _("0");
+  m_user = _("Unknown");
+  m_totalDL = _("0");
+  m_totalUL = _("0");
+  m_version = _("0");
+  m_sessionDL = _("0");
+  m_sessionUL = _("0");
+  m_runTime = _("0");
 
   m_maxDL = 0.0;
 
@@ -134,7 +134,7 @@ OnLineSig::Refresh ()
 
 bool OnLineSig::IsRunning () const
   {
-    if (m_isRunning == "1")
+    if (m_isRunning == wxT("1"))
       {
         return TRUE;
       }
@@ -242,13 +242,13 @@ wxString OnLineSig::GetConvertedSessionDL ()
 
 wxString OnLineSig::GetConnexionIDType () const
   {
-    if (m_connexionID == "H")
+    if (m_connexionID == wxT("H"))
       {
-        return (wxString ("HighID"));
+        return (wxString (wxT("HighID")));
       }
     else
       {
-        return (wxString ("LowID"));
+        return (wxString (wxT("LowID")));
       }
   }
 
@@ -278,19 +278,19 @@ wxString OnLineSig::BytesConvertion (const wxString & bytes)
   switch (i)
     {
     case 0:
-        c_bytes = wxString::Format ("%.0f B", d_bytes);
+        c_bytes = wxString::Format (wxT("%.0f B"), d_bytes);
       break;
     case 1:
-      c_bytes = wxString::Format ("%.2f KB", d_bytes);
+      c_bytes = wxString::Format (wxT("%.2f KB"), d_bytes);
       break;
     case 2:
-      c_bytes = wxString::Format ("%.2f MB", d_bytes);
+      c_bytes = wxString::Format (wxT("%.2f MB"), d_bytes);
       break;
     case 3:
-      c_bytes = wxString::Format ("%.2f GB", d_bytes);
+      c_bytes = wxString::Format (wxT("%.2f GB"), d_bytes);
       break;
     default:
-      c_bytes = wxString::Format ("%.2f TB", d_bytes);
+      c_bytes = wxString::Format (wxT("%.2f TB"), d_bytes);
       break;
     }
   return c_bytes;

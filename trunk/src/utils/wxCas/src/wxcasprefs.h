@@ -91,7 +91,6 @@ class WxCasPrefs:public wxDialog
   public:
     WxCasPrefs (wxWindow * parent);
     ~WxCasPrefs ();
-
   };
 
 #endif /* _WXCASPREFS_H */
