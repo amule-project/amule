@@ -74,14 +74,16 @@ public:
 		
 	size_t Write(const wxString& v) {
 		size_t Len = Write((uint16)v.Length());
-		return Len + WriteRaw(v.c_str(), v.Length());
+		return Len + WriteRaw(unicode2char(v), v.Length());
 	}
 	
 
 	off_t Read(wxString& v) {
 		uint16 len;
 		off_t off = Read(len);
-		off += ReadRaw(v.GetWriteBuf(len), len);
+		char buffer[len+1];
+		off += ReadRaw(buffer, len);
+		v = char2unicode(buffer);
 		v.UngetWriteBuf(len);
 		if (off != (len + 2)) {
 			throw CInvalidPacket("short packet reading string");
