@@ -65,6 +65,11 @@ CDirectoryTreeCtrl::~CDirectoryTreeCtrl()
 {
 }
 
+enum {
+	IMAGE_FOLDER = 0,
+	IMAGE_FOLDER_SUB_SHARED
+};
+
 void CDirectoryTreeCtrl::Init(void)
 {
 	// init image(s)
@@ -73,9 +78,8 @@ void CDirectoryTreeCtrl::Init(void)
 	SetImageList(&m_image);
 
 	CDirectoryTreeItemData* ItemData = new CDirectoryTreeItemData();
-	hRoot=AddRoot(wxT("/"),-1,-1,ItemData);
-	SetItemImage(hRoot, 0);  // yes, this is a folder too
-	AppendItem(hRoot,wxT("Cool. Works"));
+	hRoot=AddRoot(wxT("/"),IMAGE_FOLDER,-1,ItemData);
+	AppendItem(hRoot,wxT("Cool. Works")); // will be deleted on expanding it
 
 	HasChanged = false;
 }
@@ -86,14 +90,14 @@ void CDirectoryTreeCtrl::OnTvnItemexpanding(wxTreeEvent& evt)
 {
 	wxTreeItemId hItem = evt.GetItem();
 	DeleteChildren(hItem);
-	wxString strDir = GetFullPath(hItem);
-	AddSubdirectories(hItem, strDir);
+	AddSubdirectories(hItem, GetFullPath(hItem));
 	SortChildren(hItem);
 }
 
 void CDirectoryTreeCtrl::OnItemActivated(wxTreeEvent& evt)
 {
 	// VQB adjustments to provide for sharing or unsharing of subdirectories when control key is Down
+	// Kry - No more when is down... right click on image will be the way.
 	GetFirstVisibleItem(); // VQB mark initial window position
 	int flags=0;
 	wxTreeItemId hItem = HitTest(evt.GetPoint(),flags);
@@ -108,12 +112,13 @@ void CDirectoryTreeCtrl::OnItemActivated(wxTreeEvent& evt)
 void CDirectoryTreeCtrl::OnRButtonDown(wxTreeEvent& evt)
 {
 	// VQB adjustments to provide for sharing or unsharing of subdirectories when control key is Down
+	// Kry - No more when is down... right click on image will be the way.
 	static int __counter=0;
-	wxTreeItemId hItem = evt.GetItem(); //HitTest(point, &uFlags);
+	wxTreeItemId hItem = evt.GetItem(); 
 	GetFirstVisibleItem(); // VQB mark initial window position
 	int flags=0;
 	HitTest(evt.GetPoint(),flags);
-	// this event is launced _after_ checkbox value is set.. if it is set at all
+	// this event is launched _after_ checkbox value is set.. if it is set at all
 	if ((hItem.IsOk()) && (flags &  wxTREE_HITTEST_ONITEMICON)) {
 		bool share_it = !IsBold(hItem);
 		CheckChanged(hItem, share_it);
@@ -157,23 +162,30 @@ void CDirectoryTreeCtrl::MarkChildren(wxTreeItemId hChild,bool mark)
 
 void CDirectoryTreeCtrl::AddChildItem(wxTreeItemId hBranch, wxString const& strText)
 {
+	wxASSERT(hBranch.IsOk()); // The place to add it is ok
+	
 	wxString strDir = GetFullPath(hBranch);
-	size_t len = strDir.Len();
-	if (hBranch.IsOk() && len > 0 && strDir.Last() != wxT('/')) {
-		strDir += wxT("/");
-	}
-	strDir += strText;
+
+	wxASSERT(!strDir.IsEmpty()); // non-empty path (cannot add root dir)
+	
+	wxASSERT(strText.Find(wxT('/')) == -1); // Folder label has no '/' on the name
+	
+	strDir += strText + wxT('/');
+	
 	CDirectoryTreeItemData* ItemData = new CDirectoryTreeItemData();
-	wxTreeItemId item=AppendItem(hBranch,strText,0,-1,ItemData);
+	wxTreeItemId item=AppendItem(hBranch,strText,IMAGE_FOLDER,-1,ItemData);
+	
 	if(IsShared(strDir)) {
 		SetItemBold(item,TRUE);
 		UpdateParentItems(item,true);
 	}
+	
 	if (HasSharedSubdirectory(strDir)) {
-		SetItemImage(item,1);
+		SetItemImage(item,IMAGE_FOLDER_SUB_SHARED);
 	}
+	
 	if(HasSubdirectories(strDir)) {
-		AppendItem(item,wxT(".")); // trick. will show +
+		AppendItem(item,wxT(".")); // Trick. will show + if it has subdirs
 	}
 }
 
@@ -186,45 +198,50 @@ wxString CDirectoryTreeCtrl::GetFullPath(wxTreeItemId hItem)
 		strDir = GetItemText(hSearchItem) + wxT("/") + strDir;
 		hSearchItem = GetItemParent(hSearchItem);
 	}
+	// Allways has a '/' at the end
+	wxASSERT(strDir.Last() == wxT('/'));
 	return strDir;
 }
 
-void CDirectoryTreeCtrl::AddSubdirectories(wxTreeItemId hBranch, wxString strDir)
+void CDirectoryTreeCtrl::AddSubdirectories(wxTreeItemId hBranch, wxString folder)
 {
-	if (strDir.Right(1) != wxT("/")) {
-		strDir += wxT("/");
-	}
+	
 	wxString fname;
-	wxString dirname=strDir+wxT("*");
+	
 	// we must collect values first because we'll call FindFirstFile() again in AddChildItem() ...
 	wxArrayString ary;
 
-	fname=wxFindFirstFile(dirname,wxDIR);
+	fname=wxFindFirstFile(folder + wxT('*'),wxDIR);
+	
 	while(!fname.IsEmpty()) {
 		if(!wxDirExists(fname)) {
 			fname=wxFindNextFile();
 			continue;
 		}
-		if(fname.Find('/',TRUE)!=-1) {
-			fname=fname.Mid(fname.Find('/',TRUE)+1);
+		
+		if(fname.Find(wxT('/'),TRUE) != -1) {  // starts at end
+			// Take just the last folder of the path
+			fname=fname.Mid(fname.Find('/',TRUE)+1);  
 		}
+		
+		wxASSERT(fname.Len() > 0);
+		wxASSERT(fname.Last() != wxT('/'));
 
 		ary.Add(fname);
 		fname=wxFindNextFile();
 	}
+	
 	// then add them
 	for (unsigned int i = 0; i < ary.GetCount(); ++i) {
 		AddChildItem(hBranch, ary[i]);
 	}
 }
 
-bool CDirectoryTreeCtrl::HasSubdirectories(wxString strDir)
+bool CDirectoryTreeCtrl::HasSubdirectories(wxString folder)
 {
 	wxLogNull logNo; // prevent stupid log windows if we try to traverse somewhere we have no access.
-	if (strDir.Right(1) != wxT("/")) {
-		strDir += wxT("/");
-	}
-	wxString fname=wxFindFirstFile(strDir+wxT("*"),wxDIR);
+	
+	wxString fname=wxFindFirstFile(folder + wxT("*"),wxDIR);
 	if(!fname.IsEmpty()) {
 		return TRUE; // at least one directory ...
 	}
@@ -235,7 +252,7 @@ bool CDirectoryTreeCtrl::HasSubdirectories(wxString strDir)
 void CDirectoryTreeCtrl::GetSharedDirectories(wxArrayString* list)
 {
 	for(unsigned int i = 0; i < m_lstShared.GetCount(); ++i) {
-		list->Add(m_lstShared[i]);
+		list->Add(m_lstShared[i]); 
 	}
 }
 
@@ -243,47 +260,55 @@ void CDirectoryTreeCtrl::SetSharedDirectories(wxArrayString* list)
 {
 	m_lstShared.Clear();
 
-	wxString tmp;
 	for (unsigned int i = 0; i < list->GetCount(); ++i) {
-		wxString const* str = &list->Item(i);
-		size_t len = str->Len();
-		if (len > 0 && str->Last() != wxT('/'))
-		{
-			tmp = *str;
-			tmp += '/';
-			str = &tmp;
+		// The references returned by Item, Last or operator[] are not const
+		wxString& folder = list->Item(i);
+		
+		wxASSERT(folder.Len() > 0);
+
+		if (folder.Cmp(wxT("/"))) { // no removal for root dir
+			while(folder.Len() > 0 && folder.Last() == wxT('/')) {
+				folder.RemoveLast();	// Minus possible trailing slashes.
+			}
+			wxASSERT(folder.Len() > 0); // was modified by while
+			folder.Append(wxT('/'));
 		}
-		m_lstShared.Add(*str);
+
+		m_lstShared.Add(list->Item(i));
 	}
-	if(HasSharedSubdirectory(wxT("/"))) {
-		SetItemImage(hRoot,1);
+	
+	// Has root dir a subdir shared?
+	if(HasSharedSubdirectory(wxT("/"))) { // root folder
+		SetItemImage(hRoot,IMAGE_FOLDER_SUB_SHARED);
 	}
+	
+	// Is root dir shared?
 	if(IsShared(wxT("/"))) {
 		SetItemBold(hRoot,TRUE);
 	}
+	
 }
 
 bool CDirectoryTreeCtrl::HasSharedSubdirectory(wxString const& strDir)
 {
 	wxString tStrDir = strDir;
-	while(tStrDir.Len() > 0 && tStrDir.Last() == wxT('/'))
-		tStrDir.RemoveLast();						// Minus possible trailing slashes.
-	tStrDir += wxT("/"); // last char always a /
+
+#ifdef __WXMSW__	
+	tStrDir.MakeLower();	// Speed reasons
+#endif
+	
 	size_t tStrDirLen = tStrDir.Len(); // Speed reasons
 	for (unsigned int i = 0; i < m_lstShared.GetCount(); ++i)
 	{
 		wxString const& str(m_lstShared[i]);
-		if (tStrDirLen < str.Len())				// Minus 1 strips trailing slash of str.
-		{
-			if (
-#ifdef __UNIX__
-                str.StartsWith(tStrDir)
+		if (tStrDirLen < str.Len())	 { // Optimizing speed
+#ifdef __WXMSW__
+			if (wxString(str).MakeLower().StartsWith(tStrDir)) {
 #else
-	            wxString(str).MakeLower().StartsWith(tStrDir.MakeLower())
+               if (str.StartsWith(tStrDir)) {
 #endif
-				) {
-					return true;
-				}
+				return true;
+			}
 		}
 	}
 	return false;
@@ -291,17 +316,16 @@ bool CDirectoryTreeCtrl::HasSharedSubdirectory(wxString const& strDir)
 
 void CDirectoryTreeCtrl::CheckChanged(wxTreeItemId hItem, bool bChecked)
 {
-	wxString strDir = GetFullPath(hItem);
 	if (bChecked) {
 		if (!IsBold(hItem)) {
 			SetItemBold(hItem,TRUE);
-			AddShare(strDir);
+			AddShare(GetFullPath(hItem)); 
 			UpdateParentItems(hItem,true);
 		}
 	} else {
 		if (IsBold(hItem)) {
 			SetItemBold(hItem,FALSE);
-			DelShare(strDir);
+			DelShare(GetFullPath(hItem)); 
 			UpdateParentItems(hItem,false);
 		}
 	}
@@ -310,47 +334,35 @@ void CDirectoryTreeCtrl::CheckChanged(wxTreeItemId hItem, bool bChecked)
 bool CDirectoryTreeCtrl::IsShared(wxString const& strDir)
 {
 	wxString tStrDir = strDir;
-	while(tStrDir.Len() > 0 && tStrDir.Last() == wxT('/'))
-		tStrDir.RemoveLast();						// Minus possible trailing slashes.
-	tStrDir += wxT("/"); // last char always a /
-	size_t tStrDirLen = tStrDir.Len(); // Speed reasons
-	for (unsigned int i = 0; i < m_lstShared.GetCount(); ++i)
-	{
-		wxString const& str(m_lstShared[i]);
-		if (tStrDirLen < str.Len())				// Minus 1 strips trailing slash of str.
-		{
-			if (
-#ifdef __UNIX__
-			    str.Cmp(tStrDir)
+		
+#ifdef __WXMSW__
+	return (m_lstShared.Index(tStrDir,FALSE) != wxNOT_FOUND); // case insensitive		
 #else
-			    str.CmpNoCase(tStrDir)
+	return (m_lstShared.Index(tStrDir) != wxNOT_FOUND); 				
 #endif
-				) {
-					return true;
-				}
-		}
-	}
-	return false;
-
 }
 
 void CDirectoryTreeCtrl::AddShare(wxString strDir)
 {
-	if (strDir.Right(1) != '/') {
-		strDir += '/';
-	}
+		
+	wxASSERT(strDir.Len() > 0);
+	
 	if (IsShared(strDir)) {
 		return;
 	}
+	
+	wxMessageBox(wxT("Added ") + strDir);
+	
 	m_lstShared.Add(strDir);
 }
 
 void CDirectoryTreeCtrl::DelShare(wxString strDir)
 {
-	if (strDir.Right(1) != '/') {
-		strDir += '/';
-	}
-	m_lstShared.Remove(strDir.GetData());
+	wxASSERT(strDir.Len() > 0);
+	
+	wxMessageBox(wxT("Removed ") + strDir);
+	
+	m_lstShared.Remove(strDir);
 }
 
 void CDirectoryTreeCtrl::UpdateParentItems(wxTreeItemId hChild, bool add)
@@ -362,14 +374,14 @@ void CDirectoryTreeCtrl::UpdateParentItems(wxTreeItemId hChild, bool add)
 		if (add) {
 			parent_data->AddCount();
 			if (parent_data->GetCount()==1) {
-				SetItemImage(parent,1);
+				SetItemImage(parent,IMAGE_FOLDER_SUB_SHARED);
 			}
 		} else {
 			switch (parent_data->GetCount()) {
 				case 0:
 					break;
 				case 1:
-					SetItemImage(parent,0);
+					SetItemImage(parent,IMAGE_FOLDER);
 				default:
 					parent_data->SubCount();
 					break;
