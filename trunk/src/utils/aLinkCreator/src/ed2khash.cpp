@@ -68,7 +68,7 @@ static wxCSConv aMuleConv(wxT("iso8859-1"));
 /// Constructor
 Ed2kHash::Ed2kHash():MD4()
 {
-  m_ed2kArrayOfHashes = 0;
+  m_ed2kArrayOfHashes.Clear();
   m_filename=wxEmptyString;
   m_fileSize=0;
 }
