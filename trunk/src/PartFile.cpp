@@ -2958,7 +2958,7 @@ void CPartFile::AddClientSources(CSafeMemFile* sources,uint8 sourceexchangeversi
 	uint16 nCount = sources->ReadUInt16();
 	for (int i = 0;i != nCount;++i) {
 		uint32 dwID = sources->ReadUInt32();
-		printf("Added source exchange v%u: %u(%s)\n",sourceexchangeversion,dwID,unicode2char(Uint32toStringIP(dwID)));
+		//printf("Added source exchange v%u: %u(%s)\n",sourceexchangeversion,dwID,unicode2char(Uint32toStringIP(dwID)));
 		uint16 nPort = sources->ReadUInt16();
 		uint32 dwServerIP = sources->ReadUInt32();
 		uint16 nServerPort = sources->ReadUInt16();
