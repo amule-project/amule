@@ -168,6 +168,7 @@ void CUpDownClient::Init()
 
 
 	m_nRemoteQueueRank = 0;
+	m_nOldRemoteQueueRank = 0;
 	m_dwLastSourceRequest = 0;
 	m_dwLastSourceAnswer = 0;
 	m_dwLastAskedForSources = 0;
