@@ -98,7 +98,7 @@ char *convbytes(char *input)
 	char *endptr;
 	static char output[50];
 	float bytes;
-	int i = 0;
+	unsigned int i = 0;
 
 	/* do proper conversion and check for errors */
 	errno = 0;
@@ -126,7 +126,8 @@ char *convbytes(char *input)
 
 char *replace(char *search, char *replace, char *template, int size)
 {
-	int read,i=0,a;
+	int read;
+	unsigned int i=0,a;
 	char buffer[255];
 	char *output;
 
@@ -138,8 +139,8 @@ char *replace(char *search, char *replace, char *template, int size)
 		exit(44);
 	}
 
-	memset(output, '\0', (size));
-
+	//memset(output, '\0', (size));
+	output[0] = 0;
 
 	buffer[0] = 0;
 
@@ -174,7 +175,7 @@ char *replace(char *search, char *replace, char *template, int size)
 	return output;
 }
 
-char *time(char *input)
+char *timeconv(char *input)
 {
 	int count = atoi(input);
 	static char ret[50];

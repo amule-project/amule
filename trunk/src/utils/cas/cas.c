@@ -118,7 +118,7 @@ int main(int argc, char *argv[])
 		sprintf(lines[0],"aMule %s is connecting\n",stats[12]);
 	else
 		sprintf(lines[0], "aMule %s has been running for %s\n",
-				stats[12], time(stats[15]));
+				stats[12], timeconv(stats[15]));
 
 	sprintf(lines[1], "%s is on %s [%s:%s] with ", stats[9],
 			stats[1], stats[2], stats[3]);
@@ -168,11 +168,12 @@ int main(int argc, char *argv[])
 		create_html(stats,lines,config.template);
 		printf("HTML Page created.\n");
 
-
+#ifdef __GD__
 		if (!createimage(&config, lines)) {
 			printf("Could not create image!\n");
 			exit(5);
 		}
+#endif
 
 
 		exit(0);
