@@ -71,7 +71,7 @@ ECSocket::ECSocket(void)
 ECSocket::ECSocket(wxSockAddress& address, wxEvtHandler *handler, int id)
 {
 	m_type = AMULE_EC_SERVER;
-	m_sock = new wxSocketServer(address, wxSOCKET_WAITALL|wxSOCKET_REUSEADDR);
+	m_sock = new wxSocketServer(address, wxSOCKET_REUSEADDR);
 	if(m_sock->Ok() && handler) {
 		// Setup the event handler and subscribe to connection events
 		m_sock->SetEventHandler(*handler, id);

@@ -763,6 +763,7 @@ class CWebServer {
 
 		// Common data
 		CamulewebApp	*webInterface;
+		wxMutex *m_mutexChildren;
 		CWSThread	*wsThread;
 		GlobalParams	m_Params;
 		WebTemplates	m_Templates;

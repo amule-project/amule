@@ -34,7 +34,8 @@
 
 WX_DEFINE_ARRAY(CWCThread*, ArrayOfCWCThread);
 
-static ArrayOfCWCThread wcThreads;
+ArrayOfCWCThread s_wcThreads;
+static wxMutex *s_mutex_wcThreads;
 
 /*** CWSThread ***/
 CWSThread::CWSThread(CWebServer *ws) {
@@ -64,31 +65,44 @@ void *CWSThread::Entry() {
 		ws->Print(wxT("WSThread: could not create socket on ") + msg);	
 	} else {
 		ws->Print(wxT("WSThread: created socket listening on ") + msg);	
+
+		s_mutex_wcThreads = new wxMutex();
+
 		while (!TestDestroy()) {
 			// Accept the incoming connection and returns immediately
 			// Here we should always have a connection pending.
 			wxSocketBase *sock = m_WSSocket->Accept();
 			if (sock) {
 				CWCThread *wct = new CWCThread(ws, sock);
-				wcThreads.Add(wct);
+
+				s_mutex_wcThreads->Lock();
+				s_wcThreads.Add(wct);
 				
-				if ( wcThreads.Last()->Create() != wxTHREAD_NO_ERROR ) {
+				if ( s_wcThreads.Last()->Create() != wxTHREAD_NO_ERROR ) {
 					ws->Print(wxT("WSThread: Can't create web client socket thread\n"));
 					// destroy the socket
 					sock->Destroy();
 				} else {
 					// ...and run it
-					wcThreads.Last()->Run();
+					s_wcThreads.Last()->Run();
 				}
+				s_mutex_wcThreads->Unlock();
 			}
 		}
 		ws->Print(wxT("WSThread: Waiting for WCThreads to be terminated..."));
-		for (size_t i=0; i<wcThreads.GetCount(); ++i) {
+		s_mutex_wcThreads->Lock();
+		for (size_t i=0; i<s_wcThreads.GetCount(); ++i) {
 			// terminate i-th thread
-			wcThreads.Item(i)->Delete();
+			s_wcThreads.Item(i)->Delete();
 		}
+		s_mutex_wcThreads->Unlock();
+
+		// by this time, all threads are dead
+		delete s_mutex_wcThreads;
+
 		// frees the memory allocated to the array
-		wcThreads.Clear();
+		s_wcThreads.Clear();
+
 		ws->Print(wxT("done.\n"));
 	}
 	
@@ -191,7 +205,6 @@ void *CWCThread::Entry() {
 			//
 			// "POST" have "Content-Length"
 			if ( IsPost ) {
-				stWebSocket.m_pBuf[stWebSocket.m_dwRecv] = 0;
 				char *cont_len = strstr(stWebSocket.m_pBuf, "Content-Length");
 				// do we have received all the line ?
 				if ( cont_len && strstr(cont_len, "\r\n\r\n") ) {
@@ -207,6 +220,7 @@ void *CWCThread::Entry() {
 					char *cont = strstr(stWebSocket.m_pBuf, "\r\n\r\n");
 					cont += 4;
 					if ( cont - stWebSocket.m_pBuf + len <= (int)stWebSocket.m_dwRecv ) {
+						stWebSocket.m_bCanRecv = false;
 						stWebSocket.OnRequestReceived(stWebSocket.m_pBuf, 
 							cont - stWebSocket.m_pBuf, cont, len);
 					}
@@ -262,8 +276,10 @@ void *CWCThread::Entry() {
 	stWebSocket.m_pParent->Print(wxT("WCThread: exited [WebSocket closed]\n"));
 #endif
 	// remove ourself from threads array
-	wcThreads.Remove(this);
-		
+	s_mutex_wcThreads->Lock();
+	s_wcThreads.Remove(this);
+	s_mutex_wcThreads->Unlock();
+
 	// Kry - WTF to return here?
 	// shakraw - it must return NULL. it is correct now.
 	return NULL;	
