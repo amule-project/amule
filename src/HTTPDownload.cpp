@@ -210,8 +210,6 @@ void CHTTPDownloadThread::OnExit()
 	wxPostEvent(&theApp,evt);		
 }
 
-
-
 #ifndef AMULE_DAEMON 
 int CurlGaugeCallback(void *HTTPDlDlg, double dltotal, double dlnow, double WXUNUSED(ultotal), double WXUNUSED(ulnow)) 
 {	
@@ -220,3 +218,4 @@ int CurlGaugeCallback(void *HTTPDlDlg, double dltotal, double dlnow, double WXUN
 	return 0;
 }
 #endif
+
