@@ -37,6 +37,7 @@
 #include "UploadQueue.h"
 #include "amule.h"
 #include "ClientList.h"
+#include "DataToText.h"
 
 #include <wx/menu.h>
 #include <wx/textdlg.h>
@@ -765,14 +766,7 @@ void CQueuedView::DrawCell( CUpDownClient* client, int column, wxDC* dc, const w
 
 		case 3:
 			if ( client->GetUploadFile() ) {
-				switch( client->GetUploadFile()->GetUpPriority() ) {
-					case PR_POWERSHARE:		buffer = _("Release");		break;
-					case PR_VERYHIGH:		buffer = _("Very High");	break;
-					case PR_HIGH:			buffer = _("High");			break;
-					case PR_LOW:			buffer = _("Low");			break;
-					case PR_VERYLOW:		buffer = _("Very low");		break;
-					default:				buffer = _("Normal");		break;
-				}
+				buffer = PriorityToStr( client->GetUploadFile()->GetUpPriority(), false );
 			} else {
 				buffer = _("Unknown");
 			}
@@ -951,28 +945,8 @@ void CClientsView::DrawCell( CUpDownClient* client, int column, wxDC* dc, const 
 			break;
 			
 		case 3:
-			switch ( client->GetDownloadState() ) {
-				case DS_CONNECTING:		buffer = _("Connecting");				break;
-				case DS_CONNECTED:		buffer = _("Asking");					break;
-				case DS_WAITCALLBACK:	buffer = _("Connecting via server");	break;
-				case DS_ONQUEUE:
-					if ( client->IsRemoteQueueFull() ) {
-						buffer = _("Queue Full");
-					} else {
-						buffer = _("On Queue");
-					}
-					
-					break;
-					
-				case DS_DOWNLOADING:	buffer = _("Transferring");				break;
-				case DS_REQHASHSET:		buffer = _("Receiving hashset");		break;
-				case DS_NONEEDEDPARTS:	buffer = _("No needed parts");			break;
-				case DS_LOWTOLOWIP:		buffer = _("Cannot connect LowID to LowID");	break;
-				case DS_TOOMANYCONNS:	buffer = _("Too many connections");		break;
-				default:
-					buffer = _("Unknown");
-			}
-			
+			buffer = DownloadStateToStr( client->GetDownloadState(),
+			                             client->IsRemoteQueueFull() );
 			break;
 	
 		case 4:
