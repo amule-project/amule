@@ -526,9 +526,9 @@ void CUploadListCtrl::OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxRe
 					break;
 					case 8:
 						if (client->Credits()){
-                        Sbuffer = CastItoXBytes(client->Credits()->GetUploadedTotal()) + wxT("/") + CastItoXBytes(client->Credits()->GetDownloadedTotal());
+                        Sbuffer = CastItoXBytes(client->Credits()->GetUploadedTotal()) + wxT(" / ") + CastItoXBytes(client->Credits()->GetDownloadedTotal());
                       } else {
-                      Sbuffer.Printf(wxT("? / ?"));
+                      Sbuffer = wxT("? / ?");
                       }
 						break;
 			}
