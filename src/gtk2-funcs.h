@@ -1,6 +1,6 @@
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2004 aMule Team ( http://www.amule-project.net )
+// Copyright (c) 2003-2005 aMule Team ( http://www.amule.org )
 //
 /* GTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald

@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2004 Angel Vidal (Kry) ( kry@amule.org )
-// Copyright (c) 2004 aMule Team ( http://www.amule-project.net )
+// Copyright (c) 2004-2005 Angel Vidal (Kry) ( kry@amule.org )
+// Copyright (c) 2004-2005 aMule Team ( http://www.amule.org )
 // Copyright (c) 2003 Barry Dunne (http://www.emule-project.net)
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,

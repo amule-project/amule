@@ -1,7 +1,7 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003 aMule Team ( http://www.amule-project.net )
+// Copyright (c) 2003-2005 aMule Team ( http://www.amule.org )
 // Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
@@ -981,7 +981,7 @@ bool CPartFile::SavePartFile(bool Initial)
 void CPartFile::SaveSourceSeeds()
 {
 	// Kry - Sources seeds
-	// Copyright (c) Angel Vidal (Kry) 2004
+	// Copyright (c) 2004-2005 Angel Vidal (Kry)
 	// Based on a Feature request, this saves the last 5 sources of the file,
 	// giving a 'seed' for the next run.
 	// We save the last sources because:
