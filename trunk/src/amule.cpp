@@ -36,6 +36,7 @@
 #include <csignal>
 #include <unistd.h>			// Needed for close(2) and sleep(3)
 #include <wx/defs.h>
+#include <wx/process.h>
 
 #ifdef __WXGTK__
 
@@ -127,13 +128,6 @@
 # define RLIMIT_RESOURCE __rlimit_resource
 #else
 # define RLIMIT_RESOURCE int
-#endif
-
-#ifdef HAVE_SYS_TYPES_H
-# include <sys/types.h>
-#endif
-#ifdef HAVE_SYS_WAIT_H
-# include <sys/wait.h>
 #endif
 
 static void UnlimitResource(RLIMIT_RESOURCE resType)
@@ -842,15 +836,13 @@ bool CamuleApp::OnInit()
 				printf("execlp failed with code %d\n", errno);
 				exit(0);
 			} else {
-				int status;
 				// wait few seconds to give amuleweb chance to start or forked child to exit
 				sleep(3);
-				waitpid(pid, &status, WNOHANG);
-				if ( WIFEXITED(status) ) {
-					printf("ERROR: aMuleweb not started\n");
-				} else {
+				if (wxProcess::Exists(pid)) {
 					printf("aMuleweb is running on pid %d\n", pid);
 					webserver_pid = pid;
+				} else {
+					printf("ERROR: aMuleweb not started\n");
 				}
 			}
 		}
