@@ -2500,33 +2500,33 @@ void CPartFile::CompleteFileEnded(int completing_result, wxString* newname) {
 		paused = true;
 		SetPartFileStatus(PS_ERROR);
 		theApp.downloadqueue->StartNextFile();	
-		theApp.QueueLogLine(true,CString(_("Unexpected file error while completing %s. File paused")),GetFileName().GetData());
+		theApp.amuledlg->AddLogLine(true,CString(_("Unexpected file error while completing %s. File paused")),GetFileName().GetData());
 		delete newname;
 		return;
 	}	
 	
 	if (completing_result & DELETE_FAIL_MET) {
-		theApp.QueueLogLine(true,CString(_("WARNING: Failed to delete %s")),fullname);		
+		theApp.amuledlg->AddLogLine(true,CString(_("WARNING: Failed to delete %s")),fullname);		
 	}	
 	
 	if (completing_result & DELETE_FAIL_MET_BAK) {
-		theApp.QueueLogLine(true,CString(_("WARNING: Failed to delete %s%s")),fullname, PARTMET_BAK_EXT);				
+		theApp.amuledlg->AddLogLine(true,CString(_("WARNING: Failed to delete %s%s")),fullname, PARTMET_BAK_EXT);				
 	}	
 	
 	if (completing_result & SAME_NAME_RENAMED) {
-		theApp.QueueLogLine(true, CString(_("WARNING: A file with that name already exists, the file has been renamed")));
+		theApp.amuledlg->AddLogLine(true, CString(_("WARNING: A file with that name already exists, the file has been renamed")));
 	}		
 
 	if (completing_result & DELETE_FAIL_MET) {
-		theApp.QueueLogLine(true,"WARNING: could not remove original '%s' after creating backup\n", wxString(m_partmetfilename).Left(strlen(m_partmetfilename)-4).c_str());
+		theApp.amuledlg->AddLogLine(true,"WARNING: could not remove original '%s' after creating backup\n", wxString(m_partmetfilename).Left(strlen(m_partmetfilename)-4).c_str());
 	}	
 	
 	if (completing_result & DELETE_FAIL_SEEDS) {
-		theApp.QueueLogLine(true,"WARNING: Failed to delete %s.seeds\n", m_partmetfilename);
+		theApp.amuledlg->AddLogLine(true,"WARNING: Failed to delete %s.seeds\n", m_partmetfilename);
 	}	
 
 	
-	theApp.QueueLogLine(true,CString(_("Finished downloading %s :-)")),GetFileName().GetData());
+	theApp.amuledlg->AddLogLine(true,CString(_("Finished downloading %s :-)")),GetFileName().GetData());
 	theApp.amuledlg->ShowNotifier(CString(_("Downloaded:"))+"\n"+GetFileName(), TBN_DLOAD);
 	
 }
