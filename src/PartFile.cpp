@@ -377,7 +377,7 @@ void CPartFile::CreatePartFile()
 	SavePartFile(true);
 }
 
-uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool getsizeonly)
+uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool from_backup, bool getsizeonly)
 {
 	#warning getsizeonly is ignored because we do not import yet
 	
@@ -392,20 +392,35 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool get
 	m_fullname = m_strFilePath + wxFileName::GetPathSeparator() + m_partmetfilename;
 	
 	CSafeFile metFile;
-	bool load_from_backup = false;
+
 	// readfile data form part.met file
-	if (!metFile.Open(m_fullname,CFile::read)) {
-		AddLogLineM(false, _("Error: Failed to open part.met file! ") + m_partmetfilename + wxT("==>") + m_strFileName);
-		load_from_backup = true;
+	wxString file_to_open;
+	if (from_backup) {
+		AddLogLineM(false, _("Trying backup of met file on ") + m_partmetfilename + PARTMET_BAK_EXT);
+		file_to_open = m_fullname + PARTMET_BAK_EXT;
+	} else {
+		file_to_open = m_fullname;
+	}
+	if (!metFile.Open(file_to_open,CFile::read)) {
+		if (from_backup) {
+			AddLogLineM(false, _("Error: Failed to load backup file. Search http://forum.amule.org for .part.met recovery solutions"));
+		} else {
+			AddLogLineM(false, _("Error: Failed to open part.met file! ") + m_partmetfilename + wxT("==>") + m_strFileName);
+		}
+		return false;
 	} else {
 		if (!(metFile.Length()>0)) {
-			AddLogLineM(false, _("Error: part.met file is 0 size! ") + m_partmetfilename + wxT("==>") + m_strFileName);
+			if (from_backup) {
+				AddLogLineM(false, _("Error: Backup part.met file is 0 size! Search http://forum.amule.org for .part.met recovery solutions "));	
+			} else {
+				AddLogLineM(false, _("Error: part.met file is 0 size! ") + m_partmetfilename + wxT("==>") + m_strFileName);
+			}
 			metFile.Close();
-			load_from_backup = true;
+			return false;
 		}
 	}
 
-	if (load_from_backup) {
+	if (from_backup) {
 		AddLogLineM(false, _("Trying backup of met file on ") + m_partmetfilename + PARTMET_BAK_EXT);
 		wxString BackupFile;
 		BackupFile = m_fullname + PARTMET_BAK_EXT;
