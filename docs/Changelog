@@ -114,11 +114,16 @@ Version 2.0.0rc3 - The 'Target: Stability' version.
   		* WebServer cleanly stopped before exit	
 		* Fixed max 2Gb display bug in amuleweb
 		* Updated aMule.tmpl: added file %complete support in transfer list
-		
+
 	thepolish:
-		
+
 		* Wrote wxcas based on cas from falso
 		* Enable auto-refresh and Fix GPL headers
+
+	Unleashed:
+
+		* cas: better layout and fixes
+		* Fixed a pair of memleaks
 
 	Xaignar:
 		* Fixed negative percentages in downloadlist ... again (Disp.8)
@@ -139,7 +144,7 @@ Version 2.0.0rc3 - The 'Target: Stability' version.
 		  * Double-clicking on a nickname will open a chatsession for that friend
 		  * When a nickname is updated in the friendlist, the assosiated tab is updated as well
 		* Other stuff
-		
+
 
 	** Special thanks 
 		
