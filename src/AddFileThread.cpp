@@ -146,7 +146,17 @@ void CAddFileThread::CreateNewThread()
 	ThreadCountInc();
 
 	CAddFileThread* th = new CAddFileThread();
-	th->Create();
+	wxThreadError create_error;
+	if ((create_error = th->Create()) != wxTHREAD_NO_ERROR) {
+		// Error!
+		if (create_error == wxTHREAD_RUNNING) {
+			printf("Attempt to create a already running thread!\n");
+		} else if (create_error == wxTHREAD_NO_RESOURCE) {
+			printf("Attempt to create a thread without resources!\n");
+		} else {
+			printf("Unkown error attempting to create a thread!\n");
+		}
+	}
 
 	// The threads shouldn't be hugging the CPU, as it will already be hugging the HD
 	th->SetPriority(WXTHREAD_MIN_PRIORITY);
