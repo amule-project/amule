@@ -150,7 +150,7 @@ wxThread::ExitCode CHTTPDownloadThread::Entry()
 		CURLM *curl_multi_handle =  curl_multi_init();
 		#endif
 		
-		char * tempurl = strdup((char*)unicode2char(m_url));
+		char * tempurl = strdup((const char *)unicode2char(m_url));
 		// Options for the easy handler
 		curl_easy_setopt(curl_handle, CURLOPT_URL, tempurl);
 		curl_easy_setopt(curl_handle, CURLOPT_VERBOSE, TRUE);

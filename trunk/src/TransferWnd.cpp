@@ -57,9 +57,9 @@ BEGIN_EVENT_TABLE(CTransferWnd, wxPanel)
 	
  	EVT_SPLITTER_SASH_POS_CHANGING(ID_SPLATTER, CTransferWnd::OnSashPositionChanging)
 
-	EVT_BUTTON(ID_BTNCLRCOMPL, 					CTransferWnd::OnBtnClearDownloads)
- 	EVT_BUTTON(ID_BTNSWITCHUP, 					CTransferWnd::SwitchUploadList)
- 	EVT_BUTTON(ID_CLIENTTOGGLE,					CTransferWnd::OnToggleClientList)
+	EVT_BUTTON(ID_BTNCLRCOMPL,		CTransferWnd::OnBtnClearDownloads)
+ 	EVT_BUTTON(ID_BTNSWITCHUP, 		CTransferWnd::SwitchUploadList)
+ 	EVT_BUTTON(ID_CLIENTTOGGLE,		CTransferWnd::OnToggleClientList)
 
 	EVT_MENU_RANGE(MP_CAT_SET0, MP_CAT_SET0 + 14, CTransferWnd::OnSetDefaultCat)
 	EVT_MENU(MP_CAT_ADD, 			CTransferWnd::OnAddCategory)
@@ -69,10 +69,10 @@ BEGIN_EVENT_TABLE(CTransferWnd, wxPanel)
 	EVT_MENU(MP_PRIONORMAL,			CTransferWnd::OnSetCatPriority)
 	EVT_MENU(MP_PRIOHIGH, 			CTransferWnd::OnSetCatPriority)
 	EVT_MENU(MP_PRIOAUTO,			CTransferWnd::OnSetCatPriority)
-	EVT_MENU(MP_PAUSE,				CTransferWnd::OnSetCatStatus)
-	EVT_MENU(MP_STOP,				CTransferWnd::OnSetCatStatus)
-	EVT_MENU(MP_CANCEL,				CTransferWnd::OnSetCatStatus)
-	EVT_MENU(MP_RESUME,				CTransferWnd::OnSetCatStatus)
+	EVT_MENU(MP_PAUSE,			CTransferWnd::OnSetCatStatus)
+	EVT_MENU(MP_STOP,			CTransferWnd::OnSetCatStatus)
+	EVT_MENU(MP_CANCEL,			CTransferWnd::OnSetCatStatus)
+	EVT_MENU(MP_RESUME,			CTransferWnd::OnSetCatStatus)
 END_EVENT_TABLE()
 
 

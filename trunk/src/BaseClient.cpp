@@ -465,16 +465,24 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 
 	} catch ( CStrangePacket )
 	{
-		printf("\nWrong Tags on hello type packet!!\n");
-		printf("Sent by %s on ip %s port %i using client %x version %x\n",unicode2char(GetUserName()),unicode2char(GetFullIP()),GetUserPort(),GetClientSoft(),GetVersion());
-		printf("User Disconnected.\n");
+		printf(	"\n"
+			"Wrong Tags on hello type packet!!\n"
+			"Sent by %s on ip %s port %i using client %x version %x\n"
+			"User Disconnected.\n",
+			(const char *)unicode2char(GetUserName()),
+			(const char *)unicode2char(GetFullIP()),
+			GetUserPort(), GetClientSoft(), GetVersion());
 		throw wxString(wxT("Wrong Tags on hello type packet"));
 	}
 	catch ( CInvalidPacket (e))
 	{
-		printf("Wrong Tags on hello type packet - %s\n\n",e.what());
-		printf("Sent by %s on ip %s port %i using client %x version %x\n",unicode2char(GetUserName()),unicode2char(GetFullIP()),GetUserPort(),GetClientSoft(),GetVersion());
-		printf("User Disconnected.\n");
+		printf(	"Wrong Tags on hello type packet - %s\n\n"
+			"Sent by %s on ip %s port %i using client %x version %x\n"
+			"User Disconnected.\n",
+			e.what(),
+			(const char *)unicode2char(GetUserName()),
+			(const char *)unicode2char(GetFullIP()),
+			GetUserPort(),GetClientSoft(),GetVersion());
 		throw wxString(wxT("Wrong Tags on hello type packet"));
 	}
 
@@ -863,20 +871,28 @@ bool CUpDownClient::ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize)
 	}
 	catch ( CStrangePacket )
 	{
-		printf("\nWrong Tags on Mule Info packet!!\n");
-		printf("Sent by %s on ip %s port %i using client %x version %x\n",unicode2char(GetUserName()),unicode2char(GetFullIP()),GetUserPort(),GetClientSoft(),GetMuleVersion());
-		printf("User Disconnected.\n");
+		printf(	"\n"
+			"Wrong Tags on Mule Info packet!!\n"
+			"Sent by %s on ip %s port %i using client %x version %x\n"
+			"User Disconnected.\n",
+			(const char *)unicode2char(GetUserName()),
+			(const char *)unicode2char(GetFullIP()),
+			GetUserPort(),GetClientSoft(),GetMuleVersion());
 		printf("Packet Dump:\n");
-		DumpMem(pachPacket,nSize);
+		DumpMem(pachPacket, nSize);
 		throw wxString(wxT("Wrong Tags on Mule Info packet"));
 	}
 	catch ( CInvalidPacket (e))
 	{
-		printf("Wrong Tags on Mule Info packet - %s\n\n",e.what());
-		printf("Sent by %s on ip %s port %i using client %x version %x\n",unicode2char(GetUserName()),unicode2char(GetFullIP()),GetUserPort(),GetClientSoft(),GetMuleVersion());
-		printf("User Disconnected.\n");
+		printf(	"Wrong Tags on Mule Info packet - %s\n\n"
+			"Sent by %s on ip %s port %i using client %x version %x\n"
+			"User Disconnected.\n",
+			e.what(),
+			(const char *)unicode2char(GetUserName()),
+			(const char *)unicode2char(GetFullIP()),
+			GetUserPort(),GetClientSoft(),GetMuleVersion());
 		printf("Packet Dump:\n");
-		DumpMem(pachPacket,nSize);
+		DumpMem(pachPacket, nSize);
 		throw wxString(wxT("Wrong Tags on Mule Info packet"));
 	}
 
@@ -1029,44 +1045,59 @@ void CUpDownClient::ProcessMuleCommentPacket(const char *pachPacket, uint32 nSiz
 		m_iRate = data.ReadUInt8();
 		m_reqfile->SetHasRating(true);
 		
-		AddDebugLogLineM(false, wxT("Rating for file '") + m_clientFilename + wxString::Format(wxT("' received: %i"), m_iRate));
+		AddDebugLogLineM(false,
+			wxString(wxT("Rating for file '")) << m_clientFilename <<
+			wxT("' received: ") << m_iRate);
 
 		// The comment is unicoded, with a uin32 len and safe read 
 		// (won't break if string size is < than advertised len)
 		m_strComment = data.ReadString(GetUnicodeSupport(), 4 /* bytes (it's a uint32)*/, true);
 
-		AddDebugLogLineM(false, wxT("Description for file '") + m_clientFilename + wxT("' received: ") + m_strComment);
+		AddDebugLogLineM(false,
+			wxString(wxT("Description for file '")) << m_clientFilename <<
+			wxT("' received: ") << m_strComment);
 
 		m_reqfile->SetHasComment(true);
 		// Update file rating
 		m_reqfile->UpdateFileRatingCommentAvail();
-
 	}
 	catch ( CStrangePacket )
 	{
 		delete[] desc;
 
-		printf("\nInvalid MuleComment packet!\n");
-		printf("Sent by %s on ip %s port %i using client %i version %i\n",unicode2char(GetUserName()),unicode2char(GetFullIP()),GetUserPort(),GetClientSoft(),GetMuleVersion());
-		printf("User Disconnected.\n");
+		printf(	"\nInvalid MuleComment packet!\n"
+			"Sent by %s on ip %s port %i using client %i version %i\n"
+			"User Disconnected.\n",
+			(const char *)unicode2char(GetUserName()),
+			(const char *)unicode2char(GetFullIP()),
+			GetUserPort(),GetClientSoft(),GetMuleVersion());
 		throw wxString(wxT("Wrong MuleComment packet"));
 	}
 	catch ( CInvalidPacket e )
 	{
 		delete[] desc;
 
-		printf("\nInvalid MuleComment packet - %s\n\n",e.what());
-		printf("Sent by %s on ip %s port %i using client %i version %i\n",unicode2char(GetUserName()),unicode2char(GetFullIP()),GetUserPort(),GetClientSoft(),GetMuleVersion());
-		printf("User Disconnected.\n");
+		printf(	"\n"
+			"Invalid MuleComment packet - %s\n\n"
+			"Sent by %s on ip %s port %i using client %i version %i\n"
+			"User Disconnected.\n",
+			e.what(),
+			(const char *)unicode2char(GetUserName()),
+			(const char *)unicode2char(GetFullIP()),
+			GetUserPort(),GetClientSoft(),GetMuleVersion());
 		throw wxString(wxT("Wrong MuleComment packet"));
 	}
 	catch (...)
 	{
 		delete[] desc;
 
-		printf("\nInvalid MuleComment packet - Uncatched exception\n\n");
-		printf("Sent by %s on ip %s port %i using client %i version %i\n",unicode2char(GetUserName()),unicode2char(GetFullIP()),GetUserPort(),GetClientSoft(),GetMuleVersion());
-		printf("User Disconnected.\n");
+		printf(	"\n"
+			"Invalid MuleComment packet - Uncatched exception\n\n"
+			"Sent by %s on ip %s port %i using client %i version %i\n"
+			"User Disconnected.\n",
+			(const char *)unicode2char(GetUserName()),
+			(const char *)unicode2char(GetFullIP()),
+			GetUserPort(),GetClientSoft(),GetMuleVersion());
 		throw wxString(wxT("Wrong MuleComment packet"));
 	}
 

@@ -222,7 +222,7 @@ void* CAICHSyncThread::Entry()
 	//	}
 
 	if ( !queue.empty() ) {
-		printf("AICH Thread: Starting to hash files. %li files found.\n", queue.size() );
+		printf("AICH Thread: Starting to hash files. %d files found.\n", queue.size() );
 		while ( !queue.empty() ) {
 			// Check for termination
 			if ( TestDestroy() ) {
@@ -232,14 +232,17 @@ void* CAICHSyncThread::Entry()
 			CKnownFile* pCurFile = queue.front();
 			queue.pop_front();
 
-			printf("AICH Thread: Hashing file: %s, total files left: %li\n", unicode2char( pCurFile->GetFileName() ), queue.size() );
+			printf("AICH Thread: Hashing file: %s, total files left: %d\n",
+				(const char *)unicode2char( pCurFile->GetFileName() ), queue.size() );
 
 			// Just to be sure that the file hasnt been deleted lately
-			if ( !(theApp.knownfiles->IsKnownFile(pCurFile) && theApp.sharedfiles->GetFileByID(pCurFile->GetFileHash())) )
+			if ( 	!(theApp.knownfiles->IsKnownFile(pCurFile) &&
+				theApp.sharedfiles->GetFileByID(pCurFile->GetFileHash())) )
 				continue;
 
 			if ( !pCurFile->CreateAICHHashSetOnly() ) {
-				printf("AICH Thread: Failed to create hashset for file %s\n", unicode2char( pCurFile->GetFileName() ) );
+				printf("AICH Thread: Failed to create hashset for file %s\n",
+					(const char *)unicode2char( pCurFile->GetFileName() ) );
 			}
 		}
 

@@ -75,7 +75,8 @@ void CStateMachine::Clock()
 	{
 		m_clocksInCurrentState = 0;
 		printf( "%s(%04d): %d -> %d\n",
-			unicode2char(m_name), m_clockCounter, old_state, m_state);
+			(const char *)unicode2char(m_name),
+			m_clockCounter, old_state, m_state);
 	}
 	++m_clocksInCurrentState;
 //#endif

@@ -1028,7 +1028,8 @@ wxFileType *ft;                            /* Temporary storage for filetype. */
 		}
 
 		if ( wxExecute( cmd, false ) ) {
-			printf( "Launch Command: %s\n", unicode2char(cmd));
+			printf( "Launch Command: %s\n",
+				(const char *)unicode2char(cmd));
 			return;
 		}
 	}
@@ -1263,7 +1264,8 @@ void CamuleDlg::Apply_Clients_Skin(wxString file) {
 				if (new_image.LoadFile(bitmaps_found[i].filename)) {
 					imagelist.Add(wxBitmap(new_image));
 				} else {
-					printf("Warning: wrong client bitmap file Nº%i: %s",i,unicode2char(bitmaps_found[i].filename));
+					printf(	"Warning: wrong client bitmap file No.%i: %s",
+						i, (const char *)unicode2char(bitmaps_found[i].filename));
 					imagelist.Add(wxBitmap(clientImages(i)));
 				}
 			}else {

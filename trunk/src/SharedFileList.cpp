@@ -81,7 +81,8 @@ void CSharedFileList::FindSharedFiles() {
 			CPartFile* file = theApp.downloadqueue->GetFileByIndex( i );
 			
 			if ( file->GetStatus(true) == PS_READY ) {
-				printf("Adding file %s to shares\n", unicode2char( file->GetFullName() ) );
+				printf("Adding file %s to shares\n",
+					(const char *)unicode2char( file->GetFullName() ) );
 				
 				SafeAddKFile( file, true );
 			}
@@ -176,7 +177,7 @@ void CSharedFileList::AddFilesFromDirectory(wxString directory)
 	wxString fname = SharedDir.FindFirstFile(CDirIterator::File); // We just want files
 
 	if (fname.IsEmpty()) {
-		printf("Empty dir %s shared\n",unicode2char(directory));
+		printf("Empty dir %s shared\n", (const char *)unicode2char(directory));
     		return;
 	}
 	while(!fname.IsEmpty()) {
@@ -185,7 +186,7 @@ void CSharedFileList::AddFilesFromDirectory(wxString directory)
 
 		if (::wxDirExists(fname)) {
 			// Woops, is a dir!
-			printf("%s is a directory, skipping\n",unicode2char(fname));
+			printf("%s is a directory, skipping\n", (const char *)unicode2char(fname));
 			fname = SharedDir.FindNextFile();
 			continue;
 		}
@@ -193,7 +194,7 @@ void CSharedFileList::AddFilesFromDirectory(wxString directory)
 		CFile new_file(fname, CFile::read);
 
 		if (!new_file.IsOpened()) {
-			printf("No permisions to open %s, skipping\n",unicode2char(fname));
+			printf("No permisions to open %s, skipping\n", (const char *)unicode2char(fname));
 			fname = SharedDir.FindNextFile();
 			continue;
 		}
@@ -219,7 +220,9 @@ void CSharedFileList::AddFilesFromDirectory(wxString directory)
 				list_mut.Unlock();
 			} else {
 				if (fname.Cmp(toadd->GetFileName())) {
-					printf("Warning: File '%s' already shared as '%s'\n", unicode2char(directory + fname), unicode2char(toadd->GetFileName()));
+					printf("Warning: File '%s' already shared as '%s'\n",
+						(const char *)unicode2char(directory + fname),
+						(const char *)unicode2char(toadd->GetFileName()));
 				}
 			}
 		} else {

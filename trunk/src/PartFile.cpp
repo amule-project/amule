@@ -463,11 +463,13 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 						#ifdef wxUSE_UNICODE
 						if (GetFileName().IsEmpty()) {
 							// If it's not empty, we already loaded the unicoded one
-							printf(" - filename (u) %s - ",unicode2UTF8(newtag->tag.stringvalue));
+							printf(	" - filename (u) %s - ",
+								(const char *)unicode2UTF8(newtag->tag.stringvalue));
 							SetFileName(newtag->tag.stringvalue);
 						}
 						#else
-							printf(" - filename %s - ",unicode2char(newtag->tag.stringvalue));
+							printf(	" - filename %s - ",
+								(const char *)unicode2char(newtag->tag.stringvalue));
 							SetFileName(newtag->tag.stringvalue);
 						#endif
 						
@@ -735,7 +737,9 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 		AddGap(m_hpartfile.GetLength(), m_nFileSize-1);
 	// Goes both ways - Partfile should never be too large
 	if ((uint64)m_hpartfile.GetLength() > m_nFileSize){
-		printf("Partfile \"%s\" is too large! Truncating %llu bytes.\n", unicode2char(GetFileName()), ((ULONGLONG)m_hpartfile.GetLength() - m_nFileSize));
+		printf(	"Partfile \"%s\" is too large! Truncating %llu bytes.\n",
+			(const char *)unicode2char(GetFileName()),
+			((ULONGLONG)m_hpartfile.GetLength() - m_nFileSize));
 		m_hpartfile.SetLength(m_nFileSize);
 	}
 	// SLUGFILLER: SafeHash

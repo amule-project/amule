@@ -49,7 +49,8 @@ static void dump(const wxString &msg, bool ok, const void *buff, int n)
 	register int chars = 0;
 	
 	if (msg) {
-		printf("%s - ok=%d, %d bytes\n", unicode2char(msg), ok, n);
+		printf(	"%s - ok=%d, %d bytes\n",
+			(const char *)unicode2char(msg), ok, n);
 	}
 	for( int i = 0; i < lines; ++i) {
 		int chars_save = chars;
@@ -499,7 +500,8 @@ void CSocks5StateMachine::process_state(t_sm_state state, bool entry)
 	if (entry) {
 		dump(m_state_name[state], m_ok, m_buffer, n);
 	} else {
-		printf("wait state -- %s\n", unicode2char(m_state_name[state]));
+		printf("wait state -- %s\n",
+			(const char *)unicode2char(m_state_name[state]));
 	}
 #endif // __DEBUG__
 }
@@ -907,7 +909,8 @@ void CSocks4StateMachine::process_state(t_sm_state state, bool entry)
 	if (entry) {
 		dump(m_state_name[state], m_ok, m_buffer, n);
 	} else {
-		printf("wait state -- %s\n", unicode2char(m_state_name[state]));
+		printf(	"wait state -- %s\n",
+			(const char *)unicode2char(m_state_name[state]));
 	}
 #endif // __DEBUG__
 }
@@ -1078,7 +1081,8 @@ void CHttpStateMachine::process_state(t_sm_state state, bool entry)
 	if (entry) {
 		dump(m_state_name[state], m_ok, m_buffer, n);
 	} else {
-		printf("wait state -- %s\n", unicode2char(m_state_name[state]));
+		printf(	"wait state -- %s\n",
+			(const char *)unicode2char(m_state_name[state]));
 	}
 #endif // __DEBUG__
 }
