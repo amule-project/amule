@@ -227,23 +227,8 @@ CUpDownClient::~CUpDownClient()
 
 
 	ClearUploadBlockRequests();
+	ClearDownloadBlockRequests();
 
-	for (POSITION pos = m_DownloadBlocks_list.GetHeadPosition();pos != 0; ) {
-		delete m_DownloadBlocks_list.GetNext(pos);
-	}
-	m_DownloadBlocks_list.RemoveAll();
-
-	for (POSITION pos = m_PendingBlocks_list.GetHeadPosition();pos != 0; ) {
-		Pending_Block_Struct *pending = m_PendingBlocks_list.GetNext(pos);
-		delete pending->block;
-		// Not always allocated
-		if (pending->zStream) {
-			inflateEnd(pending->zStream);
-			delete pending->zStream;
-		}
-		delete pending;
-	}
-	/* eMule 0.30c manage this also, i give it a try ... (Creteil) */
 
 	for (POSITION pos =m_WaitingPackets_list.GetHeadPosition();pos != 0; ) {
 		delete m_WaitingPackets_list.GetNext(pos);
