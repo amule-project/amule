@@ -32,15 +32,22 @@
 #pragma interface "alcc.h"
 #endif
 
-// Include wxWindows' headers
+// For compilers that support precompilation, includes "wx/wx.h"
+#include "wx/wxprec.h"
+
+#ifdef __BORLANDC__
+    #pragma hdrstop
+#endif
+
+// For all others, include the necessary headers
 #ifndef WX_PRECOMP
-#include <wx/wx.h>
+    #include "wx/wx.h"
 #endif
 
 #include <wx/cmdline.h>
 
 //-----------------------------------------------------------------------------
-// efe, this can be put in a separete include file, if you want to reuse
+// This can be put in a separete include file
 #include <wx/strconv.h>
 static wxCSConv aMuleConv(wxT("iso8859-1"));
 #ifdef wxUSE_UNICODE
