@@ -1363,7 +1363,7 @@ wxString CWebServer::_GetGraphs(ThreadData WXUNUSED(Data)) {
 	Out.Replace(wxT("[TxtTime]"), _("Time"));
 
 	//sGraphs formatted as: %d\t%d\t%d\t%d
-	CECPacket req(EC_OP_STATSGRAPHS);
+	CECPacket req(EC_OP_GET_STATSGRAPHS);
 	CECPacket *response = webInterface->SendRecvMsg_v2(&req);
 	wxString sGraphs =  response->GetTagByIndex(0)->GetStringData();	
 	delete response;
@@ -1552,7 +1552,7 @@ wxString CWebServer::_GetStats(ThreadData Data) {
 	
 	wxString Out = m_Templates.sStats;
 	
-	CECPacket req(EC_OP_STATSTREE);
+	CECPacket req(EC_OP_GET_STATSTREE);
 	CECPacket *response = webInterface->SendRecvMsg_v2(&req);
 	wxString sStats =  response->GetTagByIndex(0)->GetStringData();
 	delete response;

@@ -1428,7 +1428,7 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request, CPartFile_Enc
 		// Statistics
 		//
 		
-		case EC_OP_STATSGRAPHS:
+		case EC_OP_GET_STATSGRAPHS:
 			response = new CECPacket(EC_OP_STATSGRAPHS);
 			response->AddTag(CECTag(EC_TAG_STRING,
 													wxString::Format(wxT("%d\t%d\t%d\t%d"), 
@@ -1438,7 +1438,7 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request, CPartFile_Enc
 													thePrefs::GetMaxConnections())));
 			break;
 		
-		case EC_OP_STATSTREE:
+		case EC_OP_GET_STATSTREE:
 			response = new CECPacket(EC_OP_STATSGRAPHS);
 			#ifdef AMULE_DAEMON
 			response->AddTag(CECTag(EC_TAG_STRING, wxT("FIXME: remove code from gui")));
