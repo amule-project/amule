@@ -1,25 +1,24 @@
 Version 2.0.0rc4 - The 'Target: REAL Stability' version.
 2004-0X-XX
-        
-        Citroklar:
+
+	Citroklar:
 	
-        deltaHF:
+	deltaHF:
 	        * Added websearch function (filehash.com)
-                * Added jugle.net as Fake-check URL
+		* Added jugle.net as Fake-check URL
 		* New buttons added:
-                  - reload sharedfiles
-                  - switch upload/uploadqueue
-                  - clear completed files
+		  - reload sharedfiles
+		  - switch upload/uploadqueue
+		  - clear completed files
 		* Added 3 new columns in upload window (Client Software , Upload/Download , Remote Status)
 		* Added 'Client Software' column in upload-queue window
 		* "Asked for another file" on sources now with the filename that is asked for ( i.e. A4AF -> xyz.avi)
-                * Added 'copy file feedback to clipboard' function
+		* Added 'copy file feedback to clipboard' function
 		* Added new Toolbar icons [ thx to http://www.everaldo.com ;) ]
 		* Added icons in Preferences
 		* Download menu changed
 		* Work on skin support
-		
-		
+
 	Hetfield:
 		* Fixed unicode issues on SysTray.cpp, now apps is really unicoded!
 		* deleted separated i18n stuff from SysTray, now uses global one
@@ -30,7 +29,7 @@ Version 2.0.0rc4 - The 'Target: REAL Stability' version.
 		  and internal link handler
 
 	Kry:
-		  
+
 	Phoenix:
 		* Patch to --enable-stdin to aid in debug with valgrind.
 		* code cleaning in module Packets, made a lot of stuff private
@@ -64,6 +63,10 @@ Version 2.0.0rc4 - The 'Target: REAL Stability' version.
 		  aLinkCreator. Using wxAppConsole when wx > 2.5.0.
 		* Fixed compilation and linking in 2.5.x for amuleweb. Now
 		  uses wxAppConsole when wx > 2.5.0.
+		* Added a test for the return value of
+		  theApp.serverlist->GetServerByAddress(), which could be
+		  NULL. This was the reason why aMule was crashing when trying
+		  to connect to server with wxWidgets-2.5.2.
 
 	thepolish:
 		* wxCas:
@@ -150,8 +153,8 @@ Version 2.0.0rc4 - The 'Target: REAL Stability' version.
 		  - CTypedPtrList.h
 		  - BarShader.*
 		* Many other smaller changes.
-	
-	
+
+
 	Special thanks to:
 		* Le Rat Noir and Inoteb of the BlackRat eMule mod (http://www.blackrat.fr.tc/) for allowing us to make use of their     work on detecting bad clients.
 		* Optimazer and the eMule Plus team for reporting a bug in source-exchange packets.
@@ -159,19 +162,19 @@ Version 2.0.0rc4 - The 'Target: REAL Stability' version.
 		* Everaldo (http://www.everaldo.com) for new icons
 		* TheBlackHand and Hawkster eMule mods 
 
-		
+
 Version 2.0.0rc3 - The 'Target: Stability' version.
 -------------
 2004-04-22
 	
-        aquatroll:
+	aquatroll:
 	
 		* win32 stuff
-		
+
 	barbapapa;
 		
 		* Fixed >2Gb files sorting bug on transfer window.
-		
+
 	Citroklar:
 		
 		* Fixed saving preferences on klick OK, not only on shutdown.
@@ -182,16 +185,16 @@ Version 2.0.0rc3 - The 'Target: Stability' version.
 	
 		* i18n stuff
 		* Minor timer fix ;)
-		
+	
 	elfstone:
 		* Fixed already downloading files not being marked as such on search results.
-		
+	
 	falso:
 		
 		* Improving and fixing cas 
 		* Added capability to create pngs with cas
 		* Fixed ed2k fast links handler
-	
+
 	Kry:
 
 		* Complete rewrite to emule 0.42x ed2k network code
@@ -250,18 +253,18 @@ Version 2.0.0rc3 - The 'Target: Stability' version.
 		* Fixed some memleaks
 		* Changed some CLists to wxLists
 		* Cleanup and fixing little bugs ;)
-		
+
 	Madcat:
 	
 	        * Disable autobacktrace on win32
 		* Removed wxTE_PROCESS_ENTER style from fast ed2k links handler (fixes assert)
 		* The following modifications to CamuleDlg::AddLogLine() function:
-                  * Now uses system locale for date/time formatting.
-                  * No longer asserts.
-                  * Now also works on win32.
+			* Now uses system locale for date/time formatting.
+			* No longer asserts.
+			* Now also works on win32.
 		* Removed unused m_StateImageList
 		* Code cleanup
-		
+	
 	one_2_one, hoschy007:
 	
 	        * MacOSX stuff
@@ -273,7 +276,7 @@ Version 2.0.0rc3 - The 'Target: Stability' version.
 		* Fixed categories for web interface
 		* WebSocket.* & WebServer.*: now uses wxThreads and wxSockets to be cross platform.
 		* Better threads' array remove in WebSocket
-  		* WebServer cleanly stopped before exit	
+		* WebServer cleanly stopped before exit	
 		* Fixed max 2Gb display bug in amuleweb
 		* Updated aMule.tmpl: added file %complete support in transfer list
 		* Fixed the "remote connect" bug
@@ -296,9 +299,9 @@ Version 2.0.0rc3 - The 'Target: Stability' version.
 		* Fixed PowerShare priority level not being saved. (Tran.9)
 		* Fixed the problem where it wasn't possible to select auto-priority in the uploadlist after having selected another priority (Tran.8)
 		* Cleanup of Search Dialog:
-  		  * The reset button is now properly enabled/disabled depending on the contenst of the text fields
+		  * The reset button is now properly enabled/disabled depending on the contenst of the text fields
 		  * Fixed a bug where searched would be limited to 2gb if max size was set to a value less than min size
-  		  * The popup-menu for the notebook now works as expected (SRCH.1) 
+		  * The popup-menu for the notebook now works as expected (SRCH.1) 
 		  * The popup-menu will now only show when right-clicking within the bounds of the notebook (DISP.12)
 		* Fixed the green progressbar on downloads always displaying 100%. (DISP.9)
 		* aMule will no longer display warnings about not being able to find server.met when a new server.met is saved and no old copy exists.
@@ -480,7 +483,7 @@ Version 2.0.0-rc2 - The 'white rabbit' version.
 		   transfered any bits yet would display a negative percentage (Disp. 8)
 
 		   
-        ** Special thanks to niet for his DNS service, bootstrap for his CVS service, stefanero & Citroklar for their    
+	** Special thanks to niet for his DNS service, bootstrap for his CVS service, stefanero & Citroklar for their    
 	   great help with a lot of stuff.
 	   Thx also to all translators and the users for reporting bugs and testing aMule (feel free to report more) :)
 	   As usual thx to eMule & wxWidgets devs and everyone i forgot ;)
@@ -612,7 +615,7 @@ Version 2.0.0-rc1 - The 'Mules and Rabbits love carrots' version.
 			credit to original Linux port author (Timo Kujala aka Tiku)
 		* Win32 port 99% operative, next version will be Win32 compatible
 
-        Emilio Sandoz:
+	Emilio Sandoz:
 		* complete re-write of preference handling to make it table-driven
 			in both file-I/O and dialog
 		* improvements in feedback given during dialog interaction
@@ -634,17 +637,17 @@ Version 2.0.0-rc1 - The 'Mules and Rabbits love carrots' version.
 		  Added "AMULEDLG SHOW" to EC available commands
 		* WebServer now use the more correct _("") for localized strings
 		* Created WebInterface.{h,cpp} for the web interface, and
-                   cleaned WebServer.{h,cpp} code
-                          
+		  cleaned WebServer.{h,cpp} code
+
 	neiro:
 		* Helped with OpenBSD port by providing a workbench
-		
+	
 	Ganael Laplanche:
 		* FreeBSD port fixes
-		
+	
 	PowerMike, hellimod:
 		* Helped a lot on future Mac port by giving ssh & vnc access
-		
+	
 	deltaHF:
 	        * New toolbar icons (thx to everaldo.com)
 		* Added & enabled chinese, danish and hungarian translation
