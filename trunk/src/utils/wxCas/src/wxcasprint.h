@@ -38,34 +38,34 @@
 #include "wx/wxprec.h"
 
 #ifdef __BORLANDC__
-    #pragma hdrstop
+ #pragma hdrstop
 #endif
 
 // For all others, include the necessary headers
 #ifndef WX_PRECOMP
-    #include "wx/wx.h"
+ #include "wx/wx.h"
 #endif
 
 #include <wx/print.h>
 
 /// Statistic image printing
-class WxCasPrint:public wxPrintout
-  {
-  public:
+class WxCasPrint: public wxPrintout
+{
+public:
 
-    /// Constructor
-    WxCasPrint (const wxString& title);
+	/// Constructor
+	WxCasPrint ( const wxString& title );
 
-    ///Destructor
-    ~WxCasPrint ();
+	///Destructor
+	~WxCasPrint ();
 
-    bool OnPrintPage (int page);
-    bool HasPage (int page);
-    bool OnBeginDocument (int startPage, int endPage);
-    void GetPageInfo (int *minPage, int *maxPage, int *selPageFrom,
-                      int *selPageTo);
+	bool OnPrintPage ( int page );
+	bool HasPage ( int page );
+	bool OnBeginDocument ( int startPage, int endPage );
+	void GetPageInfo ( int *minPage, int *maxPage, int *selPageFrom,
+	                   int *selPageTo );
 
-    void DrawPageOne (wxDC * dc);
-  };
+	void DrawPageOne ( wxDC * dc );
+};
 
 #endif /* _WXCASPRINT_H */

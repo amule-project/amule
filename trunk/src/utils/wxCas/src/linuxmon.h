@@ -38,50 +38,50 @@
 #include "wx/wxprec.h"
 
 #ifdef __BORLANDC__
-    #pragma hdrstop
+ #pragma hdrstop
 #endif
 
 // For all others, include the necessary headers
 #ifndef WX_PRECOMP
-    #include "wx/wx.h"
+ #include "wx/wx.h"
 #endif
 
 #include <wx/filename.h>
 
 /// Linux Monitoring
 class LinuxMon
-  {
-  private:
-    wxString m_uptime;
+{
+private:
+	wxString m_uptime;
 
-    wxString m_sysLoad_1;
-    wxString m_sysLoad_5;
-    wxString m_sysLoad_15;
+	wxString m_sysLoad_1;
+	wxString m_sysLoad_5;
+	wxString m_sysLoad_15;
 
-    static const wxFileName UPTIME_FILE;
-    static const wxFileName LOADAVG_FILE;
+	static const wxFileName UPTIME_FILE;
+	static const wxFileName LOADAVG_FILE;
 
-  public:
-    /// Constructor
-    LinuxMon ();
+public:
+	/// Constructor
+	LinuxMon ();
 
-    /// Destructor
-    ~LinuxMon ();
+	/// Destructor
+	~LinuxMon ();
 
-    /// Refresh stored informations
-    void Refresh ();
+	/// Refresh stored informations
+	void Refresh ();
 
-    /// Get system uptime
-    wxString GetUptime () const;
+	/// Get system uptime
+	wxString GetUptime () const;
 
-    /// Get 1min average CPU load
-    wxString GetSysLoad_1 () const;
+	/// Get 1min average CPU load
+	wxString GetSysLoad_1 () const;
 
-    /// Get 5min averag CPU load
-    wxString GetSysLoad_5 () const;
+	/// Get 5min averag CPU load
+	wxString GetSysLoad_5 () const;
 
-    /// Get 15min averag CPU load
-    wxString GetSysLoad_15 () const;
-  };
+	/// Get 15min averag CPU load
+	wxString GetSysLoad_15 () const;
+};
 
 #endif /* _LINUXMON_H */

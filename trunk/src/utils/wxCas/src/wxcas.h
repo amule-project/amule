@@ -38,37 +38,37 @@
 #include "wx/wxprec.h"
 
 #ifdef __BORLANDC__
-    #pragma hdrstop
+ #pragma hdrstop
 #endif
 
 // For all others, include the necessary headers
 #ifndef WX_PRECOMP
-    #include "wx/wx.h"
+ #include "wx/wx.h"
 #endif
 
 #include "wxcasframe.h"
 
 /// Application
-class WxCas:public wxApp
-  {
-  private:
-    WxCasFrame * m_frame;
-          
-  protected:
-    wxLocale m_locale; // Used to tell wxCas to use aMule catalog
+class WxCas: public wxApp
+{
+private:
+	WxCasFrame * m_frame;
 
-  public:
+protected:
+	wxLocale m_locale; // Used to tell wxCas to use aMule catalog
 
-    /// Application initialisation
-    virtual bool OnInit ();
+public:
 
-    /// Cleaning on exit
-    virtual int OnExit();
+	/// Application initialisation
+	virtual bool OnInit ();
 
-    /// Get application main frame
-    WxCasFrame *GetMainFrame () const;
-  };
+	/// Cleaning on exit
+	virtual int OnExit();
 
-DECLARE_APP (WxCas);
+	/// Get application main frame
+	WxCasFrame *GetMainFrame () const;
+};
+
+DECLARE_APP ( WxCas );
 
 #endif /* _WXCAS_H */

@@ -38,126 +38,126 @@
 #include "wx/wxprec.h"
 
 #ifdef __BORLANDC__
-    #pragma hdrstop
+ #pragma hdrstop
 #endif
 
 // For all others, include the necessary headers
 #ifndef WX_PRECOMP
-    #include "wx/wx.h"
+ #include "wx/wx.h"
 #endif
 
 #include <wx/filename.h>
 
 /// amulesig.dat file monitoring
 class OnLineSig
-  {
-  private:
-    double m_maxDL;
+{
+private:
+	double m_maxDL;
 
-    int  m_amuleState;
-    wxString m_serverName;
-    wxString m_serverIP;
-    wxString m_serverPort;
-    wxString m_connexionID;
-    wxString m_ULRate;
-    wxString m_DLRate;
-    wxString m_queue;
-    wxString m_sharedFiles;
-    wxString m_user;
-    wxString m_totalUL;
-    wxString m_totalDL;
-    wxString m_version;
-    wxString m_sessionUL;
-    wxString m_sessionDL;
-    unsigned int m_runTimeS;
+	int m_amuleState;
+	wxString m_serverName;
+	wxString m_serverIP;
+	wxString m_serverPort;
+	wxString m_connexionID;
+	wxString m_ULRate;
+	wxString m_DLRate;
+	wxString m_queue;
+	wxString m_sharedFiles;
+	wxString m_user;
+	wxString m_totalUL;
+	wxString m_totalDL;
+	wxString m_version;
+	wxString m_sessionUL;
+	wxString m_sessionDL;
+	unsigned int m_runTimeS;
 
-    wxFileName m_amulesig;
+	wxFileName m_amulesig;
 
-    wxString BytesConvertion (const wxString& bytes);
-    unsigned int PullCount (unsigned int *runtime, const unsigned int count);
+	wxString BytesConvertion ( const wxString& bytes );
+	unsigned int PullCount ( unsigned int *runtime, const unsigned int count );
 
 
-  public:
-    /// Default constructor
-    OnLineSig ();
+public:
+	/// Default constructor
+	OnLineSig ();
 
-    /// Constructor
-    OnLineSig (const wxFileName& file);
+	/// Constructor
+	OnLineSig ( const wxFileName& file );
 
-    /// Destructor
-    ~OnLineSig ();
+	/// Destructor
+	~OnLineSig ();
 
-    /// Set amulesig.dat file name and path
-    void SetAmuleSig (const wxFileName& file);
+	/// Set amulesig.dat file name and path
+	void SetAmuleSig ( const wxFileName& file );
 
-    /// Refresh stored informations
-    void Refresh ();
+	/// Refresh stored informations
+	void Refresh ();
 
-    /// Return TRUE if aMule is running
-    int GetAmuleState () const;
+	/// Return TRUE if aMule is running
+	int GetAmuleState () const;
 
-    /// Get server name
-    wxString GetServerName () const;
+	/// Get server name
+	wxString GetServerName () const;
 
-    /// Get server IP
-    wxString GetServerIP () const;
+	/// Get server IP
+	wxString GetServerIP () const;
 
-    /// Get server Port
-    wxString GetServerPort () const;
+	/// Get server Port
+	wxString GetServerPort () const;
 
-    /// Get server connexion ID: H or L
-    wxString GetConnexionID () const;
+	/// Get server connexion ID: H or L
+	wxString GetConnexionID () const;
 
-    /// Get Upload rate
-    wxString GetULRate () const;
+	/// Get Upload rate
+	wxString GetULRate () const;
 
-    /// Get Download rate
-    wxString GetDLRate () const;
+	/// Get Download rate
+	wxString GetDLRate () const;
 
-    /// Get number of clients in queue
-    wxString GetQueue () const;
+	/// Get number of clients in queue
+	wxString GetQueue () const;
 
-    /// Get number of shared files
-    wxString GetSharedFiles () const;
+	/// Get number of shared files
+	wxString GetSharedFiles () const;
 
-    /// Get user name
-    wxString GetUser () const;
+	/// Get user name
+	wxString GetUser () const;
 
-    /// Get total Upload
-    wxString GetTotalUL () const;
+	/// Get total Upload
+	wxString GetTotalUL () const;
 
-    /// Get total Download
-    wxString GetTotalDL () const;
+	/// Get total Download
+	wxString GetTotalDL () const;
 
-    /// Get aMule version
-    wxString GetVersion () const;
+	/// Get aMule version
+	wxString GetVersion () const;
 
-    /// Get session Upload
-    wxString GetSessionUL () const;
+	/// Get session Upload
+	wxString GetSessionUL () const;
 
-    /// Get session Download
-    wxString GetSessionDL () const;
+	/// Get session Download
+	wxString GetSessionDL () const;
 
-    /// Get aMule runtime
-    wxString GetRunTime ();
+	/// Get aMule runtime
+	wxString GetRunTime ();
 
-    /// Get total Upload in the best representative unit
-    wxString GetConvertedTotalUL ();
+	/// Get total Upload in the best representative unit
+	wxString GetConvertedTotalUL ();
 
-    /// Get total Download in the best representative unit
-    wxString GetConvertedTotalDL ();
+	/// Get total Download in the best representative unit
+	wxString GetConvertedTotalDL ();
 
-    /// Get session Upload in the best representative unit
-    wxString GetConvertedSessionUL ();
+	/// Get session Upload in the best representative unit
+	wxString GetConvertedSessionUL ();
 
-    /// Get session Download in the best representative unit
-    wxString GetConvertedSessionDL ();
+	/// Get session Download in the best representative unit
+	wxString GetConvertedSessionDL ();
 
-    /// Get server connexion ID: LowID or HighID
-    wxString GetConnexionIDType () const;
+	/// Get server connexion ID: LowID or HighID
+	wxString GetConnexionIDType () const;
 
-    /// Get max Download rate sine wxCas is running
-    wxString GetMaxDL () const;
-  };
+	/// Get max Download rate sine wxCas is running
+	wxString GetMaxDL () const;
+};
 
 #endif /* _ONLINESIG_H */

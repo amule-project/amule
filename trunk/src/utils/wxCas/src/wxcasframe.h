@@ -38,12 +38,12 @@
 #include "wx/wxprec.h"
 
 #ifdef __BORLANDC__
-    #pragma hdrstop
+ #pragma hdrstop
 #endif
 
 // For all others, include the necessary headers
 #ifndef WX_PRECOMP
-    #include "wx/wx.h"
+ #include "wx/wx.h"
 #endif
 
 #include <wx/statline.h>
@@ -59,92 +59,103 @@
 #endif
 
 /// Main wxCas Frame
-class WxCasFrame:public wxFrame
-  {
-  private:
-    wxToolBar *m_toolbar;
-    wxBitmap m_toolBarBitmaps[6];
+class WxCasFrame: public wxFrame
+{
+private:
+	wxToolBar *m_toolbar;
+	wxBitmap m_toolBarBitmaps[ 6 ];
 
-    wxBoxSizer *m_frameVBox;
-    wxBoxSizer *m_mainPanelVBox;
-    wxBoxSizer *m_sigPanelVBox;
+	wxBoxSizer *m_frameVBox;
+	wxBoxSizer *m_mainPanelVBox;
 
-    wxPanel *m_mainPanel;
+	wxPanel *m_mainPanel;
 
-    wxStaticLine *m_staticLine;
+	wxStaticLine *m_staticLine;
+#ifdef __WXMSW__
 
-    wxStaticBox *m_sigPanelSBox;
-    wxStaticBoxSizer *m_sigPanelSBoxSizer;
+	wxStaticLine *m_BottomStaticLine;
+#endif
 
-    wxStaticText *m_statLine_1;
-    wxStaticText *m_statLine_2;
-    wxStaticText *m_statLine_3;
-    wxStaticText *m_statLine_4;
-    wxStaticText *m_statLine_5;
-    wxStaticText *m_statLine_6;
-    wxStaticText *m_statLine_7;
+	wxStaticBox *m_sigPanelSBox;
+	wxStaticBoxSizer *m_sigPanelSBoxSizer;
 
-    wxTimer * m_refresh_timer;
-    wxTimer * m_ftp_update_timer;
+	wxStaticBox *m_monPanelSBox;
+	wxStaticBoxSizer *m_monPanelSBoxSizer;
 
-    wxStaticBitmap *m_amuleSBitmap;
+	wxStaticBox *m_hitPanelSBox;
+	wxStaticBoxSizer *m_hitPanelSBoxSizer;
 
-    OnLineSig *m_aMuleSig;
-    wxUint32 m_maxLineCount;
+	wxStaticText *m_statLine_1;
+	wxStaticText *m_statLine_2;
+	wxStaticText *m_statLine_3;
+	wxStaticText *m_statLine_4;
+	wxStaticText *m_statLine_5;
+	wxStaticText *m_statLine_6;
+
+	wxStaticText *m_hitLine_1;
+
+	wxTimer * m_refresh_timer;
+	wxTimer * m_ftp_update_timer;
+
+	OnLineSig *m_aMuleSig;
+	unsigned int m_maxLineCount;
 
 #ifdef __LINUX__		// System monitoring on Linux
 
-    wxStaticText *m_sysLine_1;
-    wxStaticText *m_sysLine_2;
-    LinuxMon *m_sysMonitor;
+	wxStaticText *m_sysLine_1;
+	wxStaticText *m_sysLine_2;
+	LinuxMon *m_sysMonitor;
 #endif
 
-    enum
-    {
-      ID_BAR_REFRESH = 1000,
-      ID_BAR_SAVE,
-      ID_BAR_PRINT,
-      ID_BAR_PREFS,
-      ID_BAR_ABOUT,
-      ID_REFRESH_TIMER,
-      ID_FTP_UPDATE_TIMER
-    };
+	enum
+	{
+	    ID_BAR_REFRESH = 1000,
+	    ID_BAR_SAVE,
+	    ID_BAR_PRINT,
+	    ID_BAR_PREFS,
+	    ID_BAR_ABOUT,
+	    ID_REFRESH_TIMER,
+	    ID_FTP_UPDATE_TIMER
+	};
 
-  protected:
-    bool UpdateStatsPanel ();
-    void UpdateAll (bool forceFitting = FALSE);
+	// Get maximum of 2 uint
+	unsigned int GetMaxUInt( const unsigned int a, const unsigned int b )
+	{
+		return ( ( a ) > ( b ) ? ( a ) : ( b ) );
+	}
 
-    void OnBarRefresh (wxCommandEvent & event);
-    void OnBarAbout (wxCommandEvent & event);
-    void OnBarSave (wxCommandEvent & event);
-    void OnBarPrint (wxCommandEvent & event);
-    void OnBarPrefs (wxCommandEvent & event);
-    void OnRefreshTimer (wxTimerEvent & event);
-    void OnFtpUpdateTimer (wxTimerEvent & event);
+protected:
+	bool UpdateStatsPanel ();
+	void UpdateAll ( bool forceFitting = FALSE );
 
-    DECLARE_EVENT_TABLE ();
+	void OnBarRefresh ( wxCommandEvent & event );
+	void OnBarAbout ( wxCommandEvent & event );
+	void OnBarSave ( wxCommandEvent & event );
+	void OnBarPrint ( wxCommandEvent & event );
+	void OnBarPrefs ( wxCommandEvent & event );
+	void OnRefreshTimer ( wxTimerEvent & event );
+	void OnFtpUpdateTimer ( wxTimerEvent & event );
 
-  public:
-    /// Constructor
-    WxCasFrame (const wxString& title);
+	DECLARE_EVENT_TABLE ();
 
-    /// Destructor
-    ~WxCasFrame ();
+public:
+	/// Constructor
+	WxCasFrame ( const wxString& title );
 
-    /// Get Online statistics image
-    wxImage *GetStatImage () const;
+	/// Destructor
+	~WxCasFrame ();
 
-    /// Refresh timer period changing
-    bool ChangeRefreshPeriod(const wxInt32 newPeriod);
+	/// Get Online statistics image
+	wxImage *GetStatImage () const;
 
-    /// Refresh timer period changing
-    bool ChangeFtpUpdatePeriod(const wxInt32 newPeriod);
+	/// Refresh timer period changing
+	bool ChangeRefreshPeriod( const int newPeriod );
 
-    /// Adjust splash bitmap width
-    void AdjustSplashWidth(const wxInt32 width);
+	/// Refresh timer period changing
+	bool ChangeFtpUpdatePeriod( const int newPeriod );
 
-    /// Set amulesig.dat file
-    void SetAmuleSigFile(const wxFileName& file);
-  };
+	/// Set amulesig.dat file
+	void SetAmuleSigFile( const wxFileName& file );
+};
 
 #endif /* _WXCASFRAME_H */

@@ -35,12 +35,12 @@
 #include "wx/wxprec.h"
 
 #ifdef __BORLANDC__
-    #pragma hdrstop
+ #pragma hdrstop
 #endif
 
 // For all others, include the necessary headers
 #ifndef WX_PRECOMP
-    #include "wx/wx.h"
+ #include "wx/wx.h"
 #endif
 
 #include <wx/image.h>
@@ -50,7 +50,7 @@
 #include "wxcasprint.h"
 
 // Constructor
-WxCasPrint::WxCasPrint (const wxString& title):wxPrintout (title)
+WxCasPrint::WxCasPrint ( const wxString& title ) : wxPrintout ( title )
 {}
 
 // Destructor
@@ -58,85 +58,78 @@ WxCasPrint::~WxCasPrint ()
 {}
 
 bool
-WxCasPrint::OnPrintPage (int page)
+WxCasPrint::OnPrintPage ( int page )
 {
-  wxDC *dc = GetDC ();
-  if (dc)
-    {
-      if (page == 1)
-        {
-          DrawPageOne (dc);
-        }
+	wxDC * dc = GetDC ();
+	if ( dc ) {
+		if ( page == 1 ) {
+			DrawPageOne ( dc );
+		}
 
 
-      dc->SetDeviceOrigin (0, 0);
-      dc->SetUserScale (1.0, 1.0);
+		dc->SetDeviceOrigin ( 0, 0 );
+		dc->SetUserScale ( 1.0, 1.0 );
 
-      return TRUE;
-    }
-  else
-    {
-      return FALSE;
-    }
+		return TRUE;
+	} else {
+		return FALSE;
+	}
 }
 
 bool
-WxCasPrint::OnBeginDocument (int startPage, int endPage)
+WxCasPrint::OnBeginDocument ( int startPage, int endPage )
 {
-  if (!wxPrintout::OnBeginDocument (startPage, endPage))
-    {
-      return FALSE;
-    }
-  else
-    {
-      return TRUE;
-    }
+	if ( !wxPrintout::OnBeginDocument ( startPage, endPage ) ) {
+		return FALSE;
+	} else {
+		return TRUE;
+	}
 }
 
 void
-WxCasPrint::GetPageInfo (int *minPage, int *maxPage, int *selPageFrom,
-                         int *selPageTo)
+WxCasPrint::GetPageInfo ( int *minPage, int *maxPage, int *selPageFrom,
+                          int *selPageTo )
 {
-  *minPage = 1;
-  *maxPage = 1;
-  *selPageFrom = 1;
-  *selPageTo = 1;
+	*minPage = 1;
+	*maxPage = 1;
+	*selPageFrom = 1;
+	*selPageTo = 1;
 }
 
 bool
-WxCasPrint::HasPage (int pageNum)
+WxCasPrint::HasPage ( int pageNum )
 {
-  return (pageNum == 1);
+	return ( pageNum == 1 );
 }
 
 void
-WxCasPrint::DrawPageOne (wxDC * dc)
+WxCasPrint::DrawPageOne ( wxDC * dc )
 {
-  wxInt32 dc_w, dc_h;
+	wxInt32 dc_w, dc_h;
 
-  // Get the size of the DC in pixels
-  dc->GetSize (&dc_w, &dc_h);
+	// Get the size of the DC in pixels
+	dc->GetSize ( &dc_w, &dc_h );
 
-  // Get the size of the image in pixels
-  wxImage *statImage = wxGetApp ().GetMainFrame ()->GetStatImage ();
+	// Get the size of the image in pixels
+	wxImage *statImage = wxGetApp ().GetMainFrame () ->GetStatImage ();
 
-  wxUint32 marginX = 50;
-  wxUint32 marginY = 50;
+	wxUint32 marginX = 50;
+	wxUint32 marginY = 50;
 
-  wxUint32 sizeX = statImage->GetWidth () + 2 * marginX;
-  wxUint32 sizeY = statImage->GetHeight () + 2 * marginY;
+	wxUint32 sizeX = statImage->GetWidth () + 2 * marginX;
+	wxUint32 sizeY = statImage->GetHeight () + 2 * marginY;
 
-  // Calculate a suitable scaling factor
-  float scale = wxMin ((float) (dc_w) / sizeX, (float) (dc_h) / sizeY);
+	// Calculate a suitable scaling factor
+	float scale = wxMin ( ( float ) ( dc_w ) / sizeX, ( float ) ( dc_h ) / sizeY );
 
-  // Calculate the position on the DC for centring the graphic
-  float posX = marginX + (dc_w - sizeX * scale) / 2.0;
-  float posY = marginY + (dc_h - sizeY * scale) / 2.0;
+	// Calculate the position on the DC for centring the graphic
+	float posX = marginX + ( dc_w - sizeX * scale ) / 2.0;
+	float posY = marginY + ( dc_h - sizeY * scale ) / 2.0;
 
-  // Set the scale and origin
-  dc->SetUserScale (scale, scale);
-  dc->SetDeviceOrigin ((wxCoord) posX, (wxCoord) posY);
+	// Set the scale and origin
+	dc->SetUserScale ( scale, scale );
+	dc->SetDeviceOrigin ( ( wxCoord ) posX, ( wxCoord ) posY );
 
-  // Draw image
-  dc->DrawBitmap (wxBitmap(statImage), 0, 0, FALSE);
+	// Draw image
+	dc->DrawBitmap ( wxBitmap( statImage ), 0, 0, FALSE );
 }
