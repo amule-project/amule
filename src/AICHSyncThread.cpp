@@ -59,13 +59,26 @@ bool CAICHSyncThread::Start()
 
 bool CAICHSyncThread::Stop()
 {
-	if ( GetThread() ) {
+	if ( IsRunning() ) {
+		// Are there any threads to kill?
+		printf("AICH Thread: Signaling for thread to terminate.\n");
+	
+		// Tell the thread to terminate, this function returns immediatly
 		GetThread()->Delete();
-		delete GetThread();
+
+		// Wait for all threads to die
+		while ( IsRunning() ) {
+			// Sleep for 1/100 of a second to avoid clobbering the mutex
+			// By doing this we ensure that this function only returns
+			// once the thread has died.
+			wxUsleep(10);
+		}
+
 		return true;
 	}
 
-	return false;
+	printf("AICH Thread: Warning, attempted to stop non-existing thread!\n");
+	return false;		
 }
 
 
@@ -92,7 +105,7 @@ void CAICHSyncThread::SetThread( CAICHSyncThread* ptr )
 
 
 CAICHSyncThread::CAICHSyncThread()
-	: wxThread( wxTHREAD_JOINABLE )
+	: wxThread( wxTHREAD_DETACHED )
 {
 	// Some sainity checking, this should never happen
 	if ( GetThread() ) {
@@ -113,13 +126,13 @@ CAICHSyncThread::~CAICHSyncThread()
 
 	SetThread( NULL );
 
-	printf("AICH Thread: Thread terminated\n");
+	printf("AICH Thread: Thread terminated.\n");
 }
 
 
 void* CAICHSyncThread::Entry()
 {
-	printf("AICH Thread: Syncronization thread started...\n");
+	printf("AICH Thread: Syncronization thread started.\n");
 
 	// We collect all masterhashs which we find in the known2.met and store them in a list
 	typedef std::list<CAICHHash> HashList;
@@ -164,7 +177,7 @@ void* CAICHSyncThread::Entry()
 
 	file.Close();
 
-	printf("AICH Thread: Masterhash for known files loaded...\n");
+	printf("AICH Thread: Masterhashes of known files have been loaded.\n");
 
 
 	std::list<CKnownFile*> queue;
@@ -174,7 +187,6 @@ void* CAICHSyncThread::Entry()
 	for ( uint32 i = 0; i < theApp.sharedfiles->GetCount(); i++) {
 		// Check for termination
 		if ( TestDestroy() ) {
-			printf("AICH Thread: Thread interrupted, terminating\n");
 			return 0;
 		}
 
@@ -207,13 +219,12 @@ void* CAICHSyncThread::Entry()
 		while ( !queue.empty() ) {
 			// Check for termination
 			if ( TestDestroy() ) {
-				printf("AICH Thread: Thread interrupted, terminating\n");
 				return 0;
 			}
 
 			CKnownFile* pCurFile = queue.front();
 
-			printf("AICH Thread: Hashing file: %s, total files left: %i\n", unicode2char( pCurFile->GetFileName() ), queue.size() );
+			printf("AICH Thread: Hashing file: %s, total files left: %i\n", unicode2char( pCurFile->GetFileName() ), queue.size() - 1 );
 
 			// Just to be sure that the file hasnt been deleted lately
 			if ( !(theApp.knownfiles->IsKnownFile(pCurFile) && theApp.sharedfiles->GetFileByID(pCurFile->GetFileHash())) )
@@ -226,7 +237,9 @@ void* CAICHSyncThread::Entry()
 			queue.pop_front();
 		}
 
-		printf("AICH Thread: Hashing completed...\n");
+		printf("AICH Thread: Hashing completed.\n");
+	} else {
+		printf("AICH Thread: No new files found.\n");
 	}
 
 	return 0;
