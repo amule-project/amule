@@ -468,7 +468,7 @@ wxSizer *transferBottomPane( wxWindow *parent, bool call_fit, bool set_sizer )
 
     wxStaticText *item6 = new wxStaticText( parent, ID_CLIENTCOUNT, _("0"), wxDefaultPosition, wxDefaultSize, wxST_NO_AUTORESIZE );
     item6->SetForegroundColour( *wxBLUE );
-    item1->Add( item6, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxLEFT|wxRIGHT|wxFIXED_MINSIZE, 5 );
+    item1->Add( item6, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
 
     item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
