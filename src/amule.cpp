@@ -981,9 +981,9 @@ void CamuleApp::OnFatalException()
 		return;
 	}
 	
-	wxString libname[100];
-	wxString funcname[100];
-	wxString address[100];
+	wxString *libname = new wxString[num_entries];
+	wxString *funcname = new wxString[num_entries];
+	wxString *address = new wxString[num_entries];
 	wxString AllAddresses;
 	for (int i = 0; i < num_entries; ++i) {
 		wxString wxBtString = char2unicode(bt_strings[i]);
@@ -1062,6 +1062,9 @@ void CamuleApp::OnFatalException()
 		fprintf(stderr, "%s\n", unicode2char(btline) );
 	}
 	fprintf(stderr, "\n--------------------------------------------------------------------------------\n");
+	delete [] libname;
+	delete [] funcname;
+	delete [] address;
 #endif
 
 #ifdef __BSD__
