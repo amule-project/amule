@@ -135,7 +135,6 @@ const int IDC_FD_LSTATS2 = 10075;
 const int IDC_FD_STATS2 = 10076;
 const int IDC_FD_LSTATS3 = 10077;
 const int IDC_FD_STATS3 = 10078;
-extern wxSizer *IDC_FD_SN;
 const int IDC_LISTCTRLFILENAMES = 10079;
 const int IDC_TAKEOVER = 10080;
 const int IDC_BUTTONSTRIP = 10081;
