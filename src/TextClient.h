@@ -84,6 +84,7 @@ public:
 	void ShowHelp();
 	void ShowGreet();
 	int ProcessCommand(int ID);
+	void Process_Answer_v2(CECPacket *reply);
 
 #if wxUSE_GUI
 public:

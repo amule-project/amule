@@ -43,6 +43,15 @@ typedef struct {
 
 
 /**
+ * Type to hold IPv4 address.
+ */
+typedef struct {
+	uint8 ip[4];
+	uint16 port;
+} EC_IPv4_t;
+
+
+/**
  * <b>EC opcodes</b>
  *
  * OpCodes tell the receiver what to do (with the provided data).

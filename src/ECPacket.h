@@ -50,6 +50,7 @@ class CECTag {
 	public:
 				CECTag(ec_tagname_t name, unsigned int length, const void *data, bool copy = true);
 				CECTag(ec_tagname_t name, const wxString& data);
+				CECTag(ec_tagname_t name, const EC_IPv4_t * data);
 				CECTag(const CECTag& tag);
 				~CECTag(void);
 		bool		AddTag(const CECTag& tag);
@@ -60,7 +61,8 @@ class CECTag {
 		uint16		GetTagDataLen(void) const { return m_dataLen; }
 		uint32		GetTagLen(void) const;
 		ec_tagname_t	GetTagName(void) const { return m_tagName; }
-		wxString	GetTagString(void) const { return wxString(wxConvUTF8.cMB2WC((const char *)m_tagData), aMuleConv); }
+		wxString	GetStringData(void) const { return wxString(wxConvUTF8.cMB2WC((const char *)m_tagData), aMuleConv); }
+		EC_IPv4_t *	GetIPv4Data(void) const;
 	protected:
 				CECTag(wxSocketBase *sock, ECSocket& socket);
 		bool		WriteTag(wxSocketBase *sock, ECSocket& socket) const;

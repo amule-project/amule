@@ -61,12 +61,40 @@ CECTag::CECTag(ec_tagname_t name, unsigned int length, const void *data, bool co
 };
 
 /**
+ * Creates a new CECTag instance, which contains an IPv4 address.
+ *
+ * This function takes care of the endianness of the port number.
+ *
+ * @param name TAG name
+ * @param data The EC_IPv4_t structure containing the IPv4 address.
+ *
+ * \sa GetIPv4Data()
+ */
+CECTag::CECTag(ec_tagname_t name, const EC_IPv4_t *data) : m_tagName(name), m_dynamic(true)
+{
+
+	m_dataLen = sizeof(EC_IPv4_t);
+	m_tagData = malloc(m_dataLen);
+	if (m_tagData != NULL) {
+		memcpy((void *)m_tagData, data, m_dataLen);
+		m_error = 0;
+	} else {
+		m_error = 1;
+	}
+#if wxBYTE_ORDER != wxLITTLE_ENDIAN
+	ENDIAN_SWAP_I_16(((EC_IPv4_t *)m_tagData)->port);
+#endif
+	m_tagCount = m_listSize = 0;
+	m_tagList = NULL;
+}
+
+/**
  * Creates a new CECTag instance, which contains a string
  *
  * @param name TAG name
  * @param data wxString object, it's contents are converted to UTF-8.
  *
- * \sa GetTagString()
+ * \sa GetStringData()
  */
 CECTag::CECTag(ec_tagname_t name, const wxString& data) : m_tagName(name), m_dynamic(true)
 {
@@ -378,6 +406,30 @@ uint32 CECTag::GetTagLen(void) const
 	return length;
 }
 
+/**
+ * Returns a pointer to an EC_IPv4_t structure.
+ *
+ * This function takes care of the enadianness of the port number.
+ *
+ * @return A pointer to an EC_IPv4_t structure.
+ *
+ * \note You must free the returned structure with \b delete.
+ *
+ * \sa CECTag::CECTag(ec_tagname_t, const EC_IPv4_t *)
+ */
+EC_IPv4_t *CECTag::GetIPv4Data(void) const
+{
+	EC_IPv4_t *p = new EC_IPv4_t;
+
+	if (p != NULL) {
+		memcpy(p, m_tagData, sizeof(EC_IPv4_t));
+#if wxBYTE_ORDER != wxLITTLE_ENDIAN
+		ENDIAN_SWAP_I_16(p->port);
+#endif
+	}
+	return p;
+}
+
 /*!
  * \fn CECTag *CECTag::GetTagByIndex(unsigned int index) const
  *
@@ -421,7 +473,7 @@ uint32 CECTag::GetTagLen(void) const
  */
 
 /*!
- * \fn wxString CECTag::GetTagString(void) const
+ * \fn wxString CECTag::GetStringData(void) const
  *
  * \brief Returns the string data of the tag.
  *
