@@ -122,7 +122,6 @@ bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, uint
 							uint16 nCompleteCountNew;
 							data_in.Read(nCompleteCountNew);
 							sender->SetUpCompleteSourcesCount(nCompleteCountNew);							
-							sender->SetUpCompleteSourcesCount(nCompleteCountNew);
 							if (nCompleteCountLast != nCompleteCountNew) {
 								reqfile->UpdatePartsInfo();
 							}
