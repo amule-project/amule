@@ -195,6 +195,8 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, wxString title) : wxFrame(
 	s_main->Add(p_cnt, 0, wxGROW|wxEXPAND, 0);
 	muleDlg(p_cnt, false, true);
 
+	SetSizer( s_main, true );
+
 	// Create ToolBar from the one designed by wxDesigner (BigBob)
 	CreateMuleToolBar();
 
