@@ -713,11 +713,11 @@ bool CamuleApp::ReinitializeNetwork(wxString *msg)
 	
 	// Some sanity checks first
 	if (thePrefs::ECPort() == thePrefs::GetPort()) {
-		*msg += wxT("Network configuration failed! You can't configure aMule TCP port and External Connections port at the same port number. Please, change one of them.");
+		*msg << wxT("Network configuration failed! You can't configure aMule TCP port and External Connections port at the same port number. Please, change one of them.");
 		return false;
 	}
 	if (thePrefs::GetUDPPort() == (thePrefs::GetPort()+3)) {
-		*msg += wxT("Network configuration failed! You can't configure UDP(TCP+3) port and UDP (extended eMule) port at the same port number. Please, change one of them.");
+		*msg << wxT("Network configuration failed! You can't configure UDP(TCP+3) port and UDP (extended eMule) port at the same port number. Please, change one of them.");
 		return false;
 	}
 	
@@ -738,10 +738,10 @@ bool CamuleApp::ReinitializeNetwork(wxString *msg)
 		myaddr.Service(thePrefs::GetUDPPort());
 //#ifdef TESTING_PROXY
 		clientudp = new CClientUDPSocket(myaddr, thePrefs::GetProxyData());
-		*msg += wxString::Format(wxT("*** UDP socket (extended eMule) at %s:%d\n"),
-			unicode2char(ip), thePrefs::GetUDPPort());
+		*msg << wxT("*** UDP socket (extended eMule) at ") <<
+			ip << wxT(":") << thePrefs::GetUDPPort() << wxT("\n");
 	} else {
-		*msg += wxT("*** UDP socket (extended eMule) disabled on preferences\n");
+		*msg << wxT("*** UDP socket (extended eMule) disabled on preferences\n");
 		clientudp = NULL;
 	}
 	
@@ -749,15 +749,15 @@ bool CamuleApp::ReinitializeNetwork(wxString *msg)
 	// Used for source asking on servers.
 	myaddr.Service(thePrefs::GetPort()+3);
 	serverconnect = new CServerConnect(serverlist, myaddr);
-	*msg += wxString::Format(wxT("*** UDP socket (TCP+3) at %s:%d\n"),
-		unicode2char(ip), thePrefs::GetPort()+3);
+	*msg << wxT("*** UDP socket (TCP+3) at ") << 
+		ip << wxT(":") << thePrefs::GetPort() + 3 << wxT("\n");
 	
 	// Create the ListenSocket (aMule TCP socket).
 	// Used for Client Port / Connections from other clients,
 	// Client to Client Source Exchange.
 	// Default is 4662.
-	*msg += wxString::Format(wxT("*** TCP socket (TCP) listening on %s:%d\n"),
-		unicode2char(ip), thePrefs::GetPort());
+	*msg << wxT("*** TCP socket (TCP) listening on ") <<
+		ip << wxT(":") << thePrefs::GetPort() << wxT("\n");
 	myaddr.Service(thePrefs::GetPort());
 	listensocket = new CListenSocket(myaddr);
 	
@@ -771,7 +771,7 @@ bool CamuleApp::ReinitializeNetwork(wxString *msg)
 		wxString err = wxString::Format(
 			_("Port %d is not available. You will be LOWID"),
 			thePrefs::GetPort());
-		*msg += err;
+		*msg << err;
 		AddLogLineM(true, err);
 		ShowAlert(wxString::Format(
 			_("Port %d is not available!\n\n"
