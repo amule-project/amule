@@ -200,6 +200,8 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		* Patch to fix use of deprecated functions in wxGTK-2.5.3.
 
 	Xaignar:
+		* Better handling of multi-line chat messages: The complete
+		  message will be split by linebreaks and each line timestamped.
 		* Fixed entries for connected servers in server-list not being
 		  completly reverted to normal after disconnection.
 		* Added handling of SIGINT and SIGTERM for gracefull shutdowns.

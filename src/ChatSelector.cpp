@@ -25,6 +25,7 @@
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/intl.h>		// Needed for _
 #include <wx/datetime.h>	// Needed for wxDateTime
+#include <wx/tokenzr.h>
 
 #include "pixmaps/chat.ico.xpm"
 #include "ChatSelector.h"	// Interface declarations
@@ -78,23 +79,25 @@ CChatSession::~CChatSession()
 
 void CChatSession::AddText(const wxString& text, const wxTextAttr& style)
 {
-	wxString line;
+	// Split multi-line messages into individual lines
+	wxStringTokenizer tokens( text, "\n" );
 
-	// Check if we should add a time-stamp
-	if ( GetNumberOfLines() > 1 ) {
-		// Check if the last line ended with a newline
-		wxString line = GetLineText( GetNumberOfLines() - 1 );
-		if ( line.IsEmpty() ) {
-			SetDefaultStyle( COLOR_BLACK );
+	while ( tokens.HasMoreTokens() ) {
+		// Check if we should add a time-stamp
+		if ( GetNumberOfLines() > 1 ) {
+			// Check if the last line ended with a newline
+			wxString line = GetLineText( GetNumberOfLines() - 1 );
+			if ( line.IsEmpty() ) {
+				SetDefaultStyle( COLOR_BLACK );
 
-			AppendText( wxT(" [") + wxDateTime::Now().FormatISOTime() + wxT("] ") );
+				AppendText( wxT(" [") + wxDateTime::Now().FormatISOTime() + wxT("] ") );
+			}
 		}
-	}
 		
-
-	SetDefaultStyle(style);
+		SetDefaultStyle(style);
 	
-	AppendText(text);
+		AppendText( tokens.GetNextToken() );
+	}
 }
 
 
