@@ -55,7 +55,6 @@
 #include "SharedFileList.h"	// Needed for CSharedFileList
 #include "AddFileThread.h"	// Needed for CAddFileThread
 #include "SafeFile.h"		// Needed for CSafeFile
-#include "otherstructs.h"	// Needed for Gap_Struct
 #include "Preferences.h"	// Needed for CPreferences
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "amuleDlg.h"		// Needed for CamuleDlg
@@ -66,6 +65,8 @@
 #include "BarShader.h"		// Needed for CBarShader
 #include "mfc.h"			// itoa
 
+#include <wx/listimpl.cpp>
+WX_DEFINE_LIST(ListOfChunks);
 
 #define PROGRESS_HEIGHT 3
 
@@ -2173,8 +2174,8 @@ bool CPartFile::GetNextRequestedBlock(CUpDownClient* sender, Requested_Block_Str
 	}
 	// Define and create the list of the chunks to download
 	const uint16 partCount = GetPartCount();
-	CList<Chunk> chunksList(partCount);
-
+	ListOfChunks chunksList;
+	ListOfChunks::Node *node;
 	// Main loop
 	uint16 newBlockCount = 0;
 	while(newBlockCount != *count) {
@@ -2205,10 +2206,10 @@ bool CPartFile::GetNextRequestedBlock(CUpDownClient* sender, Requested_Block_Str
 				for(uint16 i=0; i < partCount; i++) {
 					if(sender->IsPartAvailable(i) == true && GetNextEmptyBlockInPart(i, NULL) == true) {
 						// Create a new entry for this chunk and add it to the list
-						Chunk newEntry;
-						newEntry.part = i;
-						newEntry.frequency = m_SrcpartFrequency[i];
-						chunksList.AddTail(newEntry);
+						Chunk* newEntry = new Chunk;;
+						newEntry->part = i;
+						newEntry->frequency = m_SrcpartFrequency[i];
+						chunksList.Append(newEntry);
 					}
 				}
 
@@ -2234,12 +2235,14 @@ bool CPartFile::GetNextRequestedBlock(CUpDownClient* sender, Requested_Block_Str
 
 				// Cache Preview state (Criterion 2)
 				const bool isPreviewEnable = theApp.glob_prefs->GetPreviewPrio() && (IsArchive() || IsMovie());
-
+					
+				node = chunksList.GetFirst();
 				// Collect and calculate criteria for all chunks
-				for(POSITION pos = chunksList.GetHeadPosition(); pos != NULL; ) {
-					Chunk& cur_chunk = chunksList.GetNext(pos);
+				while (node) {
+					Chunk* cur_chunk = node->GetData();
+					node = node->GetNext();
 					// Offsets of chunk
-					const uint32 uStart = cur_chunk.part * PARTSIZE;
+					const uint32 uStart = cur_chunk->part * PARTSIZE;
 					const uint32 uEnd  = ((GetFileSize() - 1) < (uStart + PARTSIZE - 1)) ? (GetFileSize() - 1) : (uStart + PARTSIZE - 1);
 					// Criterion 2. Parts used for preview
 					// Remark: - We need to download the first part and the last part(s).
@@ -2247,11 +2250,11 @@ bool CPartFile::GetNextRequestedBlock(CUpDownClient* sender, Requested_Block_Str
 					//          download the two last parts.
 					bool critPreview = false;
 					if(isPreviewEnable == true) {
-						if(cur_chunk.part == 0) {
+						if(cur_chunk->part == 0) {
 							critPreview = true; // First chunk
-						} else if(cur_chunk.part == partCount-1) {
+						} else if(cur_chunk->part == partCount-1) {
 							critPreview = true; // Last chunk
-						} else if(cur_chunk.part == partCount-2) {
+						} else if(cur_chunk->part == partCount-2) {
 							// Last chunk - 1 (only if last chunk is too small)
 							const uint32 sizeOfLastChunk = GetFileSize() - uEnd;
 							if(sizeOfLastChunk < PARTSIZE/3) {
@@ -2262,7 +2265,7 @@ bool CPartFile::GetNextRequestedBlock(CUpDownClient* sender, Requested_Block_Str
 
 					// Criterion 3. Request state (downloading in process from other source(s))
 					// => CPU load
-					const bool critRequested = cur_chunk.frequency > veryRareBound && IsAlreadyRequested(uStart, uEnd);
+					const bool critRequested = cur_chunk->frequency > veryRareBound && IsAlreadyRequested(uStart, uEnd);
 
 					// Criterion 4. Completion
 					uint32 partSize = PARTSIZE;
@@ -2287,27 +2290,27 @@ bool CPartFile::GetNextRequestedBlock(CUpDownClient* sender, Requested_Block_Str
 					const uint16 critCompletion = (uint16)(partSize/(PARTSIZE/100)); // in [%]
 
 					// Calculate priority with all criteria
-					if(cur_chunk.frequency <= veryRareBound) {
+					if(cur_chunk->frequency <= veryRareBound) {
 						// 0..xxxx unrequested + requested very rare chunks
-						cur_chunk.rank = (25 * cur_chunk.frequency) + // Criterion 1
+						cur_chunk->rank = (25 * cur_chunk->frequency) + // Criterion 1
 						((critPreview == true) ? 0 : 1) + // Criterion 2
 						(100 - critCompletion); // Criterion 4
 					} else if(critPreview == true) {
 						// 10000..10100  unrequested preview chunks
 						// 30000..30100  requested preview chunks
-						cur_chunk.rank = ((critRequested == false) ? 10000 : 30000) + // Criterion 3
+						cur_chunk->rank = ((critRequested == false) ? 10000 : 30000) + // Criterion 3
 						(100 - critCompletion); // Criterion 4
-					} else if(cur_chunk.frequency <= rareBound) {
+					} else if(cur_chunk->frequency <= rareBound) {
 						// 10101..1xxxx  unrequested rare chunks
 						// 30101..3xxxx  requested rare chunks
-						cur_chunk.rank = (25 * cur_chunk.frequency) +                 // Criterion 1 
+						cur_chunk->rank = (25 * cur_chunk->frequency) +                 // Criterion 1 
 						((critRequested == false) ? 10101 : 30101) + // Criterion 3
 						(100 - critCompletion); // Criterion 4
 					} else {
 						// common chunk
 						if(critRequested == false) { // Criterion 3
 							// 20000..2xxxx  unrequested common chunks
-							cur_chunk.rank = 20000 + // Criterion 3
+							cur_chunk->rank = 20000 + // Criterion 3
 							(100 - critCompletion); // Criterion 4
 						} else {
 							// 40000..4xxxx  requested common chunks
@@ -2315,7 +2318,7 @@ bool CPartFile::GetNextRequestedBlock(CUpDownClient* sender, Requested_Block_Str
 							//         to spead the requests over the completing chunks.
 							//         Without this, the chunk closest to completion will
 							//         received every new sources.
-							cur_chunk.rank = 40000 + // Criterion 3
+							cur_chunk->rank = 40000 + // Criterion 3
 							(critCompletion); // Criterion 4
 						}
 					}
@@ -2327,32 +2330,39 @@ bool CPartFile::GetNextRequestedBlock(CUpDownClient* sender, Requested_Block_Str
 				// Find and count the chunck(s) with the highest priority
 				uint16 count = 0; // Number of found chunks with same priority
 				uint16 rank = 0xffff; // Highest priority found
-				for(POSITION pos = chunksList.GetHeadPosition(); pos != NULL;) {
-					const Chunk& cur_chunk = chunksList.GetNext(pos);
-					if(cur_chunk.rank < rank) {
+				node = chunksList.GetFirst();
+				// Collect and calculate criteria for all chunks
+				while (node) {
+					const Chunk* cur_chunk = node->GetData();
+					node = node->GetNext();
+					if(cur_chunk->rank < rank) {
 						count = 1;
-						rank = cur_chunk.rank;
-					} else if(cur_chunk.rank == rank) {
+						rank = cur_chunk->rank;
+					} else if(cur_chunk->rank == rank) {
 						count++;
 					}
 				}
 
 				// Use a random access to avoid that everybody tries to download the 
 				// same chunks at the same time (=> spread the selected chunk among clients)
-				uint16 randomness = 1 + (uint16)((((uint32)rand()*(count-1))+(RAND_MAX/2))/RAND_MAX);
-				for(POSITION pos = chunksList.GetHeadPosition(); ;) {
-					POSITION cur_pos = pos;
-					const Chunk& cur_chunk = chunksList.GetNext(pos);
-					if(cur_chunk.rank == rank) {
+				uint16 randomness = 1 + (int) (((float)(count-1))*rand()/(RAND_MAX+1.0));
+				node = chunksList.GetFirst();
+				ListOfChunks::Node* nextnode;
+				while (node) {
+					const Chunk* cur_chunk = node->GetData();
+					nextnode = node->GetNext();
+					if(cur_chunk->rank == rank) {
 						randomness--;
 						if(randomness == 0) {
 							// Selection process is over
-							sender->m_lastPartAsked = cur_chunk.part;
+							sender->m_lastPartAsked = cur_chunk->part;
 							// Remark: this list might be reused up to *count times
-							chunksList.RemoveAt(cur_pos);
+							delete cur_chunk;
+							delete node;
 							break; // exit loop for()
 						}  
 					}
+					node = nextnode;
 				}
 			} else {
 				// There is no remaining chunk to download
