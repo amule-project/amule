@@ -479,7 +479,7 @@ void CamulecmdApp::Process_Answer_v2(CECPacket *response)
 			}
 			break;
 		case EC_OP_STATS:
-			switch (response->GetTagByName(EC_TAG_STATS_CONNSTATE)->GetInt8Data()) {
+			switch (response->GetTagByName(EC_TAG_CONNSTATE)->GetInt8Data()) {
 				case 0:
 					s = _("Not connected");
 					break;
@@ -488,11 +488,11 @@ void CamulecmdApp::Process_Answer_v2(CECPacket *response)
 					break;
 				case 2:
 				case 3: {
-						CECTag *server = response->GetTagByName(EC_TAG_STATS_CONNSTATE)->GetTagByIndex(0);
+						CECTag *server = response->GetTagByName(EC_TAG_CONNSTATE)->GetTagByIndex(0);
 						s = _("Connected to ");
 						s += server->GetTagByName(EC_TAG_SERVER_NAME)->GetStringData();
 						s += wxT(" ") + server->GetIPv4Data().StringIP() + wxT(" ");
-						s += response->GetTagByName(EC_TAG_STATS_CONNSTATE)->GetInt8Data() == 2 ? _("with LowID") : _("with HighID");
+						s += response->GetTagByName(EC_TAG_CONNSTATE)->GetInt8Data() == 2 ? _("with LowID") : _("with HighID");
 					}
 					break;
 			}

@@ -410,8 +410,7 @@ class CWebServer {
 		int	UpdateSessionCount();
 		void 	AddStatsLine(UpDown* line);
 		uint16	GetSessionCount()	{ return m_Params.Sessions.GetCount();}
-		bool 	IsRunning()	{ return true /*m_bServerWorking*/;}  //shakraw, useless now
-		int 	GetWSPort(); //shakraw
+		int 	GetWSPrefs();
 		void	Print(const wxString &s);
 		void	Send_Discard_V2_Request(CECPacket *request);
 
@@ -467,6 +466,7 @@ class CWebServer {
 		bool		m_bServerWorking;
 		int		m_iSearchSortby;
 		bool		m_bSearchAsc;
+		unsigned int	m_nRefresh;
 		static wxString imgs_folder;
 };
 

@@ -79,6 +79,10 @@ public:
 	bool	m_UseGzip;
 	wxString m_AdminPass, m_GuestPass;
 	bool	m_AllowGuest;
+	bool	m_bForcedUseGzip;
+	bool	m_bForcedAdminPassword;
+	bool	m_bForcedAllowGuest;
+	bool	m_bForcedGuestPassword;
 	
 #if wxUSE_GUI
 public:
