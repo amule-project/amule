@@ -354,7 +354,8 @@ bool CUpDownClient::CreateNextBlockPackage(){
 			}
 
 			SetUploadFileID(srcfile);
-			if (m_byDataCompVer == 1 && (!strstr(unicode2char(srcfile->GetFileName()),".zip")) && (!strstr(unicode2char(srcfile->GetFileName()),".rar")) && (!strstr(unicode2char(srcfile->GetFileName()),".ace")))
+			wxString ext = srcfile->GetFileName().Right(4).Lower();
+			if (m_byDataCompVer == 1 && (ext != wxT(".zip")) && (ext != wxT(".rar")) && (ext != wxT(".ace")))
 				CreatePackedPackets(filedata,togo,currentblock);
 			else
 				CreateStandartPackets(filedata,togo,currentblock);
