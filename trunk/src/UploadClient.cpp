@@ -381,8 +381,22 @@ void CUpDownClient::ProcessUpFileStatus(char* packet,uint32 size){
 	}
 	m_nUpPartCount = 0;
 	m_nUpCompleteSourcesCount= 0;
-	if( size == 16 )
+	
+	/*
+	printf("ExtendedRequestsVersion = %i, size = %i\n",GetExtendedRequestsVersion(),size);
+	DumpMem(packet,size);
+	*/
+
+	if( GetExtendedRequestsVersion() == 0 ) {
+		return;	
+	}	
+	
+	if( size == 16 ) {
 		return;
+	}	
+	
+
+	
 	CSafeMemFile data((BYTE*)packet,size);
 	uchar cfilehash[16];
 	data.ReadRaw(cfilehash,16);
@@ -416,13 +430,16 @@ void CUpDownClient::ProcessUpFileStatus(char* packet,uint32 size){
 			}
 		}
 		if ((GetExtendedRequestsVersion() > 1) && (data.GetLength() - data.GetPosition() > 1)) {
-			uint16 nCount;
-			data.Read(nCount);
-			SetUpCompleteSourcesCount(nCount);
+			uint16 nCompleteCountLast = GetUpCompleteSourcesCount();
+			uint16 nCompleteCountNew;
+			data.Read(nCompleteCountNew);
+			SetUpCompleteSourcesCount(nCompleteCountNew);
+			if (nCompleteCountLast != nCompleteCountNew)	{
+				tempreqfile->NewAvailPartsInfo();
+			}
 		}
 	}
 
-	tempreqfile->NewAvailPartsInfo();
 	theApp.amuledlg->transferwnd->queuelistctrl->RefreshClient(this);
 }
 
