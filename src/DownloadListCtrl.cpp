@@ -1641,7 +1641,7 @@ void CDownloadListCtrl::DrawSourceItem( wxDC* dc, int nColumn, const wxRect& rec
 						if( qrDiff > 0 )
 							dc->SetTextForeground(*wxRED);
 						//if( qrDiff == 0 ) dc->SetTextForeground(*wxLIGHT_GREY);
-						buffer.Printf(_("QR: %u (%i)"), client->GetRemoteQueueRank(), qrDiff);
+						buffer = wxString::Format(_("QR: %u (%i)"), client->GetRemoteQueueRank(), qrDiff);
 						dc->DrawText(buffer, rect.GetX(), rect.GetY());
 						dc->SetTextForeground(savedColour);
 					}
