@@ -311,4 +311,3 @@ struct CClientsView
 };
 
 #endif
-

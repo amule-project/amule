@@ -45,7 +45,7 @@
 
 
 BEGIN_EVENT_TABLE(CSearchListCtrl, CMuleListCtrl)
-	EVT_RIGHT_DOWN(CSearchListCtrl::OnNMRclick)
+	EVT_RIGHT_DOWN(CSearchListCtrl::OnRightClick)
 	EVT_LIST_COL_CLICK( -1,       CSearchListCtrl::OnColumnLClick)
 	EVT_LIST_COL_END_DRAG( -1,    CSearchListCtrl::OnColumnResize)
 
@@ -345,50 +345,39 @@ void CSearchListCtrl::SyncOtherLists( CSearchListCtrl* src )
 }
 
 
-void CSearchListCtrl::OnNMRclick(wxMouseEvent& evt)
+void CSearchListCtrl::OnRightClick(wxMouseEvent& event)
 {
-	if ( GetSelectedItemCount() == 0 )
-		return;
 
-	// Check if clicked item is selected. If not, unselect all and select it.
-	int lips = 0;
-	int index = HitTest(evt.GetPosition(), lips);
+	CheckSelection(event);
+	
+	if ( GetSelectedItemCount() != 0 ) {
 
-	if ( !GetItemState( index, wxLIST_STATE_SELECTED ) ) {
-		int item = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+		// Create the popup-menu
+		wxMenu* menu = new wxMenu( _("File") );
+		menu->Append( MP_RESUME, _("Download"));
+		menu->Append( MP_GETED2KLINK, _("Copy ED2k link to clipboard"));
+		menu->Append( MP_GETHTMLED2KLINK, _("Copy ED2k link to clipboard (HTML)"));
+		menu->AppendSeparator();
+		menu->Append( MP_RAZORSTATS, _("Get Razorback 2's stats for this file"));
+		menu->AppendSeparator();
+		menu->Append( MP_FAKECHECK2, _("jugle.net Fake Check")); // deltahf -> fakecheck
+		menu->Append( MP_FAKECHECK1, _("'Donkey Fakes' Fake Check"));
+		menu->AppendSeparator();
 
-		while ( item != -1 ) {
-			SetItemState( item, 0, wxLIST_STATE_SELECTED );
-
-			item = GetNextItem( item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
-		}
-
-		SetItemState( index, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
-	}
-
-	// Create the popup-menu
-	wxMenu* menu = new wxMenu( _("File") );
-	menu->Append( MP_RESUME, _("Download"));
-	menu->Append( MP_GETED2KLINK, _("Copy ED2k link to clipboard"));
-	menu->Append( MP_GETHTMLED2KLINK, _("Copy ED2k link to clipboard (HTML)"));
-	menu->AppendSeparator();
-	menu->Append( MP_RAZORSTATS, _("Get Razorback 2's stats for this file"));
-	menu->AppendSeparator();
-	menu->Append( MP_FAKECHECK2, _("jugle.net Fake Check")); // deltahf -> fakecheck
-	menu->Append( MP_FAKECHECK1, _("'Donkey Fakes' Fake Check"));
-	menu->AppendSeparator();
-
-	// These should only be enabled for single-selections
-	bool enable = GetSelectedItemCount();
-	menu->Enable( MP_GETED2KLINK, enable );
-	menu->Enable( MP_GETHTMLED2KLINK, enable );
-	menu->Enable( MP_FAKECHECK1, enable );
-	menu->Enable( MP_FAKECHECK2, enable );
+		// These should only be enabled for single-selections
+		bool enable = GetSelectedItemCount();
+		menu->Enable( MP_GETED2KLINK, enable );
+		menu->Enable( MP_GETHTMLED2KLINK, enable );
+		menu->Enable( MP_FAKECHECK1, enable );
+		menu->Enable( MP_FAKECHECK2, enable );
 	
 
-	PopupMenu( menu, evt.GetPosition() );
+		PopupMenu( menu, event.GetPosition() );
 
-	delete menu;
+		delete menu;
+	} else {
+		event.Skip();
+	}
 }
 
 

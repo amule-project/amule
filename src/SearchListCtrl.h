@@ -174,7 +174,7 @@ protected:
 	/**
 	 * Event handler for right mouse clicks.
 	 */
-	void OnNMRclick( wxMouseEvent& evt );
+	void OnRightClick( wxMouseEvent& event );
 
 	/**
 	 * Event handler for double-clicks or enter.

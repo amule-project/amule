@@ -49,7 +49,7 @@
 
 
 BEGIN_EVENT_TABLE(CSharedFilesCtrl,CMuleListCtrl)
-	EVT_LIST_ITEM_RIGHT_CLICK(ID_SHFILELIST, CSharedFilesCtrl::OnRightClick)
+	EVT_RIGHT_DOWN(CSharedFilesCtrl::OnRightClick)
 
 	EVT_MENU( MP_PRIOVERYLOW,	CSharedFilesCtrl::OnSetPriority )
 	EVT_MENU( MP_PRIOLOW,		CSharedFilesCtrl::OnSetPriority )
@@ -116,23 +116,12 @@ CSharedFilesCtrl::~CSharedFilesCtrl()
 }
 
 
-void CSharedFilesCtrl::OnRightClick(wxListEvent& evt)
+void CSharedFilesCtrl::OnRightClick(wxMouseEvent& event)
 {
-	// Check if clicked item is selected. If not, unselect all and select it.
-	if ( !GetItemState(evt.GetIndex(), wxLIST_STATE_SELECTED) ) {
-		long index = GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
 
-		while ( index != -1 ) {
-			SetItemState( index, 0, wxLIST_STATE_SELECTED );
+	long item_hit = CheckSelection(event);
 
-			index = GetNextItem(index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
-		}
-
-		SetItemState(evt.GetIndex(), wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
-	}
-
-
-	if ( m_menu == NULL ) {
+	if ( (m_menu == NULL) && (item_hit != -1)) {
 		wxMenu* m_menu = new wxMenu(_("Shared Files"));
 		wxMenu* prioMenu = new wxMenu();
 		prioMenu->Append(MP_PRIOVERYLOW, _("Very low"));
@@ -156,7 +145,7 @@ void CSharedFilesCtrl::OnRightClick(wxListEvent& evt)
 		m_menu->Append(MP_GETHTMLED2KLINK,_("Copy ED2k link to clipboard (&HTML)"));
 		
 
-		PopupMenu( m_menu, evt.GetPoint() );
+		PopupMenu( m_menu, event.GetPosition() );
 
 		delete m_menu;
 

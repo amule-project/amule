@@ -459,3 +459,22 @@ void CMuleListCtrl::SetColumnImage(int col, int image)
     item.SetImage(image);
     SetColumn(col, item);
 }
+
+long CMuleListCtrl::CheckSelection(wxMouseEvent &event)
+{
+	int flags = 0;
+	long item_hit = HitTest( event.GetPosition(), flags );
+	// Check if clicked item is selected. If not, unselect all and select it.
+	if ( (item_hit != -1) && !GetItemState(item_hit, wxLIST_STATE_SELECTED) ) {
+		long index = GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+
+		while ( index != -1 ) {
+			SetItemState( index, 0, wxLIST_STATE_SELECTED );
+
+			index = GetNextItem(index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+		}
+
+		SetItemState(item_hit, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
+	}
+	return item_hit;
+}
