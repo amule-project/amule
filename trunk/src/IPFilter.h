@@ -64,14 +64,9 @@ public:
 	void	RemoveAllIPs();
 
 	/**
-	 * Loads a IP-list from the specified text file.
+	 * Loads a IP-list from the specified file, can be text or zip.
 	 */
-	int		LoadFromDatFile(wxString file, bool merge);
-
-	/**
-	 * Loads a IP-list from the specified zip file.
-	 */
-	int		LoadFromZipFile(wxString file, bool merge);
+	int		LoadFromFile(const wxString& file, bool merge);
 
 	/**
 	 * This function saves the list in memory to the file 'ipfilter.dat'.
@@ -114,6 +109,21 @@ public:
 	void	DownloadFinished(uint32 result);
 	
 private:
+	/**
+	 * Helper-function, loads a IP-list from the text file.
+	 */
+	int		LoadFromDatFile( const wxString& file );
+
+	/**
+	 * Helper-function, loads a IP-list from the specified zip file.
+	 */
+	int		LoadFromZipFile( const wxString& file );
+
+	/**
+	 * Helper-function, returns true if the file is a zip-archive.
+	 */
+	bool	IsZipFile( const wxString& file );
+	
 	/**
 	 * Helper-function for processing the AntiP2P format.
 	 *
