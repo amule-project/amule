@@ -41,7 +41,6 @@ amule_SOURCES = ListenSocket.cpp \
 	EMSocket.cpp \
 	AddFriend.cpp \
 	AddFileThread.cpp \
-	animate.cpp \
 	BarShader.cpp \
 	BaseClient.cpp \
 	ChatSelector.cpp \
@@ -68,6 +67,7 @@ amule_SOURCES = ListenSocket.cpp \
 	filefn.cpp \
 	Friend.cpp \
 	FriendListCtrl.cpp \
+	MuleGifCtrl.cpp \
 	HTTPDownloadDlg.cpp \
 	IPFilter.cpp \
 	CMD4Hash.cpp \

@@ -28,7 +28,7 @@
 #include <wx/intl.h>
  
 #include "HTTPDownloadDlg.h"	// Interface declarations
-#include "animate.h"		// Needed for wxGIFAnimationCtrl
+#include "MuleGifCtrl.h"
 #include "muuli_wdr.h"		// Needed for ID_CANCEL
 #include "inetdownload.h"	// Needed for inetDownload
 
@@ -42,10 +42,9 @@ CHTTPDownloadDlg::CHTTPDownloadDlg(wxWindow* parent,wxString url,wxString tempNa
 {
   wxSizer* content=downloadDlg(this,TRUE);
 
-  wxGIFAnimationCtrl *ani=(wxGIFAnimationCtrl*)FindWindowById(ID_ANIMATE);
+  MuleGifCtrl *ani=(MuleGifCtrl*)FindWindowById(ID_ANIMATE);
   ani->LoadData((char*)inetDownload,sizeof(inetDownload));
-  ani->GetPlayer().UseBackgroundColour(true);
-  ani->Play();
+  ani->Start();
 
   content->Show(this,TRUE);
 
