@@ -53,15 +53,8 @@ Version 2.0.0rc8 - The "last rc" version.
 		  
 	ken_aMule:
 		* Fixed ipfilter on big endian archs.
-		* Fixed bug where amule would start consuming 100% cpu when it received a 
-		  corrupted EC packet.
-		* Fixed webserver, it wouldn't close connection when it received a POST request.
-		* Fixed webserver crash: added mutex to make variable wcThreads thread-safe.
-		* Fixed webserver <-> amule communication corruption when the webserver 
-		  received simultaneous requests. The problem was that all webserver threads 
-		  were using the same socket for sending/receiving EC packets to/from amule 
-		  without synchronization.
-		  
+		* Fixed wxWidget's bugs that were creating serious memleaks on Mac		  
+
 	Kry:
 		===============::MULTIPLATFORM::===============
 		* When a socket connection error like WOULD_BLOCK happens, aMule retries 
@@ -217,6 +210,14 @@ Version 2.0.0rc8 - The "last rc" version.
 	wizeman:
 		* Helped finding the code snippet where WebSocket was failing on request.
 		* Fixed 'Safe Max connections' code. It's safer to use it now, and it works.
+		* Fixed bug where amule would start consuming 100% cpu when it received a 
+		  corrupted EC packet.
+		* Fixed webserver, it wouldn't close connection when it received a POST request.
+		* Fixed webserver crash: added mutex to make variable wcThreads thread-safe.
+		* Fixed webserver <-> amule communication corruption when the webserver 
+		  received simultaneous requests. The problem was that all webserver threads 
+		  were using the same socket for sending/receiving EC packets to/from amule 
+		  without synchronization.
 		
 	Xaignar:
 		* Added the new casting macros to otherfunctions.
