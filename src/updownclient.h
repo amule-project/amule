@@ -101,6 +101,7 @@ enum EClientSoftware{
 	SO_HYDRANODE            = 6,
 	SO_NEW2_MLDONKEY	= 10,
 	SO_LPHANT		= 20,
+	SO_NEW_SHAREAZA = 68, // shazzas love to send 0x44 lately.
 	SO_EDONKEYHYBRID	= 50,
 	SO_EDONKEY		= 51,
 	SO_MLDONKEY		= 52,

@@ -1484,6 +1484,7 @@ void CUpDownClient::ReGetClientSoft()
 				}
 				break;
 			case SO_SHAREAZA:
+			case SO_NEW_SHAREAZA:
 				m_clientSoft = SO_SHAREAZA;
 				m_clientVerString = wxT("Shareaza");
 				break;
