@@ -481,7 +481,7 @@ void CWebServer::ProcessURL(ThreadData Data) {
 		wxString PwStr = _ParseURL(Data, wxT("p"));
 		wxString PwHash = MD5Sum(PwStr).GetHash();
 		bool login = false;
-		wxString ip = ip.Format(wxT("%s"), inet_ntoa( Data.inadr ));
+		wxString ip = char2unicode(inet_ntoa(Data.inadr));
 		if ( (PwHash == pThis->webInterface->m_AdminPass) || (PwStr.IsEmpty() && pThis->webInterface->m_AdminPass.IsEmpty()) ) {
 			Session* ses = new Session();
 			ses->admin = true;
@@ -560,12 +560,18 @@ void CWebServer::ProcessURL(ThreadData Data) {
 			isUseGzip = false;
 		}
 		if (isUseGzip) {
+#if wxUSE_UNICODE
+			const wxCharBuffer buf = wxConvUTF8.cWC2MB(Out.wc_str(aMuleConv));
+			const char *httpOut = (const char *)buf;
+#else
+			const char *httpOut = (const char *)Out;
+#endif
 			bool bOk = false;
 			try {
-				uLongf destLen = Out.Length() + 1024;
+				uLongf destLen = strlen(httpOut) + 1024;
 				gzipOut = new TCHAR[destLen];
 				if( _GzipCompress((Bytef*)gzipOut, &destLen, 
-				   (const Bytef*)unicode2char(Out), Out.Length(), Z_DEFAULT_COMPRESSION) == Z_OK) {
+				   (const Bytef*)httpOut, strlen(httpOut), Z_DEFAULT_COMPRESSION) == Z_OK) {
 					bOk = true;
 					gzipLen = destLen;
 				}
@@ -601,8 +607,15 @@ void CWebServer::ProcessURL(ThreadData Data) {
 	//
 	// send answer ...
 	//
+#if wxUSE_UNICODE
+	const wxCharBuffer buf = wxConvUTF8.cWC2MB(Out.wc_str(aMuleConv));
+	const char *httpOut = (const char *)buf;
+#else
+	const char *httpOut = (const char *)Out;
+#endif
+
 	if (!isUseGzip)	{
-		Data.pSocket->SendContent(HTTPInit, Out, Out.Length());
+		Data.pSocket->SendContent(HTTPInit, httpOut, strlen(httpOut));
 	} else {
 		Data.pSocket->SendContent(HTTPInitGZ, gzipOut, gzipLen);
 	}
@@ -717,7 +730,7 @@ wxString CWebServer::_GetHeader(ThreadData Data, long lSession) {
 	pThis->webInterface->DebugShow(wxT("*** replaced session with ") + sSession + wxT("\n"));
 	Out.Replace(wxT("[HeaderMeta]"), wxEmptyString); // In case there are no meta
 	Out.Replace(wxT("[aMuleAppName]"), wxT("aMule"));
-	Out.Replace(wxT("[version]"), wxString::Format(wxT("%s"), VERSION));
+	Out.Replace(wxT("[version]"), wxT(VERSION));
 	Out.Replace(wxT("[StyleSheet]"), pThis->m_Templates.sHeaderStylesheet);
 	Out.Replace(wxT("[WebControl]"), _("Web Control Panel"));
 	Out.Replace(wxT("[Transfer]"), _("Transfer"));
@@ -2025,9 +2038,13 @@ wxString CWebServer::_GetWebCharSet() {
 		case MAKELANGID(LANG_TURKISH,SUBLANG_DEFAULT):			return "windows-1254";
 	}
 #endif
+#if wxUSE_UNICODE
+	return wxT("UTF-8");
+#else
 	// Western (Latin) includes Catalan, Danish, Dutch, English, Faeroese, Finnish, French,
 	// German, Galician, Irish, Icelandic, Italian, Norwegian, Portuguese, Spanish and Swedish
 	return wxT("ISO-8859-1");
+#endif
 }
 
 
