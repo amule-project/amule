@@ -373,6 +373,8 @@ class GUIEvent : public wxEvent {
 // download queue
 #define CoreNotify_Download_Set_Cat_Prio(cat, pri)  Notify_2_ValEvent(DLOAD_SET_CAT_PRIO, cat, pri);
 #define CoreNotify_Download_Set_Cat_Status(cat, st) Notify_2_ValEvent(DLOAD_SET_CAT_STATUS, cat, st);
+
+
 //
 // "Late bound pointers" lib
 //
@@ -408,16 +410,12 @@ class Notify_Event_Msg {
 	uint32 data_len;
 	// string data in size string_len coming here in packet
 
-	bool PtrLooksGood()
-	{
-		return ((data_len < 1024) && ( ((uint32)ptr_value > 0x04000000) ) );
-	}
 	Notify_Event_Msg(GUIEvent &event);
 	Notify_Event_Msg() {}
 	void print() { printf("Notify_Event_Msg: %p %d bytes type %d\n", ptr_value, data_len, long_value); }
 };
 
-//DECLARE_EVENT_TYPE(wxEVT_CORE_NOTIFY, wxEVT_USER_FIRST+1000)
+DECLARE_EVENT_TYPE(wxEVT_CORE_NOTIFY, wxEVT_USER_FIRST+1000)
 
 class wxCoreNotifyEvent : public wxEvent {
  public:
@@ -448,8 +446,7 @@ class PtrsXferClient : public wxThread {
 	uint32 data_buff_size;
 	void *data_buff;
 
-	typedef unsigned int ptr_type;
-	// assuming that sizeof(ptr) == sizeof(int)
+	typedef void * ptr_type;
 	std::map<ptr_type, ptr_type> ptr_hash;
 
 	enum {
@@ -530,16 +527,6 @@ class PtrsXferServerCliThread : public wxThread {
 	~PtrsXferServerCliThread();
 
 	int SendNotify(GUIEvent &evt);
-};
-
-//DECLARE_EVENT_TYPE(wxEVT_CORE_NEW_CLIENT, wxEVT_USER_FIRST+2)
-
-class wxCoreNewClent : public wxEvent {
- public:
-	wxCoreNewClent(PtrsXferServerCliThread *client);
-	wxEvent *Clone(void) const;
-
-	PtrsXferServerCliThread *client;
 };
 
 
