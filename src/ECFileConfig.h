@@ -46,8 +46,15 @@ class CECFileConfig : public wxFileConfig {
 			const wxString& localFilename = wxEmptyString,
 			const wxString& globalFilename = wxEmptyString,
 			long style = wxCONFIG_USE_LOCAL_FILE | wxCONFIG_USE_GLOBAL_FILE,
+#if wxCHECK_VERSION(2,5,4)
 			wxMBConv& conv = wxConvUTF8) 
-			: wxFileConfig(appName, vendorName, localFilename, globalFilename, style, conv)
+			: wxFileConfig(appName, vendorName, localFilename, globalFilename,
+				style, conv)
+#else
+			wxMBConv& WXUNUSED(conv) = wxConvUTF8) 
+			: wxFileConfig(appName, vendorName, localFilename, globalFilename,
+				style)
+#endif
 			{}
 
 		/**
