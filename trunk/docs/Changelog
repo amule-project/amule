@@ -33,10 +33,10 @@ Version 2.0.0rc7 - The "xxxxxxxxxxxxxxxx" version.
 		  switch.
 		  
 	ThePolish:
-		* Little fix in wxCas SetSizer which caused display bug with wx-cvs
-		* Add translations update (Thanks to all translators)
-		* Removed wxCas documentation to slim source tree 
-		(now downloadable from berlios)
+		* Implemented new hits system in wxCas to display and save download rate records.
+		* Changed wxCas layout to try to avoid display bug with wx-cvs
+		* Added translations update (Thanks to all translators)
+		* Removed wxCas documentation to slim source tree (now downloadable from berlios)
 		  
 	Seagull:
 		* Patch adding "Directory" column to the shared-files dialog.
