@@ -2524,19 +2524,19 @@ bool ServersInfo::CompareItems(const ServerEntry &i1, const ServerEntry &i2)
 	bool Result;
 	switch(m_SortOrder) {
 		case SERVER_SORT_NAME:
-			Result = i1.sServerName.CmpNoCase(i2.sServerName) > 0;
+			Result = i1.sServerName.CmpNoCase(i2.sServerName) < 0;
 			break;
 		case SERVER_SORT_DESCRIPTION:
-			Result = i1.sServerDescription.CmpNoCase(i2.sServerDescription) > 0;
+			Result = i1.sServerDescription.CmpNoCase(i2.sServerDescription) < 0;
 			break;
 		case SERVER_SORT_IP:
-			Result = i1.sServerIP.CmpNoCase(i2.sServerIP) > 0;
+			Result = i1.sServerIP.CmpNoCase(i2.sServerIP) < 0;
 			break;
 		case SERVER_SORT_USERS:
-			Result = i1.nServerUsers > i2.nServerUsers;
+			Result = i1.nServerUsers < i2.nServerUsers;
 			break;
 		case SERVER_SORT_FILES:
-			Result = i1.nServerFiles > i2.nServerFiles;
+			Result = i1.nServerFiles < i2.nServerFiles;
 			break;
 	}
 	return Result ^ m_SortReverse;
@@ -2623,7 +2623,7 @@ bool SharedFilesInfo::CompareItems(const SharedFiles &i1, const SharedFiles &i2)
 	bool Result;
 	switch(m_SortOrder) {
        case SHARED_SORT_NAME:
-            Result = i1.sFileName.CmpNoCase(i2.sFileName) > 0;
+            Result = i1.sFileName.CmpNoCase(i2.sFileName) < 0;
             break;
         case SHARED_SORT_SIZE:
             Result = i1.lFileSize < i2.lFileSize;
@@ -2652,7 +2652,7 @@ bool SharedFilesInfo::CompareItems(const SharedFiles &i1, const SharedFiles &i2)
                 Result = (i2.nFilePriority != 4);
             } else {
                 if (i2.nFilePriority == 4) {
-                        Result = (i1.nFilePriority == 4);
+                        Result = false;
                 } else
                         Result = i1.nFilePriority < i2.nFilePriority;
             }
@@ -2790,7 +2790,7 @@ bool DownloadFilesInfo::CompareItems(const DownloadFiles &i1, const DownloadFile
 	bool Result;
 	switch(m_SortOrder) {
 		case DOWN_SORT_NAME:
-            Result = i1.sFileName.CmpNoCase(i2.sFileName) > 0;
+            Result = i1.sFileName.CmpNoCase(i2.sFileName) < 0;
 			break;
 		case DOWN_SORT_SIZE:
 			Result = i1.lFileSize < i2.lFileSize;
@@ -2895,7 +2895,7 @@ bool SearchInfo::CompareItems(const SearchFile &i1, const SearchFile &i2)
 	bool Result;
 	switch(m_SortOrder) {
 		case SEARCH_SORT_NAME:
-			Result = i1.sFileName.CmpNoCase(i2.sFileName) > 0;
+			Result = i1.sFileName.CmpNoCase(i2.sFileName) < 0;
 			break;
 		case SEARCH_SORT_SIZE:
 			Result = i1.lFileSize < i2.lFileSize;

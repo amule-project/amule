@@ -307,7 +307,7 @@ class ItemsContainer {
 		{
 			wxString sField = m_SortHeaders[m_SortOrder];
 			// invert sort order in link
-			wxString sSortRev(m_SortReverse ? wxT("&sortreverse=true") : wxT("&sortreverse=false"));
+			wxString sSortRev(m_SortReverse ? wxT("&sortreverse=false") : wxT("&sortreverse=true"));
 			for(typename std::map<E, wxString>::iterator i = m_SortHeaders.begin();
 				i != m_SortHeaders.end(); i++) {
 					if (sField == i->second) {
@@ -326,9 +326,7 @@ class ItemsContainer {
 			if ( !order.IsEmpty() ) {
 				m_SortOrder = m_SortStrVals[order];
 			}
-			if ( !reverse.IsEmpty() ) {
-				m_SortReverse = (reverse == wxT("true")) ? false : true;
-			}
+			m_SortReverse = (reverse == wxT("true"));
 		}
 		/*!
 		 * Re-query server: refresh all dataset
