@@ -331,7 +331,9 @@ bool CamuleApp::OnInit()
 	cmdline.AddSwitch(wxT("v"), wxT("version"), wxT("Displays the current version number."));
 	cmdline.AddSwitch(wxT("h"), wxT("help"), wxT("Displays this information."));
 	cmdline.AddSwitch(wxT("i"), wxT("enable-stdin"), wxT("Does not disable stdin."));
+#ifndef AMULE_DAEMON
 	cmdline.AddOption(wxT("geometry"), wxEmptyString, wxT("Sets the geometry of the app.\n\t\t\t<str> uses the same format as standard X11 apps:\n\t\t\t[=][<width>{xX}<height>][{+-}<xoffset>{+-}<yoffset>]"));
+#endif
 	cmdline.AddSwitch(wxT("d"), wxT("disable-fatal"), wxT("Does not handle fatal exception."));
 	cmdline.AddSwitch(wxT("o"), wxT("log-stdout"), wxT("Print log messages to stdout."));
 	cmdline.Parse();
@@ -351,7 +353,11 @@ bool CamuleApp::OnInit()
 	}
 	
 	if ( cmdline.Found(wxT("version")) ) {
+#ifndef AMULE_DAEMON		
 		printf("aMule %s\n", unicode2char(GetMuleVersion()));
+#else
+		printf("aMule Daemon %s\n", unicode2char(GetMuleVersion()));
+#endif
 		return false;
 	}
 
