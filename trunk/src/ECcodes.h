@@ -97,7 +97,14 @@ enum {
 	// general commands - both way
 	//
 
-	EC_OP_STRINGS,		// I don't know if will use this command ...
+		/*!
+		 * \brief Used when need to transfer text message without
+		 * particular meaning - like logging message in reply to command
+		 *
+		 * \par Tags:
+		 *	::EC_TAG_STRING (1) string message
+		 */
+	EC_OP_STRINGS,
 
 		/*!
 		 * \brief Miscanelous data.
@@ -149,7 +156,7 @@ enum {
 		 * \brief Perform action on file in queue.
 		 *
 		 * \par Tags:
-		 *	(yet undefined) - lfroen, please review the idea!
+		 *	\b ::EC_TAG_PARTFILE (1+) file to perform command on
 		 */
 	EC_OP_Q_FILE_CMD,
 
@@ -161,10 +168,19 @@ enum {
 		 * \brief Get download queue.
 		 *
 		 * \par Tags:
-		 *	(yet undefined)
+		 *	\b ::EC_TAG_PARTFILE (1+) info about file in download queue
 		 */
 	EC_OP_DLOAD_QUEUE,
 
+		/*!
+		 * \brief Change IPFilter settings: on, off, level, reload
+		 *
+		 * \par Tags:
+		 *	\b ::EC_TAG_STRING (0-1) holds action to peform:
+		 *  'ON', 'OFF', 'RELOAD', [0-9]{2} - set level. When used without
+		 *  tag just query current settings
+		 */
+	EC_OP_IPFILTER_CMD,
 
 
 	EC_OP_COMPAT	= 0x00ff	// compatibility opcode, for testing purposes only
@@ -247,11 +263,13 @@ enum {
 		 */
 	EC_TAG_PROTOCOL_VERSION,
 
+	EC_TAG_ITEM_ID,
 	//
 	// tags for partfile info
-	//
 
 	EC_TAG_PARTFILE,
+	EC_TAG_PARTFILE_COMMAND,
+
 	EC_TAG_PARTFILE_SIZE_FULL,
 	EC_TAG_PARTFILE_SIZE_XFER,
 	EC_TAG_PARTFILE_SIZE_DONE,
