@@ -97,44 +97,60 @@ END_EVENT_TABLE()
 
 
 CamulewebFrame::CamulewebFrame(const wxString& title, const wxPoint& pos, const wxSize& size, long style)
-       : wxFrame(NULL, amuleFrame_ID, title, pos, size, style) {
+       : wxFrame(NULL, amuleFrame_ID, title, pos, size, style)
+{
+	wxMenu *menuFile = new wxMenu;
+	menuFile->Append(amuleweb_Quit, _T("E&xit\tAlt-X"), _T("Quit amuleweb"));
 
-    wxMenu *menuFile = new wxMenu;
-    menuFile->Append(amuleweb_Quit, _T("E&xit\tAlt-X"), _T("Quit amuleweb"));
+	wxMenu *helpMenu = new wxMenu;
+	helpMenu->Append(amuleweb_About, _T("&About...\tF1"), _T("Show about dialog"));
 
-    wxMenu *helpMenu = new wxMenu;
-    helpMenu->Append(amuleweb_About, _T("&About...\tF1"), _T("Show about dialog"));
+	// now append the freshly created menu to the menu bar...
+	wxMenuBar *menuBar = new wxMenuBar();
+	menuBar->Append(menuFile, _T("&File"));
+	menuBar->Append(helpMenu, _T("&Help"));
 
-    // now append the freshly created menu to the menu bar...
-    wxMenuBar *menuBar = new wxMenuBar();
-    menuBar->Append(menuFile, _T("&File"));
-    menuBar->Append(helpMenu, _T("&Help"));
+	// ... and attach this menu bar to the frame
+	SetMenuBar(menuBar);
 
-    // ... and attach this menu bar to the frame
-    SetMenuBar(menuBar);
+	log_text = new wxTextCtrl(this, -1, _T(""),
+		wxPoint(2, 2),
+		wxSize(APP_INIT_SIZE_X-4, APP_INIT_SIZE_Y-30-4),
+		wxTE_MULTILINE | wxTE_READONLY);
+	log_text->SetBackgroundColour(wxT("wheat"));
+	log_text->SetDefaultStyle(
+		wxTextAttr(
+			wxNullColour, 
+			wxT("wheat"), 
+			wxFont(10, wxMODERN, wxNORMAL, wxNORMAL)
+		)
+	);
 
-    log_text = new wxTextCtrl(this, -1, _T(""), wxPoint(2, 2), wxSize(APP_INIT_SIZE_X-4,APP_INIT_SIZE_Y-30-4), wxTE_MULTILINE | wxTE_READONLY);
-    log_text->SetBackgroundColour(wxT("wheat"));   
-
-    cmd_control = new wxTextCtrl(this,Event_Comand_ID, _T(""), wxPoint(2,APP_INIT_SIZE_Y-30-4), wxSize(APP_INIT_SIZE_X-4,30), wxTE_PROCESS_ENTER);
-    cmd_control->SetBackgroundColour(wxT("wheat"));
+	cmd_control = new wxTextCtrl(this, Event_Comand_ID, _T(""),
+		wxPoint(2, APP_INIT_SIZE_Y-30-4),
+		wxSize(APP_INIT_SIZE_X-4,30),
+		wxTE_PROCESS_ENTER);
+	cmd_control->SetBackgroundColour(wxT("wheat"));
 }
 
-void CamulewebFrame::OnQuit(wxCommandEvent& WXUNUSED(event)) {
-    // TRUE is to force the frame to close
-    Show(_("\nOk, exiting Web Client...\n"));
-    Close(TRUE);
+void CamulewebFrame::OnQuit(wxCommandEvent& WXUNUSED(event))
+{
+	// true is to force the frame to close
+	Show(_("\nOk, exiting Web Client...\n"));
+	Close(true);
 }
 
-void CamulewebFrame::OnAbout(wxCommandEvent& WXUNUSED(event)) {
-    wxString msg;
-    msg.Printf( _T("amuleweb [DLG version]\n")
-                _T("Using %s\n(c) aMule Dev Team"), wxVERSION_STRING);
-
-    wxMessageBox(msg, _T("About amuleweb"), wxOK | wxICON_INFORMATION, this);
+void CamulewebFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
+{
+	wxString msg;
+	msg.Printf( 
+		_T("amuleweb [DLG version]\n")
+		_T("Using %s\n(c) aMule Dev Team"),
+		wxVERSION_STRING);
+	wxMessageBox(msg, _T("About amuleweb"), wxOK | wxICON_INFORMATION, this);
 }
 
-void CamulewebFrame::OnCommandEnter(wxCommandEvent& WXUNUSED(event)) {
+void CamulewebFrame::OnCommandEnter(wxCommandEvent& WXUNUSED(event)){
 	if (cmd_control->GetLineLength(0) == 0) {
 		return; 
 	}
@@ -145,11 +161,11 @@ void CamulewebFrame::OnCommandEnter(wxCommandEvent& WXUNUSED(event)) {
 	cmd_control->Clear();
 }
 
-void CamulewebFrame::OnSize( wxSizeEvent& WXUNUSED(event) ) {
+void CamulewebFrame::OnSize( wxSizeEvent& WXUNUSED(event) )
+{
 	int x = 0;
 	int y = 0;
-	GetClientSize( &x, &y );
-	
+	GetClientSize( &x, &y );	
 	if (log_text) log_text->SetSize( 2, 2, x-4, y-30 - 4 );
 	if (cmd_control) cmd_control->SetSize( 2, y-30-2, x-4,30);
 }
