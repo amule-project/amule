@@ -492,8 +492,10 @@ void CamuleDlg::AddLogLine(bool addtostatusbar, const wxString& line)
 	wxString bufferline = line.Left(1000); // Max length 1000 chars
 
 	// Remove newlines at end, they cause problems with the layout...
-	while ( bufferline.Last() == '\n' )
+	// You should not call Last() in an empty string.
+	while ( !bufferline.IsEmpty() && bufferline.Last() == wxT('\n') ) {
 		bufferline.RemoveLast();
+	}
 
 	// Escape "&"s, which would otherwise not show up
 	bufferline.Replace(wxT("&"), wxT("&&"));

@@ -1872,6 +1872,9 @@ wxString CDownloadListCtrl::getTextList()
 		}
 	}
 
+	if (out.IsEmpty()) {
+		out = wxT("Download queue is empty.");
+	}
 	AddLogLineM(false, out);
 	return out;
 }
