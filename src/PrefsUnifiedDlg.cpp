@@ -924,16 +924,16 @@ PrefsUnifiedDlg::PrefsUnifiedDlg(wxWindow *parent)
 		wxASSERT(PrefsIcons);
 		PrefsIcons->SetSize(wxSize(150,-1));
 		wxImageList* icon_list = new wxImageList(16,16);
-		icon_list->Add(amuleSpecial(10));
-		icon_list->Add(amuleSpecial(11));
-		icon_list->Add(amuleSpecial(17));
-		icon_list->Add(amuleSpecial(12));
 		icon_list->Add(amuleSpecial(13));
-		icon_list->Add(amuleSpecial(18));
 		icon_list->Add(amuleSpecial(14));
+		icon_list->Add(amuleSpecial(11));
 		icon_list->Add(amuleSpecial(15));
 		icon_list->Add(amuleSpecial(16));
 		icon_list->Add(amuleSpecial(20));
+		icon_list->Add(amuleSpecial(17));
+		icon_list->Add(amuleSpecial(10));
+		icon_list->Add(amuleSpecial(18));
+		icon_list->Add(amuleSpecial(12));
 		icon_list->Add(amuleSpecial(19));
 		PrefsIcons->AssignImageList(icon_list, wxIMAGE_LIST_SMALL);
 		
