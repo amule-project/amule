@@ -2170,7 +2170,7 @@ void CUpDownClient::CheckForGPLEvilDoer_Mod()
 		Contains( modversion, wxT("warezfaw") )			||	// WarezFaw
 		Contains( modversion, wxT("|x|") )				||	// |X|
 		Contains( modversion, wxT("x-treme") )			||	// X-treme
-		( m_strModVersion == "v" ) ) 
+		( m_strModVersion == wxT("v") ) ) 
 	{
 		if ( !Credits() || Credits()->GetUploadedTotal() >= Credits()->GetDownloadedTotal() ) // must share
 			m_bGPLEvildoer = true;
