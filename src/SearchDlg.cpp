@@ -289,9 +289,9 @@ void CSearchDlg::OnBnClickedSdownload(wxCommandEvent& WXUNUSED(evt))
 	}
 	CSearchListCtrl* searchlistctrl = (CSearchListCtrl*)FindWindowById(ID_SEARCHLISTCTRL, page);
 	if ( searchlistctrl == NULL ) {
-		AddLogLineM(false,wxT("searchlistctrl == NULL in CSearchDlg::OnBnClickedSdownload -- please, report this on amule foruns: www.amule.org"));
+		AddLogLineM(false,wxT("searchlistctrl == NULL in CSearchDlg::OnBnClickedSdownload -- please, report this on amule forums: www.amule.org"));
 #ifdef __DEBUG__
-		debugprintf(true, "searchlistctrl == NULL in CSearchDlg::OnBnClickedSdownload -- please, report this on amule foruns: www.amule.org");
+		debugprintf(true, "searchlistctrl == NULL in CSearchDlg::OnBnClickedSdownload -- please, report this on amule forums: www.amule.org");
 #endif
 		return;
 	}
