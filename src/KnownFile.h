@@ -118,12 +118,11 @@ protected:
 
 class CKnownFile : public CAbstractFile
 {
+friend class CAddFileThread;
 public:
 	CKnownFile();
 	virtual ~CKnownFile();
 
-	virtual bool	CreateFromFile(const wxString& directory, const wxString& filename, volatile int const * notify); // create date, hashset and tags from a file
-	
 	void SetFilePath(const wxString& strFilePath);
 	const wxString& GetFilePath() const { return m_strFilePath; }
 	

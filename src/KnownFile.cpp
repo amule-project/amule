@@ -41,9 +41,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <wx/string.h>
-//#include <wx/filefn.h>
 #include <wx/filename.h>
-//#include <wx/config.h>
 
 #include "KnownFile.h"		// Interface declarations.
 #include "otherfunctions.h"	// Needed for nstrdup
@@ -164,73 +162,6 @@ void CKnownFile::SetFilePath(const wxString& strFilePath)
 	m_strFilePath = strFilePath;
 }
 
-bool CKnownFile::CreateFromFile(const wxString& in_directory, const wxString& in_filename, volatile int const * notify){
-	
-	m_strFilePath = in_directory;
-	m_strFileName = in_filename;
-	
-	// open file
-	wxString namebuffer = in_directory + wxFileName::GetPathSeparator() + in_filename;
-	//SetFilePath(namebuffer); ??
-	CFile file;
-	if ( !file.Open(namebuffer, CFile::read ) ) {
-		printf("Error opening %s !\n", unicode2char(namebuffer));
-		return false;
-	}
-	
-	if ((uint64) file.GetLength() >= (uint64)(4294967295U)){
-		return false; // not supported by network
-	}
-	
-	SetFileSize(file.GetLength());
-	date = wxFileModificationTime( namebuffer );
-	
-	// we are reading the file data later in 8K blocks, adjust the internal file stream buffer accordingly
-	//	setvbuf(file, NULL, _IOFBF, 1024*8*2);
-	
-	m_AvailPartFrequency.Clear();
-	m_AvailPartFrequency.Alloc(GetPartCount());
-	m_AvailPartFrequency.Insert(/*Item*/0,/*pos*/0, GetPartCount());
-
-	// create hashset
-	uint32 togo = m_nFileSize;
-	uint16 hashcount;
-	for (hashcount = 0; togo >= PARTSIZE; ) {
-		CMD4Hash newhash;
-		CreateHashFromFile(&file, PARTSIZE, newhash);
-
-		hashlist.Add(newhash);
-		togo -= PARTSIZE;
-		
-		// What's this? signaling to terminate?
-		if ( notify && *notify ) {
-			printf("Hashing thread dying?\n");
-			return false;
-		}
-		hashcount++;	
-	}
-	
-	CMD4Hash lasthash;
-	CreateHashFromFile(&file, togo, lasthash);
-	if (!hashcount){
-		m_abyFileHash = lasthash;
-	} else {
-		hashlist.Add(lasthash);		
-		uchar* buffer = new uchar[hashlist.GetCount()*16];
-		for (size_t i = 0; i < hashlist.GetCount(); i++) {
-			md4cpy(buffer+(i*16), hashlist[i]);
-		}
-		CreateHashFromString(buffer, hashlist.GetCount()*16, m_abyFileHash);
-		delete[] buffer;
-	}
-
-	if (theApp.glob_prefs->GetExtractMetaData() > 0) {
-		GetMetaDataTags();
-	}
-	
-	//finished
-	return true;	
-}
 
 void CKnownFile::GetMetaDataTags()
 {

@@ -17,150 +17,408 @@
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#ifdef __CRYPTO_DEBIAN_GENTOO__
+	#include <crypto++/md4.h>
+#else 
+	#ifdef __CRYPTO_MDK_SUSE_FC__
+		#include <cryptopp/md4.h>
+	#else
+		#ifdef __CRYPTO_SOURCE__
+			#include <crypto-5.1/md4.h>			
+		#else 
+			#include <cryptopp/md4.h>
+		#endif
+	#endif
+#endif
+
+
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/event.h>		// Needed for wxCommandEvent
 #include <wx/timer.h>		// Needed for wxStopWatch
+#include <wx/filename.h>	// Needed for wxFileName::GetPathSeperator()
 
-#include "amule.h"			// Needed for theApp
 #include "AddFileThread.h"	// Interface declarations
-#include "otherfunctions.h"	// Needed for nstrdup
+#include "otherfunctions.h"	// Needed for unicode2char
+#include "amule.h"			// Needed for theApp
 #include "opcodes.h"		// Needed for TM_HASHTHREADFINISHED
-#include "KnownFile.h"		// Needed for CKnownFile
+#include "PartFile.h"		// Needed for CKnownFile and CPartFile
+#include "CFile.h"			// Needed for CFile
 
-struct UnknownFile_Struct
+//! Size to hash in one go: PARTSIZE/95, which is 100kb.
+const int CRUMBSIZE = PARTSIZE/95;
+
+//! Max number of threads. Change if you have > 1 CPUs ;)
+const int MAXTHREADCOUNT = 1;
+
+struct QueuedFile
 {
-	wxString		name;
-	wxString		directory;
-	const CPartFile*	owner;
+	wxString			m_path;
+	wxString			m_name;
+	const CPartFile*	m_owner;
 };
 
-wxMutex CAddFileThread::m_lockWaitingForHashList;
-CTypedPtrList<CPtrList, UnknownFile_Struct*> CAddFileThread::m_sWaitingForHashList;
-volatile int CAddFileThread::m_endWaitingForHashList;
 
-uint32 CAddFileThread::dwLastAddTime;
-bool CAddFileThread::DeadThread;
+wxMutex CAddFileThread::s_running_lock;
+wxMutex CAddFileThread::s_count_lock;
+wxMutex CAddFileThread::s_queue_lock;
 
-CAddFileThread::CAddFileThread() : wxThread(wxTHREAD_DETACHED)
+std::list<QueuedFile*> CAddFileThread::s_queue;
+bool CAddFileThread::s_running;
+uint8 CAddFileThread::s_count;
+
+
+CAddFileThread::CAddFileThread()
+	: wxThread(wxTHREAD_DETACHED)
 {
-	dwLastAddTime = GetTickCount();
-	m_endWaitingForHashList = 0;
-	DeadThread = true;
 }
 
-void CAddFileThread::Setup()
+
+bool CAddFileThread::IsRunning()
 {
-	dwLastAddTime = GetTickCount();
-	m_endWaitingForHashList = 0;
-	DeadThread = false;
+	wxMutexLocker lock( s_running_lock );
+	return s_running;
+}
+
+
+void CAddFileThread::SetRunning(bool running)
+{
+	wxMutexLocker lock( s_running_lock );
+	s_running = running;
+}
+
+
+uint8 CAddFileThread::GetThreadCount()
+{
+	wxMutexLocker lock( s_count_lock );
+	return s_count;
+}
+
+
+void CAddFileThread::ThreadCountInc()
+{
+	wxMutexLocker lock( s_count_lock );
+	s_count++;
+}
+
+
+void CAddFileThread::ThreadCountDec()
+{
+	s_count_lock.Lock();
+
+	if ( s_count ) {
+		// Decrement and make a copy so we can unlock immediatly
+		uint8 count = --s_count;
+		s_count_lock.Unlock();
+
+		// No threads left? Then let it be known.
+		if ( count == 0 ) {
+			
+			wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED, TM_HASHTHREADFINISHED);
+			wxPostEvent(&theApp, evt);
+		}
+	} else {
+		// Just unlock
+		s_count_lock.Unlock();
+
+		// Some debug info
+		printf("Hasher: Warning, ThreadCountDec() called while thread count was zero!\n");
+	}
+}
+
+
+void CAddFileThread::CreateNewThread()
+{
+	printf("Hasher: Creating new thread.\n");
+
+	ThreadCountInc();
+
 	CAddFileThread* th = new CAddFileThread();
 	th->Create();
+
+	// The threads shouldn't be hugging the CPU, as it will already be hugging the HD
+	th->SetPriority(WXTHREAD_MIN_PRIORITY);
+	
 	th->Run();
 }
 
-void CAddFileThread::Shutdown()
+
+void CAddFileThread::Start()
 {
-
-	printf("Signaling hashing thread to terminate... \n");
-
-	if (DeadThread || m_endWaitingForHashList) {
-		printf("Already dead\n");
+	if ( IsRunning() ) {
+		printf("Hasher: Warning, Start() called while already running.\n");
 	} else {
-		m_lockWaitingForHashList.Lock();
-		m_endWaitingForHashList = 1;
-		m_lockWaitingForHashList.Unlock();
-		wxStopWatch aika;
+		SetRunning(true);
 
-		while (!DeadThread) {
-			if (aika.Time() > 20000) {
-				printf("\tTimed out hashing thread signal\n");
+		// Start as many threads as needed
+		while ( ( GetThreadCount() < MAXTHREADCOUNT ) && ( GetFileCount() > 0 ) )
+			CreateNewThread();
+	}
+}
+
+
+void CAddFileThread::Stop()
+{
+	printf("Hasher: Signaling for remaining threads to terminate.\n");
+	
+	if ( IsRunning() ) {
+		SetRunning( false );
+
+		wxStopWatch timer;
+	
+		// Wait for all threads to die
+		while ( GetThreadCount() ) {
+			// Sleep for 1/100 of a second to avoid clobbering the mutex
+			// Termination only takes about 3ms on my system, but I'm taking 
+			// slower systems into consideration.
+			wxUsleep(10);
+
+			// Check for timeouts after 20 seconds
+			if ( timer.Time() > 20000 ) {
+				printf("Hasher: Threads have timed out!\n");
 				break;
 			}
 		}
-		printf("\nDone\n");
+
+		printf("Hasher: Threads died after %lu millie-seconds\n", timer.Time());
+	} else {
+		printf("Hasher: Threads are already dead or dying.\n");
+	}
+}
+
+
+int	CAddFileThread::GetFileCount()
+{
+	wxMutexLocker lock( s_queue_lock );
+	return s_queue.size();
+}
+
+
+QueuedFile* CAddFileThread::PopQueuedFile()
+{
+	wxMutexLocker lock( s_queue_lock );
+	
+	QueuedFile* file = NULL;
+
+	if ( !s_queue.empty() ) {
+		file = s_queue.front();
+		s_queue.pop_front();
 	}
 
-	printf("Sending death event to the app\n");
-	wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED,TM_HASHTHREADFINISHED);
-	wxPostEvent(&theApp,evt);
-
+	return file;
 }
+
+
+void CAddFileThread::PushQueuedFile(QueuedFile* file, bool addLast)
+{
+	wxMutexLocker lock( s_queue_lock );
+
+	if ( addLast ) {
+		s_queue.push_back( file );
+	} else {
+		s_queue.push_front( file );
+	}
+}
+
 
 void CAddFileThread::AddFile(const wxString& path, const wxString& name, const CPartFile* part)
 {
-	dwLastAddTime = GetTickCount();
-	if (m_endWaitingForHashList) {
-		Setup();
-	}
-	UnknownFile_Struct* hashfile = new UnknownFile_Struct;
-	hashfile->directory = path;
-	hashfile->name = name;
-	hashfile->owner = part;
 
-	wxMutexLocker sLock(m_lockWaitingForHashList);
-	m_sWaitingForHashList.AddTail(hashfile);
+	QueuedFile* hashfile = new QueuedFile;
+	hashfile->m_path = path;
+	hashfile->m_name = name;
+	hashfile->m_owner = part;
 
+	// Add the file to the queue first. If it's a partfile (part != NULL), 
+	// then add it to the front so that it gets hashed sooner
+	PushQueuedFile( hashfile, ( part == NULL ) );
+
+	// Should we start another thread?
+	if ( GetThreadCount() < MAXTHREADCOUNT )
+		CreateNewThread();	
 }
+
 
 wxThread::ExitCode CAddFileThread::Entry()
 {
+	// Temporary file to contain the result
+	CKnownFile* knownfile 		= NULL;
+	// Current queued file
+	QueuedFile*	current 		= NULL;
 
-	while (!m_endWaitingForHashList) {
+	// Cached value of filesize, to avoid constantly calling GetFileSize()
+	uint32		filesize 		= 0;
 
-		  if (m_sWaitingForHashList.IsEmpty()) {
-			  if ((GetTickCount() - dwLastAddTime) > THREAD_ADDING_TIMEOUT) {
-				printf("Hashing thread timed out with no aditions - removing thread\n");
-				m_lockWaitingForHashList.Lock();
-				m_endWaitingForHashList = 1;
-				m_lockWaitingForHashList.Unlock();
-				wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED,TM_HASHTHREADFINISHED);
-				wxPostEvent(&theApp,evt);
-			  } else {
-				this->Yield();
-				this->Sleep(1);
-			  }
-			  continue;
-		  }
+	// The position in the current part.
+	uint32		current_pos 	= 0;
 
-		m_lockWaitingForHashList.Lock();
-		UnknownFile_Struct* hashfile = m_sWaitingForHashList.RemoveHead();
-		m_lockWaitingForHashList.Unlock();
+	// The file currently getting hashed
+	CFile		file;
+	
+	// MD4 hashing class.
+	CryptoPP::MD4	hasher;
+	
 
-		CKnownFile* newrecord = new CKnownFile();
-		printf("Sharing %s/%s\n",unicode2char(hashfile->directory),unicode2char(hashfile->name));
+	// Continue to loop until there's nothing to do, or someone kills the threads
+	while ( IsRunning() ) {
+		// Haven't we started on hashing the file?
+		if ( !file.IsOpened() ) {
 
-		// TODO: What we are supposed to do if the following does fail?
-		// Kry - Exit, afaik
-		bool finished = newrecord->CreateFromFile(hashfile->directory,hashfile->name,&m_endWaitingForHashList);
+			// Try to get the next file on queue
+			current = PopQueuedFile();
+			
+			if ( !current ) {
+				// Nothing to do, break
+				printf("Hasher: Queue is empty, stopping thread.\n");
+				
+				break;
+			}
+			
+			wxString filename = current->m_path + wxFileName::GetPathSeparator() + current->m_name;
+		
+			// Attempt to open the file
+			if ( !file.Open( filename, CFile::read ) ) {
+				printf("Hasher: Warning, failed to open file, skipping: %s\n", unicode2char(filename));
+				
+				// Whoops, something's wrong. Delete the item and continue
+				delete current;
+				current = NULL;
+				continue;
+			}
 
-		if (!finished) {
-			// Kry -Hashing thread interrupted
-			m_lockWaitingForHashList.Lock();
-			m_endWaitingForHashList = 1;
-			m_lockWaitingForHashList.Unlock();
-			continue;
+
+			// We only support files <= 4gigs
+			if ( (uint64)file.GetLength() >= (uint64)(4294967295U) ) {
+				printf("Hasher: Warning, file is bigger than 4GB, skipping: %s\n", unicode2char(filename));
+				
+				file.Close();
+
+				// Delete and continue 
+				delete current;
+				current = NULL;
+				continue;
+			}
+
+
+			// Create a CKnownFile to contain the result
+			knownfile = new CKnownFile();
+			
+			// Set initial values
+			knownfile->m_strFilePath = current->m_path;
+			knownfile->m_strFileName = current->m_name;
+		
+			filesize = file.GetLength();
+			knownfile->SetFileSize( filesize );
+			knownfile->date = wxFileModificationTime( filename );
+
+			knownfile->m_AvailPartFrequency.Clear();
+			knownfile->m_AvailPartFrequency.Alloc( knownfile->GetPartCount() );
+			knownfile->m_AvailPartFrequency.Insert(0, 0, knownfile->GetPartCount() );
+	
+			// Starting from scratch
+			current_pos = 0;
+
+			printf("Hasher: Starting to hash file: %s\n", unicode2char(current->m_name));
 		}
 
-		if (!m_endWaitingForHashList) {
-			wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED,TM_FINISHEDHASHING);
-			evt.SetClientData(newrecord);
-			evt.SetExtraLong((long)hashfile->owner);
-			wxPostEvent(&theApp,evt);
-			dwLastAddTime = GetTickCount();
+
+		// Hash the next crumb
+		if ( file.GetPosition() + CRUMBSIZE > filesize ) {
+			// Less than CRUMBSIZE left, reduce read-length		
+			uint32 length = filesize - file.GetPosition();
+	
+			byte* data = new byte[length];
+			file.Read(data, length);
+
+			// Update hash
+			hasher.Update(data, length);
+		} else {
+			byte data[CRUMBSIZE];
+			file.Read(data, CRUMBSIZE);
+
+			// Update hash
+			hasher.Update(data, CRUMBSIZE);
 		}
 
-		delete hashfile;
-    }
 
-    // Just to be sure
-	m_lockWaitingForHashList.Lock();
-	m_endWaitingForHashList = 1;
-	m_lockWaitingForHashList.Unlock();
-	DeadThread = true;
+		current_pos++;
+
+		// Finished a part?
+		if ( current_pos >= PARTSIZE/CRUMBSIZE ) {
+			byte hash[16];
+
+			// Finalize hash and reset
+			hasher.Final(hash);
+		
+			knownfile->hashlist.Add( (uchar*)hash );
+
+			current_pos = 0;
+		}
+	
+	
+		// Done hashing?
+		if ( file.GetPosition() >= filesize ) {
+			// If there was a part < PARTSIZE, then create the hash for that part now
+			if ( current_pos ) {
+				byte hash[16];
+
+				// Finalize hash and reset
+				hasher.Final(hash);
+		
+				knownfile->hashlist.Add( (uchar*)hash );
+			}
+
+	
+			// If the file is >= PARTSIZE, then the filehash is that one hash,
+			// otherwise, the filehash is the hash of the parthashes
+			if ( knownfile->hashlist.GetCount() == 1 ) {
+				knownfile->m_abyFileHash = knownfile->hashlist[0];
+				knownfile->hashlist.Clear();
+				
+			} else {
+				hasher.Restart();
+				
+				for (size_t i = 0; i < knownfile->hashlist.GetCount(); i++)
+					hasher.Update( knownfile->hashlist[i], 16 );
+
+				byte hash[16];
+				hasher.Final( hash );
+	
+				knownfile->m_abyFileHash.SetHash( (uchar*)hash );
+			}
+
+			// Nothing more to do with this file ...
+			file.Close();
+			
+			
+			// Pass on the completion
+			wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED, TM_FINISHEDHASHING);
+			evt.SetClientData( knownfile );
+			evt.SetExtraLong( (long)current->m_owner );
+
+			printf("Hasher: Finished hashing file: %s\n", unicode2char(current->m_name));
+			
+			knownfile = NULL;
+			delete current;
+			current = NULL;
+		
+			wxPostEvent(&theApp, evt);
+		}
+	}
+
+	// Ensure consistancy so we can start properly after a Stop()
+	if ( current ) {
+		delete knownfile;
+
+		// Re-add the current file to the front of the queue
+		PushQueuedFile( current, false );
+	}
+	
+	// Notify that the thread has died
+	printf("Hasher: A thread has died.\n");
+
+	ThreadCountDec();
+
 	return 0;
 }
 
-int CAddFileThread::GetCount()
-{
-	return m_sWaitingForHashList.GetCount();
-}
+
