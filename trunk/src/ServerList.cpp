@@ -45,7 +45,7 @@
 
 #include "ServerList.h"		// Interface declarations.
 #include "ListenSocket.h"	// Needed for CListenSocket
-#include "PartFile.h"		// Needed for SRV_PR_HIGH
+#include "KnownFile.h"		// Needed for SRV_PR_HIGH
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "sockets.h"		// Needed for CServerConnect
