@@ -27,7 +27,7 @@ optimizeLevel=0
 // linker
 libraryPath=
 outputFilename=Debug\amule.exe
-libraries=cryptopp,curld,zd,ws2_32,,wxmswd, regexd, pngd, jpegd, zlibd, tiffd, stdc++, gcc, odbc32, wsock32, winspool, winmm, shell32, comctl32 , ctl3d32 , odbc32, advapi32, odbc32, wsock32, opengl32, glu32, ole32, oleaut32, uuid
+libraries=cryptopp,curld,zd,ws2_32,,wx_msw_adv-2.5, wx_msw_core-2.5, wx_msw_html-2.5, wx_base-2.5, wx_base_net-2.5, wx_base_xml-2.5, wxexpat, wxregex, wxpng, wxjpeg, wxzlib, wxtiff, stdc++, gcc, odbc32, wsock32, winspool, winmm, shell32, comctl32 , ctl3d32 , odbc32, advapi32, odbc32, wsock32, opengl32, glu32, ole32, oleaut32, uuid
 extraLinkerOptions=
 ignoreStartupFile=0
 ignoreDefaultLibs=0
@@ -65,7 +65,7 @@ optimizeLevel=2
 // linker
 libraryPath=
 outputFilename=Release\amule.exe
-libraries=cryptopp,curl,z,ws2_32,wxmsw, regex, png, jpeg, zlib, tiff, stdc++, gcc, odbc32, wsock32, winspool, winmm, shell32, comctl32, ctl3d32, odbc32, advapi32, odbc32, wsock32, opengl32, glu32, ole32, oleaut32, uuid
+libraries=cryptopp,curl,z,ws2_32,wx_msw_adv-2.5, wx_msw_core-2.5, wx_msw_html-2.5, wx_base-2.5, wx_base_net-2.5, wx_base_xml-2.5, wxexpat, wxregex, wxpng, wxjpeg, wxzlib, wxtiff, stdc++, gcc, odbc32, wsock32, winspool, winmm, shell32, comctl32, ctl3d32, odbc32, advapi32, odbc32, wsock32, opengl32, glu32, ole32, oleaut32, uuid
 extraLinkerOptions=
 ignoreStartupFile=0
 ignoreDefaultLibs=0
@@ -148,13 +148,13 @@ extraResourceOptions=
 66=src\IPFilter.cpp
 67=src\MuleTextCtrl.cpp
 68=src\EMSocket.cpp
-69=src\gsocket.c
-70=src\HTTPDownloadDlg.cpp
-71=src\KnownFile.cpp
-72=src\amuleDlg.cpp
-73=src\ECSocket.cpp
-74=src\SHA.cpp
-75=src\SHAHashSet.cpp
+69=src\HTTPDownloadDlg.cpp
+70=src\KnownFile.cpp
+71=src\amuleDlg.cpp
+72=src\ECSocket.cpp
+73=src\SHA.cpp
+74=src\SHAHashSet.cpp
+75=src\AICHSyncThread.cpp
 [Header]
 [Resource]
 1=amule.rc
