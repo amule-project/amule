@@ -153,24 +153,16 @@ namespace CLogger
 
 
 
-//
-// Temporarary workaround. Avoids the issue of having to fix everything at once.
-//
-#if 0
-#define AddDebugLogLineM( critical, type, string ) \
-if ( critical || CLogger::IsEnabled( type ) ) { \
-	CLogger::AddDebugLogLine( critical, type, string ); \
-}
+#ifdef __VERBOSE_OUTPUT__
+	#define AddDebugLogLineM( critical, type, string ) \
+	if ( critical || CLogger::IsEnabled( type ) ) { \
+		CLogger::AddDebugLogLine( critical, type, string ); \
+	}
 #else
-inline void AddDebugLogLineM( bool critical, DebugType type, const wxString& str ) 
-{
-	CLogger::AddDebugLogLine( critical, type, str );
-}
-
-inline void AddDebugLogLineM( bool critical, const wxString& str ) 
-{
-	CLogger::AddDebugLogLine( critical, logGeneral, str );
-}
+	#define AddDebugLogLineM( critical, type, string ) \
+	if ( critical ) { \
+		CLogger::AddDebugLogLine( critical, type, string ); \
+	}
 #endif
 
 #define AddLogLineM( critical, string ) \

@@ -914,9 +914,6 @@ CECPacket *ProcessPreferencesRequest(const CECPacket *request)
 		if (thePrefs::GetVerbose()) {
 			cwPrefs.AddTag(CECEmptyTag(EC_TAG_CORETW_VERBOSE));
 		}
-		if (thePrefs::GetVerbosePacketError()) {
-			cwPrefs.AddTag(CECEmptyTag(EC_TAG_CORETW_VERBOSE_PACKET));
-		}
 		cwPrefs.AddTag(CECTag(EC_TAG_CORETW_FILEBUFFER, thePrefs::GetFileBufferSize()));
 		cwPrefs.AddTag(CECTag(EC_TAG_CORETW_UL_QUEUE, thePrefs::GetQueueSize()));
 		cwPrefs.AddTag(CECTag(EC_TAG_CORETW_SRV_KEEPALIVE_TIMEOUT, thePrefs::GetServerKeepAliveTimeout()));
@@ -1173,9 +1170,6 @@ CECPacket *SetPreferencesFromRequest(const CECPacket *request)
 		}
 		if ((oneTag = thisTab->GetTagByName(EC_TAG_CORETW_VERBOSE)) != NULL) {
 			thePrefs::SetVerbose(oneTag->GetInt8Data() != 0);
-		}
-		if ((oneTag = thisTab->GetTagByName(EC_TAG_CORETW_VERBOSE_PACKET)) != NULL) {
-			thePrefs::SetVerbosePacketError(oneTag->GetInt8Data() != 0);
 		}
 		if ((oneTag = thisTab->GetTagByName(EC_TAG_CORETW_FILEBUFFER)) != NULL) {
 			thePrefs::SetFileBufferSize(oneTag->GetInt32Data());
@@ -1514,7 +1508,7 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 			response = new CECPacket(EC_OP_NOOP);
 			break;
 		case EC_OP_ADDDEBUGLOGLINE:
-			AddDebugLogLineM( (request->GetTagByName(EC_TAG_LOG_TO_STATUS) != NULL), request->GetTagByNameSafe(EC_TAG_STRING)->GetStringData() );
+			AddDebugLogLineM( (request->GetTagByName(EC_TAG_LOG_TO_STATUS) != NULL), logGeneral, request->GetTagByNameSafe(EC_TAG_STRING)->GetStringData() );
 			response = new CECPacket(EC_OP_NOOP);
 			break;
 		case EC_OP_GET_LOG:

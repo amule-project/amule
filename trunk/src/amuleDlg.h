@@ -73,7 +73,6 @@ public:
 	~CamuleDlg();
 
 	void AddLogLine(bool addtostatusbar, const wxString& line);
-	void AddDebugLogLine(bool addtostatusbar, const wxString& line);
 	void AddServerMessageLine(wxString& message);
 	void ResetLog(uint32 whichone);
 	

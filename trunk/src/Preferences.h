@@ -422,9 +422,6 @@ public:
 	static bool		GetSrcSeedsOn() 		{ return s_UseSrcSeeds; }
 	static void		SetSrcSeedsOn(bool val)		{ s_UseSrcSeeds = val; }
 	
-	static bool		GetVerbosePacketError()		{ return s_VerbosePacketError; }
-	static void		SetVerbosePacketError(bool val)	{ s_VerbosePacketError = val; }
-	
 	static bool		IsSecureIdentEnabled()		{ return s_SecIdent; }
 	static void		SetSecureIdentEnabled(bool val)	{ s_SecIdent = val; }
 	
@@ -688,8 +685,6 @@ protected:
 	// Kry - Source seeds on/off
 	static bool	s_UseSrcSeeds;
 	
-	static bool	s_VerbosePacketError;
-
 	static bool	s_ProgBar;
 	static bool	s_Percent;	
 	

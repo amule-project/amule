@@ -43,6 +43,7 @@
 #include <wx/msgdlg.h>
 #include <wx/stattext.h>
 #include <wx/dirdlg.h>
+#include <wx/checklst.h>
 #ifdef __WXGTK__
 	#include <wx/gtk/tooltip.h>
 #endif
@@ -62,6 +63,7 @@
 #include "DirectoryTreeCtrl.h"		// Needed for CDirectoryTreeCtrl
 #include "Preferences.h"
 #include "muuli_wdr.h"
+#include "Logger.h"
 
 
 BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
@@ -163,6 +165,9 @@ PrefsPage pages[] =
 	//{ wxTRANSLATE("Notifications"),	PreferencesNotifyTab,		18, NULL },
 	{ wxTRANSLATE("Gui Tweaks"),		PreferencesGuiTweaksTab,	19, NULL },
 	{ wxTRANSLATE("Core Tweaks"),		PreferencesaMuleTweaksTab,	12, NULL }
+#ifdef __VERBOSE_OUTPUT__
+	,{ wxTRANSLATE("Debugging"),		PreferencesDebug,			25, NULL }
+#endif
 };
 
 
@@ -373,6 +378,19 @@ bool PrefsUnifiedDlg::TransferToWindow()
 	CastChild( IDC_SPIN_PERM_DG, wxSpinCtrl )->SetValue( perms % 0100 / 010 );
 	CastChild( IDC_SPIN_PERM_DO, wxSpinCtrl )->SetValue( perms % 0100 % 010 / 01 );
 
+	// Set debugging toggles
+#ifdef __VERBOSE_OUTPUT__
+	int count = CLogger::GetDebugCategoryCount();
+	wxCheckListBox* list = CastChild( ID_DEBUGCATS, wxCheckListBox );
+
+	for ( int i = 0; i < count; i++ ) {
+		const CDebugCategory& cat = CLogger::GetDebugCategory( i );
+		
+		list->Append( cat.GetName() );
+		list->Check( i, cat.IsEnabled() );
+	}
+#endif
+	
 	return true;
 }
 
@@ -413,6 +431,19 @@ bool PrefsUnifiedDlg::TransferFromWindow()
 	dir_perms |= 0001 * CastChild( IDC_SPIN_PERM_DO, wxSpinCtrl )->GetValue();
 	thePrefs::SetDirPermissions( dir_perms );
 
+	// Get debugging toggles
+#ifdef __VERBOSE_OUTPUT__
+	int count = CLogger::GetDebugCategoryCount();
+	wxCheckListBox* list = CastChild( ID_DEBUGCATS, wxCheckListBox );
+
+	for ( int i = 0; i < count; i++ ) {
+		const CDebugCategory& cat = CLogger::GetDebugCategory( i );
+		
+		CLogger::SetEnabled( cat.GetType(), list->IsChecked( i ) );
+	}
+#endif
+
+	
 	return true;
 }
 

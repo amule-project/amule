@@ -1327,40 +1327,6 @@ void CamuleApp::Trigger_New_version(wxString new_version)
 	thePrefs::SetLanguageID(0);
 }
 
-void CamuleApp::QueueLogLine(bool addtostatusbar, const wxString& line, bool debug)
-{
-	m_LogQueueLock.Enter();
-
-	QueuedLogLine new_line_to_log;
-	
-	new_line_to_log.line = line;
-	new_line_to_log.addtostatus = addtostatusbar;
-	new_line_to_log.debug = debug;
-
-	QueuedAddLogLines.push_back(new_line_to_log);
-
-	m_LogQueueLock.Leave();
-}
-
-
-void CamuleApp::FlushQueuedLogLines()
-{
-	QueuedLogLine line_to_add;
-
-	m_LogQueueLock.Enter();
-
-	while (!QueuedAddLogLines.empty()) {
-		line_to_add = QueuedAddLogLines.front();
-		QueuedAddLogLines.pop_front();
-		if (line_to_add.debug) {
-			AddDebugLogLineM(line_to_add.addtostatus, line_to_add.line);
-		} else {
-			AddLogLineM(line_to_add.addtostatus, line_to_add.line);
-		}
-	}
-
-	m_LogQueueLock.Leave();
-}
 
 void CamuleApp::SetOSFiles(const wxString new_path) {
 	if (::wxDirExists(new_path)) {
@@ -1470,8 +1436,6 @@ void CamuleApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 		msPrev5 = msCur;
 		listensocket->Process();
 		OnlineSig(); // Added By Bouc7
-		// Kry - Log lines flush
-		FlushQueuedLogLines();
 		// Stats tree is updated every 5 seconds. Maybe we should make it match prefs.
 		statistics->UpdateStatsTree();
 	}
