@@ -39,6 +39,7 @@
 #include <wx/fileconf.h>	// For wxFileConfig
 #include <wx/intl.h>		// For _()
 #include <wx/tokenzr.h>		// For wxStringTokenizer
+#include <wx/filefn.h>
 
 //-------------------------------------------------------------------
 
