@@ -195,6 +195,7 @@ void CUpDownClient::Init()
 	} else {
 		SetIP(0);
 	}
+	
 }
 
 
@@ -604,13 +605,14 @@ bool CUpDownClient::SendHelloPacket() {
 	CSafeMemFile data(128);
 	data.WriteUInt8(16); // size of userhash
 	SendHelloTypePacket(&data);
+	
 	Packet* packet = new Packet(&data);
 	packet->SetOpCode(OP_HELLO);
 	theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
 	SendPacket(packet,true);
 	m_bHelloAnswerPending = true;
 	#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
-	AddDebugLogLineM(true, wxT("Local Client: OP_HELLO to \n") + GetFullIP() + wxT("\n"));
+	AddDebugLogLineM(true, wxT("Local Client: OP_HELLO to ") + GetFullIP() + wxT("\n"));
 	#endif
 	return true;
 }
@@ -710,10 +712,10 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer, bool OSInfo) {
 			if (!OSInfo) {
 				AddDebugLogLineM(true, wxT("Local Client: OP_EMULEINFO to ") + GetFullIP() + wxT("\n"));
 			} else {
-				AddDebugLogLineM(true, wxT("Local Client: OP_EMULEINFO/OS_INFO to \n") + GetFullIP() + wxT("\n"));
+				AddDebugLogLineM(true, wxT("Local Client: OP_EMULEINFO/OS_INFO to ") + GetFullIP() + wxT("\n"));
 			}
 		} else {
-			AddDebugLogLineM(true, wxT("Local Client: OP_EMULEINFOANSWER to \n") + GetFullIP() + wxT("\n"));
+			AddDebugLogLineM(true, wxT("Local Client: OP_EMULEINFOANSWER to ") + GetFullIP() + wxT("\n"));
 		}
 		#endif
 	}
@@ -1228,19 +1230,11 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket){
 	Notify_ClientCtrlRefreshClient( this );
 
 	if (bDelete){
-		#ifdef __USE_DEBUG__
-		if (thePrefs.GetDebugClientTCPLevel() > 0) {
-			Debug("--- Deleted client            %s; Reason=%s\n", DbgGetClientInfo(true), strReason);
-		}
-		#endif
+		AddDebugLogLineM(false, wxString::Format(wxT("--- Deleted client ") + GetClientFullInfo() + wxT("; Reason=") + strReason + wxT("\n")));
 		return true;
 	}
 	else{
-		#ifdef __USE_DEBUG__
-		if (thePrefs.GetDebugClientTCPLevel() > 0) {
-			Debug("--- Disconnected client       %s; Reason=%s\n", DbgGetClientInfo(true), strReason);
-		}
-		#endif
+		AddDebugLogLineM(false, wxString::Format(wxT("--- Disconnected client ") + GetClientFullInfo() + wxT("; Reason=") + strReason + wxT("\n")));
 		m_fHashsetRequesting = 0;
 		SetSentCancelTransfer(0);
 		m_bHelloAnswerPending = false;
@@ -2038,9 +2032,6 @@ wxString CUpDownClient::GetClientFullInfo() {
 		FullVerName += m_Username;
 	}
 	FullVerName += _(" on IP ") + GetFullIP() + wxString::Format(_(" port %u using "),GetUserPort()) + m_clientVerString;
-	if (!GetClientModString().IsEmpty()) {
-		FullVerName += wxString(_(" Mod ")) + GetClientModString();
-	}
 	return (FullVerName);
 }
 
