@@ -30,6 +30,13 @@
 	#include <netinet/in.h>
 	#include <arpa/inet.h>
 #endif
+/*
+ * INADDR_BROADCAST is identical to INADDR_NONE which is not defined
+ * on all systems. INADDR_BROADCAST should be fine to indicate an error.
+ */
+#ifndef INADDR_NONE
+#define INADDR_NONE INADDR_BROADCAST
+#endif
 
 #include "server.h"		// Interface declarations.
 #include "SafeFile.h"		// Needed for CSafeFile
