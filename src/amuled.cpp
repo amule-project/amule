@@ -163,6 +163,10 @@ int CamuleDaemonApp::OnRun()
 		msRun = GetTickCount() - msRun;
 		msWait = uLoop - msRun;
 	}
+	/*
+	 * Stop all socket threads before entering
+	 * shutdown sequence.
+	 */
 	listensocket->Delete();
 	delete listensocket;
 	listensocket = 0;
@@ -265,32 +269,4 @@ CFriend *CamuleDaemonApp::FindFriend(CMD4Hash *WXUNUSED(hash), uint32 WXUNUSED(i
 // 	}
 	return NULL;
 }
-
-/*
-wxString CamuleDaemonApp::GetLog(bool WXUNUSED(reset))
-{
-	wxString log = wxT("FIXME");
-	return log;
-}
-
-wxString CamuleDaemonApp::GetServerLog(bool reset)
-{
-	wxString ret = server_msg;
-	if ( reset ) {
-		server_msg = wxT("");
-	}
-	return ret;
-}
-
-wxString CamuleDaemonApp::GetDebugLog(bool reset)
-{
-	return GetLog(reset);
-}
-
-void CamuleDaemonApp::AddServerMessageLine(wxString &msg)
-{
-	server_msg += msg + wxT("\n");
-	AddLogLine(wxT("ServerMessage: ") + msg);
-}
-*/
 
