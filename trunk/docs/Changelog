@@ -43,6 +43,7 @@ Version 2.0.0-rc2 - The Unnamed version.
 		* Speeded up socket event handling.
 		* Cleaned server connection. No more 'inet connection might be down' - unless it's down ;)
 		* Faster PartFile processing.
+		* Fixed endian issue on PartFile loading.
 		* Fixed non-needed delete of an array on the notebook destructor.
 		* Doesn't allow an incoming packet to get processed if socket is deleting.
 		* Fixed double-highlight of servers if disconnected by the server.
