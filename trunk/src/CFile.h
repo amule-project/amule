@@ -70,11 +70,11 @@ public:
   // ctors
   // -----
     // def ctor
-  CFile() { m_fd = fd_invalid; }
+  CFile() { m_fd = fd_invalid; m_error = FALSE; }
     // open specified file (may fail, use IsOpened())
   CFile(const wxChar *szFileName, OpenMode mode = read);
     // attach to (already opened) file
-  CFile(int fd) { m_fd = fd; }
+  CFile(int fd) { m_fd = fd; m_error = FALSE; }
 
   const wxString& GetFilePath() {return fFilePath;}; 
 
@@ -144,7 +144,7 @@ private:
   CFile& operator=(const CFile&);
 
   mutable int m_fd; // file descriptor or INVALID_FD if not opened
-  bool m_error; // error memory
+  mutable bool m_error; // error memory
   wxString fFilePath;
 };
 

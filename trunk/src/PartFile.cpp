@@ -877,8 +877,14 @@ bool CPartFile::SavePartFile(bool Initial)
 			file.Close();
 		}
 		
-		AddLogLineF(false, _("ERROR while saving partfile: %s (%s => %s)"), error.c_str(), m_partmetfilename.c_str(), m_strFileName.c_str());
+		AddLogLineF(false, _("ERROR while saving partfile: %s (%s => %s)"), unicode2char(error), unicode2char(m_partmetfilename), unicode2char(m_strFileName));
 		return false;
+	} catch (...) {
+		if (file.IsOpened()) {
+			file.Close();
+		}	
+		
+		printf("Uncatched exception on CPartFile::SavePartFile!!!\n"); 
 	}
 	
 	file.Close();
