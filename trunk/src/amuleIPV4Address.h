@@ -42,8 +42,9 @@
 // ipaddress structs.
 // prevent fscking dns queries
 class amuleIPV4Address : public wxIPV4address {
-  public:
-  amuleIPV4Address(void) { }
+public:
+	amuleIPV4Address(void) {}
+	amuleIPV4Address(const wxIPV4address &a) : wxIPV4address(a) {}
 
 	virtual bool Hostname(const wxString& name) {
 		// Some people are sometimes fool.
