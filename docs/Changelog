@@ -355,7 +355,7 @@ Version 2.0.0rc4 - The 'Rabbits and Mules love carrots' version.
 	
 	Special thanks to:
 		* Le Rat Noir and Inoteb of the BlackRat eMule mod (http://www.blackrat.fr.tc/) for allowing us to make use of their     work on detecting bad clients.
-		* Optimazer and the eMule Plus team for reporting a bug in source-exchange packets.
+		* Optimazer and the eMule Plus team (http://emuleplus.sourceforge.net/) for reporting a bug in source-exchange packets.
 		* thomas001 for reporting a problem with packet headers.
 		* Everaldo (http://www.everaldo.com) for new icons
 		* kno and thermoman for their fixes :)
