@@ -59,8 +59,10 @@
 //-------------------------------------------------------------------
 
 // Initialization of the static MyTimer member variables.
+#if wxUSE_GUI && wxUSE_TIMER && !defined(AMULE_DAEMON)
 uint32 MyTimer::tic32 = 0;
 uint64 MyTimer::tic64 = 0;
+#endif
 
 //-------------------------------------------------------------------
 
