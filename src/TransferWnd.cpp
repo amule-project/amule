@@ -182,7 +182,6 @@ void CTransferWnd::UpdateCategory( int index, bool titleChanged )
 		theApp.amuledlg->searchwnd->UpdateCatChoice();
 	}
 	
-	theApp.glob_prefs->SaveCats();
 }
 
 
