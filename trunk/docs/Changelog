@@ -1,7 +1,7 @@
 Version 2.0.0rc4 - The 'Rabbits and Mules love carrots' version.
 
 2004-0X-XX
-        
+
 	alehack:
 		* Patch to show extra QR info
 		* Patch to colorize the download list
@@ -11,30 +11,30 @@ Version 2.0.0rc4 - The 'Rabbits and Mules love carrots' version.
 		* Cleaning of unused variables on Win32
 		* Fixed compilation on Win32
 
-        Citroklar:
+	Citroklar:
 	
 	croakerc:
 		* Fixed OpenBSD compilation
-	
-        deltaHF:
+
+	deltaHF:
 	        * Added websearch function (filehash.com)
-                * Added jugle.net as Fake-check URL
+		* Added jugle.net as Fake-check URL
 		* New buttons added:
-                  - reload sharedfiles
-                  - switch upload/uploadqueue
-                  - clear completed files
+		  - reload sharedfiles
+		  - switch upload/uploadqueue
+		  - clear completed files
 		* Added 3 new columns in upload window (Client Software , Upload/Download , Remote Status)
 		* Added 'Client Software' column in upload-queue window
 		* "Asked for another file" on sources now with the filename that is asked for ( i.e. A4AF -> xyz.avi)
-                * Added 'copy file feedback to clipboard' function
+		* Added 'copy file feedback to clipboard' function
 		* Added new Toolbar icons [ thx to http://www.everaldo.com ;) ]
 		* Added icons in Preferences
 		* Download menu changed
 		* Work on skin support
-		
+
 	falso:
 		* Typo fix: bandwith to bandwidth
-		
+
 	Hetfield:
 		* Fixed unicode issues on SysTray.cpp, now apps is really unicoded!
 		* deleted separated i18n stuff from SysTray, now uses global one
@@ -184,14 +184,14 @@ Version 2.0.0rc4 - The 'Rabbits and Mules love carrots' version.
 		* Fixed PerformFileComplete to allow unicoded files to be finished :)
 		* Fixed part met filename being 001.part everytime on unicode builds.
 		* Fixed renaming on file completion causing crashes on unicode builds
-		
+
 	Madcat:
 		* Fixed preferences layout of panels.
 		* Simpler ed2k link integration for Mozilla 1.3+ / FireFox 0.6+ - Using Mozex plugin 
-	
+
 	niet:
 		* Added support for memory usage and binary name (on xas)
-		
+
 	Phoenix:
 		* code cleaning in several modules due to making the members
 		  size, opcode and prot private in packets.h.
@@ -219,7 +219,6 @@ Version 2.0.0rc4 - The 'Rabbits and Mules love carrots' version.
 		* Small unicode fixes.
 		* Fixed a messed up display in html code in aMule.tmpl (thanks
 		  to steve.reaver)
-		* Fixed some solaris compilation problems (thanks to wolti)
 		* Fixed font problem after Xaignar's great flicker free
 		  work in download list control.
 		* Fixed broken sort arrow after flicker free clean up.
@@ -245,7 +244,10 @@ Version 2.0.0rc4 - The 'Rabbits and Mules love carrots' version.
 		* Unicode support for amuleweb
 		* Fixed typos on amuleDlg
 		* Unicoded some files.
-		  
+
+	steve.reaver:
+		* Fixed a messed up display in html code in aMule.tmpl
+
 	thepolish:
 		* wxCas:
 			- Fixed for amulesig.dat changes
@@ -286,7 +288,13 @@ Version 2.0.0rc4 - The 'Rabbits and Mules love carrots' version.
 		[ rc4 ]
 		* Fixed COMP.10 bug
 		* Wiped out USE_DEBUG_SYMS
-			
+
+	wimms:
+		* More sparc compilation fixes.
+
+	wolti:
+		* patch that fixes compilation on sparc/Solaris systems.
+
 	Xaignar:
 		* Merged lists used to identify file-types to avoid duplicity.
 		* Added wrapper-class around MD4 hashes.
@@ -350,7 +358,7 @@ Version 2.0.0rc4 - The 'Rabbits and Mules love carrots' version.
 		* Optimazer and the eMule Plus team for reporting a bug in source-exchange packets.
 		* thomas001 for reporting a problem with packet headers.
 		* Everaldo (http://www.everaldo.com) for new icons
-		* kno for his fixes :)
+		* kno and thermoman for their fixes :)
 		* TheBlackHand and Hawkster eMule mods 
 
 		
@@ -358,14 +366,14 @@ Version 2.0.0rc3 - The 'Target: Stability' version.
 -------------
 2004-04-22
 	
-        aquatroll:
+	aquatroll:
 	
 		* win32 stuff
-		
+
 	barbapapa;
 		
 		* Fixed >2Gb files sorting bug on transfer window.
-		
+
 	Citroklar:
 		
 		* Fixed saving preferences on klick OK, not only on shutdown.
@@ -376,16 +384,16 @@ Version 2.0.0rc3 - The 'Target: Stability' version.
 	
 		* i18n stuff
 		* Minor timer fix ;)
-		
+
 	elfstone:
 		* Fixed already downloading files not being marked as such on search results.
-		
+
 	falso:
 		
 		* Improving and fixing cas 
 		* Added capability to create pngs with cas
 		* Fixed ed2k fast links handler
-	
+
 	Kry:
 
 		* Complete rewrite to emule 0.42x ed2k network code
@@ -444,18 +452,18 @@ Version 2.0.0rc3 - The 'Target: Stability' version.
 		* Fixed some memleaks
 		* Changed some CLists to wxLists
 		* Cleanup and fixing little bugs ;)
-		
+
 	Madcat:
 	
 	        * Disable autobacktrace on win32
 		* Removed wxTE_PROCESS_ENTER style from fast ed2k links handler (fixes assert)
 		* The following modifications to CamuleDlg::AddLogLine() function:
-                  * Now uses system locale for date/time formatting.
-                  * No longer asserts.
-                  * Now also works on win32.
+		  * Now uses system locale for date/time formatting.
+		  * No longer asserts.
+		  * Now also works on win32.
 		* Removed unused m_StateImageList
 		* Code cleanup
-		
+
 	one_2_one, hoschy007:
 	
 	        * MacOSX stuff
@@ -467,7 +475,7 @@ Version 2.0.0rc3 - The 'Target: Stability' version.
 		* Fixed categories for web interface
 		* WebSocket.* & WebServer.*: now uses wxThreads and wxSockets to be cross platform.
 		* Better threads' array remove in WebSocket
-  		* WebServer cleanly stopped before exit	
+		* WebServer cleanly stopped before exit	
 		* Fixed max 2Gb display bug in amuleweb
 		* Updated aMule.tmpl: added file %complete support in transfer list
 	thepolish:
