@@ -63,7 +63,7 @@ Version 2.0.0rc7 - The "99,6% Final" version.
 		  
 	Xaignar:
 		* Reinsured that the preferences will be saved upon clicking "Ok".
-		* Removed P4 specific optimizations from the embedded Crypto++ sources,
+		* Removed SSE2 specific optimizations from the embedded Crypto++ sources,
 		  they would break very easily and crash aMule.
 		* Fixed a bug where we would sometimes attempt to remove a client 
 		  from the wrong file, resulting in dangling pointers and crashes.
