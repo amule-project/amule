@@ -96,6 +96,10 @@ Version 2.0.0
 		* fixed copy ed2k link to clipboard
 		* fixed CArray for MFC compatibility
 		
+	Xaignar:
+		* Code cleanup in amule.* and otherfunctions.* and other files.
+		* The Cleanup button in the File Details dialog no longer replaces "&" with "&&".
+		* Max connections should be correctly set on windows platforms, instead of defaulting to 500.
 	
 		
 	Special Thanks To:
