@@ -177,16 +177,16 @@ enum {
 		int num_entries;
 	
 		if ((num_entries = backtrace(bt_array, 4)) < 0) {
-			AddLogLineM(false, wxT("* Could not generate backtrace\n"));
+			AddLogLineM(false, _("* Could not generate backtrace\n"));
 		} else {
 			if ((bt_strings = backtrace_symbols(bt_array, num_entries)) == NULL) {
-				AddLogLineM(false, wxT("* Could not get symbol names for backtrace\n"));
+				AddLogLineM(false, _("* Could not get symbol names for backtrace\n"));
 			}  else {
 				wxString wherefrom = bt_strings[value];
 				int starter = wherefrom.Find('(');
 				int ender = wherefrom.Find(')');
 				wherefrom = wherefrom.Mid(starter, ender-starter+1);
-				AddLogLineM(false, wxT("Called From: ") + wherefrom);
+				AddLogLineM(false, _("Called From: ") + wherefrom);
 			}
 		}	
 #endif
@@ -272,7 +272,7 @@ bool CFile::Create(const wxChar *szFileName, bool bOverwrite, int accessMode)
 #endif
 	
 	#ifdef FILE_TRACKER
-		AddLogLineM(false,wxString(wxT("Created file ")) + fFilePath + wxString::Format(wxT(" with file descriptor %i"),m_fd));
+		AddLogLineM(false,wxString(_("Created file ")) + fFilePath + wxString::Format(_(" with file descriptor %i"),m_fd));
     		get_caller(2);
 	#endif
 	
@@ -335,7 +335,7 @@ bool CFile::Open(const wxChar *szFileName, OpenMode mode, int accessMode)
     m_fd = wxOpen( szFileName, flags ACCESS(accessMode));
       
 	#ifdef FILE_TRACKER
-		AddLogLineM(false,wxString(wxT("Opened file ")) + fFilePath  + wxString::Format(wxT(" with file descriptor %i"),m_fd));
+		AddLogLineM(false,wxString(_("Opened file ")) + fFilePath  + wxString::Format(_(" with file descriptor %i"),m_fd));
     		if (fromConstructor) {
 			get_caller(3);    
 		} else {
@@ -360,7 +360,7 @@ bool CFile::Close()
 {
 
 	#ifdef FILE_TRACKER
-		AddLogLineM(false,wxString(wxT("Closing file ")) + fFilePath + wxString::Format(wxT(" with file descriptor %i"),m_fd));
+		AddLogLineM(false,wxString(_("Closing file ")) + fFilePath + wxString::Format(_(" with file descriptor %i"),m_fd));
 		get_caller(2);
 		wxASSERT(!fFilePath.IsEmpty());
 	#endif
