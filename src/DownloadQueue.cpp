@@ -1366,7 +1366,11 @@ wxThread::ExitCode SourcesAsyncDNS::Entry()
 #endif
 
 	if(result) {
-		unsigned long addr=*(unsigned long*)ret.h_addr;
+        #if defined(__WXMSW__)
+        unsigned long addr=*(unsigned long*)result->h_addr;
+        #else
+        unsigned long addr=*(unsigned long*)ret.h_addr;
+        #endif    
 		struct sockaddr_in* newsi=(struct sockaddr_in*)malloc(sizeof(struct sockaddr_in)); // new struct sockaddr_in;
 		newsi->sin_addr.s_addr=addr;
 		wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED,TM_SOURCESDNSDONE);
