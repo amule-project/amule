@@ -41,17 +41,16 @@
 class LinuxMon
 {
 private:
-
   wxString m_uptime;
+  
   float m_sysLoad_1;
   float m_sysLoad_5;
   float m_sysLoad_15;
 
   static const wxFileName UPTIME_FILE;
   static const wxFileName LOADAVG_FILE;
-
+  
 public:
-
   // Constructor
     LinuxMon ();
 
@@ -60,10 +59,10 @@ public:
 
   // Accessors
   void Refresh ();
-  wxString GetUptime ();
-  float GetSysLoad_1 ();
-  float GetSysLoad_5 ();
-  float GetSysLoad_15 ();
+  wxString GetUptime () const;
+  float GetSysLoad_1 () const;
+  float GetSysLoad_5 () const;
+  float GetSysLoad_15 () const;
 };
 
 #endif /* _LINUXMON_H */

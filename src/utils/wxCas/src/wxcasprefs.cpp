@@ -53,7 +53,7 @@ WxCasPrefs::WxCasPrefs (wxWindow * parent):wxDialog (parent, -1,
   m_noteStaticText =
     new wxStaticText (this, -1,
 		      _
-		      ("WxCas must be restarted for modification to take place"),
+		      ("WxCas must be restarted for modifications to take place"),
 		      wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE);
   m_noteStaticText->SetForegroundColour (*wxRED);
 
@@ -76,6 +76,9 @@ WxCasPrefs::WxCasPrefs (wxWindow * parent):wxDialog (parent, -1,
   m_osPathTextCtrl->GetTextExtent ("8", &x, &y);
   m_osPathTextCtrl->SetSize (wxSize (x * (str.Length () + 1), -1));
   m_osPathTextCtrl->SetValue (str);
+  m_osPathTextCtrl->
+    SetToolTip (_
+		("Enter here the directory where your amulesig.dat file is"));
 
   m_osPathSBoxSizer->Add (m_osPathTextCtrl, 1, wxALL | wxALIGN_CENTER, 5);
   m_osPathSBoxSizer->Add (m_osPathBrowseButton, 0, wxALL | wxALIGN_CENTER, 5);
@@ -86,13 +89,13 @@ WxCasPrefs::WxCasPrefs (wxWindow * parent):wxDialog (parent, -1,
   m_refreshSBox = new wxStaticBox (this, -1, wxEmptyString);
   m_refreshSBoxSizer = new wxStaticBoxSizer (m_refreshSBox, wxHORIZONTAL);
 
-  wxInt32 refresh;
+
   m_refreshSpinButton = new wxSpinCtrl (this, -1);
   m_refreshSpinButton->SetRange (WxCasCte::MIN_REFRESH_RATE,
 				 WxCasCte::MAX_REFRESH_RATE);
-  wxGetApp ().GetConfig ()->Read (WxCasCte::REFRESH_RATE_KEY, &refresh,
-				  WxCasCte::DEFAULT_REFRESH_RATE);
-  m_refreshSpinButton->SetValue (refresh);
+  m_refreshSpinButton->SetValue (wxGetApp ().GetConfig ()->
+				 Read (WxCasCte::REFRESH_RATE_KEY,
+				       WxCasCte::DEFAULT_REFRESH_RATE));
   m_refreshStaticText =
     new wxStaticText (this, -1, _("Refresh rate interval"), wxDefaultPosition,
 		      wxDefaultSize, wxALIGN_CENTRE);
@@ -101,6 +104,55 @@ WxCasPrefs::WxCasPrefs (wxWindow * parent):wxDialog (parent, -1,
 
   m_mainVBox->Add (m_refreshSBoxSizer, 0, wxGROW | wxALIGN_CENTER | wxALL,
 		   10);
+
+  // Auto generate stat image
+  m_autoStatImgSBox = new wxStaticBox (this, -1, wxEmptyString);
+  m_autoStatImgSBoxSizer =
+    new wxStaticBoxSizer (m_autoStatImgSBox, wxVERTICAL);
+
+  m_autoStatImgRadio =
+    new wxRadioButton (this, ID_AUTOSTATIMG_RADIO,
+		       _
+		       ("Generate a stat image at every refresh event (Eat CPU)"),
+		       wxDefaultPosition, wxDefaultSize, wxRB_SINGLE);
+  m_autoStatImgSBoxSizer->Add (m_autoStatImgRadio, 0,
+			       wxGROW | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+
+  m_autoStatImgHBoxSizer = new wxBoxSizer (wxHORIZONTAL);
+
+  m_autoStatImgTextCtrl = new wxTextCtrl (this, -1, wxEmptyString);
+  wxGetApp ().GetConfig ()->Read (WxCasCte::AUTOSTATIMG_DIR_KEY, &str,
+				  WxCasCte::AUTOSTATIMG_DEFAULT_PATH);
+  m_autoStatImgTextCtrl->SetValue (str);
+  m_autoStatImgTextCtrl->
+    SetToolTip (_
+		("Enter here the directory where you want to generate the statistic image"));
+  m_autoStatImgTextCtrl->Enable (FALSE);
+
+  m_autoStatImgButton =
+    new wxButton (this, ID_AUTOSTATIMG_BROWSE_BUTTON, wxString (_("Browse")));
+  m_autoStatImgButton->Enable (FALSE);
+
+  m_autoStatImgHBoxSizer->Add (m_autoStatImgTextCtrl, 1,
+			       wxALIGN_CENTER | wxALL, 5);
+  m_autoStatImgHBoxSizer->Add (m_autoStatImgButton, 0, wxALIGN_CENTER | wxALL,
+			       5);
+
+  m_autoStatImgSBoxSizer->Add (m_autoStatImgHBoxSizer, 0,
+			       wxGROW | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+
+  m_mainVBox->Add (m_autoStatImgSBoxSizer, 0, wxGROW | wxALIGN_CENTER | wxALL,
+		   5);
+
+  if ((bool)
+      (wxGetApp ().GetConfig ()->
+       Read (WxCasCte::ENABLE_AUTOSTATIMG_KEY,
+	     WxCasCte::ENABLE_AUTOSTATIMG_DEFAULT)))
+    {
+      m_autoStatImgTextCtrl->Enable (TRUE);
+      m_autoStatImgButton->Enable (TRUE);
+      m_autoStatImgRadio->SetValue (TRUE);
+    }
 
   // Separator line
   m_staticLine = new wxStaticLine (this, -1);
@@ -132,32 +184,83 @@ WxCasPrefs::~WxCasPrefs ()
 }
 
 // Events table
-BEGIN_EVENT_TABLE(WxCasPrefs, wxDialog) 
+BEGIN_EVENT_TABLE (WxCasPrefs, wxDialog)
 EVT_BUTTON (ID_OSPATH_BROWSE_BUTTON, WxCasPrefs::OnOSPathBrowseButton) 
+EVT_BUTTON (ID_AUTOSTATIMG_BROWSE_BUTTON, WxCasPrefs::OnAutoStatImgBrowseButton) 
 EVT_BUTTON (ID_VALIDATE_BUTTON, WxCasPrefs::OnValidateButton) 
 EVT_BUTTON (ID_CANCEL_BUTTON, WxCasPrefs::OnCancel)	// Defined in wxDialog
+EVT_RADIOBUTTON (ID_AUTOSTATIMG_RADIO, WxCasPrefs::OnAutoStatImgRadio)
 END_EVENT_TABLE ()
 
 // Browse for OS Path
 void 
-WxCasPrefs::OnOSPathBrowseButton ()
+WxCasPrefs::OnOSPathBrowseButton (wxCommandEvent & event)
 {
   const wxString & dir =
-    wxDirSelector (_("Choose the folder where your signature file is"),
+    wxDirSelector (_("Folder containing your signature file"),
 		   WxCasCte::AMULESIG_DEFAULT_PATH);
+		   
   if (!dir.empty ())
     {
       m_osPathTextCtrl->SetValue (dir);
     }
 }
 
+// Browse for stat image Path
+void
+WxCasPrefs::OnAutoStatImgBrowseButton (wxCommandEvent & event)
+{
+  const wxString & dir =
+    wxDirSelector (_("Folder where generating the statistic image"),
+		   WxCasCte::AUTOSTATIMG_DEFAULT_PATH);
+		   
+  if (!dir.empty ())
+    {
+      m_autoStatImgTextCtrl->SetValue (dir);
+    }
+}
+
+// Auto Generate Stat Image
+void
+WxCasPrefs::OnAutoStatImgRadio (wxCommandEvent & event)
+{
+  if (m_autoStatImgTextCtrl->IsEnabled ())
+    {
+      m_autoStatImgTextCtrl->Enable (FALSE);
+    }
+  else
+    {
+      m_autoStatImgTextCtrl->Enable (TRUE);
+    }
+  if (m_autoStatImgButton->IsEnabled ())
+    {
+      m_autoStatImgButton->Enable (FALSE);
+      m_autoStatImgRadio->SetValue (FALSE);
+    }
+  else
+    {
+      m_autoStatImgButton->Enable (TRUE);
+      m_autoStatImgRadio->SetValue (TRUE);
+    }
+}
+
 // Validate Prefs
 void
-WxCasPrefs::OnValidateButton ()
+WxCasPrefs::OnValidateButton (wxCommandEvent & event)
 {
   wxGetApp ().GetConfig ()->Write (WxCasCte::AMULESIG_KEY,
 				   m_osPathTextCtrl->GetValue ());
   wxGetApp ().GetConfig ()->Write (WxCasCte::REFRESH_RATE_KEY,
 				   m_refreshSpinButton->GetValue ());
+
+  wxGetApp ().GetConfig ()->Write (WxCasCte::ENABLE_AUTOSTATIMG_KEY,
+				   m_autoStatImgRadio->GetValue ());
+
+  if (m_autoStatImgRadio->GetValue ())
+    {
+      wxGetApp ().GetConfig ()->Write (WxCasCte::AUTOSTATIMG_DIR_KEY,
+				       m_autoStatImgTextCtrl->GetValue ());
+    }
+
   this->EndModal (this->GetReturnCode ());
 }

@@ -50,34 +50,8 @@
 // wxCas Frame
 class WxCasFrame:public wxFrame
 {
-public:
-
-  // Constructor
-  WxCasFrame (wxString title);
-
-  // Destructor
-  ~WxCasFrame ();
-
-  // Accessor
-  wxImage *GetStatImage ();
-
-protected:
-
-  void UpdateStatsPanel ();
-
-  void OnBarRefresh (wxCommandEvent & event);
-  void OnBarAbout (wxCommandEvent & event);
-  void OnBarSave (wxCommandEvent & event);
-  void OnBarPrint (wxCommandEvent & event);
-  void OnBarPrefs (wxCommandEvent & event);
-  void OnTimer (wxTimerEvent & event);
-
-    DECLARE_EVENT_TABLE ();
-
 private:
-	
   wxToolBar *m_toolbar;
-  
   wxBitmap m_toolBarBitmaps[6];
 
   wxBoxSizer *m_frameVBox;
@@ -85,9 +59,9 @@ private:
   wxBoxSizer *m_sigPanelVBox;
 
   wxPanel *m_mainPanel;
-  
-  wxStaticLine *m_staticLine;
   wxPanel *m_sigPanel;
+	
+  wxStaticLine *m_staticLine;
 
   wxStaticBox *m_sigPanelSBox;
   wxStaticBoxSizer *m_sigPanelSBoxSizer;
@@ -119,7 +93,28 @@ private:
 	ID_BAR_ABOUT,
     ID_TIMER
   };
+  
+protected:
+  void UpdateStatsPanel ();
 
+  void OnBarRefresh (wxCommandEvent & event);
+  void OnBarAbout (wxCommandEvent & event);
+  void OnBarSave (wxCommandEvent & event);
+  void OnBarPrint (wxCommandEvent & event);
+  void OnBarPrefs (wxCommandEvent & event);
+  void OnTimer (wxTimerEvent & event);
+
+    DECLARE_EVENT_TABLE ();
+	
+public:
+  // Constructor
+  WxCasFrame (const wxString& title);
+
+  // Destructor
+  ~WxCasFrame ();
+
+  // Accessor
+  wxImage *GetStatImage () const;
 };
 
 #endif /* _WXCASFRAME_H */

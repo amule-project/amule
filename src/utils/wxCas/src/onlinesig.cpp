@@ -63,9 +63,11 @@ OnLineSig::OnLineSig ()
 
   m_maxDL = 0.0;
 
-  wxString str;
-  wxGetApp().GetConfig()->Read(WxCasCte::AMULESIG_KEY, &str,WxCasCte::AMULESIG_DEFAULT_PATH);
-  m_amulesig = new wxFileName (str, WxCasCte::AMULESIG_NAME);
+  m_amulesig =
+    new wxFileName (wxGetApp ().GetConfig ()->
+		    Read (WxCasCte::AMULESIG_KEY,
+			  WxCasCte::AMULESIG_DEFAULT_PATH),
+		    WxCasCte::AMULESIG_NAME);
 }
 
 // Constructor 2
@@ -127,8 +129,7 @@ OnLineSig::Refresh ()
 #endif
 }
 
-bool
-OnLineSig::IsRunning ()
+bool OnLineSig::IsRunning () const
 {
   if (m_isRunning == "1")
     {
@@ -140,123 +141,103 @@ OnLineSig::IsRunning ()
     }
 }
 
-wxString
-OnLineSig::GetServerName ()
+wxString OnLineSig::GetServerName () const
 {
   return m_serverName;
 }
 
-wxString
-OnLineSig::GetServerIP ()
+wxString OnLineSig::GetServerIP () const
 {
   return m_serverIP;
 }
 
-wxString
-OnLineSig::GetServerPort ()
+wxString OnLineSig::GetServerPort () const
 {
   return m_serverPort;
 }
 
-wxString
-OnLineSig::GetConnexionID ()
+wxString OnLineSig::GetConnexionID () const
 {
   return m_connexionID;
 }
 
-wxString
-OnLineSig::GetULRate ()
+wxString OnLineSig::GetULRate () const
 {
   return m_ULRate;
 }
 
-wxString
-OnLineSig::GetDLRate ()
+wxString OnLineSig::GetDLRate () const
 {
   return m_DLRate;
 }
 
-wxString
-OnLineSig::GetQueue ()
+wxString OnLineSig::GetQueue () const
 {
   return m_queue;
 }
 
-wxString
-OnLineSig::GetSharedFiles ()
+wxString OnLineSig::GetSharedFiles () const
 {
   return m_sharedFiles;
 }
 
-wxString
-OnLineSig::GetUser ()
+wxString OnLineSig::GetUser () const
 {
   return m_user;
 }
 
-wxString
-OnLineSig::GetTotalUL ()
+wxString OnLineSig::GetTotalUL () const
 {
   return m_totalUL;
 }
 
 
-wxString
-OnLineSig::GetTotalDL ()
+wxString OnLineSig::GetTotalDL () const
 {
   return m_totalDL;
 }
 
-wxString
-OnLineSig::GetVersion ()
+wxString OnLineSig::GetVersion () const
 {
   return m_version;
 }
 
-wxString
-OnLineSig::GetSessionUL ()
+wxString OnLineSig::GetSessionUL () const
 {
   return m_sessionUL;
 }
 
-wxString
-OnLineSig::GetSessionDL ()
+wxString OnLineSig::GetSessionDL () const
 {
   return m_sessionDL;
 }
 
-wxString
-OnLineSig::GetRunTime ()
+wxString OnLineSig::GetRunTime () const
 {
   return m_runTime;
 }
 
-wxString
-OnLineSig::GetConvertedTotalUL ()
+wxString OnLineSig::GetConvertedTotalUL ()
 {
   return (BytesConvertion (m_totalUL));
 }
 
-wxString
-OnLineSig::GetConvertedTotalDL ()
+wxString OnLineSig::GetConvertedTotalDL ()
 {
   return (BytesConvertion (m_totalDL));
 }
 
-wxString
-OnLineSig::GetConvertedSessionUL ()
+wxString OnLineSig::GetConvertedSessionUL ()
 {
   return (BytesConvertion (m_sessionUL));
 }
 
-wxString
-OnLineSig::GetConvertedSessionDL ()
+wxString OnLineSig::GetConvertedSessionDL ()
 {
   return (BytesConvertion (m_sessionDL));
 }
 
-wxString
-OnLineSig::GetConnexionIDType ()
+wxString OnLineSig::GetConnexionIDType () const
 {
   if (m_connexionID == "H")
     {
@@ -268,22 +249,23 @@ OnLineSig::GetConnexionIDType ()
     }
 }
 
-wxString
-OnLineSig::GetMaxDL ()
+wxString OnLineSig::GetMaxDL () const
 {
   return (wxString::Format (_("%.2f kB/s"), m_maxDL));
 }
 
 // Private use
-wxString
-OnLineSig::BytesConvertion (wxString bytes)
+wxString OnLineSig::BytesConvertion (const wxString & bytes)
 {
-  double d_bytes;
-  wxString c_bytes;
+  double
+    d_bytes;
+  wxString
+    c_bytes;
 
   bytes.ToDouble (&d_bytes);
 
-  wxInt32 i = 0;
+  wxInt32
+    i = 0;
   while (d_bytes > 1024)
     {
       d_bytes /= 1024;

@@ -40,6 +40,7 @@ class WxCasCte
 public:
 
   static const wxString AMULESIG_NAME;
+  static const wxString AMULESIG_IMG_NAME;
 
   // Refresh rate limits
   static const wxUint32 MIN_REFRESH_RATE;
@@ -48,10 +49,15 @@ public:
   // Key config names
   static const wxString AMULESIG_KEY;
   static const wxString REFRESH_RATE_KEY;
+  static const wxString ENABLE_AUTOSTATIMG_KEY;
+  static const wxString AUTOSTATIMG_DIR_KEY;
+  
 
   // Default config parameters
   static const wxString AMULESIG_DEFAULT_PATH;
   static const wxUint32 DEFAULT_REFRESH_RATE;
+  static const bool ENABLE_AUTOSTATIMG_DEFAULT;
+  static const wxString AUTOSTATIMG_DEFAULT_PATH;
 };
 
 #endif /* _WXCASCTE_H */
