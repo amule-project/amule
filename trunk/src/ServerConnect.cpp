@@ -409,19 +409,6 @@ void CServerConnect::ConnectionFailed(CServerSocket* sender){
 	Notify_ShowConnState(false,wxEmptyString);
 }
 
-#if 0
-// 09/28/02, by zegzav
-VOID CALLBACK CServerConnect::RetryConnectCallback(HWND hWnd, UINT nMsg, UINT nId, DWORD dwTime) 
-{ 
-	CServerConnect *_this= theApp.serverconnect; 
-	ASSERT(_this); 
-	_this->StopConnectionTry();
-	if (_this->IsConnected()) return; 
-
-	_this->ConnectToAnyServer(); 
-}
-#endif
-
 void CServerConnect::CheckForTimeout()
 {
 	DWORD dwCurTick = GetTickCount();
