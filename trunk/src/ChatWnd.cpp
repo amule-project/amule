@@ -27,29 +27,44 @@
 #include "ChatWnd.h"		// Interface declarations.
 #include "amule.h"			// Needed for theApp
 #include "amuleDlg.h"		// Needed for CamuleDlg
+#include "FriendListCtrl.h"	// Needed for CFriendListCtrl
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "ChatSelector.h"	// Needed for CChatSelector
 #include "muuli_wdr.h"		// Needed for messagePage
 #include "color.h"			// Needed for GetColour
+#include "opcodes.h"
 
 
 BEGIN_EVENT_TABLE(CChatWnd, wxPanel)
 	EVT_BUTTON(IDC_CSEND, CChatWnd::OnBnClickedCsend)
 	EVT_BUTTON(IDC_CCLOSE, CChatWnd::OnBnClickedCclose)
 	EVT_TEXT_ENTER(IDC_CMESSAGE, CChatWnd::OnBnClickedCsend)
+	
+	EVT_RIGHT_DOWN(CChatWnd::OnRMButton)
+
+	EVT_MENU(MP_CLOSE_TAB, CChatWnd::OnPopupClose)
+	EVT_MENU(MP_CLOSE_ALL_TABS, CChatWnd::OnPopupCloseAll)
+	EVT_MENU(MP_CLOSE_OTHER_TABS, CChatWnd::OnPopupCloseOthers)
 END_EVENT_TABLE()
+
+
+#define GetDlgItem(a, b) wxStaticCast(FindWindow((a)), b)
 
 
 CChatWnd::CChatWnd(wxWindow* pParent)
 : wxPanel(pParent, CChatWnd::IDD)
 {
-	wxSizer* content = messagePage(this, TRUE);
-	content->Show(this, TRUE);
+	wxSizer* content = messagePage(this, true);
+	content->Show(this, true);
 
 	chatselector = (CChatSelector*)FindWindow(IDC_CHATSELECTOR);
-
-	(wxButton*)FindWindow(IDC_CSEND)->Enable(false);
-	(wxButton*)FindWindow(IDC_CCLOSE)->Enable(false);
+	friendlist = (CFriendListCtrl*)FindWindow(ID_FRIENDLIST);
+	
+	GetDlgItem(IDC_CSEND, wxButton)->Enable(false);
+	GetDlgItem(IDC_CCLOSE, wxButton)->Enable(false);
+	
+	// Allow notebook to dispatch right mouse clicks to us
+	chatselector->SetMouseListener(GetEventHandler());
 }
 
 
@@ -62,8 +77,7 @@ void CChatWnd::StartSession(CUpDownClient* client)
 }
 
 
-#define GetDlgItem(a, b) wxStaticCast(FindWindowById((a)), b)
-void CChatWnd::OnBnClickedCsend(wxCommandEvent& evt)
+void CChatWnd::OnBnClickedCsend(wxCommandEvent& WXUNUSED(evt))
 {
 	wxString message = GetDlgItem(IDC_CMESSAGE, wxTextCtrl)->GetValue();
 	if (chatselector->SendMessage( message )) {
@@ -73,7 +87,96 @@ void CChatWnd::OnBnClickedCsend(wxCommandEvent& evt)
 }
 
 
-void CChatWnd::OnBnClickedCclose(wxCommandEvent& evt)
+void CChatWnd::OnRMButton(wxMouseEvent& evt)
+{
+	if( !chatselector->GetPageCount() ) {
+		return;
+	}
+	
+	// Translate the global position to a position relative to the notebook
+	wxPoint newpt=((wxWindow*)evt.GetEventObject())->ClientToScreen( evt.GetPosition() );
+	newpt = ScreenToClient(newpt);
+
+	// Only show the popup-menu if we are inside the notebook widget
+	if ( chatselector->GetRect().Inside( newpt ) ) {
+		wxMenu* menu = new wxMenu(wxString(_("Close")));
+		menu->Append(MP_CLOSE_TAB, wxString(_("Close tab")));
+		menu->Append(MP_CLOSE_ALL_TABS, wxString(_("Close all tabs")));
+		menu->Append(MP_CLOSE_OTHER_TABS, wxString(_("Close other tabs")));
+	
+		PopupMenu(menu, newpt);
+	
+		delete menu;
+	} else {
+		evt.Skip();
+	}
+}
+
+
+void CChatWnd::OnPopupClose(wxCommandEvent& WXUNUSED(evt))
+{
+	chatselector->DeletePage( chatselector->GetSelection() );
+}
+
+
+void CChatWnd::OnPopupCloseAll(wxCommandEvent& WXUNUSED(evt))
+{
+	chatselector->DeleteAllPages();
+}
+
+
+void CChatWnd::OnPopupCloseOthers(wxCommandEvent& WXUNUSED(evt))
+{
+	wxNotebookPage* current = chatselector->GetPage( chatselector->GetSelection() );
+	
+	int i = 0;
+	while ( i < chatselector->GetPageCount() ) {
+		if ( current == chatselector->GetPage( i ) ) {
+			i++;
+			continue;
+		}
+		
+		chatselector->DeletePage( i );
+	}
+}
+
+
+void CChatWnd::OnBnClickedCclose(wxCommandEvent& WXUNUSED(evt))
 {
 	chatselector->EndSession();
+}
+
+
+CFriend* CChatWnd::FindFriend(const uchar* achUserHash, uint32 dwIP, uint16 nPort)
+{
+	return friendlist->FindFriend(achUserHash, dwIP, nPort);
+}
+
+
+void CChatWnd::AddFriend(CUpDownClient* toadd)
+{
+	friendlist->AddFriend(toadd);
+}
+
+
+void CChatWnd::AddFriend(uchar userhash[16], uint32 lastSeen, uint32 lastUsedIP, uint32 lastUsedPort, uint32 lastChatted, wxString name, uint32 hasHash)
+{
+	friendlist->AddFriend( userhash, lastSeen, lastUsedIP, lastUsedPort, lastChatted, name, hasHash);
+}
+
+
+void CChatWnd::RefreshFriend(CFriend* toupdate)
+{
+	friendlist->RefreshFriend(toupdate);
+	chatselector->RefreshFriend(toupdate);
+}
+
+void CChatWnd::ProcessMessage(CUpDownClient* sender, char* message)
+{
+	chatselector->ProcessMessage(sender, message);
+}
+
+void CChatWnd::ConnectionResult(CUpDownClient* sender, bool success)
+{
+	chatselector->ConnectionResult(sender, success);
 }

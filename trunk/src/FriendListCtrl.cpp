@@ -16,7 +16,6 @@
 //You should have received a copy of the GNU General Public License
 //along with this program; if not, write to the Free Software
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-// FriendListCtrl.cpp : implementation file
 //
 
 #include <wx/defs.h>		// Needed before any other wx/*.h
@@ -27,185 +26,334 @@
 #include "FriendListCtrl.h"	// Interface declarations
 #include "ClientDetailDialog.h"	// Needed for CClientDetailDialog
 #include "AddFriend.h"		// Needed for CAddFriend
-#include "FriendList.h"		// Needed for CFriendList
 #include "ClientList.h"		// Needed for CClientList
 #include "ChatWnd.h"		// Needed for CChatWnd
 #include "amule.h"			// Needed for theApp
 #include "opcodes.h"		// Needed for MP_DETAIL
-#include "ListenSocket.h"	// Needed for CClientReqSocket
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "Friend.h"		// Needed for CFriend
+#include "CFile.h"		// Needed for CFile
+#include "endianfix.h"
+#include "otherfunctions.h"
 
-// CFriendListCtrl
 
-BEGIN_EVENT_TABLE(CFriendListCtrl,CMuleListCtrl)
+BEGIN_EVENT_TABLE(CFriendListCtrl, CMuleListCtrl)
 	EVT_RIGHT_DOWN(CFriendListCtrl::OnNMRclick)
-	EVT_LIST_ITEM_SELECTED(ID_FRIENDLIST, CFriendListCtrl::OnItemSelected) 
+	EVT_LIST_ITEM_SELECTED(ID_FRIENDLIST, CFriendListCtrl::OnItemSelected)
+	EVT_LIST_ITEM_ACTIVATED(ID_FRIENDLIST, CFriendListCtrl::OnItemActivated) 
+	
+	EVT_MENU(MP_MESSAGE, CFriendListCtrl::OnPopupMenu)
+	EVT_MENU(MP_REMOVEFRIEND, CFriendListCtrl::OnPopupMenu)
+	EVT_MENU(MP_ADDFRIEND, CFriendListCtrl::OnPopupMenu)
+	EVT_MENU(MP_DETAIL, CFriendListCtrl::OnPopupMenu)
+	EVT_MENU(MP_SHOWLIST, CFriendListCtrl::OnPopupMenu)
+	EVT_MENU(MP_FRIENDSLOT, CFriendListCtrl::OnPopupMenu)
 END_EVENT_TABLE()
 
-//IMPLEMENT_DYNAMIC(CFriendListCtrl, CListCtrl)
 
-CFriendListCtrl::CFriendListCtrl()
+
+CFriendListCtrl::CFriendListCtrl(wxWindow* parent, int id, const wxPoint& pos, wxSize siz, int flags)
+: CMuleListCtrl(parent, id, pos, siz, flags)
 {
+  InsertColumn(0, _("Username"), wxLIST_FORMAT_LEFT, siz.GetWidth() - 4);
+  
+  // The preferences class is not availble at shutdown, so I save the path here
+  m_metfile = wxString(theApp.glob_prefs->GetAppDir()) + wxString("emfriends.met"); 
+  
+  LoadList();
 }
+
 
 CFriendListCtrl::~CFriendListCtrl()
 {
+	SaveList();
+
+	for ( int i = 0; i < GetItemCount(); i++ ) 
+		delete (CFriend*)GetItemData(i);
 }
 
-CFriendListCtrl::CFriendListCtrl(wxWindow*& parent,int id,const wxPoint& pos,wxSize siz,int flags)
-: CMuleListCtrl(parent,id,pos,siz,flags)
-{
-	Init();
-}
-
-// CFriendListCtrl message handlers
-
-void CFriendListCtrl::Init()
-{
-  wxRect rc=GetClientRect();
-  InsertColumn(0,_("Username"),wxLIST_FORMAT_LEFT,rc.width-4);
-}
 
 void CFriendListCtrl::AddFriend(CFriend* toadd)
 {
-	uint32 itemnr = GetItemCount();
-	itemnr=InsertItem(itemnr,toadd->m_strName.GetData());
-	SetItemData(itemnr,(long)toadd);
-	RefreshFriend(toadd);
+	uint32 itemnr = InsertItem(GetItemCount(), toadd->m_strName);
+	SetItemData(itemnr, (long)toadd);
 }
+
+
+void CFriendListCtrl::AddFriend( uchar userhash[16], uint32 lastSeen, uint32 lastUsedIP, uint32 lastUsedPort, uint32 lastChatted, wxString name, uint32 hasHash)
+{
+	CFriend* NewFriend = new CFriend( userhash, lastSeen, lastUsedIP, lastUsedPort, lastChatted, name, hasHash );
+
+	AddFriend( NewFriend );
+}
+
+
+void CFriendListCtrl::AddFriend(CUpDownClient* toadd)
+{
+	if ( toadd->IsFriend() ) {
+		return;
+	}
+	
+	CFriend* NewFriend = new CFriend( toadd );
+	toadd->m_Friend = NewFriend;
+	
+	AddFriend( NewFriend );
+}
+
 
 void CFriendListCtrl::RemoveFriend(CFriend* toremove)
 {
-	sint32 result = FindItem(-1,(long)toremove);
-	if (result != (-1) ) {
-		DeleteItem(result);
+	sint32 itemnr = FindItem(-1, (long)toremove);
+	
+	if ( itemnr == -1 )
+		return;
+	
+	if ( toremove->m_LinkedClient ){
+		toremove->m_LinkedClient->SetFriendSlot(false);
+		toremove->m_LinkedClient->m_Friend = NULL;
+		toremove->m_LinkedClient = NULL;
 	}
+	delete toremove;
+	
+	DeleteItem(itemnr);
 }
+
 
 void CFriendListCtrl::RefreshFriend(CFriend* toupdate)
 {
-	sint32 itemnr = FindItem(-1,(long)toupdate);
-	CString temp;
-	temp.Format( "%s", toupdate->m_strName.GetData() );
-	SetItem(itemnr,0,temp);
-	if (itemnr == (-1)) {
-		return;
-	}
-	uint8 image;
-	if (!toupdate->m_LinkedClient) {
-		image = 0;
-	} else if (toupdate->m_LinkedClient->socket && toupdate->m_LinkedClient->socket->IsConnected()) {
-		image = 2;
-	} else {
-		image = 1;
-	}
+	sint32 itemnr = FindItem(-1, (long)toupdate);
+	if (itemnr != -1) {
+		SetItem(itemnr, 0, toupdate->m_strName);
+		SaveList();
+	}	
 }
 
-void CFriendListCtrl::OnItemSelected(wxListEvent& evt)
+
+void CFriendListCtrl::OnItemSelected(wxListEvent& WXUNUSED(evt))
 {
 	// Force the list to refresh. For some reason, Refresh() wont work on its own...
 	Freeze();
 	Refresh(true);
-	Thaw();
+	Thaw(); 
 }
+
+
+void CFriendListCtrl::OnItemActivated(wxListEvent& WXUNUSED(evt))
+{
+	int cursel = GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+	
+	CFriend* cur_friend = (CFriend*)GetItemData(cursel);
+	
+	if (cur_friend->m_LinkedClient) {
+		theApp.amuledlg->chatwnd->StartSession(cur_friend->m_LinkedClient);
+	} else {
+		CUpDownClient* chatclient = new CUpDownClient(cur_friend->m_nLastUsedPort, cur_friend->m_dwLastUsedIP, 0, 0, 0);
+		chatclient->SetUserName((char*)cur_friend->m_strName.c_str());
+		theApp.clientlist->AddClient(chatclient);
+		theApp.amuledlg->chatwnd->StartSession(chatclient);
+	}
+}
+
+
+bool CFriendListCtrl::LoadList()
+{
+	if ( !wxFileExists(m_metfile) ) {
+		return false;
+	}
+	
+	bool result = false;
+	
+	CFile file;
+	if ( file.Open(m_metfile) ) {
+		
+		uint8 header;
+		if ( 1 == file.Read(&header, 1) ) {
+			if ( header == MET_HEADER ) {
+				uint32 nRecordsNumber;
+				if ( 4 == file.Read(&nRecordsNumber, 4) ) {
+		
+					ENDIAN_SWAP_I_32(nRecordsNumber);
+					for (uint32 i = 0; i < nRecordsNumber; i++) {
+						CFriend* Record = new CFriend();
+						Record->LoadFromFile(&file);
+						AddFriend(Record);
+					}
+					
+					result = true;
+				}
+			}
+		}
+		
+		file.Close();
+	} else if ( wxFileExists(m_metfile) ) {
+		theApp.amuledlg->AddLogLine(false, _("Failed to open friendlist file 'emfriends.met' for reading!\n"));
+	}
+	
+	return result;
+}
+
+
+void CFriendListCtrl::SaveList()
+{
+	CFile file;
+	if( file.Create(m_metfile, true) ) {
+		uint8 header = MET_HEADER;
+		file.Write(&header, 1);
+		
+		uint32 nRecordsNumber = GetItemCount();
+		ENDIAN_SWAP_I_32(nRecordsNumber);
+		file.Write(&nRecordsNumber, 4);
+		
+		for ( int i = 0; i < GetItemCount(); i++ ) {
+			((CFriend*)GetItemData(i))->WriteToFile(&file);
+		}
+		
+		file.Close();	
+	} else {
+		theApp.amuledlg->AddLogLine(false, _("Failed to open friendlist file 'emfriends.met' for writing!\n"));
+	}
+}
+
+
+CFriend* CFriendListCtrl::FindFriend(const uchar* abyUserHash, uint32 dwIP, uint16 nPort) const
+{
+	for ( int i = 0; i < GetItemCount(); i++ ) {
+		CFriend* cur_friend = (CFriend*)GetItemData(i);
+		
+		// to avoid that unwanted clients become a friend, we have to distinguish between friends with
+		// a userhash and of friends which are identified by IP+port only.
+		if ( abyUserHash && cur_friend->m_dwHasHash ) {
+			// check for a friend which has the same userhash as the specified one
+			if (!md4cmp(cur_friend->m_abyUserhash, abyUserHash))
+				return cur_friend;
+		}
+		else if (cur_friend->m_dwLastUsedIP == dwIP && cur_friend->m_nLastUsedPort == nPort) {
+				return cur_friend;
+		}
+	}
+	
+	return NULL;
+}
+
+
+bool CFriendListCtrl::IsAlreadyFriend( uint32 dwLastUsedIP, uint32 nLastUsedPort )
+{
+	return FindFriend( NULL, dwLastUsedIP, nLastUsedPort );
+}
+
+
+void CFriendListCtrl::RemoveAllFriendSlots()
+{
+	for ( int i = 0; i < GetItemCount(); i++ ) {
+		CFriend* cur_friend = (CFriend*)GetItemData(i);
+		
+		if ( cur_friend->m_LinkedClient ) {
+				cur_friend->m_LinkedClient->SetFriendSlot(false);
+		}
+	}	
+}
+
 
 void CFriendListCtrl::OnNMRclick(wxMouseEvent& evt)
 {
-	CFriend* cur_friend=NULL;
-	wxMenu* menu=new wxMenu(_("Friends"));
-	int cursel=GetNextItem(-1,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
-	if(cursel!=(-1)) {
+	CFriend* cur_friend = NULL;
+	
+	wxMenu* menu = new wxMenu(_("Friends"));
+	int cursel = GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+	
+	if ( cursel != -1 ) {
 		cur_friend = (CFriend*)GetItemData(cursel);
-		menu->Append(MP_DETAIL,_("Show &Details"));
-		menu->Enable(MP_DETAIL,((cur_friend->m_LinkedClient)?TRUE:FALSE));
+		menu->Append(MP_DETAIL, _("Show &Details"));
+		menu->Enable(MP_DETAIL, ( (cur_friend->m_LinkedClient) ? true : true ) );
 	}
-	menu->Append(MP_ADDFRIEND,_("Add a friend"));
+	
+	menu->Append(MP_ADDFRIEND, _("Add a friend"));
+	
 	if (cursel != (-1)) {
-		menu->Append(MP_REMOVEFRIEND,_("Remove Friend"));
-		menu->Append(MP_MESSAGE,_("Send &Message"));
-		menu->Append(MP_SHOWLIST,_("View Files"));
-		menu->AppendCheckItem(MP_FRIENDSLOT,_("Establish Friend Slot"));
+		menu->Append(MP_REMOVEFRIEND, _("Remove Friend"));
+		menu->Append(MP_MESSAGE, _("Send &Message"));
+		menu->Append(MP_SHOWLIST, _("View Files"));
+		menu->AppendCheckItem(MP_FRIENDSLOT, _("Establish Friend Slot"));
+		
 		if (cur_friend->m_LinkedClient) {
-			menu->Enable(MP_FRIENDSLOT,TRUE);
-			menu->Check(MP_FRIENDSLOT,((cur_friend->m_LinkedClient->GetFriendSlot())?TRUE : FALSE));
+			menu->Enable(MP_FRIENDSLOT, true);
+			menu->Check(MP_FRIENDSLOT, ((cur_friend->m_LinkedClient->GetFriendSlot()) ? true : false));
 		} else {
-			menu->Enable(MP_FRIENDSLOT,FALSE);
+			menu->Enable(MP_FRIENDSLOT, false);
 		}
 	}
-	PopupMenu(menu,evt.GetPosition());
+	
+	PopupMenu(menu, evt.GetPosition());
 }
 
-bool CFriendListCtrl::ProcessEvent(wxEvent& evt)
+
+void CFriendListCtrl::OnPopupMenu(wxCommandEvent& evt)
 {
-	CFriend* cur_friend;
-	if(evt.GetEventType()!=wxEVT_COMMAND_MENU_SELECTED) {
-		return CMuleListCtrl::ProcessEvent(evt);
-	}
-	wxCommandEvent& event=(wxCommandEvent&)evt;
-	int cursel=GetNextItem(-1,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
-	if (cursel != (-1)) {
+	int cursel = GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+	
+	CFriend* cur_friend = NULL;
+	
+	if (cursel != -1) {
 		cur_friend = (CFriend*)GetItemData(cursel);
 	}
-	switch (event.GetId()) {
+	
+	switch (evt.GetId()) {
 		case MP_MESSAGE: {
 			if (cur_friend->m_LinkedClient) {
 				theApp.amuledlg->chatwnd->StartSession(cur_friend->m_LinkedClient);
 			} else {
-				CUpDownClient* chatclient = new CUpDownClient(cur_friend->m_nLastUsedPort,cur_friend->m_dwLastUsedIP,0,0,0);
-				chatclient->SetUserName((char*)cur_friend->m_strName.GetData());
+				CUpDownClient* chatclient = new CUpDownClient(cur_friend->m_nLastUsedPort, cur_friend->m_dwLastUsedIP, 0, 0, 0);
+				chatclient->SetUserName((char*)cur_friend->m_strName.c_str());
 				theApp.clientlist->AddClient(chatclient);
 				theApp.amuledlg->chatwnd->StartSession(chatclient);
 			}
-			return true;			
 			break;
 		}
+		
 		case MP_REMOVEFRIEND: {
-			theApp.friendlist->RemoveFriend(cur_friend);
-			return true;			
+			RemoveFriend(cur_friend);
+			SaveList();
 			break;
 		}
+		
 		case MP_ADDFRIEND: {
-			CAddFriend* dialog2=new CAddFriend(this); 
+			CAddFriend* dialog2 = new CAddFriend(this); 
 			dialog2->ShowModal();
 			delete dialog2;
-			return true;						
+			SaveList();
+			break;
 		}
-		break;
-		case MP_DETAIL:
-		if (cur_friend->m_LinkedClient) {
-			CClientDetailDialog* dialog =new CClientDetailDialog(this,cur_friend->m_LinkedClient);
-			dialog->ShowModal();
-			delete dialog;
-			return true;
+		
+		case MP_DETAIL: {
+			if (cur_friend->m_LinkedClient) {
+				CClientDetailDialog* dialog = new CClientDetailDialog(this, cur_friend->m_LinkedClient);
+				dialog->ShowModal();
+				delete dialog;
+			}
+			break;
 		}
-		break;
+		
 		case MP_SHOWLIST: {
 			if (cur_friend->m_LinkedClient) {
 				cur_friend->m_LinkedClient->RequestSharedFileList();
 			} else {
-				CUpDownClient* newclient = new CUpDownClient(cur_friend->m_nLastUsedPort,cur_friend->m_dwLastUsedIP,0,0,0);
-				newclient->SetUserName((char*)cur_friend->m_strName.GetData());
+				CUpDownClient* newclient = new CUpDownClient(cur_friend->m_nLastUsedPort, cur_friend->m_dwLastUsedIP, 0, 0, 0);
+				newclient->SetUserName((char*)cur_friend->m_strName.c_str());
 				theApp.clientlist->AddClient(newclient);
 				newclient->RequestSharedFileList();
 			}
-			return true;			
 			break;
 		}
+		
 		case MP_FRIENDSLOT: {
 			if (cur_friend && cur_friend->m_LinkedClient) {
-				bool IsAlready;
-				IsAlready = cur_friend->m_LinkedClient->GetFriendSlot();
-				theApp.friendlist->RemoveAllFriendSlots();
+				bool IsAlready = cur_friend->m_LinkedClient->GetFriendSlot();
+				RemoveAllFriendSlots();
 				if( !IsAlready ) {
 					cur_friend->m_LinkedClient->SetFriendSlot(true);
 				}
 			}
-			return true;			
 			break;
 		}
 	}
-
-	// Kry - Column hiding & misc events
-	return CMuleListCtrl::ProcessEvent(evt);
 }

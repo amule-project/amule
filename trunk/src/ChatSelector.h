@@ -20,37 +20,35 @@
 #ifndef CHATSELECTOR_H
 #define CHATSELECTOR_H
 
-#include <list>
-#include <vector>
 #include <wx/defs.h>			// Needed before any other wx/*.h
-#include <wx/notebook.h>		// Needed for wxNotebook
 #include <wx/html/htmlwin.h>	// Needed for wxHtmlWindow
 #include <wx/imaglist.h>		// Needed for wxImageList (at least on wx2.5)
 
+#include "MuleNotebook.h"
 #include "types.h"				// Needed for uint16
 #include "color.h"				// Needed for COLORREF
-#include "CTypedPtrList.h"		// Needed for CList
 
 class CUpDownClient;
+class CFriend;
 
 
 class CChatSession : public wxHtmlWindow
 {
 public:
 	CChatSession(wxWindow *parent, wxWindowID id = -1, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxHW_SCROLLBAR_AUTO, const wxString& name = "htmlWindow");
+	~CChatSession();
 
 	CUpDownClient*	client;
 	wxString		messagepending;
 	
-	void SetText( const wxString& text );
 	void AddText( const wxString& text );
-private:
-	wxString		log;
 	
+private:
+	wxString		m_log;
 };
 
 
-class CChatSelector : public wxNotebook
+class CChatSelector : public CMuleNotebook
 {
 public:
 	CChatSelector(wxWindow* parent, wxWindowID id, const wxPoint& pos, wxSize siz, long style);
@@ -61,12 +59,11 @@ public:
 	int				GetTabByClient(CUpDownClient* client);
 	void			ProcessMessage(CUpDownClient* sender, char* message);
 	bool			SendMessage(const wxString& message);
-	void			ConnectingResult(CUpDownClient* sender, bool success);
-
+	void			ConnectionResult(CUpDownClient* sender, bool success);
+	void			RefreshFriend(CFriend* toupdate);
+	
 private:
 	wxString ColorText( const wxString& text, COLORREF iColor );
-
-	wxImageList	imagelist;
 };
 
-#endif // CHATSELECTOR_H
+#endif

@@ -42,6 +42,10 @@
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "color.h"			// Needed for RGB
 #include "SafeFile.h"		// Needed for CSafeMemFile
+#include "otherfunctions.h"
+#include "Friend.h"
+
+
 
 
 CChatSession::CChatSession(wxWindow *parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name)
@@ -49,22 +53,22 @@ CChatSession::CChatSession(wxWindow *parent, wxWindowID id, const wxPoint& pos, 
 {
 	client = NULL;
 	SetBorders(5);
-	int sizes[]={7,8,10,12,16,22,30};
-	SetFonts("","",sizes);
+	int sizes[]={7, 8, 10, 12, 16, 22, 30};
+	SetFonts("", "", sizes);
+}
+
+
+CChatSession::~CChatSession()
+{
+	client->SetChatState(MS_NONE);
 }
 
 
 void CChatSession::AddText(const wxString& text)
 {
-	log += text;
-	SetText( log );
-}
+	m_log += text;
 
-void CChatSession::SetText(const wxString& text)
-{
-	log = text;
-
-	wxString result = "<html><body>" + text + "</body></html>";
+	wxString result = "<html><body>" + m_log + "</body></html>";
 	result.Replace("\n", "<br>\n");
 	
 	Freeze();
@@ -78,11 +82,18 @@ void CChatSession::SetText(const wxString& text)
 
 
 
+
 CChatSelector::CChatSelector(wxWindow* parent, wxWindowID id, const wxPoint& pos, wxSize siz, long style)
-: wxNotebook(parent, id, pos, siz, style)
+: CMuleNotebook(parent, id, pos, siz, style)
 {
-	imagelist.Add(wxBitmap(chat_ico_xpm));
-	SetImageList(&imagelist);
+	wxImageList* imagelist = new wxImageList;
+	
+	// Chat icon -- default state
+	imagelist->Add(wxBitmap(chat_ico_xpm));
+	// Close icon -- on mouseover
+	imagelist->Add(amuleSpecial(4));
+	
+	AssignImageList(imagelist);
 }
 
 
@@ -100,14 +111,14 @@ CChatSession* CChatSelector::StartSession(CUpDownClient* client, bool show)
 	CChatSession* chatsession = new CChatSession(this);
 	chatsession->client = client;
 
-	wxString text = wxString(_("*** Chatsession Start : "))+(client->GetUserName()) + " - "+" (aMule client)\n";
-	chatsession->SetText( ColorText( text, RGB(255, 0, 0) ) );
+	wxString text = wxString(_("*** Chatsession Start : ")) + client->GetUserName() + "\n";
+	chatsession->AddText( ColorText( text, RGB(255, 0, 0) ) );
 	AddPage(chatsession, client->GetUserName(), show, 0);
 	
 	client->SetChatState(MS_CHATTING);
 
-	(wxButton*)(GetParent()->FindWindow(IDC_CSEND))->Enable(true);
-	(wxButton*)(GetParent()->FindWindow(IDC_CCLOSE))->Enable(true);
+	GetParent()->FindWindow(IDC_CSEND)->Enable(true);
+	GetParent()->FindWindow(IDC_CCLOSE)->Enable(true);
 	
 	return chatsession;
 }
@@ -211,7 +222,7 @@ bool CChatSelector::SendMessage( const wxString& message )
 */
 
 
-void CChatSelector::ConnectingResult(CUpDownClient* sender, bool success)
+void CChatSelector::ConnectionResult(CUpDownClient* sender, bool success)
 {
 	CChatSession* ci = GetPageByClient(sender);
 	if ( !ci ) {
@@ -262,19 +273,31 @@ void CChatSelector::EndSession(CUpDownClient* client)
 	if (usedtab >= GetPageCount()) {
 		usedtab = GetPageCount() - 1;
 	}
-	
-	
-	CChatSession* session = (CChatSession*)GetPage(usedtab);
-	session->client->SetChatState(MS_NONE);
+		
 	DeletePage(usedtab);
 
-
-	(wxButton*)(GetParent()->FindWindow(IDC_CSEND))->Enable(GetPageCount());
-	(wxButton*)(GetParent()->FindWindow(IDC_CCLOSE))->Enable(GetPageCount());
+	GetParent()->FindWindow(IDC_CSEND)->Enable(GetPageCount());
+	GetParent()->FindWindow(IDC_CCLOSE)->Enable(GetPageCount());
 }
 
 
 wxString CChatSelector::ColorText( const wxString& text, COLORREF iColor )
 {
 	return wxString::Format("<font color=\"#%06x\">%s</font>", iColor, text.c_str());
+}
+
+
+// Refresh the tab assosiated with a friend
+void CChatSelector::RefreshFriend(CFriend* toupdate)
+{
+	wxASSERT( toupdate );
+
+	for ( int i = 0; i < GetPageCount(); i++ ) {
+		CChatSession* page = (CChatSession*)GetPage( i );
+
+		if ( page->client == toupdate->m_LinkedClient ) {
+			SetPageText( i, toupdate->m_strName );
+			break;
+		};
+	}	
 }
