@@ -383,7 +383,7 @@ yes)
 	CXX="$CXX"
 esac
 
-AC_CONFIG_FILES([src/Makefile intl/Makefile po/Makefile.in m4/Makefile Makefile Compilation.flags])
+AC_CONFIG_FILES([src/Makefile intl/Makefile po/Makefile.in m4/Makefile docs/Makefile Makefile Compilation.flags])
 AC_OUTPUT
 
 echo
