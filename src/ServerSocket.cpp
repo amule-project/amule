@@ -463,8 +463,8 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				}
 				int addcount = 0;
 				while(count) {
-					uint16 port = servers->ReadUInt16();
 					uint32 ip	= servers->ReadUInt32();
+					uint16 port = servers->ReadUInt16();
 					CServer* srv = new CServer(
 								port ,				// Port
 								Uint32toStringIP(ip)); 	// Ip
