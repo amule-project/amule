@@ -1,3 +1,5 @@
+#ifdef __GD__
+
 #include <stdlib.h>
 
 #include <gd.h>
@@ -52,3 +54,5 @@ int createimage(CONF *config, char lines[6][80])
 
 	return 1;
 }
+
+#endif
