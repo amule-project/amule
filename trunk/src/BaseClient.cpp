@@ -888,12 +888,11 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer) {
 	CTag tag8(ET_COMPATIBLECLIENT,SO_AMULE);
 	tag8.WriteTagToFile(data);
 
-/*
 	// Support for tag ET_MOD_VERSION
-	CTag tag9(ET_MOD_VERSION, MOD_VERSION);
+	wxString mod_name(MOD_VERSION);
+	CTag tag9(ET_MOD_VERSION, mod_name);
 	tag9.WriteTagToFile(data);
 	// Maella end
-*/
 
 	Packet* packet = new Packet(data,OP_EMULEPROT);
 	delete data;
@@ -909,6 +908,7 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer) {
 
 void CUpDownClient::ProcessMuleInfoPacket(char* pachPacket, uint32 nSize)
 {
+
 	try {
 		
 		//DumpMem(pachPacket,nSize);
@@ -952,6 +952,7 @@ void CUpDownClient::ProcessMuleInfoPacket(char* pachPacket, uint32 nSize)
 
 		uint32 tagcount;
 		data.Read(tagcount);
+		
 		for (uint32 i = 0;i < tagcount; i++){
 			CTag temptag(&data);
 			switch(temptag.tag.specialtag){
@@ -1013,15 +1014,17 @@ void CUpDownClient::ProcessMuleInfoPacket(char* pachPacket, uint32 nSize)
 	}
 	catch ( CStrangePacket )
 	{
-		printf("Wrong Tags on hello packet!!\n");
-		printf("Sent by %s on ip %s using client %i version %i\n",GetUserName(),GetFullIP(),GetClientSoft(),GetMuleVersion());
+		printf("\nWrong Tags on hello packet!!\n");
+		printf("Sent by %s on ip %s port %i using client %i version %i\n",GetUserName(),GetFullIP(),GetUserPort(),GetClientSoft(),GetMuleVersion());
+		printf("User Disconnected.\n");
 		printf("Packet Dump:\n");
 		DumpMem(pachPacket,nSize);
 	}
 	catch ( CInvalidPacket )
 	{
 		printf("Wrong Tags on hello packet!!!\n\n");
-		printf("Sent by %s on ip %s using client %i version %i\n",GetUserName(),GetFullIP(),GetClientSoft(),GetMuleVersion());
+		printf("Sent by %s on ip %s port %i using client %i version %i\n",GetUserName(),GetFullIP(),GetUserPort(),GetClientSoft(),GetMuleVersion());
+		printf("User Disconnected.\n");		
 		printf("Packet Dump:\n");		
 		DumpMem(pachPacket,nSize);
 	}
