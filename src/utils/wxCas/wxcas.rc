@@ -6,6 +6,7 @@ stop     BITMAP  "pixmaps/stop.bmp"
 save     BITMAP  "pixmaps/save.bmp"
 print    BITMAP  "pixmaps/print.bmp"
 about    BITMAP  "pixmaps/about.bmp"
+prefs    BITMAP  "pixmaps/prefs.bmp"
 stat     BITMAP  "pixmaps/stat.bmp"
 
 #include "wx/msw/wx.rc"

@@ -86,6 +86,8 @@ extraResourceOptions=
 4=src\wxcascanvas.cpp
 5=src\wxcasframe.cpp
 6=src\wxcasprint.cpp
+7=src\wxcasprefs.cpp
+8=src\wxcascte.cpp
 [Header]
 1=src\linuxmon.h
 2=src\onlinesig.h
@@ -93,7 +95,12 @@ extraResourceOptions=
 4=src\wxcascanvas.h
 5=src\wxcasframe.h
 6=src\wxcasprint.h
+7=src\wxcasprefs.h
+8=src\wxcascte.h
 [Resource]
 1=wxcas.rc
 [Other]
 [History]
+src\wxcascanvas.cpp,0
+src\wxcasframe.cpp,0
+src\wxcasprefs.cpp,1357
