@@ -291,8 +291,8 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client)
 {
 	if (theApp.serverconnect->IsConnected() && theApp.serverconnect->IsLowID() && !theApp.serverconnect->IsLocalServer(client->GetServerIP(),client->GetServerPort()) && client->GetDownloadState() == DS_NONE && !client->IsFriend() && GetWaitingUserCount() > 50) {
 		// Well, all that issues finish in the same: don't allow to add to the queue
+		return;
 	}
-		return;			
 	
 	if ( client->IsBanned() ) {
 		return;
