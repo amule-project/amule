@@ -26,6 +26,7 @@
 #pragma interface "SysTray.h"
 #endif
 
+#include "StringFunctions.h"
 #include "MuleTrayIcon.h"
 
 #if !USE_WX_TRAY
