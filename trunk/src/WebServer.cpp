@@ -868,9 +868,9 @@ wxString CWebServer::_GetServerList(ThreadData Data) {
 		wxString sT;
 		if (i->nServerUsers > 0) {
 			if (i->nServerMaxUsers > 0) {
-				sT.Printf(wxT("%d (%d)"), i->nServerUsers, i->nServerMaxUsers);
+				sT = wxString::Format(wxT("%d (%d)"), i->nServerUsers, i->nServerMaxUsers);
 			} else {
-				sT.Printf(wxT("%d"), i->nServerUsers);
+				sT = wxString::Format(wxT("%d"), i->nServerUsers);
 			}
 		} else {
 			sT = wxT("0");
@@ -1145,11 +1145,11 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	Out.Replace(wxT("[TotalDownCompleted]"), CastItoXBytes((uint64)fTotalCompleted));
 	Out.Replace(wxT("[TotalDownTransferred]"), CastItoXBytes((uint64)fTotalTransferred));
 	
-	HTTPTemp.Printf(wxT("%8.2f %s"), fTotalSpeed/1024.0,_("kB/s"));
+	HTTPTemp = wxString::Format(wxT("%8.2f %s"), fTotalSpeed/1024.0,_("kB/s"));
 	Out.Replace(wxT("[TotalDownSpeed]"), HTTPTemp);
 	OutE = m_Templates.sTransferUpLine;
 	
-	HTTPTemp.Printf(wxT("%i"),m_Templates.iProgressbarWidth);
+	HTTPTemp = wxString::Format(wxT("%i"),m_Templates.iProgressbarWidth);
 	Out.Replace(wxT("[PROGRESSBARWIDTHVAL]"),HTTPTemp);
 
 	fTotalSize = 0;
@@ -1517,9 +1517,9 @@ wxString CWebServer::_GetGraphs(ThreadData Data) {
 	sScale = CastSecondsToHM(m_nGraphScale * m_nGraphWidth);
 
 	wxString s1, s2, s3;
-	s1.Printf(wxT("%u"), max_dl + 4);
-	s2.Printf(wxT("%u"), max_ul + 4);
-	s3.Printf(wxT("%u"), max_conn + 20);
+	s1 = wxString::Format(wxT("%u"), max_dl + 4);
+	s2 = wxString::Format(wxT("%u"), max_ul + 4);
+	s3 = wxString::Format(wxT("%u"), max_conn + 20);
 	
 	Out.Replace(wxT("[ScaleTime]"), sScale);
 	Out.Replace(wxT("[MaxDownload]"), s1);
@@ -1875,11 +1875,11 @@ wxString CWebServer::_GetPreferences(ThreadData Data) {
 		
 			wxString sRefresh = sRefresh.Format(wxT("%i"), webserverRefresh->GetInt32Data());
 			Out.Replace(wxT("[RefreshVal]"), sRefresh);
-			sRefresh.Printf(wxT("%i"), connMaxFileSources->GetInt16Data());
+			sRefresh = wxString::Format(wxT("%i"), connMaxFileSources->GetInt16Data());
 			Out.Replace(wxT("[MaxSourcesVal]"), sRefresh);
-			sRefresh.Printf(wxT("%i"), connMaxConn->GetInt16Data());
+			sRefresh = wxString::Format(wxT("%i"), connMaxConn->GetInt16Data());
 			Out.Replace(wxT("[MaxConnectionsVal]"), sRefresh);
-			sRefresh.Printf(wxT("%i"), coreTwMaxConnPerFive->GetInt16Data());
+			sRefresh = wxString::Format(wxT("%i"), coreTwMaxConnPerFive->GetInt16Data());
 			Out.Replace(wxT("[MaxConnectionsPer5Val]"), sRefresh);
 	
 			wxString colon(wxT(":"));
@@ -2290,13 +2290,13 @@ wxString CWebServer::_GetSearch(ThreadData Data) {
 	Out.Replace(wxT("[Global]"), _("Global (Server)"));
 
 	wxString val;
-	val.Printf(wxT("%i"),(m_iSearchSortby!=0 || (m_iSearchSortby==0 && m_bSearchAsc==0 ))?1:0 );
+	val = wxString::Format(wxT("%i"),(m_iSearchSortby!=0 || (m_iSearchSortby==0 && m_bSearchAsc==0 ))?1:0 );
 	Out.Replace(wxT("[SORTASCVALUE0]"), val);
-	val.Printf(wxT("%i"),(m_iSearchSortby!=1 || (m_iSearchSortby==1 && m_bSearchAsc==0 ))?1:0 );
+	val = wxString::Format(wxT("%i"),(m_iSearchSortby!=1 || (m_iSearchSortby==1 && m_bSearchAsc==0 ))?1:0 );
 	Out.Replace(wxT("[SORTASCVALUE1]"), val);
-	val.Printf(wxT("%i"),(m_iSearchSortby!=2 || (m_iSearchSortby==2 && m_bSearchAsc==0 ))?1:0 );
+	val = wxString::Format(wxT("%i"),(m_iSearchSortby!=2 || (m_iSearchSortby==2 && m_bSearchAsc==0 ))?1:0 );
 	Out.Replace(wxT("[SORTASCVALUE2]"), val);
-	val.Printf(wxT("%i"),(m_iSearchSortby!=3 || (m_iSearchSortby==3 && m_bSearchAsc==0 ))?1:0 );
+	val = wxString::Format(wxT("%i"),(m_iSearchSortby!=3 || (m_iSearchSortby==3 && m_bSearchAsc==0 ))?1:0 );
 	Out.Replace(wxT("[SORTASCVALUE3]"), val);
 	
 	return Out;
