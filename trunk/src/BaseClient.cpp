@@ -1014,14 +1014,14 @@ void CUpDownClient::ProcessMuleInfoPacket(char* pachPacket, uint32 nSize)
 	catch ( CStrangePacket )
 	{
 		printf("Wrong Tags on hello packet!!\n");
-		printf("Sent by %s on ip %s using client 5i version %i\n",GetUserName(),GetFullIP(),GetClientSoft(),GetMuleVersion());
+		printf("Sent by %s on ip %s using client %i version %i\n",GetUserName(),GetFullIP(),GetClientSoft(),GetMuleVersion());
 		printf("Packet Dump:\n");
 		DumpMem(pachPacket,nSize);
 	}
 	catch ( CInvalidPacket )
 	{
 		printf("Wrong Tags on hello packet!!!\n\n");
-		printf("Sent by %s on ip %s using client 5i version %i\n",GetUserName(),GetFullIP(),GetClientSoft(),GetMuleVersion());
+		printf("Sent by %s on ip %s using client %i version %i\n",GetUserName(),GetFullIP(),GetClientSoft(),GetMuleVersion());
 		printf("Packet Dump:\n");		
 		DumpMem(pachPacket,nSize);
 	}
