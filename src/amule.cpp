@@ -1749,7 +1749,8 @@ void CamuleApp::ShutDown() {
 }
 
 
-#if defined(__DEBUG__) && !(defined(__OPENBSD__)) && !(defined(__WXMAC__))
+#if defined(__DEBUG__) 
+#if !(defined(__OPENBSD__)) && !(defined(__WXMAC__))
 
 	void CamuleApp::AddSocketDeleteDebug(uint32 socket_pointer, uint32 creation_time) {
 		
@@ -1810,7 +1811,7 @@ void CamuleApp::ShutDown() {
 	// No backtrace on this platform.
 	}
 #endif
-	
+#endif
 	
 void CamuleApp::NotifyEvent(GUIEvent event) {
 	
