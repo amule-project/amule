@@ -243,7 +243,7 @@ void CServerList::ServerStats()
 				return;
 			}
 		}
-		if(ping_server->GetFailedCount() >= thePrefs::GetDeadserverRetries() && thePrefs::DeadServer()) {
+		if(ping_server->GetFailedCount() >= thePrefs::GetDeadserverRetries() && thePrefs::DeadServer() && !ping_server->IsStaticMember()) {
 			Notify_ServerRemove(ping_server);
 			return;
 		}
@@ -856,7 +856,7 @@ void CServerList::RemoveDeadServers()
 	if ( thePrefs::DeadServer() ) {
 		for ( POSITION pos = list.GetHeadPosition(); pos != NULL; ) {
 			CServer* cur_server = theApp.serverlist->list.GetNext( pos );
-			if ( cur_server->GetFailedCount() > thePrefs::GetDeadserverRetries() ) {
+			if ( cur_server->GetFailedCount() > thePrefs::GetDeadserverRetries() && !cur_server->IsStaticMember()) {
 				RemoveServer(cur_server);
 			}
 		}
