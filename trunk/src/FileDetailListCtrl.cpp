@@ -20,7 +20,7 @@
 // FileDetailDialog.cpp : implementation file
 //
 
-
+#include <wx/intl.h>		
 #include "muuli_wdr.h"		// Needed for ID_CLOSEWNDFD
 #include "FileDetailListCtrl.h"	// Interface declarations
 

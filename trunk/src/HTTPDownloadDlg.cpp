@@ -25,6 +25,8 @@
 	#include <wx/defs.h>
 	#include <wx/msw/winundef.h>
 #endif
+#include <wx/intl.h>
+ 
 #include "HTTPDownloadDlg.h"	// Interface declarations
 #include "animate.h"		// Needed for wxGIFAnimationCtrl
 #include "muuli_wdr.h"		// Needed for ID_CANCEL
