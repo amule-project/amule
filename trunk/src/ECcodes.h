@@ -51,6 +51,14 @@ enum {
 	EC_OP_STRINGS	= 0x0004,
 	EC_OP_MISC_DATA	= 0x0005,
 
+	// client -> server commands
+	
+	EC_OP_SHUTDOWN  = 0x0006, // stop server
+	EC_OP_STAT_REQ  = 0x0007, // request statistics
+	EC_OP_ED2K_LINK = 0x0008, // handle ed2k link
+	
+	EC_OP_Q_FILE_CMD  = 0x0009, // perform action on file in queue
+
 	EC_OP_COMPAT	= 0x00ff	// compatibility opcode, for testing purposes only
 					// tags: EC_TAG_STRING: v1.0 message
 };
@@ -69,7 +77,7 @@ enum {
 	EC_TAG_CLIENT_NAME	= 0x0003,
 	EC_TAG_CLIENT_VERSION	= 0x0004,
 	EC_TAG_CLIENT_MOD	= 0x0005,
-	EC_TAG_PROTOCOL_VERSION	= 0x0006
+	EC_TAG_PROTOCOL_VERSION	= 0x0006,
 };
 
 #endif	/* ECCODES_H */
