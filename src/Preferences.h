@@ -36,11 +36,11 @@
 #include <map>
 #include <vector>
 
+#include "Proxy.h"
 
 class CPreferences;
 class wxConfigBase;
 class wxWindow;
-
 
 #define DEFAULT_COL_SIZE 65535
 
@@ -493,6 +493,8 @@ public:
 			}
 		}
 	}
+	// I cant have it return a reference, I'll need a pointer later.
+	static const wxProxyData *GetProxyData()		{ return &s_ProxyData; }
 	
 	// Hidden files
 	
@@ -545,13 +547,9 @@ protected:
 ////////////// PROXY
 
 	static bool	s_ProxyEnableProxy;
-	static uint16	s_ProxyType;
-	static wxString	s_ProxyName;
-	static uint16	s_ProxyPort;
 	static bool	s_ProxyEnablePassword;
-	static wxString	s_ProxyUser;
-	static wxString	s_ProxyPassword;
 //	static bool	s_Proxy????;
+	static wxProxyData s_ProxyData;
 
 ////////////// SERVERS
 	static bool	s_autoserverlist;

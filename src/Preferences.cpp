@@ -66,13 +66,9 @@ CPreferences::CFGList	CPreferences::s_MiscList;
 
 /* Proxy */
 bool		CPreferences::s_ProxyEnableProxy;
-uint16		CPreferences::s_ProxyType;
-wxString	CPreferences::s_ProxyName;
-uint16		CPreferences::s_ProxyPort;
 bool		CPreferences::s_ProxyEnablePassword;
-wxString	CPreferences::s_ProxyUser;
-wxString	CPreferences::s_ProxyPassword;
 //bool		CPreferences::s_Proxy????;
+wxProxyData	CPreferences::s_ProxyData;
 
 /* The rest, organize it! */
 wxString	CPreferences::s_nick;
@@ -708,12 +704,12 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	 * Proxy
 	 **/
 	NewCfgItem(ID_PROXY_ENABLE_PROXY,	(new Cfg_Bool( wxT("/Proxy/ProxyEnableProxy"), s_ProxyEnableProxy, false )));
-	NewCfgItem(ID_PROXY_TYPE,		(MkCfg_Int( wxT("/Proxy/ProxyType"), s_ProxyType, 0 )));
-	NewCfgItem(ID_PROXY_NAME,		(new Cfg_Str( wxT("/Proxy/ProxyName"), s_ProxyName, wxEmptyString )));
-	NewCfgItem(ID_PROXY_PORT,		(MkCfg_Int( wxT("/Proxy/ProxyPort"), s_ProxyPort, 1080 )));
+	NewCfgItem(ID_PROXY_TYPE,		(MkCfg_Int( wxT("/Proxy/ProxyType"), s_ProxyData.m_ProxyType, 0 )));
+	NewCfgItem(ID_PROXY_NAME,		(new Cfg_Str( wxT("/Proxy/ProxyName"), s_ProxyData.m_ProxyHostName, wxEmptyString )));
+	NewCfgItem(ID_PROXY_PORT,		(MkCfg_Int( wxT("/Proxy/ProxyPort"), s_ProxyData.m_ProxyPort, 1080 )));
 	NewCfgItem(ID_PROXY_ENABLE_PASSWORD,	(new Cfg_Bool( wxT("/Proxy/ProxyEnablePassword"), s_ProxyEnablePassword, false )));
-	NewCfgItem(ID_PROXY_USER,		(new Cfg_Str( wxT("/Proxy/ProxyUser"), s_ProxyUser, wxEmptyString )));
-	NewCfgItem(ID_PROXY_PASSWORD,		(new Cfg_Str( wxT("/Proxy/ProxyPassword"), s_ProxyPassword, wxEmptyString )));
+	NewCfgItem(ID_PROXY_USER,		(new Cfg_Str( wxT("/Proxy/ProxyUser"), s_ProxyData.m_UserName, wxEmptyString )));
+	NewCfgItem(ID_PROXY_PASSWORD,		(new Cfg_Str( wxT("/Proxy/ProxyPassword"), s_ProxyData.m_Password, wxEmptyString )));
 // These were copied from eMule config file, maybe someone with windows can complete this?
 //	NewCfgItem(ID_PROXY_AUTO_SERVER_CONNECT_WITHOUT_PROXY,	(new Cfg_Bool( wxT("/eMule/Proxy/Proxy????"), s_Proxy????, false )));
 	
