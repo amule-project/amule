@@ -448,7 +448,7 @@ class RPtr : public U {
 	public:
 	RPtr(T* rem_ptr) : U(rem_ptr, sizeof(T))
 		{
-			RunUpdate();
+			this->RunUpdate();
 		}
 	~RPtr()
 		{
