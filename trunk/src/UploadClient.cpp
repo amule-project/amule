@@ -669,7 +669,7 @@ void CUpDownClient::SendHashsetPacket(char* forfileid){
 	//printf("entered in : CUpDownClient::SendHashsetPacket\n");
 	CKnownFile* file = theApp.sharedfiles->GetFileByID((uchar*)forfileid);
 	if (!file) {
-		theApp.amuledlg->AddLogLine(false, CString(_("requested file not found")));
+		theApp.amuledlg->AddLogLine(false, _("requested file not found"));
 		return;
 	}
 
@@ -732,7 +732,7 @@ void CUpDownClient::SendCommentInfo(CKnownFile *file)
 	m_bCommentDirty = false;
 
 	int8 rating=file->GetFileRate();
-	CString desc=file->GetFileComment();
+	wxString desc=file->GetFileComment();
 	if(file->GetFileRate() == 0 && desc.IsEmpty()) {
 		return;
 	}
@@ -743,7 +743,7 @@ void CUpDownClient::SendCommentInfo(CKnownFile *file)
 	// wxString write functions.
 	// data.Write(desc.Left(128));
 	
-	uint32 length = desc.GetLength();
+	uint32 length = desc.Length();
 	if (length > 128) {
 		length = 128;
 	}

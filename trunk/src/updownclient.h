@@ -339,7 +339,7 @@ public:
 	void			SetChatState(uint8 nNewS)		{m_byChatstate = nNewS;}
 
 	//File Comment 
-	CString			GetFileComment()			{return m_strComment;} 
+	const wxString&	GetFileComment()			{return m_strComment;} 
 	void			SetFileComment(char *desc)		{m_strComment.Format(wxT("%s"),desc);}
 	uint8			GetFileRate()				{return m_iRate;}
 	
@@ -458,7 +458,7 @@ private:
 	uint8*		m_abyUpPartStatus;
 	uint16		m_lastPartAsked;
 	DWORD		m_dwEnteredConnectedState;
-	CString m_strModVersion;
+	wxString m_strModVersion;
 	
 	CTypedPtrList<CPtrList, Packet*>				 m_BlockSend_queue;
 	CTypedPtrList<CPtrList, Requested_Block_Struct*> m_BlockRequests_queue;
@@ -496,7 +496,7 @@ private:
 	uint32		bytesReceivedCycle;
 	// chat
 	uint8 m_byChatstate;
-	CString m_strComment;
+	wxString m_strComment;
 	int8 m_iRate;
 	unsigned int m_fHashsetRequesting : 1, // we have sent a hashset request to this client
 		m_fNoViewSharedFiles : 1, // client has disabled the 'View Shared Files' feature, if this flag is not set, we just know that we don't know for sure if it is enabled
@@ -558,12 +558,12 @@ private:
 	// Support for tag ET_MOD_VERSION [BlackRat]
 public:
 
-	const CString	GetClientModString() const { return m_strModVersion; }
-	const CString	GetClientVerString() const { return m_clientVerString; }
+	const wxString&	GetClientModString() const { return m_strModVersion; }
+	const wxString&	GetClientVerString() const { return m_clientVerString; }
 
 private:
 
-	CString		m_clientVerString;
+	wxString		m_clientVerString;
 
 	int SecIdentSupRec;
 	
