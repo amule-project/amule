@@ -1,0 +1,135 @@
+.TH AMULEWEB 1
+.SH NAME
+amuleweb \- aMule web server
+.SH SYNOPSIS
+.B amuleweb
+.RB [ \-h " " \fI<host> ]
+.RB [ \-p " " \fI<port> ]
+.RB [ \-P " " \fI<pass> ]
+.RB [ \-f " " \fI<path> ]
+.RB [ \-q ]
+.RB [ \-v ]
+.RB [ \-w ]
+.RB [ \-t " " \fI<name> ]
+.RB [ \-s " " \fI<port> ]
+.RB [ \-z ]
+.RB [ \-Z ]
+.RB [ \-A " " \fI<pass> ]
+.RB [ \-G " " \fI<pass> ]
+.RB [ \-a ]
+.RB [ \-d ]
+.RB [ \-L ]
+.PP
+.B amuleweb
+.RB [ \-\-help ]
+.RB [ \-\-version ]
+.PP
+.B amuleweb
+.RB [ \-\-amule\-config\-file=\fI<path> ]
+.SH DESCRIPTION
+amuleweb manages your access to amule through a webbrowser.
+You can start amuleweb together with \fBamule\fR(1), or separately, any time later.
+Options can be specified via command-line or via config-file.
+Command-line options take precedence over config-file options.
+.TP
+\fB\-h\fR, \fB\-\-host\fR=\fI<host>\fR
+host where aMule is running (default: \fIlocalhost\fR).
+\fI<host>\fR might be an IP address or a DNS name
+.TP
+\fB\-p\fR, \fB\-\-port\fR=\fI<port>\fR
+aMule's port for External Connections, as set in Preferences->Remote Controls (default: \fI4712\fR)
+.TP
+\fB\-P\fR, \fB\-\-password\fR=\fI<passwd>\fR
+External Connections password
+.TP
+\fB\-f\fR, \fB\-\-config\-file\fR=\fI<path>\fR
+use the given configuration file.
+Default configuration file is \fI~/.aMule/remote.conf\fR
+.TP
+\fB\-q\fR, \fB\-\-quiet\fR
+do not print any output to stdout.
+You may want to use \fB\-q\fR to daemonize the webserwer,
+i.e. running as '\fBamuleweb \-q &\fR'
+.TP
+\fB\-v\fR, \fB\-\-verbose\fR
+be verbose \- show also debug messages
+.TP
+\fB\-w\fR, \fB\-\-write\-config\fR
+write command line options to config file and exit
+.TP
+\fB\-t\fR, \fB\-\-template\fR=\fI<name>\fR
+loads the template named \fI<name>\fR. See also the section
+.B SKIN SUPPORT
+.TP
+\fB\-s\fR, \fB\-\-server\-port\fR=\fI<port>\fR
+webserver's HTTP port. This is the port you can point your browser to (default: \fI4711\fR)
+.TP
+\fB\-z\fR, \fB\-\-enable\-gzip\fR
+enable using gzip compression in HTTP traffic to save bandwidth
+.TP
+\fB\-Z\fR, \fB\-\-disable\-gzip\fR
+disable using gzip compression (this is the default)
+.TP
+\fB\-A\fR, \fB\-\-admin\-pass\fR=\fI<passwd>\fR
+full access password for webserver
+.TP
+\fB\-G\fR, \fB\-\-guest\-pass\fR=\fI<passwd>\fR
+guest password for webserver
+.TP
+\fB\-a\fR, \fB\-\-allow\-guest\fR
+allow guest access
+.TP
+\fB\-d\fR, \fB\-\-deny\-guest\fR
+deny guest access (default)
+.TP
+\fB\-L\fR, \fB\-\-load\-settings\fR
+load/save webserver settings from/to remote aMule.
+This causes amuleweb to ignore command-line and config-file settings, and load them from aMule.
+When saving preferences none will be written to the config file, but to aMule.
+(Of course, this works only for those settings, that can be set in aMule's Preferences->Remote Controls)
+.TP
+\fB\-\-amule\-config\-file\fR=\fI<path>\fR
+aMule config file path.
+.B DO NOT USE DIRECTLY!
+aMule uses this option when starting amuleweb at aMule startup.
+This option causes all other command-line and config-file settings to be ignored, preferences to be read from the given config file, and also implies the \fB\-q \-L\fR options.
+.TP
+\fB\-\-help\fR
+display usage help information and exit
+.TP
+\fB\-\-version\fR
+output program version information and exit
+.SH SKIN SUPPORT
+\fBamuleweb\fR is capable of displaying information in different skins.
+These skins are called templates, and you can make amuleweb load a specific template via the \fB\-t\fR command line option.
+Templates are searched in two places: first in \fI~/.aMule/webserver/\fR and then in \fI$(pkgdatadir)/webserver/\fR 
+(\fI$(pkgdatadir)\fR is the install location of architecture independent data, most likely something like /usr/share/amule).
+Each template must be in a subdirectory of the template name, and this directory must contain all files the template needs.
+The actual template filename must be aMule.tmpl.
+.PP
+For example, the default template (named 'default') is in webserver/default/, and this directory contains aMule.tmpl amongst a lot of image files.
+.SH FILES
+~/.aMule/remote.conf
+.br
+~/.eMule
+.br
+~/.aMule/webserver/
+.br
+\fI$(pkgdatadir)\fR/webserver/
+.SH EXAMPLE
+Typically amuleweb will be first run as:
+.PP
+\fBamuleweb\fR \fB\-h\fR \fIhostname\fR \fB\-p\fR \fIECport\fR \fB\-P\fR \fIECpassword\fR \fB\-s\fR \fIHTTPport\fR \fB\-A\fR \fIAdminPassword\fR \fB\-w\fR
+.PP
+This will save these settings to \fI$HOME/.aMule/remote.conf\fR, and later you only need to type:
+.PP
+.B amuleweb
+.PP
+Of course, you may specify any more or less options on the first example line, and you may also totally omit it.
+.SH REPORTING BUGS
+Please report bugs either on our forum (\fIhttp://forum.amule.org/\fR), or in our bugtracker (\fIhttp://bugs.amule.org/\fR).
+Please do not report bugs in e-mail, neither to our mailing list nor directly to any team member.
+.SH COPYRIGHT
+aMule and all of its related utilities are distributed under the GNU General Public License.
+.SH SEE ALSO
+\fBamule\fR(1), \fBamulecmd\fR(1), \fBamulewebDLG\fR(1)
