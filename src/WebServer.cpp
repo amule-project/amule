@@ -64,6 +64,7 @@
 #include "Types.h"
 #include "WebSocket.h"		// Needed for StopSockets()
 #include "ECcodes.h"
+#include "Format.h"
 
 #ifndef __WXMSW__
 	#include "netinet/in.h"	// Needed for ntohl()
