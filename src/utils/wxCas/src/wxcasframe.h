@@ -105,7 +105,7 @@ class WxCasFrame:public wxFrame
 
   protected:
     bool UpdateStatsPanel ();
-    void UpdateAll ();
+    void UpdateAll (bool forceFitting = FALSE);
 
     void OnBarRefresh (wxCommandEvent & event);
     void OnBarAbout (wxCommandEvent & event);
