@@ -75,10 +75,8 @@ class ECSocket
 		// Server
 		//
 		wxSocketBase *Accept(bool wait = true) { return ((wxSocketServer *)m_sock)->Accept(wait); }
-		bool WaitForAccept(long seconds, long millisecond )
-		{
-			return ((wxSocketServer *)m_sock)->WaitForAccept(seconds, millisecond);
-		}
+		bool WaitForAccept(long seconds, long millisecond ) { return ((wxSocketServer *)m_sock)->WaitForAccept(seconds, millisecond); }
+
 		//
 		// Packet I/O
 		//
@@ -105,6 +103,7 @@ class ECSocket
 		bool WriteBuffer(const void *buffer, unsigned int len) { return WriteBuffer(m_sock, buffer, len); }
 
 	private:
+		uint32	ReadFlags(wxSocketBase *);
 		aMuleECSocketType m_type;
 		wxSocketBase *m_sock;
 };

@@ -327,6 +327,9 @@ bool CECTag::AddTag(const CECTag& tag)
 
 bool CECTag::AddTag(const CECTag *tag)
 {
+	// cannot have more than 64k tags
+	wxASSERT(m_tagCount < 0xffff);
+
 	if (m_listSize == 0) {
 		m_tagList = (_taglist_t)malloc(ARRAY_ALLOC_CHUNKS * sizeof(CECTag *));
 		if (m_tagList != NULL) {

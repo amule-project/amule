@@ -51,7 +51,7 @@
 #include "NetworkFunctions.h" // Needed for StringIPtoUint32
 #include "types.h"
 #include "WebSocket.h"		// Needed for StopSockets()
-
+#include "ECcodes.h"
 //-------------------------------------------------------------------
 
 // Initialization of the static MyTimer member variables.
