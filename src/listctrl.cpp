@@ -3035,6 +3035,7 @@ void wxODListMainWindow::OnPaint( wxPaintEvent &WXUNUSED(event) )
 			// Clear to the right of the last column if the columns dont fill everything
 			if ( last.GetWidth() < width ) {
 				// Clear the area below the last visible item
+				dc.SetBrush( wxBrush( GetBackgroundColour(), wxSOLID ) );
 				dc.DrawRectangle( last.GetWidth(), 0, width - last.GetWidth(), height );
 			}
 		}
