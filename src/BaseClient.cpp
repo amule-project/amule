@@ -328,7 +328,7 @@ void CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
 		
 	m_bIsHybrid = false;
 	m_bIsML = false;
-	data->Read((unsigned char*)m_achUserHash);
+	data->ReadRaw((unsigned char*)m_achUserHash,16);
 	data->Read(m_nUserID);
 	uint16 nUserPort = 0;
 	data->Read(nUserPort); // hmm clientport is sent twice - why?
@@ -852,6 +852,7 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer) {
 
 	// Support for ET_MOD_VERSION [BlackRat]
 	// lemonfan - I count 9 tags...
+	// Kry - Yes, my fault
 	data->Write((uint32)9); /* 7 -> 8 */ 
 
 	CTag tag1(ET_COMPRESSION,1);
@@ -908,8 +909,9 @@ void CUpDownClient::ProcessMuleInfoPacket(char* pachPacket, uint32 nSize)
 	//Therefore, sooner or later, we are going to have to switch over to using the eDonkey hello packet to set the version.
 	//No sense making a third value sent for versions..
 	data.Read(m_byEmuleVersion);
-	if( m_byEmuleVersion == 0x2B )
+	if( m_byEmuleVersion == 0x2B ) {
 		m_byEmuleVersion = 0x22;
+	}	
 	uint8 protversion;
 	data.Read(protversion);
 
@@ -996,256 +998,6 @@ void CUpDownClient::ProcessMuleInfoPacket(char* pachPacket, uint32 nSize)
 	m_byInfopacketsReceived |= IP_EMULEPROTPACK;
 	if (m_byInfopacketsReceived == IP_BOTH)
 		InfoPacketsReceived();
-	
-	
-	
-#if 0	
-	try {
-
-		#if 0
-
-		bool bDumpClientInfo = false;
-
-		#endif
-
-		CSafeMemFile* data = new CSafeMemFile((BYTE*)pachPacket,nSize);
-		m_byCompatableClient = 0;
-		if ( 1 != data->Read(&m_byEmuleVersion,1) ) {
-			throw CInvalidPacket("short packet reading emule version");
-		}
-		if( m_byEmuleVersion == 0x2B ) {
-			m_byEmuleVersion = 0x22;
-		}
-		uint8 protversion;
-		if ( 1 != data->Read(&protversion,1) ) {
-			throw CInvalidPacket("short packet reading emule protocol version");
-		}
-		//implicitly supported options by older clients
-		if (protversion == EMULE_PROTOCOL) {
-			//in the future do not use version to guess about new features
-
-			if(m_byEmuleVersion < 0x25 && m_byEmuleVersion > 0x22) {
-				m_byUDPVer = 1;
-			}
-			if(m_byEmuleVersion < 0x25 && m_byEmuleVersion > 0x21) {
-				m_bySourceExchangeVer = 1;
-			}
-			if(m_byEmuleVersion == 0x24) {
-				m_byAcceptCommentVer = 1;
-			}
-			// Shared directories are requested from eMule 0.28+ because eMule 0.27 has a bug in 
-			// the OP_ASKSHAREDFILESDIR handler, which does not return the shared files for a 
-			// directory which has a trailing backslash.
-			if(m_byEmuleVersion >= 0x28 && !m_bIsNewMLD) {
-				// MLdonkey currently does not support shared directories
-				m_fSharedDirectories = 1;
-			}
-		} else {
-			delete data;
-			return;
-		}
-		m_bEmuleProtocol = true;
-
-		uint32 tagcount;
-		if ( 4 != data->Read(&tagcount,4) ) {
-			throw CInvalidPacket("short packet reading tag count");
-		}
-
-		#if 0
-
-		if (tagcount > 10) {
-			printf("Mule info packet with unusual tag count %lu\n", (unsigned long)tagcount);
-		}
-
-		#endif
-
-		for (unsigned int i = 0; i < tagcount; ++i) {
-			CTag* temptag = new CTag(data);
-			switch(temptag->tag->specialtag) {
-				case ET_COMPRESSION:
-					if ( temptag->GetType() != TAG_INTEGER ) {
-						throw CInvalidPacket("invalid data type for compression support flag");
-					}
-					m_byDataCompVer = temptag->tag->intvalue;
-					break;
-				case ET_UDPPORT:
-					if ( temptag->GetType() != TAG_INTEGER ) {
-						throw CInvalidPacket("invalid data type for UDP port");
-					}
-					m_nUDPPort = temptag->tag->intvalue;
-					break;
-				case ET_UDPVER:
-					if ( temptag->GetType() != TAG_INTEGER ) {
-						throw CInvalidPacket("invalid data type for UDP version");
-					}
-					m_byUDPVer = temptag->tag->intvalue;
-					break;
-				case ET_SOURCEEXCHANGE:
-					if ( temptag->GetType() != TAG_INTEGER ) {
-						throw CInvalidPacket("invalid data type for source exchange version");
-					}
-					m_bySourceExchangeVer = temptag->tag->intvalue;
-					break;
-				case ET_COMMENTS:
-					if ( temptag->GetType() != TAG_INTEGER ) {
-						throw CInvalidPacket("invalid data type for comments support flag");
-					}
-					m_byAcceptCommentVer = temptag->tag->intvalue;
-					break;
-				case ET_EXTENDEDREQUEST:
-					if ( temptag->GetType() != TAG_INTEGER ) {
-						throw CInvalidPacket("invalid data type for extended request version");
-					}
-					m_byExtendedRequestsVer = temptag->tag->intvalue;
-					break;
-				case ET_COMPATABLECLIENT:
-					if ( temptag->GetType() != TAG_INTEGER ) {
-						throw CInvalidPacket("invalid data type for compatible client id");
-					}
-					m_byCompatableClient = temptag->tag->intvalue;
-					break;
-					// Support for tag ET_MOD_VERSION
-				case ET_BAD_COMPATABLECLIENT:
-					if ( temptag->GetType() != TAG_INTEGER ) {
-						throw CInvalidPacket("invalid data type for compatible client id");
-					}
-					m_byCompatableClient = temptag->tag->intvalue;
-					break;
-					// Support for tag ET_MOD_VERSION
-				case ET_MOD_VERSION: {
-					if ( temptag->GetType() != TAG_STRING ) {
-						throw CInvalidPacket("invalid data type for Mod-version");
-					}
-					// Anti-leechermods [BlackRat]
-					wxString oldmodversion;
-					bool bOldMod = false;
-					if(m_clientModString.Cmp("") != 0) {
-						bOldMod=true;
-						oldmodversion = m_clientModString;					
-						m_clientModString = "";
-					}
-					m_clientModString = "";
-					m_clientModString = temptag->tag->stringvalue;
-
-					// mod version changed ??
-					if (bOldMod && (oldmodversion != m_clientModString)) {
-						// Thief !
-						uint64 id = getUID();
-						leechertype = 2;
-						if(theApp.listensocket->offensecounter.find(id) != theApp.listensocket->offensecounter.end()) {
-							theApp.listensocket->offensecounter[id]++;
-						} else {
-							theApp.listensocket->offensecounter[id] = (uint32) 1;
-						}
-							theApp.listensocket->offensecounter[0]++;
-					}
-				}
-				break;
-				case ET_FEATURES:
-					if ( temptag->GetType() != TAG_INTEGER ) {
-
-						#if 0
-
-						printf("MuleInfo: invalid data type for feature flag\n");
-						bDumpClientInfo = true;
-
-						#endif
-
-						break;
-					}  
-
-					#if 0
-
-		 			if ( temptag->tag->intvalue & ~0x03 ) {
-						printf("MuleInfo: unknown features signaled with ET_FEATURES: %08x\n", temptag->tag->intvalue & ~0x03);
-						bDumpClientInfo = true;
-					}
-
-					#endif
-
-					/*
-					 * The known bits 0 and 1 are for
-					 * SecIdent v1/v2.
-					 */
-					break;
-
-				#if 0
-
-				case ET_TAROD:
-				case ET_TAROD_VERSION:
-				case ET_L2HAC:
-				case ET_MOD_LSD:
-				case ET_MOD_LSD_VERSION:
-				case ET_MOD_SECURE_COMMUNITY:
-				case ET_MOD_PROTOCOL:
-				case ET_MOD_Morph:
-				case ET_MOD_Morph_VERSION:
-				case ET_MOD_FUSION:
-				case ET_MOD_FUSION_VERSION:
-				case ET_MOD_MorTillo:
-				case ET_MOD_MorTillo_VERSION:
-				case ET_MOD_LOVELACE_VERSION:
-				case ET_MOD_OXY:
-				case ET_PLUS:
-				case ET_FEATURESET:
-				/* We merily know about this tags */
-				break;
-
-				default:
-					printf("Unknown tag %u in MuleInfo packet\n", (unsigned int)temptag->tag->specialtag);
-					temptag->DumpToStdout();
-					bDumpClientInfo = true;
-					break;
-
-				#endif
-
-				}
-			delete temptag;
-			}
-
-			if( m_byDataCompVer == 0 ){
-				m_bySourceExchangeVer = 0;
-				m_byExtendedRequestsVer = 0;
-				m_byAcceptCommentVer = 0;
-				m_nUDPPort = 0;
-			}
-			delete data;
-			ReGetClientSoft();
-
-			#if 0
-
-			if ( bDumpClientInfo ) {
-				printf("from client with:");
-				if ( m_pszUsername ) {
-					printf(" Username '%s'", m_pszUsername);
-				}
-				printf(" Software: '%s'", m_clientVerString.c_str());
-				printf(" Mods: '%s'", m_clientModString.c_str());
-				printf("\n");
-			}
-
-			#endif
-
-		}
-
-		catch (CInvalidPacket e) {
-			throw wxString(wxT("Received invalid Mule info packet - ")) + e.what();
-		}
-	
-		// Filtering Invalid Emule Clients [BlackRat]
-		if (((!GetMuleVersion() && (GetClientSoft()==SO_EMULE || GetClientSoft()==SO_OLDEMULE) && (GetVersion()==60 || !GetVersion())) || (!ExtProtocolAvailable() && GetClientSoft()==SO_EMULE && (GetVersion()==60 || !GetVersion()))) && !thief) {
-			// bad client : thief !
-			thief = true;
-			leechertype = 1;
-			uint64 id = getUID();
-			if(theApp.listensocket->offensecounter.find(id) != theApp.listensocket->offensecounter.end()) {
-				theApp.listensocket->offensecounter[id]++;
-			} else {
-				    theApp.listensocket->offensecounter[id] = (uint32) 1;
-			}
-			theApp.listensocket->offensecounter[0]++;
-		}
-#endif
 }
 
 void CUpDownClient::SendHelloAnswer()
@@ -1263,7 +1015,7 @@ void CUpDownClient::SendHelloAnswer()
 
 void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 {
-	data->Write((const uint8*)theApp.glob_prefs->GetUserHash());
+	data->WriteRaw(theApp.glob_prefs->GetUserHash(),16);
 	data->Write(theApp.serverconnect->GetClientID());
 	data->Write(theApp.glob_prefs->GetPort());
 	data->Write((uint32)2);
@@ -1306,7 +1058,12 @@ void CUpDownClient::ProcessMuleCommentPacket(char* pachPacket, uint32 nSize)
 		theApp.amuledlg->AddDebugLogLine(false,_("Rating for file '%s' received: %i"),m_pszClientFilename,m_iRate);
 		if (length>50) length=50;
 		if (length>0){
-			data.Read(m_strComment);
+			char* desc=new char[length+1];
+			memset(desc,0,length+1);
+			if ( (unsigned int)length != data.ReadRaw(desc,length) )
+				throw CInvalidPacket("short packet reading comment string");
+			theApp.amuledlg->AddDebugLogLine(false,_("Description for file '%s' received: %s"), m_pszClientFilename, desc);
+			m_strComment.Format("%s",desc);				
 			theApp.amuledlg->AddDebugLogLine(false,_("Description for file '%s' received: %s"), m_pszClientFilename, m_strComment.GetData());
 			reqfile->SetHasComment(true);
 		}
@@ -1857,8 +1614,8 @@ void CUpDownClient::SendPublicKeyPacket(){
 	CMemFile data;
 	data.Write(theApp.clientcredits->GetPubKeyLen());
 	data.WriteRaw(theApp.clientcredits->GetPublicKey(), theApp.clientcredits->GetPubKeyLen());
-	Packet* packet = new Packet(&data);
-	packet->opcode = OP_CALLBACKREQUEST;
+	Packet* packet = new Packet(&data, OP_EMULEPROT); 
+	packet->opcode = OP_PUBLICKEY;
 //	Packet* packet = new Packet(OP_PUBLICKEY,theApp.clientcredits->GetPubKeyLen() + 1,OP_EMULEPROT);
 //	memcpy(packet->pBuffer+1,theApp.clientcredits->GetPublicKey(), theApp.clientcredits->GetPubKeyLen());
 //	packet->pBuffer[0] = theApp.clientcredits->GetPubKeyLen();
@@ -1917,9 +1674,11 @@ void CUpDownClient::SendSignaturePacket(){
 	CMemFile data;
 	data.Write(siglen);
 	data.WriteRaw(achBuffer, siglen);
-	data.Write(byChaIPKind);
-	Packet* packet = new Packet(&data);
-	packet->opcode = OP_CALLBACKREQUEST;
+	if (bUseV2) {
+		data.Write(byChaIPKind);
+	}	
+	Packet* packet = new Packet(&data, OP_EMULEPROT);
+	packet->opcode = OP_SIGNATURE;
 
 //	Packet* packet = new Packet(OP_SIGNATURE,siglen + 1+ ( (bUseV2)? 1:0 ),OP_EMULEPROT);
 //	memcpy(packet->pBuffer+1,achBuffer, siglen);
@@ -2030,7 +1789,7 @@ void CUpDownClient::SendSecIdentStatePacket(){
 		data.Write(nValue);
 		data.Write(dwRandom);
 		Packet* packet = new Packet(&data, OP_EMULEPROT);
-		
+		packet->opcode = OP_SECIDENTSTATE;		
 //		Packet* packet = new Packet(OP_SECIDENTSTATE,5,OP_EMULEPROT);
 //		packet->pBuffer[0] = nValue;
 //		memcpy(packet->pBuffer+1,&dwRandom, sizeof(dwRandom));
@@ -2062,6 +1821,9 @@ void CUpDownClient::ProcessSecIdentStatePacket(uchar* pachPacket, uint32 nSize){
 				break;
 		}
 	CSafeMemFile data((BYTE*)pachPacket,nSize);
+	// Kry:  + 1 on the original one.
+	byte discard;
+	data.Read(discard);		
 	uint32 dwRandom;
 	data.Read(dwRandom);
 	credits->m_dwCryptRndChallengeFrom = dwRandom;
