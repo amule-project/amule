@@ -25,7 +25,7 @@
 #include "types.h"		// Needed for uint16 and uint32
 #include "CMD4Hash.h"	// Needed for CMD4Hash
 
-#include <list>
+#include <deque>
 #include <map>
 
 
@@ -241,7 +241,7 @@ public:
 
 
 	//! The type of the list used to store client-pointers for a couple of tasks.
-	typedef std::list<CUpDownClient*> SourceList;
+	typedef std::deque<CUpDownClient*> SourceList;
 	
 
 	/**
