@@ -91,6 +91,12 @@ CUpDownClient::CUpDownClient(uint16 in_port, uint32 in_userid,uint32 in_serverip
 
 void CUpDownClient::Init()
 {
+#ifdef __DEBUG__
+	MagicNumber1 = MAGIC_1;
+	MagicNumber2 = MAGIC_2;
+	MagicNumber3 = MAGIC_1;
+	MagicNumber4 = MAGIC_2;
+#endif // __DEBUG__
 	credits = 0;
 	//memset(reqfileid, 0, sizeof reqfileid);
 	// m_nAvDownDatarate = 0;  // unused
@@ -256,6 +262,15 @@ CUpDownClient::~CUpDownClient()
 
 	//DEBUG_ONLY (theApp.listensocket->Debug_ClientDeleted(this));
 	SetUploadFileID(NULL);
+#ifdef __DEBUG__
+	//
+	// Swap magic numbers to signal a properly deleted client
+	//
+	MagicNumber1 = MAGIC_2;
+	MagicNumber2 = MAGIC_1;
+	MagicNumber3 = MAGIC_2;
+	MagicNumber4 = MAGIC_1;
+#endif
 }
 
 void CUpDownClient::ClearHelloProperties()

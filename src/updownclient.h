@@ -125,6 +125,11 @@ enum EInfoPacketState{
 };
 
 
+//
+// Magic numbers to check for memory corruption
+// 
+#define MAGIC_1 1234567890
+#define MAGIC_2 1357902468
 
 class CUpDownClient
 {
@@ -566,7 +571,13 @@ private:
 	uint16		m_nUpCompleteSourcesCount;
 
 public:
+#ifdef __DEBUG__
+	unsigned int	MagicNumber3;
+#endif // __DEBUG__
 	uint8*		m_abyUpPartStatus;
+#ifdef __DEBUG__
+	unsigned int	MagicNumber4;
+#endif // __DEBUG__
 	uint16		m_lastPartAsked;
 	DWORD		m_dwEnteredConnectedState;
 	wxString	m_strModVersion;
