@@ -566,12 +566,20 @@ bool CamuleApp::OnInit()
 		entries = getmntent(mnt_tab);
 		while ( entries ) {
 			if ( strncmp(entries->mnt_type, "vfat",4) == 0 ) {
+				#if wxUSE_UNICODE
+				if ( tempdir.StartsWith( UTF82unicode(entries->mnt_dir )) ) {
+				#else 
 				if ( tempdir.StartsWith( char2unicode(entries->mnt_dir )) ) {
+				#endif
 					// Kry - We cannot addlogline because there's no GUI yet!
 					AddLogLineM(false,_("Temp dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings."));
 					use_chmod = false;
 				}
+				#if wxUSE_UNICODE
+				if ( incomingdir.StartsWith( UTF82unicode(entries->mnt_dir )) ) {
+				#else
 				if ( incomingdir.StartsWith( char2unicode(entries->mnt_dir )) ) {
+				#endif
 					AddLogLineM(false,_("Incoming dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings."));
 					use_chmod = false;
 				}
@@ -596,12 +604,20 @@ bool CamuleApp::OnInit()
 	size = getmntinfo(&mntbuf, MNT_NOWAIT);
 	for (i = 0; i < size; i++) {
 		if ( !strcmp(mntbuf[i].f_fstypename,"msdos")) {
+			#if wxUSE_UNICODE
+			if ( tempdir.StartsWith( UTF82unicode( mntbuf[i].f_mntonname )) ) {
+			#else
 			if ( tempdir.StartsWith( char2unicode( mntbuf[i].f_mntonname )) ) {
+			#endif
 				// Kry - We cannot addlogline because there's no GUI yet!
       			AddLogLineM(false,_("Temp dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings."));
                     use_chmod = false;
 			}
+			#if wxUSE_UNICODE
+			if ( incomingdir.StartsWith( UTF82unicode( mntbuf[i].f_mntonname ) ) ) {
+			#else
 			if ( incomingdir.StartsWith( char2unicode( mntbuf[i].f_mntonname ) ) ) {
+			#endif
 				AddLogLineM(false,_("Incoming dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings."));
 				use_chmod = false;
 			}
