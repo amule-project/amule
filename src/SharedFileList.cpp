@@ -468,7 +468,15 @@ void CSharedFileList::SendListToServer(){
 }
 
 
-void CSharedFileList::CreateOfferedFilePacket(CKnownFile* cur_file,CSafeMemFile* files, CServer* pServer, CUpDownClient* pClient){
+void CSharedFileList::CreateOfferedFilePacket(
+	CKnownFile *cur_file,
+	CSafeMemFile *files,
+	CServer *pServer,
+#if wxUSE_UNICODE
+	CUpDownClient *pClient) {
+#else
+	CUpDownClient *WXUNUSED(pClient)) {
+#endif
 	// This function is used for offering files to the local server and for sending
 	// shared files to some other client. In each case we send our IP+Port only, if
 	// we have a HighID.
