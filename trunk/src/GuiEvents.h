@@ -258,7 +258,9 @@ class GUIEvent : public wxEvent {
 		if ( wxThread::IsMain() ) { \
 			theApp.NotifyEvent(e); \
 		} else { \
+			wxMutexGuiEnter(); \
 			wxPostEvent(&theApp,e); \
+			wxMutexGuiLeave(); \
 		} \
 	} while (0);
 	
@@ -268,7 +270,9 @@ class GUIEvent : public wxEvent {
 		if ( wxThread::IsMain() ) { \
 			theApp.NotifyEvent(e); \
 		} else { \
+			wxMutexGuiEnter(); \
 			wxPostEvent(&theApp,e); \
+			wxMutexGuiLeave(); \
 		} \
 	} while (0);
 	
@@ -278,7 +282,9 @@ class GUIEvent : public wxEvent {
 		if ( wxThread::IsMain() ) { \
 			theApp.NotifyEvent(e); \
 		} else { \
+			wxMutexGuiEnter(); \
 			wxPostEvent(&theApp,e); \
+			wxMutexGuiLeave(); \
 		} \
 	} while (0);
 	
@@ -288,7 +294,9 @@ class GUIEvent : public wxEvent {
 		if ( wxThread::IsMain() ) { \
 			theApp.NotifyEvent(e); \
 		} else { \
+			wxMutexGuiEnter(); \
 			wxPostEvent(&theApp,e); \
+			wxMutexGuiLeave(); \
 		} \
 	} while (0);
 

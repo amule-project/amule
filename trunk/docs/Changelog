@@ -67,6 +67,9 @@ Version 2.0.0rc8 - The "???????????" version.
 		  unicode2char() when using UNICODE. Unfortunately, when the
 		  fucntion returns, the string object gets out of scope, so we
 		  stick to the macro version for now.
+		* Fix for Kry: enclosed every call to wxPostEvent() within
+		  a pair wxMutexGuiEnter()/wxMutexGuiLeave(), to make it 
+		  safe to do the call outside the main gui thread.
 
 	GonoszTopi:
 		* Initial work on EC protocol version 2.0.

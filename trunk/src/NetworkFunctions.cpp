@@ -1,4 +1,5 @@
- // This file is part of the aMule project.
+//
+// This file is part of the aMule project.
 //
 // Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
 // Copyright (c) 2004 Angel Vidal Veiga - Kry (kry@amule.org)
@@ -37,15 +38,20 @@ wxThread::ExitCode CAsyncDNS::Entry()
 			wxMuleInternalEvent evt(wxEVT_CORE_DNS_DONE);
 			evt.SetExtraLong(result);
 			evt.SetClientData(socket);
+			wxMutexGuiEnter();
 			wxPostEvent(&theApp,evt);	
+			wxMutexGuiLeave();
 		} else {
 			wxMuleInternalEvent evt(SOURCE_DNS_DONE);
 			evt.SetExtraLong(result);
 			evt.SetClientData(socket);
+			wxMutexGuiEnter();
 			wxPostEvent(&theApp,evt);
+			wxMutexGuiLeave();
 		}
 
 	}
 
 	return NULL;
 }
+

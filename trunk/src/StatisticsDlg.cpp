@@ -1168,7 +1168,8 @@ void CStatisticsDlg::ShowStatistics()
 // so we can wait until the main thread has processed the request and built
 // a valid string for us.
 
-wxString CStatisticsDlg::ExportHTML() {
+wxString CStatisticsDlg::ExportHTML()
+{
 	// only one shall pass
 	wxCriticalSectionLocker locker(exportCrit);
 
@@ -1179,7 +1180,9 @@ wxString CStatisticsDlg::ExportHTML() {
 
 	// post the message
 	wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED,ID_EXPORT_HTML);
+	wxMutexGuiEnter();
 	wxPostEvent(this,evt);
+	wxMutexGuiLeave();
 
 	// and wait until it is completed
 	exportCondition->Wait();
