@@ -26,16 +26,16 @@
 
 #include "GuiEvents.h"
 
-class HTTPThread;
+class CHTTPDownloadThread;
 class wxGauge;
 
 class MuleGifCtrl;
 
-class CHTTPThreadDlg : public wxDialog
+class CHTTPDownloadThreadDlg : public wxDialog
 {
 public:
-	CHTTPThreadDlg(wxWindow*parent, HTTPThread* thread);
-	~CHTTPThreadDlg();
+	CHTTPDownloadThreadDlg(wxWindow*parent, CHTTPDownloadThread* thread);
+	~CHTTPDownloadThreadDlg();
 
 	void StopAnimation(); 
 	void UpdateGauge(int dltotal,int dlnow);
@@ -45,31 +45,34 @@ private:
 
 	void OnBtnCancel(wxCommandEvent& evt);
   
-	HTTPThread* parent_thread;
-	MuleGifCtrl* ani;
-	wxGauge* 	m_progressbar;
+	CHTTPDownloadThread*	m_parent_thread;
+	MuleGifCtrl* 					m_ani;
+	wxGauge* 						m_progressbar;
 };
 
-class HTTPThread : public wxThread
+class CHTTPDownloadThread : public wxThread
 {
 private:
-	wxString url;
-	wxString tempfile;
-	wxThread::ExitCode Entry();
-	int result;
-	HTTP_Download_File file_type;
+
+	wxThread::ExitCode	Entry();
+	virtual void 			OnExit();
+
+	wxString					m_url;
+	wxString					m_tempfile;
+	int						m_result;
+	HTTP_Download_File	m_file_type;
 
 #ifndef AMULE_DAEMON 
-	CHTTPThreadDlg* myDlg;
+	CHTTPDownloadThreadDlg* m_myDlg;
 #endif
+
 
  public:
 //	myThread::myThread(wxEvtHandler* parent,char* urlname,char* filename);
-	~HTTPThread();
+	~CHTTPDownloadThread();
 
-	HTTPThread(wxString urlname, wxString filename, HTTP_Download_File file_id);
+	CHTTPDownloadThread(wxString urlname, wxString filename, HTTP_Download_File file_id);
 
-	virtual void OnExit();
 };
 
 #endif // HTTPDOWNLOAD_H

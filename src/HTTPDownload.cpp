@@ -43,13 +43,13 @@
 
 
 #ifndef AMULE_DAEMON 
-BEGIN_EVENT_TABLE(CHTTPThreadDlg,wxDialog)
-  EVT_BUTTON(ID_CANCEL,CHTTPThreadDlg::OnBtnCancel)
+BEGIN_EVENT_TABLE(CHTTPDownloadThreadDlg,wxDialog)
+  EVT_BUTTON(ID_CANCEL,CHTTPDownloadThreadDlg::OnBtnCancel)
 END_EVENT_TABLE()
 
 int CurlGaugeCallback(void *HTTPDlDlg, double dltotal, double dlnow, double ultotal, double ulnow);
 
-CHTTPThreadDlg::CHTTPThreadDlg(wxWindow* parent, HTTPThread* thread)
+CHTTPDownloadThreadDlg::CHTTPDownloadThreadDlg(wxWindow* parent, CHTTPDownloadThread* thread)
   : wxDialog(parent,1025,_("Downloading..."),wxDefaultPosition,wxDefaultSize,wxDEFAULT_DIALOG_STYLE|wxSYSTEM_MENU)
 {
 	downloadDlg(this,TRUE)->Show(this,TRUE);
@@ -58,36 +58,39 @@ CHTTPThreadDlg::CHTTPThreadDlg(wxWindow* parent, HTTPThread* thread)
 	wxASSERT(m_progressbar);
 	m_progressbar->SetRange(100);	// Just Temp
 	
-	ani = (MuleGifCtrl*)FindWindowById(ID_ANIMATE);
-	ani->LoadData((char*)inetDownload,sizeof(inetDownload));
-	ani->Start();
+	m_ani = (MuleGifCtrl*)FindWindowById(ID_ANIMATE);
+	m_ani->LoadData((char*)inetDownload,sizeof(inetDownload));
+	m_ani->Start();
 
 	Centre();
 	
-	parent_thread = thread;
+	m_parent_thread = thread;
 
 }
 
-void CHTTPThreadDlg::OnBtnCancel(wxCommandEvent& WXUNUSED(evt))
+void CHTTPDownloadThreadDlg::OnBtnCancel(wxCommandEvent& WXUNUSED(evt))
 {
-  parent_thread->Delete();
+  m_parent_thread->Delete();
 }
 
-void CHTTPThreadDlg::StopAnimation() { 
-	ani->Stop();
-	if (ani) {
-		ani->Stop();
+void CHTTPDownloadThreadDlg::StopAnimation() 
+{ 
+	m_ani->Stop();
+	if (m_ani) {
+		m_ani->Stop();
 	}
 };
 
-CHTTPThreadDlg::~CHTTPThreadDlg() {
+CHTTPDownloadThreadDlg::~CHTTPDownloadThreadDlg() 
+{
 	Show(false);
-	if (ani) {
-		ani->Stop();
+	if (m_ani) {
+		m_ani->Stop();
 	}
 }
 
-void CHTTPThreadDlg::UpdateGauge(int dltotal,int dlnow) {	
+void CHTTPDownloadThreadDlg::UpdateGauge(int dltotal,int dlnow) 
+{	
 	
 	if ((dltotal != m_progressbar->GetRange()) && (dltotal > 0)) {
 		m_progressbar->SetRange(dltotal);
@@ -99,33 +102,34 @@ void CHTTPThreadDlg::UpdateGauge(int dltotal,int dlnow) {
 
 #endif
 
-HTTPThread::HTTPThread(wxString urlname, wxString filename,HTTP_Download_File file_id):wxThread(wxTHREAD_DETACHED) {
-  	url= urlname;
-  	tempfile=filename;
-  	result=1;
-	file_type = file_id;
+CHTTPDownloadThread::CHTTPDownloadThread(wxString urlname, wxString filename,HTTP_Download_File file_id):wxThread(wxTHREAD_DETACHED) 
+{
+  	m_url = urlname;
+  	m_tempfile = filename;
+  	m_result = 1;
+	m_file_type = file_id;
 	#ifndef AMULE_DAEMON 
-  		myDlg= new CHTTPThreadDlg(theApp.GetTopWindow(), this);
-		myDlg->Show(true);
+  		m_myDlg= new CHTTPDownloadThreadDlg(theApp.GetTopWindow(), this);
+		m_myDlg->Show(true);
 	#endif
 };
 
-HTTPThread::~HTTPThread()
+CHTTPDownloadThread::~CHTTPDownloadThread()
 {	
 	//maybe a thread deletion needed
 }
 
-wxThread::ExitCode HTTPThread::Entry()
+wxThread::ExitCode CHTTPDownloadThread::Entry()
 {
 	if (TestDestroy()) { 
 		// Thread going down...
 		return NULL;
 	}
 	
-	FILE *outfile = fopen(unicode2char(tempfile), "w");
+	FILE *outfile = fopen(unicode2char(m_tempfile), "w");
 	
 	if (outfile!=NULL) {
- 		if (!url) {
+ 		if (!m_url) {
 			// Nowhere to download from!
 			fclose(outfile);
 			return NULL;
@@ -135,7 +139,7 @@ wxThread::ExitCode HTTPThread::Entry()
 		CURL *curl_handle = curl_easy_init();
 		CURLM *curl_multi_handle =  curl_multi_init();
 		
-		char * tempurl = strdup((char*)unicode2char(url));
+		char * tempurl = strdup((char*)unicode2char(m_url));
 		// Options for the easy handler
 		curl_easy_setopt(curl_handle, CURLOPT_URL, tempurl);
 		curl_easy_setopt(curl_handle, CURLOPT_VERBOSE, TRUE);
@@ -146,7 +150,7 @@ wxThread::ExitCode HTTPThread::Entry()
 	#ifndef AMULE_DAEMON
 		curl_easy_setopt(curl_handle, CURLOPT_NOPROGRESS, FALSE);	
 		curl_easy_setopt(curl_handle, CURLOPT_PROGRESSFUNCTION, &CurlGaugeCallback);
-		curl_easy_setopt(curl_handle, CURLOPT_PROGRESSDATA, myDlg);
+		curl_easy_setopt(curl_handle, CURLOPT_PROGRESSDATA, m_myDlg);
 	#endif
 		// Add the easy handle to the multi handle
 		curl_multi_add_handle(curl_multi_handle, curl_handle);
@@ -156,7 +160,7 @@ wxThread::ExitCode HTTPThread::Entry()
 		while (running_handles) {
 			if (TestDestroy()) {
 				// Cancel button or going down.
-				result =0;
+				m_result =0;
 				break;
 			}
 			curl_multi_perform(curl_multi_handle, &running_handles);
@@ -173,29 +177,31 @@ wxThread::ExitCode HTTPThread::Entry()
 	return 0;
 }
 
-void HTTPThread::OnExit() {
+void CHTTPDownloadThread::OnExit() 
+{
 	
 #ifndef AMULE_DAEMON 
 	wxMutexGuiEnter();
-	if (myDlg!=NULL) {
-		delete myDlg;
+	if (m_myDlg!=NULL) {
+		delete m_myDlg;
 	}
 	wxMutexGuiLeave();
 #endif
 	// Kry - Notice the app that the file finished download
 	wxMuleInternalEvent evt(wxEVT_CORE_FINISHED_HTTP_DOWNLOAD);
-	evt.SetInt((int)file_type);
-	evt.SetExtraLong((long)result);
+	evt.SetInt((int)m_file_type);
+	evt.SetExtraLong((long)m_result);
 	wxPostEvent(&theApp,evt);		
 }
 
 
 
 #ifndef AMULE_DAEMON 
-int CurlGaugeCallback(void *HTTPDlDlg, double dltotal, double dlnow, double WXUNUSED(ultotal), double WXUNUSED(ulnow)) {	
+int CurlGaugeCallback(void *HTTPDlDlg, double dltotal, double dlnow, double WXUNUSED(ultotal), double WXUNUSED(ulnow)) 
+{	
 //	printf("CB: %f %f - %i %i\n",dltotal, dlnow, int(dltotal),int(dlnow));
 	wxMutexGuiEnter();
-	((CHTTPThreadDlg*)HTTPDlDlg)->UpdateGauge(int(dltotal),int(dlnow));
+	((CHTTPDownloadThreadDlg*)HTTPDlDlg)->UpdateGauge(int(dltotal),int(dlnow));
 	wxMutexGuiLeave();
 	return 0;
 }
