@@ -1,5 +1,5 @@
 # Process this file with autoconf to produce a configure script.
-AC_INIT([aMule],[CVS],[deltahf@datahighways.de])
+AC_INIT([aMule],[CVS],[deltahf@amule.org])
 AM_INIT_AUTOMAKE
 AC_CONFIG_SRCDIR([src/SharedFileList.h])
 AM_CONFIG_HEADER([config.h])
