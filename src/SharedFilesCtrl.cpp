@@ -79,6 +79,7 @@ void CSharedFilesCtrl::Init(){
 	InsertColumn(8,_("Transferred Data"),LVCFMT_LEFT,120);
 	InsertColumn(9,_("Obtained Parts"),LVCFMT_LEFT,120);
 	InsertColumn(10,_("Complete Sources"),LVCFMT_LEFT,120);
+	InsertColumn(11,_("Directory Path"),LVCFMT_LEFT,220);
 
 	LoadSettings();
 }
@@ -234,6 +235,12 @@ void CSharedFilesCtrl::UpdateFile(CKnownFile* file,uint32 itemnr)
 	}
 	
 	SetItem(itemnr,10,buffer);
+
+	if ( file->IsPartFile() ) {
+		SetItem(itemnr,11,_("[PartFile]"));
+	} else {
+		SetItem(itemnr,11,file->GetFilePath());
+	}
 }
 
 void CSharedFilesCtrl::ShowFile(CKnownFile* file)
@@ -552,7 +559,30 @@ int CSharedFilesCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 		// Complete sources desc
 		case 1010	: return CmpAny( item2->m_nCompleteSourcesCount, item1->m_nCompleteSourcesCount );
 
-		
+	
+		// Folders ascending
+		case 11		: {
+			if ( item1->IsPartFile() && item2->IsPartFile() )
+				return 0;
+			if ( item1->IsPartFile() )
+				return -1;
+			if ( item2->IsPartFile() )
+				return 1;
+				
+			return item1->GetFilePath().Cmp( item2->GetFilePath() );
+		}
+		// Folders descending
+		case 1011	: {
+			if (item1->IsPartFile() && item2->IsPartFile())
+				return 0;
+			if (item1->IsPartFile())
+				return 1;
+			if (item2->IsPartFile())
+				return -1;
+			
+			return item2->GetFilePath().Cmp( item1->GetFilePath() );
+		}
+
 		// Sort by requests (All). Ascending.
 		case 2006: return CmpAny( item1->statistic.GetAllTimeRequests(), item2->statistic.GetAllTimeRequests() );
 		// Sort by requests (All). Descending.
