@@ -11,12 +11,12 @@
 //  it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the
 // Free Software Foundation, Inc.,
@@ -57,8 +57,7 @@ LinuxMon::LinuxMon ()
 
 // Destructor
 LinuxMon::~LinuxMon ()
-{
-}
+{}
 
 // Refresh
 void
@@ -85,30 +84,30 @@ LinuxMon::Refresh ()
 
   m_uptime =
     m_uptime.Format (_("%i day(s) %i hour(s) %i min %i s"), day, hour, min,
-		     sec);
+                     sec);
 }
 
 // Accessors
 wxString
 LinuxMon::GetUptime () const
-{
-  return m_uptime;
-}
+  {
+    return m_uptime;
+  }
 
 float
 LinuxMon::GetSysLoad_1 () const
-{
-  return m_sysLoad_1;
-}
+  {
+    return m_sysLoad_1;
+  }
 
 float
 LinuxMon::GetSysLoad_5 () const
-{
-  return m_sysLoad_5;
-}
+  {
+    return m_sysLoad_5;
+  }
 
 float
 LinuxMon::GetSysLoad_15 () const
-{
-  return m_sysLoad_15;
-}
+  {
+    return m_sysLoad_15;
+  }

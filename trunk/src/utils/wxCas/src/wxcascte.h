@@ -11,12 +11,12 @@
 //  it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the
 // Free Software Foundation, Inc.,
@@ -36,28 +36,30 @@
 #endif
 
 class WxCasCte
-{
-public:
+  {
+  public:
 
-  static const wxString AMULESIG_NAME;
-  static const wxString AMULESIG_IMG_NAME;
+    static const wxString AMULESIG_FILENAME;
+    static const wxString AMULESIG_IMG_NAME;
 
-  // Refresh rate limits
-  static const wxUint32 MIN_REFRESH_RATE;
-  static const wxUint32 MAX_REFRESH_RATE;
+    // Refresh rate limits
+    static const wxUint32 MIN_REFRESH_RATE;
+    static const wxUint32 MAX_REFRESH_RATE;
 
-  // Key config names
-  static const wxString AMULESIG_KEY;
-  static const wxString REFRESH_RATE_KEY;
-  static const wxString ENABLE_AUTOSTATIMG_KEY;
-  static const wxString AUTOSTATIMG_DIR_KEY;
-  
+    // Key config names
+    static const wxString AMULESIG_DIR_KEY;
+    static const wxString REFRESH_RATE_KEY;
+    static const wxString ENABLE_AUTOSTATIMG_KEY;
+    static const wxString AUTOSTATIMG_DIR_KEY;
+    static const wxString AUTOSTATIMG_TYPE_KEY;
 
-  // Default config parameters
-  static const wxString AMULESIG_DEFAULT_PATH;
-  static const wxUint32 DEFAULT_REFRESH_RATE;
-  static const bool ENABLE_AUTOSTATIMG_DEFAULT;
-  static const wxString AUTOSTATIMG_DEFAULT_PATH;
-};
+
+    // Default config parameters
+    static const wxString DEFAULT_AMULESIG_PATH;
+    static const wxUint32 DEFAULT_REFRESH_RATE;
+    static const bool DEFAULT_AUTOSTATIMG_ISENABLED;
+    static const wxString DEFAULT_AUTOSTATIMG_PATH;
+    static const wxString DEFAULT_AUTOSTATIMG_TYPE;
+  };
 
 #endif /* _WXCASCTE_H */

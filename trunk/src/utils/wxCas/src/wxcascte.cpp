@@ -11,12 +11,12 @@
 //  it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the
 // Free Software Foundation, Inc.,
@@ -39,34 +39,38 @@
 #include "wxcascte.h"
 
 const wxString
-WxCasCte::AMULESIG_NAME ("amulesig.dat");
-const wxString 
+WxCasCte::AMULESIG_FILENAME ("amulesig.dat");
+const wxString
 WxCasCte::AMULESIG_IMG_NAME ("aMule-online-sign");
 
 // Refresh rate limits
 const wxUint32
-  WxCasCte::MIN_REFRESH_RATE = 1;
+WxCasCte::MIN_REFRESH_RATE = 1;
 const wxUint32
-  WxCasCte::MAX_REFRESH_RATE = 3600;
+WxCasCte::MAX_REFRESH_RATE = 3600;
 
 // Key config names
 const wxString
-  WxCasCte::AMULESIG_KEY ("OSDirectory");
+WxCasCte::AMULESIG_DIR_KEY ("OSDirectory");
 const wxString
-  WxCasCte::REFRESH_RATE_KEY ("RefreshRate");
+WxCasCte::REFRESH_RATE_KEY ("RefreshRate");
 const wxString
-  WxCasCte::ENABLE_AUTOSTATIMG_KEY ("EnableAutoStatImg");
+WxCasCte::ENABLE_AUTOSTATIMG_KEY ("EnableAutoStatImg");
 const wxString
-  WxCasCte::AUTOSTATIMG_DIR_KEY ("StatImgDirectory");
+WxCasCte::AUTOSTATIMG_DIR_KEY ("StatImgDirectory");
+const wxString
+WxCasCte::AUTOSTATIMG_TYPE_KEY ("StatImgType");
 
 
 // Default config parameters
 const wxString
-  WxCasCte::AMULESIG_DEFAULT_PATH (wxFileName::GetHomeDir () +
-				 wxFileName::GetPathSeparator () + ".aMule");
+WxCasCte::DEFAULT_AMULESIG_PATH (wxFileName::GetHomeDir () +
+                                 wxFileName::GetPathSeparator () + ".aMule");
 const wxUint32
-  WxCasCte::DEFAULT_REFRESH_RATE = 5;
-const bool 
-  WxCasCte::ENABLE_AUTOSTATIMG_DEFAULT=FALSE;
+WxCasCte::DEFAULT_REFRESH_RATE = 5;
+const bool
+WxCasCte::DEFAULT_AUTOSTATIMG_ISENABLED = FALSE;
 const wxString
-  WxCasCte::AUTOSTATIMG_DEFAULT_PATH (wxFileName::GetHomeDir ());
+WxCasCte::DEFAULT_AUTOSTATIMG_PATH (wxFileName::GetHomeDir ());
+const wxString
+WxCasCte::DEFAULT_AUTOSTATIMG_TYPE ("PNG");

@@ -11,12 +11,12 @@
 //  it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the
 // Free Software Foundation, Inc.,
@@ -55,8 +55,8 @@
 
 // Constructor
 WxCasFrame::WxCasFrame (const wxString & title):
-wxFrame ((wxFrame *) NULL, -1, title, wxDefaultPosition, wxDefaultSize,
-	 wxDEFAULT_FRAME_STYLE & (wxSYSTEM_MENU | wxMINIMIZE_BOX | wxCAPTION))
+    wxFrame ((wxFrame *) NULL, -1, title, wxDefaultPosition, wxDefaultSize,
+             wxDEFAULT_FRAME_STYLE & (wxSYSTEM_MENU | wxMINIMIZE_BOX | wxCAPTION))
 {
   // Give it an icon
   SetIcon (wxICON (wxcas));
@@ -97,6 +97,7 @@ wxFrame ((wxFrame *) NULL, -1, title, wxDefaultPosition, wxDefaultSize,
   m_statLine_6 = new wxStaticText (m_sigPanel, -1, "");
   m_statLine_7 = new wxStaticText (m_sigPanel, -1, "");
 #ifdef __LINUX__		// System monitoring on Linux
+
   m_sysLine_1 = new wxStaticText (m_sigPanel, -1, "");
   m_sysLine_2 = new wxStaticText (m_sigPanel, -1, "");
 #endif
@@ -104,6 +105,7 @@ wxFrame ((wxFrame *) NULL, -1, title, wxDefaultPosition, wxDefaultSize,
   // Add Online Sig file
   m_aMuleSig = new OnLineSig ();
 #ifdef __LINUX__		// System monitoring on Linux
+
   m_sysMonitor = new LinuxMon ();
 #endif
 
@@ -117,6 +119,7 @@ wxFrame ((wxFrame *) NULL, -1, title, wxDefaultPosition, wxDefaultSize,
   m_sigPanelSBoxSizer->Add (m_statLine_6, 0, wxALL | wxADJUST_MINSIZE, 5);
   m_sigPanelSBoxSizer->Add (m_statLine_7, 0, wxALL | wxADJUST_MINSIZE, 5);
 #ifdef __LINUX__		// System monitoring on Linux
+
   m_sigPanelSBoxSizer->Add (m_sysLine_1, 0, wxALL | wxADJUST_MINSIZE, 5);
   m_sigPanelSBoxSizer->Add (m_sysLine_2, 0, wxALL | wxADJUST_MINSIZE, 5);
 #endif
@@ -147,28 +150,28 @@ wxFrame ((wxFrame *) NULL, -1, title, wxDefaultPosition, wxDefaultSize,
   // Constructing toolbar
   m_toolbar =
     new wxToolBar (this, -1, wxDefaultPosition, wxDefaultSize,
-		   wxTB_HORIZONTAL | wxTB_FLAT);
+                   wxTB_HORIZONTAL | wxTB_FLAT);
 
   m_toolbar->SetToolBitmapSize (wxSize (32, 32));
 
   m_toolbar->AddTool (ID_BAR_REFRESH, "Refresh", m_toolBarBitmaps[0],
-		      _("Stop Auto Refresh"));
+                      _("Stop Auto Refresh"));
 
   m_toolbar->AddSeparator ();
 
   m_toolbar->AddTool (ID_BAR_SAVE, "Save", m_toolBarBitmaps[1],
-		      _("Save Online Statistics image"));
+                      _("Save Online Statistics image"));
 
   m_toolbar->AddTool (ID_BAR_PRINT, "Print", m_toolBarBitmaps[2],
-		      _("Print Online Statistics image"));
+                      _("Print Online Statistics image"));
 
   m_toolbar->AddTool (ID_BAR_PREFS, "Prefs", m_toolBarBitmaps[5],
-		      _("Preferences setting"));
+                      _("Preferences setting"));
 
   m_toolbar->AddSeparator ();
 
   m_toolbar->AddTool (ID_BAR_ABOUT, "About", m_toolBarBitmaps[3],
-		      _("About wxCas"));
+                      _("About wxCas"));
 
   m_toolbar->SetMargins (2, 2);
   m_toolbar->Realize ();
@@ -188,6 +191,7 @@ WxCasFrame::~WxCasFrame ()
 {
   delete m_aMuleSig;
 #ifdef __LINUX__		// System monitoring on Linux
+
   delete m_sysMonitor;
 #endif
 }
@@ -199,35 +203,53 @@ EVT_TOOL (ID_BAR_SAVE, WxCasFrame::OnBarSave)
 EVT_TOOL (ID_BAR_PRINT, WxCasFrame::OnBarPrint)
 EVT_TOOL (ID_BAR_PREFS, WxCasFrame::OnBarPrefs)
 EVT_TOOL (ID_BAR_ABOUT, WxCasFrame::OnBarAbout)
-EVT_TIMER (ID_TIMER, WxCasFrame::OnTimer) 
+EVT_TIMER (ID_TIMER, WxCasFrame::OnTimer)
 END_EVENT_TABLE ()
 
 // Get Stat Bitmap
 wxImage *
 WxCasFrame::GetStatImage () const
-{
-  wxBitmap statBitmap = wxBITMAP (stat);
+  {
+    wxBitmap
+    statBitmap = wxBITMAP (stat);
 
-  wxMemoryDC memdc;
-  memdc.SelectObject (statBitmap);
+    wxMemoryDC
+    memdc;
+    memdc.
+    SelectObject (statBitmap);
 #ifdef __WXMSW__
-  memdc.SetFont (wxFont::wxFont (10, wxSWISS, wxNORMAL, wxBOLD));
+
+    memdc.
+    SetFont (wxFont::wxFont (10, wxSWISS, wxNORMAL, wxBOLD));
 #else
-  memdc.SetFont (wxFont::wxFont (12, wxSWISS, wxNORMAL, wxBOLD));
+
+    memdc.
+    SetFont (wxFont::wxFont (12, wxSWISS, wxNORMAL, wxBOLD));
 #endif
-  memdc.SetTextForeground (*wxWHITE);
-  memdc.DrawText (m_statLine_1->GetLabel (), 25, 8);
-  memdc.DrawText (m_statLine_2->GetLabel (), 25, 26);
-  memdc.DrawText (m_statLine_3->GetLabel (), 25, 43);
-  memdc.DrawText (m_statLine_4->GetLabel (), 25, 60);
-  memdc.DrawText (m_statLine_5->GetLabel (), 25, 77);
-  memdc.DrawText (m_statLine_6->GetLabel (), 25, 94);
-  memdc.SelectObject (wxNullBitmap);
 
-  wxImage *statImage = new wxImage (statBitmap);
+    memdc.
+    SetTextForeground (*wxWHITE);
+    memdc.
+    DrawText (m_statLine_1->GetLabel (), 25, 8);
+    memdc.
+    DrawText (m_statLine_2->GetLabel (), 25, 26);
+    memdc.
+    DrawText (m_statLine_3->GetLabel (), 25, 43);
+    memdc.
+    DrawText (m_statLine_4->GetLabel (), 25, 60);
+    memdc.
+    DrawText (m_statLine_5->GetLabel (), 25, 77);
+    memdc.
+    DrawText (m_statLine_6->GetLabel (), 25, 94);
+    memdc.
+    SelectObject (wxNullBitmap);
 
-  return statImage;
-}
+    wxImage *
+    statImage = new wxImage (statBitmap);
+
+    return
+      statImage;
+  }
 
 // Refresh button
 void
@@ -238,8 +260,8 @@ WxCasFrame::OnBarRefresh (wxCommandEvent & event)
       m_timer->Stop ();
       m_toolbar->DeleteTool (ID_BAR_REFRESH);
       m_toolbar->InsertTool (0, ID_BAR_REFRESH, "Refresh",
-			     m_toolBarBitmaps[4], wxNullBitmap,
-			     wxITEM_NORMAL, _("Start Auto Refresh"));
+                             m_toolBarBitmaps[4], wxNullBitmap,
+                             wxITEM_NORMAL, _("Start Auto Refresh"));
       m_toolbar->Realize ();
       SetStatusText (_("Auto Refresh stopped"));
     }
@@ -248,8 +270,8 @@ WxCasFrame::OnBarRefresh (wxCommandEvent & event)
       m_timer->Start ();
       m_toolbar->DeleteTool (ID_BAR_REFRESH);
       m_toolbar->InsertTool (0, ID_BAR_REFRESH, "Refresh",
-			     m_toolBarBitmaps[0], wxNullBitmap,
-			     wxITEM_NORMAL, _("Stop Auto Refresh"));
+                             m_toolBarBitmaps[0], wxNullBitmap,
+                             wxITEM_NORMAL, _("Stop Auto Refresh"));
       m_toolbar->Realize ();
       SetStatusText (_("Auto Refresh started"));
     }
@@ -262,13 +284,13 @@ WxCasFrame::OnBarSave (wxCommandEvent & event)
   wxImage *statImage = GetStatImage ();
 
   wxString saveFileName = wxFileSelector (_("Save Statistics Image"),
-					  wxFileName::GetHomeDir (),
-					  WxCasCte::AMULESIG_IMG_NAME,
-					  (const wxChar *) NULL,
-					  wxT ("PNG files (*.png)|*.png|")
-					  wxT ("JPEG files (*.jpg)|*.jpg|")
-					  wxT ("BMP files (*.bmp)|*.bmp|"),
-					  wxSAVE);
+                                          wxFileName::GetHomeDir (),
+                                          WxCasCte::AMULESIG_IMG_NAME,
+                                          (const wxChar *) NULL,
+                                          wxT ("PNG files (*.png)|*.png|")
+                                          wxT ("JPEG files (*.jpg)|*.jpg|")
+                                          wxT ("BMP files (*.bmp)|*.bmp|"),
+                                          wxSAVE);
 
   if (!saveFileName.empty ())
     {
@@ -276,10 +298,10 @@ WxCasFrame::OnBarSave (wxCommandEvent & event)
       // (it may fail if the extension is not recognized):
 
       if (!statImage->SaveFile (saveFileName))
-	{
-	  wxMessageBox (_("No handler for this file type."),
-			_("File was not saved"), wxOK | wxCENTRE, this);
-	}
+        {
+          wxMessageBox (_("No handler for this file type."),
+                        _("File was not saved"), wxOK | wxCENTRE, this);
+        }
     }
   delete statImage;
 }
@@ -293,11 +315,11 @@ WxCasFrame::OnBarPrint (wxCommandEvent & event)
   if (!printer.Print (this, &printout, TRUE))
     {
       if (wxPrinter::GetLastError () == wxPRINTER_ERROR)
-	{
-	  wxMessageBox (_
-			("There was a problem printing.\nPerhaps your current printer is not set correctly?"),
-			_("Printing"), wxOK);
-	}
+        {
+          wxMessageBox (_
+                        ("There was a problem printing.\nPerhaps your current printer is not set correctly?"),
+                        _("Printing"), wxOK);
+        }
     }
 }
 
@@ -307,8 +329,7 @@ WxCasFrame::OnBarPrefs (wxCommandEvent & event)
 {
   WxCasPrefs *dlg = new WxCasPrefs (this);
   if (dlg->ShowModal () == wxID_OK)
-    {
-    }
+  {}
 
   dlg->Destroy ();
 }
@@ -318,11 +339,11 @@ void
 WxCasFrame::OnBarAbout (wxCommandEvent & event)
 {
   wxMessageBox (_
-		("wxCas, aMule OnLine Signature Statistics\n\n"
-		 "(c) 2004 ThePolish <thepolish@vipmail.ru>\n\n"
-		 "Based on CAS by Pedro de Oliveira <falso@rdk.homeip.net>\n\n"
-		 "Distributed under GPL"),
-		_("About wxCas"), wxOK | wxCENTRE | wxICON_INFORMATION);
+                ("wxCas, aMule OnLine Signature Statistics\n\n"
+                 "(c) 2004 ThePolish <thepolish@vipmail.ru>\n\n"
+                 "Based on CAS by Pedro de Oliveira <falso@rdk.homeip.net>\n\n"
+                 "Distributed under GPL"),
+                _("About wxCas"), wxOK | wxCENTRE | wxICON_INFORMATION);
 }
 
 // Timer
@@ -341,6 +362,7 @@ WxCasFrame::UpdateStatsPanel ()
   m_aMuleSig->Refresh ();
 
 #ifdef __LINUX__		// System monitoring on Linux
+
   m_sysMonitor->Refresh ();
 #endif
 
@@ -367,13 +389,16 @@ WxCasFrame::UpdateStatsPanel ()
   newline += ":";
   newline += m_aMuleSig->GetServerPort ();
   newline += _("] with ");
-  newline += m_aMuleSig->GetConnexionIDType ();;
+  newline += m_aMuleSig->GetConnexionIDType ();
+  ;
 
   m_statLine_2->SetLabel (newline);
 
 #ifdef __GNUG__
+
   newMaxLineCount = newMaxLineCount >? newline.Length ();
 #else
+
   if (newline.Length () > newMaxLineCount)
     {
       newMaxLineCount = newline.Length ();
@@ -389,8 +414,10 @@ WxCasFrame::UpdateStatsPanel ()
   m_statLine_3->SetLabel (newline);
 
 #ifdef __GNUG__
+
   newMaxLineCount = newMaxLineCount >? newline.Length ();
 #else
+
   if (newline.Length () > newMaxLineCount)
     {
       newMaxLineCount = newline.Length ();
@@ -406,8 +433,10 @@ WxCasFrame::UpdateStatsPanel ()
   m_statLine_4->SetLabel (newline);
 
 #ifdef __GNUG__
+
   newMaxLineCount = newMaxLineCount >? newline.Length ();
 #else
+
   if (newline.Length () > newMaxLineCount)
     {
       newMaxLineCount = newline.Length ();
@@ -424,8 +453,10 @@ WxCasFrame::UpdateStatsPanel ()
   m_statLine_5->SetLabel (newline);
 
 #ifdef __GNUG__
+
   newMaxLineCount = newMaxLineCount >? newline.Length ();
 #else
+
   if (newline.Length () > newMaxLineCount)
     {
       newMaxLineCount = newline.Length ();
@@ -441,23 +472,27 @@ WxCasFrame::UpdateStatsPanel ()
   m_statLine_6->SetLabel (newline);
 
 #ifdef __GNUG__
+
   newMaxLineCount = newMaxLineCount >? newline.Length ();
 #else
+
   if (newline.Length () > newMaxLineCount)
     {
       newMaxLineCount = newline.Length ();
     }
 #endif
 
-  // Stat line 7 
+  // Stat line 7
   newline = _("Maximum DL rate since wxCas is running: ");
   newline += m_aMuleSig->GetMaxDL ();
 
   m_statLine_7->SetLabel (newline);
 
 #ifdef __GNUG__
+
   newMaxLineCount = newMaxLineCount >? newline.Length ();
 #else
+
   if (newline.Length () > newMaxLineCount)
     {
       newMaxLineCount = newline.Length ();
@@ -468,14 +503,16 @@ WxCasFrame::UpdateStatsPanel ()
   newline = _("System Load Average (1-5-15 min): ");
   newline +=
     newline.Format ("%.2f - %.2f - %.2f", m_sysMonitor->GetSysLoad_1 (),
-		    m_sysMonitor->GetSysLoad_5 (),
-		    m_sysMonitor->GetSysLoad_15 ());
+                    m_sysMonitor->GetSysLoad_5 (),
+                    m_sysMonitor->GetSysLoad_15 ());
 
   m_sysLine_1->SetLabel (newline);
 
 #ifdef __GNUG__
+
   newMaxLineCount = newMaxLineCount >? newline.Length ();
 #else
+
   if (newline.Length () > newMaxLineCount)
     {
       newMaxLineCount = newline.Length ();
@@ -490,8 +527,10 @@ WxCasFrame::UpdateStatsPanel ()
   m_sysLine_2->SetLabel (newline);
 
 #ifdef __GNUG__
+
   newMaxLineCount = newMaxLineCount >? newline.Length ();
 #else
+
   if (newline.Length () > newMaxLineCount)
     {
       newMaxLineCount = newline.Length ();
@@ -525,21 +564,24 @@ WxCasFrame::UpdateStatsPanel ()
   if ((bool)
       (wxGetApp ().GetConfig ()->
        Read (WxCasCte::ENABLE_AUTOSTATIMG_KEY,
-	     WxCasCte::ENABLE_AUTOSTATIMG_DEFAULT)))
+             WxCasCte::DEFAULT_AUTOSTATIMG_ISENABLED)))
     {
       wxImage *statImage = GetStatImage ();
 
       wxFileName fileName (wxGetApp ().GetConfig ()->
-			   Read (WxCasCte::AUTOSTATIMG_DIR_KEY,
-				 WxCasCte::AUTOSTATIMG_DEFAULT_PATH),
-			   WxCasCte::AMULESIG_IMG_NAME + ".png");
+                           Read (WxCasCte::AUTOSTATIMG_DIR_KEY,
+                                 WxCasCte::DEFAULT_AUTOSTATIMG_PATH),
+                           WxCasCte::AMULESIG_IMG_NAME,
+                           wxGetApp ().GetConfig ()->
+                           Read (WxCasCte::AUTOSTATIMG_TYPE_KEY,
+                                 WxCasCte::DEFAULT_AUTOSTATIMG_TYPE).
+                           Lower ());
 
       if (!statImage->SaveFile (fileName.GetFullPath ()))
-	{
-	  wxMessageBox (_("No handler for this file type."),
-			_("File was not saved"), wxOK | wxCENTRE, this);
-	}
-
+        {
+          wxMessageBox (_("No handler for this file type."),
+                        _("File was not saved"), wxOK | wxCENTRE, this);
+        }
       delete statImage;
     }
 }

@@ -11,12 +11,12 @@
 //  it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the
 // Free Software Foundation, Inc.,
@@ -42,13 +42,11 @@
 
 // Constructor
 WxCasPrint::WxCasPrint (const wxString& title):wxPrintout (title)
-{
-}
+{}
 
 // Destructor
 WxCasPrint::~WxCasPrint ()
-{
-}
+{}
 
 bool
 WxCasPrint::OnPrintPage (int page)
@@ -57,9 +55,9 @@ WxCasPrint::OnPrintPage (int page)
   if (dc)
     {
       if (page == 1)
-	{
-	  DrawPageOne (dc);
-	}
+        {
+          DrawPageOne (dc);
+        }
 
 
       dc->SetDeviceOrigin (0, 0);
@@ -88,7 +86,7 @@ WxCasPrint::OnBeginDocument (int startPage, int endPage)
 
 void
 WxCasPrint::GetPageInfo (int *minPage, int *maxPage, int *selPageFrom,
-			 int *selPageTo)
+                         int *selPageTo)
 {
   *minPage = 1;
   *maxPage = 1;
