@@ -204,12 +204,44 @@ CamuleApp::CamuleApp()
 
 CamuleApp::~CamuleApp()
 {
+}
+
+int CamuleApp::OnExit()
+{
+	if (m_app_state!=APP_STATE_STARTING) {
+		printf("Now, exiting main app...\n");
+	}
+
+	// From wxWidgets docs, wxConfigBase:
+	// ...
+	// Note that you must delete this object (usually in wxApp::OnExit)
+	// in order to avoid memory leaks, wxWidgets won't do it automatically.
+	// 
+	// As it happens, you may even further simplify the procedure described
+	// above: you may forget about calling Set(). When Get() is called and
+	// there is no current object, it will create one using Create() function.
+	// To disable this behaviour DontCreateOnDemand() is provided.
+	delete wxConfigBase::Set((wxConfigBase *)NULL);
 	
+	// Save credits
+	clientcredits->SaveList();
+	
+	// Save IPFilter file.
+	ipfilter->SaveToFile();
+	
+	// Kill amuleweb if running
+	if (webserver_pid) {
+		printf("Killing amuleweb instance...\n");
+		wxKillError rc;
+		wxKill(webserver_pid,wxSIGKILL, &rc);
+		printf("Killed!\n");
+	}
+
+
 	if (m_app_state!=APP_STATE_STARTING) {
 		printf("aMule shutdown: Terminating core.\n");
 	}
 	
-	//printf("Cleaning associated objects: ");
 	
 	//printf("ServerList... ");
 	if (serverlist) {
@@ -302,10 +334,11 @@ CamuleApp::~CamuleApp()
 		delete localserver;
 		localserver = NULL;
 	}
-
+	
 	//printf("AppLog... ");
 	if (applog) {
 		delete applog; // deleting a wxFFileOutputStream closes it
+		applog = NULL;
 	}
 	
 	//printf("Done! ");
@@ -313,38 +346,6 @@ CamuleApp::~CamuleApp()
 		printf("aMule shutdown completed.\n");
 	}
 	
-}
-
-int CamuleApp::OnExit()
-{
-	if (m_app_state!=APP_STATE_STARTING) {
-		printf("Now, exiting main app...\n");
-	}
-
-	// From wxWidgets docs, wxConfigBase:
-	// ...
-	// Note that you must delete this object (usually in wxApp::OnExit)
-	// in order to avoid memory leaks, wxWidgets won't do it automatically.
-	// 
-	// As it happens, you may even further simplify the procedure described
-	// above: you may forget about calling Set(). When Get() is called and
-	// there is no current object, it will create one using Create() function.
-	// To disable this behaviour DontCreateOnDemand() is provided.
-	delete wxConfigBase::Set((wxConfigBase *)NULL);
-	
-	// Save credits
-	clientcredits->SaveList();
-	
-	// Save IPFilter file.
-	ipfilter->SaveToFile();
-	
-	// Kill amuleweb if running
-	if (webserver_pid) {
-		printf("Killing amuleweb instance...\n");
-		wxKillError rc;
-		wxKill(webserver_pid,wxSIGKILL, &rc);
-		printf("Killed!\n");
-	}
 	
 	// Return 0 for succesful program termination
 	return AMULE_APP_BASE::OnExit();
