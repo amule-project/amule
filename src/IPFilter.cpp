@@ -465,9 +465,9 @@ void CIPFilter::RemoveAllIPs()
 
 bool CIPFilter::IsFiltered(uint32 IPTest)
 {
-	wxMutexLocker lock( m_mutex );
-
 	if ( thePrefs::GetIPFilterOn() ) {
+		wxMutexLocker lock( m_mutex );
+	
 		IPTest = ntohl(IPTest);
 
 		IPMap::iterator it = m_iplist.find_range( IPTest );
