@@ -228,6 +228,7 @@ bool CUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, const wxSt
 					update->SetUDPFlags( uUDPFlags );
 					update->SetLowIDUsers( uLowIDUsers );
 					Notify_ServerRefresh( update );
+					Notify_ShowUserCount(update);
 				}
 				break;
 			}
