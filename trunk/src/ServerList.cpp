@@ -73,6 +73,7 @@ list(wxKEY_NONE)
 	udp_timer.SetOwner(&theApp,TM_UDPSOCKET);
 	delservercount = 0;
 	m_nLastED2KServerLinkCheck = m_nLastSaved = ::GetTickCount();
+	broadcastpacket = NULL;
 }
 
 uint8 CServerList::AutoUpdate()
@@ -684,6 +685,7 @@ void CServerList::SendNextPacket()
 		//KillTimer(0,udp_timer);
 		udp_timer.Stop();
 		delete broadcastpacket;
+		broadcastpacket = NULL;
 		return;
 	}
 
@@ -697,6 +699,7 @@ void CServerList::SendNextPacket()
 		// KillTimer(0,udp_timer);
 		udp_timer.Stop();
 		delete broadcastpacket;
+		broadcastpacket = NULL;
 	}
 }
 
@@ -707,6 +710,7 @@ void CServerList::CancelUDPBroadcast()
 		// udp_timer = 0;
 		udp_timer.Stop();
 		delete broadcastpacket;
+		broadcastpacket = NULL;
 	}
 }
 
