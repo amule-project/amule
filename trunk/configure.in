@@ -161,10 +161,13 @@ AC_ARG_ENABLE(wxcas,  [  --disable-wxcas         Don't compile aMule GUI Statist
 AC_ARG_ENABLE(ed2k,  [  --disable-ed2k          Don't compile aMule ed2k links handler],
               ED2K="$enableval", ED2K="yes")
 
+AC_ARG_ENABLE(alc,  [  --disable-alc           Don't compile aMuleLinkCreator],
+              ALC="$enableval", ALC="yes")
+
 AC_ARG_ENABLE(gsocket, [  --disable-gsocket       Disable gsocket.c linking],
 		USE_GSOCKET="$enableval", USE_GSOCKET="yes")
 
-AC_ARG_ENABLE(uss, [  --enable-uss        Enable USS (not working atm)],
+AC_ARG_ENABLE(uss, [  --enable-uss            Enable USS (not working atm)],
 		USE_USS="$enableval", USE_USS="no")
 
 AC_ARG_ENABLE([verbose],
@@ -371,6 +374,7 @@ AM_CONDITIONAL(WEB, test x$WEB = xyes)
 AM_CONDITIONAL(ED2K, test x$ED2K = xyes)
 AM_CONDITIONAL(CAS, test x$CAS = xyes)
 AM_CONDITIONAL(WXCAS, test x$WXCAS = xyes)
+AM_CONDITIONAL(ALC, test x$ALC = xyes)
 AM_CONDITIONAL(GUI, test x$GUI = xyes)
 AM_CONDITIONAL(WEBGUI, test x$WEBGUI = xyes)
 AM_CONDITIONAL(COMPILE_CMD, test x$BUILD_AMULECMD = xyes)
@@ -451,6 +455,7 @@ echo "  Should aMule GUI client be built?                        ${GUI:-no}"
 echo "  Should aMule WebServer be built?                         ${WEB:-no}"
 echo "  Should aMule WebServer GUI be built?                     ${WEBGUI:-no}"
 echo "  Should aMule ed2k links handler be built?                ${ED2K:-no}"
+echo "  Should aMuleLinkCreator (alc and alcc) be built?         ${ALC:-no}"
 echo "  Should C aMule Statistics (CAS) be built?                ${CAS:-no}"
 echo "  Should aMule GUI Statistics (wxCas) be built?            ${WXCAS:-no}"
 echo "  Crypto++ library/headers style?                          ${CRYPTO_PP_STYLE}"
