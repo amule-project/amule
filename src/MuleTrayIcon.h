@@ -19,10 +19,13 @@
 //
 
 #include <wx/defs.h>		// Needed before any other wx/*.h
-
+/*
 #if wxCHECK_VERSION(2, 5, 3)
  #define USE_WX_TRAY 1
 #endif
+*/
+#warning remove this when new tray ready.
+#define USE_WX_TRAY 0
 
 #ifndef MULETRAYICON_H
 #define MULETRAYICON_H
