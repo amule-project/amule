@@ -3359,7 +3359,7 @@ wxSizer *PreferencesSecurityTab( wxWindow *parent, bool call_fit, bool set_sizer
 
     wxBoxSizer *item35 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxCheckBox *item36 = new wxCheckBox( parent, IDC_FILTER, _("Always filter bad IPs"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxCheckBox *item36 = new wxCheckBox( parent, IDC_FILTER, _("Always filter LAN IPs"), wxDefaultPosition, wxDefaultSize, 0 );
     item36->SetValue( TRUE );
     item35->Add( item36, 0, wxALIGN_CENTER_VERTICAL, 0 );
 

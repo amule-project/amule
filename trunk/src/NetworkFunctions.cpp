@@ -128,38 +128,39 @@ struct IPRange
 {
 	const wxChar *addr;
 	unsigned int mask;
+	bool isLAN;
 };
 
 
 const IPRange ranges[] = {
 //	Here is reserved blocks from RFC 3330 at http://www.rfc-editor.org/rfc/rfc3330.txt
 //
-//Address Block               Present Use                           Reference
-//---------------------------------------------------------------------------
-{ wxT("0.0.0.0"),        8 }, // "This" Network             [RFC1700, page 4]
-{ wxT("10.0.0.0"),       8 }, // Private-Use Networks               [RFC1918]
-{ wxT("14.0.0.0"),       8 }, // Public-Data Networks     [RFC1700, page 181]
-{ wxT("24.0.0.0"),       8 }, // Cable Television Networks                 --
-{ wxT("39.0.0.0"),       8 }, // Reserved but subject
-                              //    to allocation                   [RFC1797]
-{ wxT("127.0.0.0"),      8 }, // Loopback                   [RFC1700, page 5]
-{ wxT("128.0.0.0"),     16 }, // Reserved but subject
-                              //    to allocation                          --
-{ wxT("169.254.0.0"),   16 }, // Link Local                                --
-{ wxT("172.16.0.0"),    12 }, // Private-Use Networks               [RFC1918]
-{ wxT("191.255.0.0"),   16 }, // Reserved but subject
-                              //    to allocation                          --
-{ wxT("192.0.0.0"),     24 }, // Reserved but subject          
-                              //    to allocation                          --
-{ wxT("192.0.2.0"),     24 }, // Test-Net
-{ wxT("192.88.99.0"),   24 }, // 6to4 Relay Anycast                 [RFC3068]
-{ wxT("192.168.0.0"),   16 }, // Private-Use Networks               [RFC1918]
-{ wxT("198.18.0.0"),    15 }, // Network Interconnect
-                              //    Device Benchmark Testing        [RFC2544]
-{ wxT("223.255.255.0"), 24 }, // Reserved but subject
-                              //    to allocation                          --
-{ wxT("224.0.0.0"),      4 }, // Multicast                          [RFC3171]
-{ wxT("240.0.0.0"),      4 }  // Reserved for Future Use    [RFC1700, page 4]
+//Address Block                      Present Use                           Reference
+//----------------------------------------------------------------------------------
+{ wxT("0.0.0.0"),        8, false }, // "This" Network             [RFC1700, page 4]
+{ wxT("10.0.0.0"),       8, true  }, // Private-Use Networks               [RFC1918]
+{ wxT("14.0.0.0"),       8, false }, // Public-Data Networks     [RFC1700, page 181]
+{ wxT("24.0.0.0"),       8, false }, // Cable Television Networks                 --
+{ wxT("39.0.0.0"),       8, false }, // Reserved but subject
+                                     //    to allocation                   [RFC1797]
+{ wxT("127.0.0.0"),      8, false }, // Loopback                   [RFC1700, page 5]
+{ wxT("128.0.0.0"),     16, false }, // Reserved but subject
+                                     //    to allocation                          --
+{ wxT("169.254.0.0"),   16, false }, // Link Local                                --
+{ wxT("172.16.0.0"),    12, true  }, // Private-Use Networks               [RFC1918]
+{ wxT("191.255.0.0"),   16, false }, // Reserved but subject
+                                     //    to allocation                          --
+{ wxT("192.0.0.0"),     24, false }, // Reserved but subject          
+                                     //    to allocation                          --
+{ wxT("192.0.2.0"),     24, false }, // Test-Net
+{ wxT("192.88.99.0"),   24, false }, // 6to4 Relay Anycast                 [RFC3068]
+{ wxT("192.168.0.0"),   16, true  }, // Private-Use Networks               [RFC1918]
+{ wxT("198.18.0.0"),    15, false }, // Network Interconnect
+                                     //    Device Benchmark Testing        [RFC2544]
+{ wxT("223.255.255.0"), 24, false }, // Reserved but subject
+                                     //    to allocation                          --
+{ wxT("224.0.0.0"),      4, false }, // Multicast                          [RFC3171]
+{ wxT("240.0.0.0"),      4, false }  // Reserved for Future Use    [RFC1700, page 4]
 };
 
 
@@ -188,11 +189,13 @@ bool SetupFilter()
 static bool filterSetup = SetupFilter();
 
 
-bool IsGoodIP(uint32 IP)
+bool IsGoodIP(uint32 IP, bool filterLAN)
 {
 	for (int i = 0; i < number_of_ranges; ++i) {
 		if (((IP ^ filters[i].addr) & filters[i].mask) == 0) {
-			return false;
+			if ( filterLAN || !ranges[i].isLAN ) {
+				return false;
+			}
 		}
 	}
 

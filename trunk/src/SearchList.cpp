@@ -44,6 +44,7 @@
 #include "ObservableQueue.h"		// Needed for CQueueObserver
 #include "Format.h"
 #include "Logger.h"
+#include "Preferences.h"
 
 #include <algorithm>
 
@@ -129,7 +130,7 @@ CSearchFile::CSearchFile(const CSafeMemFile& in_data, bool bOptUTF8, long nSearc
 	m_nClientID = in_data.ReadUInt32();
 	m_nClientPort = in_data.ReadUInt16();
 	
-	if (( m_nClientID || m_nClientPort ) && ( !IsGoodIP(m_nClientID) || !m_nClientPort ) ) {
+	if (( m_nClientID || m_nClientPort ) && ( !IsGoodIP(m_nClientID, thePrefs::FilterLanIPs()) || !m_nClientPort ) ) {
 		m_nClientID = 0;
 		m_nClientPort = 0;
 	}
