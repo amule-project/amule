@@ -3018,7 +3018,7 @@ void CProgressImage::CreateSpan()
 		m_ColorLine[i] = 0x0;
 	}
 	
-	uint32 factor = m_file->lFileSize / m_width;
+	uint32 factor = (m_file->lFileSize < m_width) ? 1 : (m_file->lFileSize / m_width);
 	for(int i = 1; i <= colored_gaps_size;i++) {
 		uint32 start = colored_gaps[i].start / factor;
 		uint32 end = colored_gaps[i].end / factor;
