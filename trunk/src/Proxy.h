@@ -122,6 +122,11 @@ class wxSocketProxy
 public:
 	/* Constructor */
 	wxSocketProxy(const wxProxyData *ProxyData);
+	/* Destructor */
+	~wxSocketProxy();
+	
+	/* Interface */
+	void		SetProxyData(const wxProxyData *ProxyData);
 	bool		Start(wxIPaddress &address, enum wxProxyCommand cmd);
 	wxIPaddress	&GetTargetAddress(void) { return *m_TargetAddress; }
 	unsigned char	GetLastReply(void) { return m_LastReply; }
@@ -187,7 +192,8 @@ public:
 		const wxProxyData *ProxyData = NULL);
 		
 	/* Interface */
-	bool Connect(wxIPaddress &address, bool wait, bool UseProxy = false);
+	bool Connect(wxIPaddress &address, bool wait);
+	void SetProxyData(const wxProxyData *ProxyData);
 	
 private:
 	wxSocketProxy	m_SocketProxy;
@@ -209,6 +215,9 @@ public:
 	~wxSocketServerProxy();
 		
 	/* Interface */
+	void SetProxyData(const wxProxyData *ProxyData);
+	
+	/* wxSocketServer interface */
 	wxSocketBase *Accept(bool wait = true) { return m_SocketServer->Accept(wait); }
 	bool AcceptWith(wxSocketBase& socket, bool wait = true) { return m_SocketServer->AcceptWith(socket, wait); }
 	void Close(void) { m_SocketServer->Close(); }
