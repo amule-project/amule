@@ -1125,7 +1125,7 @@ wxFileType *ft;                            /* Temporary storage for filetype. */
 
 		if ( !cmd.Replace( wxT("%s"), tmp ) ) {
 			// No %s found, just append the url
-			cmd += tmp;
+			cmd += wxT(" ") + tmp;
 		}
 
 		if ( wxExecute( cmd, false ) ) {
