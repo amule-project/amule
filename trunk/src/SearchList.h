@@ -109,7 +109,6 @@ private:
 	bool		 m_bPreviewPossible;
 	//CArray<CxImage*,CxImage*> m_listImages;
 	LPSTR m_pszDirectory;
-
 };
 
 class CSearchList
@@ -143,6 +142,7 @@ private:
 
 	CString myHashList;
 	CString resultType;
+	
 	uint32	m_nCurrentSearch;
 };
 
