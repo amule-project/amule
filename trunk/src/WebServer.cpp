@@ -2916,7 +2916,7 @@ bool DownloadFilesInfo::ReQuery()
 			file.lFilePrio = tag->Prio();
 			file.sFileHash = wxString::Format(wxT("%08x"), tag->FileID());
 			file.sED2kLink = tag->FileEd2kLink();
-			file.sFileInfo = "FIXME";
+			file.sFileInfo = wxT("FIXME");
 		}
 	}
 	
