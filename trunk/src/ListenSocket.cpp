@@ -2099,7 +2099,9 @@ void *CListenSocket::Entry()
 				}
 				continue;
 			}
+			wxMutexGuiEnter();
 			OnAccept(0);
+			wxMutexGuiLeave();
 		} else {
 			// lfroen - can't Yield from non-main thead
 			wxThread::Sleep(10);
