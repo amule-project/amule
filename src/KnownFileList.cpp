@@ -25,6 +25,8 @@
 #include "SafeFile.h"		// Needed for CSafeFile
 #include "PartFile.h"		// Needed for CPartFile
 #include "otherfunctions.h" // md4cmp
+#include "amule.h"
+#include "amuleDlg.h"
 
 static wxString KnownFileHash(const char* filename, uint32 date, uint32 size)
 {
@@ -120,10 +122,14 @@ void CKnownFileList::Save() {
 	fullpath=NULL;
 
 	wxMutexLocker sLock(list_mut);
+	theApp.amuledlg->AddLogLine(false,CString(_("KnownFileList Save Starts")).GetData());
 	uint8 ucHeader = MET_HEADER;
+	theApp.amuledlg->AddLogLine(false,CString(_("Saved MET_HEADER")).GetData());
 	file->Write(&ucHeader, 1);
 	uint32 RecordsNumber = m_map.size();
+	theApp.amuledlg->AddLogLine(false,CString(_("RecordsNumber = %i")).GetData(), RecordsNumber);
 	ENDIAN_SWAP_I_32(RecordsNumber);
+	theApp.amuledlg->AddLogLine(false,CString(_("Endian RecordsNumber = %i")).GetData(), RecordsNumber);		
 	file->Write(&RecordsNumber,4);
 	RecordsNumber = m_map.size();
 	KnownFileMap::iterator it = m_map.begin();
@@ -134,6 +140,7 @@ void CKnownFileList::Save() {
 	}
 	file->Flush();
 	file->Close();
+	theApp.amuledlg->AddLogLine(false,CString(_("KnownFileList Save Ends")).GetData());	
 	delete file;
 }
 
