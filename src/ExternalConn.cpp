@@ -1201,9 +1201,7 @@ CECPacket *SetPreferencesFromRequest(const CECPacket *request)
 }
 
 // init with some default size
-#warning lfroen, FIX THIS MEMORY NOT BEING FREED!
-uint32 *CPartFile_Encoder::m_gap_buffer = new uint32[128];
-int CPartFile_Encoder::m_gap_buffer_size = 128;
+CPartFile_Encoder::GapBuffer CPartFile_Encoder::m_gap_buffer(128);
 
 // encoder side
 CPartFile_Encoder::CPartFile_Encoder(CPartFile *file) :
@@ -1243,33 +1241,31 @@ CPartFile_Encoder &CPartFile_Encoder::operator=(const CPartFile_Encoder &obj)
 
 void CPartFile_Encoder::Encode(CECTag *parent)
 {
-	int gap_list_size = m_file->gaplist.GetCount();
+	size_t gap_list_size = m_file->gaplist.GetCount();
 	
-	if ( m_gap_buffer_size < gap_list_size*2 ) {
-		m_gap_buffer_size = gap_list_size*2;
-		uint32 *buf = new uint32[m_gap_buffer_size];
-		delete [] m_gap_buffer;
-		m_gap_buffer = buf;
+	if ( m_gap_buffer.size() < gap_list_size * 2 ) {
+		m_gap_buffer.clear();
+		m_gap_buffer.resize(gap_list_size * 2);
 	} 
 	
 //	printf("GapList have %d entries\n", gap_list_size);
 	
 	POSITION curr_pos = m_file->gaplist.GetHeadPosition();
-	uint32 *gap_buff_ptr = m_gap_buffer;
+	GapBuffer::iterator it = m_gap_buffer.begin();
 	while ( curr_pos ) {
 		Gap_Struct *curr = m_file->gaplist.GetNext(curr_pos);
-		*gap_buff_ptr++ = htonl(curr->start);
-		*gap_buff_ptr++ = htonl(curr->end);
+		*it++ = htonl(curr->start);
+		*it++ = htonl(curr->end);
 //		printf("GAP to buffer [%08x %08x]\n", curr->start, curr->end);
 	}
 
 //	printf("DEBUG: gap data to send %d dwords [:\n", gap_list_size);
-//	otherfunctions::DumpMem_DW(m_gap_buffer, gap_list_size);
+//	otherfunctions::DumpMem_DW(&m_gap_buffer[0], gap_list_size);
 //	printf("]\n");
 	
 	m_enc_data.m_gap_status.Realloc(gap_list_size*2*sizeof(uint32));
 	int gap_enc_size = 0;
-	const unsigned char *gap_enc_data = m_enc_data.m_gap_status.Encode((unsigned char *)m_gap_buffer, gap_enc_size);
+	const unsigned char *gap_enc_data = m_enc_data.m_gap_status.Encode((unsigned char *)&m_gap_buffer[0], gap_enc_size);
 
 //	printf("DEBUG: gap data encoded %d bytes [:\n", gap_enc_size);
 //	otherfunctions::DumpMem(gap_enc_data, gap_enc_size);
@@ -1298,14 +1294,15 @@ void CPartFile_Encoder::Encode(CECTag *parent)
 	parent->AddTag(etag);
 
 	curr_pos = m_file->requestedblocks_list.GetHeadPosition();
-	gap_buff_ptr = m_gap_buffer;
+	wxASSERT(m_gap_buffer.size() >= (size_t)m_file->requestedblocks_list.GetCount() * 2);
+	it = m_gap_buffer.begin();
 	while ( curr_pos ) {
 		Requested_Block_Struct* block = m_file->requestedblocks_list.GetNext(curr_pos);
-		*gap_buff_ptr++ = htonl(block->StartOffset);
-		*gap_buff_ptr++ = htonl(block->EndOffset);
+		*it++ = htonl(block->StartOffset);
+		*it++ = htonl(block->EndOffset);
 	}
 	parent->AddTag(CECTag(EC_TAG_PARTFILE_REQ_STATUS,
-		m_file->requestedblocks_list.GetCount() * 2 * sizeof(uint32), (void *)m_gap_buffer));
+		m_file->requestedblocks_list.GetCount() * 2 * sizeof(uint32), (void *)&m_gap_buffer[0]));
 }
 
 
