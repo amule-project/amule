@@ -851,8 +851,10 @@ void CKnownFile::CreateHashFromInput(FILE* file,CFile* file2, int Length, uchar*
 	}
 }
 
-const CMD4Hash& CKnownFile::GetPartHash(uint16 part) const {
-	wxASSERT( part >= hashlist.GetCount() );
+uchar* CKnownFile::GetPartHash(uint16 part) const {
+	if ( part >= hashlist.GetCount()) 
+		return NULL;
+	
 	return hashlist[part];
 }
 
