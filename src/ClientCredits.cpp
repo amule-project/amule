@@ -182,8 +182,7 @@ void CClientCreditsList::LoadList()
 	
 		file.Open(strFileName, CFile::read);
 	
-		uint8 version;
-		file.Read(&version, 1);
+		uint8 version = file.ReadUInt8();
 		if ( version != CREDITFILE_VERSION ){
 			AddDebugLogLineM( true, logCredits, wxT("Creditfile is out of date and will be replaced") );
 			file.Close();
@@ -229,7 +228,16 @@ void CClientCreditsList::LoadList()
 		for (uint32 i = 0; i < count; i++){
 			CreditStruct* newcstruct = new CreditStruct;
 			memset(newcstruct, 0, sizeof(CreditStruct));
-			file.Read(newcstruct, sizeof(CreditStruct));
+
+			file.ReadHash16(newcstruct->abyKey);
+			newcstruct->nUploadedLo         = file.ReadUInt32();
+			newcstruct->nDownloadedLo       = file.ReadUInt32();
+			newcstruct->nLastSeen           = file.ReadUInt32();
+			newcstruct->nUploadedHi         = file.ReadUInt32();
+			newcstruct->nDownloadedHi       = file.ReadUInt32();
+			newcstruct->nReserved3          = file.ReadUInt16();
+			newcstruct->nKeySize            = file.ReadUInt8();
+			file.Read(newcstruct->abySecureIdent, MAXPUBKEYSIZE);
 		
 			if ( newcstruct->nKeySize > MAXPUBKEYSIZE ) {
 				// Oh dear, this is bad mojo, the file is most likely corrupt
@@ -313,7 +321,17 @@ void CClientCreditsList::SaveList()
 			CClientCredits* cur_credit = it->second;
 		
 			if ( cur_credit->GetUploadedTotal() || cur_credit->GetDownloadedTotal() ) {
-				file.Write( cur_credit->GetDataStruct(), sizeof(CreditStruct) );
+				const CreditStruct* const cstruct = cur_credit->GetDataStruct();
+				file.WriteHash16(cstruct->abyKey);
+				file.WriteUInt32(cstruct->nUploadedLo);
+				file.WriteUInt32(cstruct->nDownloadedLo);
+				file.WriteUInt32(cstruct->nLastSeen);
+				file.WriteUInt32(cstruct->nUploadedHi);
+				file.WriteUInt32(cstruct->nDownloadedHi);
+				file.WriteUInt16(cstruct->nReserved3);
+				file.WriteUInt8(cstruct->nKeySize);
+				// Doesn't matter if this saves garbage, will be fixed on load.
+				file.Write(cstruct->abySecureIdent, MAXPUBKEYSIZE);
 				count++;
 			}
 		}
