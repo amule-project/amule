@@ -32,6 +32,7 @@ CColorFrameCtrl::CColorFrameCtrl( wxWindow* parent,int id, int wid,int hei )
 {
 	m_crBackColor  = RGB(  0,   0,   0) ;  // see also SetBackgroundColor
 	m_crFrameColor  = RGB(  0, 255, 255) ;  // see also SetFrameColor
+	SetSizeHints(wid,hei,wid,hei,0,0);
 
 }  // CColorFrameCtrl
 

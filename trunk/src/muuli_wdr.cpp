@@ -342,31 +342,31 @@ wxSizer *searchDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     item35->Enable( false );
     item1->Add( item35, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
     wxStaticBox *item37 = new wxStaticBox( parent, -1, _("Results") );
     wxStaticBoxSizer *item36 = new wxStaticBoxSizer( item37, wxVERTICAL );
 
     wxWindow *item38 = new CMuleNotebook(parent, ID_NOTEBOOK, wxDefaultPosition,wxDefaultSize,0);
     wxASSERT( item38 );
-    item36->Add( item38, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item36->Add( item38, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
     wxGauge *item39 = new wxGauge( parent, ID_SEARCHPROGRESS, 100, wxDefaultPosition, wxSize(-1,10), 0 );
-    item36->Add( item39, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item36->Add( item39, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    item0->Add( item36, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item0->Add( item36, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
     wxStaticBox *item41 = new wxStaticBox( parent, -1, _("ED2k Link Handler") );
     wxStaticBoxSizer *item40 = new wxStaticBoxSizer( item41, wxHORIZONTAL );
     s_ed2ksizer = item40;
 
     wxTextCtrl *item42 = new wxTextCtrl( parent, ID_ED2KLINKHANDLER, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
-    item40->Add( item42, 1, wxALIGN_CENTER|wxALL, 5 );
+    item40->Add( item42, 1, wxALIGN_CENTER, 5 );
 
     wxButton *item43 = new wxButton( parent, ID_BTN_DDLOAD, _("Commit"), wxDefaultPosition, wxDefaultSize, 0 );
     item40->Add( item43, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    item0->Add( item40, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
+    item0->Add( item40, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
     if (set_sizer)
     {
@@ -397,19 +397,20 @@ wxSizer *transferTopPane( wxWindow *parent, bool call_fit, bool set_sizer )
     item4->SetToolTip( _("Clears completed downloads") );
     item1->Add( item4, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    CMuleNotebook *item5 = new CMuleNotebook( parent, ID_CATEGORIES, wxDefaultPosition, wxSize(15,30), 0 );
-    wxASSERT( item5 );
-    item1->Add( item5, 1, wxALIGN_CENTER, 5 );
+    CMuleNotebook *item6 = new CMuleNotebook( parent, ID_CATEGORIES, wxDefaultPosition, wxSize(-1,50), 0 );
+    wxNotebookSizer *item5 = new wxNotebookSizer( item6 );
 
-    wxBitmapButton *item6 = new wxBitmapButton( parent, ID_BTNSWWINDOW, amuleDlgImages( 16 ), wxDefaultPosition, wxSize(20,20) );
-    item6->SetToolTip( _("switch download list to clients you're downloading from, with files also (some day)") );
-    item1->Add( item6, 0, wxALIGN_CENTER|wxALL, 5 );
+    item1->Add( item5, 0, wxALIGN_BOTTOM|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+
+    wxBitmapButton *item7 = new wxBitmapButton( parent, ID_BTNSWWINDOW, amuleDlgImages( 16 ), wxDefaultPosition, wxSize(20,20) );
+    item7->SetToolTip( _("switch download list to clients you're downloading from, with files also (some day)") );
+    item1->Add( item7, 0, wxALIGN_CENTER|wxALL, 5 );
 
     item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    CDownloadListCtrl *item7 = new CDownloadListCtrl( parent, ID_DLOADLIST, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxSUNKEN_BORDER );
-    item7->SetName( wxT("downloadList") );
-    item0->Add( item7, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    CDownloadListCtrl *item8 = new CDownloadListCtrl( parent, ID_DLOADLIST, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxSUNKEN_BORDER );
+    item8->SetName( wxT("downloadList") );
+    item0->Add( item8, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
     if (set_sizer)
     {
@@ -477,7 +478,7 @@ wxSizer *messagePage( wxWindow *parent, bool call_fit, bool set_sizer )
 
     item1->Add( item3, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    CFriendListCtrl *item6 = new CFriendListCtrl( parent, ID_FRIENDLIST, wxDefaultPosition, wxSize(160,120), wxLC_REPORT|wxSUNKEN_BORDER );
+    CFriendListCtrl *item6 = new CFriendListCtrl( parent, ID_FRIENDLIST, wxDefaultPosition, wxSize(160,-1), wxLC_REPORT|wxSUNKEN_BORDER );
     item1->Add( item6, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxRIGHT|wxBOTTOM, 5 );
 
     item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
@@ -2898,7 +2899,7 @@ wxSizer *CategoriesEditWindow( wxWindow *parent, bool call_fit, bool set_sizer )
         _("High"), 
         _("Auto")
     };
-    wxChoice *item15 = new wxChoice( parent, IDC_PRIOCOMBO, wxDefaultPosition, wxSize(100,20), 5, strs15, 0 );
+    wxChoice *item15 = new wxChoice( parent, IDC_PRIOCOMBO, wxDefaultPosition, wxDefaultSize, 5, strs15, 0 );
     item13->Add( item15, 0, wxGROW|wxRIGHT, 5 );
 
     item1->Add( item13, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 5 );
