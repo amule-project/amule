@@ -1,10 +1,14 @@
-Version 2.0.0rc7 - The "xxxxxxxxxxxxxxxx" version.
+Version 2.0.0rc7 - The "99,6% Final" version.
 ----------
-2004-10-XX
+2004-10-15
 
+        
 	bisley:
 		* Added session ratio and total ratio to XAS
 
+	deltaHF:
+	        * Got back from hell and changed one icon on the GUI ;)
+		
 	Jacobo221:
 		aMule GUI:
 		* Fixed two almost-the-same bugs when clicked download button and no items where selected (as reported by powtrix/willy, thanks)
@@ -101,11 +105,14 @@ Version 2.0.0rc7 - The "xxxxxxxxxxxxxxxx" version.
 		   #amule	irc.freenode.net
 		   wiki		http://wiki.amule.org
 		   forums	http://forum.amule.org
-		   bugtrackier	http://abugs.amule.org
+		   bugtracker	http://abugs.amule.org
 
 		* All the people in aMule's forum
 
 		* All aMule users!!!
+		
+
+--------------------------------------------------------------------------------------------------------------------------------
 
 	
 Version 2.0.0rc6 - The "We're so EVIL that we make you lose a sock in every pair" version.
