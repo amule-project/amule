@@ -115,7 +115,15 @@ public:
 	 * sorted STL containers like std::map.
 	 */
 	bool operator  < (const CMD4Hash& other_hash) const {
-		return memcmp(m_hash, other_hash.m_hash, 16) < 0;
+		for ( int i = 0; i < MD4HASH_LENGTH; ++i ) {
+			if ( m_hash[i] < other_hash.m_hash[i] ) {
+				return true;
+			} else if ( other_hash.m_hash[i] < m_hash[i] ) {
+				return false;
+			}
+		}
+		
+		return false;
 	}
 
 	
