@@ -515,8 +515,11 @@ void COScopeCtrl::Reset(double sNewPeriod)
 void COScopeCtrl::Stop()
 { 
 	bStopped = true;
+	#if 0
 	if (nDelayedPoints>0)
 		bRecreateGraph = true;
+	#endif
+	bRecreateGraph = false;
 	RecreateGrid();
 } // Stop
 
