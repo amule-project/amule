@@ -655,6 +655,7 @@ void CServerList::SendNextPacket()
 	if (broadcastpos != 0) {
 		CServer* cur_server = list.GetAt(broadcastpos);
 		if (cur_server != theApp.serverconnect->GetCurrentServer()) {
+			theApp.uploadqueue->AddUpDataOverheadServer(broadcastpacket->GetPacketSize());
 			theApp.serverconnect->SendUDPPacket(broadcastpacket,cur_server,false);
 		}
 		list.GetNext(broadcastpos);
