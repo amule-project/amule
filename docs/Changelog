@@ -1,3 +1,99 @@
+Version 2.0.0rc3 - The 'tiku' version.
+-------------
+2004-04-22
+	
+        aquatroll:
+	
+		* win32 stuff
+		
+	Citroklar:
+		
+		* Fixed saving preferences on klick OK, not only on shutdown.
+		* Configure stuff 
+		* Cas related stuff
+
+	deltaHF:
+	
+		* i18n stuff
+		* Minor timer fix ;)
+
+	falso:
+		
+		* Improving and fixing cas 
+		* Added capability to create pngs with cas
+		* Fixed ed2k fast links handler
+	
+	Kry:	
+
+		* Complete rewrite to emule 0.42x network code
+		* Rewrite of hashing thread 
+		* Fixed FAT32 bug
+		* Fixed & rewrote stats 
+		* Fixing Win32 compilation
+		* Fix UDP socket for Win32
+		* Preparing some 1.x / 2.x / CVS stats for aMule and Cleaned the Major version identifying
+		* Thread-safe log lines adding
+		* Completion Thread revamped --> No longer crashes, no longer asserts, and it's much nicer. I love it. ;)
+		* Fixed safe_delete (again)
+		* Fixed some memleaks
+		* Fixed better chuck selection
+		* Added new verbose info button, to find out which clients are sending bad data 
+		* Cleanup and fixing little bugs ;)
+		
+	Madcat:
+	
+	        * Disable autobacktrace on win32
+		* Removed wxTE_PROCESS_ENTER style from fast ed2k links handler (fixes assert)
+		* The following modifications to CamuleDlg::AddLogLine() function:
+                  * Now uses system locale for date/time formatting.
+                  * No longer asserts.
+                  * Now also works on win32.
+		* Removed unused m_StateImageList
+		* Code cleanup
+		
+	one_2_one, hoschy007:
+	
+	        * MacOSX stuff
+
+	Shakraw:
+		
+		* Fixed multiple file download bug in webserver search section
+		* Fixed ed2k download link
+		* Fixed categories for web interface
+		* WebSocket.* & WebServer.*: now uses wxThreads and wxSockets to be cross platform.
+                * Better threads' array remove in WebSocket
+                * WebServer cleanly stopped before exit	
+		
+	thepolish:
+		
+		* Wrote wxcas based on cas from falso
+		* Enable auto-refresh and Fix GPL headers
+
+	Xaignar:
+		* Fixed negative percentages in downloadlist ... again (Disp.8)
+		* Fixed the "free(): Invalid pointer" bug (Misc.10)
+		* Fixed PowerShare priority level not being saved. (Tran.9)
+		* Fixed the problem where it wasn't possible to select auto-priority in the uploadlist after having selected another priority (Tran.8)
+		* Cleanup of Search Dialog:
+  		* The reset button is now properly enabled/disabled depending on the contenst of the text fields
+		* Fixed a bug where searched would be limited to 2gb if max size was set to a value less than min size
+  		* The popup-menu for the notebook now works as expected (SRCH.1) 
+		* The popup-menu will now only show when right-clicking within the bounds of the notebook (DISP.12)
+		* Other stuff
+		* Fixed the green progressbar on downloads always displaying 100%. (DISP.9)
+		* aMule will no longer display warnings about not being able to find server.met when a new server.met is saved and no old copy exists.
+		* known.met is now auto-saved (1) when 30 files have been hashed, (2) when 300mb worth of files have been hashed, (3) and when all files have been hashed. This is to reduce the chances of having to rehash all files after a crash.	
+
+
+	** Special thanks 
+		
+		* All the bug-reporters, helpers, translators and users at http://forum.amule.org
+		* Batman who commited a mldonkey related fix, thanks :) 
+		* Jacobo221, Stefanero for their help and support on forum and all the other stuff ;) 
+	   As usual thx to eMule & wxWidgets devs and everyone i forgot ;)
+
+---------------------------------------------------------------------------------------------------------------
+
 Version 2.0.0-rc2 - The 'white rabbit' version.
 -------------
 2004-04-11
