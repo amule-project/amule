@@ -120,6 +120,7 @@ CECTag::CECTag(const CECTag& tag) : m_tagName( tag.m_tagName ), m_dynamic( tag.m
 						m_error = (*m_tagList)[i]->m_error;
 #ifndef KEEP_PARTIAL_PACKETS
 						delete (*m_tagList)[i];
+						(*m_tagList)[i] = NULL;
 #endif
 						break;
 					}
@@ -222,6 +223,7 @@ bool CECTag::AddTag(const CECTag& tag)
 			m_error = (*m_tagList)[m_tagCount]->m_error;
 #ifndef KEEP_PARTIAL_PACKETS
 			delete (*m_tagList)[m_tagCount];
+			(*m_tagList)[m_tagCount] = NULL;
 #endif
 			return false;
 		}
@@ -314,6 +316,7 @@ bool CECTag::ReadChildren(wxSocketBase *sock, ECSocket& socket)
 						m_error = (*m_tagList)[i]->m_error;
 #ifndef KEEP_PARTIAL_PACKETS
 						delete (*m_tagList)[i];
+						(*m_tagList)[i] = NULL;
 #endif
 						return false;
 					}
