@@ -39,37 +39,26 @@
  * that have only a constructor.
  */
 
-#ifndef EC_REMOTE
 class CServer;
 class CKnownFile;
-
-#include "PartFile.h"	// Needed for CPartFile::GetProgressString()
-#endif /* ! EC_REMOTE */
+class CPartFile;
 
 
-#ifndef EC_REMOTE
 class CEC_Server_Tag : public CECTag {
  	public:
  		CEC_Server_Tag(CServer *, EC_DETAIL_LEVEL);
 };
-#endif /* ! EC_REMOTE */
 
 
-#ifndef EC_REMOTE
 class CEC_ConnState_Tag : public CECTag {
  	public:
  		CEC_ConnState_Tag(EC_DETAIL_LEVEL);
 };
-#endif /* ! EC_REMOTE */
 
 
 class CEC_PartFile_Tag : public CECTag {
  	public:
-		#ifndef EC_REMOTE
  		CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level);
-		#else // dummy constructor, to satisfy gcc
-		CEC_PartFile_Tag() : CECTag(0, 0, NULL, false) {}	// 0 = invalid tagname
-		#endif /* ! EC_REMOTE */
  		
  		uint32		FileID()	{ return GetInt32Data(); }
  		wxString	FileName()	{ return GetTagByName(EC_TAG_PARTFILE_NAME)->GetStringData(); }
@@ -84,27 +73,22 @@ class CEC_PartFile_Tag : public CECTag {
   		uint32		Speed()		{ return GetTagByName(EC_TAG_PARTFILE_SPEED)->GetInt32Data(); }
   		uint32		Prio()		{ return GetTagByName(EC_TAG_PARTFILE_PRIO)->GetInt32Data(); }
   		wxString	PartStatus()	{ return GetTagByName(EC_TAG_PARTFILE_PART_STATUS)->GetStringData(); }
+
 		#ifdef EC_REMOTE
 		wxString	GetFileStatusString();
 		#endif /* EC_REMOTE */
 };
 
 
-#ifndef EC_REMOTE
 class CEC_PartStatus_Tag : public CECTag {
  	public:
- 		CEC_PartStatus_Tag(CPartFile *file, int statussize) : CECTag(EC_TAG_PARTFILE_PART_STATUS, file->GetProgressString(statussize)) {};
+ 		CEC_PartStatus_Tag(CPartFile *file, int statussize);
 };
-#endif /* ! EC_REMOTE */
 
 
 class CEC_SharedFile_Tag : public CECTag {
 	public:
-		#ifndef EC_REMOTE
 		CEC_SharedFile_Tag(CKnownFile *file, EC_DETAIL_LEVEL detail_level);
-		#else // dummy constructor, to satisfy gcc
-		CEC_SharedFile_Tag() : CECTag(0, 0, NULL, false) {}	// 0 = invalid tagname
-		#endif /* ! EC_REMOTE */
 		
  		uint32		FileID()	{ return GetInt32Data(); }
  		wxString	FileName()	{ return GetTagByName(EC_TAG_PARTFILE_NAME)->GetStringData(); }

@@ -137,6 +137,11 @@ CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level
 					theApp.CreateED2kSourceLink(file) : theApp.CreateED2kLink(file)));
 }
 
+CEC_PartStatus_Tag::CEC_PartStatus_Tag(CPartFile *file, int statussize) :
+	CECTag(EC_TAG_PARTFILE_PART_STATUS, file->GetProgressString(statussize))
+{
+}
+
 #else /* EC_REMOTE */
 // Since this is only needed at the remote end
 
