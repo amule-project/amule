@@ -672,12 +672,8 @@ CECPacket *Get_EC_Response_Set_SharedFile_Prio(const CECPacket *request)
 CECPacket *ProcessPreferencesRequest(const CECPacket *request)
 {
 	CECPacket *response = new CECPacket(EC_OP_PREFERENCES);
-	uint32 selection = 0;
 	const CECTag *selTag = request->GetTagByName(EC_TAG_SELECT_PREFS);
-	if (selTag) {
-		selection = selTag->GetInt32Data();
-	}
-
+	uint32 selection = selTag ? selTag->GetInt32Data() : 0;	
 	if (selection & EC_PREFS_CATEGORIES) {
 		if (theApp.glob_prefs->GetCatCount() > 1) {
 			CECEmptyTag cats(EC_TAG_PREFS_CATEGORIES);

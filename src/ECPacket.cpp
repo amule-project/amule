@@ -283,7 +283,7 @@ CECTag& CECTag::operator=(const CECTag& rhs)
 		// point.  Then temp is destroyed as it goes out of scope, so its
 		// destructor cleans up whatever data used to belong to this object.
 		CECTag temp(rhs);
-		std::swap(m_error,		temp.m_error);
+		std::swap(m_error,	temp.m_error);
 		std::swap(m_tagData,	temp.m_tagData);
 		std::swap(m_tagName,	temp.m_tagName);
 		std::swap(m_dataLen,	temp.m_dataLen);
