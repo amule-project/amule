@@ -156,6 +156,21 @@ int CamuleDaemonApp::OnRun()
 		msRun = GetTickCount() - msRun;
 		msWait = uLoop - msRun;
 	}
+
+	return 0;
+}
+
+
+int CamuleDaemonApp::InitGui(bool ,wxString &)
+{
+	wxPendingEventsLocker = new wxCriticalSection;
+	
+	return 0;
+}
+
+
+int CamuleDaemonApp::OnExit()
+{
 	/*
 	 * Stop all socket threads before entering
 	 * shutdown sequence.
@@ -170,18 +185,7 @@ int CamuleDaemonApp::OnRun()
 	}
 	
 	ShutDown();
-	return 0;
-}
-
-int CamuleDaemonApp::InitGui(bool ,wxString &)
-{
-	wxPendingEventsLocker = new wxCriticalSection;
 	
-	return 0;
-}
-
-int CamuleDaemonApp::OnExit()
-{
 	// lfroen: delete socket threads
 	if (ECServerHandler) {
 		ECServerHandler->Delete();
