@@ -82,14 +82,14 @@ CDownloadQueue::CDownloadQueue()
 
 CDownloadQueue::~CDownloadQueue()
 {
-	printf("Flushing partfiles ");
-	fflush(stdout);
-	for ( uint16 i = 0; i < m_filelist.size(); i++ ) {
-		delete m_filelist[i];
-		printf(".");
-		fflush(stdout);
+	if ( !m_filelist.empty() ) {
+		for ( unsigned int i = 0; i < m_filelist.size(); i++ ) {
+			printf("\rSaving PartFile: %u of %u", i + 1, m_filelist.size());
+			fflush(stdout);
+			delete m_filelist[i];
+		}
+		printf("\nAll PartFiles Saved.\n");
 	}
-	printf(" done!\n");
 }
 
 
