@@ -1420,13 +1420,6 @@ void CamuleApp::OnNotifyEvent(wxEvent& e)
 	NotifyEvent(evt);
 }
 
-void CamuleApp::OnUDPTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
-{
-	if (IsReady) {
-		serverlist->SendNextPacket();
-	}
-}
-
 
 void CamuleApp::OnTCPTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 {

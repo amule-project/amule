@@ -69,21 +69,14 @@
 #include "NetworkFunctions.h" // Needed for StringIPtoUint32
 #include "Statistics.h"		// Needed for CStatistics
 
-//WX_DEFINE_LIST(CServerListList);
 
-CServerList::CServerList():
-list(wxKEY_NONE)
+CServerList::CServerList()
 {
-	servercount = 0;
-	version = 0;
 	serverpos = 0;
 	searchserverpos = 0;
 	statserverpos = 0;
-	//udp_timer = 0;
-	udp_timer.SetOwner(&theApp,TM_UDPSOCKET);
 	delservercount = 0;
-	m_nLastED2KServerLinkCheck = m_nLastSaved = ::GetTickCount();
-	broadcastpacket = NULL;
+	m_nLastED2KServerLinkCheck = ::GetTickCount();
 }
 
 bool CServerList::Init()
@@ -129,7 +122,7 @@ bool CServerList::AddServermetToList(const wxString& strFile, bool merge)
 
 		Notify_ServerFreeze();
 		
-		version = servermet.ReadUInt8();
+		uchar version = servermet.ReadUInt8();
 		
 		if (version != 0xE0 && version != MET_HEADER) {
 			AddLogLineM(false, wxString::Format(_("Invalid versiontag in server.met (0x%x , size %i)!"),version, sizeof(version)));
@@ -428,7 +421,6 @@ CServerList::~CServerList()
 		delete list.GetTail();
 		list.RemoveTail();
 	}
-	udp_timer.Stop();
 }
 
 void CServerList::AddServersFromTextFile(wxString strFilename,bool isstaticserver, bool writetolog)
@@ -534,15 +526,6 @@ void CServerList::AddServersFromTextFile(wxString strFilename,bool isstaticserve
 	}
 }
 
-void CServerList::MoveServerDown(CServer* aServer)
-{
-	POSITION pos = list.Find( aServer );
-	if ( pos != NULL ) {
-		list.AddTail( aServer );
-		list.RemoveAt(pos);
-	}
-}
-
 void CServerList::Sort()
 {
 	POSITION pos1, pos2;
@@ -630,61 +613,6 @@ CServer* CServerList::GetNextStatServer()
 	return nextserver;
 }
 
-bool CServerList::BroadCastPacket(CPacket* packet)
-{
-	// unused atm . but might be useful later
-	if (udp_timer.IsRunning()) {
-		return false;
-	}
-	//udp_timer = SetTimer(0,4322,UDPSEARCHSPEED,CServerList::UDPTimerProc);
-	udp_timer.Start(UDPSEARCHSPEED);
-	broadcastpos = list.GetHeadPosition();
-	broadcastpacket = packet;
-	return true;
-}
-
-void CServerList::SendNextPacket()
-{
-	if (theApp.listensocket->TooManySockets()) {
-		//KillTimer(0,udp_timer);
-		udp_timer.Stop();
-		delete broadcastpacket;
-		broadcastpacket = NULL;
-		return;
-	}
-
-	if (broadcastpos != 0) {
-		CServer* cur_server = list.GetAt(broadcastpos);
-		if (cur_server != theApp.serverconnect->GetCurrentServer()) {
-			theApp.statistics->AddUpDataOverheadServer(broadcastpacket->GetPacketSize());
-			theApp.serverconnect->SendUDPPacket(broadcastpacket,cur_server,false);
-		}
-		list.GetNext(broadcastpos);
-	} else {
-		// KillTimer(0,udp_timer);
-		udp_timer.Stop();
-		delete broadcastpacket;
-		broadcastpacket = NULL;
-	}
-}
-
-void CServerList::CancelUDPBroadcast()
-{
-	if (udp_timer.IsRunning()) {
-		// KillTimer(0,udp_timer);
-		// udp_timer = 0;
-		udp_timer.Stop();
-		delete broadcastpacket;
-		broadcastpacket = NULL;
-	}
-}
-
-#if 0
-void CALLBACK CServerList::UDPTimerProc(HWND hwnd, UINT uMsg,UINT_PTR idEvent,DWORD dwTime)
-{
-	theApp.serverlist->SendNextPacket();
-}
-#endif
 
 CServer* CServerList::GetNextServer(CServer* lastserver)
 {
@@ -738,8 +666,6 @@ CServer* CServerList::GetServerByIP(uint32 nIP, uint16 nPort){
 
 bool CServerList::SaveServermetToFile()
 {
-	m_nLastSaved=::GetTickCount(); // oops.. don't save ALL the time :)
-
 	wxString newservermet(theApp.ConfigDir + wxT("server.met.new"));
 	CSafeFile servermet;
 	servermet.Open(newservermet, CFile::write);
@@ -757,7 +683,7 @@ bool CServerList::SaveServermetToFile()
 	CServer* nextserver;
 	
 		for (uint32 j = 0; j != fservercount; ++j){
-			nextserver = this->GetServerAt(j);
+			nextserver = GetServerByIndex(j);
 
 			uint16 tagcount = 12;
 			if (!nextserver->GetListName().IsEmpty()) 
@@ -832,20 +758,13 @@ bool CServerList::SaveServermetToFile()
 
 void CServerList::Process()
 {
-	/* We save anyway the serverlist at exit, why saving every 2mins ???
-	   and if client crash, rm ~/.aMule/server* do the trick ...
-	if (::GetTickCount() - m_nLastSaved > 180000) {
-		this->SaveServermetToFile();
-	}
-	*/
-	
 	// emanuelw(20030924) added:Check for new server links once per second.	
 	if ((::GetTickCount() - m_nLastED2KServerLinkCheck) >= 1000) {
 		wxString filename(theApp.ConfigDir + wxT("ED2KServers"));
 	
 		if (wxFile::Exists(filename)) {
 			AddServersFromTextFile(filename, false, true);
-			this->SaveServermetToFile();
+			SaveServermetToFile();
 			wxRemoveFile(filename);
 		}
 		m_nLastED2KServerLinkCheck = ::GetTickCount();

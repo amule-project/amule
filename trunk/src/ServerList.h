@@ -54,7 +54,7 @@ public:
 	CServer*	GetNextServer();
 	CServer*	GetNextSearchServer();
 	CServer*	GetNextStatServer();
-	CServer*	GetServerAt(uint32 pos)	{return list.GetAt(list.FindIndex(pos));}
+	CServer*	GetServerByIndex(uint32 pos)	{return list.GetAt(list.FindIndex(pos));}
 	uint32		GetServerCount()	{return list.GetCount();}
 	CServer*	GetNextServer(CServer* lastserver); // slow
 	CServer*	GetServerByAddress(const wxString& address, uint16 port);
@@ -63,20 +63,15 @@ public:
 	bool		IsGoodServerIP( CServer* in_server ); //<<--
 	void		GetStatus( uint32 &total, uint32 &failed, uint32 &user, uint32 &file, uint32 &tuser, uint32 &tfile, float &occ);
 	void		GetUserFileStatus( uint32 &user, uint32 &file);
-	bool		BroadCastPacket(CPacket* packet); //send Packet to all server in the list
-	void		CancelUDPBroadcast();
 	void		Sort();
-	void		MoveServerDown(CServer* aServer);
 	uint32		GetServerPostion()	{return serverpos;}
 	void		SetServerPosition(uint32 newPosition) { if (newPosition<(uint32)list.GetCount() ) serverpos=newPosition; else serverpos=0;}
 	uint32		GetDeletedServerCount()		{return delservercount;}
 	void		Process();
-	void		SendNextPacket();
 	void 		UpdateServerMetFromURL(wxString strURL);	
 	void		DownloadFinished(uint32 result);	
 	void		AutoDownloadFinished(uint32 result);	
 	
-	//void static CALLBACK UDPTimerProc(HWND hwnd, unsigned int uMsg,unsigned int* idEvent,DWORD dwTime);
 protected:
 	void			AutoUpdate();
 private:
@@ -84,15 +79,8 @@ private:
 	uint32		serverpos;
 	uint32		searchserverpos;
 	uint32		statserverpos;
-	uchar		version;
-	uint32		servercount;
 	CTypedPtrList<CPtrList, CServer*>	list;
-	//uint32		udp_timer;
-	 AMULE_TIMER_CLASS        udp_timer;
-	POSITION	broadcastpos;
-	CPacket*		broadcastpacket;
 	uint32		delservercount;
-	uint32		m_nLastSaved;
 	uint32		m_nLastED2KServerLinkCheck;// emanuelw(20030924) added
 	wxString		URLUpdate;
 	wxString		URLAutoUpdate;

@@ -534,7 +534,7 @@ CECPacket *Get_EC_Response_Server(const CECPacket *request)
 	if ( srv_tag ) {
 		uint32 srv_ip = srv_tag->GetIPv4Data().IP();
 		for(uint32 i = 0; i < theApp.serverlist->GetServerCount(); i++) {
-			CServer *curr_srv = theApp.serverlist->GetServerAt(i);
+			CServer *curr_srv = theApp.serverlist->GetServerByIndex(i);
 			// lfroen: never saw 2 servers on same IP !
 			if ( curr_srv->GetIP() == srv_ip) {
 				srv = curr_srv;
@@ -1442,7 +1442,7 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request, CPartFile_Enc
 				response = new CECPacket(EC_OP_SERVER_LIST);
 				EC_DETAIL_LEVEL detail_level = request->GetDetailLevel();
 				for(uint32 i = 0; i < theApp.serverlist->GetServerCount(); i++) {
-					response->AddTag(CEC_Server_Tag(theApp.serverlist->GetServerAt(i), detail_level));
+					response->AddTag(CEC_Server_Tag(theApp.serverlist->GetServerByIndex(i), detail_level));
 				}
 			}
 			break;

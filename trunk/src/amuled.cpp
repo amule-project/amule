@@ -101,7 +101,6 @@
 
 BEGIN_EVENT_TABLE(CamuleDaemonApp, wxAppConsole)
 	// Socket timers (TCP + UDO)
-	EVT_CUSTOM(wxEVT_AMULE_TIMER, TM_UDPSOCKET, CamuleDaemonApp::OnUDPTimer)
 	EVT_CUSTOM(wxEVT_AMULE_TIMER, TM_TCPSOCKET, CamuleDaemonApp::OnTCPTimer)
 
 	// Core timer is OnRun

@@ -260,7 +260,6 @@ protected:
 	void OnSourceDnsDone(wxEvent& evt);
 	void OnServerDnsDone(wxEvent& evt);
 
-	void OnUDPTimer(AMULE_TIMER_EVENT_CLASS& evt);
 	void OnTCPTimer(AMULE_TIMER_EVENT_CLASS& evt);
 
 	void OnCoreTimer(AMULE_TIMER_EVENT_CLASS& evt);
