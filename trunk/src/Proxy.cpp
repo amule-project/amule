@@ -841,15 +841,15 @@ printf("\n");
 wxDatagramSocket &wxDatagramSocketProxy::SendTo(
 	wxIPaddress &addr, const void* buf, wxUint32 nBytes )
 {
+	m_LastUDPOperation = wxUDP_OPERATION_SEND_TO;
+	m_LastUDPOverhead = wxPROXY_UDP_OVERHEAD_IPV4;
+	if (m_UseProxy) {
+		if (m_UDPSocketOk) {
 printf("SendTo\n");
 printf("nBytes:%d\n", nBytes);
 printf("buf:\n");
 dump((unsigned char *)buf, nBytes);
 printf("\n");
-	m_LastUDPOperation = wxUDP_OPERATION_SEND_TO;
-	m_LastUDPOverhead = wxPROXY_UDP_OVERHEAD_IPV4;
-	if (m_UseProxy) {
-		if (m_UDPSocketOk) {
 			m_SocketProxy.m_buffer[0] = SOCKS5_RSV;	// Reserved
 			m_SocketProxy.m_buffer[1] = SOCKS5_RSV;	// Reserved
 			m_SocketProxy.m_buffer[2] = 0;		// FRAG
