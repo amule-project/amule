@@ -421,10 +421,7 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 		if (!isnewstyle) {
 			uint8 test[4];
 			metFile.Seek(24, CFile::start);
-			metFile.Read(&test[0],1);
-			metFile.Read(&test[1],1);
-			metFile.Read(&test[2],1);
-			metFile.Read(&test[3],1);
+			metFile.Read(test,4);
 		
 			metFile.Seek(1, CFile::start);
 			if (test[0]==0 && test[1]==0 && test[2]==2 && test[3]==1) {
@@ -1035,7 +1032,7 @@ void CPartFile::SaveSourceSeeds()
 	} 
 	
 
-	CFile file;
+	CSafeFile file;
 	
 	file.Create(m_fullname + wxT(".seeds"), true);
 	
@@ -1043,17 +1040,14 @@ void CPartFile::SaveSourceSeeds()
 		AddLogLineM(false, _("Failed to save part.met.seeds file for ") + m_fullname);
 	}	
 
-	uint8 src_count = source_seeds.GetCount();
-	file.Write(&src_count,1);
+	file.WriteUInt8(source_seeds.GetCount());
 	
 	for (POSITION pos = source_seeds.GetHeadPosition(); pos  != NULL;) {
 		CUpDownClient* cur_src = source_seeds.GetNext(pos);		
-		uint32 dwID = cur_src->GetUserID();
-		uint16 nPort = cur_src->GetUserPort();
+		file.WriteUInt32(cur_src->GetUserID());
+		file.WriteUInt16(cur_src->GetUserPort());
 		//uint32 dwServerIP = cur_src->GetServerIP();
 		//uint16 nServerPort =cur_src->GetServerPort();
-		file.Write(&dwID,4);
-		file.Write(&nPort,2);
 		//file.Write(&dwServerIP,4);
 		//file.Write(&nServerPort,2);
 	}	
@@ -1067,7 +1061,7 @@ void CPartFile::SaveSourceSeeds()
 
 void CPartFile::LoadSourceSeeds() {
 	
-	CFile file;
+	CSafeFile file;
 	CSafeMemFile sources_data;
 	
 	if (!wxFileName::FileExists(m_fullname + wxT(".seeds"))) {
@@ -1088,17 +1082,14 @@ void CPartFile::LoadSourceSeeds() {
 		return;
 	}	
 	
-	uint8 src_count;
-	file.Read(&src_count,1);	
+	uint8 src_count = file.ReadUInt8();
 	
 	sources_data.WriteUInt16(src_count);
 
 	for (int i=0;i<src_count;++i) {
 	
-		uint32 dwID;
-		uint16 nPort;
-		file.Read(&dwID,4);
-		file.Read(&nPort,2);
+		uint32 dwID = file.ReadUInt32();
+		uint16 nPort = file.ReadUInt16();
 		
 		sources_data.WriteUInt32(dwID);
 		sources_data.WriteUInt16(nPort);
