@@ -162,19 +162,19 @@ CECTag::CECTag(const CECTag& tag) : m_tagName( tag.m_tagName ), m_dynamic( tag.m
 		}
 	} else m_tagData = NULL;
 	if (tag.m_tagCount != 0) {
-		m_tagList = (_taglist_t)malloc(tag.m_tagCount * sizeof(CECTag *));
+		m_tagList = new CECTag *[tag.m_tagCount];
 		if (m_tagList != NULL) {
 			m_listSize = tag.m_tagCount;
 			for (int i=0; i<m_listSize; i++) {
-				(*m_tagList)[i] = new CECTag(*(*tag.m_tagList)[i]);
-				if ((*m_tagList)[i] != NULL) {
-					if ((*m_tagList)[i]->m_error == 0) {
+				m_tagList[i] = new CECTag(*(tag.m_tagList[i]));
+				if (m_tagList[i] != NULL) {
+					if (m_tagList[i]->m_error == 0) {
 						m_tagCount++;
 					} else {
-						m_error = (*m_tagList)[i]->m_error;
+						m_error = m_tagList[i]->m_error;
 #ifndef KEEP_PARTIAL_PACKETS
-						delete (*m_tagList)[i];
-						(*m_tagList)[i] = NULL;
+						delete m_tagList[i];
+						m_tagList[i] = NULL;
 #endif
 						break;
 					}
@@ -272,9 +272,11 @@ CECTag::~CECTag(void)
 {
 	if (m_dynamic) free((void *)m_tagData);
 	for (int i=0; i<m_tagCount; i++) {
-		delete (*m_tagList)[i];
+		delete m_tagList[i];
 	}
-//	free(m_tagList);
+	if ( m_tagList ) {
+		delete [] m_tagList;
+	}
 }
 
 /**
@@ -336,7 +338,7 @@ bool CECTag::AddTag(const CECTag *tag)
 	wxASSERT(m_tagCount < 0xffff);
 
 	if (m_listSize == 0) {
-		m_tagList = (_taglist_t)malloc(ARRAY_ALLOC_CHUNKS * sizeof(CECTag *));
+		m_tagList = new CECTag *[ARRAY_ALLOC_CHUNKS];
 		if (m_tagList != NULL) {
 			m_listSize = ARRAY_ALLOC_CHUNKS;
 		} else {
@@ -344,9 +346,11 @@ bool CECTag::AddTag(const CECTag *tag)
 			return false;
 		}
 	} else if (m_listSize == m_tagCount) {
-		void *tmp = realloc(m_tagList, (m_listSize + ARRAY_ALLOC_CHUNKS) * sizeof(CECTag *));
+		CECTag **tmp = new CECTag *[m_listSize + ARRAY_ALLOC_CHUNKS];
 		if (tmp != NULL) {
-			m_tagList = (_taglist_t)tmp;
+			memcpy(tmp, m_tagList, m_listSize * sizeof(CECTag *));
+			delete [] m_tagList;
+			m_tagList = tmp;
 			m_listSize += ARRAY_ALLOC_CHUNKS;
 		} else {
 			m_error = 1;
@@ -354,16 +358,16 @@ bool CECTag::AddTag(const CECTag *tag)
 		}
 	}
 	// remove const on assign
-	(*m_tagList)[m_tagCount] = (CECTag *)tag;
-	if (((*m_tagList)[m_tagCount]) != NULL) {
-		if ((*m_tagList)[m_tagCount]->m_error == 0) {
+	m_tagList[m_tagCount] = (CECTag *)tag;
+	if ((m_tagList[m_tagCount]) != NULL) {
+		if (m_tagList[m_tagCount]->m_error == 0) {
 			m_tagCount++;
 			return true;
 		} else {
-			m_error = (*m_tagList)[m_tagCount]->m_error;
+			m_error = m_tagList[m_tagCount]->m_error;
 #ifndef KEEP_PARTIAL_PACKETS
-			delete (*m_tagList)[m_tagCount];
-			(*m_tagList)[m_tagCount] = NULL;
+			delete m_tagList[m_tagCount];
+			m_tagList[m_tagCount] = NULL;
 #endif
 			return false;
 		}
@@ -379,6 +383,7 @@ CECTag::CECTag(wxSocketBase *sock, ECSocket& socket) : m_dynamic(true)
 	ec_tagname_t tmp_tagName;
 
 	m_listSize = m_tagCount = 0;
+	m_tagList = NULL;
 	m_tagData = NULL;
 	m_dataLen = 0;
 	if (!socket.ReadNumber(sock, &tmp_tagName, sizeof(ec_tagname_t))) {
@@ -444,18 +449,18 @@ bool CECTag::ReadChildren(wxSocketBase *sock, ECSocket& socket)
 	}
 	m_listSize = tmp_tagCount;
 	if (tmp_tagCount > 0) {
-		m_tagList = (_taglist_t)malloc(m_listSize * sizeof(CECTag *));
+		m_tagList = new CECTag *[m_listSize];
 		if (m_tagList != NULL) {
 			for (int i=0; i<m_listSize; i++) {
-				(*m_tagList)[i] = new CECTag(sock, socket);
-				if ((*m_tagList)[i] != NULL) {
-					if ((*m_tagList)[i]->m_error == 0) {
+				m_tagList[i] = new CECTag(sock, socket);
+				if (m_tagList[i] != NULL) {
+					if (m_tagList[i]->m_error == 0) {
 						m_tagCount++;
 					} else {
-						m_error = (*m_tagList)[i]->m_error;
+						m_error = m_tagList[i]->m_error;
 #ifndef KEEP_PARTIAL_PACKETS
-						delete (*m_tagList)[i];
-						(*m_tagList)[i] = NULL;
+						delete m_tagList[i];
+						m_tagList[i] = NULL;
 #endif
 						return false;
 					}
@@ -481,7 +486,7 @@ bool CECTag::WriteChildren(wxSocketBase *sock, ECSocket& socket) const
 	if (m_tagCount > 0) {
 		if (m_tagList != NULL) {	// This is here only to make sure everything, it should not be NULL at this point
 			for (int i=0; i<m_tagCount; i++) {
-				if (!(*m_tagList)[i]->WriteTag(sock, socket)) return false;
+				if (!m_tagList[i]->WriteTag(sock, socket)) return false;
 			}
 		} else return false;
 	}
@@ -497,7 +502,7 @@ bool CECTag::WriteChildren(wxSocketBase *sock, ECSocket& socket) const
 CECTag *CECTag::GetTagByName(ec_tagname_t name) const
 {
 	for (int i=0; i<m_tagCount; i++)
-		if ((*m_tagList)[i]->m_tagName == name) return (*m_tagList)[i];
+		if (m_tagList[i]->m_tagName == name) return m_tagList[i];
 	return NULL;
 }
 
@@ -511,8 +516,8 @@ uint32 CECTag::GetTagLen(void) const
 {
 	uint32 length = m_dataLen;
 	for (int i=0; i<m_tagCount; i++) {
-		length += (*m_tagList)[i]->GetTagLen();
-		length += sizeof(ec_tagname_t) + sizeof(ec_taglen_t) + (((*m_tagList)[i]->GetTagCount() > 0) ? 2 : 0);
+		length += m_tagList[i]->GetTagLen();
+		length += sizeof(ec_tagname_t) + sizeof(ec_taglen_t) + ((m_tagList[i]->GetTagCount() > 0) ? 2 : 0);
 	}
 	return length;
 }
