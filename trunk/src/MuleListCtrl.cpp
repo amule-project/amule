@@ -350,21 +350,12 @@ void CMuleListCtrl::OnColumnLClick(wxListEvent& evt)
 	
 	// Set focus on item if any was focused
 	if (item != -1) {
-		long it_pos = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_DONTCARE );
-		while ( it_pos != -1) {
-	
-			if (GetItemData( it_pos ) == item) {
-				break;
-			}
-
-			it_pos = GetNextItem( it_pos, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-		}
+		long it_pos = FindItem(-1,item);
 		if (it_pos != -1) {
 			SetItemState(it_pos,wxLIST_STATE_FOCUSED, wxLIST_STATE_FOCUSED & wxLIST_STATE_SELECTED);
 			EnsureVisible(it_pos);
 		}
 	}
-	
 }
 
 
