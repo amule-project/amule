@@ -1,6 +1,7 @@
  // This file is part of the aMule Project
 //
 // Copyright (c) 2003-2004 Angel Vidal (Kry) ( kry@amule.org )
+// Copyright (c) 2003-2004 Patrizio Bassi (Hetfield) ( hetfield@amule.org )
 // Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
 //
 //This program is free software; you can redistribute it and/or
@@ -18,9 +19,9 @@
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include "MuleTrayIcon.h"
-
 #ifdef USE_WX_TRAY 
+
+#include "MuleTrayIcon.h"
 
 #include "pixmaps/mule_TrayIcon_big.ico.xpm"
 #include "pixmaps/mule_Tr_yellow_big.ico.xpm"
@@ -28,72 +29,168 @@
 
 #include <wx/menu.h>
 #include <wx/string.h>
-#include <wx/intl.h>		
+#include <wx/intl.h>
 
 #include "opcodes.h" 			// Needed for MOD_VERSION_LONG
-#include "amule.h" 				// Needed for theApp
+#include "amule.h" 			// Needed for theApp
 #include "amuleDlg.h" 			// Needed for IsShown
 #include "Preferences.h"		// Needed for glod_prefs
-#include "DownloadQueue.h" 	// Needed for GetKbps
+#include "DownloadQueue.h" 		// Needed for GetKbps
 #include "UploadQueue.h" 		// Needed for GetKbps
 #include "sockets.h"			// Needed for CServerConnect
+#include "otherfunctions.h"		// Needed for CastSecondsToHM
+#include "server.h"			// Needed for CServer
+#include "NetworkFunctions.h"		// Needed for Uint32toStringIP
+#include "SharedFileList.h"		// Needed for CSharedFileList
+
+
+using namespace otherfunctions;
 
 // Pop-up menu clickable entries
-
 enum {
-	TRAY_MENU_INFO = 10317,
-	TRAY_MENU_CLIENTINFO,
+	TRAY_MENU_INFO = 0,
+	TRAY_MENU_CLIENTINFO=0,
+	TRAY_MENU_CLIENTINFO_ITEM = 13007,
 	TRAY_MENU_DISCONNECT,
 	TRAY_MENU_CONNECT,
 	TRAY_MENU_HIDE,
 	TRAY_MENU_SHOW,
-	TRAY_MENU_EXIT
+	TRAY_MENU_EXIT,
+	UPLOAD_ITEM1=12340,
+	UPLOAD_ITEM2=12341,
+	UPLOAD_ITEM3=12342,
+	UPLOAD_ITEM4=12343,
+	UPLOAD_ITEM5=12344,
+	UPLOAD_ITEM6=12345,
+	DOWNLOAD_ITEM1=54320,
+	DOWNLOAD_ITEM2=54321,
+	DOWNLOAD_ITEM3=54322,
+	DOWNLOAD_ITEM4=54323,
+	DOWNLOAD_ITEM5=54324,
+	DOWNLOAD_ITEM6=54325,
 };
-
 
 /****************************************************/
 /******************* Event Table ********************/
 /****************************************************/
 
-
 BEGIN_EVENT_TABLE(CMuleTrayIcon, wxTaskBarIcon)
 	EVT_TASKBAR_LEFT_DOWN(CMuleTrayIcon::SwitchShow)
+	EVT_MENU( TRAY_MENU_EXIT, CMuleTrayIcon::Close)
+	EVT_MENU( TRAY_MENU_CONNECT, CMuleTrayIcon::ServerConnection)
+	EVT_MENU( TRAY_MENU_DISCONNECT, CMuleTrayIcon::ServerConnection)
+	EVT_MENU( TRAY_MENU_HIDE, CMuleTrayIcon::ShowHide)
+	EVT_MENU( TRAY_MENU_SHOW, CMuleTrayIcon::ShowHide)
+	EVT_MENU( UPLOAD_ITEM1, CMuleTrayIcon::SetUploadSpeed)
+	EVT_MENU( UPLOAD_ITEM2, CMuleTrayIcon::SetUploadSpeed)
+	EVT_MENU( UPLOAD_ITEM3, CMuleTrayIcon::SetUploadSpeed)
+	EVT_MENU( UPLOAD_ITEM4, CMuleTrayIcon::SetUploadSpeed)
+	EVT_MENU( UPLOAD_ITEM5, CMuleTrayIcon::SetUploadSpeed)
+	EVT_MENU( UPLOAD_ITEM6, CMuleTrayIcon::SetUploadSpeed)
+	EVT_MENU( DOWNLOAD_ITEM1, CMuleTrayIcon::SetDownloadSpeed)
+	EVT_MENU( DOWNLOAD_ITEM2, CMuleTrayIcon::SetDownloadSpeed)
+	EVT_MENU( DOWNLOAD_ITEM3, CMuleTrayIcon::SetDownloadSpeed)
+	EVT_MENU( DOWNLOAD_ITEM4, CMuleTrayIcon::SetDownloadSpeed)
+	EVT_MENU( DOWNLOAD_ITEM5, CMuleTrayIcon::SetDownloadSpeed)
+	EVT_MENU( DOWNLOAD_ITEM6, CMuleTrayIcon::SetDownloadSpeed)
 END_EVENT_TABLE()
-
 
 /****************************************************/
 /************ Constructor / Destructor **************/
 /****************************************************/
 
+long GetSpeedFromString(wxString label){
+	long temp;
+	label.Replace(wxT("kB/s"),wxT(""),TRUE);
+	label.Trim(FALSE);
+	label.Trim(TRUE);
+	label.ToLong(&temp);
+	return temp;
+}
+
+void CMuleTrayIcon::SetUploadSpeed(wxCommandEvent& event){
+
+	wxObject* obj=event.GetEventObject();
+	if (obj!=NULL) 
+		if (obj->IsKindOf(CLASSINFO(wxMenu))) {
+			wxMenu* menu=dynamic_cast<wxMenu*> (obj);
+			wxMenuItem* item=menu->FindItem(event.GetId());
+			if (item!=NULL) {
+				long temp;
+				if (item->GetLabel()==(_("Unlimited"))) temp=UNLIMITED;
+				else temp=GetSpeedFromString(item->GetLabel());
+				thePrefs::SetMaxUpload(temp);
+			}
+		}
+
+}
+
+void CMuleTrayIcon::SetDownloadSpeed(wxCommandEvent& event){
+	
+	wxObject* obj=event.GetEventObject();
+	if (obj!=NULL) 
+		if (obj->IsKindOf(CLASSINFO(wxMenu))) {
+			wxMenu* menu=dynamic_cast<wxMenu*> (obj);
+			wxMenuItem* item=menu->FindItem(event.GetId());
+			if (item!=NULL) {
+				long temp;
+				if (item->GetLabel()==(_("Unlimited"))) temp=UNLIMITED;
+				else temp=GetSpeedFromString(item->GetLabel());
+				thePrefs::SetMaxDownload(temp);
+			}
+		}
+
+}
+
+void CMuleTrayIcon::ServerConnection(wxCommandEvent& event){
+	
+	if (event.GetId()==TRAY_MENU_CONNECT) {
+		if ( theApp.serverconnect->IsConnected() ) {
+			theApp.serverconnect->Disconnect();
+		} else if ( !theApp.serverconnect->IsConnecting() ) {
+			AddLogLineM(true, _("Connecting"));
+			theApp.serverconnect->ConnectToAnyServer();
+			theApp.amuledlg->ShowConnectionState(false);
+		}
+	}
+	if (event.GetId()==TRAY_MENU_DISCONNECT) {
+		if ( theApp.serverconnect->IsConnected() ) theApp.serverconnect->Disconnect();
+	}
+
+}
+void CMuleTrayIcon::ShowHide(wxCommandEvent& WXUNUSED(event)){
+
+	if ( theApp.amuledlg->IsShown() ) theApp.amuledlg->Hide_aMule();
+	else theApp.amuledlg->Show_aMule();
+}
+
+void  CMuleTrayIcon::Close(wxCommandEvent& WXUNUSED(event)){
+	wxCloseEvent SendCloseEvent;
+	theApp.amuledlg->OnClose(SendCloseEvent);
+}
 
 CMuleTrayIcon::CMuleTrayIcon()
 {
 	Old_Icon = -1;
 	Old_SpeedSize = -1;
 	// Create the background icons (speed improvement)
-	HighId_Icon 			= wxIcon(mule_TrayIcon_big_ico_xpm);
-	LowId_Icon 			= wxIcon(mule_Tr_yellow_big_ico_xpm);
-	Disconnected_Icon	= wxIcon(mule_Tr_grey_big_ico_xpm);
+	HighId_Icon = wxIcon(mule_TrayIcon_big_ico_xpm);
+	LowId_Icon = wxIcon(mule_Tr_yellow_big_ico_xpm);
+	Disconnected_Icon= wxIcon(mule_Tr_grey_big_ico_xpm);
 }
-
 
 CMuleTrayIcon::~CMuleTrayIcon() 
 {
 	// If there's an icon set, remove it
-	if (IsIconInstalled()) {
-		RemoveIcon();
-	}
-
+	if (IsIconInstalled()) RemoveIcon();
 }
 
 /****************************************************/
 /***************** Public Functions *****************/
 /****************************************************/
 
-
 void CMuleTrayIcon::SetTrayIcon(int Icon, uint32 percent) 
 {
-
 	switch (Icon) {
 		case TRAY_ICON_HIGHID:
 			// Most likely case, test first
@@ -106,12 +203,11 @@ void CMuleTrayIcon::SetTrayIcon(int Icon, uint32 percent)
 			CurrentIcon = Disconnected_Icon;
 			break;
 		default:
-			// W00T?
-			wxASSERT(0);			
+			wxASSERT(0);
 	}
-
+#warning speed bar commented out cause it corrupts icons too, need reworking
 	// Lookup this values for speed improvement: don't draw if not needed
-	
+	/*
 	int Bar_ySize = CurrentIcon.GetHeight()-2; 
 	int NewSize = ((Bar_ySize -2) * percent) / 100;
 	
@@ -148,8 +244,8 @@ void CMuleTrayIcon::SetTrayIcon(int Icon, uint32 percent)
 		
 		// Speed bar is: centered, taking 80% of the icon heigh, and 
 		// right-justified taking a 10% of the icon width.
+		
 		// X
-	
 		int Bar_xSize = (CurrentIcon.GetWidth() / 4); 
 		int Bar_xPos = CurrentIcon.GetWidth() - Bar_xSize -1; 
 			
@@ -166,13 +262,12 @@ void CMuleTrayIcon::SetTrayIcon(int Icon, uint32 percent)
 		// Unselect the icon.
 		IconWithSpeed.SelectObject(wxNullBitmap);	
 		
-	
 		new_mask = new wxMask(CurrentIcon, temp);
 	
 		CurrentIcon.SetMask(new_mask);
-
+*/
 		UpdateTray();
-	}
+	//}
 }
 		
 void CMuleTrayIcon::SetTrayToolTip(const wxString& Tip)
@@ -180,7 +275,6 @@ void CMuleTrayIcon::SetTrayToolTip(const wxString& Tip)
 	CurrentTip = Tip;
 	UpdateTray();
 }
-
 
 /****************************************************/
 /**************** Private Functions *****************/
@@ -193,7 +287,7 @@ void CMuleTrayIcon::UpdateTray() {
 
 wxMenu* CMuleTrayIcon::CreatePopupMenu() 
 {
-   // Creates dinamically the menu to show the user.
+	// Creates dinamically the menu to show the user.
 	wxMenu *traymenu = new wxMenu();
 	traymenu->SetTitle(_("aMule Tray Menu"));
 	
@@ -205,31 +299,139 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 
 	// Check for upload limits
 	unsigned int max_upload = thePrefs::GetMaxUpload();
-	if ( max_upload == UNLIMITED ) {
+	if ( max_upload == UNLIMITED ) 
 		label += wxString::Format( _("UL: None, "));
-	} else {
+	else 
 		label += wxString::Format( _("UL: %u, "), max_upload);
-	}
 
 	// Check for download limits
 	unsigned int max_download = thePrefs::GetMaxDownload();
-	if ( max_download == UNLIMITED ) {
+	if ( max_download == UNLIMITED ) 
 		label += wxString::Format( _("DL: None"));
-	} else {
+	else 
 		label += wxString::Format( _("DL: %u"), max_download);
-	}
 	
 	traymenu->Append(TRAY_MENU_INFO, label);
 	traymenu->AppendSeparator();
-//actually adds too many separator only!
-/* 	
-	// Mule info
-	wxMenu* aMuleInfoMenu = new wxMenu();
-	aMuleInfoMenu->SetTitle(_("aMule Tray Menu Info"));
 
 	// Client Info
 	wxMenu* ClientInfoMenu = new wxMenu();
 	ClientInfoMenu->SetTitle(_("Client Information"));
+
+	// User nick-name
+	{
+		wxString temp = _("Nickname: ");
+		if ( thePrefs::GetUserNick().IsEmpty() )
+			temp += _("No Nickname Selected!");
+		else
+			temp += thePrefs::GetUserNick();
+		ClientInfoMenu->Append(TRAY_MENU_CLIENTINFO_ITEM,temp);
+	}
+	
+	// Client ID
+	{
+		wxString temp = _("ClientID: ");
+		
+		if (theApp.serverconnect->IsConnected()) {
+			unsigned long id = theApp.serverconnect->GetClientID();
+					
+			temp += wxString::Format(wxT("%lu"), id);
+		} else {
+			temp += _("Not Connected");
+		}
+		ClientInfoMenu->Append(TRAY_MENU_CLIENTINFO_ITEM,temp);
+	}
+
+	// Current Server and Server IP
+	{
+		wxString temp_name = _("ServerName: ");
+		wxString temp_ip   = _("ServerIP: ");
+		
+		if ( theApp.serverconnect->GetCurrentServer() ) {
+			temp_name += theApp.serverconnect->GetCurrentServer()->GetListName();
+			temp_ip   += theApp.serverconnect->GetCurrentServer()->GetFullIP();
+		} else {
+			temp_name += _("Not Connected");
+			temp_ip   += _("Not Connected");
+		}
+		ClientInfoMenu->Append(TRAY_MENU_CLIENTINFO_ITEM,temp_name);
+		ClientInfoMenu->Append(TRAY_MENU_CLIENTINFO_ITEM,temp_ip);
+	}
+	
+	// IP Address
+	{
+		wxString temp = _("IP: ");
+		if ( theApp.GetPublicIP() ) {
+			temp += Uint32toStringIP(theApp.GetPublicIP()); 
+		} else {
+			temp += _("Unknown");
+		}
+		ClientInfoMenu->Append(TRAY_MENU_CLIENTINFO_ITEM,temp);
+	}
+
+	// TCP PORT
+	{
+		wxString temp;
+		if (thePrefs::GetPort()) {
+			temp = wxString::Format(wxT("%s%d"), _("TCP Port: "), thePrefs::GetPort());
+		} else
+			temp=_("TCP Port: Not Ready");
+		ClientInfoMenu->Append(TRAY_MENU_CLIENTINFO_ITEM,temp);
+	}
+	
+	// UDP PORT
+	{
+		wxString temp;
+		if (thePrefs::GetUDPPort()) {
+			temp = wxString::Format(wxT("%s%d"), _("UDP Port: "), thePrefs::GetUDPPort());	
+		} else
+			temp=_("UDP Port: Not Ready");
+		ClientInfoMenu->Append(TRAY_MENU_CLIENTINFO_ITEM,temp);
+	}
+
+	// Online Signature
+	{
+		wxString temp;
+		if (thePrefs::IsOnlineSignatureEnabled())
+			temp=_("Online Signature: Enabled");
+		else
+			temp=_("Online Signature: Disabled");
+		ClientInfoMenu->Append(TRAY_MENU_CLIENTINFO_ITEM,temp);
+	}
+
+	// Uptime
+	{
+		wxString temp = wxString::Format(wxT("%s%s"), _("Uptime: "), CastSecondsToHM(theApp.GetUptimeSecs()).c_str());
+		ClientInfoMenu->Append(TRAY_MENU_CLIENTINFO_ITEM,temp);
+	}
+
+	// Number of shared files
+	{
+		wxString temp = wxString::Format(wxT("%s%d"), _("Shared Files: "), theApp.sharedfiles->GetCount());
+		ClientInfoMenu->Append(TRAY_MENU_CLIENTINFO_ITEM,temp);
+	}
+
+	// Number of queued clients
+	{
+		wxString temp = wxString::Format(wxT("%s%d"), _("Queued Clients: "), theApp.uploadqueue->GetWaitingUserCount() );
+		ClientInfoMenu->Append(TRAY_MENU_CLIENTINFO_ITEM,temp);
+	}
+	
+	// Total Downloaded
+	{
+		wxString temp = CastItoXBytes( theApp.stat_sessionReceivedBytes + thePrefs::GetTotalDownloaded() );
+		temp = wxString(_("Total DL: ")) + temp;
+		ClientInfoMenu->Append(TRAY_MENU_CLIENTINFO_ITEM,temp);
+	}
+	
+	// Total Uploaded
+	{
+		wxString temp = CastItoXBytes( theApp.stat_sessionSentBytes + thePrefs::GetTotalUploaded() );
+		temp = wxString(_("Total UL: ")) + temp;
+		ClientInfoMenu->Append(TRAY_MENU_CLIENTINFO_ITEM,temp);
+	}
+
+	traymenu->Append(TRAY_MENU_CLIENTINFO,ClientInfoMenu->GetTitle(),ClientInfoMenu);
 	
 	// Separator
 	traymenu->AppendSeparator();
@@ -242,9 +444,46 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 	wxMenu* DownloadSpeedMenu = new wxMenu();
 	DownloadSpeedMenu->SetTitle(_("Download Limit"));
 	
+	// Upload Speed sub-menu
+	{
+		wxString temp=wxString(_("Unlimited"));
+		UploadSpeedMenu->Append(UPLOAD_ITEM1,temp);
+
+		uint32 max_ul_speed = thePrefs::GetMaxGraphUploadRate();
+		
+		if ( max_ul_speed == UNLIMITED ) max_ul_speed = 100;
+		else if ( max_ul_speed < 10 ) max_ul_speed = 10;
+			
+		for ( int i = 0; i < 5; i++ ) {
+			unsigned int tempspeed = (unsigned int)((double)max_ul_speed / 5) * (5 - i);
+			wxString temp = wxString::Format(wxT("%u%s "), tempspeed, wxT("kB/s"));
+			UploadSpeedMenu->Append((int)UPLOAD_ITEM1+i+1,temp);
+		}
+	}
+	traymenu->Append(0,UploadSpeedMenu->GetTitle(),UploadSpeedMenu);
+	
+	// Download Speed sub-menu
+	{ 
+		wxString temp=wxString(_("Unlimited"));
+		
+		DownloadSpeedMenu->Append(DOWNLOAD_ITEM1,temp);
+
+		uint32 max_dl_speed = thePrefs::GetMaxGraphDownloadRate();
+		
+		if ( max_dl_speed == UNLIMITED ) max_dl_speed = 100;
+		else if ( max_dl_speed < 10 ) max_dl_speed = 10;
+	
+		for ( int i = 0; i < 5; i++ ) {
+			unsigned int tempspeed = (unsigned int)((double)max_dl_speed / 5) * (5 - i);
+			wxString temp = wxString::Format(wxT("%d%s "), tempspeed, wxT("kB/s"));
+			DownloadSpeedMenu->Append((int)DOWNLOAD_ITEM1+i+1,temp);
+		}
+	}
+
+	traymenu->Append(0,DownloadSpeedMenu->GetTitle(),DownloadSpeedMenu);
 	// Separator
 	traymenu->AppendSeparator();
-*/	
+	
 	if (theApp.serverconnect->IsConnected()) {
 		//Disconnection Speed item
 		traymenu->Append(TRAY_MENU_DISCONNECT, _("Disconnect from server"));
@@ -278,8 +517,7 @@ void CMuleTrayIcon::SwitchShow(wxTaskBarIconEvent&) {
 		theApp.amuledlg->Hide_aMule();
 	} else {
 		theApp.amuledlg->Show_aMule();
-	}	
+	}
 }
-
 
 #endif // USE_WX_TRAY
