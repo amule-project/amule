@@ -12,8 +12,9 @@ AC_ARG_WITH(gtk-prefix,[  --with-gtk-prefix=PREFIX         prefix where GTK (not
             gtk_config_prefix="$withval", gtk_config_prefix="")
 AC_ARG_WITH(gtk-exec-prefix,[  --with-gtk-exec-prefix=PREFIX    exec prefix where GTK (not GTK2) is installed],
             gtk_config_exec_prefix="$withval", gtk_config_exec_prefix="")
+#The line below was moved to configure.in so that it doesn't appear twice in configure --help (one for gtk1 and one for gtk2)
 #AC_ARG_ENABLE(gtktest, [  --disable-gtktest       do not try to compile and run a test GTK program],
-		    , enable_gtktest=yes)
+#		    , enable_gtktest=yes)
 
   for module in . $4
   do

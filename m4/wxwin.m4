@@ -35,11 +35,11 @@ dnl ---------------------------------------------------------------------------
 
 AC_DEFUN([AM_OPTIONS_WXCONFIG],
 [
-   AC_ARG_WITH(wx-prefix, [  --with-wx-prefix=PREFIX          prefix where wxWidgets is installed (optional)],
+   AC_ARG_WITH(wx-prefix, [  --with-wx-prefix=PREFIX          prefix where wxWidgets is installed],
                wx_config_prefix="$withval", wx_config_prefix="")
-   AC_ARG_WITH(wx-exec-prefix,[  --with-wx-exec-prefix=PREFIX     exec prefix where wxWidgets is installed (optional)],
+   AC_ARG_WITH(wx-exec-prefix,[  --with-wx-exec-prefix=PREFIX     exec prefix where wxWidgets is installed],
                wx_config_exec_prefix="$withval", wx_config_exec_prefix="")
-   AC_ARG_WITH(wx-config,[  --with-wx-config=CONFIG          wx-config script to use (optional)],
+   AC_ARG_WITH(wx-config,[  --with-wx-config=CONFIG          wx-config script to use],
                wx_config_name="$withval", wx_config_name="")
 ])
 
@@ -52,11 +52,11 @@ dnl ---------------------------------------------------------------------------
 
 AC_DEFUN([AM_OPTIONS_WXBASECONFIG],
 [
-   AC_ARG_WITH(wxbase-prefix, [  --with-wxbase-prefix=PREFIX      prefix where wxWidgets base is installed (optional)],
+   AC_ARG_WITH(wxbase-prefix, [  --with-wxbase-prefix=PREFIX      prefix where wxWidgets base is installed],
                wxbase_config_prefix="$withval", wxbase_config_prefix="")
-   AC_ARG_WITH(wxbase-exec-prefix,[  --with-wxbase-exec-prefix=PREFIX exec prefix where wxWidgetsbase  is installed (optional)],
+   AC_ARG_WITH(wxbase-exec-prefix,[  --with-wxbase-exec-prefix=PREFIX exec prefix where wxWidgetsbase  is installed],
                wxbase_config_exec_prefix="$withval", wxbase_config_exec_prefix="")
-   AC_ARG_WITH(wxbase-config,[  --with-wxbase-config=CONFIG      wxbase-config script to use (optional)],
+   AC_ARG_WITH(wxbase-config,[  --with-wxbase-config=CONFIG      wxbase-config script to use],
                wxbase_config_name="$withval", wxbase_config_name="")
 ])
 

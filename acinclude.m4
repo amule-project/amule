@@ -345,11 +345,11 @@ dnl ---------------------------------------------------------------------------
 
 AC_DEFUN([AM_OPTIONS_GDLIBCONFIG],
 [
-   AC_ARG_WITH(gdlib-prefix, [  --with-gdlib-prefix=PREFIX       prefix where gdlib is installed (optional)],
+   AC_ARG_WITH(gdlib-prefix, [  --with-gdlib-prefix=PREFIX       prefix where gdlib is installed],
                gdlib_config_prefix="$withval", gdlib_config_prefix="")
-   AC_ARG_WITH(gdlib-exec-prefix,[  --with-gdlib-exec-prefix=PREFIX  exec prefix where gdlib  is installed (optional)],
+   AC_ARG_WITH(gdlib-exec-prefix,[  --with-gdlib-exec-prefix=PREFIX  exec prefix where gdlib  is installed],
                gdlib_config_exec_prefix="$withval", gdlib_config_exec_prefix="")
-   AC_ARG_WITH(gdlib-config,[  --with-gdlib-config=CONFIG       gdlib-config script to use (optional)],
+   AC_ARG_WITH(gdlib-config,[  --with-gdlib-config=CONFIG       gdlib-config script to use],
                gdlib_config_name="$withval", gdlib_config_name="")
 ])
 
@@ -505,11 +505,12 @@ dnl ---------------------------------------------------------------------------
 
 AC_DEFUN([AM_OPTIONS_CURLCONFIG],
 [
-   AC_ARG_WITH(curl-config,[  --with-curl-config=CONFIG        curl-config script to use (optional)],
+   AC_ARG_WITH(curl-config,[  --with-curl-config=CONFIG        curl-config script to use],
                curl_config_name="$withval", curl_config_name="")
 
-   AC_ARG_WITH(curl-prefix,[  --with-curl-prefix=PREFIX        prefix where curl is installed (optional) (unused)],
-            curl_config_prefix="$withval", curl_config_prefix="")
+# curl-config doesn't support --prefix= currently, so just don't show it
+#  AC_ARG_WITH(curl-prefix,[  --with-curl-prefix=PREFIX        prefix where curl is installed],
+#            curl_config_prefix="$withval", curl_config_prefix="")
 ])
 
 
@@ -541,12 +542,13 @@ AC_DEFUN([AM_PATH_CURLCONFIG],[
      CURL_CONFIG_NAME="$curl_config_name"
   fi
 
-  if test x$curl_config_prefix != x ; then
-     dnl curl_config_args="$curl_config_args --prefix=$curl_config_prefix"
-     if test x${CURL_CONFIG_NAME+set} != xset ; then
-        CURL_CONFIG_NAME="$curl_config_prefix/bin/curl-config"
-     fi
-  fi
+# curl-config doesn't support --prefix=
+#  if test x$curl_config_prefix != x ; then
+#     curl_config_args="$curl_config_args --prefix=$curl_config_prefix"
+#     if test x${CURL_CONFIG_NAME+set} != xset ; then
+#        CURL_CONFIG_NAME="$curl_config_prefix/bin/curl-config"
+#     fi
+#  fi
 
 ## We cannot do that until curl-config allow us to use --prefix=PFX
 ##  CURL_LIBS="`$CURL_CONFIG_NAME $curl_config_args --libs`"
@@ -657,7 +659,7 @@ AC_SUBST(CRYPTO_PP_STYLE)
 ])
 
 AC_DEFUN([AM_OPTIONS_CRYPTO], [
-     AC_ARG_WITH( crypto-prefix,[  --with-crypto-prefix=PREFIX      prefix where crypto++ is installed (optional)],
+     AC_ARG_WITH( crypto-prefix,[  --with-crypto-prefix=PREFIX      prefix where crypto++ is installed],
        crypto_prefix="$withval", crypto_prefix="")
 ])
 
@@ -687,6 +689,6 @@ AC_DEFUN([CHECK_CCACHE],
 
 AC_DEFUN([AM_OPTIONS_CCACHE_PFX],
 [
-   AC_ARG_WITH( ccache-prefix,[  --with-ccache-prefix=PREFIX      prefix where ccache is installed (optional)],
+   AC_ARG_WITH( ccache-prefix,[  --with-ccache-prefix=PREFIX      prefix where ccache is installed],
             ccache_prefix="$withval", ccache_prefix="")
 ])
