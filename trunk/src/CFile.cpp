@@ -413,7 +413,8 @@ off_t CFile::Read(void *pBuf, off_t nCount) const
 // write
 size_t CFile::Write(const void *pBuf, size_t nCount)
 {
-    wxCHECK( (pBuf != NULL) && IsOpened(), 0 );
+	wxASSERT(pBuf != NULL);
+	wxASSERT(IsOpened());
 
 #ifdef __MWERKS__
 #if __MSL__ >= 0x6000
