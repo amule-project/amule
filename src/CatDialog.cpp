@@ -208,6 +208,8 @@ void CCatDialog::OnBnClickedOk(wxCommandEvent& WXUNUSED(evt))
 		theApp.amuledlg->transferwnd->UpdateCategory( index );
 		
 		theApp.amuledlg->transferwnd->downloadlistctrl->Refresh();
+		
+		theApp.amuledlg->searchDlg->UpdateCatChoice();
 	} else {
 		// New category
 		theApp.amuledlg->transferwnd->AddCategory( m_category );
