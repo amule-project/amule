@@ -2234,7 +2234,7 @@ inline void GetUserKey(ByteOrder order, T *out, unsigned int outlen, const byte 
 	ConditionalByteReverse(order, out, out, RoundUpToMultipleOf(inlen, U));
 }
 
-inline byte UnalignedGetWordNonTemplate(ByteOrder order, const byte *block, byte*)
+inline byte UnalignedGetWordNonTemplate(ByteOrder /*order*/, const byte *block, byte*)
 {
 	return block[0];
 }
@@ -2284,7 +2284,7 @@ inline T UnalignedGetWord(ByteOrder order, const byte *block, T*dummy=NULL)
 	return UnalignedGetWordNonTemplate(order, block, dummy);
 }
 
-inline void UnalignedPutWord(ByteOrder order, byte *block, byte value, const byte *xorBlock = NULL)
+inline void UnalignedPutWord(ByteOrder /*order*/, byte *block, byte value, const byte *xorBlock = NULL)
 {
 	block[0] = xorBlock ? (value ^ xorBlock[0]) : value;
 }
@@ -3642,7 +3642,7 @@ public:
 	unsigned int MaxElementByteLength() const
 		{return (modulus-1).ByteCount();}
 
-	Element RandomElement( RandomNumberGenerator &rng , const RandomizationParameter &ignore_for_now = 0 ) const
+	Element RandomElement( RandomNumberGenerator &rng , const RandomizationParameter& /*ignore_for_now*/ = 0 ) const
 		// left RandomizationParameter arg as ref in case RandomizationParameter becomes a more complicated struct
 	{ 
 		return Element( rng , Integer( (long) 0) , modulus - Integer( (long) 1 )   ) ; 
@@ -5478,12 +5478,6 @@ private:
 	T m_countLo, m_countHi;
 };
 
-#ifdef WORD64_AVAILABLE
-CRYPTOPP_STATIC_TEMPLATE_CLASS IteratedHashBase<word64, HashTransformation>;
-CRYPTOPP_STATIC_TEMPLATE_CLASS IteratedHashBase<word64, MessageAuthenticationCode>;
-#endif
-
-CRYPTOPP_STATIC_TEMPLATE_CLASS IteratedHashBase<word32, MessageAuthenticationCode>;
 
 //! _
 template <class T, class B, class BASE>
