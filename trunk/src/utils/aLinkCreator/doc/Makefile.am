@@ -8,11 +8,12 @@ if ALCC
 dist_man_MANS += alcc.1
 endif
 
-man_langs = de es
+man_langs = de es fr
 
 EXTRA_DIST = \
 	alc.de.1 alcc.de.1 \
-	alc.es.1 alcc.es.1
+	alc.es.1 alcc.es.1 \
+	alcc.fr.1
 
 install-data-hook:
 	@for lang in $(man_langs); do \
