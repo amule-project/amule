@@ -1791,6 +1791,11 @@ void CamuleApp::ShutDown() {
 		SocketDeletionList.AddTail(current_socket);
 		
 	}
+	
+#else
+	void CamuleApp::AddSocketDeleteDebug(uint32 socket_pointer, uint32 creation_time) {
+	// No backtrace on this platform.
+	}
 #endif
 	
 	
