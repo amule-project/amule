@@ -32,11 +32,16 @@ if ED2K
 dist_man_MANS += ed2k.1
 endif
 
+if ALCC
+dist_man_MANS += alcc.1
+endif
+
 EXTRA_DIST = \
 	amule.de.1 amuled.de.1 amulecmd.de.1 amuleweb.de.1 ed2k.de.1 \
-	amule.es.1 amuled.es.1 amulecmd.es.1 amuleweb.es.1 ed2k.es.1
+	amule.es.1 amuled.es.1 amulecmd.es.1 amuleweb.es.1 ed2k.es.1 \
+	amule.fr.1 amuled.fr.1 amulecmd.fr.1 amuleweb.fr.1 ed2k.fr.1 alcc.fr.1
 
-man_langs = de es
+man_langs = de es fr
 
 install-data-hook:
 	@list='$(dlg_MANS)'; \
