@@ -54,9 +54,11 @@ CSearchListCtrl::CSearchListCtrl()
 	memset(&asc_sort,0,6);
 }
 
-CSearchListCtrl::CSearchListCtrl(wxWindow*& parent,int id,const wxPoint& pos,wxSize siz,int flags)
+CSearchListCtrl::CSearchListCtrl(wxWindow* parent,int id,const wxPoint& pos,wxSize siz,int flags)
 : CMuleListCtrl(parent,id,pos,siz,flags)
 {
+	wxASSERT( parent );
+
 	memset(&asc_sort,0,6);
 	m_SearchFileMenu=NULL;
 }

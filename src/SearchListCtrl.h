@@ -35,7 +35,7 @@ class CSearchListCtrl : public CMuleListCtrl
 
 public:
 	CSearchListCtrl();
-	CSearchListCtrl(wxWindow*& parent,int id,const wxPoint& pos,wxSize siz,int flags);
+	CSearchListCtrl(wxWindow* parent,int id,const wxPoint& pos,wxSize siz,int flags);
 
 	virtual ~CSearchListCtrl();
 	void	Init(CSearchList* in_searchlist);
