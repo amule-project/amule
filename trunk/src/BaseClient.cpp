@@ -2215,6 +2215,34 @@ wxString CUpDownClient::GetClientFullInfo() {
 	return (FullVerName);
 }
 
+
+
+void CUpDownClient::SendPublicIPRequest(){
+	if (socket && socket->IsConnected()){
+		/*
+		if (thePrefs.GetDebugClientTCPLevel() > 0)
+			DebugSend("OP__PublicIPReq", this);
+		*/
+		Packet* packet = new Packet(OP_PUBLICIP_REQ,0,OP_EMULEPROT);
+		theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
+		socket->SendPacket(packet,true);
+		m_fNeedOurPublicIP = true;
+	}
+}
+
+void CUpDownClient::ProcessPublicIPAnswer(const BYTE* pbyData, UINT uSize){
+	if (uSize != 4)
+		throw wxString(wxT("Wrong Packet size on Public IP answer\n"));
+	uint32 dwIP = PeekUInt32(pbyData);
+	if (m_fNeedOurPublicIP == true){ // did we?
+		m_fNeedOurPublicIP = false;
+		if (theApp.GetPublicIP() == 0 && !IsLowIDED2K(dwIP) )
+			theApp.SetPublicIP(dwIP);
+	}	
+}
+
+
+
 #ifdef __DEBUG__
 #warning Dont forget to remove this and the magic numbers when the bug is gone.
 bool CUpDownClient::IsASaneUpDownClient(bool verbose, char *function, char *file, int line) const

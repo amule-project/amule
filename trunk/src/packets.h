@@ -69,6 +69,10 @@ public:
 	inline const char * 	GetDataBuffer(void) const { return pBuffer; }
 	inline void 		Copy16ToDataBuffer(const char *data) { md4cpy( pBuffer, data ); }
 	void 			CopyToDataBuffer(unsigned int offset, const char *data, unsigned int n);
+	void			CopyUInt32ToDataBuffer(uint32 data, unsigned int offset = 0) { 
+		wxASSERT(offset <= size - sizeof(uint32) );
+		*((uint32*)(pBuffer + offset)) = data;
+	}
 	
 private:
 	uint32		size;

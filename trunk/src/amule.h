@@ -128,6 +128,8 @@ public:
 	bool use_chmod;
 	bool IsReady;
 	
+	uint32	GetPublicIP() const;	// return current (valid) public IP or 0 if unknown
+	void		SetPublicIP(const uint32 dwIP);
 
 	// Statistic functions. I plan on moving these to a class of their own -- Xaignar
 	void			UpdateReceivedBytes(int32 bytesToAdd);
@@ -213,6 +215,8 @@ protected:
 
 	wxString emulesig_path;
 	wxString amulesig_path;
+	
+	uint32 m_dwPublicIP;
 
 	DECLARE_EVENT_TABLE()
 };

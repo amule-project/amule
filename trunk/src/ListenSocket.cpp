@@ -1144,7 +1144,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 		*/
 		switch(opcode) {
 			case OP_MULTIPACKET: {
-				 // 0.42e
+				 // 0.43b
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0)
 					DebugRecv("OP_MultiPacket", client);
@@ -1198,7 +1198,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				client->SetUploadFileID(reqfile);
 				uint8 opcode_in;
 				CSafeMemFile data_out(128);
-				data_out.WriteRaw(reqfile->GetFileHash(),16);
+				data_out.WriteHash16(reqfile->GetFileHash());
 				while(data_in.GetLength()-data_in.GetPosition()) {
 					data_in.Read(opcode_in);
 					switch(opcode_in) {
@@ -1249,11 +1249,11 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 										theApp.uploadqueue->AddUpDataOverheadSourceExchange(tosend->GetPacketSize());
 										SendPacket(tosend, true);
 									}
-								} else {
-									if (theApp.glob_prefs->GetVerbose()) {
-											AddLogLineM(false, wxT("RCV: Source Request to fast. (This is testing the new timers to see how much older client will not receive this)"));
-									}
-								}
+								} //else {
+								//	if (theApp.glob_prefs->GetVerbose()) {
+								//		AddLogLineM(false, wxT("RCV: Source Request to fast. (This is testing the new timers to see how much older client will not receive this)"));
+								//	}
+								//}
 							}
 							break;
 						}
@@ -1274,7 +1274,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 			}
 
 			case OP_MULTIPACKETANSWER: {
-				// 0.42e
+				// 0.43b
 				#ifdef __USE_DEBUG__
 				if (theApp.glob_prefs->GetDebugClientTCPLevel() > 0)
 					DebugRecv("OP_MultiPacketAns", client);
@@ -1327,7 +1327,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 			}
 		
 			case OP_EMULEINFO: {
-				// 0.42e
+				// 0.43b
 				theApp.downloadqueue->AddDownDataOverheadOther(size);
 				client->ProcessMuleInfoPacket(packet,size);
 				#ifdef __USE_DEBUG__
@@ -1346,7 +1346,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				break;
 			}
 			case OP_EMULEINFOANSWER: {
-				// 0.42e
+				// 0.43b
 				theApp.downloadqueue->AddDownDataOverheadOther(size);
 				client->ProcessMuleInfoPacket(packet,size);
 				// start secure identification, if
@@ -1363,7 +1363,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				break;
 			}
 			case OP_SECIDENTSTATE:{
-				// 0.42e
+				// 0.43b
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
 					DebugRecv("OP_SecIdentState", client);				
@@ -1386,7 +1386,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				break;
 			}
 			case OP_PUBLICKEY:{
-				// 0.42e
+				// 0.43b
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
 					DebugRecv("OP_SecIdentState", client);	
@@ -1406,7 +1406,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				break;
 			}
  			case OP_SIGNATURE:{
-				// 0.42e
+				// 0.43b
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
 					DebugRecv("OP_Signature", client);	
@@ -1423,7 +1423,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				break;
 			}		
 			case OP_COMPRESSEDPART: {
-				// 0.42e
+				// 0.43b
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
 					DebugRecv("OP_CompressedPart", client);	
@@ -1469,7 +1469,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				break;
 			}
 			case OP_QUEUERANKING: {
-				// 0.42e
+				// 0.43b
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
 					DebugRecv("OP_QueueRanking", client);	
@@ -1497,7 +1497,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				break;
 			}
  			case OP_REQUESTSOURCES:{
-				// 0.42e
+				// 0.43b
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
 						DebugRecv("OP_RequestSources", client, packet);
@@ -1553,7 +1553,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				break;
 			}
  			case OP_ANSWERSOURCES: {
-				// 0.42e
+				// 0.43b
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
 					DebugRecv("OP_AnswerSources", client, packet);
@@ -1584,7 +1584,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				break;
 			}
 			case OP_FILEDESC: {
-				// 0.42e
+				// 0.43b
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
 					DebugRecv("OP_FileDesc", client);
@@ -1648,6 +1648,30 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				break;
 			}			
 			#endif
+			case OP_PUBLICIP_ANSWER: {
+				theApp.downloadqueue->AddDownDataOverheadOther(size);
+				/*
+				if (thePrefs.GetDebugClientTCPLevel() > 0)
+					DebugRecv("OP_PublicIPAns", client);
+				*/
+				client->ProcessPublicIPAnswer((BYTE*)packet,size);
+				break;
+			}
+			case OP_PUBLICIP_REQ: {
+				theApp.downloadqueue->AddDownDataOverheadOther(size);
+				/*
+				if (thePrefs.GetDebugClientTCPLevel() > 0)
+					DebugRecv("OP_PublicIPReq", client);
+				if (thePrefs.GetDebugClientTCPLevel() > 0)
+					DebugSend("OP__PublicIPAns", client);
+				*/
+				Packet* pPacket = new Packet(OP_PUBLICIP_ANSWER, 4, OP_EMULEPROT);
+				pPacket->CopyUInt32ToDataBuffer(client->GetIP());
+				theApp.uploadqueue->AddUpDataOverheadOther(pPacket->GetPacketSize());
+				SendPacket(pPacket);
+				break;
+			}			
+			
 			default:
 				theApp.downloadqueue->AddDownDataOverheadOther(size);
 				AddDebugLogLineM(false,wxString::Format(wxT("eMule packet : unknown opcode: %i %x"),opcode,opcode));

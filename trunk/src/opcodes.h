@@ -237,8 +237,12 @@ enum {
 #define	OP_REQUESTPREVIEW			0x90	// <HASH 16>
 #define	OP_PREVIEWANSWER			0x91	// <HASH 16><frames 1>{frames * <len 4><frame len>}
 #define	OP_MULTIPACKET				0x92
-#define	OP_MULTIPACKETANSWER	0x93
-
+#define	OP_MULTIPACKETANSWER		0x93
+#define	OP_PEERCACHE_QUERY		0x94
+#define	OP_PEERCACHE_ANSWER		0x95
+#define	OP_PEERCACHE_ACK			0x96
+#define	OP_PUBLICIP_REQ				0x97
+#define	OP_PUBLICIP_ANSWER			0x98
 
 // this 'identifier' is used for referencing shared part (incomplete) files with the OP_ASKSHAREDDIRS and related opcodes
 // it was introduced with eDonkeyHybrid and is considered as part of the protocol.
