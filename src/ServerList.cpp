@@ -320,7 +320,6 @@ bool CServerList::IsGoodServerIP(CServer* in_server)
 			char* ipmask = strdup(filtered_blocks[i]);
 			char* addr = strtok(ipmask, "/");
 			char* n = strtok(NULL, "/");
-			#warning ENDIANESS -> Take care of this htonl
 			filters[i].addr = htonl(CStringIPtoUint32(addr));
 			filters[i].mask = htonl((1 << (32 - atoi(n))) - 1);
 			free(ipmask);
