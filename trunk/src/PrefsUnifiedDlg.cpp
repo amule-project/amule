@@ -696,7 +696,9 @@ void PrefsUnifiedDlg::BuildItemList(Preferences_Struct *prefs, char * appdir)  /
 
 	listRse.Append(new RseInt(0, prefs->splitterbarPosition, "SplitterbarPosition", 75));	// no GUI needed (window layout)
 
-	listRse.Append(new RseInt(0, prefs->statsMax, "VariousStatisticsMaxValue", 100));	// no GUI yet (should be wxSpinCtrl to set scale of Connections graph)
+
+	listRse.Append(new RseInt(IDC_SLIDER4, prefs->statsMax, "VariousStatisticsMaxValue", 100));	
+	listRse.Append(new RseDynLabel(IDC_SLIDERINFO4, IDC_SLIDER4, 1, _("Connections Graph Scale: %i"), "", ""));
 
 	listRse.Append(new RseInt(IDC_SLIDER3, prefs->statsAverageMinutes, "StatsAverageMinutes", 5)); 
 	listRse.Append(new RseDynLabel(IDC_SLIDERINFO3, IDC_SLIDER3, 1, _("Time for running averages: %i mins"), "", ""));
@@ -729,8 +731,8 @@ void PrefsUnifiedDlg::BuildItemList(Preferences_Struct *prefs, char * appdir)  /
 
 	listRse.Append(new RseBool(0, prefs->filterserverbyip, "FilterServersByIP", false));	// no GUI yet
 	listRse.Append(new RseInt(0, prefs->filterlevel, "FilterLevel", 127));					// no GUI yet
-	listRse.Append(new RseBool(0, prefs->checkDiskspace, "CheckDiskspace", true));			// no GUI yet
-	listRse.Append(new RseInt(0, prefs->m_uMinFreeDiskSpace, "MinFreeDiskSpace", 0));		// no GUI yet
+	listRse.Append(new RseBool(IDC_CHECKDISKSPACE, prefs->checkDiskspace, "CheckDiskspace", true));			// no GUI yet
+	listRse.Append(new RseInt(IDC_MINDISKSPACE, prefs->m_uMinFreeDiskSpace, "MinFreeDiskSpace", 0));		// no GUI yet
 	listRse.Append(new RseString(0, prefs->yourHostname,sizeof(prefs->yourHostname), "YourHostname", "")); // no GUI yet
 
 	listRse.Append(new RseBool(IDC_AUTOCONNECTSTATICONLY, prefs->autoconnectstaticonly, "AutoConnectStaticOnly", false)); 
@@ -769,7 +771,6 @@ void PrefsUnifiedDlg::BuildItemList(Preferences_Struct *prefs, char * appdir)  /
 	listRse.Append(new RseBool(IDC_SMARTIDCHECK, prefs->smartidcheck, "SmartIdCheck", true));
 	listRse.Append(new RseBool(IDC_VERBOSE, prefs->m_bVerbose, "Verbose", false));
 	listRse.Append(new RseBool(IDC_PREVIEWPRIO, prefs->m_bpreviewprio, "PreviewPrio", false));
-	listRse.Append(new RseBool(IDC_UPDATEQUEUE, prefs->m_bupdatequeuelist, "UpdateQueueListPref", false));
 	listRse.Append(new RseBool(IDC_MANUALSERVERHIGHPRIO, prefs->m_bmanualhighprio, "ManualHighPrio", false));
 	listRse.Append(new RseBool(IDC_FULLCHUNKTRANS, prefs->m_btransferfullchunks, "FullChunkTransfers", true));
 	listRse.Append(new RseBool(IDC_STARTNEXTFILE, prefs->m_bstartnextfile, "StartNextFile", false));
@@ -869,7 +870,6 @@ void PrefsUnifiedDlg::BuildItemList(Preferences_Struct *prefs, char * appdir)  /
 	
 	listRse.Append(new RseInt(0, prefs->desktopMode, "DesktopMode", 4));
 
-	// Web Server info - no GUI in aMule yet
 	listRse.Append(new RseStringEncrypted(IDC_WEB_PASSWD, prefs->m_sWebPassword, sizeof(prefs->m_sWebPassword), "Password", "WebServer"));
 	listRse.Append(new RseStringEncrypted(IDC_WEB_PASSWD_LOW, prefs->m_sWebLowPassword, sizeof(prefs->m_sWebLowPassword), "PasswordLow"));
 	listRse.Append(new RseInt(IDC_WEB_PORT, prefs->m_nWebPort, "Port", 4711));
@@ -892,7 +892,6 @@ void PrefsUnifiedDlg::BuildItemList(Preferences_Struct *prefs, char * appdir)  /
 	listRse.Append(new RseInt(IDC_AUTO_DROP_TIMER, prefs->AutoDropTimer, "AutoDropTimer", 240));
 	listRse.Append(new RseBool(IDC_FED2KLH, prefs->FastED2KLinksHandler, "FastED2KLinksHandler", true));
 
-	/* new items - supply IDs when added to dialog (they should need no special code as it looks)  */
 	listRse.Append(new RseBool(IDC_EXT_CONN_ACCEPT, prefs->AcceptExternalConnections, "AcceptExternalConnections", true,"ExternalConnect"));
 	listRse.Append(new RseBool(IDC_EXT_CONN_USETCP, prefs->ECUseTCPPort, "ECUseTCPPort", false,"ExternalConnect"));
 	listRse.Append(new RseInt(IDC_EXT_CONN_TCP_PORT, prefs->ECPort, "ECPort", 4712, "ExternalConnect"));
@@ -928,7 +927,6 @@ BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	EVT_SPINCTRL(IDC_MAXUP, PrefsUnifiedDlg::OnSpinMaxDLR)
 	EVT_SPINCTRL(IDC_MAXDOWN, PrefsUnifiedDlg::OnSpinMaxDLR)
 	EVT_CHECKBOX(IDC_UDPDISABLE, PrefsUnifiedDlg::OnCheckBoxChange)
-	EVT_CHECKBOX(IDC_UPDATEQUEUE, PrefsUnifiedDlg::OnCheckBoxChange)
 	
 	EVT_BUTTON(ID_PREFS_OK_TOP, PrefsUnifiedDlg::OnOk)
 	EVT_BUTTON(ID_PREFS_OK_LEFT, PrefsUnifiedDlg::OnOk)
@@ -1176,8 +1174,8 @@ void PrefsUnifiedDlg::OnScroll(wxCommandEvent &event)
 	int			id = pctrl->GetId();
 	Rse*		prse = Prse(id);
 
-	if (id!=IDC_LISTREFRESH  ||  !Prse(IDC_UPDATEQUEUE)->GetCtrlValue())	
-		prse->Propagate();
+     prse->Propagate();
+
 	
 	// dynamic interactions
 	switch (id) {
@@ -1189,6 +1187,8 @@ void PrefsUnifiedDlg::OnScroll(wxCommandEvent &event)
 							break;
 		case IDC_SLIDER3:	prse->TransferFromDlg();
 							theApp.amuledlg->statisticswnd->ResetAveragingTime();
+							break;
+		case IDC_SLIDER4:	prse->TransferFromDlg();
 							break;
 
 		default:	break;
@@ -1226,6 +1226,7 @@ void PrefsUnifiedDlg::OnCancel(wxCommandEvent &event)
 	Prse(IDC_SLIDER)->RestorePrevValue();
 	Prse(IDC_SLIDER3)->RestorePrevValue();
 	Prse(IDC_SLIDER2)->RestorePrevValue();
+	Prse(IDC_SLIDER4)->RestorePrevValue();
 	Prse(IDC_COLOR_BUTTON)->RestorePrevValue();
 	theApp.amuledlg->statisticswnd->SetUpdatePeriod();	
 	theApp.amuledlg->statisticswnd->ResetAveragingTime();
@@ -1258,14 +1259,7 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxEvent& event)
 			}
 			break;
 		}
-		
-		case IDC_UPDATEQUEUE:
-			if (bIsChecked)
-				((wxStaticText*)Prse(IDC_LISTREFRESH_LABEL)->pctrl)->SetLabel(_("Upload/Download list refresh time: Disable"));
-			else
-				Prse(IDC_LISTREFRESH)->Propagate();
-			break;
-			
+				
 		default:	break;
 	}
 }

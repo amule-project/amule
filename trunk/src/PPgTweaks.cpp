@@ -78,12 +78,6 @@ void CPPgTweaks::LoadSettings(void)
 		((wxCheckBox*)FindWindowById(IDC_AUTOTAKEED2KLINKS))->SetValue(FALSE);
 	}
 
-	if(app_prefs->prefs->m_bupdatequeuelist) {
-		((wxCheckBox*)FindWindowById(IDC_UPDATEQUEUE))->SetValue(TRUE);
-	} else {
-		((wxCheckBox*)FindWindowById(IDC_UPDATEQUEUE))->SetValue(FALSE);
-	}
-
 	if(app_prefs->prefs->showRatesInTitle) {
 		((wxCheckBox*)FindWindowById(IDC_SHOWRATEONTITLE))->SetValue(TRUE);
 	} else {

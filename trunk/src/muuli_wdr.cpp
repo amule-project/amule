@@ -47,8 +47,8 @@ wxSizer *desktopDlg( wxWindow *parent, bool call_fit, bool set_sizer )
 
     wxStaticText *item1 = new wxStaticText( parent, ID_TEXT, 
         _("For system tray integration to work,\n"
-        "you must specify which desktop you are using.\n"
-        "You can change this later from preferences."),
+          "you must specify which desktop you are using.\n"
+          "You can change this later from preferences."),
         wxDefaultPosition, wxDefaultSize, 0 );
     item0->Add( item1, 0, wxALIGN_CENTER|wxALL, 5 );
 
@@ -80,13 +80,9 @@ wxSizer *desktopDlg( wxWindow *parent, bool call_fit, bool set_sizer )
 
     if (set_sizer)
     {
-        parent->SetAutoLayout( TRUE );
         parent->SetSizer( item0 );
         if (call_fit)
-        {
-            item0->Fit( parent );
             item0->SetSizeHints( parent );
-        }
     }
     
     return item0;
@@ -171,13 +167,9 @@ wxSizer *muleDlg( wxWindow *parent, bool call_fit, bool set_sizer )
 
     if (set_sizer)
     {
-        parent->SetAutoLayout( TRUE );
         parent->SetSizer( item0 );
         if (call_fit)
-        {
-            item0->Fit( parent );
             item0->SetSizeHints( parent );
-        }
     }
     
     return item0;
@@ -199,13 +191,9 @@ wxSizer *serverListDlg( wxWindow *parent, bool call_fit, bool set_sizer )
 
     if (set_sizer)
     {
-        parent->SetAutoLayout( TRUE );
         parent->SetSizer( item0 );
         if (call_fit)
-        {
-            item0->Fit( parent );
             item0->SetSizeHints( parent );
-        }
     }
     
     return item0;
@@ -391,13 +379,9 @@ wxSizer *searchDlg( wxWindow *parent, bool call_fit, bool set_sizer )
 
     if (set_sizer)
     {
-        parent->SetAutoLayout( TRUE );
         parent->SetSizer( item0 );
         if (call_fit)
-        {
-            item0->Fit( parent );
             item0->SetSizeHints( parent );
-        }
     }
     
     return item0;
@@ -428,13 +412,9 @@ wxSizer *transferTopPane( wxWindow *parent, bool call_fit, bool set_sizer )
 
     if (set_sizer)
     {
-        parent->SetAutoLayout( TRUE );
         parent->SetSizer( item0 );
         if (call_fit)
-        {
-            item0->Fit( parent );
             item0->SetSizeHints( parent );
-        }
     }
     
     return item0;
@@ -467,13 +447,9 @@ wxSizer *transferBottomPane( wxWindow *parent, bool call_fit, bool set_sizer )
 
     if (set_sizer)
     {
-        parent->SetAutoLayout( TRUE );
         parent->SetSizer( item0 );
         if (call_fit)
-        {
-            item0->Fit( parent );
             item0->SetSizeHints( parent );
-        }
     }
     
     return item0;
@@ -542,13 +518,9 @@ wxSizer *messagePage( wxWindow *parent, bool call_fit, bool set_sizer )
 
     if (set_sizer)
     {
-        parent->SetAutoLayout( TRUE );
         parent->SetSizer( item0 );
         if (call_fit)
-        {
-            item0->Fit( parent );
             item0->SetSizeHints( parent );
-        }
     }
     
     return item0;
@@ -820,13 +792,9 @@ wxSizer *fileDetails( wxWindow *parent, bool call_fit, bool set_sizer )
 
     if (set_sizer)
     {
-        parent->SetAutoLayout( TRUE );
         parent->SetSizer( item0 );
         if (call_fit)
-        {
-            item0->Fit( parent );
             item0->SetSizeHints( parent );
-        }
     }
     
     return item0;
@@ -851,7 +819,7 @@ wxSizer *commentDlg( wxWindow *parent, bool call_fit, bool set_sizer )
 
     wxStaticText *item6 = new wxStaticText( parent, ID_TEXT, 
         _("For a film you can say its length, its story, language ...\n"
-        "and if it's a fake, you can tell that to other users of aMule."),
+          "and if it's a fake, you can tell that to other users of aMule."),
         wxDefaultPosition, wxDefaultSize, 0 );
     item1->Add( item6, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
 
@@ -895,13 +863,9 @@ wxSizer *commentDlg( wxWindow *parent, bool call_fit, bool set_sizer )
 
     if (set_sizer)
     {
-        parent->SetAutoLayout( TRUE );
         parent->SetSizer( item0 );
         if (call_fit)
-        {
-            item0->Fit( parent );
             item0->SetSizeHints( parent );
-        }
     }
     
     return item0;
@@ -943,13 +907,9 @@ wxSizer *commentLstDlg( wxWindow *parent, bool call_fit, bool set_sizer )
 
     if (set_sizer)
     {
-        parent->SetAutoLayout( TRUE );
         parent->SetSizer( item0 );
         if (call_fit)
-        {
-            item0->Fit( parent );
             item0->SetSizeHints( parent );
-        }
     }
     
     return item0;
@@ -980,13 +940,9 @@ wxSizer *downloadDlg( wxWindow *parent, bool call_fit, bool set_sizer )
 
     if (set_sizer)
     {
-        parent->SetAutoLayout( TRUE );
         parent->SetSizer( item0 );
         if (call_fit)
-        {
-            item0->Fit( parent );
             item0->SetSizeHints( parent );
-        }
     }
     
     return item0;
@@ -1052,13 +1008,9 @@ wxSizer *addFriendDlg( wxWindow *parent, bool call_fit, bool set_sizer )
 
     if (set_sizer)
     {
-        parent->SetAutoLayout( TRUE );
         parent->SetSizer( item0 );
         if (call_fit)
-        {
-            item0->Fit( parent );
             item0->SetSizeHints( parent );
-        }
     }
     
     return item0;
@@ -1185,13 +1137,9 @@ wxSizer *sharedfilesDlg( wxWindow *parent, bool call_fit, bool set_sizer )
 
     if (set_sizer)
     {
-        parent->SetAutoLayout( TRUE );
         parent->SetSizer( item0 );
         if (call_fit)
-        {
-            item0->Fit( parent );
             item0->SetSizeHints( parent );
-        }
     }
     
     return item0;
@@ -1206,13 +1154,9 @@ wxSizer *searchPage( wxWindow *parent, bool call_fit, bool set_sizer )
 
     if (set_sizer)
     {
-        parent->SetAutoLayout( TRUE );
         parent->SetSizer( item0 );
         if (call_fit)
-        {
-            item0->Fit( parent );
             item0->SetSizeHints( parent );
-        }
     }
     
     return item0;
@@ -1431,13 +1375,9 @@ item41->SetName("uloadScope");
 
     if (set_sizer)
     {
-        parent->SetAutoLayout( TRUE );
         parent->SetSizer( item0 );
         if (call_fit)
-        {
-            item0->Fit( parent );
             item0->SetSizeHints( parent );
-        }
     }
     
     return item0;
@@ -1678,13 +1618,9 @@ wxSizer *clientDetails( wxWindow *parent, bool call_fit, bool set_sizer )
 
     if (set_sizer)
     {
-        parent->SetAutoLayout( TRUE );
         parent->SetSizer( item0 );
         if (call_fit)
-        {
-            item0->Fit( parent );
             item0->SetSizeHints( parent );
-        }
     }
     
     return item0;
@@ -1824,13 +1760,9 @@ wxSizer *PreferencesGeneralTab( wxWindow *parent, bool call_fit, bool set_sizer 
 
     if (set_sizer)
     {
-        parent->SetAutoLayout( TRUE );
         parent->SetSizer( item0 );
         if (call_fit)
-        {
-            item0->Fit( parent );
             item0->SetSizeHints( parent );
-        }
     }
     
     return item0;
@@ -2059,13 +1991,9 @@ wxSizer *PreferencesConnectionTab( wxWindow *parent, bool call_fit, bool set_siz
 
     if (set_sizer)
     {
-        parent->SetAutoLayout( TRUE );
         parent->SetSizer( item0 );
         if (call_fit)
-        {
-            item0->Fit( parent );
             item0->SetSizeHints( parent );
-        }
     }
     
     return item0;
@@ -2140,13 +2068,9 @@ wxSizer *PreferencesServerTab( wxWindow *parent, bool call_fit, bool set_sizer )
 
     if (set_sizer)
     {
-        parent->SetAutoLayout( TRUE );
         parent->SetSizer( item0 );
         if (call_fit)
-        {
-            item0->Fit( parent );
             item0->SetSizeHints( parent );
-        }
     }
     
     return item0;
@@ -2215,15 +2139,35 @@ wxSizer *PreferencesFilesTab( wxWindow *parent, bool call_fit, bool set_sizer )
 
     item0->Add( item9, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
+    wxStaticBox *item20 = new wxStaticBox( parent, -1, _("Disk Space") );
+    wxStaticBoxSizer *item19 = new wxStaticBoxSizer( item20, wxVERTICAL );
+
+    wxCheckBox *item21 = new wxCheckBox( parent, IDC_CHECKDISKSPACE, _("Check Disk Space"), wxDefaultPosition, wxDefaultSize, 0 );
+    item21->SetToolTip( _("Select this if you want aMule to check your Disk Space") );
+    item19->Add( item21, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+
+    wxFlexGridSizer *item22 = new wxFlexGridSizer( 3, 0, 0 );
+    item22->AddGrowableCol( 1 );
+
+    wxStaticText *item23 = new wxStaticText( parent, ID_MINDISKTEXT, _("    Min Disk Space:    "), wxDefaultPosition, wxDefaultSize, 0 );
+    item22->Add( item23, 0, wxALIGN_CENTER|wxALL, 0 );
+
+    wxSpinCtrl *item24 = new wxSpinCtrl( parent, IDC_MINDISKSPACE, wxT("1"), wxDefaultPosition, wxSize(150,-1), 0, 1, 1000000, 1 );
+    item24->SetToolTip( _("Enter here the min disk space desired.") );
+    item22->Add( item24, 0, wxALIGN_CENTER_VERTICAL, 0 );
+
+    wxStaticText *item25 = new wxStaticText( parent, ID_TEXT, _("Mb"), wxDefaultPosition, wxDefaultSize, 0 );
+    item22->Add( item25, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    item19->Add( item22, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+
+    item0->Add( item19, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
     if (set_sizer)
     {
-        parent->SetAutoLayout( TRUE );
         parent->SetSizer( item0 );
         if (call_fit)
-        {
-            item0->Fit( parent );
             item0->SetSizeHints( parent );
-        }
     }
     
     return item0;
@@ -2292,13 +2236,9 @@ wxSizer *PreferencesDirectoriesTab( wxWindow *parent, bool call_fit, bool set_si
 
     if (set_sizer)
     {
-        parent->SetAutoLayout( TRUE );
         parent->SetSizer( item0 );
         if (call_fit)
-        {
-            item0->Fit( parent );
             item0->SetSizeHints( parent );
-        }
     }
     
     return item0;
@@ -2323,12 +2263,18 @@ wxSizer *PreferencesStatisticsTab( wxWindow *parent, bool call_fit, bool set_siz
     wxSlider *item6 = new wxSlider( parent, IDC_SLIDER3, 100, 5, 100, wxDefaultPosition, wxSize(100,-1), wxSL_HORIZONTAL );
     item1->Add( item6, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticText *item7 = new wxStaticText( parent, IDC_PREFCOLORS, _("Select Statistics Colors"), wxDefaultPosition, wxDefaultSize, 0 );
-    item1->Add( item7, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT|wxTOP|wxBOTTOM, 5 );
+    wxStaticText *item7 = new wxStaticText( parent, IDC_SLIDERINFO4, _("Connections Graph Scale: 100 "), wxDefaultPosition, wxDefaultSize, 0 );
+    item1->Add( item7, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL|wxRIGHT|wxTOP|wxBOTTOM, 5 );
 
-    wxBoxSizer *item8 = new wxBoxSizer( wxHORIZONTAL );
+    wxSlider *item8 = new wxSlider( parent, IDC_SLIDER4, 100, 2, 200, wxDefaultPosition, wxSize(100,-1), wxSL_HORIZONTAL );
+    item1->Add( item8, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxString strs9[] = 
+    wxStaticText *item9 = new wxStaticText( parent, IDC_PREFCOLORS, _("Select Statistics Colors"), wxDefaultPosition, wxDefaultSize, 0 );
+    item1->Add( item9, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT|wxTOP|wxBOTTOM, 5 );
+
+    wxBoxSizer *item10 = new wxBoxSizer( wxHORIZONTAL );
+
+    wxString strs11[] = 
     {
         _("Background"), 
         _("Grid"), 
@@ -2343,36 +2289,32 @@ wxSizer *PreferencesStatisticsTab( wxWindow *parent, bool call_fit, bool set_siz
         _("Active uploads"), 
         _("Systray Icon Speedbar")
     };
-    wxChoice *item9 = new wxChoice( parent, IDC_COLORSELECTOR, wxDefaultPosition, wxDefaultSize, 12, strs9, 0 );
-    item8->Add( item9, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxRIGHT, 5 );
+    wxChoice *item11 = new wxChoice( parent, IDC_COLORSELECTOR, wxDefaultPosition, wxDefaultSize, 12, strs11, 0 );
+    item10->Add( item11, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxRIGHT, 5 );
 
-    wxButton *item10 = new wxButton( parent, IDC_COLOR_BUTTON, _("Select"), wxDefaultPosition, wxDefaultSize, 0 );
-    item8->Add( item10, 0, wxGROW|wxLEFT, 5 );
+    wxButton *item12 = new wxButton( parent, IDC_COLOR_BUTTON, _("Select"), wxDefaultPosition, wxDefaultSize, 0 );
+    item10->Add( item12, 0, wxGROW|wxLEFT, 5 );
 
-    item1->Add( item8, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    item1->Add( item10, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
     item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxTOP, 5 );
 
-    wxStaticBox *item12 = new wxStaticBox( parent, -1, _("Statistics Tree") );
-    wxStaticBoxSizer *item11 = new wxStaticBoxSizer( item12, wxVERTICAL );
+    wxStaticBox *item14 = new wxStaticBox( parent, -1, _("Statistics Tree") );
+    wxStaticBoxSizer *item13 = new wxStaticBoxSizer( item14, wxVERTICAL );
 
-    wxStaticText *item13 = new wxStaticText( parent, IDC_SLIDERINFO2, _("Update delay : 5 secs"), wxDefaultPosition, wxDefaultSize, 0 );
-    item11->Add( item13, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT|wxTOP|wxBOTTOM, 5 );
+    wxStaticText *item15 = new wxStaticText( parent, IDC_SLIDERINFO2, _("Update delay : 5 secs"), wxDefaultPosition, wxDefaultSize, 0 );
+    item13->Add( item15, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT|wxTOP|wxBOTTOM, 5 );
 
-    wxSlider *item14 = new wxSlider( parent, IDC_SLIDER2, 5, 5, 100, wxDefaultPosition, wxSize(100,-1), wxSL_HORIZONTAL );
-    item11->Add( item14, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxSlider *item16 = new wxSlider( parent, IDC_SLIDER2, 5, 5, 100, wxDefaultPosition, wxSize(100,-1), wxSL_HORIZONTAL );
+    item13->Add( item16, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    item0->Add( item11, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item0->Add( item13, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     if (set_sizer)
     {
-        parent->SetAutoLayout( TRUE );
         parent->SetSizer( item0 );
         if (call_fit)
-        {
-            item0->Fit( parent );
             item0->SetSizeHints( parent );
-        }
     }
     
     return item0;
@@ -2465,13 +2407,9 @@ wxSizer *PreferencesNotifyTab( wxWindow *parent, bool call_fit, bool set_sizer )
 
     if (set_sizer)
     {
-        parent->SetAutoLayout( TRUE );
         parent->SetSizer( item0 );
         if (call_fit)
-        {
-            item0->Fit( parent );
             item0->SetSizeHints( parent );
-        }
     }
     
     return item0;
@@ -2497,11 +2435,11 @@ wxSizer *PreferencesaMuleTweaksTab( wxWindow *parent, bool call_fit, bool set_si
 
     wxStaticText *item6 = new wxStaticText( parent, IDC_STATIC, 
         _("Do not change these setting unless you know\n"
-        "what you are doing, otherwise you can easily\n"
-        "make things worse for yourself.\n"
-        "\n"
-        "aMule will run fine without adjusting any of\n"
-        "these settings."),
+          "what you are doing, otherwise you can easily\n"
+          "make things worse for yourself.\n"
+          "\n"
+          "aMule will run fine without adjusting any of\n"
+          "these settings."),
         wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
     item6->SetForegroundColour( *wxRED );
     item3->Add( item6, 1, wxADJUST_MINSIZE|wxALIGN_CENTER|wxALL, 5 );
@@ -2543,27 +2481,13 @@ wxSizer *PreferencesaMuleTweaksTab( wxWindow *parent, bool call_fit, bool set_si
     wxSlider *item17 = new wxSlider( parent, IDC_SERVERKEEPALIVE, 0, 0, 30, wxDefaultPosition, wxSize(100,-1), wxSL_HORIZONTAL );
     item1->Add( item17, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item18 = new wxCheckBox( parent, IDC_UPDATEQUEUE, _("Upload/Download list refresh when updated"), wxDefaultPosition, wxDefaultSize, 0 );
-    item18->SetValue( TRUE );
-    item1->Add( item18, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
-
-    wxStaticText *item19 = new wxStaticText( parent, IDC_LISTREFRESH_LABEL, _("Upload/Download list refresh time: Realtime"), wxDefaultPosition, wxDefaultSize, 0 );
-    item1->Add( item19, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
-
-    wxSlider *item20 = new wxSlider( parent, IDC_LISTREFRESH, 0, 0, 60, wxDefaultPosition, wxSize(100,-1), wxSL_HORIZONTAL );
-    item1->Add( item20, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
-
     item0->Add( item1, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     if (set_sizer)
     {
-        parent->SetAutoLayout( TRUE );
         parent->SetSizer( item0 );
         if (call_fit)
-        {
-            item0->Fit( parent );
             item0->SetSizeHints( parent );
-        }
     }
     
     return item0;
@@ -2701,13 +2625,9 @@ wxSizer *PreferencesGuiTweaksTab( wxWindow *parent, bool call_fit, bool set_size
 
     if (set_sizer)
     {
-        parent->SetAutoLayout( TRUE );
         parent->SetSizer( item0 );
         if (call_fit)
-        {
-            item0->Fit( parent );
             item0->SetSizeHints( parent );
-        }
     }
     
     return item0;
@@ -2789,13 +2709,9 @@ wxSizer *PreferencesSourcesDroppingTab( wxWindow *parent, bool call_fit, bool se
 
     if (set_sizer)
     {
-        parent->SetAutoLayout( TRUE );
         parent->SetSizer( item0 );
         if (call_fit)
-        {
-            item0->Fit( parent );
             item0->SetSizeHints( parent );
-        }
     }
     
     return item0;
@@ -2890,13 +2806,9 @@ wxSizer *PreferencesRemoteControlsTab( wxWindow *parent, bool call_fit, bool set
 
     if (set_sizer)
     {
-        parent->SetAutoLayout( TRUE );
         parent->SetSizer( item0 );
         if (call_fit)
-        {
-            item0->Fit( parent );
             item0->SetSizeHints( parent );
-        }
     }
     
     return item0;
@@ -2969,13 +2881,9 @@ wxSizer *preferencesDlgTop( wxWindow *parent, bool call_fit, bool set_sizer )
 
     if (set_sizer)
     {
-        parent->SetAutoLayout( TRUE );
         parent->SetSizer( item0 );
         if (call_fit)
-        {
-            item0->Fit( parent );
             item0->SetSizeHints( parent );
-        }
     }
     
     return item0;
@@ -3074,13 +2982,9 @@ wxSizer *CategoriesEditWindow( wxWindow *parent, bool call_fit, bool set_sizer )
 
     if (set_sizer)
     {
-        parent->SetAutoLayout( TRUE );
         parent->SetSizer( item0 );
         if (call_fit)
-        {
-            item0->Fit( parent );
             item0->SetSizeHints( parent );
-        }
     }
     
     return item0;
@@ -3123,13 +3027,9 @@ wxSizer *transferDlg( wxWindow *parent, bool call_fit, bool set_sizer )
 
     if (set_sizer)
     {
-        parent->SetAutoLayout( TRUE );
         parent->SetSizer( item0 );
         if (call_fit)
-        {
-            item0->Fit( parent );
             item0->SetSizeHints( parent );
-        }
     }
     
     return item0;
@@ -3152,20 +3052,36 @@ wxSizer *ServerInfoLog( wxWindow *parent, bool call_fit, bool set_sizer )
 
     wxBoxSizer *item4 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxTextCtrl *item5 = new wxTextCtrl( parent, ID_SERVERINFO, wxT(""), wxDefaultPosition, wxSize(-1,60), wxTE_MULTILINE|wxTE_READONLY|wxVSCROLL );
-    item4->Add( item5, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
+    wxBoxSizer *item5 = new wxBoxSizer( wxVERTICAL );
+
+    wxBoxSizer *item6 = new wxBoxSizer( wxHORIZONTAL );
+
+    wxTextCtrl *item7 = new wxTextCtrl( parent, ID_SERVERINFO, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxVSCROLL|wxHSCROLL );
+    item6->Add( item7, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
+
+    wxBoxSizer *item8 = new wxBoxSizer( wxHORIZONTAL );
+
+    wxStaticBox *item10 = new wxStaticBox( parent, -1, wxT("") );
+    wxStaticBoxSizer *item9 = new wxStaticBoxSizer( item10, wxVERTICAL );
+
+    wxButton *item11 = new wxButton( parent, ID_BTN_RESET_SERVER, _("Reset"), wxDefaultPosition, wxDefaultSize, 0 );
+    item9->Add( item11, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    item8->Add( item9, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    item6->Add( item8, 0, wxALIGN_BOTTOM|wxALIGN_CENTER_HORIZONTAL, 5 );
+
+    item5->Add( item6, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+
+    item4->Add( item5, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
     item0->Add( item4, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
     if (set_sizer)
     {
-        parent->SetAutoLayout( TRUE );
         parent->SetSizer( item0 );
         if (call_fit)
-        {
-            item0->Fit( parent );
             item0->SetSizeHints( parent );
-        }
     }
     
     return item0;
@@ -3189,7 +3105,7 @@ wxSizer *aMuleLog( wxWindow *parent, bool call_fit, bool set_sizer )
 
     wxBoxSizer *item5 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxTextCtrl *item6 = new wxTextCtrl( parent, ID_LOGVIEW, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxVSCROLL );
+    wxTextCtrl *item6 = new wxTextCtrl( parent, ID_LOGVIEW, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxVSCROLL|wxHSCROLL );
     item5->Add( item6, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
 
     wxBoxSizer *item7 = new wxBoxSizer( wxHORIZONTAL );
@@ -3210,13 +3126,9 @@ wxSizer *aMuleLog( wxWindow *parent, bool call_fit, bool set_sizer )
 
     if (set_sizer)
     {
-        parent->SetAutoLayout( TRUE );
         parent->SetSizer( item0 );
         if (call_fit)
-        {
-            item0->Fit( parent );
             item0->SetSizeHints( parent );
-        }
     }
     
     return item0;
@@ -3278,13 +3190,9 @@ wxSizer *serverListDlgUp( wxWindow *parent, bool call_fit, bool set_sizer )
 
     if (set_sizer)
     {
-        parent->SetAutoLayout( TRUE );
         parent->SetSizer( item0 );
         if (call_fit)
-        {
-            item0->Fit( parent );
             item0->SetSizeHints( parent );
-        }
     }
     
     return item0;
@@ -3314,13 +3222,9 @@ wxSizer *serverListDlgDown( wxWindow *parent, bool call_fit, bool set_sizer )
 
     if (set_sizer)
     {
-        parent->SetAutoLayout( TRUE );
         parent->SetSizer( item0 );
         if (call_fit)
-        {
-            item0->Fit( parent );
             item0->SetSizeHints( parent );
-        }
     }
     
     return item0;
@@ -3393,13 +3297,49 @@ wxSizer *preferencesDlgLeft( wxWindow *parent, bool call_fit, bool set_sizer )
 
     if (set_sizer)
     {
-        parent->SetAutoLayout( TRUE );
         parent->SetSizer( item0 );
         if (call_fit)
-        {
-            item0->Fit( parent );
             item0->SetSizeHints( parent );
-        }
+    }
+    
+    return item0;
+}
+
+wxSizer *LocaleWarning( wxWindow *parent, bool call_fit, bool set_sizer )
+{
+    wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
+
+    wxStaticBox *item2 = new wxStaticBox( parent, -1, _("Info") );
+    wxStaticBoxSizer *item1 = new wxStaticBoxSizer( item2, wxVERTICAL );
+
+    wxStaticText *item3 = new wxStaticText( parent, ID_LOCALETEXT, 
+        _("The selected locale seems not to be installed on your box\n"
+          "You must generate it to use this language.\n"
+          "A good start on linux systems is the file /etc/locale.gen and the package 'locales'\n"
+          "Good luck!\n"
+          "(Note: I'll try to set it anyway)"),
+        wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
+    item1->Add( item3, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    item0->Add( item1, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    wxStaticBox *item5 = new wxStaticBox( parent, -1, wxT("") );
+    wxStaticBoxSizer *item4 = new wxStaticBoxSizer( item5, wxVERTICAL );
+
+    wxButton *item6 = new wxButton( parent, ID_OK, _("OK"), wxDefaultPosition, wxDefaultSize, 0 );
+    item6->SetDefault();
+    item4->Add( item6, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    item0->Add( item4, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    wxCheckBox *item7 = new wxCheckBox( parent, ID_LOCALENEVERAGAIN, _("Never show this again"), wxDefaultPosition, wxDefaultSize, 0 );
+    item0->Add( item7, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    if (set_sizer)
+    {
+        parent->SetSizer( item0 );
+        if (call_fit)
+            item0->SetSizeHints( parent );
     }
     
     return item0;
@@ -3606,42 +3546,42 @@ wxBitmap clientImages( size_t index )
         "16 16 23 1",
         "  c None",
         "a c Black",
-        "b c #BE6A13",
-        "c c #C88642",
-        "e c #C37A33",
-        "f c #BF7220",
-        "g c #CC9554",
-        "h c #D8D7D8",
-        "i c #D2A06B",
-        "j c #ECECEC",
-        "k c #DDA670",
-        "l c #F2F1F2",
-        "m c #F5F5F5",
-        "n c #F1DECB",
-        "o c #FEFEFE",
-        "p c #C3C3C3",
-        "q c #DBB68F",
-        "r c #E6E5E6",
-        "s c #E9E9E9",
-        "t c #CCCCCC",
-        "u c #D5D5D5",
-        "v c #F8F7F8",
-        "w c #DEDEDE",
+        "b c #DDA670",
+        "c c #C3C3C3",
+        "d c #E6E5E6",
+        "e c #E9E9E9",
+        "f c #D8D7D8",
+        "g c #CCCCCC",
+        "h c #BF7220",
+        "i c #D5D5D5",
+        "j c #F8F7F8",
+        "l c #ECECEC",
+        "m c #F1DECB",
+        "n c #C37A33",
+        "o c #DEDEDE",
+        "p c #BE6A13",
+        "q c #F2F1F2",
+        "r c #DBB68F",
+        "s c #F5F5F5",
+        "t c #CC9554",
+        "u c #D2A06B",
+        "v c #FEFEFE",
+        "w c #C88642",
         /* pixels */
         "                ",
         "      aaaa      ",
-        "    aaooooaa    ",
-        "   ammmqqlmma   ",
-        "  atjqbbbbnrha  ",
-        "  auwfbnqbgrua  ",
-        " apursjlibirupa ",
-        " atwjmmibemjwua ",
-        " aurmmobbomlrua ",
-        " awjmooooooojwa ",
-        "  ajooockoomja  ",
-        "  ajmoobcovlra  ",
-        "   amooooomja   ",
-        "    aaooooaa    ",
+        "    aavvvvaa    ",
+        "   asssrrqssa   ",
+        "  aglrppppmdfa  ",
+        "  aiohpmrptdia  ",
+        " acidelqupudica ",
+        " agolssupnsloia ",
+        " aidssvppvsqdia ",
+        " aolsvvvvvvvloa ",
+        "  alvvvwbvvsla  ",
+        "  alsvvpwvjqda  ",
+        "   asvvvvvsla   ",
+        "    aavvvvaa    ",
         "      aaaa      ",
         "                "
         };
@@ -3819,41 +3759,41 @@ wxBitmap clientImages( size_t index )
         /* columns rows colors chars-per-pixel */
         "16 16 21 1",
         "  c None",
-        "a c #10151F",
-        "b c #090C11",
-        "d c #72E500",
-        "e c #263247",
-        "f c #E6E6E6",
-        "g c #080B0F",
-        "h c #1F293B",
-        "i c #18202D",
-        "j c #E8E9EC",
-        "k c #DEDFE1",
-        "l c #0D1219",
-        "m c #1A2332",
-        "n c #59B200",
-        "o c #161E2A",
-        "p c #2C2C2D",
-        "q c #E6E7EA",
-        "r c #FFFFFF",
-        "s c #323233",
-        "t c #07090E",
-        "u c #272728",
+        "a c #0D1219",
+        "b c #263247",
+        "c c #080B0F",
+        "d c #FFFFFF",
+        "e c #090C11",
+        "f c #272728",
+        "g c #59B200",
+        "h c #161E2A",
+        "i c #07090E",
+        "j c #DEDFE1",
+        "k c #E6E7EA",
+        "l c #1A2332",
+        "m c #10151F",
+        "n c #18202D",
+        "p c #72E500",
+        "q c #E8E9EC",
+        "r c #323233",
+        "s c #E6E6E6",
+        "t c #1F293B",
+        "u c #2C2C2D",
         /* pixels */
-        " nnnnnnnn       ",
-        "nddabghddn      ",
-        "ndarrrrhdn      ",
-        "ndmffffedn      ",
-        "nddspsuddn      ",
-        "ndlkjjfmdn      ",
-        "ndbqrrfodn      ",
-        "ndbqrrfidn      ",
-        "ndbqrrfidn      ",
-        "ndbqrrfodn      ",
-        "ndgjrrfodn      ",
-        "ndtjrrfodn      ",
-        "nddt  oddn      ",
-        " nnnnnnnn       ",
+        " gggggggg       ",
+        "gppmectppg      ",
+        "gpmddddtpg      ",
+        "gplssssbpg      ",
+        "gpprurfppg      ",
+        "gpajqqslpg      ",
+        "gpekddshpg      ",
+        "gpekddsnpg      ",
+        "gpekddsnpg      ",
+        "gpekddshpg      ",
+        "gpcqddshpg      ",
+        "gpiqddshpg      ",
+        "gppi  hppg      ",
+        " gggggggg       ",
         "                ",
         "                "
         };
@@ -3867,40 +3807,40 @@ wxBitmap clientImages( size_t index )
         /* columns rows colors chars-per-pixel */
         "16 16 20 1",
         "  c None",
-        "a c #090C11",
-        "c c #263247",
-        "d c #E6E6E6",
-        "e c #080B0F",
-        "f c #1F293B",
-        "g c #18202D",
-        "h c #E8E9EC",
-        "i c #E50000",
-        "j c #DEDFE1",
-        "k c #0D1219",
-        "l c #1A2332",
-        "m c #161E2A",
-        "n c #2C2C2D",
-        "o c #E6E7EA",
-        "p c #B20000",
-        "q c #FFFFFF",
-        "r c #323233",
-        "s c #272728",
-        "t c #07090E",
+        "a c #0D1219",
+        "b c #263247",
+        "c c #080B0F",
+        "d c #FFFFFF",
+        "e c #B20000",
+        "f c #090C11",
+        "g c #272728",
+        "h c #161E2A",
+        "i c #07090E",
+        "j c #E50000",
+        "k c #DEDFE1",
+        "l c #E6E7EA",
+        "m c #1A2332",
+        "n c #18202D",
+        "p c #E8E9EC",
+        "q c #323233",
+        "r c #E6E6E6",
+        "s c #1F293B",
+        "t c #2C2C2D",
         /* pixels */
-        " pppppppp       ",
-        "piit  miip      ",
-        "pithqqdmip      ",
-        "piehqqdmip      ",
-        "piaoqqdgip      ",
-        "piaoqqdgip      ",
-        "piaoqqdgip      ",
-        "piaoqqdmip      ",
-        "pikjhhdlip      ",
-        "piirnrsiip      ",
-        "pifddddcip      ",
-        "pikqqqqfip      ",
-        "piikaafiip      ",
-        " pppppppp       ",
+        " eeeeeeee       ",
+        "ejji  hjje      ",
+        "ejipddrhje      ",
+        "ejcpddrhje      ",
+        "ejflddrnje      ",
+        "ejflddrnje      ",
+        "ejflddrnje      ",
+        "ejflddrhje      ",
+        "ejakpprmje      ",
+        "ejjqtqgjje      ",
+        "ejsrrrrbje      ",
+        "ejaddddsje      ",
+        "ejjaffsjje      ",
+        " eeeeeeee       ",
         "                ",
         "                "
         };
@@ -3956,40 +3896,40 @@ wxBitmap clientImages( size_t index )
         "16 16 19 1",
         "  c None",
         "a c Black",
-        "b c #BABBBB",
-        "d c #C0C0C0",
-        "e c #696969",
-        "f c #FEFE00",
-        "g c #726443",
+        "b c #696969",
+        "c c #808080",
+        "d c #858484",
+        "e c #9E9E9E",
+        "f c #454545",
+        "g c #FEFE00",
         "h c #A0A0A4",
-        "i c #222222",
-        "j c #ECECED",
-        "k c #CFCFD3",
-        "l c #313030",
-        "m c #9E9E9E",
-        "n c #808080",
-        "o c #545B73",
-        "p c #FDFDF5",
-        "q c #454545",
-        "r c #858484",
-        "s c #DFDFDF",
+        "i c #BABBBB",
+        "k c #222222",
+        "l c #ECECED",
+        "m c #C0C0C0",
+        "n c #CFCFD3",
+        "o c #FDFDF5",
+        "p c #DFDFDF",
+        "q c #313030",
+        "r c #726443",
+        "s c #545B73",
         /* pixels */
-        "    q      q    ",
-        "   ql     qfq   ",
-        "  qlq qlllfffl  ",
-        "  qeqlsbqfffffl ",
-        " qqeqsbqfffffffq",
-        " lembmeqqqffflql",
-        " qmenlq  qfffl  ",
-        "qlenlbmqqqqqqq  ",
-        " qmebpanelql    ",
-        "qlmhhjlmmkpdq   ",
-        " qbsbmnrmeipl   ",
-        "qqhbbmnehdhjl   ",
-        "qqemmrnebsjsq   ",
-        "qqqqlqlnmhhq    ",
-        "lgeeol lqll     ",
-        "qonreq          "
+        "    f      f    ",
+        "   fq     fgf   ",
+        "  fqf fqqqgggq  ",
+        "  fbfqpifgggggq ",
+        " ffbfpifgggggggf",
+        " qbeiebfffgggqfq",
+        " febcqf  fgggq  ",
+        "fqbcqiefffffff  ",
+        " febioacbqfq    ",
+        "fqehhlqeenomf   ",
+        " fipiecdebkoq   ",
+        "ffhiiecbhmhlq   ",
+        "ffbeedcbiplpf   ",
+        "ffffqfqcehhf    ",
+        "qrbbsq qfqq     ",
+        "fscdbf          "
         };
         wxBitmap bitmap( xpm_data );
         return bitmap;
@@ -4334,38 +4274,38 @@ wxBitmap dlStatusImages( size_t index )
         /* columns rows colors chars-per-pixel */
         "16 16 16 1",
         "  c None",
-        "a c #C10000",
-        "b c Black",
-        "c c #FF0000",
-        "d c #8C0000",
-        "f c #4C4040",
-        "g c #220000",
-        "h c #191919",
-        "i c #666666",
-        "j c #6F4848",
-        "k c #110000",
-        "l c #2A2A2A",
-        "m c #333333",
-        "n c #7F0000",
-        "o c #888888",
-        "p c #444444",
+        "a c Black",
+        "b c #110000",
+        "c c #6F4848",
+        "d c #7F0000",
+        "e c #220000",
+        "f c #444444",
+        "g c #888888",
+        "h c #8C0000",
+        "i c #4C4040",
+        "j c #C10000",
+        "k c #191919",
+        "m c #2A2A2A",
+        "n c #FF0000",
+        "o c #666666",
+        "p c #333333",
         /* pixels */
-        "          d     ",
-        "         ncb    ",
-        "        ncacb   ",
-        "       ncadacb  ",
-        "      bcadldacb ",
-        "      bbmbimbbb ",
-        "         bob    ",
-        "     hmh bib    ",
-        "     mim mmb    ",
-        "     pof        ",
-        "  kgkbibkgk     ",
-        "  jcadmdacf     ",
-        "   jcadacf      ",
-        "    jcacf       ",
-        "     jcf        ",
-        "      d         "
+        "          h     ",
+        "         dna    ",
+        "        dnjna   ",
+        "       dnjhjna  ",
+        "      anjhmhjna ",
+        "      aapaopaaa ",
+        "         aga    ",
+        "     kpk aoa    ",
+        "     pop ppa    ",
+        "     fgi        ",
+        "  bebaoabeb     ",
+        "  cnjhphjni     ",
+        "   cnjhjni      ",
+        "    cnjni       ",
+        "     cni        ",
+        "      h         "
         };
         wxBitmap bitmap( xpm_data );
         return bitmap;
@@ -4377,39 +4317,39 @@ wxBitmap dlStatusImages( size_t index )
         /* columns rows colors chars-per-pixel */
         "16 16 17 1",
         "  c None",
-        "a c #FF0000",
-        "c c #00FF00",
+        "a c #444444",
+        "b c #114C11",
+        "c c #888888",
         "d c #790000",
-        "e c #B70000",
-        "f c #191919",
-        "g c #666666",
-        "h c #114C11",
-        "i c #2A2A2A",
-        "j c #002A00",
-        "k c #333333",
-        "l c #00B700",
-        "m c #008000",
-        "n c #007700",
-        "o c #001500",
-        "p c #888888",
-        "q c #444444",
+        "e c #008000",
+        "f c #007700",
+        "g c #191919",
+        "h c #00B700",
+        "j c #B70000",
+        "k c #2A2A2A",
+        "l c #FF0000",
+        "m c #666666",
+        "n c #002A00",
+        "o c #00FF00",
+        "p c #333333",
+        "q c #001500",
         /* pixels */
         "          d     ",
-        "         dad    ",
-        "        daead   ",
-        "       daedead  ",
-        "      daedidead ",
-        "          g     ",
-        "          p     ",
-        "     fkf  g     ",
-        "     kgk kk     ",
-        "     qpq        ",
-        "  ojogggojo     ",
-        "  mclhkhlcm     ",
-        "   mclnlcm      ",
-        "    mclcm       ",
-        "     mcm        ",
-        "      m         "
+        "         dld    ",
+        "        dljld   ",
+        "       dljdjld  ",
+        "      dljdkdjld ",
+        "          m     ",
+        "          c     ",
+        "     gpg  m     ",
+        "     pmp pp     ",
+        "     aca        ",
+        "  qnqmmmqnq     ",
+        "  eohbpbhoe     ",
+        "   eohfhoe      ",
+        "    eohoe       ",
+        "     eoe        ",
+        "      e         "
         };
         wxBitmap bitmap( xpm_data );
         return bitmap;
@@ -4421,38 +4361,38 @@ wxBitmap dlStatusImages( size_t index )
         /* columns rows colors chars-per-pixel */
         "16 16 16 1",
         "  c None",
-        "a c #FF0000",
+        "a c #110000",
+        "b c #6F4848",
         "c c #220000",
-        "d c #770000",
-        "e c #00FF00",
-        "f c #191919",
-        "g c #666666",
-        "h c #6F4848",
-        "i c #110000",
-        "j c #BB0000",
-        "k c #2A2A2A",
-        "l c #333333",
-        "m c #008000",
-        "n c #00AE00",
-        "o c #888888",
-        "p c #444444",
+        "d c #444444",
+        "e c #888888",
+        "f c #008000",
+        "g c #770000",
+        "h c #191919",
+        "i c #BB0000",
+        "j c #00AE00",
+        "l c #2A2A2A",
+        "m c #FF0000",
+        "n c #666666",
+        "o c #00FF00",
+        "p c #333333",
         /* pixels */
-        "          m     ",
-        "         mem    ",
-        "        menem   ",
-        "       menmnem  ",
-        "      menmkmnem ",
-        "          gl    ",
-        "          o     ",
-        "     flf  g     ",
-        "     lgl ll     ",
-        "     pop        ",
-        "  icigggici     ",
-        "  hajdldjad     ",
-        "   hajdjad      ",
-        "    dajad       ",
-        "     dad        ",
-        "      d         "
+        "          f     ",
+        "         fof    ",
+        "        fojof   ",
+        "       fojfjof  ",
+        "      fojflfjof ",
+        "          np    ",
+        "          e     ",
+        "     hph  n     ",
+        "     pnp pp     ",
+        "     ded        ",
+        "  acannnaca     ",
+        "  bmigpgimg     ",
+        "   bmigimg      ",
+        "    gmimg       ",
+        "     gmg        ",
+        "      g         "
         };
         wxBitmap bitmap( xpm_data );
         return bitmap;
@@ -4464,34 +4404,34 @@ wxBitmap dlStatusImages( size_t index )
         /* columns rows colors chars-per-pixel */
         "16 16 12 1",
         "  c None",
-        "b c #00D400",
-        "c c #006F00",
-        "d c #00FF00",
-        "e c #404F40",
-        "f c #191919",
+        "a c #006F00",
+        "b c #888888",
+        "c c #191919",
+        "d c #404F40",
+        "e c #00D400",
         "g c #666666",
         "h c #002A00",
-        "i c #333333",
-        "j c #001500",
-        "k c #888888",
+        "i c #00FF00",
+        "j c #333333",
+        "k c #001500",
         "l c #00CA00",
         /* pixels */
-        "          c     ",
-        "         cdc    ",
-        "        cdldc   ",
-        "       cdlcldc  ",
-        "      cdlc cldc ",
-        "          gi    ",
-        "          k     ",
-        "     fif  g     ",
-        "     igi ii     ",
-        "     eke        ",
-        "  jhj g jhj     ",
-        "  cdlc cbdc     ",
-        "   cdlcldc      ",
-        "    cdldc       ",
-        "     cdc        ",
-        "      c         "
+        "          a     ",
+        "         aia    ",
+        "        ailia   ",
+        "       ailalia  ",
+        "      aila alia ",
+        "          gj    ",
+        "          b     ",
+        "     cjc  g     ",
+        "     jgj jj     ",
+        "     dbd        ",
+        "  khk g khk     ",
+        "  aila aeia     ",
+        "   ailalia      ",
+        "    ailia       ",
+        "     aia        ",
+        "      a         "
         };
         wxBitmap bitmap( xpm_data );
         return bitmap;
@@ -4874,25 +4814,25 @@ wxBitmap amuleSpecial( size_t index )
         /* columns rows colors chars-per-pixel */
         "16 16 4 1",
         "  c None",
-        "b c #BFBFDF",
-        "c c #FFFFFF",
-        "d c #000080",
+        "a c #FFFFFF",
+        "b c #000080",
+        "d c #BFBFDF",
         /* pixels */
         "                ",
-        "  dddddddddddd  ",
-        " dccccccccccccd ",
-        " dccccccccccccd ",
-        " dccddbccbddccd ",
-        " dccdddbbdddccd ",
-        " dccbddddddbccd ",
-        " dcccbddddbcccd ",
-        " dcccbddddbcccd ",
-        " dccbddddddbccd ",
-        " dccdddbbdddccd ",
-        " dccddbccbddccd ",
-        " dccccccccccccd ",
-        " dccccccccccccd ",
-        "  dddddddddddd  ",
+        "  bbbbbbbbbbbb  ",
+        " baaaaaaaaaaaab ",
+        " baaaaaaaaaaaab ",
+        " baabbdaadbbaab ",
+        " baabbbddbbbaab ",
+        " baadbbbbbbdaab ",
+        " baaadbbbbdaaab ",
+        " baaadbbbbdaaab ",
+        " baadbbbbbbdaab ",
+        " baabbbddbbbaab ",
+        " baabbdaadbbaab ",
+        " baaaaaaaaaaaab ",
+        " baaaaaaaaaaaab ",
+        "  bbbbbbbbbbbb  ",
         "                "
         };
         wxBitmap bitmap( xpm_data );
@@ -4905,26 +4845,26 @@ wxBitmap amuleSpecial( size_t index )
         /* columns rows colors chars-per-pixel */
         "16 16 5 1",
         "  c None",
-        "b c #BFBFDF",
-        "c c #FFFFFF",
-        "d c #000080",
-        "e c #E2D704",
+        "a c #FFFFFF",
+        "b c #000080",
+        "c c #E2D704",
+        "e c #BFBFDF",
         /* pixels */
         "                ",
-        "  dddddddddddd  ",
-        " deeeeeeeeeeeed ",
-        " decccccccccced ",
-        " decddbccbddced ",
-        " decdddbbdddced ",
-        " decbddddddbced ",
-        " deccbddddbcced ",
-        " deccbddddbcced ",
-        " decbddddddbced ",
-        " decdddbbdddced ",
-        " decddbccbddced ",
-        " decccccccccced ",
-        " deeeeeeeeeeeed ",
-        "  dddddddddddd  ",
+        "  bbbbbbbbbbbb  ",
+        " bccccccccccccb ",
+        " bcaaaaaaaaaacb ",
+        " bcabbeaaebbacb ",
+        " bcabbbeebbbacb ",
+        " bcaebbbbbbeacb ",
+        " bcaaebbbbeaacb ",
+        " bcaaebbbbeaacb ",
+        " bcaebbbbbbeacb ",
+        " bcabbbeebbbacb ",
+        " bcabbeaaebbacb ",
+        " bcaaaaaaaaaacb ",
+        " bccccccccccccb ",
+        "  bbbbbbbbbbbb  ",
         "                "
         };
         wxBitmap bitmap( xpm_data );
@@ -5060,16 +5000,16 @@ wxBitmap amuleSpecial( size_t index )
         /* columns rows colors chars-per-pixel */
         "13 7 3 1",
         "  c None",
-        "b c #FFFFFF",
-        "c c #808080",
+        "a c #FFFFFF",
+        "b c #808080",
         /* pixels */
-        "ccccccccccccb",
-        " c         b ",
-        "  c       b  ",
-        "   c     b   ",
-        "    c   b    ",
-        "     c b     ",
-        "      b      "
+        "bbbbbbbbbbbba",
+        " b         a ",
+        "  b       a  ",
+        "   b     a   ",
+        "    b   a    ",
+        "     b a     ",
+        "      a      "
         };
         wxBitmap bitmap( xpm_data );
         return bitmap;
@@ -5081,16 +5021,16 @@ wxBitmap amuleSpecial( size_t index )
         /* columns rows colors chars-per-pixel */
         "13 7 3 1",
         "  c None",
-        "b c #FFFFFF",
-        "c c #808080",
+        "a c #FFFFFF",
+        "b c #808080",
         /* pixels */
-        "      c      ",
-        "     c b     ",
-        "    c   b    ",
-        "   c     b   ",
-        "  c       b  ",
-        " c         b ",
-        "cbbbbbbbbbbbb"
+        "      b      ",
+        "     b a     ",
+        "    b   a    ",
+        "   b     a   ",
+        "  b       a  ",
+        " b         a ",
+        "baaaaaaaaaaaa"
         };
         wxBitmap bitmap( xpm_data );
         return bitmap;
@@ -5716,38 +5656,38 @@ wxBitmap amuleDlgImages( size_t index )
         /* columns rows colors chars-per-pixel */
         "16 16 16 1",
         "  c None",
-        "a c #C10000",
-        "b c Black",
-        "c c #FF0000",
-        "d c #8C0000",
-        "e c #4C4040",
-        "g c #220000",
-        "h c #191919",
-        "i c #666666",
-        "j c #6F4848",
-        "k c #110000",
+        "a c Black",
+        "b c #110000",
+        "c c #6F4848",
+        "d c #7F0000",
+        "e c #220000",
+        "f c #444444",
+        "g c #888888",
+        "h c #8C0000",
+        "i c #4C4040",
+        "j c #C10000",
+        "k c #191919",
         "l c #2A2A2A",
-        "m c #333333",
-        "n c #7F0000",
-        "o c #888888",
-        "p c #444444",
+        "m c #FF0000",
+        "n c #666666",
+        "p c #333333",
         /* pixels */
-        "          d     ",
-        "         ncb    ",
-        "        ncacb   ",
-        "       ncadacb  ",
-        "      bcadldacb ",
-        "      bbmbimbbb ",
-        "         bob    ",
-        "     hmh bib    ",
-        "     mim mmb    ",
-        "     poe        ",
-        "  kgkbibkgk     ",
-        "  jcadmdace     ",
-        "   jcadace      ",
-        "    jcace       ",
-        "     jce        ",
-        "      d         "
+        "          h     ",
+        "         dma    ",
+        "        dmjma   ",
+        "       dmjhjma  ",
+        "      amjhlhjma ",
+        "      aapanpaaa ",
+        "         aga    ",
+        "     kpk ana    ",
+        "     pnp ppa    ",
+        "     fgi        ",
+        "  bebanabeb     ",
+        "  cmjhphjmi     ",
+        "   cmjhjmi      ",
+        "    cmjmi       ",
+        "     cmi        ",
+        "      h         "
         };
         wxBitmap bitmap( xpm_data );
         return bitmap;
@@ -5759,39 +5699,39 @@ wxBitmap amuleDlgImages( size_t index )
         /* columns rows colors chars-per-pixel */
         "16 16 17 1",
         "  c None",
-        "a c #FF0000",
-        "c c #00FF00",
+        "a c #444444",
+        "b c #114C11",
+        "c c #888888",
         "d c #790000",
-        "e c #B70000",
-        "f c #191919",
-        "g c #666666",
-        "h c #114C11",
-        "i c #2A2A2A",
-        "j c #002A00",
-        "k c #333333",
-        "l c #00B700",
-        "m c #008000",
-        "n c #007700",
-        "o c #001500",
-        "p c #888888",
-        "q c #444444",
+        "e c #008000",
+        "f c #007700",
+        "g c #191919",
+        "h c #00B700",
+        "i c #B70000",
+        "j c #2A2A2A",
+        "k c #FF0000",
+        "l c #666666",
+        "m c #002A00",
+        "o c #00FF00",
+        "p c #333333",
+        "q c #001500",
         /* pixels */
         "          d     ",
-        "         dad    ",
-        "        daead   ",
-        "       daedead  ",
-        "      daedidead ",
-        "          g     ",
-        "          p     ",
-        "     fkf  g     ",
-        "     kgk kk     ",
-        "     qpq        ",
-        "  ojogggojo     ",
-        "  mclhkhlcm     ",
-        "   mclnlcm      ",
-        "    mclcm       ",
-        "     mcm        ",
-        "      m         "
+        "         dkd    ",
+        "        dkikd   ",
+        "       dkidikd  ",
+        "      dkidjdikd ",
+        "          l     ",
+        "          c     ",
+        "     gpg  l     ",
+        "     plp pp     ",
+        "     aca        ",
+        "  qmqlllqmq     ",
+        "  eohbpbhoe     ",
+        "   eohfhoe      ",
+        "    eohoe       ",
+        "     eoe        ",
+        "      e         "
         };
         wxBitmap bitmap( xpm_data );
         return bitmap;
@@ -5803,38 +5743,38 @@ wxBitmap amuleDlgImages( size_t index )
         /* columns rows colors chars-per-pixel */
         "16 16 16 1",
         "  c None",
-        "a c #FF0000",
+        "a c #110000",
+        "b c #6F4848",
         "c c #220000",
-        "d c #770000",
-        "e c #00FF00",
-        "f c #191919",
-        "g c #666666",
-        "h c #6F4848",
-        "i c #110000",
-        "j c #BB0000",
+        "d c #444444",
+        "e c #888888",
+        "f c #008000",
+        "g c #770000",
+        "h c #191919",
+        "i c #BB0000",
+        "j c #00AE00",
         "k c #2A2A2A",
-        "l c #333333",
-        "m c #008000",
-        "n c #00AE00",
-        "o c #888888",
-        "p c #444444",
+        "l c #FF0000",
+        "m c #666666",
+        "o c #00FF00",
+        "p c #333333",
         /* pixels */
-        "          m     ",
-        "         mem    ",
-        "        menem   ",
-        "       menmnem  ",
-        "      menmkmnem ",
-        "          gl    ",
-        "          o     ",
-        "     flf  g     ",
-        "     lgl ll     ",
-        "     pop        ",
-        "  icigggici     ",
-        "  hajdldjad     ",
-        "   hajdjad      ",
-        "    dajad       ",
-        "     dad        ",
-        "      d         "
+        "          f     ",
+        "         fof    ",
+        "        fojof   ",
+        "       fojfjof  ",
+        "      fojfkfjof ",
+        "          mp    ",
+        "          e     ",
+        "     hph  m     ",
+        "     pmp pp     ",
+        "     ded        ",
+        "  acammmaca     ",
+        "  bligpgilg     ",
+        "   bligilg      ",
+        "    glilg       ",
+        "     glg        ",
+        "      g         "
         };
         wxBitmap bitmap( xpm_data );
         return bitmap;
@@ -5846,34 +5786,34 @@ wxBitmap amuleDlgImages( size_t index )
         /* columns rows colors chars-per-pixel */
         "16 16 12 1",
         "  c None",
-        "b c #00D400",
-        "c c #006F00",
-        "d c #00FF00",
-        "e c #404F40",
-        "f c #191919",
-        "g c #666666",
-        "h c #002A00",
-        "i c #333333",
-        "j c #001500",
-        "k c #888888",
+        "a c #006F00",
+        "b c #888888",
+        "c c #191919",
+        "d c #404F40",
+        "e c #00D400",
+        "f c #666666",
+        "g c #002A00",
+        "i c #00FF00",
+        "j c #333333",
+        "k c #001500",
         "l c #00CA00",
         /* pixels */
-        "          c     ",
-        "         cdc    ",
-        "        cdldc   ",
-        "       cdlcldc  ",
-        "      cdlc cldc ",
-        "          gi    ",
-        "          k     ",
-        "     fif  g     ",
-        "     igi ii     ",
-        "     eke        ",
-        "  jhj g jhj     ",
-        "  cdlc cbdc     ",
-        "   cdlcldc      ",
-        "    cdldc       ",
-        "     cdc        ",
-        "      c         "
+        "          a     ",
+        "         aia    ",
+        "        ailia   ",
+        "       ailalia  ",
+        "      aila alia ",
+        "          fj    ",
+        "          b     ",
+        "     cjc  f     ",
+        "     jfj jj     ",
+        "     dbd        ",
+        "  kgk f kgk     ",
+        "  aila aeia     ",
+        "   ailalia      ",
+        "    ailia       ",
+        "     aia        ",
+        "      a         "
         };
         wxBitmap bitmap( xpm_data );
         return bitmap;
@@ -5885,30 +5825,30 @@ wxBitmap amuleDlgImages( size_t index )
         /* columns rows colors chars-per-pixel */
         "16 16 8 1",
         "  c None",
-        "a c #808000",
-        "b c #C0C0C0",
-        "d c #800000",
-        "e c #FFF0D4",
-        "f c #FFAA25",
-        "g c #008000",
+        "a c #FFF0D4",
+        "b c #008000",
+        "c c #800000",
+        "d c #FFAA25",
+        "e c #C0C0C0",
+        "g c #808000",
         "h c #232375",
         /* pixels */
         "                ",
-        "  d          dd ",
-        " ddd  bbbbb dddd",
-        " ddddbeebgddddd ",
-        "  ddddgggdddddf ",
-        "aaaddddhddddgae ",
-        "  efdddddddhaef ",
-        "   efdddddeaeff ",
-        " aeffdddddfeff  ",
-        "aeffdddddddff   ",
-        "affddddhddddff  ",
-        "afdddd  hdddd   ",
-        "afdddg hhhddd   ",
-        " dddd hhhhdddd  ",
-        "  dd       dddd ",
-        "             d  "
+        "  c          cc ",
+        " ccc  eeeee cccc",
+        " cccceaaebccccc ",
+        "  ccccbbbcccccd ",
+        "gggcccchccccbga ",
+        "  adccccccchgad ",
+        "   adcccccagadd ",
+        " gaddcccccdadd  ",
+        "gaddcccccccdd   ",
+        "gddcccchccccdd  ",
+        "gdcccc  hcccc   ",
+        "gdcccb hhhccc   ",
+        " cccc hhhhcccc  ",
+        "  cc       cccc ",
+        "             c  "
         };
         wxBitmap bitmap( xpm_data );
         return bitmap;
