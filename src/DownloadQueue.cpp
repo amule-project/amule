@@ -778,13 +778,18 @@ void CDownloadQueue::StopUDPRequests()
 	lastfile = 0;
 }
 
-// Comparison function needed by sort
-bool ComparePartFiles(CPartFile* file1, CPartFile* file2) {
-	if (file1->GetDownPriority() == file2->GetDownPriority()) {
-		return (wxString::wxString(file1->GetPartMetFileName()).CmpNoCase(file2->GetPartMetFileName()))>=0;
+// Comparison function needed by sort. Returns true if file1 preceeds file2
+bool ComparePartFiles(const CPartFile* file1, const CPartFile* file2) {
+	if (file1->GetDownPriority() != file2->GetDownPriority()) {
+		// To place high-priority files before low priority files we have to 
+		// invert this test, since PR_LOW is lower than PR_HIGH, and since 
+		// placing a PR_LOW file before a PR_HIGH file would mean that
+		// the PR_LOW file gets sources before the PR_HIGH file ...
+		return (file1->GetDownPriority() > file2->GetDownPriority());
+	} else {
+		// Use normal alpha-numeric comparison here, lesser before greater
+		return file1->GetPartMetFileName().CmpNoCase( file2->GetPartMetFileName() ) < 0;
 	}
-
-	return (file1->GetDownPriority() < file2->GetDownPriority());
 }
 
 void CDownloadQueue::SortByPriority()
