@@ -1762,7 +1762,8 @@ void CamuleApp::ShutDown() {
 	#endif // __LINUX__
 		
 #endif // __DEBUG__
-	
+
+
 void CamuleApp::NotifyEvent(GUIEvent event)
 {
 	if (!amuledlg && (event.ID!=ADDLOGLINE)) {
@@ -2207,6 +2208,31 @@ void CamuleApp::SetPublicIP(const uint32 dwIP){
 	
 	m_dwPublicIP = dwIP;
 
+}
+
+wxString CamuleApp::GetLog(bool reset)
+{
+	wxTextCtrl *logview = (wxTextCtrl *)amuledlg->serverwnd->FindWindow(ID_LOGVIEW);
+	wxString log = logview->GetValue();
+	if ( reset ) {
+		amuledlg->ResetLog();
+	}
+	return log;
+}
+
+wxString CamuleApp::GetServerLog(bool reset)
+{
+	wxTextCtrl *logview = (wxTextCtrl *)amuledlg->serverwnd->FindWindow(ID_SERVERINFO);
+	wxString log = logview->GetValue();
+	if ( reset ) {
+		logview->Clear();
+	}
+	return log;
+}
+
+wxString CamuleApp::GetDebugLog(bool reset)
+{
+	return GetLog(reset);
 }
 
 DEFINE_EVENT_TYPE(wxEVT_CORE_FILE_HASHING_FINISHED)

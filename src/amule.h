@@ -236,6 +236,10 @@ public:
 	
 	void NotifyEvent(GUIEvent event);
 
+	wxString GetLog(bool reset = false);
+	wxString GetServerLog(bool reset = false);
+	wxString GetDebugLog(bool reset = false);
+	
 	bool AddServer(CServer *srv);
 	CFriend *FindFriend(CMD4Hash *hash, uint32 ip, uint16 port);
 

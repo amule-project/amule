@@ -434,7 +434,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				theApp.serverconnect->Disconnect();
 			}
 			theApp.serverconnect->ConnectToAnyServer();
-			theApp.amuledlg->ShowConnectionState(false);			
+			Notify_ShowConnState(false,wxT(""));
 			return wxEmptyString;
 		}
 		if (item == wxT("SERVER DISCONNECT")) {
@@ -801,28 +801,25 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 		// LOG
 		//
 		if (item == wxT("LOG RESETLOG")) {
-			theApp.amuledlg->ResetLog();
+			theApp.GetLog(true);
 			return wxEmptyString;
 		}
 		if (item == wxT("LOG GETALLLOGENTRIES")) {
-			wxTextCtrl* logview =(wxTextCtrl*)theApp.amuledlg->serverwnd->FindWindow(ID_LOGVIEW);
-			return logview->GetValue();
+			return theApp.GetLog();
 		}
 		if (item == wxT("LOG CLEARSERVERINFO")) {
-			((wxTextCtrl*)theApp.amuledlg->serverwnd->FindWindow(ID_SERVERINFO))->Clear();
+			theApp.GetServerLog(true);
 			return wxEmptyString;
 		}
 		if (item == wxT("LOG GETSERVERINFO")) {
-			wxTextCtrl* cv=(wxTextCtrl*)theApp.amuledlg->serverwnd->FindWindow(ID_SERVERINFO);
-			return cv->GetValue().GetData();
+			return theApp.GetServerLog();
 		}
 		if (item == wxT("LOG RESETDEBUGLOG")) {
-			theApp.amuledlg->ResetDebugLog();
+			theApp.GetDebugLog(true);
 			return wxEmptyString;
 		}
 		if (item == wxT("LOG GETALLDEBUGLOGENTRIES")) {
-			wxTextCtrl* logview =(wxTextCtrl*)theApp.amuledlg->serverwnd->FindWindow(ID_LOGVIEW);
-			return logview->GetValue();
+			return theApp.GetDebugLog();
 		}
 		if (item.Left(14) == wxT("LOG ADDLOGLINE")) {
 			if (item.Length() > 15) {
@@ -1003,7 +1000,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				return wxT("Already Connected");
 			} else {
 				theApp.serverconnect->ConnectToAnyServer();
-				theApp.amuledlg->ShowConnectionState(false);
+				Notify_ShowConnState(false,wxT(""));
 				return wxT("Reconected");
 			}
 		}
@@ -1255,39 +1252,33 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			}
 			
 			if (item.Mid(8).Cmp(wxT("RESETLOG")) == 0) {
-				theApp.amuledlg->ResetLog();
+				theApp.GetLog(true);
 				return wxT("Log Cleared");
 			}
 			
 			if (item.Mid(8).Cmp(wxT("RESETDEBUGLOG")) == 0) {
-				theApp.amuledlg->ResetDebugLog();
+				theApp.GetDebugLog(true);
 				return wxT("DebugLog Cleared");
 			}
 			
 			if (item.Mid(8).Cmp(wxT("SERVERINFO CLEAR")) == 0) {
-				//theApp.amuledlg->serverwnd->servermsgbox->SetWindowText("");
-				wxTextCtrl* cv = (wxTextCtrl*)theApp.amuledlg->serverwnd->FindWindow(ID_SERVERINFO);
-				cv->Clear();
+				theApp.GetServerLog(true);
 				return wxT("ServerInfo Cleared");
 			}
 
 			if (item.Mid(8).Cmp(wxT("SERVERINFO GETTEXT")) == 0) {
-				//theApp.amuledlg->serverwnd->servermsgbox->GetText()));
-				wxTextCtrl* cv = (wxTextCtrl*)theApp.amuledlg->serverwnd->FindWindow(ID_SERVERINFO);
-				return cv->GetValue();
+				return theApp.GetServerLog();
 			}
 			
 			if (item.Mid(8).Cmp(wxT("GETALLLOGENTRIES")) == 0) {
-				wxTextCtrl* logview = (wxTextCtrl*)theApp.amuledlg->serverwnd->FindWindow(ID_LOGVIEW);
-				return logview->GetValue();
+				return theApp.GetLog();
 			}
 			
 			if (item.Mid(8).Cmp(wxT("GETALLDEBUGLOGENTRIES")) == 0) {
 				//shakraw, the same as above, but please DO NOT remove!
 				//I like to have separated requests for this (say for future use)
 				//also see comments in WebServer.cpp
-				wxTextCtrl* logview = (wxTextCtrl*)theApp.amuledlg->serverwnd->FindWindow(ID_LOGVIEW);
-				return logview->GetValue();
+				return theApp.GetDebugLog();
 			}
 
 			return wxT("Bad LOGGING request");
@@ -1698,7 +1689,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 					CServer* server = theApp.serverlist->GetServerByAddress(sIP, StrToLong(sPort) );
 					if (server != NULL) {
 						theApp.serverconnect->ConnectToServer(server);
-						theApp.amuledlg->ShowConnectionState(false);
+						Notify_ShowConnState(false,wxT(""));
 						return wxT("Connecting...");
 					} else
 						return wxT("Not Connected");
@@ -1707,7 +1698,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 						return wxT("Already connected");
 					} else {
 						theApp.serverconnect->ConnectToAnyServer();
-						theApp.amuledlg->ShowConnectionState(false);
+						Notify_ShowConnState(false,wxT(""));
 						return wxT("Connected");
 					}
 				}
@@ -2185,11 +2176,11 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				}
 				return wxT("Bad DOWNLOADFILE request");
 			}
-			
-			if (item.Mid(7,16).Cmp(wxT("DELETEALLSEARCHS")) == 0) { //delete all searchs
-				theApp.amuledlg->searchwnd->DeleteAllSearchs();
-				return wxT("Searchs Deleted");
-			}
+			// lfroen: why such command exist ?!
+// 			if (item.Mid(7,16).Cmp(wxT("DELETEALLSEARCHS")) == 0) { //delete all searchs
+// 				theApp.amuledlg->searchwnd->DeleteAllSearchs();
+// 				return wxT("Searchs Deleted");
+// 			}
 			
 			if (item.Mid(7,11).Cmp(wxT("DONEWSEARCH")) == 0) {
 				if (item.Length() > 18) {
