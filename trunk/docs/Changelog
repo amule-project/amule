@@ -79,6 +79,8 @@ Version 2.0.0rc8 - The "???????????" version.
 		* Fixed webserver connection with guest account.
 		* Added "add <ed2k link>" command to amulecmd.
 		* Tracked down and killed a number of hidden bugs.
+		* Added commands to change/monitor bandwidth settings to
+		  amulecmd.
 
 	Special Thanks To:
 

@@ -642,13 +642,32 @@ CECPacket *ProcessPreferencesRequest(const CECPacket *request)
 	}
 
 	if (selection & EC_PREFS_MESSAGEFILTER) {
-		#warning TODO
+		CECEmptyTag msg_prefs(EC_TAG_PREFS_MESSAGEFILTER);
+		if (thePrefs::MustFilterMessages()) {
+			msg_prefs.AddTag(CECEmptyTag(EC_TAG_MSGFILTER_ENABLED));
+		}
+		if (thePrefs::IsFilterAllMessages()) {
+			msg_prefs.AddTag(CECEmptyTag(EC_TAG_MSGFILTER_ALL));
+		}
+		if (thePrefs::MsgOnlyFriends()) {
+			msg_prefs.AddTag(CECEmptyTag(EC_TAG_MSGFILTER_FRIENDS));
+		}
+		if (thePrefs::MsgOnlySecure()) {
+			msg_prefs.AddTag(CECEmptyTag(EC_TAG_MSGFILTER_SECURE));
+		}
+		if (thePrefs::IsFilterByKeywords()) {
+			msg_prefs.AddTag(CECEmptyTag(EC_TAG_MSGFILTER_BY_KEYWORD));
+		}
+		msg_prefs.AddTag(CECTag(EC_TAG_MSGFILTER_KEYWORDS, thePrefs::GetMessageFilterString()));
+		response->AddTag(msg_prefs);
 	}
 
 	if (selection & EC_PREFS_REMOTECONTROLS) {
 		CECEmptyTag rc_prefs(EC_TAG_PREFS_REMOTECTRL);
-
 		rc_prefs.AddTag(CECTag(EC_TAG_WEBSERVER_PORT, thePrefs::GetWSPort()));
+		if (thePrefs::GetWSIsEnabled()) {
+			rc_prefs.AddTag(CECEmptyTag(EC_TAG_WEBSERVER_AUTORUN));
+		}
 		if (!thePrefs::GetWSPass().IsEmpty()) {
 			rc_prefs.AddTag(CECTag(EC_TAG_PASSWD_HASH, thePrefs::GetWSPass()));
 		}
@@ -667,7 +686,11 @@ CECPacket *ProcessPreferencesRequest(const CECPacket *request)
 	}
 
 	if (selection & EC_PREFS_ONLINESIG) {
-		#warning TODO
+		CECEmptyTag online_sig(EC_TAG_PREFS_ONLINESIG);
+		if (thePrefs::IsOnlineSignatureEnabled()) {
+			online_sig.AddTag(CECEmptyTag(EC_TAG_ONLINESIG_ENABLED));
+		}
+		response->AddTag(online_sig);
 	}
 
 	if (selection & EC_PREFS_SERVERS) {
@@ -720,7 +743,17 @@ CECPacket *ProcessPreferencesRequest(const CECPacket *request)
 	}
 
 	if (selection & EC_PREFS_SRCDROP) {
-		#warning TODO
+		CECEmptyTag srcdrop(EC_TAG_PREFS_SRCDROP);
+		srcdrop.AddTag(CECTag(EC_TAG_SRCDROP_NONEEDED, (uint8)thePrefs::GetNoNeededSources()));
+		if (thePrefs::DropFullQueueSources()) {
+			srcdrop.AddTag(CECEmptyTag(EC_TAG_SRCDROP_DROP_FQS));
+		}
+		if (thePrefs::DropHighQueueRankingSources()) {
+			srcdrop.AddTag(CECEmptyTag(EC_TAG_SRCDROP_DROP_HQRS));
+		}
+		srcdrop.AddTag(CECTag(EC_TAG_SRCDROP_HQRS_VALUE, (uint16)thePrefs::HighQueueRanking()));
+		srcdrop.AddTag(CECTag(EC_TAG_SRCDROP_AUTODROP_TIMER, (uint16)thePrefs::GetAutoDropTimer()));
+		response->AddTag(srcdrop);
 	}
 
 	if (selection & EC_PREFS_DIRECTORIES) {
@@ -828,10 +861,30 @@ CECPacket *SetPreferencesFromRequest(const CECPacket *request)
 	}
 
 	if ((thisTab = request->GetTagByName(EC_TAG_PREFS_MESSAGEFILTER)) != NULL) {
-		#warning TODO
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_MSGFILTER_ENABLED)) != NULL) {
+			thePrefs::SetMustFilterMessages(oneTag->GetInt8Data() != 0);
+		}
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_MSGFILTER_ALL)) != NULL) {
+			thePrefs::SetFilterAllMessages(oneTag->GetInt8Data() != 0);
+		}
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_MSGFILTER_FRIENDS)) != NULL) {
+			thePrefs::SetMsgOnlyFriends(oneTag->GetInt8Data() != 0);
+		}
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_MSGFILTER_SECURE)) != NULL) {
+			thePrefs::SetMsgOnlySecure(oneTag->GetInt8Data() != 0);
+		}
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_MSGFILTER_BY_KEYWORD)) != NULL) {
+			thePrefs::SetFilterByKeywords(oneTag->GetInt8Data() != 0);
+		}
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_MSGFILTER_KEYWORDS)) != NULL) {
+			thePrefs::SetMessageFilterString(oneTag->GetStringData());
+		}
 	}
 
 	if ((thisTab = request->GetTagByName(EC_TAG_PREFS_REMOTECTRL)) != NULL) {
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_WEBSERVER_AUTORUN)) != NULL) {
+			thePrefs::SetWSIsEnabled(oneTag->GetInt8Data() != 0);
+		}
 		if ((oneTag = thisTab->GetTagByName(EC_TAG_WEBSERVER_PORT)) != NULL) {
 			thePrefs::SetWSPort(oneTag->GetInt16Data());
 		}
@@ -853,7 +906,9 @@ CECPacket *SetPreferencesFromRequest(const CECPacket *request)
 	}
 
 	if ((thisTab = request->GetTagByName(EC_TAG_PREFS_ONLINESIG)) != NULL) {
-		#warning TODO
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_ONLINESIG_ENABLED)) != NULL) {
+			thePrefs::SetOnlineSignatureEnabled(oneTag->GetInt8Data() != 0);
+		}
 	}
 
 	if ((thisTab = request->GetTagByName(EC_TAG_PREFS_SERVERS)) != NULL) {
@@ -906,7 +961,21 @@ CECPacket *SetPreferencesFromRequest(const CECPacket *request)
 	}
 
 	if ((thisTab = request->GetTagByName(EC_TAG_PREFS_SRCDROP)) != NULL) {
-		#warning TODO
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_SRCDROP_NONEEDED)) != NULL) {
+			thePrefs::SetNoNeededSources(oneTag->GetInt8Data());
+		}
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_SRCDROP_DROP_FQS)) != NULL) {
+			thePrefs::SetDropFullQueueSources(oneTag->GetInt8Data() != 0);
+		}
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_SRCDROP_DROP_HQRS)) != NULL) {
+			thePrefs::SetDropHighQueueRankingSources(oneTag->GetInt8Data() != 0);
+		}
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_SRCDROP_HQRS_VALUE)) != NULL) {
+			thePrefs::SetHighQueueRanking(oneTag->GetInt16Data());
+		}
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_SRCDROP_AUTODROP_TIMER)) != NULL) {
+			thePrefs::SetAutoDropTimer(oneTag->GetInt8Data());
+		}
 	}
 
 	if ((thisTab = request->GetTagByName(EC_TAG_PREFS_DIRECTORIES)) != NULL) {

@@ -908,9 +908,20 @@ enum {
 		* \brief Preferences - Message Filter.
 		*
 		* \par Child TAGs:
+		*	::EC_TAG_MSGFILTER_ENABLED\n
+		*	::EC_TAG_MSGFILTER_ALL\n
+		*	::EC_TAG_MSGFILTER_FRIENDS\n
+		*	::EC_TAG_MSGFILTER_SECURE\n
+		*	::EC_TAG_MSGFILTER_BY_KEYWORD\n
+		*	::EC_TAG_MSGFILTER_KEYWORDS
 		*/
 	EC_TAG_PREFS_MESSAGEFILTER,
-/* <---> */
+	EC_TAG_MSGFILTER_ENABLED,	///< (boolean) Whether the Message Filter is enabled.
+	EC_TAG_MSGFILTER_ALL,		///< (boolean) Whether to filter all messages.
+	EC_TAG_MSGFILTER_FRIENDS,	///< (boolean) Whether to allow messages only from friends.
+	EC_TAG_MSGFILTER_SECURE,	///< (boolean) Whether to filter messages from unknown clients.
+	EC_TAG_MSGFILTER_BY_KEYWORD,	///< (boolean) Whether to filter messages by keywords.
+	EC_TAG_MSGFILTER_KEYWORDS,	///< (\c string) Keyword list (comma separated).
 
 
 	//
@@ -926,6 +937,7 @@ enum {
 		*	::EC_TAG_WEBSERVER_GUEST (0-1)
 		*/
 	EC_TAG_PREFS_REMOTECTRL,
+	EC_TAG_WEBSERVER_AUTORUN,	///< (boolean) Whether to run webserver on startup.
 	EC_TAG_WEBSERVER_PORT,		///< (\c uint16) WebServer listening port
 	EC_TAG_WEBSERVER_GUEST,		///< WebServer Guest account information
 					/*!< (boolean) The presence of this tag means that the guest account is enabled.
@@ -944,9 +956,10 @@ enum {
 		* \brief Preferences - Online Signature.
 		*
 		* \par Child TAGs:
+		*	::EC_TAG_ONLINESIG_ENABLED
 		*/
 	EC_TAG_PREFS_ONLINESIG,
-/* <---> */
+	EC_TAG_ONLINESIG_ENABLED,	///< (boolean) Whether Online Signature is enabled.
 
 
 	//
@@ -1010,9 +1023,18 @@ enum {
 		* \brief Preferences - Source Dropping.
 		*
 		* \par Child TAGs:
+		*	::EC_TAG_SRCDROP_NONEEDED\n
+		*	::EC_TAG_SRCDROP_DROP_FQS\n
+		*	::EC_TAG_SRCDROP_DROP_HQRS\n
+		*	::EC_TAG_SRCDROP_HQRS_VALUE\n
+		*	::EC_TAG_SRCDROP_AUTODROP_TIMER
 		*/
 	EC_TAG_PREFS_SRCDROP,
-/* <---> */
+	EC_TAG_SRCDROP_NONEEDED,	///< (\c uint8) How to handle no-needed-sources: 0: keep, 1: drop, 2: swap
+	EC_TAG_SRCDROP_DROP_FQS,	///< (boolean) Whether to auto-drop Full Queue Sources
+	EC_TAG_SRCDROP_DROP_HQRS,	///< (boolean) Whether to auto-drop High Queue Rating Sources
+	EC_TAG_SRCDROP_HQRS_VALUE,	///< (\c uint16) When to count as *High* queue rating
+	EC_TAG_SRCDROP_AUTODROP_TIMER,	///< (\c uint16) Timer for auto-dropping sources (in seconds)
 
 
 	//

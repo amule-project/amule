@@ -21,6 +21,8 @@
 #ifndef PREFERENCES_H
 #define PREFERENCES_H
 
+#pragma interface
+
 #include "types.h"				// Needed for ints
 #include "CMD4Hash.h"
 
@@ -234,6 +236,7 @@ public:
 	static bool		FilterBadIPs()			{ return s_filterBadIP; }
 	static void		SetFilterBadIPs(bool val)	{ s_filterBadIP = val; }
 	static bool		IsOnlineSignatureEnabled()	{ return s_onlineSig; }
+	static void		SetOnlineSignatureEnabled(bool val) { s_onlineSig = val; }
 	static uint32		GetMaxGraphUploadRate()		{ return s_maxGraphUploadRate; }
 	static uint32		GetMaxGraphDownloadRate()	{ return s_maxGraphDownloadRate; }
 	static void		SetMaxGraphUploadRate(uint32 in){ s_maxGraphUploadRate=in; }
@@ -363,10 +366,6 @@ public:
 	static void		SetMaxSourcesPerFile(uint16 in) { s_maxsourceperfile=in;}
 	static void		SetMaxConnections(uint16 in) 	{ s_maxconnections =in;}
 	
-	static bool		MsgOnlyFriends() 		{ return s_msgonlyfriends;}
-	static bool		MsgOnlySecure() 		{ return s_msgsecure;}
-
-
 	static uint32 		GetDesktopMode() 		{ return s_desktopMode; }
 	static void 		SetDesktopMode(uint32 mode) 	{ s_desktopMode=mode; }
 
@@ -376,10 +375,16 @@ public:
 	// Madcat - Sources Dropping Tweaks
 	static bool		DropNoNeededSources() 		{ return s_NoNeededSources > 0; }
 	static bool		SwapNoNeededSources() 		{ return s_NoNeededSources == 2; }
+	static uint8		GetNoNeededSources()		{ return s_NoNeededSources; }
+	static void		SetNoNeededSources(uint8 val)	{ s_NoNeededSources = val; }
 	static bool		DropFullQueueSources() 		{ return s_DropFullQueueSources; }
+	static void		SetDropFullQueueSources(bool val) { s_DropFullQueueSources = val; }
 	static bool		DropHighQueueRankingSources() 	{ return s_DropHighQueueRankingSources; }
+	static void		SetDropHighQueueRankingSources(bool val) { s_DropHighQueueRankingSources = val; }
 	static uint32		HighQueueRanking() 		{ return s_HighQueueRanking; }
+	static void		SetHighQueueRanking(uint32 val)	{ s_HighQueueRanking = val; }
 	static uint32		GetAutoDropTimer() 		{ return s_AutoDropTimer; }
+	static void		SetAutoDropTimer(uint32 val)	{ s_AutoDropTimer = val; }
 	
 	// Kry - External Connections
 	static bool 		AcceptExternalConnections()	{ return s_AcceptExternalConnections; }
@@ -452,7 +457,18 @@ public:
 	
 	// Message Filters
 	
-	static bool	MustFilterMessages()	{ return s_MustFilterMessages; }
+	static bool		MustFilterMessages()		{ return s_MustFilterMessages; }
+	static void		SetMustFilterMessages(bool val)	{ s_MustFilterMessages = val; }
+	static bool		IsFilterAllMessages()		{ return s_FilterAllMessages; }
+	static void		SetFilterAllMessages(bool val)	{ s_FilterAllMessages = val; }
+	static bool		MsgOnlyFriends() 		{ return s_msgonlyfriends;}
+	static void		SetMsgOnlyFriends(bool val)	{ s_msgonlyfriends = val; }
+	static bool		MsgOnlySecure() 		{ return s_msgsecure;}
+	static void		SetMsgOnlySecure(bool val)	{ s_msgsecure = val; }
+	static bool		IsFilterByKeywords()		{ return s_FilterSomeMessages; }
+	static void		SetFilterByKeywords(bool val)	{ s_FilterSomeMessages = val; }
+	static const wxString&	GetMessageFilterString()	{ return s_MessageFilterString; }
+	static void		SetMessageFilterString(wxString val) { s_MessageFilterString = val; }
 	static wxString 	MessageFilter() { 
 		if (s_FilterAllMessages) { 
 			return wxT("*");
