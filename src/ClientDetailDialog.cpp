@@ -104,7 +104,7 @@ bool CClientDetailDialog::OnInitDialog() {
 
 	GetDlgItem(ID_DID,wxStaticText)->SetLabel(wxString::Format(wxT("%u (%s)"),m_client->GetUserID(),(m_client->HasLowID() ? _("Low"):_("High"))));
 	
-	GetDlgItem(ID_DIP,wxStaticText)->SetLabel(wxString(char2unicode(m_client->GetFullIP())) + wxString::Format(wxT(":%i"),m_client->GetUserPort()));
+	GetDlgItem(ID_DIP,wxStaticText)->SetLabel(m_client->GetFullIP() + wxString::Format(wxT(":%i"),m_client->GetUserPort()));
 
 	if (m_client->GetServerIP()) {
 		in_addr server;

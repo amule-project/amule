@@ -309,22 +309,10 @@ void CUpDownClient::ProcessFileInfo(CSafeMemFile* data, CPartFile* file)
 	}
 	if (file != reqfile) {
 		throw wxString(_("ERROR: Wrong file ID (ProcessFileInfo; reqfile!=file)"));
-	}
-	
-	wxString Filename;
-	data->Read(Filename);
-		
-	//data->Read(m_strClientFilename);
-	
-	if (m_pszClientFilename) {
-		delete[] m_pszClientFilename;
-	}
-	m_pszClientFilename = new char[Filename.Length()+1];
-	strncpy(m_pszClientFilename, unicode2char(Filename), Filename.Length());
-	// Kry - Hum. Just to be sure.
-	m_pszClientFilename[Filename.Length()] = 0;	
-	
-	
+	}	
+
+	data->Read(ClientFilename);
+			
 	// 26-Jul-2003: removed requesting the file status for files <= PARTSIZE for better compatibility with ed2k protocol (eDonkeyHybrid).
 	// if the remote client answers the OP_REQUESTFILENAME with OP_REQFILENAMEANSWER the file is shared by the remote client. if we
 	// know that the file is shared, we know also that the file is complete and don't need to request the file status.

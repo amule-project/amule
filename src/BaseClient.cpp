@@ -106,7 +106,7 @@ CUpDownClient::CUpDownClient(uint16 in_port, uint32 in_userid,uint32 in_serverip
 	m_nUserPort = in_port;
 	sourcesslot=m_nUserID%SOURCESSLOTS;
 	if (!HasLowID()) {
-		sprintf(m_szFullUserIP,"%i.%i.%i.%i",(uint8)m_nUserID,(uint8)(m_nUserID>>8),(uint8)(m_nUserID>>16),(uint8)(m_nUserID>>24));
+		FullUserIP.Printf(wxT("%i.%i.%i.%i"),(uint8)m_nUserID,(uint8)(m_nUserID>>8),(uint8)(m_nUserID>>16),(uint8)(m_nUserID>>24));
 	}
 	m_dwServerIP = in_serverip;
 	m_nServerPort = in_serverport;
@@ -116,7 +116,7 @@ CUpDownClient::CUpDownClient(uint16 in_port, uint32 in_userid,uint32 in_serverip
 
 void CUpDownClient::Init()
 {
-	memset(m_szFullUserIP,0,21);
+
 	credits = 0;
 	//memset(reqfileid, 0, sizeof reqfileid);
 	memset(requpfileid, 0, sizeof requpfileid);
@@ -158,7 +158,7 @@ void CUpDownClient::Init()
 	m_abyUpPartStatus = 0;
 	m_dwLastAskedTime = 0;
 	m_nDownloadState = DS_NONE;
-	m_pszClientFilename = 0;
+	ClientFilename = wxEmptyString;
 	m_dwUploadTime = 0;
 	m_nTransferedDown = 0;
 	m_nUploadState = US_NONE;
@@ -194,8 +194,8 @@ void CUpDownClient::Init()
 	if (socket) {
 		wxIPV4address address;
 		socket->GetPeer(address);
-		strcpy(m_szFullUserIP,unicode2char(address.IPAddress()));
-		m_dwUserIP = inet_addr(m_szFullUserIP);
+		FullUserIP = address.IPAddress();
+		m_dwUserIP = inet_addr(unicode2char(FullUserIP));
 	}
 	sourcesslot=0;
 	m_fHashsetRequesting = 0;
@@ -226,7 +226,7 @@ CUpDownClient::~CUpDownClient()
 		reqfile->RemoveDownloadingSource(this);
 	}
 	/* End modif */
-	//printf("1...");
+	
 	
 	// Kry - This 'if' is not really needed because the client list gets 
 	// deleted AFTER all the clients were removed by the listensocket destructor.
@@ -239,42 +239,38 @@ CUpDownClient::~CUpDownClient()
 		theApp.amuledlg->chatwnd->RefreshFriend(m_Friend);
 		m_Friend = NULL;
 	}
-	//printf("2...");
+	
 	if (socket) {
 		socket->client = NULL; 
 		socket->Safe_Delete(); 
 		// We're going down anyway....
 		socket->Destroy();
 	}
-	//printf("3...");
 	
-	if (m_pszClientFilename) {
-		delete[] m_pszClientFilename;
-		m_pszClientFilename = NULL;
-	}
 	
-	//printf("4...");
 	if (m_abyPartStatus) {
 		delete[] m_abyPartStatus;
 		m_abyPartStatus = NULL;
 	}
-	//printf("5...");
+
+	
 	if (m_abyUpPartStatus) {
 		delete[] m_abyUpPartStatus;
 		m_abyUpPartStatus = NULL;
 	}
-	//printf("6...");
+	
+	
 	ClearUploadBlockRequests();
-	//printf("7...");
+	
 	for (POSITION pos = m_DownloadBlocks_list.GetHeadPosition();pos != 0;m_DownloadBlocks_list.GetNext(pos)) {
 		delete m_DownloadBlocks_list.GetAt(pos);
 	}
-	//printf("8...");
+	
 	m_DownloadBlocks_list.RemoveAll();
 	for (POSITION pos = m_RequestedFiles_list.GetHeadPosition();pos != 0;m_RequestedFiles_list.GetNext(pos)) {
 		delete m_RequestedFiles_list.GetAt(pos);
 	}
-	//printf("9...");
+	
 	m_RequestedFiles_list.RemoveAll();
 	for (POSITION pos = m_PendingBlocks_list.GetHeadPosition();pos != 0;m_PendingBlocks_list.GetNext(pos)) {
 		Pending_Block_Struct *pending = m_PendingBlocks_list.GetAt(pos);
@@ -287,12 +283,12 @@ CUpDownClient::~CUpDownClient()
 		delete pending;
 	}
 	/* eMule 0.30c manage this also, i give it a try ... (Creteil) */
-	//printf("10...");
+	
 	for (POSITION pos =m_WaitingPackets_list.GetHeadPosition();pos != 0;m_WaitingPackets_list.GetNext(pos)) {
 		delete m_WaitingPackets_list.GetAt(pos);
 	}
 
-	//printf("11...");
+	
 	if (m_iRate>0 || m_strComment.Length()>0) {
 		m_iRate=0; 
 		m_strComment.Empty();
@@ -303,7 +299,7 @@ CUpDownClient::~CUpDownClient()
 
 	//DEBUG_ONLY (theApp.listensocket->Debug_ClientDeleted(this));
 	SetUploadFileID(NULL);
-	//printf("END\n");
+	
 }
 
 void CUpDownClient::ClearHelloProperties()
@@ -479,14 +475,14 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 	} catch ( CStrangePacket )
 	{
 		printf("\nWrong Tags on hello type packet!!\n");
-		printf("Sent by %s on ip %s port %i using client %x version %x\n",unicode2char(GetUserName()),GetFullIP(),GetUserPort(),GetClientSoft(),GetVersion());
+		printf("Sent by %s on ip %s port %i using client %x version %x\n",unicode2char(GetUserName()),unicode2char(GetFullIP()),GetUserPort(),GetClientSoft(),GetVersion());
 		printf("User Disconnected.\n");
 		throw wxString(wxT("Wrong Tags on hello type packet"));
 	}
 	catch ( CInvalidPacket (e))
 	{
 		printf("Wrong Tags on hello type packet - %s\n\n",e.what());
-		printf("Sent by %s on ip %s port %i using client %x version %x\n",unicode2char(GetUserName()),GetFullIP(),GetUserPort(),GetClientSoft(),GetVersion());
+		printf("Sent by %s on ip %s port %i using client %x version %x\n",unicode2char(GetUserName()),unicode2char(GetFullIP()),GetUserPort(),GetClientSoft(),GetVersion());
 		printf("User Disconnected.\n");		
 		throw wxString(wxT("Wrong Tags on hello type packet"));
 	}
@@ -506,8 +502,8 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 	if (socket) {
 		wxIPV4address address;
 		socket->GetPeer(address);
-		strcpy(m_szFullUserIP,unicode2char(address.IPAddress()));
-		m_dwUserIP = inet_addr(m_szFullUserIP);
+		FullUserIP = address.IPAddress();
+		m_dwUserIP = inet_addr(unicode2char(FullUserIP));
 	} else {
 		printf("Huh, socket failure. Avoided crash this time.\n");
 	}
@@ -531,13 +527,13 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 	if (credits == NULL){
 		credits = pFoundCredits;
 		if (!theApp.clientlist->ComparePriorUserhash(m_dwUserIP, m_nUserPort, pFoundCredits)){
-			AddDebugLogLineM(false, wxString::Format(wxT("Clients: %s (%s), Banreason: Userhash changed (Found in TrackedClientsList)"), unicode2char(GetUserName()), GetFullIP())); 
+			AddDebugLogLineM(false, wxString::Format(wxT("Clients: %s (%s), Banreason: Userhash changed (Found in TrackedClientsList)"), unicode2char(GetUserName()), unicode2char(GetFullIP()))); 
 			Ban();
 		}	
 	} else if (credits != pFoundCredits){
 		// userhash change ok, however two hours "waittime" before it can be used
 		credits = pFoundCredits;
-		AddDebugLogLineM(false, wxString::Format(wxT("Clients: %s (%s), Banreason: Userhash changed"), unicode2char(GetUserName()), GetFullIP())); 
+		AddDebugLogLineM(false, wxString::Format(wxT("Clients: %s (%s), Banreason: Userhash changed"), unicode2char(GetUserName()), unicode2char(GetFullIP()))); 
 		Ban();
 	}
 
@@ -614,7 +610,7 @@ bool CUpDownClient::SendHelloPacket() {
 	wxIPV4address address;
 	socket->GetPeer(address);
 	if ( theApp.ipfilter->IsFiltered(inet_addr(unicode2char(address.IPAddress())))) {
-		theApp.amuledlg->AddDebugLogLine(true,_("Filtered IP: %s (%s)"),GetFullIP(),theApp.ipfilter->GetLastHit().GetData());
+		theApp.amuledlg->AddDebugLogLine(true,_("Filtered IP: ") +GetFullIP() + wxT("(") + theApp.ipfilter->GetLastHit() + wxT(")"));
 		theApp.stat_filteredclients++;
 		if (Disconnected(wxT("IPFilter"))) {
 			delete this;
@@ -807,7 +803,7 @@ void CUpDownClient::ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize)
 	catch ( CStrangePacket )
 	{
 		printf("\nWrong Tags on Mule Info packet!!\n");
-		printf("Sent by %s on ip %s port %i using client %x version %x\n",unicode2char(GetUserName()),GetFullIP(),GetUserPort(),GetClientSoft(),GetMuleVersion());
+		printf("Sent by %s on ip %s port %i using client %x version %x\n",unicode2char(GetUserName()),unicode2char(GetFullIP()),GetUserPort(),GetClientSoft(),GetMuleVersion());
 		printf("User Disconnected.\n");
 		printf("Packet Dump:\n");
 		DumpMem(pachPacket,nSize);
@@ -816,7 +812,7 @@ void CUpDownClient::ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize)
 	catch ( CInvalidPacket (e))
 	{
 		printf("Wrong Tags on Mule Info packet - %s\n\n",e.what());
-		printf("Sent by %s on ip %s port %i using client %x version %x\n",unicode2char(GetUserName()),GetFullIP(),GetUserPort(),GetClientSoft(),GetMuleVersion());
+		printf("Sent by %s on ip %s port %i using client %x version %x\n",unicode2char(GetUserName()),unicode2char(GetFullIP()),GetUserPort(),GetClientSoft(),GetMuleVersion());
 		printf("User Disconnected.\n");		
 		printf("Packet Dump:\n");		
 		DumpMem(pachPacket,nSize);
@@ -955,7 +951,7 @@ void CUpDownClient::ProcessMuleCommentPacket(const char *pachPacket, uint32 nSiz
 			throw CInvalidPacket("short packet reading comment length");
 		
 		reqfile->SetHasRating(true);
-		AddDebugLogLineM(false,wxString::Format(wxT("Rating for file '%s' received: %i"),m_pszClientFilename,m_iRate));
+		AddDebugLogLineM(false,wxT("Rating for file '") + ClientFilename + wxString::Format(wxT("' received: %i"),m_iRate));
 		if (length>50) length=50;
 		if (length>0){
 			#warning Lacks Comment Filtering
@@ -964,8 +960,8 @@ void CUpDownClient::ProcessMuleCommentPacket(const char *pachPacket, uint32 nSiz
 			if ( (unsigned int)length != data.ReadRaw(desc,length) ) {
 				throw CInvalidPacket("short packet reading comment string");
 			}		
-			AddDebugLogLineM(false,wxString::Format(wxT("Description for file '%s' received: %s"), m_pszClientFilename, desc));
 			m_strComment = char2unicode(desc);
+			AddDebugLogLineM(false,wxT("Description for file '") +ClientFilename + wxT("' received: ") + m_strComment);
 			reqfile->SetHasComment(true);
 			delete[] desc;
 		}
@@ -974,7 +970,7 @@ void CUpDownClient::ProcessMuleCommentPacket(const char *pachPacket, uint32 nSiz
 	catch ( CStrangePacket )
 	{
 		printf("\nInvalid MuleComment packet!\n");
-		printf("Sent by %s on ip %s port %i using client %i version %i\n",unicode2char(GetUserName()),GetFullIP(),GetUserPort(),GetClientSoft(),GetMuleVersion());
+		printf("Sent by %s on ip %s port %i using client %i version %i\n",unicode2char(GetUserName()),unicode2char(GetFullIP()),GetUserPort(),GetClientSoft(),GetMuleVersion());
 		printf("User Disconnected.\n");
 		return;
 		throw wxString(wxT("Wrong MuleComment packet"));
@@ -982,7 +978,7 @@ void CUpDownClient::ProcessMuleCommentPacket(const char *pachPacket, uint32 nSiz
 	catch ( CInvalidPacket (e))
 	{
 		printf("\nInvalid MuleComment packet - %s\n\n",e.what());
-		printf("Sent by %s on ip %s port %i using client %i version %i\n",unicode2char(GetUserName()),GetFullIP(),GetUserPort(),GetClientSoft(),GetMuleVersion());
+		printf("Sent by %s on ip %s port %i using client %i version %i\n",unicode2char(GetUserName()),unicode2char(GetFullIP()),GetUserPort(),GetClientSoft(),GetMuleVersion());
 		printf("User Disconnected.\n");		
 		throw wxString(wxT("Wrong MuleComment packet"));
 		return;
@@ -1238,7 +1234,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 		}
 	} else {
 		amuleIPV4Address tmp;
-		tmp.Hostname(GetFullIP());
+		tmp.Hostname(GetIP());
 		tmp.Service(GetUserPort());
 		socket->Connect(tmp,FALSE);
 		// socket->Connect(GetFullIP(),GetUserPort());
@@ -1852,16 +1848,16 @@ void CUpDownClient::ProcessSecIdentStatePacket(uchar* pachPacket, uint32 nSize){
 	catch ( CStrangePacket )
 	{
 		printf("\nWrong SecIdentState packet!!\n");
-		printf("Sent by %s on ip %s port %i using client %x version %x\n",unicode2char(GetUserName()),GetFullIP(),GetUserPort(),GetClientSoft(),GetMuleVersion());
+		printf("Sent by %s on ip %s port %i using client %x version %x\n",unicode2char(GetUserName()),unicode2char(GetFullIP()),GetUserPort(),GetClientSoft(),GetMuleVersion());
 		printf("User Disconnected.\n");
-		throw wxString(wxT("Wrong Tags on SecIdentState packet"));
+		throw wxString(wxT("Wrong SecIdentState packet"));
 	}
 	catch ( CInvalidPacket (e))
 	{
 		printf("Wrong SecIdentState packet - %s\n\n",e.what());
-		printf("Sent by %s on ip %s port %i using client %x version %x\n",unicode2char(GetUserName()),GetFullIP(),GetUserPort(),GetClientSoft(),GetMuleVersion());
+		printf("Sent by %s on ip %s port %i using client %x version %x\n",unicode2char(GetUserName()),unicode2char(GetFullIP()),GetUserPort(),GetClientSoft(),GetMuleVersion());
 		printf("User Disconnected.\n");		
-		throw wxString(wxT("Wrong Tags on SecIdentState packet"));
+		throw wxString(wxT("Wrong SecIdentState packet"));
 	}
 			
 	
@@ -1914,7 +1910,7 @@ wxString CUpDownClient::GetClientFullInfo() {
 	} else {
 		FullVerName += Username;
 	}
-	FullVerName += wxString::Format(wxT(" on ip %s port %u using "),GetFullIP(),GetUserPort()) + m_clientVerString;
+	FullVerName += wxT(" on IP ") + GetFullIP() + wxString::Format(wxT(" port %u using "),GetUserPort()) + m_clientVerString;
 	if (!GetClientModString().IsEmpty()) {		
 		FullVerName += wxString(wxT(" Mod ")) + GetClientModString();
 	}

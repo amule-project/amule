@@ -46,6 +46,7 @@ class amuleIPV4Address : public wxIPV4address {
 		inet_aton(addr,&inaddr);
 		return GAddress_INET_SetHostAddress(m_address,inaddr.s_addr)==GSOCK_NOERROR;
 	}
+
 #endif
 
 };
