@@ -73,7 +73,7 @@ class CWebSocket;
 class CMD4Hash;
 
 //shakraw - webserver code below
-#define WEB_GRAPH_HEIGHT		120
+//#define WEB_GRAPH_HEIGHT		120
 #define WEB_GRAPH_WIDTH			500
 
 #define SESSION_TIMEOUT_SECS	300	// 5 minutes session expiration
@@ -717,7 +717,7 @@ class CWebServer {
 		int		m_iSearchSortby;
 		bool		m_bSearchAsc;
 		unsigned int	m_nRefresh;
-
+		wxString	m_sLastHistoryTimeStamp;
 };
 
 #endif // WEBSERVER_H

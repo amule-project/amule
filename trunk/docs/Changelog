@@ -86,6 +86,7 @@ Version 2.0.0rc8 - The "???????????" version.
 		* Added commands to change/monitor bandwidth settings to
 		  amulecmd.
 		* Made wxTRANSLATE actually work.
+		* Fixed graphs in webserver. Also added the missing back.gif file.
 
 	Special Thanks To:
 

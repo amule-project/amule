@@ -504,15 +504,21 @@ enum {
 		 * \brief Retrieves the statistics graphs
 		 *
 		 * Server replies with an ::EC_OP_STATSGRAPHS packet.
+		 *
+		 * \par Child Tags:
+		 *	::EC_TAG_STATSGRAPH_WIDTH (required for webserver only)\n
+		 *	::EC_TAG_STATSGRAPH_SCALE (required for webserver only)\n
+		 *	::EC_TAG_STATSGRAPH_LAST
 		 */
-	
 	EC_OP_GET_STATSGRAPHS,
 
 		/*!
 		 * \brief Statistics graphs reply
 		 *
+		 * \par Child Tags:
+		 *	::EC_TAG_STATSGRAPH_LAST
+		 *	::EC_TAG_STATSGRAPH_DATA
 		 */	
-	
 	EC_OP_STATSGRAPHS,
 
 		/*!
@@ -520,14 +526,12 @@ enum {
 		 *
 		 * Server replies with an ::EC_OP_STATSTREE packet.
 		 */
-
 	EC_OP_GET_STATSTREE,
-	
+
 		/*!
 		 * \brief Statistics tree reply
 		 *
 		 */	
-	
 	EC_OP_STATSTREE,
 	
 	EC_OP_COMPAT	= 0x00ff	// compatibility opcode, for testing purposes only
@@ -1183,7 +1187,16 @@ enum {
 		 * to statusline.
 		 */
 	EC_TAG_LOG_TO_STATUS,
-	
+
+	//
+	// Statistics
+	//
+
+	EC_TAG_STATSGRAPH_WIDTH,	///< (\c uint16) Maximum number of sample points (for webserver only)
+	EC_TAG_STATSGRAPH_SCALE,	///< (\c uint16) Time between sample point (in seconds) (for webserver only)
+	EC_TAG_STATSGRAPH_LAST,		///< (\c string, should be \c float) Timestamp of last acquired/sent history item. Default: 0.0
+	EC_TAG_STATSGRAPH_DATA,		///< sequence of uint32 triplets for the webserver (dl,ul,conn); ...
+
 	EC_TAG_IMAGE,
 	EC_TAG_IMAGE_X,
 	EC_TAG_IMAGE_Y,

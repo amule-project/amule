@@ -1252,6 +1252,55 @@ void CPartFile_Encoder::Encode(CECTag *parent)
 		m_file->requestedblocks_list.GetCount() * 2 * sizeof(uint32), (void *)m_gap_buffer));
 }
 
+#ifndef AMULE_DAEMON
+// FIXME: remove code from GUI
+CECPacket *GetStatsGraphs(const CECPacket *request)
+{
+	CECPacket *response = NULL;
+
+	switch (request->GetDetailLevel()) {
+		case EC_DETAIL_GUI:
+			// Transfer graph db
+			break;
+		case EC_DETAIL_WEB: {
+			double dTimestamp = 0.0;
+			if (request->GetTagByName(EC_TAG_STATSGRAPH_LAST) != NULL) {
+				wxString tmp = request->GetTagByName(EC_TAG_STATSGRAPH_LAST)->GetStringData();
+				if (!tmp.ToDouble(&dTimestamp)) {
+					dTimestamp = 0.0;
+				}
+			}
+			uint16 nScale = request->GetTagByName(EC_TAG_STATSGRAPH_SCALE)->GetInt16Data();
+			uint16 nMaxPoints = request->GetTagByName(EC_TAG_STATSGRAPH_WIDTH)->GetInt16Data();
+			float *data[3] = { new float [nMaxPoints], new float [nMaxPoints], new float [nMaxPoints] };
+			unsigned int numPoints = theApp.amuledlg->statisticswnd->GetHistoryForWeb(nMaxPoints, (double)nScale, &dTimestamp, data);
+			if (numPoints) {
+				uint32 *graphData = new uint32 [3 * numPoints];
+				for (unsigned int i = 0; i < numPoints; ++i) {
+					graphData[3 * i] = (uint32)((data[2])[numPoints - i - 1] * 1024.0);
+					graphData[3 * i + 1] = (uint32)((data[0])[numPoints - i - 1] * 1024.0);
+					graphData[3 * i + 2] = (uint32)((data[1])[numPoints - i - 1]);
+				}
+				delete [] data[0];
+				delete [] data[1];
+				delete [] data[2];
+				response = new CECPacket(EC_OP_STATSGRAPHS);
+				response->AddTag(CECTag(EC_TAG_STATSGRAPH_DATA, 3 * numPoints * sizeof(uint32), graphData));
+				delete [] graphData;
+				response->AddTag(CECTag(EC_TAG_STATSGRAPH_LAST, wxString::Format(wxT("%f"), dTimestamp)));
+			} else {
+				response = new CECPacket(EC_OP_FAILED);
+			}
+		}
+		case EC_DETAIL_UPDATE:
+		case EC_DETAIL_CMD:
+			// No graphs
+			break;
+	}
+	return response;
+}
+#endif /* ! AMULE_DAEMON */
+
 CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request, CPartFile_Encoder_Map &enc_map)
 {
 
@@ -1427,35 +1476,17 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request, CPartFile_Enc
 			theApp.GetServerLog(true);
 			response = new CECPacket(EC_OP_NOOP);
 			break;
-
 		//
 		// Statistics
 		//
-		
-		case EC_OP_GET_STATSGRAPHS: {
-			response = new CECPacket(EC_OP_STATSGRAPHS);
-			response->AddTag(CECTag(EC_TAG_STRING,
-													wxString::Format(wxT("%d\t%d\t%d\t%d"), 
-													thePrefs::GetTrafficOMeterInterval(),
-													thePrefs::GetMaxGraphDownloadRate(),
-													thePrefs::GetMaxGraphUploadRate(),
-													thePrefs::GetMaxConnections())));
-			
-			#ifndef AMULE_DAEMON
-			/*
-			wxImage DLImage = theApp.amuledlg->statisticswnd->GetDLScope()->GetBitmapPlot()->ConvertToImage();
-			CECEmptyTag ImageTag(EC_TAG_IMAGE);
-			ImageTag.AddTag(CECTag(EC_TAG_IMAGE_X,(unsigned int)DLImage.GetWidth()));
-			ImageTag.AddTag(CECTag(EC_TAG_IMAGE_Y,(unsigned int)DLImage.GetHeight()));
-			ImageTag.AddTag(CECTag(EC_TAG_IMAGE_DATA,
-													DLImage.GetWidth()*DLImage.GetHeight()*3, // It's RGB
-													(void*)DLImage.GetData()));
-			response->AddTag(ImageTag);
-			*/
-			#endif
-			
+		case EC_OP_GET_STATSGRAPHS:
+#ifndef AMULE_DAEMON
+			response = GetStatsGraphs(request);
+#else
+			response = new CECPacket(EC_OP_FAILED);
+#endif
 			break;
-		}
+		// FIXME: using v1 style communication
 		case EC_OP_GET_STATSTREE:
 			response = new CECPacket(EC_OP_STATSGRAPHS);
 			#ifdef AMULE_DAEMON

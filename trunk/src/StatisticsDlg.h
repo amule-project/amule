@@ -61,6 +61,7 @@ public:
 	float GetKBpsDownRunningAvg()	{return kBpsDownAvg;}
 	float GetKBpsDownSession()		{return kBpsDownSession;}
 	void RecordHistory();
+	unsigned GetHistoryForWeb(unsigned cntPoints, double sStep, double *sStart, float **ppf);
 	unsigned GetHistory(unsigned cntPoints, double sStep, double sFinal, float **ppf, COScopeCtrl* pscope);
 	void VerifyHistory(bool bMsgIfOk = false);
 	float GetMaxConperFiveModifier();

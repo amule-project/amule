@@ -358,6 +358,49 @@ unsigned CStatisticsDlg::GetHistory(  // Assemble arrays of sample points for a 
 }
 
 
+unsigned CStatisticsDlg::GetHistoryForWeb(  // Assemble arrays of sample points for the webserver
+	unsigned cntPoints,		// maximum number of sample points to assemble
+	double sStep,			// time difference between sample points
+	double *sStart,			// earliest allowed timestamp
+	float** ppf)			// an array of pointers to arrays of floats for the result
+{	
+	if (*sStart < 0.0) {
+		*sStart = 0.0;
+	}
+	if (sStep==0.0 || cntPoints==0)
+		return(0);
+	float		*pf1 = *ppf;
+	float		*pf2 = *(ppf+1);
+	float		*pf3 = *(ppf+2);
+	unsigned	cntFilled = 0;
+	POSITION	pos = listHR.GetTailPosition(), posPrev;
+	HR		*phr = &listHR.GetAt(pos);  	// pointer to history record
+	double		LastTimeStamp = phr->sTimestamp;
+	double		sTarget = LastTimeStamp;
+
+	do {
+		while ((posPrev=listHR.PrevAt(pos)) != NULL	// find next history record
+			&& ((phr=&listHR.GetAt(posPrev))->sTimestamp > sTarget))
+			pos = posPrev;
+		*pf1++ = (float)phr->kBpsUpCur;
+		*pf2++ = (float)phr->cntConnections;
+		*pf3++ = (float)phr->kBpsDownCur;
+		if (++cntFilled  == cntPoints)		// enough points 
+			break;
+		if (phr->sTimestamp <= *sStart)			// reached beginning of requested time
+			break;
+		if ((sTarget -= sStep) <= 0.0) {	// don't overshoot the beginning
+			*pf1++ = *pf2++ = *pf3++ = 0.0;
+			++cntFilled;
+			break;
+		}
+	} while (posPrev != NULL);
+	*sStart = LastTimeStamp;
+
+	return cntFilled;
+}
+
+
 void CStatisticsDlg::ComputeAverages(
 	HR			**pphr,			// pointer to (end of) array of assembled history records
 	POSITION	pos,			// position in history list from which to backtrack
