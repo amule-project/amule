@@ -170,6 +170,8 @@ class CEC_UpDownClient_Tag : public CECTag {
 		uint32 ID() { return GetInt32Data(); }
 		
  		CMD4Hash FileID() { return GetTagByNameSafe(EC_TAG_KNOWNFILE)->GetMD4Data(); }
+ 		CMD4Hash UserID() { return GetTagByNameSafe(EC_TAG_CLIENT_HASH)->GetMD4Data(); }
+ 		
  		bool HaveFile() { return GetTagByName(EC_TAG_KNOWNFILE) != NULL; }
 
  		wxString ClientName() { return GetTagByNameSafe(EC_TAG_CLIENT_NAME)->GetStringData(); }
