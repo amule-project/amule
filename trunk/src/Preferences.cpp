@@ -931,6 +931,10 @@ void CPreferences::SetDirPermissions( int perms )
 	s_perms_dirs = perms | wxS_IRUSR | wxS_IWUSR | wxS_IXUSR;
 }
 
+void CPreferences::UnsetAutoServerStart()
+{
+	s_autoserverlist = false;
+}
 
 
 

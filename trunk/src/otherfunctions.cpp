@@ -22,6 +22,7 @@
 #include <wx/utils.h>
 #include <wx/tokenzr.h>
 #include <wx/filename.h>
+#include <wx/file.h>		// Needed for wxFile
 
 #ifdef __WXMSW__
     #include <wx/msw/winundef.h>
@@ -188,6 +189,26 @@ wxString GetFiletypeDesc(FileType type)
 wxString GetFiletypeByName(const wxString& filename)
 {
 	return GetFiletypeDesc( GetFiletype( filename ) );
+}
+
+/** 
+ * Return a boolean meaning whether the file has contents or not (doesn't
+ * matter if it exists)
+ *
+ * @param filename The filename of the file to evaluate (as a wxString)
+ *
+ * @return Boolean value TRUE when it has no contents (file doesn't exists
+ * or it's size is 0bytes). Any othe case, FALSE
+ */
+
+bool IsEmptyFile(const wxString& filename)
+{
+  if (wxFile::Exists(filename.GetData())) {
+       wxFile file(filename.GetData());
+       if (file.IsOpened())
+            return ( file.Length() == 0 );
+  }
+  return true;
 }
 
 // Get the max number of connections that the OS supports, or -1 for default
@@ -365,7 +386,6 @@ wxString TruncateFilename(const wxString& filename, size_t length, bool isFilePa
 
 	return file;
 }
-
 
 // Returns a BASE32 encoded byte array
 //

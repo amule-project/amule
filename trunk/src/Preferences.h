@@ -411,6 +411,7 @@ public:
 	static int		GetDirPermissions();
 	static void		SetDirPermissions( int perms );
 
+	static void		UnsetAutoServerStart();
 	static void		CheckUlDlRatio();
 	
 	static void BuildItemList( const wxString& appdir );

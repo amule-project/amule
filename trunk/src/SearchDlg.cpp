@@ -38,7 +38,7 @@
 #include "SafeFile.h"		// Needed for CSafeMemFile
 #include "SearchList.h"		// Needed for CSearchList
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
-#include "otherfunctions.h"	// Needed for URLEncode
+#include "otherfunctions.h"	// Needed for URLEncode, GetTypeSize
 #include "packets.h"		// Needed for Packet
 #include "server.h"			// Needed for CServer
 #include "ServerList.h"		// Needed for CServerList
