@@ -144,6 +144,9 @@ Version 2.0.0rc4 - The 'Target: REAL Stability' version.
 		* Fixed the possibility of sources being added to multiple source-lists at the same time (No more mis-matching hashes warnings).
 		* Fixed the new columns added by deltaHF not being displayed and added checks in case the same thing happens again.
 		* Almost completly eleminated flicker on the download list and did a cleanup of the drawing routines associated the the download list widget.
+		* Fixed some lists (Server list, maybe others) not being sorted when aMule is started.
+		* Fix mem-corruption bug in SysTray code if the systray was compiled in but hidden.
+		* Fixed the problem with deleting the last (connected) server on the server list.
 		* Removed the following files:
 		  - ini2.*
 		  - CString.h
