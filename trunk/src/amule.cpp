@@ -646,6 +646,14 @@ bool CamuleApp::OnInit()
 		vfile.Close();
 	}
 
+	// Check if we have the old style locale config
+	wxChar ch = thePrefs::GetLanguageID().GetChar(0);
+	if (ch >= '0' && ch <= '9') {
+		wxString info(_("Your locale has been changed to System Default due to a configuration change. Sorry.\n"));
+		thePrefs::SetLanguageID(wxLang2Str(wxLANGUAGE_DEFAULT));
+		ShowAlert(info, _("Info"), wxCENTRE | wxOK | wxICON_ERROR);
+	}
+
 	use_chmod = true;
 #ifdef __WXGTK__
 	/* Test to see if the Temp or the Incoming dir is on a vfat partition. If
@@ -1246,180 +1254,12 @@ void CamuleApp::OnFatalException()
 // Sets the localization of aMule
 void CamuleApp::Localize_mule()
 {
-	int language;
-
-/*
-	#define  wxLANGUAGE_CUSTOM 		wxLANGUAGE_USER_DEFINED+1
-	#define  wxLANGUAGE_ITALIAN_NAPOLITAN 	wxLANGUAGE_USER_DEFINED+2
-
-	wxLanguageInfo CustomLanguage;
-	CustomLanguage.Language = wxLANGUAGE_ITALIAN_NAPOLITAN;
-	CustomLanguage.CanonicalName = wxT("it_NA");
-	CustomLanguage.Description = wxT("sNeo's Custom Napolitan Language");
-	wxLocale::AddLanguage(CustomLanguage);
-
-	CustomLanguage.Language = wxLANGUAGE_CUSTOM;
-	CustomLanguage.CanonicalName = wxT("aMule_custom");
-	CustomLanguage.Description = wxT("aMule's custom language");
-*/
 	InitCustomLanguages();
-
-	switch ( thePrefs::GetLanguageID()) {
-		case 0:
-			language = wxLANGUAGE_DEFAULT;
-			break;
-		case 1:
-			//strcpy(newlang,"ar");
-			language = wxLANGUAGE_ARABIC;
-			break;
-		case 2:
-			//strcpy(newlang,"eu");
-			language = wxLANGUAGE_BASQUE;
-			break;
-		case 3:
-			//strcpy(newlang,"bg_BG");
-			language = wxLANGUAGE_BULGARIAN;
-			break;
-		case 4:
-			//strcpy(newlang,"zh_CN");
-			language = wxLANGUAGE_CHINESE_SIMPLIFIED;
-			break;
-		case 5:
-			//strcpy(newlang,"da_DK");
-			language = wxLANGUAGE_DANISH;
-			break;
-		case 6:
-			//strcpy(newlang,"nl_NL");
-			language = wxLANGUAGE_DUTCH;
-			break;
-		case 7:
-			//strcpy(newlang,"en_GB");
-			language = wxLANGUAGE_ENGLISH;
-			break;
-		case 8:
-			//strcpy(newlang,"et_EE");
-			language = wxLANGUAGE_ESTONIAN;
-			break;
-		case 9:
-			//strcpy(newlang,"fi");
-			language = wxLANGUAGE_FINNISH;
-			break;
-		case 10:
-			//strcpy(newlang,"fr_FR");
-			language = wxLANGUAGE_FRENCH;
-			break;
-		case 11:
-			//strcpy(newlang,"gl_ES");
-			language = wxLANGUAGE_GALICIAN;
-			break;
-		case 12:
-			//strcpy(newlang,"de_DE");
-			language = wxLANGUAGE_GERMAN;
-			break;
-		case 13:
-			//strcpy(newlang,"it_IT");
-			language = wxLANGUAGE_ITALIAN;
-			break;
-		case 14:
-			//strcpy(newlang,"ko_KR");
-			language = wxLANGUAGE_KOREAN;
-			break;
-		case 15:
-			//strcpy(newlang,"lt_LT");
-			language = wxLANGUAGE_LITHUANIAN;
-			break;
-		case 16:
-			//strcpy(newlang,"pl_PL");
-			language = wxLANGUAGE_POLISH;
-			break;
-		case 17:
-			//strcpy(newlang,"pt_PT");
-			language = wxLANGUAGE_PORTUGUESE;
-			break;
-		case 18:
-			//strcpy(newlang,"pt_BR");
-			language = wxLANGUAGE_PORTUGUESE_BRAZILIAN;
-			break;
-		case 19:
-			//strcpy(newlang,"ru_RU");
-			language = wxLANGUAGE_RUSSIAN;
-			break;
-		case 20:
-			//strcpy(newlang,"es_ES");
-			language = wxLANGUAGE_SPANISH;
-			break;
-		case 21:
-			//strcpy(newlang,"es_CH");
-			language = wxLANGUAGE_SPANISH_CHILE;
-			break;
-		case 22:
-			//strcpy(newlang,"es_MX");
-			language = wxLANGUAGE_SPANISH_MEXICAN;
-			break;
-		case 23:
-			//Turkish makes weird things with config file!!! why?
-			//language = wxLANGUAGE_TURKISH;
-			language = wxLANGUAGE_DEFAULT;
-			break;
-		case 24:
-			//strcpy(newlang,"hu");
-			language = wxLANGUAGE_HUNGARIAN;
-			break;
-		case 25:
-			//strcpy(newlang,"ca_ES");
-			language = wxLANGUAGE_CATALAN;
-			break;
-		case 26:
-			//strcpy(newlang,"hr");
-			language = wxLANGUAGE_CROATIAN;
-			break;
-		case 27:
-			//strcpy(newlang,"it_CH");
-			language = wxLANGUAGE_ITALIAN_SWISS;
-			break;
-		case 28:
-			//strcpy(newlang,"custom");
-			language = wxLANGUAGE_CUSTOM;
-			break;
-		case 29:
-			//strcpy(newlang,"zh_TW");
-			language = wxLANGUAGE_CHINESE_TRADITIONAL;
-			break;
-		case 30:
-			language = wxLANGUAGE_SLOVENIAN;
-			break;
-		default:
-			language = wxLANGUAGE_DEFAULT;
-			break;
-	}
-
-	InitLocale(m_locale, language);
+	InitLocale(m_locale, StrLang2wx(thePrefs::GetLanguageID()));
 	if (!m_locale.IsOk()) {
 		AddLogLineM(false,_("The selected locale seems not to be installed on your box."
 				    " (Note: I'll try to set it anyway)"));
 	}
-
-/*
-	int language_flags = 0;
-	if ((language != wxLANGUAGE_CUSTOM) && (language != wxLANGUAGE_ITALIAN_NAPOLITAN)) {
-		language_flags = wxLOCALE_LOAD_DEFAULT | wxLOCALE_CONV_ENCODING;
-	}
-	
-	if ((!m_locale.Init(language,language_flags)) && 
-	    (language != wxLANGUAGE_DEFAULT) &&
-	    (language != wxLANGUAGE_CUSTOM)) {
-		AddLogLineM(false,_("The selected locale seems not to be installed on your box."
-				    " (Note: I'll try to set it anyway)"));
-	}
-	
-	if (language != wxLANGUAGE_CUSTOM) {
-		m_locale.AddCatalogLookupPathPrefix(wxT(LOCALEDIR));
-		m_locale.AddCatalog(wxT(PACKAGE));
-	} else {
-		m_locale.AddCatalogLookupPathPrefix(wxString::Format(wxT("%s/.aMule"), getenv("HOME")));
-		m_locale.AddCatalog(wxT("custom"));
-	}
-*/
 }
 
 
@@ -1440,13 +1280,9 @@ void CamuleApp::Trigger_New_version(wxString new_version)
 	info += _("More information, support and new releases can found at our homepage, \n");
 	info += _("at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net. \n");
 	info += wxT("\n");
-	info += _("Your locale has been changed to System Default due to a version change. Sorry.\n");
 	info += _("Feel free to report any bugs to forum.amule.org");
 
 	ShowAlert(info, _("Info"), wxCENTRE | wxOK | wxICON_ERROR);
-
-	// Set to system default... no other way AFAIK unless we change the save type.
-	thePrefs::SetLanguageID(0);
 }
 
 

@@ -268,8 +268,8 @@ public:
 	static uint32	GetServerKeepAliveTimeout()	{ return s_dwServerKeepAliveTimeoutMins*60000; }
 	static void		SetServerKeepAliveTimeout(uint32 val)	{ s_dwServerKeepAliveTimeoutMins = val/60000; }
 	
-	static WORD		GetLanguageID()			{ return s_languageID; }
-	static void		SetLanguageID(WORD new_id)	{ s_languageID = new_id; }
+	static const wxString&	GetLanguageID()			{ return s_languageID; }
+	static void		SetLanguageID(const wxString& new_id)	{ s_languageID = new_id; }
 	static uint8		CanSeeShares()			{ return s_iSeeShares; }
 	static void		SetCanSeeShares(uint8 val)	{ s_iSeeShares = val; }
 
@@ -593,7 +593,7 @@ protected:
 
 	static uint64  	s_totalDownloadedBytes;
 	static uint64	s_totalUploadedBytes;
-	static uint16	s_languageID;
+	static wxString	s_languageID;
 	static bool	s_transferDoubleclick;
 	static uint8	s_iSeeShares;		// 0=everybody 1=friends only 2=noone
 	static uint8	s_iToolDelayTime;	// tooltip delay time in seconds

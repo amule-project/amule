@@ -71,6 +71,12 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		* Fixed setting priorities via web interface on both downloads
 		  and shared files.
 		* Enabled translations on amuleweb and amulecmd.
+		* Fixed the language selector on Preferences to show the languages
+		  that we really have.
+		* Language list is now always sorted alphabetically, but 'System
+		  default' is always the first item in the list.
+		* Changed locale saving method, so it won't have to be reset to
+		  'System default' on each version change.
 
 		**** For users, who already got used to amulecmd's or amuleweb's
 		**** command-line parameters: PLEASE READ DOCUMENTATION CAREFULLY!
