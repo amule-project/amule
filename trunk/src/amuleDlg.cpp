@@ -704,42 +704,7 @@ void CamuleDlg::OnClose(wxCloseEvent& evt)
 
 	// Stop the GUI Timer
 	delete gui_timer;
-
-	// Kry - Save the sources seeds on app exit
-	if (thePrefs::GetSrcSeedsOn()) {
-		theApp.downloadqueue->SaveSourceSeeds();
-	}
-
-	theApp.OnlineSig(); // Added By Bouc7
-
-	// Close sockets to avoid new clients coming in
-	if (theApp.listensocket) {
-		theApp.listensocket->StopListening();
-	}
-	if (theApp.clientudp) {
-		theApp.clientudp->Destroy();
-	}
-	if (theApp.serverconnect) {
-		theApp.serverconnect->Disconnect();
-	}
-
-	// saving data & stuff
-	if (theApp.knownfiles) {
-		theApp.knownfiles->Save();
-	}
-
-	thePrefs::Add2TotalDownloaded(theApp.stat_sessionReceivedBytes);
-	thePrefs::Add2TotalUploaded(theApp.stat_sessionSentBytes);
-
-	if (theApp.glob_prefs) {
-		theApp.glob_prefs->Save();
-	}
-
 	transferwnd->downloadlistctrl->DeleteAllItems();
-	//amuledlg->chatwnd->chatselector->DeleteAllItems();
-	if (theApp.clientlist) {
-		theApp.clientlist->DeleteAll();
-	}
 
 #ifndef __SYSTRAY_DISABLED__
 	//We want to delete the systray too!

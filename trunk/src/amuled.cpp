@@ -173,7 +173,21 @@ int CamuleDaemonApp::InitGui(bool ,wxString &)
 	return 0;
 }
 
-void AddLogLine(const wxString &msg);
+int CamuleDaemonApp::OnExit()
+{
+	// lfroen: delete socket threads
+	if (ECServerHandler) {
+		ECServerHandler->Delete();
+		ECServerHandler = 0;
+	}
+
+	if (listensocket) {
+		listensocket->Delete();
+		listensocket = NULL;
+	}
+	
+	return CamuleApp::OnExit();
+}
 
 void CamuleDaemonApp::ShowAlert(wxString msg, wxString title, int flags)
 {

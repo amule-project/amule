@@ -337,6 +337,7 @@ public:
 class CamuleDaemonApp : public CamuleApp {
 	bool m_Exit;
 	int OnRun();
+	int OnExit();
 	
 	virtual void ShowAlert(wxString msg, wxString title, int flags);
 	virtual int InitGui(bool geometry_enable, wxString &geometry_string);
