@@ -267,19 +267,16 @@ CED2KFileLink::CED2KFileLink( const wxString& name, const wxString& size, const 
 		}
 	}
 
-	if ( !masterhash.IsEmpty() ) {
+	if (!masterhash.IsEmpty()) {
 		// Remove the prefix of "h="
-		wxString strHash = masterhash.AfterFirst( wxT('=') );
-
-		if ( !strHash.IsEmpty() ) {
-			if ( otherfunctions::DecodeBase32(unicode2char(strHash), CAICHHash::GetHashSize(), m_AICHHash.GetRawHash()) == CAICHHash::GetHashSize()){
-				m_bAICHHashValid = true;
-				wxASSERT( m_AICHHash.GetString().CmpNoCase(strHash) == 0 );
-			} else {
-				wxASSERT( false );
-			}
-		} else {
-			wxASSERT( false );		
+		wxString strHash = masterhash.AfterFirst(wxT('='));
+		wxASSERT(!strHash.IsEmpty());
+		if (!strHash.IsEmpty()) {
+			m_bAICHHashValid = otherfunctions::DecodeBase32(
+					strHash, CAICHHash::GetHashSize(), m_AICHHash.GetRawHash()) == 
+				CAICHHash::GetHashSize();
+			wxASSERT(m_bAICHHashValid);
+			wxASSERT(m_AICHHash.GetString().CmpNoCase(strHash) == 0);
 		}
 	}
 }

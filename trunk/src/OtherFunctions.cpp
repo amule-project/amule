@@ -347,33 +347,33 @@ uint32 GetTypeSize(uint8 type)
 }
 
 // Base16 chars for encode an decode functions
-static byte base16Chars[17] = "0123456789ABCDEF";
-static byte base32Chars[33] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+static wxChar base16Chars[17] = wxT("0123456789ABCDEF");
+static wxChar base32Chars[33] = wxT("ABCDEFGHIJKLMNOPQRSTUVWXYZ234567");
 #define BASE16_LOOKUP_MAX 23
-static byte base16Lookup[BASE16_LOOKUP_MAX][2] = {
-	{ '0', 0x0 },
-	{ '1', 0x1 },
-	{ '2', 0x2 },
-	{ '3', 0x3 },
-	{ '4', 0x4 },
-	{ '5', 0x5 },
-	{ '6', 0x6 },
-	{ '7', 0x7 },
-	{ '8', 0x8 },
-	{ '9', 0x9 },
-	{ ':', 0x9 },
-	{ ';', 0x9 },
-	{ '<', 0x9 },
-	{ '=', 0x9 },
-	{ '>', 0x9 },
-	{ '?', 0x9 },
-	{ '@', 0x9 },
-	{ 'A', 0xA },
-	{ 'B', 0xB },
-	{ 'C', 0xC },
-	{ 'D', 0xD },
-	{ 'E', 0xE },
-	{ 'F', 0xF }
+static wxChar base16Lookup[BASE16_LOOKUP_MAX][2] = {
+	{ wxT('0'), 0x0 },
+	{ wxT('1'), 0x1 },
+	{ wxT('2'), 0x2 },
+	{ wxT('3'), 0x3 },
+	{ wxT('4'), 0x4 },
+	{ wxT('5'), 0x5 },
+	{ wxT('6'), 0x6 },
+	{ wxT('7'), 0x7 },
+	{ wxT('8'), 0x8 },
+	{ wxT('9'), 0x9 },
+	{ wxT(':'), 0x9 },
+	{ wxT(';'), 0x9 },
+	{ wxT('<'), 0x9 },
+	{ wxT('='), 0x9 },
+	{ wxT('>'), 0x9 },
+	{ wxT('?'), 0x9 },
+	{ wxT('@'), 0x9 },
+	{ wxT('A'), 0xA },
+	{ wxT('B'), 0xB },
+	{ wxT('C'), 0xC },
+	{ wxT('D'), 0xD },
+	{ wxT('E'), 0xE },
+	{ wxT('F'), 0xF }
 };
 
 
@@ -406,15 +406,15 @@ wxString EncodeBase16(const unsigned char* buffer, unsigned int bufLen)
 //
 // [Out]
 //   buffer: byte array containing decoded string
-unsigned int DecodeBase16(const char *base16Buffer, unsigned int base16BufLen, byte *buffer)
+unsigned int DecodeBase16(const wxString &base16Buffer, unsigned int base16BufLen, byte *buffer)
 {
-	if (!base16Buffer || (base16BufLen & 1)) {
+	if (base16BufLen & 1) {
 		return 0;
 	}
 	unsigned int ret = base16BufLen >> 1;
 	memset( buffer, 0,  ret);
 	for(unsigned int i = 0; i < base16BufLen; ++i) {
-		int lookup = toupper(base16Buffer[i]) - '0';
+		int lookup = toupper(base16Buffer[i]) - wxT('0');
 		// Check to make sure that the given word falls inside a valid range
 		byte word = (lookup < 0 || lookup >= BASE16_LOOKUP_MAX) ?
 			0xFF : base16Lookup[lookup][1];
@@ -473,49 +473,41 @@ wxString EncodeBase32(const unsigned char* buffer, unsigned int bufLen)
 //   buffer: byte array containing decoded string
 // [Return]
 //   nDecodeLen:
-unsigned int DecodeBase32(const char *base32Buffer, unsigned int base32BufLen, unsigned char *buffer)
+unsigned int DecodeBase32(const wxString &base32Buffer, unsigned int base32BufLen, unsigned char *buffer)
 {
-	if (!base32Buffer) {
-		return 0;
-	}
-
-	uint32 nDecodeLen = (strlen(base32Buffer)*5)/8;
-	if ((strlen(base32Buffer)*5) % 8 > 0) {
+	size_t nInputLen = base32Buffer.Length();
+	uint32 nDecodeLen = (nInputLen * 5) / 8;
+	if ((nInputLen * 5) % 8 > 0) {
 		++nDecodeLen;
 	}
-	uint32 nInputLen = strlen(base32Buffer);
-	if (buffer == NULL || base32BufLen == 0) {
+	if (base32BufLen == 0) {
 		return nDecodeLen;
 	}
-	if (nDecodeLen > base32BufLen || buffer == NULL) {
+	if (nDecodeLen > base32BufLen) {
 		return 0;
 	}
 
-	DWORD nBits	= 0;
-	int nCount	= 0;
-
-	for ( int nChars = nInputLen ; nChars-- ; ++base32Buffer )
+	DWORD nBits = 0;
+	int nCount = 0;
+	for (size_t i = 0; i < nInputLen; ++i)
 	{
-		if ( *base32Buffer >= 'A' && *base32Buffer <= 'Z' ) {
-			nBits |= ( *base32Buffer - 'A' );
+		if (base32Buffer[i] >= wxT('A') && base32Buffer[i] <= wxT('Z')) {
+			nBits |= ( base32Buffer[i] - wxT('A') );
 		}
-		else if ( *base32Buffer >= 'a' && *base32Buffer <= 'z' ) {
-			nBits |= ( *base32Buffer - 'a' );
+		else if (base32Buffer[i] >= wxT('a') && base32Buffer[i] <= wxT('z')) {
+			nBits |= ( base32Buffer[i] - wxT('a') );
 		}
-		else if ( *base32Buffer >= '2' && *base32Buffer <= '7' ) {
-			nBits |= ( *base32Buffer - '2' + 26 );
+		else if (base32Buffer[i] >= wxT('2') && base32Buffer[i] <= wxT('7')) {
+			nBits |= ( base32Buffer[i] - wxT('2') + 26 );
 		} else {
 			return 0;
 		}
-		
 		nCount += 5;
-
-		if ( nCount >= 8 )
+		if (nCount >= 8)
 		{
-			*buffer++ = (BYTE)( nBits >> ( nCount - 8 ) );
+			*buffer++ = (BYTE)( nBits >> (nCount - 8) );
 			nCount -= 8;
 		}
-
 		nBits <<= 5;
 	}
 
@@ -635,55 +627,52 @@ wxString EncodeBase64(const char *pbBufferIn, unsigned int bufLen)
 	return pbBufferOut;
 }
 
-unsigned int DecodeBase64(const char *base64Buffer, unsigned int base64BufLen, unsigned char *buffer)
+unsigned int DecodeBase64(const wxString &base64Buffer, unsigned int base64BufLen, unsigned char *buffer)
 {
 	int z = 0;  // 0 Normal, 1 skip MIME separator (---) to end of line
 	unsigned int nData = 0;
 	unsigned int i = 0;
 
-	if (!base64Buffer) {
-		return false;	
-	}
-	
-	if( base64BufLen == 0 ) {
+	if (base64BufLen == 0) {
 		*buffer = 0;
 		nData = 1;
 	}
 	
-	for( char c = *base64Buffer; base64BufLen--; c = *++base64Buffer ) {
-		unsigned char bits = 'z';
+	for(unsigned int j = 0; j < base64BufLen; ++j) {
+		wxChar c = base64Buffer[j];
+		wxChar bits = wxT('z');
 		if( z > 0 ) {
-			if( c == '\n' ) {
+			if(c == wxT('\n')) {
 				z = 0;
 			}
 		}
-		else if( c >= 'A' && c <= 'Z' ) {
-			bits = (unsigned char) (c - 'A');
+		else if(c >= wxT('A') && c <= wxT('Z')) {
+			bits = c - wxT('A');
 		}
-		else if( c >= 'a' && c <= 'z' ) {
-			bits = (unsigned char) (c - 'a' + (char)26);
+		else if(c >= wxT('a') && c <= wxT('z')) {
+			bits = c - wxT('a') + (wxChar)26;
 		}
-		else if( c >= '0' && c <= '9' ) {
-			bits = (unsigned char) (c - '0' + (char)52);
+		else if(c >= wxT('0') && c <= wxT('9')) {
+			bits = c - wxT('0') + (wxChar)52;
 		}
-		else if( c == '+' ) {
-			bits = (unsigned char) 62;
+		else if(c == wxT('+')) {
+			bits = (wxChar)62;
 		}
-		else if( c == '/' ) {
-			bits = (unsigned char) 63;
+		else if(c == wxT('/')) {
+			bits = (wxChar)63;
 		}
-		else if( c == '-' ) {
+		else if(c == wxT('-')) {
 			z = 1;
 		}
-		else if( c == '=' ) {
+		else if(c == wxT('=')) {
 			break;
 		} else {
-			bits = (unsigned char) 'y';
+			bits = wxT('y');
 		}
 
 		// Skips anything that was not recognized
 		// as a base64 valid char ('y' or 'z')
-		if (bits < (unsigned char)64) {
+		if (bits < (wxChar)64) {
 			switch (nData++) {
 			case 0:
 				buffer[i+0] = (bits << 2) & 0xfc;
@@ -706,7 +695,6 @@ unsigned int DecodeBase64(const char *base64Buffer, unsigned int base64BufLen, u
 			}
 		}
 	}
-	
 	if (nData == 1) {
 		// Syntax error or buffer was empty
 		*buffer = 0;
