@@ -588,10 +588,20 @@ int CQueueListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 			} else {
 				return 0;
 			}
-		case 2:
-			return item1->GetClientVerString() - item2-> GetClientVerString();
-		case 102:
-			return item2->GetClientVerString() - item1-> GetClientVerString();
+		case 2: {
+			if( item1->GetClientSoft() != item2->GetClientSoft() )
+				return item2->GetClientSoft(), item1->GetClientSoft();
+			if (item1->GetVersion() != item2->GetVersion())
+				return item1->GetVersion(), item2->GetVersion();
+			return item1->GetClientModString().CmpNoCase(item2->GetClientModString());
+			}
+		case 102: {
+			if( item1->GetClientSoft() != item2->GetClientSoft() )
+				return item1->GetClientSoft(), item2->GetClientSoft();
+			if (item1->GetVersion() != item2->GetVersion())
+			    return item2->GetVersion(), item1->GetVersion();
+			return item2->GetClientModString().CmpNoCase(item1->GetClientModString());
+			}
 		case 3:
 			if( (file1 != NULL) && (file2 != NULL)) {
 				return file1->GetUpPriority() - file2->GetUpPriority();
