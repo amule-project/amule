@@ -125,7 +125,7 @@ void CUpDownClient::Init()
 	// m_nAvDownDatarate = 0;  // unused
 	m_byChatstate = 0;
 	m_cShowDR = 0;
-	m_nUDPPort = 0;
+	
 	m_cFailed = 0;
 	m_dwBanTime = 0;
 	m_nMaxSendAllowed = 0;
@@ -171,12 +171,10 @@ void CUpDownClient::Init()
 	m_nTransferedDown = 0;
 	m_nUploadState = US_NONE;
 	m_dwLastBlockReceived = 0;
-	m_byEmuleVersion = 0;
-	m_byDataCompVer = 0;
-	m_byUDPVer = 0;
-	m_bySourceExchangeVer = 0;
-	m_byAcceptCommentVer = 0;
-	m_byExtendedRequestsVer = 0;
+
+
+
+
 	m_nRemoteQueueRank = 0;
 	m_dwLastSourceRequest = 0;
 	m_dwLastSourceAnswer = 0;
@@ -184,10 +182,9 @@ void CUpDownClient::Init()
 	
 	m_SecureIdentState = IS_UNAVAILABLE;
 	m_dwLastSignatureIP = 0;
-	m_bySupportSecIdent = 0;
+	
 	m_byInfopacketsReceived = IP_NONE;	
 	
-	m_byCompatibleClient = 0;
 	m_bIsHybrid = false;
 	m_bIsNewMLD = false;
 	m_bIsML = false;
@@ -196,7 +193,7 @@ void CUpDownClient::Init()
 	m_strComment="";
 	m_nCurSessionUp = 0;
 	m_clientSoft=SO_UNKNOWN;
-	m_nClientVersion=0;
+	
 	m_bRemoteQueueFull = false;
 	memset( m_achUserHash, 0, 16);
 	SetWaitStartTime();
@@ -226,7 +223,10 @@ void CUpDownClient::Init()
 	m_bHelloAnswerPending = false;
 	m_fSentCancelTransfer = 0;
 	Extended_aMule_SO = 0;
-}
+
+	ClearHelloProperties();	
+	
+}	
 
 
 CUpDownClient::~CUpDownClient()
