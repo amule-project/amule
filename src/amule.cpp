@@ -1241,32 +1241,22 @@ void CamuleApp::Trigger_New_version(wxString old_version, wxString new_version)
 		info += wxT(_("This version is a testing version, updated daily, and \n"));
 		info += wxT(_("we give no warranty it won't break anything, burn your house,\n"));
 		info += wxT(_("or kill your dog. But it *should* be safe to use anyway. \n"));		
-	} else if ((new_version == wxT("2.0.0rc1")) || (old_version == wxT("pre_2.0.0rc1"))) {
+	} else if ((new_version == wxT("2.0.0rc1")) || (old_version == wxT("1.2.6"))) {
 		info += wxT(_("This version has new SecureIdent support, so your \n"));
 		info += wxT(_("client credits will be lost on this first run. \n"));
 		info += wxT(_("There is no way to fix that, and eMule did the same.\n"));
 		info += wxT(_("But your hash will be safe against stealers now, and your\n"));
 		info += wxT(_("cryptokey.dat and clients.met are eMule compatible now.\n"));
 		info += wxT(_("Just take them from your eMule config dir and put then on ~/.aMule.\n"));
-		info += wxT(_("If your language is changed now, please set it again on preferences.\n"));
 		
-		if (old_version == wxString("1.2.6") || (old_version == wxString("pre_2.0.0rc1"))) {
-			WORD language_id = glob_prefs->GetLanguageID();
-			
-			if ( language_id < 4 && language_id != 0 ) {
-				language_id ++; 
-			} else if ( language_id < 7 ) {
-				language_id += 2;
-			} else if ( language_id < 22 ) {
-				language_id += 3; 			
-			}
-			
-			glob_prefs->SetLanguageID(language_id);
-		}
 	}		
 
 	info += wxT(_("Feel free to report any bugs to forum.amule.org"));
 		
 	wxMessageBox(info, _("Info"), wxCENTRE | wxOK | wxICON_ERROR);	
-}
 
+	// Set to system default... no other way AFAIK unless we change the save type.			
+		
+	glob_prefs->SetLanguageID(0);
+	
+}
