@@ -88,6 +88,18 @@ void CServerListCtrl::OnRclickServlist(wxListEvent& event)
 		SetItemState(event.GetIndex(), wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
 	}
  
+	bool priority_enabled, static_enabled, show_connect;
+	
+	// set states
+	CServer* test=NULL;
+	int selidx;
+	selidx=GetNextItem(-1,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
+	if(selidx!=-1) {
+		priority_enabled = TRUE;
+	} else {
+		priority_enabled = FALSE;
+	}
+	
 	// Create up-to-date popupmenu
 	if(m_ServerMenu==NULL) {
 		m_ServerMenu=new wxMenu(_("Server"));
@@ -97,45 +109,49 @@ void CServerListCtrl::OnRclickServlist(wxListEvent& event)
 		m_ServerPrioMenu->Append(MP_PRIOHIGH,_("High"));
 
 		m_ServerMenu->Append(MP_CONNECTTO,_("Connect to this server"));
+	
 		m_ServerMenu->Append(999999,_("Priority"),m_ServerPrioMenu);
 		m_ServerMenu->Append(MP_ADDTOSTATIC,_("Add to static"));
 		m_ServerMenu->Append(MP_REMOVEFROMSTATIC, CString(_("Remove from static server list")));
-		m_ServerMenu->Enable(MP_ADDTOSTATIC,FALSE);
-		m_ServerMenu->Enable(MP_REMOVEFROMSTATIC,FALSE);
 		m_ServerMenu->AppendSeparator();
 		m_ServerMenu->Append(MP_REMOVE,_("Remove server"));
 		m_ServerMenu->Append(MP_REMOVEALL,_("Remove all servers"));
 		m_ServerMenu->AppendSeparator();
 		m_ServerMenu->Append(MP_GETED2KLINK,_("Copy ED2k &link to clipboard"));
 	}
-
-	// set states
-	CServer* test=NULL;
-	int selidx;
-	selidx=GetNextItem(-1,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
-	if(selidx!=-1) {
-		m_ServerMenu->Enable(999999,TRUE);
-	} else {
-		m_ServerMenu->Enable(999999,FALSE);
-	}
+	
 	if(selidx!=-1) {
 		test=(CServer*)GetItemData(selidx);
 		if(test) {
 			if(test->IsStaticMember()) {
-				m_ServerMenu->Enable(MP_REMOVEFROMSTATIC,TRUE);
-				m_ServerMenu->Enable(MP_ADDTOSTATIC,FALSE);
+				static_enabled = TRUE;
 			} else {
-				m_ServerMenu->Enable(MP_REMOVEFROMSTATIC,FALSE);
-				m_ServerMenu->Enable(MP_ADDTOSTATIC,TRUE);
+				static_enabled = FALSE;
 			}
 		} else {
-			m_ServerMenu->Enable(MP_REMOVEFROMSTATIC,FALSE);
-			m_ServerMenu->Enable(MP_ADDTOSTATIC,FALSE);
+			static_enabled = FALSE;
+		}
+		if((long)test==connected) {
+			show_connect = FALSE;
+		} else {
+			show_connect = TRUE;			
 		}
 	} else {
-		m_ServerMenu->Enable(MP_REMOVEFROMSTATIC,FALSE);
-		m_ServerMenu->Enable(MP_ADDTOSTATIC,FALSE);
+		static_enabled = FALSE;
 	}
+
+
+	m_ServerMenu->Enable(MP_REMOVEFROMSTATIC,static_enabled);
+	m_ServerMenu->Enable(MP_ADDTOSTATIC,!static_enabled);
+	m_ServerMenu->Enable(999999, priority_enabled);
+
+	if (show_connect) {
+		m_ServerMenu->SetLabel(MP_CONNECTTO,_("Connect to this server"));
+	} else {
+		m_ServerMenu->SetLabel(MP_CONNECTTO,_("Reconnect to this server"));						
+	}
+
+	
 	PopupMenu(m_ServerMenu,event.GetPoint());
 }
 
