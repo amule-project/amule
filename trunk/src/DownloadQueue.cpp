@@ -1255,8 +1255,8 @@ void CDownloadQueue::CheckDiskspace(bool bNotEnoughSpaceLeft)
 				cur_file->ResumeFileInsufficient();
 			} else {
 				if (!cur_file->GetInsufficient()) {
-					printf("Free Disk Space (Total): %lli\n", nTotalAvailableSpace);
-					printf("File : %s, Needed Space : %i - PAUSED !!!\n", cur_file->GetFileName().GetData(),cur_file->GetNeededSpace());
+					theApp.amuledlg->AddLogLine(false,wxString::Format("Free Disk Space (Total): %lli\n", nTotalAvailableSpace));
+					theApp.amuledlg->AddLogLine(true,wxString::Format("File : %s, Needed Space : %i - PAUSED !!!\n", cur_file->GetFileName().GetData(),cur_file->GetNeededSpace()));
 					cur_file->PauseFile(true);
 				}
 			}
@@ -1276,8 +1276,8 @@ void CDownloadQueue::CheckDiskspace(bool bNotEnoughSpaceLeft)
 					uint32 nSpaceToGrow = cur_file->GetNeededSpace();
 					if (nSpaceToGrow) {
 						if (!cur_file->GetInsufficient()) {						
-							printf("Free Disk Space (Total): %lli\n", nTotalAvailableSpace);
-							printf("File : %s, Needed Space : %i - PAUSED !!!\n", cur_file->GetFileName().GetData(),cur_file->GetNeededSpace());
+							theApp.amuledlg->AddLogLine(false,wxString::Format("Free Disk Space (Total): %lli\n", nTotalAvailableSpace));
+							theApp.amuledlg->AddLogLine(true,wxString::Format("File : %s, Needed Space : %i - PAUSED !!!\n", cur_file->GetFileName().GetData(),cur_file->GetNeededSpace()));
 							// cur_file->PauseFileInsufficient();
 							cur_file->PauseFile(true/*bInsufficient*/);
 						}
