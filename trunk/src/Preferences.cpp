@@ -870,7 +870,7 @@ void CPreferences::LoadAllItems(wxConfigBase* cfg)
 
 void CPreferences::SaveAllItems(wxConfigBase* cfg)
 {
-	// Connect the Cfgs with their widgets
+	// Save the Cfg values
 	CFGMap::iterator it_a = s_CfgList.begin();
 	for ( ; it_a != s_CfgList.end(); ++it_a )
 		it_a->second->SaveToFile( cfg );
@@ -1072,6 +1072,9 @@ void CPreferences::SavePreferences()
 	wxConfigBase* cfg = wxConfig::Get();
 
 	cfg->Write( wxT("/eMule/AppVersion"), wxT(PACKAGE_STRING) );
+
+	// Save the options
+	SaveAllItems( cfg );
 
 	// Ensure that the changes are saved to disk.
 	cfg->Flush();
