@@ -18,7 +18,10 @@
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <wx/defs.h>		// Needed before any other wx/*.h
+#ifndef MULETRAYICON_H
+#define MULETRAYICON_H
+
+#include <wx/defs.h>	// Needed before any other wx/*.h
 #warning remove this when new tray ready.
 /*
 #if wxCHECK_VERSION(2, 5, 3)
@@ -26,55 +29,50 @@
 #endif
 */
 
-
-#ifndef MULETRAYICON_H
-#define MULETRAYICON_H
-
 #ifdef USE_WX_TRAY 
 
 #include <wx/taskbar.h>
 #include <wx/icon.h>
 #include <wx/dcmemory.h>
 
-#include "types.h"				// Needed for uint32
+#include "types.h"	// Needed for uint32
 
-class wxString;	
+class wxString;
 class wxMenu;
-	
+
 enum {
 	TRAY_ICON_DISCONNECTED,
 	TRAY_ICON_LOWID,
 	TRAY_ICON_HIGHID
 };
 
-
 /**
  * The mule tray icon class is responsible for drawing the mule systray icon 
  * and reacting to the user input on it.
  */
 class CMuleTrayIcon : public wxTaskBarIcon {
+
 	public:
-		
 		/**
 		 * Contructor.
-	 	 */		
+		 */
 		CMuleTrayIcon();
 	
 		/**
 		 * Destructor.
-	 	 */			
+		 */
 		~CMuleTrayIcon();
 	
 		/**
 		 * Set the Tray icon. 
 		 * @param Icon The wxIcon object with the new tray icon
-	 	 */			
+		 */
 		void SetTrayIcon(int Icon, uint32 percent);
 		
 		/**
 		 * Set the Tray tooltip
 		 * @param Tip The wxString object with the new tray tooltip
-	 	 */	
+		 */
 		void SetTrayToolTip(const wxString& Tip);
 		
 	private:
@@ -84,7 +82,12 @@ class CMuleTrayIcon : public wxTaskBarIcon {
 		void UpdateTray();
 	
 		void SwitchShow(wxTaskBarIconEvent&);
-	
+		void SetUploadSpeed(wxCommandEvent&);
+		void SetDownloadSpeed(wxCommandEvent&);
+		void ServerConnection(wxCommandEvent&);
+		void ShowHide(wxCommandEvent&);
+		void Close(wxCommandEvent&);
+		
 		int Old_Icon;
 		int Old_SpeedSize;
 	
