@@ -264,7 +264,7 @@ public:
 	void		ProcessFileStatus(bool bUdpPacket, const CSafeMemFile* data, const CPartFile* file);
 	
 	const CMD4Hash&	GetUploadFileID() const	{ return m_requpfileid; }
-	CPartFile*	GetDownloadFile()	{ return reqfile; }
+	CPartFile*	GetDownloadFile()				{ return m_reqfile; } 
 	uint32		SendBlockData(float kBpsToSend);
 	void		ClearUploadBlockRequests();
 	void		SendRankingInfo();
@@ -289,6 +289,9 @@ public:
 	void		DrawUpStatusBar(wxMemoryDC* dc, wxRect rect, bool onlygreyrect, bool  bFlat);
 
 	//download
+	void 		SetRequestFile(CPartFile* reqfile); 
+	CPartFile*	GetRequestFile() const { return m_reqfile; }
+	
 	uint32		GetAskedCountDown() const 	{ return m_cDownAsked; }
 	void		AddAskedCountDown()		{ m_cDownAsked++; }
 	void		SetAskedCountDown(uint32 m_cInDownAsked){ m_cDownAsked = m_cInDownAsked; }
@@ -380,14 +383,13 @@ public:
 	
 	bool		CheckHandshakeFinished(UINT protocol, UINT opcode) const;
 		
-	CPartFile*	reqfile;
-	
 	bool		GetSentCancelTransfer() const { return m_fSentCancelTransfer; }
 	void		SetSentCancelTransfer(bool bVal) { m_fSentCancelTransfer = bVal; }
 	
 	wxString	GetClientFullInfo();
 
 private:
+	CPartFile*	m_reqfile;
 
 	// base
 	void		Init();

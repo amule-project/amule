@@ -71,7 +71,7 @@ void CUpDownClient::DrawStatusBar(wxMemoryDC* dc, wxRect rect, bool onlygreyrect
 		crNextPending = RGB(255,255,100);
 	} 
 
-	s_StatusBar.SetFileSize(reqfile->GetFileSize()); 
+	s_StatusBar.SetFileSize(m_reqfile->GetFileSize()); 
 	s_StatusBar.SetHeight(rect.height - rect.y);
 	s_StatusBar.SetWidth(rect.width - rect.x);
 	s_StatusBar.Fill(crNeither);
@@ -80,16 +80,16 @@ void CUpDownClient::DrawStatusBar(wxMemoryDC* dc, wxRect rect, bool onlygreyrect
 	// Barry - was only showing one part from client, even when reserved bits from 2 parts
 	wxString gettingParts = ShowDownloadingParts();
 
-	if (!onlygreyrect && reqfile && m_abyPartStatus) {
+	if (!onlygreyrect && m_reqfile && m_abyPartStatus) {
 		for (uint32 i = 0;i != m_nPartCount;i++) {
 			if (m_abyPartStatus[i]) {
 				uint32 uEnd;
-				if (PARTSIZE*(i+1) > reqfile->GetFileSize()) {
-					uEnd = reqfile->GetFileSize();
+				if (PARTSIZE*(i+1) > m_reqfile->GetFileSize()) {
+					uEnd = m_reqfile->GetFileSize();
 				} else {
 					uEnd = PARTSIZE*(i+1);
 				}
-				if (reqfile->IsComplete(PARTSIZE*i,PARTSIZE*(i+1)-1)) {
+				if (m_reqfile->IsComplete(PARTSIZE*i,PARTSIZE*(i+1)-1)) {
 					s_StatusBar.FillRange(PARTSIZE*i, uEnd, crBoth);
 				} else if (m_nDownloadState == DS_DOWNLOADING && m_nLastBlockOffset < uEnd && m_nLastBlockOffset >= PARTSIZE*i) {
 					s_StatusBar.FillRange(PARTSIZE*i, uEnd, crPending);
@@ -140,12 +140,12 @@ bool CUpDownClient::AskForDownload()
 void CUpDownClient::SendStartupLoadReq()
 {
 	// 0.42e
-	if (socket==NULL || reqfile==NULL) {
+	if (socket==NULL || m_reqfile==NULL) {
 		return;
 	}
 	SetDownloadState(DS_ONQUEUE);
 	CSafeMemFile dataStartupLoadReq(16);
-	dataStartupLoadReq.WriteHash16(reqfile->GetFileHash());
+	dataStartupLoadReq.WriteHash16(m_reqfile->GetFileHash());
 	Packet* packet = new Packet(&dataStartupLoadReq);
 	packet->SetOpCode(OP_STARTUPLOADREQ);
 	theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->GetPacketSize());
@@ -158,10 +158,10 @@ bool CUpDownClient::IsSourceRequestAllowed()
 	// 0.42e
 	DWORD dwTickCount = ::GetTickCount() + CONNECTION_LATENCY;
 	uint32 nTimePassedClient = dwTickCount - GetLastSrcAnswerTime();
-	uint32 nTimePassedFile   = dwTickCount - reqfile->GetLastAnsweredTime();
+	uint32 nTimePassedFile   = dwTickCount - m_reqfile->GetLastAnsweredTime();
 	bool bNeverAskedBefore = (GetLastAskedForSources() == 0);
 
-	UINT uSources = reqfile->GetSourceCount();
+	UINT uSources = m_reqfile->GetSourceCount();
 	return (
 		// if client has the correct extended protocol
 		ExtProtocolAvailable() && m_bySourceExchangeVer >= 1 &&
@@ -177,7 +177,7 @@ bool CUpDownClient::IsSourceRequestAllowed()
 			//source is not complete and file is rare
 			( !m_bCompleteSource
 			&& (bNeverAskedBefore || nTimePassedClient > SOURCECLIENTREASKS)
-			&& (uSources <= RARE_FILE || uSources - reqfile->GetValidSourcesCount() <= RARE_FILE / 2)
+			&& (uSources <= RARE_FILE || uSources - m_reqfile->GetValidSourcesCount() <= RARE_FILE / 2)
 			&& (nTimePassedFile > SOURCECLIENTREASKF)
 			) ||
 			// OR if file is not rare
@@ -192,27 +192,27 @@ bool CUpDownClient::IsSourceRequestAllowed()
 void CUpDownClient::SendFileRequest()
 {
 	// 0.42e
-	wxASSERT(reqfile != NULL);
+	wxASSERT(m_reqfile != NULL);
 	
-	if(!reqfile) {
+	if(!m_reqfile) {
 		return;
 	}
 	
 	AddAskedCountDown();
 
 	CSafeMemFile dataFileReq(16+16);
-	dataFileReq.WriteHash16(reqfile->GetFileHash());
+	dataFileReq.WriteHash16(m_reqfile->GetFileHash());
 
 	if( SupportMultiPacket() ) {
 		dataFileReq.Write((uint8)OP_REQUESTFILENAME);
 		//Extended information
 		if( GetExtendedRequestsVersion() > 0 ) {
-			reqfile->WritePartStatus(&dataFileReq);
+			m_reqfile->WritePartStatus(&dataFileReq);
 		}
 		if( GetExtendedRequestsVersion() > 1 ) {
-			reqfile->WriteCompleteSourcesCount(&dataFileReq);
+			m_reqfile->WriteCompleteSourcesCount(&dataFileReq);
 		}
-		if (reqfile->GetPartCount() > 1) {
+		if (m_reqfile->GetPartCount() > 1) {
 			dataFileReq.Write((uint8)OP_SETREQFILEID);
 		}
 		if( IsEmuleClient() ) {
@@ -221,16 +221,16 @@ void CUpDownClient::SendFileRequest()
 		}
 		if(IsSourceRequestAllowed())	{
 			dataFileReq.Write((uint8)OP_REQUESTSOURCES);
-			reqfile->SetLastAnsweredTimeTimeout();
+			m_reqfile->SetLastAnsweredTimeTimeout();
 			SetLastAskedForSources();
 			#ifdef __USE_DEBUG__
 			if (thePrefs.GetDebugSourceExchange()) 
-				AddDebugLogLineF( false, "Send:Source Request User(%s) File(%s)", unicode2char(GetUserName()), reqfile->GetFileName() );
+				AddDebugLogLineF( false, "Send:Source Request User(%s) File(%s)", unicode2char(GetUserName()), m_reqfile->GetFileName() );
 			#endif
 		}
 		#ifdef __USE_DEBUG__
 		if (thePrefs.GetDebugClientTCPLevel() > 0)
-			DebugSend("OP__MultiPacket", this, (char*)reqfile->GetFileHash());
+			DebugSend("OP__MultiPacket", this, (char*)m_reqfile->GetFileHash());
 		#endif
 		Packet* packet = new Packet(&dataFileReq, OP_EMULEPROT);
 		packet->SetOpCode(OP_MULTIPACKET);
@@ -239,14 +239,14 @@ void CUpDownClient::SendFileRequest()
 	} else {
 		//This is extended information
 		if( GetExtendedRequestsVersion() > 0 ){
-			reqfile->WritePartStatus(&dataFileReq);
+			m_reqfile->WritePartStatus(&dataFileReq);
 		}
 		if( GetExtendedRequestsVersion() > 1 ){
-			reqfile->WriteCompleteSourcesCount(&dataFileReq);
+			m_reqfile->WriteCompleteSourcesCount(&dataFileReq);
 		}
 		#ifdef __USE_DEBUG__
 		if (thePrefs.GetDebugClientTCPLevel() > 0)
-			DebugSend("OP__FileRequest", this, (char*)reqfile->GetFileHash());
+			DebugSend("OP__FileRequest", this, (char*)m_reqfile->GetFileHash());
 		#endif
 		Packet* packet = new Packet(&dataFileReq);
 		packet->SetOpCode(OP_REQUESTFILENAME);
@@ -256,13 +256,13 @@ void CUpDownClient::SendFileRequest()
 		// 26-Jul-2003: removed requesting the file status for files <= PARTSIZE for better compatibility with ed2k protocol (eDonkeyHybrid).
 		// if the remote client answers the OP_REQUESTFILENAME with OP_REQFILENAMEANSWER the file is shared by the remote client. if we
 		// know that the file is shared, we know also that the file is complete and don't need to request the file status.
-		if (reqfile->GetPartCount() > 1) {
+		if (m_reqfile->GetPartCount() > 1) {
 			#ifdef __USE_DEBUG__
 			if (thePrefs.GetDebugClientTCPLevel() > 0)
-				DebugSend("OP__SetReqFileID", this, (char*)reqfile->GetFileHash());
+				DebugSend("OP__SetReqFileID", this, (char*)m_reqfile->GetFileHash());
 			#endif
 			CSafeMemFile dataSetReqFileID(16);
-			dataSetReqFileID.WriteRaw(reqfile->GetFileHash(),16);
+			dataSetReqFileID.WriteRaw(m_reqfile->GetFileHash(),16);
 			packet = new Packet(&dataSetReqFileID);
 			packet->SetOpCode(OP_SETREQFILEID);
 			theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->GetPacketSize());
@@ -276,22 +276,22 @@ void CUpDownClient::SendFileRequest()
 		if(IsSourceRequestAllowed()) {
 			#ifdef __USE_DEBUG__
 		    if (thePrefs.GetDebugClientTCPLevel() > 0){
-			    DebugSend("OP__RequestSources", this, (char*)reqfile->GetFileHash());
+			    DebugSend("OP__RequestSources", this, (char*)m_reqfile->GetFileHash());
 			    if (GetLastAskedForSources() == 0)
 				    Debug("  first source request\n");
 			    else
 				    Debug("  last source request was before %s\n", CastSecondsToHM((GetTickCount() - GetLastAskedForSources())/1000));
 		    }
 		    #endif
-			reqfile->SetLastAnsweredTimeTimeout();
+			m_reqfile->SetLastAnsweredTimeTimeout();
 			Packet* packet = new Packet(OP_REQUESTSOURCES,16,OP_EMULEPROT);
-			packet->Copy16ToDataBuffer((const char *)reqfile->GetFileHash().GetHash());
+			packet->Copy16ToDataBuffer((const char *)m_reqfile->GetFileHash().GetHash());
 			theApp.uploadqueue->AddUpDataOverheadSourceExchange(packet->GetPacketSize());
 			socket->SendPacket(packet,true,true);
 			SetLastAskedForSources();
 		    #ifdef __USE_DEBUG__
 			if (thePrefs.GetDebugSourceExchange())
-				AddDebugLogLineF( false, "Send:Source Request User(%s) File(%s)", unicode2char(GetUserName()), reqfile->GetFileName() );
+				AddDebugLogLineF( false, "Send:Source Request User(%s) File(%s)", unicode2char(GetUserName()), m_reqfile->GetFileName() );
 			#endif
 		}
 	}
@@ -303,11 +303,11 @@ void CUpDownClient::ProcessFileInfo(const CSafeMemFile* data, const CPartFile* f
 	if (file==NULL) {
 		throw wxString(_("ERROR: Wrong file ID (ProcessFileInfo; file==NULL)"));
 	}
-	if (reqfile==NULL) {
-		throw wxString(_("ERROR: Wrong file ID (ProcessFileInfo; reqfile==NULL)"));
+	if (m_reqfile==NULL) {
+		throw wxString(_("ERROR: Wrong file ID (ProcessFileInfo; m_reqfile==NULL)"));
 	}
-	if (file != reqfile) {
-		throw wxString(_("ERROR: Wrong file ID (ProcessFileInfo; reqfile!=file)"));
+	if (file != m_reqfile) {
+		throw wxString(_("ERROR: Wrong file ID (ProcessFileInfo; m_reqfile!=file)"));
 	}	
 
 	data->Read(ClientFilename);
@@ -315,14 +315,14 @@ void CUpDownClient::ProcessFileInfo(const CSafeMemFile* data, const CPartFile* f
 	// 26-Jul-2003: removed requesting the file status for files <= PARTSIZE for better compatibility with ed2k protocol (eDonkeyHybrid).
 	// if the remote client answers the OP_REQUESTFILENAME with OP_REQFILENAMEANSWER the file is shared by the remote client. if we
 	// know that the file is shared, we know also that the file is complete and don't need to request the file status.
-	if (reqfile->GetPartCount() == 1)
+	if (m_reqfile->GetPartCount() == 1)
 	{
 		if (m_abyPartStatus)
 		{
 			delete[] m_abyPartStatus;
 			m_abyPartStatus = NULL;
 		}
-		m_nPartCount = reqfile->GetPartCount();
+		m_nPartCount = m_reqfile->GetPartCount();
 		m_abyPartStatus = new uint8[m_nPartCount];
 		memset(m_abyPartStatus,1,m_nPartCount);
 		m_bCompleteSource = true;
@@ -332,7 +332,7 @@ void CUpDownClient::ProcessFileInfo(const CSafeMemFile* data, const CPartFile* f
 		{
 		    int iNeeded = 0;
 		    for (int i = 0; i < m_nPartCount; i++)
-			    if (!reqfile->IsComplete(i*PARTSIZE,((i+1)*PARTSIZE)-1))
+			    if (!m_reqfile->IsComplete(i*PARTSIZE,((i+1)*PARTSIZE)-1))
 				    iNeeded++;
 			char* psz = new char[m_nPartCount + 1];
 			for (int i = 0; i < m_nPartCount; i++)
@@ -343,19 +343,19 @@ void CUpDownClient::ProcessFileInfo(const CSafeMemFile* data, const CPartFile* f
 		}
 		#endif
 		UpdateDisplayedInfo();
-		reqfile->UpdateAvailablePartsCount();
+		m_reqfile->UpdateAvailablePartsCount();
 		// even if the file is <= PARTSIZE, we _may_ need the hashset for that file (if the file size == PARTSIZE)
-		if (reqfile->hashsetneeded)
+		if (m_reqfile->hashsetneeded)
 		{
 			if (socket)
 			{
 				Packet* packet = new Packet(OP_HASHSETREQUEST,16);
-				packet->Copy16ToDataBuffer((const char *)reqfile->GetFileHash().GetHash());
+				packet->Copy16ToDataBuffer((const char *)m_reqfile->GetFileHash().GetHash());
 				theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->GetPacketSize());
 				socket->SendPacket(packet,true,true);
 				SetDownloadState(DS_REQHASHSET);
 				m_fHashsetRequesting = 1;
-				reqfile->hashsetneeded = false;
+				m_reqfile->hashsetneeded = false;
 			}
 			else {
 				wxASSERT(0);
@@ -364,7 +364,7 @@ void CUpDownClient::ProcessFileInfo(const CSafeMemFile* data, const CPartFile* f
 		else {
 			SendStartupLoadReq();
 		}
-		reqfile->UpdatePartsInfo();
+		m_reqfile->UpdatePartsInfo();
 	}
 }
 
@@ -372,11 +372,11 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, const CSafeMemFile* data,
 {
 	// 0.42e
 	
-	if ( !reqfile || file != reqfile ){
-		if (reqfile==NULL) {
-			throw wxString(_("ERROR: Wrong file ID (ProcessFileStatus; reqfile==NULL)"));
+	if ( !m_reqfile || file != m_reqfile ){
+		if (m_reqfile==NULL) {
+			throw wxString(_("ERROR: Wrong file ID (ProcessFileStatus; m_reqfile==NULL)"));
 		}
-		throw wxString(_("ERROR: Wrong file ID (ProcessFileStatus; reqfile!=file)"));
+		throw wxString(_("ERROR: Wrong file ID (ProcessFileStatus; m_reqfile!=file)"));
 	}
 	
 	uint16 nED2KPartCount;
@@ -390,7 +390,7 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, const CSafeMemFile* data,
 	int iNeeded = 0;
 	if (!nED2KPartCount)
 	{
-		m_nPartCount = reqfile->GetPartCount();
+		m_nPartCount = m_reqfile->GetPartCount();
 		m_abyPartStatus = new uint8[m_nPartCount];
 		memset(m_abyPartStatus,1,m_nPartCount);
 		bPartsNeeded = true;
@@ -399,7 +399,7 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, const CSafeMemFile* data,
 		#if __USE_DEBUG__
 		if (bUdpPacket ? (thePrefs.GetDebugClientUDPLevel() > 0) : (thePrefs.GetDebugClientTCPLevel() > 0)) 		{
 			for (int i = 0; i < m_nPartCount; i++) {
-				if (!reqfile->IsComplete(i*PARTSIZE,((i+1)*PARTSIZE)-1)) {
+				if (!m_reqfile->IsComplete(i*PARTSIZE,((i+1)*PARTSIZE)-1)) {
 					iNeeded++;
 				}
 			}
@@ -408,15 +408,15 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, const CSafeMemFile* data,
 	}
 	else
 	{
-		if (reqfile->GetED2KPartCount() != nED2KPartCount)
+		if (m_reqfile->GetED2KPartCount() != nED2KPartCount)
 		{
 			wxString strError;
-			strError.Printf(_("ProcessFileStatus - wrong part number recv=%u  expected=%u  "), nED2KPartCount, reqfile->GetED2KPartCount());
-			strError +=  EncodeBase16(reqfile->GetFileHash(), 16);
+			strError.Printf(_("ProcessFileStatus - wrong part number recv=%u  expected=%u  "), nED2KPartCount, m_reqfile->GetED2KPartCount());
+			strError +=  EncodeBase16(m_reqfile->GetFileHash(), 16);
 			m_nPartCount = 0;
 			throw strError;
 		}
-		m_nPartCount = reqfile->GetPartCount();
+		m_nPartCount = m_reqfile->GetPartCount();
 
 		m_bCompleteSource = false;
 		m_abyPartStatus = new uint8[m_nPartCount];
@@ -430,7 +430,7 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, const CSafeMemFile* data,
 				m_abyPartStatus[done] = ((toread>>i)&1)? 1:0; 	
 				if (m_abyPartStatus[done])
 				{
-					if (!reqfile->IsComplete(done*PARTSIZE,((done+1)*PARTSIZE)-1)){
+					if (!m_reqfile->IsComplete(done*PARTSIZE,((done+1)*PARTSIZE)-1)){
 						bPartsNeeded = true;
 						iNeeded++;
 					}
@@ -456,27 +456,27 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, const CSafeMemFile* data,
 	#endif
 
 	UpdateDisplayedInfo();
-	reqfile->UpdateAvailablePartsCount();
+	m_reqfile->UpdateAvailablePartsCount();
 
 	// NOTE: This function is invoked from TCP and UDP socket!
 	if (!bUdpPacket) {
 		if (!bPartsNeeded) {
 			SetDownloadState(DS_NONEEDEDPARTS);
-		} else if (reqfile->hashsetneeded) {
+		} else if (m_reqfile->hashsetneeded) {
 			//If we are using the eMule filerequest packets, this is taken care of in the Multipacket!
 			if (socket) {
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
-					DebugSend("OP__HashSetRequest", this, (char*)reqfile->GetFileHash());
+					DebugSend("OP__HashSetRequest", this, (char*)m_reqfile->GetFileHash());
 				}
 				#endif
 				Packet* packet = new Packet(OP_HASHSETREQUEST,16);
-				packet->Copy16ToDataBuffer((const char *)reqfile->GetFileHash().GetHash());
+				packet->Copy16ToDataBuffer((const char *)m_reqfile->GetFileHash().GetHash());
 				theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->GetPacketSize());
 				socket->SendPacket(packet, true, true);
 				SetDownloadState(DS_REQHASHSET);
 				m_fHashsetRequesting = 1;
-				reqfile->hashsetneeded = false;
+				m_reqfile->hashsetneeded = false;
 			} else {
 				wxASSERT(0);
 			}
@@ -492,21 +492,17 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, const CSafeMemFile* data,
 			SetDownloadState(DS_ONQUEUE);
 		}
 	}
-	reqfile->UpdatePartsInfo();
+	m_reqfile->UpdatePartsInfo();
 }
 
 bool CUpDownClient::AddRequestForAnotherFile(CPartFile* file)
 {
 	// 0.42e
-	for (POSITION pos = m_OtherNoNeeded_list.GetHeadPosition();pos != 0;) {
-		if (m_OtherNoNeeded_list.GetNext(pos) == file) {
-			return false;
-		}
+	if ( m_OtherNoNeeded_list.Find( file ) ) {
+		return false;
 	}
-	for (POSITION pos = m_OtherRequests_list.GetHeadPosition();pos != 0;) {
-		if (m_OtherRequests_list.GetNext(pos) == file) {
-			return false;
-		}
+	if ( m_OtherRequests_list.Find( file ) ) {
+		return false;
 	}
 	m_OtherRequests_list.AddTail(file);
 	file->A4AFsrclist.AddTail(this); // [enkeyDEV(Ottavio84) -A4AF-] 
@@ -517,11 +513,11 @@ bool CUpDownClient::AddRequestForAnotherFile(CPartFile* file)
 void CUpDownClient::SetDownloadState(uint8 byNewState)
 {
 	if (m_nDownloadState != byNewState) {
-		if (reqfile) {
+		if (m_reqfile) {
 			if (byNewState == DS_DOWNLOADING) {
-				reqfile->AddDownloadingSource(this);
+				m_reqfile->AddDownloadingSource(this);
 			} else if (m_nDownloadState == DS_DOWNLOADING) {
-				reqfile->RemoveDownloadingSource(this);
+				m_reqfile->RemoveDownloadingSource(this);
 			}
 		}
 		if (byNewState == DS_CONNECTED && m_nDownloadState != DS_CONNECTED) {
@@ -544,15 +540,15 @@ void CUpDownClient::SetDownloadState(uint8 byNewState)
 			m_nDownloadState = byNewState;
 			for (POSITION pos = m_DownloadBlocks_list.GetHeadPosition();pos != 0;m_DownloadBlocks_list.GetNext(pos)) {
 				Requested_Block_Struct* cur_block = m_DownloadBlocks_list.GetAt(pos);
-				reqfile->RemoveBlockFromList(cur_block->StartOffset,cur_block->EndOffset);
+				m_reqfile->RemoveBlockFromList(cur_block->StartOffset,cur_block->EndOffset);
 				delete m_DownloadBlocks_list.GetAt(pos);
 			}
 			m_DownloadBlocks_list.RemoveAll();
 
 			for (POSITION pos = m_PendingBlocks_list.GetHeadPosition();pos != 0;m_PendingBlocks_list.GetNext(pos)) {
 				Pending_Block_Struct *pending = m_PendingBlocks_list.GetAt(pos);
-				if (reqfile) {
-					reqfile->RemoveBlockFromList(pending->block->StartOffset, pending->block->EndOffset);
+				if (m_reqfile) {
+					m_reqfile->RemoveBlockFromList(pending->block->StartOffset, pending->block->EndOffset);
 				}
 				delete pending->block;
 				// Not always allocated
@@ -592,17 +588,17 @@ void CUpDownClient::SetDownloadState(uint8 byNewState)
 
 void CUpDownClient::ProcessHashSet(const char *packet, uint32 size)
 {
-	if ((!reqfile) || md4cmp(packet,reqfile->GetFileHash())) {
+	if ((!m_reqfile) || md4cmp(packet,m_reqfile->GetFileHash())) {
 		throw wxString(wxT("Wrong fileid sent (ProcessHashSet)"));
 	}
 	if (!m_fHashsetRequesting) {
 		throw wxString(wxT("Received unsolicited hashset, ignoring it."));
 	}
 	CSafeMemFile* data = new CSafeMemFile((BYTE*)packet,size);
-	if (reqfile->LoadHashsetFromFile(data,true)) {
+	if (m_reqfile->LoadHashsetFromFile(data,true)) {
 		m_fHashsetRequesting = 0;
 	} else {
-		reqfile->hashsetneeded = true;
+		m_reqfile->hashsetneeded = true;
 		delete data;	//mf
 		throw wxString(wxT("Corrupted or invalid hashset received"));
 	}
@@ -613,14 +609,14 @@ void CUpDownClient::ProcessHashSet(const char *packet, uint32 size)
 void CUpDownClient::SendBlockRequests()
 {
 	m_dwLastBlockReceived = ::GetTickCount();
-	if (!reqfile) {
+	if (!m_reqfile) {
 		return;
 	}
 	if (m_DownloadBlocks_list.IsEmpty()) {
 		// Barry - instead of getting 3, just get how many is needed
 		uint16 count = 3 - m_PendingBlocks_list.GetCount();
 		Requested_Block_Struct** toadd = new Requested_Block_Struct*[count];
-		if (reqfile->GetNextRequestedBlock(this,toadd,&count)) {
+		if (m_reqfile->GetNextRequestedBlock(this,toadd,&count)) {
 			for (int i = 0; i != count; i++) {
 				m_DownloadBlocks_list.AddTail(toadd[i]);
 			}
@@ -653,7 +649,7 @@ void CUpDownClient::SendBlockRequests()
 	Packet* packet = new Packet(OP_REQUESTPARTS,iPacketSize);
 	char *tempbuf = new char[iPacketSize];
 	CSafeMemFile data((BYTE *)tempbuf, iPacketSize);
-	data.WriteHash16(reqfile->GetFileHash());
+	data.WriteHash16(m_reqfile->GetFileHash());
 	POSITION pos = m_PendingBlocks_list.GetHeadPosition();
 
 	for (uint32 i = 0; i != 3; i++) {
@@ -724,7 +720,7 @@ void CUpDownClient::ProcessBlockPacket(const char *packet, uint32 size, bool pac
 		data->ReadRaw(fileID,16);
 
 		// Check that this data is for the correct file
-		if ((!reqfile) || md4cmp(packet, reqfile->GetFileHash())) {
+		if ((!m_reqfile) || md4cmp(packet, m_reqfile->GetFileHash())) {
 			delete data;
 			throw wxString(wxT("Wrong fileid sent (ProcessBlockPacket)"));
 		}
@@ -762,8 +758,8 @@ void CUpDownClient::ProcessBlockPacket(const char *packet, uint32 size, bool pac
 				// Found reserved block
 				
 				if (cur_block->fZStreamError){
-					AddDebugLogLineF(false, _("Ignoring %u bytes of block %u-%u because of errornous zstream state for file \"%s\""), size - HEADER_SIZE, nStartPos, nEndPos, reqfile->GetFileName().GetData());
-					reqfile->RemoveBlockFromList(cur_block->block->StartOffset, cur_block->block->EndOffset);
+					AddDebugLogLineF(false, _("Ignoring %u bytes of block %u-%u because of errornous zstream state for file \"%s\""), size - HEADER_SIZE, nStartPos, nEndPos, m_reqfile->GetFileName().GetData());
+					m_reqfile->RemoveBlockFromList(cur_block->block->StartOffset, cur_block->block->EndOffset);
 					return;
 				}
 	    
@@ -777,7 +773,7 @@ void CUpDownClient::ProcessBlockPacket(const char *packet, uint32 size, bool pac
 				// Handle differently depending on whether packed or not
 				if (!packed) {
 					// Write to disk (will be buffered in part file class)
-					lenWritten = reqfile->WriteToBuffer(size - HEADER_SIZE, 
+					lenWritten = m_reqfile->WriteToBuffer(size - HEADER_SIZE, 
 					(BYTE *) (packet + HEADER_SIZE), nStartPos, nEndPos,
 					cur_block->block );
 				} else {
@@ -806,11 +802,11 @@ void CUpDownClient::ProcessBlockPacket(const char *packet, uint32 size, bool pac
 							nEndPos = cur_block->block->StartOffset + cur_block->totalUnzipped - 1;
 
 							if (nStartPos > cur_block->block->EndOffset || nEndPos > cur_block->block->EndOffset) {
-								AddDebugLogLineF(false, _("Corrupted compressed packet for %s received (error %i)"),reqfile->GetFileName().GetData(),666);
-								reqfile->RemoveBlockFromList(cur_block->block->StartOffset, cur_block->block->EndOffset);
+								AddDebugLogLineF(false, _("Corrupted compressed packet for %s received (error %i)"),m_reqfile->GetFileName().GetData(),666);
+								m_reqfile->RemoveBlockFromList(cur_block->block->StartOffset, cur_block->block->EndOffset);
 							} else {
 								// Write uncompressed data to file
-								lenWritten = reqfile->WriteToBuffer(size - HEADER_SIZE,
+								lenWritten = m_reqfile->WriteToBuffer(size - HEADER_SIZE,
 								unzipped, nStartPos, nEndPos,
 								cur_block->block );
 							}
@@ -820,8 +816,8 @@ void CUpDownClient::ProcessBlockPacket(const char *packet, uint32 size, bool pac
 						if (cur_block->zStream && cur_block->zStream->msg) {
 							strZipError.Printf(_T(" - %s"), cur_block->zStream->msg);
 						} 
-						AddDebugLogLineM(false, wxString(_("Corrupted compressed packet for")) + reqfile->GetFileName() + wxString::Format(_("received (error %i) ") , result) + strZipError );
-						reqfile->RemoveBlockFromList(cur_block->block->StartOffset, cur_block->block->EndOffset);
+						AddDebugLogLineM(false, wxString(_("Corrupted compressed packet for")) + m_reqfile->GetFileName() + wxString::Format(_("received (error %i) ") , result) + strZipError );
+						m_reqfile->RemoveBlockFromList(cur_block->block->StartOffset, cur_block->block->EndOffset);
 
 						// If we had an zstream error, there is no chance that we could recover from it nor that we
 						// could use the current zstream (which is in error state) any longer.
@@ -845,7 +841,7 @@ void CUpDownClient::ProcessBlockPacket(const char *packet, uint32 size, bool pac
 
 					// If finished reserved block
 					if (nEndPos == cur_block->block->EndOffset) {
-						reqfile->RemoveBlockFromList(cur_block->block->StartOffset, cur_block->block->EndOffset);
+						m_reqfile->RemoveBlockFromList(cur_block->block->StartOffset, cur_block->block->EndOffset);
 						delete cur_block->block;
 						// Not always allocated
 						if (cur_block->zStream) {
@@ -864,7 +860,7 @@ void CUpDownClient::ProcessBlockPacket(const char *packet, uint32 size, bool pac
 			}
 		}
  	} catch (...) {
-		AddDebugLogLineM(false,wxString::Format(wxT("Unknown exception in %s: file \""), __FUNCTION__) + (reqfile ? reqfile->GetFileName() : wxT("?")) + wxT("%s\""));
+		AddDebugLogLineM(false,wxString::Format(wxT("Unknown exception in %s: file \""), __FUNCTION__) + (m_reqfile ? m_reqfile->GetFileName() : wxT("?")) + wxT("%s\""));
 	}
 }
 
@@ -959,14 +955,14 @@ int CUpDownClient::unzip(Pending_Block_Struct *block, BYTE *zipped, uint32 lenZi
 				strZipError.Printf(_T(" %d '%s'"), err, zS->msg);
 			else if (err != Z_OK)
 				strZipError.Printf(_T(" %d"), err);
-			AddDebugLogLineM(false, wxString::Format(wxT("Unexpected zip error ")) +  strZipError + wxT("in file \"") + (reqfile ? reqfile->GetFileName() : wxT("?")) + wxT("\""));
+			AddDebugLogLineM(false, wxString::Format(wxT("Unexpected zip error ")) +  strZipError + wxT("in file \"") + (m_reqfile ? m_reqfile->GetFileName() : wxT("?")) + wxT("\""));
 		}
 
 		if (err != Z_OK) {
 			(*lenUnzipped) = 0;
 		}
 	} catch (...) {
-		AddDebugLogLineM(false, wxString::Format(wxT("Unknown exception in %s: file \""), __FUNCTION__) + (reqfile ? reqfile->GetFileName() : wxT("?")) + wxT("\""));
+		AddDebugLogLineM(false, wxString::Format(wxT("Unknown exception in %s: file \""), __FUNCTION__) + (m_reqfile ? m_reqfile->GetFileName() : wxT("?")) + wxT("\""));
 		err = Z_DATA_ERROR;
 	}
 	return err;
@@ -1074,7 +1070,7 @@ void CUpDownClient::UDPReaskFNF()
 
 void CUpDownClient::UDPReaskForDownload()
 {
-	if(!reqfile || m_bUDPPending) {
+	if(!m_reqfile || m_bUDPPending) {
 		return;
 	}
 
@@ -1091,22 +1087,22 @@ void CUpDownClient::UDPReaskForDownload()
 		}
 		m_bUDPPending = true;
 		CSafeMemFile data(128);
-		data.WriteRaw(reqfile->GetFileHash(),16);
+		data.WriteRaw(m_reqfile->GetFileHash(),16);
 		if (GetUDPVersion() > 3)
 		{
-			if (reqfile->IsPartFile()) {
-				((CPartFile*)reqfile)->WritePartStatus(&data);
+			if (m_reqfile->IsPartFile()) {
+				((CPartFile*)m_reqfile)->WritePartStatus(&data);
 			}
 			else {
 				data.Write((uint16) 0);
 			}
 		}
 		if (GetUDPVersion() > 2) {
-			data.Write(reqfile->m_nCompleteSourcesCount);
+			data.Write(m_reqfile->m_nCompleteSourcesCount);
 		}
 		/*
 		if (thePrefs.GetDebugClientUDPLevel() > 0)
-			DebugSend("OP__ReaskFilePing", this, (char*)reqfile->GetFileHash());
+			DebugSend("OP__ReaskFilePing", this, (char*)m_reqfile->GetFileHash());
 		*/
 		Packet* response = new Packet(&data, OP_EMULEPROT);
 		response->SetOpCode(OP_REASKFILEPING);
@@ -1144,30 +1140,30 @@ void CUpDownClient::UpdateDisplayedInfo(bool force)
 /* eMule 0.30c implementation, i give it a try (Creteil) BEGIN */
 bool CUpDownClient::DoSwap(CPartFile* SwapTo, bool bRemoveCompletely)
 {
-	if (reqfile) {
-		// Dirty fix. Why is reqfile NULL?
-		POSITION pos = reqfile->m_SrcList.Find(this);
+	if (m_reqfile) {
+		// Dirty fix. Why is m_reqfile NULL?
+		POSITION pos = m_reqfile->m_SrcList.Find(this);
 		if(pos)	{
-			// remove this client from the A4AF list of our new reqfile
+			// remove this client from the A4AF list of our new m_reqfile
 			POSITION pos2 = SwapTo->A4AFsrclist.Find(this);
 			if (pos2) {
 				SwapTo->A4AFsrclist.RemoveAt(pos2);
 				theApp.amuledlg->transferwnd->downloadlistctrl->RemoveSource(this,SwapTo);
 			}
 
-			reqfile->m_SrcList.RemoveAt(pos);
-			reqfile->IsCountDirty = true;
-			reqfile->RemoveDownloadingSource(this);
+			m_reqfile->m_SrcList.RemoveAt(pos);
+			m_reqfile->IsCountDirty = true;
+			m_reqfile->RemoveDownloadingSource(this);
 
 			if(!bRemoveCompletely) {
-				reqfile->A4AFsrclist.AddTail(this);
+				m_reqfile->A4AFsrclist.AddTail(this);
 				if (GetDownloadState() == DS_NONEEDEDPARTS) {
-					m_OtherNoNeeded_list.AddTail(reqfile);
+					m_OtherNoNeeded_list.AddTail(m_reqfile);
 				} else {
-					m_OtherRequests_list.AddTail(reqfile);
+					m_OtherRequests_list.AddTail(m_reqfile);
 				}
 				if (!bRemoveCompletely) {
-					theApp.amuledlg->transferwnd->downloadlistctrl->AddSource(reqfile,this,true);
+					theApp.amuledlg->transferwnd->downloadlistctrl->AddSource(m_reqfile,this,true);
 				}
 			}
 			SetDownloadState(DS_NONE);
@@ -1175,9 +1171,9 @@ bool CUpDownClient::DoSwap(CPartFile* SwapTo, bool bRemoveCompletely)
 			m_nRemoteQueueRank = 0;
 			m_nOldRemoteQueueRank = 0;
 
-			reqfile->UpdatePartsInfo();
-			reqfile->UpdateAvailablePartsCount();
-			reqfile = SwapTo;
+			m_reqfile->UpdatePartsInfo();
+			m_reqfile->UpdateAvailablePartsCount();
+			SetRequestFile( SwapTo );
 
 			SwapTo->m_SrcList.AddTail(this);
 			SwapTo->IsCountDirty = true;
@@ -1211,7 +1207,7 @@ bool CUpDownClient::SwapToAnotherFile(bool bIgnoreNoNeeded, bool ignoreSuspensio
 		usedList = &m_OtherRequests_list;
 		for (POSITION pos = m_OtherRequests_list.GetHeadPosition();pos != 0;m_OtherRequests_list.GetNext(pos)) {
 			cur_file = m_OtherRequests_list.GetAt(pos);
-			if (cur_file != reqfile && theApp.downloadqueue->IsPartFile(cur_file) && !cur_file->IsStopped()
+			if (cur_file != m_reqfile && theApp.downloadqueue->IsPartFile(cur_file) && !cur_file->IsStopped()
 			&& (cur_file->GetStatus(false) == PS_READY || cur_file->GetStatus(false) == PS_EMPTY))
 			{
 				if (toFile != NULL) {
@@ -1237,7 +1233,7 @@ bool CUpDownClient::SwapToAnotherFile(bool bIgnoreNoNeeded, bool ignoreSuspensio
 		usedList = &m_OtherNoNeeded_list;
 		for (POSITION pos = m_OtherNoNeeded_list.GetHeadPosition();pos != 0;m_OtherNoNeeded_list.GetNext(pos)) {
 			cur_file = m_OtherNoNeeded_list.GetAt(pos);
-			if (cur_file != reqfile && theApp.downloadqueue->IsPartFile(cur_file) && !cur_file->IsStopped()
+			if (cur_file != m_reqfile && theApp.downloadqueue->IsPartFile(cur_file) && !cur_file->IsStopped()
 			&& (cur_file->GetStatus(false) == PS_READY || cur_file->GetStatus(false) == PS_EMPTY))
 			{
 				if (toFile != NULL) {
@@ -1310,3 +1306,21 @@ bool CUpDownClient::IsSwapSuspended(const CPartFile* file)
 }
 
 /* eMule 0.30c implementation, i give it a try (Creteil) END */
+
+void CUpDownClient::SetRequestFile(CPartFile* reqfile) {
+	if ( m_reqfile != reqfile ) {
+		// Paranoia. Ensure that no calls to IsPartAvailble will seg-fault while we delete stuff
+		m_nPartCount = 0;
+		if ( m_abyPartStatus ) {
+			delete[] m_abyPartStatus;
+			m_abyPartStatus = NULL;
+		}
+				
+		m_reqfile = reqfile;
+		
+		if ( reqfile ) {
+			m_nPartCount = reqfile->GetPartCount();
+		}
+	}
+}
+

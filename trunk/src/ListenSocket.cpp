@@ -518,7 +518,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				}				
 				#endif
 				theApp.downloadqueue->AddDownDataOverheadFileRequest(size);
-				if (client->reqfile && !client->reqfile->IsStopped() && (client->reqfile->GetStatus()==PS_READY || client->reqfile->GetStatus()==PS_EMPTY)) {
+				if (client->GetRequestFile() && !client->GetRequestFile()->IsStopped() && (client->GetRequestFile()->GetStatus()==PS_READY || client->GetRequestFile()->GetStatus()==PS_EMPTY)) {
 					if (client->GetDownloadState() == DS_ONQUEUE ) {
 						client->SetDownloadState(DS_DOWNLOADING);
 						client->m_lastPartAsked = 0xffff; // Reset current downloaded Chunk // Maella -Enhanced Chunk Selection- (based on jicxicmic)
@@ -536,7 +536,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 						client->socket->SendPacket(packet,true,true);
 						client->SetSentCancelTransfer(1);
 					}
-					client->SetDownloadState((client->reqfile==NULL || client->reqfile->IsStopped()) ? DS_NONE : DS_ONQUEUE);
+					client->SetDownloadState((client->GetRequestFile()==NULL || client->GetRequestFile()->IsStopped()) ? DS_NONE : DS_ONQUEUE);
 				}
 				break;
 			}
@@ -652,9 +652,9 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					DebugRecv("OP_SendingPart", client);
 				}
 				#endif				
-				if (client->reqfile && !client->reqfile->IsStopped() && (client->reqfile->GetStatus()==PS_READY || client->reqfile->GetStatus()==PS_EMPTY)) {
+				if (client->GetRequestFile() && !client->GetRequestFile()->IsStopped() && (client->GetRequestFile()->GetStatus()==PS_READY || client->GetRequestFile()->GetStatus()==PS_EMPTY)) {
 					client->ProcessBlockPacket(packet,size);
-					if (client->reqfile->IsStopped() || client->reqfile->GetStatus()==PS_PAUSED || client->reqfile->GetStatus()==PS_ERROR) {
+					if (client->GetRequestFile()->IsStopped() || client->GetRequestFile()->GetStatus()==PS_PAUSED || client->GetRequestFile()->GetStatus()==PS_ERROR) {
 						if (!client->GetSentCancelTransfer()) {
 							#ifdef __USE_DEBUG__
 							if (thePrefs.GetDebugClientTCPLevel() > 0) {
@@ -667,7 +667,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 							client->socket->SendPacket(packet,true,true);
 							client->SetSentCancelTransfer(1);
 						}
-						client->SetDownloadState(client->reqfile->IsStopped() ? DS_NONE : DS_ONQUEUE);
+						client->SetDownloadState(client->GetRequestFile()->IsStopped() ? DS_NONE : DS_ONQUEUE);
 					}
 				} else {
 					if (!client->GetSentCancelTransfer()) {
@@ -681,7 +681,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 						client->socket->SendPacket(packet,true,true);
 						client->SetSentCancelTransfer(1);
 					}
-					client->SetDownloadState((client->reqfile==NULL || client->reqfile->IsStopped()) ? DS_NONE : DS_ONQUEUE);
+					client->SetDownloadState((client->GetRequestFile()==NULL || client->GetRequestFile()->IsStopped()) ? DS_NONE : DS_ONQUEUE);
 				}
 				break;
 			}
@@ -1312,10 +1312,10 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				if (reqfile==NULL) {
 					throw wxString(_(" Wrong File ID: (OP_MULTIPACKETANSWER; reqfile==NULL)"));
 				}
-				if (client->reqfile==NULL) {
+				if (client->GetRequestFile()==NULL) {
 					throw wxString(_(" Wrong File ID: OP_MULTIPACKETANSWER; client->reqfile==NULL)"));
 				}
-				if (reqfile != client->reqfile) {
+				if (reqfile != client->GetRequestFile()) {
 					throw wxString(_(" Wrong File ID: OP_MULTIPACKETANSWER; reqfile!=client->reqfile)"));
 				}
 				uint8 opcode_in;
@@ -1449,9 +1449,9 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 					throw wxString(wxT("Client send OP_COMPRESSEDPART before finishing handshake"));
 				}
 												
-				if (client->reqfile && !client->reqfile->IsStopped() && (client->reqfile->GetStatus()==PS_READY || client->reqfile->GetStatus()==PS_EMPTY)) {
+				if (client->GetRequestFile() && !client->GetRequestFile()->IsStopped() && (client->GetRequestFile()->GetStatus()==PS_READY || client->GetRequestFile()->GetStatus()==PS_EMPTY)) {
 					client->ProcessBlockPacket(packet,size,true);
-					if (client->reqfile->IsStopped() || client->reqfile->GetStatus()==PS_PAUSED || client->reqfile->GetStatus()==PS_ERROR) {
+					if (client->GetRequestFile()->IsStopped() || client->GetRequestFile()->GetStatus()==PS_PAUSED || client->GetRequestFile()->GetStatus()==PS_ERROR) {
 						if (!client->GetSentCancelTransfer()) {
 							#ifdef __USE_DEBUG__
 							if (thePrefs.GetDebugClientTCPLevel() > 0) {
@@ -1463,7 +1463,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 							client->socket->SendPacket(packet,true,true);					
 							client->SetSentCancelTransfer(1);
 						}
-						client->SetDownloadState(client->reqfile->IsStopped() ? DS_NONE : DS_ONQUEUE);						
+						client->SetDownloadState(client->GetRequestFile()->IsStopped() ? DS_NONE : DS_ONQUEUE);						
 					}
 				} else {
 					if (!client->GetSentCancelTransfer()) {
@@ -1477,7 +1477,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 						client->socket->SendPacket(packet,true,true);
 						client->SetSentCancelTransfer(1);
 					}
-					client->SetDownloadState((client->reqfile==NULL || client->reqfile->IsStopped()) ? DS_NONE : DS_ONQUEUE);
+					client->SetDownloadState((client->GetRequestFile()==NULL || client->GetRequestFile()->IsStopped()) ? DS_NONE : DS_ONQUEUE);
 				}
 				break;
 			}

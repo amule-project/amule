@@ -94,7 +94,7 @@ CUpDownClient::CUpDownClient(CClientReqSocket* sender)
 {
 	socket = sender;
 	//printf("Socket %x set on client %x\n",socket, this);
-	reqfile = 0;
+	m_reqfile = 0;
 	Init();
 }
 
@@ -111,7 +111,7 @@ CUpDownClient::CUpDownClient(uint16 in_port, uint32 in_userid,uint32 in_serverip
 	}
 	m_dwServerIP = in_serverip;
 	m_nServerPort = in_serverport;
-	reqfile = in_reqfile;
+	SetRequestFile( in_reqfile );
 	ReGetClientSoft();
 }
 
@@ -224,8 +224,8 @@ void CUpDownClient::Init()
 CUpDownClient::~CUpDownClient()
 {
 	/* Razor 1a - Modif by MikaelB */
-	if(reqfile != NULL) {
-		reqfile->RemoveDownloadingSource(this);
+	if(m_reqfile != NULL) {
+		m_reqfile->RemoveDownloadingSource(this);
 	}
 	/* End modif */
 	
@@ -294,8 +294,8 @@ CUpDownClient::~CUpDownClient()
 	if (m_iRate>0 || m_strComment.Length()>0) {
 		m_iRate=0; 
 		m_strComment.Empty();
-		if (reqfile) {
-			reqfile->UpdateFileRatingCommentAvail();
+		if (m_reqfile) {
+			m_reqfile->UpdateFileRatingCommentAvail();
 		}
 	}
 
@@ -941,7 +941,7 @@ void CUpDownClient::ProcessMuleCommentPacket(const char *pachPacket, uint32 nSiz
 {
 	try
 	{
-		if (!reqfile) {
+		if (!m_reqfile) {
 			throw CInvalidPacket("comment packet for unknown file");
 		}
 
@@ -952,7 +952,7 @@ void CUpDownClient::ProcessMuleCommentPacket(const char *pachPacket, uint32 nSiz
 		if ( sizeof(length) != data.Read(length) )
 			throw CInvalidPacket("short packet reading comment length");
 		
-		reqfile->SetHasRating(true);
+		m_reqfile->SetHasRating(true);
 		AddDebugLogLineM(false,wxT("Rating for file '") + ClientFilename + wxString::Format(wxT("' received: %i"),m_iRate));
 		if (length>50) length=50;
 		if (length>0){
@@ -964,7 +964,7 @@ void CUpDownClient::ProcessMuleCommentPacket(const char *pachPacket, uint32 nSiz
 			}		
 			m_strComment = char2unicode(desc);
 			AddDebugLogLineM(false,wxT("Description for file '") +ClientFilename + wxT("' received: ") + m_strComment);
-			reqfile->SetHasComment(true);
+			m_reqfile->SetHasComment(true);
 			delete[] desc;
 		}
 
@@ -986,8 +986,8 @@ void CUpDownClient::ProcessMuleCommentPacket(const char *pachPacket, uint32 nSiz
 		return;
 	}		
 
-	if (reqfile->HasRating() || reqfile->HasComment()) { 
-		theApp.amuledlg->transferwnd->downloadlistctrl->UpdateItem(reqfile);
+	if (m_reqfile->HasRating() || m_reqfile->HasComment()) { 
+		theApp.amuledlg->transferwnd->downloadlistctrl->UpdateItem(m_reqfile);
 	}
 }
 
@@ -995,8 +995,8 @@ void CUpDownClient::ClearDownloadBlockRequests()
 {
 	for (POSITION pos = m_DownloadBlocks_list.GetHeadPosition();pos != 0;){
 		Requested_Block_Struct* cur_block = m_DownloadBlocks_list.GetNext(pos);
-		if (reqfile){
-			reqfile->RemoveBlockFromList(cur_block->StartOffset,cur_block->EndOffset);
+		if (m_reqfile){
+			m_reqfile->RemoveBlockFromList(cur_block->StartOffset,cur_block->EndOffset);
 		}
 		delete cur_block;
 	}
@@ -1004,8 +1004,8 @@ void CUpDownClient::ClearDownloadBlockRequests()
 
 	for (POSITION pos = m_PendingBlocks_list.GetHeadPosition();pos != 0;){
 		Pending_Block_Struct *pending = m_PendingBlocks_list.GetNext(pos);
-		if (reqfile){
-			reqfile->RemoveBlockFromList(pending->block->StartOffset, pending->block->EndOffset);
+		if (m_reqfile){
+			m_reqfile->RemoveBlockFromList(pending->block->StartOffset, pending->block->EndOffset);
 		}
 
 		delete pending->block;
@@ -1051,8 +1051,8 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket){
 	// The remote client does not have to answer with OP_HASHSETANSWER *immediatly* 
 	// after we've sent OP_HASHSETREQUEST. It may occure that a (buggy) remote client 
 	// is sending use another OP_FILESTATUS which would let us change to DL-state to DS_ONQUEUE.
-	if (((GetDownloadState() == DS_REQHASHSET) || m_fHashsetRequesting) && (reqfile)) {
-        reqfile->hashsetneeded = true;
+	if (((GetDownloadState() == DS_REQHASHSET) || m_fHashsetRequesting) && (m_reqfile)) {
+        m_reqfile->hashsetneeded = true;
 	}
 
 	//wxASSERT(theApp.clientlist->IsValidClient(this));
@@ -1164,7 +1164,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 			SetDownloadState(DS_LOWTOLOWIP);
 		} else if (GetDownloadState() == DS_REQHASHSET) {
 			SetDownloadState(DS_ONQUEUE);
-			reqfile->hashsetneeded = true;
+			m_reqfile->hashsetneeded = true;
 		}
 		if (GetUploadState() == US_CONNECTING) {
 			if(Disconnected(wxT("LowID->LowID and US_CONNECTING"))) {
@@ -1577,13 +1577,13 @@ wxString CUpDownClient::GetUploadFileInfo()
 	// build info text and display it
 	sRet = _("NickName: ");
 	sRet += GetUserName() + wxString::Format(wxT(" ID: %u "),GetUserID());
-	if (reqfile) {
-		sRet += _("Requested:") + wxString(reqfile->GetFileName()) + wxT("\n");
+	if (m_reqfile) {
+		sRet += _("Requested:") + wxString(m_reqfile->GetFileName()) + wxT("\n");
 		wxString stat;
 		stat.Printf(wxT("Filestats for this session: Accepted %d of %d requests, %s transferred\n")+wxString(_("Filestats for all sessions: Accepted %d of %d requests")),
-		reqfile->statistic.GetAccepts(), reqfile->statistic.GetRequests(), CastItoXBytes(reqfile->statistic.GetTransfered()).GetData(),
-		reqfile->statistic.GetAllTimeAccepts(),
-		reqfile->statistic.GetAllTimeRequests(), CastItoXBytes(reqfile->statistic.GetAllTimeTransfered()).GetData() );
+		m_reqfile->statistic.GetAccepts(), m_reqfile->statistic.GetRequests(), CastItoXBytes(m_reqfile->statistic.GetTransfered()).GetData(),
+		m_reqfile->statistic.GetAllTimeAccepts(),
+		m_reqfile->statistic.GetAllTimeRequests(), CastItoXBytes(m_reqfile->statistic.GetAllTimeTransfered()).GetData() );
 		sRet += stat;
 	} else {
 		sRet += _("Requested unknown file");
@@ -1930,14 +1930,14 @@ bool CUpDownClient::IsASaneUpDownClient(bool verbose, char *function, char *file
 		sane = 	MagicNumber1 == MAGIC_1 && 
 			MagicNumber2 == MAGIC_2;
 		if (sane) {
-			sane = reqfile != NULL;
+			sane = m_reqfile != NULL;
 			if (sane) {
 				// we're ok, add more sanity checks here.
 			}
 #ifdef __DEBUG__
 			else if (verbose) {
 				debugprintf(verbose, "Bogus UpDownClient source detected!\n");
-				debugprintf(verbose, "\tsource has NULL reqfile!\n");
+				debugprintf(verbose, "\tsource has NULL m_reqfile!\n");
 				debugprintf(verbose, "\tfunction: %s(%s:%d)\n", function, file, line);
 			}
 #endif // __DEBUG__

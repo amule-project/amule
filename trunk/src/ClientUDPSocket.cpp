@@ -173,7 +173,7 @@ bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, uint
 				if (sender) {
 					CSafeMemFile data_in((BYTE*)packet,size);
 					if ( sender->GetUDPVersion() > 3 ) {
-						sender->ProcessFileStatus(true, &data_in, sender->reqfile);
+						sender->ProcessFileStatus(true, &data_in, sender->GetRequestFile());
 					}
 					uint16 nRank;
 					data_in.Read(nRank);
