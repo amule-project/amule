@@ -30,6 +30,7 @@
 #include "CString.h"		// Needed for CStringList
 #include "MD5Sum.h"		// Needed for MD5Sum
 #include "CArray.h"		// Needed for CArray
+#include "PrefsUnifiedDlg.h"			// Needed for UNIFIED_PREF_HANDLING
 
 class CString;
 class Rse;
