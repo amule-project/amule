@@ -99,3 +99,40 @@ wxString TruncateFilename(const wxString& filename, size_t length, bool isFilePa
 
 	return file;
 }
+
+// Strips specific chars to ensure legal filenames
+wxString CleanupFilename(const wxString& filename, bool keepSpaces)
+{
+	wxString result;
+
+	for ( unsigned int i = 0; i < filename.Length(); i++ ) {
+		switch ( filename[ i ] ) {
+			case wxT('/'):
+#ifdef __WXMSW__
+			case wxT('\"'):
+			case wxT('*'):
+			case wxT('<'):
+			case wxT('>'):
+			case wxT('?'):
+			case wxT('|'):
+			case wxT('\\'):
+			case wxT(':'):
+#endif
+				continue;
+			case wxT(' '):
+				if ( !keepSpaces ) {
+					result += wxT('_');
+					continue;
+				}
+				
+			default:
+				// Many illegal for filenames in windows below the 32th char (which is space).
+				if ( (wxUChar) filename[i] > 31 ) {
+						result += filename[i];
+				}
+		}
+	}
+
+	return result;
+}
+

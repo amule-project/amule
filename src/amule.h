@@ -176,7 +176,6 @@ public:
 	bool IsRunning() const { return (m_app_state == APP_STATE_RUNNING); }
 
 	// ed2k URL functions
-	wxString	StripInvalidFilenameChars(const wxString& strText, bool bKeepSpaces = true);
 	wxString	CreateED2kLink(const CAbstractFile* f);
 	wxString	CreateHTMLED2kLink(const CAbstractFile* f);
 	wxString	CreateED2kSourceLink(const CAbstractFile* f);
