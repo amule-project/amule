@@ -741,13 +741,13 @@ void CDownloadListCtrl::OnGetFeedback( wxCommandEvent& WXUNUSED(event) )
 	for ( ItemList::iterator it = files.begin(); it != files.end(); ++it ) {
 		CPartFile* file = (CPartFile*)(*it)->value;
 	
-		feed << wxString(_("Feedback from:")) + wxT(" ") + thePrefs::GetUserNick() + wxT("\r\n");
-		feed << wxString(_("Client: aMule")) + wxT(" ") + wxT(VERSION) + wxT("\r\n");
-		feed << wxString(_("File Name:")) + wxT(" ") + file->GetFileName() + wxT("\r\n");
-		feed << wxString(_("File size:")) + wxT(" MB") + (file->GetFileSize()/1048576) + wxT("\r\n");
-		feed << wxString(_("Download:")) + wxT(" ") + (file->GetCompletedSize()/1048576) + wxT("\r\n");
-		feed << wxString(_("Sources:"))  + wxT("%u\r\n ") + (file->GetSourceCount());
-		feed << wxString(_("Complete Sources:")) + wxT("%u\r\n") + (file->m_nCompleteSourcesCount);
+		feed += CFormat(_("Feedback from: %s")) % thePrefs::GetUserNick() + wxT("\n");
+		feed += CFormat(_("Client: aMule %s")) % wxT(VERSION) + wxT("\n");
+		feed += CFormat(_("File Name: %s")) % file->GetFileName() + wxT("\n");
+		feed += CFormat(_("File size: %s")) % CastItoXBytes(file->GetFileSize()) + wxT("\n");
+		feed += CFormat(_("Download: %s")) % CastItoXBytes(file->GetCompletedSize()) + wxT("\n");
+		feed += wxString::Format(_("Sources: %u"), file->GetSourceCount()) + wxT("\n");
+		feed += wxString::Format(_("Complete Sources: %u"), file->m_nCompleteSourcesCount) + wxT("\n");
 	}
 
 	if ( !feed.IsEmpty() ) {
