@@ -13,38 +13,33 @@ of course all the file modification/moving should be managed in Makefile stuff.
 
 - Team
 	- Configure Stuff:
-	    + gtk-prefix and prefix for every lib used
+	    + Add gtk-prefix and prefix for every lib used
 	    + GUI, CMD; WEB and so on meta-packages
-            + remove optimize switch, clean fro lots options no more used (gtk above all)
-            + some nice configure report
-            + Sources Reorganization as written above.
+            + Remove optimize switch, clean for lots options no more used (gtk above all)
+            + Some nice configure report [working]
+            + Sources Reorganization as written above
 
         - Systray
-            + finish new wx tray and delete all systray options from configure 
+            + Finish new wx tray and delete all systray options from configure [working]
 	
 	- Remote
-            + Add remote gui (working)
-            + Finish cmd line clients
+            + Add remote gui [working]
+            + Finish cmd line clients [working]
 
 	- Add an option "Send a mail when transfert complete", 
 		or better, execute a program (specify the parameters amule passes)
 
 	- File Tab
 	   + Add search ed2k link in clipboard (auto adding???)
-	   + add an addictional option "same category" to "start next paused file..."
-	   + fix checkbox problem in notify: "a new message arrive" enabled only if "chat session" is enabled too
+	   + Add an additional option "same category" to "start next paused file..."
+	   + Fix checkbox problem in notify: "a new message arrive" enabled only if "chat session" is enabled too
 
 	- Add Scheduler Tab
-	  + add actions menu
-	  + add time and details menu
+	  + Add actions menu
+	  + Add time and details menu
 	
 NEW FEATURES 
-	- Keep porting eMule features (medium-high priority)
-	- Implement Overnet support (preferences too) (low priority)
-	- Implement Kademlia support (preferences too) (medium priority)	
-	- Implement Proxy support (preferences too) (low priority)
-	- Implement Scheduling (preferences too) (low priority)
+	- Keep porting eMule features (medium-high priority) [working]
+	- Implement Kademlia support (preferences too) (medium priority) [working]
 
-- Many others ideas but it seem we have a big work already ... :-)
-
-A++
+- Many other ideas but it seems we have a big work already ... :-)

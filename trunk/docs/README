@@ -1,234 +1,251 @@
 
 
-
                                  -----------
                                     aMule
                                  -----------
-                 The Multiplatform ed2k network client for Linux
-              
+                         The All-platform eD2k Client
 
 
  About
 -------
 
-This program is a multiplatform ed2k client fork of eMule client using wxWidgets class library.
-It was originally forked from xMule project but not related to it anymore, except little bits of code.
+  This program is a multiplatform ed2k client, fork of the eMule client, using wxWidgets class library.
+  It was originally forked from xMule project but not related to it anymore, except little bits of code.
 
 
-CONFIGURATION:
---------------
+ Configuration:
+----------------
 
-- Go to the "Preferences" tab
+  - Go to the "Preferences" tab
 
-- Enter a nice nickname ;)
+  - Enter a nice nickname ;)
 
-- Enter the "Download Capacity" and "Upload Capacity" according to your internet connection.
-  All values in aMule are kiloBytes (kB), your Internet Service Provider's (ISP) numbers
-  are most likely kiloBits (kb). 8 kiloBits make up 1 kiloByte, so when your Internet Connection
-  is 768kb Downstream and 128kb Upstream (like German Telekom DSL), your correct values are:
+  - Enter the "Download Capacity" and "Upload Capacity" according to your internet connection.
+    All values in aMule are kiloBytes (kB), but your Internet Service Provider's numbers are
+    most likely kiloBits (kb). 8 kiloBits make up 1 kiloByte, so if your Internet Connection
+    is 768kb Downstream and 128kb Upstream (i.e. German Telekom DSL), your correct values are:
 
- Downstream: 768kb / 8 = 96kB, you enter 96 as "Download Capacity"
- Upstream: 128kb / 8 = 16kB, you enter 16 as "Upload Capacity"
+    Downstream: 768kb / 8 = 96kB, so you enter 96 as "Download Capacity"
+    Upstream: 128kb / 8 = 16kB, so you enter 16 as "Upload Capacity"
 
- These values are used to calculate the current bandwidth usage for display purposes only!
- Nevertheless, you need to know them to determine the following down/upload limits:
+    Anyway, these values are used to calculate the current bandwidth usage for display purposes
+    only (mainly for statistics). Nevertheless, you need to know them to determine the following
+    down/upload limits:
 
-
-- Enter "Download Limit" and "Upload Limit"  (IMPORTANT!)
+  - Enter "Download Limit" and "Upload Limit"  (IMPORTANT!)
  
- Download Limit: leave this at 0 (should aMule become too fast and you are unable to surf
-   the Internet or whatever, reduce it to 80-90% of "Download Capacity")
+    "Download Limit": leave this at 0, which stands for "unlimited". If aMule became too fast and
+    you were unable to surf the Internet or whatever, change this value to something about 80%
+    of your downstream capacity.
  
- Upload Limit: set this to ~80% of your "Upload Capacity" (so when your Upload Capacity is 16,
-   set Upload Limit to 13)
+    "Upload Limit": set this to something around 80% of your upstream capacity.
 
-   Setting Upload Limit to a value < 10 will automatically reduce your Download Limit, so
-   upload as fast as you can.
+    Setting "Upload Limit" to a value < 10 will automatically reduce your "Download Limit" (the less
+    you upload, the less you are allowed to download), so upload as fast as you can.
 
+    NOTE: 56k Modem users: aMule only accepts integral values for these settings, you can't
+          enter 1.6 or whatever your sweet-spot setting is. Sorry :)
 
-NOTE: 56k Modem users: aMule only accepts integral values for these settings at the moment, you
-      can't enter 1.6 or whatever your sweet-spot setting is, yet. Sorry :) Maybe later..
+  - "Maximum Connections": As a general rule, set it to 500 - 2000.
 
+  - "Maximum Sources per File": decide for yourself how many you want :) 300 - 500 are goo values.
+    Other values are probably either too little or too much.
 
+  - Choose the directories you want to share with other users.
+    DO NOT SHARE YOUR COMPLETE HARDDISK!
+    Put the stuff you want to share in a seperate Folder.
+    If you share more than 200 files, you should consider that some servers have a hard limit,
+    which means that you may be kicked from them if you share too many files or that some of your
+    files won't be populated to the network through that server. So it is not always a good idea
+    to share lots of files.
 
-- "Maximum Connections": As a general rule, set it to 500 - 2000 (hey! I
-   want to see that anyone out there has 2000 concurrent connections!)
+  - The other options are pretty self-explanatory. If you don't know what it does, don't touch it.
 
-- "Maximum Sources per File": decide for yourself, how many you want :) (but
-   300 is a good value, don't do too much, 500 should be pretty enough)
-
-- Choose the directories you want to share with other users.
-  DO NOT SHARE YOUR COMPLETE HARDDISK!
-  Put the stuff you want to share in a seperate Folder.
-  If you share more than ~200 files, you should reconsider that some servers
-  have a hard limit, what means that you may be kicked from that servers if
-  you share too many files or that some of your files won't be populated to
-  the network on that server. Consider not to share that many files.
-  
--The other options are pretty self-explaining. If you dunno what it does, don't touch it.
-
--Don't forget to connect to a server, or you won't probably download too much ;)
+  - Don't forget to connect to a server, or you probably won't download too much ;)
 
 
  Installation
 --------------
 
-See INSTALL file
+  See INSTALL file
 
 
  Basic aMule Tips
 ------------------
 
-* ALWAYS run aMule as a REGULAR USER
-* NEVER run aMule as root (unless you have a repressive ISP and need to use
-  ports lower than 1024).
-* If you are behind a firewall or router, be sure that ports 4662 (TCP)
-  and 4672 (UDP) are unblocked, or you will *always* receive a low ID.
-* Obtain an appropriate server.met:  e.g., if you are a dialup, using
-  the max server list is not recommend.
-* Set your temp and shared directories in Preferences->Directories
-   *  To recursively select a certain directory, click on its box while holding
-      down the CTRL button.
-*  You should *NOT* share
-   *  Your temp download directory!
-   *  You /etc directory
-   *  Probably not your /var, /lib, /boot, or /usr directory
-   *  Certainly make sure that any really confidential files (password files, 
-      private SSH keys, credit card numbers :) are *not* shared.  So generally
-      do not share ~, although ~/files or the equivalent should be OK.
-*  Remember that you get certain download priveledges with those aMule and 
-   eMule users to whom you upload files, in the form of reduced queue waits.
-* Please note that compilation with optimizations is not supported. If you do
-  use optimization flags, don't come back crying that it is unstable. With
-  optimization, unpredictable and strange bugs will probably accour.
+  * NEVER run aMule as root.
+  * If you are behind a firewall or router, be sure that ports 4662 (TCP)
+    and 4672 (UDP) are unblocked, or you will *always* get a "low ID".
+  * Obtain an appropriate server.met: e.g., if you are a dialup, using
+    a large server list is not appropiate.
+  * Set your temp and shared directories in Preferences->Directories
+    * To recursively select a certain directory, right-click over it.
+  * You should *NOT* share
+    * Your temp download directory!
+    * Your /etc directory
+    * Probably not your /var, /lib, /boot, or /usr directory
+    * Certainly make sure that any really confidential files (password files, 
+      private SSH keys, credit card numbers :) are *not* shared. So generally
+      do not share your entire home directory, although you might want to share
+      some files or directories in it.
+  * Remember that you get certain download priveledges with those clients (aMule,
+    eMule, etc users) to whom you upload files, in the form of reduced queue waits.
+  * Please note that compilation with optimizations is not supported. If you do
+    use optimization flags, don't come back crying that it is unstable. With
+    optimization, unpredictable bugs could accour.
+
 
  Obtaining your first server list
 ----------------------------------
 
-1) Use one of the following links in the "Update server.met from URL" box in 
-   the Server tab.  They are apparently updated every 20 minutes.
+  Use one of the following links in the "Update server.met from URL" box in 
+  the Server tab. They are apparently updated every 20 minutes.
 
-   *  The current top 50 servers (these fill up fast)
+  * The current top 50 servers (these fill up fast):
 	http://ocbmaurice.dyndns.org/pl/slist.pl/server.met?download
-   *  The current top 150 servers
+  * The current top 150 servers:
 	http://ocbmaurice.dyndns.org/pl/slist.pl/server.met?download/server-good.met 
-   *  The biggest list (~300 servers) maintained by the site.  Only if you have
-      a very decent connection, AFAIK.
+  * The biggest list (about 300 servers) maintained by the site. Only if you have
+    a very decent connection:
 	http://ocbmaurice.dyndns.org/pl/slist.pl/server.met?download/server-max.met 
-   *  Should maurice be down for some reasons, use this server.met instead 
-    http://www.srv1000.com/azz/server.met 
+  * Should maurice be down for some reasons, use this server.met instead:
+        http://www.srv1000.com/azz/server.met 
+
 
  Tranfers icons
--------
-To find descriptions of the various icons found inside aMule, take a
-look at http://www.emule-project.net/faq/icons.htm
+----------------
+
+  To find descriptions of the various icons found inside aMule, take a look at
+  http://www.amule.org/wiki/index.php/Getting_Started#Icons_and_What_They_Signify
+
 
  License
 ---------
 
-aMule -- like eMule -- is released under the GNU General Public License 
-See COPYING file for details.
+  aMule -- like eMule -- is released under the GNU General Public License 
+  See COPYING file for details.
 
 
  Developers
 ------------
 
-See AUTHORS
+  See AUTHORS
 
 
-FAQ:
-----
+ FAQ:
+------
 
---"How do I know whether my ID is high or low?"
+  -- How do I know whether my ID is high or low? --
 
- Look at the arrow in the bottom right corner, next to the server name you are connected to.
- When it's green, your ID is high. When it's orange, your ID is low.
- 
+  Look at the arrows at the bottom right corner, wrapping a world icon, next to the server
+  name you are connected to. If they're green, your ID is high. If they're yellow, your ID is low.
 
+  -- What does high and low ID mean anyway? --
 
--- "What does high and low ID mean anyway?"
+  When your ID is high (green arrows), everything is fine :)
+  When it's low (yellow arrows), you are probably behind a firewall or a router, and other clients can't
+  connect to you directly (which is a bad thing). Please read the FAQ or search our wiki or forums on 
+  how to configure your firewall/router for aMule.
 
- When your ID is high (green arrow), everything is fine :)
- When it's low (orange arrow), you are behind a firewall or router, and other clients can't
- connect to you directly (which is a bad thing). Plz read the FAQ or search the forums on 
- how to configure your firewall/router for aMule.
+  NOTE: you can also get a low ID when the server you connected to is too busy to answer
+  properly, or simply badly configured. When you are sure your settings are ok and you SHOULD
+  have a high ID, connect to antoher server.
 
-NOTE: you can also get a low ID when the server you connected to is too busy to answer
- properly, or simply badly configured. When you are sure your settings are ok and you SHOULD
- have a high ID, connect to antoher server.
+  -- I'd like to search for specific file types, what filter stands for which files? --
 
+  File Type	Extensions found
+  --------------------------------------------------------------------
+  Audio	        .mp3 .mp2 .mpc .wav .ogg .aac .mp4 .ape .au .wma
+  Video	        .avi .mpg .mpeg .ram .rm .vob .divx .mov .ogg .vivo
+  Program       .exe .com
+  Archive       .zip .rar .ace .tar.gz .tar.bz2 .Z .arj
+  CDImage       .bin .cue .iso .nrg .ccd .sub .img
+  Picture       .jpg .jpeg .bmp .gif .tif .png
 
+  -- What are all those fancy colors in the download progress bar about? --
 
--- "I'd like to search for specific file types, what filter stands for which files?"
+  Each download in the the transfers window has a coloured bar to show current
+  file availability and progress.
 
- File Type	Extensions found
- --------------------------------------------------------------------
- Audio		.mp3 .mp2 .mpc .wav .ogg .aac .mp4 .ape .au .wma
- Video		.avi .mpg .mpeg .ram .rm .vob .divx .mov .ogg .vivo
- Program		.exe .com
- Archive		.zip .rar .ace .tar.gz .tar.bz2 .Z .arj
- CDImage		.bin .cue .iso .nrg .ccd .sub .img
- Picture		.jpg .jpeg .bmp .gif .tif .png
+  * Black shows the parts of the file you already have
+  * Red indicates a part missing in all known sources
+  * Different shades of blue represent the availability of this part in the
+    sources. The darker the blue is the higher the availability
+  * Yellow denotes a part being downloaded
+  * The green bar on top shows the total download progress of this file
 
+  If you expand the download you see its sources with the corresponding
+  bar. Here the colours have a slightly different meaning:
 
---"What are all those fancy colors in the download progress bar about?"
+  * Black shows parts you are still missing
+  * Silver stands for parts this source is also missing
+  * Green indicates parts you already have
+  * Yellow denotes a part being uploaded to you
 
- Each download in the the Transfer tab has a coloured bar to show current
- file availability and progress.
+  Learning how the progress bar works will greatly help your understanding
+  of the eD2k network.
 
- -Black shows the parts of the file you already have
- -Red indicates a part missing in all known sources
- -Different shades of blue represent the availability of this part in the
-  sources. The darker the blue is the higher the availability
- -Yellow denotes a part being downloaded
- -The green bar on top shows the total download progress of this file
+  -- Where can I get more information? --
 
- If you expand the download you see its sources with the corresponding
- bar. Here the colours have a slightly different meaning:
+  Here are some links that might be of your interest:
 
- -Black shows parts you are still missing
- -Silver stands for parts this source is also missing
- -Green indicates parts you already have
- -Yellow denotes a part being uploaded to you
+  * aMule Wiki (documentation pages)
+      http://wiki.amule.org
 
- Learning how the progress bar works will greatly help your understanding
- of the eDonkey2000 network.
+  * aMule forums
+      http://forum.amule.org
+
+  * eMule documents
+      http://www.emule-project.net/home/perl/help.cgi
  
 
  Want to help?
 ---------------
-aMule is a free software project and requires the cooperation of it's users to help improve 
-the quality of the software.  We welcome all contributions to the project in the form of new 
-features, bug fixes and feature requests.
 
-If you are not a programmer you can still contribute by providing good bug reports when you 
-come accross a problem with the aMule software.  A good bug report gives the project team 
-enough information to reproduce the bug (so we can see it in action) and fix it.  If possible, 
-try to isolate the conditions under which the bug occurs (eg. does it happen on some specific 
-window, with some specific files, some specific conditions etc.) and provide as much detail as 
-you can in your report.
+  aMule is a free software project and requires the cooperation of it's users to improve
+  the quality of the software. We welcome all contributions to the project in the form of new
+  features, bug fixes, feature requests, ...
 
-If you are a programmer and can fix the bug you observe, please send us a patch or a note 
-about how you fixed the problem.
+  If you are not a programmer you can still contribute by providing good bug reports
+  when you come accross a problem with aMule. A good bug report gives the aMule Team
+  information enough to reproduce the bug (so we can see it in action) and fix it. If
+  possible, try to isolate under which the bug occurs (eg. does it happen on some
+  specific window, with some specific files, some specific conditions etc.) and provide
+  as much detail as you can in your report.
 
-IRC & Links
------------
+  If you are a programmer and fix a bug you observe, please send us a patch or a note
+  about how you fixed the problem.
 
-IRC: Channel #aMule on FREENODE IRC Network (irc.freenode.net)
 
-http://www.amule.org
-        - aMule homepage
-http://www.wxwidgets.org
-        - wxWidgets toolkit homepage
-http://www.emule-project.net
-	- eMule homepage
+ IRC & Links
+-------------
+
+  IRC: Channel #aMule on FREENODE IRC Network (irc.freenode.net)
+
+  aMule homepage
+      http://www.amule.org
+
+  aMule related links
+      http://www.amule.org/wiki/index.php/FAQ_ed2k
+      http://www.amule.org/wiki/index.php/aMule
+      http://www.amule.org/wiki/index.php/FAQ_aMule
+      http://www.amule.org/wiki/index.php/FAQ_utils
+      http://www.amule.org/wiki/index.php/Getting_Started
+      http://www.amule.org/wiki/index.php/aMule_problems
+
+  wxWidgets toolkit homepage
+      http://www.wxwidgets.org
+
+  eMule homepage
+      http://www.emule-project.net
+
 
  Legal Notice
 --------------
-  aMule is an interface to the e2dk network. As such, the aMule developers have absolutely 
-no control or say over what is transferred on this medium and cannot be held liable for any 
-non-personal copyright infringements or other illegal activities.
 
- -- Last modified by Kry Wed Dec 03 15:37:00 CEST 2003 --
- -- Last modified by Citroklar Fri Jan 02 03:03:00 MEZ 2004 --
- -- Last modified by deltaHF Mon Mar 22 20:10:00 MEZ 2004 --
+  aMule is an interface to the ed2k network. As such, the aMule developers have absolutely 
+  no control or say over what is transferred on this medium and cannot be held liable for any 
+  non-personal copyright infringements or other illegal activities.
+
+
+-- Last modified Sun Mar 27 7:20:00 GMT+1 2005 --
