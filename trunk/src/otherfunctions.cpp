@@ -52,6 +52,8 @@ wxString GetMuleVersion()
 		ver += wxT("wxMac");
 	#elif defined(__WXMSW__)
 		ver += wxT("wxWin");
+	#elif defined(__WXCOCOA__)
+		ver += wxT("wxCocoa");
 	#endif
 
 	ver += wxString::Format(wxT(" v%d.%d.%d"), wxMAJOR_VERSION, wxMINOR_VERSION, wxRELEASE_NUMBER );

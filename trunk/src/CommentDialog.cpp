@@ -17,9 +17,6 @@
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifdef __WXMAC__
-	#include <wx/wx.h>
-#endif
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/intl.h>		// Needed for _
 #include <wx/settings.h>

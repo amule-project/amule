@@ -140,7 +140,7 @@ wxThread::ExitCode CHTTPDownloadThread::Entry()
 		
 		// Init the handle
 		CURL *curl_handle = curl_easy_init();
-		#ifndef __WXMAC__
+		#if !defined(__WXMAC__) && !defined(__WXCOCOA__)
 		CURLM *curl_multi_handle =  curl_multi_init();
 		#endif
 		
@@ -158,7 +158,7 @@ wxThread::ExitCode CHTTPDownloadThread::Entry()
 		curl_easy_setopt(curl_handle, CURLOPT_PROGRESSDATA, m_myDlg);
 	#endif
 		
-		#ifndef __WXMAC__
+		#if !defined(__WXMAC__) && !defined(__WXCOCOA__)
 		// Add the easy handle to the multi handle
 		curl_multi_add_handle(curl_multi_handle, curl_handle);
 		
@@ -180,7 +180,7 @@ wxThread::ExitCode CHTTPDownloadThread::Entry()
 		
 		fclose(outfile);
 		free(tempurl);
-		#ifndef __WXMAC__
+		#if !defined(__WXMAC__) && !defined(__WXCOCOA__)
 		curl_multi_remove_handle(curl_multi_handle, curl_handle);
 		curl_easy_cleanup(curl_handle);
 		curl_multi_cleanup(curl_multi_handle);				

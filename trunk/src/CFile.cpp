@@ -18,9 +18,6 @@
 // headers
 // ----------------------------------------------------------------------------
 
-#ifdef __WXMAC__
-	#include <wx/wx.h>
-#endif
 #include <unistd.h>		// Needed for close(2)
 
 #include "CFile.h"		// Interface declarations.
@@ -164,15 +161,13 @@ enum {
 //#define FILE_TRACKER
 
 #ifdef FILE_TRACKER
+	#ifdef __LINUX__ // File tracker is only for linux, sorry
+	
 	#include <wx/event.h>
 	#include "GuiEvents.h"
 	#include <unistd.h>       
-	#ifndef __WXMAC__
-		#include <execinfo.h>
-	#endif
 
 	void get_caller(int value) {
-#ifndef __WXMAC__
 		void *bt_array[4];	
 		char **bt_strings;
 		int num_entries;
@@ -190,7 +185,12 @@ enum {
 				theApp.QueueLogLine(false, _("Called From: ") + wherefrom);
 			}
 		}	
-#endif
+	#else 
+		// Dummy function for non-linux
+		void get_caller(int value) {
+			
+		}
+	#endif
 }
 
 

@@ -27,10 +27,6 @@
 #include "config.h"		// Needed for DISABLE_PROGRESS
 #endif
 
-#ifdef __WXMAC__
-	#include <wx/wx.h>
-#endif
-
 #include <cmath>			// Needed for fmod
 #include <algorithm>		// Needed for std::min
 #include <wx/event.h>

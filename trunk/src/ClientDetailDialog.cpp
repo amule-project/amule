@@ -21,10 +21,6 @@
 //
 
 
-#if defined(__WXMAC__) || defined(__WXCOCOA__)
-	#include <wx/wx.h>
-#endif
-
 #include "ClientDetailDialog.h"	// Interface declarations
 #include "otherfunctions.h"	// Needed for CastItoIShort
 #include "NetworkFunctions.h" // Needed for Uint32toStringIP

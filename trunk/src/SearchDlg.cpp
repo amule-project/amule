@@ -21,9 +21,6 @@
 // SearchDlg.cpp : implementation file
 //
 
-#ifdef __WXMAC__
-	#include <wx/wx.h>
-#endif
 #include <wx/sizer.h>
 #include <wx/gauge.h>
 #include <wx/textctrl.h>

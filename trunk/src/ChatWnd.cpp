@@ -18,12 +18,7 @@
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 #include <wx/defs.h>		// Needed before any other wx/*.h
-#ifdef __WXMAC__
-	#include <wx/wx.h>
-#endif
-#ifdef __WXMSW__
-	#include <wx/wx.h>
-#endif
+
 #include <wx/settings.h>	// Needed for wxSYS_COLOUR_WINDOW
 #include <wx/accel.h>
 #include <wx/sizer.h>
@@ -123,4 +118,3 @@ void CChatWnd::SendMessage(const wxString& message)
 
 	CastChild(IDC_CMESSAGE, wxTextCtrl)->SetFocus();
 }
-

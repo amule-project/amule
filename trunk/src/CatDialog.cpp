@@ -19,9 +19,6 @@
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifdef __WXMAC__
-	#include <wx/wx.h>
-#endif
 #include <wx/sizer.h>
 #include <wx/msgdlg.h>
 #include <wx/textctrl.h>
