@@ -373,13 +373,23 @@ CECPacket *Get_EC_Response_GetUpQueue(const CECPacket *request)
 	CECPacket *response = new CECPacket(EC_OP_ULOAD_QUEUE);
 	
 	EC_DETAIL_LEVEL detail_level = request->GetDetailLevel();
+	//
+	// request can contain list of queried items
+	std::set<uint32> queryitems;
+	for (int i = 0;i < request->GetTagCount();i++) {
+		const CECTag *tag = request->GetTagByIndex(i);
+		if ( tag->GetTagName() == EC_TAG_UPDOWN_CLIENT ) {
+			queryitems.insert(tag->GetInt32Data());
+		}
+	}
 	
 	POSITION pos = theApp.uploadqueue->GetFirstFromUploadList();
 	while (	pos ) {
 
 		CUpDownClient* cur_client = theApp.uploadqueue->GetQueueClientAt(pos);
 		theApp.uploadqueue->GetNextFromUploadList(pos);
-		if (!cur_client) {
+
+		if ( !cur_client || (!queryitems.empty() && !queryitems.count(cur_client->GetUserID())) ) {
 			continue;
 		}
 		CEC_UpDownClient_Tag cli_tag(cur_client, detail_level);
