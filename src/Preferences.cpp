@@ -430,16 +430,16 @@ void CPreferences::SetColumnOrder(Table t, INT *piOrder)
 
 CPreferences::~CPreferences()
 {
-	catMap.Clear();
 	
-	/*
 	Category_Struct* delcat;
 	while (!catMap.IsEmpty()) {
 		delcat=catMap[0]; 
 		catMap.RemoveAt(0); 
 		delete delcat;
 	}
-	*/
+	
+	catMap.Clear();
+	
 	if (adresses_list.GetCount()>0) {
 		// the 'true' tells wxList to do 'delete' on the nodes.
 		adresses_list.DeleteContents(true); 

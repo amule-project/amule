@@ -110,10 +110,11 @@ CKnownFile::CKnownFile(){
 CKnownFile::~CKnownFile(){
 	hashlist.Clear();
 	taglist.Clear();
-	/*
+
 	for (int i = 0; i != hashlist.GetCount(); i++)
 		if (hashlist[i])
 			delete[] hashlist[i];
+	/*		
 	for (int i = 0; i != taglist.GetCount(); i++)
 		delete taglist[i];
 	*/
@@ -333,7 +334,6 @@ bool CKnownFile::CreateFromFile(char* in_directory,char* in_filename, volatile i
 	uint32 togo = m_nFileSize;
 	uint16 hashcount;
 	for (hashcount = 0; togo >= PARTSIZE; ) {
-		printf("HC %i ",hashcount);
 		uchar* newhash = new uchar[16];
 		CreateHashFromFile(file, PARTSIZE, newhash);
 		// SLUGFILLER: SafeHash - quick fallback
@@ -363,22 +363,18 @@ bool CKnownFile::CreateFromFile(char* in_directory,char* in_filename, volatile i
 	md4clr(lasthash);
 	CreateHashFromFile(file, togo, lasthash);
 	if (!hashcount){
-		printf("  !HC ");
 		md4cpy(m_abyFileHash, lasthash);
 		delete[] lasthash; // i_a: memleak 
 	} 
 	else {
-		printf("  HC ");
 		hashlist.Add(lasthash);		
 		uchar* buffer = new uchar[hashlist.GetCount()*16];
 		for (size_t i = 0; i < hashlist.GetCount(); i++) {
-			printf("CP%i",i);
 			md4cpy(buffer+(i*16), hashlist[i]);
 		}
 		CreateHashFromString(buffer, hashlist.GetCount()*16, m_abyFileHash);
 		delete[] buffer;
 	}
-	printf("\n");
 	
 	// set lastwrite date
 	struct stat fileinfo;
