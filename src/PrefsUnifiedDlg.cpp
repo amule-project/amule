@@ -47,7 +47,7 @@
 #include "amule.h"			// Needed for theApp
 #include "amuleDlg.h"
 #include "color.h"
-#include "otherfunctions.h"		// Needed for MakeFoldername, IsFileEmpty
+#include "otherfunctions.h"		// Needed for MakeFoldername, IsEmptyFile
 #include "EditServerListDlg.h"
 #include "SharedFileList.h"		// Needed for CSharedFileList
 #include "StatisticsDlg.h"		// Needed for graph parameters, colors
