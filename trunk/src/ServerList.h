@@ -66,7 +66,6 @@ public:
 	uint32		GetServerPostion()	{return serverpos;}
 	void		SetServerPosition(uint32 newPosition) { if (newPosition<(uint32)list.GetCount() ) serverpos=newPosition; else serverpos=0;}
 	uint32		GetDeletedServerCount()		{return delservercount;}
-	void		Process();
 	void 		UpdateServerMetFromURL(wxString strURL);	
 	void		DownloadFinished(uint32 result);	
 	void		AutoDownloadFinished(uint32 result);	
