@@ -75,29 +75,24 @@ bool CMuleNotebook::DeletePage(int nPage)
 	ProcessEvent( evt );
 
 	// and finally remove the actual page
-	if ( wxNotebook::DeletePage( nPage ) ) {
-		// Ensure a valid selection
-		if ( nPage >= (int)GetPageCount() )
-			nPage = GetPageCount() - 1;
+	bool result = wxNotebook::DeletePage( nPage );
 
-		if ( nPage != -1 )
-			SetSelection( nPage );
-
-		return true;
-	} 
-
-	return false;
+	// Ensure a valid selection
+	if ( GetPageCount() && GetSelection() >= GetPageCount() ) {
+		SetSelection( GetPageCount() - 1 );
+	}
 }
 
 
 bool CMuleNotebook::DeleteAllPages()
 {
 	Freeze();
+
+	bool result = true;
+	while ( GetPageCount() ) {
+		result &= DeletePage( 0 );
+	}
 	
-	bool result = false;
-	for ( int i = GetPageCount(); i > 0; i-- )
-		result |= DeletePage(i - 1);
-		
 	Thaw();
 		
 	return result;
