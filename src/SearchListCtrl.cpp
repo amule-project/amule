@@ -21,6 +21,7 @@
 // SearchListCtrl.cpp : implementation file
 //
 
+#include <wx/menu.h>
 
 #include "muuli_wdr.h"		// Needed for ID_SERVERLIST
 #include "SearchListCtrl.h"	// Interface declarations

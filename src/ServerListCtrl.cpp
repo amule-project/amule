@@ -23,6 +23,9 @@
 
 #include <wx/textfile.h>
 #include <wx/event.h>
+#include <wx/menu.h>
+#include <wx/stattext.h>
+#include <wx/msgdlg.h>
 
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "ServerListCtrl.h"	// Interface declarations

@@ -66,7 +66,8 @@ public:
 	
 private:
 	void	FindSharedFiles();
-
+	bool	reloading;
+	
 	CKnownFileMap		m_Files_map;
 	CPreferences*		app_prefs;
 	CServerConnect*		server;

@@ -49,7 +49,7 @@ CSharedFileList::CSharedFileList(CPreferences* in_prefs,CServerConnect* in_serve
 	server = in_server;
 	filelist = in_filelist;
 	output = 0;
-
+	reloading = false;
 	FindSharedFiles();
 }
 
@@ -117,7 +117,8 @@ void CSharedFileList::AddFilesFromDirectory(wxString directory)
 	while(!fname.IsEmpty()) {
 
 		uint32 fdate=wxFileModificationTime(fname);
-		#ifndef __WXMSW__
+
+		#ifdef __linux__ 
 		int b = open(unicode2char(fname), O_RDONLY | O_LARGEFILE);
 		#else
 		int b = open(unicode2char(fname), O_RDONLY);
@@ -200,17 +201,20 @@ void CSharedFileList::Reload(bool sendtoserver, bool firstload){
 	// Madcat - Disable reloading if reloading already in progress.
 	// Kry - Fixed to let non-english language users use the 'Reload' button :P
 	// deltaHF - removed the old ugly button and changed the code to use the new small one
-	GetDlgItem(ID_BTNRELSHARED)->Disable();
-	output->DeleteAllItems();
-	FindSharedFiles();
-	if ((output) && (firstload == false)) {
-		output->ShowFileList(this);
+	// Kry - bah, let's use a var. 
+	if (!reloading) {
+		reloading = true;
+		output->DeleteAllItems();
+		FindSharedFiles();
+		if ((output) && (firstload == false)) {
+			output->ShowFileList(this);
+		}
+		if (sendtoserver) {
+			SendListToServer();
+		}
+		output->InitSort();
+		reloading = false;
 	}
-	if (sendtoserver) {
-		SendListToServer();
-	}
-	GetDlgItem(ID_BTNRELSHARED)->Enable();
-	output->InitSort();
 }
 
 void CSharedFileList::SetOutputCtrl(CSharedFilesCtrl* in_ctrl){

@@ -26,7 +26,8 @@
 	#include <wx/msw/winundef.h>
 #endif
 #include <wx/intl.h>
- 
+#include <wx/sizer.h> 
+
 #include "HTTPDownloadDlg.h"	// Interface declarations
 #include "MuleGifCtrl.h"
 #include "muuli_wdr.h"		// Needed for ID_CANCEL

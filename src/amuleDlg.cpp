@@ -27,6 +27,10 @@
 #include <wx/datetime.h>
 #include <wx/config.h>
 #include <wx/textfile.h>
+#include <wx/sizer.h>
+#include <wx/radiobox.h>
+#include <wx/msgdlg.h>
+#include <wx/log.h>
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
