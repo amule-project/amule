@@ -24,7 +24,7 @@
 #define GETTICKCOUNT_H
 #include "types.h"		// Needed for uint32
 
-#if wxUSE_GUI && wxUSE_TIMER
+#if wxUSE_GUI && wxUSE_TIMER && !defined(AMULE_DAEMON)
 /**
  * Copyright (C) 2004 Alo Sarv <madcat_@users.sourceforge.net>
  * wxTimer based implementation. wxGetLocalTimeMillis() is called every 2
@@ -36,7 +36,7 @@
 	#define GetTickCount() mytimer->GetTickCountNow()
 	#define GetTickCount64() mytimer->GetTickCountNow64()
 	extern class MyTimer *mytimer;
-	class MyTimer : public AMULE_TIMER_CLASS {
+	class MyTimer : public wxTimer {
 	public:
 		MyTimer() { tic32 = tic64 = wxGetLocalTimeMillis().GetValue(); Start(20); }
 		uint32 GetTickCountNow() { return tic32; }
