@@ -339,16 +339,6 @@ no) GTK_DEFS="$GTK_DEFS -D__NOGTK__"
 	;;
 esac
 
-if test "$CURLFOUND" != "no" ; then
-  LIBS="$LIBS $CURL_LIBS"
-  CXXFLAGS="$CXXFLAGS $CURL_FLAGS"
-fi
-
-if test "$GDLIBFOUND" != "no" ; then
-   LIBS="$LIBS"
-   CXXFLAGS="$CXXFLAGS"
-fi
-
 case "$CRYPTO_PP_STYLE" in
 gentoo_debian) CXXFLAGS="$CXXFLAGS -I$crypto_prefix -D__CRYPTO_DEBIAN_GENTOO__"
 # Debian uses libcrypto++5.1 - it's not my fault, please soda patch the package
