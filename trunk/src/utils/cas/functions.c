@@ -28,6 +28,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
 
 /* XXX This needs to be replaced so that we use
  * autoconf to detect the target OS -- As of now
