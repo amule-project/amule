@@ -81,19 +81,13 @@ void CClientUDPSocket::OnReceive(int nErrorCode)
 	RecvFrom(addr,buffer,5000);
 	wxUint32 length = LastCount();
 
-	// strip IP address from wxSockAddress (do not call Hostname(). we do not want DNS)
-	struct in_addr addr_in;
-	addr_in.s_addr = inet_addr(unicode2char(addr.IPAddress()));
-	char* fromIP=inet_ntoa(addr_in);
-
-	//wxUint32 length = ReceiveFrom(buffer,5000,serverbuffer,port);
 	if (buffer[0] == (char)OP_EMULEPROT && length != static_cast<wxUint32>(-1)) {
-		ProcessPacket(buffer+2,length-2,buffer[1],/*serverbuffer.GetBuffer()*/fromIP,addr.Service());
+		ProcessPacket(buffer+2,length-2,buffer[1],inet_addr(unicode2char(addr.IPAddress())),addr.Service());
 	}
 }
 
 
-bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, char* host, uint16 port)
+bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, uint32 host, uint16 port)
 {
 	try {
 		switch(opcode) {
@@ -109,10 +103,10 @@ bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, char
 				if (!reqfile) {
 					Packet* response = new Packet(OP_FILENOTFOUND,0,OP_EMULEPROT);
 					theApp.uploadqueue->AddUpDataOverheadFileRequest(response->size);
-					SendPacket(response,inet_addr(host),port);
+					SendPacket(response,host,port);
 					break;
 				}
-				CUpDownClient* sender = theApp.uploadqueue->GetWaitingClientByIP(inet_addr(host));
+				CUpDownClient* sender = theApp.uploadqueue->GetWaitingClientByIP(host);
 				if (sender){					
 					//Make sure we are still thinking about the same file
 					if (md4cmp(reqfilehash, sender->GetUploadFileID()) == 0) {
@@ -152,7 +146,7 @@ bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, char
 						Packet* response = new Packet(&data_out, OP_EMULEPROT);
 						response->opcode = OP_REASKACK;
 						theApp.uploadqueue->AddUpDataOverheadFileRequest(response->size);
-						theApp.clientudp->SendPacket(response, inet_addr(host), port);
+						theApp.clientudp->SendPacket(response, host, port);
 					} else {					
 						AddLogLineM(false, wxT("Client UDP socket; ReaskFilePing; reqfile does not match"));
 					}						
@@ -160,14 +154,14 @@ bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, char
 					if (((uint32)theApp.uploadqueue->GetWaitingUserCount() + 50) > theApp.glob_prefs->GetQueueSize()) {
 						Packet* response = new Packet(OP_QUEUEFULL,0,OP_EMULEPROT);
 						theApp.uploadqueue->AddUpDataOverheadFileRequest(response->size);
-						SendPacket(response,inet_addr(host),port);
+						SendPacket(response,host,port);
 					}
 				}
 				break;
 			}
 			case OP_QUEUEFULL: {
 				theApp.downloadqueue->AddDownDataOverheadOther(size);
-				CUpDownClient* sender = theApp.downloadqueue->GetDownloadClientByIP(inet_addr(host));
+				CUpDownClient* sender = theApp.downloadqueue->GetDownloadClientByIP(host);
 				if (sender) {
 					sender->SetRemoteQueueFull(true);
 					sender->UDPReaskACK(0);
@@ -176,7 +170,7 @@ bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, char
 			}
 			case OP_REASKACK: {				
 				theApp.downloadqueue->AddDownDataOverheadFileRequest(size);
-				CUpDownClient* sender = theApp.downloadqueue->GetDownloadClientByIP(inet_addr(host));
+				CUpDownClient* sender = theApp.downloadqueue->GetDownloadClientByIP(host);
 				if (sender) {
 					CSafeMemFile data_in((BYTE*)packet,size);
 					if ( sender->GetUDPVersion() > 3 ) {
@@ -193,7 +187,7 @@ bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, char
 			case OP_FILENOTFOUND:
 			{
 				theApp.downloadqueue->AddDownDataOverheadFileRequest(size);
-				CUpDownClient* sender = theApp.downloadqueue->GetDownloadClientByIP(inet_addr(host));
+				CUpDownClient* sender = theApp.downloadqueue->GetDownloadClientByIP(host);
 				if (sender){
 					sender->UDPReaskFNF(); // may delete 'sender'!
 					sender = NULL;
