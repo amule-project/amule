@@ -514,7 +514,7 @@ void CamuleDlg::OnAboutButton(wxCommandEvent& WXUNUSED(ev))
 		" Website: http://www.amule.org \n"
 		" Forum: http://forum.amule.org \n"
 		" FAQ: http://wiki.amule.org \n\n"
-		" Contact: admin@amule.org (administrative issues)"
+		" Contact: admin@amule.org (administrative issues) \n"
 		" Copyright (C) 2003-2005 aMule Team \n");
 	if (is_safe_state) {
 		wxMessageBox(msg);
