@@ -1,14 +1,14 @@
-# translation of amule.po to Français
+# translation of fr2.po to Français
 # Copyright (C) 2004 Free Software Foundation, Inc.
 # This file is distributed under the same license as the PACKAGE package.
 # ThePolish <thepolish@vipmail.ru>, 2004.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: amule\n"
+"Project-Id-Version: fr2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-07-15 20:57+0200\n"
-"PO-Revision-Date: 2004-07-15 22:39+0200\n"
+"POT-Creation-Date: 2004-07-16 22:54+0200\n"
+"PO-Revision-Date: 2004-07-16 23:07+0200\n"
 "Last-Translator: ThePolish <thepolish@vipmail.ru>\n"
 "Language-Team: Français <fr@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -77,7 +77,7 @@ msgstr "Impossible de déterminer la commande pour lancer votre navigateur"
 msgid ""
 "Unable to launch browser. Please set correct browser executable path in "
 "Preferences."
-msgstr "Impossible de charger votre Navigateur. Veuillez entrer un chemin correct vers exécutable dans les Préférences"
+msgstr "Impossible de charger votre Navigateur. Veuillez entrer un chemin correct vers l'exécutable dans les Préférences"
 
 #: src/amule.cpp:1441
 #, c-format
@@ -181,7 +181,7 @@ msgstr "Confirmation en sortie"
 
 #: src/amuleDlg.cpp:840
 msgid "This ed2k link is invalid: "
-msgstr "Ce lien Ed2k est invalide: "
+msgstr "Ce lien ed2k est invalide: "
 
 #: src/amuleDlg.cpp:841 src/PartFile.cpp:190 src/PartFile.cpp:211
 msgid "Invalid link: "
@@ -215,7 +215,7 @@ msgstr "Impossible de télécharger le fichier partagé depuis "
 #: src/ClientDetailDialog.cpp:91 src/DownloadListCtrl.cpp:928
 #: src/DownloadListCtrl.cpp:940 src/DownloadListCtrl.cpp:1194
 #: src/ExternalConn.cpp:2251 src/ExternalConn.cpp:2252
-#: src/FileDetailDialog.cpp:111 src/PartFile.cpp:3447 src/ServerWnd.cpp:179
+#: src/FileDetailDialog.cpp:111 src/PartFile.cpp:3427 src/ServerWnd.cpp:179
 #: src/SharedFilesCtrl.cpp:218 src/UploadListCtrl.cpp:205
 #: src/UploadListCtrl.cpp:518 src/utils/wxCas/src/linuxmon.cpp:61
 #: src/utils/wxCas/src/onlinesig.cpp:57
@@ -412,7 +412,7 @@ msgstr "Basse"
 msgid "High"
 msgstr "Haute"
 
-#: src/ClientList.cpp:218
+#: src/ClientList.cpp:219
 #, c-format
 msgid ""
 "WARNING! Found matching client, to a currently connected client: %s (%s) and "
@@ -461,7 +461,7 @@ msgstr " commentaire(s)"
 
 #: src/DownloadClient.cpp:303
 msgid "ERROR: Wrong file ID (ProcessFileInfo; file==NULL)"
-msgstr "ERREUR: ID du fichier incorrect (ProcessFileInfo; file==NULL)"
+msgstr "ERREUR: Mauvais ID du fichier (ProcessFileInfo; file==NULL)"
 
 #: src/DownloadClient.cpp:306
 msgid "ERROR: Wrong file ID (ProcessFileInfo; m_reqfile==NULL)"
@@ -608,11 +608,11 @@ msgstr "Afficher tous les commentaires"
 #: src/DownloadListCtrl.cpp:292 src/ServerListCtrl.cpp:126
 #: src/SharedFilesCtrl.cpp:131
 msgid "Copy ED2k &link to clipboard"
-msgstr "Copier le &lien Ed2k dans le presse-papiers"
+msgstr "Copier le &lien ed2k dans le presse-papiers"
 
 #: src/DownloadListCtrl.cpp:293 src/SharedFilesCtrl.cpp:134
 msgid "Copy ED2k link to clipboard (&HTML)"
-msgstr "Copier le lien Ed2k dans le presse-papiers (&HTML)"
+msgstr "Copier le lien ed2k dans le presse-papiers (&HTML)"
 
 #: src/DownloadListCtrl.cpp:294
 msgid "Copy feedback to clipboard"
@@ -821,7 +821,7 @@ msgstr "Lien.invalide"
 #: src/DownloadQueue.cpp:964
 #, c-format
 msgid "This ed2k link is invalid (%s)"
-msgstr "Ce lien 'Ed2k' est invalide (%s)"
+msgstr "Ce lien 'ed2k' est invalide (%s)"
 
 #: src/DownloadQueue.cpp:965
 #, c-format
@@ -830,11 +830,11 @@ msgstr "Lien invalide: %s"
 
 #: src/ED2KLink.cpp:445 src/ED2KLink.cpp:454
 msgid "not a well-formed ed2k link"
-msgstr "Lien Ed2k malformé"
+msgstr "Lien ed2k malformé"
 
 #: src/ED2KLink.cpp:466
 msgid "Not an ED2K server or file link"
-msgstr "Ce n'est pas un lien Ed2k serveur ou fichier"
+msgstr "Ce n'est pas un lien ed2k serveur ou fichier"
 
 #: src/EditServerListDlg.cpp:81
 #, c-format
@@ -950,7 +950,12 @@ msgstr "Établissement d'un slot Ami"
 msgid "Downloading..."
 msgstr "En téléchargement."
 
-#: src/IPFilter.cpp:165
+#: src/IPFilter.cpp:117 src/IPFilter.cpp:127
+#, c-format
+msgid "Invalid line in file ipfilter.dat(%d)"
+msgstr "Ligne invalide dans le fichier ipfilter.dat(%d)"
+
+#: src/IPFilter.cpp:167
 #, c-format
 msgid "Loaded ipfilter with %d IP addresses."
 msgstr "Filtres IP chargés avec %d adresses IP"
@@ -1119,7 +1124,7 @@ msgstr "Envoyer"
 
 #: src/muuli_wdr.cpp:127
 msgid "Will add your ed2k link to your downloads"
-msgstr "Ajoutera votre lien Ed2k à vos téléchargements"
+msgstr "Ajoutera votre lien ed2k à vos téléchargements"
 
 #: src/muuli_wdr.cpp:136
 msgid "Loading ..."
@@ -1214,7 +1219,7 @@ msgstr "Assigner automatiquement les nouveaux téléchargements dans la catégor
 
 #: src/muuli_wdr.cpp:296
 msgid "ed2k link handler"
-msgstr "Prise en charge des liens Ed2k"
+msgstr "Prise en charge des liens ed2k"
 
 #: src/muuli_wdr.cpp:308 src/WebServer.cpp:2756
 msgid "Min Size"
@@ -1278,7 +1283,7 @@ msgid "Send"
 msgstr "Envoyer"
 
 #: src/muuli_wdr.cpp:567 src/muuli_wdr.cpp:1414 src/muuli_wdr.cpp:3299
-#: src/PrefsUnifiedDlg.cpp:914
+#: src/PrefsUnifiedDlg.cpp:915
 msgid "General"
 msgstr "Général"
 
@@ -1945,7 +1950,7 @@ msgstr "Se connecter automatiquement au démarrage"
 
 #: src/muuli_wdr.cpp:2030
 msgid "Reconnect on loss"
-msgstr "Re-connecter en cas de dé-connexion"
+msgstr "Reconnecter en cas de déconnexion"
 
 #: src/muuli_wdr.cpp:2034
 msgid "Show overhead bandwith"
@@ -2307,7 +2312,7 @@ msgstr "Signaler les erreurs de paquets en mode bavard (Debuggage seulement)"
 
 #: src/muuli_wdr.cpp:2559
 msgid "Autotake ED2K Links only during runtime"
-msgstr "Gérer automatiquement les liens Ed2k seulement quand aMule tourne"
+msgstr "Gérer automatiquement les liens ED2K seulement quand aMule tourne"
 
 #: src/muuli_wdr.cpp:2563
 msgid "Show transfer rates on title"
@@ -2387,7 +2392,7 @@ msgstr "Utiliser l'ancien style d'onglets dans les Préférences"
 
 #: src/muuli_wdr.cpp:2694
 msgid "Show Fast ED2K Links Handler"
-msgstr "Afficher la prise en charge rapide des liens Ed2k"
+msgstr "Afficher la prise en charge rapide des liens ED2K"
 
 #: src/muuli_wdr.cpp:2698
 msgid "Show extended info on categories tabs"
@@ -2447,15 +2452,15 @@ msgstr "(Mini 60 / 3600 Maxi)"
 
 #: src/muuli_wdr.cpp:2796
 msgid "Webserver Parameters"
-msgstr "Paramètres du serveur Web"
+msgstr "Paramètres du serveur web"
 
 #: src/muuli_wdr.cpp:2799
 msgid "Enable Webserver"
-msgstr "Activer le serveur Web"
+msgstr "Activer le serveur web"
 
 #: src/muuli_wdr.cpp:2804
 msgid "Webserver port"
-msgstr "Port du serveur Web"
+msgstr "Port du serveur web"
 
 #: src/muuli_wdr.cpp:2814
 msgid "Page Refresh Time (in secs)"
@@ -2577,31 +2582,31 @@ msgstr ":"
 msgid "Add manually a server (fill fields to the left before) ..."
 msgstr "Ajouter manuellement un serveur (remplir les champs à gauche avant)"
 
-#: src/muuli_wdr.cpp:3303 src/PrefsUnifiedDlg.cpp:914
+#: src/muuli_wdr.cpp:3303 src/PrefsUnifiedDlg.cpp:915
 #: src/StatisticsDlg.cpp:651
 msgid "Connection"
 msgstr "Connexion"
 
-#: src/muuli_wdr.cpp:3307 src/PrefsUnifiedDlg.cpp:914
+#: src/muuli_wdr.cpp:3307 src/PrefsUnifiedDlg.cpp:915
 msgid "Remote Controls"
 msgstr "Contrôles à distance"
 
-#: src/muuli_wdr.cpp:3311 src/PrefsUnifiedDlg.cpp:915
+#: src/muuli_wdr.cpp:3311 src/PrefsUnifiedDlg.cpp:916
 #: src/ServerListCtrl.cpp:111 src/ServerSocket.cpp:219
 #: src/ServerSocket.cpp:233 src/WebServer.cpp:2409 src/WebServer.cpp:2764
 msgid "Server"
 msgstr "Serveurs"
 
-#: src/muuli_wdr.cpp:3315 src/PrefsUnifiedDlg.cpp:915
+#: src/muuli_wdr.cpp:3315 src/PrefsUnifiedDlg.cpp:916
 #: src/ServerListCtrl.cpp:241
 msgid "Files"
 msgstr "Fichiers"
 
-#: src/muuli_wdr.cpp:3319 src/PrefsUnifiedDlg.cpp:915
+#: src/muuli_wdr.cpp:3319 src/PrefsUnifiedDlg.cpp:916
 msgid "Sources Dropping"
 msgstr "Nettoyage des sources"
 
-#: src/muuli_wdr.cpp:3323 src/PrefsUnifiedDlg.cpp:916
+#: src/muuli_wdr.cpp:3323 src/PrefsUnifiedDlg.cpp:917
 msgid "Directories"
 msgstr "Répertoires"
 
@@ -2613,7 +2618,7 @@ msgstr "Alertes"
 msgid "aMule Tweaks"
 msgstr "Paramètres avancés"
 
-#: src/muuli_wdr.cpp:3339 src/PrefsUnifiedDlg.cpp:917
+#: src/muuli_wdr.cpp:3339 src/PrefsUnifiedDlg.cpp:918
 msgid "Gui Tweaks"
 msgstr "Paramètres de l'IHM"
 
@@ -2712,7 +2717,7 @@ msgstr "Fenêtre des Messages"
 msgid "Statistics Graph Window"
 msgstr "Fenêtre des Statistiques"
 
-#: src/muuli_wdr.cpp:3521 src/PrefsUnifiedDlg.cpp:908
+#: src/muuli_wdr.cpp:3521 src/PrefsUnifiedDlg.cpp:909
 #: src/utils/wxCas/src/wxcasprefs.cpp:56
 msgid "Preferences"
 msgstr "Préférences"
@@ -2787,27 +2792,27 @@ msgstr "tous les autres"
 msgid "Incomplete"
 msgstr "Incomplet"
 
-#: src/otherfunctions.cpp:337 src/PartFile.cpp:2801 src/TransferWnd.cpp:162
+#: src/otherfunctions.cpp:337 src/PartFile.cpp:2781 src/TransferWnd.cpp:162
 #: src/WebServer.cpp:2846
 msgid "Waiting"
 msgstr "En attente"
 
-#: src/otherfunctions.cpp:338 src/PartFile.cpp:2799 src/TransferWnd.cpp:163
+#: src/otherfunctions.cpp:338 src/PartFile.cpp:2779 src/TransferWnd.cpp:163
 #: src/WebServer.cpp:2847
 msgid "Downloading"
 msgstr "En téléchargement"
 
-#: src/otherfunctions.cpp:339 src/PartFile.cpp:2818 src/TransferWnd.cpp:164
+#: src/otherfunctions.cpp:339 src/PartFile.cpp:2798 src/TransferWnd.cpp:164
 #: src/WebServer.cpp:2848
 msgid "Erroneous"
 msgstr "Erroné"
 
-#: src/otherfunctions.cpp:340 src/PartFile.cpp:2815 src/TransferWnd.cpp:165
+#: src/otherfunctions.cpp:340 src/PartFile.cpp:2795 src/TransferWnd.cpp:165
 #: src/WebServer.cpp:2849
 msgid "Paused"
 msgstr "En pause"
 
-#: src/otherfunctions.cpp:341 src/PartFile.cpp:2822 src/TransferWnd.cpp:166
+#: src/otherfunctions.cpp:341 src/PartFile.cpp:2802 src/TransferWnd.cpp:166
 #: src/WebServer.cpp:2850
 msgid "Stopped"
 msgstr "Arrêté"
@@ -2832,7 +2837,7 @@ msgstr "?"
 
 #: src/PartFile.cpp:189 src/PartFile.cpp:210
 msgid "This ed2k link is invalid ("
-msgstr "Ce lien Ed2k est invalide ("
+msgstr "Ce lien ed2k est invalide ("
 
 #: src/PartFile.cpp:357
 msgid "ERROR: Failed to create partfile)"
@@ -2885,40 +2890,36 @@ msgstr "Impossible d'ouvrir %s (%s)"
 msgid "Warning: %s might be corrupted"
 msgstr "Attention: %s est peut-être corrompu"
 
-#: src/PartFile.cpp:772 src/PartFile.cpp:890 src/PartFile.cpp:896
+#: src/PartFile.cpp:880
 #, c-format
 msgid "ERROR while saving partfile: %s (%s => %s)"
 msgstr "Erreur d'enregistrement du fichier .part: %s (%s => %s)"
 
-#: src/PartFile.cpp:772
-msgid ".part file not found"
-msgstr "Fichier .part non trouvé"
-
-#: src/PartFile.cpp:913 src/utils/aLinkCreator/src/alcframe.cpp:404
+#: src/PartFile.cpp:895 src/utils/aLinkCreator/src/alcframe.cpp:404
 msgid "Unable to open "
 msgstr "Impossible d'ouvrir "
 
-#: src/PartFile.cpp:991
+#: src/PartFile.cpp:972
 #, c-format
 msgid "Failed to save part.met.seeds file for %s"
 msgstr "Enregistrement impossible de part.met.seeds pour %s"
 
-#: src/PartFile.cpp:1011
+#: src/PartFile.cpp:992
 #, c-format
 msgid "Saved %i sources seeds for partfile: %s (%s)"
 msgstr "Enregistrement de %i de sources complètes (seeds) pour le fichier .part: %s (%s)"
 
-#: src/PartFile.cpp:1029
+#: src/PartFile.cpp:1009
 #, c-format
 msgid "Partfile %s (%s) has no seeds file"
 msgstr "Le fichier .part %s (%s) n'a pas de fichier de sources complètes (seeds)"
 
-#: src/PartFile.cpp:1034
+#: src/PartFile.cpp:1014
 #, c-format
 msgid "Partfile %s (%s) has void seeds file"
 msgstr "Le fichier .part %s (%s) a un fichier de sources complètes (seeds) vide"
 
-#: src/PartFile.cpp:1071
+#: src/PartFile.cpp:1051
 #, c-format
 msgid ""
 "Found corrupted part (%i) in 0 parts file %s - FileResultHash |%s| FileHash |"
@@ -2927,7 +2928,7 @@ msgstr ""
 "Partie corrompue trouvée (%i) dans 0 fichier .part %s - FileResultHash |%s| FileHash |"
 "%s|"
 
-#: src/PartFile.cpp:1099
+#: src/PartFile.cpp:1079
 #, c-format
 msgid ""
 "Found corrupted part (%i) in %i parts file %s - FileResultHash |%s| FileHash "
@@ -2936,186 +2937,186 @@ msgstr ""
 "Partie(s) corrompue(s) trouvée(s) (%i) dans %i fichier .part %s - FileResultHash |%s| FileHash "
 "|%s|"
 
-#: src/PartFile.cpp:1106
+#: src/PartFile.cpp:1086
 #, c-format
 msgid "Found completed part (%i) in %s"
 msgstr "Partie terminée trouvée (%i) dans %s"
 
-#: src/PartFile.cpp:1120
+#: src/PartFile.cpp:1100
 #, c-format
 msgid "Finished rehashing %s"
 msgstr "Re hachage de %s terminé"
 
-#: src/PartFile.cpp:2374
+#: src/PartFile.cpp:2354
 #, c-format
 msgid "Unexpected file error while completing %s. File paused"
 msgstr "Erreur fichier inattendue à la finalisation de %s. Fichier mis en pause"
 
-#: src/PartFile.cpp:2380
+#: src/PartFile.cpp:2360
 #, c-format
 msgid "WARNING: Failed to delete %s"
 msgstr "ATTENTION: impossible de supprimer %s"
 
-#: src/PartFile.cpp:2384
+#: src/PartFile.cpp:2364
 #, c-format
 msgid "WARNING: Failed to delete %s%s"
 msgstr "ATTENTION: impossible de supprimer %s%s"
 
-#: src/PartFile.cpp:2388
+#: src/PartFile.cpp:2368
 msgid "WARNING: A file with that name already exists, the file has been renamed"
 msgstr "ATTENTION: Une fichier portant ce nom existe déjà, le fichier a été renommé"
 
-#: src/PartFile.cpp:2400
+#: src/PartFile.cpp:2380
 #, c-format
 msgid "Finished downloading %s :-)"
 msgstr "Téléchargement de %s terminé:-)"
 
-#: src/PartFile.cpp:2401
+#: src/PartFile.cpp:2381
 msgid "Downloaded:"
 msgstr "Téléchargé:"
 
-#: src/PartFile.cpp:2605 src/PartFile.cpp:2614 src/PartFile.cpp:2624
+#: src/PartFile.cpp:2585 src/PartFile.cpp:2594 src/PartFile.cpp:2604
 msgid "Failed to delete "
 msgstr "Impossible d'effacer "
 
-#: src/PartFile.cpp:2636
+#: src/PartFile.cpp:2616
 #, c-format
 msgid "Warning: Unable to hash downloaded part - hashset incomplete (%s)"
 msgstr "Attention: impossible de hacher la partie téléchargée: hashset incomplet (%s)"
 
-#: src/PartFile.cpp:2640
+#: src/PartFile.cpp:2620
 #, c-format
 msgid ""
 "Error: Unable to hash downloaded part - hashset incomplete (%s). This should "
 "never happen"
 msgstr "Erreur: impossible de hacher la partie téléchargée: hashset incomplet (%s). Cela ne devrait jamais arriver"
 
-#: src/PartFile.cpp:2806
+#: src/PartFile.cpp:2786
 msgid "Hashing"
 msgstr "Hachage"
 
-#: src/PartFile.cpp:2809
+#: src/PartFile.cpp:2789
 msgid "Completing"
 msgstr "Finalisation"
 
-#: src/PartFile.cpp:2812 src/WebServer.cpp:1187
+#: src/PartFile.cpp:2792 src/WebServer.cpp:1187
 msgid "Complete"
 msgstr "Terminé"
 
-#: src/PartFile.cpp:3277
+#: src/PartFile.cpp:3257
 msgid "ERROR: Cannot write to disk"
 msgstr "Erreur: impossible d'écrire sur le disque"
 
-#: src/PartFile.cpp:3357
+#: src/PartFile.cpp:3337
 #, c-format
 msgid "Downloaded part %i is corrupt :(  (%s)"
 msgstr "La partie téléchargée %i est corrompue:-( (%s)"
 
-#: src/PartFile.cpp:3390
+#: src/PartFile.cpp:3370
 #, c-format
 msgid "ICH: Recovered corrupted part %i  (%s)"
 msgstr "Parties sauvées grâce à l'I.C.H: %i (%s)"
 
-#: src/PartFile.cpp:3447
+#: src/PartFile.cpp:3427
 #, c-format
 msgid "Unexpected file error while writing %s : %s"
 msgstr "Erreur de fichier inattendue en écrivant %s: %s"
 
-#: src/PrefsUnifiedDlg.cpp:527
+#: src/PrefsUnifiedDlg.cpp:528
 msgid "Choose a folder for "
 msgstr "Choisissez un répertoire pour "
 
-#: src/PrefsUnifiedDlg.cpp:665 src/PrefsUnifiedDlg.cpp:667
+#: src/PrefsUnifiedDlg.cpp:666 src/PrefsUnifiedDlg.cpp:668
 #, c-format
 msgid "Update period: %i secs"
 msgstr "Fréquence de mise à jour: %i s"
 
-#: src/PrefsUnifiedDlg.cpp:665 src/PrefsUnifiedDlg.cpp:667
+#: src/PrefsUnifiedDlg.cpp:666 src/PrefsUnifiedDlg.cpp:668
 #, c-format
 msgid "Update period: %i sec"
 msgstr "Fréquence de rafraîchissement: %i s"
 
-#: src/PrefsUnifiedDlg.cpp:665 src/PrefsUnifiedDlg.cpp:667
+#: src/PrefsUnifiedDlg.cpp:666 src/PrefsUnifiedDlg.cpp:668
 msgid "Update: Disabled"
 msgstr "Mise à jour: Désactivé"
 
-#: src/PrefsUnifiedDlg.cpp:675
+#: src/PrefsUnifiedDlg.cpp:676
 #, c-format
 msgid "Server connection refresh interval %i mins"
 msgstr "Fréquence de rafraîchissement de la connexion serveur: %i mn"
 
-#: src/PrefsUnifiedDlg.cpp:675
+#: src/PrefsUnifiedDlg.cpp:676
 #, c-format
 msgid "Server connection refresh interval %i min"
 msgstr "Fréquence de rafraîchissement de la connexion serveur: %i mn"
 
-#: src/PrefsUnifiedDlg.cpp:675
+#: src/PrefsUnifiedDlg.cpp:676
 msgid "Server connection refresh interval: Disabled"
 msgstr "Intervalle de rafraîchissement de la connexion serveur: Désactivé"
 
-#: src/PrefsUnifiedDlg.cpp:681
+#: src/PrefsUnifiedDlg.cpp:682
 #, c-format
 msgid "Connections Graph Scale: %i"
 msgstr "Échelle du graphique des connexions: %i"
 
-#: src/PrefsUnifiedDlg.cpp:684
+#: src/PrefsUnifiedDlg.cpp:685
 #, c-format
 msgid "Time for running averages: %i mins"
 msgstr "Durée pour les moyennes en fonctionnement: %i mn"
 
-#: src/PrefsUnifiedDlg.cpp:742
+#: src/PrefsUnifiedDlg.cpp:743
 #, c-format
 msgid "File Buffer Size %i bytes"
 msgstr "Taille du fichier tampon:%i octets"
 
-#: src/PrefsUnifiedDlg.cpp:745
+#: src/PrefsUnifiedDlg.cpp:746
 #, c-format
 msgid "Upload Queue Size %i clients"
 msgstr "Taille de la queue d'envoi: %i clients"
 
-#: src/PrefsUnifiedDlg.cpp:747
+#: src/PrefsUnifiedDlg.cpp:748
 #, c-format
 msgid "%i days"
 msgstr "%i jours"
 
-#: src/PrefsUnifiedDlg.cpp:747
+#: src/PrefsUnifiedDlg.cpp:748
 #, c-format
 msgid "%i day"
 msgstr "%i jour"
 
-#: src/PrefsUnifiedDlg.cpp:916
+#: src/PrefsUnifiedDlg.cpp:917
 msgid "Notifications"
 msgstr "Notifications"
 
-#: src/PrefsUnifiedDlg.cpp:917
+#: src/PrefsUnifiedDlg.cpp:918
 msgid "Core Tweaks"
 msgstr "Tweaks centraux"
 
-#: src/PrefsUnifiedDlg.cpp:1271
+#: src/PrefsUnifiedDlg.cpp:1272
 msgid "Language change will not be applied until aMule is restarted."
 msgstr "Le changement de langue ne sera pris en compte qu'après le redémarrage d'aMule"
 
-#: src/PrefsUnifiedDlg.cpp:1394
+#: src/PrefsUnifiedDlg.cpp:1398
 msgid "Browse wav"
 msgstr "Chercher un son"
 
-#: src/PrefsUnifiedDlg.cpp:1394
+#: src/PrefsUnifiedDlg.cpp:1398
 msgid "File wav (*.wav)|*.wav||"
 msgstr "File wav (*.wav)|*.wav||"
 
-#: src/PrefsUnifiedDlg.cpp:1402
+#: src/PrefsUnifiedDlg.cpp:1406
 msgid "Browse for videoplayer"
 msgstr "Chercher un lecteur vidéo"
 
-#: src/PrefsUnifiedDlg.cpp:1402
+#: src/PrefsUnifiedDlg.cpp:1406
 msgid "Executable (*)|*||"
 msgstr "Exécutable (*)|*||"
 
-#: src/PrefsUnifiedDlg.cpp:1413
+#: src/PrefsUnifiedDlg.cpp:1417
 msgid "Edit Serverlist"
 msgstr "Éditer la liste des serveurs"
 
-#: src/PrefsUnifiedDlg.cpp:1414
+#: src/PrefsUnifiedDlg.cpp:1418
 msgid ""
 "Add here URL's to download server.met files.\n"
 "Only one url on each line."
@@ -3212,11 +3213,11 @@ msgstr "ID du fichier"
 
 #: src/SearchListCtrl.cpp:133
 msgid "Copy ED2k link to clipboard"
-msgstr "Copier le lien Ed2k dans le presse-papiers"
+msgstr "Copier le lien ed2k dans le presse-papiers"
 
 #: src/SearchListCtrl.cpp:134
 msgid "Copy ED2k link to clipboard (HTML)"
-msgstr "Copier le lien Ed2k dans le presse-papiers (HTML)"
+msgstr "Copier le lien ed2k dans le presse-papiers (HTML)"
 
 #: src/SearchListCtrl.cpp:142
 msgid "Close this search result"
@@ -3526,7 +3527,7 @@ msgid ""
 "Error: Unhandled exception while processing server TCP packet: protocol=0x%"
 "02x  opcode=0x%02x  size=%u"
 msgstr ""
-"Erreur: exception non prise en charge pendant le traitement du paquet serveur TCP: protocole=0x%"
+"Erreur: exception non prise en charge lors du traitement du paquet serveur TCP: protocole=0x%"
 "02x  opcode=0x%02x  taille=%u"
 
 #: src/ServerWnd.cpp:80
@@ -4239,7 +4240,33 @@ msgstr "AddUpNextClient - purgé"
 msgid "Client '%s' and '%s' have the same userhash or IP - removed '%s'"
 msgstr "Les clients '%s' et '%s' ont la même IP ou le même Hash - '%s' supprimé"
 
-#: src/utils/aLinkCreator/src/alc.cpp:51
+#: src/utils/aLinkCreator/src/alcc.cpp:67
+#, c-format
+msgid "Processing file number %u: %s\n"
+msgstr "Traitement du fichier numéro %u: %s\n"
+
+#: src/utils/aLinkCreator/src/alcc.cpp:70
+msgid "You have asked for part hashes (Only used for files > 9.5 MB)\n"
+msgstr "Vous avez demandé les hashes partiels (Seulement utilisés pour les fichiers > 9.5 Mo)\n"
+
+#: src/utils/aLinkCreator/src/alcc.cpp:74
+msgid "Please wait... "
+msgstr "Patientez s'il vous plait... "
+
+#: src/utils/aLinkCreator/src/alcc.cpp:78
+msgid "Done !\n"
+msgstr "Terminé !\n"
+
+#: src/utils/aLinkCreator/src/alcc.cpp:86
+#, c-format
+msgid ""
+"%s ---> Non existant file !\n"
+"\n"
+msgstr ""
+"%s ---> Fichier inexistant !\n"
+"\n"
+
+#: src/utils/aLinkCreator/src/alc.cpp:55
 msgid "aLinkCreator, the aMule ed2k link creator"
 msgstr "aLinkCreator, le créateur de liens Ed2k d'aMule"
 
@@ -4269,8 +4296,8 @@ msgid ""
 "Enter here the URL you want to add to the Ed2k link: Add / at the end to let "
 "aLinkCreator append the current file name"
 msgstr ""
-"Entrer ici les URLs à rajouter au lien Ed2k: Ajouter un / à la fin pour laisser "
-"aLinkCreator ajouter le nom du fichier courant"
+"Entrer ici les URLs à ajouter au lien Ed2k: Ajouter / à la fin pour laisser "
+"aLinkCreator ajouter le nom de fichier courant"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:144
 msgid "Remove"
@@ -4284,9 +4311,7 @@ msgstr "Créer le lien avec les hashes partiels"
 msgid ""
 "Help to spread new and rare files faster, at the cost of an increased link "
 "size"
-msgstr ""
-"Aide à retrouver les fichiers rares ou nouveaux, au prix d'un lien de taille "
-"plus longue"
+msgstr "Aide à retrouver les fichiers rares et nouveaux au prix d'un lien de plus grande longueur"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:187
 msgid "MD4 File Hash"
@@ -4356,7 +4381,7 @@ msgid ""
 "\n"
 "Distributed under GPL"
 msgstr ""
-"aLinkCreator, le créateur de liens Ed2k d'aMule\n"
+"aLinkCreator, le créateur de liens ed2k  d'aMule\n"
 "\n"
 "(c) 2004 ThePolish <thepolish@vipmail.ru>\n"
 "\n"
@@ -4442,7 +4467,7 @@ msgstr "%.2f Go"
 msgid "%.2f TB"
 msgstr "%.2f To"
 
-#: src/utils/wxCas/src/wxcas.cpp:82
+#: src/utils/wxCas/src/wxcas.cpp:86
 msgid "wxCas, aMule Online Statistics"
 msgstr "wxCas, statistiques en ligne d'aMule"
 
@@ -4501,8 +4526,8 @@ msgid ""
 "There was a problem printing.\n"
 "Perhaps your current printer is not set correctly?"
 msgstr ""
-"Il y a eu un problème à l'impression.\n"
-"Peut-être votre imprimante n'est-elle pas correctement configurée ?"
+"L'impression a rencontré un problème.\n"
+"Peut-être votre imprimante n'est-elle pas configurée correctement ?"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:343
 msgid "Printing"
@@ -4518,11 +4543,11 @@ msgid ""
 "\n"
 "Distributed under GPL"
 msgstr ""
-"wxCas, statistiques en ligne d'aMule\n"
+"wxCas, Statistiques en Ligne d'aMule\n"
 "\n"
 "(c) 2004 ThePolish <thepolish@vipmail.ru>\n"
 "\n"
-"Basé su CAS par Pedro de Oliveira <falso@rdk.homeip.net>\n"
+"Basé sur CAS de Pedro de Oliveira <falso@rdk.homeip.net>\n"
 "\n"
 "Distribué sous licence GPL"
 
@@ -4724,7 +4749,7 @@ msgstr "Liste des serveurs"
 #: src/WebServer.cpp:743 src/WebServer.cpp:1369 src/WebServer.cpp:1649
 #: src/WebServer.cpp:1786 src/WebServer.cpp:1791 src/WebServer.cpp:1796
 msgid "ED2K Link(s)"
-msgstr "Lien(s) Ed2k"
+msgstr "Lien(s) ED2K"
 
 #: src/WebServer.cpp:745
 msgid "Log"
