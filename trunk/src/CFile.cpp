@@ -616,31 +616,51 @@ wxString  CDirIterator::FindNextFile() {
 	
 	wxString FoundName;
 	
+	struct stat* buf=(struct stat*)malloc(sizeof(struct stat));
+	
 	while (dp!=NULL && !found) {
-		switch (dp->d_type) {
-			case DT_DIR:
-				if (type == CDirIterator::Dir)  {
-					found = true;
-				} else {
-					dp = readdir(DirPtr);	
-				}
-				break;
-			case DT_REG:
-				if (type == CDirIterator::File)  {
-					found = true;
-				} else {
-					dp = readdir(DirPtr);					
-				}
-				break;
-			default:
-				// unix socket, block device, etc
-				if ((type == CDirIterator::Any)) {
-					// return anything.
-					found = true;
-				} else {
-					dp = readdir(DirPtr);
-				}
-				break;
+		if ((type == CDirIterator::Any)) {
+			// return anything.
+			found = true;
+		} else {		
+			switch (dp->d_type) {
+				case DT_DIR:
+					if (type == CDirIterator::Dir)  {
+						found = true;
+					} else {
+						dp = readdir(DirPtr);	
+					}
+					break;
+				case DT_REG:
+					if (type == CDirIterator::File)  {
+						found = true;
+					} else {
+						dp = readdir(DirPtr);					
+					}
+					break;
+				default:
+					// Fallback to stat
+					stat(unicode2char(DirStr + dp->d_name),buf);
+					if (S_ISREG(buf->st_mode)) {
+						if (type == CDirIterator::File) { 
+							found = true; 
+						} else { 
+							dp = readdir(DirPtr);
+						} 
+					} else {
+						if (S_ISDIR(buf->st_mode)) {
+							if (type == CDirIterator::Dir) {
+								found = true; 
+							} else { 
+								dp = readdir(DirPtr);
+							}
+						} else {						
+							// unix socket, block device, etc
+							dp = readdir(DirPtr);
+						}
+					}
+					break;
+			}
 		}
 		if (found) {
 			FoundName = char2unicode(dp->d_name);
@@ -653,6 +673,8 @@ wxString  CDirIterator::FindNextFile() {
 		}
 	}
 			
+	free(buf);
+	
 	if (dp!=NULL) {
 		return DirStr + FoundName;	
 	} else {
