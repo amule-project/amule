@@ -540,7 +540,7 @@ void CSearchDlg::OnRMButton(wxMouseEvent& evt)
 	
 	// Translate the global position to a position relative to the notebook
 	wxPoint pt=evt.GetPosition();
-	wxPoint newpt=notebook->ClientToScreen(pt);
+	wxPoint newpt=((wxWindow*)evt.GetEventObject())->ClientToScreen(pt);
 	newpt = ScreenToClient(newpt);
 
 	// Only show the popup-menu if we are inside the notebook widget
