@@ -219,15 +219,26 @@ public:
 	void SetProxyData(const wxProxyData *ProxyData);
 	
 	/* wxSocketServer interface */
-	wxSocketBase *Accept(bool wait = true) { return m_SocketServer->Accept(wait); }
-	bool AcceptWith(wxSocketBase& socket, bool wait = true) { return m_SocketServer->AcceptWith(socket, wait); }
-	void Close(void) { m_SocketServer->Close(); }
-	wxSocketBase& Discard(void) { return m_SocketServer->Discard(); }
-	void Notify(bool notify) { m_SocketServer->Notify(notify); }
-	bool Ok() const	{ return m_SocketServer ? m_SocketServer->Ok() : false; }
-	void SetEventHandler(wxEvtHandler& handler, int id = -1) { m_SocketServer->SetEventHandler(handler, id); }
-	void SetNotify(wxSocketEventFlags flags) { m_SocketServer->SetNotify(flags); }
-	bool WaitForAccept(long seconds = -1, long millisecond = 0) { return m_SocketServer->WaitForAccept(seconds, millisecond); }
+	wxSocketBase *Accept(bool wait = true) {
+		return m_SocketServer ? m_SocketServer->Accept(wait) : NULL; }
+	bool AcceptWith(wxSocketBase& socket, bool wait = true) {
+		return m_SocketServer ? m_SocketServer->AcceptWith(socket, wait) : false; }
+	void Close(void) {
+		if (m_SocketServer) m_SocketServer->Close(); }
+	/* Changed Discard interface */
+	/* wxSocketBase &Discard(void) {*/
+	void Discard(void) {
+		if (m_SocketServer) m_SocketServer->Discard(); }
+	void Notify(bool notify) {
+		if (m_SocketServer) m_SocketServer->Notify(notify); }
+	bool Ok() const	{
+		return m_SocketServer ? m_SocketServer->Ok() : false; }
+	void SetEventHandler(wxEvtHandler& handler, int id = -1) {
+		if (m_SocketServer) m_SocketServer->SetEventHandler(handler, id); }
+	void SetNotify(wxSocketEventFlags flags) {
+		if (m_SocketServer) m_SocketServer->SetNotify(flags); }
+	bool WaitForAccept(long seconds = -1, long millisecond = 0) {
+		return m_SocketServer ? m_SocketServer->WaitForAccept(seconds, millisecond) : false; }
 	
 private:
 	wxSocketProxy	m_SocketProxy;

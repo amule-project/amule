@@ -74,7 +74,9 @@ wxSocketProxy::wxSocketProxy(const wxProxyData *ProxyData)
 
 wxSocketProxy::~wxSocketProxy()
 {
-	delete m_ProxyClientSocket;
+	// Never call delete on a socket! Call Destroy().
+	// delete m_ProxyClientSocket;
+	m_ProxyClientSocket->Destroy();
 }
 
 void wxSocketProxy::SetProxyData(const wxProxyData *ProxyData)
@@ -114,7 +116,6 @@ bool wxSocketProxy::Start(wxIPaddress &address, enum wxProxyCommand cmd)
 				ok = DoHttp(address, cmd);
 				break;
 			}
-			m_ProxyClientSocket->Destroy();
 		}
 	}
 	
