@@ -2915,7 +2915,7 @@ wxSizer *preferencesDlgTop( wxWindow *parent, bool call_fit, bool set_sizer )
     wxBoxSizer *item3 = new wxBoxSizer( wxHORIZONTAL );
     prefs_sizer = item3;
 
-    item1->Add( item3, 0, wxALIGN_CENTER, 5 );
+    item1->Add( item3, 0, wxGROW, 5 );
 
     item0->Add( item1, 0, wxADJUST_MINSIZE|wxGROW, 5 );
 
