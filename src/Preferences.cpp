@@ -456,12 +456,14 @@ public:
 		if ( Cfg_Tmpl<int>::TransferToWindow() ) {
 			
 			// In order to let us update labels on slider-changes, we trigger a event
-   			if ( m_widget->IsKindOf(CLASSINFO(wxSlider)) ) {
+			if ( m_widget->IsKindOf(CLASSINFO(wxSlider)) ) {
+				wxSlider *slider = (wxSlider *)m_widget;
+#warning Why doesn't this work?
+//			wxSlider *slider = wxDynamicCast(m_widget, wxSlider);
+//			if (slider) {
 				int id = m_widget->GetId();
-				int pos = ((wxSlider*)m_widget)->GetValue();
-			
+				int pos = slider->GetValue();
 				wxScrollEvent evt( wxEVT_SCROLL_THUMBRELEASE, id, pos );
-
 				m_widget->ProcessEvent( evt );
 			}
 
