@@ -352,7 +352,7 @@ void CSearchList::LocalSearchEnd()
 
 
 void CSearchList::ProcessSearchanswer(const char *in_packet, uint32 size, 
-	CUpDownClient *Sender, bool *pbMoreResultsAvailable, LPCTSTR pszDirectory)
+	CUpDownClient *Sender, bool *pbMoreResultsAvailable, wxString& pszDirectory)
 {
 	wxASSERT( Sender != NULL );
 	
@@ -368,7 +368,7 @@ void CSearchList::ProcessSearchanswer(const char *in_packet, uint32 size,
 	uint32 results = packet.ReadUInt32();
 	bool unicoded = (Sender && Sender->GetUnicodeSupport());
 	for (unsigned int i = 0; i != results; ++i){			
-		CSearchFile* toadd = new CSearchFile(packet, unicoded, nSearchID,  0, 0, char2unicode(pszDirectory));
+		CSearchFile* toadd = new CSearchFile(packet, unicoded, nSearchID,  0, 0, pszDirectory);
 		if (Sender){
 			toadd->SetClientID(Sender->GetUserID());
 			toadd->SetClientPort(Sender->GetUserPort());

@@ -1093,7 +1093,8 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				}
 				#endif
 				theApp.statistics->AddDownDataOverheadOther(size);
-				m_client->ProcessSharedFileList(packet,size);
+				wxString EmptyStr;
+				m_client->ProcessSharedFileList(packet,size,EmptyStr);
 				break;
 			}
 			case OP_ASKSHAREDDIRS: {
@@ -1313,7 +1314,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				if (m_client->GetFileListRequested() > 0){
 					AddLogLineM(true,wxString(_("User ")) + m_client->GetUserName() + wxString::Format(_(" (%u) sent sharedfiles-list for directory "),m_client->GetUserID()) + strDir);
 					
-					m_client->ProcessSharedFileList(packet + data.GetPosition(), size - data.GetPosition(), unicode2char(strDir));
+					m_client->ProcessSharedFileList(packet + data.GetPosition(), size - data.GetPosition(), strDir);
 					if (m_client->GetFileListRequested() == 0) {
 						AddLogLineM(true,wxString(_("User ")) + m_client->GetUserName() + wxString::Format(_(" (%u) finished sending sharedfiles-list"),m_client->GetUserID()));
 					}
