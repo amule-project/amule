@@ -1015,7 +1015,7 @@ CECTag *CPartFile_Encoder::Encode()
 	//
 	unsigned char *tagdata;
 	CECTag *etag = new CECTag(EC_TAG_PARTFILE_GAP_STATUS, sizeof(uint32) + enc_size +
-		diff_list.size() * sizeof(uint32) * 2, &tagdata);
+		diff_list.size() * sizeof(uint32) * 2, (void **)&tagdata);
 
 	// size of RLE data
 	*((uint32 *)tagdata) = enc_size;
