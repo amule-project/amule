@@ -71,7 +71,7 @@ public:
 	void 			CopyToDataBuffer(unsigned int offset, const char *data, unsigned int n);
 	
 private:
-	wxUint32	size;
+	uint32		size;
 	uint8		opcode;
 	uint8		prot;
 	bool		m_bSplitted;

@@ -71,7 +71,7 @@ Packet::Packet(uint8 protocol)
 Packet::Packet(char* header)
 {
 	Header_Struct* head = (Header_Struct*) header;
-	size 		= head->packetlength - 1;
+	size 		= ENDIAN_SWAP_32(head->packetlength) - 1;
 	opcode		= head->command;
 	prot		= head->eDonkeyID;
 	m_bSplitted 	= false;
@@ -215,7 +215,7 @@ char* Packet::GetHeader() {
 	Header_Struct* header = (Header_Struct*) head;
 	header->command = opcode;
 	header->eDonkeyID =  prot;
-	header->packetlength = size + 1;
+	header->packetlength = ENDIAN_SWAP_32(size + 1);
 
 	return head;
 }
@@ -455,12 +455,14 @@ bool CTag::WriteTagToFile(CFile* file)
 			uint16 taglen= (uint16)strlen(tag.tagname);
 			ENDIAN_SWAP_I_16(taglen);
 			file->Write(&taglen,2);
+                        ENDIAN_SWAP_I_16(taglen);
 			file->Write(tag.tagname,taglen);
 		}
 		else{
 			uint16 taglen = 1;
 			ENDIAN_SWAP_I_16(taglen);
 			file->Write(&taglen,2);
+                        ENDIAN_SWAP_I_16(taglen);
 			file->Write(&tag.specialtag,taglen);
 		}
 
@@ -468,6 +470,7 @@ bool CTag::WriteTagToFile(CFile* file)
 			uint16 len = (uint16)strlen(tag.stringvalue);
 			ENDIAN_SWAP_I_16(len);
 			file->Write(&len,2);
+			ENDIAN_SWAP_I_16(len);
 			file->Write(tag.stringvalue,len);
 		}
 		else if (tag.type == 3){
@@ -535,11 +538,13 @@ bool CTag::WriteTagToFile(FILE* file) {
 		uint16 taglen = (uint16) strlen(tag.tagname);
 		ENDIAN_SWAP_I_16(taglen);
 		fwrite(&taglen, 2, 1, file);
+                ENDIAN_SWAP_I_16(taglen);
 		fwrite(tag.tagname, taglen, 1, file);
 	} else {
 		uint16 taglen = 1;
 		ENDIAN_SWAP_I_16(taglen);
 		fwrite(&taglen, 2, 1, file);
+                ENDIAN_SWAP_I_16(taglen);
 		fwrite(&tag.specialtag, taglen, 1, file);
 	}
 
@@ -547,6 +552,7 @@ bool CTag::WriteTagToFile(FILE* file) {
 		uint16 len = (uint16) strlen(tag.stringvalue);
 		ENDIAN_SWAP_I_16(len);
 		fwrite(&len, 2, 1, file);
+                ENDIAN_SWAP_I_16(len);
 		fwrite(tag.stringvalue, len, 1, file);
 	} else if (tag.type == 3) {
 		uint32 intvalue_endian = ENDIAN_SWAP_32(tag.intvalue);

@@ -194,7 +194,7 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender){
 		
 		CTag tagflags(CT_SERVER_FLAGS,CAPABLE_ZLIB); // FLAGS for server connection
 		tagflags.WriteTagToFile(&data);
-		
+
 		// eMule Version (14-Mar-2004: requested by lugdunummaster (need for LowID clients which have no chance 
 		// to send an Hello packet to the server during the callback test))
 		CTag tagMuleVersion(CT_EMULE_VERSION, 
