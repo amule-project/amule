@@ -198,7 +198,8 @@ bool 			CPreferences::s_AICHTrustEveryHash;
 bool 			CPreferences::s_IPFilterAutoLoad;
 wxString 	CPreferences::s_IPFilterURL;
 CMD4Hash	CPreferences::s_userhash;
-
+bool		CPreferences::s_MustFilterMessages;
+wxString 	CPreferences::s_MessageFilterString;
 
 /**
  * Template Cfg class for connecting with widgets.

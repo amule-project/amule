@@ -877,17 +877,21 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 
 				#warning TODO: CHECK MESSAGE FILTERING!
 				//filter me?
+				wxString message = message_file.ReadString();
 				if ( (thePrefs::MsgOnlyFriends() && !m_client->IsFriend()) ||
-					 (thePrefs::MsgOnlySecure() && m_client->GetUserName()==wxEmptyString) ) {
-					#if 0
+					(thePrefs::MsgOnlySecure() && m_client->GetUserName()==wxEmptyString) ||
+					(thePrefs::MustFilterMessages() && (
+							#warning Check if any chat open
+							thePrefs::MessageFilter().IsSameAs(wxT("*")) ||  // Filter anything
+							#warning Apply message filtering here
+							false))
+				) {
 					if (!m_client->m_bMsgFiltered) {
 						AddLogLineM(true,wxString(_("Message filtered from '")) + m_client->GetUserName() + _("' (IP:") + m_client->GetFullIP() + wxT(")"));
 					}
 					m_client->m_bMsgFiltered=true;
-					#endif
 					break;
 				}
-				wxString message = message_file.ReadString();
 				Notify_ChatProcessMsg(m_client, message);
 				break;
 			}
