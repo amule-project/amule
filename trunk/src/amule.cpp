@@ -432,11 +432,16 @@ bool CamuleApp::OnInit()
 		while ( entries ) {
 			if ( strncmp(entries->mnt_type, "vfat",4) == 0 ) {
 				if ( tempdir.StartsWith( entries->mnt_dir ) ) {
+					// Kry - We cannot addlogline because there's no GUI yet!
 					QueueLogLine(false,"Temp dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings.");
 					use_chmod = false;
-				} else if ( incomingdir.StartsWith( entries->mnt_dir ) ) {
+				}
+				if ( incomingdir.StartsWith( entries->mnt_dir ) ) {
 					QueueLogLine(false,"Incoming dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings.");
 					use_chmod = false;
+				}
+				if (!use_chmod) {
+					break;
 				}
 			}
 
@@ -458,10 +463,14 @@ bool CamuleApp::OnInit()
 				// Kry - We cannot addlogline because there's no GUI yet!
       			QueueLogLine(false,"Temp dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings.");
                     use_chmod = false;
-			} else if ( incomingdir.StartsWith( mntbuf[i].f_mntonname ) ) {
+			}
+			if ( incomingdir.StartsWith( mntbuf[i].f_mntonname ) ) {
 				QueueLogLine(false,"Incoming dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings.");
 				use_chmod = false;
 			}     
+			if (!use_chmod) {
+				break;
+			}
 		}
 	}
 
