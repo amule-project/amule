@@ -604,7 +604,12 @@ bool CamuleApp::OnInit()
 	CPreferences::BuildItemList( theApp.ConfigDir);
 	CPreferences::LoadAllItems( wxConfigBase::Get() );
 	glob_prefs = new CPreferences();
-	
+
+	// Some sanity check
+	if (!thePrefs::UseTrayIcon()) {
+		thePrefs::SetMinToTray(false);
+	}
+
 	// Build the filenames for the two OS files
 	SetOSFiles(thePrefs::GetOSDir());
 
