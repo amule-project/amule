@@ -1863,7 +1863,7 @@ wxString CWebServer::_GetPreferences(ThreadData Data) {
 				wxFileName::Mkdir(otherfunctions::GetConfigDir());
 			}
 			if (!webInterface->m_configFile) {
-				webInterface->m_configFile = new CECFileConfig(wxEmptyString, wxEmptyString, webInterface->m_configFileName, wxEmptyString, wxCONFIG_USE_LOCAL_FILE);
+				webInterface->m_configFile = new CECFileConfig(webInterface->m_configFileName);
 			}
 			if (webInterface->m_configFile) {
 				webInterface->m_configFile->Write(wxT("/Webserver/UseGzip"), webInterface->m_UseGzip);

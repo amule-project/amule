@@ -28,9 +28,24 @@
 	#include <wx/config.h>
 #endif
 #include <wx/fileconf.h>
+#include <wx/filename.h>
 #include <wx/string.h>
 
 #include "CMD4Hash.h"
+#include "OtherFunctions.h"
+
+
+/**
+ * Prepends ConfigDir to filename, if it has no PathSeparator chars in it
+ */
+inline wxString FinalizeFilename(const wxString filename)
+{
+	if  (wxStrchr(filename, wxFileName::GetPathSeparator()) == NULL) {
+		return otherfunctions::GetConfigDir() + filename;
+	}
+	return filename;
+}
+
 
 /**
  * Extension to wxFileConfig for reading/writing CMD4Hash values.
@@ -41,20 +56,10 @@
 class CECFileConfig : public wxFileConfig {
 	public:
 
-		CECFileConfig(const wxString& appName = wxEmptyString,
-			const wxString& vendorName = wxEmptyString,
-			const wxString& localFilename = wxEmptyString,
-			const wxString& globalFilename = wxEmptyString,
-			long style = wxCONFIG_USE_LOCAL_FILE | wxCONFIG_USE_GLOBAL_FILE,
-#if wxCHECK_VERSION(2,5,4)
-			wxMBConv& conv = wxConvUTF8) 
-			: wxFileConfig(appName, vendorName, localFilename, globalFilename,
-				style, conv)
-#else
-			wxMBConv& WXUNUSED(conv) = wxConvUTF8) 
-			: wxFileConfig(appName, vendorName, localFilename, globalFilename,
-				style)
-#endif
+		CECFileConfig(
+			const wxString& localFilename = wxEmptyString)
+			: wxFileConfig(wxEmptyString, wxEmptyString, FinalizeFilename(localFilename),
+				wxEmptyString, wxCONFIG_USE_LOCAL_FILE | wxCONFIG_USE_RELATIVE_PATH)
 			{}
 
 		/**
