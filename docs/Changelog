@@ -38,12 +38,17 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		reporting.
 		* Changed the output of the "Oops" to give better instructions
 		to the user.
+		* Applied patch from volpol to fix use of deprecated functions
+		in wxGTK-2.5.3.
 
 	Ken:
 		* Fixed Mac bug: window was a little larger each restart.
 		* Fixed aMule.tmpl so Safari can work with amuleweb (reported
 		by blue_eclipse).
 		* On Mac, enabled Command-clicking in lists to toggle selection.
+
+	volpol
+		* Patch to fix use of deprecated functions in wxGTK-2.5.3.
 
 	Special Thanks To:
 		* Bug and feature reporters:
