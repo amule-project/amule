@@ -397,7 +397,7 @@ void CDownloadListCtrl::OnDrawItem(int item, wxDC * dc, const wxRect & rect, con
 	
 	CtrlItem_Struct *content = (CtrlItem_Struct *) GetItemData(item);
 
-	if ((content->type == 1) && (highlighted)) {
+	if ((content->type == FILE_TYPE) && (highlighted)) {
 		if (GetFocus()) {
 			dc->SetBackground(*m_hilightBrush);
 			dc->SetTextForeground(wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHTTEXT));
@@ -409,12 +409,15 @@ void CDownloadListCtrl::OnDrawItem(int item, wxDC * dc, const wxRect & rect, con
 		dc->SetBackground(*(wxTheBrushList->FindOrCreateBrush(wxSystemSettings::GetColour(wxSYS_COLOUR_LISTBOX), wxSOLID)));
 		dc->SetTextForeground(wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT));
 	}
-	/* If we have category, override textforeground with what category tells us. */
-
-	CPartFile *file = (CPartFile *) content->value;
-	if (file->GetCategory() > 0) {
-		dc->SetTextForeground(theApp.glob_prefs->GetCatColor(file->GetCategory()));
+	
+	if (content->type==FILE_TYPE) {
+		/* If we have category, override textforeground with what category tells us. */		
+		CPartFile *file = (CPartFile *) content->value;
+		if (file->GetCategory() > 0) {
+			dc->SetTextForeground(theApp.glob_prefs->GetCatColor(file->GetCategory()));
+		}		
 	}
+
 	/* we must fill the background */
 	wxPen mypen;
 	if (content->type == FILE_TYPE && highlighted) {
@@ -454,7 +457,7 @@ void CDownloadListCtrl::OnDrawItem(int item, wxDC * dc, const wxRect & rect, con
 	cur_rec.right -= iOffset;
 	cur_rec.left += iOffset;
 
-	if (content->type == 1) {
+	if (content->type == FILE_TYPE) {
 		for (int iCurrent = 0; iCurrent < iCount; iCurrent++) {
 			int iColumn = iCurrent;	//pHeaderCtrl->OrderToIndex(iCurrent);
 			wxListItem listitem;
@@ -480,8 +483,7 @@ void CDownloadListCtrl::OnDrawItem(int item, wxDC * dc, const wxRect & rect, con
 				cur_rec.left += cx;
 			}
 		}
-	} else if (content->type == 3 || content->type == 2) {
-
+	} else if (content->type == AVAILABLE_SOURCE || content->type == UNAVAILABLE_SOURCE) {
 		for (int iCurrent = 0; iCurrent < iCount; iCurrent++) {
 
 			int iColumn = iCurrent;	//pHeaderCtrl->OrderToIndex(iCurrent);
@@ -536,7 +538,7 @@ void CDownloadListCtrl::OnDrawItem(int item, wxDC * dc, const wxRect & rect, con
 		//gather some information
 		bool hasNext = notLast && ((CtrlItem_Struct *) this->GetItemData(item + 1))->type != 1;
 		bool isOpenRoot = hasNext && content->type == 1;
-		bool isChild = content->type != 1;
+		bool isChild = content->type != FILE_TYPE;
 		//might as well calculate these now
 		int treeCenter = tree_start + 3;
 		int middle = (cur_rec.top + cur_rec.bottom + 1) / 2;
