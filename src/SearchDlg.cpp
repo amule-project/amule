@@ -77,8 +77,9 @@ BEGIN_EVENT_TABLE(CSearchDlg, wxPanel)
 	EVT_NOTEBOOK_PAGE_CHANGED(ID_NOTEBOOK, CSearchDlg::OnSearchPageChanged)
 
 	// Event handlers for the parameter fields getting changed
-	EVT_CUSTOM( wxEVT_COMMAND_TEXT_UPDATED,     -1, CSearchDlg::OnFieldChanged) 
-	EVT_CUSTOM( wxEVT_COMMAND_SPINCTRL_UPDATED, -1, CSearchDlg::OnFieldChanged)
+	EVT_CUSTOM( wxEVT_COMMAND_TEXT_UPDATED,     IDC_SEARCHNAME, CSearchDlg::OnFieldChanged) 
+	EVT_CUSTOM( wxEVT_COMMAND_TEXT_UPDATED,     IDC_EDITSEARCHEXTENSION, CSearchDlg::OnFieldChanged) 
+	EVT_CUSTOM( wxEVT_COMMAND_SPINCTRL_UPDATED, wxID_ANY, CSearchDlg::OnFieldChanged)
 END_EVENT_TABLE()
 
 
@@ -117,8 +118,6 @@ CSearchDlg::CSearchDlg(wxWindow* pParent)
 
 CSearchDlg::~CSearchDlg()
 {
-
-
 }
 
 
