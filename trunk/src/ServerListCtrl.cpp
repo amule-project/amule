@@ -117,7 +117,8 @@ void CServerListCtrl::RemoveServer( const CServer* server, bool ask_static)
 	long result = FindItem( -1, (long)server );
 	if ( result != -1 ) {
 		CServer* cur_server = (CServer*) GetItemData( result );
-		if ( !ask_static || wxMessageBox(_("Are you sure you want to delete the static server ") + cur_server->GetListName(), _("Cancel"), wxICON_QUESTION | wxYES_NO) == wxYES ) {
+		bool is_static = cur_server->IsStaticMember();
+		if ( !ask_static || !is_static || (is_static && (wxMessageBox(_("Are you sure you want to delete the static server ") + cur_server->GetListName(), _("Cancel"), wxICON_QUESTION | wxYES_NO) == wxYES ))) {
 			theApp.serverlist->RemoveServer( cur_server );
 			DeleteItem( result );
 		}
@@ -138,7 +139,8 @@ void CServerListCtrl::RemoveAllServers( int state, bool ask_static )
 			++pos;
 		} else {
 			CServer* cur_server = (CServer*) GetItemData( pos );
-			if ( !ask_static || wxMessageBox(_("Are you sure you want to delete the static server ") + cur_server->GetListName(), _("Cancel"), wxICON_QUESTION | wxYES_NO) == wxYES ) {
+			bool is_static = cur_server->IsStaticMember();
+			if ( !ask_static || !is_static || (is_static && (wxMessageBox(_("Are you sure you want to delete the static server ") + cur_server->GetListName(), _("Cancel"), wxICON_QUESTION | wxYES_NO) == wxYES ))) {
 				theApp.serverlist->RemoveServer( cur_server );
 				DeleteItem( pos );
 			} else {
