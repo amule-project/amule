@@ -56,6 +56,8 @@
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #endif
 
+#include "GuiEvents.h"		// Needed for Notify_* macros
+
 #include "ECPacket.h"		// Needed for CECPacket, CECTag
 #include "ECcodes.h"		// Needed for OPcodes, TAGnames
 
@@ -554,6 +556,7 @@ CECPacket *Get_EC_Response_Server(const CECPacket *request)
 			break;
 		case EC_OP_SERVER_REMOVE:
 			if ( srv ) {
+				Notify_ServerRemove(srv);
 				theApp.serverlist->RemoveServer(srv);
 				response->AddTag(CECTag(EC_TAG_STRING, _("OK: server removed")));
 			} else {
