@@ -12,7 +12,7 @@ Preface
 -------
 
     EC is under heavy construction, however the protocol itself is considered
-    stable and you can rely on. The opceodes and tagnames, tag content formats
+    stable and you can rely on. The opcodes and tagnames, tag content formats
     and values are still changing, so if you decide to implement an application
     using aMule EC, you'd better include our ECcodes.h for the values, and
     check the documentations often, or even the code itself (ExternalConn.cpp
