@@ -188,7 +188,13 @@ int CIPFilter::LoadFromFile(){
 		}
 		fclose(readFile);
 	}
-	theApp.amuledlg->AddLogLine(true, CString(_("Loaded ipfilter with %d IP addresses.")),filtercounter);
+
+	GUIEvent event(ADDLOGLINE);
+	event.string_value = wxString::Format(_("Loaded ipfilter with %d IP addresses."),filtercounter);	
+	event.byte_value = true;
+	
+	theApp.NotifyEvent(event);	
+	
 	return filtercounter;
 }
 

@@ -1164,8 +1164,8 @@ void CKnownFile::UpdatePartsInfo()
 		m_nCompleteSourcesTime = time(NULL) + (60);
 	}
 	
-	if (theApp.amuledlg->sharedfileswnd->GetHandle()) {
-		theApp.amuledlg->sharedfileswnd->sharedfilesctrl->UpdateItem(this);
-	}
-	
+	GUIEvent event(SHAREDFILES_UPDATEITEM);
+	event.ptr_value = this;
+	theApp.NotifyEvent(event);
+		
 }

@@ -69,6 +69,10 @@
 #include "aMule.xpm"
 #endif
 
+#ifdef __USE_SPLASH__
+#include "splash.xpm"
+#endif
+
 BEGIN_EVENT_TABLE(CamuleDlg, wxFrame)
 
 	EVT_TOOL(ID_BUTTONSERVERS, CamuleDlg::OnToolBarButton)
@@ -153,7 +157,7 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, wxString title, wxPoint where, wxSize dl
 	}
 	
 	bool override_where = (where != wxDefaultPosition);
-	bool override_size = ((dlg_size.x == DEFAULT_SIZE_X) && (dlg_size.y == DEFAULT_SIZE_Y));
+	bool override_size = ((dlg_size.x != DEFAULT_SIZE_X) || (dlg_size.y != DEFAULT_SIZE_Y));
 	
 	if (!LoadGUIPrefs(override_where, override_size)) {
 		// Prefs not loaded for some reason, exit
@@ -181,6 +185,60 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, wxString title, wxPoint where, wxSize dl
 	// When adding functionality, assume that the timer is only approximately correct;
 	// for measurements, always use the system clock [::GetTickCount()].
 	gui_timer->Start(100);	
+	Show(TRUE);
+
+#ifndef __SYSTRAY_DISABLED__
+	CreateSystray(wxString::Format(wxT("%s %s"), wxT(PACKAGE), wxT(VERSION)));
+#endif 
+	
+	// splashscreen
+	#ifdef __USE_SPLASH__
+	if (theApp.glob_prefs->UseSplashScreen() && !theApp.glob_prefs->GetStartMinimized()) {
+		new wxSplashScreen( wxBitmap(splash_xpm),
+		                    wxSPLASH_CENTRE_ON_SCREEN|wxSPLASH_TIMEOUT,
+		                    5000, NULL, -1, wxDefaultPosition, wxDefaultSize,
+		                    wxSIMPLE_BORDER|wxSTAY_ON_TOP
+		);
+	}
+	#endif
+
+	// Init statistics stuff, better do it asap
+	statisticswnd->Init();
+	statisticswnd->SetUpdatePeriod();
+
+	// must do initialisations here.. 
+	serverwnd->serverlistctrl->Init(theApp.serverlist);	
+
+	// Initialize and sort all lists.
+	// FIX: Remove from here and put these back to the OnInitDialog()s
+	// and call the OnInitDialog()s here!
+	transferwnd->downloadlistctrl->InitSort();
+	transferwnd->uploadlistctrl->InitSort();
+	transferwnd->queuelistctrl->InitSort();
+	serverwnd->serverlistctrl->InitSort();
+	sharedfileswnd->sharedfilesctrl->InitSort();
+
+	// call the initializers
+	transferwnd->OnInitDialog();	
+	
+	searchwnd->UpdateCatChoice();
+	
+	// Must we start minimized?
+	if (theApp.glob_prefs->GetStartMinimized()) {
+		#ifndef __SYSTRAY_DISABLED__	
+		// Send it to tray?
+		if (theApp.glob_prefs->DoMinToTray()) {
+			Hide_aMule();
+		} else {
+			Iconize(TRUE);
+		}
+		#else
+			Iconize(TRUE);
+		#endif
+	}
+	
+		
+	
 }
 
 

@@ -93,7 +93,7 @@ bool CTransferWnd::OnInitDialog()
 		// but they will be accepted in SetPageText().. so let's use this as a countermeasure
 		m_dlTab->SetPageText(ix,tmpstrstr);
 	}
-	theApp.amuledlg->searchwnd->UpdateCatChoice();
+	
 	return true;
 }
 

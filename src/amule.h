@@ -29,6 +29,34 @@
 #include "types.h"			// Needed for int32, uint16 and uint64
 
 
+// must be moved to a file
+enum GUI_Event_ID {
+	INVALID_EVENT = 0,
+	SHAREDFILES_UPDATEITEM,
+	ADDLOGLINE
+};
+
+class GUIEvent {
+	public:
+	GUIEvent(GUI_Event_ID new_id) {
+		ID 					= new_id;	
+		byte_value 		= 0;
+		long_value 		= 0;
+		longlong_value 	= 0;
+		string_value 	= "";
+		ptr_value			= NULL;
+	};
+	
+	GUI_Event_ID ID;
+	byte			byte_value;
+	uint32		long_value;
+	uint64		longlong_value;
+	wxString		string_value;
+	// this should NEVER be needed
+	void*			ptr_value; 
+};
+
+
 class CAbstractFile;
 class ExternalConn;
 class CamuleDlg;
@@ -153,6 +181,8 @@ public:
 	CIPFilter*			ipfilter;
 
 	void ShutDown();
+	
+	void NotifyEvent(GUIEvent event);
 
 #ifdef __DEBUG__
 	void AddSocketDeleteDebug(uint32 socket_pointer, uint32 creation_time);

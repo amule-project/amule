@@ -279,11 +279,15 @@ void CClientCreditsList::LoadList()
 	}
 	file.Close();
 
+	GUIEvent event(ADDLOGLINE);
+	event.string_value = wxString::Format(_("Creditfile loaded, %u clients are known"),count-cDeleted);	
+	event.byte_value = false;
+	
 	if (cDeleted>0) {
-		theApp.amuledlg->AddLogLine(false, _("Creditfile loaded, %u clients are known") + CString(_("Credits expired!")), count-cDeleted,cDeleted);
-	} else {
-		theApp.amuledlg->AddLogLine(false, _("Creditfile loaded, %u clients are known"), count);
+		event.string_value += wxString::Format(_(" - Credits expired for %u clients!"),cDeleted);
 	}
+	
+	theApp.NotifyEvent(event);
 
 }
 
