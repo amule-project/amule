@@ -596,7 +596,8 @@ bool UTF8_MoveFile(wxString& from, wxString& to) {
 
 #define FILE_COPY_BUFFER 5*1024
 
-bool UTF8_CopyFile(wxString& from, wxString& to) {
+bool UTF8_CopyFile(wxString& from, wxString& to)
+{
 	char buffer[FILE_COPY_BUFFER];
 	CFile input_file(from,CFile::read);
 	if (!input_file.IsOpened()) {
@@ -606,7 +607,6 @@ bool UTF8_CopyFile(wxString& from, wxString& to) {
 	CFile output_file(to,CFile::write);
 	if (!output_file.IsOpened()) {
 		printf("Error on file copy (can't create destination file)\n");
-		input_file.Close();
 		return false;
 	}
 	
@@ -615,20 +615,14 @@ bool UTF8_CopyFile(wxString& from, wxString& to) {
 	while ((total_read = input_file.Read(buffer,FILE_COPY_BUFFER))) {
 		if (total_read == -1) {
 			printf("Unexpected error copying file! (read error)\n");
-			input_file.Close();
-			output_file.Close();
 			return false;
 		}
 		total_write = output_file.Write(buffer,total_read);
 		if (total_write != total_read) {
 			printf("Unexpected error copying file! (write error)\n");
-			input_file.Close();
-			output_file.Close();
 			return false;			
 		}	
 	}
-	input_file.Close();
-	output_file.Close();
 	return true;
 }
 
