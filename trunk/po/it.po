@@ -78,7 +78,12 @@ msgid ""
 "This means that you will be LOWID.\n"
 "\n"
 "Check your network to make sure the port is open for output and input."
-msgstr ""
+msgstr "La porta %d non è disponibile!!\n"
+"\n"
+"Questo significa che avrai un ID basso.\n"
+"\n!"
+"controlla le impostazioni di rete e verifica che la porta sia aperta in ingresso e in uscita."
+
 
 #: src/amule.cpp:708 src/amule.cpp:1426 src/otherfunctions.cpp:83
 #: src/otherfunctions.cpp:101 src/otherfunctions.cpp:120
@@ -1198,7 +1203,7 @@ msgstr "Hai già il file %s"
 #: src/DownloadQueue.cpp:459
 msgid "Tried to add source with matching hash to your own."
 msgstr ""
-"Si è tentato di aggiungere una sorgente con hash corrispondente al tuo."
+"Si è tentato di aggiungere una fonte con hash corrispondente al tuo."
 
 #: src/DownloadQueue.cpp:866
 msgid "Local server source request for file \""
@@ -1267,7 +1272,7 @@ msgstr ""
 
 #: src/ExternalConn.cpp:166
 msgid "Unauthorized access attempt. Connection closed."
-msgstr ""
+msgstr "Tentativo di accesso non autorizzato. Connessione chiusa."
 
 #: src/ExternalConn.cpp:399
 msgid "Webserver-Admin-Login"
@@ -2308,7 +2313,7 @@ msgstr "http://www.aMule.org - il Mulo per Linux"
 
 #: src/muuli_wdr.cpp:1582
 msgid "This is the name that other users will see when connecting to you."
-msgstr ""
+msgstr "Questo è il nome che gli altri utenti vedranno quando saranno connessi con te."
 
 #: src/muuli_wdr.cpp:1587
 msgid "Language"
@@ -2914,7 +2919,7 @@ msgstr "Aggiunta o conclusione di un download"
 
 #: src/muuli_wdr.cpp:2297
 msgid "New aMule version detected"
-msgstr "Disponibilità nuova versione di aMule"
+msgstr "Disponibile una nuova versione di aMule"
 
 #: src/muuli_wdr.cpp:2301
 msgid "Urgent OOD, serverconnection lost"
@@ -3211,7 +3216,7 @@ msgstr "Clicca su questo pulsante per cancellare il log."
 
 #: src/muuli_wdr.cpp:2923 src/muuli_wdr.cpp:3023
 msgid "aMule Log"
-msgstr "Log"
+msgstr "Log di aMule"
 
 #: src/muuli_wdr.cpp:2957
 msgid "Click on this button to update the servers list from URL ..."
@@ -3246,7 +3251,7 @@ msgstr "IP:Porta"
 
 #: src/muuli_wdr.cpp:2984
 msgid "Enter the IP of the server here, using the x.x.x.x format."
-msgstr ""
+msgstr "Inserisci qui l'IP del server, nel formato x.x.x.x"
 
 #: src/muuli_wdr.cpp:2987 src/utils/wxCas/src/wxcasframe.cpp:547
 msgid ":"
@@ -5021,7 +5026,10 @@ msgid ""
 "----------------> Help: Avalaible commands (case insensitive): "
 "<----------------\n"
 "\n"
-msgstr ""
+msgstr "\n"
+"----------------> Aiuto: comandi disponibili: "
+"<----------------\n"
+"\n"
 
 #: src/TextClient.cpp:299 src/WebInterface.cpp:216
 msgid "Shows this help.\n"
@@ -5708,8 +5716,8 @@ msgid ""
 "Using %s\n"
 "(c) aMule Dev Team"
 msgstr ""
-"amuleweb [DLG version]\n"
-"Using %s\n"
+"amuleweb [versione DLG]\n"
+"Usa %s\n"
 "(c) aMule Dev Team"
 
 #: src/WebInterface.cpp:158
