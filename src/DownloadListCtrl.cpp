@@ -46,6 +46,7 @@
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "muuli_wdr.h"		// Needed for ID_DLOADLIST
 #include "color.h"		// Needed for G_BLEND and SYSCOLOR
+#include "ClientCredits.h"		// Needed for GetCurrentIdentState
 
 #define DLC_BARUPDATE 512
 #define strcmpi strcasecmp
@@ -84,6 +85,10 @@ void preloadImages(wxImageList * imgs)
 	imgs->Add(wxBitmap(clientImages(11)));
 	imgs->Add(wxBitmap(clientImages(17)));
 	imgs->Add(wxBitmap(clientImages(18)));
+	imgs->Add(wxBitmap(clientImages(21)));
+	imgs->Add(wxBitmap(clientImages(22)));
+	imgs->Add(wxBitmap(clientImages(23)));
+	imgs->Add(wxBitmap(clientImages(24)));	
 }
 
 //IMPLEMENT_DYNAMIC(CDownloadListCtrl, CListBox)
@@ -1122,22 +1127,38 @@ void CDownloadListCtrl::DrawSourceItem(wxDC * dc, int nColumn, LPRECT lpRect, Ct
 						cur_rec.left += 20;
 					} else if (lpUpDownClient->ExtProtocolAvailable() && lpUpDownClient->GetClientSoft() == SO_AMULE) {
 						POINT point2 = { cur_rec.left, cur_rec.top + 1 };
-						m_ImageList.Draw(13, *dc, point2.x, point.y, ILD_NORMAL);
+						if (lpUpDownClient->Credits() && lpUpDownClient->Credits()->GetCurrentIdentState(lpUpDownClient->GetIP()) == IS_IDENTIFIED) {
+							m_ImageList.Draw(15, *dc, point2.x, point.y, ILD_NORMAL);
+						} else {
+							m_ImageList.Draw(12, *dc, point2.x, point.y, ILD_NORMAL);		
+						}
 						cur_rec.left += 20;
 					} else if (lpUpDownClient->ExtProtocolAvailable()) {
 						POINT point2 = { cur_rec.left, cur_rec.top + 1 };
-						m_ImageList.Draw(5, *dc, point2.x, point.y, ILD_NORMAL);
+						if (lpUpDownClient->Credits() && lpUpDownClient->Credits()->GetCurrentIdentState(lpUpDownClient->GetIP()) == IS_IDENTIFIED) {
+							m_ImageList.Draw(14, *dc, point2.x, point.y, ILD_NORMAL);
+						} else {
+							m_ImageList.Draw(5, *dc, point2.x, point.y, ILD_NORMAL);		
+						}														
 						cur_rec.left += 20;
 					} else {
 						POINT point2 = { cur_rec.left, cur_rec.top + 1 };
 						if (lpUpDownClient->GetClientSoft() == SO_MLDONKEY || lpUpDownClient->GetClientSoft() == SO_NEW_MLDONKEY) {
 							m_ImageList.Draw(8, *dc, point2.x, point.y, ILD_NORMAL);
 						} else if (lpUpDownClient->GetClientSoft() == SO_AMULE) {
-							m_ImageList.Draw(12, *dc, point2.x, point.y, ILD_NORMAL);
+							if (lpUpDownClient->Credits() && lpUpDownClient->Credits()->GetCurrentIdentState(lpUpDownClient->GetIP()) == IS_IDENTIFIED) {
+								m_ImageList.Draw(17, *dc, point2.x, point.y, ILD_NORMAL);
+							} else {
+								m_ImageList.Draw(13, *dc, point2.x, point.y, ILD_NORMAL);
+							}						
 						} else if (lpUpDownClient->GetClientSoft() == SO_EDONKEYHYBRID) {
 							m_ImageList.Draw(11, *dc, point2.x, point.y, ILD_NORMAL);
 						} else {
-							m_ImageList.Draw(7, *dc, point2.x, point.y, ILD_NORMAL);
+							if (lpUpDownClient->Credits() && lpUpDownClient->Credits()->GetCurrentIdentState(lpUpDownClient->GetIP()) == IS_IDENTIFIED) {
+								m_ImageList.Draw(16, *dc, point2.x, point.y, ILD_NORMAL);
+							} else {
+								m_ImageList.Draw(7, *dc, point2.x, point.y, ILD_NORMAL);		
+							}														
 						}
 						cur_rec.left += 20;
 					}
