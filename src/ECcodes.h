@@ -231,6 +231,22 @@ enum {
 		 */
 	EC_OP_GET_SHARED_FILES,
 	
+		/*!
+		 * \brief Set priority for shared file(s)
+		 * 
+		 * \par Tags:
+		 *  ::EC_TAG_KNOWNFILE (1+) file to process
+		 */
+	EC_OP_SHARED_SET_PRIO,
+
+		/*
+		 * \brief Add 1 or more of found files to download queue
+		 * 
+		 * \par Tags:
+		 *  ::EC_TAG_SEARCHFILE (1+) file to download
+		 */
+	EC_OP_DOWNLOAD_SEARCH_RESULT,
+	
 		/*
 		 * \brief Perform action on file in queue.
 		 *
@@ -247,14 +263,9 @@ enum {
 	EC_OP_PARTFILE_PAUSE,
 	EC_OP_PARTFILE_RESUME,
 	EC_OP_PARTFILE_STOP,
-	EC_OP_PARTFILE_PRIO_AUTO,
 	EC_OP_PARTFILE_PRIO_SET,
 	EC_OP_PARTFILE_DELETE,
 	EC_OP_PARTFILE_SET_CAT,
-	EC_OP_KNOWNFILE_SET_UP_PRIO,
-	EC_OP_KNOWNFILE_SET_UP_PRIO_AUTO,
-	EC_OP_KNOWNFILE_SET_PERM,
-	EC_OP_KNOWNFILE_SET_COMMENT,
 
 		/*!
 		 * \brief Get download queue.
@@ -286,6 +297,16 @@ enum {
 	EC_OP_SHAREDFILES_RELOAD,
 
 
+		/*!
+		 * \brief Command to start new search
+		 */
+	EC_OP_SEARCH_START,
+	
+		/*!
+		 * \brief Search results returned to client
+		 */
+	EC_OP_SEARCH_RESULTS,
+	
 	//
 	// IPFilter
 	//
@@ -703,6 +724,7 @@ enum {
 	EC_TAG_PARTFILE_STATUS,
 	EC_TAG_PARTFILE_PRIO,
 	EC_TAG_PARTFILE_SOURCE_COUNT,
+	EC_TAG_PARTFILE_SOURCE_COUNT_A4AF,
 	EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT,
 	EC_TAG_PARTFILE_SOURCE_COUNT_XFER,
 	EC_TAG_PARTFILE_ED2K_LINK,
@@ -829,6 +851,31 @@ enum {
 	 */
 	EC_TAG_UPDOWN_CLIENT,
 
+	//
+	// Search
+	//
+		/*!
+		 * \brief Info about file found in search
+		 */
+		 EC_TAG_SEARCHFILE,
+		 
+		/*!
+		 * \brief Type of search requested
+		 * 
+		 * Value: (\c uint32) EC_SEARCH_TYPE
+		 */
+	EC_TAG_SEARCH_TYPE,
+	
+		/*!
+		 * \brief Search parameters
+		 */
+	EC_TAG_SEARCH_NAME,
+	
+	EC_TAG_SEARCH_MIN_SIZE,
+	EC_TAG_SEARCH_MAX_SIZE,
+	EC_TAG_SEARCH_FILE_TYPE,
+	EC_TAG_SEARCH_EXTENSION,
+	EC_TAG_SEARCH_AVAILABILITY,
 
 	//
 	// Preferences
@@ -1218,6 +1265,15 @@ enum EC_DETAIL_LEVEL {
 };
 
 
+/*!
+ * Search type
+ */
+ 
+enum EC_SEARCH_TYPE {
+	EC_SEARCH_LOCAL,
+	EC_SEARCH_GLOBAL,
+	EC_SEARCH_WEB,
+};
 /*
  * EC Preferences selection bit values.
  */

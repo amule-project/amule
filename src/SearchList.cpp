@@ -478,6 +478,15 @@ private:
 	int		m_type;
 };
 
+const std::vector<CSearchFile*> CSearchList::GetSearchResults(long nSearchID)
+{
+	ResultMap::const_iterator it = m_Results.find(nSearchID);
+
+	if ( it != m_Results.end() ) {
+		return it->second;
+	}
+	return std::vector<CSearchFile*>();
+}
 
 wxString CSearchList::GetWebList( const wxString& linePattern, int sortby, bool asc ) const
 {

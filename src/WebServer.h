@@ -113,6 +113,12 @@ typedef enum {
 	SERVER_SORT_FILES
 } xServerSort;
 
+typedef enum {
+	SEARCH_SORT_NAME,
+	SEARCH_SORT_SIZE,
+	SEARCH_SORT_SOURCES,
+} xSearchSort;
+
 WX_DECLARE_OBJARRAY(UpDown*, ArrayOfUpDown);
 WX_DECLARE_OBJARRAY(Session*, ArrayOfSession);
 WX_DECLARE_OBJARRAY(TransferredData*, ArrayOfTransferredData);
@@ -120,6 +126,7 @@ WX_DECLARE_OBJARRAY(TransferredData*, ArrayOfTransferredData);
 class CEC_PartFile_Tag;
 class CEC_SharedFile_Tag;
 class CEC_UpDownClient_Tag;
+class CEC_SearchFile_Tag;
 class CProgressImage;
 
 class DownloadFiles {
@@ -134,8 +141,10 @@ class DownloadFiles {
 		long		lSourceCount;
 		long		lNotCurrentSourceCount;
 		long		lTransferringSourceCount;
+		long		lSourceCountA4AF;
 		double		fCompleted;
 		long		lFilePrio;
+		bool		bFileAutoPriority;
 		wxString	sFileHash;
 		wxString	sED2kLink;
 		wxString	sFileInfo;
@@ -164,7 +173,6 @@ class SharedFiles {
 		uint16		nFileAccepts;
 		uint32		nFileAllTimeAccepts;
 		uint8		nFilePriority;
-		wxString	sFilePriority;
 		bool		bFileAutoPriority;
 		wxString 	sFileHash;
 		wxString	sED2kLink;
@@ -205,6 +213,21 @@ class UploadFiles {
 		UploadFiles(CEC_UpDownClient_Tag *tag);
 		
 		static class UploadsInfo *GetContainerInstance();
+		CMD4Hash ID() { return nHash; }
+};
+
+class SearchFile {
+	public:
+		wxString sFileName;
+		long lFileSize;
+		CMD4Hash  nHash;
+		long lSourceCount;
+		bool bPresent;
+		
+		SearchFile(CEC_SearchFile_Tag *);
+		
+		void ProcessUpdate(CEC_SearchFile_Tag *);
+		static class SearchInfo *GetContainerInstance();
 		CMD4Hash ID() { return nHash; }
 };
 
@@ -380,15 +403,25 @@ class UpdatableItemsContainer : public ItemsContainer<T, E> {
 					full_req->AddTag(CECTag(req_type, tag->ID()));
 				}
 			}
-			for(typename std::list<T>::iterator j = ItemsContainer<T, E>::m_items.begin();
-				j != ItemsContainer<T, E>::m_items.end();j++) {
+			std::list<I> del_ids;
+			for(typename std::list<T>::iterator j = this->m_items.begin(); j != this->m_items.end(); j++) {
 				if ( core_files.count(j->ID()) == 0 ) {
 					// item may contain data that need to be freed externally, before
 					// dtor is called and memory freed
-					this->ItemDeleted(*j);
 					
-					m_items_hash.erase(j->ID());
-					ItemsContainer<T, E>::m_items.erase(j);
+					T *real_ptr = &*j;
+					this->ItemDeleted(real_ptr);
+					
+					del_ids.push_back(j->ID());
+				}
+			}
+			for(typename std::list<I>::iterator j = del_ids.begin(); j != del_ids.end(); j++) {
+				m_items_hash.erase(*j);
+				for(typename std::list<T>::iterator k = this->m_items.begin(); k != this->m_items.end(); k++) {
+					if ( *j == k->ID() ) {
+						this->m_items.erase(k);
+						break;
+					}
 				}
 			}
 		}
@@ -401,7 +434,7 @@ class UpdatableItemsContainer : public ItemsContainer<T, E> {
 				T item(tag);
 				T *real_ptr = AddItem(item);
 				// initialize any external data that may depend on this item
-				this->ItemInserted(*real_ptr);
+				this->ItemInserted(real_ptr);
 			}
 		}
 		
@@ -435,8 +468,8 @@ class UpdatableItemsContainer : public ItemsContainer<T, E> {
 			return true;
 		}
 		
-		virtual void ItemDeleted(T &) { }
-		virtual void ItemInserted(T &) { }
+		virtual void ItemDeleted(T *) { }
+		virtual void ItemInserted(T *) { }
 };
 
 class UploadsInfo : public ItemsContainer<UploadFiles, int> {
@@ -471,12 +504,19 @@ class SharedFilesInfo : public UpdatableItemsContainer<SharedFiles, xSharedSort,
 		bool CompareItems(const SharedFiles &i1, const SharedFiles &i2);
 };
 
+class SearchInfo : public UpdatableItemsContainer<SearchFile, xSearchSort, CEC_SearchFile_Tag, CMD4Hash> {
+	public:
+		static SearchInfo *m_This;
+		
+		SearchInfo(CamulewebApp *webApp);
+		
+		virtual bool ReQuery();
+
+		bool CompareItems(const SearchFile &i1, const SearchFile &i2);
+};
+
 class CImageLib;
 class DownloadFilesInfo : public UpdatableItemsContainer<DownloadFiles, xDownloadSort, CEC_PartFile_Tag, CMD4Hash> {
-		// need duplicate list with a map, so check "do we already have"
-		// will take O(log(n)) instead of O(n)
-		// map will contain pointers to items in list 
-		std::map<CMD4Hash, DownloadFiles *> m_files;
 		CImageLib *m_ImageLib;
 		
 		// parameters of progress images
@@ -494,8 +534,8 @@ class DownloadFilesInfo : public UpdatableItemsContainer<DownloadFiles, xDownloa
 
 		// container requirements
 		bool CompareItems(const DownloadFiles &i1, const DownloadFiles &i2);
-		void ItemInserted(DownloadFiles &item);
-		void ItemDeleted(DownloadFiles &item);
+		void ItemInserted(DownloadFiles *item);
+		void ItemDeleted(DownloadFiles *item);
 };
 
 class CAnyImage {
@@ -712,6 +752,7 @@ class CWebServer {
 	SharedFilesInfo m_SharedFilesInfo;
 	DownloadFilesInfo m_DownloadFilesInfo;
 	UploadsInfo m_UploadsInfo;
+	SearchInfo m_SearchInfo;
 	
 	CImageLib m_ImageLib;
 	
@@ -764,7 +805,6 @@ class CWebServer {
 		bool	_GetFileHash(wxString sHash, unsigned char *FileHash);
 		wxString	_GetPlainResString(UINT nID, bool noquote = false);
 		int	_GzipCompress(Bytef *dest, uLongf *destLen, const Bytef *source, uLong sourceLen, int level);
-		void	_SetSharedFilePriority(wxString hash, uint8 priority);
 		wxString	_GetWebCharSet();
 		wxString	_LoadTemplate(wxString sAll, wxString sTemplateName);
 		Session	GetSessionByID(ThreadData Data,long sessionID);
