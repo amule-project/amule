@@ -187,12 +187,12 @@ CClientCreditsList::~CClientCreditsList()
 	SaveList();
 	CClientCredits* cur_credit;
 	CCKey tmpkey((uchar*)0);
-	POSITION pos = m_mapClients.GetStartPosition();
-	while (pos){
-		m_mapClients.GetNextAssoc(pos, tmpkey, cur_credit);
-		delete cur_credit;
+	
+	std::map<CCKey, CClientCredits*>::iterator it = m_mapClients.begin();
+	for ( ; it != m_mapClients.end(); ++it ){
+		delete it->second;
 	}
-	m_mapClients.RemoveAll();
+	m_mapClients.clear();
 	if (m_pSignkey){
 		delete m_pSignkey;
 		m_pSignkey = NULL;
@@ -252,7 +252,6 @@ void CClientCreditsList::LoadList()
 	uint32 count;
 	file.Read(&count, 4);
 	ENDIAN_SWAP_I_32(count);
-	m_mapClients.InitHashTable(count+5000); // TODO: should be prime number... and 20% larger
 
 	const uint32 dwExpired = time(NULL) - 12960000; // today - 150 day
 	uint32 cDeleted = 0;
@@ -268,7 +267,7 @@ void CClientCreditsList::LoadList()
 		}
 
 		CClientCredits* newcredits = new CClientCredits(newcstruct);
-		m_mapClients.SetAt(CCKey(newcredits->GetKey()), newcredits);
+		m_mapClients[ CCKey(newcredits->GetKey()) ] = newcredits;
 	}
 	file.Close();
 
@@ -299,15 +298,15 @@ void CClientCreditsList::SaveList()
 	
 	file.Open(name,CFile::write);
 	
-	uint32 count = m_mapClients.GetCount();
+	uint32 count = m_mapClients.size();
 	BYTE* pBuffer = new BYTE[count*sizeof(CreditStruct)];
-	CClientCredits* cur_credit;
-	CCKey tempkey((uchar*)0);
-	POSITION pos = m_mapClients.GetStartPosition();
 	count = 0;
-	while (pos)
+	
+	std::map<CCKey, CClientCredits*>::iterator it = m_mapClients.begin();
+	for ( ; it != m_mapClients.end(); ++it )
 	{
-		m_mapClients.GetNextAssoc(pos, tempkey, cur_credit);
+		CClientCredits* cur_credit = it->second;
+		
 		if (cur_credit->GetUploadedTotal() || cur_credit->GetDownloadedTotal())
 		{
 			memcpy(pBuffer+(count*sizeof(CreditStruct)), cur_credit->GetDataStruct(), sizeof(CreditStruct));
@@ -331,12 +330,19 @@ void CClientCreditsList::SaveList()
 CClientCredits* CClientCreditsList::GetCredit(const uchar* key)
 {
 	CClientCredits* result;
-	CCKey tkey(key);
-	if (!m_mapClients.Lookup(tkey, result)){
+
+	std::map<CCKey, CClientCredits*>::iterator it = m_mapClients.find( CCKey(key) );
+
+	
+	if ( it == m_mapClients.end() ){
 		result = new CClientCredits(key);
-		m_mapClients.SetAt(CCKey(result->GetKey()), result);
+		m_mapClients[ CCKey(result->GetKey()) ] = result;
+	} else {
+		result = it->second;
 	}
+	
 	result->SetLastSeen();
+	
 	return result;
 }
 

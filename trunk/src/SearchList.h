@@ -23,9 +23,10 @@
 
 #include "types.h"		// Needed for uint8, uint16 and uint32
 #include "KnownFile.h"		// Needed for CAbstractFile
-#include "mfc.h"		// Needed for CMap
 #include "CMemFile.h"		// Needed for CMemFile
 #include "CArray.h"
+
+#include <map>
 
 class CSafeMemFile;
 
@@ -142,7 +143,7 @@ public:
 private:
 	bool AddToList(CSearchFile* toadd, bool bClientResponse = false);
 	CTypedPtrList<CPtrList, CSearchFile*> list;
-	CMap<uint32, uint32, uint16, uint16> foundFilesCount;
+	std::map<uint32, uint16> foundFilesCount;
 
 	wxString myHashList;
 	wxString resultType;

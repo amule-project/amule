@@ -41,6 +41,7 @@
 #include "ChatWnd.h"		// Needed for CChatWnd
 #include "sockets.h"		// Needed for CServerConnect
 #include "TransferWnd.h"	// Needed for transferwnd
+#include "MapKey.h"
 
 #include <wx/listimpl.cpp>
 #include <wx/dynarray.h>

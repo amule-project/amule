@@ -43,6 +43,7 @@
 
 #include "types.h"		// Needed for uint16 and uint32
 #include "MapKey.h"		// Needed for CMap and CCKey
+#include <map>
 
 #include "Preferences.h"
 //#include "loggable.h"
@@ -140,7 +141,7 @@ protected:
 	bool	Debug_CheckCrypting();
 #endif
 private:
-	CMap<CCKey, const CCKey&, CClientCredits*, CClientCredits*> m_mapClients;
+	std::map<CCKey, CClientCredits*> m_mapClients;
 	CPreferences*	m_pAppPrefs;
 	uint32			m_nLastSaved;
 	CryptoPP::RSASSA_PKCS1v15_SHA_Signer*		m_pSignkey;

@@ -35,29 +35,26 @@ WX_DEFINE_OBJARRAY(ArrayOfPortAndHash);
 CClientList::CClientList(){
 	m_dwLastBannCleanUp = 0;
 	m_dwLastTrackedCleanUp = 0;
-	m_bannedList.InitHashTable(331);
-	m_trackedClientsList.InitHashTable(2011);
 }
 
-CClientList::~CClientList(){
-	POSITION pos = m_trackedClientsList.GetStartPosition();
-	uint32 nKey;
-	CDeletedClient* pResult;
-	while (pos != NULL){
-		m_trackedClientsList.GetNextAssoc( pos, nKey, pResult );
-		m_trackedClientsList.RemoveKey(nKey);
-		delete pResult;
-	}	
+CClientList::~CClientList() {
+	std::map<uint32, CDeletedClient*>::iterator it = m_trackedClientsList.begin();
+	
+	for ( ; it != m_trackedClientsList.end(); ++it ){
+		delete it->second;
+	}
+
+	m_trackedClientsList.clear();
 }
 
 // xrmb : statsclientstatus
-void CClientList::GetStatistics(uint32 &totalclient, uint32 stats[], CMap<uint16, uint16, uint32, uint32> *clientStatus, CMap<uint32, uint32, uint32, uint32> *clientVersionEDonkey, CMap<uint32, uint32, uint32, uint32> *clientVersionEDonkeyHybrid, CMap<uint32, uint32, uint32, uint32> *clientVersionEMule, CMap<uint32, uint32, uint32, uint32> *clientVersionAMule){
+void CClientList::GetStatistics(uint32 &totalclient, uint32 stats[], clientmap16* WXUNUSED(clientStatus), clientmap32 *clientVersionEDonkey, clientmap32 *clientVersionEDonkeyHybrid, clientmap32 *clientVersionEMule, clientmap32 *clientVersionAMule){
 	//if(clientStatus)		clientStatus->RemoveAll();
 	totalclient = list.GetCount();
-	if(clientVersionEDonkey)	clientVersionEDonkey->RemoveAll();
-	if(clientVersionEMule)		clientVersionEMule->RemoveAll();
-	if(clientVersionEDonkeyHybrid)	clientVersionEDonkeyHybrid->RemoveAll();
-	if(clientVersionAMule)		clientVersionAMule->RemoveAll();
+	if(clientVersionEDonkey)	clientVersionEDonkey->clear();
+	if(clientVersionEMule)		clientVersionEMule->clear();
+	if(clientVersionEDonkeyHybrid)	clientVersionEDonkeyHybrid->clear();
+	if(clientVersionAMule)		clientVersionAMule->clear();
 	POSITION pos1, pos2;
 
 	for (int i=0;i<18;i++) stats[i]=0;
@@ -279,8 +276,11 @@ bool CClientList::Debug_IsValidClient(CUpDownClient* tocheck){
 // true = everything ok, hash didn't changed
 // false = hash changed
 bool CClientList::ComparePriorUserhash(uint32 dwIP, uint16 nPort, void* pNewHash){
-	CDeletedClient* pResult = 0;
-	if (m_trackedClientsList.Lookup(dwIP, pResult)){
+	std::map<uint32, CDeletedClient*>::iterator it = m_trackedClientsList.find( dwIP );
+	
+	if ( it != m_trackedClientsList.end() ) {
+		CDeletedClient* pResult = it->second;
+		
 		for (unsigned int i = 0; i != pResult->m_ItemsList.GetCount(); i++){
 			if (pResult->m_ItemsList[i].nPort == nPort){
 				if (pResult->m_ItemsList[i].pHash != pNewHash)
@@ -294,8 +294,11 @@ bool CClientList::ComparePriorUserhash(uint32 dwIP, uint16 nPort, void* pNewHash
 }
 
 void CClientList::AddTrackClient(CUpDownClient* toadd){
-	CDeletedClient* pResult = 0;
-	if (m_trackedClientsList.Lookup(toadd->GetIP(), pResult)){
+	std::map<uint32, CDeletedClient*>::iterator it = m_trackedClientsList.find( toadd->GetIP() );
+	
+	if ( it != m_trackedClientsList.end() ) {
+		CDeletedClient* pResult = it->second;
+	
 		pResult->m_dwInserted = ::GetTickCount();
 		for (unsigned int i = 0; i != pResult->m_ItemsList.GetCount(); i++){
 			if (pResult->m_ItemsList[i].nPort == toadd->GetUserPort()){
@@ -308,16 +311,18 @@ void CClientList::AddTrackClient(CUpDownClient* toadd){
 		pResult->m_ItemsList.Add(porthash);
 	}
 	else{
-		m_trackedClientsList.SetAt(toadd->GetIP(), new CDeletedClient(toadd));
+		m_trackedClientsList[ toadd->GetIP() ] = new CDeletedClient(toadd);
 	}
 }
 
 uint16 CClientList::GetClientsFromIP(uint32 dwIP){
-	CDeletedClient* pResult = 0;
-	if (m_trackedClientsList.Lookup(dwIP, pResult)){
-		return pResult->m_ItemsList.GetCount();
+	std::map<uint32, CDeletedClient*>::iterator it = m_trackedClientsList.find( dwIP );
+	
+	if ( it != m_trackedClientsList.end() ) {
+		return it->second->m_ItemsList.GetCount();
+	} else {
+		return 0;
 	}
-	return 0;
 }
 
 void CClientList::Process(){
@@ -325,11 +330,13 @@ void CClientList::Process(){
 	if (m_dwLastBannCleanUp + BAN_CLEANUP_TIME < cur_tick){
 		m_dwLastBannCleanUp = cur_tick;
 		
-		POSITION pos = m_bannedList.GetStartPosition();
-		uint32 nKey;
-		uint32 dwBantime;
-		while (pos != NULL){
-			m_bannedList.GetNextAssoc( pos, nKey, dwBantime );
+		std::map<uint32, uint32>::iterator it = m_bannedList.begin();
+		while ( it != m_bannedList.end() ) {
+			uint32 nKey = it->first;
+			uint32 dwBantime = it->second;
+		
+			++it;
+			
 			if (dwBantime + CLIENTBANTIME < cur_tick )
 				RemoveBannedClient(nKey);
 		}
@@ -338,29 +345,33 @@ void CClientList::Process(){
 	
 	if (m_dwLastTrackedCleanUp + TRACKED_CLEANUP_TIME < cur_tick ){
 		m_dwLastTrackedCleanUp = cur_tick;
-		theApp.amuledlg->AddDebugLogLine(false, wxT("Cleaning up TrackedClientList, %i clients on List..."), m_trackedClientsList.GetCount());
-		POSITION pos = m_trackedClientsList.GetStartPosition();
-		uint32 nKey;
-		CDeletedClient* pResult;
-		while (pos != NULL){
-			m_trackedClientsList.GetNextAssoc( pos, nKey, pResult );
+		theApp.amuledlg->AddDebugLogLine(false, wxT("Cleaning up TrackedClientList, %i clients on List..."), m_trackedClientsList.size());
+		
+		std::map<uint32, CDeletedClient*>::iterator it = m_trackedClientsList.begin();
+		while ( it != m_trackedClientsList.end() ) {
+			uint32 nKey = it->first;
+			CDeletedClient* pResult = it->second;
+				
+			++it;
+			
 			if (pResult->m_dwInserted + KEEPTRACK_TIME < cur_tick ){
-				m_trackedClientsList.RemoveKey(nKey);
+				m_trackedClientsList.erase( nKey );
 				delete pResult;
 			}
 		}
-		theApp.amuledlg->AddDebugLogLine(false, wxT("...done, %i clients left on list"), m_trackedClientsList.GetCount());
+		theApp.amuledlg->AddDebugLogLine(false, wxT("...done, %i clients left on list"), m_trackedClientsList.size());
 	}
 }
 
 void CClientList::AddBannedClient(uint32 dwIP){
-	m_bannedList.SetAt(dwIP, ::GetTickCount());
+	m_bannedList[dwIP] = ::GetTickCount();
 }
 
 bool CClientList::IsBannedClient(uint32 dwIP){
-	uint32 dwBantime = 0;
-	if (m_bannedList.Lookup(dwIP, dwBantime)){
-		if (dwBantime + CLIENTBANTIME > ::GetTickCount() )
+	std::map<uint32, uint32>::iterator it = m_bannedList.find( dwIP );
+		
+	if ( it != m_bannedList.end() ){
+		if ( it->second + CLIENTBANTIME > ::GetTickCount() )
 			return true;
 		else
 			RemoveBannedClient(dwIP);
@@ -369,5 +380,5 @@ bool CClientList::IsBannedClient(uint32 dwIP){
 }
 
 void CClientList::RemoveBannedClient(uint32 dwIP){
-	m_bannedList.RemoveKey(dwIP);
+	m_bannedList.erase(dwIP);
 }
