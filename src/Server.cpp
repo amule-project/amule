@@ -60,6 +60,31 @@ CServer::CServer(uint16 in_port, const wxString i_addr)
 	}
 }
 
+#ifdef CLIENT_GUI
+CServer::CServer(CEC_Server_Tag *tag)
+{
+	CECTag *tmpTag;
+	if ((tmpTag = tag->GetTagByName(EC_TAG_SERVER_NAME)) != NULL) {
+		listname = tmpTag->GetStringData();
+	}
+	if ((tmpTag = tag->GetTagByName(EC_TAG_SERVER_DESC)) != NULL) {
+	    description = tmpTag->GetStringData();
+	}
+	ip = tag->GetIPv4Data().IP();
+	port = tag->GetIPv4Data().port;
+    if ((tmpTag = tag->GetTagByName(EC_TAG_SERVER_USERS_MAX)) != NULL) {
+        maxusers = tmpTag->GetInt32Data();
+    } else {
+        maxusers = 0;
+    }
+    if ((tmpTag = tag->GetTagByName(EC_TAG_SERVER_FILES)) != NULL) {
+        hardfiles = tmpTag->GetInt32Data();
+    } else {
+	    hardfiles = 0;
+    }
+}
+#endif
+
 // copy constructor
 CServer::CServer(CServer* pOld)
 {

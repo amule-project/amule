@@ -32,6 +32,10 @@
 #include "Types.h"		// Needed for uint8, uint16 and uint32
 #include "CFile.h"
 
+#ifdef CLIENT_GUI
+#include "ECSpecialTags.h"
+#endif
+
 class CTag;
 class TagList;
 class ServerMet_Struct;
@@ -66,6 +70,11 @@ public:
 	CServer(ServerMet_Struct* in_data);
 	CServer(uint16 in_port, const wxString i_addr);
 	CServer(CServer* pOld);
+
+#ifdef CLIENT_GUI
+	CServer(CEC_Server_Tag *);
+#endif
+
 	~CServer();
 	void		AddTag(CTag* in_tag)	{taglist->Append(in_tag);}
 	const wxString &GetListName() const	{return listname;}
