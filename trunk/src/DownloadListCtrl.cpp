@@ -504,16 +504,19 @@ void CDownloadListCtrl::ChangeCategory( int newCategory )
 	
 			bool curVisibility = file->CheckShowItemInGivenCat( m_category );
 			bool newVisibility = file->CheckShowItemInGivenCat( newCategory );
-			
-			// Check if the visibility of the file has changed
-			if ( curVisibility != newVisibility ) {
+		
+			// Check if the visibility of the file has changed. However, if the
+			// current category is the default (0) category, then we can't use
+			// curVisiblity to see if the visibility has changed but instead
+			// have to let ShowFile() check if the file is or isn't on the list.
+			if ( curVisibility != newVisibility || !newCategory ) {
 				ShowFile( file, newVisibility );
 			}
 		}
 	}
 	
 	Thaw();
-	
+
 	m_category = newCategory;
 
 	ShowFilesCount();
