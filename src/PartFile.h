@@ -187,7 +187,7 @@ public:
 	CFile	m_hpartfile;	//permanent opened handle to avoid write conflicts
 	volatile bool m_bPreviewing;
 	CTypedPtrList<CPtrList, CUpDownClient*> A4AFsrclist; //<<-- enkeyDEV(Ottavio84) -A4AF-
-	void	SetDownPriority(uint8 newDownPriority);
+	void	SetDownPriority(uint8 newDownPriority, bool bSave = true);
 	bool	IsAutoDownPriority()	{ return m_bAutoDownPriority; }
 	void	SetAutoDownPriority(bool flag) { m_bAutoDownPriority = flag; }
 	void	UpdateAutoDownPriority();

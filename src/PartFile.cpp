@@ -2834,13 +2834,14 @@ bool CPartFile::IsText()
 }
 
 
-void CPartFile::SetDownPriority(uint8 np)
+void CPartFile::SetDownPriority(uint8 np, bool bSave )
 {
 	m_iDownPriority = np;
 	theApp.downloadqueue->SortByPriority();
 	theApp.downloadqueue->CheckDiskspace();
 	UpdateDisplayedInfo(true);
-	SavePartFile();
+	if ( bSave )
+		SavePartFile();
 }
 
 void CPartFile::StopFile(bool bCancel)
@@ -3263,11 +3264,11 @@ void CPartFile::UpdateAutoDownPriority()
 		return;
 	}
 	if (GetSourceCount() <= RARE_FILE) {
-		SetDownPriority(PR_VERYHIGH);
+		SetDownPriority(PR_VERYHIGH, false);
 	} else if (GetSourceCount() < 100) {
-		SetDownPriority(PR_HIGH);
+		SetDownPriority(PR_HIGH, false);
 	} else {
-		SetDownPriority(PR_NORMAL);
+		SetDownPriority(PR_NORMAL, false);
 	}
 }
 
