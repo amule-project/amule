@@ -812,20 +812,21 @@ bool CamuleApp::ReinitializeNetwork(wxString *msg)
 	// This command just sets a flag to control maximun number of connections.
 	// Notify(true) has already been called to the ListenSocket, so events may
 	// be already comming in.
-	listensocket->StartListening();
-	
-	// If we wern't able to start listening, we need to warn the user
-	if ( !listensocket->Ok() ) {
-		wxString err = wxString::Format(
-			_("Port %d is not available. You will be LOWID"),
-			thePrefs::GetPort());
+	if (listensocket->Ok()) {
+		listensocket->StartListening();
+	} else {
+		// If we wern't able to start listening, we need to warn the user
+		wxString err;
+		err <<	_("Port ") << thePrefs::GetPort() <<
+			_(" is not available. You will be LOWID");
 		*msg << err;
 		AddLogLineM(true, err);
-		ShowAlert(wxString::Format(
-			_("Port %d is not available!\n\n"
-			  "This means that you will be LOWID.\n\n"
-			  "Check your network to make sure the port is open for output and input."),
-			thePrefs::GetPort()), _("Error"), wxOK | wxICON_ERROR);
+		err.Clear();
+		err << _("Port ") << thePrefs::GetPort() << _(
+			" is not available!\n\n"
+			"This means that you will be LOWID.\n\n"
+			"Check your network to make sure the port is open for output and input.");
+		ShowAlert(err, _("Error"), wxOK | wxICON_ERROR);
 	}
 	
 	return ok;
