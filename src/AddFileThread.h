@@ -23,6 +23,10 @@
 #include <wx/thread.h>		// Needed for wxThread
 
 #include "CTypedPtrList.h"	// Needed for CTypedPtrList
+#include "types.h"
+#include "GetTickCount.h"
+
+#define THREAD_ADDING_TIMEOUT	60000 // 1 min timeout
 
 class CPartFile;
 class UnknownFile_Struct;
@@ -54,8 +58,9 @@ private:
 	// Lock for the wait list and the conditions
 	static wxMutex 		m_lockWaitingForHashList;
 
-	// Signaled when something is added to the wait list.
-	static wxCondition 	m_runWaitingForHashList;
+	static bool DeadThread;
+
+	static uint32 dwLastAddTime;
 
 	// The wait list itself
 	static CTypedPtrList<CPtrList, UnknownFile_Struct*>

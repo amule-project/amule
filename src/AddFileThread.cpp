@@ -19,6 +19,7 @@
 
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/event.h>		// Needed for wxCommandEvent
+#include <sys/time.h>		// Needed for gettimeofday
 
 #include "AddFileThread.h"	// Interface declarations
 #include "otherfunctions.h"	// Needed for nstrdup
@@ -35,38 +36,65 @@ struct UnknownFile_Struct
 };
 
 wxMutex CAddFileThread::m_lockWaitingForHashList;
-wxCondition CAddFileThread::m_runWaitingForHashList(m_lockWaitingForHashList);
 CTypedPtrList<CPtrList, UnknownFile_Struct*> CAddFileThread::m_sWaitingForHashList;
 volatile int CAddFileThread::m_endWaitingForHashList;
 
+uint32 CAddFileThread::dwLastAddTime;
+bool CAddFileThread::DeadThread;
+
 CAddFileThread::CAddFileThread() : wxThread(wxTHREAD_DETACHED)
 {
+	dwLastAddTime = GetTickCount();
+	m_endWaitingForHashList = 0;
 }
 
 void CAddFileThread::Setup()
 {
-	CAddFileThread *th = new CAddFileThread();
+	dwLastAddTime = GetTickCount();
+	m_endWaitingForHashList = 0;
+	DeadThread = false;
+	CAddFileThread* th = new CAddFileThread();
 	th->Create();
 	th->Run();
 }
 
 void CAddFileThread::Shutdown()
 {
-	m_lockWaitingForHashList.Lock();
 
-	printf("Signaling hashing thread to terminate\n");
+	printf("Signaling hashing thread to terminate... ");
 
-	// Tell the thread to exit
-	m_endWaitingForHashList = 1;
+	if (DeadThread || m_endWaitingForHashList) {
+		printf("Already dead\n");
+	} else {		
+		m_lockWaitingForHashList.Lock();
+		m_endWaitingForHashList = 1;
+		m_lockWaitingForHashList.Unlock();
+		struct timeval aika;
+		gettimeofday(&aika,NULL);
+		long secs = aika.tv_sec;
 
-	// Signal the thread there is something to do
-	m_runWaitingForHashList.Signal();
+		while (!DeadThread) {
+			gettimeofday(&aika,NULL);
+			if (aika.tv_sec > (secs + 20)) {
+				printf("Timed out hashing thread signal\n");
+				break;
+			}
+		}
+		printf("OK\n");
+	}
 
-	m_lockWaitingForHashList.Unlock();
+	printf("Sending death event to main dialog\n");
+	wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED,TM_HASHTHREADFINISHED);
+	wxPostEvent(theApp.amuledlg,evt);		
+
 }
 
 void CAddFileThread::AddFile(const char *path, const char *name, CPartFile* part)
 {
+	dwLastAddTime = GetTickCount();
+	if (m_endWaitingForHashList) {
+		Setup();
+	}
 	UnknownFile_Struct* hashfile = new UnknownFile_Struct;
 	hashfile->directory = nstrdup(path);
 	hashfile->name = nstrdup(name);
@@ -74,47 +102,72 @@ void CAddFileThread::AddFile(const char *path, const char *name, CPartFile* part
 
 	wxMutexLocker sLock(m_lockWaitingForHashList);
 	m_sWaitingForHashList.AddTail(hashfile);
-	m_runWaitingForHashList.Signal();
+
 }
 
 wxThread::ExitCode CAddFileThread::Entry()
 {
-   while ( 1 ) {
-	m_lockWaitingForHashList.Lock();
-
-	if (m_endWaitingForHashList) {
-  		m_lockWaitingForHashList.Unlock();
-
-		wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED,TM_HASHTHREADFINISHED);
-    		wxPostEvent(theApp.amuledlg,evt);
-		return 0;
-	}
-
-  	if (m_sWaitingForHashList.IsEmpty()) {
-		m_runWaitingForHashList.Wait();
-  		m_lockWaitingForHashList.Unlock();
-  		continue;
-  	}
-
-	UnknownFile_Struct* hashfile = m_sWaitingForHashList.RemoveHead();
-  	m_lockWaitingForHashList.Unlock();
-
-	CKnownFile* newrecord = new CKnownFile();
-  	printf("Sharing %s/%s\n",hashfile->directory,hashfile->name);
-
-	// TODO: What we are supposed to do if the following does fail?
-	newrecord->CreateFromFile(hashfile->directory,hashfile->name,&m_endWaitingForHashList);
-	if (!m_endWaitingForHashList) {
-		wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED,TM_FINISHEDHASHING);
-		evt.SetClientData(newrecord);
-		evt.SetExtraLong((long)hashfile->owner);
-		wxPostEvent(theApp.amuledlg,evt);
-	}
-
-	delete[] hashfile->name;
-	delete[] hashfile->directory;
-  	delete hashfile;
+	
+	while (!m_endWaitingForHashList) {
+	
+		if (theApp.amuledlg) {
+			// Sanity check
+		    if (theApp.amuledlg->m_app_state == APP_STATE_SHUTINGDOWN) {
+			    printf("App is shutting down, hashing thread died\n");		    	
+				break;
+		    }		    
+		}
+		   
+		  if (m_sWaitingForHashList.IsEmpty()) {
+			  if ((GetTickCount() - dwLastAddTime) > THREAD_ADDING_TIMEOUT) {
+				printf("Hashing thread timed out with no aditions - removing thread\n");
+				m_lockWaitingForHashList.Lock();
+				m_endWaitingForHashList = 1;
+				m_lockWaitingForHashList.Unlock();
+				wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED,TM_HASHTHREADFINISHED);
+				wxPostEvent(theApp.amuledlg,evt);
+			  } 
+			  continue;	  
+		  }
+			
+		m_lockWaitingForHashList.Lock();
+		UnknownFile_Struct* hashfile = m_sWaitingForHashList.RemoveHead();
+		m_lockWaitingForHashList.Unlock();
+	
+		CKnownFile* newrecord = new CKnownFile();
+		printf("Sharing %s/%s\n",hashfile->directory,hashfile->name);
+	
+		// TODO: What we are supposed to do if the following does fail?
+		// Kry - Exit, afaik
+		bool finished = newrecord->CreateFromFile(hashfile->directory,hashfile->name,&m_endWaitingForHashList);
+		
+		if (!finished) {
+			// Kry -Hashing thread interrupted
+			m_lockWaitingForHashList.Lock();
+			m_endWaitingForHashList = 1;
+			m_lockWaitingForHashList.Unlock();
+			continue;
+		}
+		
+		if (!m_endWaitingForHashList) {
+			wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED,TM_FINISHEDHASHING);
+			evt.SetClientData(newrecord);
+			evt.SetExtraLong((long)hashfile->owner);
+			wxPostEvent(theApp.amuledlg,evt);
+			dwLastAddTime = GetTickCount();
+		}
+	
+		delete[] hashfile->name;
+		delete[] hashfile->directory;
+		delete hashfile;
     }
+    
+    // Just to be sure
+	m_lockWaitingForHashList.Lock();
+	m_endWaitingForHashList = 1;
+	m_lockWaitingForHashList.Unlock();
+	DeadThread = true;
+	return 0;
 }
 
 int CAddFileThread::GetCount()
