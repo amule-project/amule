@@ -958,13 +958,15 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 		} else if (sOp == wxT("prioup")) {
 			DownloadFiles *file = m_DownloadFilesInfo.GetByID(sFileHash);
 			if ( file ) {
-				hashtag.AddTag(CECTag(EC_OP_PARTFILE_PRIO_SET,
+				file_cmd = new CECPacket(EC_OP_PARTFILE_PRIO_SET);
+				hashtag.AddTag(CECTag(EC_TAG_PARTFILE_PRIO,
 					GetHigherPrio(file->lFilePrio, file->bFileAutoPriority)));
 			}
 		} else if (sOp == wxT("priodown")) {
 			DownloadFiles *file = m_DownloadFilesInfo.GetByID(sFileHash);
 			if ( file ) {
-				hashtag.AddTag(CECTag(EC_OP_PARTFILE_PRIO_SET,
+				file_cmd = new CECPacket(EC_OP_PARTFILE_PRIO_SET);
+				hashtag.AddTag(CECTag(EC_TAG_PARTFILE_PRIO,
 					GetLowerPrio(file->lFilePrio, file->bFileAutoPriority)));
 			}
 		}
