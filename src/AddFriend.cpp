@@ -49,8 +49,6 @@ BEGIN_EVENT_TABLE(CAddFriend, wxDialog)
 END_EVENT_TABLE()
 
 
-#define GetDlgItem(a,b) wxStaticCast(FindWindow(a),b)
-
 void CAddFriend::OnAddBtn(wxCommandEvent& WXUNUSED(evt))
 {
 	int a, b, c, d, scancount;
@@ -58,12 +56,10 @@ void CAddFriend::OnAddBtn(wxCommandEvent& WXUNUSED(evt))
 	uint32 ip = 0;
 	uint16 port = 0;
 	
-	name = GetDlgItem(ID_USERNAME, wxTextCtrl)->GetValue();
-	hash = GetDlgItem(ID_USERHASH, wxTextCtrl)->GetValue();
-	fullip = GetDlgItem(ID_IPADDRESS, wxTextCtrl)->GetValue();
-	unsigned long temp;
-	GetDlgItem(ID_IPORT, wxTextCtrl)->GetValue().ToULong(&temp);
-	port = temp;
+	name = CastChild(ID_USERNAME, wxTextCtrl)->GetValue();
+	hash = CastChild(ID_USERHASH, wxTextCtrl)->GetValue();
+	fullip = CastChild(ID_IPADDRESS, wxTextCtrl)->GetValue();
+	port = StrToULong( CastChild(ID_IPORT, wxTextCtrl)->GetValue() );
 
 	scancount = sscanf(unicode2char(fullip), "%d.%d.%d.%d", &a, &b, &c, &d);
 	if ( scancount != 4 || port <= 0 ) {

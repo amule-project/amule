@@ -75,10 +75,10 @@ CStatisticsDlg::CStatisticsDlg(wxWindow* pParent)
 	// resolution if the graphs are rebuilt based on the history list.
 	nPointsPerRange = wxGetTopLevelParent(this)->GetMaxSize().GetWidth()/2 - 80;
 
-	pscopeDL=(COScopeCtrl*)FindWindowByName(wxT("dloadScope"));
-	pscopeUL=(COScopeCtrl*)FindWindowByName(wxT("uloadScope"));
-	pscopeConn=(COScopeCtrl*)FindWindowByName(wxT("otherScope"));
-	stattree=wxStaticCast(FindWindowByName(wxT("statTree")),wxTreeCtrl);
+	pscopeDL	= CastChild( wxT("dloadScope"), COScopeCtrl );
+	pscopeUL	= CastChild( wxT("uloadScope"), COScopeCtrl );
+	pscopeConn	= CastChild( wxT("otherScope"), COScopeCtrl );
+	stattree	= CastChild( wxT("statTree"),	wxTreeCtrl  );
 
 	aposRecycle = NULL;
 	m_ilastMaxConnReached = 0;
@@ -173,7 +173,7 @@ void CStatisticsDlg::ApplyStatsColor(int index)
 		case 5:  case 6:  case 7:	
 		case 8:  case 9:  case 10:
 				(*ppscope)->SetPlotColor(cr, iTrend);
-				if ((ctrl=(CColorFrameCtrl*)FindWindow(iRes)) == NULL) {
+				if ((ctrl= CastChild(iRes, CColorFrameCtrl)) == NULL) {
 					printf("CStatisticsDlg::ApplyStatsColor: control missing (%d)\n",iRes);
 					exit(1);
 				}
@@ -515,38 +515,13 @@ void CStatisticsDlg::UpdateStatGraphs(bool bStatsVisible)
 		pscopeUL->DelayPoints();
 		pscopeConn->DelayPoints();
 	}
-	// Update scaling of the active connections graph
-/*  this older variant of the code allows for up-scaling (e.g. 3:1) in addition to down-scaling
-	but this seems rather pointless, because the number of active connections will always be
-	higher than the number of active up/downloads, so if their scale is appropriate, then 
-	(1:1) should be the lower limit of the active connections scale. -- Emilio
-	static uint32 savedMaxConns;
-	if (savedMaxConns != peakconnections) {
-		savedMaxConns = peakconnections;
-		unsigned nMult, 
-		unsigned nDiv;
-		unsigned nMax = thePrefs::GetStatsMax();
-		float fUpperLimit;
-		if (savedMaxConns < nMax) {
-			nMult = nMax / savedMaxConns;
-			nDiv = 1;
-			fUpperLimit = (float)nMax / (float)nMult;
-		} else {
-			nDiv = (savedMaxConns+nMax-1) / nMax;
-			nMult = 1;
-			fUpperLimit = (float)(nMax * nDiv);
-		}
-		wxString txt = wxString::Format(_("Active connections (%u:%u)"), nMult, nDiv);
-		wxStaticCast(wxWindow::FindWindowById(ID_ACTIVEC),wxStaticText)->SetLabel(txt);
-		pscopeConn->SetRange(0.0, fUpperLimit, 1);
-	}
-*/
+
 	static unsigned nScalePrev=1;
 	unsigned nScale = (unsigned)std::ceil((float)peakconnections / pscopeConn->GetUpperLimit());
 	if (nScale != nScalePrev) {
 		nScalePrev = nScale;
 		wxString txt = wxString::Format(_("Active connections (1:%u)"), nScale);
-		wxStaticCast(wxWindow::FindWindowById(ID_ACTIVEC),wxStaticText)->SetLabel(txt);
+		CastChild( ID_ACTIVEC, wxStaticText )->SetLabel(txt);
 		pscopeConn->SetRange(0.0, (float)nScale*pscopeConn->GetUpperLimit(), 1);
 	}
 	if (!bStatsVisible)

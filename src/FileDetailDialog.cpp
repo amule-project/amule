@@ -75,38 +75,37 @@ void CFileDetailDialog::OnClosewnd(wxCommandEvent& WXUNUSED(evt))
 	EndModal(0);
 }
 
-#define GetDlgItem(a,b) wxStaticCast(FindWindowById((a)),b)
 void CFileDetailDialog::UpdateData()
 {
 	wxString bufferS;
-	GetDlgItem(IDC_FNAME,wxStaticText)->SetLabel(MakeStringEscaped(TruncateFilename(m_file->GetFileName(),60)));
-	GetDlgItem(IDC_METFILE,wxStaticText)->SetLabel(MakeStringEscaped(TruncateFilename(m_file->GetFullName(),60,true)));
-	wxString tmp=GetDlgItem(IDC_FILENAME,wxTextCtrl)->GetValue();
+	CastChild(IDC_FNAME,wxStaticText)->SetLabel(MakeStringEscaped(TruncateFilename(m_file->GetFileName(),60)));
+	CastChild(IDC_METFILE,wxStaticText)->SetLabel(MakeStringEscaped(TruncateFilename(m_file->GetFullName(),60,true)));
+	wxString tmp=CastChild(IDC_FILENAME,wxTextCtrl)->GetValue();
 
 	if (tmp.Length()<3) {
-		GetDlgItem(IDC_FILENAME,wxTextCtrl)->SetValue(m_file->GetFileName());
+		CastChild(IDC_FILENAME,wxTextCtrl)->SetValue(m_file->GetFileName());
 	}
 
-	GetDlgItem(IDC_FHASH,wxStaticText)->SetLabel(EncodeBase16(m_file->GetFileHash(), 16));
-	GetDlgItem(IDC_FSIZE,wxControl)->SetLabel(CastItoXBytes(m_file->GetFileSize()));
-	GetDlgItem(IDC_PFSTATUS,wxControl)->SetLabel(m_file->getPartfileStatus());
+	CastChild(IDC_FHASH,wxStaticText)->SetLabel(EncodeBase16(m_file->GetFileHash(), 16));
+	CastChild(IDC_FSIZE,wxControl)->SetLabel(CastItoXBytes(m_file->GetFileSize()));
+	CastChild(IDC_PFSTATUS,wxControl)->SetLabel(m_file->getPartfileStatus());
 	bufferS.Printf(wxT("%i(%i)"),m_file->GetPartCount(),m_file->GetHashCount());
-	GetDlgItem(IDC_PARTCOUNT,wxControl)->SetLabel(bufferS);
-	GetDlgItem(IDC_TRANSFERED,wxControl)->SetLabel(CastItoXBytes(m_file->GetTransfered()));
-	GetDlgItem(IDC_FD_STATS1,wxControl)->SetLabel(CastItoXBytes(m_file->GetLostDueToCorruption()).GetData());
-	GetDlgItem(IDC_FD_STATS2,wxControl)->SetLabel(CastItoXBytes(m_file->GetGainDueToCompression()).GetData());
-	GetDlgItem(IDC_FD_STATS3,wxControl)->SetLabel(CastItoIShort(m_file->TotalPacketsSavedDueToICH()));
-	GetDlgItem(IDC_COMPLSIZE,wxControl)->SetLabel(CastItoXBytes(m_file->GetCompletedSize()));
+	CastChild(IDC_PARTCOUNT,wxControl)->SetLabel(bufferS);
+	CastChild(IDC_TRANSFERED,wxControl)->SetLabel(CastItoXBytes(m_file->GetTransfered()));
+	CastChild(IDC_FD_STATS1,wxControl)->SetLabel(CastItoXBytes(m_file->GetLostDueToCorruption()).GetData());
+	CastChild(IDC_FD_STATS2,wxControl)->SetLabel(CastItoXBytes(m_file->GetGainDueToCompression()).GetData());
+	CastChild(IDC_FD_STATS3,wxControl)->SetLabel(CastItoIShort(m_file->TotalPacketsSavedDueToICH()));
+	CastChild(IDC_COMPLSIZE,wxControl)->SetLabel(CastItoXBytes(m_file->GetCompletedSize()));
 	bufferS.Printf(wxT("%.2f "),m_file->GetPercentCompleted());
-	GetDlgItem(IDC_PROCCOMPL,wxControl)->SetLabel(bufferS+wxT("% ")+wxString(_("done")));
+	CastChild(IDC_PROCCOMPL,wxControl)->SetLabel(bufferS+wxT("% ")+wxString(_("done")));
 	bufferS.Printf(wxT("%.2f %s"),(float)m_file->GetKBpsDown(),_("kB/s"));
-	GetDlgItem(IDC_DATARATE,wxControl)->SetLabel(bufferS);
+	CastChild(IDC_DATARATE,wxControl)->SetLabel(bufferS);
 	bufferS.Printf(wxT("%i"),m_file->GetSourceCount());
-	GetDlgItem(IDC_SOURCECOUNT,wxControl)->SetLabel(bufferS);
+	CastChild(IDC_SOURCECOUNT,wxControl)->SetLabel(bufferS);
 	bufferS.Printf(wxT("%i"),m_file->GetTransferingSrcCount());
-	GetDlgItem(IDC_SOURCECOUNT2,wxControl)->SetLabel(bufferS);
+	CastChild(IDC_SOURCECOUNT2,wxControl)->SetLabel(bufferS);
 	bufferS.Printf(wxT("%i (%.1f%%)"),m_file->GetAvailablePartCount(),(float) ((m_file->GetAvailablePartCount()*100)/ m_file->GetPartCount()));
-	GetDlgItem(IDC_PARTAVAILABLE,wxControl)->SetLabel(bufferS);
+	CastChild(IDC_PARTAVAILABLE,wxControl)->SetLabel(bufferS);
 
 	if (m_file->lastseencomplete==0) {
 		bufferS = wxString(_("Unknown")).MakeLower();
@@ -117,8 +116,8 @@ void CFileDetailDialog::UpdateData()
 		bufferS=char2unicode(tmps);//.Format( "%s",m_file->lastseencomplete.Format( "%A, %x, %X"));
 	}
 
-	GetDlgItem(IDC_LASTSEENCOMPL,wxControl)->SetLabel(bufferS);
-	GetDlgItem(IDC_RENAME,wxControl)->Enable((m_file->GetStatus() == PS_COMPLETE || m_file->GetStatus() == PS_COMPLETING) ? false:true);//add by CML 
+	CastChild(IDC_LASTSEENCOMPL,wxControl)->SetLabel(bufferS);
+	CastChild(IDC_RENAME,wxControl)->Enable((m_file->GetStatus() == PS_COMPLETE || m_file->GetStatus() == PS_COMPLETING) ? false:true);//add by CML 
 	FillSourcenameList();
 	Layout();
 }
@@ -134,7 +133,7 @@ void CFileDetailDialog::FillSourcenameList()
 	CFileDetailListCtrl* pmyListCtrl; 
 	int itempos; 
 	wxString nameCountStr; 
-	pmyListCtrl = (CFileDetailListCtrl*)FindWindowById(IDC_LISTCTRLFILENAMES); 
+	pmyListCtrl = CastChild(IDC_LISTCTRLFILENAMES, CFileDetailListCtrl ); 
 
 // PA: imported new version from emule 0.30e
 
@@ -201,19 +200,19 @@ void CFileDetailDialog::OnBnClickedShowComment(wxCommandEvent& WXUNUSED(evt))
 
 void CFileDetailDialog::OnBnClickedRename(wxCommandEvent& WXUNUSED(evt))
 {
-	wxString NewFileName=GetDlgItem(IDC_FILENAME,wxTextCtrl)->GetValue();
+	wxString NewFileName=CastChild(IDC_FILENAME,wxTextCtrl)->GetValue();
 	m_file->SetFileName(NewFileName);
 	m_file->SavePartFile(); 
-	FindWindowById(IDC_FNAME)->SetLabel(MakeStringEscaped(m_file->GetFileName()));
-	FindWindowById(IDC_METFILE)->SetLabel(m_file->GetFullName());
-	((wxTextCtrl*)FindWindowById(IDC_FILENAME))->SetValue(m_file->GetFileName());
+	FindWindow(IDC_FNAME)->SetLabel(MakeStringEscaped(m_file->GetFileName()));
+	FindWindow(IDC_METFILE)->SetLabel(m_file->GetFullName());
+	
+	CastChild( IDC_FILENAME, wxTextCtrl )->SetValue(m_file->GetFileName());
 } 
 
 void CFileDetailDialog::OnBnClickedButtonStrip(wxCommandEvent& WXUNUSED(evt)) {
 	wxString filename,tempStr;
 	char c;
-	//filename=FindWindowById(IDC_FILENAME)->GetValue();
-	filename=GetDlgItem(IDC_FILENAME,wxTextCtrl)->GetValue();
+	filename=CastChild(IDC_FILENAME,wxTextCtrl)->GetValue();
 	
 	// Replace . with - except the last one (extention-dot)
 	int extpos=filename.Find('.',TRUE);
@@ -256,14 +255,13 @@ void CFileDetailDialog::OnBnClickedButtonStrip(wxCommandEvent& WXUNUSED(evt)) {
 		}
 	}
 
-	//FindWindowById(IDC_FILENAME)->SetValue(MakeStringEscaped(wxString(filename.GetData())));
-	GetDlgItem(IDC_FILENAME,wxTextCtrl)->SetValue(filename);
+	CastChild(IDC_FILENAME,wxTextCtrl)->SetValue(filename);
 }
 
 void CFileDetailDialog::OnBnClickedTakeOver(wxCommandEvent& WXUNUSED(evt))
 {
 	CFileDetailListCtrl* pmyListCtrl;
-	pmyListCtrl = (CFileDetailListCtrl*)FindWindowById(IDC_LISTCTRLFILENAMES);
+	pmyListCtrl = CastChild( IDC_LISTCTRLFILENAMES, CFileDetailListCtrl );
 	if (pmyListCtrl->GetSelectedItemCount() > 0) {
 		long pos=-1;
 		for(;;) {
@@ -271,7 +269,7 @@ void CFileDetailDialog::OnBnClickedTakeOver(wxCommandEvent& WXUNUSED(evt))
 			if(pos==-1) {
 				break;
 			}
-			GetDlgItem(IDC_FILENAME,wxTextCtrl)->SetValue(pmyListCtrl->GetItemText(pos));
+			CastChild(IDC_FILENAME,wxTextCtrl)->SetValue(pmyListCtrl->GetItemText(pos));
 		}
 	}
 }
@@ -279,7 +277,7 @@ void CFileDetailDialog::OnBnClickedTakeOver(wxCommandEvent& WXUNUSED(evt))
 void CFileDetailDialog::OnListClickedTakeOver(wxListEvent& WXUNUSED(evt))
 {
 	CFileDetailListCtrl* pmyListCtrl;
-	pmyListCtrl = (CFileDetailListCtrl*)FindWindowById(IDC_LISTCTRLFILENAMES);
+	pmyListCtrl = CastChild( IDC_LISTCTRLFILENAMES, CFileDetailListCtrl );
 	if (pmyListCtrl->GetSelectedItemCount() > 0) {
 		long pos=-1;
 		for(;;) {
@@ -287,7 +285,7 @@ void CFileDetailDialog::OnListClickedTakeOver(wxListEvent& WXUNUSED(evt))
 			if(pos==-1) {
 				break;
 			}
-			GetDlgItem(IDC_FILENAME,wxTextCtrl)->SetValue(pmyListCtrl->GetItemText(pos));
+			CastChild(IDC_FILENAME,wxTextCtrl)->SetValue(pmyListCtrl->GetItemText(pos));
 		}
 	}
 }

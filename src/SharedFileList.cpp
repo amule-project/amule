@@ -213,7 +213,6 @@ void CSharedFileList::RemoveFile(CKnownFile* toremove){
 	m_Files_map.erase(toremove->GetFileHash());
 }
 
-#define GetDlgItem(X) (wxStaticCast(wxWindow::FindWindowById((X)),wxButton))
 void CSharedFileList::Reload(bool sendtoserver, bool firstload){
 	// Madcat - Disable reloading if reloading already in progress.
 	// Kry - Fixed to let non-english language users use the 'Reload' button :P

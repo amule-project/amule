@@ -42,7 +42,7 @@ wxDefaultPosition,wxDefaultSize,wxDEFAULT_DIALOG_STYLE|wxSYSTEM_MENU)
 	content->Show(this,TRUE);
 	SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWFRAME));
 	Centre();
-	pmyListCtrl = (wxListCtrl*)FindWindowById(IDC_LST);
+	pmyListCtrl = CastChild( IDC_LST, wxListCtrl );
 	OnInitDialog();
 }
 
@@ -100,6 +100,6 @@ void CCommentDialogLst::CompleteList()
 	} else {
 		info = CastItoIShort(count) + _(" comment(s)");
 	}
-	FindWindowById(IDC_CMSTATUS)->SetLabel(info);
+	FindWindow(IDC_CMSTATUS)->SetLabel(info);
 	m_file->UpdateFileRatingCommentAvail();
 }

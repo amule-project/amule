@@ -46,17 +46,14 @@ BEGIN_EVENT_TABLE(CChatWnd, wxPanel)
 END_EVENT_TABLE()
 
 
-#define GetDlgItem(a, b) wxStaticCast(FindWindow((a)), b)
-
-
 CChatWnd::CChatWnd(wxWindow* pParent)
 : wxPanel(pParent, -1)
 {
 	wxSizer* content = messagePage(this, true);
 	content->Show(this, true);
 
-	chatselector = (CChatSelector*)FindWindow(IDC_CHATSELECTOR);
-	friendlist = (CFriendListCtrl*)FindWindow(ID_FRIENDLIST);
+	chatselector = CastChild( IDC_CHATSELECTOR, CChatSelector );
+	friendlist   = CastChild( ID_FRIENDLIST, CFriendListCtrl );
 }
 
 
@@ -73,7 +70,7 @@ void CChatWnd::StartSession(CUpDownClient* client, bool setfocus)
 
 void CChatWnd::OnBnClickedCsend(wxCommandEvent& WXUNUSED(evt))
 {
-	wxString message = GetDlgItem(IDC_CMESSAGE, wxTextCtrl)->GetValue();
+	wxString message = CastChild(IDC_CMESSAGE, wxTextCtrl)->GetValue();
 	SendMessage(message);
 }
 
@@ -121,8 +118,9 @@ void CChatWnd::ConnectionResult(CUpDownClient* sender, bool success)
 void CChatWnd::SendMessage(const wxString& message)
 {
 	if (chatselector->SendMessage( message )) {
-		GetDlgItem(IDC_CMESSAGE, wxTextCtrl)->Clear();
+		CastChild(IDC_CMESSAGE, wxTextCtrl)->Clear();
 	}
-	GetDlgItem(IDC_CMESSAGE, wxTextCtrl)->SetFocus();
+
+	CastChild(IDC_CMESSAGE, wxTextCtrl)->SetFocus();
 }
 

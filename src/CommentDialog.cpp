@@ -41,7 +41,7 @@ wxDefaultPosition,wxDefaultSize,wxDEFAULT_DIALOG_STYLE|wxSYSTEM_MENU)
 	content->SetSizeHints(this);
 	content->Show(this,TRUE);
 	Center();
-	ratebox=((wxChoice*)FindWindowById(IDC_RATELIST));
+	ratebox = CastChild( IDC_RATELIST, wxChoice );
 	OnInitDialog();
 }
 
@@ -59,7 +59,7 @@ END_EVENT_TABLE()
 void CCommentDialog::OnBnClickedApply(wxCommandEvent& WXUNUSED(evt))
 {
 	wxString SValue;
-	SValue=((wxTextCtrl*)FindWindowById(IDC_CMT_TEXT))->GetValue();
+	SValue = CastChild( IDC_CMT_TEXT, wxTextCtrl )->GetValue();
 	m_file->SetFileComment(SValue);
 	m_file->SetFileRate((int8)ratebox->GetSelection());
 	EndModal(0);
@@ -67,7 +67,7 @@ void CCommentDialog::OnBnClickedApply(wxCommandEvent& WXUNUSED(evt))
 
 void CCommentDialog::OnBnClickedClear(wxCommandEvent& WXUNUSED(evt))
 {
-	((wxTextCtrl*)FindWindowById(IDC_CMT_TEXT))->SetValue(wxEmptyString);
+	CastChild(IDC_CMT_TEXT, wxTextCtrl)->SetValue(wxEmptyString);
 } 
 
 void CCommentDialog::OnBnClickedCancel(wxCommandEvent& WXUNUSED(evt))
@@ -77,8 +77,8 @@ void CCommentDialog::OnBnClickedCancel(wxCommandEvent& WXUNUSED(evt))
 
 bool CCommentDialog::OnInitDialog()
 {
-	((wxTextCtrl*)FindWindowById(IDC_CMT_TEXT))->SetValue(m_file->GetFileComment());
-	((wxTextCtrl*)FindWindowById(IDC_CMT_TEXT))->SetMaxLength(50);
+	CastChild(IDC_CMT_TEXT, wxTextCtrl)->SetValue(m_file->GetFileComment());
+	CastChild(IDC_CMT_TEXT, wxTextCtrl)->SetMaxLength(50);
 	ratebox->SetSelection(m_file->GetFileRate());
 	return TRUE;
 }
