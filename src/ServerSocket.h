@@ -52,6 +52,11 @@ public:
 	bool	PacketReceived(Packet* packet);
 	bool   SendPacket(Packet* packet, bool delpacket = true,bool controlpacket = true);
  	CServer*	GetServerConnected() const { return serverconnect->GetCurrentServer(); }
+	
+#ifdef AMULE_DAEMON
+	bool Connect(wxIPV4address &addr, bool wait);
+#endif
+
 private:
 	bool	ProcessPacket(const char* packet, uint32 size, int8 opcode);
 	void	SetConnectionState(sint8 newstate);
@@ -69,15 +74,16 @@ private:
 	
 };
 
+#ifdef AMULE_DAEMON
+#define SERVER_SOCK_HANDLER_BASE wxThread
+#else
+#define SERVER_SOCK_HANDLER_BASE wxEvtHandler
+#endif
 
-
-class CServerSocketHandler: 
-		public wxEvtHandler
+class CServerSocketHandler: public SERVER_SOCK_HANDLER_BASE
 {
 	public:
-	CServerSocketHandler(CServerSocket* parent) {
-		socket = parent;
-	}
+	CServerSocketHandler(CServerSocket* parent);
 	
 	CServerSocket* socket;
 	
@@ -86,6 +92,11 @@ class CServerSocketHandler:
 	
 	void ServerSocketHandler(wxSocketEvent& event);
 	
-	DECLARE_EVENT_TABLE()
+#ifdef AMULE_DAEMON
+	void *Entry();
+#else
+	DECLARE_EVENT_TABLE();
+#endif
+
 };
 #endif // SERVERSOCKET_H

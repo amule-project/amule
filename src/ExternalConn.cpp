@@ -131,7 +131,7 @@ void *ExternalConn::Entry()
 			continue;
 		}
 		client->Notify(false);
-		ExternalConnClientThread *cli_thread = new ExternalConnClientThread(m_owner, client);
+		ExternalConnClientThread *cli_thread = new ExternalConnClientThread(this, client);
 		cli_thread->Run();
 	}
 	return 0;
