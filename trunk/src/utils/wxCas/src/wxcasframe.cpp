@@ -534,9 +534,14 @@ WxCasFrame::UpdateStatsPanel ()
       m_statLine_1->SetLabel (newline);
 
       // Stat line 2
+      wxString notTooLongName (m_aMuleSig->GetServerName ());
+      if (notTooLongName.Length() > 32)
+        {
+          notTooLongName=notTooLongName.Left(32) + wxT("...");
+        }
       newline = m_aMuleSig->GetUser ();
       newline += _(" is on ");
-      newline += m_aMuleSig->GetServerName ();
+      newline += notTooLongName;
       newline += _(" [");
       newline += m_aMuleSig->GetServerIP ();
       newline += _(":");
