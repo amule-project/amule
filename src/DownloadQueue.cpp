@@ -1123,10 +1123,9 @@ void CDownloadQueue::AddToResolve(const CMD4Hash& fileid, const wxString& pszHos
 		return;
 	}
 	
-	CAsyncDNS* dns = new CAsyncDNS();
+	CAsyncDNS* dns = new CAsyncDNS(pszHostname, DNS_SOURCE);
 	
 	if ( dns->Create() == wxTHREAD_NO_ERROR ) {
-		dns->ipName = pszHostname;
 		if ( dns->Run() != wxTHREAD_NO_ERROR ) {
 			dns->Delete();
 			m_toresolve.pop_front();
@@ -1138,7 +1137,7 @@ void CDownloadQueue::AddToResolve(const CMD4Hash& fileid, const wxString& pszHos
 }
 
 
-bool CDownloadQueue::OnHostnameResolved(uint32 ip)
+void CDownloadQueue::OnHostnameResolved(uint32 ip)
 {
 	wxMutexLocker lock( m_mutex );
 
@@ -1163,10 +1162,9 @@ bool CDownloadQueue::OnHostnameResolved(uint32 ip)
 	while ( !m_toresolve.empty() ) {
 		Hostname_Entry entry = m_toresolve.front();
 		
-		CAsyncDNS* dns = new CAsyncDNS();
+		CAsyncDNS* dns = new CAsyncDNS(entry.strHostname, DNS_SOURCE);
 	
 		if ( dns->Create() == wxTHREAD_NO_ERROR ) {
-			dns->ipName = entry.strHostname;
 			if ( dns->Run() != wxTHREAD_NO_ERROR ) {
 				dns->Delete();
 				m_toresolve.pop_front();
@@ -1177,7 +1175,6 @@ bool CDownloadQueue::OnHostnameResolved(uint32 ip)
 		}
 	}		
 	
-	return true;
 }
 
 
@@ -1280,4 +1277,3 @@ bool CDownloadQueue::AddED2KLink( const CED2KServerListLink* link )
 
 	return true;
 }
-

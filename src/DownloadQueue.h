@@ -264,7 +264,7 @@ public:
 	/**
 	 * This function is called when a DNS lookup is finished.
 	 */
-	bool	OnHostnameResolved(uint32 ip);
+	void	OnHostnameResolved(uint32 ip);
 
 
 

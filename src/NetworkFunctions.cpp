@@ -30,28 +30,45 @@
 #warning deprecate this: Intenal Events should be on a separate file
 #include "amule.h"
 
-CAsyncDNS::CAsyncDNS() : wxThread(wxTHREAD_DETACHED)
+CAsyncDNS::CAsyncDNS(const wxString& ipName, DnsSolveType type, void* socket) : wxThread(wxTHREAD_DETACHED)
 {
-	socket = NULL;
+	m_type = type;
+	m_ipName = ipName;
+	m_socket = socket;
 }
 
 wxThread::ExitCode CAsyncDNS::Entry()
 {
-
-	uint32 result = StringHosttoUint32(ipName);
+	printf("Async thread solving a hostname\n");
+	uint32 result = StringHosttoUint32(m_ipName);
+	printf("Done\n");
+	uint32 event_id = 0;
+	void* event_data = NULL;
 	
-	if (socket) {
-		wxMuleInternalEvent evt(wxEVT_CORE_DNS_DONE);
-		evt.SetExtraLong(result);
-		evt.SetClientData(socket);
-		wxPostEvent(&theApp,evt);	
-	} else {
-		wxMuleInternalEvent evt(SOURCE_DNS_DONE);
-		evt.SetExtraLong(result);
-		evt.SetClientData(socket);
-		wxPostEvent(&theApp,evt);
+	switch (m_type) {
+		case DNS_UDP:
+			event_id = wxEVT_CORE_UDP_DNS_DONE;
+			event_data = m_socket;
+			break;
+		case DNS_SOURCE:
+			event_id = wxEVT_CORE_SOURCE_DNS_DONE;
+			event_data = NULL;
+			break;
+		case DNS_SERVER_CONNECT:
+			event_id = wxEVT_CORE_SERVER_DNS_DONE;
+			event_data = m_socket;
+			break;
+		default:
+			printf("WRONG TYPE ID ON ASYNC DNS SOLVING!!!\n");
 	}
-
+	
+	if (event_id) {
+		wxMuleInternalEvent evt(event_id);
+		evt.SetExtraLong(result);
+		evt.SetClientData(event_data);
+		wxPostEvent(&theApp,evt);	
+	}
+	
 	return NULL;
 }
 #endif /* ! EC_REMOTE */

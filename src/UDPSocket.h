@@ -68,7 +68,7 @@ public:
 	~CUDPSocket();
 
 	void	SendPacket(Packet* packet,CServer* host);
-	void	DnsLookupDone(uint32 ip);
+	void	OnHostnameResolved(uint32 ip);
 
 	virtual void OnReceive(int nErrorCode);
  	void	ReceiveAndDiscard();

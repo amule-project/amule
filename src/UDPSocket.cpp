@@ -327,7 +327,7 @@ void CUDPSocket::ProcessPacket(CSafeMemFile& packet, int16 size, int8 opcode, co
 	
 }
 
-void CUDPSocket::DnsLookupDone(uint32 ip) {
+void CUDPSocket::OnHostnameResolved(uint32 ip) {
   /* An asynchronous database routine completed. */
 	//printf("Server UDP packet dns lookup done\n");
 	if (!ip) { 
@@ -420,13 +420,11 @@ void CUDPSocket::SendPacket(Packet* packet,CServer* host){
 	if (cur_server->HasDynIP()) {
 		// This not an ip but a hostname. Resolve it.
 		//printf("Have to solve hostname\n");
-		CAsyncDNS* dns=new CAsyncDNS();
+		CAsyncDNS* dns=new CAsyncDNS(cur_server->GetDynIP(), DNS_UDP, this);
 		if(dns->Create()!=wxTHREAD_NO_ERROR) {
 			// uh?
 			return;
 		}
-		dns->ipName=cur_server->GetDynIP();
-		dns->socket=this;
 		dns->Run();
 	} else {
 		m_SaveAddr.Hostname(cur_server->GetIP());
