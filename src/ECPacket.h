@@ -29,7 +29,7 @@
 #else
 #include <winsock.h>
 #endif
-#include "StringFunctions.h"	// Needed for char2UTF8
+#include "StringFunctions.h"	// Needed for aMuleConv
 #include "ECcodes.h"	// Needed for EC types
 #include "CMD4Hash.h"	// Needed for CMD4Hash
 

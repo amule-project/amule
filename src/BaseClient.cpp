@@ -966,7 +966,12 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
 	const UINT uMultiPacket			= 1;
 	const UINT uSupportPreview		= 0; // No network preview at all.
 	const UINT uPeerCache			= 0; // No peercache for aMule, baby
-	const UINT uUnicodeSupport		= 1; // No unicode support yet.
+	const UINT uUnicodeSupport		= 
+#if wxUSE_UNICODE	
+												1; 
+#else
+												0; 
+#endif
 	const UINT nAICHVer				= 1; // AICH is ENABLED right now.
 
 	CTag tagMisOptions(CT_EMULE_MISCOPTIONS1,
