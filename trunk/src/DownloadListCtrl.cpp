@@ -324,14 +324,21 @@ void CDownloadListCtrl::OnNMRclick(wxListEvent & evt)
 			menu->Enable(MP_STOP, ((file->GetStatus() != PS_PAUSED && file->GetStatus() != PS_ERROR) ? MF_ENABLED : MF_GRAYED));
 			menu->Enable(MP_RESUME, ((file->GetStatus() == PS_PAUSED) ? MF_ENABLED : MF_GRAYED));
 			menu->Enable(MP_OPEN, ((file->GetStatus() == PS_COMPLETE) ? MF_ENABLED : MF_GRAYED));	//<<--9/21/02
-			if (file->IsPartFile() && !(file->GetStatus() == PS_COMPLETE)) {
-			  wxString preview(_("Preview ["));
-			  char* buffer = nstrdup(file->GetPartMetFileName());
-			  int n = strlen(buffer);
-			  if (n >= 4)
-				  buffer[n-4] = 0;
-			  menu->SetLabel(MP_PREVIEW, preview + buffer + "]");
-			  delete[] buffer;
+			if (file->IsPartFile()) {
+				wxString preview(_("Preview"));
+				if (!(file->GetStatus() == PS_COMPLETE)) {
+					preview += " [";
+			  		char* buffer = nstrdup(file->GetPartMetFileName());
+			  		int n = strlen(buffer);
+			  		if (n >= 4) {
+				  		buffer[n-4] = 0;
+			  		}
+					preview += " [";					
+					preview += buffer;
+					preview += "]";
+					delete[] buffer;
+				}
+				menu->SetLabel(MP_PREVIEW, preview);
 			}
 			menu->Enable(MP_PREVIEW, ((file->PreviewAvailable())? MF_ENABLED : MF_GRAYED));
 
