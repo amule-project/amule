@@ -23,7 +23,6 @@
 
 #include "SafeFile.h"		// Interface declarations.
 #include "OtherFunctions.h"
-#include "StringFunctions.h"		// Needed for unicode2char
 
 #include "Packet.h"
 #include "kademlia/utils/UInt128.h"
@@ -74,6 +73,47 @@ void CFileDataIO::ReadHash16(uchar* pVal) const
 	Read(pVal, 16);
 }
 
+wxString CFileDataIO::ReadOnlyString(bool bOptUTF8, uint16 raw_len) const {
+	// The name is just to confuse people
+	
+	char* val = NULL;
+	try {
+		val = new char[raw_len + 1];
+		// We only need to set the the NULL terminator, since we know that
+		// reads will either succeed or throw an exception, in which case
+		// we wont be returning anything
+		val[raw_len] = 0;
+		
+		Read(val, raw_len);
+		wxString str;
+		
+		if (CHECK_BOM(raw_len,val)) {
+			// This is a UTF8 string with a BOM header, skip header.
+			str = UTF82unicode(val+3);
+		} else {
+			if (bOptUTF8) {
+				str = UTF82unicode(val);
+				if (str.IsEmpty()) {
+					// Fallback to system locale
+					//printf("Failed UTF8 conversion (READ), going for current locale: %s\n",val);
+					str = char2unicode(val);
+				}					
+			} else {
+				str = char2unicode(val);
+			}
+		}
+		delete[] val;
+
+		return str;
+	} catch ( ... ) {
+		// Have to avoid mem-leaks
+		delete[] val;
+		
+		// Re-throw
+		throw;
+	}	
+	
+}
 
 wxString CFileDataIO::ReadString(bool bOptUTF8, uint8 SizeLen, bool SafeRead) const
 {
@@ -101,42 +141,8 @@ wxString CFileDataIO::ReadString(bool bOptUTF8, uint8 SizeLen, bool SafeRead) co
 		}	
 	}
 	
-	char* val = NULL;
-	try {
-		val = new char[length + 1];
-		// We only need to set the the NULL terminator, since we know that
-		// reads will either succeed or throw an exception, in which case
-		// we wont be returning anything
-		val[length] = 0;
-		
-		Read(val, length);
-		wxString str;
-		
-		if (CHECK_BOM(length,val)) {
-			// This is a UTF8 string with a BOM header, skip header.
-			str = UTF82unicode(val+3);
-		} else {
-			if (bOptUTF8) {
-				str = UTF82unicode(val);
-				if (str.IsEmpty()) {
-					// Fallback to system locale
-					//printf("Failed UTF8 conversion (READ), going for current locale: %s\n",val);
-					str = char2unicode(val);
-				}					
-			} else {
-				str = char2unicode(val);
-			}
-		}
-		delete[] val;
+	return ReadOnlyString(bOptUTF8, length);
 
-		return str;
-	} catch ( ... ) {
-		// Have to avoid mem-leaks
-		delete[] val;
-		
-		// Re-throw
-		throw;
-	}
 }
 
 
@@ -175,19 +181,22 @@ void CFileDataIO::WriteHash16(const uchar* pVal)
 void CFileDataIO::WriteStringCore(const char *s, EUtf8Str eEncode, uint8 SizeLen)
 {
 	unsigned int sLength = s ? strlen(s) : 0;
-	unsigned int real_length = 0;
+	uint32 real_length = 0;
 	if (eEncode == utf8strOptBOM) {
 		real_length = sLength + 3; // For BOM header.
 	} else {
 		real_length = sLength;
 	}			
 	switch (SizeLen) {
+		case 0:
+			// don't write size :)
+			break;
 		case 2:
-			wxASSERT(sLength < (uint16)0xFFFF); // Can't be higher than a uint16
+			wxASSERT(real_length < (uint16)0xFFFF); // Can't be higher than a uint16
 			WriteUInt16(real_length);
 			break;
 		case 4:
-			wxASSERT(sLength < (uint32)0xFFFFFFFF); // Can't be higher than a uint32
+			wxASSERT(real_length < (uint32)0xFFFFFFFF); // Can't be higher than a uint32
 			WriteUInt32(real_length);
 			break;
 		default:

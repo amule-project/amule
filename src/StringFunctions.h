@@ -30,6 +30,14 @@
 #include <wx/string.h>
 #include <wx/strconv.h>
 
+// UTF8 types: No UTF8, BOM prefix, or Raw UTF8
+enum EUtf8Str
+{
+	utf8strNone,
+	utf8strOptBOM,
+	utf8strRaw
+};
+
 /****************************************************/ 
 /******************* Inlines ************************/
 /****************************************************/
@@ -132,6 +140,32 @@ inline bool NeedUTF8String(wchar_t* pwsz)
 	return false;
 }
 
+inline unsigned int GetRawSize(const wxString& rstr, EUtf8Str eEncode)
+{
+	unsigned int RealLen = 0;
+	switch (eEncode) {
+		case utf8strOptBOM:
+			RealLen = 3;
+		case utf8strRaw: {
+			Unicode2CharBuf s(unicode2UTF8(rstr));
+			if (s) {
+				RealLen += strlen(s);
+				break;
+			} else {
+				RealLen = 0;
+			}
+		}
+		default: {
+			Unicode2CharBuf s(unicode2char(rstr));
+			if (s) {
+				RealLen = strlen(s);
+			}
+		}
+	}
+	return RealLen;
+}
+
+
 /****************************************************/ 
 /***************** Non-inlines **********************/
 /****************************************************/
@@ -152,4 +186,3 @@ wxString CleanupFilename(const wxString& filename, bool keepSpaces = true);
 wxString URLEncode(wxString sIn);
 	
 #endif // STRING_FUNCTIONS_H
-

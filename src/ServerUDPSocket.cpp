@@ -264,24 +264,38 @@ void CServerUDPSocket::ProcessPacket(CSafeMemFile& packet, int16 size, int8 opco
 						uint32 uTags = packet.ReadUInt32();
 						for (uint32 i = 0; i < uTags; ++i) {
 							CTag tag(packet, update->GetUnicodeSupport());
-							if (tag.tag.specialtag == ST_SERVERNAME && tag.tag.type == 2) {
-								update->SetListName(tag.tag.stringvalue);
-							} else if (tag.tag.specialtag == ST_DESCRIPTION && tag.tag.type == 2) {
-								update->SetDescription(tag.tag.stringvalue);
-							} else if (tag.tag.specialtag == ST_DYNIP && tag.tag.type == 2) {
-								update->SetDynIP(tag.tag.stringvalue);
-							} else if (tag.tag.specialtag == ST_VERSION && tag.tag.type == 2) {
-								update->SetVersion(tag.tag.stringvalue);
-							} else if (tag.tag.specialtag == ST_VERSION && tag.tag.type == 3) {
-								wxString strVersion;
-								strVersion.Printf(wxT("%u.%u"), tag.tag.intvalue >> 16,
-									tag.tag.intvalue & 0xFFFF);
-								update->SetVersion(strVersion);
-							} else if (tag.tag.specialtag == ST_AUXPORTSLIST && tag.tag.type == 2) {
-								update->SetAuxPortsList(tag.tag.stringvalue);
-							} else {
-								// Unknown tag
-								;
+							switch (tag.GetNameID()) {
+								case ST_SERVERNAME:
+									if (tag.IsStr()) {
+										update->SetListName(tag.GetStr());
+									}
+									break;
+								case ST_DESCRIPTION:
+									if (tag.IsStr()) {
+										update->SetDescription(tag.GetStr());
+									}
+									break;
+								case ST_DYNIP:
+									if (tag.IsStr()) {
+										update->SetDynIP(tag.GetStr());
+									}
+									break;
+								case ST_VERSION:
+									if (tag.IsStr()) {
+										update->SetVersion(tag.GetStr());
+									} else if (tag.IsInt()) {
+										wxString strVersion = wxString::Format(wxT("%u.%u"), tag.GetInt() >> 16, tag.GetInt() & 0xFFFF);
+										update->SetVersion(strVersion);
+									}
+									break;
+								case ST_AUXPORTSLIST:
+									if (tag.IsStr()) {
+										update->SetAuxPortsList(tag.GetStr());
+									}
+									break;
+								default:
+									// Unknown tag
+									;
 							}
 						}
 					} else {

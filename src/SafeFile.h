@@ -28,17 +28,10 @@
 #include "Types.h"		// Needed for LPCSTR
 #include "MemFile.h"		// Needed for CMemFile
 #include "EndianFix.h"		// Needed for ENDIAN_SWAP_*
+#include "StringFunctions.h"		// Needed for the utf8 types.
 
 namespace Kademlia{
 	class CUInt128;
-};
-
-
-enum EUtf8Str
-{
-	utf8strNone,
-	utf8strOptBOM,
-	utf8strRaw
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -55,7 +48,8 @@ public:
 	virtual uint32		ReadUInt32() const;
 	virtual void		ReadUInt128(Kademlia::CUInt128 *pVal) const;
 	virtual void		ReadHash16(unsigned char* pVal) const;
- 	virtual wxString	ReadString(bool bOptUTF8, uint8 SizeLen = 2 /* bytes */, bool SafeRead = false) const;
+ 	virtual wxString ReadString(bool bOptUTF8, uint8 SizeLen = 2 /* bytes */, bool SafeRead = false) const;
+	virtual wxString ReadOnlyString(bool bOptUTF8, uint16 raw_len) const;
 
 	virtual void WriteUInt8(uint8 nVal);
 	virtual void WriteUInt16(uint16 nVal);

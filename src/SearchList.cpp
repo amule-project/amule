@@ -162,8 +162,8 @@ CSearchFile::~CSearchFile()
 uint32 CSearchFile::GetIntTagValue(uint8 tagname)
 {
 	for (unsigned int i = 0; i != m_taglist.size(); ++i) {
-		if ( m_taglist[i]->tag.specialtag == tagname )
-			return m_taglist[i]->tag.intvalue;
+		if ( m_taglist[i]->GetNameID() == tagname )
+			return m_taglist[i]->GetInt();
 	}
 	
 	return 0;
@@ -173,8 +173,8 @@ uint32 CSearchFile::GetIntTagValue(uint8 tagname)
 wxString CSearchFile::GetStrTagValue(uint8 tagname)
 {
 	for (unsigned int i = 0; i != m_taglist.size(); ++i) {
-		if ( m_taglist[i]->tag.specialtag == tagname )
-			return m_taglist[i]->tag.stringvalue;
+		if ( m_taglist[i]->GetNameID() == tagname )
+			return m_taglist[i]->GetStr();
 	}
 	
 	return wxEmptyString;
@@ -184,15 +184,14 @@ wxString CSearchFile::GetStrTagValue(uint8 tagname)
 void CSearchFile::AddSources(uint32 count, uint32 count_complete)
 {
 	for ( unsigned int i = 0; i < m_taglist.size(); ++i ) {
-		STag& tag = m_taglist[i]->tag;
+		CTag* tag = m_taglist[i];
 	
-		switch ( tag.specialtag ) {
+		switch ( tag->GetNameID() ) {
 			case FT_SOURCES:
-				tag.intvalue += count;
+				tag->SetInt(tag->GetInt() + count);
 				break;
-				
 			case FT_COMPLETE_SOURCES:
-				tag.intvalue += count_complete;
+				tag->SetInt(tag->GetInt() + count_complete);
 				break;
 		}
 	}

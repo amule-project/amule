@@ -523,14 +523,14 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 					uint32 nTags = data.ReadUInt32();					
 					for (uint32 i = 0; i < nTags; i++){
 						CTag tag(data, update->GetUnicodeSupport());
-						if (tag.tag.specialtag == ST_SERVERNAME){
-							if (tag.tag.type == 3){ //String
-								update->SetListName(tag.tag.stringvalue);
+						if (tag.GetNameID() == ST_SERVERNAME){
+							if (tag.IsStr()){ //String
+								update->SetListName(tag.GetStr());
 							}
 						}
-						else if (tag.tag.specialtag == ST_DESCRIPTION){
-							if (tag.tag.type == 3){
-								update->SetDescription(tag.tag.stringvalue);		
+						else if (tag.GetNameID() == ST_DESCRIPTION){
+							if (tag.IsStr()){
+								update->SetDescription(tag.GetStr());
 							}
 						} // No more known tags from server
 					}				

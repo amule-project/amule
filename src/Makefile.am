@@ -215,7 +215,7 @@ amuled_SOURCES = \
         CFile.cpp \
         ClientCredits.cpp \
         ClientList.cpp \
-		DeadSourceList.cpp \
+	DeadSourceList.cpp \
         ClientUDPSocket.cpp \
         DownloadClient.cpp \
         DownloadQueue.cpp \

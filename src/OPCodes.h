@@ -326,6 +326,7 @@ const unsigned int UNLIMITED =	 		0;
 #define	FT_DL_ACTIVE_TIME			 0x23	// <uint32>
 #define	FT_CORRUPTEDPARTS			 0x24	// <string>
 #define FT_DL_PREVIEW				 0x25
+#define  FT_KADLASTPUBLISHNOTES	 0x26	// <uint32> 
 #define FT_AICH_HASH				 0x27
 #define	FT_COMPLETE_SOURCES			 0x30	// nr. of sources which share a complete version
 							 //of the associated file (supported by eserver 16.46+)

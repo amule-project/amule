@@ -154,82 +154,75 @@ CPartFile::CPartFile(CSearchFile* searchresult)
 	Init();
 	m_abyFileHash = searchresult->GetFileHash();
 	for (unsigned int i = 0; i < searchresult->m_taglist.size();++i){
-		const CTag* pTag = searchresult->m_taglist[i];
-		switch (pTag->tag.specialtag){
-			case FT_FILENAME:{
-				if (pTag->tag.type == 2)
-					SetFileName(pTag->tag.stringvalue);
+		const CTag pTag(*searchresult->m_taglist[i]);
+		switch (pTag.GetNameID()){
+			case FT_FILENAME: {
+				if (pTag.IsStr())
+					SetFileName(pTag.GetStr());
 				break;
 			}
-			case FT_FILESIZE:{
-				if (pTag->tag.type == 3) {
-					SetFileSize(pTag->tag.intvalue);
+			case FT_FILESIZE: {
+				if (pTag.IsInt()) {
+					SetFileSize(pTag.GetInt());
 				}
 				break;
 			}
-			default:{
+			default: {
 				bool bTagAdded = false;
-				if (pTag->tag.specialtag == 0 && pTag->tag.tagname != NULL && (pTag->tag.type == 2 || pTag->tag.type == 3))
-				{
-					static const struct
-					{
-						LPCSTR	pszName;
+				if (pTag.GetNameID() == 0 && pTag.GetName() != NULL && (pTag.IsStr() || pTag.IsInt())) {
+					static const struct {
+						char*	pszName;
 						uint8	nType;
 					} _aMetaTags[] = 
-					{
-						{ FT_ED2K_MEDIA_ARTIST,  2 },
-						{ FT_ED2K_MEDIA_ALBUM,   2 },
-						{ FT_ED2K_MEDIA_TITLE,   2 },
-						{ FT_ED2K_MEDIA_LENGTH,  2 },
-						{ FT_ED2K_MEDIA_BITRATE, 3 },
-						{ FT_ED2K_MEDIA_CODEC,   2 }
-					};
-					for (int t = 0; t < ARRSIZE(_aMetaTags); ++t)
-					{
-						if (pTag->tag.type == _aMetaTags[t].nType && !strcasecmp(pTag->tag.tagname, _aMetaTags[t].pszName))
 						{
+							{ FT_ED2K_MEDIA_ARTIST,  2 },
+							{ FT_ED2K_MEDIA_ALBUM,   2 },
+							{ FT_ED2K_MEDIA_TITLE,   2 },
+							{ FT_ED2K_MEDIA_LENGTH,  2 },
+							{ FT_ED2K_MEDIA_BITRATE, 3 },
+							{ FT_ED2K_MEDIA_CODEC,   2 }
+						};
+					for (int t = 0; t < ARRSIZE(_aMetaTags); ++t) {
+						if (pTag.GetType() == _aMetaTags[t].nType && !strcasecmp(pTag.GetName(), _aMetaTags[t].pszName)) {
 							// skip string tags with empty string values
-							if (pTag->tag.type == 2 && pTag->tag.stringvalue.IsEmpty())
+							if (pTag.IsStr() && pTag.GetStr().IsEmpty()) {
 								break;
+							}
 
 							// skip "length" tags with "0: 0" values
-							if (!strcasecmp(pTag->tag.tagname, FT_ED2K_MEDIA_LENGTH) && (pTag->tag.stringvalue.IsSameAs(wxT("0: 0")) || pTag->tag.stringvalue.IsSameAs(wxT("0:0"))))
+							if (!strcasecmp(pTag.GetName(), FT_ED2K_MEDIA_LENGTH) && (pTag.GetStr().IsSameAs(wxT("0: 0")) || pTag.GetStr().IsSameAs(wxT("0:0")))) {
 								break;
+							}
 
 							// skip "bitrate" tags with '0' values
-							if (!strcasecmp(pTag->tag.tagname, FT_ED2K_MEDIA_BITRATE) && pTag->tag.intvalue == 0)
+							if (!strcasecmp(pTag.GetName(), FT_ED2K_MEDIA_BITRATE) && !pTag.GetInt()) {
 								break;
+							}
 
-							AddDebugLogLineM( false, wxT("CPartFile::CPartFile(CSearchFile*): added tag ") + pTag->GetFullInfo() );
-							CTag* newtag = new CTag(pTag->tag);
-							taglist.Add(newtag);
+							AddDebugLogLineM( false, wxT("CPartFile::CPartFile(CSearchFile*): added tag ") + pTag.GetFullInfo() );
+							taglist.Add(new CTag(pTag));
 							bTagAdded = true;
 							break;
 						}
 					}
-				}
-				else if (pTag->tag.specialtag != 0 && pTag->tag.tagname == NULL && (pTag->tag.type == 2 || pTag->tag.type == 3))
-				{
-					static const struct
-					{
+				} else if (pTag.GetNameID() != 0 && pTag.GetName() == NULL && (pTag.IsStr() || pTag.IsInt())) {
+					static const struct {
 						uint8	nID;
 						uint8	nType;
 					} _aMetaTags[] = 
-					{
-						{ FT_FILETYPE,		2 },
-						{ FT_FILEFORMAT,	2 }
-					};
-					for (int t = 0; t < ARRSIZE(_aMetaTags); ++t)
-					{
-						if (pTag->tag.type == _aMetaTags[t].nType && pTag->tag.specialtag == _aMetaTags[t].nID)
 						{
+							{ FT_FILETYPE,		2 },
+							{ FT_FILEFORMAT,	2 }
+						};
+					for (int t = 0; t < ARRSIZE(_aMetaTags); ++t) {
+						if (pTag.GetType() == _aMetaTags[t].nType && pTag.GetNameID() == _aMetaTags[t].nID) {
 							// skip string tags with empty string values
-							if (pTag->tag.type == 2 && pTag->tag.stringvalue.IsEmpty())
+							if (pTag.IsStr() && pTag.GetStr().IsEmpty()) {
 								break;
+							}
 
-							AddDebugLogLineM( false, wxT("CPartFile::CPartFile(CSearchFile*): added tag ") + pTag->GetFullInfo() );
-							CTag* newtag = new CTag(pTag->tag);
-							taglist.Add(newtag);
+							AddDebugLogLineM( false, wxT("CPartFile::CPartFile(CSearchFile*): added tag ") + pTag.GetFullInfo() );
+							taglist.Add(new CTag(pTag));
 							bTagAdded = true;
 							break;
 						}
@@ -237,7 +230,7 @@ CPartFile::CPartFile(CSearchFile* searchresult)
 				}
 
 				if (!bTagAdded) {
-					AddDebugLogLineM( false, wxT("CPartFile::CPartFile(CSearchFile*): ignored tag ") + pTag->GetFullInfo() );
+					AddDebugLogLineM( false, wxT("CPartFile::CPartFile(CSearchFile*): ignored tag ") + pTag.GetFullInfo() );
 				}
 			}
 		}
@@ -441,67 +434,58 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 		uint32 tagcount = metFile.ReadUInt32();
 
 		for (uint32 j = 0; j < tagcount;++j) {
-			CTag* newtag = new CTag(metFile,true);
-			if (!getsizeonly || (getsizeonly && (newtag->tag.specialtag==FT_FILESIZE || newtag->tag.specialtag==FT_FILENAME))) {
-				switch(newtag->tag.specialtag) {
+			CTag newtag(metFile,true);
+			if (!getsizeonly || (getsizeonly && (newtag.GetNameID() == FT_FILESIZE || newtag.GetNameID() == FT_FILENAME))) {
+				switch(newtag.GetNameID()) {
 					case FT_FILENAME: {
-						if(newtag->tag.type != 2) {
+						if(!newtag.IsStr()) {
 							AddLogLineM(true, _("Error: ") + m_partmetfilename + wxT("(") + m_strFileName + _(") is corrupt"));
-							delete newtag;
 							return false;
 						}
 						#ifdef wxUSE_UNICODE
 						if (GetFileName().IsEmpty()) {
 							// If it's not empty, we already loaded the unicoded one
 							printf(	" - filename (u) %s - ",
-								(const char *)unicode2UTF8(newtag->tag.stringvalue));
-							SetFileName(newtag->tag.stringvalue);
+								(const char *)unicode2UTF8(newtag.GetStr()));
+							SetFileName(newtag.GetStr());
 						}
 						#else
 							printf(	" - filename %s - ",
-								(const char *)unicode2char(newtag->tag.stringvalue));
-							SetFileName(newtag->tag.stringvalue);
+								(const char *)unicode2char(newtag.GetStr()));
+							SetFileName(newtag.GetStr());
 						#endif
-						
-						delete newtag;
 						break;
 					}
 					case FT_LASTSEENCOMPLETE: {
-						if (newtag->tag.type == 3) {
-						lastseencomplete = newtag->tag.intvalue;					
+						if (newtag.IsInt()) {
+							lastseencomplete = newtag.GetInt();		
 						}
-						delete newtag;
 						break;
 					}
 					case FT_FILESIZE: {
-						SetFileSize(newtag->tag.intvalue);
-						delete newtag;
+						SetFileSize(newtag.GetInt());
 						break;
 					}
 					case FT_TRANSFERED: {
-						transfered = newtag->tag.intvalue;
-					delete newtag;
+						transfered = newtag.GetInt();
 						break;
 					}
 					case FT_FILETYPE:{
 						#warning needs setfiletype string
-						//SetFileType(newtag->tag.stringvalue);
-						delete newtag;
+						//SetFileType(newtag.GetStr());
 						break;
 					}					
 					case FT_CATEGORY: {
-						m_category = newtag->tag.intvalue;
+						m_category = newtag.GetInt();
 						if (m_category > theApp.glob_prefs->GetCatCount() - 1 ) {
 							m_category = 0;
 						}
-						
-						delete newtag;
 						break;
 					}
 					case FT_OLDDLPRIORITY:
 					case FT_DLPRIORITY: {
 						if (!isnewstyle){
-							m_iDownPriority = newtag->tag.intvalue;
+							m_iDownPriority = newtag.GetInt();
 							if( m_iDownPriority == PR_AUTO ){
 								m_iDownPriority = PR_HIGH;
 								SetAutoDownPriority(true);
@@ -512,45 +496,47 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 								SetAutoDownPriority(false);
 							}
 						}
-						delete newtag;
 						break;
 					}
 					case FT_STATUS: {
-						m_paused = newtag->tag.intvalue;
+						m_paused = newtag.GetInt();
 						m_stopped = m_paused;
-						delete newtag;
 						break;
-						}
+					}
 					case FT_OLDULPRIORITY:
 					case FT_ULPRIORITY: {			
 						if (!isnewstyle){
-							SetUpPriority(newtag->tag.intvalue, false);
+							SetUpPriority(newtag.GetInt(), false);
 							if( GetUpPriority() == PR_AUTO ){
 								SetUpPriority(PR_HIGH, false);
 								SetAutoUpPriority(true);
-							}
-							else
+							} else {
 								SetAutoUpPriority(false);
+							}
 						}					
-						delete newtag;
 						break;
 					}				
 					case FT_KADLASTPUBLISHSRC:{
-						//SetLastPublishTimeKadSrc(newtag->tag.intvalue);
-						delete newtag;
+						#warning Kad
+						//SetLastPublishTimeKadSrc(newtag.GetInt());
 						break;
 					}
+				    case FT_KADLASTPUBLISHNOTES:{
+						wxASSERT( newtag.IsInt() );
+						if (newtag.IsInt()) {
+							#warning Kad
+						    // SetLastPublishTimeKadNotes(newtag->GetInt());
+						}
+					    break;
+				    }					
 					// old tags: as long as they are not needed, take the chance to purge them
 					case FT_PERMISSIONS:
-						delete newtag;
-						break;
 					case FT_KADLASTPUBLISHKEY:
-						delete newtag;
 						break;
 					case FT_CORRUPTEDPARTS:
 						//wxASSERT( newtag->IsStr() );
 //						if (newtag->IsStr())
-						
+						#warning TODO RIGHT NOW!
 						/*{
 							wxASSERT( corrupted_list.GetHeadPosition() == NULL );
 							wxString strCorruptedParts(newtag->tag.stringvalue);
@@ -567,28 +553,26 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 								strPart = strCorruptedParts.Tokenize(_T(","), iPos);
 							}
 						}*/
-
-						delete newtag;
 						break;
 					case FT_AICH_HASH:{
-						//wxASSERT( newtag->IsStr() );
+						wxASSERT( newtag.IsStr() );
 						CAICHHash hash;
-						if (hash.DecodeBase32(unicode2char(newtag->tag.stringvalue)) == CAICHHash::GetHashSize())
+						if (hash.DecodeBase32(unicode2char(newtag.GetStr())) == CAICHHash::GetHashSize()) {
 							m_pAICHHashSet->SetMasterHash(hash, AICH_VERIFIED);
-						else
+						} else {
 							wxASSERT( false );
-						delete newtag;
+						}
 						break;
 					}
 
 					
 					default: {
 						// Start Changes by Slugfiller for better exception handling
-						if ((!newtag->tag.specialtag) &&
-						(newtag->tag.tagname[0] == FT_GAPSTART ||
-						newtag->tag.tagname[0] == FT_GAPEND)) {
+						if ((!newtag.GetNameID()) &&
+						((newtag.GetName())[0] == FT_GAPSTART ||
+						(newtag.GetName())[0] == FT_GAPEND)) {
 							Gap_Struct* gap = NULL;
-							uint16 gapkey = atoi(&newtag->tag.tagname[1]);
+							uint16 gapkey = atoi(&(newtag.GetName())[1]);
 
 							if ( gap_map.find( gapkey ) == gap_map.end() ) {
 								gap = new Gap_Struct;
@@ -598,21 +582,20 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 							} else {
 								gap = gap_map[ gapkey ];
 							}
-							if (newtag->tag.tagname[0] == FT_GAPSTART) {
-								gap->start = newtag->tag.intvalue;
+							if ((newtag.GetName())[0] == FT_GAPSTART) {
+								gap->start = newtag.GetInt();
 							}
-							if (newtag->tag.tagname[0] == FT_GAPEND) {
-								gap->end = newtag->tag.intvalue-1;
+							if ((newtag.GetName())[0] == FT_GAPEND) {
+								gap->end = newtag.GetInt()-1;
 							}
-							delete newtag;
 							// End Changes by Slugfiller for better exception handling
 						} else {
-							taglist.Add(newtag);
+							taglist.Add(new CTag(newtag));
 						}
 					}
 				}
 			} else {
-				delete newtag;
+				// Nothing. Else, nothing.
 			}
 		}
 		

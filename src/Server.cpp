@@ -171,127 +171,107 @@ void CServer::Init() {
 }	
 
 bool CServer::AddTagFromFile(CFileDataIO* servermet){
-	if (servermet == 0)
-		return false;
 	
-	CTag* tag = NULL;
+	if (servermet == NULL) {
+		return false;
+	}
 	
 	try {
-		tag = new CTag(*servermet, false);
-	} catch (CInvalidPacket e) {
-		if (tag) {
-			delete tag;
+		CTag tag(*servermet, true);
+
+		switch(tag.GetNameID()){		
+		case ST_SERVERNAME:
+			#if wxUSE_UNICODE
+			if (listname.IsEmpty())
+			#endif
+				listname = tag.GetStr();
+			break;
+		case ST_DESCRIPTION:
+			#if wxUSE_UNICODE
+			if (description.IsEmpty())
+			#endif
+				description = tag.GetStr();		
+			break;
+		case ST_PREFERENCE:
+			preferences =tag.GetInt();
+			break;
+		case ST_PING:
+			ping = tag.GetInt();
+			break;
+		case ST_DYNIP:
+			#if wxUSE_UNICODE
+			if (dynip.IsEmpty())
+			#endif	
+				dynip = tag.GetStr();
+			break;
+		case ST_FAIL:
+			failedcount = tag.GetInt();
+			break;
+		case ST_LASTPING:
+			lastpinged = tag.GetInt();
+			break;
+		case ST_MAXUSERS:
+			maxusers = tag.GetInt();
+			break;
+		case ST_SOFTFILES:
+			softfiles = tag.GetInt();
+			break;
+		case ST_HARDFILES:
+			hardfiles = tag.GetInt();
+			break;
+		case ST_VERSION:
+			if (tag.IsStr()) {
+				#ifdef wxUSE_UNICODE
+				if (m_strVersion.IsEmpty())
+				#endif
+					m_strVersion = tag.GetStr();
+			} else if (tag.IsInt()) {
+				m_strVersion = wxString::Format(wxT("%u.%u"), tag.GetInt() >> 16, tag.GetInt() & 0xFFFF);
+			} else {
+				wxASSERT(0);
+			}
+			break;
+		case ST_UDPFLAGS:
+			if (tag.IsInt()) {
+				m_uUDPFlags = tag.GetInt();
+			}
+			break;
+		case ST_AUXPORTSLIST:
+			if (tag.IsStr()) {
+				m_auxPorts = tag.GetStr();
+				realport = port;
+				port = StrToULong(m_auxPorts.BeforeFirst(','));
+			}
+			break;
+		case ST_LOWIDUSERS:
+			if (tag.IsInt())			
+				m_uLowIDUsers = tag.GetInt();
+			break;
+		default:
+			if (tag.GetNameID()){
+				wxASSERT(0);
+			} else if (!CmpED2KTagName(tag.GetName(), "files")) {
+				wxASSERT( tag.IsInt() );
+				if (tag.IsInt()) {
+					files = tag.GetInt();
+				}
+			} else if (!CmpED2KTagName(tag.GetName(), "users")) {
+				wxASSERT( tag.IsInt() );
+				if (tag.IsInt()) {
+					users = tag.GetInt();
+				}
+			}
 		}
+	} catch (CInvalidPacket e) {
 		printf("Caught CInvalidPacket exception in CServer::AddTagFromFile! server.met is corrupted.\n");
 		throw e;
 	} catch (wxString error) {
-		if (tag) {
-			delete tag;
-		}
 		printf("Caught exception in CServer::AddTagFromFile! server.met is corrupted.\n");
 		printf("Error: %s\n", (const char *)unicode2char(error)); 
 		throw CInvalidPacket("Error reading server.met");		
-	}
-	
-	switch(tag->tag.specialtag){		
-	case ST_SERVERNAME:
-		#if wxUSE_UNICODE
-		if (listname.IsEmpty())
-		#endif
-			listname = tag->tag.stringvalue;
-		delete tag;
-		break;
-	case ST_DESCRIPTION:
-		#if wxUSE_UNICODE
-		if (description.IsEmpty())
-		#endif
-			description = tag->tag.stringvalue;		
-		delete tag;
-		break;
-	case ST_PREFERENCE:
-		wxASSERT( tag->tag.type == 3 );
-		preferences =tag->tag.intvalue;
-		delete tag;
-		break;
-	case ST_PING:
-		wxASSERT( tag->tag.type == 3 );
-		ping = tag->tag.intvalue;
-		delete tag;
-		break;
-	case ST_DYNIP:
-		#if wxUSE_UNICODE
-		if (dynip.IsEmpty())
-		#endif	
-			dynip = tag->tag.stringvalue;
-		delete tag;
-		break;
-	case ST_FAIL:
-		wxASSERT( tag->tag.type == 3 );
-		failedcount = tag->tag.intvalue;
-		delete tag;
-		break;
-	case ST_LASTPING:
-		wxASSERT( tag->tag.type == 3 );
-		lastpinged = tag->tag.intvalue;
-		delete tag;
-		break;
-	case ST_MAXUSERS:
-		wxASSERT( tag->tag.type == 3 );
-		maxusers = tag->tag.intvalue;
-		delete tag;
-		break;
-	case ST_SOFTFILES:
-		wxASSERT( tag->tag.type == 3 );
-		softfiles = tag->tag.intvalue;
-		delete tag;
-		break;
-	case ST_HARDFILES:
-		wxASSERT( tag->tag.type == 3 );
-		hardfiles = tag->tag.intvalue;
-		delete tag;
-		break;
-	case ST_VERSION:
-		if (tag->tag.type == 2)
-			#ifdef wxUSE_UNICODE
-			if (m_strVersion.IsEmpty())
-			#endif
-				m_strVersion = tag->tag.stringvalue;
-		delete tag;
-		break;
-	case ST_UDPFLAGS:
-		wxASSERT( tag->tag.type == 3 );		
-		if (tag->tag.type == 3)
-			m_uUDPFlags = tag->tag.intvalue;
-		delete tag;
-		break;
-	case ST_AUXPORTSLIST:
-		if (tag->tag.type == 2)
-			m_auxPorts = tag->tag.stringvalue;
-			realport = port;
-			port = StrToULong(m_auxPorts.BeforeFirst(','));
-		delete tag;
-		break;
-	case ST_LOWIDUSERS:
-		wxASSERT( tag->tag.type == 3 );
-		if (tag->tag.type == 3)			
-			m_uLowIDUsers = tag->tag.intvalue;
-		delete tag;
-		break;
-	default:
-		if (tag->tag.specialtag){
-			tag->tag.tagname = nstrdup("Unknown");
-			AddTag(tag);
-		}
-		else if (!strcmp(tag->tag.tagname,"files")){
-			files = tag->tag.intvalue;
-			delete tag;
-		}
-		else if (!strcmp(tag->tag.tagname,"users")){
-			users = tag->tag.intvalue;
-			delete tag;
-		}
-		else
-			AddTag(tag);
+	} catch (...) {
+		printf("Caught unknown exception in CServer::AddTagFromFile! server.met is corrupted.\n");
+		throw CInvalidPacket("Error reading server.met");				
 	}
 	return true;
 }
