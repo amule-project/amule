@@ -3640,11 +3640,11 @@ void CPartFile::UpdateFileRatingCommentAvail()
 		for (pos1 = srclists[sl].GetHeadPosition();( pos2 = pos1 ) != NULL;) {
 			srclists[sl].GetNext(pos1);
 			CUpDownClient* cur_src = srclists[sl].GetAt(pos2);
-/* KRY_TEST	
+
 			if (cur_src->GetFileComment().GetLength()>0) {
 				hasComment=true;
 			}
-*/
+
 			if (cur_src->GetFileRate()>0) {
 				ratings++;
 			}
