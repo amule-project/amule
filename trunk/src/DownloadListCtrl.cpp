@@ -1725,13 +1725,13 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 				case MP_WS :
 					{
 					wxString feed = wxEmptyString;
-                    feed += wxString::Format("Feedback from: %s \r\n", theApp.glob_prefs->GetUserNick().c_str()); // edited by madcat
-					feed += wxString::Format("Client: aMule 2.0.0rc4 \r\n");	
-					feed += wxString::Format("File Name: %s \r\n", file->GetFileName().c_str());  
-					feed += wxString::Format("File size: %i MB\r\n", file->GetFileSize()/1048576).c_str(); 
-					feed += wxString::Format("Download: %i MB\r\n", file->GetCompletedSize()/1048576).c_str(); 
-					feed += wxString::Format("Sources: %i \r\n", file->GetSourceCount()); 
-					feed += wxString::Format("Complete Sources: %i \r\n", file->m_nCompleteSourcesCount).c_str(); 
+                    feed += wxString::Format(_("Feedback from: %s \r\n"), theApp.glob_prefs->GetUserNick().c_str()); // edited by madcat
+					feed += wxString::Format(wxT("Client: aMule %s \r\n"), wxT(VERSION));
+					feed += wxString::Format(_("File Name: %s \r\n"), file->GetFileName().c_str());  
+					feed += wxString::Format(_("File size: %i MB\r\n"), file->GetFileSize()/1048576).c_str(); 
+					feed += wxString::Format(_("Download: %i MB\r\n"), file->GetCompletedSize()/1048576).c_str(); 
+					feed += wxString::Format(_("Sources: %i \r\n"), file->GetSourceCount()); 
+					feed += wxString::Format(_("Complete Sources: %i \r\n"), file->m_nCompleteSourcesCount).c_str(); 
                     theApp.CopyTextToClipboard(feed);
 					break;
 				}
