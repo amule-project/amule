@@ -23,6 +23,7 @@
 #include "types.h"		// Needed for uint16 and uint32
 #include "CString.h"		// Needed for CString
 #include "CTypedPtrList.h"	// Needed for CTypedPtrList
+#include "otherfunctions.h" // Needed for unicode2char & char2unicode
 
 class CMemFile;
 
@@ -78,8 +79,8 @@ public:
 	virtual CED2KServerLink* GetServerLink();
 	virtual CED2KFileLink* GetFileLink();
 	virtual void GetLink(wxString& lnk);
-	const char* GetName() const { return m_name; }
-	uint64 GetSize() const { return atoll(m_size); }
+	const char* GetName() const { return unicode2char(m_name); }
+	uint64 GetSize() const { return atoll(unicode2char(m_size)); }
 	const unsigned char* GetHashKey() const { return m_hash;}
 	bool HasValidSources() const {return (SourcesList!=NULL); }
 	CMemFile* SourcesList;
@@ -106,7 +107,7 @@ public:
 	virtual CED2KServerLink* GetServerLink();
 	virtual CED2KFileLink* GetFileLink();
 	virtual void GetLink(wxString& lnk);
-	const char* GetAddress() const { return m_address; }
+	const char* GetAddress() const { return unicode2char(m_address); }
 private:
 	CED2KServerListLink(); // Not defined
 	CED2KServerListLink(const CED2KFileLink&); // Not defined

@@ -1391,7 +1391,7 @@ void CUpDownClient::ReGetClientSoft()
 					#endif
 					m_clientVerString = wxString::Format(wxT("eMule Compat(0x%x)"),m_byCompatibleClient);
 				}
-				else if (GetClientModString().Find("xMule")!=-1 || wxString(GetUserName()).Find("xmule.org")!=-1) {
+				else if (GetClientModString().Find("xMule")!=-1 || wxString(char2unicode(GetUserName())).Find(wxT("xmule.org"))!=-1) {
 					// FAKE eMule -a newwer xMule faking is ident.
 					m_clientSoft = SO_LXMULE;
 					if (GetClientModString().IsEmpty() == false) {
