@@ -46,6 +46,8 @@ BEGIN_EVENT_TABLE(CSearchListCtrl, CMuleListCtrl)
 	EVT_MENU( MP_GETHTMLED2KLINK, CSearchListCtrl::OnPopupGetUrl)
 	EVT_MENU( MP_FAKECHECK1,      CSearchListCtrl::OnPopupFakeCheck)
 	EVT_MENU( MP_FAKECHECK2,      CSearchListCtrl::OnPopupFakeCheck)
+	EVT_MENU( MP_FAKECHECK2,      CSearchListCtrl::OnPopupFakeCheck)
+	EVT_MENU( MP_RAZORSTATS,      CSearchListCtrl::OnRazorStatsCheck)
 	EVT_MENU( MP_RESUME,          CSearchListCtrl::OnPopupDownload)
 
 	EVT_LIST_ITEM_ACTIVATED( -1,  CSearchListCtrl::OnItemActivated)
@@ -327,6 +329,8 @@ void CSearchListCtrl::OnNMRclick(wxMouseEvent& evt)
 	menu->Append( MP_GETED2KLINK, _("Copy ED2k link to clipboard"));
 	menu->Append( MP_GETHTMLED2KLINK, _("Copy ED2k link to clipboard (HTML)"));
 	menu->AppendSeparator();
+	menu->Append( MP_RAZORSTATS, _("Get Razorback 2's stats for this file"));
+	menu->AppendSeparator();
 	menu->Append( MP_FAKECHECK2, _("jugle.net Fake Check")); // deltahf -> fakecheck
 	menu->Append( MP_FAKECHECK1, _("'Donkey Fakes' Fake Check"));
 	menu->AppendSeparator();
@@ -380,7 +384,6 @@ void CSearchListCtrl::OnPopupGetUrl( wxCommandEvent& evt )
 	}
 }
 
-
 void CSearchListCtrl::OnPopupFakeCheck( wxCommandEvent& evt )
 {
 	int item = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
@@ -405,6 +408,16 @@ void CSearchListCtrl::OnPopupFakeCheck( wxCommandEvent& evt )
 		theApp.amuledlg->LaunchUrl( URL );
 }
 
+void CSearchListCtrl::OnRazorStatsCheck( wxCommandEvent& WXUNUSED(evt) )
+{
+	int item = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+	if ( item == -1 )
+		return;
+
+	CSearchFile* file = (CSearchFile*)GetItemData( item );
+	theApp.amuledlg->LaunchUrl(wxT("http://stats.razorback2.com/ed2khistory?ed2k=") + file->GetFileHash().Encode());
+}
+
 
 void CSearchListCtrl::OnPopupDownload( wxCommandEvent& WXUNUSED(evt) )
 {
@@ -418,4 +431,3 @@ void CSearchListCtrl::OnItemActivated( wxListEvent& WXUNUSED(event) )
 	wxCommandEvent nullEvt;
 	theApp.amuledlg->searchwnd->OnBnClickedDownload(nullEvt);
 }
-

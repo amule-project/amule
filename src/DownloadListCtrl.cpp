@@ -289,8 +289,11 @@ void CDownloadListCtrl::OnNMRclick(wxListEvent & evt)
 				extendedmenu->Append(MP_DROP_HIGH_QUEUE_RATING_SOURCES, _("Drop High Queue Rating Sources now"));
 				extendedmenu->Append(MP_CLEAN_UP_SOURCES, _("Clean Up Sources now (NNS, FQS && HQRS)"));
 				menu->Append(MP_MENU_EXTD, _("Extended Options"), extendedmenu);
+				
 				menu->AppendSeparator();
-
+				menu->Append( MP_RAZORSTATS, _("Get Razorback 2's stats for this file"));
+			
+				menu->AppendSeparator();
 				wxMenu *fakecheckmenu = new wxMenu();
 				fakecheckmenu->Append(MP_FAKECHECK2, _("jugle.net Fake Check")); // deltahf -> fakecheck
 				fakecheckmenu->Append(MP_FAKECHECK1, _("'Donkey Fakes' Fake Check"));
@@ -1530,12 +1533,15 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 					CoreNotify_PartFile_Stop(file);
 					return true;					
 					break;
+				case MP_RAZORSTATS:
+					theApp.amuledlg->LaunchUrl(wxT("http://stats.razorback2.com/ed2khistory?ed2k=") + file->GetFileHash().Encode());
+					break;
 				case MP_FAKECHECK1:	// deltahf -> fakecheck
-					    theApp.amuledlg->LaunchUrl(theApp.GenFakeCheckUrl(file));
+					theApp.amuledlg->LaunchUrl(theApp.GenFakeCheckUrl(file));
 					break;
 				case MP_FAKECHECK2:
-						theApp.amuledlg->LaunchUrl(theApp.GenFakeCheckUrl2(file));
-					break;
+					theApp.amuledlg->LaunchUrl(theApp.GenFakeCheckUrl2(file));
+					break;				
 				case MP_CLEARCOMPLETED:
 					Freeze();
 					ClearCompleted();
