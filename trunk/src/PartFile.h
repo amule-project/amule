@@ -282,9 +282,6 @@ public:
 	void SetStatus(uint8 in);
 	void StopPausedFile();
 
-	/* A4AF sources list */
-	CTypedPtrList<CPtrList, CUpDownClient*> A4AFSourcesList;
-
 	// void SetA4AFAuto(bool A4AFauto)
 	// [sivka / Tarod] Imported from eMule 0.30c (Creteil) ... 
 	void SetA4AFAuto(bool in)		{ m_is_A4AF_auto = in; }

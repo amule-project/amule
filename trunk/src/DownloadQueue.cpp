@@ -987,9 +987,9 @@ void CDownloadQueue::RemoveSourceFromPartFile(CPartFile* file, CUpDownClient* cl
 		POSITION position, temp_position;
 		for(position = client->m_OtherRequests_list.GetHeadPosition(); (temp_position = position) != NULL;) {
 			client->m_OtherRequests_list.GetNext(position);
-			POSITION position2 = client->m_OtherRequests_list.GetAt(temp_position)->A4AFSourcesList.Find(client);
+			POSITION position2 = client->m_OtherRequests_list.GetAt(temp_position)->A4AFsrclist.Find(client);
 			if(position2) {
-				client->m_OtherRequests_list.GetAt(temp_position)->A4AFSourcesList.RemoveAt(position2);
+				client->m_OtherRequests_list.GetAt(temp_position)->A4AFsrclist.RemoveAt(position2);
 				theApp.amuledlg->transferwnd->downloadlistctrl->RemoveSource(client, client->m_OtherRequests_list.GetAt(temp_position));
 				client->m_OtherRequests_list.RemoveAt(temp_position);
 			}
