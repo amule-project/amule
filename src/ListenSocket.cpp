@@ -124,9 +124,8 @@ void CClientReqSocket::Delete_Timed()
 	// So we need to wait some time to make sure this doesn't happens
 	if (::GetTickCount() - deltimer > 10000) {
 		if (!OnDestroy) {
-			Close();		
 			OnDestroy = true;		
-			Destroy();	
+			delete this;
 		}		
 	}
 }
