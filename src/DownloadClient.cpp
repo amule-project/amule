@@ -134,7 +134,7 @@ void CUpDownClient::SendStartupLoadReq()
 	}
 	SetDownloadState(DS_ONQUEUE);
 	CSafeMemFile* dataStartupLoadReq = new CSafeMemFile(16);
-	dataStartupLoadReq->Write((const uint8*)reqfile->GetFileHash());
+	dataStartupLoadReq->WriteRaw(reqfile->GetFileHash(),16);
 	Packet* packet = new Packet(dataStartupLoadReq);
 	packet->opcode = OP_STARTUPLOADREQ;
 	theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->size);
@@ -179,7 +179,7 @@ void CUpDownClient::SendFileRequest()
 
 	CSafeMemFile dataFileReq(16+16);
 
-	dataFileReq.Write((const uint8*)reqfile->GetFileHash());
+	dataFileReq.WriteRaw(reqfile->GetFileHash(),16);
 	if( GetExtendedRequestsVersion() > 0 ){
 		reqfile->WritePartStatus(&dataFileReq);
 	}
@@ -196,7 +196,7 @@ void CUpDownClient::SendFileRequest()
 	// know that the file is shared, we know also that the file is complete and don't need to request the file status.
 	if (reqfile->GetPartCount() > 1){
 	    CSafeMemFile dataSetReqFileID(16);
-	    dataSetReqFileID.Write((const uint8*)reqfile->GetFileHash());
+	    dataSetReqFileID.WriteRaw(reqfile->GetFileHash(),16);
 	    packet = new Packet(&dataSetReqFileID);
 	    packet->opcode = OP_SETREQFILEID;
 	    theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->size);
@@ -227,8 +227,8 @@ void CUpDownClient::SendFileRequest()
 void CUpDownClient::ProcessFileInfo(char* packet,uint32 size)
 {
 	CSafeMemFile* data = new CSafeMemFile((BYTE*)packet,size);
-	uint8 cfilehash[16];
-	data->Read(cfilehash);
+	uchar cfilehash[16];
+	data->ReadRaw(cfilehash,16);
 	wxString Filename;
 	data->Read(Filename);
 		
@@ -240,6 +240,8 @@ void CUpDownClient::ProcessFileInfo(char* packet,uint32 size)
 	}
 	m_pszClientFilename = new char[Filename.Length()+1];
 	strncpy(m_pszClientFilename, Filename.GetData(), Filename.Length());
+	// Kry - Hum. Just to be sure.
+	memset(m_pszClientFilename, 0, Filename.Length()+1);
 	delete data;
 
 	if ( (!reqfile) || memcmp(cfilehash,reqfile->GetFileHash(),16)) {
@@ -269,7 +271,7 @@ void CUpDownClient::ProcessFileInfo(char* packet,uint32 size)
 		// for that file (if the file size == PARTSIZE)
 		if (reqfile->hashsetneeded) {
 			CMemFile* data = new CMemFile();
-			data->Write((const uint8*)reqfile->GetFileHash());
+			data->WriteRaw(reqfile->GetFileHash(),16);
 			Packet* packet = new Packet(data);
 			packet->opcode = OP_HASHSETREQUEST;
 			delete data;
@@ -292,8 +294,8 @@ void CUpDownClient::ProcessFileInfo(char* packet,uint32 size)
 void CUpDownClient::ProcessFileStatus(char* packet,uint32 size)
 {
 	CSafeMemFile data((BYTE*)packet,size);
-	uint8 cfilehash[16];
-	data.Read(cfilehash);
+	uchar	cfilehash[16];
+	data.ReadRaw(cfilehash,16);
 	
 	if ( (!reqfile) || md4cmp(cfilehash,reqfile->GetFileHash())){
 		if (reqfile==NULL) {
@@ -513,7 +515,7 @@ void CUpDownClient::SendBlockRequests()
 	}
 	Packet* packet = new Packet(OP_REQUESTPARTS,40);
 	CMemFile* data = new CMemFile((BYTE*)packet->pBuffer,40);
-	data->Write((const uint8*)reqfile->GetFileHash());
+	data->WriteRaw(reqfile->GetFileHash(),16);
 	POSITION pos = m_PendingBlocks_list.GetHeadPosition();
 
 	Requested_Block_Struct* block;
@@ -575,8 +577,8 @@ void CUpDownClient::ProcessBlockPacket(char *packet, uint32 size, bool packed)
 
 		// Read data from packet
 		CSafeMemFile *data = new CSafeMemFile((BYTE*)packet, size);
-		uint8 fileID[16];
-		data->Read(fileID);
+		uchar fileID[16];
+		data->ReadRaw(fileID,16);
 
 		// Check that this data is for the correct file
 		if ((!reqfile) || memcmp(packet, reqfile->GetFileHash(), 16)) {

@@ -138,27 +138,6 @@ CKnownFile::~CKnownFile(){
 CBarShader CKnownFile::s_ShareStatusBar(16);
 
 void CKnownFile::DrawShareStatusBar(wxDC* dc, wxRect rect, bool onlygreyrect, bool  bFlat) {
-/*
-   DWORD crBoth; 
-   DWORD crNeither; 
-   DWORD crClientOnly; 
-   DWORD crPending;
-   DWORD crNextPending;
-
-   if(bFlat) { 
-		crBoth = RGB(0, 150, 0);
-		crNeither = RGB(224, 224, 224);
-		crClientOnly = RGB(0, 0, 0);
-		crPending = RGB(255,208,0);
-		crNextPending = RGB(255,255,100);
-   } else {
-		crBoth = RGB(0, 192, 0);
-		crNeither = RGB(240, 240, 240);
-		crClientOnly = RGB(104, 104, 104);
-		crPending = RGB(255, 208, 0);
-		crNextPending = RGB(255,255,100);
-   } 
- */
 
    s_ShareStatusBar.SetFileSize(GetFileSize()); 
    s_ShareStatusBar.SetHeight(rect.GetHeight()); 
@@ -362,7 +341,7 @@ bool CKnownFile::CreateFromFile(char* in_directory,char* in_filename, volatile i
 	
 	// we are reading the file data later in 8K blocks, adjust the internal file stream buffer accordingly
 	//	setvbuf(file, NULL, _IOFBF, 1024*8*2);
-
+	
 	m_AvailPartFrequency.SetSize(GetPartCount());
 	for (uint32 i = 0; i != GetPartCount();i++) {
 		m_AvailPartFrequency.Add(0);
@@ -371,6 +350,7 @@ bool CKnownFile::CreateFromFile(char* in_directory,char* in_filename, volatile i
 	uint32 togo = m_nFileSize;
 	uint16 hashcount;
 	for (hashcount = 0; togo >= PARTSIZE; ) {
+		printf("HC %i ",hashcount);
 		uchar* newhash = new uchar[16];
 		CreateHashFromFile(file, PARTSIZE, newhash);
 		// SLUGFILLER: SafeHash - quick fallback
@@ -396,18 +376,23 @@ bool CKnownFile::CreateFromFile(char* in_directory,char* in_filename, volatile i
 	md4clr(lasthash);
 	CreateHashFromFile(file, togo, lasthash);
 	if (!hashcount){
+		printf("  !HC ");
 		md4cpy(m_abyFileHash, lasthash);
 		delete[] lasthash; // i_a: memleak 
 	} 
 	else {
+		printf("  HC ");
 		hashlist.Add(lasthash);		
 		uchar* buffer = new uchar[hashlist.GetCount()*16];
-		for (int i = 0; i < hashlist.GetCount(); i++)
+		for (int i = 0; i < hashlist.GetCount(); i++) {
+			printf("CP%i",i);
 			md4cpy(buffer+(i*16), hashlist[i]);
+		}
 		CreateHashFromString(buffer, hashlist.GetCount()*16, m_abyFileHash);
 		delete[] buffer;
 	}
-
+	printf("\n");
+	
 	// set lastwrite date
 	struct stat fileinfo;
 	fstat(fileno(file),&fileinfo);
@@ -490,7 +475,7 @@ void CKnownFile::SetFileSize(uint32 nFileSize)
 	// PARTSIZE*2+1    3               3               3
 
 	if (nFileSize == 0){
-//		wxASSERT(0);
+		wxASSERT(0); // Kry - Why commented out by lemonfan? it can never be 0
 		m_iPartCount = 0;
 		m_iED2KPartCount = 0;
 		m_iED2KPartHashCount = 0;
@@ -886,7 +871,7 @@ Packet*	CKnownFile::CreateSrcInfoPacket(CUpDownClient* forClient){
 	uint16 nCount = 0;
 
 	//data.Write(forClient->reqfileid, 16);
-	data.Write((const uint8*)forClient->GetUploadFileID());
+	data.WriteRaw(forClient->GetUploadFileID(),16);
 	data.Write(nCount);
 
 	//uint32 lastRequest = forClient->GetLastSrcReqTime();
@@ -904,7 +889,7 @@ Packet*	CKnownFile::CreateSrcInfoPacket(CUpDownClient* forClient){
 			data.Write(cur_src->GetServerIP());
 			data.Write(cur_src->GetServerPort());
 			if (forClient->GetSourceExchangeVersion() > 1)
-				data.Write((const uint8*)cur_src->GetUserHash());
+				data.WriteRaw(cur_src->GetUserHash(),16);
 		}
 
 		srclist.RemoveAt(pos);
