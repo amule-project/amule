@@ -68,13 +68,13 @@ private:
 	//afx_msg void TakeOver();
 	void FillSourcenameList();
 
-	void OnBnClickedButtonrename(wxEvent& evt);
-	void OnBnClickedButtonStrip(wxEvent& evt);
-	void OnBnClickedFileinfo(wxEvent& evt);
-	void OnBnClickedShowComment(wxEvent& evt);//for Comment//
-	void TakeOver(wxEvent& evt);
-	void Rename(wxEvent& evt);
-
+	void OnBnClickedButtonrename(wxCommandEvent& evt);
+	void OnBnClickedButtonStrip(wxCommandEvent& evt);
+	void OnBnClickedFileinfo(wxCommandEvent& evt);
+	void OnBnClickedShowComment(wxCommandEvent& evt);//for Comment//
+	void OnBnClickedTakeOver(wxCommandEvent& evt);
+	void OnListClickedTakeOver(wxListEvent& evt);
+	void OnBnClickedRename(wxCommandEvent& evt);
 
 };
 

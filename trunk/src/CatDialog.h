@@ -53,9 +53,9 @@ private:
 	wxBitmap* m_bitmap;
 	wxChoice* m_prio;
 public:
-	void OnBnClickedBrowse(wxEvent& evt);
-	void OnBnClickedOk(wxEvent& evt);
-	void OnBnClickColor(wxEvent& evt);
+	void OnBnClickedBrowse(wxCommandEvent& evt);
+	void OnBnClickedOk(wxCommandEvent& evt);
+	void OnBnClickColor(wxCommandEvent& evt);
 	void mkBitmap(wxBitmap& bitmap);
 };
 

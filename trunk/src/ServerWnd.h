@@ -53,17 +53,17 @@ protected:
 	//virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//virtual bool OnInitDialog();
 	//DECLARE_MESSAGE_MAP()
-	void OnSashPositionChanged();
+	void OnSashPositionChanged(wxSplitterEvent& evt);
 public:
 	//CHyperTextCtrl servermsgbox;
 	wxHtmlWindow servermsgbox;
 	wxTextCtrl logbox;
-	void OnBnClickedAddserver(wxEvent& evt);
-	void OnBnClickedUpdateservermetfromurl(wxEvent& evt);
+	void OnBnClickedAddserver(wxCommandEvent& evt);
+	void OnBnClickedUpdateservermetfromurl(wxCommandEvent& evt);
 	//afx_msg void OnBnClickedAddserver();
 	//afx_msg void OnBnClickedUpdateservermetfromurl();
-	void OnBnClickedResetLog(wxEvent& evt);
-	void OnBnClickedResetServerLog(wxEvent& evt);
+	void OnBnClickedResetLog(wxCommandEvent& evt);
+	void OnBnClickedResetServerLog(wxCommandEvent& evt);
 private:
 	wxStaticBitmap m_ctrlNewServerFrm;
 	wxStaticBitmap m_ctrlUpdateServerFrm;

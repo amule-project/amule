@@ -85,18 +85,18 @@ private:
     // WDR: handler declarations for PrefsUnifiedDlg
 	void OnOk(wxCommandEvent &event);
 	void OnCancel(wxCommandEvent &event);
-	void OnButtonBrowseWav(wxEvent &event);
-	void OnButtonBrowseVideoplayer(wxEvent &event);
-	void OnButtonWizard(wxEvent &event);
-	void OnButtonDir(wxEvent& event);
-	void OnButtonSystray(wxEvent& event);
-	void OnButtonEditAddr(wxEvent& event);
+	void OnButtonBrowseWav(wxCommandEvent &event);
+	void OnButtonBrowseVideoplayer(wxCommandEvent &event);
+	void OnButtonWizard(wxCommandEvent &event);
+	void OnButtonDir(wxCommandEvent& event);
+	void OnButtonSystray(wxCommandEvent& event);
+	void OnButtonEditAddr(wxCommandEvent& event);
 	void OnButtonColorChange(wxCommandEvent &event);
 	void OnButtonIPFilterReload(wxCommandEvent &event);
-	void OnSpinMaxDLR(wxCommandEvent &event);
+	void OnSpinMaxDLR(wxSpinEvent &event);
 	void OnColorCategorySelected(wxCommandEvent &event);
-	void OnCheckBoxChange(wxEvent &event);
-	void OnScroll(wxCommandEvent &event);
+	void OnCheckBoxChange(wxCommandEvent &event);
+	void OnScroll(wxScrollEvent &event);
 	
 private:
     DECLARE_EVENT_TABLE()

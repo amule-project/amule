@@ -70,7 +70,7 @@ CClientDetailDialog::~CClientDetailDialog()
 {
 }
 
-void CClientDetailDialog::OnBnClose(wxEvent& evt)
+void CClientDetailDialog::OnBnClose(wxCommandEvent& evt)
 {
 	EndModal(0);
 }

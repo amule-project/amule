@@ -29,6 +29,9 @@
 #include "treectlc.h"
 #include <wx/settings.h>
 #include <wx/timer.h>
+#include <wx/version.h>
+
+#if (wxMINOR_VERSION < 5)
 
 /* XPM */
 static char const* check1_xpm[] = {
@@ -1105,3 +1108,4 @@ wxGenericCTreeCtrl::SearchEventTable(wxEventTable& table, wxEvent& event)
 #endif
 }
 
+#endif //wx 2.5

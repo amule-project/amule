@@ -56,7 +56,7 @@ CHTTPDownloadDlg::CHTTPDownloadDlg(wxWindow* parent,wxString url,wxString tempNa
 
 }
 
-void CHTTPDownloadDlg::OnBtnCancel(wxEvent& evt)
+void CHTTPDownloadDlg::OnBtnCancel(wxCommandEvent& evt)
 {
 
  EndModal(ID_CANCEL);

@@ -102,7 +102,7 @@ void CServerWnd::Localize()
 
 // CServerWnd message handlers
 
-void CServerWnd::OnBnClickedAddserver(wxEvent& evt)
+void CServerWnd::OnBnClickedAddserver(wxCommandEvent& evt)
 {
 	wxString serveraddr;
 	if(((wxTextCtrl*)FindWindowById(IDC_IPADDRESS))->GetLineText(0).IsEmpty()) {
@@ -144,19 +144,19 @@ void CServerWnd::OnBnClickedAddserver(wxEvent& evt)
 	((wxTextCtrl*)FindWindowById(IDC_SPORT))->SetValue("");
 }
 
-void CServerWnd::OnBnClickedUpdateservermetfromurl(wxEvent& evt)
+void CServerWnd::OnBnClickedUpdateservermetfromurl(wxCommandEvent& evt)
 {
 	wxString strURL;
 	strURL=((wxTextCtrl*)FindWindowById(IDC_SERVERLISTURL))->GetLineText(0);
 	UpdateServerMetFromURL(strURL);
 }
 
-void CServerWnd::OnBnClickedResetLog(wxEvent& evt)
+void CServerWnd::OnBnClickedResetLog(wxCommandEvent& evt)
 {
 	theApp.amuledlg->ResetLog(1);
 }
 
-void CServerWnd::OnBnClickedResetServerLog(wxEvent& evt)
+void CServerWnd::OnBnClickedResetServerLog(wxCommandEvent& evt)
 {
 	theApp.amuledlg->ResetLog(2);
 }
@@ -204,7 +204,7 @@ void CServerWnd::UpdateMyInfo()
 //	printf("TODO: MyInfo @ CServerWnd (GUI missing)\n");
 }
 
-void CServerWnd::OnSashPositionChanged()
+void CServerWnd::OnSashPositionChanged(wxSplitterEvent& evt)
 {
 	theApp.amuledlg->srv_split_pos = ((wxSplitterWindow*)FindWindow("SrvSplitterWnd"))->GetSashPosition();
 }

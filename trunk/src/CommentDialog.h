@@ -41,9 +41,9 @@ public:
 protected:
 	DECLARE_EVENT_TABLE()
 public:
-	void OnBnClickedApply(wxEvent& evt);
-	void OnBnClickedClear(wxEvent& evt);
-	void OnBnClickedCancel(wxEvent& evt); 
+	void OnBnClickedApply(wxCommandEvent& evt);
+	void OnBnClickedClear(wxCommandEvent& evt);
+	void OnBnClickedCancel(wxCommandEvent& evt); 
 private:
 	wxChoice* ratebox;
 	CKnownFile* m_file;

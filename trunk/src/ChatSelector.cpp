@@ -183,7 +183,7 @@ uint16 CChatSelector::GetTabByClient(CUpDownClient* client)
 {
 	if (m_items.GetSize() > 0)
 	{
-		for (int i = 0; i != GetPageCount();i++) {
+		for (uint32 i = 0; i != GetPageCount();i++) {
 			CChatItem *item=m_items.GetAt(m_items.FindIndex(i));
 			if(item->client==client) {
 				return i;
@@ -199,7 +199,7 @@ CChatItem* CChatSelector::GetItemByClient(CUpDownClient* client)
 		return NULL;
 	}
 
-	for (int i = 0; i != GetPageCount();i++) {
+	for (uint32 i = 0; i != GetPageCount();i++) {
 		CChatItem* item=m_items.GetAt(m_items.FindIndex(i));
 		if(item->client==client) {
 			return item;

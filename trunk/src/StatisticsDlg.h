@@ -43,10 +43,7 @@ using namespace std;
 class CStatisticsDlg : public wxPanel// CResizableDialog
 {
 	friend class PrefsUnifiedDlg;
-#ifndef DISABLE_OLDPREFS
-	friend class CPPgStats;
-#endif
-  //DECLARE_DYNAMIC(CStatisticsDlg)
+
 public:
 	CStatisticsDlg(wxWindow* pParent = NULL);   // standard constructor
 	~CStatisticsDlg();
@@ -82,7 +79,7 @@ protected:
 	static COLORREF	acrStat[cntStatColors];
 	
  private:
-	void ExportHTMLEvent(wxEvent& evt);
+	void ExportHTMLEvent(wxCommandEvent& evt);
 	wxString exportString;
 	wxMutex exportMutex;
 	wxCondition* exportCondition;
@@ -174,11 +171,7 @@ private:
 	
 protected:
 	DECLARE_EVENT_TABLE()
-	//virtual void OnSize(unsigned int nType,int cx,int cy);
-	//virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support	
-	//DECLARE_MESSAGE_MAP()
-	//virtual bool OnInitDialog(); 
-	//void	OnShowWindow(bool bShow,unsigned int nStatus);
+
 };
 
 #endif // STATISTICSDLG_H

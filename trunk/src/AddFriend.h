@@ -40,8 +40,8 @@ protected:
 	DECLARE_EVENT_TABLE()
 
 private:
-	void OnAddBtn(wxEvent& evt);
-	void OnCloseBtn(wxEvent& evt);
+	void OnAddBtn(wxCommandEvent& evt);
+	void OnCloseBtn(wxCommandEvent& evt);
 };
 
 #endif // ADDFRIEND_H

@@ -55,7 +55,7 @@ static CSearchListCtrl* GetSearchListControl(uint32 nSearchID)
 
 	nb->m_LockTabs.Lock();
 
-	for (int tabCounter=0; tabCounter < nb->GetPageCount(); tabCounter++) {
+	for (unsigned int tabCounter=0; tabCounter < nb->GetPageCount(); tabCounter++) {
 		if(nb->GetUserData(tabCounter)==nSearchID) {
 			return (CSearchListCtrl*)theApp.amuledlg->searchwnd->FindWindowById(ID_SEARCHLISTCTRL,nb->GetPage(tabCounter));
 		}

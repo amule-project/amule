@@ -20,6 +20,7 @@
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+
 #ifndef TREECTLC_H
 #define TREECTLC_H
 
@@ -28,6 +29,8 @@
 #include <wx/generic/treectlg.h>
 #include <wx/bitmap.h>
 #include <wx/brush.h>
+
+#if (wxMINOR_VERSION < 5)
 
 // -----------------------------------------------------------------------------
 // forward declaration
@@ -96,5 +99,7 @@ public:
 private:
   DECLARE_DYNAMIC_CLASS(wxCTreeCtrl)
 };
+
+#endif // wx 2.5
 
 #endif // TREECTLC_H

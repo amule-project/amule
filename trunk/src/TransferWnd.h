@@ -82,7 +82,7 @@ protected:
 	int GetItemUnderMouse(wxListCtrl* ctrl);
 	void OnSelchangeDltab(wxNotebookEvent& evt);
 	void OnNMRclickDLtab(wxMouseEvent& evt);
-    void OnSashPositionChanged();
+    void OnSashPositionChanged(wxSplitterEvent& evt);
 
 	int AddCategorie(CString newtitle,CString newincoming,CString newcomment,bool addTab);
 	void EditCatTabLabel(int index,CString newlabel);

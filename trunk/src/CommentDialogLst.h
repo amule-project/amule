@@ -51,8 +51,8 @@ protected:
    //DECLARE_MESSAGE_MAP() 
    DECLARE_EVENT_TABLE()
 public: 
-   void OnBnClickedApply(wxEvent& evt); 
-   void OnBnClickedRefresh(wxEvent& evt); 
+   void OnBnClickedApply(wxCommandEvent& evt); 
+   void OnBnClickedRefresh(wxCommandEvent& evt); 
 private: 
    void CompleteList(); 
    CPartFile* m_file; 

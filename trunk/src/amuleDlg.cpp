@@ -276,7 +276,7 @@ public:
 		Centre();
 	};
 protected:
-	void OnOk(wxEvent& evt) { EndModal(0); };
+	void OnOk(wxCommandEvent& evt) { EndModal(0); };
 	DECLARE_EVENT_TABLE();
 };
 
@@ -335,7 +335,7 @@ bool CamuleDlg::IsRunning() {
 	return (m_app_state == APP_STATE_RUNNING);
 }
 
-void CamuleDlg::OnBnStats(wxEvent& ev) {
+void CamuleDlg::OnBnStats(wxCommandEvent& ev) {
 	// Kry - just if the app is ready for it
 	if (theApp.IsReady) {
 		if(lastbutton == ID_BUTTONSTATISTICS) {
@@ -349,7 +349,7 @@ void CamuleDlg::OnBnStats(wxEvent& ev) {
 	}
 }
 
-void CamuleDlg::OnBnShared(wxEvent& ev) {
+void CamuleDlg::OnBnShared(wxCommandEvent& ev) {
 	// Kry - just if the app is ready for it
 	if (theApp.IsReady) {
 		if(lastbutton == ID_BUTTONSHARED) {
@@ -363,7 +363,7 @@ void CamuleDlg::OnBnShared(wxEvent& ev) {
 	}
 }
 
-void CamuleDlg::btnServers(wxEvent& ev) {
+void CamuleDlg::btnServers(wxCommandEvent& ev) {
 	// Kry - just if the app is ready for it
 	if (theApp.IsReady) {
 		if(lastbutton == ID_BUTTONSERVERS) {
@@ -380,7 +380,7 @@ void CamuleDlg::btnServers(wxEvent& ev) {
 	}
 }
 
-void CamuleDlg::btnSearch(wxEvent& ev) {
+void CamuleDlg::btnSearch(wxCommandEvent& ev) {
 	// Kry - just if the app is ready for it
 	if (theApp.IsReady) {
 		if(lastbutton == ID_BUTTONSEARCH) {
@@ -394,7 +394,7 @@ void CamuleDlg::btnSearch(wxEvent& ev) {
 	}
 }
 
-void CamuleDlg::btnTransfer(wxEvent& ev) {
+void CamuleDlg::btnTransfer(wxCommandEvent& ev) {
 	// Kry - just if the app is ready for it
 	if (theApp.IsReady) {
 		if(lastbutton == ID_BUTTONTRANSFER) {
@@ -411,7 +411,7 @@ void CamuleDlg::btnTransfer(wxEvent& ev) {
 	}
 }
 
-void CamuleDlg::OnBnMessages(wxEvent& ev) {
+void CamuleDlg::OnBnMessages(wxCommandEvent& ev) {
 	// Kry - just if the app is ready for it
 	if (theApp.IsReady) {
 		if(lastbutton == ID_BUTTONMESSAGES) {
@@ -583,7 +583,7 @@ CamuleDlg::~CamuleDlg()
 
 // CamuleDlg eventhandler
 
-void CamuleDlg::OnBnConnect(wxEvent& evt) {
+void CamuleDlg::OnBnConnect(wxCommandEvent& evt) {
 	if (!theApp.serverconnect->IsConnected()) {
 		//connect if not currently connected
 		if (!theApp.serverconnect->IsConnecting()) {
@@ -1047,7 +1047,7 @@ void CamuleDlg::OnQLTimer(wxTimerEvent& evt) {
 	CQueueListCtrl::QueueUpdateTimer();
 }
 
-void CamuleDlg::OnBnClickedFast(wxEvent& evt) {
+void CamuleDlg::OnBnClickedFast(wxCommandEvent& evt) {
 	if (!theApp.serverconnect->IsConnected()) {
 		wxMessageDialog* bigbob=new wxMessageDialog(this,CString(_("You are not connected to a server!")),CString(_("Not Connected")),wxOK|wxCENTRE|wxICON_INFORMATION);
 		bigbob->ShowModal();
@@ -1181,7 +1181,7 @@ void CamuleDlg::Show_aMule(bool uniconize) {
 	}
 }
 
-void CamuleDlg::OnMinimize(wxEvent& evt) {
+void CamuleDlg::OnMinimize(wxIconizeEvent& evt) {
 #ifndef __SYSTRAY_DISABLED__	
 	if (theApp.amuledlg->IsIconized()) {
 		if (theApp.glob_prefs->DoMinToTray()) {
@@ -1199,7 +1199,7 @@ void CamuleDlg::OnMinimize(wxEvent& evt) {
 #endif
 }
 
-void CamuleDlg::OnBnNewPreferences(wxEvent& ev) {
+void CamuleDlg::OnBnNewPreferences(wxCommandEvent& ev) {
 
 	if (theApp.IsReady)
 		prefsunifiedwnd->ShowModal();

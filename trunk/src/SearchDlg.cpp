@@ -137,12 +137,12 @@ void CSearchDlg::OnSearchClosed(wxNotebookEvent& evt) {
 	}
 	// Abort global search if it was last tab that was closed.
 	wxPuts(wxString::Format(wxT("OnSearchClosed. Selection: %d PageCount: %d"), evt.GetSelection(), nb->GetPageCount()));
-	if (evt.GetSelection() == nb->GetPageCount()-1) {
+	if ((size_t)evt.GetSelection() == nb->GetPageCount()-1) {
 		OnBnClickedCancels(nullEvent);
 	}
 }
 
-void CSearchDlg::OnBnClickedStarts(wxEvent& evt)
+void CSearchDlg::OnBnClickedStarts(wxCommandEvent& evt)
 {
 	if (((wxTextCtrl*)FindWindowById(IDC_SEARCHNAME))->GetLineLength(0) !=0) {
 		OnBnClickedCancels(nullEvent);
@@ -151,7 +151,7 @@ void CSearchDlg::OnBnClickedStarts(wxEvent& evt)
 	}
 }
 
-void CSearchDlg::OnFieldsChange(wxEvent& evt)
+void CSearchDlg::OnFieldsChange(wxCommandEvent& evt)
 {
 	if (((wxTextCtrl*)FindWindowById(IDC_SEARCHNAME))->GetLineLength(0) !=0) {
 		FindWindowById(IDC_SEARCH_RESET)->Enable(TRUE);
@@ -216,7 +216,7 @@ void CSearchDlg::CreateNewTab(wxString searchString,uint32 nSearchID)
 	FindWindowById(IDC_CLEARALL)->Enable(TRUE);
 }
 
-void CSearchDlg::OnBnClickedCancels(wxEvent &evt)
+void CSearchDlg::OnBnClickedCancels(wxCommandEvent &evt)
 {
 	canceld = true;
 
@@ -317,7 +317,7 @@ void CSearchDlg::DownloadSelected()
 	}
 }
 
-void CSearchDlg::OnBnClickedClearall()
+void CSearchDlg::OnBnClickedClearall(wxCommandEvent& ev)
 {
 	OnBnClickedCancels(nullEvent);
 	DeleteAllSearchs();
@@ -494,7 +494,7 @@ void CSearchDlg::DeleteSearch(uint16 nSearchID) {
 	wxMutexLocker sLock(nb->m_LockTabs);
 	if(nb->GetPageCount() > 0) {
 		/* Remove the notebook page */
-		for(int i=0; i < nb->GetPageCount(); i++) {
+		for(unsigned int i=0; i < nb->GetPageCount(); i++) {
 			/* get searchlist->GetId() from the current notebook entry (?) */
 			wxWindow * page = (wxWindow *)nb->GetPage(i);
 			wxWindow * slctrl = page->FindWindowById(ID_SEARCHLISTCTRL, page);
@@ -533,7 +533,7 @@ void CSearchDlg::DeleteAllSearchs()
 	FindWindowById(IDC_CLEARALL)->Enable(FALSE);
 }
 
-void CSearchDlg::OnBnClickedSearchReset(wxEvent& evt) {
+void CSearchDlg::OnBnClickedSearchReset(wxCommandEvent& evt) {
 	((wxTextCtrl*)FindWindowById(IDC_SEARCHNAME))->Clear();
 	((wxTextCtrl*)FindWindowById(IDC_EDITSEARCHMIN))->Clear();
 	((wxTextCtrl*)FindWindowById(IDC_EDITSEARCHMAX))->Clear();
@@ -564,7 +564,7 @@ void CSearchDlg::UpdateCatChoice() {
 	wxChoice *c_cat = (wxChoice*)FindWindowById(ID_AUTOCATASSIGN);
 	c_cat->Clear();
 
-	for (int i=0;i<catbook->GetPageCount();i++) {
+	for (unsigned int i=0;i<catbook->GetPageCount();i++) {
 		c_cat->Append(catbook->GetPageText(i));
 	}
 	c_cat->SetSelection(0);

@@ -1039,7 +1039,7 @@ wxString CStatisticsDlg::ExportHTML() {
 	return exportString;
 }
 
-void CStatisticsDlg::ExportHTMLEvent(wxEvent& evt)
+void CStatisticsDlg::ExportHTMLEvent(wxCommandEvent& evt)
 {
 	int8 ix;
 	wxString temp;

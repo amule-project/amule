@@ -54,7 +54,7 @@ END_EVENT_TABLE()
 
 #define GetDlgItem(a,b) wxStaticCast(FindWindowById((a)),b)
 
-void CAddFriend::OnAddBtn(wxEvent& evt)
+void CAddFriend::OnAddBtn(wxCommandEvent& evt)
 {
 	int a, b, c, d, scancount;
 	CString name, fullip, hash;
@@ -106,8 +106,7 @@ void CAddFriend::OnAddBtn(wxEvent& evt)
 	EndModal(1);
 }
 
-void CAddFriend::OnCloseBtn(wxEvent& evt)
+void CAddFriend::OnCloseBtn(wxCommandEvent& evt)
 {
 	EndModal(0);
 }
-

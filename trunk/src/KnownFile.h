@@ -123,7 +123,7 @@ protected:
 //	char*	m_strFileName;
 	wxString	m_strFileName;
 	unsigned char	m_abyFileHash[16];
-	uint64	m_nFileSize;
+	uint32	m_nFileSize;
 	uint32	m_iFileType;
 	CString m_strComment;
 	int8	m_iRate; //for rate 

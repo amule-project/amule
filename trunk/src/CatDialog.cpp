@@ -106,7 +106,7 @@ END_EVENT_TABLE()
 
 // CCatDialog message handlers
 
-void CCatDialog::OnBnClickedBrowse(wxEvent& evt)
+void CCatDialog::OnBnClickedBrowse(wxCommandEvent& evt)
 {	
 	wxString dir=wxDirSelector(_("Choose a folder for incoming files"),((wxTextCtrl*)FindWindowById(IDC_INCOMING))->GetValue());
 	if(!dir.IsEmpty()) {
@@ -114,7 +114,7 @@ void CCatDialog::OnBnClickedBrowse(wxEvent& evt)
 	}
 }
 
-void CCatDialog::OnBnClickedOk(wxEvent& evt)
+void CCatDialog::OnBnClickedOk(wxCommandEvent& evt)
 {
 	CString oldpath=CString(m_myCat->incomingpath);
 	if (((wxTextCtrl*)FindWindowById(IDC_TITLE))->GetValue().Length()>0) {
@@ -157,7 +157,7 @@ void CCatDialog::mkBitmap(wxBitmap& bitmap)
 	dc.SelectObject(wxNullBitmap);
 }
 
-void CCatDialog::OnBnClickColor(wxEvent& evt)
+void CCatDialog::OnBnClickColor(wxCommandEvent& evt)
 {
 	wxColour newcol=wxGetColourFromUser(this,wxColour(GetBValue(newcolor),GetGValue(newcolor),GetRValue(newcolor)));
 	if(newcol.Ok()) {

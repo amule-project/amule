@@ -42,7 +42,7 @@ public:
 	enum { IDD = IDD_SOURCEDETAILWND };
 
 protected:
-	void OnBnClose(wxEvent& evt);
+	void OnBnClose(wxCommandEvent& evt);
 	DECLARE_EVENT_TABLE()
 
 private:
