@@ -773,35 +773,49 @@ wxString  CDirIterator::FindNextFile() {
 				// so that we don't loose information. Only then stick
 				// to an ANSI name. UTF82Unicode might fail because
 				// dp->name may not be a valid UTF-8 sequence.
+				printf("Found file %s on folder %s\n",dp->d_name,(const char*)unicode2char(DirStr));
 				Char2UnicodeBuf tmpFoundName(UTF82unicode(dp->d_name));
 				FoundName = tmpFoundName ?
 					tmpFoundName : char2unicode(dp->d_name);
 				wxString FullName(DirStr + FoundName);
 				// First, we try to use an ANSI name, but it might not be
 				// possible to use ANSI for the full name, so we test.
-				Unicode2CharBuf tmpFullName(unicode2char(FullName));
+				Unicode2CharBuf tmpFullName(unicode2char(FullName));		
+				int stat_error = -1;
 				if (tmpFullName) {
-					stat(tmpFullName, buf);
-				} else {
-					stat(unicode2UTF8(FullName), buf);
+					printf("Trying ANSI name...\n");
+					stat_error = stat(tmpFullName, buf);
+				} 
+				if (stat_error) {
+					printf("Trying UTF8 name...\n");
+					stat_error = stat(unicode2UTF8(FullName), buf);
 				}
-				if (S_ISREG(buf->st_mode)) {
-					if (type == CDirIterator::File) { 
-						found = true; 
-					} else { 
-						dp = readdir(DirPtr);
-					} 
-				} else {
-					if (S_ISDIR(buf->st_mode)) {
-						if (type == CDirIterator::Dir) {
+				
+				if (!stat_error) {
+					if (S_ISREG(buf->st_mode)) {
+						if (type == CDirIterator::File) { 
 							found = true; 
 						} else { 
 							dp = readdir(DirPtr);
+						} 
+					} else {
+						if (S_ISDIR(buf->st_mode)) {
+							if (type == CDirIterator::Dir) {
+								found = true; 
+							} else { 
+								dp = readdir(DirPtr);
+							}
+						} else {				
+							// unix socket, block device, etc
+							dp = readdir(DirPtr);
 						}
-					} else {				
-						// unix socket, block device, etc
-						dp = readdir(DirPtr);
 					}
+				} else {
+					// Stat failed. Assert.
+					wxASSERT(0);
+					AddDebugLogLineM( true, logFileIO, wxT("Unexpected error calling stat on a file!") );
+					printf("CFile: serious error, stat failed\n");
+					dp = readdir(DirPtr);
 				}
 #if 0
 				break;
