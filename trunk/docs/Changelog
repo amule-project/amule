@@ -37,7 +37,7 @@ Version 2.0.0rc8 - The "???????????" version.
 		* Fixed: Server names sorting now differences between names
 		  and IPs.
 		* Fixed: Last byte is now drawn in bar progress.
-		* Fixed: Stop button not working after second global search
+		* Fixed: Stop button now working after second global search
 		  and another hidden bug in global searches' progress bar.
 		  (reported by ecforum)
 
@@ -93,6 +93,11 @@ Version 2.0.0rc8 - The "???????????" version.
 		  Frankk,	han,
 		  skolnick,	Vollstrecker,
 		  volpop
+
+		* Translators:
+		  GhePeU:	(Italian / it_IT)
+		  piarres:	(Basque / es_EU)
+		  Typhon/Gusar:	(Slovenian / si_SI)
 
 		* Everyone at:
 		  #amule	irc.freenode.net
