@@ -260,7 +260,7 @@ public:
 	bool 			IsDifferentPartBlock();
 	void			UnBan();
 	void			Ban();
-	bool			m_bAddNextConnect;  // VQB Fix for LowID slots only on connection	
+	bool			m_bAddNextConnect;  // VQB Fix for LowID slots only on connection
 	uint32			GetBanTime()				{return m_dwBanTime;}
 	uint32			GetAskedCount()				{return m_cAsked;}
 	void			AddAskedCount()				{m_cAsked++;}
@@ -290,6 +290,7 @@ public:
 	float			GetKBpsDown()				{return kBpsDown;}	// Emilio
 	float			CalculateKBpsDown();
 	uint16			GetRemoteQueueRank()		{return m_nRemoteQueueRank;}
+	uint16			GetOldRemoteQueueRank()		{return m_nOldRemoteQueueRank;}
 	void			SetRemoteQueueFull( bool flag )	{m_bRemoteQueueFull = flag;}
 	bool			IsRemoteQueueFull()			{return m_bRemoteQueueFull;}
 	void			SetRemoteQueueRank(uint16 nr);
@@ -480,6 +481,7 @@ private:
 	uint16		m_cShowDR;
 	uint32		m_dwLastBlockReceived;
 	uint16		m_nRemoteQueueRank;
+	uint16		m_nOldRemoteQueueRank;
 	bool		m_bCompleteSource;
 	bool		m_bReaskPending;
 	bool		m_bUDPPending;

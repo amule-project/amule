@@ -94,7 +94,7 @@ CDownloadListCtrl::CDownloadListCtrl(wxWindow * &parent, int id, const wxPoint &
 
 void CDownloadListCtrl::InitSort()
 {
-	
+
 	// Barry - Use preferred sort order from preferences
 	int sortItem = theApp.glob_prefs->GetColumnSortItem(CPreferences::tableDownload);
 	bool sortAscending = theApp.glob_prefs->GetColumnSortAscending(CPreferences::tableDownload);
@@ -882,7 +882,7 @@ void CDownloadListCtrl::DrawFileItem(wxDC * dc, int nColumn, LPRECT lpRect, Ctrl
 //					lpRect->top++;
 
 					if (theApp.glob_prefs->ShowProgBar()) {
-					
+
 						int iWidth = lpRect->right - lpRect->left;
 						int iHeight = (lpRect->bottom - lpRect->top);
 	
@@ -920,7 +920,7 @@ void CDownloadListCtrl::DrawFileItem(wxDC * dc, int nColumn, LPRECT lpRect, Ctrl
 						int middley = (lpRect->bottom + lpRect->top) >> 1;
 						dc->GetTextExtent(buffer, &textwidth, &textheight);
 							wxColour AktColor = dc->GetTextForeground();
-						if (theApp.glob_prefs->ShowProgBar()) {	
+						if (theApp.glob_prefs->ShowProgBar()) {
 							dc->SetTextForeground(*wxWHITE);
 						} else {	
 							dc->SetTextForeground(*wxBLACK);
@@ -957,7 +957,7 @@ void CDownloadListCtrl::DrawFileItem(wxDC * dc, int nColumn, LPRECT lpRect, Ctrl
 					dc->DrawText(buffer, lpRect->left, lpRect->top);
 				}
 				break;
-				
+
 			case 7:	// prio
 				switch(lpPartFile->GetDownPriority()) {
 				case PR_LOW:
@@ -995,14 +995,14 @@ void CDownloadListCtrl::DrawFileItem(wxDC * dc, int nColumn, LPRECT lpRect, Ctrl
 					//char bufferSize[50];
 					//char bufferTime[50];
 
-					//size 
+					//size
 					uint32 remains;
 					remains = lpPartFile->GetFileSize() - lpPartFile->GetCompletedSize();	//<<-- 09/27/2002, CML
 
 					if (remains < 0) {
 						remains = 0;
 					}
-					// time 
+					// time
 					sint32 restTime = lpPartFile->getTimeRemaining();
 					buffer.Format(wxT("%s (%s)"), CastSecondsToHM(restTime).GetData(), CastItoXBytes(remains).GetData());
 					if (lpPartFile->GetStatus() == PS_COMPLETING || lpPartFile->GetStatus() == PS_COMPLETE) {
@@ -1058,7 +1058,7 @@ void CDownloadListCtrl::DrawSourceItem(wxDC * dc, int nColumn, LPRECT lpRect, Ct
 				{
 					RECT cur_rec;
 					memcpy(&cur_rec, lpRect, sizeof(RECT));
-					// +3 is added by OnDrawItem()... so take it off 
+					// +3 is added by OnDrawItem()... so take it off
 					// Kry - eMule says +1, so I'm trusting it
 					POINT point = { cur_rec.left, cur_rec.top+1 };
 					if (lpCtrlItem->type == 2) {
@@ -1262,8 +1262,16 @@ void CDownloadListCtrl::DrawSourceItem(wxDC * dc, int nColumn, LPRECT lpRect, Ct
 						dc->DrawText(buffer, lpRect->left, lpRect->top);
 					} else {
 						if (lpUpDownClient->GetRemoteQueueRank()) {
-							buffer.Format(wxT("QR: %u"), lpUpDownClient->GetRemoteQueueRank());
+							sint16 qrDiff = lpUpDownClient->GetRemoteQueueRank() - lpUpDownClient->GetOldRemoteQueueRank();
+							if(qrDiff == lpUpDownClient->GetRemoteQueueRank() )
+								qrDiff = 0;
+							wxColour savedColour = dc->GetTextForeground();
+							if( qrDiff < 0 ) dc->SetTextForeground(*wxBLUE);
+							if( qrDiff > 0 ) dc->SetTextForeground(*wxRED);
+							//if( qrDiff == 0 ) dc->SetTextForeground(*wxLIGHT_GREY);
+							buffer.Format(wxT("QR: %u (%i)"), lpUpDownClient->GetRemoteQueueRank(), qrDiff);
 							dc->DrawText(buffer, lpRect->left, lpRect->top);
+							dc->SetTextForeground(savedColour);
 						} else {
 							buffer = "";
 							dc->DrawText(buffer, lpRect->left, lpRect->top);
@@ -2006,7 +2014,7 @@ wxString CDownloadListCtrl::getTextList()
 		}
 	}
 
-	theApp.amuledlg->AddLogLine(false, CString(wxT("%s")), out.c_str());
+	AddLogLineM(false, out);
 	return out;
 }
 
