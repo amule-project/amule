@@ -73,51 +73,6 @@
 #include "StringFunctions.h"
 
 //-------------------------------------------------------------------
-//
-// Static data initialization -- memorize this, you'll need some day!
-// 
-//-------------------------------------------------------------------
-const wxCmdLineEntryDesc CaMuleExternalConnector::cmdLineDesc[12] =
-{
-	{ wxCMD_LINE_SWITCH, wxEmptyString, wxT("help"),
-		wxT("show this help"),
-		wxCMD_LINE_VAL_STRING, wxCMD_LINE_OPTION_HELP },
-	{ wxCMD_LINE_OPTION, wxT("h"), wxT("host"),
-		wxT("host where aMule is running (default localhost)"),
-		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL },
-	{ wxCMD_LINE_OPTION, wxT("p"), wxT("port"),
-		wxT("aMule's port for External Connection"),
-		wxCMD_LINE_VAL_NUMBER, wxCMD_LINE_PARAM_OPTIONAL },
-	{ wxCMD_LINE_OPTION, wxT("P"), wxT("password"), 
-		wxT("External Connection password."),
-		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL },
-	{ wxCMD_LINE_OPTION, wxT("f"), wxT("config-file"), 
-		wxT("Read configuration from file."),
-		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL },
-	{ wxCMD_LINE_SWITCH, wxT("q"), wxT("quiet"), 
-		wxT("Do not print any output to stdout."),
-		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL },
-	{ wxCMD_LINE_SWITCH, wxT("v"), wxT("verbose"), 
-		wxT("Be verbose - show also debug messages."),
-		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL },
-	{ wxCMD_LINE_OPTION, wxT("l"), wxT("locale"), 
-		wxT("Sets program locale (language)."),
-		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL },
-	{ wxCMD_LINE_SWITCH, wxT("w"), wxT("write-config"),
-		wxT("Write command line options to config file."),
-		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL },
-	{ wxCMD_LINE_OPTION, wxEmptyString, wxT("create-config-from"),
-		wxT("Creates config file based on aMule's config file."),
-		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL },
-	{ wxCMD_LINE_SWITCH, wxEmptyString, wxT("version"),
-		wxT("Print program version."),
-		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL },
-	{ wxCMD_LINE_NONE, wxEmptyString, wxEmptyString,
-		wxEmptyString,
-		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL }
-};
-
-//-------------------------------------------------------------------
 
 CaMuleExternalConnector::CaMuleExternalConnector()
 {
@@ -414,7 +369,39 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxSt
 
 void CaMuleExternalConnector::OnInitCmdLine(wxCmdLineParser& parser)
 {
-	parser.SetDesc(cmdLineDesc);
+	parser.AddSwitch(wxEmptyString, wxT("help"),
+		_("Show this help text."),
+		wxCMD_LINE_PARAM_OPTIONAL);
+	parser.AddOption(wxT("h"), wxT("host"),
+		_("Host where aMule is running. (default: localhost)"),
+		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL);
+	parser.AddOption(wxT("p"), wxT("port"),
+		_("aMule's port for External Connection. (default: 4712)"),
+		wxCMD_LINE_VAL_NUMBER, wxCMD_LINE_PARAM_OPTIONAL);
+	parser.AddOption(wxT("P"), wxT("password"),
+		_("External Connection password."),
+		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL);
+	parser.AddOption(wxT("f"), wxT("config-file"),
+		_("Read configuration from file."),
+		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL);
+	parser.AddOption(wxT("q"), wxT("quiet"),
+		_("Do not print any output to stdout."),
+		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL);
+	parser.AddSwitch(wxT("v"), wxT("verbose"),
+		_("Be verbose - show also debug messages."),
+		wxCMD_LINE_PARAM_OPTIONAL);
+	parser.AddOption(wxT("l"), wxT("locale"),
+		_("Sets program locale (language)."),
+		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL);
+	parser.AddSwitch(wxT("w"), wxT("write-config"),
+		_("Write command line options to config file."),
+		wxCMD_LINE_PARAM_OPTIONAL);
+	parser.AddOption(wxEmptyString, wxT("create-config-from"),
+		_("Creates config file based on aMule's config file."),
+		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL);
+	parser.AddSwitch(wxEmptyString, wxT("version"),
+		_("Print program version."),
+		wxCMD_LINE_PARAM_OPTIONAL);
 }
 
 bool CaMuleExternalConnector::OnCmdLineParsed(wxCmdLineParser& parser)
@@ -486,6 +473,11 @@ bool CaMuleExternalConnector::OnCmdLineParsed(wxCmdLineParser& parser)
 	parser.Found(wxT("locale"), &m_language);
 	otherfunctions::InitCustomLanguages();
 	otherfunctions::InitLocale(m_locale, otherfunctions::StrLang2wx(m_language));
+
+	if (parser.Found(wxT("help"))) {
+		parser.Usage();
+		return false;
+	}
 
 	m_KeepQuiet = parser.Found(wxT("quiet"));
 	m_Verbose = parser.Found(wxT("verbose"));

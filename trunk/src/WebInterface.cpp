@@ -275,38 +275,44 @@ void CamulewebApp::OnInitCmdLine(wxCmdLineParser& amuleweb_parser)
 {
 	CaMuleExternalConnector::OnInitCmdLine(amuleweb_parser);
 	amuleweb_parser.AddOption(wxT("t"), wxT("template"), 
-		wxT("loads template <str>"), 
+		_("Loads template <str>"), 
 		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL);
 		
 	amuleweb_parser.AddOption(wxT("s"), wxT("server-port"), 
-		wxT("Webserver HTTP port"),
+		_("Webserver HTTP port"),
 		wxCMD_LINE_VAL_NUMBER, wxCMD_LINE_PARAM_OPTIONAL);
 
 	amuleweb_parser.AddSwitch(wxT("z"), wxT("enable-gzip"), 
-		wxT("Use gzip compression"));
+		_("Use gzip compression"),
+		wxCMD_LINE_PARAM_OPTIONAL);
 	
 	amuleweb_parser.AddSwitch(wxT("Z"), wxT("disable-gzip"), 
-		wxT("Do not use gzip compression"));
+		wxT("Do not use gzip compression"),
+		wxCMD_LINE_PARAM_OPTIONAL);
 	
 	amuleweb_parser.AddOption(wxT("A"), wxT("admin-pass"), 
-		wxT("Full access password for webserver"), 
+		_("Full access password for webserver"), 
 		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL);
 
 	amuleweb_parser.AddOption(wxT("G"), wxT("guest-pass"), 
-		wxT("Guest password for webserver"), 
+		_("Guest password for webserver"), 
 		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL);
 
 	amuleweb_parser.AddSwitch(wxT("a"), wxT("allow-guest"), 
-		wxT("Allow guest access"));
+		_("Allow guest access"),
+		wxCMD_LINE_PARAM_OPTIONAL);
 
 	amuleweb_parser.AddSwitch(wxT("d"), wxT("deny-guest"), 
-		wxT("Deny guest access"));
+		_("Deny guest access"),
+		wxCMD_LINE_PARAM_OPTIONAL);
 
 	amuleweb_parser.AddSwitch(wxT("L"), wxT("load-settings"), 
-		wxT("Load/save webserver settings from/to remote aMule"));
+		_("Load/save webserver settings from/to remote aMule"),
+		wxCMD_LINE_PARAM_OPTIONAL);
 
 	amuleweb_parser.AddOption(wxEmptyString, wxT("amule-config-file"),
-		wxT("aMule config file path. DO NOT USE DIRECTLY!"));
+		_("aMule config file path. DO NOT USE DIRECTLY!"),
+		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL);
 }
 
 bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
@@ -324,7 +330,6 @@ bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 		if (!GetTemplateDir(m_TemplateName, m_TemplateDir)) {
 			// no reason to run webserver without a template
 			fprintf(stderr, (const char *)unicode2char(wxT("FATAL ERROR: Cannot find template: ") + m_TemplateName + wxT("\n")));
-			//std::cerr << _("You should have a look at http://www.amule.org/wiki/index.php/Webserver#Webserver_with_aMule_2.0.0_or_later_(starting_from_CVS_2005.02.27)\n");
 			exit(1);
 			// cmd-line versions exit after a return false; but DLG versions not - that's why the exit()
 			//return false;
