@@ -124,9 +124,7 @@ void CAddFileThread::ThreadCountDec()
 		// No threads left? Then let it be known.
 		if ( count == 0 ) {
 			wxMuleInternalEvent evt(wxEVT_CORE_FILE_HASHING_SHUTDOWN);
-			wxMutexGuiEnter();
 			wxPostEvent(&theApp, evt);
-			wxMutexGuiLeave();
 		}
 	} else {
 		// Just unlock
@@ -437,9 +435,7 @@ wxThread::ExitCode CAddFileThread::Entry()
 			printf("Hasher: Finished hashing file: %s\n", unicode2char(current->m_name));
 			
 			RemoveFromQueue( current );
-			wxMutexGuiEnter();
 			wxPostEvent(&theApp, evt);
-			wxMutexGuiLeave();
 		}
 	}
 

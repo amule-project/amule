@@ -207,9 +207,7 @@ void CHTTPDownloadThread::OnExit()
 	wxMuleInternalEvent evt(wxEVT_CORE_FINISHED_HTTP_DOWNLOAD);
 	evt.SetInt((int)m_file_type);
 	evt.SetExtraLong((long)m_result);
-	wxMutexGuiEnter();
 	wxPostEvent(&theApp,evt);		
-	wxMutexGuiLeave();
 }
 
 
@@ -218,9 +216,7 @@ void CHTTPDownloadThread::OnExit()
 int CurlGaugeCallback(void *HTTPDlDlg, double dltotal, double dlnow, double WXUNUSED(ultotal), double WXUNUSED(ulnow)) 
 {	
 //	printf("CB: %f %f - %i %i\n",dltotal, dlnow, int(dltotal),int(dlnow));
-	wxMutexGuiEnter();
 	((CHTTPDownloadThreadDlg*)HTTPDlDlg)->UpdateGauge(int(dltotal),int(dlnow));
-	wxMutexGuiLeave();
 	return 0;
 }
 #endif

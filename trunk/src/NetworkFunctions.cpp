@@ -38,16 +38,12 @@ wxThread::ExitCode CAsyncDNS::Entry()
 			wxMuleInternalEvent evt(wxEVT_CORE_DNS_DONE);
 			evt.SetExtraLong(result);
 			evt.SetClientData(socket);
-			wxMutexGuiEnter();
 			wxPostEvent(&theApp,evt);	
-			wxMutexGuiLeave();
 		} else {
 			wxMuleInternalEvent evt(SOURCE_DNS_DONE);
 			evt.SetExtraLong(result);
 			evt.SetClientData(socket);
-			wxMutexGuiEnter();
 			wxPostEvent(&theApp,evt);
-			wxMutexGuiLeave();
 		}
 
 	}
