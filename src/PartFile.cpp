@@ -2731,7 +2731,7 @@ CPacket *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 			uint32 dwID;
 			#warning We should use the IDHybrid here... but is not implemented yet
 			if(forClient->GetSourceExchangeVersion() > 2) {
-				dwID = ENDIAN_NTOHL(cur_src->GetUserID());
+				dwID = wxUINT32_SWAP_ALWAYS(cur_src->GetUserID());
 			} else {
 				dwID = cur_src->GetUserID();
 			}
