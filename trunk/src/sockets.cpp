@@ -300,7 +300,7 @@ void CServerConnect::ConnectionFailed(CServerSocket* sender){
 			if ((app_prefs->Reconnect()) && (autoretry) && (!m_idRetryTimer.IsRunning())){ 
 				theApp.amuledlg->AddLogLine(false,CString(_("Automatic connection to server will retry in %d seconds")), CS_RETRYCONNECTTIME); 
 				//m_idRetryTimer= SetTimer(NULL, 0, 1000*CS_RETRYCONNECTTIME, (TIMERPROC)RetryConnectCallback);
-				m_idRetryTimer.SetOwner(theApp.amuledlg,TM_TCPSOCKET);
+				m_idRetryTimer.SetOwner(&theApp,TM_TCPSOCKET);
 				m_idRetryTimer.Start(1000*CS_RETRYCONNECTTIME);
 			}
 			theApp.amuledlg->ShowConnectionState(false,"",true);
@@ -421,7 +421,7 @@ CServerConnect::CServerConnect(CServerList* in_serverlist, CPreferences* in_pref
 	tmp.Service(theApp.glob_prefs->GetPort()+3);
 	udpsocket = new CUDPSocket(this,tmp); // initalize socket for udp packets
 	//udpsocket->Create();
-	m_idRetryTimer.SetOwner(theApp.amuledlg,TM_TCPSOCKET);
+	m_idRetryTimer.SetOwner(&theApp,TM_TCPSOCKET);
 	lastStartAt=0;	
 	InitLocalIP();	
 }

@@ -122,6 +122,9 @@ BEGIN_EVENT_TABLE(CamuleApp, wxApp)
 	
 	EVT_MENU(TM_DNSDONE, CamuleApp::OnDnsDone)
 	EVT_MENU(TM_SOURCESDNSDONE, CamuleApp::OnSourcesDnsDone)
+
+	EVT_TIMER(TM_UDPSOCKET, CamuleApp::OnUDPTimer)
+	EVT_TIMER(TM_TCPSOCKET, CamuleApp::OnTCPTimer)
 	
 END_EVENT_TABLE()	
 	
@@ -1550,4 +1553,26 @@ void CamuleApp::OnSourcesDnsDone(wxCommandEvent& evt)
 {
 	struct sockaddr_in *si=(struct sockaddr_in*)evt.GetExtraLong();
 	downloadqueue->OnHostnameResolved(si);
+}
+
+void CamuleApp::OnUDPTimer(wxTimerEvent& WXUNUSED(evt))
+{
+	if (IsReady) {
+		serverlist->SendNextPacket();
+	}
+}
+
+
+void CamuleApp::OnTCPTimer(wxTimerEvent& WXUNUSED(evt))
+{
+	if(!IsReady) {
+		return;
+	}
+	
+	serverconnect->StopConnectionTry();
+	if (serverconnect->IsConnected() ) {
+		return;
+	}
+	
+	serverconnect->ConnectToAnyServer();
 }

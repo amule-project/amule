@@ -69,8 +69,6 @@
 #include "aMule.xpm"
 #endif
 
-#define ID_UQTIMER 59742
-
 BEGIN_EVENT_TABLE(CamuleDlg, wxFrame)
 
 	EVT_TOOL(ID_BUTTONSERVERS, CamuleDlg::OnToolBarButton)
@@ -84,8 +82,7 @@ BEGIN_EVENT_TABLE(CamuleDlg, wxFrame)
 	
 	EVT_TOOL(ID_BUTTONCONNECT, CamuleDlg::OnBnConnect)
 	EVT_TIMER(ID_UQTIMER, CamuleDlg::OnUQTimer)
-	EVT_TIMER(TM_UDPSOCKET, CamuleDlg::OnUDPTimer)
-	EVT_TIMER(TM_TCPSOCKET, CamuleDlg::OnSocketTimer)
+
 	EVT_MENU(TM_FINISHEDHASHING, CamuleDlg::OnFinishedHashing)
 	EVT_MENU(TM_FILECOMPLETIONFINISHED, CamuleDlg::OnFinishedCompletion)
 	EVT_CLOSE(CamuleDlg::OnClose)
@@ -768,29 +765,6 @@ void CamuleDlg::ShowNotifier(wxString Text, int MsgType, bool ForceSoundOFF)
 {
 }
 //END - enkeyDEV(kei-kun) -TaskbarNotifier-
-
-
-void CamuleDlg::OnUDPTimer(wxTimerEvent& WXUNUSED(evt))
-{
-	if( IsRunning() ) {
-		theApp.serverlist->SendNextPacket();
-	}
-}
-
-
-void CamuleDlg::OnSocketTimer(wxTimerEvent& WXUNUSED(evt))
-{
-	if(!IsRunning()) {
-		return;
-	}
-	
-	theApp.serverconnect->StopConnectionTry();
-	if ( theApp.serverconnect->IsConnected() ) {
-		return;
-	}
-	
-	theApp.serverconnect->ConnectToAnyServer();
-}
 
 
 void CamuleDlg::OnBnClickedFast(wxCommandEvent& WXUNUSED(evt))

@@ -70,7 +70,7 @@ list(wxKEY_NONE)
 	statserverpos = 0;
 	app_prefs = in_prefs;
 	//udp_timer = 0;
-	udp_timer.SetOwner(theApp.amuledlg,TM_TCPSOCKET);
+	udp_timer.SetOwner(&theApp,TM_UDPSOCKET);
 	delservercount = 0;
 	m_nLastED2KServerLinkCheck = m_nLastSaved = ::GetTickCount();
 }
