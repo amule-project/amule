@@ -1,3 +1,12 @@
+Version 2.0.0rc5 - 
+
+	phoenix:
+		* Added a test with a warning to
+		  CSearchDlg::OnBnClickedSdownload in SearchDlg.cpp. A NULL
+		  value has been reported on the foruns, we don't know how
+		  GetPage() or FindWindowById() could have returned NULL.
+		* More unicode fixes to alcc and ed2khash.
+
 Version 2.0.0rc4 - The 'Mules and rabbits like apples too' version.
 
 2004-07-12
