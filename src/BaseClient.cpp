@@ -177,7 +177,8 @@ void CUpDownClient::Init()
 	m_nLastBlockOffset = 0;
 
 	m_requpfile = NULL;
-
+	
+	m_bMsgFiltered = false;
 
 	if (m_socket) {
 		amuleIPV4Address address;
