@@ -20,7 +20,7 @@
  */
 
 #ifdef HAVE_CONFIG_H
-	#include "config.h"		// Needed for VERSION
+	#include "config.h"	// For VERSION
 #endif
 
 #if !defined( __WXMSW__ )
@@ -44,7 +44,7 @@
 #include "WebServer.h"
 
 #if wxCHECK_VERSION(2,4,2)
-	#include <wx/confbase.h>
+	#include <wx/config.h>	// For wxFileConfig in wx-2.4.2
 #endif
 #include <wx/fileconf.h>	// For wxFileConfig
 
