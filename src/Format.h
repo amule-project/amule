@@ -145,9 +145,9 @@ private:
 	CFormat& FormatFloat( ValueType value );
 	
 	//! Index to the current format-field.
-	int m_index;
+	unsigned int m_index;
 	//! Index to past the end of the current format-field.
-	int m_indexEnd;
+	unsigned int m_indexEnd;
 
 	//! The format-string fed to the parser.
 	wxString	m_format;
