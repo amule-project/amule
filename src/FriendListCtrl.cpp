@@ -159,7 +159,7 @@ void CFriendListCtrl::RefreshFriend(CDlgFriend* toupdate)
 }
 
 
-void CFriendListCtrl::OnItemSelected(wxListEvent& WXUNUSED(evt))
+void CFriendListCtrl::OnItemSelected(wxListEvent& WXUNUSED(event))
 {
 	// Force the list to refresh. For some reason, Refresh() wont work on its own...
 	Freeze();
@@ -168,7 +168,7 @@ void CFriendListCtrl::OnItemSelected(wxListEvent& WXUNUSED(evt))
 }
 
 
-void CFriendListCtrl::OnItemActivated(wxListEvent& WXUNUSED(evt))
+void CFriendListCtrl::OnItemActivated(wxListEvent& WXUNUSED(event))
 {
 	int cursel = GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
 	
@@ -257,64 +257,89 @@ void CFriendListCtrl::OnRightClick(wxMouseEvent& event)
 }
 
 
-void CFriendListCtrl::OnPopupMenu(wxCommandEvent& evt)
+void CFriendListCtrl::OnPopupMenu(wxCommandEvent& event)
 {
+	
 	int cursel = GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
 	
 	CDlgFriend* cur_friend = NULL;
-	
-	if (cursel != -1) {
-		cur_friend = (CDlgFriend*)GetItemData(cursel);
-	}
-	
-	switch (evt.GetId()) {
-		case MP_MESSAGE: {
-			theApp.amuledlg->chatwnd->StartSession(cur_friend);			
-			#warning CORE/GUI!			
-			#ifndef CLIENT_GUI
-			theApp.friendlist->StartChatSession(cur_friend->m_hash, cur_friend->m_ip, cur_friend->m_port);
-			#endif
-			break;
+
+	bool end=false;
+	while (((cursel != -1) || (event.GetId() == MP_ADDFRIEND)) && !end) {
+		if (cursel != -1) {
+			cur_friend = (CDlgFriend*)GetItemData(cursel);
 		}
 		
-		case MP_REMOVEFRIEND: {
-			RemoveFriend(cur_friend);
-			break;
-		}
-		
-		case MP_ADDFRIEND: {
-			CAddFriend* dialog2 = new CAddFriend(this);
-			dialog2->ShowModal();			
-			delete dialog2;			
-			break;
-		}
-		
-		case MP_DETAIL: {
-			if (cur_friend->islinked) {
-				#warning EC: We need a reply packet with a full CUpDownClient
+		switch (event.GetId()) {
+			case MP_MESSAGE: {
+				wxASSERT(cur_friend);
+				theApp.amuledlg->chatwnd->StartSession(cur_friend);			
+				#warning CORE/GUI!			
 				#ifndef CLIENT_GUI
-				CClientDetailDialog* dialog = new CClientDetailDialog(this, theApp.friendlist->FindFriend(cur_friend->m_hash, cur_friend->m_ip, cur_friend->m_port)->GetLinkedClient());
-				dialog->ShowModal();
-				delete dialog;
+				theApp.friendlist->StartChatSession(cur_friend->m_hash, cur_friend->m_ip, cur_friend->m_port);
 				#endif
+				break;
 			}
-			break;
+		
+			case MP_REMOVEFRIEND: {
+				wxASSERT(cur_friend);				
+				RemoveFriend(cur_friend);
+				break;
+			}
+		
+			case MP_ADDFRIEND: {
+				CAddFriend* dialog2 = new CAddFriend(this);
+				dialog2->ShowModal();			
+				delete dialog2;			
+				// We don't want to add more than one friend ;)
+				end = true;
+				break;
+			}
+		
+			case MP_DETAIL: {
+				wxASSERT(cur_friend);
+				if (cur_friend->islinked) {
+					#warning EC: We need a reply packet with a full CUpDownClient
+					#ifndef CLIENT_GUI
+					CClientDetailDialog* dialog = new CClientDetailDialog(this, theApp.friendlist->FindFriend(cur_friend->m_hash, cur_friend->m_ip, cur_friend->m_port)->GetLinkedClient());
+					dialog->ShowModal();
+					delete dialog;
+					#endif
+				}
+				// I included no "end = true;" here, tho could be needed. However, if a user selects 
+				// several friends and clicks show details.. must expect several dialogs.
+				break;
+			}
+		
+			case MP_SHOWLIST: {
+				wxASSERT(cur_friend);
+				#warning CORE/GUI!
+				#ifndef CLIENT_GUI
+				theApp.friendlist->RequestSharedFileList(cur_friend->m_hash, cur_friend->m_ip, cur_friend->m_port);
+				#endif
+				break;
+			}
+		
+			case MP_FRIENDSLOT: {
+				wxASSERT(cur_friend);
+				#warning CORE/GUI!
+				#ifndef CLIENT_GUI
+				theApp.friendlist->ToogleFriendSlot(cur_friend->m_hash, cur_friend->m_ip, cur_friend->m_port);
+				#endif
+				// Friendslot only for the first friend!
+				end = true;
+				break;
+			}
 		}
 		
-		case MP_SHOWLIST: {
-			#warning CORE/GUI!
-			#ifndef CLIENT_GUI
-			theApp.friendlist->RequestSharedFileList(cur_friend->m_hash, cur_friend->m_ip, cur_friend->m_port);
-			#endif
-			break;
-		}
-		
-		case MP_FRIENDSLOT: {
-			#warning CORE/GUI!
-			#ifndef CLIENT_GUI
-			theApp.friendlist->ToogleFriendSlot(cur_friend->m_hash, cur_friend->m_ip, cur_friend->m_port);
-			#endif
-			break;
+		// If we ended, nothing more to do.
+		if (!end) {
+			cursel = GetNextItem( cursel, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+		} else {
+			// Safe check for leechers that expect more than 1 friendslot.
+			if ((event.GetId() == MP_FRIENDSLOT) && (GetNextItem( cursel, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED ) != -1)) {
+				wxMessageBox(_("You are not allowed to set more than one friendslot."), _("Multiple selection"), wxICON_ERROR);
+			}			
 		}
 	}
 }
