@@ -19,6 +19,8 @@
 
 #include <unistd.h>			// Needed for close(2) and sleep(3)
 #include <wx/defs.h>
+#include <wx/textctrl.h>
+#include <wx/gauge.h>
 
 #ifdef __WXMSW__
 	#include <winsock.h>
