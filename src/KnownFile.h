@@ -168,7 +168,7 @@ public:
 	void	NewAvailPartsInfo();
 	
 	// comment 
-	CString	GetFileComment()		{if (!m_bCommentLoaded) LoadComment(); return m_strComment;} 
+	const CString&	GetFileComment()		{if (!m_bCommentLoaded) LoadComment(); return m_strComment;} 
 	void	SetFileComment(CString strNewComment);
 	void	SetFileRate(int8 iNewRate); 
 	int8	GetFileRate()			{if (!m_bCommentLoaded) LoadComment(); return m_iRate;}
