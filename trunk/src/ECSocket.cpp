@@ -476,12 +476,13 @@ bool ECSocket::WriteNumber(wxSocketBase *sock, const void *buffer, unsigned int 
 {
 	if (((struct socket_desc *)opaque)->used_flags & EC_FLAG_UTF8_NUMBERS) {
 		unsigned char mb[6];
-		uint32 wc;
+		uint32 wc = 0;
 		int mb_len;
 		switch (len) {
 			case 1: wc = PeekUInt8( buffer ); break;
 			case 2: wc = RawPeekUInt16( buffer ); break;
 			case 4: wc = RawPeekUInt32( buffer ); break;
+			default: return false;
 		}
 		if ((mb_len = utf8_wctomb(mb, wc, 6)) == -1) return false;	// Something is terribly wrong...
 		return WriteBuffer(sock, mb, mb_len, opaque);

@@ -682,7 +682,7 @@ public:
 	
 		// Add all other languages in alphabetical order
 		// and find the index of the selected language.
-		for (int i = 0; i < itemsof(aMuleLanguages); i++) {
+		for ( unsigned int i = 0; i < itemsof(aMuleLanguages); i++) {
 			if ( aMuleLanguages[i].id == wxId ) {
 				m_selection = i;
 			}

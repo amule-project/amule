@@ -202,7 +202,7 @@ void CChatSelector::ProcessMessage(uint64 sender_id, const wxString& message)
 			// This must NOT happen.
 			// Build a client name based on the ID
 			uint32 ip = IP_FROM_GUI_ID(sender_id);
-			client_name =  wxString::Format(wxT("IP: %u.%u.%u.%u Port: %u"),(uint8)ip,(uint8)(ip>>8),(uint8)(ip>>16),(uint8)(ip>>24),PORT_FROM_GUI_ID(sender_id));
+			client_name =  wxString::Format(wxT("IP: %u.%u.%u.%u Port: %u"),(uint8)ip,(uint8)(ip>>8),(uint8)(ip>>16),(uint8)(ip>>24),(unsigned)PORT_FROM_GUI_ID(sender_id));
 		}
 		
 		session = StartSession( sender_id, client_name, true );
