@@ -36,7 +36,7 @@ openbsd*)
 	AC_MSG_ERROR([
 		"You are trying to compile aMule using configure under Windows.
 		This is not possible. Please use the provided MakefineWIN32 instead.
-		Just type make -f MakefileWIN32.
+		Just type make -f MakefileWIN32."
 	])
 	;;
 esac
