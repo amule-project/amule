@@ -1236,6 +1236,22 @@ wxString CStatisticsDlg::GetHTML() {
  	strBuffer+=wxT("</font>");
 
 	// return the string
+	
+	int filecount = theApp.downloadqueue->GetFileCount();
+	uint32 stats[2]; // get the source count
+	theApp.downloadqueue->GetDownloadStats(stats);
+	strBuffer += 
+		wxString::Format(wxT(
+		"\tStatistics: \n"
+		"\t\tDownloading files: %d\n"
+		"\t\tFound sources: %d\n"
+		"\t\tActive downloads: %d\n"
+		"\t\tActive Uploads: %d\n"
+		"\t\tUsers on upload queue: %d"),
+		filecount, stats[0], stats[1], 
+		theApp.uploadqueue->GetUploadQueueLength(), 
+		theApp.uploadqueue->GetWaitingUserCount());
+	
 	return(strBuffer);
 }
 

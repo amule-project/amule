@@ -500,6 +500,22 @@ enum {
 		 */
 	EC_OP_PREFERENCES,
 
+		/*!
+		 * \brief Retrieves the statistics graphs
+		 *
+		 * Server replies with an ::EC_OP_STATSGRAPHS packet.
+		 */
+	
+	EC_OP_STATSGRAPHS,
+
+		/*!
+		 * \brief Retrieves the statistics tree
+		 *
+		 * Server replies with an ::EC_OP_STATSTREE packet.
+		 */
+
+	EC_OP_STATSTREE,
+
 
 	EC_OP_COMPAT	= 0x00ff	// compatibility opcode, for testing purposes only
 					// tags: EC_TAG_STRING: v1.0 message
