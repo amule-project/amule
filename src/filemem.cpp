@@ -139,6 +139,7 @@ off_t CMemFile::ReadRaw(void* buf,off_t length)
   unsigned int readlen=length;
   if(length+fPosition>fFileSize) {
     printf("Read After End Of File!!!!\n");
+    wxASSERT(0);
     throw CInvalidPacket("short packet on read (corrupted tagcount?)");
     readlen=fFileSize-fPosition;
   }
