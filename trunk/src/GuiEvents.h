@@ -97,9 +97,16 @@ enum GUI_Event_ID {
 	KNOWNFILE_SET_UP_PRIO,
 	KNOWNFILE_SET_UP_PRIO_AUTO,
 	KNOWNFILE_SET_PERM,
+	KNOWNFILE_SET_COMMENT,
 	// search
 	SEARCH_LOCAL_REQ,
 	SEARCH_GLOBAL_REQ,
+	SEARCH_ADD_TO_DLOAD,
+	SEARCH_ADD_RESULT,
+	SEARCH_UPDATE_SOURCES,
+	// download queue
+	DLOAD_SET_CAT_PRIO,
+	DLOAD_SET_CAT_STATUS,
 };
 
 class GUIEvent {
@@ -275,11 +282,18 @@ class GUIEvent {
 #define CoreNotify_KnownFile_Up_Prio_Set(ptr, val)  Notify_2_ValEvent(KNOWNFILE_SET_UP_PRIO,(CKnownFile *)ptr, (uint8)val);
 #define CoreNotify_KnownFile_Up_Prio_Auto(ptr)      Notify_1_ValEvent(KNOWNFILE_SET_UP_PRIO_AUTO,(CKnownFile *)ptr);
 #define CoreNotify_KnownFile_Perm_Set(ptr, val)     Notify_2_ValEvent(KNOWNFILE_SET_PERM,(CKnownFile *)ptr, (uint8)val);
+#define CoreNotify_KnownFile_Comment_Set(ptr, val)  Notify_2_ValEvent(KNOWNFILE_SET_PERM,(CKnownFile *)ptr, val);
 
 // Search
 #define CoreNotify_Search_Local_Req(ptr)            Notify_1_ValEvent(SEARCH_LOCAL_REQ,(Packet *)ptr);
 #define CoreNotify_Search_Global_Req(ptr, ser)      Notify_2_ValEvent(SEARCH_GLOBAL_REQ,(Packet *)ptr, (CServer *)ser);
+#define CoreNotify_Search_Add_Download(ptr, val)    Notify_2_ValEvent(SEARCH_ADD_TO_DLOAD,(CSearchFile *)ptr, (uint8)val);
+#define CoreNotify_Search_Add_Result(ptr, val)      Notify_2_ValEvent(SEARCH_ADD_RESULT,(CSearchFile *)ptr, (uint8)val);
+#define CoreNotify_Search_Update_Sources(ptr)       Notify_1_ValEvent(SEARCH_UPDATE_SOURCES,(CSearchFile *)ptr);
 
+// download queue
+#define CoreNotify_Download_Set_Cat_Prio(cat, pri)  Notify_2_ValEvent(DLOAD_SET_CAT_PRIO, cat, pri);
+#define CoreNotify_Download_Set_Cat_Status(cat, st) Notify_2_ValEvent(DLOAD_SET_CAT_STATUS, cat, st);
 //
 // "Late bound pointers" lib
 //
