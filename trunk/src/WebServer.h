@@ -338,11 +338,16 @@ class CAnyImage {
 	protected:
 		unsigned char *m_data;
 		int m_size, m_alloc_size;
+		wxString m_Http;
 		
 		void Realloc(int size);
+		
+		void SetHttpType(wxString &ext);
 	public:
 		CAnyImage(int size);
 		virtual ~CAnyImage();
+
+		char *GetHTTP() { return (char *)unicode2char(m_Http); }
 		
 		virtual unsigned char *RequestData(int &size);
 };
@@ -351,6 +356,8 @@ class CFileImage : public CAnyImage {
 		wxString m_name;
 	public:
 		CFileImage(const char *name);
+		
+		bool OpenOk() { return m_size != 0; }
 };
 
 class CProgressImage : public CAnyImage {
@@ -408,6 +415,18 @@ class CDynImage : public CProgressImage {
 
 #endif
 
+class CImageLib {
+		std::map<wxString, CAnyImage *> m_image_map;
+		wxString m_image_dir;
+	public:
+		CImageLib(wxString image_dir);
+		~CImageLib();
+		
+		CAnyImage *GetImage(wxString &name);
+		void AddImage(CAnyImage *img, wxString &name);
+		void RemoveImage(wxString &name);
+};
+
 typedef struct {
 	uint32		nUsers;
 	bool		bShowUploadQueue;
@@ -415,15 +434,12 @@ typedef struct {
 	ArrayOfUpDown		PointsForWeb;
 	ArrayOfSession		Sessions;
 	ArrayOfTransferredData	badlogins;
-	
-	wxString	sLastModified;
-	wxString	sETag;
+
 } GlobalParams;
 
 typedef struct {
 	wxString	sURL;
 	in_addr		inadr;
-	void		*pThis;
 	CWebSocket	*pSocket;
 } ThreadData;
 
@@ -477,6 +493,7 @@ class CWebServer {
 	ServersInfo m_ServersInfo;
 	SharedFilesInfo m_SharedFilesInfo;
 	DownloadFilesInfo m_DownloadFilesInfo;
+	CImageLib m_ImageLib;
 	
 	public:
 		CWebServer(CamulewebApp *webApp);
