@@ -911,7 +911,7 @@ CED2KFileTypes theED2KFileTypes;
 
 EED2KFileType GetED2KFileTypeID(const wxString &strFileName)
 {
-	int i = strFileName.Find(wxT('.'));
+	int i = strFileName.Find(wxT('.'),true/* from end*/);
 	if (i == -1) {
 		return ED2KFT_ANY;
 	}
