@@ -206,10 +206,14 @@ bool CServerList::AddServermetToList(CString strFile, bool merge)
 			} else {
 				iAddCount++;
 			}
+
 			// don't yield all the time
+			// Kry - What's this supposed to do?
+			/*
 			if(j%75==0) {
 				theApp.Yield();
 			}
+			*/
 		}
 		theApp.amuledlg->serverwnd->serverlistctrl->Thaw();
     
