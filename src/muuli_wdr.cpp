@@ -1187,7 +1187,7 @@ wxSizer *statsDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticBoxSizer *item5 = new wxStaticBoxSizer( item6, wxVERTICAL );
 
     wxWindow *item7 = new COScopeCtrl(3,1,parent);
-item7->SetName("dloadScope");
+item7->SetName(wxT("dloadScope"));
     wxASSERT( item7 );
     item5->Add( item7, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -1249,7 +1249,7 @@ item7->SetName("dloadScope");
     wxStaticBoxSizer *item22 = new wxStaticBoxSizer( item23, wxVERTICAL );
 
     wxWindow *item24 = new COScopeCtrl(3,0,parent);
-item24->SetName("otherScope");
+item24->SetName(wxT("otherScope"));
     wxASSERT( item24 );
     item22->Add( item24, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -1312,7 +1312,7 @@ item24->SetName("otherScope");
     wxStaticBoxSizer *item39 = new wxStaticBoxSizer( item40, wxVERTICAL );
 
     wxWindow *item41 = new COScopeCtrl(3,1,parent);
-item41->SetName("uloadScope");
+item41->SetName(wxT("uloadScope"));
     wxASSERT( item41 );
     item39->Add( item41, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
