@@ -19,7 +19,6 @@ CTimer::~CTimer()
 
 CTimer::CTimer(wxEvtHandler *owner, int id)
 {
-	printf("CTimer:: created  %p with id = %d\n",this, id);
 	if ( owner ) {
 		SetOwner(owner, id);
 	} else {
@@ -30,7 +29,6 @@ CTimer::CTimer(wxEvtHandler *owner, int id)
 
 void CTimer::SetOwner(wxEvtHandler *owner, int id)
 {
-	printf("CTimer:: %p owner set, with id = %d\n", this, id);
 	CTimer::owner = owner;
 	CTimer::id = id;
 }
@@ -82,7 +80,6 @@ void *CTimer::CTimerThread::Entry()
 			Sleep(m_period);
 			wxMuleInternalEvent evt(wxEVT_AMULE_TIMER, m_id);
 			if ( m_id != -1 ) {
-				printf("CTimer:: %p sending event with id %d\n", this, m_id);
 			}
 			wxPostEvent(m_owner, evt);
 		}
