@@ -31,6 +31,7 @@
 #include "PartFile.h"		// Needed for CPartFile
 #include "KnownFile.h"		// Needed for CAbstractFile
 #include "amule.h"
+#include "filefn.h"
 #include "Preferences.h"
 
 #include <ctype.h>

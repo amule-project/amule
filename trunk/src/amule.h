@@ -23,9 +23,7 @@
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/app.h>			// Needed for wxApp
 #include <wx/intl.h>		// Needed for wxLocale
-#include <wx/timer.h>		// Needed for wxTimerEvent
 
-#include "CTypedPtrList.h"
 #include "types.h"			// Needed for int32, uint16 and uint64
 #include "GuiEvents.h"
 
@@ -54,6 +52,7 @@ class CIPFilter;
 class wxServer;
 class wxString;
 class wxSocketEvent;
+class wxTimer;
 class wxTimerEvent;
 class wxCommandEvent;
 

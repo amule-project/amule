@@ -23,17 +23,10 @@
 
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/panel.h>		// Needed for wxPanel
-#include <wx/combobox.h>	// Needed for wxComboBox
-#include <wx/imaglist.h>	// Needed for wxImageList
 #include <wx/timer.h>		// Needed for wxTimer and wxTimerEvent
-#include <wx/statbmp.h>		// Needed for wxStaticBitmap
-#include <wx/listbase.h>	// Needed for wxListEvent
-#include <wx/gauge.h>		// Needed for wxGauge
-#include <wx/notebook.h>	// Needed for wxNotebookEvent
 
 #include "types.h"		// Needed for uint16 and uint32
 #include "resource.h"		// Needed for IDD_SEARCH
-#include "server.h"			// Needed for CServer
 
 #include <set>
 
@@ -41,7 +34,11 @@ class CMuleNotebook;
 class CSearchListCtrl;
 class CMuleNotebookEvent;
 class Packet;
+class CServer;
 
+class wxListEvent;
+class wxNotebookEvent;
+class wxGauge;
 
 class CSearchDlg : public wxPanel {
 public:

@@ -20,10 +20,10 @@
 #ifndef EDITSERVERLISTDLG_H
 #define EDITSERVERLISTDLG_H
 
-#include <wx/dialog.h>		// Needed for wxDialog
 #include <wx/defs.h>		// Needed before any other wx/*.h
-#include <wx/textctrl.h>	// Needed for wxTextCtrl
+#include <wx/dialog.h>		// Needed for wxDialog
 
+class wxTextCtrl;
 
 class EditServerListDlg : public wxDialog
 {

@@ -25,7 +25,6 @@
 #include <wx/string.h>		// Needed for wxString
 #include <wx/strconv.h>
 #include "types.h"		// Needed for uint16, uint32 and uint64
-#include "filefn.h"		// Needed for wxCopyFile_fat32
 #include "endianfix.h"
 
 class CPartFile;

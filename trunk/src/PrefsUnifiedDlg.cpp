@@ -55,6 +55,7 @@
 #include "SearchList.h"
 #include "DownloadQueue.h"
 #include "DirectoryTreeCtrl.h"	// Needed for CDirectoryTreeCtrl
+#include "MD5Sum.h"
 
 // The following classes are used for table-driven access to user-definable settings,
 // most of which appear in the Preferences dialog.  All other items in the preference file

@@ -23,6 +23,7 @@
 #include <wx/file.h>		// Needed for wxFile
 #include <wx/intl.h>		// Needed for _
 #include <wx/log.h>		// Needed for wxLogSysError
+#include <wx/textctrl.h>
 
 #include "EditServerListDlg.h"	// Interface declarations
 

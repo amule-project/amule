@@ -45,9 +45,8 @@
 #include <map>
 
 #include "CMD4Hash.h"
-#include "Preferences.h"
-//#include "loggable.h"
 
+class CPreferences;
 
 #define	 MAXPUBKEYSIZE		80
 

@@ -24,6 +24,7 @@
 
 #include <wx/hashmap.h>		// Needed for WX_DECLARE_HASH_MAP
 
+#include "CTypedPtrList.h"
 #include "types.h"		// Needed for uint8, uint16, uint32 and uint64
 #include "EMSocket.h"		// Needed for CEMSocket
 #include <wx/dynarray.h>

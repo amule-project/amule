@@ -20,7 +20,6 @@
 #ifndef UPLOADQUEUE_H
 #define UPLOADQUEUE_H
 
-#include <cstring>		// Needed for std::memset
 #include <wx/defs.h>		// Needed before any other wx/*.h
 
 #include "types.h"		// Needed for uint16, uint32 and uint64

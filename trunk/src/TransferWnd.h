@@ -21,12 +21,7 @@
 #define TRANSFERWND_H
 
 #include <wx/defs.h>		// Needed before any other wx/*.h
-#include <wx/colour.h>		// Needed before wx/listctrl.h
-#include <wx/event.h>		// Needed before wx/listctrl.h
-#include <wx/listctrl.h>	// Needed for wxListCtrl
 #include <wx/panel.h>		// Needed for wxPanel
-#include <wx/notebook.h>	// Needed for wxNotebookEvent
-#include <wx/splitter.h>		// Needed for wxSplitterEvent
 
 #include "types.h"		// Needed for uint32
 #include "resource.h"		// Needed for IDD_TRANSFER
@@ -37,6 +32,11 @@ class CDownloadListCtrl;
 class CQueueListCtrl;
 class CMuleNotebook;
 class wxListCtrl;
+class wxSplitterEvent;
+class wxNotebookEvent;
+class wxCommandEvent;
+class wxMouseEvent;
+class wxEvent;
 
 // CTransferWnd dialog
 

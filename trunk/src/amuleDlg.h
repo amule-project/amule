@@ -25,13 +25,9 @@
 #endif
 
 #include <wx/defs.h>		// Needed before any other wx/*.h.
-#include <wx/statusbr.h>	// Needed for wxStatusBar
 #include <wx/frame.h>		// Needed for wxFrame
-#include <wx/socket.h>		// Needed for wxSocketEvent
-#include <wx/timer.h>		// Needed for wxTimerEvent
-#include <wx/textctrl.h>	// Needed for wxTextCtrl
+#include <wx/timer.h>
 #include <wx/imaglist.h>
-
 
 #include "types.h"			// Needed for uint32
 #include "resource.h"		// Needed for IDD_EMULE_DIALOG
@@ -43,6 +39,9 @@ class CSearchDlg;
 class CChatWnd;
 class CStatisticsDlg;
 class PrefsUnifiedDlg;
+
+class wxTimerEvent;
+class wxTextCtrl;
 
 #ifndef __SYSTRAY_DISABLED__
 class CSysTray;

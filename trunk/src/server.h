@@ -23,7 +23,6 @@
 
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/list.h>		// Needed for WX_DECLARE_LIST
-#include <wx/treebase.h>	// Needed for wxTreeCtrl and wxTreeItemId
 
 #include "types.h"		// Needed for uint8, uint16 and uint32
 #include "CFile.h"

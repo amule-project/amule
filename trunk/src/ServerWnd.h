@@ -23,7 +23,6 @@
 
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/panel.h>		// Needed for wxPanel
-#include <wx/textctrl.h>	// Needed for wxTextCtrl
 
 #include "resource.h"		// Needed for IDD_SERVER
 
@@ -49,7 +48,6 @@ protected:
 	
 public:
 	
-	wxTextCtrl logbox;
 	void OnBnClickedAddserver(wxCommandEvent& evt);
 	void OnBnClickedUpdateservermetfromurl(wxCommandEvent& evt);
 	void OnBnClickedResetLog(wxCommandEvent& evt);
