@@ -155,14 +155,18 @@ namespace CLogger
 
 #ifdef __VERBOSE_OUTPUT__
 	#define AddDebugLogLineM( critical, type, string ) \
-	if ( critical || CLogger::IsEnabled( type ) ) { \
-		CLogger::AddDebugLogLine( critical, type, string ); \
-	}
+	do { \
+		if ( critical || CLogger::IsEnabled( type ) ) { \
+			CLogger::AddDebugLogLine( critical, type, string ); \
+		} \
+	} while ( false );
 #else
 	#define AddDebugLogLineM( critical, type, string ) \
-	if ( critical ) { \
-		CLogger::AddDebugLogLine( critical, type, string ); \
-	}
+	do { \
+		if ( critical ) { \
+			CLogger::AddDebugLogLine( critical, type, string ); \
+		} \
+	} while ( false );
 #endif
 
 #define AddLogLineM( critical, string ) \
