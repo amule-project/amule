@@ -267,7 +267,6 @@ noinst_HEADERS = AddFileThread.h \
 		 SharedFilesCtrl.h \
 		 SharedFilesWnd.h \
 		 sockets.h \
-		 SplitterControl.h \
 		 StatisticsDlg.h \
 		 SysTray.h \
 		 TextClient.h \
