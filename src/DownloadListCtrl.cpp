@@ -823,9 +823,8 @@ void CDownloadListCtrl::DrawFileItem(wxDC* dc, int nColumn, const wxRect& rect, 
 					}
 					if (theApp.glob_prefs->ShowPercent()) {
 						// Percentage of completing
-						float percent = lpPartFile->GetPercentCompleted();
 						// We strip anything below the first decimal point, to avoid Format doing roundings
-						percent -= fmod( percent, 0.1f );
+						float percent = floor( lpPartFile->GetPercentCompleted() * 10.0f ) / 10.0f;
 						
 						wxString buffer = wxString::Format( wxT("%.1f%%"), percent );
 						int middlex = (2*rect.GetX() + rect.GetWidth()) >> 1;
