@@ -22,12 +22,13 @@
 #ifndef LISTENSOCKET_H
 #define LISTENSOCKET_H
 
-#include <wx/hashmap.h>		// Needed for WX_DECLARE_HASH_MAP
 
-#include "CTypedPtrList.h"
 #include "types.h"		// Needed for uint8, uint16, uint32 and uint64
 #include "EMSocket.h"		// Needed for CEMSocket
+#include "CTypedPtrList.h"
 #include <wx/dynarray.h>
+
+#include <map> 
 
 WX_DECLARE_OBJARRAY(wxString, ArrayOfwxStrings);
 
@@ -35,25 +36,6 @@ class CUpDownClient;
 class CPacket;
 class CTimerWnd;
 class CPreferences;
-
-class MyIntegerHash {
-public:
-    MyIntegerHash() { }
-    uint64 operator()( uint64 x ) const { return x; }
-
-    MyIntegerHash& operator=(const MyIntegerHash&) { return *this; }
-};
-
-class MyIntegerEqual {
-public:
-    MyIntegerEqual() { }
-    bool operator()( uint64 a, uint64 b ) const { return a == b; }
-
-    MyIntegerEqual& operator=(const MyIntegerEqual&) { return *this; }
-};
-
-WX_DECLARE_HASH_MAP(uint64, uint32, MyIntegerHash, MyIntegerEqual, MyHashMap1);
-WX_DECLARE_HASH_MAP(uint64, uint64, MyIntegerHash, MyIntegerEqual, MyHashMap2);
 
 // CClientReqSocket;
 
@@ -171,8 +153,8 @@ private:
 	uint32	activeconnections;
 
 public:
-	MyHashMap1 offensecounter;
-	MyHashMap2 hashbase;  
+	std::map<uint64, uint32> offensecounter;
+	std::map<uint64, uint64> hashbase;  
 
 };
 

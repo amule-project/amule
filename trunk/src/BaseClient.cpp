@@ -196,9 +196,6 @@ void CUpDownClient::Init()
 	m_fHashsetRequesting = 0;
 	m_fSharedDirectories = 0;
 	m_dwEnteredConnectedState = 0;
-	// At the beginning, client is't a thief :)
-	leechertype = 0;
-	thief = false;
 	m_lastPartAsked = 0xffff;
 	m_nUpCompleteSourcesCount= 0;
 	m_lastRefreshedDLDisplay = 0;
@@ -209,6 +206,11 @@ void CUpDownClient::Init()
 	Extended_aMule_SO = 0;
 	m_Aggressiveness = 0;
 	m_LastFileRequest = 0;
+
+	// Imported from BlackRat : Anti-Leech
+	m_bGPLEvildoer = false;
+	m_bHasBeenGPLEvildoer = false;
+	// Import from BlackRat end
 	
 	ClearHelloProperties();	
 }
@@ -363,24 +365,75 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 			CTag temptag(data);
 			switch(temptag.tag.specialtag){
 				case CT_NAME:
-					if( temptag.tag.stringvalue ) {
-						m_Username = char2unicode(temptag.tag.stringvalue);
+					{
+						// Imported from BlackRat : Anti-Leech
+						bool bValidName = false;
+				
+						if ( !m_Username.IsEmpty() ) {
+							bValidName = true;
+							m_old_Username = m_Username;
+						}
+					
+						if ( temptag.tag.stringvalue ) {
+							m_Username = char2unicode(temptag.tag.stringvalue);
+						}
+
+						if ( m_Username != m_old_Username && !m_bGPLEvildoer ) {
+							if ( bValidName ) {
+								theApp.listensocket->offensecounter[getUID()]++;
+								theApp.listensocket->offensecounter[0]++;
+							}
+							
+							CheckForGPLEvilDoer_Nick();
+						}
+						// Import from BlackRat end
+
+						break;
 					}
-					break;
 				case CT_VERSION:
 					m_nClientVersion = temptag.tag.intvalue;
 					break;
 				case ET_MOD_VERSION:
-					if (temptag.tag.type == 2) {
-						m_strModVersion = char2unicode(temptag.tag.stringvalue);
-					} else if (temptag.tag.type == 3) {
-						m_strModVersion.Printf(_T("ModID=%u"), temptag.tag.intvalue);						
-					} else {
-						m_strModVersion = wxT("ModID=<Unknwon>");
+					{
+						// Imported from BlackRat : Anti-Leech
+						bool bValidMod = false;
+						if ( !m_strModVersion.IsEmpty() ) {
+							bValidMod = true;
+							m_old_ModVersion = m_strModVersion;
+							m_strModVersion.Clear();
+						}               
+					
+	
+						if (temptag.tag.type == 2) {
+							m_strModVersion = char2unicode(temptag.tag.stringvalue);
+						} else if (temptag.tag.type == 3) {
+							m_strModVersion.Printf(_T("ModID=%u"), temptag.tag.intvalue);
+						} else {
+							m_strModVersion = wxT("ModID=<Unknwon>");
+						}
+				
+						
+						if ( (m_strModVersion != m_old_ModVersion) && !m_bGPLEvildoer ) {
+							if ( bValidMod ) {
+								theApp.listensocket->offensecounter[getUID()]++;
+								theApp.listensocket->offensecounter[0]++;
+							}
+
+							CheckForGPLEvilDoer_Mod();
+						}
+						// Import from BlackRat end
+						
+						break;
 					}
-					break;			
 				case CT_PORT:
-					nUserPort = temptag.tag.intvalue;
+					// Imported from BlackRat [Vorlost/Sivka: Ban users trying to fake there port]
+					if ( temptag.tag.intvalue != nUserPort ) {
+						Ban();
+						m_Username = wxT("!FakedPortUser!");
+					} else {
+						nUserPort = temptag.tag.intvalue;
+					}
+					
 					break;
 				case CT_EMULE_UDPPORTS:
 					// 16 KAD Port
@@ -556,17 +609,44 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 	}
 
 	
-	// We want to educate Users of major comercial GPL breaking mods by telling them about the effects
-	// check for known advertising in usernames
-	// the primary aim is not to technical block those but to make users use a GPL-conform version
-	wxString strBuffer = m_Username;
-	strBuffer.MakeUpper();
-	strBuffer.Remove(' ');
-	if (strBuffer.Find(wxT("EMULE-CLIENT")) != -1 || strBuffer.Find(wxT("POWERMULE")) != -1){
-		m_bGPLEvildoer = true;  
-	}
-
 	ReGetClientSoft();
+
+
+	// Imported from BlackRat [xrmb: Anti-Leech]
+	if ( !m_bGPLEvildoer ) {
+		// Added by BlackRat [xrmb: own hash detection]
+		if ( theApp.serverconnect->GetClientID() != GetUserID() 
+			 && m_UserHash == theApp.glob_prefs->GetUserHash() )
+		{
+			Ban();
+ 			m_bGPLEvildoer = true;
+ 		}
+		// [xrmb: own hash detection]
+ 
+		// Added by BlackRat [xrmb: changed id detection]
+		uint64 thishash  = 0;
+		for ( int i = 0; i < 8; i++ )
+			thishash += GetUserHash()[i] << (i*8) ^ GetUserHash()[i+8] << (i*8);
+
+		std::map<uint64, uint64>::iterator it_1 = theApp.listensocket->hashbase.find( getUID() );
+		if ( it_1 != theApp.listensocket->hashbase.end() && it_1->second != thishash ) {
+			theApp.listensocket->offensecounter[getUID()]++;
+			theApp.listensocket->offensecounter[0]++;
+		}
+		
+		theApp.listensocket->hashbase[getUID()] = thishash;
+		// [xrmb: changed id detection] End
+
+		std::map<uint64, uint32>::iterator it_2 = theApp.listensocket->offensecounter.find( getUID() );
+		if ( it_2 != theApp.listensocket->offensecounter.end() && it_2->second >= 2 ) {
+			if ( !Credits() || Credits()->GetUploadedTotal() >= Credits()->GetDownloadedTotal() ) // must share
+			    m_bGPLEvildoer = true;
+
+			m_bHasBeenGPLEvildoer = true;
+		}
+	}
+	// [xrmb: Anti-Leech] End
+
 	
 	m_byInfopacketsReceived |= IP_EDONKEYPROTPACK;
 
@@ -773,17 +853,35 @@ void CUpDownClient::ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize)
 					SecIdentSupRec +=  2;
 					break;
 				case ET_MOD_VERSION:
-					if (temptag.tag.type == 2) {
-						m_strModVersion = char2unicode(temptag.tag.stringvalue);
+					{
+						// Imported from BlackRat : Anti-Leech
+						bool bValidMod = false;
+						if ( !m_strModVersion.IsEmpty() ){
+							bValidMod = true;
+							m_old_ModVersion = m_strModVersion;
+							m_strModVersion.Clear();
+						}
+						
+						if (temptag.tag.type == 2) {
+							m_strModVersion = char2unicode(temptag.tag.stringvalue);
+						} else if (temptag.tag.type == 3) {
+							m_strModVersion.Printf(_T("ModID=%u"), temptag.tag.intvalue);
+						} else {
+							m_strModVersion = _T("ModID=<Unknwon>");
+						}
+
+						if ( m_old_ModVersion != m_strModVersion && !m_bGPLEvildoer) {
+							if ( bValidMod ) {
+								theApp.listensocket->offensecounter[getUID()]++;
+								theApp.listensocket->offensecounter[0]++;
+							}
+
+							CheckForGPLEvilDoer_Mod();
+						}
+						// Import from BlackRat end
+						
+						break;
 					}
-					else if (temptag.tag.type == 3) {
-						m_strModVersion.Printf(_T("ModID=%u"), temptag.tag.intvalue);
-					}
-					else {
-						m_strModVersion = _T("ModID=<Unknwon>");
-					}
-					CheckForGPLEvilDoer();
-					break;
 				default:
 					//printf("Mule Unk Tag 0x%02x=%x\n", temptag.tag.specialtag, (UINT)temptag.tag.intvalue);
 					break;
@@ -817,6 +915,16 @@ void CUpDownClient::ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize)
 	}
 
 	ReGetClientSoft();
+
+	// Imported from BlackRat [xrmb: Anti-Leech]
+	std::map<uint64, uint32>::iterator it = theApp.listensocket->offensecounter.find( getUID() );
+	if ( it != theApp.listensocket->offensecounter.end() && it->second >= 2 ) {
+        if ( !Credits() || Credits()->GetUploadedTotal() >= Credits()->GetDownloadedTotal() ) // must share
+            m_bGPLEvildoer = true;
+
+        m_bHasBeenGPLEvildoer = true;
+	}
+	// Import from BlackRat end
 
 	m_byInfopacketsReceived |= IP_EMULEPROTPACK;
 
@@ -1881,12 +1989,200 @@ bool CUpDownClient::CheckHandshakeFinished(UINT WXUNUSED(protocol), UINT WXUNUSE
 	return true;
 }
 
-void CUpDownClient::CheckForGPLEvilDoer(){
-	// check for known major gpl breaker 
-	if (m_strModVersion.Trim().MakeUpper().Find(wxT("LH")) == 0 || m_strModVersion.Trim().MakeUpper().Find(wxT("LIO")) == 0 || m_strModVersion.Trim().MakeUpper().Find(wxT("LI0")) == 0){
-		m_bGPLEvildoer = true;
+
+/**
+ * Checks if a substring is to be found in a string.
+ */
+inline bool Contains( const wxString& string, const wxString& sub )
+{
+	return ( string.Find( sub ) != -1 );
+}
+
+void CUpDownClient::CheckForGPLEvilDoer_Nick()
+{
+	// Convert to lowercase for speedier comparisons
+	wxString username = m_Username.Lower();
+	
+	// check for known leecher
+	if (Contains( username, wxT("§¯å]¹qå[") )			||	// §¯Å]¹qÅ[
+		Contains( username, wxT("§¯å]¸tå[") )			||	// §¯Å]¸tÅ[
+		Contains( username, wxT("00de") )				||
+		Contains( username, wxT("a-edit") )				||	// a-eDit
+		Contains( username, wxT("agentsmith") )			||	// AgentSmith
+		Contains( username, wxT("bionic") )				||	// Bionic
+		Contains( username, wxT("brainkiller") )		||	// Brainkiller
+		Contains( username, wxT("burton") )				||	// Burton
+		Contains( username, wxT("buzzfuzz") )			||
+		Contains( username, wxT("celinesexy") )			||
+		Contains( username, wxT("chief") )				||	// Chief
+		Contains( username, wxT("cow.v") )				||	// Cow.v
+		Contains( username, wxT("darkmule") )			||
+		Contains( username, wxT("dodgethis") )			||
+		Contains( username, wxT("donpedro") )			||	// DonPedro
+		Contains( username, wxT("emule-client") )	 	||
+		Contains( username, wxT("efish") )				||	// eFish
+		Contains( username, wxT("-=egoist=-") )			||	// -=EGOist=-
+		Contains( username, wxT("egomule") )			||	// EGOmule
+		Contains( username, wxT("elfenpower") )			||	// ElfenPower
+		Contains( username, wxT("elfenwombat") )		||	// ElfenWombat
+		( Contains( username, wxT("emule") ) && Contains( username, wxT("booster") ) ) ||
+		Contains( username, wxT("emule@#$") )			||	// eMule@#$			
+		Contains( username, wxT("emule-speed") )		||
+		Contains( username, wxT("emulespeed") )			||
+		Contains( username, wxT("emulspeed") )			||
+		Contains( username, wxT("energyfaker") )		||
+		Contains( username, wxT("esl@d3vil") )			||	// eSl@d3vil
+		Contains( username, wxT("evortex") )			||	// eVortex
+		Contains( username, wxT("|evorte|x|") )			||	// |eVorte|X|
+		Contains( username, wxT("freeza") )				||	// Freeza
+		Contains( username, wxT("$gam3r$") )			||	// $GAM3R$
+		Contains( username, wxT("g@m3r") )				||	// G@m3r
+		Contains( username, wxT("gate-emule") )			||	// Gate-eMule
+		Contains( username, wxT("hardmule") )			||
+		Contains( username, wxT("imperator") )			||	// Imperator
+		Contains( username, wxT("je te pigeone") )		||	// Je Te Pigeone
+		Contains( username, wxT("killians") )			||	// Killians
+		Contains( username, wxT("leecha") )				||	// Leecha		
+		Contains( username, wxT("lh.2y.net") )			||
+		Contains( username, wxT("master mod") )			||	// Master Mod
+		Contains( username, wxT("merrek") )				||	// Merrek
+		Contains( username, wxT("muli_checka") )		||	// Muli_Checka
+		Contains( username, wxT("netstorm") )			||	// Netstorm
+		Contains( username, wxT("nother edition") )		||	// NotHer eDitiOn
+		Contains( username, wxT("$motty") )				||
+		Contains( username, wxT("nameless") )			||
+		( username == wxT("pbwll") ) 					||
+		Contains( username, wxT("pharao") )				||	// phArAo
+		Contains( username, wxT("powermule") )			||
+		Contains( username, wxT("project-sandstorm") )	||	// PrOjEcT-SaNdStOrM
+		Contains( username, wxT("pubsman") )			||
+		( username == wxT("punisher") )					||
+		Contains( username, wxT("rammstein") )			||	// RAMMSTEIN
+		Contains( username, wxT("relikt") )				||	// Relikt
+		Contains( username, wxT("reverse") )			||	// Reverse
+		Contains( username, wxT("rocket.t35") )			||
+		Contains( username, wxT("safty´s") )			||	// Safty´s
+		Contains( username, wxT("sauger") )				||	// Sauger
+		Contains( username, wxT("schlumpmule") )		||	// SchlumpMule
+		Contains( username, wxT("speed-unit") )			||	// Speed-Unit
+		Contains( username, wxT("taz456") )				||
+		Contains( username, wxT("[toxic]") )			||	// [toXic]
+		Contains( username, wxT("unknown poison") )		||	// UnKnOwN pOiSoN
+		( m_Username == wxT("unix user") )				||
+		Contains( username, wxT("vision") )				||	// Vision
+		Contains( username, wxT("$warez$") )			||	// $WAREZ$
+		Contains( username, wxT("x-mule") )				||	// X-MuLe
+		Contains( username, wxT("watson") )				||	// Watson
+		Contains( username, wxT("willtrash") )			||	// WillTrash
+		Contains( username, wxT("aideadsl.com") )		||	// aideADSL.com
+		Contains( username, wxT("pruna.com") )			||	// Pruna.com
+		Contains( username, wxT("mediavamp") )			||	// MediaVAMP
+		Contains( username, wxT("warezfaw") )			||	// WarezFaw
+		Contains( username, wxT("zulu") ) )					// Zulu
+	{
+		if ( !Credits() || Credits()->GetUploadedTotal() >= Credits()->GetDownloadedTotal() ) // must share
+			m_bGPLEvildoer = true;
+
+		m_bHasBeenGPLEvildoer = true;
+
+#ifdef __VERBOSE_OUTPUT__
+		printf("EVIL nickname found: %s\n", unicode2char( m_Username ) );
+#endif
 	}
 }
+
+void CUpDownClient::CheckForGPLEvilDoer_Mod()
+{
+	// Convert to lowercase for speedier comparisons
+	wxString modversion = m_strModVersion.Lower();
+	wxString old_modversion = m_old_ModVersion.Lower();
+	
+	// check for known unrespectful version of eMule
+	if ( // Added by BlackRat [EastShare : irregular clients]
+		Contains( m_clientVerString, wxT("0.60") ) ||	
+		Contains( m_clientVerString, wxT("0.69") ) ||	
+		( Contains( old_modversion, wxT("eastshare") ) && Contains( m_clientVerString, wxT("0.29") ) ) ||
+		// BlackRat : irregular blackrat mod
+		( Contains( old_modversion, wxT("blackrat 0.4") ) && !Contains( m_clientVerString, wxT("eMule v0.4") ) ) ||
+		// BlackRat : irregular ZX mod
+		( Contains( m_old_ModVersion, wxT("ZX") ) && Contains( m_clientVerString, wxT("v0.") ) ) ||
+		// BlackRat [irregular edonkey client]
+		( !m_old_ModVersion.IsEmpty() && Contains( m_clientVerString, wxT("eDonkey") ) ) ||
+		// Added by BlackRat [Icecream: irregular LSD mod]
+		( m_old_ModVersion.Lower().Find( wxT("lsd.7c") ) != -1 && m_old_ModVersion.Find( wxT("27") ) == -1 ) ||
+		// Added by BlackRat [LSD: irregular Clients Donkeys]
+		((GetVersion() > 589) && (GetSourceExchangeVersion() > 0) && (GetClientSoft() == SO_EDONKEY) ) ||
+		// check for known unrespectful version of eMule
+		Contains( modversion, wxT("§¯å]") )				||	// §¯Å]
+		Contains( modversion, wxT("aideadsl") )			||	// AideADSL
+		Contains( modversion, wxT("a i d e a d s l") )	||	// A I D E A D S L
+		Contains( modversion, wxT("aldo") )				||
+		Contains( modversion, wxT("antigate") )			||	// AntiGate
+		Contains( modversion, wxT("argo") )				||	// ArGo
+		Contains( modversion, wxT("booster") )			||
+		Contains( modversion, wxT("brain") )			||
+		Contains( modversion, wxT("buzzfuzz") )			||	// BuzzFuzz
+		Contains( modversion, wxT("crack") )			||
+		Contains( modversion, wxT("darkmule") )			||
+		Contains( modversion, wxT("d-unit") )			||
+		Contains( modversion, wxT("dm-") )				||	// DM-
+		Contains( modversion, wxT("dodgethis") )		||
+		Contains( modversion, wxT("dragon") )			||	// Dragon
+		Contains( modversion, wxT("egomule") )			||
+		Contains( modversion, wxT("element") )			||	// Element
+		Contains( modversion, wxT("epo") )				||
+		Contains( modversion, wxT("esl@d3vil") )		||	// eSl@d3vil
+		Contains( modversion, wxT("esladevil") )		||	// eSladevil
+		Contains( modversion, wxT("|ev|") )				||	// |eV|
+		Contains( modversion, wxT("evortex") )			||	// eVortex
+		Contains( modversion, wxT("father") )			||
+		Contains( modversion, wxT("fcb") )				||	// FCB
+		Contains( modversion, wxT("freeza") )			||	// Freeza
+		Contains( modversion, wxT("go ") )				||	// Go
+		Contains( modversion, wxT("golk ") )			||	// goLk
+		Contains( modversion, wxT("gt mod") )			||
+		Contains( modversion, wxT("hardmule") )			||
+		Contains( modversion, wxT("hardpaw") )			||
+		Contains( modversion, wxT("heartbreaker") )		||	// Heartbreaker
+		( m_strModVersion.Find( wxT("Ice") ) != -1 )	||
+		Contains( modversion, wxT("imperator") )		||
+		Contains( modversion, wxT("kalitsch") )			||	// Kalitsch
+		Contains( modversion, wxT("ketamine") )			||	// Ketamine
+		Contains( modversion, wxT("killians") )			||	// Killians
+		Contains( modversion, wxT("legolas") )			||	// LegoLas
+		Contains( modversion, wxT("lh") )				||	// LH
+		Contains( modversion, wxT("lsd.13") )			||	// LSD.13
+		Contains( modversion, wxT("mison") )			||	// Mison
+		Contains( modversion, wxT("moddet") )			||
+		Contains( modversion, wxT("$motty") )			||
+		Contains( modversion, wxT("neo mule") )			||	// Neo Mule
+		Contains( modversion, wxT("nos") )				||	// NOS
+		Contains( modversion, wxT("osama") )			||	// Osama
+		Contains( modversion, wxT("rappi") )			||	// Rappi
+		Contains( modversion, wxT("rocket") )			||	// Rocket
+		Contains( modversion, wxT("rul0r") )			||	// Rul0r
+		Contains( modversion, wxT("rykigam") )			||	// ryKigaM
+		Contains( modversion, wxT("snort") )			||	// SnORt
+		Contains( modversion, wxT("speedload") )		||	// SpeedLoad
+		Contains( modversion, wxT("speed-unit") )		||	// Speed-Unit
+		Contains( modversion, wxT("sweetmule") )		||	// SweetMule
+		Contains( modversion, wxT("thunder") )			||	// Thunder
+		Contains( modversion, wxT("warezfaw") )			||	// WarezFaw
+		Contains( modversion, wxT("|x|") )				||	// |X|
+		Contains( modversion, wxT("x-treme") )			||	// X-treme
+		( m_strModVersion == "v" ) ) 
+	{
+		if ( !Credits() || Credits()->GetUploadedTotal() >= Credits()->GetDownloadedTotal() ) // must share
+			m_bGPLEvildoer = true;
+
+		m_bHasBeenGPLEvildoer = true;
+		
+#ifdef __VERBOSE_OUTPUT__
+		printf("EVIL mod found: %s\n", unicode2char( m_strModVersion ) );
+#endif
+	}
+}
+
 
 wxString CUpDownClient::GetClientFullInfo() {
 
