@@ -905,7 +905,7 @@ END_EVENT_TABLE()
 
 
 PrefsUnifiedDlg::PrefsUnifiedDlg(wxWindow *parent)
-	: wxDialog(parent,9990, _("Preferences"), wxDefaultPosition, wxSize(820,780), wxDEFAULT_DIALOG_STYLE|wxSYSTEM_MENU | wxRESIZE_BORDER)
+	: wxDialog(parent,9990, _("Preferences"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxSYSTEM_MENU | wxRESIZE_BORDER)
 {
 	Rse *prse;
 	int id;
@@ -921,8 +921,8 @@ PrefsUnifiedDlg::PrefsUnifiedDlg(wxWindow *parent)
 	if (theApp.glob_prefs->BDlgTabsOnTop()) {
 		wxSizer* top_sizer = preferencesDlgTop( this, FALSE ); 
 		wxListCtrl* PrefsIcons = (wxListCtrl*) FindWindowById(ID_PREFSLISTCTRL,this);
-		wxPanel* PrefsPanel = (wxPanel*) FindWindowById(ID_PREFSPANEL,this);
-		PrefsPanel->Show(TRUE);
+		//wxPanel* PrefsPanel = (wxPanel*) FindWindowById(ID_PREFSPANEL,this);
+		//PrefsPanel->Show(TRUE);
 		PrefsIcons->SetSize(wxSize(150,-1));
 		wxASSERT(PrefsIcons);
 		wxImageList* icon_list = new wxImageList(16,16);
@@ -945,44 +945,56 @@ PrefsUnifiedDlg::PrefsUnifiedDlg(wxWindow *parent)
 		for (int i = 0; i < 11; i++) {
 			PrefsIcons->InsertItem(i, m_text[i], i);
 		}
-		PrefsPanels[0] = new wxPanel( PrefsPanel , -1 );
+		PrefsPanels[0] = new wxPanel(  this, -1 );
 		PreferencesGeneralTab( PrefsPanels[0], TRUE );
 		PrefsPanels[0]->Show(FALSE);
-		PrefsPanels[1] = new wxPanel( PrefsPanel , -1 );
+		PrefsPanels[1] = new wxPanel( this , -1 );
 		PreferencesConnectionTab( PrefsPanels[1], TRUE );
 		PrefsPanels[1]->Show(FALSE);
-		PrefsPanels[2] = new wxPanel( PrefsPanel , -1 );
+		PrefsPanels[2] = new wxPanel( this , -1 );
 		PreferencesRemoteControlsTab( PrefsPanels[2], TRUE );
 		PrefsPanels[2]->Show(FALSE);
-		PrefsPanels[3] = new wxPanel( PrefsPanel , -1 );
+		PrefsPanels[3] = new wxPanel( this , -1 );
     		PreferencesServerTab( PrefsPanels[3], TRUE );
 		PrefsPanels[3]->Show(FALSE);
-		PrefsPanels[4] = new wxPanel( PrefsPanel , -1 );
+		PrefsPanels[4] = new wxPanel( this , -1 );
 		PreferencesFilesTab( PrefsPanels[4], TRUE );
 		PrefsPanels[4]->Show(FALSE);
-		PrefsPanels[5] = new wxPanel( PrefsPanel , -1 );
+		PrefsPanels[5] = new wxPanel( this , -1 );
 		PreferencesSourcesDroppingTab( PrefsPanels[5], TRUE );
 		PrefsPanels[5]->Show(FALSE);
-		PrefsPanels[6] = new wxPanel( PrefsPanel , -1 );
+		PrefsPanels[6] = new wxPanel( this , -1 );
 		PreferencesDirectoriesTab( PrefsPanels[6], TRUE );
 		PrefsPanels[6]->Show(FALSE);
-		PrefsPanels[7] = new wxPanel( PrefsPanel , -1 );
+		PrefsPanels[7] = new wxPanel( this , -1 );
 		PreferencesStatisticsTab( PrefsPanels[7], TRUE );
 		PrefsPanels[7]->Show(FALSE);
-		PrefsPanels[8] = new wxPanel( PrefsPanel , -1 );
+		PrefsPanels[8] = new wxPanel( this , -1 );
 		PreferencesNotifyTab( PrefsPanels[8], TRUE );
 		PrefsPanels[8]->Show(FALSE);
-		PrefsPanels[9] = new wxPanel( PrefsPanel , -1 );
+		PrefsPanels[9] = new wxPanel( this , -1 );
 		PreferencesaMuleTweaksTab( PrefsPanels[9], TRUE );
 		PrefsPanels[9]->Show(FALSE);
-		PrefsPanels[10] = new wxPanel( PrefsPanel , -1 );
+		PrefsPanels[10] = new wxPanel( this , -1 );
 		PreferencesGuiTweaksTab( PrefsPanels[10], TRUE );
 		PrefsPanels[10]->Show(FALSE);
 
-		PrefsPanels[0]->Show(TRUE);
+		for (int i = 0; i < 11; i++) {
+			prefs_sizer->Add(PrefsPanels[i]);
+			prefs_sizer->Show(PrefsPanels[i], FALSE);
+		}
+
+		prefs_sizer->Show(PrefsPanels[0],TRUE);
+		prefs_sizer->Layout();
+
 		//prefs_select_sizer->Add(new_parent, 0 , wxGROW | wxEXPAND);
-		
+
 		CurrentPrefsPanel = PrefsPanels[0];
+		
+		this->Fit();
+		//PrefsPanel->Fit();
+		//CurrentPrefsPanel->Fit();
+		
 		//prefs_select_sizer->Fit();
 		//prefs_main_sizer->Fit( this );
 		//top_sizer->Fit( this );
@@ -1426,7 +1438,10 @@ void PrefsUnifiedDlg::SaveAllItems(wxConfigBase& ini)
 }
 
 void PrefsUnifiedDlg::OnPrefsPageChange(wxListEvent& event) {
-	CurrentPrefsPanel->Show(FALSE);
+
+	prefs_sizer->Show(CurrentPrefsPanel,FALSE);
 	CurrentPrefsPanel = PrefsPanels[event.GetIndex()];
-	CurrentPrefsPanel->Show(TRUE);
+	prefs_sizer->Show(CurrentPrefsPanel,TRUE);
+	prefs_sizer->Layout();
+	this->Fit();
 }

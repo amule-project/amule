@@ -19,6 +19,19 @@
 
 #include <wx/intl.h>
 
+// Euro sign hack of the year
+#if wxUSE_UNICODE
+    #define __WDR_EURO__ wxT("\u20ac")
+#else
+    #if defined(__WXMAC__)
+        #define __WDR_EURO__ wxT("\xdb")
+    #elif defined(__WXMSW__)
+        #define __WDR_EURO__ wxT("\x80")
+    #else
+        #define __WDR_EURO__ wxT("\xa4")
+    #endif
+#endif
+
 // Custom source
 #include "types.h"
 #include "amule.h"
@@ -2512,9 +2525,6 @@ wxSizer *PreferencesaMuleTweaksTab( wxWindow *parent, bool call_fit, bool set_si
     wxStaticText *item6 = new wxStaticText( parent, IDC_WARNING, _("!!! WARNING !!!"), wxDefaultPosition, wxDefaultSize, 0 );
     item6->SetForegroundColour( *wxRED );
     item6->SetFont( wxFont( 24, wxROMAN, wxNORMAL, wxNORMAL ) );
-#if defined(__WXMSW__) && !(wxCHECK_VERSION(2,3,0))
-    item6->SetSize( item6->GetBestSize() );
-#endif
     item4->Add( item6, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxALL, 5 );
 
     wxStaticText *item7 = new wxStaticText( parent, IDC_STATIC, 
@@ -2889,6 +2899,7 @@ wxSizer *PreferencesRemoteControlsTab( wxWindow *parent, bool call_fit, bool set
 
 wxSizer *prefs_main_sizer;
 wxSizer *prefs_select_sizer;
+wxSizer *prefs_sizer;
 wxSizer *preferencesDlgTop( wxWindow *parent, bool call_fit, bool set_sizer )
 {
     wxFlexGridSizer *item0 = new wxFlexGridSizer( 2, 0, 0, 0 );
@@ -2902,8 +2913,10 @@ wxSizer *preferencesDlgTop( wxWindow *parent, bool call_fit, bool set_sizer )
     wxListCtrl *item2 = new wxListCtrl( parent, ID_PREFSLISTCTRL, wxDefaultPosition, wxSize(150,350), wxLC_REPORT|wxLC_NO_HEADER|wxLC_SINGLE_SEL|wxSUNKEN_BORDER );
     item1->Add( item2, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxPanel *item3 = new wxPanel( parent, ID_PREFSPANEL, wxDefaultPosition, wxSize(550,700), 0 );
-    item1->Add( item3, 0, wxALIGN_CENTER|wxALL, 0 );
+    wxBoxSizer *item3 = new wxBoxSizer( wxHORIZONTAL );
+    prefs_sizer = item3;
+
+    item1->Add( item3, 0, wxALIGN_CENTER, 5 );
 
     item0->Add( item1, 0, wxADJUST_MINSIZE|wxGROW, 5 );
 
