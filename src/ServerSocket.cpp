@@ -17,6 +17,7 @@
 //along with this program; if not, write to the Free Software
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+//#define SERVER_NET_TEST
 
 #include <ctime>
 #include <cerrno>
@@ -335,7 +336,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 			}
 			case OP_SEARCHRESULT: {
 				#ifdef SERVER_NET_TEST
-				AddLogLine(true,_("ServerMsg - OP_SearchResult\n"));
+				AddLogLineM(true,_("ServerMsg - OP_SearchResult\n"));
 				#endif
 				theApp.downloadqueue->AddDownDataOverheadServer(size);
 				CServer* cur_srv = (serverconnect) ? serverconnect->GetCurrentServer() : NULL;
@@ -344,7 +345,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 			}
 			case OP_FOUNDSOURCES: {
 				#ifdef SERVER_NET_TEST
-				AddLogLineF(true,_("ServerMsg - OP_FoundSources; Sources=%u  %s\n"), (UINT)(uchar)packet[16], DbgGetFileInfo((uchar*)packet)); // Creteil
+				AddLogLineM(true,wxString::Format(_("ServerMsg - OP_FoundSources; sources = %u\n"), (UINT)(uchar)packet[16]));
 				#endif
 				theApp.downloadqueue->AddDownDataOverheadServer(size);
 				CMemFile* sources = new CMemFile((BYTE*)packet,size);
@@ -383,10 +384,11 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				#ifdef SERVER_NET_TEST
 				AddLogLineM(true,_("ServerMsg - OP_ServerIdent\n"));
 				#endif
+				DumpMem(packet,size);
 
 				theApp.downloadqueue->AddDownDataOverheadServer(size);
 				if (size<38) {
-					AddLogLineM(false, _("Unknown server info received !"));
+					AddLogLineM(false, _("Unknown server info received! - too short"));
 					// throw wxString(wxT("Unknown server info received!"));
 					break;
 				}
@@ -395,19 +397,23 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				uint16 num,num2;
 				memcpy(buffer,&packet[30],size-30);// 1st 30 char contain only server address & fillers
 				memcpy(&num,&buffer[0],2); // length of server_name
+				ENDIAN_SWAP_I_16(num);
 				if ((uint32)(num + 2) > (size - 30)) {
+	                                printf("%u + 2 > %u - 30\n",num,size);
 					delete[] buffer;
-					throw wxString(_("Unknown server info received!"));
+					throw wxString(_("Unknown server info received!- wrong server name"));
 				}
 				char* temp=new char[size-38+1];
 				memcpy(temp,&buffer[2],num);
 				temp[num]=0;//close the string
 				update->SetListName(char2unicode(temp));
 				memcpy(&num2,&buffer[num+6],2);
+                                ENDIAN_SWAP_I_16(num2);
 				if ((uint32)(num2 + num + 8) > (size - 30)) {
+	                                printf("%u + %u + 8 > %u - 30\n",num2,num,size);
 					delete[] temp;
 					delete[] buffer;
-					throw wxString(_("Unknown server info received!"));
+					throw wxString(_("Unknown server info received! - wrong description"));
 				}
 				memcpy (temp,&buffer[num+8],num2);
 				temp[num2]=0; //close the string
@@ -506,7 +512,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 void CServerSocket::ConnectToServer(CServer* server)
 {
 	#ifdef SERVER_NET_TEST
-	AddLogLine(true,_("Trying to connect\n"));
+	AddLogLineM(true,_("Trying to connect\n"));
 	#endif
 	cur_server = new CServer(server);
 	AddLogLineM(false, _("Connecting to ") + cur_server->GetListName() + wxT(" (") + server->GetAddress() + wxT(" - ") + cur_server->GetFullIP() + wxString::Format(wxT(":%i)"),cur_server->GetPort()));
@@ -616,15 +622,19 @@ void CServerSocketHandler::ServerSocketHandler(wxSocketEvent& event) {
 	
 	switch(event.GetSocketEvent()) {
 		case wxSOCKET_CONNECTION:
+			printf("wxSOCKET_CONNECTION\n");
 			socket->OnConnect(wxSOCKET_NOERROR);
 			break;
 		case wxSOCKET_LOST:
+			printf("wxSOCKET_LOST\n");
 			socket->OnError(socket->LastError());
 			break;
 		case wxSOCKET_INPUT:
+			printf("wxSOCKET_INPUT\n");
 			socket->OnReceive(wxSOCKET_NOERROR);
 			break;
 		case wxSOCKET_OUTPUT:
+			printf("wxSOCKET_OUTPUT\n");
 			socket->OnSend(wxSOCKET_NOERROR);
 			break;
 		default:

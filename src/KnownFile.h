@@ -20,13 +20,15 @@
 #ifndef KNOWNFILE_H
 #define KNOWNFILE_H
 
+#include "CMD4Hash.h"
+
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/dynarray.h>
 
 #include "types.h"		// Needed for int8, uint8, uint16, uint32 and uint64
 #include "opcodes.h"		// Needed for PARTSIZE
 #include "CTypedPtrList.h"	// Needed for CTypedPtrList
-#include "CMD4Hash.h"
+
 
 #define	PS_READY			0
 #define	PS_EMPTY			1

@@ -19,7 +19,6 @@
 //along with this program; if not, write to the Free Software
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <wx/string.h>
@@ -760,17 +759,40 @@ bool CKnownFile::WriteToFile(CFile* file){
 	return true;
 }
 
+#include <openssl/md4.h>
+
+#define USE_CRYPTO_HASH
+
 void CKnownFile::CreateHashFromInput(FILE* file, CFile* file2, int Length, uchar* Output, uchar* in_string) {
+
+#ifdef USE_CRYPTO_HASH
+	
+		if (in_string) {
+			MD4(in_string,Length,Output);
+		} else { 
+			unsigned char* input = new unsigned char[Length];
+			if (file) {
+				fread(input,Length,1,file); 
+			} else if (file2) {
+				file2->Read(input,Length);
+			}
+			MD4(input,Length,Output);
+			delete[] input;
+		}
+
+#else
 	// time critial
+
+	CFile* data = NULL;
+	if (in_string)
+		data = new CMemFile(in_string,Length);
+		
 	bool PaddingStarted = false;
 	uint32 Hash[4];
 	Hash[0] = 0x67452301;
 	Hash[1] = 0xEFCDAB89;
 	Hash[2] = 0x98BADCFE;
 	Hash[3] = 0x10325476;
-	CFile* data = NULL;
-	if (in_string)
-		data = new CMemFile(in_string,Length);
 	uint32 Required = Length;
 	uchar   X[64*128];  
 	while (Required >= 64){
@@ -811,16 +833,21 @@ void CKnownFile::CreateHashFromInput(FILE* file, CFile* file2, int Length, uchar
 		X[Required++] = 0x80;
 	memset(&X[Required], 0, 64 - Required);
 	// add size (convert to bits)
-	uint32 Length2 = Length >> 29;
-	Length <<= 3;
+	uint32 Length2 = Length >> 29; // Length / 2^29 (536870912)
+	Length <<= 3; // Length * 8
 	memcpy(&X[56], &Length, 4);
 	memcpy(&X[60], &Length2, 4);
 	MD4Transform(Hash, (uint32*)X);
 	md4cpy(Output, Hash);
+
 	if (data) {
 		delete data;
 		data = 0;
 	}
+
+#endif
+
+	
 }
 
 const CMD4Hash& CKnownFile::GetPartHash(uint16 part) const {
