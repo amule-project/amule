@@ -6,6 +6,7 @@
 
 #include "functions.h"
 #include "configfile.h"
+#include "graphics.h"
 
 /*
  * this is the funcion that writes the text to the image.
