@@ -371,12 +371,13 @@ int CamulewebApp::OnRun() {
 
 
 #ifndef AMULEWEBDLG
+// Command line version
 bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& amuleweb_parser) {
 	
 	bool result = true;
 	
 	// Call base class version to process standard command line options
-	result = wxApp::OnCmdLineParsed(amuleweb_parser);
+	//result = wxAppConsole::OnCmdLineParsed(amuleweb_parser);
 
 	if ( !amuleweb_parser.Found(wxT("rh"), &hostName) ) {
 		hostName = wxT("localhost");
