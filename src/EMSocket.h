@@ -86,7 +86,7 @@ private:
 	bool	pendingOnReceive;
 
 	// Download partial header
-	char*	pendingHeader[PACKET_HEADER_SIZE];      
+	char	pendingHeader[PACKET_HEADER_SIZE];      
 	uint32	pendingHeaderSize;
 
 	// Download partial packet
