@@ -93,6 +93,9 @@ CClientUDPSocket::~CClientUDPSocket()
 
 void CClientUDPSocket::OnReceive(int WXUNUSED(nErrorCode))
 {
+	if (thePrefs::IsUDPDisabled()) {
+		ReceiveAndDiscard();
+	}
 	char buffer[CLIENT_UDP_BUFFER_SIZE];
 	amuleIPV4Address addr;
 	RecvFrom(addr,buffer,CLIENT_UDP_BUFFER_SIZE);
@@ -108,7 +111,11 @@ void CClientUDPSocket::ReceiveAndDiscard() {
 	char buffer[CLIENT_UDP_BUFFER_SIZE];
 	amuleIPV4Address addr;
 	RecvFrom(addr,buffer,CLIENT_UDP_BUFFER_SIZE);	
-	// And the discard.
+	// And then discard.
+
+	if (thePrefs::IsUDPDisabled()) {
+		Close();
+	}
 }
 
 bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, uint32 host, uint16 port)
