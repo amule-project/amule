@@ -530,7 +530,7 @@ void CamuleDlg::AddLogLine(bool addtostatusbar, const wxString& line)
 	wxTextCtrl* ct = CastByID( ID_LOGVIEW, serverwnd, wxTextCtrl );
 	if ( ct ) {
 		ct->AppendText( stamp + bufferline + wxT("\n") );
-		ct->ShowPosition( ct->GetValue().Length() - 1 );
+		ct->ShowPosition( ct->GetLastPosition() - 1 );
 	}
 	
 
@@ -563,7 +563,7 @@ void CamuleDlg::AddServerMessageLine(wxString& message)
 		} else {
 			cv->AppendText(message + wxT("\n"));
 		}
-		cv->ShowPosition(cv->GetValue().Length()-1);
+		cv->ShowPosition(cv->GetLastPosition()-1);
 	}
 }
 
