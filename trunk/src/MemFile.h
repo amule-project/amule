@@ -21,7 +21,6 @@
 #define MEMFILE_H
 
 #if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-// implementation in MemFile.cpp
 #pragma interface "MemFile.h"
 #endif
 
