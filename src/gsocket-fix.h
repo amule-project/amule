@@ -27,11 +27,12 @@
 #if !defined(wxCHECK_VERSION_FULL)
 
 	#define wxCHECK_VERSION_FULL(major,minor,release,subrel) \
-		wxCHECK_VERSION(major, minor, release) && \
-			((major) != wxMAJOR_VERSION || \
-			 (minor) != wxMINOR_VERSION || \
-			 (release) != wxRELEASE_NUMBER || \
-			 (subrel) >= wxSUBRELEASE_NUMBER)
+		(wxMAJOR_VERSION > (major) || \
+		(wxMAJOR_VERSION == (major) && wxMINOR_VERSION > (minor)) || \
+		(wxMAJOR_VERSION == (major) && wxMINOR_VERSION == (minor) && \
+		 	wxRELEASE_NUMBER > (release)) || \
+		 wxMAJOR_VERSION == (major) && wxMINOR_VERSION == (minor) && \
+		 	wxRELEASE_NUMBER == (release) && wxSUBRELEASE_NUMBER >= (subrel))
 
 #endif
 
@@ -49,7 +50,6 @@
 #else
 	// If wx >= 2.5.2.3, there is nothing to do, wx socket.c is fine now.
 #endif
-
 
 #endif // __GSOCKET_FIX_H__
 
