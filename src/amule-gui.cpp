@@ -300,56 +300,6 @@ int CamuleGuiApp::InitGui(bool geometry_enabled, wxString &geom_string)
 }
 
 
-#define wxGTK_WINDOW 1
-#define SHIFT (8 * (sizeof(short int) - sizeof(char)))
-
-static bool GetColourWidget(int &red, int &green, int &blue, int type)
-{
-#ifdef __WXGTK__
-	GtkWidget *widget;
-        GtkStyle *def;
-
-        if (type == wxGTK_WINDOW) {
-                widget = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-                (def = gtk_rc_get_style(widget)) ? : (def =gtk_widget_get_default_style());
-        }
-        else return FALSE;
-
-        GdkColor *col;
-        col = def->bg;
-        red = col[GTK_STATE_NORMAL].red;
-        green = col[GTK_STATE_NORMAL].green;
-        blue = col[GTK_STATE_NORMAL].blue;
-        gtk_widget_destroy(widget);
-        return TRUE;
-#else
-	return FALSE;
-#endif
-}
-
-
-// external helper function
-wxColour GetColour(wxSystemColour what)
-{
-	static wxColour *_systemWindowColour = NULL;
-
-	switch (what) {
-		case wxSYS_COLOUR_WINDOW:
-			if (!_systemWindowColour) {
-				int red, green, blue;
-				if (!GetColourWidget(red, green, blue, wxGTK_WINDOW)) {
-					red = green = blue = 0x9c40;
-				}
-				_systemWindowColour = new wxColour(red >> SHIFT, green >> SHIFT, blue >> SHIFT);
-			}
-			return *_systemWindowColour;
-			break;
-		default:
-			break;
-	}
-	return true;
-}
-
 void CamuleGuiApp::ListenSocketHandler(wxSocketEvent& event)
 {
 	wxASSERT(event.GetSocket()->IsKindOf(CLASSINFO(CListenSocket)));
