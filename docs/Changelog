@@ -30,7 +30,7 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 
 	Phoenix:
 		* Fixed crash in CClientReqSocket::ProcessExtPacket()
-		processing of OP_COMPRESSEDPART.
+		  processing of OP_COMPRESSEDPART.
 		* More UNICODE fixes.
 		* Fixed WX_SYSTRAY compilation on wx-2.4.2.
 		* More proxy updates, we are getting there.
@@ -50,6 +50,7 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		* In StateMachine.cpp, m_state is now private and state machine code 
 		  is now thread safe.
 		* Added base64 encoding/decoding support to aMule.
+		* SOCKS5 and SOCKS4 proxy support is working now.
 		
 	Ken:
 		* Fixed Mac bug: window was a little larger each restart
