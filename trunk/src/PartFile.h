@@ -201,7 +201,6 @@ protected:
 	void	CompleteFile(bool hashingdone);
 	void	CreatePartFile();
 	void	Init();
-	wxMutex 	m_FileCompleteMutex; // Lord KiRon - Mutex for file completion
 private:
 	uint32	m_iLastPausePurge;
 	uint16	count;
@@ -312,6 +311,7 @@ private:
           /* downloading sources list */
           CTypedPtrList<CPtrList, CUpDownClient*> m_downloadingSourcesList;
 
+		static wxMutex 	m_FileCompleteMutex; 
 
 /* End modif */
 friend class completingThread;
@@ -319,20 +319,22 @@ friend class completingThread;
 
 class completingThread : public wxThread
 {
-  private:
-  void* Entry();
-  int result;
-  CPartFile* completing;
+public:
 
-  public:
+	~completingThread();
+	completingThread::completingThread(CPartFile*);
+	completingThread() { };
 
-  ~completingThread();
-  completingThread::completingThread(CPartFile*);
-  completingThread();
+	void setFile(CPartFile*);
 
-  void setFile(CPartFile*);
-  void OnExit();
+private:
+	virtual	bool		InitInstance() {return true;}	
+	virtual wxThread::ExitCode 	Entry();
+	uint8 completing_result;
+	CPartFile* completing;
+	virtual void OnExit();  	
 
+	
 };
 
 #endif // PARTFILE_H
