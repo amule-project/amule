@@ -151,9 +151,6 @@ struct Preferences_Struct{
 	int16	clientListColumnWidths[8];
 	Bool	clientListColumnHidden[8];
 	int16 	clientListColumnOrder[8];
-#ifndef UNIFIED_PREF_HANDLING
-	DWORD	statcolors[cntStatColors];
-#endif
 
 	uint8	splashscreen;
 	uint8	filterBadIP;
@@ -742,13 +739,6 @@ public:
 	bool ShowProgBar() { return prefs->ProgBar; }
 	bool ShowPercent() { return prefs->Percent; }	
 	
-		
-#ifndef UNIFIED_PREF_HANDLING
-	void	SetStatsColor(int index,DWORD value) 	{prefs->statcolors[index]=value;}
-	DWORD	GetStatsColor(int index) 		{return prefs->statcolors[index];}
-	void	ResetStatsColor(int index);
-#endif
-
 protected:
 	void	CreateUserHash();
 	void	SetStandartValues();

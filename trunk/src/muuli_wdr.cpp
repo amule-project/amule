@@ -3362,10 +3362,7 @@ void muleToolbar( wxToolBar *parent )
     parent->AddTool( ID_BUTTONMESSAGES, _("Messages"), amuleDlgImages( 22 ), wxNullBitmap, wxITEM_CHECK, _("Messages Window") );
     parent->AddTool( ID_BUTTONSTATISTICS, _("Statistics"), amuleDlgImages( 16 ), wxNullBitmap, wxITEM_CHECK, _("Statistics Graph Window") );
     parent->AddSeparator();
-    parent->AddTool( ID_BUTTONPREFERENCES, _("Preferences"), amuleDlgImages( 19 ), wxNullBitmap, wxITEM_NORMAL, _("Preferences Settings Window") );
-    parent->EnableTool( ID_BUTTONPREFERENCES, FALSE );
-    parent->AddSeparator();
-    parent->AddTool( ID_BUTTONNEWPREFERENCES, _("New Prefs"), amuleDlgImages( 19 ), wxNullBitmap, wxITEM_NORMAL, _("News Preferences Work in Progress") );
+    parent->AddTool( ID_BUTTONNEWPREFERENCES, _("Preferences"), amuleDlgImages( 19 ), wxNullBitmap, wxITEM_NORMAL, _("Preferences Settings Window") );
     
     parent->Realize();
 }

@@ -45,6 +45,8 @@
 #ifdef __OPENBSD__
 	// glibc -> bsd libc
 	#define round rint
+#else
+	#define round(x) floor(x+0.5)
 #endif /* __OPENBSD__ */
 // CStatisticsDlg dialog
 
@@ -145,11 +147,9 @@ void CStatisticsDlg::ApplyStatsColor(int index)
 	static char aTrend[] = { 0,0,  2,     1,     0,           2,     1,     0,          1,    2,    0 };
 	static int aRes[] = { 0,0, IDC_C0,IDC_C0_3,IDC_C0_2,  IDC_C1,IDC_C1_3,IDC_C1_2,  IDC_S0,IDC_S3,IDC_S1 };
 	static COScopeCtrl** apscope[] = { NULL, NULL, &pscopeDL,&pscopeDL,&pscopeDL, &pscopeUL,&pscopeUL,&pscopeUL, &pscopeConn,&pscopeConn,&pscopeConn };
-#ifndef UNIFIED_PREF_HANDLING
-	COLORREF cr = theApp.glob_prefs->GetStatsColor(index);
-#else
+
 	COLORREF cr = acrStat[index];  
-#endif
+
 	int iRes = aRes[index];
 	int iTrend = aTrend[index];
 	COScopeCtrl** ppscope = apscope[index];

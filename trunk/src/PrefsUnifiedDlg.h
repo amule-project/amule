@@ -30,9 +30,6 @@
     #include "wx/wx.h"
 #endif
 
-#define UNIFIED_PREF_HANDLING
-//#define DISABLE_OLDPREFS
-
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/dialog.h>		// Needed for wxDialog
 #include "muuli_wdr.h"

@@ -457,8 +457,7 @@ wxSizer *LocaleWarning( wxWindow *parent, bool call_fit = TRUE, bool set_sizer =
 #define ID_BUTTONSHARED 10333
 #define ID_BUTTONMESSAGES 10334
 #define ID_BUTTONSTATISTICS 10335
-#define ID_BUTTONPREFERENCES 10336
-#define ID_BUTTONNEWPREFERENCES 10337
+#define ID_BUTTONNEWPREFERENCES 10336
 void muleToolbar( wxToolBar *parent );
 
 // Declare bitmap functions

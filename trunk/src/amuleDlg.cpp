@@ -58,7 +58,6 @@
 #include "ChatWnd.h"		// Needed for CChatWnd
 #include "StatisticsDlg.h"	// Needed for CStatisticsDlg
 #include "SharedFilesWnd.h"	// Needed for CSharedFilesWnd
-#include "PreferencesDlg.h"	// Needed for CPreferencesDlg
 #include "TransferWnd.h"	// Needed for CTransferWnd
 #include "SearchDlg.h"		// Needed for CSearchDlg
 #include "ServerWnd.h"		// Needed for CServerWnd
@@ -100,9 +99,6 @@ BEGIN_EVENT_TABLE(CamuleDlg,wxFrame)
 	EVT_TOOL(ID_BUTTONSHARED,CamuleDlg::OnBnShared)
 	EVT_TOOL(ID_BUTTONMESSAGES,CamuleDlg::OnBnMessages)
 	EVT_TOOL(ID_BUTTONSTATISTICS,CamuleDlg::OnBnStats)
-#ifndef DISABLE_OLDPREFS
-	EVT_TOOL(ID_BUTTONPREFERENCES,CamuleDlg::btnPreferences)
-#endif
 	EVT_TOOL(ID_BUTTONNEWPREFERENCES,CamuleDlg::OnBnNewPreferences)
 	EVT_TIMER(ID_UQTIMER,CamuleDlg::OnUQTimer)
 	EVT_TIMER(TM_UDPSOCKET,CamuleDlg::OnUDPTimer)
@@ -203,9 +199,6 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, wxString title) : wxFrame(
 	serverwnd=new CServerWnd(p_cnt);
 	searchwnd=new CSearchDlg(p_cnt);
 	transferwnd=new CTransferWnd(p_cnt);
-#ifndef DISABLE_OLDPREFS
-	preferenceswnd=new CPreferencesDlg(p_cnt,theApp.glob_prefs);
-#endif
 	prefsunifiedwnd=new PrefsUnifiedDlg(p_cnt);
 	sharedfileswnd=new CSharedFilesWnd(p_cnt);
 	statisticswnd=new CStatisticsDlg(p_cnt);
@@ -429,16 +422,6 @@ void CamuleDlg::OnBnMessages(wxEvent& ev) {
 			SetActiveDialog(chatwnd);
 			m_nActiveDialog = 5;
 		}
-	}
-}
-
-void CamuleDlg::btnPreferences(wxEvent& ev) {
-	// do preferences
-	// Kry - just if the app is ready for it
-	if (theApp.IsReady) {
-#ifndef DISABLE_OLDPREFS
-		preferenceswnd->ShowModal();
-#endif
 	}
 }
 
