@@ -1,4 +1,4 @@
-.TH AMULECMD 1
+.TH AMULECMD 1 "March 2005" "aMuleCmd v2.0.0" "aMule utilities"
 .SH NAME
 amulecmd \- Text-basiertes Client Programm um aMule zu kontrollieren
 .SH SYNOPSIS
@@ -13,43 +13,50 @@ amulecmd \- Text-basiertes Client Programm um aMule zu kontrollieren
 .RB [ \-c " " \fI<command> ]
 .PP
 .B amulecmd
+.RB [ \-f " " \fI<path> ]
+.B \-\-create-config-from=\fI<path>
+.PP
+.B amulecmd
 .RB [ \-\-help ]
 .RB [ \-\-version ]
 .SH BESCHREIBUNG
-amulecmd ist ein Text-basiertes Programm um aMule zu steuern.
-Nuetzliche Hilfe wird angezeigt wenn das Programm gestartet wird.
+\fBamulecmd\fR ist ein Text-basiertes Programm um aMule zu steuern.
+Nützliche Hilfe wird angezeigt wenn das Programm gestartet wird.
+.PP
+\fBamulecmdDLG\fR ist die GUI version von \fBamulecmd\fR, der einzige Unterschied ist das die GUI version die\fB\-c\fR Option nicht akzeptiert.
 .TP
 \fB\-h\fR, \fB\-\-host\fR=\fI<host>\fR
-Host auf dem aMule laeuft (default: \fIlocalhost\fR). \fI<host>\fR es kann sich um eine IP-Address oder DNS Namen handeln
+Host auf dem aMule läuft (standart: \fIlocalhost\fR). \fI<host>\fR es kann sich um eine IP-Address oder DNS Namen handeln
 .TP
 \fB\-p\fR, \fB\-\-port\fR=\fI<port>\fR
-aMule's Port fuer Externe Verbindungen, wie eingestellt unter Einstellungen-> Fernwartung (default: \fI4712\fR)
+aMule's Port für Externe Verbindungen, wie eingestellt unter Einstellungen-> Remote Controls (standart: \fI4712\fR)
 .TP
 \fB\-P\fR, \fB\-\-password\fR=\fI<passwd>\fR
 Externe Verbindung Password
 .TP
 \fB\-f\fR, \fB\-\-config\-file\fR=\fI<path>\fR
-nutze die vorgegebene Konfigurationsdatei. Default Konfigurationsdatei ist \fI~/.aMule/remote.conf\fR
+nutze die vorgegebene Konfigurationsdatei. Standart Konfigurationsdatei ist \fI~/.aMule/remote.conf\fR
 .TP
 \fB\-q\fR, \fB\-\-quiet\fR
 gibt nichts nach stdout. Diese Options ist mit \fBamulecmd\fR jedoch relativ Sinnlos.
 .TP
 \fB\-v\fR, \fB\-\-verbose\fR
-sei verbose \- zeige ebenfalls Debug Ausgaben.
+sei verbose \- zeigt ebenfalls Debug Ausgaben.
 .TP
 \fB\-w\fR, \fB\-\-write\-config\fR
-schreibe Commandozeilen Optionen in die Konfigurationsdatei und beende.
+schreibe Kommandozeilen Optionen in die Konfigurationsdatei und beende.
 .TP
 \fB\-c\fR, \fB\-\-command\fR=\fI<command>\fR
-fuehre das \fI<command>\fR aus, als wuerde es direkt in amulecmd eingegeben und beende dann
+führe das \fI<command>\fR aus, als würde es direkt in amulecmd eingegeben und beende dann
+.TP
+\fB\-\-create\-config\-from\fR=\fI<path>\fR
+erstellt Konfigdatei basierend auf \fI<path>\fR, dieser Pfad muss auf eine gültige aMUle KOnfigdatei zeigen, und dann beenden
 .TP
 \fB\-\-help\fR
 zeigt diese Hilfe an
 .TP
 \fB\-\-version\fR
 zeigt die Versionsnummer and und beendet
-.SH ACHTUNG
-Die GUI Version von amulecmd (\fBamulecmdDLG\fR(1)) akzeptiert die Option \fB\-c\fR nicht.
 .SH DATEIEN
 ~/.aMule/remote.conf
 .SH BEISPIEL
@@ -57,15 +64,19 @@ Normalerweise wird amulecmd das erste mal mit diesen Optionen gestartet:
 .PP
 \fBamulecmd\fR \fB\-h\fR \fIhostname\fR \fB\-p\fR \fIECport\fR \fB\-P\fR \fIECpassword\fR \fB\-w\fR
 .PP
-Dies wird alle Einstellungen in \fI$HOME/.aMule/remote.conf\fR speichern, und spaeter brauhct man nur noch aufrufen:
+oder
+.PP
+\fBamulecmd\fR \fB\-\-create-config-from\fR=\fI/home/username/.aMule/amule.conf\fR
+.PP
+Dies wird alle Einstellungen in \fI$HOME/.aMule/remote.conf\fR speichern, und später braucht man nur noch aufrufen:
 .PP
 .B amulecmd
 .PP
-Natuerlich kann man es auch anders machen, dies ist nur ein Beispiel.
+Natürlich kann man es auch anders machen, dies ist nur ein Beispiel.
 .SH PROBLEME BERICHTEN
 Bitte berichte Fehler im Programm entweder im Forum (\fIhttp://forum.amule.org/\fR), oder in unserem Bugtracker (\fIhttp://bugs.amule.org/\fR).
 Bitte berichte keine Fehler per E-Mail, zu unserer Mailingliste oder direkt zu einem Teammitglied.
 .SH COPYRIGHT
 aMule und all seine Tools stehen unter der GNU General Public License.
 .SH SIEHE AUCH
-\fBamule\fR(1), \fBamulecmdDLG\fR(1), \fBamuleweb\fR(1)
+\fBamule\fR(1), \fBamuleweb\fR(1)
