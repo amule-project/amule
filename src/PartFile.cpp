@@ -3046,7 +3046,17 @@ Packet*	CPartFile::CreateSrcInfoPacket(CUpDownClient* forClient)
 				#warning Phoenix - ugly hack to see the problem - I
 				if( cur_src->m_nPartCount != forClient->m_nPartCount ) {
 #ifdef __DEBUG__
-					printf("CPartFile->GetPartStatus() = %d, cur_src->m_nPartCount = %d,  forClient->m_nPartCount = %d\n", n, cur_src->m_nPartCount, forClient->m_nPartCount);
+					printf("\nCPartFile->GetPartStatus() = %d, cur_src->m_nPartCount = %d,  forClient->m_nPartCount = %d\n", n, cur_src->m_nPartCount, forClient->m_nPartCount);
+					if ( md4cmp(cur_src->reqfile->GetFileHash(), forClient->reqfile->GetFileHash()) || md4cmp(cur_src->reqfile->GetFileHash(), GetFileHash() ) ) {
+						printf("Mismatching hashes!\n");
+						printf("\tthis: %s\n", unicode2char(GetFileHash().Encode().c_str()));
+						printf("\tcur_src: %s\n", unicode2char(cur_src->reqfile->GetFileHash().Encode().c_str()));
+						printf("\tfor_clt: %s\n", unicode2char(forClient->reqfile->GetFileHash().Encode().c_str()));
+						printf("Filenames are: \n");
+						printf("\tthis: %s\n", unicode2char(GetFileName().c_str()));
+						printf("\tcur_src: %s\n", unicode2char(cur_src->reqfile->GetFileName().c_str()));
+						printf("\tfor_clt: %s\n", unicode2char(forClient->reqfile->GetFileName().c_str()));
+					}
 #endif // __DEBUG__
 					n = cur_src->m_nPartCount < forClient->m_nPartCount ? cur_src->m_nPartCount : forClient->m_nPartCount;
 				}
@@ -3062,7 +3072,16 @@ Packet*	CPartFile::CreateSrcInfoPacket(CUpDownClient* forClient)
 				#warning Phoenix - ugly hack to see the problem - II
 				if( n != cur_src->m_nPartCount ) {
 #ifdef __DEBUG__
-					printf("CPartFile->GetPartStatus() = %d, cur_src->m_nPartCount = %d\n", n, cur_src->m_nPartCount);
+					printf("\nCPartFile->GetPartStatus() = %d, cur_src->m_nPartCount = %d\n", n, cur_src->m_nPartCount);
+
+					if ( md4cmp( cur_src->reqfile->GetFileHash(), cur_src->reqfile->GetFileHash() ) ) {
+						printf("Mismatching hashes!\n");
+						printf("\tthis: %s\n", unicode2char(GetFileHash().Encode().c_str()));
+						printf("\tcur_src: %s\n", unicode2char(cur_src->reqfile->GetFileHash().Encode().c_str()));
+						printf("Filenames are: \n");
+						printf("\tthis: %s\n", unicode2char(GetFileName().c_str()));
+						printf("\tcur_src: %s\n", unicode2char(cur_src->reqfile->GetFileName().c_str()));
+					}
 #endif // __DEBUG__
 					n = cur_src->m_nPartCount;
 				}
