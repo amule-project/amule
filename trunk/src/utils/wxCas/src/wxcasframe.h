@@ -134,9 +134,28 @@ private:
 		return ( ( a ) > ( b ) ? ( a ) : ( b ) );
 	}
 
+	// Constructing Stat_lines
+	wxString MakeStatLine_1() const;
+	wxString MakeStatLine_2() const;
+	wxString MakeStatLine_3() const;
+	wxString MakeStatLine_4() const;
+	wxString MakeStatLine_5() const;
+	wxString MakeStatLine_6() const;
+
+	// Constructing Hits_lines
+	wxString MakeHitsLine_1() const;
+	wxString MakeHitsLine_2() const;
+
+#ifdef __LINUX__		// System monitoring on Linux
+	// Constructing Sys_lines
+	wxString MakeSysLine_1() const;
+	wxString MakeSysLine_2() const;
+#endif
+
 protected:
 	bool UpdateStatsPanel ();
 	void UpdateAll ( bool forceFitting = FALSE );
+	void SaveAbsoluteHits();
 
 	void OnBarRefresh ( wxCommandEvent & event );
 	void OnBarAbout ( wxCommandEvent & event );
