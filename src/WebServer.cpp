@@ -504,7 +504,12 @@ void CWebServer::ProcessURL(ThreadData Data) {
 			pThis->m_Params.Sessions.Add(ses);
 			login=true;
 		} else {
-			TransferredData newban={inet_addr((char*) ip.GetData()), ::GetTickCount()}; // save failed attempt (ip,time)
+			// This call to ::GetTickCount has segfaulted once with this == 0x0, because
+			// wxUSE_GUI was set to 1 in a console only application. This may happen due
+			// to wrong wxWidgets configuration.
+			// 
+			// save failed attempt (ip,time)
+			TransferredData newban={inet_addr((char*) ip.GetData()), ::GetTickCount()}; 
 			pThis->m_Params.badlogins.Add(&newban);
 			login=false;
 		}
