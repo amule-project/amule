@@ -28,7 +28,10 @@
 #include <wx/dynarray.h>
 
 #include <wx/defs.h>		// Needed before any other wx/*.h
-#include <wx/string.h>		// Needed for wxArrayString
+#include <wx/string.h>		// Needed for wxString
+#if wxCHECK_VERSION(2, 5, 2)
+#	include <wx/arrstr.h>	// Needed for wxArrayString
+#endif
 
 enum EViewSharedFilesAccess{
 	vsfaEverybody = 0,
