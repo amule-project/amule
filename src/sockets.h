@@ -27,7 +27,8 @@
 
 #include "types.h"		// Needed for int8, uint8, uint16 and uint32
 #include "CTypedPtrList.h"	// Needed for CTypedPtrList
-#include "mfc.h"		// Needed for CMap
+
+#include <map>
 
 class CPreferences;
 class CServerList;
@@ -101,7 +102,7 @@ private:
 	wxTimer m_idRetryTimer;
 	uint32	m_nLocalIP;
 
-	CMap<DWORD ,DWORD&,CServerSocket*,CServerSocket*> connectionattemps;
+	std::map<DWORD, CServerSocket*> connectionattemps;
 };
 
 #endif // SOCKETS_H

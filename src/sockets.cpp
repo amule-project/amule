@@ -52,13 +52,13 @@
 // CServerConnect
 
 void CServerConnect::TryAnotherConnectionrequest(){
-	if ( connectionattemps.GetCount()<((app_prefs->IsSafeServerConnectEnabled()) ? 1 : 2) ) {
+	if ( connectionattemps.size() < ((app_prefs->IsSafeServerConnectEnabled()) ? 1 : 2) ) {
 
 		CServer*  next_server = used_list->GetNextServer();
 
 		if (!next_server)
 		{
-			if (connectionattemps.GetCount()==0){
+			if (connectionattemps.empty()){
 				AddLogLineM(true,wxString::Format(_("Failed to connect to all servers listed. Making another pass.")));
 				ConnectToAnyServer(lastStartAt);
 			}
@@ -132,11 +132,11 @@ void CServerConnect::ConnectToServer(CServer* server, bool multiconnect){
 	newsocket->ConnectToServer(server);
 
 	DWORD x=GetTickCount();
-	connectionattemps.SetAt(x,newsocket);
+	connectionattemps[x] = newsocket;
 }
 
 void CServerConnect::StopConnectionTry(){
-	connectionattemps.RemoveAll();
+	connectionattemps.clear();
 	connecting = false;
 	singleconnecting = false;
 
@@ -339,15 +339,13 @@ void CServerConnect::ConnectionFailed(CServerSocket* sender){
 				break;
 			}
 
-			DWORD tmpkey;
-			CServerSocket* tmpsock;
-			POSITION pos = connectionattemps.GetStartPosition();
-			while (pos){
-				connectionattemps.GetNextAssoc(pos,tmpkey,tmpsock);
-				if (tmpsock==sender) {
-					connectionattemps.RemoveKey(tmpkey);
+			std::map<DWORD, CServerSocket*>::iterator it = connectionattemps.begin();
+			while ( it != connectionattemps.end() ){
+				if ( it->second == sender ) {
+					connectionattemps.erase( it );
 					break;
-				}
+				} 
+				++it;
 			}			
 			TryAnotherConnectionrequest();
 		}
@@ -371,22 +369,26 @@ VOID CALLBACK CServerConnect::RetryConnectCallback(HWND hWnd, UINT nMsg, UINT nI
 void CServerConnect::CheckForTimeout()
 { 
 	DWORD maxage=GetTickCount() - CONSERVTIMEOUT;
-	DWORD tmpkey;
-	CServerSocket* tmpsock;
-	POSITION pos = connectionattemps.GetStartPosition();
-	while (pos){
-		connectionattemps.GetNextAssoc(pos,tmpkey,tmpsock);
-		if (!tmpsock) {
-			AddLogLineM(false, wxString::Format(_("Error: Socket invalid at timeoutcheck")));
-			connectionattemps.RemoveKey(tmpkey);
+
+	std::map<DWORD, CServerSocket*>::iterator it = connectionattemps.begin();
+	while ( it != connectionattemps.end() ){
+		if ( !it->second ) {
+			AddLogLineM(false, _("Error: Socket invalid at timeoutcheck"));
+			connectionattemps.erase( it );
 			return;
 		}
-
-		if (tmpkey<=maxage) {
-			AddLogLineM(false,wxString(_("Connection attempt to ")) + tmpsock->info + wxT(" (") + char2unicode(tmpsock->cur_server->GetFullIP()) + wxString::Format(wxT(":%i) timed out."),tmpsock->cur_server->GetPort()));			
-			connectionattemps.RemoveKey(tmpkey);
+			
+		if ( it->first <= maxage) {
+			DWORD key = it->first;
+			CServerSocket* value = it->second;
+			
+			AddLogLineM(false,wxString(_("Connection attempt to ")) + value->info + wxT(" (") + char2unicode(value->cur_server->GetFullIP()) + wxString::Format(wxT(":%i) timed out."),value->cur_server->GetPort()));			
+			
+			it++;
+			connectionattemps.erase( key );
+			
 			TryAnotherConnectionrequest();
-			DestroySocket(tmpsock);
+			DestroySocket( value );
 		}
 	}
 }
