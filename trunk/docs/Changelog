@@ -1,12 +1,7 @@
-Version 2.0.1 - The "xx" version.
-----------
-2005-XX-XX
-
---------------------------------------------------------------------------------
 
 Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 ----------
-2005-03-XX
+2005-04-XX
 
 	BigBob:
 		* Compilation fix for WebServer.cpp and BaseClient.cpp with wx-2.4.2.
@@ -385,24 +380,53 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		* Changed default configure options. Now only 'amule' and 'ed2k' are
 		  compiled by default, since other apps require extra dependancies.
 
+	xmb:
+		* id2ip awk script (with Jacobo221)
+
 	
 	Special Thanks To:
+
+		* Translators:
+		  Ateo:		(US english	/ en_US)
+		  gaspojo:	(Portuguese	/ pt_PT)
+		  guest:	(German		/ de_DE)
+		  GhePeU:	(Italian	/ it_IT)
+		  shafff:	(Russian	/ ru_RU)
+		  thedude0001:	(German		/ de_DE)
+		  toshi:	(Russian	/ ru_RU)
+
+		* Contributors:
+		  markb
+		  monkeyboy
+		  ObsessionAl
+		  rommel
+		  S0undt3ch
+		  Vollstrecker
+		  volpop
+
 		* Bug and feature reporters:
-		alandar
-		feralertx
-		Frankk
-		markb
-		monkeyboy
-		Mr Faber
-		ObsessionAl
-		OldFrog
-		peper
-		rommel
-		S0undt3ch
-		skolnick
-		thedude0001
-		Vollstrecker
-		volpop
+		  alandar
+		  Angel
+		  feralertx
+		  Frankk
+		  Mr Faber
+		  OldFrog
+		  peper
+		  RedDwarf
+		  skolnick
+		  thedude0001
+		  Valery
+
+		* Everyone at:
+		  #amule	irc.freenode.net
+		  wiki		http://wiki.amule.org
+		  forums	http://forum.amule.org
+		  bugtracker	http://bugs.amule.org
+
+		* All aMule users!!!
+
+	Welcome our new aMule team members:
+		blerfont, m2kio, skolnick, thedude0001 & thorero
 
 --------------------------------------------------------------------------------
 
