@@ -493,46 +493,16 @@ CECPacket *Get_EC_Response_PartFile_Cmd(const CECPacket *request)
 			case EC_OP_PARTFILE_STOP:
 				pfile->StopFile();
 				break;
-/*
-			case EC_OP_PARTFILE_PRIO_AUTO:
-				if ( !valtag ) {
-					response = new CECPacket(EC_OP_FAILED);
-					response->AddTag(CECTag(EC_TAG_STRING,
-								wxTRANSLATE("no value tag in EC_OP_PARTFILE_PRIO_AUTO")));
-					return response;
-				}
-				if ( valtag->GetStringData() == wxT("1") ) {
-					pfile->SetAutoDownPriority(true);
-				} else if ( valtag->GetStringData() == wxT("0") ) {
-					pfile->SetAutoDownPriority(false);
-				} else {
-					response = new CECPacket(EC_OP_FAILED);
-					response->AddTag(CECTag(EC_TAG_STRING,
-								wxTRANSLATE("value for EC_OP_PARTFILE_PRIO_AUTO is bad")));
-					return response;
+			case EC_OP_PARTFILE_PRIO_SET: {
+					int prio = hashtag->GetTagByIndex(0)->GetInt32Data();
+					if ( prio == PR_AUTO ) {
+						pfile->SetAutoDownPriority(1);
+					} else {
+						pfile->SetAutoDownPriority(0);
+						pfile->SetDownPriority(prio);
+					}
 				}
 				break;
-			case EC_OP_PARTFILE_PRIO_SET:
-				if ( !valtag ) {
-					response = new CECPacket(EC_OP_FAILED);
-					response->AddTag(CECTag(EC_TAG_STRING,
-								wxTRANSLATE("no value tag in EC_OP_PARTFILE_PRIO_SET")));
-					return response;
-				}
-				if ( valtag->GetStringData() == wxT("PR_LOW") ) {
-					pfile->SetDownPriority(PR_LOW);
-				} else if ( valtag->GetStringData() == wxT("PR_NORMAL") ) {
-					pfile->SetDownPriority(PR_NORMAL);
-				} else if ( valtag->GetStringData() == wxT("PR_HIGH") ) {
-					pfile->SetDownPriority(PR_HIGH);
-				} else {
-					response = new CECPacket(EC_OP_FAILED);
-					response->AddTag(CECTag(EC_TAG_STRING,
-								wxTRANSLATE("value for EC_OP_PARTFILE_PRIO_SET is bad")));
-					return response;
-				}
-				break;
-*/
 			case EC_OP_PARTFILE_DELETE:
 				if ( thePrefs::StartNextFile() && (pfile->GetStatus() == PS_PAUSED) ) {
 					theApp.downloadqueue->StartNextFile();
@@ -682,6 +652,28 @@ CECPacket *Get_EC_Response_Search(const CECPacket *request)
 	// no reply - search in progress
 	response->AddTag(CECTag(EC_TAG_STRING,
 		wxTRANSLATE("Search in progress. Refetch results in a moment!")));
+	return response;
+}
+
+CECPacket *Get_EC_Response_Set_SharedFile_Prio(const CECPacket *request)
+{
+	CECPacket *response = new CECPacket(EC_OP_STRINGS);
+	for (int i = 0;i < request->GetTagCount();i++) {
+		CECTag *tag = request->GetTagByIndex(i);
+		CMD4Hash hash = tag->GetMD4Data();
+		uint8 prio = tag->GetTagByIndex(0)->GetInt32Data();
+		CKnownFile* cur_file = theApp.sharedfiles->GetFileByID(hash);
+		if ( !cur_file ) {
+			continue;
+		}
+		if (prio == PR_AUTO) {
+			cur_file->SetAutoUpPriority(1);
+			cur_file->UpdateAutoUpPriority();
+		} else {
+			cur_file->SetUpPriority(prio);
+		}
+	}
+
 	return response;
 }
 
@@ -1441,24 +1433,20 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request, CPartFile_Enc
 		case EC_OP_PARTFILE_PAUSE:
 		case EC_OP_PARTFILE_RESUME:
 		case EC_OP_PARTFILE_STOP:
-		case EC_OP_PARTFILE_PRIO_AUTO:
 		case EC_OP_PARTFILE_PRIO_SET:
 		case EC_OP_PARTFILE_DELETE:
 		case EC_OP_PARTFILE_SET_CAT:
 			response = Get_EC_Response_PartFile_Cmd(request);
 			break;
-		case EC_OP_KNOWNFILE_SET_UP_PRIO:
-			break;
-		case EC_OP_KNOWNFILE_SET_UP_PRIO_AUTO:
-			break;
-		case EC_OP_KNOWNFILE_SET_PERM:
-			break;
-		case EC_OP_KNOWNFILE_SET_COMMENT:
-			break;
 		case EC_OP_SHAREDFILES_RELOAD:
 			theApp.sharedfiles->Reload();
 			response = new CECPacket(EC_OP_NOOP);
 			break;
+
+		case EC_OP_SHARED_SET_PRIO:
+			response = Get_EC_Response_Set_SharedFile_Prio(request);
+			break;
+			
 		//
 		// Server commands
 		//
