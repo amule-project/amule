@@ -43,6 +43,9 @@
 #include "otherfunctions.h"
 #include "WebServer.h"
 
+#if wxCHECK_VERSION(2,4,2)
+	#include <wx/confbase.h>
+#endif
 #include <wx/fileconf.h>	// For wxFileConfig
 
 //-------------------------------------------------------------------
