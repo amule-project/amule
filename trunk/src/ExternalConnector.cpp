@@ -300,7 +300,7 @@ wxString CaMuleExternalConnector::SendRecvMsg(const wxChar *msg)
 	}
 }
 
-void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, CmdId *UNUSED_IN_GUI(commands))
+void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxString& ProgVersion, CmdId *UNUSED_IN_GUI(commands))
 {
 	wxString pass_plain;
 	wxString pass_hash;
@@ -330,9 +330,8 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, CmdId *UNU
 	
 	// Create the packet
 	CECPacket packet(EC_OP_AUTH_REQ);
-	CECTag *tag = new CECTag(EC_TAG_CLIENT_NAME, ProgName);
-	packet.AddTag(*tag);
-	delete tag;
+	packet.AddTag(CECTag(EC_TAG_CLIENT_NAME, ProgName));
+	packet.AddTag(CECTag(EC_TAG_CLIENT_VERSION, ProgVersion));
 	packet.AddTag(CECTag(EC_TAG_PROTOCOL_VERSION, (uint16)0x01f0));
 
 	if ( m_HasConfigFromFile ) {
@@ -399,7 +398,11 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, CmdId *UNU
 			Show(_("ExternalConn: Bad reply from server. Connection closed.\n"));
 		    } else {
 			m_isConnected = true;
-			Show(_("Succeeded! Connection established.\n"));
+			if (reply->GetTagByName(EC_TAG_SERVER_VERSION)) {
+				Show(_("Succeeded! Connection established to aMule ") + reply->GetTagByName(EC_TAG_SERVER_VERSION)->GetStringData() + wxT("\n"));
+			} else {
+				Show(_("Succeeded! Connection established.\n"));
+			}
 			ShowGreet();
 			Pre_Shell();
 #if wxUSE_GUI

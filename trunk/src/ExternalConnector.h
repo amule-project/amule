@@ -89,7 +89,7 @@ public:
 	void GetCommand(const wxString &prompt, char* buffer, size_t buffer_size);
 	wxString SendRecvMsg(const wxChar *msg);
 	CECPacket *SendRecvMsg_v2(CECPacket *request);
-	void ConnectAndRun(const wxString &ProgName, CmdId *commands);
+	void ConnectAndRun(const wxString &ProgName, const wxString& ProgName, CmdId *commands);
 	//
 	// Command line processing
 	// 

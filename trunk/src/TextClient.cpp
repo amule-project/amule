@@ -671,7 +671,7 @@ bool CamulecmdApp::OnInit() {
 #else
 int CamulecmdApp::OnRun() {
 #endif
-	ConnectAndRun(wxT("aMulecmd"), commands);
+	ConnectAndRun(wxT("aMulecmd"), wxT(VERSION), commands);
 	
 	return true;
 }
