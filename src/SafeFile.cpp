@@ -30,6 +30,8 @@
 
 #define CHECK_BOM(size,x) ((size > 3)  && (x[0] == (char)0xEF) && (x[1] == (char)0xBB) && (x[2] == (char)0xBF))
 
+const char BOMHeader[3] = {0xEF,0xBB,0xBF};
+
 ///////////////////////////////////////////////////////////////////////////////
 // CFileDataIO
 
@@ -158,7 +160,7 @@ void CFileDataIO::WriteString(const wxString& rstr,  EUtf8Str eEncode)
 	// The macro wxWX2MBbuf reflects the correct return value of cWX2MB 
 	// (either char* or wxCharBuffer), except for the const.
 	
-	if (eEncode == utf8strRaw) {
+	if ((eEncode == utf8strRaw) || (eEncode == utf8strOptBOM)) {
 		wxCharBuffer s = wxConvUTF8.cWC2MB(rstr.wc_str(aMuleConv));
 		unsigned int sLength = s ? strlen(s) : 0;
 		if (sLength == 0) {
@@ -172,8 +174,15 @@ void CFileDataIO::WriteString(const wxString& rstr,  EUtf8Str eEncode)
 				Write(s2, sLength);
 			}
 		} else {
-			WriteUInt16(sLength);
+			if (eEncode == utf8strOptBOM) {
+				WriteUInt16(sLength + 3 ); // For BOM header.
+			} else {
+				WriteUInt16(sLength);
+			}
 			if (sLength) {
+				if (eEncode == utf8strOptBOM) {
+					Write(BOMHeader,3);
+				}
 				Write(s, sLength);
 			}
 		}

@@ -96,10 +96,13 @@ void CFriend::LoadFromFile(CFileDataIO* file)
 		uint32 tagcount;
 		file->Read(&tagcount, 4);
 		for ( uint32 j = 0; j != tagcount; j++) {
-			CTag *newtag = new CTag(*file, false);
+			CTag *newtag = new CTag(*file, true);
 			switch ( newtag->tag.specialtag ) {
 				case FF_NAME:
-					m_strName = newtag->tag.stringvalue;
+					#if wxUSE_UNICODE
+					if (m_strName.IsEmpty()) 
+					#endif
+						m_strName = newtag->tag.stringvalue;
 					break;
 			}
 		
@@ -121,10 +124,15 @@ void CFriend::WriteToFile(CFileDataIO* file)
 	file->WriteUInt32(m_dwLastSeen);
 	file->WriteUInt32(m_dwLastChatted);
 	uint32 tagcount = ( m_strName.IsEmpty() ? 0 : 1 );
-
-	file->WriteUInt32(tagcount);
+	#if wxUSE_UNICODE
+		tagcount++;
+	#endif
+	file->WriteUInt32(tagcount);			
 	if ( !m_strName.IsEmpty() ) {
 		CTag nametag(FF_NAME, m_strName);
+		#if wxUSE_UNICODE
+			nametag.WriteTagToFile(file, utf8strOptBOM);
+		#endif		
 		nametag.WriteTagToFile(file);
 	}
 }

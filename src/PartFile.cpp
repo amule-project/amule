@@ -861,7 +861,9 @@ bool CPartFile::SavePartFile(bool Initial)
 		file.WriteUInt32(tagcount);
 
 		#if wxUSE_UNICODE					
-		CTag(FT_FILENAME,m_strFileName).WriteTagToFile(&file,utf8strRaw);	// 0 (unicoded part file name)
+		// 0 (unicoded part file name) 
+		// We write it with BOM to kep eMule compatibility
+		CTag(FT_FILENAME,m_strFileName).WriteTagToFile(&file,utf8strOptBOM);	
 		#endif
 		
 		CTag(FT_FILENAME,m_strFileName).WriteTagToFile(&file);	// 1
