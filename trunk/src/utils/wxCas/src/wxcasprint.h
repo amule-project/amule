@@ -23,11 +23,11 @@
 // 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef _WXCAS_H
-#define _WXCAS_H
+#ifndef _WXCASPRINT_H
+#define _WXCASPRINT_H
 
 #ifdef __GNUG__
-#pragma interface "wxcas.h"
+#pragma interface "wxcasprint.h"
 #endif
 
 // Include wxWindows' headers
@@ -35,18 +35,23 @@
 #include <wx/wx.h>
 #endif
 
-#include "wxcasframe.h"
+#include <wx/print.h>
 
-// Application
-class WxCas:public wxApp
+class WxCasPrint:public wxPrintout
 {
-private:
-  WxCasFrame * m_frame;
 public:
-  virtual bool OnInit ();
-  WxCasFrame *GetMainFrame ();
+  WxCasPrint (wxString title);
+
+  //Destructor
+  ~WxCasPrint ();
+
+  bool OnPrintPage (int page);
+  bool HasPage (int page);
+  bool OnBeginDocument (int startPage, int endPage);
+  void GetPageInfo (int *minPage, int *maxPage, int *selPageFrom,
+		    int *selPageTo);
+
+  void DrawPageOne (wxDC * dc);
 };
 
-DECLARE_APP (WxCas);
-
-#endif /* _WXCAS_H */
+#endif /* _WXCASPRINT_H */

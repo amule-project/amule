@@ -34,12 +34,17 @@
 #pragma hdrstop
 #endif
 
+#if !wxUSE_PRINTING_ARCHITECTURE
+#error You must set wxUSE_PRINTING_ARCHITECTURE to 1 in setup.h to compile wxCas.
+#endif
+
 #include "wxcas.h"
-#include "wxcasframe.h"
 
 // Application implementation
-IMPLEMENT_APP (WxCas)
-     bool WxCas::OnInit ()
+IMPLEMENT_APP (WxCas);
+
+bool
+WxCas::OnInit ()
 {
 #if wxUSE_LIBPNG
   wxImage::AddHandler (new wxPNGHandler);
@@ -49,11 +54,22 @@ IMPLEMENT_APP (WxCas)
   wxImage::AddHandler (new wxJPEGHandler);
 #endif
 
+#ifdef __WXMSW__
+  SetPrintMode (wxPRINT_WINDOWS);
+#else
+  SetPrintMode (wxPRINT_POSTSCRIPT);
+#endif
 
-  wxFrame *frame = new WxCasFrame (_("wxCas, aMule online statistics"));
+  m_frame = new WxCasFrame (_("wxCas, aMule Online Statistics"));
 
   // Show all
-  frame->Show (TRUE);
-  SetTopWindow (frame);
+  m_frame->Show (TRUE);
+  SetTopWindow (m_frame);
   return true;
+}
+
+WxCasFrame *
+WxCas::GetMainFrame ()
+{
+  return m_frame;
 }
