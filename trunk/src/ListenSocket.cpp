@@ -1,4 +1,3 @@
-//
 // This file is part of the aMule Project
 //
 // Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
@@ -116,7 +115,7 @@ CClientReqSocket::~CClientReqSocket()
 	}
 #ifdef AMULE_DAEMON
 	if ( my_handler ) {
-		my_handler->Delete();
+		Safe_Delete();
 	}
 #else
 	delete my_handler;
@@ -210,14 +209,25 @@ void CClientReqSocket::Safe_Delete()
 		//theApp.AddSocketDeleteDebug((uint32) this,created);
 		// Paranoia is back.
 		SetNotify(0);
-		Notify(false);		
-	
+		Notify(false);
+		// lfroen: first of all - stop handler
+		deletethis = true;
+#ifdef AMULE_DAEMON
+                if ( my_handler ) {
+                        printf("CClientReqSocket: sock %p in Safe_Delete\n", this);
+                        // lfroen: this code is executed with app mutex locked. In order
+                        // to prevent deadlock in deleted thread, temporary unlock it here
+                        theApp.data_mutex.Unlock();
+                        my_handler->Delete();
+                        theApp.data_mutex.Lock();
+                }
+#endif
+
 		if (m_client) {
 			m_client->SetSocket( NULL );
 			m_client = NULL;
 		}
 		byConnected = ES_DISCONNECTED;
-		deletethis = true;
 		Close();
 	}
 }
@@ -2061,35 +2071,45 @@ CClientReqSocketHandler::CClientReqSocketHandler(CClientReqSocket* parent)
 
 void *CClientReqSocketHandler::Entry()
 {
+	exit_mutex.Lock();
 	printf("CClientReqSocketHandler: start thread for %p\n", socket);
 	while ( !TestDestroy() ) {
-		CALL_APP_DATA_LOCK;
 		if ( socket->deletethis ) {
 			printf("CClientReqSocketHandler: socket %p being deleted\n", socket);
 			break;
 		}
 		if ( socket->Error()) {
 			if ( socket->LastError() == wxSOCKET_WOULDBLOCK ) {
-				if ( socket->WaitForWrite(0, 10) ) {
+				if ( socket->WaitForWrite(0, 0) ) {
 					socket->OnSend(0);
 				}
-				continue;
+				//continue;
+			} else  {
+				printf("CClientReqSocketHandler: error %d on socket %p\n", socket->LastError(), socket);
+				break;
 			}
-			printf("CClientReqSocketHandler: error %d on socket %p\n", socket->LastError(), socket);
-			break;
 		}
 		if ( socket->WaitForLost(0, 0) ) {
 			printf("CClientReqSocketHandler: connection lost on %p\n", socket);
 			break;
 		}
-		if ( socket->WaitForRead(0, 10) ) {
+		// lfroen: tradeof here - short wait time for high performance on delete
+		// but long wait time for low cpu usage
+		if ( socket->WaitForRead(0, 100) ) {
+			CALL_APP_DATA_LOCK;
 			socket->OnReceive(0);
 		}
 	}
 	printf("CClientReqSocketHandler: thread for %p exited\n", socket);
-	CALL_APP_DATA_LOCK;
 	socket->my_handler = 0;
+	exit_mutex.Unlock();
 	return 0;
+}
+
+wxThreadError CClientReqSocketHandler::Delete()
+{
+	exit_mutex.Lock();
+	return wxThread::Delete();
 }
 
 #else
@@ -2327,6 +2347,7 @@ void CListenSocket::RecalculateStats()
 
 void CListenSocket::AddSocket(CClientReqSocket* toadd)
 {
+	wxASSERT(toadd);
 	socket_list.insert(toadd);
 #ifdef AMULE_DAEMON
 	global_sock_thread.AddSocket(toadd);
@@ -2335,6 +2356,7 @@ void CListenSocket::AddSocket(CClientReqSocket* toadd)
 
 void CListenSocket::RemoveSocket(CClientReqSocket* todel)
 {
+	wxASSERT(todel);
 	socket_list.erase(todel);
 #ifdef AMULE_DAEMON
 	global_sock_thread.RemoveSocket(todel);
@@ -2445,7 +2467,7 @@ void CSocketGlobalThread::RemoveSocket(CClientReqSocket* sock)
 
 void *CSocketGlobalThread::Entry()
 {
-	AddDebugLogLineM(true, _("Socket global thread running\n"));
+	AddDebugLogLineM(true, "Socket global thread running\n");
 	while ( !TestDestroy() ) {
 		Sleep(10);
 		std::set<CClientReqSocket *> erase_list;
@@ -2458,7 +2480,7 @@ void *CSocketGlobalThread::Entry()
 				continue;
 			}
 			if ( !cur_sock->wxSocketBase::IsConnected() ) {
-				if ( cur_sock->WaitOnConnect(0, 10) ) {
+				if ( cur_sock->WaitOnConnect(0, 0) ) {
 					cur_sock->OnConnect(0);
 				}
 			} else {
@@ -2466,7 +2488,7 @@ void *CSocketGlobalThread::Entry()
 					erase_list.insert(cur_sock);
 					continue;
 				}
-				if ( cur_sock->WaitForRead(0, 1000) ) {
+				if ( cur_sock->WaitForRead(0, 0) ) {
 					cur_sock->OnReceive(0);
 				}
 				CUpDownClient *client = cur_sock->GetClient();
