@@ -43,6 +43,8 @@ Version 2.0.0rc6 - The '???' version.
 		  Fast reconnect -> lowid bug is fixed in wx-cvs now. When
 		  wx-2.5.3 is out, we will finally be able to drop this file.
 		  It will only be needed for versions 2.5.0(?) to 2.5.2.
+		* Removed gsocket-2.5.h from the project. This file was not
+		  beeing used anymore.
 
 	rommel:
 		* Patch to implement the commands serverconnect and reloadipf
