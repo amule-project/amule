@@ -30,12 +30,12 @@
 
 #if wxBYTE_ORDER == wxLITTLE_ENDIAN
 	#define ENDIAN_SWAP_16(x) (x)
-	#define ENDIAN_SWAP_I_16(x) {}
+	#define ENDIAN_SWAP_I_16(x) ((void)0)
 	#define ENDIAN_SWAP_32(x) (x)
-	#define ENDIAN_SWAP_I_32(x) {}
+	#define ENDIAN_SWAP_I_32(x) ((void)0)
 	#if defined __GNUC__ && __GNUC__ >= 2
 		#define ENDIAN_SWAP_64(x) (x)
-		#define ENDIAN_SWAP_I_64(x) {}
+		#define ENDIAN_SWAP_I_64(x) ((void)0)
 	#endif
 	// ntohs
 	#define ENDIAN_NTOHS(x) ( wxUINT16_SWAP_ALWAYS(x) )
