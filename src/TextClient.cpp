@@ -67,7 +67,7 @@ static CmdId commands[] = {
 	{ wxT("reloadipf"),	CMD_ID_RELOAD_IPFILTER },
 	{ wxT("setiplevel"),	CMD_ID_SET_IPLEVEL },
 	{ wxT("iplevel"),	CMD_ID_IPLEVEL },
-	{ wxT("list"),		CMD_ID_DLOAD_QUEUE },
+//	{ wxT("list"),		CMD_ID_DLOAD_QUEUE }, // TODO: FIXME!
 	//{ wxT("find"),	CMD_ID_CMDSEARCH },
 	{ wxT("shutdown"),	CMD_ID_SHUTDOWN },
 	{ wxT("servers"),	CMD_ID_SERVERLIST },
@@ -638,7 +638,7 @@ void CamulecmdApp::ShowHelp() {
 //	Show(wxString(wxT("ServerStatus:\t\t")) + wxString(_("Tell us if connected/not connected.\n")));
 	Show(wxString(wxT("Stats:\t\t\t")) + wxString(_("Shows status and statistics.\n")));
 	Show(wxString(wxT("Show DL | UL:\t\t")) + wxString(_("Shows Download/Upload queue.\n")));
-	Show(wxString(wxT("List <")) + wxString(_("pattern")) + wxString(wxT(">:\t\t")) + wxString(_("Lists or finds downloads by name or number.\n")));
+//	Show(wxString(wxT("List <")) + wxString(_("pattern")) + wxString(wxT(">:\t\t")) + wxString(_("Lists or finds downloads by name or number.\n")));
 	Show(wxString(wxT("Resume [n | all]:\t")) + wxString(_("Resume file number n (or 'all').\n")));
 	Show(wxString(wxT("Pause [n | all]:\t")) + wxString(_("Pauses file number n (or 'all').\n")));
 	Show(wxString(wxT("SetIPFilter <on | off>:\t")) + wxString(_("Turn on/off amule IPFilter.\n")));
@@ -651,8 +651,8 @@ void CamulecmdApp::ShowHelp() {
 	Show(wxString(wxT("SetDownBWLimit <")) + wxString(_("limit")) + wxString(wxT(">\t")) + wxString(_("Sets maximum downloadload bandwidth.\n")));
 	Show(wxString(wxT("GetBWLimits\t\t")) + wxString(_("Displays bandwidth limits.\n")));
 	Show(wxString(wxT("Help:\t\t\t")) + wxString(_("Shows this help.\n")));	
-	Show(wxString(wxT("Quit:\t\t\t")) + wxString(_("Exits Textclient.\n")));
-	Show(wxString(wxT("Shutdown:\t\t\t")) + wxString(_("Shutdown amule\n")));
+	Show(wxString(wxT("Quit, exit:\t\t")) + wxString(_("Exits Textclient.\n")));
+	Show(wxString(wxT("Shutdown:\t\t")) + wxString(_("Shutdown amule\n")));
 	Show(_("\n----------------------------> End of listing <----------------------------------\n"));
 }
 
