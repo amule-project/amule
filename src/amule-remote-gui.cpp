@@ -584,6 +584,9 @@ bool CServerConnectRem::ReQuery()
 	return true;
 }
 
+/*
+ * Server list: host list of ed2k servers.
+ */
 CServerListRem::CServerListRem(CRemoteConnect *conn) : CRemoteContainer<CServer, uint32, CEC_Server_Tag>(conn)
 {
 }
@@ -656,6 +659,9 @@ void CIPFilterRem::Update(wxString /*url*/)
 	wxASSERT(0);
 }
 
+/*
+ * Shared files list
+ */
 CSharedFilesRem::CSharedFilesRem(CRemoteConnect *conn) : CRemoteContainer<CKnownFile, CMD4Hash, CEC_SharedFile_Tag>(conn)
 {
 }
@@ -678,8 +684,9 @@ void CSharedFilesRem::ReloadControl()
 
 void CSharedFilesRem::Reload(bool, bool)
 {
-
-	//CECPacket req(EC_OP_SHAREDFILES_RELOAD);
+	CECPacket req(EC_OP_SHAREDFILES_RELOAD);
+	
+	m_conn->Send(&req);
 }
 
 void CSharedFilesRem::AddFilesFromDirectory(wxString)
