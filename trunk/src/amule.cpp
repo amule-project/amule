@@ -1787,7 +1787,10 @@ void CamuleApp::ShutDown() {
 	// Signal the hashing thread to terminate
 	m_app_state = APP_STATE_SHUTINGDOWN;
 	IsReady =  false;
+
 	amuledlg->Destroy();
+	amuledlg = NULL;
+
 	if (CAddFileThread::IsRunning()) {
 		CAddFileThread::Stop();
 	}
