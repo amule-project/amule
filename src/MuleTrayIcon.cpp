@@ -5,19 +5,19 @@
 // Copyright (c) 2003-2004 Patrizio Bassi (Hetfield) ( hetfield@amule.org )
 // Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
 //
-//This program is free software; you can redistribute it and/or
-//modify it under the terms of the GNU General Public License
-//as published by the Free Software Foundation; either
-//version 2 of the License, or (at your option) any later version.
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either
+// version 2 of the License, or (at your option) any later version.
 //
-//This program is distributed in the hope that it will be useful,
-//but WITHOUT ANY WARRANTY; without even the implied warranty of
-//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//GNU General Public License for more details.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 //
-//You should have received a copy of the GNU General Public License
-//along with this program; if not, write to the Free Software
-//Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
 #if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
@@ -138,8 +138,8 @@ void CMuleTrayIcon::SetDownloadSpeed(wxCommandEvent& event){
 	
 	wxObject* obj=event.GetEventObject();
 	if (obj!=NULL) {
-		if (obj->IsKindOf(CLASSINFO(wxMenu))) {
-			wxMenu* menu=dynamic_cast<wxMenu*> (obj);
+		wxMenu *menu = wxDynamicCast(obj, wxMenu);
+		if (menu) {
 			wxMenuItem* item=menu->FindItem(event.GetId());
 			if (item!=NULL) {
 				long temp;
@@ -210,7 +210,7 @@ CMuleTrayIcon::~CMuleTrayIcon()
 /***************** Public Functions *****************/
 /****************************************************/
 
-void CMuleTrayIcon::SetTrayIcon(int Icon, uint32 percent) 
+void CMuleTrayIcon::SetTrayIcon(int Icon, uint32 WXUNUSED(percent))
 {
 	switch (Icon) {
 		case TRAY_ICON_HIGHID:
@@ -227,9 +227,9 @@ void CMuleTrayIcon::SetTrayIcon(int Icon, uint32 percent)
 			wxASSERT(0);
 	}
 	
-	#warning speed bar commented out cause it corrupts icons too, need reworking
+#warning speed bar commented out cause it corrupts icons too, need reworking
+#if 0
 	// Lookup this values for speed improvement: don't draw if not needed
-	/*
 	int Bar_ySize = CurrentIcon.GetHeight()-2; 
 	int NewSize = ((Bar_ySize -2) * percent) / 100;
 	
@@ -287,7 +287,7 @@ void CMuleTrayIcon::SetTrayIcon(int Icon, uint32 percent)
 		new_mask = new wxMask(CurrentIcon, temp);
 	
 		CurrentIcon.SetMask(new_mask);
-	*/
+#endif
 		UpdateTray();
 	//}
 }
