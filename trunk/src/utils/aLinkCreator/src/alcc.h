@@ -96,7 +96,11 @@ class alcc : public wxApp
     wxLocale m_locale; // Used to tell wxCas to use aMule catalog
     
   public:
+    /// Application
     virtual int OnRun ();
+    
+    /// Cleaning on exit
+    virtual int OnExit();
   };
 
 DECLARE_APP(alcc);
