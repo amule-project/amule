@@ -645,6 +645,8 @@ void  CStatisticsDlg::InitTree()
 	cli_versions[2].active = false;
 	cli_versions[3].active = false;
 	cli10= stattree->AppendItem(h_clients,_("Waiting...")); // aMule
+	cli10_1= stattree->AppendItem(cli10,_("Version")); // aMule
+	cli10_2= stattree->AppendItem(cli10,_("Operative System")); // aMule
 	cli_versions[12].active = false;
 	cli_versions[13].active = false;
 	cli_versions[14].active = false;
@@ -861,7 +863,8 @@ void CStatisticsDlg::ShowStatistics()
 	CClientList::ClientMap clientVersionEMule;
 	CClientList::ClientMap clientVersionAMule;
 	uint32 totalclient;
-	theApp.clientlist->GetStatistics(totalclient, myStats, &clientVersionEDonkey, &clientVersionEDonkeyHybrid, &clientVersionEMule, &clientVersionAMule);
+	aMuleOSInfoMap OSInfo;
+	theApp.clientlist->GetStatistics(totalclient, myStats, &clientVersionEDonkey, &clientVersionEDonkeyHybrid, &clientVersionEMule, &clientVersionAMule, &OSInfo);
 	totalclient -= myStats[0];
 	if( !totalclient ) {
 		totalclient = 1;
@@ -1060,7 +1063,7 @@ void CStatisticsDlg::ShowStatistics()
 		}
 	}
 
-	if(stattree->IsExpanded(cli10) || (myStats[8] > 0)) {
+	if(stattree->IsExpanded(cli10_1) || (myStats[8] > 0)) {
 		uint32 totcnt = myStats[8];
 
 		//--- find top 4 aMule client versions ---
@@ -1108,12 +1111,38 @@ void CStatisticsDlg::ShowStatistics()
 				if (cli_versions[i+12].active) {
 					stattree->SetItemText(cli_versions[i+12].TreeItem,cbuffer);
 				} else {
-					cli_versions[i+12].TreeItem = stattree->AppendItem(cli10,cbuffer);
+					cli_versions[i+12].TreeItem = stattree->AppendItem(cli10_1,cbuffer);
 					cli_versions[i+12].active = true;
 				}
 			}
 		}
 	}
+	
+	if(stattree->IsExpanded(cli10_2) || myStats[8]) {
+
+
+		stattree->DeleteChildren(cli10_2);
+		
+		uint32 total = 0;
+		
+		for (aMuleOSInfoMap::iterator it = OSInfo.begin(); it != OSInfo.end(); ++it ) {
+			total += it->second;
+			cbuffer = it->first + wxString::Format(wxT(": %u (%1.1f%%)"),it->second, ((double)it->second / myStats[8]) * 100 );
+			stattree->AppendItem(cli10_2,cbuffer);
+		}
+		
+		wxASSERT((myStats[8] - total)>=0);
+		
+		uint32 not_rec = (myStats[8] - total);
+		
+		if (not_rec > 0 ) {
+			cbuffer = _("Not Received");
+			cbuffer += wxString::Format(wxT(": %u (%1.1f%%)"),not_rec, ((double)not_rec / myStats[8]) * 100 );
+			stattree->AppendItem(cli10_2,cbuffer);
+		}
+		
+	}
+
 
 	// get serverstats
 	uint32 servtotal;

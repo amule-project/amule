@@ -161,7 +161,6 @@ bool CClientDetailDialog::OnInitDialog() {
 	
 	wxString OSInfo = m_client->GetClientOSInfo();
 	if (!OSInfo.IsEmpty()) {
-		#warning Debug message, remove ASAP.
 		wxMessageBox(wxT("aMule O.S. info is: ") + OSInfo);
 	}
 	

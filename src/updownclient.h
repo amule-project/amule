@@ -576,6 +576,7 @@ public:
 	BitVector	m_upPartStatus;
 	uint16		m_lastPartAsked;
 	wxString	m_strModVersion;
+	bool			sent_OSInfo;
 	
 	CList<Packet*>		 			m_BlockSend_queue;
 	CList<Requested_Block_Struct*>	m_BlockRequests_queue;

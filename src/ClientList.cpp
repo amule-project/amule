@@ -323,7 +323,7 @@ void CClientList::DeleteAll()
 }
 
 
-void CClientList::GetStatistics(uint32 &totalclient, uint32 stats[], ClientMap *clientVersionEDonkey, ClientMap *clientVersionEDonkeyHybrid, ClientMap *clientVersionEMule, ClientMap *clientVersionAMule)
+void CClientList::GetStatistics(uint32 &totalclient, uint32 stats[], ClientMap *clientVersionEDonkey, ClientMap *clientVersionEDonkeyHybrid, ClientMap *clientVersionEMule, ClientMap *clientVersionAMule, aMuleOSInfoMap* OSMap)
 {
 	totalclient = m_clientList.size();
 	
@@ -338,6 +338,9 @@ void CClientList::GetStatistics(uint32 &totalclient, uint32 stats[], ClientMap *
 		
 	if (clientVersionAMule)
 		clientVersionAMule->clear();
+	
+	if (OSMap)
+		OSMap->clear();
 
 
 	for ( int i = 0; i < 18; i++ )
@@ -391,6 +394,12 @@ void CClientList::GetStatistics(uint32 &totalclient, uint32 stats[], ClientMap *
 						continue;					
 					}
 					(*clientVersionAMule)[cur_client->GetVersion()]++;
+				}
+				if (OSMap) {
+					wxString OS = cur_client->GetClientOSInfo();
+					if (!OS.IsEmpty()) {
+						(*OSMap)[OS]++;	
+					}
 				}
 				break;
 			case SO_MLDONKEY:
