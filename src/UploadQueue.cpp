@@ -34,7 +34,6 @@
 
 #include "UploadQueue.h"	// Interface declarations
 #include "ini2.h"		// Needed for CIni
-#include "FriendList.h"		// Needed for CFriendList
 #include "ServerList.h"		// Needed for CServerList
 #include "ClientCredits.h"	// Needed for CClientCreditsList
 #include "StatisticsDlg.h"	// Needed for CStatisticsDlg
@@ -725,7 +724,6 @@ void TimerProc()
 		msPrev1 = msCur;
 		theApp.clientcredits->Process();
 		theApp.serverlist->Process();
-		theApp.friendlist->Process();
 		if( theApp.serverconnect->IsConnecting() && !theApp.serverconnect->IsSingleConnect() ) {
 			theApp.serverconnect->TryAnotherConnectionrequest();
 		}
