@@ -425,7 +425,7 @@ void CUpDownClient::ProcessExtendedInfo(const CSafeMemFile* data, CKnownFile* te
 			//please fix your protocol implementation (shareaza, xmule, etc)!
 			//return;
 			// Kry - No mercy since xMule bans aMule and eMule 0.43x
-			throw(wxT("Wrong size on extended info packet"));
+			throw(CInvalidPacket("Wrong size on extended info packet"));
 		}
 		
 		uint16 nED2KUpPartCount;
