@@ -65,7 +65,7 @@ bool Ed2kHash::SetED2KHashFromFile(const wxFileName& filename, MD4Hook hook)
   wxFFile file(filename.GetFullPath(), wxT("rbS"));
   if (! file.IsOpened())
     {
-      wxLogError (_("Unable to open %$"),filename.GetFullPath().c_str());
+      wxLogError (_("Unable to open %s"),filename.GetFullPath().c_str());
       return (false);
     }
   else if (file.Length() > (size_t)-1)

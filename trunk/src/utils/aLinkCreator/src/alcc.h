@@ -38,15 +38,40 @@
 #include <wx/cmdline.h>
 #endif
 
+/// Command line parameters
+static const wxCmdLineEntryDesc cmdLineDesc[] =
+  {
+    {
+      wxCMD_LINE_SWITCH, wxT("h"), wxT("help"), wxT("show this help message"), wxCMD_LINE_VAL_NONE, wxCMD_LINE_OPTION_HELP
+    },
+    { wxCMD_LINE_SWITCH, wxT("v"), wxT("verbose"), wxT("be verbose"), wxCMD_LINE_VAL_NONE, wxCMD_LINE_PARAM_OPTIONAL},
+
+    { wxCMD_LINE_SWITCH, wxT("p"), wxT("parthashes"), wxT("add part-hashes to ed2k link"), wxCMD_LINE_VAL_NONE,wxCMD_LINE_PARAM_OPTIONAL },
+
+    { wxCMD_LINE_PARAM,  NULL, NULL, wxT("input files"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE },
+
+    { wxCMD_LINE_NONE }
+  };
+
+
 // Application
 #if wxCHECK_VERSION(2,5,0)
 class alcc : public wxAppConsole
 #else
 class alcc : public wxApp
 #endif
+
   {
   private:
-    int computeEd2kLinks(const wxCmdLineParser& cmdline);
+    bool m_flagVerbose ;
+    bool m_flagPartHashes;
+    wxArrayString m_filesToHash;
+
+    /// Parse command line
+    virtual void OnInitCmdLine(wxCmdLineParser& cmdline);
+
+    /// Command line preocessing
+    virtual bool OnCmdLineParsed(wxCmdLineParser& cmdline);
 
   public:
     virtual int OnRun ();

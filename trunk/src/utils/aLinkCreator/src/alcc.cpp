@@ -37,7 +37,6 @@
 #endif
 
 #ifndef WX_PRECOMP
-#include <wx/log.h>
 #include <wx/filename.h>
 #endif
 
@@ -47,56 +46,66 @@
 // Application implementation
 IMPLEMENT_APP (alcc)
 
+/// Running Alcc
 int alcc::OnRun ()
 {
-  static const wxCmdLineEntryDesc cmdLineDesc[] =
-    {
-      {
-        wxCMD_LINE_SWITCH, wxT("h"), wxT("help"), wxT("show this help message"), wxCMD_LINE_VAL_NONE, wxCMD_LINE_OPTION_HELP
-      },
-      
-      { wxCMD_LINE_SWITCH, wxT("p"), wxT("parthashes"), wxT("add part-hashes to ed2k link"), wxCMD_LINE_VAL_NONE,wxCMD_LINE_PARAM_OPTIONAL },
-
-      { wxCMD_LINE_PARAM,  NULL, NULL, wxT("input files"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE },
-
-      { wxCMD_LINE_NONE }
-    };
-
-  wxCmdLineParser parser(cmdLineDesc, argc, argv);
-
-  switch (parser.Parse())
-    {
-    case -1: // Exit after giving usage msg
-      return 0;
-      break;
-
-    case 0: // Run
-      return (computeEd2kLinks(parser));
-      break;
-
-    default: // Syntax error, exit after giving usage msg
-      return 1;
-      break;
-    }
-}
-
-int alcc::computeEd2kLinks(const wxCmdLineParser& cmdline)
-{
-  wxFileName filename;
+  Ed2kHash hash;
   size_t i;
-
-  bool flagPartHashes = cmdline.Found(_T("p"));
-
-  for (i = 0; i < cmdline.GetParamCount(); i++)
+  for (i=0;i<(m_filesToHash.GetCount());i++)
     {
-      filename.Assign(cmdline.GetParam(i));
-      Ed2kHash hash;
-
-      if (hash.SetED2KHashFromFile(filename, NULL))
+      if (wxFileExists(m_filesToHash[i]))
         {
-          printf (wxT("%s ---> %s\n\n"),filename.GetFullName().c_str(),
-                  hash.GetED2KLink(flagPartHashes).c_str());
+          if (m_flagVerbose)
+            {
+              printf(_("Processing file n°%u: %s\n"),i+1,m_filesToHash[i].c_str());
+              if (m_flagPartHashes)
+                {
+                  printf(_("You have asked for part hashes (Only used for files > 9.5 MB)\n"));
+                }
+            }
+	    
+          printf (_("Please wait... "));
+	    
+          if (hash.SetED2KHashFromFile(m_filesToHash[i], NULL))
+            {
+              printf (_("Done !\n"));
+		    
+              printf (wxT("%s ---> %s\n\n"),m_filesToHash[i].c_str(),
+                      hash.GetED2KLink(m_flagPartHashes).c_str());
+            }
+        }
+      else
+        {
+          printf (_("%s ---> Non existant file !\n\n"),m_filesToHash[i].c_str());
         }
     }
   return 0;
+}
+
+
+/// Parse command line
+void alcc::OnInitCmdLine(wxCmdLineParser& cmdline)
+{
+  cmdline.SetDesc(cmdLineDesc);
+}
+
+/// Command line preocessing
+bool alcc::OnCmdLineParsed(wxCmdLineParser& cmdline)
+{
+
+  wxFileName filename;
+  size_t i;
+
+  m_flagVerbose = cmdline.Found(wxT("v"));
+  m_flagPartHashes = cmdline.Found(wxT("p"));
+
+  m_filesToHash.Clear();
+  for (i = 0; i < cmdline.GetParamCount(); i++)
+    {
+      filename.Assign(cmdline.GetParam(i));
+      m_filesToHash.Add(filename.GetFullPath());
+    }
+  m_filesToHash.Shrink();
+    
+  return true;
 }
