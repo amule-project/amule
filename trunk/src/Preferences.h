@@ -224,6 +224,7 @@ public:
 	static bool		AutoServerlist()		{ return s_autoserverlist; }
 	static void		SetAutoServerlist(bool val)	{ s_autoserverlist = val; }
 	static bool		DoMinToTray()			{ return s_mintotray; }
+	static void		SetMinToTray(bool val)		{ s_mintotray = val; }
 	static bool		UseTrayIcon()			{ return s_trayiconenabled; }
 	static bool		DoAutoConnect()			{ return s_autoconnect; }
 	static void		SetAutoConnect(bool inautoconnect)
