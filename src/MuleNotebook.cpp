@@ -71,11 +71,11 @@ bool CMuleNotebook::DeleteAllPages() {
 
 // Specific for CMuleNotebook
 
-unsigned long CMuleNotebook::GetUserData(int nPage) const {
+long CMuleNotebook::GetUserData(int nPage) const {
 	return (tab_data_array.Item(nPage));
 }
 
-void CMuleNotebook::SetUserData(int nPage,unsigned long itemData) {
+void CMuleNotebook::SetUserData(int nPage, long itemData) {
 	tab_data_array.RemoveAt(nPage);
 	tab_data_array.Insert(itemData, nPage);
 }

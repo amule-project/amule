@@ -25,7 +25,7 @@
 #include <wx/dynarray.h>		// Needed for WX_DECLARE_LIST
 #include <wx/notebook.h>
 
-typedef unsigned long item_data;
+typedef long item_data;
 
 WX_DECLARE_OBJARRAY(item_data, SearchDataArray);
 
@@ -74,8 +74,8 @@ public:
 	// Specific for CMuleNotebook
 
 	bool AddPage(wxNotebookPage* page, const wxString& text, bool select = false, int imageId = -1, unsigned long itemData = 0);
-	unsigned long GetUserData(int nPage) const; 
-	void SetUserData(int nPage,unsigned long itemData); 
+	long GetUserData(int nPage) const; 
+	void SetUserData(int nPage, long itemData); 
 
 	// sets the size of the tabs (assumes all tabs are the same size)
 	// Seems never used
