@@ -267,7 +267,7 @@ void CMuleTrayIcon::SetTrayIcon(int Icon, uint32 percent)
 		int Bar_xSize = (CurrentIcon.GetWidth() / 4); 
 		int Bar_xPos = CurrentIcon.GetWidth() - Bar_xSize -1; 
 			
-		IconWithSpeed.SetBrush(*wxBLACK_BRUSH);
+		IconWithSpeed.SetBrush(*wxBLUE_BRUSH);
 		IconWithSpeed.SetPen(*wxTRANSPARENT_PEN);
 		
 		IconWithSpeed.DrawRectangle(Bar_xPos + 1, Bar_ySize - NewSize, Bar_xSize -2 , NewSize);
