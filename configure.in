@@ -400,7 +400,8 @@ echo
 echo "  Which libraries should aMule use?"
 echo "                                       wxWidgets          ${WXGTK_VERSION:-Not detected}"
 echo "                                       GTK                ${GTK_VERSION:-Not detected}"
-if test x"$GTK_USEDVERSION" = x"2" ; then
+
+if test x"$GTK_USEDVERSION" = x"2" && test x"$WX_VERSION" = x"any" ; then
 echo ""
 echo ""
 echo "  WARNING!! Your wxWidgets copy has been linked against GTK2 and this will make aMule"
