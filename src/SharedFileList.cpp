@@ -87,7 +87,7 @@ static bool wxDirExists(const wxChar *pszPathName, wxMBConv &wxConv)
 
 void CSharedFileList::FindSharedFiles() {
 	/* Abort loading if we are shutting down. */
-	if(!theApp.IsRunning()) {
+	if(!theApp.IsOnShutDown()) {
 		return;
 	}
 	
