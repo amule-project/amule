@@ -114,7 +114,7 @@ CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level
 	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT_XFER, (uint32)file->GetTransferingSrcCount()));
 	
 	// FIXME: this will be replaced by RLE encoded data
-	AddTag(CEC_PartStatus_Tag(file, 200));
+	//AddTag(CEC_PartStatus_Tag(file, 200));
 	
 	if ( (file->GetTransferingSrcCount() > 0) || (detail_level != EC_DETAIL_UPDATE) ) {
 		

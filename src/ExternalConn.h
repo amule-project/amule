@@ -80,7 +80,7 @@ class CPartFile_Encoder {
 		CPartFile_Encoder &operator=(const CPartFile_Encoder &obj);
 		
 		// encode - take data from m_file
-		CECTag *Encode();
+		void Encode(CECTag *parent_tag);
 		// decode - take data from tag
 		void Decode(CECTag *tag);
 

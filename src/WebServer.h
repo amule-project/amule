@@ -99,7 +99,8 @@ class DownloadFiles {
 		wxString	sPartStatus;
 		
 		otherfunctions::PartFileEncoderData m_Encoder;
-
+		std::vector<Gap_Struct> m_ReqParts;
+		
 		static class DownloadFilesInfo *GetContainerInstance();
 
 		uint32 file_id;
@@ -385,11 +386,11 @@ class CImage3D_Modifiers {
 
 class CProgressImage : public CAnyImage {
 	protected:
+		DownloadFiles *m_file;
+		
 		wxString m_template;
 		int m_width, m_height;
-		otherfunctions::PartFileEncoderData *m_Encoder;
 		wxString m_name;
-		uint32 m_file_size;
 		
 		//
 		// sorted list of gaps
@@ -411,7 +412,7 @@ class CProgressImage : public CAnyImage {
 		uint32 *m_ColorLine;
 		void CreateSpan();
 	public:
-		CProgressImage(int w, int h, uint32 filesize, wxString &tmpl, otherfunctions::PartFileEncoderData *encoder);
+		CProgressImage(int w, int h, wxString &tmpl, DownloadFiles *file);
 
 		~CProgressImage();
 				
@@ -426,15 +427,13 @@ class CProgressImage : public CAnyImage {
 // Dynamic png image generation from gap info
 class CDynImage : public CProgressImage {
 		CImage3D_Modifiers m_modifiers;
-		uint32 m_id;
 		png_bytep *m_row_ptrs;
 		
 		static void png_write_fn(png_structp png_ptr, png_bytep data, png_size_t length);
 		
 		void DrawImage();
 	public:
-		CDynImage(uint32 id, int w, int h, uint32 filesize,
-			wxString &tmpl, otherfunctions::PartFileEncoderData *encoder);
+		CDynImage(int w, int h,	wxString &tmpl, DownloadFiles *file);
 		~CDynImage();
 		
 		virtual unsigned char *RequestData(int &size);
@@ -447,10 +446,8 @@ class CDynImage : public CProgressImage {
 //
 // Fallback to original implementation
 class CDynImage : public CProgressImage {
-		uint32 m_id;
 	public:
-		CDynImage(uint32 id, int w, int h, uint32 filesize,
-			wxString &tmpl, otherfunctions::PartFileEncoderData *encoder);
+		CDynImage(int w, int h,	wxString &tmpl, DownloadFiles *file);
 
 		virtual wxString GetHTML();
 };

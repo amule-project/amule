@@ -658,19 +658,16 @@ const unsigned char *RLE_Data::Decode(const unsigned char *buff, int len)
 	return m_buff;
 }
 
-void PartFileEncoderData::Decode(unsigned char *data, int len)
+void PartFileEncoderData::Decode(unsigned char *gapdata, int gaplen, unsigned char *partdata, int partlen)
 {
-	// get size of RLE data for part_status
-	uint32 partsize = *((uint32 *)data);
-	data += sizeof(uint32);
-	m_part_status.Decode(data, partsize);
-	// following is RLE data and size for gap_status
-	data += partsize;
-	uint32 gapsize = *((uint32 *)data);
-	data += sizeof(uint32);
-	printf("PartFileEncoderData: realloc to %d ( %x )\n", gapsize, gapsize);
+	m_part_status.Decode(partdata, partlen);
+
+	// in a first dword - real size
+	uint32 gapsize = ENDIAN_SWAP_32(*((uint32 *)gapdata));
+	gapdata += sizeof(uint32);
 	m_gap_status.Realloc(gapsize*2*sizeof(uint32));
-	m_gap_status.Decode(data, len - 2*sizeof(uint32) - partsize);
+
+	m_gap_status.Decode(gapdata, gaplen - sizeof(uint32));
 }
 
 } // End namespace
