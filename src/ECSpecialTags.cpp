@@ -34,6 +34,8 @@
 #include "server.h"		// Needed for CServer
 #include "PartFile.h"		// Needed for CPartFile
 #include "sockets.h"		// Needed for CServerConnect
+#include "updownclient.h"
+#include "SharedFileList.h"
 #include "amule.h"		// Needed for theApp
 
 #else
@@ -122,6 +124,10 @@ CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level
 		AddTag(CECTag(EC_TAG_PARTFILE_SPEED, (uint32)(file->GetKBpsDown()*1024)));
 	}
 	
+	AddTag(CECTag(EC_TAG_PARTFILE_PRIO,
+		(uint32)(file->IsAutoDownPriority() ? 
+						file->GetDownPriority() + 10 : file->GetDownPriority())));
+
 	if (detail_level == EC_DETAIL_UPDATE) {
 			return;
 	}
@@ -129,10 +135,6 @@ CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level
 	AddTag(CECTag(EC_TAG_PARTFILE_NAME,file->GetFileName()));
 
 	AddTag(CECTag(EC_TAG_PARTFILE_SIZE_FULL, (uint32)file->GetFileSize()));
-
-	AddTag(CECTag(EC_TAG_PARTFILE_PRIO,
-		(uint32)(file->IsAutoDownPriority() ? 
-						file->GetDownPriority() + 10 : file->GetDownPriority())));
 
 	AddTag(CECTag(EC_TAG_PARTFILE_ED2K_LINK,
 				(theApp.serverconnect->IsConnected() && !theApp.serverconnect->IsLowID()) ?
@@ -199,6 +201,24 @@ CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, EC_DETAIL_LEVEL d
 	AddTag(CECTag(EC_TAG_PARTFILE_ED2K_LINK,
 				(theApp.serverconnect->IsConnected() && !theApp.serverconnect->IsLowID()) ?
 					theApp.CreateED2kSourceLink(file) : theApp.CreateED2kLink(file)));
+}
+
+CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAIL_LEVEL detail_level) :
+	CECTag(EC_TAG_UPDOWN_CLIENT, client->GetUserID())
+{
+	AddTag(CECTag(EC_TAG_CLIENT_NAME, client->GetUserName()));
+	AddTag(CECTag(EC_TAG_PARTFILE_SIZE_XFER, (uint32)client->GetTransferedDown()));
+	AddTag(CECTag(EC_TAG_PARTFILE_SIZE_XFER_UP, (uint32)client->GetTransferedUp()));
+	AddTag(CECTag(EC_TAG_PARTFILE_SPEED, (uint32)(client->GetKBpsUp()*1024.0)));
+
+	CKnownFile* file = theApp.sharedfiles->GetFileByID(client->GetUploadFileID());
+	if (file) {
+		AddTag(CECTag(EC_TAG_KNOWNFILE, file->GetFileHash()));
+		if ( detail_level != EC_DETAIL_WEB ) {
+			AddTag(CECTag(EC_TAG_PARTFILE_NAME, file->GetFileName()));
+		}
+	}
+	
 }
 
 #endif /* ! EC_REMOTE */
