@@ -34,26 +34,30 @@
 #define    SEC2MS(sec)             ((sec)*1000)
 #define    MIN2MS(min)             SEC2MS((min)*60)
 
-// socket handlers
+// Handlers
 
-#define LISTENSOCKET_HANDLER 			wxID_HIGHEST+123 // random safe ID
-#define CLIENTREQSOCKET_HANDLER		wxID_HIGHEST+124 
-#define UDPSOCKET_HANDLER				wxID_HIGHEST+125
-#define SERVERSOCKET_HANDLER			wxID_HIGHEST+126
-#define CLIENTUDPSOCKET_HANDLER		wxID_HIGHEST+127
+enum {
 
-// Custom Events
+	// socket handlers
 
-#define ID_CORETIMER 						wxID_HIGHEST + 128
-#define ID_GUITIMER 							wxID_HIGHEST + 129
+	LISTENSOCKET_HANDLER = wxID_HIGHEST+123,  // random safe ID
+	CLIENTREQSOCKET_HANDLER,
+	UDPSOCKET_HANDLER,
+	SERVERSOCKET_HANDLER,
+	CLIENTUDPSOCKET_HANDLER,
 
-#define TM_DNSDONE 						wxID_HIGHEST + 130
-#define TM_SOURCESDNSDONE 			wxID_HIGHEST + 131
+	// Custom Events
 
-#define TM_TCPSOCKET						wxID_HIGHEST + 132
-#define TM_UDPSOCKET						wxID_HIGHEST + 133
+	ID_CORETIMER,
+	ID_GUITIMER,
 
+	TM_DNSDONE,
+	TM_SOURCESDNSDONE,
 
+	TM_TCPSOCKET,
+	TM_UDPSOCKET
+
+};
 
 // MOD Note: Do not change this part - Merkur
 #define	CURRENT_VERSION_SHORT			0x30
