@@ -817,11 +817,11 @@ void CRemoteConnect::Send(CECPacket *packet)
     delete reply;
 }
 
-CUpQueueRem::CUpQueueRem(CRemoteConnect *conn) : CRemoteContainer<CUpDownClient, uint32, CEC_UpDownClient_Tag>(conn)
+CUpDownClientListRem::CUpDownClientListRem(CRemoteConnect *conn) : CRemoteContainer<CUpDownClient, uint32, CEC_UpDownClient_Tag>(conn)
 {
 }
 
-POSITION CUpQueueRem::GetFirstFromUploadList()
+POSITION CUpDownClientListRem::GetFirstFromList()
 {
 	it = m_items.begin();
 	if ( it == m_items.end() ) {
@@ -832,7 +832,7 @@ POSITION CUpQueueRem::GetFirstFromUploadList()
 	return pos;
 }
 
-CUpDownClient *CUpQueueRem::GetNextFromUploadList(POSITION &pos)
+CUpDownClient *CUpDownClientListRem::GetNextFromList(POSITION &pos)
 {
 	std::list<CUpDownClient *>::iterator *i = (std::list<CUpDownClient *>::iterator *)pos.m_ptr;
 	(*i)++;
@@ -843,33 +843,25 @@ CUpDownClient *CUpQueueRem::GetNextFromUploadList(POSITION &pos)
 	return *(*i);
 }
 
-// waiting list can be quite long. i see no point transferring it
-POSITION CUpQueueRem::GetFirstFromWaitingList()
-{
-	POSITION pos;
-	pos.m_ptr = NULL;
-	return pos;
-}
-
-CUpDownClient *CUpQueueRem::GetNextFromWaitingList(POSITION &)
-{
-	return NULL;
-}
-
-CUpDownClient *CUpQueueRem::CreateItem(CEC_UpDownClient_Tag *)
+CUpDownClient *CUpDownClientListRem::CreateItem(CEC_UpDownClient_Tag *)
 {
 	return 0;
 }
 
-void CUpQueueRem::DeleteItem(CUpDownClient *)
+void CUpDownClientListRem::DeleteItem(CUpDownClient *)
 {
 }
 
-uint32 CUpQueueRem::GetItemID(CUpDownClient *)
+uint32 CUpDownClientListRem::GetItemID(CUpDownClient *)
 {
 	return 0;
 }
-void CUpQueueRem::ProcessItemUpdate(CEC_UpDownClient_Tag *, CUpDownClient *)
+
+void CUpDownClientListRem::ProcessItemUpdate(CEC_UpDownClient_Tag *, CUpDownClient *)
+{
+}
+
+CUpQueueRem::CUpQueueRem(CRemoteConnect *conn) : m_up_list(conn), m_wait_list(conn)
 {
 }
 

@@ -357,26 +357,14 @@ class CServerListRem : public CRemoteContainer<CServer, uint32, CEC_Server_Tag> 
 		void ProcessItemUpdate(CEC_Server_Tag *, CServer *);
 };
 
-class CUpQueueRem : public CRemoteContainer<CUpDownClient, uint32, CEC_UpDownClient_Tag> {
-		uint32 m_waiting_user_count;
-		float m_kbps;
-		uint32 m_data_overhead;
-
+class CUpDownClientListRem : public CRemoteContainer<CUpDownClient, uint32, CEC_UpDownClient_Tag> {
 		std::list<CUpDownClient *>::iterator it;
 	public:
-		CUpQueueRem(CRemoteConnect *);
-		
-		uint32 GetWaitingUserCount() { return m_waiting_user_count; }
-		float GetKBps() { return m_kbps; }
-		uint32 GetUpDatarateOverhead() { return m_data_overhead; }
-		
-		POSITION GetFirstFromUploadList();
-		CUpDownClient *GetNextFromUploadList(POSITION &curpos);
-		
-		POSITION GetFirstFromWaitingList();
-		CUpDownClient *GetNextFromWaitingList(POSITION &curpos);
-		
-		void UpdateStats(CEC_Stats_Tag *);
+		CUpDownClientListRem(CRemoteConnect *);
+
+		POSITION GetFirstFromList();
+		CUpDownClient *GetNextFromList(POSITION &curpos);
+
 		//
 		// template
 		//
@@ -384,6 +372,31 @@ class CUpQueueRem : public CRemoteContainer<CUpDownClient, uint32, CEC_UpDownCli
 		void DeleteItem(CUpDownClient *);
 		uint32 GetItemID(CUpDownClient *);
 		void ProcessItemUpdate(CEC_UpDownClient_Tag *, CUpDownClient *);
+};
+
+class CUpQueueRem {
+		uint32 m_waiting_user_count;
+		float m_kbps;
+		uint32 m_data_overhead;
+
+		CUpDownClientListRem m_up_list, m_wait_list;
+	public:
+		CUpQueueRem(CRemoteConnect *);
+		
+		bool ReQueryUp() { return m_up_list.DoRequery(EC_OP_GET_ULOAD_QUEUE, EC_TAG_UPDOWN_CLIENT); }
+//		bool ReQueryWait() { return m_wait_list.ReQuery(); }
+		
+		uint32 GetWaitingUserCount() { return m_waiting_user_count; }
+		float GetKBps() { return m_kbps; }
+		uint32 GetUpDatarateOverhead() { return m_data_overhead; }
+		
+		POSITION GetFirstFromUploadList() { return m_up_list.GetFirstFromList(); }
+		CUpDownClient *GetNextFromUploadList(POSITION &curpos) { return m_up_list.GetNextFromList(curpos); }
+		
+		POSITION GetFirstFromWaitingList() { return m_wait_list.GetFirstFromList(); }
+		CUpDownClient *GetNextFromWaitingList(POSITION &curpos) { return m_wait_list.GetNextFromList(curpos); }
+		
+		void UpdateStats(CEC_Stats_Tag *);
 };
 
 class CDownQueueRem : public CRemoteContainer<CPartFile, CMD4Hash, CEC_PartFile_Tag> {
