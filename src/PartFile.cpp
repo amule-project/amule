@@ -1544,18 +1544,18 @@ void CPartFile::DrawStatusBar(wxMemoryDC* dc, wxRect rect, bool bFlat)
 	s_ChunkBar.Draw(dc, rect.x, rect.y, bFlat); 
 
 	// green progress
-	float blockpixel = (float)(rect.width -  rect.x)/((float)m_nFileSize);
+	float blockpixel = (float)(rect.width)/((float)m_nFileSize);
 	RECT gaprect;
 	gaprect.top = rect.y; 
 	gaprect.bottom = gaprect.top + 4;
 	gaprect.left = rect.x; //->left;
 
 	if(!bFlat) {
-		s_LoadBar.SetWidth((uint32)((float)((float)((m_nFileSize-((allgaps==0)?1:allgaps) )-1))*blockpixel + .5f));
+		s_LoadBar.SetWidth((m_nFileSize - allgaps) * blockpixel);
 		s_LoadBar.Fill(crProgress);
 		s_LoadBar.Draw(dc, gaprect.left, gaprect.top, false);
 	} else {
-		gaprect.right = rect.x+  (uint32)((float)((float)((m_nFileSize-((allgaps==0)?1:allgaps))-1))*blockpixel +  .5f);
+		gaprect.right = rect.x + ((m_nFileSize - allgaps) * blockpixel);
 		dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(wxColour(crProgress),wxSOLID))); //wxBrush(crProgress));
 		dc->DrawRectangle(gaprect.left,gaprect.top,gaprect.right,gaprect.bottom);
 		//dc->FillRect(&gaprect, &CBrush(crProgress));
