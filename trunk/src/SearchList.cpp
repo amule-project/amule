@@ -285,7 +285,7 @@ uint16 CSearchList::ProcessSearchanswer(const char *in_packet, uint32 size, CUpD
 	try
 	{
 		uint32 results = packet->ReadUInt32();
-		uint32 mySearchID=( (Sender != NULL)? (uint32)Sender : m_nCurrentSearch);
+		long mySearchID=( (Sender != NULL)? (long)Sender : m_nCurrentSearch);
 		foundFilesCount[mySearchID] = 0;
 
 		try
@@ -323,7 +323,7 @@ uint16 CSearchList::ProcessSearchanswer(const char *in_packet, uint32 size,
 {
 	wxASSERT( Sender != NULL );
 	// Elandal: Assumes sizeof(void*) == sizeof(uint32)
-	uint32 nSearchID = (uint32)Sender;
+	long nSearchID = (long)Sender;
 
 	if (!theApp.amuledlg->searchwnd->CheckTabNameExists(Sender->GetUserName())) {
 		theApp.amuledlg->searchwnd->CreateNewTab(Sender->GetUserName() + wxT(" (0)"),nSearchID);
