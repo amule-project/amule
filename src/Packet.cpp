@@ -260,7 +260,6 @@ bool CPacket::UnPackPacket(UINT uMaxDecompressedSize) {
 	uint32 nNewSize = size * 10 + 300;
 
 	if (nNewSize > uMaxDecompressedSize){
-		//ASSERT(0);
 		nNewSize = uMaxDecompressedSize;
 	}
 
