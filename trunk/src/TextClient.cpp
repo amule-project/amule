@@ -474,7 +474,7 @@ void CamulecmdApp::Process_Answer_v2(CECPacket *response)
 						s = _("Connected to ");
 						s += server->GetTagByName(EC_TAG_SERVER_NAME)->GetStringData();
 						s += wxString::Format(wxT(" [%d.%d.%d.%d:%d] "), addr->ip[0], addr->ip[1], addr->ip[2], addr->ip[3], addr->port);
-						s += response->GetTagByName(EC_TAG_STATS_CONNSTATE)->GetInt8Data() == 2 ? _("with LowID") : _("with HighID"),
+						s += response->GetTagByName(EC_TAG_STATS_CONNSTATE)->GetInt8Data() == 2 ? _("with LowID") : _("with HighID");
 						delete addr;
 					}
 					break;
