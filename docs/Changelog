@@ -2,6 +2,8 @@ Version 2.0.0rc8 - The "???????????" version.
 ----------
 2004-10-??
 
+	Hetfield:
+		* Some fix in new Tray system and desktopMode bypass
 	Jacobo221:
 		* Added option to select the max and min size-type in advanced
 		  searches.

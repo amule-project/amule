@@ -221,7 +221,8 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 	
 	traymenu->Append(TRAY_MENU_INFO, label);
 	traymenu->AppendSeparator();
-	
+//actually adds too many separator only!
+/* 	
 	// Mule info
 	wxMenu* aMuleInfoMenu = new wxMenu();
 	aMuleInfoMenu->SetTitle(_("aMule Tray Menu Info"));
@@ -243,7 +244,7 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 	
 	// Separator
 	traymenu->AppendSeparator();
-	
+*/	
 	if (theApp.serverconnect->IsConnected()) {
 		//Disconnection Speed item
 		traymenu->Append(TRAY_MENU_DISCONNECT, _("Disconnect from server"));
@@ -260,7 +261,7 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 		traymenu->Append(TRAY_MENU_HIDE, _("Hide aMule"));
 	} else {
 		//show item
-		traymenu->Append(TRAY_MENU_SHOW, _("Hide aMule"));
+		traymenu->Append(TRAY_MENU_SHOW, _("Show aMule"));
 	}
 	
 	// Separator
