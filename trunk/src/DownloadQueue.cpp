@@ -548,27 +548,26 @@ void CDownloadQueue::CheckAndAddKnownSource(CPartFile* sender,CUpDownClient* sou
 		return;
 	}
 
-	// use this for client which are already know (downloading for example)
-	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
-		CPartFile* cur_file = filelist[i];
-		if (cur_file->m_SrcList.find(source) != cur_file->m_SrcList.end()) {
-			if (cur_file == sender) {
-				return;
+
+	CPartFile* cur_file = source->GetRequestFile();
+	
+	// Check if the file is already queued for something else
+	if ( cur_file ) {
+		if ( cur_file != sender ) {
+			if ( source->AddRequestForAnotherFile( sender ) ) {
+				Notify_DownloadCtrlAddSource( sender, source, true );
 			}
-			if (source->AddRequestForAnotherFile(sender)) {
-				Notify_DownloadCtrlAddSource(sender,source,true);
-			}
-			return;
 		}
-	}
-	source->SetRequestFile( sender );
+	} else {
+		source->SetRequestFile( sender );
 
-	if (source->GetFileRate() || !source->GetFileComment().IsEmpty() ) {
-		sender->UpdateFileRatingCommentAvail();
-	}
+		if ( source->GetFileRate() || !source->GetFileComment().IsEmpty() ) {
+			sender->UpdateFileRatingCommentAvail();
+		}
 
-	sender->m_SrcList.insert(source);
-	Notify_DownloadCtrlAddSource(sender,source,false);
+		sender->m_SrcList.insert( source );
+		Notify_DownloadCtrlAddSource( sender, source, false );
+	}
 }
 
 /* Creteil importing new method from eMule 0.30c */
