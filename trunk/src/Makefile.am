@@ -52,7 +52,7 @@ BUILT_SOURCES =
 
 #LIBS = @LIBS@ 
 amulegui_SOURCES = \
-	#amule-gui.cpp \
+	amule-gui.cpp \
 	BarShader.cpp \
 	CatDialog.cpp \
 	CFile.cpp \
@@ -293,6 +293,7 @@ noinst_HEADERS = AddFileThread.h \
 		 ClientCredits.h \
 		 ClientDetailDialog.h \
 		 ClientList.h \
+		 ClientListCtrl.h \
 		 ClientUDPSocket.h \
 		 CMD4Hash.h \
 		 CMemFile.h \
@@ -353,7 +354,6 @@ noinst_HEADERS = AddFileThread.h \
 		 Preferences.h \
 		 PrefsUnifiedDlg.h \
 		 Preview.h \
-		 ClientListCtrl.h \
 		 SafeFile.h \
 		 SearchDlg.h \
 		 SearchListCtrl.h \
