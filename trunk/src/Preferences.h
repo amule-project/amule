@@ -421,6 +421,12 @@ public:
 	static void SaveAllItems(wxConfigBase* cfg);
 
 	static bool 		GetShowRatesOnTitle()		{ return s_ShowRatesOnTitle; }
+	
+	// Message Filters
+	
+	static bool		MustFilterMessages()	{ return s_MustFilterMessages; }
+	static wxString 	MessageFilter() {	return s_MessageFilterString; }
+	
 
 protected:
 	void	CreateUserHash();
@@ -640,6 +646,10 @@ protected:
 	static bool	s_UseSkinFile;
 	
 	static bool	s_FastED2KLinksHandler;	// Madcat - Toggle Fast ED2K Links Handler
+	
+	// Message Filtering
+	static bool 		s_MustFilterMessages;
+	static wxString 	s_MessageFilterString;
 };
 
 
