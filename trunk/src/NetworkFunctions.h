@@ -75,7 +75,21 @@ inline uint32 StringIPtoUint32(const wxString &strIP)
 	
 	return ip;
 }
+/**
+ * Parses a String-IHost and returns the IP or 0 if it was invalid.
+ * 
+ * @param Host A string with the Host to convert.
+ * @return The resulting IP-address or zero if invalid (or 0.0.0.0).
+ * 
+ * The IP will be saved in anti-host order.
+ */
+uint32 StringHosttoUint32(const wxString &Host);
 
+
+/**
+ * Returns our Local Host.
+ */
+wxString GetLocalHost();
 
 /**
  * Checks for invalid IP-values.
