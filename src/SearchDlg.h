@@ -129,6 +129,8 @@ public:
 
 
 	CSearchListCtrl* GetSearchList( long id );
+	int		GetSearchType() { return m_searchtype; };
+	bool		IsGlobalSearch() { return m_globalsearch; };
 
 	wxGauge*	m_progressbar;
 
@@ -151,6 +153,7 @@ private:
 
 	bool		m_canceld;
 	bool		m_globalsearch;
+	int		m_searchtype;
 
 	uint32		m_last_search_time;
 	

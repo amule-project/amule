@@ -46,6 +46,7 @@ class wxSocketEvent;
  * Instead of sending each time full part-status string, send
  * RLE encoded difference from previous one.
  */
+#define RLE_CONTROL_CHAR 0
 class RLE_String {
 		unsigned char *m_buff, *m_enc_buff;
 		int m_len, m_enc_len;

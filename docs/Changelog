@@ -36,6 +36,8 @@ Version 2.0.0rc8 - The "???????????" version.
 		* Fixed: Server names sorting now differences between names
 		  and IPs.
 		* Fixed: Last byte is now drawn in bar progress.
+		* Fixed: Stop button not working after second global search.
+		  (reported by ecforum)
 
 	Phoenix:
 		* Lots of unicode fixes.
@@ -70,7 +72,8 @@ Version 2.0.0rc8 - The "???????????" version.
 		  Sir,		jolupa,
 		  Pableron,	Banerjee,
 		  m2kio,	juanii,
-		  jaguarwan,	kdka
+		  jaguarwan,	kdka,
+		  ecforum
 
 		* Contributors:
 		  Frankk,	han,
