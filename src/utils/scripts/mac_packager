@@ -30,6 +30,7 @@ echo ""
 echo -n "Step 2: Copying aMule to app bundle... " 
 cp src/amule aMule.app/Contents/MacOS/
 cp src/amuleweb aMule.app/Contents/MacOS/
+cp src/ed2k aMule.app/Contents/MacOS/
 echo "Done"
 echo ""
 echo "Step 3: Copying libs to Framework"
