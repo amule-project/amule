@@ -258,7 +258,7 @@ void CFileDetailDialog::OnBnClickedButtonStrip(wxEvent& evt) {
 	}
 
 	//FindWindowById(IDC_FILENAME)->SetValue(MakeStringEscaped(CString(filename.GetData())));
-	GetDlgItem(IDC_FILENAME,wxTextCtrl)->SetValue(MakeStringEscaped(CString(filename.GetData())));
+	GetDlgItem(IDC_FILENAME,wxTextCtrl)->SetValue(filename);
 }
 
 void CFileDetailDialog::TakeOver(wxEvent& evt)
