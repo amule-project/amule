@@ -925,10 +925,38 @@ CECPacket *SetPreferencesFromRequest(const CECPacket *request)
 }
 
 
-RLE_Encoder::RLE_Encoder(int len)
+CPartFile_Encoder::CPartFile_Encoder(CPartFile *file) : m_part_status(file->GetPartCount(), true)
 {
-	m_len = len;
+	m_file = file;
 }
+
+
+CECTag *CPartFile_Encoder::Encode()
+{
+	//
+	// compare gaps lists, calculate difference
+	std::list<Gap_Struct>::iterator prev = m_gap_list.begin();
+	POSITION curr_pos = m_file->gaplist.GetHeadPosition();
+	unsigned int gap_ptr;
+	while ( curr_pos ) {
+		Gap_Struct *curr = m_file->gaplist.GetAt(curr_pos);
+		gap_ptr = curr->start;
+		while ( curr->end <= prev->end ) {
+			if ( gap_ptr != curr->start ) {
+				// diff = { gap_ptr, curr.start }
+			}
+			gap_ptr = curr->end;
+			curr = m_file->gaplist.GetNext(curr_pos);
+		}
+		if ( gap_ptr != prev->end ) {
+			// diff = { gap_ptr, prev.end }
+			prev++;
+		}
+	}
+	//m_part_status.Encode(m_file->m_SrcpartFrequency);
+	return 0;
+}
+
 
 CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request)
 {
