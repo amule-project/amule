@@ -1,6 +1,13 @@
 /*
+ *  Name:         Main cas file 
+ *
+ *  Purpose:      aMule Statistics
+ *
+ *  Author:       Pedro de Oliveira <falso@rdk.homeip.net>
+ *
+ *  Copyright (C) 2004 by Pedro de Oliveira
+ * 
  *  This file is part of aMule.
- *  Copyright (C) 2003 Pedro de Oliveira <falso@rdk.homeip.net>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,23 +20,9 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- */
-
-/*
-   c amule statistics
-
-   written by:
-   Pedro de Oliveira <falso@rdk.homeip.net>
-
-   this is very buggy software but i hope you like it.
-   i mainly did this cause aStats was very slow, so i
-   tried to do a remake of it in c to learn something
-   and do something useful.
-
-   if anyone wants to help me or give any ideas please
-   email me.
+ *  along with this program; if not, write to the
+ *  Free Software Foundation, Inc.,
+ *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
 #include <stdio.h>
@@ -40,22 +33,23 @@
 #include "configfile.h"
 #include "functions.h"
 #include "graphics.h"
+#include "html.h"
 
 void usage(char *myname)
 {
 	printf	("   ___    _ _   ___    c aMule statistics\n"
-		 " /'___) /'_` )/',__)   by Pedro de Oliveira\n"
-		 "( (___ ( (_| |\\__, \\   <falso@rdk.homeip.net>\n"
-		 "`\\____)`\\__,_)(____/   Version %s\n\n"
+			" /'___) /'_` )/',__)   by Pedro de Oliveira\n"
+			"( (___ ( (_| |\\__, \\   <falso@rdk.homeip.net>\n"
+			"`\\____)`\\__,_)(____/   Version %s\n\n"
 
-		 "Usage: %s [OPTION]\n"
-		 "If run without any option prints stats to stdout\n\n"
-		 "OPTIONS:\n"
+			"Usage: %s [OPTION]\n"
+			"If run without any option prints stats to stdout\n\n"
+			"OPTIONS:\n"
 #ifdef __GD__
-		 "-o\tWrites the online signature picture\n"
+			"-o\tWrites the online signature picture\n"
 #endif
-		 //"-p\tHTML Page with stats and picture\n"
-		 "-h\tThis help youre reading\n", CAS_VERSION, myname);
+			"-p\tHTML Page with stats and picture\n"
+			"-h\tThis help youre reading\n", CAS_VERSION, myname);
 }
 
 int main(int argc, char *argv[])
@@ -115,13 +109,17 @@ int main(int argc, char *argv[])
 	/* if amule isnt running say that and exit else print out the stuff */
 	// Jacobo221 - Detect connecting state
 	//             [ToDo] States 0 & 2 mean offline/connecting not "not running"...
-	if (stats[0][0] == '0' || stats[0][0] == '2') {
+	if (stats[0][0] == '0') {
 		printf("aMule is not running\n");
 		exit(3);
 	}
 
-	sprintf(lines[0], "aMule %s has been running for %s\n",
-			stats[12], stats[15]);
+	if (stats[0][0] == '2')
+		sprintf(lines[0],"aMule %s is connecting\n",stats[12]);
+	else
+		sprintf(lines[0], "aMule %s has been running for %s\n",
+				stats[12], time(stats[15]));
+
 	sprintf(lines[1], "%s is on %s [%s:%s] with ", stats[9],
 			stats[1], stats[2], stats[3]);
 	if (stats[4][0] == 'H')
@@ -159,6 +157,27 @@ int main(int argc, char *argv[])
 		exit(0);
 	}
 #endif
+
+	if (argc == 2 && strcmp(argv[1], "-p") == 0) {
+		
+		if (!readconfig(&config)) {
+			printf("Could not read config file\n");
+			exit(4);
+		}
+
+		create_html(stats,lines,config.template);
+		printf("HTML Page created.\n");
+
+
+		if (!createimage(&config, lines)) {
+			printf("Could not create image!\n");
+			exit(5);
+		}
+
+
+		exit(0);
+	}
+
 	for (i = 0; i <= 5; i++)
 		printf("%s", lines[i]);
 
