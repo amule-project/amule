@@ -603,6 +603,7 @@ dnl Generate the Makefiles
 dnl
 AC_CONFIG_FILES([Makefile
                  docs/Makefile
+		 docs/man/Makefile
                  intl/Makefile
                  m4/Makefile
                  src/Makefile
@@ -615,9 +616,11 @@ AC_CONFIG_FILES([Makefile
                  src/pixmaps/Makefile
                  src/utils/Makefile
                  src/utils/aLinkCreator/Makefile
+		 src/utils/aLinkCreator/doc/Makefile
                  src/utils/aLinkCreator/src/Makefile
                  src/utils/cas/Makefile
                  src/utils/wxCas/Makefile
+		 src/utils/wxCas/doc/Makefile
                  src/utils/wxCas/src/Makefile
                  src/utils/xas/Makefile
                  src/webserver/Makefile])

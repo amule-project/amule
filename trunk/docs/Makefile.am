@@ -1,3 +1,5 @@
+SUBDIRS = man
+
 dist_doc_DATA = ABOUT-NLS \
 	        amulesig.txt \
 		amule-win32.HOWTO.txt \

@@ -1,4 +1,4 @@
-SUBDIRS = src
+SUBDIRS = src doc
 
 EXTRA_DIST =  wxcas.msp wxcas.rc wxcas.ico wxcas.iss
 

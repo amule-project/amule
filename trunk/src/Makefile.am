@@ -368,6 +368,7 @@ noinst_HEADERS = AddFileThread.h \
 		 FileDetailListCtrl.h \
 		 filefn.h \
 		 Friend.h \
+		 FriendList.h \
 		 FriendListCtrl.h \
 		 GetTickCount.h \
 		 gsocket-fix.h \
