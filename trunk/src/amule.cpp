@@ -656,7 +656,6 @@ bool CamuleApp::OnInit()
 	wxIPV4address myaddr;
 	myaddr.AnyAddress();
 	myaddr.Service(glob_prefs->GetUDPPort());
-	printf("*** TCP socket at %d\n", glob_prefs->GetPort());
 	clientudp	= new CClientUDPSocket(myaddr);
 	clientcredits	= new CClientCreditsList(glob_prefs);
 	
@@ -666,6 +665,7 @@ bool CamuleApp::OnInit()
 	ipfilter	= new CIPFilter();
 
 	// Create listen socket 
+	printf("*** TCP socket at %d\n", glob_prefs->GetPort());
 	myaddr.Service(glob_prefs->GetPort());
 	listensocket = new CListenSocket(glob_prefs, myaddr);
 
@@ -694,10 +694,11 @@ bool CamuleApp::OnInit()
 	// reload shared files
 	sharedfiles->Reload(true, true);
 
+	// This command just sets a flag to control maximun number of connections.
+	// Notify(true) has already been called to the ListenSocket, so events may
+	// be already comming in.
 	listensocket->StartListening();
-
 	// If we wern't able to start listening, we need to warn the user
-
 	if ( !listensocket->Ok() ) {
 		GUIEvent event(ADDLOGLINE);
 		event.string_value = wxString::Format(_("Port %d is not available. You will be LOWID"),
@@ -1442,7 +1443,7 @@ void CamuleApp::SetOSFiles(const wxString new_path) {
 void CamuleApp::ListenSocketHandler(wxSocketEvent& event)
 {
 	wxASSERT(event.GetSocket()->IsKindOf(CLASSINFO(CListenSocket)));
-	CListenSocket * socket = (CListenSocket*) event.GetSocket();
+	CListenSocket *socket = (CListenSocket*) event.GetSocket();
 	if(!IsReady || !socket) {
 		// we are not mentally ready to receive anything
 		// or there is no socket on the event (got deleted?)
@@ -1454,40 +1455,6 @@ void CamuleApp::ListenSocketHandler(wxSocketEvent& event)
 			break;
 		default:
 			// shouldn't get other than connection events...
-			wxASSERT(0);
-			break;
-	}
-}
-
-
-void CamuleApp::ClientReqSocketHandler(wxSocketEvent& event)
-{
-	wxASSERT(event.GetSocket()->IsKindOf(CLASSINFO(CClientReqSocket)));
-	CClientReqSocket * socket = (CClientReqSocket *) event.GetSocket();
-	if(!IsReady || !socket) {
-		// we are not mentally ready to receive anything
-		// or there is no socket on the event (got deleted?)
-		return;
-	}
-	if (socket->OnDestroy()) {
-		return;
-	}
-	//printf("request at clientreqsocket\n");
-	switch(event.GetSocketEvent()) {
-		case wxSOCKET_LOST:
-			socket->OnError(socket->LastError());
-			break;
-		case wxSOCKET_INPUT:
-			socket->OnReceive(0);
-			break;
-		case wxSOCKET_OUTPUT:
-			socket->OnSend(0);
-			break;
-		case wxSOCKET_CONNECTION:
-			// connection stablished, nothing to do about it?
-			break;
-		default:
-			// connection requests should not arrive here..
 			wxASSERT(0);
 			break;
 	}
@@ -1512,7 +1479,8 @@ void CamuleApp::UDPSocketHandler(wxSocketEvent& event)
 	}
 }
 
-void CamuleApp::ServerSocketHandler(wxSocketEvent& event) {
+void CamuleApp::ServerSocketHandler(wxSocketEvent& event)
+{
 	//printf("Got a server event\n");
 	//wxMessageBox(wxString::Format("Got Server Event %u",event.GetSocketEvent()));
 	wxASSERT(event.GetSocket()->IsKindOf(CLASSINFO(CServerSocket)));

@@ -247,7 +247,6 @@ protected:
 
 	// Socket handlers
 	void ListenSocketHandler(wxSocketEvent& event);
-	void ClientReqSocketHandler(wxSocketEvent& event);
 	void UDPSocketHandler(wxSocketEvent& event);
 	void ServerSocketHandler(wxSocketEvent& event);
 	void ClientUDPSocketHandler(wxSocketEvent& event);

@@ -25,12 +25,12 @@
 
 #include "types.h"		// Needed for uint8, uint16, uint32 and uint64
 #include "EMSocket.h"		// Needed for CEMSocket
-#include "CTypedPtrList.h"
 #include "gsocket-fix.h"	// Needed for wxSOCKET_REUSEADDR
 
 #include <wx/dynarray.h>
 
 #include <map> 
+#include <set> 
 
 WX_DECLARE_OBJARRAY(wxString, ArrayOfwxStrings);
 
@@ -38,8 +38,6 @@ class CUpDownClient;
 class CPacket;
 class CTimerWnd;
 class CPreferences;
-
-// CClientReqSocket;
 
 class CClientReqSocketHandler;
 
@@ -49,13 +47,15 @@ friend class CClientSocket;
 
 	DECLARE_DYNAMIC_CLASS(CClientReqSocket)
 
-	CClientReqSocket(); /*{};*/
+	CClientReqSocket();
 
 public:
 	CClientReqSocket(CPreferences* in_prefs, CUpDownClient* in_client = 0);	
 	virtual ~CClientReqSocket();
+	virtual	void 	OnInit();
+	virtual	bool 	Close(); /*	{return wxSocketBase::Close();}*/
+	bool		Create();
 	void		Disconnect(const wxString& strReason);
-
 
 	void		ResetTimeOutTimer();
 	bool		CheckTimeOut();
@@ -63,14 +63,11 @@ public:
 
 	bool		deletethis; // 0.30c (Creteil), set as bool
 
-	bool		Create();
 	void		OnClose(int nErrorCode);
 	void		OnSend(int nErrorCode);
 	void		OnReceive(int nErrorCode);
 	void		OnError(int nErrorCode);
 	void		OnConnect(int nErrorCode);
-	virtual	void OnInit();
-	virtual	bool Close(); /*	{return wxSocketBase::Close();}*/
 	
 	uint32		timeout_timer;
 	bool		hotrank;
@@ -83,7 +80,6 @@ protected:
 
 private:
 	CUpDownClient*	m_client;
-
 	
 //	void	Delete_Timed();
 	bool	ProcessPacket(const char *packet, uint32 size, uint8 opcode);
@@ -100,17 +96,13 @@ public:
 		socket = parent;
 	}
 
-	CClientReqSocket* socket;
-
 private:
 	void ClientReqSocketHandler(wxSocketEvent& event);
+	CClientReqSocket* socket;
 	
 	DECLARE_EVENT_TABLE()
 };
 
-
-
-//WX_DECLARE_LIST(CClientReqSocket,SocketListL);
 
 // CListenSocket command target
 class CListenSocket : public wxSocketServer{
@@ -128,7 +120,7 @@ public:
 	void	Process();
 	void	RemoveSocket(CClientReqSocket* todel);
 	void	AddSocket(CClientReqSocket* toadd);
-	uint16	GetOpenSockets()		{return socket_list.GetCount();}
+	uint16	GetOpenSockets()		{return socket_list.size();}
 	void	KillAllSockets();
 	bool	TooManySockets(bool bIgnoreInterval = false);
 	uint32	GetMaxConnectionReached()	{return maxconnectionreached;}
@@ -145,10 +137,12 @@ public:
 	uint32	GetActiveConnections()		{ return activeconnections; }
 	
 private:
+	typedef std::set<CClientReqSocket *> SocketSet;
+	SocketSet socket_list;
+	
 	bool bListening;
 	CPreferences* app_prefs;
-	CTypedPtrList<CPtrList, CClientReqSocket*> socket_list;
-	//SocketListL socket_list;
+	
 	uint16 opensockets;
 	uint16 m_OpenSocketsInterval;
 	uint32 maxconnectionreached;
@@ -163,7 +157,7 @@ private:
 public:
 	std::map<uint64, uint32> offensecounter;
 	std::map<uint64, uint64> hashbase;  
-
 };
 
 #endif // LISTENSOCKET_H
+
