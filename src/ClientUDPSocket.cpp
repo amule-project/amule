@@ -292,6 +292,9 @@ bool CClientUDPSocket::SendTo(char* lpBuf,int nBufLen,uint32 dwIP, uint16 nPort)
 
 bool CClientUDPSocket::SendPacket(Packet* packet, uint32 dwIP, uint16 nPort)
 {
+	// Send any previously queued packet before this one.
+	OnSend(0);
+	
 	UDPPack* newpending = new UDPPack;
 	newpending->dwIP = dwIP;
 	newpending->nPort = nPort;
