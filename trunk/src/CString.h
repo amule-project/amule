@@ -78,16 +78,12 @@ public:
 		return *this;
 	}
 
-	CString& operator+(const wxChar a[]) {
-		Append((wxChar*)a);
-		return *this;
+	CString operator+(const wxChar a[]) {
+		return CString(wxString(this->GetData())+wxString(a));
 	}
 
-	CString& operator+(wxString src) {
-		if(this!=&src) {
-			Append(src.GetData());
-		}
-		return *this;
+	CString operator+(wxString src) {
+		return (*this + src.GetData());
 	}
 	
 };
