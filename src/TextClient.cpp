@@ -58,22 +58,23 @@ static CmdId commands[] = {
 	{ wxT("exit"),		CMD_ID_QUIT },
 	{ wxT("help"),		CMD_ID_HELP },
 	{ wxT("stats"),		CMD_ID_STATS },
-	{ wxT("status"),	CMD_ID_STATS },
-	{ wxT("show"),		CMD_ID_SHOW },
 	{ wxT("pause"),		CMD_ID_PAUSE },
 	{ wxT("resume"),	CMD_ID_RESUME },
-	{ wxT("serverstatus"),	CMD_ID_SRVSTAT },
 	{ wxT("connect"),	CMD_ID_CONN },
-	{ wxT("connectto"),	CMD_ID_CONN_TO_SRV },
 	{ wxT("disconnect"),	CMD_ID_DISCONN },
 	{ wxT("reloadipf"),	CMD_ID_RELOAD_IPFILTER },
-	{ wxT("setipfilter"),	CMD_ID_SET_IPFILTER },
-	{ wxT("getiplevel"),	CMD_ID_GET_IPLEVEL },
 	{ wxT("setiplevel"),	CMD_ID_SET_IPLEVEL },
 	{ wxT("iplevel"),	CMD_ID_IPLEVEL },
 	{ wxT("list"),		CMD_ID_CMDSEARCH },
 	{ wxT("find"),		CMD_ID_CMDSEARCH },
 	{ wxT("shutdown"),		CMD_ID_SHUTDOWN },
+	{ wxT("servers"),		CMD_ID_SERVERLIST },
+	// backward compat commands
+	{ wxT("connectto"),	CMD_ID_CONN_TO_SRV },
+	{ wxT("serverstatus"),	CMD_ID_SRVSTAT },
+	{ wxT("setipfilter"),	CMD_ID_SET_IPFILTER },
+	{ wxT("getiplevel"),	CMD_ID_GET_IPLEVEL },
+	{ wxT("show"),		CMD_ID_SHOW },
 	{ wxEmptyString,	0 },
 };
 
@@ -285,22 +286,25 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			request_list.push_back(request);
 			break;
 			
+		case CMD_ID_CONN_TO_SRV:
  		case CMD_ID_CONN:
-			if ( ! args.IsEmpty() ) {
-				msg = wxT("SERVER CONNECT ") + args;
-			} else {
-				msg = wxT("RECONN");
+			request = new CECPacket(EC_OP_SERVER_CONNECT);
+			request_list.push_back(request);
+			if (args.ToULong((unsigned long *)&FileId, 16)) {
+				request->AddTag(CECTag(EC_TAG_ITEM_ID, FileId));
 			}
 			break;
-			
+
  		case CMD_ID_DISCONN:
-			msg = wxT("DISCONN");
+			request = new CECPacket(EC_OP_SERVER_DISCONNECT);
+			request_list.push_back(request);
 			break;
 
-		case CMD_ID_CONN_TO_SRV:
-		// kept for backwards compatibility only
-			msg = wxT("SERVER CONNECT ") + args;
+		case CMD_ID_SERVERLIST:
+			request = new CECPacket(EC_OP_GET_SERVER_LIST);
+			request_list.push_back(request);
 			break;
+
 			
 		case CMD_ID_RELOAD_IPFILTER:
 			request = new CECPacket(EC_OP_IPFILTER_CMD);
@@ -465,7 +469,13 @@ wxString ECv2_Response2String(CECPacket *response)
 				s += _("\n");
 			}
 			break;
-			
+		case EC_OP_SERVER_LIST:
+			for(int i = 0; i < response->GetTagCount(); i ++) {
+				CECTag *tag = response->GetTagByIndex(i);
+				s += wxString::Format(wxT("%08x "), tag->GetTagByName(EC_TAG_ITEM_ID)->GetInt32Data()) +
+					tag->GetStringData();
+				s += _("\n");
+			}
 	}
 	return s;
 }
@@ -475,9 +485,10 @@ void CamulecmdApp::ShowHelp() {
 //                                  1         2         3         4         5         6         7         8
 //                         12345678901234567890123456789012345678901234567890123456789012345678901234567890
 	Show(_("\n----------------> Help: Avalaible commands (case insensitive): <----------------\n\n"));
-	Show(wxString(wxT("Connect [")) + wxString(_("ip")) + wxString(wxT("] [")) + wxString(_("port")) + wxString(wxT("]:\t")) + wxString(_("Connect to given/random server. No warn if failed!\n")));
+	Show(wxString(wxT("Connect [")) + wxString(_("server ID")) + wxString(_("Connect to given/random server. No warn if failed!\n")));
 //	Show(wxString(wxT("ConnectTo [")) + wxString(_("name")) + wxString(wxT("] [")) + wxString(_("port")) + wxString(wxT("]:\t")) + wxString(_("Connect to specified server and port.\n")));
 	Show(wxString(wxT("Disconnect:\t\t")) + wxString(_("Disconnect from server.\n")));
+	Show(wxString(wxT("Servers:\t\t")) + wxString(_("Show server list.\n")));
 //	Show(wxString(wxT("ServerStatus:\t\t")) + wxString(_("Tell us if connected/not connected.\n")));
 	Show(wxString(wxT("Stats:\t\t\t")) + wxString(_("Shows status and statistics.\n")));
 //	Show(wxString(wxT("Show DL:\t\t")) + wxString(_("Shows Download queue.\n")));

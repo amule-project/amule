@@ -43,6 +43,7 @@ enum {
 	CMD_ID_IPLEVEL,
 	CMD_ID_CMDSEARCH,
 	CMD_ID_SHUTDOWN,
+	CMD_ID_SERVERLIST,
 };
 //-------------------------------------------------------------------
 //

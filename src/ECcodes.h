@@ -213,6 +213,36 @@ enum {
 		 */
 	EC_OP_IPFILTER_CMD,
 
+	/*!
+	 * \brief Request list of servers
+	 */
+	EC_OP_GET_SERVER_LIST,
+	
+	/*!
+	 * \brief List of servers, reply to EC_OP_GET_SERVER_LIST
+	 * 
+	 * \par Tags:
+	 *  ::EC_TAG_SERVER (1+)
+	 */
+	EC_OP_SERVER_LIST,
+	
+	/*!
+	 *  \brief Disconnect from current server
+	 * 
+	 * No tags
+	 */
+	EC_OP_SERVER_DISCONNECT,
+	
+	/*!
+	 * \brief Connect to server
+	 * 
+	 * Connect to server - when tag is present it identifies server to use,
+	 * otherwise it will be "any server"
+	 * 
+	 * \par Tags:
+	 *  ::EC_TAG_ITEM_ID (0-1) identifies server to use
+	 */
+	EC_OP_SERVER_CONNECT,
 
 	EC_OP_COMPAT	= 0x00ff	// compatibility opcode, for testing purposes only
 					// tags: EC_TAG_STRING: v1.0 message
@@ -316,6 +346,20 @@ enum {
 	EC_TAG_PARTFILE_SOURCE_COUNT_XFER,
 	EC_TAG_PARTFILE_ED2K_LINK,
 
+	/*@
+	 * \brief Info about server
+	 * 
+	 * Value (string): name of server
+	 * 
+	 *  \par Child TAGs:
+	 *  ::EC_TAG_ITEM_ID
+	 *  ::EC_TAG_SERVER_ADDRESS
+	 */
+	EC_TAG_SERVER,
+	EC_TAG_SERVER_ADDRESS,
+	EC_TAG_SERVER_USERS,
+	EC_TAG_SERVER_FILES,
+	
 		/*!
 		 * \brief Status of IPFilter (current/desired)
 		 *
