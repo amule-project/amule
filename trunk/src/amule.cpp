@@ -1043,19 +1043,35 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 	amulesig_out.Write("\n",1);
 
         // Total received bytes in session
-	sprintf(buffer, "%llu", stat_sessionReceivedBytes);
-        amulesig_out.Write(buffer, strlen(buffer));
-        amulesig_out.Write("\n",1);
+	if (zero) {
+		amulesig_out.Write("0",1);
+		amulesig_out.Write("\n",1);
+	} else {
+		sprintf(buffer, "%llu", stat_sessionReceivedBytes);
+        	amulesig_out.Write(buffer, strlen(buffer));
+        	amulesig_out.Write("\n",1);
+	}
 
         // Total sent bytes in session
-	sprintf(buffer, "%llu", stat_sessionSentBytes);
-        amulesig_out.Write(buffer, strlen(buffer));
-        amulesig_out.Write("\n",1);
+	if (zero) {
+		amulesig_out.Write("0",1);
+		amulesig_out.Write("\n",1);
+	} else {
+		sprintf(buffer, "%llu", stat_sessionSentBytes);
+        	amulesig_out.Write(buffer, strlen(buffer));
+        	amulesig_out.Write("\n",1);
+	}
 
 	// Uptime
-	sprintf(buffer,"%s",unicode2char(CastSecondsToHM(GetUptimeSecs())));
-	amulesig_out.Write(buffer, strlen(buffer));
-	amulesig_out.Write("\n",1);
+	if (zero) {
+		sprintf(buffer,"%s",unicode2char(CastSecondsToHM(0).GetData()));
+		amulesig_out.Write(buffer, strlen(buffer));
+		amulesig_out.Write("\n",1);
+	} else {
+		sprintf(buffer,"%s",unicode2char(CastSecondsToHM(GetUptimeSecs())));
+		amulesig_out.Write(buffer, strlen(buffer));
+		amulesig_out.Write("\n",1);
+	}
 
 	// Close the files
 	emulesig_out.Close();
