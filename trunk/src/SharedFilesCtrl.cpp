@@ -175,6 +175,9 @@ void CSharedFilesCtrl::UpdateFile(CKnownFile* file,uint32 itemnr)
 				SetItem(itemnr,3,CString(_("Auto [Re]")));
 				break;
 			}
+			default:
+				SetItem(itemnr,3,CString(_("Auto [UNK]")));
+				break;
 		}
 	} else {
 		switch (file->GetUpPriority()) {
@@ -202,6 +205,9 @@ void CSharedFilesCtrl::UpdateFile(CKnownFile* file,uint32 itemnr)
 				SetItem(itemnr,3,CString(_("PowerShare[Release]")));
 				break; //end
 			}	
+			default:
+				SetItem(itemnr,3,CString(_("Unknown")));
+				break;
 		}
 	}
 
