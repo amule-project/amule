@@ -426,7 +426,6 @@ CPreferences::~CPreferences()
 		adresses_list.DeleteContents(true); 
 	}
 	
-	delete[] appdir;
 	delete prefs;
 	delete prefsExt;
 }
