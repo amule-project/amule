@@ -389,11 +389,9 @@ CTag::CTag(const CFile &in_data)
 		tag.type &= 0x7F;
 		
 		#warning we need to add the new tag types before 2.0.0
-		uint8 Uint8Name; // This is discarded right now, fix it!
-		if ((off = in_data.Read(&Uint8Name,1)) == wxInvalidOffset) {	
+		if ((off = in_data.Read(&tag.specialtag,1)) == wxInvalidOffset) {	
 			throw CInvalidPacket("Bad Met File");
 		}
-		
 		tag.tagname = NULL;
 	} else {
 	
