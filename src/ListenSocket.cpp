@@ -129,6 +129,14 @@ void CClientReqSocket::ResetTimeOutTimer()
 
 bool CClientReqSocket::CheckTimeOut()
 {
+// lfroen: on daemon sockets must be blocking. Which means
+// that when client is downloading, i will only trust
+// tcp timeout
+#ifdef AMULE_DAEMON
+	if (my_handler) {
+		return false;
+	}
+#endif
 	// 0.42x
 	UINT uTimeout = CONNECTION_TIMEOUT;
 	if(m_client) {
@@ -141,7 +149,6 @@ bool CClientReqSocket::CheckTimeOut()
 			uTimeout += CONNECTION_TIMEOUT;
 		}
 	}
-	
 	if (::GetTickCount() - timeout_timer > uTimeout){
 		timeout_timer = ::GetTickCount();
 		Disconnect(wxT("Timeout"));
@@ -2056,8 +2063,18 @@ void *CClientReqSocketHandler::Entry()
 	printf("CClientReqSocketHandler: start thread for %p\n", socket);
 	while ( !TestDestroy() ) {
 		CALL_APP_DATA_LOCK;
-		if ( socket->deletethis || socket->Error()) {
+		if ( socket->deletethis ) {
 			printf("CClientReqSocketHandler: socket %p being deleted\n", socket);
+			break;
+		}
+		if ( socket->Error()) {
+			if ( socket->LastError() == wxSOCKET_WOULDBLOCK ) {
+				if ( socket->WaitForWrite(0, 10) ) {
+					socket->OnSend(0);
+				}
+				continue;
+			}
+			printf("CClientReqSocketHandler: error %d on socket %p\n", socket->LastError(), socket);
 			break;
 		}
 		if ( socket->WaitForLost(0, 0) ) {
@@ -2129,9 +2146,10 @@ CListenSocket::CListenSocket(CPreferences* in_prefs, wxSockAddress& addr)
 :
 // wxSOCKET_NOWAIT    - means non-blocking i/o
 // wxSOCKET_REUSEADDR - means we can reuse the socket imediately (wx-2.5.3)
-wxSocketServer(addr, wxSOCKET_NOWAIT|wxSOCKET_REUSEADDR)
 #ifdef AMULE_DAEMON
-,wxThread(wxTHREAD_JOINABLE) 
+wxSocketServer(addr, wxSOCKET_WAITALL|wxSOCKET_REUSEADDR), wxThread(wxTHREAD_JOINABLE) 
+#else
+wxSocketServer(addr, wxSOCKET_NOWAIT|wxSOCKET_REUSEADDR)
 #endif
 {
 	// 0.42e - vars not used by us
@@ -2415,18 +2433,11 @@ CSocketGlobalThread::CSocketGlobalThread() : wxThread(wxTHREAD_JOINABLE)
 
 void CSocketGlobalThread::AddSocket(CClientReqSocket* sock)
 {
-	//CALL_APP_DATA_LOCK;
-	//printf("CClientReqSocket: socket %p added (%d total)\n", sock, socket_list.size());
-	//wxMutexLocker locker(list_mutex);
 	socket_list.insert(sock);
 }
 
 void CSocketGlobalThread::RemoveSocket(CClientReqSocket* sock)
 {
-	//CALL_APP_DATA_LOCK;
-	//wxMutexLocker locker(list_mutex);
-	//socket_list.remove(sock);
-	//printf("CClientReqSocket: socket %p removed\n", sock);
 	socket_list.erase(sock);
 }
 
@@ -2473,9 +2484,7 @@ void *CSocketGlobalThread::Entry()
 			it != erase_list.end(); it++) {
 			CClientReqSocket* cur_sock = *it;
 			socket_list.erase(cur_sock);
-			//socket_list.remove(cur_sock);
 		}
-		//list_mutex.Unlock();
 	}
 	return 0;
 }
