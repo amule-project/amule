@@ -131,6 +131,11 @@ CKnownFile::~CKnownFile(){
 		delete taglist[i];
 	}		
 	
+	SourceSet::iterator it = m_ClientUploadList.begin();
+	for ( ; it != m_ClientUploadList.end(); it++ ) {
+		(*it)->ResetUploadFile();
+	}
+	
 	m_AvailPartFrequency.Clear();
 	
 	delete m_pAICHHashSet;
