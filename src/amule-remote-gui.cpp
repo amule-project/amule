@@ -550,6 +550,10 @@ bool CPreferencesRem::LoadRemote()
 	return true;
 }
 
+void CPreferencesRem::SendToRemote()
+{
+}
+
 //
 // Container implementation
 //
