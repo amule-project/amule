@@ -434,27 +434,34 @@ void CamuleRemoteGuiApp::NotifyEvent(const GUIEvent& event)
 				break;
 
 	        case PARTFILE_REMOVE_NO_NEEDED:
-			break;
+	        	downloadqueue->SendFileCommand((CPartFile *)event.ptr_value, EC_OP_PARTFILE_REMOVE_NO_NEEDED);
+				break;
 	        case PARTFILE_REMOVE_FULL_QUEUE:
-			break;
+	        	downloadqueue->SendFileCommand((CPartFile *)event.ptr_value, EC_OP_PARTFILE_REMOVE_FULL_QUEUE);
+				break;
 	        case PARTFILE_REMOVE_HIGH_QUEUE:
-			break;
+	        	downloadqueue->SendFileCommand((CPartFile *)event.ptr_value, EC_OP_PARTFILE_REMOVE_HIGH_QUEUE);
+				break;
 	        case PARTFILE_CLEANUP_SOURCES:
-			break;
+	        	downloadqueue->SendFileCommand((CPartFile *)event.ptr_value, EC_OP_PARTFILE_CLEANUP_SOURCES);
+				break;
 	        case PARTFILE_SWAP_A4AF_THIS:
-			break;
+	        	downloadqueue->SendFileCommand((CPartFile *)event.ptr_value, EC_OP_PARTFILE_SWAP_A4AF_THIS);
+				break;
         	case PARTFILE_SWAP_A4AF_OTHERS:
-			break;
+	        	downloadqueue->SendFileCommand((CPartFile *)event.ptr_value, EC_OP_PARTFILE_SWAP_A4AF_OTHERS);
+				break;
 	        case PARTFILE_SWAP_A4AF_THIS_AUTO:
-			break;
+	        	downloadqueue->SendFileCommand((CPartFile *)event.ptr_value, EC_OP_PARTFILE_SWAP_A4AF_THIS_AUTO);
+				break;
 	        case PARTFILE_PAUSE:
-	        	downloadqueue->Pause((CPartFile *)event.ptr_value);
+	        	downloadqueue->SendFileCommand((CPartFile *)event.ptr_value, EC_OP_PARTFILE_PAUSE);
 				break;
 	        case PARTFILE_RESUME:
-	        	downloadqueue->Resume((CPartFile *)event.ptr_value);
+	        	downloadqueue->SendFileCommand((CPartFile *)event.ptr_value, EC_OP_PARTFILE_RESUME);
 				break;
 	        case PARTFILE_STOP:
-	        	downloadqueue->Stop((CPartFile *)event.ptr_value);
+	        	downloadqueue->SendFileCommand((CPartFile *)event.ptr_value, EC_OP_PARTFILE_STOP);
 				break;
 	        case PARTFILE_PRIO_AUTO:
 	        	downloadqueue->AutoPrio((CPartFile *)event.ptr_value, event.long_value);
@@ -466,7 +473,7 @@ void CamuleRemoteGuiApp::NotifyEvent(const GUIEvent& event)
 	        	downloadqueue->Category((CPartFile *)event.ptr_value, event.byte_value);
 				break;
 	        case PARTFILE_DELETE:
-		        downloadqueue->Delete((CPartFile *)event.ptr_value);
+	        	downloadqueue->SendFileCommand((CPartFile *)event.ptr_value, EC_OP_PARTFILE_DELETE);
 				break;
 			
 	        case KNOWNFILE_SET_UP_PRIO:
@@ -1116,33 +1123,9 @@ void CDownQueueRem::UpdateStats(CEC_Stats_Tag *tag)
 	m_kbps = tag->DownSpeed() / 1024.0;
 }
 
-void CDownQueueRem::Pause(CPartFile *file)
+void CDownQueueRem::SendFileCommand(CPartFile *file, ec_tagname_t cmd)
 {
-	CECPacket req(EC_OP_PARTFILE_PAUSE);
-	req.AddTag(CECTag(EC_TAG_PARTFILE, file->GetFileHash()));
-	
-	m_conn->Send(&req);
-}
-
-void CDownQueueRem::Resume(CPartFile *file)
-{
-	CECPacket req(EC_OP_PARTFILE_RESUME);
-	req.AddTag(CECTag(EC_TAG_PARTFILE, file->GetFileHash()));
-	
-	m_conn->Send(&req);
-}
-
-void CDownQueueRem::Stop(CPartFile *file)
-{
-	CECPacket req(EC_OP_PARTFILE_STOP);
-	req.AddTag(CECTag(EC_TAG_PARTFILE, file->GetFileHash()));
-	
-	m_conn->Send(&req);
-}
-
-void CDownQueueRem::Delete(CPartFile *file)
-{
-	CECPacket req(EC_OP_PARTFILE_DELETE);
+	CECPacket req(cmd);
 	req.AddTag(CECTag(EC_TAG_PARTFILE, file->GetFileHash()));
 	
 	m_conn->Send(&req);
