@@ -123,13 +123,15 @@ ExternalConn::~ExternalConn() {
 void *ExternalConn::Entry()
 {
         while ( !TestDestroy() ) {
-		wxSocketBase *client = m_ECServer->Accept();
-		if ( !client ) {
-			continue;
-		}
-		client->Notify(false);
-		ExternalConnClientThread *cli_thread = new ExternalConnClientThread(this, client);
-		cli_thread->Run();
+        	if ( m_ECServer->WaitForAccept(1, 0) ) {
+				wxSocketBase *client = m_ECServer->Accept();
+				if ( !client ) {
+					continue;
+				}
+				client->Notify(false);
+				ExternalConnClientThread *cli_thread = new ExternalConnClientThread(this, client);
+				cli_thread->Run();
+        	}
 	}
 	return 0;
 }
@@ -2615,7 +2617,7 @@ void *ExternalConnClientThread::Entry()
 			AddLogLineM(false, _("ExternalConnClientThread: connection closed\n"));
 			break;
 		}
-		if (m_sock->WaitForRead()) {
+		if (m_sock->WaitForRead(1, 0)) {
 			request = m_owner->m_ECServer->ReadPacket(m_sock);
 			response = m_owner->ProcessRequest2(request);
 			delete request;

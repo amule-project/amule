@@ -2228,7 +2228,7 @@ CListenSocket::~CListenSocket()
 void *CListenSocket::Entry()
 {
 	while ( !TestDestroy() ) {
-		if ( WaitForAccept() ) {
+		if ( WaitForAccept(1, 0) ) {
 			if ( !theApp.IsReady ) {
 				wxSocketBase *s = Accept(false);
 				if ( s ) {
