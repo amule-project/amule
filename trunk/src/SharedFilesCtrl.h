@@ -26,6 +26,7 @@
 
 #include "types.h"		// Needed for uint32
 #include "MuleListCtrl.h"	// Needed for CMuleListCtrl
+#include "BarShader.h"
 
 class CSharedFileList;
 class CKnownFile;
@@ -53,6 +54,8 @@ private:
 	void		OnNMRclick(wxListEvent& evt);
 	virtual bool ProcessEvent(wxEvent& evt);
 	CPreferences::Table TablePrefs()	{ return CPreferences::tableShared; }
+
+	CBarShader s_ShareStatusBar;
 
 	wxMenu* m_SharedFilesMenu;
 	wxMenu		   m_PrioMenu;

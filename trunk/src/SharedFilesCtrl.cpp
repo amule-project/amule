@@ -34,6 +34,7 @@
 #include "opcodes.h"		// Needed for MP_PRIOVERYLOW
 #include "amule.h"		// Needed for theApp
 #include "color.h"		// Needed for SYSCOLOR
+#include "BarShader.h"
 
 // CSharedFilesCtrl
 
@@ -659,9 +660,25 @@ void CSharedFilesCtrl::OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxR
 		wxDCClipper clipper(*dc, columnRect);
 		switch ( iColumn )
 		{
-		case 9:
-			file->DrawShareStatusBar(dc, columnRect, false, theApp.glob_prefs->UseFlatBar());
+		case 9: {
+			s_ShareStatusBar.SetFileSize(file->GetFileSize()); 
+			s_ShareStatusBar.SetHeight(columnRect.GetHeight()); 
+			s_ShareStatusBar.SetWidth(columnRect.GetWidth()); 
+			s_ShareStatusBar.Fill(RGB(255,0,0));
+
+			if ( !file->m_AvailPartFrequency.IsEmpty()) {
+				for (int i = 0;i != file->GetPartCount();i++)
+					if(file->m_AvailPartFrequency[i] > 0 ){
+						DWORD color = RGB(0, (210-(22*(file->m_AvailPartFrequency[i]-1)) <  0)? 0:210-(22*(file->m_AvailPartFrequency[i]-1)), 255);
+						s_ShareStatusBar.FillRange(PARTSIZE*(i),PARTSIZE*(i+1),color);
+					}
+				}
+
+			s_ShareStatusBar.Draw(dc, columnRect.GetLeft(), columnRect.GetTop(), theApp.glob_prefs->UseFlatBar());
+			
 			break;
+		}
+		
 		default:
 			columnItem.m_col = iColumn;
 			columnItem.m_itemId = item;
