@@ -244,7 +244,7 @@ case "${host}" in
 powerpc-apple-darwin*) LDFLAGS="$LDFLAGS -bind_at_load"
 	USE_GSOCKET="no"
 	;;
-i386-unknown-openbsd*) LIBS="$LIBS -lX11 -L/usr/X11R6/lib"  CXXFLAGS=" $CXXFLAGS -D__OPENBSD__" 
+i386-unknown-openbsd*) LIBS="$LIBS -L/usr/local/lib -lX11 -L/usr/X11R6/lib"  CXXFLAGS=" $CXXFLAGS -D__OPENBSD__" 
 	;;
 esac
 
