@@ -841,7 +841,7 @@ bool CServerList::SaveServermetToFile()
 			softfiles.WriteTagToFile(&servermet);
 			CTag hardfiles(ST_HARDFILES, nextserver->GetHardFiles() );
 			hardfiles.WriteTagToFile(&servermet);
-			CTag version(ST_VERSION, (LPCSTR)nextserver->GetVersion().c_str() );
+			CTag version(ST_VERSION, unicode2char(nextserver->GetVersion()));
 			version.WriteTagToFile(&servermet);
 			CTag tagUDPFlags(ST_UDPFLAGS, nextserver->GetUDPFlags() );
 			tagUDPFlags.WriteTagToFile(&servermet);
