@@ -878,7 +878,7 @@ void CDownloadListCtrl::DrawFileItem(wxDC * dc, int nColumn, LPRECT lpRect, Ctrl
 					if (theApp.glob_prefs->ShowProgBar()) {
 					
 						int iWidth = lpRect->right - lpRect->left;
-						int iHeight = (lpRect->bottom - lpRect->top) + 2;
+						int iHeight = (lpRect->bottom - lpRect->top);
 	
 						// DO NOT DRAW IT ALL THE TIME
 						DWORD dwTicks = GetTickCount();
