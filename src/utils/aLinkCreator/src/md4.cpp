@@ -336,7 +336,7 @@ wxString MD4::calcMd4FromFile(const wxString &filename, MD4Hook hook)
 
   // Open file and let wxFFile destructor close the file
   // Closing it explicitly may crash on Win32 ...
-#if wxCHECK_VERSION(2,5,2)
+#if wxCHECK_VERSION(2,5,1)
   wxFFile file(filename, wxT("rbS"));
 #else
   wxFFile file(filename, "rbS");
