@@ -56,8 +56,6 @@ private:
 	void	OnItemActivated(wxListEvent& evt);
 	
 	void	RemoveAllFriendSlots();
-
-	wxString m_metfile;
 };
 
 #endif

@@ -57,9 +57,6 @@ CFriendListCtrl::CFriendListCtrl(wxWindow* parent, int id, const wxPoint& pos, w
 {
   InsertColumn(0, _("Username"), wxLIST_FORMAT_LEFT, siz.GetWidth() - 4);
   
-  // The preferences class is not availble at shutdown, so I save the path here
-  m_metfile = wxString(theApp.glob_prefs->GetAppDir()) + wxString("emfriends.met"); 
-  
   LoadList();
 }
 
@@ -157,14 +154,16 @@ void CFriendListCtrl::OnItemActivated(wxListEvent& WXUNUSED(evt))
 
 bool CFriendListCtrl::LoadList()
 {
-	if ( !wxFileExists(m_metfile) ) {
+  	wxString metfile = wxString(theApp.glob_prefs->GetAppDir()) + "emfriends.met"; 
+	
+	if ( !wxFileExists(metfile) ) {
 		return false;
 	}
 	
 	bool result = false;
 	
 	CFile file;
-	if ( file.Open(m_metfile) ) {
+	if ( file.Open(metfile) ) {
 		
 		uint8 header;
 		if ( 1 == file.Read(&header, 1) ) {
@@ -185,7 +184,7 @@ bool CFriendListCtrl::LoadList()
 		}
 		
 		file.Close();
-	} else if ( wxFileExists(m_metfile) ) {
+	} else if ( wxFileExists(metfile) ) {
 		theApp.amuledlg->AddLogLine(false, _("Failed to open friendlist file 'emfriends.met' for reading!\n"));
 	}
 	
@@ -196,7 +195,7 @@ bool CFriendListCtrl::LoadList()
 void CFriendListCtrl::SaveList()
 {
 	CFile file;
-	if( file.Create(m_metfile, true) ) {
+	if( file.Create(wxString(theApp.glob_prefs->GetAppDir()) + "emfriends.met", true) ) {
 		uint8 header = MET_HEADER;
 		file.Write(&header, 1);
 		
