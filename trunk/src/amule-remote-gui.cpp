@@ -370,19 +370,24 @@ void CamuleRemoteGuiApp::NotifyEvent(const GUIEvent& event)
 	        case PARTFILE_SWAP_A4AF_THIS_AUTO:
 			break;
 	        case PARTFILE_PAUSE:
-			break;
+	        	downloadqueue->Pause((CPartFile *)event.ptr_value);
+				break;
 	        case PARTFILE_RESUME:
-			break;
+	        	downloadqueue->Resume((CPartFile *)event.ptr_value);
+				break;
 	        case PARTFILE_STOP:
-			break;
+	        	downloadqueue->Stop((CPartFile *)event.ptr_value);
+				break;
 	        case PARTFILE_PRIO_AUTO:
 			break;
 	        case PARTFILE_PRIO_SET:
 			break;
 	        case PARTFILE_SET_CAT:
-			break;
+	        	downloadqueue->Category((CPartFile *)event.ptr_value, event.byte_value);
+				break;
 	        case PARTFILE_DELETE:
 			break;
+			
 	        case KNOWNFILE_SET_UP_PRIO:
 			break;
 	        case KNOWNFILE_SET_UP_PRIO_AUTO:
@@ -395,6 +400,7 @@ void CamuleRemoteGuiApp::NotifyEvent(const GUIEvent& event)
 			break;
 	        case DLOAD_SET_CAT_STATUS:
 			break;
+
 			case ADDLOGLINE:
 			case ADDDEBUGLOGLINE:
 				printf("LOG: %s\n", event.string_value.GetData());
@@ -703,6 +709,8 @@ bool CRemoteConnect::Connect(const wxString &host, int port,
         }
     }
     m_isConnected = true;
+    m_ECSocket->SetFlags(wxSOCKET_BLOCK);
+    
 	return true;
 }
 
@@ -848,6 +856,7 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 	file->m_notCurrentSources = tag->SourceNotCurrCount();
 	file->m_source_count = tag->SourceCount();
 	file->m_a4af_source_count = tag->SourceCountA4AF();
+    file->status = tag->FileStatus();
 
 	file->kBpsDown = tag->Speed() / 1024.0;
 	
