@@ -105,8 +105,6 @@ public:
 	void ShowNotifier(wxString Text, int MsgType, bool ForceSoundOFF = false); // Should be removed or implemented!
 	void Hide_aMule(bool iconize = true);
 	void Show_aMule(bool uniconize = true);
-	// has to be done in own method
-	void changeDesktopMode();
 	
 	bool SafeState() { return is_safe_state; }
 
@@ -119,7 +117,12 @@ public:
 
 
 #ifndef __SYSTRAY_DISABLED__
-	void CreateSystray(const wxString& title);
+	#if !USE_WX_TRAY
+		// Has to be done in own method
+		void changeDesktopMode();
+	#endif
+	void CreateSystray();
+	void RemoveSystray();	
 #endif
 
 	CTransferWnd*		transferwnd;
@@ -169,7 +172,6 @@ private:
 
 // Systray functions
 #ifndef __SYSTRAY_DISABLED__
-	void RemoveSystray();
 	void UpdateTrayIcon(int percent);
 	#if USE_WX_TRAY
 		CMuleTrayIcon* m_wndTaskbarNotifier;

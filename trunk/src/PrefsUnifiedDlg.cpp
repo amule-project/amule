@@ -88,6 +88,7 @@ BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	EVT_CHECKBOX(IDC_MSGFILTER_ALL,		PrefsUnifiedDlg::OnCheckBoxChange)
 	EVT_CHECKBOX(IDC_MSGFILTER_WORD,	PrefsUnifiedDlg::OnCheckBoxChange)
 	EVT_CHECKBOX(IDC_STARTNEXTFILE, PrefsUnifiedDlg::OnCheckBoxChange)
+	EVT_CHECKBOX(IDC_ENABLETRAYICON, PrefsUnifiedDlg::OnCheckBoxChange)
 
 	EVT_BUTTON(ID_PREFS_OK_TOP,		PrefsUnifiedDlg::OnOk)
 	EVT_BUTTON(ID_OK,			PrefsUnifiedDlg::OnOk)
@@ -106,7 +107,7 @@ BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	EVT_SPINCTRL(IDC_TOOLTIPDELAY,		PrefsUnifiedDlg::OnToolTipDelayChange)
 
 	EVT_BUTTON(IDC_EDITADR,			PrefsUnifiedDlg::OnButtonEditAddr)
-	EVT_BUTTON(ID_DESKTOPMODE,		PrefsUnifiedDlg::OnButtonSystray)
+	EVT_BUTTON(IDC_DESKTOPMODE,		PrefsUnifiedDlg::OnButtonSystray)
 	EVT_BUTTON(IDC_IPFRELOAD,		PrefsUnifiedDlg::OnButtonIPFilterReload)
 	EVT_BUTTON(IDC_COLOR_BUTTON,		PrefsUnifiedDlg::OnButtonColorChange)
 	EVT_BUTTON(IDC_IPFILTERUPDATE,		PrefsUnifiedDlg::OnButtonIPFilterUpdate)
@@ -191,6 +192,7 @@ wxDialog(parent, -1, _("Preferences"), wxDefaultPosition, wxDefaultSize,
 	s_ID = GetId();
 
 	preferencesDlgTop( this, FALSE );
+	
 	wxListCtrl* PrefsIcons = CastChild( ID_PREFSLISTCTRL, wxListCtrl );
 
 	wxImageList* icon_list = new wxImageList(16, 16);
@@ -223,6 +225,14 @@ wxDialog(parent, -1, _("Preferences"), wxDefaultPosition, wxDefaultSize,
 		// Add it to the sizer
 		prefs_sizer->Add( pages[i].m_widget, 0, wxGROW|wxEXPAND );
 
+		if (pages[i].m_function == PreferencesGeneralTab) {
+			// This must be done now or pages won't Fit();
+			#if USE_WX_TRAY
+				FindWindow(IDC_DESKTOPMODE)->Show(false);
+				IDC_MISC_OPTIONS->Remove(FindWindow(IDC_DESKTOPMODE));
+			#endif
+		}
+		
 		// Align and resize the page
 		Fit();
 		Layout();
@@ -241,7 +251,7 @@ wxDialog(parent, -1, _("Preferences"), wxDefaultPosition, wxDefaultSize,
 		prefs_sizer->Remove( pages[i].m_widget );
 		pages[i].m_widget->Show( false );
 	}
-
+	
 	// Default to the General tab
 	m_CurrentPanel = pages[0].m_widget;
 	prefs_sizer->Add( pages[0].m_widget, 0, wxGROW|wxEXPAND );
@@ -353,6 +363,11 @@ bool PrefsUnifiedDlg::TransferToWindow()
 	FindWindow( IDC_HQR_VALUE )->Enable( thePrefs::DropHighQueueRankingSources() );
 	FindWindow( IDC_IPFILTERURL )->Enable( thePrefs::IPFilterAutoLoad() );
 	FindWindow( IDC_STARTNEXTFILE_SAME )->Enable(thePrefs::StartNextFile());
+	
+	FindWindow(IDC_MINTRAY)->Enable(thePrefs::UseTrayIcon());
+	#if !USE_WX_TRAY
+		FindWindow(IDC_DESKTOPMODE)->Enable(thePrefs::UseTrayIcon());
+	#endif
 
 	if (!CastChild(IDC_MSGFILTER, wxCheckBox)->IsChecked()) {
 		FindWindow(IDC_MSGFILTER_ALL)->Enable(false);
@@ -663,6 +678,16 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 			FindWindow(IDC_STARTNEXTFILE_SAME)->Enable(value);
 			break;
 		
+		case IDC_ENABLETRAYICON:
+			FindWindow(IDC_MINTRAY)->Enable(value);
+			FindWindow(IDC_DESKTOPMODE)->Enable(value);
+			if (value) {
+				theApp.amuledlg->CreateSystray();
+			} else {
+				theApp.amuledlg->RemoveSystray();
+			}
+			break;
+		
 		case ID_PROXY_AUTO_SERVER_CONNECT_WITHOUT_PROXY:
 			break;
 	}
@@ -697,14 +722,18 @@ void PrefsUnifiedDlg::OnFakeBrowserChange( wxCommandEvent& evt )
 	}
 }
 
-
 void PrefsUnifiedDlg::OnButtonSystray(wxCommandEvent& WXUNUSED(evt))
 {
+	#if !USE_WX_TRAY
 	theApp.amuledlg->changeDesktopMode();
 
 	// Ensure that the dialog is still visible afterwards
 	Raise();
 	SetFocus();
+	#else
+	// Should never happen, button is not shown.
+	wxASSERT(0);
+	#endif
 }
 
 

@@ -224,6 +224,7 @@ public:
 	static bool		AutoServerlist()		{ return s_autoserverlist; }
 	static void		SetAutoServerlist(bool val)	{ s_autoserverlist = val; }
 	static bool		DoMinToTray()			{ return s_mintotray; }
+	static bool		UseTrayIcon()			{ return s_trayiconenabled; }
 	static bool		DoAutoConnect()			{ return s_autoconnect; }
 	static void		SetAutoConnect(bool inautoconnect)
        					{s_autoconnect = inautoconnect; }
@@ -575,6 +576,7 @@ protected:
 
 	static bool	s_scorsystem;
 	static bool	s_mintotray;
+	static bool	s_trayiconenabled;
 	static bool	s_addnewfilespaused;
 	static bool	s_addserversfromserver;
 	static bool	s_addserversfromclient;
