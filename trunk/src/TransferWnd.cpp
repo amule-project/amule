@@ -285,19 +285,19 @@ bool CTransferWnd::ProcessEvent(wxEvent& evt)
 			break;
 		}
 		case MP_PRIOLOW: {
-			theApp.downloadqueue->SetCatPrio(m_dlTab->GetSelection(),PR_LOW);
+			CoreNotify_Download_Set_Cat_Prio(m_dlTab->GetSelection(),PR_LOW);
 			break;
 		}
 		case MP_PRIONORMAL: {
-			theApp.downloadqueue->SetCatPrio(m_dlTab->GetSelection(),PR_NORMAL);
+			CoreNotify_Download_Set_Cat_Prio(m_dlTab->GetSelection(),PR_NORMAL);
 			break;
 		}
 		case MP_PRIOHIGH: {
-			theApp.downloadqueue->SetCatPrio(m_dlTab->GetSelection(),PR_HIGH );
+			CoreNotify_Download_Set_Cat_Prio(m_dlTab->GetSelection(),PR_HIGH );
 			break;
 		}
 		case MP_PRIOAUTO: {
-			theApp.downloadqueue->SetCatPrio(m_dlTab->GetSelection(),PR_AUTO );
+			CoreNotify_Download_Set_Cat_Prio(m_dlTab->GetSelection(),PR_AUTO );
 			break;
 		}
 		case MP_PAUSE: {
@@ -356,7 +356,7 @@ void CTransferWnd::EditCatTabLabel(int index,wxString newlabel)
 			if (cur_file==0) {
 				continue;
 			}
-			if (downloadlistctrl->CheckShowItemInGivenCat(cur_file,index)) {
+			if (cur_file->CheckShowItemInGivenCat(index)) {
 				count++;
 				if (cur_file->GetTransferingSrcCount()>0) {
 					dwl++;
