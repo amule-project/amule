@@ -32,7 +32,9 @@
 #include "EMSocket.h"		// Needed for CEMSocket
 #include "sockets.h"
 
-/******************************************************************************/
+//------------------------------------------------------------------------------
+// CServerSocketHandler
+//------------------------------------------------------------------------------
 
 #ifdef AMULE_DAEMON
 #define SERVER_SOCK_HANDLER_BASE wxThread
@@ -45,19 +47,20 @@ class CServerSocketHandler: public SERVER_SOCK_HANDLER_BASE
 public:
 	CServerSocketHandler(CServerSocket *socket = NULL);
 
-private:
-	void ServerSocketHandler(wxSocketEvent& event);
-
-public:	
+public:
 #ifdef AMULE_DAEMON
 	void *Entry();
 	CServerSocket *m_socket;
 #else
+private:
+	void ServerSocketHandler(wxSocketEvent& event);
 	DECLARE_EVENT_TABLE();
 #endif
 };
 
-/******************************************************************************/
+//------------------------------------------------------------------------------
+// CServerSocket
+//------------------------------------------------------------------------------
 
 class CServer;
 
