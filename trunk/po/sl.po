@@ -1,4 +1,3 @@
-# translation of si.po to 
 # translation of source_strings.po to si.po
 # Copyright (C) 2004 Free Software Foundation, Inc.
 # This file is distributed under the same license as the PACKAGE package.
@@ -6,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: si\n"
+"Project-Id-Version: sl\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2004-11-16 23:38+0100\n"
-"PO-Revision-Date: 2004-11-19 13:54+0100\n"
+"PO-Revision-Date: 2004-12-10 17:52+0100\n"
 "Last-Translator: Uros Vampl <uros.vampl@stud.uni-graz.at>\n"
 "Language-Team:  <sl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -262,7 +261,7 @@ msgid ""
 "\n"
 " Copyright (C) 2003-2004 aMule Project \n"
 msgstr ""
-"aMule - odjemalec p2p za 'vse platforme' ki temelji na eMule.\n"
+"aMule - 'all platform' p2p odjemalec ki temelji na eMule.\n"
 "\n"
 " Spletna stran: http://www.amule.org\n"
 " Forum: http://forum.amule.org \n"
@@ -791,7 +790,7 @@ msgstr "Datoteka"
 #: src/ClientListCtrl.cpp:443 src/ClientListCtrl.cpp:727
 #: src/ClientListCtrl.cpp:909
 msgid "Client Software"
-msgstr "Software uporabnika"
+msgstr "Odjemalec"
 
 #: src/ClientListCtrl.cpp:444 src/DownloadListCtrl.cpp:554
 #: src/WebServer.cpp:971
@@ -2451,7 +2450,7 @@ msgstr "Hitrost prenosa(gor)"
 
 #: src/muuli_wdr.cpp:1389
 msgid "Clientsoftware :"
-msgstr "Software uporabnika :"
+msgstr "Odjemalec :"
 
 #: src/muuli_wdr.cpp:1395
 msgid "Server IP :"
@@ -2507,7 +2506,7 @@ msgstr "Gor/Dol koliènik :"
 
 #: src/muuli_wdr.cpp:1536
 msgid "Rating (total) :"
-msgstr "Razmerja (skupno) :"
+msgstr "Razmerje (skupno) :"
 
 #: src/muuli_wdr.cpp:1555
 msgid "Secure Ident :"
@@ -2515,7 +2514,7 @@ msgstr "Secure Ident :"
 
 #: src/muuli_wdr.cpp:1558
 msgid "Uploadqueue score :"
-msgstr "Toèk v vrsti :"
+msgstr "Toèke v vrsti :"
 
 #: src/muuli_wdr.cpp:1600
 msgid "General Settings"
@@ -4776,7 +4775,7 @@ msgstr "Povpreèni prenos gor (seja): %.2f kB/s"
 #: src/StatisticsDlg.cpp:797
 #, c-format
 msgid "Max Downloadrate Average (Session): %.2f kB/s"
-msgstr "Povpreèni najveèji prenos dol (seja): %.2f kB/s"
+msgstr "Najveèji povpreèni prenos dol (seja): %.2f kB/s"
 
 #: src/StatisticsDlg.cpp:799
 #, c-format
