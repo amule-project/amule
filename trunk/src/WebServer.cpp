@@ -2515,32 +2515,29 @@ wxString CWebServer::_GetConnectedServer(ThreadData Data) {
 	OutS.Replace(wxT("[ServerOptions]"), _("Server Preferences"));
 	OutS.Replace(wxT("[WebSearch]"), _("Web-based Search"));
 
-	wxString sServerStat = pThis->webInterface->SendRecvMsg(wxT("SERVER STAT"));
-	int brk=sServerStat.First(wxT("\t"));
-	if (sServerStat.Left(brk) == wxT("Connected")) {
-		sServerStat=sServerStat.Mid(brk+1);brk=sServerStat.First(wxT("\t"));
-		if (sServerStat.Left(brk) == wxT("High ID"))
-			OutS.Replace(wxT("[1]"), _("Connected"));
-		else
-			OutS.Replace(wxT("[1]"), _("Connected (Low ID)"));
-
-		sServerStat=sServerStat.Mid(brk+1);brk=sServerStat.First(wxT("\t"));
-		OutS.Replace(wxT("[2]"), sServerStat.Left(brk));
-		
-		sServerStat=sServerStat.Mid(brk+1);brk=sServerStat.First(wxT("\t"));
-		sprintf(HTTPTempC, "%10i", atoi((char*) sServerStat.Left(brk).GetData()));
-		HTTPTemp = HTTPTemp.Format(wxT("%s"), HTTPTempC);
-		OutS.Replace(wxT("[3]"), HTTPTemp);
-	} else if (sServerStat.Left(brk) == wxT("Connecting")) {
-		OutS.Replace(wxT("[1]"), _("Connecting"));
-		OutS.Replace(wxT("[2]"), wxEmptyString);
-		OutS.Replace(wxT("[3]"), wxEmptyString);
-	} else {
-		OutS.Replace(wxT("[1]"), _("Disconnected"));
-		OutS.Replace(wxT("[2]"), wxEmptyString);
-		OutS.Replace(wxT("[3]"), wxEmptyString);
+	CECPacket connstate_req(EC_OP_GET_CONNSTATE);
+	CECPacket *sServerStat = pThis->webInterface->SendRecvMsg_v2(&connstate_req);
+	uint8 connstate = sServerStat->GetTagByIndex(0)->GetInt8Data();
+	switch (connstate) {
+		case 0:
+			OutS.Replace(wxT("[1]"), _("Disconnected"));
+			OutS.Replace(wxT("[2]"), wxEmptyString);
+			OutS.Replace(wxT("[3]"), wxEmptyString);
+			break;
+		case 1:
+			OutS.Replace(wxT("[1]"), _("Connecting"));
+			OutS.Replace(wxT("[2]"), wxEmptyString);
+			OutS.Replace(wxT("[3]"), wxEmptyString);
+			break;
+		case 2:
+		case 3:
+			OutS.Replace(wxT("[1]"), wxString(_("Connected ")) + ((connstate == 2) ? wxString(_("with LowID")) : wxString(_("with HighID"))));
+			CECTag *server = sServerStat->GetTagByIndex(0)->GetTagByIndex(0);
+			OutS.Replace(wxT("[2]"), server->GetTagByName(EC_TAG_SERVER_NAME)->GetStringData());
+			sprintf(HTTPTempC, "%10i", server->GetTagByName(EC_TAG_SERVER_USERS)->GetInt32Data());
+			HTTPTemp = HTTPTemp.Format(wxT("%s"), HTTPTempC);
+			OutS.Replace(wxT("[3]"), HTTPTemp);
 	}
-
 	return OutS;
 }
 
