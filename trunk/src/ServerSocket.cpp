@@ -167,7 +167,7 @@ void *CServerSocketHandler::Entry()
 //
 // There can be only one. :)
 //
-static CServerSocketHandler TheServerSocketHandler(NULL);
+static CServerSocketHandler TheServerSocketHandler;
 
 /******************************************************************************/
 
