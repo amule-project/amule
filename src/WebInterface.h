@@ -128,7 +128,6 @@ class CamulewebApp : public wxApp
 		virtual void 	OnInitCmdLine(wxCmdLineParser& amuleweb_parser)
 			{ amuleweb_parser.SetDesc(cmdLineDesc); }
 		virtual bool 	OnCmdLineParsed(wxCmdLineParser& amuleweb_parser);
-		void 		ParseCommandLine();
 		
 		bool 		m_HasCommandLinePassword;
 		wxString	m_CommandLinePassword;

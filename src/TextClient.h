@@ -87,7 +87,6 @@ public:
 		amulecmd_parser.SetDesc(cmdLineDesc); 	
 	}
 	virtual bool OnCmdLineParsed(wxCmdLineParser& amulecmd_parser);
-	void ParseCommandLine();
 #else
 	virtual bool 			OnInit();
 	virtual int			OnExit();
