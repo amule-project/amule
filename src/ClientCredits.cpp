@@ -200,77 +200,85 @@ void CClientCreditsList::LoadList()
 		return;
 	}	
 	
-	file.Open(strFileName, CFile::read);
+	try {
 	
-	uint8 version;
-	file.Read(&version, 1);
-	if (version != CREDITFILE_VERSION && version != CREDITFILE_VERSION_29){
-		AddLogLineM(false, _("Creditfile is out of date and will be replaced"));
-		file.Close();
-		return;
-	}
-
-	// everything is ok, lets see if the backup exist...
-	wxString strBakFileName(theApp.ConfigDir + CLIENTS_MET_BAK_FILENAME);
+		file.Open(strFileName, CFile::read);
 	
-	bool bCreateBackup = TRUE;
-	if (wxFileExists(strBakFileName)) {
-		// Ok, the backup exist, get the size
-		CFile hBakFile(strBakFileName);
-		if ( hBakFile.Length() > file.Length()) {
-			// the size of the backup was larger then the org. file, something is wrong here, don't overwrite old backup..
-			bCreateBackup = FALSE;
-		}
-		// else: backup is smaller or the same size as org. file, proceed with copying of file
-	}
-	
-	//else: the backup doesn't exist, create it
-	if (bCreateBackup) {
-		file.Close(); // close the file before copying
-		// safe? you bet it is
-		if (!wxCopyFile(strFileName,strBakFileName)) {
-			AddLogLineM(true, _("Could not create backup file ") + strFileName);
-		}
-		// reopen file
-		if (!file.Open(strFileName, CFile::read)) {
-			AddLogLineM(true, _("Failed to load creditfile"));
+		uint8 version;
+		file.Read(&version, 1);
+		if (version != CREDITFILE_VERSION && version != CREDITFILE_VERSION_29){
+			AddLogLineM(false, _("Creditfile is out of date and will be replaced"));
+			file.Close();
 			return;
 		}
-		file.Seek(1);
-	}	
-	
-	
-	uint32 count;
-	file.Read(&count, 4);
-	ENDIAN_SWAP_I_32(count);
 
-	const uint32 dwExpired = time(NULL) - 12960000; // today - 150 day
-	uint32 cDeleted = 0;
-	for (uint32 i = 0; i < count; i++){
-		CreditStruct* newcstruct = new CreditStruct;
-		memset(newcstruct, 0, sizeof(CreditStruct));
-		file.Read(newcstruct, sizeof(CreditStruct));
-		
-		if (newcstruct->nLastSeen < dwExpired){
-			cDeleted++;
-			delete newcstruct;
-			continue;
+		// everything is ok, lets see if the backup exist...
+		wxString strBakFileName(theApp.ConfigDir + CLIENTS_MET_BAK_FILENAME);
+	
+		bool bCreateBackup = TRUE;
+		if (wxFileExists(strBakFileName)) {
+			// Ok, the backup exist, get the size
+			CFile hBakFile(strBakFileName);
+			if ( hBakFile.Length() > file.Length()) {
+				// the size of the backup was larger then the org. file, something is wrong here, don't overwrite old backup..
+				bCreateBackup = FALSE;
+			}
+			// else: backup is smaller or the same size as org. file, proceed with copying of file
 		}
-
-		CClientCredits* newcredits = new CClientCredits(newcstruct);
-		m_mapClients[ CMD4Hash(newcredits->GetKey()) ] = newcredits;
-	}
-	file.Close();
-
-	GUIEvent event(ADDLOGLINE);
-	event.string_value = wxString::Format(_("Creditfile loaded, %u clients are known"),count-cDeleted);	
-	event.byte_value = false;
 	
-	if (cDeleted>0) {
-		event.string_value += wxString::Format(_(" - Credits expired for %u clients!"),cDeleted);
-	}
+		//else: the backup doesn't exist, create it
+		if (bCreateBackup) {
+			file.Close(); // close the file before copying
+			// safe? you bet it is
+			if (!wxCopyFile(strFileName,strBakFileName)) {
+				AddLogLineM(true, _("Could not create backup file ") + strFileName);
+			}
+			// reopen file
+			if (!file.Open(strFileName, CFile::read)) {
+				AddLogLineM(true, _("Failed to load creditfile"));
+				return;
+			}
+			file.Seek(1);
+		}	
 	
-	theApp.NotifyEvent(event);
+	
+		uint32 count;
+		file.Read(&count, 4);
+		ENDIAN_SWAP_I_32(count);
+
+		const uint32 dwExpired = time(NULL) - 12960000; // today - 150 day
+		uint32 cDeleted = 0;
+		for (uint32 i = 0; i < count; i++){
+			CreditStruct* newcstruct = new CreditStruct;
+			memset(newcstruct, 0, sizeof(CreditStruct));
+			file.Read(newcstruct, sizeof(CreditStruct));
+		
+			if (newcstruct->nLastSeen < dwExpired){
+				cDeleted++;
+				delete newcstruct;
+				continue;
+			}
+
+			CClientCredits* newcredits = new CClientCredits(newcstruct);
+			m_mapClients[ CMD4Hash(newcredits->GetKey()) ] = newcredits;
+		}
+		file.Close();
+
+		GUIEvent event(ADDLOGLINE);
+		event.string_value = wxString::Format(_("Creditfile loaded, %u clients are known"),count-cDeleted);	
+		event.byte_value = false;
+	
+		if (cDeleted>0) {
+			event.string_value += wxString::Format(_(" - Credits expired for %u clients!"),cDeleted);
+		}
+	
+		theApp.NotifyEvent(event);
+		
+	} catch (wxString error) {
+		AddLogLineM(true,wxT("Unable to load clients.met file! ") + error);
+	} catch (...) {
+		AddLogLineM(true,wxT("Unable to load clients.met file! - Unknown Error"));
+	}
 
 }
 
@@ -310,7 +318,7 @@ void CClientCreditsList::SaveList()
 	file.Write(&version, 1);
 	ENDIAN_SWAP_I_32(count);
 	file.Write(&count, 4);
-	file.Write(pBuffer, count*sizeof(CreditStruct));
+	file.Write(pBuffer, ENDIAN_SWAP_32(count)*sizeof(CreditStruct));
 //		if (theApp.glob_prefs->GetCommitFiles() >= 2 || (theApp.glob_prefs->GetCommitFiles() >= 1 && !theApp.emuledlg->IsRunning()))
 	file.Flush();
 	file.Close();
