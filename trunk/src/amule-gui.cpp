@@ -213,31 +213,31 @@ int CamuleGuiBase::InitGui(bool geometry_enabled, wxString &geom_string)
 		long y = display.y;
 
 		// Tokenize the string
-		wxStringTokenizer tokens(geom_string, "xX+-");
+		wxStringTokenizer tokens(geom_string, wxT("xX+-"));
 
 		// First part: Program width
 		if ( tokens.GetNextToken().ToLong( &width ) ) {
 			wxString prefix = geom_string[ tokens.GetPosition() - 1 ];
-			if ( prefix == "x" || prefix == "X" ) {
+			if ( prefix == wxT("x") || prefix == wxT("X") ) {
 				// Second part: Program height
 				if ( tokens.GetNextToken().ToLong( &height ) ) {
 					prefix = geom_string[ tokens.GetPosition() - 1 ];
-					if ( prefix == "+" || prefix == "-" ) {
+					if ( prefix == wxT("+") || prefix == wxT("-") ) {
 						// Third part: X-Offset
 						if ( tokens.GetNextToken().ToLong( &x ) ) {
-							if ( prefix == "-" )
+							if ( prefix == wxT("-") )
 								x = display.GetRight() - ( width + x );
 							prefix = geom_string[ tokens.GetPosition() - 1 ];
-							if ( prefix == "+" || prefix == "-" ) {
+							if ( prefix == wxT("+") || prefix == wxT("-") ) {
 								// Fourth part: Y-Offset
 								if ( tokens.GetNextToken().ToLong( &y ) ) {
-									if ( prefix == "-" )
+									if ( prefix == wxT("-") )
 										y = display.GetBottom() - ( height + y );
 								}
 							}
 						}
 					}
-					// We need at least height and width to override default geomtry
+					// We need at least height and width to override default geometry
 					geometry_enabled = true;
 					geometry_x = x;
 					geometry_y = y;

@@ -45,6 +45,8 @@
 
 #include <wx/menu.h>
 #include <wx/textdlg.h>
+#include <wx/brush.h>
+#include <wx/dc.h>
 
 
 BEGIN_EVENT_TABLE( CClientListCtrl, CMuleListCtrl )
@@ -85,7 +87,7 @@ struct ClientListView
 	void		(*m_draw)(CUpDownClient*, int, wxDC*, const wxRect&);
 
 	//! Pointer to the sorting function.
-	int			(*m_sort)(long, long, long);
+	wxListCtrlCompare	m_sort;
 };
 
 

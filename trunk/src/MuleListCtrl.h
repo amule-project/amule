@@ -56,7 +56,9 @@ const int SORT_OFFSET_ALT_DEC = 3000;
  *  - Loading and saving of column properties.
  */
 #ifdef __WXMSW__
+	#define wxLC_OWNERDRAW	0
 	#include <wx/listctrl.h>
+	#include <wx/msw/imaglist.h>
 	class CMuleListCtrl : public wxListCtrl
 #elif defined(__WXMAC__)
 	#include "listctrl.h"
