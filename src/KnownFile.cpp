@@ -235,7 +235,6 @@ bool CKnownFile::CreateFromFile(const wxString& in_directory, const wxString& in
 	if (theApp.glob_prefs->GetExtractMetaData() > 0) {
 		GetMetaDataTags();
 	}
-	return true;		
 	
 	//finished
 	fclose(file);
