@@ -90,7 +90,7 @@ void CCommentDialogLst::CompleteList()
 
 		if (cur_src->GetFileComment().Length()>0 || cur_src->GetFileRate()>0) {
 			pmyListCtrl->InsertItem(count, cur_src->GetUserName());
-			pmyListCtrl->SetItem(count, 1, char2unicode(cur_src->GetClientFilename()));
+			pmyListCtrl->SetItem(count, 1, cur_src->GetClientFilename());
 			pmyListCtrl->SetItem(count, 2, GetRateString(cur_src->GetFileRate()));
 			pmyListCtrl->SetItem(count, 3, cur_src->GetFileComment());
 			count++;
