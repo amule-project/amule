@@ -748,7 +748,7 @@ void CUpDownClient::SendCommentInfo(CKnownFile *file)
 		length = 128;
 	}
 	data.Write(length);
-	data.WriteRaw(desc.c_str(),length);
+	data.WriteRaw(unicode2char(desc),length);
 	
 	Packet *packet = new Packet(&data,OP_EMULEPROT);
 	packet->opcode = OP_FILEDESC;

@@ -471,7 +471,7 @@ void CamulecmdFrame::OnComandEnter(wxCommandEvent& WXUNUSED(event)) {
 		return;
 	}
 	
-	char* buffer = (char *) cmd_control->GetLineText(0).c_str();
+	char* buffer = unicode2char(cmd_control->GetLineText(0));
 	
 	if (Parse_Command(buffer)) {
 		Close(TRUE);

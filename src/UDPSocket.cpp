@@ -157,11 +157,9 @@ void CUDPSocket::OnReceive(int nErrorCode){
 	char* fromIP=inet_ntoa(addr_in);
 
 	if (buffer[0] == (char)OP_EDONKEYPROT && length != static_cast<wxUint32>(-1))
-	  //ProcessPacket(buffer+2,length-2,buffer[1],(char*)addr.Hostname().GetData(),addr.Service()); //serverbuffer.GetBuffer(),port);
-	  ProcessPacket(buffer+2,length-2,buffer[1],fromIP,addr.Service()); //serverbuffer.GetBuffer(),port);
+	  ProcessPacket(buffer+2,length-2,buffer[1],fromIP,addr.Service()); 
 	else if ((buffer[0] == (char)OP_EMULEPROT) && length != static_cast<wxUint32>(-1))
-	  //ProcessExtPacket(buffer+2,length-2,buffer[1],(char*)addr.Hostname().GetData(),addr.Service()); //serverbuffer.GetBuffer(),port);
-	  ProcessExtPacket(buffer+2,length-2,buffer[1],fromIP,addr.Service()); //serverbuffer.GetBuffer(),port);
+	  ProcessExtPacket(buffer+2,length-2,buffer[1],fromIP,addr.Service()); 
 }
 
 bool CUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, char* host, uint16 port){

@@ -383,7 +383,6 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
 		// Well, all that issues finish in the same: don't allow to add to the queue
 		return;
 	}
-
 	
 	if (client->IsBanned()) {
 		if (::GetTickCount() - client->GetBanTime() > 18000000) {
@@ -576,7 +575,7 @@ void CUploadQueue::ResumeUpload( const CMD4Hash& filehash )
 {
 	//Find the position of the filehash in the list and remove it.
 	suspended_uploads_list.RemoveAt( suspended_uploads_list.Find(filehash) );
-	printf("%s: Resuming uploads of file.\n", EncodeBase16(filehash, 16).GetBuffer() );
+	printf("%s: Resuming uploads of file.\n", unicode2char(EncodeBase16(filehash, 16)));
 	
 }
 
@@ -589,7 +588,7 @@ void CUploadQueue::SuspendUpload( const CMD4Hash& filehash )
 	suspended_uploads_list.AddTail(filehash);
 	CString base16hash = EncodeBase16(filehash, 16);
 	
-	printf("%s: Suspending uploads of file.\n", base16hash.GetBuffer());
+	printf("%s: Suspending uploads of file.\n", unicode2char(base16hash));
 	
 	POSITION pos = uploadinglist.GetHeadPosition();
 	while(pos) { //while we have a valid position
@@ -598,7 +597,7 @@ void CUploadQueue::SuspendUpload( const CMD4Hash& filehash )
 		if(memcmp(potential->GetUploadFileID(), filehash, 16) == 0) {
 			//remove the unlucky client from the upload queue and add to the waiting queue
 			RemoveFromUploadQueue(potential, 1);
-			printf("%s: Removed user '%s'\n", base16hash.GetBuffer() ,potential->GetUserName() );
+			printf("%s: Removed user '%s'\n", unicode2char(base16hash) ,potential->GetUserName() );
 			//this code to add to the waitinglist was copied from the end of AddClientToQueue()
 			//the function itself is not used as it could prevent the requeuing of the client
 			waitinglist.AddTail(potential);
@@ -606,7 +605,7 @@ void CUploadQueue::SuspendUpload( const CMD4Hash& filehash )
 			potential->SendRankingInfo();
 			theApp.amuledlg->transferwnd->queuelistctrl->AddClient(potential);
 			theApp.amuledlg->transferwnd->ShowQueueCount(waitinglist.GetCount());
-			printf("%s: ReQueued user '%s'\n", base16hash.GetBuffer(), potential->GetUserName() );
+			printf("%s: ReQueued user '%s'\n", unicode2char(base16hash), potential->GetUserName() );
 		}
 	}
 }

@@ -84,7 +84,7 @@ bool CTransferWnd::OnInitDialog()
 	m_dlTab=(CMuleNotebook*)FindWindowById(ID_CATEGORIES);
 
 	// show & cat-tabs
-	sprintf(theApp.glob_prefs->GetCategory(0)->title, "%s",GetCatTitle(theApp.glob_prefs->GetAllcatType()).GetBuffer());
+	sprintf(theApp.glob_prefs->GetCategory(0)->title, "%s",unicode2char(GetCatTitle(theApp.glob_prefs->GetAllcatType())));
 
 	sprintf(theApp.glob_prefs->GetCategory(0)->incomingpath,"%s",theApp.glob_prefs->GetIncomingDir());
 	for (uint32 ix=0;ix<theApp.glob_prefs->GetCatCount();ix++) {
@@ -230,7 +230,7 @@ bool CTransferWnd::ProcessEvent(wxEvent& evt)
 		case MP_CAT_SET0+13: 
 		case MP_CAT_SET0+14: {
 			theApp.glob_prefs->SetAllcatType(event.GetId()-MP_CAT_SET0);
-			sprintf(theApp.glob_prefs->GetCategory(0)->title, "%s", GetCatTitle(theApp.glob_prefs->GetAllcatType()).GetBuffer());
+			sprintf(theApp.glob_prefs->GetCategory(0)->title, "%s", unicode2char(GetCatTitle(theApp.glob_prefs->GetAllcatType())));
 			CString csName;
 			csName.Format(wxT("%s"), theApp.glob_prefs->GetCategory(0)->title );
 			EditCatTabLabel(0,csName);
@@ -339,10 +339,10 @@ bool CTransferWnd::ProcessEvent(wxEvent& evt)
 int CTransferWnd::AddCategorie(CString newtitle,CString newincoming,CString newcomment,bool addTab){
         Category_Struct* newcat=new Category_Struct;
 
-        sprintf(newcat->title,"%s",newtitle.GetBuffer());
+        sprintf(newcat->title,"%s",unicode2char(newtitle));
         newcat->prio=0;
-        sprintf(newcat->incomingpath,"%s",newincoming.GetBuffer());
-        sprintf(newcat->comment,"%s",newcomment.GetBuffer());
+        sprintf(newcat->incomingpath,"%s",unicode2char(newincoming));
+        sprintf(newcat->comment,"%s",unicode2char(newcomment));
         int index=theApp.glob_prefs->AddCat(newcat);
 
         if (addTab) {

@@ -394,7 +394,7 @@ void CServer::SetID(uint32 newip)
 	strcpy(ipfull,inet_ntoa(host));
 }
 
-void CServer::SetDynIP(char* newdynip)
+void CServer::SetDynIP(const char* newdynip)
 {
 	if (dynip) {
 		delete[] dynip;
