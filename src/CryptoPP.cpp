@@ -9239,8 +9239,14 @@ void NonblockingRng::GenerateBlock(byte *output, unsigned int size)
 	if (!CryptGenRandom(m_Provider.GetProviderHandle(), size, output))
 		throw OS_RNG_Err("CryptGenRandom");
 #else
-	if (read(m_fd, output, size) != size)
-		throw OS_RNG_Err("read /dev/urandom");
+	if (read(m_fd, output, size) != size) {
+		// Kernel 2.6.10 has non-concurrent access to /dev/urandom, retry at least once
+		printf("Shamelessly retrying a random generation attempt\n");
+		if (read(m_fd, output, size) != size) {
+			printf("Error reading /dev/urandom! (kernel 2.6.10?)\n");
+			throw OS_RNG_Err("read /dev/urandom");
+		}
+	}
 #endif
 }
 
@@ -9437,4 +9443,3 @@ void MD4::Transform (word32 *digest, const word32 *in)
 
 NAMESPACE_END
 ////////////////////////////////////////////////////////////////////////////////
-
