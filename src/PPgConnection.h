@@ -71,7 +71,6 @@ public:
 	afx_msg void OnBnClickedAutoconnect()			{ SetModified(); }
 	afx_msg void OnBnClickedReconn()				{ SetModified(); }
 #endif
-	void OnBnClickedWizard(wxEvent& evt);
 	void OnUDPDISABLEChecked(wxEvent& evt);
 };
 

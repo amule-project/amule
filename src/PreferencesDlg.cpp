@@ -21,7 +21,6 @@
 #include "PreferencesDlg.h"	// Interface declarations
 #include "Preferences.h"	// Needed for CPreferences
 #include "CamuleAppBase.h"	// Needed for theApp
-#include "Wizard.h"		// Needed for Wizard
 #include "PPgGuiTweaks.h"	// Needed for CPPgGuiTweaks
 #include "PPgSourcesDropping.h"	// Needed for CPPgSourcesDropping
 #include "PPgTweaks.h"		// Needed for CPPgTweaks
@@ -104,15 +103,6 @@ int CPreferencesDlg::ShowModal()
 	return wxDialog::ShowModal();
 }
 
-void CPreferencesDlg::OnBtnWizard(wxEvent& evt)
-{
-	Wizard* test=new Wizard(this);
-	test->SetPrefs(theApp.glob_prefs);//app_prefs);
-	test->OnInitDialog();
-	test->ShowModal();
-	delete test;
-	printf("** done\n");
-}
 
 void CPreferencesDlg::OnBtnOk(wxEvent& evt)
 {
