@@ -976,15 +976,17 @@ END_EVENT_TABLE()
 
 
 PrefsUnifiedDlg::PrefsUnifiedDlg(wxWindow *parent)
-	: wxDialog(parent,9990, _("Preferences"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxSYSTEM_MENU)
+	: wxDialog(parent,9990, _("Preferences"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxSYSTEM_MENU | wxRESIZE_BORDER)
 {
 	Rse *prse;
 	int id;
 
-	if (theApp.glob_prefs->BDlgTabsOnTop())
+	if (theApp.glob_prefs->BDlgTabsOnTop()) {
 		preferencesDlgTop( this, TRUE ); 
-	else
+	} else {
     		preferencesDlgLeft( this, TRUE ); 
+	}
+	
 	CentreOnParent();
 	pdtcShareSelector = ((CDirectoryTreeCtrl*)FindWindowById(IDC_SHARESELECTOR, this));
 	pbuttonColor = (wxButton*)FindWindowById(IDC_COLOR_BUTTON, this);
