@@ -26,7 +26,6 @@ src/FileDetailListCtrl.cpp
 src/filefn.cpp
 src/FriendListCtrl.cpp
 src/HTTPDownload.cpp
-src/HTTPDownloadDlg.cpp
 src/IPFilter.cpp
 src/KadDlg.cpp
 src/KnownFileList.cpp
