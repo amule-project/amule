@@ -43,7 +43,7 @@
 class CServerSocketHandler: public SERVER_SOCK_HANDLER_BASE
 {
 public:
-	CServerSocketHandler(CServerSocket *socket);
+	CServerSocketHandler(CServerSocket *socket = NULL);
 
 private:
 	void ServerSocketHandler(wxSocketEvent& event);
