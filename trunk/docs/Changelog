@@ -81,6 +81,9 @@ Version 2.0.0
 
 	lemonfan:
 		* modified network code for big-endian systems
+		* fixed preferences bug
+		* fixed copy ed2k link to clipboard
+		* fixed CArray for MFC compatibility
 		
 	
 		
