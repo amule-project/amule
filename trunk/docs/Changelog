@@ -16,7 +16,10 @@ Version 2.0.0rc3 - The 'Target: Stability' version.
 	
 		* i18n stuff
 		* Minor timer fix ;)
-
+		
+	elfstone:
+		* Fixed already downloading files not being marked as such on search results.
+		
 	falso:
 		
 		* Improving and fixing cas 
