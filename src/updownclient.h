@@ -291,6 +291,7 @@ public:
 	void		ProcessPublicKeyPacket(const uchar* pachPacket, uint32 nSize);
 	void		ProcessSignaturePacket(const uchar* pachPacket, uint32 nSize);
 	uint8		GetSecureIdentState() {
+#ifndef CLIENT_GUI
 		if (m_SecureIdentState != IS_UNAVAILABLE) {
 			if (!SecIdentSupRec) {
 				// This can be caused by a 0.30x based client which sends the old
@@ -306,7 +307,7 @@ public:
 				AddDebugLogLineM(false, wxT("This client won't be disconnected, but it should be. :P"));
 			}
 		}
-		
+#endif
 		return m_SecureIdentState;
 	}
 
@@ -337,6 +338,7 @@ public:
 	float		GetKBpsUp()	const 		{ return kBpsUp; }
 	
 #ifdef CLIENT_GUI
+	uint32 m_base_score, m_score;
 	uint32		GetScore(bool sysvalue, bool isdownloading = false, bool onlybasevalue = false) const
 	{
 		// lfroen:it's calculated

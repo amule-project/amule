@@ -6,6 +6,7 @@
 #endif
 
 #include <wx/string.h>
+
 #include "CTypedPtrList.h"
 #include "ECSpecialTags.h"
 #include "Statistics.h"
@@ -23,6 +24,7 @@ class CKnownFile;
 class CSearchFile;
 class CPartFile;
 class CUpDownClient;
+class CStatistics;
 
 #include <wx/dialog.h>
 
@@ -466,26 +468,8 @@ class CListenSocketRem {
 		uint32 GetPeakConnections() { return m_peak_connections; }
 };
 
-class CStatisticsRem : public CStatistics {
+class CStatisticsRem {
+	CStatistics *m_stat_data;
 };
 
-/*
-class CStatisticsRem {
-		uint32 m_Uptime;
-		uint32 m_SendBytes, m_RecvBytes;
-		uint32 m_UpOverhead, m_DownOverhead;
-	public:
-		uint32 GetUptimeMsecs() { return m_Uptime; }
-		uint32 GetUptimeSecs() { return GetUptimeMsecs()/1000; }
-		uint32 GetSessionReceivedBytes() { return m_RecvBytes; }
-		uint32 GetSessionSentBytes() { return m_SendBytes; }
-		uint32 GetUpDatarateOverhead() { return m_UpOverhead; }
-		uint32 GetDownDatarateOverhead() { return m_DownOverhead; }
-		
-		unsigned GetHistory(unsigned cntPoints, double sStep, double sFinal, float **ppf, StatsGraphType which_graph);
-		
-		GraphUpdateInfo GetPointsForUpdate();
-		StatsTree statstree;
-};
-*/
 #endif /* AMULE_REMOTE_GUI_H */

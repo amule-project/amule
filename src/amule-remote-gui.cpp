@@ -192,7 +192,8 @@ bool CamuleRemoteGuiApp::OnInit()
 	// Load Preferences
 	glob_prefs = new CPreferencesRem(connect);
 	
-	statistics = new CStatisticsRem();
+	serverconnect = new CServerConnectRem(connect);
+	statistics = new CStatistics();
 	
 	clientlist = new CClientListRem(connect);
 	searchlist = new CSearchListRem(connect);
@@ -220,8 +221,11 @@ bool CamuleRemoteGuiApp::OnInit()
 			return false;
 		}
 	} while ( !connect->Connect(dialog->Host(), dialog->Port()) );
+	amuledlg->AddLogLine(true, _("Connected to amule at ") + dialog->Host());
 	dialog->Destroy();
-	AddLogLineM(true, _("Connected to amule at ") + dialog->Host());
+	
+	serverlist->FullReload(EC_OP_GET_SERVER_LIST);
+	serverlist->ReloadControl();
 	
 	IsReady = true;
 	
