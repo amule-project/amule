@@ -23,6 +23,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <wx/msgdlg.h>
+#include <wx/file.h>
 #include <wx/filename.h>
 
 #include "muuli_wdr.h"		// Needed for IDC_RELOADSHAREDFILES
@@ -82,7 +83,7 @@ void CSharedFileList::FindSharedFiles() {
 			--ij;
 		}
 	}
-	
+
 	for (unsigned int ii = 0; ii < app_prefs->shareddir_list.GetCount(); ++ii) {
 		AddFilesFromDirectory(app_prefs->shareddir_list.Item(ii));
 	}
@@ -102,18 +103,18 @@ void CSharedFileList::FindSharedFiles() {
 
 void CSharedFileList::AddFilesFromDirectory(wxString directory)
 {
-	
+
 	if (directory.Last() != wxT('/')) {
 		directory += wxT("/");
 	}
-	
+
 	wxString fname=::wxFindFirstFile(directory,wxFILE);
-  	
+
 	if (fname.IsEmpty()) {
 		printf("Empty dir %s shared\n",unicode2char(directory));
     		return;
 	}
-	while(!fname.IsEmpty()) {  
+	while(!fname.IsEmpty()) {
 
 		uint32 fdate=wxFileModificationTime(fname);
 		#ifndef __WXMSW__
@@ -124,12 +125,12 @@ void CSharedFileList::AddFilesFromDirectory(wxString directory)
 		wxASSERT(b!=-1);
 		wxFile new_file(b);
 		wxASSERT(new_file.IsOpened());
-		
+
 		if(fname.Find(wxT('/'),TRUE) != -1) {  // starts at end
 			// Take just the file from the path
-			fname=fname.Mid(fname.Find('/',TRUE)+1);  
+			fname=fname.Mid(fname.Find('/',TRUE)+1);
 		}
-		
+
 		CKnownFile* toadd=filelist->FindKnownFile(fname,fdate,new_file.Length());
 		//theApp.Yield();
 		if (toadd) {
@@ -172,7 +173,7 @@ void CSharedFileList::SafeAddKFile(CKnownFile* toadd, bool bOnlyAdd){
 	if (output) {
 		output->ShowFile(toadd);
 	}
-	
+
 	// offer new file to server
 	if (!server->IsConnected()) {
 		return;
@@ -223,7 +224,7 @@ void CSharedFileList::SendListToServer(){
 	CMemFile* files = new CMemFile();
 
 	files->Write((uint32)m_Files_map.size());
-	
+
 	for (CKnownFileMap::iterator pos = m_Files_map.begin();
 	     pos != m_Files_map.end(); pos++ ) {
 		CreateOfferedFilePacket(pos->second,files,true);
@@ -237,7 +238,7 @@ void CSharedFileList::SendListToServer(){
 
 CKnownFile* CSharedFileList::GetFileByIndex(int index){
         int count=0;
- 
+
 	for (CKnownFileMap::iterator pos = m_Files_map.begin();
 	     pos != m_Files_map.end(); pos++ ) {
                 if (index==count) return pos->second;
@@ -250,13 +251,13 @@ void CSharedFileList::CreateOfferedFilePacket(CKnownFile* cur_file,CMemFile* fil
 	// This function is used for offering files to the local server and for sending
 	// shared files to some other client. In each case we send our IP+Port only, if
 	// we have a HighID.
-	
+
 	cur_file->SetPublishedED2K(true);
 	files->Write((const uint8*)cur_file->GetFileHash());
 
 	uint32 nClientID;
 	uint16 nClientPort;
-	
+
 	if (!fromserver || (theApp.serverconnect->GetCurrentServer()->GetTCPFlags() & SRV_TCPFLG_COMPRESSION)) {
 		#define FILE_COMPLETE_ID		0xfbfbfbfb
 		#define FILE_COMPLETE_PORT	0xfbfb
@@ -269,9 +270,9 @@ void CSharedFileList::CreateOfferedFilePacket(CKnownFile* cur_file,CMemFile* fil
 			nClientID = FILE_COMPLETE_ID;
 			nClientPort = FILE_COMPLETE_PORT;
 		} else {
-//			printf("Publishing incomplete file\n");			
+//			printf("Publishing incomplete file\n");
 			nClientID = FILE_INCOMPLETE_ID;
-			nClientPort = FILE_INCOMPLETE_PORT;		
+			nClientPort = FILE_INCOMPLETE_PORT;
 		}
 	} else {
 //		printf("Publishing standard file\n");
@@ -283,7 +284,7 @@ void CSharedFileList::CreateOfferedFilePacket(CKnownFile* cur_file,CMemFile* fil
 			nClientPort = theApp.glob_prefs->GetPort();
 		}
 	}
-	
+
 	files->Write(nClientID);
 	files->Write(nClientPort);
 
@@ -291,24 +292,24 @@ void CSharedFileList::CreateOfferedFilePacket(CKnownFile* cur_file,CMemFile* fil
 
 	//uint32 uTagCount = tags.GetSize();
 	uint32 uTagCount = 0; // File name and size right now
-	
-	if (cur_file->GetFileName()) { 
+
+	if (cur_file->GetFileName()) {
 		uTagCount++;
 	}
 
-	if (cur_file->GetFileSize()>0) { 
+	if (cur_file->GetFileSize()>0) {
 		uTagCount++;
 	}
-	
+
 	files->Write(uTagCount);
-	
+
 	if (cur_file->GetFileName()) {
 		CTag* nametag = new CTag(FT_FILENAME,cur_file->GetFileName());
 		nametag->WriteTagToFile(files);
-		delete nametag;		
+		delete nametag;
 	}
-	
-	if (cur_file->GetFileSize()>0) { 	
+
+	if (cur_file->GetFileSize()>0) {
 		CTag* sizetag = new CTag(FT_FILESIZE,cur_file->GetFileSize());
 		sizetag->WriteTagToFile(files);
 		delete sizetag;
