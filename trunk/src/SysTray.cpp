@@ -35,7 +35,6 @@
 
 #include "pixmaps/mule_Tr_grey.ico.xpm"
 #include "amuleDlg.h"		// Needed for CamuleDlg
-#include "UploadListCtrl.h"	// Needed for CUploadListCtrl
 #include "SysTray.h"		// Interface declarations.
 #include "GetTickCount.h"	// Needed for GetTickCount
 #include "DownloadQueue.h"	// Needed for GetKBps()
@@ -48,7 +47,6 @@
 #include "SharedFilesWnd.h"	// Needed for CSharedFilesWnd
 #include "ServerListCtrl.h"	// Needed for CServerListCtrl
 #include "ServerWnd.h"		// Needed for CServerWnd
-#include "DownloadListCtrl.h"	// Needed for CDownloadListCtrl
 #include "TransferWnd.h"	// Needed for CTransferWnd
 #include "opcodes.h"		// Needed for UNLIMITED
 #include "Preferences.h"	// Needed for CPreferences
