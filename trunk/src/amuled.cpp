@@ -1002,11 +1002,11 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 
 	// Uptime
 	if (zero) {
-		sprintf(buffer,"%s",unicode2char(CastSecondsToHM(0).GetData()));
+		sprintf(buffer,"%u",0);
 		amulesig_out.Write(buffer, strlen(buffer));
 		amulesig_out.Write("\n",1);
 	} else {
-		sprintf(buffer,"%s",unicode2char(CastSecondsToHM(GetUptimeSecs())));
+		sprintf(buffer,"%u",GetUptimeSecs());
 		amulesig_out.Write(buffer, strlen(buffer));
 		amulesig_out.Write("\n",1);
 	}
@@ -1020,15 +1020,6 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 // Gracefully handle fatal exceptions and print backtrace if possible
 void CamuleApp::OnFatalException()
 {
-#ifndef __WXMSW__
-	// Close sockets first.
-	if ( listensocket )
-		listensocket->Destroy();
-	if ( clientudp )
-		clientudp->Destroy();
-
-	// (stkn) create backtrace
-#ifdef __WXGTK__
 #ifndef __BSD__
 	void *bt_array[100];	// 100 should be enough ?!?
 	char **bt_strings;
