@@ -62,6 +62,7 @@ protected:
 	void	OnBnClickedCsend(wxCommandEvent& evt);
 	void	OnBnClickedCclose(wxCommandEvent& evt);
 	void	OnAllPagesClosed(wxNotebookEvent& evt);
+	void	CheckNewButtonsState();
 
 	DECLARE_EVENT_TABLE()
 

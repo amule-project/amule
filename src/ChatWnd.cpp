@@ -73,13 +73,8 @@ void CChatWnd::StartSession(CDlgFriend* friend_client, bool setfocus)
 		chatselector->StartSession(GUI_ID(friend_client->m_ip, friend_client->m_port), friend_client->m_name, true);
 	}
 
-	// Enabling the window controls. Beware, they must also be set in SendMessage(), it is this fucntion
-        // that is called from ClientListCtrl, instead of StartSession()
-	if ( chatselector->GetPageCount() == 1 ) {
-		GetParent()->FindWindow(IDC_CSEND)->Enable(true);
-		GetParent()->FindWindow(IDC_CCLOSE)->Enable(true);
-		GetParent()->FindWindow(IDC_CMESSAGE)->Enable(true);
-	}
+	// Check to enable the window controls if needed
+	CheckNewButtonsState();	
 }
 
 
@@ -99,10 +94,9 @@ void CChatWnd::OnBnClickedCclose(wxCommandEvent& WXUNUSED(evt))
 
 void CChatWnd::OnAllPagesClosed(wxNotebookEvent& WXUNUSED(evt))
 {
-	GetParent()->FindWindow(IDC_CSEND)->Enable(false);
-	GetParent()->FindWindow(IDC_CCLOSE)->Enable(false);
-	GetParent()->FindWindow(IDC_CMESSAGE)->Enable(false);
 	CastChild(IDC_CMESSAGE, wxTextCtrl)->Clear();
+	// Check to disable the window controls
+	CheckNewButtonsState();
 }
 
 
@@ -140,7 +134,10 @@ void CChatWnd::RefreshFriend(const CMD4Hash& userhash, const wxString& name, uin
 
 void CChatWnd::ProcessMessage(uint64 sender, const wxString& message)
 {
-	chatselector->ProcessMessage(sender, message);
+	if (chatselector->ProcessMessage(sender, message)) {
+		// Check to enable the window controls if needed
+		CheckNewButtonsState();
+	}
 }
 
 void CChatWnd::ConnectionResult(bool success, const wxString& message, uint64 id)
@@ -155,13 +152,29 @@ void CChatWnd::SendMessage(const wxString& message, const wxString& client_name,
 		CastChild(IDC_CMESSAGE, wxTextCtrl)->Clear();
 	}
 
-	// Enabling the window controls. Beware, they must also be set in StartSession(), it is this function
-        // that is called from CFriendLiist, instead of SendMessage()
-	if ( chatselector->GetPageCount() == 1 ) {
-		GetParent()->FindWindow(IDC_CSEND)->Enable(true);
-		GetParent()->FindWindow(IDC_CCLOSE)->Enable(true);
-		GetParent()->FindWindow(IDC_CMESSAGE)->Enable(true);
-	}
-
+	// Check to enable the window controls if needed
+	CheckNewButtonsState();
 	CastChild(IDC_CMESSAGE, wxTextCtrl)->SetFocus();
+}
+
+
+void CChatWnd::CheckNewButtonsState() {
+	switch (chatselector->GetPageCount()) {
+			case 0:
+				GetParent()->FindWindow(IDC_CSEND)->Enable(false);
+				GetParent()->FindWindow(IDC_CCLOSE)->Enable(false);
+				GetParent()->FindWindow(IDC_CMESSAGE)->Enable(false);
+				break;
+			case 1:
+				GetParent()->FindWindow(IDC_CSEND)->Enable(true);
+				GetParent()->FindWindow(IDC_CCLOSE)->Enable(true);
+				GetParent()->FindWindow(IDC_CMESSAGE)->Enable(true);
+				break;
+			default:
+				// Nothing to be done here. Keep current state, which should be enabled.
+				wxASSERT(GetParent()->FindWindow(IDC_CSEND)->IsEnabled());
+				wxASSERT(GetParent()->FindWindow(IDC_CCLOSE)->IsEnabled());
+				wxASSERT(GetParent()->FindWindow(IDC_CMESSAGE)->IsEnabled());			
+				break;
+	}
 }

@@ -179,7 +179,7 @@ int CChatSelector::GetTabByClientID(uint64 client_id)
 }
 
 
-void CChatSelector::ProcessMessage(uint64 sender_id, const wxString& message)
+bool CChatSelector::ProcessMessage(uint64 sender_id, const wxString& message)
 {
 	CChatSession* session = GetPageByClientID(sender_id);
 
@@ -194,6 +194,8 @@ void CChatSelector::ProcessMessage(uint64 sender_id, const wxString& message)
 		// No need to define client_name. If needed, will be build on tab creation.
 		client_message = message;
 	}
+	
+	bool newtab = !session;
 	
 	if ( !session ) {
 		// This must be a mesage from a client that is not already chatting 
@@ -218,6 +220,8 @@ void CChatSelector::ProcessMessage(uint64 sender_id, const wxString& message)
 	// Page text is client name
 	session->AddText( GetPageText(GetTabByClientID(sender_id)), COLOR_BLUE, false );
 	session->AddText( wxT(": ") + client_message, COLOR_BLACK );
+	
+	return newtab;
 }
 
 bool CChatSelector::SendMessage( const wxString& message, const wxString& client_name, uint64 to_id )
