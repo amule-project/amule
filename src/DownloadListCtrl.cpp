@@ -1982,17 +1982,11 @@ wxString CDownloadListCtrl::getTextList()
 			}
 */			//theApp.amuledlg->AddLogLine(false, wxT("%s"), file->GetFileName());
 
-			char buffer[255 + 1];
-			strncpy(buffer, unicode2char(file->GetFileName()), 255);
-			buffer[255] = '\0';
-
-			wxString temp;
 			i++;
-			temp.Printf(wxT("%i: %s\t [%.1f%%] %i/%i - %s"),i,buffer, file->GetPercentCompleted(), file->GetTransferingSrcCount(), file->GetSourceCount(), file->getPartfileStatus().GetData());
+			out += wxString::Format(wxT("%i: %s\t [%.1f%%] %i/%i - %s"),i, file->GetFileName().c_str(), file->GetPercentCompleted(), file->GetTransferingSrcCount(), file->GetSourceCount(), file->getPartfileStatus().GetData());
 			if (file->GetKBpsDown()>0.001) {
-				temp += wxString::Format(wxT(" %.1f kB/s"),(float)file->GetKBpsDown());
+				out += wxString::Format(wxT(" %.1f kB/s"),(float)file->GetKBpsDown());
 			}
-			out += temp;
 			out += wxT("\n");
 		}
 	}

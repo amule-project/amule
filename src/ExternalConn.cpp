@@ -928,9 +928,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			// get the source count
 			uint32 stats[2];
 			theApp.downloadqueue->GetDownloadStats(stats);
-			static char buffer[1024];
-			sprintf(buffer, "Statistics: \n Downloading files: %d\n Found sources: %d\n Active downloads: %d\n Active Uploads: %d\n Users on upload queue: %d", filecount, stats[0], stats[1], theApp.uploadqueue->GetUploadQueueLength(), theApp.uploadqueue->GetWaitingUserCount());
-			return char2unicode(buffer);
+			return wxString::Format( wxT("Statistics: \n Downloading files: %d\n Found sources: %d\n Active downloads: %d\n Active Uploads: %d\n Users on upload queue: %d"), filecount, stats[0], stats[1], theApp.uploadqueue->GetUploadQueueLength(), theApp.uploadqueue->GetWaitingUserCount());
 		}
 
 		if (item == wxT("DL_QUEUE")) {
@@ -938,9 +936,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 		}
 
 		if (item == wxT("UL_QUEUE")) {
-			static char buffer[1024];
-			sprintf(buffer, "We should be showing UL list here");
-			return char2unicode(buffer);
+			return wxT("We should be showing UL list here");
 		}
 		
 		if (item == wxT("CONNSTAT")) {
@@ -1007,9 +1003,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 		// PREFERENCES
 		if (item.Left(11).Cmp(wxT("PREFERENCES")) == 0) {
 			if (item.Mid(12).Cmp(wxT("GETWSPORT")) == 0) {
-				static char buffer[1024];
-				sprintf(buffer, "%d", theApp.glob_prefs->GetWSPort());
-				return(char2unicode(buffer));
+				return wxString::Format( wxT("%d"), theApp.glob_prefs->GetWSPort() );
 			}
 			
 			if (item.Mid(12,9).Cmp(wxT("GETWSPASS")) == 0) {
@@ -1033,9 +1027,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			}
 
 			if (item.Mid(12).Cmp(wxT("GETWEBPAGEREFRESH")) == 0) {
-				static char buffer[1024];
-				sprintf(buffer, "%d", theApp.glob_prefs->GetWebPageRefresh());
-				return(char2unicode(buffer));
+				return wxString::Format( wxT("%d"), theApp.glob_prefs->GetWebPageRefresh() );
 			}
 						
 			if (item.Mid(12,13).Cmp(wxT("SETWEBUSEGZIP")) == 0) {
@@ -1047,9 +1039,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			}
 
 			if (item.Mid(12).Cmp(wxT("GETWEBUSEGZIP")) == 0) {
-				static char buffer[1024];
-				sprintf(buffer, "%d", theApp.glob_prefs->GetWebUseGzip());
-				return(char2unicode(buffer));
+				return wxString::Format( wxT("%d"), theApp.glob_prefs->GetWebUseGzip() );
 			}
 			
 			if (item.Mid(12,14).Cmp(wxT("SETMAXDOWNLOAD")) == 0) {
@@ -1061,9 +1051,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			}
 
 			if (item.Mid(12).Cmp(wxT("GETMAXDOWNLOAD")) == 0) {
-				static char buffer[1024];
-				sprintf(buffer, "%d", theApp.glob_prefs->GetMaxDownload());
-				return(char2unicode(buffer));
+				return wxString::Format( wxT("%d"), theApp.glob_prefs->GetMaxDownload() );
 			}
 
 			if (item.Mid(12,12).Cmp(wxT("SETMAXUPLOAD")) == 0) {
@@ -1075,9 +1063,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			}
 
 			if (item.Mid(12).Cmp(wxT("GETMAXUPLOAD")) == 0) {
-				static char buffer[1024];
-				sprintf(buffer, "%d", theApp.glob_prefs->GetMaxUpload());
-				return(char2unicode(buffer));
+				return wxString::Format( wxT("%d"), theApp.glob_prefs->GetMaxUpload() );
 			}
 			
 			if (item.Mid(12,23).Cmp(wxT("SETMAXGRAPHDOWNLOADRATE")) == 0) {
@@ -1089,9 +1075,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			}
 
 			if (item.Mid(12).Cmp(wxT("GETMAXGRAPHDOWNLOADRATE")) == 0) {
-				static char buffer[1024];
-				sprintf(buffer, "%d", theApp.glob_prefs->GetMaxGraphDownloadRate());
-				return(char2unicode(buffer));
+				return wxString::Format( wxT("%d"), theApp.glob_prefs->GetMaxGraphDownloadRate() );
 			}
 
 
@@ -1104,9 +1088,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			}
 
 			if (item.Mid(12).Cmp(wxT("GETMAXGRAPHUPLOADRATE")) == 0) {
-				static char buffer[1024];
-				sprintf(buffer, "%d", theApp.glob_prefs->GetMaxGraphUploadRate());
-				return(char2unicode(buffer));
+				return wxString::Format( wxT("%d"), theApp.glob_prefs->GetMaxGraphUploadRate() );
 			}
 
 			if (item.Mid(12,20).Cmp(wxT("SETMAXSOURCESPERFILE")) == 0) {
@@ -1118,9 +1100,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			}
 
 			if (item.Mid(12).Cmp(wxT("GETMAXSOURCEPERFILE")) == 0) {
-				static char buffer[1024];
-				sprintf(buffer, "%d", theApp.glob_prefs->GetMaxSourcePerFile());
-				return(char2unicode(buffer));
+				return wxString::Format( wxT("%d"), theApp.glob_prefs->GetMaxSourcePerFile() );
 			}
 
 			if (item.Mid(12,17).Cmp(wxT("SETMAXCONNECTIONS")) == 0) {
@@ -1132,9 +1112,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			}
 
 			if (item.Mid(12).Cmp(wxT("GETMAXCONNECTIONS")) == 0) {
-				static char buffer[1024];
-				sprintf(buffer, "%d", theApp.glob_prefs->GetMaxConnections());
-				return(char2unicode(buffer));
+				return wxString::Format( wxT("%d"), theApp.glob_prefs->GetMaxConnections() );
 			}
 
 			if (item.Mid(12,17).Cmp(wxT("SETMAXCONSPERFIVE")) == 0) {
@@ -1146,9 +1124,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			}
 
 			if (item.Mid(12).Cmp(wxT("GETMAXCONPERFIVE")) == 0) {
-				static char buffer[1024];
-				sprintf(buffer, "%d", theApp.glob_prefs->GetMaxConperFive());
-				return(char2unicode(buffer));
+				return wxString::Format( wxT("%d"), theApp.glob_prefs->GetMaxConperFive() );
 			}
 
 			if (item.Mid(12,21).Cmp(wxT("SETTRANSFERFULLCHUNKS")) == 0) {
@@ -1161,9 +1137,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			}
 
 			if (item.Mid(12).Cmp(wxT("GETTRANSFERFULLCHUNKS")) == 0) {
-				static char buffer[1024];
-				sprintf(buffer, "%d", theApp.glob_prefs->TransferFullChunks());
-				return(char2unicode(buffer));
+				return wxString::Format( wxT("%d"), theApp.glob_prefs->TransferFullChunks() );
 			}
 			
 			if (item.Mid(12,14).Cmp(wxT("SETPREVIEWPRIO")) == 0) {
@@ -1175,9 +1149,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			}
 
 			if (item.Mid(12).Cmp(wxT("GETPREVIEWPRIO")) == 0) {
-				static char buffer[1024];
-				sprintf(buffer, "%d", theApp.glob_prefs->GetPreviewPrio());
-				return(char2unicode(buffer));
+				return wxString::Format( wxT("%d"), theApp.glob_prefs->GetPreviewPrio() );
 			}
 
 			return wxT("Bad PREFERENCES request");
@@ -1219,9 +1191,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			if (item.Mid(8).Cmp(wxT("SERVERINFO GETTEXT")) == 0) {
 				//theApp.amuledlg->serverwnd->servermsgbox->GetText()));
 				wxTextCtrl* cv=(wxTextCtrl*)theApp.amuledlg->serverwnd->FindWindow(ID_SERVERINFO);
-				static char buffer[1024];
-				sprintf(buffer,"%s", unicode2char(cv->GetValue()));
-				return(char2unicode(buffer));
+				return cv->GetValue();
 			}
 			
 			if (item.Mid(8).Cmp(wxT("GETALLLOGENTRIES")) == 0) {
@@ -1266,9 +1236,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			}
 
 			if (item.Mid(11).Cmp(wxT("GETTRAFFICOMETERINTERVAL")) == 0) {
-				static char buffer[1024];
-				sprintf(buffer, "%d", theApp.glob_prefs->GetTrafficOMeterInterval());
-				return(char2unicode(buffer));
+				return wxString::Format( wxT("%d"), theApp.glob_prefs->GetTrafficOMeterInterval() );
 			}
 			
 		} //end - STATISTICS
@@ -1277,9 +1245,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 		// SHAREDFILES
 		if (item.Left(11).Cmp(wxT("SHAREDFILES")) == 0) {
 			if (item.Mid(12).Cmp(wxT("GETCOUNT")) == 0) {
-				static char buffer[1024];
-				sprintf(buffer, "%d", theApp.sharedfiles->GetCount());
-				return(char2unicode(buffer));
+				return wxString::Format( wxT("%d"), theApp.sharedfiles->GetCount() );
 			}
 			
 			if (item.Mid(12,11).Cmp(wxT("GETFILENAME")) == 0) {
@@ -1297,9 +1263,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				if ((item.Length() > 23) && item.Mid(24).IsNumber()) {
 					CKnownFile* cur_file = theApp.sharedfiles->GetFileByIndex(atoi(unicode2char(item.Mid(24))));
 					if (cur_file) {
-						static char buffer[1024];
-						sprintf(buffer, "%d", cur_file->GetFileSize());
-						return(char2unicode(buffer));
+						return wxString::Format( wxT("%d"), cur_file->GetFileSize() );
 					}
 					return wxT("Bad file");
 				}
@@ -1310,9 +1274,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				if ((item.Length() > 28) && item.Mid(29).IsNumber()) {
 					CKnownFile* cur_file = theApp.sharedfiles->GetFileByIndex(atoi(unicode2char(item.Mid(29))));
 					if (cur_file) {
-						static char buffer[1024];
-						sprintf(buffer, "%s", unicode2char(theApp.CreateED2kSourceLink(cur_file)));
-						return(char2unicode(buffer));
+						return theApp.CreateED2kSourceLink(cur_file);
 					}
 					return wxT("Bad file");					
 				}
@@ -1323,9 +1285,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				if ((item.Length() > 25) && item.Mid(26).IsNumber()) {
 					CKnownFile* cur_file = theApp.sharedfiles->GetFileByIndex(atoi(unicode2char(item.Mid(26))));
 					if (cur_file) {
-						static char buffer[1024];
-						sprintf(buffer, "%s", unicode2char(theApp.CreateED2kLink(cur_file)));
-						return(char2unicode(buffer));
+						return theApp.CreateED2kLink(cur_file);
 					}
 					return wxT("Bad file");					
 				}
@@ -1336,9 +1296,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				if ((item.Length() > 25) && item.Mid(26).IsNumber()) {
 					CKnownFile* cur_file = theApp.sharedfiles->GetFileByIndex(atoi(unicode2char(item.Mid(26))));
 					if (cur_file) {
-						static char buffer[1024];
-						sprintf(buffer, "%lld", cur_file->statistic.GetTransfered());
-						return(char2unicode(buffer));
+						return wxString::Format( wxT("%lld"), cur_file->statistic.GetTransfered() );
 					}
 					return wxT("Bad file");					
 				}
@@ -1349,9 +1307,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				if ((item.Length() > 32) && item.Mid(33).IsNumber()) {
 					CKnownFile* cur_file = theApp.sharedfiles->GetFileByIndex(atoi(unicode2char(item.Mid(33))));
 					if (cur_file) {
-						static char buffer[1024];
-						sprintf(buffer, "%lld", cur_file->statistic.GetAllTimeTransfered());
-						return(char2unicode(buffer));
+						return wxString::Format( wxT("%lld"), cur_file->statistic.GetAllTimeTransfered() );
 					}
 					return wxT("Bad file");					
 				}
@@ -1362,9 +1318,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				if ((item.Length() > 23) && item.Mid(24).IsNumber()) {
 					CKnownFile* cur_file = theApp.sharedfiles->GetFileByIndex(atoi(unicode2char(item.Mid(24))));
 					if (cur_file) {
-						static char buffer[1024];
-						sprintf(buffer, "%d", cur_file->statistic.GetRequests());
-						return(char2unicode(buffer));
+						return wxString::Format( wxT("%d"), cur_file->statistic.GetRequests() );
 					}
 					return wxT("Bad file");					
 				}
@@ -1375,9 +1329,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				if ((item.Length() > 31) && item.Mid(32).IsNumber()) {
 					CKnownFile* cur_file = theApp.sharedfiles->GetFileByIndex(atoi(unicode2char(item.Mid(32))));
 					if (cur_file) {
-						static char buffer[1024];
-						sprintf(buffer, "%d", cur_file->statistic.GetAllTimeRequests());
-						return(char2unicode(buffer));
+						return wxString::Format( wxT("%d"), cur_file->statistic.GetAllTimeRequests() );
 					}
 					return wxT("Bad file");					
 				}
@@ -1388,9 +1340,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				if ((item.Length() > 22) && item.Mid(23).IsNumber()) {
 					CKnownFile* cur_file = theApp.sharedfiles->GetFileByIndex(atoi(unicode2char(item.Mid(23))));
 					if (cur_file) {
-						static char buffer[1024];
-						sprintf(buffer, "%d", cur_file->statistic.GetAccepts());
-						return(char2unicode(buffer));
+						return wxString::Format( wxT("%d"), cur_file->statistic.GetAccepts() );
 					}
 					return wxT("Bad file");					
 				}
@@ -1401,9 +1351,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				if ((item.Length() > 29) && item.Mid(30).IsNumber()) {
 					CKnownFile* cur_file = theApp.sharedfiles->GetFileByIndex(atoi(unicode2char(item.Mid(30))));
 					if (cur_file) {
-						static char buffer[1024];
-						sprintf(buffer, "%d", cur_file->statistic.GetAllTimeAccepts());
-						return(char2unicode(buffer));
+						return wxString::Format( wxT("%d"), cur_file->statistic.GetAllTimeAccepts() );
 					}
 					return wxT("Bad file");					
 				}
@@ -1414,9 +1362,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				if ((item.Length() > 26) && item.Mid(27).IsNumber()) {
 					CKnownFile* cur_file = theApp.sharedfiles->GetFileByIndex(atoi(unicode2char(item.Mid(27))));
 					if (cur_file) {
-						static char buffer[1024];
-						sprintf(buffer, "%s", unicode2char(EncodeBase16(cur_file->GetFileHash(), 16)));
-						return(char2unicode(buffer));
+						return cur_file->GetFileHash().Encode();
 					}
 					return wxT("Bad file");					
 				}
@@ -1441,9 +1387,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				if ((item.Length() > 25) && item.Mid(26).IsNumber()) {
 					CKnownFile* cur_file = theApp.sharedfiles->GetFileByIndex(atoi(unicode2char(item.Mid(26))));
 					if (cur_file) {
-						static char buffer[1024];
-						sprintf(buffer, "%d", cur_file->GetUpPriority());
-						return(char2unicode(buffer));
+						return wxString::Format( wxT("%d"), cur_file->GetUpPriority() );
 					}
 					return wxT("Bad file");					
 				}
@@ -1535,37 +1479,31 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 		
 		// GETCATCOUNT
 		if (item.Left(11).Cmp(wxT("GETCATCOUNT")) == 0) { //get categories number
-			static char buffer[10];
-			sprintf(buffer, "%d", theApp.glob_prefs->GetCatCount());
-			return(char2unicode(buffer));
+			return wxString::Format( wxT("%d"), theApp.glob_prefs->GetCatCount() );
 		}
 		
 		
 		// SPEED
 		if (item.Left(5).Cmp(wxT("SPEED")) == 0) { //get upload/download datarate
-			static char buffer[1024];
 			if (item.Mid(6).Cmp(wxT("UL")) == 0) { //upload
-				sprintf(buffer, "%.1f", theApp.uploadqueue->GetKBps());	
+				return wxString::Format( wxT("%.1f"), theApp.uploadqueue->GetKBps() );	
 			} else if (item.Mid(6).Cmp(wxT("DL")) == 0) { //download
-				sprintf(buffer, "%.1f", theApp.downloadqueue->GetKBps());
+				return wxString::Format( wxT("%.1f"), theApp.downloadqueue->GetKBps() );
 			} else {
-				sprintf(buffer, "Wrong speed requested");
+				return wxT("Wrong speed requested");
 			}
-			return(char2unicode(buffer));
 		}
 		
 		
 		// MAX
 		if (item.Left(3).Cmp(wxT("MAX")) == 0) { //get max upload/download values
-			static char buffer[1024];
 			if (item.Mid(4).Cmp(wxT("UL")) == 0) { //upload
-				sprintf(buffer, "%i", theApp.glob_prefs->GetMaxUpload());
+				return wxString::Format( wxT("%i"), theApp.glob_prefs->GetMaxUpload() );
 			} else if (item.Mid(4).Cmp(wxT("DL")) == 0) { //download
-				sprintf(buffer, "%i", theApp.glob_prefs->GetMaxDownload());
+				return wxString::Format( wxT("%i"), theApp.glob_prefs->GetMaxDownload() );
 			} else {
-				sprintf(buffer, "Wrong value requested");
+				return wxT("Wrong value requested");
 			}
-			return(char2unicode(buffer));
 		}
 		
 
@@ -1593,9 +1531,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			}
 			
 			if (item.Mid(7).Cmp(wxT("COUNT")) == 0) { //get number of server in serverlist
-				static char buffer[1024];
-				sprintf(buffer, "%i", theApp.serverlist->GetServerCount());
-				return(char2unicode(buffer));
+				return wxString::Format( wxT("%i"), theApp.serverlist->GetServerCount() );
 			}
 			
 			if (item.Mid(7,4).Cmp (wxT("NAME")) == 0) { // get server name
@@ -1619,16 +1555,13 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			}
 
 			if (item.Mid(7,4).Cmp(wxT("PORT")) == 0) { // get the server port
-				static char buffer[1024];
 				if ((item.Length() > 11) && (item.Mid(12).IsNumber())) {
 					CServer* server = theApp.serverlist->GetServerAt(atoi(unicode2char(item.Mid(12))));
-					sprintf(buffer, "%i", server->GetPort());
+					return wxString::Format( wxT("%i"), server->GetPort() );
 				} else if (theApp.serverconnect->IsConnected())
-					sprintf(buffer, "%i", theApp.serverconnect->GetCurrentServer()->GetPort());
+					return wxString::Format( wxT("%i"), theApp.serverconnect->GetCurrentServer()->GetPort() );
 				else 
-					*buffer = 0;
-				
-				return(char2unicode(buffer));
+					return wxT("0");
 			}
 
 			if (item.Mid(7,2).Cmp(wxT("IP")) == 0) { // get the server address
@@ -1642,33 +1575,27 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			}
 			
 			if (item.Mid(7,5).Cmp(wxT("USERS")) == 0) { //get the number of users in the server we are connected to
-				static char buffer[1024];
 				if ((item.Length() > 12) && (item.Mid(13).IsNumber())) {
 					CServer* server = theApp.serverlist->GetServerAt(atoi(unicode2char(item.Mid(13))));
-					sprintf(buffer, "%i", server->GetUsers());
+					return wxString::Format( wxT("%i"), server->GetUsers() );
 				} else if (theApp.serverconnect->IsConnected())
-					sprintf(buffer, "%i", theApp.serverconnect->GetCurrentServer()->GetUsers());
+					return wxString::Format( wxT("%i"), theApp.serverconnect->GetCurrentServer()->GetUsers() );
 				else 
-					*buffer = 0;
-
-				return(char2unicode(buffer));
+					return wxT("");
 			}
 			
 			if (item.Mid(7,8).Cmp(wxT("MAXUSERS")) == 0) { // get the max number of users in a server
-				static char buffer[1024];
 				if ((item.Length() > 12) && (item.Mid(16).IsNumber())) {
 					CServer* cur_file = theApp.serverlist->GetServerAt(atoi(unicode2char(item.Mid(16))));
-					sprintf(buffer, "%i", cur_file->GetMaxUsers());
+					return wxString::Format( wxT("%i"), cur_file->GetMaxUsers() );
 				} else if (theApp.serverconnect->IsConnected())
-					sprintf(buffer, "%i", theApp.serverconnect->GetCurrentServer()->GetMaxUsers());
+					return wxString::Format( wxT("%i"), theApp.serverconnect->GetCurrentServer()->GetMaxUsers() );
 				else
-				  *buffer = 0;
-				
-				return(char2unicode(buffer));
+				  return wxT("0");
 			}
 
 			if (item.Mid(7,5).Cmp(wxT("FILES")) == 0) { // get the number of file shared in a server
-				static wxString buffer;
+				wxString buffer;
 				if ((item.Length() > 12) && (item.Mid(13).IsNumber())) {
 					CServer* server = theApp.serverlist->GetServerAt(atoi(unicode2char(item.Mid(13))));
 					buffer = wxString::Format(wxT("%i"), server->GetFiles());
@@ -1853,79 +1780,61 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			}
 			
 			if (item.Mid(9).Cmp(wxT("DL_COUNT")) == 0) { //get number of downloading files
-				static char buffer[1024];
-				sprintf(buffer, "%i", theApp.downloadqueue->GetFileCount());
-				return(char2unicode(buffer));
+				return wxString::Format( wxT("%i"), theApp.downloadqueue->GetFileCount() );
 			}
 			
 			if (item.Mid(9,11).Cmp(wxT("DL_FILENAME")) == 0) { //get the n-th file name
 				if ((item.Length() > 20) && (item.Mid(21).IsNumber())) {
-					static char buffer[1024];
-					sprintf(buffer, "%s", unicode2char(theApp.downloadqueue->GetFileByIndex(atoi(unicode2char(item.Mid(21))))->GetFileName()));
-					return(char2unicode(buffer));
+					return theApp.downloadqueue->GetFileByIndex(atoi(unicode2char(item.Mid(21))))->GetFileName();
 				}
 				return wxT("Bad DL_FILENAME request");
 			}
 
 			if (item.Mid(9,11).Cmp(wxT("DL_FILESIZE")) == 0) { //get the n-th file size
 				if ((item.Length() > 20) && (item.Mid(21).IsNumber())) {
-					static char buffer[1024];
-					sprintf(buffer, "%i", theApp.downloadqueue->GetFileByIndex(atoi(unicode2char(item.Mid(21))))->GetFileSize());
-					return(char2unicode(buffer));
+					return wxString::Format( wxT("%i"), theApp.downloadqueue->GetFileByIndex(atoi(unicode2char(item.Mid(21))))->GetFileSize());
 				}
 				return wxT("Bad DL_FILESIZE request");
 			}
 
 			if (item.Mid(9,17).Cmp(wxT("DL_FILETRANSFERED")) == 0) {
 				if ((item.Length() > 26) && (item.Mid(27).IsNumber())) {
-					static char buffer[1024];
-					sprintf(buffer, "%i", theApp.downloadqueue->GetFileByIndex(atoi(unicode2char(item.Mid(27))))->GetTransfered());
-					return(char2unicode(buffer));
+					return wxString::Format( wxT("%i"), theApp.downloadqueue->GetFileByIndex(atoi(unicode2char(item.Mid(27))))->GetTransfered() );
 				}
 				return wxT("Bad DL_FILETRANSFERED request");
 			}
 
 			if (item.Mid(9,14).Cmp(wxT("DL_FILEPERCENT")) == 0) {
 				if ((item.Length() > 23) && (item.Mid(24).IsNumber())) {
-					static char buffer[1024];
-					sprintf(buffer, "%f", theApp.downloadqueue->GetFileByIndex(atoi(unicode2char(item.Mid(24))))->GetPercentCompleted());
-					return(char2unicode(buffer));
+					return wxString::Format( wxT("%f"), theApp.downloadqueue->GetFileByIndex(atoi(unicode2char(item.Mid(24))))->GetPercentCompleted() );
 				}
 				return wxT("Bad DL_FILEPERCENT request");
 			}	
 			
 			if (item.Mid(9,15).Cmp(wxT("DL_FILEDATARATE")) == 0) {
 				if ((item.Length() > 24) && (item.Mid(25).IsNumber())) {
-					static char buffer[1024];
-					sprintf(buffer, "%i", (int)(theApp.downloadqueue->GetFileByIndex(atoi(unicode2char(item.Mid(25))))->GetKBpsDown())*1024);
-					return(char2unicode(buffer));
+					return wxString::Format( wxT("%i"), (int)(theApp.downloadqueue->GetFileByIndex(atoi(unicode2char(item.Mid(25))))->GetKBpsDown())*1024);
 				}
 				return wxT("Bad DL_FILEDATARATE request");
 			}	
 
 			if (item.Mid(9,13).Cmp(wxT("DL_FILESTATUS")) == 0) {
 				if ((item.Length() > 22) && (item.Mid(23).IsNumber())) {
-					static char buffer[1024];
-					sprintf(buffer, "%i", theApp.downloadqueue->GetFileByIndex(atoi(unicode2char(item.Mid(23))))->GetStatus());
-					return(char2unicode(buffer));
+					return wxString::Format( wxT("%i"), theApp.downloadqueue->GetFileByIndex(atoi(unicode2char(item.Mid(23))))->GetStatus() );
 				}
 				return wxT("Bad DL_FILESTATUS request");
 			}	
 			
 			if (item.Mid(9,17).Cmp(wxT("DL_PARTFILESTATUS")) == 0) {
 				if ((item.Length() > 26) && (item.Mid(27).IsNumber())) {
-					static char buffer[1024];
-					sprintf(buffer, "%s", unicode2char(theApp.downloadqueue->GetFileByIndex(atoi(unicode2char(item.Mid(27))))->getPartfileStatus().GetData()));
-					return(char2unicode(buffer));
+					return theApp.downloadqueue->GetFileByIndex(atoi(unicode2char(item.Mid(27))))->getPartfileStatus();
 				}
 				return wxT("Bad DL_PARTFILESTATUS request");
 			}
 			
 			if (item.Mid(9,18).Cmp(wxT("DL_FILEGETDOWNPRIO")) == 0) {
 				if ((item.Length() > 27) && (item.Mid(28).IsNumber())) {
-					static char buffer[1024];
-					sprintf(buffer, "%i", theApp.downloadqueue->GetFileByIndex(atoi(unicode2char(item.Mid(28))))->GetDownPriority());
-					return(char2unicode(buffer));
+					return wxString::Format( wxT("%i"), theApp.downloadqueue->GetFileByIndex(atoi(unicode2char(item.Mid(28))))->GetDownPriority() );
 				}
 				return wxT("Bad DL_FILEGETDOWNPRIO request");
 			}	
@@ -1942,7 +1851,8 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 
 			if (item.Mid(9,11).Cmp(wxT("DL_FILEHASH")) == 0) {
 				if ((item.Length() > 20) && (item.Mid(21).IsNumber())) {
-					static char buffer[1024];
+					// Why not use the encoded has? -- Xaignar
+					char buffer[17];
 					const unsigned char* hash = theApp.downloadqueue->GetFileByIndex(atoi(unicode2char(item.Mid(21))))->GetFileHash();
 					for ( int i = 0; i < 16; i++ ) {
 						buffer[i] = hash[i];
@@ -1955,63 +1865,49 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			
 			if (item.Mid(9,17).Cmp(wxT("DL_FILEENCODEHASH")) == 0) {
 				if ((item.Length() > 26) && (item.Mid(27).IsNumber())) {
-					static char buffer[1024];
-					sprintf(buffer, "%s", unicode2char(EncodeBase16(theApp.downloadqueue->GetFileByIndex(atoi(unicode2char(item.Mid(27))))->GetFileHash(), 16).GetData()));
-					return(char2unicode(buffer));
+					return theApp.downloadqueue->GetFileByIndex(atoi(unicode2char(item.Mid(27))))->GetFileHash().Encode();
 				}
 				return wxT("Bad DL_FILEENCODEHASH request");
 			}	
 
 			if (item.Mid(9,18).Cmp(wxT("DL_FILESOURCECOUNT")) == 0) {
 				if ((item.Length() > 27) && (item.Mid(28).IsNumber())) {
-					static char buffer[1024];
-					sprintf(buffer, "%i", theApp.downloadqueue->GetFileByIndex(atoi(unicode2char(item.Mid(28))))->GetSourceCount());
-					return(char2unicode(buffer));
+					return wxString::Format( wxT("%i"), theApp.downloadqueue->GetFileByIndex(atoi(unicode2char(item.Mid(28))))->GetSourceCount() );
 				}
 				return wxT("Bad DL_FILESOURCECOUNT request");
 			}	
 			
 			if (item.Mid(9,19).Cmp(wxT("DL_FILENOCURRSOURCE")) == 0) {
 				if ((item.Length() > 28) && (item.Mid(29).IsNumber())) {
-					static char buffer[1024];
-					sprintf(buffer, "%i", theApp.downloadqueue->GetFileByIndex(atoi(unicode2char(item.Mid(29))))->GetNotCurrentSourcesCount());
-					return(char2unicode(buffer));
+					return wxString::Format( wxT("%i"), theApp.downloadqueue->GetFileByIndex(atoi(unicode2char(item.Mid(29))))->GetNotCurrentSourcesCount() );
 				}
 				return wxT("Bad DL_FILENOCURRSOURCE request");
 			}	
 			
 			if (item.Mid(9,17).Cmp(wxT("DL_FILETRSRCCOUNT")) == 0) {
 				if ((item.Length() > 26) && (item.Mid(27).IsNumber())) {
-					static char buffer[1024];
-					sprintf(buffer, "%i", theApp.downloadqueue->GetFileByIndex(atoi(unicode2char(item.Mid(27))))->GetTransferingSrcCount());
-					return(char2unicode(buffer));
+					return wxString::Format( wxT("%i"), theApp.downloadqueue->GetFileByIndex(atoi(unicode2char(item.Mid(27))))->GetTransferingSrcCount() );
 				}
 				return wxT("Bad DL_FILETRSRCCOUNT request");
 			}	
 			
 			if (item.Mid(9,18).Cmp(wxT("DL_FILEED2KSRCLINK")) == 0) {
 				if ((item.Length() > 27) && (item.Mid(28).IsNumber())) {
-					static char buffer[1024];					
-					sprintf(buffer, "%s", unicode2char(theApp.CreateED2kSourceLink(theApp.downloadqueue->GetFileByIndex(atoi(unicode2char(item.Mid(28)))))));
-					return(char2unicode(buffer));
+					return theApp.CreateED2kSourceLink(theApp.downloadqueue->GetFileByIndex(atoi(unicode2char(item.Mid(28)))));
 				}
 				return wxT("Bad DL_FILEED2KSRCLINK request");
 			}	
 
 			if (item.Mid(9,15).Cmp(wxT("DL_FILEED2KLINK")) == 0) {
 				if ((item.Length() > 24) && (item.Mid(25).IsNumber())) {
-					static char buffer[1024];					
-					sprintf(buffer, "%s", unicode2char(theApp.CreateED2kLink(theApp.downloadqueue->GetFileByIndex(atoi(unicode2char(item.Mid(25))))).GetData()));
-					return(char2unicode(buffer));
+					return theApp.CreateED2kLink(theApp.downloadqueue->GetFileByIndex(atoi(unicode2char(item.Mid(25)))));
 				}
 				return wxT("Bad DL_FILEED2KLINK request");
 			}	
 			
 			if (item.Mid(9,11).Cmp(wxT("DL_FILEINFO")) == 0) {
 				if ((item.Length() > 20) && (item.Mid(21).IsNumber())) {
-					static char buffer[1024];					
-					sprintf(buffer, "%s", unicode2char(GetDownloadFileInfo(theApp.downloadqueue->GetFileByIndex(atoi(unicode2char(item.Mid(21))))).c_str()));
-					return(char2unicode(buffer));
+					return GetDownloadFileInfo(theApp.downloadqueue->GetFileByIndex(atoi(unicode2char(item.Mid(21)))));
 				}
 				return wxT("Bad DL_FILEINFO request");
 			}	
@@ -2155,9 +2051,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 						DecodeBase16(unicode2char(filehash),filehash.Length(),fileid);
 						CPartFile *cur_file=theApp.downloadqueue->GetFileByID(fileid);
 						if (cur_file) {
-							static char buffer[1024];
-							sprintf(buffer, "%s", unicode2char(cur_file->GetProgressString(progressbarWidth)));
-							return(char2unicode(buffer));
+							return cur_file->GetProgressString(progressbarWidth);
 						}
 						
 						return wxT("No File");
@@ -2173,9 +2067,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 					DecodeBase16(unicode2char(filehash),filehash.Length(),fileid);
 					CPartFile *cur_file=theApp.downloadqueue->GetFileByID(fileid);
 					if (cur_file) {
-						static char buffer[1024];
-						sprintf(buffer, "%f", cur_file->GetPercentCompleted());
-						return(char2unicode(buffer));
+						return wxString::Format( wxT("%f"), cur_file->GetPercentCompleted() );
 					}
 					
 					return wxT("No File");
@@ -2242,9 +2134,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			}
 
 			if (item.Mid(6).Cmp(wxT("UL_GETLENGTH")) == 0) {
-				static char buffer[1024];
-				sprintf(buffer,"%i", theApp.uploadqueue->GetUploadQueueLength());
-				return(char2unicode(buffer));
+				return wxString::Format( wxT("%i"), theApp.uploadqueue->GetUploadQueueLength() );
 			}
 			
 			return wxT("Bad QUEUE request");
@@ -2274,24 +2164,24 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 					int curIndex, nextIndex;
 					wxString sParams = item.Mid(19);
 					
-					curIndex=0; nextIndex=sParams.Mid(curIndex).Find(char2unicode("\n"));
+					curIndex=0; nextIndex=sParams.Mid(curIndex).Find(wxT("\n"));
 					((wxTextCtrl*)wxWindow::FindWindowById(IDC_SEARCHNAME))->SetValue(sParams.Left(nextIndex)); //_ParseURL(Data.sURL, "tosearch");
-					curIndex=curIndex+nextIndex+1; nextIndex=sParams.Mid(curIndex).Find(char2unicode("\n"));
+					curIndex=curIndex+nextIndex+1; nextIndex=sParams.Mid(curIndex).Find(wxT("\n"));
 					((wxChoice*)wxWindow::FindWindowById(IDC_TypeSearch))->SetStringSelection(sParams.Mid(curIndex, nextIndex)); //_ParseURL(Data.sURL, "type");
-					curIndex=curIndex+nextIndex+1; nextIndex=sParams.Mid(curIndex).Find(char2unicode("\n"));
+					curIndex=curIndex+nextIndex+1; nextIndex=sParams.Mid(curIndex).Find(wxT("\n"));
 					((wxTextCtrl*)wxWindow::FindWindowById(IDC_EDITSEARCHMIN))->SetValue(sParams.Mid(curIndex, nextIndex)); //atol(_ParseURL(Data.sURL, "min"))*1048576;
-					curIndex=curIndex+nextIndex+1; nextIndex=sParams.Mid(curIndex).Find(char2unicode("\n"));
+					curIndex=curIndex+nextIndex+1; nextIndex=sParams.Mid(curIndex).Find(wxT("\n"));
 					((wxTextCtrl*)wxWindow::FindWindowById(IDC_EDITSEARCHMAX))->SetValue(sParams.Mid(curIndex, nextIndex));
-					curIndex=curIndex+nextIndex+1; nextIndex=sParams.Mid(curIndex).Find(char2unicode("\n"));
+					curIndex=curIndex+nextIndex+1; nextIndex=sParams.Mid(curIndex).Find(wxT("\n"));
 					((wxTextCtrl*)wxWindow::FindWindowById(IDC_EDITSEARCHAVAIBILITY))->SetValue(sParams.Mid(curIndex, nextIndex)); //_ParseURL(Data.sURL, "avail")=="")?-1:atoi(_ParseURL(Data.sURL, "avail"));
-					curIndex=curIndex+nextIndex+1; nextIndex=sParams.Mid(curIndex).Find(char2unicode("\n"));
+					curIndex=curIndex+nextIndex+1; nextIndex=sParams.Mid(curIndex).Find(wxT("\n"));
 					((wxTextCtrl*)wxWindow::FindWindowById(IDC_EDITSEARCHEXTENSION))->SetValue(sParams.Mid(curIndex, nextIndex)); //_ParseURL(Data.sURL, "ext");
-					curIndex=curIndex+nextIndex+1; nextIndex=sParams.Mid(curIndex).Find(char2unicode("\n"));
+					curIndex=curIndex+nextIndex+1; nextIndex=sParams.Mid(curIndex).Find(wxT("\n"));
 					
-					if (sParams.Mid(curIndex, nextIndex).Cmp(char2unicode("global")) == 0) //Method
-						((wxCheckBox*)wxWindow::FindWindowByName(char2unicode("globalSearch")))->SetValue(true); //SearchTypeGlobal;
+					if (sParams.Mid(curIndex, nextIndex).Cmp(wxT("global")) == 0) //Method
+						((wxCheckBox*)wxWindow::FindWindowByName(wxT("globalSearch")))->SetValue(true); //SearchTypeGlobal;
 					else
-						((wxCheckBox*)wxWindow::FindWindowByName(char2unicode("globalSearch")))->SetValue(false); //SearchTypeServer;
+						((wxCheckBox*)wxWindow::FindWindowByName(wxT("globalSearch")))->SetValue(false); //SearchTypeServer;
 					
 					wxCommandEvent evt;
 					theApp.amuledlg->searchwnd->OnBnClickedStarts(evt); //do a new search
@@ -2326,23 +2216,23 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 		
 		if (item.Left(10).Cmp(wxT("TOTALULREQ")) == 0) { 
 			
-			static char buffer[1024];
+			wxString buffer;
 			#ifdef RELEASE_GROUP_MODE
 			if (item.Mid(11).Length() == 16) {
 				CKnownFile* shared_file = theApp.sharedfiles->GetFileByID((uchar*)item.Mid(11).c_str());
 				if (shared_file!=NULL) {
-					sprintf(buffer, "%i",shared_file->totalupload);
+					buffer.Printf( wxT("%i"), shared_file->totalupload );
 				} else {
-					sprintf(buffer, "FILENOTSHARED");
+					buffer = wxT("FILENOTSHARED");
 				}
 			} else {
-				sprintf(buffer, "WRONGHASH",item.Mid(11).c_str());
+				buffer = wxT("WRONGHASH");
 			}	
 			#else
-				sprintf(buffer, "NOTRELEASEGRP");
+				buffer = wxT("NOTRELEASEGRP");
 			#endif	
 
-			return(char2unicode(buffer));
+			return buffer;
 		}		
 		
 		
