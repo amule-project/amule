@@ -557,17 +557,17 @@ CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, CValueMap &valuemap)
 {
 	valuemap.CreateTag(EC_TAG_PARTFILE_STATUS, file->GetStatus(), this);
 
-	valuemap.CreateTag(EC_TAG_PARTFILE_SOURCE_COUNT, (uint32)file->GetSourceCount(), this);
-	valuemap.CreateTag(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT, (uint32)file->GetNotCurrentSourcesCount(), this);
-	valuemap.CreateTag(EC_TAG_PARTFILE_SOURCE_COUNT_XFER, (uint32)file->GetTransferingSrcCount(), this);
-	valuemap.CreateTag(EC_TAG_PARTFILE_SOURCE_COUNT_A4AF, (uint32)file->GetSrcA4AFCount(), this);
+	valuemap.CreateTag(EC_TAG_PARTFILE_SOURCE_COUNT, file->GetSourceCount(), this);
+	valuemap.CreateTag(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT, file->GetNotCurrentSourcesCount(), this);
+	valuemap.CreateTag(EC_TAG_PARTFILE_SOURCE_COUNT_XFER, file->GetTransferingSrcCount(), this);
+	valuemap.CreateTag(EC_TAG_PARTFILE_SOURCE_COUNT_A4AF, file->GetSrcA4AFCount(), this);
 		
-	valuemap.CreateTag(EC_TAG_PARTFILE_SIZE_XFER, (uint32)file->GetTransfered(), this);
-	valuemap.CreateTag(EC_TAG_PARTFILE_SIZE_DONE, (uint32)file->GetCompletedSize(), this);
+	valuemap.CreateTag(EC_TAG_PARTFILE_SIZE_XFER, file->GetTransfered(), this);
+	valuemap.CreateTag(EC_TAG_PARTFILE_SIZE_DONE, file->GetCompletedSize(), this);
 	valuemap.CreateTag(EC_TAG_PARTFILE_SPEED, (uint32)(file->GetKBpsDown()*1024), this);
 	
 	valuemap.CreateTag(EC_TAG_PARTFILE_PRIO, 
-		(uint32)(file->IsAutoDownPriority() ? 
+		(uint8)(file->IsAutoDownPriority() ? 
 						file->GetDownPriority() + 10 : file->GetDownPriority()), this);
 
 	valuemap.CreateTag(EC_TAG_PARTFILE_CAT, file->GetCategory(), this);
@@ -576,7 +576,7 @@ CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, CValueMap &valuemap)
 	
 	valuemap.CreateTag(EC_TAG_PARTFILE_NAME, file->GetFileName(), this);
 
-	valuemap.CreateTag(EC_TAG_PARTFILE_SIZE_FULL, (uint32)file->GetFileSize(), this);
+	valuemap.CreateTag(EC_TAG_PARTFILE_SIZE_FULL, file->GetFileSize(), this);
 
 	valuemap.CreateTag(EC_TAG_PARTFILE_ED2K_LINK,
 				(theApp.serverconnect->IsConnected() && !theApp.serverconnect->IsLowID()) ?
@@ -588,20 +588,20 @@ CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level
 {
 	AddTag(CECTag(EC_TAG_PARTFILE_STATUS, file->GetStatus()));
 
-	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT, (uint32)file->GetSourceCount()));
-	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT, (uint32)file->GetNotCurrentSourcesCount()));
-	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT_XFER, (uint32)file->GetTransferingSrcCount()));
-	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT_A4AF, (uint32)file->GetSrcA4AFCount()));
+	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT, file->GetSourceCount()));
+	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT, file->GetNotCurrentSourcesCount()));
+	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT_XFER, file->GetTransferingSrcCount()));
+	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT_A4AF, file->GetSrcA4AFCount()));
 		
 	if ( (file->GetTransferingSrcCount() > 0) || (detail_level != EC_DETAIL_UPDATE) ) {
 		
-		AddTag(CECTag(EC_TAG_PARTFILE_SIZE_XFER, (uint32)file->GetTransfered()));
-		AddTag(CECTag(EC_TAG_PARTFILE_SIZE_DONE, (uint32)file->GetCompletedSize()));
+		AddTag(CECTag(EC_TAG_PARTFILE_SIZE_XFER, file->GetTransfered()));
+		AddTag(CECTag(EC_TAG_PARTFILE_SIZE_DONE, file->GetCompletedSize()));
 		AddTag(CECTag(EC_TAG_PARTFILE_SPEED, (uint32)(file->GetKBpsDown()*1024)));
 	}
 	
 	AddTag(CECTag(EC_TAG_PARTFILE_PRIO,
-		(uint32)(file->IsAutoDownPriority() ? 
+		(uint8)(file->IsAutoDownPriority() ? 
 						file->GetDownPriority() + 10 : file->GetDownPriority())));
 
 	AddTag(CECTag(EC_TAG_PARTFILE_CAT, file->GetCategory()));
