@@ -503,7 +503,7 @@ wxSizer *messagePage( wxWindow *parent, bool call_fit, bool set_sizer )
     item1->Add( item3, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
     CFriendListCtrl *item6 = new CFriendListCtrl( parent, ID_FRIENDLIST, wxDefaultPosition, wxSize(160,120), wxLC_REPORT|wxSUNKEN_BORDER );
-    item1->Add( item6, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxRIGHT|wxBOTTOM, 5 );
+    item1->Add( item6, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxRIGHT|wxBOTTOM|wxFIXED_MINSIZE, 5 );
 
     item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
 
