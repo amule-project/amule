@@ -170,14 +170,13 @@ public:
 	 */
 	void ClearCompleted();
 
+private:
 	/**
 	 * Updates the displayed number representing the ammount of files currently shown.
 	 */
-	void ShowFilesCount() const;
-	
-	
-private:
+	void ShowFilesCount( int diff );
 
+	
 	/**
 	 * Overloaded function needed for custom drawing of items.
 	 */
@@ -285,6 +284,10 @@ private:
 	
 	//! The currently displayed category
 	uint8 m_category;
+
+	
+	//! The number of displayed files
+	int m_filecount;
 
 	DECLARE_EVENT_TABLE()
 };

@@ -2121,7 +2121,6 @@ void CPartFile::CompleteFile(bool bIsHashingDone)
 
 
 	}
-	Notify_DownloadCtrlShowFilesCount();
 	if (thePrefs::ShowCatTabInfos()) {
 		Notify_ShowUpdateCatTabTitles();
 	}			
@@ -2166,7 +2165,6 @@ void CPartFile::CompleteFileEnded(int completing_result, wxString* newname) {
 		theApp.downloadqueue->RemoveFile(this);
 		theApp.sharedfiles->SafeAddKFile(this);
 		UpdateDisplayedInfo();
-		Notify_DownloadCtrlShowFilesCount();
 
 		// republish that file to the ed2k-server to update the 'FT_COMPLETE_SOURCES' counter on the server.
 		theApp.sharedfiles->RepublishFile(this);		
@@ -3208,10 +3206,9 @@ void CPartFile::SetPartFileStatus(uint8 newstatus)
 	status=newstatus;
 	
 	if (thePrefs::GetAllcatType()) {
-		// lfroen - just notify gui that show-hide status is changing
-		Notify_DownloadCtrlShowHideFileStatus(this);
-		Notify_DownloadCtrlShowFilesCount();
+		Notify_DownloadCtrlUpdateItem(this);
 	}
+
 	Notify_DownloadCtrlSort();
 }
 

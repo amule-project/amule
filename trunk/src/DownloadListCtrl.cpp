@@ -197,6 +197,7 @@ CDownloadListCtrl::CDownloadListCtrl( wxWindow *parent, wxWindowID winid, const 
 
 	m_category = 0;
 
+	m_filecount = 0;
 
 	LoadSettings();
 }
@@ -229,8 +230,6 @@ void CDownloadListCtrl::AddFile( CPartFile* file )
 		// Check if the new file is visible in the current category
 		if ( file->CheckShowItemInGivenCat( m_category ) ) {
 			ShowFile( file, true );
-			
-			ShowFilesCount();
 		}
 	}
 }
@@ -345,8 +344,6 @@ void CDownloadListCtrl::RemoveFile( CPartFile* file )
 		delete it->second;
 
 		m_ListItems.erase( it );
-	
-		ShowFilesCount();
 	}
 }
 
@@ -432,6 +429,8 @@ void CDownloadListCtrl::ShowFile( CPartFile* file, bool show )
 				SetItem(myitem);	
 			
 				RefreshItem( newitem );
+
+				ShowFilesCount( 1 );
 			}
 		} else {
 			// Ensure sources are hidden
@@ -441,6 +440,7 @@ void CDownloadListCtrl::ShowFile( CPartFile* file, bool show )
 			long index = FindItem( -1, (long)item );
 			if ( index > -1 ) {
 				DeleteItem( index );
+				ShowFilesCount( -1 );
 			}
 		}
 	}
@@ -492,7 +492,6 @@ void CDownloadListCtrl::ShowSources( CPartFile* file, bool show )
 
 void CDownloadListCtrl::ChangeCategory( int newCategory )
 {
-
 	Freeze();
 
 	// remove all displayed files with a different cat and show the correct ones
@@ -518,8 +517,6 @@ void CDownloadListCtrl::ChangeCategory( int newCategory )
 	Thaw();
 
 	m_category = newCategory;
-
-	ShowFilesCount();
 }
 
 
@@ -1914,21 +1911,11 @@ void CDownloadListCtrl::ClearCompleted()
 }
 
 
-void CDownloadListCtrl::ShowFilesCount() const
+void CDownloadListCtrl::ShowFilesCount( int diff )
 {
-	int count = 0;
-
-	// remove all displayed files with a different cat
-	for (ListItems::const_iterator it = m_ListItems.begin(); it != m_ListItems.end(); it++) {
-		const CtrlItem_Struct* cur_item = it->second;
-		if (cur_item->type == FILE_TYPE) {
-			if ( ShowItemInCurrentCat( (CPartFile *)cur_item->value, m_category ) ) {
-				count++;
-			}
-		}
-	}
-
-	wxString fmtstr = wxString::Format( _("Downloads (%i)"), count );
+	m_filecount += diff;
+	
+	wxString fmtstr = wxString::Format( _("Downloads (%i)"), m_filecount );
 	CastByName( wxT("downloadsLabel"), GetParent(), wxStaticText )->SetLabel( fmtstr );
 }
 
