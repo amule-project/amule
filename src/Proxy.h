@@ -69,6 +69,8 @@ const unsigned char SOCKS5_AUTH_METHOD_GSSAPI			= 0x01;
 const unsigned char SOCKS5_AUTH_METHOD_USERNAME_PASSWORD	= 0x02;
 const unsigned char SOCKS5_AUTH_METHOD_NO_ACCEPTABLE_METHODS	= 0xFF;
 
+const unsigned char SOCKS5_AUTH_VERSION_USERNAME_PASSWORD	= 0x01;
+
 const unsigned char SOCKS5_CMD_CONNECT		= 0x01;
 const unsigned char SOCKS5_CMD_BIND		= 0x02;
 const unsigned char SOCKS5_CMD_UDP_ASSOCIATE	= 0x03;
