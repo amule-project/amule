@@ -181,10 +181,6 @@ if ADD_THROTTLER
 amule_SOURCES += UploadBandwidthThrottler.cpp LastCommonRouteFinder.cpp 
 endif
 
-if VERBOSE_OUTPUT
-amule_SOURCES += debugstuff.cpp
-endif
-
 amule_CFLAGS = $(TRAY_FLAGS) $(WX_CXXFLAGS) $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFLAGS)
 amule_CXXFLAGS = $(TRAY_FLAGS) $(WX_CXXFLAGS) $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFLAGS) $(CURL_FLAGS)
 amule_LDADD = $(WX_LIBS) $(GTK_LIBS) $(ZLIB_LIBS) $(CURL_LIBS) $(CRYPTOLIBS)
@@ -252,7 +248,6 @@ noinst_HEADERS = AddFileThread.h \
 		 CommentDialog.h \
 		 CommentDialogLst.h \
 		 CTypedPtrList.h \
-		 debugstuff.h \
 		 DirectoryTreeCtrl.h \
 		 DownloadListCtrl.h \
 		 DownloadQueue.h \

@@ -318,7 +318,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
 			theApp.clientlist->AddTrackClient(client); // in any case keep track of this client
 				
 			// another client with same ip or hash
-			AddDebugLogLineM(false,wxString::Format(_("Client '%s' and '%s' have the same userhash or IP - removed '%s'"),unicode2char(client->GetUserName()),unicode2char(cur_client->GetUserName()),unicode2char(cur_client->GetUserName())));
+			AddDebugLogLineM(false,wxString::Format(_("Client '%s' and '%s' have the same userhash or IP - removed '%s'"), client->GetUserName().c_str(), cur_client->GetUserName().c_str(), cur_client->GetUserName().c_str()));
 
 			if ( cur_client->credits && cur_client->credits->GetCurrentIdentState(cur_client->GetIP()) == IS_IDENTIFIED)
 			{

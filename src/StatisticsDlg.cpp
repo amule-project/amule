@@ -1228,7 +1228,7 @@ wxString CStatisticsDlg::GetHTML() {
 	wxString strBuffer=wxEmptyString;
 	wxTreeItemId item;
 
-	strBuffer.Printf(wxT("<font face=\"Verdana,Courier New,Helvetica\" size=\"2\">\r\n<b>aMule v%s %s [%s]</b>\r\n<br><br>\r\n"), PACKAGE_VERSION, _("Statistics"), unicode2char(theApp.glob_prefs->GetUserNick()));
+	strBuffer.Printf(wxT("<font face=\"Verdana,Courier New,Helvetica\" size=\"2\">\r\n<b>aMule v%s %s [%s]</b>\r\n<br><br>\r\n"), PACKAGE_VERSION, _("Statistics"), theApp.glob_prefs->GetUserNick().c_str());
 	// update it
 	ShowStatistics();
 

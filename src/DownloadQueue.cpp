@@ -185,7 +185,7 @@ void CDownloadQueue::Init()
 	if(count == 0) {
 		AddLogLineM(false, _("No part files found"));
 	} else {
-		AddLogLineF(false, _("Found %i part files"),count);
+		AddLogLineM(false, wxString::Format(_("Found %i part files"), count));
 		SortByPriority();
 		CheckDiskspace();
 	}
@@ -316,11 +316,6 @@ void CDownloadQueue::AddFileLinkToDownload(CED2KFileLink* pLink, uint8 category)
 
 void CDownloadQueue::AddDownload(CPartFile* newfile, bool paused, uint8 category)
 {
-#ifdef __DEBUG__
-	if( !newfile->IsASanePartFile(true, "CDownloadQueue::AddDownload", __FILE__, __LINE__) ) {
-		return;
-	}
-#endif // __DEBUG__
 	// Creteil - Add in paused mode if there is already file(s) downloading
 	if (paused && !filelist.empty()) {
 		newfile->StopFile();
@@ -332,9 +327,9 @@ void CDownloadQueue::AddDownload(CPartFile* newfile, bool paused, uint8 category
 
 	newfile->SetCategory(category);
 	Notify_DownloadCtrlAddFile(newfile);
-	AddLogLineF(true, _("Downloading %s"),newfile->GetFileName().GetData());
+	AddLogLineM(true, wxString::Format(_("Downloading %s"), newfile->GetFileName().c_str()));
 	wxString msgTemp;
-	msgTemp.Printf(wxString(wxT("Downloading %s"))+wxT("\n"),newfile->GetFileName().GetData());
+	msgTemp.Printf(wxT("Downloading %s\n"), newfile->GetFileName().c_str());
 	Notify_ShowNotifier(msgTemp, TBN_DLOAD, 0);
 	// Kry - Get sources if not stopped
 	if (!newfile->IsStopped()) {
@@ -346,13 +341,13 @@ bool CDownloadQueue::IsFileExisting(const CMD4Hash& fileid) const
 {
 	if (const CKnownFile* file = sharedfilelist->GetFileByID(fileid)) {
 		if (file->IsPartFile()) {
-			AddLogLineF(true, _("You are already trying to download the file %s"), file->GetFileName().GetData());
+			AddLogLineM(true, wxString::Format(_("You are already trying to download the file %s"), file->GetFileName().c_str()));
 		} else {
-			AddLogLineF(true, _("You already have the file %s"), file->GetFileName().GetData());
+			AddLogLineM(true, wxString::Format(_("You already have the file %s"), file->GetFileName().c_str()));
 		}
 		return true;
 	} else if ((file = GetFileByID(fileid))) {
-		AddLogLineF(true, _("You are already trying to download the file %s"), file->GetFileName().GetData());
+		AddLogLineM(true, wxString::Format(_("You are already trying to download the file %s"), file->GetFileName().c_str()));
 		return true;
 	}
 	return false;
@@ -969,9 +964,7 @@ void CDownloadQueue::AddLinksFromFile()
 				}
 				delete pLink;
 			} catch(wxString error) {
-				char buffer[200];
-				sprintf(buffer,unicode2char(_("This ed2k link is invalid (%s)")),error.GetData());
-				AddLogLineF(true,_("Invalid link: %s"),buffer);
+				AddLogLineM(true, wxString::Format(_("Invalid link: %s"), wxString::Format(_("This ed2k link is invalid (%s)"), error.c_str()).c_str()));
 			}
 			// We must double-check here where are we, because GetNextLine moves reading head
 			// one line below, and we must make sure that line exists. Thus check if we are
@@ -1289,7 +1282,7 @@ void CDownloadQueue::AddToResolve(const CMD4Hash& fileid, const wxString& pszHos
 	if (bResolving) {
 		return;
 	}
-	printf(unicode2char(wxString::Format(wxT("Opening thread for resolving ")) + pszHostname + wxT("\n")));
+	printf(unicode2char(wxString(wxT("Opening thread for resolving ")) + pszHostname + wxT("\n")));
 	SourcesAsyncDNS* dns=new SourcesAsyncDNS();
 	if(dns->Create()!=wxTHREAD_NO_ERROR) {
 		// Cannot create (Already there?)

@@ -56,7 +56,7 @@ void CServerConnect::TryAnotherConnectionrequest(){
 		if (!next_server)
 		{
 			if (connectionattemps.empty()){
-				AddLogLineM(true,wxString::Format(_("Failed to connect to all servers listed. Making another pass.")));
+				AddLogLineM(true, _("Failed to connect to all servers listed. Making another pass."));
 				ConnectToAnyServer(lastStartAt);
 			}
 			return;
@@ -264,7 +264,7 @@ void CServerConnect::ConnectionFailed(CServerSocket* sender){
 	CServer* update = NULL;
 	switch (sender->GetConnectionState()){
 		case CS_FATALERROR:
-			AddLogLineM(true, wxString::Format(_("Fatal Error while trying to connect. Internet connection might be down")));
+			AddLogLineM(true, _("Fatal Error while trying to connect. Internet connection might be down"));
 			break;
 		case CS_DISCONNECTED:
 			theApp.sharedfiles->ClearED2KPublishInfo();
@@ -500,7 +500,7 @@ void CServerConnect::KeepConnectionAlive()
 		theApp.uploadqueue->AddUpDataOverheadServer(packet->GetPacketSize());
 		connectedsocket->SendPacket(packet,true);
 		
-		AddDebugLogLineM(false, wxString::Format(_("Refreshing server connection")));
+		AddDebugLogLineM(false, _("Refreshing server connection"));
 		delete files;
  	}
 }

@@ -224,7 +224,7 @@ void CUpDownClient::SendFileRequest()
 			SetLastAskedForSources();
 			#ifdef __USE_DEBUG__
 			if (thePrefs.GetDebugSourceExchange()) 
-				AddDebugLogLineF( false, "Send:Source Request User(%s) File(%s)", unicode2char(GetUserName()), m_reqfile->GetFileName() );
+				AddDebugLogLineM( false, wxString::Format(wxT("Send:Source Request User(%s) File(%s)"), GetUserName().c_str(), m_reqfile->GetFileName().c_str()));
 			#endif
 		}
 		#ifdef __USE_DEBUG__
@@ -290,7 +290,7 @@ void CUpDownClient::SendFileRequest()
 			SetLastAskedForSources();
 		    #ifdef __USE_DEBUG__
 			if (thePrefs.GetDebugSourceExchange())
-				AddDebugLogLineF( false, "Send:Source Request User(%s) File(%s)", unicode2char(GetUserName()), m_reqfile->GetFileName() );
+				AddDebugLogLineM(false, wxString::Format(wxT"Send:Source Request User(%s) File(%s)", GetUserName().c_str(), m_reqfile->GetFileName().c_str()));
 			#endif
 		}
 	}
@@ -764,7 +764,7 @@ void CUpDownClient::ProcessBlockPacket(const char *packet, uint32 size, bool pac
 				// Found reserved block
 				
 				if (cur_block->fZStreamError){
-					AddDebugLogLineF(false, _("Ignoring %u bytes of block %u-%u because of errornous zstream state for file \"%s\""), size - HEADER_SIZE, nStartPos, nEndPos, m_reqfile->GetFileName().GetData());
+					AddDebugLogLineM(false, wxString::Format(_("Ignoring %u bytes of block %u-%u because of errornous zstream state for file \"%s\""), size - HEADER_SIZE, nStartPos, nEndPos, m_reqfile->GetFileName().c_str()));
 					m_reqfile->RemoveBlockFromList(cur_block->block->StartOffset, cur_block->block->EndOffset);
 					return;
 				}
@@ -808,7 +808,7 @@ void CUpDownClient::ProcessBlockPacket(const char *packet, uint32 size, bool pac
 							nEndPos = cur_block->block->StartOffset + cur_block->totalUnzipped - 1;
 
 							if (nStartPos > cur_block->block->EndOffset || nEndPos > cur_block->block->EndOffset) {
-								AddDebugLogLineF(false, _("Corrupted compressed packet for %s received (error %i)"),m_reqfile->GetFileName().GetData(),666);
+								AddDebugLogLineM(false, wxString::Format(_("Corrupted compressed packet for %s received (error %i)"), m_reqfile->GetFileName().c_str(), 666));
 								m_reqfile->RemoveBlockFromList(cur_block->block->StartOffset, cur_block->block->EndOffset);
 							} else {
 								// Write uncompressed data to file
@@ -961,7 +961,7 @@ int CUpDownClient::unzip(Pending_Block_Struct *block, BYTE *zipped, uint32 lenZi
 				strZipError.Printf(_T(" %d '%s'"), err, zS->msg);
 			else if (err != Z_OK)
 				strZipError.Printf(_T(" %d"), err);
-			AddDebugLogLineM(false, wxString::Format(wxT("Unexpected zip error ")) +  strZipError + wxT("in file \"") + (m_reqfile ? m_reqfile->GetFileName() : wxT("?")) + wxT("\""));
+			AddDebugLogLineM(false, wxString(wxT("Unexpected zip error ")) +  strZipError + wxT("in file \"") + (m_reqfile ? m_reqfile->GetFileName() : wxT("?")) + wxT("\""));
 		}
 
 		if (err != Z_OK) {
@@ -1070,7 +1070,7 @@ void CUpDownClient::UDPReaskFNF()
 			}
 		}
 	} else {
-		AddDebugLogLineM(false,wxString::Format(wxT("UDP ANSWER FNF : %s - did not remove client because of current download state"),unicode2char(GetUserName())));
+		AddDebugLogLineM(false,wxString::Format(wxT("UDP ANSWER FNF : %s - did not remove client because of current download state"), GetUserName().c_str()));
 	}
 }
 

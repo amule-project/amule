@@ -369,11 +369,11 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				DecodeBase16(unicode2char(filehash),filehash.Length(),fileid);
 				CPartFile *cur_file=theApp.downloadqueue->GetFileByID(fileid);
 				if (cur_file && cur_file->IsPartFile()) {
-					buffer.Append(wxString::Format(wxT("0\t")));
+					buffer.Append(wxT("0\t"));
 					buffer+=cur_file->GetProgressString(progressbarWidth)+wxString(wxT("\t"));
 					buffer+=wxString::Format(wxT("%f\t"), cur_file->GetPercentCompleted());
 				} else {
-					buffer.Append(wxString::Format(wxT("1\t")));
+					buffer.Append(wxT("1\t"));
 				}
 			}
 			
@@ -395,15 +395,15 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 		if (item.Left(15) == wxT("PREFS GETWSPASS")) {
 			wxString pwdHash = item.Mid(16);
 			if (pwdHash == theApp.glob_prefs->GetWSPass()) {
-				AddLogLineM(false, wxString::Format(wxT("Webserver-Admin-Login")));
+				AddLogLineM(false, wxT("Webserver-Admin-Login"));
 				return wxT("AdminLogin");
 			} else if (theApp.glob_prefs->GetWSIsLowUserEnabled() && 
 					!theApp.glob_prefs->GetWSLowPass().IsEmpty() && 
 					pwdHash == theApp.glob_prefs->GetWSLowPass()) {
-					AddLogLineM(false, wxString::Format(wxT("Webserver-Guest-Login")));
+					AddLogLineM(false, wxT("Webserver-Guest-Login"));
 				return wxT("GuestLogin");
 			} else {
-				AddLogLineM(false, wxString::Format(wxT("Webserver: Failed Loginattempt")));
+				AddLogLineM(false, wxT("Webserver: Failed Loginattempt"));
 				return wxT("Access Denied");
 			}
 		}
@@ -987,7 +987,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			if (theApp.glob_prefs->GetIPFilterOn()) {
 				theApp.clientlist->FilterQueues();
 			}
-			wxString msg = wxString::Format(_("IPFilter state set to '%s'."), unicode2char(param));
+			wxString msg = wxString::Format(_("IPFilter state set to '%s'."), param.c_str());
 			AddLogLineM(true, msg);
 			return msg;
 		}

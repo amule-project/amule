@@ -101,7 +101,7 @@ uint8 CServerList::AutoUpdate()
 			if(retval==0) {
 				temp_count++;		
 			} else {
-				AddLogLineF(true, _("Failed to download the serverlist from %s"), strURLToDownload.GetData());
+				AddLogLineM(true, wxString::Format(_("Failed to download the serverlist from %s"), strURLToDownload.c_str()));
 			}
 			delete dlg;
 		}
@@ -109,7 +109,7 @@ uint8 CServerList::AutoUpdate()
 
 	wxASSERT(temp_count <= url_count);
 	if (temp_count < url_count) {
-		AddLogLineF(true, _("%u auto-update serverlist entries failed loading"), (url_count - temp_count));
+		AddLogLineM(true, wxString::Format(_("%u auto-update serverlist entries failed loading"), (url_count - temp_count)));
 	}
 	
 	return temp_count;
@@ -167,7 +167,7 @@ bool CServerList::AddServermetToList(const wxString& strFile, bool merge)
 
 	if ( (1 != servermet.Read(&version,1)) || (version != 0xE0 && version != MET_HEADER)) {
 		servermet.Close();
-		AddLogLineF(false,_("Invalid versiontag in server.met (0x%x , size %i)!"),version, sizeof(version));
+		AddLogLineM(false, wxString::Format(_("Invalid versiontag in server.met (0x%x , size %i)!"),version, sizeof(version)));
 		return false;
 	}
 
@@ -227,9 +227,9 @@ bool CServerList::AddServermetToList(const wxString& strFile, bool merge)
 		Notify_ServerThaw();
     
 		if (!merge) {
-			AddLogLineF(true,_("%i servers in server.met found"),fservercount);
+			AddLogLineM(true, wxString::Format(_("%i servers in server.met found"),fservercount));
 		} else {
-			AddLogLineF(true,_("%d servers added"), iAddCount, fservercount-iAddCount);
+			AddLogLineM(true, wxString::Format(_("%d servers added"), iAddCount));
 		}
 	}
 	catch (CInvalidPacket) {

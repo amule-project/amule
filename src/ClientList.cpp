@@ -220,13 +220,13 @@ bool CClientList::AttachToAlreadyKnown(CUpDownClient** client, CClientReqSocket*
 				{
 					// if found_client is connected and has the IS_IDENTIFIED, it's safe to say that the other one is a bad guy
 					if (found_client->Credits() && found_client->Credits()->GetCurrentIdentState(found_client->GetIP()) == IS_IDENTIFIED){
-						AddDebugLogLineF(false, wxT("Clients: %s (%s), Banreason: Userhash invalid"), unicode2char(tocheck->GetUserName()),unicode2char(tocheck->GetFullIP())); 
+						AddDebugLogLineM(false, wxString::Format(_("Clients: %s (%s), Banreason: Userhash invalid"), tocheck->GetUserName().c_str(), tocheck->GetFullIP().c_str())); 
 						tocheck->Ban();
 						return false;
 					}
 	
 					//IDS_CLIENTCOL Warning: Found matching client, to a currently connected client: %s (%s) and %s (%s)
-					AddDebugLogLineF(true,_("WARNING! Found matching client, to a currently connected client: %s (%s) and with %s"),unicode2char(tocheck->GetUserName()),unicode2char(tocheck->GetFullIP()),unicode2char(found_client->GetUserName()),unicode2char(found_client->GetFullIP()));
+					AddDebugLogLineM(true, wxString::Format(_("WARNING! Found matching client, to a currently connected client: %s (%s) and with %s"), tocheck->GetUserName().c_str(), tocheck->GetFullIP().c_str(), found_client->GetUserName().c_str(), found_client->GetFullIP().c_str()));
 					return false;
 				}
 				found_client->GetSocket()->client = NULL;
@@ -351,7 +351,7 @@ void CClientList::Process()
 	
 	if (m_dwLastTrackedCleanUp + TRACKED_CLEANUP_TIME < cur_tick ){
 		m_dwLastTrackedCleanUp = cur_tick;
-		AddDebugLogLineF(false, wxT("Cleaning up TrackedClientList, %i clients on List..."), m_trackedClientsList.size());
+		AddDebugLogLineM(false, wxString::Format(_("Cleaning up TrackedClientList, %i clients on List..."), m_trackedClientsList.size()));
 		
 		std::map<uint32, CDeletedClient*>::iterator it = m_trackedClientsList.begin();
 		while ( it != m_trackedClientsList.end() ) {
@@ -362,7 +362,7 @@ void CClientList::Process()
 				m_trackedClientsList.erase( cur_src );
 			}
 		}
-		AddDebugLogLineF(false, wxT("...done, %i clients left on list"), m_trackedClientsList.size());
+		AddDebugLogLineM(false, wxString::Format(_("...done, %i clients left on list"), m_trackedClientsList.size()));
 	}
 }
 
