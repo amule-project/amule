@@ -83,7 +83,7 @@ wxString _SpecialChars(wxString str) {
 }
 
 CWebServer::CWebServer(CamulewebApp *webApp):
-	m_ServersInfo(webApp), m_SharedFilesInfo(webApp), m_DownloadFilesInfo(webApp),
+	m_ServersInfo(webApp), m_SharedFilesInfo(webApp), m_DownloadFilesInfo(webApp, &m_ImageLib),
 	m_ImageLib(wxString(char2unicode(getenv("HOME"))) + wxT("/.aMule/webserver/"))
 {
 	webInterface = webApp;
@@ -92,8 +92,6 @@ CWebServer::CWebServer(CamulewebApp *webApp):
 
 	m_iSearchSortby = 3;
 	m_bSearchAsc = 0;
-
-	imgs_folder = wxString(char2unicode(getenv("HOME"))) + wxT("/.aMule/webserver/");
 
 	m_bServerWorking = false; // not running (listening) yet
 }
@@ -325,6 +323,10 @@ void CWebServer::ReloadTemplates(void) {
 			m_Templates.sProgressbarImgsPercent.Replace(wxT("[PROGRESSGIFINTERNAL]"),wxT("%i"));
 			m_Templates.sProgressbarImgs.Replace(wxT("[PROGRESSGIFNAME]"),wxT("%s"));
 			m_Templates.sProgressbarImgs.Replace(wxT("[PROGRESSGIFINTERNAL]"),wxT("%i"));
+			
+			m_DownloadFilesInfo.LoadImageParams(m_Templates.sProgressbarImgs,
+				m_Templates.iProgressbarWidth, 20);
+				
 		}
 	} else {
 		// Show error locally instead of logging into remote core
@@ -389,33 +391,6 @@ void CWebServer::ProcessImgFileReq(ThreadData Data)
 	} else {
 		webInterface->DebugShow(wxT("**** imgrequest: failed\n"));
 	}	
-}
-
-
-void CWebServer::ProcessStyleFileReq(ThreadData Data) {
-
-	wxString filename = Data.sURL;
-	wxString contenttype;
-	webInterface->DebugShow(wxT("inc. fname=") + filename + wxT("\n"));
-	contenttype = wxT("Content-Type: text/css\r\n");
-	
-	webInterface->DebugShow(wxT("**** cssrequest: ") + filename + wxT("\n"));
-	
-	wxFFile fis(imgs_folder + filename.Right(filename.Length()-1));
-	if (!fis.IsOpened()) {
-		webInterface->DebugShow(wxT("**** cssrequest: file ") + filename + wxT(" does not exists or you have no permisions\n"));
-	} else {
-		size_t file_size = fis.Length();
-		char* css_data = new char[file_size];
-		size_t bytes_read;
-		if ((bytes_read = fis.Read(css_data,file_size)) != file_size) {
-			webInterface->DebugShow(wxT("**** cssrequest: file ") + filename + wxT(" was not fully read\n"));				
-		}
-		// Try to send as much as possible if it failed
-		Data.pSocket->SendContent(unicode2char(contenttype),(void*)css_data,bytes_read);	
-		delete css_data;
-	}
-	
 }
 
 void CWebServer::ProcessURL(ThreadData Data) {
@@ -2432,10 +2407,12 @@ DownloadFilesInfo *DownloadFiles::GetContainerInstance()
 
 DownloadFilesInfo *DownloadFilesInfo::m_This = 0;
 
-DownloadFilesInfo::DownloadFilesInfo(CamulewebApp *webApp) : ItemsContainer<DownloadFiles, xDownloadSort>(webApp)
+DownloadFilesInfo::DownloadFilesInfo(CamulewebApp *webApp, CImageLib *imlib) :
+	ItemsContainer<DownloadFiles, xDownloadSort>(webApp)
 {
 	m_This = this;
-
+	m_ImageLib = imlib;
+	
 	m_SortHeaders[DOWN_SORT_NAME] = wxT("[SortName]");
 	m_SortHeaders[DOWN_SORT_SIZE] = wxT("[SortSize]");
 	m_SortHeaders[DOWN_SORT_COMPLETED] = wxT("[SortCompleted]");
@@ -2452,6 +2429,13 @@ DownloadFilesInfo::DownloadFilesInfo(CamulewebApp *webApp) : ItemsContainer<Down
 	m_SortStrVals[wxT("speed")] = DOWN_SORT_SPEED;
 	
 	m_This = this;
+}
+
+void DownloadFilesInfo::LoadImageParams(wxString &tpl, int width, int height)
+{
+	m_Template = tpl;
+	m_width = width;
+	m_height = height;
 }
 
 bool DownloadFilesInfo::ReQuery()
@@ -2504,6 +2488,10 @@ bool DownloadFilesInfo::ReQuery()
 	// status = "downloading" for parts query
 	for(std::list<DownloadFiles>::iterator i = m_items.begin(); i != m_items.end();i++) {
 		if ( core_files.count(i->file_id) == 0 ) {
+			delete i->m_Image;
+#ifdef WITH_LIBPNG
+			m_ImageLib->RemoveImage(i->m_Image->Name());
+#endif
 			m_files.erase(i->file_id);
 			m_items.erase(i);
 		}
@@ -2535,10 +2523,14 @@ bool DownloadFilesInfo::ReQuery()
 			file.sFileHash = wxString::Format(wxT("%08x"), tag->FileID());
 			file.sED2kLink = tag->FileEd2kLink();
 			file.sPartStatus = tag->PartStatus();
-			
-			
+						
 			file.m_Encoder = PartFileEncoderData( (file.lFileSize + (PARTSIZE - 1)) / PARTSIZE, 10);
 
+			file.m_Image = new CDynImage(file.file_id, m_width, m_height, m_Template, file.m_Encoder);
+			
+#ifdef WITH_LIBPNG
+			m_ImageLib->AddImage(file.m_Image, file.m_Image->Name());
+#endif
 			m_items.push_back(file);
 			m_files[file.file_id] = &(m_items.back());
 
@@ -2627,9 +2619,9 @@ unsigned char *CAnyImage::RequestData(int &size)
 	return m_data;
 }
 
-void CAnyImage::SetHttpType(wxString &ext)
+void CAnyImage::SetHttpType(wxString ext)
 {
-	m_Http = wxT("Content-Type: image/") + ext + wxT("\r\n");
+	m_Http = wxT("Content-Type: ") + ext + wxT("\r\n");
 
 	time_t t = time(NULL);
 	char tmp[255];
@@ -2653,7 +2645,11 @@ CFileImage::CFileImage(const char *name) : CAnyImage(0), m_name(char2unicode(nam
 			printf("CFileImage: file %s have zero length\n", unicode2char(m_name));
 		}
 		wxString ext = wxString(name).Right(3).MakeLower();
-		SetHttpType(ext);
+		if ( ext == wxT("css") ) {
+			SetHttpType(wxT("text/css"));
+		} else {
+			SetHttpType(wxT("image/") + ext);
+		}
 	} else {
 		printf("CFileImage: failed to open %s\n", unicode2char(m_name));
 	}
@@ -2662,12 +2658,12 @@ CFileImage::CFileImage(const char *name) : CAnyImage(0), m_name(char2unicode(nam
 #ifdef WITH_LIBPNG
 
 CDynImage::CDynImage(uint32 id, int width, int height, wxString &tmpl, otherfunctions::PartFileEncoderData &encoder) :
-	CProgressImage(width * height * sizeof(uint32), tmpl), m_Encoder(encoder),
-	m_name(wxString::Format(wxT("%d"), id))
+	CProgressImage(width * height * sizeof(uint32), tmpl, encoder)
 {
 	m_id = id;
 	m_width = width;
 	m_height = height;
+	m_name = wxString::Format(wxT("%d"), id);
 	
 	//
 	// Allocate array of "row pointers" - libpng need it in this form
@@ -2698,7 +2694,7 @@ void CDynImage::png_write_fn(png_structp png_ptr, png_bytep data, png_size_t len
 wxString CDynImage::GetHTML()
 {
 	// template contain %s (name) %d (width)
-	return wxString::Format(m_tmpl, m_name.GetData(), m_width);
+	return wxString::Format(m_template, m_name.GetData(), m_width);
 }
 
 unsigned char *CDynImage::RequestData(int &size)
@@ -2734,7 +2730,7 @@ CImageLib::~CImageLib()
 {
 }
 
-void CImageLib::AddImage(CAnyImage *img, wxString &name)
+void CImageLib::AddImage(CAnyImage *img, const wxString &name)
 {
 	CAnyImage *prev = m_image_map[name];
 	if ( prev ) {
@@ -2743,7 +2739,7 @@ void CImageLib::AddImage(CAnyImage *img, wxString &name)
 	m_image_map[name] = img;
 }
 
-void CImageLib::RemoveImage(wxString &name)
+void CImageLib::RemoveImage(const wxString &name)
 {
 	CAnyImage *prev = m_image_map[name];
 	if ( prev ) {
