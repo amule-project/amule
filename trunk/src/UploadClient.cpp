@@ -159,14 +159,13 @@ uint32 CUpDownClient::GetScore(bool sysvalue, bool isdownloading, bool onlybasev
 		fBaseValue += (float)(::GetTickCount() - m_dwUploadTime > 900000)? 900000:1800000;
 		fBaseValue /= 1000;
 	}
-	//gjn 2003-01-14 added following if statement to get the credit system to work
-	if(theApp.glob_prefs->UseCreditSystem()) {
-		float modif = credits->GetScoreRatio(GetIP());
-		fBaseValue *= modif;
-		if( !m_bySupportSecIdent && modif == 1 ) {
-			fBaseValue *= 0.95f;		
-		}
+	
+	float modif = credits->GetScoreRatio(GetIP());
+	fBaseValue *= modif;
+	if( !m_bySupportSecIdent && modif == 1 ) {
+		fBaseValue *= 0.95f;		
 	}
+	
 	if (!onlybasevalue) {
 		fBaseValue *= (float(filepriority)/10.0f);
 	}

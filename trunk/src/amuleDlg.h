@@ -37,7 +37,6 @@ class CSharedFilesWnd;
 class CSearchDlg;
 class CChatWnd;
 class CStatisticsDlg;
-class PrefsUnifiedDlg;
 class CKadDlg;
 
 class wxTimerEvent;
@@ -110,7 +109,6 @@ public:
 
 	CTransferWnd*		transferwnd;
 	CServerWnd*		serverwnd;
-	PrefsUnifiedDlg*	prefsunifiedwnd;
 	CSharedFilesWnd*	sharedfileswnd;
 	CSearchDlg*		searchwnd;
 	CChatWnd*		chatwnd;
@@ -134,7 +132,6 @@ protected:
 	void OnToolBarButton(wxCommandEvent& ev);
 	void OnAboutButton(wxCommandEvent& ev);
 	void OnPrefButton(wxCommandEvent& ev);
-	void OnBnClickedPrefOk(wxCommandEvent &event);
 
 	void OnMinimize(wxIconizeEvent& evt);
 

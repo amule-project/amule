@@ -60,7 +60,6 @@ bool		CPreferences::s_deadserver;
 wxString	CPreferences::s_incomingdir;
 wxString	CPreferences::s_tempdir;
 bool	CPreferences::s_ICH;
-int8	CPreferences::s_versioncheckdays;
 int16	CPreferences::s_downloadColumnWidths[13];
 CPreferences::Bool	CPreferences::s_downloadColumnHidden[13];
 int16	CPreferences::s_downloadColumnOrder[13];
@@ -98,18 +97,15 @@ bool	CPreferences::s_tableSortAscendingShared;
 bool	CPreferences::s_tableSortAscendingServer;
 bool	CPreferences::s_tableSortAscendingClientList;
 bool	CPreferences::s_scorsystem;
-bool	CPreferences::s_updatenotify;
 bool	CPreferences::s_mintotray;
-bool	CPreferences::s_autotakeed2klinks;
 bool	CPreferences::s_addnewfilespaused;
 bool	CPreferences::s_addserversfromserver;
 bool	CPreferences::s_addserversfromclient;
 int16	CPreferences::s_maxsourceperfile;
 int16	CPreferences::s_trafficOMeterInterval;
 int16	CPreferences::s_statsInterval;
-int		CPreferences::s_maxGraphDownloadRate;
-int		CPreferences::s_maxGraphUploadRate;
-bool	CPreferences::s_beepOnError;
+uint32	CPreferences::s_maxGraphDownloadRate;
+uint32	CPreferences::s_maxGraphUploadRate;
 bool	CPreferences::s_confirmExit;
 bool	CPreferences::s_splashscreen;
 bool	CPreferences::s_filterBadIP;
@@ -120,7 +116,6 @@ uint16	CPreferences::s_languageID;
 bool	CPreferences::s_transferDoubleclick;
 int8	CPreferences::s_iSeeShares;
 int8	CPreferences::s_iToolDelayTime;
-bool	CPreferences::s_bringtoforeground;
 int8	CPreferences::s_splitterbarPosition;
 uint16	CPreferences::s_deadserverretries;
 uint32	CPreferences::s_dwServerKeepAliveTimeoutMins;
@@ -159,17 +154,14 @@ wxString	CPreferences::s_VideoPlayer;
 bool	CPreferences::s_moviePreviewBackup;
 bool	CPreferences::s_indicateratings;
 bool	CPreferences::s_showAllNotCats;
-bool	CPreferences::s_watchclipboard;
 bool	CPreferences::s_filterserverbyip;
 bool	CPreferences::s_bFirstStart;
-bool	CPreferences::s_bCreditSystem;
 bool	CPreferences::s_msgonlyfriends;
 bool	CPreferences::s_msgsecure;
 uint8	CPreferences::s_filterlevel;
 uint8	CPreferences::s_iFileBufferSize;
 uint8	CPreferences::s_iQueueSize;
 uint16	CPreferences::s_maxmsgsessions;
-uint32	CPreferences::s_versioncheckLastAutomatic;
 wxString 	CPreferences::s_datetimeformat;
 wxString	CPreferences::s_sWebPassword;
 wxString	CPreferences::s_sWebLowPassword;
@@ -212,7 +204,6 @@ wxString	CPreferences::s_OSDirectory;
 wxString	CPreferences::s_SkinFile;
 bool	CPreferences::s_UseSkinFile;
 bool	CPreferences::s_FastED2KLinksHandler;
-bool	CPreferences::s_bDlgTabsOnTop;
 
 
 
@@ -295,6 +286,55 @@ CPreferences::CPreferences()
 	printf("Userhash loaded: %s\n", unicode2char(m_userhash.Encode()));
 }
 
+
+void CPreferences::SetMaxUpload(uint16 in)
+{
+	if ( s_maxupload != in ) {
+		s_maxupload = in;
+
+		// Ensure that the ratio is upheld
+		CheckUlDlRatio();
+	}
+}
+
+
+void CPreferences::SetMaxDownload(uint16 in)
+{
+	if ( s_maxdownload != in ) {
+		s_maxdownload = in;
+
+		// Ensure that the ratio is upheld
+		CheckUlDlRatio();
+	}
+}
+
+
+// Here we slightly limit the users' ability to be a bad citizen: for very low upload rates
+// we force a low download rate, so as to discourage this type of leeching.  
+// We're Open Source, and whoever wants it can do his own mod to get around this, but the 
+// packaged product will try to enforce good behavior. 
+//
+// Kry note: of course, any leecher mod will be banned asap.
+void CPreferences::CheckUlDlRatio()
+{
+	// Backwards compatibility
+	if ( s_maxupload == 0xFFFF )	s_maxupload = 0;
+
+	// Backwards compatibility
+	if ( s_maxdownload == 0xFFFF )	s_maxdownload = 0;
+		
+	// Enforce the limits
+	if ( s_maxupload < 4  ) {
+		if ( ( s_maxupload * 3 < s_maxdownload ) || ( s_maxdownload == 0 ) )
+			s_maxdownload = s_maxupload * 3 ;
+	} else if ( s_maxupload < 10  ) {
+		if ( ( s_maxupload * 4 < s_maxdownload ) || ( s_maxdownload == 0 ) )
+			s_maxdownload = s_maxupload * 4;
+	}
+}
+
+
+
 void CPreferences::SetStandartValues()
 {
 	CreateUserHash();
@@ -305,7 +345,6 @@ void CPreferences::SetStandartValues()
 	defaultWPM.rcNormalPosition.right=700;
 	defaultWPM.rcNormalPosition.bottom=500;
 	defaultWPM.showCmd=0;
-	s_versioncheckLastAutomatic=0;
 	Save();
 }
 

@@ -147,14 +147,7 @@ void set_dl_speed(GtkWidget* widget, GdkEventButton* WXUNUSED(event), gpointer W
 {
 	unsigned int temp = (unsigned int)gtk_object_get_data (GTK_OBJECT(widget), "label");
 	
-	if ( temp == 0 ) {
-		theApp.glob_prefs->SetDownloadlimit(UNLIMITED);
-	} else {
-		theApp.glob_prefs->SetDownloadlimit(temp);
-	}
-
-	// The parameter "1" is needed to signify that the perferences has been created at this point
-	PrefsUnifiedDlg::ForceUlDlRateCorrelation( 0 );
+	theApp.glob_prefs->SetMaxDownload(temp);
 }
 
 
@@ -163,14 +156,7 @@ void set_ul_speed(GtkWidget* widget, GdkEventButton* WXUNUSED(event), gpointer W
 {
 	unsigned int temp = (unsigned int)gtk_object_get_data (GTK_OBJECT(widget), "label");
 
-	if ( temp == 0 ) {
-		theApp.glob_prefs->SetUploadlimit(UNLIMITED);
-	} else {
-		theApp.glob_prefs->SetUploadlimit(temp);
-	}
-
-	// The parameter "1" is needed to signify that the perferences has been created at this point
-	PrefsUnifiedDlg::ForceUlDlRateCorrelation( 0 );
+	theApp.glob_prefs->SetMaxUpload(temp);
 }
 
 
@@ -195,7 +181,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 	
 		// Check for upload limits
 		int max_upload = theApp.glob_prefs->GetMaxUpload();
-		if ( max_upload == UNLIMITED || max_upload == 0) {
+		if ( max_upload == UNLIMITED ) {
 			label += wxString::Format( _("UL: None, "));
 		} else {
 			label += wxString::Format( _("UL: %d, "), max_upload);
@@ -203,7 +189,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 	
 		// Check for download limits
 		int max_download = theApp.glob_prefs->GetMaxDownload();
-		if ( max_download == UNLIMITED || max_download == 0) {
+		if ( max_download == UNLIMITED ) {
 			label += wxString::Format( _("DL: None"));
 		} else {
 			label += wxString::Format( _("DL: %d"), max_download);
@@ -398,7 +384,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 	
 		uint32 max_ul_speed = theApp.glob_prefs->GetMaxGraphUploadRate();
 		// If we dont have a frame of reference, then we'll just have to pull some numbers out our asses
-		if ( max_ul_speed == UNLIMITED || max_ul_speed == 0 )
+		if ( max_ul_speed == UNLIMITED )
 			max_ul_speed = 100;
 		else if ( max_ul_speed < 10 )
 			max_ul_speed = 10;
@@ -432,7 +418,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 
 		uint32 max_dl_speed = theApp.glob_prefs->GetMaxGraphDownloadRate();
 		// If we dont have a frame of reference, then we'll just have to pull some numbers out our asses
-		if ( max_dl_speed == UNLIMITED || max_dl_speed == 0 )
+		if ( max_dl_speed == UNLIMITED )
 			max_dl_speed = 100;
 		else if ( max_dl_speed < 10 )
 			max_dl_speed = 10;

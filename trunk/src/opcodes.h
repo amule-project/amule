@@ -146,7 +146,7 @@ const int	BLOCKSIZE =			184320;
 #define	OP_MLDONKEYPROT				0x00
 #define	MET_HEADER				0x0E
 	
-#define	UNLIMITED				0xFFFF
+const unsigned int UNLIMITED	= 	0;
 
 //Proxytypes deadlake
 #define	PROXYTYPE_NOPROXY			0

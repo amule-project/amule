@@ -532,8 +532,8 @@ bool CamuleApp::OnInit()
 	file.Close();
 
 	// Load Preferences
-	PrefsUnifiedDlg::BuildItemList(glob_prefs, theApp.ConfigDir);
-	PrefsUnifiedDlg::LoadAllItems(*(wxConfig::Get()));
+	PrefsUnifiedDlg::BuildItemList( theApp.ConfigDir);
+	PrefsUnifiedDlg::LoadAllItems( wxConfig::Get() );
 	glob_prefs = new CPreferences();
 	
 	// Build the filenames for the two OS files
@@ -717,20 +717,9 @@ bool CamuleApp::OnInit()
 		amuledlg->OnBnConnect(nullEvt);
 	}
 
-	// Calculate maximum download-rate
-	if (glob_prefs->GetMaxDownload() == 0 && glob_prefs->GetMaxUpload() < 10) {
-	    glob_prefs->SetDownloadlimit((glob_prefs->GetMaxUpload()*4));
-	}
-        if (glob_prefs->GetMaxUpload() != 0 && glob_prefs->GetMaxUpload() !=UNLIMITED) {
-		if (glob_prefs->GetMaxUpload() < 4 &&
-		    (glob_prefs->GetMaxUpload()*3 < glob_prefs->GetMaxDownload())) {
-			glob_prefs->SetDownloadlimit((glob_prefs->GetMaxUpload()*3));
-		}
-		if (glob_prefs->GetMaxUpload() < 10 &&
-		    (glob_prefs->GetMaxUpload()*4 < glob_prefs->GetMaxDownload())) {
-			glob_prefs->SetDownloadlimit((glob_prefs->GetMaxUpload()*4)) ;
-		}
-	}
+	// Ensure that the up/down ratio is used
+	CPreferences::CheckUlDlRatio();
+
 
 	// The user may now click on buttons
 	IsReady = true;
