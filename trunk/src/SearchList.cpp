@@ -175,15 +175,17 @@ CSearchFile::CSearchFile(uint32 nSearchID, const uchar* pucFileHash, uint32 uFil
 	m_list_childcount = 0;
 	m_bPreviewPossible = false;
 	
-	for (uint i=0; i<m_aServers.GetCount();i++) {
-		delete m_aServers.GetAt(i);		
-	}
-
 }
 
 CSearchFile::~CSearchFile(){
-	for (int i = 0; i != taglist.GetSize();i++)
+	
+	for (int i = 0; i < m_aServers.GetCount(); i++) {
+		delete m_aServers.GetAt(i);
+	}
+	
+	for (int i = 0; i != taglist.GetSize();i++) {
 		delete taglist[i];
+	}
 	taglist.RemoveAll();
 	taglist.SetSize(0);
 }
