@@ -180,7 +180,7 @@ void CKnownFile::SetFilePath(LPCTSTR pszFilePath)
 bool CKnownFile::CreateFromFile(char* in_directory,char* in_filename, volatile int const * notify){
 	
 	directory = nstrdup(in_directory);
-	m_strFileName = nstrdup(in_filename);
+	m_strFileName = in_filename;
 	
 	// open file
 	CString namebuffer;
@@ -729,6 +729,7 @@ bool CKnownFile::LoadFromFile(CFile* file){
 	bool ret1 = LoadDateFromFile(file);
 	bool ret2 = LoadHashsetFromFile(file,false);
 	bool ret3 = LoadTagsFromFile(file);
+	UpdatePartsInfo();
 	return ret1 && ret2 && ret3 && GetED2KPartHashCount()==GetHashCount();// Final hash-count verification, needs to be done after the tags are loaded.
 	// SLUGFILLER: SafeHash
 }
@@ -1150,12 +1151,10 @@ void CKnownFile::UpdatePartsInfo()
 	}
 
 	uint k_test = 0;
-	printf("File %s \n\tCount= %u\n",GetFileName().c_str(),m_ClientUploadList.GetCount());
 	
 	for (POSITION pos = m_ClientUploadList.GetHeadPosition(); pos != 0; ) {
 		k_test++;
 		CUpDownClient* cur_src = m_ClientUploadList.GetNext(pos);
-		printf("\tIt_%u partcount= %u GetPartCount= %u\n",k_test,partcount);
 		//This could be a partfile that just completed.. Many of these clients will not have this information.
 		if(cur_src->m_abyUpPartStatus && cur_src->GetUpPartCount() == partcount ) {
 			for (uint16 i = 0; i < partcount; i++) {
