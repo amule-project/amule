@@ -324,7 +324,7 @@ void CSearchList::LocalSearchEnd()
 		m_searchpacket = NULL;
 	}
 	if (!IsGlobalSearch()) {
-		m_SearchInProgress = true;
+		m_SearchInProgress = false;
 		// On global search, we must not reset the GUI controls.
 		Notify_SearchLocalEnd();
 	}
