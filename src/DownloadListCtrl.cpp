@@ -2229,8 +2229,9 @@ void CDownloadListCtrl::PreviewFile(CPartFile* file)
 	}
 	command += wxT("\"");
 
-	// wxExecute does not work with mplayer, e.g., it needs a shell.
-	if (!wxShell(command)) {
+	// We can't use wxShell here, it blocks the app
+	// <jacobo221> mplayer users (like me) should use  -T "aMule Preview" -e mplayer -idx
+	if (!wxExecute(command,wxEXEC_ASYNC)) {
 		AddLogLineM( true, _("ERROR: Failed to execute external media-player!") );
 		AddLogLineM( false, wxString( _("Command: ") ) + command );
 	}
