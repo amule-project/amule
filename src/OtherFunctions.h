@@ -28,6 +28,8 @@
 
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/string.h>		// Needed for wxString
+#include <wx/utils.h>		// Needed for wxGetHomeDir()
+#include <wx/filename.h>	// Needed for wxFileName::GetPathSeparator()
 
 #ifdef __WXBASE__
 	#include <time.h>
@@ -435,6 +437,10 @@ inline void MilliSleep(uint32 msecs) {
 			wxUsleep(msecs);
 		#endif
 	#endif
+}
+
+inline wxString GetConfigDir(void) {
+	return wxGetHomeDir() + wxFileName::GetPathSeparator() + wxT(".aMule") + wxFileName::GetPathSeparator();
 }
 
 } // End namespace

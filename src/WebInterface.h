@@ -73,12 +73,14 @@ public:
 	void ShowGreet();
 	void Pre_Shell();
 	int ProcessCommand(int ID);
+	bool GetTemplateDir(const wxString& templateName, wxString& templateDir);
+	bool CheckDirForTemplate(wxString& dir, const wxString& tmpl);
 
 	// other command line switches
 	void	OnInitCmdLine(wxCmdLineParser& amuleweb_parser);
 	bool	OnCmdLineParsed(wxCmdLineParser& parser);
+	wxString m_TemplateDir;
 	wxString m_TemplateFileName;
-	bool	m_HasTemplate;
 	bool	m_UseGzip;
 	wxString m_AdminPass, m_GuestPass;
 	bool	m_AllowGuest;
@@ -86,7 +88,7 @@ public:
 	bool	m_bForcedAdminPassword;
 	bool	m_bForcedAllowGuest;
 	bool	m_bForcedGuestPassword;
-	
+
 #if wxUSE_GUI
 public:
 	void LocalShow(const wxString &s);

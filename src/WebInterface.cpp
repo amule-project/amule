@@ -43,6 +43,7 @@
 
 //-------------------------------------------------------------------
 
+#include <wx/filename.h>	// Needed for wxFileName
 #include "OtherFunctions.h"
 #include "WebServer.h"
 
@@ -232,11 +233,56 @@ void CamulewebApp::Post_Shell() {
 
 #endif
 
+bool CamulewebApp::CheckDirForTemplate(wxString& dir, const wxString& tmpl)
+{
+	DebugShow(wxT("checking whether directory ") + dir + wxT(" exists\n"));
+	if (wxFileName::DirExists(dir)) {
+		dir += wxFileName::GetPathSeparator() + tmpl;
+		DebugShow(wxT("checking whether directory ") + dir + wxT(" exists\n"));
+		if (wxFileName::DirExists(dir)) {
+			wxString tmplPath(dir + wxFileName::GetPathSeparator() + wxT("aMule.tmpl"));
+			DebugShow(wxT("checking whether file ") + tmplPath + wxT(" exists\n"));
+			if (wxFileName::FileExists(tmplPath)) {
+				// dir is already set to the directory component of the template path
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+bool CamulewebApp::GetTemplateDir(const wxString& templateName, wxString& templateDir)
+{
+	wxString dir;
+
+	DebugShow(wxT("looking for template: ") + templateName + wxT("\n"));
+	dir = otherfunctions::GetConfigDir() + wxT("webserver");
+	if (CheckDirForTemplate(dir, templateName)) {
+		templateDir = dir;
+		return true;
+	}
+#ifdef __linux__
+	dir = wxT("/usr/share/amule/webserver");
+	if (CheckDirForTemplate(dir, templateName)) {
+		templateDir = dir;
+		return true;
+	}
+	dir = wxT("/usr/local/share/amule/webserver");
+	if (CheckDirForTemplate(dir, templateName)) {
+		templateDir = dir;
+		return true;
+	}
+#else
+	#warning Put OS dependant default template search paths here
+#endif
+	return false;
+}
+
 void CamulewebApp::OnInitCmdLine(wxCmdLineParser& amuleweb_parser)
 {
 	CaMuleExternalConnector::OnInitCmdLine(amuleweb_parser);
 	amuleweb_parser.AddOption(wxT("t"), wxT("template"), 
-		wxT("loads template from file <template file>"), 
+		wxT("loads template <str>"), 
 		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL);
 		
 	amuleweb_parser.AddSwitch(wxT("z"), wxT("gzip"), 
@@ -256,7 +302,6 @@ void CamulewebApp::OnInitCmdLine(wxCmdLineParser& amuleweb_parser)
 
 bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 {
-	m_HasTemplate = parser.Found(wxT("template"), &m_TemplateFileName);
 	if ( parser.Found(wxT("file-config")) ) {
 		wxFileConfig eMuleIni(
 			wxT("eMule"),
@@ -268,6 +313,17 @@ bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 		wxString AllowGuest = eMuleIni.Read(wxT("/WebServer/UseLowRightsUser"));
 		m_AllowGuest = (AllowGuest == wxT("1")) ? true : false;
 	}
+	wxString templateName;
+	if (!parser.Found(wxT("template"), &templateName)) {
+		templateName = wxT("default");
+	}
+	if (!GetTemplateDir(templateName, m_TemplateDir)) {
+		// no reason to run webserver without a template
+		Show(_("FATAL ERROR: Cannot find template: ") + templateName + wxT("\n"));
+		return false;
+	}
+	m_TemplateFileName = m_TemplateDir + wxFileName::GetPathSeparator() + wxT("aMule.tmpl");
+	DebugShow(wxT("*** Using template: ") + m_TemplateFileName + wxT("\n"));
 	m_bForcedUseGzip = m_UseGzip = parser.Found(wxT("gzip"));
 	m_bForcedAllowGuest = m_AllowGuest = parser.Found(wxT("guest"));
 	// file already contain password in hashed form
@@ -329,6 +385,6 @@ void CamulewebApp::ShowGreet() {
 
 void CamulewebApp::Pre_Shell() {
 	//Creating the web server
-	webserver = new CWebServer(this);
+	webserver = new CWebServer(this, m_TemplateDir);
 	webserver->StartServer();
 }
