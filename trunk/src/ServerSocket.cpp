@@ -64,10 +64,11 @@
 
 //#define DEBUG_SERVER_PROTOCOL
 
-
+#ifndef AMULE_DAEMON
 BEGIN_EVENT_TABLE(CServerSocketHandler, wxEvtHandler)
 	EVT_SOCKET(SERVERSOCKET_HANDLER, CServerSocketHandler::ServerSocketHandler)
 END_EVENT_TABLE()
+#endif
 
 IMPLEMENT_DYNAMIC_CLASS(CServerSocket,CEMSocket)
 
@@ -81,9 +82,11 @@ CServerSocket::CServerSocket(CServerConnect* in_serverconnect)
 	info= wxEmptyString;
 	m_bIsDeleting = false;
 	my_handler = new CServerSocketHandler(this);
+#ifndef AMULE_DAEMON	
 	SetEventHandler(*my_handler,SERVERSOCKET_HANDLER);
 	SetNotify(wxSOCKET_CONNECTION_FLAG|wxSOCKET_INPUT_FLAG|wxSOCKET_OUTPUT_FLAG|wxSOCKET_LOST_FLAG);
 	Notify(TRUE);
+#endif
 	m_dwLastTransmission = 0;	
 }
 
@@ -604,6 +607,27 @@ bool CServerSocket::SendPacket(Packet* packet, bool delpacket, bool controlpacke
 	return CEMSocket::SendPacket(packet, delpacket, controlpacket);
 }
 
+CServerSocketHandler::CServerSocketHandler(CServerSocket* parent)
+#ifdef AMULE_DAEMON
+ : wxThread(wxTHREAD_JOINABLE)
+#endif
+{
+	socket = parent;
+#ifdef AMULE_DAEMON
+	if ( Create() != wxTHREAD_NO_ERROR ) {
+		AddLogLineM(true,wxT("CServerSocketHandler: can not create my thread"));
+	}
+#endif
+}
+
+#ifdef AMULE_DAEMON
+bool CServerSocket::Connect(wxIPV4address &addr, bool wait)
+{
+	bool res = CEMSocket::Connect(addr, wait);
+	my_handler->Run();
+	return res;
+}
+#endif
 
 void CServerSocketHandler::ServerSocketHandler(wxSocketEvent& event) {
 	//printf("Got a server event\n");
@@ -637,3 +661,39 @@ void CServerSocketHandler::ServerSocketHandler(wxSocketEvent& event) {
 	
 	
 }
+
+#ifdef AMULE_DAEMON
+void *CServerSocketHandler::Entry()
+{
+	if ( !socket->WaitOnConnect() ) {
+		printf("CServerSocket: connection attempt failed\n");
+	}
+	if ( !socket->wxSocketClient::IsConnected() ) {
+		printf("CServerSocket: connection refused\n");
+	}
+	wxMutexGuiEnter();
+	socket->OnConnect(wxSOCKET_NOERROR);
+	socket->OnSend(wxSOCKET_NOERROR);
+	wxMutexGuiLeave();
+	while ( !TestDestroy() ) {
+		if ( socket->WaitForLost(0, 0) ) {
+			wxMutexGuiEnter();
+			socket->OnError(socket->LastError());
+			wxMutexGuiLeave();
+
+			printf("CServerSocket: connection closed\n");
+			return 0;
+		}
+		// lfroen: setting timeout to give app a chance gracefully destroy
+		// thread before deleting object
+		if ( socket->WaitForRead(0, 10) ) {
+			wxMutexGuiEnter();
+			socket->OnReceive(wxSOCKET_NOERROR);
+			wxMutexGuiLeave();
+		}
+	}
+	printf("CServerSocket: terminated\n");
+	return 0;
+
+}
+#endif
