@@ -633,15 +633,21 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				;
 		}
 		return true;
+	} catch (CInvalidPacket e) {
+		AddLogLineM(false,wxString(_("Bogus packet received from server - ")) + char2unicode(e.what()));
 	} catch (wxString error) {
 		AddLogLineM(false,_("Unhandled error while processing packet from server - ") + error);
-		SetConnectionState(CS_DISCONNECTED);
-		return false;
 	} catch (...) {
 		AddLogLineM(false, _("Unknown exception while processing packet from server!"));
-		SetConnectionState(CS_DISCONNECTED);
-		return false;
 	}
+
+	// Don't disconnect because of wrong sources.
+	if (opcode==OP_SEARCHRESULT || opcode==OP_FOUNDSOURCES) {
+		return true;
+	}				
+
+	SetConnectionState(CS_DISCONNECTED);
+	return false;	
 }
 
 void CServerSocket::ConnectToServer(CServer* server)
