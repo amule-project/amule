@@ -536,7 +536,8 @@ void CUploadingView::DrawCell( CUpDownClient* client, int column, wxDC* dc, cons
 			if ( client->GetDownloadState() == DS_DOWNLOADING ) {
 				buffer += wxString::Format( wxT("/%.1f"), client->GetKBpsDown() );
 			} 
-				
+
+			buffer += wxT(" ");
 			buffer += _("kB/s");
 		break;
 			
