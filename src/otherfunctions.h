@@ -100,6 +100,49 @@ int CmpAny(const TYPE& ArgA, const TYPE& ArgB)
 wxString GetMuleVersion();
 
 
+
+/**
+ * Helperfunction for accessing a child of the calling widget.
+ *
+ * @param IdOrName The ID or the Name of the widget to find.
+ * @param type The widget-type to cast the found widget to.
+ *
+ * Use this function as a replacement for the following constructs:
+ *  - wxStaticCast( FindWindow( <IdOrName> ), <type> )
+ *  - (<type>*)FindWindow( <IdOrName> )
+ *
+ * It has the advantage of validating the cast in debug builds and being much
+ * shorter than than manually typing wxStaticCast + FindWindow. This mean that
+ * we will be alerted in case of widget changing type, instead of getting just 
+ * getting bad mojo due to casting a pointer to the wrong type.
+ */
+#define CastChild( IdOrName, type )			wxStaticCast( FindWindow( IdOrName ), type )
+
+
+/**
+ * Helperfunction for accessing the child of a any widget by ID.
+ *
+ * @param ID The ID of the widget to find.
+ * @param parent The parent of the widget to find, or NULL to search from the top.
+ * @param type The type to cast the widget to.
+ *
+ * @see CastChild()
+ */
+#define CastByID( ID, parent, type )		wxStaticCast( wxWindow::FindWindowById( (ID), (parent) ), type )
+
+
+/**
+ * Helperfunction for accessing the child of a any widget by Name.
+ *
+ * @param Name The Name of the widget to find.
+ * @param parent The parent of the widget to find, or NULL to search from the top.
+ * @param type The type to cast the widget to.
+ *
+ * @see CastChild()
+ */
+#define CastByName( Name, parent, type )	wxStaticCast( wxWindow::FindWindowByName( (Name), (parent) ), type )
+
+
 // From Gnucleus project [found by Tarod]
 // Converts 'buffer' with length 'bufLen' to a wxString, base 32
 wxString EncodeBase32(const unsigned char* buffer, unsigned int bufLen);
