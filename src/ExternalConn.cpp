@@ -24,11 +24,11 @@
 #include <wx/textctrl.h>	// Needed for wxTextCtrl
 
 #include "ExternalConn.h"	// Interface declarations
+#include "ServerListCtrl.h"	// Needed for CServerListCtrl
 #include "otherfunctions.h"	// Needed for EncodeBase16
 #include "SearchDlg.h"		// Needed for CSearchDlg
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "ED2KLink.h"		// Needed for CED2KLink
-#include "ServerListCtrl.h"	// Needed for CServerListCtrl
 #include "server.h"			// Needed for CServer
 #include "ServerList.h"		// Needed for CServerList
 #include "SharedFileList.h"	// Needed for CSharedFileList
