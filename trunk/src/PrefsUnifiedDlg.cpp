@@ -817,42 +817,42 @@ void PrefsUnifiedDlg::OnScrollBarChange( wxScrollEvent& event )
 	switch ( event.GetId() ) {
 	case IDC_SLIDER:
 		id = IDC_SLIDERINFO;
-		label.Printf( _("Update delay: %d secs"), event.GetPosition() );
+		label = wxString::Format( _("Update delay: %d secs"), event.GetPosition() );
 		break;
 
 	case IDC_SLIDER3:
 		id = IDC_SLIDERINFO3;
-		label.Printf( _("Time for average graph: %d mins"), event.GetPosition() );
+		label = wxString::Format( _("Time for average graph: %d mins"), event.GetPosition() );
 		break;
 
 	case IDC_SLIDER4:
 		id = IDC_SLIDERINFO4;
-		label.Printf( _("Connections Graph Scale: %d"), event.GetPosition() );
+		label = wxString::Format( _("Connections Graph Scale: %d"), event.GetPosition() );
 		break;
 
 	case IDC_SLIDER2:
 		id = IDC_SLIDERINFO2;
-		label.Printf( _("Update delay : %d secs"), event.GetPosition() );
+		label = wxString::Format( _("Update delay : %d secs"), event.GetPosition() );
 		break;
 
 	case IDC_FILEBUFFERSIZE:
 		id = IDC_FILEBUFFERSIZE_STATIC;
-		label.Printf( _("File Buffer Size: %d bytes"), event.GetPosition() * 15000 );
+		label = wxString::Format( _("File Buffer Size: %d bytes"), event.GetPosition() * 15000 );
 		break;
 
 	case IDC_QUEUESIZE:
 		id = IDC_QUEUESIZE_STATIC;
-		label.Printf( _("Upload Queue Size: %d clients"), event.GetPosition() * 100 );
+		label = wxString::Format( _("Upload Queue Size: %d clients"), event.GetPosition() * 100 );
 		break;
 
 	case IDC_SERVERKEEPALIVE:
 		id = IDC_SERVERKEEPALIVE_LABEL;
 
 		if ( event.GetPosition() ) {
-			label.Printf( _("Server connection refresh interval: %d minutes"),
+			label = wxString::Format( _("Server connection refresh interval: %d minutes"),
 				event.GetPosition() );
 		} else {
-			label.Printf( _("Server connection refresh interval: Disabled") );
+			label = wxString::Format( _("Server connection refresh interval: Disabled") );
 		}
 		break;
 

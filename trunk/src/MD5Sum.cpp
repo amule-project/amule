@@ -65,7 +65,7 @@ wxString MD5Sum::Calculate(wxString sSource)
 	for (int i = 0; i < 16; ++i)
 	{
 		wxString sT;
-		sT.Printf(wxT("%02x"), digest[i]);
+		sT = wxString::Format(wxT("%02x"), digest[i]);
 		m_sHash += sT;
 	}
 

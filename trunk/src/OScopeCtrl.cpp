@@ -264,7 +264,7 @@ void COScopeCtrl::RecreateGrid()
 //	dcGrid->SetPen(wxNullPen);
 /*
 	// y/2
-	strTemp.Printf("%.*lf", nYDecimals, pdsTrends[ 0 ].fUpperLimit / 2) ;
+	strTemp = wxString::Format("%.*lf", nYDecimals, pdsTrends[ 0 ].fUpperLimit / 2) ;
 	dcGrid->GetTextExtent(strTemp,&sizX,&sizY);
 	dcGrid->DrawText(strTemp,rectPlot.left-2-sizX,rectPlot.bottom+((rectPlot.top-rectPlot.bottom)/2)-7);
 */

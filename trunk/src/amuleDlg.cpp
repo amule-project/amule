@@ -656,9 +656,9 @@ void CamuleDlg::ShowTransferRate()
 	{
 		float overhead_up = theApp.statistics->GetUpDatarateOverhead();
 		float overhead_down = theApp.statistics->GetDownDatarateOverhead();
-		buffer.Printf(_("Up: %.1f(%.1f) | Down: %.1f(%.1f)"), kBpsUp, overhead_up/1024, kBpsDown, overhead_down/1024);
+		buffer = wxString::Format(_("Up: %.1f(%.1f) | Down: %.1f(%.1f)"), kBpsUp, overhead_up/1024, kBpsDown, overhead_down/1024);
 	} else {
-		buffer.Printf(_("Up: %.1f | Down: %.1f"), kBpsUp, kBpsDown);
+		buffer = wxString::Format(_("Up: %.1f | Down: %.1f"), kBpsUp, kBpsDown);
 	}
 	buffer.Truncate(50); // Max size 50
 

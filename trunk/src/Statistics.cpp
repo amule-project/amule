@@ -991,7 +991,7 @@ void CStatistics::UpdateStatsTree() {
 				UINT verMaj = topver/(100*10*100);
 				UINT verMin = (topver - (verMaj*100*10*100))/(100*10);
 				UINT verUp = (topver - (verMaj*100*10*100) - (verMin*100*10))/(100);
-				cbuffer.Printf(wxT("v%u.%u.%u: %i (%1.1f%%)"), verMaj, verMin, verUp, topcnt, topper*100);							
+				cbuffer = wxString::Format(wxT("v%u.%u.%u: %i (%1.1f%%)"), verMaj, verMin, verUp, topcnt, topper*100);							
 			} else {
 				cbuffer=wxEmptyString;
 			}
@@ -1043,7 +1043,7 @@ void CStatistics::UpdateStatsTree() {
 				UINT verMaj = topver/(100*10*100);
 				UINT verMin = (topver - (verMaj*100*10*100))/(100*10);
 				UINT verUp = (topver - (verMaj*100*10*100) - (verMin*100*10))/(100);
-				cbuffer.Printf(wxT("v%u.%u.%u: %i (%1.1f%%)"), verMaj, verMin, verUp, topcnt, topper*100);
+				cbuffer = wxString::Format(wxT("v%u.%u.%u: %i (%1.1f%%)"), verMaj, verMin, verUp, topcnt, topper*100);
 			} else {
 				cbuffer= wxEmptyString;
 			}
@@ -1094,7 +1094,7 @@ void CStatistics::UpdateStatsTree() {
 				UINT verMaj = topver/(100*10*100);
 				UINT verMin = (topver - (verMaj*100*10*100))/(100*10);
 				UINT verUp = (topver - (verMaj*100*10*100) - (verMin*100*10))/(100);
-				cbuffer.Printf(wxT(" v%u.%u%c: %i (%1.1f%%)"),verMaj, verMin, 'a' + verUp, topcnt, topper*100);
+				cbuffer = wxString::Format(wxT(" v%u.%u%c: %i (%1.1f%%)"),verMaj, verMin, 'a' + verUp, topcnt, topper*100);
 			} else {
 				cbuffer=wxEmptyString;
 			}
@@ -1146,9 +1146,9 @@ void CStatistics::UpdateStatsTree() {
 				uint8 verMin = (topver - (verMaj*100*10*100))/(100*10);
 				uint8 verUp = (topver - (verMaj*100*10*100) - (verMin*100*10))/(100);
 				if ((verMaj == 0) && (verUp == 0)) {
-					cbuffer.Printf(wxT(" v1.x: %i (%1.1f%%)"), topcnt, topper*100);
+					cbuffer = wxString::Format(wxT(" v1.x: %i (%1.1f%%)"), topcnt, topper*100);
 				} else {
-					cbuffer.Printf(wxT(" v%u.%u.%u: %i (%1.1f%%)"),verMaj, verMin, verUp, topcnt, topper*100);
+					cbuffer = wxString::Format(wxT(" v%u.%u.%u: %i (%1.1f%%)"),verMaj, verMin, verUp, topcnt, topper*100);
 				}
 			} else {
 				cbuffer=wxEmptyString;
