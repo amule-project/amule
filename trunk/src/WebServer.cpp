@@ -110,6 +110,68 @@ wxString _SpecialChars(wxString str) {
 	return str;
 }
 
+uint32 GetHigherPrio(int prio, bool autoprio)
+{
+	uint32 upperpriority = PR_LOW;
+	if (autoprio) {
+		upperpriority = PR_AUTO;
+	} else {
+		switch (prio) {
+			case PR_LOW: upperpriority = PR_NORMAL; break;
+			case PR_NORMAL: upperpriority = PR_HIGH; break;
+			case PR_HIGH: upperpriority = PR_VERYHIGH; break;
+			case PR_VERYHIGH: upperpriority = PR_AUTO; break;
+			case PR_VERYLOW: upperpriority = PR_LOW; break;
+			case PR_AUTO: upperpriority = PR_AUTO; break;
+		}
+	}
+	return upperpriority;
+}
+
+wxString Prio2Str(uint32 nFilePriority, bool bFileAutoPriority)
+{
+	wxString sFilePriority;
+	switch (nFilePriority) {
+		case PR_VERYLOW:
+			sFilePriority = wxT("Very Low"); break;
+		case PR_LOW:
+			sFilePriority = wxT("Low"); break;
+		case PR_NORMAL:
+			sFilePriority = wxT("Normal"); break;
+		case PR_HIGH:
+			sFilePriority = wxT("High"); break;
+		case PR_VERYHIGH:
+			sFilePriority = wxT("Very High"); break;
+		case PR_POWERSHARE:
+			sFilePriority = wxT("PowerShare[Release]"); break;
+		default:
+			printf("No value for %d\n", nFilePriority);
+			sFilePriority = wxT("-"); break;
+	}
+	if ( bFileAutoPriority ) {
+		sFilePriority += wxT(" Auto");
+	}
+	return sFilePriority;
+}
+
+uint32 GetLowerPrio(int prio, bool autoprio)
+{
+	uint32 lesserpriority = PR_LOW;
+	if (autoprio) {
+		lesserpriority = PR_VERYHIGH;
+	} else {
+		switch (prio) {
+			case PR_LOW: lesserpriority = PR_VERYLOW; break;
+			case PR_NORMAL: lesserpriority = PR_LOW; break;
+			case PR_HIGH: lesserpriority = PR_NORMAL; break;
+			case PR_VERYHIGH: lesserpriority = PR_HIGH; break;
+			case PR_VERYLOW: lesserpriority = PR_VERYLOW; break;
+			case PR_AUTO: lesserpriority = PR_VERYHIGH; break;
+		}
+	}
+	return lesserpriority;
+}
+
 CWebServer::CWebServer(CamulewebApp *webApp):
 	m_ServersInfo(webApp), m_SharedFilesInfo(webApp), m_DownloadFilesInfo(webApp, &m_ImageLib),
 	m_UploadsInfo(webApp), m_SearchInfo(webApp),
@@ -393,19 +455,6 @@ wxString CWebServer::_LoadTemplate(wxString sAll, wxString sTemplateName) {
 	}
 	return sRet;
 }
-
-
-void CWebServer::_SetSharedFilePriority(wxString hash, uint8 priority) {	
-	int prio = (int) priority;
-	if (prio >= 0 && prio < 5) {
-		webInterface->SendRecvMsg(wxString::Format(wxT("SHAREDFILES SETAUTOUPPRIORITY %s %d"), hash.GetData(), 0));
-		webInterface->SendRecvMsg(wxString::Format(wxT("SHAREDFILES SETUPPRIORITY %s %d"), hash.GetData(), prio));
-	} else if (prio == 5) {
-		webInterface->SendRecvMsg(wxString::Format(wxT("SHAREDFILES SETAUTOUPPRIORITY %s %d"), hash.GetData(), 1));
-		webInterface->SendRecvMsg(wxString::Format(wxT("SHAREDFILES UPDATEAUTOUPPRIORITY %s"), hash.GetData()));
-	}
-}
-
 
 void CWebServer::ProcessImgFileReq(ThreadData Data)
 {
@@ -900,6 +949,7 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	//
 	if (!sOp.IsEmpty() && !sFileHash.IsEmpty()) {
 		CECPacket *file_cmd = 0;
+		CECTag hashtag(EC_TAG_PARTFILE, CMD4Hash(sFileHash));
 		if (sOp == wxT("pause")) {
 			file_cmd = new CECPacket(EC_OP_PARTFILE_PAUSE);
 		} else if (sOp == wxT("resume")) {
@@ -907,12 +957,21 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 		} else if (sOp == wxT("cancel")) {
 			file_cmd = new CECPacket(EC_OP_PARTFILE_DELETE);
 		} else if (sOp == wxT("prioup")) {
-			//file_cmd = new CECPacket(EC_OP_KNOWNFILE_SET_UP_PRIO);
+			DownloadFiles *file = m_DownloadFilesInfo.GetByID(sFileHash);
+			if ( file ) {
+				hashtag.AddTag(CECTag(EC_OP_PARTFILE_PRIO_SET,
+					GetHigherPrio(file->lFilePrio, file->bFileAutoPriority)));
+			}
 		} else if (sOp == wxT("priodown")) {
-			//file_cmd = new CECPacket(EC_OP_KNOWNFILE_SET_UP_PRIO);
+			DownloadFiles *file = m_DownloadFilesInfo.GetByID(sFileHash);
+			if ( file ) {
+				hashtag.AddTag(CECTag(EC_OP_PARTFILE_PRIO_SET,
+					GetLowerPrio(file->lFilePrio, file->bFileAutoPriority)));
+			}
 		}
+		wxASSERT(file_cmd);
 		if ( file_cmd ) {
-			file_cmd->AddTag(CECTag(EC_TAG_PARTFILE, CMD4Hash(sFileHash)));
+			file_cmd->AddTag(hashtag);
 			Send_Discard_V2_Request(file_cmd);
 			delete file_cmd;
 		}
@@ -1079,22 +1138,7 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 		} else
 			HTTPProcessData.Replace(wxT("[6]"), wxT("-"));
 		
-		switch (i->lFilePrio) {
-			case 0: HTTPTemp=_("Low");break;
-			case 10: HTTPTemp=_("Auto [Lo]");break;
-
-			case 1: HTTPTemp=_("Normal");break;
-			case 11: HTTPTemp=_("Auto [No]");break;
-
-			case 2: HTTPTemp=_("High");break;
-			case 12: HTTPTemp=_("Auto [Hi]");break;
-			//shakraw - it seems there is a problem with dl file priorities
-			//i.e. I've got fileprio=3, VERYHIGH, but we can't set this priority 
-			//in dl window. so, why fileprio=3?
-			default: HTTPTemp=wxT("-"); break; 
-		}
-	
-		HTTPProcessData.Replace(wxT("[PrioVal]"), HTTPTemp);
+		HTTPProcessData.Replace(wxT("[PrioVal]"), Prio2Str(i->lFilePrio, i->bFileAutoPriority));
 		HTTPProcessData.Replace(wxT("[7]"), sActions);
 
 		sDownList += HTTPProcessData;
@@ -1262,9 +1306,13 @@ wxString CWebServer::_GetSharedFilesList(ThreadData Data) {
 	
 	//
 	// commands: setpriority, reload
-	if (!_ParseURL(Data, wxT("hash")).IsEmpty() && !_ParseURL(Data, wxT("setpriority")).IsEmpty() && IsSessionAdmin(Data,sSession)) 
-		_SetSharedFilePriority(_ParseURL(Data, wxT("hash")), StrToLong(_ParseURL(Data, wxT("setpriority"))));
-
+	if (!_ParseURL(Data, wxT("hash")).IsEmpty() && !_ParseURL(Data, wxT("setpriority")).IsEmpty() && IsSessionAdmin(Data,sSession)) {
+		CECTag tag(EC_TAG_KNOWNFILE, CMD4Hash(_ParseURL(Data, wxT("hash"))));
+		tag.AddTag(CECTag(EC_TAG_PARTFILE_PRIO, (uint32)StrToLong(_ParseURL(Data, wxT("setpriority")))));
+		CECPacket prio_req(EC_OP_SHARED_SET_PRIO);
+		prio_req.AddTag(tag);
+		Send_Discard_V2_Request(&prio_req);
+	}
 	if (_ParseURL(Data, wxT("reload")) == wxT("true")) {
 		CECPacket req(EC_OP_SHAREDFILES_RELOAD);
 		Send_Discard_V2_Request(&req);
@@ -1321,7 +1369,7 @@ wxString CWebServer::_GetSharedFilesList(ThreadData Data) {
 
 		HTTPProcessData.Replace(wxT("[FileAllTimeAccepts]"), wxString::Format(wxT("%i"), i->nFileAllTimeAccepts));
 
-		HTTPProcessData.Replace(wxT("[Priority]"), i->sFilePriority);
+		HTTPProcessData.Replace(wxT("[Priority]"), Prio2Str(i->nFilePriority, i->bFileAutoPriority));
 
 		HTTPProcessData.Replace(wxT("[FileHash]"), i->sFileHash);
 
@@ -2349,25 +2397,6 @@ void SharedFiles::ProcessUpdate(CEC_SharedFile_Tag *tag)
 	} else {
 		bFileAutoPriority = false;
 	}
-	switch (nFilePriority) {
-		case PR_VERYLOW:
-			sFilePriority = wxT("Very Low"); break;
-		case PR_LOW:
-			sFilePriority = wxT("Low"); break;
-		case PR_NORMAL:
-			sFilePriority = wxT("Normal"); break;
-		case PR_HIGH:
-			sFilePriority = wxT("High"); break;
-		case PR_VERYHIGH:
-			sFilePriority = wxT("Very High"); break;
-		case PR_POWERSHARE:
-			sFilePriority = wxT("PowerShare[Release]"); break;
-		default:
-			sFilePriority = wxT("-"); break;
-	}
-	if ( bFileAutoPriority ) {
-		sFilePriority += wxT(" Auto");
-	}
 }
 
 SharedFilesInfo *SharedFiles::GetContainerInstance()
@@ -2481,6 +2510,12 @@ DownloadFiles::DownloadFiles(CEC_PartFile_Tag *tag)
 void DownloadFiles::ProcessUpdate(CEC_PartFile_Tag *tag)
 {
 	lFilePrio = tag->Prio();
+	if ( lFilePrio >= 10 ) {
+		lFilePrio -= 10;
+		bFileAutoPriority = true;
+	} else {
+		bFileAutoPriority = false;
+	}
 	nFileStatus = tag->FileStatus();
 	sFileStatus = tag->GetFileStatusString();
 	lSourceCount = tag->SourceCount();

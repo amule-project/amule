@@ -140,6 +140,7 @@ class DownloadFiles {
 		long		lSourceCountA4AF;
 		double		fCompleted;
 		long		lFilePrio;
+		bool		bFileAutoPriority;
 		wxString	sFileHash;
 		wxString	sED2kLink;
 		wxString	sFileInfo;
@@ -168,7 +169,6 @@ class SharedFiles {
 		uint16		nFileAccepts;
 		uint32		nFileAllTimeAccepts;
 		uint8		nFilePriority;
-		wxString	sFilePriority;
 		bool		bFileAutoPriority;
 		wxString 	sFileHash;
 		wxString	sED2kLink;
@@ -800,7 +800,6 @@ class CWebServer {
 		bool	_GetFileHash(wxString sHash, unsigned char *FileHash);
 		wxString	_GetPlainResString(UINT nID, bool noquote = false);
 		int	_GzipCompress(Bytef *dest, uLongf *destLen, const Bytef *source, uLong sourceLen, int level);
-		void	_SetSharedFilePriority(wxString hash, uint8 priority);
 		wxString	_LoadTemplate(wxString sAll, wxString sTemplateName);
 		Session	GetSessionByID(ThreadData Data,long sessionID);
 		bool	IsSessionAdmin(ThreadData Data,wxString SsessionID);
