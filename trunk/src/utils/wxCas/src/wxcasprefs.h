@@ -56,7 +56,7 @@ class WxCasPrefs:public wxDialog
 
     wxStaticBox *m_autoStatImgSBox;
     wxStaticBoxSizer *m_autoStatImgSBoxSizer;
-    wxRadioButton *m_autoStatImgRadio;
+    wxCheckBox *m_autoStatImgCheck;
     wxBoxSizer *m_autoStatImgHBoxSizer;
     wxTextCtrl *m_autoStatImgTextCtrl;
     wxButton *m_autoStatImgButton;

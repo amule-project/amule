@@ -39,6 +39,7 @@
 #endif
 
 #include <wx/image.h>
+#include <wx/config.h>
 
 #include "wxcas.h"
 
@@ -65,9 +66,10 @@ WxCas::OnInit ()
   SetPrintMode (wxPRINT_POSTSCRIPT);
 #endif
 
-  m_config = new wxConfig(GetAppName());
-  m_config->Get(TRUE);
+  // Prefs
+  wxConfigBase::Get();
 
+  // Main Frame
   m_frame = new WxCasFrame (_("wxCas, aMule Online Statistics"));
 
   // Show all
@@ -79,8 +81,7 @@ WxCas::OnInit ()
 int
 WxCas::OnExit()
 {
-  m_config->Set(NULL);
-  delete m_config;
+  delete wxConfigBase::Set((wxConfigBase *)NULL);
   return 0;
 }
 
@@ -90,8 +91,3 @@ WxCas::GetMainFrame () const
     return m_frame;
   }
 
-wxConfig *
-WxCas::GetConfig () const
-  {
-    return m_config;
-  }
