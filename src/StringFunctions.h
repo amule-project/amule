@@ -63,9 +63,11 @@ static wxCSConv aMuleConv(wxT("iso8859-1"));
 	inline const wxCharBuffer char2unicode(const char* x) { return x; };
 #endif
 
-inline const char *aMuleConvToUTF8(const wxString &x) { 
-	return wxConvUTF8.cWC2MB(wxString(x).wc_str(aMuleConv));
-};
+// Reverted to #define, the returned pointer pointed to local (already unavailable) data
+#define aMuleConvToUTF8(x)	(const char *)wxConvUTF8.cWC2MB(wxString(x).wc_str(aMuleConv))
+//inline const char *aMuleConvToUTF8(const wxString &x) { 
+//	return wxConvUTF8.cWC2MB(wxString(x).wc_str(aMuleConv));
+//};
 
 // Replaces "&" with "&&" in 'in' for use with text-labels
 inline wxString MakeStringEscaped(wxString in) {
