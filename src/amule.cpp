@@ -78,7 +78,6 @@
 #include <wx/ipc.h>
 #include <wx/intl.h>			// Needed for i18n
 #include <wx/mimetype.h>		// For launching default browser
-#include <wx/textfile.h>		// Needed for wxTextFile
 #include <wx/cmdline.h>			// Needed for wxCmdLineParser
 #include <wx/tokenzr.h>			// Needed for wxStringTokenizer
 #include <wx/url.h>
@@ -229,6 +228,10 @@ CamuleApp::~CamuleApp()
 	if (m_app_state!=APP_STATE_STARTING) {
 		printf("aMule shutdown: Terminating core.\n");
 	}
+	
+	// Close OS files.
+	amulesig_out.Close();
+	emulesig_out.Close();
 	
 	// Delete associated objects
 	if (serverlist) {
@@ -898,154 +901,167 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 		return;
 	}
 
-	// Open both files for writing
-	CFile amulesig_out, emulesig_out;
-	if (!emulesig_out.Open(emulesig_path, CFile::write)) {
-		AddLogLineM(true, wxString(_("Failed to save"))+_(" OnlineSig File"));
+	// Open both files if needed
+	if (!emulesig_out.IsOpened()) {
+		if (!emulesig_out.Open(emulesig_path)) {
+			if (!emulesig_out.Create(emulesig_path)) {
+				AddLogLineM(true, wxString(_("Failed to save"))+_(" OnlineSig File"));
+				// Will never try again.
+				amulesig_path.Clear();
+				emulesig_path.Clear();
+				return;
+			}
+		}
 	}
-	if (!amulesig_out.Open(amulesig_path, CFile::write)) {
-		AddLogLineM(true, wxString(_("Failed to save"))+_(" aMule OnlineSig File"));
+	if (!amulesig_out.IsOpened()) {
+		if (!amulesig_out.Open(amulesig_path)) {
+			if (!amulesig_out.Create(amulesig_path)) {
+				AddLogLineM(true, wxString(_("Failed to save"))+_(" aMule OnlineSig File"));
+				// Will never try again.
+				amulesig_path.Clear();
+				emulesig_path.Clear();
+				return;
+			}
+		}
 	}
 
-	char buffer[256];
+	emulesig_out.Clear();
+	amulesig_out.Clear();
+	
+	wxString emulesig_string;
+	
 	if (zero) {
-		sprintf(buffer, "0\xA");
-		strcat(buffer, "0.0|0.0|0");
-		emulesig_out.Write(buffer, strlen(buffer));
-		amulesig_out.Write("0\n0\n0\n0\n0\n0.0\n0.0\n0\n0\n", 22);
+		
+		emulesig_string = wxT("0\xA0.0|0.0|0");
+		amulesig_out.AddLine(wxT("0\n0\n0\n0\n0\n0.0\n0.0\n0\n0"));
+		
 	} else {
 		if (serverconnect->IsConnected()) {
+
 			// We are online
-			emulesig_out.Write("1",1);
-			emulesig_out.Write("|",1);
-			// Name of server (Do not use GetRealName()!)
-			emulesig_out.Write(unicode2char(serverconnect->GetCurrentServer()->GetListName()),strlen(unicode2char(serverconnect->GetCurrentServer()->GetListName())));
-			emulesig_out.Write("|",1);
-			// IP and port of the server
-			emulesig_out.Write(unicode2char(serverconnect->GetCurrentServer()->GetFullIP()),strlen(unicode2char(serverconnect->GetCurrentServer()->GetFullIP())));
-			emulesig_out.Write("|",1);
-			sprintf(buffer,"%d",serverconnect->GetCurrentServer()->GetPort());
-			emulesig_out.Write(buffer,strlen(buffer));
+			emulesig_string =
+				// Connected
+				wxT("1|") 
+				//Server name
+				+ serverconnect->GetCurrentServer()->GetListName() 
+				+ wxT("|")
+				// IP and port of the server
+				+ serverconnect->GetCurrentServer()->GetFullIP()
+				+ wxT("|")
+				+ wxString::Format(wxT("%d"),serverconnect->GetCurrentServer()->GetPort());
+				
 
 			// Now for amule sig
-			amulesig_out.Write("1",1);
-			amulesig_out.Write("\n",1);
-			amulesig_out.Write(unicode2char(serverconnect->GetCurrentServer()->GetListName()),strlen(unicode2char(serverconnect->GetCurrentServer()->GetListName())));
-			amulesig_out.Write("\n",1);
-			amulesig_out.Write(unicode2char(serverconnect->GetCurrentServer()->GetFullIP()),strlen(unicode2char(serverconnect->GetCurrentServer()->GetFullIP())));
-			amulesig_out.Write("\n",1);
-			amulesig_out.Write(buffer,strlen(buffer));
-			amulesig_out.Write("\n",1);
+			
+			// Connected. State 1, full info
+			
+			amulesig_out.AddLine(wxT("1"));
+			// Server Name
+			amulesig_out.AddLine(serverconnect->GetCurrentServer()->GetListName());
+			// Server IP
+			amulesig_out.AddLine(serverconnect->GetCurrentServer()->GetFullIP());
+			// Server Port
+			amulesig_out.AddLine(wxString::Format(wxT("%d"),serverconnect->GetCurrentServer()->GetPort()));
 
-			// Low- or High-ID (only in amule sig)
 			if (serverconnect->IsLowID()) {
-				amulesig_out.Write("L\n",2);
+				amulesig_out.AddLine(wxT("L"));
 			} else {
-				amulesig_out.Write("H\n",2);
+				amulesig_out.AddLine(wxT("H"));
 			}
+			
 		} else if (serverconnect->IsConnecting()) {
-			emulesig_out.Write("0",1);    // shouldn't be modified, to mantain eMule compatibility
-
-                	amulesig_out.Write("2",1);
-                	amulesig_out.Write("\n",1);
-                	amulesig_out.Write("0",1);
-                	amulesig_out.Write("\n",1);
-                	amulesig_out.Write("0",1);
-                	amulesig_out.Write("\n",1);
-                	amulesig_out.Write("0",1);
-                	amulesig_out.Write("\n",1);
-                	amulesig_out.Write("0\n",2);
-		} else {	// Not connected to a server
-			emulesig_out.Write("0",1);
-			amulesig_out.Write("0\n0\n0\n0\n0\n",10);
+			
+			emulesig_string = wxT("0");
+			
+			// Connecting. State 2, No info.
+			
+			amulesig_out.AddLine(wxT("2\n0\n0\n0\n0"));
+			
+		} else {	
+			
+			// Not connected to a server
+			
+			emulesig_string = wxT("0");
+			
+			// Not connected, state 0, no info
+			amulesig_out.AddLine(wxT("0\n0\n0\n0\n0"));
 		}
+		
+		emulesig_string += wxT("\xA");
+		/*
 		emulesig_out.Write("\xA",1);
+		*/
 
+		wxString temp;
+		
 		// Datarate for downloads
-		sprintf(buffer,"%.1f",downloadqueue->GetKBps());
-		emulesig_out.Write(buffer,strlen(buffer));
-		emulesig_out.Write("|",1);
-		amulesig_out.Write(buffer,strlen(buffer));
-		amulesig_out.Write("\n",1);
+		temp = wxString::Format(wxT("%.1f"),downloadqueue->GetKBps());
+		
+		emulesig_string += temp + wxT("|");
+		amulesig_out.AddLine(temp);
 
 		// Datarate for uploads
-		sprintf(buffer,"%.1f",uploadqueue->GetKBps());
-		emulesig_out.Write(buffer,strlen(buffer));
-		emulesig_out.Write("|",1);
-		amulesig_out.Write(buffer,strlen(buffer));
-		amulesig_out.Write("\n",1);
+		temp = wxString::Format(wxT("%.1f"),uploadqueue->GetKBps());
+		
+		emulesig_string += temp + wxT("|");		
+		amulesig_out.AddLine(temp);
 
 		// Number of users waiting for upload
-		sprintf(buffer,"%d",uploadqueue->GetWaitingUserCount());
-		emulesig_out.Write(buffer,strlen(buffer));
-		amulesig_out.Write(buffer,strlen(buffer));
-		amulesig_out.Write("\n",1);
-
-		// Number of shared files
-		sprintf(buffer,"%d", sharedfiles->GetCount());
-		amulesig_out.Write(buffer, strlen(buffer));
-		amulesig_out.Write("\n",1);
+		temp = wxString::Format(wxT("%d"),uploadqueue->GetWaitingUserCount());
+		
+		emulesig_string += temp; 
+		amulesig_out.AddLine(temp);
+		
+		// Number of shared files (not on eMule)
+		amulesig_out.AddLine(wxString::Format(wxT("%d"), sharedfiles->GetCount()));
+		
 	}	/* if (!zero) */
+	
+	// eMule signature finished here. Write the line to the wxTextFile.
+	emulesig_out.AddLine(emulesig_string);
 
+	// Now for aMule signature extras
+	
 	// Nick on the network
-	sprintf(buffer, "%s", unicode2char( thePrefs::GetUserNick()));
-	amulesig_out.Write(buffer, strlen(buffer));
-	amulesig_out.Write("\n",1);
+	amulesig_out.AddLine(thePrefs::GetUserNick());
 
 	// Total received in bytes
-	sprintf(buffer, "%llu", (long long unsigned int)(theApp.statistics->GetSessionReceivedBytes()+ thePrefs::GetTotalDownloaded()));
-	amulesig_out.Write(buffer, strlen(buffer));
-	amulesig_out.Write("\n",1);
+	amulesig_out.AddLine(wxString::Format(wxT("%llu"), (long long unsigned int)(theApp.statistics->GetSessionReceivedBytes()+ thePrefs::GetTotalDownloaded())));
 
 	// Total sent in bytes
-	sprintf(buffer, "%llu", (long long unsigned int)(theApp.statistics->GetSessionSentBytes()+ thePrefs::GetTotalUploaded()));
-	amulesig_out.Write(buffer, strlen(buffer));
-	amulesig_out.Write("\n",1);
+	amulesig_out.AddLine(wxString::Format(wxT("%llu"), (long long unsigned int)(theApp.statistics->GetSessionSentBytes()+ thePrefs::GetTotalUploaded())));
 
 	// amule version
 #ifdef CVSDATE
-	sprintf(buffer, "%s %s", VERSION, CVSDATE);
+	amulesig_out.AddLine(wxT(VERSION) + wxString(" ") + wxT(CVSDATE));
 #else
-    strcpy(buffer, VERSION);
+	amulesig_out.AddLine(wxT(VERSION));
 #endif
-	amulesig_out.Write(buffer, strlen(buffer));
-	amulesig_out.Write("\n",1);
 
         // Total received bytes in session
 	if (zero) {
-		amulesig_out.Write("0",1);
-		amulesig_out.Write("\n",1);
+		amulesig_out.AddLine(wxT("0"));
 	} else {
-		sprintf(buffer, "%llu", (long long unsigned int)theApp.statistics->GetSessionReceivedBytes());
-        	amulesig_out.Write(buffer, strlen(buffer));
-        	amulesig_out.Write("\n",1);
+		amulesig_out.AddLine(wxString::Format(wxT("%llu"), (long long unsigned int)theApp.statistics->GetSessionReceivedBytes()));
 	}
 
         // Total sent bytes in session
 	if (zero) {
-		amulesig_out.Write("0",1);
-		amulesig_out.Write("\n",1);
+		amulesig_out.AddLine(wxT("0"));
 	} else {
-		sprintf(buffer, "%llu", (long long unsigned int)theApp.statistics->GetSessionSentBytes());
-        	amulesig_out.Write(buffer, strlen(buffer));
-        	amulesig_out.Write("\n",1);
+		amulesig_out.AddLine(wxString::Format(wxT("%llu"), (long long unsigned int)theApp.statistics->GetSessionSentBytes()));
 	}
 
 	// Uptime
 	if (zero) {
-		sprintf(buffer,"%u",0);
-		amulesig_out.Write(buffer, strlen(buffer));
-		amulesig_out.Write("\n",1);
+		amulesig_out.AddLine(wxT("0"));
 	} else {
-		//sprintf(buffer,"%s",unicode2char(CastSecondsToHM(GetUptimeSecs())));
-		sprintf(buffer,"%u",statistics->GetUptimeSecs());
-		amulesig_out.Write(buffer, strlen(buffer));
-		amulesig_out.Write("\n",1);
+		amulesig_out.AddLine(wxString::Format(wxT("%u"),statistics->GetUptimeSecs()));
 	}
-
-	// Close the files
-	emulesig_out.Close();
-	amulesig_out.Close();
+	
+	// Flush the files
+	emulesig_out.Write();
+	amulesig_out.Write();
 
 } //End Added By Bouc7
 

@@ -29,6 +29,7 @@
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/app.h>			// Needed for wxApp
 #include <wx/intl.h>		// Needed for wxLocale
+#include <wx/textfile.h>		// Needed for wxTextFile
 #include <wx/file.h>
 #include <wx/string.h>
 
@@ -282,6 +283,8 @@ protected:
 
 	APPState m_app_state;	
 
+	wxTextFile amulesig_out;
+	wxTextFile emulesig_out;
 	wxString emulesig_path;
 	wxString amulesig_path;
 	
