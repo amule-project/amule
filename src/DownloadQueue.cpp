@@ -561,8 +561,7 @@ void CDownloadQueue::CheckAndAddKnownSource(CPartFile* sender,CUpDownClient* sou
 /* Creteil importing new method from eMule 0.30c */
 bool CDownloadQueue::RemoveSource(CUpDownClient* toremove, bool	WXUNUSED(updatewindow), bool bDoStatsUpdate)
 {
-	toremove->m_OtherRequests_list.RemoveAll();
-	toremove->m_OtherNoNeeded_list.RemoveAll();
+	toremove->DeleteAllFileRequests();
 	
 	bool removed = false;
 	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
