@@ -328,8 +328,12 @@ struct Preferences_Struct{
 	
 	char		OSDirectory[512];
 	
-	bool	FastED2KLinksHandler;	// Madcat - Toggle Fast ED2K Links Handler
-	bool	bDlgTabsOnTop;			// Creteil: dlg aesthetics
+	char		SkinFile[1024];
+	
+	bool		UseSkinFile;
+	
+	bool		FastED2KLinksHandler;	// Madcat - Toggle Fast ED2K Links Handler
+	bool		bDlgTabsOnTop;			// Creteil: dlg aesthetics
 };
 #pragma pack()
 
@@ -348,60 +352,60 @@ public:
 	bool	Save();
 	void	SaveCats();
 
-	int8	Score()				{return prefs->scorsystem;}
-	bool	Reconnect()			{return prefs->reconnect;}
-	int8	DeadServer()			{return prefs->deadserver;}
-	char*	GetUserNick()			{return prefs->nick;}
-	void	SetUploadlimit(uint16 in)	{ prefs->maxupload=in;}
-	void	SetDownloadlimit(uint16 in)	{ prefs->maxdownload=in;}
+	int8	Score() const {return prefs->scorsystem;}
+	bool	Reconnect() const {return prefs->reconnect;}
+	int8	DeadServer() const {return prefs->deadserver;}
+	char*	GetUserNick() const {return prefs->nick;}
+	void	SetUploadlimit(uint16 in) { prefs->maxupload=in;}
+	void	SetDownloadlimit(uint16 in) { prefs->maxdownload=in;}
 
-	uint16	GetPort()			{return prefs->port;}
-	uint16	GetUDPPort()			{return prefs->udpport;}
-	char*	GetIncomingDir()		{return prefs->incomingdir;}
-	char*	GetTempDir()			{return prefs->tempdir;}
-	uchar*	GetUserHash()			{return (uchar*)userhash;}
-	uint16	GetMaxUpload()			{return	prefs->maxupload;}
-	uint16	GetSlotAllocation()		{return	prefs->slotallocation;}
-	bool	IsICHEnabled()			{return prefs->ICH;}
-	bool	AutoServerlist()		{return prefs->autoserverlist;}
-	bool	UpdateNotify()			{return prefs->updatenotify;}
-	bool	DoMinToTray()			{return prefs->mintotray;}
-	bool	DoAutoConnect() 		{return prefs->autoconnect;}
-	void	SetAutoConnect( bool inautoconnect)	{prefs->autoconnect = inautoconnect;}
-	bool	AddServersFromServer()		{return prefs->addserversfromserver;}
-	bool	AddServersFromClient()		{return prefs->addserversfromclient;}
+	uint16	GetPort() const {return prefs->port;}
+	uint16	GetUDPPort() const {return prefs->udpport;}
+	char*	GetIncomingDir() const {return prefs->incomingdir;}
+	char*	GetTempDir() const {return prefs->tempdir;}
+	uchar*	GetUserHash() const {return (uchar*)userhash;}
+	uint16	GetMaxUpload() const {return	prefs->maxupload;}
+	uint16	GetSlotAllocation() const {return	prefs->slotallocation;}
+	bool	IsICHEnabled() const {return prefs->ICH;}
+	bool	AutoServerlist() const {return prefs->autoserverlist;}
+	bool	UpdateNotify() const {return prefs->updatenotify;}
+	bool	DoMinToTray() const {return prefs->mintotray;}
+	bool	DoAutoConnect() const {return prefs->autoconnect;}
+	void	SetAutoConnect( bool inautoconnect) {prefs->autoconnect = inautoconnect;}
+	bool	AddServersFromServer() const {return prefs->addserversfromserver;}
+	bool	AddServersFromClient() const {return prefs->addserversfromclient;}
 //	char*	GetLRUServermetURL()		{return prefs->m_szLRUServermetURL;}
 //	void	SetLRUServermetURL(const char* pszURL) {snprintf(prefs->m_szLRUServermetURL,sizeof prefs->m_szLRUServermetURL,"%s",pszURL);}
 //	int8*	GetMinTrayPTR() 		{return &prefs->mintotray;}
-	uint16	GetTrafficOMeterInterval() 	{ return prefs->trafficOMeterInterval;}
+	uint16	GetTrafficOMeterInterval() const { return prefs->trafficOMeterInterval;}
 	void	SetTrafficOMeterInterval(int16 in) { prefs->trafficOMeterInterval=in;}
-	uint16	GetStatsInterval() 		{ return prefs->statsInterval;}
-	void	SetStatsInterval(int16 in) 	{ prefs->statsInterval=in;}
-	void	Add2TotalDownloaded(uint64 in) 	{prefs->totalDownloadedBytes+=in;}
-	void	Add2TotalUploaded(uint64 in) 	{prefs->totalUploadedBytes+=in;}
-	uint64  GetTotalDownloaded()		{return prefs->totalDownloadedBytes;}
-	uint64	GetTotalUploaded()		{return prefs->totalUploadedBytes;}
+	uint16	GetStatsInterval() const { return prefs->statsInterval;}
+	void	SetStatsInterval(int16 in) { prefs->statsInterval=in;}
+	void	Add2TotalDownloaded(uint64 in) {prefs->totalDownloadedBytes+=in;}
+	void	Add2TotalUploaded(uint64 in) {prefs->totalUploadedBytes+=in;}
+	uint64  GetTotalDownloaded() const {return prefs->totalDownloadedBytes;}
+	uint64	GetTotalUploaded() const {return prefs->totalUploadedBytes;}
 //	bool	IsErrorBeepEnabled()		{return prefs->beepOnError;}
-	bool	IsConfirmExitEnabled()		{return prefs->confirmExit;}
-	bool	UseSplashScreen()		{return prefs->splashscreen;}
-	bool	FilterBadIPs()			{return prefs->filterBadIP;}
-	bool	IsOnlineSignatureEnabled()  	{return prefs->onlineSig;}
-	int32	GetMaxGraphUploadRate()		{return prefs->maxGraphUploadRate;}
-	int32	GetMaxGraphDownloadRate()	{return prefs->maxGraphDownloadRate;}
-	void	SetMaxGraphUploadRate(int32 in)	{prefs->maxGraphUploadRate=in;}
-	void	SetMaxGraphDownloadRate(int32 in)	{prefs->maxGraphDownloadRate=in;}
+	bool	IsConfirmExitEnabled() const {return prefs->confirmExit;}
+	bool	UseSplashScreen() const {return prefs->splashscreen;}
+	bool	FilterBadIPs() const {return prefs->filterBadIP;}
+	bool	IsOnlineSignatureEnabled() const {return prefs->onlineSig;}
+	int32	GetMaxGraphUploadRate() const {return prefs->maxGraphUploadRate;}
+	int32	GetMaxGraphDownloadRate() const {return prefs->maxGraphDownloadRate;}
+	void	SetMaxGraphUploadRate(int32 in) {prefs->maxGraphUploadRate=in;}
+	void	SetMaxGraphDownloadRate(int32 in) {prefs->maxGraphDownloadRate=in;}
 
 	uint16	GetMaxDownload();
-	uint16	GetMaxConnections()		{return	prefs->maxconnections;}
-	uint16	GetMaxSourcePerFile()		{return prefs->maxsourceperfile;}
-	uint16	GetMaxSourcePerFileSoft()	{uint16 temp = (uint16)(prefs->maxsourceperfile*0.9);
+	uint16	GetMaxConnections() const {return	prefs->maxconnections;}
+	uint16	GetMaxSourcePerFile() const {return prefs->maxsourceperfile;}
+	uint16	GetMaxSourcePerFileSoft() const {uint16 temp = (uint16)(prefs->maxsourceperfile*0.9);
 						if( temp > 1000 ) return 1000;
                                             	return temp;}
-	uint16	GetMaxSourcePerFileUDP()	{uint16 temp = (uint16)(prefs->maxsourceperfile*0.75);
+	uint16	GetMaxSourcePerFileUDP() const {uint16 temp = (uint16)(prefs->maxsourceperfile*0.75);
 						if( temp > 100 ) return 100;
                                             	return temp;}
-	uint16	GetDeadserverRetries()		{return prefs->deadserverretries;}
-	DWORD	GetServerKeepAliveTimeout()	{return prefs->m_dwServerKeepAliveTimeoutMins*60000;}
+	uint16	GetDeadserverRetries() const {return prefs->deadserverretries;}
+	DWORD	GetServerKeepAliveTimeout() const {return prefs->m_dwServerKeepAliveTimeoutMins*60000;}
 	
 	int32     GetColumnWidth (Table t, int index) const;
 	bool    GetColumnHidden(Table t, int index) const;
@@ -416,19 +420,19 @@ public:
 	void	SetColumnSortItem 	(Table t, int32 sortItem);
 	void	SetColumnSortAscending 	(Table t, bool sortAscending);
 
-	WORD	GetLanguageID()			{return prefs->languageID;}
-	void	SetLanguageID(WORD new_id)			{prefs->languageID = new_id;}	
+	WORD	GetLanguageID() const {return prefs->languageID;}
+	void	SetLanguageID(WORD new_id) {prefs->languageID = new_id;}	
 //	int8	IsDoubleClickEnabled()		{return prefs->transferDoubleclick;}
-	int8	CanSeeShares(void)		{return prefs->m_iSeeShares;}
+	int8	CanSeeShares(void) const {return prefs->m_iSeeShares;}
 //	int8	GetToolTipDelay(void)		{return prefs->m_iToolDelayTime;}
 //	int8	IsBringToFront()		{return prefs->bringtoforeground;}
 
 //	int8    GetSplitterbarPosition()	{return prefs->splitterbarPosition;}
 //	void	SetSplitterbarPosition(int8 pos) {prefs->splitterbarPosition=pos;}
-	int8	GetStatsMax()			{return prefs->statsMax;}
-	int8	UseFlatBar()			{return (prefs->depth3D==0);}
-	int8	GetStatsAverageMinutes()	{return prefs->statsAverageMinutes;}
-	void	SetStatsAverageMinutes(int8 in)	{prefs->statsAverageMinutes=in;}
+	int8	GetStatsMax() const {return prefs->statsMax;}
+	int8	UseFlatBar() const {return (prefs->depth3D==0);}
+	int8	GetStatsAverageMinutes() const {return prefs->statsAverageMinutes;}
+	void	SetStatsAverageMinutes(int8 in) {prefs->statsAverageMinutes=in;}
 
 //	bool    GetUseDownloadNotifier()	{return prefs->useDownloadNotifier;}
 //	bool    GetUseChatNotifier()	 	{return prefs->useChatNotifier;}
@@ -436,66 +440,66 @@ public:
 //	bool    GetUseSoundInNotifier()  	{return prefs->useSoundInNotifier;}
 //	bool	GetSendEmailNotifier()		{return prefs->sendEmailNotifier;}
 //	bool    GetNotifierPopsEveryChatMsg() 	{return prefs->notifierPopsEveryChatMsg;}
-	bool	GetNotifierPopOnImportantError(){return prefs->notifierImportantError;}
+	bool	GetNotifierPopOnImportantError() const {return prefs->notifierImportantError;}
 //	bool	GetNotifierPopOnNewVersion()	{return prefs->notifierNewVersion;}
 //	char*   GetNotifierWavSoundPath() 	{return prefs->notifierSoundFilePath;}
 
 //	WORD	GetWindowsVersion();
-	bool	GetStartMinimized()			{return prefs->startMinimized;}
-	void	SetStartMinimized( bool instartMinimized){prefs->startMinimized = instartMinimized;}
-	bool	GetSmartIdCheck()			{return prefs->smartidcheck;}
-	void	SetSmartIdCheck( bool in_smartidcheck )	{prefs->smartidcheck = in_smartidcheck;}
-	uint8	GetSmartIdState()			{return prefs->smartidstate;}
-	void	SetSmartIdState( uint8 in_smartidstate ){prefs->smartidstate = in_smartidstate;}
-	bool	GetVerbose()				{return prefs->m_bVerbose;}
-	bool	GetPreviewPrio()			{return prefs->m_bpreviewprio;}
-	void	SetPreviewPrio(bool in)			{prefs->m_bpreviewprio=in;}
-	bool	GetUpdateQueueList()			{return prefs->m_bupdatequeuelist;}
-	void	SetUpdateQueueList(bool new_state)	{prefs->m_bupdatequeuelist = new_state;}
+	bool	GetStartMinimized() const {return prefs->startMinimized;}
+	void	SetStartMinimized( bool instartMinimized) {prefs->startMinimized = instartMinimized;}
+	bool	GetSmartIdCheck()	 const {return prefs->smartidcheck;}
+	void	SetSmartIdCheck( bool in_smartidcheck ) {prefs->smartidcheck = in_smartidcheck;}
+	uint8	GetSmartIdState() const {return prefs->smartidstate;}
+	void	SetSmartIdState( uint8 in_smartidstate ) { prefs->smartidstate = in_smartidstate;}
+	bool	GetVerbose() const {return prefs->m_bVerbose;}
+	bool	GetPreviewPrio() const {return prefs->m_bpreviewprio;}
+	void	SetPreviewPrio(bool in) {prefs->m_bpreviewprio=in;}
+	bool	GetUpdateQueueList() const {return prefs->m_bupdatequeuelist;}
+	void	SetUpdateQueueList(bool new_state) {prefs->m_bupdatequeuelist = new_state;}
 //	bool	GetManualHighPrio()			{return prefs->m_bmanualhighprio;}
-	bool	TransferFullChunks()			{return prefs->m_btransferfullchunks;}
-	void	SetTransferFullChunks( bool m_bintransferfullchunks )	{prefs->m_btransferfullchunks = m_bintransferfullchunks;}
-	bool	StartNextFile()				{return prefs->m_bstartnextfile;}
-	bool	ShowOverhead()				{return prefs->m_bshowoverhead;}
-	void	SetNewAutoUp(bool m_bInUAP)		{prefs->m_bUAP = m_bInUAP;}
-	bool	GetNewAutoUp()				{return prefs->m_bUAP;}
-	void	SetNewAutoDown(bool m_bInDAP)		{prefs->m_bDAP = m_bInDAP;}
-	bool	GetNewAutoDown()			{return prefs->m_bDAP;}
+	bool	TransferFullChunks() const {return prefs->m_btransferfullchunks;}
+	void	SetTransferFullChunks( bool m_bintransferfullchunks ) {prefs->m_btransferfullchunks = m_bintransferfullchunks;}
+	bool	StartNextFile() const {return prefs->m_bstartnextfile;}
+	bool	ShowOverhead() const {return prefs->m_bshowoverhead;}
+	void	SetNewAutoUp(bool m_bInUAP) {prefs->m_bUAP = m_bInUAP;}
+	bool	GetNewAutoUp() const {return prefs->m_bUAP;}
+	void	SetNewAutoDown(bool m_bInDAP) {prefs->m_bDAP = m_bInDAP;}
+	bool	GetNewAutoDown() const {return prefs->m_bDAP;}
 //	bool	IsKnownClientListDisabled()		{return prefs->m_bDisableKnownClientList;}
 //	bool	IsQueueListDisabled()			{return prefs->m_bDisableQueueList;}
 //	bool	IsFirstStart()				{return prefs->m_bFirstStart;}
-	bool	UseCreditSystem()			{return prefs->m_bCreditSystem;}
-	void	SetCreditSystem(bool m_bInCreditSystem)	{prefs->m_bCreditSystem = m_bInCreditSystem;}
+	bool	UseCreditSystem() const {return prefs->m_bCreditSystem;}
+	void	SetCreditSystem(bool m_bInCreditSystem) {prefs->m_bCreditSystem = m_bInCreditSystem;}
 
 //	char*	GetTxtEditor()				{return prefs->TxtEditor;}
-	wxString	GetVideoPlayer()			{if (strlen(prefs->VideoPlayer)==0) return wxT(""); else return wxString(char2unicode(prefs->VideoPlayer));}
+	wxString	GetVideoPlayer() const {if (strlen(prefs->VideoPlayer)==0) return wxT(""); else return wxString(char2unicode(prefs->VideoPlayer));}
 
-	uint32	GetFileBufferSize()			{return prefs->m_iFileBufferSize*15000;}
-	uint32	GetQueueSize()				{return prefs->m_iQueueSize*100;}
+	uint32	GetFileBufferSize() const {return prefs->m_iFileBufferSize*15000;}
+	uint32	GetQueueSize() const {return prefs->m_iQueueSize*100;}
 
 	// Barry
-	uint16	Get3DDepth()				 { return prefs->depth3D;}
+	uint16	Get3DDepth() const { return prefs->depth3D;}
 //	bool	AutoTakeED2KLinks()			 {return prefs->autotakeed2klinks;}
-	bool	AddNewFilesPaused() 			{return prefs->addnewfilespaused;}
+	bool	AddNewFilesPaused() const {return prefs->addnewfilespaused;}
 
-	void	SetMaxConsPerFive(int in) 		{prefs->MaxConperFive=in;}
+	void	SetMaxConsPerFive(int in) {prefs->MaxConperFive=in;}
 
-	uint16	GetMaxConperFive()			{return prefs->MaxConperFive;}
+	uint16	GetMaxConperFive() const {return prefs->MaxConperFive;}
 	uint16	GetDefaultMaxConperFive();
 
-	bool	IsSafeServerConnectEnabled()		{return prefs->safeServerConnect;}
+	bool	IsSafeServerConnectEnabled() const {return prefs->safeServerConnect;}
 //	void	SetSafeServerConnectEnabled(bool in)	{prefs->safeServerConnect=in;}
-	bool	IsMoviePreviewBackup()			{return prefs->moviePreviewBackup;}
+	bool	IsMoviePreviewBackup() const {return prefs->moviePreviewBackup;}
 	
-	bool	IsCheckDiskspaceEnabled()		{return prefs->checkDiskspace != 0;}
-	int32	GetMinFreeDiskSpace()		{return prefs->m_uMinFreeDiskSpace;}
+	bool	IsCheckDiskspaceEnabled() const {return prefs->checkDiskspace != 0;}
+	int32	GetMinFreeDiskSpace() const {return prefs->m_uMinFreeDiskSpace;}
 
-	char*	GetYourHostname()			{return prefs->yourHostname;}
+	char*	GetYourHostname() const {return prefs->yourHostname;}
 
 	// quick-speed changer [xrmb]
-	void	SetMaxUpload(uint16 in) 		{prefs->maxupload =in;};
-	void	SetMaxDownload(uint16 in) 		{prefs->maxdownload=in; };
-	void	SetSlotAllocation(uint16 in)		{prefs->slotallocation=in; };
+	void	SetMaxUpload(uint16 in)  {prefs->maxupload =in;};
+	void	SetMaxDownload(uint16 in) {prefs->maxdownload=in; };
+	void	SetSlotAllocation(uint16 in) {prefs->slotallocation=in; };
 
 //	WINDOWPLACEMENT GetEmuleWindowPlacement() 	{return prefs->EmuleWindowPlacement; }
 //	void SetWindowLayout(WINDOWPLACEMENT in)	{prefs->EmuleWindowPlacement=in; }
@@ -504,29 +508,29 @@ public:
 	wxArrayString adresses_list;
 
 	void 	SetLanguage();
-	bool 	AutoConnectStaticOnly()		{return prefs->autoconnectstaticonly;}	
+	bool 	AutoConnectStaticOnly() const {return prefs->autoconnectstaticonly;}	
 //	int8 	GetUpdateDays()			{return prefs->versioncheckdays;}
 //	uint32 	GetLastVC()			{return prefs->versioncheckLastAutomatic;}
 //	void   	UpdateLastVC()			{prefs->versioncheckLastAutomatic=time(NULL);}
-	int32	GetIPFilterLevel()		{ return prefs->filterlevel;}
+	int32	GetIPFilterLevel() const { return prefs->filterlevel;}
 //	bool	ShowRatesOnTitle()		{ return prefs->showRatesInTitle;}
 //	char*   GetNotifierConfiguration()   	{return prefs->notifierConfiguration;}; //<<-- enkeyDEV(kei-kun) -skinnable notifier-
 	void	LoadCats();
-	wxString	GetDateTimeFormat()		{ return wxString(char2unicode(prefs->datetimeformat));}
+	wxString	GetDateTimeFormat() const { return wxString(char2unicode(prefs->datetimeformat));}
 	// Download Categories (Ornis)
-	int32	AddCat(Category_Struct* cat) 	{ catMap.Add(cat); return catMap.GetCount()-1;}
+	int32	AddCat(Category_Struct* cat) { catMap.Add(cat); return catMap.GetCount()-1;}
 	void	RemoveCat(size_t index);
-	uint32	GetCatCount()			{ return catMap.GetCount();}
-	Category_Struct* GetCategory(size_t index) { if (index>=0 && index<catMap.GetCount()) return catMap[index]; else return NULL;}
+	uint32	GetCatCount() const { return catMap.GetCount();}
+	Category_Struct* GetCategory(size_t index) const { if (index>=0 && index<catMap.GetCount()) return catMap[index]; else return NULL;}
 
-	const wxString&	GetCatPath(uint8 index)		{ return catMap[index]->incomingpath;}
+	const wxString&	GetCatPath(uint8 index) const { return catMap[index]->incomingpath;}
 
-	DWORD	GetCatColor(size_t index)		{ if (index>=0 && index<catMap.GetCount()) return catMap[index]->color; else return 0;}
+	DWORD	GetCatColor(size_t index) const { if (index>=0 && index<catMap.GetCount()) return catMap[index]->color; else return 0;}
 
 //	bool	ShowRatingIndicator()		{ return prefs->indicateratings;}
-	int32	GetAllcatType()			{ return prefs->allcatType;}
-	void	SetAllcatType(int32 in)		{ prefs->allcatType=in; }
-	bool	ShowAllNotCats()		{ return prefs->showAllNotCats;}
+	int32	GetAllcatType() const { return prefs->allcatType;}
+	void	SetAllcatType(int32 in) const { prefs->allcatType=in; }
+	bool	ShowAllNotCats() const { return prefs->showAllNotCats;}
 //	bool	WatchClipboard4ED2KLinks()	{ return prefs->watchclipboard;}
 //	void	InvertShowAllNotCats()		{ prefs->showAllNotCats=!prefs->showAllNotCats; }
 //	bool	FilterServerByIP()		{ return prefs->filterserverbyip;}
@@ -536,31 +540,31 @@ public:
 //	int32		GetMaxLogMessages() 	{ return prefs->iMaxLogMessages;}
 
 	// WebServer
-	uint16	GetWSPort()			{ return prefs->m_nWebPort; }
-	void	SetWSPort(uint16 uPort)		{ prefs->m_nWebPort=uPort; }
-	wxString	GetWSPass()			{ return wxString(char2unicode(prefs->m_sWebPassword)); }
-	bool	GetWSIsEnabled()		{ return prefs->m_bWebEnabled; }
-	void	SetWSIsEnabled(bool bEnable)	{ prefs->m_bWebEnabled=bEnable; }
-	bool	GetWebUseGzip()			{ return prefs->m_bWebUseGzip; }
-	void	SetWebUseGzip(bool bUse)	{ prefs->m_bWebUseGzip=bUse; }
-	int32	GetWebPageRefresh()		{ return prefs->m_nWebPageRefresh; }
-	void	SetWebPageRefresh(int nRefresh)	{ prefs->m_nWebPageRefresh=nRefresh; }
-	bool	GetWSIsLowUserEnabled()		{ return prefs->m_bWebLowEnabled; }
-	void	SetWSIsLowUserEnabled(bool in)	{ prefs->m_bWebLowEnabled=in; }
-	wxString	GetWSLowPass()			{ return wxString(char2unicode(prefs->m_sWebLowPassword)); }
+	uint16	GetWSPort() const { return prefs->m_nWebPort; }
+	void	SetWSPort(uint16 uPort) { prefs->m_nWebPort=uPort; }
+	wxString	GetWSPass() const { return wxString(char2unicode(prefs->m_sWebPassword)); }
+	bool	GetWSIsEnabled() const { return prefs->m_bWebEnabled; }
+	void	SetWSIsEnabled(bool bEnable) { prefs->m_bWebEnabled=bEnable; }
+	bool	GetWebUseGzip() const { return prefs->m_bWebUseGzip; }
+	void	SetWebUseGzip(bool bUse) { prefs->m_bWebUseGzip=bUse; }
+	int32	GetWebPageRefresh() const { return prefs->m_nWebPageRefresh; }
+	void	SetWebPageRefresh(int nRefresh) { prefs->m_nWebPageRefresh=nRefresh; }
+	bool	GetWSIsLowUserEnabled() const { return prefs->m_bWebLowEnabled; }
+	void	SetWSIsLowUserEnabled(bool in) { prefs->m_bWebLowEnabled=in; }
+	wxString	GetWSLowPass() const { return wxString(char2unicode(prefs->m_sWebLowPassword)); }
 
-	void	SetMaxSourcesPerFile(uint16 in)	{ prefs->maxsourceperfile=in;}
-	void	SetMaxConnections(uint16 in)	{ prefs->maxconnections =in;}
+	void	SetMaxSourcesPerFile(uint16 in) { prefs->maxsourceperfile=in;}
+	void	SetMaxConnections(uint16 in) { prefs->maxconnections =in;}
 //	bool	IsSchedulerEnabled()		{ return prefs->scheduler;}
 //	bool	GetDontCompressAvi()		{ return prefs->dontcompressavi;}
 	
-	bool	MsgOnlyFriends()		{ return prefs->msgonlyfriends;}
-	bool	MsgOnlySecure()			{ return prefs->msgsecure;}
+	bool	MsgOnlyFriends() const { return prefs->msgonlyfriends;}
+	bool	MsgOnlySecure() const { return prefs->msgsecure;}
 //	uint16	GetMsgSessionsMax()		{ return prefs->maxmsgsessions;}
 
 
-	int32 	GetDesktopMode() 		{return prefs->desktopMode;}
-	void 	SetDesktopMode(int mode)	{prefs->desktopMode=mode;}
+	int32 	GetDesktopMode() const {return prefs->desktopMode;}
+	void 	SetDesktopMode(int mode) {prefs->desktopMode=mode;}
 
 	// deadlake PROXYSUPPORT
 //	ProxySettings GetProxy()		{return prefs->proxy;}
@@ -573,27 +577,27 @@ public:
 //	bool	IsProxyASCWOP()			{ return prefs->m_bIsASCWOP;}
 //	void	SetProxyASCWOP(bool in)		{ prefs->m_bIsASCWOP=in;}
 
-	bool	ShowCatTabInfos()		{ return prefs->showCatTabInfos;}
-	void	ShowCatTabInfos(bool in)	{ prefs->showCatTabInfos=in;}
+	bool	ShowCatTabInfos() const { return prefs->showCatTabInfos;}
+	void	ShowCatTabInfos(bool in) { prefs->showCatTabInfos=in;}
 //	bool	GetResumeSameCat()		{ return prefs->resumeSameCat;}
 //	bool	IsGraphRecreateDisabled()	{ return prefs->dontRecreateGraphs;}
 	
 	// Madcat - Sources Dropping Tweaks
-	bool	DropNoNeededSources()		{ return prefs->NoNeededSources == 0; }
-	bool    SwapNoNeededSources()   	{ return prefs->NoNeededSources == 1; }
-	bool	DropFullQueueSources()		{ return prefs->DropFullQueueSources; }
-	bool	DropHighQueueRankingSources()	{ return prefs->DropHighQueueRankingSources; }
-	int32	HighQueueRanking()		{ return prefs->HighQueueRanking; }
-	int32	GetAutoDropTimer()		{ return prefs->AutoDropTimer; }
+	bool	DropNoNeededSources() const { return prefs->NoNeededSources == 0; }
+	bool    SwapNoNeededSources() const { return prefs->NoNeededSources == 1; }
+	bool	DropFullQueueSources() const { return prefs->DropFullQueueSources; }
+	bool	DropHighQueueRankingSources() const { return prefs->DropHighQueueRankingSources; }
+	int32	HighQueueRanking() const { return prefs->HighQueueRanking; }
+	int32	GetAutoDropTimer() const { return prefs->AutoDropTimer; }
 	
 	// Kry - External Connections
-	bool 	AcceptExternalConnections() { return prefs->AcceptExternalConnections; }
-	bool 	ECUseTCPPort() { return prefs->ECUseTCPPort; }
-	int32	ECPort() { return prefs->ECPort; }
-	wxString	ECPassword() { return wxString(char2unicode(prefs->ECPassword)); }
+	bool 	AcceptExternalConnections() const { return prefs->AcceptExternalConnections; }
+	bool 	ECUseTCPPort() const { return prefs->ECUseTCPPort; }
+	int32	ECPort() const { return prefs->ECPort; }
+	wxString	ECPassword() const { return wxString(char2unicode(prefs->ECPassword)); }
 	// Madcat - Fast ED2K Links Handler Toggling
-	bool	GetFED2KLH() { return prefs->FastED2KLinksHandler; }
-	bool	BDlgTabsOnTop()	{ 
+	bool	GetFED2KLH() const { return prefs->FastED2KLinksHandler; }
+	bool	BDlgTabsOnTop() const { 
 		#if defined(__WXMAC__) || defined(__WXMSW__) 
 			return false;
 		#else
@@ -602,29 +606,33 @@ public:
 	}
 	
 	// Kry - Ip filter On/Off
-	bool GetIPFilterOn() { return prefs->IPFilterOn; }
+	bool GetIPFilterOn() const { return prefs->IPFilterOn; }
 
 	// Kry - Source seeds On/Off
-	bool GetSrcSeedsOn() { return prefs->UseSrcSeeds; }
+	bool GetSrcSeedsOn() const { return prefs->UseSrcSeeds; }
 	
 	// Kry - Safe Max Connections
-	bool GetSafeMaxConn() { return prefs->UseSafeMaxConn; }
+	bool GetSafeMaxConn() const { return prefs->UseSafeMaxConn; }
 	
-	bool GetVerbosePacketError() { return prefs->VerbosePacketError; }
+	bool GetVerbosePacketError() const { return prefs->VerbosePacketError; }
 	
-	bool IsSecureIdentEnabled() { return prefs->SecIdent; }
+	bool IsSecureIdentEnabled() const { return prefs->SecIdent; }
 	
-	bool GetExtractMetaData() { return prefs->ExtractMetaData; }
+	bool GetExtractMetaData() const { return prefs->ExtractMetaData; }
 	
-	bool ShowProgBar() { return prefs->ProgBar; }
-	bool ShowPercent() { return prefs->Percent; }	
+	bool ShowProgBar() const { return prefs->ProgBar; }
+	bool ShowPercent() const { return prefs->Percent; }	
 	
-	bool	GetAllocFullPart() { return prefs->AllocFullPart; };
-	bool	GetAllocFullChunk() { return prefs->AllocFullChunk; };
+	bool	GetAllocFullPart() const { return prefs->AllocFullPart; };
+	bool	GetAllocFullChunk() const { return prefs->AllocFullChunk; };
 
 	wxString GetBrowser();
 	
-	char* GetOSDir(){return prefs->OSDirectory;};
+	wxString GetSkinFile() const { return char2unicode(prefs->SkinFile); }
+	
+	bool	UseSkin() const { return prefs->UseSkinFile; }
+	
+	char* GetOSDir() const {return prefs->OSDirectory;};
 	
 protected:
 	void	CreateUserHash();
