@@ -446,12 +446,7 @@ bool CAICHHashTree::SetHash(CFileDataIO* fileInput, uint16 wHashIdent, sint8 nLe
 ///CAICHUntrustedHash
 bool CAICHUntrustedHash::AddSigningIP(uint32 dwIP){
 	dwIP &= 0x00F0FFFF; // we use only the 20 most significant bytes for unique IPs
-	for (uint32 i=0; i < m_adwIpsSigning.size(); ++i){
-		if (m_adwIpsSigning[i] == dwIP)
-			return false;
-	}
-	m_adwIpsSigning.push_back(dwIP);
-	return true;
+	return m_adwIpsSigning.insert(dwIP).second;
 }
 
 
