@@ -366,7 +366,7 @@ void CDirectoryTreeCtrl::DelShare(wxString strDir)
 void CDirectoryTreeCtrl::UpdateParentItems(wxTreeItemId hChild, bool add)
 {
 	wxTreeItemId parent = hChild;
-	do {
+	while (parent != GetRootItem()) {
 		parent = GetItemParent(parent);
 		CDirectoryTreeItemData* parent_data = ((CDirectoryTreeItemData*) GetItemData(parent));
 		if (add) {
@@ -385,5 +385,5 @@ void CDirectoryTreeCtrl::UpdateParentItems(wxTreeItemId hChild, bool add)
 					break;
 			}
 		}
-	} while (parent != GetRootItem());
+	};
 }
