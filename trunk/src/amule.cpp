@@ -296,7 +296,7 @@ bool CamuleApp::OnInit()
 	cmdline.AddSwitch(wxT("o"), wxT("log-stdout"), wxT("Print log messages to stdout."));
 	cmdline.Parse();
 
-	if ( cmdline.Found(wxT("disable-fatal")) ) {
+	if ( !cmdline.Found(wxT("disable-fatal")) ) {
 #ifndef __WXMSW__
 	// catch fatal exceptions
 	wxHandleFatalExceptions(true);
