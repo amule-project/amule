@@ -54,17 +54,9 @@
 	#include "SearchDlg.h"		// Needed for CSearchDlg
 #endif
 
+
 //#define DEBUG_CLIENT_PROTOCOL
 
-#ifdef TESTING_PROXY
-	static class wxProxyData pd(
-		wxT("localhost"),
-		1080,
-		wxPROXY_SOCKS5,
-		wxT(""),
-		wxT("")
-	);
-#endif
 
 void CServerConnect::TryAnotherConnectionrequest()
 {
@@ -149,7 +141,7 @@ void CServerConnect::ConnectToServer(CServer* server, bool multiconnect)
 	singleconnecting = !multiconnect;
 
 #ifdef TESTING_PROXY
-	CServerSocket* newsocket = new CServerSocket(this, &pd);
+	CServerSocket* newsocket = new CServerSocket(this, thePrefs::GetProxyData());
 //	CServerSocket* newsocket = new CServerSocket(this);
 #else
 	CServerSocket* newsocket = new CServerSocket(this);

@@ -66,16 +66,16 @@ wxProxyData::wxProxyData()
 }
 
 wxProxyData::wxProxyData(
+	wxProxyType	ProxyType,
 	const wxString	&ProxyHostName,
 	unsigned short	ProxyPort,
-	wxProxyType	ProxyType,
-	const wxString	&Username,
+	const wxString	&UserName,
 	const wxString	&Password)
 {
+	m_ProxyType	= ProxyType;
 	m_ProxyHostName	= ProxyHostName;
 	m_ProxyPort	= ProxyPort;
-	m_ProxyType	= ProxyType;
-	m_Username	= Username;
+	m_UserName	= UserName;
 	m_Password	= Password;
 }
 
@@ -84,7 +84,7 @@ void wxProxyData::Empty()
 	m_ProxyHostName.Clear();
 	m_ProxyPort = 0;
 	m_ProxyType = wxPROXY_NONE;
-	m_Username.Clear();
+	m_UserName.Clear();
 	m_Password.Clear();
 }
 
@@ -219,8 +219,8 @@ bool wxSocketProxy::DoSocks4Request(wxIPaddress &address, wxProxyCommand cmd)
 	*((uint16 *)(m_buffer+2)) = htons(address.Service());
 	*((uint32 *)(m_buffer+4)) = StringIPtoUint32(address.IPAddress());
 	unsigned int OffsetUser = 8;
-	unsigned char LenUser = m_ProxyData.m_Username.Len();
-	memcpy(m_buffer+OffsetUser, unicode2char(m_ProxyData.m_Username),
+	unsigned char LenUser = m_ProxyData.m_UserName.Len();
+	memcpy(m_buffer+OffsetUser, unicode2char(m_ProxyData.m_UserName),
 		LenUser);
 	unsigned int LenPacket = 1 + 1 + 2 + 4 + LenUser + 1 ;
 	
@@ -364,7 +364,7 @@ bool wxSocketProxy::DoSocks5AuthenticationGSSAPI(void)
 
 bool wxSocketProxy::DoSocks5AuthenticationUsernamePassword(void)
 {
-	unsigned char LenUser = m_ProxyData.m_Username.Len();
+	unsigned char LenUser = m_ProxyData.m_UserName.Len();
 	unsigned char LenPassword = m_ProxyData.m_Password.Len();
 	unsigned int LenPacket = 1 + 1 + LenUser + 1 + LenPassword;
 	unsigned int OffsetUser = 2;
@@ -373,7 +373,7 @@ bool wxSocketProxy::DoSocks5AuthenticationUsernamePassword(void)
 	// Prepare username/password buffer
 	m_buffer[0] = SOCKS5_VERSION;
 	m_buffer[OffsetUser-1] = LenUser;
-	memcpy(m_buffer+OffsetUser, unicode2char(m_ProxyData.m_Username),
+	memcpy(m_buffer+OffsetUser, unicode2char(m_ProxyData.m_UserName),
 		LenUser);
 	m_buffer[OffsetPassword-1] = LenPassword;
 	memcpy(m_buffer+OffsetPassword, unicode2char(m_ProxyData.m_Password),
@@ -579,7 +579,7 @@ bool wxSocketProxy::DoHttpRequest(wxIPaddress &address, wxProxyCommand cmd)
 	wxCharBuffer buf(unicode2charbuf(address.IPAddress()));
 	const char *host = (const char *)buf;
 	uint16 port = address.Service();
-	wxString UserPass = m_ProxyData.m_Username + wxT(":") + m_ProxyData.m_Password;
+	wxString UserPass = m_ProxyData.m_UserName + wxT(":") + m_ProxyData.m_Password;
 	wxString UserPassEncoded =
 		otherfunctions::EncodeBase64(m_buffer, wxPROXY_BUFFER_SIZE);
 	wxString msg;
@@ -734,17 +734,19 @@ m_SocketProxy(ProxyData)
 	
 	if (m_UseProxy) {
 		ok = m_SocketProxy.Start(address, wxPROXY_CMD_UDP_ASSOCIATE, this);
+		m_UDPSocket = new wxDatagramSocket(m_SocketProxy.GetProxyBoundAddress(), flags);
 	} else {
 		m_UDPSocket = new wxDatagramSocket(address, flags);
 	}
+	m_LastUDPOperation = wxUDP_OPERATION_NONE;
 }
 
 wxDatagramSocketProxy::~wxDatagramSocketProxy()
 {
 	if (m_UseProxy) {
 	} else {
-		m_UDPSocket->Destroy();
 	}
+	m_UDPSocket->Destroy();
 }
 
 void wxDatagramSocketProxy::SetProxyData(const wxProxyData *ProxyData)
@@ -760,15 +762,51 @@ void wxDatagramSocketProxy::RecvFrom(
 	} else {
 		m_UDPSocket->RecvFrom(addr, buf, nBytes);
 	}
+	m_LastUDPOperation = wxUDP_OPERATION_RECV_FROM;
 }
 
 void wxDatagramSocketProxy::SendTo(
-	wxSockAddress& addr, const void* buf, wxUint32 nBytes )
+	wxIPaddress& addr, const void* buf, wxUint32 nBytes )
 {
 	if (m_UseProxy) {
+		m_SocketProxy.m_buffer[0] = SOCKS5_RSV;	// Reserved
+		m_SocketProxy.m_buffer[1] = SOCKS5_RSV;	// Reserved
+		m_SocketProxy.m_buffer[2] = 0;		// FRAG
+		m_SocketProxy.m_buffer[3] = SOCKS5_ATYP_IPV4_ADDRESS;
+		*((uint32 *)(m_SocketProxy.m_buffer+4)) = StringIPtoUint32(addr.IPAddress());
+		*((uint16 *)(m_SocketProxy.m_buffer+8)) = htons(addr.Service());
+		memcpy(m_SocketProxy.m_buffer + wxPROXY_UDP_OVERHEAD, buf, nBytes);
+		nBytes += wxPROXY_UDP_OVERHEAD;
+		m_UDPSocket->SendTo(addr, m_SocketProxy.m_buffer, nBytes);
 	} else {
 		m_UDPSocket->SendTo(addr, buf, nBytes);
 	}
+	m_LastUDPOperation = wxUDP_OPERATION_SEND_TO;
+}
+
+wxUint32 wxDatagramSocketProxy::LastCount(void) const
+{
+	wxUint32 ret;
+
+	if (m_UseProxy) {	
+		switch (m_LastUDPOperation) {
+		case wxUDP_OPERATION_NONE:
+			ret = 0;
+			break;
+		
+		case wxUDP_OPERATION_RECV_FROM:
+			ret = 0;
+			break;
+		
+		case wxUDP_OPERATION_SEND_TO:
+			ret = m_UDPSocket->LastCount() - wxPROXY_UDP_OVERHEAD;
+			break;
+		}
+	} else {
+		ret = m_UDPSocket->LastCount();
+	}
+	
+	return ret;
 }
 
 /******************************************************************************/

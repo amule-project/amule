@@ -89,11 +89,14 @@ const unsigned char SOCKS5_REPLY_ATYP_NOT_SUPPORTED	= 0x08;
 
 /******************************************************************************/
 
+//
+// These constants must match the integer values saved in the configuration file
+//
 enum wxProxyType {
-	wxPROXY_NONE,
-	wxPROXY_SOCKS4,
-	wxPROXY_SOCKS5,
-	wxPROXY_HTTP
+	wxPROXY_NONE = -1,
+	wxPROXY_SOCKS5 = 0,
+	wxPROXY_SOCKS4 = 1,
+	wxPROXY_HTTP = 2
 };
 
 enum wxProxyCommand {
@@ -107,10 +110,10 @@ class wxProxyData
 public:
 	wxProxyData();
 	wxProxyData(
+		wxProxyType	m_ProxyType,
 		const wxString	&m_ProxyHostName,
 		unsigned short	m_ProxyPort,
-		wxProxyType	m_ProxyType,
-		const wxString	&m_Username,
+		const wxString	&m_UserName,
 		const wxString	&m_Password
 	);
 	void Empty();
@@ -119,7 +122,7 @@ public:
 	wxString	m_ProxyHostName;
 	unsigned short	m_ProxyPort;
 	wxProxyType	m_ProxyType;
-	wxString	m_Username;
+	wxString	m_UserName;
 	wxString	m_Password;
 };
 
@@ -143,8 +146,8 @@ public:
 	/* Interface */
 	void		SetProxyData(const wxProxyData *ProxyData);
 	bool		Start(wxIPaddress &address, enum wxProxyCommand cmd, wxSocketClient *socket);
-	wxIPaddress	&GetProxyBoundAddress(void) { return *m_ProxyBoundAddress; }
-	unsigned char	GetLastReply(void) { return m_LastReply; }
+	wxIPaddress &GetProxyBoundAddress(void) const { return *m_ProxyBoundAddress; }
+	unsigned char	GetLastReply(void) const { return m_LastReply; }
 
 private:
 	/* SOCKS4 */
@@ -171,9 +174,11 @@ private:
 	bool DoHttpReply(void);
 	bool DoHttpCmdConnect(void);
 	
+public:
+	char			m_buffer[wxPROXY_BUFFER_SIZE];
+	
 private:
 	wxProxyData		m_ProxyData;
-	char			m_buffer[wxPROXY_BUFFER_SIZE];
 	amuleIPV4Address	m_ProxyAddress;
 	wxSocketClient		*m_ProxyClientSocket;
 	wxIPaddress		*m_ProxyBoundAddress;
@@ -238,6 +243,14 @@ private:
 
 /******************************************************************************/
 
+enum wxUDPOperation {
+	wxUDP_OPERATION_NONE,
+	wxUDP_OPERATION_RECV_FROM,
+	wxUDP_OPERATION_SEND_TO
+};
+
+#define wxPROXY_UDP_OVERHEAD	10
+
 class wxDatagramSocketProxy : public wxSocketClient
 {
 public:
@@ -257,12 +270,14 @@ public:
 	void RecvFrom(
 		wxSockAddress& addr, void* buf, wxUint32 nBytes );
 	void SendTo(
-		wxSockAddress& addr, const void* buf, wxUint32 nBytes );
+		wxIPaddress& addr, const void* buf, wxUint32 nBytes );
+	wxUint32 LastCount(void) const;
 	
 private:
 	wxSocketProxy	m_SocketProxy;
 	bool 		m_UseProxy;
 	wxDatagramSocket *m_UDPSocket;
+	enum wxUDPOperation m_LastUDPOperation;
 };
 
 /******************************************************************************/
