@@ -120,6 +120,12 @@ void CServerSocketHandler::ServerSocketHandler(wxSocketEvent& event)
 	
 	
 }
+
+//
+// There can be only one. :)
+//
+static CServerSocketHandler TheServerSocketHandler;
+
 #else
 CServerSocketHandler::CServerSocketHandler(CServerSocket *socket)
 :
@@ -163,11 +169,6 @@ void *CServerSocketHandler::Entry()
 
 }
 #endif
-
-//
-// There can be only one. :)
-//
-static CServerSocketHandler TheServerSocketHandler;
 
 //------------------------------------------------------------------------------
 // CServerSocket

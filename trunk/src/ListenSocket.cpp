@@ -101,6 +101,12 @@ void CClientReqSocketHandler::ClientReqSocketHandler(wxSocketEvent& event)
 			break;
 	}
 }
+
+//
+// There can be only one. :)
+//
+static CClientReqSocketHandler TheClientReqSocketHandler;
+
 #else
 CClientReqSocketHandler::CClientReqSocketHandler(CClientReqSocket* socket)
 {
@@ -165,11 +171,6 @@ void *CClientReqSocketHandler::Entry()
 	return 0;
 }
 #endif
-
-//
-// There can be only one. :)
-//
-static CClientReqSocketHandler TheClientReqSocketHandler;
 
 //------------------------------------------------------------------------------
 // CClientReqSocket
