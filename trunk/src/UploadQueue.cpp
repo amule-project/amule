@@ -293,109 +293,102 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client)
 	}
 		
 	
-	if (client->IsBanned()) {
+	if ( client->IsBanned() ) {
 		return;
 	}
 
+	
 	client->AddAskedCount();
 	client->SetLastUpRequest();
 
-	// check for double
-	uint16 cSameIP = 0;
-	for (POSITION pos = waitinglist.GetHeadPosition();pos != 0; ) {
-		POSITION pos2 = pos;
-		CUpDownClient* cur_client= waitinglist.GetNext(pos);
-		if (cur_client == client) { // already on queue
-			if ( client->m_bAddNextConnect && ( ( uploadinglist.GetCount() < theApp.glob_prefs->GetMaxUpload() ) || ( theApp.glob_prefs->GetMaxUpload() == UNLIMITED ) ) ) {
-				if (lastupslotHighID) {
-					client->m_bAddNextConnect = false;
-					RemoveFromWaitingQueue(client, true);
-					AddUpNextClient(client);
-					lastupslotHighID = false; // LowID alternate
+	
+	// Find all clients with the same user-hash
+	CClientList::SourceList found = theApp.clientlist->GetClientsByHash( client->GetUserHash() );
+	
+
+	CClientList::SourceList::iterator it = found.begin();
+	for ( ; it != found.end(); it++ ) {
+		if ( IsOnUploadQueue( *it ) ) {
+			CUpDownClient* cur_client = *it;
+			
+			if ( cur_client == client ) {
+				if ( client->m_bAddNextConnect && ( ( uploadinglist.GetCount() < theApp.glob_prefs->GetMaxUpload() ) || ( theApp.glob_prefs->GetMaxUpload() == UNLIMITED ) ) ) {
+					if (lastupslotHighID) {
+						client->m_bAddNextConnect = false;
+						RemoveFromWaitingQueue(client, true);
+						AddUpNextClient(client);
+						lastupslotHighID = false; // LowID alternate
+						return;
+					}
+				}
+			
+				client->SendRankingInfo();
+				Notify_QlistRefreshClient(client);
+				return;
+
+			} else {
+				// Hash-clash, remove unidentified clients (possibly both)
+				bool oldID = (cur_client->credits && cur_client->credits->GetCurrentIdentState(cur_client->GetIP()) == IS_IDENTIFIED);
+				bool newID = (client->credits && client->credits->GetCurrentIdentState(client->GetIP()) == IS_IDENTIFIED);
+			
+				if ( !oldID ) {
+					// Cur_client isn't identifed, remove it
+					theApp.clientlist->AddTrackClient( cur_client );
+
+					RemoveFromWaitingQueue( cur_client );
+					if ( !cur_client->GetSocket() ) {
+						if (cur_client->Disconnected( wxT("AddClientToQueue - same userhash") ) ) {
+							cur_client->Safe_Delete();
+						}
+					}
+				}
+
+				if ( !newID ) {
+					// New client isn't identified, remove it				
+					theApp.clientlist->AddTrackClient( client );
+
+					if ( !client->GetSocket() ) {
+						if ( client->Disconnected( wxT("AddClientToQueue - same userhash") ) ) {
+							client->Safe_Delete();
+						}
+					}
+
 					return;
 				}
 			}
-			// VQB end
-			client->SendRankingInfo();
-			Notify_QlistRefreshClient(client);
-			return;			
-		} else if ( client->Compare(cur_client) ) {
-			theApp.clientlist->AddTrackClient(client); // in any case keep track of this client
-				
-			// another client with same ip or hash
-			AddDebugLogLineM(false,wxString::Format(_("Client '%s' and '%s' have the same userhash or IP - removed '%s'"), client->GetUserName().c_str(), cur_client->GetUserName().c_str(), cur_client->GetUserName().c_str()));
-
-			if ( cur_client->credits && cur_client->credits->GetCurrentIdentState(cur_client->GetIP()) == IS_IDENTIFIED)
-			{
-				//cur_client has a valid secure hash, don't remove him
-#ifdef __USE_DEBUG__
-				if (thePrefs.GetVerbose())
-					AddDebugLogLine(false, wxT("Client '%s' and '%s' have the same userhash or IP - removed '%s'"),client->GetUserName(),cur_client->GetUserName(),client->GetUserName() );
-#endif
-				return;
-			}
-
-			if (client->credits != NULL && client->credits->GetCurrentIdentState(client->GetIP()) == IS_IDENTIFIED)
-			{
-				//client has a valid secure hash, add him remove other one
-#ifdef __ENABLE_DEBUG__
-				if (thePrefs.GetVerbose())
-					AddDebugLogLine(false,wxT("Client '%s' and '%s' have the same userhash or IP - removed '%s'"),client->GetUserName(),cur_client->GetUserName(),cur_client->GetUserName() );
-#endif
-				RemoveFromWaitingQueue(pos2);
-				if (!cur_client->GetSocket()) {
-					if (cur_client->Disconnected(wxT("AddClientToQueue - same userhash 1"))) {
-						cur_client->Safe_Delete();
-					}
-				}
-			} else {
-				// remove both since we dont know who the bad on is
-#ifdef __ENABLE_DEBUG__
-				if (thePrefs.GetVerbose())
-					AddDebugLogLine(false,wxT("Client '%s' and '%s' have the same userhash or IP - removed '%s'"),client->GetUserName(),cur_client->GetUserName(),"Both" );
-#endif
-				RemoveFromWaitingQueue(pos2);
-				if (!cur_client->GetSocket()) {
-					if (cur_client->Disconnected(wxT("AddClientToQueue - same userhash 2"))) {
-						cur_client->Safe_Delete();
-					}
-				}
-				return;
-			}
-		} else if (client->GetIP() == cur_client->GetIP()) {
-			// same IP, different port, different userhash
-			cSameIP++;
 		}
 	}
-	// done
-	if (cSameIP >= 3)
-	{
-		// do not accept more than 3 clients from the same IP
-#ifdef __ENABLE_DEBUG__
-		if (thePrefs.GetVerbose())
-			DEBUG_ONLY( AddDebugLogLine(false,"%s's (%s) request to enter the queue was rejected, because of too many clients with the same IP", client->GetUserName(), ipstr(client->GetConnectIP())) );
-#endif
-		return;
+	
+
+	// Count the number of clients with the same IP-address
+	found = theApp.clientlist->GetClientsByIP( client->GetIP() );
+
+	int ipCount = 0;
+	for ( it = found.begin(); it != found.end(); it++ ) {
+		if ( ( *it == client ) || IsOnUploadQueue( *it ) ) {
+			ipCount++;
+		}
 	}
-	else if (theApp.clientlist->GetClientsFromIP(client->GetIP()) >= 3)
-	{
-#ifdef __ENABLE_DEBUG__
-		if (thePrefs.GetVerbose())
-			DEBUG_ONLY( AddDebugLogLine(false,"%s's (%s) request to enter the queue was rejected, because of too many clients with the same IP (found in TrackedClientsList)", client->GetUserName(), ipstr(client->GetConnectIP())) );
-#endif
+	
+	
+	// We do not accept more than 3 clients from the same IP
+	if ( ipCount > 3 ) {
+		return;
+	} else if ( theApp.clientlist->GetClientsFromIP(client->GetIP()) >= 3 ) {
 		return;
 	}
 	
 
 	// statistic values
-	CKnownFile* reqfile = theApp.sharedfiles->GetFileByID(client->GetUploadFileID());
-	if (reqfile) {
-		reqfile->statistic.AddRequest();
+	if ( client->GetUploadFile() ) {
+		client->GetUploadFile()->statistic.AddRequest();
 	}
+	
 	// TODO find better ways to cap the list
-	if ((uint32)waitinglist.GetCount() > (theApp.glob_prefs->GetQueueSize())) {
+	if ( (uint32)waitinglist.GetCount() > (theApp.glob_prefs->GetQueueSize())) {
 		return;
 	}
+	
 	if (client->IsDownloading()) {
 		// he's already downloading and wants probably only another file
 		Packet* packet = new Packet(OP_ACCEPTUPLOADREQ,0);
@@ -408,6 +401,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client)
 	if ( client->Credits() && client->Credits()->GetUploadedTotal() < client->Credits()->GetDownloadedTotal() ) // must share
 		client->SetGPLEvildoer( false );
 	// Import from BlackRat end
+	
 	
 	if (waitinglist.IsEmpty() && AcceptNewClient()) {
 		AddUpNextClient(client);
@@ -488,9 +482,10 @@ void CUploadQueue::DeleteAll()
 
 uint16 CUploadQueue::GetWaitingPosition(CUpDownClient* client)
 {
-	if (!IsOnUploadQueue(client)) {
+	if ( !IsOnUploadQueue(client) ) {
 		return 0;
 	}
+
 	uint16 rank = 1;
 	uint32 myscore = client->GetScore(false);
 	for (POSITION pos = waitinglist.GetHeadPosition();pos != 0; ) {
@@ -559,8 +554,6 @@ void CUploadQueue::SuspendUpload( const CMD4Hash& filehash )
 	suspended_uploads_list.push_back(filehash);
 	wxString base16hash = EncodeBase16(filehash, 16);
 	
-	printf("%s: Suspending uploads of file.\n", unicode2char(base16hash));
-	
 	POSITION pos = uploadinglist.GetHeadPosition();
 	while(pos) { //while we have a valid position
 		CUpDownClient *potential = uploadinglist.GetNext(pos);
@@ -568,15 +561,12 @@ void CUploadQueue::SuspendUpload( const CMD4Hash& filehash )
 		if(potential->GetUploadFileID() == filehash) {
 			//remove the unlucky client from the upload queue and add to the waiting queue
 			RemoveFromUploadQueue(potential, 1);
-			printf("%s: Removed user '%s'\n", unicode2char(base16hash) , unicode2char(potential->GetUserName()));
-			//this code to add to the waitinglist was copied from the end of AddClientToQueue()
-			//the function itself is not used as it could prevent the requeuing of the client
+			
 			waitinglist.AddTail(potential);
 			potential->SetUploadState(US_ONUPLOADQUEUE);
 			potential->SendRankingInfo();
 			Notify_QlistRefreshClient(potential);
 			Notify_ShowQueueCount(waitinglist.GetCount());
-			printf("%s: ReQueued user '%s'\n", unicode2char(base16hash), unicode2char(potential->GetUserName()));
 		}
 	}
 }

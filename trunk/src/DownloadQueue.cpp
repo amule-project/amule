@@ -462,44 +462,38 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender,CUpDownClient* source)
 		}
 	}
 
-	/*
-	if (IsBlacklisted(source)) {
-		delete source;
-		return;
-	}
-	*/
-
 	if (sender->IsStopped()) {
 		source->Safe_Delete();
 		return;
 	}
 
-	// "Filter LAN IPs" and/or "IPfilter" is not required here,
-	// because it was already done in parent functions
+	
+	// Find all clients with the same hash
+	if ( source->HasValidHash() ) {
+		CClientList::SourceList found = theApp.clientlist->GetClientsByHash( source->GetUserHash() );
 
-	// uses this only for temp. clients
-	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
-		CPartFile* cur_file = filelist[i];
-		for ( CPartFile::SourceSet::iterator it = cur_file->m_SrcList.begin(); it != cur_file->m_SrcList.end(); ++it) {
-			if ( (*it)->Compare(source) ) {
-				if (cur_file == sender) { // this file has already this source
-					source->Safe_Delete();
-					return;
+		CClientList::SourceList::iterator it = found.begin();
+		for ( ; it != found.end(); it++ ) {
+			CKnownFile* cur_file = (*it)->GetRequestFile();
+
+			// Only check files on the download-queue
+			if ( cur_file ) {
+				// Is the found source queued for something else?
+				if (  cur_file != sender ) {
+					// Try to add a request for the other file
+					if ( (*it)->AddRequestForAnotherFile(sender)) {
+						// Add it to downloadlistctrl
+						Notify_DownloadCtrlAddSource(sender, *it, true);
+					}
 				}
-				// set request for this source
-				if ( (*it)->AddRequestForAnotherFile(sender)) {
-					// add it to uploadlistctrl
-					Notify_DownloadCtrlAddSource(sender, *it, true);
-					source->Safe_Delete();
-					return;
-				}
-				else{
-					source->Safe_Delete();
-					return;
-				}
+				
+				source->Safe_Delete();
+				return;
 			}
 		}
 	}
+
+
 
 	// Our new source is real new but maybe it is already uploading to us?
 	// If yes the known client will be attached to the var "source" and the old
@@ -532,7 +526,7 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender,CUpDownClient* source)
 		// Unknown client, add it to the clients list
 		source->SetRequestFile( sender );
 
-		theApp.clientlist->AddClient(source, true);
+		theApp.clientlist->AddClient(source);
 	
 		if ( source->GetFileRate() || !source->GetFileComment().IsEmpty() ) {
 			sender->UpdateFileRatingCommentAvail();
