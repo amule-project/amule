@@ -454,8 +454,6 @@ CamuleDlg::~CamuleDlg()
 	
 	SaveGUIPrefs();
 
-	theApp.OnlineSig(true);
-
 	theApp.amuledlg = NULL;
 	
 	printf("aMule dialog destroyed\n");
@@ -477,7 +475,6 @@ void CamuleDlg::OnBnConnect(wxCommandEvent& WXUNUSED(evt))
 	} else {
 		//disconnect if currently connected
 		theApp.serverconnect->Disconnect();
-		theApp.OnlineSig();
 	}
 }
 
