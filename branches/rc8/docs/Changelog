@@ -25,6 +25,8 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 			- webserver search results (reported by poulpe)
 			- aMule version on webserver's Statistics page
 		* Endianness fixes in EC.
+		* Fixed appearing strange characters at the end of webserver's
+		  log and debug log pages.
 
 	Kry:
 
