@@ -69,6 +69,9 @@ struct PartFileBufferedData
 class CPartFile : public CKnownFile {
 public:
 	CPartFile();
+#ifdef CLIENT_GUI
+	CPartFile(CEC_PartFile_Tag *tag);
+#endif
 	CPartFile(CSearchFile* searchresult);  //used when downloading a new file
 	CPartFile(const CED2KFileLink* fileLink);
 	virtual ~CPartFile();
@@ -253,8 +256,10 @@ public:
 
 protected:
 	//! A local list of sources that are invalid for this file.
+#ifndef CLIENT_GUI
 	CDeadSourceList	m_deadSources;
-	
+#endif
+
 	bool	m_showSources;
 	
 	uint32	m_validSources;
