@@ -607,11 +607,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 					buffer+=wxString::Format("%ul\t", cur_file->GetCompletedSize());
 					buffer+=wxString::Format("%ul\t", cur_file->GetTransfered());
 					buffer+=wxString::Format("%f\t", cur_file->GetPercentCompleted());
-#ifdef DOWNLOADRATE_FILTERED
 					buffer+=wxString::Format("%li\t", (long)(cur_file->GetKBpsDown()*1024));
-#else
-					buffer+=wxString::Format("%ul\t", cur_file->GetDatarate());
-#endif
 					buffer+=wxString::Format("%u\t", cur_file->GetStatus());
 					buffer+=wxString::Format("%s\t", cur_file->getPartfileStatus().c_str());
 					if (cur_file->IsAutoDownPriority()) {
@@ -1765,11 +1761,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 						buffer+=wxString::Format("%li\t", (long)cur_file->GetFileSize());
 						buffer+=wxString::Format("%li\t", (long)cur_file->GetTransfered());
 						buffer+=wxString::Format("%f\t", cur_file->GetPercentCompleted());
-#ifdef DOWNLOADRATE_FILTERED
 						buffer+=wxString::Format("%li\t", (long)(cur_file->GetKBpsDown()*1024));
-#else
-						buffer+=wxString::Format("%u\t", cur_file->GetDatarate());
-#endif
 						buffer+=wxString::Format("%d\t", cur_file->GetStatus());
 						buffer+=wxString::Format("%s\t", cur_file->getPartfileStatus().c_str());
 						if (cur_file->IsAutoDownPriority())
@@ -1906,11 +1898,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			if (item.Mid(9,15).Cmp("DL_FILEDATARATE") == 0) {
 				if ((item.Length() > 24) && (item.Mid(25).IsNumber())) {
 					static char buffer[1024];
-#ifdef DOWNLOADRATE_FILTERED
 					sprintf(buffer, "%i", (int)(theApp.downloadqueue->GetFileByIndex(atoi(item.Mid(25).GetData()))->GetKBpsDown())*1024);
-#else
-					sprintf(buffer, "%i", (int)(theApp.downloadqueue->GetFileByIndex(atoi(item.Mid(25).GetData()))->GetDatarate()));
-#endif
 					return(buffer);
 				}
 				return("Bad DL_FILEDATARATE request");

@@ -30,8 +30,7 @@
 #include "KnownFile.h"		// Needed for CKnownFile
 #include "CFile.h"		// Needed for CFile
 #include "GetTickCount.h"	// Needed for GetTickCount
-
-#include "updownclient.h"  // temporarily needed for #define DOWNLOADRATE_FILTERED
+#include "BarShader.h"
 #include "otherstructs.h"	// Needed for Gap_Struct
 
 class CSearchFile;
@@ -108,11 +107,7 @@ public:
 	uint16	GetSourceCount();
 	uint16	GetSrcA4AFCount()							{return A4AFsrclist.GetCount();}
 	uint16	GetTransferingSrcCount()						{return transferingsrc;}
-#ifdef DOWNLOADRATE_FILTERED
 	float	GetKBpsDown()									{ return kBpsDown; }
-#else
-	uint32	GetDatarate()								{return datarate;}
-#endif
 	float	GetPercentCompleted()							{return percentcompleted;}
 	uint16  GetNotCurrentSourcesCount();
 	int	GetValidSourcesCount();
@@ -205,11 +200,7 @@ private:
 	uint64	m_iLostDueToCorruption;
 	uint64	m_iGainDueToCompression;
 	uint32  m_iTotalPacketsSavedDueToICH;
-#ifdef DOWNLOADRATE_FILTERED
 	float 	kBpsDown;
-#else
-	uint32	datarate;
-#endif
 	char*	fullname;
 	char*	m_partmetfilename;
 	uint32	transfered;
