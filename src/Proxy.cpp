@@ -233,7 +233,9 @@ wxSocketBase &ProxyStateMachine::ProxyRead(wxSocketBase &socket, void *buffer, w
 	return ret;
 }
 
-/******************************************************************************/
+//------------------------------------------------------------------------------
+// Socks5StateMachine
+//------------------------------------------------------------------------------
 
 Socks5StateMachine::Socks5StateMachine(
 	const wxProxyData &ProxyData,
@@ -662,7 +664,193 @@ void Socks5StateMachine::process_end(bool)
 dump("process_end", m_ok, NULL, 0);
 }
 
-/******************************************************************************/
+//------------------------------------------------------------------------------
+// Socks4StateMachine
+//------------------------------------------------------------------------------
+
+Socks4StateMachine::Socks4StateMachine(
+	const wxProxyData &ProxyData,
+	wxProxyCommand ProxyCommand)
+:
+ProxyStateMachine(
+	wxString(wxT("Socks4")), SOCKS4_MAX_STATES, SOCKS4_STATE_START,
+	ProxyData, ProxyCommand)
+{
+	m_process_state[0] = &Socks4StateMachine::process_start;
+	m_process_state[1] = &Socks4StateMachine::process_send_command_request;
+	m_process_state[2] = &Socks4StateMachine::process_receive_command_reply;
+	m_process_state[3] = &Socks4StateMachine::process_process_command_reply;
+	m_process_state[4] = &Socks4StateMachine::process_end;
+}
+
+void Socks4StateMachine::process_state(t_sm_state state, bool entry)
+{
+	(this->*m_process_state[state])(entry);
+}
+
+t_sm_state Socks4StateMachine::next_state(t_sm_event event)
+{
+	// Default is stay in current state	
+	t_sm_state ret = m_state;
+	
+	switch(event)
+	{
+	case wxSOCKET_CONNECTION:
+		printf("Connection event\n");
+		m_IsConnected = true;
+		break;
+		
+	case wxSOCKET_INPUT:
+		printf("Input event\n");
+		m_CanReceive = true;
+		break;
+		
+	case wxSOCKET_OUTPUT:
+		printf("Output event\n");
+		m_CanSend = true;
+		break;
+		
+	case wxSOCKET_LOST:
+		printf("Lost connection event\n");
+		m_IsLost = true;
+		break;
+		
+	default:
+		printf("No event\n");
+		break;
+	}
+	
+	if (m_IsLost) {
+		ret = SOCKS5_STATE_END;
+		
+		return ret;
+	}
+	
+	switch (m_state) {
+	case SOCKS4_STATE_START:
+		if (m_IsConnected && !m_IsLost && CanSend()) {
+			ret = SOCKS4_STATE_SEND_COMMAND_REQUEST;
+		}
+		break;
+		
+	case SOCKS4_STATE_SEND_COMMAND_REQUEST:
+		if (m_ok) {
+			if (CanReceive()) {
+				ret = SOCKS4_STATE_RECEIVE_COMMAND_REPLY;
+			}
+		} else {
+			ret = SOCKS4_STATE_END;
+		}
+		break;
+		
+	case SOCKS4_STATE_RECEIVE_COMMAND_REPLY:
+		if (CanReceive()) {
+			ret = SOCKS4_STATE_PROCESS_COMMAND_REPLY;
+		}
+		break;
+		
+	case SOCKS4_STATE_PROCESS_COMMAND_REPLY:
+		ret = SOCKS4_STATE_END;
+		break;
+		
+	case SOCKS4_STATE_END:
+	default:
+		break;
+	}
+	
+	return ret;
+}
+
+void Socks4StateMachine::process_start(bool entry)
+{
+	if (entry) {
+dump("process_start", m_ok, NULL, 0);
+	} else {
+printf("wait state -- process_start\n");
+	}
+}
+
+void Socks4StateMachine::process_send_command_request(bool entry)
+{
+	if (entry) {
+		// Prepare the request command buffer
+		m_buffer[0] = SOCKS4_VERSION;
+		switch (m_ProxyCommand) {
+		case wxPROXY_CMD_CONNECT:
+			m_buffer[1] = SOCKS4_CMD_CONNECT;
+			break;
+			
+		case wxPROXY_CMD_BIND:
+			m_buffer[1] = SOCKS4_CMD_BIND;
+			break;
+			
+		case wxPROXY_CMD_UDP_ASSOCIATE:
+			m_ok = false;
+			return;
+			break;
+		}
+		*((uint16 *)(m_buffer+2)) = htons(m_PeerAddress->Service());
+		*((uint32 *)(m_buffer+4)) = StringIPtoUint32(m_PeerAddress->IPAddress());
+		unsigned int OffsetUser = 8;
+		unsigned char LenUser = m_ProxyData.m_UserName.Len();
+		memcpy(m_buffer + OffsetUser, 
+			unicode2char(m_ProxyData.m_UserName), LenUser);
+		// Send the command packet
+		m_PacketLenght = 1 + 1 + 2 + 4 + LenUser + 1 ;
+		ProxyWrite(*m_ProxyClientSocket, m_buffer, m_PacketLenght);
+dump("process_send_command_request", m_ok, m_buffer, m_PacketLenght);
+	} else {
+printf("wait state -- process_send_command_request\n");
+	}
+}
+
+void Socks4StateMachine::process_receive_command_reply(bool entry)
+{
+	if (entry) {
+		// Receive the server's reply
+		m_PacketLenght = 8;
+		ProxyRead(*m_ProxyClientSocket, m_buffer, m_PacketLenght);
+dump("process_receive_command_reply", m_ok, m_buffer, 0);
+	} else {
+printf("wait state -- process_receive_command_reply\n");
+	}
+}
+
+void Socks4StateMachine::process_process_command_reply(bool entry)
+{
+	if (entry) {
+		m_LastReply = m_buffer[1];
+		
+		// Process the server's reply
+		m_ok = m_ok &&
+			m_buffer[0] == SOCKS4_VERSION &&
+			m_buffer[1] == SOCKS4_REPLY_GRANTED;
+		if (m_ok) {
+			// Read BND.PORT
+			const unsigned int Port_offset = 2;
+			m_ok = m_ProxyBoundAddressIPV4.Service(ntohs(
+				*((uint16 *)(m_buffer+Port_offset)) ));
+			// Read BND.ADDR
+			const unsigned int Addr_offset = 4;
+			m_ok = m_ok &&
+				m_ProxyBoundAddressIPV4.Hostname(Uint32toStringIP(
+					*((uint32 *)(m_buffer+Addr_offset)) ));
+			m_ProxyBoundAddress = &m_ProxyBoundAddressIPV4;
+		}
+dump("process_process_command_reply", m_ok, m_buffer, m_PacketLenght);
+	} else {
+printf("wait state -- process_receive_command_reply\n");
+	}
+}
+
+void Socks4StateMachine::process_end(bool)
+{
+dump("process_end", m_ok, NULL, 0);
+}
+
+//------------------------------------------------------------------------------
+// amuleProxy
+//------------------------------------------------------------------------------
 
 amuleProxy::amuleProxy(
 	const wxProxyData *ProxyData,
@@ -713,11 +901,13 @@ address.Service());
 				break;
 				
 			case wxPROXY_SOCKS4:
-				ok = DoSocks4(address, cmd);
+				//ok = DoSocks4(address, cmd);
+				ok = false;
 				break;
 				
 			case wxPROXY_SOCKS5:
-				ok = DoSocks5(address, cmd);
+				//ok = DoSocks5(address, cmd);
+				ok = false;
 				break;
 				
 			case wxPROXY_HTTP:
@@ -736,378 +926,6 @@ printf("Failed to bind proxy address, ok=%d\n", ok);
 }
 	
 	return ok;
-}
-
-bool amuleProxy::DoSocks4(wxIPaddress &address, wxProxyCommand cmd)
-{
-	bool ok =
-		DoSocks4Request(address, cmd) &&
-		DoSocks4Reply();
-	if (ok) {
-		switch(cmd)
-		{
-		case wxPROXY_CMD_CONNECT:
-			ok = DoSocks4CmdConnect();
-			break;
-		
-		case wxPROXY_CMD_BIND:
-			ok = DoSocks4CmdBind();
-			break;
-		
-		case wxPROXY_CMD_UDP_ASSOCIATE:
-			// No UDP in SOCKS4
-			ok = false;
-			break;
-		}
-	}
-	return ok;
-}
-
-bool amuleProxy::DoSocks4Request(wxIPaddress &address, wxProxyCommand cmd)
-{
-	// Prepare the request command buffer
-	m_buffer[0] = SOCKS4_VERSION;
-	switch (cmd) {
-	case wxPROXY_CMD_CONNECT:
-		m_buffer[1] = SOCKS4_CMD_CONNECT;
-		break;
-		
-	case wxPROXY_CMD_BIND:
-		m_buffer[1] = SOCKS4_CMD_BIND;
-		break;
-		
-	case wxPROXY_CMD_UDP_ASSOCIATE:
-		/* Not supported, cannot happen */
-		return false;
-	}
-	*((uint16 *)(m_buffer+2)) = htons(address.Service());
-	*((uint32 *)(m_buffer+4)) = StringIPtoUint32(address.IPAddress());
-	unsigned int OffsetUser = 8;
-	unsigned char LenUser = m_ProxyData.m_UserName.Len();
-	memcpy(m_buffer+OffsetUser, unicode2char(m_ProxyData.m_UserName),
-		LenUser);
-	unsigned int LenPacket = 1 + 1 + 2 + 4 + LenUser + 1 ;
-	
-	// Send the command packet
-	m_ProxyClientSocket->Write(m_buffer, LenPacket);
-
-	// Check the if the write operation succeded
-	bool ok =
-		!m_ProxyClientSocket->Error() &&
-		m_ProxyClientSocket->LastCount() == LenPacket;
-
-	return ok;
-}
-
-bool amuleProxy::DoSocks4Reply(void)
-{
-	// Receive the server's reply
-	unsigned int LenPacket = 8;
-	m_ProxyClientSocket->Read(m_buffer, LenPacket);
-	m_LastReply = m_buffer[1];
-
-	// Process the server's reply
-	bool ok =
-		!m_ProxyClientSocket->Error() &&
-		m_ProxyClientSocket->LastCount() == LenPacket &&
-		m_buffer[0] == SOCKS4_VERSION &&
-		m_buffer[1] == SOCKS4_REPLY_GRANTED;
-	if (ok) {
-		// Read BND.PORT
-		const unsigned int Port_offset = 2;
-		m_ProxyBoundAddressIPV4.Service(ntohs(
-			*((uint16 *)(m_buffer+Port_offset)) ));
-		// Read BND.ADDR
-		const unsigned int Addr_offset = 4;
-		m_ProxyBoundAddressIPV4.Hostname(Uint32toStringIP(
-			*((uint32 *)(m_buffer+Addr_offset)) ));
-		m_ProxyBoundAddress = &m_ProxyBoundAddressIPV4;
-	}
-
-	return ok;
-}
-
-bool amuleProxy::DoSocks4CmdConnect(void)
-{
-	// Nothing to do here.
-	
-	return true;
-}
-
-bool amuleProxy::DoSocks4CmdBind(void)
-{
-	// TODO
-	bool ok = false;
-	
-	return ok;
-}
-
-bool amuleProxy::DoSocks5(wxIPaddress &address, wxProxyCommand cmd)
-{
-	// Use the short circuit evaluation
-	bool ok = 
-		DoSocks5Authentication() && 
-		DoSocks5Request(address, cmd) &&
-		DoSocks5Reply();
-	if (ok) {
-		switch(cmd)
-		{
-		case wxPROXY_CMD_CONNECT:
-			ok = DoSocks5CmdConnect();
-			break;
-		
-		case wxPROXY_CMD_BIND:
-			ok = DoSocks5CmdBind();
-			break;
-		
-		case wxPROXY_CMD_UDP_ASSOCIATE:
-			ok = DoSocks5CmdUDPAssociate();
-			break;
-		}
-	}
-
-	return ok;
-}
-
-bool amuleProxy::DoSocks5Authentication(void)
-{
-	// Prepare the authentication method negotiation packet
-	m_buffer[0] = SOCKS5_VERSION;
-	m_buffer[1] = 2; // Number of supported methods
-	//m_buffer[1] = 3; // Number of supported methods
-	m_buffer[2] = SOCKS5_AUTH_METHOD_NO_AUTH_REQUIRED;
-	m_buffer[3] = SOCKS5_AUTH_METHOD_USERNAME_PASSWORD;
-	m_buffer[4] = SOCKS5_AUTH_METHOD_GSSAPI;
-	unsigned int LenPacket = 4;
-	//unsigned int LenPacket = 5;
-
-	// Send the authentication method negotiation packet
-	m_ProxyClientSocket->Write(m_buffer, LenPacket);	
-	bool ok =
-		!m_ProxyClientSocket->Error() &&
-		m_ProxyClientSocket->LastCount() == LenPacket;
-	if (ok) {
-		// Receive the method selection message
-		LenPacket = 2;
-		m_ProxyClientSocket->Read(m_buffer, LenPacket);
-		m_LastReply = m_buffer[1];
-		ok =	!m_ProxyClientSocket->Error() &&
-			m_ProxyClientSocket->LastCount() == LenPacket &&
-			m_buffer[0] == SOCKS5_VERSION;
-		if (ok) {
-			// Process the result
-			switch (m_LastReply)
-			{
-			case SOCKS5_AUTH_METHOD_NO_AUTH_REQUIRED:
-				break;
-			
-			case SOCKS5_AUTH_METHOD_GSSAPI:
-				ok = DoSocks5AuthenticationGSSAPI();
-				break;
-			
-			case SOCKS5_AUTH_METHOD_USERNAME_PASSWORD:
-				ok = DoSocks5AuthenticationUsernamePassword();
-				break;
-			
-			case SOCKS5_AUTH_METHOD_NO_ACCEPTABLE_METHODS:
-			default:
-				ok = false;
-				break;
-			}
-		}
-	}
-		
-	return ok;
-}
-
-bool amuleProxy::DoSocks5AuthenticationGSSAPI(void)
-{
-	// TODO or not TODO? That is the question...
-	return false;
-}
-
-bool amuleProxy::DoSocks5AuthenticationUsernamePassword(void)
-{
-	unsigned char LenUser = m_ProxyData.m_UserName.Len();
-	unsigned char LenPassword = m_ProxyData.m_Password.Len();
-	unsigned int LenPacket = 1 + 1 + LenUser + 1 + LenPassword;
-	unsigned int OffsetUser = 2;
-	unsigned int OffsetPassword = OffsetUser + LenUser + 1;
-	
-	// Prepare username/password buffer
-	m_buffer[0] = SOCKS5_AUTH_VERSION_USERNAME_PASSWORD;
-	m_buffer[OffsetUser-1] = LenUser;
-	memcpy(m_buffer+OffsetUser, unicode2char(m_ProxyData.m_UserName),
-		LenUser);
-	m_buffer[OffsetPassword-1] = LenPassword;
-	memcpy(m_buffer+OffsetPassword, unicode2char(m_ProxyData.m_Password),
-		LenPassword);
-
-	// Send the username/password packet
-	m_ProxyClientSocket->Write(m_buffer, LenPacket);
-	bool ok =
-		!m_ProxyClientSocket->Error() &&
-		m_ProxyClientSocket->LastCount() == LenPacket;
-	if (ok) {
-		// Receive the server's authentication response
-		LenPacket = 2;
-		m_ProxyClientSocket->Read(m_buffer, LenPacket);
-		m_LastReply = m_buffer[1];
-
-		// Process the server's reply
-		ok = 	!m_ProxyClientSocket->Error() &&
-			m_ProxyClientSocket->LastCount() == LenPacket &&
-			m_buffer[0] == SOCKS5_AUTH_VERSION_USERNAME_PASSWORD &&
-			m_buffer[1] == SOCKS5_REPLY_SUCCEED;
-	}
-	
-	return ok;
-}
-
-bool amuleProxy::DoSocks5Request(wxIPaddress &address, wxProxyCommand cmd)
-{
-	// Prepare the request command buffer
-	m_buffer[0] = SOCKS5_VERSION;
-	switch (cmd) {
-	case wxPROXY_CMD_CONNECT:
-		m_buffer[1] = SOCKS5_CMD_CONNECT;
-		break;
-		
-	case wxPROXY_CMD_BIND:
-		m_buffer[1] = SOCKS5_CMD_BIND;
-		break;
-		
-	case wxPROXY_CMD_UDP_ASSOCIATE:
-		m_buffer[1] = SOCKS5_CMD_UDP_ASSOCIATE;
-		break;
-	}
-	m_buffer[2] = SOCKS5_RSV;
-	m_buffer[3] = SOCKS5_ATYP_IPV4_ADDRESS;
-	*((uint32 *)(m_buffer+4)) = StringIPtoUint32(address.IPAddress());
-	*((uint16 *)(m_buffer+8)) = htons(address.Service());
-	unsigned int LenPacket = 10;
-	
-	// Send the command packet
-	m_ProxyClientSocket->Write(m_buffer, LenPacket);
-
-	// Check the if the write operation succeded
-	bool ok =
-		!m_ProxyClientSocket->Error() &&
-		m_ProxyClientSocket->LastCount() == LenPacket;
-
-	return ok;
-}
-
-bool amuleProxy::DoSocks5Reply(void)
-{
-	// Receive the server's reply -- read 4 bytes
-	unsigned int LenPacket = 4;
-	m_ProxyClientSocket->Read(m_buffer, LenPacket);
-	m_LastReply = m_buffer[1];
-	unsigned char AddressType = m_buffer[3];
-
-	// Process the server's reply
-	bool ok =
-		!m_ProxyClientSocket->Error() &&
-		m_ProxyClientSocket->LastCount() == LenPacket &&
-		m_buffer[0] == SOCKS5_VERSION &&
-		m_buffer[1] == SOCKS5_REPLY_SUCCEED;
-	if (ok) {
-		// Read BND.ADDR
-		unsigned int Port_offset = 0;
-		switch(AddressType) {
-		case SOCKS5_ATYP_IPV4_ADDRESS:
-		{
-			const unsigned int Addr_offset = 4;
-			Port_offset = 8;
-			LenPacket = 4;
-			m_ProxyClientSocket->Read(m_buffer+Addr_offset, LenPacket);
-			ok = 	!m_ProxyClientSocket->Error() &&
-				m_ProxyClientSocket->LastCount() == LenPacket;
-			if (ok) {
-				wxString strAddr = Uint32toStringIP(
-					*((uint32 *)(m_buffer+Addr_offset)) );
-				ok = m_ProxyBoundAddressIPV4.Hostname(strAddr);
-				m_ProxyBoundAddress = &m_ProxyBoundAddressIPV4;
-			}
-			break;
-		}
-		case SOCKS5_ATYP_DOMAINNAME:
-		{
-			// Read the size
-			LenPacket = 1;
-			m_ProxyClientSocket->Read(m_buffer+4, LenPacket);
-			ok = 	!m_ProxyClientSocket->Error() &&
-				m_ProxyClientSocket->LastCount() == LenPacket;
-			if (ok) {
-				LenPacket = m_buffer[4];
-				const unsigned int Addr_offset = 5;
-				Port_offset = Addr_offset + LenPacket;
-				// Read the address
-				m_ProxyClientSocket->Read(m_buffer+Addr_offset,
-					LenPacket);
-				ok =	!m_ProxyClientSocket->Error() &&
-					m_ProxyClientSocket->LastCount() == LenPacket;
-				if (ok) {
-					m_buffer[Port_offset] = 0;
-					m_ProxyBoundAddressIPV4.Hostname(
-						char2unicode(m_buffer+Addr_offset));
-					m_ProxyBoundAddress = &m_ProxyBoundAddressIPV4;
-				}
-			}
-			break;
-		}
-		case SOCKS5_ATYP_IPV6_ADDRESS:
-		{
-			const unsigned int Addr_offset = 4;
-			Port_offset = 20;
-			LenPacket = 16;
-			m_ProxyClientSocket->Read(m_buffer+Addr_offset, LenPacket);
-			ok =	!m_ProxyClientSocket->Error() &&
-				m_ProxyClientSocket->LastCount() == LenPacket;
-			// TODO
-			// IPV6 not yet implemented in wx
-			//m_ProxyBoundAddress.Hostname(Uint128toStringIP(
-			//	*((uint128 *)(m_buffer+Addr_offset)) ));
-			//m_ProxyBoundAddress = &m_ProxyBoundAddressIPV6;
-			ok = false;
-			break;
-		}
-		}
-		if (ok) {
-			// Read BND.PORT
-			LenPacket = 2;
-			m_ProxyClientSocket->Read(m_buffer+Port_offset, LenPacket);
-			ok =	!m_ProxyClientSocket->Error() &&
-				m_ProxyClientSocket->LastCount() == LenPacket &&
-				m_ProxyBoundAddress->Service(ntohs(
-					*((uint16 *)(m_buffer+Port_offset)) ));
-		}
-	}
-
-	return ok;
-}
-
-bool amuleProxy::DoSocks5CmdConnect(void)
-{
-	// Nothing to do here.
-	
-	return true;
-}
-
-bool amuleProxy::DoSocks5CmdBind(void)
-{
-	// TODO
-	bool ok = false;
-	
-	return ok;
-}
-
-bool amuleProxy::DoSocks5CmdUDPAssociate(void)
-{
-	// Nothing to do here.
-	
-	return true;
 }
 
 bool amuleProxy::DoHttp(wxIPaddress &address, wxProxyCommand cmd)
@@ -1214,6 +1032,8 @@ wxSocketClient(flags)
 			break;
 		
 		case wxPROXY_SOCKS4:
+			m_ProxyStateMachine =
+				new Socks4StateMachine(*ProxyData, ProxyCommand);
 			break;
 		
 		case wxPROXY_HTTP:
@@ -1260,6 +1080,7 @@ bool amuleProxyClientSocket::Start(const wxIPaddress &PeerAddress)
 	// the next input event.
 //	SetFlags(wxSOCKET_WAITALL);
 //	SetFlags(wxSOCKET_NOWAIT);
+	// wxSOCKET_WAITALL tends to assert inside wx, while wxSOCKET_NONE behaves better.
 	SetFlags(wxSOCKET_NONE);
 	bool ok = m_ProxyStateMachine->Start(PeerAddress, this);
 	RestoreState();
