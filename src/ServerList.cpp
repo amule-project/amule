@@ -83,7 +83,7 @@ uint8 CServerList::AutoUpdate()
 	uint8 url_count = app_prefs->adresses_list.GetCount();
 	
 	if (!url_count) {
-		wxMessageBox(CString(_("No serverlist address entry in 'addresses.dat' found. Please paste a valid serverlist address into this file in order to auto-update your serverlist")),CString(_("Unable to retrieve serverlist")),wxICON_ERROR|wxCENTRE|wxOK);
+		wxMessageBox(_("No serverlist address entry in 'addresses.dat' found. Please paste a valid serverlist address into this file in order to auto-update your serverlist"),_("Unable to retrieve serverlist"),wxICON_ERROR|wxCENTRE|wxOK);
 		return 0;
 	}
 	
@@ -104,7 +104,7 @@ uint8 CServerList::AutoUpdate()
 			if(retval==0) {
 				temp_count++;		
 			} else {
-				theApp.amuledlg->AddLogLine(true, CString(_("Failed to download the serverlist from %s")).GetData(), strURLToDownload.GetData());
+				theApp.amuledlg->AddLogLine(true, _("Failed to download the serverlist from %s"), strURLToDownload.GetData());
 			}
 			delete dlg;
 		}
@@ -112,7 +112,7 @@ uint8 CServerList::AutoUpdate()
 
 	wxASSERT(temp_count <= url_count);
 	if (temp_count < url_count) {
-		theApp.amuledlg->AddLogLine(true, CString(_("%u auto-update serverlist entries failed loading")).GetData(), (url_count - temp_count));
+		theApp.amuledlg->AddLogLine(true, _("%u auto-update serverlist entries failed loading"), (url_count - temp_count));
 	}
 	
 	return temp_count;
@@ -126,7 +126,7 @@ bool CServerList::Init()
 		auto_count=AutoUpdate();
 	}
 	// Load Metfile
-	CString strTempFilename;
+	wxString strTempFilename;
 	printf("*** reading servers\n");
 	strTempFilename = theApp.ConfigDir + wxT("server.met");
 	bool bRes = AddServermetToList(strTempFilename, false);
@@ -144,7 +144,7 @@ bool CServerList::Init()
 	return bRes;
 }
 
-bool CServerList::AddServermetToList(CString strFile, bool merge)
+bool CServerList::AddServermetToList(const wxString& strFile, bool merge)
 {
 	if (!theApp.amuledlg || !theApp.amuledlg->serverwnd || !theApp.amuledlg->serverwnd->serverlistctrl) {
 		return false;
@@ -156,18 +156,18 @@ bool CServerList::AddServermetToList(CString strFile, bool merge)
 	}
 	CSafeFile servermet;
 	if(!wxFileExists(strFile)) {
-		theApp.amuledlg->AddLogLine(false, CString(_("Failed to load server.met!")));
+		theApp.amuledlg->AddLogLine(false, _("Failed to load server.met!"));
 		return false;
 	}
 
 	if (!servermet.Open(strFile,CFile::read)){ //CFile::modeRead|CFile::osSequentialScan)) {
-		theApp.amuledlg->AddLogLine(false, CString(_("Failed to load server.met!")));
+		theApp.amuledlg->AddLogLine(false, _("Failed to load server.met!"));
 		return false;
 	}
 
 	if ( (1 != servermet.Read(&version,1)) || (version != 0xE0 && version != MET_HEADER)) {
 		servermet.Close();
-		theApp.amuledlg->AddLogLine(false,CString(_("Invalid versiontag in server.met (0x%i , size %i)!")),version, sizeof(version));
+		theApp.amuledlg->AddLogLine(false,_("Invalid versiontag in server.met (0x%i , size %i)!")),version, sizeof(version);
 		return false;
 	}
 
@@ -230,13 +230,13 @@ bool CServerList::AddServermetToList(CString strFile, bool merge)
 		theApp.amuledlg->serverwnd->serverlistctrl->Thaw();
     
 		if (!merge) {
-			theApp.amuledlg->AddLogLine(true,CString(_("%i servers in server.met found")),fservercount);
+			theApp.amuledlg->AddLogLine(true,_("%i servers in server.met found"),fservercount);
 		} else {
-			theApp.amuledlg->AddLogLine(true,CString(_("%d servers added")), iAddCount, fservercount-iAddCount);
+			theApp.amuledlg->AddLogLine(true,_("%d servers added"), iAddCount, fservercount-iAddCount);
 		}
 	}
 	catch (CInvalidPacket) {
-		theApp.amuledlg->AddLogLine(true,CString(_("Error: the file server.met is corrupted")));
+		theApp.amuledlg->AddLogLine(true,_("Error: the file server.met is corrupted"));
 		servermet.Close();
 		return false;
 	}
@@ -549,7 +549,7 @@ void CServerList::AddServersFromTextFile(wxString strFilename,bool isstaticserve
 
 		// emanuelw(20030924) added: create log entry
 		if(writetolog == true) {
-			theApp.amuledlg->AddLogLine(true,CString(_("Server added: "))+CString(nsrv->GetAddress())); 
+			theApp.amuledlg->AddLogLine(true,wxString(_("Server added: "))+wxString(nsrv->GetAddress())); 
 		}
 
 		if (!theApp.amuledlg->serverwnd->serverlistctrl->AddServer(nsrv, true))	{
@@ -780,11 +780,11 @@ bool CServerList::SaveServermetToFile()
 {
 	m_nLastSaved=::GetTickCount(); // oops.. don't save ALL the time :)
 
-	CString newservermet(theApp.ConfigDir + wxT("server.met.new"));
+	wxString newservermet(theApp.ConfigDir + wxT("server.met.new"));
 	CFile servermet;
 	servermet.Open(newservermet, CFile::write);
 	if (!servermet.IsOpened()) {
-		theApp.amuledlg->AddLogLine(false,CString(_("Failed to save server.met!")));
+		theApp.amuledlg->AddLogLine(false,_("Failed to save server.met!"));
 		return false;
 	}
 
@@ -849,8 +849,8 @@ bool CServerList::SaveServermetToFile()
 	
 	servermet.Flush();
 	servermet.Close();
-	CString curservermet(theApp.ConfigDir + wxT("server.met"));
-	CString oldservermet(theApp.ConfigDir + wxT("server_met.old"));
+	wxString curservermet(theApp.ConfigDir + wxT("server.met"));
+	wxString oldservermet(theApp.ConfigDir + wxT("server_met.old"));
 	if ( wxFileExists(oldservermet) ) {
 		wxRemoveFile(oldservermet);
 	}

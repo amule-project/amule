@@ -26,7 +26,6 @@
 
 #include "types.h"		// Needed for uint8, uint16, uint32 and uint64
 #include "EMSocket.h"		// Needed for CEMSocket
-#include "CString.h"
 #include <wx/dynarray.h>
 
 WX_DECLARE_OBJARRAY(wxString, ArrayOfwxStrings);
@@ -70,7 +69,7 @@ public:
 
 	CClientReqSocket(CPreferences* in_prefs, CUpDownClient* in_client = 0);	
 	~CClientReqSocket();
-	void		Disconnect(CString strReason);
+	void		Disconnect(const wxString& strReason);
 
 
 	void		ResetTimeOutTimer();

@@ -1708,13 +1708,13 @@ void CamuleApp::OnCoreTimer(wxTimerEvent& WXUNUSED(evt))
 
 	if (msCur-msPrevSave >= 60000) {
 		msPrevSave = msCur;
-		CString buffer;
+		wxString buffer;
 		
 		wxConfigBase* cfg = wxConfig::Get();
-		buffer.Format(wxT("%llu"),stat_sessionReceivedBytes+glob_prefs->GetTotalDownloaded());
+		buffer.Printf(wxT("%llu"),stat_sessionReceivedBytes+glob_prefs->GetTotalDownloaded());
 		cfg->Write(wxT("/Statistics/TotalDownloadedBytes"), buffer);
 
-		buffer.Format(wxT("%llu"),stat_sessionSentBytes+glob_prefs->GetTotalUploaded());
+		buffer.Printf(wxT("%llu"),stat_sessionSentBytes+glob_prefs->GetTotalUploaded());
 		cfg->Write(wxT("/Statistics/TotalUploadedBytes"), buffer);
 	}
 

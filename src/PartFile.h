@@ -63,7 +63,7 @@ class CPartFile : public CKnownFile {
 public:
 	CPartFile();
 	CPartFile(CSearchFile* searchresult);  //used when downloading a new file
-	CPartFile(CString edonkeylink);
+	CPartFile(const wxString& edonkeylink);
 	CPartFile(class CED2KFileLink* fileLink);
 	void InitializeFromLink(CED2KFileLink* fileLink);
 	virtual ~CPartFile();
@@ -112,7 +112,7 @@ public:
 	int	GetValidSourcesCount();
 	uint32	GetNeededSpace();
 	
-	CString CPartFile::getPartfileStatus(); //<<--9/21/02
+	wxString CPartFile::getPartfileStatus(); //<<--9/21/02
 	sint32	CPartFile::getTimeRemaining(); //<<--9/21/02
 	time_t	lastseencomplete;
 	int		getPartfileStatusRang();

@@ -29,12 +29,12 @@
 
 #include "types.h"		// Needed for int8, int16, int32, int64, uint8, uint16, uint32 and uint64
 
-#include "CString.h"		// Needed for CStringList
 #include "MD5Sum.h"		// Needed for MD5Sum
+#include "otherfunctions.h"
+#include "CString.h"
 #include "PrefsUnifiedDlg.h"			// Needed for UNIFIED_PREF_HANDLING
 #include <wx/dynarray.h>
 
-class CString;
 class Rse;
 
 #ifndef MAX_PATH
@@ -353,7 +353,6 @@ public:
 	bool	Reconnect()			{return prefs->reconnect;}
 	int8	DeadServer()			{return prefs->deadserver;}
 	char*	GetUserNick()			{return prefs->nick;}
-//	void	SetUserNick(CString in)		{sprintf(prefs->nick,"%s",in.GetData());}
 	void	SetUploadlimit(uint16 in)	{ prefs->maxupload=in;}
 	void	SetDownloadlimit(uint16 in)	{ prefs->maxdownload=in;}
 
@@ -470,7 +469,7 @@ public:
 	void	SetCreditSystem(bool m_bInCreditSystem)	{prefs->m_bCreditSystem = m_bInCreditSystem;}
 
 //	char*	GetTxtEditor()				{return prefs->TxtEditor;}
-	CString	GetVideoPlayer()			{if (strlen(prefs->VideoPlayer)==0) return wxT(""); else return CString(prefs->VideoPlayer);}
+	wxString	GetVideoPlayer()			{if (strlen(prefs->VideoPlayer)==0) return wxT(""); else return wxString(char2unicode(prefs->VideoPlayer));}
 
 	uint32	GetFileBufferSize()			{return prefs->m_iFileBufferSize*15000;}
 	uint32	GetQueueSize()				{return prefs->m_iQueueSize*100;}
@@ -493,7 +492,6 @@ public:
 	int32	GetMinFreeDiskSpace()		{return prefs->m_uMinFreeDiskSpace;}
 
 	char*	GetYourHostname()			{return prefs->yourHostname;}
-	//void	SetYourHostname(CString in)		{sprintf(prefs->yourHostname,"%s",in.GetData());}
 
 	// quick-speed changer [xrmb]
 	void	SetMaxUpload(uint16 in) 		{prefs->maxupload =in;};
@@ -512,13 +510,11 @@ public:
 //	uint32 	GetLastVC()			{return prefs->versioncheckLastAutomatic;}
 //	void   	UpdateLastVC()			{prefs->versioncheckLastAutomatic=time(NULL);}
 	int32	GetIPFilterLevel()		{ return prefs->filterlevel;}
-//	CString GetMessageFilter()		{ return CString(prefs->messageFilter);}
-//	CString GetCommentFilter()		{ return CString(prefs->commentFilter);}
 //	bool	ShowRatesOnTitle()		{ return prefs->showRatesInTitle;}
 //	char*   GetNotifierConfiguration()   	{return prefs->notifierConfiguration;}; //<<-- enkeyDEV(kei-kun) -skinnable notifier-
 	//void    SetNotifierConfiguration(CString configFullPath) {sprintf(prefs->notifierConfiguration,"%s",configFullPath.GetData()); } //<<-- enkeyDEV(kei-kun) -skinnable notifier-
 	void	LoadCats();
-	CString	GetDateTimeFormat()		{ return CString(prefs->datetimeformat);}
+	wxString	GetDateTimeFormat()		{ return wxString(char2unicode(prefs->datetimeformat));}
 	// Download Categories (Ornis)
 	int32	AddCat(Category_Struct* cat) 	{ catMap.Add(cat); return catMap.GetCount()-1;}
 	void	RemoveCat(size_t index);
@@ -542,8 +538,7 @@ public:
 	// WebServer
 	uint16	GetWSPort()			{ return prefs->m_nWebPort; }
 	void	SetWSPort(uint16 uPort)		{ prefs->m_nWebPort=uPort; }
-	CString	GetWSPass()			{ return CString(prefs->m_sWebPassword); }
-	//void	SetWSPass(CString strNewPass)	{ sprintf(prefs->m_sWebPassword,"%s",unicode2char(MD5Sum(strNewPass).GetHash().GetData())); }
+	wxString	GetWSPass()			{ return wxString(char2unicode(prefs->m_sWebPassword)); }
 	bool	GetWSIsEnabled()		{ return prefs->m_bWebEnabled; }
 	void	SetWSIsEnabled(bool bEnable)	{ prefs->m_bWebEnabled=bEnable; }
 	bool	GetWebUseGzip()			{ return prefs->m_bWebUseGzip; }
@@ -552,8 +547,7 @@ public:
 	void	SetWebPageRefresh(int nRefresh)	{ prefs->m_nWebPageRefresh=nRefresh; }
 	bool	GetWSIsLowUserEnabled()		{ return prefs->m_bWebLowEnabled; }
 	void	SetWSIsLowUserEnabled(bool in)	{ prefs->m_bWebLowEnabled=in; }
-	CString	GetWSLowPass()			{ return CString(prefs->m_sWebLowPassword); }
-	//void	SetWSLowPass(CString strNewPass){ sprintf(prefs->m_sWebLowPassword,"%s",unicode2char(MD5Sum(strNewPass).GetHash().GetData())); }
+	wxString	GetWSLowPass()			{ return wxString(char2unicode(prefs->m_sWebLowPassword)); }
 
 	void	SetMaxSourcesPerFile(uint16 in)	{ prefs->maxsourceperfile=in;}
 	void	SetMaxConnections(uint16 in)	{ prefs->maxconnections =in;}
@@ -564,8 +558,6 @@ public:
 	bool	MsgOnlySecure()			{ return prefs->msgsecure;}
 //	uint16	GetMsgSessionsMax()		{ return prefs->maxmsgsessions;}
 
-//	CString	GetTemplate()			{ return CString(prefs->m_sTemplateFile);}
-//	void	SetTemplate(CString in)		{ sprintf(prefs->m_sTemplateFile,"%s",in.GetData());}
 
 	int32 	GetDesktopMode() 		{return prefs->desktopMode;}
 	void 	SetDesktopMode(int mode)	{prefs->desktopMode=mode;}
@@ -598,7 +590,7 @@ public:
 	bool 	AcceptExternalConnections() { return prefs->AcceptExternalConnections; }
 	bool 	ECUseTCPPort() { return prefs->ECUseTCPPort; }
 	int32	ECPort() { return prefs->ECPort; }
-	CString	ECPassword() { return CString(prefs->ECPassword); }
+	wxString	ECPassword() { return wxString(char2unicode(prefs->ECPassword)); }
 	// Madcat - Fast ED2K Links Handler Toggling
 	bool	GetFED2KLH() { return prefs->FastED2KLinksHandler; }
 	bool	BDlgTabsOnTop()	{ 
