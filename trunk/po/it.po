@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2004-11-16 23:38+0100\n"
-"PO-Revision-Date: 2004-11-23 00:07+0100\n"
-"Last-Translator: ilbuio <ilbuio.bnf@iol.it>\n"
+"PO-Revision-Date: 2004-11-23 13:29+0100\n"
+"Last-Translator: GhePeU <ghepeu@virgilio.it>\n"
 "Language-Team: Italian\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -439,7 +439,7 @@ msgstr "Sconosciuto"
 #: src/BaseClient.cpp:1375
 #, c-format
 msgid " (Fake eMule version %x)"
-msgstr " (falsa versione %x di eMule)"
+msgstr " (simula versione %x di eMule)"
 
 #: src/BaseClient.cpp:1393
 msgid "Old MlDonkey"
@@ -863,7 +863,7 @@ msgstr "Connessione in corso attraverso il server"
 #: src/ClientListCtrl.cpp:569 src/ClientListCtrl.cpp:960
 #: src/DownloadListCtrl.cpp:1185
 msgid "Transferring"
-msgstr "Trasferimento in corso"
+msgstr "In trasferimento"
 
 #: src/ClientListCtrl.cpp:598 src/ClientListCtrl.cpp:953
 #: src/DownloadListCtrl.cpp:1146 src/DownloadListCtrl.cpp:1179
@@ -947,7 +947,7 @@ msgstr "Inviati"
 
 #: src/ClientListCtrl.cpp:907
 msgid "Download Status"
-msgstr "Status download"
+msgstr "Stato download"
 
 #: src/ClientListCtrl.cpp:908
 msgid "Transferred Down"
@@ -1101,7 +1101,7 @@ msgstr "Opzioni avanzate"
 
 #: src/DownloadListCtrl.cpp:295 src/SearchListCtrl.cpp:332
 msgid "Get Razorback 2's stats for this file"
-msgstr "Vedi statistiche Razorback 2 per questo file"
+msgstr "Vedi statistiche Razorback 2 del file"
 
 #: src/DownloadListCtrl.cpp:299 src/SearchListCtrl.cpp:334
 msgid "jugle.net Fake Check"
@@ -1934,7 +1934,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:124
 msgid "Pop-up status text"
-msgstr "Apri finestra di stato"
+msgstr "Apri pop-up"
 
 #: src/muuli_wdr.cpp:127
 msgid "Loading ..."
@@ -2145,7 +2145,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:457
 msgid "Shows Upload / Up-queue"
-msgstr "Mostra Upload / Coda Upload"
+msgstr "Mostra Upload / Coda Upload / Client"
 
 #: src/muuli_wdr.cpp:460 src/StatisticsDlg.cpp:606 src/TransferWnd.cpp:407
 msgid "Uploads"
@@ -2271,7 +2271,7 @@ msgstr "Trasferiti:"
 
 #: src/muuli_wdr.cpp:695
 msgid "Completed Size :"
-msgstr "Dimensione completata:"
+msgstr "Completati:"
 
 #: src/muuli_wdr.cpp:719
 msgid " / ("
@@ -2335,7 +2335,7 @@ msgstr "Senza voto"
 
 #: src/muuli_wdr.cpp:858 src/otherfunctions.cpp:253
 msgid "Invalid / Corrupt / Fake"
-msgstr "Invalido / Corrotto / Falso"
+msgstr "Non valido / Corrotto / Falso"
 
 #: src/muuli_wdr.cpp:859 src/otherfunctions.cpp:254
 msgid "Poor"
@@ -2438,7 +2438,7 @@ msgstr "Upload attivi:"
 
 #: src/muuli_wdr.cpp:1171
 msgid "Download-Speed"
-msgstr "Velocità download"
+msgstr "Velocità di download"
 
 #: src/muuli_wdr.cpp:1180 src/muuli_wdr.cpp:1301
 msgid "Current"
@@ -2494,7 +2494,7 @@ msgstr "Download in corso:"
 
 #: src/muuli_wdr.cpp:1468
 msgid "Downloaded (this session) :"
-msgstr "Scaricati (questa sessione):"
+msgstr "Scaricati (in questa sessione):"
 
 #: src/muuli_wdr.cpp:1471
 msgid "Average downloadrate :"
@@ -2502,11 +2502,11 @@ msgstr "Velocità media download:"
 
 #: src/muuli_wdr.cpp:1474
 msgid "Downloaded total :"
-msgstr "Scaricati totale:"
+msgstr "Scaricati in totale:"
 
 #: src/muuli_wdr.cpp:1497
 msgid "Uploaded (this session) :"
-msgstr "Inviati (questa sessione):"
+msgstr "Inviati (in questa sessione):"
 
 #: src/muuli_wdr.cpp:1500
 msgid "Average Uploadrate :"
@@ -2514,7 +2514,7 @@ msgstr "Velocità media upload:"
 
 #: src/muuli_wdr.cpp:1503
 msgid "Uploaded total :"
-msgstr "Inviati totale:"
+msgstr "Inviati in totale:"
 
 #: src/muuli_wdr.cpp:1528
 msgid "Scores"
@@ -2806,7 +2806,7 @@ msgid ""
 "menu-item from the dropdown-menu above."
 msgstr ""
 "Inserisci il nome del tuo browser. Per usare un browser diverso, seleziona "
-"Browser Personalizzato nel presente menu."
+"Browser Personalizzato nel menu."
 
 #: src/muuli_wdr.cpp:1736
 msgid "Open in new tab if possible"
@@ -2843,7 +2843,8 @@ msgstr "Capacità linea"
 msgid ""
 "Note: These values are\n"
 " only used for statistics."
-msgstr "Nota: questi valori sono\n usati solo nelle statistiche."
+msgstr "Nota: questi valori sono\n"
+" usati solo nelle statistiche."
 
 #: src/muuli_wdr.cpp:1854
 msgid "Client TCP Port:"
@@ -2903,7 +2904,7 @@ msgstr "tentativi"
 
 #: src/muuli_wdr.cpp:1975
 msgid "Auto-update serverlist at startup"
-msgstr "Aggiorna automaticamente la lista dei server all'avvio"
+msgstr "Aggiorna la lista dei server all'avvio"
 
 #: src/muuli_wdr.cpp:1978
 msgid "List"
@@ -2931,7 +2932,7 @@ msgstr "Connessione sicura"
 
 #: src/muuli_wdr.cpp:2001
 msgid "Autoconnect to servers in static list only"
-msgstr "Connetti automaticamente solo ai server della lista statica"
+msgstr "Connetti automaticamente solo ai server statici"
 
 #: src/muuli_wdr.cpp:2004
 msgid "Set manually added servers to High Priority"
@@ -3069,7 +3070,7 @@ msgstr "mplayer -idx"
 
 #: src/muuli_wdr.cpp:2190
 msgid "Create Backup to preview"
-msgstr "Crea copia di backup per anteprima"
+msgstr "Crea copia di backup per l'anteprima"
 
 #: src/muuli_wdr.cpp:2219 src/WebServer.cpp:719
 msgid "Graphs"
@@ -3077,7 +3078,7 @@ msgstr "Grafici"
 
 #: src/muuli_wdr.cpp:2222 src/muuli_wdr.cpp:2273
 msgid "Update delay : 5 secs"
-msgstr "Intervallo aggiornamento: 5 sec"
+msgstr "Intervallo di aggiornamento: 5 sec"
 
 #: src/muuli_wdr.cpp:2228
 msgid "Time for average graph: 100 mins"
@@ -3173,7 +3174,7 @@ msgstr "Aggiunta o conclusione di un download"
 
 #: src/muuli_wdr.cpp:2345
 msgid "New aMule version detected"
-msgstr "Nuova versione di aMule"
+msgstr "Nuova versione di aMule disponibile"
 
 #: src/muuli_wdr.cpp:2349
 msgid "Urgent OOD, serverconnection lost"
@@ -3252,7 +3253,7 @@ msgstr "Dimensione coda upload: 5000 client"
 
 #: src/muuli_wdr.cpp:2463
 msgid "Server connection refresh interval: Disable"
-msgstr "Intervallo aggiornamento connessione al server: disabilitato"
+msgstr "Intervallo di aggiornamento connessione al server: disabilitato"
 
 #: src/muuli_wdr.cpp:2490
 msgid "GUI Tweaks"
@@ -3315,11 +3316,11 @@ msgstr "Mostra velocità di trasferimento nella barra del titolo"
 
 #: src/muuli_wdr.cpp:2587
 msgid "Source Dropping"
-msgstr "Gestione rilascio fonti"
+msgstr "Gestione fonti"
 
 #: src/muuli_wdr.cpp:2587
 msgid "Sources Dropping"
-msgstr "Gestione rilascio fonti"
+msgstr "Gestione fonti"
 
 #: src/muuli_wdr.cpp:2594
 msgid "Keep sources"
@@ -3394,7 +3395,7 @@ msgstr "Porta webserver"
 
 #: src/muuli_wdr.cpp:2691
 msgid "Page Refresh Time (in secs)"
-msgstr "Intervallo aggiornamento pagina (in sec)"
+msgstr "Intervallo di aggiornamento pagina (in sec)"
 
 #: src/muuli_wdr.cpp:2699
 msgid "Enable Gzip compression"
@@ -3508,7 +3509,7 @@ msgstr "Aggiungi server: nome"
 
 #: src/muuli_wdr.cpp:3038
 msgid "Enter the name of the new server here"
-msgstr "Inserisci quì il nome di un nuovo server"
+msgstr "Inserisci qui il nome di un nuovo server"
 
 #: src/muuli_wdr.cpp:3041 src/ServerWnd.cpp:164
 msgid "IP:Port"
@@ -3516,7 +3517,7 @@ msgstr "IP:Porta"
 
 #: src/muuli_wdr.cpp:3045
 msgid "Enter the IP of the server here, using the x.x.x.x format."
-msgstr "Inserisci quì l'IP del server, nel formato x.x.x.x"
+msgstr "Inserisci qui l'IP del server, nel formato x.x.x.x"
 
 #: src/muuli_wdr.cpp:3048 src/utils/wxCas/src/wxcasframe.cpp:747
 msgid ":"
@@ -3524,7 +3525,7 @@ msgstr ":"
 
 #: src/muuli_wdr.cpp:3052
 msgid "Enter the port of the server here."
-msgstr "Inserisci quì la porta del server."
+msgstr "Inserisci qui la porta del server."
 
 #: src/muuli_wdr.cpp:3056
 msgid "Add manually a server (fill fields to the left before) ..."
@@ -3700,7 +3701,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:3451
 msgid "Update Frequency (Secs):"
-msgstr "Frequenza aggiornamento (secondi):"
+msgstr "Frequenza di aggiornamento (secondi):"
 
 #: src/muuli_wdr.cpp:3455
 msgid "Change the frequency (in seconds) of Online Signature updates."
@@ -3712,7 +3713,7 @@ msgstr "Directory firma online:"
 
 #: src/muuli_wdr.cpp:3468
 msgid "Click here to select the directory containing the the Online Signature files."
-msgstr "Clicca quì per selezionare la directory che contiene i file di firma online."
+msgstr "Clicca qui per selezionare la directory che contiene i file di firma online."
 
 #: src/muuli_wdr.cpp:3497
 msgid "Disable/Enable"
@@ -3748,7 +3749,7 @@ msgstr "leech,leecher,Ketamine"
 
 #: src/muuli_wdr.cpp:3519
 msgid "add here the words amule should filter and block messages including it"
-msgstr "aggiungi quì le parole che aMule filtrerà rimuovendo i messaggi che le contengono"
+msgstr "aggiungi qui le parole che aMule filtrerà rimuovendo i messaggi che le contengono"
 
 #: src/muuli_wdr.cpp:3546
 msgid "Servers List Window"
@@ -3877,7 +3878,7 @@ msgstr "download in corso"
 #: src/otherfunctions.cpp:477 src/PartFile.cpp:2783 src/TransferWnd.cpp:305
 #: src/WebServer.cpp:2198
 msgid "Erroneous"
-msgstr "Errati"
+msgstr "Errato"
 
 #: src/otherfunctions.cpp:478 src/PartFile.cpp:2780 src/TransferWnd.cpp:306
 #: src/WebServer.cpp:2198
@@ -3887,7 +3888,7 @@ msgstr "In pausa"
 #: src/otherfunctions.cpp:479 src/PartFile.cpp:2794 src/TransferWnd.cpp:307
 #: src/WebServer.cpp:2198
 msgid "Stopped"
-msgstr "Fermi"
+msgstr "Fermo"
 
 #: src/otherfunctions.cpp:480 src/TransferWnd.cpp:311 src/WebServer.cpp:1525
 #: src/WebServer.cpp:2134
@@ -4139,7 +4140,7 @@ msgstr "Hashing in corso"
 
 #: src/PartFile.cpp:2774
 msgid "Completing"
-msgstr "Completamento in corso"
+msgstr "In completamento"
 
 #: src/PartFile.cpp:2777 src/WebServer.cpp:968
 msgid "Complete"
@@ -4235,13 +4236,13 @@ msgid ""
 "Add here URL's to download server.met files.\n"
 "Only one url on each line."
 msgstr ""
-"Inserisci quì l'URL da cui scaricare i file server.met.\n"
+"Inserisci qui l'URL da cui scaricare i file server.met.\n"
 "Solo un URL per riga."
 
 #: src/PrefsUnifiedDlg.cpp:751
 #, c-format
 msgid "Update delay: %d secs"
-msgstr "Intervallo aggiornamento: %d secondi"
+msgstr "Intervallo di aggiornamento: %d secondi"
 
 #: src/PrefsUnifiedDlg.cpp:756
 #, c-format
@@ -4256,7 +4257,7 @@ msgstr "Scala grafico delle connessioni: %d"
 #: src/PrefsUnifiedDlg.cpp:766
 #, c-format
 msgid "Update delay : %d secs"
-msgstr "Intervallo aggiornamento: %d secondi"
+msgstr "Intervallo di aggiornamento: %d secondi"
 
 #: src/PrefsUnifiedDlg.cpp:771
 #, c-format
@@ -4266,16 +4267,16 @@ msgstr "Dimensione buffer file: %d byte"
 #: src/PrefsUnifiedDlg.cpp:776
 #, c-format
 msgid "Upload Queue Size: %d clients"
-msgstr "Dimensione coda upload: %d client"
+msgstr "Dimensione coda di upload: %d client"
 
 #: src/PrefsUnifiedDlg.cpp:783
 #, c-format
 msgid "Server connection refresh interval: %d minutes"
-msgstr "Intervallo aggiornamento connessione ai server: %d minuti"
+msgstr "Intervallo di aggiornamento connessione ai server: %d minuti"
 
 #: src/PrefsUnifiedDlg.cpp:785
 msgid "Server connection refresh interval: Disabled"
-msgstr "Intervallo aggiornamento connessione ai server: disabilitato"
+msgstr "Intervallo di aggiornamento connessione ai server: disabilitato"
 
 #: src/SearchDlg.cpp:393
 msgid "You are not connected to a server!"
@@ -5375,7 +5376,7 @@ msgstr "Benvenuto!"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:98
 msgid "Input parameters"
-msgstr "Parametri di input"
+msgstr "Parametri di ingresso"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:109
 msgid "File to Hash"
@@ -5785,7 +5786,7 @@ msgstr "Inserire la directory contentente il file amulesig.dat"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:105
 msgid "Refresh rate interval in seconds"
-msgstr "Intervallo aggiornamento in secondi"
+msgstr "Intervallo di aggiornamento in secondi"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:121
 msgid "Generate a stat image at every refresh event"
@@ -5833,7 +5834,7 @@ msgstr "Inserire password per il login nel server FTP"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:258
 msgid "FTP update rate interval in minutes"
-msgstr "Intervallo aggiornamento FTP in minuti"
+msgstr "Intervallo di aggiornamento FTP in minuti"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:302
 msgid "Validate"
@@ -6095,7 +6096,7 @@ msgstr "Abilita o disabilita visione delle code nella finestra trasferimenti."
 
 #: src/WebServer.cpp:1751
 msgid "Refresh-Time of Pages"
-msgstr "Intervallo aggiornamento pagine"
+msgstr "Intervallo di aggiornamento pagine"
 
 #: src/WebServer.cpp:1752
 msgid "Time in seconds (zero=disabled)"
