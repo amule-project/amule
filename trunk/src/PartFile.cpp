@@ -3612,6 +3612,8 @@ CPartFile::CPartFile(CEC_PartFile_Tag *tag)
 	percentcompleted = (100.0*completedsize) / m_nFileSize;
 	completedsize = tag->SizeDone();
 
+	m_category = tag->FileCat();
+	
     // is it ok ?
     m_stopped = 0;
     

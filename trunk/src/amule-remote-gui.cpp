@@ -895,7 +895,7 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
     file->status = tag->FileStatus();
 
 	file->m_category = tag->FileCat();
-	
+
 	//
 	// Copy part/gap status
 	//
@@ -1015,6 +1015,7 @@ void CDownQueueRem::Category(CPartFile *file, uint8 cat)
 	
 	CECTag hashtag(EC_TAG_PARTFILE, file->GetFileHash());
 	hashtag.AddTag(CECTag(EC_TAG_PARTFILE_CAT, cat));
+	req.AddTag(hashtag);
 	
 	m_conn->Send(&req);
 }
