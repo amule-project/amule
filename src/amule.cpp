@@ -198,9 +198,10 @@ bool CamuleApp::OnInit()
 	unsigned int geometry_width = 800;
 	unsigned int geometry_height = 600;
 
-
+#ifndef __WXMSW__
 	// catch fatal exceptions
 	wxHandleFatalExceptions(true);
+#endif
 
 	// Apprently needed for *BSD
 	SetResourceLimits();
@@ -965,10 +966,10 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 	delete[] amulesig_path;
 } //End Added By Bouc7
 
-
 // Gracefully handle fatal exceptions and print backtrace if possible
 void CamuleApp::OnFatalException()
 {
+#ifndef __WXMSW__
 	// Close sockets first.
 	if ( listensocket )
 		listensocket->Destroy();
@@ -1000,6 +1001,7 @@ void CamuleApp::OnFatalException()
 #endif
 #ifdef __OPENBSD__
 	fprintf(stderr, "\nOOPS! - Seems like aMule crashed\n--== no BACKTRACE yet \n\n");
+#endif
 #endif
 #endif
 }
