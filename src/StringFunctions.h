@@ -62,20 +62,20 @@ static wxCSConv aMuleConv(wxT("iso8859-1"));
 	inline const wxCharBuffer unicode2charbuf(wxString x) { return aMuleConv.cWX2MB(x); };
 	inline const wxWCharBuffer char2unicode(const char* x) { return aMuleConv.cMB2WX(x); };
 	inline const wxWCharBuffer UTF82unicode (const char* x) { return wxConvUTF8.cMB2WC(x); };
+
 #else
 	inline const char* unicode2char(wxString x) { return ((const char*) x); };
 	inline const wxCharBuffer unicode2charbuf(wxString x) { return (const char*)x; };
 	inline const wxCharBuffer char2unicode(const char* x) { return x; };
 	
 	inline const wxCharBuffer UTF82unicode (const char* x) { return wxString(wxConvUTF8.cMB2WC(x)).c_str(); };
+
 #endif
 
-#define UTF82char(x) unicode2char(UTF82unicode(x))	
-	
-// Reverted to #define, the returned pointer pointed to local (already unavailable) data
+
+// Use define, the returned pointer points to local data
 #define unicode2UTF8(x)	(const char *)wxConvUTF8.cWC2MB(x.wc_str(wxConvLocal))
 #define char2UTF8(x)	(const char *)wxConvUTF8.cWC2MB(wxString(x).wc_str(wxConvLocal))
-
 	
 // Replaces "&" with "&&" in 'in' for use with text-labels
 inline wxString MakeStringEscaped(wxString in) {
