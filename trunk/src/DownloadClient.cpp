@@ -424,7 +424,8 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, CSafeMemFile* data, CPart
 		if (reqfile->GetED2KPartCount() != nED2KPartCount)
 		{
 			CString strError;
-			strError.Format(_("ProcessFileStatus - wrong part number recv=%u  expected=%u  %s"), nED2KPartCount, reqfile->GetED2KPartCount(), EncodeBase16(reqfile->GetFileHash(), 16).c_str());
+			strError.Format(_("ProcessFileStatus - wrong part number recv=%u  expected=%u  "), nED2KPartCount, reqfile->GetED2KPartCount());
+			strError +=  EncodeBase16(reqfile->GetFileHash(), 16);
 			m_nPartCount = 0;
 			throw strError;
 		}
@@ -829,7 +830,7 @@ void CUpDownClient::ProcessBlockPacket(char *packet, uint32 size, bool packed)
 						if (cur_block->zStream && cur_block->zStream->msg) {
 							strZipError.Format(_T(" - %s"), cur_block->zStream->msg);
 						} 
-						AddDebugLogLineM(false, wxString::Format(wxT("Corrupted compressed packet for %s recieved (error %i) "), reqfile->GetFileName().c_str(), result) + strZipError );
+						AddDebugLogLineM(false, wxString(_("Corrupted compressed packet for")) + reqfile->GetFileName() + wxString::Format(_("received (error %i) ") , result) + strZipError );
 						reqfile->RemoveBlockFromList(cur_block->block->StartOffset, cur_block->block->EndOffset);
 
 						// If we had an zstream error, there is no chance that we could recover from it nor that we
@@ -968,7 +969,7 @@ int CUpDownClient::unzip(Pending_Block_Struct *block, BYTE *zipped, uint32 lenZi
 				strZipError.Format(_T(" %d '%s'"), err, zS->msg);
 			else if (err != Z_OK)
 				strZipError.Format(_T(" %d"), err);
-			AddDebugLogLineM(false, wxString::Format(wxT("Unexpected zip error %s in file \""),strZipError.c_str()) + (reqfile ? reqfile->GetFileName() : wxT("?")) + wxT("\""));
+			AddDebugLogLineM(false, wxString::Format(wxT("Unexpected zip error ")) +  strZipError + wxT("in file \"") + (reqfile ? reqfile->GetFileName() : wxT("?")) + wxT("\""));
 		}
 
 		if (err != Z_OK) {
