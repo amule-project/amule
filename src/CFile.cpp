@@ -27,6 +27,8 @@
 
 #include "amule.h"		// Needed for theApp
 
+#include "Preferences.h"	// Needed for CPreferences
+
 #include "otherfunctions.h" // unicode2char
 
 #ifdef HAVE_CONFIG_H
@@ -251,6 +253,9 @@ CFile::CFile(const wxChar *szFileName, OpenMode mode)
 // create the file, fail if it already exists and bOverwrite
 bool CFile::Create(const wxChar *szFileName, bool bOverwrite, int accessMode)
 {
+	if ( accessMode == -1 )
+		accessMode = CPreferences::GetFilePermissions();
+
 	fFilePath=szFileName;
 
     if (m_fd != fd_invalid) {
@@ -287,6 +292,9 @@ bool CFile::Create(const wxChar *szFileName, bool bOverwrite, int accessMode)
 // open the file
 bool CFile::Open(const wxChar *szFileName, OpenMode mode, int accessMode)
 {
+	if ( accessMode == -1 )
+		accessMode = CPreferences::GetFilePermissions();
+
     int flags = O_BINARY;
 
     fFilePath=szFileName;

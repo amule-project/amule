@@ -230,6 +230,19 @@ PrefsUnifiedDlg::PrefsUnifiedDlg(wxWindow* parent)
 		}
 	}
 
+	// Set the permissions scrollers for files
+	int perms = CPreferences::GetFilePermissions();
+	((wxSpinCtrl*)FindWindow(IDC_SPIN_PERM_FU))->SetValue( perms / 0100 );
+	((wxSpinCtrl*)FindWindow(IDC_SPIN_PERM_FG))->SetValue( perms % 0100 / 010 );
+	((wxSpinCtrl*)FindWindow(IDC_SPIN_PERM_FO))->SetValue( perms % 0100 % 010 / 01 );
+	
+	// Set the permissions scrollers for directories
+	perms = CPreferences::GetDirPermissions();
+	((wxSpinCtrl*)FindWindow(IDC_SPIN_PERM_DU))->SetValue( perms / 0100 );
+	((wxSpinCtrl*)FindWindow(IDC_SPIN_PERM_DG))->SetValue( perms % 0100 / 010 );
+	((wxSpinCtrl*)FindWindow(IDC_SPIN_PERM_DO))->SetValue( perms % 0100 % 010 / 01 );
+
+
 	Fit();
 
 	// Place the window centrally
@@ -334,6 +347,21 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 	// do sanity checking, special processing, and user notifications here
 	theApp.glob_prefs->CheckUlDlRatio();
 
+	// Set the file-permissions value
+	int file_perms = 0;
+	file_perms |= 0100 * ((wxSpinCtrl*)FindWindow(IDC_SPIN_PERM_FU))->GetValue();
+	file_perms |= 0010 * ((wxSpinCtrl*)FindWindow(IDC_SPIN_PERM_FG))->GetValue();
+	file_perms |= 0001 * ((wxSpinCtrl*)FindWindow(IDC_SPIN_PERM_FO))->GetValue();
+	CPreferences::SetFilePermissions( file_perms );
+
+	int dir_perms = 0;
+	dir_perms |= 0100 * ((wxSpinCtrl*)FindWindow(IDC_SPIN_PERM_FU))->GetValue();
+	dir_perms |= 0010 * ((wxSpinCtrl*)FindWindow(IDC_SPIN_PERM_FG))->GetValue();
+	dir_perms |= 0001 * ((wxSpinCtrl*)FindWindow(IDC_SPIN_PERM_FO))->GetValue();
+	CPreferences::SetDirPermissions( dir_perms );
+	
+
+	
 	// save the preferences on ok
 	theApp.glob_prefs->Save();
 

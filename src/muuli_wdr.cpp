@@ -1728,7 +1728,7 @@ wxSizer *PreferencesConnectionTab( wxWindow *parent, bool call_fit, bool set_siz
     wxStaticText *item3 = new wxStaticText( parent, ID_TEXT, _("Connections"), wxDefaultPosition, wxDefaultSize, 0 );
     item1->Add( item3, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    item0->Add( item1, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+    item0->Add( item1, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
     wxBoxSizer *item4 = new wxBoxSizer( wxHORIZONTAL );
 
@@ -1736,7 +1736,7 @@ wxSizer *PreferencesConnectionTab( wxWindow *parent, bool call_fit, bool set_siz
     wxStaticBoxSizer *item5 = new wxStaticBoxSizer( item6, wxVERTICAL );
 
     wxStaticText *item7 = new wxStaticText( parent, IDC_DLIMIT_LBL, _("Download"), wxDefaultPosition, wxDefaultSize, 0 );
-    item5->Add( item7, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxTOP, 5 );
+    item5->Add( item7, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
     wxBoxSizer *item8 = new wxBoxSizer( wxHORIZONTAL );
 
@@ -1780,7 +1780,7 @@ wxSizer *PreferencesConnectionTab( wxWindow *parent, bool call_fit, bool set_siz
     wxStaticBoxSizer *item19 = new wxStaticBoxSizer( item20, wxVERTICAL );
 
     wxStaticText *item21 = new wxStaticText( parent, IDC_DCAP_LBL, _("Download"), wxDefaultPosition, wxDefaultSize, 0 );
-    item19->Add( item21, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxTOP, 5 );
+    item19->Add( item21, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
     wxBoxSizer *item22 = new wxBoxSizer( wxHORIZONTAL );
 
@@ -1918,7 +1918,7 @@ wxSizer *PreferencesServerTab( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticText *item3 = new wxStaticText( parent, ID_TEXT, _("Servers"), wxDefaultPosition, wxDefaultSize, 0 );
     item1->Add( item3, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    item0->Add( item1, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    item0->Add( item1, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
     wxStaticBox *item5 = new wxStaticBox( parent, -1, _("Server Options") );
     wxStaticBoxSizer *item4 = new wxStaticBoxSizer( item5, wxVERTICAL );
@@ -2133,9 +2133,9 @@ wxSizer *PreferencesDirectoriesTab( wxWindow *parent, bool call_fit, bool set_si
 
     CDirectoryTreeCtrl *item14 = new CDirectoryTreeCtrl(parent, IDC_SHARESELECTOR,wxPoint(0,0),  wxSize(100, 100),wxSUNKEN_BORDER|wxTR_DEFAULT_STYLE);
     wxASSERT( item14 );
-    item12->Add( item14, 1, wxGROW|wxALL, 5 );
+    item12->Add( item14, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    item0->Add( item12, 1, wxGROW|wxALL, 5 );
+    item0->Add( item12, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     wxStaticBox *item16 = new wxStaticBox( parent, -1, _("Video Player") );
     wxStaticBoxSizer *item15 = new wxStaticBoxSizer( item16, wxVERTICAL );
@@ -2177,7 +2177,7 @@ wxSizer *PreferencesStatisticsTab( wxWindow *parent, bool call_fit, bool set_siz
     wxStaticText *item3 = new wxStaticText( parent, ID_TEXT, _("Statistics"), wxDefaultPosition, wxDefaultSize, 0 );
     item1->Add( item3, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    item0->Add( item1, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    item0->Add( item1, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
     wxStaticBox *item5 = new wxStaticBox( parent, -1, _("Graphs") );
     wxStaticBoxSizer *item4 = new wxStaticBoxSizer( item5, wxVERTICAL );
@@ -2358,7 +2358,9 @@ wxSizer *PreferencesNotifyTab( wxWindow *parent, bool call_fit, bool set_sizer )
 
 wxSizer *PreferencesaMuleTweaksTab( wxWindow *parent, bool call_fit, bool set_sizer )
 {
-    wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
+    wxFlexGridSizer *item0 = new wxFlexGridSizer( 1, 0, 0 );
+    item0->AddGrowableCol( 0 );
+    item0->AddGrowableRow( 1 );
 
     wxBoxSizer *item1 = new wxBoxSizer( wxHORIZONTAL );
 
@@ -2386,11 +2388,11 @@ wxSizer *PreferencesaMuleTweaksTab( wxWindow *parent, bool call_fit, bool set_si
           "these settings."),
         wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
     item6->SetForegroundColour( *wxRED );
-    item4->Add( item6, 1, wxADJUST_MINSIZE|wxALIGN_CENTER|wxALL, 5 );
+    item4->Add( item6, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxALL, 5 );
 
     item0->Add( item4, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
-    wxStaticBox *item8 = new wxStaticBox( parent, -1, _("Tweaks") );
+    wxStaticBox *item8 = new wxStaticBox( parent, -1, _("Advanced Settings") );
     wxStaticBoxSizer *item7 = new wxStaticBoxSizer( item8, wxVERTICAL );
 
     wxStaticText *item9 = new wxStaticText( parent, IDC_MAXCON5SECLABEL, _("Max new connections / 5 secs"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -2427,7 +2429,7 @@ wxSizer *PreferencesaMuleTweaksTab( wxWindow *parent, bool call_fit, bool set_si
     wxSlider *item19 = new wxSlider( parent, IDC_SERVERKEEPALIVE, 0, 0, 30, wxDefaultPosition, wxSize(100,-1), wxSL_HORIZONTAL );
     item7->Add( item19, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    item0->Add( item7, 0, wxGROW|wxALL, 5 );
+    item0->Add( item7, 1, wxGROW|wxALL, 5 );
 
     if (set_sizer)
     {
@@ -2545,10 +2547,10 @@ wxSizer *PreferencesSourcesDroppingTab( wxWindow *parent, bool call_fit, bool se
     wxStaticBitmap *item2 = new wxStaticBitmap( parent, ID_STATICBITMAP, amuleSpecial( 20 ), wxDefaultPosition, wxSize(16,16) );
     item1->Add( item2, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticText *item3 = new wxStaticText( parent, ID_TEXT, _("Sources Dropping"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxStaticText *item3 = new wxStaticText( parent, ID_TEXT, _("Source Dropping"), wxDefaultPosition, wxDefaultSize, 0 );
     item1->Add( item3, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    item0->Add( item1, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    item0->Add( item1, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
     wxString strs4[] = 
     {
@@ -2616,7 +2618,10 @@ wxSizer *PreferencesSourcesDroppingTab( wxWindow *parent, bool call_fit, bool se
 
 wxSizer *PreferencesRemoteControlsTab( wxWindow *parent, bool call_fit, bool set_sizer )
 {
-    wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
+    wxFlexGridSizer *item0 = new wxFlexGridSizer( 1, 0, 0 );
+    item0->AddGrowableCol( 0 );
+    item0->AddGrowableRow( 1 );
+    item0->AddGrowableRow( 2 );
 
     wxBoxSizer *item1 = new wxBoxSizer( wxHORIZONTAL );
 
@@ -2731,18 +2736,17 @@ wxSizer *preferencesDlgTop( wxWindow *parent, bool call_fit, bool set_sizer )
 
     wxFlexGridSizer *item1 = new wxFlexGridSizer( 2, 0, 0 );
     item1->AddGrowableCol( 1 );
-    item1->AddGrowableRow( 0 );
     prefs_sizer = item1;
 
     wxBoxSizer *item2 = new wxBoxSizer( wxVERTICAL );
     prefs_list_sizer = item2;
 
     wxListCtrl *item3 = new wxListCtrl( parent, ID_PREFSLISTCTRL, wxDefaultPosition, wxSize(150,250), wxLC_REPORT|wxLC_NO_HEADER|wxLC_SINGLE_SEL|wxSUNKEN_BORDER );
-    item2->Add( item3, 1, wxGROW|wxALL, 5 );
+    item2->Add( item3, 0, wxGROW|wxALL, 5 );
 
-    item1->Add( item2, 0, wxALL, 0 );
+    item1->Add( item2, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
 
-    item0->Add( item1, 1, wxADJUST_MINSIZE|wxGROW|wxALL, 0 );
+    item0->Add( item1, 0, wxADJUST_MINSIZE|wxGROW|wxALL, 0 );
 
     wxStaticBox *item5 = new wxStaticBox( parent, -1, wxT("") );
     wxStaticBoxSizer *item4 = new wxStaticBoxSizer( item5, wxHORIZONTAL );
@@ -3238,7 +3242,7 @@ wxSizer *PreferencesSecurityTab( wxWindow *parent, bool call_fit, bool set_sizer
 
     wxBoxSizer *item1 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxStaticText *item2 = new wxStaticText( parent, ID_TEXT, _("Security Options"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxStaticText *item2 = new wxStaticText( parent, ID_TEXT, _("Security"), wxDefaultPosition, wxDefaultSize, 0 );
     item1->Add( item2, 0, wxALIGN_CENTER|wxALL, 5 );
 
     item0->Add( item1, 0, wxALIGN_CENTER_VERTICAL, 5 );
@@ -3256,61 +3260,97 @@ wxSizer *PreferencesSecurityTab( wxWindow *parent, bool call_fit, bool set_sizer
     item5->SetToolTip( _("Select who can request to view a list of your shared files.") );
     item3->Add( item5, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticText *item6 = new wxStaticText( parent, ID_TEXT, _("Default File Permissions:"), wxDefaultPosition, wxDefaultSize, 0 );
-    item6->SetToolTip( _("New files will be created with these permissions.") );
-    item3->Add( item6, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxTOP, 5 );
+    wxStaticBox *item7 = new wxStaticBox( parent, -1, _("Default Permissions") );
+    wxStaticBoxSizer *item6 = new wxStaticBoxSizer( item7, wxVERTICAL );
 
-    wxBoxSizer *item7 = new wxBoxSizer( wxHORIZONTAL );
+    wxBoxSizer *item8 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxSpinCtrl *item8 = new wxSpinCtrl( parent, IDC_SPIN_PERM_OWNER, wxT("6"), wxDefaultPosition, wxSize(35,-1), 0, 0, 7, 6 );
-    item8->SetToolTip( _("Owner permissions, must at least be read/write'able.") );
-    item8->Enable( false );
-    item7->Add( item8, 0, wxALIGN_CENTER|wxALL, 5 );
+    wxStaticText *item9 = new wxStaticText( parent, ID_TEXT, _("Files"), wxDefaultPosition, wxDefaultSize, 0 );
+    item8->Add( item9, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    wxSpinCtrl *item9 = new wxSpinCtrl( parent, IDC_SPIN_PERM_GROUP, wxT("0"), wxDefaultPosition, wxSize(35,-1), 0, 0, 7, 0 );
-    item9->SetToolTip( _("Group permissions.") );
-    item9->Enable( false );
-    item7->Add( item9, 0, wxALIGN_CENTER|wxALL, 5 );
+    item8->Add( 20, 20, 1, wxALIGN_CENTER|wxALL, 5 );
 
-    wxSpinCtrl *item10 = new wxSpinCtrl( parent, IDC_SPIN_PERM_OTHER, wxT("0"), wxDefaultPosition, wxSize(35,-1), 0, 0, 7, 0 );
-    item10->SetToolTip( _("Other permissions.") );
-    item10->Enable( false );
-    item7->Add( item10, 0, wxALIGN_CENTER|wxALL, 5 );
+    wxSpinCtrl *item10 = new wxSpinCtrl( parent, IDC_SPIN_PERM_FU, wxT("6"), wxDefaultPosition, wxSize(35,-1), 0, 6, 7, 6 );
+    item10->SetToolTip( _("Owner permissions, must at least be read/write'able.") );
+    item8->Add( item10, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    item3->Add( item7, 0, wxALIGN_CENTER|wxALL, 5 );
+    wxSpinCtrl *item11 = new wxSpinCtrl( parent, IDC_SPIN_PERM_FG, wxT("4"), wxDefaultPosition, wxSize(35,-1), 0, 0, 7, 4 );
+    item11->SetToolTip( _("Group permissions.") );
+    item8->Add( item11, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    wxSpinCtrl *item12 = new wxSpinCtrl( parent, IDC_SPIN_PERM_FO, wxT("0"), wxDefaultPosition, wxSize(35,-1), 0, 0, 7, 0 );
+    item12->SetToolTip( _("Other permissions.") );
+    item8->Add( item12, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    item6->Add( item8, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+
+    wxBoxSizer *item13 = new wxBoxSizer( wxHORIZONTAL );
+
+    wxStaticText *item14 = new wxStaticText( parent, ID_TEXT, _("Folders"), wxDefaultPosition, wxDefaultSize, 0 );
+    item13->Add( item14, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    item13->Add( 20, 20, 1, wxALIGN_CENTER|wxALL, 5 );
+
+    wxSpinCtrl *item15 = new wxSpinCtrl( parent, IDC_SPIN_PERM_DU, wxT("7"), wxDefaultPosition, wxSize(35,-1), 0, 7, 7, 7 );
+    item15->SetToolTip( _("Owner permissions, must at least be read/write'able.") );
+    item13->Add( item15, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    wxSpinCtrl *item16 = new wxSpinCtrl( parent, IDC_SPIN_PERM_DG, wxT("5"), wxDefaultPosition, wxSize(35,-1), 0, 0, 7, 5 );
+    item16->SetToolTip( _("Group permissions.") );
+    item13->Add( item16, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    wxSpinCtrl *item17 = new wxSpinCtrl( parent, IDC_SPIN_PERM_DO, wxT("0"), wxDefaultPosition, wxSize(35,-1), 0, 0, 7, 0 );
+    item17->SetToolTip( _("Other permissions.") );
+    item13->Add( item17, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    item6->Add( item13, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+
+    item3->Add( item6, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     item0->Add( item3, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticBox *item12 = new wxStaticBox( parent, -1, _("IP-Filtering") );
-    wxStaticBoxSizer *item11 = new wxStaticBoxSizer( item12, wxVERTICAL );
+    wxStaticBox *item19 = new wxStaticBox( parent, -1, _("IP-Filtering") );
+    wxStaticBoxSizer *item18 = new wxStaticBoxSizer( item19, wxVERTICAL );
 
-    wxCheckBox *item13 = new wxCheckBox( parent, IDC_IPFONOFF, _("Enable IP-Filtering"), wxDefaultPosition, wxDefaultSize, 0 );
-    item13->SetValue( TRUE );
-    item13->SetToolTip( _("Enable filtering of the IPs defined in the file ~/.aMule/ipfilter.dat.") );
-    item11->Add( item13, 0, wxADJUST_MINSIZE|wxGROW, 0 );
+    wxBoxSizer *item20 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxStaticText *item14 = new wxStaticText( parent, ID_TEXT, _("Filtering Level:"), wxDefaultPosition, wxDefaultSize, 0 );
-    item11->Add( item14, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxTOP, 5 );
+    wxCheckBox *item21 = new wxCheckBox( parent, IDC_IPFONOFF, _("Enable IP-Filtering"), wxDefaultPosition, wxDefaultSize, 0 );
+    item21->SetValue( TRUE );
+    item21->SetToolTip( _("Enable filtering of the IPs defined in the file ~/.aMule/ipfilter.dat.") );
+    item20->Add( item21, 0, wxADJUST_MINSIZE|wxGROW|wxALL, 0 );
 
-    wxSpinCtrl *item15 = new wxSpinCtrl( parent, ID_SPINCTRL, wxT("0"), wxDefaultPosition, wxDefaultSize, 0, 0, 100, 0 );
-    item15->Enable( false );
-    item11->Add( item15, 0, wxALIGN_CENTER|wxALL, 5 );
+    item20->Add( 10, 10, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL, 0 );
 
-    wxButton *item16 = new wxButton( parent, IDC_IPFRELOAD, _("Reload List"), wxDefaultPosition, wxDefaultSize, 0 );
-    item16->SetToolTip( _("Reload the list of IPs to filter from the file ~/.aMule/ipfilter.dat") );
-    item11->Add( item16, 0, wxALIGN_CENTER|wxALL, 5 );
+    wxButton *item22 = new wxButton( parent, IDC_IPFRELOAD, _("Reload List"), wxDefaultPosition, wxDefaultSize, 0 );
+    item22->SetToolTip( _("Reload the list of IPs to filter from the file ~/.aMule/ipfilter.dat") );
+    item20->Add( item22, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    item0->Add( item11, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item18->Add( item20, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
-    wxStaticBox *item18 = new wxStaticBox( parent, -1, _("Client Identification:") );
-    wxStaticBoxSizer *item17 = new wxStaticBoxSizer( item18, wxVERTICAL );
+    wxBoxSizer *item23 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxCheckBox *item19 = new wxCheckBox( parent, IDC_SECIDENT, _("Use Secure Identification"), wxDefaultPosition, wxDefaultSize, 0 );
-    item19->SetValue( TRUE );
-    item19->SetToolTip( _("Secure Identification uses a handshake approch to safely identify clients for use with the credit system.") );
-    item17->Add( item19, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxStaticText *item24 = new wxStaticText( parent, ID_TEXT, _("Filtering Level:"), wxDefaultPosition, wxDefaultSize, 0 );
+    item23->Add( item24, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    item0->Add( item17, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item23->Add( 10, 10, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+
+    wxSpinCtrl *item25 = new wxSpinCtrl( parent, ID_SPINCTRL, wxT("0"), wxDefaultPosition, wxDefaultSize, 0, 0, 100, 0 );
+    item25->Enable( false );
+    item23->Add( item25, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    item18->Add( item23, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 0 );
+
+    item0->Add( item18, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    wxStaticBox *item27 = new wxStaticBox( parent, -1, _("Client Identification:") );
+    wxStaticBoxSizer *item26 = new wxStaticBoxSizer( item27, wxVERTICAL );
+
+    wxCheckBox *item28 = new wxCheckBox( parent, IDC_SECIDENT, _("Use Secure Identification"), wxDefaultPosition, wxDefaultSize, 0 );
+    item28->SetValue( TRUE );
+    item28->SetToolTip( _("Secure Identification uses a handshake approch to safely identify clients for use with the credit system.") );
+    item26->Add( item28, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    item0->Add( item26, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     if (set_sizer)
     {
@@ -3336,7 +3376,7 @@ wxSizer *PreferencesOnlineSigTab( wxWindow *parent, bool call_fit, bool set_size
     wxCheckBox *item3 = new wxCheckBox( parent, IDC_ONLINESIG, _("Enable Online-Signature"), wxDefaultPosition, wxDefaultSize, 0 );
     item3->SetValue( TRUE );
     item3->SetToolTip( _("Enables the writing of the OS file, which can be used by external apps to create signatures and the like.") );
-    item0->Add( item3, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item0->Add( item3, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 10 );
 
     wxStaticBox *item5 = new wxStaticBox( parent, -1, _("Update Frequency (Secs):") );
     wxStaticBoxSizer *item4 = new wxStaticBoxSizer( item5, wxVERTICAL );

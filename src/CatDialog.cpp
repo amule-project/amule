@@ -128,7 +128,7 @@ void CCatDialog::OnBnClickedOk(wxCommandEvent& WXUNUSED(evt))
 	m_myCat->comment = ((wxTextCtrl*)FindWindowById(IDC_COMMENT))->GetValue();
 	m_myCat->incomingpath = MakeFoldername(m_myCat->incomingpath);
 	if (!::wxDirExists(m_myCat->incomingpath)) {
-		::wxMkdir(m_myCat->incomingpath); // 0777 is the default
+		::wxMkdir( m_myCat->incomingpath, CPreferences::GetDirPermissions() );
 	}
 
 	if (m_myCat->incomingpath.CmpNoCase(oldpath)!=0) {
