@@ -69,9 +69,9 @@ void CSharedFileList::FindSharedFiles() {
 	}
 
 	/* Global incoming dir and all category incoming directories are automatically shared. */
-	AddFilesFromDirectory(theApp.glob_prefs->GetIncomingDir());
+	AddFilesFromDirectory(char2unicode(theApp.glob_prefs->GetIncomingDir()));
 	for (uint32 i = 1;i < theApp.glob_prefs->GetCatCount();i++) {
-		AddFilesFromDirectory(theApp.glob_prefs->GetCatPath(i));
+		AddFilesFromDirectory(char2unicode(theApp.glob_prefs->GetCatPath(i)));
 	}
 	//for (POSITION pos = app_prefs->shareddir_list.GetHeadPosition();pos != 0;app_prefs->shareddir_list.GetNext(pos))
 	// remove bogus entries first
@@ -82,7 +82,7 @@ void CSharedFileList::FindSharedFiles() {
 		}
 	}
 	for (unsigned int ii = 0; ii < app_prefs->shareddir_list.GetCount(); ++ii) {
-		AddFilesFromDirectory((char*)app_prefs->shareddir_list.Item(ii).GetData());
+		AddFilesFromDirectory(app_prefs->shareddir_list.Item(ii));
 	}
 
 	uint32 newFiles = CAddFileThread::GetCount();
@@ -93,26 +93,16 @@ void CSharedFileList::FindSharedFiles() {
 	}
 }
 
-void CSharedFileList::AddFilesFromDirectory(char* directory)
+void CSharedFileList::AddFilesFromDirectory(wxString directory)
 {
-	
-	char* searchpath = new char[strlen(directory)+3];
-	// Kry - Add slash only if it's not already in string to avoid double-slash
-	if (directory[strlen(directory)-1] != '/') {
-		sprintf(searchpath,"%s/*",directory);
-	} else {
-		sprintf(searchpath,"%s*",directory);
-	}
-	
-	wxString fname=::wxFindFirstFile(char2unicode(searchpath),wxFILE);
-	delete[] searchpath;
+		
+	wxString fname=::wxFindFirstFile(directory + wxT("/"),wxFILE);
   	
 	if (fname.IsEmpty()) {
     		return;
 	}
   	
-	while(!fname.IsEmpty()) {
-    
+	while(!fname.IsEmpty()) {  
 
 		wxFileName fName(fname);
 
@@ -123,11 +113,11 @@ void CSharedFileList::AddFilesFromDirectory(char* directory)
 		struct stat sbf;
 		stat(unicode2char(fname.GetData()),&sbf);
 		koko=sbf.st_size;
-		CKnownFile* toadd=filelist->FindKnownFile((char*)fName.GetFullName().GetData(),fdate,koko);
+		CKnownFile* toadd=filelist->FindKnownFile(fName.GetFullName(),fdate,koko);
 		//theApp.Yield();
 		if (toadd) {
 			if ( m_Files_map.find(CCKey(toadd->GetFileHash())) == m_Files_map.end() ) {
-				toadd->SetFilePath(char2unicode(directory));
+				toadd->SetFilePath(directory);
 				output->ShowFile(toadd);
 				list_mut.Lock();
 				m_Files_map[CCKey(toadd->GetFileHash())] = toadd;
@@ -138,7 +128,7 @@ void CSharedFileList::AddFilesFromDirectory(char* directory)
 			}
 		} else {
 			//not in knownfilelist - start adding thread to hash file
-			CAddFileThread::AddFile(char2unicode(directory), fName.GetFullName().GetData());
+			CAddFileThread::AddFile(directory, fName.GetFullName());
 		}
 		fname=::wxFindNextFile();
 	}

@@ -60,7 +60,7 @@ public:
 	uint64	GetDatasize();
 	uint16	GetCount()	{return m_Files_map.size(); }
 	void	UpdateItem(CKnownFile* toupdate);
-	void	AddFilesFromDirectory(char* directory);
+	void	AddFilesFromDirectory(wxString directory);
 	void    GetSharedFilesByDirectory(const wxString directory,CTypedPtrList<CPtrList, CKnownFile*>& list);
 	void	ClearED2KPublishInfo();
 	
