@@ -131,7 +131,10 @@ void CFileDataIO::WriteString(const wxString& rstr)
 	// We dont include the NULL terminator. Dont know why.
 	// It is because we write the size, so the NULL is not necessary.
 	// 
-	const wxCharBuffer tmp = unicode2char(rstr);
+	// From wx docs: 
+	// The macro wxWX2MBbuf reflects the correct return value of cWX2MB 
+	// (either char* or wxCharBuffer), except for the const.
+	const wxWX2MBbuf tmp = aMuleConv.cWX2MB(rstr);
 	const char *s = (const char *)tmp;
 	//
 	// This avoids a crash in case unicode2char cannot perform the conversion,
