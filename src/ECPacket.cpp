@@ -28,8 +28,6 @@
 #include <string.h>	// Needed for memcpy(), strlen()
 #include "CMD4Hash.h"	// Needed for CMD4Hash
 
-#define	ARRAY_ALLOC_CHUNKS	16
-
 /**********************************************************
  *							  *
  *	CECTag class					  *
@@ -51,7 +49,6 @@ CECTag::CECTag(ec_tagname_t name, unsigned int length, const void *data, bool co
 {
 	m_error = 0;
 	m_dataLen = length;
-	m_tagCount = 0;
 	if (copy && (data != NULL)) {
 		m_tagData = malloc(m_dataLen);
 		if (m_tagData != NULL) {
@@ -63,8 +60,6 @@ CECTag::CECTag(ec_tagname_t name, unsigned int length, const void *data, bool co
 	} else {
 		m_tagData = data;
 	}
-	m_tagList = NULL;
-	m_listSize = 0;
 };
 
 /**
@@ -86,9 +81,6 @@ CECTag::CECTag(ec_tagname_t name, unsigned int length, void **dataptr)  : m_tagN
 		m_error = 1;
 	}
 	*dataptr = (void *)m_tagData;
-	m_tagList = NULL;
-	m_listSize = 0;
-	m_tagCount = 0;
 }
 
 /**
@@ -113,8 +105,6 @@ CECTag::CECTag(ec_tagname_t name, const EC_IPv4_t& data) : m_tagName(name), m_dy
 	} else {
 		m_error = 1;
 	}
-	m_tagCount = m_listSize = 0;
-	m_tagList = NULL;
 }
 
 /**
@@ -139,8 +129,6 @@ CECTag::CECTag(ec_tagname_t name, const CMD4Hash& data) : m_tagName(name), m_dyn
 	} else {
 		m_error = 1;
 	}
-	m_tagCount = m_listSize = 0;
-	m_tagList = NULL;
 }
 
 /**
@@ -164,8 +152,6 @@ CECTag::CECTag(ec_tagname_t name, const wxString& data) : m_tagName(name), m_dyn
 	} else {
 		m_error = 1;
 	}
-	m_tagCount = m_listSize = 0;
-	m_tagList = NULL;
 }
 
 /**
@@ -175,7 +161,6 @@ CECTag::CECTag(const CECTag& tag) : m_tagName( tag.m_tagName ), m_dynamic( tag.m
 {
 	m_error = 0;
 	m_dataLen = tag.m_dataLen;
-	m_tagCount = 0;
 	if (m_dataLen != 0) {
 		if (m_dynamic) {
 			m_tagData = malloc(m_dataLen);
@@ -190,35 +175,18 @@ CECTag::CECTag(const CECTag& tag) : m_tagName( tag.m_tagName ), m_dynamic( tag.m
 			m_tagData = tag.m_tagData;
 		}
 	} else m_tagData = NULL;
-	if (tag.m_tagCount != 0) {
-		m_tagList = new CECTag *[tag.m_tagCount];
-		if (m_tagList != NULL) {
-			m_listSize = tag.m_tagCount;
-			for (int i=0; i<m_listSize; i++) {
-				m_tagList[i] = new CECTag(*(tag.m_tagList[i]));
-				if (m_tagList[i] != NULL) {
-					if (m_tagList[i]->m_error == 0) {
-						m_tagCount++;
-					} else {
-						m_error = m_tagList[i]->m_error;
+	if (!tag.m_tagList.empty()) {
+		m_tagList.reserve(tag.m_tagList.size());
+		for (TagList::size_type i=0; i<tag.m_tagList.size(); i++) {
+			m_tagList.push_back(tag.m_tagList[i]);
+			if (m_tagList.back().m_error != 0) {
+				m_error = m_tagList.back().m_error;
 #ifndef KEEP_PARTIAL_PACKETS
-						delete m_tagList[i];
-						m_tagList[i] = NULL;
+				m_tagList.pop_back();
 #endif
-						break;
-					}
-				} else {
-					m_error = 1;
-					break;
-				}
+				break;
 			}
-		} else {
-			m_error = 1;
 		}
-	} else {
-		m_listSize = 0;
-		m_tagCount = 0;
-		m_tagList = NULL;
 	}
 }
 
@@ -242,8 +210,6 @@ CECTag::CECTag(ec_tagname_t name, uint8 data) : m_tagName(name), m_dynamic(true)
 	} else {
 		m_error = 1;
 	}
-	m_tagCount = m_listSize = 0;
-	m_tagList = NULL;
 }
 
 /**
@@ -266,8 +232,6 @@ CECTag::CECTag(ec_tagname_t name, uint16 data) : m_tagName(name), m_dynamic(true
 	} else {
 		m_error = 1;
 	}
-	m_tagCount = m_listSize = 0;
-	m_tagList = NULL;
 }
 
 /**
@@ -290,8 +254,6 @@ CECTag::CECTag(ec_tagname_t name, uint32 data) : m_tagName(name), m_dynamic(true
 	} else {
 		m_error = 1;
 	}
-	m_tagCount = m_listSize = 0;
-	m_tagList = NULL;
 }
 
 /**
@@ -300,12 +262,36 @@ CECTag::CECTag(ec_tagname_t name, uint32 data) : m_tagName(name), m_dynamic(true
 CECTag::~CECTag(void)
 {
 	if (m_dynamic) free((void *)m_tagData);
-	for (int i=0; i<m_tagCount; i++) {
-		delete m_tagList[i];
+}
+
+/**
+ * Copy assignment operator.
+ *
+ * std::vector uses this, but the compiler-supplied version wouldn't properly
+ * handle m_dynamic and m_tagData.  This wouldn't be necessary if m_tagData
+ * was a smart pointer (Hi, Kry!).
+ */
+CECTag& CECTag::operator=(const CECTag& rhs)
+{
+	if (&rhs != this)
+	{
+		// This is a trick to reuse the implementation of the copy constructor
+		// so we don't have to duplicate it here.  temp is constructed as a
+		// copy of rhs, which properly handles m_dynamic and m_tagData.  Then
+		// temp's members are swapped for this object's members.  So,
+		// effectively, this object has been made a copy of rhs, which is the
+		// point.  Then temp is destroyed as it goes out of scope, so its
+		// destructor cleans up whatever data used to belong to this object.
+		CECTag temp(rhs);
+		std::swap(m_error,		temp.m_error);
+		std::swap(m_tagData,	temp.m_tagData);
+		std::swap(m_tagName,	temp.m_tagName);
+		std::swap(m_dataLen,	temp.m_dataLen);
+		std::swap(m_dynamic,	temp.m_dynamic);
+		std::swap(m_tagList,	temp.m_tagList);
 	}
-	if ( m_tagList ) {
-		delete [] m_tagList;
-	}
+
+	return *this;
 }
 
 /**
@@ -352,56 +338,17 @@ CECTag::~CECTag(void)
  */
 bool CECTag::AddTag(const CECTag& tag)
 {
-	CECTag *copy = new CECTag(tag);
-	if ( AddTag(copy) ) {
+	// cannot have more than 64k tags
+	wxASSERT(m_tagList.size() < 0xffff);
+
+	m_tagList.push_back(tag);
+	if (m_tagList.back().m_error == 0) {
 		return true;
 	} else {
-		delete copy;
-		return false;
-	}
-}
-
-bool CECTag::AddTag(const CECTag *tag)
-{
-	// cannot have more than 64k tags
-	wxASSERT(m_tagCount < 0xffff);
-
-	if (m_listSize == 0) {
-		m_tagList = new CECTag *[ARRAY_ALLOC_CHUNKS];
-		if (m_tagList != NULL) {
-			m_listSize = ARRAY_ALLOC_CHUNKS;
-		} else {
-			m_error = 1;
-			return false;
-		}
-	} else if (m_listSize == m_tagCount) {
-		CECTag **tmp = new CECTag *[m_listSize + ARRAY_ALLOC_CHUNKS];
-		if (tmp != NULL) {
-			memcpy(tmp, m_tagList, m_listSize * sizeof(CECTag *));
-			delete [] m_tagList;
-			m_tagList = tmp;
-			m_listSize += ARRAY_ALLOC_CHUNKS;
-		} else {
-			m_error = 1;
-			return false;
-		}
-	}
-	// remove const on assign
-	m_tagList[m_tagCount] = (CECTag *)tag;
-	if ((m_tagList[m_tagCount]) != NULL) {
-		if (m_tagList[m_tagCount]->m_error == 0) {
-			m_tagCount++;
-			return true;
-		} else {
-			m_error = m_tagList[m_tagCount]->m_error;
+		m_error = m_tagList.back().m_error;
 #ifndef KEEP_PARTIAL_PACKETS
-			delete m_tagList[m_tagCount];
-			m_tagList[m_tagCount] = NULL;
+		m_tagList.pop_back();
 #endif
-			return false;
-		}
-	} else {
-		m_error = 1;
 		return false;
 	}
 }
@@ -411,8 +358,6 @@ CECTag::CECTag(wxSocketBase *sock, ECSocket& socket, void *opaque) : m_dynamic(t
 	ec_taglen_t tagLen;
 	ec_tagname_t tmp_tagName;
 
-	m_listSize = m_tagCount = 0;
-	m_tagList = NULL;
 	m_tagData = NULL;
 	m_dataLen = 0;
 	if (!socket.ReadNumber(sock, &tmp_tagName, sizeof(ec_tagname_t), opaque)) {
@@ -452,11 +397,11 @@ CECTag::CECTag(wxSocketBase *sock, ECSocket& socket, void *opaque) : m_dynamic(t
 bool CECTag::WriteTag(wxSocketBase *sock, ECSocket& socket, void *opaque) const
 {
 	ec_taglen_t tagLen = GetTagLen();
-	ec_tagname_t tmp_tagName = (m_tagName << 1) | ((m_tagCount > 0) ? 1 : 0);
+	ec_tagname_t tmp_tagName = (m_tagName << 1) | (m_tagList.empty() ? 0 : 1);
 	
 	if (!socket.WriteNumber(sock, &tmp_tagName, sizeof(ec_tagname_t), opaque)) return false;
 	if (!socket.WriteNumber(sock, &tagLen, sizeof(ec_taglen_t), opaque)) return false;
-	if (m_tagCount > 0) {
+	if (!m_tagList.empty()) {
 		if (!WriteChildren(sock, socket, opaque)) return false;
 	}
 	if (m_dataLen > 0) {
@@ -476,34 +421,20 @@ bool CECTag::ReadChildren(wxSocketBase *sock, ECSocket& socket, void *opaque)
 		m_error = 2;
 		return false;
 	}
-	m_listSize = tmp_tagCount;
+
+	m_tagList.clear();
 	if (tmp_tagCount > 0) {
-		m_tagList = new CECTag *[m_listSize];
-		if (m_tagList != NULL) {
-			for (int i=0; i<m_listSize; i++) {
-				m_tagList[i] = new CECTag(sock, socket, opaque);
-				if (m_tagList[i] != NULL) {
-					if (m_tagList[i]->m_error == 0) {
-						m_tagCount++;
-					} else {
-						m_error = m_tagList[i]->m_error;
+		m_tagList.reserve(tmp_tagCount);
+		for (int i=0; i<tmp_tagCount; i++) {
+			m_tagList.push_back(CECTag(sock, socket, opaque));
+			if (m_tagList.back().m_error != 0) {
+				m_error = m_tagList.back().m_error;
 #ifndef KEEP_PARTIAL_PACKETS
-						delete m_tagList[i];
-						m_tagList[i] = NULL;
+				m_tagList.pop_back();
 #endif
-						return false;
-					}
-				}  else {
-					m_error = 1;
-					return false;
-				}
+				return false;
 			}
-		} else {
-			m_error = 1;
-			return false;
 		}
-	} else {
-		m_tagList = NULL;
 	}
 	return true;
 }
@@ -511,13 +442,12 @@ bool CECTag::ReadChildren(wxSocketBase *sock, ECSocket& socket, void *opaque)
 
 bool CECTag::WriteChildren(wxSocketBase *sock, ECSocket& socket, void *opaque) const
 {
-	if (!socket.WriteNumber(sock, &m_tagCount, 2, opaque)) return false;
-	if (m_tagCount > 0) {
-		if (m_tagList != NULL) {	// This is here only to make sure everything, it should not be NULL at this point
-			for (int i=0; i<m_tagCount; i++) {
-				if (!m_tagList[i]->WriteTag(sock, socket, opaque)) return false;
-			}
-		} else return false;
+    uint16 tmp = m_tagList.size();
+	if (!socket.WriteNumber(sock, &tmp, sizeof(tmp), opaque)) return false;
+	if (!m_tagList.empty()) {
+		for (TagList::size_type i=0; i<m_tagList.size(); i++) {
+			if (!m_tagList[i].WriteTag(sock, socket, opaque)) return false;
+		}
 	}
 	return true;
 }
@@ -528,10 +458,23 @@ bool CECTag::WriteChildren(wxSocketBase *sock, ECSocket& socket, void *opaque) c
  * @param name TAG name to look for.
  * @return the tag found, or NULL.
  */
-CECTag *CECTag::GetTagByName(ec_tagname_t name) const
+const CECTag* CECTag::GetTagByName(ec_tagname_t name) const
 {
-	for (int i=0; i<m_tagCount; i++)
-		if (m_tagList[i]->m_tagName == name) return m_tagList[i];
+	for (TagList::size_type i=0; i<m_tagList.size(); i++)
+		if (m_tagList[i].m_tagName == name) return &m_tagList[i];
+	return NULL;
+}
+
+/**
+ * Finds the (first) child tag with given name.
+ *
+ * @param name TAG name to look for.
+ * @return the tag found, or NULL.
+ */
+CECTag* CECTag::GetTagByName(ec_tagname_t name)
+{
+	for (TagList::size_type i=0; i<m_tagList.size(); i++)
+		if (m_tagList[i].m_tagName == name) return &m_tagList[i];
 	return NULL;
 }
 
@@ -544,9 +487,9 @@ CECTag *CECTag::GetTagByName(ec_tagname_t name) const
 uint32 CECTag::GetTagLen(void) const
 {
 	uint32 length = m_dataLen;
-	for (int i=0; i<m_tagCount; i++) {
-		length += m_tagList[i]->GetTagLen();
-		length += sizeof(ec_tagname_t) + sizeof(ec_taglen_t) + ((m_tagList[i]->GetTagCount() > 0) ? 2 : 0);
+	for (TagList::size_type i=0; i<m_tagList.size(); i++) {
+		length += m_tagList[i].GetTagLen();
+		length += sizeof(ec_tagname_t) + sizeof(ec_taglen_t) + ((m_tagList[i].GetTagCount() > 0) ? 2 : 0);
 	}
 	return length;
 }

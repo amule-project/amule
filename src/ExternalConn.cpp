@@ -243,12 +243,12 @@ CECPacket *ExternalConn::Authenticate(const CECPacket *request)
 	
 
 	if (request->GetOpCode() == EC_OP_AUTH_REQ) {
-		CECTag *clientName = request->GetTagByName(EC_TAG_CLIENT_NAME);
-		CECTag *clientVersion = request->GetTagByName(EC_TAG_CLIENT_VERSION);
+		const CECTag *clientName = request->GetTagByName(EC_TAG_CLIENT_NAME);
+		const CECTag *clientVersion = request->GetTagByName(EC_TAG_CLIENT_VERSION);
 		AddLogLineM(false, _("Connecting client: ") + ((clientName == NULL) ? wxString(_("Unknown")) : clientName->GetStringData()) +
 			wxT(" ") + ((clientVersion == NULL) ? wxString(_("Unknown version")) : clientVersion->GetStringData()));
-		CECTag *passwd = request->GetTagByName(EC_TAG_PASSWD_HASH);
-		CECTag *protocol = request->GetTagByName(EC_TAG_PROTOCOL_VERSION);
+		const CECTag *passwd = request->GetTagByName(EC_TAG_PASSWD_HASH);
+		const CECTag *protocol = request->GetTagByName(EC_TAG_PROTOCOL_VERSION);
 		if (protocol != NULL) {
 			uint16 proto_version = protocol->GetInt16Data();
 			if (proto_version == 0x01f1) {
@@ -362,7 +362,7 @@ CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request,
 	// request can contain list of queried items
 	std::set<CMD4Hash> queryitems;
 	for (int i = 0;i < request->GetTagCount();i++) {
-		CECTag *tag = request->GetTagByIndex(i);
+		const CECTag *tag = request->GetTagByIndex(i);
 		if ( tag->GetTagName() == EC_TAG_PARTFILE ) {
 			queryitems.insert(tag->GetMD4Data());
 		}
@@ -418,7 +418,7 @@ CECPacket *Get_EC_Response_PartFile_Cmd(const CECPacket *request)
 
 	// request can contain multiple files.
 	for (int i = 0; i < request->GetTagCount(); ++i) {
-		CECTag *hashtag = request->GetTagByIndex(i);
+		const CECTag *hashtag = request->GetTagByIndex(i);
 
 		wxASSERT(hashtag->GetTagName() == EC_TAG_PARTFILE);
 
@@ -521,7 +521,7 @@ CECPacket *Get_EC_Response_PartFile_Cmd(const CECPacket *request)
 CECPacket *Get_EC_Response_Server(const CECPacket *request)
 {
 	CECPacket *response = NULL;
-	CECTag *srv_tag = request->GetTagByIndex(0);
+	const CECTag *srv_tag = request->GetTagByIndex(0);
 	CServer *srv = 0;
 	if ( srv_tag ) {
 		uint32 srv_ip = srv_tag->GetIPv4Data().IP();
@@ -582,7 +582,7 @@ CECPacket *Get_EC_Response_Search_Results(const CECPacket *request)
 	// request can contain list of queried items
 	std::set<CMD4Hash> queryitems;
 	for (int i = 0;i < request->GetTagCount();i++) {
-		CECTag *tag = request->GetTagByIndex(i);
+		const CECTag *tag = request->GetTagByIndex(i);
 		if ( tag->GetTagName() == EC_TAG_SEARCHFILE ) {
 			queryitems.insert(tag->GetMD4Data());
 		}
@@ -603,7 +603,7 @@ CECPacket *Get_EC_Response_Search_Results_Download(const CECPacket *request)
 {
 	CECPacket *response = new CECPacket(EC_OP_STRINGS);
 	for (int i = 0;i < request->GetTagCount();i++) {
-		CECTag *tag = request->GetTagByIndex(i);
+		const CECTag *tag = request->GetTagByIndex(i);
 		CMD4Hash hash = tag->GetMD4Data();
 		theApp.searchlist->AddFileToDownloadByHash(hash);
 	}
@@ -646,7 +646,7 @@ CECPacket *Get_EC_Response_Set_SharedFile_Prio(const CECPacket *request)
 {
 	CECPacket *response = new CECPacket(EC_OP_STRINGS);
 	for (int i = 0;i < request->GetTagCount();i++) {
-		CECTag *tag = request->GetTagByIndex(i);
+		const CECTag *tag = request->GetTagByIndex(i);
 		CMD4Hash hash = tag->GetMD4Data();
 		uint8 prio = tag->GetTagByIndex(0)->GetInt32Data();
 		CKnownFile* cur_file = theApp.sharedfiles->GetFileByID(hash);
@@ -668,7 +668,7 @@ CECPacket *ProcessPreferencesRequest(const CECPacket *request)
 {
 	CECPacket *response = new CECPacket(EC_OP_PREFERENCES);
 	uint32 selection = 0;
-	CECTag *selTag = request->GetTagByName(EC_TAG_SELECT_PREFS);
+	const CECTag *selTag = request->GetTagByName(EC_TAG_SELECT_PREFS);
 	if (selTag) {
 		selection = selTag->GetInt32Data();
 	}
@@ -925,8 +925,8 @@ CECPacket *ProcessPreferencesRequest(const CECPacket *request)
 
 CECPacket *SetPreferencesFromRequest(const CECPacket *request)
 {
-	CECTag * thisTab;
-	CECTag * oneTag;
+	const CECTag * thisTab;
+	const CECTag * oneTag;
 
 	/* Maybe we'll have another way to change categories
 	if ((thisTab =request->GetTagByName(EC_TAG_PREFS_CATEGORIES)) != NULL) {
@@ -1277,7 +1277,7 @@ void CPartFile_Encoder::Encode(CECTag *parent)
 	// [num_of_gaps] [gap_enc_data]
 	//
 	unsigned char *tagdata;
-	CECTag *etag = new CECTag(EC_TAG_PARTFILE_GAP_STATUS,
+	CECTag etag(EC_TAG_PARTFILE_GAP_STATUS,
 		sizeof(uint32) + gap_enc_size, (void **)&tagdata);
 
 	// real number of gaps - so remote size can realloc
@@ -1366,7 +1366,7 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request, CPartFile_Enc
 			break;
 		case EC_OP_ED2K_LINK: 
 			for(int i = 0; i < request->GetTagCount();i++) {
-				CECTag *tag = request->GetTagByIndex(i);
+				const CECTag *tag = request->GetTagByIndex(i);
 				wxString link = tag->GetStringData();
 				
 				if ( theApp.downloadqueue->AddED2KLink( link ) ) {

@@ -32,6 +32,7 @@
 #include "StringFunctions.h"	// Needed for aMuleConv
 #include "ECcodes.h"	// Needed for EC types
 #include "CMD4Hash.h"	// Needed for CMD4Hash
+#include <vector>
 
 #if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
 #pragma interface "ECPacket.h"
@@ -65,11 +66,17 @@ class CECTag {
 				CECTag(ec_tagname_t name, const CMD4Hash& data);
 				CECTag(const CECTag& tag);
 				~CECTag(void);
+
+		CECTag& operator=(const CECTag& rhs);
+
 		bool		AddTag(const CECTag& tag);
-		bool		AddTag(const CECTag *tag);
-		CECTag *	GetTagByIndex(unsigned int index) const { return ((index >= m_tagCount) ? NULL : m_tagList[index]); }
-		CECTag *	GetTagByName(ec_tagname_t name) const;
-		uint16		GetTagCount(void) const { return m_tagCount; }
+
+		const	CECTag*	GetTagByIndex(unsigned int index) const { return ((index >= m_tagList.size()) ? NULL : &m_tagList[index]); }
+				CECTag*	GetTagByIndex(unsigned int index)		{ return ((index >= m_tagList.size()) ? NULL : &m_tagList[index]); }
+		const	CECTag*	GetTagByName(ec_tagname_t name) const;
+				CECTag*	GetTagByName(ec_tagname_t name);
+
+		uint16		GetTagCount(void) const { return m_tagList.size(); }
 		const void *	GetTagData(void) const { return m_tagData; }
 		uint16		GetTagDataLen(void) const { return m_dataLen; }
 		uint32		GetTagLen(void) const;
@@ -90,11 +97,11 @@ class CECTag {
 		const void *	m_tagData;
 	private:
 		ec_tagname_t	m_tagName;
-		uint16		m_tagCount;
 		unsigned int	m_dataLen;
-		const bool	m_dynamic;
-		uint16		m_listSize;
-		CECTag **m_tagList;
+		bool			m_dynamic;
+
+		typedef std::vector<CECTag> TagList;
+		TagList m_tagList;
 };
 
 
@@ -133,7 +140,7 @@ class CECPacket : private CECEmptyTag {
 		uint32		GetPacketLength(void) const { return CECTag::GetTagLen(); }
 		EC_DETAIL_LEVEL GetDetailLevel() const
 				{
-					CECTag *tag = GetTagByName(EC_TAG_DETAIL_LEVEL);
+					const CECTag *tag = GetTagByName(EC_TAG_DETAIL_LEVEL);
 					return (tag) ? (EC_DETAIL_LEVEL)tag->GetInt8Data() : EC_DETAIL_GUI;
 				}
 	private:
