@@ -1157,8 +1157,8 @@ printf("wait state -- process_receive_command_reply\n");
  * but that may vary. The important thing is the "200"
  * code, that means success.
  */
-const static char HTTP_AUTH_RESPONSE[] = "HTTP/";
-const static int  HTTP_AUTH_RESPONSE_LENGHT = strlen(HTTP_AUTH_RESPONSE);
+static const char HTTP_AUTH_RESPONSE[] = "HTTP/";
+static const int  HTTP_AUTH_RESPONSE_LENGHT = strlen(HTTP_AUTH_RESPONSE);
 void HttpStateMachine::process_process_command_reply(bool entry)
 {
 	if (entry) {
