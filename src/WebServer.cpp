@@ -2493,12 +2493,12 @@ bool ServersInfo::ServersInfo::ReQuery()
 		CECTag *tmpTag;
 		
 		ServerEntry Entry;
-		if (tmpTag = tag->GetTagByName(EC_TAG_SERVER_NAME)) {
+		if ((tmpTag = tag->GetTagByName(EC_TAG_SERVER_NAME)) != NULL) {
 			Entry.sServerName = tmpTag->GetStringData();
 		} else {
 			Entry.sServerName.Clear();
 		}
-		if (tmpTag = tag->GetTagByName(EC_TAG_SERVER_DESC)) {
+		if ((tmpTag = tag->GetTagByName(EC_TAG_SERVER_DESC)) != NULL) {
 			Entry.sServerDescription = tmpTag->GetStringData();
 		} else {
 			Entry.sServerDescription = wxEmptyString;
@@ -2506,17 +2506,17 @@ bool ServersInfo::ServersInfo::ReQuery()
 		Entry.sServerIP = tag->GetIPv4Data().StringIP(false);
 		Entry.nServerIP = tag->GetIPv4Data().IP();
 		Entry.nServerPort = tag->GetIPv4Data().port;
-		if (tmpTag = tag->GetTagByName(EC_TAG_SERVER_USERS)) {
+		if ((tmpTag = tag->GetTagByName(EC_TAG_SERVER_USERS)) != NULL) {
 			Entry.nServerUsers = tmpTag->GetInt32Data();
 		} else {
 			Entry.nServerUsers = 0;
 		}
-		if (tmpTag = tag->GetTagByName(EC_TAG_SERVER_USERS_MAX)) {
+		if ((tmpTag = tag->GetTagByName(EC_TAG_SERVER_USERS_MAX)) != NULL) {
 			Entry.nServerMaxUsers = tmpTag->GetInt32Data();
 		} else {
 			Entry.nServerMaxUsers = 0;
 		}
-		if (tmpTag = tag->GetTagByName(EC_TAG_SERVER_FILES)) {
+		if ((tmpTag = tag->GetTagByName(EC_TAG_SERVER_FILES)) != NULL) {
 			Entry.nServerFiles = tmpTag->GetInt32Data();
 		} else {
 			Entry.nServerFiles = 0;
