@@ -3243,18 +3243,17 @@ void CPartFile::SetStatus(uint8 in)
 {
 	wxASSERT( in != PS_PAUSED && in != PS_INSUFFICIENT );
 	
-	if ( status != in ) {
-		status = in;
+	status = in;
 	
-		if (theApp.IsRunning()) {
-			UpdateDisplayedInfo( true );
-		
-			if ( thePrefs::ShowCatTabInfos() ) {
-				Notify_ShowUpdateCatTabTitles();
-			}
+	if (theApp.IsRunning()) {
+		UpdateDisplayedInfo( true );
+	
+		if ( thePrefs::ShowCatTabInfos() ) {
+			Notify_ShowUpdateCatTabTitles();
 		}
 	}
 }
+
 
 uint32 CPartFile::GetTotalGapSizeInRange(uint32 uRangeStart, uint32 uRangeEnd) const
 {
