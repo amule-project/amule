@@ -794,7 +794,6 @@ class CWebServer {
 		Session	GetSessionByID(ThreadData Data,long sessionID);
 		bool	IsSessionAdmin(ThreadData Data,wxString SsessionID);
 		wxString	GetPermissionDenied();
-		wxString	_GetDownloadGraph(ThreadData Data,int percent, wxString &s_ChunkBar);
 
 		void	InsertCatBox(wxString &Out, int preselect, wxString boxlabel, CECTag *cats, bool jump=false);
 		wxString GetStatusBox(wxString &preselect);
