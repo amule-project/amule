@@ -193,30 +193,15 @@ void CClientReqSocket::Safe_Delete()
 		Notify(false);
 		// lfroen: first of all - stop handler
 		deletethis = true;
-#ifdef AMULE_DAEMON
-                if ( my_handler ) {
-                        printf("CClientReqSocket: sock %p in Safe_Delete\n", this);
-                        // lfroen: this code is executed with app mutex locked. In order
-                        // to prevent deadlock in deleted thread, temporary unlock it here
-			if ( wxThread::This() != my_handler ) {
-				theApp.data_mutex.Unlock();
-				//wxASSERT( wxThread::IsMain() );
-
-				// wait handler thread to exit
-				handler_exit.Lock();
-				handler_exit.Unlock();
-
-				theApp.data_mutex.Lock();
-			}
-			my_handler = 0;
-                }
-#endif
 
 		if (m_client) {
 			m_client->SetSocket( NULL );
 			m_client = NULL;
 		}
 		byConnected = ES_DISCONNECTED;
+#ifdef AMULE_DAEMON
+	if ( !my_handler )
+#endif
 		Close();
 	}
 }
@@ -2062,12 +2047,18 @@ CClientReqSocketHandler::~CClientReqSocketHandler()
 	wxASSERT(socket == 0);
 }
 
+void CClientReqSocket::Destroy()
+{
+	if ( !my_handler ) {
+		CEMSocket::Destroy();
+	}
+}
+
 void *CClientReqSocketHandler::Entry()
 {
-	socket->handler_exit.Lock();
 	while ( !TestDestroy() ) {
 		if ( socket->deletethis ) {
-			printf("CClientReqSocketHandler: socket %p being deleted\n", socket);
+			printf("CClientReqSocketHandler: socket %p in %ld being deleted\n", socket, GetId());
 			break;
 		}
 		if ( socket->Error()) {
@@ -2089,9 +2080,9 @@ void *CClientReqSocketHandler::Entry()
 			socket->OnReceive(0);
 		}
 	}
-	printf("CClientReqSocketHandler: thread for %p exited\n", socket);
-	socket->handler_exit.Unlock();
+	printf("CClientReqSocketHandler: thread %ld for %p exited\n", GetId(), socket);
 	socket->my_handler = 0;
+	socket->Safe_Delete();
 	socket = 0;
 
 	return 0;
@@ -2294,7 +2285,8 @@ void CListenSocket::Process()
 	// 042e + Kry changes for Destroy
 	m_OpenSocketsInterval = 0;
 	opensockets = 0;
-	for (SocketSet::iterator it = socket_list.begin(); it != socket_list.end(); ) {
+	SocketSet::iterator it = socket_list.begin();
+	while ( it != socket_list.end() ) {
 		CClientReqSocket* cur_socket = *it++;
 		opensockets++;
 		if (!cur_socket->OnDestroy()) {
@@ -2305,6 +2297,7 @@ void CListenSocket::Process()
 			}
 		}
 	}
+	
 	if ((GetOpenSockets()+5 < app_prefs->GetMaxConnections() || theApp.serverconnect->IsConnecting()) && !bListening) {
 		ReStartListening();
 	}
@@ -2441,11 +2434,13 @@ CSocketGlobalThread::CSocketGlobalThread() : wxThread(wxTHREAD_JOINABLE)
 
 void CSocketGlobalThread::AddSocket(CClientReqSocket* sock)
 {
+	wxASSERT(sock);
 	socket_list.insert(sock);
 }
 
 void CSocketGlobalThread::RemoveSocket(CClientReqSocket* sock)
 {
+	wxASSERT(sock);
 	socket_list.erase(sock);
 }
 
@@ -2454,13 +2449,13 @@ void *CSocketGlobalThread::Entry()
 {
 	while ( !TestDestroy() ) {
 		Sleep(10);
-		std::set<CClientReqSocket *> erase_list, run_list;
+		std::set<CClientReqSocket *>::iterator it;
 		CALL_APP_DATA_LOCK;
-		for (std::set<CClientReqSocket *>::iterator it = socket_list.begin();
-			it != socket_list.end(); it++) {
-			CClientReqSocket* cur_sock = *it;
+		it = socket_list.begin();
+		while (it != socket_list.end()) {
+			CClientReqSocket* cur_sock = *it++;
 			if (cur_sock->deletethis || cur_sock->Error()) {
-				erase_list.insert(cur_sock);
+				socket_list.erase(cur_sock);
 				continue;
 			}
 			if ( !cur_sock->wxSocketBase::IsConnected() ) {
@@ -2468,33 +2463,28 @@ void *CSocketGlobalThread::Entry()
 					cur_sock->OnConnect(0);
 				}
 			} else {
-				if ( cur_sock->WaitForLost(0, 0) ) {
-					erase_list.insert(cur_sock);
+				if ( cur_sock->deletethis ) {
+					socket_list.erase(cur_sock);
 					continue;
 				}
-				if ( cur_sock->WaitForRead(0, 0) ) {
-					cur_sock->OnReceive(0);
+				if ( cur_sock->WaitForLost(0, 0) ) {
+					cur_sock->OnError(cur_sock->LastError());
+					socket_list.erase(cur_sock);
+					continue;
 				}
-				CUpDownClient *client = cur_sock->GetClient();
-				if ( (client != 0) && (client->GetDownloadState() == DS_DOWNLOADING) ) {
-					run_list.insert(cur_sock);
-					erase_list.insert(cur_sock);
+				if ( !cur_sock->deletethis && cur_sock->WaitForRead(0, 0) ) {
+					cur_sock->OnReceive(0);
+					CUpDownClient *client = cur_sock->GetClient();
+					if ( (client != 0) && (client->GetDownloadState() == DS_DOWNLOADING) ) {
+						CClientReqSocketHandler *t = new CClientReqSocketHandler(cur_sock);
+						printf("Socket %p started dload\n", cur_sock);
+						socket_list.erase(cur_sock);
+						t->Run();
+					}
+						 	
 				}
 			}
 		}
-		for (std::set<CClientReqSocket *>::iterator it = erase_list.begin();
-			it != erase_list.end(); it++) {
-			CClientReqSocket* cur_sock = *it;
-			socket_list.erase(cur_sock);
-		}
-		for (std::set<CClientReqSocket *>::iterator it = run_list.begin(); 
-		     it != run_list.end(); it++) { 
-                        CClientReqSocket* cur_sock = *it; 
-                        CClientReqSocketHandler *t = new CClientReqSocketHandler(cur_sock);
-			// fire & forget
-			//printf("Client %p started dload\n", client);
-			t->Run();
-                }
  
 	}
 	return 0;

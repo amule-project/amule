@@ -335,7 +335,6 @@ void *CClientUDPSocket::Entry()
 {
 	while ( !TestDestroy() ) {
 		if ( WaitForRead(1, 0) ) {
-			CALL_APP_DATA_LOCK;
 			OnReceive(0);
 		}
 	}

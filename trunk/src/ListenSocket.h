@@ -76,13 +76,15 @@ public:
 
 	void		SetClient(CUpDownClient* client) { m_client = client; }
 	CUpDownClient* GetClient() { return m_client; }
+#ifdef AMULE_DAEMON
+	void Destroy();
+#endif
 protected:
 	bool	 PacketReceived(Packet* packet);
 
 private:
 	CUpDownClient*	m_client;
 	
-//	void	Delete_Timed();
 	bool	ProcessPacket(const char *packet, uint32 size, uint8 opcode);
 	bool	ProcessExtPacket(const char *packet, uint32 size, uint8 opcode);
 
@@ -149,7 +151,7 @@ public:
 	~CListenSocket();
 	bool	StartListening();
 	void	StopListening();
-	virtual void OnAccept(int nErrorCode);
+	void OnAccept(int nErrorCode);
 	void	Process();
 	void	RemoveSocket(CClientReqSocket* todel);
 	void	AddSocket(CClientReqSocket* toadd);
