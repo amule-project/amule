@@ -11,12 +11,12 @@
 //  it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the
 // Free Software Foundation, Inc.,
@@ -65,9 +65,9 @@ OnLineSig::OnLineSig ()
 
   m_amulesig =
     new wxFileName (wxGetApp ().GetConfig ()->
-		    Read (WxCasCte::AMULESIG_KEY,
-			  WxCasCte::AMULESIG_DEFAULT_PATH),
-		    WxCasCte::AMULESIG_NAME);
+                    Read (WxCasCte::AMULESIG_DIR_KEY,
+                          WxCasCte::DEFAULT_AMULESIG_PATH),
+                    WxCasCte::AMULESIG_FILENAME);
 }
 
 // Constructor 2
@@ -120,8 +120,10 @@ OnLineSig::Refresh ()
   m_DLRate.ToDouble (&dl);
 
 #ifdef __GNUG__
+
   m_maxDL = m_maxDL >? dl;
 #else
+
   if (dl > m_maxDL)
     {
       m_maxDL = dl;
@@ -130,92 +132,92 @@ OnLineSig::Refresh ()
 }
 
 bool OnLineSig::IsRunning () const
-{
-  if (m_isRunning == "1")
-    {
-      return TRUE;
-    }
-  else
-    {
-      return FALSE;
-    }
-}
+  {
+    if (m_isRunning == "1")
+      {
+        return TRUE;
+      }
+    else
+      {
+        return FALSE;
+      }
+  }
 
 wxString OnLineSig::GetServerName () const
-{
-  return m_serverName;
-}
+  {
+    return m_serverName;
+  }
 
 wxString OnLineSig::GetServerIP () const
-{
-  return m_serverIP;
-}
+  {
+    return m_serverIP;
+  }
 
 wxString OnLineSig::GetServerPort () const
-{
-  return m_serverPort;
-}
+  {
+    return m_serverPort;
+  }
 
 wxString OnLineSig::GetConnexionID () const
-{
-  return m_connexionID;
-}
+  {
+    return m_connexionID;
+  }
 
 wxString OnLineSig::GetULRate () const
-{
-  return m_ULRate;
-}
+  {
+    return m_ULRate;
+  }
 
 wxString OnLineSig::GetDLRate () const
-{
-  return m_DLRate;
-}
+  {
+    return m_DLRate;
+  }
 
 wxString OnLineSig::GetQueue () const
-{
-  return m_queue;
-}
+  {
+    return m_queue;
+  }
 
 wxString OnLineSig::GetSharedFiles () const
-{
-  return m_sharedFiles;
-}
+  {
+    return m_sharedFiles;
+  }
 
 wxString OnLineSig::GetUser () const
-{
-  return m_user;
-}
+  {
+    return m_user;
+  }
 
 wxString OnLineSig::GetTotalUL () const
-{
-  return m_totalUL;
-}
+  {
+    return m_totalUL;
+  }
 
 
 wxString OnLineSig::GetTotalDL () const
-{
-  return m_totalDL;
-}
+  {
+    return m_totalDL;
+  }
 
 wxString OnLineSig::GetVersion () const
-{
-  return m_version;
-}
+  {
+    return m_version;
+  }
 
 wxString OnLineSig::GetSessionUL () const
-{
-  return m_sessionUL;
-}
+  {
+    return m_sessionUL;
+  }
 
 wxString OnLineSig::GetSessionDL () const
-{
-  return m_sessionDL;
-}
+  {
+    return m_sessionDL;
+  }
 
 wxString OnLineSig::GetRunTime () const
-{
-  return m_runTime;
-}
+  {
+    return m_runTime;
+  }
 
 wxString OnLineSig::GetConvertedTotalUL ()
 {
@@ -238,34 +240,34 @@ wxString OnLineSig::GetConvertedSessionDL ()
 }
 
 wxString OnLineSig::GetConnexionIDType () const
-{
-  if (m_connexionID == "H")
-    {
-      return (wxString ("HighID"));
-    }
-  else
-    {
-      return (wxString ("LowID"));
-    }
-}
+  {
+    if (m_connexionID == "H")
+      {
+        return (wxString ("HighID"));
+      }
+    else
+      {
+        return (wxString ("LowID"));
+      }
+  }
 
 wxString OnLineSig::GetMaxDL () const
-{
-  return (wxString::Format (_("%.2f kB/s"), m_maxDL));
-}
+  {
+    return (wxString::Format (_("%.2f kB/s"), m_maxDL));
+  }
 
 // Private use
 wxString OnLineSig::BytesConvertion (const wxString & bytes)
 {
   double
-    d_bytes;
+  d_bytes;
   wxString
-    c_bytes;
+  c_bytes;
 
   bytes.ToDouble (&d_bytes);
 
   wxInt32
-    i = 0;
+  i = 0;
   while (d_bytes > 1024)
     {
       d_bytes /= 1024;
@@ -275,7 +277,7 @@ wxString OnLineSig::BytesConvertion (const wxString & bytes)
   switch (i)
     {
     case 0:
-      c_bytes = wxString::Format ("%.0f B", d_bytes);
+        c_bytes = wxString::Format ("%.0f B", d_bytes);
       break;
     case 1:
       c_bytes = wxString::Format ("%.2f KB", d_bytes);

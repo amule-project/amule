@@ -11,12 +11,12 @@
 //  it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the
 // Free Software Foundation, Inc.,
@@ -44,7 +44,7 @@
 
 // Constructor
 WxCasCanvas::WxCasCanvas (wxWindow * parent, wxWindow * model):wxPanel (parent,
-	 -1)
+        -1)
 {
   // Add Bitmap Splash
   m_bitmap = wxBITMAP (amule);
@@ -58,12 +58,11 @@ WxCasCanvas::WxCasCanvas (wxWindow * parent, wxWindow * model):wxPanel (parent,
 
 // Destructor
 WxCasCanvas::~WxCasCanvas ()
-{
-}
+{}
 
 // Event table
 BEGIN_EVENT_TABLE (WxCasCanvas, wxPanel)
-EVT_PAINT (WxCasCanvas::OnPaint) 
+EVT_PAINT (WxCasCanvas::OnPaint)
 END_EVENT_TABLE ()
 
 // OnPaint event
@@ -83,7 +82,7 @@ WxCasCanvas::Update ()
   GetClientSize (&wI, &h);
   if (wI != wS)
     {
-	  wxClientDC dc (this);
+      wxClientDC dc (this);
       DrawImg (&dc);
     }
 }
@@ -98,10 +97,10 @@ WxCasCanvas::DrawImg (wxDC *dc)
 
   h =
     (wxInt32) ((double) (m_bitmap.GetHeight ()) / m_bitmap.GetWidth () *
-	       pw);
+               pw);
 
   wxBitmap bitmap (wxImage (m_bitmap.ConvertToImage ()).
-				   Scale (pw, h));
+                   Scale (pw, h));
 
   SetClientSize (pw, h);
 
@@ -110,7 +109,7 @@ WxCasCanvas::DrawImg (wxDC *dc)
   dc->BeginDrawing();
   dc->DrawBitmap (bitmap, 0, 0);
   dc->EndDrawing();
-  
+
   // Frame layout
   GetParent ()->Layout ();
   GetParent ()->Fit ();

@@ -11,12 +11,12 @@
 //  it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the
 // Free Software Foundation, Inc.,
@@ -39,65 +39,65 @@
 
 // OnLineSig Class
 class OnLineSig
-{
-private:
-  double m_maxDL;
+  {
+  private:
+    double m_maxDL;
 
-  wxString m_isRunning;
-  wxString m_serverName;
-  wxString m_serverIP;
-  wxString m_serverPort;
-  wxString m_connexionID;
-  wxString m_ULRate;
-  wxString m_DLRate;
-  wxString m_queue;
-  wxString m_sharedFiles;
-  wxString m_user;
-  wxString m_totalUL;
-  wxString m_totalDL;
-  wxString m_version;
-  wxString m_sessionUL;
-  wxString m_sessionDL;
-  wxString m_runTime;
+    wxString m_isRunning;
+    wxString m_serverName;
+    wxString m_serverIP;
+    wxString m_serverPort;
+    wxString m_connexionID;
+    wxString m_ULRate;
+    wxString m_DLRate;
+    wxString m_queue;
+    wxString m_sharedFiles;
+    wxString m_user;
+    wxString m_totalUL;
+    wxString m_totalDL;
+    wxString m_version;
+    wxString m_sessionUL;
+    wxString m_sessionDL;
+    wxString m_runTime;
 
-  wxFileName *m_amulesig;
+    wxFileName *m_amulesig;
 
-  wxString BytesConvertion (const wxString& bytes);
+    wxString BytesConvertion (const wxString& bytes);
 
 
-public:
-  // Constructors
+  public:
+    // Constructors
     OnLineSig ();
     OnLineSig (wxFileName * file);
 
-  // Destructor
-   ~OnLineSig ();
+    // Destructor
+    ~OnLineSig ();
 
-  // Accessor
-  void SetAmuleSig (wxFileName * file);
-  void Refresh ();
-  bool IsRunning () const;
-  wxString GetServerName () const;
-  wxString GetServerIP () const;
-  wxString GetServerPort () const;
-  wxString GetConnexionID () const;
-  wxString GetULRate () const;
-  wxString GetDLRate () const;
-  wxString GetQueue () const;
-  wxString GetSharedFiles () const;
-  wxString GetUser () const;
-  wxString GetTotalUL () const;
-  wxString GetTotalDL () const;
-  wxString GetVersion () const;
-  wxString GetSessionUL () const;
-  wxString GetSessionDL () const;
-  wxString GetRunTime () const;
-  wxString GetConvertedTotalUL ();
-  wxString GetConvertedTotalDL ();
-  wxString GetConvertedSessionUL ();
-  wxString GetConvertedSessionDL ();
-  wxString GetConnexionIDType () const;
-  wxString GetMaxDL () const;
-};
+    // Accessor
+    void SetAmuleSig (wxFileName * file);
+    void Refresh ();
+    bool IsRunning () const;
+    wxString GetServerName () const;
+    wxString GetServerIP () const;
+    wxString GetServerPort () const;
+    wxString GetConnexionID () const;
+    wxString GetULRate () const;
+    wxString GetDLRate () const;
+    wxString GetQueue () const;
+    wxString GetSharedFiles () const;
+    wxString GetUser () const;
+    wxString GetTotalUL () const;
+    wxString GetTotalDL () const;
+    wxString GetVersion () const;
+    wxString GetSessionUL () const;
+    wxString GetSessionDL () const;
+    wxString GetRunTime () const;
+    wxString GetConvertedTotalUL ();
+    wxString GetConvertedTotalDL ();
+    wxString GetConvertedSessionUL ();
+    wxString GetConvertedSessionDL ();
+    wxString GetConnexionIDType () const;
+    wxString GetMaxDL () const;
+  };
 
 #endif /* _ONLINESIG_H */

@@ -11,12 +11,12 @@
 //  it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the
 // Free Software Foundation, Inc.,
@@ -39,30 +39,30 @@
 
 // LinuxMon Class
 class LinuxMon
-{
-private:
-  wxString m_uptime;
-  
-  float m_sysLoad_1;
-  float m_sysLoad_5;
-  float m_sysLoad_15;
+  {
+  private:
+    wxString m_uptime;
 
-  static const wxFileName UPTIME_FILE;
-  static const wxFileName LOADAVG_FILE;
-  
-public:
-  // Constructor
+    float m_sysLoad_1;
+    float m_sysLoad_5;
+    float m_sysLoad_15;
+
+    static const wxFileName UPTIME_FILE;
+    static const wxFileName LOADAVG_FILE;
+
+  public:
+    // Constructor
     LinuxMon ();
 
-  // Destructor
-   ~LinuxMon ();
+    // Destructor
+    ~LinuxMon ();
 
-  // Accessors
-  void Refresh ();
-  wxString GetUptime () const;
-  float GetSysLoad_1 () const;
-  float GetSysLoad_5 () const;
-  float GetSysLoad_15 () const;
-};
+    // Accessors
+    void Refresh ();
+    wxString GetUptime () const;
+    float GetSysLoad_1 () const;
+    float GetSysLoad_5 () const;
+    float GetSysLoad_15 () const;
+  };
 
 #endif /* _LINUXMON_H */

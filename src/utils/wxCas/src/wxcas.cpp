@@ -11,12 +11,12 @@
 //  it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the
 // Free Software Foundation, Inc.,
@@ -53,12 +53,15 @@ WxCas::OnInit ()
 #endif
 
 #if wxUSE_LIBJPEG
+
   wxImage::AddHandler (new wxJPEGHandler);
 #endif
 
 #ifdef __WXMSW__
+
   SetPrintMode (wxPRINT_WINDOWS);
 #else
+
   SetPrintMode (wxPRINT_POSTSCRIPT);
 #endif
 
@@ -73,22 +76,22 @@ WxCas::OnInit ()
   return true;
 }
 
-int 
+int
 WxCas::OnExit()
 {
-	m_config->Set(NULL);
-	delete m_config;
-	return 0;
+  m_config->Set(NULL);
+  delete m_config;
+  return 0;
 }
 
 WxCasFrame *
 WxCas::GetMainFrame () const
-{
-  return m_frame;
-}
+  {
+    return m_frame;
+  }
 
 wxConfig *
 WxCas::GetConfig () const
-{
-	return m_config;
-}
+  {
+    return m_config;
+  }
