@@ -58,8 +58,9 @@ class CPartFile_Encoder {
 		// so realloc buffer when needed.
 		// This buffer only needed on core-side, where list is turned into array
 		// before passing to RLE. Decoder will just use RLE internal buffer
-		uint32 *m_gap_buffer;
-		int m_gap_buffer_size;
+		// Buffer can be static, since it is accessed with mutex locked
+		static uint32 *m_gap_buffer;
+		static int m_gap_buffer_size;
 		
 		CPartFile *m_file;
 	public:

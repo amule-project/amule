@@ -956,75 +956,53 @@ CECPacket *SetPreferencesFromRequest(const CECPacket *request)
 	return response;
 }
 
+// init with some default size
+uint32 *CPartFile_Encoder::m_gap_buffer = new uint32[128];
+int CPartFile_Encoder::m_gap_buffer_size = 128;
+
 // encoder side
 CPartFile_Encoder::CPartFile_Encoder(CPartFile *file) :
 	m_enc_data(file->GetPartCount(), file->gaplist.GetCount()*2)
 {
 	m_file = file;
-	m_gap_buffer_size = file->gaplist.GetCount()*2;
-	m_gap_buffer = new uint32[m_gap_buffer_size];
 }
 
 // decoder side
 CPartFile_Encoder::CPartFile_Encoder(int size): m_enc_data(size, 0)
 {
 	m_file = 0;
-	m_gap_buffer = 0;
-	m_gap_buffer_size = 0;
 }
 
 CPartFile_Encoder::~CPartFile_Encoder()
 {
-	if ( m_gap_buffer ) {
-		delete [] m_gap_buffer;
-	}
 }
 		
 // stl side :)
 CPartFile_Encoder::CPartFile_Encoder()
 {
 	m_file = 0;
-	m_gap_buffer = 0;
-	m_gap_buffer_size = 0;
 }
 
 CPartFile_Encoder::CPartFile_Encoder(const CPartFile_Encoder &obj) : m_enc_data(obj.m_enc_data)
 {
 	m_file = obj.m_file;
-	m_gap_buffer_size = obj.m_gap_buffer_size;
-	if ( m_gap_buffer_size ) {
-		m_gap_buffer = new uint32[m_gap_buffer_size];
-		memcpy(m_gap_buffer, obj.m_gap_buffer, m_gap_buffer_size*sizeof(uint32));
-	} else {
-		m_gap_buffer = 0;
-	}
 }
 
 CPartFile_Encoder &CPartFile_Encoder::operator=(const CPartFile_Encoder &obj)
 {
 	m_file = obj.m_file;
 	m_enc_data = obj.m_enc_data;
-	m_gap_buffer_size = obj.m_gap_buffer_size;
-	if ( m_gap_buffer_size ) {
-		m_gap_buffer = new uint32[m_gap_buffer_size];
-		memcpy(m_gap_buffer, obj.m_gap_buffer, m_gap_buffer_size*sizeof(uint32));
-	} else {
-		m_gap_buffer = 0;
-	}
 	return *this;
 }
 
 
 CECTag *CPartFile_Encoder::Encode()
 {
-	//
-	// compare gaps lists, calculate difference
-	std::list<Gap_Struct> diff_list;
-
 	if ( m_gap_buffer_size < m_file->gaplist.GetCount()*2 ) {
 		m_gap_buffer_size = m_file->gaplist.GetCount()*2;
 		uint32 *buf = new uint32[m_gap_buffer_size];
-		memcpy(buf, m_gap_buffer, m_gap_buffer_size*sizeof(uint32));
+		delete [] m_gap_buffer;
+		m_gap_buffer = buf;
 	} 
 	
 	POSITION curr_pos = m_file->gaplist.GetHeadPosition();
@@ -1035,6 +1013,7 @@ CECTag *CPartFile_Encoder::Encode()
 		*gap_buff_ptr++ = curr->end;
 	}
 
+	m_enc_data.m_gap_status.Realloc(m_gap_buffer_size);
 	int gap_enc_size = 0;
 	const unsigned char *gap_enc_data = m_enc_data.m_gap_status.Encode((unsigned char *)m_gap_buffer, gap_enc_size);
 	
