@@ -1097,7 +1097,8 @@ void CUpDownClient::ProcessMuleCommentPacket(const char *pachPacket, uint32 nSiz
 		throw wxString(wxT("Wrong MuleComment packet"));
 	}
 
-	if (m_reqfile->HasRating() || m_reqfile->HasComment()) {
+	if (!m_strComment.IsEmpty() || m_iRate > 0) {
+		m_reqfile->UpdateFileRatingCommentAvail();
 		Notify_DownloadCtrlUpdateItem(m_reqfile);
 	}
 
