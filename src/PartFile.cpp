@@ -213,11 +213,7 @@ void CPartFile::Init()
 	m_stopped = false;
 	m_insufficient = false;
 
-#ifdef CLIENT_GUI
 	status = PS_EMPTY;
-#else
-	SetPartFileStatus(PS_EMPTY);
-#endif // CLIENT_GUI
 	
 	transfered = 0;
 	m_iLastPausePurge = time(NULL);
