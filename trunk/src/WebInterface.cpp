@@ -57,6 +57,8 @@
 #define APP_INIT_SIZE_X 640
 #define APP_INIT_SIZE_Y 480
 
+#define char2unicode(x) wxConvCurrent->cMB2WX(x)
+#define unicode2char(x) (const char*)wxConvCurrent->cWX2MB(x)
 
 #if wxUSE_GUI && wxUSE_TIMER
 	class MyTimer *mytimer;
@@ -298,7 +300,7 @@ int CamulewebApp::OnRun() {
 #ifndef AMULEWEBDLG
 	char *t_passwd = getpass("Enter password for mule connection (return if no pass defined): ");
 	if (strlen(t_passwd)>0) {
-		temp_wxpasswd = new wxString(MD5Sum(wxT(t_passwd)).GetHash());
+		temp_wxpasswd = new wxString(MD5Sum(char2unicode(t_passwd)).GetHash());
 #else
 	hostName = wxGetTextFromUser(_T("Enter hostname or ip of the box running aMule"), _T("Enter Hostname"), _T("localhost"));
 	sPort = wxGetTextFromUser(_T("Enter port for aMule's External Connection"), _T("Enter Port"), _T("4712"));
@@ -307,9 +309,9 @@ int CamulewebApp::OnRun() {
 		temp_wxpasswd = new wxString(MD5Sum(*temp_wxpasswd).GetHash());
 #endif
 	} else 
-		temp_wxpasswd = new wxString("");
+		temp_wxpasswd = new wxString(wxT(""));
 
-	wxString passwd = wxString::Format("aMuleweb %s", temp_wxpasswd->GetData());
+	wxString passwd = wxString::Format(wxT("aMuleweb %s"), temp_wxpasswd->GetData());
 	delete temp_wxpasswd;
 
 	Print("\nCreating client...\n");
@@ -334,7 +336,7 @@ int CamulewebApp::OnRun() {
     		Print("Failed ! Unable to connect to the specified host\n");
 	} else {
 		//Authenticate ourself
-		if (m_ECClient->SendRecvMsg(wxString::Format("AUTH %s", passwd.GetData())) == "Access Denied") {
+		if (m_ECClient->SendRecvMsg(wxString::Format(wxT("AUTH %s"), passwd.GetData())) == wxT("Access Denied")) {
 			Print("ExternalConn: Access Denied.\n");
 		} else {
     		Print("Succeeded ! Connection established\n\n");
@@ -371,17 +373,17 @@ bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& amuleweb_parser) {
 	result = wxApp::OnCmdLineParsed(amuleweb_parser);
 	
 	wxString TempStr;
-	TempStr = "rh";
+	TempStr = wxT("rh");
 	if (!amuleweb_parser.Found(TempStr,&hostName)) {
-		hostName = "localhost";
+		hostName = wxT("localhost");
 	}
 	
 	long port;
-	TempStr = "p";
+	TempStr = wxT("p");
 	if (!amuleweb_parser.Found(TempStr,&port)) {
-		sPort="4712"; //get the default port
+		sPort=wxT("4712"); //get the default port
 	} else {
-		sPort=wxString::Format("%li", port);
+		sPort=wxString::Format(wxT("%li"), port);
 	}
 
 	return result;

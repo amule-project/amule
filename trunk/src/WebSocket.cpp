@@ -288,29 +288,29 @@ void CWebSocket::OnReceived(char* pData, wxUint32 dwSize) {
 
 
 void CWebSocket::OnRequestReceived(char* pHeader, wxUint32 dwHeaderLen, char* pData, wxUint32 dwDataLen) {
-	wxString sHeader(pHeader, dwHeaderLen);
-	wxString sData(pData, dwDataLen);
+	wxString sHeader = sHeader.Format(wxT("%s"), pHeader); sHeader=sHeader.Left(dwHeaderLen);
+	wxString sData = sData.Format(wxT("%s"), pData); sData=sData.Left(dwDataLen);
 	wxString sURL;
 	bool imgreq=false;
 	bool stylereq=false;
 	
-	if (sHeader.Left(3) == "GET")
+	if (sHeader.Left(3) == wxT("GET"))
 		sURL = sHeader.Trim();
-	else if (sHeader.Left(4) == "POST")
-		sURL = "?" + sData.Trim(); // '?' to imitate GET syntax for ParseURL
+	else if (sHeader.Left(4) == wxT("POST"))
+		sURL = wxT("?") + sData.Trim(); // '?' to imitate GET syntax for ParseURL
 
-	if (sURL.Find(" ") > -1)
-		sURL = sURL.Mid(sURL.Find(" ")+1, sURL.Length());
+	if (sURL.Find(wxT(" ")) > -1)
+		sURL = sURL.Mid(sURL.Find(wxT(" "))+1, sURL.Length());
 	
-	if (sURL.Find(" ") > -1)
-		sURL = sURL.Left(sURL.Find(" "));
+	if (sURL.Find(wxT(" ")) > -1)
+		sURL = sURL.Left(sURL.Find(wxT(" ")));
 
-	if (sURL.Length()>4 && sURL.Right(4).MakeLower()==".gif" || sURL.Right(4).MakeLower()==".jpg" || 
-		sURL.Right(4).MakeLower()==".png" || sURL.Right(4).MakeLower()==".bmp" ||
-		sURL.Right(5).MakeLower()==".jpeg")
+	if (sURL.Length()>4 && sURL.Right(4).MakeLower()==wxT(".gif") || sURL.Right(4).MakeLower()==wxT(".jpg") || 
+		sURL.Right(4).MakeLower()==wxT(".png") || sURL.Right(4).MakeLower()==wxT(".bmp") ||
+		sURL.Right(5).MakeLower()==wxT(".jpeg"))
 		imgreq=true;
 	
-	if (sURL.Length()>4 && sURL.Right(4).MakeLower()==".css")
+	if (sURL.Length()>4 && sURL.Right(4).MakeLower()==wxT(".css"))
 		stylereq=true;
 
 	ThreadData Data;
