@@ -59,7 +59,6 @@ src/StatisticsDlg.cpp
 src/SysTray.cpp
 src/TextClient.cpp
 src/TransferWnd.cpp
-src/updownclient.h
 src/UploadClient.cpp
 src/utils/aLinkCreator/src/alcc.cpp
 src/utils/aLinkCreator/src/alc.cpp
