@@ -625,12 +625,12 @@ AC_CONFIG_FILES([Makefile
 		 src/pixmaps/Makefile
 		 src/utils/Makefile
 		 src/utils/aLinkCreator/Makefile
-		 src/utils/aLinkCreator/doc/Makefile
+		 src/utils/aLinkCreator/docs/Makefile
 		 src/utils/aLinkCreator/src/Makefile
 		 src/utils/cas/Makefile
 		 src/utils/cas/docs/Makefile
 		 src/utils/wxCas/Makefile
-		 src/utils/wxCas/doc/Makefile
+		 src/utils/wxCas/docs/Makefile
 		 src/utils/wxCas/src/Makefile
 		 src/utils/xas/Makefile
 		 src/utils/xas/docs/Makefile
