@@ -180,6 +180,8 @@ void CUpDownClient::Init()
 	
 	m_bMsgFiltered = false;
 
+	sent_OSInfo = false;
+
 	if (m_socket) {
 		amuleIPV4Address address;
 		m_socket->GetPeer(address);
@@ -568,7 +570,7 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 	if ((m_clientSoft == SO_AMULE) && (m_nClientVersion >= MAKE_CLIENT_VERSION(2,0,0))) {
 		SendMuleInfoPacket(false,true); // Send the aMule OS Info tag
 	}
-	
+
 	return bIsMule;
 }
 
@@ -632,6 +634,8 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer, bool OSInfo) {
 			CTag tag1(ET_OS_INFO,wxT("Unknown"));
 			tag1.WriteTagToFile(data);
 		}
+		
+		sent_OSInfo = true; // So we can ignore old aMule's reply.
 		
 	} else {
 		
@@ -777,10 +781,17 @@ void CUpDownClient::ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize)
 
 					break;
 				case ET_OS_INFO:
-					// Special tag, sent only from aMule 2.0.0rc8 to other 2.0.0 aMules
-					wxASSERT(temptag.tag.type == 2); // tag must be a string
+					// Special tag, aMule 2.0.0rc8 sends it to other aMules.
+					// It was recycled from a mod's tag, so we need to make sure
+					// that there's an aMule on the other side.
+				
+					if ((m_clientSoft == SO_AMULE) && (m_nClientVersion >= MAKE_CLIENT_VERSION(2,0,0))) {
+						wxASSERT(temptag.tag.type == 2); // tag must be a string
 
-					m_sClientOSInfo = char2unicode(temptag.tag.stringvalue);
+						m_sClientOSInfo = char2unicode(temptag.tag.stringvalue);
+					}
+					
+					break;
 					
 				default:
 					//printf("Mule Unk Tag 0x%02x=%x\n", temptag.tag.specialtag, (UINT)temptag.tag.intvalue);
