@@ -63,7 +63,7 @@ class RLE_Data {
  * instance of such encoder
  */
 class RLE_Encoder {
-		std::map<CPartFile *, RLE_String> m_encoders;
+		std::map<CPartFile *, RLE_Data> m_encoders;
 		int m_len;
 	public:
 		RLE_Encoder(int buff_len);
