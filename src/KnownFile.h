@@ -27,6 +27,7 @@
 #include "CString.h"		// Needed for CString
 #include "opcodes.h"		// Needed for PARTSIZE
 #include "CTypedPtrList.h"	// Needed for CTypedPtrList
+#include "CMD4Hash.h"
 
 #define	PS_READY			0
 #define	PS_EMPTY			1
@@ -57,7 +58,7 @@ class CTag;
 
 WX_DEFINE_ARRAY_SHORT(uint16, ArrayOfUInts16);
 
-WX_DECLARE_OBJARRAY(unsigned char*, ArrayOfUCharPtr);
+WX_DECLARE_OBJARRAY(CMD4Hash, ArrayOfCMD4Hash);
 
 WX_DECLARE_OBJARRAY(CTag*, ArrayOfCTag);
 
@@ -101,14 +102,14 @@ public:
 	virtual ~CAbstractFile() {};
 
 	const wxString&	GetFileName()			{return m_strFileName;}
-	unsigned char*	GetFileHash()			{return m_abyFileHash;}
+	CMD4Hash&		GetFileHash()			{return m_abyFileHash;}
 	uint32	GetFileSize()			{return m_nFileSize;}
 	void	SetFileSize(uint32 nFileSize) { m_nFileSize = nFileSize; }
 	void	SetFileName(const wxString& strmakeFilename);
 	
 protected:
 	wxString	m_strFileName;
-	unsigned char m_abyFileHash[16];
+	CMD4Hash	m_abyFileHash;
 	uint32		m_nFileSize;
 	CString		m_strComment;
 	int8		m_iRate;
@@ -136,7 +137,7 @@ public:
 
 	// local available part hashs
 	uint16	GetHashCount() const	{return hashlist.GetCount();}
-	uchar*	GetPartHash(uint16 part) const;
+	const CMD4Hash&	GetPartHash(uint16 part) const;
 
 	// nr. of part hashs according the file size wrt ED2K protocol
 	UINT	GetED2KPartHashCount() const { return m_iED2KPartHashCount; }
@@ -198,7 +199,7 @@ protected:
 	void	CreateHashFromString(unsigned char* in_string, int Length, unsigned char* Output)	{CreateHashFromInput(0,0,Length,Output,in_string);}
 	void	LoadComment();//comment
 	void GetMetaDataTags();
-	ArrayOfUCharPtr hashlist;
+	ArrayOfCMD4Hash hashlist;
 	ArrayOfCTag taglist;
 	CString m_strFilePath;	
 
