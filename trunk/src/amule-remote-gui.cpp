@@ -190,6 +190,7 @@ void CamuleRemoteGuiApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS&)
 	CECPacket stats_req(EC_OP_STAT_REQ);
 	CEC_Stats_Tag *stats = (CEC_Stats_Tag *)connect->SendRecv(&stats_req);
 	if ( !stats ) {
+		//core_timer->Stop();
 		return;
 	}
 	downloadqueue->UpdateStats(stats);
@@ -225,8 +226,12 @@ void CamuleRemoteGuiApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS&)
 		}
 	}
 	theApp.amuledlg->ShowTransferRate();
-	amuledlg->ShowUserCount(serverconnect->GetCurrentServer()->GetUsers(),
-		serverconnect->GetCurrentServer()->GetFiles());
+	if ( serverconnect->GetCurrentServer() ) {
+		amuledlg->ShowUserCount(serverconnect->GetCurrentServer()->GetUsers(),
+			serverconnect->GetCurrentServer()->GetFiles());
+	} else {
+		amuledlg->ShowUserCount(0, 0);
+	}
 }
 
 void CamuleRemoteGuiApp::ShutDown() {
