@@ -1140,7 +1140,7 @@ bool amuleProxyClientSocket::Start(const wxIPaddress &PeerAddress)
 	
 bool amuleProxyClientSocket::ProxyIsCapableOf(wxProxyCommand ProxyCommand) const
 {
-	bool ret;
+	bool ret = false;
 	
 	switch (m_ProxyData.m_ProxyType) {
 	case wxPROXY_NONE:

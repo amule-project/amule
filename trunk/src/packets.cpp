@@ -381,7 +381,7 @@ CTag::CTag(const CFileDataIO& data, bool bOptUTF8)
 		throw CInvalidPacket("Bad Met File");
 	}
 	
-	uint16 length;
+	uint16 length = 0;
 	
 	if (tag.type & 0x80)
 	{

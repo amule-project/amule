@@ -443,7 +443,7 @@ void CServerListCtrl::OnPriorityChange( wxCommandEvent& event )
 	
 	ItemDataList items = GetSelectedItems();
 	
-	for ( int i = 0; i < items.size(); ++i ) {
+	for ( unsigned int i = 0; i < items.size(); ++i ) {
 		CServer* server = (CServer*)items[ i ];
 		
 		server->SetPreference( priority );
@@ -458,7 +458,7 @@ void CServerListCtrl::OnStaticChange( wxCommandEvent& event )
 
 	ItemDataList items = GetSelectedItems();
 	
-	for ( int i = 0; i < items.size(); ++i ) {
+	for ( unsigned int i = 0; i < items.size(); ++i ) {
 		CServer* server = (CServer*)items[ i ];
 
 		// Only update items that have the wrong setting
