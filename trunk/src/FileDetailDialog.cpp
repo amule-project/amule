@@ -147,14 +147,14 @@ void CFileDetailDialog::FillSourcenameList()
 	// update
 	for (POSITION pos = m_file->m_SrcList.GetHeadPosition(); pos != NULL; ) { 
 		cur_src = m_file->m_SrcList.GetNext(pos); 
-		if (cur_src->reqfile!=m_file || wxString(char2unicode(cur_src->GetClientFilename())).Length()==0)
+		if (cur_src->reqfile!=m_file || cur_src->GetClientFilename().Length()==0)
 			continue;
 
-		if ((itempos=pmyListCtrl->FindItem(-1,wxString(char2unicode(cur_src->GetClientFilename())))) == -1) { 
-			int itemid = pmyListCtrl->InsertItem(0, (char2unicode(cur_src->GetClientFilename()))); 
+		if ((itempos=pmyListCtrl->FindItem(-1,cur_src->GetClientFilename())) == -1) { 
+			int itemid = pmyListCtrl->InsertItem(0, cur_src->GetClientFilename()); 
 			pmyListCtrl->SetItem(0, 1, wxT("1")); 
 			SourcenameItem *item = new SourcenameItem;
-			item->name = (char2unicode(cur_src->GetClientFilename()));
+			item->name = cur_src->GetClientFilename();
 			item->count = 1;
 			pmyListCtrl->SetItemData(0, (long)item); 
 			// background.. argh -- PA: was in old version - do we still need this?
