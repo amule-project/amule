@@ -1043,11 +1043,6 @@ void CDownloadListCtrl::DrawSourceItem(wxDC * dc, int nColumn, LPRECT lpRect, Ct
 		wxDCClipper clipper(*dc, lpRect->left, lpRect->top, lpRect->right - lpRect->left - 2, lpRect->bottom - lpRect->top);
 		wxString buffer;
 		CUpDownClient *lpUpDownClient = (CUpDownClient *) lpCtrlItem->value;
-		if (!lpUpDownClient->GetRequestFile()) {
-			// This sanity check failed, avoid the crash this time.
-			printf("Source drawn with no reqfile associated, avoided crash this time.\n");
-			return;
-		}
 		switch (nColumn) {
 
 			case 0:	// icon, name, status
@@ -1483,9 +1478,13 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 							CUpDownClient *cur_source = *it++;
 							if (cur_source->GetDownloadState() != DS_DOWNLOADING
 							&& cur_source->GetRequestFile()
-							&& ((!cur_source->GetRequestFile()->IsA4AFAuto()) || cur_source->GetDownloadState() == DS_NONEEDEDPARTS))
+							&& ((!cur_source->GetRequestFile()->IsA4AFAuto()) || cur_source->GetDownloadState() == DS_NONEEDEDPARTS)
+							&& !cur_source->IsSwapSuspended(file))
 							{
-								cur_source->SwapToAnotherFile(true, false, false, file);
+								CPartFile* oldfile = cur_source->GetRequestFile();
+								if (cur_source->SwapToAnotherFile(true, false, false, file)) {
+									cur_source->DontSwapTo(oldfile);
+								}
 							}
 						}
 
