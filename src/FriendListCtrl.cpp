@@ -154,7 +154,7 @@ void CFriendListCtrl::OnItemActivated(wxListEvent& WXUNUSED(evt))
 
 bool CFriendListCtrl::LoadList()
 {
-  	wxString metfile = wxString(theApp.glob_prefs->GetAppDir()) + wxT("emfriends.met"); 
+  	wxString metfile = theApp.ConfigDir + wxT("emfriends.met"); 
 	
 	if ( !wxFileExists(metfile) ) {
 		return false;
@@ -195,7 +195,7 @@ bool CFriendListCtrl::LoadList()
 void CFriendListCtrl::SaveList()
 {
 	CFile file;
-	if( file.Create(wxString(theApp.glob_prefs->GetAppDir()) + wxT("emfriends.met"), true) ) {
+	if( file.Create(theApp.ConfigDir + wxT("emfriends.met"), true) ) {
 		uint8 header = MET_HEADER;
 		file.Write(&header, 1);
 		

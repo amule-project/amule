@@ -81,22 +81,18 @@ wxString Tokenize(wxString input,wxString token,int startat)
 #endif
 
 int CIPFilter::LoadFromFile(){
-	wxString sbuffer,sbuffer2,sbuffer3,sbuffer4;
+	wxString sbuffer2,sbuffer3,sbuffer4;
 	int pos,filtercounter;
 	uint32 ip1,ip2;
 	uint8 filter;
-	char buffer[1024];
-	int lenBuf = 1024;
 	filtercounter=0;
 
 	RemoveAllIPs();
 
-	FILE* readFile= fopen(unicode2char(wxString(theApp.glob_prefs->GetAppDir())+wxT("ipfilter.dat")),"r");
-	if (readFile!=NULL) {
-		while (!feof(readFile)) {
-			if (fgets(buffer,lenBuf,readFile)==0) break;
-			sbuffer=(char2unicode(buffer));
-			
+	wxTextFile readFile(theApp.ConfigDir + wxT("ipfilter.dat"));
+	if (readFile.Open()) {
+		for (wxString sbuffer = readFile.GetFirstLine(); !readFile.Eof(); sbuffer = readFile.GetNextLine() ) {
+		
 			// ignore comments & too short lines
 			if (sbuffer.GetChar(0) == '#' || sbuffer.GetChar(0) == '/' || sbuffer.Length()<5)
 				continue;
@@ -129,28 +125,6 @@ int CIPFilter::LoadFromFile(){
 				ip1|=(uint32)(s3[i]<<(8*(3-i)));
 				ip2|=(uint32)(s4[i]<<(8*(3-i)));
 			}
-#if 0
-			for( int i = 0; i < 4; i++){
-			  //sbuffer3.Tokenize(".",counter);
-			  Tokenize(sbuffer3,".",counter);
-			  if( counter == -1 ){ skip=true;break;}
-			}
-			counter=0;
-			for( int i = 0; i < 4; i++){
-			  //sbuffer4.Tokenize(".",counter);
-			  Tokenize(sbuffer4,counter);
-			  if( counter == -1 ){ skip=true;break;}
-			}
-			if (skip) continue;
-			
-			counter=0;
-			for(int i=0; i<4; i++){ 
-			  temp = Tokenize(sbuffer3,".",counter);//sbuffer3.Tokenize(".",counter);
-			  ip1 |= (uint32) (atoi(temp) << (8 * (3-i)));
-			  temp = Tokenize(sbuffer4,".",counter);//sbuffer4.Tokenize(".",counter);
-			  ip2 |= (uint32)(atoi(temp) << (8*(3-i)));
-			}
-#endif
 
 			// filter
 			bool found=false;
@@ -162,8 +136,6 @@ int CIPFilter::LoadFromFile(){
 			  }
 			}
 			if(!found) pos=-1;
-			//pos=sbuffer.Find(",",pos+1);
-			//int pos2=sbuffer.Find(",",pos+1);
 			int pos2 = (-1);
 			found=false;
 			for(unsigned int m = pos + 1; m < sbuffer.Length(); ++m) {
@@ -186,7 +158,7 @@ int CIPFilter::LoadFromFile(){
 			filtercounter++;
 
 		}
-		fclose(readFile);
+		readFile.Close();
 	}
 
 	AddLogLineM(true,wxString::Format(_("Loaded ipfilter with %d IP addresses."),filtercounter));	

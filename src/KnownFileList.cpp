@@ -33,8 +33,7 @@
 #include <wx/listimpl.cpp> // ye old magic incantation
 WX_DEFINE_LIST(KnownFileList);
 
-CKnownFileList::CKnownFileList(CString in_appdir) {
-	appdir = in_appdir;
+CKnownFileList::CKnownFileList() {
 	accepted = 0;
 	requested = 0;
 	transfered = 0;
@@ -51,7 +50,7 @@ bool CKnownFileList::Init() {
 	CSafeFile file;
 	try {
 		
-		CString fullpath = appdir + wxT("known.met");
+		CString fullpath(theApp.ConfigDir + wxT("known.met"));
 		if (!wxFileExists(fullpath)) {//CFile::modeRead|CFile::osSequentialScan)) {
 			return false;
 		}
@@ -103,7 +102,7 @@ bool CKnownFileList::Init() {
 void CKnownFileList::Save() {
 
 	CFile* file = new CFile();
-	CString fullpath = appdir + wxT("known.met");
+	CString fullpath(theApp.ConfigDir + wxT("known.met"));
 	file->Open(fullpath, CFile::write);
 	if (!(file->IsOpened())) {
 		delete file;
@@ -223,7 +222,7 @@ bool CKnownFileList::Append(CKnownFile* Record)
 		}
 	} else {
 		#ifdef __DEBUG__
-		printf("%s is 0-size, not added\n",Record->GetFileName().c_str());
+		printf("%s is 0-size, not added\n",unicode2char(Record->GetFileName()));
 		#endif
 		return false;
 	}

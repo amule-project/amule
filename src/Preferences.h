@@ -463,7 +463,6 @@ public:
 	CPreferences();
 	~CPreferences();
 
-	CString	GetAppDir()			{return appdir;}
 	bool	Save();
 	void	SaveCats();
 
@@ -758,7 +757,6 @@ protected:
 	static int32 GetRecommendedMaxConnections();
 
 private:
-	CString appdir;
 	Preferences_Struct* prefs;
 	Preferences_Ext_Struct* prefsExt;
 

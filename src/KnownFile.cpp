@@ -158,7 +158,7 @@ bool CKnownFile::CreateFromFile(const wxString& in_directory, const wxString& in
 	//SetFilePath(namebuffer); ??
 	FILE* file = fopen(unicode2char(namebuffer.c_str()), "rbS");
 	if (!file){
-		printf("Error opening %s !\n",namebuffer.c_str());
+		printf("Error opening %s !\n",unicode2char(namebuffer));
 		return false;
 	}
 	

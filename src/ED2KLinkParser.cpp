@@ -84,10 +84,10 @@ void AddServer(char *ed2klink)
 	char bufferIP[16];
 	char bufferPORT[6];
 	
-	char* server;
-	char* ip;
-	char* port;
-	char* portEnd;
+	char* server = NULL;
+	char* ip = NULL;
+	char* port = NULL;
+	char* portEnd = NULL;
 	
 	memset(bufferIP,0,16);
 	memset(bufferPORT,0,6);

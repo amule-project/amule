@@ -502,7 +502,7 @@ void CamuleDlg::AddLogLine(bool addtostatusbar, const wxChar* line, ...)
 	}
 
 	// Write into log file
-	wxString filename = wxString::Format(wxT("%s/.aMule/logfile"), getenv("HOME"));
+	wxString filename = theApp.ConfigDir + wxT("logfile");
 	wxFile file(filename, wxFile::write_append);
 
 	if ( file.IsOpened() ) {

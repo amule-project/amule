@@ -65,6 +65,7 @@
 #include "BarShader.h"		// Needed for CBarShader
 #include "mfc.h"			// itoa
 #include "GetTickCount.h"	// Needed for GetTickCount
+#include "ClientList.h"	// Needed for clientlist
 
 
 #define PROGRESS_HEIGHT 3
@@ -128,7 +129,7 @@ CPartFile::CPartFile(CSearchFile* searchresult)
 							if (!stricmp(pTag->tag.tagname, FT_MEDIA_BITRATE) && pTag->tag.intvalue == 0)
 								break;
 
-							printf("CPartFile::CPartFile(CSearchFile*): added tag %s\n", pTag->GetFullInfo().c_str());
+							printf("CPartFile::CPartFile(CSearchFile*): added tag %s\n", unicode2char(pTag->GetFullInfo()));
 							CTag* newtag = new CTag(pTag->tag);
 							taglist.Add(newtag);
 							bTagAdded = true;
@@ -155,7 +156,7 @@ CPartFile::CPartFile(CSearchFile* searchresult)
 							if (pTag->tag.type == 2 && (pTag->tag.stringvalue == NULL || pTag->tag.stringvalue[0] == '\0'))
 								break;
 
-							printf("CPartFile::CPartFile(CSearchFile*): added tag %s\n", pTag->GetFullInfo().c_str());
+							printf("CPartFile::CPartFile(CSearchFile*): added tag %s\n", unicode2char(pTag->GetFullInfo()));
 							CTag* newtag = new CTag(pTag->tag);
 							taglist.Add(newtag);
 							bTagAdded = true;
@@ -165,7 +166,7 @@ CPartFile::CPartFile(CSearchFile* searchresult)
 				}
 
 				if (!bTagAdded)
-					printf("CPartFile::CPartFile(CSearchFile*): ignored tag %s\n", pTag->GetFullInfo().c_str());
+					printf("CPartFile::CPartFile(CSearchFile*): ignored tag %s\n", unicode2char(pTag->GetFullInfo()));
 			}
 		}
 	}
@@ -678,7 +679,7 @@ uint8 CPartFile::LoadPartFile(LPCTSTR in_directory, LPCTSTR filename, bool getsi
 	// Goes both ways - Partfile should never be too large
 	if ((uint64)m_hpartfile.GetLength() > m_nFileSize){
 		//printf("Partfile \"%s\" is too large! Truncating %I64u bytes.\n", GetFileName().c_str(), (uint64) (m_hpartfile.GetLength() - m_nFileSize));
-		printf("Partfile \"%s\" is too large! Truncating %llu bytes.\n", GetFileName().c_str(), ((ULONGLONG)m_hpartfile.GetLength() - m_nFileSize));
+		printf("Partfile \"%s\" is too large! Truncating %llu bytes.\n", unicode2char(GetFileName()), ((ULONGLONG)m_hpartfile.GetLength() - m_nFileSize));
 		m_hpartfile.SetLength(m_nFileSize);
 	}
 	// SLUGFILLER: SafeHash
@@ -2575,10 +2576,13 @@ void  CPartFile::RemoveAllSources(bool bTryToSwap)
 		m_SrcList.GetNext(pos1);
 		if (bTryToSwap) {
 			if (!m_SrcList.GetAt(pos2)->SwapToAnotherFile(true, true, true, NULL)) {
-				theApp.downloadqueue->RemoveSource(m_SrcList.GetAt(pos2),true, false);
+				theApp.downloadqueue->RemoveSource(m_SrcList.GetAt(pos2),true,false);
+				// If it was not swapped, it's not on any file anymore, and should die 
+				//theApp.clientlist->RemoveClient(m_SrcList.GetAt(pos2));
 			}
 		} else {
-			theApp.downloadqueue->RemoveSource(m_SrcList.GetAt(pos2),true, false);
+			theApp.downloadqueue->RemoveSource(m_SrcList.GetAt(pos2),true,false);
+			//theApp.clientlist->RemoveClient(m_SrcList.GetAt(pos2));
 		}
 	}
 
@@ -2634,7 +2638,7 @@ void CPartFile::Delete()
 	printf("\tClosed\n");
 	
 	if (!wxRemoveFile(m_fullname)) {
-		theApp.amuledlg->AddLogLine(true,_("Failed to delete %s"), m_fullname.c_str());
+		AddLogLineM(true, wxT("Failed to delete ") + m_fullname);
 		printf("\tFailed to remove .part.met\n");
 	} else {
 		printf("\tRemoved .part.met\n");
@@ -2643,7 +2647,7 @@ void CPartFile::Delete()
 	wxString strPartFile = m_fullname.Left( m_fullname.Length() - 4 );
 	
 	if (!wxRemoveFile(strPartFile)) {
-		theApp.amuledlg->AddLogLine(true,_("Failed to delete %s"), strPartFile.c_str());
+		AddLogLineM(true,_("Failed to delete ") + strPartFile);
 		printf("\tFailed to removed .part\n");	
 	} else {
 		printf("\tRemoved .part\n");
@@ -2652,7 +2656,7 @@ void CPartFile::Delete()
 	wxString BAKName = m_fullname + PARTMET_BAK_EXT;
 
 	if (!wxRemoveFile(BAKName)) {
-		theApp.amuledlg->AddLogLine(true,_("Failed to delete %s"), BAKName.c_str());
+		AddLogLineM(true,_("Failed to delete ") + BAKName);
 		printf("\tFailed to remove .BAK\n");
 	} else {
 		printf("\tRemoved .BAK\n");
@@ -2662,7 +2666,7 @@ void CPartFile::Delete()
 	
 	if (wxFileName::FileExists(SEEDSName)) {
 		if (!wxRemoveFile(SEEDSName)) {
-			theApp.amuledlg->AddLogLine(true,_("Failed to delete %s"), SEEDSName.c_str());
+			AddLogLineM(true,_("Failed to delete ") + SEEDSName);
 		}
 		printf("\tRemoved .seeds\n");
 	}
@@ -2751,6 +2755,7 @@ void CPartFile::StopFile(bool bCancel)
 	stopped=true;
 	kBpsDown = 0.0;
 	transferingsrc = 0;
+	insufficient = false;
 	memset(m_anStates,0,sizeof(m_anStates));
 	if (!bCancel) {
 		FlushBuffer();
@@ -2933,7 +2938,7 @@ bool CPartFile::PreviewAvailable()
 {
 	wxLongLong free;
 	wxGetDiskSpace(theApp.glob_prefs->GetTempDir(), NULL, &free);
-	printf("\nFree Space (wxLongLong): %s\n", free.ToString().c_str());
+	printf("\nFree Space (wxLongLong): %s\n", unicode2char(free.ToString()));
 	typedef unsigned long long uint64;
 	uint64 space = free.GetValue();
 	printf("\nFree Space (uint64): %lli\n", space);

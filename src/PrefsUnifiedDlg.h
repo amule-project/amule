@@ -67,7 +67,7 @@ public:
 	static void ForceUlDlRateCorrelation(int id);
 	static void CheckRateUnlimited(Rse* prse);
 
-	static void BuildItemList(Preferences_Struct *prefs, const char * appdir);
+	static void BuildItemList(Preferences_Struct *prefs, const wxString appdir);
 	static void LoadAllItems(wxConfigBase& ini);
 	static void SaveAllItems(wxConfigBase& ini);
 
