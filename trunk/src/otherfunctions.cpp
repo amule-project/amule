@@ -103,7 +103,7 @@ FileType GetFiletype(const wxString& filename)
 	if ( ext=="avi"  || ext=="mpg"  || ext=="mpeg" || ext=="ogm"  ||
 		 ext=="ram"  || ext=="rm"   || ext=="asf"  || ext=="vob"  ||
 		 ext=="divx" || ext=="vivo" || ext=="mov"  || ext=="wmv"  ||
-		 ext=="m2v"  || ext=="swf"  || ext=="qt" )
+		 ext=="m2v"  || ext=="swf"  || ext=="qt"   || ext=="mkv" )
 		 return ftVideo;
 		 
 	if ( ext=="cue"  || ext=="bin"  || ext=="iso"  || ext=="ccd"  ||
