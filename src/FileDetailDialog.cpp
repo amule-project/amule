@@ -22,6 +22,8 @@
 
 #include <wx/settings.h>	// Needed for wxSYS_COLOUR_WINDOW
 #include <wx/stattext.h>	// Needed for wxStaticText
+#include <wx/sizer.h>
+#include <wx/intl.h>
 
 #include "muuli_wdr.h"		// Needed for ID_CLOSEWNDFD,...,IDC_RENAME
 #include "FileDetailDialog.h"	// Interface declarations
