@@ -98,6 +98,23 @@ void CSharedFileList::FindSharedFiles() {
 	}
 }
 
+
+// Checks if the dir a is the same as b. If they are, then logs the message and returns.
+#define CHECKDIRECTORY( a, b, msg )								\
+	{															\
+		wxString tmp = a;										\
+		if ( tmp.Last() != wxFileName::GetPathSeparator() ) {	\
+			tmp += wxFileName::GetPathSeparator();				\
+		}														\
+																\
+		if ( tmp == b ) {										\
+			AddLogLineM(true, msg);								\
+																\
+			return;												\
+		}														\
+	}
+		
+
 void CSharedFileList::AddFilesFromDirectory(wxString directory)
 {
 	if ( !wxDirExists( directory ) )
@@ -107,6 +124,16 @@ void CSharedFileList::AddFilesFromDirectory(wxString directory)
 	if (directory.Last() != wxFileName::GetPathSeparator()) {
 		directory += wxFileName::GetPathSeparator();
 	}
+
+
+	// Do not allow these folders to be shared:
+	//  - The users home-dir
+	//  - The .aMule folder
+	//  - The Temp folder
+	CHECKDIRECTORY( wxGetHomeDir(),			directory, _("WARNING! Attempted to share \"home\" dir!") );
+	CHECKDIRECTORY( theApp.ConfigDir,		directory, _("WARNING! Attempted to share \".aMule\" dir!") );
+	CHECKDIRECTORY( thePrefs::GetTempDir(),	directory, _("WARNING! Attempted to share \"Temp\" dir!") );
+
 
 	CDirIterator SharedDir(directory); 
 	
