@@ -301,6 +301,12 @@ struct Preferences_Struct{
 	// Kry - IPFilter On/Off
 	bool		IPFilterOn;
 	
+	// Kry - Source seeds on/off
+	bool		UseSrcSeeds;
+
+	bool		ProgBar;
+	bool		Percent;	
+	
 	bool	FastED2KLinksHandler;	// Madcat - Toggle Fast ED2K Links Handler
 	bool	bDlgTabsOnTop;			// Creteil: dlg aesthetics
 };
@@ -718,7 +724,15 @@ public:
 	
 	// Kry - Ip filter On/Off
 	bool GetIPFilterOn() { return prefs->IPFilterOn; }
+
+	// Kry - Source seeds On/Off
+	bool GetSrcSeedsOn() { return prefs->UseSrcSeeds; }
 	
+	
+	bool ShowProgBar() { return prefs->ProgBar; }
+	bool ShowPercent() { return prefs->Percent; }	
+	
+		
 #ifndef UNIFIED_PREF_HANDLING
 	void	SetStatsColor(int index,DWORD value) 	{prefs->statcolors[index]=value;}
 	DWORD	GetStatsColor(int index) 		{return prefs->statcolors[index];}

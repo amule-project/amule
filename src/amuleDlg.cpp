@@ -904,6 +904,11 @@ void CamuleDlg::OnClose(wxCloseEvent& evt) {
 	// we are going DOWN
 	m_app_state=APP_STATE_SHUTINGDOWN;
 
+	// Kry - Save the sources seeds on app exit
+	if (theApp.glob_prefs->GetSrcSeedsOn()) {
+		theApp.downloadqueue->SaveSourceSeeds();
+	}	
+	
 	theApp.OnlineSig(); // Added By Bouc7
 
 	// Close sockets to avoid new clients coming in
