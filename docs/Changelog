@@ -1066,9 +1066,9 @@ Version 1.2.5
 		* Fixed the 'rehashing of files on restart' problem. 
 		* Fixed a missing "Error" message on console when partfile loading failed.
 		* i18n activated, GNU xgettext compatible.
-		* Fixed bug on OP_FILEREQUEST packet that made eMule clients to disconnect 
+		* Fixed bug on OP_REQUESTFILENAME packet that made eMule clients to disconnect 
 		  from us. eMule clients got our version of client and expected to get the
-		  new OP_FILEREQUEST from eMule 0.30. Thanks to John & BlubbX from eMule 
+		  new OP_REQUESTFILENAME from eMule 0.30. Thanks to John & BlubbX from eMule 
 		  team for the report and help tracking down it.
 		* Fixed several i18n bugs from xMule times.
 		* Fixed the lseek error on console and window popup when canceling a file
