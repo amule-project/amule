@@ -657,7 +657,7 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer, bool OSInfo) {
 		tag2.WriteTagToFile(data);
 		CTag tag3(ET_UDPPORT,thePrefs::GetUDPPort());
 		tag3.WriteTagToFile(data);
-		CTag tag4(ET_SOURCEEXCHANGE,2);
+		CTag tag4(ET_SOURCEEXCHANGE,3);
 		tag4.WriteTagToFile(data);
 		CTag tag5(ET_COMMENTS,1);
 		tag5.WriteTagToFile(data);
@@ -963,7 +963,7 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
 	const UINT uUdpVer				= 4;
 	const UINT uDataCompVer			= 1;
 	const UINT uSupportSecIdent		= theApp.clientcredits->CryptoAvailable() ? 3 : 0;
-	const UINT uSourceExchangeVer	= 2; //3; Kry - Our source exchange it type 2, TODO
+	const UINT uSourceExchangeVer	= 3; 
 	const UINT uExtendedRequestsVer	= 2;
 	const UINT uAcceptCommentVer	= 1;
 	const UINT uNoViewSharedFiles	= (thePrefs::CanSeeShares() == vsfaNobody) ? 1 : 0; // for backward compatibility this has to be a 'negative' flag
