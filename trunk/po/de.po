@@ -2520,9 +2520,7 @@ msgstr "Entferne Quellen sofort"
 
 #: src/muuli_wdr.cpp:2832
 msgid "Send sources to any other file before dropping (High CPU)"
-msgstr ""
-"Vor dem Entfernen Quellen auf eine andere Datei übertragen\n"
-"(hohe CPU Last)"
+msgstr "Quellen auf eine andere Datei übertragen (hohe CPU Last)"
 
 #: src/muuli_wdr.cpp:2837
 msgid "Full Queue Sources Handling"
