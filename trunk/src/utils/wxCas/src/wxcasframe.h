@@ -1,13 +1,27 @@
-/////////////////////////////////////////////////////////////////////////////
-// Name:        wxcasframe.h
-// Purpose:     wxCas main frame
-// Author:      ThePolish <thepolish@vipmail.ru>
-// Created:     2004/04/15
-// Modified by:
-// Copyright:   (c) ThePolish <thepolish@vipmail.ru>
-// Licence:     GPL
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Name:        wxCas
+// Purpose:    Display aMule Online Statistics
+// Author:       ThePolish <thepolish@vipmail.ru>
+// Copyright (C) 2004 by ThePolish
+//
 // Derived from CAS by Pedro de Oliveira <falso@rdk.homeip.net>
-/////////////////////////////////////////////////////////////////////////////
+// Pixmats from aMule http://www.amule.org
+//
+// This program is free software; you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the
+// Free Software Foundation, Inc.,
+// 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #ifndef _WXCASFRAME_H
 #define _WXCASFRAME_H
@@ -20,6 +34,10 @@
 #ifndef WX_PRECOMP
 #include <wx/wx.h>
 #endif
+
+#include <wx/statline.h>
+#include <wx/toolbar.h>
+#include <wx/timer.h>
 
 #include "wxcascanvas.h"
 
@@ -42,36 +60,41 @@ class WxCasFrame:public wxFrame
 	void OnBarAbout (wxCommandEvent & event);
 	void OnBarSave (wxCommandEvent & event);
 	void OnBarPrint (wxCommandEvent & event);
+	void OnTimer(wxTimerEvent& event);
 
 	  DECLARE_EVENT_TABLE ();
 
       private:
-	  wxToolBar * m_toolbar;
+         wxTimer * m_timer;
+	  
+	 wxToolBar * m_toolbar;
+	 wxBitmap *m_toolBarBitmaps[5];
 
 	wxBoxSizer *m_frameVBox;
 	wxBoxSizer *m_sigPanelVBox;
 
+	wxStaticLine *m_staticLine;
 	wxPanel *m_sigPanel;
 
 	wxStaticBox *m_sigPanelSBox;
 	wxStaticBoxSizer *m_sigPanelSBoxSizer;
 
-	wxStaticText *label_1;
-	wxStaticText *label_2;
-	wxStaticText *label_3;
-	wxStaticText *label_4;
-	wxStaticText *label_5;
-	wxStaticText *label_6;
+	wxStaticText *m_statLine_1;
+	wxStaticText *m_statLine_2;
+	wxStaticText *m_statLine_3;
+	wxStaticText *m_statLine_4;
+	wxStaticText *m_statLine_5;
+	wxStaticText *m_statLine_6;
 
 	WxCasCanvas *m_imgPanel;
-	wxBitmap *m_amule_xpm;
 
 	enum
 	{
 		ID_BAR_REFRESH = 1000,
-		ID_BAR_ABOUT = 1001,
-		ID_BAR_PRINT = 1002,
-		ID_BAR_SAVE = 1003
+		ID_BAR_ABOUT,
+		ID_BAR_PRINT,
+		ID_BAR_SAVE,
+		ID_TIMER
 	};
 };
 
