@@ -728,7 +728,7 @@ bool CClientList::SendMessage(uint64 client_id, const wxString& message) {
 		printf("Sending\n");
 		return client->SendMessage(message);
 	} else {
-		printf("No client (GUI_ID %li [%s:%u]\n",client_id,(const char*)unicode2char(Uint32toStringIP(IP_FROM_GUI_ID(client_id))), PORT_FROM_GUI_ID(client_id));
+		printf("No client (GUI_ID %lli [%s:%llu]\n", client_id, (const char*)unicode2char(Uint32toStringIP(IP_FROM_GUI_ID(client_id))),  PORT_FROM_GUI_ID(client_id));
 		return false;
 	}
 }
