@@ -734,12 +734,12 @@ wxString CWebServer::_GetHeader(ThreadData Data, long lSession) {
 	if (!stats) {
 		return wxEmptyString;
 	}
-	CECTag *tag = stats->GetTagByName(EC_TAG_CONNSTATE);
+	CEC_ConnState_Tag *tag = (CEC_ConnState_Tag *)stats->GetTagByName(EC_TAG_CONNSTATE);
 	if (!tag) {
 		return wxEmptyString;
 	}
 	
-	switch (tag->GetInt8Data()) {
+	switch (tag->ClientID()) {
 	case 0:
 		sConnected = _("Not connected");
 		if (IsSessionAdmin(Data,sSession)) {
@@ -747,18 +747,17 @@ wxString CWebServer::_GetHeader(ThreadData Data, long lSession) {
 				wxT("&w=server&c=connect\">Connect to any server</a></small>)");
 		}
 		break;
-	case 1:
+	case 0xffffffff:
 		sConnected = _("Now connecting");
 		break;
-	case 2:
-	case 3:
+	default:
 		CECTag *server = tag->GetTagByIndex(0);
 		CECTag *sname  = server ? server->GetTagByName(EC_TAG_SERVER_NAME) : NULL;
 		if (server && sname) {
 			sConnected = _("Connected to ");
 			sConnected += sname->GetStringData() + wxT(" ");
 			sConnected += server->GetIPv4Data().StringIP() + wxT(" ");
-			sConnected += tag->GetInt8Data() == 2 ? _("with LowID") : _("with HighID");
+			sConnected += tag->HaveLowID() ? _("with LowID") : _("with HighID");
 		} else {
 			return wxEmptyString;
 		}
