@@ -90,6 +90,7 @@ const unsigned char SOCKS5_REPLY_ATYP_NOT_SUPPORTED	= 0x08;
 /******************************************************************************/
 
 enum wxProxyType {
+	wxPROXY_NONE,
 	wxPROXY_SOCKS4,
 	wxPROXY_SOCKS5,
 	wxPROXY_HTTP
@@ -104,6 +105,7 @@ enum wxProxyCommand {
 class wxProxyData
 {
 public:
+	void Empty();
 	wxString ProxyHostName;
 	unsigned short ProxyPort;
 	wxProxyType ProxyType;
@@ -255,4 +257,3 @@ private:
 /******************************************************************************/
 
 #endif /* __PROXY_H__ */
-
