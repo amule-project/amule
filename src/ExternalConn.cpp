@@ -341,7 +341,8 @@ CECPacket *Get_EC_Response_GetUpQueue(const CECPacket *request)
 		} else {
 			cli_tag.AddTag(CECTag(EC_TAG_PARTFILE, wxString(wxT("?"))));
 		}
-		cli_tag.AddTag(CECTag(EC_TAG_PARTFILE_SIZE_XFER, (uint32)cur_client->GetTransferedUp()));
+		cli_tag.AddTag(CECTag(EC_TAG_PARTFILE_SIZE_XFER, (uint32)cur_client->GetTransferedDown()));
+		cli_tag.AddTag(CECTag(EC_TAG_PARTFILE_SIZE_XFER_UP, (uint32)cur_client->GetTransferedUp()));
 		cli_tag.AddTag(CECTag(EC_TAG_PARTFILE_SPEED, (uint32)(cur_client->GetKBpsUp()*1024.0)));
 		response->AddTag(cli_tag);
 	}
