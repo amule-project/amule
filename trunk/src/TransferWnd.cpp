@@ -367,6 +367,18 @@ void CTransferWnd::Prepare()
 	
 		splitter->SetSashPosition( height );
 	} else if ( m_splitter ) {
+		// Some sainity checking
+		if ( m_splitter < 90 ) {
+			m_splitter = 90;
+		} else {
+			int height = splitter->GetWindow1()->GetSize().GetHeight();
+		    	height += splitter->GetWindow2()->GetSize().GetHeight();
+		
+			if ( height - 65 < m_splitter ) {
+				m_splitter = height - 65;
+			}
+		}
+		
 		splitter->SetSashPosition( m_splitter );
 
 		m_splitter = 0;
