@@ -49,9 +49,7 @@ int alcc::OnRun ()
 {
   static const wxCmdLineEntryDesc cmdLineDesc[] =
     {
-      {
-        wxCMD_LINE_SWITCH, wxT("h"), wxT("help"), wxT("show this help message"), wxCMD_LINE_VAL_NONE, wxCMD_LINE_OPTION_HELP
-      },
+      { wxCMD_LINE_SWITCH, wxT("h"), wxT("help"), wxT("show this help message"), wxCMD_LINE_VAL_NONE, wxCMD_LINE_OPTION_HELP },
       { wxCMD_LINE_SWITCH, _T("v"), _T("verbose"), _T("be verbose") },
 
       { wxCMD_LINE_SWITCH, wxT("p"), wxT("parthashes"), wxT("add part-hashes to ed2k link") },
@@ -61,31 +59,7 @@ int alcc::OnRun ()
       { wxCMD_LINE_NONE }
     };
 
-#if wxUSE_UNICODE
-
-  wxChar **wargv = new wxChar *[argc + 1];
-
-
-  for ( int n = 0; n < argc; n++ )
-    {
-      wxMB2WXbuf warg = wxConvertMB2WX(argv[n]);
-      wargv[n] = wxStrdup(warg);
-    }
-
-  wargv[n] = NULL;
-
-  wxCmdLineParser parser(cmdLineDesc, argc, wargv);
-
-  for ( int n = 0; n < argc; n++ )
-    free(wargv[n]);
-
-  delete [] wargv;
-
-#else
-
   wxCmdLineParser parser(cmdLineDesc, argc, argv);
-#endif // wxUSE_UNICODE
-
   switch (parser.Parse())
     {
     case -1: // Exit after giving usage msg
@@ -102,9 +76,9 @@ int alcc::OnRun ()
     }
 }
 
-
 int alcc::computeEd2kLinks(const wxCmdLineParser& cmdline)
 {
   wxLogError(wxT("Let me some time to implement it !"));
   return 0;
 }
+

@@ -38,18 +38,21 @@
 #include <wx/cmdline.h>
 #endif
 
-/// Application
-class alcc:public wxApp
-  {
-  private:
+// Application
+#if wxCHECK_VERSION(2,5,0)
+class alcc : public wxAppConsole
+#else
+class alcc : public wxApp
+#endif
+{
+private:
+	int computeEd2kLinks(const wxCmdLineParser& cmdline);
 
-    int computeEd2kLinks(const wxCmdLineParser& cmdline);
+public:
+	virtual int OnRun ();
+};
 
-  public:
-    virtual int OnRun ();
-  };
-
-DECLARE_APP (alcc);
-
+DECLARE_APP(alcc);
 
 #endif /* _ALCC_H */
+
