@@ -19,7 +19,7 @@
 
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/event.h>		// Needed for wxCommandEvent
-#include <sys/time.h>		// Needed for gettimeofday
+#include <wx/timer.h>		// Needed for wxStopWatch
 
 #include "AddFileThread.h"	// Interface declarations
 #include "otherfunctions.h"	// Needed for nstrdup
@@ -70,13 +70,10 @@ void CAddFileThread::Shutdown()
 		m_lockWaitingForHashList.Lock();
 		m_endWaitingForHashList = 1;
 		m_lockWaitingForHashList.Unlock();
-		struct timeval aika;
-		gettimeofday(&aika,NULL);
-		long secs = aika.tv_sec;
+		wxStopWatch aika;
 
 		while (!DeadThread) {
-			gettimeofday(&aika,NULL);
-			if (aika.tv_sec > (secs + 20)) {
+			if (aika.Time() > 20000) {
 				printf("\tTimed out hashing thread signal\n");
 				break;
 			}
