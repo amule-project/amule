@@ -84,7 +84,7 @@ struct filter_st {
 	in_addr_t mask;
 };
 
-const int number_of_ranges = sizeof(ranges) / sizeof(IPRange*);
+const int number_of_ranges = sizeof(ranges) / sizeof(IPRange);
 static filter_st filters[number_of_ranges];
 
 
