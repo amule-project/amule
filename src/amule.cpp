@@ -2149,3 +2149,27 @@ CFriend *CamuleApp::FindFriend(CMD4Hash *hash, uint32 ip, uint16 port)
 	return NULL;
 }
 
+uint32 CamuleApp::GetPublicIP() const {
+	/*
+	if (m_dwPublicIP == 0 && Kademlia::CKademlia::isConnected() && !Kademlia::CKademlia::isFirewalled() )
+		return ntohl(Kademlia::CKademlia::getIPAddress());
+	*/
+	return m_dwPublicIP;
+}
+
+void CamuleApp::SetPublicIP(const uint32 dwIP){
+	if (dwIP != 0){
+		wxASSERT ( !IsLowIDED2K(dwIP));
+		//wxASSERT ( m_pPeerCache );
+//		if ( GetPublicIP() == 0)
+			//AddDebugLogLineM(false, wxString::Format(wxT("My public IP Address is: %s"),ipstr(dwIP)));
+//		else if (Kademlia::CKademlia::isConnected() && !Kademlia::CKademlia::isFirewalled() && ntohl(Kademlia::CKademlia::getIPAddress()) != dwIP)
+//			AddDebugLogLine(DLP_DEFAULT, false,  _T("Public IP Address reported from Kademlia (%s) differs from new found (%s)"),ipstr(ntohl(Kademlia::CKademlia::getIPAddress())),ipstr(dwIP));
+//		m_pPeerCache->FoundMyPublicIPAddress(dwIP);	
+	}
+//	else
+//		AddDebugLogLine(DLP_VERYLOW, false, _T("Deleted public IP"));
+	
+	m_dwPublicIP = dwIP;
+
+}

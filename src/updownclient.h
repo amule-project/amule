@@ -367,6 +367,9 @@ public:
 	
 	wxString	GetClientFullInfo();
 
+	void			ProcessPublicIPAnswer(const BYTE* pbyData, UINT uSize);
+	void			SendPublicIPRequest();
+	
 private:
 	/**
 	 * This struct is used to keep track of CPartFiles which this source shares.
@@ -442,7 +445,8 @@ private:
 	uint16		m_nKadPort;
 	bool		m_bMultiPacket;
 		
- 	
+	bool		m_fNeedOurPublicIP; // we requested our IP from this client
+
 	// Kry - Secure User Ident import
 	ESecureIdentState	m_SecureIdentState; 
 	uint8		m_byInfopacketsReceived;			// have we received the edonkeyprot and emuleprot packet already (see InfoPacketsReceived() )
