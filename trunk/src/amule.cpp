@@ -1368,8 +1368,8 @@ void CamuleApp::Localize_mule()
 			language = wxLANGUAGE_CROATIAN;
 			break;
 		case 27:
-			//strcpy(newlang,"it_NA");
-			language = wxLANGUAGE_ITALIAN_NAPOLITAN;
+			//strcpy(newlang,"it_CH");
+			language = wxLANGUAGE_ITALIAN_SWISS;
 			break;
 		case 28:
 			//strcpy(newlang,"custom");
