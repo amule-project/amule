@@ -54,7 +54,7 @@ done
 echo " looks good, installing."
 
 %prep
-%setup -q -n amule-dev-cvs
+%setup -q -n amule-cvs
 ./autogen.sh
 CFLAGS="$RPM_OPT_FLAGS" ./configure \
         --prefix=%{_prefix} \
