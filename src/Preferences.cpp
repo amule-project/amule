@@ -500,7 +500,7 @@ void CPreferences::LoadCats() {
 
 	wxConfigBase* cfg = wxConfig::Get();
 	
-	long max = cfg->Read( "/General/Count", 0l );
+	long max = cfg->Read( wxT("/General/Count"), 0l );
 	
 	for ( int i = 1; i <= max ; i++ ) {
 		cfg->SetPath( wxString::Format(wxT("/Cat#%i"), i) );
@@ -508,11 +508,11 @@ void CPreferences::LoadCats() {
 		Category_Struct* newcat = new Category_Struct;
 
 	
-		sprintf(newcat->title, wxT("%s"), unicode2char( cfg->Read( wxT("Title"), wxT("") )));
-		sprintf(newcat->incomingpath, wxT("%s"), unicode2char( cfg->Read( wxT("Incoming"), wxT("") )));
+		sprintf(newcat->title, "%s", unicode2char( cfg->Read( wxT("Title"), wxT("") )));
+		sprintf(newcat->incomingpath, "%s", unicode2char( cfg->Read( wxT("Incoming"), wxT("") )));
 
 		MakeFoldername(newcat->incomingpath);
-		sprintf(newcat->comment, wxT("%s"), unicode2char( cfg->Read( wxT("Comment"), wxT("") )));
+		sprintf(newcat->comment, "%s", unicode2char( cfg->Read( wxT("Comment"), wxT("") )));
 
 		newcat->prio = cfg->Read( wxT("Priority"), 0l );
 
