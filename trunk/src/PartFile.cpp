@@ -339,7 +339,7 @@ void CPartFile::CreatePartFile()
 	int i = 0; 
 	do { 
 		i++; 
-		m_partmetfilename = wxString::Format(wxT("%03i.part"), i);
+		m_partmetfilename = wxString::Format(wxT("%03i.part.met"), i);
 		m_fullname = theApp.glob_prefs->GetTempDir() + wxT("/") + m_partmetfilename;
 	} while (wxFileName::FileExists(m_fullname));
 	
