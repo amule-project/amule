@@ -256,7 +256,6 @@ void CPartFile::Init()
 	hasRating = false;
 	hasComment = false; 
 	hasBadRating = false;
-	m_lastdatetimecheck = 0;
 	m_category = 0;
 	m_lastRefreshedDLDisplay = 0;
 	m_is_A4AF_auto = false;
@@ -346,6 +345,9 @@ void CPartFile::CreatePartFile()
 		AddLogLineM(false,_("ERROR: Failed to open partfile)"));
 		SetPartFileStatus(PS_ERROR);
 	}
+
+	// Update last-changed date
+	m_lastDateChanged = wxFileName( strPartPath ).GetModificationTime();
 	
 	if (thePrefs::GetAllocFullPart()) {
 		#warning Code for full file alloc - should be done on thread.
@@ -720,6 +722,9 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool fro
 		AddLogLineM(false, wxString::Format(_("Failed to open %s (%s)"), m_fullname.c_str(), m_strFileName.c_str()));
 		return false;
 	}
+	
+	// Update last-changed date
+	m_lastDateChanged = wxFileName( strSearchPath ).GetModificationTime();
 
 	// SLUGFILLER: SafeHash - final safety, make sure any missing part of the file is gap
 	if ((uint64)m_hpartfile.GetLength() < m_nFileSize)
@@ -3063,6 +3068,9 @@ void CPartFile::FlushBuffer(bool forcewait, bool bForceICH, bool bNoAICH)
 			// Go to the correct position in file and write block of data			
 			m_hpartfile.Seek(item->start);
 			m_hpartfile.Write(item->data, lenData);
+
+			// Update last-changed date
+			m_lastDateChanged = wxDateTime().Now();
 			
 			// Remove item from queue
 			m_BufferedData_list.RemoveHead();
@@ -3307,24 +3315,12 @@ void CPartFile::UpdateDisplayedInfo(bool force)
 	
 }
 
-time_t CPartFile::GetLastChangeDatetime(bool forcecheck)
-{
-	if ((::GetTickCount()-m_lastdatetimecheck)<60000 && !forcecheck) {
-		return m_lastdatecheckvalue;
-	}
 
-	m_lastdatetimecheck=::GetTickCount();
-	if (!::wxFileExists(m_hpartfile.GetFilePath())) {
-		m_lastdatecheckvalue=-1;
-	} else {
-		//CFileStatus filestatus;
-		struct stat filestatus;
-		fstat(m_hpartfile.fd(),&filestatus);
-		//m_hpartfile.GetStatus(filestatus); // this; "...returns m_attribute without high-order flags" indicates a known MFC bug, wonder how many unknown there are... :)
-		m_lastdatecheckvalue=filestatus.st_mtime;
-	}
-	return m_lastdatecheckvalue;
+const wxDateTime& CPartFile::GetLastChangeDatetime() const
+{
+	return m_lastDateChanged;
 }
+
 
 uint8 CPartFile::GetCategory()
 {

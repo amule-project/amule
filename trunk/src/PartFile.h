@@ -26,6 +26,7 @@
 
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/thread.h>		// Needed for wxMutex
+#include <wx/datetime.h>	// Needed for wxDateTime
 
 #include "types.h"		// Needed for uint8
 #include "KnownFile.h"		// Needed for CKnownFile
@@ -165,7 +166,8 @@ public:
 
 	int	GetCommonFilePenalty();
 	void	UpdateDisplayedInfo(bool force = false);
-	time_t	GetLastChangeDatetime(bool forcecheck = false);
+	
+	const wxDateTime& GetLastChangeDatetime() const;
 	uint8	GetCategory();
 	void	SetCategory(uint8 cat)		{ m_category = cat; SavePartFile(); }
 
@@ -279,9 +281,8 @@ private:
 	//static unsigned int CompleteThreadProc(CPartFile* pFile); // Lord KiRon - Used as separate thread to complete file
 	void    CharFillRange(wxString* buffer,uint32 start, uint32 end, char color);
 
-	DWORD	m_lastRefreshedDLDisplay;
-	DWORD   m_lastdatetimecheck;
-	time_t	m_lastdatecheckvalue;
+	DWORD		m_lastRefreshedDLDisplay;
+	wxDateTime	m_lastDateChanged;
 
 	// Barry - Buffered data to be written
 	CTypedPtrList<CPtrList, PartFileBufferedData*> m_BufferedData_list;

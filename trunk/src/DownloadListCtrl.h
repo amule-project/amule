@@ -211,7 +211,7 @@ private:
 
 	
 	static int wxCALLBACK SortProc(long item1, long item2, long lpSort);
-	static int Compare(CPartFile* file1, CPartFile* file2, long lParamSort);
+	static int Compare( const CPartFile* file1, const CPartFile* file2, long lParamSort );
 	static int Compare(CUpDownClient* client1, CUpDownClient* client2, long lParamSort);
 	
 
@@ -264,6 +264,9 @@ private:
 	typedef std::multimap<const void*,CtrlItem_Struct*> ListItems;
 	//! Shortcut to the pair-type used on the list.
 	typedef ListItems::value_type ListItemsPair;
+	//! This pair is used when searching for equal-ranges.
+	typedef std::pair< ListItems::iterator, ListItems::iterator > ListIteratorPair;
+
 	//! This list contains everything shown on the list. Sources are only to
 	//! be found on this list if they are being displayed, whereas files can
 	//! always be found on this list, even if they are currently hidden.
