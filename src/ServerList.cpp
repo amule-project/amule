@@ -39,6 +39,7 @@
 #include <wx/wfstream.h>
 #include <wx/intl.h>		// Needed for _
 #include <wx/filename.h>	// Needed for wxFileName
+#include <wx/url.h>			// Needed for wxURL
 
 #include "ServerList.h"		// Interface declarations.
 #include "ListenSocket.h"	// Needed for CListenSocket
@@ -880,6 +881,7 @@ void CServerList::DownloadFinished(uint32 result) {
 	}
 }
 
+
 void CServerList::AutoUpdate() {
 	
 	uint8 url_count = theApp.glob_prefs->adresses_list.GetCount();
@@ -893,27 +895,30 @@ void CServerList::AutoUpdate() {
 	wxString strTempFilename;
 
 	// Do current URL. Callback function will take care of the others.
+	while ( current_url_index < url_count ) {
+		wxString URI = theApp.glob_prefs->adresses_list[current_url_index];
 
-	strURLToDownload = theApp.glob_prefs->adresses_list[current_url_index]; 
-	
-	while ((strURLToDownload.Find(wxT("://")) == -1) && (current_url_index<url_count)) {
-		AddLogLineM(true, _("Invalid URL ") + strURLToDownload);
-		++current_url_index;
-		strURLToDownload = theApp.glob_prefs->adresses_list[current_url_index]; 
-	}
-	
-	if (current_url_index < url_count) {
-		// A valid url was found
-		URLAutoUpdate = strURLToDownload;
-		strTempFilename =  theApp.ConfigDir + wxT("server_auto.met");
-		CHTTPDownloadThread *downloader = new CHTTPDownloadThread(strURLToDownload,strTempFilename, HTTP_ServerMetAuto);
-		downloader->Create();
-		downloader->Run();
-	} else {
-		AddLogLineM(true, _("No valid server.met auto-download url on addresses.dat "));
+		// We use wxURL to validate the URI
+		if ( wxURL( URI ).GetError() == wxURL_NOERR ) {
+			// Ok, got a valid URI
+			URLAutoUpdate = strURLToDownload;
+			strTempFilename =  theApp.ConfigDir + wxT("server_auto.met");
+		
+			CHTTPDownloadThread *downloader = new CHTTPDownloadThread(strURLToDownload,strTempFilename, HTTP_ServerMetAuto);
+			downloader->Create();
+			downloader->Run();
+		
+			return;
+		} else {
+			AddLogLineM(true, wxString::Format( _("Warning, invalid URL specified for auto-updating of servers: %s"), URI.c_str()) );
+		}
+		
+		current_url_index++;
 	}
 
+	AddLogLineM(true, _("No valid server.met auto-download url on addresses.dat"));
 }
+
 
 void CServerList::AutoDownloadFinished(uint32 result) {
 	if(result==1) {
