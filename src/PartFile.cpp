@@ -3597,9 +3597,7 @@ wxString CPartFile::GetProgressString(uint16 size)
 					}
 					// paint
 					uint8 color;
-					if (	m_SrcpartFrequency.GetCount() &&
-						m_SrcpartFrequency.GetCount() >= (size_t)i && 
-						m_SrcpartFrequency[i]) {  // frequency?
+					if ( m_SrcpartFrequency.GetCount() > (size_t)i && m_SrcpartFrequency[i] ) {  // frequency?
 						//color = crWaiting;
 						//added lemonfan's progressbar patch
 						color = m_SrcpartFrequency[i] < 10 ? crWaiting[m_SrcpartFrequency[i]/2]:crWaiting[5];
