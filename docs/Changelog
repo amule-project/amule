@@ -29,6 +29,8 @@ Version 2.0.0rc8 - The "???????????" version.
 		* Changed m4/readline.m4 so that readline libs are only used
 		  when needed, i.e., no longer append readline libs to LIBS,
 		  use READLINE_LIBS instead.
+		* Fixed crash in aMule when amuleweb tried to get transfers
+		  tab and aMule had never connected to a server before.
 
 	GonoszTopi:
 		* Initial work on EC protocol version 2.0.
