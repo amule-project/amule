@@ -197,7 +197,7 @@ public:
 #else
 	//base
 	CUpDownClient(CClientReqSocket* sender = 0);
-	CUpDownClient(uint16 in_port, uint32 in_userid, uint32 in_serverup, uint16 in_serverport,CPartFile* in_reqfile);
+	CUpDownClient(uint16 in_port, uint32 in_userid, uint32 in_serverup, uint16 in_serverport,CPartFile* in_reqfile, bool checkfriend = false);
 #endif
 	/**
 	 * This function should be called when the client object is to be deleted.

@@ -738,7 +738,7 @@ bool CClientList::SendMessage(uint64 client_id, const wxString& message)
 				% client_id 
 				% Uint32toStringIP(IP_FROM_GUI_ID(client_id))
 				% PORT_FROM_GUI_ID(client_id) );
-		client = new CUpDownClient(PORT_FROM_GUI_ID(client_id),IP_FROM_GUI_ID(client_id),0,0,NULL);
+		client = new CUpDownClient(PORT_FROM_GUI_ID(client_id),IP_FROM_GUI_ID(client_id),0,0,NULL, true);
 		AddClient(client);
 	}
 	return client->SendMessage(message);
