@@ -242,7 +242,8 @@ void CPartFile::Init()
 {
 	fullname = NULL; // new
 	
-	
+	m_nLastBufferFlushTime = 0;
+
 	newdate = true;
 	lastsearchtime = 0;
 	lastpurgetime = ::GetTickCount();
@@ -1649,7 +1650,7 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 	DWORD dwCurTick = ::GetTickCount();
 
 	// If buffer size exceeds limit, or if not written within time limit, flush data
-	if ((m_nTotalBufferData > theApp.glob_prefs->GetFileBufferSize())) {
+	if ((m_nTotalBufferData > theApp.glob_prefs->GetFileBufferSize())  || (dwCurTick > (m_nLastBufferFlushTime + BUFFER_TIME_LIMIT))) {
 		// Avoid flushing while copying preview file
 		if (!m_bPreviewing) {
 			FlushBuffer();
@@ -3461,6 +3462,7 @@ uint32 CPartFile::WriteToBuffer(uint32 transize, BYTE *data, uint32 start, uint3
 void CPartFile::FlushBuffer(void)
 {
 	m_nLastBufferFlushTime = GetTickCount();
+	
 	if (m_BufferedData_list.IsEmpty()) {
 		return;
 	}

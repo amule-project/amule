@@ -42,7 +42,7 @@ class Gap_Struct;
 
 
 //#define BUFFER_SIZE_LIMIT	500000 // Max bytes before forcing a flush
-#define BUFFER_TIME_LIMIT	5000   // Max milliseconds before forcing a flush
+#define BUFFER_TIME_LIMIT	60000   // Max milliseconds before forcing a flush
 
 #define	STATES_COUNT			13
 
