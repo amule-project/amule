@@ -159,6 +159,12 @@ void set_ul_speed(GtkWidget* widget, GdkEventButton* WXUNUSED(event), gpointer W
 	thePrefs::SetMaxUpload(temp);
 }
 
+gboolean on_delete (GtkWidget* widget, GdkEvent* event, gpointer user_data)
+{
+	return TRUE;
+}
+
+
 
 // Create menu linked to the tray icon
 static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, gpointer WXUNUSED(data))
@@ -553,6 +559,7 @@ CSysTray::CSysTray(wxWindow* parent, DesktopMode desktopmode, const wxString& ti
 			return;
 		}
 	}
+
 	gtk_widget_realize(m_status_docklet);
 	gtk_signal_connect(GTK_OBJECT(m_status_docklet),"destroy", GTK_SIGNAL_FUNC(gtk_widget_destroyed),&m_status_docklet);
 
@@ -583,6 +590,8 @@ CSysTray::CSysTray(wxWindow* parent, DesktopMode desktopmode, const wxString& ti
 	gtk_widget_show(GTK_WIDGET(m_status_docklet));
 	gtk_widget_show_all (GTK_WIDGET (m_status_docklet));
 
+	g_signal_connect(GTK_OBJECT(m_status_docklet), "delete-event", GTK_SIGNAL_FUNC(on_delete), NULL);
+	
 }
 
 void CSysTray::setupProperties()
@@ -694,7 +703,7 @@ void CSysTray::SetTrayIcon(char** data, int* pVals)
 
 CSysTray::~CSysTray()
 {
-
+	gtk_signal_emit_by_name(GTK_OBJECT(m_status_docklet),"delete_event");
 }
 
 #endif // !USE_WX_TRAY
