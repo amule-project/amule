@@ -35,12 +35,12 @@
 #include "wx/wxprec.h"
 
 #ifdef __BORLANDC__
-    #pragma hdrstop
+ #pragma hdrstop
 #endif
 
 // For all others, include the necessary headers
 #ifndef WX_PRECOMP
-    #include "wx/wx.h"
+ #include "wx/wx.h"
 #endif
 
 #include "linuxmon.h"
@@ -50,18 +50,18 @@
 
 // Constants
 const wxFileName
-LinuxMon::UPTIME_FILE (wxT("/proc/uptime"));
+LinuxMon::UPTIME_FILE ( wxT( "/proc/uptime" ) );
 
 const wxFileName
-LinuxMon::LOADAVG_FILE (wxT("/proc/loadavg"));
+LinuxMon::LOADAVG_FILE ( wxT( "/proc/loadavg" ) );
 
 // Constructors
 LinuxMon::LinuxMon ()
 {
-  m_uptime = _("Unknown");
-  m_sysLoad_1 = wxT("0.00");
-  m_sysLoad_5 = wxT("0.00");
-  m_sysLoad_15 = wxT("0.00");
+	m_uptime = _( "Unknown" );
+	m_sysLoad_1 = wxT( "0.00" );
+	m_sysLoad_5 = wxT( "0.00" );
+	m_sysLoad_15 = wxT( "0.00" );
 }
 
 // Destructor
@@ -72,51 +72,51 @@ LinuxMon::~LinuxMon ()
 void
 LinuxMon::Refresh ()
 {
-  wxFileInputStream upInput (UPTIME_FILE.GetFullPath ());
-  wxFileInputStream loadInput (LOADAVG_FILE.GetFullPath ());
+	wxFileInputStream upInput ( UPTIME_FILE.GetFullPath () );
+	wxFileInputStream loadInput ( LOADAVG_FILE.GetFullPath () );
 
-  wxTextInputStream upText (upInput);
-  wxTextInputStream loadText (loadInput);
+	wxTextInputStream upText ( upInput );
+	wxTextInputStream loadText ( loadInput );
 
-  loadText >> m_sysLoad_1;
-  loadText >> m_sysLoad_5;
-  loadText >> m_sysLoad_15;
+	loadText >> m_sysLoad_1;
+	loadText >> m_sysLoad_5;
+	loadText >> m_sysLoad_15;
 
-  double uptime;
-  upText >> uptime;
+	double uptime;
+	upText >> uptime;
 
-  wxInt32 day, hour, min, sec;
-  day = (wxInt32) (uptime / 86400);
-  hour = (wxInt32) ((uptime - day * 86400) / 3600);
-  min = (wxInt32) ((uptime - day * 86400 - hour * 3600) / 60);
-  sec = (wxInt32) (uptime - day * 86400 - hour * 3600 - min * 60);
+	wxInt32 day, hour, min, sec;
+	day = ( wxInt32 ) ( uptime / 86400 );
+	hour = ( wxInt32 ) ( ( uptime - day * 86400 ) / 3600 );
+	min = ( wxInt32 ) ( ( uptime - day * 86400 - hour * 3600 ) / 60 );
+	sec = ( wxInt32 ) ( uptime - day * 86400 - hour * 3600 - min * 60 );
 
-  m_uptime =
-    m_uptime.Format (_("%i day(s) %i hour(s) %i min %i s"), day, hour, min,
-                     sec);
+	m_uptime =
+	    m_uptime.Format ( _( "%i day(s) %i hour(s) %i min %i s" ), day, hour, min,
+	                      sec );
 }
 
 // Accessors
 wxString
 LinuxMon::GetUptime () const
-  {
-    return m_uptime;
-  }
+{
+	return m_uptime;
+}
 
 wxString
 LinuxMon::GetSysLoad_1 () const
-  {
-    return m_sysLoad_1;
-  }
+{
+	return m_sysLoad_1;
+}
 
 wxString
 LinuxMon::GetSysLoad_5 () const
-  {
-    return m_sysLoad_5;
-  }
+{
+	return m_sysLoad_5;
+}
 
 wxString
 LinuxMon::GetSysLoad_15 () const
-  {
-    return m_sysLoad_15;
-  }
+{
+	return m_sysLoad_15;
+}

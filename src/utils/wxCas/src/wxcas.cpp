@@ -35,12 +35,12 @@
 #include "wx/wxprec.h"
 
 #ifdef __BORLANDC__
-    #pragma hdrstop
+ #pragma hdrstop
 #endif
 
 // For all others, include the necessary headers
 #ifndef WX_PRECOMP
-    #include "wx/wx.h"
+ #include "wx/wx.h"
 #endif
 
 #ifdef HAVE_CONFIG_H
@@ -57,54 +57,55 @@
 #include "wxcas.h"
 
 // Application implementation
-IMPLEMENT_APP (WxCas);
+IMPLEMENT_APP ( WxCas );
 
 bool
 WxCas::OnInit ()
 {
-  // Used to tell wxCas to use aMule catalog
-  m_locale.Init();
-  m_locale.AddCatalog(wxT(PACKAGE));
+	// Used to tell wxCas to use aMule catalog
+	m_locale.Init();
+	m_locale.AddCatalog( wxT( PACKAGE ) );
 
 #if wxUSE_LIBPNG
-  wxImage::AddHandler (new wxPNGHandler);
+
+	wxImage::AddHandler ( new wxPNGHandler );
 #endif
 
 #if wxUSE_LIBJPEG
 
-  wxImage::AddHandler (new wxJPEGHandler);
+	wxImage::AddHandler ( new wxJPEGHandler );
 #endif
 
 #ifdef __WXMSW__
 
-  SetPrintMode (wxPRINT_WINDOWS);
+	SetPrintMode ( wxPRINT_WINDOWS );
 #else
 
-  SetPrintMode (wxPRINT_POSTSCRIPT);
+	SetPrintMode ( wxPRINT_POSTSCRIPT );
 #endif
 
-  // Prefs
-  wxConfigBase::Get();
+	// Prefs
+	wxConfigBase::Get();
 
-  // Main Frame
-  m_frame = new WxCasFrame (_("wxCas, aMule Online Statistics"));
-  
-  // Show all
-  m_frame->Show (TRUE);
-  SetTopWindow (m_frame);
-  return true;
+	// Main Frame
+	m_frame = new WxCasFrame ( _( "wxCas, aMule Online Statistics" ) );
+
+	// Show all
+	m_frame->Show ( TRUE );
+	SetTopWindow ( m_frame );
+	return true;
 }
 
 int
 WxCas::OnExit()
 {
-  delete wxConfigBase::Set((wxConfigBase *)NULL);
-  return 0;
+	delete wxConfigBase::Set( ( wxConfigBase * ) NULL );
+	return 0;
 }
 
 WxCasFrame *
 WxCas::GetMainFrame () const
-  {
-    return m_frame;
-  }
+{
+	return m_frame;
+}
 

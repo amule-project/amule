@@ -43,9 +43,9 @@
 #include "wxcascte.h"
 
 const wxString
-WxCasCte::AMULESIG_FILENAME (wxT("amulesig.dat"));
+WxCasCte::AMULESIG_FILENAME ( wxT( "amulesig.dat" ) );
 const wxString
-WxCasCte::AMULESIG_IMG_NAME (wxT("aMule-online-sign"));
+WxCasCte::AMULESIG_IMG_NAME ( wxT( "aMule-online-sign" ) );
 
 // Refresh rate limits
 const wxUint32
@@ -62,54 +62,54 @@ WxCasCte::MAX_FTP_RATE = 1440;
 
 // Key config names
 const wxString
-WxCasCte::AMULESIG_PATH_KEY (wxT("OSDirectory"));
+WxCasCte::AMULESIG_PATH_KEY ( wxT( "OSDirectory" ) );
 const wxString
-WxCasCte::REFRESH_RATE_KEY (wxT("RefreshRate"));
+WxCasCte::REFRESH_RATE_KEY ( wxT( "RefreshRate" ) );
 
 const wxString
-WxCasCte::ENABLE_AUTOSTATIMG_KEY (wxT("EnableAutoStatImg"));
+WxCasCte::ENABLE_AUTOSTATIMG_KEY ( wxT( "EnableAutoStatImg" ) );
 const wxString
-WxCasCte::AUTOSTATIMG_DIR_KEY (wxT("StatImgDirectory"));
+WxCasCte::AUTOSTATIMG_DIR_KEY ( wxT( "StatImgDirectory" ) );
 const wxString
-WxCasCte::AUTOSTATIMG_TYPE_KEY (wxT("StatImgType"));
+WxCasCte::AUTOSTATIMG_TYPE_KEY ( wxT( "StatImgType" ) );
 
 const wxString
-WxCasCte::ENABLE_FTP_UPDATE_KEY(wxT("EnableFtpUpdate"));
+WxCasCte::ENABLE_FTP_UPDATE_KEY( wxT( "EnableFtpUpdate" ) );
 const wxString
-WxCasCte::FTP_UPDATE_RATE_KEY (wxT("FtpUpdateRate"));
+WxCasCte::FTP_UPDATE_RATE_KEY ( wxT( "FtpUpdateRate" ) );
 const wxString
-WxCasCte::FTP_URL_KEY (wxT("FtpUrl"));
+WxCasCte::FTP_URL_KEY ( wxT( "FtpUrl" ) );
 const wxString
-WxCasCte::FTP_PATH_KEY (wxT("FtpPath"));
+WxCasCte::FTP_PATH_KEY ( wxT( "FtpPath" ) );
 const wxString
-WxCasCte::FTP_USER_KEY (wxT("FtpUser"));
+WxCasCte::FTP_USER_KEY ( wxT( "FtpUser" ) );
 const wxString
-WxCasCte::FTP_PASSWD_KEY (wxT("FtpPasswd"));
+WxCasCte::FTP_PASSWD_KEY ( wxT( "FtpPasswd" ) );
 
 
 // Default config parameters
 const wxString
-WxCasCte::DEFAULT_AMULESIG_PATH (wxFileName::GetHomeDir () +
-                                 wxFileName::GetPathSeparator () + wxT(".aMule"));
+WxCasCte::DEFAULT_AMULESIG_PATH ( wxFileName::GetHomeDir () +
+                                  wxFileName::GetPathSeparator () + wxT( ".aMule" ) );
 const wxUint32
 WxCasCte::DEFAULT_REFRESH_RATE = 5;
 
 const bool
 WxCasCte::DEFAULT_AUTOSTATIMG_ISENABLED = FALSE;
 const wxString
-WxCasCte::DEFAULT_AUTOSTATIMG_PATH (wxFileName::GetHomeDir ());
+WxCasCte::DEFAULT_AUTOSTATIMG_PATH ( wxFileName::GetHomeDir () );
 const wxString
-WxCasCte::DEFAULT_AUTOSTATIMG_TYPE (wxT("PNG"));
+WxCasCte::DEFAULT_AUTOSTATIMG_TYPE ( wxT( "PNG" ) );
 
 const bool
 WxCasCte::DEFAULT_FTP_UPDATE_ISENABLED = FALSE;
 const wxUint32
 WxCasCte::DEFAULT_FTP_UPDATE_RATE = 10;
 const wxString
-WxCasCte::DEFAULT_FTP_URL(wxT("ftp.myftp.cx"));
+WxCasCte::DEFAULT_FTP_URL( wxT( "ftp.myftp.cx" ) );
 const wxString
-WxCasCte::DEFAULT_FTP_PATH(wxT("/pub/myamuledir"));
+WxCasCte::DEFAULT_FTP_PATH( wxT( "/pub/myamuledir" ) );
 const wxString
-WxCasCte::DEFAULT_FTP_USER(wxT("anonymous"));
+WxCasCte::DEFAULT_FTP_USER( wxT( "anonymous" ) );
 const wxString
-WxCasCte::DEFAULT_FTP_PASSWD(wxT("whiterabit@here"));
+WxCasCte::DEFAULT_FTP_PASSWD( wxT( "whiterabit@here" ) );

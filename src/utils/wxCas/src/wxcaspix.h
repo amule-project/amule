@@ -38,29 +38,28 @@
 #include "wx/wxprec.h"
 
 #ifdef __BORLANDC__
-    #pragma hdrstop
+ #pragma hdrstop
 #endif
 
 // For all others, include the necessary headers
 #ifndef WX_PRECOMP
-    #include "wx/wx.h"
+ #include "wx/wx.h"
 #endif
 
 class WxCasPix
-  {
-  private:
-    static const char *m_about_xpm[];
-    static const char *m_amule_xpm[];
-    static const char *m_prefs_xpm[];
-    static const char *m_print_xpm[];
-    static const char *m_refresh_xpm[];
-    static const char *m_save_xpm[];
-    static const char *m_stat_xpm[];
-    static const char *m_stop_xpm[];
-    static const char *m_wxcas_xpm[];
+{
+private:
+	static const char *m_about_xpm[];
+	static const char *m_prefs_xpm[];
+	static const char *m_print_xpm[];
+	static const char *m_refresh_xpm[];
+	static const char *m_save_xpm[];
+	static const char *m_stat_xpm[];
+	static const char *m_stop_xpm[];
+	static const char *m_wxcas_xpm[];
 
-  public:
-    static wxBitmap getPixmap(const wxString& name);
-  };
+public:
+	static wxBitmap getPixmap( const wxString& name );
+};
 
 #endif /* _WXCASPIX_H */
