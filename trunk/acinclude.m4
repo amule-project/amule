@@ -425,43 +425,59 @@ dnl Check for crypto++ library
 dnl --------------------------------------------------------------------------
  
 
-AC_DEFUN([CHECK_CRYPTO],[AC_MSG_CHECKING([for crypto++ version >= 5.1])
-          
+AC_DEFUN([CHECK_CRYPTO], [
+
+CRYPTO_PP_STYLE="unknown"
+
 if test x$USE_EMBEDDED_CRYPTO = xno; then
-	  if test x$crypto_prefix == x ; then
-          crypto_prefix="/usr/include/"
-          fi
-          CRYPTO_PP_STYLE="gentoo_debian"
-          
-	  grep "5.1" $crypto_prefix/crypto++/cryptlib.h > /dev/null 2>&1
-          CRYPTO=$?
-          
-	  if test "$CRYPTO" != 0; then
-          grep "5.1" $crypto_prefix/cryptopp/cryptlib.h > /dev/null 2>&1
-          CRYPTO_PP_STYLE="mdk_suse_fc"
-          
-	  CRYPTO=$?
-          fi
-          
-	  if test "$CRYPTO" != 0; then
-          grep "5.1" $crypto_prefix/crypto-5.1/cryptlib.h > /dev/null 2>&1
-          CRYPTO_PP_STYLE="sources"
-          CRYPTO=$?
+
+	  min_crypto_version=ifelse([$1], ,5.1,$1)
+	  crypto_version=0;
+	  
+	  AC_MSG_CHECKING([for crypto++ version >= $min_crypto_version])
+	  
+	  #We don't use AC_CHECK_FILE to avoid caching.
+
+	  if test x$crypto_prefix != x ; then
+		  if test -f $crypto_prefix/local.h; then
+		  CRYPTO_PP_STYLE="sources"
+		  crypto_version=`grep PACKAGE_VERSION $crypto_prefix/local.h | cut -d\" -f2`
+		  fi
+	  else
+          crypto_prefix="/usr"
           fi
           
-	  if test "$CRYPTO" != 0; then
-          result="no"
-          else
-          result="yes"
+	  if test -f $crypto_prefix/include/cryptopp/local.h; then
+		  CRYPTO_PP_STYLE="mdk_suse_fc"
+		  crypto_version=`grep PACKAGE_VERSION $crypto_prefix/include/cryptopp/local.h | cut -d\" -f2`
+	  fi
+	  
+	  if test -f $crypto_prefix/include/crypto++/local.h; then
+		  CRYPTO_PP_STYLE="gentoo_debian"
+		  crypto_version=`grep PACKAGE_VERSION $crypto_prefix/include/crypto++/local.h | cut -d\" -f2`
+	  fi
+
+	  vers=`echo $crypto_version | $AWK 'BEGIN { FS = "."; } { printf "% d", ([$]1 * 1000 + [$]2) * 1000 + [$]3;}'`
+	  minvers=`echo $min_crypto_version | $AWK 'BEGIN { FS = "."; } { printf "% d", ([$]1 * 1000 + [$]2) * 1000 + [$]3;}'`
+	  
+	  if test -n "$vers" && test "$vers" -ge $minvers; then
+	  
+          result="yes (version $crypto_version)"
+	  
+	  else
+	  
+	  result="no"
+	  
           fi
+	  
+	  AC_MSG_RESULT($result)
+          AC_SUBST(crypto_prefix)
 else
 echo "crypto check disabled, using embedded libs"
+CRYPTO_PP_STYLE="embeded"
 fi
-          AC_MSG_RESULT($result)
-          AC_SUBST(CRYPTO)
-          AC_SUBST(crypto_prefix)
-          AC_SUBST(CRYPTO_PP_STYLE)
 
+AC_SUBST(CRYPTO_PP_STYLE)
 ])
 
 AC_DEFUN([AM_OPTIONS_CRYPTO], [
