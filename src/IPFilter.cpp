@@ -23,430 +23,460 @@
 #pragma implementation "IPFilter.h"
 #endif
 
-#include <wx/filefn.h>
-#include <wx/ffile.h>
-#include <wx/file.h>
-
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/intl.h>		// Needed for _()
-#include <wx/textfile.h>
-#include <wx/arrimpl.cpp>	// this is a magic incantation which must be done!
-#include <wx/string.h>		// for wxString
-#include <wx/tokenzr.h>		// for wxTokenizer
+#include <wx/filefn.h>		// Needed for wxFileExists
+#include <wx/textfile.h>	// Needed for wxTextFile
+#include <wx/string.h>		// Needed for wxString
+#include <wx/txtstrm.h>		// Needed for wxTextInputStream
+#include <wx/zipstrm.h>		// Needed for wxZipInputStream
 
-
-#if defined(__WXMSW__)
-  #include <winsock2.h>
-#else
-  #include <sys/socket.h>	// for inet_aton() and struct in_addr
-  #include <netinet/in.h>
-  #include <arpa/inet.h>
-#endif
+#include <netinet/in.h>
 
 #include "IPFilter.h"		// Interface declarations.
 #include "NetworkFunctions.h"
 #include "Preferences.h"	// Needed for CPreferences
-#include "amule.h"		// Needed for theApp
+#include "amule.h"			// Needed for theApp
 #include "HTTPDownload.h"
 #include "GetTickCount.h"
 
-CIPFilter::CIPFilter(){
-	lasthit = wxEmptyString;
-	LoadFromFile(theApp.ConfigDir + wxT("ipfilter.dat"), false); // No merge on construction
+CIPFilter::CIPFilter()
+{
+	LoadFromDatFile(theApp.ConfigDir + wxT("ipfilter.dat"), false); // No merge on construction
+	
 	if (thePrefs::IPFilterAutoLoad()) {
-		Update();	
+		Update();
 	}
 }
 
-CIPFilter::~CIPFilter(){
-	RemoveAllIPs();
-}
 
-void CIPFilter::Reload(){
-	RemoveAllIPs();
-	lasthit = wxEmptyString;
-	LoadFromFile(theApp.ConfigDir + wxT("ipfilter.dat"), false); // No merge on reload.
-}
-
-
-/* *
- * IPFilter is an map of IPRanges, ordered by IPstart, of banned ranges of IP addresses.
- */
-void CIPFilter::AddBannedIPRange(uint32 IPStart, uint32 IPEnd, uint16 AccessLevel, const wxString& Description)
+CIPFilter::~CIPFilter()
 {
-	if ( !iplist.empty() ) {
-		// Find the first element larger than or equal to IPTest
-		IPListMap::iterator it = iplist.lower_bound( IPStart );
+	RemoveAllIPs();
+}
+
+
+void CIPFilter::Reload()
+{
+	RemoveAllIPs();
 	
-		if ( it != iplist.begin() ) {
-			// To a step back to the first element smaller than IPStart
-			it--;
-		}
-		
-		while ( it != iplist.end() ) {
-			// Begins before the current span
-			if ( IPStart < it->first ) {
-				// Never touches the current span
-				if ( IPEnd < it->first - 1 ) {
-					break;
-				}
-
-				// Stops just before the current span
-				else if ( IPEnd == it->first - 1 ) {
-					// If same AccessLevel: Merge
-					if ( AccessLevel == it->second->AccessLevel ) {
-						IPEnd = it->second->IPEnd;
-						iplist.erase( it );
-					}
-
-					break;
-				}
-
-				// Covers part of the current span (maybe entire span)
-				else {
-					// If it only covers part of the span
-					if ( IPEnd < it->second->IPEnd ) {
-						// Same AccessLevel?
-						if ( AccessLevel == it->second->AccessLevel ) {
-							IPEnd = it->second->IPEnd;
-							iplist.erase( it );
-						} else {
-							// Re-insert the partially covered span
-							IPRange_Struct* item = it->second;
-
-							iplist.erase( it );
-							iplist[ IPEnd + 1 ] = item;
-						}
-
-						break;
-					} else {
-						// It covers the entire span
-						IPListMap::iterator tmp = it++;
-						iplist.erase( tmp );
-						continue;
-					}
-				}
-			}
-			// It starts at the current span
-			else if ( IPStart == it->first ) {
-				// Covers only part of the current span
-				if ( IPEnd < it->second->IPEnd ) {
-					// Same AccessLevel, nothing to do
-					if ( AccessLevel == it->second->AccessLevel ) {
-						return;
-					} else {
-						// Re-insert the partially covered span
-						IPRange_Struct* item = it->second;
-
-						iplist.erase( it );
-						iplist[ IPEnd + 1 ] = item;
-					}
-
-					break;
-
-				} else {
-					// Covers the entire span
-					IPListMap::iterator tmp = it++;
-					iplist.erase( tmp );					
-					continue;
-				}
-			}
-
-			// Starts inside the current span or after the current span
-			else if ( IPStart > it->first ) {
-				// Starts inside the current span
-				if ( IPStart < it->second->IPEnd ) {
-					// Ends inside the current span
-					if ( IPEnd < it->second->IPEnd ) {
-						// Adding a span with same AccessLevel inside a existing span is fruitless
-						if ( AccessLevel == it->second->AccessLevel ) {
-							return;
-						}
-					
-						// Split the currens span and stop
-						uint32 oldend = it->second->IPEnd;
-						// Resize the current span to fit before the new span
-						it->second->IPEnd = IPStart - 1;
-
-						// Create a new span to cover the second block
-						IPRange_Struct* item = new IPRange_Struct();
-						*item = *it->second;
-						item->IPEnd       = oldend;
-						
-						// Insert the new span	
-						iplist[ IPEnd + 1 ] = item;
-						
-						break;
-					} else {
-						// If access-level is the same, then we remove the current and
-						// resize the new span
-						if ( AccessLevel == it->second->AccessLevel ) {
-							IPStart = it->first;
-							
-							IPListMap::iterator tmp = it++;
-							iplist.erase( tmp );
-							continue;
-						} else {
-							// Continues past the end of the current span, resize current span
-							it->second->IPEnd = IPStart - 1;
-						}
-					}
-				} else if ( IPStart == it->second->IPEnd ) {
-					// If access-level is the same, then we remove the current and
-					// resize the new span
-					if ( AccessLevel == it->second->AccessLevel ) {
-						IPStart = it->first;
-						
-						IPListMap::iterator tmp = it++;
-						iplist.erase( tmp );
-						continue;
-					} else {
-						// Continues past the end of the current span, resize current span
-						it->second->IPEnd = IPStart - 1;
-					}
-				} else {
-					// Starts after the current span, nothing to do
-				}
-			}
-
-			it++;
-		}
-	}
+	LoadFromDatFile(theApp.ConfigDir + wxT("ipfilter.dat"), false); // No merge on reload.
+}
 
 
-	IPRange_Struct *newFilter = new IPRange_Struct();
-	newFilter->IPEnd	= IPEnd;
+const wxString& CIPFilter::GetLastHit() const
+{
+	wxMutexLocker lock( m_mutex );
+	
+	return m_lasthit;
+}
+
+uint32 CIPFilter::BanCount() const
+{
+	wxMutexLocker lock( m_mutex );
+
+	return m_iplist.size();
+}
+
+
+void CIPFilter::AddIPRange(uint32 IPStart, uint32 IPEnd, uint16 AccessLevel, const wxString& Description)
+{
 	wxASSERT(AccessLevel < 256);
-	newFilter->AccessLevel	= AccessLevel;
-	newFilter->Description	= Description;
+	wxASSERT(IPStart <= IPEnd);
 
+	rangeObject item;
+	item.AccessLevel = AccessLevel;
+	item.Description = Description;
 
-	// It should now be safe to insert the span, without risking multiple spans covering the same range
-	iplist[IPStart]		= newFilter;
+	m_iplist.insert( IPStart, IPEnd, item );
 }
 
 
-/* *
- * This was done because the ipfilter.dat format uses sometimes leading zeroes,
- * and inet_aton interprets a leading zero as an octal number, not a decimal.
- * This function returns an ip in host order, not network.
- */
-bool CIPFilter::m_inet_atoh(wxString &s, uint32 *ip)
+bool CIPFilter::m_inet_atoh( const wxString &str, uint32& ipA, uint32& ipB )
 {
-	int i;
-	unsigned long n;
-	int ret = true;
-	register uint32 hostip;
-	wxStringTokenizer t( s, wxT("."), wxTOKEN_RET_EMPTY_ALL );
-	wxString s1;
-	hostip = 0;
-	for( i = 0; i < 4; i++ ) {
-		s1 = t.GetNextToken();
-		n = 0;
-		if( !s1.IsEmpty() ) {
-			s1.ToULong(&n);
+	// Empty strings would cause problems due to the way I use pointers
+	if ( str.IsEmpty() ) {
+		return false;
+	}
+	
+	// Ensure IPs are zero'd
+	ipA = ipB = 0;
+	
+	// Details if the last char was a digit
+	bool lastIsDigit = false;
+	
+	// The current position in the current field, used to detect malformed fields (x.y..z).
+	int digit = 0;
+
+	// The current field, used to ensure only IPs that looks like a.b.c.d are supported
+	int field = 0;
+
+	// The value of the current field
+	int value = 0;
+
+	// Some ptr magic. Direct pointer access is faster in this case.
+	const wxChar* ptr = str.c_str();
+	wxChar c;
+
+	while ( ( c = *ptr++ ) ) {
+		if ( c >= wxT('0') && c <= wxT('9') ) {
+			// Avoid whitespace inside numbers, ie a.b.XY Z.d
+			if ( lastIsDigit || !digit ) {
+				value = ( value * 10 ) + ( c - wxT('0') );
+				++digit;
+				lastIsDigit = true;
+			} else {
+				// There was a whitespace inside a number, bail
+				return false;
+			}
+		} else if ( c == wxT('.') || c == wxT('-') ) {
+			// Ensure that the split happens at the right place
+			if ( field == 3 && c != wxT('-') ) {
+				return false;
+				// There must have been at least one digit and value must be valid
+			} else if ( digit && value <= 255 ) {
+				// Add the current field to either the first or the second IP
+				if ( field < 4 ) {
+					ipA = ( ipA << 8 ) | value;
+				} else {
+					ipB = ( ipB << 8 ) | value;
+				}
+
+				// Rest the current field values
+				value = digit = 0;
+				++field;
+			} else {
+				return false;
+			}
+		} else if ( c != wxT(' ') && c != wxT('\t') ) {
+			// Something in the string, which isn't whitespace
+			return false;
+		} else {
+			lastIsDigit = false;
 		}
-		hostip = ( hostip << 8 ) | n;
 	}
-	*ip = hostip;
-	
-	return ret;
+
+	// Add the last field to the second IP
+	ipB = ( ipB << 8 ) | value;
+
+	// The only valid possibility is 8 fields.
+	return ( field == 7 );
 }
 
 
-/**
- * Helper-function for removing bad chars from str-IPs
- */
-wxString CleanUp( const wxString& str ) 
+wxString CIPFilter::GetNextToken( const wxString& str, wxChar token, int& cur )
 {
-	wxString result;
+	// Empty strings would cause problems due to the way I use pointers
+	if ( str.IsEmpty() ) {
+		cur = -1;
+		return wxEmptyString;
+	}
 
-	for ( unsigned int i = 0; i < str.Length(); i++ ) {
-		if ( ( str[i] >= wxT('0') && str[i] <= wxT('9') ) || str[i] == wxT('.') ) {
-			result += str[i];		
+	int current = ( cur < 0 ? 0 : cur );
+
+	const wxChar* ptr = str.c_str() + cur;
+	const wxChar* end = str.c_str() + str.Len() + 1;
+
+	while ( ++ptr < end ) {
+		if ( *ptr == token ) {
+			cur = ptr - str.c_str() + 1;
+
+			return str.Mid( current, ptr - ( str.c_str() + current ) );
 		}
 	}
 
-	return result;
+	// Move back to beginning, thus starting the circle over
+	cur = -1;
+
+	// Return the last token
+	return str.Mid(  current );
 }
 
 
-bool CIPFilter::ProcessLineOk(const wxString& sLine, unsigned long linecounter)
+bool CIPFilter::StrToU( const wxString& str, unsigned& i )
 {
-	// remove spaces from the left and right.
-	wxString line = sLine.Strip(wxString::both);
-	
-	// ignore comments & too short lines
-	if ( line.GetChar(0) == wxT('#') ||
-		 line.GetChar(0) == wxT('/') || 
-		 line.Length() < 5 )
-		return false;
-	
-	// Create the tokenizer. Fields are separated with commas. 
-	// Returns the empty last token if that is the case
-	wxStringTokenizer tokens( line, wxT(","), wxTOKEN_RET_EMPTY_ALL );
-	
-	// First token is IP Range
-	wxString IPRange = tokens.GetNextToken();
-	if( IPRange.IsEmpty() )
-		return false;
-	// Separate the two IP's
-	wxStringTokenizer IPToken( IPRange, wxT("-"), wxTOKEN_RET_EMPTY_ALL );
-	wxString sIPStart = IPToken.GetNextToken().Strip(wxString::both);
-	wxString sIPEnd   = IPToken.GetNextToken().Strip(wxString::both);
-	
-	// Ensure that we only have valid chars in the ips
-	sIPStart = CleanUp( sIPStart );
-	sIPEnd   = CleanUp( sIPEnd );
-	
-	if( sIPStart.IsEmpty() || sIPEnd.IsEmpty() ) {
-		AddLogLineM(true, wxString::Format(_("Invalid line in file ipfilter.dat(%d)"), linecounter));
+	// Empty strings would cause problems due to the way I use pointers
+	if ( str.IsEmpty() ) {
 		return false;
 	}
-	
+
+	// The current digit-number and reset i
+	int digit = i = 0;
+	// If the last char was a digit. Used to avoid stuff like "12 3".
+	bool lastIsDigit = false;
+
+	// Direct ptr-access is used for the sake of speed.
+	const wxChar* ptr = str.c_str();
+	wxChar c;
+
+	while ( ( c = *ptr++ ) ) {
+		if ( c >= wxT('0') && c <= wxT('9') ) {
+			if ( lastIsDigit || !digit ) {
+				i = i * 10 + ( c - wxT('0') );
+				++digit;
+				lastIsDigit = true;
+			} else {
+				return false;
+			}
+		} else if ( c != wxT(' ') && c != wxT('\t') ) {
+			return false;
+		} else {
+			lastIsDigit = false;
+		}
+	}
+
+	return digit;
+}
+
+
+bool CIPFilter::ProcessPeerGuardianLine( const wxString& sLine )
+{
+	if ( sLine.Len() < 18 ) {
+		return false;
+	}
+
+	int current = -1;
+	wxString first	= GetNextToken( sLine, wxT(','), current );
+	wxString second	= GetNextToken( sLine, wxT(','), current );
+
+	// If there was only one or two tokens, then fail
+	if ( current == -1 ) {
+		return false;
+	}
+
+	wxString third;
+	if ( current < (int)sLine.Len() ) {
+		third = sLine.Mid( current + 1 ).Strip( wxString::both );
+	}
+
 	// Convert string IP's to host order IP numbers
-	uint32 IPStart, IPEnd;
-	bool ok = 
-		m_inet_atoh( sIPStart, &IPStart ) &&
-		m_inet_atoh( sIPEnd  , &IPEnd   );
-	if ( !ok ) {
-		AddLogLineM(true, wxString::Format(_("Invalid line in file ipfilter.dat(%d)"), linecounter));
+	uint32 IPStart = 0;
+	uint32 IPEnd   = 0;
+
+	// This will also fail if the line is commented out
+	if ( !m_inet_atoh( first, IPStart, IPEnd ) ) {
 		return false;
 	}
+
 	// Second token is Access Level, default is 0.
-	long AccessLevel = 0;
-	wxString sAccessLevel = tokens.GetNextToken();
-	if ( !sAccessLevel.IsEmpty() ) {
-		sAccessLevel.ToLong(&AccessLevel);
+	unsigned AccessLevel = 0;
+	if ( !StrToU( second, AccessLevel ) || AccessLevel >= 255 ) {
+		return false;
 	}
-	// Third Token is description
-	wxString Description = tokens.GetNextToken().Strip(wxString::both);
-	// add a filter
-	AddBannedIPRange( IPStart, IPEnd, AccessLevel, Description );
+
+	// Add the filter
+	AddIPRange( IPStart, IPEnd, AccessLevel, third );
 
 	return true;
 }
 
-int CIPFilter::LoadFromFile(wxString file, bool merge)
+
+bool CIPFilter::ProcessAntiP2PLine( const wxString& sLine )
+{
+	// remove spaces from the left and right.
+	const wxString line = sLine.Strip(wxString::leading);
+
+	// Ignore comments, too short lines and other odd stuff
+	// The theoretical smallest line would be ":0.0.0.0-0.0.0.0"
+	if ( line.Len() < 16 ) {
+		return false;
+	}
+
+	// Extract description (first) and IP-range (second) form the line
+	int pos = line.Find( wxT(':'), true );
+	if ( pos == -1 ) {
+		return false;
+	}
+
+	wxString Description = line.Left( pos ).Strip( wxString::trailing );
+	wxString IPRange     = line.Right( line.Len() - pos - 1 );
+
+	// Convert string IP's to host order IP numbers
+	uint32 IPStart = 0;
+	uint32 IPEnd   = 0;
+
+	if ( !m_inet_atoh( IPRange ,IPStart, IPEnd ) ) {
+		return false;
+	}
+
+	// Add the filter
+	AddIPRange( IPStart, IPEnd, 0, Description );
+
+	return true;
+}
+
+
+int CIPFilter::LoadFromZipFile( wxString file, bool merge )
 {
 	int filtercounter = 0;
-	if (!merge) {
+	if ( !merge ) {
 		RemoveAllIPs();
 	}
-	wxTextFile readFile(file);
-	if( readFile.Exists() && readFile.Open() ) {
-		// Ok, the file exists and was opened, lets read it
+	
+	if ( wxFileExists( file ) ) {
+		wxMutexLocker lock( m_mutex );
 		
-		for ( size_t i = 0; i < readFile.GetLineCount(); i++ ) {
-			if( ProcessLineOk( readFile.GetLine( i ), i ) ) {
-				filtercounter++;
+		wxZipInputStream inputStream( file, wxT("ipfilter.dat") );
+		wxBufferedInputStream buffer( inputStream );
+		wxTextInputStream stream( buffer );
+
+		// Function pointer-type of the parse-functions we can use
+		typedef bool (CIPFilter::*ParseFunc)(const wxString&);
+
+		// Default parser is IPFilter.dat format
+		ParseFunc func = NULL;
+
+		if ( inputStream.LastError() == wxSTREAM_NO_ERROR ) {
+			while ( !inputStream.Eof() ) {
+				wxString line = stream.ReadLine();
+
+				if ( func ) {
+					if ( (*this.*func)( line ) ) {
+						filtercounter++;
+					}
+				} else {
+					// Select the parser that can handle this file
+					if ( ProcessPeerGuardianLine( line ) ) {
+						func = &CIPFilter::ProcessPeerGuardianLine;
+						filtercounter++;
+					} else if ( ProcessAntiP2PLine( line ) ) {
+						func = &CIPFilter::ProcessAntiP2PLine;
+						filtercounter++;
+					}
+				}
 			}
 		}
-		
-		// Close it for completeness ;)
-		readFile.Close();
 	}
+
+	AddLogLineM(true, wxString::Format(_("Loaded ipfilter with %d new IP addresses."), filtercounter));
+
+
+	if (merge) {
+		SaveToFile();
+	}
+
+	return filtercounter;
+}
+
+
+int CIPFilter::LoadFromDatFile(wxString file, bool merge)
+{
+	int filtercounter = 0;
+	if ( !merge ) {
+		RemoveAllIPs();
+	}
+
+	wxTextFile readFile(file);
+	if( readFile.Exists() && readFile.Open() ) {
+		wxMutexLocker lock( m_mutex );
+	
+		// Function pointer-type of the parse-functions we can use
+		typedef bool (CIPFilter::*ParseFunc)(const wxString&);
+
+		// Default parser is IPFilter.dat format
+		ParseFunc func = NULL;
+
+		for ( size_t i = 0; i < readFile.GetLineCount(); i++ ) {
+			wxString line = readFile.GetLine( i );
+
+			if ( func ) {
+				if ( (*this.*func)( line ) ) {
+					filtercounter++;
+				}
+			} else {
+				// Select the parser that can handle this file
+				if ( ProcessPeerGuardianLine( line ) ) {
+					func = &CIPFilter::ProcessPeerGuardianLine;
+					filtercounter++;
+				} else if ( ProcessAntiP2PLine( line ) ) {
+					func = &CIPFilter::ProcessAntiP2PLine;
+					filtercounter++;
+				}
+			}
+		}
+	}
+	
 	AddLogLineM(true, wxString::Format(_("Loaded ipfilter with %d new IP addresses."), filtercounter));
 
 	if (merge) {
 		SaveToFile();
 	}
-	
+
 	return filtercounter;
 }
 
-void CIPFilter::SaveToFile() {
+
+void CIPFilter::SaveToFile()
+{
+	wxMutexLocker lock( m_mutex );
+
 	wxString IPFilterName = theApp.ConfigDir + wxT("ipfilter.dat");
 	wxTextFile IPFilterFile(IPFilterName + wxT(".new"));
 	if (IPFilterFile.Exists()) {
 		// We're gonna do a new one, baby
 		::wxRemoveFile(IPFilterName + wxT(".new"));
 	}
-	
+
 	// Create the new ipfilter.
 	IPFilterFile.Create();
-	
-	IPListMap::iterator it = iplist.begin();
-	while(it != iplist.end()) {
+
+	IPMap::iterator it = m_iplist.begin();
+	for ( ; it != m_iplist.end(); ++it ) {
 		wxString line;
+		wxString ipA = Uint32toStringIP( wxUINT32_SWAP_ALWAYS( it.keyStart() ) );
+		wxString ipB = Uint32toStringIP( wxUINT32_SWAP_ALWAYS( it.keyEnd() ) );
+
 		// Range Start
-		line += Uint32toStringIP(wxUINT32_SWAP_ALWAYS(it->first));
-		// Make it nice
-		for (uint32 i = line.Len(); i < 15; i++) { // 15 -> "xxx.xxx.xxx.xxx"
-			line += wxT(" ");
-		}
-		// Range Separator
-		line += wxT(" - ");
+		line << ipA.Pad( 15 - ipA.Len() )
+		// Range Seperator
+		<< wxT(" - ")
 		// Range End
-		line += Uint32toStringIP(wxUINT32_SWAP_ALWAYS(it->second->IPEnd));
-		// Make it nice
-		for (uint32 i = line.Len(); i < 33; i++) { // 33 -> "xxx.xxx.xxx.xxx - yyy.yyy.yyy.yyy"
-			line += wxT(" ");
-		}
+		<< ipB.Pad( 15 - ipB.Len() )
 		// Token separator
-		line += wxT(" , ");		
+		<< wxT(" , ")
 		// Access level
-		line += wxString::Format(wxT("%i"),it->second->AccessLevel);
+		<< (int)it->AccessLevel
 		// Token separator
-		line += wxT(" , ");		
+		<< wxT(" , ")
 		// Description
-		line += it->second->Description;		
+		<< it->Description;
+
 		// Add it to file...
 		IPFilterFile.AddLine(line);
-		// And to next :)
-		it++;
 	}
 
 	// Close & write the file
 	IPFilterFile.Write();
 	IPFilterFile.Close();
-	
+
 	// Remove old ipfilter
 	::wxRemoveFile(IPFilterName);
-	
+
 	// Make new ipfilter the default one.
 	wxRenameFile(IPFilterName + wxT(".new"),IPFilterName);
-	
 }
+
 
 void CIPFilter::RemoveAllIPs()
 {
+	wxMutexLocker lock( m_mutex );
 
-  /* prevents access violation errors */
-  IPListMap temp = iplist;
-
-  iplist.clear();
-
-	// For wxObjArray classes, this destroys all of the array elements 
-	// and additionally frees the memory allocated to the array.
-	for( IPListMap::iterator it = temp.begin(); it != temp.end(); it++ ) {
-		delete it->second;
-	}
+	m_iplist.clear();
 }
 
-/*
- * IP2Test should to be in network order
- */
+
 bool CIPFilter::IsFiltered(uint32 IPTest)
 {
-	// Return false if not using ip filter or ip filter is disabled
-	if ( iplist.empty() || ( !thePrefs::GetIPFilterOn() ) )
-		return false;
-	
-	IPTest = ntohl(IPTest);
-	
-	// Find the first element larger than IPTest
-	IPListMap::iterator it = iplist.upper_bound( IPTest );
-	
-	if ( it != iplist.begin() ) {
-		// Go back to the first element smaller than or equal to IPTest
-		it--;
+	wxMutexLocker lock( m_mutex );
 
-		// Check if this range covers the IP
-		if ( IPTest <= it->second->IPEnd ) {
-			// Is this filter active with the current access-level?
-			if ( it->second->AccessLevel < thePrefs::GetIPFilterLevel() ) {
-				lasthit = it->second->Description;
+	if ( thePrefs::GetIPFilterOn() ) {
+		IPTest = ntohl(IPTest);
+
+		IPMap::iterator it = m_iplist.find_range( IPTest );
+
+		if ( it != m_iplist.end() ) {
+			if ( it->AccessLevel < thePrefs::GetIPFilterLevel() ) {
+				m_lasthit = it->Description;
 				return true;
 			}
 		}
@@ -455,26 +485,41 @@ bool CIPFilter::IsFiltered(uint32 IPTest)
 	return false;
 }
 
-void CIPFilter::Update(wxString strURL) {
-	if (strURL.IsEmpty()) {
-		strURL = thePrefs::IPFilterURL();
-	}
-	if (!strURL.IsEmpty()) {
-		wxString strTempFilename(theApp.ConfigDir + wxT("ipfilter.dat.download"));
-		CHTTPDownloadThread *downloader = new CHTTPDownloadThread(strURL,strTempFilename, HTTP_IPFilter);
+
+void CIPFilter::Update( const wxString& strURL )
+{
+	wxString URL = strURL.IsEmpty() ? thePrefs::IPFilterURL() : strURL;
+	
+	if ( !URL.IsEmpty() ) {
+		wxString filename = theApp.ConfigDir + wxT("ipfilter.download");
+		CHTTPDownloadThread *downloader = new CHTTPDownloadThread( URL, filename, HTTP_IPFilter );
+		
 		downloader->Create();
+		
 		downloader->Run();
-	}	
+	}
 }
 
-void CIPFilter::DownloadFinished(uint32 result) {
-	if(result==1) {
-		wxString strTempFilename(theApp.ConfigDir + wxT("ipfilter.dat.download"));
+
+void CIPFilter::DownloadFinished(uint32 result)
+{
+	if ( result == 1 ) {
 		// curl succeeded. proceed with ipfilter loading
-		LoadFromFile(strTempFilename, true); // merge it
-		// So, file is loaded and merged, and also saved to ipfilter.dat
-		wxRemoveFile(strTempFilename);
+		wxString filename = theApp.ConfigDir + wxT("ipfilter.download");
+		
+#warning Needs improvement. Kry?
+		// Simply try to load as a Zip file first, then as a Dat file, I check Zip
+		// first since that is much better at detecting whenever or not it is a zip-file.
+		if ( !LoadFromZipFile( filename, true ) ) {
+			if ( !LoadFromDatFile( filename, true ) ) {
+				AddLogLineM(true, _("Failed to download the ipfilter from ") + thePrefs::IPFilterURL());
+			}
+		}
+		
+		// Remove the now unused file
+		wxRemoveFile( filename );
 	} else {
 		AddLogLineM(true, _("Failed to download the ipfilter from ") + thePrefs::IPFilterURL());
 	}
 }
+
