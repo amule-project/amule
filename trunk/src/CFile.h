@@ -86,7 +86,7 @@ public:
   virtual bool Open(const wxChar *szFileName, OpenMode mode = read,
             int access = wxS_DEFAULT);
   // Kry -Added for windoze compatibility.
-  off_t GetLength( ) { return Length(); }
+  off_t GetLength() const { return Length(); }
   
   bool Open(const wxString& szFileName, OpenMode mode = read, int access = wxS_DEFAULT) {
     return Open(szFileName.GetData(),mode,access);
