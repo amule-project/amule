@@ -384,7 +384,7 @@ bool CKnownFile::CreateAICHHashSetOnly()
 	wxASSERT( !IsPartFile() );
 	m_pAICHHashSet->FreeHashSet();
 	
-	CFile file(GetFilePath()+GetFileName(),CFile::read);
+	CFile file(GetFilePath()+ wxT('/') + GetFileName(),CFile::read);
 	if (!file.IsOpened()){
 // TODO
 		//theApp.QueueLogLine(false, GetResString(IDS_ERR_FILEOPEN) + _T(" - %hs"), GetFilePath(), _T(""), strerror(errno));
