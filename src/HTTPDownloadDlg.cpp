@@ -105,7 +105,7 @@ wxThread::ExitCode myThread::Entry() {
  if (outfile!=NULL) {
 // by Hetfield - ugly workaround due to unicode converting bug
     url.StartsWith(wxT("http://"),&url);
-    if (url==NULL) return;
+    if (!url) return NULL;
     curl_easy_setopt(curl_handle, CURLOPT_URL, unicode2char(url));
     curl_easy_setopt(curl_handle, CURLOPT_VERBOSE, TRUE);
     curl_easy_setopt(curl_handle, CURLOPT_MAXREDIRS , 10);
