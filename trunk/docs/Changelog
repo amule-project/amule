@@ -85,6 +85,7 @@ Version 2.0.0rc8 - The "???????????" version.
 		* Tracked down and killed a number of hidden bugs.
 		* Added commands to change/monitor bandwidth settings to
 		  amulecmd.
+		* Made wxTRANSLATE actually work.
 
 	Special Thanks To:
 
