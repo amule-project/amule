@@ -477,6 +477,7 @@ void CServerListCtrl::OnConnectToServer( wxCommandEvent& WXUNUSED(event) )
 			theApp.serverconnect->Disconnect();
 
 		theApp.serverconnect->ConnectToServer( (CServer*)GetItemData( item ) );
+		theApp.amuledlg->ShowConnectionState( false );
 	}
 }
 	
