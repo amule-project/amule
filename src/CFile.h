@@ -119,6 +119,8 @@ public:
   virtual off_t Tell() const;
     // get current file length
   virtual off_t Length() const;
+    //Truncate/grow file
+  bool SetLength(off_t new_len);
 
   // simple accessors
     // is file opened?
