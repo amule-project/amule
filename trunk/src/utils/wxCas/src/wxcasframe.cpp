@@ -93,10 +93,18 @@ wxFrame ((wxFrame *) NULL, -1, title, wxDefaultPosition, wxDefaultSize,
   m_statLine_4 = new wxStaticText (m_sigPanel, -1, "");
   m_statLine_5 = new wxStaticText (m_sigPanel, -1, "");
   m_statLine_6 = new wxStaticText (m_sigPanel, -1, "");
+#ifdef __LINUX__		// System monitoring on Linux
+  m_sysLine_1 = new wxStaticText (m_sigPanel, -1, "");
+  m_sysLine_2 = new wxStaticText (m_sigPanel, -1, "");
+#endif
 
   // Add Online Sig file
-  aMuleSig = new OnLineSig ();
-  SetFromAmuleFile ();
+  m_aMuleSig = new OnLineSig ();
+#ifdef __LINUX__		// System monitoring on Linux
+  m_sysMonitor = new LinuxMon ();
+#endif
+
+  UpdateStatsPanel ();
 
   m_sigPanelSBoxSizer->Add (m_statLine_1, 0, wxALL | wxADJUST_MINSIZE, 5);
   m_sigPanelSBoxSizer->Add (m_statLine_2, 0, wxALL | wxADJUST_MINSIZE, 5);
@@ -104,6 +112,10 @@ wxFrame ((wxFrame *) NULL, -1, title, wxDefaultPosition, wxDefaultSize,
   m_sigPanelSBoxSizer->Add (m_statLine_4, 0, wxALL | wxADJUST_MINSIZE, 5);
   m_sigPanelSBoxSizer->Add (m_statLine_5, 0, wxALL | wxADJUST_MINSIZE, 5);
   m_sigPanelSBoxSizer->Add (m_statLine_6, 0, wxALL | wxADJUST_MINSIZE, 5);
+#ifdef __LINUX__		// System monitoring on Linux
+  m_sigPanelSBoxSizer->Add (m_sysLine_1, 0, wxALL | wxADJUST_MINSIZE, 5);
+  m_sigPanelSBoxSizer->Add (m_sysLine_2, 0, wxALL | wxADJUST_MINSIZE, 5);
+#endif
 
   // Panel Layout
   m_sigPanel->SetSizerAndFit (m_sigPanelSBoxSizer);
@@ -171,7 +183,11 @@ wxFrame ((wxFrame *) NULL, -1, title, wxDefaultPosition, wxDefaultSize,
 // Destructor
 WxCasFrame::~WxCasFrame ()
 {
-  delete aMuleSig;
+  delete m_aMuleSig;
+#ifdef __LINUX__		// System monitoring on Linux
+  delete m_sysMonitor;
+#endif
+
 }
 
 // Events table
@@ -238,39 +254,43 @@ WxCasFrame::OnBarAbout (wxCommandEvent & event)
 void
 WxCasFrame::OnTimer (wxTimerEvent & event)
 {
-  SetFromAmuleFile ();
+  UpdateStatsPanel ();
   m_imgPanel->Update ();
 }
 
 // Accessors
 void
-WxCasFrame::SetFromAmuleFile ()
+WxCasFrame::UpdateStatsPanel ()
 {
   // Set labels
-  aMuleSig->Refresh ();
+  m_aMuleSig->Refresh ();
+
+#ifdef __LINUX__		// System monitoring on Linux
+  m_sysMonitor->Refresh ();
+#endif
 
   Freeze ();
 
   wxString newline;
 
   newline = "aMule ";
-  newline += aMuleSig->GetVersion ();
+  newline += m_aMuleSig->GetVersion ();
   newline += _(" has been running for ");
-  newline += aMuleSig->GetRunTime ();
+  newline += m_aMuleSig->GetRunTime ();
 
   wxUint32 newMaxLineCount = newline.Length ();
 
   m_statLine_1->SetLabel (newline);
 
-  newline = aMuleSig->GetUser ();
+  newline = m_aMuleSig->GetUser ();
   newline += _(" is on ");
-  newline += aMuleSig->GetServerName ();
+  newline += m_aMuleSig->GetServerName ();
   newline += " [";
-  newline += aMuleSig->GetServerIP ();
+  newline += m_aMuleSig->GetServerIP ();
   newline += ":";
-  newline += aMuleSig->GetServerPort ();
+  newline += m_aMuleSig->GetServerPort ();
   newline += _("] with ");
-  newline += aMuleSig->GetConnexionIDType ();;
+  newline += m_aMuleSig->GetConnexionIDType ();;
 
   m_statLine_2->SetLabel (newline);
 
@@ -284,9 +304,9 @@ WxCasFrame::SetFromAmuleFile ()
 #endif
 
   newline = _("Total Download: ");
-  newline += aMuleSig->GetConvertedTotalDL ();
+  newline += m_aMuleSig->GetConvertedTotalDL ();
   newline += _(", Upload: ");
-  newline += aMuleSig->GetConvertedTotalUL ();
+  newline += m_aMuleSig->GetConvertedTotalUL ();
 
   m_statLine_3->SetLabel (newline);
 
@@ -300,9 +320,9 @@ WxCasFrame::SetFromAmuleFile ()
 #endif
 
   newline = _("Session Download: ");
-  newline += aMuleSig->GetConvertedSessionDL ();
+  newline += m_aMuleSig->GetConvertedSessionDL ();
   newline += _(", Upload: ");
-  newline += aMuleSig->GetConvertedSessionUL ();
+  newline += m_aMuleSig->GetConvertedSessionUL ();
 
   m_statLine_4->SetLabel (newline);
 
@@ -316,9 +336,9 @@ WxCasFrame::SetFromAmuleFile ()
 #endif
 
   newline = _("Download: ");
-  newline += aMuleSig->GetDLRate ();
+  newline += m_aMuleSig->GetDLRate ();
   newline += _(" kB/s, Upload: ");
-  newline += aMuleSig->GetULRate ();
+  newline += m_aMuleSig->GetULRate ();
   newline += _("kB/s");
 
   m_statLine_5->SetLabel (newline);
@@ -333,9 +353,9 @@ WxCasFrame::SetFromAmuleFile ()
 #endif
 
   newline = _("Sharing: ");
-  newline += aMuleSig->GetSharedFiles ();
+  newline += m_aMuleSig->GetSharedFiles ();
   newline += _(" file(s), Clients on queue: ");
-  newline += aMuleSig->GetQueue ();
+  newline += m_aMuleSig->GetQueue ();
 
   m_statLine_6->SetLabel (newline);
 
@@ -348,8 +368,44 @@ WxCasFrame::SetFromAmuleFile ()
     }
 #endif
 
+#ifdef __LINUX__		// System monitoring on Linux
+  newline = _("System Load Average (1-5-15 min): ");
+  newline +=
+    newline.Format ("%.2f - %.2f - %.2f", m_sysMonitor->GetSysLoad_1 (),
+		    m_sysMonitor->GetSysLoad_5 (),
+		    m_sysMonitor->GetSysLoad_15 ());
+
+  m_sysLine_1->SetLabel (newline);
+
+#ifdef __GNUG__
+  newMaxLineCount = newMaxLineCount >? newline.Length ();
+#else
+  if (newline.Length () > newMaxLineCount)
+    {
+      newMaxLineCount = newline.Length ();
+    }
+#endif
+#endif
+
+#ifdef __LINUX__		// System monitoring on Linux
+  newline = _("System uptime: ");
+  newline += m_sysMonitor->GetUptime ();
+
+  m_sysLine_2->SetLabel (newline);
+
+#ifdef __GNUG__
+  newMaxLineCount = newMaxLineCount >? newline.Length ();
+#else
+  if (newline.Length () > newMaxLineCount)
+    {
+      newMaxLineCount = newline.Length ();
+    }
+#endif
+#endif
+
+
   // Set status bar
-  if (aMuleSig->IsRunning ())
+  if (m_aMuleSig->IsRunning ())
     {
       SetStatusText (_("aMule is running"));
     }
