@@ -644,7 +644,7 @@ wxSocketClientProxy::wxSocketClientProxy(
 wxSocketClient(flags),
 m_SocketProxy(ProxyData)
 {
-	m_UseProxy = ProxyData != NULL;
+	m_UseProxy = (ProxyData != NULL) && (ProxyData->m_ProxyEnable);
 }
 
 /*
