@@ -562,8 +562,8 @@ public:
 
 private:
 
-	wxString		m_clientModString; 
-	wxString		m_clientVerString;
+	CString		m_clientModString; 
+	CString		m_clientVerString;
 
 	int SecIdentSupRec;
 	
