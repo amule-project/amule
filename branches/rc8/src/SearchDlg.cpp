@@ -352,12 +352,15 @@ void CSearchDlg::OnBnClickedDownload(wxCommandEvent& WXUNUSED(evt))
 		return;
 	
 	FindWindow(IDC_SDOWNLOAD)->Enable(FALSE);
+
+	uint8 category = 0;
+	if (CastChild(ID_EXTENDEDSEARCHCHECK, wxCheckBox)->GetValue()) {
+		category = CastChild( ID_AUTOCATASSIGN, wxChoice )->GetSelection();
+	}
 	
 	int index = searchlistctrl->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
 	while ( index > -1 ) {
-		uint8 cat = CastChild( ID_AUTOCATASSIGN, wxChoice )->GetSelection();
-		
-		CoreNotify_Search_Add_Download( (CSearchFile*)searchlistctrl->GetItemData(index), cat );
+		CoreNotify_Search_Add_Download( (CSearchFile*)searchlistctrl->GetItemData(index), category );
 		
 		searchlistctrl->UpdateColor( index );
 
