@@ -2869,7 +2869,7 @@ wxSizer *preferencesDlgTop( wxWindow *parent, bool call_fit, bool set_sizer )
 {
     wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
 
-    wxNotebook *item2 = new wxNotebook( parent, ID_NOTEBOOK_TOP, wxDefaultPosition, wxDefaultSize, 0 );
+    wxNotebook *item2 = new wxNotebook( parent, ID_NOTEBOOK_TOP, wxDefaultPosition, wxDefaultSize, 0|wxNB_MULTILINE );
     wxNotebookSizer *item1 = new wxNotebookSizer( item2 );
 
     wxPanel *item3 = new wxPanel( item2, -1 );
