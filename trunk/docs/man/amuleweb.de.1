@@ -1,4 +1,4 @@
-.TH AMULEWEB 1
+.TH AMULEWEB 1 "March 2005" "aMule webserver v2.0.0" "aMule utilities"
 .SH NAME
 amuleweb \- aMule web server
 .SH SYNOPSIS
@@ -21,28 +21,36 @@ amuleweb \- aMule web server
 .RB [ \-L ]
 .PP
 .B amuleweb
+.RB [ \-f " " \fI<path> ]
+.B \-\-create-config-from=\fI<path>
+.PP
+.B amuleweb
 .RB [ \-\-help ]
 .RB [ \-\-version ]
 .PP
 .B amuleweb
 .RB [ \-\-amule\-config\-file=\fI<path> ]
 .SH BESCHREIBUNG
-amuleweb ermoeglicht es aMule mithilfe eines Webservers zu steuern.
-Du kannst amuleweb beim aMule start oder jederzeit spaeter starten.
-Optionen koennen ueber die Kommandozeile oder ueber eine Konfigdatei angegeben werden.
-Kommandozeilen Optionen haben hierbei eine hoehere Prioritaet als Konfigdatei Optionen.
+\fBamuleweb\fR ermöglicht es aMule mithilfe eines Webservers zu steuern.
+Du kannst amuleweb beim \fBaMule\fR start oder jederzeit später starten.
+Optionen können über die Kommandozeile oder über eine Konfigdatei angegeben werden.
+Kommandozeilen Optionen haben hierbei eine höhere Priorität als Konfigdatei Optionen.
+.PP
+\fBamulewebDLG\fR ist die GUI Version von \fBamuleweb\fR, und beide sind identisch (ausser das Interface natürlich).
 .TP
 \fB\-h\fR, \fB\-\-host\fR=\fI<host>\fR
-Host auf dem aMule laeuft (default: \fIlocalhost\fR). \fI<host>\fR es kann sich um eine IP-Address oder DNS Namen handeln
+Host auf dem aMule läuft (standart: \fIlocalhost\fR). 
+\fI<host>\fR es kann sich um eine IP-Address oder DNS Namen handeln
 .TP
 \fB\-p\fR, \fB\-\-port\fR=\fI<port>\fR
-aMule's Port fuer Externe Verbindungen, wie eingestellt unter Einstellungen-> Fernwartung (default: \fI4712\fR)
+aMule's Port für Externe Verbindungen, wie eingestellt unter Einstellungen-> Remote Controls (standart: \fI4712\fR)
 .TP
 \fB\-P\fR, \fB\-\-password\fR=\fI<passwd>\fR
 Externe Verbindung Password
 .TP
 \fB\-f\fR, \fB\-\-config\-file\fR=\fI<path>\fR
-nutze die vorgegebene Konfigurationsdatei. Default Konfigurationsdatei ist \fI~/.aMule/remote.conf\fR
+nutze die vorgegebene Konfigurationsdatei. 
+Standart Konfigurationsdatei ist \fI~/.aMule/remote.conf\fR
 .TP
 \fB\-q\fR, \fB\-\-quiet\fR
 gibt keine Infos nach stdout.
@@ -53,44 +61,47 @@ z.B mit '\fBamuleweb \-q &\fR'
 sei verbose \- zeige ebenfalls Debug Ausgaben.
 .TP
 \fB\-w\fR, \fB\-\-write\-config\fR
-schreibe Commandozeilen Optionen in die Konfigurationsdatei und beende.
+schreibe Kommandozeilen Optionen in die Konfigurationsdatei und beende.
+.TP
+\fB\-\-create\-config\-from\fR=\fI<path>\fR
+erstelle eine Konfigdaite basierend auf\fI<path>\fR, dieser Pfad muss auf eine gültige aMUle KOnfigdatei zeigen, und dann beenden
 .TP
 \fB\-t\fR, \fB\-\-template\fR=\fI<name>\fR
-laed das Template mit dem Namen \fI<name>\fR. Siehe hierzu den Abschnitt
+läd das Template mit dem Namen \fI<name>\fR. Siehe hierzu den Abschnitt
 .B SKIN UNTERSTUETZUNG
 .TP
 \fB\-s\fR, \fB\-\-server\-port\fR=\fI<port>\fR
-Webserver's HTTP port. Dies ist der Port wohin man spaeter seinen Webbrowser schickt (default: \fI4711\fR)
+Webserver's HTTP port. Dies ist der Port wohin man später seinen Webbrowser richtet (standart: \fI4711\fR)
 .TP
 \fB\-z\fR, \fB\-\-enable\-gzip\fR
 aktiviert gzip kompremierung im HTTP Verkehr um Bandbreite zu sparen
 .TP
 \fB\-Z\fR, \fB\-\-disable\-gzip\fR
-deaktieviert die gzip kompremierung (die ist default)
+deaktieviert die gzip kompremierung (die ist standart)
 .TP
 \fB\-A\fR, \fB\-\-admin\-pass\fR=\fI<passwd>\fR
-volle zugriffsrechte Nutzer Passwort fuer den Webserver
+volle zugriffsrechte Nutzer Passwort für den Webserver
 .TP
 \fB\-G\fR, \fB\-\-guest\-pass\fR=\fI<passwd>\fR
-Gast Passwort fuer den Webserver
+Gast Passwort für den Webserver
 .TP
 \fB\-a\fR, \fB\-\-allow\-guest\fR
 gestatte Gast Zugang
 .TP
 \fB\-d\fR, \fB\-\-deny\-guest\fR
-verbiete Gast Zugang (default)
+verbiete Gast Zugang (standart)
 .TP
 \fB\-L\fR, \fB\-\-load\-settings\fR
 lade/speichere webserver Einstellungen von/nach remote aMule.
-Dies bewirkt das amuleweb alle Kommandozeilen und Konfigzeilen Optionen ignoriert, und diese direkt von aMule laed.
+Dies bewirkt das amuleweb alle Kommandozeilen und Konfigzeilen Optionen ignoriert, und diese direkt von aMule läd.
 Beim speichern werden die Einstellungen nicht in die Konfigdatei gespeichert sondern direkt in aMule.
-(Natuerlich funktioniert dies nur fuer die Optionen, welche auch unter aMule's Einstellunge->Fernwartung eingestellt werden koennen)
+(Natürlich funktioniert dies nur für die Optionen, welche auch unter aMule's Einstellunge->Remote Controls eingestellt werden können)
 .TP
 \fB\-\-amule\-config\-file\fR=\fI<path>\fR
 aMule Konfigdatei Pfad.
 .B NICHT DIREKT BENUTZEN!
-aMule nutzt diese Option wenn amuleweb automatish beim Programmstart gestartet wird..
-Diese Option bewirkt das all andern Kommandozeilen und Konfigdatei einstellungen ignoriert werden, Einstellungen werden von der angegebenen Datei gelesen, und zusaetzlich werden die \fB\-q \-L\fR Optionen gesetzt.
+aMule nutzt diese Option wenn amuleweb automatish beim Programmstart gestartet wird.
+Diese Option bewirkt das all andern Kommandozeilen und Konfigdatei einstellungen ignoriert werden, Einstellungen werden von der angegebenen Datei gelesen, und zusätzlich werden die \fB\-q \-L\fR Optionen gesetzt.
 .TP
 \fB\-\-help\fR
 zeigt diese Hilfe an
@@ -98,14 +109,14 @@ zeigt diese Hilfe an
 \fB\-\-version\fR
 zeigt die Versionsnummer and und beendet
 .SH SKIN UNTERSTUETZUNG
-\fBamuleweb\fR hat die moeglichkeit die Webseiten in verschiedenen Skins darzustellen.
+\fBamuleweb\fR hat die möglichkeit die Webseiten in verschiedenen Skins darzustellen.
 Diese Skins nennen sich Templates, und man kann amuleweb eine komplett anderes Gesicht geben mit der \fB\-t\fR Option.
-Tenplates werden an zwei Stellen zuerste gesucht: erstens \fI~/.aMule/webserver/\fR und dann noch in \fI$(pkgdatadir)/webserver/\fR
-(\fI$(pkgdatadir)\fR ist das Installations unabhaengige Verzeichniss von architektur unabhaengigen Daten, meistnes wird dies in etwas /usr/share/amule sein).
-Jedes Template muss in einem eigenen Unterverzeichniss liegen mit dem Template Namen, darin muessen alle Dateien enthalten sein welches das Template benoetigt.
-Die Template Datei muss immer aMule.tmpl heissen.
+Tenplates werden an zwei Stellen zuerste gesucht: erstens \fI~/.aMule/webserver/\fR und dannach in \fI$(pkgdatadir)/webserver/\fR
+(\fI$(pkgdatadir)\fR ist das Installations unabhängige Verzeichniss von Architektur unabhängigen Daten, meistnes wird dies in etwas /usr/share/amule sein).
+Jedes Template muss in einem eigenen Unterverzeichniss liegen mit dem Template Namen, darin müssen alle Dateien enthalten sein welches das Template benötigt.
+Die Template Datei muss immer aMule.tmpl heißen.
 .PP
-Zum Beispiel, die default Template (Name 'default') befindet sich in webserver/default/, und dieses Verzeichniss beinhaltet aMule.tmpl und die zusaetzlichen Grafiken.
+Zum Beispiel, die standart Template (Name 'default') befindet sich in webserver/default/, und dieses Verzeichniss beinhaltet aMule.tmpl und die zusätzlichen Grafiken.
 .SH DATEIEN
 ~/.aMule/remote.conf
 .br
@@ -115,15 +126,19 @@ Zum Beispiel, die default Template (Name 'default') befindet sich in webserver/d
 .br
 \fI$(pkgdatadir)\fR/webserver/
 .SH BEISPIEL
-Normalerweise wird amuleweb das erste mal ungefaehr so gestartet:
+Normalerweise wird amuleweb das erste mal ungefähr so gestartet:
 .PP
 \fBamuleweb\fR \fB\-h\fR \fIhostname\fR \fB\-p\fR \fIECport\fR \fB\-P\fR \fIECpassword\fR \fB\-s\fR \fIHTTPport\fR \fB\-A\fR \fIAdminPassword\fR \fB\-w\fR
 .PP
-Dies wird alle Einstellungen in die \fI$HOME/.aMule/remote.conf\fR Datei speichern, und spaeter braucht man nur noch aufrufen:
+oder
+.PP
+\fBamuleweb\fR \fB\-\-create-config-from\fR=\fI/home/username/.aMule/amule.conf\fR
+.PP
+Dies wird alle Einstellungen in die \fI$HOME/.aMule/remote.conf\fR Datei speichern, und später braucht man nur noch aufrufen:
 .PP
 .B amuleweb
 .PP
-Natuerlich kann man es auch anders machen, dies ist nur ein Beispiel.
+Natürlich kann man es auch anders machen, dies ist nur ein Beispiel.
 .SH PROBLEME BERICHTEN
 Bitte berichte Fehler im Programm entweder im Forum (\fIhttp://forum.amule.org/\fR), oder in unserem Bugtracker (\fIhttp://bugs.amule.org/\fR).
 Bitte berichte keine Fehler per E-Mail, zu unserer Mailingliste oder direkt zu einem Teammitglied.
