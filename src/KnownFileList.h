@@ -26,11 +26,11 @@
 #include <wx/string.h>		// Needed for wxString
 
 #include "types.h"		// Needed for uint16 and uint32
+#include "SharedFileList.h" // CKnownFileMap
 
 class CKnownFile;
-class KnownFileMap;
 
-WX_DECLARE_HASH_MAP(wxString,CKnownFile*,wxStringHash,wxStringEqual,KnownFileMap);
+//WX_DECLARE_HASH_MAP(wxString,CKnownFile*,wxStringHash,wxStringEqual,KnownFileMap);
 
 class CKnownFileList {
 //	friend class CSharedFilesWnd;
@@ -55,7 +55,7 @@ private:
 	bool	Append(CKnownFile*);
 	char*	appdir;
 
-	KnownFileMap	m_map;
+	CKnownFileMap	m_map;
 };
 
 #endif // KNOWNFILELIST_H
