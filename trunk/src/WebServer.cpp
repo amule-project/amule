@@ -769,7 +769,7 @@ wxString CWebServer::_GetHeader(ThreadData Data, long lSession) {
 			sConnected = _("Not connected");
 			if (IsSessionAdmin(Data,sSession)) {
 				sConnected += wxString::Format(wxT(" (<small><a href=\"?ses="));
-				sConnected += sSession + wxT("&w=server&c=connect\">Connect to any server</a></small>");
+				sConnected += sSession + wxT("&w=server&c=connect\">Connect to any server</a></small>)");
 			}
 			break;
 		case 1:
