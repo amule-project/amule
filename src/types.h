@@ -67,7 +67,7 @@ typedef uint8_t		BYTE;
 	typedef uint8_t		byte;
 	typedef uint32_t	DWORD;
 	typedef long		LONG;
-	typedef unsigned long ULONG;
+	typedef unsigned long	ULONG;
 	typedef unsigned long long	ULONGLONG;
 	typedef char*   	LPBYTE;
 	typedef int32_t		INT;
@@ -86,8 +86,8 @@ typedef uint8_t		BYTE;
 	typedef TCHAR*      	LPTSTR;
 	typedef const TCHAR*	LPCTSTR;
 
-	typedef wchar_t			WCHAR;
-	typedef WCHAR*			LPWSTR;
+	typedef wchar_t		WCHAR;
+	typedef WCHAR*		LPWSTR;
 	typedef const WCHAR*	LPCWSTR;
 
 	typedef uint32_t	COLORREF;
