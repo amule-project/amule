@@ -322,7 +322,7 @@ public:
 	};
 
 
-	void RemoveAt( POSITION& pos )
+	void RemoveAt( POSITION pos )
 	{
 		MYNODE* n = (MYNODE*)pos.m_ptr;
 		wxASSERT( n );
