@@ -656,14 +656,9 @@ protected:
 	static bool	s_bWebUseGzip;
 	static uint32	s_nWebPageRefresh;
 	static bool	s_bWebLowEnabled;
-	static wxString	s_sWebResDir;
-
-	static wxString	s_sTemplateFile;
-	static bool	s_bIsASCWOP;
 
 	static bool	s_showCatTabInfos;
-	static bool	s_resumeSameCat;
-	static bool	s_dontRecreateGraphs;
+//	static bool	s_resumeSameCat;
 	static uint32	s_allcatType;
 	
 	static uint32 	s_desktopMode;
