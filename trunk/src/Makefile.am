@@ -7,9 +7,17 @@ bin_PROGRAMS += amulecmd
 endif
 if WEB
 bin_PROGRAMS += amuleweb
+htmldir = $(datadir)/amuleweb
+dist_html_DATA = aMule.tmpl
+htmlimgdir = $(htmldir)/webserver
+dist_htmlimg_DATA = webserver/*.gif
 endif
 if WEBGUI
 bin_PROGRAMS += amulewebDLG
+htmldir = $(datadir)/amuleweb
+dist_html_DATA = aMule.tmpl
+htmlimgdir = $(htmldir)/webserver
+dist_htmlimg_DATA = webserver/*.gif
 endif
 if CAS
 bin_PROGRAMS += cas
