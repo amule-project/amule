@@ -1689,18 +1689,16 @@ wxString CamuleApp::GetLog(bool reset)
 	char *tmp_buffer = new char[len + sizeof(wxChar)];
 	logfile->Read(tmp_buffer, len);
 	memset(tmp_buffer + len, 0, sizeof(wxChar));
-#if wxCHECK_VERSION(2,5,3)
-	#if wxUSE_UNICODE
-	wxString str((wxWCharBuffer&)tmp_buffer);
-	#else
-	wxString str(tmp_buffer);
-	#endif
+#if wxUSE_UNICODE
+	// try to guess file format
+	wxString str;
+	if (tmp_buffer[0] && tmp_buffer[1]) {
+		str = wxString(UTF82unicode(tmp_buffer));
+	} else {
+		str = wxString((wxWCharBuffer&)tmp_buffer);
+	}
 #else
-	#if wxUSE_UNICODE
-	wxString str(UTF82unicode(tmp_buffer));
-	#else
 	wxString str(tmp_buffer);
-	#endif
 #endif
 	delete [] tmp_buffer;
 	delete logfile;
