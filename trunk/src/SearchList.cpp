@@ -447,6 +447,7 @@ bool CSearchList::AddToList(CSearchFile* toadd, bool bClientResponse){
 	
 	// If filesize is 0, drop it (why would we want to download a 0-byte file anyway?)
 	if (!toadd->GetIntTagValue(FT_FILESIZE)) {
+		delete toadd;
 		return false;
 	}
 	
