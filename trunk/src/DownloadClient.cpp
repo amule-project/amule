@@ -1290,10 +1290,18 @@ void CUpDownClient::SetRequestFile(CPartFile* reqfile)
 			delete[] m_abyPartStatus;
 			m_abyPartStatus = NULL;
 		}
-				
+			
+		// Decrement the source-count of the old request-file
+		if ( m_reqfile ) {
+			m_reqfile->ClientStateChanged( GetDownloadState(), -1 );
+		}
+			
 		m_reqfile = reqfile;
 		
 		if ( reqfile ) {
+			// Increment the source-count of the new request-file	
+			m_reqfile->ClientStateChanged( -1, GetDownloadState() );
+
 			m_nPartCount = reqfile->GetPartCount();
 		}
 	}
