@@ -34,6 +34,8 @@
 	#endif
 #endif
 
+#include <wx/file.h>
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <wx/string.h>
