@@ -212,8 +212,25 @@ void CUpDownClient::Init()
 	
 	m_pReqFileAICHHash = NULL;
 	m_fSupportsAICH = 0;
-	m_fAICHRequested = 0;	
+	m_fAICHRequested = 0;
+
+	compressiongain = 0;
+	notcompressed = 0;
+	m_dwUserIP = 0;
+	m_nConnectIP = 0;
+	m_dwServerIP = 0;
+
+	m_bPreviewReqPending = false;
+	m_bPreviewAnsPending = false;
+	m_fNeedOurPublicIP = false;
+	m_bHashsetRequested = false;
+
+	m_nLastBlockOffset = 0;
+	m_dwDownStartTime = 0;
+
+	m_bTransferredDownMini = false;
 }
+
 
 CUpDownClient::~CUpDownClient()
 {
