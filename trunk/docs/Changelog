@@ -40,7 +40,6 @@ Version 2.0.0rc7 - The "99,6% Final" version.
 			* Fixed: 	Secure Ident was not working on big endian archs.
 			* Fixed: 	ClientID endianess issues leading to faking low/high id
 			* Fixed: 	Several fields were not having correct size on preferences.
-			* 
 			* Fixed: 	Curl preform_multi was crashing the http download dialog on Mac.
 					This means server.met update and ipfilter update was crashing.
 					Currently the fix disables 'Cancel' button on that dialog, while we
