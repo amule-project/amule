@@ -35,13 +35,19 @@
 #ifdef __WXMSW__
 	#include <wx/msw/winundef.h>
 #endif
-#include <wx/msgdlg.h>
+
 #include <wx/listimpl.cpp>
 #include <wx/txtstrm.h>
 #include <wx/wfstream.h>
 #include <wx/intl.h>		// Needed for _
 #include <wx/filename.h>	// Needed for wxFileName
 #include <wx/url.h>			// Needed for wxURL
+
+#ifndef AMULE_DAEMON
+	#include <wx/msgdlg.h>		// Needed for wxMessageBox
+#else 
+	#define wxMessageBox(x) AddLogLineM(true,x)
+#endif
 
 #include "ServerList.h"		// Interface declarations.
 #include "ListenSocket.h"	// Needed for CListenSocket
@@ -341,11 +347,7 @@ bool CServerList::IsGoodServerIP(CServer* in_server)
 void CServerList::RemoveServer(CServer* out_server)
 {
 	if (out_server == theApp.serverconnect->GetCurrentServer()) {
-#ifdef AMULE_DAEMON
-		AddLogLineM(true, _("You are connected to the server you are trying to delete. please disconnect first."));
-#else
 		wxMessageBox(_("You are connected to the server you are trying to delete. please disconnect first."), _("Info"), wxOK);	
-#endif
 	} else {
 	
 		POSITION pos = list.Find( out_server );
