@@ -62,6 +62,29 @@ CECTag::CECTag(ec_tagname_t name, unsigned int length, const void *data, bool co
 };
 
 /**
+ * Creates a new CECTag instance for custom data
+ *
+ * @param name	 	TAG name
+ * @param length 	length of data buffer that will be alloc'ed
+ * @param dataptr	pointer to internal TAG data buffer
+ *
+ * 
+ */
+CECTag::CECTag(ec_tagname_t name, unsigned int length, void **dataptr)  : m_tagName(name), m_dynamic(true)
+{
+	m_error = 0;
+	m_dataLen = length;
+	m_tagData = malloc(m_dataLen);
+	if ( !m_tagData ) {
+		m_dataLen = 0;
+		m_error = 1;
+	}
+	*dataptr = (void *)m_tagData;
+	m_listSize = 0;
+	m_tagCount = 0;
+}
+
+/**
  * Creates a new CECTag instance, which contains an IPv4 address.
  *
  * This function takes care of the endianness of the port number.
