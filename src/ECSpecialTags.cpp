@@ -34,6 +34,14 @@
 #include "sockets.h"		// Needed for CServerConnect
 #include "amule.h"		// Needed for theApp
 
+#else
+
+#include "wx/intl.h"		// Needed for _()
+#include "KnownFile.h"		// Needed for PS_*
+
+#endif
+
+#ifndef EC_REMOTE
 
 CEC_Server_Tag::CEC_Server_Tag(CServer *server, EC_DETAIL_LEVEL detail_level) :
 	CECTag(EC_TAG_SERVER, EC_IPv4_t(server->GetIP(), server->GetPort()))
@@ -128,6 +136,39 @@ CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level
 				(theApp.serverconnect->IsConnected() && !theApp.serverconnect->IsLowID()) ?
 					theApp.CreateED2kSourceLink(file) : theApp.CreateED2kLink(file)));
 }
+
+#else /* EC_REMOTE */
+// Since this is only needed at the remote end
+
+wxString CEC_PartFile_Tag::GetFileStatusString()
+{
+	uint8 nFileStatus = FileStatus();
+	
+        if ((nFileStatus == PS_HASHING) || (nFileStatus == PS_WAITINGFORHASH)) {
+                return _("Hashing");
+        } else {
+                switch (nFileStatus) {
+                        case PS_COMPLETING:
+                                return _("Completing");
+                        case PS_COMPLETE:
+                                return _("Complete");
+                        case PS_PAUSED:
+                                return _("Paused");
+                        case PS_ERROR:
+                                return _("Erroneous");
+                        default:
+                                if (SourceXferCount() > 0) {
+                                        return _("Downloading");
+                                } else {
+                                        return _("Waiting");
+                                }
+                }
+                // if stopped
+        }
+}
+
+#endif /* ! EC_REMOTE */
+#ifndef EC_REMOTE
 
 CEC_SharedFile_Tag::CEC_SharedFile_Tag(CKnownFile *file, EC_DETAIL_LEVEL detail_level) : CECTag(EC_TAG_KNOWNFILE, PTR_2_ID(file))
 {

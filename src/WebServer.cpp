@@ -999,23 +999,22 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	wxString sDownList;
 	DownloadFilesInfo::ItemIterator i = pThis->m_DownloadFilesInfo.GetBeginIterator();
 	while (i != pThis->m_DownloadFilesInfo.GetEndIterator()) {
-		wxString sFileStatus = i->GetFileStatus();
 
-		if ( sCat.Length() && (sCat != sFileStatus)) {
+		if ( sCat.Length() && (sCat != i->sFileStatus)) {
 			i++;
 			continue;
 		}
 		
-		wxString JSfileinfo = i->sFileName + wxT("-") + sFileStatus;
+		wxString JSfileinfo = i->sFileName + wxT("-") + i->sFileStatus;
 
 		JSfileinfo.Replace(wxT("|"),wxT("\\n"));
 		wxString sActions = 
 			wxT("<acronym title=\"") +
-			sFileStatus +
+			i->sFileStatus +
 			wxT("\"><a ref=\"javascript:alert('") +
 			JSfileinfo +
 			wxT("')\"><img src=\"l_info.gif\" alt=\"") +
-			sFileStatus +
+			i->sFileStatus +
 			wxT("\"></a></acronym>");
 		wxString sED2kLink =
 			wxT("<acronym title=\"[Ed2klink]\"><a href=\"") +
@@ -2519,31 +2518,6 @@ bool SharedFilesInfo::CompareItems(const SharedFiles &i1, const SharedFiles &i2)
 	return Result ^ m_SortReverse;
 }
 
-wxString DownloadFiles::GetFileStatus()
-{
-	if ((nFileStatus == PS_HASHING) || (nFileStatus == PS_WAITINGFORHASH)) {
-		return _("Hashing");
-	} else {
-		switch (nFileStatus) {
-			case PS_COMPLETING:
-				return _("Completing");
-			case PS_COMPLETE:
-				return _("Complete");
-			case PS_PAUSED:
-				return _("Paused");
-			case PS_ERROR:
-				return _("Erroneous");
-			default:
-				if (lTransferringSourceCount > 0) {
-					return _("Downloading");
-				} else {
-					return _("Waiting");
-				}
-		}
-		// if stopped
-	}
-}
-
 DownloadFilesInfo *DownloadFiles::GetContainerInstance()
 {
 	return DownloadFilesInfo::m_This;
@@ -2598,6 +2572,7 @@ bool DownloadFilesInfo::ReQuery()
 			file->lSourceCount = tag->SourceCount();
 			file->lNotCurrentSourceCount = tag->SourceNotCurrCount();
 			file->nFileStatus = tag->FileStatus();
+			file->sFileStatus = tag->GetFileStatusString();
 			file->sPartStatus = tag->PartStatus();
 			file->lTransferringSourceCount = tag->SourceXferCount();
 			if ( file->lTransferringSourceCount > 0 ) {
@@ -2644,6 +2619,7 @@ bool DownloadFilesInfo::ReQuery()
 			file.lTransferringSourceCount = tag->SourceXferCount();
 			file.fCompleted = (100.0*file.lFileCompleted) / file.lFileSize;
 			file.nFileStatus = tag->FileStatus();
+			file.sFileStatus = tag->GetFileStatusString();
 			file.lFilePrio = tag->Prio();
 			file.sFileHash = wxString::Format(wxT("%08x"), tag->FileID());
 			file.sED2kLink = tag->FileEd2kLink();
