@@ -519,7 +519,7 @@ void CDownloadListCtrl::OnDrawItem(int item, wxDC* dc, const wxRect& rect, const
 			
 			// Draw the line back up to parent node
 			if (notFirst) {
-				tmp_dc.DrawLine(treeCenter, middle, treeCenter, 0);
+				tmp_dc.DrawLine(treeCenter, middle, treeCenter, -1);
 			}
 		} else if ( isOpenRoot ) {
 			// Draw empty circle
