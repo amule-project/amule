@@ -45,21 +45,17 @@
 #include <wx/txtstrm.h>
 #include <wx/wfstream.h>
 #include <wx/filename.h>
-#if wxCHECK_VERSION(2, 4, 2)
-	#include <wx/config.h>	// For wxFileConfig in wx-2.4.2
-#else
-	#include <wx/fileconf.h>
-#endif
 
 //-------------------------------------------------------------------
 
+#include "ECFileConfig.h"	// Needed for CECFileConfig
 #include "ECSocket.h"
 #include "ECSpecialTags.h"
 #include "GetTickCount.h"	// Needed for GetTickCount
 #include "MD5Sum.h"
 #include "OtherStructs.h"	// Needed for TransferredData
 #include "OtherFunctions.h"	// Needed for atoll, ED2KFT_*
-#include "NetworkFunctions.h" // Needed for StringIPtoUint32
+#include "NetworkFunctions.h"	// Needed for StringIPtoUint32
 #include "Types.h"
 #include "WebSocket.h"		// Needed for StopSockets()
 #include "ECcodes.h"
@@ -1837,7 +1833,7 @@ wxString CWebServer::_GetPreferences(ThreadData Data) {
 				wxFileName::Mkdir(otherfunctions::GetConfigDir());
 			}
 			if (!webInterface->m_configFile) {
-				webInterface->m_configFile = new wxFileConfig(wxEmptyString, wxEmptyString, webInterface->m_configFileName, wxEmptyString, wxCONFIG_USE_LOCAL_FILE);
+				webInterface->m_configFile = new CECFileConfig(wxEmptyString, wxEmptyString, webInterface->m_configFileName, wxEmptyString, wxCONFIG_USE_LOCAL_FILE);
 			}
 			if (webInterface->m_configFile) {
 				webInterface->m_configFile->Write(wxT("/Webserver/UseGzip"), webInterface->m_UseGzip);

@@ -20,14 +20,18 @@
 	#include "config.h"	// Needed for VERSION
 #endif
 
-//-------------------------------------------------------------------
-
 #if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
 #pragma implementation "ExternalConnector.h"
+#pragma implementation "ECFileConfig.h"
 #endif
-#include "ExternalConnector.h"
 
-//-------------------------------------------------------------------
+#include <wx/filefn.h>
+#include <wx/intl.h>		// For _()
+#include <wx/tokenzr.h>		// For wxStringTokenizer
+
+#if wxUSE_GUI
+	#include <wx/textdlg.h>	// For GetTextFromUser, GetPasswordFromUser
+#endif
 
 #if !wxUSE_GUI
 	#include <unistd.h>	// For getpass() and pause()
@@ -59,22 +63,10 @@
 	#endif /* HAVE_READLINE_HISTORY */
 #endif
 
-//-------------------------------------------------------------------
-
-#if wxUSE_GUI
-	#include <wx/textdlg.h>	// For GetTextFromUser, GetPasswordFromUser
-#endif
-
-#include <wx/filefn.h>
-#if wxCHECK_VERSION(2,4,2)
-	#include <wx/config.h>	// For wxFileConfig in wx-2.4.2
-#endif
-#include <wx/fileconf.h>	// For wxFileConfig
-#include <wx/intl.h>		// For _()
-#include <wx/tokenzr.h>		// For wxStringTokenizer
-
+#include "ECFileConfig.h"	// Needed for CECFileConfig
 #include "ECPacket.h"		// Needed for CECPacket, CECTag
 #include "ECcodes.h"		// Needed for OPcodes and TAGnames
+#include "ExternalConnector.h"
 #include "MD5Sum.h"
 #include "OtherFunctions.h"
 
@@ -479,17 +471,12 @@ bool CaMuleExternalConnector::OnCmdLineParsed(wxCmdLineParser& parser)
 void CaMuleExternalConnector::LoadConfigFile()
 {
 	if (!m_configFile) {
-		m_configFile = new wxFileConfig(wxEmptyString, wxEmptyString, m_configFileName, wxEmptyString, wxCONFIG_USE_LOCAL_FILE);
+		m_configFile = new CECFileConfig(wxEmptyString, wxEmptyString, m_configFileName, wxEmptyString, wxCONFIG_USE_LOCAL_FILE);
 	}
 	if (m_configFile) {
 		m_host = m_configFile->Read(wxT("/EC/Host"), wxEmptyString);
 		m_port = m_configFile->Read(wxT("/EC/Port"), -1l);
-		wxString sHash(m_configFile->Read(wxT("/EC/Password"), wxEmptyString));
-		if (sHash.IsEmpty()) {
-			m_password.Clear();
-		} else {
-			m_password.Decode(sHash);
-		}
+		m_configFile->ReadHash(wxT("/EC/Password"), &m_password);
 	}
 }
 
@@ -499,11 +486,11 @@ void CaMuleExternalConnector::SaveConfigFile()
 		wxFileName::Mkdir(otherfunctions::GetConfigDir());
 	}
 	if (!m_configFile) {
-		m_configFile = new wxFileConfig(wxEmptyString, wxEmptyString, m_configFileName, wxEmptyString, wxCONFIG_USE_LOCAL_FILE);
+		m_configFile = new CECFileConfig(wxEmptyString, wxEmptyString, m_configFileName, wxEmptyString, wxCONFIG_USE_LOCAL_FILE);
 	}
 	if (m_configFile) {
 		m_configFile->Write(wxT("/EC/Host"), m_host);
 		m_configFile->Write(wxT("/EC/Port"), m_port);
-		m_configFile->Write(wxT("/EC/Password"), m_password.IsEmpty() ? wxString(wxEmptyString) : m_password.Encode());
+		m_configFile->WriteHash(wxT("/EC/Password"), m_password);
 	}
 }

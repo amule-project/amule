@@ -353,6 +353,7 @@ noinst_HEADERS = AddFileThread.h \
 		 DirectoryTreeCtrl.h \
 		 DownloadListCtrl.h \
 		 DownloadQueue.h \
+		 ECFileConfig.h \
 		 ECSocket.h \
 		 ECPacket.h \
 		 ECSpecialTags.h \
