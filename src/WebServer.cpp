@@ -1197,14 +1197,14 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	UploadsInfo::ItemIterator j = m_UploadsInfo.GetBeginIterator();
 	while (j != m_UploadsInfo.GetEndIterator()) {
 		wxString HTTPProcessData(OutE);
-		HTTPProcessData.Replace(wxT("[1]"), _SpecialChars(j->sUserName));
+		HTTPProcessData.Replace(wxT("[1]"), j->sUserName);
 		SharedFiles *file = m_SharedFilesInfo.GetByID(j->nHash);
 		if ( !file ) {
 			m_SharedFilesInfo.ReQuery();
 			file = m_SharedFilesInfo.GetByID(j->nHash);
 		}
 		if ( file ) {
-			HTTPProcessData.Replace(wxT("[2]"), _SpecialChars(file->sFileName));
+			HTTPProcessData.Replace(wxT("[2]"), file->sFileName);
 		} else {
 			HTTPProcessData.Replace(wxT("[2]"), _("Internal error - no item in container"));
 		}
@@ -1383,11 +1383,11 @@ wxString CWebServer::_GetSharedFilesList(ThreadData Data) {
 		else
 			HTTPProcessData = OutE;
 
-		HTTPProcessData.Replace(wxT("[FileName]"), _SpecialChars(i->sFileName));
+		HTTPProcessData.Replace(wxT("[FileName]"), i->sFileName);
 		if (i->sFileName.Length() > SHORT_FILENAME_LENGTH)
-			HTTPProcessData.Replace(wxT("[ShortFileName]"), _SpecialChars(i->sFileName.Left(SHORT_FILENAME_LENGTH)) + wxT("..."));
+			HTTPProcessData.Replace(wxT("[ShortFileName]"), i->sFileName.Left(SHORT_FILENAME_LENGTH) + wxT("..."));
 		else
-			HTTPProcessData.Replace(wxT("[ShortFileName]"), _SpecialChars(i->sFileName));
+			HTTPProcessData.Replace(wxT("[ShortFileName]"), i->sFileName);
 
 		HTTPProcessData.Replace(wxT("[FileSize]"), CastItoXBytes(i->lFileSize));
 		HTTPProcessData.Replace(wxT("[FileLink]"), i->sED2kLink);
@@ -2499,9 +2499,9 @@ bool ServersInfo::ServersInfo::ReQuery()
 		
 		ServerEntry Entry;
 		Entry.sServerName =
-			tag->GetTagByNameSafe(EC_TAG_SERVER_NAME)->GetStringData();
+			_SpecialChars(tag->GetTagByNameSafe(EC_TAG_SERVER_NAME)->GetStringData());
 		Entry.sServerDescription =
-			tag->GetTagByNameSafe(EC_TAG_SERVER_DESC)->GetStringData();
+			_SpecialChars(tag->GetTagByNameSafe(EC_TAG_SERVER_DESC)->GetStringData());
 		Entry.sServerIP = tag->GetIPv4Data().StringIP(false);
 		Entry.nServerIP = tag->GetIPv4Data().IP();
 		Entry.nServerPort = tag->GetIPv4Data().port;
@@ -2664,10 +2664,10 @@ bool SharedFilesInfo::CompareItems(const SharedFiles &i1, const SharedFiles &i2)
 DownloadFiles::DownloadFiles(CEC_PartFile_Tag *tag)
 {
 	nHash = tag->ID();
-	sFileName = tag->FileName();
+	sFileName = _SpecialChars(tag->FileName());
 	lFileSize = tag->SizeFull();
 	sFileHash = nHash.Encode();
-	sED2kLink = tag->FileEd2kLink();
+	sED2kLink = _SpecialChars(tag->FileEd2kLink());
 	lFileCompleted = tag->SizeDone();
 	lFileTransferred = tag->SizeXfer();
 	lFileSpeed = tag->Speed();
@@ -2814,7 +2814,7 @@ bool DownloadFilesInfo::CompareItems(const DownloadFiles &i1, const DownloadFile
 UploadFiles::UploadFiles(CEC_UpDownClient_Tag *tag)
 {
 	nHash = tag->FileID();
-	sUserName = tag->ClientName();
+	sUserName = _SpecialChars(tag->ClientName());
 	nSpeed = tag->SpeedUp();
 	nTransferredUp = tag->XferUp();
 	nTransferredDown = tag->XferDown();
@@ -2848,7 +2848,7 @@ bool UploadsInfo::ReQuery()
 SearchFile::SearchFile(CEC_SearchFile_Tag *tag)
 {
 	nHash = tag->FileHash();
-	sFileName = tag->FileName();
+	sFileName = _SpecialChars(tag->FileName());
 	lFileSize = tag->SizeFull();
 	lSourceCount = tag->SourceCount();
 	bPresent = tag->AlreadyHave();
