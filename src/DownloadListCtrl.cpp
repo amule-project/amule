@@ -338,59 +338,56 @@ void CDownloadListCtrl::RemoveFile( CPartFile* file )
 
 void CDownloadListCtrl::UpdateItem(const void* toupdate)
 {
-	if (	theApp.amuledlg->IsDialogVisible( CamuleDlg::TransferWnd ) &&
-		!theApp.amuledlg->IsIconized() ) {
-		// Retrieve all entries matching the source
-		ListIteratorPair rangeIt = m_ListItems.equal_range( toupdate );
+	// Retrieve all entries matching the source
+	ListIteratorPair rangeIt = m_ListItems.equal_range( toupdate );
 
-		// Visible lines, default to all because not all platforms
-		// support the GetVisibleLines function
-		long first = 0, last = GetItemCount();
+	// Visible lines, default to all because not all platforms
+	// support the GetVisibleLines function
+	long first = 0, last = GetItemCount();
 
 #ifndef __WXMSW__
-		// Get visible lines if we need them
-		if ( rangeIt.first != rangeIt.second ) {
-			GetVisibleLines( &first, &last );
-		}
+	// Get visible lines if we need them
+	if ( rangeIt.first != rangeIt.second ) {
+		GetVisibleLines( &first, &last );
+	}
 #endif
-		
-		for ( ListItems::iterator it = rangeIt.first; it != rangeIt.second; ++it ) {
-			CtrlItem_Struct* item = it->second;
-
-			long index = FindItem( -1, (long)item );
-
-			// Determine if the file should be shown in the current category
-			if ( item->type == FILE_TYPE ) {
-				CPartFile* file = (CPartFile*)item->value;
-			
-				bool show = file->CheckShowItemInGivenCat( m_category );
-		
-				if ( index > -1 ) {
-					if ( show ) {
-						item->dwUpdated = 0;
 	
-						// Only update visible lines
-						if ( index >= first && index <= last) {
-							RefreshItem( index );
-						}
-					} else {
-						// Item should no longer be shown in
-						// the current category
-						ShowFile( file, false );
+	for ( ListItems::iterator it = rangeIt.first; it != rangeIt.second; ++it ) {
+		CtrlItem_Struct* item = it->second;
+
+		long index = FindItem( -1, (long)item );
+
+		// Determine if the file should be shown in the current category
+		if ( item->type == FILE_TYPE ) {
+			CPartFile* file = (CPartFile*)item->value;
+		
+			bool show = file->CheckShowItemInGivenCat( m_category );
+	
+			if ( index > -1 ) {
+				if ( show ) {
+					item->dwUpdated = 0;
+
+					// Only update visible lines
+					if ( index >= first && index <= last) {
+						RefreshItem( index );
 					}
-				} else if ( show ) {
-					// Item has been hidden but new status means
-					// that it should it should be shown in the
-					// current category
-					ShowFile( file, true );
+				} else {
+					// Item should no longer be shown in
+					// the current category
+					ShowFile( file, false );
 				}
-			} else {
-				item->dwUpdated = 0;
-	
-				// Only update visible lines
-				if ( index >= first && index <= last) {
-					RefreshItem( index );
-				}
+			} else if ( show ) {
+				// Item has been hidden but new status means
+				// that it should it should be shown in the
+				// current category
+				ShowFile( file, true );
+			}
+		} else {
+			item->dwUpdated = 0;
+
+			// Only update visible lines
+			if ( index >= first && index <= last) {
+				RefreshItem( index );
 			}
 		}
 	}
