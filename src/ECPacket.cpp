@@ -270,6 +270,7 @@ CECTag::~CECTag(void)
 	for (int i=0; i<m_tagCount; i++) {
 		delete (*m_tagList)[i];
 	}
+	free(m_tagList);
 }
 
 /**
