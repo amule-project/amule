@@ -24,6 +24,9 @@
 #pragma interface "SysTray.h"
 #endif
 
+#include "MuleTrayIcon.h"
+
+#if !USE_WX_TRAY
 
 enum TaskbarNotifier
 {
@@ -128,4 +131,5 @@ private:
 
 #endif // !AMULE_DAEMON
 #endif // __SYSTRAY_DISABLED__
+#endif // !USE_WX_TRAY
 #endif // SYSTRAY_H

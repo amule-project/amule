@@ -23,6 +23,10 @@
 #pragma implementation "SysTray.h"
 #endif
 
+#include "SysTray.h"		// Interface declarations.
+
+#if !USE_WX_TRAY
+
 #ifndef __WXMSW__
 	#include <sys/types.h>
 
@@ -36,7 +40,6 @@
 
 #include "pixmaps/mule_Tr_grey.ico.xpm"
 #include "amuleDlg.h"		// Needed for CamuleDlg
-#include "SysTray.h"		// Interface declarations.
 #include "GetTickCount.h"	// Needed for GetTickCount
 #include "DownloadQueue.h"	// Needed for GetKBps()
 #include "UploadQueue.h"	// Needed for CUploadQueue
@@ -684,4 +687,5 @@ CSysTray::~CSysTray()
 
 }
 
+#endif // !USE_WX_TRAY
 #endif // __WXGTK__

@@ -30,11 +30,21 @@
 
 #include <wx/defs.h>	// Needed before any other wx/*.h
 
-#if !wxCHECK_VERSION(2, 5, 3)
- #define USE_WX_TRAY 0
+#if wxCHECK_VERSION(2, 5, 3)
+ #define USE_WX_TRAY 1
 #endif
 
 #if USE_WX_TRAY 
+
+enum TaskbarNotifier
+{
+	TBN_NULL = 0,
+	TBN_CHAT,
+	TBN_DLOAD,
+	TBN_LOG,
+	TBN_IMPORTANTEVENT,
+	TBN_NEWVERSION
+};
 
 #include <wx/taskbar.h>
 #include <wx/icon.h>
