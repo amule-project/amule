@@ -73,14 +73,15 @@ void CUploadListCtrl::Init()
 
 	InsertColumn(0,_("Username"),wxLIST_FORMAT_LEFT,150); //,0);
 	InsertColumn(1,_("File"),wxLIST_FORMAT_LEFT,275);//,1);
-	InsertColumn(2,_("Speed"),wxLIST_FORMAT_LEFT,60);//,2);
-	InsertColumn(3,_("Transferred"),wxLIST_FORMAT_LEFT,65);//,3);
-	InsertColumn(4,_("Waited"),wxLIST_FORMAT_LEFT,60);//,4);
-	InsertColumn(5,_("Upload Time"),wxLIST_FORMAT_LEFT,60);//,6);
-	InsertColumn(6,_("Status"),wxLIST_FORMAT_LEFT,110);//,5);
-	InsertColumn(7,_("Obtained Parts"),wxLIST_FORMAT_LEFT,100);
-    InsertColumn(8,_("Upload/Download"),wxLIST_FORMAT_LEFT,100);
-	InsertColumn(9,_("Remote Status"),wxLIST_FORMAT_LEFT,100);
+	InsertColumn(2,_("Client Software"),wxLIST_FORMAT_LEFT,100);
+	InsertColumn(3,_("Speed"),wxLIST_FORMAT_LEFT,60);//,2);
+	InsertColumn(4,_("Transferred"),wxLIST_FORMAT_LEFT,65);//,3);
+	InsertColumn(5,_("Waited"),wxLIST_FORMAT_LEFT,60);//,4);
+	InsertColumn(6,_("Upload Time"),wxLIST_FORMAT_LEFT,60);//,6);
+	InsertColumn(7,_("Status"),wxLIST_FORMAT_LEFT,110);//,5);
+	InsertColumn(8,_("Obtained Parts"),wxLIST_FORMAT_LEFT,100);
+    InsertColumn(9,_("Upload/Download"),wxLIST_FORMAT_LEFT,100);
+	InsertColumn(10,_("Remote Status"),wxLIST_FORMAT_LEFT,100);
 	// not here.. no preferences yet
 	//LoadSettings(CPreferences::tableUpload);
 }
@@ -185,9 +186,10 @@ void CUploadListCtrl::RefreshClient(CUpDownClient* client)
 		SetItem(itemnr,1,wxT("?"));
 	}
 	sprintf(buffer,"%.1f kB/s",client->GetKBpsUp());
-	SetItem(itemnr,2,char2unicode(buffer));
-	SetItem(itemnr,3,CastItoXBytes(client->GetTransferedUp()));
-	SetItem(itemnr,5,CastSecondsToHM((client->GetUpStartTimeDelay())/1000));
+	SetItem(itemnr,2,client->GetClientVerString());
+	SetItem(itemnr,3,char2unicode(buffer));
+	SetItem(itemnr,5,CastItoXBytes(client->GetTransferedUp()));
+	SetItem(itemnr,6,CastSecondsToHM((client->GetUpStartTimeDelay())/1000));
 	wxString status;
 	switch (client->GetUploadState()) {
 		case US_CONNECTING:
@@ -202,10 +204,10 @@ void CUploadListCtrl::RefreshClient(CUpDownClient* client)
 		default:
 			status = _("Unknown");
 	}
-	SetItem(itemnr,6,status);
-	SetItem(itemnr,7,wxT("Bar is missing :)"));
-	SetItem(itemnr,8,CastItoXBytes(client->Credits()->GetUploadedTotal()) + wxT(" / ") + CastItoXBytes(client->Credits()->GetDownloadedTotal()));
-	SetItem(itemnr,9,wxT("QR: %u"),client->GetRemoteQueueRank());
+	SetItem(itemnr,7,status);
+	SetItem(itemnr,8,wxT("Bar is missing :)"));
+	SetItem(itemnr,9,CastItoXBytes(client->Credits()->GetUploadedTotal()) + wxT(" / ") + CastItoXBytes(client->Credits()->GetDownloadedTotal()));
+	SetItem(itemnr,10,wxT("QR: %u"),client->GetRemoteQueueRank());
 }
 
 bool CUploadListCtrl::ProcessEvent(wxEvent& evt)
@@ -301,28 +303,32 @@ int CUploadListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 				return 0;
 			}
 		case 2:
-			return int(item1->GetKBpsUp() - item2->GetKBpsUp());
+			return item1->GetClientVerString() - item2-> GetClientVerString();
 		case 102:
-			return int(item2->GetKBpsUp() - item1->GetKBpsUp());
+			return item2->GetClientVerString() - item1-> GetClientVerString();
 		case 3:
-			return item1->GetTransferedUp() - item2->GetTransferedUp();
+			return int(item1->GetKBpsUp() - item2->GetKBpsUp());
 		case 103:
-			return item2->GetTransferedUp() - item1->GetTransferedUp();
+			return int(item2->GetKBpsUp() - item1->GetKBpsUp());
 		case 4:
-			return item1->GetWaitTime() - item2->GetWaitTime();
+			return item1->GetTransferedUp() - item2->GetTransferedUp();
 		case 104:
-			return item2->GetWaitTime() - item1->GetWaitTime();
+			return item2->GetTransferedUp() - item1->GetTransferedUp();
 		case 5:
-			return item1->GetUpStartTimeDelay() - item2->GetUpStartTimeDelay();
+			return item1->GetWaitTime() - item2->GetWaitTime();
 		case 105:
-			return item2->GetUpStartTimeDelay() - item1->GetUpStartTimeDelay();
+			return item2->GetWaitTime() - item1->GetWaitTime();
 		case 6:
-			return item1->GetUploadState() - item2->GetUploadState();
+			return item1->GetUpStartTimeDelay() - item2->GetUpStartTimeDelay();
 		case 106:
-			return item2->GetUploadState() - item1->GetUploadState();
+			return item2->GetUpStartTimeDelay() - item1->GetUpStartTimeDelay();
 		case 7:
-			return item1->GetUpPartCount() - item2->GetUpPartCount();
+			return item1->GetUploadState() - item2->GetUploadState();
 		case 107:
+			return item2->GetUploadState() - item1->GetUploadState();
+		case 8:
+			return item1->GetUpPartCount() - item2->GetUpPartCount();
+		case 108:
 			return item2->GetUpPartCount() - item1->GetUpPartCount();
 		case 9:
 			return item1->GetRemoteQueueRank() - item2->GetRemoteQueueRank();
@@ -464,7 +470,10 @@ void CUploadListCtrl::OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxRe
 						Sbuffer = wxT("?");
 					}
 					break;
-				case 2:
+					case 2:
+					Sbuffer = client->GetClientVerString();
+					break;
+				case 3:
 					// lagloose
 					if (client->GetDownloadState() == DS_DOWNLOADING) {
 						Sbuffer = wxT("");
@@ -478,16 +487,16 @@ void CUploadListCtrl::OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxRe
 					}
 					// end lagloose
 					break;
-				case 3:
+				case 4:
 					Sbuffer.Printf(wxT("%s"),CastItoXBytes(client->GetSessionUp()).GetData());
 					break;
-				case 4:
+				case 5:
 					Sbuffer.Printf(wxT("%s"),CastSecondsToHM((client->GetWaitTime())/1000).GetData());
 					break;
-				case 5:
+				case 6:
 					Sbuffer.Printf(wxT("%s"),CastSecondsToHM((client->GetUpStartTimeDelay())/1000).GetData());
 					break;
-				case 6:
+				case 7:
 					switch (client->GetUploadState()) {
 						case US_CONNECTING:
 							Sbuffer = _("Connecting");
@@ -509,7 +518,7 @@ void CUploadListCtrl::OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxRe
 							Sbuffer = _("Unknown");
 					}
 					break;
-				case 7:
+				case 8:
 					if( client->GetUpPartCount()) {
 						wxMemoryDC memdc;
 						cur_rec.bottom--;
@@ -532,14 +541,14 @@ void CUploadListCtrl::OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxRe
 					// } else {
 					}
 					break;
-					case 8:
+					case 9:
 						if (client->Credits()){
                         Sbuffer = CastItoXBytes(client->Credits()->GetUploadedTotal()) + wxT(" / ") + CastItoXBytes(client->Credits()->GetDownloadedTotal());
                       } else {
                       Sbuffer = wxT("? / ?");
                       }
 						break;
-					case 9:
+					case 10:
 						if (client->GetDownloadState() == DS_ONQUEUE) {
 							if (client->IsRemoteQueueFull()) {
 								Sbuffer = wxT("Queue Full");
@@ -554,8 +563,8 @@ void CUploadListCtrl::OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxRe
 					Sbuffer = wxT("Unknown");
 				}
 				break;
-			}
-			if( iColumn != 7 && iColumn != 0 ) {
+				}
+			if( iColumn != 8 && iColumn != 0 ) {
 				//dc->DrawText(Sbuffer,Sbuffer.GetLength(),&cur_rec,DT_LEFT|DT_SINGLELINE|DT_VCENTER|DT_NOPREFIX|DT_END_ELLIPSIS);
 				dc->DrawText(Sbuffer,cur_rec.left,cur_rec.top+3);
 			}

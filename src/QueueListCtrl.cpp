@@ -93,14 +93,15 @@ void CQueueListCtrl::Init(){
 	
 	InsertColumn(0,_("Username"),LVCFMT_LEFT,150);
 	InsertColumn(1,_("File"),LVCFMT_LEFT,275);
-	InsertColumn(2,_("File Priority"),LVCFMT_LEFT,110);
-	InsertColumn(3,_("Rating"),LVCFMT_LEFT,60);
-	InsertColumn(4,_("Score"),LVCFMT_LEFT,60);
-	InsertColumn(5,_("Asked"),LVCFMT_LEFT,60);
-	InsertColumn(6,_("Last Seen"),LVCFMT_LEFT,110);
-	InsertColumn(7,_("Entered Queue"),LVCFMT_LEFT,110);
-	InsertColumn(8,_("Banned"),LVCFMT_LEFT,60);
-	InsertColumn(9,_("Obtained Parts"),LVCFMT_LEFT,100);
+	InsertColumn(2,_("Client Software"),LVCFMT_LEFT,100);
+	InsertColumn(3,_("File Priority"),LVCFMT_LEFT,110);
+	InsertColumn(4,_("Rating"),LVCFMT_LEFT,60);
+	InsertColumn(5,_("Score"),LVCFMT_LEFT,60);
+	InsertColumn(6,_("Asked"),LVCFMT_LEFT,60);
+	InsertColumn(7,_("Last Seen"),LVCFMT_LEFT,110);
+	InsertColumn(8,_("Entered Queue"),LVCFMT_LEFT,110);
+	InsertColumn(9,_("Banned"),LVCFMT_LEFT,60);
+	InsertColumn(10,_("Obtained Parts"),LVCFMT_LEFT,100);
 
 }
 
@@ -168,40 +169,45 @@ void CQueueListCtrl::Localize() {
 		hdi.pszText = strRes.GetBuffer();
 		pHeaderCtrl->SetItem(1, &hdi);
 		strRes.ReleaseBuffer();
-
-		strRes = wxString(_("File Priority"));
+		
+		strRes = wxString(_("Client Software"));
 		hdi.pszText = strRes.GetBuffer();
 		pHeaderCtrl->SetItem(2, &hdi);
 		strRes.ReleaseBuffer();
 
-		strRes = wxString(_("Rating"));
+		strRes = wxString(_("File Priority"));
 		hdi.pszText = strRes.GetBuffer();
 		pHeaderCtrl->SetItem(3, &hdi);
 		strRes.ReleaseBuffer();
 
-		strRes = wxString(_("Score"));
+		strRes = wxString(_("Rating"));
 		hdi.pszText = strRes.GetBuffer();
 		pHeaderCtrl->SetItem(4, &hdi);
 		strRes.ReleaseBuffer();
 
-		strRes = wxString(_("Asked"));
+		strRes = wxString(_("Score"));
 		hdi.pszText = strRes.GetBuffer();
 		pHeaderCtrl->SetItem(5, &hdi);
 		strRes.ReleaseBuffer();
 
-		strRes = wxString(_("Last Seen"));
+		strRes = wxString(_("Asked"));
 		hdi.pszText = strRes.GetBuffer();
 		pHeaderCtrl->SetItem(6, &hdi);
 		strRes.ReleaseBuffer();
 
-		strRes = wxString(_("Entered Queue"));
+		strRes = wxString(_("Last Seen"));
 		hdi.pszText = strRes.GetBuffer();
 		pHeaderCtrl->SetItem(7, &hdi);
 		strRes.ReleaseBuffer();
 
-		strRes = wxString(_("Banned"));
+		strRes = wxString(_("Entered Queue"));
 		hdi.pszText = strRes.GetBuffer();
 		pHeaderCtrl->SetItem(8, &hdi);
+		strRes.ReleaseBuffer();
+
+		strRes = wxString(_("Banned"));
+		hdi.pszText = strRes.GetBuffer();
+		pHeaderCtrl->SetItem(9, &hdi);
 		strRes.ReleaseBuffer();
 	}
 #endif
@@ -377,7 +383,10 @@ void CQueueListCtrl::OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxRec
 	  else
 	    Sbuffer = wxT("?");
 	  break;
-	case 2:
+	  case 2:
+		Sbuffer = client->GetClientVerString();
+		break;
+	case 3:
 	  if(file){
 	    switch(file->GetUpPriority()){
 	    case PR_POWERSHARE:                    //added for powershare (deltaHF)
@@ -403,10 +412,10 @@ void CQueueListCtrl::OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxRec
 	  else
 	    Sbuffer = wxT("?");
 	  break;
-	case 3:
+	case 4:
 	  Sbuffer.Printf(wxT("%.1f"),(float)client->GetScore(false,false,true));
 	  break;
-	case 4:
+	case 5:
 		if (client->HasLowID()){
 			if (client->m_bAddNextConnect) {
 				Sbuffer.Printf(wxT("%i ****"),client->GetScore(false));
@@ -418,22 +427,22 @@ void CQueueListCtrl::OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxRec
 		}
 		break;		
 	  break;
-	case 5:
+	case 6:
 	  Sbuffer.Printf(wxT("%i"),client->GetAskedCount());
 	  break;
-	case 6:
+	case 7:
 	  Sbuffer.Printf(wxT("%s"), CastSecondsToHM((::GetTickCount() - client->GetLastUpRequest())/1000).GetData());
 	  break;
-	case 7:
+	case 8:
 	  Sbuffer.Printf(wxT("%s"), CastSecondsToHM((::GetTickCount() - client->GetWaitStartTime())/1000).GetData());
 	  break;
-	case 8:
+	case 9:
 	  if(client->IsBanned())
 	    Sbuffer.Printf(wxT("%s"),_("Yes"));
 	  else
 	    Sbuffer.Printf(wxT("%s"),_("No"));
 	  break;
-	case 9:
+	case 10:
 	  if( client->GetUpPartCount()){
 	    wxMemoryDC memdc;
 	    cur_rec.bottom--;
@@ -453,7 +462,7 @@ void CQueueListCtrl::OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxRec
 	  }
 	  break;
 	}
-	if( iColumn != 9 && iColumn != 0)
+	if( iColumn != 10 && iColumn != 0)
 	  //dc->DrawText(Sbuffer,Sbuffer.GetLength(),&cur_rec,DT_LEFT|DT_SINGLELINE|DT_VCENTER|DT_NOPREFIX|DT_END_ELLIPSIS);
 	  dc->DrawText(Sbuffer,cur_rec.left,cur_rec.top+3);
 	cur_rec.left += cx;//GetColumnWidth(iColumn);
@@ -580,6 +589,10 @@ int CQueueListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 				return 0;
 			}
 		case 2:
+			return item1->GetClientVerString() - item2-> GetClientVerString();
+		case 102:
+			return item2->GetClientVerString() - item1-> GetClientVerString();
+		case 3:
 			if( (file1 != NULL) && (file2 != NULL)) {
 				return file1->GetUpPriority() - file2->GetUpPriority();
 			} else if(file1 == NULL) {
@@ -587,7 +600,7 @@ int CQueueListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 			} else {
 				return 0;
 			}
-		case 102:
+		case 103:
 			if( (file1 != NULL) && (file2 != NULL)) {
 				return file2->GetUpPriority() - file1->GetUpPriority();
 			} else if( file1 == NULL ) {
@@ -595,29 +608,29 @@ int CQueueListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 			} else {
 				return 0;
 			}
-		case 3:
-			return (int)((float)item1->GetScore(false,false,true) - (float)item2->GetScore(false,false,true));
-		case 103:
-			return (int)((float)item2->GetScore(false,false,true) - (float)item1->GetScore(false,false,true));
 		case 4:
-			return item1->GetScore(false) - item2->GetScore(false);
+			return (int)((float)item1->GetScore(false,false,true) - (float)item2->GetScore(false,false,true));
 		case 104:
-			return item2->GetScore(false) - item1->GetScore(false);
+			return (int)((float)item2->GetScore(false,false,true) - (float)item1->GetScore(false,false,true));
 		case 5:
-			return item1->GetAskedCount() - item2->GetAskedCount();
+			return item1->GetScore(false) - item2->GetScore(false);
 		case 105:
-			return item2->GetAskedCount() - item1->GetAskedCount();
+			return item2->GetScore(false) - item1->GetScore(false);
 		case 6:
-			return item1->GetLastUpRequest() - item2->GetLastUpRequest();
+			return item1->GetAskedCount() - item2->GetAskedCount();
 		case 106:
-			return item2->GetLastUpRequest() - item1->GetLastUpRequest();
+			return item2->GetAskedCount() - item1->GetAskedCount();
 		case 7:
-			return item1->GetWaitStartTime() - item2->GetWaitStartTime();
+			return item1->GetLastUpRequest() - item2->GetLastUpRequest();
 		case 107:
-			return item2->GetWaitStartTime() - item1->GetWaitStartTime();
+			return item2->GetLastUpRequest() - item1->GetLastUpRequest();
 		case 8:
-			return item1->IsBanned() - item2->IsBanned();
+			return item1->GetWaitStartTime() - item2->GetWaitStartTime();
 		case 108:
+			return item2->GetWaitStartTime() - item1->GetWaitStartTime();
+		case 9:
+			return item1->IsBanned() - item2->IsBanned();
+		case 109:
 			return item2->IsBanned() - item1->IsBanned();
 
 		default:
