@@ -917,7 +917,7 @@ bool CamuleApp::ReinitializeNetwork(wxString *msg)
 		// If we wern't able to start listening, we need to warn the user
 		wxString err;
 		err <<	_("Port ") << thePrefs::GetPort() <<
-			_(" is not available. You will be LOWID");
+			_(" is not available. You will be LOWID") << wxT("\n");
 		*msg << err;
 		AddLogLineM(true, err);
 		err.Clear();
