@@ -45,6 +45,7 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		in wxGTK-2.5.3.
 		* Applied patch from geeko to complete html functionality of
 		cas.
+		* Fixed a crash due to an unicode issue while logging.
 
 	Ken:
 		* Fixed Mac bug: window was a little larger each restart.
