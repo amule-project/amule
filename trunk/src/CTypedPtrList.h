@@ -347,6 +347,31 @@ template<class TYPE, class ARG_TYPE = TYPE const&>
     } 
   }
 
+  TYPE& DeAttach(POSITION pos)
+  {
+    MYNODE* n = (MYNODE*)pos;
+    if(n) {
+      // are we removing the head?
+      if(head == n) {
+		head = n->next; // yes
+	} else {
+		n->prev->next = n->next; // no
+	}
+      // is it tail too?
+      if(tail == n) {
+		tail = n->prev; // yes
+	} else {
+		n->next->prev = n->prev; // no
+	}
+      count--;  
+	 TYPE value = n->data;
+	 freeNode(n);
+	 return (value);
+     } 
+	return (NULL);
+  }  
+  
+  
   void InsertAfter(POSITION pos, ARG_TYPE data)
   {
     MYNODE* n = (MYNODE*)pos;
