@@ -38,6 +38,8 @@
 #include <wx/statline.h>
 #include <wx/toolbar.h>
 #include <wx/timer.h>
+//#include <wx/print.h>
+//#include <wx/printdlg.h>
 
 #include "wxcascanvas.h"
 #include "onlinesig.h"
@@ -52,11 +54,14 @@ class WxCasFrame:public wxFrame
 {
 public:
 
-  //Constructor
-  WxCasFrame (const wxChar * title);
+  // Constructor
+  WxCasFrame (wxString title);
 
-  //Destructor
-   ~WxCasFrame ();
+  // Destructor
+  ~WxCasFrame ();
+
+  // Accessor
+  wxImage *GetStatImage ();
 
 protected:
 
@@ -106,7 +111,6 @@ private:
 
   OnLineSig *m_aMuleSig;
 
-
   enum
   {
     ID_BAR_REFRESH = 1000,
@@ -115,6 +119,7 @@ private:
     ID_BAR_SAVE,
     ID_TIMER
   };
+
 };
 
 #endif /* _WXCASFRAME_H */

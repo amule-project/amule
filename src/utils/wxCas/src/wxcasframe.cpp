@@ -35,6 +35,7 @@
 #endif
 
 #include "wxcasframe.h"
+#include "wxcasprint.h"
 
 #ifdef __WXMSW__
 #define USE_XPM_BITMAPS 0
@@ -59,7 +60,7 @@
 #endif
 
 // Constructor
-WxCasFrame::WxCasFrame (const wxChar * title):
+WxCasFrame::WxCasFrame (wxString title):
 wxFrame ((wxFrame *) NULL, -1, title, wxDefaultPosition, wxDefaultSize,
 	 wxDEFAULT_FRAME_STYLE & (wxSYSTEM_MENU | wxMINIMIZE_BOX | wxCAPTION))
 {
@@ -157,12 +158,10 @@ wxFrame ((wxFrame *) NULL, -1, title, wxDefaultPosition, wxDefaultSize,
   m_toolbar->AddSeparator ();
 
   m_toolbar->AddTool (ID_BAR_SAVE, "Save", *(m_toolBarBitmaps[1]),
-		      _
-		      ("Save Online Statistics image"));
+		      _("Save Online Statistics image"));
 
   m_toolbar->AddTool (ID_BAR_PRINT, "Print", *(m_toolBarBitmaps[2]),
-		      _
-		      ("Print Online Statistics image (NOT implemented Yet)"));
+		      _("Print Online Statistics image"));
 
   m_toolbar->AddSeparator ();
 
@@ -200,6 +199,35 @@ EVT_TOOL (ID_BAR_ABOUT, WxCasFrame::OnBarAbout)
 EVT_TIMER (ID_TIMER, WxCasFrame::OnTimer) 
 END_EVENT_TABLE ()
 
+// Get Stat Bitmap
+wxImage *
+WxCasFrame::GetStatImage ()
+{
+#if USE_XPM_BITMAPS
+  wxBitmap *statBitmap = new wxBitmap (stat_xpm);
+#else
+  wxBitmap *statBitmap = new wxBITMAP (stat);
+#endif
+
+  wxMemoryDC memdc;
+  memdc.SelectObject (*statBitmap);
+  memdc.SetFont (wxFont::wxFont (12, wxSWISS, wxNORMAL, wxBOLD));
+  memdc.SetTextForeground (*wxWHITE);
+  memdc.DrawText (m_statLine_1->GetLabel (), 25, 8);
+  memdc.DrawText (m_statLine_2->GetLabel (), 25, 26);
+  memdc.DrawText (m_statLine_3->GetLabel (), 25, 43);
+  memdc.DrawText (m_statLine_4->GetLabel (), 25, 60);
+  memdc.DrawText (m_statLine_5->GetLabel (), 25, 77);
+  memdc.DrawText (m_statLine_6->GetLabel (), 25, 94);
+  memdc.SelectObject (wxNullBitmap);
+
+  wxImage *statImage = new wxImage (*statBitmap);
+
+  delete statBitmap;
+
+  return statImage;
+}
+
 // Refresh button
 void
 WxCasFrame::OnBarRefresh (wxCommandEvent & event)
@@ -229,27 +257,7 @@ WxCasFrame::OnBarRefresh (wxCommandEvent & event)
 void
 WxCasFrame::OnBarSave (wxCommandEvent & event)
 {
-#if USE_XPM_BITMAPS
-  wxBitmap *statBitmap = new wxBitmap (stat_xpm);
-#else
-  wxBitmap *statBitmap = new wxBITMAP (stat);
-#endif
-
-  wxMemoryDC memdc;
-  memdc.SelectObject (*statBitmap);
-  memdc.SetFont (wxFont::wxFont (12, wxSWISS, wxNORMAL, wxBOLD));
-  memdc.SetTextForeground (*wxWHITE);
-  memdc.DrawText (m_statLine_1->GetLabel (), 25, 8);
-  memdc.DrawText (m_statLine_2->GetLabel (), 25, 26);
-  memdc.DrawText (m_statLine_3->GetLabel (), 25, 43);
-  memdc.DrawText (m_statLine_4->GetLabel (), 25, 60);
-  memdc.DrawText (m_statLine_5->GetLabel (), 25, 77);
-  memdc.DrawText (m_statLine_6->GetLabel (), 25, 94);
-  memdc.SelectObject (wxNullBitmap);
-
-  wxImage statImage = statBitmap->ConvertToImage ();
-
-  delete statBitmap;
+  wxImage *statImage = GetStatImage ();
 
   wxString saveFileName = wxFileSelector (_("Save Statistics Image"),
 					  wxFileName::GetHomeDir (),
@@ -272,21 +280,32 @@ WxCasFrame::OnBarSave (wxCommandEvent & event)
 
   // This one guesses image format from filename extension
   // (it may fail if the extension is not recognized):
-  loaded = statImage.SaveFile (saveFileName);
+  loaded = statImage->SaveFile (saveFileName);
 
   if (!loaded)
     {
-      wxMessageBox (_T ("No handler for this file type."),
-		    _T ("File was not saved"), wxOK | wxCENTRE, this);
+      wxMessageBox (_("No handler for this file type."),
+		    _("File was not saved"), wxOK | wxCENTRE, this);
     }
-  statImage.Destroy ();
+
+  delete statImage;
 }
 
 // Print button
 void
 WxCasFrame::OnBarPrint (wxCommandEvent & event)
 {
-  printf ("To be implemented\n");
+  wxPrinter printer;
+  WxCasPrint printout (_("aMule Online Statistics"));
+  if (!printer.Print (this, &printout, TRUE))
+    {
+      if (wxPrinter::GetLastError () == wxPRINTER_ERROR)
+	{
+	  wxMessageBox (_
+			("There was a problem printing.\nPerhaps your current printer is not set correctly?"),
+			_("Printing"), wxOK);
+	}
+    }
 }
 
 // About button
