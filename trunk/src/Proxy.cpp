@@ -257,10 +257,12 @@ t_sm_state ProxyStateMachine::HandleEvent(t_sm_event event)
 
 void ProxyStateMachine::AddDummyEvent()
 {
+#ifndef AMULE_DAEMON
 	wxSocketEvent e(PROXY_SOCKET_HANDLER);
 	e.m_event = (wxSocketNotify)(wxSOCKET_INPUT + wxSOCKET_OUTPUT + wxSOCKET_CONNECTION + wxSOCKET_LOST);
 	e.SetEventObject(m_ProxyClientSocket);
 	TheProxyEventHandler.AddPendingEvent(e);
+#endif
 }
 
 /*
