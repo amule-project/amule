@@ -47,12 +47,12 @@ class wxSocketEvent;
  * RLE encoded difference from previous one.
  */
 #define RLE_CONTROL_CHAR 0
-class RLE_String {
+class RLE_Data {
 		unsigned char *m_buff, *m_enc_buff;
 		int m_len, m_enc_len;
 	public:
-		RLE_String(int len);
-		~RLE_String();
+		RLE_Data(int len);
+		~RLE_Data();
 		
 		CECTag *Encode(unsigned char *);
 		const unsigned char *Decode(CECTag *);	
