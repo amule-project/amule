@@ -61,6 +61,7 @@
 #include "opcodes.h"		// Needed for SOURCESSLOTS
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "amuleIPV4Address.h"	// Needed for amuleIPV4Address
+#include "debugstuff.h"		// Needed for debugprintf
 
 //#define NET_TEST 
 
@@ -219,23 +220,29 @@ void CUpDownClient::Init()
 }
 
 #warning Dont forget to remove this and the magic numbers when the bug is gone.
-bool CUpDownClient::IsASaneUpDownClient(char *function, char *file, int line) const
+bool CUpDownClient::IsASaneUpDownClient(bool verbose, char *function, char *file, int line) const
 {
-	bool sane;
-	
-	sane = 	this &&
-		MagicNumber1 == MAGIC_1 && 
-		MagicNumber2 == MAGIC_2;
+	bool sane = this != NULL;
+
 	if( !sane ) {
-#if defined( __DEBUG__ )
-		// scream loud!
-		printf("Bogus pointer to UpDownClient detected in %s(%s:%d)!\n", function, file, line);
-		if(this) {
-			printf("MN1 = %u, MN2 = %u\n", MagicNumber1, MagicNumber2);
+		debugprintf(verbose, "Bogus pointer to UpDownClient detected!\n");
+		debugprintf(verbose, "'this' is a NULL pointer.\n");
+		debugprintf(verbose, "function: %s(%s:%d)\n", function, file, line);
+	} else {
+		sane = 	MagicNumber1 == MAGIC_1 && 
+			MagicNumber2 == MAGIC_2;
+		if(!sane) {
+			debugprintf(verbose, "Bogus UpDownClient detected!\n", function, file, line);
+			debugprintf(verbose, "MN1 = %u, MN2 = %u\n", MagicNumber1, MagicNumber2);
+			debugprintf(verbose, "function: %s(%s:%d)\n", function, file, line);
 		} else {
-			printf("'this' is a NULL pointer.\n");
+			sane = reqfile != NULL;
+			if (!sane) {
+				debugprintf(verbose, "Bogus UpDownClient source detected!\n");
+				debugprintf(verbose, "source has NULL reqfile!\n");
+				debugprintf(verbose, "function: %s(%s:%d)\n", function, file, line);
+			}
 		}
-#endif // __DEBUG__
 	}
 
 	return sane;

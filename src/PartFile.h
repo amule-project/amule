@@ -70,8 +70,9 @@ public:
 	void InitializeFromLink(CED2KFileLink* fileLink);
 	virtual ~CPartFile();
 	
-	bool	IsASanePartFile() const;
-	bool	IsASaneFileClientCombination( bool verbose, 
+	bool	IsASanePartFile(bool verbose, char *function, char *file, int line) const;
+	bool	IsASaneFileClientCombination( 
+			bool verbose, char *function, char *file, int line,
 			const CUpDownClient* cur_src, const CUpDownClient* forClient = 0) const;
 	void 	SetPartFileStatus(uint8 newstatus);
 	virtual bool CreateFromFile(
