@@ -27,7 +27,6 @@
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "packets.h"		// Needed for Packet
 #include "opcodes.h"		// Needed for OP_MESSAGE
-#include "ListenSocket.h"	// Needed for CClientReqSocket
 #include "Preferences.h"	// Needed for CPreferences
 #include "ChatWnd.h"		// Needed for CChatWnd
 #ifdef __WXMSW__
