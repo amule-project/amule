@@ -60,7 +60,7 @@ public:
 #else
 private:
 	void ServerSocketHandler(wxSocketEvent& event);
-	DECLARE_EVENT_TABLE();
+	DECLARE_EVENT_TABLE()
 #endif
 };
 
@@ -82,7 +82,7 @@ public:
 
 	void	ConnectToServer(CServer* server);
 	sint8	GetConnectionState()		{ return connectionstate; } 
- 	DWORD   GetLastTransmission() const	{ return m_dwLastTransmission; }
+ 	uint32  GetLastTransmission() const	{ return m_dwLastTransmission; }
 	wxString info;
 
  public:
@@ -111,7 +111,7 @@ private:
 	int32	sizereceived;
 	char*	rbuffer;
 	bool	m_bIsDeleting;	// true: socket is already in deletion phase, don't destroy it in ::StopConnectionTry
-	DWORD	m_dwLastTransmission;
+	uint32	m_dwLastTransmission;
 
 	bool m_IsSolving;
 

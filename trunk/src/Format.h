@@ -134,7 +134,7 @@ private:
 		//! Two 'long' modifieres, arguments is interpreted as long long (integer types).
 		modLongLong,
 		//! Argument is interpreted as long double (floating point types).
-		modLongDouble,
+		modLongDouble
 	};
 
 	/**

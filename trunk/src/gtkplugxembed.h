@@ -1,8 +1,9 @@
-// This file is part of the aMule Project.
-//
-// Copyright (c) 2003-2005 aMule Team ( http://www.amule.org )
-//
-/* GTK - The GIMP Toolkit
+/*
+ * This file is part of the aMule Project.
+ *
+ * Copyright (c) 2003-2005 aMule Team ( http://www.amule.org )
+ *
+ * GTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  * 
  * This library is free software; you can redistribute it and/or
@@ -104,8 +105,8 @@ void _gtk_plug_xembed_remove_from_socket (GtkPlugXEmbed   *plug,
 }
 #endif /* __cplusplus */
 
-#endif // __WXGTK__
+#endif /* __WXGTK__ */
 
-#endif //USE_WX_TRAY
+#endif /* USE_WX_TRAY */
 
-#endif // GTKPLUGXEMBED_H
+#endif /* GTKPLUGXEMBED_H */

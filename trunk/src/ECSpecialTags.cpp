@@ -309,8 +309,8 @@ CEC_Prefs_Packet::CEC_Prefs_Packet(uint32 selection, EC_DETAIL_LEVEL detail_leve
  */
 void CEC_Prefs_Packet::Apply()
 {
-	const CECTag * thisTab;
-	const CECTag * oneTag;
+	const CECTag* thisTab = NULL;
+	const CECTag* oneTag = NULL;
 
 	if ((thisTab = GetTagByName(EC_TAG_PREFS_GENERAL)) != NULL) {
 		if ((oneTag = thisTab->GetTagByName(EC_TAG_USER_NICK)) != NULL) {

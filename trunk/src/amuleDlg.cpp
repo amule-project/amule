@@ -322,7 +322,7 @@ void CamuleDlg::SetActiveDialog(DialogType type, wxWindow* dlg)
 			};
 		protected:
 			void OnOk(wxCommandEvent& WXUNUSED(evt)) { EndModal(0); };
-			DECLARE_EVENT_TABLE();
+			DECLARE_EVENT_TABLE()
 		};
 
 		BEGIN_EVENT_TABLE(QueryDlg, wxDialog)

@@ -117,7 +117,7 @@ CSHA::CSHA()
 
 void CSHA::Compile()
 {
-	DWORD    w[80], i, a, b, c, d, e, t;
+	uint32    w[80], i, a, b, c, d, e, t;
 
     /* note that words are compiled from the buffer into 32-bit */
     /* words in big-endian order so an order reversal is needed */
@@ -184,11 +184,11 @@ void CSHA::GetHash(CAICHHash& Hash)
 /* SHA1 hash data in an array of bytes into hash buffer and call the        */
 /* hash_compile function as required.                                       */
 
-void CSHA::Add(LPCVOID pData, DWORD nLength)
+void CSHA::Add(const void* pData, uint32 nLength)
 {
 	const unsigned char* data = (const unsigned char*)pData;
 	
-	DWORD pos = (DWORD)(m_nCount[0] & SHA1_MASK), 
+	uint32 pos = (uint32)(m_nCount[0] & SHA1_MASK), 
              space = SHA1_BLOCK_SIZE - pos;
     const unsigned char *sp = data;
 
@@ -208,20 +208,20 @@ void CSHA::Add(LPCVOID pData, DWORD nLength)
 /* SHA1 final padding and digest calculation  */
 
 #if (PLATFORM_BYTE_ORDER == SHA_LITTLE_ENDIAN)
-static DWORD  mask[4] = 
+static uint32  mask[4] = 
 	{   0x00000000, 0x000000ff, 0x0000ffff, 0x00ffffff };
-static DWORD  bits[4] = 
+static uint32  bits[4] = 
 	{   0x00000080, 0x00008000, 0x00800000, 0x80000000 };
 #else
-static DWORD  mask[4] = 
+static uint32  mask[4] = 
 	{   0x00000000, 0xff000000, 0xffff0000, 0xffffff00 };
-static DWORD  bits[4] = 
+static uint32  bits[4] = 
 	{   0x80000000, 0x00800000, 0x00008000, 0x00000080 };
 #endif
 
 void CSHA::Finish(CAICHHash& Hash)
 {
-	DWORD    i = (DWORD)(m_nCount[0] & SHA1_MASK);
+	uint32    i = (uint32)(m_nCount[0] & SHA1_MASK);
 
     /* mask out the rest of any partial 32-bit word and then set    */
     /* the next byte to 0x80. On big-endian machines any bytes in   */

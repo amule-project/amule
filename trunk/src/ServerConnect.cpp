@@ -392,7 +392,7 @@ void CServerConnect::ConnectionFailed(CServerSocket* sender){
 				break;
 			}
 
-			std::map<DWORD, CServerSocket*>::iterator it = connectionattemps.begin();
+			std::map<uint32, CServerSocket*>::iterator it = connectionattemps.begin();
 			while ( it != connectionattemps.end() ){
 				if ( it->second == sender ) {
 					connectionattemps.erase( it );
@@ -408,9 +408,9 @@ void CServerConnect::ConnectionFailed(CServerSocket* sender){
 
 void CServerConnect::CheckForTimeout()
 {
-	DWORD dwCurTick = GetTickCount();
+	uint32 dwCurTick = GetTickCount();
 
-	std::map<DWORD, CServerSocket*>::iterator it = connectionattemps.begin();
+	std::map<uint32, CServerSocket*>::iterator it = connectionattemps.begin();
 	while ( it != connectionattemps.end() ){
 		if ( !it->second ) {
 			AddLogLineM(false, _("Error: Socket invalid at timeoutcheck"));
@@ -419,7 +419,7 @@ void CServerConnect::CheckForTimeout()
 		}
 
 		if ( dwCurTick - it->first > CONSERVTIMEOUT) {
-			DWORD key = it->first;
+			uint32 key = it->first;
 			CServerSocket* value = it->second;
 			++it;
 			if (!value->IsSolving()) {
@@ -544,7 +544,7 @@ bool CServerConnect::IsLocalServer(uint32 dwIP, uint16 nPort)
 
 void CServerConnect::KeepConnectionAlive()
 {
-	DWORD dwServerKeepAliveTimeout = thePrefs::GetServerKeepAliveTimeout();
+	uint32 dwServerKeepAliveTimeout = thePrefs::GetServerKeepAliveTimeout();
 	if (dwServerKeepAliveTimeout && connected && connectedsocket &&
 	connectedsocket->connectionstate == CS_CONNECTED &&
 	GetTickCount() - connectedsocket->GetLastTransmission() >= dwServerKeepAliveTimeout) {

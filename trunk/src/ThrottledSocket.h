@@ -47,7 +47,7 @@ class ThrottledFileSocket : public ThrottledControlSocket
 {
 public:
     virtual SocketSentBytes SendFileAndControlData(uint32 maxNumberOfBytesToSend, uint32 minFragSize) = 0;
-    virtual DWORD GetLastCalledSend() = 0;
+    virtual uint32 GetLastCalledSend() = 0;
     virtual uint32	GetNeededBytes() = 0;
 };
 

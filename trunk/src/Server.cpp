@@ -38,7 +38,7 @@
 #include <wx/intl.h>	// Needed for _
 
 #include <wx/listimpl.cpp>
-WX_DEFINE_LIST(TagList);
+WX_DEFINE_LIST(TagList)
 
 CServer::CServer(ServerMet_Struct* in_data)
 {

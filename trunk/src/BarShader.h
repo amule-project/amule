@@ -155,14 +155,14 @@ public:
 	 * removed or resized. If the value of end is larger than the current
 	 * filesize, the filesize is increased to the value of end.
 	 */
-	void FillRange(uint32 start, uint32 end, const DWORD color);
+	void FillRange(uint32 start, uint32 end, const uint32 color);
 
 	/**
 	 * Fill the entire bar with a span of the specified color.
 	 *
 	 * @param color The color of the new span.
 	 */
-	void Fill(DWORD color);
+	void Fill(uint32 color);
 
 	/**
 	 * Draws the bar on the specifed wxDC.
@@ -191,7 +191,7 @@ private:
 	 * @param color The color of the rectangle.
 	 * @param bFlat If this is true, a simple rectangle will be drawn, otherwise the modifers will be applyed to achive a 3D effect.
 	 */
-	void FillRect(wxDC* dc, const wxRect& rectSpan, DWORD color, bool bFlat);
+	void FillRect(wxDC* dc, const wxRect& rectSpan, uint32 color, bool bFlat);
 
 	//! The width of the drawn bar
 	int    m_Width;
@@ -205,8 +205,8 @@ private:
 	uint16 m_used3dlevel;
 
 	
-	//! SpanList is defined as a CRangeMap with DWORDs as range-data
-	typedef CRangeMap< DWORD > SpanList;
+	//! SpanList is defined as a CRangeMap with uint32s as range-data
+	typedef CRangeMap<uint32> SpanList;
 	//! The list of spans. This list is kept sorted.
 	SpanList m_spanlist;
 };

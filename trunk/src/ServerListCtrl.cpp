@@ -139,7 +139,7 @@ void CServerListCtrl::RemoveAllServers( int state, bool ask_static )
 	  theApp.serverconnect->IsConnecting();
 
 	while ( pos != -1 ) {
-		if ( GetItemData(pos) == m_connected && connected == true) {
+		if ( (long)GetItemData(pos) == m_connected && connected == true) {
 			wxMessageBox(_("You are connected to a server you are trying to delete. Please disconnect first. The server was NOT deleted."), _("Info"), wxOK);
 			++pos;
 		} else {

@@ -126,7 +126,7 @@ void CBarShader::BuildModifiers()
 }
 
 
-void CBarShader::FillRange(uint32 start, uint32 end, const DWORD color)
+void CBarShader::FillRange(uint32 start, uint32 end, const uint32 color)
 {
 	// Sanity check
 	wxASSERT( start <= end );
@@ -143,7 +143,7 @@ void CBarShader::FillRange(uint32 start, uint32 end, const DWORD color)
 }
 
 
-void CBarShader::Fill(DWORD color)
+void CBarShader::Fill(uint32 color)
 {
 	m_spanlist.clear();
 	m_spanlist.insert( 0, m_FileSize - 1, color );
@@ -254,7 +254,7 @@ void CBarShader::Draw( wxDC* dc, int iLeft, int iTop, bool bFlat )
 }
 
 
-void CBarShader::FillRect(wxDC *dc, const wxRect& rectSpan, DWORD color, bool bFlat)
+void CBarShader::FillRect(wxDC *dc, const wxRect& rectSpan, uint32 color, bool bFlat)
 {
 	wxASSERT( dc );
 

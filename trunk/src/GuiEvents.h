@@ -126,7 +126,7 @@ enum GUI_Event_ID {
 	SEARCH_UPDATE_PROGRESS,
 	// download queue
 	DLOAD_SET_CAT_PRIO,
-	DLOAD_SET_CAT_STATUS,
+	DLOAD_SET_CAT_STATUS
 };
 
 // lfroen : custom events for core internal messages

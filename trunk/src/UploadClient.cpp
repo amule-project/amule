@@ -317,7 +317,7 @@ void CUpDownClient::CreateStandartPackets(const byte* data,uint32 togo, Requeste
 	uint32 nPacketSize;
 
 	try {
-		CMemFile memfile((BYTE*)data,togo);
+		CMemFile memfile((byte*)data,togo);
 		if (togo > 10240) 
 			nPacketSize = togo/(uint32)(togo/10240);
 		else
@@ -345,7 +345,7 @@ void CUpDownClient::CreateStandartPackets(const byte* data,uint32 togo, Requeste
 }
 
 void CUpDownClient::CreatePackedPackets(const byte* data,uint32 togo, Requested_Block_Struct* currentblock){
-	BYTE* output = new BYTE[togo+300];
+	byte* output = new byte[togo+300];
 	uLongf newsize = togo+300;
 	uint16 result = compress2(output,&newsize,data,togo,9);
 	if (result != Z_OK || togo <= newsize){

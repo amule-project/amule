@@ -80,9 +80,9 @@ uint64 MyTimer::tic64 = 0;
 
 //-------------------------------------------------------------------
 
-WX_DEFINE_OBJARRAY(ArrayOfUpDown);
-WX_DEFINE_OBJARRAY(ArrayOfSession);
-WX_DEFINE_OBJARRAY(ArrayOfTransferredData);
+WX_DEFINE_OBJARRAY(ArrayOfUpDown)
+WX_DEFINE_OBJARRAY(ArrayOfSession)
+WX_DEFINE_OBJARRAY(ArrayOfTransferredData)
 
 #define HTTPInit "Server: aMule\r\nPragma: no-cache\r\nExpires: 0\r\nCache-Control: no-cache, no-store, must-revalidate\r\nConnection: close\r\nContent-Type: text/html\r\n"
 #define HTTPInitGZ "Server: aMule\r\nPragma: no-cache\r\nExpires: 0\r\nCache-Control: no-cache, no-store, must-revalidate\r\nConnection: close\r\nContent-Type: text/html\r\nContent-Encoding: gzip\r\n"
@@ -490,7 +490,7 @@ void CWebServer::ProcessURL(ThreadData Data) {
 	wxString OutE2;
 	// ServerStatus Templates
 	wxString OutS;
-	TCHAR *gzipOut = NULL;
+	char *gzipOut = NULL;
 
 	long gzipLen = 0;
 	wxString HTTPProcessData;
@@ -595,7 +595,7 @@ void CWebServer::ProcessURL(ThreadData Data) {
 			bool bOk = false;
 			try {
 				uLongf destLen = strlen(httpOut) + 1024;
-				gzipOut = new TCHAR[destLen];
+				gzipOut = new char[destLen];
 				if( _GzipCompress((Bytef*)gzipOut, &destLen, 
 				   (const Bytef*)httpOut, strlen(httpOut), Z_DEFAULT_COMPRESSION) == Z_OK) {
 					bOk = true;
@@ -2205,15 +2205,15 @@ wxString CWebServer::GetPermissionDenied() {
 }
 
 
-bool CWebServer::_GetFileHash(wxString sHash, uchar *FileHash) {
+bool CWebServer::_GetFileHash(wxString sHash, byte *FileHash) {
 	char hex_byte[3];
-	int byte;
+	int Byte;
 	hex_byte[2] = '\0';
 	for (int i = 0; i < 16; ++i) {
 		hex_byte[0] = sHash.GetChar(i*2);
 		hex_byte[1] = sHash.GetChar((i*2 + 1));
-		sscanf(hex_byte, "%02x", &byte);
-		FileHash[i] = (uchar)byte;
+		sscanf(hex_byte, "%02x", &Byte);
+		FileHash[i] = (byte)Byte;
 	}
 	return true;
 }
@@ -2520,7 +2520,7 @@ bool ServersInfo::ServersInfo::ReQuery()
 
 bool ServersInfo::CompareItems(const ServerEntry &i1, const ServerEntry &i2)
 {
-	bool Result;
+	bool Result = false;
 	switch(m_SortOrder) {
 		case SERVER_SORT_NAME:
 			Result = i1.sServerName.CmpNoCase(i2.sServerName) < 0;
@@ -2619,7 +2619,7 @@ bool SharedFilesInfo::ReQuery()
 
 bool SharedFilesInfo::CompareItems(const SharedFiles &i1, const SharedFiles &i2)
 {
-	bool Result;
+	bool Result = false;
 	switch(m_SortOrder) {
        case SHARED_SORT_NAME:
             Result = i1.sFileName.CmpNoCase(i2.sFileName) < 0;
@@ -2786,7 +2786,7 @@ bool DownloadFilesInfo::ReQuery()
 
 bool DownloadFilesInfo::CompareItems(const DownloadFiles &i1, const DownloadFiles &i2)
 {
-	bool Result;
+	bool Result = false;
 	switch(m_SortOrder) {
 		case DOWN_SORT_NAME:
             Result = i1.sFileName.CmpNoCase(i2.sFileName) < 0;
@@ -2891,7 +2891,7 @@ bool SearchInfo::ReQuery()
 
 bool SearchInfo::CompareItems(const SearchFile &i1, const SearchFile &i2)
 {
-	bool Result;
+	bool Result = false;
 	switch(m_SortOrder) {
 		case SEARCH_SORT_NAME:
 			Result = i1.sFileName.CmpNoCase(i2.sFileName) < 0;

@@ -415,7 +415,7 @@ void CClientCredits::Verified(uint32 dwForIP){
 	IdentState = IS_IDENTIFIED;
 }
 
-bool CClientCredits::SetSecureIdent(const uchar* pachIdent, uint8 nIdentLen){ // verified Public key cannot change, use only if there is not public key yet
+bool CClientCredits::SetSecureIdent(const byte* pachIdent, uint8 nIdentLen){ // verified Public key cannot change, use only if there is not public key yet
 	if (MAXPUBKEYSIZE < nIdentLen || m_pCredits->nKeySize != 0 )
 		return false;
 	memcpy(m_abyPublicKey,pachIdent, nIdentLen);
@@ -519,7 +519,7 @@ void CClientCreditsList::InitalizeCrypting()
 	}
 }
 
-uint8 CClientCreditsList::CreateSignature(CClientCredits* pTarget, uchar* pachOutput, uint8 nMaxSize, uint32 ChallengeIP, uint8 byChaIPKind, void* sigkey){
+uint8 CClientCreditsList::CreateSignature(CClientCredits* pTarget, byte* pachOutput, uint8 nMaxSize, uint32 ChallengeIP, uint8 byChaIPKind, void* sigkey){
 	
 	CryptoPP::RSASSA_PKCS1v15_SHA_Signer* signer = (CryptoPP::RSASSA_PKCS1v15_SHA_Signer*)sigkey;
 	// signer param is used for debug only
@@ -563,7 +563,7 @@ uint8 CClientCreditsList::CreateSignature(CClientCredits* pTarget, uchar* pachOu
 	return nResult;
 }
 
-bool CClientCreditsList::VerifyIdent(CClientCredits* pTarget, const uchar* pachSignature, uint8 nInputSize, uint32 dwForIP, uint8 byChaIPKind){
+bool CClientCreditsList::VerifyIdent(CClientCredits* pTarget, const byte* pachSignature, uint8 nInputSize, uint32 dwForIP, uint8 byChaIPKind){
 	wxASSERT( pTarget );
 	wxASSERT( pachSignature );
 	if ( !CryptoAvailable() ){
@@ -656,7 +656,7 @@ bool CClientCreditsList::Debug_CheckCrypting(){
 	newcredits->SetSecureIdent(m_abyMyPublicKey,m_nMyPublicKeyLen);
 	newcredits->m_dwCryptRndChallengeFrom = challenge;
 	// create signature with fake priv key
-	uchar pachSignature[200];
+	byte pachSignature[200];
 	memset(pachSignature,200,0);
 	uint8 sigsize = CreateSignature(newcredits,pachSignature,200,0,false, &priv);
 

@@ -69,6 +69,6 @@ public:
 	WxCasFrame *GetMainFrame () const;
 };
 
-DECLARE_APP ( WxCas );
+DECLARE_APP ( WxCas )
 
 #endif /* _WXCAS_H */

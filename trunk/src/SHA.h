@@ -81,15 +81,15 @@ public:
 // Operations
 public:
 	virtual void	Reset();
-	virtual void	Add(LPCVOID pData, DWORD nLength);
+	virtual void	Add(const void* pData, uint32 nLength);
 	virtual void	Finish(CAICHHash& Hash);
 	virtual void	GetHash(CAICHHash& Hash);
 protected:
 	void			Compile();
 private:
-	DWORD	m_nCount[2];
-	DWORD	m_nHash[5];
-	DWORD	m_nBuffer[16];
+	uint32	m_nCount[2];
+	uint32	m_nHash[5];
+	uint32	m_nBuffer[16];
 };
 
 #define SHA1_BLOCK_SIZE		64

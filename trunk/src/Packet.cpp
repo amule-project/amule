@@ -108,7 +108,7 @@ CPacket::CPacket(CMemFile* datafile, uint8 protocol, uint8 ucOpcode)
 	completebuffer = new char[size + sizeof(Header_Struct)/*Why this 4?*/];
 	pBuffer = completebuffer + sizeof(Header_Struct);
 
-	BYTE* tmp = datafile->Detach();
+	byte* tmp = datafile->Detach();
 	memcpy(pBuffer, tmp, size);
 	free(tmp); 
 }
@@ -243,9 +243,9 @@ void CPacket::PackPacket() {
 	wxASSERT(!m_bSplitted);
 
 	uLongf newsize = size + 300;
-	BYTE* output = new BYTE[newsize];
+	byte* output = new byte[newsize];
 
-	uint16 result = compress2(output, &newsize, (BYTE*) pBuffer, size, Z_BEST_COMPRESSION);
+	uint16 result = compress2(output, &newsize, (byte*) pBuffer, size, Z_BEST_COMPRESSION);
 
 	if (result != Z_OK || size <= newsize) {
 		delete[] output;
@@ -260,7 +260,7 @@ void CPacket::PackPacket() {
 	size = newsize;
 }
 
-bool CPacket::UnPackPacket(UINT uMaxDecompressedSize) {
+bool CPacket::UnPackPacket(uint32 uMaxDecompressedSize) {
 	wxASSERT( prot == OP_PACKEDPROT );
 
 	uint32 nNewSize = size * 10 + 300;
@@ -269,9 +269,9 @@ bool CPacket::UnPackPacket(UINT uMaxDecompressedSize) {
 		nNewSize = uMaxDecompressedSize;
 	}
 
-	BYTE* unpack = new BYTE[nNewSize];
+	byte* unpack = new byte[nNewSize];
 	uLongf unpackedsize = nNewSize;
-	uint16 result = uncompress(unpack, &unpackedsize, (BYTE *) pBuffer, size);
+	uint16 result = uncompress(unpack, &unpackedsize, (byte*) pBuffer, size);
 
 	if (result == Z_OK) {
 		wxASSERT( completebuffer == NULL );
@@ -423,7 +423,7 @@ CTag::CTag(const CFileDataIO& data, bool bOptUTF8)
 			data.Read(&m_fVal, 4);
 			break;
 		case TAGTYPE_HASH:
-			m_pData = new BYTE[16];
+			m_pData = new byte[16];
 			try{
 				data.ReadHash16(m_pData);
 			} catch (...){
@@ -440,8 +440,9 @@ CTag::CTag(const CFileDataIO& data, bool bOptUTF8)
 			printf("***NOTE: %s; Reading BOOL Array tag\n", __FUNCTION__);
 			uint16 len = data.ReadUInt16();
 			// 07-Apr-2004: eMule versions prior to 0.42e.29 used the formula "(len+7)/8"!
-			char discard[(len/8)+1];
-			data.Read(discard,(len/8)+1);
+			char* discard = new char[ (len/8)+1 ];
+			data.Read(discard, (len/8)+1);
+			delete[] discard;
 			break;
 		}
 		case TAGTYPE_BLOB:

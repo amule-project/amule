@@ -56,10 +56,6 @@
 #include "md4.h"
 #include "bithelp.h"
 
-/// Constants initialization
-const unsigned int MD4::MD4_HASHLEN_BYTE = 128 / 8;
-const unsigned int MD4::BUFSIZE  = 64*1024;
-const unsigned int MD4::PARTSIZE = 9500*1024;
 
 /// BIG ENDIAN byte reversing
 #if wxBYTE_ORDER == wxBIG_ENDIAN

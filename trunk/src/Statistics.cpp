@@ -990,9 +990,9 @@ void CStatistics::UpdateStatsTree() {
 			lasttop=currtop;
 			currtop=0;
 			if(topcnt) {
-				UINT verMaj = topver/(100*10*100);
-				UINT verMin = (topver - (verMaj*100*10*100))/(100*10);
-				UINT verUp = (topver - (verMaj*100*10*100) - (verMin*100*10))/(100);
+				uint32 verMaj = topver/(100*10*100);
+				uint32 verMin = (topver - (verMaj*100*10*100))/(100*10);
+				uint32 verUp = (topver - (verMaj*100*10*100) - (verMin*100*10))/(100);
 				cbuffer = wxString::Format(wxT("v%u.%u.%u: %i (%1.1f%%)"), verMaj, verMin, verUp, topcnt, topper*100);							
 			} else {
 				cbuffer.Clear();
@@ -1042,9 +1042,9 @@ void CStatistics::UpdateStatsTree() {
 			lasttop=currtop;
 			currtop=0;
 			if(topcnt) {
-				UINT verMaj = topver/(100*10*100);
-				UINT verMin = (topver - (verMaj*100*10*100))/(100*10);
-				UINT verUp = (topver - (verMaj*100*10*100) - (verMin*100*10))/(100);
+				uint32 verMaj = topver/(100*10*100);
+				uint32 verMin = (topver - (verMaj*100*10*100))/(100*10);
+				uint32 verUp = (topver - (verMaj*100*10*100) - (verMin*100*10))/(100);
 				cbuffer = wxString::Format(wxT("v%u.%u.%u: %i (%1.1f%%)"), verMaj, verMin, verUp, topcnt, topper*100);
 			} else {
 				cbuffer.Clear();
@@ -1093,9 +1093,9 @@ void CStatistics::UpdateStatsTree() {
 			lasttop=currtop;
 			currtop=0;
 			if(topcnt) {
-				UINT verMaj = topver/(100*10*100);
-				UINT verMin = (topver - (verMaj*100*10*100))/(100*10);
-				UINT verUp = (topver - (verMaj*100*10*100) - (verMin*100*10))/(100);
+				uint32 verMaj = topver/(100*10*100);
+				uint32 verMin = (topver - (verMaj*100*10*100))/(100*10);
+				uint32 verUp = (topver - (verMaj*100*10*100) - (verMin*100*10))/(100);
 				cbuffer = wxString::Format(wxT(" v%u.%u%c: %i (%1.1f%%)"),verMaj, verMin, 'a' + verUp, topcnt, topper*100);
 			} else {
 				cbuffer.Clear();

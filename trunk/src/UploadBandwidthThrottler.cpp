@@ -318,7 +318,7 @@ void UploadBandwidthThrottler::Pause(bool paused)
  */
 void* UploadBandwidthThrottler::Entry()
 {
-	DWORD lastLoopTick = ::GetTickCount();
+	uint32 lastLoopTick = ::GetTickCount();
 
 	sint64 realBytesToSpend = 0;
 
@@ -327,13 +327,13 @@ void* UploadBandwidthThrottler::Entry()
 
     uint32 rememberedSlotCounter = 0;
 
-    DWORD lastTickReachedBandwidth = ::GetTickCount();
+    uint32 lastTickReachedBandwidth = ::GetTickCount();
 
 	while (m_doRun) {
         m_pauseLocker.Lock();
 		m_pauseLocker.Unlock();
 
-		DWORD timeSinceLastLoop = ::GetTickCount() - lastLoopTick;
+		uint32 timeSinceLastLoop = ::GetTickCount() - lastLoopTick;
 
 		// Get current speed from UploadSpeedSense
 		allowedDataRate = 10 * 1024; // theApp.lastCommonRouteFinder->GetUpload();
@@ -362,7 +362,7 @@ const uint32 TIME_BETWEEN_UPLOAD_LOOPS = 1;
             Sleep(sleepTime-timeSinceLastLoop);
         }
 
-		const DWORD thisLoopTick = ::GetTickCount();
+		const uint32 thisLoopTick = ::GetTickCount();
 		timeSinceLastLoop = thisLoopTick - lastLoopTick;
 
 		// Calculate how many bytes we can spend

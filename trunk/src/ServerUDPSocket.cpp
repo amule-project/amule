@@ -137,7 +137,7 @@ int CServerUDPSocket::DoReceive(amuleIPV4Address& addr, char* buffer, uint32 max
 	}
 	#endif
 	return length;
-};
+}
 
 void CServerUDPSocket::ProcessPacket(CSafeMemFile& packet, int16 size, int8 opcode, const wxString& host, uint16 port){
 

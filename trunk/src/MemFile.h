@@ -37,12 +37,12 @@ class CMemFile : public CFile {
 public:  
 	
 	CMemFile( unsigned int growBytes = 1024 );
-	CMemFile( BYTE* buffer, unsigned int bufferSize, unsigned int growBytes = 0 );
+	CMemFile( byte* buffer, unsigned int bufferSize, unsigned int growBytes = 0 );
 	virtual ~CMemFile();
 
 
-	void Attach(BYTE* buffer, unsigned int buffserSize, unsigned int growBytes = 0 );
-	BYTE* Detach();	
+	void Attach(byte* buffer, unsigned int buffserSize, unsigned int growBytes = 0 );
+	byte* Detach();	
 	
 	virtual off_t GetPosition() const 		{ return m_position; };
 	virtual bool GetStatus(unsigned long) const 	{ return true; };
@@ -72,7 +72,7 @@ protected:
 	off_t	m_BufferSize;
 	off_t	m_FileSize;
 	bool	m_delete;
-	BYTE*	m_buffer;
+	byte*	m_buffer;
 };
 
 #endif // MEMFILE_H

@@ -103,12 +103,12 @@ void CUpDownClient::SendStartupLoadReq()
 bool CUpDownClient::IsSourceRequestAllowed()
 {
 	// 0.42e
-	DWORD dwTickCount = ::GetTickCount() + CONNECTION_LATENCY;
+	uint32 dwTickCount = ::GetTickCount() + CONNECTION_LATENCY;
 	uint32 nTimePassedClient = dwTickCount - GetLastSrcAnswerTime();
 	uint32 nTimePassedFile   = dwTickCount - m_reqfile->GetLastAnsweredTime();
 	bool bNeverAskedBefore = (GetLastAskedForSources() == 0);
 
-	UINT uSources = m_reqfile->GetSourceCount();
+	uint32 uSources = m_reqfile->GetSourceCount();
 	return (
 		// if client has the correct extended protocol
 		ExtProtocolAvailable() && m_bySourceExchangeVer >= 1 &&
@@ -488,7 +488,7 @@ void CUpDownClient::ProcessHashSet(const char *packet, uint32 size)
 	if (!m_fHashsetRequesting) {
 		throw wxString(wxT("Received unsolicited hashset, ignoring it."));
 	}
-	CSafeMemFile* data = new CSafeMemFile((BYTE*)packet,size);
+	CSafeMemFile* data = new CSafeMemFile((byte*)packet,size);
 	if (m_reqfile->LoadHashsetFromFile(data,true)) {
 		m_fHashsetRequesting = 0;
 	} else {
@@ -606,8 +606,8 @@ void CUpDownClient::ProcessBlockPacket(const char *packet, uint32 size, bool pac
 	m_dwLastBlockReceived = ::GetTickCount();
 
 	// Read data from packet
-	const CSafeMemFile data((BYTE*)packet, size);
-	uchar fileID[16];
+	const CSafeMemFile data((byte*)packet, size);
+	byte fileID[16];
 	data.ReadHash16(fileID);
 
 	// Check that this data is for the correct file
@@ -663,7 +663,7 @@ void CUpDownClient::ProcessBlockPacket(const char *packet, uint32 size, bool pac
 			if (!packed) {
 				// Write to disk (will be buffered in part file class)
 				lenWritten = m_reqfile->WriteToBuffer( size - HEADER_SIZE, 
-													   (BYTE*)(packet + HEADER_SIZE),
+													   (byte*)(packet + HEADER_SIZE),
 													   nStartPos,
 													   nEndPos,
 													   cur_block->block );
@@ -678,10 +678,10 @@ void CUpDownClient::ProcessBlockPacket(const char *packet, uint32 size, bool pac
 				if (lenUnzipped > (BLOCKSIZE + 300)) {
 					lenUnzipped = (BLOCKSIZE + 300);
 				}
-				BYTE *unzipped = new BYTE[lenUnzipped];
+				byte *unzipped = new byte[lenUnzipped];
 
 				// Try to unzip the packet
-				int result = unzip(cur_block, (BYTE *)(packet + HEADER_SIZE), (size - HEADER_SIZE), &unzipped, &lenUnzipped);
+				int result = unzip(cur_block, (byte*)(packet + HEADER_SIZE), (size - HEADER_SIZE), &unzipped, &lenUnzipped);
 				
 				// no block can be uncompressed to >2GB, 'lenUnzipped' is obviously errornous.				
 				if (result == Z_OK && ((int)lenUnzipped >= 0)) {
@@ -758,7 +758,7 @@ void CUpDownClient::ProcessBlockPacket(const char *packet, uint32 size, bool pac
 	}
 }
 
-int CUpDownClient::unzip(Pending_Block_Struct *block, BYTE *zipped, uint32 lenZipped, BYTE **unzipped, uint32 *lenUnzipped, int iRecursion)
+int CUpDownClient::unzip(Pending_Block_Struct *block, byte *zipped, uint32 lenZipped, byte **unzipped, uint32 *lenUnzipped, int iRecursion)
 {
 	int err = Z_DATA_ERROR;
 	
@@ -824,7 +824,7 @@ int CUpDownClient::unzip(Pending_Block_Struct *block, BYTE *zipped, uint32 lenZi
 			newLength = lenZipped * 2;
 		}
 		// Copy any data that was successfully unzipped to new array
-		BYTE *temp = new BYTE[newLength];
+		byte *temp = new byte[newLength];
 		wxASSERT( zS->total_out - block->totalUnzipped <= newLength );
 		memcpy(temp, (*unzipped), (zS->total_out - block->totalUnzipped));
 		delete [] (*unzipped);
@@ -1021,7 +1021,7 @@ wxString CUpDownClient::ShowDownloadingParts() const
 
 void CUpDownClient::UpdateDisplayedInfo(bool force)
 {
-	DWORD curTick = ::GetTickCount();
+	uint32 curTick = ::GetTickCount();
 	if(force || curTick-m_lastRefreshedDLDisplay > MINWAIT_BEFORE_DLDISPLAY_WINDOWUPDATE) {
 		// Check if we actually need to notify of changes
 		bool update = m_reqfile && m_reqfile->ShowSources();
@@ -1244,19 +1244,19 @@ void CUpDownClient::SendAICHRequest(CPartFile* pForFile, uint16 nPart){
 	SafeSendPacket(packet);
 }
 
-void CUpDownClient::ProcessAICHAnswer(const char* packet, UINT size)
+void CUpDownClient::ProcessAICHAnswer(const char* packet, uint32 size)
 {
 	if (m_fAICHRequested == FALSE){
 		throw wxString(_("Received unrequested AICH Packet"));
 	}
 	m_fAICHRequested = FALSE;
 
-	CSafeMemFile data((BYTE*)packet, size);
+	CSafeMemFile data((byte*)packet, size);
 	if (size <= 16){	
 		CAICHHashSet::ClientAICHRequestFailed(this);
 		return;
 	}
-	uchar abyHash[16];
+	byte abyHash[16];
 	data.ReadHash16(abyHash);
 	CPartFile* pPartFile = theApp.downloadqueue->GetFileByID(abyHash);
 	CAICHRequestedData request = CAICHHashSet::GetAICHReqDetails(this);
@@ -1285,12 +1285,12 @@ void CUpDownClient::ProcessAICHAnswer(const char* packet, UINT size)
 	CAICHHashSet::ClientAICHRequestFailed(this);
 }
 
-void CUpDownClient::ProcessAICHRequest(const char* packet, UINT size){
+void CUpDownClient::ProcessAICHRequest(const char* packet, uint32 size){
 	if (size != 16 + 2 + CAICHHash::GetHashSize())
 		throw wxString(_T("Received AICH Request Packet with wrong size"));
 	
-	CSafeMemFile data((BYTE*)packet, size);
-	uchar abyHash[16];
+	CSafeMemFile data((byte*)packet, size);
+	byte abyHash[16];
 	data.ReadHash16(abyHash);
 	uint16 nPart = data.ReadUInt16();
 	CAICHHash ahMasterHash(&data);
@@ -1330,7 +1330,7 @@ void CUpDownClient::ProcessAICHRequest(const char* packet, UINT size){
 void CUpDownClient::ProcessAICHFileHash(CSafeMemFile* data, const CPartFile* file){
 	CPartFile* pPartFile;
 	if (file == NULL){
-		uchar abyHash[16];
+		byte abyHash[16];
 		data->ReadHash16(abyHash);
 		pPartFile = theApp.downloadqueue->GetFileByID(abyHash);
 	} else {

@@ -39,6 +39,7 @@
 #include "GetTickCount.h"	// Needed for GetTickCount()
 #include "OtherFunctions.h" // Needed for IP_FROM_GUI_ID and PORT_FROM_GUI_ID
 #include "Logger.h"
+#include "Format.h"
 
 #include <algorithm>
 
@@ -725,14 +726,19 @@ bool CClientList::IsDeadSource(const CUpDownClient* client)
 	return m_deadSources.IsDeadSource( client );
 }
 
-bool CClientList::SendMessage(uint64 client_id, const wxString& message) {
+bool CClientList::SendMessage(uint64 client_id, const wxString& message)
+{
 	CUpDownClient* client = FindClientByIP(IP_FROM_GUI_ID(client_id), PORT_FROM_GUI_ID(client_id));
 	printf("Send Message: ");
 	if (client) {
 		printf("Sending\n");
 		return client->SendMessage(message);
 	} else {
-		printf("No client (GUI_ID %lli [%s:%llu]\n", client_id, (const char*)unicode2char(Uint32toStringIP(IP_FROM_GUI_ID(client_id))),  PORT_FROM_GUI_ID(client_id));
+		AddDebugLogLineM( true, logClient, 
+			CFormat( wxT("No client (GUI_ID %lli [%s:%llu]) found in CClientList::SendMessage()\n") ) 
+				% client_id 
+				% Uint32toStringIP(IP_FROM_GUI_ID(client_id))
+				% PORT_FROM_GUI_ID(client_id) );
 		return false;
 	}
 }

@@ -78,7 +78,7 @@ enum {
 	DOWNLOAD_ITEM3=54322,
 	DOWNLOAD_ITEM4=54323,
 	DOWNLOAD_ITEM5=54324,
-	DOWNLOAD_ITEM6=54325,
+	DOWNLOAD_ITEM6=54325
 };
 
 /****************************************************/
@@ -218,7 +218,7 @@ CMuleTrayIcon::~CMuleTrayIcon()
 
 void CMuleTrayIcon::SetTrayIcon(int Icon, uint32 percent)
 {
-	int Bar_ySize;
+	int Bar_ySize = 0;
 
 	switch (Icon) {
 		case TRAY_ICON_HIGHID:

@@ -107,7 +107,7 @@ typedef enum {
 typedef enum {
 	SEARCH_SORT_NAME,
 	SEARCH_SORT_SIZE,
-	SEARCH_SORT_SOURCES,
+	SEARCH_SORT_SOURCES
 } xSearchSort;
 
 WX_DECLARE_OBJARRAY(UpDown*, ArrayOfUpDown);
@@ -791,7 +791,7 @@ class CWebServer {
 		void		_RemoveTimeOuts(ThreadData Data, long lSession);
 		bool		_RemoveSession(ThreadData Data, long lSession);
 		bool		_GetFileHash(wxString sHash, unsigned char *FileHash);
-		wxString	_GetPlainResString(UINT nID, bool noquote = false);
+		wxString	_GetPlainResString(uint32 nID, bool noquote = false);
 		int		_GzipCompress(Bytef *dest, uLongf *destLen, const Bytef *source, uLong sourceLen, int level);
 		wxString	_LoadTemplate(wxString sAll, wxString sTemplateName);
 		Session		GetSessionByID(ThreadData Data,long sessionID);

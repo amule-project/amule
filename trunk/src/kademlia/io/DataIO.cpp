@@ -192,7 +192,7 @@ CTag *CDataIO::readTag(bool bOptACP)
 			//
 			case TAGTYPE_HASH:
 			{
-				BYTE value[16];
+				byte value[16];
 				readHash(value);
 				retVal = new CTagHash(name, value);
 				break;
@@ -294,12 +294,12 @@ void CDataIO::writeFloat(float val)
 	writeArray(&val, sizeof(float));
 }
 
-void CDataIO::writeHash(const BYTE* value)
+void CDataIO::writeHash(const byte* value)
 {
 	writeArray(value, 16);
 }
 
-void CDataIO::writeBsob(const BYTE* value, uint8 size)
+void CDataIO::writeBsob(const byte* value, uint8 size)
 {
 	writeUInt8(size);
 	writeArray(value, size);

@@ -75,7 +75,7 @@ void CFileDataIO::ReadUInt128(Kademlia::CUInt128 *pVal) const
 }
 
 
-void CFileDataIO::ReadHash16(uchar* pVal) const
+void CFileDataIO::ReadHash16(byte* pVal) const
 {
 	Read(pVal, 16);
 }
@@ -180,7 +180,7 @@ void CFileDataIO::WriteUInt128(const Kademlia::CUInt128 *pVal)
 }
 
 
-void CFileDataIO::WriteHash16(const uchar* pVal)
+void CFileDataIO::WriteHash16(const byte* pVal)
 {
 	Write(pVal, 16);
 }
@@ -332,7 +332,7 @@ void CSafeMemFile::WriteUInt128(const Kademlia::CUInt128* pVal)
 }
 
 
-void CSafeMemFile::WriteHash16(const uchar* pVal)
+void CSafeMemFile::WriteHash16(const byte* pVal)
 {
 	if ((off_t)(m_position + sizeof(uint32)*4 /* 16 bytes */) > m_BufferSize)
 		enlargeBuffer(m_position + sizeof(uint32)*4);

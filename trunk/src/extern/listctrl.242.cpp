@@ -323,10 +323,10 @@ private:
 //-----------------------------------------------------------------------------
 //  wxListLineData (internal)
 //-----------------------------------------------------------------------------
+#include "wx/listimpl.cpp"
 
 WX_DECLARE_LIST(wxListItemData, wxListItemDataList);
-#include "wx/listimpl.cpp"
-WX_DEFINE_LIST(wxListItemDataList);
+WX_DEFINE_LIST(wxListItemDataList)
 
 class wxListLineData
 {
@@ -438,7 +438,7 @@ private:
 
 WX_DECLARE_EXPORTED_OBJARRAY(wxListLineData, wxListLineDataArray);
 #include "wx/arrimpl.cpp"
-WX_DEFINE_OBJARRAY(wxListLineDataArray);
+WX_DEFINE_OBJARRAY(wxListLineDataArray)
 
 //-----------------------------------------------------------------------------
 //  wxListHeaderWindow (internal)
@@ -541,9 +541,9 @@ private:
 //  wxListMainWindow (internal)
 //-----------------------------------------------------------------------------
 
-WX_DECLARE_LIST(wxListHeaderData, wxListHeaderDataList);
 #include "wx/listimpl.cpp"
-WX_DEFINE_LIST(wxListHeaderDataList);
+WX_DECLARE_LIST(wxListHeaderData, wxListHeaderDataList);
+WX_DEFINE_LIST(wxListHeaderDataList)
 
 class wxListMainWindow : public wxScrolledWindow
 {

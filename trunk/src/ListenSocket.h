@@ -73,7 +73,7 @@ private:
 #else
 private:
 	void ClientReqSocketHandler(wxSocketEvent& event);
-	DECLARE_EVENT_TABLE();
+	DECLARE_EVENT_TABLE()
 #endif
 };
 

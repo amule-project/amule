@@ -172,7 +172,7 @@ class AlcFrame:public wxFrame
     /// Clear the URL list box
     void OnClearUrlButton (wxCommandEvent & event);
 
-    DECLARE_EVENT_TABLE ();
+    DECLARE_EVENT_TABLE ()
 
   public:
     /// Constructor

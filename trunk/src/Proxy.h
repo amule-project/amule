@@ -197,7 +197,7 @@ private:
 	 * Event handler function.
 	 */
 	void ProxySocketHandler(wxSocketEvent &event);
-	DECLARE_EVENT_TABLE();
+	DECLARE_EVENT_TABLE()
 #else
 public:
 	/**

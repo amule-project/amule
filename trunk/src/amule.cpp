@@ -1164,14 +1164,14 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 	amulesig_out.AddLine(thePrefs::GetUserNick());
 
 	// Total received in bytes
-	amulesig_out.AddLine(wxString::Format(wxT("%llu"),
-		(long long unsigned int)(theApp.statistics->GetSessionReceivedBytes() +
-		thePrefs::GetTotalDownloaded())));
+	amulesig_out.AddLine( CFormat( wxT("%llu") ) %
+		(uint64)(theApp.statistics->GetSessionReceivedBytes() +
+		thePrefs::GetTotalDownloaded()) );
 
 	// Total sent in bytes
-	amulesig_out.AddLine(wxString::Format(wxT("%llu"),
-		(long long unsigned int)(theApp.statistics->GetSessionSentBytes() +
-		thePrefs::GetTotalUploaded())));
+	amulesig_out.AddLine( CFormat( wxT("%llu") ) %
+		(uint64)(theApp.statistics->GetSessionSentBytes() +
+		thePrefs::GetTotalUploaded()) );
 
 	// amule version
 #ifdef CVSDATE
@@ -1186,12 +1186,12 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 		amulesig_out.AddLine(wxT("0"));
 	} else {
         // Total received bytes in session
-		amulesig_out.AddLine(wxString::Format(wxT("%llu"),
-			(long long unsigned int)theApp.statistics->GetSessionReceivedBytes()));
+		amulesig_out.AddLine( CFormat( wxT("%llu") ) %
+			(uint64)theApp.statistics->GetSessionReceivedBytes() );
 
         // Total sent bytes in session
-		amulesig_out.AddLine(wxString::Format(wxT("%llu"),
-			(long long unsigned int)theApp.statistics->GetSessionSentBytes()));
+		amulesig_out.AddLine( CFormat( wxT("%llu") ) %
+			(uint64)theApp.statistics->GetSessionSentBytes() );
 		
 		// Uptime
 		amulesig_out.AddLine(wxString::Format(wxT("%u"),statistics->GetUptimeSecs()));
@@ -1414,10 +1414,10 @@ void CamuleApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 		wxString buffer;
 		
 		wxConfigBase* cfg = wxConfigBase::Get();
-		buffer = wxString::Format(wxT("%llu"),(long long unsigned int)(theApp.statistics->GetSessionReceivedBytes() + thePrefs::GetTotalDownloaded()));
+		buffer = CFormat( wxT("%llu") ) % ( theApp.statistics->GetSessionReceivedBytes() + thePrefs::GetTotalDownloaded() );
 		cfg->Write(wxT("/Statistics/TotalDownloadedBytes"), buffer);
 
-		buffer = wxString::Format(wxT("%llu"),(long long unsigned int)(theApp.statistics->GetSessionSentBytes()+thePrefs::GetTotalUploaded()));
+		buffer = CFormat( wxT("%llu") ) % ( theApp.statistics->GetSessionSentBytes()+thePrefs::GetTotalUploaded() );
 		cfg->Write(wxT("/Statistics/TotalUploadedBytes"), buffer);
 	}
 

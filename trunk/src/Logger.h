@@ -75,7 +75,7 @@ enum DebugType
 	//! Warnings/Errors for proxy.
 	logProxy,
 	//! Warnings/Errors related to searching.
-	logSearch,
+	logSearch
 };
 
 
@@ -177,7 +177,7 @@ namespace CLogger
 	 * Returns the number of debug-categories.
 	 */
 	unsigned int 			GetDebugCategoryCount();
-};
+}
 
 
 

@@ -74,7 +74,7 @@ void destructor(T1* p)
    p->~T1();
    }
 
-};
+}
 
 template<class T>
 class tree_node_ { // size: 5*4=20 bytes (on 32 bit arch), can be reduced by 8.

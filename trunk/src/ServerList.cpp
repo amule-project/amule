@@ -110,7 +110,7 @@ bool CServerList::LoadServerMet(const wxString& strFile)
 	try {
 		Notify_ServerFreeze();
 		
-		uchar version = servermet.ReadUInt8();
+		byte version = servermet.ReadUInt8();
 		
 		if (version != 0xE0 && version != MET_HEADER) {
 			AddLogLineM(false, wxString::Format(_("Invalid versiontag in server.met (0x%x , size %i)!"),version, sizeof(version)));

@@ -139,11 +139,11 @@ public:
 	uint32 GetInt() const				{ wxASSERT(IsInt());		return m_uVal; }
 	const wxString& GetStr() const	{ wxASSERT(IsStr());		return *m_pstrVal; }
 	float GetFloat() const			{ wxASSERT(IsFloat());	return m_fVal; }
-	const BYTE* GetHash() const		{ wxASSERT(IsHash());		return m_pData; }
+	const byte* GetHash() const		{ wxASSERT(IsHash());		return m_pData; }
 	uint32 GetBlobSize() const		{ wxASSERT(IsBlob());		return m_nBlobSize; }
-	const BYTE* GetBlob() const		{ wxASSERT(IsBlob());		return m_pData; }
+	const byte* GetBlob() const		{ wxASSERT(IsBlob());		return m_pData; }
 
-	void SetInt(UINT uVal);
+	void SetInt(uint32 uVal);
 	
 	CTag* CloneTag()				{ return new CTag(*this); }
 	
@@ -176,6 +176,6 @@ inline int CmpED2KTagName(char* pszTagName1, char* pszTagName2){
 }
 void ConvertED2KTag(CTag*& pTag);
 
-bool WriteOptED2KUTF8Tag(CFileDataIO* data, LPCWSTR pwsz, uint8 uTagName);
+bool WriteOptED2KUTF8Tag(CFileDataIO* data, const wchar_t* pwsz, uint8 uTagName);
 
 #endif // PACKET_H

@@ -85,7 +85,7 @@ private:
 
 
 	//! Variable used to store the user-selected color.
-	DWORD				m_color;
+	uint32				m_color;
 
 	//! Pointer to category to be edited or NULL if we are adding a new category.
 	Category_Struct*	m_category;

@@ -42,7 +42,7 @@ CMemFile::CMemFile(unsigned int growBytes)
 }
 
 
-CMemFile::CMemFile(BYTE *buffer, unsigned int bufferSize, unsigned int growBytes)
+CMemFile::CMemFile(byte *buffer, unsigned int bufferSize, unsigned int growBytes)
 {
 	m_buffer		= NULL;
 	m_delete		= true;
@@ -51,7 +51,7 @@ CMemFile::CMemFile(BYTE *buffer, unsigned int bufferSize, unsigned int growBytes
 }
 
 
-void CMemFile::Attach(BYTE* buffer, unsigned int bufferSize, unsigned int growBytes)
+void CMemFile::Attach(byte* buffer, unsigned int bufferSize, unsigned int growBytes)
 {
 	// Should we free the old buffer if one such exists
 	if ( m_buffer && m_delete ) {
@@ -70,9 +70,9 @@ void CMemFile::Attach(BYTE* buffer, unsigned int bufferSize, unsigned int growBy
 }
 
 
-BYTE* CMemFile::Detach()
+byte* CMemFile::Detach()
 {
-	BYTE *retval	= m_buffer;
+	byte *retval	= m_buffer;
 	
 	m_position		= 0;
 	m_BufferSize	= 0;
@@ -157,9 +157,9 @@ void CMemFile::enlargeBuffer(unsigned long size)
 	}
 
 	if ( m_buffer ) {
-		m_buffer = (BYTE*)realloc((void*)m_buffer, newsize);
+		m_buffer = (byte*)realloc((void*)m_buffer, newsize);
 	} else {
-		m_buffer = (BYTE*)malloc(newsize);
+		m_buffer = (byte*)malloc(newsize);
 	}
 
 	// Check for memory errors

@@ -58,6 +58,7 @@
 #include "CFile.h"
 #include "MD5Sum.h"
 #include "Logger.h"
+#include "Format.h"
 
 #ifndef AMULE_DAEMON
 #include <wx/valgen.h>
@@ -548,7 +549,7 @@ public:
 
 	virtual void SaveToFile(wxConfigBase* cfg)
 	{
-		wxString str = wxString::Format(wxT("%llu"),(unsigned long long)m_value);
+		wxString str = CFormat( wxT("%llu") ) % m_value;
 	
 		cfg->Write( GetKey(), str );
 	}
@@ -616,7 +617,7 @@ static LangInfo aMuleLanguages[] = {
 
 bool TranslatedSort( const LangInfo& a, const LangInfo& b ) {
 	return wxStricmp( wxGetTranslation( a.name ), wxGetTranslation( b.name) ) < 0;
-};
+}
 
 
 class Cfg_Lang : public Cfg_Tmpl<int>
@@ -1152,13 +1153,6 @@ void CPreferences::CheckUlDlRatio()
 void CPreferences::SetStandartValues()
 {
 	CreateUserHash();
-	WINDOWPLACEMENT defaultWPM;
-	defaultWPM.length = sizeof(WINDOWPLACEMENT);
-	defaultWPM.rcNormalPosition.left=10;
-	defaultWPM.rcNormalPosition.top=10;
-	defaultWPM.rcNormalPosition.right=700;
-	defaultWPM.rcNormalPosition.bottom=500;
-	defaultWPM.showCmd=0;
 	Save();
 }
 
@@ -1395,7 +1389,7 @@ const wxString&	CPreferences::GetCatPath(uint8 index)
 }
 
 
-DWORD CPreferences::CPreferences::GetCatColor(size_t index)
+uint32 CPreferences::CPreferences::GetCatColor(size_t index)
 {
 	wxASSERT( index < m_CatList.size() );
 

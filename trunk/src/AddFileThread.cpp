@@ -49,7 +49,7 @@
 #include <algorithm>
 
 
-const uchar default_zero_hash[16] = { 0x31, 0xD6, 0xCF, 0xE0, 0xD1, 0x6A, 0xE9, 0x31, 
+const byte default_zero_hash[16] = { 0x31, 0xD6, 0xCF, 0xE0, 0xD1, 0x6A, 0xE9, 0x31, 
 												0xB7, 0x3C, 0x59, 0xD7, 0xE0, 0xC0, 0x89, 0xC0 };
 
 
@@ -309,7 +309,7 @@ wxThread::ExitCode CAddFileThread::Entry()
 				knownfile->CreateHashFromString( data, len, hash, NULL );
 				delete [] data;
 
-				knownfile->m_abyFileHash.SetHash( (uchar*)hash );
+				knownfile->m_abyFileHash.SetHash( (byte*)hash );
 			}
 			
 			
@@ -406,7 +406,7 @@ bool CAddFileThread::CreateNextPartHash( CFile* file, CKnownFile* owner, bool cr
 	owner->CreateHashFromString( data, cur_length, hash, pBlockAICHHashTree );
 	
 	// Store the md4 hash
-	owner->hashlist.Add( (uchar*)hash );
+	owner->hashlist.Add( (byte*)hash );
 
 	
 	// Kry This is because of the ed2k implementation for parts. A 2 * PARTSIZE 

@@ -585,7 +585,7 @@ enum {
 		 *	::EC_TAG_USER_NICK and ::EC_TAG_SERVER_VERSION only if
 		 *	detail level is ::EC_DETAIL_WEB (ie. for webserver only)
 		 */
-	EC_OP_STATSTREE,
+	EC_OP_STATSTREE
 };
 
 
@@ -1299,8 +1299,7 @@ enum {
 		 * Children:
 		 *	zero or more ::EC_TAG_TREE tags, containing the subtree for this item
 		 */
-	EC_TAG_TREE,
-
+	EC_TAG_TREE
 };
 
 
@@ -1323,7 +1322,7 @@ enum EC_DETAIL_LEVEL {
 	 * Send only tags that has been changed since last request. This algorithm
 	 * uses twice memory as previous, but saves bandwidth. Good for remote gui
 	 */
-	EC_DETAIL_INC_UPDATE,
+	EC_DETAIL_INC_UPDATE
 };
 
 
@@ -1334,7 +1333,7 @@ enum EC_DETAIL_LEVEL {
 enum EC_SEARCH_TYPE {
 	EC_SEARCH_LOCAL,
 	EC_SEARCH_GLOBAL,
-	EC_SEARCH_WEB,
+	EC_SEARCH_WEB
 };
 /*
  * EC Preferences selection bit values.

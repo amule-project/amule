@@ -636,7 +636,7 @@ CServerListRem::CServerListRem(CRemoteConnect *conn) : CRemoteContainer<CServer,
 {
 }
 
-void CServerListRem::UpdateServerMetFromURL(wxString url)
+void CServerListRem::UpdateServerMetFromURL(wxString WXUNUSED(url))
 {
 	// FIXME: add command
 }
@@ -655,7 +655,7 @@ void CServerListRem::RemoveServer(CServer* server)
 	m_conn->Send(&req);
 }
 
-CServer *CServerListRem::GetServerByAddress(const wxString& address, uint16 port)
+CServer *CServerListRem::GetServerByAddress(const wxString& WXUNUSED(address), uint16 WXUNUSED(port))
 {
 	// It's ok to return 0 for context where this code is used in remote gui
 	return 0;
@@ -1193,7 +1193,7 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 			file->m_SrcpartFrequency[i] = part_info[i];
 		}
 	} else {
-		printf("ERROR: %p %p %p\n", gaptag, parttag, reqtag);
+		printf("ERROR: %p %p %p\n", (void*)gaptag, (void*)parttag, (void*)reqtag);
 	}
 	theApp.amuledlg->transferwnd->downloadlistctrl->UpdateItem(file);
 }
@@ -1415,8 +1415,8 @@ wxString CUpDownClient::ShowDownloadingParts() const
 {
 	return wxEmptyString;
 }
-bool CUpDownClient::SwapToAnotherFile(bool bIgnoreNoNeeded, bool ignoreSuspensions,
-										bool bRemoveCompletely, CPartFile* toFile)
+bool CUpDownClient::SwapToAnotherFile(bool WXUNUSED(bIgnoreNoNeeded), bool WXUNUSED(ignoreSuspensions),
+										bool WXUNUSED(bRemoveCompletely), CPartFile* WXUNUSED(toFile))
 {
 	// FIXME: add code
 	wxASSERT(0);
