@@ -33,6 +33,12 @@
 #include <wx/spinctrl.h>
 #include <wx/tokenzr.h>
 #include <wx/valgen.h>
+#include <wx/textctrl.h>
+#include <wx/choice.h>
+#include <wx/msgdlg.h>
+#include <wx/stattext.h>
+#include <wx/dirdlg.h>
+
 #ifdef __WXGTK__
 	#include <wx/gtk/tooltip.h>
 #endif
