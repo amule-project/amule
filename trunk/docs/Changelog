@@ -7,6 +7,9 @@ Version 2.0.0rc6 - The '???' version.
 		  and wx headers checks.
 		* Configure cleanup, safetray remove and nice cosmetics for tools
 
+	Jacobo:
+		* Fixed issue on the About button.
+
 	phoenix:
 		* Fixed a compilation warning + appartently useless code in 
 		  DirectoryTree.cpp.
