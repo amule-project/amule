@@ -47,13 +47,13 @@ class CAICHHash;
  */
 static wxCSConv aMuleConv(wxT("iso8859-1"));
 #if wxUSE_UNICODE
-	inline const char* unicode2char(wxString x) { return ((const char*) aMuleConv.cWX2MB(x));};
+	inline const char *unicode2char(wxString x) { return ((const char *) aMuleConv.cWX2MB(x));};
 	inline const wxCharBuffer unicode2charbuf(wxString x) { return aMuleConv.cWX2MB(x); };
-	inline const wxWCharBuffer char2unicode(char* x) { return aMuleConv.cMB2WX(x); };
+	inline const wxWCharBuffer char2unicode(const char *x) { return aMuleConv.cMB2WX(x); };
 #else
-	inline const char* unicode2char(wxString x) { return ((const char*) x); };
-	inline const wxCharBuffer unicode2charbuf(wxString x) { return (const char*)x; };
-	inline const wxCharBuffer char2unicode(const char* x) { return x; };
+	inline const char *unicode2char(wxString x) { return ((const char *) x); };
+	inline const wxCharBuffer unicode2charbuf(wxString x) { return (const char *)x; };
+	inline const wxCharBuffer char2unicode(const char *x) { return x; };
 #endif
 #define aMuleConvToUTF8(x) (const char*) wxConvUTF8.cWC2MB((wxString(x)).wc_str(aMuleConv))
 
