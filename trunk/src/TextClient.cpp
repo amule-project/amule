@@ -274,17 +274,15 @@ bool CamulecmdApp::OnCmdLineParsed(wxCmdLineParser& amulecmd_parser) {
 	
 	bool result = true;
 	
+	// Call base class version to process standard command line options
 	//result = wxApp::OnCmdLineParsed(amulecmd_parser);
 	
-	wxString TempStr;
-	TempStr = wxT("rh");
-	if (!amulecmd_parser.Found(TempStr,&hostName)) {
+	if ( !amulecmd_parser.Found(wxT("rh"), &hostName) ) {
 		hostName = wxT("localhost");
 	}
 	
 	long port;
-	TempStr = wxT("p");
-	if (!amulecmd_parser.Found(TempStr,&port)) {
+	if (!amulecmd_parser.Found(wxT("p"),&port)) {
 		//server = getenv("HOME") + wxString("/.aMule/muleconn");	;
 		sPort = wxT("4712"); // default port
 	} else {
@@ -292,10 +290,12 @@ bool CamulecmdApp::OnCmdLineParsed(wxCmdLineParser& amulecmd_parser) {
 		sPort = wxString::Format(wxT("%li"),port);
 	}
 	
+	m_HasCommandLinePassword = amulecmd_parser.Found(wxT("password"), &m_CommandLinePassword);
+	
 	return result;
 }
-
 #endif
+
 #ifdef AMULECMDDLG
 int CamulecmdApp::OnExit() {
 /*
@@ -321,27 +321,29 @@ bool CamulecmdApp::OnInit() {
 #else
 int CamulecmdApp::OnRun() {
 #endif
-	
 	Show("\nThis is amulecmd (TextClient)\n\n");
 
 	wxString * temp_wxpasswd;
 
-	#ifndef AMULECMDDLG
-	char* t_passwd;
-	t_passwd = getpass("Enter password for mule connection (return if no pass defined): ");
-	if (strlen(t_passwd)>0) {
+#ifndef AMULECMDDLG
+	const char* t_passwd;
+	if ( m_HasCommandLinePassword ) {
+		t_passwd = unicode2char(m_CommandLinePassword);
+	} else {
+		t_passwd = getpass("Enter password for mule connection (return if no pass defined): ");
+	}
+	if ( strlen(t_passwd) > 0 ) {
 		temp_wxpasswd = new wxString(MD5Sum(char2unicode(t_passwd)).GetHash());
-	} else temp_wxpasswd = new wxString(wxT(""));
-	#else
+#else
 	hostName = wxGetTextFromUser(_T("Enter hostname or ip of the box running aMule"),_T("Enter Hostname"),_T("localhost"));
-	//server = wxGetTextFromUser(_T("Enter port for aMule's External Connection"),_T("Enter Port"),_T("4713"));
-	sPort = wxGetTextFromUser(_T("Enter port for aMule's External Connection"),_T("Enter Port"),_T("4713"));
+	//server = wxGetTextFromUser(_T("Enter port for aMule's External Connection"),_T("Enter Port"),_T("4712"));
+	sPort = wxGetTextFromUser(_T("Enter port for aMule's External Connection"),_T("Enter Port"),_T("4712"));
 	temp_wxpasswd = new wxString(::wxGetPasswordFromUser(_T("Enter password for mule connection (OK if no pass defined)"),_T("Enter Password")));
-	if (strlen(unicode2char(temp_wxpasswd->GetData()))>0) {
+	if (strlen(unicode2char(*temp_wxpasswd))>0) {
 		temp_wxpasswd = new wxString(MD5Sum(*temp_wxpasswd).GetHash());
-	} else temp_wxpasswd = new wxString(wxT(""));
-	#endif
-
+#endif
+	} else 
+		temp_wxpasswd = new wxString(wxT(""));
 
 	wxString passwd = wxString::Format(wxT("aMulecmd %s"),temp_wxpasswd->GetData());
 	//printf("pass |%s| MD5HASH = |%s|\n",t_passwd,temp_wxpasswd->GetData());;

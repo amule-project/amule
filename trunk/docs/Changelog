@@ -9,6 +9,9 @@ Version 2.0.0rc6 - The '???' version.
 		* Fixed the low number of sources problem with wx-2.5.2 and
 		  up. Problem was in CUDPSocket::SendBuffer, now there is a
 		  macro to test. aMule should be 2.5.2 network ready now.
+		* wxCHECK_VERSION(2,5,0) no longer necessary in
+		  amule{web,cmd} for wxApp because we have now -DwxUSE_GUI=0.
+		* New command line parameter in amulecmd: -pw or --password.
 
 Version 2.0.0rc5 - The 'Let's recover our release speed' version.
 ----------
