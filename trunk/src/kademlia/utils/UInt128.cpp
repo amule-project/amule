@@ -183,7 +183,7 @@ void CUInt128::toHexString(wxString *str) const
 	str->Clear();
 	for (int i=0; i<4; ++i)
 	{
-		str->Append(wxString::Format(wxT("%08X"), m_data[i]));
+		str->Append(wxString::Format(wxT("%08lX"), m_data[i]));
 	}
 }
 
