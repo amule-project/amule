@@ -197,7 +197,7 @@ void CClientCreditsList::LoadList()
 	CSafeFile file;
 	CString strFileName = CString(m_pAppPrefs->GetAppDir()) + CString(CLIENTS_MET_FILENAME);
 	if (!::wxFileExists(strFileName)) {
-		theApp.amuledlg->AddLogLine(true, CString(_("Failed to load creditfile")));
+		AddLogLineM(true, wxT("Failed to load creditfile"));
 		return;
 	}	
 	
@@ -206,7 +206,7 @@ void CClientCreditsList::LoadList()
 	uint8 version;
 	file.Read(&version, 1);
 	if (version != CREDITFILE_VERSION && version != CREDITFILE_VERSION_29){
-		theApp.amuledlg->AddLogLine(false, CString(_("Creditfile is out of date and will be replaced")));
+		AddLogLineM(false, wxT("Creditfile is out of date and will be replaced"));
 		file.Close();
 		return;
 	}
@@ -247,7 +247,7 @@ void CClientCreditsList::LoadList()
 		//}
 		// reopen file
 		if (!file.Open(strFileName, CFile::read)) {
-			theApp.amuledlg->AddLogLine(true, CString(_("Failed to load creditfile")));
+			AddLogLineM(true, wxT("Failed to load creditfile"));
 			return;
 		}
 		// file.Seek(1); //, CFile::begin); // set filepointer
