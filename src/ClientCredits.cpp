@@ -223,7 +223,6 @@ void CClientCreditsList::LoadList()
 	CString strBakFileName(theApp.ConfigDir + CLIENTS_MET_BAK_FILENAME);
 	
 	bool bCreateBackup = TRUE;
-	wxFile hBakFile(strBakFileName);
 	if (wxFileExists(strBakFileName)) {
 		// Ok, the backup exist, get the size
 		wxFile hBakFile(strBakFileName);
