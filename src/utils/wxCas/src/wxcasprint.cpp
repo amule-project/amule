@@ -34,6 +34,8 @@
 #pragma hdrstop
 #endif
 
+#include <wx/image.h>
+
 #include "wxcas.h"
 #include "wxcasframe.h"
 #include "wxcasprint.h"
@@ -126,7 +128,7 @@ WxCasPrint::DrawPageOne (wxDC * dc)
 
   // Set the scale and origin
   dc->SetUserScale (scale, scale);
-  dc->SetDeviceOrigin ((long) posX, (long) posY);
+  dc->SetDeviceOrigin ((wxCoord) posX, (wxCoord) posY);
 
   // Draw image
   dc->DrawBitmap (statImage->ConvertToBitmap (), 0, 0, FALSE);
