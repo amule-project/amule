@@ -734,7 +734,6 @@ void CamuleDlg::OnClose(wxCloseEvent& evt)
 
 	if (theApp.glob_prefs) {
 		theApp.glob_prefs->Save();
-		CPreferences::SaveAllItems( wxConfig::Get() );
 	}
 
 	transferwnd->downloadlistctrl->DeleteAllItems();
