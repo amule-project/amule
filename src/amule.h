@@ -377,8 +377,6 @@ public:
 
 	void ShutDown();
 
-	bool IsRunning() { return true; }
-
 	uint32 GetUptimeMsecs();
 
 	CPreferencesRem *glob_prefs;
