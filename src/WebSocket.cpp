@@ -214,7 +214,7 @@ void *CWCThread::Entry() {
 					//stWebSocket.m_pParent->Print(wxString::Format(wxT("*** WCThread write:\n%s\n"), stWebSocket.m_pHead->m_pToSend));
 					//WRITE
 					stWebSocket.m_hSocket->Write(stWebSocket.m_pHead->m_pToSend, stWebSocket.m_pHead->m_dwSize);
-					wxUint32 nRes = stWebSocket.m_hSocket->LastCount();
+					uint32 nRes = stWebSocket.m_hSocket->LastCount();
 					if (nRes == stWebSocket.m_pHead->m_dwSize) {
 						// erase this chunk
 						CWebSocket::CChunk* pNext = stWebSocket.m_pHead->m_pNext;
@@ -255,7 +255,7 @@ void *CWCThread::Entry() {
 	return NULL;	
 }
 
-void CWebSocket::OnRequestReceived(char* pHeader, wxUint32 dwHeaderLen, char* pData, wxUint32 dwDataLen)
+void CWebSocket::OnRequestReceived(char* pHeader, uint32 dwHeaderLen, char* pData, uint32 dwDataLen)
 {
 	wxString sHeader(char2unicode(pHeader));
 	sHeader = sHeader.Left(dwHeaderLen);
@@ -311,7 +311,7 @@ void CWebSocket::Disconnect() {
 }
 
 
-void CWebSocket::SendContent(LPCSTR szStdResponse, const void* pContent, wxUint32 dwContentSize) {
+void CWebSocket::SendContent(LPCSTR szStdResponse, const void* pContent, uint32 dwContentSize) {
 	char szBuf[0x1000]; // 0x1000 is safe because it's just used for the header
 	int nLen = sprintf(szBuf, "HTTP/1.1 200 OK\r\n%sContent-Length: %d\r\n\r\n", szStdResponse, dwContentSize);
 	SendData(szBuf, nLen);
@@ -319,7 +319,7 @@ void CWebSocket::SendContent(LPCSTR szStdResponse, const void* pContent, wxUint3
 }
 
 
-void CWebSocket::SendData(const void* pData, wxUint32 dwDataSize) {
+void CWebSocket::SendData(const void* pData, uint32 dwDataSize) {
 	if (m_bValid && m_bCanSend) {
 		if (!m_pHead) {
 			// try to send it directly

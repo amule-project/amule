@@ -45,7 +45,7 @@ public:
 	Packet(char* header); // only used for receiving packets
 	Packet(CMemFile* datafile, uint8 protocol = OP_EDONKEYPROT, uint8 ucOpcode = 0x00);
 	Packet(int8 in_opcode, uint32 in_size, uint8 protocol = OP_EDONKEYPROT, bool bFromPF = true);
-	Packet(char* pPacketPart, wxUint32 nSize, bool bLast, bool bFromPF = true); // only used for splitted packets!
+	Packet(char* pPacketPart, uint32 nSize, bool bLast, bool bFromPF = true); // only used for splitted packets!
 
 	~Packet();
 	
@@ -58,7 +58,7 @@ public:
 	bool			IsSplitted()		{ return m_bSplitted; }
 	bool			IsLastSplitted()	{ return m_bLastSplitted; }
 	void			PackPacket();
-	bool			UnPackPacket(wxUint32 uMaxDecompressedSize = 50000);
+	bool			UnPackPacket(uint32 uMaxDecompressedSize = 50000);
 	// -khaos--+++> Returns either -1, 0 or 1.  -1 is unset, 0 is from complete file, 1 is from part file
 	bool			IsFromPF()		{ return m_bFromPF; }
 	

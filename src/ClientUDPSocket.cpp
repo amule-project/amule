@@ -91,9 +91,9 @@ void CClientUDPSocket::OnReceive(int WXUNUSED(nErrorCode))
 	char buffer[CLIENT_UDP_BUFFER_SIZE];
 	amuleIPV4Address addr;
 	RecvFrom(addr,buffer,CLIENT_UDP_BUFFER_SIZE);
-	wxUint32 length = LastCount();
+	uint32 length = LastCount();
 
-	if (buffer[0] == (char)OP_EMULEPROT && length != static_cast<wxUint32>(-1)) {
+	if (buffer[0] == (char)OP_EMULEPROT && length != static_cast<uint32>(-1)) {
 		ProcessPacket(buffer+2,length-2,buffer[1],StringIPtoUint32(addr.IPAddress()),addr.Service());
 	}
 }
