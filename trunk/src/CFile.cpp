@@ -773,7 +773,6 @@ wxString  CDirIterator::FindNextFile() {
 				// so that we don't loose information. Only then stick
 				// to an ANSI name. UTF82Unicode might fail because
 				// dp->name may not be a valid UTF-8 sequence.
-				printf("Found file %s on folder %s\n",dp->d_name,(const char*)unicode2char(DirStr));
 				Char2UnicodeBuf tmpFoundName(UTF82unicode(dp->d_name));
 				FoundName = tmpFoundName ?
 					tmpFoundName : char2unicode(dp->d_name);
@@ -783,11 +782,9 @@ wxString  CDirIterator::FindNextFile() {
 				Unicode2CharBuf tmpFullName(unicode2char(FullName));		
 				int stat_error = -1;
 				if (tmpFullName) {
-					printf("Trying ANSI name...\n");
 					stat_error = stat(tmpFullName, buf);
 				} 
 				if (stat_error) {
-					printf("Trying UTF8 name...\n");
 					stat_error = stat(unicode2UTF8(FullName), buf);
 				}
 				
@@ -812,9 +809,9 @@ wxString  CDirIterator::FindNextFile() {
 					}
 				} else {
 					// Stat failed. Assert.
+					printf("CFile: serious error, stat failed\n");
 					wxASSERT(0);
 					AddDebugLogLineM( true, logFileIO, wxT("Unexpected error calling stat on a file!") );
-					printf("CFile: serious error, stat failed\n");
 					dp = readdir(DirPtr);
 				}
 #if 0
