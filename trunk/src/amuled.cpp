@@ -85,6 +85,7 @@
 #include "AICHSyncThread.h"
 #include "Statistics.h"
 #include "Logger.h"
+#include "Format.h"
 
 #ifdef HAVE_SYS_RESOURCE_H
 #include <sys/resource.h>
@@ -223,7 +224,7 @@ void CamuleDaemonApp::NotifyEvent(const GUIEvent& event)
 				AddLogLine(CFormat(_("Connected to %s %s")) % event.string_value % id);
 			} else {
 				if ( theApp.serverconnect->IsConnecting() ) {
-					AddLogLine(CFormat(_("Connecting to %s")) % event.string_value)
+					AddLogLine(CFormat(_("Connecting to %s")) % event.string_value);
 				} else {
 					AddLogLine(_("Disconnected"));
 				}
