@@ -580,7 +580,7 @@ void CClientList::Process()
 			if ( it->second + CLIENTBANTIME < cur_tick ) {
 				ClientMap::iterator tmp = it++;		
 				
-				m_bannedList.erase( it );
+				m_bannedList.erase( tmp );
 			} else {
 				it++;
 			}
