@@ -32,12 +32,18 @@
 
 #include "types.h"		// Needed for uint16 and uint32
 #include "amuleIPV4Address.h"	// Needed for wxIPV4address
+#include "CTypedPtrList.h"	// Needed for CTypedPtrList
 
 class Packet;
 class CServer;
 class CSafeMemFile;
 
 #define WM_DNSLOOKUPDONE WM_USER+280
+
+struct ServerUDPPacket {
+	Packet*	packet;
+	CServer*	server;
+};
 
 // Client to Server communication
 
@@ -71,6 +77,7 @@ private:
 	char*	sendbuffer;
 	uint32	sendblen;
 	CServer* cur_server;
+	CTypedPtrList<CPtrList, ServerUDPPacket*> server_packet_queue;
 	wxIPV4address useless;
 #ifdef AMULE_DAEMON
 	void *Entry();
