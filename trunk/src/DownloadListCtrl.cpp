@@ -71,18 +71,18 @@ END_EVENT_TABLE()
 void preloadImages(wxImageList * imgs)
 {
 	for (uint32 i=0; i<22; i++) {
-		imgs->Add(wxBitmap(clientImages(i)));
+		imgs->Add(clientImages(i));
 	}
 }
 
 //IMPLEMENT_DYNAMIC(CDownloadListCtrl, CListBox)
-CDownloadListCtrl::CDownloadListCtrl():m_ImageList(170, 16)
+CDownloadListCtrl::CDownloadListCtrl():m_ImageList(16, 16)
 {
 	SetImageList(&m_ImageList, wxIMAGE_LIST_SMALL);
 	preloadImages(&m_ImageList);
 }
 
-CDownloadListCtrl::CDownloadListCtrl(wxWindow * &parent, int id, const wxPoint & pos, wxSize siz, int flags):CMuleListCtrl(parent, id, pos, siz, flags | wxLC_OWNERDRAW), m_ImageList(170, 16)
+CDownloadListCtrl::CDownloadListCtrl(wxWindow * &parent, int id, const wxPoint & pos, wxSize siz, int flags):CMuleListCtrl(parent, id, pos, siz, flags | wxLC_OWNERDRAW), m_ImageList(16, 16)
 {
 	m_ClientMenu = NULL;
 	m_PrioMenu = NULL;

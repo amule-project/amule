@@ -98,7 +98,7 @@ CSearchDlg::CSearchDlg(wxWindow* pParent)
 	wxASSERT( notebook );
 
 	// Initialise the image list
-	wxImageList* m_ImageList = new wxImageList();
+	wxImageList* m_ImageList = new wxImageList(16,16);
 	m_ImageList->Add(amuleSpecial(3));
 	m_ImageList->Add(amuleSpecial(4));
 	notebook->AssignImageList(m_ImageList);
@@ -589,4 +589,3 @@ void CSearchDlg::OnPopupCloseOthers(wxCommandEvent& WXUNUSED(evt))
 		notebook->DeletePage( i );
 	}
 }
-

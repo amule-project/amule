@@ -62,6 +62,8 @@ CUploadListCtrl::CUploadListCtrl(wxWindow*& parent,int id,const wxPoint& pos,wxS
 
 	Init();
 	
+	imagelist.Create(16,16);	
+	
 	for (uint32 i=0; i<22; i++) {
 		imagelist.Add(wxBitmap(clientImages(i)));
 	}
@@ -69,9 +71,7 @@ CUploadListCtrl::CUploadListCtrl(wxWindow*& parent,int id,const wxPoint& pos,wxS
 
 void CUploadListCtrl::Init()
 {
-	#if 0
-	SetExtendedStyle(LVS_EX_FULLROWSELECT);
-	#endif
+
 	InsertColumn(0,CString(_("Username")),wxLIST_FORMAT_LEFT,150); //,0);
 	InsertColumn(1,CString(_("File")),wxLIST_FORMAT_LEFT,275);//,1);
 	InsertColumn(2,CString(_("Speed")),wxLIST_FORMAT_LEFT,60);//,2);
@@ -81,15 +81,6 @@ void CUploadListCtrl::Init()
 	InsertColumn(6,CString(_("Status")),wxLIST_FORMAT_LEFT,110);//,5);
 	InsertColumn(7,CString(_("Obtained Parts")),wxLIST_FORMAT_LEFT,100);
 
-	#if 0
-	imagelist.Create(16,16,ILC_COLOR32|ILC_MASK,0,10);
-	imagelist.SetBkColor(RGB(255,255,255));
-	imagelist.Add(theApp.LoadIcon(IDI_USER0));
-	imagelist.Add(theApp.LoadIcon(IDI_COMPPROT));
-	imagelist.Add(theApp.LoadIcon(IDI_PLUS));
-	imagelist.Add(theApp.LoadIcon(IDI_PLUSCOMPROT));
-	SetImageList(&imagelist,LVSIL_SMALL);
-	#endif
 	// not here.. no preferences yet
 	//LoadSettings(CPreferences::tableUpload);
 }

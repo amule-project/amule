@@ -70,6 +70,8 @@ CQueueListCtrl::CQueueListCtrl(wxWindow*& parent,int id,const wxPoint& pos,wxSiz
   // load images
 #warning As with uploadlistctrl and downloadlistctrl, this list should be centralised on amuleDlg, or even better, not used at all.
 	
+	imagelist.Create(16,16);
+	
 	for (uint32 i=0; i<22; i++) {
 		imagelist.Add(wxBitmap(clientImages(i)));
 	}
@@ -93,6 +95,7 @@ void CQueueListCtrl::InitSort()
 #define LVCFMT_LEFT wxLIST_FORMAT_LEFT
 
 void CQueueListCtrl::Init(){
+	
 	InsertColumn(0,CString(_("Username")),LVCFMT_LEFT,150);
 	InsertColumn(1,CString(_("File")),LVCFMT_LEFT,275);
 	InsertColumn(2,CString(_("File Priority")),LVCFMT_LEFT,110);
@@ -104,44 +107,6 @@ void CQueueListCtrl::Init(){
 	InsertColumn(8,CString(_("Banned")),LVCFMT_LEFT,60);
 	InsertColumn(9,CString(_("Obtained Parts")),LVCFMT_LEFT,100);
 
-#if 0
-	// something that can't be done here and now. moved to InitSort()
-	// Barry - Use preferred sort order from preferences
-	int sortItem = theApp.glob_prefs->GetColumnSortItem(CPreferences::tableQueue);
-	bool sortAscending = theApp.glob_prefs->GetColumnSortAscending(CPreferences::tableQueue);
-	SetSortArrow(sortItem, sortAscending);
-	SortItems(SortProc, sortItem + (sortAscending ? 0:10));
-#endif
-
-#if 0
-	SetExtendedStyle(LVS_EX_FULLROWSELECT);
-	InsertColumn(0,CString(_("Username")),LVCFMT_LEFT,150,0);
-	InsertColumn(1,CString(_("File")),LVCFMT_LEFT,275,1);
-	InsertColumn(2,CString(_("File Priority")),LVCFMT_LEFT,110,2);
-	InsertColumn(3,CString(_("Rating")),LVCFMT_LEFT,60,3);
-	InsertColumn(4,CString(_("Score")),LVCFMT_LEFT,60,4);
-	InsertColumn(5,CString(_("Asked")),LVCFMT_LEFT,60,5);
-	InsertColumn(6,CString(_("Last Seen")),LVCFMT_LEFT,110,6);
-	InsertColumn(7,CString(_("Entered Queue")),LVCFMT_LEFT,110,7);
-	InsertColumn(8,CString(_("Banned")),LVCFMT_LEFT,60,8);
-	imagelist.Create(16,16,ILC_COLOR32|ILC_MASK,0,10);
-	imagelist.SetBkColor(RGB(255,255,255));
-	imagelist.Add(theApp.LoadIcon(IDI_USER0));
-	imagelist.Add(theApp.LoadIcon(IDI_COMPPROT));
-	imagelist.Add(theApp.LoadIcon(IDI_PLUS));
-	imagelist.Add(theApp.LoadIcon(IDI_PLUSCOMPROT));
-	SetImageList(&imagelist,LVSIL_SMALL);
-
-	m_ClientMenu.CreatePopupMenu();
-	m_ClientMenu.AddMenuTitle(CString(_("Clients")));
-	m_ClientMenu.AppendMenu(MF_STRING,MP_DETAIL, CString(_("Show &Details")));
-	m_ClientMenu.AppendMenu(MF_STRING,MP_UNBAN, CString(_("Unban")));
-
-	m_ClientMenu.AppendMenu(MF_SEPARATOR);
-	m_ClientMenu.AppendMenu(MF_STRING,MP_SWITCHCTRL, CString(_("Show Uploads")));
-	SetMenu(&m_ClientMenu);
-	LoadSettings(CPreferences::tableQueue);
-#endif
 }
 
 CQueueListCtrl::~CQueueListCtrl(){
