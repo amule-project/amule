@@ -384,9 +384,9 @@ void CaMuleExternalConnector::OnInitCmdLine(wxCmdLineParser& parser)
 	parser.AddOption(wxT("f"), wxT("config-file"),
 		_("Read configuration from file."),
 		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL);
-	parser.AddOption(wxT("q"), wxT("quiet"),
+	parser.AddSwitch(wxT("q"), wxT("quiet"),
 		_("Do not print any output to stdout."),
-		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL);
+		wxCMD_LINE_PARAM_OPTIONAL);
 	parser.AddSwitch(wxT("v"), wxT("verbose"),
 		_("Be verbose - show also debug messages."),
 		wxCMD_LINE_PARAM_OPTIONAL);
