@@ -518,11 +518,9 @@ void CSharedFileList::CreateOfferedFilePacket(
 	tags.push_back(new CTag(FT_FILENAME, cur_file->GetFileName()));
 	tags.push_back(new CTag(FT_FILESIZE, cur_file->GetFileSize()));
 	
-	printf("Publishing %s\n", (const char*)unicode2char(cur_file->GetFileName()));
 	// NOTE: Archives and CD-Images are published with file type "Pro"
 	wxString strED2KFileType(otherfunctions::GetED2KFileTypeSearchTerm(otherfunctions::GetED2KFileTypeID(cur_file->GetFileName())));
 	if (!strED2KFileType.IsEmpty()) {
-		printf("\tPublishing type %s\n", (const char*)unicode2char(strED2KFileType));
 		tags.push_back(new CTag(FT_FILETYPE, strED2KFileType));
 	}
 
@@ -534,7 +532,6 @@ void CSharedFileList::CreateOfferedFilePacket(
 			strExt = strExt.Mid(1);
 			if (!strExt.IsEmpty()){
 				strExt.MakeLower();
-				printf("\tPublishing ext %s\n", (const char*)unicode2char(strExt));
 				tags.push_back(new CTag(FT_FILEFORMAT, strExt)); // file extension without a "."
 			}
 		}
