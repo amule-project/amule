@@ -35,6 +35,7 @@
 #include "KnownFileList.h"
 #include "Preferences.h"
 #include "Logger.h"
+#include "Format.h"
 
 #include <list>
 #include <algorithm>
@@ -52,7 +53,7 @@ bool CAICHSyncThread::Start()
 
 	CAICHSyncThread* thread = new CAICHSyncThread();
 	if ( thread->Create() != wxTHREAD_NO_ERROR ) {
-		AddLogLineM( true, _("Failed to create AICH thread!") );
+		AddDebugLogLineM( true, logAICHThread, wxT("Failed to create AICH thread!") );
 		return false;
 	}
 
@@ -67,7 +68,7 @@ bool CAICHSyncThread::Stop()
 {
 	if ( IsRunning() ) {
 		// Are there any threads to kill?
-		printf("AICH Thread: Signaling for thread to terminate.\n");
+		AddLogLineM( false, _("AICH Thread: Signaling for thread to terminate.") );
 	
 		// Tell the thread to terminate, this function returns immediatly
 		GetThread()->Delete();
@@ -85,7 +86,7 @@ bool CAICHSyncThread::Stop()
 		return true;
 	}
 
-	printf("AICH Thread: Warning, attempted to stop non-existing thread!\n");
+	AddDebugLogLineM( true, logAICHThread, wxT("Warning, attempted to stop non-existing thread!") );
 	return false;		
 }
 
@@ -117,7 +118,7 @@ CAICHSyncThread::CAICHSyncThread()
 {
 	// Some sainity checking, this should never happen
 	if ( GetThread() ) {
-		printf("AICH Thread: Warning, thread has already been started!\n");
+		AddDebugLogLineM( true, logAICHThread, wxT("Error, thread has already been started!") );
 	}
 
 	SetThread( this );
@@ -128,19 +129,19 @@ CAICHSyncThread::~CAICHSyncThread()
 {
 	// Some sainity checking, this should never happen
 	if ( GetThread() != this ) {
-		printf("AICH Thread: Warning, mismatch between running thread and static pointer!\n");
+		AddDebugLogLineM( true, logAICHThread, wxT("Error, mismatch between running thread and static pointer!") );
 		return;
 	}
 
 	SetThread( NULL );
 
-	printf("AICH Thread: Thread terminated.\n");
+	AddLogLineM( false, _("AICH Thread: Thread terminated.") );
 }
 
 
 void* CAICHSyncThread::Entry()
 {
-	printf("AICH Thread: Syncronization thread started.\n");
+	AddLogLineM( false, _("AICH Thread: Syncronization thread started.") );
 
 	// We collect all masterhashs which we find in the known2.met and store them in a list
 	typedef std::list<CAICHHash> HashList;
@@ -151,14 +152,12 @@ void* CAICHSyncThread::Entry()
 	CSafeFile file;
 	if ( file.Exists( fullpath ) ) {
 		if ( !file.Open( fullpath, CFile::read_write ) ) {
-			printf("AICH Thread: Error, failed to open hashlist file!\n");
-
+			AddDebugLogLineM( true, logAICHThread, wxT("Error, failed to open hashlist file!") );
 			return 0;
 		}
 	} else {
 		if ( !file.Create( fullpath, CFile::read_write ) ) {
-			printf("AICH Thread: Error, failed to create hashlist file!\n");
-
+			AddDebugLogLineM( true, logAICHThread, wxT("Error, failed to create hashlist file!") );
 			return 0;
 		}
 	}
@@ -175,9 +174,9 @@ void* CAICHSyncThread::Entry()
 		}
 	} catch ( ... ) {
 		if ( file.Eof() ) {
-			AddLogLineM( true, _("AICH Thread: Error, EOF while reading hashlist!") );
+			AddDebugLogLineM( true, logAICHThread, wxT("EOF while reading hashlist!") );
 		} else {
-			AddLogLineM( true, _("AICH Thread: Error, Corrupt file encountered while reading hashlist!") );
+			AddDebugLogLineM( true, logAICHThread, wxT("Corrupt file encountered while reading hashlist!") );
 		}
 
 		return 0;
@@ -185,7 +184,7 @@ void* CAICHSyncThread::Entry()
 
 	file.Close();
 
-	printf("AICH Thread: Masterhashes of known files have been loaded.\n");
+	AddLogLineM( false, _("AICH Thread: Masterhashes of known files have been loaded.") );
 
 
 	std::list<CKnownFile*> queue;
@@ -223,7 +222,7 @@ void* CAICHSyncThread::Entry()
 	//	}
 
 	if ( !queue.empty() ) {
-		printf("AICH Thread: Starting to hash files. %li files found.\n", (long int)queue.size() );
+		AddLogLineM( false, wxString::Format( _("AICH Thread: Starting to hash files. %li files found."), (long int)queue.size() ) );
 		while ( !queue.empty() ) {
 			// Check for termination
 			if ( TestDestroy() ) {
@@ -233,8 +232,7 @@ void* CAICHSyncThread::Entry()
 			CKnownFile* pCurFile = queue.front();
 			queue.pop_front();
 
-			printf("AICH Thread: Hashing file: %s, total files left: %li\n",
-				(const char *)unicode2char( pCurFile->GetFileName() ), (long int)queue.size() );
+			AddLogLineM( false, CFormat( _("AICH Thread: Hashing file: %s, total files left: %li") ) % pCurFile->GetFileName() % queue.size() );
 
 			// Just to be sure that the file hasnt been deleted lately
 			if ( 	!(theApp.knownfiles->IsKnownFile(pCurFile) &&
@@ -242,15 +240,15 @@ void* CAICHSyncThread::Entry()
 				continue;
 
 			if ( !pCurFile->CreateAICHHashSetOnly() ) {
-				printf("AICH Thread: Failed to create hashset for file %s\n",
-					(const char *)unicode2char( pCurFile->GetFileName() ) );
+				AddDebugLogLineM( true, logAICHThread, wxT("Failed to create hashset for file ") + pCurFile->GetFileName() );
 			}
 		}
 
-		printf("AICH Thread: Hashing completed.\n");
+		AddLogLineM( false, _("AICH Thread: Hashing completed.") );
 	} else {
-		printf("AICH Thread: No new files found.\n");
+		AddLogLineM( false, _("AICH Thread: No new files found.") );
 	}
 
 	return 0;
 }
+

@@ -44,9 +44,9 @@
 #include "OPCodes.h"		// Needed for OP_*
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "Statistics.h"
+#include "Format.h"
 #include "Logger.h"
 
-//#define DEBUG_LOCAL_CLIENT_PROTOCOL
 //#define __PACKET_DEBUG__
 
 
@@ -57,10 +57,6 @@ static wxString empty_name = wxT("[Empty User Name]");
 //	members of CUpDownClient
 //	which are used by down and uploading functions
 
-#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
-#undef AddDebugLogLineM
-#define AddDebugLogLineM(x,y) printf("%s\n",(const char*)unicode2char(y));
-#endif 
 
 CUpDownClient::CUpDownClient(CClientReqSocket* sender)
 {
@@ -85,7 +81,6 @@ CUpDownClient::CUpDownClient(uint16 in_port, uint32 in_userid,uint32 in_serverip
 		} else {
 			m_nConnectIP = ENDIAN_NTOHL(in_userid);
 		}
-	}
 	#else
  	if(!HasLowID()) {
 		m_nConnectIP = in_userid;
@@ -511,13 +506,13 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 	if (credits == NULL){
 		credits = pFoundCredits;
 		if (!theApp.clientlist->ComparePriorUserhash(m_dwUserIP, m_nUserPort, pFoundCredits)){
-			AddDebugLogLineM(false, wxT("Client: ") + GetUserName() + wxT("(") + GetFullIP() + wxT(")") + wxT(" Banreason: Userhash changed (Found in TrackedClientsList)"));
+			AddDebugLogLineM( false, logClient, CFormat( wxT("Client: %s (%s) Banreason: Userhash changed (Found in TrackedClientsList)") ) % GetUserName() % GetFullIP() );
 			Ban();
 		}
 	} else if (credits != pFoundCredits){
 		// userhash change ok, however two hours "waittime" before it can be used
 		credits = pFoundCredits;
-		AddDebugLogLineM(false, wxT("Client: ") + GetUserName() + wxT("(") + GetFullIP() + wxT(")") + wxT(" Banreason: Userhash changed"));
+		AddDebugLogLineM( false, logClient, CFormat( wxT("Client: %s (%s) Banreason: Userhash changed") ) % GetUserName() % GetFullIP() );
 		Ban();
 	}
 
@@ -600,9 +595,7 @@ bool CUpDownClient::SendHelloPacket() {
 	theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());
 	SendPacket(packet,true);
 	m_bHelloAnswerPending = true;
-	#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
-	AddDebugLogLineM(true, wxT("Local Client: OP_HELLO to ") + GetFullIP() + wxT("\n"));
-	#endif
+	AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_HELLO to ") + GetFullIP() + wxT("\n") );
 	return true;
 }
 
@@ -696,17 +689,16 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer, bool OSInfo) {
 	if (m_socket) {
 		theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());
 		SendPacket(packet,true,true);
-		#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
+		
 		if (!bAnswer) {
 			if (!OSInfo) {
-				AddDebugLogLineM(true, wxT("Local Client: OP_EMULEINFO to ") + GetFullIP() + wxT("\n"));
+				AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_EMULEINFO to ") + GetFullIP() + wxT("\n") );
 			} else {
-				AddDebugLogLineM(true, wxT("Local Client: OP_EMULEINFO/OS_INFO to ") + GetFullIP() + wxT("\n"));
+				AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_EMULEINFO/OS_INFO to ") + GetFullIP() + wxT("\n") );
 			}
 		} else {
-			AddDebugLogLineM(true, wxT("Local Client: OP_EMULEINFOANSWER to ") + GetFullIP() + wxT("\n"));
+			AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_EMULEINFOANSWER to ") + GetFullIP() + wxT("\n") );
 		}
-		#endif
 	}
 }
 
@@ -716,7 +708,6 @@ bool CUpDownClient::ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize)
 	uint8 protocol_version;
 	
 	try {
-
 		const CSafeMemFile data((BYTE*)pachPacket,nSize);
 
 		//The version number part of this packet will soon be useless since it is only able to go to v.99.
@@ -911,9 +902,7 @@ void CUpDownClient::SendHelloAnswer()
 	theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());
 	SendPacket(packet,true);
 
-	#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
-	AddDebugLogLineM(true, wxT("Local Client: OP_HELLOANSWER to ") + GetFullIP());
-	#endif
+	AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_HELLOANSWER to ") + GetFullIP() );
 }
 
 
@@ -1040,17 +1029,13 @@ void CUpDownClient::ProcessMuleCommentPacket(const char *pachPacket, uint32 nSiz
 		m_iRate = data.ReadUInt8();
 		m_reqfile->SetHasRating(true);
 		
-		AddDebugLogLineM(false,
-			wxString(wxT("Rating for file '")) << m_clientFilename <<
-			wxT("' received: ") << m_iRate);
+		AddDebugLogLineM( false, logClient, wxString(wxT("Rating for file '")) << m_clientFilename << wxT("' received: ") << m_iRate);
 
 		// The comment is unicoded, with a uin32 len and safe read 
 		// (won't break if string size is < than advertised len)
 		m_strComment = data.ReadString(GetUnicodeSupport(), 4 /* bytes (it's a uint32)*/, true);
 
-		AddDebugLogLineM(false,
-			wxString(wxT("Description for file '")) << m_clientFilename <<
-			wxT("' received: ") << m_strComment);
+		AddDebugLogLineM( false, logClient, wxString(wxT("Description for file '")) << m_clientFilename << wxT("' received: ") << m_strComment);
 
 		m_reqfile->SetHasComment(true);
 		// Update file rating
@@ -1218,7 +1203,7 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket){
 	m_socket = NULL;
 
 	if (m_iFileListRequested){
-		AddLogLineM(true, wxString(_("Failed to retrieve shared files from ")) +GetUserName());
+		AddLogLineM( false, wxString(_("Failed to retrieve shared files from ")) + GetUserName() );
 		m_iFileListRequested = 0;
 	}
 	if (m_Friend) {
@@ -1228,13 +1213,13 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket){
 	Notify_ClientCtrlRefreshClient( this );
 
 	if (bDelete) {
-		AddDebugLogLineM(false, wxString() <<
+		AddDebugLogLineM( false, logClient, wxString() <<
 			wxT("--- Deleted client \"") <<	GetClientFullInfo() <<
-			wxT("\"; Reason was ") << strReason << wxT("\n"));
+			wxT("\"; Reason was ") << strReason );
 	} else {
-		AddDebugLogLineM(false, wxString() <<
+		AddDebugLogLineM( false, logClient, wxString() <<
 			wxT("--- Disconnected client \"") << GetClientFullInfo() <<
-			wxT("\"; Reason was ") << strReason << wxT("\n"));
+			wxT("\"; Reason was ") << strReason );
 		m_fHashsetRequesting = 0;
 		SetSentCancelTransfer(0);
 		m_bHelloAnswerPending = false;
@@ -1330,9 +1315,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 
 			theApp.statistics->AddUpDataOverheadServer(packet->GetPacketSize());
 			theApp.serverconnect->SendPacket(packet);
-			#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
-			AddDebugLogLineM(true, wxT("Local Client: OP_CALLBACKREQUEST\n"));
-			#endif
+			AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_CALLBACKREQUEST") );
 		} else {
 			if (GetUploadState() == US_NONE && (!GetRemoteQueueRank() || m_bReaskPending)) {
 				theApp.downloadqueue->RemoveSource(this);
@@ -1407,22 +1390,18 @@ void CUpDownClient::ConnectionEstablished()
 				CPacket* packet = new CPacket(OP_ACCEPTUPLOADREQ,0);
 				theApp.statistics->AddUpDataOverheadFileRequest(packet->GetPacketSize());
 				SendPacket(packet,true);
-				#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
-				AddDebugLogLineM(true, wxT("Local Client: OP_ACCEPTUPLOADREQ\n"));
-				#endif
+				AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_ACCEPTUPLOADREQ") );
 			}
 	}
 	if (m_iFileListRequested == 1) {
 		CPacket* packet = new CPacket(m_fSharedDirectories ? OP_ASKSHAREDDIRS : OP_ASKSHAREDFILES,0);
 		theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());
 		SendPacket(packet,true,true);
-		#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
 		if (m_fSharedDirectories) {
-			AddDebugLogLineM(true, wxT("Local Client: OP_ASKSHAREDDIRS\n"));
+			AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_ASKSHAREDDIRS") );
 		} else {
-			AddDebugLogLineM(true, wxT("Local Client: OP_ASKSHAREDFILES\n"));
+			AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_ASKSHAREDFILES") );
 		}
-		#endif
 	}
 	while (!m_WaitingPackets_list.IsEmpty()) {
 		SendPacket(m_WaitingPackets_list.RemoveHead());
@@ -1662,11 +1641,11 @@ void CUpDownClient::ReGetClientSoft()
 void CUpDownClient::RequestSharedFileList()
 {
 	if (m_iFileListRequested == 0) {
-		AddDebugLogLineM(true,wxString(wxT("Requesting shared files from ")) + GetUserName());
+		AddDebugLogLineM( false, logClient, wxString( wxT("Requesting shared files from ") ) + GetUserName() );
 		m_iFileListRequested = 1;
 		TryToConnect(true);
 	} else {
-		AddDebugLogLineM(true,wxString(wxT("Requesting shared files from user ")) + GetUserName() + wxString::Format(wxT(" (%u) is already in progress"),GetUserID()));
+		AddDebugLogLineM( false, logClient, CFormat( wxT("Requesting shared files from user %s (%u) is already in progress") ) % GetUserName() % GetUserID() );
 	}
 }
 
@@ -1751,9 +1730,8 @@ void CUpDownClient::SendPublicKeyPacket(){
 	theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());
 	SendPacket(packet,true,true);
 	m_SecureIdentState = IS_SIGNATURENEEDED;
-	#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
-	AddDebugLogLineM(true, wxT("Local Client: OP_PUBLICKEY\n"));
-	#endif
+	
+	AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_PUBLICKEY") );
 }
 
 
@@ -1772,7 +1750,7 @@ void CUpDownClient::SendSignaturePacket(){
 	}
 	// do we have a challenge value recieved (actually we should if we are in this function)
 	if (credits->m_dwCryptRndChallengeFrom == 0){
-		AddDebugLogLineM(false, wxString(wxT("Want to send signature but challenge value is invalid - User ")) + GetUserName());
+		AddDebugLogLineM( false, logClient, wxString(wxT("Want to send signature but challenge value is invalid - User ")) + GetUserName());
 		return;
 	}
 	// v2
@@ -1816,9 +1794,8 @@ void CUpDownClient::SendSignaturePacket(){
 	theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());
 	SendPacket(packet,true,true);
 	m_SecureIdentState = IS_ALLREQUESTSSEND;
-	#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
-	AddDebugLogLineM(true, wxT("Local Client: OP_SIGNATURE\n"));
-	#endif
+	
+	AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_SIGNATURE") );
 }
 
 
@@ -1826,7 +1803,6 @@ void CUpDownClient::ProcessPublicKeyPacket(const uchar* pachPacket, uint32 nSize
 {
 	theApp.clientlist->AddTrackClient(this);
 
-	///* delete this line later*/ DEBUG_ONLY(AddDebugLogLine(false, "recieving public key from '%s'", GetUserName()));
 	if (m_socket == NULL || credits == NULL || pachPacket[0] != nSize-1
 		|| nSize == 0 || nSize > 250){
 		wxASSERT ( false );
@@ -1842,16 +1818,16 @@ void CUpDownClient::ProcessPublicKeyPacket(const uchar* pachPacket, uint32 nSize
 		}
 		else if(m_SecureIdentState == IS_KEYANDSIGNEEDED){
 			// something is wrong
-			AddDebugLogLineM(false, wxT("Invalid State error: IS_KEYANDSIGNEEDED in ProcessPublicKeyPacket"));
+			AddDebugLogLineM( false, logClient, wxT("Invalid State error: IS_KEYANDSIGNEEDED in ProcessPublicKeyPacket") );
 		}
-	}
-	else{
-		AddDebugLogLineM(false, wxT("Failed to use new recieved public key"));
+	} else{
+		AddDebugLogLineM( false, logClient, wxT("Failed to use new recieved public key") );
 	}
 }
 
-void CUpDownClient::ProcessSignaturePacket(const uchar* pachPacket, uint32 nSize){
-	///* delete this line later*/ DEBUG_ONLY(AddDebugLogLine(false, "receiving signature from '%s'", GetUserName()));
+
+void CUpDownClient::ProcessSignaturePacket(const uchar* pachPacket, uint32 nSize)
+{
 	// here we spread the good guys from the bad ones ;)
 
 	if (m_socket == NULL || credits == NULL || nSize == 0 || nSize > 250){
@@ -1874,27 +1850,27 @@ void CUpDownClient::ProcessSignaturePacket(const uchar* pachPacket, uint32 nSize
 
 	// we accept only one signature per IP, to avoid floods which need a lot cpu time for cryptfunctions
 	if (m_dwLastSignatureIP == GetIP()){
-		AddDebugLogLineM(false, wxT("recieved multiple signatures from one client"));
+		AddDebugLogLineM( false, logClient, wxT("recieved multiple signatures from one client") );
 		return;
 	}
 	// also make sure this client has a public key
 	if (credits->GetSecIDKeyLen() == 0){
-		AddDebugLogLineM(false, wxT("recieved signature for client without public key"));
+		AddDebugLogLineM( false, logClient, wxT("recieved signature for client without public key") );
 		return;
 	}
 	// and one more check: did we ask for a signature and sent a challange packet?
 	if (credits->m_dwCryptRndChallengeFor == 0){
-		AddDebugLogLineM(false, wxT("recieved signature for client with invalid challenge value - User ") + GetUserName());
+		AddDebugLogLineM( false, logClient, wxT("recieved signature for client with invalid challenge value - User ") + GetUserName() );
 		return;
 	}
 
 	if (theApp.clientcredits->VerifyIdent(credits, pachPacket+1, pachPacket[0], GetIP(), byChaIPKind ) ){
-		// result is saved in function abouve
-		//AddDebugLogLine(false, "'%s' has passed the secure identification, V2 State: %i", GetUserName(), byChaIPKind);
+		// result is saved in function above
+		AddDebugLogLineM( false, logClient, CFormat( wxT("'%s' has passed the secure identification, V2 State: %i") ) % GetUserName() % byChaIPKind );
+	} else {
+		AddDebugLogLineM( false, logClient, CFormat( wxT("'%s' has failed the secure identification, V2 State: %i") ) % GetUserName() % byChaIPKind );
 	}
-	else {
-		AddDebugLogLineM(false,  GetUserName() + wxString::Format(wxT(" has failed the secure identification, V2 State: %i"), byChaIPKind));
-	}
+
 	m_dwLastSignatureIP = GetIP();
 }
 
@@ -1910,7 +1886,7 @@ void CUpDownClient::SendSecIdentStatePacket(){
 			}
 		}
 		if (nValue == 0){
-			AddDebugLogLineM(false, wxT("Not sending SecIdentState Packet, because State is Zero"));
+			AddDebugLogLineM( false, logClient, wxT("Not sending SecIdentState Packet, because State is Zero") );
 			return;
 		}
 		// crypt: send random data to sign
@@ -1925,9 +1901,8 @@ void CUpDownClient::SendSecIdentStatePacket(){
 
 		theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());
 		SendPacket(packet,true,true);
-		#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
-		AddDebugLogLineM(true, wxT("Local Client: OP_SECIDENTSTATE\n"));
-		#endif
+		
+		AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_SECIDENTSTATE") );
 	} else {
 		wxASSERT ( false );
 	}
@@ -1982,9 +1957,7 @@ bool CUpDownClient::CheckHandshakeFinished(UINT WXUNUSED(protocol), UINT WXUNUSE
 {
 	if (m_bHelloAnswerPending){
 		// this triggers way too often.. need more time to look at this -> only create a warning
-		if (thePrefs::GetVerbose()) {
-			AddLogLineM(false, _("Handshake not finished while processing packet."));
-		}
+		AddDebugLogLineM( false, logClient, _("Handshake not finished while processing packet.") );
 		return false;
 	}
 
@@ -2017,9 +1990,7 @@ void CUpDownClient::SendPublicIPRequest(){
 		theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());
 		SendPacket(packet,true);
 		m_fNeedOurPublicIP = true;
-		#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
-		AddDebugLogLineM(true, wxT("Local Client: OP_PUBLICIP_REQ\n"));
-		#endif
+		AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_PUBLICIP_REQ") );
 	}
 }
 
@@ -2116,9 +2087,7 @@ EUtf8Str CUpDownClient::GetUnicodeSupport() const
 }
 
 
-uint8 CUpDownClient::GetSecureIdentState()
-{
-#ifndef CLIENT_GUI
+uint8 CUpDownClient::GetSecureIdentState() {
 	if (m_SecureIdentState != IS_UNAVAILABLE) {
 		if (!SecIdentSupRec) {
 			// This can be caused by a 0.30x based client which sends the old
@@ -2129,12 +2098,11 @@ uint8 CUpDownClient::GetSecureIdentState()
 			// this SUI state if they are reporting no SUI (won't be used) and if 
 			// they report using SUI on the mule info packet, it's ok to use it.
 			
-			AddDebugLogLineM(false, wxT("A client sent secure ident state before telling us the SUI capabilities"));
-			AddDebugLogLineM(false, wxT("Client info: ") + GetClientFullInfo());
-			AddDebugLogLineM(false, wxT("This client won't be disconnected, but it should be. :P"));
+			AddDebugLogLineM(false, logClient, wxT("A client sent secure ident state before telling us the SUI capabilities"));
+			AddDebugLogLineM(false, logClient, wxT("Client info: ") + GetClientFullInfo());
+			AddDebugLogLineM(false, logClient, wxT("This client won't be disconnected, but it should be. :P"));
 		}
 	}
-#endif
+	
 	return m_SecureIdentState;
 }
-
