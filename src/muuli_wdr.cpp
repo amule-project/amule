@@ -1803,7 +1803,7 @@ wxSizer *PreferencesConnectionTab( wxWindow *parent, bool call_fit, bool set_siz
     item31->Add( item33, 0, wxALIGN_CENTER|wxALL, 5 );
 
     wxStaticText *item34 = new wxStaticText( parent, ID_TEXT_CLIENT_UDP_PORT, _("Client UDP port: 4665"), wxDefaultPosition, wxDefaultSize, 0 );
-    item31->Add( item34, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item31->Add( item34, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     item30->Add( item31, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 
