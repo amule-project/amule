@@ -56,12 +56,12 @@ class CSearchFile : public CAbstractFile
 {
 	friend class CPartFile;
 public:
-	CSearchFile(const CSafeMemFile* in_data, long nSearchID, uint32 nServerIP=0, uint16 nServerPort=0, LPCTSTR pszDirectory = NULL);
+	CSearchFile(const CSafeMemFile& in_data, long nSearchID, uint32 nServerIP=0, uint16 nServerPort=0, wxString pszDirectory = wxEmptyString);
 	
 	virtual ~CSearchFile();
 
 	uint32	GetIntTagValue(uint8 tagname);
-	char*	GetStrTagValue(uint8 tagname);
+	wxString	GetStrTagValue(uint8 tagname);
 	void	AddSources(uint32 count, uint32 count_complete);
 	
 	uint32	GetSourceCount();
@@ -95,7 +95,7 @@ public:
 	void	NewSearch(const wxString& resTypes, long nSearchID);
 	void	ProcessSearchanswer(const char* packet, uint32 size, uint32 nServerIP, uint16 nServerPort);
 	void	ProcessSearchanswer(const char* in_packet, uint32 size, CUpDownClient* Sender, bool* pbMoreResultsAvailable, LPCTSTR pszDirectory);
-	void	ProcessUDPSearchanswer(CSafeMemFile* packet, uint32 nServerIP, uint16 nServerPort);	
+	void	ProcessUDPSearchanswer(const CSafeMemFile& packet, uint32 nServerIP, uint16 nServerPort);	
 
 	void	RemoveResults(long nSearchID);
 	void	ShowResults(long nSearchID);
@@ -120,4 +120,3 @@ private:
 };
 
 #endif // SEARCHLIST_H
-

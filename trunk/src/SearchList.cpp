@@ -165,42 +165,40 @@ Packet *CreateSearchPacket(wxString &searchString, wxString& typeText,
 }
 
 
-CSearchFile::CSearchFile(const CSafeMemFile* in_data, long nSearchID, uint32 WXUNUSED(nServerIP), uint16 WXUNUSED(nServerPort), LPCTSTR pszDirectory)
+CSearchFile::CSearchFile(const CSafeMemFile& in_data, long nSearchID, uint32 WXUNUSED(nServerIP), uint16 WXUNUSED(nServerPort), wxString pszDirectory)
 {
 	m_nSearchID = nSearchID;
 	
-	in_data->ReadHash16(m_abyFileHash);
-	m_nClientID = in_data->ReadUInt32();
-	m_nClientPort = in_data->ReadUInt16();
+	in_data.ReadHash16(m_abyFileHash);
+	m_nClientID = in_data.ReadUInt32();
+	m_nClientPort = in_data.ReadUInt16();
 	
 	if (( m_nClientID || m_nClientPort ) && ( !IsGoodIP(m_nClientID) || !m_nClientPort ) ) {
 		m_nClientID = 0;
 		m_nClientPort = 0;
 	}
-	uint32 tagcount = in_data->ReadUInt32();
+	
+	uint32 tagcount = in_data.ReadUInt32();
 
 	for (unsigned int i = 0; i != tagcount; ++i){
-		CTag* toadd = new CTag(*in_data);
+		CTag* toadd = new CTag(in_data);
 		m_taglist.push_back(toadd);
 	}
 
 	// here we have two choices
 	//	- if the server/client sent us a filetype, we could use it (though it could be wrong)
 	//	- we always trust our filetype list and determine the filetype by the extension of the file
-	char* tempName = GetStrTagValue(FT_FILENAME);
-	if ( !tempName )
+	wxString tempName = GetStrTagValue(FT_FILENAME);
+	
+	if (tempName.IsEmpty()) {
 		throw CInvalidPacket("No filename in search result");
-		
-	int iSize = (int)strlen(tempName)+1;
-	if ( iSize < 2 ) {
-		iSize = 2;		// required by tag format
 	}
-
-	SetFileName(char2unicode(tempName));
+		
+	SetFileName(tempName);
 	
 	SetFileSize(GetIntTagValue(FT_FILESIZE));
 
-	m_Directory = char2unicode( pszDirectory );
+	m_Directory = pszDirectory;
 }
 
 
@@ -224,14 +222,14 @@ uint32 CSearchFile::GetIntTagValue(uint8 tagname)
 }
 
 
-char* CSearchFile::GetStrTagValue(uint8 tagname)
+wxString CSearchFile::GetStrTagValue(uint8 tagname)
 {
 	for (unsigned int i = 0; i != m_taglist.size(); ++i) {
 		if ( m_taglist[i]->tag.specialtag == tagname )
-			return m_taglist[i]->tag.stringvalue;
+			return char2unicode(m_taglist[i]->tag.stringvalue);
 	}
 	
-	return NULL;
+	return wxEmptyString;
 }
 
 
@@ -359,7 +357,7 @@ void CSearchList::ProcessSearchanswer(const char *in_packet, uint32 size,
 	uint32 results = packet.ReadUInt32();
 
 	for (unsigned int i = 0; i != results; ++i){
-		CSearchFile* toadd = new CSearchFile(&packet, nSearchID, 0, 0, pszDirectory);
+		CSearchFile* toadd = new CSearchFile(packet, nSearchID, 0, 0, char2unicode(pszDirectory));
 		if (Sender){
 			toadd->SetClientID(Sender->GetUserID());
 			toadd->SetClientPort(Sender->GetUserPort());
@@ -383,20 +381,19 @@ void CSearchList::ProcessSearchanswer(const char *in_packet, uint32 size,
 
 void CSearchList::ProcessSearchanswer(const char* in_packet, uint32 size, uint32 WXUNUSED(nServerIP), uint16 WXUNUSED(nServerPort))
 {
-	const CSafeMemFile* packet = new CSafeMemFile((BYTE*)in_packet,size,0);
+	CSafeMemFile packet((BYTE*)in_packet,size,0);
 
-	uint32 results = packet->ReadUInt32();
+	uint32 results = packet.ReadUInt32();
 
 	for (unsigned int i = 0; i != results; ++i) {
 		CSearchFile* toadd = new CSearchFile(packet, m_CurrentSearch);
 		AddToList(toadd, false);
 	}
 	
-	delete packet;
 }
 
 
-void CSearchList::ProcessUDPSearchanswer(CSafeMemFile* packet, uint32 nServerIP, uint16 nServerPort)
+void CSearchList::ProcessUDPSearchanswer(const CSafeMemFile& packet, uint32 nServerIP, uint16 nServerPort)
 {
 	CSearchFile* toadd = new CSearchFile(packet, m_CurrentSearch, nServerIP, nServerPort);
 	AddToList(toadd);

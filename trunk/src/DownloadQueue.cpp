@@ -1257,7 +1257,7 @@ bool CDownloadQueue::OnHostnameResolved(uint32 ip)
 				sources.WriteUInt32(ip);
 				sources.WriteUInt16(resolved->port);
 				sources.Seek(0,wxFromStart);
-				file->AddSources(&sources,0,0);
+				file->AddSources(sources,0,0);
 			}
 		}
 		delete resolved;
