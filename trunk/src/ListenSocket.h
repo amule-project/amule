@@ -29,7 +29,6 @@
 
 #include <wx/dynarray.h>
 
-#include <map> 
 #include <set> 
 #include <list>
 
@@ -185,10 +184,6 @@ private:
 	uint32	totalconnectionchecks;
 	float	averageconnections;
 	uint32	activeconnections;
-
-public:
-	std::map<uint64, uint32> offensecounter;
-	std::map<uint64, uint64> hashbase;  
 };
 
 

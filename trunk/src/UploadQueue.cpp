@@ -75,17 +75,13 @@ CUploadQueue::CUploadQueue()
 	m_nUpDataOverheadOtherPackets = 0;
 	m_nUpDataOverheadServerPackets = 0;
 	m_nLastStartUpload = 0;
-
-	lastupslotHighID = true; // Uninitialized on eMule
 }
 
 void CUploadQueue::AddUpNextClient(CUpDownClient* directadd){
 	POSITION toadd = 0;
-	POSITION toaddlow = 0;
 	uint32	bestscore = 0;
-	uint32	bestlowscore = 0;
 	
-	CUpDownClient* newclient;
+	CUpDownClient* newclient = NULL;
 	// select next client or use given client
 	if (!directadd) {
 		POSITION pos1, pos2;
@@ -93,7 +89,7 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd){
 			waitinglist.GetNext(pos1);
 			CUpDownClient* cur_client =	waitinglist.GetAt(pos2);
 			// clear dead clients
-			if ( cur_client->IsGPLEvildoer() || (::GetTickCount() - cur_client->GetLastUpRequest() > MAX_PURGEQUEUETIME) || !theApp.sharedfiles->GetFileByID(cur_client->GetUploadFileID()) ) {
+			if ( (::GetTickCount() - cur_client->GetLastUpRequest() > MAX_PURGEQUEUETIME) || !theApp.sharedfiles->GetFileByID(cur_client->GetUploadFileID()) ) {
 				cur_client->ClearWaitStartTime();
 				RemoveFromWaitingQueue(pos2);	
 				if (!cur_client->GetSocket()) {
@@ -111,30 +107,19 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd){
 			if (cur_client->IsBanned() || it != suspended_uploads_list.end() ) { // Banned client or suspended upload ?
 			        continue;
 			} 
+			
 			// finished clearing
-			uint32 cur_score = cur_client->GetScore(true);
+			uint32 cur_score = cur_client->GetScore(false);
 			if ( cur_score > bestscore){
 				bestscore = cur_score;
 				toadd = pos2;
-			} else {
-				cur_score = cur_client->GetScore(false);
-				if ((cur_score > bestlowscore) && !cur_client->m_bAddNextConnect){
-					bestlowscore = cur_score;
-					toaddlow = pos2;
-				}
 			}			
 		}
-
-		if (bestlowscore > bestscore){
-			newclient = waitinglist.GetAt(toaddlow);
-			newclient->m_bAddNextConnect = true;
-		}		
 
 		if (!toadd) {
 			return;
 		}
 		newclient = waitinglist.GetAt(toadd);
-		lastupslotHighID = true; // VQB LowID alternate		
 		RemoveFromWaitingQueue(toadd);
 		Notify_ShowQueueCount(waitinglist.GetCount());
 	} else {
@@ -311,16 +296,6 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client)
 			CUpDownClient* cur_client = *it;
 			
 			if ( cur_client == client ) {
-				if ( client->m_bAddNextConnect && ( ( uploadinglist.GetCount() < thePrefs::GetMaxUpload() ) || ( thePrefs::GetMaxUpload() == UNLIMITED ) ) ) {
-					if (lastupslotHighID) {
-						client->m_bAddNextConnect = false;
-						RemoveFromWaitingQueue(client, true);
-						AddUpNextClient(client);
-						lastupslotHighID = false; // LowID alternate
-						return;
-					}
-				}
-			
 				client->SendRankingInfo();
 				Notify_QlistRefreshClient(client);
 				return;
@@ -396,12 +371,6 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client)
 		return;
 	}
 
-	// Imported from BlackRat : Anti-Leech
-	if ( client->Credits() && client->Credits()->GetUploadedTotal() < client->Credits()->GetDownloadedTotal() ) // must share
-		client->SetGPLEvildoer( false );
-	// Import from BlackRat end
-	
-	
 	if (waitinglist.IsEmpty() && AcceptNewClient()) {
 		AddUpNextClient(client);
 		m_nLastStartUpload = ::GetTickCount();
@@ -446,14 +415,6 @@ uint32 CUploadQueue::GetAverageUpTime()
 
 bool CUploadQueue::CheckForTimeOver(CUpDownClient* client)
 {
-	// BlackRat : Anti-Leech
-	if ( client->HasBeenGPLEvildoer() ) {
-		if ( client->Credits()->GetUploadedTotal() >= client->Credits()->GetDownloadedTotal() ) {
-			client->SetGPLEvildoer(true);
-			return true;
-		}
-	}
-	
 	if (thePrefs::TransferFullChunks()) {
 		if( client->GetUpStartTimeDelay() > 3600000 ) { // Try to keep the clients from downloading for ever.
 			return true;
@@ -617,25 +578,3 @@ CUpDownClient* CUploadQueue::GetNextClient(CUpDownClient* lastclient)
 	}
 }
 
-void CUploadQueue::FindSourcesForFileById(CTypedPtrList<CPtrList, CUpDownClient*>* srclist, const CMD4Hash& filehash)
-{
-	POSITION pos;
-	
-	pos = uploadinglist.GetHeadPosition();
-	while(pos) {
-		CUpDownClient *potential = uploadinglist.GetNext(pos);
-		if( potential->GetUploadFileID() == filehash) {
-			srclist->AddTail(potential);
-		}
-	}
-
-	pos = waitinglist.GetHeadPosition();
-	while(pos) {
-		CUpDownClient *potential = waitinglist.GetNext(pos);
-		if( potential->GetUploadFileID() == filehash ) {
-			srclist->AddTail(potential);
-		}
-	}
-}
-
-// TimerProc is on amule.cpp now

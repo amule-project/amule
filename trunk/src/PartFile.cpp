@@ -1633,7 +1633,6 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 					} else {
 						cur_src->DisableDownloadLimit();
 					}
-					cur_src->SetValidSource(true);
 					break;
 				}
 				case DS_BANNED: {
@@ -1682,15 +1681,12 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 				}
 				case DS_ONQUEUE: {
 					if( cur_src->IsRemoteQueueFull()) {
-						cur_src->SetValidSource(false);
 						if( ((dwCurTick - lastpurgetime) > 60000) && (GetSourceCount() >= (thePrefs::GetMaxSourcePerFile()*.8 )) ){
 							RemoveSource( cur_src );
 							lastpurgetime = dwCurTick;
 							break; //Johnny-B - nothing more to do here (good eye!)
 						}
-					} else {
-						cur_src->SetValidSource(true);
-					}
+					} 
 					
 					//Give up to 1 min for UDP to respond.. If we are within on min on TCP, do not try..
 					if (theApp.serverconnect->IsConnected() && ((!cur_src->GetLastAskedTime()) || (dwCurTick - cur_src->GetLastAskedTime()) > FILEREASKTIME-20000)) {
@@ -2983,9 +2979,14 @@ Packet *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 	for (SourceSet::iterator it = m_SrcList.begin(); it != m_SrcList.end(); ++it ) {
 		bNeeded = false;
 		CUpDownClient* cur_src = *it;
-		if (cur_src->HasLowID() || !cur_src->IsValidSource()) {
+		
+		int state = cur_src->GetDownloadState();
+		int valid = ( state == DS_DOWNLOADING ) || ( state == DS_ONQUEUE && !cur_src->IsRemoteQueueFull() );
+		
+		if ( cur_src->HasLowID() || !valid ) {
 			continue;
 		}
+		
 		// only send source which have needed parts for this client if possible
 		const uint8* srcstatus = cur_src->GetPartStatus();
 		if (srcstatus) {
@@ -3533,7 +3534,7 @@ void CPartFile::UpdateDisplayedInfo(bool force)
 	DWORD curTick = ::GetTickCount();
 
 	 // Wait 1.5s between each redraw
-	 if(force || curTick-m_lastRefreshedDLDisplay > MINWAIT_BEFORE_DLDISPLAY_WINDOWUPDATE + 500 ) {
+	 if(force || curTick-m_lastRefreshedDLDisplay > MINWAIT_BEFORE_DLDISPLAY_WINDOWUPDATE ) {
 		 Notify_DownloadCtrlUpdateItem(this);
 		m_lastRefreshedDLDisplay = curTick;
 	}

@@ -872,52 +872,95 @@ const CMD4Hash& CKnownFile::GetPartHash(uint16 part) const {
 	return hashlist[part];
 }
 
-Packet*	CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient){
-	CTypedPtrList<CPtrList, CUpDownClient*> srclist;
-	//theApp.uploadqueue->FindSourcesForFileById(&srclist, forClient->reqfileid); //should we use "filehash"?
-	theApp.uploadqueue->FindSourcesForFileById(&srclist, forClient->GetUploadFileID()); //should we use "filehash"?
+Packet*	CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
+{
+	if (m_ClientUploadList.empty() )
+		return NULL;
 
-	if(srclist.IsEmpty())
-		return 0;
 
-	CSafeMemFile data;
+	CSafeMemFile data(1024);
 	uint16 nCount = 0;
 
-	//data.Write(forClient->reqfileid, 16);
 	data.WriteHash16(forClient->GetUploadFileID());
 	data.WriteUInt16(nCount);
+	uint32 cDbgNoSrc = 0;
 
-	//uint32 lastRequest = forClient->GetLastSrcReqTime();
-	//we are only taking 30 random sources since we can't be sure if they have parts we need
-	//this is hard coded because its a temp solution until next(?) version
-	srand(time(NULL));
-	for(int i = 0; i < 30; i++) {
-		int victim = ((rand() >> 7) % srclist.GetSize());
-		POSITION pos = srclist.FindIndex(victim);
-		CUpDownClient *cur_src = srclist.GetAt(pos);
-		if(!cur_src->HasLowID() && cur_src != forClient) {
-			nCount++;
-			data.WriteUInt32(cur_src->GetUserID());
-			data.WriteUInt16(cur_src->GetUserPort());
-			data.WriteUInt32(cur_src->GetServerIP());
-			data.WriteUInt16(cur_src->GetServerPort());
-			if (forClient->GetSourceExchangeVersion() > 1)
-				data.WriteHash16(cur_src->GetUserHash());
+	
+	SourceSet::iterator it = m_ClientUploadList.begin();
+	for ( ; it != m_ClientUploadList.end(); it++ ) {
+		const CUpDownClient *cur_src = *it;
+		
+		if ( cur_src->HasLowID() || cur_src == forClient || !(cur_src->GetUploadState() == US_UPLOADING || cur_src->GetUploadState() == US_ONUPLOADQUEUE))
+			continue;
+
+		bool bNeeded = false;
+		const uint8* rcvstatus = forClient->GetUpPartStatus();
+
+		if ( rcvstatus ) {
+			const uint8* srcstatus = cur_src->GetUpPartStatus();
+			if ( srcstatus ) {
+				if ( cur_src->GetUpPartCount() == forClient->GetUpPartCount() ) {
+					for (int x = 0; x < GetPartCount(); x++ ) {
+						if ( srcstatus[x] && !rcvstatus[x] ) {
+							// We know the recieving client needs a chunk from this client.
+							bNeeded = true;
+							break;
+						}
+					}
+				}
+			} else {
+				cDbgNoSrc++;
+				// This client doesn't support upload chunk status. So just send it and hope for the best.
+				bNeeded = true;
+			}
+		} else {
+			// remote client does not support upload chunk status, search sources which have at least one complete part
+			// we could even sort the list of sources by available chunks to return as much sources as possible which
+			// have the most available chunks. but this could be a noticeable performance problem.
+			const uint8* srcstatus = cur_src->GetUpPartStatus();
+			if ( srcstatus ) {
+				for (int x = 0; x < GetPartCount(); x++ ) {
+					if ( srcstatus[x] ) {
+						// this client has at least one chunk
+						bNeeded = true;
+						break;
+					}
+				}
+			} else {
+				// This client doesn't support upload chunk status. So just send it and hope for the best.
+				bNeeded = true;
+			}
 		}
 
-		srclist.RemoveAt(pos);
-		if(srclist.GetSize() == 0)
-			break;
+		if ( bNeeded ) {
+			nCount++;
+			uint32 dwID = cur_src->GetIP();
+		    
+			data.WriteUInt32(dwID);
+		    data.WriteUInt16(cur_src->GetUserPort());
+		    data.WriteUInt32(cur_src->GetServerIP());
+		    data.WriteUInt16(cur_src->GetServerPort());
+			
+			if (forClient->GetSourceExchangeVersion() > 1)
+			    data.WriteHash16(cur_src->GetUserHash());
+			
+			if (nCount > 500)
+				break;
+		}
 	}
+	
 	if (!nCount)
 		return 0;
-	data.Seek(16);
+	
+	data.Seek(16, wxFromStart);
 	data.WriteUInt16(nCount);
 
 	Packet* result = new Packet(&data, OP_EMULEPROT);
-	result->SetOpCode(OP_ANSWERSOURCES);
-	if (nCount > 28)
+	result->SetOpCode( OP_ANSWERSOURCES );
+	
+	if ( result->GetPacketSize() > 354 )
 		result->PackPacket();
+	
 	return result;
 }
 
@@ -969,13 +1012,11 @@ void CKnownFile::SetFileComment(const wxString& strNewComment)
 	cfg->Write( strCfgPath + wxT("Comment"), strNewComment);
      
 	m_strComment = strNewComment;
-   
-	CTypedPtrList<CPtrList, CUpDownClient*> srclist;
-	theApp.uploadqueue->FindSourcesForFileById(&srclist, this->GetFileHash());
-
-	for (POSITION pos = srclist.GetHeadPosition();pos != 0; ){
-		srclist.GetNext(pos)->SetCommentDirty();
-	}   
+  
+	SourceSet::iterator it = m_ClientUploadList.begin();
+	for ( ; it != m_ClientUploadList.end(); it++ ) {
+		(*it)->SetCommentDirty();
+	}
 }
 
 
@@ -987,10 +1028,9 @@ void CKnownFile::SetFileRate(int8 iNewRate)
 	cfg->Write( strCfgPath + wxT("Rate"), iNewRate);
 	m_iRate = iNewRate; 
 
-	CTypedPtrList<CPtrList, CUpDownClient*> srclist;
-	theApp.uploadqueue->FindSourcesForFileById(&srclist, this->GetFileHash());
-	for (POSITION pos = srclist.GetHeadPosition(); pos != 0; ) {
-		srclist.GetNext(pos)->SetCommentDirty();
+	SourceSet::iterator it = m_ClientUploadList.begin();
+	for ( ; it != m_ClientUploadList.end(); it++ ) {
+		(*it)->SetCommentDirty();
 	}
 } 
 

@@ -57,9 +57,6 @@
 #include "amuleIPV4Address.h"	// Needed for amuleIPV4Address
 
 
-//#define DEBUG_LOCAL_CLIENT_PROTOCOL
-
-
 // some client testing variables
 static wxString crash_name = wxT("[Invalid User Name]"); 
 static wxString empty_name = wxT("[Empty User Name]");
@@ -104,36 +101,23 @@ CUpDownClient::CUpDownClient(uint16 in_port, uint32 in_userid,uint32 in_serverip
 
 void CUpDownClient::Init()
 {
-#ifdef __DEBUG__
-	MagicNumber1 = MAGIC_1;
-	MagicNumber2 = MAGIC_2;
-	MagicNumber3 = MAGIC_1;
-	MagicNumber4 = MAGIC_2;
-#endif // __DEBUG__
 	credits = 0;
-	//memset(reqfileid, 0, sizeof reqfileid);
-	// m_nAvDownDatarate = 0;  // unused
 	m_byChatstate = 0;
 	m_cShowDR = 0;
 	m_reqfile = NULL;	 // No file required yet
-	m_cFailed = 0;
 	m_nMaxSendAllowed = 0;
 	m_nTransferedUp = 0;
 	m_cSendblock = 0;
 	m_cAsked = 0;
-	m_cDownAsked = 0;
 	msSentPrev = msReceivedPrev = 0;
 	kBpsUp = kBpsDown = 0.0;
 	fDownAvgFilter = 1.0;
 	bytesReceivedCycle = 0;
 	m_nUserID = 0;
 	m_nServerPort = 0;
-	//m_bFileListRequested = false;
 	m_iFileListRequested = 0;
 	m_dwLastUpRequest = 0;
 	m_bEmuleProtocol = false;
-	usedcompressiondown = false;
-	m_bUsedComprUp = false;
 	m_bCompleteSource = false;
 	m_bFriendSlot = false;
 	m_bCommentDirty = false;
@@ -146,13 +130,11 @@ void CUpDownClient::Init()
 	m_abyUpPartStatus = 0;
 	m_dwLastAskedTime = 0;
 	m_nDownloadState = DS_NONE;
-	ClientFilename = wxEmptyString;
 	m_dwUploadTime = 0;
 	m_nTransferedDown = 0;
 	m_nUploadState = US_NONE;
 	m_dwLastBlockReceived = 0;
 
-	m_ValidSource = false;
 	m_bUnicodeSupport = false;
 
 	m_nRemoteQueueRank = 0;
@@ -167,7 +149,6 @@ void CUpDownClient::Init()
 	m_byInfopacketsReceived = IP_NONE;	
 	
 	m_bIsHybrid = false;
-	m_bIsNewMLD = false;
 	m_bIsML = false;
 	m_Friend = NULL;
 	m_iRate=0;
@@ -178,26 +159,17 @@ void CUpDownClient::Init()
 	m_HasValidHash = false;
 	SetWaitStartTime();
 
-	sourcesslot=0;
 	m_fHashsetRequesting = 0;
 	m_fSharedDirectories = 0;
-	m_dwEnteredConnectedState = 0;
 	m_lastPartAsked = 0xffff;
 	m_nUpCompleteSourcesCount= 0;
 	m_lastRefreshedDLDisplay = 0;
-	m_bAddNextConnect = false;  // VQB Fix for LowID slots only on connection
 	m_SoftLen = 0;
 	m_bHelloAnswerPending = false;
 	m_fSentCancelTransfer = 0;
-	Extended_aMule_SO = 0;
 	m_Aggressiveness = 0;
 	m_LastFileRequest = 0;
 
-	// Imported from BlackRat : Anti-Leech
-	m_bGPLEvildoer = false;
-	m_bHasBeenGPLEvildoer = false;
-	// Import from BlackRat end
-	
 	m_clientState = CS_NEW;
 
 	ClearHelloProperties();	
@@ -206,21 +178,14 @@ void CUpDownClient::Init()
 	m_fSupportsAICH = 0;
 	m_fAICHRequested = 0;
 
-	compressiongain = 0;
-	notcompressed = 0;
 	m_dwUserIP = 0;
 	m_nConnectIP = 0;
 	m_dwServerIP = 0;
 
-	m_bPreviewReqPending = false;
-	m_bPreviewAnsPending = false;
 	m_fNeedOurPublicIP = false;
 	m_bHashsetRequested = false;
 
 	m_nLastBlockOffset = 0;
-	m_dwDownStartTime = 0;
-
-	m_bTransferredDownMini = false;
 
 	m_requpfile = NULL;
 
@@ -238,10 +203,6 @@ void CUpDownClient::Init()
 
 CUpDownClient::~CUpDownClient()
 {
-	// Ensure that source-counts gets updated in case 
-	// of a source not on the download-queue
-	SetRequestFile( NULL );	
-
 	if (IsAICHReqPending()){
 		m_fAICHRequested = FALSE;
 		CAICHHashSet::ClientAICHRequestFailed(this);
@@ -309,23 +270,16 @@ CUpDownClient::~CUpDownClient()
 		}
 	}
 
-	//DEBUG_ONLY (theApp.listensocket->Debug_ClientDeleted(this));
+	// Ensure that source-counts gets updated in case 
+	// of a source not on the download-queue
+	SetRequestFile( NULL );	
+
 	SetUploadFileID(NULL);
 	
 	if (m_pReqFileAICHHash != NULL) {
 		delete m_pReqFileAICHHash;	
 		m_pReqFileAICHHash = NULL;
 	}
-	
-#ifdef __DEBUG__
-	//
-	// Swap magic numbers to signal a properly deleted client
-	//
-	MagicNumber1 = MAGIC_2;
-	MagicNumber2 = MAGIC_1;
-	MagicNumber3 = MAGIC_2;
-	MagicNumber4 = MAGIC_1;
-#endif
 }
 
 void CUpDownClient::ClearHelloProperties()
@@ -422,74 +376,28 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 			CTag temptag(data);
 			switch(temptag.tag.specialtag){
 				case CT_NAME:
-					{
-						// Imported from BlackRat : Anti-Leech
-						bool bValidName = false;
-				
-						if ( !m_Username.IsEmpty() ) {
-							bValidName = true;
-							m_old_Username = m_Username;
-						}
-					
-						if ( temptag.tag.stringvalue ) {
-							m_Username = char2unicode(temptag.tag.stringvalue);
-						}
-
-						if ( m_Username != m_old_Username && !m_bGPLEvildoer ) {
-							if ( bValidName ) {
-								theApp.listensocket->offensecounter[getUID()]++;
-								theApp.listensocket->offensecounter[0]++;
-							}
-							
-							CheckForGPLEvilDoer_Nick();
-						}
-						// Import from BlackRat end
-
-						break;
+					if ( temptag.tag.stringvalue ) {
+						m_Username = char2unicode(temptag.tag.stringvalue);
+					} else {
+						m_Username.Clear();
 					}
+					
+					break;
 				case CT_VERSION:
 					m_nClientVersion = temptag.tag.intvalue;
 					break;
 				case ET_MOD_VERSION:
-					{
-						// Imported from BlackRat : Anti-Leech
-						bool bValidMod = false;
-						if ( !m_strModVersion.IsEmpty() ) {
-							bValidMod = true;
-							m_old_ModVersion = m_strModVersion;
-							m_strModVersion.Clear();
-						}               
-					
-	
-						if (temptag.tag.type == 2) {
-							m_strModVersion = char2unicode(temptag.tag.stringvalue);
-						} else if (temptag.tag.type == 3) {
-							m_strModVersion.Printf(_T("ModID=%u"), temptag.tag.intvalue);
-						} else {
-							m_strModVersion = wxT("ModID=<Unknwon>");
-						}
-				
-						
-						if ( (m_strModVersion != m_old_ModVersion) && !m_bGPLEvildoer ) {
-							if ( bValidMod ) {
-								theApp.listensocket->offensecounter[getUID()]++;
-								theApp.listensocket->offensecounter[0]++;
-							}
-
-							CheckForGPLEvilDoer_Mod();
-						}
-						// Import from BlackRat end
-						
-						break;
-					}
-				case CT_PORT:
-					// Imported from BlackRat [Vorlost/Sivka: Ban users trying to fake there port]
-					if ( temptag.tag.intvalue != nUserPort ) {
-						Ban();
-						m_Username = wxT("!FakedPortUser!");
+					if (temptag.tag.type == 2) {
+						m_strModVersion = char2unicode(temptag.tag.stringvalue);
+					} else if (temptag.tag.type == 3) {
+						m_strModVersion.Printf( wxT("ModID=%u"), temptag.tag.intvalue);
 					} else {
-						nUserPort = temptag.tag.intvalue;
+						m_strModVersion = wxT("ModID=<Unknown>");
 					}
+				
+					break;
+				case CT_PORT:
+					nUserPort = temptag.tag.intvalue;
 					
 					break;
 				case CT_EMULE_UDPPORTS:
@@ -592,7 +500,6 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 		throw wxString(wxT("Wrong Tags on hello type packet"));
 	}
 	
-	// tecxx 1609 2002 - add client's servet to serverlist (Moved to uploadqueue.cpp)
 
 	if (m_socket) {
 		wxIPV4address address;
@@ -663,43 +570,6 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 	
 	ReGetClientSoft();
 
-
-	// Imported from BlackRat [xrmb: Anti-Leech]
-	if ( !m_bGPLEvildoer ) {
-		// Added by BlackRat [xrmb: own hash detection]
-		if ( theApp.serverconnect->GetClientID() != GetUserID() 
-			 && m_UserHash == thePrefs::GetUserHash() )
-		{
-			Ban();
- 			m_bGPLEvildoer = true;
- 		}
-		// [xrmb: own hash detection]
- 
-		// Added by BlackRat [xrmb: changed id detection]
-		uint64 thishash  = 0;
-		for ( int i = 0; i < 8; i++ )
-			thishash += GetUserHash()[i] << (i*8) ^ GetUserHash()[i+8] << (i*8);
-
-		std::map<uint64, uint64>::iterator it_1 = theApp.listensocket->hashbase.find( getUID() );
-		if ( it_1 != theApp.listensocket->hashbase.end() && it_1->second != thishash ) {
-			theApp.listensocket->offensecounter[getUID()]++;
-			theApp.listensocket->offensecounter[0]++;
-		}
-		
-		theApp.listensocket->hashbase[getUID()] = thishash;
-		// [xrmb: changed id detection] End
-
-		std::map<uint64, uint32>::iterator it_2 = theApp.listensocket->offensecounter.find( getUID() );
-		if ( it_2 != theApp.listensocket->offensecounter.end() && it_2->second >= 2 ) {
-			if ( !Credits() || Credits()->GetUploadedTotal() >= Credits()->GetDownloadedTotal() ) // must share
-			    m_bGPLEvildoer = true;
-
-			m_bHasBeenGPLEvildoer = true;
-		}
-	}
-	// [xrmb: Anti-Leech] End
-
-	
 	m_byInfopacketsReceived |= IP_EDONKEYPROTPACK;
 
 	// check if at least CT_EMULEVERSION was received, all other tags are optional
@@ -749,9 +619,6 @@ bool CUpDownClient::SendHelloPacket() {
 	theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
 	SendPacket(packet,true);
 	m_bHelloAnswerPending = true;
-	#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
-	AddLogLineM(true,_("Local Client: OP_HELLO\n"));
-	#endif
 	return true;
 }
 
@@ -811,13 +678,6 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer) {
 	if (m_socket) {
 		theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
 		SendPacket(packet,true,true);
-		#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
-		if (!bAnswer) {
-			AddLogLineM(true,_("Local Client: OP_EMULEINFO\n"));
-		} else {
-			AddLogLineM(true,_("Local Client: OP_EMULEINFOANSWER\n"));
-		}
-		#endif
 	}
 }
 
@@ -913,35 +773,15 @@ void CUpDownClient::ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize)
 					SecIdentSupRec +=  2;
 					break;
 				case ET_MOD_VERSION:
-					{
-						// Imported from BlackRat : Anti-Leech
-						bool bValidMod = false;
-						if ( !m_strModVersion.IsEmpty() ){
-							bValidMod = true;
-							m_old_ModVersion = m_strModVersion;
-							m_strModVersion.Clear();
-						}
-						
-						if (temptag.tag.type == 2) {
-							m_strModVersion = char2unicode(temptag.tag.stringvalue);
-						} else if (temptag.tag.type == 3) {
-							m_strModVersion.Printf(_T("ModID=%u"), temptag.tag.intvalue);
-						} else {
-							m_strModVersion = _T("ModID=<Unknwon>");
-						}
-
-						if ( m_old_ModVersion != m_strModVersion && !m_bGPLEvildoer) {
-							if ( bValidMod ) {
-								theApp.listensocket->offensecounter[getUID()]++;
-								theApp.listensocket->offensecounter[0]++;
-							}
-
-							CheckForGPLEvilDoer_Mod();
-						}
-						// Import from BlackRat end
-						
-						break;
+					if (temptag.tag.type == 2) {
+						m_strModVersion = char2unicode(temptag.tag.stringvalue);
+					} else if (temptag.tag.type == 3) {
+						m_strModVersion.Printf(wxT("ModID=%u"), temptag.tag.intvalue);
+					} else {
+						m_strModVersion = wxT("ModID=<Unknown>");
 					}
+
+					break;
 				default:
 					//printf("Mule Unk Tag 0x%02x=%x\n", temptag.tag.specialtag, (UINT)temptag.tag.intvalue);
 					break;
@@ -976,16 +816,6 @@ void CUpDownClient::ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize)
 
 	ReGetClientSoft();
 
-	// Imported from BlackRat [xrmb: Anti-Leech]
-	std::map<uint64, uint32>::iterator it = theApp.listensocket->offensecounter.find( getUID() );
-	if ( it != theApp.listensocket->offensecounter.end() && it->second >= 2 ) {
-        if ( !Credits() || Credits()->GetUploadedTotal() >= Credits()->GetDownloadedTotal() ) // must share
-            m_bGPLEvildoer = true;
-
-        m_bHasBeenGPLEvildoer = true;
-	}
-	// Import from BlackRat end
-
 	m_byInfopacketsReceived |= IP_EMULEPROTPACK;
 
 }
@@ -1005,9 +835,6 @@ void CUpDownClient::SendHelloAnswer()
 
 	theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
 	SendPacket(packet,true);
-	#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
-	AddLogLineM(true,_("Local Client: OP_HELLOANSWER\n"));
-	#endif
 
 }
 
@@ -1119,7 +946,7 @@ void CUpDownClient::ProcessMuleCommentPacket(const char *pachPacket, uint32 nSiz
 
 		m_iRate = data.ReadUInt8();
 		m_reqfile->SetHasRating(true);
-		AddDebugLogLineM(false,_("Rating for file '") + ClientFilename + wxString::Format(_("' received: %i"),m_iRate));
+		AddDebugLogLineM(false,_("Rating for file '") + m_clientFilename + wxString::Format(_("' received: %i"),m_iRate));
 		
 		uint32 length = data.ReadUInt32();	
 
@@ -1142,7 +969,7 @@ void CUpDownClient::ProcessMuleCommentPacket(const char *pachPacket, uint32 nSiz
 
 			m_strComment = char2unicode(desc);			
 			
-			AddDebugLogLineM(false, _("Description for file '") + ClientFilename + _("' received: ") + m_strComment);
+			AddDebugLogLineM(false, _("Description for file '") + m_clientFilename + _("' received: ") + m_strComment);
 			
 			m_reqfile->SetHasComment(true);
 		}
@@ -1412,9 +1239,6 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 
 			theApp.uploadqueue->AddUpDataOverheadServer(packet->GetPacketSize());
 			theApp.serverconnect->SendPacket(packet);
-			#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
-			AddLogLineM(true,_("Local Client: OP_CALLBACKREQUEST\n"));
-			#endif
 		} else {
 			if (GetUploadState() == US_NONE && (!GetRemoteQueueRank() || m_bReaskPending)) {
 				theApp.downloadqueue->RemoveSource(this);
@@ -1490,39 +1314,36 @@ void CUpDownClient::ConnectionEstablished()
 				Packet* packet = new Packet(OP_ACCEPTUPLOADREQ,0);
 				theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->GetPacketSize());
 				SendPacket(packet,true);
-				#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
-				AddLogLineM(true,_("Local Client: OP_ACCEPTUPLOADREQ\n"));
-				#endif
 			}
 	}
 	if (m_iFileListRequested == 1) {
 		Packet* packet = new Packet(m_fSharedDirectories ? OP_ASKSHAREDDIRS : OP_ASKSHAREDFILES,0);
 		theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
 		SendPacket(packet,true,true);
-		#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
-		if (m_fSharedDirectories) {
-			AddLogLineM(true,_("Local Client: OP_ASKSHAREDDIRS\n"));
-		} else {
-			AddLogLineM(true,_("Local Client: OP_ASKSHAREDFILES\n"));
-		}
-		#endif
 	}
 	while (!m_WaitingPackets_list.IsEmpty()) {
 		SendPacket(m_WaitingPackets_list.RemoveHead());
 	}
 }
 
+
 int CUpDownClient::GetHashType() const
 {
-	if (m_UserHash[5] == 13 && m_UserHash[14] == 110)
+	if ( m_UserHash[5] == 13  && m_UserHash[14] == 110 ) {
 		return SO_OLDEMULE;
-	else if (m_UserHash[5] == 14 && m_UserHash[14] == 111)
+	} 
+	
+	if ( m_UserHash[5] == 14  && m_UserHash[14] == 111 ) {
 		return SO_EMULE;
- 	else if (m_UserHash[5] == 'M' && m_UserHash[14] == 'L')
+	}
+	
+ 	if ( m_UserHash[5] == 'M' && m_UserHash[14] == 'L' ) {
 		return SO_MLDONKEY;
-	else
-		return SO_UNKNOWN;
+	}
+	
+	return SO_UNKNOWN;
 }
+
 
 void CUpDownClient::ReGetClientSoft()
 {
@@ -1555,7 +1376,6 @@ void CUpDownClient::ReGetClientSoft()
 			case SO_AMULE:
 				m_clientSoft = SO_AMULE;
 				if(GetClientModString().IsEmpty() == false) {
-					Extended_aMule_SO &= 2;
 					m_clientVerString = GetClientModString();
 				} else {
 					m_clientVerString = wxT("aMule");
@@ -1620,7 +1440,6 @@ void CUpDownClient::ReGetClientSoft()
 			m_nClientVersion = MAKE_CLIENT_VERSION(0,nClientMinVersion,0);
 			switch (m_clientSoft) {
 				case SO_AMULE:
-					Extended_aMule_SO = 1; // no CVS flag for 1.x, so no &= right now					
 					m_clientVerString += wxString::Format(_(" (based on eMule v0.%u)"), nClientMinVersion);
 					break;
 				case SO_LPHANT:
@@ -1777,7 +1596,7 @@ void CUpDownClient::ResetFileStatusInfo()
 		m_abyPartStatus = NULL;
 	}
 
-	#warning ADDME - Import needed // m_strClientFilename = "";
+	m_clientFilename.Clear();
 
 	m_bCompleteSource = false;
 	m_dwLastAskedTime = 0;
@@ -1829,7 +1648,6 @@ bool CUpDownClient::SafeSendPacket(Packet* packet)
 }
 
 void CUpDownClient::SendPublicKeyPacket(){
-	///* delete this line later*/ DEBUG_ONLY(AddDebugLogLine(false, "sending public key to '%s'", GetUserName()));
 	// send our public key to the client who requested it
 	if (m_socket == NULL || credits == NULL || m_SecureIdentState != IS_KEYANDSIGNEEDED){
 		wxASSERT ( false );
@@ -1843,16 +1661,10 @@ void CUpDownClient::SendPublicKeyPacket(){
 	data.Write(theApp.clientcredits->GetPublicKey(), theApp.clientcredits->GetPubKeyLen());
 	Packet* packet = new Packet(&data, OP_EMULEPROT); 
 	packet->SetOpCode(OP_PUBLICKEY);
-//	Packet* packet = new Packet(OP_PUBLICKEY,theApp.clientcredits->GetPubKeyLen() + 1,OP_EMULEPROT);
-//	memcpy(packet->pBuffer+1,theApp.clientcredits->GetPublicKey(), theApp.clientcredits->GetPubKeyLen());
-//	packet->pBuffer[0] = theApp.clientcredits->GetPubKeyLen();
 
 	theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
 	SendPacket(packet,true,true);
 	m_SecureIdentState = IS_SIGNATURENEEDED;
-	#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
-	AddLogLineM(true,_("Local Client: OP_PUBLICKEY\n"));
-	#endif
 }
 
 void CUpDownClient::SendSignaturePacket(){
@@ -1910,21 +1722,13 @@ void CUpDownClient::SendSignaturePacket(){
 	Packet* packet = new Packet(&data, OP_EMULEPROT);
 	packet->SetOpCode(OP_SIGNATURE);
 
-//	Packet* packet = new Packet(OP_SIGNATURE,siglen + 1+ ( (bUseV2)? 1:0 ),OP_EMULEPROT);
-//	memcpy(packet->pBuffer+1,achBuffer, siglen);
-//	packet->pBuffer[0] = siglen;
-//	if (bUseV2)
-//		packet->pBuffer[1+siglen] = byChaIPKind;
-
 	theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
 	SendPacket(packet,true,true);
 	m_SecureIdentState = IS_ALLREQUESTSSEND;
-	#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
-	AddLogLineM(true,_("Local Client: OP_SIGNATURE\n"));
-	#endif
 }
 
-void CUpDownClient::ProcessPublicKeyPacket(const uchar* pachPacket, uint32 nSize){
+void CUpDownClient::ProcessPublicKeyPacket(const uchar* pachPacket, uint32 nSize)
+{
 	theApp.clientlist->AddTrackClient(this);
 
 	///* delete this line later*/ DEBUG_ONLY(AddDebugLogLine(false, "recieving public key from '%s'", GetUserName()));
@@ -2017,76 +1821,44 @@ void CUpDownClient::SendSecIdentStatePacket(){
 		// crypt: send random data to sign
 		uint32 dwRandom = rand()+1;
 		credits->m_dwCryptRndChallengeFor = dwRandom;
-		// Kry - Too much output, it already works.
-		//AddDebugLogLineM(false, "sending SecIdentState Packet, state: %i (to '%s')", nValue, GetUserName() );
 
 		CSafeMemFile data;
 		data.WriteUInt8(nValue);
 		data.WriteUInt32(dwRandom);
 		Packet* packet = new Packet(&data, OP_EMULEPROT);
 		packet->SetOpCode(OP_SECIDENTSTATE);
-//		Packet* packet = new Packet(OP_SECIDENTSTATE,5,OP_EMULEPROT);
-//		packet->pBuffer[0] = nValue;
-//		memcpy(packet->pBuffer+1,&dwRandom, sizeof(dwRandom));
 
 		theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
 		SendPacket(packet,true,true);
-		#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
-		AddLogLineM(true,_("Local Client: OP_SECIDENTSTATE\n"));
-		#endif
 	}
 	else {
 		wxASSERT ( false );
 	}
 }
 
+
 void CUpDownClient::ProcessSecIdentStatePacket(const uchar* pachPacket, uint32 nSize){
-	if (nSize != 5)
-		return;
-	if (!credits){
-		wxASSERT ( false );
+	if ( nSize != 5 || !credits ) {
+		wxASSERT( credits );
 		return;
 	}
-	switch(pachPacket[0]){
-			case 0:
-				m_SecureIdentState = IS_UNAVAILABLE;
-				break;
-			case 1:
-				m_SecureIdentState = IS_SIGNATURENEEDED;
-				break;
-			case 2:
-				m_SecureIdentState = IS_KEYANDSIGNEEDED;
-				break;
-		}
-	CSafeMemFile data((BYTE*)pachPacket,nSize);
-	// Kry:  + 1 on the original one.
-	try {
-		// Discard first byte
-		data.ReadUInt8();		
-		uint32 dwRandom = data.ReadUInt32();
-		credits->m_dwCryptRndChallengeFrom = dwRandom;
-	} 
-	catch ( CStrangePacket )
-	{
-		printf("\nWrong SecIdentState packet!!\n");
-		printf("Sent by %s on ip %s port %i using client %x version %x\n",unicode2char(GetUserName()),unicode2char(GetFullIP()),GetUserPort(),GetClientSoft(),GetMuleVersion());
-		printf("User Disconnected.\n");
-		throw wxString(wxT("Wrong SecIdentState packet"));
-	}
-	catch ( CInvalidPacket (e))
-	{
-		printf("Wrong SecIdentState packet - %s\n\n",e.what());
-		printf("Sent by %s on ip %s port %i using client %x version %x\n",unicode2char(GetUserName()),unicode2char(GetFullIP()),GetUserPort(),GetClientSoft(),GetMuleVersion());
-		printf("User Disconnected.\n");		
-		throw wxString(wxT("Wrong SecIdentState packet"));
-	}
-			
 	
-	//DEBUG_ONLY(AddDebugLogLine(false, "recieved SecIdentState Packet, state: %i", pachPacket[0]));
+	CSafeMemFile data((BYTE*)pachPacket,nSize);
+	
+	switch ( data.ReadUInt8() ) {
+		case 0:	m_SecureIdentState = IS_UNAVAILABLE;		break;
+		case 1:	m_SecureIdentState = IS_SIGNATURENEEDED;	break;
+		case 2:	m_SecureIdentState = IS_KEYANDSIGNEEDED;	break;
+		default:
+			return;
+	}
+	
+	credits->m_dwCryptRndChallengeFrom = data.ReadUInt32();
 }
 
 
-void CUpDownClient::InfoPacketsReceived(){
+void CUpDownClient::InfoPacketsReceived()
+{
 	// indicates that both Information Packets has been received
 	// needed for actions, which process data from both packets
 	wxASSERT ( m_byInfopacketsReceived == IP_BOTH );
@@ -2097,10 +1869,10 @@ void CUpDownClient::InfoPacketsReceived(){
 	}
 }
 
+
 bool CUpDownClient::CheckHandshakeFinished(UINT WXUNUSED(protocol), UINT WXUNUSED(opcode)) const
 {
 	if (m_bHelloAnswerPending){
-		//	throw CString(wxT("Handshake not finished")); // -> disconnect client
 		// this triggers way too often.. need more time to look at this -> only create a warning
 		if (thePrefs::GetVerbose()) {
 			AddLogLineM(false, _("Handshake not finished while processing packet."));
@@ -2109,193 +1881,6 @@ bool CUpDownClient::CheckHandshakeFinished(UINT WXUNUSED(protocol), UINT WXUNUSE
 	}
 
 	return true;
-}
-
-
-/**
- * Checks if a substring is to be found in a string.
- */
-inline bool Contains( const wxString& string, const wxString& sub )
-{
-	return ( string.Find( sub ) != -1 );
-}
-
-void CUpDownClient::CheckForGPLEvilDoer_Nick()
-{
-	// Convert to lowercase for speedier comparisons
-	wxString username = m_Username.Lower();
-	
-	// check for known leecher
-	if (
-//		Contains( username, char2unicode("���]�q�[") )			||	// ���]�q�[
-//		Contains( username, char2unicode("���]�t�[") )			||	// ���]�t�[
-		Contains( username, wxT("00de") )				||
-		Contains( username, wxT("a-edit") )				||	// a-eDit
-		Contains( username, wxT("agentsmith") )			||	// AgentSmith
-		Contains( username, wxT("bionic") )				||	// Bionic
-		Contains( username, wxT("brainkiller") )		||	// Brainkiller
-		Contains( username, wxT("burton") )				||	// Burton
-		Contains( username, wxT("buzzfuzz") )			||
-		Contains( username, wxT("celinesexy") )			||
-		Contains( username, wxT("chief") )				||	// Chief
-		Contains( username, wxT("cow.v") )				||	// Cow.v
-		Contains( username, wxT("darkmule") )			||
-		Contains( username, wxT("dodgethis") )			||
-		Contains( username, wxT("donpedro") )			||	// DonPedro
-		Contains( username, wxT("emule-client") )	 	||
-		Contains( username, wxT("efish") )				||	// eFish
-		Contains( username, wxT("-=egoist=-") )			||	// -=EGOist=-
-		Contains( username, wxT("egomule") )			||	// EGOmule
-		Contains( username, wxT("elfenpower") )			||	// ElfenPower
-		Contains( username, wxT("elfenwombat") )		||	// ElfenWombat
-		( Contains( username, wxT("emule") ) && Contains( username, wxT("booster") ) ) ||
-		Contains( username, wxT("emule@#$") )			||	// eMule@#$			
-		Contains( username, wxT("emule-speed") )		||
-		Contains( username, wxT("emulespeed") )			||
-		Contains( username, wxT("emulspeed") )			||
-		Contains( username, wxT("energyfaker") )		||
-		Contains( username, wxT("esl@d3vil") )			||	// eSl@d3vil
-		Contains( username, wxT("evortex") )			||	// eVortex
-		Contains( username, wxT("|evorte|x|") )			||	// |eVorte|X|
-		Contains( username, wxT("freeza") )				||	// Freeza
-		Contains( username, wxT("$gam3r$") )			||	// $GAM3R$
-		Contains( username, wxT("g@m3r") )				||	// G@m3r
-		Contains( username, wxT("gate-emule") )			||	// Gate-eMule
-		Contains( username, wxT("hardmule") )			||
-		Contains( username, wxT("imperator") )			||	// Imperator
-		Contains( username, wxT("je te pigeone") )		||	// Je Te Pigeone
-		Contains( username, wxT("killians") )			||	// Killians
-		Contains( username, wxT("leecha") )				||	// Leecha		
-		Contains( username, wxT("lh.2y.net") )			||
-		Contains( username, wxT("master mod") )			||	// Master Mod
-		Contains( username, wxT("merrek") )				||	// Merrek
-		Contains( username, wxT("muli_checka") )		||	// Muli_Checka
-		Contains( username, wxT("netstorm") )			||	// Netstorm
-		Contains( username, wxT("nother edition") )		||	// NotHer eDitiOn
-		Contains( username, wxT("$motty") )				||
-		Contains( username, wxT("nameless") )			||
-		( username == wxT("pbwll") ) 					||
-		Contains( username, wxT("pharao") )				||	// phArAo
-		Contains( username, wxT("powermule") )			||
-		Contains( username, wxT("project-sandstorm") )	||	// PrOjEcT-SaNdStOrM
-		Contains( username, wxT("pubsman") )			||
-		( username == wxT("punisher") )					||
-		Contains( username, wxT("rammstein") )			||	// RAMMSTEIN
-		Contains( username, wxT("relikt") )				||	// Relikt
-		Contains( username, wxT("reverse") )			||	// Reverse
-		Contains( username, wxT("rocket.t35") )			||
-//		Contains( username, char2unicode("safty�s") )			||	// Safty�s
-		Contains( username, wxT("sauger") )				||	// Sauger
-		Contains( username, wxT("schlumpmule") )		||	// SchlumpMule
-		Contains( username, wxT("speed-unit") )			||	// Speed-Unit
-		Contains( username, wxT("taz456") )				||
-		Contains( username, wxT("[toxic]") )			||	// [toXic]
-		Contains( username, wxT("unknown poison") )		||	// UnKnOwN pOiSoN
-		( m_Username == wxT("unix user") )				||
-		Contains( username, wxT("vision") )				||	// Vision
-		Contains( username, wxT("$warez$") )			||	// $WAREZ$
-		Contains( username, wxT("x-mule") )				||	// X-MuLe
-		Contains( username, wxT("watson") )				||	// Watson
-		Contains( username, wxT("willtrash") )			||	// WillTrash
-		Contains( username, wxT("aideadsl.com") )		||	// aideADSL.com
-		Contains( username, wxT("pruna.com") )			||	// Pruna.com
-		Contains( username, wxT("mediavamp") )			||	// MediaVAMP
-		Contains( username, wxT("warezfaw") )			||	// WarezFaw
-		Contains( username, wxT("zulu") ) )					// Zulu
-	{
-		if ( !Credits() || Credits()->GetUploadedTotal() >= Credits()->GetDownloadedTotal() ) // must share
-			m_bGPLEvildoer = true;
-
-		m_bHasBeenGPLEvildoer = true;
-	}
-}
-
-void CUpDownClient::CheckForGPLEvilDoer_Mod()
-{
-	// Convert to lowercase for speedier comparisons
-	wxString modversion = m_strModVersion.Lower();
-	wxString old_modversion = m_old_ModVersion.Lower();
-	
-	// check for known unrespectful version of eMule
-	if ( // Added by BlackRat [EastShare : irregular clients]
-		Contains( m_clientVerString, wxT("0.60") ) ||	
-		Contains( m_clientVerString, wxT("0.69") ) ||	
-		( Contains( old_modversion, wxT("eastshare") ) && Contains( m_clientVerString, wxT("0.29") ) ) ||
-		// BlackRat : irregular blackrat mod
-		( Contains( old_modversion, wxT("blackrat 0.4") ) && !Contains( m_clientVerString, wxT("eMule v0.4") ) ) ||
-		// BlackRat : irregular ZX mod
-		( Contains( m_old_ModVersion, wxT("ZX") ) && Contains( m_clientVerString, wxT("v0.") ) ) ||
-		// BlackRat [irregular edonkey client]
-		( !m_old_ModVersion.IsEmpty() && Contains( m_clientVerString, wxT("eDonkey") ) ) ||
-		// Added by BlackRat [Icecream: irregular LSD mod]
-		( m_old_ModVersion.Lower().Find( wxT("lsd.7c") ) != -1 && m_old_ModVersion.Find( wxT("27") ) == -1 ) ||
-		// Added by BlackRat [LSD: irregular Clients Donkeys]
-		((GetVersion() > 589) && (GetSourceExchangeVersion() > 0) && (GetClientSoft() == SO_EDONKEY) ) ||
-		// check for known unrespectful version of eMule
-//		Contains( modversion, char2unicode("���]") )				||	// ���]
-		Contains( modversion, wxT("aideadsl") )			||	// AideADSL
-		Contains( modversion, wxT("a i d e a d s l") )	||	// A I D E A D S L
-		Contains( modversion, wxT("aldo") )				||
-		Contains( modversion, wxT("antigate") )			||	// AntiGate
-		Contains( modversion, wxT("argo") )				||	// ArGo
-		Contains( modversion, wxT("booster") )			||
-		Contains( modversion, wxT("brain") )			||
-		Contains( modversion, wxT("buzzfuzz") )			||	// BuzzFuzz
-		Contains( modversion, wxT("crack") )			||
-		Contains( modversion, wxT("darkmule") )			||
-		Contains( modversion, wxT("d-unit") )			||
-		Contains( modversion, wxT("dm-") )				||	// DM-
-		Contains( modversion, wxT("dodgethis") )		||
-		Contains( modversion, wxT("dragon") )			||	// Dragon
-		Contains( modversion, wxT("egomule") )			||
-		Contains( modversion, wxT("element") )			||	// Element
-		Contains( modversion, wxT("epo") )				||
-		Contains( modversion, wxT("esl@d3vil") )		||	// eSl@d3vil
-		Contains( modversion, wxT("esladevil") )		||	// eSladevil
-		Contains( modversion, wxT("|ev|") )				||	// |eV|
-		Contains( modversion, wxT("evortex") )			||	// eVortex
-		Contains( modversion, wxT("father") )			||
-		Contains( modversion, wxT("fcb") )				||	// FCB
-		Contains( modversion, wxT("freeza") )			||	// Freeza
-		Contains( modversion, wxT("go ") )				||	// Go
-		Contains( modversion, wxT("golk ") )			||	// goLk
-		Contains( modversion, wxT("gt mod") )			||
-		Contains( modversion, wxT("hardmule") )			||
-		Contains( modversion, wxT("hardpaw") )			||
-		Contains( modversion, wxT("heartbreaker") )		||	// Heartbreaker
-		( m_strModVersion.Find( wxT("Ice") ) != -1 )	||
-		Contains( modversion, wxT("imperator") )		||
-		Contains( modversion, wxT("kalitsch") )			||	// Kalitsch
-		Contains( modversion, wxT("ketamine") )			||	// Ketamine
-		Contains( modversion, wxT("killians") )			||	// Killians
-		Contains( modversion, wxT("legolas") )			||	// LegoLas
-		Contains( modversion, wxT("lh") )				||	// LH
-		Contains( modversion, wxT("lsd.13") )			||	// LSD.13
-		Contains( modversion, wxT("mison") )			||	// Mison
-		Contains( modversion, wxT("moddet") )			||
-		Contains( modversion, wxT("$motty") )			||
-		Contains( modversion, wxT("neo mule") )			||	// Neo Mule
-		Contains( modversion, wxT("nos") )				||	// NOS
-		Contains( modversion, wxT("osama") )			||	// Osama
-		Contains( modversion, wxT("rappi") )			||	// Rappi
-		Contains( modversion, wxT("rocket") )			||	// Rocket
-		Contains( modversion, wxT("rul0r") )			||	// Rul0r
-		Contains( modversion, wxT("rykigam") )			||	// ryKigaM
-		Contains( modversion, wxT("snort") )			||	// SnORt
-		Contains( modversion, wxT("speedload") )		||	// SpeedLoad
-		Contains( modversion, wxT("speed-unit") )		||	// Speed-Unit
-		Contains( modversion, wxT("sweetmule") )		||	// SweetMule
-		Contains( modversion, wxT("thunder") )			||	// Thunder
-		Contains( modversion, wxT("warezfaw") )			||	// WarezFaw
-		Contains( modversion, wxT("|x|") )				||	// |X|
-		Contains( modversion, wxT("x-treme") )			||	// X-treme
-		( m_strModVersion == wxT("v") ) ) 
-	{
-		if ( !Credits() || Credits()->GetUploadedTotal() >= Credits()->GetDownloadedTotal() ) // must share
-			m_bGPLEvildoer = true;
-
-		m_bHasBeenGPLEvildoer = true;
-	}
 }
 
 
@@ -2323,17 +1908,10 @@ wxString CUpDownClient::GetClientFullInfo() {
 
 void CUpDownClient::SendPublicIPRequest(){
 	if (IsConnected()){
-		/*
-		if (thePrefs.GetDebugClientTCPLevel() > 0)
-			DebugSend("OP__PublicIPReq", this);
-		*/
 		Packet* packet = new Packet(OP_PUBLICIP_REQ,0,OP_EMULEPROT);
 		theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
 		SendPacket(packet,true);
 		m_fNeedOurPublicIP = true;
-		#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
-		AddLogLineM(true,_("Local Client: OP_PUBLICIP_REQ\n"));
-		#endif
 	}
 }
 

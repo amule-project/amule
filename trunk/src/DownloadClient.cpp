@@ -83,7 +83,7 @@ void CUpDownClient::DrawStatusBar(wxMemoryDC* dc, const wxRect& rect, bool onlyg
 	// Barry - was only showing one part from client, even when reserved bits from 2 parts
 	wxString gettingParts = ShowDownloadingParts();
 
-	if (!onlygreyrect && m_reqfile && m_abyPartStatus) {
+	if (!onlygreyrect && m_abyPartStatus) {
 		for (uint32 i = 0;i != m_nPartCount;i++) {
 			if (m_abyPartStatus[i]) {
 				uint32 uEnd;
@@ -113,11 +113,11 @@ bool CUpDownClient::Compare(const CUpDownClient* tocomp, bool bIgnoreUserhash){
 		return false;
 	}
 	if(!bIgnoreUserhash && HasValidHash() && tocomp->HasValidHash())
-	    return (this->GetUserHash() == tocomp->GetUserHash());
+	    return (GetUserHash() == tocomp->GetUserHash());
 	if (HasLowID())
-		return ((this->GetUserID() == tocomp->GetUserID()) && (GetServerIP() == tocomp->GetServerIP()) && (this->GetUserPort() == tocomp->GetUserPort()));
+		return ((GetUserID() == tocomp->GetUserID()) && (GetServerIP() == tocomp->GetServerIP()) && (GetUserPort() == tocomp->GetUserPort()));
 	else
-		return ((this->GetUserID() == tocomp->GetUserID() && this->GetUserPort() == tocomp->GetUserPort()) || (this->GetIP() && (this->GetIP() == tocomp->GetIP() && this->GetUserPort() == tocomp->GetUserPort())) );
+		return ((GetUserID() == tocomp->GetUserID() && GetUserPort() == tocomp->GetUserPort()) || (GetIP() && (GetIP() == tocomp->GetIP() && GetUserPort() == tocomp->GetUserPort())) );
 }
 
 
@@ -205,8 +205,6 @@ void CUpDownClient::SendFileRequest()
 		return;
 	}
 	
-	AddAskedCountDown();
-
 	CSafeMemFile dataFileReq(16+16);
 	dataFileReq.WriteHash16(m_reqfile->GetFileHash());
 
@@ -296,7 +294,7 @@ void CUpDownClient::ProcessFileInfo(const CSafeMemFile* data, const CPartFile* f
 		throw wxString(_("ERROR: Wrong file ID (ProcessFileInfo; m_reqfile!=file)"));
 	}	
 
-	ClientFilename = data->ReadString();
+	m_clientFilename = data->ReadString();
 			
 	// 26-Jul-2003: removed requesting the file status for files <= PARTSIZE for better compatibility with ed2k protocol (eDonkeyHybrid).
 	// if the remote client answers the OP_REQUESTFILENAME with OP_REQFILENAMEANSWER the file is shared by the remote client. if we
@@ -426,18 +424,6 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, const CSafeMemFile* data,
 		}
 	}
 	
-	#ifdef __USE_DEBUG__	
-	if (bUdpPacket ? (thePrefs.GetDebugClientUDPLevel() > 0) : (thePrefs.GetDebugClientTCPLevel() > 0))
-	{
-		char* psz = new char[m_nPartCount + 1];
-		for (int i = 0; i < m_nPartCount; i++)
-			psz[i] = m_abyPartStatus[i] ? '#' : '.';
-		psz[i] = '\0';
-		Debug("  Parts=%u  %s  Needed=%u\n", m_nPartCount, psz, iNeeded);
-		delete[] psz;
-	}
-	#endif
-
 	UpdateDisplayedInfo();
 
 	// NOTE: This function is invoked from TCP and UDP socket!
@@ -447,11 +433,6 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, const CSafeMemFile* data,
 		} else if (m_reqfile->hashsetneeded) {
 			//If we are using the eMule filerequest packets, this is taken care of in the Multipacket!
 			if (m_socket) {
-				#ifdef __USE_DEBUG__
-				if (thePrefs.GetDebugClientTCPLevel() > 0) {
-					DebugSend("OP__HashSetRequest", this, (char*)m_reqfile->GetFileHash());
-				}
-				#endif
 				Packet* packet = new Packet(OP_HASHSETREQUEST,16);
 				packet->Copy16ToDataBuffer((const char *)m_reqfile->GetFileHash().GetHash());
 				theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->GetPacketSize());
@@ -515,23 +496,7 @@ void CUpDownClient::SetDownloadState(uint8 byNewState)
 				m_reqfile->RemoveDownloadingSource(this);
 			}
 		}
-		if (byNewState == DS_CONNECTED && m_nDownloadState != DS_CONNECTED) {
-			m_dwEnteredConnectedState = GetTickCount();
-		}
 		if (m_nDownloadState == DS_DOWNLOADING) {
-			#if 0
-			// -khaos--+++> Extended Statistics (Successful/Failed Download Sessions)
-			if (m_bTransferredDownMini && byNewState != DS_ERROR) {
-				// Increment our counters for successful sessions (Cumulative AND Session)
-				thePrefs::Add2DownSuccessfulSessions();
-			} else {
-				// Increment our counters failed sessions (Cumulative AND Session)
-				thePrefs::Add2DownFailedSessions();
-			}
-			thePrefs::Add2DownSAvgTime(GetDownTimeDifference()/1000);
-			// <-----khaos-
-			#endif
-
 			m_nDownloadState = byNewState;
 			for (POSITION pos = m_DownloadBlocks_list.GetHeadPosition();pos != 0; ) {
 				Requested_Block_Struct* cur_block = m_DownloadBlocks_list.GetNext(pos);
@@ -574,7 +539,6 @@ void CUpDownClient::SetDownloadState(uint8 byNewState)
 				SetRemoteQueueFull(false);
 			}
 			SetRemoteQueueRank(0); // eMule 0.30c set like this ...
-			SetAskedCountDown(0);
 		}
 		UpdateDisplayedInfo(true);
 	}
@@ -697,268 +661,270 @@ fill a gap.
 
 void CUpDownClient::ProcessBlockPacket(const char *packet, uint32 size, bool packed)
 {
-	try {
-		// Ignore if no data required
-		if (!(GetDownloadState() == DS_DOWNLOADING || GetDownloadState() == DS_NONEEDEDPARTS)) {
-			return;
-		}
+	// Ignore if no data required
+	if (!(GetDownloadState() == DS_DOWNLOADING || GetDownloadState() == DS_NONEEDEDPARTS)) {
+		return;
+	}
 
-		const int HEADER_SIZE = 24;
+	const int HEADER_SIZE = 24;
 
-		// Update stats
-		m_dwLastBlockReceived = ::GetTickCount();
+	// Update stats
+	m_dwLastBlockReceived = ::GetTickCount();
 
+	// Read data from packet
+	const CSafeMemFile data((BYTE*)packet, size);
+	uchar fileID[16];
+	data.ReadHash16(fileID);
 
-		// Read data from packet
-		const CSafeMemFile *data = new CSafeMemFile((BYTE*)packet, size);
-		uchar fileID[16];
-		data->ReadHash16(fileID);
+	// Check that this data is for the correct file
+	if ((!m_reqfile) || md4cmp(packet, m_reqfile->GetFileHash())) {
+		throw wxString(wxT("Wrong fileid sent (ProcessBlockPacket)"));
+	}
 
-		// Check that this data is for the correct file
-		if ((!m_reqfile) || md4cmp(packet, m_reqfile->GetFileHash())) {
-			delete data;
-			throw wxString(wxT("Wrong fileid sent (ProcessBlockPacket)"));
-		}
+	// Find the start & end positions, and size of this chunk of data
+	uint32 nStartPos = data.ReadUInt32();
+	uint32 nEndPos = 0;
+	uint32 nBlockSize = 0;
+	if (packed) {
+		nBlockSize = data.ReadUInt32();
+		nEndPos = nStartPos + (size - HEADER_SIZE);
+	} else {
+		nEndPos = data.ReadUInt32();
+	}
 
-		// Find the start & end positions, and size of this chunk of data
-		uint32 nStartPos = data->ReadUInt32();
-		uint32 nEndPos = 0;
-		uint32 nBlockSize = 0;
-		if (packed) {
-			nBlockSize = data->ReadUInt32();
-			nEndPos = nStartPos + (size - HEADER_SIZE);
-			usedcompressiondown = true;
-		} else {
-			nEndPos = data->ReadUInt32();
-		}
-		delete data;
+	// Check that packet size matches the declared data size + header size (24)
+	if ( nEndPos == nStartPos || size != ((nEndPos - nStartPos) + HEADER_SIZE)) {
+		throw wxString(wxT("Corrupted or invalid DataBlock received (ProcessBlockPacket)"));
+	}
+	theApp.UpdateReceivedBytes(size - HEADER_SIZE);
+	bytesReceivedCycle += size - HEADER_SIZE;
 
-		// Check that packet size matches the declared data size + header size (24)
-		if ( nEndPos == nStartPos || size != ((nEndPos - nStartPos) + HEADER_SIZE)) {
-			throw wxString(wxT("Corrupted or invalid DataBlock received (ProcessBlockPacket)"));
-		}
-		// Move end back one, should be inclusive
-		theApp.UpdateReceivedBytes(size - HEADER_SIZE);
-		bytesReceivedCycle += size - HEADER_SIZE;
+	credits->AddDownloaded(size - HEADER_SIZE, GetIP());
+	
+	// Move end back one, should be inclusive
+	nEndPos--;
 
-		credits->AddDownloaded(size - HEADER_SIZE, GetIP());
-		nEndPos--;
-
-		// Loop through to find the reserved block that this is within
-		Pending_Block_Struct *cur_block;
-		for (POSITION pos = m_PendingBlocks_list.GetHeadPosition(); pos != NULL; m_PendingBlocks_list.GetNext(pos)) {
-			cur_block = m_PendingBlocks_list.GetAt(pos);
-			if ((cur_block->block->StartOffset <= nStartPos) && (cur_block->block->EndOffset >= nStartPos)) {
-				// Found reserved block
+	// Loop through to find the reserved block that this is within
+	for ( POSITION pos = m_PendingBlocks_list.GetHeadPosition(); pos != NULL; m_PendingBlocks_list.GetNext(pos) ) {
+		Pending_Block_Struct* cur_block = m_PendingBlocks_list.GetAt(pos);
+		
+		if ((cur_block->block->StartOffset <= nStartPos) && (cur_block->block->EndOffset >= nStartPos)) {
+			// Found reserved block
 				
-				if (cur_block->fZStreamError){
-					AddDebugLogLineM(false, wxString::Format(_("Ignoring %u bytes of block %u-%u because of errornous zstream state for file \"%s\""), size - HEADER_SIZE, nStartPos, nEndPos, m_reqfile->GetFileName().c_str()));
-					m_reqfile->RemoveBlockFromList(cur_block->block->StartOffset, cur_block->block->EndOffset);
-					return;
-				}
-	    
-				// Remember this start pos, used to draw part downloading in list
-				m_nLastBlockOffset = nStartPos;
-
-				// Occasionally packets are duplicated, no point writing it twice
-				// This will be 0 in these cases, or the length written otherwise
-				uint32 lenWritten = 0;
-
-				// Handle differently depending on whether packed or not
-				if (!packed) {
-					// Write to disk (will be buffered in part file class)
-					lenWritten = m_reqfile->WriteToBuffer(size - HEADER_SIZE, 
-					(BYTE *) (packet + HEADER_SIZE), nStartPos, nEndPos,
-					cur_block->block );
-				} else {
-					// Packed
-					wxASSERT( (int)size > 0 );
-					// Create space to store unzipped data, the size is
-					// only an initial guess, will be resized in unzip()
-					// if not big enough
-					uint32 lenUnzipped = (size * 2);
-					// Don't get too big
-					if (lenUnzipped > (BLOCKSIZE + 300)) {
-						lenUnzipped = (BLOCKSIZE + 300);
-					}
-					BYTE *unzipped = new BYTE[lenUnzipped];
-
-					// Try to unzip the packet
-					int result = unzip(cur_block, (BYTE *)(packet + HEADER_SIZE), (size - HEADER_SIZE), &unzipped, &lenUnzipped);
-					if (result == Z_OK && ((int)lenUnzipped >= 0)) {
-						
-						// Write any unzipped data to disk
-						if (lenUnzipped > 0) {
-							wxASSERT( (int)lenUnzipped > 0 );
-							// Use the current start and end
-							// positions for the uncompressed data
-							nStartPos = cur_block->block->StartOffset + cur_block->totalUnzipped - lenUnzipped;
-							nEndPos = cur_block->block->StartOffset + cur_block->totalUnzipped - 1;
-
-							if (nStartPos > cur_block->block->EndOffset || nEndPos > cur_block->block->EndOffset) {
-								AddDebugLogLineM(false, wxString::Format(_("Corrupted compressed packet for %s received (error %i)"), m_reqfile->GetFileName().c_str(), 666));
-								m_reqfile->RemoveBlockFromList(cur_block->block->StartOffset, cur_block->block->EndOffset);
-							} else {
-								// Write uncompressed data to file
-								lenWritten = m_reqfile->WriteToBuffer(size - HEADER_SIZE,
-								unzipped, nStartPos, nEndPos,
-								cur_block->block );
-							}
-						}
-					} else {
-						wxString strZipError;
-						if (cur_block->zStream && cur_block->zStream->msg) {
-							strZipError.Printf(_T(" - %s"), cur_block->zStream->msg);
-						} 
-						AddDebugLogLineM(false, wxString(_("Corrupted compressed packet for")) + m_reqfile->GetFileName() + wxString::Format(_("received (error %i) ") , result) + strZipError );
-						m_reqfile->RemoveBlockFromList(cur_block->block->StartOffset, cur_block->block->EndOffset);
-
-						// If we had an zstream error, there is no chance that we could recover from it nor that we
-						// could use the current zstream (which is in error state) any longer.
-						if (cur_block->zStream){
-							inflateEnd(cur_block->zStream);
-							delete cur_block->zStream;
-							cur_block->zStream = NULL;
-						}
-
-						// Although we can't further use the current zstream, there is no need to disconnect the sending 
-						// client because the next zstream (a series of 10K-blocks which build a 180K-block) could be
-						// valid again. Just ignore all further blocks for the current zstream.
-						cur_block->fZStreamError = 1;
-						cur_block->totalUnzipped = 0; // bluecow's fix
-					}
-					delete [] unzipped;
-				}
-				// These checks only need to be done if any data was written
-				if (lenWritten > 0) {
-					m_nTransferedDown += lenWritten;
-
-					// If finished reserved block
-					if (nEndPos == cur_block->block->EndOffset) {
-						m_reqfile->RemoveBlockFromList(cur_block->block->StartOffset, cur_block->block->EndOffset);
-						delete cur_block->block;
-						// Not always allocated
-						if (cur_block->zStream) {
-					  		inflateEnd(cur_block->zStream);
-					 		delete cur_block->zStream;
-						}
-						delete cur_block;
-						m_PendingBlocks_list.RemoveAt(pos);
-
-						// Request next block
-						SendBlockRequests();
-					}
-				}
-				// Stop looping and exit method
+			if (cur_block->fZStreamError){
+				AddDebugLogLineM(false, wxString::Format(_("Ignoring %u bytes of block %u-%u because of errornous zstream state for file \"%s\""), size - HEADER_SIZE, nStartPos, nEndPos, m_reqfile->GetFileName().c_str()));
+				m_reqfile->RemoveBlockFromList(cur_block->block->StartOffset, cur_block->block->EndOffset);
 				return;
 			}
+	   
+			// Remember this start pos, used to draw part downloading in list
+			m_nLastBlockOffset = nStartPos;
+
+			// Occasionally packets are duplicated, no point writing it twice
+			// This will be 0 in these cases, or the length written otherwise
+			uint32 lenWritten = 0;
+
+			// Handle differently depending on whether packed or not
+			if (!packed) {
+				// Write to disk (will be buffered in part file class)
+				lenWritten = m_reqfile->WriteToBuffer( size - HEADER_SIZE, 
+													   (BYTE*)(packet + HEADER_SIZE),
+													   nStartPos,
+													   nEndPos,
+													   cur_block->block );
+			} else {
+				// Packed
+				wxASSERT( (int)size > 0 );
+				// Create space to store unzipped data, the size is
+				// only an initial guess, will be resized in unzip()
+				// if not big enough
+				uint32 lenUnzipped = (size * 2);
+				// Don't get too big
+				if (lenUnzipped > (BLOCKSIZE + 300)) {
+					lenUnzipped = (BLOCKSIZE + 300);
+				}
+				BYTE *unzipped = new BYTE[lenUnzipped];
+
+				// Try to unzip the packet
+				int result = unzip(cur_block, (BYTE *)(packet + HEADER_SIZE), (size - HEADER_SIZE), &unzipped, &lenUnzipped);
+				
+				// no block can be uncompressed to >2GB, 'lenUnzipped' is obviously errornous.				
+				if (result == Z_OK && ((int)lenUnzipped >= 0)) {
+					
+					// Write any unzipped data to disk
+					if (lenUnzipped > 0) {
+						wxASSERT( (int)lenUnzipped > 0 );
+						
+						// Use the current start and end positions for the uncompressed data
+						nStartPos = cur_block->block->StartOffset + cur_block->totalUnzipped - lenUnzipped;
+						nEndPos = cur_block->block->StartOffset + cur_block->totalUnzipped - 1;
+
+						if (nStartPos > cur_block->block->EndOffset || nEndPos > cur_block->block->EndOffset) {
+							AddDebugLogLineM(false, wxString::Format(_("Corrupted compressed packet for %s received (error %i)"), m_reqfile->GetFileName().c_str(), 666));
+							m_reqfile->RemoveBlockFromList(cur_block->block->StartOffset, cur_block->block->EndOffset);
+						} else {
+							// Write uncompressed data to file
+							lenWritten = m_reqfile->WriteToBuffer( size - HEADER_SIZE,
+																   unzipped,
+																   nStartPos,
+																   nEndPos,
+																   cur_block->block );
+						}
+					}
+				} else {
+					wxString strZipError;
+					if (cur_block->zStream && cur_block->zStream->msg) {
+						strZipError.Printf(_T(" - %s"), cur_block->zStream->msg);
+					} 
+					
+					AddDebugLogLineM(false, wxString(_("Corrupted compressed packet for")) + m_reqfile->GetFileName() + wxString::Format(_("received (error %i) ") , result) + strZipError );
+					
+					m_reqfile->RemoveBlockFromList(cur_block->block->StartOffset, cur_block->block->EndOffset);
+
+					// If we had an zstream error, there is no chance that we could recover from it nor that we
+					// could use the current zstream (which is in error state) any longer.
+					if (cur_block->zStream){
+						inflateEnd(cur_block->zStream);
+						delete cur_block->zStream;
+						cur_block->zStream = NULL;
+					}
+
+					// Although we can't further use the current zstream, there is no need to disconnect the sending 
+					// client because the next zstream (a series of 10K-blocks which build a 180K-block) could be
+					// valid again. Just ignore all further blocks for the current zstream.
+					cur_block->fZStreamError = 1;
+					cur_block->totalUnzipped = 0; // bluecow's fix
+				}
+				delete [] unzipped;
+			}
+			// These checks only need to be done if any data was written
+			if (lenWritten > 0) {
+				m_nTransferedDown += lenWritten;
+
+				// If finished reserved block
+				if (nEndPos == cur_block->block->EndOffset) {
+					m_reqfile->RemoveBlockFromList(cur_block->block->StartOffset, cur_block->block->EndOffset);
+					delete cur_block->block;
+					// Not always allocated
+					if (cur_block->zStream) {
+				  		inflateEnd(cur_block->zStream);
+				 		delete cur_block->zStream;
+					}
+					delete cur_block;
+					m_PendingBlocks_list.RemoveAt(pos);
+
+					// Request next block
+					SendBlockRequests();
+				}
+			}
+			// Stop looping and exit method
+			return;
 		}
- 	} catch (...) {
-		AddDebugLogLineM(false,wxString::Format(wxT("Unknown exception in %s: file \""), __FUNCTION__) + (m_reqfile ? m_reqfile->GetFileName() : wxString(wxT("?"))) + wxT("%s\""));
 	}
 }
 
 int CUpDownClient::unzip(Pending_Block_Struct *block, BYTE *zipped, uint32 lenZipped, BYTE **unzipped, uint32 *lenUnzipped, int iRecursion)
 {
 	int err = Z_DATA_ERROR;
-	try {
-		// Save some typing
-		z_stream *zS = block->zStream;
+	
+	// Save some typing
+	z_stream *zS = block->zStream;
 
-		// Is this the first time this block has been unzipped
-		if (zS == NULL) {
-			// Create stream
-			block->zStream = new z_stream;
-			zS = block->zStream;
+	// Is this the first time this block has been unzipped
+	if (zS == NULL) {
+		// Create stream
+		block->zStream = new z_stream;
+		zS = block->zStream;
 
-			// Initialise stream values
-			zS->zalloc = (alloc_func)0;
-			zS->zfree = (free_func)0;
-			zS->opaque = (voidpf)0;
+		// Initialise stream values
+		zS->zalloc = (alloc_func)0;
+		zS->zfree = (free_func)0;
+		zS->opaque = (voidpf)0;
 
-			// Set output data streams, do this here to avoid overwriting on recursive calls
-			zS->next_out = (*unzipped);
-			zS->avail_out = (*lenUnzipped);
+		// Set output data streams, do this here to avoid overwriting on recursive calls
+		zS->next_out = (*unzipped);
+		zS->avail_out = (*lenUnzipped);
 
-			// Initialise the z_stream
-			err = inflateInit(zS);
-			if (err != Z_OK) {
-				return err;
-			}
-		}
-
-		// Use whatever input is provided
-		zS->next_in  = zipped;
-		zS->avail_in = lenZipped;
-
-		// Only set the output if not being called recursively
-		if (iRecursion == 0) {
-			zS->next_out = (*unzipped);
-			zS->avail_out = (*lenUnzipped);
-		}
-
-		// Try to unzip the data
-		err = inflate(zS, Z_SYNC_FLUSH);
-
-		// Is zip finished reading all currently available input and writing
-		// all generated output
-		if (err == Z_STREAM_END) {
-			// Finish up
-			err = inflateEnd(zS);
-			if (err != Z_OK) {
-				return err;
-			}
-
-			// Got a good result, set the size to the amount unzipped in this call
-			//  (including all recursive calls)
-			(*lenUnzipped) = (zS->total_out - block->totalUnzipped);
-			block->totalUnzipped = zS->total_out;
-		} else if ((err == Z_OK) && (zS->avail_out == 0) && (zS->avail_in != 0)) {
-			// Output array was not big enough,
-			// call recursively until there is enough space
-
-			// What size should we try next
-			uint32 newLength = (*lenUnzipped) *= 2;
-			if (newLength == 0) {
-				newLength = lenZipped * 2;
-			}
-			// Copy any data that was successfully unzipped to new array
-			BYTE *temp = new BYTE[newLength];
-			assert( zS->total_out - block->totalUnzipped <= newLength );
-			memcpy(temp, (*unzipped), (zS->total_out - block->totalUnzipped));
-			delete [] (*unzipped);
-			(*unzipped) = temp;
-			(*lenUnzipped) = newLength;
-
-			// Position stream output to correct place in new array
-			zS->next_out = (*unzipped) + (zS->total_out - block->totalUnzipped);
-			zS->avail_out = (*lenUnzipped) - (zS->total_out - block->totalUnzipped);
-
-			// Try again
-			err = unzip(block, zS->next_in, zS->avail_in, unzipped, lenUnzipped, iRecursion + 1);
-		} else if ((err == Z_OK) && (zS->avail_in == 0)) {
-			// All available input has been processed, everything ok.
-			// Set the size to the amount unzipped in this call
-			// (including all recursive calls)
-			(*lenUnzipped) = (zS->total_out - block->totalUnzipped);
-			block->totalUnzipped = zS->total_out;
-		} else {
-			// Should not get here unless input data is corrupt
-			wxString strZipError;
-			if (zS->msg)
-				strZipError.Printf(_T(" %d '%s'"), err, zS->msg);
-			else if (err != Z_OK)
-				strZipError.Printf(_T(" %d"), err);
-			AddDebugLogLineM(false, wxString(wxT("Unexpected zip error ")) +  strZipError + wxString(wxT("in file \"")) + (m_reqfile ? m_reqfile->GetFileName() : wxString(wxT("?"))) + wxT("\""));
-		}
-
+		// Initialise the z_stream
+		err = inflateInit(zS);
 		if (err != Z_OK) {
-			(*lenUnzipped) = 0;
+			return err;
 		}
-	} catch (...) {
-		AddDebugLogLineM(false, wxString::Format(wxT("Unknown exception in %s: file \""), __FUNCTION__) + (m_reqfile ? m_reqfile->GetFileName() : wxString(wxT("?"))) + wxT("\""));
-		err = Z_DATA_ERROR;
 	}
+
+	// Use whatever input is provided
+	zS->next_in  = zipped;
+	zS->avail_in = lenZipped;
+
+	// Only set the output if not being called recursively
+	if (iRecursion == 0) {
+		zS->next_out = (*unzipped);
+		zS->avail_out = (*lenUnzipped);
+	}
+
+	// Try to unzip the data
+	err = inflate(zS, Z_SYNC_FLUSH);
+
+	// Is zip finished reading all currently available input and writing
+	// all generated output
+	if (err == Z_STREAM_END) {
+		// Finish up
+		err = inflateEnd(zS);
+		if (err != Z_OK) {
+			return err;
+		}
+
+		// Got a good result, set the size to the amount unzipped in this call
+		//  (including all recursive calls)
+		(*lenUnzipped) = (zS->total_out - block->totalUnzipped);
+		block->totalUnzipped = zS->total_out;
+	} else if ((err == Z_OK) && (zS->avail_out == 0) && (zS->avail_in != 0)) {
+		
+		// Output array was not big enough,
+		// call recursively until there is enough space
+
+		// What size should we try next
+		uint32 newLength = (*lenUnzipped) *= 2;
+		if (newLength == 0) {
+			newLength = lenZipped * 2;
+		}
+		// Copy any data that was successfully unzipped to new array
+		BYTE *temp = new BYTE[newLength];
+		assert( zS->total_out - block->totalUnzipped <= newLength );
+		memcpy(temp, (*unzipped), (zS->total_out - block->totalUnzipped));
+		delete [] (*unzipped);
+		(*unzipped) = temp;
+		(*lenUnzipped) = newLength;
+
+		// Position stream output to correct place in new array
+		zS->next_out = (*unzipped) + (zS->total_out - block->totalUnzipped);
+		zS->avail_out = (*lenUnzipped) - (zS->total_out - block->totalUnzipped);
+
+		// Try again
+		err = unzip(block, zS->next_in, zS->avail_in, unzipped, lenUnzipped, iRecursion + 1);
+	} else if ((err == Z_OK) && (zS->avail_in == 0)) {
+		// All available input has been processed, everything ok.
+		// Set the size to the amount unzipped in this call
+		// (including all recursive calls)
+		(*lenUnzipped) = (zS->total_out - block->totalUnzipped);
+		block->totalUnzipped = zS->total_out;
+	} else {
+		// Should not get here unless input data is corrupt
+		wxString strZipError;
+		
+		if ( zS->msg ) {
+			strZipError.Printf(_T(" %d '%s'"), err, zS->msg);
+		} else if (err != Z_OK) {
+			strZipError.Printf(_T(" %d"), err);
+		}
+		
+		AddDebugLogLineM(false, wxString(wxT("Unexpected zip error ")) +  strZipError + wxString(wxT("in file \"")) + (m_reqfile ? m_reqfile->GetFileName() : wxString(wxT("?"))) + wxT("\""));
+	}
+
+	if (err != Z_OK) {
+		(*lenUnzipped) = 0;
+	}
+	
 	return err;
 }
 
@@ -974,7 +940,8 @@ int CUpDownClient::unzip(Pending_Block_Struct *block, BYTE *zipped, uint32 lenZi
 // makes the degree of smoothing slightly imprecise (the true TC of the filter 
 // varies inversely with the true loop time), which is of no importance here.
 
-float CUpDownClient::CalculateKBpsDown() {
+float CUpDownClient::CalculateKBpsDown()
+{
 												// -- all timing values are in seconds --
 	const	float tcLoop   =  0.1;				// _assumed_ Process() loop time = 0.1 sec
 	const	float tcInit   =  0.4;				// initial filter time constant
@@ -1068,13 +1035,9 @@ void CUpDownClient::UDPReaskForDownload()
 		return;
 	}
 
-	//the line "m_bUDPPending = true;" use to be here
-
-	
 	if(m_nUDPPort != 0 && thePrefs::GetUDPPort() != 0 &&
 	   !HasLowID() && !IsConnected())
 	{ 
-		// deadlake PROXYSUPPORT
 		//don't use udp to ask for sources
 		if(IsSourceRequestAllowed()) {
 			return;
@@ -1094,10 +1057,7 @@ void CUpDownClient::UDPReaskForDownload()
 		if (GetUDPVersion() > 2) {
 			data.WriteUInt16(m_reqfile->m_nCompleteSourcesCount);
 		}
-		/*
-		if (thePrefs.GetDebugClientUDPLevel() > 0)
-			DebugSend("OP__ReaskFilePing", this, (char*)m_reqfile->GetFileHash());
-		*/
+		
 		Packet* response = new Packet(&data, OP_EMULEPROT);
 		response->SetOpCode(OP_REASKFILEPING);
 		theApp.uploadqueue->AddUpDataOverheadFileRequest(response->GetPacketSize());
@@ -1123,7 +1083,7 @@ wxString CUpDownClient::ShowDownloadingParts()
 void CUpDownClient::UpdateDisplayedInfo(bool force)
 {
 	DWORD curTick = ::GetTickCount();
-	if(force || curTick-m_lastRefreshedDLDisplay > MINWAIT_BEFORE_DLDISPLAY_WINDOWUPDATE+(uint32)(rand()/(RAND_MAX/1000))) {
+	if(force || curTick-m_lastRefreshedDLDisplay > MINWAIT_BEFORE_DLDISPLAY_WINDOWUPDATE) {
 		Notify_DownloadCtrlUpdateItem(this);
 		m_lastRefreshedDLDisplay = curTick;
 	}

@@ -775,11 +775,7 @@ void CQueuedView::DrawCell( CUpDownClient* client, int column, wxDC* dc, const w
 		
 		case 5:
 			if ( client->HasLowID() ) {
-				if (client->m_bAddNextConnect) {
-					buffer.Printf( wxT("%i ****"), client->GetScore(false) );
-				} else {
-					buffer.Printf( wxT("%i %s"), client->GetScore(false), _("LowID") );
-				}
+				buffer.Printf( wxT("%i %s"), client->GetScore(false), _("LowID") );
 			} else {
 				buffer.Printf(wxT("%i"),client->GetScore(false));
 			}

@@ -131,7 +131,7 @@ enum {
 #define	PURGESOURCESWAPSTOP			900000	// (15 mins), how long forbid swapping a source to a certain file (NNP,...)
 #define	CONNECTION_LATENCY			22050	// latency for responces
 #define	SOURCESSLOTS				100
-#define	MINWAIT_BEFORE_DLDISPLAY_WINDOWUPDATE	1000
+#define	MINWAIT_BEFORE_DLDISPLAY_WINDOWUPDATE	1500
 #define	MAXAVERAGETIME				40000 //millisecs
 #define	CLIENTBANTIME				7200000 // 2h
 #define	TRACKED_CLEANUP_TIME			3600000 // 1 hour

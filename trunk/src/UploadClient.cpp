@@ -125,9 +125,6 @@ uint32 CUpDownClient::GetScore(bool sysvalue, bool isdownloading, bool onlybasev
 	
 	float modif = credits->GetScoreRatio(GetIP());
 	fBaseValue *= modif;
-	if( !m_bySupportSecIdent && modif == 1 ) {
-		fBaseValue *= 0.95f;		
-	}
 	
 	if (!onlybasevalue) {
 		fBaseValue *= (float(filepriority)/10.0f);
@@ -139,7 +136,7 @@ uint32 CUpDownClient::GetScore(bool sysvalue, bool isdownloading, bool onlybasev
 			}
 		}
 	}
-	if( (IsEmuleClient() || this->GetClientSoft() < 10) && m_byEmuleVersion <= 0x19) {
+	if( (IsEmuleClient() || GetClientSoft() < 10) && m_byEmuleVersion <= 0x19) {
 		fBaseValue *= 0.5f;
 	}
 	return (uint32)fBaseValue;
@@ -153,50 +150,45 @@ uint32 CUpDownClient::GetScore(bool sysvalue, bool isdownloading, bool onlybasev
 //   false: Next requested block is from same chunk that last downloaded block 
 bool CUpDownClient::IsDifferentPartBlock() const // [Tarod 12/22/2002] 
 { 
-	//printf("entered in : CUpDownClient::IsDifferentPartBlock\n");
-	Requested_Block_Struct* last_done_block;
-	Requested_Block_Struct* next_requested_block;
-	uint32 last_done_part = 0xffffffff;
-	uint32 next_requested_part = 0xffffffff;
-	
 	bool different_part = false;
 	
-	try {
-		// Check if we have good lists and proceed to check for different chunks
-		if (!m_BlockRequests_queue.IsEmpty() && !m_DoneBlocks_list.IsEmpty())
-		{
-			// Get last block and next pending
-			last_done_block = (Requested_Block_Struct*)m_DoneBlocks_list.GetHead();
-			next_requested_block = (Requested_Block_Struct*)m_BlockRequests_queue.GetHead(); 
+	// Check if we have good lists and proceed to check for different chunks
+	if (!m_BlockRequests_queue.IsEmpty() && !m_DoneBlocks_list.IsEmpty())
+	{
+		Requested_Block_Struct* last_done_block = NULL;
+		Requested_Block_Struct* next_requested_block = NULL;
+		uint32 last_done_part = 0xffffffff;
+		uint32 next_requested_part = 0xffffffff;
 			
-			// Calculate corresponding parts to blocks
-			last_done_part = last_done_block->StartOffset / PARTSIZE;
-			next_requested_part = next_requested_block->StartOffset / PARTSIZE; 
+			
+		// Get last block and next pending
+		last_done_block = (Requested_Block_Struct*)m_DoneBlocks_list.GetHead();
+		next_requested_block = (Requested_Block_Struct*)m_BlockRequests_queue.GetHead(); 
+			
+		// Calculate corresponding parts to blocks
+		last_done_part = last_done_block->StartOffset / PARTSIZE;
+		next_requested_part = next_requested_block->StartOffset / PARTSIZE; 
              
-			// Test is we are asking same file and same part
-			if ( last_done_part != next_requested_part)
-			{ 
-				different_part = true;
-				AddDebugLogLineM(false, _("Session ended due to new chunk."));
-			}
-			if (md4cmp(last_done_block->FileID, next_requested_block->FileID) != 0)
-			{ 
-				different_part = true;
-				AddDebugLogLineM(false, _("Session ended due to different file."));
-			}
-		} 
-   	}
-   	catch(...)
-   	{ 
-      		different_part = true; 
-   	} 
-//	AddDebugLogLineF(false, "Debug: User %s, last_done_part (%u) %s (%u) next_requested_part, sent %u Kbs.", GetUserName(), last_done_part, different_part? "!=": "==", next_requested_part, this->GetTransferedUp() / 1024); 
+		// Test is we are asking same file and same part
+		if ( last_done_part != next_requested_part)
+		{ 
+			different_part = true;
+			AddDebugLogLineM(false, _("Session ended due to new chunk."));
+		}
+	
+		if (md4cmp(last_done_block->FileID, next_requested_block->FileID) != 0)
+		{ 
+			different_part = true;
+			AddDebugLogLineM(false, _("Session ended due to different file."));
+		}
+	} 
 
 	return different_part; 
 }
 
-bool CUpDownClient::CreateNextBlockPackage(){
-	//printf("entered in : CUpDownClient::CreateNextBlockPackage\n");
+
+bool CUpDownClient::CreateNextBlockPackage()
+{
 	// time critical
 	// check if we should kick this client
 	// VQB Full Chunk Trans..
@@ -299,13 +291,11 @@ bool CUpDownClient::CreateNextBlockPackage(){
 			delete[] filedata;
 		return false;
 	}
-	//AddDebugLogLine(false,"Debug: Packet done. Size: %i",blockpack->GetLength());
 	return true;
 
 }
 
 void CUpDownClient::CreateStandartPackets(const byte* data,uint32 togo, Requested_Block_Struct* currentblock){
-	//printf("entered in : CUpDownClient::CreateStandartPackets\n");
 	uint32 nPacketSize;
 
 	try {
@@ -338,7 +328,6 @@ void CUpDownClient::CreateStandartPackets(const byte* data,uint32 togo, Requeste
 }
 
 void CUpDownClient::CreatePackedPackets(const byte* data,uint32 togo, Requested_Block_Struct* currentblock){
-	//printf("entered in : CUpDownClient::CreatePackedPackets\n");
 	BYTE* output = new BYTE[togo+300];
 	uLongf newsize = togo+300;
 	uint16 result = compress2(output,&newsize,data,togo,9);
@@ -347,7 +336,6 @@ void CUpDownClient::CreatePackedPackets(const byte* data,uint32 togo, Requested_
 		CreateStandartPackets(data,togo,currentblock);
 		return;
 	}
-	m_bUsedComprUp = true;
 	
 	try {
 		CMemFile memfile(output,newsize);
@@ -486,7 +474,6 @@ void CUpDownClient::SetUploadFileID(CKnownFile* newreqfile)
 
 
 void CUpDownClient::AddReqBlock(Requested_Block_Struct* reqblock){
-	//printf("entered in : CUpDownClient::AddReqBlock\n");
 	for (POSITION pos = m_DoneBlocks_list.GetHeadPosition();pos != 0;m_DoneBlocks_list.GetNext(pos)){
 		if (reqblock->StartOffset == m_DoneBlocks_list.GetAt(pos)->StartOffset && reqblock->EndOffset == m_DoneBlocks_list.GetAt(pos)->EndOffset){
 			delete reqblock;
@@ -513,11 +500,6 @@ uint32 CUpDownClient::GetWaitStartTime() const
 		if (dwResult > m_dwUploadTime && IsDownloading()) {
 			//this happens only if two clients with invalid securehash are in the queue - if at all
 			dwResult = m_dwUploadTime - 1;
-
-#if __ENABLE_DEBUG__
-			if (thePrefs.GetVerbose())
-				DEBUG_ONLY(AddDebugLogLine(false,"Warning: CUpDownClient::GetWaitStartTime() waittime Collision (%s)",GetUserName()));
-#endif
 		}
 	}
 		
@@ -537,7 +519,6 @@ void CUpDownClient::ClearWaitStartTime(){
 }
 
 uint32 CUpDownClient::SendBlockData(float kBpsToSend){
-	//printf("entered in : CUpDownClient::SendBlockData\n");
 	uint32	msCur = ::GetTickCount();
 	uint32	bytesToSend;
 	float	lambdaAvg;		// decay factor for averaging filter
@@ -567,7 +548,7 @@ uint32 CUpDownClient::SendBlockData(float kBpsToSend){
 		return 0;
 	}
 	m_nMaxSendAllowed += bytesToSend;
-	if (m_BlockSend_queue.GetHead()->GetRealPacketSize() > 0/*m_nMaxSendAllowed*3*/
+	if (m_BlockSend_queue.GetHead()->GetRealPacketSize() > 0/*m_nMaxSendAllowed * 3*/
 		&& m_BlockSend_queue.GetHead()->GetRealPacketSize() > MAXFRAGSIZE*2){
 		// splitting packets
 			uint32 nSize = m_BlockSend_queue.GetHead()->GetRealPacketSize();
@@ -592,7 +573,6 @@ uint32 CUpDownClient::SendBlockData(float kBpsToSend){
 		Packet* tosend = m_BlockSend_queue.RemoveHead();
 		uint32 nBlockSize = tosend->GetRealPacketSize();
 		m_nMaxSendAllowed -= nBlockSize;
-//		theApp.uploadqueue->AddUpDataOverheadOther(0, 24);
 		SendPacket(tosend,true,false);
 		m_nTransferedUp += nBlockSize;
 		theApp.UpdateSentBytes(nBlockSize);
@@ -604,19 +584,18 @@ uint32 CUpDownClient::SendBlockData(float kBpsToSend){
 	return bytesToSend;
 }
 
-void CUpDownClient::FlushSendBlocks(){ // call this when you stop upload, or the socket might be not able to send
-	//printf("entered in : CUpDownClient::FlushSendBlocks\n");
-	bool bBreak = false;
-	while (!m_BlockSend_queue.IsEmpty() && m_BlockSend_queue.GetHead()->IsSplitted() && IsConnected() && !bBreak ){	
+
+void CUpDownClient::FlushSendBlocks()
+{ // call this when you stop upload, or the socket might be not able to send
+	while (!m_BlockSend_queue.IsEmpty() && m_BlockSend_queue.GetHead()->IsSplitted() && IsConnected() ) {	
 		Packet* tosend = m_BlockSend_queue.RemoveHead();
-		//bool bBreak = tosend->IsLastSplitted();
 		theApp.uploadqueue->AddUpDataOverheadOther(tosend->GetPacketSize());
 		SendPacket(tosend,true,false);
 	}
 }
 
+
 void CUpDownClient::SendHashsetPacket(const CMD4Hash& forfileid) {
-	//printf("entered in : CUpDownClient::SendHashsetPacket\n");
 	CKnownFile* file = theApp.sharedfiles->GetFileByID(forfileid);
 	if (!file) {
 		AddLogLineM(false, _("requested file not found"));
@@ -637,7 +616,6 @@ void CUpDownClient::SendHashsetPacket(const CMD4Hash& forfileid) {
 }
 
 void CUpDownClient::ClearUploadBlockRequests(){
-	//printf("entered in : CUpDownClient::ClearUploadBlockRequests\n");
 	FlushSendBlocks();
 	for (POSITION pos = m_BlockRequests_queue.GetHeadPosition();pos != 0; )
 		delete m_BlockRequests_queue.GetNext(pos);
@@ -653,7 +631,6 @@ void CUpDownClient::ClearUploadBlockRequests(){
 }
 
 void CUpDownClient::SendRankingInfo(){
-	//printf("entered in : CUpDownClient::SendRankingInfo\n");
 	if (!ExtProtocolAvailable())
 		return;
 	uint16 nRank = theApp.uploadqueue->GetWaitingPosition(this);
@@ -667,9 +644,7 @@ void CUpDownClient::SendRankingInfo(){
 	data.WriteUInt32(0); data.WriteUInt32(0); data.WriteUInt16(0);
 	Packet* packet = new Packet(&data,OP_EMULEPROT);
 	packet->SetOpCode(OP_QUEUERANKING);
-//	Packet* packet = new Packet(OP_QUEUERANKING,12,OP_EMULEPROT);
-//	memset(packet->pBuffer,0,12);
-//	memcpy(packet->pBuffer+0,&nRank,2);
+	
 	theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
 	SendPacket(packet,true,true);
 }
@@ -709,7 +684,6 @@ void  CUpDownClient::UnBan(){
 	ClearWaitStartTime();
 	
 	Notify_ShowQueueCount(theApp.uploadqueue->GetWaitingUserCount());
-	//Notify_QlistRefreshClient(this);
 }
 
 void CUpDownClient::Ban(){

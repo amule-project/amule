@@ -122,11 +122,6 @@ enum ClientState
 	CS_DYING
 };
 
-//
-// Magic numbers to check for memory corruption
-// 
-#define MAGIC_1 1234567890
-#define MAGIC_2 1357902468
 
 class CUpDownClient
 {
@@ -139,9 +134,6 @@ private:
 	 */
 	~CUpDownClient();
 	
-#ifdef __DEBUG__
-	unsigned int	MagicNumber1;
-#endif // __DEBUG__
 public:
 	//base
 	CUpDownClient(CClientReqSocket* sender = 0);
@@ -203,17 +195,12 @@ public:
 	bool		IsEmuleClient()	const		{ return m_byEmuleVersion;}
 	CClientCredits*	Credits()			{ return credits;}
 	bool		IsBanned() const;
-	const wxString&	GetClientFilename() const	{ return ClientFilename; }
-	bool		SupportsUDP() const		{ return m_byUDPVer != 0 && m_nUDPPort != 0; }
+	const wxString&	GetClientFilename() const	{ return m_clientFilename; }
 	uint16		GetUDPPort() const		{ return m_nUDPPort; }
 	void		SetUDPPort(uint16 nPort)	{ m_nUDPPort = nPort; }
 	uint8		GetUDPVersion() const		{ return m_byUDPVer; }
 	uint8		GetExtendedRequestsVersion() const { return m_byExtendedRequestsVer; }
 	bool		IsFriend() const 		{ return m_Friend != NULL; }
-	float		GetCompression() const
-		{ return (float)compressiongain / notcompressed * 100.0f; } // Add rod show compression
-	void		ResetCompressionGain()
-		{ compressiongain = 0; notcompressed = 1; } // Add show compression
 
 	void		ClearDownloadBlockRequests();
 	void		RequestSharedFileList();
@@ -239,7 +226,6 @@ public:
 	uint32		GetLastSrcReqTime() const 	{ return m_dwLastSourceRequest; }
 	uint32		GetLastSrcAnswerTime() const	{ return m_dwLastSourceAnswer; }
 	uint32		GetLastAskedForSources() const	{ return m_dwLastAskedForSources; }
-	DWORD		GetEnteredConnectedState() const{ return m_dwEnteredConnectedState; }
 	bool		GetFriendSlot() const 		{ return m_bFriendSlot; }
 	void		SetFriendSlot(bool bNV)		{ m_bFriendSlot = bNV; }
 	void		SetCommentDirty(bool bDirty = true){ m_bCommentDirty = bDirty; }
@@ -256,15 +242,18 @@ public:
 				printf("\nWrong Tags on SecIdentState packet!!\n");
 				printf("%s\n",unicode2char(GetClientFullInfo()));
 				printf("User Disconnected.\n");			
+			
+				// Kry - This assert is a fucking BIG PROBLEM!
+				// This means m_SecureIdentState != IS_UNAVAILABLE
+				// and no secure ident packet received or requested.
+				// That means - Mem Corruption.			
+				wxASSERT(SecIdentSupRec);			
 			}
-			// Kry - This assert is a fucking BIG PROBLEM!
-			// This means m_SecureIdentState != IS_UNAVAILABLE
-			// and no secure ident packet received or requested.
-			// That means - Mem Corruption.			
-			wxASSERT(SecIdentSupRec);
 		}
+		
 		return m_SecureIdentState;
 	}
+
 	void		SendSecIdentStatePacket();
 	void		ProcessSecIdentStatePacket(const uchar* pachPacket, uint32 nSize);
 
@@ -275,8 +264,6 @@ public:
 	CFriend 		*m_Friend;
 
 	//upload
-	uint32		compressiongain; // Add show compression
-	uint32  	notcompressed; // Add show compression
 	uint8		GetUploadState() const		{ return m_nUploadState; }
 	void		SetUploadState(uint8 news)	{ m_nUploadState = news; }
 	uint32		GetWaitStartTime() const;
@@ -305,26 +292,22 @@ public:
 
 	//! Only call this function if the old requpfile is being deleted
 	void		ResetUploadFile();
-	CKnownFile*	GetUploadFile()		{ return m_requpfile; }
 	void		SetUploadFileID(CKnownFile *newreqfile);
 	void		ProcessExtendedInfo(const CSafeMemFile *data, CKnownFile *tempreqfile);
 	void		ProcessFileInfo(const CSafeMemFile* data, const CPartFile* file);
 	void		ProcessFileStatus(bool bUdpPacket, const CSafeMemFile* data, const CPartFile* file);
 	
+	CKnownFile*	GetUploadFile()		{ return m_requpfile; }
 	const CMD4Hash&	GetUploadFileID() const	{ return m_requpfileid; }
 	uint32		SendBlockData(float kBpsToSend);
 	void		ClearUploadBlockRequests();
 	void		SendRankingInfo();
 	void		SendCommentInfo(CKnownFile *file);
-	// This function has been replaced by CheckForAggressive()
-	// void		AddRequestCount(const CMD4Hash& fileid);
 	bool 		IsDifferentPartBlock() const;
 	void		UnBan();
 	void		Ban();
-	bool		m_bAddNextConnect;	// VQB Fix for LowID slots only on connection
 	uint32		GetAskedCount() const 		{ return m_cAsked; }
 	void		AddAskedCount()			{ m_cAsked++; }
-	void		SetAskedCount(uint32 m_cInAsked){ m_cAsked = m_cInAsked; }
 	void		FlushSendBlocks();	// call this when you stop upload, 
 						// or the socket might be not able to send
 	void		SetLastUpRequest()		{ m_dwLastUpRequest = ::GetTickCount(); }
@@ -338,9 +321,6 @@ public:
 	void 		SetRequestFile(CPartFile* reqfile); 
 	CPartFile*	GetRequestFile() const { return m_reqfile; }
 	
-	uint32		GetAskedCountDown() const 	{ return m_cDownAsked; }
-	void		AddAskedCountDown()		{ m_cDownAsked++; }
-	void		SetAskedCountDown(uint32 m_cInDownAsked){ m_cDownAsked = m_cInDownAsked; }
 	uint8		GetDownloadState() const	{ return m_nDownloadState; }
 	void		SetDownloadState(uint8 byNewState);
 	uint32		GetLastAskedTime() const	{ return m_dwLastAskedTime; }
@@ -351,6 +331,7 @@ public:
 		{ return ( (iPart >= m_nUpPartCount) || (!m_abyUpPartStatus) )? 0:m_abyUpPartStatus[iPart];}
 
 	const uint8*	GetPartStatus() const		{ return m_abyPartStatus; }
+	const uint8*	GetUpPartStatus() const		{ return m_abyUpPartStatus; }
 	float		GetKBpsDown() const		{ return kBpsDown; }
 	float		CalculateKBpsDown();
 	uint16		GetRemoteQueueRank() const	{ return m_nRemoteQueueRank; }
@@ -377,18 +358,10 @@ public:
 	void		UDPReaskFNF();
 	void		UDPReaskForDownload();
 	bool		IsSourceRequestAllowed();
-	void		SetDownStartTime()		{ m_dwDownStartTime = ::GetTickCount(); }
-	uint32		GetDownTimeDifference() 
-		{ uint32 myTime = m_dwDownStartTime; m_dwDownStartTime = 0; return ::GetTickCount() - myTime; }
-	bool		GetTransferredDownMini() const	{ return m_bTransferredDownMini; }
-	void		SetTransferredDownMini()	{ m_bTransferredDownMini=true; }
-	void		InitTransferredDownMini()	{ m_bTransferredDownMini=false; }
 	uint16		GetUpCompleteSourcesCount() const { return m_nUpCompleteSourcesCount; }
 	void		SetUpCompleteSourcesCount(uint16 n){ m_nUpCompleteSourcesCount = n; }
 
 	
-
-	int		sourcesslot;
 
 	//chat
 	uint8		GetChatState()			{ return m_byChatstate; }
@@ -396,14 +369,11 @@ public:
 
 	//File Comment 
 	const wxString&	GetFileComment() const 		{ return m_strComment; }
-	void		SetFileComment(const char *desc){ m_strComment = char2unicode(desc); }
 	uint8		GetFileRate() const		{ return m_iRate; }
 	
 	wxString	GetSoftStr() const 		{ return m_clientVerString.Left(m_SoftLen); }
 	wxString	GetSoftVerStr() const		{ return m_clientVerString.Mid(m_SoftLen+1); }
 	
-	void		SetFileRate(int8 iNewRate)	{ m_iRate=iNewRate; }
-
 	uint16		GetKadPort() const		{ return m_nKadPort; }
 	void		SetKadPort(uint16 nPort)	{ m_nKadPort = nPort; }
 
@@ -519,9 +489,8 @@ private:
 	bool		ProcessHelloTypePacket(const CSafeMemFile& data);
 	void		SendHelloTypePacket(CSafeMemFile* data);
 	void		ClearHelloProperties(); // eMule 0.42
-	bool		m_bIsBotuser;
 	uint32		m_dwUserIP;
-	uint32	m_nConnectIP;		// holds the supposed IP or (after we had a connection) the real IP
+	uint32		m_nConnectIP;		// holds the supposed IP or (after we had a connection) the real IP
 	uint32		m_dwServerIP;
 	uint32		m_nUserID;
 	int16		m_nUserPort;
@@ -541,21 +510,17 @@ private:
 	uint8		m_bySourceExchangeVer;
 	uint8		m_byAcceptCommentVer;
 	uint8		m_byExtendedRequestsVer;
-	uint8		m_cFailed;
 	uint8		m_clientSoft;
 	uint32		m_dwLastSourceRequest;
 	uint32		m_dwLastSourceAnswer;
 	uint32		m_dwLastAskedForSources;
-	int		m_iFileListRequested;
+	int			m_iFileListRequested;
 	bool		m_bFriendSlot;
 	bool		m_bCommentDirty;
 	bool		m_bIsHybrid;
-	bool		m_bIsNewMLD;
 	bool		m_bIsML;
  	bool		m_bSupportsPreview;
 	bool		m_bUnicodeSupport;	
-	bool		m_bPreviewReqPending;
- 	bool		m_bPreviewAnsPending;
 	uint16		m_nKadPort;
 	bool		m_bMultiPacket;
 	ClientState	m_clientState;
@@ -569,7 +534,7 @@ private:
 	uint8		m_bySupportSecIdent;
 	
 	uint32		m_byCompatibleClient;
-	CTypedPtrList<CPtrList, Packet*>	m_WaitingPackets_list;
+	CList<Packet*>	m_WaitingPackets_list;
 	DWORD		m_lastRefreshedDLDisplay;
 
 	//upload
@@ -584,7 +549,6 @@ private:
 	uint32		m_nMaxSendAllowed;
 	uint32		m_cAsked;
 	uint32		m_dwLastUpRequest;
-	bool		m_bUsedComprUp;	//only used for interface output
 	uint32		m_nCurSessionUp;
 	uint16		m_nUpPartCount;
 	CKnownFile*	m_requpfile;
@@ -592,33 +556,21 @@ private:
 	uint16		m_nUpCompleteSourcesCount;
 
 public:
-#ifdef __DEBUG__
-	unsigned int	MagicNumber3;
-#endif // __DEBUG__
 	uint8*		m_abyUpPartStatus;
-#ifdef __DEBUG__
-	unsigned int	MagicNumber4;
-#endif // __DEBUG__
 	uint16		m_lastPartAsked;
-	DWORD		m_dwEnteredConnectedState;
 	wxString	m_strModVersion;
 	
-	CTypedPtrList<CPtrList, Packet*>		 m_BlockSend_queue;
-	CTypedPtrList<CPtrList, Requested_Block_Struct*> m_BlockRequests_queue;
-	CTypedPtrList<CPtrList, Requested_Block_Struct*> m_DoneBlocks_list;
+	CList<Packet*>		 			m_BlockSend_queue;
+	CList<Requested_Block_Struct*>	m_BlockRequests_queue;
+	CList<Requested_Block_Struct*>	m_DoneBlocks_list;
+	
 	//download
 	bool		m_bRemoteQueueFull;
-	bool		usedcompressiondown; //only used for interface output
 	uint8		m_nDownloadState;
 	uint16		m_nPartCount;
-	uint32		m_cDownAsked;
 	uint32		m_dwLastAskedTime;
-	wxString	ClientFilename;
+	wxString	m_clientFilename;
 	uint32		m_nTransferedDown;
-	// -khaos--+++> Download Session Stats Imported from eMule 0.30c (Creteil) BEGIN ...
-	bool		m_bTransferredDownMini;
-	uint32		m_dwDownStartTime;
-	// -khaos--+++> Download Session Stats Imported from eMule 0.30c (Creteil) END ...
 	uint32		m_nLastBlockOffset;   // Patch for show parts that you download [Cax2]
 	uint16		m_cShowDR;
 	uint32		m_dwLastBlockReceived;
@@ -629,8 +581,8 @@ public:
 	bool		m_bUDPPending;
 	bool		m_bHashsetRequested;
 
-	CTypedPtrList<CPtrList,Pending_Block_Struct*>	m_PendingBlocks_list;
-	CTypedPtrList<CPtrList,Requested_Block_Struct*>	m_DownloadBlocks_list;
+	CList<Pending_Block_Struct*>	m_PendingBlocks_list;
+	CList<Requested_Block_Struct*>	m_DownloadBlocks_list;
 
 	float		kBpsDown;
 	float		fDownAvgFilter;
@@ -648,33 +600,19 @@ public:
 		m_fSupportsPreview   : 1,
 		m_fSentCancelTransfer: 1, // we have sent an OP_CANCELTRANSFER in the current connection
 		m_fSharedDirectories : 1, // client supports OP_ASKSHAREDIRS opcodes
-		// Kry - AICH import
-		m_fSupportsAICH	  : 3,
+		m_fSupportsAICH      : 3,
 		m_fAICHRequested     : 1; 
 		 
 	/* Razor 1a - Modif by MikaelB */
 	
 	int		GetHashType() const;
 	bool		m_bHelloAnswerPending;
-	// Kry - Atribute to get the 1.x / 2.x / CVS flags
-	// Why this way? Well, on future is expected that count(2.x) > count(1x)
-	// So I prefer to set the 1.x flag because it will be less CPU. 
-	// I know. I'm paranoid on CPU.
-	// (Extended_aMule_SO & 1)  -> 1.x 
-	// !(Extended_aMule_SO & 1) -> 2.x 	
-	// (Extended_aMule_SO & 2)  -> CVS 
-	uint8		Extended_aMule_SO;
 	
 	uint8*		m_abyPartStatus;
 	
 	CAICHHash*  m_pReqFileAICHHash; 
 	
 public:
-	bool IsValidSource() const	{ return m_ValidSource; };
-	void SetValidSource(bool in)	{ m_ValidSource = in; };
-
-	uint8 GetExtended_aMule_SO() const{ return Extended_aMule_SO; };
-	
 	/**
 	 * Checks that a client isn't aggressively re-asking for files.
 	 * 
@@ -705,74 +643,19 @@ private:
 	uint32 m_LastFileRequest;
 
 
-	/* valid source attribute */
-	bool m_ValidSource;
-
-	/* End modif */
-
 public:
 	const wxString&	GetClientModString() const { return m_strModVersion; }
 	const wxString&	GetClientVerString() const { return m_clientVerString; }
 
-	// Imported from BlackRat : Anti-Leech
-	/**
-	 * Checks the current username for known evil mods.
-	 */
-	void		CheckForGPLEvilDoer_Nick();
-	/**
-	 * Checks the current eMule mod or client version for known leechers.
-	 */
-	void		CheckForGPLEvilDoer_Mod();
-	/**
-	 * Returns true if the client has been flagged as EVIL.
-	 *
-	 * @return True if the client is EVIL, false otherwise.
-	 */
-	bool		IsGPLEvildoer() const { return m_bGPLEvildoer; }
-	/**
-	 * Returns true if the client used to be EVIL.
-	 *
-	 * @return True if the client shows signs of having been EVIL, such
-	 *         as bad usernames and such. 
-	 *
-	 * Please note that the client might not be EVIL, even if this returns true,
-	 * and should only be used as an indication of the client's past behavior.
-	 */
-	bool		HasBeenGPLEvildoer() const { return m_bHasBeenGPLEvildoer; }
-	/**
-	 * Specifies if the client is a GPLEvilDoer (or leech) or not.
-	 */
-	void		SetGPLEvildoer(bool bVal) {
-						m_bGPLEvildoer = bVal;
-						m_bHasBeenGPLEvildoer |= bVal;
-					}
-	uint64	getUID() { return ((uint64)m_dwUserIP<<32)+((uint64)m_nUserPort<<16); }
-
 private:
-	//! The last username used by the client. Used to check for clients constantly changing nicks.
-	wxString	m_old_Username;
-	//! The last mod specified by the client. Used to check for clients constantly changing mods.
-	wxString	m_old_ModVersion;
-	//! Is the client EVIL? This includes leeches and people not respecting the GPL.
-	bool		m_bGPLEvildoer;
-	//! Is set to true if the clients shows signs of having been a GPLEvilDoer.
-	bool		m_bHasBeenGPLEvildoer;
-	// BlackRat import end
-	
 	wxString		m_clientVerString;
 
 	int SecIdentSupRec;
-	
-#ifdef __DEBUG__
-public:
-	bool		IsASaneUpDownClient(bool verbose, char *function, char *file, int line) const;
-
-private:
-	unsigned int	MagicNumber2;
-#endif // __DEBUG__
 };
+
 
 #define	MAKE_CLIENT_VERSION(mjr, min, upd) \
 	((UINT)(mjr)*100U*10U*100U + (UINT)(min)*100U*10U + (UINT)(upd)*100U)
+
 
 #endif // UPDOWNCLIENT_H
