@@ -287,9 +287,9 @@ amuleweb_LDADD = $(WXBASE_LIBS) $(ZLIB_LIBS) $(READLINE_LIBS) $(LIBPNG_LDFLAGS) 
 
 amulewebDLG_SOURCES = WebServer.cpp WebInterface.cpp WebSocket.cpp \
 	 MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp otherfunctions.cpp ECSpecialTags.cpp
-amulewebDLG_CFLAGS = $(WX_CFLAGS) -DAMULEWEBDLG -DEC_REMOTE
+amulewebDLG_CFLAGS = $(WX_CFLAGS) $(LIBPNG_CFLAGS) -DAMULEWEBDLG -DEC_REMOTE
 amulewebDLG_CXXFLAGS = $(WX_CXXFLAGS) -DAMULEWEBDLG  -DEC_REMOTE
-amulewebDLG_LDADD = $(WX_LIBS) $(ZLIB_LIBS)
+amulewebDLG_LDADD = $(WX_LIBS) $(ZLIB_LIBS) $(LIBPNG_LDFLAGS)
 
 noinst_HEADERS = AddFileThread.h \
 		 AddFriend.h \
