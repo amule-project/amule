@@ -48,300 +48,176 @@
 
 #include <algorithm>
 
-//! Max number of threads. Change if you have > 1 CPUs ;)
-const unsigned int MAXTHREADCOUNT = 1;
 
 const uchar default_zero_hash[16] = { 0x31, 0xD6, 0xCF, 0xE0, 0xD1, 0x6A, 0xE9, 0x31, 
 												0xB7, 0x3C, 0x59, 0xD7, 0xE0, 0xC0, 0x89, 0xC0 };
 
-/**
- * Container for queued files.
- */
-struct QueuedFile
-{
-	//! Signifies if a thread is currently working on this file.
-	bool				m_busy;
-	//! The full path to the file.
-	wxString			m_path;
-	//! The name of the file.
-	wxString			m_name;
-	//! The PartFile owning this file in case of a final hashing (completing).
-	const CPartFile*	m_owner;
-};
 
-
-wxMutex CAddFileThread::s_running_lock;
-wxMutex CAddFileThread::s_count_lock;
-wxMutex CAddFileThread::s_queue_lock;
-
-
-std::list<QueuedFile*> CAddFileThread::s_queue;
+std::list<CAddFileThread::QueuedFile> CAddFileThread::s_queue;
 bool CAddFileThread::s_running;
-uint8 CAddFileThread::s_count;
-
+CAddFileThread*	CAddFileThread::s_thread;
+wxMutex CAddFileThread::s_mutex;
 
 CAddFileThread::CAddFileThread()
 	: wxThread(wxTHREAD_DETACHED)
 {
-	// Ensure that the AICH thread isn't running
-	if ( CAICHSyncThread::IsRunning() )
-		CAICHSyncThread::Stop();
-}
-
-
-CAddFileThread::~CAddFileThread()
-{
-	ThreadCountDec();
 }
 
 
 bool CAddFileThread::IsRunning()
 {
-	wxMutexLocker lock( s_running_lock );
+	wxMutexLocker lock( s_mutex );
 	return s_running;
-}
-
-
-void CAddFileThread::SetRunning(bool running)
-{
-	wxMutexLocker lock( s_running_lock );
-	s_running = running;
-}
-
-
-uint8 CAddFileThread::GetThreadCount()
-{
-	wxMutexLocker lock( s_count_lock );
-	return s_count;
-}
-
-
-void CAddFileThread::ThreadCountInc()
-{
-	wxMutexLocker lock( s_count_lock );
-	s_count++;
-}
-
-
-void CAddFileThread::ThreadCountDec()
-{
-	s_count_lock.Lock();
-
-	if ( s_count ) {
-		// Decrement and make a copy so we can unlock immediatly
-		uint8 count = --s_count;
-		s_count_lock.Unlock();
-
-		// No threads left? Then let it be known.
-		if ( count == 0 ) {
-			wxMuleInternalEvent evt(wxEVT_CORE_FILE_HASHING_SHUTDOWN);
-			wxPostEvent(&theApp, evt);
-		}
-	} else {
-		// Just unlock
-		s_count_lock.Unlock();
-
-		// Some debug info
-		AddDebugLogLineM( true, logHasher, wxT("Warning, ThreadCountDec() called while thread count was zero!") );
-	}
 }
 
 
 void CAddFileThread::CreateNewThread()
 {
-	AddLogLineM( false, _("Hasher: Creating new thread.") );
-
-	ThreadCountInc();
-
-	CAddFileThread* th = new CAddFileThread();
+	if ( !s_thread && !s_queue.empty() ) {
+		// Ensure that the AICH thread isn't running
+		if ( CAICHSyncThread::IsRunning() ) {
+			CAICHSyncThread::Stop();
+		}
+		
+		AddLogLineM( false, _("Hasher: Creating new thread.") );
+		
+		s_thread = new CAddFileThread();
 	
-	switch ( th->Create() ) {
-		case wxTHREAD_NO_ERROR:
-			break;
-		case wxTHREAD_RUNNING:
-			AddDebugLogLineM( true, logHasher, wxT("Error, attempt to create a already running thread!") );
-			break;
-		case wxTHREAD_NO_RESOURCE:
-			AddDebugLogLineM( true, logHasher, wxT("Error, attempt to create a thread without resources!") );
-			break;
-		default:
-			AddDebugLogLineM( true, logHasher, wxT("Error, unknown error attempting to create a thread!") );
+		switch ( s_thread->Create() ) {
+			case wxTHREAD_NO_ERROR:
+				break;
+			case wxTHREAD_RUNNING:
+				AddDebugLogLineM( true, logHasher, wxT("Error, attempt to create a already running thread!") );
+				break;
+			case wxTHREAD_NO_RESOURCE:
+				AddDebugLogLineM( true, logHasher, wxT("Error, attempt to create a thread without resources!") );
+				break;
+			default:
+				AddDebugLogLineM( true, logHasher, wxT("Error, unknown error attempting to create a thread!") );
+		}
+
+		// The threads shouldn't be hugging the CPU, as it will already be hugging the HD
+		s_thread->SetPriority(WXTHREAD_MIN_PRIORITY);
+		
+		s_thread->Run();
 	}
-
-	// The threads shouldn't be hugging the CPU, as it will already be hugging the HD
-	th->SetPriority(WXTHREAD_MIN_PRIORITY);
-	
-	th->Run();
 }
 
 
 void CAddFileThread::Start()
 {
-	if ( IsRunning() ) {
-		AddDebugLogLineM( true, logHasher, wxT("Warning, Start() called while already running.") );
+	wxASSERT( wxThread::IsMain() );
+	
+	wxMutexLocker lock( s_mutex );
+
+	if ( s_running ) {
+		AddDebugLogLineM( true, logHasher, wxT("Warning, Start() called while already running.") );		
 	} else {
-		SetRunning(true);
+		s_running = true;
 
 		// No threads are running yet, so all files are non-busy.
-		uint32 files = GetFileCount();
-		// We wont start on more files than the max number of threads.
-		if ( files > MAXTHREADCOUNT )
-			files = MAXTHREADCOUNT;
-
-		// Start as many threads as we can and as needed
-		for ( ; files; files-- ) {
-			CreateNewThread();
-		}
+		CreateNewThread();		
 	}
 }
 
 
 void CAddFileThread::Stop()
 {
-	if ( IsRunning() ) {
-		// Are there any threads to kill?
-		if ( GetThreadCount() ) {		
-			AddLogLineM( false, _("Hasher: Signaling for remaining threads to terminate.") );
-		
-			SetRunning( false );
+	wxASSERT( wxThread::IsMain() );
 
+	s_mutex.Lock();
+
+	if ( s_running ) {
+		AddLogLineM( false, _("Hasher: Signaling for remaining threads to terminate.") );
+
+		s_running = false;
+			
+		s_mutex.Unlock();
+		
+		if ( s_thread ) {
+			// We will be blocking the main thread, so we need to leave the
+			// gui mutex, so that events can still be processed while we are
+			// waiting.
+			wxMutexGuiLeave();
+			
 			// Wait for all threads to die
-			while ( GetThreadCount() ) {
+			while ( s_thread ) {
 				// Sleep for 1/100 of a second to avoid clobbering the mutex
 				// By doing this we ensure that this function only returns
 				// once the thread has died.
 
 				otherfunctions::MilliSleep(10);
-				
 			}
-			
-			AddLogLineM( false, _("Hasher: Threads terminated.") );
-		} else {
-			// No threads to kill, just stay quiet.
-			SetRunning( false );
+
+			// Re-claim the GUI mutex.
+			wxMutexGuiLeave();
 		}
 	} else {
 		AddDebugLogLineM( true, logHasher, wxT("Warning, Attempted to stop already stopped hasher!") );
+
+		s_mutex.Unlock();
 	}
 }
 
 
 int	CAddFileThread::GetFileCount()
 {
-	wxMutexLocker lock( s_queue_lock );
+	wxMutexLocker lock( s_mutex );
 	return s_queue.size();
-}
-
-
-QueuedFile* CAddFileThread::GetNextFile()
-{
-	wxMutexLocker lock( s_queue_lock );
-
-	QueuedFile* file = NULL;
-
-	// Get the first non-busy file
-	FileQueue::iterator it = s_queue.begin();
-	for ( ; it != s_queue.end(); ++it ) {
-		if ( !(*it)->m_busy ) {
-			file = (*it);
-			// Mark the file as busy to avoid having multiple threads working on it
-			file->m_busy = true;
-			break;					
-		}
-	}
-			
-	return file;
-}
-
-
-void CAddFileThread::RemoveFromQueue(QueuedFile* file)
-{
-	// Some debugging information
-	if ( !file ) {
-		AddDebugLogLineM( true, logHasher, wxT("Error, tried to pass NULL pointer to RemoveFromQueue().") );
-		return;
-	}
-
-	// Some more debugging information
-	if ( !file->m_busy ) {
-		AddDebugLogLineM( true, logHasher, wxT("Error, non-busy file passed to RemoveFromQueue().") );
-	}
-
-	// Remove a queued file which has been completed
-	FileQueue::iterator it = std::find( s_queue.begin(), s_queue.end(), file );
-			
-	if ( it != s_queue.end() ) {
-		s_queue.erase( it );
-	} else {
-		// Some debug info
-		AddDebugLogLineM( true, logHasher, wxT("Error, attempted to remove file from queue, but didn't find it.") );
-	}
-			
-	delete file;
 }
 
 
 void CAddFileThread::AddFile(const wxString& path, const wxString& name, const CPartFile* part)
 {
 	AddDebugLogLineM( false, logHasher, wxString( wxT("Adding file to queue: ") ) + path );
-
-	QueuedFile* hashfile = new QueuedFile;
-	hashfile->m_busy = false;
-	hashfile->m_path = path;
-	hashfile->m_name = name;
-	hashfile->m_owner = part;
-
-
-	// New scope so that I can use wxMutexLocker ;) 
-	{
-		wxMutexLocker lock( s_queue_lock );
-
-		// Avoid duplicate files
-		FileQueue::iterator it = s_queue.begin();
-		for ( ; it != s_queue.end(); ++it )
-			if ( ( name == (*it)->m_name ) && ( path == (*it)->m_path ) ) {
-				// Duplicated
-				delete hashfile;
-				return;
-			}
-
-		
-		// If it's a partfile (part != NULL), then add it to the front so that
-		// it gets hashed sooner, otherwise add it to the back
-		if ( part == NULL ) {
-			s_queue.push_back( hashfile );
-		} else {
-			s_queue.push_front( hashfile );
+	
+	wxMutexLocker lock( s_mutex );
+	
+	// Avoid duplicate files
+	for ( FileQueue::iterator it = s_queue.begin(); it != s_queue.end(); ++it ) {
+		if ( it->m_path == path && it->m_name == name ) {
+			return;
 		}
 	}
+	
+	QueuedFile newfile = { path, name, part };
+	
+	// If it's a partfile (part != NULL), then add it to the front so that
+	// it gets hashed sooner, otherwise add it to the back
+	if ( part == NULL ) {
+		s_queue.push_back( newfile );
+	} else {
+		s_queue.push_front( newfile );
+	}
 
-
-	// Should we start another thread?
-	if ( GetThreadCount() < MAXTHREADCOUNT )
-		CreateNewThread();
+	
+	// Check if we need to start an actual thread.
+	CreateNewThread();
 }
 
 
 wxThread::ExitCode CAddFileThread::Entry()
 {
-	// Pointer to the queued file currently being hashed
-	QueuedFile* current = NULL;
-	// Pointer to the known-file used to store the results
-	CKnownFile* knownfile = NULL;
+	// The current file being hashed.	
+	QueuedFile current;
 
 	// Continue to loop until there's nothing to do, or someone kills the threads
 	while ( IsRunning() ) {
-		// Try to get the next file on queue
-		current = GetNextFile();
+		s_mutex.Lock();
+		if ( s_queue.size() ) {
+			current = s_queue.front();
+			s_queue.pop_front();
+
+			s_mutex.Unlock();
+		} else {
+			s_mutex.Unlock();
 			
-		if ( !current ) {
-			// Nothing to do, break
 			AddLogLineM( false, _("Hasher: No files on queue, stopping thread.") );
 			break;
 		}
-		
 
-		wxString filename = current->m_path + wxFileName::GetPathSeparator() + current->m_name;
+
+		wxString filename = current.m_path + wxFileName::GetPathSeparator() + current.m_name;
 		
 		// The file currently getting hashed
 		CFile file;
@@ -349,9 +225,6 @@ wxThread::ExitCode CAddFileThread::Entry()
 		// Attempt to open the file
 		if ( !file.Open( filename, CFile::read ) ) {
 			AddDebugLogLineM( true, logHasher, wxT("Warning, failed to open file, skipping: " ) + filename );
-			
-			// Whoops, something's wrong. Delete the item and continue
-			RemoveFromQueue( current );
 			continue;
 		}
 
@@ -359,27 +232,22 @@ wxThread::ExitCode CAddFileThread::Entry()
 		// We only support files <= 4gigs
 		if ( (uint64)file.GetLength() >= (uint64)(4294967295U) ) {
 			AddDebugLogLineM( true, logHasher, wxT("Warning, file is bigger than 4GB, skipping: ") + filename );
-			
-			// Delete and continue 
-			RemoveFromQueue( current );
 			continue;
 		}
 
-		if (!file.GetLength()) {
+		// Zero-size partfiles should be hashed, but not zero-sized shared-files.
+		if (!file.GetLength() && !current.m_owner) {
 			AddDebugLogLineM( true, logHasher, wxT("Warning, 0-size file, skipping: ") + filename );
-			
-			// Delete and continue 
-			RemoveFromQueue( current );
 			continue;			
 		}
 		
 
 		// Create a CKnownFile to contain the result
-		knownfile = new CKnownFile();
+		CKnownFile* knownfile = new CKnownFile();
 		
 		// Set initial values
-		knownfile->m_strFilePath = current->m_path;
-		knownfile->m_strFileName = current->m_name;
+		knownfile->m_strFilePath = current.m_path;
+		knownfile->m_strFileName = current.m_name;
 		
 		knownfile->SetFileSize( file.GetLength() );
 		knownfile->date = GetLastModificationTime( filename );
@@ -391,7 +259,7 @@ wxThread::ExitCode CAddFileThread::Entry()
 		// so that the AICH hashset only gets assigned if the MD4 hashset 
 		// matches what we expected. Due to the rareity of post-completion
 		// corruptions, this gives us a nice speedup in almost all cases.
-		bool needsAICH = !current->m_owner || current->m_owner->GetGapList().IsEmpty();
+		bool needsAICH = !current.m_owner || current.m_owner->GetGapList().IsEmpty();
 		bool error = false;
 		
 		
@@ -399,9 +267,9 @@ wxThread::ExitCode CAddFileThread::Entry()
 		if ( needsAICH ) {
 			knownfile->GetAICHHashset()->FreeHashSet();
 		
-			AddLogLineM( false, _("Hasher: Starting to create MD4 and AICH hash for file: ") + current->m_name );
+			AddLogLineM( false, _("Hasher: Starting to create MD4 and AICH hash for file: ") + current.m_name );
 		} else {
-			AddLogLineM( false, _("Hasher: Starting to create MD4 hash for file: ") + current->m_name );
+			AddLogLineM( false, _("Hasher: Starting to create MD4 hash for file: ") + current.m_name );
 		}
 		
 		
@@ -413,13 +281,11 @@ wxThread::ExitCode CAddFileThread::Entry()
 
 		// Checking if something went wrong
 		if ( error ) {
-			AddDebugLogLineM( true, logHasher, wxT("Error while reading file, skipping: ") + current->m_name );
+			AddDebugLogLineM( true, logHasher, wxT("Error while reading file, skipping: ") + current.m_name );
 		
 			// Remove the temp-result
 			delete knownfile;
 			
-			// Delete and continue 
-			RemoveFromQueue( current );
 			continue;
 		}
 
@@ -456,7 +322,7 @@ wxThread::ExitCode CAddFileThread::Entry()
 					m_pAICHHashSet->SetStatus(AICH_HASHSETCOMPLETE);
 		
 					if ( !m_pAICHHashSet->SaveHashSet() ) {
-						AddDebugLogLineM( true, logHasher, wxT("Warning, failed to save AICH hashset for file: ") + current->m_name );
+						AddDebugLogLineM( true, logHasher, wxT("Warning, failed to save AICH hashset for file: ") + current.m_name );
 					}
 				}
 			}
@@ -465,26 +331,28 @@ wxThread::ExitCode CAddFileThread::Entry()
 			// Pass on the completion
 			wxMuleInternalEvent evt(wxEVT_CORE_FILE_HASHING_FINISHED);
 			evt.SetClientData( knownfile );
-			evt.SetExtraLong( (long)current->m_owner );
+			evt.SetExtraLong( (long)current.m_owner );
 
-			AddLogLineM( false, _("Hasher: Finished hashing file: ") + current->m_name );
+			AddLogLineM( false, _("Hasher: Finished hashing file: ") + current.m_name );
 			
-			RemoveFromQueue( current );
 			wxPostEvent(&theApp, evt);
+		} else {
+			delete knownfile;
 		}
 	}
 
-	// Ensure consistancy so we can start properly after a Stop()
-	if ( current ) {
-		delete knownfile;
-
-		// Reset the busy-flag so the file will be hashed again
-		current->m_busy = false;
-	}
-	
-	
 	// Notify that the thread has died
 	AddLogLineM( false, _("Hasher: A thread has died.") );
+
+	
+	s_mutex.Lock();
+	s_thread = NULL;
+	s_mutex.Unlock();
+
+
+	// Notify the core.
+	wxMuleInternalEvent evt(wxEVT_CORE_FILE_HASHING_SHUTDOWN);
+	wxPostEvent(&theApp, evt);
 
 
 	return 0;

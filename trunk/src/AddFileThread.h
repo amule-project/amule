@@ -38,7 +38,6 @@
 
 class CKnownFile;
 class CPartFile;
-struct QueuedFile;
 class CFile;
 
 
@@ -53,29 +52,10 @@ class CFile;
  * You need to call Start() before the class will start spawning new threads, 
  * however, it does not matter if you call it before or after adding the files.
  * To terminate the threads, simply call Stop().
- *
- *
- * Note:
- *  I have been very careful to decrease the locking time of this class in order
- *  to avoid dead-locks. Should you wish to change this class, please keep this 
- *  in mind.
  */
 class CAddFileThread : private wxThread
 {
 public:
-	/**
-	 * Constructor.
-	 */
-	CAddFileThread();
-
-	/**
-	 * Destructor.
-	 *
-	 * Upon destruction of the last thread, a wxEVT_CORE_FILE_HASHING_SHUTDOWN
-	 * event will be sent the application object.
-	 */
-	~CAddFileThread();
-
 	/**
 	 * Starts the hasher.
 	 *
@@ -96,24 +76,9 @@ public:
 
 
 	/**
-	 * @return The number of files in the s_queue list.
-	 *
-	 * Please note that this function only returns the number of files not being 
-	 * hashes, as any files that are being hashes are immediatly removed from the 
-	 * queue. Therefore, the number of files will be aproximatly GetFileCount() +
-	 * GetThreadCount()
+	 * @return The number of files in the queue.
 	 */
 	static int		GetFileCount();
-	
-	/**
-	 * Speficies the number of existing threads.
-	 *
-	 * @return The current number of existing threads. 
-	 *
-	 * It is probably safe to assume that this reflects the number of files being
-	 * hashed, as threads with no files to hash die immediatly.
-	 */
-	static uint8	GetThreadCount();
 	
 	/**
 	 * Specifies if the hasher is active.
@@ -134,31 +99,14 @@ public:
 
 private:
 	/**
-	 * Helper function that creates another thread.
+	 * Constructor.
+	 */
+	CAddFileThread();
+	
+	/**
+	 * Helper function that creates a new hashing-thread if needed.
 	 */
 	static void CreateNewThread();
-
-	/**
-	 * Helper function which returns the next non-busy file or NULL.
-	 *
-	 * @return A viable file on the queue or NULL if the list is empty.
-	 *
-	 * Returns the first non-busy file on the queue and sets it's busy flag. 
-	 * This allows multiple threads to work on the list and also to check 
-	 * for duplicates when adding files.
-	 */
-	static QueuedFile* GetNextFile();
-
-	/**
-	 * Helper function for removing a file from the queue.
-	 *
-	 * @param file The object to be removed from to the queue.
-	 *
-	 * Please not that this function will also delete the pointer, so 
-	 * do not attempt to delete it afterwards.
-	 */
-	static void RemoveFromQueue(QueuedFile* file);
-	
 
 	/**
 	 * Helper function for hashing the next PARTSIZE chunk of a file.
@@ -175,32 +123,33 @@ private:
 	static bool CreateNextPartHash( CFile* file, CKnownFile* owner, bool createAICH );
 
 	
-
-	//! Sets the IsRunning status
-	static void		SetRunning(bool running);
-	//! Increments thread count
-	static void		ThreadCountInc();
-	//! Decrements thread count
-	static void		ThreadCountDec();
-	
 	//! Main function
 	virtual ExitCode 	Entry();
+	//! The mutex used to protect variables and datastructures used by the thread.
+	static wxMutex		s_mutex;
 	
-	//! Lock for the s_running variable
-	static wxMutex		s_running_lock;
-	//! Lock for the thread count
-	static wxMutex		s_count_lock;
-	//! Lock for the queue
-	static wxMutex 		s_queue_lock;
-
 	//! Is the hasher active. Does not mean that there are any threads running.
 	static bool			s_running;
 
-	//! Number of currently existing threads.
-	static uint8		s_count;
+	static CAddFileThread*		s_thread;
 
+
+	/**
+	 * Container for queued files.
+	 */
+	struct QueuedFile
+	{
+		//! The full path to the file.
+		wxString			m_path;
+		//! The name of the file.
+		wxString			m_name;
+		//! The PartFile owning this file in case of a final hashing (completing).
+		const CPartFile*	m_owner;
+	};
+
+	
 	//! The queue-type
-	typedef std::list<QueuedFile*> FileQueue;
+	typedef std::list<QueuedFile> FileQueue;
 	//! The queue of files to be hashed
 	static FileQueue s_queue;
 };

@@ -89,19 +89,8 @@ private:
 	virtual void* Entry();
 
 
-	/**
-	 * Helper-function which returns the current thread or NULL.
-	 */
-	static CAICHSyncThread* GetThread();
-
-	/**
-	 * Helper-function used to set the currently running thread to avoid multiple threads.
-	 */
-	static void SetThread( CAICHSyncThread* ptr );
-
-
 	//! Mutex used to protect the s_tread variable.
-	static	wxMutex s_thread_mutex;
+	static	wxMutex s_mutex;
 
 	//! Pointer to the currently running thread.
 	static	CAICHSyncThread* s_thread;
