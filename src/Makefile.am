@@ -86,6 +86,7 @@ amulegui_SOURCES = \
 	MuleTextCtrl.cpp \
 	MuleTrayIcon.cpp \
 	muuli_wdr.cpp \
+	NetworkFunctions.cpp \
 	OtherFunctions.cpp \
 	DataToText.cpp \
 	OScopeCtrl.cpp \
