@@ -19,9 +19,11 @@
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <netinet/in.h>		// Needed for hton, ntoh functions
-
 #include "ECSocket.h"
+
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
 
 #include "gsocket-fix.h"	// Needed for wxSOCKET_REUSEADDR
 
