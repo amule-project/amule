@@ -255,7 +255,7 @@ CUpDownClient* CClientList::FindClientByUserHash(uchar* clienthash){
 	for (pos1 = list.GetHeadPosition();( pos2 = pos1 ) != NULL;){
 		list.GetNext(pos1);
 		CUpDownClient* cur_client =	list.GetAt(pos2);
-		if (memcmp(cur_client->GetUserHash() ,clienthash,16)  )
+		if (md4cmp(cur_client->GetUserHash() ,clienthash)  )
 				return cur_client;
 	}
 	return 0;

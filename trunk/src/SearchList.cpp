@@ -453,7 +453,7 @@ bool CSearchList::AddToList(CSearchFile* toadd, bool bClientResponse){
 	CSearchListCtrl* outputwnd = GetSearchListControl(toadd->GetSearchID());
 	for (POSITION pos = list.GetHeadPosition(); pos != NULL; list.GetNext(pos)){
 		CSearchFile* cur_file = list.GetAt(pos);
-		if ( (!memcmp(toadd->GetFileHash(),cur_file->GetFileHash(),16)) && cur_file->GetSearchID() ==  toadd->GetSearchID()){
+		if ( (!md4cmp(toadd->GetFileHash(),cur_file->GetFileHash())) && cur_file->GetSearchID() ==  toadd->GetSearchID()){
 			cur_file->AddSources(toadd->GetIntTagValue(FT_SOURCES),toadd->GetIntTagValue(FT_COMPLETE_SOURCES));
 			if (outputwnd) {
 				outputwnd->UpdateSources(cur_file);

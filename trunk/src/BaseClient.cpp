@@ -188,7 +188,7 @@ void CUpDownClient::Init()
 	m_clientSoft=SO_UNKNOWN;
 	
 	m_bRemoteQueueFull = false;
-	memset( m_achUserHash, 0, 16);
+	md4clr( m_achUserHash );
 	m_HasValidHash = false;
 	SetWaitStartTime();
 	if (socket) {

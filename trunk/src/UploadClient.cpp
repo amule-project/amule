@@ -249,7 +249,7 @@ bool CUpDownClient::IsDifferentPartBlock(void) // [Tarod 12/22/2002]
 				different_part = true;
 				AddDebugLogLineM(false, wxT("Session ended due to new chunk."));
 			}
-			if (memcmp(last_done_block->FileID, next_requested_block->FileID, 16) != 0)
+			if (md4cmp(last_done_block->FileID, next_requested_block->FileID) != 0)
 			{ 
 				different_part = true;
 				AddDebugLogLineM(false, wxT("Session ended due to different file."));
@@ -760,7 +760,7 @@ void  CUpDownClient::AddRequestCount(uchar* fileid){
 	//printf("entered in : CUpDownClient::AddRequestCount\n");
 	for (POSITION pos = m_RequestedFiles_list.GetHeadPosition();pos != 0;m_RequestedFiles_list.GetNext(pos)){
 		Requested_File_Struct* cur_struct = m_RequestedFiles_list.GetAt(pos);
-		if (!memcmp(cur_struct->fileid,fileid,16)){
+		if (!md4cmp(cur_struct->fileid,fileid)){
 			if (::GetTickCount() - cur_struct->lastasked < MIN_REQUESTTIME && !GetFriendSlot()){ 
 				if (GetDownloadState() != DS_DOWNLOADING)
 					cur_struct->badrequests++;
@@ -778,7 +778,7 @@ void  CUpDownClient::AddRequestCount(uchar* fileid){
 	}
 	Requested_File_Struct* new_struct = new Requested_File_Struct;
 	memset(new_struct,0,sizeof(Requested_File_Struct));
-	memcpy(new_struct->fileid,fileid,16);
+	md4cpy(new_struct->fileid,fileid);
 	new_struct->lastasked = ::GetTickCount();
 	m_RequestedFiles_list.AddHead(new_struct);
 }

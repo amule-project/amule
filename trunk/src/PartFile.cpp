@@ -1266,7 +1266,7 @@ bool CPartFile::GetNextEmptyBlockInPart(uint16 partNumber, Requested_Block_Struc
 			if (result != NULL) {
 				result->StartOffset = start;
 				result->EndOffset = end;
-				memcpy(result->FileID, GetFileHash(), 16);
+				md4cpy(result->FileID, GetFileHash());
 				result->transferred = 0;
 			}
 			return true;

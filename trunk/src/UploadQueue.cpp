@@ -607,7 +607,7 @@ void CUploadQueue::SuspendUpload( const CMD4Hash& filehash )
 	while(pos) { //while we have a valid position
 		CUpDownClient *potential = uploadinglist.GetNext(pos);
 		//check if the client is uploading the file we need to suspend
-		if(memcmp(potential->GetUploadFileID(), filehash, 16) == 0) {
+		if(md4cmp(potential->GetUploadFileID(), filehash) == 0) {
 			//remove the unlucky client from the upload queue and add to the waiting queue
 			RemoveFromUploadQueue(potential, 1);
 			printf("%s: Removed user '%s'\n", unicode2char(base16hash) ,potential->GetUserName() );
@@ -676,7 +676,7 @@ void CUploadQueue::FindSourcesForFileById(CTypedPtrList<CPtrList, CUpDownClient*
 	pos = uploadinglist.GetHeadPosition();
 	while(pos) {
 		CUpDownClient *potential = uploadinglist.GetNext(pos);
-		if(memcmp(potential->GetUploadFileID(), filehash, 16) == 0) {
+		if(md4cmp(potential->GetUploadFileID(), filehash) == 0) {
 			srclist->AddTail(potential);
 		}
 	}
@@ -684,7 +684,7 @@ void CUploadQueue::FindSourcesForFileById(CTypedPtrList<CPtrList, CUpDownClient*
 	pos = waitinglist.GetHeadPosition();
 	while(pos) {
 		CUpDownClient *potential = waitinglist.GetNext(pos);
-		if(memcmp(potential->GetUploadFileID(), filehash, 16) == 0) {
+		if(md4cmp(potential->GetUploadFileID(), filehash) == 0) {
 			srclist->AddTail(potential);
 		}
 	}
