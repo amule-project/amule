@@ -75,6 +75,7 @@ Version 2.0.0
 		
 	deltaHF:
 	        * New toolbar icons (thx to everaldo.com)
+		* Added & enabled chinese, danish and hungarian translation
 		* Preferences (added/changed):
 		  IP-Filter reload and on/off buttons 
 		  securehash -> secure ident
@@ -85,8 +86,6 @@ Version 2.0.0
 		  remove dead servers after: 1 >
 		  tcp port: 80 > (for users with bad ISP's .. but remember -> running aMule as root is unsecure !!!)
 		  add new files (dl & share) with auto priority: off by default now (if running aMule for the first time)
-		  
-		* Enabled chinese translation
 		
 	niet:
 	        * Donated amule-project.net :-)
@@ -117,6 +116,8 @@ Version 2.0.0
 		Portuguese (BR): KamiKazeNH
 		Korean: BlueSpring
 		Spanish: JonathanShields
+		Danish: nowlin
+		Hungarian: biger [HUN]
 	
 		* All aMule users!!!
 
