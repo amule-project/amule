@@ -52,14 +52,7 @@ protected:
 	void	OnBnClickedCsend(wxCommandEvent& evt);
 	void	OnBnClickedCclose(wxCommandEvent& evt);
 
-	void	OnRMButton(wxMouseEvent& evt);
-	void	OnPopupClose(wxCommandEvent& evt);
-	void	OnPopupCloseAll(wxCommandEvent& evt);
-	void	OnPopupCloseOthers(wxCommandEvent& evt);
-
 	DECLARE_EVENT_TABLE()
-	
-private:
 
 	CFriendListCtrl* friendlist;
 	CChatSelector*	chatselector;

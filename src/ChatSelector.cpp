@@ -263,7 +263,7 @@ void CChatSelector::ConnectionResult(CUpDownClient* sender, bool success)
 
 void CChatSelector::EndSession(CUpDownClient* client)
 {
-	sint16 usedtab;
+	int usedtab;
 	if (client) {
 		usedtab = GetTabByClient(client);
 	} else {
@@ -273,11 +273,6 @@ void CChatSelector::EndSession(CUpDownClient* client)
 	if (usedtab == -1)
 		return;
 
-	// Workaround for a problem with wxNotebook, where an invalid selection is returned
-	if (usedtab >= (sint32)GetPageCount()) {
-		usedtab = GetPageCount() - 1;
-	}
-		
 	DeletePage(usedtab);
 
 	GetParent()->FindWindow(IDC_CSEND)->Enable(GetPageCount());

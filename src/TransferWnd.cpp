@@ -75,7 +75,8 @@ CTransferWnd::CTransferWnd(wxWindow* pParent /*=NULL*/)
 	queuelistctrl->Show(FALSE);
 	// allow notebook to dispatch right mouse clicks to us
 	CMuleNotebook* nb=(CMuleNotebook*)FindWindowById(ID_CATEGORIES);
-	nb->SetMouseListener(GetEventHandler());
+	// We want to use our own popup
+	nb->SetPopupHandler( this );
 	#if (wxMINOR_VERSION > 4) && (wxRELEASE_NUMBER > 1)
 	nb->SetSizeHints(-1,32,-1,32);
 	wxBitmapButton* bmap = (wxBitmapButton*)FindWindowById(ID_BTNSWWINDOW);
@@ -150,9 +151,15 @@ void CTransferWnd::OnSelchangeDltab(wxNotebookEvent& evt)
   downloadlistctrl->SortList();
 }
 
-void CTransferWnd::OnNMRclickDLtab(wxMouseEvent& evt) {
-	CMuleNotebook* nb=(CMuleNotebook*)FindWindowById(ID_CATEGORIES);
-	if(nb->GetSelection()==-1) {
+void CTransferWnd::OnNMRclickDLtab(wxMouseEvent& evt)
+{
+	CMuleNotebook* notebook = (CMuleNotebook*)FindWindowById(ID_CATEGORIES);
+	
+	// Only handle events from the category-notebook
+	if ( evt.GetEventObject() != (wxObject*)notebook )
+		return;
+	
+	if ( notebook->GetSelection() == -1 ) {
 		return;
 	}
 	
@@ -162,7 +169,7 @@ void CTransferWnd::OnNMRclickDLtab(wxMouseEvent& evt) {
 		CatMenu=true;
 		wxMenu* menu=new wxMenu(_("Category"));
 
-		if(nb->GetSelection()==0) {
+		if(notebook->GetSelection()==0) {
 			wxMenu* m_CatMenu=new wxMenu();
 
 			m_CatMenu->Append(MP_CAT_SET0,_("all"));
@@ -187,7 +194,7 @@ void CTransferWnd::OnNMRclickDLtab(wxMouseEvent& evt) {
 		}
 
 		menu->Append(MP_CAT_ADD,_("Add category"));
-		if(nb->GetSelection()!=0) {
+		if(notebook->GetSelection()!=0) {
 			menu->Append(MP_CAT_EDIT,_("Edit category"));
 			menu->Append(MP_CAT_REMOVE, _("Remove category"));
 		}
@@ -202,11 +209,8 @@ void CTransferWnd::OnNMRclickDLtab(wxMouseEvent& evt) {
 		// the point coming from mulenotebook control isn't in screen coordinates
 		// (unlike std mouse event, which always returns screen coordinates)
 		// so we must do the conversion here
-		wxPoint pt=evt.GetPosition();
-		wxPoint newpt=nb->ClientToScreen(pt);
-		newpt=ScreenToClient(newpt);
-		//evt.Skip();
-		PopupMenu(menu,newpt);
+		
+		PopupMenu(menu, evt.GetPosition());
 		delete menu;
 
 		CatMenu=false;

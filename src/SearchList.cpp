@@ -3,20 +3,20 @@
 // Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
 // Copyright (C) 2002 Merkur ( merkur-@users.sourceforge.net / http://www.emule-project.net )
 //
-//This program is free software; you can redistribute it and/or
-//modify it under the terms of the GNU General Public License
-//as published by the Free Software Foundation; either
-//version 2 of the License, or (at your option) any later version.
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either
+// version 2 of the License, or (at your option) any later version.
 //
-//This program is distributed in the hope that it will be useful,
-//but WITHOUT ANY WARRANTY; without even the implied warranty of
-//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//GNU General Public License for more details.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 //
-//You should have received a copy of the GNU General Public License
-//along with this program; if not, write to the Free Software
-//Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+// 
 
 #include "muuli_wdr.h"		// Needed for ID_NOTEBOOK
 #include "SearchList.h"		// Interface declarations.
@@ -36,23 +36,27 @@
 #include "SharedFileList.h" // Needed for GetFileByID
 #include "DownloadQueue.h"  // Needed for GetFileByID
 
-CGlobalSearchThread::CGlobalSearchThread(Packet *packet, CSearchList *owner) : wxThread(wxTHREAD_JOINABLE)
+#include <algorithm>
+
+CGlobalSearchThread::CGlobalSearchThread( Packet *packet )
+	: wxThread(wxTHREAD_JOINABLE)
 {
-	CGlobalSearchThread::packet = packet;
-	CGlobalSearchThread::owner = owner;
+	m_packet = packet;
 	
 	CServer* current = theApp.serverconnect->GetCurrentServer();
 	current = theApp.serverlist->GetServerByIP( current->GetIP(), current->GetPort() );
-	askedlist.insert( current );
 	
-	packet->SetOpCode(OP_GLOBSEARCHREQ);
+	m_packet->SetOpCode(OP_GLOBSEARCHREQ);
+
 	Create();
 }
 
+
 CGlobalSearchThread::~CGlobalSearchThread()
 {
-	delete packet;
+	delete m_packet;
 }
+
 
 void *CGlobalSearchThread::Entry()
 {
@@ -60,21 +64,25 @@ void *CGlobalSearchThread::Entry()
 	current = theApp.serverlist->GetServerByIP( current->GetIP(), current->GetPort() );
 	
 	for ( uint16 i = 0; i < theApp.serverlist->GetServerCount(); i++ ) {
-		if ( TestDestroy() ) {
+		if ( TestDestroy() )
 			break;
-		}
+		
 		CServer* server = theApp.serverlist->GetNextSearchServer();
-		if ( server == current ) {
+		if ( server == current )
 			continue;
-		}
+		
 		Sleep(750);
-		theApp.serverconnect->SendUDPPacket(packet, server, false);
-		CoreNotify_Search_Update_Progress(i * 100 / theApp.serverlist->GetServerCount());
+		
+		theApp.serverconnect->SendUDPPacket( m_packet, server, false );
+		
+		CoreNotify_Search_Update_Progress( i * 100 / theApp.serverlist->GetServerCount() );
 	}
-	Sleep(1000);
+	
 	CoreNotify_Search_Update_Progress(0xffff);
+	
 	return 0;
 }
+
 
 Packet *CreateSearchPacket(wxString &searchString, wxString& typeText,
 				wxString &extension, uint32 min, uint32 max, uint32 avaibility)
@@ -82,11 +90,11 @@ Packet *CreateSearchPacket(wxString &searchString, wxString& typeText,
 	// Count the number of used parameters
 	int parametercount = 0;
 	if ( !searchString.IsEmpty() )	parametercount++;
-	if ( !typeText.IsEmpty() ) 	parametercount++;
-	if ( min > 0 )			parametercount++;
-	if ( max > 0 ) 			parametercount++;
-	if ( avaibility > 0 ) 		parametercount++;
-	if ( !extension.IsEmpty() )	parametercount++;
+	if ( !typeText.IsEmpty() )		parametercount++;
+	if ( min > 0 )					parametercount++;
+	if ( max > 0 ) 					parametercount++;
+	if ( avaibility > 0 )			parametercount++;
+	if ( !extension.IsEmpty() )		parametercount++;
 	
 	// Must write parametercount - 1 parameter headers
 	CSafeMemFile* data = new CSafeMemFile(100);
@@ -101,9 +109,8 @@ Packet *CreateSearchPacket(wxString &searchString, wxString& typeText,
 	const uint32 avaibilityNemonic = 0x15000101;
 	const uint32 extensionNemonic = 0x00040001;
 	
-	for ( int i = 0; i < parametercount - 1; i++ ) {
+	for ( int i = 0; i < parametercount - 1; i++ )
 		data->WriteUInt16(andParameter);
-	}
 
 	// Packet body:
 	if ( !searchString.IsEmpty() ) {
@@ -150,6 +157,7 @@ Packet *CreateSearchPacket(wxString &searchString, wxString& typeText,
 		data->Write(&endian_corrected, 3); // Nemonic for this kind of parameter (only 3 bytes!!)
 #endif		
 	}
+
 	Packet* packet = new Packet(data);
 	packet->SetOpCode(OP_SEARCHREQUEST);
 	delete data;
@@ -157,52 +165,16 @@ Packet *CreateSearchPacket(wxString &searchString, wxString& typeText,
 	return packet;
 }
 
-bool IsValidClientIPPort(uint32 nIP, uint16 nPort)
-{
-	return     nIP != 0
-			&& nPort != 0
-		        && ((nIP) != nPort)		// this filters most of the false data
-			&& ((nIP & 0x000000FF) != 0)
-			&& ((nIP & 0x0000FF00) != 0)
-			&& ((nIP & 0x00FF0000) != 0)
-			&& ((nIP & 0xFF000000) != 0);
-}
 
-
-///////////////////////////////////////////////////////////////////////////////
-// CSearchFile
-	
-CSearchFile::CSearchFile(CSearchFile* copyfrom)
-{
-	m_abyFileHash = copyfrom->GetFileHash();
-	SetFileSize(copyfrom->GetIntTagValue(FT_FILESIZE));
-	SetFileName(char2unicode(copyfrom->GetStrTagValue(FT_FILENAME)));
-	m_nClientServerIP = copyfrom->GetClientServerIP();
-	m_nClientID = copyfrom->GetClientID();
-	m_nClientPort = copyfrom->GetClientPort();
-	m_nClientServerPort = copyfrom->GetClientServerPort();
-	m_pszDirectory = copyfrom->m_pszDirectory ? nstrdup(copyfrom->m_pszDirectory) : NULL;
-	m_nSearchID = copyfrom->GetSearchID();
-	for (unsigned int i = 0; i < copyfrom->taglist.size(); i++)
-		taglist.push_back(new CTag(*copyfrom->taglist.at(i)));
-
-	m_aServers.insert( m_aServers.end(), copyfrom->GetServers().begin(), 
-	                                     copyfrom->GetServers().end() );
-
-	m_list_bExpanded = false;
-	m_list_parent = copyfrom;
-	m_list_childcount = 0;
-	m_bPreviewPossible = false;
-}
-
-
-CSearchFile::CSearchFile(const CSafeMemFile* in_data, long nSearchID, uint32 nServerIP, uint16 nServerPort, LPCTSTR pszDirectory)
+CSearchFile::CSearchFile(const CSafeMemFile* in_data, long nSearchID, uint32 WXUNUSED(nServerIP), uint16 WXUNUSED(nServerPort), LPCTSTR pszDirectory)
 {
 	m_nSearchID = nSearchID;
+	
 	in_data->ReadHash16(m_abyFileHash);
 	m_nClientID = in_data->ReadUInt32();
 	m_nClientPort = in_data->ReadUInt16();
-	if ((m_nClientID || m_nClientPort) && !IsValidClientIPPort(m_nClientID, m_nClientPort)){
+	
+	if (( m_nClientID || m_nClientPort ) && ( !IsGoodIP(m_nClientID) || !m_nClientPort ) ) {
 		m_nClientID = 0;
 		m_nClientPort = 0;
 	}
@@ -210,7 +182,7 @@ CSearchFile::CSearchFile(const CSafeMemFile* in_data, long nSearchID, uint32 nSe
 
 	for (unsigned int i = 0; i != tagcount; ++i){
 		CTag* toadd = new CTag(*in_data);
-		taglist.push_back(toadd);
+		m_taglist.push_back(toadd);
 	}
 
 	// here we have two choices
@@ -219,6 +191,7 @@ CSearchFile::CSearchFile(const CSafeMemFile* in_data, long nSearchID, uint32 nSe
 	char* tempName = GetStrTagValue(FT_FILENAME);
 	if ( !tempName )
 		throw CInvalidPacket("No filename in search result");
+		
 	int iSize = (int)strlen(tempName)+1;
 	if ( iSize < 2 ) {
 		iSize = 2;		// required by tag format
@@ -228,198 +201,146 @@ CSearchFile::CSearchFile(const CSafeMemFile* in_data, long nSearchID, uint32 nSe
 	
 	SetFileSize(GetIntTagValue(FT_FILESIZE));
 
-	m_nClientServerIP = nServerIP;
-	m_nClientServerPort = nServerPort;
-	if (m_nClientServerIP && m_nClientServerPort){
-		SServer server(m_nClientServerIP, m_nClientServerPort);
-		server.m_uAvail = GetIntTagValue(FT_SOURCES);
-		AddServer(server);
-	}
-
-	m_pszDirectory = pszDirectory ? nstrdup(pszDirectory) : NULL;
-	
-	m_list_bExpanded = false;
-	m_list_parent = NULL;
-	m_list_childcount = 0;
-	m_bPreviewPossible = false;
+	m_Directory = char2unicode( pszDirectory );
 }
 
-CSearchFile::CSearchFile(long nSearchID, const CMD4Hash& pucFileHash, uint32 uFileSize, LPCTSTR pszFileName, int WXUNUSED(iFileType), int iAvailability)
+
+CSearchFile::~CSearchFile()
+{	
+	for ( unsigned int i = 0; i < m_taglist.size(); i++ )
+		delete m_taglist[i];
+	
+	m_taglist.clear();
+}
+
+
+uint32 CSearchFile::GetIntTagValue(uint8 tagname)
 {
-	m_nSearchID = nSearchID;
-	m_abyFileHash = pucFileHash;
-
-	taglist.push_back(new CTag(FT_FILESIZE, uFileSize));
-	taglist.push_back(new CTag(FT_FILENAME, pszFileName));
-	taglist.push_back(new CTag(FT_SOURCES, iAvailability));
-	printf("Filename2: %s\n",pszFileName);
-
-	SetFileName(char2unicode(pszFileName));
-	SetFileSize(uFileSize);
-
-	m_nClientID = 0;
-	m_nClientPort = 0;
-	m_nClientServerIP = 0;
-	m_nClientServerPort = 0;
-	m_pszDirectory = NULL;
-	m_list_bExpanded = false;
-	m_list_parent = NULL;
-	m_list_childcount = 0;
-	m_bPreviewPossible = false;
-	
-}
-
-CSearchFile::~CSearchFile(){
-	
-	for (unsigned int i = 0; i != taglist.size();i++) {
-		delete taglist[i];
+	for (unsigned int i = 0; i != m_taglist.size(); i++) {
+		if ( m_taglist[i]->tag.specialtag == tagname )
+			return m_taglist[i]->tag.intvalue;
 	}
-	taglist.clear();
-
-	if (m_pszDirectory)
-		delete[] m_pszDirectory;
-}
-
-uint32 CSearchFile::GetIntTagValue(uint8 tagname){
-	for (unsigned int i = 0; i != taglist.size(); i++){
-		if (taglist[i]->tag.specialtag == tagname)
-			return taglist[i]->tag.intvalue;
-	}
+	
 	return 0;
 }
 
-char* CSearchFile::GetStrTagValue(uint8 tagname){
-	for (unsigned int i = 0; i != taglist.size(); i++){
-		if (taglist[i]->tag.specialtag == tagname)
-			return taglist[i]->tag.stringvalue;
+
+char* CSearchFile::GetStrTagValue(uint8 tagname)
+{
+	for (unsigned int i = 0; i != m_taglist.size(); i++) {
+		if ( m_taglist[i]->tag.specialtag == tagname )
+			return m_taglist[i]->tag.stringvalue;
 	}
-	return 0;
+	
+	return NULL;
 }
 
-uint32 CSearchFile::AddSources(uint32 count, uint32 count_complete){
-	for (unsigned int i = 0; i != taglist.size(); i++){
-		if (taglist[i]->tag.specialtag == FT_SOURCES){
-			taglist[i]->tag.intvalue += count;
-			return taglist[i]->tag.intvalue;
+
+void CSearchFile::AddSources(uint32 count, uint32 count_complete)
+{
+	for ( unsigned int i = 0; i < m_taglist.size(); i++ ) {
+		STag& tag = m_taglist[i]->tag;
+	
+		switch ( tag.specialtag ) {
+			case FT_SOURCES:
+				tag.intvalue += count;
+				break;
+				
+			case FT_COMPLETE_SOURCES:
+				tag.intvalue += count_complete;
+				break;
 		}
-		if (taglist[i]->tag.specialtag == FT_COMPLETE_SOURCES){
-			taglist[i]->tag.intvalue += count_complete;
-			return taglist[i]->tag.intvalue;
-		}		
 	}
-	return 0;
 }
 
-uint32 CSearchFile::GetSourceCount(){
+
+uint32 CSearchFile::GetSourceCount()
+{
 	return GetIntTagValue(FT_SOURCES);
 }
 
-uint32 CSearchFile::GetCompleteSourceCount(){
+
+uint32 CSearchFile::GetCompleteSourceCount()
+{
 	return GetIntTagValue(FT_COMPLETE_SOURCES);
 }
 
-CSearchList::CSearchList(){
+
+CSearchList::CSearchList()
+{
+	m_CurrentSearch = 0;
+	m_searchpacket = NULL;
+	m_searchthread = NULL;
 }
 
-CSearchList::~CSearchList(){
+
+CSearchList::~CSearchList()
+{
 	Clear();
 }
 
-void CSearchList::Clear(){
-	for(POSITION pos = list.GetHeadPosition(); pos != NULL; ) {
-		delete list.GetNext(pos);
+
+void CSearchList::Clear()
+{
+	ResultMap::iterator it = m_Results.begin();
+	
+	for ( ; it != m_Results.end(); ++it ) {
+		SearchList& list = it->second;
+	
+		for ( int i = 0; i < list.size(); i++ ) 
+			delete list[i];
 	}
-	list.RemoveAll();
+		
+	m_Results.clear();
 }
 
-void CSearchList::RemoveResults(long nSearchID){
-	// this will not delete the item from the window, make sure your code does it if you call this
-	POSITION pos1, pos2;
-	for (pos1 = list.GetHeadPosition();( pos2 = pos1 ) != NULL;){
-		list.GetNext(pos1);
-		CSearchFile* cur_file =	list.GetAt(pos2);
-		if( cur_file->GetSearchID() == nSearchID ){
-			list.RemoveAt(pos2);
-			delete cur_file;
-		}
+
+void CSearchList::RemoveResults(long nSearchID)
+{
+	ResultMap::iterator it = m_Results.find( nSearchID );
+
+	if ( it != m_Results.end() ) {
+		SearchList& list = it->second;
+	
+		for ( int i = 0; i < list.size(); i++ ) 
+			delete list[i];
+	
+		m_Results.erase( it );
 	}
 }
 
 
-void CSearchList::NewSearch(const wxString& resTypes, long nSearchID){
-	resultType=resTypes;
-	m_nCurrentSearch = nSearchID;
-	myHashList=wxEmptyString;
-
-	foundFilesCount[nSearchID] = 0;
+void CSearchList::NewSearch(const wxString& resTypes, long nSearchID)
+{
+	m_resultType = resTypes;
+	m_CurrentSearch = nSearchID;
 }
+
 
 void CSearchList::LocalSearchEnd()
 {
-	if ( searchpacket ) {
-		searchthread = new CGlobalSearchThread(searchpacket, this);
-		searchthread->Run();
+	if ( m_searchpacket ) {
+		m_searchthread = new CGlobalSearchThread(m_searchpacket);
+		m_searchthread->Run();
 	}
 	Notify_SearchLocalEnd();
 }
 
-// NEVER called: commenting it out untill someone will explain why it's here
-// uint16 CSearchList::ProcessSearchanswer(const char *in_packet, uint32 size, CUpDownClient *Sender) {
-// 	const CSafeMemFile *packet = new CSafeMemFile((BYTE*)in_packet,size,0);
-// #ifndef AMULE_DAEMON
-// 	if(Sender) {
-// 	  theApp.amuledlg->searchwnd->CreateNewTab(Sender->GetUserName() + wxT(" (0)"),(long)Sender);
-// 	}
-// #endif
-// 	try
-// 	{
-// 		uint32 results = packet->ReadUInt32();
-// 		long mySearchID=( (Sender != NULL)? (long)Sender : m_nCurrentSearch);
-// 		foundFilesCount[mySearchID] = 0;
-// 
-// 		try
-// 		{
-// 			for (uint32 i = 0; i != results; i++){
-// 				CSearchFile* toadd = new CSearchFile(packet, mySearchID);
-// 				AddToList(toadd, (Sender != NULL) );
-// 			}
-// 		}
-// 		catch ( CStrangePacket )
-// 		{
-// 			printf("Strange search result on packet\n");
-// 		}
-// 		catch ( CInvalidPacket )
-// 		{
-// 			printf("Invalid search result on packet\n");
-// 		}
-// 		
-// 	}
-// 	catch ( CInvalidPacket e )
-// 	{
-// 
-// 		printf("Invalid search result packet: %s\n", e.what());
-// 		DumpMem(in_packet, size);
-// 
-// 	}
-// 
-// 	packet->Close();
-// 	delete packet;
-// 	return GetResultCount();
-// }
 
-// Called when some of clients returns list of files
-uint16 CSearchList::ProcessSearchanswer(const char *in_packet, uint32 size, 
+void CSearchList::ProcessSearchanswer(const char *in_packet, uint32 size, 
 	CUpDownClient *Sender, bool *pbMoreResultsAvailable, LPCTSTR pszDirectory)
 {
 	wxASSERT( Sender != NULL );
-	// Elandal: Assumes sizeof(void*) == sizeof(uint32)
+	
 	long nSearchID = (long)Sender;
+
 #ifndef AMULE_DAEMON
 	if (!theApp.amuledlg->searchwnd->CheckTabNameExists(Sender->GetUserName())) {
 		theApp.amuledlg->searchwnd->CreateNewTab(Sender->GetUserName() + wxT(" (0)"),nSearchID);
 	}
 #endif
-	const CSafeMemFile packet((BYTE*)in_packet,size);
+
+	const CSafeMemFile packet((BYTE*)in_packet, size);
 	uint32 results = packet.ReadUInt32();
 
 	for (unsigned int i = 0; i != results; i++){
@@ -427,15 +348,6 @@ uint16 CSearchList::ProcessSearchanswer(const char *in_packet, uint32 size,
 		if (Sender){
 			toadd->SetClientID(Sender->GetUserID());
 			toadd->SetClientPort(Sender->GetUserPort());
-			toadd->SetClientServerIP(Sender->GetServerIP());
-			toadd->SetClientServerPort(Sender->GetServerPort());
-			if (Sender->GetServerIP() && Sender->GetServerPort()){
-	   			CSearchFile::SServer server(Sender->GetServerIP(), Sender->GetServerPort());
-				server.m_uAvail = 1;
-				toadd->AddServer(server);
-			}			
-			// Well, preview is not available yet.
-			//toadd->SetPreviewPossible( Sender->SupportsPreview() && ED2KFT_VIDEO == GetED2KFileTypeID(toadd->GetFileName()) );
 		}
 		AddToList(toadd, true);
 	}
@@ -444,79 +356,40 @@ uint16 CSearchList::ProcessSearchanswer(const char *in_packet, uint32 size,
 		*pbMoreResultsAvailable = false;
 	
 	int iAddData = (int)(packet.Length() - packet.GetPosition());
-	if (iAddData == 1){
+	if (iAddData == 1) {
 		uint8 ucMore = packet.ReadUInt8();
 		if (ucMore == 0x00 || ucMore == 0x01){
 			if (pbMoreResultsAvailable)
 				*pbMoreResultsAvailable = (bool)ucMore;
 		}
 	}
-
-	packet.Close();
-	return GetResultCount(nSearchID);
 }
 
-//
-// Called from ServerSocket when server returns answer about local search
-uint16 CSearchList::ProcessSearchanswer(const char *in_packet, uint32 size, uint32 nServerIP, uint16 nServerPort) {
 
-	//CSafeMemFile packet((BYTE*)in_packet,size);
+void CSearchList::ProcessSearchanswer(const char* in_packet, uint32 size, uint32 WXUNUSED(nServerIP), uint16 WXUNUSED(nServerPort))
+{
 	const CSafeMemFile* packet = new CSafeMemFile((BYTE*)in_packet,size,0);
 
 	uint32 results = packet->ReadUInt32();
 
-	
-//	in_addr server;
-//	server.s_addr = nServerIP;
-//	printf("ip %s siz %i rslt %i\n",inet_ntoa(server), size, results);
-
-	//DumpMem(in_packet,64);
-
-	
-	for (unsigned int i = 0; i != results; ++i){
-//		printf("Result %i\n",i);
-//		DumpMem(packet->GetCurrentBuffer(),64);
-		CSearchFile* toadd = new CSearchFile(packet, m_nCurrentSearch);
-		toadd->SetClientServerIP(nServerIP);
-		toadd->SetClientServerPort(nServerPort);
-		if (nServerIP && nServerPort){
-   			CSearchFile::SServer server(nServerIP, nServerPort);
-			server.m_uAvail = toadd->GetIntTagValue(FT_SOURCES);
-			toadd->AddServer(server);
-		}
+	for (unsigned int i = 0; i != results; ++i) {
+		CSearchFile* toadd = new CSearchFile(packet, m_CurrentSearch);
 		AddToList(toadd, false);
 	}
-	/*if (m_MobilMuleSearch)
-		theApp.mmserver->SearchFinished(false);
-	m_MobilMuleSearch = false;*/
-	packet->Close();
+	
 	delete packet;
-	return GetResultCount();
 }
 
-uint16 CSearchList::ProcessUDPSearchanswer(CSafeMemFile* packet, uint32 nServerIP, uint16 nServerPort)
+
+void CSearchList::ProcessUDPSearchanswer(CSafeMemFile* packet, uint32 nServerIP, uint16 nServerPort)
 {
-	CSearchFile* toadd = new CSearchFile(packet, m_nCurrentSearch, nServerIP, nServerPort);
+	CSearchFile* toadd = new CSearchFile(packet, m_CurrentSearch, nServerIP, nServerPort);
 	AddToList(toadd);
-	return GetResultCount();
 }
-/*
-uint16 CSearchList::ProcessUDPSearchanswer(char* in_packet, uint32 size){
-	CSafeMemFile* packet = new CSafeMemFile((BYTE*)in_packet,size,0);
-	try
-	{
-		CSearchFile* toadd = new CSearchFile(packet, m_nCurrentSearch);
-		AddToList(toadd);
-	}
-	catch ( CStrangePacket )
-	{ }
-	packet->Close();
-	delete packet;
-	return GetResultCount();
-}
-*/
-bool CSearchList::AddToList(CSearchFile* toadd, bool bClientResponse){
-	
+
+
+bool CSearchList::AddToList(CSearchFile* toadd, bool bClientResponse)
+{
 	// If filesize is 0, drop it (why would we want to download a 0-byte file anyway?)
 	if (!toadd->GetIntTagValue(FT_FILESIZE)) {
 		delete toadd;
@@ -524,81 +397,91 @@ bool CSearchList::AddToList(CSearchFile* toadd, bool bClientResponse){
 	}
 	
 	// If the result was not the type user wanted, drop it.
-	if (!bClientResponse && !(resultType == wxString(_("Any")) || GetFiletypeByName(toadd->GetFileName())==resultType)){
+	if (!bClientResponse && !(m_resultType == wxString(_("Any")) || GetFiletypeByName(toadd->GetFileName())==m_resultType)){
 		delete toadd;
 		return false;
 	}
 
-	for (POSITION pos = list.GetHeadPosition(); pos != NULL; ){
-		CSearchFile* cur_file = list.GetNext(pos);
-		if ( (toadd->GetFileHash() == cur_file->GetFileHash()) && cur_file->GetSearchID() ==  toadd->GetSearchID()){
-			cur_file->AddSources(toadd->GetIntTagValue(FT_SOURCES),toadd->GetIntTagValue(FT_COMPLETE_SOURCES));
-			Notify_Search_Update_Sources(toadd, cur_file);
-			delete toadd;
-			return true;
+
+
+	ResultMap::iterator it = m_Results.find( toadd->GetSearchID() );
+
+	if ( it != m_Results.end() ) {
+		SearchList& list = it->second;
+	
+		for ( int i = 0; i < list.size(); i++ ) {
+			if ( toadd->GetFileHash() == list[i]->GetFileHash() ) {
+				list[i]->AddSources( toadd->GetSourceCount(), toadd->GetCompleteSourceCount() );
+				
+				Notify_Search_Update_Sources( list[i] );
+				
+				delete toadd;
+				
+				return true;
+			}
 		}
 	}
-	if (list.AddTail(toadd)) {	
-		foundFilesCount[toadd->GetSearchID()]++;
-	}
+
+		
+	m_Results[ toadd->GetSearchID() ].push_back( toadd );
+	
 	Notify_Search_Add_Result(toadd);
+	
+		
 	return true;
 }
 
-uint16 CSearchList::GetResultCount(long nSearchID) {
-	uint16 hits = 0;
-	for (POSITION pos = list.GetHeadPosition(); pos != NULL; list.GetNext(pos)){
-		if( list.GetAt(pos)->GetSearchID() == nSearchID ) {
-			hits += list.GetAt(pos)->GetSourceCount();
-		}
+
+
+class CmpFiles
+{
+public:
+	CmpFiles( int sortBy = 0, bool ascending = true )
+	{
+		m_type = sortBy;
+		m_asc = ascending;
 	}
-	return hits;
-}
 
-
-uint16 CSearchList::GetResultCount(){
-	return GetResultCount(m_nCurrentSearch);
-}
-
-uint16 CSearchList::GetFoundFiles(long searchID) {
-	return foundFilesCount[ searchID ];
-}
-
-wxString CSearchList::GetWebList(const wxString& linePattern,int sortby,bool asc) const {
-	wxString buffer;
-	wxString temp;
-	std::list<CSearchFile*> sortarray;
-	int swap = 0;
-	bool inserted = false;
-
-	// insertsort
-	CSearchFile* sf1;
-	CSearchFile* sf2;
-	for (POSITION pos = list.GetHeadPosition(); pos !=0;) {
-		inserted=false;
-		sf1 = list.GetNext(pos);
-		
-		if (sf1->GetListParent()!=NULL) continue;
-		
-		std::list<CSearchFile*>::iterator it = sortarray.begin();
-		for ( ; it != sortarray.end(); ++it ) {
-			sf2 = (*it);
-			
-			switch (sortby) {
-				case 0: swap=sf1->GetFileName().CmpNoCase(sf2->GetFileName()); break;
-				case 1: swap=sf1->GetFileSize()-sf2->GetFileSize();break;
-				case 2: swap=EncodeBase16(sf1->GetFileHash(), 16).Cmp( EncodeBase16(sf2->GetFileHash(), 16) ); break;
-				case 3: swap=sf1->GetSourceCount()-sf2->GetSourceCount(); break;
-			}
-			if (!asc) swap=0-swap;
-			if (swap<0) {inserted=true; sortarray.insert(it, sf1);break;}
-		}
-		if (!inserted) sortarray.push_back(sf1);
-	}
+	bool operator()( CSearchFile* file1, CSearchFile* file2 )
+	{
+		int mod = ( m_asc ? 1 : -1 );
+		int result = 0;
 	
-	std::list<CSearchFile*>::iterator it = sortarray.begin();
-	for ( ; it != sortarray.end(); ++it ) {
-		/*const*/ CSearchFile* sf = (*it);
+		switch ( m_type ) {
+			case 0: result = file1->GetFileName().CmpNoCase( file2->GetFileName() ); break;				
+			case 1: result = CmpAny( file1->GetFileSize(), file2->GetFileSize() ); break;
+			case 2: result = file1->GetFileHash().Encode().Cmp( file2->GetFileHash().Encode() ); break;
+			case 3: result = CmpAny( file1->GetSourceCount(), file2->GetSourceCount() ); break;
+		}
+
+		return (result * mod) < 0;
+	}
+
+private:
+	bool	m_asc;
+	int		m_type;
+};
+
+
+wxString CSearchList::GetWebList( const wxString& linePattern, int sortby, bool asc ) const
+{
+	wxString buffer;
+
+	SearchList list;
+
+	// WTF? Why do we use all results, not just a specific search?
+	{
+		ResultMap::const_iterator it = m_Results.begin();
+		for ( ; it != m_Results.end(); ++it )
+			list.insert( list.end(), it->second.begin(), it->second.end() );
+	}
+
+	// Sorts the entire list using the specified parameters
+	std::sort( list.begin(), list.end(), CmpFiles( sortby, asc ) );
+	
+	SearchList::iterator it = list.begin();
+	for ( ; it != list.end(); ++it ) {
+		CSearchFile* sf = (*it);
 
 		// colorize
 		wxString coloraddon;
@@ -609,27 +492,17 @@ wxString CSearchList::GetWebList(const wxString& linePattern,int sortby,bool asc
 		if (!sameFile)
 			samePFile = theApp.downloadqueue->GetFileByID(sf->GetFileHash());
 
-#if 0 //shakraw
-		if (sameFile) {
-			if (sameFile->IsPartFile())
-				coloraddon = _T("<font color=\"#FF0000\">");
-			else
-				coloraddon = _T("<font color=\"#00FF00\">");
-		}
-#endif
-		
 		if (sameFile) 
-			coloraddon = _T("<font color=\"#00FF00\">");
+			coloraddon = wxT("<font color=\"#00FF00\">");
 		else
-			coloraddon = _T("<font color=\"#FF0000\">");
+			coloraddon = wxT("<font color=\"#FF0000\">");
 		
 		
 		if (coloraddon.Length()>0)
-			coloraddonE = _T("</font>");
+			coloraddonE = wxT("</font>");
 
 		wxString strHash(EncodeBase16(sf->GetFileHash(),16));
-		temp.Printf(linePattern,
-					//coloraddon + StringLimit(sf->GetFileName(),70) + coloraddonE,
+		wxString temp = wxString::Format(linePattern,
 					wxString(coloraddon + sf->GetFileName() + coloraddonE).GetData(),
 					CastItoXBytes(sf->GetFileSize()).GetData(),
 					strHash.GetData(),
@@ -637,15 +510,24 @@ wxString CSearchList::GetWebList(const wxString& linePattern,int sortby,bool asc
 					strHash.GetData());
 		buffer.Append(temp);
 	}
+	
 	return buffer;
 }
 
-void CSearchList::AddFileToDownloadByHash(const CMD4Hash& hash,uint8 cat) {
-	for (POSITION pos = list.GetHeadPosition(); pos !=0; ){
-		CSearchFile* sf=list.GetNext(pos);
-		if (hash == sf->GetFileHash()) {
-			CoreNotify_Search_Add_Download(sf, cat);
-			break;
+
+void CSearchList::AddFileToDownloadByHash(const CMD4Hash& hash, uint8 cat)
+{
+	ResultMap::iterator it = m_Results.begin();
+	for ( ; it != m_Results.end(); ++it ) {
+		SearchList& list = it->second;
+	
+		for ( int i = 0; i < list.size(); i++ ) {
+			if ( list[i]->GetFileHash() == hash ) {
+				CoreNotify_Search_Add_Download( list[i], cat );
+
+				return;
+			}
 		}
 	}
 }
+

@@ -1,423 +1,421 @@
+//
 // This file is part of the aMule Project
 //
 // Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
 // Copyright (C) 2002 Merkur ( merkur-@users.sourceforge.net / http://www.emule-project.net )
 //
-//This program is free software; you can redistribute it and/or
-//modify it under the terms of the GNU General Public License
-//as published by the Free Software Foundation; either
-//version 2 of the License, or (at your option) any later version.
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either
+// version 2 of the License, or (at your option) any later version.
 //
-//This program is distributed in the hope that it will be useful,
-//but WITHOUT ANY WARRANTY; without even the implied warranty of
-//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//GNU General Public License for more details.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 //
-//You should have received a copy of the GNU General Public License
-//along with this program; if not, write to the Free Software
-//Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
-
-// SearchListCtrl.cpp : implementation file
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include "muuli_wdr.h"		// Needed for ID_SERVERLIST
+
 #include "SearchListCtrl.h"	// Interface declarations
-#include "PartFile.h"		// Needed for CPartFile
+#include "MuleNotebook.h"	// Needed for CMuleNotebook
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
-#include "SharedFileList.h"	// Needed for CSharedFileList
+#include "KnownFileList.h"	// Needed for CKnownFileList
 #include "otherfunctions.h"	// Needed for CastItoXBytes
+#include "PartFile.h"		// Needed for CPartFile and CKnownFile
 #include "SearchList.h"		// Needed for CSearchFile
 #include "SearchDlg.h"		// Needed for CSearchDlg
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "opcodes.h"		// Needed for MP_RESUME
 #include "amule.h"			// Needed for theApp
-#include "color.h"			// Needed for SYSCOLOR
-#include "MuleNotebook.h"	// Needed for CMuleNotebook
-#include "Preferences.h"	// Needed for CPreferences
 
 #include <wx/menu.h>
 
-// CSearchListCtrl
+#include <algorithm>
 
-// CARE: This will lock the notebook when it does find a control.
-//       Call the function UngetSearchListControl() to unlock the notebook. But
-//       only after you are done with the Control returned by this function.
-//
-CSearchListCtrl* GetSearchListControl(long nSearchID)
-{
-	CMuleNotebook* nb=(CMuleNotebook*)wxWindow::FindWindowById(ID_NOTEBOOK);
-	if ( !nb ) return NULL;
-
-	nb->m_LockTabs.Lock();
-
-	for (unsigned int tabCounter=0; tabCounter < nb->GetPageCount(); tabCounter++) {
-		if(nb->GetUserData(tabCounter)==nSearchID) {
-			return (CSearchListCtrl*)(nb->GetPage(tabCounter));
-		}
-	}
-
-	nb->m_LockTabs.Unlock();
-	return NULL;
-}
-
-void UngetSearchListControl(CSearchListCtrl* ctrl)
-{
-	if ( !ctrl ) return;			// NB was already unlocked
-
-	CMuleNotebook* nb=(CMuleNotebook*)wxWindow::FindWindowById(ID_NOTEBOOK);
-	nb->m_LockTabs.Unlock();
-}
-
-//IMPLEMENT_DYNAMIC_CLASS(CSearchListCtrl,CMuleListCtrl)
 
 BEGIN_EVENT_TABLE(CSearchListCtrl, CMuleListCtrl)
 	EVT_RIGHT_DOWN(CSearchListCtrl::OnNMRclick)
-	EVT_LEFT_DCLICK(CSearchListCtrl::OnLDclick)
+	EVT_LIST_COL_CLICK( -1,       CSearchListCtrl::OnColumnLClick)
+	EVT_LIST_COL_END_DRAG( -1,    CSearchListCtrl::OnColumnResize)
+
+	EVT_MENU( MP_GETED2KLINK,     CSearchListCtrl::OnPopupGetUrl)
+	EVT_MENU( MP_GETHTMLED2KLINK, CSearchListCtrl::OnPopupGetUrl)
+	EVT_MENU( MP_FAKECHECK1,      CSearchListCtrl::OnPopupFakeCheck)
+	EVT_MENU( MP_FAKECHECK2,      CSearchListCtrl::OnPopupFakeCheck)
+	EVT_MENU( MP_RESUME,          CSearchListCtrl::OnPopupDownload)
+
+	EVT_LIST_ITEM_ACTIVATED( -1,  CSearchListCtrl::OnItemActivated)
 END_EVENT_TABLE()
 
-CSearchListCtrl::CSearchListCtrl(wxWindow* parent,int id,const wxPoint& pos,wxSize siz,int flags)
-: CMuleListCtrl(parent,id,pos,siz,flags)
-{
-	wxASSERT( parent );
 
+std::list<CSearchListCtrl*> CSearchListCtrl::s_lists;
+
+
+CSearchListCtrl::CSearchListCtrl( wxWindow* parent, wxWindowID winid, const wxPoint& pos, const wxSize& size, long style, const wxValidator& validator, const wxString& name )
+	: CMuleListCtrl( parent, winid, pos, size, style, validator, name )
+{
 	// Setting the sorter function.
 	SetSortFunc( SortProc );
 
-	// Set the table-name (for loading and saving preferences).
-	SetTableName( wxT("Search") );
+	InsertColumn( 0, _("File Name"), wxLIST_FORMAT_LEFT, 500);
+	InsertColumn( 1, _("Size"),      wxLIST_FORMAT_LEFT, 100);
+	InsertColumn( 2, _("Sources"),   wxLIST_FORMAT_LEFT, 50);
+	InsertColumn( 3, _("Type"),      wxLIST_FORMAT_LEFT, 65);
+	InsertColumn( 4, _("FileID"),    wxLIST_FORMAT_LEFT, 280);
 
-	m_SearchFileMenu=NULL;
-}
+	m_nResultsID = 0;
 
-void CSearchListCtrl::Init(CSearchList* in_searchlist)
-{
-	//SetExtendedStyle(LVS_EX_FULLROWSELECT);
-	//ModifyStyle(LVS_SINGLESEL,0);
-	searchlist = in_searchlist;
-  
-	#define LVCFMT_LEFT wxLIST_FORMAT_LEFT
-	InsertColumn(0,_("File Name"),LVCFMT_LEFT,500);
-	InsertColumn(1,_("Size"),LVCFMT_LEFT,100);
-	InsertColumn(2,_("Sources"),LVCFMT_LEFT,50);
-	InsertColumn(3,_("Type"),LVCFMT_LEFT,65);
-	InsertColumn(4,_("FileID"),LVCFMT_LEFT,280);
+	// Only load settings for first list, otherwise sync with current lists
+	if ( s_lists.empty() ) {
+		// Set the name to enable loading of settings
+		SetTableName( wxT("Search") );
 	
-	LoadSettings();
+		LoadSettings();
+
+		// Unset the name to avoid the settings getting saved every time a list is closed
+		SetTableName( wxEmptyString );
+	} else {
+		// Sync this list with one of the others
+		SyncLists( s_lists.front(), this );
+	}
+
+	// Add the list so that it will be synced with the other lists
+	s_lists.push_back( this );
 }
+
 
 CSearchListCtrl::~CSearchListCtrl()
 {
-}
+	std::list<CSearchListCtrl*>::iterator it = std::find( s_lists.begin(), s_lists.end(), this );
 
+	if ( it != s_lists.end() )
+		s_lists.erase( it );
 
-void CSearchListCtrl::OnNMRclick(wxMouseEvent& evt)
-{
-
-	// Check if clicked item is selected. If not, unselect all and select it.
-	int lips = 0;
-	long item=-1;
-	int index=HitTest(evt.GetPosition(), lips);
-	if (!GetItemState(index, wxLIST_STATE_SELECTED)) {
-		for (;;) {
-			item = GetNextItem(item,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
-			if (item==-1) {
-				break;
-			}
-			SetItemState(item, 0, wxLIST_STATE_SELECTED);
-		}
-		SetItemState(index, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
+	// We only save the settings if the last list was closed
+	if ( s_lists.empty() ) {
+		// In order to get the settings saved, we need to set the name
+		SetTableName( wxT("Search") );
 	}
-	// create popup-menu
-	if(m_SearchFileMenu==NULL) {
-		wxMenu* m=new wxMenu(_("File"));
-		m->Append(MP_RESUME,_("Download"));
-		m->Append(MP_GETED2KLINK,_("Copy ED2k link to clipboard"));
-		m->Append(MP_GETHTMLED2KLINK,_("Copy ED2k link to clipboard (HTML)"));
-		m->AppendSeparator();
-		m->Append(MP_FAKECHECK2,_("jugle.net Fake Check")); // deltahf -> fakecheck
-		m->Append(MP_FAKECHECK1,_("'Donkey Fakes' Fake Check"));
-		m->AppendSeparator();
-		//  Removing this entry cause nobody knows why its here :)
-		//  Besides, it crashes amule.
-		//  m->Append(MP_REMOVESELECTED,_("Remove Selected"));
-		m->Append(MP_REMOVE,_("Close this search result"));
-		m->Append(MP_REMOVEALL,_("Clear All"));
-		m_SearchFileMenu=m;
-	}
-	PopupMenu(m_SearchFileMenu,evt.GetPosition());
 }
 
-void CSearchListCtrl::OnLDclick(wxMouseEvent& event)
-{
-	int lips=0;
-	int index=HitTest(event.GetPosition(),lips);
-	if(index>=0) {
-		SetItemState(index,wxLIST_STATE_SELECTED,wxLIST_STATE_SELECTED);
-	}
-	wxCommandEvent nulEvt;
-	theApp.amuledlg->searchwnd->OnBnClickedSdownload(nulEvt);
-}
-
-void CSearchListCtrl::Localize()
-{
-}
-
-// CSearchListCtrl message handlers
 
 void CSearchListCtrl::AddResult(CSearchFile* toshow)
 {
-	if (toshow->GetSearchID() != m_nResultsID) {
+	// Ensure that only the right results gets added
+	if ( toshow->GetSearchID() != m_nResultsID )
 		return;
-	}
-	uint32 newid=InsertItem( GetInsertPos((long)toshow),toshow->GetFileName());
-	SetItemData(newid,(long)toshow);
-	char buffer[50];
-	uint32 filesize=toshow->GetIntTagValue(FT_FILESIZE);
-	SetItem(newid,1,CastItoXBytes(filesize));
-	sprintf(buffer,"%d (%d)",toshow->GetIntTagValue(FT_SOURCES), toshow->GetIntTagValue(FT_COMPLETE_SOURCES));
-	SetItem(newid,2,char2unicode(buffer));
-	wxString pim=toshow->GetFileName();
-	SetItem(newid,3,GetFiletypeByName(pim));
-	buffer[0]=0;
-	for(uint16 i=0;i!=16;i++) {
-		sprintf(buffer,"%s%02X",buffer,toshow->GetFileHash()[i]);
-	}
-	SetItem(newid,4,char2unicode(buffer));
-	// set color
-	UpdateColor(newid,toshow->GetIntTagValue(FT_SOURCES));
+
+	// Insert the item before the item found by the search
+	uint32 newid = InsertItem( GetInsertPos( (long)toshow ), toshow->GetFileName() );
+
+	SetItemData( newid, (long)toshow );
+
+	// Filesize
+	SetItem(newid, 1, CastItoXBytes( toshow->GetIntTagValue(FT_FILESIZE) ) );
+
+	// Source count
+	wxString temp = wxString::Format( wxT("%d (%d)"), toshow->GetSourceCount(), toshow->GetCompleteSourceCount() );
+	SetItem( newid, 2, temp );
+
+	// File-type
+	SetItem( newid, 3, GetFiletypeByName( toshow->GetFileName() ) );
+
+	// File-hash
+	SetItem(newid, 4, toshow->GetFileHash().Encode() );
+
+	// Set the color of the item
+	UpdateColor( newid );
 }
 
-void CSearchListCtrl::UpdateColor(long index,long WXUNUSED(count))
+
+void CSearchListCtrl::UpdateResult(CSearchFile* toupdate)
+{
+	long index = FindItem( -1, (long)toupdate );
+
+	if ( index != -1 ) {
+		// Remove the old item
+		DeleteItem( index );
+
+		// Re-add it to update the displayed information and have it properly positioned
+		AddResult( toupdate );
+	}
+}
+
+
+void CSearchListCtrl::UpdateColor( long index )
 {
 	wxListItem item;
-	item.m_itemId=index;
-	item.m_col=1;
-	item.m_mask=wxLIST_MASK_STATE|wxLIST_MASK_TEXT|wxLIST_MASK_IMAGE|wxLIST_MASK_DATA|wxLIST_MASK_WIDTH|wxLIST_MASK_FORMAT;
-	if(GetItem(item)) {
-		wxColour newcol;
-		newcol=wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT);
-		CSearchFile* file=(CSearchFile*)GetItemData(index); //item.GetData();
-		if(!file) {
-			return;
+	item.SetId( index );
+	item.SetColumn( 1 );
+	item.SetMask( wxLIST_MASK_STATE|wxLIST_MASK_TEXT|wxLIST_MASK_IMAGE|wxLIST_MASK_DATA|wxLIST_MASK_WIDTH|wxLIST_MASK_FORMAT );
+
+	if ( GetItem(item) ) {
+		wxColour newcol = wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT);
+
+		CSearchFile* file = (CSearchFile*)GetItemData(index);
+
+		CKnownFile* sameFile = theApp.sharedfiles->GetFileByID(file->GetFileHash());
+		if ( !sameFile ) {
+			sameFile = theApp.knownfiles->FindKnownFileByID(file->GetFileHash());
 		}
-		CKnownFile* sameFile=theApp.sharedfiles->GetFileByID(file->GetFileHash());
-		if(!sameFile) {
-			sameFile=theApp.downloadqueue->GetFileByID(file->GetFileHash());
-		}
-		int red,green,blue;
-		red=newcol.Red();
-		green=newcol.Green();
-		blue=newcol.Blue();
-		if(sameFile) {
-			if(sameFile->IsPartFile()) {
-				// already downloading
-				red=(file->GetSourceCount()+4)*20;
-				if(red>255) {
-					red=255;
-				}
+
+		int red		= newcol.Red();
+		int green	= newcol.Green();
+		int blue	= newcol.Blue();
+
+		if ( sameFile ) {
+			if ( sameFile->IsPartFile() ) {
+				// File is already being downloaded. Marks as red.
+				red = 255;
 			} else {
-				// already downloaded
-				green=128;
+				// File has already been downloaded. Mark as green.
+				green = 200;
 			}
 		} else {
-			blue=(file->GetSourceCount()-1)*20;
-			if(blue>255) {
-				blue=255;
+			// File is new, colour after number of files
+			blue += file->GetSourceCount() * 5;
+			if ( blue > 255 ) {
+				blue = 255;
 			}
 		}
-		newcol.Set(red,green,blue);
-		item.SetTextColour(newcol);
+
 		// don't forget to set the item data back...
 		wxListItem newitem;
-		newitem.m_itemId=index;
-		//wxColour* jes=new wxColour(red,green,blue);
-		newitem.SetTextColour(newcol); //*jes);
-		newitem.SetBackgroundColour(SYSCOLOR(wxSYS_COLOUR_LISTBOX));
-		SetItem(newitem);
+		newitem.SetId( index );
+		newitem.SetTextColour( wxColour( red, green, blue ) );
+		newitem.SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_LISTBOX));
+		SetItem( newitem );
 	}
 }
 
-void CSearchListCtrl::UpdateSources(CSearchFile* toupdate)
-{
-	long index=FindItem(-1,(long)toupdate);
-	if(index!=(-1)) {
-		char buffer[50];
-		sprintf(buffer,"%d (%d)",toupdate->GetSourceCount(),toupdate->GetCompleteSourceCount());
-		SetItem(index,2,char2unicode(buffer));
-		UpdateColor(index,toupdate->GetSourceCount());
-	}
-  
-	// Re-sort the items after each added source to keep the sort order.
-	SortList();
-}
 
-void CSearchListCtrl::RemoveResult(CSearchFile* toremove)
-{
-	//LVFINDINFO find;
-	//find.flags = LVFI_PARAM;
-	//find.lParam = (LPARAM)toremove;
-	sint32 result = FindItem(-1,(long)toremove);
-	if(result != (-1)) {
-		this->DeleteItem(result);
-	}
-}
-
-void CSearchListCtrl::ShowResults(long nResultsID)
+void CSearchListCtrl::ShowResults( long ResultsID )
 {
 	DeleteAllItems();
-	m_nResultsID = nResultsID;
+	m_nResultsID = ResultsID;
 
-	for (POSITION pos = searchlist->list.GetHeadPosition(); pos != 0; searchlist->list.GetNext(pos)) {
-		if ( ((CSearchFile*)searchlist->list.GetAt(pos))->GetSearchID() == m_nResultsID) {
-			AddResult(searchlist->list.GetAt(pos));
+	if ( ResultsID ) {
+		CSearchList::ResultMap::iterator it = theApp.searchlist->m_Results.find( m_nResultsID );
+
+		if ( it != theApp.searchlist->m_Results.end() ) {
+			CSearchList::SearchList& list = it->second;
+
+			for ( unsigned int i = 0; i < list.size(); i++ )
+				AddResult( list[i] );
 		}
 	}
 }
 
-int CSearchListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
+
+long CSearchListCtrl::GetSearchId()
 {
-	CSearchFile* item1 = (CSearchFile*)lParam1;
-	CSearchFile* item2 = (CSearchFile*)lParam2;	
-	switch(lParamSort){
-		case 0: //filename asc
-		    return item1->GetFileName().CmpNoCase(item2->GetFileName());
-		case 1000: //filename desc
-			return item2->GetFileName().CmpNoCase(item1->GetFileName());
-		case 1: //size asc
-			// Need to avoid nasty bug on files >2.4Gb
-			// return item1->GetIntTagValue(FT_FILESIZE) - item2->GetIntTagValue(FT_FILESIZE);
-			if (item1->GetIntTagValue(FT_FILESIZE) > item2->GetIntTagValue(FT_FILESIZE)) {
-				// item1 > item2
-				return 1;
-			} else if (item1->GetIntTagValue(FT_FILESIZE) < item2->GetIntTagValue(FT_FILESIZE)) {
-				// item1 < item2
-				return -1;
-			} else {
-				// item1 == item2
-				return 0;
-			}		
-		case 1001: //size desc
-			// Need to avoid nasty bug on files >2.4Gb
-			//	return item2->GetIntTagValue(FT_FILESIZE) - item1->GetIntTagValue(FT_FILESIZE);
-			if (item2->GetIntTagValue(FT_FILESIZE) > item1->GetIntTagValue(FT_FILESIZE)) {
-				// item1 < item2
-				return 1;
-			} else if (item2->GetIntTagValue(FT_FILESIZE) < item1->GetIntTagValue(FT_FILESIZE)) {
-				// item1 > item2
-				return -1;
-			} else {
-				// item1 == item2
-				return 0;
+		return m_nResultsID;
+}
+
+
+int CSearchListCtrl::SortProc( long item1, long item2, long sortData )
+{
+	CSearchFile* file1 = (CSearchFile*)item1;
+	CSearchFile* file2 = (CSearchFile*)item2;
+
+	// Modifies the result, 1 for ascending, -1 for decending
+	int modifier = 1;
+	if ( sortData >= 1000 ) {
+		modifier = -1;
+		sortData -= 1000;
+	}
+
+	switch ( sortData ) {
+		// Sort by filename
+		case 0:
+			return modifier * file1->GetFileName().CmpNoCase( file2->GetFileName() );
+
+		// Sort file-size
+		case 1:
+			return modifier * CmpAny( file1->GetIntTagValue(FT_FILESIZE), file2->GetIntTagValue(FT_FILESIZE) );
+
+		// Sort by sources
+		case 2:
+			{
+				int cmp = CmpAny( file1->GetSourceCount(), file2->GetSourceCount() );
+
+				if ( cmp == 0 )
+					cmp = CmpAny( file1->GetCompleteSourceCount(), file2->GetCompleteSourceCount() );
+
+				return modifier * cmp;
 			}
-		case 2: {  //sources asc
-			int cmpS = item1->GetIntTagValue(FT_SOURCES) - item2->GetIntTagValue(FT_SOURCES);
-			if (!cmpS) {			
-				return(item1->GetIntTagValue(FT_COMPLETE_SOURCES) - item1->GetIntTagValue(FT_COMPLETE_SOURCES));
-			} else {
-				return (cmpS);
-			}	
+		
+		// Sort by file-types
+		case 3:
+			return modifier *  GetFiletypeByName( file1->GetFileName() ).Cmp(GetFiletypeByName(file2->GetFileName()));
 
-		}
-		case 1002: {  //sources desc
-			int cmpS = item2->GetIntTagValue(FT_SOURCES) - item1->GetIntTagValue(FT_SOURCES);
-			if (!cmpS) {			
-				return(item2->GetIntTagValue(FT_COMPLETE_SOURCES) - item2->GetIntTagValue(FT_COMPLETE_SOURCES));
-			} else {
-				return (cmpS);
-			}	
+		// Sort by file-hash
+		case 4:
+			return modifier * file2->GetFileHash().Encode().Cmp( file1->GetFileHash().Encode() );
 
-		}		
-		case 3: //type asc
-			return GetFiletypeByName(item1->GetFileName()).Cmp(GetFiletypeByName(item2->GetFileName()));
-
-		case 1003: //type  desc
-			return GetFiletypeByName(item2->GetFileName()).Cmp(GetFiletypeByName(item1->GetFileName()));
-
-		case 4: //filahash asc
-			return memcmp(item1->GetFileHash(),item2->GetFileHash(),16);
-		case 1004: //filehash desc
-			return memcmp(item2->GetFileHash(),item1->GetFileHash(),16);
 		default:
 			return 0;
 	}
 }
 
-bool CSearchListCtrl::ProcessEvent(wxEvent& evt)
-{
-	if(evt.GetEventType()!=wxEVT_COMMAND_MENU_SELECTED) {
-		return CMuleListCtrl::ProcessEvent(evt);
-	}
 
-	// Kry - Cleaner to call the overloaded function - Column hiding gets processed there.	
-	
-	if ((evt.GetId() >= MP_LISTCOL_1) && (evt.GetId() <= MP_LISTCOL_15)) {
-		return CMuleListCtrl::ProcessEvent(evt);
-	}			
-	
-	wxCommandEvent& event=(wxCommandEvent&)evt;
-	CSearchFile* file ;
-	int item;
-	item=GetNextItem(-1,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
-	if (item != (-1)) {
-		file = (CSearchFile*)GetItemData(item);
-		switch (event.GetId()) {
-			case MP_GETED2KLINK: {
-				theApp.CopyTextToClipboard(theApp.CreateED2kLink(file));
-				break;
-			}
-			case MP_GETHTMLED2KLINK: {
-				theApp.CopyTextToClipboard(theApp.CreateHTMLED2kLink(file));
-				break;
-			}
-			case MP_FAKECHECK1: {	// deltahf -> fakecheck
-				theApp.amuledlg->LaunchUrl(theApp.GenFakeCheckUrl(file));
-				break;
-			}
-			case MP_FAKECHECK2: {
-				theApp.amuledlg->LaunchUrl(theApp.GenFakeCheckUrl2(file));
-				break;
-			}
-			case MP_RESUME: {
-				wxCommandEvent nulEvt;
-				theApp.amuledlg->searchwnd->OnBnClickedSdownload(nulEvt);
-				break;
-			}
-			case MP_REMOVEALL: {
-				theApp.amuledlg->searchwnd->DeleteAllSearchs();
-				break;
-			}
-			// Nobody knows why this is here, so disabling it until someone comes up with a reason.
-			// Besides, it crashes amule.
-			/*
-			case MP_REMOVESELECTED: {
-				//SetRedraw(false);
-				Freeze();
-				while (item!=(-1)) {
-					//pos=GetFirstSelectedItemPosition();
-					//item = this->GetNextSelectedItem(pos);
-					theApp.searchlist->RemoveResults((CSearchFile*)this->GetItemData(item));
-					item=GetNextItem(item,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
-				}
-				//SetRedraw(true);
-				Thaw();
-				break;
-			} */
+void CSearchListCtrl::SyncLists( CSearchListCtrl* src, CSearchListCtrl* dst )
+{
+	wxASSERT( src );
+	wxASSERT( dst );
+
+	// Column widths
+	for ( int i = 0; i < src->GetColumnCount(); i++ ) {
+		// We do this check since just setting the width causes a redraw
+		if ( dst->GetColumnWidth( i ) != src->GetColumnWidth( i ) ) {
+			dst->SetColumnWidth( i, src->GetColumnWidth( i ) );
 		}
 	}
-	switch (event.GetId()) {
-		case MP_REMOVE:
-			theApp.amuledlg->searchwnd->DeleteSearch(m_nResultsID);
-			break;
-		case MP_REMOVEALL:
-			theApp.amuledlg->searchwnd->DeleteAllSearchs();
-			break;
-		default:
-			break;
+
+	// Sync sorting
+	if ( src->GetSortColumn() != dst->GetSortColumn() ||
+	     src->GetSortAsc() != dst->GetSortAsc() )
+	{
+		dst->SetSortColumn( src->GetSortColumn() );
+		dst->SetSortAsc( src->GetSortAsc() );
+
+		dst->SortList();
 	}
-	// calling old is probably a bad idea after all..
-	// return CMuleListCtrl::ProcessEvent(evt);
-	return true;
 }
 
+
+void CSearchListCtrl::SyncOtherLists( CSearchListCtrl* src )
+{
+	std::list<CSearchListCtrl*>::iterator it;
+
+	for ( it = s_lists.begin(); it != s_lists.end(); ++it ) {
+		if ( (*it) != src ) {
+			SyncLists( src, *it );
+		}
+	}
+}
+
+
+void CSearchListCtrl::OnNMRclick(wxMouseEvent& evt)
+{
+	if ( GetSelectedItemCount() == 0 )
+		return;
+
+	// Check if clicked item is selected. If not, unselect all and select it.
+	int lips = 0;
+	int index = HitTest(evt.GetPosition(), lips);
+
+	if ( !GetItemState( index, wxLIST_STATE_SELECTED ) ) {
+		int item = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+
+		while ( item != -1 ) {
+			SetItemState( item, 0, wxLIST_STATE_SELECTED );
+
+			item = GetNextItem( item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+		}
+
+		SetItemState( index, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
+	}
+
+	// Create the popup-menu
+	wxMenu* menu = new wxMenu( _("File") );
+	menu->Append( MP_RESUME, _("Download"));
+	menu->Append( MP_GETED2KLINK, _("Copy ED2k link to clipboard"));
+	menu->Append( MP_GETHTMLED2KLINK, _("Copy ED2k link to clipboard (HTML)"));
+	menu->AppendSeparator();
+	menu->Append( MP_FAKECHECK2, _("jugle.net Fake Check")); // deltahf -> fakecheck
+	menu->Append( MP_FAKECHECK1, _("'Donkey Fakes' Fake Check"));
+	menu->AppendSeparator();
+
+	// These should only be enabled for single-selections
+	bool enable = GetSelectedItemCount();
+	menu->Enable( MP_GETED2KLINK, enable );
+	menu->Enable( MP_GETHTMLED2KLINK, enable );
+	menu->Enable( MP_FAKECHECK1, enable );
+	menu->Enable( MP_FAKECHECK2, enable );
+	
+
+	PopupMenu( menu, evt.GetPosition() );
+
+	delete menu;
+}
+
+
+void CSearchListCtrl::OnColumnLClick( wxListEvent& evt )
+{
+	// Let the real event handler do its work first
+	CMuleListCtrl::OnColumnLClick( evt );
+	
+	SyncOtherLists( this );
+}
+
+
+void CSearchListCtrl::OnColumnResize( wxListEvent& WXUNUSED(evt) )
+{
+	SyncOtherLists( this );
+}
+
+
+void CSearchListCtrl::OnPopupGetUrl( wxCommandEvent& evt )
+{
+	int item = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+	if ( item == -1 )
+		return;
+
+	CSearchFile* file = (CSearchFile*)GetItemData( item );
+
+	// Add new cases as nescecarry ...
+	switch ( evt.GetId() ) {
+		case MP_GETED2KLINK:
+				theApp.CopyTextToClipboard(theApp.CreateED2kLink(file));
+				break;
+		
+		case MP_GETHTMLED2KLINK:
+				theApp.CopyTextToClipboard(theApp.CreateHTMLED2kLink(file));
+				break;
+	}
+}
+
+
+void CSearchListCtrl::OnPopupFakeCheck( wxCommandEvent& evt )
+{
+	int item = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+	if ( item == -1 )
+		return;
+
+	CSearchFile* file = (CSearchFile*)GetItemData( item );
+	wxString URL;
+
+	// Add new cases as nescesarry
+	switch ( evt.GetId() ) {
+		case MP_FAKECHECK1:
+			URL = theApp.GenFakeCheckUrl( file );
+			break;
+		
+		case MP_FAKECHECK2:
+			URL = theApp.GenFakeCheckUrl2( file );
+			break;
+	}
+
+	if ( !URL.IsEmpty() )
+		theApp.amuledlg->LaunchUrl( URL );
+}
+
+
+void CSearchListCtrl::OnPopupDownload( wxCommandEvent& WXUNUSED(evt) )
+{
+	wxCommandEvent nullEvt;
+	theApp.amuledlg->searchwnd->OnBnClickedDownload(nullEvt);
+}
+
+
+void CSearchListCtrl::OnItemActivated( wxListEvent& WXUNUSED(event) )
+{
+	wxCommandEvent nullEvt;
+	theApp.amuledlg->searchwnd->OnBnClickedDownload(nullEvt);
+}
 

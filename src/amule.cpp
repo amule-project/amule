@@ -114,7 +114,6 @@
 #include "muuli_wdr.h"			// Needed for IDs
 #include "amuleDlg.h"			// Needed for CamuleDlg
 #include "SearchDlg.h"			// Needed for CSearchDlg
-#include "SearchListCtrl.h"
 #include "ServerListCtrl.h"		// Needed for CServerListCtrl
 #include "SharedFilesCtrl.h"		// Needed for CSharedFilesCtrl
 #include "QueueListCtrl.h"		// Needed for CQueueListCtrl
@@ -1769,9 +1768,9 @@ void CamuleApp::NotifyEvent(GUIEvent event)
 			uploadqueue->AddUpDataOverheadServer(((Packet *)event.ptr_value)->GetPacketSize());
 			serverconnect->SendPacket( (Packet *)event.ptr_value, 0 );
 			if ( event.byte_value ) {
-				searchlist->searchpacket = (Packet *)event.ptr_value;
+				searchlist->m_searchpacket = (Packet *)event.ptr_value;
 			} else {
-				searchlist->searchpacket = 0;
+				searchlist->m_searchpacket = NULL;
 			}
 			break;
 	        case SEARCH_ADD_TO_DLOAD:
@@ -2071,12 +2070,12 @@ void CamuleApp::NotifyEvent(GUIEvent event)
 		case SEARCH_CANCEL:
 			if ( amuledlg->searchwnd ) {
 				wxCommandEvent evt;
-				amuledlg->searchwnd->OnBnClickedCancels(evt);
+				amuledlg->searchwnd->OnBnClickedCancel(evt);
 			}
 			break;
 		case SEARCH_LOCAL_END:
 			if ( amuledlg->searchwnd ) {
-				amuledlg->searchwnd->LocalSearchEnd(event.long_value);
+				amuledlg->searchwnd->LocalSearchEnd();
 			}
 			break;
 		case SEARCH_UPDATE_PROGRESS:
@@ -2084,32 +2083,15 @@ void CamuleApp::NotifyEvent(GUIEvent event)
 				if ( event.long_value == 0xffff ) {
 					amuledlg->searchwnd->ResetControls();
 				} else {
-					amuledlg->searchwnd->progressbar->SetValue(event.long_value);
+					amuledlg->searchwnd->m_progressbar->SetValue(event.long_value);
 				}
 			}
 			break;
-	        case SEARCH_UPDATE_SOURCES: {
-			CSearchFile* toadd = (CSearchFile *)event.ptr_value;
-			CSearchFile* cur_file = (CSearchFile *)event.ptr_aux_value;
-			CSearchListCtrl* outputwnd = GetSearchListControl(toadd->GetSearchID());
-			if (outputwnd) {
-				outputwnd->UpdateSources(cur_file);
-				// Update the result count
-				amuledlg->searchwnd->UpdateHitCount( outputwnd );
-			}
-			UngetSearchListControl(outputwnd);
-		}
+	        case SEARCH_UPDATE_SOURCES:
+				amuledlg->searchwnd->UpdateResult( (CSearchFile *)event.ptr_value );
 			break;
-	        case SEARCH_ADD_RESULT: {
-			CSearchFile* toadd = (CSearchFile *)event.ptr_value;
-			CSearchListCtrl* outputwnd = GetSearchListControl(toadd->GetSearchID());
-			if (outputwnd) {
-				outputwnd->AddResult(toadd);
-				// Update the result count
-				amuledlg->searchwnd->UpdateHitCount( outputwnd );
-			}
-			UngetSearchListControl(outputwnd);
-		}
+	        case SEARCH_ADD_RESULT:
+				amuledlg->searchwnd->AddResult( (CSearchFile *)event.ptr_value );
 			break;
 		// chat window
 		case CHAT_REFRESH_FRIEND:
