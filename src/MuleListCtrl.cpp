@@ -35,7 +35,7 @@
 	const int COL_SIZE_MIN = 10;
 #elif defined(__WXMSW__)
 	const int COL_SIZE_MIN = 0;
-#elif defined(__WXMAC__)
+#elif defined(__WXMAC__) || defined(__WXCOCOA__)
 	const int COL_SIZE_MIN = 0;
 #else
 	#error Need to set col_minsize for your OS
