@@ -39,6 +39,9 @@
 
 #include <wx/statline.h>
 
+// Compute and display md4sum or not
+//#define WANT_MD4SUM 1
+
 /// Main Alc Frame
 class AlcFrame:public wxFrame
   {
@@ -53,13 +56,16 @@ class AlcFrame:public wxFrame
 
     wxStaticLine *m_staticLine;
 
+#ifdef WANT_MD4SUM
+
     wxStaticBox *m_md4HashSBox;
     wxStaticBoxSizer* m_md4HashSBoxSizer;
     wxTextCtrl *m_md4HashTextCtrl;
+#endif
 
-    wxStaticBox *m_hashSBox;
-    wxStaticBoxSizer* m_hashSBoxSizer;
-    wxTextCtrl *m_hashTextCtrl;
+    wxStaticBox *m_e2kHashSBox;
+    wxStaticBoxSizer* m_e2kHashSBoxSizer;
+    wxTextCtrl *m_e2kHashTextCtrl;
 
     wxStaticBox *m_ed2kSBox;
     wxStaticBoxSizer* m_ed2kSBoxSizer;

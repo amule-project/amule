@@ -37,8 +37,8 @@
 #endif
 
 #include <wx/filedlg.h>
-#include <wx/txtstrm.h>
-#include <wx/wfstream.h>
+#include <wx/textfile.h>
+#include <wx/timer.h>
 
 #include "alcframe.h"
 #include "alchash.h"
@@ -80,6 +80,7 @@ AlcFrame::AlcFrame (const wxString & title):
   m_staticLine = new wxStaticLine (m_mainPanel, -1);
   m_mainPanelVBox->Add (m_staticLine, 0, wxALL | wxGROW);
 
+#ifdef WANT_MD4SUM
   // MD4 Hash Vertical Box Sizer
   m_md4HashSBox = new wxStaticBox (m_mainPanel, -1, _("MD4 File Hash"));
   m_md4HashSBoxSizer = new wxStaticBoxSizer (m_md4HashSBox, wxHORIZONTAL);
@@ -88,25 +89,24 @@ AlcFrame::AlcFrame (const wxString & title):
   m_md4HashTextCtrl = new wxTextCtrl( m_mainPanel, -1, wxEmptyString, wxDefaultPosition,
                                       wxDefaultSize, wxTE_READONLY );
 
-
-  wxInt32 x, y;
-  m_md4HashTextCtrl->GetTextExtent (wxT("8"), &x, &y);
-  m_md4HashTextCtrl->SetSize (wxSize (33 * x, -1)); // 32 + 1 characters
-  
   m_md4HashSBoxSizer->Add (m_md4HashTextCtrl, 1, wxALL | wxALIGN_CENTER, 5);
   m_mainPanelVBox->Add( m_md4HashSBoxSizer, 0, wxALL | wxGROW, 10 );
+#endif
 
   // Hash Vertical Box Sizer
-  m_hashSBox = new wxStaticBox (m_mainPanel, -1, _("Ed2k File Hash"));
-  m_hashSBoxSizer = new wxStaticBoxSizer (m_hashSBox, wxHORIZONTAL);
+  m_e2kHashSBox = new wxStaticBox (m_mainPanel, -1, _("Ed2k File Hash"));
+  m_e2kHashSBoxSizer = new wxStaticBoxSizer (m_e2kHashSBox, wxHORIZONTAL);
 
   // Hash results
-  m_hashTextCtrl = new wxTextCtrl( m_mainPanel, -1, wxEmptyString, wxDefaultPosition,
-                                   wxDefaultSize, wxTE_READONLY );
+  m_e2kHashTextCtrl = new wxTextCtrl( m_mainPanel, -1, wxEmptyString, wxDefaultPosition,
+                                      wxDefaultSize, wxTE_READONLY );
 
+  wxInt32 x, y;
+  m_e2kHashTextCtrl->GetTextExtent (wxT("8"), &x, &y);
+  m_e2kHashTextCtrl->SetSize (wxSize (33 * x, -1)); // 32 + 1 characters
 
-  m_hashSBoxSizer->Add (m_hashTextCtrl, 1, wxALL | wxALIGN_CENTER, 5);
-  m_mainPanelVBox->Add( m_hashSBoxSizer, 0, wxALL | wxGROW, 10 );
+  m_e2kHashSBoxSizer->Add (m_e2kHashTextCtrl, 1, wxALL | wxALIGN_CENTER, 5);
+  m_mainPanelVBox->Add( m_e2kHashSBoxSizer, 0, wxALL | wxGROW, 10 );
 
   // Ed2k Vertical Box Sizer
   m_ed2kSBox = new wxStaticBox (m_mainPanel, -1, _("Ed2k link"));
@@ -114,9 +114,7 @@ AlcFrame::AlcFrame (const wxString & title):
 
   // Ed2k results
   m_ed2kTextCtrl = new wxTextCtrl( m_mainPanel, -1, wxEmptyString, wxDefaultPosition,
-                                   wxSize(-1,40), wxTE_MULTILINE|wxTE_READONLY|wxVSCROLL );
-
-
+                                   wxSize(-1,60), wxTE_MULTILINE|wxTE_READONLY|wxVSCROLL );
 
   m_ed2kSBoxSizer->Add (m_ed2kTextCtrl, 1, wxALL | wxGROW, 5);
   m_mainPanelVBox->Add( m_ed2kSBoxSizer, 1, wxALL | wxGROW, 10 );
@@ -142,7 +140,7 @@ AlcFrame::AlcFrame (const wxString & title):
   m_toolbar->AddSeparator ();
 
   m_toolbar->AddTool (ID_BAR_ABOUT, wxT("About"), m_toolBarBitmaps[2],
-                      _("About Alc"));
+                      _("About aLinkCreator"));
 
   m_toolbar->SetMargins (2, 2);
   m_toolbar->Realize ();
@@ -181,31 +179,85 @@ AlcFrame::OnBarOpen (wxCommandEvent & event)
 
   if (!filename.empty ())
     {
-      AlcHash hash (filename);
-      m_md4HashTextCtrl->SetValue(hash.GetMD4Hash());
+      // Chrono
+      wxStopWatch chrono;
+
+      m_mainPanel->Enable(FALSE);
+
+      AlcHash hash;
+
+      wxString ed2kHash(hash.GetED2KHashFromFile(filename));
+
+#ifdef WANT_MD4SUM
+      // Md4 hash
+      m_md4HashTextCtrl->SetValue(hash.GetMD4HashFromFile(filename));
+#endif
+      // Ed2k hash
+      m_e2kHashTextCtrl->SetValue(ed2kHash);
+
+      // Ed2k link
+      m_ed2kTextCtrl->SetValue(hash.GetED2KLinkFromFile(filename,ed2kHash));
+
+      m_mainPanel->Enable(TRUE);
+
+      SetStatusText (wxString::Format(_("Done in %.2f s"),
+                                      chrono.Time()*.001));
     }
-  SetStatusText (_("Ed2k computed from ")+filename);
+  else
+    {
+      SetStatusText (_("Please, enter a non empty file name"));
+    }
 }
 
 // Save as button
 void
 AlcFrame::OnBarSaveAs (wxCommandEvent & event)
 {
-  const wxString & filename =
-    wxFileSelector (_("Select the file to your computed ed2k link"),
-                    wxFileName::GetHomeDir(),wxT("my_ed2k_link"), wxT("txt"), wxT("*.txt"),
-                    wxSAVE );
+  wxString link(m_ed2kTextCtrl->GetValue());
 
-  if (!filename.empty ())
+  if (!link.IsEmpty())
     {
-      // Openning streams to write cleaned file
-      wxFileOutputStream outputStream( filename );
-      wxTextOutputStream txtOutStream( outputStream );
+      const wxString & filename =
+        wxFileSelector (_("Select the file to your computed ed2k link"),
+                        wxFileName::GetHomeDir(),wxT("my_ed2k_link"),
+                        wxT("txt"), wxT("*.txt"), wxSAVE );
 
-      txtOutStream << m_ed2kTextCtrl->GetValue() <<endl;
+      if (!filename.empty ())
+        {
+          wxTextFile file(filename);
+		  
+          // Openning file
+          if (! file.Open())
+            {
+              SetStatusText (_("Unable to open ") + filename);
+              return;
+            }
+		  
+		  // Write link in memory
+          file.AddLine(link);
+		  
+		  // Write file to disk
+          if (file.Write())
+            {
+              SetStatusText (_("Ed2k link saved to ") + filename);
+            }
+          else
+            {
+              SetStatusText (_("Unable to append Ed2k link to ") + filename);
+            }
+		  
+          // Closing file
+          file.Close();
+        }
+      else
+        {
+          SetStatusText (_("Please, enter a non empty file name"));
+        }
     }
-
-  SetStatusText (_("Ed2k link saved to ")+filename);
+  else
+    {
+      SetStatusText (_("Nothing to save for now !"));
+    }
 }
 
 // About button

@@ -36,22 +36,93 @@
 #pragma hdrstop
 #endif
 
+#include <wx/ffile.h>
+#include <wx/regex.h>
+
 #include "alchash.h"
 #include "md4.h"
 
-AlcHash::AlcHash(const wxFileName& filename)
-{
-  MD4 a;
-  m_md4Hash=a.calcMd4FromFile(filename.GetFullPath());
+/// Constructor
+AlcHash::AlcHash()
+{}
 
-}
-AlcHash::AlcHash (const wxString& filename)
+/// Destructor
+AlcHash::~AlcHash()
+{}
+
+/// Get Md4 hash from a file
+wxString AlcHash::GetMD4HashFromFile (const wxFileName& filename)
 {
-  MD4 a;
-  m_md4Hash=a.calcMd4FromFile(filename);
+  return (GetMD4HashFromFile(filename.GetFullPath()));
 }
 
-wxString AlcHash::GetMD4Hash()
+/// Get Md4 hash from a file
+wxString AlcHash::GetMD4HashFromFile(const wxString& filename)
 {
-  return (m_md4Hash);
+  MD4 md4;
+  return (md4.calcMd4FromFile(filename));
+}
+
+/// Get Ed2k hash from a file
+wxString AlcHash::GetED2KHashFromFile(const wxFileName& filename)
+{
+  return (GetED2KHashFromFile(filename.GetFullPath()));
+}
+
+/// Get Ed2k hash from a file
+wxString AlcHash::GetED2KHashFromFile(const wxString& filename)
+{
+  MD4 md4;
+  return (md4.calcEd2kFromFile(filename));
+}
+
+/// Get Ed2k link from a file
+wxString AlcHash::GetED2KLinkFromFile(const wxFileName& filename, const wxString& ed2kHash)
+{
+  // Check file
+  wxFFile file(filename.GetFullPath());
+  if (! file.IsOpened())
+    {
+      return (_("Unable to open ")+filename.GetFullPath());
+    }
+
+  size_t fileSize = file.Length();
+  file.Close();
+
+  // Check for file size
+  if (fileSize > (size_t)-1)
+    {
+      return (_("The file ") + filename.GetFullPath() +
+              _(" is to big for the Donkey: maximum allowed is 4 GB."));
+    }
+
+  // Compute ed2k hash if not provided
+  wxString hash(ed2kHash);
+  if (hash.IsEmpty())
+    {
+      hash = GetED2KHashFromFile(filename);
+    }
+
+  // Constructing ed2k link
+  wxString ed2kLink = wxT("ed2k://|file|")+CleanFilename(filename.GetFullName())
+                      +wxT("|")+ wxString::Format(wxT("%u"),fileSize) +wxT("|")+ hash + wxT("|");
+
+  return ed2kLink;
+}
+
+/// Get Ed2k link from a file
+wxString AlcHash::GetED2KLinkFromFile(const wxString& filename, const wxString& ed2kHash)
+{
+  return (GetED2KLinkFromFile(wxFileName(filename), ed2kHash));
+}
+
+/// Strip all non-alphanumeric characters of a filename string
+wxString AlcHash::CleanFilename(const wxString& filename)
+{
+  wxString name(filename);
+
+  wxRegEx toStrip(wxT("[^[:alnum:]_.-]"));
+  toStrip.Replace(&name, wxT("_"));
+
+  return (name);
 }

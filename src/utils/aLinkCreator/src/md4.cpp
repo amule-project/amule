@@ -7,10 +7,15 @@
 ///
 /// Copyright (C) 2004 by ThePolish
 ///
+/// Copyright (C) 2004 by Madcat
+///
 /// Copyright (C) 2002, 2003, 2004 by Michael Buesch
 /// Email: mbuesch@freenet.de
 ///
-/// Copyright (C) 2001 Nikos Mavroyanopoulos
+/// The algorithm is due to Ron Rivest.  This code is based on code
+/// written by Colin Plumb in 1993.
+///
+/// This code implements the MD4 message-digest algorithm.
 ///
 /// Pixmaps from http://www.everaldo.com and http://www.amule.org
 ///
@@ -30,31 +35,6 @@
 /// 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-/* Test vectors:
- *
- * ""
- * 31d6cfe0d16ae931b73c59d7e0c089c0
- *
- * "a"
- * bde52cb31de33e46245e05fbdbd6fb24
- *
- * "abc"
- * a448017aaf21d8525fc10ae87aa6729d
- *
- * "message digest"
- * d9130a8164549fe818874806e1c7014b
- *
- * "abcdefghijklmnopqrstuvwxyz"
- * d79e1c308aa5bbcdeea8ed63df412da9
- *
- * "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
- * 043f8582f241db351ce627e153e7f0e4
- *
- * "12345678901234567890123456789012345678901234567890123456789012345678901234567890"
- * e33b4ddc9c38f2199c3e7b164fcc0536
- */
-
 #ifdef __GNUG__
 #pragma implementation "md4.h"
 #endif
@@ -66,23 +46,19 @@
 #pragma hdrstop
 #endif
 
-#include <stdio.h>
 #include <wx/ffile.h>
+
 #include "md4.h"
 #include "bithelp.h"
 
-/*
- * The algorithm is due to Ron Rivest.  This code is based on code
- * written by Colin Plumb in 1993.
- */
+/// Constants initialization
+const unsigned int MD4::MD4_HASHLEN_BYTE = 128 / 8;
+const unsigned int MD4::BUFSIZE  = 64*1024;
+const unsigned int MD4::PARTSIZE = 9500*1024;
 
-/*
- * This code implements the MD4 message-digest algorithm.
- */
-
+/// BIG ENDIAN byte reversing
 #if wxBYTE_ORDER == wxBIG_ENDIAN
-/* Note: this code is harmless on little-endian machines.
-*/
+// Note: this code is harmless on little-endian machines.
 void MD4::byteReverse(unsigned char *buf, unsigned longs)
 {
   uint32_t t;
@@ -99,10 +75,8 @@ void MD4::byteReverse(unsigned char *buf, unsigned longs)
 #define byteReverse(buf, len)	do { } while (0)
 #endif
 
-/*
- * Start MD4 accumulation.  Set bit count to 0 and buffer to mysterious
- * initialization constants.
- */
+/// Start MD4 accumulation.
+/// Set bit count to 0 and buffer to mysteriousinitialization constants.
 void MD4::MD4Init(struct MD4Context *ctx)
 {
   ctx->buf[0] = 0x67452301;
@@ -113,23 +87,21 @@ void MD4::MD4Init(struct MD4Context *ctx)
   ctx->bits[1] = 0;
 }
 
-/*
- * Update context to reflect the concatenation of another buffer full
- * of bytes.
- */
+/// Update context to reflect the concatenation of another buffer full of bytes.
 void MD4::MD4Update(struct MD4Context *ctx, unsigned char const *buf,
                     unsigned len)
 {
   register uint32_t t;
 
-  /* Update bitcount */
+  // Update bitcount
   t = ctx->bits[0];
   if ((ctx->bits[0] = t + ((uint32_t) len << 3)) < t)
-    ctx->bits[1]++;	/* Carry from low to high */
+    ctx->bits[1]++;	// Carry from low to high
   ctx->bits[1] += len >> 29;
 
-  t = (t >> 3) & 0x3f;	/* Bytes already in shsInfo->data */
-  /* Handle any leading odd-sized chunks */
+  t = (t >> 3) & 0x3f;	// Bytes already in shsInfo->data
+
+  // Handle any leading odd-sized chunks
   if (t)
     {
       unsigned char *p = (unsigned char *) ctx->in + t;
@@ -146,7 +118,8 @@ void MD4::MD4Update(struct MD4Context *ctx, unsigned char const *buf,
       buf += t;
       len -= t;
     }
-  /* Process data in 64-byte chunks */
+
+  // Process data in 64-byte chunks
   while (len >= 64)
     {
       memcpy(ctx->in, buf, 64);
@@ -155,49 +128,49 @@ void MD4::MD4Update(struct MD4Context *ctx, unsigned char const *buf,
       buf += 64;
       len -= 64;
     }
-  /* Handle any remaining bytes of data. */
+
+  //Handle any remaining bytes of data.
   memcpy(ctx->in, buf, len);
 }
 
-/*
- * Final wrapup - pad to 64-byte boundary with the bit pattern
- * 1 0* (64-bit count of bits processed, MSB-first)
- */
+
+///  Final wrapup - pad to 64-byte boundary with the bit pattern
+///  1 0* (64-bit count of bits processed, MSB-first)
 void MD4::MD4Final(struct MD4Context *ctx, unsigned char* digest)
 {
   unsigned int count;
   unsigned char *p;
 
-  /* Compute number of bytes mod 64 */
+  // Compute number of bytes mod 64
   count = (ctx->bits[0] >> 3) & 0x3F;
 
-  /* Set the first char of padding to 0x80.  This is safe since there is
-     always at least one byte free */
+  // Set the first char of padding to 0x80.
+  //This is safe since there is always at least one byte free
   p = ctx->in + count;
   *p++ = 0x80;
 
-  /* Bytes of padding needed to make 64 bytes */
+  // Bytes of padding needed to make 64 bytes
   count = 64 - 1 - count;
 
-  /* Pad out to 56 mod 64 */
+  // Pad out to 56 mod 64
   if (count < 8)
     {
-      /* Two lots of padding:  Pad the first block to 64 bytes */
+      // Two lots of padding:  Pad the first block to 64 bytes
       memset(p, 0, count);
       byteReverse(ctx->in, 16);
       MD4Transform(ctx->buf, (uint32_t *) ctx->in);
 
-      /* Now fill the next block with 56 bytes */
+      // Now fill the next block with 56 bytes
       memset(ctx->in, 0, 56);
     }
   else
     {
-      /* Pad block to 56 bytes */
+      // Pad block to 56 bytes
       memset(p, 0, count - 8);
     }
   byteReverse(ctx->in, 14);
 
-  /* Append length in bits and transform */
+  // Append length in bits and transform
   ((uint32_t *) ctx->in)[14] = ctx->bits[0];
   ((uint32_t *) ctx->in)[15] = ctx->bits[1];
 
@@ -208,11 +181,10 @@ void MD4::MD4Final(struct MD4Context *ctx, unsigned char* digest)
     {
       memcpy(digest, ctx->buf, 16);
     }
-  memset(ctx, 0, sizeof(ctx));	/* In case it's sensitive */
+  memset(ctx, 0, sizeof(ctx));	// In case it's sensitive
 }
 
-/* The three core functions */
-
+/// The three core functions
 #define MD4_F(x, y, z) (((x) & (y)) | ((~x) & (z)))
 #define MD4_G(x, y, z) (((x) & (y)) | ((x) & (z)) | ((y) & (z)))
 #define MD4__H(x, y, z) ((x) ^ (y) ^ (z))
@@ -230,9 +202,7 @@ void MD4::MD4Final(struct MD4Context *ctx, unsigned char* digest)
     (a) = rol ((a), (s)); \
   }
 
-/*
- * The core of the MD4 algorithm
- */
+/// The core of the MD4 algorithm
 void MD4::MD4Transform(uint32_t buf[4], uint32_t const in[16])
 {
   register uint32_t a, b, c, d;
@@ -242,16 +212,16 @@ void MD4::MD4Transform(uint32_t buf[4], uint32_t const in[16])
   c = buf[2];
   d = buf[3];
 
-  MD4_FF(a, b, c, d, in[0], 3);	/* 1 */
-  MD4_FF(d, a, b, c, in[1], 7);	/* 2 */
+  MD4_FF(a, b, c, d, in[0], 3);	    /* 1 */
+  MD4_FF(d, a, b, c, in[1], 7);	    /* 2 */
   MD4_FF(c, d, a, b, in[2], 11);	/* 3 */
   MD4_FF(b, c, d, a, in[3], 19);	/* 4 */
-  MD4_FF(a, b, c, d, in[4], 3);	/* 5 */
-  MD4_FF(d, a, b, c, in[5], 7);	/* 6 */
+  MD4_FF(a, b, c, d, in[4], 3);		/* 5 */
+  MD4_FF(d, a, b, c, in[5], 7);		/* 6 */
   MD4_FF(c, d, a, b, in[6], 11);	/* 7 */
   MD4_FF(b, c, d, a, in[7], 19);	/* 8 */
-  MD4_FF(a, b, c, d, in[8], 3);	/* 9 */
-  MD4_FF(d, a, b, c, in[9], 7);	/* 10 */
+  MD4_FF(a, b, c, d, in[8], 3);		/* 9 */
+  MD4_FF(d, a, b, c, in[9], 7);		/* 10 */
   MD4_FF(c, d, a, b, in[10], 11);	/* 11 */
   MD4_FF(b, c, d, a, in[11], 19);	/* 12 */
   MD4_FF(a, b, c, d, in[12], 3);	/* 13 */
@@ -259,36 +229,36 @@ void MD4::MD4Transform(uint32_t buf[4], uint32_t const in[16])
   MD4_FF(c, d, a, b, in[14], 11);	/* 15 */
   MD4_FF(b, c, d, a, in[15], 19);	/* 16 */
 
-  MD4_GG(a, b, c, d, in[0], 3);	/* 17 */
-  MD4_GG(d, a, b, c, in[4], 5);	/* 18 */
-  MD4_GG(c, d, a, b, in[8], 9);	/* 19 */
+  MD4_GG(a, b, c, d, in[0], 3);		/* 17 */
+  MD4_GG(d, a, b, c, in[4], 5);		/* 18 */
+  MD4_GG(c, d, a, b, in[8], 9);		/* 19 */
   MD4_GG(b, c, d, a, in[12], 13);	/* 20 */
-  MD4_GG(a, b, c, d, in[1], 3);	/* 21 */
-  MD4_GG(d, a, b, c, in[5], 5);	/* 22 */
-  MD4_GG(c, d, a, b, in[9], 9);	/* 23 */
+  MD4_GG(a, b, c, d, in[1], 3);		/* 21 */
+  MD4_GG(d, a, b, c, in[5], 5);		/* 22 */
+  MD4_GG(c, d, a, b, in[9], 9);		/* 23 */
   MD4_GG(b, c, d, a, in[13], 13);	/* 24 */
-  MD4_GG(a, b, c, d, in[2], 3);	/* 25 */
-  MD4_GG(d, a, b, c, in[6], 5);	/* 26 */
+  MD4_GG(a, b, c, d, in[2], 3);		/* 25 */
+  MD4_GG(d, a, b, c, in[6], 5);		/* 26 */
   MD4_GG(c, d, a, b, in[10], 9);	/* 27 */
   MD4_GG(b, c, d, a, in[14], 13);	/* 28 */
-  MD4_GG(a, b, c, d, in[3], 3);	/* 29 */
-  MD4_GG(d, a, b, c, in[7], 5);	/* 30 */
+  MD4_GG(a, b, c, d, in[3], 3);		/* 29 */
+  MD4_GG(d, a, b, c, in[7], 5);		/* 30 */
   MD4_GG(c, d, a, b, in[11], 9);	/* 31 */
   MD4_GG(b, c, d, a, in[15], 13);	/* 32 */
 
-  MD4_HH(a, b, c, d, in[0], 3);	/* 33 */
-  MD4_HH(d, a, b, c, in[8], 9);	/* 34 */
+  MD4_HH(a, b, c, d, in[0], 3);		/* 33 */
+  MD4_HH(d, a, b, c, in[8], 9);		/* 34 */
   MD4_HH(c, d, a, b, in[4], 11);	/* 35 */
   MD4_HH(b, c, d, a, in[12], 15);	/* 36 */
-  MD4_HH(a, b, c, d, in[2], 3);	/* 37 */
+  MD4_HH(a, b, c, d, in[2], 3);		/* 37 */
   MD4_HH(d, a, b, c, in[10], 9);	/* 38 */
   MD4_HH(c, d, a, b, in[6], 11);	/* 39 */
   MD4_HH(b, c, d, a, in[14], 15);	/* 40 */
-  MD4_HH(a, b, c, d, in[1], 3);	/* 41 */
-  MD4_HH(d, a, b, c, in[9], 9);	/* 42 */
+  MD4_HH(a, b, c, d, in[1], 3);		/* 41 */
+  MD4_HH(d, a, b, c, in[9], 9);		/* 42 */
   MD4_HH(c, d, a, b, in[5], 11);	/* 43 */
   MD4_HH(b, c, d, a, in[13], 15);	/* 44 */
-  MD4_HH(a, b, c, d, in[3], 3);	/* 45 */
+  MD4_HH(a, b, c, d, in[3], 3);		/* 45 */
   MD4_HH(d, a, b, c, in[11], 9);	/* 46 */
   MD4_HH(c, d, a, b, in[7], 11);	/* 47 */
   MD4_HH(b, c, d, a, in[15], 15);	/* 48 */
@@ -299,6 +269,7 @@ void MD4::MD4Transform(uint32_t buf[4], uint32_t const in[16])
   buf[3] += d;
 }
 
+/// Algorithm verification
 bool MD4::selfTest()
 {
   wxString test1(wxT(""));
@@ -336,6 +307,7 @@ bool MD4::selfTest()
   return true;
 }
 
+/// Get Md4 hash from a string
 wxString MD4::calcMd4FromString(const wxString &buf)
 {
   MD4Context hdc;
@@ -350,9 +322,9 @@ wxString MD4::calcMd4FromString(const wxString &buf)
                    MD4_HASHLEN_BYTE);
 }
 
+/// Get Md4 hash from a file
 wxString MD4::calcMd4FromFile(const wxString &filename)
 {
-  size_t read, fileSize, i;
   unsigned int bufSize;
   unsigned char ret[MD4_HASHLEN_BYTE];
   MD4Context hdc;
@@ -363,31 +335,94 @@ wxString MD4::calcMd4FromFile(const wxString &filename)
       return wxEmptyString;
     }
 
-  fileSize = file.Length();
-
-  MD4Init(&hdc);
-
-  bufSize = calcBufSize(fileSize);
+  bufSize = calcBufSize(file.Length());
   char *buf = new char[bufSize];
 
-  i = 0;
-  while (i < fileSize)
+  MD4Init(&hdc);
+  while (!file.Eof())
     {
-      read=  file.Read(buf, bufSize);
-
-      i += read;
       MD4Update(&hdc, reinterpret_cast<unsigned char const *>(buf),
-                read);
+                file.Read(buf, bufSize));
     }
+  MD4Final(&hdc, ret);
+
   file.Close();
   delete [] buf;
-
-  MD4Final(&hdc, ret);
 
   return charToHex(reinterpret_cast<const char *>(ret),
                    MD4_HASHLEN_BYTE);
 }
 
+/// Get Ed2k hash from a file
+wxString MD4::calcEd2kFromFile(const wxString &filename)
+{
+  size_t read;
+  unsigned char ret[MD4_HASHLEN_BYTE];
+  MD4Context hdc;
+
+  wxString tmpHash(wxEmptyString);
+
+  size_t partcount = 0;
+  size_t dataread = 0;
+
+  char *buf = new char[BUFSIZE];
+
+  // Opening file
+  wxFFile file(filename, wxT("rbS"));
+  if (! file.IsOpened())
+    {
+      return wxEmptyString;
+    }
+
+  // Processing each block
+  while (!file.Eof())
+    {
+      MD4Init(&hdc);
+      while (dataread < PARTSIZE && !file.Eof())
+        {
+          if ((dataread + BUFSIZE) > PARTSIZE)
+            {
+              read = file.Read(buf, PARTSIZE - dataread);
+            }
+          else
+            {
+              read = file.Read(buf, BUFSIZE);
+            }
+          dataread += read;
+          MD4Update(&hdc, reinterpret_cast<unsigned char const *>(buf),
+                    read);
+        }
+      MD4Final(&hdc, ret);
+
+      // MD4_HASHLEN_BYTE is ABSOLUTLY needed as we dont want NULL
+      // character to be interpreted as the end of the parthash string
+      tmpHash += wxString(reinterpret_cast<const char *>(ret),MD4_HASHLEN_BYTE);
+
+      // If some more blocks left, re-init for next block
+      if (!file.Eof())
+        {
+          dataread=0;
+          partcount++;
+        }
+    }
+
+  file.Close();
+  delete [] buf;
+
+  if (partcount == 0)
+    {
+      // For only block, hash = parthash
+      return (charToHex(reinterpret_cast<const char *>(tmpHash.c_str()),
+                        MD4_HASHLEN_BYTE));
+    }
+  else
+    {
+      // hash == hash of concatenned parthashes
+      return (calcMd4FromString(tmpHash));
+    }
+}
+
+/// Convert hash to hexa string
 wxString MD4::charToHex(const char *buf, unsigned int len)
 {
   unsigned int i;
@@ -395,12 +430,13 @@ wxString MD4::charToHex(const char *buf, unsigned int len)
 
   for (i = 0; i < len; ++i)
     {
-      ret += wxString::Format(wxT("%.2x"), 0xFF & *(buf + i));
+      ret += wxString::Format(wxT("%02x"), 0xFF & *(buf + i));
     }
 
   return ret;
 }
 
+/// Compute Md4 buffsize
 unsigned int MD4::calcBufSize(size_t filesize)
 {
   unsigned int ret;

@@ -39,17 +39,41 @@
 
 #include <wx/filename.h>
 
+#include "md4.h"
+
 class AlcHash
   {
   private:
-    wxString m_md4Hash;
+
+  protected:
+
+    /// Strip all non-alphanumeric characters of a filename string
+    wxString CleanFilename(const wxString& filename);
 
   public:
     /// Constructor
-    AlcHash (const wxFileName& filename);
-    AlcHash (const wxString& filename);
+    AlcHash ();
 
-    wxString GetMD4Hash();
+    /// Destructor
+    ~AlcHash ();
+
+    /// Get Md4 hash from a file
+    wxString GetMD4HashFromFile (const wxFileName& filename);
+
+    /// Get Md4 hash from a file
+    wxString GetMD4HashFromFile(const wxString& filename);
+
+    /// Get Ed2k hash from a file
+    wxString GetED2KHashFromFile(const wxFileName& filename);
+
+    /// Get Ed2k hash from a file
+    wxString GetED2KHashFromFile(const wxString& filename);
+
+    /// Get Ed2k link from a file
+    wxString GetED2KLinkFromFile(const wxFileName& filename, const wxString& ed2kHash=wxEmptyString);
+
+    /// Get Ed2k link from a file
+    wxString GetED2KLinkFromFile(const wxString& filename, const wxString& ed2kHash=wxEmptyString);
   };
 
 #endif /* _ALCHASH_H */
