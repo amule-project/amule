@@ -642,6 +642,17 @@ CECPacket *Get_EC_Response_Search_Results(const CECPacket *request)
 	return response;
 }
 
+CECPacket *Get_EC_Response_Search_Results_Download(const CECPacket *request)
+{
+	CECPacket *response = new CECPacket(EC_OP_STRINGS);
+	for (int i = 0;i < request->GetTagCount();i++) {
+		CECTag *tag = request->GetTagByIndex(i);
+		CMD4Hash hash = tag->GetMD4Data();
+		theApp.searchlist->AddFileToDownloadByHash(hash);
+	}
+	return response;
+}
+
 CECPacket *Get_EC_Response_Search(const CECPacket *request)
 {
 	CEC_Search_Tag *search_request = (CEC_Search_Tag *)request->GetTagByIndex(0);
@@ -1486,6 +1497,9 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request, CPartFile_Enc
 			response = Get_EC_Response_Search_Results(request);
 			break;
 
+		case EC_OP_DOWNLOAD_SEARCH_RESULT:
+			response = Get_EC_Response_Search_Results_Download(request);
+			break;
 		//
 		// Preferences
 		//

@@ -1073,7 +1073,7 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 					i->lSourceCount, i->lTransferringSourceCount);
 			}
 			if ( i->lSourceCountA4AF ) {
-				srcstring += wxString::Format(wxT("+%i"), i->lSourceCountA4AF);
+				srcstring += wxString::Format(wxT("+%li"), i->lSourceCountA4AF);
 			}
 			HTTPProcessData.Replace(wxT("[6]"), srcstring);
 		} else
@@ -2009,10 +2009,16 @@ wxString CWebServer::_GetSearch(ThreadData Data) {
 	wxString downloads=_ParseURLArray(Data,wxT("downloads"));
 	if (!downloads.IsEmpty() && IsSessionAdmin(Data,sSession) ) {
 		int brk;
+		CECPacket dload_req(EC_OP_DOWNLOAD_SEARCH_RESULT);
 		while (downloads.Length()>0) {
 			brk=downloads.First(wxT("|"));
-			webInterface->SendRecvMsg(wxString::Format(wxT("SEARCH DOWNLOADFILE %s"), downloads.Left(brk).GetData()));
+			CMD4Hash file_hash(downloads.Left(brk));
+			dload_req.AddTag(CECTag(EC_TAG_KNOWNFILE, file_hash));
 			downloads=downloads.Mid(brk+1);
+		}
+		CECPacket *dload_reply = webInterface->SendRecvMsg_v2(&dload_req);
+		if ( dload_reply ) {
+			delete dload_reply;
 		}
 	}
 
