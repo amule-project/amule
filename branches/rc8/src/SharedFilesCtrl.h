@@ -138,11 +138,6 @@ private:
 	void	OnRightClick(wxListEvent& evt);
 	
 	/**
-	 * Event-handler for the Set Permissions menu items.
-	 */
-	void	OnSetPermissions( wxCommandEvent& event );
-	
-	/**
 	 * Event-handler for the Set Priority menu items.
 	 */
 	void	OnSetPriority( wxCommandEvent& event );

@@ -541,9 +541,6 @@ void CamuleGuiApp::NotifyEvent(GUIEvent event)
 			((CKnownFile *)event.ptr_value)->SetAutoUpPriority(true);
 			((CKnownFile *)event.ptr_value)->UpdateAutoUpPriority();
 			break;
-	        case KNOWNFILE_SET_PERM:
-			((CKnownFile *)event.ptr_value)->SetPermissions(event.byte_value);
-			break;
 	        case KNOWNFILE_SET_COMMENT:
 			((CKnownFile *)event.ptr_value)->SetFileComment(event.string_value);
 			break;

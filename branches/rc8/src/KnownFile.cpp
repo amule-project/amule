@@ -109,7 +109,6 @@ CKnownFile::CKnownFile() :
 	m_iPartCount(0),
 	m_iED2KPartCount(0),
 	m_iED2KPartHashCount(0),
-	m_iPermissions(PERM_ALL),
 	m_iQueuedCount(0),
 	m_PublishedED2K(false)
 {
@@ -630,7 +629,7 @@ bool CKnownFile::LoadTagsFromFile(const CFile* file)
 					break;
 				}
 				case FT_PERMISSIONS:{
-					m_iPermissions = newtag->tag.intvalue;
+					// Ignore it, it's not used anymore.
 					delete newtag;
 					break;
 				}
@@ -688,7 +687,7 @@ bool CKnownFile::WriteToFile(CFile* file){
 	for (int i = 0; i < parts; i++)
 		file->Write(hashlist[i],16);
 	//tags
-	const int iFixedTags = 8;
+	const int iFixedTags = 7;
 	uint32 tagcount = iFixedTags;
 	if (m_pAICHHashSet->HasValidMasterHash() && (m_pAICHHashSet->GetStatus() == AICH_HASHSETCOMPLETE || m_pAICHHashSet->GetStatus() == AICH_VERIFIED)) {	
 		tagcount++;
@@ -737,9 +736,6 @@ bool CKnownFile::WriteToFile(CFile* file){
 	// priority N permission
 	CTag priotag(FT_ULPRIORITY, IsAutoUpPriority() ? PR_AUTO : m_iUpPriority);
 	priotag.WriteTagToFile(file);
-
-	CTag permtag(FT_PERMISSIONS, m_iPermissions);
-	permtag.WriteTagToFile(file);
 
 	//AICH Filehash
 	if (m_pAICHHashSet->HasValidMasterHash() && (m_pAICHHashSet->GetStatus() == AICH_HASHSETCOMPLETE || m_pAICHHashSet->GetStatus() == AICH_VERIFIED)){
