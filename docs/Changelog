@@ -108,6 +108,8 @@ Version 2.0.0rc6 - The '???' version.
 		  wxSOCKET_WAITALL flag to work properly when the message has
 		  more than 64Kbytes. aMule now uses ECSocket.cpp, no more
 		  replicated code in ExternalConn.cpp.
+		* Fixed a bug in ListenSocket.cpp, m_client can be null after
+		  ProcessSecIdentStatePacket(), so, we must check.
 
 	rommel:
 		* Patch to implement the commands serverconnect and reloadipf
