@@ -110,6 +110,7 @@
 #include "DownloadListCtrl.h"		// Needed for CDownloadListCtrl
 #include "ClientListCtrl.h"
 #include "ServerListCtrl.h"
+#include "ClientCredits.h"
 
 #include "CMD4Hash.h"
 #include "ECSocket.h"
@@ -879,12 +880,16 @@ CUpDownClient::CUpDownClient(CEC_UpDownClient_Tag *tag)
 		m_requpfile = 0;
 	}
 	
-	// FIXME !
-	credits = 0;
+	CreditStruct *credit_struct = new CreditStruct;
+	memset(credit_struct, 0, sizeof(CreditStruct));
+	credits = new CClientCredits(credit_struct);
 }
 
 CUpDownClient::~CUpDownClient()
 {
+	if ( credits ) {
+		delete credits;
+	}
 }
 
 CUpDownClient *CUpDownClientListRem::CreateItem(CEC_UpDownClient_Tag *tag)
@@ -925,6 +930,14 @@ void CUpDownClientListRem::ProcessItemUpdate(CEC_UpDownClient_Tag *tag, CUpDownC
 	client->m_UpStartTimeDelay = tag->XferTime();
 	client->m_dwLastUpRequest = tag->LastReqTime();
 	client->m_WaitStartTime = tag->QueueTime();
+	
+	CreditStruct *credit_struct = (CreditStruct *)client->credits->GetDataStruct();
+	uint64 value = tag->XferUp();
+	credit_struct->nUploadedHi = value >> 32;
+	credit_struct->nUploadedLo = value & 0xffffffff;
+	value = tag->XferDown();
+	credit_struct->nDownloadedHi = value >> 32;
+	credit_struct->nDownloadedLo = value & 0xffffffff;
 }
 
 CUpQueueRem::CUpQueueRem(CRemoteConnect *conn) : m_up_list(conn), m_wait_list(conn)
