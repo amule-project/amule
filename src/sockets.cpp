@@ -520,6 +520,6 @@ void CServerConnect::InitLocalIP(){
 	}
 	catch(...){
 		// at least two ppl reported crashs when using 'gethostbyname' with third party winsock DLLs
-		AddDebugLogLineM(false, _T("Unknown exception in CServerConnect::InitLocalIP"));
+		AddDebugLogLineM(false, _("Unknown exception in CServerConnect::InitLocalIP"));
 	}
 }

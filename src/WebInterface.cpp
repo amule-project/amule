@@ -100,20 +100,20 @@ CamulewebFrame::CamulewebFrame(const wxString& title, const wxPoint& pos, const 
        : wxFrame(NULL, amuleFrame_ID, title, pos, size, style)
 {
 	wxMenu *menuFile = new wxMenu;
-	menuFile->Append(amuleweb_Quit, _T("E&xit\tAlt-X"), _T("Quit amuleweb"));
+	menuFile->Append(amuleweb_Quit, _("E&xit\tAlt-X"), _("Quit amuleweb"));
 
 	wxMenu *helpMenu = new wxMenu;
-	helpMenu->Append(amuleweb_About, _T("&About...\tF1"), _T("Show about dialog"));
+	helpMenu->Append(amuleweb_About, _("&About...\tF1"), _("Show about dialog"));
 
 	// now append the freshly created menu to the menu bar...
 	wxMenuBar *menuBar = new wxMenuBar();
-	menuBar->Append(menuFile, _T("&File"));
-	menuBar->Append(helpMenu, _T("&Help"));
+	menuBar->Append(menuFile, _("&File"));
+	menuBar->Append(helpMenu, _("&Help"));
 
 	// ... and attach this menu bar to the frame
 	SetMenuBar(menuBar);
 
-	log_text = new wxTextCtrl(this, -1, _T(""),
+	log_text = new wxTextCtrl(this, -1, wxEmptyString,
 		wxPoint(2, 2),
 		wxSize(APP_INIT_SIZE_X-4, APP_INIT_SIZE_Y-30-4),
 		wxTE_MULTILINE | wxTE_READONLY);
@@ -126,7 +126,7 @@ CamulewebFrame::CamulewebFrame(const wxString& title, const wxPoint& pos, const 
 		)
 	);
 
-	cmd_control = new wxTextCtrl(this, Event_Comand_ID, _T(""),
+	cmd_control = new wxTextCtrl(this, Event_Comand_ID, wxEmptyString,
 		wxPoint(2, APP_INIT_SIZE_Y-30-4),
 		wxSize(APP_INIT_SIZE_X-4,30),
 		wxTE_PROCESS_ENTER);
@@ -144,10 +144,10 @@ void CamulewebFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
 {
 	wxString msg;
 	msg.Printf( 
-		_T("amuleweb [DLG version]\n")
-		_T("Using %s\n(c) aMule Dev Team"),
+		_("amuleweb [DLG version]\n"
+		"Using %s\n(c) aMule Dev Team"),
 		wxVERSION_STRING);
-	wxMessageBox(msg, _T("About amuleweb"), wxOK | wxICON_INFORMATION, this);
+	wxMessageBox(msg, _("About amuleweb"), wxOK | wxICON_INFORMATION, this);
 }
 
 void CamulewebFrame::OnCommandEnter(wxCommandEvent& WXUNUSED(event)){
@@ -212,18 +212,18 @@ int CamulewebApp::ProcessCommand(int ID) {
 
 void CamulewebApp::ShowHelp() {
 	Show(_("\n->Help: Avalaible commands (case insensitive):\n\n"));	
-	Show(_("help:\n\tShows this help.\n"));	
+	Show(wxString(wxT("help:\n\t")) + wxString(_("Shows this help.\n")));	
 	//Show(_("start: Start web server.\n"));
 	//Show(_("stop: Stop web server.\n"));
 	//Show(_("restart: Restart web server.\n"));	
-	Show(_("quit, exit:\n\tExits aMuleWeb.\n"));	
+	Show(wxString(wxT("quit, exit:\n\t")) + wxString(_("Exits aMuleWeb.\n")));	
 	Show(_("\n->End of listing\n"));
 }
 
 void CamulewebApp::ShowGreet() {
-	Show(_("\n---------------------------------\n"));
-	Show(_(  "|       aMule Web Server        |\n"));
-	Show(_(  "---------------------------------\n\n"));
+	Show(wxT("\n---------------------------------\n"));
+	Show(wxString(wxT("|       ")) + wxString(_("aMule Web Server")) + wxString(wxT("        |\n")));
+	Show(wxT("---------------------------------\n\n"));
 	Show(_("\nUse 'Help' for command list\n\n"));
 }
 
@@ -253,7 +253,7 @@ int CamulewebApp::OnExit() {
 #if wxUSE_GUI
 bool CamulewebApp::OnInit() {
 	CaMuleExternalConnector::OnInit();
-	frame = new CamulewebFrame(_T("amuleweb DLG"), wxPoint(50, 50), wxSize(APP_INIT_SIZE_X, APP_INIT_SIZE_Y));
+	frame = new CamulewebFrame(_("amuleweb DLG"), wxPoint(50, 50), wxSize(APP_INIT_SIZE_X, APP_INIT_SIZE_Y));
 	frame->Show(true);
 #else
 int CamulewebApp::OnRun() {

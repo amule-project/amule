@@ -113,20 +113,20 @@ CamulecmdFrame::CamulecmdFrame(const wxString& title, const wxPoint& pos, const 
        : wxFrame(NULL, amuleFrame_ID, title, pos, size, style)
 {
 	wxMenu *menuFile = new wxMenu;
-	menuFile->Append(amulecmd_Quit, _T("E&xit\tAlt-X"), _T("Quit amulecmd"));
+	menuFile->Append(amulecmd_Quit, _("E&xit\tAlt-X"), _("Quit amulecmd"));
 
 	wxMenu *helpMenu = new wxMenu;
-	helpMenu->Append(amulecmd_About, _T("&About...\tF1"), _T("Show about dialog"));
+	helpMenu->Append(amulecmd_About, _("&About...\tF1"), _("Show about dialog"));
 
 	// now append the freshly created menu to the menu bar...
 	wxMenuBar *menuBar = new wxMenuBar();
-	menuBar->Append(menuFile, _T("&File"));
-	menuBar->Append(helpMenu, _T("&Help"));
+	menuBar->Append(menuFile, _("&File"));
+	menuBar->Append(helpMenu, _("&Help"));
 
 	// ... and attach this menu bar to the frame
 	SetMenuBar(menuBar);
 
-	log_text = new wxTextCtrl(this, -1, _T(""),
+	log_text = new wxTextCtrl(this, -1, wxEmptyString,
 		wxPoint(2, 2),
 		wxSize(APP_INIT_SIZE_X-4, APP_INIT_SIZE_Y-30-4),
 		wxTE_MULTILINE | wxTE_READONLY);
@@ -139,7 +139,7 @@ CamulecmdFrame::CamulecmdFrame(const wxString& title, const wxPoint& pos, const 
 		)
 	);
 
-	cmd_control = new wxTextCtrl(this,Event_Comand_ID, _T(""),
+	cmd_control = new wxTextCtrl(this,Event_Comand_ID, wxEmptyString,
 		wxPoint(2, APP_INIT_SIZE_Y-30-4),
 		wxSize(APP_INIT_SIZE_X-4,30),
 		wxTE_PROCESS_ENTER);
@@ -157,10 +157,10 @@ void CamulecmdFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
 {
 	wxString msg;
 	msg.Printf(
-		_T("amulecmd DLG version\n")
-		_T("Using %s\n(c) aMule Dev Team"),
+		_("amulecmd DLG version\n"
+		"Using %s\n(c) aMule Dev Team"),
 		wxVERSION_STRING);
-	wxMessageBox(msg, _T("About amulecmd"), wxOK | wxICON_INFORMATION, this);
+	wxMessageBox(msg, _("About amulecmd"), wxOK | wxICON_INFORMATION, this);
 }
 
 void CamulecmdFrame::OnComandEnter(wxCommandEvent& WXUNUSED(event)) { 
@@ -282,32 +282,32 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 
 void CamulecmdApp::ShowHelp() {
 	Show(_("\n->Help: Avalaible commands (case insensitive):\n\n"));	
-	Show(_("help:\n\tShows this help.\n"));	
-	Show(_("quit, exit:\n\tExits Textclient.\n"));	
-	Show(_("stats:\n\tShows statistics.\n"));	
-	Show(_("show DL:\n\tShows Download queue.\n"));	
-	Show(_("resume n:\n\tResume file number n.\n"));
-	Show(_("pause n:\n\tPauses file number n.\n"));
-	Show(_("ServerStatus:\n\tTell us if connected/not connected.\n"));
-	Show(_("connect:\n\tTries to connect to any server. WARNING: Doesn't warn if failed\n"));
-	Show(_("disconnect:\n\tDisconnect from server.\n"));
-	Show(_("server connect 'name' 'port':\n\tConnect to specified server and port.\n"));
-	Show(_("ReloadIPF:\n\tReload IPFilter table from file.\n"));
-	Show(_("Setipfilter on/off:\n\tTurn on/of amule IPFilter.\n"));
+	Show(wxString(wxT("help:\n\t")) + wxString(_("Shows this help.\n")));	
+	Show(wxString(wxT("quit, exit:\n\t")) + wxString(_("Exits Textclient.\n")));	
+	Show(wxString(wxT("stats:\n\t")) + wxString(_("Shows statistics.\n")));	
+	Show(wxString(wxT("show DL:\n\t")) + wxString(_("Shows Download queue.\n")));	
+	Show(wxString(wxT("resume n:\n\t")) + wxString(_("Resume file number n.\n")));
+	Show(wxString(wxT("pause n:\n\t")) + wxString(_("Pauses file number n.\n")));
+	Show(wxString(wxT("ServerStatus:\n\t")) + wxString(_("Tell us if connected/not connected.\n")));
+	Show(wxString(wxT("connect:\n\t")) + wxString(_("Tries to connect to any server. WARNING: Doesn't warn if failed\n")));
+	Show(wxString(wxT("disconnect:\n\t")) + wxString(_("Disconnect from server.\n")));
+	Show(wxString(wxT("server connect 'name' 'port':\n\t")) + wxString(_("Connect to specified server and port.\n")));
+	Show(wxString(wxT("ReloadIPF:\n\t")) + wxString(_("Reload IPFilter table from file.\n")));
+	Show(wxString(wxT("Setipfilter on/off:\n\t")) + wxString(_("Turn on/of amule IPFilter.\n")));
 	Show(_("\n->End of listing\n"));
 }
 
 void CamulecmdApp::ShowGreet() {
-	Show(_("\n---------------------------------\n"));
-	Show(_(  "|       aMule text client       |\n"));
-	Show(_(  "---------------------------------\n\n"));
+	Show(wxT("\n---------------------------------\n"));
+	Show(wxString(wxT("|       ")) + wxString(_("aMule text client")) + wxString(wxT("       |\n")));
+	Show(wxT("---------------------------------\n\n"));
 	Show(_("\nUse 'Help' for command list\n\n"));
 }
 
 #if wxUSE_GUI
 bool CamulecmdApp::OnInit() {
 	CaMuleExternalConnector::OnInit();
-	frame = new CamulecmdFrame(_T("amulecmd DLG"), wxPoint(50, 50), wxSize(APP_INIT_SIZE_X, APP_INIT_SIZE_Y));
+	frame = new CamulecmdFrame(wxT("amulecmd DLG"), wxPoint(50, 50), wxSize(APP_INIT_SIZE_X, APP_INIT_SIZE_Y));
 	frame->Show(TRUE);
 #else
 int CamulecmdApp::OnRun() {
