@@ -679,7 +679,7 @@ void PrefsUnifiedDlg::BuildItemList(Preferences_Struct *prefs, const char * appd
 	listRse.Append(new Rse("Missing ID of dlg item in listRse"));  // LEAVE AT HEAD OF LIST - handles missing dlg IDs gracefully
 	
 	listRse.Append(new RseDirAssured(IDC_TEMPFILES, prefs->tempdir, appdir, "TempDir", "Temp"));
-	listRse.Append(new RseString(IDC_NICK, prefs->nick, sizeof(prefs->nick), "Nick", "Someone using aMule (http://amule.sourceforge.net)"));
+	listRse.Append(new RseString(IDC_NICK, prefs->nick, sizeof(prefs->nick), "Nick", "http://www.aMule.org"));
 	listRse.Append(new RseDirAssured(IDC_INCFILES, prefs->incomingdir, appdir, "IncomingDir", "Incoming"));
 
 	listRse.Append(prseMaxUp = new RseInt(IDC_MAXUP, prefs->maxupload, "MaxUpload", UNLIMITED)); // see note in ForceUlDlRateCorrelation
