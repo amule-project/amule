@@ -56,6 +56,8 @@
 		+ Graphs
 		+ Categories
 		+ DownloadLink
+	- check websearch->download (problems when downloading more than 1 file)
+	- ed2k download
 	- ssl support for communication protocol
 
 - hellimod:
