@@ -580,7 +580,7 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
 	// We want to educate Users of major comercial GPL breaking mods by telling them about the effects
 	// check for known advertising in usernames
 	// the primary aim is not to technical block those but to make users use a GPL-conform version
-	CString strBuffer = m_pszUsername;
+	wxString strBuffer = m_pszUsername;
 	strBuffer.MakeUpper();
 	strBuffer.Remove(' ');
 	if (strBuffer.Find("EMULE-CLIENT") != -1 || strBuffer.Find("POWERMULE") != -1){
@@ -621,7 +621,7 @@ bool CUpDownClient::SendHelloPacket() {
 	wxIPV4address address;
 	socket->GetPeer(address);
 	if ( theApp.ipfilter->IsFiltered(inet_addr(unicode2char(address.IPAddress())))) {
-		theApp.amuledlg->AddDebugLogLine(true,CString(_("Filtered IP: %s (%s)")).GetData(),GetFullIP(),theApp.ipfilter->GetLastHit().GetData());
+		theApp.amuledlg->AddDebugLogLine(true,_("Filtered IP: %s (%s)"),GetFullIP(),theApp.ipfilter->GetLastHit().GetData());
 		theApp.stat_filteredclients++;
 		if (Disconnected("IPFilter")) {
 			delete this;
@@ -1028,7 +1028,7 @@ void CUpDownClient::ClearDownloadBlockRequests()
 	m_PendingBlocks_list.RemoveAll();
 }
 
-bool CUpDownClient::Disconnected(CString strReason, bool bFromSocket){
+bool CUpDownClient::Disconnected(wxString strReason, bool bFromSocket){
 	//If this is a KAD client object, just delete it!
 	//wxASSERT(theApp.clientlist->IsValidClient(this));
 
@@ -1108,7 +1108,7 @@ bool CUpDownClient::Disconnected(CString strReason, bool bFromSocket){
 	socket = 0;
 	
     if (m_iFileListRequested){
-		theApp.amuledlg->AddLogLine(true,CString("Failed to retrieve shared files from %s"),GetUserName());
+		theApp.amuledlg->AddLogLine(true,_("Failed to retrieve shared files from %s"),GetUserName());
 		m_iFileListRequested = 0;
 	}
 	if (m_Friend) {
@@ -1592,14 +1592,14 @@ void CUpDownClient::ResetFileStatusInfo()
 wxString CUpDownClient::GetUploadFileInfo()
 {
 	if(this == NULL) return wxT("");
-	CString sRet;
+	wxString sRet;
  
 	// build info text and display it
 	sRet.Printf(_("NickName: %s\n"), GetUserName(), GetUserID());
 	if (reqfile) {
 		sRet += _("Requested:") + wxString(reqfile->GetFileName()) + wxT("\n");
 		wxString stat;
-		stat.Printf(wxT("Filestats for this session: Accepted %d of %d requests, %s transferred\n")+CString(_("Filestats for all sessions: Accepted %d of %d requests")),
+		stat.Printf(wxT("Filestats for this session: Accepted %d of %d requests, %s transferred\n")+wxString(_("Filestats for all sessions: Accepted %d of %d requests")),
 		reqfile->statistic.GetAccepts(), reqfile->statistic.GetRequests(), CastItoXBytes(reqfile->statistic.GetTransfered()).GetData(),
 		reqfile->statistic.GetAllTimeAccepts(),
 		reqfile->statistic.GetAllTimeRequests(), CastItoXBytes(reqfile->statistic.GetAllTimeTransfered()).GetData() );
@@ -1901,7 +1901,7 @@ void CUpDownClient::InfoPacketsReceived(){
 bool CUpDownClient::CheckHandshakeFinished(UINT protocol, UINT opcode) const
 {
 	if (m_bHelloAnswerPending){
-//		throw CString(wxT("Handshake not finished")); // -> disconnect client
+		//throw wxString(_T("Handshake not finished")); // -> disconnect client
 		// this triggers way too often.. need more time to look at this -> only create a warning
 		if (theApp.glob_prefs->GetVerbose()) {
 			theApp.amuledlg->AddLogLine(false, wxT("Handshake not finished while processing packet."));
@@ -1925,7 +1925,7 @@ wxString CUpDownClient::GetClientFullInfo() {
 		ReGetClientSoft();		
 	}
 	
-	CString FullVerName;
+	wxString FullVerName;
 	FullVerName = "Client ";
 	if (!m_pszUsername) {
 		FullVerName += wxT("(Unknown)");
@@ -1934,7 +1934,7 @@ wxString CUpDownClient::GetClientFullInfo() {
 	}
 	FullVerName += wxString::Format(wxT(" on ip %s port %u using "),GetFullIP(),GetUserPort()) + m_clientVerString;
 	if (!GetClientModString().IsEmpty()) {		
-		FullVerName += CString(" Mod ") + GetClientModString();
+		FullVerName += wxString(" Mod ") + GetClientModString();
 	}
 	return (FullVerName);
 }
