@@ -22,9 +22,9 @@
 	#include <winsock.h>
 	#include <wx/msw/winundef.h>
 #else
-#ifdef __OPENBSD__
+#ifdef __BSD__
        #include <sys/types.h>
-#endif /* __OPENBSD__ */
+#endif /* __BSD__ */
 	#include <sys/socket.h>
 	#include <netinet/in.h>
 	#include <arpa/inet.h>

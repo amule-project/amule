@@ -22,9 +22,9 @@
 #include <libintl.h>
 #include <clocale>		// Needed for setlocale(3)
 #ifndef __WXMSW__
-#ifdef __OPENBSD__
+#ifdef __BSD__
        #include <sys/types.h>
-#endif /* __OPENBSD__ */
+#endif /* __BSD__ */
 	#include <sys/socket.h>		//
 	#include <net/if.h>		// Needed for struct ifreq
 	#include <netinet/in.h>		// Needed for inet_ntoa

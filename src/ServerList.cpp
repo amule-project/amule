@@ -22,9 +22,9 @@
 #ifdef __WXMSW__
 	#include <winsock.h>
 #else
-#ifdef __OPENBSD__
+#ifdef __BSD__
        #include <sys/types.h>
-#endif /* __OPENBSD__ */
+#endif /* __BSD__ */
 	#include <sys/socket.h>		//
 	#include <netinet/in.h>		// Needed for inet_addr, htonl
 	#include <arpa/inet.h>		//
