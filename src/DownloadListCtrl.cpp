@@ -152,9 +152,6 @@ END_EVENT_TABLE()
 
 
 
-//! This pair is used when searching for equal-ranges.
-typedef std::pair< CDownloadListCtrl::ListItems::iterator, CDownloadListCtrl::ListItems::iterator > ListIteratorPair;
-
 //! This listtype is used when gathering the selected items.
 typedef std::list<CtrlItem_Struct*>	ItemList;
 
@@ -1419,8 +1416,8 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 
 		// Laste received
 		case 11: {
-			if ( file->GetLastChangeDatetime() ) {
-				text = wxDateTime( file->GetLastChangeDatetime() ).Format( _("%y/%m/%d %H:%M:%S") );
+			if ( file->GetLastChangeDatetime().IsValid() ) {
+				text = file->GetLastChangeDatetime().Format( _("%y/%m/%d %H:%M:%S") );
 
 			} else {
 				text = _("Unknown");
@@ -1720,7 +1717,7 @@ int CDownloadListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 }
 
 
-int CDownloadListCtrl::Compare(CPartFile* file1, CPartFile* file2, long lParamSort)
+int CDownloadListCtrl::Compare( const CPartFile* file1, const CPartFile* file2, long lParamSort)
 {
 	int result = 0;
 
