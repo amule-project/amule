@@ -64,7 +64,6 @@ public:
 	void RemoveFile(const CPartFile* toremove);
 	void ClearCompleted();
 	void SetStyle();
-	void CreateMenues();
 	void HideSources(CPartFile* toCollapse,bool isShift = false,bool isCtrl = false,bool isAlt = false);
 	void ShowFilesCount();
 	void ChangeCategory(int newsel);
@@ -91,7 +90,7 @@ protected:
 	void OnColumnClick(wxListEvent& evt);
 	static int wxCALLBACK SortProc(long lp1,long lp2,long lpSort);
 	static int Compare(CPartFile* file1, CPartFile* file2, long lParamSort);
-	static int Compare(const CUpDownClient* client1, const CUpDownClient* client2, long lParamSort,int sortMod);
+	static int Compare(const CUpDownClient* client1, const CUpDownClient* client2, long lParamSort);
 	void OnLvnItemActivate(wxListEvent& evt);
 	void OnNMRclick(wxListEvent& evt);
 	void OnPriLow(wxCommandEvent& evt);

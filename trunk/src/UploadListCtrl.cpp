@@ -291,75 +291,62 @@ int CUploadListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 {
 	CUpDownClient* item1 = (CUpDownClient*)lParam1;
 	CUpDownClient* item2 = (CUpDownClient*)lParam2;
-	CKnownFile* file1 = theApp.sharedfiles->GetFileByID(item1->GetUploadFileID());
-	CKnownFile* file2 = theApp.sharedfiles->GetFileByID(item2->GetUploadFileID());
-	switch(lParamSort) {
-		case 0:
-			return item1->GetUserName().CmpNoCase(item2->GetUserName());
-		case 100:
-			return item2->GetUserName().CmpNoCase(item1->GetUserName());
+
+	// Sorting ascending or decending	
+	int mode = 1;
+	if ( lParamSort >= 100 ) {
+		mode = -1;
+		lParamSort -= 100;
+	}
+
+	switch (lParamSort) {
+		// Sort by username
+		case 0: return mode * item1->GetUserName().CmpNoCase( item2->GetUserName() );
+			
+		// Sort by requested file
 		case 1:
-			if( (file1 != NULL) && (file2 != NULL)) {
-				return file1->GetFileName().CmpNoCase(file2->GetFileName());
-			} else if (file1 == NULL) {
-				return 1;
-			} else {
-				return 0;
+			{
+				CKnownFile* file1 = theApp.sharedfiles->GetFileByID(item1->GetUploadFileID());
+				CKnownFile* file2 = theApp.sharedfiles->GetFileByID(item2->GetUploadFileID());
+	
+				if ((file1 != NULL) && (file2 != NULL)) {
+					return mode * file1->GetFileName().CmpNoCase( file2->GetFileName() );
+				} else if (file1 == NULL) {
+					return 1 * mode;
+				} else if (file2 == NULL) {
+					return -1 * mode;
+				} else {
+					return 0;
+				}
 			}
-		case 101:
-			if( (file1 != NULL) && (file2 != NULL)) {
-				return file2->GetFileName().CmpNoCase(file1->GetFileName());
-			} else if (file1 == NULL) {
-				return 1;
-			} else {
-				return 0;
+		// Sort by client software
+		case 2: 
+			{
+				if ( item1->GetClientSoft() != item2->GetClientSoft() )
+					return mode * CmpAny( item1->GetClientSoft(), item2->GetClientSoft() );
+				
+				if (item1->GetVersion() != item2->GetVersion())
+					return mode * CmpAny( item1->GetVersion(), item2->GetVersion() );
+				
+				return mode * item1->GetClientModString().CmpNoCase( item2->GetClientModString() );
 			}
-		case 2: {
-			if( item1->GetClientSoft() != item2->GetClientSoft() )
-				return item2->GetClientSoft(), item1->GetClientSoft();
-			if (item1->GetVersion() != item2->GetVersion())
-				return item1->GetVersion(), item2->GetVersion();
-			return item1->GetClientModString().CmpNoCase(item2->GetClientModString());
-			}
-		case 102: {
-			if( item1->GetClientSoft() != item2->GetClientSoft() )
-				return item1->GetClientSoft(), item2->GetClientSoft();
-			if (item1->GetVersion() != item2->GetVersion())
-			    return item2->GetVersion(), item1->GetVersion();
-			return item2->GetClientModString().CmpNoCase(item1->GetClientModString());
-			}
-		case 3:
-			return int(item1->GetKBpsUp() - item2->GetKBpsUp());
-		case 103:
-			return int(item2->GetKBpsUp() - item1->GetKBpsUp());
-		case 4:
-			return item1->GetTransferedUp() - item2->GetTransferedUp();
-		case 104:
-			return item2->GetTransferedUp() - item1->GetTransferedUp();
-		case 5:
-			return item1->GetWaitTime() - item2->GetWaitTime();
-		case 105:
-			return item2->GetWaitTime() - item1->GetWaitTime();
-		case 6:
-			return item1->GetUpStartTimeDelay() - item2->GetUpStartTimeDelay();
-		case 106:
-			return item2->GetUpStartTimeDelay() - item1->GetUpStartTimeDelay();
-		case 7:
-			return item1->GetUploadState() - item2->GetUploadState();
-		case 107:
-			return item2->GetUploadState() - item1->GetUploadState();
-		case 8:
-			return item1->GetUpPartCount() - item2->GetUpPartCount();
-		case 108:
-			return item2->GetUpPartCount() - item1->GetUpPartCount();
-		case 9:
-			return item2->Credits()->GetDownloadedTotal() - item1->Credits()->GetDownloadedTotal();
-		case 109:
-			return item2->Credits()->GetUploadedTotal() - item1->Credits()->GetUploadedTotal();
-		case 10:
-			return item1->GetRemoteQueueRank() - item2->GetRemoteQueueRank();
-		case 110:
-			return item2->GetRemoteQueueRank() - item1->GetRemoteQueueRank();
+		// Sort by speed
+		case 3: return mode * CmpAny( item1->GetKBpsUp(), item2->GetKBpsUp() );
+		// Sort by transfered
+		case 4: return mode * CmpAny( item1->GetTransferedUp(), item2->GetTransferedUp() );
+		// Sort by wait-time
+		case 5: return mode * CmpAny( item1->GetWaitTime(), item2->GetWaitTime() );
+		// Sort by upload time
+		case 6: return mode * CmpAny( item1->GetUpStartTimeDelay(), item2->GetUpStartTimeDelay() );
+		// Sort by state
+		case 7: return mode * CmpAny( item1->GetUploadState(), item2->GetUploadState() );
+		// Sort by partcount
+		case 8: return mode * CmpAny( item1->GetUpPartCount(), item2->GetUpPartCount() );
+		// Sort by U/D ratio
+		case 9: return mode * CmpAny( item2->Credits()->GetDownloadedTotal(), item1->Credits()->GetDownloadedTotal() );
+		// Sort by remote rank
+		case 10: return mode * CmpAny( item2->GetRemoteQueueRank(), item1->GetRemoteQueueRank() );
+
 		default:
 			return 0;
 	}
