@@ -1477,7 +1477,7 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 					if (selectedCount > 1) {
 						Freeze();
 						while (!selectedList.IsEmpty()) {
-							CoreNotify_PartFile_PrioAuto(selectedList.GetHead(), false);
+							CoreNotify_PartFile_PrioAuto(selectedList.GetHead(), true);
 							CoreNotify_PartFile_PrioSet(selectedList.GetHead(), PR_HIGH, true);
 							selectedList.RemoveHead();
 						}
