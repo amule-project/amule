@@ -66,6 +66,7 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		* Fixed a big bug in proxy code. Sockets were not continuing 
 		conversation after connecting to sources.
 		* Fixed a crash due to an unicode issue while logging.
+		* Show some activity upon destruction of the DownloadQueue.
 
 	Ken:
 		* Fixed Mac bug: window was a little larger each restart
