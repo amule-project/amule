@@ -37,6 +37,70 @@
 #endif
 
 
+
+bool StringIPtoUint32(const wxString &strIP, uint32& Ip)
+{
+	// The current position in the current field, used to detect malformed fields (x.y..z).
+	int digit = 0;
+
+	// The current field, used to ensure only IPs that looks like a.b.c.d are supported
+	int field = 0;
+
+	// The value of the current field
+	int value = 0;
+
+	// Stores the work-value of the IP, reference is not changed unless the str was valid
+	uint32 tmp_ip = 0;
+
+	wxString str = strIP.Strip( wxString::both );
+	for ( size_t i = 0; i < str.Length(); i++ ) {
+		wxChar c = str.GetChar( i );
+		
+		if ( c >= wxT('0') && c <= wxT('9') ) {
+			value = ( value * 10 ) + ( c - wxT('0') );
+			++digit;
+		} else if ( c == wxT('.') ) {
+			if ( digit && value <= 255 ) {
+				tmp_ip = tmp_ip | value << ( field * 8 );
+
+				// Rest the current field values
+				value = digit = 0;
+				++field;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
+
+	// Only set the referenced value if it was a valid IP
+	if ( field == 3 && digit ) {
+		Ip = tmp_ip | value << 24;
+		return true;
+	}
+
+	return false;
+}
+
+
+uint32 StringHosttoUint32(const wxString &Host)
+{
+	// Why using native things when we have a wrapper for it :)
+	wxIPV4address solver;
+	solver.Hostname(Host);
+	uint32 result = StringIPtoUint32(solver.IPAddress());
+	if (result != (uint32)-1) {
+		return result;
+	} else {
+		// This actually happens on wrong hostname
+		return 0;
+	}
+}
+
+
+
+
 /**
  * Used to store the ranges.
  */
