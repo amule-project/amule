@@ -911,9 +911,6 @@ CECPacket *ProcessPreferencesRequest(const CECPacket *request)
 	if (selection & EC_PREFS_CORETWEAKS) {
 		CECEmptyTag cwPrefs(EC_TAG_PREFS_CORETWEAKS);
 		cwPrefs.AddTag(CECTag(EC_TAG_CORETW_MAX_CONN_PER_FIVE, thePrefs::GetMaxConperFive()));
-		if (thePrefs::GetSafeMaxConn()) {
-			cwPrefs.AddTag(CECEmptyTag(EC_TAG_CORETW_SAFE_MAXCONN));
-		}
 		if (thePrefs::GetVerbose()) {
 			cwPrefs.AddTag(CECEmptyTag(EC_TAG_CORETW_VERBOSE));
 		}
@@ -1173,9 +1170,6 @@ CECPacket *SetPreferencesFromRequest(const CECPacket *request)
 	if ((thisTab = request->GetTagByName(EC_TAG_PREFS_CORETWEAKS)) != NULL) {
 		if ((oneTag = thisTab->GetTagByName(EC_TAG_CORETW_MAX_CONN_PER_FIVE)) != NULL) {
 			thePrefs::SetMaxConsPerFive(oneTag->GetInt16Data());
-		}
-		if ((oneTag = thisTab->GetTagByName(EC_TAG_CORETW_SAFE_MAXCONN)) != NULL) {
-			thePrefs::SetSafeMaxConn(oneTag->GetInt8Data() != 0);
 		}
 		if ((oneTag = thisTab->GetTagByName(EC_TAG_CORETW_VERBOSE)) != NULL) {
 			thePrefs::SetVerbose(oneTag->GetInt8Data() != 0);

@@ -1214,7 +1214,6 @@ enum {
 		*
 		* \par Child TAGs:
 		*	::EC_TAG_CORETW_MAX_CONN_PER_FIVE\n
-		*	::EC_TAG_CORETW_SAFE_MAXCONN\n
 		*	::EC_TAG_CORETW_VERBOSE\n
 		*	::EC_TAG_CORETW_VERBOSE_PACKET\n
 		*	::EC_TAG_CORETW_FILEBUFFER\n
@@ -1223,7 +1222,6 @@ enum {
 		*/
 	EC_TAG_PREFS_CORETWEAKS,
 	EC_TAG_CORETW_MAX_CONN_PER_FIVE,	///< (\c uint16) Max connections per 5 seconds.
-	EC_TAG_CORETW_SAFE_MAXCONN,		///< (boolean) Safe max connections.
 	EC_TAG_CORETW_VERBOSE,			///< (boolean) Verbose debug messages.
 	EC_TAG_CORETW_VERBOSE_PACKET,		///< (boolean) Verbose packet debug messages.
 	EC_TAG_CORETW_FILEBUFFER,		///< (\c uint32) File buffer size.

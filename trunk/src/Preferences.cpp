@@ -191,7 +191,6 @@ uint32		CPreferences::s_ECPort;
 wxString	CPreferences::s_ECPassword;
 bool		CPreferences::s_IPFilterOn;
 bool		CPreferences::s_UseSrcSeeds;
-bool		CPreferences::s_UseSafeMaxConn;
 bool		CPreferences::s_VerbosePacketError;
 bool		CPreferences::s_ProgBar;
 bool		CPreferences::s_Percent;	
@@ -693,7 +692,6 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	NewCfgItem(IDC_MAXSOURCEPERFILE,	(MkCfg_Int( wxT("/eMule/MaxSourcesPerFile"), s_maxsourceperfile, 300 )));
 	NewCfgItem(IDC_MAXCON,		(MkCfg_Int( wxT("/eMule/MaxConnections"), s_maxconnections, GetRecommendedMaxConnections() )));
 	NewCfgItem(IDC_MAXCON5SEC,	(MkCfg_Int( wxT("/eMule/MaxConnectionsPerFiveSeconds"), s_MaxConperFive, 20 )));
-	NewCfgItem(IDC_SAFEMAXCONN,	(new Cfg_Bool( wxT("/FakeCheck/SafeMaxConn"), s_UseSafeMaxConn, false )));
 
 	/**
 	 * Proxy

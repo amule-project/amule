@@ -422,10 +422,6 @@ public:
 	static bool		GetSrcSeedsOn() 		{ return s_UseSrcSeeds; }
 	static void		SetSrcSeedsOn(bool val)		{ s_UseSrcSeeds = val; }
 	
-	// Kry - Safe Max Connections
-	static bool		GetSafeMaxConn()		{ return s_UseSafeMaxConn; }
-	static void		SetSafeMaxConn(bool val)	{ s_UseSafeMaxConn = val; }
-	
 	static bool		GetVerbosePacketError()		{ return s_VerbosePacketError; }
 	static void		SetVerbosePacketError(bool val)	{ s_VerbosePacketError = val; }
 	
@@ -691,9 +687,6 @@ protected:
 	
 	// Kry - Source seeds on/off
 	static bool	s_UseSrcSeeds;
-	
-	// Kry - Safe Max Connections
-	static bool	s_UseSafeMaxConn;
 	
 	static bool	s_VerbosePacketError;
 
