@@ -1444,7 +1444,7 @@ void CamuleApp::ListenSocketHandler(wxSocketEvent& event)
 {
 	wxASSERT(event.GetSocket()->IsKindOf(CLASSINFO(CListenSocket)));
 	CListenSocket *socket = (CListenSocket*) event.GetSocket();
-	if(!IsReady || !socket) {
+	if(!socket) {
 		// we are not mentally ready to receive anything
 		// or there is no socket on the event (got deleted?)
 		return;
