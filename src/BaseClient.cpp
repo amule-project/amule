@@ -57,8 +57,8 @@
 #include "amuleIPV4Address.h"	// Needed for amuleIPV4Address
 
 
-#define DEBUG_LOCAL_CLIENT_PROTOCOL
-#define __PACKET_DEBUG__
+//#define DEBUG_LOCAL_CLIENT_PROTOCOL
+//#define __PACKET_DEBUG__
 
 // some client testing variables
 static wxString crash_name = wxT("[Invalid User Name]"); 
