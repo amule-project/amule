@@ -469,19 +469,22 @@ wxSizer *LocaleWarning( wxWindow *parent, bool call_fit = TRUE, bool set_sizer =
 #define ID_KADSEARCHLIST 10343
 wxSizer *KadDlg( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
+#define ID_MYSERVINFO 10344
+wxSizer *MyInfoLog( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
+
 // Declare menubar functions
 
 // Declare toolbar functions
 
-#define ID_BUTTONCONNECT 10344
-#define ID_BUTTONSERVERS 10345
-#define ID_BUTTONKAD 10346
-#define ID_BUTTONSEARCH 10347
-#define ID_BUTTONTRANSFER 10348
-#define ID_BUTTONSHARED 10349
-#define ID_BUTTONMESSAGES 10350
-#define ID_BUTTONSTATISTICS 10351
-#define ID_BUTTONNEWPREFERENCES 10352
+#define ID_BUTTONCONNECT 10345
+#define ID_BUTTONSERVERS 10346
+#define ID_BUTTONKAD 10347
+#define ID_BUTTONSEARCH 10348
+#define ID_BUTTONTRANSFER 10349
+#define ID_BUTTONSHARED 10350
+#define ID_BUTTONMESSAGES 10351
+#define ID_BUTTONSTATISTICS 10352
+#define ID_BUTTONNEWPREFERENCES 10353
 void muleToolbar( wxToolBar *parent );
 
 // Declare bitmap functions
