@@ -20,7 +20,7 @@
 #include <wx/string.h>		// Needed for wxString
 #include <wx/filefn.h>		// Needed for wxSeekMode and seek related stuff.
 
-
+#include <dirent.h> // for CDirIterator
 
 // ----------------------------------------------------------------------------
 // constants
@@ -141,5 +141,30 @@ private:
 	mutable bool m_error; // error memory
 	wxString fFilePath;
 };
+
+// Dir iterator: needed because wxWidget's wxFindNextFile and 
+// wxFindFirstFile are bugged like hell.
+
+class CDirIterator {
+public:
+	enum FileType { File, Dir, Any}; 
+
+	CDirIterator(const wxString dir);
+	~CDirIterator();
+
+	bool IsValid() const {
+		return (DirPtr != NULL);
+	}
+
+	wxString FindFirstFile(FileType search_type, wxString search_mask = wxEmptyString);
+	wxString FindNextFile();
+
+private:
+	DIR* DirPtr;
+	FileType type;
+	wxString DirStr;
+	wxString FileMask;
+};
+	
 
 #endif // CFILE_H

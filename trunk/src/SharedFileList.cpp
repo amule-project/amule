@@ -106,7 +106,9 @@ void CSharedFileList::AddFilesFromDirectory(wxString directory)
 		directory += wxFileName::GetPathSeparator();
 	}
 
-	wxString fname=::wxFindFirstFile(directory,wxFILE);
+	CDirIterator SharedDir(directory); 
+	
+	wxString fname = SharedDir.FindFirstFile(CDirIterator::File); // We just want files
 
 	if (fname.IsEmpty()) {
 		printf("Empty dir %s shared\n",unicode2char(directory));
@@ -119,7 +121,7 @@ void CSharedFileList::AddFilesFromDirectory(wxString directory)
 		if (::wxDirExists(fname)) {
 			// Woops, is a dir!
 			printf("%s is a directory, skipping\n",unicode2char(fname));
-			fname=::wxFindNextFile();
+			fname = SharedDir.FindNextFile();
 			continue;
 		}
 		
@@ -129,7 +131,7 @@ void CSharedFileList::AddFilesFromDirectory(wxString directory)
 			printf("No permisions to open %s, skipping\n",unicode2char(fname));
 			// Kry - Return? WTF? What about the other files?
 			//return;
-			fname=::wxFindNextFile();
+			fname = SharedDir.FindNextFile();
 			continue;
 		}
 
@@ -156,7 +158,7 @@ void CSharedFileList::AddFilesFromDirectory(wxString directory)
 			//not in knownfilelist - start adding thread to hash file
 			CAddFileThread::AddFile(directory, fname);
 		}
-		fname=::wxFindNextFile();
+		fname = SharedDir.FindNextFile();
 	}
 }
 
