@@ -630,17 +630,12 @@ bool CKnownFile::LoadTagsFromFile(const CFile* file){
 				break;
 			}
 			case FT_ATTRANSFERED:{
-				statistic.alltimetransferred = newtag->tag.intvalue;
+				statistic.alltimetransferred += newtag->tag.intvalue;
 				delete newtag;
 				break;
 			}
 			case FT_ATTRANSFEREDHI:{
-				uint32 hi,low;
-				low=statistic.alltimetransferred;
-				hi = newtag->tag.intvalue;
-				uint64 hi2;
-				hi2=hi;
-				statistic.alltimetransferred=low+hi2;
+				statistic.alltimetransferred = (((uint64)newtag->tag.intvalue) << 32) + ((uint64)statistic.alltimetransferred);
 				delete newtag;
 				break;
 			}
