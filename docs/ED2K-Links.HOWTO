@@ -63,7 +63,17 @@ ANSWER:
 
 (Credits: ender)
 
-------- MOZILLA -------
+------- MOZILLA 1.3+ / FireFox 0.6+  ---
+	1. Go to http://mozex.mozdev.org/installation.html and click the
+	   install link. This will automatically install Mozex plugin for
+	   your browser.
+	2. Restart your browser.
+	3a. Firefox:  Go to Tools->Preferences->Extensions->Mozex->Options
+	    and add 'ed2k %r' in the ED2K box.
+	3b. Mozilla: Go to Edit->Preferences->Mozex and add 'ed2k %r' in the
+	    ED2K box.
+
+------- Mozilla before v1.3 / Firefox before v0.6 -----
 	1) Go to http://protozilla.mozdev.org/download.html
 	Choose the version fitting your mozilla-version and click on "install". It will auto-install protozilla
 	Now close mozilla completely.
