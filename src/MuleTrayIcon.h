@@ -21,12 +21,13 @@
 #ifndef MULETRAYICON_H
 #define MULETRAYICON_H
 
+#ifndef AMULE_DAEMON
+
 #include <wx/defs.h>	// Needed before any other wx/*.h
 
 #if !wxCHECK_VERSION(2, 5, 3)
  #define USE_WX_TRAY 0
 #endif
-
 
 #ifdef USE_WX_TRAY 
 
@@ -101,7 +102,8 @@ class CMuleTrayIcon : public wxTaskBarIcon {
 		DECLARE_EVENT_TABLE()
 };
 
-
 #endif // USE_WX_TRAY
+
+#endif // DAEMON
 
 #endif //MULETRAYICON_H
