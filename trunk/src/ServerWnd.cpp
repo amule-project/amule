@@ -80,8 +80,8 @@ void CServerWnd::UpdateServerMetFromURL(wxString strURL)
 		theApp.amuledlg->AddLogLine(true, CString(_("Invalid URL")));
 		return;
 	}
-	wxString strTempFilename;
-	strTempFilename=wxString::Format("%stemp-%d-server.met", theApp.glob_prefs->GetAppDir(), ::GetTickCount());
+	CString strTempFilename;
+	strTempFilename = theApp.glob_prefs->GetAppDir() + wxString::Format("temp-%d-server.met", ::GetTickCount());
 	CHTTPDownloadDlg *dlg=new CHTTPDownloadDlg(this,strURL,strTempFilename);
 	int retval=dlg->ShowModal();
 	if(retval==0) {

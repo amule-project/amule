@@ -64,7 +64,7 @@ public:
 	static void ForceUlDlRateCorrelation(int id);
 	static void CheckRateUnlimited(Rse* prse);
 
-	static void BuildItemList(Preferences_Struct *prefs, char * appdir);
+	static void BuildItemList(Preferences_Struct *prefs, const char * appdir);
 	static void LoadAllItems(CIni& ini);
 	static void SaveAllItems(CIni& ini);
 

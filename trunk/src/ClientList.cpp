@@ -215,7 +215,7 @@ bool CClientList::AttachToAlreadyKnown(CUpDownClient** client, CClientReqSocket*
 				{
 					// if found_client is connected and has the IS_IDENTIFIED, it's safe to say that the other one is a bad guy
 					if (found_client->Credits() && found_client->Credits()->GetCurrentIdentState(found_client->GetIP()) == IS_IDENTIFIED){
-						theApp.amuledlg->AddDebugLogLine(false, "Clients: %s (%s), Banreason: Userhash invalid", tocheck->GetUserName(),tocheck->GetFullIP()); 
+						theApp.amuledlg->AddDebugLogLine(false, wxT("Clients: %s (%s), Banreason: Userhash invalid"), tocheck->GetUserName(),tocheck->GetFullIP()); 
 						tocheck->Ban();
 						return false;
 					}
@@ -334,7 +334,7 @@ void CClientList::Process(){
 	
 	if (m_dwLastTrackedCleanUp + TRACKED_CLEANUP_TIME < cur_tick ){
 		m_dwLastTrackedCleanUp = cur_tick;
-		theApp.amuledlg->AddDebugLogLine(false, "Cleaning up TrackedClientList, %i clients on List...", m_trackedClientsList.GetCount());
+		theApp.amuledlg->AddDebugLogLine(false, wxT("Cleaning up TrackedClientList, %i clients on List..."), m_trackedClientsList.GetCount());
 		POSITION pos = m_trackedClientsList.GetStartPosition();
 		uint32 nKey;
 		CDeletedClient* pResult;
@@ -345,7 +345,7 @@ void CClientList::Process(){
 				delete pResult;
 			}
 		}
-		theApp.amuledlg->AddDebugLogLine(false, "...done, %i clients left on list", m_trackedClientsList.GetCount());
+		theApp.amuledlg->AddDebugLogLine(false, wxT("...done, %i clients left on list"), m_trackedClientsList.GetCount());
 	}
 }
 

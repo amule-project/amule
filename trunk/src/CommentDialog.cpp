@@ -67,7 +67,7 @@ void CCommentDialog::OnBnClickedApply(wxCommandEvent& evt)
 
 void CCommentDialog::OnBnClickedClear(wxCommandEvent& evt)
 {
-	((wxTextCtrl*)FindWindowById(IDC_CMT_TEXT))->SetValue("");
+	((wxTextCtrl*)FindWindowById(IDC_CMT_TEXT))->SetValue(wxT(""));
 } 
 
 void CCommentDialog::OnBnClickedCancel(wxCommandEvent& evt)

@@ -73,7 +73,7 @@ CServerSocket::CServerSocket(CServerConnect* in_serverconnect)
 	serverconnect = in_serverconnect;
 	connectionstate = 0;
 	cur_server = 0;
-	info="";
+	info= wxT("");
 	m_bIsDeleting = false;
 	SetEventHandler(theApp,SERVERSOCKET_HANDLER);
 	SetNotify(wxSOCKET_CONNECTION_FLAG|wxSOCKET_INPUT_FLAG|wxSOCKET_OUTPUT_FLAG|wxSOCKET_LOST_FLAG);
@@ -142,8 +142,11 @@ void CServerSocket::OnReceive(wxSocketError nErrorCode)
 		serverconnect->DestroySocket(this);
 		return;
 	}
-	#warning fix this
-	CEMSocket::OnReceive(0);
+	if (nErrorCode==wxSOCKET_NOERROR) {
+		CEMSocket::OnReceive(0);
+	} else {
+		CEMSocket::OnReceive((int)nErrorCode);
+	}
 	m_dwLastTransmission = GetTickCount();
 }
 
@@ -497,9 +500,8 @@ void CServerSocket::ConnectToServer(CServer* server)
 	wxIPV4address addr;
 	addr.Hostname(server->GetAddress());
 	addr.Service(server->GetPort());
-	#ifdef SERVER_NET_TEST
 	theApp.amuledlg->AddLogLine(true,"Server %s Port %i",server->GetAddress(),server->GetPort());
-	#endif	
+	theApp.amuledlg->AddLogLine(true,"Addr %s Port %i",addr.Hostname().c_str(),addr.Service());
 	this->Connect(addr,FALSE);
 	// We will handle the result on the event.
 	/*
@@ -515,9 +517,7 @@ void CServerSocket::ConnectToServer(CServer* server)
 		}
 	}
 	*/
-	#ifdef SERVER_NET_TEST
-	theApp.amuledlg->AddLogLine(true,"Connetion past connet() call");
-	#endif
+
 	info=server->GetListName();
 	SetConnectionState(CS_CONNECTING);
 }

@@ -83,7 +83,7 @@ void CClientUDPSocket::OnReceive(int nErrorCode)
 
 	// strip IP address from wxSockAddress (do not call Hostname(). we do not want DNS)
 	struct in_addr addr_in;
-	addr_in.s_addr = inet_addr(addr.IPAddress().c_str());
+	addr_in.s_addr = inet_addr(unicode2char(addr.IPAddress()));
 	char* fromIP=inet_ntoa(addr_in);
 
 	//wxUint32 length = ReceiveFrom(buffer,5000,serverbuffer,port);
@@ -154,7 +154,7 @@ bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, char
 						theApp.uploadqueue->AddUpDataOverheadFileRequest(response->size);
 						theApp.clientudp->SendPacket(response, inet_addr(host), port);
 					} else {					
-						theApp.amuledlg->AddLogLine(false, "Client UDP socket; ReaskFilePing; reqfile does not match");
+						AddLogLineM(false, wxT("Client UDP socket; ReaskFilePing; reqfile does not match"));
 					}						
 				} else {
 					if (((uint32)theApp.uploadqueue->GetWaitingUserCount() + 50) > theApp.glob_prefs->GetQueueSize()) {
