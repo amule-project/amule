@@ -17,13 +17,14 @@
 //along with this program; if not, write to the Free Software
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-#ifdef __WXMSW__
-	#include <wx/msw/registry.h>
-#endif
-
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/intl.h>		// Needed for wxGetTranslation
 #include <wx/utils.h>
+
+#ifdef __WXMSW__
+    #include <wx/msw/winundef.h>
+	#include <wx/msw/registry.h>
+#endif
 
 #include "otherfunctions.h"	// Interface declarations
 #include "Preferences.h"	// Needed for CPreferences
@@ -31,7 +32,6 @@
 #include "PartFile.h"		// Needed for CPartFile
 #include "KnownFile.h"		// Needed for CAbstractFile
 #include "CString.h"		// Needed for CString
-
 
 // Formats a filesize in bytes to make it suitable for displaying
 CString CastItoXBytes( uint64 count )
