@@ -89,6 +89,7 @@
 #include "PrefsUnifiedDlg.h"
 #include "GetTickCount.h"	// Needed for GetTickCount()
 #include "StringFunctions.h"	// Needed for unicode2char
+#include "Statistics.h"		// Needed for CStatistics
 
 #include "aMule.xpm"
 
@@ -653,7 +654,7 @@ void CamuleDlg::ShowTransferRate()
 	if( thePrefs::ShowOverhead() )
 	{
 		float overhead_up = theApp.uploadqueue->GetUpDatarateOverhead();
-		float overhead_down = theApp.downloadqueue->GetDownDatarateOverhead();
+		float overhead_down = theApp.statistics->GetDownDatarateOverhead();
 		buffer.Printf(_("Up: %.1f(%.1f) | Down: %.1f(%.1f)"), kBpsUp, overhead_up/1024, kBpsDown, overhead_down/1024);
 	} else {
 		buffer.Printf(_("Up: %.1f | Down: %.1f"), kBpsUp, kBpsDown);

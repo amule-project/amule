@@ -77,30 +77,8 @@ public:
 	void	AddDownload(CPartFile* newfile, bool paused, uint8 category);
 	CUpDownClient* 	GetDownloadClientByIP(uint32 dwIP);
 	void	StartNextFile();
-	void	AddDownDataOverheadSourceExchange(uint32 data)	{ m_nDownDataRateMSOverhead += data;
-															  m_nDownDataOverheadSourceExchange += data;
-															  m_nDownDataOverheadSourceExchangePackets++;}
-	void	AddDownDataOverheadFileRequest(uint32 data)		{ m_nDownDataRateMSOverhead += data;
-															  m_nDownDataOverheadFileRequest += data;
-															  m_nDownDataOverheadFileRequestPackets++;}
-	void	AddDownDataOverheadServer(uint32 data)			{ m_nDownDataRateMSOverhead += data;
-															  m_nDownDataOverheadServer += data;
-															  m_nDownDataOverheadServerPackets++;}
-	void	AddDownDataOverheadOther(uint32 data)			{ m_nDownDataRateMSOverhead += data;
-															  m_nDownDataOverheadOther += data;
-															  m_nDownDataOverheadOtherPackets++;}
 	void	AddLinksFromFile();
-	
-	double	GetDownDatarateOverhead()			{return m_nDownDatarateOverhead;}
-	uint64	GetDownDataOverheadSourceExchange()		{return m_nDownDataOverheadSourceExchange;}
-	uint64	GetDownDataOverheadFileRequest()		{return m_nDownDataOverheadFileRequest;}
-	uint64	GetDownDataOverheadServer()			{return m_nDownDataOverheadServer;}
-	uint64	GetDownDataOverheadOther()			{return m_nDownDataOverheadOther;}
-	uint64	GetDownDataOverheadSourceExchangePackets()	{return m_nDownDataOverheadSourceExchangePackets;}
-	uint64	GetDownDataOverheadFileRequestPackets()		{return m_nDownDataOverheadFileRequestPackets;}
-	uint64	GetDownDataOverheadServerPackets()		{return m_nDownDataOverheadServerPackets;}
-	uint64	GetDownDataOverheadOtherPackets()		{return m_nDownDataOverheadOtherPackets;}
-	void	CompDownDatarateOverhead();
+
 	unsigned int GetFileCount()				{return filelist.size();}
 	void	ResetCatParts(int cat);
 	void	SavePartFiles(bool del = false);	// InterCeptor
@@ -125,16 +103,16 @@ public:
 	bool	AddED2KLink( const CED2KServerLink* link );
 	bool	AddED2KLink( const CED2KServerListLink* link );
 	
-protected:
+	void  DisableAllA4AFAuto(void);
+	
+private:
 	bool	SendNextUDPPacket();
 	void	ProcessLocalRequests();
 	int	GetMaxFilesPerUDPServerPacket() const;
 	bool	SendGlobGetSourcesUDPPacket(CSafeMemFile& data);
 
-private:
 	void AddSearchToDownloadCommon(CPartFile *newfile, uint8 category);
 
-private:
 	std::deque<CPartFile*> filelist;
 	std::list<CPartFile*> m_localServerReqQueue;
 	CSharedFileList* sharedfilelist;
@@ -151,34 +129,7 @@ private:
 	int		m_iSearchedServers;
 	uint8		udcounter;
 
-	uint64		m_datarateMS;
-	long		m_nDownDatarateTotal;
-	double		m_nDownDatarateOverhead;
-	uint32		m_nDownDataRateMSOverhead;
-	uint64		m_nDownDataOverheadSourceExchange;
-	uint64		m_nDownDataOverheadSourceExchangePackets;
-	uint64		m_nDownDataOverheadFileRequest;
-	uint64		m_nDownDataOverheadFileRequestPackets;
-	uint64		m_nDownDataOverheadServer;
-	uint64		m_nDownDataOverheadServerPackets;
-	uint64		m_nDownDataOverheadOther;
-	uint64		m_nDownDataOverheadOtherPackets;
-	std::deque<int>	m_AverageDDRO_list;
-
-	// uint32 sumavgDDRO;
-
 	bool do_not_sort_please;
-
-	DWORD m_lastRefreshedDLDisplay;
-
-/* Razor 1a - Modif by MikaelB */
-public:
-
-	/* DisableAnyA4AFAuto function */
-	void  DisableAllA4AFAuto(void);
-
-/* End Modif */
-
 };
 
 #endif // DOWNLOADQUEUE_H

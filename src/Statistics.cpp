@@ -88,15 +88,66 @@ CStatistics::CStatistics() {
 	m_ilastMaxConnReached = 0;
 	
 	InitStatsTree();	
-	
+
+
+	// Download-values
+	m_nDownDataRateMSOverhead = 0;
+	m_nDownDatarateTotal = 0;
+	m_nDownDatarateOverhead = 0;
+	m_nDownDataOverheadSourceExchange = 0;
+	m_nDownDataOverheadFileRequest = 0;
+	m_nDownDataOverheadOther = 0;
+	m_nDownDataOverheadServer = 0;
+	m_nDownDataOverheadSourceExchangePackets = 0;
+	m_nDownDataOverheadFileRequestPackets = 0;
+	m_nDownDataOverheadOtherPackets = 0;
+	m_nDownDataOverheadServerPackets = 0;
 }
 
-CStatistics::~CStatistics() {
+
+CStatistics::~CStatistics()
+{
 	
 	// the destructor for listHR frees the memory occupied by the nodes
 	delete[] aposRecycle;	
 	
 }
+
+
+/* ------------------------------ OVERHEAD ---------------------------- */
+
+void CStatistics::CompDownDatarateOverhead()
+{
+	// Adding the new overhead
+	m_nDownDatarateTotal += m_nDownDataRateMSOverhead * 10;
+	m_AverageDDRO_list.push_back( m_nDownDataRateMSOverhead * 10 );
+	
+	// Reset the overhead count
+	m_nDownDataRateMSOverhead = 0;
+	
+	// We want at least 11 elements before we will start doing averages
+	if ( m_AverageDDRO_list.size() > 10 ) {
+		
+		// We want 50 elements at most (~5s)
+		if ( m_AverageDDRO_list.size() > 50 ) {
+			m_nDownDatarateTotal -= m_AverageDDRO_list.front();
+		
+			m_AverageDDRO_list.pop_front();
+		
+			m_nDownDatarateOverhead = m_nDownDatarateTotal / 50.0f;
+		} else {
+			m_nDownDatarateOverhead = m_nDownDatarateTotal / (double)m_AverageDDRO_list.size();
+		}
+	} else {
+		m_nDownDatarateOverhead = 0;
+	}
+}
+
+
+
+
+
+
 
 /* ------------------------------- GRAPHS ---------------------------- */
 
@@ -650,14 +701,14 @@ void CStatistics::UpdateStatsTree() {
 
 	#define a_brackets_b(a,b) a +wxT(" (") + b + wxT(")")
 	
-	uint64 DownOHTotal = theApp.downloadqueue->GetDownDataOverheadFileRequest() 
-								+ theApp.downloadqueue->GetDownDataOverheadSourceExchange() 
-								+ theApp.downloadqueue->GetDownDataOverheadServer() 
-								+ theApp.downloadqueue->GetDownDataOverheadOther();
-	uint64 DownOHTotalPackets = theApp.downloadqueue->GetDownDataOverheadFileRequestPackets() 
-										+ theApp.downloadqueue->GetDownDataOverheadSourceExchangePackets() 
-										+ theApp.downloadqueue->GetDownDataOverheadServerPackets() 
-										+ theApp.downloadqueue->GetDownDataOverheadOtherPackets();
+	uint64 DownOHTotal = GetDownDataOverheadFileRequest() 
+								+ GetDownDataOverheadSourceExchange() 
+								+ GetDownDataOverheadServer() 
+								+ GetDownDataOverheadOther();
+	uint64 DownOHTotalPackets = GetDownDataOverheadFileRequestPackets() 
+										+ GetDownDataOverheadSourceExchangePackets() 
+										+ GetDownDataOverheadServerPackets() 
+										+ GetDownDataOverheadOtherPackets();
 
 	(*down1) = _("Downloaded Data (Session (Total)): ") +
 										a_brackets_b(
@@ -671,18 +722,18 @@ void CStatistics::UpdateStatsTree() {
 
 	(*down3) = _("File Request Overhead (Packets): ") +
 										a_brackets_b(
-											CastItoXBytes(theApp.downloadqueue->GetDownDataOverheadFileRequest()),
-											CastItoIShort(theApp.downloadqueue->GetDownDataOverheadFileRequestPackets()));
+											CastItoXBytes(GetDownDataOverheadFileRequest()),
+											CastItoIShort(GetDownDataOverheadFileRequestPackets()));
 											
 	(*down4) = _("Source Exchange Overhead (Packets): ") +
 										a_brackets_b(
-											CastItoXBytes(theApp.downloadqueue->GetDownDataOverheadSourceExchange()),
-											CastItoIShort(theApp.downloadqueue->GetDownDataOverheadSourceExchangePackets()));	
+											CastItoXBytes(GetDownDataOverheadSourceExchange()),
+											CastItoIShort(GetDownDataOverheadSourceExchangePackets()));	
 
 	(*down5) = _("Server Overhead (Packets): ") +
 										a_brackets_b(
-											CastItoXBytes(theApp.downloadqueue->GetDownDataOverheadServer()),
-											CastItoIShort(theApp.downloadqueue->GetDownDataOverheadServerPackets()));
+											CastItoXBytes(GetDownDataOverheadServer()),
+											CastItoIShort(GetDownDataOverheadServerPackets()));
 											
 	(*down6) = wxString::Format(_("Found Sources: %i"),myStats[0]);
 	
