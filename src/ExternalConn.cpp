@@ -395,15 +395,15 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 		if (item.Left(15) == wxT("PREFS GETWSPASS")) {
 			wxString pwdHash = item.Mid(16);
 			if (pwdHash == theApp.glob_prefs->GetWSPass()) {
-				AddLogLineM(false, wxT("Webserver-Admin-Login"));
+				AddLogLineM(false, _("Webserver-Admin-Login"));
 				return wxT("AdminLogin");
 			} else if (theApp.glob_prefs->GetWSIsLowUserEnabled() && 
 					!theApp.glob_prefs->GetWSLowPass().IsEmpty() && 
 					pwdHash == theApp.glob_prefs->GetWSLowPass()) {
-					AddLogLineM(false, wxT("Webserver-Guest-Login"));
+					AddLogLineM(false, _("Webserver-Guest-Login"));
 				return wxT("GuestLogin");
 			} else {
-				AddLogLineM(false, wxT("Webserver: Failed Loginattempt"));
+				AddLogLineM(false, _("Webserver: Failed Loginattempt"));
 				return wxT("Access Denied");
 			}
 		}
