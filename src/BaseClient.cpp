@@ -506,13 +506,13 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 	if (credits == NULL){
 		credits = pFoundCredits;
 		if (!theApp.clientlist->ComparePriorUserhash(m_dwUserIP, m_nUserPort, pFoundCredits)){
-			AddDebugLogLineM(false, _("Client: ") + GetUserName() + wxT("(") + GetFullIP() + wxT(")") + _(" Banreason: Userhash changed (Found in TrackedClientsList)"));
+			AddDebugLogLineM(false, wxT("Client: ") + GetUserName() + wxT("(") + GetFullIP() + wxT(")") + wxT(" Banreason: Userhash changed (Found in TrackedClientsList)"));
 			Ban();
 		}
 	} else if (credits != pFoundCredits){
 		// userhash change ok, however two hours "waittime" before it can be used
 		credits = pFoundCredits;
-		AddDebugLogLineM(false, _("Client: ") + GetUserName() + wxT("(") + GetFullIP() + wxT(")") + _(" Banreason: Userhash changed"));
+		AddDebugLogLineM(false, wxT("Client: ") + GetUserName() + wxT("(") + GetFullIP() + wxT(")") + wxT(" Banreason: Userhash changed"));
 		Ban();
 	}
 
@@ -1030,6 +1030,7 @@ void CUpDownClient::ProcessMuleCommentPacket(const char *pachPacket, uint32 nSiz
 
 		m_iRate = data.ReadUInt8();
 		m_reqfile->SetHasRating(true);
+		
 		AddDebugLogLineM(false, wxT("Rating for file '") + m_clientFilename + wxString::Format(wxT("' received: %i"), m_iRate));
 
 		uint32 length = data.ReadUInt32();
