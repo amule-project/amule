@@ -168,8 +168,8 @@ void CClientReqSocket::Safe_Delete()
 		}
 		client = NULL;
 		byConnected = ES_DISCONNECTED;
-		// deletethis = true;
-		Destroy();
+		deletethis = true;
+		Close();
 }
 
 bool CClientReqSocket::ProcessPacket(char* packet, uint32 size, uint8 opcode)
@@ -1828,9 +1828,11 @@ void CListenSocket::Process()
 		socket_list.GetNext(pos1);
 		CClientReqSocket* cur_sock = socket_list.GetAt(pos2);
 		opensockets++;
-
+		
 		if (!cur_sock->OnDestroy()) {
 			cur_sock->CheckTimeOut();
+		} else if (cur_sock->deletethis) {
+			cur_sock->Destroy();
 		}
 	}
 	if ((GetOpenSockets()+5 < app_prefs->GetMaxConnections() || theApp.serverconnect->IsConnecting()) && !bListening) {
