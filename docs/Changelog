@@ -72,6 +72,8 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		* Fixed the backtrace message.
 		* Added a static text to Preferences->Connection->Client TCP
 		port to show the value of the client UDP port.
+		* Fixed a crash on webserver, all return values of
+		SendRecvMsg_v2 must be checked for NULL return value.
 
 	Ken:
 		* Fixed Mac bug: window was a little larger each restart
