@@ -38,7 +38,7 @@
 
 BEGIN_EVENT_TABLE(CSharedFilesWnd,wxPanel)
 	EVT_LIST_ITEM_SELECTED(ID_SHFILELIST,CSharedFilesWnd::OnLvnItemActivateSflist)
-	EVT_BUTTON(IDC_RELOADSHAREDFILES, CSharedFilesWnd::OnBnClickedReloadsharedfiles)
+	EVT_BUTTON(ID_BTNRELSHARED, CSharedFilesWnd::OnBtnReloadsharedfiles)
 END_EVENT_TABLE()
 
 //IMPLEMENT_DYNAMIC(CSharedFilesWnd, CDialog)
@@ -63,10 +63,6 @@ CSharedFilesWnd::~CSharedFilesWnd()
 }
 
 // CSharedFilesWnd message handlers
-void CSharedFilesWnd::OnBnClickedReloadsharedfiles(wxCommandEvent& ev)
-{
-	theApp.sharedfiles->Reload(true, false);
-}
 
 void CSharedFilesWnd::Check4StatUpdate(CKnownFile* file)
 {
@@ -130,4 +126,9 @@ void CSharedFilesWnd::ShowDetails(CKnownFile* cur_file)
 
 void CSharedFilesWnd::Localize()
 {
+}
+
+void CSharedFilesWnd::OnBtnReloadsharedfiles(wxCommandEvent &evt) {
+
+	theApp.sharedfiles->Reload(true, false);
 }

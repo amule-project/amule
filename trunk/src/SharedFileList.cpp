@@ -190,16 +190,15 @@ void CSharedFileList::RemoveFile(CKnownFile* toremove){
 void CSharedFileList::Reload(bool sendtoserver, bool firstload){
 	// Madcat - Disable reloading if reloading already in progress.
 	// Kry - Fixed to let non-english language users use the 'Reload' button :P
-	if (GetDlgItem(IDC_RELOADSHAREDFILES)->GetLabel() == CString(_("Reload"))) {
-		GetDlgItem(IDC_RELOADSHAREDFILES)->SetLabel(CString(_("Loading...")));
+	// deltaHF - removed the old ugly button and changed the code to use the new small one
+		GetDlgItem(ID_BTNRELSHARED)->Disable();
 		output->DeleteAllItems();
 		this->FindSharedFiles();
 		if ((output) && (firstload == false))
 			output->ShowFileList(this);
 		if (sendtoserver)
 			SendListToServer();
-		GetDlgItem(IDC_RELOADSHAREDFILES)->SetLabel(CString(_("Reload")));
-	}
+		GetDlgItem(ID_BTNRELSHARED)->Enable();
 	output->InitSort();
 }
 
