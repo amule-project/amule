@@ -137,7 +137,7 @@ int CamuleDaemonApp::OnRun()
 			"Change configuration either from GUI or by editing $HOME/.eMule");
 		AddLogLineM(true, warning);
 		// Also to console.
-		printf(unicode2char(warning + wxT("\n")));
+		printf((const char*)unicode2char(warning + wxT("\n")));
 		return 0;
 	}
 	

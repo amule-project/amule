@@ -165,7 +165,7 @@ CamuleApp::CamuleApp()
 		<< wxT("Current version is: aMule ") << GetMuleVersion() << "\n";
 
 #ifdef AMULE_DAEMON
-	printf("FATAL ERROR! %s\n", unicode2char(msg));
+	printf("FATAL ERROR! %s\n", (const char*)unicode2char(msg));
 #else
 	wxMessageBox( msg, "FATAL ERROR!", wxICON_ERROR );
 #endif	
