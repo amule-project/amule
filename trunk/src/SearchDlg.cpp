@@ -41,6 +41,7 @@
 #include "muuli_wdr.h"		// Needed for IDC_STARTS
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "MuleNotebook.h"
+#include "GetTickCount.h"
 
 #define ID_SEARCHTIMER 55219
 
@@ -87,6 +88,8 @@ END_EVENT_TABLE()
 CSearchDlg::CSearchDlg(wxWindow* pParent)
 : wxPanel(pParent, CSearchDlg::IDD), m_timer(this, ID_SEARCHTIMER)
 {
+	last_search_time = 0;
+	
 	globalsearch = false;
 
 	searchpacket = NULL;
@@ -129,9 +132,16 @@ void CSearchDlg::OnSearchClosed(wxNotebookEvent& evt)
 
 void CSearchDlg::OnBnClickedStarts(wxCommandEvent& WXUNUSED(evt))
 {
-	OnBnClickedCancels(nullEvent);
+	// lugdunum will kill us if we don't fix this ;)
+	if ((GetTickCount() - last_search_time)  > 2000) /* 2 secs */{
 		
-	StartNewSearch();
+		last_search_time = GetTickCount();
+		
+		OnBnClickedCancels(nullEvent);
+		
+		StartNewSearch();
+		
+	}
 }
 
 
