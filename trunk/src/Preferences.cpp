@@ -721,17 +721,8 @@ CPreferences::CPreferences()
 	LoadPreferences();
 
 #ifndef CLIENT_GUI
-	// shared directories
-	wxTextFile sdirfile(theApp.ConfigDir + wxT("shareddir.dat"));
-	if( sdirfile.Exists() && sdirfile.Open() ) {
-		if (sdirfile.GetLineCount()) {
-			shareddir_list.Add(sdirfile.GetFirstLine());				
-			while (!sdirfile.Eof()) {
-				shareddir_list.Add(sdirfile.GetNextLine());
-			}
-		}
-		sdirfile.Close();
-	}
+
+	 ReloadSharedFolders();
 
 	// serverlist adresses
 	wxTextFile slistfile(theApp.ConfigDir + wxT("addresses.dat"));
@@ -1480,4 +1471,22 @@ void CPreferences::SetPort(uint16 val) {
 	} else {
 		s_port = val;
 	}
+}
+
+bool CPreferences::ReloadSharedFolders() {
+
+	wxTextFile sdirfile(theApp.ConfigDir + wxT("shareddir.dat"));
+	
+	shareddir_list.Clear();
+	
+	if( sdirfile.Exists() && sdirfile.Open() ) {
+		if (sdirfile.GetLineCount()) {
+			shareddir_list.Add(sdirfile.GetFirstLine());				
+			while (!sdirfile.Eof()) {
+				shareddir_list.Add(sdirfile.GetNextLine());
+			}
+		}
+		sdirfile.Close();
+	}
+	
 }
