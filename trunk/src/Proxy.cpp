@@ -77,7 +77,7 @@ wxSocketProxy::wxSocketProxy(const wxProxyData *ProxyData)
 	}
 }
 
-bool wxSocketProxy::Connect(wxIPaddress& address)
+bool wxSocketProxy::Start(wxIPaddress& address, enum wxProxyCommand cmd)
 {
 	bool ok = false;
 
@@ -92,11 +92,11 @@ bool wxSocketProxy::Connect(wxIPaddress& address)
 			switch(m_ProxyData.ProxyType)
 			{
 			case wxPROXY_SOCKS4:
-				ok = DoSocks4(address, wxPROXY_CMD_CONNECT);
+				ok = DoSocks4(address, cmd);
 				break;
 				
 			case wxPROXY_SOCKS5:
-				ok = DoSocks5(address, wxPROXY_CMD_CONNECT);
+				ok = DoSocks5(address, cmd);
 				break;
 			}
 			m_ProxyClientSocket->Destroy();
@@ -167,7 +167,7 @@ bool wxSocketProxy::DoSocks4Reply(void)
 		!m_ProxyClientSocket->Error() &&
 		m_ProxyClientSocket->LastCount() == LenPacket &&
 		m_buffer[0] == SOCKS4_VERSION &&
-		m_buffer[1] == SOCKS4_REPLY_SUCCEED;
+		m_buffer[1] == SOCKS4_REPLY_GRANTED;
 	if (ok) {
 		// Read BND.PORT
 		const unsigned int Port_offset = 2;
@@ -487,7 +487,8 @@ bool wxSocketProxy::DoHttpRequest(wxIPaddress& address, unsigned char cmd)
 	const char *host = (const char *)buf;
 	uint16 port = address.Service();
 	wxString UserPass = m_ProxyData.Username + wxT(":") + m_ProxyData.Password;
-	wxString UserPassEncoded = otherfunctions::EncodeBase64(m_buffer, wxPROXY_BUFFER_SIZE);
+	wxString UserPassEncoded =
+		otherfunctions::EncodeBase64(m_buffer, wxPROXY_BUFFER_SIZE);
 	wxString msg = wxString::Format(
 		wxT(
 		"CONNECT %s:%d HTTP/1.1\r\n"
@@ -527,18 +528,29 @@ wxSocketClientProxy::wxSocketClientProxy(
 	wxSocketFlags flags,
 	const wxProxyData *ProxyData)
 :
-wxSocketClient(flags),
 m_SocketProxy(ProxyData)
 {
+	m_UseProxy = ProxyData != NULL;
+	m_SocketClient = new wxSocketClient(flags);
 }
 
-bool wxSocketClientProxy::Connect(wxIPaddress& address, bool wait)
+wxSocketClientProxy::~wxSocketClientProxy()
+{
+	delete m_SocketClient;
+}
+
+bool wxSocketClientProxy::Connect(wxIPaddress& address, bool wait, bool UseProxy)
 {
 	bool ok;
 	
-	ok = m_SocketProxy.Connect(address);
-	if (ok) {
-		ok = wxSocketClient::Connect(m_SocketProxy.GetTargetAddress(), wait);
+	if (UseProxy && m_UseProxy) {
+		ok = m_SocketProxy.Start(address, wxPROXY_CMD_CONNECT);
+		if (ok) {
+			ok = m_SocketClient->Connect(
+				m_SocketProxy.GetTargetAddress(), wait);
+		}
+	} else {
+		ok = m_SocketClient->Connect(address, wait);
 	}
 
 	return ok;
@@ -551,9 +563,23 @@ wxSocketServerProxy::wxSocketServerProxy(
 	wxSocketFlags flags,
 	const wxProxyData *ProxyData)
 :
-wxSocketServer(address, flags),
 m_SocketProxy(ProxyData)
 {
+	m_UseProxy = ProxyData != NULL;
+	if (m_UseProxy) {
+		bool ok = m_SocketProxy.Start(address, wxPROXY_CMD_BIND);
+		if (ok) {
+			m_SocketServer = new wxSocketServer(
+				m_SocketProxy.GetTargetAddress(), flags);
+		}
+	} else {
+		m_SocketServer = new wxSocketServer(address, flags);
+	}
+}
+
+wxSocketServerProxy::~wxSocketServerProxy()
+{
+	delete m_SocketServer;
 }
 
 /******************************************************************************/
