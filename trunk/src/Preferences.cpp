@@ -42,6 +42,182 @@
 #include <wx/arrimpl.cpp> // this is a magic incantation which must be done!
 #include "amule.h"
 
+#include "Preferences.h"
+
+
+wxString	CPreferences::s_nick;
+uint16		CPreferences::s_maxupload;
+uint16		CPreferences::s_maxdownload;
+uint16		CPreferences::s_slotallocation;
+uint16		CPreferences::s_port;
+uint16		CPreferences::s_udpport;
+bool		CPreferences::s_UDPDisable;
+uint16		CPreferences::s_maxconnections;
+bool		CPreferences::s_reconnect;
+bool		CPreferences::s_autoconnect;
+bool		CPreferences::s_autoconnectstaticonly;
+bool		CPreferences::s_autoserverlist;
+bool		CPreferences::s_deadserver;
+wxString	CPreferences::s_incomingdir;
+wxString	CPreferences::s_tempdir;
+bool	CPreferences::s_ICH;
+int8	CPreferences::s_versioncheckdays;
+int16	CPreferences::s_downloadColumnWidths[13];
+CPreferences::Bool	CPreferences::s_downloadColumnHidden[13];
+int16	CPreferences::s_downloadColumnOrder[13];
+int16	CPreferences::s_uploadColumnWidths[8];
+CPreferences::Bool	CPreferences::s_uploadColumnHidden[8];
+int16	CPreferences::s_uploadColumnOrder[8];
+int16	CPreferences::s_queueColumnWidths[10];
+CPreferences::Bool	CPreferences::s_queueColumnHidden[10];
+int16	CPreferences::s_queueColumnOrder[10];
+int16	CPreferences::s_searchColumnWidths[5];
+CPreferences::Bool	CPreferences::s_searchColumnHidden[5];
+int16	CPreferences::s_searchColumnOrder[5];
+int16	CPreferences::s_sharedColumnWidths[12];
+CPreferences::Bool	CPreferences::s_sharedColumnHidden[12];
+int16	CPreferences::s_sharedColumnOrder[12];
+int16	CPreferences::s_serverColumnWidths[12];
+CPreferences::Bool	CPreferences::s_serverColumnHidden[12];
+int16 	CPreferences::s_serverColumnOrder[12];
+int16	CPreferences::s_clientListColumnWidths[8];
+CPreferences::Bool	CPreferences::s_clientListColumnHidden[8];
+int16 	CPreferences::s_clientListColumnOrder[8];
+int8	CPreferences::s_depth3D;
+int32	CPreferences::s_tableSortItemDownload;
+int32	CPreferences::s_tableSortItemUpload;
+int32	CPreferences::s_tableSortItemQueue;
+int32	CPreferences::s_tableSortItemSearch;
+int32	CPreferences::s_tableSortItemShared;
+int32	CPreferences::s_tableSortItemServer;
+int32	CPreferences::s_tableSortItemClientList;
+bool	CPreferences::s_tableSortAscendingDownload;
+bool	CPreferences::s_tableSortAscendingUpload;
+bool	CPreferences::s_tableSortAscendingQueue;
+bool	CPreferences::s_tableSortAscendingSearch;
+bool	CPreferences::s_tableSortAscendingShared;
+bool	CPreferences::s_tableSortAscendingServer;
+bool	CPreferences::s_tableSortAscendingClientList;
+bool	CPreferences::s_scorsystem;
+bool	CPreferences::s_updatenotify;
+bool	CPreferences::s_mintotray;
+bool	CPreferences::s_autotakeed2klinks;
+bool	CPreferences::s_addnewfilespaused;
+bool	CPreferences::s_addserversfromserver;
+bool	CPreferences::s_addserversfromclient;
+int16	CPreferences::s_maxsourceperfile;
+int16	CPreferences::s_trafficOMeterInterval;
+int16	CPreferences::s_statsInterval;
+int		CPreferences::s_maxGraphDownloadRate;
+int		CPreferences::s_maxGraphUploadRate;
+bool	CPreferences::s_beepOnError;
+bool	CPreferences::s_confirmExit;
+bool	CPreferences::s_splashscreen;
+bool	CPreferences::s_filterBadIP;
+bool	CPreferences::s_onlineSig;
+uint64  CPreferences::s_totalDownloadedBytes;
+uint64	CPreferences::s_totalUploadedBytes;
+uint16	CPreferences::s_languageID;
+bool	CPreferences::s_transferDoubleclick;
+int8	CPreferences::s_iSeeShares;
+int8	CPreferences::s_iToolDelayTime;
+bool	CPreferences::s_bringtoforeground;
+int8	CPreferences::s_splitterbarPosition;
+uint16	CPreferences::s_deadserverretries;
+uint32	CPreferences::s_dwServerKeepAliveTimeoutMins;
+uint8	CPreferences::s_statsMax;
+int8	CPreferences::s_statsAverageMinutes;
+bool    CPreferences::s_useDownloadNotifier;
+bool	CPreferences::s_useChatNotifier;
+bool	CPreferences::s_useLogNotifier;	
+bool	CPreferences::s_useSoundInNotifier;
+bool	CPreferences::s_sendEmailNotifier;
+bool	CPreferences::s_notifierPopsEveryChatMsg;
+bool	CPreferences::s_notifierImportantError;
+bool	CPreferences::s_notifierNewVersion;
+wxString	CPreferences::s_notifierSoundFilePath;
+bool	CPreferences::s_bpreviewprio;
+bool	CPreferences::s_smartidcheck;
+uint8	CPreferences::s_smartidstate;
+bool	CPreferences::s_safeServerConnect;
+bool	CPreferences::s_startMinimized;
+uint16	CPreferences::s_MaxConperFive;
+bool	CPreferences::s_checkDiskspace;
+uint32	CPreferences::s_uMinFreeDiskSpace;
+wxString	CPreferences::s_yourHostname;
+bool	CPreferences::s_bVerbose;
+bool	CPreferences::s_bupdatequeuelist;
+bool	CPreferences::s_bmanualhighprio;
+bool	CPreferences::s_btransferfullchunks;
+bool	CPreferences::s_bstartnextfile;
+bool	CPreferences::s_bshowoverhead;
+bool	CPreferences::s_bDAP;
+bool	CPreferences::s_bUAP;
+bool	CPreferences::s_bDisableKnownClientList;
+bool	CPreferences::s_bDisableQueueList;
+bool	CPreferences::s_showRatesInTitle;
+wxString	CPreferences::s_VideoPlayer;
+bool	CPreferences::s_moviePreviewBackup;
+bool	CPreferences::s_indicateratings;
+bool	CPreferences::s_showAllNotCats;
+bool	CPreferences::s_watchclipboard;
+bool	CPreferences::s_filterserverbyip;
+bool	CPreferences::s_bFirstStart;
+bool	CPreferences::s_bCreditSystem;
+bool	CPreferences::s_msgonlyfriends;
+bool	CPreferences::s_msgsecure;
+uint8	CPreferences::s_filterlevel;
+uint8	CPreferences::s_iFileBufferSize;
+uint8	CPreferences::s_iQueueSize;
+uint16	CPreferences::s_maxmsgsessions;
+uint32	CPreferences::s_versioncheckLastAutomatic;
+wxString 	CPreferences::s_datetimeformat;
+wxString	CPreferences::s_sWebPassword;
+wxString	CPreferences::s_sWebLowPassword;
+uint16	CPreferences::s_nWebPort;
+bool	CPreferences::s_bWebEnabled;
+bool	CPreferences::s_bWebUseGzip;
+int32	CPreferences::s_nWebPageRefresh;
+bool	CPreferences::s_bWebLowEnabled;
+wxString	CPreferences::s_sWebResDir;
+wxString	CPreferences::s_sTemplateFile;
+bool	CPreferences::s_bIsASCWOP;
+bool	CPreferences::s_showCatTabInfos;
+bool	CPreferences::s_resumeSameCat;
+bool	CPreferences::s_dontRecreateGraphs;
+int32	CPreferences::s_allcatType;
+int32	CPreferences::s_desktopMode;
+uint8	CPreferences::s_NoNeededSources;
+bool	CPreferences::s_DropFullQueueSources;
+bool	CPreferences::s_DropHighQueueRankingSources;
+int32	CPreferences::s_HighQueueRanking;
+int32	CPreferences::s_AutoDropTimer;
+bool 	CPreferences::s_AcceptExternalConnections;
+bool 	CPreferences::s_ECUseTCPPort;
+int32	CPreferences::s_ECPort;
+wxString	CPreferences::s_ECPassword;
+bool	CPreferences::s_IPFilterOn;
+bool	CPreferences::s_UseSrcSeeds;
+bool	CPreferences::s_UseSafeMaxConn;
+bool	CPreferences::s_VerbosePacketError;
+bool	CPreferences::s_ProgBar;
+bool	CPreferences::s_Percent;	
+bool	CPreferences::s_SecIdent;
+bool	CPreferences::s_ExtractMetaData;
+bool	CPreferences::s_AllocFullPart;
+bool	CPreferences::s_AllocFullChunk;
+uint16	CPreferences::s_Browser;
+wxString	CPreferences::s_CustomBrowser;
+bool	CPreferences::s_BrowserTab;
+wxString	CPreferences::s_OSDirectory;
+wxString	CPreferences::s_SkinFile;
+bool	CPreferences::s_UseSkinFile;
+bool	CPreferences::s_FastED2KLinksHandler;
+bool	CPreferences::s_bDlgTabsOnTop;
+
+
+
+
 WX_DEFINE_OBJARRAY(ArrayOfCategory_Struct);
 
 /// new implementation
@@ -49,8 +225,6 @@ CPreferences::CPreferences()
 {
 	srand((uint32)time(0)); // we need random numbers sometimes
 
-	prefs = new Preferences_Struct;
-	memset(prefs,0,sizeof(Preferences_Struct));
 	prefsExt=new Preferences_Ext_Struct;
 	memset(prefsExt,0,sizeof(Preferences_Ext_Struct));
 
@@ -69,12 +243,11 @@ CPreferences::CPreferences()
 			SetStandartValues();
 		}
 		md4cpy(m_userhash,prefsExt->userhash);
-		prefs->EmuleWindowPlacement=prefsExt->EmuleWindowPlacement;
 		fclose(preffile);
-		prefs->smartidstate=0;
+		s_smartidstate=0;
 	}
 
-	PrefsUnifiedDlg::BuildItemList(prefs, theApp.ConfigDir);
+	PrefsUnifiedDlg::BuildItemList(this, theApp.ConfigDir);
 
 	LoadPreferences();
 
@@ -103,12 +276,12 @@ CPreferences::CPreferences()
 	m_userhash[5] = 14;
 	m_userhash[14] = 111;
 
-	if (!::wxDirExists(char2unicode(GetIncomingDir()))) {
-		::wxMkdir(char2unicode(GetIncomingDir()),0777);
+	if (!::wxDirExists(GetIncomingDir())) {
+		::wxMkdir(GetIncomingDir(),0750);
 	}
 
-	if (!::wxDirExists(char2unicode(GetTempDir()))) {
-		::wxMkdir(char2unicode(GetTempDir()),0777);
+	if (!::wxDirExists(GetTempDir())) {
+		::wxMkdir(GetTempDir(),0750);
 	}
 
 	if (m_userhash.IsEmpty()) {
@@ -128,8 +301,7 @@ void CPreferences::SetStandartValues()
 	defaultWPM.rcNormalPosition.right=700;
 	defaultWPM.rcNormalPosition.bottom=500;
 	defaultWPM.showCmd=0;
-	prefs->EmuleWindowPlacement=defaultWPM;
-	prefs->versioncheckLastAutomatic=0;
+	s_versioncheckLastAutomatic=0;
 	Save();
 }
 
@@ -144,7 +316,6 @@ bool CPreferences::Save()
 
 	if (preffile) {
 		prefsExt->version=PREFFILE_VERSION;
-		prefsExt->EmuleWindowPlacement=prefs->EmuleWindowPlacement;
 		printf("Saving userhash: %s\n", m_userhash.Encode().c_str());
 		md4cpy(prefsExt->userhash,m_userhash.GetHash());
 		error = fwrite(prefsExt,sizeof(Preferences_Ext_Struct),1,preffile);
@@ -185,23 +356,23 @@ void CPreferences::CreateUserHash()
 	m_userhash[14] = 111;
 }
 
-int32 CPreferences::GetColumnWidth(Table t, int index) const
+int32 CPreferences::GetColumnWidth(Table t, int index)
 {
 	switch(t) {
 	case tableDownload:
-		return prefs->downloadColumnWidths[index];
+		return s_downloadColumnWidths[index];
 	case tableUpload:
-		return prefs->uploadColumnWidths[index];
+		return s_uploadColumnWidths[index];
 	case tableQueue:
-		return prefs->queueColumnWidths[index];
+		return s_queueColumnWidths[index];
 	case tableSearch:
-		return prefs->searchColumnWidths[index];
+		return s_searchColumnWidths[index];
 	case tableShared:
-		return prefs->sharedColumnWidths[index];
+		return s_sharedColumnWidths[index];
 	case tableServer:
-		return prefs->serverColumnWidths[index];
+		return s_serverColumnWidths[index];
 	case tableClientList:
-		return prefs->clientListColumnWidths[index];
+		return s_clientListColumnWidths[index];
 	case tableNone:
 	default:
 		return 0;
@@ -212,25 +383,25 @@ void CPreferences::SetColumnWidth(Table t, int index, int32 width)
 {
 	switch(t) {
 	case tableDownload:
-		prefs->downloadColumnWidths[index] = width;
+		s_downloadColumnWidths[index] = width;
 		break;
 	case tableUpload:
-		prefs->uploadColumnWidths[index] = width;
+		s_uploadColumnWidths[index] = width;
 		break;
 	case tableQueue:
-		prefs->queueColumnWidths[index] = width;
+		s_queueColumnWidths[index] = width;
 		break;
 	case tableSearch:
-		prefs->searchColumnWidths[index] = width;
+		s_searchColumnWidths[index] = width;
 		break;
 	case tableShared:
-		prefs->sharedColumnWidths[index] = width;
+		s_sharedColumnWidths[index] = width;
 		break;
 	case tableServer:
-		prefs->serverColumnWidths[index] = width;
+		s_serverColumnWidths[index] = width;
 		break;
 	case tableClientList:
-		prefs->clientListColumnWidths[index] = width;
+		s_clientListColumnWidths[index] = width;
 		break;
 	case tableNone:
 	default:
@@ -238,23 +409,23 @@ void CPreferences::SetColumnWidth(Table t, int index, int32 width)
 	}
 }
 
-bool CPreferences::GetColumnHidden(Table t, int index) const
+bool CPreferences::GetColumnHidden(Table t, int index)
 {
 	switch(t) {
 	case tableDownload:
-		return prefs->downloadColumnHidden[index];
+		return s_downloadColumnHidden[index];
 	case tableUpload:
-		return prefs->uploadColumnHidden[index];
+		return s_uploadColumnHidden[index];
 	case tableQueue:
-		return prefs->queueColumnHidden[index];
+		return s_queueColumnHidden[index];
 	case tableSearch:
-		return prefs->searchColumnHidden[index];
+		return s_searchColumnHidden[index];
 	case tableShared:
-		return prefs->sharedColumnHidden[index];
+		return s_sharedColumnHidden[index];
 	case tableServer:
-		return prefs->serverColumnHidden[index];
+		return s_serverColumnHidden[index];
 	case tableClientList:
-		return prefs->clientListColumnHidden[index];
+		return s_clientListColumnHidden[index];
 	case tableNone:
 	default:
 		return FALSE;
@@ -265,25 +436,25 @@ void CPreferences::SetColumnHidden(Table t, int index, bool bHidden)
 {
 	switch(t) {
 	case tableDownload:
-		prefs->downloadColumnHidden[index] = bHidden;
+		s_downloadColumnHidden[index] = bHidden;
 		break;
 	case tableUpload:
-		prefs->uploadColumnHidden[index] = bHidden;
+		s_uploadColumnHidden[index] = bHidden;
 		break;
 	case tableQueue:
-		prefs->queueColumnHidden[index] = bHidden;
+		s_queueColumnHidden[index] = bHidden;
 		break;
 	case tableSearch:
-		prefs->searchColumnHidden[index] = bHidden;
+		s_searchColumnHidden[index] = bHidden;
 		break;
 	case tableShared:
-		prefs->sharedColumnHidden[index] = bHidden;
+		s_sharedColumnHidden[index] = bHidden;
 		break;
 	case tableServer:
-		prefs->serverColumnHidden[index] = bHidden;
+		s_serverColumnHidden[index] = bHidden;
 		break;
 	case tableClientList:
-		prefs->clientListColumnHidden[index] = bHidden;
+		s_clientListColumnHidden[index] = bHidden;
 		break;
 	case tableNone:
 	default:
@@ -291,23 +462,23 @@ void CPreferences::SetColumnHidden(Table t, int index, bool bHidden)
 	}
 }
 
-int32 CPreferences::GetColumnOrder(Table t, int index) const
+int32 CPreferences::GetColumnOrder(Table t, int index)
 {
 	switch(t) {
 	case tableDownload:
-		return prefs->downloadColumnOrder[index];
+		return s_downloadColumnOrder[index];
 	case tableUpload:
-		return prefs->uploadColumnOrder[index];
+		return s_uploadColumnOrder[index];
 	case tableQueue:
-		return prefs->queueColumnOrder[index];
+		return s_queueColumnOrder[index];
 	case tableSearch:
-		return prefs->searchColumnOrder[index];
+		return s_searchColumnOrder[index];
 	case tableShared:
-		return prefs->sharedColumnOrder[index];
+		return s_sharedColumnOrder[index];
 	case tableServer:
-		return prefs->serverColumnOrder[index];
+		return s_serverColumnOrder[index];
 	case tableClientList:
-		return prefs->clientListColumnOrder[index];
+		return s_clientListColumnOrder[index];
 	case tableNone:
 	default:
 		return 0;
@@ -318,25 +489,25 @@ void CPreferences::SetColumnOrder(Table t, INT *piOrder)
 {
 	switch(t) {
 	case tableDownload:
-		memcpy(prefs->downloadColumnOrder, piOrder, sizeof(prefs->downloadColumnOrder));
+		memcpy(s_downloadColumnOrder, piOrder, sizeof(s_downloadColumnOrder));
 		break;
 	case tableUpload:
-		memcpy(prefs->uploadColumnOrder, piOrder, sizeof(prefs->uploadColumnOrder));
+		memcpy(s_uploadColumnOrder, piOrder, sizeof(s_uploadColumnOrder));
 		break;
 	case tableQueue:
-		memcpy(prefs->queueColumnOrder, piOrder, sizeof(prefs->queueColumnOrder));
+		memcpy(s_queueColumnOrder, piOrder, sizeof(s_queueColumnOrder));
 		break;
 	case tableSearch:
-		memcpy(prefs->searchColumnOrder, piOrder, sizeof(prefs->searchColumnOrder));
+		memcpy(s_searchColumnOrder, piOrder, sizeof(s_searchColumnOrder));
 		break;
 	case tableShared:
-		memcpy(prefs->sharedColumnOrder, piOrder, sizeof(prefs->sharedColumnOrder));
+		memcpy(s_sharedColumnOrder, piOrder, sizeof(s_sharedColumnOrder));
 		break;
 	case tableServer:
-		memcpy(prefs->serverColumnOrder, piOrder, sizeof(prefs->serverColumnOrder));
+		memcpy(s_serverColumnOrder, piOrder, sizeof(s_serverColumnOrder));
 		break;
 	case tableClientList:
-		memcpy(prefs->clientListColumnOrder, piOrder, sizeof(prefs->clientListColumnOrder));
+		memcpy(s_clientListColumnOrder, piOrder, sizeof(s_clientListColumnOrder));
 		break;
 	case tableNone:
 	default:
@@ -356,7 +527,6 @@ CPreferences::~CPreferences()
 
 	catMap.Clear();
 
-	delete prefs;
 	delete prefsExt;
 }
 
@@ -412,7 +582,7 @@ void CPreferences::LoadPreferences()
 {
 	wxConfigBase* cfg = wxConfig::Get();
 
-	PrefsUnifiedDlg::LoadAllItems( (*cfg) );
+	PrefsUnifiedDlg::LoadAllItems( (*cfg)  );
 
 	LoadCats();
 }
@@ -462,23 +632,23 @@ uint16 CPreferences::GetDefaultMaxConperFive()
 
 
 // Barry - Provide a mechanism for all tables to store/retrieve sort order
-int32 CPreferences::GetColumnSortItem(Table t) const
+int32 CPreferences::GetColumnSortItem(Table t)
 {
 	switch(t) {
 		case tableDownload:
-			return prefs->tableSortItemDownload;
+			return s_tableSortItemDownload;
 		case tableUpload:
-			return prefs->tableSortItemUpload;
+			return s_tableSortItemUpload;
 		case tableQueue:
-			return prefs->tableSortItemQueue;
+			return s_tableSortItemQueue;
 		case tableSearch:
-			return prefs->tableSortItemSearch;
+			return s_tableSortItemSearch;
 		case tableShared:
-			return prefs->tableSortItemShared;
+			return s_tableSortItemShared;
 		case tableServer:
-			return prefs->tableSortItemServer;
+			return s_tableSortItemServer;
 		case tableClientList:
-			return prefs->tableSortItemClientList;
+			return s_tableSortItemClientList;
 		case tableNone:
 		default:
 			return 0;
@@ -486,23 +656,23 @@ int32 CPreferences::GetColumnSortItem(Table t) const
 }
 
 // Barry - Provide a mechanism for all tables to store/retrieve sort order
-bool CPreferences::GetColumnSortAscending(Table t) const
+bool CPreferences::GetColumnSortAscending(Table t)
 {
 	switch(t) {
 		case tableDownload:
-			return prefs->tableSortAscendingDownload;
+			return s_tableSortAscendingDownload;
 		case tableUpload:
-			return prefs->tableSortAscendingUpload;
+			return s_tableSortAscendingUpload;
 		case tableQueue:
-			return prefs->tableSortAscendingQueue;
+			return s_tableSortAscendingQueue;
 		case tableSearch:
-			return prefs->tableSortAscendingSearch;
+			return s_tableSortAscendingSearch;
 		case tableShared:
-			return prefs->tableSortAscendingShared;
+			return s_tableSortAscendingShared;
 		case tableServer:
-			return prefs->tableSortAscendingServer;
+			return s_tableSortAscendingServer;
 		case tableClientList:
-			return prefs->tableSortAscendingClientList;
+			return s_tableSortAscendingClientList;
 		case tableNone:
 		default:
 			return true;
@@ -514,25 +684,25 @@ void CPreferences::SetColumnSortItem(Table t, int32 sortItem)
 {
 	switch(t) {
 		case tableDownload:
-			prefs->tableSortItemDownload = sortItem;
+			s_tableSortItemDownload = sortItem;
 			break;
 		case tableUpload:
-			prefs->tableSortItemUpload = sortItem;
+			s_tableSortItemUpload = sortItem;
 			break;
 		case tableQueue:
-			prefs->tableSortItemQueue = sortItem;
+			s_tableSortItemQueue = sortItem;
 			break;
 		case tableSearch:
-			prefs->tableSortItemSearch = sortItem;
+			s_tableSortItemSearch = sortItem;
 			break;
 		case tableShared:
-			prefs->tableSortItemShared = sortItem;
+			s_tableSortItemShared = sortItem;
 			break;
 		case tableServer:
-			prefs->tableSortItemServer = sortItem;
+			s_tableSortItemServer = sortItem;
 			break;
 		case tableClientList:
-			prefs->tableSortItemClientList = sortItem;
+			s_tableSortItemClientList = sortItem;
 			break;
 		case tableNone:
 		default:
@@ -545,25 +715,25 @@ void CPreferences::SetColumnSortAscending(Table t, bool sortAscending)
 {
 	switch(t) {
 		case tableDownload:
-			prefs->tableSortAscendingDownload = sortAscending;
+			s_tableSortAscendingDownload = sortAscending;
 			break;
 		case tableUpload:
-			prefs->tableSortAscendingUpload = sortAscending;
+			s_tableSortAscendingUpload = sortAscending;
 			break;
 		case tableQueue:
-			prefs->tableSortAscendingQueue = sortAscending;
+			s_tableSortAscendingQueue = sortAscending;
 			break;
 		case tableSearch:
-			prefs->tableSortAscendingSearch = sortAscending;
+			s_tableSortAscendingSearch = sortAscending;
 			break;
 		case tableShared:
-			prefs->tableSortAscendingShared = sortAscending;
+			s_tableSortAscendingShared = sortAscending;
 			break;
 		case tableServer:
-			prefs->tableSortAscendingServer = sortAscending;
+			s_tableSortAscendingServer = sortAscending;
 			break;
 		case tableClientList:
-			prefs->tableSortAscendingClientList = sortAscending;
+			s_tableSortAscendingClientList = sortAscending;
 			break;
 		case tableNone:
 		default:
@@ -584,11 +754,11 @@ void CPreferences::RemoveCat(size_t index)
 // Niether Galeon tabs nor epiphany tabs have been tested
 // Konqueror alternatives is (Open on current window, fails if no konq already open):
 //	dcop `dcop konqueror-* | head -n1` konqueror-mainwindow#1 openURL '%s'
-wxString CPreferences::GetBrowser() const
+wxString CPreferences::GetBrowser()
 {
 	wxString cmd;
-	if( prefs->BrowserTab )
-                switch ( prefs->Browser ) {
+	if( s_BrowserTab )
+                switch ( s_Browser ) {
                         case 0: cmd = wxT("kfmclient exec '%s'"); break;
                         case 1: cmd = wxT("sh -c \"if ! mozilla -remote 'openURL(%s, new-tab)'; then mozilla '%s'; fi\""); break;
                         case 2: cmd = wxT("sh -c \"if ! firefox -remote 'openURL(%s, new-tab)'; then firefox '%s'; fi\""); break;
@@ -597,12 +767,12 @@ wxString CPreferences::GetBrowser() const
                         case 5: cmd = wxT("sh -c \"if ! netscape -remote 'openURLs(%s,new-tab)'; then netscape '%s'; fi\""); break;
                         case 6: cmd = wxT("galeon -n '%s'"); break;
                         case 7: cmd = wxT("epiphany -n '%s'"); break;
-                        case 8: cmd = char2unicode(prefs->CustomBrowser); break;
+                        case 8: cmd = s_CustomBrowser; break;
                         default:
                                 printf("Unable to determine selected browser!\n");
                 }
         else
-		switch ( prefs->Browser ) {
+		switch ( s_Browser ) {
 			case 0: cmd = wxT("konqueror '%s'"); break;
 			case 1: cmd = wxT("sh -c 'mozilla %s'"); break;
 			case 2: cmd = wxT("firefox '%s'"); break;
@@ -611,7 +781,7 @@ wxString CPreferences::GetBrowser() const
 			case 5: cmd = wxT("netscape '%s'"); break;
 			case 6: cmd = wxT("galeon '%s'"); break;
 			case 7: cmd = wxT("epiphany '%s'"); break;
-			case 8: cmd = char2unicode(prefs->CustomBrowser); break;
+			case 8: cmd = s_CustomBrowser; break;
 			default:
 				printf("Unable to determine selected browser!\n");
 		}

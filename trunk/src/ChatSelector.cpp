@@ -186,7 +186,7 @@ bool CChatSelector::SendMessage( const wxString& message )
 		packet->SetOpCode(OP_MESSAGE);
 		theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
 		ci->client->socket->SendPacket(packet, true, true);
-		ci->AddText( wxString(char2unicode(theApp.glob_prefs->GetUserNick())), COLOR_GREEN );
+		ci->AddText( theApp.glob_prefs->GetUserNick(), COLOR_GREEN );
 		ci->AddText( wxT(": ") + message + wxT("\n"), COLOR_BLACK );
 	} else {
 		printf("Not connected to Chat. Trying to connect...\n");
@@ -243,7 +243,7 @@ void CChatSelector::ConnectionResult(CUpDownClient* sender, bool success)
 		theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
 		ci->client->socket->SendPacket(packet, true, true);
 		
-		ci->AddText( wxString(char2unicode(theApp.glob_prefs->GetUserNick())), COLOR_GREEN );
+		ci->AddText( theApp.glob_prefs->GetUserNick(), COLOR_GREEN );
 		ci->AddText( wxT(": ") + ci->messagepending + wxT("\n"), COLOR_BLACK );
 		
 		ci->messagepending.Clear();
