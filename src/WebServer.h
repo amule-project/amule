@@ -493,7 +493,7 @@ class SearchInfo : public UpdatableItemsContainer<SearchFile, xSearchSort, CEC_S
 		
 		SearchInfo(CamulewebApp *webApp);
 		
-		virtual bool ReQuery();
+		//virtual bool ReQuery();
 
 		bool CompareItems(const SearchFile &i1, const SearchFile &i2);
 };
