@@ -978,8 +978,12 @@ void CPartFile::SaveSourceSeeds() {
 	// However, if we have downloading sources, they have preference because
 	// we probably have more credits on them.
 	// Anyway, source exchange will get us the rest of the sources
-	// This function also saves load on servers on first run - and avoids 
-	// being unable to download if not server available
+	// This feature is currently used only on rare files (< 20 sources)
+	// 
+	
+	if (GetSourceCount()>20) {
+		return;	
+	}	
 	
 	CTypedPtrList<CPtrList, CUpDownClient*>	source_seeds;
 	int n_sources = 0;
@@ -1151,7 +1155,7 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
 			if (IsComplete(i*PARTSIZE,((i+1)*PARTSIZE)-1)){
 				if (!(result->GetPartHash(i) && !md4cmp(result->GetPartHash(i),this->GetPartHash(i)))){
 					theApp.amuledlg->AddLogLine(false, CString(_("Found corrupted part (%i) in %i parts file %s - FileResultHash |%s| FileHash |%s|")), i+1, GetED2KPartHashCount(), m_strFileName.GetData(),result->GetPartHash(i),this->GetPartHash(i));							
-					theApp.amuledlg->AddLogLine(false, CString(_("Found corrupted part (%i) in %s")), i+1, m_strFileName.GetData());		
+//					theApp.amuledlg->AddLogLine(false, CString(_("Found corrupted part (%i) in %s")), i+1, m_strFileName.GetData());		
 					AddGap(i*PARTSIZE,((((i+1)*PARTSIZE)-1) >= m_nFileSize) ? m_nFileSize-1 : ((i+1)*PARTSIZE)-1);
 					errorfound = true;
 				}

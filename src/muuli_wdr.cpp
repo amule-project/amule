@@ -1962,10 +1962,6 @@ wxSizer *PreferencesGeneralTab( wxWindow *parent, bool call_fit, bool set_sizer 
     wxCheckBox *item40 = new wxCheckBox( parent, IDC_STARTMIN, _("Start minimized"), wxDefaultPosition, wxDefaultSize, 0 );
     item30->Add( item40, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item41 = new wxCheckBox( parent, IDC_FED2KLH, _("Show Fast ED2K Links Handler"), wxDefaultPosition, wxDefaultSize, 0 );
-    item41->SetValue( TRUE );
-    item30->Add( item41, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0 );
-
     item0->Add( item30, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxTOP, 5 );
 
     if (set_sizer)
@@ -2348,7 +2344,8 @@ wxSizer *PreferencesFilesTab( wxWindow *parent, bool call_fit, bool set_sizer )
     item16->SetValue( TRUE );
     item9->Add( item16, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
 
-    wxCheckBox *item17 = new wxCheckBox( parent, IDC_SRCSEEDS, _("Use sources seeds"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxCheckBox *item17 = new wxCheckBox( parent, IDC_SRCSEEDS, _("Save 5 sources on rare files (< 20 sources)"), wxDefaultPosition, wxDefaultSize, 0 );
+    item17->SetValue( TRUE );
     item9->Add( item17, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
     item0->Add( item9, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
@@ -2768,11 +2765,11 @@ wxSizer *PreferencesGuiTweaksTab( wxWindow *parent, bool call_fit, bool set_size
 
     wxCheckBox *item22 = new wxCheckBox( parent, IDC_PERCENT, _("Show percentage"), wxDefaultPosition, wxDefaultSize, 0 );
     item22->SetValue( TRUE );
-    item20->Add( item22, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item20->Add( item22, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
     wxCheckBox *item23 = new wxCheckBox( parent, IDC_PROGBAR, _("Show progressbar "), wxDefaultPosition, wxDefaultSize, 0 );
     item23->SetValue( TRUE );
-    item20->Add( item23, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item20->Add( item23, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
     item0->Add( item20, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
@@ -2780,7 +2777,11 @@ wxSizer *PreferencesGuiTweaksTab( wxWindow *parent, bool call_fit, bool set_size
     wxStaticBoxSizer *item24 = new wxStaticBoxSizer( item25, wxVERTICAL );
 
     wxCheckBox *item26 = new wxCheckBox( parent, IDC_NEWSTYLETABS, _("Use old style tabs on preferences"), wxDefaultPosition, wxDefaultSize, 0 );
-    item24->Add( item26, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item24->Add( item26, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+
+    wxCheckBox *item27 = new wxCheckBox( parent, IDC_FED2KLH, _("Show Fast ED2K Links Handler"), wxDefaultPosition, wxDefaultSize, 0 );
+    item27->SetValue( TRUE );
+    item24->Add( item27, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
     item0->Add( item24, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
