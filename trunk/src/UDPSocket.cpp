@@ -159,11 +159,7 @@ void CUDPSocket::OnReceive(int nErrorCode){
 	wxUint32 length = LastCount();
 	// strip IP address from wxSockAddress (do not call Hostname(). we do not want DNS)
 	struct in_addr addr_in;
-	#ifdef __WXMSW__
 	addr_in.s_addr = inet_addr(addr.IPAddress().c_str());
-	#else
-	addr_in.s_addr=GAddress_INET_GetHostAddress(addr.GetAddress());
-	#endif
 	char* fromIP=inet_ntoa(addr_in);
 
 	if (buffer[0] == (char)OP_EDONKEYPROT && length != static_cast<wxUint32>(-1))

@@ -59,11 +59,13 @@
 #include "ListenSocket.h"	// Needed for CClientReqSocket
 #include "opcodes.h"		// Needed for SOURCESSLOTS
 #include "updownclient.h"	// Needed for CUpDownClient
+#include "amuleIPV4Address.h"	// Needed for amuleIPV4Address
 
 // some client testing variables
 static wxString crash_name   = "[Invalid User Name]"; 
 static wxString empty_name = "[Empty User Name]";
 
+/*
 // prevent fscking dns queries
 class amuleIPV4Address : public wxIPV4address {
 public:
@@ -79,6 +81,7 @@ public:
 	}
 #endif
 };
+*/
 
 //	members of CUpDownClient
 //	which are used by down and uploading functions 
@@ -198,11 +201,7 @@ void CUpDownClient::Init()
 		socket->GetPeer(address);
 		//uint32 nSockAddrLen = sizeof(sockAddr);
 		//socket->GetPeerName((SOCKADDR*)&sockAddr,(int*)&nSockAddrLen);
-//		#ifdef __WXMSW__
 		sockAddr.sin_addr.s_addr = inet_addr(address.IPAddress().c_str());
-//		#else
-//		sockAddr.sin_addr.s_addr=GAddress_INET_GetHostAddress(address.GetAddress());
-//		#endif
 		m_dwUserIP = sockAddr.sin_addr.s_addr;
 		strcpy(m_szFullUserIP,inet_ntoa(sockAddr.sin_addr));
 	}
@@ -419,11 +418,7 @@ void CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
 		memset(&sockAddr, 0, sizeof(sockAddr));
 		wxIPV4address address;
 		socket->GetPeer(address);
-	#ifdef __WXMSW__
 		sockAddr.sin_addr.s_addr=inet_addr(address.IPAddress().c_str());
-	#else	
-		sockAddr.sin_addr.s_addr=GAddress_INET_GetHostAddress(address.GetAddress());
-	#endif
 	//uint32 nSockAddrLen = sizeof(sockAddr);
 		//socket->GetPeerName((SOCKADDR*)&sockAddr,(int*)&nSockAddrLen);
 		m_dwUserIP = sockAddr.sin_addr.s_addr;
@@ -669,7 +664,9 @@ void CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
 			memset(&sockAddr, 0, sizeof(sockAddr));
 			wxIPV4address address;
 			socket->GetPeer(address);
-			sockAddr.sin_addr.s_addr=GAddress_INET_GetHostAddress(address.GetAddress());
+			
+			sockAddr.sin_addr.s_addr=inet_addr(address.GetAddress().GetData());
+			
 			//uint32 nSockAddrLen = sizeof(sockAddr);
 			//socket->GetPeerName((SOCKADDR*)&sockAddr,(int*)&nSockAddrLen);
 			m_dwUserIP = sockAddr.sin_addr.s_addr;
@@ -828,11 +825,7 @@ void CUpDownClient::SendHelloPacket() {
 		//socket->GetPeerName((SOCKADDR*)&sockAddr,(int*)&nSockAddrLen);
 		wxIPV4address address;
 		socket->GetPeer(address);
-		#ifdef __WXMSW__
 		sockAddr.sin_addr.s_addr = inet_addr(address.IPAddress().c_str());
-		#else
-		sockAddr.sin_addr.s_addr = GAddress_INET_GetHostAddress(address.GetAddress());
-		#endif
 		if ( theApp.ipfilter->IsFiltered(sockAddr.sin_addr.s_addr)) {
 			theApp.amuledlg->AddDebugLogLine(true,CString(_("Filtered IP: %s (%s)")).GetData(),GetFullIP(),theApp.ipfilter->GetLastHit().GetData());
 			Disconnected();
