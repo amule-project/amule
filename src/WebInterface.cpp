@@ -71,7 +71,7 @@ static CWebServer *webserver = NULL;
 #endif
 
 //-------------------------------------------------------------------
-IMPLEMENT_APP(CamulewebApp)
+IMPLEMENT_APP(CamulewebApp);
 //-------------------------------------------------------------------
 
 //-------------------------------------------------------------------
@@ -183,11 +183,7 @@ void CamulewebFrame::OnTimerEvent(wxTimerEvent &WXUNUSED(event))
 {
 	wxWakeUpIdle();
 }
-//-------------------------------------------------------------------
-#endif
-//-------------------------------------------------------------------
 
-#if wxUSE_GUI
 void CamulewebApp::LocalShow(const wxString &s)
 {
 	if (!frame) {
@@ -195,6 +191,36 @@ void CamulewebApp::LocalShow(const wxString &s)
 	}
 	frame->log_text->AppendText(s);
 }
+
+int CamulewebApp::OnExit() {
+	frame = NULL;
+	if (webserver) {
+		webserver->StopServer();
+	}
+	return 0;
+}
+
+bool CamulewebApp::OnInit() {
+	CaMuleExternalConnector::OnInit();
+	frame = new CamulewebFrame(_("amuleweb DLG"), wxPoint(50, 50), wxSize(APP_INIT_SIZE_X, APP_INIT_SIZE_Y));
+	frame->Show(true);
+	ConnectAndRun(wxT("aMuleweb"), commands);
+
+	return true;
+}
+
+#else
+
+int CamulewebApp::OnRun() {
+	ConnectAndRun(wxT("aMuleweb"), commands);
+
+	return true;
+}
+
+void CamulewebApp::Post_Shell() {
+	webserver->StopServer();
+}
+
 #endif
 
 void CamulewebApp::OnInitCmdLine(wxCmdLineParser& amuleweb_parser)
@@ -257,34 +283,3 @@ void CamulewebApp::Pre_Shell() {
 	webserver = new CWebServer(this);
 	webserver->StartServer();
 }
-
-#if !wxUSE_GUI
-void CamulewebApp::Post_Shell() {
-	webserver->StopServer();
-}
-#endif
-
-
-#if wxUSE_GUI
-int CamulewebApp::OnExit() {
-	frame = NULL;
-	if (webserver) {
-		webserver->StopServer();
-	}
-	return 0;
-}
-#endif
-
-#if wxUSE_GUI
-bool CamulewebApp::OnInit() {
-	CaMuleExternalConnector::OnInit();
-	frame = new CamulewebFrame(_("amuleweb DLG"), wxPoint(50, 50), wxSize(APP_INIT_SIZE_X, APP_INIT_SIZE_Y));
-	frame->Show(true);
-#else
-int CamulewebApp::OnRun() {
-#endif
-	ConnectAndRun(wxT("aMuleweb"), commands);
-
-	return true;
-}
-
