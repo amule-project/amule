@@ -36,7 +36,7 @@
 #pragma hdrstop
 #endif
 
-#ifndef WX_PRECOMP
+#ifndef WX_PRECOMP || defined(__WXMAC__)
 #include <wx/filename.h>
 #endif
 
