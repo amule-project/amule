@@ -40,9 +40,14 @@
 #endif
 
 #include <wx/filename.h>
+#include <wx/log.h>
 
 #include "alcc.h"
 #include "ed2khash.h"
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"             // Needed for PACKAGE
+#endif
 
 // Application implementation
 IMPLEMENT_APP (alcc)
@@ -52,8 +57,12 @@ int alcc::OnRun ()
 {
   // Used to tell wxCas to use aMule catalog
   m_locale.Init();
-  m_locale.AddCatalog(wxT("amule"));
-  
+  m_locale.AddCatalog(wxT(PACKAGE));
+
+  wxLog::DontCreateOnDemand();
+  delete wxLog::SetActiveTarget(new wxLogStderr); // Replace printf by Log on Stderr
+  wxLog::SetTimestamp(NULL); // Disable timestamp on messages
+
   Ed2kHash hash;
   size_t i;
   for (i=0;i<(m_filesToHash.GetCount());i++)
@@ -62,26 +71,25 @@ int alcc::OnRun ()
         {
           if (m_flagVerbose)
             {
-              printf(unicode2char(_("Processing file number %u: %s\n")),i+1,unicode2char(m_filesToHash[i]));
+              wxLogMessage(_("Processing file number %u: %s"),i+1,m_filesToHash[i].c_str());
+
               if (m_flagPartHashes)
                 {
-                  printf(unicode2char(_("You have asked for part hashes (Only used for files > 9.5 MB)\n")));
+                  wxLogMessage(_("You have asked for part hashes (Only used for files > 9.5 MB)"));
                 }
             }
-	    
-          printf (unicode2char(_("Please wait... ")));
-	    
+
+          wxLogMessage(_("Please wait... "));
+
           if (hash.SetED2KHashFromFile(m_filesToHash[i], NULL))
             {
-              printf (unicode2char(_("Done !\n")));
-		    
-              printf (unicode2char(wxT("%s ---> %s\n\n")),unicode2char(m_filesToHash[i]),
-                      unicode2char(hash.GetED2KLink(m_flagPartHashes)));
+              wxLogMessage(wxT("%s ---> %s\n"),m_filesToHash[i].c_str(),
+                           hash.GetED2KLink(m_flagPartHashes).c_str());
             }
         }
       else
         {
-          printf (unicode2char(_("%s ---> Non existant file !\n\n")),unicode2char(m_filesToHash[i]));
+          wxLogMessage(_("%s ---> Non existant file !\n"),m_filesToHash[i].c_str());
         }
     }
   return 0;
@@ -111,6 +119,6 @@ bool alcc::OnCmdLineParsed(wxCmdLineParser& cmdline)
       m_filesToHash.Add(filename.GetFullPath());
     }
   m_filesToHash.Shrink();
-    
+
   return true;
 }

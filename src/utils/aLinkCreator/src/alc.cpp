@@ -41,6 +41,10 @@
     #include "wx/wx.h"
 #endif
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"             // Needed for PACKAGE
+#endif
+
 #include "alc.h"
 
 // Application implementation
@@ -50,7 +54,7 @@ bool alc::OnInit ()
 {
   // Used to tell wxCas to use aMule catalog
   m_locale.Init();
-  m_locale.AddCatalog(wxT("amule"));
+  m_locale.AddCatalog(wxT(PACKAGE));
   
   m_alcFrame = new AlcFrame (_("aLinkCreator, the aMule ed2k link creator"));
   m_alcFrame->Show (true);

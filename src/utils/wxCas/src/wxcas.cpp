@@ -43,6 +43,10 @@
     #include "wx/wx.h"
 #endif
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"             // Needed for PACKAGE
+#endif
+
 #if !wxUSE_PRINTING_ARCHITECTURE
 #error You must set wxUSE_PRINTING_ARCHITECTURE to 1 in setup.h to compile wxCas.
 #endif
@@ -60,7 +64,7 @@ WxCas::OnInit ()
 {
   // Used to tell wxCas to use aMule catalog
   m_locale.Init();
-  m_locale.AddCatalog(wxT("amule"));
+  m_locale.AddCatalog(wxT(PACKAGE));
 
 #if wxUSE_LIBPNG
   wxImage::AddHandler (new wxPNGHandler);
