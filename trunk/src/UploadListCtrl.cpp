@@ -138,15 +138,17 @@ void CUploadListCtrl::OnNMRclick(wxMouseEvent& evt)
 	long item=-1;
 	int lips=0;
 	int index=HitTest(evt.GetPosition(), lips);
-	if (!GetItemState(index, wxLIST_STATE_SELECTED)) {
-		for (;;) {
-			item = GetNextItem(item,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
-			if (item==-1) {
-				break;
+	if (index != -1) {
+		if (!GetItemState(index, wxLIST_STATE_SELECTED)) {
+			for (;;) {
+				item = GetNextItem(item,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
+				if (item==-1) {
+					break;
+				}
+				SetItemState(item, 0, wxLIST_STATE_SELECTED);
 			}
-			SetItemState(item, 0, wxLIST_STATE_SELECTED);
+			SetItemState(index, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
 		}
-		SetItemState(index, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
 	}
 	if(m_ClientMenu==NULL) {
 		wxMenu* menu=new wxMenu(CString(_("Clients")));
@@ -157,6 +159,11 @@ void CUploadListCtrl::OnNMRclick(wxMouseEvent& evt)
 		menu->Append(MP_SWITCHCTRL,CString(_("Show Queue")));
 		m_ClientMenu=menu;
 	}
+	
+	m_ClientMenu->Enable(MP_DETAIL,(index!=-1));
+	m_ClientMenu->Enable(MP_ADDFRIEND,(index!=-1));
+	m_ClientMenu->Enable(MP_SHOWLIST,(index!=-1));
+	
 	PopupMenu(m_ClientMenu,evt.GetPosition());
 }
 
