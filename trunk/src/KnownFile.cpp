@@ -42,6 +42,7 @@
 #include <sys/stat.h>
 #include <wx/string.h>
 #include <wx/filename.h>
+#include <wx/confbase.h>
 #include <wx/fileconf.h>
 
 #include "KnownFile.h"		// Interface declarations.
