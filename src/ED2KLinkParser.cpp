@@ -198,6 +198,8 @@ void writeLink( const string& uri )
 	}
 
 	file << uri << std::endl;
+
+	std::cout << "Link succesfully queued." << std::endl;
 }
 
 
