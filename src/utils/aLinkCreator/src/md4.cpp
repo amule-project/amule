@@ -70,6 +70,7 @@
 #include <wx/ffile.h>
 #include "md4.h"
 #include "bithelp.h"
+#include "../../../otherfunctions.h"	// char2unicode
 
 /*
  * The algorithm is due to Ron Rivest.  This code is based on code
@@ -301,20 +302,20 @@ void MD4::MD4Transform(uint32_t buf[4], uint32_t const in[16])
 
 bool MD4::selfTest()
 {
-  wxString test1("");
-  wxString test1_md("31D6CFE0D16AE931B73C59D7E0C089C0");
-  wxString test2("a");
-  wxString test2_md("BDE52CB31DE33E46245E05FBDBD6FB24");
-  wxString test3("abc");
-  wxString test3_md("A448017AAF21D8525FC10AE87AA6729D");
-  wxString test4("message digest");
-  wxString test4_md("D9130A8164549FE818874806E1C7014B");
-  wxString test5("abcdefghijklmnopqrstuvwxyz");
-  wxString test5_md("D79E1C308AA5BBCDEEA8ED63DF412DA9");
-  wxString test6("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789");
-  wxString test6_md("043F8582F241DB351CE627E153E7F0E4");
-  wxString test7("12345678901234567890123456789012345678901234567890123456789012345678901234567890");
-  wxString test7_md("E33B4DDC9C38F2199C3E7B164FCC0536");
+  wxString test1(wxT(""));
+  wxString test1_md(wxT("31D6CFE0D16AE931B73C59D7E0C089C0"));
+  wxString test2(wxT("a"));
+  wxString test2_md(wxT("BDE52CB31DE33E46245E05FBDBD6FB24"));
+  wxString test3(wxT("abc"));
+  wxString test3_md(wxT("A448017AAF21D8525FC10AE87AA6729D"));
+  wxString test4(wxT("message digest"));
+  wxString test4_md(wxT("D9130A8164549FE818874806E1C7014B"));
+  wxString test5(wxT("abcdefghijklmnopqrstuvwxyz"));
+  wxString test5_md(wxT("D79E1C308AA5BBCDEEA8ED63DF412DA9"));
+  wxString test6(wxT("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"));
+  wxString test6_md(wxT("043F8582F241DB351CE627E153E7F0E4"));
+  wxString test7(wxT("12345678901234567890123456789012345678901234567890123456789012345678901234567890"));
+  wxString test7_md(wxT("E33B4DDC9C38F2199C3E7B164FCC0536"));
 
   MD4 md4;
 
@@ -357,7 +358,7 @@ wxString MD4::calcMd4FromFile(const wxString &filename)
   unsigned char ret[MD4_HASHLEN_BYTE];
   MD4Context hdc;
 
-  wxFFile file(filename, "rbS");
+  wxFFile file(filename, wxT("rbS"));
   if (! file.IsOpened())
     {
       return wxEmptyString;
@@ -400,14 +401,14 @@ wxString MD4::charToHex(const char *buf, unsigned int len)
       cur = *(buf + i);
       if (cur == 0)
         {
-          ret += "00";
+          ret += wxT("00");
         }
       else
         {
           sprintf(tmp, "%x", 0xFF & *(buf + i));
           if (strlen(tmp) == 1)
             ret += '0';
-          ret += tmp;
+          ret += char2unicode(tmp);
         }
     }
 
