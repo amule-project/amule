@@ -835,13 +835,14 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	 * Files
 	 **/
 	NewCfgItem(IDC_TEMPFILES,	(new Cfg_Str(  wxT("/eMule/TempDir"), 	s_tempdir, appdir + wxT("Temp") )));
-	NewCfgItem(IDC_INCFILES,	(new Cfg_Str(  wxT("/eMule/IncomingDir"), s_incomingdir, 
-		#ifdef __WXMAC__
-			wxGetHomeDir() + wxFileName::GetPathSeparator() + wxT("Documents") + wxFileName::GetPathSeparator() + wxT("aMule Downloads")
-		#else 
-			appdir + wxT("Incoming") 
-		#endif
-		)));
+	
+	#ifdef __WXMAC__
+		wxString incpath = wxGetHomeDir() + wxFileName::GetPathSeparator() + wxT("Documents") + wxFileName::GetPathSeparator() + wxT("aMule Downloads");
+	#else 
+		wxString incpath = appdir + wxT("Incoming");
+	#endif
+	NewCfgItem(IDC_INCFILES,	(new Cfg_Str(  wxT("/eMule/IncomingDir"), s_incomingdir, incpath )));
+	
 	NewCfgItem(IDC_ICH,		(new Cfg_Bool( wxT("/eMule/ICH"), s_ICH, true )));
 	NewCfgItem(IDC_AICHTRUST,	(new Cfg_Bool( wxT("/eMule/AICHTrust"), s_AICHTrustEveryHash, false )));
 	NewCfgItem(IDC_METADATA,	(new Cfg_Bool( wxT("/ExternalConnect/ExtractMetaDataTags"), s_ExtractMetaData, false )));
