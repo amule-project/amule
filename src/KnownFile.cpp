@@ -116,17 +116,16 @@ CKnownFile::~CKnownFile(){
 			delete[] hashlist[i];
 		
 	hashlist.Clear();		
-	/*		
-	for (int i = 0; i != taglist.GetCount(); i++)
+			
+	for (int i = 0; i != taglist.GetCount(); i++) {
 		delete taglist[i];
-	*/
-		
-	taglist.Clear();
-		
+	}
+				
 //	if (filename)	// done by CAbstractFile destructor
 //		delete[] filename;
-	if (directory)
+	if (directory) {
 		delete[] directory;
+	}
 	
 	m_AvailPartFrequency.Clear();
 }
