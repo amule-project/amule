@@ -397,7 +397,12 @@ void CSearchDlg::StartNewSearch()
 	if ( !typeText.IsEmpty() ) {
 		data->Write( typeParameter );		// Search-Type is a type parameter type
 		data->Write( typeText ); 				// Write the parameter
-		data->WriteRaw(&typeNemonic, 3); 	// Nemonic for this kind of parameter (only 3 bytes!!)
+#if wxBYTE_ORDER == wxLITTLE_ENDIAN
+		data->WriteRaw(&typeNemonic, 3); // Nemonic for this kind of parameter (only 3 bytes!!)
+#else
+		uint32 endian_corrected = ENDIAN_SWAP_32(typeNemonic);
+		data->WriteRaw(&endian_corrected, 3); // Nemonic for this kind of parameter (only 3 bytes!!)
+#endif
 	}
 	
 	if ( min > 0 ) {
@@ -421,7 +426,12 @@ void CSearchDlg::StartNewSearch()
 	if ( !extension.IsEmpty() ) {
 		data->Write( stringParameter );		// Write the parameter type
 		data->Write( extension );			// Write the parameter
+#if wxBYTE_ORDER == wxLITTLE_ENDIAN
 		data->WriteRaw(&extensionNemonic, 3); // Nemonic for this kind of parameter (only 3 bytes!!)
+#else
+		uint32 endian_corrected = ENDIAN_SWAP_32(extensionNemonic);
+		data->WriteRaw(&endian_corrected, 3); // Nemonic for this kind of parameter (only 3 bytes!!)
+#endif		
 	}
 	
 	Packet* packet = new Packet(data);
