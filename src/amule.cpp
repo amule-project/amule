@@ -315,6 +315,8 @@ bool CamuleApp::OnInit()
 	downloadqueue	= NULL;
 	uploadqueue 	= NULL;
 	ipfilter			= NULL;
+	
+	m_dwPublicIP = 0;
 
 	// Default geometry of the GUI. Can be changed with a cmdline argument...
 	bool geometry_enabled = false;
