@@ -194,7 +194,6 @@ AC_DEFUN([AM_PATH_WXCONFIG],
       WX_CXXFLAGS=""
       WX_LIBS=""
       WX_LIBS_STATIC=""
-      ifelse([$3], , :, [$3])
 
     fi
   fi
