@@ -1980,34 +1980,30 @@ wxSizer *PreferencesServerTab( wxWindow *parent, bool call_fit, bool set_sizer )
 
     item4->Add( item10, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item13 = new wxCheckBox( parent, IDC_FILTER, _("Always filter bad IPs"), wxDefaultPosition, wxDefaultSize, 0 );
-    item13->SetValue( TRUE );
-    item4->Add( item13, 0, wxALIGN_CENTER_VERTICAL, 0 );
+    wxCheckBox *item13 = new wxCheckBox( parent, IDC_UPDATESERVERCONNECT, _("Update serverlist when connecting to a server"), wxDefaultPosition, wxDefaultSize, 0 );
+    item4->Add( item13, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item14 = new wxCheckBox( parent, IDC_UPDATESERVERCONNECT, _("Update serverlist when connecting to a server"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxCheckBox *item14 = new wxCheckBox( parent, IDC_UPDATESERVERCLIENT, _("Update serverlist when a client connect"), wxDefaultPosition, wxDefaultSize, 0 );
     item4->Add( item14, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item15 = new wxCheckBox( parent, IDC_UPDATESERVERCLIENT, _("Update serverlist when a client connect"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxCheckBox *item15 = new wxCheckBox( parent, IDC_SCORE, _("Use priority system"), wxDefaultPosition, wxDefaultSize, 0 );
+    item15->SetValue( TRUE );
     item4->Add( item15, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item16 = new wxCheckBox( parent, IDC_SCORE, _("Use priority system"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxCheckBox *item16 = new wxCheckBox( parent, IDC_SMARTIDCHECK, _("Use smart LowID check on connect"), wxDefaultPosition, wxDefaultSize, 0 );
     item16->SetValue( TRUE );
     item4->Add( item16, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item17 = new wxCheckBox( parent, IDC_SMARTIDCHECK, _("Use smart LowID check on connect"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxCheckBox *item17 = new wxCheckBox( parent, IDC_SAFESERVERCONNECT, _("Safe connect"), wxDefaultPosition, wxDefaultSize, 0 );
     item17->SetValue( TRUE );
     item4->Add( item17, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item18 = new wxCheckBox( parent, IDC_SAFESERVERCONNECT, _("Safe connect"), wxDefaultPosition, wxDefaultSize, 0 );
-    item18->SetValue( TRUE );
+    wxCheckBox *item18 = new wxCheckBox( parent, IDC_AUTOCONNECTSTATICONLY, _("Autoconnect to servers in static list only"), wxDefaultPosition, wxDefaultSize, 0 );
     item4->Add( item18, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item19 = new wxCheckBox( parent, IDC_AUTOCONNECTSTATICONLY, _("Autoconnect to servers in static list only"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxCheckBox *item19 = new wxCheckBox( parent, IDC_MANUALSERVERHIGHPRIO, _("Set manually added servers to High Priority"), wxDefaultPosition, wxDefaultSize, 0 );
+    item19->SetValue( TRUE );
     item4->Add( item19, 0, wxALIGN_CENTER_VERTICAL, 5 );
-
-    wxCheckBox *item20 = new wxCheckBox( parent, IDC_MANUALSERVERHIGHPRIO, _("Set manually added servers to High Priority"), wxDefaultPosition, wxDefaultSize, 0 );
-    item20->SetValue( TRUE );
-    item4->Add( item20, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
     item0->Add( item4, 0, wxADJUST_MINSIZE|wxGROW|wxALL, 5 );
 
@@ -3359,12 +3355,12 @@ wxSizer *PreferencesSecurityTab( wxWindow *parent, bool call_fit, bool set_sizer
     item24->SetToolTip( _("Reload the list of IPs to filter from the file ~/.aMule/ipfilter.dat") );
     item22->Add( item24, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    item20->Add( item22, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+    item20->Add( item22, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
 
     wxBoxSizer *item25 = new wxBoxSizer( wxVERTICAL );
 
     wxCheckBox *item26 = new wxCheckBox( parent, IDC_AUTOIPFILTER, _("Auto-update ipfilter at startup"), wxDefaultPosition, wxDefaultSize, 0 );
-    item25->Add( item26, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    item25->Add( item26, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
 
     wxFlexGridSizer *item27 = new wxFlexGridSizer( 3, 0, 0 );
     item27->AddGrowableCol( 1 );
@@ -3382,29 +3378,41 @@ wxSizer *PreferencesSecurityTab( wxWindow *parent, bool call_fit, bool set_sizer
 
     item20->Add( item25, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL, 15 );
 
-    wxBoxSizer *item31 = new wxBoxSizer( wxHORIZONTAL );
+    wxBoxSizer *item31 = new wxBoxSizer( wxVERTICAL );
 
-    wxStaticText *item32 = new wxStaticText( parent, ID_TEXT, _("Filtering Level:"), wxDefaultPosition, wxDefaultSize, 0 );
-    item31->Add( item32, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxBoxSizer *item32 = new wxBoxSizer( wxHORIZONTAL );
 
-    item31->Add( 10, 10, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+    wxStaticText *item33 = new wxStaticText( parent, ID_TEXT, _("Filtering Level:"), wxDefaultPosition, wxDefaultSize, 0 );
+    item32->Add( item33, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxSpinCtrl *item33 = new wxSpinCtrl( parent, ID_IPFILTERLEVEL, wxT("0"), wxDefaultPosition, wxDefaultSize, 0, 0, 255, 0 );
-    item31->Add( item33, 0, wxALIGN_CENTER|wxALL, 5 );
+    item32->Add( 10, 10, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 
-    item20->Add( item31, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 0 );
+    wxSpinCtrl *item34 = new wxSpinCtrl( parent, ID_IPFILTERLEVEL, wxT("0"), wxDefaultPosition, wxDefaultSize, 0, 0, 255, 0 );
+    item32->Add( item34, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    item31->Add( item32, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 0 );
+
+    item20->Add( item31, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+
+    wxBoxSizer *item35 = new wxBoxSizer( wxHORIZONTAL );
+
+    wxCheckBox *item36 = new wxCheckBox( parent, IDC_FILTER, _("Always filter bad IPs"), wxDefaultPosition, wxDefaultSize, 0 );
+    item36->SetValue( TRUE );
+    item35->Add( item36, 0, wxALIGN_CENTER_VERTICAL, 0 );
+
+    item20->Add( item35, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
 
     item0->Add( item20, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticBox *item35 = new wxStaticBox( parent, -1, _("Client Identification:") );
-    wxStaticBoxSizer *item34 = new wxStaticBoxSizer( item35, wxVERTICAL );
+    wxStaticBox *item38 = new wxStaticBox( parent, -1, _("Client Identification:") );
+    wxStaticBoxSizer *item37 = new wxStaticBoxSizer( item38, wxVERTICAL );
 
-    wxCheckBox *item36 = new wxCheckBox( parent, IDC_SECIDENT, _("Use Secure Identification"), wxDefaultPosition, wxDefaultSize, 0 );
-    item36->SetValue( TRUE );
-    item36->SetToolTip( _("Secure Identification uses a handshake approch to safely identify clients for use with the credit system.") );
-    item34->Add( item36, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxCheckBox *item39 = new wxCheckBox( parent, IDC_SECIDENT, _("Use Secure Identification"), wxDefaultPosition, wxDefaultSize, 0 );
+    item39->SetValue( TRUE );
+    item39->SetToolTip( _("Secure Identification uses a handshake approch to safely identify clients for use with the credit system.") );
+    item37->Add( item39, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    item0->Add( item34, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item0->Add( item37, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     if (set_sizer)
     {
