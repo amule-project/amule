@@ -26,7 +26,7 @@ _DEFINE_LIST(char*, VoidList);	// WX_DEFINE_LIST(VoidList), but avoiding warning
 WX_DEFINE_LIST(stringList);
 
 int stricmp( const char* s1, const char* s2 ) {
-	return(wxString::wxString(s1).CmpNoCase(s2));
+	return(wxString::wxString(char2unicode(s1)).CmpNoCase(char2unicode(s2)));
 }
 
  /*

@@ -101,7 +101,7 @@ CMuleListCtrl::~CMuleListCtrl()
 
 void CMuleListCtrl::SetNamaMule(LPCTSTR lpszName)
 {
-	m_Name = lpszName;
+	m_Name = char2unicode(lpszName);
 }
 
 //new fix for old problem... normally Update(int) causes entire list to redraw

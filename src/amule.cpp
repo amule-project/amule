@@ -1697,7 +1697,7 @@ void CamuleApp::OnFinishedHashing(wxCommandEvent& evt)
 	static int bytecount = 0;
 
 	CKnownFile* result = (CKnownFile*)evt.GetClientData();
-	printf("Finished Hashing %s\n",result->GetFileName().c_str());
+	printf("Finished Hashing %s\n",unicode2char(result->GetFileName()));
 	if (evt.GetExtraLong()) {
 		CPartFile* requester = (CPartFile*)evt.GetExtraLong();
 		if (downloadqueue->IsPartFile(requester)) {
@@ -1758,17 +1758,17 @@ void CamuleApp::ShutDown() {
 
 		current_socket.socket_n = socket_pointer;
 		current_socket.creation_time = creation_time;
-		current_socket.backtrace = "";
+		current_socket.backtrace = wxT("");
 
 		void *bt_array[6];	// 6 should be enough ?!?
 		char **bt_strings;
 		int num_entries;
 
 		if ((num_entries = backtrace(bt_array, 6)) < 0) {
-			current_socket.backtrace += "* Could not generate backtrace\n";
+			current_socket.backtrace += wxT("* Could not generate backtrace\n");
 		} else {
 			if ((bt_strings = backtrace_symbols(bt_array, num_entries)) == NULL) {
-				current_socket.backtrace += "* Could not get symbol names for backtrace\n";
+				current_socket.backtrace += wxT("* Could not get symbol names for backtrace\n");
 			}  else {
 				int n;
 				if (num_entries < 5) {
@@ -1777,9 +1777,9 @@ void CamuleApp::ShutDown() {
 					n = 5;
 				}
 				for (int i = n - 1; i >= 0; i--) {
-					current_socket.backtrace += wxString::Format("[%d] %s | ", i, bt_strings[i]);
+					current_socket.backtrace += wxString::Format(wxT("[%d] %s | "), i, bt_strings[i]);
 				}
-				current_socket.backtrace += "END";
+				current_socket.backtrace += wxT("END");
 			}
 		}
 
@@ -1790,10 +1790,10 @@ void CamuleApp::ShutDown() {
 
 				printf("\n-----------------------RSB FOUND!!!!!!!!!!!!!!!!!!!!!!!!!------------\n");
 				printf("First deletion  (ptr: %u time: %u) BT:\n",temp_socket.socket_n, temp_socket.creation_time);
-				printf("-> %s\n\n",temp_socket.backtrace.c_str());
+				printf("-> %s\n\n",unicode2char(temp_socket.backtrace));
 
 				printf("Second deletion (ptr: %u time: %u) BT:\n",current_socket.socket_n,current_socket.creation_time);
-				printf("-> %s\n\n",current_socket.backtrace.c_str());
+				printf("-> %s\n\n",unicode2char(current_socket.backtrace));
 
 				printf("--------------------------- Get Ready for RC4---------------------------\n");
 

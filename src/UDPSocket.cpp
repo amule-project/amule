@@ -78,11 +78,11 @@ wxThread::ExitCode AsyncDNS::Entry()
 #endif
 
 #if defined(__linux__)
-  gethostbyname_r(ipName.GetData(),&ret,dataBuf,sizeof(dataBuf),&result,&errorno);
+  gethostbyname_r(unicode2char(ipName),&ret,dataBuf,sizeof(dataBuf),&result,&errorno);
 #elif defined(__WXMSW__)
-  result = gethostbyname(ipName.GetData());
+  result = gethostbyname(unicode2char(ipName));
 #else
-  result = gethostbyname_r(ipName.GetData(),&ret,dataBuf,sizeof(dataBuf),&errorno);
+  result = gethostbyname_r(unicode2char(ipName),&ret,dataBuf,sizeof(dataBuf),&errorno);
 #endif
 
   if(result) {
@@ -153,7 +153,7 @@ void CUDPSocket::OnReceive(int nErrorCode){
 	wxUint32 length = LastCount();
 	// strip IP address from wxSockAddress (do not call Hostname(). we do not want DNS)
 	struct in_addr addr_in;
-	addr_in.s_addr = inet_addr(addr.IPAddress().c_str());
+	addr_in.s_addr = inet_addr(unicode2char(addr.IPAddress()));
 	char* fromIP=inet_ntoa(addr_in);
 
 	if (buffer[0] == (char)OP_EDONKEYPROT && length != static_cast<wxUint32>(-1))
@@ -468,7 +468,7 @@ void CUDPSocket::SendPacket(Packet* packet,CServer* host){
 	    // uh?
 	    return;
 	  }
-	  dns->ipName=cur_server->GetAddress();
+	  dns->ipName=char2unicode(cur_server->GetAddress());
 	  dns->socket=this;
 	  dns->Run();
 	} else {
