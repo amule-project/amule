@@ -21,8 +21,9 @@
 
 
 #include "PrefsUnifiedDlg.h"
-
-
+#include <wx/dirdlg.h>
+#include <wx/msgdlg.h>
+#include <wx/textctrl.h>
 #include <wx/button.h>
 #include <wx/checkbox.h>
 #include <wx/colordlg.h>
@@ -93,7 +94,7 @@ struct PrefsPage
 	//! The title of the page, used on the listctrl.
 	wxString	m_title;
 	//! Function pointer to the wxDesigner function creating the dialog.
-	wxSizer*	(*m_function)(wxWindow*, bool = TRUE, bool = TRUE );
+	wxSizer*	(*m_function)(wxWindow*, bool , bool );
 	//! The index of the image used on the list.
 	int 		m_imageidx;
 	//! The actual widget, to be set later.
@@ -148,7 +149,7 @@ PrefsUnifiedDlg::PrefsUnifiedDlg(wxWindow* parent)
 		
 		// Create a container widget and the contents of the page 
 		pages[i].m_widget = new wxPanel( this, -1 );	
-		pages[i].m_function( pages[i].m_widget, true );
+		pages[i].m_function( pages[i].m_widget, true, true );
 
 		// Add it to the sizer
 		prefs_sizer->Add( pages[i].m_widget, 0, wxGROW|wxEXPAND );
