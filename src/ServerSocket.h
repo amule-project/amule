@@ -48,10 +48,10 @@ public:
 	CString info;
 
  public:
-	void	OnClose(int nErrorCode);
-	void	OnConnect(int nErrorCode);
-	void	OnReceive(int nErrorCode);
-	void	OnError(int nErrorCode);
+	void	OnClose(wxSocketError nErrorCode);
+	void	OnConnect(wxSocketError nErrorCode);
+	void	OnReceive(wxSocketError nErrorCode);
+	void	OnError(wxSocketError nErrorCode);
 	void	PacketReceived(Packet* packet);
 	bool   SendPacket(Packet* packet, bool delpacket = true,bool controlpacket = true);
 private:

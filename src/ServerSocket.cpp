@@ -93,28 +93,15 @@ CServerSocket::~CServerSocket()
 }
 
 
-void CServerSocket::OnConnect(int nErrorCode)
+void CServerSocket::OnConnect(wxSocketError nErrorCode)
 {
 	//CAsyncSocket::OnConnect(nErrorCode);
-	switch (errno) {
-		#if 0
-		case EINPROGRESS:
-			/* Kry - There's no point for this AFAIK!!!
-			while(!WaitOnConnect(1,0)) {
-			}
-			if(!IsConnected()) {
-			} else {
-			}
-			*/
-			break;
-		#endif
-		case 0: {
+	switch (nErrorCode) {
+
+		case wxSOCKET_NOERROR: {
 			if (cur_server->HasDynIP()) {
 				struct sockaddr_in sockAddr;
 				memset(&sockAddr, 0, sizeof(sockAddr));
-				// uint32 nSockAddrLen = sizeof(sockAddr);
-				// GetPeerName((SOCKADDR*)&sockAddr,(int*)&nSockAddrLen);
-				// GetPeer(sockAddr);
 				wxIPV4address tmpaddr;
 				GetPeer(tmpaddr);
 				sockAddr.sin_addr.s_addr = inet_addr(tmpaddr.IPAddress().c_str());
@@ -124,48 +111,39 @@ void CServerSocket::OnConnect(int nErrorCode)
 			SetConnectionState(CS_WAITFORLOGIN);
 			break;
 		}
-		case EINPROGRESS: {
-			theApp.amuledlg->AddLogLine(true,"In progress.. please wait\n");
-			wxIPV4address addr;
-			addr.Hostname(cur_server->GetAddress());
-			addr.Service(cur_server->GetPort());
-			if (!this->Connect(addr,FALSE)) {
-				if(errno!=EINPROGRESS) {
-					theApp.amuledlg->AddLogLine(true,"connect error!!!\n");
-				}
-			}
-		}
-		return;
-		case EADDRNOTAVAIL:
-		case ECONNREFUSED:
-		case ENETUNREACH:
-		case ETIMEDOUT:
-		case EADDRINUSE:
+
+		case wxSOCKET_INVADDR :
+		case wxSOCKET_NOHOST:
+		case wxSOCKET_INVPORT:
+		case wxSOCKET_TIMEDOUT :
+			
 			m_bIsDeleting = true;
 			SetConnectionState(CS_SERVERDEAD);
 			serverconnect->DestroySocket(this);
 			return;
-		case E2BIG:
-			// hmm?? argument list too big
-			m_bIsDeleting=true;
-			SetConnectionState(CS_SERVERDEAD);
-			serverconnect->DestroySocket(this);
-			return;
+		
+		case wxSOCKET_IOERR:
+		case wxSOCKET_MEMERR:
+		case wxSOCKET_INVOP:
 		default:
+			
 			m_bIsDeleting = true;
 			SetConnectionState(CS_FATALERROR);
 			serverconnect->DestroySocket(this);
 			return;
+		
 	}
+	
 }
 
-void CServerSocket::OnReceive(int nErrorCode)
+void CServerSocket::OnReceive(wxSocketError nErrorCode)
 {
 	if (connectionstate != CS_CONNECTED && !this->serverconnect->IsConnecting()) {
 		serverconnect->DestroySocket(this);
 		return;
 	}
-	CEMSocket::OnReceive(nErrorCode);
+	#warning fix this
+	CEMSocket::OnReceive(0);
 	m_dwLastTransmission = GetTickCount();
 }
 
@@ -503,7 +481,7 @@ bool CServerSocket::ProcessPacket(char* packet, uint32 size, int8 opcode)
 		return true;
 	}
 	catch(wxString error) {
-		// theApp.amuledlg->AddLogLine(false, CString(_("Unhandled error while processing packet from server (%s)")),error.GetData());
+		theApp.amuledlg->AddLogLine(false, CString(_("Unhandled error while processing packet from server (%s)")),error.c_str());
 		SetConnectionState(CS_DISCONNECTED);
 		return false;
 	}
@@ -523,6 +501,9 @@ void CServerSocket::ConnectToServer(CServer* server)
 	#ifdef SERVER_NET_TEST
 	theApp.amuledlg->AddLogLine(true,"Server %s Port %i",server->GetAddress(),server->GetPort());
 	#endif	
+	this->Connect(addr,FALSE);
+	// We will handle the result on the event.
+	/*
 	if (!this->Connect(addr,FALSE)) {
 		int error = errno; //this->GetLastError();
 		if ( error != EINPROGRESS) {
@@ -534,6 +515,7 @@ void CServerSocket::ConnectToServer(CServer* server)
 			return;
 		}
 	}
+	*/
 	#ifdef SERVER_NET_TEST
 	theApp.amuledlg->AddLogLine(true,"Connetion past connet() call");
 	#endif
@@ -541,12 +523,12 @@ void CServerSocket::ConnectToServer(CServer* server)
 	SetConnectionState(CS_CONNECTING);
 }
 
-void CServerSocket::OnError(int nErrorCode)
+void CServerSocket::OnError(wxSocketError nErrorCode)
 {
-	SetConnectionState(CS_DISCONNECTED);
 	if (theApp.glob_prefs->GetVerbose()) {
-		theApp.amuledlg->AddLogLine(false,CString(_("Error in serversocket: %s (%s:%i): %u")),cur_server->GetListName(),cur_server->GetFullIP(),cur_server->GetPort(), nErrorCode);
+		theApp.amuledlg->AddLogLine(false,CString(_("Error in serversocket: %s (%s:%i): %u")),cur_server->GetListName(),cur_server->GetFullIP(),cur_server->GetPort(), (int)nErrorCode);
 	}
+	SetConnectionState(CS_DISCONNECTED);
 }
 
 void CServerSocket::PacketReceived(Packet* packet)
@@ -584,7 +566,7 @@ void CServerSocket::PacketReceived(Packet* packet)
 
 }
 
-void CServerSocket::OnClose(int nErrorCode)
+void CServerSocket::OnClose(wxSocketError nErrorCode)
 {
 	CEMSocket::OnClose(0);
 	if (connectionstate == CS_WAITFORLOGIN) {
