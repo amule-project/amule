@@ -995,7 +995,7 @@ void CKnownFile::UpdateAutoUpPriority(void)
 //For File Comment // 
 void CKnownFile::LoadComment()
 {
-	wxString strFullPath = wxString::Format("%sfileinfo.ini",theApp.glob_prefs->GetAppDir());
+	wxString strFullPath = theApp.glob_prefs->GetAppDir() + wxT("fileinfo.ini");
 	wxString strHash = m_abyFileHash.Encode();
 
 	CIni ini( strFullPath, strHash );
@@ -1007,7 +1007,7 @@ void CKnownFile::LoadComment()
 
 void CKnownFile::SetFileComment(CString strNewComment)
 { 
-	wxString strFullPath = wxString::Format("%sfileinfo.ini",theApp.glob_prefs->GetAppDir());
+	wxString strFullPath = theApp.glob_prefs->GetAppDir() + wxT("fileinfo.ini");
 	wxString strHash = m_abyFileHash.Encode();
 
 	CIni ini( strFullPath, strHash );
@@ -1028,7 +1028,7 @@ void CKnownFile::SetFileComment(CString strNewComment)
 // For File rate 
 void CKnownFile::SetFileRate(int8 iNewRate)
 { 
-	wxString strFullPath = wxString::Format("%sfileinfo.ini",theApp.glob_prefs->GetAppDir());
+	wxString strFullPath = theApp.glob_prefs->GetAppDir() + wxT("fileinfo.ini");
 	wxString strHash = m_abyFileHash.Encode();
 
 	CIni ini( strFullPath, strHash );
