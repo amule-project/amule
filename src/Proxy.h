@@ -114,7 +114,7 @@ public:
 /******************************************************************************/
 
 #if !wxCHECK_VERSION(2,5,1)
-	#define wxIPaddress amuleIPV4Address
+	#define wxIPaddress wxIPV4address
 #endif
 
 const unsigned int wxPROXY_BUFFER_SIZE = 1024;
