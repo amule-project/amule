@@ -121,6 +121,7 @@ private:
 	uint64	m_nUpDataOverheadFileRequestPackets;
 	uint64	m_nUpDataOverheadServerPackets;
 	uint64	m_nUpDataOverheadOtherPackets;
+	bool	lastupslotHighID; // VQB lowID alternation
 	std::deque<int>	m_AverageUDRO_list;
 
 };

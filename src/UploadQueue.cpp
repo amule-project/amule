@@ -75,13 +75,17 @@ CUploadQueue::CUploadQueue()
 	m_nUpDataOverheadOtherPackets = 0;
 	m_nUpDataOverheadServerPackets = 0;
 	m_nLastStartUpload = 0;
+
+	lastupslotHighID = true;
 }
 
 void CUploadQueue::AddUpNextClient(CUpDownClient* directadd){
 	POSITION toadd = 0;
+	POSITION toaddlow = 0;
 	uint32	bestscore = 0;
+	uint32	bestlowscore = 0;
 	
-	CUpDownClient* newclient = NULL;
+	CUpDownClient* newclient;
 	// select next client or use given client
 	if (!directadd) {
 		POSITION pos1, pos2;
@@ -107,19 +111,30 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd){
 			if (cur_client->IsBanned() || it != suspended_uploads_list.end() ) { // Banned client or suspended upload ?
 			        continue;
 			} 
-			
 			// finished clearing
-			uint32 cur_score = cur_client->GetScore(false);
+			uint32 cur_score = cur_client->GetScore(true);
 			if ( cur_score > bestscore){
 				bestscore = cur_score;
 				toadd = pos2;
+			} else {
+				cur_score = cur_client->GetScore(false);
+				if ((cur_score > bestlowscore) && !cur_client->m_bAddNextConnect){
+					bestlowscore = cur_score;
+					toaddlow = pos2;
+				}
 			}			
 		}
+
+		if (bestlowscore > bestscore){
+			newclient = waitinglist.GetAt(toaddlow);
+			newclient->m_bAddNextConnect = true;
+		}		
 
 		if (!toadd) {
 			return;
 		}
 		newclient = waitinglist.GetAt(toadd);
+		lastupslotHighID = true; // VQB LowID alternate		
 		RemoveFromWaitingQueue(toadd);
 		Notify_ShowQueueCount(waitinglist.GetCount());
 	} else {
@@ -296,6 +311,16 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client)
 			CUpDownClient* cur_client = *it;
 			
 			if ( cur_client == client ) {
+				if ( client->m_bAddNextConnect && ( ( uploadinglist.GetCount() < thePrefs::GetMaxUpload() ) || ( thePrefs::GetMaxUpload() == UNLIMITED ) ) ) {
+					if (lastupslotHighID) {
+						client->m_bAddNextConnect = false;
+						RemoveFromWaitingQueue(client, true);
+						AddUpNextClient(client);
+						lastupslotHighID = false; // LowID alternate
+						return;
+					}
+				}
+			
 				client->SendRankingInfo();
 				Notify_QlistRefreshClient(client);
 				return;
