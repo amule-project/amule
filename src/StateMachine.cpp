@@ -28,13 +28,11 @@
 StateMachine::StateMachine(
 		const wxString &name,
 		const unsigned int max_states,
-		const t_sm_state initial_state,
-		const state_processor_vector *process_state )
+		const t_sm_state initial_state )
 :
 m_name(name),
 m_max_states(max_states),
 m_initial_state(initial_state),
-m_process_state(process_state),
 m_clock_counter(0)
 {
 }
@@ -43,7 +41,7 @@ StateMachine::~StateMachine()
 {
 }
 
-void StateMachine::clock()
+void StateMachine::Clock()
 {
 	t_sm_state old_state;
 	t_sm_event event;
@@ -52,8 +50,12 @@ void StateMachine::clock()
 	old_state = m_state;
 
 	/* Process state change acording to event */
-	event = m_queue.front();
-	m_queue.pop();
+	if (!m_queue.empty()) {
+		event = m_queue.front();
+		m_queue.pop();
+	} else {
+		event = 0;
+	}
 	m_state = next_state( event );
 
 //#if 0
@@ -70,19 +72,13 @@ void StateMachine::clock()
 	/* Process new state entry */
 	if( m_state < m_max_states )
 	{
-		m_process_state[m_state](state_entry);
+		process_state(m_state, state_entry);
 	}
 }
 
-void StateMachine::schedule(t_sm_event event)
+void StateMachine::Schedule(t_sm_event event)
 {
 	m_queue.push(event);
-}
-
-void StateMachine::reset()
-{
-	flush_queue();
-	m_state = m_initial_state;
 }
 
 void StateMachine::flush_queue()
