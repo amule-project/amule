@@ -265,7 +265,9 @@ PrefsUnifiedDlg::PrefsUnifiedDlg(wxWindow* parent)
 PrefsUnifiedDlg::~PrefsUnifiedDlg()
 {
 	// So the gui knows if the dlg exists.
-	theApp.amuledlg->prefs_dialog = NULL;
+	if (theApp.amuledlg) {
+		theApp.amuledlg->prefs_dialog = NULL;
+	}
 
 	// Un-Connect the Cfgs
 	thePrefs::CFGMap::iterator it = thePrefs::s_CfgList.begin();
