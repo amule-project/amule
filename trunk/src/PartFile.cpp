@@ -1849,17 +1849,21 @@ void CPartFile::AddSources(CMemFile* sources,uint32 serverip, uint16 serverport)
 		return;
 	}
 
+	uint32 userid;
+	uint16 port;	
+	
 	for (int i = 0;i != count;i++) {
-		uint32 userid;
+		
 		sources->Read(userid);
-		uint16 port;
 		sources->Read(port);
 		
 		// "Filter LAN IPs" and "IPfilter" the received sources IP addresses
 		if (userid >= 16777216) {
-			if (!IsGoodIP(userid)) { // check for 0-IP, localhost and optionally for LAN addresses
-				//AddDebugLogLine(false, _T("Ignored source (IP=%s) received from server"), inet_ntoa(*(in_addr*)&userid));
-				continue;
+			if (theApp.glob_prefs->FilterBadIPs()) {
+				if (!IsGoodIP(userid)) { // check for 0-IP, localhost and optionally for LAN addresses
+					//AddDebugLogLine(false, _T("Ignored source (IP=%s) received from server"), inet_ntoa(*(in_addr*)&userid));
+					continue;
+				}
 			}
 			if (theApp.ipfilter->IsFiltered(userid)) {
 				//AddDebugLogLine(false, _T("IPfiltered source IP=%s (%s) received from server"), inet_ntoa(*(in_addr*)&userid), theApp.ipfilter->GetLastHit());
