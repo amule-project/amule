@@ -49,6 +49,7 @@
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "MuleNotebook.h"
 #include "GetTickCount.h"
+#include "Preferences.h"
 
 #define ID_SEARCHTIMER 55219
 #define ID_SEARCHLISTCTRL wxID_HIGHEST+666

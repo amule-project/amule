@@ -84,7 +84,7 @@ public:
 protected:
 	void OnColResize(wxListEvent& evt);
 
-	CPreferences::Table TablePrefs()	{ return CPreferences::tableDownload; }
+	virtual int TablePrefs();
 	void DrawFileItem(wxDC* dc,int nColumn, const wxRect& rect,CtrlItem_Struct* lpCtrlItem);
 	void DrawSourceItem(wxDC* dc,int nColumn, const wxRect& rect,CtrlItem_Struct* lpCtrlItem);
 	void OnColumnClick(wxListEvent& evt);

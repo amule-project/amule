@@ -43,6 +43,7 @@
 #include "muuli_wdr.h"		// Needed for ID_CATEGORIES
 #include "SearchDlg.h"		// Needed for CSearchDlg->UpdateCatChoice()
 #include "MuleNotebook.h"
+#include "Preferences.h"
 #include "ClientList.h"
 
 // CTransferWnd dialog

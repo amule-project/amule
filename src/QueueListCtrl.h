@@ -50,15 +50,8 @@ public:
 	void	Visable() {/*ShowWindow(SW_SHOW);*/}
 	void	Localize();
 
-	//virtual bool OnCommand(WPARAM wParam,LPARAM lParam );
 protected:
-	/*
-	static int CALLBACK SortProc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
-	afx_msg	void OnColumnClick( NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnNMRclick(NMHDR *pNMHDR, LRESULT *pResult);
-	DECLARE_MESSAGE_MAP()
-	*/
-	CPreferences::Table TablePrefs()	{ return CPreferences::tableQueue; }
+	virtual int TablePrefs();
 	static int wxCALLBACK SortProc(long lp1,long lp2,long lpsort);
 	void OnNMRclick(wxMouseEvent& evt);
 	void OnColumnClick(wxListEvent& evt);

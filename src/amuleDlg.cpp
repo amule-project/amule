@@ -431,17 +431,14 @@ void CamuleDlg::OnAboutButton(wxCommandEvent& WXUNUSED(ev))
 void CamuleDlg::OnPrefButton(wxCommandEvent& WXUNUSED(ev))
 {
 	if ( theApp.IsReady ) {
-		// Check if there's already a dialog
-		if ( CPreferences::GetPrefsID() ) {
-			// Raise the preferences-dialog.
-			FindWindow( CPreferences::GetPrefsID() )->Raise();
-		} else {
-			// No existing dialog, create a new one	
-			PrefsUnifiedDlg* prefswnd = new PrefsUnifiedDlg( this );
+		// Try to create a new dialog-window
+		PrefsUnifiedDlg* dialog = PrefsUnifiedDlg::NewPrefsDialog( this );
+	
+		// Check if a dialog was created and show it
+		if ( dialog ) {
+			dialog->TransferToWindow();
 		
-			prefswnd->TransferToWindow();
-		
-			prefswnd->Show();
+			dialog->Show();
 		}
 	}
 }

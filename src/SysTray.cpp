@@ -52,7 +52,6 @@
 #include "TransferWnd.h"	// Needed for CTransferWnd
 #include "opcodes.h"		// Needed for UNLIMITED
 #include "Preferences.h"	// Needed for CPreferences
-#include "PrefsUnifiedDlg.h"	// Needed for CPrefsUnifiedDlg
 #include "amule.h"		// Needed for theApp
 
 #ifdef __WXGTK__

@@ -19,9 +19,6 @@
 
 // UploadListCtrl.cpp : implementation file
 //
-#include <wx/filefn.h>
-#include <wx/ffile.h>
-#include <wx/file.h>
 
 #include "UploadListCtrl.h"	// Interface declarations
 #include "otherfunctions.h"	// Needed for CastItoXBytes
@@ -37,6 +34,7 @@
 #include "opcodes.h"		// Needed for MP_DETAIL
 #include "muuli_wdr.h"		// Needed for ID_UPLOADLIST
 #include "color.h"		// Needed for G_BLEND and SYSCOLOR
+#include "Preferences.h"	// Needed for CPreferences
 
 #include <wx/menu.h>
 #include <wx/textdlg.h>
@@ -87,7 +85,7 @@ void CUploadListCtrl::Init()
     InsertColumn(9,_("Upload/Download"),wxLIST_FORMAT_LEFT,100);
 	InsertColumn(10,_("Remote Status"),wxLIST_FORMAT_LEFT,100);
 	// not here.. no preferences yet
-	//LoadSettings(CPreferences::tableUpload);
+	//LoadSettings(TP_Upload);
 }
 
 void CUploadListCtrl::InitSort()
@@ -95,8 +93,8 @@ void CUploadListCtrl::InitSort()
 	LoadSettings();
 
 	// Barry - Use preferred sort order from preferences
-	int sortItem = theApp.glob_prefs->GetColumnSortItem(CPreferences::tableUpload);
-	bool sortAscending = theApp.glob_prefs->GetColumnSortAscending(CPreferences::tableUpload);
+	int sortItem = theApp.glob_prefs->GetColumnSortItem(TP_Upload);
+	bool sortAscending = theApp.glob_prefs->GetColumnSortAscending(TP_Upload);
 	SetSortArrow(sortItem, sortAscending);
 	SortItems(SortProc, sortItem + (sortAscending ? 0:100));
 }
@@ -275,14 +273,14 @@ void CUploadListCtrl::OnColumnClick( wxListEvent& evt)
 	// Barry - Store sort order in preferences
         // Determine ascending based on whether already sorted on this column
 
-	int sortItem = theApp.glob_prefs->GetColumnSortItem(CPreferences::tableUpload);
-	bool m_oldSortAscending = theApp.glob_prefs->GetColumnSortAscending(CPreferences::tableUpload);
+	int sortItem = theApp.glob_prefs->GetColumnSortItem(TP_Upload);
+	bool m_oldSortAscending = theApp.glob_prefs->GetColumnSortAscending(TP_Upload);
 	bool sortAscending = (sortItem != evt.GetColumn()) ? true : !m_oldSortAscending;
 	// Item is column clicked
 	sortItem = evt.GetColumn();
 	// Save new preferences
-	theApp.glob_prefs->SetColumnSortItem(CPreferences::tableUpload, sortItem);
-	theApp.glob_prefs->SetColumnSortAscending(CPreferences::tableUpload, sortAscending);
+	theApp.glob_prefs->SetColumnSortItem(TP_Upload, sortItem);
+	theApp.glob_prefs->SetColumnSortAscending(TP_Upload, sortAscending);
 	// Sort table
 	SetSortArrow(sortItem, sortAscending);
 	SortItems(SortProc, sortItem + (sortAscending ? 0:100));
@@ -602,3 +600,10 @@ void CUploadListCtrl::ShowSelectedUserDetails()
 		}
 	}
 }
+
+
+int CUploadListCtrl::TablePrefs()
+{
+	return TP_Upload;
+}
+

@@ -35,6 +35,7 @@
 #include "opcodes.h"		// Needed for MP_DETAIL
 #include "amule.h"			// Needed for theApp
 #include "color.h"		// Needed for SYSCOLOR
+#include "Preferences.h"
 
 #include <wx/menu.h>
 
@@ -80,8 +81,8 @@ void CQueueListCtrl::InitSort()
 	LoadSettings();
 
 	// Barry - Use preferred sort order from preferences
-	int sortItem = theApp.glob_prefs->GetColumnSortItem(CPreferences::tableQueue);
-	bool sortAscending = theApp.glob_prefs->GetColumnSortAscending(CPreferences::tableQueue);
+	int sortItem = theApp.glob_prefs->GetColumnSortItem( TP_Queue );
+	bool sortAscending = theApp.glob_prefs->GetColumnSortAscending( TP_Queue );
 	SetSortArrow(sortItem, sortAscending);
 	SortItems(SortProc, sortItem + (sortAscending ? 0:100));
 }
@@ -548,14 +549,14 @@ void CQueueListCtrl::OnColumnClick( wxListEvent& evt)
 	}
 	// Barry - Store sort order in preferences
 	// Determine ascending based on whether already sorted on this column
-	int sortItem = theApp.glob_prefs->GetColumnSortItem(CPreferences::tableQueue);
-	bool m_oldSortAscending = theApp.glob_prefs->GetColumnSortAscending(CPreferences::tableQueue);
+	int sortItem = theApp.glob_prefs->GetColumnSortItem( TP_Queue );
+	bool m_oldSortAscending = theApp.glob_prefs->GetColumnSortAscending( TP_Queue );
 	bool sortAscending = (sortItem != evt.GetColumn()) ? true : !m_oldSortAscending;
 	// Item is column clicked
 	sortItem = evt.GetColumn();
 	// Save new preferences
-	theApp.glob_prefs->SetColumnSortItem(CPreferences::tableQueue, sortItem);
-	theApp.glob_prefs->SetColumnSortAscending(CPreferences::tableQueue, sortAscending);
+	theApp.glob_prefs->SetColumnSortItem( TP_Queue, sortItem);
+	theApp.glob_prefs->SetColumnSortAscending( TP_Queue, sortAscending);
 	// Sort table
 	SetSortArrow(sortItem, sortAscending);
 	SortItems(SortProc, sortItem + (sortAscending ? 0:100));
@@ -690,3 +691,9 @@ void CQueueListCtrl::ShowSelectedUserDetails()
 		}
 	}
 }
+
+int CQueueListCtrl::TablePrefs()
+{
+	return TP_Queue;
+}
+

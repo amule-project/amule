@@ -20,7 +20,6 @@
 #ifndef MULELISTCTRL_H
 #define MULELISTCTRL_H
 
-#include "Preferences.h"	// Needed for CPreferences
 #include "listctrl_gen.h"	// Needed for wxODListCtrl
 #include "types.h"		// Needed for LPCTSTR
 #include "color.h"		// Needed for COLORREF
@@ -115,7 +114,7 @@ protected:
 	virtual void PreSubclassWindow();
 	//virtual bool OnWndMsg(unsigned int message, WPARAM wParam, LPARAM lParam, LRESULT* pResult);
 	//virtual bool OnChildNotify(unsigned int message, WPARAM wParam, LPARAM lParam, LRESULT* pResult);
-	virtual CPreferences::Table TablePrefs()	{ return CPreferences::tableNone; }
+	virtual int TablePrefs();
 
 #if 0
 	DECLARE_MESSAGE_MAP()

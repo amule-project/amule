@@ -38,7 +38,6 @@ class serverListItem : public wxListItem {
   CServer* data;
 };
 
-// CServerListCtrl
 
 class CServerListCtrl : public CMuleListCtrl 
 {
@@ -46,7 +45,6 @@ public:
 	CServerListCtrl();
 	CServerListCtrl(wxWindow*& parent,int id,const wxPoint& pos,wxSize siz,int flags);
 
-//	void	ShowServers();
 	virtual ~CServerListCtrl() { }
 	bool	Init(CServerList* in_list);
 	void InitSort();
@@ -57,8 +55,6 @@ public:
 	void	HighlightServer(const CServer* server, bool highlight);
 	void	RefreshServer(CServer* server);
 	void	RemoveDeadServer();
-	//void	Hide() {ShowWindow(SW_HIDE);}
-	//void	Visable() {ShowWindow(SW_SHOW);}
 	void	Localize();
 	void	ShowFilesCount();
 
@@ -83,7 +79,7 @@ public:
 	long connected;
 
 protected:
-	CPreferences::Table TablePrefs()	{ return CPreferences::tableServer; }
+	virtual int TablePrefs();
 
 private:
 	CServerList*	server_list;

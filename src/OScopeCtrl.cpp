@@ -28,8 +28,6 @@
 #include "StatisticsDlg.h"	// Needed for GetHistory()
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "otherfunctions.h"	// Needed for CastSecondsToHM
-#include "GetTickCount.h"	// Needed for GetTickCount
-//#include "Preferences.h"	// Needed for CPreferences
 #include "amule.h"			// Needed for theApp
 #include "color.h"			// Needed for COLORREF, GetRValue, GetGValue and GetBValue
 

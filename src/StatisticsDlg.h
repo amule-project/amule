@@ -26,10 +26,7 @@
 #include <wx/treebase.h>	// Needed for wxTreeItemId (HTREEITEM) and wxTreeCtrl
 
 #include "types.h"			// Needed for uint32 and uint64
-#include "Preferences.h"	// Needed for cntStatColors
-#include "OScopeCtrl.h"		// Needed for graphs
 #include "CTypedPtrList.h"	// Needed for CList
-#include "amule.h"			// Needed for theApp
 
 class COScopeCtrl;
 
@@ -56,7 +53,7 @@ public:
 	void SetUpdatePeriod();
 	void ResetAveragingTime();
 	void ShowStatistics();
-	void SetARange(bool SetDownload,int maxValue) {(SetDownload ? pscopeDL : pscopeUL)->SetRanges(0, maxValue+4);}
+	void SetARange(bool SetDownload,int maxValue);
 	float GetKBpsUpCurrent()		{return kBpsUpCur;}
 	float GetKBpsUpRunningAvg()		{return kBpsUpAvg;}
 	float GetKBpsUpSession()		{return kBpsUpSession;}
@@ -78,7 +75,7 @@ public:
 	wxString ExportHTML();
 	wxString GetHTML();
 protected:
-	static COLORREF	acrStat[cntStatColors];
+	static COLORREF	acrStat[13];
 	
  private:
 	void ExportHTMLEvent(wxCommandEvent& evt);
@@ -143,34 +140,11 @@ private:
 
 	// ComputeSessionAvg and ComputeRunningAvg are used to assure consistent computations across
 	// RecordHistory and ComputeAverages; see note in RecordHistory on the use of double and float 
-	void ComputeSessionAvg(float& kBpsSession, float& kBpsCur, double& kBytesTrans, double& sCur, double& sTrans)
-	{
-		if (theApp.sTransferDelay == 0.0  ||  sCur <= theApp.sTransferDelay) {
-			sTrans = 0.0;
-			kBpsSession = 0.0;
-		} else {
-			sTrans = sCur - theApp.sTransferDelay;
-			kBpsSession = kBytesTrans / sTrans;
-			if (sTrans < 10.0  &&  kBpsSession > kBpsCur) 
-				kBpsSession = kBpsCur;	// avoid spiking of the first few values due to small sTrans
-		}
-	}
-	
-	
+	void ComputeSessionAvg(float& kBpsSession, float& kBpsCur, double& kBytesTrans, double& sCur, double& sTrans);
+
 	void ComputeRunningAvg(float& kBpsRunning, float& kBpsSession, double& kBytesTrans, 
-							double& kBytesTransPrev, double& sTrans, double& sPrev, float& sAvg)
-	{
-		float sPeriod;
-		if ((float)sTrans < sAvg) {		// startup: just track session average
-			kBpsRunning = kBpsSession;
-			kBytesTransPrev = kBytesTrans;
-		} else if ((sPeriod=(float)(sTrans-sPrev)) > 0.0) { // then use a first-order low-pass filter
-			float lambda = std::exp(-sPeriod/sAvg);		
-			kBpsRunning = kBpsRunning*lambda + (1.0-lambda)*(float)(kBytesTrans-kBytesTransPrev)/sPeriod;
-			kBytesTransPrev = kBytesTrans;
-		}							// if sPeriod is zero then leave the average unchanged
-	}
-	
+							double& kBytesTransPrev, double& sTrans, double& sPrev, float& sAvg);
+							
 protected:
 	DECLARE_EVENT_TABLE()
 

@@ -18,35 +18,34 @@
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"		// Needed for PACKAGE_NAME and PACKAGE_STRING
-#endif
-
 #include <cstdio>
 #include <cstdlib>
-#include <clocale>
-#include <ctime>
-#include <sys/stat.h>
-#include <sys/types.h>
+
+#include <wx/timer.h>
+#include <wx/valgen.h>
+#include <wx/tokenzr.h>
+#include <wx/control.h>
+#include <wx/slider.h>
 #include <wx/filename.h>
 #include <wx/textfile.h>
-#include "otherfunctions.h"	// Needed for atoll
+#include <wx/config.h>
+
 #ifdef __WXMSW__
 	#include <wx/msw/winundef.h>
 #endif
-#include "opcodes.h"		// Needed for PREFFILE_VERSION
 
-#include <wx/config.h>
-#include <wx/arrimpl.cpp> // this is a magic incantation which must be done!
 #include "amule.h"
-
+#include "config.h"		// Needed for PACKAGE_NAME and PACKAGE_STRING
+#include "otherfunctions.h"
+#include "opcodes.h"		// Needed for PREFFILE_VERSION
 #include "Preferences.h"
 #include "CFile.h"
 #include "muuli_wdr.h"
 #include "StatisticsDlg.h"
+#include "MD5Sum.h"
+
 
 // Static variables
-int			CPreferences::s_ID;
 COLORREF		CPreferences::s_colors[cntStatColors];
 COLORREF		CPreferences::s_colors_ref[cntStatColors];
 
@@ -69,164 +68,564 @@ bool		CPreferences::s_autoserverlist;
 bool		CPreferences::s_deadserver;
 wxString	CPreferences::s_incomingdir;
 wxString	CPreferences::s_tempdir;
-bool	CPreferences::s_ICH;
-int16	CPreferences::s_downloadColumnWidths[13];
-CPreferences::Bool	CPreferences::s_downloadColumnHidden[13];
-int16	CPreferences::s_downloadColumnOrder[13];
-int16	CPreferences::s_uploadColumnWidths[11];
-CPreferences::Bool	CPreferences::s_uploadColumnHidden[11];
-int16	CPreferences::s_uploadColumnOrder[11];
-int16	CPreferences::s_queueColumnWidths[11];
-CPreferences::Bool	CPreferences::s_queueColumnHidden[11];
-int16	CPreferences::s_queueColumnOrder[11];
-int16	CPreferences::s_searchColumnWidths[5];
-CPreferences::Bool	CPreferences::s_searchColumnHidden[5];
-int16	CPreferences::s_searchColumnOrder[5];
-int16	CPreferences::s_sharedColumnWidths[12];
-CPreferences::Bool	CPreferences::s_sharedColumnHidden[12];
-int16	CPreferences::s_sharedColumnOrder[12];
-int16	CPreferences::s_serverColumnWidths[12];
-CPreferences::Bool	CPreferences::s_serverColumnHidden[12];
-int16 	CPreferences::s_serverColumnOrder[12];
-int16	CPreferences::s_clientListColumnWidths[8];
-CPreferences::Bool	CPreferences::s_clientListColumnHidden[8];
-int16 	CPreferences::s_clientListColumnOrder[8];
-int8	CPreferences::s_depth3D;
-int32	CPreferences::s_tableSortItemDownload;
-int32	CPreferences::s_tableSortItemUpload;
-int32	CPreferences::s_tableSortItemQueue;
-int32	CPreferences::s_tableSortItemSearch;
-int32	CPreferences::s_tableSortItemShared;
-int32	CPreferences::s_tableSortItemServer;
-int32	CPreferences::s_tableSortItemClientList;
-bool	CPreferences::s_tableSortAscendingDownload;
-bool	CPreferences::s_tableSortAscendingUpload;
-bool	CPreferences::s_tableSortAscendingQueue;
-bool	CPreferences::s_tableSortAscendingSearch;
-bool	CPreferences::s_tableSortAscendingShared;
-bool	CPreferences::s_tableSortAscendingServer;
-bool	CPreferences::s_tableSortAscendingClientList;
-bool	CPreferences::s_scorsystem;
-bool	CPreferences::s_mintotray;
-bool	CPreferences::s_addnewfilespaused;
-bool	CPreferences::s_addserversfromserver;
-bool	CPreferences::s_addserversfromclient;
-int16	CPreferences::s_maxsourceperfile;
-int16	CPreferences::s_trafficOMeterInterval;
-int16	CPreferences::s_statsInterval;
-uint32	CPreferences::s_maxGraphDownloadRate;
-uint32	CPreferences::s_maxGraphUploadRate;
-bool	CPreferences::s_confirmExit;
-bool	CPreferences::s_splashscreen;
-bool	CPreferences::s_filterBadIP;
-bool	CPreferences::s_onlineSig;
-uint64  CPreferences::s_totalDownloadedBytes;
-uint64	CPreferences::s_totalUploadedBytes;
-uint16	CPreferences::s_languageID;
-bool	CPreferences::s_transferDoubleclick;
-int8	CPreferences::s_iSeeShares;
-int8	CPreferences::s_iToolDelayTime;
-int8	CPreferences::s_splitterbarPosition;
-uint16	CPreferences::s_deadserverretries;
-uint32	CPreferences::s_dwServerKeepAliveTimeoutMins;
-uint8	CPreferences::s_statsMax;
-int8	CPreferences::s_statsAverageMinutes;
-bool    CPreferences::s_useDownloadNotifier;
-bool	CPreferences::s_useChatNotifier;
-bool	CPreferences::s_useLogNotifier;	
-bool	CPreferences::s_useSoundInNotifier;
-bool	CPreferences::s_sendEmailNotifier;
-bool	CPreferences::s_notifierPopsEveryChatMsg;
-bool	CPreferences::s_notifierImportantError;
-bool	CPreferences::s_notifierNewVersion;
+bool		CPreferences::s_ICH;
+uint16		CPreferences::s_downloadColumnWidths[13];
+uint16		CPreferences::s_downloadColumnHidden[13];
+uint16		CPreferences::s_downloadColumnOrder[13];
+uint16		CPreferences::s_uploadColumnWidths[11];
+uint16		CPreferences::s_uploadColumnHidden[11];
+uint16		CPreferences::s_uploadColumnOrder[11];
+uint16		CPreferences::s_queueColumnWidths[11];
+uint16		CPreferences::s_queueColumnHidden[11];
+uint16		CPreferences::s_queueColumnOrder[11];
+uint16		CPreferences::s_searchColumnWidths[5];
+uint16		CPreferences::s_searchColumnHidden[5];
+uint16		CPreferences::s_searchColumnOrder[5];
+uint16		CPreferences::s_sharedColumnWidths[12];
+uint16		CPreferences::s_sharedColumnHidden[12];
+uint16		CPreferences::s_sharedColumnOrder[12];
+uint16		CPreferences::s_serverColumnWidths[12];
+uint16		CPreferences::s_serverColumnHidden[12];
+uint16 		CPreferences::s_serverColumnOrder[12];
+uint16		CPreferences::s_clientListColumnWidths[8];
+uint16		CPreferences::s_clientListColumnHidden[8];
+uint16 		CPreferences::s_clientListColumnOrder[8];
+uint8		CPreferences::s_depth3D;
+uint32		CPreferences::s_tableSortItemDownload;
+uint32		CPreferences::s_tableSortItemUpload;
+uint32		CPreferences::s_tableSortItemQueue;
+uint32		CPreferences::s_tableSortItemSearch;
+uint32		CPreferences::s_tableSortItemShared;
+uint32		CPreferences::s_tableSortItemServer;
+uint32		CPreferences::s_tableSortItemClientList;
+bool		CPreferences::s_tableSortAscendingDownload;
+bool		CPreferences::s_tableSortAscendingUpload;
+bool		CPreferences::s_tableSortAscendingQueue;
+bool		CPreferences::s_tableSortAscendingSearch;
+bool		CPreferences::s_tableSortAscendingShared;
+bool		CPreferences::s_tableSortAscendingServer;
+bool		CPreferences::s_tableSortAscendingClientList;
+bool		CPreferences::s_scorsystem;
+bool		CPreferences::s_mintotray;
+bool		CPreferences::s_addnewfilespaused;
+bool		CPreferences::s_addserversfromserver;
+bool		CPreferences::s_addserversfromclient;
+uint16		CPreferences::s_maxsourceperfile;
+uint16		CPreferences::s_trafficOMeterInterval;
+uint16		CPreferences::s_statsInterval;
+uint32		CPreferences::s_maxGraphDownloadRate;
+uint32		CPreferences::s_maxGraphUploadRate;
+bool		CPreferences::s_confirmExit;
+bool		CPreferences::s_splashscreen;
+bool		CPreferences::s_filterBadIP;
+bool		CPreferences::s_onlineSig;
+uint64		CPreferences::s_totalDownloadedBytes;
+uint64		CPreferences::s_totalUploadedBytes;
+uint16		CPreferences::s_languageID;
+bool		CPreferences::s_transferDoubleclick;
+uint8		CPreferences::s_iSeeShares;
+uint8		CPreferences::s_iToolDelayTime;
+uint8		CPreferences::s_splitterbarPosition;
+uint16		CPreferences::s_deadserverretries;
+uint32		CPreferences::s_dwServerKeepAliveTimeoutMins;
+uint8		CPreferences::s_statsMax;
+uint8		CPreferences::s_statsAverageMinutes;
+bool		CPreferences::s_useDownloadNotifier;
+bool		CPreferences::s_useChatNotifier;
+bool		CPreferences::s_useLogNotifier;	
+bool		CPreferences::s_useSoundInNotifier;
+bool		CPreferences::s_sendEmailNotifier;
+bool		CPreferences::s_notifierPopsEveryChatMsg;
+bool		CPreferences::s_notifierImportantError;
+bool		CPreferences::s_notifierNewVersion;
 wxString	CPreferences::s_notifierSoundFilePath;
-bool	CPreferences::s_bpreviewprio;
-bool	CPreferences::s_smartidcheck;
-uint8	CPreferences::s_smartidstate;
-bool	CPreferences::s_safeServerConnect;
-bool	CPreferences::s_startMinimized;
-uint16	CPreferences::s_MaxConperFive;
-bool	CPreferences::s_checkDiskspace;
-uint32	CPreferences::s_uMinFreeDiskSpace;
+bool		CPreferences::s_bpreviewprio;
+bool		CPreferences::s_smartidcheck;
+uint8		CPreferences::s_smartidstate;
+bool		CPreferences::s_safeServerConnect;
+bool		CPreferences::s_startMinimized;
+uint16		CPreferences::s_MaxConperFive;
+bool		CPreferences::s_checkDiskspace;
+uint32		CPreferences::s_uMinFreeDiskSpace;
 wxString	CPreferences::s_yourHostname;
-bool	CPreferences::s_bVerbose;
-bool	CPreferences::s_bupdatequeuelist;
-bool	CPreferences::s_bmanualhighprio;
-bool	CPreferences::s_btransferfullchunks;
-bool	CPreferences::s_bstartnextfile;
-bool	CPreferences::s_bshowoverhead;
-bool	CPreferences::s_bDAP;
-bool	CPreferences::s_bUAP;
-bool	CPreferences::s_bDisableKnownClientList;
-bool	CPreferences::s_bDisableQueueList;
-bool	CPreferences::s_showRatesInTitle;
+bool		CPreferences::s_bVerbose;
+bool		CPreferences::s_bupdatequeuelist;
+bool		CPreferences::s_bmanualhighprio;
+bool		CPreferences::s_btransferfullchunks;
+bool		CPreferences::s_bstartnextfile;
+bool		CPreferences::s_bshowoverhead;
+bool		CPreferences::s_bDAP;
+bool		CPreferences::s_bUAP;
+bool		CPreferences::s_bDisableKnownClientList;
+bool		CPreferences::s_bDisableQueueList;
+bool		CPreferences::s_showRatesInTitle;
 wxString	CPreferences::s_VideoPlayer;
-bool	CPreferences::s_moviePreviewBackup;
-bool	CPreferences::s_indicateratings;
-bool	CPreferences::s_showAllNotCats;
-bool	CPreferences::s_filterserverbyip;
-bool	CPreferences::s_bFirstStart;
-bool	CPreferences::s_msgonlyfriends;
-bool	CPreferences::s_msgsecure;
-uint8	CPreferences::s_filterlevel;
-uint8	CPreferences::s_iFileBufferSize;
-uint8	CPreferences::s_iQueueSize;
-uint16	CPreferences::s_maxmsgsessions;
+bool		CPreferences::s_moviePreviewBackup;
+bool		CPreferences::s_indicateratings;
+bool		CPreferences::s_showAllNotCats;
+bool		CPreferences::s_filterserverbyip;
+bool		CPreferences::s_bFirstStart;
+bool		CPreferences::s_msgonlyfriends;
+bool		CPreferences::s_msgsecure;
+uint8		CPreferences::s_filterlevel;
+uint8		CPreferences::s_iFileBufferSize;
+uint8		CPreferences::s_iQueueSize;
+uint16		CPreferences::s_maxmsgsessions;
 wxString 	CPreferences::s_datetimeformat;
 wxString	CPreferences::s_sWebPassword;
 wxString	CPreferences::s_sWebLowPassword;
-uint16	CPreferences::s_nWebPort;
-bool	CPreferences::s_bWebEnabled;
-bool	CPreferences::s_bWebUseGzip;
-int32	CPreferences::s_nWebPageRefresh;
-bool	CPreferences::s_bWebLowEnabled;
+uint16		CPreferences::s_nWebPort;
+bool		CPreferences::s_bWebEnabled;
+bool		CPreferences::s_bWebUseGzip;
+uint32		CPreferences::s_nWebPageRefresh;
+bool		CPreferences::s_bWebLowEnabled;
 wxString	CPreferences::s_sWebResDir;
 wxString	CPreferences::s_sTemplateFile;
-bool	CPreferences::s_bIsASCWOP;
-bool	CPreferences::s_showCatTabInfos;
-bool	CPreferences::s_resumeSameCat;
-bool	CPreferences::s_dontRecreateGraphs;
-int32	CPreferences::s_allcatType;
-int32	CPreferences::s_desktopMode;
-uint8	CPreferences::s_NoNeededSources;
-bool	CPreferences::s_DropFullQueueSources;
-bool	CPreferences::s_DropHighQueueRankingSources;
-int32	CPreferences::s_HighQueueRanking;
-int32	CPreferences::s_AutoDropTimer;
-bool 	CPreferences::s_AcceptExternalConnections;
-bool 	CPreferences::s_ECUseTCPPort;
-int32	CPreferences::s_ECPort;
+bool		CPreferences::s_bIsASCWOP;
+bool		CPreferences::s_showCatTabInfos;
+bool		CPreferences::s_resumeSameCat;
+bool		CPreferences::s_dontRecreateGraphs;
+uint32		CPreferences::s_allcatType;
+uint32		CPreferences::s_desktopMode;
+uint8		CPreferences::s_NoNeededSources;
+bool		CPreferences::s_DropFullQueueSources;
+bool		CPreferences::s_DropHighQueueRankingSources;
+uint32		CPreferences::s_HighQueueRanking;
+uint32		CPreferences::s_AutoDropTimer;
+bool 		CPreferences::s_AcceptExternalConnections;
+bool 		CPreferences::s_ECUseTCPPort;
+uint32		CPreferences::s_ECPort;
 wxString	CPreferences::s_ECPassword;
-bool	CPreferences::s_IPFilterOn;
-bool	CPreferences::s_UseSrcSeeds;
-bool	CPreferences::s_UseSafeMaxConn;
-bool	CPreferences::s_VerbosePacketError;
-bool	CPreferences::s_ProgBar;
-bool	CPreferences::s_Percent;	
-bool	CPreferences::s_SecIdent;
-bool	CPreferences::s_ExtractMetaData;
-bool	CPreferences::s_AllocFullPart;
-bool	CPreferences::s_AllocFullChunk;
-uint16	CPreferences::s_Browser;
+bool		CPreferences::s_IPFilterOn;
+bool		CPreferences::s_UseSrcSeeds;
+bool		CPreferences::s_UseSafeMaxConn;
+bool		CPreferences::s_VerbosePacketError;
+bool		CPreferences::s_ProgBar;
+bool		CPreferences::s_Percent;	
+bool		CPreferences::s_SecIdent;
+bool		CPreferences::s_ExtractMetaData;
+bool		CPreferences::s_AllocFullPart;
+bool		CPreferences::s_AllocFullChunk;
+uint16		CPreferences::s_Browser;
 wxString	CPreferences::s_CustomBrowser;
-bool	CPreferences::s_BrowserTab;
+bool		CPreferences::s_BrowserTab;
 wxString	CPreferences::s_OSDirectory;
 wxString	CPreferences::s_SkinFile;
-bool	CPreferences::s_UseSkinFile;
-bool	CPreferences::s_FastED2KLinksHandler;
+bool		CPreferences::s_UseSkinFile;
+bool		CPreferences::s_FastED2KLinksHandler;
 
 
 
 
-WX_DEFINE_OBJARRAY(ArrayOfCategory_Struct);
+/**
+ * Template Cfg class for connecting with widgets.
+ *
+ * This template provides the base functionionality needed to syncronize a 
+ * variable with a widget. However, please note that wxGenericValidator only
+ * supports a few types (int, wxString, bool and wxArrayInt), so this template 
+ * can't always be used directly.
+ *
+ * Cfg_Str and Cfg_Bool are able to use this template directly, whereas Cfg_Int
+ * makes use of serveral workaround to enable it to be used with integers other
+ * than int.
+ */
+template <typename TYPE>
+class Cfg_Tmpl : public Cfg_Base
+{
+public:
+	/**
+	 * Constructor.
+	 *
+	 * @param keyname
+	 * @param value
+	 * @param defaultVal
+	 */
+	Cfg_Tmpl( const wxString& keyname, TYPE& value, const TYPE& defaultVal )
+	 : Cfg_Base( keyname ),
+	   m_value( value ),
+	   m_default( defaultVal ),
+	   m_widget( NULL )
+	{}
+
+#ifndef AMULE_DAEMON
+	/**
+	 * Connects the Cfg to a widget.
+	 * 
+	 * @param id The ID of the widget to be connected.
+	 * @param parent The parent of the widget. Use this to speed up searches.
+	 *
+	 * This function works by setting the wxValidator of the class. This however
+	 * poses some restrictions on which variable types can be used for this
+	 * template, as noted above. It also poses some limits on the widget types,
+	 * refer to the wx documentation for those.
+	 */
+	virtual	bool ConnectToWidget( int id, wxWindow* parent = NULL )
+	{
+		if ( id ) {
+			m_widget = wxWindow::FindWindowById( id, parent );
+		
+			if ( m_widget ) {
+				wxGenericValidator validator( &m_value );
+
+				m_widget->SetValidator( validator );
+			
+				return true;
+			}
+		} else {
+			m_widget = NULL;
+		}
+
+		return false;
+	}
+	
+	
+	/**
+	 * Sets the assosiated variable to the value of the widget.
+	 *
+	 * @return True on success, false otherwise.
+	 */
+	virtual bool TransferFromWindow()
+	{
+		if ( m_widget ) {
+			wxValidator* validator = m_widget->GetValidator();
+
+			if ( validator ) {
+				TYPE temp = m_value;
+			
+				if ( validator->TransferFromWindow() ) {
+					SetChanged( temp != m_value );
+
+					return true;
+				}
+			}
+		} 
+		
+		return false;
+	}
+	
+	/**
+	 * Sets the assosiated variable to the value of the widget.
+	 *
+	 * @return True on success, false otherwise.
+	 */
+	virtual bool TransferToWindow()
+	{
+		if ( m_widget ) {
+			wxValidator* validator = m_widget->GetValidator();
+
+			if ( validator )
+				return validator->TransferToWindow();
+		}
+
+		return false;
+	}
+
+#endif
+
+protected:
+	//! Reference to the assosiated variable
+	TYPE&	m_value;
+
+	//! Default variable value
+	TYPE	m_default;
+	
+	//! Pointer to the widget assigned to the Cfg instance
+	wxWindow*	m_widget;
+};
+
+
+/**
+ * Cfg class for wxStrings.
+ */
+class Cfg_Str : public Cfg_Tmpl<wxString>
+{
+public:
+	/**
+	 * Constructor.
+	 */
+	Cfg_Str( const wxString& keyname, wxString& value, const wxString& defaultVal = wxT("") )
+	 : Cfg_Tmpl<wxString>( keyname, value, defaultVal )
+	{}
+
+	/**
+	 * Saves the string to specified wxConfig.
+	 *
+	 * @param cfg The wxConfig to save the variable to.
+	 */
+	virtual void LoadFromFile(wxConfigBase* cfg)
+	{
+		cfg->Read( GetKey(), &m_value, m_default );
+	}
+
+	
+	/**
+	 * Loads the string to specified wxConfig using the specified default value.
+	 *
+	 * @param cfg The wxConfig to load the variable from.
+	 */
+	virtual void SaveToFile(wxConfigBase* cfg)
+	{
+		cfg->Write( GetKey(), m_value );
+	}
+};
+
+
+/**
+ * Cfg-class for encrypting strings, for example for passwords.
+ */
+class Cfg_Str_Encrypted : public Cfg_Str
+{
+public:
+	Cfg_Str_Encrypted( const wxString& keyname, wxString& value, const wxString& defaultVal = wxT("") )
+	 : Cfg_Str( keyname, value, defaultVal )
+	{}
+
+#ifndef AMULE_DAEMON
+	virtual bool TransferFromWindow()
+	{
+		// Store current value to see if it has changed
+		wxString temp;
+	
+		// Shakraw: when storing value, store it encrypted here (only if changed in prefs)
+		if ( Cfg_Str::TransferFromWindow() ) {
+			if ( temp != m_value ) {
+				if ( temp.IsEmpty() ) {
+					m_value = temp;
+				} else {
+					m_value = MD5Sum(temp).GetHash();
+				}
+			}
+
+			return true;
+		}
+
+		return false;
+	}
+#endif
+};
+
+
+/**
+ * Cfg class that takes care of integer types.
+ *
+ * This template is needed since wxValidator only supports normals ints, and 
+ * wxConfig for the matter only supports longs, thus some worksarounds are
+ * needed. 
+ *
+ * There are two work-arounds:
+ *  1) wxValidator only supports int*, so we need a immediate variable to act
+ *     as a storage. Thus we use Cfg_Tmpl<int> as base class. Thus this class
+ *     contains a integer which we use to pass the value back and forth 
+ *     between the widgets.
+ *
+ *  2) wxConfig uses longs to save and read values, thus we need an immediate
+ *     stage when loading and saving the value.
+ */
+template <typename TYPE>
+class Cfg_Int : public Cfg_Tmpl<int>
+{
+public:
+	Cfg_Int( const wxString& keyname, TYPE& value, int defaultVal = 0 )
+	 : Cfg_Tmpl<int>( keyname, m_temp_value, defaultVal ),
+	   m_real_value( value ),
+	   m_temp_value( value )
+	{}
+
+
+	virtual void LoadFromFile(wxConfigBase* cfg)
+	{
+		long tmp = 0;
+		cfg->Read( GetKey(), &tmp, m_default ); 
+		
+		// Set the temp value
+		m_temp_value = (int)tmp;
+		// Set the actual value
+		m_real_value = (TYPE)tmp;
+	}
+
+	virtual void SaveToFile(wxConfigBase* cfg)
+	{
+		cfg->Write( GetKey(), (long)m_real_value );
+	}
+
+
+#ifndef AMULE_DAEMON
+	virtual bool TransferFromWindow()
+	{
+		if ( Cfg_Tmpl<int>::TransferFromWindow() ) { 
+			m_real_value = (TYPE)m_temp_value;
+
+			return true;
+		} 
+		
+		return false;
+	}
+
+	virtual bool TransferToWindow()
+	{
+		m_temp_value = (int)m_real_value;
+
+		if ( Cfg_Tmpl<int>::TransferToWindow() ) {
+			
+			// In order to let us update labels on slider-changes, we trigger a event
+   			if ( m_widget->IsKindOf(CLASSINFO(wxSlider)) ) {
+				int id = m_widget->GetId();
+				int pos = ((wxSlider*)m_widget)->GetValue();
+			
+				wxScrollEvent evt( wxEVT_SCROLL_THUMBRELEASE, id, pos );
+
+				m_widget->ProcessEvent( evt );
+			}
+
+			return true;
+		}
+		
+		return false;
+	}
+#endif
+
+protected:
+
+	TYPE&	m_real_value;
+	int		m_temp_value;
+};
+
+
+/**
+ * Helper function for creating new Cfg_Ints.
+ *
+ * @param keyname The cfg-key under which the item should be saved.
+ * @param value The variable to syncronize. The type of this variable defines the type used to create the Cfg_Int.
+ * @param defaultVal The default value if the key isn't found when loading the value.
+ * @return A pointer to the new Cfg_Int object. The caller is responsible for deleting it.
+ *
+ * This template-function returns a Cfg_Int of the appropriate type for the 
+ * variable used as argument and should be used to avoid having to specify
+ * the integer type when adding a new Cfg_Int, since that's just increases
+ * the maintainence burden.
+ */
+template <class TYPE>
+Cfg_Base* MkCfg_Int( const wxString& keyname, TYPE& value, int defaultVal )
+{
+	return new Cfg_Int<TYPE>( keyname, value, defaultVal );
+}
+
+
+/**
+ * Cfg-class for bools.
+ */
+class Cfg_Bool : public Cfg_Tmpl<bool>
+{
+public:
+	Cfg_Bool( const wxString& keyname, bool& value, bool defaultVal )
+	 : Cfg_Tmpl<bool>( keyname, value, defaultVal )
+	{}
+
+	
+	virtual void LoadFromFile(wxConfigBase* cfg)
+	{
+		cfg->Read( GetKey(), &m_value, m_default );
+	}
+
+	virtual void SaveToFile(wxConfigBase* cfg)
+	{
+		cfg->Write( GetKey(), m_value );
+	}
+};
+
+
+/**
+ * Cfg-class for uint64s, with no assisiated widgets.
+ */
+class Cfg_Counter : public Cfg_Base
+{
+public:
+	Cfg_Counter( const wxString& keyname, uint64& value )
+	 : Cfg_Base( keyname ),
+	   m_value( value )
+	{
+
+	}
+
+	virtual void LoadFromFile(wxConfigBase* cfg)
+	{
+		wxString buffer;
+	
+		cfg->Read( GetKey(), &buffer, wxT("0") );
+	
+		m_value = atoll(unicode2char(buffer));
+	}
+
+	virtual void SaveToFile(wxConfigBase* cfg)
+	{
+		wxString str = wxString::Format(wxT("%llu"),(unsigned long long)m_value);
+	
+		cfg->Write( GetKey(), str );
+	}
+
+	
+protected:
+	uint64& m_value;
+};
+
+
+/**
+ * Cfg-class for arrays of uint16, with no assisiated widgets.
+ */
+class Cfg_Columns : public Cfg_Base
+{
+public:
+	Cfg_Columns( const wxString& keyname, uint16* array, int count, int defaultVal )
+	 : Cfg_Base( keyname ),
+	   m_array( array ),
+	   m_default_val( defaultVal ),
+	   m_count( count )
+	{
+	}
+
+
+	virtual void LoadFromFile(wxConfigBase* cfg)
+	{
+		// Set default values
+		for ( int i = 0; i < m_count; i++ )
+			m_array[i] = m_default_val;
+		
+		wxString buffer;
+		if ( cfg->Read( GetKey(), &buffer, wxT("") ) ) {
+			int counter = 0;
+		
+			wxStringTokenizer tokenizer( buffer, wxT(",") );
+			while ( tokenizer.HasMoreTokens() && ( counter < m_count ) ) {
+				m_array[counter++] = atoi( unicode2char( tokenizer.GetNextToken() ) );
+			}
+		}
+	}
+	
+	virtual void SaveToFile(wxConfigBase* cfg)
+	{
+		wxString buffer;
+
+		for ( int i = 0; i < m_count; i++ ) {
+			if ( i ) buffer << wxT(",");
+
+			buffer << m_array[i];
+		}
+	
+		cfg->Write( GetKey(), buffer );
+	}
+
+protected:
+	uint16*	m_array;
+	int		m_default_val;
+	int 	m_count;
+};
+
+
 
 /// new implementation
 CPreferences::CPreferences()
 {
-	srand((uint32)time(0)); // we need random numbers sometimes
-
-	prefsExt=new Preferences_Ext_Struct;
-	memset(prefsExt,0,sizeof(Preferences_Ext_Struct));
+	srand( wxGetLocalTimeMillis().ToLong() ); // we need random numbers sometimes
 
 	CreateUserHash();
 
@@ -236,15 +635,17 @@ CPreferences::CPreferences()
 	CFile preffile;
 	if ( wxFileExists( fullpath ) ) {
 		if ( preffile.Open(fullpath, CFile::read) ) {
-			off_t read = preffile.Read(prefsExt, sizeof(Preferences_Ext_Struct));
+			Preferences_Ext_Struct prefsExt;
+	
+			memset( &prefsExt, 0, sizeof(Preferences_Ext_Struct) );
+			off_t read = preffile.Read( &prefsExt, sizeof(Preferences_Ext_Struct) );
 
-			if ( read != sizeof(Preferences_Ext_Struct) ) {
+			if ( read == sizeof(Preferences_Ext_Struct) ) {
+				md4cpy(m_userhash, prefsExt.userhash);
+			} else {
 				SetStandartValues();
 			}
-		
-			md4cpy(m_userhash,prefsExt->userhash);
-			s_smartidstate = 0;
-
+			
 			preffile.Close();	
 		} else {
 			SetStandartValues();
@@ -295,6 +696,7 @@ CPreferences::CPreferences()
 	
 	printf("Userhash loaded: %s\n", unicode2char(m_userhash.Encode()));
 }
+
 
 void CPreferences::BuildItemList( const wxString& appdir )  // gets called at init time
 {
@@ -570,7 +972,7 @@ void CPreferences::LoadAllItems(wxConfigBase* cfg)
 
 	
 	// Now do some post-processing / sanity checking on the values we just loaded
-	theApp.glob_prefs->CheckUlDlRatio();
+	CheckUlDlRatio();
 }
 
 
@@ -634,7 +1036,6 @@ void CPreferences::CheckUlDlRatio()
 }
 
 
-
 void CPreferences::SetStandartValues()
 {
 	CreateUserHash();
@@ -653,7 +1054,6 @@ bool CPreferences::Save()
 	wxString fullpath(theApp.ConfigDir + wxT("preferences.dat"));
 
 	bool error = false;
-	prefsExt->version = PREFFILE_VERSION;
 
 	CFile preffile;
 	
@@ -663,8 +1063,13 @@ bool CPreferences::Save()
 	if ( preffile.Open(fullpath, CFile::read_write) ) {
 		printf("Saving userhash: %s\n", unicode2char(m_userhash.Encode()));
 		
-		md4cpy(prefsExt->userhash, m_userhash.GetHash());
-		off_t read = preffile.Write(prefsExt, sizeof(Preferences_Ext_Struct) );
+		Preferences_Ext_Struct prefsExt;
+		memset( &prefsExt, 0, sizeof(Preferences_Ext_Struct) );
+		
+		prefsExt.version = PREFFILE_VERSION;
+		md4cpy( prefsExt.userhash, m_userhash.GetHash() );
+		
+		off_t read = preffile.Write( &prefsExt, sizeof(Preferences_Ext_Struct) );
 
 		error = read != sizeof(Preferences_Ext_Struct);
 		
@@ -694,6 +1099,7 @@ bool CPreferences::Save()
 	return error;
 }
 
+
 void CPreferences::CreateUserHash()
 {
 	for (int i = 0;i != 8; i++) {
@@ -722,179 +1128,181 @@ void CPreferences::CreateUserHash()
 	}
 
 
-int32 CPreferences::GetColumnWidth(Table t, int index)
+int32 CPreferences::GetColumnWidth(TablePreference t, int index)
 {
 	switch(t) {
-	case tableDownload:
+	case TP_Download:
 		CHECKANDRETURN( s_downloadColumnWidths,   index );
-	case tableUpload:
+	case TP_Upload:
 		CHECKANDRETURN( s_uploadColumnWidths,     index );
-	case tableQueue:
+	case TP_Queue:
 		CHECKANDRETURN( s_queueColumnWidths,      index );
-	case tableSearch:
+	case TP_Search:
 		CHECKANDRETURN( s_searchColumnWidths,     index );
-	case tableShared:
+	case TP_Shared:
 		CHECKANDRETURN( s_sharedColumnWidths,     index );
-	case tableServer:
+	case TP_Server:
 		CHECKANDRETURN( s_serverColumnWidths,     index );
-	case tableClientList:
+	case TP_ClientList:
 		CHECKANDRETURN( s_clientListColumnWidths, index );
-	case tableNone:
+	case TP_None:
 	default:
 		return 0;
 	}
 }
 
-void CPreferences::SetColumnWidth(Table t, int index, int32 width)
+
+void CPreferences::SetColumnWidth(TablePreference t, int index, int32 width)
 {
 	switch(t) {
-	case tableDownload:
+	case TP_Download:
 		CHECKANDSET( s_downloadColumnWidths,   index, width );
 		break;
-	case tableUpload:
+	case TP_Upload:
 		CHECKANDSET( s_uploadColumnWidths,     index, width );
 		break;
-	case tableQueue:
+	case TP_Queue:
 		CHECKANDSET( s_queueColumnWidths,      index, width );
 		break;
-	case tableSearch:
+	case TP_Search:
 		CHECKANDSET( s_searchColumnWidths,     index, width );
 		break;
-	case tableShared:
+	case TP_Shared:
 		CHECKANDSET( s_sharedColumnWidths,     index, width );
 		break;
-	case tableServer:
+	case TP_Server:
 		CHECKANDSET( s_serverColumnWidths,     index, width );
 		break;
-	case tableClientList:
+	case TP_ClientList:
 		CHECKANDSET( s_clientListColumnWidths, index, width );
 		break;
-	case tableNone:
+	case TP_None:
 	default:
 		break;
 	}
 }
 
-bool CPreferences::GetColumnHidden(Table t, int index)
+
+bool CPreferences::GetColumnHidden(TablePreference t, int index)
 {
 	switch(t) {
-	case tableDownload:
+	case TP_Download:
 		CHECKANDRETURN( s_downloadColumnHidden,   index );
-	case tableUpload:
+	case TP_Upload:
 		CHECKANDRETURN( s_uploadColumnHidden,     index );
-	case tableQueue:
+	case TP_Queue:
 		CHECKANDRETURN( s_queueColumnHidden,      index );
-	case tableSearch:
+	case TP_Search:
 		CHECKANDRETURN( s_searchColumnHidden,     index );
-	case tableShared:
+	case TP_Shared:
 		CHECKANDRETURN( s_sharedColumnHidden,     index );
-	case tableServer:
+	case TP_Server:
 		CHECKANDRETURN( s_serverColumnHidden,     index );
-	case tableClientList:
+	case TP_ClientList:
 		CHECKANDRETURN( s_clientListColumnHidden, index );
-	case tableNone:
+	case TP_None:
 	default:
 		return FALSE;
 	}
 }
 
-void CPreferences::SetColumnHidden(Table t, int index, bool bHidden)
+
+void CPreferences::SetColumnHidden(TablePreference t, int index, bool bHidden)
 {
 	switch(t) {
-	case tableDownload:
+	case TP_Download:
 		CHECKANDSET( s_downloadColumnHidden,   index, bHidden );
 		break;
-	case tableUpload:
+	case TP_Upload:
 		CHECKANDSET( s_uploadColumnHidden,     index, bHidden );
 		break;
-	case tableQueue:
+	case TP_Queue:
 		CHECKANDSET( s_queueColumnHidden,      index, bHidden );
 		break;
-	case tableSearch:
+	case TP_Search:
 		CHECKANDSET( s_searchColumnHidden,     index, bHidden );
 		break;
-	case tableShared:
+	case TP_Shared:
 		CHECKANDSET( s_sharedColumnHidden,     index, bHidden );
 		break;
-	case tableServer:
+	case TP_Server:
 		CHECKANDSET( s_serverColumnHidden,     index, bHidden );
 		break;
-	case tableClientList:
+	case TP_ClientList:
 		CHECKANDSET( s_clientListColumnHidden, index, bHidden );
 		break;
-	case tableNone:
+	case TP_None:
 	default:
 		break;
 	}
 }
 
-int32 CPreferences::GetColumnOrder(Table t, int index)
+
+int32 CPreferences::GetColumnOrder(TablePreference t, int index)
 {
 	switch(t) {
-	case tableDownload:
+	case TP_Download:
 		CHECKANDRETURN( s_downloadColumnOrder,   index );
-	case tableUpload:
+	case TP_Upload:
 		CHECKANDRETURN( s_uploadColumnOrder,     index );
-	case tableQueue:
+	case TP_Queue:
 		CHECKANDRETURN( s_queueColumnOrder,      index );
-	case tableSearch:
+	case TP_Search:
 		CHECKANDRETURN( s_searchColumnOrder,     index );
-	case tableShared:
+	case TP_Shared:
 		CHECKANDRETURN( s_sharedColumnOrder,     index );
-	case tableServer:
+	case TP_Server:
 		CHECKANDRETURN( s_serverColumnOrder,     index );
-	case tableClientList:
+	case TP_ClientList:
 		CHECKANDRETURN( s_clientListColumnOrder, index );
-	case tableNone:
+	case TP_None:
 	default:
 		return 0;
 	}
 }
 
-void CPreferences::SetColumnOrder(Table t, INT *piOrder)
+
+void CPreferences::SetColumnOrder(TablePreference t, INT *piOrder)
 {
 	switch(t) {
-	case tableDownload:
+	case TP_Download:
 		memcpy(s_downloadColumnOrder, piOrder, sizeof(s_downloadColumnOrder));
 		break;
-	case tableUpload:
+	case TP_Upload:
 		memcpy(s_uploadColumnOrder, piOrder, sizeof(s_uploadColumnOrder));
 		break;
-	case tableQueue:
+	case TP_Queue:
 		memcpy(s_queueColumnOrder, piOrder, sizeof(s_queueColumnOrder));
 		break;
-	case tableSearch:
+	case TP_Search:
 		memcpy(s_searchColumnOrder, piOrder, sizeof(s_searchColumnOrder));
 		break;
-	case tableShared:
+	case TP_Shared:
 		memcpy(s_sharedColumnOrder, piOrder, sizeof(s_sharedColumnOrder));
 		break;
-	case tableServer:
+	case TP_Server:
 		memcpy(s_serverColumnOrder, piOrder, sizeof(s_serverColumnOrder));
 		break;
-	case tableClientList:
+	case TP_ClientList:
 		memcpy(s_clientListColumnOrder, piOrder, sizeof(s_clientListColumnOrder));
 		break;
-	case tableNone:
+	case TP_None:
 	default:
 		break;
 	}
 }
 
+
 CPreferences::~CPreferences()
 {
-
-	Category_Struct* delcat;
-	while (!catMap.IsEmpty()) {
-		delcat=catMap[0];
-		catMap.RemoveAt(0);
-		delete delcat;
+	while ( !m_CatList.empty() ) {
+		delete m_CatList.front();
+		m_CatList.erase( m_CatList.begin() );
 	}
 
-	catMap.Clear();
-
-	delete prefsExt;
+	m_CatList.clear();
 }
+
 
 int32 CPreferences::GetRecommendedMaxConnections()
 {
@@ -911,6 +1319,7 @@ int32 CPreferences::GetRecommendedMaxConnections()
 	return iRealMax - 20;
 }
 
+
 void CPreferences::SavePreferences()
 {
 	wxConfigBase* cfg = wxConfig::Get();
@@ -921,6 +1330,7 @@ void CPreferences::SavePreferences()
 	cfg->Flush();
 }
 
+
 void CPreferences::SaveCats()
 {
 	if ( GetCatCount() ) {
@@ -928,24 +1338,26 @@ void CPreferences::SaveCats()
 
 		// The first category is the default one and should not be counte
 
-		cfg->Write( wxT("/General/Count"), (long)(catMap.GetCount() - 1) );
+		cfg->Write( wxT("/General/Count"), (long)(m_CatList.size() - 1) );
 
-		for ( size_t i = 1; i < catMap.GetCount(); i++ ) {
+		for ( size_t i = 1; i < m_CatList.size(); i++ ) {
 			cfg->SetPath( wxString::Format(wxT("/Cat#%i"), i) );
 
-			cfg->Write( wxT("Title"), catMap[i]->title );
-			cfg->Write( wxT("Incoming"), catMap[i]->incomingpath );
-			cfg->Write( wxT("Comment"), catMap[i]->comment );
-			cfg->Write( wxT("Color"), wxString::Format(wxT("%u"), catMap[i]->color) );
-			cfg->Write( wxT("Priority"), catMap[i]->prio );
+			cfg->Write( wxT("Title"),		m_CatList[i]->title );
+			cfg->Write( wxT("Incoming"),	m_CatList[i]->incomingpath );
+			cfg->Write( wxT("Comment"),		m_CatList[i]->comment );
+			cfg->Write( wxT("Color"),		wxString::Format(wxT("%u"), m_CatList[i]->color) );
+			cfg->Write( wxT("Priority"),	m_CatList[i]->prio );
 		}
 	}
 }
+
 
 void CPreferences::LoadPreferences()
 {
 	LoadCats();
 }
+
 
 void CPreferences::LoadCats() {
 	// default cat ... Meow! =(^.^)=
@@ -985,6 +1397,7 @@ void CPreferences::LoadCats() {
 	}
 }
 
+
 uint16 CPreferences::GetDefaultMaxConperFive()
 {
 	return MAXCONPER5SEC;
@@ -992,121 +1405,164 @@ uint16 CPreferences::GetDefaultMaxConperFive()
 
 
 // Barry - Provide a mechanism for all tables to store/retrieve sort order
-int32 CPreferences::GetColumnSortItem(Table t)
+int32 CPreferences::GetColumnSortItem(TablePreference t)
 {
 	switch(t) {
-		case tableDownload:
+		case TP_Download:
 			return s_tableSortItemDownload;
-		case tableUpload:
+		case TP_Upload:
 			return s_tableSortItemUpload;
-		case tableQueue:
+		case TP_Queue:
 			return s_tableSortItemQueue;
-		case tableSearch:
+		case TP_Search:
 			return s_tableSortItemSearch;
-		case tableShared:
+		case TP_Shared:
 			return s_tableSortItemShared;
-		case tableServer:
+		case TP_Server:
 			return s_tableSortItemServer;
-		case tableClientList:
+		case TP_ClientList:
 			return s_tableSortItemClientList;
-		case tableNone:
 		default:
 			return 0;
 	}
 }
 
+
 // Barry - Provide a mechanism for all tables to store/retrieve sort order
-bool CPreferences::GetColumnSortAscending(Table t)
+bool CPreferences::GetColumnSortAscending(TablePreference t)
 {
 	switch(t) {
-		case tableDownload:
+		case TP_Download:
 			return s_tableSortAscendingDownload;
-		case tableUpload:
+		case TP_Upload:
 			return s_tableSortAscendingUpload;
-		case tableQueue:
+		case TP_Queue:
 			return s_tableSortAscendingQueue;
-		case tableSearch:
+		case TP_Search:
 			return s_tableSortAscendingSearch;
-		case tableShared:
+		case TP_Shared:
 			return s_tableSortAscendingShared;
-		case tableServer:
+		case TP_Server:
 			return s_tableSortAscendingServer;
-		case tableClientList:
+		case TP_ClientList:
 			return s_tableSortAscendingClientList;
-		case tableNone:
 		default:
 			return true;
 	}
 }
 
+
 // Barry - Provide a mechanism for all tables to store/retrieve sort order
-void CPreferences::SetColumnSortItem(Table t, int32 sortItem)
+void CPreferences::SetColumnSortItem(TablePreference t, int32 sortItem)
 {
 	switch(t) {
-		case tableDownload:
+		case TP_Download:
 			s_tableSortItemDownload = sortItem;
 			break;
-		case tableUpload:
+		case TP_Upload:
 			s_tableSortItemUpload = sortItem;
 			break;
-		case tableQueue:
+		case TP_Queue:
 			s_tableSortItemQueue = sortItem;
 			break;
-		case tableSearch:
+		case TP_Search:
 			s_tableSortItemSearch = sortItem;
 			break;
-		case tableShared:
+		case TP_Shared:
 			s_tableSortItemShared = sortItem;
 			break;
-		case tableServer:
+		case TP_Server:
 			s_tableSortItemServer = sortItem;
 			break;
-		case tableClientList:
+		case TP_ClientList:
 			s_tableSortItemClientList = sortItem;
 			break;
-		case tableNone:
 		default:
 			break;
 	}
 }
 
+
 // Barry - Provide a mechanism for all tables to store/retrieve sort order
-void CPreferences::SetColumnSortAscending(Table t, bool sortAscending)
+void CPreferences::SetColumnSortAscending(TablePreference t, bool sortAscending)
 {
 	switch(t) {
-		case tableDownload:
+		case TP_Download:
 			s_tableSortAscendingDownload = sortAscending;
 			break;
-		case tableUpload:
+		case TP_Upload:
 			s_tableSortAscendingUpload = sortAscending;
 			break;
-		case tableQueue:
+		case TP_Queue:
 			s_tableSortAscendingQueue = sortAscending;
 			break;
-		case tableSearch:
+		case TP_Search:
 			s_tableSortAscendingSearch = sortAscending;
 			break;
-		case tableShared:
+		case TP_Shared:
 			s_tableSortAscendingShared = sortAscending;
 			break;
-		case tableServer:
+		case TP_Server:
 			s_tableSortAscendingServer = sortAscending;
 			break;
-		case tableClientList:
+		case TP_ClientList:
 			s_tableSortAscendingClientList = sortAscending;
 			break;
-		case tableNone:
 		default:
 			break;
 	}
 }
+
+
+uint32 CPreferences::AddCat(Category_Struct* cat)
+{
+	m_CatList.push_back( cat );
+	
+	return m_CatList.size() - 1;
+}
+
 
 void CPreferences::RemoveCat(size_t index)
 {
-	if (index < catMap.GetCount()) {
-		catMap.RemoveAt(index);
+	if ( index < m_CatList.size() ) {
+		CatList::iterator it = m_CatList.begin() + index;
+	
+		delete *it;
+		
+		m_CatList.erase( it );
 	}
 }
+
+
+uint32 CPreferences::GetCatCount()
+{
+	return m_CatList.size();
+}
+
+
+Category_Struct* CPreferences::GetCategory(size_t index)
+{
+	wxASSERT( index < m_CatList.size() );
+
+	return m_CatList[index];
+}
+
+
+const wxString&	CPreferences::GetCatPath(uint8 index)
+{
+	wxASSERT( index < m_CatList.size() );
+	
+	return m_CatList[index]->incomingpath;
+}
+
+DWORD CPreferences::CPreferences::GetCatColor(size_t index)
+{
+	wxASSERT( index < m_CatList.size() );
+
+	return m_CatList[index]->color;
+}
+
+
 
 // Jacobo221 - Several issues on the browsers:
 // netscape is named Netscape on some systems
@@ -1148,3 +1604,4 @@ wxString CPreferences::GetBrowser()
 	
 	return cmd;
 }
+
