@@ -4109,27 +4109,13 @@ void CPartFile::ClientStateChanged( int oldState, int newState )
 
 bool CPartFile::AddSource( CUpDownClient* client )
 {
-	if ( m_SrcList.insert( client ).second ) {
-		// Update source-counts
-		ClientStateChanged( -1, client->GetDownloadState() );
-
-		return true;
-	}
-
-	return false;
+	return m_SrcList.insert( client ).second;
 }
 
 	
 bool CPartFile::DelSource( CUpDownClient* client )
 {
-	if ( m_SrcList.erase( client ) ) {
-		// Update source-counts
-		ClientStateChanged( client->GetDownloadState(), -1 );
-
-		return true;
-	}
-
-	return false;
+	return m_SrcList.erase( client );
 }
 
 	
