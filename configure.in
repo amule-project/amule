@@ -268,10 +268,12 @@ case "$WXBASE24FOUND" in
 1)	HAVE_AMULECMD="yes"
 	WXBASE_CXXFLAGS="$WXBASE_CXXFLAGS -DWXBASE"
 	;;
-*)	HAVE_AMULECMD="no"
-	if test "${WX_VERSION}" = "any"; then
+*)	if test "$WXBASE25FOUND" = "1"; then
+      	HAVE_AMULECMD="yes"
+      else
 		WEB="no"
 		WEBGUI="no"
+		HAVE_AMULECMD="no"
 	fi
 	;;
 esac
