@@ -226,7 +226,7 @@ CECPacket *ExternalConn::Authenticate(const CECPacket *request)
 
 	if (request->GetOpCode() == EC_OP_AUTH_REQ) {
 		CECTag *clientName = request->GetTagByName(EC_TAG_CLIENT_NAME);
-		AddLogLineM(false, _("Connecting client: ") + ((clientName == NULL) ? wxString(_("Unknown")) : clientName->GetTagString()));
+		AddLogLineM(false, _("Connecting client: ") + ((clientName == NULL) ? wxString(_("Unknown")) : clientName->GetStringData()));
 		CECTag *passwd = request->GetTagByName(EC_TAG_PASSWD_HASH);
 		CECTag *protocol = request->GetTagByName(EC_TAG_PROTOCOL_VERSION);
 		if (protocol != NULL) {
@@ -239,7 +239,7 @@ CECPacket *ExternalConn::Authenticate(const CECPacket *request)
 						response = new CECPacket(EC_OP_AUTH_FAIL);
 						response->AddTag(CECTag(EC_TAG_STRING, _("Authentication failed.")));
 					}
-				} else if (passwd->GetTagString() == thePrefs::ECPassword()) {
+				} else if (passwd->GetStringData() == thePrefs::ECPassword()) {
 					response = new CECPacket(EC_OP_AUTH_OK);
 				} else {
 					response = new CECPacket(EC_OP_AUTH_FAIL);
@@ -261,7 +261,7 @@ CECPacket *ExternalConn::Authenticate(const CECPacket *request)
 	if (response->GetOpCode() == EC_OP_AUTH_OK) {
 		AddLogLineM(false, _("Access granted."));
 	} else {
-		AddLogLineM(false, response->GetTagByIndex(0)->GetTagString());
+		AddLogLineM(false, response->GetTagByIndex(0)->GetStringData());
 	}
 
 	return response;
@@ -310,7 +310,7 @@ CECPacket *Get_EC_Response_IPFilter(const CECPacket *request)
 
 	wxString msg;
 	if ( request->GetTagCount() ) {
-		wxString cmd = request->GetTagByIndex(0)->GetTagString();
+		wxString cmd = request->GetTagByIndex(0)->GetStringData();
 		if ( cmd == wxT("ON") ) {
 			thePrefs::SetIPFilterOn(true);
 		} else if ( cmd == wxT("OFF") ) {
@@ -353,7 +353,7 @@ CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request)
 		CECTag filetag(EC_TAG_PARTFILE, cur_file->GetFileName());
 
 		filetag.AddTag(CECTag(EC_TAG_ITEM_ID,
-			wxString::Format("%lx", (unsigned long)(cur_file))));
+			wxString::Format(wxT("%lx"), (unsigned long)(cur_file))));
 		filetag.AddTag(CECTag(EC_TAG_PARTFILE_SIZE_FULL,
 			wxString::Format(wxT("%ul"),cur_file->GetFileSize())));
 		filetag.AddTag(CECTag(EC_TAG_PARTFILE_SIZE_XFER,
@@ -397,7 +397,7 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request)
 		case EC_OP_COMPAT: 
 			response = new CECPacket(EC_OP_COMPAT);
 			response->AddTag(CECTag(EC_TAG_STRING,
-				ProcessRequest(request->GetTagByIndex(0)->GetTagString())));
+				ProcessRequest(request->GetTagByIndex(0)->GetStringData())));
 			break;
 		case EC_OP_SHUTDOWN:
 			AddLogLineM(true, _("ExternalConn: shutdown requested"));
@@ -415,7 +415,7 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request)
 		case EC_OP_ED2K_LINK: 
 			for(int i = 0; i < request->GetTagCount();i++) {
 				CECTag *tag = request->GetTagByIndex(i);
-				wxString link = tag->GetTagString();
+				wxString link = tag->GetStringData();
 				CED2KLink* pLink = CED2KLink::CreateLinkFromUrl(unicode2char(link));
 				if ( pLink->GetKind() == CED2KLink::kFile ) {
 					theApp.downloadqueue->AddFileLinkToDownload(pLink->GetFileLink(), 0);
@@ -427,7 +427,7 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request)
 		case EC_OP_Q_FILE_CMD:
 			for(int i = 0; i < request->GetTagCount();i++) {
 				CECTag *tag = request->GetTagByIndex(i);
-				wxString cmd = tag->GetTagString();
+				wxString cmd = tag->GetStringData();
 				/*
 				 * command format:
 				 *  PartFile id: [0-9a-f]{8}

@@ -229,6 +229,16 @@ void CamulecmdApp::TextShell(const wxString& prompt, CmdId commands[])
 }
 #endif
 
+void CamulecmdApp::Process_Answer_v2(CECPacket *reply)
+{
+	wxString answer;
+		{
+			answer = ECv2_Response2String(reply);
+			delete reply;
+		}
+		Process_Answer(answer);
+}
+
 int CamulecmdApp::ProcessCommand(int CmdId)
 {
 	long FileId;
@@ -268,7 +278,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			
 		case CMD_ID_RELOAD_IPFILTER:
 			request = new CECPacket(EC_OP_IPFILTER_CMD);
-			request->AddTag(CECTag(EC_TAG_STRING, wxT("RELOAD"));
+			request->AddTag(CECTag(EC_TAG_STRING, wxT("RELOAD")));
 			break;
 			
 		case CMD_ID_SET_IPFILTER:
@@ -361,10 +371,9 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 		wxString answer;
 		CECPacket *reply = SendRecvMsg_v2(request);
 		if ( reply ) {
-			answer = ECv2_Response2String(reply);
+			Process_Answer_v2(reply);
 			delete reply;
 		}
-		Process_Answer(answer);
 	} else {
 		Process_Answer(SendRecvMsg(msg));
 	}
@@ -384,22 +393,22 @@ wxString ECv2_Response2String(CECPacket *response)
 	}
 	switch(response->GetOpCode()) {
 		case EC_OP_STRINGS:
-			s = response->GetTagByIndex(0)->GetTagString();
+			s = response->GetTagByIndex(0)->GetStringData();
 			break;
 		case EC_OP_DLOAD_QUEUE:
 			for(int i = 0; i < response->GetTagCount(); i ++) {
 				CECTag *tag = response->GetTagByIndex(i);
 				unsigned long filesize, donesize, src_count, src_xfer_count;
-				tag->GetTagByName(EC_TAG_PARTFILE_SIZE_FULL)->GetTagString().ToULong(&filesize);
-				tag->GetTagByName(EC_TAG_PARTFILE_SIZE_DONE)->GetTagString().ToULong(&donesize);
-				tag->GetTagByName(EC_TAG_PARTFILE_SOURCE_COUNT)->GetTagString().ToULong(&src_count);
-				tag->GetTagByName(EC_TAG_PARTFILE_SOURCE_COUNT_XFER)->GetTagString().ToULong(&src_xfer_count);
+				tag->GetTagByName(EC_TAG_PARTFILE_SIZE_FULL)->GetStringData().ToULong(&filesize);
+				tag->GetTagByName(EC_TAG_PARTFILE_SIZE_DONE)->GetStringData().ToULong(&donesize);
+				tag->GetTagByName(EC_TAG_PARTFILE_SOURCE_COUNT)->GetStringData().ToULong(&src_count);
+				tag->GetTagByName(EC_TAG_PARTFILE_SOURCE_COUNT_XFER)->GetStringData().ToULong(&src_xfer_count);
 					
-				s += tag->GetTagByName(EC_TAG_ITEM_ID)->GetTagString() + _(" ") +
-					tag->GetTagString () +
+				s += tag->GetTagByName(EC_TAG_ITEM_ID)->GetStringData() + _(" ") +
+					tag->GetStringData() +
 					wxString::Format(wxT("\t [%.1f%%] %i/%i - "),
 						((float)donesize) / ((float)filesize)*100.0, (int)src_xfer_count, (int)src_count) +
-					tag->GetTagByName(EC_TAG_PARTFILE_STATUS)->GetTagString();
+					tag->GetTagByName(EC_TAG_PARTFILE_STATUS)->GetStringData();
 					
 				s += _("\n");
 			}

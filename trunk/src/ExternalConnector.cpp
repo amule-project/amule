@@ -279,7 +279,7 @@ wxString CaMuleExternalConnector::SendRecvMsg(const wxChar *msg)
     if (m_ECClient->WritePacket(&request)) {
 	CECPacket *reply = m_ECClient->ReadPacket();
 	if (reply != NULL) {
-	    wxString s = reply->GetTagByIndex(0)->GetTagString();	// An EC_OP_COMPAT request implies the EC_OP_COMPAT reply.
+	    wxString s = reply->GetTagByIndex(0)->GetStringData();	// An EC_OP_COMPAT request implies the EC_OP_COMPAT reply.
 	    delete reply;
 	    return s;
 	} else {
@@ -376,7 +376,7 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, CmdId *UNU
 			if (reply->GetTagCount() > 0) {
 			    CECTag *reason = reply->GetTagByName(EC_TAG_STRING);
 			    if (reason != NULL) {
-				Show(wxString::Format(_("ExternalConn: Access denied because: %s\n"), reason->GetTagString().GetData()));
+				Show(wxString::Format(_("ExternalConn: Access denied because: %s\n"), reason->GetStringData().GetData()));
 			    } else {
 				Show(_("ExternalConn: Access denied.\n"));
 			    }
