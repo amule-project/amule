@@ -201,6 +201,8 @@ enum {
 #define	OP_SERVER_DESC_RES			0xA3	// <name_len 2><name name_len><desc_len 2 desc_en>
 #define	OP_SERVER_LIST_REQ2			0xA4	// (null)
 
+#define INV_SERV_DESC_LEN		0xF0FF	// used as an 'invalid' string len for OP_SERVER_DESC_REQ/RES
+
 // client <-> client
 #define	OP_HELLO				0x01	// 0x10<HASH 16><ID 4><PORT 2><1 Tag_set>
 #define	OP_SENDINGPART				0x46	// <HASH 16><von 4><bis 4><Daten len:(von-bis)>
@@ -262,19 +264,21 @@ enum {
 #define	OP_QUEUEFULL				0x93	// (null)
 	
 // server.met
-#define	ST_SERVERNAME				0x01	// <string>
-#define	ST_DESCRIPTION				0x0B	// <string>
-#define	ST_PING					0x0C	// <int>
-#define	ST_PREFERENCE				0x0E	// <int>
-#define	ST_FAIL					0x0D	// <int>
-#define	ST_DYNIP				0x85
-// #define ST_LASTPING				0x86	// <int>
+#define	ST_SERVERNAME			0x01	// <string>
+#define	ST_DESCRIPTION			0x0B	// <string>
+#define	ST_PING						0x0C	// <uint32>
+#define	ST_PREFERENCE			0x0E	// <uint32>
+#define	ST_FAIL						0x0D	// <uint32>
+#define	ST_DYNIP						0x85
+// #define ST_LASTPING				0x86	// <uint32>
 #define 	ST_MAXUSERS				0x87
 #define	ST_SOFTFILES				0x88
 #define	ST_HARDFILES				0x89
-#define	ST_LASTPING				0x90	// <int>
-#define	ST_VERSION				0x91	// <string>
-#define	ST_UDPFLAGS				0x92	// <int>
+#define	ST_LASTPING				0x90	// <uint32>
+#define	ST_VERSION					0x91	// <string>
+#define	ST_UDPFLAGS				0x92	// <uint32>
+#define	ST_AUXPORTSLIST			0x93	// <string>
+#define	ST_LOWIDUSERS			0x94	// <uint32>
 
 //file tags
 #define	FT_FILENAME				0x01

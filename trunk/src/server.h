@@ -98,7 +98,13 @@ public:
 	uint32	GetTCPFlags() const					{return m_uTCPFlags;}
 	void	SetUDPFlags(uint32 uFlags)				{m_uUDPFlags = uFlags;}
 	uint32	GetUDPFlags() const					{return m_uUDPFlags;}
-
+	uint32	GetLowIDUsers() const					{return m_uLowIDUsers;}
+	void	SetLowIDUsers(uint32 uLowIDUsers)		{m_uLowIDUsers = uLowIDUsers;}
+	uint32	GetDescReqChallenge() const				{return m_uDescReqChallenge;}
+	void	SetDescReqChallenge(uint32 uDescReqChallenge) {m_uDescReqChallenge = uDescReqChallenge;}
+	uint8	GetLastDescPingedCount() const			{return lastdescpingedcout;}
+	void	SetLastDescPingedCount(bool reset);
+	
 private:
 	uint32		challenge;
 	uint32		lastpinged;
@@ -117,12 +123,15 @@ private:
 	uint32		ip;
 	uint16		port;
 	uint32		failedcount; 
+	uint32		m_uDescReqChallenge;
+	uint8			lastdescpingedcout;
 	TagList* taglist;
 	//CTypedPtrList<CPtrList, CTag*>*	taglist;
 	uint8		staticservermember;
 	wxString		m_strVersion;
 	uint32		m_uTCPFlags;
 	uint32		m_uUDPFlags;
+	uint32		m_uLowIDUsers;
 	
 	void Init();
 

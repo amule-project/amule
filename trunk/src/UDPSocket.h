@@ -83,7 +83,7 @@ private:
 
 	void SendBuffer();
 	bool	ProcessPacket(char* packet, int16 size, int8 opcode, const wxString& host, uint16 port);
-	bool	ProcessExtPacket(char* packet, int16 size, int8 opcode, const wxString& host, uint16 port);
+	//bool	ProcessExtPacket(char* packet, int16 size, int8 opcode, const wxString& host, uint16 port);
 	CServerConnect*	serverconnect;
 	char*	sendbuffer;
 	uint32	sendblen;

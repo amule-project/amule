@@ -292,15 +292,22 @@ void CServerList::ServerStats()
 		Notify_ServerRefresh(ping_server);
 		theApp.uploadqueue->AddUpDataOverheadServer(packet->GetPacketSize());
 		theApp.serverconnect->SendUDPPacket(packet, ping_server, true);
-		/* Initial Import Test (Creteil) BEGIN Leave commented for the moment ...
+		
 		ping_server->SetLastDescPingedCount(false);
 		if(ping_server->GetLastDescPingedCount() < 2) {
-			packet = new Packet( OP_SERVER_DESC_REQ,0);
-			theApp.uploadqueue->AddUpDataOverheadServer(packet->size);
+			// eserver 16.45+ supports a new OP_SERVER_DESC_RES answer, if the OP_SERVER_DESC_REQ contains a uint32
+			// challenge, the server returns additional info with OP_SERVER_DESC_RES. To properly distinguish the
+			// old and new OP_SERVER_DESC_RES answer, the challenge has to be selected carefully. The first 2 bytes 
+			// of the challenge (in network byte order) MUST NOT be a valid string-len-int16!
+			uint32 randomness = 1 + (int) (((float)(0xFFFF))*rand()/(RAND_MAX+1.0));
+			uint32 uDescReqChallenge = ((uint32)randomness << 16) + INV_SERV_DESC_LEN; // 0xF0FF = an 'invalid' string length.
+			packet = new Packet( OP_SERVER_DESC_REQ,4);
+			*((uint32*)packet) = uDescReqChallenge;
+			theApp.uploadqueue->AddUpDataOverheadServer(packet->GetPacketSize());
 			theApp.serverconnect->SendUDPPacket(packet, ping_server, true);
 		} else {
 			ping_server->SetLastDescPingedCount(true);
-		}*/
+		}
 	}
 }
 
@@ -830,6 +837,8 @@ bool CServerList::SaveServermetToFile()
 			version.WriteTagToFile(&servermet);
 			CTag tagUDPFlags(ST_UDPFLAGS, nextserver->GetUDPFlags() );
 			tagUDPFlags.WriteTagToFile(&servermet);
+			CTag tagLowIDUsers(ST_LOWIDUSERS, nextserver->GetLowIDUsers() );
+			tagLowIDUsers.WriteTagToFile(&servermet);			
 	}
 	
 	servermet.Flush();

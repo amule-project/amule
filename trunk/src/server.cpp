@@ -112,7 +112,9 @@ CServer::CServer(CServer* pOld)
 	challenge = pOld->challenge;
 	softfiles = pOld->softfiles;
 	hardfiles = pOld->hardfiles;
-	
+	m_uDescReqChallenge = pOld->m_uDescReqChallenge;
+	m_uLowIDUsers = pOld->m_uLowIDUsers;
+	lastdescpingedcout = pOld->lastdescpingedcout;
 }
 
 CServer::~CServer()
@@ -153,7 +155,9 @@ void CServer::Init() {
 	softfiles = 0;
 	hardfiles = 0;	
 	m_strVersion = wxT("Unknown");
-	
+	m_uLowIDUsers = 0;
+	m_uDescReqChallenge = 0;
+	lastdescpingedcout = 0;
 }	
 
 bool CServer::AddTagFromFile(CFile* servermet){
@@ -176,10 +180,12 @@ bool CServer::AddTagFromFile(CFile* servermet){
 		delete tag;
 		break;
 	case ST_PREFERENCE:
+		wxASSERT( tag->tag.type == 3 );
 		preferences =tag->tag.intvalue;
 		delete tag;
 		break;
 	case ST_PING:
+		wxASSERT( tag->tag.type == 3 );
 		ping = tag->tag.intvalue;
 		delete tag;
 		break;
@@ -191,22 +197,27 @@ bool CServer::AddTagFromFile(CFile* servermet){
 		delete tag;
 		break;
 	case ST_FAIL:
+		wxASSERT( tag->tag.type == 3 );
 		failedcount = tag->tag.intvalue;
 		delete tag;
 		break;
 	case ST_LASTPING:
+		wxASSERT( tag->tag.type == 3 );
 		lastpinged = tag->tag.intvalue;
 		delete tag;
 		break;
 	case ST_MAXUSERS:
+		wxASSERT( tag->tag.type == 3 );
 		maxusers = tag->tag.intvalue;
 		delete tag;
 		break;
 	case ST_SOFTFILES:
+		wxASSERT( tag->tag.type == 3 );
 		softfiles = tag->tag.intvalue;
 		delete tag;
 		break;
 	case ST_HARDFILES:
+		wxASSERT( tag->tag.type == 3 );
 		hardfiles = tag->tag.intvalue;
 		delete tag;
 		break;
@@ -216,10 +227,16 @@ bool CServer::AddTagFromFile(CFile* servermet){
 		delete tag;
 		break;
 	case ST_UDPFLAGS:
+		wxASSERT( tag->tag.type == 3 );		
 		if (tag->tag.type == 3)
 			m_uUDPFlags = tag->tag.intvalue;
 		delete tag;
 		break;
+	case ST_LOWIDUSERS:
+		wxASSERT( tag->tag.type == 3 );
+		if (tag->tag.type == 3)			
+			m_uLowIDUsers = tag->tag.intvalue;
+		break;	
 	default:
 		if (tag->tag.specialtag){
 			tag->tag.tagname = nstrdup("Unknown");
@@ -260,4 +277,14 @@ void CServer::SetID(uint32 newip)
 void CServer::SetDynIP(const wxString& newdynip)
 {
 	dynip = newdynip;
+}
+
+
+void CServer::SetLastDescPingedCount(bool bReset)
+{
+	if (bReset) {
+		lastdescpingedcout = 0;
+	} else {
+		lastdescpingedcout++;
+	}
 }
