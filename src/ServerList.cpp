@@ -29,11 +29,10 @@
 #endif
 
 #include <wx/txtstrm.h>
-#include <wx/listimpl.cpp>
 #include <wx/wfstream.h>
-#include <wx/intl.h>		// Needed for _
 #include <wx/filename.h>	// Needed for wxFileName
 #include <wx/url.h>			// Needed for wxURL
+#include <wx/tokenzr.h>
 
 #ifndef AMULE_DAEMON
 	#include <wx/msgdlg.h>		// Needed for wxMessageBox
@@ -67,6 +66,7 @@ CServerList::CServerList()
 	m_nLastED2KServerLinkCheck = ::GetTickCount();
 }
 
+
 bool CServerList::Init()
 {
 	// Load Metfile
@@ -77,7 +77,7 @@ bool CServerList::Init()
 
 	// insert static servers from textfile
 	strTempFilename=  theApp.ConfigDir + wxT("staticservers.dat");
-	AddServersFromTextFile(strTempFilename);
+	LoadStaticServers( strTempFilename );
 	
 	// Send the auto-update of server.met via HTTPThread requests
 	current_url_index = 0;
@@ -87,6 +87,7 @@ bool CServerList::Init()
 	
 	return bRes;
 }
+
 
 bool CServerList::AddServermetToList(const wxString& strFile, bool merge)
 {
@@ -162,13 +163,6 @@ bool CServerList::AddServermetToList(const wxString& strFile, bool merge)
 				++iAddCount;
 			}
 
-			// don't yield all the time
-			// Kry - What's this supposed to do?
-			/*
-			if(j%75==0) {
-				theApp.Yield();
-			}
-			*/
 		}
 		Notify_ServerThaw();
     
@@ -187,6 +181,7 @@ bool CServerList::AddServermetToList(const wxString& strFile, bool merge)
 	servermet.Close();
 	return true;
 }
+
 
 bool CServerList::AddServer(CServer* in_server)
 {
@@ -208,6 +203,7 @@ bool CServerList::AddServer(CServer* in_server)
 	
 	return true;
 }
+
 
 void CServerList::ServerStats()
 {
@@ -283,6 +279,7 @@ void CServerList::RemoveServer(CServer* out_server)
 	}
 }
 
+
 void CServerList::RemoveAllServers()
 {
 	NotifyObservers( EventType( EventType::CLEARED ) );
@@ -294,6 +291,7 @@ void CServerList::RemoveAllServers()
 		list.RemoveTail();
 	}
 }
+
 
 void CServerList::GetStatus(uint32 &total, uint32 &failed, uint32 &user, uint32 &file, uint32 &tuser, uint32 &tfile,float &occ)
 {
@@ -329,6 +327,7 @@ void CServerList::GetStatus(uint32 &total, uint32 &failed, uint32 &user, uint32 
 	}
 }
 
+
 void CServerList::GetUserFileStatus(uint32 &user, uint32 &file)
 {
 	user = 0;
@@ -343,6 +342,7 @@ void CServerList::GetUserFileStatus(uint32 &user, uint32 &file)
 	}
 }
 
+
 CServerList::~CServerList()
 {
 	SaveServermetToFile();
@@ -352,108 +352,75 @@ CServerList::~CServerList()
 	}
 }
 
-void CServerList::AddServersFromTextFile(wxString strFilename,bool isstaticserver, bool writetolog)
-{
-	// emanuelw(20030731) added writetolog
-	wxString strLine;
-	//CStdioFile f;
-	//wxFFile f;
-	//if (!f.Open(strFilename, CFile::modeRead | CFile::typeText))
-	if(!wxFileName::FileExists(strFilename)) {
-		// no file. do nothing.
-		return;
-	}
-	wxFileInputStream stream(strFilename);
-	if(!stream.Ok()) {
-		return;
-	}
 
+void CServerList::LoadStaticServers( const wxString& filename )
+{
+	if ( !wxFileName::FileExists( filename ) ) {
+		return;
+	}
+	
+	wxFileInputStream stream( filename );
 	wxTextInputStream f(stream);
 
-	while(strLine=f.ReadLine()) {
-		if(stream.Eof()) {
-			break; // stop iteration if end of file is met..
-		}
-		// (while won't do it for us)
-		// format is host:port,Name
-		if (strLine.Length() < 5) {
-			continue;
-		}
-		if (strLine.GetChar(0) == '#' || strLine.GetChar(0) == '/') {
+	while ( !stream.Eof() ) {
+		wxString line = f.ReadLine();
+		
+		// Skip comments
+		if ( line.GetChar(0) == '#' || line.GetChar(0) == '/') {
 			continue;
 		}
 
-		// fetch host
-		int pos = strLine.Find(wxT(":"));
-		if (pos == -1) {
-			pos = strLine.Find(wxT(","));
-			if (pos == -1) {
-				continue;
-			}
-		}
-		wxString strHost = strLine.Left(pos);
-		strLine = strLine.Mid(pos+1);
-		// fetch  port
-		pos = strLine.Find(wxT(","));
-		if (pos == -1) {
+		wxStringTokenizer tokens( line, wxT(",") );
+		
+		if ( tokens.CountTokens() != 3 ) {
 			continue;
 		}
-		wxString strPort = strLine.Left(pos);
-		strLine = strLine.Mid(pos+1);
+		
 
-		// Barry - fetch priority
-		pos = strLine.Find(wxT(","));
-		int priority = SRV_PR_NORMAL;
-		if (pos == 1) {
-			wxString strPriority = strLine.Left(pos);
-			try {
-				priority = StrToLong(strPriority);
-				if ((priority < 0) || (priority > 2)) {
-					priority = SRV_PR_NORMAL;
-				}
-			} catch (...) {
-			}
-			strLine = strLine.Mid(pos+1);
+		// format is host:port,priority,Name
+		wxString addy = tokens.GetNextToken().Strip( wxString::both );
+		wxString prio = tokens.GetNextToken().Strip( wxString::both );
+		wxString name = tokens.GetNextToken().Strip( wxString::both );
+
+		wxString host = addy.BeforeFirst( wxT(':') );
+		wxString port = addy.AfterFirst( wxT(':') );
+
+		
+		int priority = StrToLong( prio );
+		if ( priority < 0 || priority > 2 ) {
+			priority = SRV_PR_NORMAL;
 		}
 
-		// fetch name
-		wxString strName = strLine;
-		strName.Replace(wxT("\r"),wxT( ""));
-		strName.Replace(wxT("\n"),wxT( ""));
 
-		// emanuelw(20030924) fix: if there is no name the ip is set as name
-		if(wxStrlen(strName) == 0) {
-			strName = strHost;
+		// We need a valid name for the list
+		if ( name.IsEmpty() ) {
+			name = addy;
 		}
+		
 
 		// create server object and add it to the list
-		CServer* nsrv = new CServer(StrToULong(strPort), strHost);
-		nsrv->SetListName(strName);
+		CServer* server = new CServer( StrToLong( port ), host );
+		
+		server->SetListName( name );
+		server->SetIsStaticMember( true );
+		server->SetPreference( priority );
 
-		// emanuelw(20030924) fix: isstaticserver now is used! before it was always true
-		nsrv->SetIsStaticMember(isstaticserver);
-
-		// Barry - Was always high
-		nsrv->SetPreference(priority);
-
-		// emanuelw(20030924) added: create log entry
-		if(writetolog == true) {
-			AddLogLineM(true,wxString(_("Server added: "))+nsrv->GetAddress()); 
-		}
-
-		if (!theApp.AddServer(nsrv))	{
-			delete nsrv;
-			CServer* srvexisting = GetServerByAddress(strHost, StrToULong(strPort));
-			if (srvexisting) {
-				srvexisting->SetListName(strName);
-				srvexisting->SetIsStaticMember(true);
-				// Barry - Was always high
-				srvexisting->SetPreference(priority); 
-				Notify_ServerRefresh(srvexisting);
+		
+		// Try to add the server to the list
+		if ( !theApp.AddServer( server ) ) {
+			delete server;
+			CServer* existing = GetServerByAddress( host, StrToULong( port ) );
+			if ( existing) {
+				existing->SetListName( name );
+				existing->SetIsStaticMember( true );
+				existing->SetPreference( priority ); 
+				
+				Notify_ServerRefresh( existing );
 			}
 		}
 	}
 }
+
 
 void CServerList::Sort()
 {
@@ -475,6 +442,7 @@ void CServerList::Sort()
 		}
 	}
 }
+
 
 CServer* CServerList::GetNextServer()
 {
@@ -535,6 +503,7 @@ CServer* CServerList::GetServerByAddress(const wxString& address, uint16 port)
 	return NULL;
 }
 
+
 CServer* CServerList::GetServerByIP(uint32 nIP){
 	for (POSITION pos = list.GetHeadPosition();pos != 0;){
         CServer* s = list.GetNext(pos);
@@ -544,6 +513,7 @@ CServer* CServerList::GetServerByIP(uint32 nIP){
 	return NULL;
 }
 
+
 CServer* CServerList::GetServerByIP(uint32 nIP, uint16 nPort){
 	for (POSITION pos = list.GetHeadPosition();pos != 0;){
         CServer* s = list.GetNext(pos);
@@ -552,6 +522,7 @@ CServer* CServerList::GetServerByIP(uint32 nIP, uint16 nPort){
 	}
 	return NULL;
 }
+
 
 bool CServerList::SaveServermetToFile()
 {
@@ -571,7 +542,7 @@ bool CServerList::SaveServermetToFile()
 	
 	CServer* nextserver;
 	
-		for (uint32 j = 0; j != fservercount; ++j){
+		for (uint32 j = 0; j != fservercount; ++j) {
 			nextserver = GetServerByIndex(j);
 
 			uint16 tagcount = 12;
