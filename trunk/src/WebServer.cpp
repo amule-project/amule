@@ -500,7 +500,7 @@ void CWebServer::ProcessURL(ThreadData Data) {
 		wxString PwHash = MD5Sum(PwStr).GetHash();
 		bool login = false;
 		wxString ip = char2unicode(inet_ntoa(Data.inadr));
-		if ( true ||  (PwHash == webInterface->m_AdminPass) || (PwStr.IsEmpty() && webInterface->m_AdminPass.IsEmpty()) ) {
+		if ( (PwHash == webInterface->m_AdminPass) || (PwStr.IsEmpty() && webInterface->m_AdminPass.IsEmpty()) ) {
 			Session* ses = new Session();
 			ses->admin = true;
 			ses->startTime = time(NULL);
