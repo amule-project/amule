@@ -35,10 +35,9 @@
 // Include wxWindows' headers
 #ifndef WX_PRECOMP
 #include <wx/wx.h>
-#endif
-
 #include <wx/timer.h>
 #include <wx/gauge.h>
+#endif
 
 class ActivityBar:public wxGauge
   {

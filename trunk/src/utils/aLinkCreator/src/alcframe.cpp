@@ -36,15 +36,19 @@
 #pragma hdrstop
 #endif
 
+#ifndef WX_PRECOMP
 #include <wx/filedlg.h>
 #include <wx/textfile.h>
+#include <wx/file.h>
 #include <wx/timer.h>
 #include <wx/listbox.h>
 #include <wx/url.h>
 #include <wx/filename.h>
+#endif
 
+#include "md4.h"
+#include "ed2khash.h"
 #include "alcframe.h"
-#include "alchash.h"
 #include "alcpix.h"
 
 /// Constructor
@@ -335,41 +339,15 @@ AlcFrame::SaveEd2kLinkToFile()
 
       if (!filename.empty ())
         {
-          wxTextFile file(filename);
-
-          // Openning file
-          if (file.Exists())
+          // Open file and let wxFile destructor close the file
+          // Closing it explicitly may crash on Win32 ...
+          wxFile file(filename,wxFile::write_append);
+          if (! file.IsOpened())
             {
-              if (! file.Open())
-                {
-                  SetStatusText (_("Unable to open ") + filename);
-                  return;
-                }
+              SetStatusText (_("Unable to open ") + filename);
+              return;
             }
-          else
-            {
-              if (! file.Create())
-                {
-                  SetStatusText (_("Unable to create ") + filename);
-                  return;
-                }
-            }
-
-          // Write link in memory
-          file.AddLine(link);
-
-          // Write file to disk
-          if (file.Write())
-            {
-              SetStatusText (_("Ed2k link saved to ") + filename);
-            }
-          else
-            {
-              SetStatusText (_("Unable to append Ed2k link to ") + filename);
-            }
-
-          // Closing file
-          file.Close();
+          file.Write(link + wxTextFile::GetEOL());
         }
       else
         {
@@ -425,7 +403,7 @@ void AlcFrame::OnStartButton (wxCommandEvent & event)
       m_activityBar->Start();
 
       // Compute ed2k Hash
-      AlcHash hash;
+      Ed2kHash hash;
       hash.SetED2KHashFromFile(filename);
       wxArrayString ed2kHash (hash.GetED2KHash());
 
