@@ -468,7 +468,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				if (size == 6) {
 					CSafeMemFile data((BYTE*)packet,size);
 					uint32 dwIP = data.ReadUInt32();
-					uint16 nPort = data.ReadUInt32();
+					uint16 nPort = data.ReadUInt16();
 					CUpDownClient* client = theApp.clientlist->FindClientByIP(dwIP,nPort);
 					if (client) {
 						client->TryToConnect();
