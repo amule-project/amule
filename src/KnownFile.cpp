@@ -940,10 +940,10 @@ Packet*	CKnownFile::CreateSrcInfoPacket(CUpDownClient* forClient){
 		CUpDownClient *cur_src = srclist.GetAt(pos);
 		if(!cur_src->HasLowID() && cur_src != forClient) {
 			nCount++;
-			data.Write(cur_src->GetUserID());
-			data.Write(cur_src->GetUserPort());
-			data.Write(cur_src->GetServerIP());
-			data.Write(cur_src->GetServerPort());
+			data.Write((uint32)cur_src->GetUserID());
+			data.Write((uint16)cur_src->GetUserPort());
+			data.Write((uint32)cur_src->GetServerIP());
+			data.Write((uint16)cur_src->GetServerPort());
 			if (forClient->GetSourceExchangeVersion() > 1)
 				data.WriteRaw(cur_src->GetUserHash(),16);
 		}
