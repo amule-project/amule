@@ -149,11 +149,23 @@ class CEC_UpDownClient_Tag : public CECTag {
  		bool HaveFile() { return GetTagByName(EC_TAG_KNOWNFILE) != NULL; }
 
  		wxString ClientName() { return GetTagByNameSafe(EC_TAG_CLIENT_NAME)->GetStringData(); }
- 		uint32 Speed() { return GetTagByNameSafe(EC_TAG_PARTFILE_SPEED)->GetInt32Data(); }
+ 		uint32 SpeedUp() { return GetTagByNameSafe(EC_TAG_CLIENT_UP_SPEED)->GetInt32Data(); }
+ 		uint32 SpeedDown() { return GetTagByNameSafe(EC_TAG_CLIENT_DOWN_SPEED)->GetInt32Data(); }
  		
  		uint32 XferUp() { return GetTagByNameSafe(EC_TAG_CLIENT_UPLOAD_TOTAL)->GetInt32Data(); };
  		uint32 XferDown() { return GetTagByNameSafe(EC_TAG_CLIENT_DOWNLOAD_TOTAL)->GetInt32Data(); }
  		uint32 XferUpSession() { return GetTagByNameSafe(EC_TAG_CLIENT_UPLOAD_SESSION)->GetInt32Data(); }
+ 		
+ 		bool IsFriend() { return (GetTagByName(EC_TAG_CLIENT_FRIEND) != 0); }
+ 		
+ 		uint8 ClientSoftware() { return GetTagByNameSafe(EC_TAG_CLIENT_SOFTWARE)->GetInt8Data(); }
+ 		
+ 		uint8 ClientState() { return GetTagByNameSafe(EC_TAG_CLIENT_STATE)->GetInt8Data(); }
+ 		
+ 		uint32 WaitTime() { return GetTagByNameSafe(EC_TAG_CLIENT_WAIT_TIME)->GetInt32Data(); }
+ 		uint32 XferTime() { return GetTagByNameSafe(EC_TAG_CLIENT_XFER_TIME)->GetInt32Data(); }
+ 		uint32 LastReqTime() { return GetTagByNameSafe(EC_TAG_CLIENT_LAST_TIME)->GetInt32Data(); }
+ 		uint32 QueueTime() { return GetTagByNameSafe(EC_TAG_CLIENT_QUEUE_TIME)->GetInt32Data(); }
 };
 
 class CEC_SearchFile_Tag : public CECTag {

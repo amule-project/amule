@@ -576,7 +576,7 @@ bool CServerConnectRem::ReQuery()
 		    		theApp.amuledlg->serverwnd->serverlistctrl->HighlightServer(m_CurrServer, false);
 		    	}
 		    	theApp.amuledlg->serverwnd->serverlistctrl->HighlightServer(server, true);
-		    	
+		    	m_CurrServer = server;
 				theApp.amuledlg->ShowConnectionState(true,
 					server->GetListName() + wxT(" ") + server->GetAddress());
 		    	break;
@@ -861,7 +861,9 @@ CUpDownClient::CUpDownClient(CEC_UpDownClient_Tag *tag)
 {
 	m_nUserID = tag->ID();
 	m_Username = tag->ClientName();
-	kBpsDown = tag->Speed() / 1024.0;
+	m_clientSoft = tag->ClientSoftware();
+	
+	m_Friend = 0;
 	
 	if ( tag->HaveFile() ) {
 		CMD4Hash filehash = tag->FileID();
@@ -884,8 +886,10 @@ CUpDownClient::~CUpDownClient()
 CUpDownClient *CUpDownClientListRem::CreateItem(CEC_UpDownClient_Tag *tag)
 {
 	CUpDownClient *client = new CUpDownClient(tag);
+	ProcessItemUpdate(tag, client);
 	
 	theApp.amuledlg->transferwnd->clientlistctrl->InsertClient(client, vtUploading);
+	
 	return client;
 }
 
@@ -901,7 +905,18 @@ uint32 CUpDownClientListRem::GetItemID(CUpDownClient *client)
 
 void CUpDownClientListRem::ProcessItemUpdate(CEC_UpDownClient_Tag *tag, CUpDownClient *client)
 {
-	client->kBpsDown = tag->Speed() / 1024.0;
+	client->m_nDownloadState = tag->ClientState();
+	client->kBpsUp = tag->SpeedUp() / 1024.0;
+	if ( client->m_nDownloadState == DS_DOWNLOADING ) {
+		client->kBpsDown = tag->SpeedDown() / 1024.0;
+	} else {
+		client->kBpsDown = 0;
+	}
+
+	client->m_WaitTime = tag->WaitTime();
+	client->m_UpStartTimeDelay = tag->XferTime();
+	client->m_dwLastUpRequest = tag->LastReqTime();
+	client->m_WaitStartTime = tag->QueueTime();
 }
 
 CUpQueueRem::CUpQueueRem(CRemoteConnect *conn) : m_up_list(conn), m_wait_list(conn)
