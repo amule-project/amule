@@ -300,6 +300,7 @@ bool CKnownFile::CreateFromFile(char* in_directory,char* in_filename, volatile i
 		return false;
 	}
 	#if defined(__WXGTK__) 
+	#ifndef __OPENBSD__
 	struct stat64 file_stats_long;
 	if (fstat64(fileno(file),&file_stats_long)) {
 		printf("ERROR ON STAT64!!!\n");
@@ -311,6 +312,7 @@ bool CKnownFile::CreateFromFile(char* in_directory,char* in_filename, volatile i
 		fclose(file);
 		return false; // not supported by network
 	}
+	#endif /* __OPENBSD__ */
 	#endif	
 	#if defined(__WXMSW__) 
 	// set filesize

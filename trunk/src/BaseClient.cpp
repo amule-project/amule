@@ -22,6 +22,9 @@
 #ifdef __WXMSW__
 	#include <winsock.h>
 #else
+#ifdef __OPENBSD__
+       #include <sys/types.h>
+#endif /* __OPENBSD__ */
 	#include <sys/socket.h>
 	#include <netinet/in.h>
 	#include <arpa/inet.h>

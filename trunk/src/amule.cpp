@@ -24,13 +24,22 @@
 	#include <wx/msw/winundef.h>
 	#include <wx/msw/registry.h>	// Needed for wxRegKey
 #else
+#ifdef __OPENBSD__
+       #include <sys/types.h>
+#endif /* __OPENBSD__ */
 	#include <sys/socket.h>
 	#include <netinet/in.h>
 	#include <arpa/inet.h>
 #endif
 #ifdef __WXGTK__
+#ifdef __OPENBSD__
+       #include <sys/param.h>
+       #include <sys/mount.h>
+#endif /* __OPENBSD__ */
+#ifndef __OPENBSD__
 	#include <execinfo.h>
 	#include <mntent.h>
+#endif 
 	#include <X11/Xlib.h>		// Needed for XParseGeometry
 	#include <gdk/gdk.h>
 	#include <gtk/gtk.h>
@@ -413,7 +422,7 @@ bool CamuleApp::OnInit()
 	   that is the case, we need to avoid chmoding to avoid lots of warnings.
 	   This is done by reading through fstab entries and comparing to the 
 	   folders used for incomming and temp files. */
-	
+#ifndef __OPENBSD__	
 	FILE* mnt_tab = setmntent("/etc/mtab","r");
 	if ( mnt_tab ) {
 		wxString incomingdir = glob_prefs->GetIncomingDir();
@@ -437,6 +446,30 @@ bool CamuleApp::OnInit()
 	
 		fclose(mnt_tab);
 	}
+#endif /*not __OPENBSD__ */
+
+#ifdef __OPENBSD__
+       wxString incomingdir = glob_prefs->GetIncomingDir();
+       wxString tempdir = glob_prefs->GetTempDir();
+       long size, i;
+        struct statfs *mntbuf;
+ 	
+        size = getmntinfo(&mntbuf, MNT_NOWAIT);
+        for (i = 0; i < size; i++) {
+                if ( !strcmp(mntbuf[i].f_fstypename,"msdos"))
+                       if ( tempdir.StartsWith( mntbuf[i].f_mntonname ) ) {
+      				 amuledlg->AddLogLine(false, "Temp dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings.");
+
+                       		use_chmod = false;
+                       } else if ( incomingdir.StartsWith( mntbuf[i].f_mntonname ) ) {
+
+      				 amuledlg->AddLogLine(false, "Incoming dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings.");
+
+                       		use_chmod = false;
+ 			}     
+	}
+
+#endif __OPENBSD__
 #endif
 
 
@@ -947,6 +980,7 @@ void CamuleApp::OnFatalException()
 
 	// (stkn) create backtrace
 #ifdef __WXGTK__
+#ifndef __OPENBSD__
 	void *bt_array[100];	// 100 should be enough ?!?
 	char **bt_strings;
 	int num_entries;
@@ -966,6 +1000,10 @@ void CamuleApp::OnFatalException()
 		fprintf(stderr, "[%d] %s\n", i, bt_strings[i]);
 	}
 	free(bt_strings);
+#endif
+#ifdef __OPENBSD__
+	fprintf(stderr, "\nOOPS! - Seems like aMule crashed\n--== no BACKTRACE yet \n\n");
+#endif
 #endif
 }
 

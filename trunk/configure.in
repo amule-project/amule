@@ -203,6 +203,8 @@ AC_CHECK_FUNCS([floor ftruncate gettimeofday inet_ntoa memchr memmove memset mkd
 case "${host}" in
 powerpc-apple-darwin*) LDFLAGS="$LDFLAGS -bind_at_load"
 	;;
+i386-unknown-openbsd*) LIBS="$LIBS -lX11 -L/usr/X11R6/lib"  CXXFLAGS=" $CXXFLAGS -D__OPENBSD__" 
+	;;
 esac
 
 
