@@ -53,6 +53,8 @@ typedef CECTag* (*_taglist_t)[];
 class CECTag {
 	public:
 				CECTag(ec_tagname_t name, unsigned int length, const void *data, bool copy = true);
+				// tag for custom data: just init object, alloc buffer and return pointer
+				CECTag(ec_tagname_t name, unsigned int length, void **dataptr);
 			// Routines for special data types.
 				CECTag(ec_tagname_t name, uint8 data);
 				CECTag(ec_tagname_t name, uint16 data);
