@@ -751,7 +751,7 @@ bool CPartFile::SavePartFile(bool Initial)
 			return false;
 	}
 	/* Don't write anything to disk if less than 5000 bytes of free space is left. */
-	wxLongLong total, free;
+	wxLongLong total = 0, free = 0;
 	if (wxGetDiskSpace(char2unicode(theApp.glob_prefs->GetTempDir()), &total, &free) && free < 5000) {
 		return false;
 	}
