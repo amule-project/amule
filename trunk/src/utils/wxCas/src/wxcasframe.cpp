@@ -115,7 +115,10 @@ WxCasFrame::WxCasFrame (const wxString & title):
 #endif
 
   // Add Online Sig file
-  m_aMuleSig = new OnLineSig ();
+  m_aMuleSig = new OnLineSig (wxFileName(prefs->
+                                         Read (WxCasCte::AMULESIG_PATH_KEY,
+                                               WxCasCte::DEFAULT_AMULESIG_PATH),
+                                         WxCasCte::AMULESIG_FILENAME));
 
 #ifdef __LINUX__		// System monitoring on Linux
 
@@ -514,187 +517,265 @@ WxCasFrame::UpdateStatsPanel ()
 #endif
 
   wxString newline;
+  wxString status;
+  wxUint32 newMaxLineCount;
 
   Freeze ();
 
-  // Stat line 1
-  newline = _("aMule ");
-  newline += m_aMuleSig->GetVersion ();
-  newline += _(" has been running for ");
-  newline += m_aMuleSig->GetRunTime ();
+  // aMule is running
+  if (m_aMuleSig->GetAmuleState () == 1 )
+    {
+      // Stat line 1
+      newline = _("aMule ");
+      newline += m_aMuleSig->GetVersion ();
+      newline += _(" has been running for ");
+      newline += m_aMuleSig->GetRunTime ();
 
-  wxUint32 newMaxLineCount = newline.Length ();
+      newMaxLineCount = newline.Length ();
 
-  m_statLine_1->SetLabel (newline);
+      m_statLine_1->SetLabel (newline);
 
-  // Stat line 2
-  newline = m_aMuleSig->GetUser ();
-  newline += _(" is on ");
-  newline += m_aMuleSig->GetServerName ();
-  newline += _(" [");
-  newline += m_aMuleSig->GetServerIP ();
-  newline += _(":");
-  newline += m_aMuleSig->GetServerPort ();
-  newline += _("] with ");
-  newline += m_aMuleSig->GetConnexionIDType ();
+      // Stat line 2
+      newline = m_aMuleSig->GetUser ();
+      newline += _(" is on ");
+      newline += m_aMuleSig->GetServerName ();
+      newline += _(" [");
+      newline += m_aMuleSig->GetServerIP ();
+      newline += _(":");
+      newline += m_aMuleSig->GetServerPort ();
+      newline += _("] with ");
+      newline += m_aMuleSig->GetConnexionIDType ();
 
-  m_statLine_2->SetLabel (newline);
+      m_statLine_2->SetLabel (newline);
 
 #ifdef __GNUG__
 
-  newMaxLineCount = newMaxLineCount >? newline.Length ();
+      newMaxLineCount = newMaxLineCount >? newline.Length ();
 #else
 
-  if (newline.Length () > newMaxLineCount)
-    {
-      newMaxLineCount = newline.Length ();
-    }
+      if (newline.Length () > newMaxLineCount)
+        {
+          newMaxLineCount = newline.Length ();
+        }
 #endif
 
-  // Stat line 3
-  newline = _("Total Download: ");
-  newline += m_aMuleSig->GetConvertedTotalDL ();
-  newline += _(", Upload: ");
-  newline += m_aMuleSig->GetConvertedTotalUL ();
+      // Stat line 3
+      newline = _("Total Download: ");
+      newline += m_aMuleSig->GetConvertedTotalDL ();
+      newline += _(", Upload: ");
+      newline += m_aMuleSig->GetConvertedTotalUL ();
 
-  m_statLine_3->SetLabel (newline);
+      m_statLine_3->SetLabel (newline);
 
 #ifdef __GNUG__
 
-  newMaxLineCount = newMaxLineCount >? newline.Length ();
+      newMaxLineCount = newMaxLineCount >? newline.Length ();
 #else
 
-  if (newline.Length () > newMaxLineCount)
-    {
-      newMaxLineCount = newline.Length ();
-    }
+      if (newline.Length () > newMaxLineCount)
+        {
+          newMaxLineCount = newline.Length ();
+        }
 #endif
 
-  // Stat line 4
-  newline = _("Session Download: ");
-  newline += m_aMuleSig->GetConvertedSessionDL ();
-  newline += _(", Upload: ");
-  newline += m_aMuleSig->GetConvertedSessionUL ();
+      // Stat line 4
+      newline = _("Session Download: ");
+      newline += m_aMuleSig->GetConvertedSessionDL ();
+      newline += _(", Upload: ");
+      newline += m_aMuleSig->GetConvertedSessionUL ();
 
-  m_statLine_4->SetLabel (newline);
+      m_statLine_4->SetLabel (newline);
 
 #ifdef __GNUG__
 
-  newMaxLineCount = newMaxLineCount >? newline.Length ();
+      newMaxLineCount = newMaxLineCount >? newline.Length ();
 #else
 
-  if (newline.Length () > newMaxLineCount)
-    {
-      newMaxLineCount = newline.Length ();
-    }
+      if (newline.Length () > newMaxLineCount)
+        {
+          newMaxLineCount = newline.Length ();
+        }
 #endif
 
-  // Stat line 5
-  newline = _("Download: ");
-  newline += m_aMuleSig->GetDLRate ();
-  newline += _(" kB/s, Upload: ");
-  newline += m_aMuleSig->GetULRate ();
-  newline += _("kB/s");
+      // Stat line 5
+      newline = _("Download: ");
+      newline += m_aMuleSig->GetDLRate ();
+      newline += _(" kB/s, Upload: ");
+      newline += m_aMuleSig->GetULRate ();
+      newline += _("kB/s");
 
-  m_statLine_5->SetLabel (newline);
+      m_statLine_5->SetLabel (newline);
 
 #ifdef __GNUG__
 
-  newMaxLineCount = newMaxLineCount >? newline.Length ();
+      newMaxLineCount = newMaxLineCount >? newline.Length ();
 #else
 
-  if (newline.Length () > newMaxLineCount)
-    {
-      newMaxLineCount = newline.Length ();
-    }
+      if (newline.Length () > newMaxLineCount)
+        {
+          newMaxLineCount = newline.Length ();
+        }
 #endif
 
-  // Stat line 6
-  newline = _("Sharing: ");
-  newline += m_aMuleSig->GetSharedFiles ();
-  newline += _(" file(s), Clients on queue: ");
-  newline += m_aMuleSig->GetQueue ();
+      // Stat line 6
+      newline = _("Sharing: ");
+      newline += m_aMuleSig->GetSharedFiles ();
+      newline += _(" file(s), Clients on queue: ");
+      newline += m_aMuleSig->GetQueue ();
 
-  m_statLine_6->SetLabel (newline);
+      m_statLine_6->SetLabel (newline);
 
 #ifdef __GNUG__
 
-  newMaxLineCount = newMaxLineCount >? newline.Length ();
+      newMaxLineCount = newMaxLineCount >? newline.Length ();
 #else
 
-  if (newline.Length () > newMaxLineCount)
-    {
-      newMaxLineCount = newline.Length ();
-    }
+      if (newline.Length () > newMaxLineCount)
+        {
+          newMaxLineCount = newline.Length ();
+        }
 #endif
 
-  // Stat line 7
-  newline = _("Maximum DL rate since wxCas is running: ");
-  newline += m_aMuleSig->GetMaxDL ();
+      // Stat line 7
+      newline = _("Maximum DL rate since wxCas is running: ");
+      newline += m_aMuleSig->GetMaxDL ();
 
-  m_statLine_7->SetLabel (newline);
+      m_statLine_7->SetLabel (newline);
 
 #ifdef __GNUG__
 
-  newMaxLineCount = newMaxLineCount >? newline.Length ();
+      newMaxLineCount = newMaxLineCount >? newline.Length ();
 #else
 
-  if (newline.Length () > newMaxLineCount)
-    {
-      newMaxLineCount = newline.Length ();
-    }
+      if (newline.Length () > newMaxLineCount)
+        {
+          newMaxLineCount = newline.Length ();
+        }
 #endif
 
 #ifdef __LINUX__		// System monitoring on Linux
-  newline = _("System Load Average (1-5-15 min): ");
-  newline +=
-    newline.Format (wxT("%.2f - %.2f - %.2f"), m_sysMonitor->GetSysLoad_1 (),
-                    m_sysMonitor->GetSysLoad_5 (),
-                    m_sysMonitor->GetSysLoad_15 ());
+      newline = _("System Load Average (1-5-15 min): ");
+      newline +=
+        newline.Format (wxT("%.2f - %.2f - %.2f"),
+                        m_sysMonitor->GetSysLoad_1 (),
+                        m_sysMonitor->GetSysLoad_5 (),
+                        m_sysMonitor->GetSysLoad_15 ());
 
-  m_sysLine_1->SetLabel (newline);
+      m_sysLine_1->SetLabel (newline);
 
 #ifdef __GNUG__
 
-  newMaxLineCount = newMaxLineCount >? newline.Length ();
+      newMaxLineCount = newMaxLineCount >? newline.Length ();
 #else
 
-  if (newline.Length () > newMaxLineCount)
-    {
-      newMaxLineCount = newline.Length ();
-    }
+      if (newline.Length () > newMaxLineCount)
+        {
+          newMaxLineCount = newline.Length ();
+        }
 #endif
 #endif
 
 #ifdef __LINUX__		// System monitoring on Linux
-  newline = _("System uptime: ");
-  newline += m_sysMonitor->GetUptime ();
+      newline = _("System uptime: ");
+      newline += m_sysMonitor->GetUptime ();
 
-  m_sysLine_2->SetLabel (newline);
+      m_sysLine_2->SetLabel (newline);
 
 #ifdef __GNUG__
 
-  newMaxLineCount = newMaxLineCount >? newline.Length ();
+      newMaxLineCount = newMaxLineCount >? newline.Length ();
 #else
 
-  if (newline.Length () > newMaxLineCount)
-    {
-      newMaxLineCount = newline.Length ();
+      if (newline.Length () > newMaxLineCount)
+        {
+          newMaxLineCount = newline.Length ();
+        }
+#endif
+#endif
+
+      status=_("aMule is running");
     }
+  // aMule is stopped
+  else if (m_aMuleSig->GetAmuleState () == 0 )
+    {
+      // Stat line 1
+      newline = _("aMule ");
+      newline += m_aMuleSig->GetVersion ();
+      newline += _(" is STOPPED !");
+
+      newMaxLineCount = newline.Length ();
+
+      m_statLine_1->SetLabel (newline);
+
+      newMaxLineCount = newline.Length ();
+#ifdef __GNUG__
+
+      newMaxLineCount = newMaxLineCount >? m_maxLineCount;
+#else
+
+      if (m_maxLineCount > newMaxLineCount)
+        {
+          newMaxLineCount = m_maxLineCount;
+        }
 #endif
+
+      status=_("WARNING: aMule is stopped !");
+    }
+  // aMule is connecting
+  else if (m_aMuleSig->GetAmuleState () == 2 )
+    {
+      // Stat line 1
+      newline = _("aMule ");
+      newline += m_aMuleSig->GetVersion ();
+      newline += _(" is connecting...");
+
+      m_statLine_1->SetLabel (newline);
+
+      newMaxLineCount = newline.Length ();
+#ifdef __GNUG__
+
+      newMaxLineCount = newMaxLineCount >? m_maxLineCount;
+#else
+
+      if (m_maxLineCount > newMaxLineCount)
+        {
+          newMaxLineCount = m_maxLineCount;
+        }
 #endif
+
+      status=_("aMule is connecting...!");
+    }
+  // aMule status is unknown
+  else
+    {
+      // Stat line 1
+      newline = _("aMule ");
+      newline += m_aMuleSig->GetVersion ();
+      newline += _(" is doing something strange, check it !");
+
+      newMaxLineCount = newline.Length ();
+
+      m_statLine_1->SetLabel (newline);
+
+      newMaxLineCount = newline.Length ();
+#ifdef __GNUG__
+
+      newMaxLineCount = newMaxLineCount >? m_maxLineCount;
+#else
+
+      if (m_maxLineCount > newMaxLineCount)
+        {
+          newMaxLineCount = m_maxLineCount;
+        }
+#endif
+
+      status=_("Oh Oh, aMule status is unknown...");
+    }
 
   Thaw ();
 
   // Set status bar
-  if (m_aMuleSig->IsRunning ())
-    {
-      SetStatusText (_("aMule is running"));
-    }
-  else
-    {
-      SetStatusText (_("WARNING: aMule is NOT running"));
-    }
+  SetStatusText (status);
 
   // Resize only if needed
   if (m_maxLineCount != newMaxLineCount)
