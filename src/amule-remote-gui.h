@@ -65,6 +65,10 @@ class CRemoteContainer {
 			m_item_count = 0;
 		}
 		
+		virtual ~CRemoteContainer()
+		{
+		}
+		
 		uint32 GetCount()
 		{
 			return m_item_count;
@@ -73,7 +77,7 @@ class CRemoteContainer {
 		void AddItem(T *item)
 		{
 			m_items.push_back(item);
-			m_items_hash[this->GetItemID(item)] = item;
+			m_items_hash[GetItemID(item)] = item;
 			m_idx_items[m_item_count] = item;
 			m_item_count++;
 		}
@@ -142,39 +146,57 @@ class CRemoteContainer {
 				core_files.insert(tag->ID());
 				if ( m_items_hash.count(tag->ID()) ) {
 					T *item = m_items_hash[tag->ID()];
-					item->ProcessUpdate(tag);
+					ProcessItemUpdate(tag, item);
 				} else {
 					full_req->AddTag(CECTag(req_type, tag->ID()));
 				}
 			}
 			std::list<I> del_ids;
-			for(typename std::list<T>::iterator j = this->m_items.begin(); j != this->m_items.end(); j++) {
-				if ( core_files.count(j->ID()) == 0 ) {
+			for(typename std::list<T *>::iterator j = this->m_items.begin(); j != this->m_items.end(); j++) {
+				I item_id = GetItemID(*j);
+				if ( core_files.count(item_id) == 0 ) {
 					// item may contain data that need to be freed externally, before
 					// dtor is called and memory freed
 					
 					this->DeleteItem(*j);
 					
-					del_ids.push_back(j->ID());
+					del_ids.push_back(item_id);
 				}
 			}
 			for(typename std::list<I>::iterator j = del_ids.begin(); j != del_ids.end(); j++) {
 				for(int idx = 0;idx < m_item_count;idx++) {
-					if ( m_idx_items[idx] == *j ) {
+					if ( this->GetItemID(m_idx_items[idx]) == *j ) {
 						m_idx_items[idx] = m_idx_items[m_item_count-1];
 						break;
 					}
 				}
 				m_item_count--;
 				m_items_hash.erase(*j);
-				for(typename std::list<T>::iterator k = this->m_items.begin(); k != this->m_items.end(); k++) {
-					if ( *j == k->ID() ) {
+				for(typename std::list<T *>::iterator k = this->m_items.begin(); k != this->m_items.end(); k++) {
+					//if ( *j == k->ID() ) {
+					if ( *j == GetItemID(*k) ) {
 						this->m_items.erase(k);
 						break;
 					}
 				}
 			}
 		}
+
+		virtual T *CreateItem(G *)
+		{
+			return 0;
+		}
+		virtual void DeleteItem(T *)
+		{
+		}
+		virtual I GetItemID(T *)
+		{
+			return 0;
+		}
+		virtual void ProcessItemUpdate(G *, T *)
+		{
+		}
+
 };
 
 class CServerConnectRem {
@@ -221,6 +243,7 @@ class CServerListRem : public CRemoteContainer<CServer, uint32, CEC_Server_Tag> 
 		CServer *CreateItem(CEC_Server_Tag *);
 		void DeleteItem(CServer *);
 		uint32 GetItemID(CServer *);
+		void ProcessItemUpdate(CEC_Server_Tag *, CServer *);
 };
 
 class CUpQueueRem : public CRemoteContainer<CUpDownClient, uint32, CEC_UpDownClient_Tag> {
@@ -248,6 +271,7 @@ class CUpQueueRem : public CRemoteContainer<CUpDownClient, uint32, CEC_UpDownCli
 		CUpDownClient *CreateItem(CEC_UpDownClient_Tag *);
 		void DeleteItem(CUpDownClient *);
 		uint32 GetItemID(CUpDownClient *);
+		void ProcessItemUpdate(CEC_UpDownClient_Tag *, CUpDownClient *);
 };
 
 class CDownQueueRem : public CRemoteContainer<CPartFile, CMD4Hash, CEC_PartFile_Tag> {
@@ -274,12 +298,14 @@ class CDownQueueRem : public CRemoteContainer<CPartFile, CMD4Hash, CEC_PartFile_
 		bool AddED2KLink(const wxString &link, int category = 0);
 		void UnsetCompletedFilesExist();
 		void ResetCatParts(int cat);
+
 		//
 		// template
 		//
 		CPartFile *CreateItem(CEC_PartFile_Tag *);
 		void DeleteItem(CPartFile *);
-		uint32 GetItemID(CPartFile *);
+		CMD4Hash GetItemID(CPartFile *);
+		void ProcessItemUpdate(CEC_PartFile_Tag *, CPartFile *);
 };
 
 class CSharedFilesRem : public CRemoteContainer<CKnownFile, CMD4Hash, CEC_SharedFile_Tag> {
@@ -293,6 +319,14 @@ class CSharedFilesRem : public CRemoteContainer<CKnownFile, CMD4Hash, CEC_Shared
 		//
 		void AddFilesFromDirectory(wxString );
 		void Reload(bool sendtoserver = true, bool firstload = false);
+
+		//
+		// template
+		//
+		CKnownFile *CreateItem(CEC_SharedFile_Tag *);
+		void DeleteItem(CKnownFile *);
+		CMD4Hash GetItemID(CKnownFile *);
+		void ProcessItemUpdate(CEC_SharedFile_Tag *, CKnownFile *);
 };
 
 class CKnownFilesRem : public CRemoteContainer<CKnownFile, CMD4Hash> {
