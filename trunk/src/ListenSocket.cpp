@@ -1471,7 +1471,11 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				#endif
 				// 0.43b
 				theApp.downloadqueue->AddDownDataOverheadOther(size);
-				m_client->ProcessMuleInfoPacket(packet,size);
+				if (!sent_OSInfo) {
+					// Just to be sure...
+					m_client->ProcessMuleInfoPacket(packet,size);
+				}
+					
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0){
 
