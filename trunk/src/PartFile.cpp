@@ -1417,7 +1417,7 @@ void CPartFile::FillGap(uint32 start, uint32 end)
 
 void CPartFile::UpdateCompletedInfos()
 {
-   	uint64 allgaps = 0; 
+   	uint32 allgaps = 0; 
 	for (POSITION pos = gaplist.GetHeadPosition(); pos != 0;) {
 		POSITION prev = pos;
 		Gap_Struct* cur_gap = gaplist.GetNext(pos);
@@ -1492,7 +1492,7 @@ void CPartFile::DrawStatusBar(wxMemoryDC* dc, wxRect rect, bool bFlat)
 	s_ChunkBar.SetFileSize(m_nFileSize);
 	s_ChunkBar.Fill(crHave);
 
-	uint64 allgaps = 0;
+	uint32 allgaps = 0;
 
 	if(status == PS_COMPLETE || status == PS_COMPLETING) {
 		s_ChunkBar.FillRange(0, m_nFileSize, crProgress);
