@@ -83,8 +83,9 @@ public:
 	// open/close
 		// create a new file (with the default value of bOverwrite, it will fail if
 		// the file already exists, otherwise it will overwrite it and succeed)
-	virtual bool Create(const wxChar *szFileName, bool bOverwrite = FALSE, int access = wxS_DEFAULT);
-	virtual bool Open(const wxChar *szFileName, OpenMode mode = read, int access = wxS_DEFAULT);
+		// Default permissions will use the ones specified through CPreferences::GetFilePermissions
+	virtual bool Create(const wxChar *szFileName, bool bOverwrite = FALSE, int access = -1 );
+	virtual bool Open(const wxChar *szFileName, OpenMode mode = read, int access = -1 );
 	// Kry -Added for windoze compatibility.
 	off_t GetLength() const { return Length(); }
 

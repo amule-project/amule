@@ -48,8 +48,8 @@ public:
 	
 	// These functions should not be used as they make no sense for a MemFile.
 	// However using them has no effect and is safe, though not advisable.
-	virtual bool Create(const wxChar *szFileName, bool bOverwrite = FALSE, int access = wxS_DEFAULT);
-	virtual bool Open(const wxChar *szFileName, OpenMode mode = read, int access = wxS_DEFAULT);
+	virtual bool Create(const wxChar *szFileName, bool bOverwrite = FALSE, int access = -1 );
+	virtual bool Open(const wxChar *szFileName, OpenMode mode = read, int access = -1 );
 	virtual bool Close() const;
 	virtual bool Flush();
 	virtual bool IsOpened() const;

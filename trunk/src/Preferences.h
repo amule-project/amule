@@ -398,6 +398,11 @@ public:
 
 	static uint8		GetToolTipDelay()		{ return s_iToolDelayTime; }
 
+	static int		GetFilePermissions();
+	static void		SetFilePermissions( int perms );
+	static int		GetDirPermissions();
+	static void		SetDirPermissions( int perms );
+
 	static void		CheckUlDlRatio();
 	
 	#warning NEED GUI!
@@ -460,7 +465,9 @@ protected:
 	static wxString	s_incomingdir;
 	static wxString	s_tempdir;
 	static bool	s_ICH;
-	
+	static int	s_perms_files;
+	static int	s_perms_dirs;
+
 ////////////// GUI
 	static uint8	s_depth3D;
 	

@@ -402,7 +402,7 @@ bool CamuleApp::OnInit()
 
 		} else if ( wxDirExists(xMulePrefDir) ) {
 			printf("Found xMule old settings, copying config & credits files.\n");
-			wxMkdir(ConfigDir);
+			wxMkdir( ConfigDir, CPreferences::GetDirPermissions() );
 
 			// Copy .dat files to the aMule dir
 			wxString file = wxFindFirstFile(xMulePrefDir + wxFileName::GetPathSeparator() + wxT("*.dat"), wxFILE);
@@ -423,7 +423,7 @@ bool CamuleApp::OnInit()
 			//wxMessageBox(_("Copied old ~/.xMule config and credit files to ~/.aMule\nHowever, be sure NOT to remove .xMule if your Incoming / Temp folders are still there ;)"), _("Info"), wxOK);
 		} else {
 			// No settings to import, new to build.
-			wxMkdir(ConfigDir);
+			wxMkdir( ConfigDir, CPreferences::GetDirPermissions() );
 		}
 	}
 

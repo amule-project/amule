@@ -192,6 +192,8 @@ wxString	CPreferences::s_OSDirectory;
 wxString	CPreferences::s_SkinFile;
 bool		CPreferences::s_UseSkinFile;
 bool		CPreferences::s_FastED2KLinksHandler;
+int			CPreferences::s_perms_files;
+int			CPreferences::s_perms_dirs;
 
 
 
@@ -604,11 +606,11 @@ CPreferences::CPreferences()
 	m_userhash[14] = 111;
 
 	if (!::wxDirExists(GetIncomingDir())) {
-		::wxMkdir(GetIncomingDir(),0750);
+		::wxMkdir( GetIncomingDir(), GetDirPermissions() );
 	}
 
 	if (!::wxDirExists(GetTempDir())) {
-		::wxMkdir(GetTempDir(),0750);
+		::wxMkdir( GetTempDir(), GetDirPermissions() );
 	}
 
 	if (m_userhash.IsEmpty()) {
@@ -695,6 +697,7 @@ void CPreferences::BuildItemList( const wxString& appdir )  // gets called at in
 	s_CfgList[IDC_FILEBUFFERSIZE]	=    MkCfg_Int( wxT("/eMule/FileBufferSizePref"), s_iFileBufferSize, 16 );
 	s_CfgList[IDC_DAP]		= new Cfg_Bool( wxT("/eMule/DAPPref"), s_bDAP, true );
 	s_CfgList[IDC_UAP]		= new Cfg_Bool( wxT("/eMule/UAPPref"), s_bUAP, true );
+
 
 
 	/**
@@ -801,7 +804,9 @@ void CPreferences::BuildItemList( const wxString& appdir )  // gets called at in
 	s_MiscList.push_back(    MkCfg_Int( wxT("/eMule/MaxMessageSessions"),		s_maxmsgsessions, 50 ) );
 	s_MiscList.push_back( new Cfg_Str(  wxT("/eMule/WebTemplateFile"),		s_sTemplateFile, wxT("eMule.tmpl") ) );
 
-	s_MiscList.push_back(   MkCfg_Int( wxT("/Statistics/DesktopMode"), s_desktopMode, 4 ) );
+	s_MiscList.push_back(	 MkCfg_Int( wxT("/Statistics/DesktopMode"), s_desktopMode, 4 ) );
+	s_MiscList.push_back(	 MkCfg_Int( wxT("/eMule/PermissionsFiles"),	s_perms_files, 0640 ) );
+	s_MiscList.push_back(	 MkCfg_Int( wxT("/eMule/PermissionsDirs"),	s_perms_dirs, 0750 ) );
 
 #ifndef AMULE_DAEMON
 	// Colors have been moved from global prefs to CStatisticsDlg
@@ -897,6 +902,37 @@ void CPreferences::SetMaxDownload(uint16 in)
 }
 
 
+int CPreferences::GetFilePermissions()
+{
+	// We need at least r/w access for user
+	return s_perms_files | wxS_IRUSR | wxS_IWUSR;
+}
+
+
+void CPreferences::SetFilePermissions( int perms )
+{
+	// We need at least r/w access for user
+	s_perms_files = perms | wxS_IRUSR | wxS_IWUSR;
+}
+
+
+int CPreferences::GetDirPermissions()
+{
+	// We need at least r/w/x access for user
+	return s_perms_dirs | wxS_IRUSR | wxS_IWUSR | wxS_IXUSR;
+}
+
+
+void CPreferences::SetDirPermissions( int perms )
+{
+	// We need at least r/w/x access for user
+	s_perms_dirs = perms | wxS_IRUSR | wxS_IWUSR | wxS_IXUSR;
+}
+
+
+
+
+	
 // Here we slightly limit the users' ability to be a bad citizen: for very low upload rates
 // we force a low download rate, so as to discourage this type of leeching.  
 // We're Open Source, and whoever wants it can do his own mod to get around this, but the 
@@ -1102,7 +1138,7 @@ void CPreferences::LoadCats() {
 
 		AddCat(newcat);
 		if (!wxFileName::DirExists(newcat->incomingpath)) {
-			wxFileName::Mkdir(newcat->incomingpath);
+			wxFileName::Mkdir( newcat->incomingpath, GetDirPermissions() );
 		}
 	}
 }
