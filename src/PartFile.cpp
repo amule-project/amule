@@ -2114,7 +2114,7 @@ void CPartFile::UpdatePartsInfo() {
 	UpdateDisplayedInfo();
 }	
 
-// Kry - Importing nice feature from from 030d
+// Kry - Updated to 0.42e + bugfix
 // [Maella -Enhanced Chunk Selection- (based on jicxicmic)]
 bool CPartFile::GetNextRequestedBlock(CUpDownClient* sender, Requested_Block_Struct** newblocks, uint16* count)
 {
@@ -2222,10 +2222,10 @@ bool CPartFile::GetNextRequestedBlock(CUpDownClient* sender, Requested_Block_Str
 				// Define the bounds of the three zones (very rare, rare)
 				// more depending on available sources
 				uint8 modif=10;
-				if (GetSourceCount()>200) {
-					modif=5;
-				} else if (GetSourceCount()>800) {
+				if (GetSourceCount()>800) {
 					modif=2;
+				} else if (GetSourceCount()>200) {
+					modif=5;
 				}
 				uint16 limit= modif*GetSourceCount()/ 100;
 				if (limit==0) {
