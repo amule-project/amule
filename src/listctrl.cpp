@@ -693,8 +693,10 @@ public:
     void OnScroll(wxScrollWinEvent& event) ;
 
     void OnPaint( wxPaintEvent &event );
-	void OnErase( wxEraseEvent& event ) {
-		event.Skip( !HasFlag(wxLC_OWNERDRAW) || IsEmpty() );
+	void OnErase( wxEraseEvent& event )
+	{
+		if ( !HasFlag(wxLC_OWNERDRAW) || IsEmpty() )
+			event.Skip();
 	}
 
     void DrawImage( int index, wxDC *dc, int x, int y );
@@ -2988,29 +2990,61 @@ void wxODListMainWindow::OnPaint( wxPaintEvent &WXUNUSED(event) )
             GetParent()->GetEventHandler()->ProcessEvent( evCache );
         }
 
-        for ( size_t line = visibleFrom; line <= visibleTo; line++ )
-        {
-            rectLine = GetLineRect(line);
+		// Report view is drawn normally, owner-drawn is double-buffered.
+		if ( !HasFlag(wxLC_OWNERDRAW) ) {
+			for ( size_t line = visibleFrom; line <= visibleTo; line++ ) {
+	            rectLine = GetLineRect(line);
 
-            if ( !IsExposed(rectLine.x - xOrig, rectLine.y - yOrig,
-                            rectLine.width, rectLine.height) )
-            {
-                // don't redraw unaffected lines to avoid flicker
-                continue;
-            }
+    	        if ( !IsExposed(rectLine.x - xOrig, rectLine.y - yOrig,
+        	                    rectLine.width, rectLine.height) )
+            	{
+                	// don't redraw unaffected lines to avoid flicker
+	                continue;
+    	        }
 
-			if ( HasFlag(wxLC_OWNERDRAW) ) {
-				((wxODListCtrl*)m_parent)->OnDrawItem(line,&dc,rectLine,GetLineHighlightRect(line),IsHighlighted(line));
-			} else {
-				GetLine(line)->DrawInReportMode( &dc,
-												 rectLine,
-												 GetLineHighlightRect(line),
-												 IsHighlighted(line) );
-	    	}
-        }
+				GetLine(line)->DrawInReportMode( &dc, rectLine, GetLineHighlightRect(line), IsHighlighted(line) );
+			}
+		} else {
 
-		// Clean up empty spaces because we ignore ERASE_BACKGROUND events
-		if ( HasFlag(wxLC_OWNERDRAW) ) {
+			// This DC is used to write to the bitmaps used to double-buffer
+			wxMemoryDC dbDC;
+	    	
+			for ( size_t line = visibleFrom; line <= visibleTo; line++ ) {
+				rectLine = GetLineRect(line);
+
+            	if ( !IsExposed(rectLine.x - xOrig, rectLine.y - yOrig,
+                	            rectLine.width, rectLine.height) )
+            	{
+                	// don't redraw unaffected lines to avoid flicker
+                	continue;
+            	}
+
+				// We use this for double-buffer
+				wxBitmap buffer( rectLine.GetWidth(), rectLine.GetHeight() );
+
+				wxRect rect = rectLine;
+				wxRect highl = GetLineHighlightRect(line);
+
+				// Map the highlight rect onto the buffer
+				highl.x = highl.x - rectLine.x;
+				highl.y = highl.y - rectLine.y;
+			
+				// Map the normal rect onto the buffer
+				rect.x = 0;
+				rect.y = 0;
+
+				dbDC.SelectObject( buffer );
+		 	   	dbDC.SetFont( GetFont() );
+
+				((wxODListCtrl*)m_parent)->OnDrawItem( line, &dbDC, rect, highl, IsHighlighted(line) );
+
+				dc.Blit( rectLine.x, rectLine.y, rectLine.width, rectLine.height, &dbDC, 0, 0 );
+			
+				dbDC.SelectObject( wxNullBitmap );
+			}
+	    		
+
+			// Clean up empty spaces because we ignore ERASE_BACKGROUND events
 			// Get the last visible item
 			wxRect last = GetLineRect(visibleTo);
 				
@@ -3028,7 +3062,7 @@ void wxODListMainWindow::OnPaint( wxPaintEvent &WXUNUSED(event) )
 				// Since visibleTo can include items partly past the bottom, we have
 				// ensure that we dont overwrite items below the visible area
 				if ( last.GetBottom() < height ) {
-					
+				
 					// Clear the area below the last visible item
 					dc.DrawRectangle( 0, last.GetBottom(), last.GetWidth(), height - last.GetBottom() );
 				}
@@ -3040,6 +3074,8 @@ void wxODListMainWindow::OnPaint( wxPaintEvent &WXUNUSED(event) )
 				dc.DrawRectangle( last.GetWidth(), 0, width - last.GetWidth(), height );
 			}
 		}
+		
+		
 
         if ( HasFlag(wxLC_HRULES) )
         {
@@ -5128,7 +5164,7 @@ int wxODGenericListCtrl::GetItemSpacing( bool isSmall ) const
     return m_mainWin->GetItemSpacing( isSmall );
 }
 
-void wxODGenericListCtrl::OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxRect& rectHL,bool highlighted)
+void wxODGenericListCtrl::OnDrawItem( int /*item*/, wxDC* /*dc*/, const wxRect& /*rect*/, const wxRect& /*rectHL*/, bool /*highlighted*/ )
 {
   printf("::GenericListCtrl::OnDrawItem\n");
 }
