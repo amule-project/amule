@@ -98,7 +98,7 @@ OnLineSig::Refresh ()
   wxFileInputStream input (m_amulesig->GetFullPath ());
 
   wxTextInputStream text (input);
-  text.SetStringSeparators ("\n");
+  text.SetStringSeparators (wxT("\n"));
 
   text >> m_isRunning;
   text >> m_serverName;
