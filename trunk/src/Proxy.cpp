@@ -450,7 +450,7 @@ bool wxSocketProxy::DoSocks5Reply(void)
 		m_buffer[1] == SOCKS5_REPLY_SUCCEED;
 	if (ok) {
 		// Read BND.ADDR
-		unsigned int Port_offset;
+		unsigned int Port_offset = 0;
 		switch(m_AddressType) {
 		case SOCKS5_ATYP_IPV4_ADDRESS:
 		{
@@ -790,10 +790,6 @@ wxUint32 wxDatagramSocketProxy::LastCount(void) const
 
 	if (m_UseProxy) {	
 		switch (m_LastUDPOperation) {
-		case wxUDP_OPERATION_NONE:
-			ret = 0;
-			break;
-		
 		case wxUDP_OPERATION_RECV_FROM:
 			ret = 0;
 			break;
@@ -801,6 +797,11 @@ wxUint32 wxDatagramSocketProxy::LastCount(void) const
 		case wxUDP_OPERATION_SEND_TO:
 			ret = m_UDPSocket->LastCount() - wxPROXY_UDP_OVERHEAD;
 			break;
+		case wxUDP_OPERATION_NONE:
+		default:
+			ret = 0;
+			break;
+		
 		}
 	} else {
 		ret = m_UDPSocket->LastCount();
