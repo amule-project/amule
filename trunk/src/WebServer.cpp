@@ -435,7 +435,7 @@ void CWebServer::ProcessStyleFileReq(ThreadData Data) {
 	pThis->webInterface->Show(wxT("inc. fname=") + filename + wxT("\n"));
 	contenttype = wxT("Content-Type: text/css\r\n");
 	filename = filename.Right(filename.Length()-1);
-	filename = char2unicode(getenv("HOME")) + wxT("/.aMule/webserver/") + filename;
+	filename = wxString() << char2unicode(getenv("HOME")) << wxT("/.aMule/webserver/") << filename;
 	pThis->webInterface->Show(wxT("**** cssrequest: ") + filename + wxT("\n"));
 	if (wxFileName::FileExists(filename)) {
 		wxFileInputStream* fis = new wxFileInputStream(filename);
