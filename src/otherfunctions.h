@@ -81,6 +81,32 @@ inline int CmpAny(const wxChar* ArgA, const wxChar* ArgB)
 
 
 /**
+ * Removes a value from a stl list, like list, vector or deque.
+ *
+ * @param list The list to manipulate.
+ * @param item The value to search for and remove.
+ * @return The number of instances removed.
+ */
+template <typename LIST, typename ITEM>
+int EraseValue( LIST& list, const ITEM& item )
+{
+	typename LIST::iterator it = list.begin();
+	unsigned int count = 0;
+
+	for ( ; it != list.end(); ) {
+		if ( *it == item ) {
+			list.erase( it++ );
+			count++;
+		} else {
+			++it;
+		}
+	}
+
+	return count;
+}
+
+
+/**
  * Returns a description of the version of aMule being used.
  *
  * @return A detailed description of the aMule version, including wx information.
