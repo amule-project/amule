@@ -640,6 +640,7 @@ bool CKnownFile::LoadTagsFromFile(const CFileDataIO* file)
 				}
 				case FT_AICH_HASH:{
 					CAICHHash hash;
+					// This unicode2char is ok, because the hash is always ASCII.
 					if (hash.DecodeBase32(unicode2char(newtag->tag.stringvalue)) == CAICHHash::GetHashSize()) {
 						m_pAICHHashSet->SetMasterHash(hash, AICH_HASHSETCOMPLETE);
 					} else {

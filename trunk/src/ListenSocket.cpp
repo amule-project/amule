@@ -1377,7 +1377,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			}
 			m_client->SetDownloadState(DS_ERROR);
 			// TODO write this into a debugfile
-			AddDebugLogLineM(false,wxString(_("Client '")) + m_client->GetUserName() + wxString::Format(_(" (IP:%s) caused an error: "), unicode2char(m_client->GetFullIP())) + error + _(". Disconnecting client!"));
+			AddDebugLogLineM(false,_("Client '") + m_client->GetUserName() + _(" (IP:") + m_client->GetFullIP() + _(") caused an error: ") + error + _(". Disconnecting client!"));
 		} else {
 			if (thePrefs::GetVerbosePacketError()) {
 				if (error.IsEmpty()) {
@@ -2076,7 +2076,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 		Disconnect(wxT("UnCaught invalid packet exception On ProcessPacket\n"));
 		return false;
 	} catch(wxString error) {
-		AddDebugLogLineM(false, wxString::Format(wxT("A client caused an error or did something bad: %s. Disconnecting client!"), unicode2char(error)));
+		AddDebugLogLineM(false, wxT("A client caused an error or did something bad: ") + error + _(". Disconnecting client!"));
 		if (m_client) {
 			if (thePrefs::GetVerbosePacketError()) {
 				if (error.IsEmpty()) {			
@@ -2183,7 +2183,7 @@ void CClientReqSocket::OnError(int nErrorCode)
 			} else {
 				strError = wxT("An unnamed client");
 			}
-			strError += wxString::Format(wxT(" (IP:%s) caused a socket blocking error or closed connection."),unicode2char(m_client->GetFullIP()));
+			strError += wxT(" (IP:") + m_client->GetFullIP() + _(") caused a socket blocking error or closed connection.");
 		} else {
 			strError = wxT("A client caused a socket blocking error or closed connection.");
 		}
