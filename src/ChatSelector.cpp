@@ -81,7 +81,7 @@ void CChatSession::AddText(const wxString& text, const wxTextAttr& style)
 CChatSelector::CChatSelector(wxWindow* parent, wxWindowID id, const wxPoint& pos, wxSize siz, long style)
 : CMuleNotebook(parent, id, pos, siz, style)
 {
-	wxImageList* imagelist = new wxImageList;
+	wxImageList* imagelist = new wxImageList(16,16);
 	
 	// Chat icon -- default state
 	imagelist->Add(wxBitmap(chat_ico_xpm));
