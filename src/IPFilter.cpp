@@ -494,13 +494,13 @@ bool CIPFilter::IsFiltered(uint32 IPTest)
 	if ( thePrefs::GetIPFilterOn() ) {
 		wxMutexLocker lock( m_mutex );
 	
-		IPTest = ntohl(IPTest);
+		IPTest = wxUINT32_SWAP_ALWAYS(IPTest);
 
 		IPMap::iterator it = m_iplist.find_range( IPTest );
 
 		if ( it != m_iplist.end() ) {
 			if ( it->AccessLevel < thePrefs::GetIPFilterLevel() ) {
-				AddDebugLogLineM( true, wxT("Filtered IP: ") + Uint32toStringIP( IPTest ) + wxT(" (") + it->Description + wxT(")") );
+				AddDebugLogLineM( true, wxT("Filtered IP: ") + Uint32toStringIP( wxUINT32_SWAP_ALWAYS(IPTest) ) + wxT(" (") + it->Description + wxT(")") );
 				theApp.statistics->AddFilteredClient();
 				
 				return true;

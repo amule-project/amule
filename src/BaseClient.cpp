@@ -579,7 +579,7 @@ bool CUpDownClient::SendHelloPacket() {
 	amuleIPV4Address address;
 	m_socket->GetPeer(address);
 	#warning Kry - why is IPAddress returning wrong endianess?
-	if ( theApp.ipfilter->IsFiltered(ENDIAN_SWAP_32(StringIPtoUint32(address.IPAddress())))) {
+	if ( theApp.ipfilter->IsFiltered(StringIPtoUint32(address.IPAddress()))) {
 		if (Disconnected(wxT("IPFilter"))) {
 			Safe_Delete();
 			return false;
