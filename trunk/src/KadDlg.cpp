@@ -28,6 +28,8 @@
 #include "CMD4Hash.h"
 #include "otherfunctions.h"
 #include <wx/sizer.h>
+#include <wx/intl.h>
+#include <wx/msgdlg.h>
 
 BEGIN_EVENT_TABLE(CKadDlg, wxPanel)
 	
