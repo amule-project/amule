@@ -7,7 +7,20 @@ Version 2.0.0rc4 - The 'Target: REAL Stability' version.
 		* updated italian and napoletanean translations
 		* fixed unicode issues in serverlist updates and download tab
 
-			
+	Phoenix:
+		* Patch to --enable-stdin to aid in debug with valgrind.
+		* code cleaning in module Packets, made a lot of stuff private
+		  now.
+		* small hacks to print debug messages and avoid crashes,
+		  mainly in PartFile.cpp.
+		* lots of consts around the code.
+		* sanity checks in debug mode (MagicNumbers) to aid finding
+		  bogus clients and files.
+		* created debugstuff module, debug build only.
+		* new configure option --enale-verbose, so that normal users
+		  are not flooded with debug messages.
+		* MagicNumbers are swapped to signal deleted source/PartFile.
+
 	Xaignar:
 		* Merged lists used to identify file-types to avoid duplicity.
 		* Added wrapper-class around MD4 hashes.
