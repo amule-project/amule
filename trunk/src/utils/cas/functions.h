@@ -31,6 +31,6 @@
 char *get_path(char *file);
 char *convbytes(char *input);
 char *timeconv(char *input);
-char *replace(char *search, char *replace, char *template, int size);
+void replace(char *tmpl, const char *search, const char *replace);
 
 #endif
