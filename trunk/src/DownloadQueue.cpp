@@ -615,7 +615,8 @@ bool CDownloadQueue::RemoveSource(CUpDownClient* toremove, bool	WXUNUSED(updatew
 	// Remove from downloadlist widget
 	Notify_DownloadCtrlRemoveSource(toremove,0);
 	toremove->ResetFileStatusInfo();
-	toremove->SetRequestFile( NULL );
+	#warning Kry test - remove asap
+	toremove->SetRequestFile( (CPartFile*)12345 ); 
 	return removed;
 }
 

@@ -69,8 +69,12 @@ void CUpDownClient::DrawStatusBar(wxMemoryDC* dc, wxRect rect, bool onlygreyrect
 		crPending = RGB(255, 208, 0);
 		crNextPending = RGB(255,255,100);
 	} 
-
-	s_StatusBar.SetFileSize(m_reqfile->GetFileSize()); 
+	if (m_reqfile) {
+		s_StatusBar.SetFileSize(m_reqfile->GetFileSize()); 
+	} else {
+		printf("Null reqfile on a source being drawn, avoided crash this time\n");
+		s_StatusBar.SetFileSize(0); 
+	}
 	s_StatusBar.SetHeight(rect.height - rect.y);
 	s_StatusBar.SetWidth(rect.width - rect.x);
 	s_StatusBar.Fill(crNeither);
@@ -1283,6 +1287,13 @@ bool CUpDownClient::IsValidSwapTarget( A4AFList::iterator it, bool ignorenoneede
 
 
 void CUpDownClient::SetRequestFile(CPartFile* reqfile) {
+	
+	#warning Kry test - remove asap	
+	wxASSERT(reqfile); // Never call it with a reqfile null.
+	if ( (int)reqfile == 12345) {
+		reqfile =NULL;
+	}
+	// end of test
 	if ( m_reqfile != reqfile ) {
 		// Paranoia. Ensure that no calls to IsPartAvailble will seg-fault while we delete stuff
 		m_nPartCount = 0;
@@ -1298,4 +1309,3 @@ void CUpDownClient::SetRequestFile(CPartFile* reqfile) {
 		}
 	}
 }
-
