@@ -1,4 +1,4 @@
-// This file is part of the aMule Project
+	// This file is part of the aMule Project
 //
 // Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
 // Copyright (C) 2002 Merkur ( merkur-@users.sourceforge.net / http://www.emule-project.net )
@@ -1073,20 +1073,20 @@ enum ClientSkinEnum {
 	Client_White_Smiley,
 	Client_BadComment_Smiley,
 	Client_GoodComment_Smiley,
-	Client_Extended_Protocol,
-	Client_Sec_Ident,
-	Client_Bad_Guy,
-	Client_Credits_Grey,
-	Client_Credits_Yellow,
-	Client_Upload,
-	Client_Friend,
-	Client_eMule,
-	Client_mlDonkey,
-	Client_eDonkeyHybrid,
-	Client_aMule,
-	Client_lphant,
-	Client_Shareazza,
-	Client_xMule,
+	Client_ExtendedProtocol_Smiley,
+	Client_SecIdent_Smiley,
+	Client_BadGuy_Smiley,
+	Client_CreditsGrey_Smiley,
+	Client_CreditsYellow_Smiley,
+	Client_Upload_Smiley,
+	Client_Friend_Smiley,
+	Client_eMule_Smiley,
+	Client_mlDonkey_Smiley,
+	Client_eDonkeyHybrid_Smiley,
+	Client_aMule_Smiley,
+	Client_lphant_Smiley,
+	Client_Shareazza_Smiley,
+	Client_xMule_Smiley,
 	Client_Unknown,
 	// Add items here.
 	UNUSED
@@ -1154,8 +1154,8 @@ void CamuleDlg::Apply_Clients_Skin(wxString file) {
 				}
 				// Client_Grey_Smiley
 				if (skinfile[i].StartsWith(wxT("Client_A4AFNoNeededPartsQueueFull="))) {
-				    bitmaps_found[Client_Yellow_Smiley].found = true;
-				    bitmaps_found[Client_Yellow_Smiley].filename=skinfile[i].AfterLast(wxT('='));
+				    bitmaps_found[Client_Grey_Smiley].found = true;
+				    bitmaps_found[Client_Grey_Smiley].filename=skinfile[i].AfterLast(wxT('='));
 				}
 				// Client_Unknown_Smiley
 				if (skinfile[i].StartsWith(wxT("Client_Unknown="))) {
@@ -1172,11 +1172,82 @@ void CamuleDlg::Apply_Clients_Skin(wxString file) {
 					bitmaps_found[Client_GoodComment_Smiley].found = true;
 				    bitmaps_found[Client_GoodComment_Smiley].filename=skinfile[i].AfterLast(wxT('='));
 				}
-				// Start
+				// Client_Extended_Protocol
+				if (skinfile[i].StartsWith(wxT("Client_ExtendedProtocol="))) {
+					bitmaps_found[Client_ExtendedProtocol_Smiley].found = true;
+				    bitmaps_found[Client_ExtendedProtocol_Smiley].filename=skinfile[i].AfterLast(wxT('='));
+				}
+				// Client_SecIdent
+				if (skinfile[i].StartsWith(wxT("Client_SecIdent="))) {
+					bitmaps_found[Client_SecIdent_Smiley].found = true;
+				    bitmaps_found[Client_SecIdent_Smiley].filename=skinfile[i].AfterLast(wxT('='));
+				}
+				// Client_BadGuy
+				if (skinfile[i].StartsWith(wxT("Client_BadGuy="))) {
+				    bitmaps_found[Client_BadGuy_Smiley].found = true;
+				    bitmaps_found[Client_BadGuy_Smiley].filename=skinfile[i].AfterLast(wxT('='));
+				}
+				// Client_CreditsGrey
+				if (skinfile[i].StartsWith(wxT("Client_CreditsGrey="))) {
+					bitmaps_found[Client_CreditsGrey_Smiley].found = true;
+				    bitmaps_found[Client_CreditsGrey_Smiley].filename=skinfile[i].AfterLast(wxT('='));
+				}
+				// Client_CreditsYellow
+				if (skinfile[i].StartsWith(wxT("Client_CreditsYellow="))) {
+					bitmaps_found[Client_CreditsYellow_Smiley].found = true;
+				    bitmaps_found[Client_CreditsYellow_Smiley].filename=skinfile[i].AfterLast(wxT('='));
+				}
+				// Client_Upload
+				if (skinfile[i].StartsWith(wxT("Client_Upload="))) {
+					bitmaps_found[Client_Upload_Smiley].found = true;
+				    bitmaps_found[Client_Upload_Smiley].filename=skinfile[i].AfterLast(wxT('='));
+				}
+	            // Client_Friend
+				if (skinfile[i].StartsWith(wxT("Client_Friend="))) {
+					bitmaps_found[Client_Friend_Smiley].found = true;
+				    bitmaps_found[Client_Friend_Smiley].filename=skinfile[i].AfterLast(wxT('='));
+				}
+	            // Client_eMule
+				if (skinfile[i].StartsWith(wxT("Client_eMule="))) {
+					bitmaps_found[Client_eMule_Smiley].found = true;
+				    bitmaps_found[Client_eMule_Smiley].filename=skinfile[i].AfterLast(wxT('='));
+				}
+	            // Client_mlDonkey
+				if (skinfile[i].StartsWith(wxT("Client_mlDonkey="))) {
+					bitmaps_found[Client_mlDonkey_Smiley].found = true;
+				    bitmaps_found[Client_mlDonkey_Smiley].filename=skinfile[i].AfterLast(wxT('='));
+				}
+	            // Client_eDonkeyHybrid
+				if (skinfile[i].StartsWith(wxT("Client_eDonkeyHybrid="))) {
+					bitmaps_found[Client_eDonkeyHybrid_Smiley].found = true;
+				    bitmaps_found[Client_eDonkeyHybrid_Smiley].filename=skinfile[i].AfterLast(wxT('='));
+				}
+	            // Client_aMule
+				if (skinfile[i].StartsWith(wxT("Client_aMule="))) {
+					bitmaps_found[Client_aMule_Smiley].found = true;
+				    bitmaps_found[Client_aMule_Smiley].filename=skinfile[i].AfterLast(wxT('='));
+				}
+	            // Client_lphant
+				if (skinfile[i].StartsWith(wxT("Client_lphant="))) {
+					bitmaps_found[Client_lphant_Smiley].found = true;
+				    bitmaps_found[Client_lphant_Smiley].filename=skinfile[i].AfterLast(wxT('='));
+				}
+	            // Client_Shareazza
+				if (skinfile[i].StartsWith(wxT("Client_Shareazza="))) {
+					bitmaps_found[Client_Shareazza_Smiley].found = true;
+				    bitmaps_found[Client_Shareazza_Smiley].filename=skinfile[i].AfterLast(wxT('='));
+				}
+	            // Client_xMule
+				if (skinfile[i].StartsWith(wxT("Client_xMule="))) {
+					bitmaps_found[Client_xMule_Smiley].found = true;
+				    bitmaps_found[Client_xMule_Smiley].filename=skinfile[i].AfterLast(wxT('='));
+				}
+	            // Client_Unknown
+				if (skinfile[i].StartsWith(wxT("Client_Unknown="))) {
+					bitmaps_found[Client_Unknown].found = true;
+				    bitmaps_found[Client_Unknown].filename=skinfile[i].AfterLast(wxT('='));
+				}
 				
-				#warning Code isnt complete
-				
-				// End of completion
 			}
 		}
 		
