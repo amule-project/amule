@@ -263,7 +263,7 @@ bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 			wxT(".eMule")
 		);
 		m_AdminPass = eMuleIni.Read(wxT("/WebServer/Password"));
-		m_GuestPass = eMuleIni.Read(wxT("/WebServer/LowPassword"));
+		m_GuestPass = eMuleIni.Read(wxT("/WebServer/PasswordLow"));
 		wxString AllowGuest = eMuleIni.Read(wxT("/WebServer/UseLowRightsUser"));
 		m_AllowGuest = (AllowGuest == wxT("1")) ? true : false;
 	} else {
