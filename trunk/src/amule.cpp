@@ -158,7 +158,7 @@ void OnShutdownSignal( int /* sig */ )
 	if ( !terminating ) {
 		terminating = true;
 		printf("Shutdown requested, terminating.\n");
-#ifndef AMULE_DEAMON
+#ifndef AMULE_DAEMON
 		if ( theApp.amuledlg ) {
 			((wxWindow*)theApp.amuledlg)->Close( true );
 		} else {
