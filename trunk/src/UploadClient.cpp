@@ -71,8 +71,10 @@ void CUpDownClient::DrawUpStatusBar(wxMemoryDC* dc, wxRect rect, bool onlygreyre
 		return;
 	}
 	float blockpixel = (float)(rect.width)/((float)(PARTSIZE*(m_nUpPartCount))/1024);
-	for (uint32 i = 0;i != m_nUpPartCount;i++){ 
-		if (m_abyUpPartStatus[i]){ 
+	for (uint32 i = 0;i != m_nUpPartCount;i++){
+#warning We have a problem here, segfaults with m_abyUpPartStatus == NULL
+		assert(m_abyUpPartStatus);
+		if (m_abyUpPartStatus && m_abyUpPartStatus[i]){ 
 			gaprect.right = rect.x + (uint32)(((float)PARTSIZE*i/1024)*blockpixel);
 			gaprect.left  = rect.x + (uint32)((float)((float)PARTSIZE*(i+1)/1024)*blockpixel);
 			//dc->FillRect(&gaprect,&CBrush(RGB(0,0,0)));
@@ -424,7 +426,7 @@ void CUpDownClient::ProcessExtendedInfo(const CSafeMemFile *data, CKnownFile *te
 	try {
 		if (m_abyUpPartStatus)  {
 			delete[] m_abyUpPartStatus;
-			m_abyUpPartStatus = NULL;	// added by jicxicmic
+			m_abyUpPartStatus = NULL;
 		}
 	
 		m_nUpPartCount = 0;
