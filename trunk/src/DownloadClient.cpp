@@ -284,6 +284,7 @@ void CUpDownClient::SendFileRequest()
 		if (IsSupportingAICH()){
 			Packet* packet = new Packet(OP_AICHFILEHASHREQ,16,OP_EMULEPROT);
 			packet->Copy16ToDataBuffer((const char *)m_reqfile->GetFileHash().GetHash());
+			theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
 			SendPacket(packet,true,true);
 		}		
 	}
@@ -1274,6 +1275,7 @@ void CUpDownClient::SendAICHRequest(CPartFile* pForFile, uint16 nPart){
 	data.WriteUInt16(nPart);
 	pForFile->GetAICHHashset()->GetMasterHash().Write(&data);
 	Packet* packet = new Packet(&data, OP_EMULEPROT, OP_AICHREQUEST);
+	theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());	
 	SafeSendPacket(packet);
 }
 
@@ -1347,7 +1349,8 @@ void CUpDownClient::ProcessAICHRequest(const char* packet, UINT size){
 			if (pKnownFile->GetAICHHashset()->CreatePartRecoveryData(nPart*PARTSIZE, &fileResponse)){
 // TODO							
 //				AddDebugLogLine(DLP_HIGH, false, _T("AICH Packet Request: Sucessfully created and send recoverydata for %s to %s"), pKnownFile->GetFileName(), DbgGetClientInfo());
-				Packet* packAnswer = new Packet(&fileResponse, OP_EMULEPROT, OP_AICHANSWER);
+				Packet* packAnswer = new Packet(&fileResponse, OP_EMULEPROT, OP_AICHANSWER);			
+				theApp.uploadqueue->AddUpDataOverheadOther(packAnswer->GetPacketSize());
 				SafeSendPacket(packAnswer);
 				return;
 			}
@@ -1370,6 +1373,7 @@ void CUpDownClient::ProcessAICHRequest(const char* packet, UINT size){
 	
 	Packet* packAnswer = new Packet(OP_AICHANSWER, 16, OP_EMULEPROT);
 	packAnswer->Copy16ToDataBuffer((char*)abyHash);
+	theApp.uploadqueue->AddUpDataOverheadOther(packAnswer->GetPacketSize());
 	SafeSendPacket(packAnswer);
 }
 
