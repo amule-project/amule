@@ -1700,7 +1700,7 @@ void CPartFile::AddSources(CSafeMemFile& sources,uint32 serverip, uint16 serverp
 
 	if (m_stopped) {
 		// since we may received multiple search source UDP results we have to "consume" all data of that packet
-		sources.Seek(count*(4+2), wxFromStart);
+		sources.Seek(count*(4+2), wxFromCurrent);
 		return;
 	}
 
@@ -1729,7 +1729,7 @@ void CPartFile::AddSources(CSafeMemFile& sources,uint32 serverip, uint16 serverp
 			theApp.downloadqueue->CheckAndAddSource(this,newsource);
 		} else {
 			// since we may received multiple search source UDP results we have to "consume" all data of that packet
-			sources.Seek((count-i)*(4+2), wxFromStart);
+			sources.Seek((count-i)*(4+2), wxFromCurrent);
 			break;
 		}
 	}
