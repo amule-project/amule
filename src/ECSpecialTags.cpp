@@ -67,12 +67,12 @@ CEC_Prefs_Packet::CEC_Prefs_Packet(uint32 selection, EC_DETAIL_LEVEL detail_leve
 				CECTag catTag(EC_TAG_CATEGORY, (uint32)i);
 				switch (detail_level) {
 					case EC_DETAIL_UPDATE:
-					case EC_DETAIL_GUI:
+					case EC_DETAIL_INC_UPDATE:
+					case EC_DETAIL_FULL:
 						catTag.AddTag(CECTag(EC_TAG_CATEGORY_PATH, cat->incomingpath));
 						catTag.AddTag(CECTag(EC_TAG_CATEGORY_COMMENT, cat->comment));
 						catTag.AddTag(CECTag(EC_TAG_CATEGORY_COLOR, (uint32)cat->color));
 						catTag.AddTag(CECTag(EC_TAG_CATEGORY_PRIO, cat->prio));
-					case EC_DETAIL_WEB:
 					case EC_DETAIL_CMD:
 						catTag.AddTag(CECTag(EC_TAG_CATEGORY_TITLE, cat->title));
 				}
@@ -496,6 +496,10 @@ CEC_Server_Tag::CEC_Server_Tag(CServer *server, EC_DETAIL_LEVEL detail_level) :
 	uint8 tmpShort;
 
 	switch (detail_level) {
+		case EC_DETAIL_INC_UPDATE:
+			// should not get here
+			wxASSERT(0);
+			break;
 		case EC_DETAIL_UPDATE:
 			if ((tmpInt = server->GetPing()) != 0) {
 				AddTag(CECTag(EC_TAG_SERVER_PING, tmpInt));
@@ -504,7 +508,7 @@ CEC_Server_Tag::CEC_Server_Tag(CServer *server, EC_DETAIL_LEVEL detail_level) :
 				AddTag(CECTag(EC_TAG_SERVER_FAILED, tmpShort));
 			}
 			break;
-		case EC_DETAIL_GUI:
+		case EC_DETAIL_FULL:
 			if ((tmpInt = server->GetPing()) != 0) {
 				AddTag(CECTag(EC_TAG_SERVER_PING, tmpInt));
 			}
@@ -520,7 +524,6 @@ CEC_Server_Tag::CEC_Server_Tag(CServer *server, EC_DETAIL_LEVEL detail_level) :
 			if (!(tmpStr = server->GetVersion()).IsEmpty()) {
 				AddTag(CECTag(EC_TAG_SERVER_VERSION, tmpStr));
 			}
-		case EC_DETAIL_WEB:
 			if (!(tmpStr = server->GetDescription()).IsEmpty()) {
 				AddTag(CECTag(EC_TAG_SERVER_DESC, tmpStr));
 			}
@@ -547,6 +550,37 @@ CEC_ConnState_Tag::CEC_ConnState_Tag(EC_DETAIL_LEVEL detail_level) : CECTag(EC_T
 	if ( theApp.serverconnect->GetCurrentServer() ) {
 		AddTag(CEC_Server_Tag(theApp.serverconnect->GetCurrentServer(), detail_level));
 	}
+}
+
+CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, CValueMap &valuemap)
+	: CECTag(EC_TAG_PARTFILE, file->GetFileHash())
+{
+	valuemap.CreateTag(EC_TAG_PARTFILE_STATUS, file->GetStatus(), this);
+
+	valuemap.CreateTag(EC_TAG_PARTFILE_SOURCE_COUNT, (uint32)file->GetSourceCount(), this);
+	valuemap.CreateTag(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT, (uint32)file->GetNotCurrentSourcesCount(), this);
+	valuemap.CreateTag(EC_TAG_PARTFILE_SOURCE_COUNT_XFER, (uint32)file->GetTransferingSrcCount(), this);
+	valuemap.CreateTag(EC_TAG_PARTFILE_SOURCE_COUNT_A4AF, (uint32)file->GetSrcA4AFCount(), this);
+		
+	valuemap.CreateTag(EC_TAG_PARTFILE_SIZE_XFER, (uint32)file->GetTransfered(), this);
+	valuemap.CreateTag(EC_TAG_PARTFILE_SIZE_DONE, (uint32)file->GetCompletedSize(), this);
+	valuemap.CreateTag(EC_TAG_PARTFILE_SPEED, (uint32)(file->GetKBpsDown()*1024), this);
+	
+	valuemap.CreateTag(EC_TAG_PARTFILE_PRIO, 
+		(uint32)(file->IsAutoDownPriority() ? 
+						file->GetDownPriority() + 10 : file->GetDownPriority()), this);
+
+	valuemap.CreateTag(EC_TAG_PARTFILE_CAT, file->GetCategory(), this);
+
+	valuemap.CreateTag(EC_TAG_PARTFILE_LAST_SEEN_COMP, (uint32)file->lastseencomplete, this);
+	
+	valuemap.CreateTag(EC_TAG_PARTFILE_NAME, file->GetFileName(), this);
+
+	valuemap.CreateTag(EC_TAG_PARTFILE_SIZE_FULL, (uint32)file->GetFileSize(), this);
+
+	valuemap.CreateTag(EC_TAG_PARTFILE_ED2K_LINK,
+				(theApp.serverconnect->IsConnected() && !theApp.serverconnect->IsLowID()) ?
+					theApp.CreateED2kSourceLink(file) : theApp.CreateED2kLink(file), this);
 }
 
 CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level)
@@ -586,7 +620,6 @@ CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level
 					theApp.CreateED2kSourceLink(file) : theApp.CreateED2kLink(file)));
 }
 
-
 #else /* EC_REMOTE */
 // Since this is only needed at the remote end
 
@@ -620,6 +653,26 @@ wxString CEC_PartFile_Tag::GetFileStatusString()
 #endif /* ! EC_REMOTE */
 #ifndef EC_REMOTE
 
+
+CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, CValueMap &valuemap) : CECTag(EC_TAG_KNOWNFILE, file->GetFileHash())
+{
+	valuemap.CreateTag(EC_TAG_KNOWNFILE_REQ_COUNT, (uint32)file->statistic.GetRequests(), this);
+	valuemap.CreateTag(EC_TAG_KNOWNFILE_REQ_COUNT_ALL, (uint32)file->statistic.GetAllTimeRequests(), this);
+	valuemap.CreateTag(EC_TAG_KNOWNFILE_ACCEPT_COUNT, (uint32)file->statistic.GetAccepts(), this);
+	valuemap.CreateTag(EC_TAG_KNOWNFILE_ACCEPT_COUNT_ALL, (uint32)file->statistic.GetAllTimeAccepts(), this);
+	valuemap.CreateTag(EC_TAG_KNOWNFILE_XFERRED, (uint32)file->statistic.GetTransfered(), this);
+	valuemap.CreateTag(EC_TAG_KNOWNFILE_XFERRED_ALL, (uint32)file->statistic.GetAllTimeTransfered(), this);
+	
+	valuemap.CreateTag(EC_TAG_PARTFILE_PRIO,
+		(uint32)(file->IsAutoUpPriority() ? file->GetUpPriority() + 10 : file->GetUpPriority()), this);
+	
+	valuemap.CreateTag(EC_TAG_PARTFILE_NAME, file->GetFileName(), this);
+	valuemap.CreateTag(EC_TAG_PARTFILE_SIZE_FULL, (uint32)file->GetFileSize(), this);
+	valuemap.CreateTag(EC_TAG_PARTFILE_ED2K_LINK,
+		(theApp.serverconnect->IsConnected() && !theApp.serverconnect->IsLowID()) ?
+					theApp.CreateED2kSourceLink(file) : theApp.CreateED2kLink(file), this);
+}
+
 CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, EC_DETAIL_LEVEL detail_level) : CECTag(EC_TAG_KNOWNFILE, file->GetFileHash())
 {
 	AddTag(CECTag(EC_TAG_KNOWNFILE_REQ_COUNT, (uint32)file->statistic.GetRequests()));
@@ -646,25 +699,6 @@ CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, EC_DETAIL_LEVEL d
 	AddTag(CECTag(EC_TAG_PARTFILE_ED2K_LINK,
 				(theApp.serverconnect->IsConnected() && !theApp.serverconnect->IsLowID()) ?
 					theApp.CreateED2kSourceLink(file) : theApp.CreateED2kLink(file)));
-}
-
-CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, CValueMap &valuemap) : CECTag(EC_TAG_KNOWNFILE, file->GetFileHash())
-{
-	valuemap.CreateTag(EC_TAG_KNOWNFILE_REQ_COUNT, (uint32)file->statistic.GetRequests(), this);
-	valuemap.CreateTag(EC_TAG_KNOWNFILE_REQ_COUNT_ALL, (uint32)file->statistic.GetAllTimeRequests(), this);
-	valuemap.CreateTag(EC_TAG_KNOWNFILE_ACCEPT_COUNT, (uint32)file->statistic.GetAccepts(), this);
-	valuemap.CreateTag(EC_TAG_KNOWNFILE_ACCEPT_COUNT_ALL, (uint32)file->statistic.GetAllTimeAccepts(), this);
-	valuemap.CreateTag(EC_TAG_KNOWNFILE_XFERRED, (uint32)file->statistic.GetTransfered(), this);
-	valuemap.CreateTag(EC_TAG_KNOWNFILE_XFERRED_ALL, (uint32)file->statistic.GetAllTimeTransfered(), this);
-	
-	valuemap.CreateTag(EC_TAG_PARTFILE_PRIO,
-		(uint32)(file->IsAutoUpPriority() ? file->GetUpPriority() + 10 : file->GetUpPriority()), this);
-	
-	valuemap.CreateTag(EC_TAG_PARTFILE_NAME, file->GetFileName(), this);
-	valuemap.CreateTag(EC_TAG_PARTFILE_SIZE_FULL, (uint32)file->GetFileSize(), this);
-	valuemap.CreateTag(EC_TAG_PARTFILE_ED2K_LINK,
-		(theApp.serverconnect->IsConnected() && !theApp.serverconnect->IsLowID()) ?
-					theApp.CreateED2kSourceLink(file) : theApp.CreateED2kLink(file), this);
 }
 
 CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAIL_LEVEL detail_level) :
@@ -711,15 +745,18 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAI
 //
 CEC_SearchFile_Tag::CEC_SearchFile_Tag(CSearchFile *file, EC_DETAIL_LEVEL detail_level) : CECTag(EC_TAG_SEARCHFILE, file->GetFileHash())
 {
-	if ( detail_level != EC_DETAIL_WEB ) {
-		AddTag(CECTag(EC_TAG_PARTFILE_NAME, file->GetFileName()));
-		AddTag(CECTag(EC_TAG_PARTFILE_SIZE_FULL, file->GetFileSize()));
-		if ( theApp.sharedfiles->GetFileByID(file->GetFileHash()) ) {
-			AddTag(CECTag(EC_TAG_KNOWNFILE, (uint8)0));
-		}
-	}
 	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT, file->GetSourceCount()));
 	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT_XFER, file->GetCompleteSourceCount()));
+
+	if (detail_level == EC_DETAIL_UPDATE) {
+			return;
+	}
+
+	AddTag(CECTag(EC_TAG_PARTFILE_NAME, file->GetFileName()));
+	AddTag(CECTag(EC_TAG_PARTFILE_SIZE_FULL, file->GetFileSize()));
+	if ( theApp.sharedfiles->GetFileByID(file->GetFileHash()) ) {
+		AddTag(CECEmptyTag(EC_TAG_KNOWNFILE));
+	}
 }
 
 //

@@ -58,6 +58,8 @@ class CPartFile;
 class CSearchFile;
 class CUpDownClient;
 
+#ifndef EC_REMOTE
+
 /*
  * EC tags encoder. Idea: if for an object <X>, client <Z> tag <Y> have value equal to previous
  * request, skip this tag.
@@ -117,6 +119,10 @@ class CValueMap {
 			CreateTagT<wxString>(tagname, value, m_map_string, parent);
 		}
 };
+#else
+// define empty class, so compiler will be happy
+class CValueMap {};
+#endif
 
 class CEC_Prefs_Packet : public CECPacket {
  	public:
@@ -172,6 +178,7 @@ class CEC_Stats_Tag : public CECTag {
 class CEC_PartFile_Tag : public CECTag {
  	public:
  		CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level);
+		CEC_PartFile_Tag(CPartFile *file, CValueMap &valuemap);
  		
 		// template needs it
 		CMD4Hash		ID()	{ return GetMD4Data(); }
@@ -191,9 +198,27 @@ class CEC_PartFile_Tag : public CECTag {
   		uint32		SourceCountA4AF()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_SOURCE_COUNT_A4AF)->GetInt32Data(); }
   		uint32		Speed()		{ return GetTagByNameSafe(EC_TAG_PARTFILE_SPEED)->GetInt32Data(); }
   		uint32		Prio()		{ return GetTagByNameSafe(EC_TAG_PARTFILE_PRIO)->GetInt32Data(); }
-  		wxString	PartStatus()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_PART_STATUS)->GetStringData(); }
+
  		uint8		FileCat()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_CAT)->GetInt8Data(); }
 		time_t		LastSeenComplete() { return (time_t)GetTagByNameSafe(EC_TAG_PARTFILE_LAST_SEEN_COMP)->GetInt32Data(); }
+		
+		void SetSizeXfer(uint32 &value) { AssignIfExist(EC_TAG_PARTFILE_SIZE_XFER, value); }
+		void SetSizeDone(uint32 &value) { AssignIfExist(EC_TAG_PARTFILE_SIZE_DONE, value); }
+
+		void SetFileEd2kLink(uint32 &value) { AssignIfExist(EC_TAG_PARTFILE_ED2K_LINK, value); }
+
+		void SetFileStatus(uint32 &value) { AssignIfExist(EC_TAG_PARTFILE_STATUS, value); }
+
+		void SetSourceCount(uint32 &value) { AssignIfExist(EC_TAG_PARTFILE_SOURCE_COUNT, value); }
+		void SetSourceNotCurrCount(uint32 &value) { AssignIfExist(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT, value); }
+		void SetSourceXferCount(uint32 &value) { AssignIfExist(EC_TAG_PARTFILE_SOURCE_COUNT_XFER, value); }
+		void SetSourceCountA4AF(uint32 &value) { AssignIfExist(EC_TAG_PARTFILE_SOURCE_COUNT_A4AF, value); }
+
+		void SetSpeed(uint32 &value) { AssignIfExist(EC_TAG_PARTFILE_SPEED, value); }
+		void SetPrio(uint32 &value) { AssignIfExist(EC_TAG_PARTFILE_PRIO, value); }
+		void SetFileCat(uint32 &value) { AssignIfExist(EC_TAG_PARTFILE_CAT, value); }
+		void SetLastSeenComplete(uint32 &value) { AssignIfExist(EC_TAG_PARTFILE_LAST_SEEN_COMP, value); }
+		
 		#ifdef EC_REMOTE
 		wxString	GetFileStatusString();
 		#endif /* EC_REMOTE */
@@ -201,9 +226,9 @@ class CEC_PartFile_Tag : public CECTag {
 
 class CEC_SharedFile_Tag : public CECTag {
 	public:
-		CEC_SharedFile_Tag(const CKnownFile *file, EC_DETAIL_LEVEL detail_level);
+ 		CEC_SharedFile_Tag(const CKnownFile *file, EC_DETAIL_LEVEL detail_level);
 		CEC_SharedFile_Tag(const CKnownFile *file, CValueMap &valuemap);
-
+ 		
 		// template needs it
  		CMD4Hash	ID()		{ return GetMD4Data(); }
 		
@@ -212,9 +237,9 @@ class CEC_SharedFile_Tag : public CECTag {
 
  		wxString	FileName()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_NAME)->GetStringData(); }
  		uint32		SizeFull()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_SIZE_FULL)->GetInt32Data(); }
-  		uint32		Prio()		{ return GetTagByNameSafe(EC_TAG_PARTFILE_PRIO)->GetInt32Data(); }
  		wxString	FileEd2kLink()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_ED2K_LINK)->GetStringData(); }
 
+  		uint32		Prio()		{ return GetTagByNameSafe(EC_TAG_PARTFILE_PRIO)->GetInt32Data(); }
  		uint32		GetRequests()	{ return GetTagByNameSafe(EC_TAG_KNOWNFILE_REQ_COUNT)->GetInt32Data(); }
  		uint32		GetAllRequests()	{ return GetTagByNameSafe(EC_TAG_KNOWNFILE_REQ_COUNT_ALL)->GetInt32Data(); }
 
@@ -223,6 +248,17 @@ class CEC_SharedFile_Tag : public CECTag {
 
  		uint32		GetXferred()	{ return GetTagByNameSafe(EC_TAG_KNOWNFILE_XFERRED)->GetInt32Data(); }
  		uint32		GetAllXferred()	{ return GetTagByNameSafe(EC_TAG_KNOWNFILE_XFERRED_ALL)->GetInt32Data(); }
+ 		
+ 		void SetPrio(uint32 &val) { AssignIfExist(EC_TAG_PARTFILE_PRIO, val); }
+ 		
+ 		void SetRequests(uint32 &val) { AssignIfExist(EC_TAG_KNOWNFILE_REQ_COUNT, val); }
+ 		void SetAllRequests(uint32 &val) { AssignIfExist(EC_TAG_KNOWNFILE_REQ_COUNT_ALL, val); }
+ 		
+ 		void SetAccepts(uint32 &val) { AssignIfExist(EC_TAG_KNOWNFILE_ACCEPT_COUNT, val); }
+ 		void SetAllAccepts(uint32 &val) { AssignIfExist(EC_TAG_KNOWNFILE_ACCEPT_COUNT_ALL, val); }
+ 		
+ 		void SetXferred(uint32 &val) { AssignIfExist(EC_TAG_KNOWNFILE_XFERRED, val); }
+ 		void SetAllXferred(uint32 &val) { AssignIfExist(EC_TAG_KNOWNFILE_XFERRED_ALL, val); }
 };
 
 class CEC_UpDownClient_Tag : public CECTag {

@@ -198,7 +198,8 @@ void ExternalConn::OnSocketEvent(wxSocketEvent& event) {
 				sock->SetEventHandler(*this, SOCKET_ID);
 			}
 		} else {
-			response = ProcessRequest2(request, m_part_encoders[sock], m_shared_encoders[sock]);
+			response = ProcessRequest2(request, m_part_encoders[sock],
+				m_shared_encoders[sock], m_obj_tagmap[sock]);
 			delete request; request = NULL;
 			m_ECServer->WritePacket(sock, response);
 			delete response; response = NULL;
@@ -226,6 +227,7 @@ void ExternalConn::OnSocketEvent(wxSocketEvent& event) {
 		// remove client data
 		m_part_encoders.erase(sock);
 		m_shared_encoders.erase(sock);
+		m_obj_tagmap.erase(sock);
 		break;
 	}
 	
@@ -333,9 +335,9 @@ CECPacket *Get_EC_Response_GetSharedFiles(const CECPacket *request, CKnownFile_E
 {
 	wxASSERT(request->GetOpCode() == EC_OP_GET_SHARED_FILES);
 
-	EC_DETAIL_LEVEL detail_level = request->GetDetailLevel();
 	CECPacket *response = new CECPacket(EC_OP_SHARED_FILES);
 
+	EC_DETAIL_LEVEL detail_level = request->GetDetailLevel();
 	//
 	// request can contain list of queried items
 	CTagSet<CMD4Hash, EC_TAG_KNOWNFILE> queryitems(request);
@@ -355,6 +357,25 @@ CECPacket *Get_EC_Response_GetSharedFiles(const CECPacket *request, CKnownFile_E
 			enc.ResetEncoder();
 		}
 		enc.Encode(&filetag);
+		response->AddTag(filetag);
+	}
+	return response;
+}
+
+CECPacket *Get_EC_Response_GetSharedFiles(CKnownFile_Encoder_Map &encoders, CObjTagMap &tagmap)
+{
+	CECPacket *response = new CECPacket(EC_OP_SHARED_FILES);
+
+	encoders.UpdateEncoders(theApp.sharedfiles);
+	for (uint32 i = 0; i < theApp.sharedfiles->GetFileCount(); ++i) {
+		CKnownFile *cur_file = (CKnownFile *)theApp.sharedfiles->GetFileByIndex(i);
+		if ( !cur_file ) continue;
+
+		CValueMap &valuemap = tagmap.GetValueMap(cur_file);
+		CEC_SharedFile_Tag filetag(cur_file, valuemap);
+		CKnownFile_Encoder &enc = encoders[cur_file];
+		enc.Encode(&filetag);
+		
 		response->AddTag(filetag);
 	}
 	return response;
@@ -417,11 +438,28 @@ CECPacket *Get_EC_Response_GetUpQueue(const CECPacket *request)
 	return response;
 }	
 
-CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request,
-	CPartFile_Encoder_Map &encoders)
+CECPacket *Get_EC_Response_GetDownloadQueue(CPartFile_Encoder_Map &encoders, CObjTagMap &tagmap)
 {	
 	CECPacket *response = new CECPacket(EC_OP_DLOAD_QUEUE);
-	
+
+	encoders.UpdateEncoders(theApp.downloadqueue);
+	for (unsigned int i = 0; i < theApp.downloadqueue->GetFileCount(); i++) {
+		CPartFile *cur_file = theApp.downloadqueue->GetFileByIndex(i);
+
+		CValueMap &valuemap = tagmap.GetValueMap(cur_file);
+		CEC_PartFile_Tag filetag(cur_file, valuemap);
+		CPartFile_Encoder &enc = encoders[cur_file];
+		enc.Encode(&filetag);
+		
+		response->AddTag(filetag);
+	}	
+	return 	response;
+}
+
+CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request, CPartFile_Encoder_Map &encoders)
+{	
+	CECPacket *response = new CECPacket(EC_OP_DLOAD_QUEUE);
+
 	EC_DETAIL_LEVEL detail_level = request->GetDetailLevel();
 	//
 	// request can contain list of queried items
@@ -446,7 +484,6 @@ CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request,
 
 		response->AddTag(filetag);
 	}
-
 	return 	response;
 }
 
@@ -875,10 +912,7 @@ CECPacket *GetStatsGraphs(const CECPacket *request)
 	CECPacket *response = NULL;
 
 	switch (request->GetDetailLevel()) {
-		case EC_DETAIL_GUI:
-			// Transfer graph db
-			break;
-		case EC_DETAIL_WEB: {
+		case EC_DETAIL_FULL: {
 			double dTimestamp = 0.0;
 			if (request->GetTagByName(EC_TAG_STATSGRAPH_LAST) != NULL) {
 				wxString tmp = request->GetTagByName(EC_TAG_STATSGRAPH_LAST)->GetStringData();
@@ -912,7 +946,7 @@ CECPacket *GetStatsGraphs(const CECPacket *request)
 }
 
 CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
-	CPartFile_Encoder_Map &enc_part_map, CKnownFile_Encoder_Map &enc_shared_map)
+	CPartFile_Encoder_Map &enc_part_map, CKnownFile_Encoder_Map &enc_shared_map, CObjTagMap &objmap)
 {
 
 	if ( !request ) {
@@ -958,10 +992,18 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 		//
 		//
 		case EC_OP_GET_SHARED_FILES:
-			response = Get_EC_Response_GetSharedFiles(request, enc_shared_map);
+			if ( request->GetDetailLevel() == EC_DETAIL_INC_UPDATE ) {
+				response = Get_EC_Response_GetSharedFiles(enc_shared_map, objmap);
+			} else {
+				response = Get_EC_Response_GetSharedFiles(request, enc_shared_map);
+			}
 			break;
 		case EC_OP_GET_DLOAD_QUEUE:
-			response = Get_EC_Response_GetDownloadQueue(request, enc_part_map);
+			if ( request->GetDetailLevel() == EC_DETAIL_INC_UPDATE ) {
+				response = Get_EC_Response_GetDownloadQueue(enc_part_map, objmap);
+			} else {
+				response = Get_EC_Response_GetDownloadQueue(request, enc_part_map);
+			}
 			break;
 		case EC_OP_GET_ULOAD_QUEUE:
 			response = Get_EC_Response_GetUpQueue(request);
@@ -1102,7 +1144,7 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 		case EC_OP_GET_STATSTREE:
 			response = new CECPacket(EC_OP_STATSTREE);
 			response->AddTag(CEC_Tree_Tag(theApp.statistics->statstree.begin().begin()));
-			if (request->GetDetailLevel() == EC_DETAIL_WEB) {
+			if (request->GetDetailLevel() == EC_DETAIL_FULL) {
 				response->AddTag(CECTag(EC_TAG_SERVER_VERSION, wxT(PACKAGE_VERSION)));
 				response->AddTag(CECTag(EC_TAG_USER_NICK, thePrefs::GetUserNick()));
 			}
@@ -1154,7 +1196,7 @@ void *ExternalConnClientThread::Entry()
 		}
 		if (m_sock->WaitForRead(1, 0)) {
 			request = m_owner->m_ECServer->ReadPacket(m_sock);
-			response = m_owner->ProcessRequest2(request, m_part_encoders, m_shared_encoders);
+			response = m_owner->ProcessRequest2(request, m_part_encoders, m_shared_encoders, m_obj_tagmap);
 			delete request;
 			if ( response ) {
 				m_owner->m_ECServer->WritePacket(m_sock, response);
@@ -1163,9 +1205,4 @@ void *ExternalConnClientThread::Entry()
 		}
 	}
 	return 0;
-}
-
-CECTag *CObjTagMap::Encode(CKnownFile *file)
-{
-	return new CEC_SharedFile_Tag(file, m_obj_map[file]);
 }

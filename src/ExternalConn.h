@@ -193,10 +193,10 @@ class CTagSet : public std::set<T> {
 class CObjTagMap {
 		std::map<void *, CValueMap> m_obj_map;
 	public:
-		CECTag *Encode(CPartFile *);
-		CECTag *Encode(CKnownFile *);
-		CECTag *Encode(CSearchFile *);
-		CECTag *Encode(CUpDownClient *);
+		CValueMap &GetValueMap(void *object)
+		{
+			return m_obj_map[object];
+		}
 		
 		void RemoveDeleted(std::set<void *> &current_set);
 };
@@ -213,7 +213,7 @@ class ExternalConn : public EXTERNAL_CONN_BASE {
 		~ExternalConn();
 	
 		CECPacket *ProcessRequest2(const CECPacket *request,
-			CPartFile_Encoder_Map &, CKnownFile_Encoder_Map &);
+			CPartFile_Encoder_Map &, CKnownFile_Encoder_Map &, CObjTagMap &);
 	
 		CECPacket *Authenticate(const CECPacket *);
 		ECSocket *m_ECServer;
@@ -227,6 +227,7 @@ class ExternalConn : public EXTERNAL_CONN_BASE {
 		// encoder container must be created per EC client
 		std::map<wxSocketBase *, CPartFile_Encoder_Map> m_part_encoders;
 		std::map<wxSocketBase *, CKnownFile_Encoder_Map> m_shared_encoders;
+		std::map<wxSocketBase *, CObjTagMap> m_obj_tagmap;
 
 		// event handlers (these functions should _not_ be virtual)
 		void OnServerEvent(wxSocketEvent& event);
@@ -247,6 +248,7 @@ class ExternalConnClientThread : public wxThread {
 		// encoder container must be created per EC client
 		CPartFile_Encoder_Map m_part_encoders;
 		CKnownFile_Encoder_Map m_shared_encoders;
+		CObjTagMap m_obj_tagmap;
 		
 		ExternalConn *m_owner;
 		wxSocketBase *m_sock;

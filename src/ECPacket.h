@@ -177,11 +177,11 @@ class CECEmptyTag : public CECTag {
 class CECPacket : protected CECEmptyTag {
 	friend class ECSocket;
 	public:
-		CECPacket(ec_opcode_t opCode, EC_DETAIL_LEVEL detail_level = EC_DETAIL_GUI)
+		CECPacket(ec_opcode_t opCode, EC_DETAIL_LEVEL detail_level = EC_DETAIL_FULL)
 		: CECEmptyTag(0), m_opCode(opCode)
 		{
-			// since EC_DETAIL_GUI is default - no point transmit it
-			if ( detail_level != EC_DETAIL_GUI ) {
+			// since EC_DETAIL_FULL is default - no point transmit it
+			if ( detail_level != EC_DETAIL_FULL ) {
 				AddTag(CECTag(EC_TAG_DETAIL_LEVEL, (uint8)detail_level));
 			}
 		}
@@ -198,7 +198,7 @@ class CECPacket : protected CECEmptyTag {
 		EC_DETAIL_LEVEL GetDetailLevel() const
 		{
 			const CECTag *tag = GetTagByName(EC_TAG_DETAIL_LEVEL);
-			return (tag) ? (EC_DETAIL_LEVEL)tag->GetInt8Data() : EC_DETAIL_GUI;
+			return (tag) ? (EC_DETAIL_LEVEL)tag->GetInt8Data() : EC_DETAIL_FULL;
 		}
 		
 	private:
