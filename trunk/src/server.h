@@ -87,7 +87,7 @@ public:
 	void	SetSoftFiles(uint32 in_softfiles)			{softfiles = in_softfiles;}
 	uint32	GetHardFiles()						{return hardfiles;}
 	void	SetHardFiles(uint32 in_hardfiles)			{hardfiles = in_hardfiles;}
-	const	CString& GetVersion() const				{return m_strVersion;}
+	const	wxString& GetVersion() const				{return m_strVersion;}
 	void	SetVersion(CString pszVersion)				{m_strVersion = pszVersion;}
 	void	SetTCPFlags(uint32 uFlags)				{m_uTCPFlags = uFlags;}
 	uint32	GetTCPFlags() const					{return m_uTCPFlags;}
@@ -115,7 +115,7 @@ private:
 	TagList* taglist;
 	//CTypedPtrList<CPtrList, CTag*>*	taglist;
 	uint8		staticservermember;
-	CString		m_strVersion;
+	wxString		m_strVersion;
 	uint32		m_uTCPFlags;
 	uint32		m_uUDPFlags;
 	

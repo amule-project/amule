@@ -503,7 +503,7 @@ void CServerSocket::ConnectToServer(CServer* server)
 	theApp.amuledlg->AddLogLine(true,"Trying to connect\n");
 	#endif
 	cur_server = new CServer(server);
-	theApp.amuledlg->AddLogLine(false,CString(_("Connecting to %s (%s:%i)...")),cur_server->GetListName(),cur_server->GetFullIP(),cur_server->GetPort());
+	theApp.amuledlg->AddLogLine(false,wxString::Format(_("Connecting to %s (%s:%i)..."),cur_server->GetListName(),cur_server->GetFullIP(),cur_server->GetPort()));
 	SetConnectionState(CS_CONNECTING);
 	wxIPV4address addr;
 	addr.Hostname(char2unicode(server->GetAddress()));
