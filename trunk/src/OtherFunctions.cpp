@@ -981,25 +981,6 @@ wxString GetFileTypeByName(const wxString &strFileName)
 	}
 }
 
-#warning #############################################################################
-#warning # Kry, I doubt we are using this function, so please delete if you think so.#
-#warning #############################################################################
-#if 0
-// Returns a file type which is used eMule internally only (GUI)
-wxString GetFileTypeDisplayStrFromED2KFileType(const wxString &strED2KFileType)
-{
-	if      (strED2KFileType.CmpNoCase(ED2KFTSTR_AUDIO) == 0)	return GetResString(IDS_SEARCH_AUDIO);
-	else if (strED2KFileType.CmpNoCase(ED2KFTSTR_VIDEO) == 0)	return GetResString(IDS_SEARCH_VIDEO);
-	else if (strED2KFileType.CmpNoCase(ED2KFTSTR_IMAGE) == 0)	return GetResString(IDS_SEARCH_PICS);
-	else if (strED2KFileType.CmpNoCase(ED2KFTSTR_DOCUMENT) == 0)	return GetResString(IDS_SEARCH_DOC);
-	else if (strED2KFileType.CmpNoCase(ED2KFTSTR_PROGRAM) == 0)	return GetResString(IDS_SEARCH_PRG);
-	else if (strED2KFileType.CmpNoCase(ED2KFTSTR_ARCHIVE) == 0)	return GetResString(IDS_SEARCH_ARC);
-	else if (strED2KFileType.CmpNoCase(ED2KFTSTR_CDIMAGE) == 0)	return GetResString(IDS_SEARCH_CDIMG);
-
-	return wxEmptyString;
-}
-#endif
-
 class CED2KFileTypes{
 public:
 	CED2KFileTypes() {
