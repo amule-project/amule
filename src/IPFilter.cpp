@@ -64,20 +64,150 @@ void CIPFilter::Reload(){
 	LoadFromFile(theApp.ConfigDir + wxT("ipfilter.dat"), false); // No merge on reload.
 }
 
+
 /* *
  * IPFilter is an map of IPRanges, ordered by IPstart, of banned ranges of IP addresses.
  */
 void CIPFilter::AddBannedIPRange(uint32 IPStart, uint32 IPEnd, uint16 AccessLevel, const wxString& Description)
 {
+	if ( !iplist.empty() ) {
+		// Find the first element larger than or equal to IPTest
+		IPListMap::iterator it = iplist.lower_bound( IPStart );
+	
+		if ( it != iplist.begin() ) {
+			// To a step back to the first element smaller than IPStart
+			it--;
+		}
+		
+		while ( it != iplist.end() ) {
+			// Begins before the current span
+			if ( IPStart < it->second->IPStart ) {
+				// Never touches the current span
+				if ( IPEnd < it->second->IPStart - 1 ) {
+					break;
+				}
+
+				// Stops just before the current span
+				else if ( IPEnd == it->second->IPStart - 1 ) {
+					// If same AccessLevel: Merge
+					if ( AccessLevel == it->second->AccessLevel ) {
+						IPEnd = it->second->IPEnd;
+						iplist.erase( it );
+					}
+
+					break;
+				}
+
+				// Covers part of the current span (maybe entire span)
+				else {
+					// If it only covers part of the span
+					if ( IPEnd < it->second->IPEnd ) {
+						// Same AccessLevel?
+						if ( AccessLevel == it->second->AccessLevel ) {
+							IPEnd = it->second->IPEnd;
+							iplist.erase( it );
+						} else {
+							// Re-insert the partially covered span
+							IPRange_Struct* item = it->second;
+							item->IPStart = IPEnd + 1;
+
+							iplist.erase( it );
+							iplist[ item->IPStart ] = item;
+						}
+
+						break;
+					} else {
+						// It covers the entire span
+						IPListMap::iterator tmp = it++;
+						iplist.erase( tmp );
+						continue;
+					}
+				}
+			}
+			// It starts at the current span
+			else if ( IPStart == it->second->IPStart ) {
+				// Covers only part of the current span
+				if ( IPEnd < it->second->IPEnd ) {
+					// Same AccessLevel, nothing to do
+					if ( AccessLevel == it->second->AccessLevel ) {
+						return;
+					} else {
+						// Re-insert the partially covered span
+						IPRange_Struct* item = it->second;
+						item->IPStart = IPEnd + 1;
+
+						iplist.erase( it );
+						iplist[ item->IPStart ] = item;
+					}
+
+					break;
+
+				} else {
+					// Covers the entire span
+					IPListMap::iterator tmp = it++;
+					iplist.erase( tmp );					
+					continue;
+				}
+			}
+
+			// Starts inside the current span or after the current span
+			else if ( IPStart > it->second->IPStart  && IPStart <= it->second->IPEnd + 1 ) {
+				// Covers only a slice of the current span
+				if ( IPEnd < it->second->IPEnd ) {
+					// Same AccessLevel, nothing to do
+					if ( AccessLevel == it->second->AccessLevel ) {
+						return;
+					} else {
+						// Remember the old end-position
+						uint32 oldend = it->second->IPEnd;
+						// Resize the current span to fit before the new span
+						it->second->IPEnd = IPStart - 1;
+
+						// Create a new span to cover the second block
+						IPRange_Struct* item = new IPRange_Struct();
+						*item = *(it->second);
+
+						item->IPStart = IPEnd + 1;
+						item->IPEnd   = oldend;
+						
+						// Insert the new span	
+						iplist[ item->IPStart ] = item;
+						break;
+					}
+				} else {
+					// Completly covers a side of the span
+					if ( AccessLevel == it->second->AccessLevel ) {
+						// Same AccessLevel, delete old and update start position
+						IPStart = it->second->IPStart;
+
+						IPListMap::iterator tmp = it++;
+						iplist.erase( tmp );	
+						continue;
+
+					} else {
+						// Update old end
+						it->second->IPEnd = IPStart - 1;
+					}
+				}
+			}
+
+			it++;
+		}
+	}
+
+
 	IPRange_Struct *newFilter = new IPRange_Struct();
 	newFilter->IPStart	= IPStart;
 	newFilter->IPEnd	= IPEnd;
 	wxASSERT(AccessLevel < 256);
 	newFilter->AccessLevel	= AccessLevel;
 	newFilter->Description	= Description;
-	// iplist is a std::map, key is IPstart.
+
+
+	// It should now be safe to insert the span, without risking multiple spans covering the same range
 	iplist[IPStart]		= newFilter;
 }
+
 
 /* *
  * This was done because the ipfilter.dat format uses sometimes leading zeroes,
@@ -258,22 +388,31 @@ void CIPFilter::RemoveAllIPs()
  */
 bool CIPFilter::IsFiltered(uint32 IPTest)
 {
-	IPTest = ntohl(IPTest);
-	// return false if not using ip filter or ip filter is disabled
-	if( ( iplist.size() == 0 ) || ( !theApp.glob_prefs->GetIPFilterOn() ) )
+	// Return false if not using ip filter or ip filter is disabled
+	if ( iplist.empty() || ( !theApp.glob_prefs->GetIPFilterOn() ) )
 		return false;
-	bool found = false;
-	IPListMap::iterator it = iplist.begin();
-	while( !found && it != iplist.end() && it->second->IPStart <= IPTest ) {
-		found = IPTest <= it->second->IPEnd && 
-			it->second->AccessLevel < theApp.glob_prefs->GetIPFilterLevel();
-		if( found ) {
-			lasthit = it->second->Description;
+	
+	IPTest = ntohl(IPTest);
+	
+	// Find the first element larger than IPTest
+	IPListMap::iterator it = iplist.upper_bound( IPTest );
+	
+	if ( it != iplist.begin() ) {
+		// Go back to the first element smaller than or equal to IPTest
+		it--;
+
+		// Check if this range covers the IP
+		if ( IPTest <= it->second->IPEnd ) {
+			// Is this filter active with the current access-level?
+			if ( it->second->AccessLevel < theApp.glob_prefs->GetIPFilterLevel() ) {
+				lasthit = it->second->Description;
+			}
+
+			return true;
 		}
-		it++;
 	}
 
-	return found;
+	return false;
 }
 
 void CIPFilter::Update() {
