@@ -7,9 +7,9 @@ AC_CONFIG_SRCDIR([src/SharedFileList.h])
 AM_CONFIG_HEADER([config.h])
 AM_MAINTAINER_MODE
 
-# No -O2 by default
-CFLAGS=" $CFLAGS"
-CXXFLAGS=" $CXXFLAGS"
+# No -O2 by default, removing -fomit since it causes problems
+CFLAGS=" ${CFLAGS/-fomit-frame-pointer/}"
+CXXFLAGS=" ${CXXFLAGS/-fomit-frame-pointer/}"
 
 # Checks for programs.
 AC_PROG_CXX
