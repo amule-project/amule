@@ -72,6 +72,27 @@ Version 2.0.0-rc2 - The Unnamed version.
 	shakraw:
 		* rewrote WebSocket.* and modified WebServer.*: they use wxThreads and
 		  wxSockets to be used on other platform too.
+		  
+	Xaignar:
+		* Amule no longer writes met files when priority is changed through the
+		  auto-priority subsystem. Thus hd-writes are substancially reduced 
+		  depending on the number of files set to auto-priority.
+		* Fixed bug where text fields overlap each other (Disp. 4 & 5)
+		* Cleanup of amuleDlg.*
+		* aMule no longer displays a message about not being able to open the 
+		  file "lastversion" the first time it is run
+		* Changed the CTypedPtrList filelist in DownloadQueue.* to a std::deque,
+		  with a speed-increase as a result
+		* Fixed the bug where the background of previously selected items in the
+		  friendslist wouldn't be redrawn (Disp. 2)
+		* Fixed auto-priority. Priority would be set one tad too high, resulting
+		  in the downloadlist failing to assign a name to the priority, thus 
+		  leaving empty fields. Also fixed displaying of priorty "Auto [Lo]" 
+		  in sharedfiles-list. (Tran. 3)
+		* Fixed the problem where "completed percent" of files that hadn't 
+		  transfered any bits yet would display a negative percentage (Disp. 8)
+- 
+
 
 Version 2.0.0-rc1 - The 'Mules and Rabbits love carrots' version.
 -------------
