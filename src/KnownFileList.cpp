@@ -215,8 +215,9 @@ bool CKnownFileList::Append(CKnownFile* Record)
 				// The file is already on the list, ignore it.
 				return false;
 			} else {
-				// The file is a duplicated hash. Add it to the duplicates list.
-				duplicates.Append(Record);
+				// The file is a duplicated hash. Add THE OLD ONE to the duplicates list.
+				duplicates.Append(m_map[tkey]);
+				m_map[tkey] = Record;	
 				return true;
 			}
 		}
