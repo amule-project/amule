@@ -103,7 +103,7 @@ public:
 	const wxString&	GetFileName() const		{return m_strFileName;}
 	const CMD4Hash&	GetFileHash() const	{return m_abyFileHash;}
 	uint32	GetFileSize() const			{return m_nFileSize;}
-	void	SetFileSize(uint32 nFileSize) { m_nFileSize = nFileSize; }
+	virtual void SetFileSize(uint32 nFileSize) { m_nFileSize = nFileSize; }
 	void	SetFileName(const wxString& strmakeFilename);
 	
 protected:
@@ -132,7 +132,7 @@ public:
 	uint32	GetFileDate() const	{return date;}
 
 		
-	void SetFileSize(uint32 nFileSize);
+	virtual void SetFileSize(uint32 nFileSize);
 
 	// local available part hashs
 	uint16	GetHashCount() const	{return hashlist.GetCount();}

@@ -3055,6 +3055,15 @@ void CPartFile::SetLastAnsweredTimeTimeout()
 
 Packet *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 {
+	if(!IsPartFile())
+		return CKnownFile::CreateSrcInfoPacket(forClient);
+
+	if (forClient->reqfile != this)
+		return NULL;
+
+	if ( !(GetStatus() == PS_READY || GetStatus() == PS_EMPTY))
+		return NULL;
+
 	if ( m_SrcList.IsEmpty() )
 		return NULL;
 
