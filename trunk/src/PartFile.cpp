@@ -63,6 +63,7 @@
 #include "GetTickCount.h"	// Needed for GetTickCount
 #include "ClientList.h"		// Needed for clientlist
 #include "color.h"
+#include "filefn.h"
 
 #include <map>
 #include <algorithm>

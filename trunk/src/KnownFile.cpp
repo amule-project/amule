@@ -57,6 +57,7 @@
 #include "KnownFileList.h"	// Needed for CKnownFileList
 #include "amule.h"			// Needed for theApp
 #include "PartFile.h"		// Needed for SavePartFile
+#include "endianfix.h"
 
 #include <wx/arrimpl.cpp> // this is a magic incantation which must be done!
 

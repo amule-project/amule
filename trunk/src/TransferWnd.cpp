@@ -292,23 +292,23 @@ bool CTransferWnd::ProcessEvent(wxEvent& evt)
 			break;
 		}
 		case MP_PAUSE: {
-			theApp.downloadqueue->SetCatStatus(m_dlTab->GetSelection(),MP_PAUSE);
+			downloadlistctrl->SetCatStatus(m_dlTab->GetSelection(),MP_PAUSE);
 			break;
 		}
 		case MP_STOP : {
-			theApp.downloadqueue->SetCatStatus(m_dlTab->GetSelection(),MP_STOP);
+			downloadlistctrl->SetCatStatus(m_dlTab->GetSelection(),MP_STOP);
 			break;
 		}
 
 		case MP_CANCEL:
 			if (wxMessageBox(_("Are you sure you wish to cancel and delete all files in this category?"),_("Confirmation Required"),
 			   wxYES_NO|wxCENTRE|wxICON_EXCLAMATION) == wxYES) {
-				theApp.downloadqueue->SetCatStatus(m_dlTab->GetSelection(),MP_CANCEL);
+				downloadlistctrl->SetCatStatus(m_dlTab->GetSelection(),MP_CANCEL);
 			}
 			break;
 
 		case MP_RESUME: {
-			theApp.downloadqueue->SetCatStatus(m_dlTab->GetSelection(),MP_RESUME);
+			downloadlistctrl->SetCatStatus(m_dlTab->GetSelection(),MP_RESUME);
 			break;
 		}
 		default: {
@@ -347,7 +347,7 @@ void CTransferWnd::EditCatTabLabel(int index,wxString newlabel)
 			if (cur_file==0) {
 				continue;
 			}
-			if (CheckShowItemInGivenCat(cur_file,index)) {
+			if (downloadlistctrl->CheckShowItemInGivenCat(cur_file,index)) {
 				count++;
 				if (cur_file->GetTransferingSrcCount()>0) {
 					dwl++;

@@ -24,6 +24,7 @@
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/string.h>		// Needed for wxString
 #include <wx/strconv.h>
+
 #include "types.h"		// Needed for uint16, uint32 and uint64
 #include "endianfix.h"
 
@@ -37,13 +38,6 @@ static wxCSConv aMuleConv(wxT("iso8859-1"));
 	#define unicode2char(x) x.c_str()
 	#define char2unicode(x) x
 #endif
-/*
-#define unicode2char(x) ConvertUnicode2Char(x)
-#define char2unicode(x) ConvertChar2Unicode(x)
-
-wxString ConvertChar2Unicode(const char* c_string);
-const char* ConvertUnicode2Char(wxString unic_string);
-*/
 
 // From Gnucleus project [found by Tarod]
 // Converts 'buffer' with length 'bufLen' to a wxString
@@ -147,19 +141,9 @@ inline wxString MakeFoldername(wxString path) {
  */
 wxString TruncateFilename(const wxString& filename, size_t length, bool isFilePath = false);
 
-// Makes a backup of a file, by copying the original file to filename + appendix
-bool BackupFile(const wxString& filename, const wxString& appendix);
-// This function is a replacement for wxCopyFile, with the added feature,
-// that chmoding of the target file can be disabled. The reason for this
-// is, that FAT partitons under linux generate warnings when chmoding.
-bool FS_wxCopyFile(const wxString& file1, const wxString& file2,bool overwrite = TRUE);
-// Same as above, but renames rather than copies.
-bool FS_wxRenameFile(const wxString& file1, const wxString& file2);
-
 
 /* Other */
 void HexDump(const void *buffer, unsigned long buflen);
-bool CheckShowItemInGivenCat(CPartFile* file,int inCategory);
 // Compares first and second. For uint16 arrays sorting.
 int wxCMPFUNC_CONV Uint16CompareValues(uint16* first, uint16* second);
 

@@ -133,7 +133,6 @@ public:
 	void	ResetCatParts(int cat);
 	void	SavePartFiles(bool del = false);	// InterCeptor
 	void	SetCatPrio(int cat, uint8 newprio);
-	void	SetCatStatus(int cat, int newstatus);
 	void	SendLocalSrcRequest(CPartFile* sender);
 	void	RemoveLocalServerRequest(CPartFile* pFile);
 	void	ResetLocalServerRequests();
