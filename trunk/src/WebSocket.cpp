@@ -217,38 +217,35 @@ void *CWCThread::Entry() {
 		//stWebSocket.m_pParent->Print(wxT("*** WCThread - WaitForLost\n"));
 		//connection closed/lost. terminate thread
 	} else {
-		//check for write and return immediately
-		if (stWebSocket.m_hSocket->WaitForWrite(0)) {
-			// send what is left in our tails
-			while (stWebSocket.m_pHead && stWebSocket.m_pHead->m_pToSend) {
-				if (!stWebSocket.m_hSocket->WaitForWrite()) {
-					stWebSocket.m_pParent->Print(wxT("WCThread: got timeout on socket.\n"));
-					stWebSocket.m_bValid = false;
-					break;				
+		// send what is left in our tails
+		while (stWebSocket.m_pHead && stWebSocket.m_pHead->m_pToSend) {
+			if (!stWebSocket.m_hSocket->WaitForWrite()) {
+				stWebSocket.m_pParent->Print(wxT("WCThread: got timeout on socket.\n"));
+				stWebSocket.m_bValid = false;
+				break;				
+			}
+			//stWebSocket.m_pParent->Print(wxString::Format(wxT("*** WCThread write:\n%s\n"), stWebSocket.m_pHead->m_pToSend));
+			//WRITE
+			stWebSocket.m_hSocket->Write(stWebSocket.m_pHead->m_pToSend, stWebSocket.m_pHead->m_dwSize);
+			uint32 nRes = stWebSocket.m_hSocket->LastCount();
+			if (nRes >= stWebSocket.m_pHead->m_dwSize) {
+				// erase this chunk
+				CWebSocket::CChunk* pNext = stWebSocket.m_pHead->m_pNext;
+				delete stWebSocket.m_pHead;
+				if (!(stWebSocket.m_pHead = pNext)) {
+					stWebSocket.m_pTail = NULL;
 				}
-				//stWebSocket.m_pParent->Print(wxString::Format(wxT("*** WCThread write:\n%s\n"), stWebSocket.m_pHead->m_pToSend));
-				//WRITE
-				stWebSocket.m_hSocket->Write(stWebSocket.m_pHead->m_pToSend, stWebSocket.m_pHead->m_dwSize);
-				uint32 nRes = stWebSocket.m_hSocket->LastCount();
-				if (nRes >= stWebSocket.m_pHead->m_dwSize) {
-					// erase this chunk
-					CWebSocket::CChunk* pNext = stWebSocket.m_pHead->m_pNext;
-					delete stWebSocket.m_pHead;
-					if (!(stWebSocket.m_pHead = pNext)) {
-						stWebSocket.m_pTail = NULL;
-					}
+			} else {
+				if ((nRes > 0) && (!stWebSocket.m_hSocket->Error())) {
+					stWebSocket.m_pHead->m_pToSend += nRes;
+					stWebSocket.m_pHead->m_dwSize -= nRes;
 				} else {
-					if ((nRes > 0) && (!stWebSocket.m_hSocket->Error())) {
-						stWebSocket.m_pHead->m_pToSend += nRes;
-						stWebSocket.m_pHead->m_dwSize -= nRes;
-					} else {
-						if (stWebSocket.m_hSocket->Error()) {
-							if (stWebSocket.m_hSocket->LastError() != wxSOCKET_WOULDBLOCK) {
-								//got error
-								stWebSocket.m_pParent->Print(wxT("WCThread: got write error.\n"));
-								stWebSocket.m_bValid = false;
-								break;
-							}
+					if (stWebSocket.m_hSocket->Error()) {
+						if (stWebSocket.m_hSocket->LastError() != wxSOCKET_WOULDBLOCK) {
+							//got error
+							stWebSocket.m_pParent->Print(wxT("WCThread: got write error.\n"));
+							stWebSocket.m_bValid = false;
+							break;
 						}
 					}
 				}
