@@ -177,7 +177,6 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, wxString title) : wxFrame(
 
 	theApp.amuledlg = this;
 	
-	list_no_refresh = false;
 	
 	m_app_state=APP_STATE_STARTING;
 	srand(time(NULL));
@@ -244,12 +243,6 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, wxString title) : wxFrame(
 	srv_split->SetSashPosition(srv_split_pos, true);
 
 	CAddFileThread::Setup();
-
-	m_lastRefreshedQDisplay = 0;
-  	transfers_frozen = false;
-	old_list_refresh = 0;
-	old_update_queue_list = false;
-	switch_thaw_hide_mutex = false;
 
 	ToggleFastED2KLinksHandler();
 
@@ -768,8 +761,9 @@ void CamuleDlg::ShowConnectionState(bool connected, wxString server,bool iconOnl
 		//statusbar.SetTipText(3,server);
 		//statusbar.SetText(server,3,0);
 	} else {
-    
-		theApp.amuledlg->serverwnd->serverlistctrl->HighlightServer(NULL);
+		
+		// Why? We already handle the highlight on connection/disconnection states.		
+		//theApp.amuledlg->serverwnd->serverlistctrl->HighlightServer(NULL);
 
 		wxStaticBitmap* bmp=(wxStaticBitmap*)FindWindowByName("connImage");
     
@@ -1144,54 +1138,9 @@ bool CamuleDlg::LoadRazorPrefs() {
 	return true;
 }
 
-void CamuleDlg::Thaw_AllTransfering() {
-	if (!switch_thaw_hide_mutex) {
-		switch_thaw_hide_mutex = true;
-  		theApp.amuledlg->transferwnd->downloadlistctrl->Thaw();
-		theApp.amuledlg->transferwnd->uploadlistctrl->Thaw();
-		switch_thaw_hide_mutex = false;
-	}
-}
-
-void CamuleDlg::Freeze_AllTransfering() {
- 	if (!switch_thaw_hide_mutex) {
-		switch_thaw_hide_mutex = true;
-  		theApp.amuledlg->transferwnd->downloadlistctrl->Freeze();
-		theApp.amuledlg->transferwnd->uploadlistctrl->Freeze();
-		switch_thaw_hide_mutex = false;
-	}
-}
-
-void CamuleDlg::UpdateLists(DWORD msCur) {
-	if (!theApp.amuledlg->list_no_refresh) {
-		// Do we want to draw on fixed time?
-   		if (!theApp.glob_prefs->GetUpdateQueueList()) {
-			if  ((msCur-m_lastRefreshedQDisplay) > theApp.glob_prefs->GetListRefresh()) {
-				Thaw_AllTransfering();
-				transfers_frozen = false;
-				m_lastRefreshedQDisplay = msCur;
-			} else {
-				if ((msCur-m_lastRefreshedQDisplay) > 500) { // 0.5 sec refresh min.
-					if (!transfers_frozen) {
-						Freeze_AllTransfering();
-						transfers_frozen = true;
-					}
-				}
-			}
-   		} else {
-			// Sanity check
-			if (transfers_frozen) {
-				transfers_frozen = false;
-				Thaw_AllTransfering();
-			}
-		}
-	}
-}
-
 //hides amule
 void CamuleDlg::Hide_aMule(bool iconize) {
-	if (theApp.amuledlg->IsShown()  && (!switch_thaw_hide_mutex)) {
-		switch_thaw_hide_mutex = true;
+	if (theApp.amuledlg->IsShown()) {
 
 		theApp.amuledlg->transferwnd->downloadlistctrl->Freeze();
 		theApp.amuledlg->transferwnd->uploadlistctrl->Freeze();
@@ -1206,12 +1155,6 @@ void CamuleDlg::Hide_aMule(bool iconize) {
 			theApp.amuledlg->Iconize(TRUE);
 		}
 		theApp.amuledlg->Show(FALSE);
-		theApp.amuledlg->transfers_frozen = true;
-		old_update_queue_list = theApp.glob_prefs->GetUpdateQueueList();
-		theApp.glob_prefs->SetUpdateQueueList(false);
-		old_list_refresh = theApp.glob_prefs->GetListRefresh();
-		theApp.glob_prefs->SetListRefresh(32767); // Should be enough!
-		switch_thaw_hide_mutex = false;
 	} else {
 		printf("aMule is already hidden!\n");
 	}
@@ -1219,8 +1162,7 @@ void CamuleDlg::Hide_aMule(bool iconize) {
 
 //shows amule
 void CamuleDlg::Show_aMule(bool uniconize) {
-	if (!theApp.amuledlg->IsShown() && (!switch_thaw_hide_mutex)) {
-		switch_thaw_hide_mutex = true;
+	if (!theApp.amuledlg->IsShown()) {
 
 		theApp.amuledlg->transferwnd->downloadlistctrl->Show(TRUE);
 		theApp.amuledlg->serverwnd->serverlistctrl->Show(TRUE);
@@ -1237,17 +1179,12 @@ void CamuleDlg::Show_aMule(bool uniconize) {
 			theApp.amuledlg->Show(TRUE);
 		}
 
-		theApp.amuledlg->transfers_frozen = false;
-		theApp.glob_prefs->SetUpdateQueueList(old_update_queue_list);
-		theApp.glob_prefs->SetListRefresh(old_list_refresh);
-
-		switch_thaw_hide_mutex = false;
 	} else {
 		printf("aMule is already shown!\n");
 	}
 }
 
-void CamuleDlg::OnMinimize(wxEvent& evt) {
+void CamuleDlg::OnMinimize(wxEvent& evt) { 
 	if (theApp.amuledlg->IsIconized()) {
 		if (theApp.glob_prefs->DoMinToTray()) {
 			theApp.amuledlg->Hide_aMule(false);

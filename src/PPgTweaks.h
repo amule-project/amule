@@ -56,7 +56,6 @@ protected:
 	DECLARE_EVENT_TABLE()
 
 	void OnHScroll(wxScrollEvent& evt);
-	void OnUpDownListRefreshChecked(wxEvent& evt);
 
 public:
 	virtual bool OnInitDialog();
