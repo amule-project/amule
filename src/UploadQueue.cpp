@@ -196,12 +196,14 @@ void CUploadQueue::Process()
 		}
 	}
 	if (!clientsrdy) {
-		if ((kBpsEst -= 2.0) < 1.0)
+		if ((kBpsEst -= 1.0) < 1.0)
 			kBpsEst = 1.0;
 		clientsrdy++;
 	} else {
-		if (theApp.glob_prefs->GetMaxUpload() != UNLIMITED) {
-			if ((kBpsEst += 2.0) > (float)(app_prefs->GetMaxUpload()))
+		kBpsEst += 1.0;
+		
+		if ( theApp.glob_prefs->GetMaxUpload() != UNLIMITED ) {
+			if ( kBpsEst > (float)(app_prefs->GetMaxUpload()))
 				kBpsEst = (float)(app_prefs->GetMaxUpload());
 		}
 	}
