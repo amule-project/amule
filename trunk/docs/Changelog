@@ -146,7 +146,6 @@ Version 2.0.0rc6 - The "We're so EVIL that we make you lose a sock in every pair
 			* aMule separated GUI does not compile right now, and the communication
 			   with the core will be improved as EC is rewritten by GonoszTopi.
 		* Fixed crash on DownloadClient
-		* 
 		* Misc aMule fixes here and there :)
 			
 	Littletux:
@@ -443,13 +442,14 @@ Version 2.0.0rc6 - The "We're so EVIL that we make you lose a sock in every pair
 		Lucasvr, for providing fixes for compilation with some wx versions.
 		
 	Funny stuff about this changelog:
-		* You can notice that the Search dilago we rewritten 3 (THREE!) times
+		* You can notice that the Search dialog was rewritten 3 (THREE!) times
 		   between rc5 and rc6. You only get to see the final version (Xaignar's), 
 		   but the initial one was Kry's (when the extended buttons show/hide 
-		   was added) and then deltaHF changed it later. 
+		   were added) and then deltaHF changed it later. 
 		   We just love changing that page.
 		
-
+----------------------------------------------------------------------------------------------------------------------
+		   
 Version 2.0.0rc5 - The 'Let's recover our release speed' version.
 ----------
 2004-07-18
