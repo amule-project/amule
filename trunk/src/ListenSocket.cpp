@@ -2068,9 +2068,9 @@ wxSocketServer(addr, wxSOCKET_NOWAIT|wxSOCKET_REUSEADDR)
 	// Set the listen socket event handler -- The handler is written in amule.cpp
 	if (Ok()) {
 #ifdef AMULE_DAEMON
-	if ( Create() != wxTHREAD_NO_ERROR ) {
-		AddLogLineM(true,wxT("CListenSocket: can not create my thread\n"));
-	}
+		if ( Create() != wxTHREAD_NO_ERROR ) {
+			AddLogLineM(true,wxT("CListenSocket: can not create my thread\n"));
+		}
 		Notify(false);
 #else
  		SetEventHandler(theApp, LISTENSOCKET_HANDLER);
