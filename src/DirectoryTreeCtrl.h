@@ -51,11 +51,11 @@ private:
 	// add a new item
 	void AddChildItem(wxTreeItemId hBranch, wxString const& strText);
 	// add subdirectory items
-	void AddSubdirectories(wxTreeItemId hBranch, wxString strDir);
+	void AddSubdirectories(wxTreeItemId hBranch, wxString folder);
+	// returns true if folder has at least one subdirectory
+	bool HasSubdirectories(wxString folder);
 	// return the full path of an item (like C:\abc\somewhere\inheaven\)
 	wxString GetFullPath(wxTreeItemId hItem);
-	// returns true if strDir has at least one subdirectory
-	bool HasSubdirectories(wxString strDir);
 	// check status of an item has changed
 	void CheckChanged(wxTreeItemId hItem, bool bChecked);
 	// returns true if a subdirectory of strDir is shared
