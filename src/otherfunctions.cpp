@@ -21,6 +21,7 @@
 #include <wx/intl.h>		// Needed for wxGetTranslation
 #include <wx/utils.h>
 #include <wx/tokenzr.h>
+#include <wx/filename.h>
 
 #ifdef __WXMSW__
     #include <wx/msw/winundef.h>
@@ -270,6 +271,52 @@ wxString URLEncode(wxString sIn)
 	}
 
 	return sOut;
+}
+
+
+wxString TruncateFilename(const wxString& filename, int length, bool isFilePath)
+{
+	// Check if there's anything to do
+	if ( filename.Length() <= length )
+		return filename;
+	
+	wxString file = filename;
+	
+	// If the filename is a path, then prefer to remove from the path, rather than the filename
+	if ( isFilePath ) {
+		wxString path = file.BeforeLast( wxFileName::GetPathSeparator() );
+		file          = file.AfterLast( wxFileName::GetPathSeparator() );
+
+		if ( path.Length() >= length ) {
+			path.Clear();
+		} else if ( file.Length() >= length ) {
+			path.Clear();
+		} else {
+			// Minus 6 for "[...]" + seperator
+			int pathlen = length - file.Length() - 6;
+			
+			if ( pathlen > 0 ) {
+				path = wxT("[...]") + path.Right( pathlen );
+			} else {
+				path.Clear();
+			}
+		}
+		
+		if ( !path.IsEmpty() ) {
+			file = path + wxFileName::GetPathSeparator() + file;
+		}
+	}
+
+	if ( file.Length() > length ) {
+		if ( length > 5 ) {		
+			file = file.Left( length - 5 ) + wxT("[...]");
+		} else {
+			file.Clear();
+		}
+	}
+	
+
+	return file;
 }
 
 

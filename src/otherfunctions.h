@@ -137,6 +137,16 @@ inline wxString MakeFoldername(wxString path) {
 	return path;
 }
 
+/**
+ * Truncates a filename to the specified length.
+ *
+ * @param filename The original filename.
+ * @param length The max length of the resulting filename.
+ * @param isFilePath If true, then the path will be truncated rather than the filename if possible.
+ * @return The truncated filename.
+ */
+wxString TruncateFilename(const wxString& filename, int length, bool isFilePath = false);
+
 // Makes a backup of a file, by copying the original file to filename + appendix
 bool BackupFile(const wxString& filename, const wxString& appendix);
 // This function is a replacement for wxCopyFile, with the added feature,
