@@ -165,7 +165,7 @@ void CFileDataIO::WriteString(const wxString& rstr,  EUtf8Str eEncode)
 			//wxASSERT(sLength);
 			// Something failed on UTF8 enconding.
 			//printf("Failed UTF8 conversion (WRITE), going for current locale: %s\n",unicode2char(rstr));			
-			wxCharBuffer s2 = strdup((const char *) aMuleConv.cWX2MB(rstr));
+			wxCharBuffer s2 = aMuleConv.cWX2MB(rstr);
 			sLength = s2 ? strlen(s2) : 0;
 			WriteUInt16(sLength);
 			if (sLength) {
@@ -178,7 +178,7 @@ void CFileDataIO::WriteString(const wxString& rstr,  EUtf8Str eEncode)
 			}
 		}
 	} else {
-		wxCharBuffer s = strdup((const char *) aMuleConv.cWX2MB(rstr));;
+		wxCharBuffer s = aMuleConv.cWX2MB(rstr);
 		unsigned int sLength = s ? strlen(s) : 0;
 		WriteUInt16(sLength);
 		if (sLength) {
