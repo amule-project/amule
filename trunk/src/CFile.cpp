@@ -278,8 +278,10 @@ bool CFile::Create(const wxString& sFileName, bool bOverwrite, int accessMode)
 	if (tmpFileName) {
 		// Use an ANSI name
 		m_fd = creat(tmpFileName, accessMode);
-	} else {
-		// Use an UTF-8 name
+	} 
+	
+	if (m_fd == fd_invalid) { // Wrong conversion or can't create.
+		// Try an UTF-8 name
 		m_fd = creat(unicode2UTF8(sFileName), accessMode);
 	}
 	
@@ -288,7 +290,7 @@ bool CFile::Create(const wxString& sFileName, bool bOverwrite, int accessMode)
 	get_caller(2);
 #endif
 	
-	if (m_fd == -1) {
+	if (m_fd == fd_invalid) {
 		wxLogSysError(_("can't create file '") + sFileName + wxT("'"));
 		return false;
 	} else {
@@ -360,8 +362,10 @@ bool CFile::Open(const wxString& sFileName, OpenMode mode, int accessMode)
 	if (tmpFileName) {
 		// Use an ANSI name
 		m_fd = open(tmpFileName, flags ACCESS(accessMode));
-	} else {
-		// Use an UTF-8 name
+	} 
+	
+	if (m_fd == fd_invalid) { // Wrong conversion or can't open.
+		// Try an UTF-8 name
 		m_fd = open(unicode2UTF8(sFileName), flags ACCESS(accessMode));
 	}
       
@@ -376,7 +380,7 @@ bool CFile::Open(const wxString& sFileName, OpenMode mode, int accessMode)
 	}
 #endif
     
-	if (m_fd == -1) {
+	if (m_fd == fd_invalid) {
 		AddDebugLogLineM( true, logCFile, wxT("Can't open file '") + sFileName + wxT("'") );
 		/*
 			get_caller(4);    	    
@@ -404,7 +408,7 @@ bool CFile::Close()
 #endif
 	if ( IsOpened() ) {
 		if (close(m_fd) == -1) {
-			wxLogSysError(_("can't close file descriptor %d"), m_fd);
+			wxLogSysError(_("Can't close file descriptor %d"), m_fd);
 			m_fd = fd_invalid;
 			return false;
 		} else {
@@ -675,12 +679,19 @@ CDirIterator::CDirIterator(wxString dir) {
 	if (DirStr.Last() != wxFileName::GetPathSeparator()) {
 		DirStr += wxFileName::GetPathSeparator();
 	}
+	
+	DirPtr = NULL;
+	
 	Unicode2CharBuf tmpDir(unicode2char(dir));
 	if (tmpDir) {
 		DirPtr = opendir(tmpDir);
-	} else {
+	}
+	
+	if (DirPtr == NULL) { // Wrong conversion or error opening
+		// Try UTF8
 		DirPtr = opendir(unicode2UTF8(dir));
 	}
+	
 	if (!DirPtr) {
 		AddDebugLogLineM( true, logFileIO, wxT("Error enumerating files for dir ") + dir + wxT(" (permissions?)") );
 	}
@@ -808,4 +819,3 @@ time_t GetLastModificationTime(wxString& file) {
 
 	return buf.st_mtime;
 }
-
