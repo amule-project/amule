@@ -151,7 +151,7 @@ bool CServerList::AddServermetToList(const wxString& strFile, bool merge)
 				newserver->AddTagFromFile(&servermet);
 			}
 
-			if (newserver->GetPreferences() < SRV_PR_LOW || newserver->GetPreferences() > SRV_PR_HIGH) {
+			if (newserver->GetPreferences() > SRV_PR_HIGH) {
 				newserver->SetPreference(SRV_PR_NORMAL);
 			}
 			
