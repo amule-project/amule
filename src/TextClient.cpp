@@ -346,13 +346,17 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			} else if ( args.Left(3) == wxT("all") ) {
 				CECPacket request_all(EC_OP_GET_DLOAD_QUEUE, EC_DETAIL_CMD);
 				CECPacket *reply_all = SendRecvMsg_v2(&request_all);
-				
-				request = new CECPacket(EC_OP_PARTFILE_PAUSE);
-				for(int i = 0;i < reply_all->GetTagCount();i++) {
-					request->AddTag(CECTag(EC_TAG_PARTFILE, reply_all->GetTagByIndex(i)->GetMD4Data()));
+				if (reply_all) {
+					request = new CECPacket(EC_OP_PARTFILE_PAUSE);
+					for(int i = 0;i < reply_all->GetTagCount();i++) {
+						CECTag *tag = reply_all->GetTagByIndex(i);
+						if (tag) {
+							request->AddTag(CECTag(EC_TAG_PARTFILE, tag->GetMD4Data()));
+						}
+					}
+					request_list.push_back(request);
+					delete reply_all;
 				}
-				request_list.push_back(request);
-				delete reply_all;
 			} else {
 				CMD4Hash hash(args);
 				if (!hash.IsEmpty()) {
@@ -373,13 +377,17 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			} else if ( args.Left(3) == wxT("all") ) {
 				CECPacket request_all(EC_OP_GET_DLOAD_QUEUE, EC_DETAIL_CMD);
 				CECPacket *reply_all = SendRecvMsg_v2(&request_all);
-				
-				request = new CECPacket(EC_OP_PARTFILE_RESUME);
-				for(int i = 0;i < reply_all->GetTagCount();i++) {
-					request->AddTag(CECTag(EC_TAG_PARTFILE, reply_all->GetTagByIndex(i)->GetMD4Data()));
+				if (reply_all) {
+					request = new CECPacket(EC_OP_PARTFILE_RESUME);
+					for(int i = 0;i < reply_all->GetTagCount();i++) {
+						CECTag *tag = reply_all->GetTagByIndex(i);
+						if (tag) {
+							request->AddTag(CECTag(EC_TAG_PARTFILE, tag->GetMD4Data()));
+						}
+					}
+					request_list.push_back(request);
+					delete reply_all;
 				}
-				request_list.push_back(request);
-				delete reply_all;
 			} else {
 				CMD4Hash hash(args);
 				if (!hash.IsEmpty()) {
@@ -523,6 +531,9 @@ wxString CastItoXBytes( uint64 count )
 // Formats a statistics (sub)tree to text
 wxString StatTree2Text(CECTag *tree, int depth)
 {
+	if (!tree) {
+		return wxEmptyString;
+	}
 	wxString result = wxString(wxChar(' '), depth) + tree->GetStringData() + wxT("\n");
 	for (int i = 0; i < tree->GetTagCount(); ++i) {
 		result += StatTree2Text(tree->GetTagByIndex(i), depth + 1);
@@ -537,40 +548,58 @@ wxString StatTree2Text(CECTag *tree, int depth)
 void CamulecmdApp::Process_Answer_v2(CECPacket *response)
 {
 	wxString s;
-
+	wxString msgFailedUnknown(_("Request failed with an unknown error."));
 	wxASSERT(response);
-
 	switch (response->GetOpCode()) {
 		case EC_OP_NOOP:
-			s += _("Operation was successful.");
+			s << _("Operation was successful.");
 			break;
 		case EC_OP_FAILED:
 			if (response->GetTagCount()) {
-				s += wxString(_("Request failed with the following error: ")) + wxString(wxGetTranslation(response->GetTagByIndex(0)->GetStringData())) + wxT(".");
+				CECTag *tag = response->GetTagByIndex(0);
+				if (tag) {
+					s <<	_("Request failed with the following error: ") <<
+						wxGetTranslation(tag->GetStringData()) << wxT(".");
+				} else {
+					s << msgFailedUnknown;
+				}
 			} else {
-				s += _("Request failed with an unknown error.");
+				s << msgFailedUnknown;
 			}
 			break;
 		case EC_OP_PREFERENCES:
 			{
 				CECTag *tab = response->GetTagByName(EC_TAG_PREFS_SECURITY);
-				if (tab) {
-					s += wxString::Format(_("IPFilter is %s.\n"), (tab->GetTagByName(EC_TAG_IPFILTER_ENABLED) == NULL) ? _("OFF") : _("ON"));
-					s += wxString::Format(_("Current IPFilter Level is %d.\n"), tab->GetTagByName(EC_TAG_IPFILTER_LEVEL)->GetInt8Data());
+				CECTag *ipfilterLevel = tab->GetTagByName(EC_TAG_IPFILTER_LEVEL);
+				if (tab && ipfilterLevel) {
+					s << wxString::Format(_("IPFilter is %s.\n"),
+						(tab->GetTagByName(EC_TAG_IPFILTER_ENABLED) == NULL) ? _("OFF") : _("ON"));
+					s << wxString::Format(_("Current IPFilter Level is %d.\n"),
+						ipfilterLevel->GetInt8Data());
 				}
 				tab = response->GetTagByName(EC_TAG_PREFS_CONNECTIONS);
+				CECTag *connMaxUL = response->GetTagByName(EC_TAG_CONN_MAX_UL);
+				CECTag *connMaxDL = response->GetTagByName(EC_TAG_CONN_MAX_DL);
 				if (tab) {
-					s += wxString::Format(_("Bandwidth Limits: Up: %u kB/s, Down: %u kB/s.\n"), tab->GetTagByName(EC_TAG_CONN_MAX_UL)->GetInt16Data(), tab->GetTagByName(EC_TAG_CONN_MAX_DL)->GetInt16Data());
+					s << wxString::Format(_("Bandwidth Limits: Up: %u kB/s, Down: %u kB/s.\n"),
+						connMaxUL->GetInt16Data(),
+						connMaxDL->GetInt16Data());
 				}
 			}
-			break;		
+			break;
 		case EC_OP_STRINGS:
 			for (int i = 0; i < response->GetTagCount(); ++i) {
-				s += response->GetTagByIndex(i)->GetStringData();
+				CECTag *tag = response->GetTagByIndex(0);
+				if (tag) {
+					s << tag->GetStringData();
+				} else {
+				}
 			}
 			break;
-		case EC_OP_STATS:
-			switch (response->GetTagByName(EC_TAG_CONNSTATE)->GetInt8Data()) {
+		case EC_OP_STATS: {
+			CECTag *connState = response->GetTagByName(EC_TAG_CONNSTATE);
+			if (connState) {
+				switch (connState->GetInt8Data()) {
 				case 0:
 					s = _("Not connected");
 					break;
@@ -578,69 +607,90 @@ void CamulecmdApp::Process_Answer_v2(CECPacket *response)
 					s = _("Now connecting");
 					break;
 				case 2:
-				case 3: {
-						CECTag *server = response->GetTagByName(EC_TAG_CONNSTATE)->GetTagByIndex(0);
-						s = _("Connected to ");
-						s += server->GetTagByName(EC_TAG_SERVER_NAME)->GetStringData();
-						s += wxT(" ") + server->GetIPv4Data().StringIP() + wxT(" ");
-						s += response->GetTagByName(EC_TAG_CONNSTATE)->GetInt8Data() == 2 ? _("with LowID") : _("with HighID");
+				case 3:
+					CECTag *server = connState ? connState->GetTagByIndex(0) : NULL;
+					CECTag *serverName = server ? server->GetTagByName(EC_TAG_SERVER_NAME) : NULL;
+					if (server && serverName) {
+						s << 	_("Connected to ") <<
+							serverName->GetStringData() <<
+							wxT(" ") << server->GetIPv4Data().StringIP() << wxT(" ") <<
+							(connState->GetInt8Data() == 2 ? _("with LowID") : _("with HighID"));
 					}
 					break;
+				}
 			}
-			s += _("\nDownload:\t") +
-				CastItoXBytes(response->GetTagByName(EC_TAG_STATS_DL_SPEED)->GetInt32Data()) + _("/sec");
-			s += _("\nUpload:\t") +
-				CastItoXBytes(response->GetTagByName(EC_TAG_STATS_UL_SPEED)->GetInt32Data()) + _("/sec");
-
-			s += wxString::Format(_("\nClients in queue: \t%d\n"),
-				response->GetTagByName(EC_TAG_STATS_UL_QUEUE_LEN)->GetInt32Data());
+			CECTag *statsDLSpeed = response->GetTagByName(EC_TAG_STATS_DL_SPEED);
+			if (statsDLSpeed) {
+				s <<	_("\nDownload:\t") <<
+					CastItoXBytes(statsDLSpeed->GetInt32Data()) << _("/sec");
+			}
+			CECTag *statsULSpeed = response->GetTagByName(EC_TAG_STATS_UL_SPEED);
+			if (statsULSpeed) {
+				s <<	_("\nUpload:\t") <<
+					CastItoXBytes(statsULSpeed->GetInt32Data()) << _("/sec");
+			}
+			CECTag *statsULQueueLen = response->GetTagByName(EC_TAG_STATS_UL_QUEUE_LEN);
+			if (statsULQueueLen) {
+				s << 	_("\nClients in queue: \t") <<
+					statsULQueueLen->GetInt32Data() << wxT("\n");
+			}
 			break;
+		}
 		case EC_OP_DLOAD_QUEUE:
-			for(int i = 0; i < response->GetTagCount(); i ++) {
-				CEC_PartFile_Tag *tag = (CEC_PartFile_Tag *)response->GetTagByIndex(i);
-				unsigned long filesize, donesize;
-				filesize = tag->SizeFull();
-				donesize = tag->SizeDone();
-					
-				s += tag->FileHashString() + wxT(" ") +
-					tag->FileName() +
-					wxString::Format(wxT("\t [%.1f%%] %i/%i - "),
-						((float)donesize) / ((float)filesize)*100.0,
-						(int)tag->SourceXferCount(),
-						(int)tag->SourceCount()) +
-					tag->GetFileStatusString();
-					if ( tag->SourceXferCount() > 0) {
-						s += wxT(" ") + CastItoXBytes(tag->Speed()) + _("/sec");
-					}
-				s += wxT("\n");
+			for(int i = 0; i < response->GetTagCount(); ++i) {
+				CEC_PartFile_Tag *tag =
+					(CEC_PartFile_Tag *)response->GetTagByIndex(i);
+				if (tag) {
+					unsigned long filesize, donesize;
+					filesize = tag->SizeFull();
+					donesize = tag->SizeDone();
+					s <<	tag->FileHashString() << wxT(" ") <<
+						tag->FileName() <<
+						wxString::Format(wxT("\t [%.1f%%] %i/%i - "),
+							((float)donesize) / ((float)filesize)*100.0,
+							(int)tag->SourceXferCount(),
+							(int)tag->SourceCount()) <<
+						tag->GetFileStatusString();
+						if ( tag->SourceXferCount() > 0) {
+							s << wxT(" ") << CastItoXBytes(tag->Speed()) << _("/sec");
+						}
+					s << wxT("\n");
+				}
 			}
 			break;
 		case EC_OP_ULOAD_QUEUE:
-			for(int i = 0; i < response->GetTagCount(); i ++) {
+			for(int i = 0; i < response->GetTagCount(); ++i) {
 				CECTag *tag = response->GetTagByIndex(i);
-				s += wxT("\n");
-				s += wxString::Format(wxT("%10u "), tag->GetInt32Data()) +
-					tag->GetTagByName(EC_TAG_CLIENT_NAME)->GetStringData() + wxT(" ") +
-					tag->GetTagByName(EC_TAG_PARTFILE_NAME)->GetStringData() + wxT(" ") +
-					CastItoXBytes(tag->GetTagByName(EC_TAG_PARTFILE_SIZE_XFER)->GetInt32Data()) + wxT(" ") +
-					CastItoXBytes(tag->GetTagByName(EC_TAG_PARTFILE_SPEED)->GetInt32Data()) + _("/sec");
+				CECTag *clientName = tag ? tag->GetTagByName(EC_TAG_CLIENT_NAME) : NULL;
+				CECTag *partfileName = tag ? tag->GetTagByName(EC_TAG_PARTFILE_NAME) : NULL;
+				CECTag *partfileSizeXfer = tag ? tag->GetTagByName(EC_TAG_PARTFILE_SIZE_XFER) : NULL;
+				CECTag *partfileSpeed = tag ? tag->GetTagByName(EC_TAG_PARTFILE_SPEED) : NULL;
+				if (tag && clientName && partfileName && partfileSizeXfer && partfileSpeed) {
+					s <<	wxT("\n") <<
+						wxString::Format(wxT("%10u "), tag->GetInt32Data()) <<
+						clientName->GetStringData() << wxT(" ") <<
+						partfileName->GetStringData() << wxT(" ") <<
+						CastItoXBytes(partfileSizeXfer->GetInt32Data()) << wxT(" ") <<
+						CastItoXBytes(partfileSpeed->GetInt32Data()) << _("/sec");
+				}
 			}
 			break;
 		case EC_OP_SERVER_LIST:
 			for(int i = 0; i < response->GetTagCount(); i ++) {
 				CECTag *tag = response->GetTagByIndex(i);
-				wxString ip = tag->GetIPv4Data().StringIP();
-				ip.Append(' ', 24 - ip.Length());
-				s += ip;
-				s += tag->GetTagByName(EC_TAG_SERVER_NAME)->GetStringData();
-				s += wxT("\n");
+				CECTag *serverName = tag ? tag->GetTagByName(EC_TAG_SERVER_NAME) : NULL;
+				if (tag && serverName) {
+					wxString ip = tag->GetIPv4Data().StringIP();
+					ip.Append(' ', 24 - ip.Length());
+					s << ip << serverName->GetStringData() << wxT("\n");
+				}
 			}
 			break;
 		case EC_OP_STATSTREE:
-			s += StatTree2Text(response->GetTagByIndex(0), 0);
+			s << StatTree2Text(response->GetTagByIndex(0), 0);
 			break;
 		default:
-			s += wxString::Format(_("Received an unknown reply from the server, OpCode = %#x."), response->GetOpCode());
+			s << wxString::Format(_("Received an unknown reply from the server, OpCode = %#x."), response->GetOpCode());
 	}
 	Process_Answer(s);
 }

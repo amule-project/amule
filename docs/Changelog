@@ -80,6 +80,8 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		* Fixed the following bug in the search dialog window: if you
 		type a letter by mistake or if you use the down arrow from 1
 		to 0, both actions on a wxSpinCtrl, aMule would crash.
+		* Fixed the GetTagByIndex and GetTagByName segfaults in
+		amulecmd.
 
 	Ken:
 		* Fixed Mac bug: window was a little larger each restart
