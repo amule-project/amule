@@ -436,7 +436,7 @@ wxString CastItoXBytes( uint64 count )
  */
 void CamulecmdApp::Process_Answer_v2(CECPacket *response)
 {
-	wxString s = wxEmptyString;
+	wxString s;
 
 	wxASSERT(response);
 
@@ -459,27 +459,33 @@ void CamulecmdApp::Process_Answer_v2(CECPacket *response)
 				s += response->GetTagByIndex(i)->GetStringData();
 			}
 			break;
-		case EC_OP_STATS: {
-				uint32 id = response->GetTagByName(EC_TAG_STATS_ED2K_ID)->GetInt32Data();
-				if ( id >= 16777216 ) {
-					s = wxString::Format(wxT("Connected with HIGH ID %u to "), id) + 
-						response->GetTagByName(EC_TAG_STATS_SERVER)->GetStringData();
-				} else if ( id == 0 ) {
-					s = _("Disconnected");
-				} else if ( id == 0xffffffff) {
+		case EC_OP_STATS:
+			switch (response->GetTagByName(EC_TAG_STATS_CONNSTATE)->GetInt8Data()) {
+				case 0:
+					s = _("Not connected");
+					break;
+				case 1:
 					s = _("Now connecting");
-				} else {
-					s = wxString::Format(wxT("Connected with LOW ID %u to "), id) + 
-						response->GetTagByName(EC_TAG_STATS_SERVER)->GetStringData();
-				}
-				s += wxT("\nDownload:\t") +
-					CastItoXBytes(response->GetTagByName(EC_TAG_STATS_DL_SPEED)->GetInt32Data()) + wxT("/sec");
-				s += wxT("\nUpload:\t") +
-					CastItoXBytes(response->GetTagByName(EC_TAG_STATS_UL_SPEED)->GetInt32Data()) + wxT("/sec");
-				
-				s += wxString::Format(wxT("\nClients in queue: \t%d\n"),
-					response->GetTagByName(EC_TAG_STATS_UL_QUEUE_LEN)->GetInt32Data());
+					break;
+				case 2:
+				case 3: {
+						CECTag *server = response->GetTagByName(EC_TAG_STATS_CONNSTATE)->GetTagByIndex(0);
+						EC_IPv4_t * addr = server->GetIPv4Data();
+						s = _("Connected to ");
+						s += server->GetTagByName(EC_TAG_SERVER_NAME)->GetStringData();
+						s += wxString::Format(wxT(" [%d.%d.%d.%d:%d] "), addr->ip[0], addr->ip[1], addr->ip[2], addr->ip[3], addr->port);
+						s += response->GetTagByName(EC_TAG_STATS_CONNSTATE)->GetInt8Data() == 2 ? _("with LowID") : _("with HighID"),
+						delete addr;
+					}
+					break;
 			}
+			s += _("\nDownload:\t") +
+				CastItoXBytes(response->GetTagByName(EC_TAG_STATS_DL_SPEED)->GetInt32Data()) + _("/sec");
+			s += _("\nUpload:\t") +
+				CastItoXBytes(response->GetTagByName(EC_TAG_STATS_UL_SPEED)->GetInt32Data()) + _("/sec");
+
+			s += wxString::Format(_("\nClients in queue: \t%d\n"),
+				response->GetTagByName(EC_TAG_STATS_UL_QUEUE_LEN)->GetInt32Data());
 			break;
 		case EC_OP_DLOAD_QUEUE:
 			for(int i = 0; i < response->GetTagCount(); i ++) {
