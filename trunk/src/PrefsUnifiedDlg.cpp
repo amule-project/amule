@@ -1,4 +1,4 @@
-// this file is part of aMule
+// This file is part of the aMule Project
 //
 // Copyright (c) 2004 aMule Project ( http://www.amule-project.net )
 // Original author: Emilio Sandoz

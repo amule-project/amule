@@ -1,5 +1,6 @@
 // This file is part of the aMule project.
 //
+// Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
 // Copyright (c) 2003, robert rostek - tecxx@rrs.at
 //
 // This program is free software; you can redistribute it and/or

@@ -1,5 +1,6 @@
 /*
-  This file is part of aMule
+  This file is part of the aMule Project
+  Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
   Copyright (C) 2003 Madcat ( madcat@_@users.sf.net / sharedaemon.sf.net )
 
   This program is free software; you can redistribute it and/or

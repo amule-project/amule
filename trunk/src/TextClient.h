@@ -1,4 +1,4 @@
-//this file is part of aMule
+// This file is part of the aMule Project
 //Copyright (C)2003 aMule Team ( http://www.amule-project.net )
 //This fle Copyright (C)2003 Kry ( elkry@users.sourceforge.net   http://www.amule-project.net )
 //This program is free software; you can redistribute it and/or
