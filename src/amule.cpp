@@ -1326,7 +1326,6 @@ void CamuleApp::Localize_mule()
 
 	}
 
-<<<<<<< amule.cpp
 	int language_flags = 0;
 	
 	if ((language != wxLANGUAGE_CUSTOM) && (language != wxLANGUAGE_ITALIAN_NAPOLITAN)) {
