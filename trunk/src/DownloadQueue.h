@@ -23,6 +23,7 @@
 #include "types.h"		// Needed for uint8, uint16, uint32 and uint64
 #include "CString.h"		// Needed for CString
 #include "CTypedPtrList.h"	// Needed for CTypedPtrList
+#include <deque>
 
 class CSharedFileList;
 class CPreferences;
@@ -128,7 +129,7 @@ public:
 	uint64	GetDownDataOverheadServerPackets()		{return m_nDownDataOverheadServerPackets;}
 	uint64	GetDownDataOverheadOtherPackets()		{return m_nDownDataOverheadOtherPackets;}
 	void	CompDownDatarateOverhead();
-	int	GetFileCount()					{return filelist.GetCount();}
+	int	GetFileCount()					{return filelist.size();}
 	void	ResetCatParts(int cat);
 	void	SavePartFiles(bool del = false);	// InterCeptor
 	void	SetCatPrio(int cat, uint8 newprio);
@@ -153,10 +154,9 @@ protected:
 	bool	SendGlobGetSourcesUDPPacket(CSafeMemFile& data);
 
 private:
-	bool	CompareParts(POSITION pos1, POSITION pos2);
-	void	SwapParts(POSITION pos1, POSITION pos2);
+	bool	CompareParts(int pos1, int pos2);
 	void	HeapSort(uint16 first, uint16 last);
-	CTypedPtrList<CPtrList, CPartFile*> filelist;
+	std::deque<CPartFile*> filelist;
 	CTypedPtrList<CPtrList, CPartFile*> m_localServerReqQueue;
 	CSharedFileList* sharedfilelist;
 	CPreferences*	 app_prefs;
