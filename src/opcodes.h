@@ -422,6 +422,7 @@
 //thread messages
 #define	TM_FINISHEDHASHING			(WM_APP+10)
 #define	TM_HASHTHREADFINISHED			(WM_APP+20)
+#define	TM_FILECOMPLETIONFINISHED			(WM_APP+30)
 
 // quick-speed changer
 #define	MP_QS_U10				10501

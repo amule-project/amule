@@ -194,7 +194,9 @@ public:
 	uint8	GetDownPriority()	{ return m_iDownPriority; }
 	completingThread* cthread;
 	bool GetInsufficient() { return insufficient; }
-		
+	
+	void	CompleteFileEnded(int completing_result, wxString* newname);	
+	
 protected:
 	bool	GetNextEmptyBlockInPart(uint16 partnumber,Requested_Block_Struct* result);
 	bool	IsAlreadyRequested(uint32 start, uint32 end);
@@ -322,15 +324,19 @@ class completingThread : public wxThread
 public:
 
 	~completingThread();
-	completingThread::completingThread(CPartFile*);
+	completingThread(wxString FileName, wxString fullname, uint32 Category, CPartFile* caller);
 	completingThread() { };
 
-	void setFile(CPartFile*);
+	//void setFile(CPartFile*);
 
 private:
 	virtual	bool		InitInstance() {return true;}	
 	virtual wxThread::ExitCode 	Entry();
 	uint8 completing_result;
+	uint32 Completing_Category;
+	wxString Completing_FileName;
+	wxString Completing_Fullname;
+	wxString* newname;
 	CPartFile* completing;
 	virtual void OnExit();  	
 

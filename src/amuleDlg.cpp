@@ -93,6 +93,7 @@ BEGIN_EVENT_TABLE(CamuleDlg, wxFrame)
 	EVT_TIMER(TM_UDPSOCKET, CamuleDlg::OnUDPTimer)
 	EVT_TIMER(TM_TCPSOCKET, CamuleDlg::OnSocketTimer)
 	EVT_MENU(TM_FINISHEDHASHING, CamuleDlg::OnFinishedHashing)
+	EVT_MENU(TM_FILECOMPLETIONFINISHED, CamuleDlg::OnFinishedCompletion)
 	EVT_MENU(TM_DNSDONE, CamuleDlg::OnDnsDone)
 	EVT_MENU(TM_SOURCESDNSDONE, CamuleDlg::OnSourcesDnsDone)
 	EVT_CLOSE(CamuleDlg::OnClose)
@@ -138,6 +139,16 @@ void CamuleDlg::OnFinishedHashing(wxCommandEvent& evt)
 	return;
 }
 
+void CamuleDlg::OnFinishedCompletion(wxCommandEvent& evt)
+{
+	CPartFile* completed = (CPartFile*)evt.GetClientData();
+	
+	wxASSERT(completed);
+	
+	completed->CompleteFileEnded(evt.GetInt(), (wxString*)evt.GetExtraLong());
+
+	return;
+}
 
 
 #ifndef wxCLOSE_BOX
@@ -1086,4 +1097,3 @@ void CamuleDlg::OnBnClickedPrefOk(wxCommandEvent &event)
 {
 	prefsunifiedwnd->EndModal(TRUE);
 }
-
