@@ -21,9 +21,11 @@
 
 #include "ECSocket.h"
 
+#ifndef __WXMSW__
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#endif
 
 #include "gsocket-fix.h"	// Needed for wxSOCKET_REUSEADDR
 
