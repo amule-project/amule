@@ -88,7 +88,6 @@ CUpDownClient::CUpDownClient(CClientReqSocket* sender)
 {
 	socket = sender;
 	//printf("Socket %x set on client %x\n",socket, this);
-	m_reqfile = 0;
 	Init();
 }
 
@@ -124,7 +123,7 @@ void CUpDownClient::Init()
 	// m_nAvDownDatarate = 0;  // unused
 	m_byChatstate = 0;
 	m_cShowDR = 0;
-	
+	m_reqfile = 0;	
 	m_cFailed = 0;
 	m_dwBanTime = 0;
 	m_nMaxSendAllowed = 0;
