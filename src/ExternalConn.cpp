@@ -375,28 +375,26 @@ CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request,
 		}
 	}
 	
+	
 	// check if encoder contains files that no longer in download queue
-	if ( encoders.size() > theApp.downloadqueue->GetFileCount() ) {
-		std::set<CPartFile *> curr_files, dead_files;
-		for (unsigned int i = 0; i < theApp.downloadqueue->GetFileCount(); i++) {
-			curr_files.insert(theApp.downloadqueue->GetFileByIndex(i));
-		}
-		for(CPartFile_Encoder_Map::iterator i = encoders.begin(); i != encoders.end(); i++) {
-			if ( curr_files.count(i->first) == 0 ) {
-				dead_files.insert(i->first);
-			}
-		}
-		for(std::set<CPartFile *>::iterator i = dead_files.begin(); i != dead_files.end(); i++) {
-			encoders.erase(*i);
-		}
-	} else if ( encoders.size() < theApp.downloadqueue->GetFileCount() ) {
-		for (unsigned int i = 0; i < theApp.downloadqueue->GetFileCount(); i++) {
-			CPartFile *cur_file = theApp.downloadqueue->GetFileByIndex(i);
-			if ( encoders.count(cur_file) == 0 ) {
-				encoders[cur_file] = CPartFile_Encoder(cur_file);
-			}
+	// or, we have new files without encoder yet
+	std::set<CPartFile *> curr_files, dead_files;
+	for (unsigned int i = 0; i < theApp.downloadqueue->GetFileCount(); i++) {
+		CPartFile *cur_file = theApp.downloadqueue->GetFileByIndex(i);
+		curr_files.insert(cur_file);
+		if ( encoders.count(cur_file) == 0 ) {
+			encoders[cur_file] = CPartFile_Encoder(cur_file);
 		}
 	}
+	for(CPartFile_Encoder_Map::iterator i = encoders.begin(); i != encoders.end(); i++) {
+		if ( curr_files.count(i->first) == 0 ) {
+			dead_files.insert(i->first);
+		}
+	}
+	for(std::set<CPartFile *>::iterator i = dead_files.begin(); i != dead_files.end(); i++) {
+		encoders.erase(*i);
+	}
+	
 	for (unsigned int i = 0; i < theApp.downloadqueue->GetFileCount(); i++) {
 		CPartFile *cur_file = theApp.downloadqueue->GetFileByIndex(i);
 	
