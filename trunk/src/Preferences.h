@@ -361,12 +361,12 @@ protected:
 	static int16	s_downloadColumnWidths[13];
 	static Bool		s_downloadColumnHidden[13];
 	static int16	s_downloadColumnOrder[13];
-	static int16	s_uploadColumnWidths[8];
-	static Bool		s_uploadColumnHidden[8];
-	static int16	s_uploadColumnOrder[8];
-	static int16	s_queueColumnWidths[10];
-	static Bool		s_queueColumnHidden[10];
-	static int16	s_queueColumnOrder[10];
+	static int16	s_uploadColumnWidths[11];
+	static Bool		s_uploadColumnHidden[11];
+	static int16	s_uploadColumnOrder[11];
+	static int16	s_queueColumnWidths[11];
+	static Bool		s_queueColumnHidden[11];
+	static int16	s_queueColumnOrder[11];
 	static int16	s_searchColumnWidths[5];
 	static Bool		s_searchColumnHidden[5];
 	static int16	s_searchColumnOrder[5];
