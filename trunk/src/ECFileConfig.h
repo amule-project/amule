@@ -40,7 +40,7 @@
  */
 inline wxString FinalizeFilename(const wxString filename)
 {
-	if  (wxStrchr(filename, wxFileName::GetPathSeparator()) == NULL) {
+	if (wxStrchr(filename, wxFileName::GetPathSeparator()) == NULL) {
 		return otherfunctions::GetConfigDir() + filename;
 	}
 	return filename;
@@ -56,8 +56,7 @@ inline wxString FinalizeFilename(const wxString filename)
 class CECFileConfig : public wxFileConfig {
 	public:
 
-		CECFileConfig(
-			const wxString& localFilename = wxEmptyString)
+		CECFileConfig(const wxString& localFilename = wxEmptyString)
 			: wxFileConfig(wxEmptyString, wxEmptyString, FinalizeFilename(localFilename),
 				wxEmptyString, wxCONFIG_USE_LOCAL_FILE | wxCONFIG_USE_RELATIVE_PATH)
 			{}
