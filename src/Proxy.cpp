@@ -236,11 +236,13 @@ bool ProxyStateMachine::Start(const wxIPaddress &PeerAddress, wxSocketClient *Pr
 		return false;
 	}
 	
+#if 0
 	// Debug message
 	printf("amuleProxySocket::Start\nHostname Orig:%s, IPAddr:%s, Port:%d\n",
 		unicode2char(m_PeerAddress->Hostname()),
 		unicode2char(m_PeerAddress->IPAddress()),
 		m_PeerAddress->Service());
+#endif
 	
 	// To run the state machine, return and just let the events start to happen.
 	return true;
@@ -312,6 +314,7 @@ void ProxyStateMachine::AddDummyEvent()
 
 void ProxyStateMachine::ReactivateSocket()
 {
+#if 0
 	// Debug message
 	if (m_ok) {
 		if (m_ProxyBoundAddress) {
@@ -324,6 +327,7 @@ void ProxyStateMachine::ReactivateSocket()
 	} else {
 		printf("Proxy request failed, ok=%d\n", m_ok);
 	}
+#endif
 	
 #ifndef AMULE_DAEMON
 	/*    If proxy is beeing used, then the TCP socket handlers 
@@ -1402,7 +1406,6 @@ wxDatagramSocket &wxDatagramSocketProxy::RecvFrom(
 			}
 			memcpy(buf, bufUDP + offset, nBytes);
 printf("RecvFrom\n");
-printf("LastCount:%d\n", wxDatagramSocket::LastCount());
 dump("nbufUDP:", 3, bufUDP, wxDatagramSocket::LastCount());
 			/* Only delete buffer if it was dynamically created */
 			if (bufUDP != m_ProxyTCPSocket.GetBuffer()) {
@@ -1430,9 +1433,6 @@ wxDatagramSocket &wxDatagramSocketProxy::SendTo(
 	m_LastUDPOverhead = wxPROXY_UDP_OVERHEAD_IPV4;
 	if (m_ProxyTCPSocket.GetUseProxy()) {
 		if (m_UDPSocketOk) {
-printf("SendTo\n");
-printf("nBytes:%d\n", nBytes);
-dump("buf:", 3, buf, nBytes);
 			m_ProxyTCPSocket.GetBuffer()[0] = SOCKS5_RSV;	// Reserved
 			m_ProxyTCPSocket.GetBuffer()[1] = SOCKS5_RSV;	// Reserved
 			m_ProxyTCPSocket.GetBuffer()[2] = 0;		// FRAG
@@ -1444,6 +1444,8 @@ dump("buf:", 3, buf, nBytes);
 			wxDatagramSocket::SendTo(
 				m_ProxyTCPSocket.GetProxyBoundAddress(),
 				m_ProxyTCPSocket.GetBuffer(), nBytes);
+printf("SendTo\n");
+dump("buf:", 3, m_ProxyTCPSocket.GetBuffer(), nBytes);
 		}
 	} else {
 		wxDatagramSocket::SendTo(addr, buf, nBytes);
