@@ -686,7 +686,7 @@ void *CServerSocketHandler::Entry()
 		}
 		// lfroen: setting timeout to give app a chance gracefully destroy
 		// thread before deleting object
-		if ( socket->WaitForRead(0, 10) ) {
+		if ( socket->WaitForRead(0, 1000) ) {
 			socket->OnReceive(wxSOCKET_NOERROR);
 		}
 	}

@@ -2458,7 +2458,7 @@ void *CSocketGlobalThread::Entry()
 				continue;
 			}
 			if ( !cur_sock->wxSocketBase::IsConnected() ) {
-				if ( cur_sock->WaitOnConnect(0, 0) ) {
+				if ( cur_sock->WaitOnConnect(0, 10) ) {
 					cur_sock->OnConnect(0);
 				}
 			} else {
@@ -2466,7 +2466,7 @@ void *CSocketGlobalThread::Entry()
 					erase_list.insert(cur_sock);
 					continue;
 				}
-				if ( cur_sock->WaitForRead(0, 0) ) {
+				if ( cur_sock->WaitForRead(0, 1000) ) {
 					cur_sock->OnReceive(0);
 				}
 				CUpDownClient *client = cur_sock->GetClient();
