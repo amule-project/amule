@@ -454,7 +454,7 @@ void CClientCreditsList::InitalizeCrypting(){
 			delete m_pSignkey;
 			m_pSignkey = NULL;
 		}
-		theApp.amuledlg->AddLogLine(false, CString(_("IDS_CRYPT_INITFAILED|n")));
+		theApp.amuledlg->AddLogLine(false, CString(_("IDS_CRYPT_INITFAILED\n")));
 	}
 	//Debug_CheckCrypting();
 }
