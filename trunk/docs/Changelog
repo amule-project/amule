@@ -78,6 +78,7 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		* Changed locale saving method, so it won't have to be reset to
 		  'System default' on each version change.
 		* Added Hungarian man pages.
+		* Fixed sorting in web interface.
 
 		**** For users, who already got used to amulecmd's or amuleweb's
 		**** command-line parameters: PLEASE READ DOCUMENTATION CAREFULLY!
