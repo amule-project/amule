@@ -151,7 +151,13 @@ m_ProxyData(ProxyData)
 	m_CanSend = false;
 	m_ok = true;
 	m_ProxyCommand = ProxyCommand;
+	// Will be initialized at Start()
 	m_PeerAddress = NULL;
+	m_ProxyClientSocket = NULL;
+	m_ProxyBoundAddress = NULL;
+	// Temporary variables
+	m_LastReply = 0;
+	m_PacketLenght = 0;
 }
 
 ProxyStateMachine::~ProxyStateMachine()
