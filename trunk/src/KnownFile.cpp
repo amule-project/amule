@@ -713,13 +713,9 @@ bool CKnownFile::WriteToFile(CFile* file){
 	// hashset
 	file->Write(&m_abyFileHash,16);
 	uint16 parts = hashlist.GetCount();
-	#ifdef __WXMAC__
-	theApp.amuledlg->AddLogLine(false,CString(_("Parts = %i")).GetData(), parts);
-	#endif
+
 	ENDIAN_SWAP_I_16(parts);
-	#ifdef __WXMAC__
-	theApp.amuledlg->AddLogLine(false,CString(_("Endian Parts = %i")).GetData(),parts);		
-	#endif
+
 	file->Write(&parts,2);
 	parts = hashlist.GetCount();
 	for (int i = 0; i < parts; i++)
@@ -741,14 +737,9 @@ bool CKnownFile::WriteToFile(CFile* file){
 			tagcount++;
 	}
 	// standard tags
-	#ifdef __WXMAC__
-	theApp.amuledlg->AddLogLine(false,CString(_("tagcount = %i")).GetData(), tagcount);
-	#endif
+
 	ENDIAN_SWAP_I_32(tagcount);
-	#ifdef __WXMAC__
-	theApp.amuledlg->AddLogLine(false,CString(_("Endian tagcount = %i")).GetData(),tagcount);		
-	#endif
-	
+
 	file->Write(&tagcount, 4);
 	
 	CTag nametag(FT_FILENAME, GetFileName());
