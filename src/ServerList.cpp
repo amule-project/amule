@@ -34,12 +34,6 @@
 #include <wx/url.h>			// Needed for wxURL
 #include <wx/tokenzr.h>
 
-#ifndef AMULE_DAEMON
-	#include <wx/msgdlg.h>		// Needed for wxMessageBox
-#else 
-	#define wxMessageBox(x,y,z) AddLogLineM(true,x)
-#endif
-
 #include "ServerList.h"			// Interface declarations.
 #include "ListenSocket.h"		// Needed for CListenSocket
 #include "DownloadQueue.h"		// Needed for CDownloadQueue
@@ -255,7 +249,7 @@ void CServerList::ServerStats()
 void CServerList::RemoveServer(CServer* out_server)
 {
 	if (out_server == theApp.serverconnect->GetCurrentServer()) {
-		wxMessageBox(_("You are connected to the server you are trying to delete. please disconnect first."), _("Info"), wxOK);	
+		theApp.ShowAlert(_("You are connected to the server you are trying to delete. please disconnect first."), _("Info"), wxOK);	
 	} else {
 	
 		POSITION pos = list.Find( out_server );

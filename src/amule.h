@@ -314,7 +314,6 @@ class CamuleGuiApp : public CamuleApp, public CamuleGuiBase {
 	AMULE_TIMER_CLASS* core_timer;
 
     virtual int InitGui(bool geometry_enable, wxString &geometry_string);
-    virtual void ShowAlert(wxString msg, wxString title, int flags);
 	
 	// Socket handlers
 	void ListenSocketHandler(wxSocketEvent& event);
@@ -328,6 +327,8 @@ class CamuleGuiApp : public CamuleApp, public CamuleGuiBase {
 	
 public:
 	CFriend *FindFriend(CMD4Hash *hash, uint32 ip, uint16 port);
+
+    virtual void ShowAlert(wxString msg, wxString title, int flags);
 	
 	void ShutDown();
 	virtual void NotifyEvent(const GUIEvent& event);
@@ -348,7 +349,6 @@ class CamuleRemoteGuiApp : public wxApp, public CamuleGuiBase {
 	AMULE_TIMER_CLASS* core_timer;
 
 	virtual int InitGui(bool geometry_enable, wxString &geometry_string);
-	virtual void ShowAlert(wxString msg, wxString title, int flags);
 
 	int OnExit();
 	bool OnInit();
@@ -360,6 +360,8 @@ public:
 	wxString	m_FrameTitle;
 
 	bool CopyTextToClipboard(wxString strText);
+
+	virtual void ShowAlert(wxString msg, wxString title, int flags);
 
 	void ShutDown();
 
@@ -421,7 +423,6 @@ class CamuleDaemonApp : public CamuleApp {
 	int OnRun();
 	int OnExit();
 	
-	virtual void ShowAlert(wxString msg, wxString title, int flags);
 	virtual int InitGui(bool geometry_enable, wxString &geometry_string);
 public:
 	void ExitMainLoop() { m_Exit = true; }
@@ -430,6 +431,8 @@ public:
 
 	CFriend *FindFriend(CMD4Hash *hash, uint32 ip, uint16 port);
 	bool CopyTextToClipboard(wxString strText);
+
+	virtual void ShowAlert(wxString msg, wxString title, int flags);
 
 	wxMutex data_mutex;
 	
