@@ -137,7 +137,7 @@ void CSearchDlg::OnSearchClosed(wxNotebookEvent& evt) {
 	}
 	// Abort global search if it was last tab that was closed.
 	wxPuts(wxString::Format(wxT("OnSearchClosed. Selection: %d PageCount: %d"), evt.GetSelection(), nb->GetPageCount()));
-	if ((size_t)evt.GetSelection() == nb->GetPageCount()-1) {
+	if ((size_t)evt.GetSelection() ==(size_t) (nb->GetPageCount()-1)) {
 		OnBnClickedCancels(nullEvent);
 	}
 }
@@ -172,7 +172,8 @@ void CSearchDlg::OnTimer(wxTimerEvent& evt) {
 			servercount++;
 			theApp.serverconnect->SendUDPPacket(searchpacket,toask,false);
 			// Only update progress if we have any tabs around...
-			if (((CMuleNotebook*)FindWindowById(ID_NOTEBOOK))->GetPageCount() > 0) {
+			// Kry - And if we're on search dialog actually.
+			if ((((CMuleNotebook*)FindWindowById(ID_NOTEBOOK))->GetPageCount() > 0) && (theApp.amuledlg->GetActiveDialog() == 3)) {
 				searchprogress->SetValue(searchprogress->GetValue()+1);
 			}
 		} else {
@@ -494,7 +495,7 @@ void CSearchDlg::DeleteSearch(uint16 nSearchID) {
 	wxMutexLocker sLock(nb->m_LockTabs);
 	if(nb->GetPageCount() > 0) {
 		/* Remove the notebook page */
-		for(unsigned int i=0; i < nb->GetPageCount(); i++) {
+		for(unsigned int i=0; i < (unsigned int) nb->GetPageCount(); i++) {
 			/* get searchlist->GetId() from the current notebook entry (?) */
 			wxWindow * page = (wxWindow *)nb->GetPage(i);
 			wxWindow * slctrl = page->FindWindowById(ID_SEARCHLISTCTRL, page);
@@ -524,7 +525,7 @@ void CSearchDlg::DeleteAllSearchs()
 	}
 	if(nb->GetPageCount() > 0) {
 		/* Remove all notebook pages */
-		for(int i=nb->GetPageCount()-1; i>=0; i--) {
+		for(unsigned int i= (unsigned int)nb->GetPageCount()-1; i>=0; i--) {
 			if(nb->GetPage(i) != NULL) {
 				nb->DeletePage(i);
 			}
@@ -564,7 +565,7 @@ void CSearchDlg::UpdateCatChoice() {
 	wxChoice *c_cat = (wxChoice*)FindWindowById(ID_AUTOCATASSIGN);
 	c_cat->Clear();
 
-	for (unsigned int i=0;i<catbook->GetPageCount();i++) {
+	for (unsigned int i=0;i<(unsigned int)catbook->GetPageCount();i++) {
 		c_cat->Append(catbook->GetPageText(i));
 	}
 	c_cat->SetSelection(0);
