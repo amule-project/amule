@@ -8,6 +8,9 @@ Version 2.0.0rc7 - The "xxxxxxxxxxxxxxxx" version.
 	Phoenix:
 		* Fixed '&' char next to Preferences in amuleweb web page, as
 		  reported by DreamWalker.
+		* ExternalConn: protected GETCATTITLE command from buffer
+		  overflow.
+		* Start removing unused code from ExternalConn.cpp.
 
 Version 2.0.0rc6 - The "We're so EVIL that we make you lose a sock in every pair" version.
 ----------

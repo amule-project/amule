@@ -1,3 +1,4 @@
+//
 // This file is part of the aMule Project
 //
 // aMule Copyright (C) 2003-204 aMule Team ( http://www.amule-project.net )
@@ -16,7 +17,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
+//
 
 #ifdef HAVE_CONFIG_H
 	#include "config.h"		// Needed for VERSION

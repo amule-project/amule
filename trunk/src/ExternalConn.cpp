@@ -227,13 +227,14 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 
 	unsigned int nChars = 0;
 	wxString sOp;
+	wxString buffer;
 	//---------------------------------------------------------------------
 	// WEBPAGE
 	//---------------------------------------------------------------------
 	if (item == wxT("WEBPAGE HEADER")) {
 		// returns one string formatted as:
 		// %d\t%s\t%s\t%d\t%d\t%f\t%f\t%d\t%d
-		wxString buffer = wxString() << theApp.glob_prefs->GetWebPageRefresh() << wxT("\t");		
+		buffer = wxString() << theApp.glob_prefs->GetWebPageRefresh() << wxT("\t");		
 		if (theApp.serverconnect->IsConnected()) {
 			buffer += wxString(wxT("Connected\t"));
 		} else if (theApp.serverconnect->IsConnecting()) {
@@ -258,18 +259,16 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			theApp.downloadqueue->GetKBps(),
 			theApp.glob_prefs->GetMaxUpload(),
 			theApp.glob_prefs->GetMaxDownload());
-		
 		return buffer;
 	}
 	if (item == wxT("WEBPAGE GETGRAPH")) {
 		//returns one string formatted as:
 		//%d\t%d\t%d\t%d
-		wxString buffer = wxString::Format(wxT("%d\t%d\t%d\t%d"), 
+		buffer = wxString::Format(wxT("%d\t%d\t%d\t%d"), 
 			theApp.glob_prefs->GetTrafficOMeterInterval(),
 			theApp.glob_prefs->GetMaxGraphDownloadRate(),
 			theApp.glob_prefs->GetMaxGraphUploadRate(),
 			theApp.glob_prefs->GetMaxConnections());
-		
 		return buffer;
 	}
 	if (item == wxT("WEBPAGE STATISTICS")) {
@@ -279,7 +278,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 		int filecount = theApp.downloadqueue->GetFileCount();
 		uint32 stats[2]; // get the source count
 		theApp.downloadqueue->GetDownloadStats(stats);
-		wxString buffer = theApp.amuledlg->statisticswnd->GetHTML() +
+		buffer = theApp.amuledlg->statisticswnd->GetHTML() +
 			wxString::Format(wxT(
 			"\tStatistics: \n"
 			"\t\tDownloading files: %d\n"
@@ -290,14 +289,12 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			filecount, stats[0], stats[1], 
 			theApp.uploadqueue->GetUploadQueueLength(), 
 			theApp.uploadqueue->GetWaitingUserCount());
-		
 		return buffer;
 #endif
 	}
 	if (item == wxT("WEBPAGE GETPREFERENCES")) {
 		// returns one string formatted as:
 		// %d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d
-		wxString buffer(wxEmptyString);
 		theApp.glob_prefs->GetWebUseGzip() ?
 			buffer += wxT("1\t") : buffer += wxT("0\t");
 		theApp.glob_prefs->GetPreviewPrio() ?
@@ -313,7 +310,6 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			theApp.glob_prefs->GetMaxUpload(),
 			theApp.glob_prefs->GetMaxGraphDownloadRate(),
 			theApp.glob_prefs->GetMaxGraphUploadRate());
-		
 		return buffer;
 	}
 	sOp = wxT("WEBPAGE SETPREFERENCES");
@@ -362,11 +358,11 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 	sOp = wxT("WEBPAGE PROGRESSBAR");
 	nChars = sOp.Length();
 	if (item.Left(nChars) == sOp) {
-		wxString buffer;			
 		if (item.Length() > nChars+1) {
-			int idx = item.Mid(nChars+1).Find(wxT(" "));
-			uint16 progressbarWidth = StrToLong(item.Mid(nChars+1,idx));
-			wxString filehash = item.Mid(nChars+1+idx+1);
+			wxString sParam = item.Mid(nChars+1);
+			int idx = sParam.Find(wxT(" "));
+			uint16 progressbarWidth = StrToLong(sParam.Mid(0,idx));
+			wxString filehash = sParam.Mid(idx+1);
 			
 			uchar fileid[16];
 			DecodeBase16(unicode2char(filehash),filehash.Length(),fileid);
@@ -379,14 +375,12 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				buffer.Append(wxT("1\t"));
 			}
 		}
-		
 		return buffer;
 	}
 	//---------------------------------------------------------------------
 	// PREFS
 	//---------------------------------------------------------------------
 	if (item == wxT("PREFS GETWEBUSEGZIP")) {
-		wxString buffer;
 		if (theApp.glob_prefs->GetWebUseGzip()) {
 			buffer += wxT("1");
 		} else {
@@ -415,78 +409,77 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 	//---------------------------------------------------------------------
 	// SERVER
 	//---------------------------------------------------------------------
-		if (item == wxT("SERVER RE-CONNECT")) {
-			if (theApp.serverconnect->IsConnected() || theApp.serverconnect->IsConnecting()) {
-				theApp.serverconnect->Disconnect();
-			}
-			theApp.serverconnect->ConnectToAnyServer();
-			Notify_ShowConnState(false,wxEmptyString);
-			return wxEmptyString;
+	if (item == wxT("SERVER RE-CONNECT")) {
+		if (theApp.serverconnect->IsConnected() || theApp.serverconnect->IsConnecting()) {
+			theApp.serverconnect->Disconnect();
 		}
-		if (item == wxT("SERVER DISCONNECT")) {
-			if (theApp.serverconnect->IsConnected() || theApp.serverconnect->IsConnecting()) {
-				theApp.serverconnect->Disconnect();
-			}
-			return wxEmptyString;
+		theApp.serverconnect->ConnectToAnyServer();
+		Notify_ShowConnState(false,wxEmptyString);
+		return wxEmptyString;
+	}
+	if (item == wxT("SERVER DISCONNECT")) {
+		if (theApp.serverconnect->IsConnected() || theApp.serverconnect->IsConnecting()) {
+			theApp.serverconnect->Disconnect();
 		}
-		if (item == wxT("SERVER LIST")) {
-			// returns one string where each line is formatted 
-			// as: %s\t%s\t%d\t%s\t%d\t%d\t%d\n
-			wxString buffer(wxEmptyString);
-			for (uint i=0; i < theApp.serverlist->GetServerCount(); i++) {
-				CServer *server = theApp.serverlist->GetServerAt(i);
-				if (server) {
-					buffer.Append(
-						server->GetListName() + wxT("\t") +
-						server->GetDescription() + wxT("\t") +
-						wxString::Format(wxT("%i"),server->GetPort()) + wxT("\t") +
-						server->GetAddress() + wxT("\t") +
-						wxString::Format(wxT("%i"),server->GetUsers()) + wxT("\t") +
-						wxString::Format(wxT("%i"),server->GetMaxUsers()) + wxT("\t") +
-						wxString::Format(wxT("%i"),server->GetFiles()) + wxT("\n")
-					);
-				}
+		return wxEmptyString;
+	}
+	if (item == wxT("SERVER LIST")) {
+		// returns one string where each line is formatted 
+		// as: %s\t%s\t%d\t%s\t%d\t%d\t%d\n
+		for (uint i=0; i < theApp.serverlist->GetServerCount(); i++) {
+			CServer *server = theApp.serverlist->GetServerAt(i);
+			if (server) {
+				buffer.Append(
+					server->GetListName() + wxT("\t") +
+					server->GetDescription() + wxT("\t") +
+					wxString::Format(wxT("%i"),server->GetPort()) + wxT("\t") +
+					server->GetAddress() + wxT("\t") +
+					wxString::Format(wxT("%i"),server->GetUsers()) + wxT("\t") +
+					wxString::Format(wxT("%i"),server->GetMaxUsers()) + wxT("\t") +
+					wxString::Format(wxT("%i"),server->GetFiles()) + wxT("\n")
+				);
 			}
-			return buffer;
 		}
-		if (item.Left(10) == wxT("SERVER ADD")) {
-			if (item.Length() > 10) {
-				int idx1 = item.Mid(11).Find(wxT(" "));
-				wxString sIP = item.Mid(11, idx1);
-				int idx2= item.Mid(11+idx1+1).Find(wxT(" "));
-				wxString sPort = item.Mid(11+idx1+1,idx2);
-				wxString sName = item.Mid(11+idx1+idx2+2);
-					
-				CServer *nsrv = new CServer( StrToLong(sPort), sIP );
-				nsrv->SetListName(sName);
-				theApp.AddServer(nsrv);
-			}
-			return wxEmptyString;
+		return buffer;
+	}
+	if (item.Left(10) == wxT("SERVER ADD")) {
+		if (item.Length() > 10) {
+			int idx1 = item.Mid(11).Find(wxT(" "));
+			wxString sIP = item.Mid(11, idx1);
+			int idx2= item.Mid(11+idx1+1).Find(wxT(" "));
+			wxString sPort = item.Mid(11+idx1+1,idx2);
+			wxString sName = item.Mid(11+idx1+idx2+2);
+			
+			CServer *nsrv = new CServer( StrToLong(sPort), sIP );
+			nsrv->SetListName(sName);
+			theApp.AddServer(nsrv);
+			return wxT("Server Added");
 		}
-		if (item.Left(16) == wxT("SERVER UPDATEMET")) {
+		return wxT("Server Not Added");
+	}
+	if (item.Left(16) == wxT("SERVER UPDATEMET")) {
 #ifndef AMULE_DAEMON
-			if (item.Length() > 16) {
-				theApp.amuledlg->serverwnd->UpdateServerMetFromURL(item.Mid(17));
-			}
+		if (item.Length() > 16) {
+			theApp.amuledlg->serverwnd->UpdateServerMetFromURL(item.Mid(17));
+		}
 #endif
-			return wxEmptyString;
-		}
-		if (item == wxT("SERVER STAT")) {
-			// returns one string where each line is formatted 
-			// as: %s or as: %s\t%s\t%s\t%ld
-			wxString buffer;			
-			if (theApp.serverconnect->IsConnected()) {
-				buffer.Append(wxT("Connected\t"));
-				theApp.serverconnect->IsLowID() ? buffer.Append(wxT("Low ID\t")) : buffer.Append(wxT("High ID\t"));
-				buffer+=theApp.serverconnect->GetCurrentServer()->GetListName() + wxT("\t");
-				buffer+=wxString::Format(wxT("%ld"), (long)theApp.serverconnect->GetCurrentServer()->GetUsers());
-			} else if (theApp.serverconnect->IsConnecting()) {
-				buffer.Append(wxT("Connecting\t"));
-			} else {
-				buffer.Append(wxT("Disconnected\t"));
-			}			
-			return buffer;
-		}
+		return wxEmptyString;
+	}
+	if (item == wxT("SERVER STAT")) {
+		// returns one string where each line is formatted 
+		// as: %s or as: %s\t%s\t%s\t%ld
+		if (theApp.serverconnect->IsConnected()) {
+			buffer.Append(wxT("Connected\t"));
+			theApp.serverconnect->IsLowID() ? buffer.Append(wxT("Low ID\t")) : buffer.Append(wxT("High ID\t"));
+			buffer+=theApp.serverconnect->GetCurrentServer()->GetListName() + wxT("\t");
+			buffer+=wxString::Format(wxT("%ld"), (long)theApp.serverconnect->GetCurrentServer()->GetUsers());
+		} else if (theApp.serverconnect->IsConnecting()) {
+			buffer.Append(wxT("Connecting\t"));
+		} else {
+			buffer.Append(wxT("Disconnected\t"));
+		}			
+		return buffer;
+	}
 	//---------------------------------------------------------------------
 	// TRANSFER
 	//---------------------------------------------------------------------
@@ -495,12 +488,12 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 #ifndef AMULE_DAEMON
 		theApp.amuledlg->transferwnd->downloadlistctrl->ClearCompleted();
 #endif
-		return wxEmptyString;
+		return wxT("Clear Completed");
 	}	
 	sOp = wxT("TRANSFER ADDFILELINK");
 	nChars = sOp.Length();
 	if (item.Left(nChars) == sOp) {
-		wxString buffer= wxT("Bad Link");
+		buffer = wxT("Bad Link");
 		if (item.Length() > nChars) {
 			try {
 				CED2KLink *pLink = CED2KLink::CreateLinkFromUrl(unicode2char(item.Mid(nChars+1)));
@@ -518,7 +511,6 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 	if (item == wxT("TRANSFER DL_FILEHASH")) {
 		// returns one string where each line is formatted as:
 		// %s\t%s\t...\t%s
-		wxString buffer;
 		unsigned int n = theApp.downloadqueue->GetFileCount();
 		for (unsigned int i = 0; i < n; ++i) {
 			CPartFile *cur_file = theApp.downloadqueue->GetFileByIndex(i);
@@ -537,9 +529,10 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			CPartFile *cur_file = theApp.downloadqueue->GetFileByIndex( StrToLong(item.Mid(nChars+1)) );
 			if (cur_file) {
 				cur_file->PauseFile();
+				return wxT("File Paused");
 			}
 		}
-		return wxEmptyString;
+		return wxT("Bad DL_FILEPAUSE request");
 	}
 	sOp = wxT("TRANSFER DL_FILERESUME");
 	nChars = sOp.Length();
@@ -548,9 +541,10 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			CPartFile *cur_file = theApp.downloadqueue->GetFileByIndex( StrToLong(item.Mid(nChars+1)) );
 			if (cur_file) {
 				cur_file->ResumeFile();
+				return wxT("File Resumed");
 			}
 		}
-		return wxEmptyString;
+		return wxT("Bad DL_FILERESUME request");
 	}
 	sOp = wxT("TRANSFER DL_FILEDELETE");
 	nChars = sOp.Length();
@@ -625,7 +619,6 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 		// returns one string where each line is formatted as:
 		// %s\t%ul\t%ul\t%ul\t%f\t%li\t%u\t%s\t%u\t%s\t%u\t%u\t%u\t%s\t%s\t%d\n
 		// 16 fields
-		wxString buffer;
 		wxString tempFileInfo;
 		unsigned int i;
 		for (i = 0; i < theApp.downloadqueue->GetFileCount(); ++i) {
@@ -668,7 +661,6 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 	if (item == wxT("TRANSFER UL_LIST")) {
 		// returns one string where each line is formatted as:
 		// %s\t%s\t%s\t%ul\t%ul\t%li\n"
-		wxString buffer;
 		wxString tempFileInfo;
 		for (POSITION pos = theApp.uploadqueue->GetFirstFromUploadList();
 			 pos != 0;theApp.uploadqueue->GetNextFromUploadList(pos)) {
@@ -696,7 +688,6 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 		// %s\n 
 		// or as:
 		// %s\t%s\t%d\t%d\n"
-		wxString buffer;
 		for (POSITION pos = theApp.uploadqueue->GetFirstFromWaitingList();
 			pos != 0; theApp.uploadqueue->GetNextFromWaitingList(pos)) {
 			CUpDownClient* cur_client = theApp.uploadqueue->GetWaitClientAt(pos);
@@ -717,9 +708,9 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 		}
 		return buffer;
 	}
-	//
+	//---------------------------------------------------------------------
 	// SHAREDFILES
-	//
+	//---------------------------------------------------------------------
 	if (item == wxT("SHAREDFILES RELOAD")) {
 		theApp.sharedfiles->Reload(true, false);
 		return wxEmptyString;
@@ -727,7 +718,6 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 	if (item == wxT("SHAREDFILES LIST")) {
 		// returns one string where each line is formatted as:
 		// %s\t%ld\t%s\t%ld\t%ll\t%d\t%d\t%d\t%d\t%s\t%s\t%d\t%d\n
-		wxString buffer;
 		for (int i = 0; i < theApp.sharedfiles->GetCount(); ++i) {
 			const CKnownFile *cur_file = theApp.sharedfiles->GetFileByIndex(i);
 			if (cur_file) {
@@ -783,97 +773,107 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 		}
 		return buffer;
 	}
+	//---------------------------------------------------------------------
+	// LOG
+	//---------------------------------------------------------------------
+	if (item == wxT("LOG RESETLOG")) {
+		theApp.GetLog(true);
+		return wxEmptyString;
+	}
+	if (item == wxT("LOG GETALLLOGENTRIES")) {
+		return theApp.GetLog();
+	}
+	if (item == wxT("LOG CLEARSERVERINFO")) {
+		theApp.GetServerLog(true);
+		return wxEmptyString;
+	}
+	if (item == wxT("LOG GETSERVERINFO")) {
+		return theApp.GetServerLog();
+	}
+	if (item == wxT("LOG RESETDEBUGLOG")) {
+		theApp.GetDebugLog(true);
+		return wxEmptyString;
+	}
+	if (item == wxT("LOG GETALLDEBUGLOGENTRIES")) {
+		return theApp.GetDebugLog();
+	}
+	sOp = wxT("LOG ADDLOGLINE");
+	nChars = sOp.Length();
+	if (item.Left(nChars) == sOp) {
+		if ((item.Length() > nChars) && (item.Mid(nChars+1).IsNumber())) {
+			AddLogLineM(false, item.Mid(nChars+1));
+		}
+		return wxEmptyString;
+	}
+	//---------------------------------------------------------------------
+	// CATEGORIES
+	//---------------------------------------------------------------------
+	if (item == wxT("CATEGORIES GETCATCOUNT")) {
+		buffer = wxString::Format(wxT("%d"), theApp.glob_prefs->GetCatCount());
+		return buffer;
+	}
+	sOp = wxT("CATEGORIES GETCATTITLE");
+	nChars = sOp.Length();
+	if (item.Left(nChars) == sOp) {
+		if ((item.Length() > nChars) && (item.Mid(nChars+1).IsNumber())) {
+			unsigned int catIndex = StrToLong(item.Mid(nChars+1));
+			if (catIndex < theApp.glob_prefs->GetCatCount() ) {
+				return theApp.glob_prefs->GetCategory(catIndex)->title;
+			} else {
+				AddLogLineM(false, wxT("error: EC: invalid category index."));
+				return wxEmptyString;
+			}
+		}
+	}
+	sOp = wxT("CATEGORIES GETCATEGORY");
+	nChars = sOp.Length();
+	if (item.Left(nChars) == sOp) {
+		if (item.Length() > nChars) {
+			wxString fileHash = item.Mid(nChars+1);
+			uchar fileid[16];
+			DecodeBase16(unicode2char(fileHash), fileHash.Length(), fileid);				
+			CPartFile *cur_file = theApp.downloadqueue->GetFileByID(fileid);
+			if (cur_file) {
+				// we've found the file
+				buffer = wxString::Format(wxT("%d"), cur_file->GetCategory());
+				return buffer;
+			}
+			return wxT("0");
+		}
+	}
+	sOp = wxT("CATEGORIES GETFILEINFO");
+	nChars = sOp.Length();
+	if (item.Left(nChars) == sOp) {
+		if (item.Length() > nChars) {
+			wxString fileHash = item.Mid(nChars+1);
+			uchar fileid[16];
+			DecodeBase16(unicode2char(fileHash), fileHash.Length(), fileid);
+			CPartFile *cur_file = theApp.downloadqueue->GetFileByID(fileid);
+			if (cur_file) {
+				// we've found the file
+				//buffer:
+				//int\tint\tint\twxstring\twxstring\twxstring\twxstring
+				buffer = wxString::Format(wxT("%d\t%d\t2\t"),
+					cur_file->GetStatus(),
+					cur_file->GetTransferingSrcCount()
+					) +
+				// Needed because GetFileType() no longer exists (and returned always returned 2 anyway)
+				// buffer.Append(wxString::Format("%d\t", cur_file->GetFileType()));
+				// buffer.Append(wxString::Format(wxT("%d\t"), 2));
+					( cur_file->IsPartFile() ? wxT("Is PartFile\t") : wxT("Is Not PartFile\t") ) +
+					( cur_file->IsStopped()  ? wxT("Is Stopped\t")  : wxT("Is Not Stopped\t")  ) +
+					( GetFiletype(cur_file->GetFileName()) == ftVideo ? 
+						wxT("Is Movie\t") : wxT("Is Not Movie\t") ) +
+					( GetFiletype(cur_file->GetFileName()) == ftArchive ?
+						wxT("Is Archive") : wxT("Is Not Archive") );
+				return buffer;
+			}
+		}
+		return wxEmptyString;
+	}
 /**********************************************/
 /* Must still do a check from here to the end */
 /**********************************************/
-		//
-		// LOG
-		//
-		if (item == wxT("LOG RESETLOG")) {
-			theApp.GetLog(true);
-			return wxEmptyString;
-		}
-		if (item == wxT("LOG GETALLLOGENTRIES")) {
-			return theApp.GetLog();
-		}
-		if (item == wxT("LOG CLEARSERVERINFO")) {
-			theApp.GetServerLog(true);
-			return wxEmptyString;
-		}
-		if (item == wxT("LOG GETSERVERINFO")) {
-			return theApp.GetServerLog();
-		}
-		if (item == wxT("LOG RESETDEBUGLOG")) {
-			theApp.GetDebugLog(true);
-			return wxEmptyString;
-		}
-		if (item == wxT("LOG GETALLDEBUGLOGENTRIES")) {
-			return theApp.GetDebugLog();
-		}
-		if (item.Left(14) == wxT("LOG ADDLOGLINE")) {
-			if (item.Length() > 15) {
-				AddLogLineM(false, item.Mid(15));
-			}
-			return wxEmptyString;
-		}
-		
-		//CATEGORIES
-		if (item == wxT("CATEGORIES GETCATCOUNT")) {
-			wxString buffer = wxString::Format(wxT("%d"), theApp.glob_prefs->GetCatCount());
-			return buffer;
-		}
-		
-		if (item.Left(22) == wxT("CATEGORIES GETCATTITLE")) {
-			if (item.Length() > 22) {
-				int catIndex = StrToLong(item.Mid(23));
-				return theApp.glob_prefs->GetCategory(catIndex)->title;
-			}
-		}
-		
-		if (item.Left(22) == wxT("CATEGORIES GETCATEGORY")) {
-			if (item.Length() > 22) {
-				wxString fileHash = item.Mid(23);
-				uchar fileid[16];
-				DecodeBase16(unicode2char(fileHash), fileHash.Length(), fileid);				
-				CPartFile *cur_file = theApp.downloadqueue->GetFileByID(fileid);
-				if (cur_file) {
-					// we've found the file
-					wxString buffer = wxString::Format(wxT("%d"), cur_file->GetCategory());
-					return buffer;
-				}
-				return wxT("0");
-			}
-		}
-		
-		if (item.Left(22) == wxT("CATEGORIES GETFILEINFO")) {
-			if (item.Length() > 22) {
-				wxString fileHash = item.Mid(23);
-				uchar fileid[16];
-				DecodeBase16(unicode2char(fileHash), fileHash.Length(), fileid);
-				CPartFile *cur_file = theApp.downloadqueue->GetFileByID(fileid);
-				if (cur_file) {
-					// we've found the file
-					//buffer:
-					//int\tint\tint\twxstring\twxstring\twxstring\twxstring
-					wxString buffer = wxString::Format(wxT("%d\t%d\t2\t"),
-						cur_file->GetStatus(),
-						cur_file->GetTransferingSrcCount()
-						) +
-					// Needed because GetFileType() no longer exists (and returned always returned 2 anyway)
-					// buffer.Append(wxString::Format("%d\t", cur_file->GetFileType()));
-					// buffer.Append(wxString::Format(wxT("%d\t"), 2));
-						( cur_file->IsPartFile() ? wxT("Is PartFile\t") : wxT("Is Not PartFile\t") ) +
-						( cur_file->IsStopped()  ? wxT("Is Stopped\t")  : wxT("Is Not Stopped\t")  ) +
-						( GetFiletype(cur_file->GetFileName()) == ftVideo ? 
-							wxT("Is Movie\t") : wxT("Is Not Movie\t") ) +
-						( GetFiletype(cur_file->GetFileName()) == ftArchive ?
-							wxT("Is Archive") : wxT("Is Not Archive") );
-					return buffer;
-				}
-			}
-			return wxEmptyString;
-		}
-		
 		//SEARCH
 		if (item.Left(19) == wxT("SEARCH DOWNLOADFILE")) {
 			if (item.Length() > 19) {
@@ -1079,18 +1079,6 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				return wxString::Format( wxT("%d"), theApp.glob_prefs->GetWSPort() );
 			}
 			
-			if (item.Mid(12,9).Cmp(wxT("GETWSPASS")) == 0) {
-				wxString pwdHash = item.Mid(22);
-				if (pwdHash == theApp.glob_prefs->GetWSPass())
-					return wxT("Admin Session");
-				else if (theApp.glob_prefs->GetWSIsLowUserEnabled() && 
-						!theApp.glob_prefs->GetWSLowPass().IsEmpty() && 
-						pwdHash == theApp.glob_prefs->GetWSLowPass())
-					return wxT("LowUser Session");
-				else
-					return wxT("Access Denied");
-			}
-
 			if (item.Mid(12,17).Cmp(wxT("SETWEBPAGEREFRESH")) == 0) {
 				if ((item.Length() > 29) && item.Mid(30).IsNumber()) {
 					theApp.glob_prefs->SetWebPageRefresh( StrToLong(item.Mid(30)));
@@ -1583,30 +1571,6 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 
 		// SERVER		
 		if (item.Left(6).Cmp(wxT("SERVER")) == 0) {
-			if (item.Mid(7).Cmp(wxT("LIST")) == 0) {
-				// shakraw - return a unique string where each line is formatted 
-				// as: wxString\twxString\tint\twxString\tint\tint\tint\n
-				wxString buffer;
-				for (uint i=0; i < theApp.serverlist->GetServerCount(); i++) {
-					CServer *server = theApp.serverlist->GetServerAt(i);
-					if (server) {
-						buffer +=
-							server->GetListName() + wxT("\t") +
-							server->GetDescription() + wxT("\t") +
-							wxString::Format(wxT("%i"), server->GetPort()) + wxT("\t") +
-							server->GetAddress() + wxT("\t") +
-							wxString::Format(wxT("%i\t%i\t%i\n"),
-								server->GetUsers(),
-								server->GetMaxUsers(),
-								server->GetFiles() );
-					}
-				}
-				return buffer;
-			}
-			
-			if (item.Mid(7).Cmp(wxT("COUNT")) == 0) { //get number of server in serverlist
-				return wxString::Format( wxT("%i"), theApp.serverlist->GetServerCount() );
-			}
 			
 			if (item.Mid(7,4).Cmp (wxT("NAME")) == 0) { // get server name
 				if ((item.Length() > 11) && (item.Mid(12).IsNumber())) {
@@ -1669,7 +1633,6 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			}
 
 			if (item.Mid(7,5).Cmp(wxT("FILES")) == 0) { // get the number of file shared in a server
-				wxString buffer;
 				if ((item.Length() > 12) && (item.Mid(13).IsNumber())) {
 					CServer* server = theApp.serverlist->GetServerAt( StrToLong(item.Mid(13)) );
 					buffer = wxString::Format(wxT("%i"), server->GetFiles());
@@ -1704,22 +1667,6 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				}
 			}
 			
-			if (item.Mid(7,3).Cmp(wxT("ADD")) == 0) { //add a new server
-				if (item.Length() > 10) {
-					int separator1 = item.Mid(11).Find(wxT(" "));
-					wxString sIP = item.Mid(11, separator1);
-					int separator2 = item.Mid(11+separator1+1).Find(wxT(" "));
-					wxString sPort = item.Mid(11+separator1+1,separator2);
-					wxString sName = item.Mid(11+separator1+separator2+2);
-					
-					CServer *nsrv = new CServer(StrToLong(sPort), sIP);
-					nsrv->SetListName(sName);
-					theApp.AddServer(nsrv);
-					return wxT("Server Added");
-				}
-				return wxT("Server Not Added");
-			}
-			
 			if (item.Mid(7,6).Cmp(wxT("REMOVE")) == 0) { // remove selected server from serverlist
 				if (item.Length() > 13) {
 					int separator = item.Mid(14).Find(wxT(" "));
@@ -1752,66 +1699,6 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 		
 		// TRANSFER
 		if (item.Left(8).Cmp(wxT("TRANSFER")) == 0) {
-			if (item.Mid(9) == wxT("DL_LIST")) {
-				// shakraw - return a big string where each line is formatted as:
-				// wxString\tlong\tlong\tdouble\tlong\tint\twxString\tint\twxString\tlong\tlong\tlong\twxString\twxString\tint\n
-				wxString buffer;
-				wxString tempFileInfo;
-				for (unsigned int i = 0; i < theApp.downloadqueue->GetFileCount(); ++i) {
-					const CPartFile *cur_file = theApp.downloadqueue->GetFileByIndex(i);
-					if (cur_file) {
-						tempFileInfo = GetDownloadFileInfo(cur_file);
-						tempFileInfo.Replace(wxT("\n"),wxT("|"));
-						buffer += 
-							cur_file->GetFileName() +
-							wxString::Format(wxT("\t%li\t%li\t%f\t%li\t%d\t"),
-								(long)cur_file->GetFileSize(),
-								(long)cur_file->GetTransfered(),
-								cur_file->GetPercentCompleted(),
-								(long)(cur_file->GetKBpsDown()*1024),
-								cur_file->GetStatus() ) +
-							cur_file->getPartfileStatus() +
-							wxString::Format(wxT("\t%d\t"), cur_file->GetDownPriority() +
-								( cur_file->IsAutoDownPriority() ? 10 : 0 ) ) +
-							EncodeBase16(cur_file->GetFileHash(), 16) +
-							wxString::Format(wxT("\t%d\t%d\t%d\t"),
-								cur_file->GetSourceCount(),
-								cur_file->GetNotCurrentSourcesCount(),
-								cur_file->GetTransferingSrcCount() ) +
-							( theApp.serverconnect->IsConnected() && theApp.serverconnect->IsLowID() ?
-								theApp.CreateED2kSourceLink(cur_file) :
-								theApp.CreateED2kLink(cur_file) ) +
-							wxT("\t") + tempFileInfo + wxT("\t") +
-							( !cur_file->IsPartFile() ? wxT("1\n") : wxT("0\n") );
-					}
-				}
-				return buffer;
-			}
-			
-			if (item.Mid(9).Cmp(wxT("CLEARCOMPLETE")) == 0) { //clear completed transfers
-#ifndef AMULE_DAEMON		
-				theApp.amuledlg->transferwnd->downloadlistctrl->ClearCompleted();
-#endif	
-				return wxT("Clear Completed");
-			}
-			
-			if (item.Mid(9,11).Cmp(wxT("ADDFILELINK")) == 0) { //add file link to download
-				if (item.Length() > 20) {
-					try {
-						CED2KLink* pLink = CED2KLink::CreateLinkFromUrl(unicode2char(item.Mid(21)));
-						if (pLink->GetKind() == CED2KLink::kFile) {
-							// lfroen - using default category 0
-							theApp.downloadqueue->AddFileLinkToDownload(pLink->GetFileLink(), 0); 
-							delete pLink;
-							return wxT("Link Added");
-						}
-						delete pLink;
-					} catch (...) {
-						return wxT("Bad Link!");
-					}
-				}
-				return wxT("Bad ADDFILELINK request");
-			}
 			
 			if (item.Mid(9).Cmp(wxT("DL_COUNT")) == 0) { //get number of downloading files
 				return wxString::Format( wxT("%i"), theApp.downloadqueue->GetFileCount() );
@@ -1892,13 +1779,13 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			if (item.Mid(9,11).Cmp(wxT("DL_FILEHASH")) == 0) {
 				if ((item.Length() > 20) && (item.Mid(21).IsNumber())) {
 					// Why not use the encoded has? -- Xaignar
-					char buffer[17];
+					char char_buffer[17];
 					const unsigned char* hash = theApp.downloadqueue->GetFileByIndex( StrToLong(item.Mid(21)) )->GetFileHash();
 					for ( int i = 0; i < 16; i++ ) {
-						buffer[i] = hash[i];
+						char_buffer[i] = hash[i];
 					}
-					buffer[16] = 0;
-					return(char2unicode(buffer));
+					char_buffer[16] = 0;
+					return(char2unicode(char_buffer));
 				}
 				return wxT("Bad DL_FILEHASH request");
 			}	
@@ -1964,28 +1851,6 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				}
 				return wxT("Bad DL_FILEISPARTFILE request");
 			}	
-
-			if (item.Mid(9,12).Cmp(wxT("DL_FILEPAUSE")) == 0) { //pause the n-th downloading file
-				if ((item.Length() > 21) && (item.Mid(22).IsNumber())) {
-					CPartFile *cur_file = theApp.downloadqueue->GetFileByIndex( StrToLong(item.Mid(22)) );
-					if (cur_file) {
-						cur_file->PauseFile();
-						return wxT("File Paused");
-					}
-				}
-				return wxT("Bad DL_FILEPAUSE request");
-			}
-
-			if (item.Mid(9,13).Cmp(wxT("DL_FILERESUME")) == 0) { //resume the n-th downloading file
-				if ((item.Length() > 22) && (item.Mid(23).IsNumber())) {
-					CPartFile *cur_file = theApp.downloadqueue->GetFileByIndex( StrToLong(item.Mid(23)) );
-					if (cur_file) {
-						cur_file->ResumeFile();
-						return wxT("File Resumed");
-					}
-				}
-				return wxT("Bad DL_FILERESUME request");
-			}
 
 			if (item.Mid(9,21).Cmp(wxT("DL_FILESETAUTODOWNPRIO")) == 0) { //set autodownprio for the file
 				if (item.Length() > 30) {
@@ -2114,7 +1979,6 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 		// QUEUE
 		if (item.Left(5).Cmp(wxT("QUEUE")) == 0) { //Get queue data information
 			if (item.Mid(6).Cmp(wxT("W_GETSHOWDATA")) == 0) {
-				wxString buffer;
 				for (POSITION pos = theApp.uploadqueue->GetFirstFromWaitingList();
 					 pos != 0;theApp.uploadqueue->GetNextFromWaitingList(pos)) {
 					CUpDownClient* cur_client = theApp.uploadqueue->GetWaitClientAt(pos);
@@ -2138,7 +2002,6 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			}
 			
 			if (item.Mid(6).Cmp(wxT("UL_GETSHOWDATA")) == 0) {
-				wxString buffer;
 				wxString temp;
 				for (POSITION pos = theApp.uploadqueue->GetFirstFromUploadList();
 					 pos != 0;theApp.uploadqueue->GetNextFromUploadList(pos)) {
@@ -2253,7 +2116,6 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 		//shakraw, amuleweb protocol communication START
 		// New item: for release goups only, TOTALULREQ HASH replies the total upload for the file HASH
 		if (item.Left(10).Cmp(wxT("TOTALULREQ")) == 0) { 
-			wxString buffer;
 			#ifdef RELEASE_GROUP_MODE
 			if (item.Mid(11).Length() == 16) {
 				CKnownFile* shared_file = theApp.sharedfiles->GetFileByID(item.Mid(11));
