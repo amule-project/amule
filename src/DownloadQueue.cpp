@@ -1234,13 +1234,13 @@ bool CDownloadQueue::AddED2KLink( const CED2KLink* link, int category )
 	switch ( link->GetKind() ) {
 		case CED2KLink::kFile:
 			result = AddED2KLink( dynamic_cast<const CED2KFileLink*>( link ), category );
-			
+			break;
 		case CED2KLink::kServer:
 			result = AddED2KLink( dynamic_cast<const CED2KServerLink*>( link ) );
-			
+			break;
 		case CED2KLink::kServerList:
 			result = AddED2KLink( dynamic_cast<const CED2KServerListLink*>( link ) );
-			
+			break;
 		default:
 			result = false;
 	}
