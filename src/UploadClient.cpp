@@ -769,12 +769,3 @@ void CUpDownClient::Ban(){
 	AddDebugLogLineM(false,wxString::Format(_("Client '%s' seems to be an aggressive client and is banned from the uploadqueue"),unicode2char(GetUserName())));
 }
 
-void CUpDownClient::UDPFileReasked(){
-	//printf("entered in : CUpDownClient::UDPFileReasked\n");
-	AddAskedCount();
-	SetLastUpRequest();
-	uint16 nRank = theApp.uploadqueue->GetWaitingPosition(this);
-	Packet* response = new Packet(OP_REASKACK,2,OP_EMULEPROT);
-	response->CopyToDataBuffer(0, (const char *)&nRank, 2);
-	theApp.clientudp->SendPacket(response,GetIP(),GetUDPPort());
-}
