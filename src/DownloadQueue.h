@@ -37,6 +37,11 @@ class CUpDownClient;
 class CServer;
 class CSafeMemFile;
 class CKnownFile;
+class CED2KLink;
+class CED2KFileLink;
+class CED2KServerLink;
+class CED2KServerListLink;
+
 
 struct Hostname_Entry {
 		CMD4Hash fileid;
@@ -53,7 +58,6 @@ public:
 	void	Process();
 	void	Init();
 	void	AddSearchToDownload(CSearchFile* toadd, uint8 category);
-	void	AddSearchToDownload(const wxString& link, uint8 category);
 	void	AddFileLinkToDownload(class CED2KFileLink* pLink, uint8 category);
 	bool	IsFileExisting(const CMD4Hash& fileid) const;
 	bool	IsPartFile(const CKnownFile* totest) const;
@@ -123,6 +127,12 @@ public:
 	void	SetCompletedFilesExist() { completedFilesExist = true; }
 	void	UnsetCompletedFilesExist() { completedFilesExist = false; }
 
+	bool	AddED2KLink( const wxString& link, int category = 0 );
+	bool	AddED2KLink( const CED2KLink* link, int category = 0 );
+	bool	AddED2KLink( const CED2KFileLink* link, int category = 0 );
+	bool	AddED2KLink( const CED2KServerLink* link );
+	bool	AddED2KLink( const CED2KServerListLink* link );
+	
 protected:
 	bool	SendNextUDPPacket();
 	void	ProcessLocalRequests();

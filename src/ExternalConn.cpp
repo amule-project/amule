@@ -1384,15 +1384,8 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request, CPartFile_Enc
 			for(int i = 0; i < request->GetTagCount();i++) {
 				CECTag *tag = request->GetTagByIndex(i);
 				wxString link = tag->GetStringData();
-				CED2KLink* pLink = CED2KLink::CreateLinkFromUrl(unicode2char(link));
-				if ( pLink->GetKind() == CED2KLink::kFile ) {
-					theApp.downloadqueue->AddFileLinkToDownload(pLink->GetFileLink(), 0);
-					response = new CECPacket(EC_OP_NOOP);
-				} else if ( pLink->GetKind() == CED2KLink::kServer ) {
-					CServer *server = new CServer(((CED2KServerLink *)pLink)->GetPort(), Uint32toStringIP(((CED2KServerLink *)pLink)->GetIP()));
-					server->SetListName(Uint32toStringIP(((CED2KServerLink *)pLink)->GetIP()));
-					theApp.serverlist->AddServer(server);
-					Notify_ServerAdd(server);
+				
+				if ( theApp.downloadqueue->AddED2KLink( link ) ) {
 					response = new CECPacket(EC_OP_NOOP);
 				} else {
 					AddLogLineM(true, _("ExternalConn: Unable to understand ed2k link '") + link + wxT("'."));

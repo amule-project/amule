@@ -233,15 +233,6 @@ void CDownloadQueue::AddSearchToDownload(CSearchFile* toadd, uint8 category)
 	AddSearchToDownloadCommon(newfile, category);
 }
 
-void CDownloadQueue::AddSearchToDownload(const wxString& link, uint8 category)
-{
-	CPartFile* newfile = new CPartFile(link);
-	if (!newfile) {
-		return;
-	}
-	AddSearchToDownloadCommon(newfile, category);
-}
-
 void CDownloadQueue::AddSearchToDownloadCommon(CPartFile *newfile, uint8 category)
 {
 	if (newfile->GetStatus() == PS_ERROR) {
@@ -926,7 +917,7 @@ CUpDownClient* CDownloadQueue::GetDownloadClientByIP(uint32 dwIP)
 
 void CDownloadQueue::AddLinksFromFile()
 {
-        wxString filename;
+	wxString filename;
 	wxString link;
 	wxTextFile linksfile(theApp.ConfigDir + wxT("ED2KLinks"));
 
@@ -935,8 +926,6 @@ void CDownloadQueue::AddLinksFromFile()
 		// GetLineCount returns the actual number of lines in file, but line numbering
 		// starts from zero. Thus we must loop until i = GetLineCount()-1.
 		for (unsigned int i = 0; i < linksfile.GetLineCount(); i++) {
-			// Need the links to end with /, otherwise CreateLinkFromUrl crashes us.
-			
 			// Special case! used by a secondary running mule to raise this one.
 			if (link.Cmp(wxT("RAISE_DIALOG")) == 0) {
 				printf("Rising dialog at secondary aMule running request\n");
@@ -944,22 +933,7 @@ void CDownloadQueue::AddLinksFromFile()
 				continue;
 			}
 			
-			if (link.Right(1) != wxT("/")) {
-				link+=wxT("/");
-			}
-			try {
-				CED2KLink* pLink=CED2KLink::CreateLinkFromUrl(unicode2char(link));
-				if(pLink->GetKind()==CED2KLink::kFile) {
-					// All seems ok, add it to download queue.
-					// lfroen - using category 0
-					AddFileLinkToDownload(pLink->GetFileLink(), 0);
-				} else {
-					throw wxString(_("Bad link."));
-				}
-				delete pLink;
-			} catch(wxString error) {
-				AddLogLineM(true, wxString::Format(_("Invalid link: %s"), wxString::Format(_("This ed2k link is invalid (%s)"), error.c_str()).c_str()));
-			}
+			AddED2KLink( link );
 			// We must double-check here where are we, because GetNextLine moves reading head
 			// one line below, and we must make sure that line exists. Thus check if we are
 			// at least one line away from end before trying to read next line.
@@ -1328,4 +1302,99 @@ wxString CDownloadQueue::getTextList( const wxString& file_to_search ) const
 	}
 	
 	return out;
+}
+
+
+bool CDownloadQueue::AddED2KLink( const wxString& link, int category )
+{
+	wxString URI = link;
+	
+	// Need the links to end with /, otherwise CreateLinkFromUrl crashes us.
+	if ( URI.Last() != wxT('/') ) {
+		URI += wxT("/");
+	}
+	
+	try {
+		return AddED2KLink( CED2KLink::CreateLinkFromUrl( unicode2char( URI ) ), category );
+	} catch ( wxString err ) {
+		AddLogLineM( true, wxString(_("Invalid link: ")) + wxString::Format(_("This ed2k link is invalid (%s)"), err.c_str() ) );
+	}
+	
+	return false;
+}
+
+
+bool CDownloadQueue::AddED2KLink( const CED2KLink* link, int category )
+{
+	switch ( link->GetKind() ) {
+		case CED2KLink::kFile:
+			return AddED2KLink( dynamic_cast<const CED2KFileLink*>( link ), category );
+			
+		case CED2KLink::kServer:
+			return AddED2KLink( dynamic_cast<const CED2KServerLink*>( link ) );
+			
+		case CED2KLink::kServerList:
+			return AddED2KLink( dynamic_cast<const CED2KServerListLink*>( link ) );
+			
+		default:
+			return false;
+	}
+}
+
+
+
+bool CDownloadQueue::AddED2KLink( const CED2KFileLink* link, int category )
+{
+	// Check if the file already exists, in which case we just add the source
+	CPartFile* file = GetFileByID( link->GetHashKey() );
+		
+	if ( !file ) {
+		file = new CPartFile( link );
+	
+		if ( file->GetStatus() == PS_ERROR ) {
+			delete file;
+
+			return false;
+		}
+	
+		AddDownload( file, thePrefs::AddNewFilesPaused(), category );
+	}
+	
+	
+	// Add specified sources, specified by IP
+	if ( link->HasValidSources() ) {
+		file->AddClientSources( link->SourcesList, 1 );
+	}
+	
+	// Add specified sources, specified by hostname
+	if ( link->HasHostnameSources() ) {
+		const CTypedPtrList<CPtrList, SUnresolvedHostname*>& list = link->m_HostnameSourcesList;
+		
+		for ( POSITION pos = list.GetHeadPosition(); pos; list.GetNext(pos) ) {
+			AddToResolve( link->GetHashKey(), list.GetAt(pos)->strHostname, list.GetAt(pos)->nPort );
+		}
+	}
+
+	return true;	
+}
+
+
+bool CDownloadQueue::AddED2KLink( const CED2KServerLink* link )
+{
+	CServer *server = new CServer( link->GetPort(), Uint32toStringIP( link->GetIP() ) );
+	
+	server->SetListName( Uint32toStringIP( link->GetIP() ) );
+	
+	theApp.serverlist->AddServer(server);
+	
+	Notify_ServerAdd(server);
+
+	return true;
+}
+
+
+bool CDownloadQueue::AddED2KLink( const CED2KServerListLink* link )
+{
+	#warning AddED2KLink @ CED2KServerListLink not implemented!
+	return false;
 }
