@@ -2461,15 +2461,16 @@ wxThread::ExitCode completingThread::Entry()
 	return NULL;
 }
 
-void completingThread::OnExit(){
-	
-	// Kry - Notice the app that the completion has finished for this file.		
+void completingThread::OnExit()
+{
+	// Kry - Notice the app that the completion has finished for this file.	
 	wxMuleInternalEvent evt(wxEVT_CORE_FINISHED_FILE_COMPLETION);
 	evt.SetClientData(completing);
 	evt.SetInt((int)completing_result);
 	evt.SetExtraLong((long)newname);
+	wxMutexGuiEnter();
 	wxPostEvent(&theApp,evt);
-	
+	wxMutexGuiLeave();
 }
 
 
