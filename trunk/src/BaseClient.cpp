@@ -395,7 +395,7 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
 					if (temptag.tag.type == 2) {
 						m_strModVersion = temptag.tag.stringvalue;
 					} else if (temptag.tag.type == 3) {
-						m_strModVersion.Format(_T("ModID=%u"), temptag.tag.intvalue);						
+						m_strModVersion.Printf(_T("ModID=%u"), temptag.tag.intvalue);						
 					} else {
 						m_strModVersion = wxT("ModID=<Unknwon>");
 					}
@@ -798,7 +798,7 @@ void CUpDownClient::ProcessMuleInfoPacket(char* pachPacket, uint32 nSize)
 						m_strModVersion = temptag.tag.stringvalue;
 					}
 					else if (temptag.tag.type == 3) {
-						m_strModVersion.Format(_T("ModID=%u"), temptag.tag.intvalue);
+						m_strModVersion.Printf(_T("ModID=%u"), temptag.tag.intvalue);
 					}
 					else {
 						m_strModVersion = _T("ModID=<Unknwon>");
