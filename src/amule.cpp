@@ -946,7 +946,7 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 	char buffer[256];
 
 	if (zero) {
-		emulesig_out.Write("0\n0.0|0.0|0", 12);
+		emulesig_out.Write("0\n0.0|0.0|0", 11);
 		amulesig_out.Write("0\n0\n0\n0\n0\n0.0\n0.0\n0\n0\n", 22);
 	} else {
 		if (serverconnect->IsConnected()) {
