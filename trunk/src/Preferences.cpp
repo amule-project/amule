@@ -684,7 +684,7 @@ void CPreferences::BuildItemList( const wxString& appdir )  // gets called at in
 	s_CfgList[IDC_TEMPFILES]	= new Cfg_Str(  wxT("/eMule/TempDir"), 	s_tempdir, appdir + wxT("Temp") );
 	s_CfgList[IDC_INCFILES]		= new Cfg_Str(  wxT("/eMule/IncomingDir"), s_incomingdir, appdir + wxT("Incoming") );
 	s_CfgList[IDC_ICH]		= new Cfg_Bool( wxT("/eMule/ICH"), s_ICH, true );
-	s_CfgList[IDC_AICHTRUST]		= new Cfg_Bool( wxT("/eMule/AICHTrust"), s_AICHTrustEveryHash, true );
+	s_CfgList[IDC_AICHTRUST]		= new Cfg_Bool( wxT("/eMule/AICHTrust"), s_AICHTrustEveryHash, false );
 	s_CfgList[IDC_METADATA] 	= new Cfg_Bool( wxT("/ExternalConnect/ExtractMetaDataTags"), s_ExtractMetaData, false );
 	s_CfgList[IDC_CHUNKALLOC]	= new Cfg_Bool( wxT("/ExternalConnect/FullChunkAlloc"), s_AllocFullChunk, false );
 	s_CfgList[IDC_FULLALLOCATE]	= new Cfg_Bool( wxT("/ExternalConnect/FullPartAlloc"), s_AllocFullPart, false );
