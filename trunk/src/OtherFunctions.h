@@ -278,7 +278,7 @@ inline void md4cpy(const void* dst, const void* src) {
 }
 
 // DumpMem ... Dumps mem ;)
-void DumpMem(const void* where, uint32 size);
+void DumpMem(const void *buff, int n, const wxString *msg = NULL, bool ok = true);
 
 void DumpMem_DW(const uint32 *ptr, int count);
 
