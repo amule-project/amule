@@ -98,8 +98,7 @@ CEC_ConnState_Tag::CEC_ConnState_Tag(EC_DETAIL_LEVEL detail_level) : CECTag(EC_T
 
 CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level) : CECTag(EC_TAG_PARTFILE, PTR_2_ID(file))
 {
-	uint8 tmpStatus = file->GetStatus();
-	AddTag(CECTag(EC_TAG_PARTFILE_STATUS, tmpStatus));
+	AddTag(CECTag(EC_TAG_PARTFILE_STATUS, file->GetStatus()));
 
 	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT, (uint32)file->GetSourceCount()));
 	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT, (uint32)file->GetNotCurrentSourcesCount()));
