@@ -145,6 +145,8 @@ CamuleApp::CamuleApp()
 	
 	printf("Initialising aMule\n");
 
+	m_app_state = APP_STATE_STARTING;
+	
 	ConfigDir = wxGetHomeDir() + wxFileName::GetPathSeparator() + 
 	wxT(".aMule") + wxFileName::GetPathSeparator();
 	
@@ -161,6 +163,9 @@ CamuleApp::CamuleApp()
 	downloadqueue	= NULL;
 	uploadqueue	= NULL;
 	ipfilter	= NULL;
+	ECServerHandler = NULL;
+	localserver = NULL;
+	glob_prefs = NULL;
 	
 	m_dwPublicIP	= 0;
 
@@ -295,8 +300,6 @@ bool CamuleApp::OnInit()
 	// Do NOT change this string to aMule nor anything else, it WILL fuck you up.
 	SetAppName(wxT("eMule"));
 	
-	m_app_state = APP_STATE_STARTING;
-
 	Start_time = GetTickCount64();
 
 	// Parse cmdline arguments.
