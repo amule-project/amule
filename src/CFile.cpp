@@ -166,10 +166,12 @@ enum {
 	#include <wx/event.h>
 	#include "GuiEvents.h"
 	#include <unistd.h>       
-	#include <execinfo.h>
-	
+	#ifndef __WXMAC__
+		#include <execinfo.h>
+	#endif
+
 	void get_caller(int value) {
-			
+#ifndef __WXMAC__
 		void *bt_array[4];	
 		char **bt_strings;
 		int num_entries;
@@ -187,7 +189,9 @@ enum {
 				AddLogLineM(false, wxT("Called From: ") + wherefrom);
 			}
 		}	
-	}
+#endif
+}
+
 
 #endif
 
