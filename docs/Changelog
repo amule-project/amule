@@ -2,6 +2,51 @@ Version 2.0.0-rc2 - The Unnamed version.
 -------------
 2004-04-xx
 	
+	Kry:
+		* Fixed all crashes on Hello packets.
+		* Made SafeMem files really safe checking for read after end of file.
+		* Fixed wrong Modversion data (fixes random crash too)
+		* Fixed several crashes on wxString::GetData usage.
+		* Fixed a WEIRD crash on lists due to POSITION struct.
+		* Fixed UDP disable button not being saved across sessions
+		* Fixed a bug on version check
+		* Locale goes to System Default on new version now (fixes weird language problems)
+		* Fixed wrong OP_REASKFILEPING packets being sent 
+		* Reverted GAddress_INET functions to standard inet_addr ones.
+		* Completely removed list refresh functions. CPU saved was not worth it.
+		* Added CheckDiskSpace checkbox and radio button to the preferences.
+		* Added the scale of the connections graph on stats. (only rescaled on restart)
+		* Added 'Reset' button for Server Log
+		* Fixed: Right click popup on server connected was showing 'connect' now shows 'reconnect'.
+		* gscocket shouldn't be compiled on Mac, and so it's not compiled now ;)
+		* Fixed Preview of already completed files not working.
+		* Fixed files > 2Gb not working on fast ed2k links handler and ed2k app.
+		* Fixed file size for files larger then 2Gb displayed incorrectly
+		* Changed timeout of curl functions to 10 - fixes hangups when clicking server update without
+		   internet conenction.
+		* We don't share 0 size files anymore.
+		* Fixed the crash on invalid socket using 5 different ways. The last one seems to be the most stable.
+		* Fixed several hangups on file completion.
+		* Fixed % and progressbar not being updated when changed on GUI Tweaks.
+		* Fixed comment packets. This was causing disconection from eMule clients (and crashing aMule clients)
+		* Fixed amule dissapearing because sent to systray when --disable-systray was used.
+		* Fixed memleak on search packet sent.
+		* Fixed memleak on KnownFile deletion
+		* Fixed memleak on search results received.
+		* Fixed memleak on comment packet received.
+		* Speeded up socket event handling.
+		* Cleaned server connection. No more 'inet connection might be down' - unless it's down ;)
+		* Faster PartFile processing.
+		* Fixed non-needed delete of an array on the notebook destructor.
+		* Doesn't allow an incoming packet to get processed if socket is deleting.
+		* Fixed double-highlight of servers if disconnected by the server.
+		* Speeded up hashing of the files a lot. This should fix the gui hangs at startup.
+		* Removed all old preferences code. That makes the app smaller, less memory used, and avoid some
+		   unexpected bugs that arised on having 2 preferences implementation. Now New Prefs become Preferences.
+		* Fixed several warnings.
+		* Make aMule compile on wxWidgets 2.5 (and CVS) version.
+
+
 	 Ariel:
 		* Implemented completed parts count on file rehash.
 		  Prevents your downloads to completely lost on a wrong .part.met write.
@@ -11,9 +56,9 @@ Version 2.0.0-rc2 - The Unnamed version.
 		* Added new inclusion path if distro in not detected
 		* fixed wrong and duplicated inclusion in ClientCredits.*
     
-    shakraw:
-        * rewrote WebSocket.* and modified WebServer.*: they use wxThreads and
-          wxSockets to be used on other platform too.
+	shakraw:
+		* rewrote WebSocket.* and modified WebServer.*: they use wxThreads and
+		  wxSockets to be used on other platform too.
 
 Version 2.0.0-rc1 - The 'Mules and Rabbits love carrots' version.
 -------------
