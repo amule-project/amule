@@ -165,7 +165,7 @@ public:
 	 *
 	 * @return True if Safe_Delete has been called, false otherwise.
 	 */
-	bool		HasBeenDeleted();
+	bool		HasBeenDeleted()		{ return m_SafelyDeleted; }
 	
 	
 	bool		Disconnected(const wxString& strReason, bool bFromSocket = false);
