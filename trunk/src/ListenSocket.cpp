@@ -297,15 +297,21 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				// Client might die from Sending in SendMuleInfoPacket, so check
 				if ( m_client )
 					m_client->SendHelloAnswer();
+							
+				// Kry - If the other side supports it, send OS_INFO
+				// Client might die from Sending in SendHelloAnswer, so check				
+				if (m_client && m_client->m_fOsInfoSupport) {
+					m_client->SendMuleInfoPacket(false,true); // Send the OS Info tag on the recycled Mule Info
+				}				
 				
-				// Client might die from Sending in SendHelloAnswer, so check
+				// Client might die from Sending in SendMuleInfoPacket, so check
 				if ( m_client )
 					m_client->ConnectionEstablished();
 				
 				// start secure identification, if
 				//	- we have received eMule-OP_HELLO (new eMule)				
 				if (m_client && m_client->GetInfoPacketsReceived() == IP_BOTH) {
-						m_client->InfoPacketsReceived();				
+						m_client->InfoPacketsReceived();		
 				}
 				
 				break;
@@ -1467,9 +1473,6 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 			}
 		
 			case OP_EMULEINFO: {
-				#ifdef DEBUG_REMOTE_CLIENT_PROTOCOL
-				AddDebugLogLineM(true,wxT("Remote Client: OP_EMULEINFO\n"));
-				#endif
 				// 0.43b
 				theApp.downloadqueue->AddDownDataOverheadOther(size);
 
@@ -1482,6 +1485,10 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				#endif
 				
 				if (!m_client->ProcessMuleInfoPacket(packet,size)) { 
+					#ifdef DEBUG_REMOTE_CLIENT_PROTOCOL
+					AddDebugLogLineM(true,wxT("Remote Client: OP_EMULEINFO\n"));
+					#endif
+					
 					// If it's not a OS Info packet, is an old client
 					// start secure identification, if
 					//  - we have received eD2K and eMule info (old eMule)
@@ -1489,6 +1496,10 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 						m_client->InfoPacketsReceived();
 					}
 					m_client->SendMuleInfoPacket(true);
+				} else {
+					#ifdef DEBUG_REMOTE_CLIENT_PROTOCOL					
+					AddDebugLogLineM(true,wxT("Remote Client: OP_EMULEINFO is a OS_INFO\n"));
+					#endif					
 				}
 				break;
 			}
