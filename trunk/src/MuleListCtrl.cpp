@@ -42,9 +42,15 @@
 #endif
 
 
-IMPLEMENT_DYNAMIC_CLASS(CMuleListCtrl, CMuleListCtrl_Base)
+#ifdef __WXMSW__
+IMPLEMENT_DYNAMIC_CLASS(CMuleListCtrl, wxListCtrl)
 
-BEGIN_EVENT_TABLE(CMuleListCtrl, CMuleListCtrl_Base)
+BEGIN_EVENT_TABLE(CMuleListCtrl, wxListCtrl)
+#else
+IMPLEMENT_DYNAMIC_CLASS(CMuleListCtrl, wxODListCtrl)
+
+BEGIN_EVENT_TABLE(CMuleListCtrl, wxODListCtrl)
+#endif
 	EVT_LIST_COL_CLICK( -1, 		CMuleListCtrl::OnColumnLClick)
 	EVT_LIST_COL_RIGHT_CLICK( -1,	CMuleListCtrl::OnColumnRClick)
 	EVT_MENU_RANGE(MP_LISTCOL_1, MP_LISTCOL_15, CMuleListCtrl::OnMenuSelected)
@@ -63,7 +69,11 @@ CMuleListCtrl::CMuleListCtrl()
 
 
 CMuleListCtrl::CMuleListCtrl( wxWindow *parent, wxWindowID winid, const wxPoint& pos, const wxSize& size, long style, const wxValidator& validator, const wxString& name)
-	: CMuleListCtrl_Base( parent, winid, pos, size, style, validator, name )
+#ifdef __WXMSW__
+	: wxListCtrl( parent, winid, pos, size, style, validator, name )
+#else
+	: wxODListCtrl( parent, winid, pos, size, style, validator, name )
+#endif
 {
 	m_sort_func = NULL;
 	m_sort_asc 	= true;

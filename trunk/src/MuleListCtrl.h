@@ -22,13 +22,7 @@
 
 
 // Defines base class of CMuleListCtrl so that we only need this one ifdef
-#ifdef __WXMSW__
-	#include <wx/listctrl.h>
-	typedef wxListCtrl CMuleListCtrl_Base;
-#else
-	#include "listctrl_gen.h"
-	typedef wxODListCtrl CMuleListCtrl_Base;
-#endif
+
 
 
 //! This value will be added to the user-data of the sorter-funtion when sorting ascending.
@@ -51,7 +45,13 @@ const int SORT_OFFSET_ALT_DEC = 3000;
  *  - Helper function for inserting items pre-sorted.
  *  - Loading and saving of column properties.
  */
-class CMuleListCtrl : public CMuleListCtrl_Base
+#ifdef __WXMSW__
+	#include <wx/listctrl.h>
+	class CMuleListCtrl : public wxListCtrl
+#else
+	#include "listctrl_gen.h"
+	class CMuleListCtrl : public wxODListCtrl
+#endif
 {
 public:
 
