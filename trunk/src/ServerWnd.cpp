@@ -67,13 +67,13 @@ CServerWnd::CServerWnd(wxWindow* pParent /*=NULL*/)
 	serverlistctrl=list;
 
 	wxTextCtrl* cv=(wxTextCtrl*)FindWindowById(ID_SERVERINFO);
-	cv->AppendText(wxT("This is aMule")+wxString(wxT(" "))+wxString(wxT(VERSION))+wxT(" (based on eMule)\n"));
+	cv->AppendText(wxT("This is aMule ") wxT(VERSION) wxT(" (based on eMule)\n"));
 	cv->AppendText(wxT("Visit http://www.amule.org to check if a new version is available.\n"));
 
 	// Insert two columns, currently without a header
 	wxListCtrl* MyInfoList = (wxListCtrl*)FindWindow(ID_MYSERVINFO);
-	MyInfoList->InsertColumn(0, wxT(""));	
-	MyInfoList->InsertColumn(1, wxT(""));	
+	MyInfoList->InsertColumn(0, wxEmptyString);
+	MyInfoList->InsertColumn(1, wxEmptyString);
 }
 
 CServerWnd::~CServerWnd()
@@ -173,7 +173,7 @@ void CServerWnd::UpdateMyInfo()
 	wxString buffer;
 
 	MyInfoList->DeleteAllItems();
-	MyInfoList->InsertItem(0, wxString(_("Status"))+":");
+	MyInfoList->InsertItem(0, _("Status:"));
 	if (theApp.serverconnect->IsConnected()) {
 		MyInfoList->SetItem(0, 1, _("Connected"));
 	}	else {
@@ -181,28 +181,30 @@ void CServerWnd::UpdateMyInfo()
 	}
 
 	if (theApp.serverconnect->IsConnected()) {
-		MyInfoList->InsertItem(1, wxString(_("IP")) +":"+ wxString(_("Port")));
+		MyInfoList->InsertItem(1, _("IP:Port"));
 		if (theApp.serverconnect->IsLowID()) {
-			buffer=_("Unknown"); 
+			buffer = _("Unknown"); 
 		} else {
-			uint32 myid=theApp.serverconnect->GetClientID();
-			uint8 d=myid/(256*256*256);myid-=d*(256*256*256);
-			uint8 c=myid/(256*256);myid-=c*256*256;
-			uint8 b=myid/(256);myid-=b*256;
-			buffer.Printf("%i.%i.%i.%i:%i",myid,b,c,d,theApp.glob_prefs->GetPort());
+			uint32 myid = theApp.serverconnect->GetClientID();
+			uint8 a = ( myid       ) & 0xFF;
+			uint8 b = ( myid >>  8 ) & 0xFF;
+			uint8 c = ( myid >> 16 ) & 0xFF;
+			uint8 d = ( myid >> 24 ) & 0xFF;
+			buffer.Printf(wxT("%i.%i.%i.%i:%i"),
+				a, b, c, d, theApp.glob_prefs->GetPort());
 		}
-		MyInfoList->SetItem(1,1,buffer);
+		MyInfoList->SetItem(1, 1, buffer);
 
-		buffer.Printf("%u",theApp.serverconnect->GetClientID());
-		MyInfoList->InsertItem(2,_("ID"));
+		buffer.Printf(wxT("%u"), theApp.serverconnect->GetClientID());
+		MyInfoList->InsertItem(2, _("ID"));
 		if (theApp.serverconnect->IsConnected()) {
 			MyInfoList->SetItem(2, 1, buffer);
 		}
 
-		MyInfoList->InsertItem(3,"");
+		MyInfoList->InsertItem(3, wxEmptyString);
 		if (theApp.serverconnect->IsLowID()) {
 			MyInfoList->SetItem(3, 1,_("Low ID"));
-		}	else {
+		} else {
 			MyInfoList->SetItem(3, 1,_("High ID"));
 		}
 	}
