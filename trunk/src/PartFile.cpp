@@ -1474,7 +1474,7 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 							limit = 1;
 						}
 						cur_src->SetDownloadLimit(limit);
-					} else { // Kry - Is this needed?
+					} else {
 						cur_src->DisableDownloadLimit();
 					}
 				}
@@ -3862,4 +3862,3 @@ bool CPartFile::IsDeadSource(const CUpDownClient* client)
 	return m_deadSources.IsDeadSource( client );
 }
 #endif
-
