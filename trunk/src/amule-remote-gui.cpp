@@ -205,6 +205,7 @@ void CamuleRemoteGuiApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS&)
 	} else if ( theApp.amuledlg->transferwnd->IsShown() ) {
 		downloadqueue->DoRequery(EC_OP_GET_DLOAD_QUEUE, EC_TAG_PARTFILE);
 		uploadqueue->ReQueryUp();
+		uploadqueue->ReQueryWait();
 	} else if ( theApp.amuledlg->searchwnd->IsShown() ) {
 		if ( searchlist->m_curr_search != -1 ) {
 			searchlist->DoRequery(EC_OP_SEARCH_RESULTS, EC_TAG_SEARCHFILE);
@@ -834,8 +835,9 @@ void CRemoteConnect::Send(CECPacket *packet)
 /*
  * List of uploading and waiting clients.
  */
-CUpDownClientListRem::CUpDownClientListRem(CRemoteConnect *conn) : CRemoteContainer<CUpDownClient, uint32, CEC_UpDownClient_Tag>(conn)
+CUpDownClientListRem::CUpDownClientListRem(CRemoteConnect *conn, int viewtype) : CRemoteContainer<CUpDownClient, uint32, CEC_UpDownClient_Tag>(conn)
 {
+	m_viewtype = viewtype;
 }
 
 POSITION CUpDownClientListRem::GetFirstFromList()
@@ -895,14 +897,14 @@ CUpDownClient *CUpDownClientListRem::CreateItem(CEC_UpDownClient_Tag *tag)
 	CUpDownClient *client = new CUpDownClient(tag);
 	ProcessItemUpdate(tag, client);
 	
-	theApp.amuledlg->transferwnd->clientlistctrl->InsertClient(client, vtUploading);
+	theApp.amuledlg->transferwnd->clientlistctrl->InsertClient(client, (ViewType)m_viewtype);
 	
 	return client;
 }
 
 void CUpDownClientListRem::DeleteItem(CUpDownClient *client)
 {
-	theApp.amuledlg->transferwnd->clientlistctrl->RemoveClient(client, vtUploading);
+	theApp.amuledlg->transferwnd->clientlistctrl->RemoveClient(client, (ViewType)m_viewtype);
 	delete client;
 }
 
@@ -939,7 +941,7 @@ void CUpDownClientListRem::ProcessItemUpdate(CEC_UpDownClient_Tag *tag, CUpDownC
 	credit_struct->nDownloadedLo = value & 0xffffffff;
 }
 
-CUpQueueRem::CUpQueueRem(CRemoteConnect *conn) : m_up_list(conn), m_wait_list(conn)
+CUpQueueRem::CUpQueueRem(CRemoteConnect *conn) : m_up_list(conn, vtUploading), m_wait_list(conn, vtQueued)
 {
 }
 

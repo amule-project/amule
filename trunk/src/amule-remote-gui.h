@@ -363,8 +363,9 @@ class CServerListRem : public CRemoteContainer<CServer, uint32, CEC_Server_Tag> 
 
 class CUpDownClientListRem : public CRemoteContainer<CUpDownClient, uint32, CEC_UpDownClient_Tag> {
 		std::list<CUpDownClient *>::iterator it;
+		int m_viewtype;
 	public:
-		CUpDownClientListRem(CRemoteConnect *);
+		CUpDownClientListRem(CRemoteConnect *, int viewtype);
 
 		POSITION GetFirstFromList();
 		CUpDownClient *GetNextFromList(POSITION &curpos);
@@ -388,7 +389,7 @@ class CUpQueueRem {
 		CUpQueueRem(CRemoteConnect *);
 		
 		bool ReQueryUp() { return m_up_list.DoRequery(EC_OP_GET_ULOAD_QUEUE, EC_TAG_UPDOWN_CLIENT); }
-//		bool ReQueryWait() { return m_wait_list.ReQuery(); }
+		bool ReQueryWait() { return m_wait_list.DoRequery(EC_OP_GET_WAIT_QUEUE, EC_TAG_UPDOWN_CLIENT); }
 		
 		uint32 GetWaitingUserCount() { return m_waiting_user_count; }
 		float GetKBps() { return m_kbps; }
