@@ -506,7 +506,7 @@ void CamuleDlg::AddDebugLogLine(bool addtostatusbar, const wxChar* line, ...)
 		bufferline.Truncate(1000); // Max size 1000 chars
 		va_end(argptr);
 		
-		AddLogLine(addtostatusbar, bufferline.c_str());
+		AddLogLine(addtostatusbar, "%s", bufferline.c_str());
 	}
 }
 

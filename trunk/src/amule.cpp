@@ -1389,7 +1389,7 @@ void CamuleApp::FlushQueuedLogLines() {
 	
 	while (!QueuedAddLogLines.IsEmpty()) {
 		line_to_add = QueuedAddLogLines.RemoveHead();
-		theApp.amuledlg->AddLogLine(line_to_add.addtostatus,line_to_add.line.c_str());
+		theApp.amuledlg->AddLogLine(line_to_add.addtostatus, "%s", line_to_add.line.c_str());
 	}
 	
 	m_LogQueueLock.Leave();
