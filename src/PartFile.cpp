@@ -2850,17 +2850,23 @@ void CPartFile::SetLastAnsweredTimeTimeout()
 
 Packet *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 {
-	if(!IsPartFile())
+	if(!IsPartFile()) 
 		return CKnownFile::CreateSrcInfoPacket(forClient);
 
-	if (forClient->GetRequestFile() != this)
+	if (forClient->GetRequestFile() != this) {
+		//printf("IT's not requesting this!!! oops!!\n");
 		return NULL;
+	}
 
-	if ( !(GetStatus() == PS_READY || GetStatus() == PS_EMPTY))
+	if ( !(GetStatus() == PS_READY || GetStatus() == PS_EMPTY)) {
+		//printf("Not ready!\n");
 		return NULL;
+	}
 
-	if ( m_SrcList.empty() )
+	if ( m_SrcList.empty() ) {
+		//printf("No sources!\n");
 		return NULL;
+	}
 
 	CSafeMemFile data(1024);
 	uint16 nCount = 0;
@@ -2909,9 +2915,9 @@ Packet *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 			uint32 dwID;
 			#warning We should use the IDHybrid here... but is not implemented yet
 			if(forClient->GetSourceExchangeVersion() > 2) {
-				dwID = cur_src->GetUserID();
-			} else {
 				dwID = ntohl(cur_src->GetUserID());
+			} else {
+				dwID = cur_src->GetUserID();
 			}
 			data.WriteUInt32(dwID);
 			data.WriteUInt16(cur_src->GetUserPort());
@@ -2926,6 +2932,7 @@ Packet *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 		}
 	}
 	if (!nCount) {
+		//printf("Nothing!\n");
 		return 0;
 	}
 	data.Seek(16, wxFromStart);
@@ -2951,7 +2958,7 @@ void CPartFile::AddClientSources(CSafeMemFile* sources,uint8 sourceexchangeversi
 	uint16 nCount = sources->ReadUInt16();
 	for (int i = 0;i != nCount;++i) {
 		uint32 dwID = sources->ReadUInt32();
-//		printf("Added source exchange v%u: %u(%s)\n",sourceexchangeversion,dwID,unicode2char(Uint32toStringIP(dwID)));
+		printf("Added source exchange v%u: %u(%s)\n",sourceexchangeversion,dwID,unicode2char(Uint32toStringIP(dwID)));
 		uint16 nPort = sources->ReadUInt16();
 		uint32 dwServerIP = sources->ReadUInt32();
 		uint16 nServerPort = sources->ReadUInt16();
