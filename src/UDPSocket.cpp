@@ -116,7 +116,7 @@ CUDPSocket::CUDPSocket(CServerConnect* in_serverconnect,wxIPV4address& address)
   cur_server = 0;
   serverconnect = in_serverconnect;
 
-  printf("*** UDP socket at %d  (chat)\n",address.Service());
+  printf("*** UDP socket at %d\n",address.Service());
   SetEventHandler(theApp,UDPSOCKET_HANDLER);
   SetNotify(wxSOCKET_INPUT_FLAG);
   Notify(TRUE);
