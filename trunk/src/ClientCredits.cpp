@@ -196,7 +196,7 @@ void CClientCreditsList::LoadList()
 	CSafeFile file;
 	wxString strFileName(theApp.ConfigDir + CLIENTS_MET_FILENAME);
 	if (!::wxFileExists(strFileName)) {
-		AddLogLineM(true, wxT("Failed to load creditfile"));
+		AddLogLineM(true, _("Failed to load creditfile"));
 		return;
 	}	
 	
@@ -205,7 +205,7 @@ void CClientCreditsList::LoadList()
 	uint8 version;
 	file.Read(&version, 1);
 	if (version != CREDITFILE_VERSION && version != CREDITFILE_VERSION_29){
-		AddLogLineM(false, wxT("Creditfile is out of date and will be replaced"));
+		AddLogLineM(false, _("Creditfile is out of date and will be replaced"));
 		file.Close();
 		return;
 	}
@@ -229,11 +229,11 @@ void CClientCreditsList::LoadList()
 		file.Close(); // close the file before copying
 		// safe? you bet it is
 		if (!wxCopyFile(strFileName,strBakFileName)) {
-			AddLogLineM(true, wxT("Could not create backup file ") + strFileName);
+			AddLogLineM(true, _("Could not create backup file ") + strFileName);
 		}
 		// reopen file
 		if (!file.Open(strFileName, CFile::read)) {
-			AddLogLineM(true, wxT("Failed to load creditfile"));
+			AddLogLineM(true, _("Failed to load creditfile"));
 			return;
 		}
 		file.Seek(1);
@@ -276,7 +276,7 @@ void CClientCreditsList::LoadList()
 
 void CClientCreditsList::SaveList()
 {
-	AddDebugLogLineM(false, wxT("Saved Credit list"));
+	AddDebugLogLineM(false, _("Saved Credit list"));
 	m_nLastSaved = ::GetTickCount();
 
 	wxString name(theApp.ConfigDir + CLIENTS_MET_FILENAME);
@@ -371,7 +371,7 @@ void CClientCredits::Verified(uint32 dwForIP){
 			m_pCredits->nDownloadedLo = 1;
 			m_pCredits->nUploadedHi = 0;
 			m_pCredits->nUploadedLo = 1; // in order to safe this client, set 1 byte
-			AddDebugLogLineM(false, wxT("Credits deleted due to new SecureIdent"));
+			AddDebugLogLineM(false, _("Credits deleted due to new SecureIdent"));
 		}
 	}
 	IdentState = IS_IDENTIFIED;
@@ -414,11 +414,11 @@ bool CClientCreditsList::CreateKeyPair(){
 		
 		privkeysink.MessageEnd();
 
-		AddDebugLogLineM(false,wxT("Created new RSA keypair"));
+		AddDebugLogLineM(false,_("Created new RSA keypair"));
 	}
 	catch(...)
 	{
-		AddDebugLogLineM(false, wxT("Failed to create new RSA keypair"));
+		AddDebugLogLineM(false, _("Failed to create new RSA keypair"));
 		wxASSERT ( false );
 		return false;
 	}
@@ -549,7 +549,7 @@ bool CClientCreditsList::VerifyIdent(CClientCredits* pTarget, const uchar* pachS
 					break;
 				case CRYPT_CIP_REMOTECLIENT:
 					if (theApp.serverconnect->GetClientID() == 0 || theApp.serverconnect->IsLowID()){
-						AddDebugLogLineM(false, wxT("Warning: Maybe SecureHash Ident fails because LocalIP is unknown"));
+						AddDebugLogLineM(false, _("Warning: Maybe SecureHash Ident fails because LocalIP is unknown"));
 						ChallengeIP = theApp.serverconnect->GetLocalIP();
 					}
 					else
