@@ -1258,7 +1258,9 @@ bool amuleProxyClientSocket::Start(const wxIPaddress &PeerAddress)
 	// Without this flag, we would end up with more states, 
 	// because we can't test the read buffer until we get 
 	// the next input event.
-	SetFlags(wxSOCKET_WAITALL);
+//	SetFlags(wxSOCKET_WAITALL);
+//	SetFlags(wxSOCKET_NOWAIT);
+	SetFlags(wxSOCKET_NONE);
 	bool ok = m_ProxyStateMachine->Start(PeerAddress, this);
 	RestoreState();
 	
