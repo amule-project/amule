@@ -373,10 +373,12 @@ public:
 	POSITION Find( ARG_TYPE searchValue, POSITION startAfter = NULL ) const
 	{
 		if ( head ) {
-			MYNODE* n = head;
 			if ( startAfter ) {
 				n = ((MYNODE*)startAfter.m_ptr)->next;
+			} else {
+				MYNODE* n = head;
 			}
+			
 			while ( n ) {
 				if ( n->data == searchValue ) {
 					return n;
