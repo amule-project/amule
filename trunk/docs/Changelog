@@ -42,6 +42,10 @@ Version 2.0.0rc8 - The "???????????" version.
 		  and another hidden bug in global searches' progress bar.
 		  (reported by ecforum)
 
+	permats:
+		* FIXED: Preferences -> Security -> Permissions wasn't being
+		  correctly saved restored.
+
 	Phoenix:
 		* Lots of unicode fixes.
 		* Added readline and history support to amuleweb/amulecmd text
@@ -85,32 +89,41 @@ Version 2.0.0rc8 - The "???????????" version.
 	Special Thanks To:
 
 		* Translators:
-		  experience.chris: (German    / de_DE)
-		  GhePeU:	    (Italian   / it_IT)
-		  KamiKazeNH:	    (Brazilian / pt_BR)
-		  Ogon:		    (Polish    / pl_PL)
-		  piarres:	    (Basque    / es_EU)
-		  pukxd:	    (Catalan   / es_CA)
-		  Supersnail	    (Dutch     / nl_NL)
-		  Typhon/Gusar:	    (Slovenian / sl_SL)
+		  Ateo:             (US english / en_US)
+		  biger [HUN]:      (Hungarian  / hu_HU)
+		  experience.chris: (German     / de_DE)
+		  GhePeU:	    (Italian    / it_IT)
+		  Gusar:	    (Slovenian  / sl_SL)
+		  ilbuio:	    (Italian    / it_IT)
+		  KamiKazeNH:	    (Brazilian  / pt_BR)
+		  mad_soft:	    (Spanish    / es_ES)
+		  nbfnw:	    (Chinese    / zh_CH)
+		  Ogon:		    (Polish     / pl_PL)
+		  piarres:	    (Basque     / es_EU)
+		  pukyxd:	    (Catalan    / es_CA)
+		  Supersnail	    (Dutch      / nl_NL)
+		  Typhon:	    (Slovenian  / sl_SL)
 
 		* Contributors:
-		  Baz,		boutros,
-		  fossybaer,	Frankk,
-		  han,		junaru,
-		  sebaX,	skolnick,
-		  sLiCeR\,	Vollstrecker,
-		  volpop
+		  alehack,	alus,
+		  Baz,		boutros,fossybaer,
+		  Frankk,	han,
+		  junaru,	sebaX,
+		  skolnick,	sLiCeR\,
+		  Vollstrecker,	volpop,
+		  {xmb}
 
 		* Bug and feature reporters:
 		  Banerjee,	chisky2003,
 		  Danny,	ecforum,
-		  fctk,		jaguarwan,
+		  fctk,		Gnucco,
+		  hades,	jaguarwan,
 		  jolupa,	juanii,
-		  kdka,		m2kio,
-		  Pableron,	pi-c,
-		  plaenky,	realcruncher,
-		  Sir,		Sniffer,
+		  kdka,		kno,
+		  m2kio,	Pableron,
+		  pi-c,		plaenky,
+		  realcruncher,	Sir,
+		  Sniffer,	sosonok,
 		  |Syrius|,	xplode_me
 
 		* Everyone at:
@@ -121,7 +134,7 @@ Version 2.0.0rc8 - The "???????????" version.
 
 		* All aMule users!!!
 
-	Welcome our new aMule team members: nachbarnebenan and one2one
+	Welcome our new aMule team members: lionel77, nachbarnebenan and one2one
 
 
 --------------------------------------------------------------------------------
