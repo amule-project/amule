@@ -191,16 +191,20 @@ void CDirectoryTreeCtrl::AddChildItem(wxTreeItemId hBranch, wxString const& strT
 
 wxString CDirectoryTreeCtrl::GetFullPath(wxTreeItemId hItem)
 {
-	wxString strDir;
-	wxTreeItemId hSearchItem = hItem;
+	wxASSERT(hItem.IsOk());
 	// don't traverse to the root item ... it will cause extra / to the path
-	while(hSearchItem.IsOk()) {
-		strDir = GetItemText(hSearchItem) + wxT("/") + strDir;
-		hSearchItem = GetItemParent(hSearchItem);
+	if (hItem == hRoot) {
+		return wxT("/");
+	} else {
+		wxString strDir = wxT("/");
+		while(hItem.IsOk() && (hItem != hRoot))  {	
+			strDir = wxT("/") + GetItemText(hItem)  + strDir;
+			hItem = GetItemParent(hItem);		
+		}
+		// Allways has a '/' at the end
+		wxASSERT(strDir.Last() == wxT('/'));
+		return strDir;
 	}
-	// Allways has a '/' at the end
-	wxASSERT(strDir.Last() == wxT('/'));
-	return strDir;
 }
 
 void CDirectoryTreeCtrl::AddSubdirectories(wxTreeItemId hBranch, wxString folder)
@@ -332,13 +336,11 @@ void CDirectoryTreeCtrl::CheckChanged(wxTreeItemId hItem, bool bChecked)
 }
 
 bool CDirectoryTreeCtrl::IsShared(wxString const& strDir)
-{
-	wxString tStrDir = strDir;
-		
+{	
 #ifdef __WXMSW__
-	return (m_lstShared.Index(tStrDir,FALSE) != wxNOT_FOUND); // case insensitive		
+	return (m_lstShared.Index(strDir,FALSE) != wxNOT_FOUND); // case insensitive		
 #else
-	return (m_lstShared.Index(tStrDir) != wxNOT_FOUND); 				
+	return (m_lstShared.Index(strDir) != wxNOT_FOUND); 				
 #endif
 }
 
