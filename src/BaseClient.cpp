@@ -164,7 +164,7 @@ void CUpDownClient::Init()
 	m_nUploadState = US_NONE;
 	m_dwLastBlockReceived = 0;
 
-
+	m_ValidSource = false;
 
 
 	m_nRemoteQueueRank = 0;
