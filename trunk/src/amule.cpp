@@ -1796,6 +1796,7 @@ void CamuleApp::OnFinishedHashing(wxCommandEvent& evt)
 				}
 			}
 		} else {
+			printf("Not added\n");
 			delete result;
 		}
 	}
