@@ -1,0 +1,15 @@
+/* XPM */
+static char *down_btn_xpm[] = {
+/* columns rows colors chars-per-pixel */
+"13 7 2 1",
+"  c black",
+"X c #c0c0c0",
+/* pixels */
+"XXXXXXXXXXXXX",
+"XXXXXXXXXXXXX",
+"XXXX     XXXX",
+"XXXXX   XXXXX",
+"XXXXXX XXXXXX",
+"XXXXXXXXXXXXX",
+"XXXXXXXXXXXXX",
+};
