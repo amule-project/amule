@@ -518,12 +518,6 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				#ifdef DEBUG_REMOTE_CLIENT_PROTOCOL
 				AddLogLineM(true,wxT("Remote Client: OP_STARTUPLOADREQ\n"));
 				#endif
-				// 0.43b except check for bad clients. Xaignar please review.
-				#ifdef __USE__DEBUG__
-				if (thePrefs.GetDebugClientTCPLevel() > 0) {
-					DebugRecv("OP_StartUpLoadReq", m_client);
-				}
-				#endif
 				theApp.downloadqueue->AddDownDataOverheadFileRequest(size);
 			
 				if (!m_client->CheckHandshakeFinished(OP_EDONKEYPROT, opcode)) {
@@ -1868,13 +1862,10 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				uchar abyHash[16];
 				data.ReadHash16(abyHash);
 				CKnownFile* pPartFile = theApp.sharedfiles->GetFileByID(abyHash);
-				#warning Xaignar - check this for agressive
-				/*
 				if (pPartFile == NULL){
-					m_client->CheckFailedFileIdReqs(abyHash);
 					break;
 				}
-				*/
+				
 				if (m_client->IsSupportingAICH() && pPartFile->GetAICHHashset()->GetStatus() == AICH_HASHSETCOMPLETE
 					&& pPartFile->GetAICHHashset()->HasValidMasterHash()) {
 					CSafeMemFile data_out;
