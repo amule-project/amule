@@ -390,21 +390,6 @@ CamuleDlg::~CamuleDlg()
 
 	theApp.OnlineSig(true);
 
-	// TODO: We want to free the memory used by the webserver
-	//       but currently it does wait in accept().
-	// delete theApp.webserver;
-	delete theApp.serverlist; theApp.serverlist = NULL;
-	delete theApp.searchlist; theApp.searchlist = NULL;
-	delete theApp.clientcredits; theApp.clientcredits = NULL;
-	// Destroying CDownloadQueue calls destructor for CPartFile
-	// calling CSharedFileList::SafeAddKFile occasally.
-	delete theApp.downloadqueue; theApp.downloadqueue = NULL;
-	delete theApp.sharedfiles; theApp.sharedfiles = NULL;
-	delete theApp.knownfiles; theApp.knownfiles = NULL;
-	delete theApp.uploadqueue; theApp.uploadqueue = NULL;
-	delete theApp.clientlist; theApp.clientlist = NULL;
-	delete theApp.glob_prefs; theApp.glob_prefs = NULL;
-	delete theApp.serverconnect; theApp.serverconnect = NULL;
 	printf("aMule dialog destroyed\n");
 }
 
