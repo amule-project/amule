@@ -420,7 +420,7 @@ wxSizer *transferTopPane( wxWindow *parent, bool call_fit, bool set_sizer )
 
     CMuleNotebook *item5 = new CMuleNotebook( parent, ID_CATEGORIES, wxDefaultPosition, wxSize(15,30), 0 );
     wxASSERT( item5 );
-    item1->Add( item5, 1, wxALIGN_CENTER|wxFIXED_MINSIZE, 5 );
+    item1->Add( item5, 1, wxALIGN_CENTER, 5 );
 
     wxBitmapButton *item6 = new wxBitmapButton( parent, ID_BTNSWWINDOW, amuleDlgImages( 16 ), wxDefaultPosition, wxSize(20,20) );
     item6->SetToolTip( _("switch download list to clients you're downloading from, with files also (some day)") );
@@ -503,7 +503,7 @@ wxSizer *messagePage( wxWindow *parent, bool call_fit, bool set_sizer )
     item1->Add( item3, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
     CFriendListCtrl *item6 = new CFriendListCtrl( parent, ID_FRIENDLIST, wxDefaultPosition, wxSize(160,120), wxLC_REPORT|wxSUNKEN_BORDER );
-    item1->Add( item6, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxRIGHT|wxBOTTOM|wxFIXED_MINSIZE, 5 );
+    item1->Add( item6, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxRIGHT|wxBOTTOM, 5 );
 
     item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
 
@@ -775,7 +775,7 @@ wxSizer *fileDetails( wxWindow *parent, bool call_fit, bool set_sizer )
 
     CFileDetailListCtrl *item63 = new CFileDetailListCtrl( parent, IDC_LISTCTRLFILENAMES, wxDefaultPosition, wxSize(-1,90), wxLC_REPORT|wxSUNKEN_BORDER );
     wxASSERT( item63 );
-    item61->Add( item63, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxFIXED_MINSIZE, 5 );
+    item61->Add( item63, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
     wxBoxSizer *item64 = new wxBoxSizer( wxHORIZONTAL );
 
@@ -933,7 +933,7 @@ wxSizer *downloadDlg( wxWindow *parent, bool call_fit, bool set_sizer )
 
     MuleGifCtrl *item1 = new MuleGifCtrl(parent,ID_ANIMATE,wxPoint(0,0),wxSize(272,60),wxNO_BORDER);
     wxASSERT( item1 );
-    item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL|wxFIXED_MINSIZE, 5 );
+    item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     wxStaticText *item2 = new wxStaticText( parent, ID_TEXT, _("Downloading, please wait ..."), wxDefaultPosition, wxDefaultSize, 0 );
     item0->Add( item2, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
@@ -1175,7 +1175,7 @@ item6->SetName(wxT("dloadScope"));
 
     wxWindow *item11 = new CColorFrameCtrl(parent,IDC_C0,20,14);
     wxASSERT( item11 );
-    item10->Add( item11, 0, wxALIGN_CENTER|wxFIXED_MINSIZE, 5 );
+    item10->Add( item11, 0, wxALIGN_CENTER, 5 );
 
     wxStaticText *item12 = new wxStaticText( parent, ID_TEXT, _("Current"), wxDefaultPosition, wxDefaultSize, 0 );
     item10->Add( item12, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxLEFT, 5 );
@@ -1190,7 +1190,7 @@ item6->SetName(wxT("dloadScope"));
 
     wxWindow *item15 = new CColorFrameCtrl(parent,IDC_C0_3,20,14);
     wxASSERT( item15 );
-    item14->Add( item15, 0, wxALIGN_CENTER|wxFIXED_MINSIZE, 5 );
+    item14->Add( item15, 0, wxALIGN_CENTER, 5 );
 
     wxStaticText *item16 = new wxStaticText( parent, ID_TEXT, _("Running average"), wxDefaultPosition, wxDefaultSize, 0 );
     item14->Add( item16, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxLEFT, 5 );
@@ -1201,7 +1201,7 @@ item6->SetName(wxT("dloadScope"));
 
     wxWindow *item18 = new CColorFrameCtrl(parent,IDC_C0_2,20,14);
     wxASSERT( item18 );
-    item17->Add( item18, 0, wxALIGN_CENTER|wxFIXED_MINSIZE, 5 );
+    item17->Add( item18, 0, wxALIGN_CENTER, 5 );
 
     wxStaticText *item19 = new wxStaticText( parent, ID_TEXT, _("Session average"), wxDefaultPosition, wxDefaultSize, 0 );
     item17->Add( item19, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxLEFT, 5 );
@@ -1234,7 +1234,7 @@ item23->SetName(wxT("otherScope"));
 
     wxWindow *item27 = new CColorFrameCtrl(parent,IDC_S3,20,14);
     wxASSERT( item27 );
-    item26->Add( item27, 0, wxALIGN_CENTER|wxLEFT|wxFIXED_MINSIZE, 5 );
+    item26->Add( item27, 0, wxALIGN_CENTER|wxLEFT, 5 );
 
     wxStaticText *item28 = new wxStaticText( parent, ID_TEXT, _("Active downloads"), wxDefaultPosition, wxDefaultSize, 0 );
     item26->Add( item28, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxLEFT, 5 );
@@ -1245,7 +1245,7 @@ item23->SetName(wxT("otherScope"));
 
     wxWindow *item30 = new CColorFrameCtrl(parent,IDC_S0,20,14);
     wxASSERT( item30 );
-    item29->Add( item30, 0, wxALIGN_CENTER|wxLEFT|wxFIXED_MINSIZE, 5 );
+    item29->Add( item30, 0, wxALIGN_CENTER|wxLEFT, 5 );
 
     wxStaticText *item31 = new wxStaticText( parent, ID_ACTIVEC, _("Active connections (1:1)"), wxDefaultPosition, wxDefaultSize, 0 );
     item29->Add( item31, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxLEFT, 5 );
@@ -1258,7 +1258,7 @@ item23->SetName(wxT("otherScope"));
 
     wxWindow *item33 = new CColorFrameCtrl(parent,IDC_S1,20,14);
     wxASSERT( item33 );
-    item32->Add( item33, 0, wxALIGN_CENTER|wxFIXED_MINSIZE, 5 );
+    item32->Add( item33, 0, wxALIGN_CENTER, 5 );
 
     wxStaticText *item34 = new wxStaticText( parent, ID_TEXT, _("Active uploads"), wxDefaultPosition, wxDefaultSize, 0 );
     item32->Add( item34, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxLEFT, 5 );
@@ -1296,7 +1296,7 @@ item39->SetName(wxT("uloadScope"));
 
     wxWindow *item44 = new CColorFrameCtrl(parent,IDC_C1,20,14);
     wxASSERT( item44 );
-    item43->Add( item44, 0, wxALIGN_CENTER|wxLEFT|wxFIXED_MINSIZE, 5 );
+    item43->Add( item44, 0, wxALIGN_CENTER|wxLEFT, 5 );
 
     wxStaticText *item45 = new wxStaticText( parent, ID_TEXT, _("Current"), wxDefaultPosition, wxDefaultSize, 0 );
     item43->Add( item45, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxLEFT, 5 );
@@ -1311,7 +1311,7 @@ item39->SetName(wxT("uloadScope"));
 
     wxWindow *item48 = new CColorFrameCtrl(parent,IDC_C1_3,20,14);
     wxASSERT( item48 );
-    item47->Add( item48, 0, wxALIGN_CENTER|wxFIXED_MINSIZE, 5 );
+    item47->Add( item48, 0, wxALIGN_CENTER, 5 );
 
     wxStaticText *item49 = new wxStaticText( parent, ID_TEXT, _("Running average"), wxDefaultPosition, wxDefaultSize, 0 );
     item47->Add( item49, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxLEFT, 5 );
@@ -1322,7 +1322,7 @@ item39->SetName(wxT("uloadScope"));
 
     wxWindow *item51 = new CColorFrameCtrl(parent,IDC_C1_2,20,14);
     wxASSERT( item51 );
-    item50->Add( item51, 0, wxALIGN_CENTER|wxFIXED_MINSIZE, 5 );
+    item50->Add( item51, 0, wxALIGN_CENTER, 5 );
 
     wxStaticText *item52 = new wxStaticText( parent, ID_TEXT, _("Session average"), wxDefaultPosition, wxDefaultSize, 0 );
     item50->Add( item52, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxLEFT, 5 );
@@ -2683,7 +2683,7 @@ wxSizer *PreferencesRemoteControlsTab( wxWindow *parent, bool call_fit, bool set
     wxStaticBox *item5 = new wxStaticBox( parent, -1, _("Webserver Parameters") );
     wxStaticBoxSizer *item4 = new wxStaticBoxSizer( item5, wxVERTICAL );
 
-    wxCheckBox *item6 = new wxCheckBox( parent, IDC_ENABLE_WEB, _("Run Webserver on startup"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxCheckBox *item6 = new wxCheckBox( parent, IDC_ENABLE_WEB, _("Run amuleweb on startup"), wxDefaultPosition, wxDefaultSize, 0 );
     item4->Add( item6, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
     wxBoxSizer *item7 = new wxBoxSizer( wxHORIZONTAL );
@@ -2753,13 +2753,13 @@ wxSizer *PreferencesRemoteControlsTab( wxWindow *parent, bool call_fit, bool set
 
     wxBoxSizer *item27 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxCheckBox *item28 = new wxCheckBox( parent, IDC_EXT_CONN_PASSWD_ENABLE, _("Enable password"), wxDefaultPosition, wxDefaultSize, 0 );
-    item27->Add( item28, 1, wxALIGN_CENTER, 5 );
+    wxStaticText *item28 = new wxStaticText( parent, ID_TEXT, _("Password"), wxDefaultPosition, wxDefaultSize, 0 );
+    item27->Add( item28, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
 
     CMuleTextCtrl *item29 = new CMuleTextCtrl( parent, IDC_EXT_CONN_PASSWD, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD );
-    item27->Add( item29, 1, wxALIGN_CENTER, 5 );
+    item27->Add( item29, 1, wxALIGN_CENTER|wxLEFT, 5 );
 
-    item20->Add( item27, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item20->Add( item27, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxRIGHT|wxTOP|wxBOTTOM, 5 );
 
     item0->Add( item20, 0, wxGROW|wxALL, 5 );
 
@@ -3549,13 +3549,13 @@ wxSizer *PreferencesProxyTab( wxWindow *parent, bool call_fit, bool set_sizer )
 
     wxBoxSizer *item1 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxStaticBitmap *item2 = new wxStaticBitmap( parent, ID_STATICBITMAP, connButImg( 0 ), wxDefaultPosition, wxDefaultSize );
+    wxStaticBitmap *item2 = new wxStaticBitmap( parent, ID_STATICBITMAP, amuleSpecial( 24 ), wxDefaultPosition, wxSize(16,16) );
     item1->Add( item2, 0, wxALIGN_CENTER|wxALL, 5 );
 
     wxStaticText *item3 = new wxStaticText( parent, ID_TEXT, _("Proxy"), wxDefaultPosition, wxDefaultSize, 0 );
     item1->Add( item3, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    item0->Add( item1, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item0->Add( item1, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
     wxStaticBox *item5 = new wxStaticBox( parent, -1, _("General") );
     wxStaticBoxSizer *item4 = new wxStaticBoxSizer( item5, wxVERTICAL );
@@ -5849,40 +5849,81 @@ wxBitmap amuleSpecial( size_t index )
     {
         static const unsigned char data[] = 
         {
-            163,162,160,163,162,160,163,162,160,163,162,160,163,162,160,163,162,160,163,162,160,163,162,160,163,
-            162,160,163,162,160,100,157,253,189,217,255,193,218,255,172,208,255,139,187,255,109,169,255,163,162,
-            160,163,162,160,163,162,160,163,162,160,163,162,160,163,162,160,163,162,160,163,162,160,163,162,160,
-            163,162,160,144,177,236,139,158,193,82,97,127,146,180,239,111,164,254,99,155,250,163,162,160,163,
-            162,160,163,162,160,163,162,160,163,162,160,163,162,160,163,162,160,163,162,160,163,162,160,102,159,
-            255,57,85,138,102,128,178,70,97,150,103,142,214,88,139,229,82,132,220,163,162,160,163,162,160,
-            163,162,160,163,162,160,163,162,160,163,162,160,163,162,160,163,162,160,163,162,160,92,146,238,58,
-            93,160,67,103,173,36,62,114,77,119,198,74,120,204,73,117,201,163,162,160,163,162,160,163,162,
-            160,163,162,160,163,162,160,163,162,160,163,162,160,163,162,160,163,162,160,78,125,210,76,121,204,
-            61,99,171,63,102,179,99,129,192,61,99,178,73,116,200,163,162,160,163,162,160,163,162,160,163,
-            162,160,163,162,160,163,162,160,163,162,160,163,162,160,163,162,160,96,146,235,78,120,197,51,85,
-            156,70,99,160,108,139,202,42,73,143,76,122,207,163,162,160,163,162,160,163,162,160,163,162,160,
-            163,162,160,163,162,160,163,162,160,163,162,160,92,145,237,98,146,231,81,128,216,88,129,206,117,
-            149,212,59,92,162,50,84,157,79,127,214,163,162,160,163,162,160,163,162,160,163,162,160,163,162,
-            160,163,162,160,163,162,160,163,162,160,101,150,237,89,137,224,77,123,208,91,131,204,85,120,189,
-            31,56,121,67,109,190,163,162,160,163,162,160,163,162,160,163,162,160,163,162,160,163,162,160,163,
-            162,160,163,162,160,113,161,243,101,148,231,80,127,215,75,119,201,90,131,207,29,54,117,53,89,
-            163,74,120,204,163,162,160,163,162,160,163,162,160,163,162,160,163,162,160,163,162,160,102,159,255,
-            123,170,251,116,161,240,86,134,221,76,122,207,82,129,215,36,65,131,42,74,143,74,120,203,163,
-            162,160,163,162,160,163,162,160,163,162,160,163,162,160,108,168,255,145,191,255,144,186,255,131,173,
-            248,96,144,229,79,127,214,87,137,227,38,67,134,39,68,137,75,121,206,163,162,160,163,162,160,
-            163,162,160,163,162,160,146,192,255,123,152,210,112,139,194,54,71,122,112,154,229,101,150,237,87,
-            137,227,86,137,227,40,69,138,45,77,148,78,125,210,163,162,160,163,162,160,163,162,160,163,162,
-            160,163,162,160,142,189,255,135,160,210,9,26,79,48,82,155,75,121,205,96,150,243,71,115,198,
-            36,65,132,59,98,175,82,132,219,163,162,160,163,162,160,163,162,160,163,162,160,163,162,160,163,
-            162,160,108,168,255,105,164,255,101,159,255,90,144,235,71,115,198,45,78,150,57,94,171,79,127,
-            214,87,138,228,163,162,160,163,162,160,163,162,160,163,162,160,163,162,160,163,162,160,163,162,160,
-            143,160,219,88,134,227,92,146,239,85,135,224,79,127,214,94,148,241,100,157,253,163,162,160,163,
-            162,160,163,162,160,163,162,160,163,162,160,163,162,160,163,162,160,163,162,160,163,162,160,82,82,
-            139,163,162,160,163,162,160,163,162,160,163,162,160,163,162,160,163,162,160,163,162,160,163,162,160,
-            163,162,160,163,162,160,163,162,160,163,162,160,163,162,160,163,162,160
+            220,218,213,220,218,213,220,218,213,220,218,213,220,218,213,220,218,213,220,218,213,220,218,213,220,
+            218,213,220,218,213,100,157,253,189,217,255,193,218,255,172,208,255,139,187,255,109,169,255,220,218,
+            213,220,218,213,220,218,213,220,218,213,220,218,213,220,218,213,220,218,213,220,218,213,220,218,213,
+            220,218,213,144,177,236,139,158,193,82,97,127,146,180,239,111,164,254,99,155,250,220,218,213,220,
+            218,213,220,218,213,220,218,213,220,218,213,220,218,213,220,218,213,220,218,213,220,218,213,102,159,
+            255,57,85,138,102,128,178,70,97,150,103,142,214,88,139,229,82,132,220,220,218,213,220,218,213,
+            220,218,213,220,218,213,220,218,213,220,218,213,220,218,213,220,218,213,220,218,213,92,146,238,58,
+            93,160,67,103,173,36,62,114,77,119,198,74,120,204,73,117,201,220,218,213,220,218,213,220,218,
+            213,220,218,213,220,218,213,220,218,213,220,218,213,220,218,213,220,218,213,78,125,210,76,121,204,
+            61,99,171,63,102,179,99,129,192,61,99,178,73,116,200,220,218,213,220,218,213,220,218,213,220,
+            218,213,220,218,213,220,218,213,220,218,213,220,218,213,220,218,213,96,146,235,78,120,197,51,85,
+            156,70,99,160,108,139,202,42,73,143,76,122,207,220,218,213,220,218,213,220,218,213,220,218,213,
+            220,218,213,220,218,213,220,218,213,220,218,213,92,145,237,98,146,231,81,128,216,88,129,206,117,
+            149,212,59,92,162,50,84,157,79,127,214,220,218,213,220,218,213,220,218,213,220,218,213,220,218,
+            213,220,218,213,220,218,213,220,218,213,101,150,237,89,137,224,77,123,208,91,131,204,85,120,189,
+            31,56,121,67,109,190,220,218,213,220,218,213,220,218,213,220,218,213,220,218,213,220,218,213,220,
+            218,213,220,218,213,113,161,243,101,148,231,80,127,215,75,119,201,90,131,207,29,54,117,53,89,
+            163,74,120,204,220,218,213,220,218,213,220,218,213,220,218,213,220,218,213,220,218,213,102,159,255,
+            123,170,251,116,161,240,86,134,221,76,122,207,82,129,215,36,65,131,42,74,143,74,120,203,220,
+            218,213,220,218,213,220,218,213,220,218,213,220,218,213,108,168,255,145,191,255,144,186,255,131,173,
+            248,96,144,229,79,127,214,87,137,227,38,67,134,39,68,137,75,121,206,220,218,213,220,218,213,
+            220,218,213,220,218,213,146,192,255,123,152,210,112,139,194,54,71,122,112,154,229,101,150,237,87,
+            137,227,86,137,227,40,69,138,45,77,148,78,125,210,220,218,213,220,218,213,220,218,213,220,218,
+            213,220,218,213,142,189,255,135,160,210,9,26,79,48,82,155,75,121,205,96,150,243,71,115,198,
+            36,65,132,59,98,175,82,132,219,220,218,213,220,218,213,220,218,213,220,218,213,220,218,213,220,
+            218,213,108,168,255,105,164,255,101,159,255,90,144,235,71,115,198,45,78,150,57,94,171,79,127,
+            214,87,138,228,220,218,213,220,218,213,220,218,213,220,218,213,220,218,213,220,218,213,220,218,213,
+            143,160,219,88,134,227,92,146,239,85,135,224,79,127,214,94,148,241,100,157,253,220,218,213,220,
+            218,213,220,218,213,220,218,213,220,218,213,220,218,213,220,218,213,220,218,213,220,218,213,82,82,
+            139,220,218,213,220,218,213,220,218,213,220,218,213,220,218,213,220,218,213,220,218,213,220,218,213,
+            220,218,213,220,218,213,220,218,213,220,218,213,220,218,213,220,218,213
         };
         wxImage image( 16, 16, (unsigned char*)data, TRUE );
-        image.SetMaskColour( 163, 162, 160);
+        image.SetMaskColour( 220, 218, 213);
+        wxBitmap bitmap( image );
+        return bitmap;
+    }
+    if (index == 24)
+    {
+        static const unsigned char data[] = 
+        {
+            220,218,213,220,218,213,220,218,213,220,218,213,220,218,213,220,218,213,220,218,213,220,218,213,220,
+            218,213,220,218,213,220,218,213,220,218,213,220,218,213,220,218,213,220,218,213,220,218,213,160,89,
+            134,220,218,213,220,218,213,220,218,213,220,218,213,220,218,213,220,218,213,220,218,213,220,218,213,
+            220,218,213,220,218,213,220,218,213,220,218,213,220,218,213,220,218,213,162,72,100,160,89,112,173,
+            119,145,220,218,213,220,218,213,220,218,213,220,218,213,220,218,213,220,218,213,220,218,213,220,218,
+            213,220,218,213,220,218,213,220,218,213,154,154,154,220,218,213,162,81,120,142,87,114,216,166,192,
+            220,218,213,232,180,205,172,152,164,159,159,159,220,218,213,220,218,213,160,164,162,220,218,213,220,
+            218,213,220,218,213,163,149,154,212,159,185,172,121,149,195,131,162,100,31,100,207,142,175,244,191,
+            216,255,224,245,213,166,190,152,140,148,220,218,213,160,154,158,168,139,152,160,158,158,220,218,213,
+            152,150,152,205,162,184,255,226,246,221,160,190,222,168,194,220,218,213,166,82,123,244,191,216,255,
+            224,245,219,158,188,197,134,166,185,130,158,190,125,158,251,123,186,178,128,152,180,139,159,184,129,
+            155,224,169,195,255,215,239,250,193,221,195,163,178,220,218,213,220,218,213,213,151,181,255,221,244,
+            255,206,233,255,209,237,248,136,191,225,118,170,255,144,205,214,112,161,250,150,199,255,207,235,244,
+            186,214,255,220,243,235,176,205,154,103,129,220,218,213,134,134,134,202,151,173,255,216,244,235,173,
+            205,181,98,140,214,107,159,255,148,201,255,149,202,255,143,200,214,111,160,213,140,176,255,213,240,
+            255,212,239,188,111,148,220,218,213,100,100,100,169,130,149,241,178,211,255,209,239,180,129,153,220,
+            218,213,162,104,134,243,143,192,255,162,215,221,129,173,148,89,112,152,97,124,229,164,197,255,201,
+            233,170,114,142,220,218,213,173,92,132,250,181,216,251,186,221,245,172,207,192,151,171,220,218,213,
+            220,218,213,220,138,178,255,162,213,173,133,153,220,218,213,220,218,213,227,163,194,255,209,241,202,
+            141,172,152,121,136,212,133,171,243,171,207,164,82,125,193,110,150,237,168,201,220,218,213,170,138,
+            153,251,160,205,255,172,220,186,133,160,220,218,213,179,144,162,245,170,207,225,151,188,255,194,229,
+            184,98,140,184,103,142,171,84,127,220,218,213,159,78,117,243,160,200,204,139,171,241,161,200,222,
+            134,178,211,124,166,248,164,205,171,127,149,235,160,197,204,119,160,158,73,114,234,153,193,231,148,
+            188,155,128,142,220,218,213,220,218,213,220,218,213,195,105,150,255,184,226,237,155,195,158,77,115,
+            159,76,115,241,161,200,252,168,212,239,142,190,159,77,119,220,218,213,172,81,128,214,123,168,220,
+            218,213,220,218,213,220,218,213,220,218,213,162,72,115,202,118,160,168,85,125,220,218,213,220,218,
+            213,175,95,134,244,158,201,180,91,134,220,218,213,220,218,213,100,100,100,166,97,131,220,218,213,
+            220,218,213,220,218,213,220,218,213,220,218,213,154,76,110,220,218,213,220,218,213,220,218,213,139,
+            64,100,168,83,125,152,72,111,220,218,213,220,218,213,220,218,213,160,148,153,220,218,213,220,218,
+            213,220,218,213,220,218,213,220,218,213,220,218,213,220,218,213,220,218,213,220,218,213,220,218,213,
+            220,218,213,220,218,213,220,218,213,220,218,213,220,218,213,220,218,213
+        };
+        wxImage image( 16, 16, (unsigned char*)data, TRUE );
+        image.SetMaskColour( 220, 218, 213);
         wxBitmap bitmap( image );
         return bitmap;
     }

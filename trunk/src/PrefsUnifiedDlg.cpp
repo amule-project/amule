@@ -142,7 +142,7 @@ PrefsPage pages[] =
     {
 		{ wxTRANSLATE("General"),		PreferencesGeneralTab,		13, NULL },
 		{ wxTRANSLATE("Connection"),		PreferencesConnectionTab,	14, NULL },
-		{ wxTRANSLATE("Proxy"),			PreferencesProxyTab,		14, NULL },
+		{ wxTRANSLATE("Proxy"),			PreferencesProxyTab,		24, NULL },
 		{ wxTRANSLATE("Message Filter"),	PreferencesMessagesTab,		23, NULL },
 		{ wxTRANSLATE("Remote Controls"),	PreferencesRemoteControlsTab,	11, NULL },
 		{ wxTRANSLATE("Online Signature"),	PreferencesOnlineSigTab,	21, NULL },
