@@ -17,7 +17,6 @@
 //along with this program; if not, write to the Free Software
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-//#define SERVER_NET_TEST
 
 #include <ctime>
 #include <cerrno>
@@ -61,6 +60,10 @@
 #include "server.h"		// Needed for CServer
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "amule.h"		// Needed for theApp
+
+
+#define DEBUG_SERVER_PROTOCOL
+
 
 BEGIN_EVENT_TABLE(CServerSocketHandler, wxEvtHandler)
 	EVT_SOCKET(SERVERSOCKET_HANDLER, CServerSocketHandler::ServerSocketHandler)
@@ -163,15 +166,15 @@ void CServerSocket::OnReceive(wxSocketError nErrorCode)
 bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 {
 	try {
-		#ifdef SERVER_NET_TEST
+		#ifdef DEBUG_SERVER_PROTOCOL
 		AddLogLineM(true,_("Processing Server Packet: "));
 		#endif
 		CServer* update;
 		switch(opcode) {
 			case OP_SERVERMESSAGE: {
 				/* Kry import of lugdunum 16.40 new features */
-				#ifdef SERVER_NET_TEST
-				AddLogLineM(true,_("Server message\n"));
+				#ifdef DEBUG_SERVER_PROTOCOL
+				AddLogLineM(true,_("Server: OP_SERVERMESSAGE\n"));
 				#endif
 				theApp.downloadqueue->AddDownDataOverheadServer(size);
 				char* buffer = new char[size-1];
@@ -253,8 +256,8 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				break;
 			}
 			case OP_IDCHANGE:{
-				#ifdef SERVER_NET_TEST
-				AddLogLineM(true,_("ServerMsg - OP_IDChange\n"));
+				#ifdef DEBUG_SERVER_PROTOCOL
+				AddLogLineM(true,_("Server: OP_IDCHANGE\n"));
 				#endif
 				theApp.downloadqueue->AddDownDataOverheadServer(size);
 				if (size < sizeof(LoginAnswer_Struct)) {
@@ -310,7 +313,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				serverconnect->clientid = la->clientid;
 
 				if (connectionstate != CS_CONNECTED) {
-					#ifdef SERVER_NET_TEST
+					#ifdef DEBUG_SERVER_PROTOCOL
 					AddLogLineM(true,_("Connected\n"));
 					#endif
 					SetConnectionState(CS_CONNECTED);
@@ -335,8 +338,8 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				break;
 			}
 			case OP_SEARCHRESULT: {
-				#ifdef SERVER_NET_TEST
-				AddLogLineM(true,_("ServerMsg - OP_SearchResult\n"));
+				#ifdef DEBUG_SERVER_PROTOCOL
+				AddLogLineM(true,_("Server: OP_SEARCHRESULT\n"));
 				#endif
 				theApp.downloadqueue->AddDownDataOverheadServer(size);
 				CServer* cur_srv = (serverconnect) ? serverconnect->GetCurrentServer() : NULL;
@@ -345,7 +348,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				break;
 			}
 			case OP_FOUNDSOURCES: {
-				#ifdef SERVER_NET_TEST
+				#ifdef DEBUG_SERVER_PROTOCOL
 				AddLogLineM(true,wxString::Format(_("ServerMsg - OP_FoundSources; sources = %u\n"), (UINT)(uchar)packet[16]));
 				#endif
 				theApp.downloadqueue->AddDownDataOverheadServer(size);
@@ -359,8 +362,8 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				break;
 			}
 			case OP_SERVERSTATUS: {
-				#ifdef SERVER_NET_TEST
-				AddLogLineM(true,_("ServerMsg - OP_ServerStatus\n"));
+				#ifdef DEBUG_SERVER_PROTOCOL
+				AddLogLineM(true,_("Server: OP_SERVERSTATUS\n"));
 				#endif
 				// FIXME some statuspackets have a different size -> why? structur?
 				if (size < 8) {
@@ -384,8 +387,8 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 			}
 			//<<--Working, but needs to be cleaned up..
 			case OP_SERVERIDENT: {
-				#ifdef SERVER_NET_TEST
-				AddLogLineM(true,_("ServerMsg - OP_ServerIdent\n"));
+				#ifdef DEBUG_SERVER_PROTOCOL
+				AddLogLineM(true,_("Server: OP_SERVERIDENT\n"));
 				#endif
 				//DumpMem(packet,size);
 
@@ -429,8 +432,8 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 			}
 			// tecxx 1609 2002 - add server's serverlist to own serverlist
 			case OP_SERVERLIST: {
-				#ifdef SERVER_NET_TEST
-				AddLogLineM(true,_("ServerMsg - OP_ServerList\n"));
+				#ifdef DEBUG_SERVER_PROTOCOL
+				AddLogLineM(true,_("Server: OP_SERVERLIST\n"));
 				#endif
 				CSafeMemFile* servers = new CSafeMemFile((BYTE*)packet,size);
 				uint8 count = servers->ReadUInt8();
@@ -461,8 +464,8 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				break;
 			}
 			case OP_CALLBACKREQUESTED: {
-				#ifdef SERVER_NET_TEST
-				AddLogLineM(true,_("ServerMsg - OP_CallbackRequested\n"));
+				#ifdef DEBUG_SERVER_PROTOCOL
+				AddLogLineM(true,_("Server: OP_CALLBACKREQUESTED\n"));
 				#endif
 				theApp.downloadqueue->AddDownDataOverheadServer(size);
 				if (size == 6) {
@@ -484,19 +487,23 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				break;
 			}
 			case OP_CALLBACK_FAIL: {
-				#ifdef SERVER_NET_TEST
-				AddLogLineM(true,_("ServerMsg - OP_Callback_Fail\n"));
+				#ifdef DEBUG_SERVER_PROTOCOL
+				AddLogLineM(true,_("Server: OP_CALLBACK_FAIL\n"));
 				#endif
 				break;
 			}
 			case OP_REJECT: {
-				#ifdef SERVER_NET_TEST
-				AddLogLineM(true,_("ServerMsg - OP_Reject\n"));
+				#ifdef DEBUG_SERVER_PROTOCOL
+				AddLogLineM(true,_("Server: OP_REJECT\n"));
 				#endif
 				AddLogLineM(false, _("Server rejected last command"));
 				break;
 			}
-			default:
+			default: {
+				#ifdef DEBUG_SERVER_PROTOCOL
+				AddLogLineM(true,_("Server: Unrecognized packet -- protocol error\n\n"));
+				#endif
+			}
 				;
 		}
 		return true;
@@ -513,7 +520,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 
 void CServerSocket::ConnectToServer(CServer* server)
 {
-	#ifdef SERVER_NET_TEST
+	#ifdef DEBUG_SERVER_PROTOCOL
 	AddLogLineM(true,_("Trying to connect\n"));
 	#endif
 	cur_server = new CServer(server);
@@ -540,8 +547,8 @@ void CServerSocket::OnError(wxSocketError nErrorCode)
 
 bool CServerSocket::PacketReceived(Packet* packet)
 {
-	#ifdef SERVER_NET_TEST
-	AddLogLineM(true,_("Server Packet Received:  "));
+	#ifdef DEBUG_SERVER_PROTOCOL
+	AddLogLineM(true,_("Server: Packet Received: "));
 	#endif
 	try {
 		if (packet->GetProtocol() == OP_PACKEDPROT) {
