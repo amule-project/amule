@@ -116,6 +116,8 @@ private:
 	wxMenu*		m_ClientMenu;
 	wxMenu*		m_PrioMenu;
 	wxBrush*	m_hilightBrush,*m_hilightUnfocusBrush;
+	wxCoord textwidth;
+	wxCoord textheight;
 };
 
 #endif // DOWNLOADLISTCTRL_H
