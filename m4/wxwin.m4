@@ -109,7 +109,6 @@ AC_DEFUN([AM_PATH_WXCONFIG],
     no_wx=""
 
     min_wx_version=ifelse([$1], ,2.4.2,$1)
-    AC_MSG_CHECKING(for wxWidgets version >= $min_wx_version)
 
     WX_CONFIG_WITH_ARGS="$WX_CONFIG_PATH $wx_config_args"
 
@@ -117,58 +116,86 @@ AC_DEFUN([AM_PATH_WXCONFIG],
     
     vers=`echo $WX_VERSION | $AWK 'BEGIN { FS = "."; } { printf "% d", ([$]1 * 1000 + [$]2) * 1000 + [$]3;}'`
     minvers=`echo $min_wx_version | $AWK 'BEGIN { FS = "."; } { printf "% d", ([$]1 * 1000 + [$]2) * 1000 + [$]3;}'`
+
+    if test "x${need_gui:-yes}" = "xyes" ; then
     
-    if test -n "$vers" && test "$vers" -ge $minvers; then
-	  case "$USE_DEBUG_STATIC" in
-	    yes)
-          WX_LIBS_STATIC=`$WX_CONFIG_WITH_ARGS --static --libs`
-		  ;;
-		*)
-          WX_LIBS=`$WX_CONFIG_WITH_ARGS --libs`
-		  ;;
-      esac
+      AC_MSG_CHECKING(for wxWidgets version >= $min_wx_version)
+      if test -n "$vers" && test "$vers" -ge $minvers; then
 
-      dnl we have CPPFLAGS included in CFLAGS included in CXXFLAGS
-      WX_CPPFLAGS=`$WX_CONFIG_WITH_ARGS --cppflags`
-      WX_CXXFLAGS=`$WX_CONFIG_WITH_ARGS --cxxflags`
-      WX_CFLAGS=`$WX_CONFIG_WITH_ARGS --cflags`
+        case "$USE_DEBUG_STATIC" in
+          yes)
+            WX_LIBS_STATIC=`$WX_CONFIG_WITH_ARGS --static --libs`
+            ;;
+          *)
+            WX_LIBS=`$WX_CONFIG_WITH_ARGS --libs`
+            ;;
+        esac
 
-      WX_CFLAGS_ONLY=`echo $WX_CFLAGS | sed "s@^$WX_CPPFLAGS *@@"`
-      WX_CXXFLAGS_ONLY=`echo $WX_CXXFLAGS | sed "s@^$WX_CFLAGS *@@"`
+        dnl we have CPPFLAGS included in CFLAGS included in CXXFLAGS
+        WX_CPPFLAGS=`$WX_CONFIG_WITH_ARGS --cppflags`
+        WX_CXXFLAGS=`$WX_CONFIG_WITH_ARGS --cxxflags`
+        WX_CFLAGS=`$WX_CONFIG_WITH_ARGS --cflags`
+
+        WX_CFLAGS_ONLY=`echo $WX_CFLAGS | sed "s@^$WX_CPPFLAGS *@@"`
+        WX_CXXFLAGS_ONLY=`echo $WX_CXXFLAGS | sed "s@^$WX_CFLAGS *@@"`
+      else
+        no_wx=yes
+      fi
+
+      if test "x$no_wx" = x ; then
+        AC_MSG_RESULT(yes (version $WX_VERSION))
+        ifelse([$2], , :, [$2])
+      else
+        if test "x$WX_VERSION" = x; then
+          dnl no wx-config at all
+          AC_MSG_RESULT(no)
+        else
+          AC_MSG_RESULT(no (version $WX_VERSION is not new enough))
+        fi
+
+        WX_CFLAGS=""
+        WX_CPPFLAGS=""
+        WX_CXXFLAGS=""
+        WX_LIBS=""
+        WX_LIBS_STATIC=""
+        ifelse([$3], , :, [$3])
+
+        AC_MSG_ERROR([
+         Please check that wx-config is in path, the directory
+         where wxWidgets libraries are installed (returned by
+         'wx-config --libs' command) is in LD_LIBRARY_PATH or
+         equivalent variable and wxWidgets version is new enough.
+         Or this might also be a bug in our configure. Please try again
+         with --with-wx-config=/usr/bin/wx-config
+         (replace /usr/bin/wx-config with a valid path to your wx-config)
+         * Note:
+         Most probably, either one of the above aren't correct, you don't
+         have wxGTK installed, or are missing wxGTK-devel (or equivalent) package.
+         ])
+      fi
+
     else
-      no_wx=yes
-    fi
 
-    if test "x$no_wx" = x ; then
-       AC_MSG_RESULT(yes (version $WX_VERSION))
-       ifelse([$2], , :, [$2])
-    else
-       if test "x$WX_VERSION" = x; then
-	  dnl no wx-config at all
-	  AC_MSG_RESULT(no)
-       else
-	  AC_MSG_RESULT(no (version $WX_VERSION is not new enough))
-       fi
+      if test "$vers" -ge 2005000; then
+        AC_MSG_CHECKING(for wxWidgets version >= $min_wx_version)
+        if test "x$no_wx" = x ; then
+          AC_MSG_RESULT(yes (version $WX_VERSION))
+        else
+          if test "x$WX_VERSION" = x; then
+            dnl no wx-config at all
+            AC_MSG_RESULT(no)
+          else
+            AC_MSG_RESULT(no (version $WX_VERSION is not new enough))
+          fi
+        fi
+      fi
+      WX_CFLAGS=""
+      WX_CPPFLAGS=""
+      WX_CXXFLAGS=""
+      WX_LIBS=""
+      WX_LIBS_STATIC=""
+      ifelse([$3], , :, [$3])
 
-       WX_CFLAGS=""
-       WX_CPPFLAGS=""
-       WX_CXXFLAGS=""
-       WX_LIBS=""
-       WX_LIBS_STATIC=""
-       ifelse([$3], , :, [$3])
-       
-       AC_MSG_ERROR([
-        Please check that wx-config is in path, the directory
-        where wxWidgets libraries are installed (returned by
-        'wx-config --libs' command) is in LD_LIBRARY_PATH or
-        equivalent variable and wxWidgets version is new enough.
-	Or this might also be a bug in our configure. Please try again
-	with --with-wx-config=/usr/bin/wx-config
-	(replace /usr/bin/wx-config with a valid path to your wx-config)
-	* Note:
-	Most probably, either one of the above aren't correct, you don't
-	have wxGTK installed, or are missing wxGTK-devel (or equivalent) package.
-       ])
     fi
   fi
   
