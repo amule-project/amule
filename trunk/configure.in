@@ -228,10 +228,10 @@ openbsd*)
 		DEBUG_FLAGS="-Wall -g -fno-inline -D__DEBUG__"
 	fi
 	;;
-*mingw32*)
+mingw32*)
 	AC_CHECK_TOOL(WINDRES, windres, :)
 	;;
-*cygwin*)
+cygwin*)
 	AC_CHECK_TOOL(WINDRES, windres, :)
 	;;
 esac
