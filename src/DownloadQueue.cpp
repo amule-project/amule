@@ -53,13 +53,10 @@
 #include "SearchList.h"		// Needed for CSearchFile
 #include "SharedFileList.h"	// Needed for CSharedFileList
 #include "PartFile.h"		// Needed for CPartFile
-#include "DownloadListCtrl.h"	// Needed for CDownloadListCtrl
-#include "TransferWnd.h"	// Needed for CTransferWnd
-#include "amuleDlg.h"		// Needed for CamuleDlg
+#include "Preferences.h"
 #include "amule.h"			// Needed for theApp
 #include "opcodes.h"		// Needed for MINWAIT_BEFORE_DLDISPLAY_WINDOWUPDATE
 #include "otherfunctions.h"	// Needed for GetTickCount
-#include "SearchDlg.h"		// Needed for CSearchDlg->GetCatChoice()
 #include <algorithm>
 
 // Max. file IDs per UDP packet
@@ -106,7 +103,7 @@ void CDownloadQueue::UpdateDisplayedInfo(bool force)
 	DWORD curTick = ::GetTickCount();
 
 	if(force || curTick-m_lastRefreshedDLDisplay > MINWAIT_BEFORE_DLDISPLAY_WINDOWUPDATE+(uint32)(rand()/(RAND_MAX/1000))) {
-		theApp.amuledlg->transferwnd->downloadlistctrl->UpdateItem(this);
+		Notify_DownloadCtrlUpdateItem(this);
 		m_lastRefreshedDLDisplay = curTick;
 	}
 }
@@ -166,7 +163,7 @@ void CDownloadQueue::Init()
 			if (toadd->GetStatus(true) == PS_READY) {
 				sharedfilelist->SafeAddKFile(toadd); // part files are always shared files
 			}
-			theApp.amuledlg->transferwnd->downloadlistctrl->AddFile(toadd);// show in downloadwindow
+			Notify_DownloadCtrlAddFile(toadd);// show in downloadwindow
 		} else {
 			printf("ERROR!\n");
 			delete toadd;
@@ -215,7 +212,7 @@ void CDownloadQueue::LoadSourceSeeds()
 	}
 }
 
-void CDownloadQueue::AddSearchToDownload(CSearchFile* toadd)
+void CDownloadQueue::AddSearchToDownload(CSearchFile* toadd, uint8 category)
 {
 	if (IsFileExisting(toadd->GetFileHash())) {
 		return;
@@ -224,26 +221,26 @@ void CDownloadQueue::AddSearchToDownload(CSearchFile* toadd)
 	if (!newfile) {
 		return;
 	}
-	AddSearchToDownloadCommon(newfile);
+	AddSearchToDownloadCommon(newfile, category);
 }
 
-void CDownloadQueue::AddSearchToDownload(const wxString& link)
+void CDownloadQueue::AddSearchToDownload(const wxString& link, uint8 category)
 {
 	CPartFile* newfile = new CPartFile(link);
 	if (!newfile) {
 		return;
 	}
-	AddSearchToDownloadCommon(newfile);
+	AddSearchToDownloadCommon(newfile, category);
 }
 
-void CDownloadQueue::AddSearchToDownloadCommon(CPartFile *newfile)
+void CDownloadQueue::AddSearchToDownloadCommon(CPartFile *newfile, uint8 category)
 {
 	if (newfile->GetStatus() == PS_ERROR) {
 		delete newfile;
 		return;
 	}
-	AddDownload(newfile, theApp.glob_prefs->AddNewFilesPaused());
-	newfile->SetCategory(theApp.amuledlg->searchwnd->GetCatChoice());
+	AddDownload(newfile, theApp.glob_prefs->AddNewFilesPaused(), category);
+	newfile->SetCategory(category);
 }
 
 void CDownloadQueue::StartNextFile()
@@ -276,7 +273,7 @@ void CDownloadQueue::StartNextFile()
 	}
 }
 
-void CDownloadQueue::AddFileLinkToDownload(CED2KFileLink* pLink)
+void CDownloadQueue::AddFileLinkToDownload(CED2KFileLink* pLink, uint8 category)
 {
 	CPartFile* newfile = new CPartFile(pLink);
 	if (!newfile) {
@@ -286,7 +283,7 @@ void CDownloadQueue::AddFileLinkToDownload(CED2KFileLink* pLink)
 		delete newfile;
 		newfile=NULL;
 	} else {
-		AddDownload(newfile,theApp.glob_prefs->AddNewFilesPaused());
+		AddDownload(newfile,theApp.glob_prefs->AddNewFilesPaused(), category);
 	}
 	if (pLink->HasValidSources()) {
 		if (newfile) {
@@ -305,7 +302,7 @@ void CDownloadQueue::AddFileLinkToDownload(CED2KFileLink* pLink)
 	}
 }
 
-void CDownloadQueue::AddDownload(CPartFile* newfile, bool paused)
+void CDownloadQueue::AddDownload(CPartFile* newfile, bool paused, uint8 category)
 {
 #ifdef __DEBUG__
 	if( !newfile->IsASanePartFile(true, "CDownloadQueue::AddDownload", __FILE__, __LINE__) ) {
@@ -321,12 +318,12 @@ void CDownloadQueue::AddDownload(CPartFile* newfile, bool paused)
 	SortByPriority();
 	CheckDiskspace();
 
-	newfile->SetCategory(theApp.amuledlg->searchwnd->GetCatChoice());
-	theApp.amuledlg->transferwnd->downloadlistctrl->AddFile(newfile);
+	newfile->SetCategory(category);
+	Notify_DownloadCtrlAddFile(newfile);
 	AddLogLineF(true, _("Downloading %s"),newfile->GetFileName().GetData());
 	wxString msgTemp;
 	msgTemp.Printf(wxString(wxT("Downloading %s"))+wxT("\n"),newfile->GetFileName().GetData());
-	theApp.amuledlg->ShowNotifier(msgTemp, TBN_DLOAD);
+	Notify_ShowNotifier(msgTemp, TBN_DLOAD, 0);
 	// Kry - Get sources if not stopped
 	if (!newfile->IsStopped()) {
 		SendLocalSrcRequest(newfile);
@@ -480,7 +477,7 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender,CUpDownClient* source)
 				// set request for this source
 				if ( (*it)->AddRequestForAnotherFile(sender)) {
 					// add it to uploadlistctrl
-					theApp.amuledlg->transferwnd->downloadlistctrl->AddSource(sender, *it,true);
+					Notify_DownloadCtrlAddSource(sender, *it, true);
 					delete source;
 					return;
 				}
@@ -509,7 +506,7 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender,CUpDownClient* source)
 
 	sender->m_SrcList.insert(source);
 	sender->IsCountDirty = true;
-	theApp.amuledlg->transferwnd->downloadlistctrl->AddSource(sender,source,false);
+	Notify_DownloadCtrlAddSource(sender,source,false);
 	UpdateDisplayedInfo();
 }
 
@@ -531,7 +528,7 @@ void CDownloadQueue::CheckAndAddKnownSource(CPartFile* sender,CUpDownClient* sou
 				return;
 			}
 			if (source->AddRequestForAnotherFile(sender)) {
-				theApp.amuledlg->transferwnd->downloadlistctrl->AddSource(sender,source,true);
+				Notify_DownloadCtrlAddSource(sender,source,true);
 			}
 			return;
 		}
@@ -546,7 +543,7 @@ void CDownloadQueue::CheckAndAddKnownSource(CPartFile* sender,CUpDownClient* sou
 
 	sender->m_SrcList.insert(source);
 	sender->IsCountDirty = true;
-	theApp.amuledlg->transferwnd->downloadlistctrl->AddSource(sender,source,false);
+	Notify_DownloadCtrlAddSource(sender,source,false);
 	UpdateDisplayedInfo();
 }
 
@@ -582,7 +579,7 @@ bool CDownloadQueue::RemoveSource(CUpDownClient* toremove, bool	WXUNUSED(updatew
 	toremove->SetDownloadState(DS_NONE);
 
 	// Remove from downloadlist widget
-	theApp.amuledlg->transferwnd->downloadlistctrl->RemoveSource(toremove, 0);
+	Notify_DownloadCtrlRemoveSource(toremove,0);
 	toremove->ResetFileStatusInfo();
 	toremove->SetRequestFile( NULL );
 	return removed;
@@ -921,7 +918,8 @@ void CDownloadQueue::AddLinksFromFile()
 				CED2KLink* pLink=CED2KLink::CreateLinkFromUrl(unicode2char(link));
 				if(pLink->GetKind()==CED2KLink::kFile) {
 					// All seems ok, add it to download queue.
-					AddFileLinkToDownload(pLink->GetFileLink());
+					// lfroen - using category 0
+					AddFileLinkToDownload(pLink->GetFileLink(), 0);
 				} else {
 					throw wxString(_("Bad link."));
 				}

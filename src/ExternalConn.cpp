@@ -451,7 +451,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 					
 				CServer *nsrv = new CServer( StrToLong(sPort), sIP );
 				nsrv->SetListName(sName);
-				theApp.amuledlg->serverwnd->serverlistctrl->AddServer(nsrv, true);
+				theApp.AddServer(nsrv);
 			}
 			return wxT("");
 		}
@@ -489,7 +489,8 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			if (item.Length() > 20) {
 				CED2KLink* pLink = CED2KLink::CreateLinkFromUrl(unicode2char(item.Mid(21)));
 				if (pLink->GetKind() == CED2KLink::kFile) {
-					theApp.downloadqueue->AddFileLinkToDownload(pLink->GetFileLink()); 
+					// lfroen - using default category 0
+					theApp.downloadqueue->AddFileLinkToDownload(pLink->GetFileLink(), 0); 
 					buffer= wxT("Link Added");
 				}
 			}
@@ -1641,7 +1642,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 					
 					CServer *nsrv = new CServer(StrToLong(sPort), sIP);
 					nsrv->SetListName(sName);
-					theApp.amuledlg->serverwnd->serverlistctrl->AddServer(nsrv, true);
+					theApp.AddServer(nsrv);
 					return wxT("Server Added");
 				}
 				return wxT("Server Not Added");
@@ -1771,7 +1772,8 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				if (item.Length() > 20) {
 					CED2KLink* pLink = CED2KLink::CreateLinkFromUrl(unicode2char(item.Mid(21)));
 					if (pLink->GetKind() == CED2KLink::kFile) {
-						theApp.downloadqueue->AddFileLinkToDownload(pLink->GetFileLink()); 
+						// lfroen - using default category 0
+						theApp.downloadqueue->AddFileLinkToDownload(pLink->GetFileLink(), 0); 
 						delete pLink;
 						return wxT("Link Added");
 					}

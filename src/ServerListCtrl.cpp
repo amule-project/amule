@@ -305,9 +305,12 @@ void CServerListCtrl::RemoveDeadServer()
 
 bool CServerListCtrl::AddServer(CServer* toadd,bool bAddToList)
 {
+	/*
+	  lfroen - do it outside of gui !
 	if (!server_list->AddServer(toadd)) {
 		return false;
 	}
+	*/
 	if (bAddToList) {
 		uint32 itemnr=GetItemCount();
 		uint32 newid=InsertItem(itemnr,toadd->GetListName());

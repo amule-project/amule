@@ -26,7 +26,6 @@
 #include "PartFile.h"		// Needed for CPartFile
 #include "otherfunctions.h" // md4cmp
 #include "amule.h"
-//#include "amuleDlg.h"
 #include "CMD4Hash.h"		// Needed for CMD4Hash
 
 

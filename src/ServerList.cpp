@@ -51,12 +51,9 @@
 #include "packets.h"		// Needed for CInvalidPacket
 #include "opcodes.h"		// Needed for MET_HEADER
 #include "SafeFile.h"		// Needed for CSafeFile
-#include "ServerListCtrl.h"	// Needed for CServerListCtrl
-#include "ServerWnd.h"		// Needed for CServerWnd
 #include "HTTPDownloadDlg.h"	// Needed for CHTTPDownloadDlg
 #include "Preferences.h"	// Needed for CPreferences
 #include "otherfunctions.h"	// Needed for GetTickCount
-#include "amuleDlg.h"		// Needed for CamuleDlg
 #include "amule.h"			// Needed for theApp
 #include "GetTickCount.h"
 
@@ -98,7 +95,8 @@ uint8 CServerList::AutoUpdate()
 		} else {
 			strTempFilename =  theApp.ConfigDir + wxString::Format(wxT("server_auto%u.met"), temp_count);
 
-			CHTTPDownloadDlg *dlg=new CHTTPDownloadDlg(theApp.amuledlg->serverwnd,strURLToDownload,strTempFilename);
+			// lfroen - this must go to the gui side. By now, avoid to reference gui members of CamuleApp
+			CHTTPDownloadDlg *dlg=new CHTTPDownloadDlg(theApp.GetTopWindow(),strURLToDownload,strTempFilename);
 			int retval=dlg->ShowModal();
 			if(retval==0) {
 				temp_count++;		
@@ -145,12 +143,15 @@ bool CServerList::Init()
 
 bool CServerList::AddServermetToList(const wxString& strFile, bool merge)
 {
+	/*
+	  lfroen - this checked in CamuleApp::NotifyEvent if needed
 	if (!theApp.amuledlg || !theApp.amuledlg->serverwnd || !theApp.amuledlg->serverwnd->serverlistctrl) {
 		return false;
 	}
+	*/
 	
 	if (!merge) {
-		theApp.amuledlg->serverwnd->serverlistctrl->DeleteAllItems();
+		Notify_ServerRemoveAll();
 		this->RemoveAllServers();
 	}
 	CSafeFile servermet;
@@ -180,7 +181,7 @@ bool CServerList::AddServermetToList(const wxString& strFile, bool merge)
 
 		ServerMet_Struct sbuffer;
 		uint32 iAddCount = 0;
-		theApp.amuledlg->serverwnd->serverlistctrl->Freeze();
+		Notify_ServerFreeze();
 
 		for (uint32 j = 0;j < fservercount;j++) {
 			// get server
@@ -201,14 +202,14 @@ bool CServerList::AddServermetToList(const wxString& strFile, bool merge)
 			if (newserver->GetListName().IsEmpty()) {
 				newserver->SetListName(wxT("Server ") +newserver->GetAddress());
 			}
-			if (!theApp.amuledlg->serverwnd->serverlistctrl->AddServer(newserver,true)) {
+			if (!theApp.AddServer(newserver)) {
 				CServer* update = theApp.serverlist->GetServerByAddress(newserver->GetAddress(), newserver->GetPort());
 				if(update) {
 					update->SetListName( newserver->GetListName());
 					if(!newserver->GetDescription().IsEmpty()) {
 						update->SetDescription( newserver->GetDescription());
 					}
-					theApp.amuledlg->serverwnd->serverlistctrl->RefreshServer(update);
+					Notify_ServerRefresh(update);
 				}
 				delete newserver;
 			} else {
@@ -223,7 +224,7 @@ bool CServerList::AddServermetToList(const wxString& strFile, bool merge)
 			}
 			*/
 		}
-		theApp.amuledlg->serverwnd->serverlistctrl->Thaw();
+		Notify_ServerThaw();
     
 		if (!merge) {
 			AddLogLineF(true,_("%i servers in server.met found"),fservercount);
@@ -248,9 +249,11 @@ bool CServerList::AddServer(CServer* in_server)
 		}
 	}
 	CServer* test_server = GetServerByAddress(in_server->GetAddress(), in_server->GetPort());
-	if (test_server && theApp.amuledlg) {
+	// lfroen - it's ok, gui status checked in Notify
+	// if (test_server && theApp.amuledlg) {
+	if (test_server) {
 		test_server->ResetFailedCount();
-		theApp.amuledlg->serverwnd->serverlistctrl->RefreshServer( test_server );
+		Notify_ServerRefresh( test_server );
 		return false;
 	}
 	list.AddTail(in_server); //AddTail(in_server);
@@ -275,7 +278,7 @@ void CServerList::ServerStats()
 			}
 		}
 		if(ping_server->GetFailedCount() >= theApp.glob_prefs->GetDeadserverRetries() && theApp.glob_prefs->DeadServer()) {
-			theApp.amuledlg->serverwnd->serverlistctrl->RemoveServer(ping_server);
+			Notify_ServerRemove(ping_server);
 			return;
 		}
 		Packet* packet = new Packet(OP_GLOBSERVSTATREQ, 4);
@@ -286,7 +289,7 @@ void CServerList::ServerStats()
 		ping_server->SetLastPinged(::GetTickCount());
 		//ping_server->SetLastPingedTime(temp);
 		ping_server->AddFailedCount();
-		theApp.amuledlg->serverwnd->serverlistctrl->RefreshServer(ping_server);
+		Notify_ServerRefresh(ping_server);
 		theApp.uploadqueue->AddUpDataOverheadServer(packet->GetPacketSize());
 		theApp.serverconnect->SendUDPPacket(packet, ping_server, true);
 		/* Initial Import Test (Creteil) BEGIN Leave commented for the moment ...
@@ -544,7 +547,7 @@ void CServerList::AddServersFromTextFile(wxString strFilename,bool isstaticserve
 			AddLogLineM(true,wxString(_("Server added: "))+nsrv->GetAddress()); 
 		}
 
-		if (!theApp.amuledlg->serverwnd->serverlistctrl->AddServer(nsrv, true))	{
+		if (!theApp.AddServer(nsrv))	{
 			delete nsrv;
 			CServer* srvexisting = GetServerByAddress(strHost, atoi(unicode2char(strPort)));
 			if (srvexisting) {
@@ -552,9 +555,7 @@ void CServerList::AddServersFromTextFile(wxString strFilename,bool isstaticserve
 				srvexisting->SetIsStaticMember(true);
 				// Barry - Was always high
 				srvexisting->SetPreference(priority); 
-				if (theApp.amuledlg->serverwnd) {
-					theApp.amuledlg->serverwnd->serverlistctrl->RefreshServer(srvexisting);
-				}
+				Notify_ServerRefresh(srvexisting);
 			}
 		}
 	}

@@ -442,7 +442,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 					host.s_addr=ip;
 					CServer* srv = new CServer(port, char2unicode(inet_ntoa(host)));
 					srv->SetListName(srv->GetFullIP());
-					if (!theApp.amuledlg->serverwnd->serverlistctrl->AddServer(srv, true)) {
+					if (!theApp.AddServer(srv)) {
 						delete srv;
 					} else {
 						addcount++;

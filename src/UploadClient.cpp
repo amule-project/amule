@@ -31,7 +31,6 @@
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "Preferences.h"	// Needed for CPreferences
-#include "amuleDlg.h"		// Needed for CamuleDlg
 #include "otherstructs.h"	// Needed for Requested_Block_Struct
 #include "sockets.h"		// Needed for CServerConnect
 #include "PartFile.h"		// Needed for PR_POWERSHARE
@@ -479,7 +478,7 @@ void CUpDownClient::ProcessExtendedInfo(const CSafeMemFile* data, CKnownFile* te
 		wxString error = wxT("CUpDownClient::ProcessExtendedInfo: Unknown Exception");
 		throw(error);
 	}
-	theApp.amuledlg->transferwnd->queuelistctrl->RefreshClient(this);
+	Notify_QlistRefreshClient(this);
 }
 
 
@@ -570,7 +569,7 @@ uint32 CUpDownClient::SendBlockData(float kBpsToSend){
 	m_cSendblock++;
 	if (m_cSendblock == 30){
 		m_cSendblock = 0;
-		theApp.amuledlg->transferwnd->uploadlistctrl->RefreshClient(this);
+		Notify_UploadCtrlRefreshClient(this);
 	}
 
 	kBpsUp *= lambdaAvg;	// 1st part of averaging filter; do it here in case we return "0"
@@ -751,22 +750,22 @@ void  CUpDownClient::UnBan(){
 	m_dwBanTime = 0;
 	SetWaitStartTime();
 	theApp.uploadqueue->UpdateBanCount();
-	theApp.amuledlg->transferwnd->ShowQueueCount(theApp.uploadqueue->GetWaitingUserCount());
+	Notify_ShowQueueCount(theApp.uploadqueue->GetWaitingUserCount());
 	for (POSITION pos = m_RequestedFiles_list.GetHeadPosition();pos != 0; ) {
 		Requested_File_Struct* cur_struct = m_RequestedFiles_list.GetNext(pos);
 		cur_struct->badrequests = 0;
 		cur_struct->lastasked = 0;	
 	}
-	//theApp.amuledlg->transferwnd->queuelistctrl->RefreshClient(this, true, true);
+	//Notify_QlistRefreshClient(this);
 }
 
 void CUpDownClient::Ban(){
 	//printf("entered in : CUpDownClient::Ban\n");
 	m_bBanned = true;
 	theApp.uploadqueue->UpdateBanCount();
-	theApp.amuledlg->transferwnd->ShowQueueCount(theApp.uploadqueue->GetWaitingUserCount());
+	Notify_ShowQueueCount(theApp.uploadqueue->GetWaitingUserCount());
 	m_dwBanTime = ::GetTickCount();
-	theApp.amuledlg->transferwnd->queuelistctrl->RefreshClient(this);
+	Notify_QlistRefreshClient(this);
 	AddDebugLogLineM(false,wxString::Format(_("Client '%s' seems to be an aggressive client and is banned from the uploadqueue"),unicode2char(GetUserName())));
 }
 

@@ -35,16 +35,10 @@
 #include "UploadQueue.h"	// Interface declarations
 #include "ServerList.h"		// Needed for CServerList
 #include "ClientCredits.h"	// Needed for CClientCreditsList
-#include "StatisticsDlg.h"	// Needed for CStatisticsDlg
 #include "OScopeCtrl.h"		// Needed for DelayPoints
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
-#include "DownloadListCtrl.h"	// Needed for CDownloadListCtrl
-#include "ServerListCtrl.h"	// Needed for CServerListCtrl
-#include "ServerWnd.h"		// Needed for CServerWnd
 #include "server.h"			// Needed for CServer
-#include "QueueListCtrl.h"	// Needed for CQueueListCtrl
 #include "sockets.h"		// Needed for CServerConnect
-#include "UploadListCtrl.h"	// Needed for CUploadListCtrl
 #include "KnownFile.h"		// Needed for CKnownFile
 #include "packets.h"		// Needed for Packet
 #include "TransferWnd.h"	// Needed for CTransferWnd
@@ -53,8 +47,8 @@
 #include "opcodes.h"		// Needed for MAX_PURGEQUEUETIME
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "otherfunctions.h"	// Needed for GetTickCount
-#include "amuleDlg.h"		// Needed for CamuleDlg
 #include "amule.h"			// Needed for theApp
+#include "Preferences.h"
 
 //TODO rewrite the whole networkcode, use overlapped sockets
 
@@ -139,7 +133,7 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd){
 		newclient = waitinglist.GetAt(toadd);
 		lastupslotHighID = true; // VQB LowID alternate		
 		RemoveFromWaitingQueue(toadd, true);
-		theApp.amuledlg->transferwnd->ShowQueueCount(waitinglist.GetCount());
+		Notify_ShowQueueCount(waitinglist.GetCount());
 	} else {
 		//prevent another potential access of a suspended upload
 	
@@ -263,7 +257,7 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd){
 	if (reqfile) {
 		reqfile->statistic.AddAccepted();
 	}
-	theApp.amuledlg->transferwnd->uploadlistctrl->AddClient(newclient);
+	Notify_UploadCtrlAddClient(newclient);
 
 }
 
@@ -418,7 +412,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
 			}
 			// VQB end
 			client->SendRankingInfo();
-			theApp.amuledlg->transferwnd->queuelistctrl->RefreshClient(client);
+			Notify_QlistRefreshClient(client);
 			return;			
 		} else if ( client->Compare(cur_client) ) {
 			// another client with same ip or hash
@@ -441,7 +435,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
 		CServer* srv = new CServer(client->GetServerPort(), char2unicode(inet_ntoa(host)));
 		srv->SetListName(srv->GetAddress());
 		
-		if (!theApp.amuledlg->serverwnd->serverlistctrl->AddServer(srv, true)) {
+		if (!theApp.AddServer(srv)) {
 			delete srv;
 		}
 		
@@ -470,8 +464,8 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
 		waitinglist.AddTail(client);
 		client->SetUploadState(US_ONUPLOADQUEUE);
 		client->SendRankingInfo();
-		theApp.amuledlg->transferwnd->queuelistctrl->AddClient(client);
-		theApp.amuledlg->transferwnd->ShowQueueCount(waitinglist.GetCount());
+		Notify_QlistAddClient(client);
+		Notify_ShowQueueCount(waitinglist.GetCount());
 	}
 }
 
@@ -480,7 +474,7 @@ bool CUploadQueue::RemoveFromUploadQueue(CUpDownClient* client, bool updatewindo
 	POSITION pos = uploadinglist.Find( client );
 	if ( pos != NULL ) {
 		if (updatewindow) {
-			theApp.amuledlg->transferwnd->uploadlistctrl->RemoveClient( client );
+			Notify_UploadCtrlRemoveClient(client);
 		}
 		uploadinglist.RemoveAt(pos);
 		if( client->GetTransferedUp() ) {
@@ -607,8 +601,8 @@ void CUploadQueue::SuspendUpload( const CMD4Hash& filehash )
 			waitinglist.AddTail(potential);
 			potential->SetUploadState(US_ONUPLOADQUEUE);
 			potential->SendRankingInfo();
-			theApp.amuledlg->transferwnd->queuelistctrl->AddClient(potential);
-			theApp.amuledlg->transferwnd->ShowQueueCount(waitinglist.GetCount());
+			Notify_QlistRefreshClient(potential);
+			Notify_ShowQueueCount(waitinglist.GetCount());
 			printf("%s: ReQueued user '%s'\n", unicode2char(base16hash), unicode2char(potential->GetUserName()));
 		}
 	}
@@ -620,7 +614,7 @@ bool CUploadQueue::RemoveFromWaitingQueue(CUpDownClient* client, bool updatewind
 	if (pos) {
 		RemoveFromWaitingQueue(pos,updatewindow);
 		if (updatewindow) {
-			theApp.amuledlg->transferwnd->ShowQueueCount(waitinglist.GetCount());
+			Notify_ShowQueueCount(waitinglist.GetCount());
 		}
 		return true;
 	} else {
@@ -636,7 +630,7 @@ void CUploadQueue::RemoveFromWaitingQueue(POSITION pos, bool updatewindow)
 		todelete->UnBan();
 	}
 	//if (updatewindow)
-	theApp.amuledlg->transferwnd->queuelistctrl->RemoveClient(todelete);
+	Notify_QlistRemoveClient(todelete);
 	todelete->SetUploadState(US_NONE);
 }
 
