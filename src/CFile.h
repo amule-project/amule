@@ -59,6 +59,8 @@ public:
 		// standard values for file descriptor
 	enum { fd_invalid = -1, fd_stdin, fd_stdout, fd_stderr };
 
+	enum SeekMode { start = wxFromStart, current = wxFromCurrent, end = wxFromEnd}; 
+	
 	// static functions
 	// ----------------
 		// check whether a regular file by this name exists
@@ -103,9 +105,9 @@ public:
 
 	// file pointer operations (return ofsInvalid on failure)
 		// move ptr ofs bytes related to start/current off_t/end of file
-	virtual off_t Seek(off_t ofs, wxSeekMode mode = wxFromStart) const;
+	virtual off_t Seek(off_t ofs, CFile::SeekMode mode = start) const;
 		// move ptr to ofs bytes before the end
-	virtual off_t SeekEnd(off_t ofs = 0) { return Seek(ofs, wxFromEnd); }
+	virtual off_t SeekEnd(off_t ofs = 0) { return Seek(ofs, end); }
 		// get current off_t
 	virtual off_t GetPosition() const;
 		// get current file length

@@ -25,26 +25,55 @@
 #include "CMemFile.h"		// Needed for CMemFile
 
 
+namespace Kademlia{
+	class CUInt128;
+};
+
+
+enum EUtf8Str
+{
+	utf8strNone,
+	utf8strOptBOM,
+	utf8strRaw
+};
+
 ///////////////////////////////////////////////////////////////////////////////
 class CFileDataIO
 {
  public:
 	virtual off_t Read(void *pBuf, off_t nCount) const = 0;
 	virtual size_t Write(const void *pBuf, size_t nCount) = 0;
-	
+	virtual off_t GetPosition() const = 0;
+	virtual off_t GetLength() const = 0;
+ 
 	virtual uint8		ReadUInt8() const;
 	virtual uint16		ReadUInt16() const;
 	virtual uint32		ReadUInt32() const;
 //	virtual void		ReadUInt128(Kademlia::CUInt128 *pVal) const;
 	virtual void		ReadHash16(unsigned char* pVal) const;
-	virtual wxString	ReadString() const;
+#warning Unicode
+#ifdef __NET_UNICODE__
+ 	virtual CString ReadString(bool bOptUTF8);
+	virtual CString ReadString(bool bOptUTF8, UINT uRawSize);
+	virtual CStringW ReadStringUTF8();
+#else
+ 	virtual wxString	ReadString() const;
+#endif
 
 	virtual void WriteUInt8(uint8 nVal);
 	virtual void WriteUInt16(uint16 nVal);
 	virtual void WriteUInt32(uint32 nVal);
 //	virtual void WriteUInt128(const Kademlia::CUInt128 *pVal);
 	virtual void WriteHash16(const unsigned char* pVal);
+#warning Unicode
+#ifdef __NET_UNICODE__	
+ 	virtual void WriteString(const CString& rstr, EUtf8Str eEncode = utf8strNone);
+	virtual void WriteString(LPCSTR psz);
+	virtual void WriteLongString(const CString& rstr, EUtf8Str eEncode = utf8strNone);
+	virtual void WriteLongString(LPCSTR psz);
+#else
 	virtual void WriteString(const wxString& rstr);
+#endif
  };
  
 
@@ -59,6 +88,16 @@ class CSafeFile : public CFile, public CFileDataIO
 
 	virtual off_t Read(void *pBuf, off_t nCount) const;
 	virtual size_t Write(const void *pBuf, size_t nCount);
+	virtual off_t GetPosition() const {
+		return CFile::GetPosition();
+	}
+	virtual off_t GetLength() const {
+		return CFile::GetLength();
+	}
+	virtual off_t Seek(off_t lOff, CFile::SeekMode nFrom = CFile::start) const {
+		return CFile::Seek(lOff, nFrom);
+	}
+	
  };
  
 
@@ -80,6 +119,30 @@ public:
 	virtual size_t Write(const void *pBuf, size_t nCount) {
 		return CMemFile::Write( pBuf, nCount );
 	}
+
+	virtual off_t Seek(off_t lOff, wxSeekMode from = wxFromStart) {
+		return CMemFile::Seek(lOff, from);
+	}
+	
+	virtual off_t GetPosition() const {
+		return CMemFile::GetPosition();
+	}
+	virtual off_t GetLength() const {
+		return CMemFile::GetLength();
+	}
+
+	virtual uint8		ReadUInt8() const;
+	virtual uint16		ReadUInt16() const;
+	virtual uint32		ReadUInt32() const;
+//	virtual void		ReadUInt128(Kademlia::CUInt128 *pVal) const;
+	virtual void		ReadHash16(unsigned char* pVal) const;
+	
+	virtual void WriteUInt8(uint8 nVal);
+	virtual void WriteUInt16(uint16 nVal);
+	virtual void WriteUInt32(uint32 nVal);
+//	virtual void WriteUInt128(const Kademlia::CUInt128 *pVal);
+	virtual void WriteHash16(const unsigned char* pVal);
+
 };
 
 
@@ -95,6 +158,15 @@ class CSafeBufferedFile : public CFile, public CFileDataIO
 
 	virtual off_t Read(void *pBuf, off_t nCount) const;
 	virtual size_t Write(const void *pBuf, size_t nCount);
+	virtual off_t Seek(off_t lOff, CFile::SeekMode nFrom = CFile::start) {
+		return CFile::Seek(lOff, nFrom);
+	}
+	virtual off_t GetPosition() const {
+		return CFile::GetPosition();
+	}
+	virtual off_t GetLength() const {
+		return CFile::GetLength();
+	}
 };
  
 

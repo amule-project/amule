@@ -95,6 +95,7 @@ amule_SOURCES = ListenSocket.cpp \
 	EMSocket.cpp \
 	AddFriend.cpp \
 	AddFileThread.cpp \
+	AICHSyncThread.cpp \
 	BarShader.cpp \
 	BaseClient.cpp \
 	ChatSelector.cpp \
@@ -154,6 +155,8 @@ amule_SOURCES = ListenSocket.cpp \
 	SharedFileList.cpp \
 	SharedFilesCtrl.cpp \
 	SharedFilesWnd.cpp \
+	SHA.cpp \
+	SHAHashSet.cpp \
 	sockets.cpp \
 	StatisticsDlg.cpp \
 	TransferWnd.cpp \

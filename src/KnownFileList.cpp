@@ -27,7 +27,6 @@
 #include "amule.h"
 #include "CMD4Hash.h"		// Needed for CMD4Hash
 
-
 #include <wx/listimpl.cpp> // ye old magic incantation
 WX_DEFINE_LIST(KnownFileList);
 
@@ -139,8 +138,6 @@ void CKnownFileList::Save() {
 	delete file;
 }
 
-
-
 void CKnownFileList::Clear() {	
 	wxMutexLocker sLock(list_mut);
 	for ( CKnownFileMap::iterator it = m_map.begin(); it != m_map.end(); it++ )
@@ -165,7 +162,7 @@ CKnownFile* CKnownFileList::FindKnownFile(wxString filename,uint32 in_date,uint3
 
 	for (CKnownFileMap::iterator pos = m_map.begin(); pos != m_map.end(); pos++ ) {
 		cur_file = pos->second;
-		if ((abs(cur_file->GetFileDate() - in_date) < 20) && cur_file->GetFileSize() == in_size && !cur_file->GetFileName().Cmp(filename)) {
+		if ((abs((int)cur_file->GetFileDate() - (int)in_date) < 20) && cur_file->GetFileSize() == in_size && !cur_file->GetFileName().Cmp(filename)) {
 			return cur_file;
 		}
 	}
@@ -207,7 +204,7 @@ bool CKnownFileList::Append(CKnownFile* Record)
 			uint32 in_date =  it->second->GetFileDate();
 			uint32 in_size =  it->second->GetFileSize();
 			wxString filename = it->second->GetFileName();
-			if (((abs(Record->GetFileDate() - (in_date)) < 20) && Record->GetFileSize() == in_size && !Record->GetFileName().Cmp(filename)) || IsOnDuplicates(filename, in_date, in_size)) {
+			if (((abs((int)Record->GetFileDate() - (int)in_date) < 20) && Record->GetFileSize() == in_size && !Record->GetFileName().Cmp(filename)) || IsOnDuplicates(filename, in_date, in_size)) {
 				// The file is already on the list, ignore it.
 				return false;
 			} else {
@@ -231,7 +228,7 @@ CKnownFile* CKnownFileList::IsOnDuplicates(wxString filename,uint32 in_date,uint
 	while (node) {
 		CKnownFile* duplicate = node->GetData();
 		cur_file = duplicate;
-		if ((abs(cur_file->GetFileDate() - in_date) < 20) && cur_file->GetFileSize() == in_size && !cur_file->GetFileName().Cmp(filename)) {
+		if ((abs((int)cur_file->GetFileDate() - (int)in_date) < 20) && cur_file->GetFileSize() == in_size && !cur_file->GetFileName().Cmp(filename)) {
 			return cur_file;
 		}
 		node = node->GetNext();

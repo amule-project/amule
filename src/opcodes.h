@@ -92,7 +92,7 @@ enum {
 
 #define RSAKEYSIZE                         384             //384 bits
 
-#define EMBLOCKSIZE                               184320
+#define EMBLOCKSIZE                               (uint32)184320
 
 #define COMPILE_DATE				__DATE__
 #define COMPILE_TIME				__TIME__
@@ -139,7 +139,7 @@ enum {
 
 // you shouldn't change anything here if you are not really sure, or amule will probaly not work
 #define	MAXFRAGSIZE				1300
-#define	PARTSIZE				9728000
+#define	PARTSIZE				(uint32)9728000
 const int	BLOCKSIZE =			184320;
 #define	OP_EDONKEYHEADER			0xE3
 #define	OP_EDONKEYPROT				OP_EDONKEYHEADER

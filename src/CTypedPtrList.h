@@ -20,6 +20,8 @@
 #ifndef CTYPEDPTRLIST_H
 #define CTYPEDPTRLIST_H
 
+#include <cstddef> 
+
 /**
  * The iterators used by CList.
  *

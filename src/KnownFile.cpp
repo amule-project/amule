@@ -377,7 +377,59 @@ void CKnownFile::GetMetaDataTags()
 #endif
 }
 
+bool CKnownFile::CreateAICHHashSetOnly()
+{
+	#warning AICH IMPORT
+	#if 0
+	wxASSERT( !IsPartFile() );
+	m_pAICHHashSet->FreeHashSet();
+	FILE* file = _tfsopen(GetFilePath(), _T("rbS"), _SH_DENYNO); // can not use _SH_DENYWR because we may access a completing part file
+	if (!file){
+		theApp.QueueLogLine(false, GetResString(IDS_ERR_FILEOPEN) + _T(" - %hs"), GetFilePath(), _T(""), strerror(errno));
+		return false;
+	}
+	// we are reading the file data later in 8K blocks, adjust the internal file stream buffer accordingly
+	setvbuf(file, NULL, _IOFBF, 1024*8*2);
 
+	// create aichhashset
+	uint32 togo = m_nFileSize;
+	for (uint16 hashcount = 0; togo >= PARTSIZE; ) {
+		CAICHHashTree* pBlockAICHHashTree = m_pAICHHashSet->m_pHashTree.FindHash(hashcount*PARTSIZE, PARTSIZE);
+		wxASSERT( pBlockAICHHashTree != NULL );
+		CreateHashFromFile(file, PARTSIZE, NULL, pBlockAICHHashTree);
+		// SLUGFILLER: SafeHash - quick fallback
+		if (theApp.emuledlg==NULL || !theApp.emuledlg->IsRunning()){ // in case of shutdown while still hashing
+			fclose(file);
+			return false;
+		}
+
+		togo -= PARTSIZE;
+		hashcount++;
+	}
+
+	if (togo != 0){
+		CAICHHashTree* pBlockAICHHashTree = m_pAICHHashSet->m_pHashTree.FindHash(hashcount*PARTSIZE, togo);
+		wxASSERT( pBlockAICHHashTree != NULL );
+		CreateHashFromFile(file, togo, NULL, pBlockAICHHashTree);
+	}
+	
+	m_pAICHHashSet->ReCalculateHash(false);
+	if ( m_pAICHHashSet->VerifyHashTree(true) ){
+		m_pAICHHashSet->SetStatus(AICH_HASHSETCOMPLETE);
+		if (!m_pAICHHashSet->SaveHashSet()){
+			theApp.QueueLogLine(true, GetResString(IDS_SAVEACFAILED));
+		}
+	}
+	else{
+		// now something went pretty wrong
+		theApp.QueueDebugLogLine(true,_T("Failed to calculate AICH Hashset from file %s"), GetFileName());
+	}
+	
+	fclose(file);
+	file = NULL;
+	return true;	
+	#endif
+}
 
 void CKnownFile::SetFileSize(uint32 nFileSize)
 {

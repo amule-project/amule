@@ -410,12 +410,12 @@ CTag::CTag(const CFile &in_data)
 	}
 	else if (tag.type == 1){ // HASH (never seen)
 		printf("CTag::CTag(CFile*); Reading *unverified* HASH tag\n");
-		in_data.Seek(16, wxFromCurrent);
+		in_data.Seek(16, CFile::current);
 	}
 	else if (tag.type == 5){ // BOOL (never seen; propably 1 bit)
 		// NOTE: This is preventive code, it was never tested
 		printf("CTag::CTag(CFile*); Reading *unverified* BOOL tag\n");
-		in_data.Seek(1, wxFromCurrent);
+		in_data.Seek(1, CFile::current);
 	}
 	else if (tag.type == 6){ // BOOL Array (never seen; propably <numbits> <bits>)
 		// NOTE: This is preventive code, it was never tested
@@ -423,7 +423,7 @@ CTag::CTag(const CFile &in_data)
 		uint16 len;
 		in_data.Read(&len,2);
 		ENDIAN_SWAP_I_16(len);
-		in_data.Seek((len+7)/8, wxFromCurrent);
+		in_data.Seek((len+7)/8, CFile::current);
 	}
 	else if (tag.type == 7){ // BLOB (never seen; propably <len> <byte>)
 		// NOTE: This is preventive code, it was never tested
@@ -431,7 +431,7 @@ CTag::CTag(const CFile &in_data)
 		uint16 len;
 		in_data.Read(&len,2);
 		ENDIAN_SWAP_I_16(len);
-		in_data.Seek(len, wxFromCurrent);
+		in_data.Seek(len, CFile::current);
 	}
 	else{
 		if (tag.type==0x00) throw(CInvalidPacket("Bad met file"));
