@@ -96,10 +96,13 @@ const unsigned char SOCKS5_REPLY_TTL_EXPIRED		= 0x06;
 const unsigned char SOCKS5_REPLY_COMMAND_NOT_SUPPORTED	= 0x07;
 const unsigned char SOCKS5_REPLY_ATYP_NOT_SUPPORTED	= 0x08;
 
-/******************************************************************************/
+//------------------------------------------------------------------------------
+// wxProxyType
+//------------------------------------------------------------------------------
 
 /*
- * These constants must match the integer values saved in the configuration file
+ * These constants must match the integer values saved in the configuration file,
+ * DO NOT CHANGE THIS ORDER!!!
  */
 enum wxProxyType {
 	wxPROXY_NONE = -1,
@@ -107,6 +110,10 @@ enum wxProxyType {
 	wxPROXY_SOCKS4,
 	wxPROXY_HTTP
 };
+
+//------------------------------------------------------------------------------
+// wxProxyData
+//------------------------------------------------------------------------------
 
 class wxProxyData
 {
@@ -133,7 +140,9 @@ public:
 	wxString	m_Password;
 };
 
-/******************************************************************************/
+//------------------------------------------------------------------------------
+// ProxyEventHandler
+//------------------------------------------------------------------------------
 
 class ProxyEventHandler :
 #ifndef AMULE_DAEMON
@@ -159,8 +168,9 @@ private:
 #endif
 };
 
-/******************************************************************************/
-
+//------------------------------------------------------------------------------
+// ProxyStateMachine
+//------------------------------------------------------------------------------
 /* This size is just to be a little bit greater than the UDP buffer used in aMule.
  * Proxy protocol needs much less than this. 1024 would be ok. */
 const unsigned int wxPROXY_BUFFER_SIZE = 5*1024;
@@ -225,6 +235,9 @@ protected:
 	unsigned int		m_PacketLenght;
 };
 
+//------------------------------------------------------------------------------
+// Socks5StateMachine
+//------------------------------------------------------------------------------
 const unsigned int SOCKS5_MAX_STATES = 14;
 
 enum Socks5State {
@@ -277,7 +290,47 @@ private:
 	Socks5StateProcessor m_process_state[SOCKS5_MAX_STATES];
 };
 
-/******************************************************************************/
+//------------------------------------------------------------------------------
+// Socks4StateMachine
+//------------------------------------------------------------------------------
+const unsigned int SOCKS4_MAX_STATES = 5;
+
+// Declare this inside the class and always start at state 0!
+enum Socks4State {
+	SOCKS4_STATE_START = 0,
+	SOCKS4_STATE_SEND_COMMAND_REQUEST,
+	SOCKS4_STATE_RECEIVE_COMMAND_REPLY,
+	SOCKS4_STATE_PROCESS_COMMAND_REPLY,
+	SOCKS4_STATE_END
+};
+
+class Socks4StateMachine;
+typedef void (Socks4StateMachine::*Socks4StateProcessor)(bool entry);
+class Socks4StateMachine : public ProxyStateMachine
+{
+public:
+	/* Constructor */
+	Socks4StateMachine(
+		const wxProxyData &ProxyData,
+		wxProxyCommand ProxyCommand);
+	void process_state(t_sm_state state, bool entry);
+	t_sm_state next_state(t_sm_event event);
+	bool IsEndState() const { return m_state == SOCKS4_STATE_END; }
+	
+private:
+	/* State Processors */
+	void process_start(bool entry);
+	void process_send_command_request(bool entry);
+	void process_receive_command_reply(bool entry);
+	void process_process_command_reply(bool entry);
+	void process_end(bool entry);
+	/* Private Vars */
+	Socks4StateProcessor m_process_state[SOCKS4_MAX_STATES];
+};
+
+//------------------------------------------------------------------------------
+// amuleProxy
+//------------------------------------------------------------------------------
 
 class amuleProxy
 {
@@ -298,24 +351,6 @@ public:
 	unsigned char	GetLastReply(void) const		{ return m_LastReply; }
 
 private:
-	/* SOCKS4 */
-	bool DoSocks4(wxIPaddress &address, wxProxyCommand cmd);
-	bool DoSocks4Request(wxIPaddress &address, wxProxyCommand cmd);
-	bool DoSocks4Reply(void);
-	bool DoSocks4CmdConnect(void);
-	bool DoSocks4CmdBind(void);
-	
-	/* SOCKS5 */
-	bool DoSocks5(wxIPaddress &address, wxProxyCommand cmd);
-	bool DoSocks5Authentication(void);
-	bool DoSocks5AuthenticationUsernamePassword(void);
-	bool DoSocks5AuthenticationGSSAPI(void);
-	bool DoSocks5Request(wxIPaddress &address, wxProxyCommand cmd);
-	bool DoSocks5Reply(void);
-	bool DoSocks5CmdConnect(void);
-	bool DoSocks5CmdBind(void);
-	bool DoSocks5CmdUDPAssociate(void);
-
 	/* HTTP */
 	bool DoHttp(wxIPaddress &address, wxProxyCommand cmd);
 	bool DoHttpRequest(wxIPaddress &address, wxProxyCommand cmd);
