@@ -313,25 +313,25 @@ CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request)
 		CECTag filetag(EC_TAG_PARTFILE, cur_file->GetFullName());
 
 		filetag.AddTag(CECTag(EC_TAG_PARTFILE_SIZE_FULL,
-			wxString::Format("%ul",cur_file->GetFileSize())));
+			wxString::Format(wxT("%ul"),cur_file->GetFileSize())));
 		filetag.AddTag(CECTag(EC_TAG_PARTFILE_SIZE_XFER,
-			wxString::Format("%ul",cur_file->GetTransfered())));
+			wxString::Format(wxT("%ul"),cur_file->GetTransfered())));
 		filetag.AddTag(CECTag(EC_TAG_PARTFILE_SIZE_DONE,
-			wxString::Format("%ul",cur_file->GetCompletedSize())));
+			wxString::Format(wxT("%ul"),cur_file->GetCompletedSize())));
 		filetag.AddTag(CECTag(EC_TAG_PARTFILE_DOWN_SPEED,
-			wxString::Format("%li",(long)(cur_file->GetKBpsDown()*1024))));
+			wxString::Format(wxT("%li"),(long)(cur_file->GetKBpsDown()*1024))));
 		filetag.AddTag(CECTag(EC_TAG_PARTFILE_STATUS,
-			wxString::Format("%d",cur_file->GetStatus())));
+			wxString::Format(wxT("%d"),cur_file->GetStatus())));
 		filetag.AddTag(CECTag(EC_TAG_PARTFILE_PRIO,
-			wxString::Format("%d",cur_file->IsAutoDownPriority() ? 
+			wxString::Format(wxT("%d"),cur_file->IsAutoDownPriority() ? 
 							cur_file->GetDownPriority() + 10 :
 							cur_file->GetDownPriority())));
 		filetag.AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT,
-			wxString::Format("%d",cur_file->GetSourceCount())));
+			wxString::Format(wxT("%d"),cur_file->GetSourceCount())));
 		filetag.AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT,
-			wxString::Format("%d",cur_file->GetNotCurrentSourcesCount())));
+			wxString::Format(wxT("%d"),cur_file->GetNotCurrentSourcesCount())));
 		filetag.AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT_XFER,
-			wxString::Format("%d",cur_file->GetTransferingSrcCount())));
+			wxString::Format(wxT("%d"),cur_file->GetTransferingSrcCount())));
 		filetag.AddTag(CECTag(EC_TAG_PARTFILE_ED2K_LINK,
 					(theApp.serverconnect->IsConnected() && !theApp.serverconnect->IsLowID()) ?
 						theApp.CreateED2kSourceLink(cur_file) :
@@ -362,7 +362,7 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request)
 			for(int i = 0; i < request->GetTagCount();i++) {
 				CECTag *tag = request->GetTagByIndex(i);
 				wxString link = tag->GetTagString();
-				CED2KLink* pLink=CED2KLink::CreateLinkFromUrl(link);
+				CED2KLink* pLink = CED2KLink::CreateLinkFromUrl(unicode2char(link));
 				if ( pLink->GetKind() == CED2KLink::kFile ) {
 					theApp.downloadqueue->AddFileLinkToDownload(pLink->GetFileLink(), 0);
 				} else {
