@@ -30,6 +30,9 @@
 #include <string.h>
 #include <errno.h>
 
+/* XXX: does '/' work on M$ OSes? */
+#define CAS_DIR_SEPARATOR	'/'
+
 /* XXX This needs to be replaced so that we use
  * autoconf to detect the target OS -- As of now
  * it should compile fine in other non UNIX-like
@@ -43,7 +46,6 @@
 #if defined(unix) || defined(__unix__) || defined(__unix)
 #include <unistd.h>
 #include <pwd.h>
-#include <errno.h>
 #include <fcntl.h>
 #define CAS_UNIX
 #endif
@@ -109,7 +111,8 @@ char *get_path(char *file)
 		return NULL;
 
 	strcpy(ret, saved_home);
-	strcat(ret, "/");
+	ret[home_len] = CAS_DIR_SEPARATOR;
+	ret[home_len+1] = '\0';
 	strcat(ret, file);
 	/* the string is guaranteed to be null-terminated
 	 * so no need to do this...

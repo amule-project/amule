@@ -50,9 +50,9 @@ int create_html(char stats[20][80], char *lines[6], char template[120])
 	FILE *temp;
 
 
-	sprintf(version,"cas %s",CAS_VERSION);
-	sprintf(upload,"%s kB/s",stats[6]);
-	sprintf(download,"%s kB/s",stats[5]);
+	snprintf(version, 25, "cas %s", CAS_VERSION);
+	snprintf(upload, 25, "%s kB/s", stats[6]);
+	snprintf(download, 25, "%s kB/s", stats[5]);
 
 
 	char *search[] = {"#VERSION#", "#CLIENT#", "#NICK#", "#UPLOADRATE#" ,
