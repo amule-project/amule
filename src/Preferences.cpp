@@ -589,8 +589,7 @@ typedef struct {
  * Add new languages here, as this list overrides the one defined in muuli.wdr
  */
 static LangInfo aMuleLanguages[] = {
-// No need to mess with this one, it's set directly to be always the first
-//	{ wxLANGUAGE_DEFAULT,			wxTRANSLATE("System default") },
+	{ wxLANGUAGE_DEFAULT,			wxTRANSLATE("System default") },
 	{ wxLANGUAGE_ARABIC,			wxTRANSLATE("Arabic") },
 	{ wxLANGUAGE_BASQUE,			wxTRANSLATE("Basque") },
 	{ wxLANGUAGE_BULGARIAN,			wxTRANSLATE("Bulgarian") },
@@ -633,26 +632,17 @@ static LangInfo aMuleLanguages[] = {
 };
 
 
+bool TranslatedSort( const LangInfo& a, const LangInfo& b ) {
+	return wxStricmp( wxGetTranslation( a.name ), wxGetTranslation( b.name) ) < 0;
+};
+
+
 class Cfg_Lang : public Cfg_Tmpl<int>
 {
 public:
 	Cfg_Lang()
-	 : Cfg_Tmpl<int>( wxEmptyString, m_selection, 0 )
+		: Cfg_Tmpl<int>( wxEmptyString, m_selection, 0 )
 	{
-		// Count languages
-		for (m_numLangs = 0; aMuleLanguages[m_numLangs].id != wxLANGUAGE_UNKNOWN; m_numLangs++) ;
-
-		m_sortOrder = new int[m_numLangs];
-		// initialize sort order to unsorted
-		for (int i = 0; i < m_numLangs; i++) {
-			m_sortOrder[i] = i;
-		}
-		m_sortOrderValid = false;
-	}
-
-	virtual ~Cfg_Lang()
-	{
-		delete [] m_sortOrder;
 	}
 
 	virtual void LoadFromFile(wxConfigBase* WXUNUSED(cfg)) {}
@@ -662,16 +652,11 @@ public:
 	virtual bool TransferFromWindow()
 	{
 		if ( Cfg_Tmpl<int>::TransferFromWindow() ) { 
-
 			// find wx ID of selected language
-			int wxId = wxLANGUAGE_DEFAULT;
-			if (m_selection) {
-				wxId = aMuleLanguages[m_sortOrder[m_selection - 1]].id;
-			}
-
+			int id = aMuleLanguages[m_selection].id;
+		
 			// save language selection
-			thePrefs::SetLanguageID(otherfunctions::wxLang2Str(wxId));
-			m_sortOrderValid = ! HasChanged();
+			thePrefs::SetLanguageID(otherfunctions::wxLang2Str(id));
 
 			return true;
 		}
@@ -682,43 +667,26 @@ public:
 
 	virtual bool TransferToWindow()
 	{
-		if (!m_sortOrderValid) {
-			// create sort order - i.e. resort list
-			for (int i = 0; i < m_numLangs - 1; i++) {
-				for (int j = i + 1; j < m_numLangs; j++) {
-					if (wxStricmp(
-						wxGetTranslation(aMuleLanguages[m_sortOrder[i]].name),
-						wxGetTranslation(aMuleLanguages[m_sortOrder[j]].name)) > 0)
-					{
-						int tmp = m_sortOrder[i];
-						m_sortOrder[i] = m_sortOrder[j];
-						m_sortOrder[j] = tmp;
-					}
-				}
-			}
-			// get selected language's number
-			m_selection = 0;
-			int wxId = otherfunctions::StrLang2wx(thePrefs::GetLanguageID());
-			if (wxId != wxLANGUAGE_DEFAULT) {
-				for (int i = 0; i < m_numLangs; i++) {
-					if (aMuleLanguages[m_sortOrder[i]].id == wxId) {
-						m_selection = i + 1;
-						break;
-					}
-				}
-			}
-		}
-
-		wxChoice *langSelector = (wxChoice *)m_widget;
+		// Sort the list after the current locale
+		std::sort( aMuleLanguages + 1, // Dont include DEFAULT
+			   aMuleLanguages + itemsof(aMuleLanguages) - 1, // Dont include UNKNOWN
+			   TranslatedSort );
+			
+		wxChoice *langSelector = dynamic_cast<wxChoice*>(m_widget);
 		// clear existing list
 		langSelector->Clear();
 
-		// add 'System default' to the first place
-		langSelector->Append(_("System default"));
-
-		// add all other languages in alphabetical order
-		for (int i = 0; i < m_numLangs; i++) {
-			langSelector->Append(wxGetTranslation(aMuleLanguages[m_sortOrder[i]].name));
+		m_selection = 0;
+		int wxId = otherfunctions::StrLang2wx(thePrefs::GetLanguageID());
+	
+		// Add all other languages in alphabetical order, excluding UNKNOWN
+		// and find the index of the selected language.
+		for (int i = 0; i < itemsof(aMuleLanguages) - 1; i++) {
+			if ( aMuleLanguages[i].id == wxId ) {
+				m_selection = i;
+			}
+			
+			langSelector->Append( wxGetTranslation(aMuleLanguages[i].name) );
 		}
 
 		return Cfg_Tmpl<int>::TransferToWindow();
@@ -726,10 +694,6 @@ public:
 
 protected:
 	int	m_selection;
-	int	m_numLangs;
-	int *	m_sortOrder;
-	bool	m_sortOrderValid;
-
 };
 
 #endif /* ! AMULE_DAEMON */
