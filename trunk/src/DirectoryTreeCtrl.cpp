@@ -225,6 +225,11 @@ void CDirectoryTreeCtrl::AddSubdirectories(wxTreeItemId hBranch, wxString folder
 	wxString fname = SharedDir.FindFirstFile(CDirIterator::Dir); // We just want dirs
 	
 	while(!fname.IsEmpty()) {
+
+		if (folder.CmpNoCase(wxT("/Volumes/")) == 0) {
+			printf("On Volumes: %s\n",unicode2char(fname));
+		}		
+		
 		if(!wxDirExists(fname)) {
 			fname= SharedDir.FindNextFile();
 			continue;
