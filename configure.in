@@ -341,6 +341,10 @@ no) TRAY_FLAGS="-D__SYSTRAY_DISABLED__"
      ;;
 esac
 
+case "$USE_EMBEDDED_CRYPTO" in
+yes) CXXFLAGS="$CXXFLAGS -DUSE_EMBEDDED_CRYPTO"
+esac
+
 case "$DISABLE_PROGRESS" in
 yes)     AC_DEFINE_UNQUOTED(DISABLE_PROGRESS, 1,
       [Define if progress bar drawing should be disabled.])
