@@ -101,6 +101,7 @@ CServerSocket::~CServerSocket()
 	}
 	cur_server = NULL;
 #ifdef AMULE_DAEMON
+	printf("CServerSocket: destroying socket %p\n", this);
 	my_handler->Delete();
 #else
 	delete my_handler;
@@ -684,11 +685,16 @@ void CServerSocketHandler::ServerSocketHandler(wxSocketEvent& event) {
 #ifdef AMULE_DAEMON
 void *CServerSocketHandler::Entry()
 {
-	if ( !socket->WaitOnConnect() ) {
-		printf("CServerSocket: connection attempt failed\n");
+	while ( !TestDestroy() ) {
+		if ( socket->WaitOnConnect(1,0) ) {
+			break;
+		}
 	}
 	if ( !socket->wxSocketClient::IsConnected() ) {
-		printf("CServerSocket: connection refused\n");
+		printf("CServerSocket: connection refused or timed out\n");
+	}
+	if ( TestDestroy() ) {
+		return 0;
 	}
 	socket->OnConnect(wxSOCKET_NOERROR);
 	socket->OnSend(wxSOCKET_NOERROR);
