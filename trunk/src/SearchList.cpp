@@ -322,7 +322,7 @@ void CSearchList::LocalSearchEnd()
 	
 	if ( m_searchpacket ) {
 		m_searchthread = new CGlobalSearchThread(m_searchpacket);
-		if (m_searchthread->Create() == wxTHREAD_NO_ERROR) {
+		if ( (result =  m_searchthread->Create()) == wxTHREAD_NO_ERROR) {
 			m_searchthread->Run();
 		} else {
 			printf("THREAD CREATION ERROR FOR GLOBAL SEARCH: ");
