@@ -1665,14 +1665,13 @@ void CamuleApp::OnCoreTimer(wxTimerEvent& WXUNUSED(evt))
 	if (msCur-msPrevSave >= 60000) {
 		msPrevSave = msCur;
 		CString buffer;
-		CString fullpath = glob_prefs->GetAppDir() + wxT("preferences.ini");
-		wxString bf(wxT("aMule"));
-		CIni ini(fullpath, bf);
+		
+		wxConfigBase* cfg = wxConfig::Get();
 		buffer.Format("%llu",stat_sessionReceivedBytes+glob_prefs->GetTotalDownloaded());
-		ini.WriteString("TotalDownloadedBytes",buffer ,"Statistics");
+		cfg->Write("/Statistics/TotalDownloadedBytes", buffer);
 
 		buffer.Format("%llu",stat_sessionSentBytes+glob_prefs->GetTotalUploaded());
-		ini.WriteString("TotalUploadedBytes",buffer ,"Statistics");
+		cfg->Write("/Statistics/TotalUploadedBytes", buffer);
 	}
 
 	// Recomended by lugdunummaster himself - from emule 0.30c

@@ -24,11 +24,11 @@
 #include <sys/stat.h>
 #include <wx/ffile.h>
 #include <wx/filename.h>
+#include <wx/config.h>
 
 #include "KnownFile.h"		// Interface declarations.
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "otherfunctions.h"	// Needed for nstrdup
-#include "ini2.h"			// Needed for CIni
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "CMemFile.h"		// Needed for CMemFile
 #include "SharedFilesCtrl.h"	// Needed for CSharedFilesCtrl
@@ -995,24 +995,23 @@ void CKnownFile::UpdateAutoUpPriority(void)
 //For File Comment // 
 void CKnownFile::LoadComment()
 {
-	wxString strFullPath = theApp.glob_prefs->GetAppDir() + wxT("fileinfo.ini");
-	wxString strHash = m_abyFileHash.Encode();
+	wxString strCfgPath = wxT("/") + m_abyFileHash.Encode() + wxT("/");
 
-	CIni ini( strFullPath, strHash );
+	wxConfigBase* cfg = wxConfig::Get();
 	
-	m_strComment = ini.GetString(wxT("Comment")); 
-	m_iRate = ini.GetInt(wxT("Rate"), 0);
+	m_strComment = cfg->Read( strCfgPath + wxT("Comment"), wxT(""));
+	m_iRate = cfg->Read( strCfgPath + wxT("Rate"), 0l);
 	m_bCommentLoaded = true;
 }    
 
 void CKnownFile::SetFileComment(CString strNewComment)
 { 
-	wxString strFullPath = theApp.glob_prefs->GetAppDir() + wxT("fileinfo.ini");
-	wxString strHash = m_abyFileHash.Encode();
+	wxString strCfgPath = wxT("/") + m_abyFileHash.Encode() + wxT("/");
+	
+	wxConfigBase* cfg = wxConfig::Get();
 
-	CIni ini( strFullPath, strHash );
-    
-	ini.WriteString (wxT("Comment"), strNewComment); 
+   	cfg->Write( strCfgPath + wxT("Comment"), strNewComment); 
+	
 	m_strComment = strNewComment;
    
 	CTypedPtrList<CPtrList, CUpDownClient*> srclist;
@@ -1028,12 +1027,12 @@ void CKnownFile::SetFileComment(CString strNewComment)
 // For File rate 
 void CKnownFile::SetFileRate(int8 iNewRate)
 { 
-	wxString strFullPath = theApp.glob_prefs->GetAppDir() + wxT("fileinfo.ini");
-	wxString strHash = m_abyFileHash.Encode();
+	wxString strCfgPath = wxT("/") + m_abyFileHash.Encode() + wxT("/");
+	
+	wxConfigBase* cfg = wxConfig::Get();
 
-	CIni ini( strFullPath, strHash );
-	    
-	ini.WriteInt (wxT("Rate"), iNewRate); 
+   	cfg->Write( strCfgPath + wxT("Rate"), iNewRate); 
+
 	m_iRate = iNewRate; 
 
 	CTypedPtrList<CPtrList, CUpDownClient*> srclist;

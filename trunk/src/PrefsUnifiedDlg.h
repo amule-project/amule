@@ -33,8 +33,8 @@
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/dialog.h>		// Needed for wxDialog
 #include <wx/choice.h>
+#include <wx/config.h>
 #include "muuli_wdr.h"
-#include "ini2.h"
 #include "Preferences.h"
 
 class CDirectoryTreeCtrl;
@@ -47,6 +47,7 @@ class CDirectoryTreeCtrl;
 
 class Rse;
 struct Preferences_Struct;
+
 
 class PrefsUnifiedDlg: public wxDialog
 {
@@ -67,8 +68,8 @@ public:
 	static void CheckRateUnlimited(Rse* prse);
 
 	static void BuildItemList(Preferences_Struct *prefs, const char * appdir);
-	static void LoadAllItems(CIni& ini);
-	static void SaveAllItems(CIni& ini);
+	static void LoadAllItems(wxConfigBase& ini);
+	static void SaveAllItems(wxConfigBase& ini);
 
 	Rse	*Prse(int id);	// returns the Rse* corresponding to an item ID
 

@@ -37,7 +37,6 @@ SOURCES = AddFriend.cpp \
 	gtk2-funcs.c \
 	gtkplugxembed.c \
 	HTTPDownloadDlg.cpp \
-	ini2.cpp \
 	IPFilter.cpp \
 	KnownFile.cpp \
 	KnownFileList.cpp \
