@@ -2183,8 +2183,6 @@ wxSizer *PreferencesConnectionTab( wxWindow *parent, bool call_fit, bool set_siz
 
     item55->Add( item56, 1, wxALIGN_CENTER|wxTOP|wxBOTTOM, 5 );
 
-    item0->Add( item55, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
-
     wxStaticBox *item63 = new wxStaticBox( parent, -1, _("IP-Filter") );
     wxStaticBoxSizer *item62 = new wxStaticBoxSizer( item63, wxVERTICAL );
     IDC_IPF_0 = item62;
@@ -2196,7 +2194,9 @@ wxSizer *PreferencesConnectionTab( wxWindow *parent, bool call_fit, bool set_siz
     item65->SetValue( TRUE );
     item62->Add( item65, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    item0->Add( item62, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
+    item55->Add( item62, 0, wxLEFT, 5 );
+
+    item0->Add( item55, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     if (set_sizer)
     {
