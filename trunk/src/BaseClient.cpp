@@ -223,13 +223,6 @@ void CUpDownClient::Init()
 
 CUpDownClient::~CUpDownClient()
 {
-	/* Razor 1a - Modif by MikaelB */
-	if(m_reqfile != NULL) {
-		m_reqfile->RemoveDownloadingSource(this);
-	}
-	/* End modif */
-	
-	
 	// Kry - This 'if' is not really needed because the client list gets 
 	// deleted AFTER all the clients were removed by the listensocket destructor.
 	if (theApp.clientlist) {
@@ -247,6 +240,8 @@ CUpDownClient::~CUpDownClient()
 		socket->Safe_Delete(); 
 		// We're going down anyway....
 		socket->Destroy();
+		// Paranoia
+		socket = NULL;
 	}
 	
 	
