@@ -144,6 +144,8 @@ inline bool NeedUTF8String(wchar_t* pwsz)
  */
 wxString TruncateFilename(const wxString& filename, size_t length, bool isFilePath = false);
 
+wxString CleanupFilename(const wxString& filename, bool keepSpaces = true);
+
 // Makes sIn suitable for inclusion in an URL, by escaping all chars that could cause trouble.
 wxString URLEncode(wxString sIn);
 	

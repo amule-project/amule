@@ -708,48 +708,13 @@ bool CamuleApp::OnInit()
 	return true;
 }
 
-// Strips specific chars to ensure legal filenames
-wxString CamuleApp::StripInvalidFilenameChars(const wxString& strText, bool bKeepSpaces)
-{
-	wxString result;
-
-	for ( unsigned int i = 0; i < strText.Length(); i++ ) {
-		switch ( strText.GetChar(i) ) {
-			case wxT('/'):
-#ifdef __WXMSW__
-			case wxT('\"'):
-			case wxT('*'):
-			case wxT('<'):
-			case wxT('>'):
-			case wxT('?'):
-			case wxT('|'):
-			case wxT('\\'):
-			case wxT(':'):
-#endif
-				continue;
-			default:
-				// Many illegal for filenames in windows below the 32th char (which is space).
-				if ( (wxUChar) strText[i] > 31 ) {
-						result += strText[i];
-				}
-		}
-	}
-
-	// Should we replace spaces?
-	if ( !bKeepSpaces ) {
-		result.Replace(wxT(" "), wxT("_"), TRUE);
-	}
-
-	return result;
-}
-
 
 // Returns a ed2k file URL
 wxString CamuleApp::CreateED2kLink(const CAbstractFile *f)
 {
 	// Construct URL like this: ed2k://|file|<filename>|<size>|<hash>|/
 	wxString strURL	= wxString(wxT("ed2k://|file|")) <<
-		StripInvalidFilenameChars(f->GetFileName(), true) << wxT("|") <<
+		CleanupFilename(f->GetFileName(), true) << wxT("|") <<
 		f->GetFileSize() << wxT("|") <<
 		EncodeBase16( f->GetFileHash(), 16 ) << wxT("|/");
 	return strURL;
@@ -794,7 +759,7 @@ wxString CamuleApp::CreateHTMLED2kLink(const CAbstractFile* f)
 {
 	wxString strCode = wxT("<a href=\"") + 
 		CreateED2kLink(f) + wxT("\">") + 
-		StripInvalidFilenameChars(f->GetFileName(), true) + wxT("</a>");
+		CleanupFilename(f->GetFileName(), true) + wxT("</a>");
 	return strCode;
 }
 

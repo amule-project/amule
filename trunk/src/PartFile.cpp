@@ -72,6 +72,7 @@
 #include "GetTickCount.h"	// Needed for GetTickCount
 #include "ClientList.h"		// Needed for clientlist
 #include "NetworkFunctions.h" // Needed for Uint32toStringIP
+#include "StringFunctions.h"	// Needed for CleanupFilename
 #include "filefn.h"
 #include "color.h"              // Needed for RGB, DarkenColour
 
@@ -2262,7 +2263,7 @@ wxThread::ExitCode completingThread::Entry()
 	// Strip the .met
 	wxString partfilename =  Completing_Fullname.Left(Completing_Fullname.Length()-4);
 	
-	Completing_FileName = theApp.StripInvalidFilenameChars(Completing_FileName);
+	Completing_FileName = CleanupFilename(Completing_FileName);
 
 	newname = new wxString();
 	if(wxFileName::DirExists(theApp.glob_prefs->GetCategory(Completing_Category)->incomingpath)) {
