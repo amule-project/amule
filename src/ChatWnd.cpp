@@ -17,8 +17,6 @@
 //along with this program; if not, write to the Free Software
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-// ChatWnd.cpp : implementation file
-
 #ifdef __WXMAC__
 	#include <wx/wx.h>
 #endif
@@ -32,75 +30,50 @@
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "ChatSelector.h"	// Needed for CChatSelector
 #include "muuli_wdr.h"		// Needed for messagePage
-#include "color.h"		// Needed for GetColour
+#include "color.h"			// Needed for GetColour
 
-// CChatWnd dialog
 
-//IMPLEMENT_DYNAMIC(CChatWnd, CDialog)
-CChatWnd::CChatWnd(wxWindow* pParent /*=NULL*/)
-: wxPanel(pParent,CChatWnd::IDD)
-{
-	wxSizer* content=messagePage(this,TRUE);
-	content->Show(this,TRUE);
-
-	OnInitDialog();	
-
-	wxHtmlWindow *win=(wxHtmlWindow*)FindWindowById(ID_HTMLWIN);
-	int sizes[]={7,8,10,12,16,22,30};
-	win->SetFonts("","",sizes);
-}
-
-CChatWnd::~CChatWnd()
-{
-}
-
-BEGIN_EVENT_TABLE(CChatWnd,wxPanel)
-	EVT_BUTTON(IDC_CSEND,CChatWnd::OnBnClickedCsend)
-	EVT_BUTTON(IDC_CCLOSE,CChatWnd::OnBnClickedCclose)
-	EVT_TEXT_ENTER(IDC_CMESSAGE,CChatWnd::OnBnClickedCsend)
+BEGIN_EVENT_TABLE(CChatWnd, wxPanel)
+	EVT_BUTTON(IDC_CSEND, CChatWnd::OnBnClickedCsend)
+	EVT_BUTTON(IDC_CCLOSE, CChatWnd::OnBnClickedCclose)
+	EVT_TEXT_ENTER(IDC_CMESSAGE, CChatWnd::OnBnClickedCsend)
 END_EVENT_TABLE()
 
-bool CChatWnd::OnInitDialog()
-{
-	// CResizableDialog::OnInitDialog();
-	// Localize();
-	// chatselector=new CChatSelector();
-	chatselector=(CChatSelector*)FindWindowById(IDC_CHATSELECTOR);
-	chatselector->Init();
 
-	return true;
+CChatWnd::CChatWnd(wxWindow* pParent)
+: wxPanel(pParent, CChatWnd::IDD)
+{
+	wxSizer* content = messagePage(this, TRUE);
+	content->Show(this, TRUE);
+
+	chatselector = (CChatSelector*)FindWindow(IDC_CHATSELECTOR);
+
+	(wxButton*)FindWindow(IDC_CSEND)->Enable(false);
+	(wxButton*)FindWindow(IDC_CCLOSE)->Enable(false);
 }
+
 
 void CChatWnd::StartSession(CUpDownClient* client)
 {
-	if (!client->GetUserName()) {
-		return;
+	if ( client->GetUserName() ) {
+		theApp.amuledlg->SetActiveDialog(this);
+		chatselector->StartSession(client, true);
 	}
-
-	theApp.amuledlg->SetActiveDialog(this);
-	chatselector->StartSession(client,true);
 }
 
-#define GetDlgItem(a,b) wxStaticCast(FindWindowById((a)),b)
 
+#define GetDlgItem(a, b) wxStaticCast(FindWindowById((a)), b)
 void CChatWnd::OnBnClickedCsend(wxCommandEvent& evt)
 {
-	uint16 len = GetDlgItem(IDC_CMESSAGE,wxTextCtrl)->GetValue().Length()+2;
-	char* messagetosend = new char[len+1];
-	wxString str=GetDlgItem(IDC_CMESSAGE,wxTextCtrl)->GetValue();//>GetWindowText(messagetosend,len);
-	strcpy(messagetosend,str.c_str());
-	if (chatselector->SendMessage(messagetosend)) {
-		GetDlgItem(IDC_CMESSAGE,wxTextCtrl)->SetValue("");
+	wxString message = GetDlgItem(IDC_CMESSAGE, wxTextCtrl)->GetValue();
+	if (chatselector->SendMessage( message )) {
+		GetDlgItem(IDC_CMESSAGE, wxTextCtrl)->Clear();
 	}
-	delete[] messagetosend;
-	GetDlgItem(IDC_CMESSAGE,wxTextCtrl)->SetFocus();
+	GetDlgItem(IDC_CMESSAGE, wxTextCtrl)->SetFocus();
 }
+
 
 void CChatWnd::OnBnClickedCclose(wxCommandEvent& evt)
 {
 	chatselector->EndSession();
-}
-
-void CChatWnd::Localize()
-{
 }

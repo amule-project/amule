@@ -21,41 +21,29 @@
 #define CHATWND_H
 
 #include <wx/panel.h>		// Needed for wxPanel
-
 #include "resource.h"		// Needed for IDD_CHAT
+
 
 class CUpDownClient;
 class CChatSelector;
 
-// CChatWnd dialog
 
-class CChatWnd : public wxPanel //CResizableDialog
+class CChatWnd : public wxPanel 
 {
-  //DECLARE_DYNAMIC(CChatWnd)
 public:
-	CChatWnd(wxWindow* pParent = NULL);   // standard constructor
-	virtual ~CChatWnd();
-
-// Dialog Data
 	enum { IDD = IDD_CHAT };
-	void StartSession(CUpDownClient* client);
-	void Localize();
-	CChatSelector* chatselector;
-protected:
-	virtual bool OnInitDialog(); 
-#if 0
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support	
-	DECLARE_MESSAGE_MAP()
-	afx_msg void OnBnClickedCsend();
-	void	OnShowWindow(bool bShow, unsigned int nStatus);
-	virtual bool	PreTranslateMessage(MSG* pMsg);
-public:
-	afx_msg void OnBnClickedCclose();
-#endif
-	DECLARE_EVENT_TABLE()
+	
+	CChatWnd(wxWindow* pParent = NULL); 
+	virtual ~CChatWnd() {};
 
+	void StartSession(CUpDownClient* client);
+
+	CChatSelector*	chatselector;
+protected:
 	void OnBnClickedCsend(wxCommandEvent& evt);
 	void OnBnClickedCclose(wxCommandEvent& evt);
+	
+	DECLARE_EVENT_TABLE()
 };
 
-#endif // CHATWND_H
+#endif 
