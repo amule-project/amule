@@ -23,6 +23,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <wx/ffile.h>
+#include <wx/filename.h>
 
 #include "KnownFile.h"		// Interface declarations.
 #include "amuleDlg.h"		// Needed for CamuleDlg
@@ -260,10 +261,10 @@ bool CKnownFile::CreateFromFile(char* in_directory,char* in_filename, volatile i
 		delete[] buffer;
 	}
 	
-	// set lastwrite date
-	struct stat fileinfo;
-	fstat(fileno(file),&fileinfo);
-	date = fileinfo.st_mtime;
+	wxFileName fName(namebuffer);
+	wxDateTime accTime,modTime,crtTime;
+	fName.GetTimes(&accTime,&modTime,&crtTime);
+	date = modTime.GetTicks();
 
 	if (theApp.glob_prefs->GetExtractMetaData() > 0) {
 		GetMetaDataTags();

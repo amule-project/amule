@@ -113,11 +113,12 @@ void CSharedFileList::AddFilesFromDirectory(char* directory)
   	
 	while(!fname.IsEmpty()) {
     
+
 		wxFileName fName(fname);
 
 		wxDateTime accTime,modTime,crtTime;
 		fName.GetTimes(&accTime,&modTime,&crtTime);
-		uint32 fdate=modTime.GetTicks();
+		uint32 fdate=wxFileModificationTime(fname);
 		int koko;
 		struct stat sbf;
 		stat(fname.GetData(),&sbf);
