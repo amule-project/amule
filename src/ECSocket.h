@@ -34,6 +34,15 @@ enum aMuleECSocketType {
 
 class CECPacket;
 
+/*! \class ECSocket
+ *
+ * \brief Socket handler for External Communications (EC).
+ *
+ * ECSocket takes care of the transmission of EC packets
+ *
+ * \todo Implement compression.
+ */
+
 #ifdef AMULE_DAEMON
 class ECSocket : public wxEvtHandler
 #else
@@ -71,10 +80,7 @@ class ECSocket
 		// Packet I/O
 		//
 		CECPacket * ReadPacket(wxSocketBase *sock);
-//		const uint8 *ReadData(wxSocketBase *sock);
-
 		bool WritePacket(wxSocketBase *sock, const CECPacket *packet);
-//		bool WriteData(wxSocketBase *sock, const void *buffer, unsigned int len);
 
 		// These 4 methods are to be used by CECPacket & CECTag
 		bool ReadNumber(wxSocketBase *sock, void *buffer, unsigned int len);
@@ -87,9 +93,7 @@ class ECSocket
 		// Wrapper functions for client sockets
 		//
 		CECPacket * ReadPacket(void) { return ReadPacket(m_sock); }
-//		const uint8 *ReadData(void) { return ReadData(m_sock); }
 		bool WritePacket(const CECPacket *packet) { return WritePacket(m_sock, packet); }
-//		bool WriteData(const void *buffer, unsigned int len) { return WriteData(m_sock, buffer, len); }
 
 		bool ReadNumber(void *buffer, unsigned int len) { return ReadNumber(m_sock, buffer, len); }
 		bool ReadBuffer(void *buffer, unsigned int len) { return ReadBuffer(m_sock, buffer, len); }
@@ -100,8 +104,6 @@ class ECSocket
 	private:
 		aMuleECSocketType m_type;
 		wxSocketBase *m_sock;
-		bool m_firstMessage;
-
 };
 
 #endif // ECSOCKET_H
