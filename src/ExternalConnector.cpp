@@ -490,6 +490,7 @@ void CaMuleExternalConnector::LoadAmuleConfig(CECFileConfig& cfg)
 	m_host = wxT("localhost");
 	m_port = cfg.Read(wxT("/ExternalConnect/ECPort"), -1l);
 	cfg.ReadHash(wxT("/ExternalConnect/ECPassword"), &m_password);
+	m_language = cfg.Read(wxT("/eMule/Language"), wxEmptyString);
 }
 
 
