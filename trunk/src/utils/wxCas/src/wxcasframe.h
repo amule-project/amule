@@ -42,8 +42,8 @@
 #include <wx/statline.h>
 #include <wx/toolbar.h>
 #include <wx/timer.h>
+#include <wx/filename.h>
 
-#include "wxcascanvas.h"
 #include "onlinesig.h"
 
 
@@ -63,7 +63,6 @@ class WxCasFrame:public wxFrame
     wxBoxSizer *m_sigPanelVBox;
 
     wxPanel *m_mainPanel;
-    wxPanel *m_sigPanel;
 
     wxStaticLine *m_staticLine;
 
@@ -81,7 +80,8 @@ class WxCasFrame:public wxFrame
     wxTimer * m_refresh_timer;
     wxTimer * m_ftp_update_timer;
 
-    WxCasCanvas *m_imgPanel;
+    wxStaticBitmap *m_amuleSBitmap;
+
     OnLineSig *m_aMuleSig;
     wxUint32 m_maxLineCount;
 
@@ -132,6 +132,12 @@ class WxCasFrame:public wxFrame
 
     /// Refresh timer period changing
     bool ChangeFtpUpdatePeriod(wxInt32 newPeriod);
+
+    /// Adjust splash bitmap width
+    void AdjustSplashWidth(wxInt32 width);
+
+    /// Set amulesig.dat file
+    void SetAmuleSigFile(wxFileName *file);
   };
 
 #endif /* _WXCASFRAME_H */

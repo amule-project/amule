@@ -402,19 +402,29 @@ WxCasPrefs::OnValidateButton (wxCommandEvent & event)
   wxConfigBase * prefs = wxConfigBase::Get();
 
   // Write amulesig dir
-  prefs->Write (WxCasCte::AMULESIG_PATH_KEY,
-                m_osPathTextCtrl->GetValue ());
+  if (prefs->Read (WxCasCte::AMULESIG_PATH_KEY,
+                   WxCasCte::DEFAULT_AMULESIG_PATH)	!=
+      m_osPathTextCtrl->GetValue ())
+    {
+      // Reload amulesig.dat
+      /*wxFileName *amulesig = new wxFileName (m_osPathTextCtrl->GetValue (),
+                                             WxCasCte::AMULESIG_FILENAME);
+      ((WxCasFrame*)GetParent())->SetAmuleSigFile(amulesig);
+      delete amulesig;*/
 
+      prefs->Write (WxCasCte::AMULESIG_PATH_KEY,
+                    m_osPathTextCtrl->GetValue ());
+    }
   // Restart timer if refresh interval has changed
   if (prefs->Read (WxCasCte::REFRESH_RATE_KEY,WxCasCte::DEFAULT_REFRESH_RATE)	!=
       m_refreshSpinButton->GetValue ())
     {
       ((WxCasFrame*)GetParent())->ChangeRefreshPeriod(1000 * m_refreshSpinButton->GetValue ());
-    }
 
-  // Write refresh interval
-  prefs->Write (WxCasCte::REFRESH_RATE_KEY,
-                m_refreshSpinButton->GetValue ());
+      // Write refresh interval
+      prefs->Write (WxCasCte::REFRESH_RATE_KEY,
+                    m_refreshSpinButton->GetValue ());
+    }
 
   // Write auto stat img state
   prefs->Write (WxCasCte::ENABLE_AUTOSTATIMG_KEY,
@@ -441,11 +451,10 @@ WxCasPrefs::OnValidateButton (wxCommandEvent & event)
               m_ftpUpdateSpinButton->GetValue ())
             {
               ((WxCasFrame*)GetParent())->ChangeFtpUpdatePeriod(60000 * m_refreshSpinButton->GetValue ());
+              prefs->Write (WxCasCte::FTP_UPDATE_RATE_KEY,
+                            m_ftpUpdateSpinButton->GetValue ());
             }
           // Write Ftp parameters
-          prefs->Write (WxCasCte::FTP_UPDATE_RATE_KEY,
-                        m_ftpUpdateSpinButton->GetValue ());
-
           prefs->Write (WxCasCte::FTP_URL_KEY,
                         m_ftpUrlTextCtrl->GetValue ());
 
