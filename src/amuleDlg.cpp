@@ -917,7 +917,7 @@ void CamuleDlg::OnSocketTimer(wxTimerEvent& WXUNUSED(evt))
 void CamuleDlg::OnBnClickedFast(wxCommandEvent& WXUNUSED(evt))
 {
 	if (!theApp.serverconnect->IsConnected()) {
-		wxMessageDialog* bigbob = new wxMessageDialog(this, wxT(_("You are not connected to a server!")), wxT(_("Not Connected")), wxOK|wxICON_INFORMATION);
+		wxMessageDialog* bigbob = new wxMessageDialog(this, wxT(_("The ED2K link has been added but your download won't start until you connect to a server.")), wxT(_("Not Connected")), wxOK|wxICON_INFORMATION);
 		bigbob->ShowModal();
 		delete bigbob;
 	}
