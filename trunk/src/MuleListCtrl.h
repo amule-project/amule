@@ -58,12 +58,6 @@ const int SORT_OFFSET_ALT_DEC = 3000;
 #endif
 {
 public:
-
-	/**
-	 * Constructor needed for dynamic classes.
-	 */
-	CMuleListCtrl();
-
 	/**
 	 * Constructor.
 	 * 
@@ -260,6 +254,15 @@ protected:
 
 
 	/**
+	 * Sets the image of a specific column.
+	 *
+	 * @param col The column to change.
+	 * @param image The image-index to use.
+	 */
+	void SetColumnImage(int col, int image);
+
+	
+	/**
 	 * Event handler for right-clicks on the column headers.
 	 */
 	void OnColumnRClick(wxListEvent& evt);
@@ -291,7 +294,6 @@ private:
 	wxListCtrlCompare	m_sort_func;
 	
 	DECLARE_EVENT_TABLE()
-	DECLARE_DYNAMIC_CLASS(CMuleListCtrl)
 };
 
 #endif // MULELISTCTRL_H

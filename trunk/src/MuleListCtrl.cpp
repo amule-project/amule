@@ -35,6 +35,11 @@
 #include "StringFunctions.h"	// Needed for StrToLong
 #include "OPCodes.h"		// Needed for MP_LISTCOL_1
 
+#include "pixmaps/sort_dn.xpm"
+#include "pixmaps/sort_up.xpm"
+#include "pixmaps/sort_dnx2.xpm"
+#include "pixmaps/sort_upx2.xpm"
+
 
 // Global constants
 #if defined(__WXGTK__)
@@ -49,13 +54,9 @@
 
 
 #ifdef __WXMSW__
-IMPLEMENT_DYNAMIC_CLASS(CMuleListCtrl, wxListCtrl)
-
 BEGIN_EVENT_TABLE(CMuleListCtrl, wxListCtrl)
 #else
-IMPLEMENT_DYNAMIC_CLASS(CMuleListCtrl, wxODListCtrl)
-
-BEGIN_EVENT_TABLE(CMuleListCtrl, wxODListCtrl)
+BEGIN_EVENT_TABLE(CMuleListCtrl, wxMolested::wxListCtrl)
 #endif
 	EVT_LIST_COL_CLICK( -1, 		CMuleListCtrl::OnColumnLClick)
 	EVT_LIST_COL_RIGHT_CLICK( -1,	CMuleListCtrl::OnColumnRClick)
@@ -64,27 +65,25 @@ BEGIN_EVENT_TABLE(CMuleListCtrl, wxODListCtrl)
 END_EVENT_TABLE()
 
 
-
-CMuleListCtrl::CMuleListCtrl()
-{
-	m_sort_func = NULL;
-	m_sort_asc 	= true;
-	m_sort_alt	= false;
-	m_sort_column = 0;
-}
-
-
 CMuleListCtrl::CMuleListCtrl( wxWindow *parent, wxWindowID winid, const wxPoint& pos, const wxSize& size, long style, const wxValidator& validator, const wxString& name)
 #ifdef __WXMSW__
 	: wxListCtrl( parent, winid, pos, size, style, validator, name )
 #else
-	: wxODListCtrl( parent, winid, pos, size, style, validator, name )
+	: wxMolested::wxListCtrl( parent, winid, pos, size, style, validator, name )
 #endif
 {
 	m_sort_func = NULL;
 	m_sort_asc 	= true;
 	m_sort_alt	= false;
 	m_sort_column = 0;
+
+	wxImageList* imglist = new wxImageList( 16, 16 );
+	imglist->Add( wxBitmap(sort_dn_xpm) );
+	imglist->Add( wxBitmap(sort_up_xpm) );
+	imglist->Add( wxBitmap(sort_dnx2_xpm) );
+	imglist->Add( wxBitmap(sort_upx2_xpm) );
+	
+	SetImageList( imglist, wxIMAGE_LIST_SMALL );
 }
 
 
@@ -239,16 +238,6 @@ void CMuleListCtrl::SortList()
 	// Some sainity checking
 	bool sort_alt = GetSortAlt() && AltSortAllowed( GetSortColumn() );
 	
-
-#ifndef __WXMSW__
-	if ( sort_alt ) {
-		wxODListCtrl::SetSortArrow( GetSortColumn(), ( GetSortAsc() ? 4 : 3 ) );
-	} else {
-		wxODListCtrl::SetSortArrow( GetSortColumn(), ( GetSortAsc() ? 2 : 1 ) );
-	}
-#endif
-
-
 	int sortby = GetSortColumn();
 
 	// Decending sort?
@@ -397,6 +386,8 @@ bool CMuleListCtrl::GetSortAsc()
 void CMuleListCtrl::SetSortAsc( bool value )
 {
 	m_sort_asc = value;
+	
+	SetSortColumn( GetSortColumn() );
 }
 
 
@@ -415,6 +406,8 @@ bool CMuleListCtrl::GetSortAlt()
 void CMuleListCtrl::SetSortAlt( bool value )
 {
 	m_sort_alt = value;
+	
+	SetSortColumn( GetSortColumn() );
 }
 
 
@@ -426,7 +419,17 @@ int CMuleListCtrl::GetSortColumn()
 
 void CMuleListCtrl::SetSortColumn( int column )
 {
+	// Unset old
+	SetColumnImage( m_sort_column, -1 );
+	
 	m_sort_column = column;
+	
+	// Set new
+	if ( GetSortAlt() ) {
+		SetColumnImage( m_sort_column, ( GetSortAsc() ? 3 : 2 ) );
+	} else {
+		SetColumnImage( m_sort_column, ( GetSortAsc() ? 1 : 0 ) );
+	}
 }
 
 /**
@@ -435,4 +438,13 @@ void CMuleListCtrl::SetSortColumn( int column )
 void CMuleListCtrl::OnMouseWheel(wxMouseEvent &event)
 {
 	event.Skip();
+}
+
+
+void CMuleListCtrl::SetColumnImage(int col, int image)
+{
+    wxListItem item;
+    item.SetMask(wxLIST_MASK_IMAGE);
+    item.SetImage(image);
+    SetColumn(col, item);
 }
