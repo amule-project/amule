@@ -6,6 +6,10 @@ Version 2.0.0rc3 - The 'Target: Stability' version.
 	
 		* win32 stuff
 		
+	barbapapa;
+		
+		* Fixed >2Gb files sorting bug on transfer window.
+		
 	Citroklar:
 		
 		* Fixed saving preferences on klick OK, not only on shutdown.
