@@ -580,7 +580,6 @@ bool CamuleApp::OnInit()
 	if ( !listensocket->Ok() ) {
 		AddLogLineM(true, wxString::Format(_("Port %d is not available. You will be LOWID"),
 			thePrefs::GetPort()));
-		#warning we need to move this lowid warning to the GUI itself.
 		ShowAlert(wxString::Format(
 			_("Port %d is not available !!\n\n"
 			  "This means that you will be LOWID.\n\n"
@@ -1373,6 +1372,40 @@ void CamuleApp::ShutDown() {
 	// Signal the hashing thread to terminate
 	m_app_state = APP_STATE_SHUTINGDOWN;
 	IsReady =  false;
+	
+	// Kry - Save the sources seeds on app exit
+	if (thePrefs::GetSrcSeedsOn()) {
+		downloadqueue->SaveSourceSeeds();
+	}
+
+	OnlineSig(); // Added By Bouc7
+
+	// Close sockets to avoid new clients coming in
+	if (listensocket) {
+		listensocket->StopListening();
+	}
+	if (clientudp) {
+		clientudp->Destroy();
+	}
+	if (serverconnect) {
+		serverconnect->Disconnect();
+	}
+
+	// saving data & stuff
+	if (knownfiles) {
+		knownfiles->Save();
+	}
+
+	thePrefs::Add2TotalDownloaded(theApp.stat_sessionReceivedBytes);
+	thePrefs::Add2TotalUploaded(theApp.stat_sessionSentBytes);
+
+	if (glob_prefs) {
+		glob_prefs->Save();
+	}
+
+	if (theApp.clientlist) {
+		theApp.clientlist->DeleteAll();
+	}
 	if (CAddFileThread::IsRunning()) {
 		CAddFileThread::Stop();
 	}
