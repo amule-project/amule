@@ -1790,7 +1790,6 @@ void CamuleApp::ShutDown() {
 	IsReady =  false;
 
 	amuledlg->Destroy();
-	amuledlg = NULL;
 
 	if (CAddFileThread::IsRunning()) {
 		CAddFileThread::Stop();
