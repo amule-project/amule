@@ -26,6 +26,8 @@
 #include "types.h"		// Needed for uint8, uint16, uint32 and uint64
 #include "EMSocket.h"		// Needed for CEMSocket
 #include "CTypedPtrList.h"
+#include "gsocket-fix.h"	// Needed for wxSOCKET_REUSEADDR
+
 #include <wx/dynarray.h>
 
 #include <map> 
@@ -115,7 +117,9 @@ class CListenSocket : public wxSocketServer{
 	DECLARE_DYNAMIC_CLASS(CListenSocket)
 
 public:
-	CListenSocket() : wxSocketServer(happyCompiler) {};
+	// The default constructor is here only because of IMPLEMENT_DYNAMIC_CLASS
+	// in ListenSocket.cpp. Do we really need that?
+	CListenSocket() : wxSocketServer(happyCompiler, wxSOCKET_REUSEADDR) {};
 	CListenSocket(CPreferences* in_prefs,wxSockAddress& addr);
 	~CListenSocket();
 	bool	StartListening();

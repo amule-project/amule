@@ -35,17 +35,18 @@
 #endif
 #include <wx/app.h>
 #include <wx/config.h>
-#include <wx/socket.h>			// Needed for wxSocket
+#include <wx/socket.h>		// Needed for wxSocket
 #include <wx/utils.h>
 #include <wx/timer.h>
 
-#include "types.h"			// Needed for int32, uint16 and uint64
+#include "types.h"		// Needed for int32, uint16 and uint64
 #include "GuiEvents.h"
 
 #include "PartFile.h"
+#include "gsocket-fix.h"	// Needed for wxSOCKET_REUSEADDR
 
-//int sock_flags = wxSOCKET_WAITALL|wxSOCKET_BLOCK;
-int sock_flags = wxSOCKET_NONE;
+//int sock_flags = wxSOCKET_WAITALL|wxSOCKET_BLOCK|wxSOCKET_REUSEADDR;
+int sock_flags = wxSOCKET_NONE|wxSOCKET_REUSEADDR;
 
 char *SockStrError(wxSocketError e)
 {
