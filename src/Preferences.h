@@ -286,7 +286,7 @@ struct Preferences_Struct{
 	int32 desktopMode;
 	
 	// Madcat - Sources Dropping Tweaks
-	uint8	NoNeededSources; // 0: Drop, 1:Swap
+	uint8	NoNeededSources; // 0: Keep, 1: Drop, 2:Swap
 	bool	DropFullQueueSources;
 	bool	DropHighQueueRankingSources;
 	int32	HighQueueRanking;
@@ -580,8 +580,8 @@ public:
 //	bool	IsGraphRecreateDisabled()	{ return prefs->dontRecreateGraphs;}
 	
 	// Madcat - Sources Dropping Tweaks
-	bool	DropNoNeededSources() const { return prefs->NoNeededSources == 0; }
-	bool    SwapNoNeededSources() const { return prefs->NoNeededSources == 1; }
+	bool	DropNoNeededSources() const { return prefs->NoNeededSources > 0; }
+	bool    SwapNoNeededSources() const { return prefs->NoNeededSources == 2; }
 	bool	DropFullQueueSources() const { return prefs->DropFullQueueSources; }
 	bool	DropHighQueueRankingSources() const { return prefs->DropHighQueueRankingSources; }
 	int32	HighQueueRanking() const { return prefs->HighQueueRanking; }
