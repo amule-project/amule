@@ -3231,7 +3231,7 @@ wxString CDynImage::GetHTML()
 			}
 			// Evil unicode2char, but nothing we ca do against it because of the template.
 			str += wxString::Format(m_template,
-				unicode2char(progresscolor[color_idx]), i - lastindex);
+				(const char*) unicode2char(progresscolor[color_idx]), i - lastindex);
 			lastindex = i;
 			lastcolor = m_ColorLine[i];
 		}
