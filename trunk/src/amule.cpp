@@ -398,13 +398,13 @@ int CamuleApp::InitGui(bool ,wxString &)
 
 bool CamuleApp::OnInit()
 {
-	// get rid of sigpipe
 #ifndef __WXMSW__
+	// get rid of sigpipe
 	signal(SIGPIPE, SIG_IGN);
-#endif
 	// Handle sigint and sigterm
 	signal(SIGINT, OnShutdownSignal);
 	signal(SIGTERM, OnShutdownSignal);
+#endif
 	
 	sent = 0;
 	
