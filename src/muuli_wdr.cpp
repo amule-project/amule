@@ -2377,65 +2377,61 @@ wxSizer *PreferencesDirectoriesTab( wxWindow *parent, bool call_fit, bool set_si
     wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
 
     wxStaticBox *item2 = new wxStaticBox( parent, -1, _("Incoming Directory :") );
-    wxStaticBoxSizer *item1 = new wxStaticBoxSizer( item2, wxVERTICAL );
+    wxStaticBoxSizer *item1 = new wxStaticBoxSizer( item2, wxHORIZONTAL );
 
-    wxBoxSizer *item3 = new wxBoxSizer( wxHORIZONTAL );
+    wxTextCtrl *item3 = new wxTextCtrl( parent, IDC_INCFILES, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
+    item1->Add( item3, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 
-    wxTextCtrl *item4 = new wxTextCtrl( parent, IDC_INCFILES, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
-    item3->Add( item4, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
-
-    wxButton *item5 = new wxButton( parent, IDC_SELINCDIR, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
-    item3->Add( item5, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
-
-    item1->Add( item3, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxButton *item4 = new wxButton( parent, IDC_SELINCDIR, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
+    item1->Add( item4, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 
     item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxTOP, 5 );
 
-    wxStaticBox *item7 = new wxStaticBox( parent, -1, _("Temporary Directory :") );
-    wxStaticBoxSizer *item6 = new wxStaticBoxSizer( item7, wxHORIZONTAL );
+    wxStaticBox *item6 = new wxStaticBox( parent, -1, _("Temporary Directory :") );
+    wxStaticBoxSizer *item5 = new wxStaticBoxSizer( item6, wxHORIZONTAL );
 
-    wxTextCtrl *item8 = new wxTextCtrl( parent, IDC_TEMPFILES, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
-    item6->Add( item8, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+    wxTextCtrl *item7 = new wxTextCtrl( parent, IDC_TEMPFILES, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
+    item5->Add( item7, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 
-    wxButton *item9 = new wxButton( parent, IDC_SELTEMPDIR, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
-    item6->Add( item9, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+    wxButton *item8 = new wxButton( parent, IDC_SELTEMPDIR, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
+    item5->Add( item8, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 
-    item0->Add( item6, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxTOP, 5 );
+    item0->Add( item5, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxTOP, 5 );
 
-    wxStaticBox *item11 = new wxStaticBox( parent, -1, _("Shared Directories") );
-    wxStaticBoxSizer *item10 = new wxStaticBoxSizer( item11, wxHORIZONTAL );
+    wxStaticBox *item10 = new wxStaticBox( parent, -1, _("Shared Directories") );
+    wxStaticBoxSizer *item9 = new wxStaticBoxSizer( item10, wxHORIZONTAL );
 
-    wxBoxSizer *item12 = new wxBoxSizer( wxVERTICAL );
+    wxBoxSizer *item11 = new wxBoxSizer( wxVERTICAL );
 
-    CDirectoryTreeCtrl *item13 = new CDirectoryTreeCtrl(parent, IDC_SHARESELECTOR,wxPoint(0,0),  wxSize(100, 100),wxTR_CHECKBOX|wxSUNKEN_BORDER|wxTR_DEFAULT_STYLE);
-    wxASSERT( item13 );
-    item12->Add( item13, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    CDirectoryTreeCtrl *item12 = new CDirectoryTreeCtrl(parent, IDC_SHARESELECTOR,wxPoint(0,0),  wxSize(100, 100),wxTR_CHECKBOX|wxSUNKEN_BORDER|wxTR_DEFAULT_STYLE);
+    wxASSERT( item12 );
+    item11->Add( item12, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    item10->Add( item12, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    item9->Add( item11, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    item0->Add( item10, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxTOP, 5 );
+    item0->Add( item9, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxTOP, 5 );
 
-    wxStaticBox *item15 = new wxStaticBox( parent, -1, _("Video Player") );
-    wxStaticBoxSizer *item14 = new wxStaticBoxSizer( item15, wxVERTICAL );
+    wxStaticBox *item14 = new wxStaticBox( parent, -1, _("Video Player") );
+    wxStaticBoxSizer *item13 = new wxStaticBoxSizer( item14, wxVERTICAL );
 
-    wxBoxSizer *item16 = new wxBoxSizer( wxVERTICAL );
+    wxBoxSizer *item15 = new wxBoxSizer( wxVERTICAL );
 
-    wxBoxSizer *item17 = new wxBoxSizer( wxHORIZONTAL );
+    wxBoxSizer *item16 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxTextCtrl *item18 = new wxTextCtrl( parent, IDC_VIDEOPLAYER, _("mplayer -idx"), wxDefaultPosition, wxSize(80,-1), 0 );
-    item17->Add( item18, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+    wxTextCtrl *item17 = new wxTextCtrl( parent, IDC_VIDEOPLAYER, _("mplayer -idx"), wxDefaultPosition, wxSize(80,-1), 0 );
+    item16->Add( item17, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 
-    wxButton *item19 = new wxButton( parent, IDC_BROWSEV, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
-    item17->Add( item19, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+    wxButton *item18 = new wxButton( parent, IDC_BROWSEV, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
+    item16->Add( item18, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 
-    item16->Add( item17, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
+    item15->Add( item16, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
 
-    item14->Add( item16, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    item13->Add( item15, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item20 = new wxCheckBox( parent, IDC_VIDEOBACKUP, _("Create Backup to preview"), wxDefaultPosition, wxDefaultSize, 0 );
-    item14->Add( item20, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxCheckBox *item19 = new wxCheckBox( parent, IDC_VIDEOBACKUP, _("Create Backup to preview"), wxDefaultPosition, wxDefaultSize, 0 );
+    item13->Add( item19, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    item0->Add( item14, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item0->Add( item13, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     if (set_sizer)
     {
