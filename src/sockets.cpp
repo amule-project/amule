@@ -47,6 +47,7 @@
 #include "amule.h"		// Needed for theApp
 #include "ServerList.h"		// Needed for CServerList
 #include "Preferences.h"	// Needed for CPreferences
+#include "updownclient.h" // for SO_AMULE
 
 // CServerConnect
 
@@ -199,12 +200,11 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender){
 		
 		// eMule Version (14-Mar-2004: requested by lugdunummaster (need for LowID clients which have no chance 
 		// to send an Hello packet to the server during the callback test))
-		// Kry - We're identifying as eMule 0.42e (0 42 4)
 		CTag tagMuleVersion(CT_EMULE_VERSION, 
-							//(uCompatibleClientID	<< 24) |
-							(0			<< 17) |
-							(42			<< 10) |
-							(4			<<  7) );
+							(SO_AMULE				<< 24) |
+							(VERSION_MJR			<< 17) |
+							(VERSION_MIN			<< 10) |
+							(VERSION_UPDATE		<<  7) );
 		tagMuleVersion.WriteTagToFile(&data);
 
 		Packet* packet = new Packet(&data);
