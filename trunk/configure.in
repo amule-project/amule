@@ -25,7 +25,6 @@ AC_CHECK_TOOL(RANLIB, ranlib)
 AC_CHECK_TOOL(STRIP, strip)
 AC_CHECK_TOOL(AR, ar)
 AC_CHECK_TOOL(LD, ld)
-AC_CHECK_TOOL(WINDRES, windres)
 
 # Checks for gettext.
 AM_GNU_GETTEXT
@@ -219,7 +218,7 @@ AC_FUNC_MKTIME
 AC_TYPE_SIGNAL
 AC_FUNC_STAT
 AC_FUNC_STRFTIME
-AC_CHECK_FUNCS([floor ftruncate gettimeofday inet_ntoa memchr memmove memset mkdir putenv select setlocale sqrt strcasecmp strchr strdup strrchr strstr strtoul getrlimit setrlimit])
+AC_CHECK_FUNCS([floor ftruncate gettimeofday inet_ntoa memchr memmove memset mkdir select setlocale sqrt strcasecmp strchr strdup strrchr strstr strtoul getrlimit setrlimit])
 
 # Other tests
 

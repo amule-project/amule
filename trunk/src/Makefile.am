@@ -193,15 +193,10 @@ ed2k_SOURCES = ED2KLinkParser.cpp
 ed2k_CFLAGS =
 
 amulecmd_SOURCES = TextClient.cpp MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp
-if HAVE_WXBASE
 amulecmd_CFLAGS = $(WXBASE_CFLAGS)
 amulecmd_CXXFLAGS = $(WXBASE_CXXFLAGS)
 amulecmd_LDADD = $(WXBASE_LIBS)
-else
-amulecmd_CFLAGS = $(WX_CFLAGS)
-amulecmd_CXXFLAGS = $(WX_CXXFLAGS)
-amulecmd_LDADD = $(WX_LIBS)
-endif
+
 
 amulecmdDLG_SOURCES = TextClient.cpp MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp
 amulecmdDLG_CFLAGS = $(WX_CFLAGS) -DAMULECMDDLG
@@ -210,15 +205,10 @@ amulecmdDLG_LDADD = $(WX_LIBS)
 
 amuleweb_SOURCES =  WebServer.cpp WebInterface.cpp WebSocket.cpp \
 	MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp
-if HAVE_WXBASE
 amuleweb_CFLAGS = $(WXBASE_CFLAGS)
 amuleweb_CXXFLAGS = $(WXBASE_CXXFLAGS)
 amuleweb_LDADD = $(WXBASE_LIBS) $(ZLIB_LIBS)
-else
-amuleweb_CFLAGS = $(WX_CFLAGS)
-amuleweb_CXXFLAGS = $(WX_CXXFLAGS)
-amuleweb_LDADD = $(WX_LIBS) $(ZLIB_LIBS)
-endif
+
 
 amulewebDLG_SOURCES = WebServer.cpp WebInterface.cpp WebSocket.cpp \
 	 MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp
