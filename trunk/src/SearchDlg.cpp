@@ -183,6 +183,7 @@ void CSearchDlg::OnSearchClosed(wxNotebookEvent& evt)
 	if ( m_notebook->GetPageCount() == 1 ) {
 		theApp.searchlist->Clear();
 
+		FindWindow(IDC_SDOWNLOAD)->Enable(FALSE);
 		FindWindow(IDC_CLEAR_RESULTS)->Enable(FALSE);
 	}
 }
@@ -372,6 +373,7 @@ void CSearchDlg::OnBnClickedClear(wxCommandEvent& WXUNUSED(ev))
 	m_notebook->DeleteAllPages();
 
 	FindWindow(IDC_CLEAR_RESULTS)->Enable(FALSE);
+	FindWindow(IDC_SDOWNLOAD)->Enable(FALSE);
 }
 
 
@@ -392,6 +394,7 @@ void CSearchDlg::StartNewSearch()
 	}
 
 	FindWindow(IDC_STARTS)->Disable();
+	FindWindow(IDC_SDOWNLOAD)->Disable();
 	FindWindow(IDC_CANCELS)->Enable();
 
 	m_canceld = false;
