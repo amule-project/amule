@@ -220,7 +220,6 @@ protected:
 	bool	LoadDateFromFile(const CFileDataIO* file);
 	void	CreateHashFromFile(CFile* file, uint32 Length, uchar* Output, CAICHHashTree* pShaHashOut = NULL) const { CreateHashFromInput(file, Length, Output, NULL, pShaHashOut); }	
 	void	LoadComment();//comment
-	void GetMetaDataTags();
 	ArrayOfCMD4Hash hashlist;
 	ArrayOfCTag taglist;
 	wxString m_strFilePath;	
