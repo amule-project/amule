@@ -288,11 +288,11 @@ bool CUpDownClient::CreateNextBlockPackage()
 			}
 
 			SetUploadFileID(srcfile);
-			wxString ext = srcfile->GetFileName().Right(4).Lower();
-			if (m_byDataCompVer == 1 && (ext != wxT(".zip")) && (ext != wxT(".rar")) && (ext != wxT(".ace")))
+			if (m_byDataCompVer == 1 && (GetFiletype(srcfile->GetFileName()) != ftArchive)) {
 				CreatePackedPackets(filedata,togo,currentblock);
-			else
+			} else {
 				CreateStandartPackets(filedata,togo,currentblock);
+			}
 			
 			// file statistic
 			srcfile->statistic.AddTransferred(togo);
