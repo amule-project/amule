@@ -85,21 +85,21 @@ public:
 	CClientCredits(const CMD4Hash& key);
 	~CClientCredits();
 
-	const uchar* GetKey()					{return m_pCredits->abyKey;}
-	uchar*	GetSecureIdent()				{return m_abyPublicKey;}
-	uint8	GetSecIDKeyLen()				{return m_nPublicKeyLen;}
-	CreditStruct* GetDataStruct()			{return m_pCredits;}
+	const uchar* GetKey() const 			{return m_pCredits->abyKey;}
+	const uchar*	GetSecureIdent() const	{return m_abyPublicKey;}
+	uint8	GetSecIDKeyLen() const 			{return m_nPublicKeyLen;}
+	const CreditStruct* GetDataStruct() const	{return m_pCredits;}
 	void	ClearWaitStartTime();
 	void	AddDownloaded(uint32 bytes, uint32 dwForIP);
 	void	AddUploaded(uint32 bytes, uint32 dwForIP);
-	uint64	GetUploadedTotal();
-	uint64	GetDownloadedTotal();
+	uint64	GetUploadedTotal() const;
+	uint64	GetDownloadedTotal() const;
 	float	GetScoreRatio(uint32 dwForIP);
 	void	SetLastSeen()					{m_pCredits->nLastSeen = time(NULL);}
-	bool	SetSecureIdent(uchar* pachIdent, uint8 nIdentLen); // Public key cannot change, use only if there is not public key yet
+	bool	SetSecureIdent(const uchar* pachIdent, uint8 nIdentLen); // Public key cannot change, use only if there is not public key yet
 	uint32	m_dwCryptRndChallengeFor;
 	uint32	m_dwCryptRndChallengeFrom;
-	EIdentState	GetCurrentIdentState(uint32 dwForIP); // can be != IdentState
+	EIdentState	GetCurrentIdentState(uint32 dwForIP) const; // can be != IdentState
 	uint32	GetSecureWaitStartTime(uint32 dwForIP);
 	void	SetSecWaitStartTime(uint32 dwForIP);
 protected:
@@ -125,13 +125,13 @@ public:
 	
 			// return signature size, 0 = Failed | use sigkey param for debug only
 	uint8	CreateSignature(CClientCredits* pTarget, uchar* pachOutput, uint8 nMaxSize, uint32 ChallengeIP, uint8 byChaIPKind, CryptoPP::RSASSA_PKCS1v15_SHA_Signer* sigkey = NULL);
-	bool	VerifyIdent(CClientCredits* pTarget, uchar* pachSignature, uint8 nInputSize, uint32 dwForIP, uint8 byChaIPKind);	
+	bool	VerifyIdent(CClientCredits* pTarget, const uchar* pachSignature, uint8 nInputSize, uint32 dwForIP, uint8 byChaIPKind);	
 
 	CClientCredits* GetCredit(const CMD4Hash& key);
 	void	Process();
-	uint8	GetPubKeyLen()					{return m_nMyPublicKeyLen;}
-	byte*	GetPublicKey()					{return m_abyMyPublicKey;}
-	bool	CryptoAvailable();
+	uint8	GetPubKeyLen() const 			{return m_nMyPublicKeyLen;}
+	const byte*	GetPublicKey() const		{return m_abyMyPublicKey;}
+	bool	CryptoAvailable() const;
 protected:
 	void	LoadList();
 	void	SaveList();

@@ -42,7 +42,7 @@ struct CtrlItem_Struct{
 	DWORD				dwUpdated;
 	wxBitmap*			status;
 
-	~CtrlItem_Struct() { delete status; }
+	~CtrlItem_Struct() { if (status) delete status; }
 };
 
 // CDownloadListCtrl
@@ -62,7 +62,7 @@ public:
 	void AddFile(CPartFile* toadd);
 	void AddSource(CPartFile* owner,CUpDownClient* source,bool notavailable);
 	void RemoveSource(CUpDownClient* source,CPartFile* owner);
-	void RemoveFile(CPartFile* toremove);
+	void RemoveFile(const CPartFile* toremove);
 	void ClearCompleted();
 	void SetStyle();
 	void CreateMenues();
@@ -92,7 +92,7 @@ protected:
 	void OnColumnClick(wxListEvent& evt);
 	static int wxCALLBACK SortProc(long lp1,long lp2,long lpSort);
 	static int Compare(CPartFile* file1, CPartFile* file2, long lParamSort);
-	static int Compare(CUpDownClient* client1, CUpDownClient* client2, long lParamSort,int sortMod);
+	static int Compare(const CUpDownClient* client1, const CUpDownClient* client2, long lParamSort,int sortMod);
 	void OnLvnItemActivate(wxListEvent& evt);
 	void OnNMRclick(wxListEvent& evt);
 	void OnPriLow(wxCommandEvent& evt);

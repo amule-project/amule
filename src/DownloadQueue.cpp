@@ -334,16 +334,16 @@ void CDownloadQueue::AddDownload(CPartFile* newfile,bool paused)
 	}
 }
 
-bool CDownloadQueue::IsFileExisting(const CMD4Hash& fileid)
+bool CDownloadQueue::IsFileExisting(const CMD4Hash& fileid) const
 {
-	if (CKnownFile* file = sharedfilelist->GetFileByID(fileid)) {
+	if (const CKnownFile* file = sharedfilelist->GetFileByID(fileid)) {
 		if (file->IsPartFile()) {
 			theApp.amuledlg->AddLogLine(true, _("You are already trying to download the file %s"), file->GetFileName().GetData());
 		} else {
 			theApp.amuledlg->AddLogLine(true, _("You already have the file %s"), file->GetFileName().GetData());
 		}
 		return true;
-	} else if ((file = this->GetFileByID(fileid))) {
+	} else if ((file = GetFileByID(fileid))) {
 		theApp.amuledlg->AddLogLine(true, _("You are already trying to download the file %s"), file->GetFileName().GetData());
 		return true;
 	}
@@ -413,7 +413,7 @@ void CDownloadQueue::Process()
 	}
 }
 
-CPartFile* CDownloadQueue::GetFileByID(const CMD4Hash& filehash){
+CPartFile* CDownloadQueue::GetFileByID(const CMD4Hash& filehash) const {
 	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
 		if (filehash == filelist[i]->GetFileHash())
 			return filelist[i];
@@ -421,7 +421,7 @@ CPartFile* CDownloadQueue::GetFileByID(const CMD4Hash& filehash){
 	return NULL;
 }
 
-CPartFile* CDownloadQueue::GetFileByIndex(int index){
+CPartFile* CDownloadQueue::GetFileByIndex(int index) const {
 //      if (index>=filelist.GetCount()) return 0;
 	int count=0;
 
@@ -434,7 +434,7 @@ CPartFile* CDownloadQueue::GetFileByIndex(int index){
 	return NULL;
 }
 
-bool CDownloadQueue::IsPartFile(void* totest){
+bool CDownloadQueue::IsPartFile(const CKnownFile* totest) const{
 	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
 		if (totest == filelist[i]) {
 			return true;

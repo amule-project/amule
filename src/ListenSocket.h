@@ -68,7 +68,7 @@ friend class CClientSocket;
 
 public:
 	CClientReqSocket(CPreferences* in_prefs, CUpDownClient* in_client = 0);	
-	~CClientReqSocket();
+	virtual ~CClientReqSocket();
 	void		Disconnect(const wxString& strReason);
 
 

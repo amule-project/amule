@@ -183,17 +183,17 @@ void CDownloadListCtrl::setPri(int newpri)
 	}
 }
 
-void CDownloadListCtrl::OnPriLow(wxCommandEvent & evt)
+void CDownloadListCtrl::OnPriLow(wxCommandEvent& WXUNUSED(evt))
 {
 	setPri(PR_LOW);
 }
 
-void CDownloadListCtrl::OnPriNormal(wxCommandEvent & evt)
+void CDownloadListCtrl::OnPriNormal(wxCommandEvent& WXUNUSED(evt))
 {
 	setPri(PR_NORMAL);
 }
 
-void CDownloadListCtrl::OnPriHigh(wxCommandEvent & evt)
+void CDownloadListCtrl::OnPriHigh(wxCommandEvent& WXUNUSED(evt))
 {
 	setPri(PR_HIGH);
 }
@@ -388,7 +388,7 @@ void CDownloadListCtrl::OnNMRclick(wxListEvent & evt)
 	}
 }
 
-void CDownloadListCtrl::OnColResize(wxListEvent & evt)
+void CDownloadListCtrl::OnColResize(wxListEvent& WXUNUSED(evt))
 {
 	return;
 }
@@ -754,7 +754,7 @@ void CDownloadListCtrl::RemoveSource(CUpDownClient * source, CPartFile * owner)
 }
 
 // argh. wxWin lists. remove these!!!
-void CDownloadListCtrl::RemoveFile(CPartFile * toremove)
+void CDownloadListCtrl::RemoveFile(const CPartFile * toremove)
 {
 	// Retrieve all entries matching the File or linked to the file
 	// Remark: The 'asked another files' clients must be removed from here
@@ -999,9 +999,6 @@ void CDownloadListCtrl::DrawFileItem(wxDC * dc, int nColumn, LPRECT lpRect, Ctrl
 					uint32 remains;
 					remains = lpPartFile->GetFileSize() - lpPartFile->GetCompletedSize();	//<<-- 09/27/2002, CML
 
-					if (remains < 0) {
-						remains = 0;
-					}
 					// time
 					sint32 restTime = lpPartFile->getTimeRemaining();
 					buffer = CastSecondsToHM(restTime) + wxT(" (") + CastItoXBytes(remains) + wxT(")");
@@ -1918,7 +1915,7 @@ int CDownloadListCtrl::Compare(CPartFile * file1, CPartFile * file2, long lParam
 	}
 }
 
-int CDownloadListCtrl::Compare(CUpDownClient * client1, CUpDownClient * client2, long lParamSort, int sortMod)
+int CDownloadListCtrl::Compare(const CUpDownClient * client1, const CUpDownClient * client2, long lParamSort, int sortMod)
 {
 	switch (lParamSort) {
 		case 0:	//name asc

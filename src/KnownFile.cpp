@@ -554,7 +554,7 @@ void CKnownFile::SetFileSize(uint32 nFileSize)
 
 
 // needed for memfiles. its probably better to switch everything to CFile...
-bool CKnownFile::LoadHashsetFromFile(CFile* file, bool checkhash){
+bool CKnownFile::LoadHashsetFromFile(const CFile* file, bool checkhash){
 	CMD4Hash checkid;
 	file->Read(&checkid,16);
 	
@@ -610,7 +610,7 @@ bool CKnownFile::LoadHashsetFromFile(CFile* file, bool checkhash){
 	}
 }
 
-bool CKnownFile::LoadTagsFromFile(CFile* file){
+bool CKnownFile::LoadTagsFromFile(const CFile* file){
 	uint32 tagcount;
 	file->Read(&tagcount,4);
 	ENDIAN_SWAP_I_32(tagcount);
@@ -683,14 +683,14 @@ bool CKnownFile::LoadTagsFromFile(CFile* file){
 	return true;
 }
 
-bool CKnownFile::LoadDateFromFile(CFile* file){
+bool CKnownFile::LoadDateFromFile(const CFile* file){
 	uint32 i;
 	int j = file->Read(&i,4);
 	date = ENDIAN_SWAP_32(i);
 	return (4 == j);
 }
 
-bool CKnownFile::LoadFromFile(CFile* file){
+bool CKnownFile::LoadFromFile(const CFile* file){
 	// SLUGFILLER: SafeHash - load first, verify later
 	bool ret1 = LoadDateFromFile(file);
 	bool ret2 = LoadHashsetFromFile(file,false);
@@ -700,10 +700,6 @@ bool CKnownFile::LoadFromFile(CFile* file){
 	// SLUGFILLER: SafeHash
 }
 
-uint8 CKnownFile::GetStatus(bool WXUNUSED(ignorepause))
-{
-	return PS_COMPLETE;
-}
 
 bool CKnownFile::WriteToFile(CFile* file){
 	// date
@@ -778,7 +774,7 @@ bool CKnownFile::WriteToFile(CFile* file){
 	return true;
 }
 
-void CKnownFile::CreateHashFromInput(FILE* file,CFile* file2, int Length, uchar* Output, uchar* in_string) {
+void CKnownFile::CreateHashFromInput(FILE* file, CFile* file2, int Length, uchar* Output, uchar* in_string) {
 	// time critial
 	bool PaddingStarted = false;
 	uint32 Hash[4];
@@ -915,7 +911,7 @@ static void MD4Transform(uint32 Hash[4], uint32 x[16])
 }
 
 
-Packet*	CKnownFile::CreateSrcInfoPacket(CUpDownClient* forClient){
+Packet*	CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient){
 	CTypedPtrList<CPtrList, CUpDownClient*> srclist;
 	//theApp.uploadqueue->FindSourcesForFileById(&srclist, forClient->reqfileid); //should we use "filehash"?
 	theApp.uploadqueue->FindSourcesForFileById(&srclist, forClient->GetUploadFileID()); //should we use "filehash"?

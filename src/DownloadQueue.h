@@ -33,6 +33,7 @@ class CPartFile;
 class CUpDownClient;
 class CServer;
 class CSafeMemFile;
+class CKnownFile;
 
 struct Hostname_Entry {
 		CMD4Hash fileid;
@@ -83,17 +84,17 @@ public:
 	void	AddSearchToDownload(CSearchFile* toadd,uint8 paused=2);
 	void	AddSearchToDownload(const wxString& link,uint8 paused=2);
 	void	AddFileLinkToDownload(class CED2KFileLink* pLink);
-	bool	IsFileExisting(const CMD4Hash& fileid);
-	bool	IsPartFile(void* totest);
-	CPartFile*	GetFileByID(const CMD4Hash& filehash);
-	CPartFile* GetFileByIndex(int idx);
+	bool	IsFileExisting(const CMD4Hash& fileid) const;
+	bool	IsPartFile(const CKnownFile* totest) const;
+	CPartFile*	GetFileByID(const CMD4Hash& filehash) const;
+	CPartFile* GetFileByIndex(int idx) const;
 	void    CheckAndAddSource(CPartFile* sender,CUpDownClient* source);
 	void    CheckAndAddKnownSource(CPartFile* sender,CUpDownClient* source);
 	// bool	RemoveSource(CUpDownClient* toremove, bool updatewindow = true);
 	bool	RemoveSource(CUpDownClient* toremove, bool updatewindow = true, bool bDoStatsUpdate = true); // delete later ->{ return RemoveSource(toremove,NULL,updatewindow);}
 	void	DeleteAll();
 	void	RemoveFile(CPartFile* toremove);
-	float	GetKBps()								{return datarate/1024.0;}
+	float	GetKBps() const						{return datarate/1024.0;}
 	void	SortByPriority();
 	void	CheckDiskspace(bool bNotEnoughSpaceLeft = false);
 	void	StopUDPRequests();

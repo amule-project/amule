@@ -1536,7 +1536,7 @@ uint16 CPartFile::GetNotCurrentSourcesCount()
 		return counter;
 }
 
-uint8 CPartFile::GetStatus(bool ignorepause)
+uint8 CPartFile::GetStatus(bool ignorepause) const
 {
 	if ((!paused && !insufficient) || status == PS_ERROR || status == PS_COMPLETING || status == PS_COMPLETE || ignorepause) {
 		return status;
@@ -2811,7 +2811,7 @@ void CPartFile::ResumeFile()
 	
 }
 
-wxString CPartFile::getPartfileStatus()
+wxString CPartFile::getPartfileStatus() const
 {
 	wxString mybuffer=""; 
 	if (GetTransferingSrcCount()>0) {
@@ -2843,7 +2843,7 @@ wxString CPartFile::getPartfileStatus()
 	return mybuffer; 
 } 
 
-int CPartFile::getPartfileStatusRang()
+int CPartFile::getPartfileStatusRang() const
 {
 	
 	int tempstatus=0;
@@ -2869,7 +2869,7 @@ int CPartFile::getPartfileStatusRang()
 	return tempstatus;
 } 
 
-sint32 CPartFile::getTimeRemaining()
+sint32 CPartFile::getTimeRemaining() const
 {
 	if (GetKBpsDown() < 0.001)
 		return -1;
@@ -3033,9 +3033,9 @@ Packet*	CPartFile::CreateSrcInfoPacket(CUpDownClient* forClient)
 			continue;
 		}
 		// only send source which have needed parts for this client if possible
-		uint8* srcstatus = cur_src->GetPartStatus();
+		const uint8* srcstatus = cur_src->GetPartStatus();
 		if (srcstatus) {
-			uint8* reqstatus = forClient->GetPartStatus();
+			const uint8* reqstatus = forClient->GetPartStatus();
 			int n = GetPartCount();
 			if (reqstatus) {
 				// only send sources which have needed parts for this client
@@ -3566,11 +3566,6 @@ void CPartFile::UpdateFileRatingCommentAvail()
 	if ((prev!=(hasComment || hasRating)) || (prevbad!=hasBadRating)) {
 		UpdateDisplayedInfo();
 	}
-}
-
-uint16 CPartFile::GetSourceCount()
-{
-	return m_SrcList.GetCount();
 }
 
 void CPartFile::UpdateDisplayedInfo(bool force)

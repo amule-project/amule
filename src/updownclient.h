@@ -137,7 +137,7 @@ public:
 	CUpDownClient(uint16 in_port, uint32 in_userid, uint32 in_serverup, uint16 in_serverport,CPartFile* in_reqfile);
 	~CUpDownClient();
 //	void			Destroy();
-	bool			Disconnected(wxString strReason, bool bFromSocket = false);
+	bool			Disconnected(const wxString& strReason, bool bFromSocket = false);
 	bool			TryToConnect(bool bIgnoreMaxCon = false);
 	void			ConnectionEstablished();
 	uint32			GetUserID() const			{return m_nUserID;}
@@ -181,7 +181,7 @@ public:
 	
 	void			CheckForGPLEvilDoer();
 
-	void			SetUserName(wxString NewName) { m_Username = NewName; }
+	void			SetUserName(const wxString& NewName) { m_Username = NewName; }
 	
 	uint8			GetClientSoft() const		{return m_clientSoft;}
 	void			ReGetClientSoft();
@@ -192,7 +192,7 @@ public:
 	void			SendMuleInfoPacket(bool bAnswer);
 	void			ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize);
 	void			ProcessMuleCommentPacket(const char *pachPacket, uint32 nSize);
-	bool			Compare(CUpDownClient* tocomp, bool bIgnoreUserhash = false);	
+	bool			Compare(const CUpDownClient* tocomp, bool bIgnoreUserhash = false);	
 	void			SetLastSrcReqTime()			{m_dwLastSourceRequest = ::GetTickCount();}
 	void			SetLastSrcAnswerTime()		{m_dwLastSourceAnswer = ::GetTickCount();}
 	void			SetLastAskedForSources()	{m_dwLastAskedForSources = ::GetTickCount();}
@@ -208,8 +208,8 @@ public:
 	
 	void			SendPublicKeyPacket();
 	void			SendSignaturePacket();
-	void			ProcessPublicKeyPacket(uchar* pachPacket, uint32 nSize);
-	void			ProcessSignaturePacket(uchar* pachPacket, uint32 nSize);
+	void			ProcessPublicKeyPacket(const uchar* pachPacket, uint32 nSize);
+	void			ProcessSignaturePacket(const uchar* pachPacket, uint32 nSize);
 	uint8			GetSecureIdentState() {
 		if (m_SecureIdentState != IS_UNAVAILABLE) {
 			if (!SecIdentSupRec) {
@@ -222,7 +222,7 @@ public:
 		return m_SecureIdentState;
 	}
 	void			SendSecIdentStatePacket();
-	void			ProcessSecIdentStatePacket(uchar* pachPacket, uint32 nSize);
+	void			ProcessSecIdentStatePacket(const uchar* pachPacket, uint32 nSize);
 
 	uint8			GetInfoPacketsReceived() const { return m_byInfopacketsReceived; }
 
@@ -235,14 +235,14 @@ public:
 	//upload
 	uint32			compressiongain; // Add show compression
 	uint32  		notcompressed; // Add show compression
-	uint8			GetUploadState()			{return m_nUploadState;}
+	uint8			GetUploadState() const		{return m_nUploadState;}
 	void			SetUploadState(uint8 news)	{m_nUploadState = news;}
 	uint32			GetWaitStartTime() const	{return m_dwWaitTime;}
 	uint32			GetWaitTime() const 		{return m_dwUploadTime-m_dwWaitTime;}
 	bool			IsDownloading()	const 		{return (m_nUploadState == US_UPLOADING);}
 	bool			HasBlocks() const 			{return !(m_BlockSend_queue.IsEmpty() && m_BlockRequests_queue.IsEmpty());}
 	float			GetKBpsUp()	const 			{return kBpsUp;}
-	uint32			GetScore(bool sysvalue, bool isdownloading = false, bool onlybasevalue = false);
+	uint32			GetScore(bool sysvalue, bool isdownloading = false, bool onlybasevalue = false) const;
 	void			AddReqBlock(Requested_Block_Struct* reqblock);
 	bool			CreateNextBlockPackage();
 	void			SetUpStartTime(uint32 dwTime = 0);
@@ -252,9 +252,9 @@ public:
 	bool			SupportMultiPacket() const { return m_bMultiPacket;	}	
 
 	void			SetUploadFileID(CKnownFile* newreqfile);
-	void			ProcessExtendedInfo(CSafeMemFile* data, CKnownFile* tempreqfile);
-	void			ProcessFileInfo(CSafeMemFile* data, CPartFile* file);
-	void			ProcessFileStatus(bool bUdpPacket, CSafeMemFile* data, CPartFile* file);
+	void			ProcessExtendedInfo(const CSafeMemFile* data, CKnownFile* tempreqfile);
+	void			ProcessFileInfo(const CSafeMemFile* data, const CPartFile* file);
+	void			ProcessFileStatus(bool bUdpPacket, const CSafeMemFile* data, const CPartFile* file);
 	
 	const CMD4Hash&	GetUploadFileID() const	{return m_requpfileid;}
 	CPartFile*		GetDownloadFile()	{return reqfile;}
@@ -262,9 +262,8 @@ public:
 	void			ClearUploadBlockRequests();
 	void			SendRankingInfo();
 	void			SendCommentInfo(CKnownFile *file);
-	uint32			GetLastAskedDelay();
 	void			AddRequestCount(const CMD4Hash& fileid);
-	bool 			IsDifferentPartBlock();
+	bool 			IsDifferentPartBlock() const;
 	void			UnBan();
 	void			Ban();
 	bool			m_bAddNextConnect;  // VQB Fix for LowID slots only on connection
@@ -293,7 +292,7 @@ public:
 	
 	bool			IsUpPartAvailable(uint16 iPart) const {return ( (iPart >= m_nUpPartCount) || (!m_abyUpPartStatus) )? 0:m_abyUpPartStatus[iPart];}
 
-	uint8*			GetPartStatus()				{return m_abyPartStatus;}
+	const uint8*	GetPartStatus() const		{return m_abyPartStatus;}
 	float			GetKBpsDown() const			{return kBpsDown;}	// Emilio
 	float			CalculateKBpsDown();
 	uint16			GetRemoteQueueRank() const	{return m_nRemoteQueueRank;}
@@ -309,10 +308,10 @@ public:
 	bool			AddRequestForAnotherFile(CPartFile* file);
 	void			SendBlockRequests();
 	void			ProcessBlockPacket(const char* packet, uint32 size, bool packed = false);
-	uint16			GetAvailablePartCount();
+	uint16			GetAvailablePartCount() const;
 	bool			SwapToAnotherFile(bool bIgnoreNoNeeded, bool ignoreSuspensions, bool bRemoveCompletely, CPartFile* toFile = NULL);
 	void			DontSwapTo(CPartFile* file);
-	bool			IsSwapSuspended(CPartFile* file);
+	bool			IsSwapSuspended(const CPartFile* file);
 	bool			DoSwap(CPartFile* SwapTo, bool anotherfile=false);
 	void			UDPReaskACK(uint16 nNewQR);
 	void			UDPReaskFNF();
@@ -320,7 +319,7 @@ public:
 	bool			IsSourceRequestAllowed();
 	// -khaos--+++> Download Sessions Stuff Imported from eMule 0.30c (Creteil) BEGIN ...
 	void			SetDownStartTime()			{m_dwDownStartTime = ::GetTickCount();}
-	uint32			GetDownTimeDifference()			{uint32 myTime = m_dwDownStartTime; m_dwDownStartTime = 0; return ::GetTickCount() - myTime;}
+	uint32			GetDownTimeDifference() 	{uint32 myTime = m_dwDownStartTime; m_dwDownStartTime = 0; return ::GetTickCount() - myTime;}
 	bool			GetTransferredDownMini() const	{return m_bTransferredDownMini;}
 	void			SetTransferredDownMini()		{m_bTransferredDownMini=true;}
 	void			InitTransferredDownMini()		{m_bTransferredDownMini=false;}
@@ -347,7 +346,7 @@ public:
 
 	//File Comment 
 	const wxString&	GetFileComment() const 			{return m_strComment;} 
-	void			SetFileComment(char *desc)		{m_strComment = char2unicode(desc);}
+	void			SetFileComment(const char *desc)		{m_strComment = char2unicode(desc);}
 	uint8			GetFileRate() const				{return m_iRate;}
 	
 	wxString		GetSoftStr() const 				{ return m_clientVerString.Left(m_SoftLen); }
@@ -363,12 +362,12 @@ public:
 	// Barry - Sets string to show parts downloading, eg NNNYNNNNYYNYN
 	wxString		ShowDownloadingParts();
 	void 			UpdateDisplayedInfo(bool force=false);
-	int 			GetFileListRequested() { return m_iFileListRequested; }
+	int 			GetFileListRequested() const { return m_iFileListRequested; }
 	void 			SetFileListRequested(int iFileListRequested) { m_iFileListRequested = iFileListRequested; }
 	
 	void			ResetFileStatusInfo();
 	
-	bool                    CheckHandshakeFinished(UINT protocol, UINT opcode) const;
+	bool			CheckHandshakeFinished(UINT protocol, UINT opcode) const;
 		
 	CPartFile*		reqfile;
 	
@@ -443,8 +442,8 @@ private:
 	DWORD	m_lastRefreshedDLDisplay;
 
 	//upload
-	void CreateStandartPackets(unsigned char* data,uint32 togo, Requested_Block_Struct* currentblock);
-	void CreatePackedPackets(unsigned char* data,uint32 togo, Requested_Block_Struct* currentblock);
+	void CreateStandartPackets(const unsigned char* data,uint32 togo, Requested_Block_Struct* currentblock);
+	void CreatePackedPackets(const unsigned char* data,uint32 togo, Requested_Block_Struct* currentblock);
 	
 	float			kBpsUp;
 	uint32		msSentPrev;

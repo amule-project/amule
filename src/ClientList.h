@@ -75,7 +75,6 @@ public:
 	bool	AttachToAlreadyKnown(CUpDownClient** client, CClientReqSocket* sender);
 	CUpDownClient* FindClientByIP(uint32 clientip,uint16 port);
 	CUpDownClient* VUGetRandomClient();
-	bool	VerifyUpload(uint32 clientip,uint16 port);
 	bool	ComparePriorUserhash(uint32 dwIP, uint16 nPort, void* pNewHash);
 	void AddTrackClient(CUpDownClient* toadd);
 	uint16 GetClientsFromIP(uint32 dwIP);
@@ -83,12 +82,12 @@ public:
 	void	AddBannedClient(uint32 dwIP);
 	bool	IsBannedClient(uint32 dwIP);
 	void	RemoveBannedClient(uint32 dwIP);
-	uint16	GetBannedCount()			{return m_bannedList.size(); }
+	uint16	GetBannedCount() const		{return m_bannedList.size(); }
 
 
 	void	Process();
 	
-	bool	Debug_IsValidClient(CUpDownClient* tocheck);
+	bool	Debug_IsValidClient(CUpDownClient* tocheck) const;
 	void	Debug_SocketDeleted(CClientReqSocket* deleted);
 private:
 	CTypedPtrList<CPtrList, CUpDownClient*> list;

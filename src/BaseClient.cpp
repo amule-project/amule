@@ -1014,7 +1014,7 @@ void CUpDownClient::ClearDownloadBlockRequests()
 	m_PendingBlocks_list.RemoveAll();
 }
 
-bool CUpDownClient::Disconnected(wxString strReason, bool bFromSocket){
+bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket){
 	//If this is a KAD client object, just delete it!
 	//wxASSERT(theApp.clientlist->IsValidClient(this));
 
@@ -1703,7 +1703,7 @@ void CUpDownClient::SendSignaturePacket(){
 	m_SecureIdentState = IS_ALLREQUESTSSEND;
 }
 
-void CUpDownClient::ProcessPublicKeyPacket(uchar* pachPacket, uint32 nSize){
+void CUpDownClient::ProcessPublicKeyPacket(const uchar* pachPacket, uint32 nSize){
 	theApp.clientlist->AddTrackClient(this);
 
 	///* delete this line later*/ DEBUG_ONLY(AddDebugLogLine(false, "recieving public key from '%s'", GetUserName()));
@@ -1730,7 +1730,7 @@ void CUpDownClient::ProcessPublicKeyPacket(uchar* pachPacket, uint32 nSize){
 	}
 }
 
-void CUpDownClient::ProcessSignaturePacket(uchar* pachPacket, uint32 nSize){
+void CUpDownClient::ProcessSignaturePacket(const uchar* pachPacket, uint32 nSize){
 	///* delete this line later*/ DEBUG_ONLY(AddDebugLogLine(false, "receiving signature from '%s'", GetUserName()));
 	// here we spread the good guys from the bad ones ;)
 
@@ -1816,7 +1816,7 @@ void CUpDownClient::SendSecIdentStatePacket(){
 	}
 }
 
-void CUpDownClient::ProcessSecIdentStatePacket(uchar* pachPacket, uint32 nSize){
+void CUpDownClient::ProcessSecIdentStatePacket(const uchar* pachPacket, uint32 nSize){
 	if (nSize != 5)
 		return;
 	if (!credits){
