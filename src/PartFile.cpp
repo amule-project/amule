@@ -3617,6 +3617,10 @@ CPartFile::CPartFile(CEC_PartFile_Tag *tag)
     m_iPartCount = (m_nFileSize + (PARTSIZE - 1)) / PARTSIZE;
 	m_showSources = false;
 	
+	transfered = tag->SizeXfer();
+	percentcompleted = (100.0*completedsize) / m_nFileSize;
+	completedsize = tag->SizeDone();
+
     // is it ok ?
     m_stopped = 0;
     
