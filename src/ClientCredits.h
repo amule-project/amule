@@ -34,6 +34,9 @@
 		#ifdef __CRYPTO_SOURCE__
 			#include <crypto-5.1/config.h>
 			#include <crypto-5.1/rsa.h>
+		#else //needed for standard path
+			#include <cryptopp/config.h>
+			#include <cryptopp/rsa.h>
 		#endif
 	#endif
 #endif
