@@ -69,7 +69,6 @@
 #include <wx/intl.h>			// Needed for i18n
 #include <wx/mimetype.h>		// For launching default browser
 #include <wx/cmdline.h>			// Needed for wxCmdLineParser
-#include <wx/tokenzr.h>			// Needed for wxStringTokenizer
 #include <wx/url.h>
 #include <wx/wfstream.h>
 
@@ -416,12 +415,9 @@ bool CamuleApp::OnInit()
 	SetVendorName(wxT("TikuWarez"));
 	
 	SetAppName(wxT("aMule"));
-	
-	wxStringTokenizer tkz(wxGetOsDescription(), wxT(" "));
 
-	if (tkz.HasMoreTokens()) {
-		OSType = tkz.GetNextToken();
-	} else {
+	OSType = wxGetOsDescription().BeforeFirst( wxT(' ') );
+	if ( OSType.IsEmpty() ) {
 		OSType = wxT("Unknown");
 	}	
 	
