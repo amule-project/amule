@@ -262,6 +262,10 @@ if test "x${need_gui}" = "xyes" ; then
 
   CHECK_WX_BUILT_WITH_GTK2
 
+  // Put this here instead of in both in gtk.4 and gtk-2_0.m4 so that it only appears once in configure --help
+  AC_ARG_ENABLE(gtktest, [  --disable-gtktest       do not try to compile and run a test GTK program],
+		, enable_gtktest=yes)
+
   if test x"$GTK_USEDVERSION" = x"2" ; then
     AM_PATH_GTK_2_0(2.0.3, havegtk2=yes, havegtk2=no)
     GTK_DEFS="-D__GTK2__"
