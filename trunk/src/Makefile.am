@@ -115,9 +115,6 @@ amule_SOURCES = ListenSocket.cpp \
 	amule.cpp \
 	amuleDlg.cpp 
 
-if USE_MINGW
-amule_SOURCES += ../amule.rc
-endif
 
 if ADD_GSOCKET
 if ADD_24GSOCKET
