@@ -35,11 +35,13 @@
 #if wxUSE_GUI
 	#include <wx/textdlg.h>	// For GetTextFromUser, GetPasswordFromUser
 #endif
+
+#include <wx/filefn.h>
 #include <wx/config.h>		// For wxConfig
 #include <wx/fileconf.h>	// For wxFileConfig
 #include <wx/intl.h>		// For _()
 #include <wx/tokenzr.h>		// For wxStringTokenizer
-#include <wx/filefn.h>
+
 
 //-------------------------------------------------------------------
 
