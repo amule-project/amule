@@ -77,13 +77,12 @@ public:
 	bool	WriteToFile(CFile* WXUNUSED(file)) const	{ return false; }
 	bool	IsPartFile() const		{ return !(status == PS_COMPLETE); }
 	uint32	Process(uint32 reducedownload, uint8 m_icounter);
-	uint8	LoadPartFile(wxString in_directory, wxString filename, bool from_backup = false, bool getsizeonly = false);
+	uint8	LoadPartFile(const wxString& in_directory, const wxString& filename, bool from_backup = false, bool getsizeonly = false);
 	bool	SavePartFile(bool Initial = false);
 	void	PartFileHashFinished(CKnownFile* result);
 	bool	HashSinglePart(uint16 partnumber); // true = ok , false = corrupted
 	uint64	GetRealFileSize();
 	
-	bool	IsNormalFile() const 		{ return true; }
 	bool    CheckShowItemInGivenCat(int inCategory);
 	void	AddGap(uint32 start, uint32 end);
 	void	FillGap(uint32 start, uint32 end);
@@ -140,8 +139,6 @@ public:
 	void	StopFile(bool bCancel = false);
 	void	PauseFile(bool bInsufficient = false);
 	void	ResumeFile();
-	void	PauseFileInsufficient();
-	void	ResumeFileInsufficient();
 
 	virtual	Packet* CreateSrcInfoPacket(const CUpDownClient* forClient);
 	//void	AddClientSources(CMemFile* sources);
@@ -155,8 +152,8 @@ public:
 	uint64	GetLostDueToCorruption() const	{ return m_iLostDueToCorruption; }
 	uint64	GetGainDueToCompression() const	{ return m_iGainDueToCompression; }
 	uint32	TotalPacketsSavedDueToICH()const{ return m_iTotalPacketsSavedDueToICH; }
-	bool	IsStopped() const		{ return stopped; }
-	bool	IsPaused() const		{ return paused; }
+	bool	IsStopped() const		{ return m_stopped; }
+	bool	IsPaused() const		{ return m_paused; }
 	bool	HasComment() const		{ return hasComment; }
 	bool	HasRating() const		{ return hasRating; }
 	bool	HasBadRating() const		{ return hasBadRating; }
@@ -181,7 +178,7 @@ public:
 	void	UpdateAutoDownPriority();
 	uint8	GetDownPriority() const		{ return m_iDownPriority; }
 	completingThread* cthread;
-	bool	GetInsufficient() const		{ return insufficient; }
+	bool	GetInsufficient() const		{ return m_insufficient; }
 	
 	void	CompleteFileEnded(int completing_result, wxString* newname);	
 
@@ -245,6 +242,8 @@ protected:
 	void	CompleteFile(bool hashingdone);
 	void	CreatePartFile();
 	void	Init();
+
+	bool	CheckFreeDiskSpace( uint32 neededSpace = 0 );
 private:
 	uint32	m_iLastPausePurge;
 	uint16	count;
@@ -258,9 +257,9 @@ private:
 	wxString m_fullname;
 	wxString m_partmetfilename;
 	uint32	transfered;
-	bool	paused;
-	bool	stopped;
-	bool	insufficient;
+	bool	m_paused;
+	bool	m_stopped;
+	bool	m_insufficient;
 	uint8   m_iDownPriority;
 	bool    m_bAutoDownPriority;
 	uint8	status;
@@ -300,10 +299,6 @@ public:
 	SourceSet m_SrcList;
 	SourceSet A4AFsrclist;
 	
-	// Kry - Avoid counting again and again (mayor cpu leak)
-	bool	IsCountDirty;
-	uint16	CleanCount;
-
 	bool	hashsetneeded;
 	uint32  GetCompletedSize() const	{ return completedsize; }
 

@@ -69,7 +69,6 @@ public:
 	void	RemoveFile(CPartFile* toremove);
 	float	GetKBps() const						{return datarate/1024.0;}
 	void	SortByPriority();
-	void	CheckDiskspace(bool bNotEnoughSpaceLeft = false);
 	void	StopUDPRequests();
 	CServer*	cur_udpserver;
 	void	GetDownloadStats(uint32 results[]);
@@ -103,6 +102,7 @@ public:
 	bool	AddED2KLink( const CED2KServerListLink* link );
 	
 private:
+	void	CheckDiskspace( const wxString& path );
 	bool	SendNextUDPPacket();
 	void	ProcessLocalRequests();
 	int	GetMaxFilesPerUDPServerPacket() const;
