@@ -27,38 +27,39 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 	Kry:
 		* New SysTray Core written in wxWidgets (portable and transparent icon)
 
-
 	Phoenix:
 		* Fixed crash in CClientReqSocket::ProcessExtPacket()
-		  processing of OP_COMPRESSEDPART.
+		processing of OP_COMPRESSEDPART.
 		* More UNICODE fixes.
 		* Fixed WX_SYSTRAY compilation on wx-2.4.2.
 		* More proxy updates, we are getting there.
 		* Small UI bug: double click on a server did not change the
-		  "Connect" button to "Cancel".
+		"Connect" button to "Cancel".
 		* Changed some deprecated IsKindOf(CLASSINFO()) to wxDynamicCast().
 		* Fixed crash in CUpDownClient::SendFileRequest(), short
-		  circuit evaluation was reversed.
+		circuit evaluation was reversed.
 		* Created Proxy dialog on preferences.
 		* Updated muuli.wdr for wxDesigner version 2.11 -- no more
-		  manual patching for wxFIXED_MINSIZE required.
+		manual patching for wxFIXED_MINSIZE required.
 		* Fix for rommel's report of IP filter problem.
 		* No more IsKindOf(), all replaced by dynamic_cast<>().
 		* No more wxDynamicCast(), all replaced by dynamic_cast<>().
 		* Fixed multiple instances of event handlers in CClientReqSocketHandler
-		  and CServerSocketHandler.
+		and CServerSocketHandler.
 		* In StateMachine.cpp, m_state is now private and state machine code 
-		  is now thread safe.
+		is now thread safe.
 		* Added base64 encoding/decoding support to aMule.
 		* SOCKS5 and SOCKS4 proxy support is working now.
 		* HTTP proxy support is working now.
-		
+		* Changed the output of the "Oops" to give better instructions
+		to the user.
+
 	Ken:
 		* Fixed Mac bug: window was a little larger each restart
 		* Fixed aMule.tmpl so Safari can work with amuleweb
 		* On Mac, enabled Command-clicking in lists to toggle selection
 		* Solved the DECLARE_ABSTRACT_CLASS() mistery on wx-2.4.2. Now
-		  we can have UDP socks5 with wx-2.4.2.
+		we can have UDP socks5 with wx-2.4.2.
 
 	Special Thanks To:
 		* Bug and feature reporters:
