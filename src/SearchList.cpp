@@ -35,6 +35,7 @@
 #include "DownloadQueue.h"  // Needed for GetFileByID
 #include "UploadQueue.h"	// Needed for AddUpDataOverheadServer
 #include "Statistics.h"		// Needed for CStatistics
+#include "ObservableQueue.h"		// Needed for CQueueObserver
 
 #include <algorithm>
 
@@ -75,25 +76,36 @@ void *CGlobalSearchThread::Entry()
 	} else {
 		return NULL;
 	}
-	
-	for ( uint16 i = 0; i < theApp.serverlist->GetServerCount(); ++i ) {
-		if ( TestDestroy() )
-			break;
-		
-		CServer* server = theApp.serverlist->GetNextSearchServer();
-		if ( server == current )
-			continue;
-		
+
+	// Create the a queue of servers
+	CQueueObserver<CServer*> queue;
+
+	// Initialize it with the current servers
+	theApp.serverlist->AddObserver( &queue );
+
+	while ( !TestDestroy() ) {
 		Sleep(750);
-	
-		theApp.statistics->AddUpDataOverheadServer( m_packet->GetPacketSize() );
-		theApp.serverconnect->SendUDPPacket( m_packet, server, false );
 		
-		CoreNotify_Search_Update_Progress( i * 100 / theApp.serverlist->GetServerCount() );
+		if ( !queue.GetRemaining() ) {
+			break;
+		} else {
+			CServer* server = queue.GetNext();
+
+			if ( server != current ) {
+	
+				theApp.statistics->AddUpDataOverheadServer( m_packet->GetPacketSize() );
+				theApp.serverconnect->SendUDPPacket( m_packet, server, false );
+		
+				int percentage = 100 - ( queue.GetRemaining() * 100 ) / theApp.serverlist->GetServerCount();
+				CoreNotify_Search_Update_Progress( percentage );
+			}	
+		}
 	}
+	
 	
 	CoreNotify_Search_Update_Progress(0xffff);
 	theApp.searchlist->ClearThreadData();
+
 	
 	return NULL;
 }
