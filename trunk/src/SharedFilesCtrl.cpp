@@ -78,6 +78,7 @@ void CSharedFilesCtrl::Init(){
 	InsertColumn(7,_("Accepted Requests"),LVCFMT_LEFT,100);
 	InsertColumn(8,_("Transferred Data"),LVCFMT_LEFT,120);
 	InsertColumn(9,_("Obtained Parts"),LVCFMT_LEFT,120);
+	InsertColumn(10,_("Complete Sources"),LVCFMT_LEFT,120);
 
 	LoadSettings();
 }
@@ -223,6 +224,16 @@ void CSharedFilesCtrl::UpdateFile(CKnownFile* file,uint32 itemnr)
 	buffer.Printf(wxT("%u (%u)"),file->statistic.GetRequests(),file->statistic.GetAllTimeRequests());SetItem(itemnr,6,buffer);
 	buffer.Printf(wxT("%u (%u)"),file->statistic.GetAccepts(),file->statistic.GetAllTimeAccepts());SetItem(itemnr,7,buffer);
 	buffer.Printf(wxT("%s (%s)"),CastItoXBytes(file->statistic.GetTransfered()).GetData(), CastItoXBytes(file->statistic.GetAllTimeTransfered()).GetData());SetItem(itemnr,8,buffer);
+
+	if ( file->m_nCompleteSourcesCountLo == 0 ) {
+		buffer.Printf(wxT("< %u"), file->m_nCompleteSourcesCountHi );
+	} else if (file->m_nCompleteSourcesCountLo == file->m_nCompleteSourcesCountHi) {
+		buffer.Printf(wxT("%u"), file->m_nCompleteSourcesCountLo);
+	} else {
+		buffer.Printf(wxT("%u - %u"), file->m_nCompleteSourcesCountLo, file->m_nCompleteSourcesCountHi);
+	}
+	
+	SetItem(itemnr,10,buffer);
 }
 
 void CSharedFilesCtrl::ShowFile(CKnownFile* file)
@@ -534,6 +545,12 @@ int CSharedFilesCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 		case 8		:  return CmpAny( item1->statistic.GetTransfered(), item2->statistic.GetTransfered() );
 		// Sort by transferred. Decending.
 		case 1008	: return CmpAny( item2->statistic.GetTransfered(), item1->statistic.GetTransfered() );
+
+
+		// Complete sources asc
+		case 10		: return CmpAny( item1->m_nCompleteSourcesCount, item2->m_nCompleteSourcesCount );
+		// Complete sources desc
+		case 1010	: return CmpAny( item2->m_nCompleteSourcesCount, item1->m_nCompleteSourcesCount );
 
 		
 		// Sort by requests (All). Ascending.
