@@ -1461,6 +1461,8 @@ void CamuleApp::ListenSocketHandler(wxSocketEvent& event)
 		// socket imediately.
 		wxSocketBase *s = socket->Accept(false);
 		s->Destroy();
+		// Kry - Woops, we don't want to accept a destroying socket
+		return;
 	}
 	switch(event.GetSocketEvent()) {
 		case wxSOCKET_CONNECTION:
