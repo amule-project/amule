@@ -7,6 +7,10 @@
 #ifndef POSITION_H
 #define POSITION_H
 
+// Uncomment this if you want to test the experimental Position type
+// #define USE_INSANE_POSITION 1
+
+#ifndef USE_INSANE_POSITION 
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/list.h>		// Needed for WX_DECLARE_LIST
 #include <wx/hashmap.h>		// Needed for WX_DECLARE_HASH_MAP
@@ -25,5 +29,21 @@ typedef struct  {
 } _POSITION;
 
 typedef _POSITION* POSITION;
+
+#else
+
+struct POSITION 
+{
+	POSITION(void* ptr = NULL)
+		: m_ptr( ptr ) {}
+
+	operator void*() {
+		return m_ptr;
+	}
+
+	void* m_ptr;
+};
+
+#endif
 
 #endif // POSITION_H
