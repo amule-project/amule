@@ -862,7 +862,7 @@ void CDownloadListCtrl::DrawFileItem(wxDC * dc, int nColumn, LPRECT lpRect, Ctrl
 				if (lpPartFile->GetTransferingSrcCount() == 0) {
 					buffer = wxT("");
 				} else {
-					buffer.Printf(wxT("%.1f %s"), lpPartFile->GetKBpsDown(), "kB/s");
+					buffer.Printf(wxT("%.1f %s"), lpPartFile->GetKBpsDown(), wxT("kB/s"));
 				}
 
 				dc->DrawText(buffer, lpRect->left, lpRect->top);
