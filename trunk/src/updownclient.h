@@ -285,12 +285,20 @@ public:
 	//upload
 	uint8		GetUploadState() const		{ return m_nUploadState; }
 	void		SetUploadState(uint8 news)	{ m_nUploadState = news; }
+
+#ifndef CLIENT_GUI
 	uint32		GetWaitStartTime() const;
+#else
+	uint32 m_WaitStartTime;
+	uint32 GetWaitStartTime() const { return m_WaitStartTime; }
+#endif
+
 	uint32		GetWaitTime() const 		{ return m_dwUploadTime - GetWaitStartTime(); }
 	bool		IsDownloading()	const 		{ return (m_nUploadState == US_UPLOADING); }
 	bool		HasBlocks() const
 		{ return !(m_BlockSend_queue.IsEmpty() && m_BlockRequests_queue.IsEmpty()); }
 	float		GetKBpsUp()	const 		{ return kBpsUp; }
+	
 #ifdef CLIENT_GUI
 	uint32		GetScore(bool sysvalue, bool isdownloading = false, bool onlybasevalue = false) const
 	{
@@ -300,6 +308,7 @@ public:
 #else
 	uint32		GetScore(bool sysvalue, bool isdownloading = false, bool onlybasevalue = false) const;
 #endif
+
 	void		AddReqBlock(Requested_Block_Struct* reqblock);
 	bool		CreateNextBlockPackage();
 	void		SetUpStartTime() 			{ m_dwUploadTime = ::GetTickCount(); }
@@ -368,7 +377,14 @@ public:
 	void		DeleteAllFileRequests();
 	void		SendBlockRequests();
 	void		ProcessBlockPacket(const char* packet, uint32 size, bool packed = false);
+
+#ifndef CLIENT_GUI
 	uint16		GetAvailablePartCount() const;
+#else
+	uint16 m_AvailPartCount;
+	uint16 GetAvailablePartCount() const { return m_AvailPartCount; }
+#endif
+
 	bool		SwapToAnotherFile(bool bIgnoreNoNeeded, bool ignoreSuspensions, bool bRemoveCompletely, CPartFile* toFile = NULL);
 
 	void		UDPReaskACK(uint16 nNewQR);
@@ -453,7 +469,13 @@ public:
 	 *
 	 * @return True if the socket exists and is connected, false otherwise.
 	 */
+#ifndef CLIENT_GUI
 	bool		IsConnected() const;
+#else
+	bool m_IsConnected;
+	bool IsConnected() const { return m_IsConnected; }
+#endif
+
 	/**
 	 * Safe function for sending packets.
 	 *
