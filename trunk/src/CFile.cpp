@@ -605,7 +605,6 @@ CDirIterator::~CDirIterator() {
 
 wxString CDirIterator::FindFirstFile(FileType search_type, wxString search_mask) {
 	if (!DirPtr) {
-		wxASSERT(DirPtr);
 		return wxEmptyString;
 	}
 	seekdir(DirPtr, 0);// 2 if we want to skip . and ..
@@ -617,7 +616,6 @@ wxString CDirIterator::FindFirstFile(FileType search_type, wxString search_mask)
 wxString  CDirIterator::FindNextFile() {
 
 	if (!DirPtr) {
-		wxASSERT(DirPtr);
 		return wxEmptyString;
 	}
 	struct dirent *dp;
