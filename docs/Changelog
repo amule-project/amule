@@ -1,6 +1,16 @@
-Version 2.0.0rc6 - The 'We're so EVIL that we make you lose a sock in every pair' version.
+Version 2.0.0rc6 - The "We're so EVIL that we make you lose a sock in every pair" version.
 ----------
-2004-10-02
+2004-10-03
+	
+	deltaHF:
+		* GUI for MyInfo at Server window.
+		* Added 'About' button.
+		* Fixed sorting upload list by speed
+		* Changed the Search dialog. 
+		* Fixes websearch for jugle.net
+		* Added hability for send msg to clients in upload queue, without having to add 
+		  them as friends (based on Kry's download queue send-on-right-click implementation)
+		* Translations update.
 
 	GonoszTopi:
 		* Patch to fix buffer overflow in cas when line had more than
@@ -18,7 +28,7 @@ Version 2.0.0rc6 - The 'We're so EVIL that we make you lose a sock in every pair
 		* fixed crypto usage in core with configure and compilation flags
 		* Re-enable Pentium4 and SSE2 optimizations fro Crypto stuff
 
-	Jacobo:
+	Jacobo221:
 		* Fixed issue on the About button.
 
 	Kry:
@@ -412,6 +422,13 @@ Version 2.0.0rc6 - The 'We're so EVIL that we make you lose a sock in every pair
 		
 	Special Thanks To:
 		Lucasvr, for providing fixes for compilation with some wx versions.
+		
+	Funny stuff about this changelog:
+		* You can notice that the Search dilago we rewritten 3 (THREE!) times
+		   between rc5 and rc6. You only get to see the final version (Xaignar's), 
+		   but the initial one was Kry's (when the extended buttons show/hide 
+		   was added) and then deltaHF changed it later. 
+		   We just love changing that page.
 		
 
 Version 2.0.0rc5 - The 'Let's recover our release speed' version.
