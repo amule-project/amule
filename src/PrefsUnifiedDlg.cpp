@@ -40,7 +40,6 @@
 #include <wx/colordlg.h>
 #include <wx/button.h>
 #include <wx/filedlg.h>
-#include <wx/dirdlg.h>
 
 #include "ini2.h"			// Needed for CIni
 #include "amule.h"			// Needed for theApp
@@ -594,7 +593,7 @@ public:
 	
 	void SelectDir()
 	{
-		wxString str = wxDirSelector(_("Choose a folder for ") + wxString (szDef), "");
+		wxString str = wxDirSelector(_("Choose a folder for ")+wxString(szDef), "");
 		if (!str.IsEmpty())
 			SetCtrlValue(str);
 	}
@@ -1338,11 +1337,11 @@ void PrefsUnifiedDlg::OnButtonDir(wxCommandEvent& event)
 	int			idButton = pctrl->GetId();
 	Rse*		prse;
 	
-	if 	(idButton == IDC_SELTEMPDIR)
+	if (idButton == IDC_SELTEMPDIR)
 		prse = Prse(IDC_TEMPFILES);
 	else if (idButton == IDC_SELINCDIR)
 		prse = Prse(IDC_INCFILES);
-	else if (idButton == IDC_SELINCDIR)
+	else if (idButton == IDC_SELOSDIR)
 		prse = Prse(IDC_OSDIR);
 	else
 		wxASSERT(false);
