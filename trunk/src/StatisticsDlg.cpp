@@ -56,7 +56,6 @@
 // CStatisticsDlg dialog
 
 BEGIN_EVENT_TABLE(CStatisticsDlg,wxPanel)
-	EVT_MENU(ID_EXPORT_HTML,CStatisticsDlg::ExportHTMLEvent)
 END_EVENT_TABLE()
 
 using namespace otherfunctions;
@@ -1188,71 +1187,6 @@ void CStatisticsDlg::ShowStatistics()
 	}
 	cbuffer.Printf(wxT("%s: %i"),_("Peak Connections (estimate)"),peakconnections);
 	stattree->SetItemText(con9, cbuffer);
-}
-
-
-// the idea: we must dispatch this request to the main thread as web thread
-// can't touch the GUI controls. Only allowed function is wxPostEvent which
-// unfortunately just passes the event, so we must implement a wxCondition
-// so we can wait until the main thread has processed the request and built
-// a valid string for us.
-
-wxString CStatisticsDlg::ExportHTML()
-{
-	// only one shall pass
-	wxCriticalSectionLocker locker(exportCrit);
-
-	// then lock the signalling mutex
-	wxCondition myCond(exportMutex);
-	exportCondition=&myCond;
-	exportMutex.Lock();
-
-	// post the message
-	wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED,ID_EXPORT_HTML);
-	wxPostEvent(this,evt);
-
-	// and wait until it is completed
-	exportCondition->Wait();
-
-	// and now we can return the string
-	exportMutex.Unlock();
-	printf("*** WEB THREAD: returning the value\n");
-	return exportString;
-}
-
-void CStatisticsDlg::ExportHTMLEvent(wxCommandEvent& WXUNUSED(evt))
-{
-	int8 ix;
-	wxString temp;
-	wxString text=wxEmptyString;
-	wxTreeItemId item;
-
-	// update it
-	ShowStatistics();
-
-	item=stattree->GetRootItem();
-	text=stattree->GetItemText(item);
-	while (item) {
-		item=stattree->GetNextVisible(item);
-		if (!item) {
-			break;
-		}
-		stattree->Expand(item);//,TVE_EXPAND);
-
-		temp=wxEmptyString;
-		for (ix=0;ix<3*(int)stattree->GetItemData(item); ++ix) {
-			temp+=wxT("&nbsp;");
-			}
-		text+=wxT("<br>")+temp+stattree->GetItemText(item);
-		}
- 
-	// set the string
-	exportString=text;
-	// and signal
-	printf("** MAIN THREAD: Return value ready.\n");
-	wxMutexLocker locker(exportMutex);
-	exportCondition->Broadcast();
-	printf("** MAIN THREAD: All done.\n");
 }
 
 // This is the primary function for generating HTML output of the statistics tree.

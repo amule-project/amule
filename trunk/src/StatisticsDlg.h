@@ -70,19 +70,11 @@ public:
 	void ApplyStatsColor(int index);
 	COLORREF GetTrayBarColor()		{return acrStat[11];}
 
-	// export can't be done directly in the webserver's thread
-	// so it is splitted in two parts	
-	wxString ExportHTML();
 	wxString GetHTML();
 protected:
 	static COLORREF	acrStat[13];
 	
  private:
-	void ExportHTMLEvent(wxCommandEvent& evt);
-	wxString exportString;
-	wxMutex exportMutex;
-	wxCondition* exportCondition;
-	wxCriticalSection exportCrit;
  
  	typedef struct HistoryRecord {
 		double		kBytesSent;
