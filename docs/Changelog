@@ -43,6 +43,15 @@ Version 2.0.0rc6 - The '???' version.
 	rommel:
 		* Patch to implement the commands serverconnect and reloadipf
 		  in amulecmd.
+		  
+	ThePolish:
+		* i18n log lines
+		* Some win32 fixes (slashes and backslashes)
+		* Add traditionnal Chinese translation (zh_TW) from Paul (Thanks !)
+		* Add it, nl, fr, pl, es translation updates (Thanks to all translators)
+		* Fix copyright for alc icons
+		* Replace .ico simple icons by icons group .ico
+		
 
 Version 2.0.0rc5 - The 'Let's recover our release speed' version.
 ----------
@@ -100,6 +109,7 @@ Version 2.0.0rc5 - The 'Let's recover our release speed' version.
 		 * Limit the server name length in wxCas to avoid a too large window
 		 * New icon for alc
 		 * Global fr translation
+		 * Fix win32 ToolBar problem
 
 	Xaignar:
 		* Added the ability to search for "Texts"	
