@@ -320,6 +320,7 @@ CED2KFileLink::~CED2KFileLink()
 	while (!m_HostnameSourcesList.IsEmpty())
 		delete m_HostnameSourcesList.RemoveHead();
 	
+	if(returnName) free(returnName);
 	// EOI
 }
 
