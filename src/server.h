@@ -69,7 +69,11 @@ public:
 		}
 	}	
 	
-	uint16	GetPort()						{return port;}
+	// the official port
+	uint16  GetPort()                       {return realport ? realport : port;}
+	// the connection port
+	uint16  GetConnPort()                   {return port;}
+	void    SetPort(uint32 val)             {realport = val;}
 	bool	AddTagFromFile(CFile* servermet);
 	void	SetListName(const wxString& newname);
 	void	SetDescription(const wxString& newdescription);
@@ -114,6 +118,8 @@ public:
 	void	SetDescReqChallenge(uint32 uDescReqChallenge) {m_uDescReqChallenge = uDescReqChallenge;}
 	uint8	GetLastDescPingedCount() const	{return lastdescpingedcout;}
 	void	SetLastDescPingedCount(bool reset);
+	const wxString& GetAuxPortsList() const {return m_auxPorts;}
+	void    SetAuxPortsList(wxString val)   {m_auxPorts = val;}
 	
 private:
 	uint32		challenge;
@@ -132,6 +138,7 @@ private:
 	wxString	ipfull;
 	uint32		ip;
 	uint16		port;
+	uint16		realport;
 	uint32		failedcount; 
 	uint32		m_uDescReqChallenge;
 	uint8		lastdescpingedcout;
@@ -142,6 +149,7 @@ private:
 	uint32		m_uTCPFlags;
 	uint32		m_uUDPFlags;
 	uint32		m_uLowIDUsers;
+	wxString	m_auxPorts;
 	
 	void Init();
 
