@@ -814,7 +814,7 @@ void Socks5StateMachine::process_process_command_reply(bool entry)
 				Port_offset = 8;
 				wxString strAddr = Uint32toStringIP(
 					*((uint32 *)(m_buffer+Addr_offset)) );
-				m_ok = m_ProxyBoundAddressIPV4.Hostname(strAddr);
+				m_ProxyBoundAddressIPV4.Hostname(strAddr);
 				m_ProxyBoundAddress = &m_ProxyBoundAddressIPV4;
 				break;
 			}
