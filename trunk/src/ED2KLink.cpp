@@ -40,7 +40,7 @@
 #include <wx/datetime.h>	// Needed for wxDateTime
 
 #include "ED2KLink.h"		// Interface declarations.
-#include "CMemFile.h"		// Needed for CMemFile
+#include "SafeFile.h"		// Needed for CSafeMemFile
 
 #if 1
 namespace {
@@ -252,8 +252,8 @@ CED2KFileLink::CED2KFileLink(const TCHAR* name,const TCHAR* size, const TCHAR* h
 
 			// increment pCh to point to the first "ip:port" and check for sources
 			if ( bAllowSources && ++pCh < pEnd ) {
-				SourcesList=new CMemFile();
-				SourcesList->Write(nCount); // init to 0, we'll fix this at the end.
+				SourcesList=new CSafeMemFile();
+				SourcesList->WriteUInt16(nCount); // init to 0, we'll fix this at the end.
 				// for each "ip:port" source string until the end
 				// limit to prevent overflow (uint16 due to CPartFile::AddClientSources)
 #define MAXSHORT 65535
@@ -297,14 +297,14 @@ CED2KFileLink::CED2KFileLink(const TCHAR* name,const TCHAR* size, const TCHAR* h
 					if( dwID < 16777216 )	// ip
 					{	nInvalid++;	continue;	}
 
-					SourcesList->Write(dwID);
-					SourcesList->Write(nPort);
-					SourcesList->Write(dwServerIP);
-					SourcesList->Write(nServerPort);
+					SourcesList->WriteUInt32(dwID);
+					SourcesList->WriteUInt16(nPort);
+					SourcesList->WriteUInt32(dwServerIP);
+					SourcesList->WriteUInt16(nServerPort);
 					nCount++;
 				}
 				SourcesList->Seek(0); //ToBegin();
-				SourcesList->Write(nCount);
+				SourcesList->WriteUInt16(nCount);
 				SourcesList->Seek(0);//ToBegin();
 				if (nCount==0) {
 					delete SourcesList;

@@ -480,7 +480,7 @@ private:
 	// base
 	void		Init();
 	bool		ProcessHelloTypePacket(const CSafeMemFile& data);
-	void		SendHelloTypePacket(CMemFile* data);
+	void		SendHelloTypePacket(CSafeMemFile* data);
 	void		ClearHelloProperties(); // eMule 0.42
 	bool		m_bIsBotuser;
 	uint32		m_dwUserIP;

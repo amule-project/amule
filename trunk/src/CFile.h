@@ -52,100 +52,88 @@
 // ----------------------------------------------------------------------------
 class CFile {
 public:
-  // more file constants
-  // -------------------
-    // opening mode
-  enum OpenMode { read, write, read_write, write_append, write_excl };
-    // standard values for file descriptor
-  enum { fd_invalid = -1, fd_stdin, fd_stdout, fd_stderr };
+	// more file constants
+	// -------------------
+		// opening mode
+	enum OpenMode { read, write, read_write, write_append, write_excl };
+		// standard values for file descriptor
+	enum { fd_invalid = -1, fd_stdin, fd_stdout, fd_stderr };
 
-  // static functions
-  // ----------------
-    // check whether a regular file by this name exists
-  static bool Exists(const wxChar *name);
-    // check whetther we can access the given file in given mode
-    // (only read and write make sense here)
-  static bool Access(const wxChar *name, OpenMode mode);
+	// static functions
+	// ----------------
+		// check whether a regular file by this name exists
+	static bool Exists(const wxChar *name);
+		// check whetther we can access the given file in given mode
+		// (only read and write make sense here)
+	static bool Access(const wxChar *name, OpenMode mode);
 
-  // ctors
-  // -----
-    // def ctor
-  CFile() { m_fd = fd_invalid; m_error = FALSE; }
-    // open specified file (may fail, use IsOpened())
-  CFile(const wxChar *szFileName, OpenMode mode = read);
-    // attach to (already opened) file
-  CFile(int fd) { m_fd = fd; m_error = FALSE; }
+	// ctors
+	// -----
+		// def ctor
+	CFile() { m_fd = fd_invalid; m_error = FALSE; }
+		// open specified file (may fail, use IsOpened())
+	CFile(const wxChar *szFileName, OpenMode mode = read);
+		// attach to (already opened) file
+	CFile(int fd) { m_fd = fd; m_error = FALSE; }
 
-  const wxString& GetFilePath() {return fFilePath;}; 
+	virtual const wxString& GetFilePath() const {return fFilePath;}; 
 
-  // open/close
-    // create a new file (with the default value of bOverwrite, it will fail if
-    // the file already exists, otherwise it will overwrite it and succeed)
-  virtual bool Create(const wxChar *szFileName, bool bOverwrite = FALSE,
-              int access = wxS_DEFAULT);
-  virtual bool Open(const wxChar *szFileName, OpenMode mode = read,
-            int access = wxS_DEFAULT);
-  // Kry -Added for windoze compatibility.
-  off_t GetLength() const { return Length(); }
-  
-  bool Open(const wxString& szFileName, OpenMode mode = read, int access = wxS_DEFAULT) {
-    return Open(szFileName.GetData(),mode,access);
-  };
-  virtual bool Close() const;  // Close is a NOP if not opened
+	// open/close
+		// create a new file (with the default value of bOverwrite, it will fail if
+		// the file already exists, otherwise it will overwrite it and succeed)
+	virtual bool Create(const wxChar *szFileName, bool bOverwrite = FALSE, int access = wxS_DEFAULT);
+	virtual bool Open(const wxChar *szFileName, OpenMode mode = read, int access = wxS_DEFAULT);
+	// Kry -Added for windoze compatibility.
+	off_t GetLength() const { return Length(); }
 
-  // assign an existing file descriptor and get it back from CFile object
-  void Attach(int fd) { Close(); m_fd = fd; }
-  void Detach()       { m_fd = fd_invalid;  }
-  int  fd() const { return m_fd; }
+	virtual bool Close() const;  // Close is a NOP if not opened
 
-  // read/write (unbuffered)
-    // returns number of bytes read or ofsInvalid on error
-  virtual off_t Read(void *pBuf, off_t nCount) const;
-    // returns the number of bytes written
-  virtual size_t Write(const void *pBuf, size_t nCount);
-    // returns true on success
-  virtual bool Write(const wxString& s, wxMBConv& conv = wxConvLocal)
-  {
-      const wxWX2MBbuf buf = s.mb_str(conv);
-      size_t size = strlen(buf);
-      return Write((const char *) buf, size) == size;
-  }
-    // flush data not yet written
-  virtual bool Flush();
+	// assign an existing file descriptor and get it back from CFile object
+	void Attach(int fd) { Close(); m_fd = fd; }
+	void Detach()       { m_fd = fd_invalid;  }
+	int  fd() const { return m_fd; }
 
-  // file pointer operations (return ofsInvalid on failure)
-    // move ptr ofs bytes related to start/current off_t/end of file
-  virtual off_t Seek(off_t ofs, wxSeekMode mode = wxFromStart) const;
-    // move ptr to ofs bytes before the end
-  virtual off_t SeekEnd(off_t ofs = 0) { return Seek(ofs, wxFromEnd); }
-    // get current off_t
-  virtual off_t Tell() const;
-    // get current file length
-  virtual off_t Length() const;
-    //Truncate/grow file
-  bool SetLength(off_t new_len);
+	// read/write (unbuffered)
+		// returns number of bytes read or ofsInvalid on error
+	virtual off_t Read(void *pBuf, off_t nCount) const;
+		// returns the number of bytes written
+	virtual size_t Write(const void *pBuf, size_t nCount);
+		// flush data not yet written
+	virtual bool Flush();
 
-  // simple accessors
-    // is file opened?
-  bool IsOpened() const { return m_fd != fd_invalid; }
-    // is end of file reached?
-  bool Eof() const;
-    // has an error occured?
-  bool Error() const { return m_error; }
+	// file pointer operations (return ofsInvalid on failure)
+		// move ptr ofs bytes related to start/current off_t/end of file
+	virtual off_t Seek(off_t ofs, wxSeekMode mode = wxFromStart) const;
+		// move ptr to ofs bytes before the end
+	virtual off_t SeekEnd(off_t ofs = 0) { return Seek(ofs, wxFromEnd); }
+		// get current off_t
+	virtual off_t GetPosition() const;
+		// get current file length
+	virtual off_t Length() const;
+		//Truncate/grow file
+	virtual bool SetLength(off_t new_len);
 
-  // dtor closes the file if opened
-  virtual ~CFile() { Close(); }
+	// simple accessors
+		// is file opened?
+	virtual bool IsOpened() const { return m_fd != fd_invalid; }
+		// is end of file reached?
+	virtual bool Eof() const;
+		// has an error occured?
+	virtual bool Error() const { return m_error; }
+
+	// dtor closes the file if opened
+	virtual ~CFile() { Close(); }
 
 private:
-  // copy ctor and assignment operator are private because
-  // it doesn't make sense to copy files this way:
-  // attempt to do it will provoke a compile-time error.
-  CFile(const CFile&);
-  CFile& operator=(const CFile&);
+	// copy ctor and assignment operator are private because
+	// it doesn't make sense to copy files this way:
+	// attempt to do it will provoke a compile-time error.
+	CFile(const CFile&);
+	CFile& operator=(const CFile&);
 
-  mutable int m_fd; // file descriptor or INVALID_FD if not opened
-  mutable bool m_error; // error memory
-  wxString fFilePath;
+	mutable int m_fd; // file descriptor or INVALID_FD if not opened
+	mutable bool m_error; // error memory
+	wxString fFilePath;
 };
 
 #endif // CFILE_H

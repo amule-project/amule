@@ -459,7 +459,7 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool get
 				uchar gethash[16];
 				metFile.Seek(2, wxFromStart);
 				LoadDateFromFile(&metFile);
-					metFile.Read(&gethash, 16);
+					metFile.Read(gethash, 16);
 				m_abyFileHash = gethash;
 			}
 
@@ -599,13 +599,13 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool get
 		}
 		
 		// load the hashsets from the hybridstylepartmet
-		if (isnewstyle && !getsizeonly && (metFile.Tell()<metFile.Length()) ) {
+		if (isnewstyle && !getsizeonly && (metFile.GetPosition()<metFile.Length()) ) {
 			int8 temp;
 			metFile.Read(&temp,1);
 			
 			uint16 parts=GetPartCount();	// assuming we will get all hashsets
 			
-			for (uint16 i = 0; i < parts && (metFile.Tell()+16<metFile.Length()); i++){
+			for (uint16 i = 0; i < parts && (metFile.GetPosition()+16<metFile.Length()); i++){
 				CMD4Hash cur_hash;
 				metFile.Read(cur_hash, 16);
 				hashlist.Add(cur_hash);
@@ -1003,7 +1003,7 @@ void CPartFile::SaveSourceSeeds() {
 void CPartFile::LoadSourceSeeds() {
 	
 	CFile file;
-	CMemFile sources_data;
+	CSafeMemFile sources_data;
 	
 	if (!wxFileName::FileExists(m_fullname + wxT(".seeds"))) {
 		return;
@@ -1024,7 +1024,7 @@ void CPartFile::LoadSourceSeeds() {
 	uint8 src_count;
 	file.Read(&src_count,1);	
 	
-	sources_data.Write((uint16)src_count);
+	sources_data.WriteUInt16(src_count);
 
 	for (int i=0;i<src_count;i++) {
 	
@@ -1033,10 +1033,10 @@ void CPartFile::LoadSourceSeeds() {
 		file.Read(&dwID,4);
 		file.Read(&nPort,2);
 		
-		sources_data.Write(dwID);
-		sources_data.Write(nPort);
-		sources_data.Write((uint32) 0);
-		sources_data.Write((uint16) 0);	
+		sources_data.WriteUInt32(dwID);
+		sources_data.WriteUInt16(nPort);
+		sources_data.WriteUInt32(0);
+		sources_data.WriteUInt16(0);	
 	}
 	
 	sources_data.Seek(0);
@@ -1466,10 +1466,10 @@ void CPartFile::DrawStatusBar(wxMemoryDC* dc, wxRect rect, bool bFlat)
 	}
 }
 
-void CPartFile::WritePartStatus(CMemFile* file)
+void CPartFile::WritePartStatus(CSafeMemFile* file)
 {
 	uint16 parts = GetED2KPartCount();
-	file->Write(parts);
+	file->WriteUInt16(parts);
 	uint16 done = 0;
 	while (done != parts){
 		uint8 towrite = 0;
@@ -1482,13 +1482,13 @@ void CPartFile::WritePartStatus(CMemFile* file)
 				break;
 			}
 		}
-		file->Write(towrite);
+		file->WriteUInt8(towrite);
 	}
 }
 
-void CPartFile::WriteCompleteSourcesCount(CMemFile* file)
+void CPartFile::WriteCompleteSourcesCount(CSafeMemFile* file)
 {
-	file->Write(m_nCompleteSourcesCount);
+	file->WriteUInt16(m_nCompleteSourcesCount);
 }
 
 int CPartFile::GetValidSourcesCount()
@@ -1803,26 +1803,21 @@ bool CPartFile::CanAddSource(uint32 userid, uint16 port, uint32 serverip, uint16
 	return true;
 }
 
-void CPartFile::AddSources(CMemFile* sources,uint32 serverip, uint16 serverport)
+void CPartFile::AddSources(CSafeMemFile* sources,uint32 serverip, uint16 serverport)
 {
-	uint8 count;
+	uint8 count = sources->ReadUInt8();
 	uint8 debug_lowiddropped = 0;
 	uint8 debug_possiblesources = 0;
 
-	sources->Read(count);
 	if (stopped) {
 		// since we may received multiple search source UDP results we have to "consume" all data of that packet
 		sources->Seek(count*(4+2), wxFromStart);
 		return;
 	}
 
-	uint32 userid;
-	uint16 port;	
-	
 	for (int i = 0;i != count;i++) {
-		
-		sources->Read(userid);
-		sources->Read(port);
+		uint32 userid = sources->ReadUInt32();
+		uint16 port   = sources->ReadUInt16();
 		
 		// "Filter LAN IPs" and "IPfilter" the received sources IP addresses
 		if (userid >= 16777216) {
@@ -2991,7 +2986,7 @@ Packet *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 	uint16 nCount = 0;
 
 	data.WriteHash16(m_abyFileHash);
-	data.Write(nCount);
+	data.WriteUInt16(nCount);
 	bool bNeeded;
 	for (SourceSet::iterator it = m_SrcList.begin(); it != m_SrcList.end(); ++it ) {
 		bNeeded = false;
@@ -3045,10 +3040,10 @@ Packet *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 			} else {
 				dwID = ntohl(cur_src->GetUserID());
 			}
-			data.Write((uint32)dwID);
-			data.Write((uint16)cur_src->GetUserPort());
-			data.Write((uint32)cur_src->GetServerIP());
-			data.Write((uint16)cur_src->GetServerPort());
+			data.WriteUInt32(dwID);
+			data.WriteUInt16(cur_src->GetUserPort());
+			data.WriteUInt32(cur_src->GetServerIP());
+			data.WriteUInt16(cur_src->GetServerPort());
 			if (forClient->GetSourceExchangeVersion()>1) {
 				data.WriteHash16(cur_src->GetUserHash());
 			}
@@ -3061,7 +3056,7 @@ Packet *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 		return 0;
 	}
 	data.Seek(16,wxFromStart);
-	data.Write(nCount);
+	data.WriteUInt16(nCount);
 
 	Packet* result = new Packet(&data, OP_EMULEPROT);
 	result->SetOpCode(OP_ANSWERSOURCES);
@@ -3075,25 +3070,21 @@ Packet *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 	return result;
 }
 
-void CPartFile::AddClientSources(CMemFile* sources,uint8 sourceexchangeversion)
+void CPartFile::AddClientSources(CSafeMemFile* sources,uint8 sourceexchangeversion)
 {
 	if(stopped) {
 		return;
 	}
-	uint16 nCount;
-	sources->Read(nCount);
+	uint16 nCount = sources->ReadUInt16();
 	for (int i = 0;i != nCount;i++) {
-		uint32 dwID;
-		uint16 nPort;
-		uint32 dwServerIP;
-		uint16 nServerPort;
+		uint32 dwID = sources->ReadUInt32();
+		uint16 nPort = sources->ReadUInt16();
+		uint32 dwServerIP = sources->ReadUInt32();
+		uint16 nServerPort = sources->ReadUInt16();
+		
 		uchar achUserHash[16];
-		sources->Read(dwID);
-		sources->Read(nPort);
-		sources->Read(dwServerIP);
-		sources->Read(nServerPort);
 		if (sourceexchangeversion > 1) {
-			sources->ReadRaw(achUserHash,16);
+			sources->ReadHash16(achUserHash);
 		}
 		// check first if we are this source
 		if (theApp.serverconnect->GetClientID() < 16777216 && theApp.serverconnect->IsConnected()) {

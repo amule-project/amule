@@ -359,7 +359,7 @@ void CUpDownClient::CreateStandartPackets(const byte* data,uint32 togo, Requeste
 		uint32 endpos = ENDIAN_SWAP_32((currentblock->EndOffset - togo));	
 		packet->CopyToDataBuffer(20, (const char *)&endpos, 4);
 		char *tempbuf = new char[nPacketSize];
-		memfile.ReadRaw(tempbuf, nPacketSize);
+		memfile.Read(tempbuf, nPacketSize);
 		packet->CopyToDataBuffer(24, tempbuf, nPacketSize);
 		delete [] tempbuf;
 		m_BlockSend_queue.AddTail(packet);
@@ -397,7 +397,7 @@ void CUpDownClient::CreatePackedPackets(const byte* data,uint32 togo, Requested_
 		packet->CopyToDataBuffer(16, (const char *)&statpos, 4);
 		packet->CopyToDataBuffer(20, (const char *)&endiannewsize, 4);
 		char *tempbuf = new char[nPacketSize];
-		memfile.ReadRaw(tempbuf, nPacketSize);
+		memfile.Read(tempbuf, nPacketSize);
 		packet->CopyToDataBuffer(24, tempbuf, nPacketSize);
 		delete [] tempbuf;
 		m_BlockSend_queue.AddTail(packet);
@@ -428,8 +428,7 @@ void CUpDownClient::ProcessExtendedInfo(const CSafeMemFile* data, CKnownFile* te
 			throw(CInvalidPacket("Wrong size on extended info packet"));
 		}
 		
-		uint16 nED2KUpPartCount;
-		data->Read(nED2KUpPartCount);
+		uint16 nED2KUpPartCount = data->ReadUInt16();
 		if (!nED2KUpPartCount) {
 			m_nUpPartCount = tempreqfile->GetPartCount();
 			m_abyUpPartStatus = new uint8[m_nUpPartCount];
@@ -445,8 +444,7 @@ void CUpDownClient::ProcessExtendedInfo(const CSafeMemFile* data, CKnownFile* te
 			m_abyUpPartStatus = new uint8[m_nUpPartCount];
 			uint16 done = 0;
 			while (done != m_nUpPartCount) {
-				uint8 toread;
-				data->Read(toread);
+				uint8 toread = data->ReadUInt8();
 				for (sint32 i = 0;i != 8;i++){
 					m_abyUpPartStatus[done] = ((toread>>i)&1)? 1:0;
 					//	We may want to use this for another feature..
@@ -461,8 +459,7 @@ void CUpDownClient::ProcessExtendedInfo(const CSafeMemFile* data, CKnownFile* te
 			
 			if (GetExtendedRequestsVersion() > 1) {
 				uint16 nCompleteCountLast = GetUpCompleteSourcesCount();
-				uint16 nCompleteCountNew;
-				data->Read(nCompleteCountNew);
+				uint16 nCompleteCountNew = data->ReadUInt16();
 				SetUpCompleteSourcesCount(nCompleteCountNew);
 				if (nCompleteCountLast != nCompleteCountNew) {
 					tempreqfile->UpdatePartsInfo();
@@ -654,12 +651,12 @@ void CUpDownClient::SendHashsetPacket(const CMD4Hash& forfileid) {
 		return;
 	}
 
-	CMemFile* data = new CMemFile();
-	data->WriteRaw(file->GetFileHash(),16);
+	CSafeMemFile* data = new CSafeMemFile();
+	data->WriteHash16(file->GetFileHash());
 	uint16 parts = file->GetHashCount();
-	data->Write(parts);
+	data->WriteUInt16(parts);
 	for (int i = 0; i != parts; i++)
-		data->WriteRaw(file->GetPartHash(i),16);
+		data->WriteHash16(file->GetPartHash(i));
 	Packet* packet = new Packet(data);
 	delete data;
 	packet->SetOpCode(OP_HASHSETANSWER);
@@ -691,11 +688,11 @@ void CUpDownClient::SendRankingInfo(){
 	if (!nRank)
 		return;
 		
-	CMemFile data;
-	data.Write(nRank);
+	CSafeMemFile data;
+	data.WriteUInt16(nRank);
 	// Kry: what are these zero bytes for. are they really correct?
 	// Kry - Well, eMule does like that. I guess they're ok.
-	data.Write((uint32)0); data.Write((uint32)0); data.Write((uint16)0);
+	data.WriteUInt32(0); data.WriteUInt32(0); data.WriteUInt16(0);
 	Packet* packet = new Packet(&data,OP_EMULEPROT);
 	packet->SetOpCode(OP_QUEUERANKING);
 //	Packet* packet = new Packet(OP_QUEUERANKING,12,OP_EMULEPROT);
@@ -712,24 +709,18 @@ void CUpDownClient::SendCommentInfo(CKnownFile* file)
 	}
 	m_bCommentDirty = false;
 
-	int8 rating=file->GetFileRate();
-	wxString desc=file->GetFileComment();
-	if(file->GetFileRate() == 0 && desc.IsEmpty()) {
+	// Max lenght of comments is 50 chars
+	wxString desc = file->GetFileComment().Left(50);
+	uint8 rating=file->GetFileRate();
+	
+	if ( file->GetFileRate() == 0 && desc.IsEmpty() ) {
 		return;
 	}
-	CMemFile data;
-	data.Write(rating);
-	// Kry - The mule comment length is a uin32, even when we limit it's length 
-	// to 128. The reason for this is unknown :) But we cannot use the standard
-	// wxString write functions.
-	// data.Write(desc.Left(128));
 	
-	uint32 length = desc.Length();
-	if (length > 128) {
-		length = 128;
-	}
-	data.Write(length);
-	data.WriteRaw(unicode2char(desc),length);
+	CSafeMemFile data;
+	data.WriteUInt8(rating);
+	data.WriteUInt32(desc.Length());
+	data.Write(unicode2char(desc), desc.Length());
 	
 	Packet *packet = new Packet(&data,OP_EMULEPROT);
 	packet->SetOpCode(OP_FILEDESC);

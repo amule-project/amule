@@ -203,7 +203,7 @@ void CUpDownClient::SendFileRequest()
 	dataFileReq.WriteHash16(m_reqfile->GetFileHash());
 
 	if( SupportMultiPacket() ) {
-		dataFileReq.Write((uint8)OP_REQUESTFILENAME);
+		dataFileReq.WriteUInt8(OP_REQUESTFILENAME);
 		//Extended information
 		if( GetExtendedRequestsVersion() > 0 ) {
 			m_reqfile->WritePartStatus(&dataFileReq);
@@ -212,14 +212,14 @@ void CUpDownClient::SendFileRequest()
 			m_reqfile->WriteCompleteSourcesCount(&dataFileReq);
 		}
 		if (m_reqfile->GetPartCount() > 1) {
-			dataFileReq.Write((uint8)OP_SETREQFILEID);
+			dataFileReq.WriteUInt8(OP_SETREQFILEID);
 		}
 		if( IsEmuleClient() ) {
 			SetRemoteQueueFull( true );
 			SetRemoteQueueRank(0);
 		}
 		if(IsSourceRequestAllowed())	{
-			dataFileReq.Write((uint8)OP_REQUESTSOURCES);
+			dataFileReq.WriteUInt8(OP_REQUESTSOURCES);
 			m_reqfile->SetLastAnsweredTimeTimeout();
 			SetLastAskedForSources();
 			#ifdef __USE_DEBUG__
@@ -261,7 +261,7 @@ void CUpDownClient::SendFileRequest()
 				DebugSend("OP__SetReqFileID", this, (char*)m_reqfile->GetFileHash());
 			#endif
 			CSafeMemFile dataSetReqFileID(16);
-			dataSetReqFileID.WriteRaw(m_reqfile->GetFileHash(),16);
+			dataSetReqFileID.WriteHash16(m_reqfile->GetFileHash());
 			packet = new Packet(&dataSetReqFileID);
 			packet->SetOpCode(OP_SETREQFILEID);
 			theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->GetPacketSize());
@@ -309,7 +309,7 @@ void CUpDownClient::ProcessFileInfo(const CSafeMemFile* data, const CPartFile* f
 		throw wxString(_("ERROR: Wrong file ID (ProcessFileInfo; m_reqfile!=file)"));
 	}	
 
-	data->Read(ClientFilename);
+	ClientFilename = data->ReadString();
 			
 	// 26-Jul-2003: removed requesting the file status for files <= PARTSIZE for better compatibility with ed2k protocol (eDonkeyHybrid).
 	// if the remote client answers the OP_REQUESTFILENAME with OP_REQFILENAMEANSWER the file is shared by the remote client. if we
@@ -378,8 +378,7 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, const CSafeMemFile* data,
 		throw wxString(_("ERROR: Wrong file ID (ProcessFileStatus; m_reqfile!=file)"));
 	}
 	
-	uint16 nED2KPartCount;
-	data->Read(nED2KPartCount);
+	uint16 nED2KPartCount = data->ReadUInt16();
 	if (m_abyPartStatus)
 	{
 		delete[] m_abyPartStatus;
@@ -422,8 +421,7 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, const CSafeMemFile* data,
 		uint16 done = 0;
 		while (done != m_nPartCount)
 		{
-			uint8 toread;
-			data->Read(toread);
+			uint8 toread = data->ReadUInt8();
 			for (sint32 i = 0;i != 8;i++)
 			{
 				m_abyPartStatus[done] = ((toread>>i)&1)? 1:0; 	
@@ -669,9 +667,9 @@ void CUpDownClient::SendBlockRequests()
 			//ASSERT( pending->totalUnzipped == 0 );
 			pending->fZStreamError = 0;
 			pending->fRecovered = 0;
-			data.Write((uint32)pending->block->StartOffset);
+			data.WriteUInt32(pending->block->StartOffset);
 		} else {
-			data.Write((uint32)0);
+			data.WriteUInt32(0);
 		}
 	}
 	pos = m_PendingBlocks_list.GetHeadPosition();
@@ -679,9 +677,9 @@ void CUpDownClient::SendBlockRequests()
 		if (pos) {
 			Requested_Block_Struct* block = m_PendingBlocks_list.GetNext(pos)->block;
 			uint32 endpos = block->EndOffset+1;
-			data.Write(endpos);			
+			data.WriteUInt32(endpos);			
 		} else {
-			data.Write((uint32)0);
+			data.WriteUInt32(0);
 		}
 	}
 
@@ -726,7 +724,7 @@ void CUpDownClient::ProcessBlockPacket(const char *packet, uint32 size, bool pac
 		// Read data from packet
 		const CSafeMemFile *data = new CSafeMemFile((BYTE*)packet, size);
 		uchar fileID[16];
-		data->ReadRaw(fileID,16);
+		data->ReadHash16(fileID);
 
 		// Check that this data is for the correct file
 		if ((!m_reqfile) || md4cmp(packet, m_reqfile->GetFileHash())) {
@@ -735,16 +733,15 @@ void CUpDownClient::ProcessBlockPacket(const char *packet, uint32 size, bool pac
 		}
 
 		// Find the start & end positions, and size of this chunk of data
-		uint32 nStartPos;
-		uint32 nEndPos;
+		uint32 nStartPos = data->ReadUInt32();
+		uint32 nEndPos = 0;
 		uint32 nBlockSize = 0;
-		data->Read(nStartPos);
 		if (packed) {
-			data->Read(nBlockSize);
+			nBlockSize = data->ReadUInt32();
 			nEndPos = nStartPos + (size - HEADER_SIZE);
 			usedcompressiondown = true;
 		} else {
-			data->Read(nEndPos);
+			nEndPos = data->ReadUInt32();
 		}
 		delete data;
 
@@ -1096,18 +1093,18 @@ void CUpDownClient::UDPReaskForDownload()
 		}
 		m_bUDPPending = true;
 		CSafeMemFile data(128);
-		data.WriteRaw(m_reqfile->GetFileHash(),16);
+		data.WriteHash16(m_reqfile->GetFileHash());
 		if (GetUDPVersion() > 3)
 		{
 			if (m_reqfile->IsPartFile()) {
 				((CPartFile*)m_reqfile)->WritePartStatus(&data);
 			}
 			else {
-				data.Write((uint16) 0);
+				data.WriteUInt16(0);
 			}
 		}
 		if (GetUDPVersion() > 2) {
-			data.Write(m_reqfile->m_nCompleteSourcesCount);
+			data.WriteUInt16(m_reqfile->m_nCompleteSourcesCount);
 		}
 		/*
 		if (thePrefs.GetDebugClientUDPLevel() > 0)

@@ -33,7 +33,7 @@
 
 #include "SearchDlg.h"		// Interface declarations.
 #include "UploadQueue.h"	// Needed for CUploadQueue
-#include "CMemFile.h"		// Needed for CMemFile
+#include "SafeFile.h"		// Needed for CSafeMemFile
 #include "SearchList.h"		// Needed for CSearchList
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "otherfunctions.h"	// Needed for URLEncode
@@ -419,56 +419,56 @@ void CSearchDlg::StartNewSearch()
 	if ( !extension.IsEmpty() )		parametercount++;
 
 	// Must write parametercount - 1 parameter headers
-	CMemFile* data = new CMemFile(100);
+	CSafeMemFile* data = new CSafeMemFile(100);
 	for ( int i = 0; i < parametercount - 1; i++ ) {
 
-		data->Write(andParameter);
+		data->WriteUInt16(andParameter);
 	}
 	
 	
 	// Packet body:
 	if ( !searchString.IsEmpty() ) {
-		data->Write( stringParameter ); 	// Search-String is a string parameter type
-		data->Write( searchString ); 		// Write the value of the string
+		data->WriteUInt8( stringParameter ); 	// Search-String is a string parameter type
+		data->WriteString( searchString ); 		// Write the value of the string
 	}
 	
 	if ( !typeText.IsEmpty() ) {
-		data->Write( typeParameter );		// Search-Type is a type parameter type
-		data->Write( typeText ); 				// Write the parameter
+		data->WriteUInt8( typeParameter );		// Search-Type is a type parameter type
+		data->WriteString( typeText ); 			// Write the parameter
 #if wxBYTE_ORDER == wxLITTLE_ENDIAN
-		data->WriteRaw(&typeNemonic, 3); // Nemonic for this kind of parameter (only 3 bytes!!)
+		data->Write(&typeNemonic, 3); 		// Nemonic for this kind of parameter (only 3 bytes!!)
 #else
 		uint32 endian_corrected = ENDIAN_SWAP_32(typeNemonic);
-		data->WriteRaw(&endian_corrected, 3); // Nemonic for this kind of parameter (only 3 bytes!!)
+		data->Write(&endian_corrected, 3); 	// Nemonic for this kind of parameter (only 3 bytes!!)
 #endif
 	}
 	
 	if ( min > 0 ) {
-		data->Write( numericParameter );	// Write the parameter type
-		data->Write( min );					// Write the parameter
-		data->Write( minNemonic );			// Nemonic for this kind of parameter
+		data->WriteUInt8( numericParameter );	// Write the parameter type
+		data->WriteUInt32( min );					// Write the parameter
+		data->WriteUInt32( minNemonic );			// Nemonic for this kind of parameter
 	}
 	
 	if ( max > 0 ) {
-		data->Write( numericParameter );	// Write the parameter type
-		data->Write( max );					// Write the parameter
-		data->Write( maxNemonic );			// Nemonic for this kind of parameter
+		data->WriteUInt8( numericParameter );	// Write the parameter type
+		data->WriteUInt32( max );				// Write the parameter
+		data->WriteUInt32( maxNemonic );		// Nemonic for this kind of parameter
 	}
 	
 	if ( avaibility > 0 ) {
-		data->Write( numericParameter );	// Write the parameter type
-		data->Write( avaibility );			// Write the parameter
-		data->Write( avaibilityNemonic );	// Nemonic for this kind of parameter
+		data->WriteUInt8( numericParameter );	// Write the parameter type
+		data->WriteUInt32( avaibility );		// Write the parameter
+		data->WriteUInt32( avaibilityNemonic );	// Nemonic for this kind of parameter
 	}
 	
 	if ( !extension.IsEmpty() ) {
-		data->Write( stringParameter );		// Write the parameter type
-		data->Write( extension );			// Write the parameter
+		data->WriteUInt8( stringParameter );	// Write the parameter type
+		data->WriteString( extension );			// Write the parameter
 #if wxBYTE_ORDER == wxLITTLE_ENDIAN
-		data->WriteRaw(&extensionNemonic, 3); // Nemonic for this kind of parameter (only 3 bytes!!)
+		data->Write(&extensionNemonic, 3); // Nemonic for this kind of parameter (only 3 bytes!!)
 #else
 		uint32 endian_corrected = ENDIAN_SWAP_32(extensionNemonic);
-		data->WriteRaw(&endian_corrected, 3); // Nemonic for this kind of parameter (only 3 bytes!!)
+		data->Write(&endian_corrected, 3); // Nemonic for this kind of parameter (only 3 bytes!!)
 #endif		
 	}
 	

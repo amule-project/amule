@@ -743,7 +743,7 @@ bool CDownloadQueue::SendNextUDPPacket()
 		}
 
 		if (!bSentPacket && nextfile && nextfile->GetSourceCount() < theApp.glob_prefs->GetMaxSourcePerFileUDP()) {
-			dataGlobGetSources.WriteRaw(nextfile->GetFileHash(),16);
+			dataGlobGetSources.WriteHash16(nextfile->GetFileHash());
 			iFiles++;
 		}
 	}
@@ -877,7 +877,7 @@ void CDownloadQueue::ProcessLocalRequests()
 				// create request packet
 				Packet* packet = new Packet(OP_GETSOURCES,16);
 				packet->Copy16ToDataBuffer((const char *)cur_file->GetFileHash().GetHash());
-				dataTcpFrame.WriteRaw(packet->GetPacket(), packet->GetRealPacketSize());
+				dataTcpFrame.Write(packet->GetPacket(), packet->GetRealPacketSize());
 				delete packet;
 			}
 		}
@@ -889,7 +889,7 @@ void CDownloadQueue::ProcessLocalRequests()
 			// server credits: 16*iMaxFilesPerTcpFrame+1 = 241
 			Packet* packet = new Packet(new char[iSize], dataTcpFrame.GetLength(), true, false);
 			dataTcpFrame.Seek(0, wxFromStart);
-			dataTcpFrame.ReadRaw(packet->GetPacket(), iSize);
+			dataTcpFrame.Read(packet->GetPacket(), iSize);
 			uint32 size = packet->GetPacketSize();
 			theApp.serverconnect->SendPacket(packet, true);	// Deletes `packet'.
 			theApp.uploadqueue->AddUpDataOverheadServer(size);
@@ -1321,9 +1321,9 @@ bool CDownloadQueue::OnHostnameResolved(struct sockaddr_in* inaddr)
 			CPartFile* file = theApp.downloadqueue->GetFileByID(resolved->fileid);
 			if (file) {
 				CSafeMemFile sources(1+4+2);
-				sources.Write((uint8)1); // No. Sources
-				sources.Write((uint32)inaddr->sin_addr.s_addr);
-				sources.Write((uint16)resolved->port);
+				sources.WriteUInt8(1); // No. Sources
+				sources.WriteUInt32(inaddr->sin_addr.s_addr);
+				sources.WriteUInt16(resolved->port);
 				sources.Seek(0,wxFromStart);
 				file->AddSources(&sources,0,0);
 			}

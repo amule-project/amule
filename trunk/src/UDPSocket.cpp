@@ -182,8 +182,7 @@ bool CUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, const wxSt
 					// check if there is another source packet
 					iLeft = (int)(data->GetLength() - data->GetPosition());
 					if (iLeft >= 2){
-						uint8 protocol;
-						data->Read(protocol);
+						uint8 protocol = data->ReadUInt8();
 						iLeft--;
 						if (protocol != OP_EDONKEYPROT){
 							data->Seek(-1, wxFromCurrent);
@@ -191,8 +190,7 @@ bool CUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, const wxSt
 							break;
 						}
 
-						uint8 opcode;
-						data->Read(opcode);
+						uint8 opcode = data->ReadUInt8();
 						iLeft--;
 						if (opcode != OP_GLOBSEARCHRES){
 							data->Seek(-2,wxFromCurrent);
@@ -215,21 +213,19 @@ bool CUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, const wxSt
 				int iLeft;
 				do{
 					uint8 fileid[16];
-					data->Read(fileid);
+					data->ReadHash16(fileid);
 					if (CPartFile* file = theApp.downloadqueue->GetFileByID(fileid))
 						file->AddSources(data, inet_addr(unicode2char(host)), port-4);
 					else{
 						// skip sources for that file
-						uint8 count;
-						data->Read(count);
+						uint8 count = data->ReadUInt8();
 						data->Seek(count*(4+2), wxFromStart);
 					}
 
 					// check if there is another source packet
 					iLeft = (int)(data->GetLength() - data->GetPosition());
 					if (iLeft >= 2){
-						uint8 protocol;
-						data->Read(protocol);
+						uint8 protocol = data->ReadUInt8();
 						iLeft--;
 						if (protocol != OP_EDONKEYPROT){
 							data->Seek(-1, wxFromCurrent);
@@ -237,8 +233,7 @@ bool CUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, const wxSt
 							break;
 						}
 
-						uint8 opcode;
-						data->Read(opcode);
+						uint8 opcode = data->ReadUInt8();
 						iLeft--;
 						if (opcode != OP_GLOBFOUNDSORUCES){
 							data->Seek(-2, wxFromCurrent);
@@ -319,11 +314,9 @@ bool CUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, const wxSt
 					if (update->GetDescReqChallenge() != 0 && get_uint32(packet) == update->GetDescReqChallenge())
 					{
 						update->SetDescReqChallenge(0);
-						uint32 challenge;
-						(void)srvinfo.Read(challenge); // skip challenge
+						uint32 challenge = srvinfo.ReadUInt32(); // skip challenge
 						
-						uint32 uTags;
-						srvinfo.Read(uTags);
+						uint32 uTags = srvinfo.ReadUInt32();
 						for (uint32 i = 0; i < uTags; i++)
 						{
 							CTag tag(srvinfo);
@@ -367,10 +360,8 @@ bool CUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, const wxSt
 				}
 				else
 				{
-					wxString strName;
-					srvinfo.Read(strName);
-					wxString strDesc;
-					srvinfo.Read(strDesc);
+					wxString strName = srvinfo.ReadString();
+					wxString strDesc = srvinfo.ReadString();
 					update->SetDescription(strDesc);
 					update->SetListName(strName);
 				}

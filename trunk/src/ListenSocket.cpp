@@ -321,8 +321,8 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					
 					// send filename etc
 					CSafeMemFile data_out(128);
-					data_out.WriteRaw(reqfile->GetFileHash(),16);
-					data_out.Write(reqfile->GetFileName());
+					data_out.WriteHash16(reqfile->GetFileHash());
+					data_out.WriteString(reqfile->GetFileName());
 					Packet* packet = new Packet(&data_out);
 					packet->SetOpCode(OP_REQFILENAMEANSWER);
 					#ifdef __USE__DEBUG__
@@ -386,7 +386,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					if (reqfile->IsPartFile()) {
 						((CPartFile*)reqfile)->WritePartStatus(&data);
 					} else {
-						data.Write((uint16)0);
+						data.WriteUInt16(0);
 					}
 					Packet* packet = new Packet(&data);
 					packet->SetOpCode(OP_FILESTATUS);
@@ -504,8 +504,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				#endif
 				theApp.downloadqueue->AddDownDataOverheadFileRequest(size);
 				CSafeMemFile data((BYTE*)packet,size);
-				uint32 rank;
-				data.Read(rank);
+				uint32 rank = data.ReadUInt32();
 				#ifdef __USE__DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
 					Debug("  %u (prev. %d)\n", rank, client->IsRemoteQueueFull() ? (UINT)-1 : (UINT)client->GetRemoteQueueRank());
@@ -562,14 +561,15 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				data.ReadHash16(reqfilehash);
 
 				uint32 auStartOffsets[3];
-				data.Read(auStartOffsets[0]);
-				data.Read(auStartOffsets[1]);
-				data.Read(auStartOffsets[2]);
+				auStartOffsets[0] = data.ReadUInt32();
+				auStartOffsets[1] = data.ReadUInt32();
+				auStartOffsets[2] = data.ReadUInt32();
 
 				uint32 auEndOffsets[3];
-				data.Read(auEndOffsets[0]);
-				data.Read(auEndOffsets[1]);
-				data.Read(auEndOffsets[2]);
+				auEndOffsets[0] = data.ReadUInt32();
+				auEndOffsets[1] = data.ReadUInt32();
+				auEndOffsets[2] = data.ReadUInt32();
+
 
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0){
@@ -705,10 +705,8 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				#endif				
 				theApp.downloadqueue->AddDownDataOverheadOther(size);
 				CSafeMemFile data((BYTE*)packet, size);
-				uint32 nNewUserID;
-				data.Read(nNewUserID);
-				uint32 nNewServerIP;
-				data.Read(nNewServerIP);
+				uint32 nNewUserID = data.ReadUInt32();
+				uint32 nNewServerIP = data.ReadUInt32();
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
 					Debug("  NewUserID=%u (%08x, %s)  NewServerIP=%u (%08x, %s)\n", nNewUserID, nNewUserID, ipstr(nNewUserID), nNewServerIP, nNewServerIP, ipstr(nNewServerIP));
@@ -782,8 +780,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					#endif
 					break;
 				}
-				wxString message;
-				message_file.Read(message);
+				wxString message = message_file.ReadString();
 				theApp.amuledlg->chatwnd->ProcessMessage(client, message);
 				break;
 			}
@@ -812,7 +809,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				}
 				// now create the memfile for the packet
 				CSafeMemFile tempfile(80);
-				tempfile.Write((uint32)list.GetCount());
+				tempfile.WriteUInt32(list.GetCount());
 				while (list.GetCount()) {
 					theApp.sharedfiles->CreateOfferedFilePacket((CKnownFile*)list.GetHead(), &tempfile, false);
 					list.RemoveHead();
@@ -902,9 +899,9 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					CSafeMemFile tempfile(80);
 
 					uDirs = folders_to_send.GetCount();
-					tempfile.Write(uDirs);
+					tempfile.WriteUInt32(uDirs);
 					for (uint32 iDir=0; iDir < uDirs; iDir++) {
-						tempfile.Write(folders_to_send[iDir]);
+						tempfile.WriteString(folders_to_send[iDir]);
 					}
 
 					#ifdef __USE_DEBUG__
@@ -944,8 +941,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				}
 				CSafeMemFile data((uchar*)packet, size);
 											
-				wxString strReqDir;
-				data.Read(strReqDir);
+				wxString strReqDir = data.ReadString();
 				if (theApp.glob_prefs->CanSeeShares()==vsfaEverybody || (theApp.glob_prefs->CanSeeShares()==vsfaFriends && client->IsFriend())) {
 					AddLogLineM(true,wxString(_("User ")) + client->GetUserName() + wxString::Format(wxT(" (%u) requested your sharedfiles-list for directory "),client->GetUserID()) + strReqDir + wxT(" -> ") + _("accepted"));			
 					wxASSERT( data.GetPosition() == data.GetLength() );
@@ -966,8 +962,8 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					}
 
 					CSafeMemFile tempfile(80);
-					tempfile.Write(strReqDir);
-					tempfile.Write((uint32)list.GetCount());
+					tempfile.WriteString(strReqDir);
+					tempfile.WriteUInt32(list.GetCount());
 					while (list.GetCount()) {
 						theApp.sharedfiles->CreateOfferedFilePacket(list.GetHead(), &tempfile, false);
 						list.RemoveHead();
@@ -1006,11 +1002,9 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				theApp.downloadqueue->AddDownDataOverheadOther(size);
 				if (client->GetFileListRequested() == 1){
 					CSafeMemFile data((uchar*)packet, size);
-					uint32 uDirs;
-					data.Read(uDirs);
+					uint32 uDirs = data.ReadUInt32();
 					for (uint32 i = 0; i < uDirs; i++){
-						wxString strDir;
-						data.Read(strDir);
+						wxString strDir = data.ReadString();
 						AddLogLineM(true,wxString(_("User ")) + client->GetUserName() + wxString::Format(_(" (%u) shares directory "),client->GetUserID()) + strDir);
 						#ifdef __USE_DEBUG__
 						if (thePrefs.GetDebugClientTCPLevel() > 0) {
@@ -1019,7 +1013,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 						#endif
 				
 						CSafeMemFile tempfile(80);
-						tempfile.Write(strDir);
+						tempfile.WriteString(strDir);
 						Packet* replypacket = new Packet(&tempfile);
 						replypacket->SetOpCode(OP_ASKSHAREDFILESDIR);
 						theApp.uploadqueue->AddUpDataOverheadOther(replypacket->GetPacketSize());
@@ -1043,8 +1037,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				
 				theApp.downloadqueue->AddDownDataOverheadOther(size);
 				CSafeMemFile data((uchar*)packet, size, 0);
-				wxString strDir;
-				data.Read(strDir);
+				wxString strDir = data.ReadString();
 
 				if (client->GetFileListRequested() > 0){
 					AddLogLineM(true,wxString(_("User ")) + client->GetUserName() + wxString::Format(_(" (%u) sent sharedfiles-list for directory %s"),client->GetUserID()) + strDir);
@@ -1163,7 +1156,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 
 				CSafeMemFile data_in((BYTE*)packet,size);
 				CMD4Hash reqfilehash;
-				data_in.ReadRaw(reqfilehash,16);
+				data_in.ReadHash16(reqfilehash);
 				CKnownFile* reqfile;
 
 				if ( (reqfile = theApp.sharedfiles->GetFileByID(reqfilehash)) == NULL ){
@@ -1196,24 +1189,23 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 					client->SetCommentDirty();
 				}
 				client->SetUploadFileID(reqfile);
-				uint8 opcode_in;
 				CSafeMemFile data_out(128);
 				data_out.WriteHash16(reqfile->GetFileHash());
 				while(data_in.GetLength()-data_in.GetPosition()) {
-					data_in.Read(opcode_in);
+					uint8 opcode_in = data_in.ReadUInt8();
 					switch(opcode_in) {
 						case OP_REQUESTFILENAME: {
 							client->ProcessExtendedInfo(&data_in, reqfile);
-							data_out.Write((uint8)OP_REQFILENAMEANSWER);
-							data_out.Write(reqfile->GetFileName());
+							data_out.WriteUInt8(OP_REQFILENAMEANSWER);
+							data_out.WriteString(reqfile->GetFileName());
 							break;
 						}
 						case OP_SETREQFILEID: {
-							data_out.Write((uint8)OP_FILESTATUS);
+							data_out.WriteUInt8(OP_FILESTATUS);
 							if (reqfile->IsPartFile()) {
 								((CPartFile*)reqfile)->WritePartStatus(&data_out);
 							} else {
-								data_out.Write((uint16)0);
+								data_out.WriteUInt16(0);
 							}
 							break;
 						}
@@ -1293,7 +1285,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				
 				CSafeMemFile data_in((BYTE*)packet,size);
 				CMD4Hash reqfilehash;
-				data_in.ReadRaw(reqfilehash,16);
+				data_in.ReadHash16(reqfilehash);
 				CPartFile* reqfile = theApp.downloadqueue->GetFileByID(reqfilehash);
 				//Make sure we are downloading this file.
 				if (reqfile==NULL) {
@@ -1305,10 +1297,9 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				if (reqfile != client->GetRequestFile()) {
 					throw wxString(_(" Wrong File ID: OP_MULTIPACKETANSWER; reqfile!=client->reqfile)"));
 				}
-				uint8 opcode_in;
 				while(data_in.GetLength()-data_in.GetPosition())
 				{
-					data_in.Read(opcode_in);
+					uint8 opcode_in = data_in.ReadUInt8();
 					switch(opcode_in)
 					{
 						case OP_REQFILENAMEANSWER:

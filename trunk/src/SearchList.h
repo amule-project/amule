@@ -23,7 +23,6 @@
 
 #include "types.h"		// Needed for uint8, uint16 and uint32
 #include "KnownFile.h"		// Needed for CAbstractFile
-#include "CMemFile.h"		// Needed for CMemFile
 #include "CTypedPtrList.h"
 
 #include <map>
@@ -36,7 +35,7 @@ class CSearchFile : public CAbstractFile {
 	friend class CPartFile;
 public:
 	//CSearchFile() {};
-	CSearchFile(const CMemFile* in_data, uint32 nSearchID, uint32 nServerIP=0, uint16 nServerPort=0, LPCTSTR pszDirectory = NULL);
+	CSearchFile(const CSafeMemFile* in_data, uint32 nSearchID, uint32 nServerIP=0, uint16 nServerPort=0, LPCTSTR pszDirectory = NULL);
 	CSearchFile(uint32 nSearchID, const CMD4Hash& pucFileHash, uint32 uFileSize, LPCTSTR pszFileName, int iFileType, int iAvailability);
 	CSearchFile(CSearchFile* copyfrom);
 	//CSearchFile(CFile* in_data, uint32 nSearchID);

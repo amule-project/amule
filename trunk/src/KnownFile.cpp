@@ -46,7 +46,7 @@
 #include "KnownFile.h"		// Interface declarations.
 #include "otherfunctions.h"	// Needed for nstrdup
 #include "UploadQueue.h"	// Needed for CUploadQueue
-#include "CMemFile.h"		// Needed for CMemFile
+#include "SafeFile.h"		// Needed for CSafeMemFile
 #include "SharedFilesCtrl.h"	// Needed for CSharedFilesCtrl
 #include "SharedFilesWnd.h"	// Needed for CSharedFilesWnd
 #include "updownclient.h"	// Needed for CUpDownClient
@@ -700,7 +700,7 @@ bool CKnownFile::WriteToFile(CFile* file){
 	uint32 endiandate = ENDIAN_SWAP_32(date);
 	file->Write(&endiandate,4); 
 	// hashset
-	file->Write(&m_abyFileHash,16);
+	file->Write(m_abyFileHash,16);
 	uint16 parts = hashlist.GetCount();
 
 	ENDIAN_SWAP_I_16(parts);
@@ -797,7 +797,7 @@ void CKnownFile::CreateHashFromInput(FILE* file, CFile* file2, int Length, uchar
 
 	CFile* data = NULL;
 	if (in_string)
-		data = new CMemFile(in_string,Length);
+		data = new CSafeMemFile(in_string,Length);
 		
 	bool PaddingStarted = false;
 	uint32 Hash[4];
@@ -944,12 +944,12 @@ Packet*	CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient){
 	if(srclist.IsEmpty())
 		return 0;
 
-	CMemFile data;
+	CSafeMemFile data;
 	uint16 nCount = 0;
 
 	//data.Write(forClient->reqfileid, 16);
-	data.WriteRaw(forClient->GetUploadFileID(),16);
-	data.Write(nCount);
+	data.WriteHash16(forClient->GetUploadFileID());
+	data.WriteUInt16(nCount);
 
 	//uint32 lastRequest = forClient->GetLastSrcReqTime();
 	//we are only taking 30 random sources since we can't be sure if they have parts we need
@@ -961,12 +961,12 @@ Packet*	CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient){
 		CUpDownClient *cur_src = srclist.GetAt(pos);
 		if(!cur_src->HasLowID() && cur_src != forClient) {
 			nCount++;
-			data.Write((uint32)cur_src->GetUserID());
-			data.Write((uint16)cur_src->GetUserPort());
-			data.Write((uint32)cur_src->GetServerIP());
-			data.Write((uint16)cur_src->GetServerPort());
+			data.WriteUInt32(cur_src->GetUserID());
+			data.WriteUInt16(cur_src->GetUserPort());
+			data.WriteUInt32(cur_src->GetServerIP());
+			data.WriteUInt16(cur_src->GetServerPort());
 			if (forClient->GetSourceExchangeVersion() > 1)
-				data.WriteRaw(cur_src->GetUserHash(),16);
+				data.WriteHash16(cur_src->GetUserHash());
 		}
 
 		srclist.RemoveAt(pos);
@@ -976,7 +976,7 @@ Packet*	CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient){
 	if (!nCount)
 		return 0;
 	data.Seek(16);
-	data.Write(nCount);
+	data.WriteUInt16(nCount);
 
 	Packet* result = new Packet(&data, OP_EMULEPROT);
 	result->SetOpCode(OP_ANSWERSOURCES);

@@ -25,7 +25,7 @@
 #include "otherfunctions.h" // Needed for unicode2char & char2unicode
 #include "CMD4Hash.h"
 
-class CMemFile;
+class CSafeMemFile;
 
 // Imported from 0.30d
 struct SUnresolvedHostname{
@@ -83,7 +83,7 @@ public:
 	uint64 GetSize() const { return atoll(unicode2char(m_size)); }
 	const CMD4Hash& GetHashKey() const { return m_hash;}
 	bool HasValidSources() const {return (SourcesList!=NULL); }
-	CMemFile* SourcesList;
+	CSafeMemFile* SourcesList;
 	// Imported from 0.30d
 	bool HasHostnameSources() const {return (!m_HostnameSourcesList.IsEmpty()); }
 	CTypedPtrList<CPtrList, SUnresolvedHostname*> m_HostnameSourcesList;
