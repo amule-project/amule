@@ -9,44 +9,34 @@ d) add "EC" directory and move webserver and amulecmd apps there
 e) add a "libs_patch" directory to manage all possibile/probably/future patch
 to wx and similar libs
 
-f) reduce the number of files! 89.cpp files and 105.h ones
-are incredibily high for a p2p app! can be a kernel.
-Let's merge some files and about all reduce 105-89=16 .h only files
-these *should* be included only files, so can be merged in 1-2 max 3 files,
-cause they're protected by #ifdef for duplicated inclusions.
-
 of course all the file modification/moving should be managed in Makefile stuff.
 
-g) Keep on using this TODO file cause it's readed by everyone, while forum a bit less 
- (me for example :PPP)
-
-Hetfield
-
 - Team
-	- Add an option "Send a mail when transfert complete"
-	- Add an option "Change U/L & D/L Speed from time to time"
-	  (example change U/L & D/L Speed to max From 11h00s00 pm to 7h59m59s am and
-	  change U/L & D/L to 4/4 from 8h00m00s am to 10h59m59s pm.
+	- Configure Stuff:
+	    + gtk-prefix and prefix for every lib used
+	    + GUI, CMD; WEB and so on meta-packages
+            + remove optimize switch, clean fro lots options no more used (gtk above all)
+            + some nice configure report
+            + Sources Reorganization as written above.
+
+        - Systray
+            + finish new wx tray and delete all systray options from configure 
+	
+	- Remote
+            + Add remote gui (working)
+            + Finish cmd line clients
+
+	- Add an option "Send a mail when transfert complete", 
+		or better, execute a program (specify the parameters amule passes)
 
 	- File Tab
-	   + Move preview app setting from Directory to File tab
-	   + Add "clean file name" settings
-	   + Add search ed2k link in clipboard
+	   + Add search ed2k link in clipboard (auto adding???)
 	   + add an addictional option "same category" to "start next paused file..."
 	   + fix checkbox problem in notify: "a new message arrive" enabled only if "chat session" is enabled too
-
-	- Stats Tab
-	  + add ratio dl/up in stats tab to normalize graphics
-
-	- Add Security Tab
-	  + add ipfilter settings
-	  + add spam filtering
-	  + ignore user definited comments
 
 	- Add Scheduler Tab
 	  + add actions menu
 	  + add time and details menu
-
 	
 NEW FEATURES 
 	- Keep porting eMule features (medium-high priority)
