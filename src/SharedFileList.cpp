@@ -90,6 +90,10 @@ void CSharedFileList::FindSharedFiles() {
 	if(!theApp.IsRunning()) {
 		return;
 	}
+	
+	// Reload shareddir.dat
+	theApp.glob_prefs->ReloadSharedFolders();
+	
 	/* All part files are automatically shared. */
   	if (!m_Files_map.empty()) {
 		list_mut.Lock();
