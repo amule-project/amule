@@ -243,14 +243,12 @@ class GUIEvent : public wxEvent {
 	do { \
 	GUIEvent e(id);\
 	wxPostEvent(&theApp,e);\
-	theApp.ProcessPendingEvents();\
 	} while (0);
 	
 #define Notify_1_ValEvent(id, val) \
 	do { \
 	GUIEvent e(id, val);\
 	wxPostEvent(&theApp,e);\
-	theApp.ProcessPendingEvents();\
 	} while (0);
 	
 #define Notify_2_ValEvent(id, val0, val1) \
