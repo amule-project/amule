@@ -1176,7 +1176,7 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
 	if (GetED2KPartHashCount() == 0){
 		if (IsComplete(0, m_nFileSize-1)){
 			if (md4cmp(result->GetFileHash(), GetFileHash())){
-				theApp.amuledlg->AddLogLine(false, CString(_("Found corrupted part (%i) in 0 parts file %s - FileResultHash |%s| FileHash |%s|")), 1, m_strFileName.GetData(),result->GetFileHash(), GetFileHash());		
+				theApp.amuledlg->AddLogLine(false, CString(_("Found corrupted part (%i) in 0 parts file %s - FileResultHash |%s| FileHash |%s|")), 1, m_strFileName.GetData(),EncodeBase16(result->GetFileHash(), 16).c_str(), EncodeBase16(GetFileHash(), 16).c_str());
 				AddGap(0, m_nFileSize-1);
 				errorfound = true;
 			}
@@ -1200,7 +1200,7 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
 			*/
 			if (!(result->GetPartHash(i) && !md4cmp(result->GetPartHash(i),this->GetPartHash(i)))){
 				if (IsComplete(i*PARTSIZE,((i+1)*PARTSIZE)-1)){
-					theApp.amuledlg->AddLogLine(false, CString(_("Found corrupted part (%i) in %i parts file %s - FileResultHash |%s| FileHash |%s|")), i+1, GetED2KPartHashCount(), m_strFileName.GetData(),result->GetPartHash(i),this->GetPartHash(i));
+					theApp.amuledlg->AddLogLine(false, CString(_("Found corrupted part (%i) in %i parts file %s - FileResultHash |%s| FileHash |%s|")), i+1, GetED2KPartHashCount(), m_strFileName.GetData(),EncodeBase16(result->GetPartHash(i), 16).c_str(),EncodeBase16(this->GetPartHash(i), 16).c_str());
 					AddGap(i*PARTSIZE,((((i+1)*PARTSIZE)-1) >= m_nFileSize) ? m_nFileSize-1 : ((i+1)*PARTSIZE)-1);
 					errorfound = true;
 				}
