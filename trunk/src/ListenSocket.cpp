@@ -169,9 +169,8 @@ void CClientReqSocket::OnClose(int nErrorCode)
 	}
 }
 
-void CClientReqSocket::Disconnect(const wxString& strReason){
-	//AsyncSelect(0);
-
+void CClientReqSocket::Disconnect(const wxString& strReason)
+{
 	byConnected = ES_DISCONNECTED;
 
 	if (m_client) {
@@ -180,33 +179,15 @@ void CClientReqSocket::Disconnect(const wxString& strReason){
 			m_client->Safe_Delete();
 		} 
 		m_client = NULL;
-	} else {
-		// lfroen: m_client->Safe_Delete internally Destroy() socket
-		// which effectively crashes daemon
-		if (!OnDestroy()) {
-			Safe_Delete();
-		}
 	}
+	
+	Safe_Delete();
 };
 
-/* Kry - this eMule function has no use for us, because we have Destroy()
 
-void CClientReqSocket::Delete_Timed()
-{
-	// it seems that MFC Sockets call socketfunctions after they are deleted,
-	// even if the socket is closed and select(0) is set.
-	// So we need to wait some time to make sure this doesn't happens
-	if (::GetTickCount() - deltimer > 30000) {
-		delete this;
-	}
-}
-*/
 void CClientReqSocket::Safe_Delete()
 {
-	//wxASSERT(!deletethis); 
-	
-	if (!deletethis) {
-		//theApp.AddSocketDeleteDebug((uint32) this,created);
+	if ( !deletethis && !OnDestroy() ) {
 		// Paranoia is back.
 		SetNotify(0);
 		Notify(false);
