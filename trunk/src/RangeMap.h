@@ -240,15 +240,9 @@ public:
 		// the last element first, since sequential insertions are commen
 		RangeIterator it = --m_ranges.end();
 
-
-		// The start-key of the last element must be smaller than our start-key
-		// Otherwise there is the possibility that we can merge with the one before that
-		if ( start <= it->first ) {
-			// If the two starts are equal, then we only need to go back another
-			// step to see if the range prior to this one is mergeable
-			if ( start != it->first ) {
-				it = m_ranges.upper_bound( start );
-			}
+		// The endkey of the last element must be smaller than our start-key
+		if ( it->second.first >= start ) {
+			it = m_ranges.upper_bound( start );
 
 			if ( it != m_ranges.begin() ) {
 				// Go back to the last range which starts at or before key
@@ -283,14 +277,15 @@ public:
 						end = it->second.first;
 						m_ranges.erase( it++ );
 					} else {
-						// Resize the partially covered span and get the next one
-						it = ++resize( end + 1, it->second.first, it );
+						// Resize the partially covered span
+						it = resize( end + 1, it->second.first, it );
 					}
 
 					break;
 				} else {
 					// It covers the entire span
 					m_ranges.erase( it++ );
+					continue;
 				}
 			}
 			
@@ -321,8 +316,8 @@ public:
 							start = it->first;
 							m_ranges.erase( it++ );
 						} else {
-							// Resize the partially covered span and get the next one
-							it = ++resize( it->first, start - 1, it );
+							// Resize the partially covered span
+							it = resize( it->first, start - 1, it );
 						}
 					}
 				} else {
@@ -335,11 +330,11 @@ public:
 						}
 					} else {
 						// Starts after the current span, nothing to do
-						++it;
 					}
 				}
 			}
 
+			++it;
 		}
 
 		return m_ranges.insert( it, RangePair( start, RangeItems( end, object ) ) );
@@ -559,7 +554,7 @@ private:
 	RangeIterator resize( uint32 start, uint32 end, RangeIterator it ) {
 		VALUE item( it->second.second );
 
-		m_ranges.erase( it-- );
+		m_ranges.erase( it++ );
 
 		return m_ranges.insert( it, RangePair( start, RangeItems( end, item ) ) );		
 	}
