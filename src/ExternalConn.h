@@ -30,6 +30,8 @@
 #include "ECSocket.h"
 #include "ECPacket.h"
 
+#include "otherfunctions.h" // for RLE
+
 class CPartFile;
 class wxSocketServer;
 class wxSocketEvent;
@@ -40,30 +42,18 @@ class wxSocketEvent;
 #define EXTERNAL_CONN_BASE wxEvtHandler
 #endif
 
+
 /*!
  * PartStatus strings are quite long - RLE encoding will help.
  * 
  * Instead of sending each time full part-status string, send
  * RLE encoded difference from previous one.
- */
-#define RLE_CONTROL_CHAR 0
-class RLE_Data {
-		unsigned char *m_buff, *m_enc_buff;
-		int m_len, m_enc_len;
-	public:
-		RLE_Data(int len);
-		~RLE_Data();
-		
-		CECTag *Encode(unsigned char *);
-		const unsigned char *Decode(CECTag *);	
-};
-
-/*!
+ * 
  * Container for encoder per CPartFile. Each EC client must have
  * instance of such encoder
  */
 class RLE_Encoder {
-		std::map<CPartFile *, RLE_Data> m_encoders;
+		std::map<CPartFile *, otherfunctions::RLE_Data> m_encoders;
 		int m_len;
 	public:
 		RLE_Encoder(int buff_len);

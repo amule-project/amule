@@ -217,6 +217,23 @@ inline void md4cpy(const void* dst, const void* src) {
 // DumpMem ... Dumps mem ;)
 void DumpMem(const void* where, uint32 size);
 
+/*!
+ * General purpose RLE implementation. Just encode or create
+ * differential data with previous
+ */
+class RLE_Data {
+		unsigned char *m_buff, *m_enc_buff;
+		bool m_use_diff;
+		int m_len, m_enc_len;
+	public:
+		RLE_Data(int len, bool use_diff);
+		~RLE_Data();
+		
+		const unsigned char *Encode(const unsigned char *data, int &outlen);
+		const unsigned char *Decode(const unsigned char *data);	
+};
+
+
 } // End namespace
 
 #endif // OTHERFUNCTIONS_H

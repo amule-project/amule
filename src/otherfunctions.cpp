@@ -522,4 +522,111 @@ void DumpMem(const void* where, uint32 size) {
 	printf("\n");	
 }
 
+/*
+ * RLE encoder implementation. This is RLE implementation for very specific
+ * purpose: encode DIFFERENCE between subsequent states of status bar.
+ * 
+ * This difference is calculated by xor-ing with previous data
+ * 
+ * We can't use implementation with "control char" since this encoder
+ * will process binary data - not ascii (or unicode) strings
+ */
+ 
+RLE_Data::RLE_Data(int len, bool use_diff)
+{
+	// since we using char, length limited to 255. also there's no point encoding with len <=3 
+	wxASSERT((len < 0xff) && (len > 3));
+	
+	m_len = len;
+	m_use_diff = use_diff;
+	
+	m_buff = new unsigned char[m_len];
+	//
+	// in worst case 2-byte sequence encoded as 3. So, data can grow at 1/3
+	m_enc_buff = new unsigned char[m_len*4/3 + 1];
+}
+
+RLE_Data::~RLE_Data()
+{
+	delete [] m_buff;
+	delete [] m_enc_buff;
+}
+
+const unsigned char *RLE_Data::Encode(const unsigned char *buff, int &outlen)
+{
+	//
+	// calculate difference from prev
+	//
+	if ( m_use_diff ) {
+		for (int i = 0; i < m_len; i++) {
+			m_buff[i] ^= buff[i];
+		}
+	}
+		
+	//
+	// now RLE
+	//
+	int i = 0, j = 0;
+	while ( i != m_len ) {
+		unsigned char curr_val = m_buff[i];
+		int seq_start = i;
+		while ( (i != m_len) && (curr_val == m_buff[i]) ) {
+			i++;
+		}
+		if (i - seq_start > 1) {
+			// if there's 2 or more equal vals - put it twice in stream
+			m_enc_buff[j++] = curr_val;
+			m_enc_buff[j++] = curr_val;
+			m_enc_buff[j++] = i - seq_start;
+		} else {
+			// single value - put it as is
+			m_enc_buff[j++] = curr_val;
+		}
+	}
+
+	outlen = j - 1;
+	
+	//
+	// If using differential encoder, remember current data for
+	// later use
+	if ( m_use_diff ) {
+		memcpy(m_buff, buff, m_len);
+	}
+	
+	return m_enc_buff;
+}
+
+const unsigned char *RLE_Data::Decode(const unsigned char *buff)
+{
+	//
+	// Open RLE
+	//
+
+	int i = 0, j = 0;
+	while ( i != m_len ) {
+
+		if (buff[i+1] == buff[i]) {
+			// this is sequence
+			j++;
+			memset(m_enc_buff + j, buff[i], buff[i + 2]);
+			j += buff[i + 2];
+			i += 3;
+		} else {
+			// this is single byte
+			m_enc_buff[j++] = buff[i++];
+		}
+	}
+	
+	//
+	// Recreate data from diff
+	//
+	if ( m_use_diff ) {
+		for (int i = 0; i < m_len; i++) {
+			m_buff[i] ^= m_enc_buff[i];
+		}
+	}
+		
+	return m_buff;
+}
+
 } // End namespace
