@@ -42,7 +42,6 @@
 #include "Logger.h"			// Needed for AddLogLine
 
 #include <algorithm>
-#include <vector>
 
 //! Max number of threads. Change if you have > 1 CPUs ;)
 const unsigned int MAXTHREADCOUNT = 1;
@@ -250,10 +249,10 @@ QueuedFile* CAddFileThread::GetNextFile()
 }
 
 
-void CAddFileThread::RemoveFromQueue(QueuedFilePtr file)
+void CAddFileThread::RemoveFromQueue(QueuedFile* file)
 {
 	// Some debugging information
-	if ( !file.get() ) {
+	if ( !file ) {
 		AddDebugLogLineM( true, logHasher, wxT("Error, tried to pass NULL pointer to RemoveFromQueue().") );
 		return;
 	}
@@ -264,7 +263,7 @@ void CAddFileThread::RemoveFromQueue(QueuedFilePtr file)
 	}
 
 	// Remove a queued file which has been completed
-	FileQueue::iterator it = std::find( s_queue.begin(), s_queue.end(), file.get() );
+	FileQueue::iterator it = std::find( s_queue.begin(), s_queue.end(), file );
 			
 	if ( it != s_queue.end() ) {
 		s_queue.erase( it );
@@ -272,6 +271,8 @@ void CAddFileThread::RemoveFromQueue(QueuedFilePtr file)
 		// Some debug info
 		AddDebugLogLineM( true, logHasher, wxT("Error, attempted to remove file from queue, but didn't find it.") );
 	}
+			
+	delete file;
 }
 
 
@@ -279,7 +280,7 @@ void CAddFileThread::AddFile(const wxString& path, const wxString& name, const C
 {
 	AddDebugLogLineM( false, logHasher, wxString( wxT("Adding file to queue: ") ) + path );
 
-	QueuedFilePtr hashfile(new QueuedFile);
+	QueuedFile* hashfile = new QueuedFile;
 	hashfile->m_busy = false;
 	hashfile->m_path = path;
 	hashfile->m_name = name;
@@ -295,6 +296,7 @@ void CAddFileThread::AddFile(const wxString& path, const wxString& name, const C
 		for ( ; it != s_queue.end(); ++it )
 			if ( ( name == (*it)->m_name ) && ( path == (*it)->m_path ) ) {
 				// Duplicated
+				delete hashfile;
 				return;
 			}
 
@@ -302,11 +304,10 @@ void CAddFileThread::AddFile(const wxString& path, const wxString& name, const C
 		// If it's a partfile (part != NULL), then add it to the front so that
 		// it gets hashed sooner, otherwise add it to the back
 		if ( part == NULL ) {
-			s_queue.push_back( hashfile.get() );
+			s_queue.push_back( hashfile );
 		} else {
-			s_queue.push_front( hashfile.get() );
+			s_queue.push_front( hashfile );
 		}
-		hashfile.release();
 	}
 
 
@@ -318,11 +319,15 @@ void CAddFileThread::AddFile(const wxString& path, const wxString& name, const C
 
 wxThread::ExitCode CAddFileThread::Entry()
 {
+	// Pointer to the queued file currently being hashed
+	QueuedFile* current = NULL;
+	// Pointer to the known-file used to store the results
+	CKnownFile* knownfile = NULL;
+
 	// Continue to loop until there's nothing to do, or someone kills the threads
 	while ( IsRunning() ) {
-		// Pointer to the queued file currently being hashed
 		// Try to get the next file on queue
-		QueuedFile* current = GetNextFile();
+		current = GetNextFile();
 			
 		if ( !current ) {
 			// Nothing to do, break
@@ -341,7 +346,7 @@ wxThread::ExitCode CAddFileThread::Entry()
 			AddDebugLogLineM( true, logHasher, wxT("Warning, failed to open file, skipping: " ) + filename );
 			
 			// Whoops, something's wrong. Delete the item and continue
-			RemoveFromQueue( QueuedFilePtr(current) );
+			RemoveFromQueue( current );
 			continue;
 		}
 
@@ -351,7 +356,7 @@ wxThread::ExitCode CAddFileThread::Entry()
 			AddDebugLogLineM( true, logHasher, wxT("Warning, file is bigger than 4GB, skipping: ") + filename );
 			
 			// Delete and continue 
-			RemoveFromQueue( QueuedFilePtr(current) );
+			RemoveFromQueue( current );
 			continue;
 		}
 
@@ -359,13 +364,13 @@ wxThread::ExitCode CAddFileThread::Entry()
 			AddDebugLogLineM( true, logHasher, wxT("Warning, 0-size file, skipping: ") + filename );
 			
 			// Delete and continue 
-			RemoveFromQueue( QueuedFilePtr(current) );
+			RemoveFromQueue( current );
 			continue;			
 		}
 		
 
 		// Create a CKnownFile to contain the result
-		std::auto_ptr<CKnownFile> knownfile(new CKnownFile());
+		knownfile = new CKnownFile();
 		
 		// Set initial values
 		knownfile->m_strFilePath = current->m_path;
@@ -397,7 +402,7 @@ wxThread::ExitCode CAddFileThread::Entry()
 		
 		// This loops creates the part-hashes, loop-de-loop.
 		while ( !error && ( file.GetPosition() < file.GetLength() ) && IsRunning() ) {
-			error = !CreateNextPartHash( &file, knownfile.get(), needsAICH );	
+			error = !CreateNextPartHash( &file, knownfile, needsAICH );	
 		}
 
 
@@ -405,66 +410,71 @@ wxThread::ExitCode CAddFileThread::Entry()
 		if ( error ) {
 			AddDebugLogLineM( true, logHasher, wxT("Error while reading file, skipping: ") + current->m_name );
 		
+			// Remove the temp-result
+			delete knownfile;
+			
 			// Delete and continue 
-			RemoveFromQueue( QueuedFilePtr(current) );
+			RemoveFromQueue( current );
 			continue;
 		}
 
 
-		if ( !IsRunning() ) {
-			// Reset the busy-flag so the file will be hashed again
-			current->m_busy = false;
-			break;
-		}
-
-
-		// If the file is < PARTSIZE, then the filehash is that one hash,
-		// otherwise, the filehash is the hash of the parthashes
-		if ( knownfile->hashlist.GetCount() == 1 ) {
-			knownfile->m_abyFileHash = knownfile->hashlist[0];
-			knownfile->hashlist.Clear();
-		} else {
-			unsigned int len = knownfile->hashlist.GetCount() * 16;
-			std::vector<byte> data(len);
-			
-			for (size_t i = 0; i < knownfile->hashlist.GetCount(); i++) {
-				memcpy( &data[16*i], knownfile->hashlist[i], 16 );
-			}
-
-			byte hash[16];
-
-			knownfile->CreateHashFromString( &data.front(), len, hash, NULL );
-
-			knownfile->m_abyFileHash.SetHash( (uchar*)hash );
-		}
-		
-		
-		// Did we create a AICH hashset?
-		if ( needsAICH ) {
-			CAICHHashSet* m_pAICHHashSet = knownfile->GetAICHHashset();
-
-			m_pAICHHashSet->ReCalculateHash(false);
-			if ( m_pAICHHashSet->VerifyHashTree(true) ) {
-				m_pAICHHashSet->SetStatus(AICH_HASHSETCOMPLETE);
+		if ( IsRunning() ) {
+			// If the file is < PARTSIZE, then the filehash is that one hash,
+			// otherwise, the filehash is the hash of the parthashes
+			if ( knownfile->hashlist.GetCount() == 1 ) {
+				knownfile->m_abyFileHash = knownfile->hashlist[0];
+				knownfile->hashlist.Clear();
+			} else {
+				unsigned int len = knownfile->hashlist.GetCount() * 16;
+				byte* data = new byte[ len ];
+				
+				for (size_t i = 0; i < knownfile->hashlist.GetCount(); i++) {
+					memcpy( data + 16*i, knownfile->hashlist[i], 16 );
+				}
 	
-				if ( !m_pAICHHashSet->SaveHashSet() ) {
-					AddDebugLogLineM( true, logHasher, wxT("Warning, failed to save AICH hashset for file: ") + current->m_name );
+				byte hash[16];
+	
+				knownfile->CreateHashFromString( data, len, hash, NULL );
+				delete [] data;
+
+				knownfile->m_abyFileHash.SetHash( (uchar*)hash );
+			}
+			
+			
+			// Did we create a AICH hashset?
+			if ( needsAICH ) {
+				CAICHHashSet* m_pAICHHashSet = knownfile->GetAICHHashset();
+
+				m_pAICHHashSet->ReCalculateHash(false);
+				if ( m_pAICHHashSet->VerifyHashTree(true) ) {
+					m_pAICHHashSet->SetStatus(AICH_HASHSETCOMPLETE);
+		
+					if ( !m_pAICHHashSet->SaveHashSet() ) {
+						AddDebugLogLineM( true, logHasher, wxT("Warning, failed to save AICH hashset for file: ") + current->m_name );
+					}
 				}
 			}
-		}
-		
-		
-		// Pass on the completion
-		// Transfers ownership of knownfile, when event is successfully posted
-		wxMuleInternalEvent evt(wxEVT_CORE_FILE_HASHING_FINISHED);
-		evt.SetClientData( knownfile.get() );
-		evt.SetExtraLong( (long)current->m_owner );
+			
+			
+			// Pass on the completion
+			wxMuleInternalEvent evt(wxEVT_CORE_FILE_HASHING_FINISHED);
+			evt.SetClientData( knownfile );
+			evt.SetExtraLong( (long)current->m_owner );
 
-		AddLogLineM( false, _("Hasher: Finished hashing file: ") + current->m_name );
-		
-		RemoveFromQueue( QueuedFilePtr(current) );
-		wxPostEvent(&theApp, evt);
-		knownfile.release();
+			AddLogLineM( false, _("Hasher: Finished hashing file: ") + current->m_name );
+			
+			RemoveFromQueue( current );
+			wxPostEvent(&theApp, evt);
+		}
+	}
+
+	// Ensure consistancy so we can start properly after a Stop()
+	if ( current ) {
+		delete knownfile;
+
+		// Reset the busy-flag so the file will be hashed again
+		current->m_busy = false;
 	}
 	
 	
@@ -495,10 +505,12 @@ bool CAddFileThread::CreateNextPartHash( CFile* file, CKnownFile* owner, bool cr
 		return false;
 	}
 
-	std::vector<byte> data(cur_length);
+	byte* data = new byte[cur_length];
 		
 	// Check for read errors
-	if ( file->Read(&data.front(), cur_length) != cur_length ) {
+	if ( file->Read(data, cur_length) != cur_length ) {
+		delete[] data;
+		
 		return false;
 	}
 
@@ -518,7 +530,7 @@ bool CAddFileThread::CreateNextPartHash( CFile* file, CKnownFile* owner, bool cr
 
 
 	// Create the md4 hash and perhaps a AICH hash
-	owner->CreateHashFromString( &data.front(), cur_length, hash, pBlockAICHHashTree );
+	owner->CreateHashFromString( data, cur_length, hash, pBlockAICHHashTree );
 	
 	// Store the md4 hash
 	owner->hashlist.Add( (uchar*)hash );
@@ -531,6 +543,8 @@ bool CAddFileThread::CreateNextPartHash( CFile* file, CKnownFile* owner, bool cr
 	if ( zero_hash ) {
 		owner->hashlist.Add( default_zero_hash );
 	}
+
+	delete[] data;
 
 	return true;
 }

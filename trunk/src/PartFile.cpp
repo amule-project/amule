@@ -1104,7 +1104,7 @@ void CPartFile::LoadSourceSeeds() {
 	file.Close();	
 }		
 
-void CPartFile::PartFileHashFinished(std::auto_ptr<CKnownFile> result)
+void CPartFile::PartFileHashFinished(CKnownFile* result)
 {
 	date = result->date;
 	newdate = true;
@@ -1193,7 +1193,7 @@ void CPartFile::PartFileHashFinished(std::auto_ptr<CKnownFile> result)
 	}
 
 	
-	result.reset();
+	delete result;
 	if (!errorfound){
 		if (status == PS_COMPLETING){
 			CompleteFile(true);
