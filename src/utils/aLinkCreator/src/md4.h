@@ -76,10 +76,11 @@ class MD4
     void MD4Final(struct MD4Context *context,
                   unsigned char *digest);
     void MD4Transform(uint32_t buf[4], uint32_t const in[16]);
-#ifdef BIG_ENDIAN_HOST
+#if wxBYTE_ORDER == wxBIG_ENDIAN
 
     void byteReverse(unsigned char *buf, unsigned longs);
 #endif
+
   };
 
 #endif
