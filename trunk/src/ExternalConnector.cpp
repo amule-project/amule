@@ -236,13 +236,17 @@ void CaMuleExternalConnector::GetCommand(const wxString &prompt, char* buffer, s
 		const char *text = buffer;
 #endif /* HAVE_LIBREADLINE */
 #endif /* wxUSE_GUI */
-		size_t len = strlen(text);
-		if (len > buffer_size - 2) {
-			len = buffer_size - 2;
+		if ( text ) {
+			size_t len = strlen(text);
+			if (len > buffer_size - 2) {
+				len = buffer_size - 2;
+			}
+			strncpy(buffer, text, len);
+			buffer[len] = '\n';
+			buffer[len + 1] = 0;
+		} else {
+			strncpy(buffer, "quit", buffer_size);
 		}
-		strncpy(buffer, text, len);
-		buffer[len] = '\n';
-		buffer[len + 1] = 0;
 	}
 }
 
@@ -257,6 +261,15 @@ void CaMuleExternalConnector::TextShell(const wxString &prompt, CmdId commands[]
 		buf = char2unicode(buffer);
 		The_End = Parse_Command(buf, commands);
 	} while ((!The_End) && (m_isConnected));
+}
+
+CECPacket *CaMuleExternalConnector::SendRecvMsg_v2(CECPacket *request)
+{
+    if (m_ECClient->WritePacket(request)) {
+		CECPacket *reply = m_ECClient->ReadPacket();
+		return reply;
+    }
+    return 0;
 }
 
 wxString CaMuleExternalConnector::SendRecvMsg(const wxChar *msg)
