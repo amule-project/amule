@@ -94,10 +94,12 @@ void CUDPSocket::OnReceive(int WXUNUSED(nErrorCode)) {
 				CSafeMemFile  data(buffer+2,length);
 				wxASSERT(length == data.GetLength());
 				ProcessPacket(data,length,/*opcode*/buffer[1],addr.IPAddress(),addr.Service()); 
+				break;
 			}
 			case OP_EMULEPROT:
 				// Silently drop it.
 				theApp.downloadqueue->AddDownDataOverheadOther(length);
+				break;
 			default:
 				printf("Received UDP server packet with unknown protocol 0x%x!\n",buffer[0]);
 		}		
