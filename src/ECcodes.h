@@ -69,6 +69,11 @@ class EC_IPv4_t {
 };
 
 
+/**
+ * Current EC protocol version
+ */
+#define	EC_CURRENT_PROTOCOL_VERSION	0x01f1
+
 
 /*
  * EC FLAG values
