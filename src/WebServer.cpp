@@ -480,7 +480,7 @@ void CWebServer::ProcessURL(ThreadData Data) {
 	if (pThis == NULL) {
 		return;
 	}
-	bool isUseGzip = pThis->webInterface->SendRecvMsg(wxT("PREFS GETWEBUSEGZIP")) == wxT("1");
+	bool isUseGzip = pThis->webInterface->m_UseGzip;
 	wxString Out;
 	// List Entry Templates
 	wxString OutE;
@@ -488,6 +488,7 @@ void CWebServer::ProcessURL(ThreadData Data) {
 	// ServerStatus Templates
 	wxString OutS;
 	TCHAR *gzipOut = NULL;
+
 	long gzipLen = 0;
 	wxString HTTPProcessData;
 	wxString HTTPTemp;
@@ -503,18 +504,17 @@ void CWebServer::ProcessURL(ThreadData Data) {
 	// WE CANT TOUCH THE MAIN THREAD'S GUI!!!
 	//
 	if (sW == wxT("password")) {
+		wxString PwHash = MD5Sum(_ParseURL(Data, wxT("p"))).GetHash();
 		bool login = false;
 		wxString ip = ip.Format(wxT("%s"), inet_ntoa( Data.inadr ));
-		wxString strAuth = pThis->webInterface->SendRecvMsg(
-			wxT("PREFS GETWSPASS ") + MD5Sum(_ParseURL(Data, wxT("p"))).GetHash());
-		if (strAuth == wxT("AdminLogin")) {
+		if ( PwHash == pThis->webInterface->m_AdminPass ) {
 			Session* ses = new Session();
 			ses->admin = true;
 			ses->startTime = time(NULL);
 			ses->lSession = lSession = rand() * 10000L + rand();
 			pThis->m_Params.Sessions.Add(ses);
 			login = true;
-		} else if (strAuth == wxT("GuestLogin")) {
+		} else if ( PwHash == pThis->webInterface->m_GuestPass ) {
 			Session* ses = new Session();
 			ses->admin = false;
 			ses->startTime = time(NULL);
@@ -714,12 +714,8 @@ wxString CWebServer::_GetHeader(ThreadData Data, long lSession) {
 
 	Out.Replace(wxT("[CharSet]"), _GetWebCharSet());
 
-	//get page header data
-	wxString sHeaderList = pThis->webInterface->SendRecvMsg(wxT("WEBPAGE HEADER"));
-	int brk=sHeaderList.First(wxT("\t"));
-	
-	int nRefresh = atoi((char*) sHeaderList.Left(brk).GetData());
-	sHeaderList = sHeaderList.Mid(brk+1); brk=sHeaderList.First(wxT("\t"));
+	// TODO: must be taken from prefs
+	const int nRefresh = 120;
 	
 	if (nRefresh) {
 		wxString sPage = _ParseURL(Data, wxT("w"));
@@ -760,49 +756,47 @@ wxString CWebServer::_GetHeader(ThreadData Data, long lSession) {
 	Out.Replace(wxT("[Logout]"), _("Logout"));
 	Out.Replace(wxT("[Search]"), _("Search"));
 
-	char HTTPTempC[100] = "";
 	wxString sConnected;
-	
-	if (sHeaderList.Left(brk) == wxT("Connected")) {
-		sHeaderList = sHeaderList.Mid(brk+1); brk=sHeaderList.First(wxT("\t"));
-		if (sHeaderList.Left(brk) == wxT("High ID"))
-			sConnected = wxT("Connected");
-		else
-			sConnected = wxT("Connected (Low ID)");
-		
-		sHeaderList = sHeaderList.Mid(brk+1); brk=sHeaderList.First(wxT("\t"));
-		sConnected += wxString::Format(wxT(": %s"), sHeaderList.Left(brk).GetData());
-		sHeaderList = sHeaderList.Mid(brk+1); brk=sHeaderList.First(wxT("\t"));
-		sprintf(HTTPTempC, "%s ", unicode2char(sHeaderList.Left(brk)));
-		sConnected += wxString::Format(wxT(" [%s users]"), HTTPTempC);
-	} else if (sHeaderList.Left(brk) == wxT("Connecting")) {
-		sConnected = wxT("Connecting");
-	} else {
-		sConnected = wxT("Disconnected");
-		if (IsSessionAdmin(Data,sSession))
-			sConnected += wxString::Format(wxT(" (<small><a href=\"?ses=%s&w=server&c=connect\">Connect to any server</a></small>)"), sSession.GetData());
+
+	CECPacket stat_req(EC_OP_STAT_REQ);
+	CECPacket *stats = pThis->webInterface->SendRecvMsg_v2(&stat_req);
+	if ( !stats ) {
+		return wxEmptyString;
 	}
-	Out.Replace(wxT("[Connected]"), wxString::Format(wxT("<b>Connection:</b> %s"), sConnected.GetData()));
-
-	sHeaderList = sHeaderList.Mid(brk+1); brk=sHeaderList.First(wxT("\t"));
-	double ul_speed = atof((char*) sHeaderList.Left(brk).GetData());
-	sHeaderList = sHeaderList.Mid(brk+1); brk=sHeaderList.First(wxT("\t"));
-	double dl_speed = atof((char*) sHeaderList.Left(brk).GetData());
-
-	sprintf(HTTPTempC, "Up: %.1f | Down: %.1f", ul_speed, dl_speed);
-
-	wxString sLimits;
-	// EC 25-12-2003
-	sHeaderList = sHeaderList.Mid(brk+1); brk=sHeaderList.First(wxT("\t"));
-	wxString MaxUpload = sHeaderList.Left(brk);
-	sHeaderList = sHeaderList.Mid(brk+1); brk=sHeaderList.First(wxT("\t"));
-	wxString MaxDownload = sHeaderList.Left(brk);
 	
-	if (MaxUpload == wxT("65535"))  MaxUpload = wxT("Unlimited");
-	if (MaxDownload == wxT("65535")) MaxDownload = wxT("Unlimited");
-	sLimits.Printf(wxT("%s/%s"), MaxUpload.GetData(), MaxDownload.GetData());
-	// EC Ends
-	Out.Replace(wxT("[Speed]"), wxString::Format(wxT("<b>Speed:</b> %s <small> (Limits: %s)</small>"), HTTPTempC, sLimits.GetData()));
+	switch (stats->GetTagByName(EC_TAG_STATS_CONNSTATE)->GetInt8Data()) {
+		case 0:
+			sConnected = _("Not connected");
+			if (IsSessionAdmin(Data,sSession)) {
+				sConnected += wxString::Format(wxT(" (<small><a href=\"?ses="));
+				sConnected += sSession + wxT("&w=server&c=connect\">Connect to any server</a></small>");
+			}
+			break;
+		case 1:
+			sConnected = _("Now connecting");
+			break;
+		case 2:
+		case 3: {
+				CECTag *server = stats->GetTagByName(EC_TAG_STATS_CONNSTATE)->GetTagByIndex(0);
+				EC_IPv4_t * addr = server->GetIPv4Data();
+				sConnected = _("Connected to ");
+				sConnected += server->GetTagByName(EC_TAG_SERVER_NAME)->GetStringData();
+				sConnected += wxString::Format(wxT(" [%d.%d.%d.%d:%d] "),
+					addr->ip[0], addr->ip[1], addr->ip[2], addr->ip[3], addr->port);
+				sConnected += stats->GetTagByName(EC_TAG_STATS_CONNSTATE)->GetInt8Data() == 2 ? _("with LowID") : _("with HighID");
+				delete addr;
+			}
+			break;
+	}
+
+	Out.Replace(wxT("[Connected]"), wxT("<b>Connection:</b> ") + sConnected);
+
+	Out.Replace(wxT("[Speed]"),
+		wxString::Format(wxT("<b>Speed:</b> Up: %.1f | Down: %.1f <small> (Limits: %.1f/%.1f)</small>"),
+		((double)stats->GetTagByName(EC_TAG_STATS_UL_SPEED)->GetInt32Data())/1024.0,
+		((double)stats->GetTagByName(EC_TAG_STATS_DL_SPEED)->GetInt32Data())/1024.0,
+		((double)stats->GetTagByName(EC_TAG_STATS_UL_SPEED_LIMIT)->GetInt32Data())/1024.0,
+		((double)stats->GetTagByName(EC_TAG_STATS_DL_SPEED_LIMIT)->GetInt32Data())/1024.0));
 
 	return Out;
 }
