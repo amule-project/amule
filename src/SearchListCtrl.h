@@ -179,42 +179,42 @@ protected:
 	/**
 	 * Event handler for double-clicks or enter.
 	 */
-	void OnItemActivated( wxListEvent& evt );
+	void OnItemActivated( wxListEvent& event );
 	
 	/**
 	 * Event handler for left-clicks on the column headers.
 	 * 
 	 * This eventhandler takes care of sync'ing all the other lists with this one.
 	 */
-	void OnColumnLClick( wxListEvent& evt );
+	void OnColumnLClick( wxListEvent& event );
 
 	/**
 	 * Event handler for resizing of the columns.
 	 *
 	 * This eventhandler takes care of sync'ing all the other lists with this one.
 	 */
-	void OnColumnResize( wxListEvent& evt );
+	void OnColumnResize( wxListEvent& event );
 
 	
 	/**
 	 * Event handler for get-url menu items.
 	 */
-	void OnPopupGetUrl( wxCommandEvent& evt );
+	void OnPopupGetUrl( wxCommandEvent& event );
 
 	/**
 	 * Event handler for fake-check menu items.
 	 */
-	void OnPopupFakeCheck( wxCommandEvent& evt );
+	void OnPopupFakeCheck( wxCommandEvent& event );
 
 	/**
 	 * Event handler for Razorback 2 stats menu items.
 	 */
-	void OnRazorStatsCheck( wxCommandEvent& evt );
+	void OnRazorStatsCheck( wxCommandEvent& event );
 
 	/**
 	 * Event handler for download-file(s) menu item.
 	 */
-	void OnPopupDownload( wxCommandEvent& evt );
+	void OnPopupDownload( wxCommandEvent& event );
 
 	DECLARE_EVENT_TABLE()
 };

@@ -381,52 +381,56 @@ void CSearchListCtrl::OnRightClick(wxMouseEvent& event)
 }
 
 
-void CSearchListCtrl::OnColumnLClick( wxListEvent& evt )
+void CSearchListCtrl::OnColumnLClick( wxListEvent& event )
 {
 	// Let the real event handler do its work first
-	CMuleListCtrl::OnColumnLClick( evt );
+	CMuleListCtrl::OnColumnLClick( event );
 	
 	SyncOtherLists( this );
 }
 
 
-void CSearchListCtrl::OnColumnResize( wxListEvent& WXUNUSED(evt) )
+void CSearchListCtrl::OnColumnResize( wxListEvent& WXUNUSED(event) )
 {
 	SyncOtherLists( this );
 }
 
 
-void CSearchListCtrl::OnPopupGetUrl( wxCommandEvent& evt )
+void CSearchListCtrl::OnPopupGetUrl( wxCommandEvent& event )
 {
-	int item = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-	if ( item == -1 )
-		return;
+	wxString URIs;	
+	
+	long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+	
+	while( index != -1 ) {
+		CSearchFile* file = (CSearchFile*)GetItemData( index );
 
-	CSearchFile* file = (CSearchFile*)GetItemData( item );
+		switch ( event.GetId() ) {
+			case MP_GETED2KLINK:				URIs += theApp.CreateED2kLink( file ) + wxT("\n");					break;
+			case MP_GETHTMLED2KLINK:			URIs += theApp.CreateHTMLED2kLink( file ) + wxT("\n");				break;
+		}
 
-	// Add new cases as nescecarry ...
-	switch ( evt.GetId() ) {
-		case MP_GETED2KLINK:
-				theApp.CopyTextToClipboard(theApp.CreateED2kLink(file));
-				break;
-		
-		case MP_GETHTMLED2KLINK:
-				theApp.CopyTextToClipboard(theApp.CreateHTMLED2kLink(file));
-				break;
+		index = GetNextItem( index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	}
+
+	if ( !URIs.IsEmpty() ) {	
+		theApp.CopyTextToClipboard( URIs.RemoveLast() );
+	}
+	
 }
 
-void CSearchListCtrl::OnPopupFakeCheck( wxCommandEvent& evt )
+void CSearchListCtrl::OnPopupFakeCheck( wxCommandEvent& event )
 {
 	int item = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-	if ( item == -1 )
+	if ( item == -1 ) {
 		return;
+	}
 
 	CSearchFile* file = (CSearchFile*)GetItemData( item );
 	wxString URL;
 
 	// Add new cases as nescesarry
-	switch ( evt.GetId() ) {
+	switch ( event.GetId() ) {
 		case MP_FAKECHECK1:
 			URL = theApp.GenFakeCheckUrl( file );
 			break;
@@ -436,22 +440,24 @@ void CSearchListCtrl::OnPopupFakeCheck( wxCommandEvent& evt )
 			break;
 	}
 
-	if ( !URL.IsEmpty() )
+	if ( !URL.IsEmpty() ) {
 		theApp.amuledlg->LaunchUrl( URL );
+	}
 }
 
-void CSearchListCtrl::OnRazorStatsCheck( wxCommandEvent& WXUNUSED(evt) )
+void CSearchListCtrl::OnRazorStatsCheck( wxCommandEvent& WXUNUSED(event) )
 {
 	int item = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-	if ( item == -1 )
+	if ( item == -1 ) {
 		return;
+	}
 
 	CSearchFile* file = (CSearchFile*)GetItemData( item );
 	theApp.amuledlg->LaunchUrl(wxT("http://stats.razorback2.com/ed2khistory?ed2k=") + file->GetFileHash().Encode());
 }
 
 
-void CSearchListCtrl::OnPopupDownload( wxCommandEvent& WXUNUSED(evt) )
+void CSearchListCtrl::OnPopupDownload( wxCommandEvent& WXUNUSED(event) )
 {
 	wxCommandEvent nullEvt;
 	theApp.amuledlg->searchwnd->OnBnClickedDownload(nullEvt);
