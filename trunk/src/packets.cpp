@@ -377,15 +377,25 @@ CTag::CTag(CFile *file)
 
 CTag::CTag(const CFile &in_data)
 {
-	in_data.Read(&tag.type,1);
+	off_t off;
+	if ((off = in_data.Read(&tag.type,1)) == wxInvalidOffset) {
+		throw CInvalidPacket("Bad Met File");
+	}
 	uint16 length;
-	in_data.Read(&length,2);
+	if ((off = in_data.Read(&length,2)) == wxInvalidOffset) {	
+		throw CInvalidPacket("Bad Met File");
+	}
+
 	ENDIAN_SWAP_I_16(length);
-	if (length == 1)
-		in_data.Read(&tag.specialtag,1);
-	else {
+	if (length == 1) {
+		if ((off = in_data.Read(&tag.specialtag,1)) == wxInvalidOffset) {
+			throw CInvalidPacket("Bad Met File");
+		}
+	} else {
 		tag.tagname = new char[length+1];
-		in_data.Read(tag.tagname,length);
+		if ((off = in_data.Read(tag.tagname,length)) == wxInvalidOffset) {
+			throw CInvalidPacket("Bad Met File");
+		}
 		tag.tagname[length] = 0;
 	}
 
@@ -394,44 +404,64 @@ CTag::CTag(const CFile &in_data)
 	// a list - like the search results from a server.
 	
 	if (tag.type == 2){ // STRING
-		in_data.Read(&length,2);
+		if ((off = in_data.Read(&length,2)) == wxInvalidOffset) {
+			throw CInvalidPacket("Bad Met File");
+		}
 		ENDIAN_SWAP_I_16(length);
 		tag.stringvalue = new char[length+1];
-		in_data.Read(tag.stringvalue,length);
+		if (in_data.Read(tag.stringvalue,length) == wxInvalidOffset) {
+			throw CInvalidPacket("Bad Met File");
+		}		
 		tag.stringvalue[length] = '\0';
 	}
 	else if (tag.type == 3){ // DWORD
-		in_data.Read(&tag.intvalue,4);
+		if (in_data.Read(&tag.intvalue,4) == wxInvalidOffset) {
+			throw CInvalidPacket("Bad Met File");
+		}				
 		ENDIAN_SWAP_I_32(tag.intvalue);
 	}
 	else if (tag.type == 4){ // FLOAT (used by Hybrid 0.48)
 		// What to do with them?
-		in_data.Read(&tag.floatvalue,4);
+		if (in_data.Read(&tag.floatvalue,4) == wxInvalidOffset) {
+			throw CInvalidPacket("Bad Met File");
+		}				
 	}
 	else if (tag.type == 1){ // HASH (never seen)
 		printf("CTag::CTag(CFile*); Reading *unverified* HASH tag\n");
-		in_data.Seek(16, CFile::current);
+		if (in_data.Seek(16, CFile::current) == wxInvalidOffset) {
+			throw CInvalidPacket("Bad Met File");
+		}								
 	}
-	else if (tag.type == 5){ // BOOL (never seen; propably 1 bit)
+	else if (tag.type == 5){ // BOOL (never seen; propably 1 byte)
 		// NOTE: This is preventive code, it was never tested
 		printf("CTag::CTag(CFile*); Reading *unverified* BOOL tag\n");
-		in_data.Seek(1, CFile::current);
+		if (in_data.Seek(1, CFile::current) == wxInvalidOffset) {
+			throw CInvalidPacket("Bad Met File");
+		}								
 	}
-	else if (tag.type == 6){ // BOOL Array (never seen; propably <numbits> <bits>)
+	else if (tag.type == 6){ // BOOL Array (never seen; propably <numbytes> <bytes>)
 		// NOTE: This is preventive code, it was never tested
 		printf("CTag::CTag(CFile*); Reading *unverified* BOOL Array tag\n");
 		uint16 len;
-		in_data.Read(&len,2);
+		if (in_data.Read(&len,2) == wxInvalidOffset) {
+			throw CInvalidPacket("Bad Met File");
+		}										
 		ENDIAN_SWAP_I_16(len);
-		in_data.Seek((len+7)/8, CFile::current);
+		if (in_data.Seek((len+7)/8, CFile::current) == wxInvalidOffset) {
+			throw CInvalidPacket("Bad Met File");
+		}								
 	}
 	else if (tag.type == 7){ // BLOB (never seen; propably <len> <byte>)
 		// NOTE: This is preventive code, it was never tested
 		printf("CTag::CTag(CFile*); Reading *unverified* BLOB tag\n");
 		uint16 len;
-		in_data.Read(&len,2);
+		if (in_data.Read(&len,2) == wxInvalidOffset) {
+			throw CInvalidPacket("Bad Met File");
+		}										
 		ENDIAN_SWAP_I_16(len);
-		in_data.Seek(len, CFile::current);
+		if (in_data.Seek(len, CFile::current) == wxInvalidOffset) {		
+			throw CInvalidPacket("Bad Met File");
+		}								
 	}
 	else{
 		if (tag.type==0x00) throw(CInvalidPacket("Bad met file"));
