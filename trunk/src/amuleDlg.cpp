@@ -116,6 +116,7 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 	wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxDIALOG_NO_PARENT|
 	wxTHICK_FRAME|wxMINIMIZE_BOX|wxMAXIMIZE_BOX|wxCLOSE_BOX,wxT("aMule") )
 {
+	last_iconizing = 0;
 
 	wxInitAllImageHandlers();
 	curl_global_init(CURL_GLOBAL_ALL);
@@ -919,7 +920,10 @@ bool CamuleDlg::SaveGUIPrefs()
 void CamuleDlg::Hide_aMule(bool iconize)
 {
 
-	if (!is_hidden) {
+	if ((!is_hidden) && ((last_iconizing + 2000) < GetTickCount())) { // 1 secs for sanity
+		is_hidden = true;
+		last_iconizing = GetTickCount();
+		
 		transferwnd->downloadlistctrl->Freeze();
 		transferwnd->uploadlistctrl->Freeze();
 		serverwnd->serverlistctrl->Freeze();
@@ -934,8 +938,6 @@ void CamuleDlg::Hide_aMule(bool iconize)
 		}
 		Show(FALSE);
 
-		is_hidden = true;
-
 	}
 
 }
@@ -945,8 +947,10 @@ void CamuleDlg::Hide_aMule(bool iconize)
 void CamuleDlg::Show_aMule(bool uniconize)
 {
 
-	if (is_hidden) {
-
+	if ((is_hidden) && ((last_iconizing + 1000) < GetTickCount())) { // 1 secs for sanity
+		is_hidden = false;
+		last_iconizing = GetTickCount();
+		
 		transferwnd->downloadlistctrl->Show(TRUE);
 		transferwnd->uploadlistctrl->Show(TRUE);
 		serverwnd->serverlistctrl->Show(TRUE);
@@ -961,8 +965,6 @@ void CamuleDlg::Show_aMule(bool uniconize)
 		if (uniconize) {
 			Show(TRUE);
 		}
-
-		is_hidden = false;
 
 	}
 
@@ -983,6 +985,7 @@ void CamuleDlg::OnMinimize(wxIconizeEvent& evt)
 			}
 		}
 	}
+	
 #endif
 }
 
