@@ -2272,6 +2272,53 @@ bool ServersInfo::CompareItems(const ServerEntry &i1, const ServerEntry &i2)
 	return Result ^ m_SortReverse;
 }
 
+SharedFiles::SharedFiles(CEC_SharedFile_Tag *tag)
+{
+		sFileName = _SpecialChars(tag->FileName());
+		lFileSize = tag->SizeFull();
+		sED2kLink = tag->FileEd2kLink();
+		nHash = tag->ID();
+		
+		ProcessUpdate(tag);
+}
+
+void SharedFiles::ProcessUpdate(CEC_SharedFile_Tag *tag)
+{
+	nFileTransferred = tag->GetXferred();
+	nFileAllTimeTransferred = tag->GetAllXferred();
+	nFileRequests = tag->GetRequests();
+	nFileAllTimeRequests = tag->GetAllRequests();
+	nFileAccepts = tag->GetAccepts();
+	nFileAllTimeAccepts = tag->GetAllAccepts();
+	sFileHash = nHash.Encode();
+	nFilePriority = tag->Prio();
+	if ( nFilePriority >= 10 ) {
+		bFileAutoPriority = true;
+		nFilePriority -= 10;
+	} else {
+		bFileAutoPriority = false;
+	}
+	switch (nFilePriority) {
+		case PR_VERYLOW:
+			sFilePriority = wxT("Very Low"); break;
+		case PR_LOW:
+			sFilePriority = wxT("Low"); break;
+		case PR_NORMAL:
+			sFilePriority = wxT("Normal"); break;
+		case PR_HIGH:
+			sFilePriority = wxT("High"); break;
+		case PR_VERYHIGH:
+			sFilePriority = wxT("Very High"); break;
+		case PR_POWERSHARE:
+			sFilePriority = wxT("PowerShare[Release]"); break;
+		default:
+			sFilePriority = wxT("-"); break;
+	}
+	if ( bFileAutoPriority ) {
+		sFilePriority += wxT(" Auto");
+	}
+}
+
 SharedFilesInfo *SharedFiles::GetContainerInstance()
 {
 	return SharedFilesInfo::m_This;
@@ -2279,7 +2326,8 @@ SharedFilesInfo *SharedFiles::GetContainerInstance()
 
 SharedFilesInfo *SharedFilesInfo::m_This = 0;
 
-SharedFilesInfo::SharedFilesInfo(CamulewebApp *webApp) : ItemsContainer<SharedFiles, xSharedSort>(webApp)
+SharedFilesInfo::SharedFilesInfo(CamulewebApp *webApp) :
+	UpdatableItemsContainer<SharedFiles, xSharedSort, CEC_SharedFile_Tag, CMD4Hash>(webApp)
 {
 	m_This = this;
 	m_SortOrder = SHARED_SORT_NAME;
@@ -2309,68 +2357,35 @@ SharedFilesInfo::SharedFilesInfo(CamulewebApp *webApp) : ItemsContainer<SharedFi
 
 }
 
-bool SharedFilesInfo::ProcessUpdate(CECPacket *)
-{
-	// no updates expected
-	return false;
-}
 
-//
-// Using v1 interface ! - FIXME
 bool SharedFilesInfo::ReQuery()
 {
-	// sSharedFilesList as:
-	// %s\t%ld\t%s\t%ld\t%ll\t%d\t%d\t%d\t%d\t%s\t%s\t%d\t%d\n
-	wxString sSharedFilesList = m_webApp->SendRecvMsg(wxT("SHAREDFILES LIST"));
+	CECPacket req_sts(EC_OP_GET_SHARED_FILES, EC_DETAIL_UPDATE);
+
 	//
-	// query succeded - flush existing values and refill
-	EraseAll();
-	wxString sEntry;
-	int brk=0, newLinePos;
-	while (sSharedFilesList.Length()>0) {
-		newLinePos=sSharedFilesList.First(wxT("\n"));
-
-		sEntry = sSharedFilesList.Left(newLinePos);
-		
-		sSharedFilesList = sSharedFilesList.Mid(newLinePos+1);
-
-		SharedFiles dFile;
-		
-		//%s\t%ld\t%s\t%ld\t%ll\t%d\t%d\t%d\t%d\t%s\t%s\t%d\t%d\n
-		brk=sEntry.First(wxT("\t"));
-		dFile.sFileName = _SpecialChars(sEntry.Left(brk));
-		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
-		dFile.lFileSize = StrToLong(sEntry.Left(brk));
-		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
-		dFile.sED2kLink = sEntry.Left(brk);
-		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
-		dFile.nFileTransferred = StrToLong(sEntry.Left(brk));
-		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
-		dFile.nFileAllTimeTransferred = atoll(unicode2char(sEntry.Left(brk)));
-		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
-		dFile.nFileRequests = StrToLong(sEntry.Left(brk));
-		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
-		dFile.nFileAllTimeRequests = StrToLong(sEntry.Left(brk));
-		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
-		dFile.nFileAccepts = StrToLong(sEntry.Left(brk));
-		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
-		dFile.nFileAllTimeAccepts = StrToLong(sEntry.Left(brk));
-		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
-		dFile.sFileHash = sEntry.Left(brk);
-		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
-		dFile.sFilePriority = sEntry.Left(brk);
-		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
-		dFile.nFilePriority = StrToLong(sEntry.Left(brk));
-		sEntry=sEntry.Mid(brk+1);
-		if (StrToLong(sEntry.Left(brk))==0) {
-			dFile.bFileAutoPriority = false;
-		} else {
-			dFile.bFileAutoPriority = true;
-		}
-
-		AddItem(dFile);
+	// Phase 1: request status
+	CECPacket *reply = m_webApp->SendRecvMsg_v2(&req_sts);
+	if ( !reply ) {
+		return false;
 	}
+	
+	//
+	// Phase 2: update status, mark new files for subsequent query
+	CECPacket req_full(EC_OP_GET_SHARED_FILES);
 
+	ProcessUpdate(reply, &req_full, EC_TAG_KNOWNFILE);
+
+	delete reply;
+
+	// Phase 3: request full info about files we don't have yet
+	if ( req_full.GetTagCount() ) {
+		reply = m_webApp->SendRecvMsg_v2(&req_full);
+		if ( !reply ) {
+			return false;
+		}
+		ProcessFull(reply);	
+	}
+	
 	SortItems();
 
 	return true;
@@ -2419,6 +2434,52 @@ bool SharedFilesInfo::CompareItems(const SharedFiles &i1, const SharedFiles &i2)
 	return Result ^ m_SortReverse;
 }
 
+DownloadFiles::DownloadFiles(CEC_PartFile_Tag *tag)
+{
+	nHash = tag->ID();
+	sFileName = tag->FileName();
+	lFileSize = tag->SizeFull();
+	sFileHash = nHash.Encode();
+	sED2kLink = tag->FileEd2kLink();
+	lFileCompleted = tag->SizeDone();
+	lFileTransferred = tag->SizeXfer();
+	lFileSpeed = tag->Speed();
+	fCompleted = (100.0*lFileCompleted) / lFileSize;
+	
+	m_Encoder = PartFileEncoderData( (lFileSize + (PARTSIZE - 1)) / PARTSIZE, 10);
+
+	ProcessUpdate(tag);							
+}
+
+void DownloadFiles::ProcessUpdate(CEC_PartFile_Tag *tag)
+{
+	nFileStatus = tag->FileStatus();
+	sFileStatus = tag->GetFileStatusString();
+	lSourceCount = tag->SourceCount();
+	lNotCurrentSourceCount = tag->SourceNotCurrCount();
+	lTransferringSourceCount = tag->SourceXferCount();
+	if ( lTransferringSourceCount > 0 ) {
+		lFileCompleted = tag->SizeDone();
+		lFileTransferred = tag->SizeXfer();
+		lFileSpeed = tag->Speed();
+		fCompleted = (100.0*lFileCompleted) / lFileSize;
+	}
+	CECTag *gaptag = tag->GetTagByName(EC_TAG_PARTFILE_GAP_STATUS);
+	CECTag *parttag = tag->GetTagByName(EC_TAG_PARTFILE_PART_STATUS);
+	CECTag *reqtag = tag->GetTagByName(EC_TAG_PARTFILE_REQ_STATUS);
+	if ( gaptag && parttag && reqtag) {
+		m_Encoder.Decode((unsigned char *)gaptag->GetTagData(), gaptag->GetTagDataLen(),
+			(unsigned char *)parttag->GetTagData(), parttag->GetTagDataLen());
+
+		const Gap_Struct *reqparts = (const Gap_Struct *)reqtag->GetTagData();
+		int reqcount = reqtag->GetTagDataLen() / sizeof(Gap_Struct);
+		m_ReqParts.resize(reqcount);
+		for (int i = 0; i < reqcount;i++) {
+			m_ReqParts[i] = reqparts[i];
+		}
+	}
+}
+
 DownloadFilesInfo *DownloadFiles::GetContainerInstance()
 {
 	return DownloadFilesInfo::m_This;
@@ -2427,7 +2488,7 @@ DownloadFilesInfo *DownloadFiles::GetContainerInstance()
 DownloadFilesInfo *DownloadFilesInfo::m_This = 0;
 
 DownloadFilesInfo::DownloadFilesInfo(CamulewebApp *webApp, CImageLib *imlib) :
-	ItemsContainer<DownloadFiles, xDownloadSort>(webApp)
+	UpdatableItemsContainer<DownloadFiles, xDownloadSort, CEC_PartFile_Tag, CMD4Hash>(webApp)
 {
 	m_This = this;
 	m_ImageLib = imlib;
@@ -2457,12 +2518,28 @@ void DownloadFilesInfo::LoadImageParams(wxString &tpl, int width, int height)
 	m_height = height;
 }
 
+void DownloadFilesInfo::ItemInserted(DownloadFiles &item)
+{
+	item.m_Image = new CDynImage(m_width, m_height, m_Template, &item);
+
+#ifdef WITH_LIBPNG
+	m_ImageLib->AddImage(item.m_Image, wxT("/") + item.m_Image->Name());
+#endif
+}
+
+void DownloadFilesInfo::ItemDeleted(DownloadFiles &item)
+{
+#ifdef WITH_LIBPNG
+			m_ImageLib->RemoveImage(wxT("/") + item.m_Image->Name());
+#endif
+			delete item.m_Image;
+}
+
 bool DownloadFilesInfo::ReQuery()
 {
 	CECPacket req_sts(EC_OP_GET_DLOAD_QUEUE, EC_DETAIL_UPDATE);
 	//
 	// Phase 1: request status
-	//printf("DownloadFilesInfo: first request\n");
 	CECPacket *reply = m_webApp->SendRecvMsg_v2(&req_sts);
 	if ( !reply ) {
 		return false;
@@ -2470,134 +2547,24 @@ bool DownloadFilesInfo::ReQuery()
 	
 	//
 	// Phase 2: update status, mark new files for subsequent query
-	std::set<CMD4Hash> core_files;
 	CECPacket req_full(EC_OP_GET_DLOAD_QUEUE);
 
-	for (int i = 0;i < reply->GetTagCount();i++) {
-		CEC_PartFile_Tag *tag = (CEC_PartFile_Tag *)reply->GetTagByIndex(i);
+	ProcessUpdate(reply, &req_full, EC_TAG_PARTFILE);
 
-		core_files.insert(tag->FileHash());
-		if ( m_files.count(tag->FileHash()) ) {
-			// already have it - update status
-			DownloadFiles *file = m_files[tag->FileHash()];
-			file->lSourceCount = tag->SourceCount();
-			file->lNotCurrentSourceCount = tag->SourceNotCurrCount();
-			file->nFileStatus = tag->FileStatus();
-			file->sFileStatus = tag->GetFileStatusString();
-			file->sPartStatus = tag->PartStatus();
-			file->lTransferringSourceCount = tag->SourceXferCount();
-			if ( file->lTransferringSourceCount > 0 ) {
-				file->lFileCompleted = tag->SizeDone();
-				file->lFileTransferred = tag->SizeXfer();
-				file->lFileSpeed = tag->Speed();
-				file->fCompleted = (100.0*file->lFileCompleted) / file->lFileSize;
-			}
-			CECTag *gaptag = tag->GetTagByName(EC_TAG_PARTFILE_GAP_STATUS);
-			CECTag *parttag = tag->GetTagByName(EC_TAG_PARTFILE_PART_STATUS);
-			CECTag *reqtag = tag->GetTagByName(EC_TAG_PARTFILE_REQ_STATUS);
-			if ( gaptag && parttag && reqtag) {
-				file->m_Encoder.Decode((unsigned char *)gaptag->GetTagData(), gaptag->GetTagDataLen(),
-					(unsigned char *)parttag->GetTagData(), parttag->GetTagDataLen());
-
-				const Gap_Struct *reqparts = (const Gap_Struct *)reqtag->GetTagData();
-				int reqcount = reqtag->GetTagDataLen() / sizeof(Gap_Struct);
-				file->m_ReqParts.resize(reqcount);
-				for (int i = 0; i < reqcount;i++) {
-					file->m_ReqParts[i] = reqparts[i];
-				}
-			}
-		} else {
-			// don't have it - prepare to request full info
-			req_full.AddTag(CECTag(EC_TAG_PARTFILE, tag->FileHash()));
-		}
-	}
 	delete reply;
 
-	//
-	// Phase 2.5: remove files that core no longer have; mark files with
-	// status = "downloading" for parts query
-	for(std::list<DownloadFiles>::iterator i = m_items.begin(); i != m_items.end();i++) {
-		if ( core_files.count(i->nHash) == 0 ) {
-#ifdef WITH_LIBPNG
-			m_ImageLib->RemoveImage(wxT("/") + i->m_Image->Name());
-#endif
-			delete i->m_Image;
-			m_files.erase(i->nHash);
-			m_items.erase(i);
-		}
-	}
-	//
 	// Phase 3: request full info about files we don't have yet
 	if ( req_full.GetTagCount() ) {
-		//printf("DownloadFilesInfo: second request\n");
 		reply = m_webApp->SendRecvMsg_v2(&req_full);
 		if ( !reply ) {
 			return false;
 		}
-		for (int i = 0;i < reply->GetTagCount();i++) {
-			CEC_PartFile_Tag *tag = (CEC_PartFile_Tag *)reply->GetTagByIndex(i);
-
-			DownloadFiles file;
-			file.nHash = tag->FileHash();
-			file.sFileName = tag->FileName();
-			file.lFileSize = tag->SizeFull();
-			file.lFileCompleted = tag->SizeDone();
-			file.lFileTransferred = tag->SizeXfer();
-			file.lFileSpeed = tag->Speed();
-			file.lSourceCount = tag->SourceCount();
-			file.lNotCurrentSourceCount = tag->SourceNotCurrCount();
-			file.lTransferringSourceCount = tag->SourceXferCount();
-			file.fCompleted = (100.0*file.lFileCompleted) / file.lFileSize;
-			file.nFileStatus = tag->FileStatus();
-			file.sFileStatus = tag->GetFileStatusString();
-			file.lFilePrio = tag->Prio();
-			file.sFileHash = tag->FileHashString();
-			file.sED2kLink = tag->FileEd2kLink();
-			file.sPartStatus = tag->PartStatus();
-						
-			file.m_Encoder = PartFileEncoderData( (file.lFileSize + (PARTSIZE - 1)) / PARTSIZE, 10);
-
-			CECTag *gaptag = tag->GetTagByName(EC_TAG_PARTFILE_GAP_STATUS);
-			CECTag *parttag = tag->GetTagByName(EC_TAG_PARTFILE_PART_STATUS);
-			CECTag *reqtag = tag->GetTagByName(EC_TAG_PARTFILE_REQ_STATUS);
-			if ( gaptag && parttag && reqtag ) {
-				file.m_Encoder.Decode((unsigned char *)gaptag->GetTagData(), gaptag->GetTagDataLen(),
-					(unsigned char *)parttag->GetTagData(), parttag->GetTagDataLen());
-
-				const Gap_Struct *reqparts = (const Gap_Struct *)reqtag->GetTagData();
-				int reqcount = reqtag->GetTagDataLen() / sizeof(Gap_Struct);
-				file.m_ReqParts.resize(reqcount);
-				for (int i = 0; i < reqcount;i++) {
-					file.m_ReqParts[i] = reqparts[i];
-				}
-			}
-			
-			//
-			// That's the dark side of using stl containers by instance - copy constructor
-			// can invalidate pointers.
-			m_items.push_back(file);
-			DownloadFiles *real_ptr = &(m_items.back());
-			m_files[file.nHash] = real_ptr;
-			
-//			real_ptr->m_Image = new CDynImage(file.file_id, m_width, m_height,
-//				file.lFileSize, m_Template, &real_ptr->m_Encoder);
-			real_ptr->m_Image = new CDynImage(m_width, m_height, m_Template, real_ptr);
-
-#ifdef WITH_LIBPNG
-			m_ImageLib->AddImage(real_ptr->m_Image, wxT("/") + real_ptr->m_Image->Name());
-#endif
-
-		}
+		ProcessFull(reply);	
 	}
 	
 	SortItems();
 
 	return true;
-}
-
-bool DownloadFilesInfo::ProcessUpdate(CECPacket *)
-{
-	return false;
 }
 
 bool DownloadFilesInfo::CompareItems(const DownloadFiles &i1, const DownloadFiles &i2)

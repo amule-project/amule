@@ -115,7 +115,10 @@ WX_DECLARE_OBJARRAY(UpDown*, ArrayOfUpDown);
 WX_DECLARE_OBJARRAY(Session*, ArrayOfSession);
 WX_DECLARE_OBJARRAY(TransferredData*, ArrayOfTransferredData);
 
+class CEC_PartFile_Tag;
+class CEC_SharedFile_Tag;
 class CProgressImage;
+
 class DownloadFiles {
 	public:
 		wxString	sFileName;
@@ -133,7 +136,7 @@ class DownloadFiles {
 		wxString	sFileHash;
 		wxString	sED2kLink;
 		wxString	sFileInfo;
-		wxString	sPartStatus;
+
 		CMD4Hash	nHash;
 		
 		CProgressImage *m_Image;
@@ -142,6 +145,9 @@ class DownloadFiles {
 
 		// container require this		
 		static class DownloadFilesInfo *GetContainerInstance();
+		DownloadFiles(CEC_PartFile_Tag *);
+		void ProcessUpdate(CEC_PartFile_Tag *);
+		CMD4Hash ID() { return nHash; }
 };
 
 class SharedFiles {
@@ -159,10 +165,13 @@ class SharedFiles {
 		bool		bFileAutoPriority;
 		wxString 	sFileHash;
 		wxString	sED2kLink;
-		uint32 file_id;
+
+		CMD4Hash	nHash;
 
 		static class SharedFilesInfo *GetContainerInstance();
-		uint32 ID() { return file_id; }
+		SharedFiles(CEC_SharedFile_Tag *);
+		void ProcessUpdate(CEC_SharedFile_Tag *);
+		CMD4Hash ID() { return nHash; }
 };
 
 class ServerEntry {
@@ -286,8 +295,6 @@ class ItemsContainer {
 		 * Re-query server: refresh all dataset
 		 */
 		virtual bool ReQuery() = 0;
-		virtual bool ProcessUpdate(CECPacket *update) = 0;
-
 
 		typedef typename std::list<T>::iterator ItemIterator;
 		ItemIterator GetBeginIterator()
@@ -306,7 +313,7 @@ class ItemsContainer {
  * I - type of item ID
  * G - type of tag in EC
  */
-template <class T, class E, class G, class I = uint32>
+template <class T, class E, class G, class I>
 class UpdatableItemsContainer : public ItemsContainer<T, E> {
 	protected:
 		// need duplicate list with a map, so check "do we already have"
@@ -329,7 +336,7 @@ class UpdatableItemsContainer : public ItemsContainer<T, E> {
 		 * Process answer of update request, create list of new items for
 		 * full request later. Also remove items that no longer exist in core
 		 */
-		void ProcessUpdate(CECTag *reply, CECTag *full_req, int req_type)
+		void ProcessUpdate(CECPacket *reply, CECPacket *full_req, int req_type)
 		{
 			std::set<I> core_files;
 			for (int i = 0;i < reply->GetTagCount();i++) {
@@ -348,7 +355,7 @@ class UpdatableItemsContainer : public ItemsContainer<T, E> {
 				if ( core_files.count(j->ID()) == 0 ) {
 					// item may contain data that need to be freed externally, before
 					// dtor is called and memory freed
-					this->ItemDeleted(j);
+					this->ItemDeleted(*j);
 					
 					m_items_hash.erase(j->ID());
 					ItemsContainer<T, E>::m_items.erase(j);
@@ -356,7 +363,7 @@ class UpdatableItemsContainer : public ItemsContainer<T, E> {
 			}
 		}
 		
-		void ProcessFull(CECTag *reply)
+		void ProcessFull(CECPacket *reply)
 		{
 			for (int i = 0;i < reply->GetTagCount();i++) {
 				G *tag = (G *)reply->GetTagByIndex(i);
@@ -364,9 +371,11 @@ class UpdatableItemsContainer : public ItemsContainer<T, E> {
 				T item(tag);
 				T *real_ptr = AddItem(item);
 				// initialize any external data that may depend on this item
-				this->ItemInserted(real_ptr);
+				this->ItemInserted(*real_ptr);
 			}
 		}
+		virtual void ItemDeleted(T &) { }
+		virtual void ItemInserted(T &) { }
 };
 
 class ServersInfo : public ItemsContainer<ServerEntry, xServerSort> {
@@ -383,7 +392,7 @@ class ServersInfo : public ItemsContainer<ServerEntry, xServerSort> {
 };
 
 
-class SharedFilesInfo : public ItemsContainer<SharedFiles, xSharedSort> {
+class SharedFilesInfo : public UpdatableItemsContainer<SharedFiles, xSharedSort, CEC_SharedFile_Tag, CMD4Hash> {
 	public:
 		// can be only one instance.
 		static SharedFilesInfo *m_This;
@@ -391,13 +400,12 @@ class SharedFilesInfo : public ItemsContainer<SharedFiles, xSharedSort> {
 		SharedFilesInfo(CamulewebApp *webApp);
 
 		virtual bool ReQuery();
-		virtual bool ProcessUpdate(CECPacket *update);
 
 		bool CompareItems(const SharedFiles &i1, const SharedFiles &i2);
 };
 
 class CImageLib;
-class DownloadFilesInfo : public ItemsContainer<DownloadFiles, xDownloadSort> {
+class DownloadFilesInfo : public UpdatableItemsContainer<DownloadFiles, xDownloadSort, CEC_PartFile_Tag, CMD4Hash> {
 		// need duplicate list with a map, so check "do we already have"
 		// will take O(log(n)) instead of O(n)
 		// map will contain pointers to items in list 
@@ -416,9 +424,11 @@ class DownloadFilesInfo : public ItemsContainer<DownloadFiles, xDownloadSort> {
 		void LoadImageParams(wxString &tpl, int width, int height);
 		
 		virtual bool ReQuery();
-		virtual bool ProcessUpdate(CECPacket *update);
 
+		// container requirements
 		bool CompareItems(const DownloadFiles &i1, const DownloadFiles &i2);
+		void ItemInserted(DownloadFiles &item);
+		void ItemDeleted(DownloadFiles &item);
 };
 
 class CAnyImage {
