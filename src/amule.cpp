@@ -685,6 +685,9 @@ bool CamuleApp::OnInit()
 		downloadqueue->LoadSourceSeeds();
 	}
 
+	// Everything should be loaded now, so sort the list widgets
+	amuledlg->InitSort();
+	
 	// Start the Core Timer
 
 	// Note: wxTimer can be off by more than 10% !!!

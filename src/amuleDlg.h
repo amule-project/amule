@@ -113,6 +113,10 @@ public:
 	
 	void StartGuiTimer() { gui_timer->Start(100); }
 
+	/**
+	 * This function ensures that _all_ list widgets are properly sorted.
+	 */
+	void InitSort();
 protected:
 	
 	void OnToolBarButton(wxCommandEvent& ev);
