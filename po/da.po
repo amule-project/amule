@@ -1,0 +1,3750 @@
+# Danish translation for xmule package
+# Oversættelse af xmule.
+# Copyright (C) 2003 Free Software Foundation, Inc.
+# This file is distributed under the same license as the xmule package.
+# Pure Ascii <pure_ascii@donkey-chat.de>, 2003.
+# 
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: xmule 1.7.4b\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-03-8 08:00+0100\n"
+"PO-Revision-Date: 2004-03-08 22:21+0100\n"
+"Last-Translator: Pure Ascii <alexl@stofanet.dk>\n"
+"Language-Team: Dansk / Danmark\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-15\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);"
+
+#: src/muuli_wdr.cpp:61
+msgid "Loading..."
+msgstr "Henter..."
+
+#: src/muuli_wdr.cpp:71
+msgid "Users: 0"
+msgstr "Brugere: 0"
+
+#: src/muuli_wdr.cpp:82
+msgid "Up: 0.0 | Down: 0.0"
+msgstr "Op: 0.0 | Ned: 0.0"
+
+#: src/muuli_wdr.cpp:93
+msgid "Not Connected"
+msgstr "Ingen Forbindelse"
+
+#: src/muuli_wdr.cpp:126
+msgid "Serverlist"
+msgstr "Serverliste"
+
+#: src/muuli_wdr.cpp:140
+msgid "Serverinfo"
+msgstr "Serverinfo"
+
+#: src/muuli_wdr.cpp:153
+msgid "New Server"
+msgstr "Ny Server"
+
+#: src/muuli_wdr.cpp:159
+msgid "IP or Address"
+msgstr "IP eller Adresse"
+
+#: src/muuli_wdr.cpp:162
+msgid "Port"
+msgstr "Port"
+
+#: src/muuli_wdr.cpp:171
+msgid ":"
+msgstr ":"
+
+#: src/muuli_wdr.cpp:182 src/muuli_wdr.cpp:263 src/muuli_wdr.cpp:302
+msgid "Name"
+msgstr "Navn"
+
+#: src/muuli_wdr.cpp:191
+msgid "Check Server"
+msgstr "Tester Server"
+
+#: src/muuli_wdr.cpp:194
+msgid "Add to list"
+msgstr "Tilføj til liste"
+
+#: src/muuli_wdr.cpp:201
+msgid "Update server.met from URL"
+msgstr "Opdater Server.met fra URL"
+
+#: src/muuli_wdr.cpp:208
+msgid "Update"
+msgstr "Opdater"
+
+#: src/muuli_wdr.cpp:214
+msgid "Reset"
+msgstr "Reset"
+
+#: src/muuli_wdr.cpp:226
+msgid "Log"
+msgstr "Log"
+
+#: src/muuli_wdr.cpp:258 src/xmuleDlg.cpp:120
+msgid "Search"
+msgstr "Søg"
+
+#: src/muuli_wdr.cpp:268
+msgid "Search global"
+msgstr "Søg globalt"
+
+#: src/muuli_wdr.cpp:277 src/muuli_wdr.cpp:310
+msgid "Type"
+msgstr "Type"
+
+#: src/muuli_wdr.cpp:282 src/muuli_wdr.cpp:315
+msgid "Any"
+msgstr "Alle"
+
+#: src/muuli_wdr.cpp:283
+msgid "Archives"
+msgstr "Arkiver"
+
+#: src/muuli_wdr.cpp:284 src/muuli_wdr.cpp:316
+msgid "Audio"
+msgstr "Lyd"
+
+#: src/muuli_wdr.cpp:285
+msgid "CD-Images"
+msgstr "CD-Aftryks"
+
+#: src/muuli_wdr.cpp:286
+msgid "Pictures"
+msgstr "Billeder"
+
+#: src/muuli_wdr.cpp:287 src/muuli_wdr.cpp:318
+msgid "Programs"
+msgstr "Programer"
+
+#: src/muuli_wdr.cpp:288
+msgid "Videos"
+msgstr "Videoer"
+
+#: src/muuli_wdr.cpp:295
+msgid "Web-based Search"
+msgstr "Web-baseret Søgning"
+
+#: src/muuli_wdr.cpp:317
+msgid "Video"
+msgstr "Video"
+
+#: src/muuli_wdr.cpp:329
+msgid "Direct Download"
+msgstr "Direkte Download"
+
+#: src/muuli_wdr.cpp:332
+msgid "ED2K Link"
+msgstr "ED2K-Link"
+
+#: src/muuli_wdr.cpp:343
+msgid "Start"
+msgstr "Start"
+
+#: src/muuli_wdr.cpp:347 src/muuli_wdr.cpp:554 src/muuli_wdr.cpp:1832
+#: src/muuli_wdr.cpp:1947 src/muuli_wdr.cpp:2012 src/muuli_wdr.cpp:2084
+#: src/PreferencesDlg.cpp:69
+msgid "Cancel"
+msgstr "Afbryd"
+
+#: src/muuli_wdr.cpp:352 src/SearchListCtrl.cpp:149
+msgid "Remove All"
+msgstr "Fjern Alt"
+
+#: src/muuli_wdr.cpp:366
+msgid "Search Results"
+msgstr "Søge Resultater"
+
+#: src/muuli_wdr.cpp:375
+msgid "Download selected"
+msgstr "Download markerede"
+
+#: src/muuli_wdr.cpp:429
+msgid "Clients on queue:"
+msgstr "Klient i kø:"
+
+#: src/muuli_wdr.cpp:432
+msgid "0"
+msgstr "0"
+
+#: src/muuli_wdr.cpp:461
+msgid "Downloads"
+msgstr "Downloads"
+
+#: src/muuli_wdr.cpp:495
+msgid "Uploads"
+msgstr "Uploads"
+
+#: src/muuli_wdr.cpp:532 src/muuli_wdr.cpp:1301 src/muuli_wdr.cpp:1588
+#: src/PPgGeneral.cpp:33
+msgid "General"
+msgstr "General"
+
+#: src/muuli_wdr.cpp:536 src/PPgConnection.cpp:33
+msgid "Connection"
+msgstr "Forbindelse"
+
+#: src/muuli_wdr.cpp:540 src/PPgServer.cpp:30 src/ServerListCtrl.cpp:80
+msgid "Server"
+msgstr "Server"
+
+#: src/muuli_wdr.cpp:544 src/PPgFiles.cpp:32 src/ServerListCtrl.cpp:213
+msgid "Files"
+msgstr "Filer"
+
+#: src/muuli_wdr.cpp:550 src/muuli_wdr.cpp:2129 src/PreferencesDlg.cpp:68
+msgid "OK"
+msgstr "OK"
+
+#: src/muuli_wdr.cpp:557 src/muuli_wdr.cpp:1942 src/muuli_wdr.cpp:2008
+msgid "Apply"
+msgstr "Anvend"
+
+#: src/muuli_wdr.cpp:560
+msgid "Help"
+msgstr "Hjælp"
+
+#: src/muuli_wdr.cpp:586
+msgid "Nick"
+msgstr "Nick"
+
+#: src/muuli_wdr.cpp:595
+msgid "Language"
+msgstr "Sprog"
+
+#: src/muuli_wdr.cpp:600
+msgid "English"
+msgstr "Dansk"
+
+#: src/muuli_wdr.cpp:609
+msgid "Misc Options"
+msgstr "Andre Indstillinger"
+
+#: src/muuli_wdr.cpp:612
+msgid "Use flat statusbar"
+msgstr "Brug flad statusbar"
+
+#: src/muuli_wdr.cpp:616
+msgid "Minimize to trayicon"
+msgstr "Minimer til statusområde"
+
+#: src/muuli_wdr.cpp:620
+msgid "Beep on errors"
+msgstr "Bip ved fejl"
+
+#: src/muuli_wdr.cpp:624
+msgid "Prompt on exit"
+msgstr "Spørg ved afslut"
+
+#: src/muuli_wdr.cpp:628
+msgid "Show splashscreen"
+msgstr "Vis velkomstskærm"
+
+#: src/muuli_wdr.cpp:632
+msgid "Start Minimized"
+msgstr "Start Minimeret"
+
+#: src/muuli_wdr.cpp:636
+msgid "Downloadlist doubleclick to expand"
+msgstr "Dobbeltklik for udfoldelse af downloadlist"
+
+#: src/muuli_wdr.cpp:640
+msgid "Bring to front on link click"
+msgstr "Bring frem ved link klik"
+
+#: src/muuli_wdr.cpp:644
+msgid "Enable Online-Signature"
+msgstr "Aktiver Online-Signatur"
+
+#: src/muuli_wdr.cpp:650
+msgid "Tooltip Delay Time (seconds)"
+msgstr "Værktøjstip Forsinkelses Tid (Sekunder)"
+
+#: src/muuli_wdr.cpp:656
+msgid "ED2K Links"
+msgstr "ED2K-Links"
+
+#: src/muuli_wdr.cpp:684
+msgid "Capacities"
+msgstr "Kapasitet"
+
+#: src/muuli_wdr.cpp:687 src/muuli_wdr.cpp:720 src/SearchListCtrl.cpp:141
+msgid "Download"
+msgstr "Download"
+
+#: src/muuli_wdr.cpp:696 src/muuli_wdr.cpp:710 src/muuli_wdr.cpp:729
+#: src/muuli_wdr.cpp:743
+msgid "kB/s"
+msgstr "kB/s"
+
+#: src/muuli_wdr.cpp:701 src/muuli_wdr.cpp:734
+msgid "Upload"
+msgstr "Upload"
+
+#: src/muuli_wdr.cpp:717
+msgid "Limits"
+msgstr "Grænser"
+
+#: src/muuli_wdr.cpp:754
+msgid "Clientport"
+msgstr "Klient Port"
+
+#: src/muuli_wdr.cpp:761
+msgid "TCP"
+msgstr "TCP"
+
+#: src/muuli_wdr.cpp:772
+msgid "UDP"
+msgstr "UDP"
+
+#: src/muuli_wdr.cpp:783
+msgid "disable"
+msgstr "deaktiver"
+
+#: src/muuli_wdr.cpp:795
+msgid "Max Sources Per File"
+msgstr "Max Antal Kilder Per Fil"
+
+#: src/muuli_wdr.cpp:802
+msgid "Hard Limit"
+msgstr "Fast Grænse"
+
+#: src/muuli_wdr.cpp:815
+msgid "Connection Limits"
+msgstr "Forbindelses Grænser"
+
+#: src/muuli_wdr.cpp:818
+msgid "Max. Connections"
+msgstr "Max. Forbindelser"
+
+#: src/muuli_wdr.cpp:831
+msgid "Reconnect on loss"
+msgstr "Genforbind ved fejl"
+
+#: src/muuli_wdr.cpp:835
+msgid "Autoconnect on Startup"
+msgstr "Forbind Automatisk Ved Opstart"
+
+#: src/muuli_wdr.cpp:841 src/Wizard.cpp:17
+msgid "Wizard"
+msgstr "Assistent"
+
+#: src/muuli_wdr.cpp:866
+msgid "Remove dead server after"
+msgstr "Fjern ikke tilgængelige servere efter"
+
+#: src/muuli_wdr.cpp:874
+msgid "retries"
+msgstr "forsøg"
+
+#: src/muuli_wdr.cpp:879
+msgid "Auto-update serverlist at startup"
+msgstr "Opdater serverliste ved start"
+
+#: src/muuli_wdr.cpp:883
+msgid "Update serverlist when connecting to a server"
+msgstr "Opdater serverliste ved forbindelse til server"
+
+#: src/muuli_wdr.cpp:887
+msgid "Update serverlist when a client connects"
+msgstr "Opdater serverliste når klient forbinder"
+
+#: src/muuli_wdr.cpp:891
+msgid "Use smart LowID check on connect"
+msgstr "Brug smart LowID tjeck ved forbindelse"
+
+#: src/muuli_wdr.cpp:895
+msgid "Always filter bad IPs"
+msgstr "Filtrer dårlige IPer"
+
+#: src/muuli_wdr.cpp:899
+msgid "Use priority system"
+msgstr "Brug prioterings system"
+
+#: src/muuli_wdr.cpp:903
+msgid "Safe connect"
+msgstr "Sikker forbindelse"
+
+#: src/muuli_wdr.cpp:925
+msgid "See my share"
+msgstr "Se mine delte"
+
+#: src/muuli_wdr.cpp:928
+msgid "Everybody"
+msgstr "Alle"
+
+#: src/muuli_wdr.cpp:932 src/muuli_wdr.cpp:1528
+msgid "Friends"
+msgstr "Venner"
+
+#: src/muuli_wdr.cpp:936
+msgid "No One"
+msgstr "Ingen"
+
+#: src/muuli_wdr.cpp:942
+msgid "Intelligent Corruption Handling"
+msgstr "Intelligent Fejl Håndtering"
+
+#: src/muuli_wdr.cpp:945
+msgid "I.C.H. active"
+msgstr "I.C.H. aktiv"
+
+#: src/muuli_wdr.cpp:951
+msgid "Enable autopriority"
+msgstr "Aktiver Auto-Priotet"
+
+#: src/muuli_wdr.cpp:978 src/xmuleDlg.cpp:121
+msgid "Shared Files"
+msgstr "Delte Filer"
+
+#: src/muuli_wdr.cpp:989 src/PPgStats.cpp:33 src/StatisticsDlg.cpp:100
+#: src/xmuleDlg.cpp:124
+msgid "Statistics"
+msgstr "Statistik"
+
+#: src/muuli_wdr.cpp:1003
+msgid "Current Session"
+msgstr "Nuværende Program"
+
+#: src/muuli_wdr.cpp:1014
+msgid "Total"
+msgstr "Total"
+
+#: src/muuli_wdr.cpp:1020 src/muuli_wdr.cpp:1030
+msgid "Requested"
+msgstr "Anmodet"
+
+#: src/muuli_wdr.cpp:1023 src/muuli_wdr.cpp:1033 src/muuli_wdr.cpp:1039
+#: src/muuli_wdr.cpp:1049 src/muuli_wdr.cpp:1055 src/muuli_wdr.cpp:1065
+#: src/muuli_wdr.cpp:1322 src/muuli_wdr.cpp:1325 src/muuli_wdr.cpp:1328
+#: src/muuli_wdr.cpp:1333 src/muuli_wdr.cpp:1339 src/muuli_wdr.cpp:1360
+#: src/muuli_wdr.cpp:1370 src/muuli_wdr.cpp:1387 src/muuli_wdr.cpp:1397
+#: src/muuli_wdr.cpp:1415 src/muuli_wdr.cpp:1425 src/muuli_wdr.cpp:1432
+#: src/muuli_wdr.cpp:1444 src/muuli_wdr.cpp:1596 src/muuli_wdr.cpp:1606
+#: src/muuli_wdr.cpp:1616 src/muuli_wdr.cpp:1622 src/muuli_wdr.cpp:1632
+#: src/muuli_wdr.cpp:1638 src/muuli_wdr.cpp:1648 src/muuli_wdr.cpp:1654
+#: src/muuli_wdr.cpp:1669 src/muuli_wdr.cpp:1679 src/muuli_wdr.cpp:1685
+#: src/muuli_wdr.cpp:1695 src/muuli_wdr.cpp:1701 src/muuli_wdr.cpp:1711
+#: src/muuli_wdr.cpp:1717 src/muuli_wdr.cpp:1732 src/muuli_wdr.cpp:1742
+#: src/muuli_wdr.cpp:1748
+msgid "text"
+msgstr "tekst"
+
+#: src/muuli_wdr.cpp:1036 src/muuli_wdr.cpp:1046
+msgid "Active Uploads"
+msgstr "Aktive Uploads"
+
+#: src/muuli_wdr.cpp:1052 src/muuli_wdr.cpp:1062
+msgid "Transferred"
+msgstr "Overført"
+
+#: src/muuli_wdr.cpp:1074
+msgid "Reload"
+msgstr "Opdater"
+
+#: src/muuli_wdr.cpp:1114
+msgid "Download-Speed"
+msgstr "Download-Hastighed"
+
+#: src/muuli_wdr.cpp:1123 src/muuli_wdr.cpp:1238
+msgid "current"
+msgstr "nuværrende"
+
+#: src/muuli_wdr.cpp:1138
+msgid "Average (5mins)"
+msgstr "Gennemsnit (5min)"
+
+#: src/muuli_wdr.cpp:1149 src/muuli_wdr.cpp:1264
+msgid "session average"
+msgstr "Gennemsnit (program)"
+
+#: src/muuli_wdr.cpp:1177
+msgid "active downloads"
+msgstr "Aktive Downloads"
+
+#: src/muuli_wdr.cpp:1188
+msgid "active connections (1:3)"
+msgstr "aktive Forbindelser (1:3)"
+
+#: src/muuli_wdr.cpp:1203
+msgid "active uploads"
+msgstr "Aktive Uploads"
+
+#: src/muuli_wdr.cpp:1229
+msgid "Upload-Speed"
+msgstr "Upload-Hastighed"
+
+#: src/muuli_wdr.cpp:1253
+msgid "Average (5 mins)"
+msgstr "Gennemsnit (5min)"
+
+#: src/muuli_wdr.cpp:1306
+msgid "Full Name:"
+msgstr "Navn:"
+
+#: src/muuli_wdr.cpp:1309
+msgid "met-File:"
+msgstr "met-Fil:"
+
+#: src/muuli_wdr.cpp:1312
+msgid "Hash:"
+msgstr "Hash:"
+
+#: src/muuli_wdr.cpp:1315
+msgid "Filesize:"
+msgstr "Fil Størrelse:"
+
+#: src/muuli_wdr.cpp:1336
+msgid "Partfilestatus:"
+msgstr "Status:"
+
+#: src/muuli_wdr.cpp:1348 src/muuli_wdr.cpp:1661 src/xmuleDlg.cpp:119
+msgid "Transfer"
+msgstr "Overfør"
+
+#: src/muuli_wdr.cpp:1357
+msgid "Found Sources:"
+msgstr "Fundne Kilder:"
+
+#: src/muuli_wdr.cpp:1367
+msgid "Filepart-Count:"
+msgstr "Fildel-Tæller:"
+
+#: src/muuli_wdr.cpp:1377
+msgid "Last seen complete:"
+msgstr "Sidst set færdig:"
+
+#: src/muuli_wdr.cpp:1384
+msgid "Transferred:"
+msgstr "Overført:"
+
+#: src/muuli_wdr.cpp:1394
+msgid "Datarate:"
+msgstr "Data Rate:"
+
+#: src/muuli_wdr.cpp:1412
+msgid "Transferring:"
+msgstr "Overfører:"
+
+#: src/muuli_wdr.cpp:1422
+msgid "Available:"
+msgstr "Tilgængelig:"
+
+#: src/muuli_wdr.cpp:1441
+msgid "Completed size:"
+msgstr "Total Overført:"
+
+#: src/muuli_wdr.cpp:1453
+msgid "Source Names"
+msgstr "Kilde Navne"
+
+#: src/muuli_wdr.cpp:1461
+msgid "Takeover"
+msgstr "Overtag"
+
+#: src/muuli_wdr.cpp:1466
+msgid "Cleanup"
+msgstr "Ryd Op"
+
+#: src/muuli_wdr.cpp:1476
+msgid "Rename"
+msgstr "Omdøb"
+
+#: src/muuli_wdr.cpp:1485
+msgid "Show all comments"
+msgstr "Vis alle kommentarer"
+
+#: src/muuli_wdr.cpp:1490
+msgid "File Info"
+msgstr "Fil Info"
+
+#: src/muuli_wdr.cpp:1495 src/muuli_wdr.cpp:1561 src/muuli_wdr.cpp:1755
+#: src/muuli_wdr.cpp:2049
+msgid "Close"
+msgstr "Luk"
+
+#: src/muuli_wdr.cpp:1545 src/muuli_wdr.cpp:2160 src/xmuleDlg.cpp:122
+msgid "Messages"
+msgstr "Beskeder"
+
+#: src/muuli_wdr.cpp:1558
+msgid "Send"
+msgstr "Send"
+
+#: src/muuli_wdr.cpp:1593 src/muuli_wdr.cpp:1806
+msgid "Username:"
+msgstr "Navn:"
+
+#: src/muuli_wdr.cpp:1603 src/muuli_wdr.cpp:1816
+msgid "Userhash:"
+msgstr "Hash:"
+
+#: src/muuli_wdr.cpp:1613
+msgid "Clientsoftware:"
+msgstr "Software:"
+
+#: src/muuli_wdr.cpp:1619
+msgid "Clientversion:"
+msgstr "Version:"
+
+#: src/muuli_wdr.cpp:1629 src/muuli_wdr.cpp:1781
+msgid "IP Address:"
+msgstr "IP Adresse:"
+
+#: src/muuli_wdr.cpp:1635
+msgid "ID:"
+msgstr "ID:"
+
+#: src/muuli_wdr.cpp:1645
+msgid "Server IP:"
+msgstr "Server IP:"
+
+#: src/muuli_wdr.cpp:1651
+msgid "Servername:"
+msgstr "Servernavn:"
+
+#: src/muuli_wdr.cpp:1666
+msgid "Currently downloading:"
+msgstr "Downloader Nu:"
+
+#: src/muuli_wdr.cpp:1676
+msgid "Downloaded (this session):"
+msgstr "Downloaded (Nuværende Program):"
+
+#: src/muuli_wdr.cpp:1682
+msgid "Uploaded (this session):"
+msgstr "Upload (Nuværende Program):"
+
+#: src/muuli_wdr.cpp:1692
+msgid "Average downloadrate:"
+msgstr "Gennemsnitlig Downloadrate:"
+
+#: src/muuli_wdr.cpp:1698
+msgid "Average Uploadrate:"
+msgstr "Gennemsnitlig Upload-Rate:"
+
+#: src/muuli_wdr.cpp:1708
+msgid "Downloaded total:"
+msgstr "Downloaded total:"
+
+#: src/muuli_wdr.cpp:1714
+msgid "Uploaded total:"
+msgstr "Uploaded total:"
+
+#: src/muuli_wdr.cpp:1724
+msgid "Scores"
+msgstr "Point:"
+
+#: src/muuli_wdr.cpp:1729
+msgid "DL/UP Modifier:"
+msgstr "DL/UP Faktor:"
+
+#: src/muuli_wdr.cpp:1739
+msgid "Rating (total):"
+msgstr "Rating (total):"
+
+#: src/muuli_wdr.cpp:1745
+msgid "Uploadqueue score:"
+msgstr "Upload-kø point:"
+
+#: src/muuli_wdr.cpp:1776
+msgid "Required Information"
+msgstr "Krævet Information"
+
+#: src/muuli_wdr.cpp:1791
+msgid "Port:"
+msgstr "Port:"
+
+#: src/muuli_wdr.cpp:1801
+msgid "Additional Information"
+msgstr "Aktuelle Adresse"
+
+#: src/muuli_wdr.cpp:1828
+msgid "Add"
+msgstr "Tilføj"
+
+#: src/muuli_wdr.cpp:1855
+msgid "Operating System"
+msgstr "Operativ System"
+
+#: src/muuli_wdr.cpp:1858
+msgid "Linux"
+msgstr "Linux"
+
+#: src/muuli_wdr.cpp:1862
+msgid "Win2K/XP"
+msgstr "Win2k/XP"
+
+#: src/muuli_wdr.cpp:1866
+msgid "Win98/ME"
+msgstr "Win98/ME"
+
+#: src/muuli_wdr.cpp:1872
+msgid "Concurrent Downloads"
+msgstr "Samtidige Downloads"
+
+#: src/muuli_wdr.cpp:1877
+msgid "1-5"
+msgstr "1-5"
+
+#: src/muuli_wdr.cpp:1881
+msgid "6-15"
+msgstr "6-15"
+
+#: src/muuli_wdr.cpp:1884
+msgid "16+"
+msgstr "16+"
+
+#: src/muuli_wdr.cpp:1891
+msgid "Connection Type"
+msgstr "Forbindelses Type"
+
+#: src/muuli_wdr.cpp:1894
+msgid "Select your connection type here:"
+msgstr "Vælg din forbindelses type her:"
+
+#: src/muuli_wdr.cpp:1904
+msgid "True download bandwidth"
+msgstr "Max download grænse"
+
+#: src/muuli_wdr.cpp:1914
+msgid "True upload bandwidth"
+msgstr "Max upload grænse"
+
+#: src/muuli_wdr.cpp:1926
+msgid "Unit:"
+msgstr "Enhed:"
+
+#: src/muuli_wdr.cpp:1929
+msgid "kBits/sec"
+msgstr "kbit/s"
+
+#: src/muuli_wdr.cpp:1933
+msgid "kBytes/sec"
+msgstr "kB/s"
+
+#: src/muuli_wdr.cpp:1970
+msgid "Comment this file (this text will be shown to all users)"
+msgstr "Fil kommentar (alle brugere kan se denne kommentar)"
+
+#: src/muuli_wdr.cpp:1977
+msgid ""
+"For a film you can say its length, its story, language.. \n"
+"and if it's a fake, you can tell that to other users of Emule."
+msgstr ""
+"For en film kan du skrive dens længde, den historie, sprog.. \n"
+"og hvis den er falsk, kan du også fortælle det til andre xMule brugere."
+
+#: src/muuli_wdr.cpp:1986
+msgid "File Quality"
+msgstr "Fil Kvalitet"
+
+#: src/muuli_wdr.cpp:1991
+msgid "Not rated"
+msgstr "Ikke anslået"
+
+#: src/muuli_wdr.cpp:1992
+msgid "Invalid / Corrupt / Fake"
+msgstr "Invalid / fejl / Falsk"
+
+#: src/muuli_wdr.cpp:1993
+msgid "Poor"
+msgstr "Dårlig"
+
+#: src/muuli_wdr.cpp:1994
+msgid "Good"
+msgstr "God"
+
+#: src/muuli_wdr.cpp:1995
+msgid "Fair"
+msgstr "Nogen Lunde"
+
+#: src/muuli_wdr.cpp:1996
+msgid "Excellent"
+msgstr "Glimrende"
+
+#: src/muuli_wdr.cpp:2001
+msgid "Choose the file rating or advice users if the file is invalid!"
+msgstr "Vælg en handlig for denne fil!"
+
+#: src/muuli_wdr.cpp:2044
+msgid "Refresh"
+msgstr "Opdater"
+
+#: src/muuli_wdr.cpp:2078
+msgid "Downloading.. please wait"
+msgstr "Downloader.. vent venligst"
+
+#: src/muuli_wdr.cpp:2106
+msgid ""
+"For system tray integration to work,\n"
+"you must specify which desktop you are using.\n"
+"You can change this later from preferences."
+msgstr ""
+"For at få xmule til at integrere med værktøjslinjen,\n"
+"skal du vælge hvilken desktop du bruger.\n"
+"du kan ændre dette senere."
+
+#: src/muuli_wdr.cpp:2112
+msgid "Desktop"
+msgstr "Desktop"
+
+#: src/muuli_wdr.cpp:2115
+msgid "Gnome 2.x (or other XEMBED compatible)"
+msgstr "Gnome 2.x (eller andre XEMBED-kompatible)"
+
+#: src/muuli_wdr.cpp:2118
+msgid "KDE 3.x"
+msgstr "KDE 3.x"
+
+#: src/muuli_wdr.cpp:2121
+msgid "KDE 2.x / Gnome 1.2 "
+msgstr "KDE 2.x / Gnome 1.2 "
+
+#: src/muuli_wdr.cpp:2124
+msgid "No systray integration, please"
+msgstr "Ingen integration til værktøjslinjen"
+
+#: src/muuli_wdr.cpp:2154 src/xmuleDlg.cpp:116
+msgid "Connect"
+msgstr "Forbind"
+
+#: src/muuli_wdr.cpp:2156 src/xmuleDlg.cpp:118
+msgid "Server list"
+msgstr "Serverliste"
+
+#: src/muuli_wdr.cpp:2157 src/xmuleDlg.cpp:119
+msgid "File transfer"
+msgstr "Fil overførsel"
+
+#: src/muuli_wdr.cpp:2158 src/xmuleDlg.cpp:120
+msgid "Search files"
+msgstr "Søg filer"
+
+#: src/muuli_wdr.cpp:2159 src/xmuleDlg.cpp:121
+msgid "Show shared files"
+msgstr "Vis delte filer"
+
+#: src/muuli_wdr.cpp:2161 src/xmuleDlg.cpp:123
+msgid "Internet Relay Chat"
+msgstr "Internet Relay Chat"
+
+#: src/muuli_wdr.cpp:2162 src/xmuleDlg.cpp:124
+msgid "Show current statistics"
+msgstr "Vis aktuel statistik"
+
+#: src/muuli_wdr.cpp:2164 src/xmuleDlg.cpp:126
+msgid "Modify preferences"
+msgstr "Ændre Indstillinger"
+
+#: src/CFile.cpp:236
+#, c-format
+msgid "can't create file '%s'"
+msgstr "kan ikke oprette fil '%s'"
+
+#: src/CFile.cpp:284
+#, c-format
+msgid "can't open file '%s'"
+msgstr "kan ikke åbne fil '%s'"
+
+#: src/CFile.cpp:298
+#, c-format
+msgid "can't close file descriptor %d"
+msgstr "kan ikke lukke fil beskrivelse %d"
+
+#: src/CFile.cpp:324
+#, c-format
+msgid "can't read from file descriptor %d"
+msgstr "kan ikke læse fil beskrivelse %d"
+
+#: src/CFile.cpp:346
+#, c-format
+msgid "can't write to file descriptor %d"
+msgstr "kan ikke skrive til fil beskrivelse %d"
+
+#: src/CFile.cpp:361
+#, c-format
+msgid "can't flush file descriptor %d"
+msgstr "kan ikke tømme fil beskrivelse %d"
+
+#: src/CFile.cpp:384
+msgid "unknown seek origin"
+msgstr "ikke kendt søge oprindelse"
+
+#: src/CFile.cpp:401
+#, c-format
+msgid "can't seek on file descriptor %d"
+msgstr "kan ikke søge i fil beskrivelse %d"
+
+#: src/CFile.cpp:415
+#, c-format
+msgid "can't get seek position on file descriptor %d"
+msgstr "kan ikke søge position i fil beskrivelse %d"
+
+#: src/CFile.cpp:447
+#, c-format
+msgid "can't find length of file on file descriptor %d"
+msgstr "kan ikke finde længde af fil i fil beskrivelse %d"
+
+#: src/CFile.cpp:481
+#, c-format
+msgid "can't determine if the end of file is reached on descriptor %d"
+msgstr "kan ikke afgøre om enden af filen er nået i beskrivelse %d"
+
+#: src/CFile.cpp:485
+msgid "invalid eof() return value."
+msgstr "invalid eof() tilbage melding."
+
+#: src/ClientDetailDialog.cpp:104
+msgid "xMule"
+msgstr "xMule"
+
+#: src/ClientDetailDialog.cpp:113
+msgid "xmule"
+msgstr "xmule"
+
+#: src/ClientDetailDialog.cpp:122
+msgid "eDonkey"
+msgstr "eDonkey"
+
+#: src/ClientDetailDialog.cpp:127 src/DownloadListCtrl.cpp:1274
+msgid "Old MlDonkey"
+msgstr "Gammel MlDonkey"
+
+#: src/ClientDetailDialog.cpp:132 src/DownloadListCtrl.cpp:1277
+msgid "New MlDonkey"
+msgstr "Ny MlDonkey"
+
+#: src/CommentDialog.cpp:22 src/CommentDialogLst.cpp:19
+msgid "File Comments"
+msgstr "Fil Kommentarer"
+
+#: src/DownloadListCtrl.cpp:1255
+#, c-format
+msgid "eDonkey v%i"
+msgstr "eDonkey v%i"
+
+#: src/DownloadListCtrl.cpp:1258
+#, c-format
+msgid "eDonkeyHybrid v%i"
+msgstr "eDonkeyHybrid v%i"
+
+#: src/DownloadListCtrl.cpp:1262
+#, c-format
+msgid "xMule v%02X"
+msgstr "xMule v%02X"
+
+#: src/DownloadListCtrl.cpp:1266
+#, c-format
+msgid "cDonkey v%02X"
+msgstr "cDonkey v%02X"
+
+#: src/DownloadListCtrl.cpp:1270
+#, c-format
+msgid "xmule v%02X"
+msgstr "xmule v%02X"
+
+#: src/HTTPDownloadDlg.cpp:35
+msgid "Downloading..."
+msgstr "Downloader..."
+
+#: src/HTTPDownloadDlg.cpp:54
+msgid ""
+"Can't spawn wget. You should have it\n"
+"in your $PATH."
+msgstr ""
+"Kan ikke finde wget. Du skal have det\n"
+"i din $PATH."
+
+#: src/HTTPDownloadDlg.cpp:54 src/xmule.cpp:325
+msgid "Error"
+msgstr "Fejl"
+
+#: src/HashThread.cpp:83
+msgid "Failed to create hash thread!\n"
+msgstr "Fejl ved oprettelse af hash tråde!\n"
+
+#: src/HashThread.cpp:86
+#, c-format
+msgid "Successfully created the hash thread: %d, @%d\n"
+msgstr "Oprettede hash trådene: %d, @%d\n"
+
+#: src/HashThread.cpp:98
+#, c-format
+msgid "Starting Part File Thread:%d, @%d\n"
+msgstr "Begynder Part Fil Tråd:%d ,@%d\n"
+
+#: src/HashThread.cpp:100
+#, c-format
+msgid "Starting Shared Files Thread:%d, @%d\n"
+msgstr "Begynder Tråde For Delte Filer:%d, @%d\n"
+
+#: src/HashThread.cpp:130
+#, c-format
+msgid "The App is shutting down, exiting hash thread: %d, @%d\n"
+msgstr "Programmet afslutter, afslutter hash tråd: %d, @%d\n"
+
+#: src/HashThread.cpp:154
+#, c-format
+msgid "Exiting Part File Thread:%d, @%d\n"
+msgstr "Afslutter Tråd For Part Fil:%d, @%d\n"
+
+#: src/HashThread.cpp:156
+#, c-format
+msgid "Exiting Shared Files Thread:%d, @%d\n"
+msgstr "Afslutter Tråd For Delte Filer:%d, @%d\n"
+
+#: src/PPgDirectories.cpp:53
+msgid "Directories"
+msgstr "Mapper"
+
+#: src/PPgDirectories.cpp:181
+msgid "Browse for videoplayer"
+msgstr "Søg efter Video Afspiller"
+
+#: src/PPgDirectories.cpp:181
+msgid "Executable (*)|*||"
+msgstr "Program (*)|*||"
+
+#: src/PPgGeneral.cpp:38
+msgid "System Default"
+msgstr "System Standard"
+
+#: src/PPgGeneral.cpp:43
+msgid "Systray Integration"
+msgstr "Værktøjslinje Integration"
+
+#: src/PPgNotify.cpp:38
+msgid "Notify"
+msgstr "Påmind"
+
+#: src/PPgNotify.cpp:174
+msgid "Browse wav"
+msgstr "Find wav"
+
+#: src/PPgNotify.cpp:174
+msgid "File wav (*.wav)|*.wav||"
+msgstr "Fil wav (*.wav)|*.wav||"
+
+#: src/PPgServer.cpp:228
+msgid "Edit Serverlist"
+msgstr "Ændre Serverlisten"
+
+#: src/PPgServer.cpp:229
+msgid ""
+"Add here URL's to download server.met files.\n"
+"Only one url on each line."
+msgstr ""
+"Tilføj URLer hvor der kan hentes server.met filer.\n"
+"Kun en URL på hver linje."
+
+#: src/PPgTweaks.cpp:41
+msgid "Tweaks"
+msgstr "Tuning"
+
+#: src/PreferencesDlg.cpp:37 src/xmuleDlg.cpp:126
+msgid "Preferences"
+msgstr "Indstillinger"
+
+#: src/SearchDlg.cpp:380
+msgid "bad link"
+msgstr "dårligt link"
+
+#: src/SearchListCtrl.cpp:140
+msgid "File"
+msgstr "Fil"
+
+#: src/SearchListCtrl.cpp:142
+msgid "Copy ED2k link to clipboard"
+msgstr "Kopier ED2k-Link til udklipsholder"
+
+#: src/SearchListCtrl.cpp:143
+msgid "Copy ED2k link to clipboard (HTML)"
+msgstr "Kopier ED2k-Link til udklipsholder (HTML)"
+
+#: src/SearchListCtrl.cpp:148
+msgid "Close This Searchresult"
+msgstr "Luk Dette Søgeresultat"
+
+#: src/ServerList.cpp:138 src/ServerList.cpp:142
+msgid "Failed to load server.met!"
+msgstr "Fejl ved åbning af server.met!"
+
+#: src/ServerListCtrl.cpp:82
+msgid "Low"
+msgstr "Lav"
+
+#: src/ServerListCtrl.cpp:83
+msgid "Normal"
+msgstr "Normal"
+
+#: src/ServerListCtrl.cpp:84
+msgid "High"
+msgstr "Høj"
+
+#: src/ServerListCtrl.cpp:86
+msgid "Connect to this server"
+msgstr "Forbind til denne server"
+
+#: src/ServerListCtrl.cpp:87
+msgid "Priority"
+msgstr "Priotet"
+
+#: src/ServerListCtrl.cpp:88
+msgid "Add to static"
+msgstr "Tilføj til statitik"
+
+#: src/ServerListCtrl.cpp:93
+msgid "Remove server"
+msgstr "Fjern server"
+
+#: src/ServerListCtrl.cpp:94
+msgid "Remove all servers"
+msgstr "Fjern Alle servere"
+
+#: src/ServerListCtrl.cpp:96
+msgid "Copy ED2k &link to clipboard"
+msgstr "Kopier ED2k-Link til udklipsholder"
+
+#: src/ServerListCtrl.cpp:208
+msgid "Server Name"
+msgstr "Servernavn"
+
+#: src/ServerListCtrl.cpp:209
+msgid "IP"
+msgstr "IP"
+
+#: src/ServerListCtrl.cpp:210
+msgid "Description"
+msgstr "Beskrivelse"
+
+#: src/ServerListCtrl.cpp:211
+msgid "Ping"
+msgstr "Ping"
+
+#: src/ServerListCtrl.cpp:212
+msgid "Users"
+msgstr "Brugere"
+
+#: src/ServerListCtrl.cpp:214
+msgid "Preference"
+msgstr "Indstilling"
+
+#: src/ServerListCtrl.cpp:215
+msgid "Failed"
+msgstr "Fejlede"
+
+#: src/ServerListCtrl.cpp:216
+msgid "Static"
+msgstr "Statistik"
+
+#: src/ServerListCtrl.cpp:430
+msgid "Yes"
+msgstr "Ja"
+
+#: src/ServerListCtrl.cpp:431
+msgid "No"
+msgstr "Nej"
+
+#: src/ServerWnd.cpp:57
+msgid "This is "
+msgstr "Dette er "
+
+#: src/ServerWnd.cpp:57
+msgid " (based on "
+msgstr " (baseret på "
+
+#: src/ServerWnd.cpp:57
+msgid "xMule v"
+msgstr "xMule v"
+
+#: src/ServerWnd.cpp:58
+msgid "Visit http://xmule.sf.net to check if a new version is available."
+msgstr "Besøg http://xmule.sf.net for at se om der er en ny version tilgængelig."
+
+#: src/SharedFilesCtrl.cpp:155
+msgid "Permissions"
+msgstr "Tilladelser"
+
+#: src/StatisticsDlg.cpp:455
+#, c-format
+msgid "xMule: %i (%1.1f%%)"
+msgstr "xMule: %i (%1.1f%%)"
+
+#: src/StatisticsDlg.cpp:456
+#, c-format
+msgid "xmule: %i (%1.1f%%)"
+msgstr "xmule: %i (%1.1f%%)"
+
+#: src/StatisticsDlg.cpp:457
+#, c-format
+msgid "eDonkeyHybrid: %i (%1.1f%%)"
+msgstr "eDonkeyHybrid: %i (%1.1f%%)"
+
+#: src/StatisticsDlg.cpp:458
+#, c-format
+msgid "eDonkey: %i (%1.1f%%)"
+msgstr "eDonkey: %i (%1.1f%%)"
+
+#: src/StatisticsDlg.cpp:459
+#, c-format
+msgid "cDonkey: %i (%1.1f%%)"
+msgstr "cDonkey: %i (%1.1f%%)"
+
+#: src/StatisticsDlg.cpp:460
+#, c-format
+msgid "Old MLDonkey: %i (%1.1f%%)"
+msgstr "Gammel MLDonkey: %i (%1.1f%%)"
+
+#: src/StatisticsDlg.cpp:461
+#, c-format
+msgid "New MLDonkey: %i (%1.1f%%)"
+msgstr "Ny MLDonkey: %i (%1.1f%%)"
+
+#: src/SysTray.cpp:74 src/SysTray.cpp:78 src/SysTray.cpp:99
+#: src/xmuleDlg.cpp:141
+msgid "xMule for Linux"
+msgstr "xMule til Linux"
+
+#: src/Wizard.cpp:267
+msgid "56-k Modem"
+msgstr "56k-Modem"
+
+#: src/Wizard.cpp:268
+msgid "ISDN"
+msgstr "ISDN"
+
+#: src/Wizard.cpp:269
+msgid "ISDN 2x"
+msgstr "ISDN 2x"
+
+#: src/Wizard.cpp:270 src/Wizard.cpp:271 src/Wizard.cpp:272 src/Wizard.cpp:273
+#: src/Wizard.cpp:274
+msgid "DSL"
+msgstr "DSL"
+
+#: src/Wizard.cpp:275
+msgid "DSL (T-DSL, newDSL, 1&1-DSL"
+msgstr "DSL (T-DSL, newDSL, 1&1-DSL)"
+
+#: src/Wizard.cpp:276
+msgid "DSL (QDSL, NGI-DSL"
+msgstr "DSL (QDSL, NGI-DSL)"
+
+#: src/Wizard.cpp:277
+msgid "DSL 1500 ('TDSL 1500')"
+msgstr "DSL 1500 ('TDSL 1500')"
+
+#: src/Wizard.cpp:278
+msgid "DSL 1600"
+msgstr "DSL 1600"
+
+#: src/Wizard.cpp:279
+msgid "DSL 2000"
+msgstr "DSL 2000"
+
+#: src/Wizard.cpp:280 src/Wizard.cpp:281
+msgid "Cable"
+msgstr "Kabelmodem"
+
+#: src/Wizard.cpp:282
+msgid "T1"
+msgstr "T1"
+
+#: src/Wizard.cpp:283
+msgid "T3+"
+msgstr "T3+"
+
+#: src/xmule.cpp:322
+#, c-format
+msgid "Port %d is not available. You will be LOWID"
+msgstr "Port %d er ikke tilgængelig. Du får LOWID"
+
+#: src/xmule.cpp:324
+#, c-format
+msgid ""
+"Port %d is not available !!\n"
+"\n"
+"This will mean that you will be LOWID.\n"
+"\n"
+"Use netstat to determine when port becomes available\n"
+"and try starting xmule again."
+msgstr ""
+"Port %d er ikke tilgængelig !!\n"
+"\n"
+"Dette vil medføre at du får LOWID.\n"
+"Brug netstat til at finde ud af hvornår porten bliver tilgængelig\n"
+"og start xmule igen."
+
+#: src/xmuleDlg.cpp:116
+msgid "Connect to server"
+msgstr "Forbind til Server"
+
+#: src/xmuleDlg.cpp:118
+msgid "Servers"
+msgstr "Servere"
+
+#: src/xmuleDlg.cpp:123
+msgid "IRC"
+msgstr "IRC"
+
+#: src/xmuleDlg.cpp:283
+msgid "Desktop integration"
+msgstr "Desktop integration"
+
+#: src/xmuleDlg.cpp:1038 src/xmuleDlg.cpp:1040
+#, c-format
+msgid "xMule (%s | "
+msgstr "xMule (%s | "
+
+#: ../src/strings.en:7
+msgid "Error initiating the windows sockets."
+msgstr "Fejl ved initialisering af windows socket."
+
+#: ../src/strings.en:8
+msgid "&About xMule..."
+msgstr "&Om xMule..."
+
+#: ../src/strings.en:9
+msgid "%1 from %2"
+msgstr "%1 fra %2"
+
+#: ../src/strings.en:10
+msgid "Connected to %1"
+msgstr "Forbundet til %1"
+
+#: ../src/strings.en:11
+msgid "Resolving name: %1"
+msgstr "Bestemmer navne: %1"
+
+#: ../src/strings.en:12
+msgid "Resolved name to %1"
+msgstr "Bestemte navne til %1"
+
+#: ../src/strings.en:13
+msgid "Connecting to %1"
+msgstr "Forbinder til %1"
+
+#: ../src/strings.en:14
+msgid "Redirecting to %1"
+msgstr "Omdirigere til %1"
+
+#: ../src/strings.en:15
+msgid "Getting file information"
+msgstr "Henter fil information"
+
+#: ../src/strings.en:16
+#, c-format
+msgid "An error occurred parsing the url: %s"
+msgstr "En fejl opstod ved analysering af url: %s"
+
+#: ../src/strings.en:17
+msgid "An error occurred while attempting to download the file, Error:%1"
+msgstr "En fejl opstod ved forsøg på at hente filen, Fejl:%1"
+
+#: ../src/strings.en:18
+msgid "An error occurred connecting to the server, Error:%1"
+msgstr "En fejl opstod ved forbinding til server, Fejl:%1"
+
+#: ../src/strings.en:19
+msgid "Failed to receive a valid response from the server"
+msgstr "Kunne ikke modtage en ægte respons fra server"
+
+#: ../src/strings.en:20
+msgid "Failed to receive a valid HTTP response from the server"
+msgstr "Kunne ikke modtage en ægte HTTP respons fra serveren"
+
+#: ../src/strings.en:21
+msgid "An error occurred while downloading the file, Error:%1"
+msgstr "Der opstod en fejl ved downloading af filen, Fejl:%1"
+
+#: ../src/strings.en:22
+msgid "Updating serverlist: %1% of %2 Completed"
+msgstr "Opdatere serverliste: %1% af %2 Færdig"
+
+#: ../src/strings.en:23
+msgid "Retrieving the file"
+msgstr "Modtager filen"
+
+#: ../src/strings.en:24
+msgid "%1 of %2"
+msgstr "%1 af %2"
+
+#: ../src/strings.en:25
+msgid "%1 sec"
+msgstr "%1 sek"
+
+#: ../src/strings.en:26
+msgid "%1 min"
+msgstr "%1 min"
+
+#: ../src/strings.en:27
+msgid "%1 min %2 sec"
+msgstr "%1 min %2 sek"
+
+#: ../src/strings.en:28
+msgid "%1 Bytes"
+msgstr "%1 Bytes"
+
+#: ../src/strings.en:29
+msgid "%1 KB"
+msgstr "%1 KB"
+
+#: ../src/strings.en:31
+msgid "%1 MB"
+msgstr "%1 MB"
+
+#: ../src/strings.en:32
+msgid "Updating serverlist"
+msgstr "Opdaterer serverlist"
+
+#: ../src/strings.en:33
+msgid "%1 (%2 copied)"
+msgstr "%1 (%2 kopieret)"
+
+#: ../src/strings.en:34
+msgid "%1 Bytes/Sec"
+msgstr "%1 Bytes/s"
+
+#: ../src/strings.en:35
+msgid "%1 KB/Sec"
+msgstr "%1 KB/s"
+
+#: ../src/strings.en:36
+msgid ""
+"The file '%1' already exists.\n"
+"Do you want to replace it?"
+msgstr ""
+"Filen '%1' existere allerede.\n"
+"Vil du overskrive den?"
+
+#: ../src/strings.en:37
+msgid "An error occured while opening the file to be downloaded, Error:%1"
+msgstr "En fejl opstod ved åbning af filen som skal downloads, Fejl:%1"
+
+#: ../src/strings.en:38
+msgid "Aborting transfer"
+msgstr "Afbryder overførsel"
+
+#: ../src/strings.en:39
+#, c-format
+msgid "xMule Version %s ready"
+msgstr "xMule Version %s klar"
+
+#: ../src/strings.en:40
+#, c-format
+msgid "Fatal Error: Unable to create socket on port %i"
+msgstr "Fatal Fejl: kunne ikke oprette socket på port %i"
+
+#: ../src/strings.en:41 ../src/strings.en:562
+msgid "Disconnect"
+msgstr "Afbryd"
+
+#: ../src/strings.en:42
+msgid "Disconnect from current server"
+msgstr "Afbryd fra nuværende server"
+
+#: ../src/strings.en:43
+msgid "wrong fileid sent"
+msgstr "forkert fil id sendt"
+
+#: ../src/strings.en:44
+msgid "corrupted or invalid hashset received"
+msgstr "Fejl behæftiget eller invalid hashsæt modtaget"
+
+#: ../src/strings.en:45
+msgid "corrupted or invalid DataBlock received"
+msgstr "Fejl behæftiget eller invalid DataBlock modtaget"
+
+#: ../src/strings.en:46
+msgid "Ill-formed hash"
+msgstr "Ill-formet Hash"
+
+#: ../src/strings.en:47
+msgid "not a well-formed ed2k link"
+msgstr "ikke et odentligt ed2k link"
+
+#: ../src/strings.en:48
+msgid "Not an ED2K server or file link"
+msgstr "Ikke en ED2K server eller fil link"
+
+#: ../src/strings.en:49
+msgid "invalid OP_FILEREQUEST packet size"
+msgstr "invalid OP_FILEREQUEST pakke størrelse"
+
+#: ../src/strings.en:50
+msgid "Server name"
+msgstr "Servernavn"
+
+#: ../src/strings.en:56
+msgid "No Pref"
+msgstr "Ingen Indstilling"
+
+#: ../src/strings.en:57
+msgid "Connect to selected server"
+msgstr "Forbind til valgte server"
+
+#: ../src/strings.en:58
+msgid ""
+"Instant Messaging\n"
+"  \n"
+"Right-click on any client and select 'Send Message' to start a chatsession"
+msgstr ""
+"Instant Messaging\n"
+"  \n"
+"Højre klik på en klient og vælg 'Send Besked' til start a chat"
+
+#: ../src/strings.en:59
+msgid "Stops the current connection attempts"
+msgstr "Stop de nuværende forbindelses forsøg"
+
+#: ../src/strings.en:61
+msgid ""
+"Failed to save server.met! You may need to delete server.met and rename "
+"server.met.old to server.met!"
+msgstr ""
+"kunne ikke gemme server.met! Du må selv slette server.met og omdåbe "
+"server.met.old til server.met"
+
+#: ../src/strings.en:63
+msgid "Disconnected"
+msgstr "Afbrudt"
+
+#: ../src/strings.en:64
+#, c-format
+msgid "User: %i"
+msgstr "Bruger: %i"
+
+#: ../src/strings.en:65
+#, c-format
+msgid "Up: %.1f(%.1f) | Down: %.1f(%.1f)"
+msgstr "Up: %.1f(%.1f) | Down: %.1f(%.1f)"
+
+#: ../src/strings.en:66
+msgid ""
+"xMule is not assigned to ED2K links. Do you want to assign xMule to ED2K "
+"links now (recommended) ?"
+msgstr ""
+"xMule er ikke tildelt ED2K links. Vil du tildele xmule ED2K links "
+"nu? (anbefalet)"
+
+#: ../src/strings.en:67
+msgid ""
+"No serverlistadress entry in 'adresses.dat' found. Please paste a valid "
+"serverlist address into this file in order to auto-update your serverlist"
+msgstr ""
+"Ingen serverlistadresse indskrevet i 'adresses.dat'. Indsæt venligst en "
+"serverlist adresse i denne fil, så kan xmule selv auto-update din serverliste."
+
+#: ../src/strings.en:68
+msgid "Unable to retrieve serverlist"
+msgstr "Kunne ikke modtage serverliste"
+
+#: ../src/strings.en:69
+#, c-format
+msgid "Invalid versiontag in server.met (0x%X)!"
+msgstr "Invalid Versiontag i server.met (0x%X)!"
+
+#: ../src/strings.en:70
+#, c-format
+msgid "%i servers in server.met found"
+msgstr "%i Serverer fundet i server.met"
+
+#: ../src/strings.en:71
+#, c-format
+msgid "%d servers added, %d not added (already listed/invalid)"
+msgstr "%d Serverer tilføjet, %d ikke tilføjet"
+
+#: ../src/strings.en:72
+msgid "Error: the file server.met is corrupted, unable to load serverlist"
+msgstr "Fejl: filen server.met er fejl behæftede, kunne ikke hente serverliste"
+
+#: ../src/strings.en:73
+#, c-format
+msgid ""
+"Unexpected file error while reading server.met: %s, unable to load serverlist"
+msgstr "Fil fejl ved læsning af server.met: %s, kunne ikke hente serverliste"
+
+#: ../src/strings.en:74
+msgid "Failed to save server.met!"
+msgstr "Fejl ved gemning af server.met!"
+
+#: ../src/strings.en:75
+msgid "Connection established on:"
+msgstr "Forbindelse etableret til: "
+
+#: ../src/strings.en:77
+msgid "available"
+msgstr "tilgængelig"
+
+#: ../src/strings.en:79
+msgid "FileID"
+msgstr "Fil ID"
+
+#: ../src/strings.en:82
+msgid "Connected"
+msgstr "Forbundet"
+
+#: ../src/strings.en:83
+msgid "Could not add link"
+msgstr "Kunne ikke tilføje link"
+
+#: ../src/strings.en:84
+msgid "Do you really want to exit xMule?"
+msgstr "Vil du virkelig afslutte xMule?"
+
+#: ../src/strings.en:85
+msgid "Exit confirmation"
+msgstr "Bekræft afslut"
+
+#: ../src/strings.en:86
+msgid "Restore"
+msgstr "Genopret"
+
+#: ../src/strings.en:87
+msgid "Connect to any server"
+msgstr "Forbind til en tilfældig server"
+
+#: ../src/strings.en:88
+msgid "Exit"
+msgstr "Afslut"
+
+#: ../src/strings.en:89
+msgid "Connecting"
+msgstr "Forbinder"
+
+#: ../src/strings.en:90
+msgid "failed"
+msgstr "fejlede"
+
+#: ../src/strings.en:91
+msgid "Corrupt or invalid loginanswer from server received"
+msgstr "Fejl behæftiget eller invalid login-svar fra server modtaget"
+
+#: ../src/strings.en:92
+#, c-format
+msgid "New clientid is %u"
+msgstr "Ny Klient-ID er %u"
+
+#: ../src/strings.en:93
+msgid "No shared folders"
+msgstr "Ingen delte mapper"
+
+#: ../src/strings.en:94
+msgid "Shared folders"
+msgstr "Delte Mapper"
+
+#: ../src/strings.en:95
+msgid "view "
+msgstr "se "
+
+#: ../src/strings.en:96
+msgid " (not shared)"
+msgstr " (ikke delt)"
+
+#: ../src/strings.en:102
+#, c-format
+msgid "Received %d new servers"
+msgstr "Modtog %d nye Servere"
+
+#: ../src/strings.en:103
+msgid "&Stop"
+msgstr "&Stop"
+
+#: ../src/strings.en:104
+msgid "&Pause"
+msgstr "&Pause"
+
+#: ../src/strings.en:105
+msgid "&Resume"
+msgstr "&Genoptag"
+
+#: ../src/strings.en:106
+msgid "&Open the file"
+msgstr "&Åben filen"
+
+#: ../src/strings.en:107
+msgid "Show file &details"
+msgstr "Vis fil &detaljer"
+
+#: ../src/strings.en:108
+msgid "C&lear completed"
+msgstr "Ryd færdige"
+
+#: ../src/strings.en:110
+msgid "Copy ED2k link to clipboard (&HTML)"
+msgstr "Kopier ED2k-Link til udklipsholder (&HTML)"
+
+#: ../src/strings.en:111
+msgid "Show &Details"
+msgstr "Vis &Detaljer"
+
+#: ../src/strings.en:112
+msgid "Send &Message"
+msgstr "Send &Besked"
+
+#: ../src/strings.en:113
+msgid "Asking"
+msgstr "Spørger"
+
+#: ../src/strings.en:114
+msgid "Connecting via server"
+msgstr "Forbinder via Server"
+
+#: ../src/strings.en:115
+msgid "On Queue"
+msgstr "I Kø"
+
+#: ../src/strings.en:116
+msgid "Transferring"
+msgstr "Overfører"
+
+#: ../src/strings.en:117
+msgid "Receiving hashset"
+msgstr "Modtaget Hashsæt"
+
+#: ../src/strings.en:118
+msgid "No needed parts"
+msgstr "Ingen brugbare dele"
+
+#: ../src/strings.en:119
+msgid "Cannot connect LowID to LowID"
+msgstr "Kan ikke forbinde LowID til LowID"
+
+#: ../src/strings.en:120
+msgid "Unknown"
+msgstr "Ukendt"
+
+#: ../src/strings.en:121
+msgid "Asked for another file"
+msgstr "Spørger efter en anden fil"
+
+#: ../src/strings.en:122
+msgid "Are you sure that you want to cancel and delete these files?\n"
+msgstr "Er du sikker på at du vil annulere og slette disse filer?\n"
+
+#: ../src/strings.en:123
+msgid "Are you sure that you want to cancel and delete this file?\n"
+msgstr "Er du sikker på du vil annulere og slette disse filer?\n"
+
+#: ../src/strings.en:124
+msgid "Copied to clipboard: \n"
+msgstr "Kopieret til udklipsholder: \n"
+
+#: ../src/strings.en:125
+msgid "% done"
+msgstr "% færdig"
+
+#: ../src/strings.en:126 ../src/strings.en:666
+msgid "Choose a folder for incoming files"
+msgstr "Vælg en mappe til indkommende filer"
+
+#: ../src/strings.en:127 ../src/strings.en:667
+msgid "Choose a folder for temp files"
+msgstr "Vælg en mappe til midlertidige filer"
+
+#: ../src/strings.en:128
+msgid "File Name"
+msgstr "Fil Navn"
+
+#: ../src/strings.en:129
+msgid "Size"
+msgstr "Størrelse"
+
+#: ../src/strings.en:131
+msgid "Speed"
+msgstr "Hastighed"
+
+#: ../src/strings.en:132
+msgid "Progress"
+msgstr "Forløb"
+
+#: ../src/strings.en:133
+msgid "Sources"
+msgstr "Kilder"
+
+#: ../src/strings.en:134
+msgid "Invalid serverlist packet received"
+msgstr "Invalid serverlist pak modtaget"
+
+#: ../src/strings.en:135 ../src/strings.en:548
+msgid "Status"
+msgstr "Status"
+
+#: ../src/strings.en:136
+msgid "Remaining"
+msgstr "Tilbage"
+
+#: ../src/strings.en:137
+msgid "Username"
+msgstr "Brugernavn"
+
+#: ../src/strings.en:138
+#, c-format
+msgid "Unhandled error while processing packet from server (%s)"
+msgstr ""
+
+#: ../src/strings.en:139
+msgid "Rating"
+msgstr ""
+
+#: ../src/strings.en:140
+#, c-format
+msgid "Connecting to %s (%s:%i)..."
+msgstr "Forbinder til %s (%s:%i)..."
+
+#: ../src/strings.en:141 ../src/strings.en:173
+msgid "Clients"
+msgstr "Klienter"
+
+#: ../src/strings.en:148
+msgid "Archive"
+msgstr "Arkiv"
+
+#: ../src/strings.en:149
+#, c-format
+msgid "This ed2k link is invalid (%s)"
+msgstr "Dette ed2k link er invalid (%s)"
+
+#: ../src/strings.en:150
+#, c-format
+msgid "Invalid link: %s"
+msgstr "Invalid Link: %s"
+
+#: ../src/strings.en:151
+msgid "You are not connected to a server!"
+msgstr "Du er ikke forbundet til en server!"
+
+#: ../src/strings.en:152
+msgid "Remove selected server"
+msgstr "Fjern valgte servere"
+
+#: ../src/strings.en:154
+msgid "Please enter a serveradress"
+msgstr "Indsæt en serveradresse"
+
+#: ../src/strings.en:155
+msgid "Incomplete serverport: Please enter a serverport"
+msgstr "forkert serverport: Indsæt en serverport"
+
+#: ../src/strings.en:156
+msgid "Server not added!"
+msgstr "Server ikke tilføjet!"
+
+#: ../src/strings.en:157
+msgid "Server was marked as dead, it has been readded!"
+msgstr "Serveren var markeret som død, den er blevet tilføjet!"
+
+#: ../src/strings.en:158
+msgid "No URL available."
+msgstr "Ingen URL tilgængelig."
+
+#: ../src/strings.en:159
+msgid "Invalid URL"
+msgstr "Invalid URL"
+
+#: ../src/strings.en:160
+#, c-format
+msgid "Failed to download the serverlist from %s"
+msgstr "Kunne ikke hente serverlist fra %s"
+
+#: ../src/strings.en:161
+msgid "Permission"
+msgstr "Rettighed"
+
+#: ../src/strings.en:163
+msgid "Very low"
+msgstr "Meget lav"
+
+#: ../src/strings.en:164
+msgid "Release"
+msgstr "Udgivelse"
+
+#: ../src/strings.en:165
+msgid "Locked"
+msgstr "Låst"
+
+#: ../src/strings.en:166
+msgid "Friends only"
+msgstr "Kun venner"
+
+#: ../src/strings.en:167
+msgid "Public"
+msgstr "Offentlig"
+
+#: ../src/strings.en:168
+msgid "Highest"
+msgstr "Højeste"
+
+#: ../src/strings.en:169
+msgid "You cannot change permissions while a file is still downloading!"
+msgstr "Du kan ikke ændre rettigheder mens filen stadig downloader!"
+
+#: ../src/strings.en:170
+msgid "Hidden"
+msgstr "Skjult"
+
+#: ../src/strings.en:175
+msgid "Waiting..."
+msgstr "Venter..."
+
+#: ../src/strings.en:176
+msgid "Time"
+msgstr "Tid"
+
+#: ../src/strings.en:177
+#, c-format
+msgid "Downloaded Data (Session (Total)): %s (%s)"
+msgstr "Downloadet Data (session (Total)): %s (%s)"
+
+#: ../src/strings.en:178
+#, c-format
+msgid "Uploaded Data (Session (Total)): %s (%s)"
+msgstr "Uploadet Data (Session (Total)): %s (%s)"
+
+#: ../src/strings.en:179
+#, c-format
+msgid "Average Downloadrate (Session): %.2f kB/s"
+msgstr "Gennemsnitlig Downloadhastighed (Session): %.2f kB/s"
+
+#: ../src/strings.en:180
+#, c-format
+msgid "Average Uploadrate (Session): %.2f kB/s"
+msgstr "Gennemsnitlig Uploadhastighed (Session): %.2f kB/s"
+
+#: ../src/strings.en:181
+#, c-format
+msgid "Found Sources: %i"
+msgstr "Fundne Kilder: %i"
+
+#: ../src/strings.en:182
+#, c-format
+msgid "Active Downloads (chunks): %i"
+msgstr "Aktive Downloades: %i"
+
+#: ../src/strings.en:183
+#, c-format
+msgid "Active Uploads: %i"
+msgstr "Aktive Uploads: %i"
+
+#: ../src/strings.en:184
+#, c-format
+msgid "Waiting Uploads: %i"
+msgstr "Ventende Uploads: %i"
+
+#: ../src/strings.en:185
+#, c-format
+msgid "Reconnects: %i"
+msgstr "Genforbindelser: %i"
+
+#: ../src/strings.en:186
+msgid "waiting for transfer..."
+msgstr "Venter på overførsel..."
+
+#: ../src/strings.en:187
+msgid "waiting for connection..."
+msgstr "venter på forbindelse..."
+
+#: ../src/strings.en:188
+#, c-format
+msgid "Connected To Server Since: %s"
+msgstr "Forbundet Til Server Siden: %s"
+
+#: ../src/strings.en:189
+msgid "Session UL:DL Ratio:"
+msgstr "Session UL:DL Forhold:"
+
+#: ../src/strings.en:190
+#, c-format
+msgid "Unknown: %i"
+msgstr "Ubekendt: %i"
+
+#: ../src/strings.en:191
+#, c-format
+msgid "Total: %i"
+msgstr "Total: %i"
+
+#: ../src/strings.en:192
+#, c-format
+msgid "Working: %i"
+msgstr "Arbejder: %i"
+
+#: ../src/strings.en:193
+#, c-format
+msgid "Dead/Deleted: %i"
+msgstr "Død/Slettet: %i"
+
+#: ../src/strings.en:194
+msgid "disabled"
+msgstr "inaktiv"
+
+#: ../src/strings.en:195
+msgid "Stopped"
+msgstr "stoppet"
+
+#: ../src/strings.en:196
+#, c-format
+msgid "Update delay: %i sec"
+msgstr "Opdaterings interval: %i sec"
+
+#: ../src/strings.en:197
+#, c-format
+msgid "%u (%u banned)"
+msgstr "%u (%u Bannet)"
+
+#: ../src/strings.en:198
+msgid "Nickname: "
+msgstr "navn: "
+
+#: ../src/strings.en:199 ../src/strings.en:444
+msgid ""
+"\n"
+"Client's filename: "
+msgstr ""
+"\n"
+"Klients filnavn: "
+
+#: ../src/strings.en:200
+msgid ""
+"\n"
+"Asked for another file"
+msgstr ""
+"\n"
+"Spurgte efter en anden fil"
+
+#: ../src/strings.en:201
+msgid "Waited"
+msgstr "Ventet"
+
+#: ../src/strings.en:202
+msgid "Failed to load creditfile, a new file will be created"
+msgstr "Kunne ikke hente creditfil, en ny fil vil blive oprettet"
+
+#: ../src/strings.en:203
+msgid "Creditfile is out of date and will be replaced"
+msgstr "Creditfil er for gammel og vil blive overskrevet"
+
+#: ../src/strings.en:204
+#, c-format
+msgid "Creditfile loaded, %u clients are known"
+msgstr "Creditfil hentet, %u klienter som er kendt"
+
+#: ../src/strings.en:205
+msgid "Error: the creditfile is corrupted and will be replaced!"
+msgstr "Fejl: creditfilen er beskadiget og vil blive overskrevet!"
+
+#: ../src/strings.en:206
+#, c-format
+msgid "Unexpected file error while reading creditfile: %s"
+msgstr "Uventet fil fejl ved læsning af creditfil: %s"
+
+#: ../src/strings.en:207
+msgid "Failed to save creditfile"
+msgstr "Kunne ikke gemme creditfil"
+
+#: ../src/strings.en:208
+msgid "No part files found"
+msgstr "Ingen part filer fundet"
+
+#: ../src/strings.en:209
+#, c-format
+msgid "Found %i part files"
+msgstr "Fandt %i part filer"
+
+#: ../src/strings.en:210
+#, c-format
+msgid "File Buffer Size (%i)"
+msgstr "Fil Lager Størrelse (%i)"
+
+#: ../src/strings.en:211
+#, c-format
+msgid "Queue Size (%i)"
+msgstr "Kø Størrelse (%i)"
+
+#: ../src/strings.en:212
+msgid "days"
+msgstr "dag(e)"
+
+#: ../src/strings.en:213
+msgid "Failed to make backup of creditfile"
+msgstr "Kunne ikke lave en backup af creditfilen"
+
+#: ../src/strings.en:214
+msgid "Comment"
+msgstr "Kommentar"
+
+#: ../src/strings.en:215
+#, c-format
+msgid "Filtered IP: %s (%s)"
+msgstr "Filtreret IP: %s (%s)"
+
+#: ../src/strings.en:216
+msgid "Completed"
+msgstr "Færdige"
+
+#: ../src/strings.en:217
+#, c-format
+msgid "Filtered: %i"
+msgstr "Filtreret: %i"
+
+#: ../src/strings.en:218
+msgid "Filter messages containing: (Seperator | )"
+msgstr "Filter besked indeholder: (Seperator | )"
+
+#: ../src/strings.en:219
+msgid "Client requested too large of a block."
+msgstr "Klient anmodede om en for stor blok."
+
+#: ../src/strings.en:220
+msgid "Show transfer rates on title"
+msgstr "Vis overførsels hastighed i titel"
+
+#: ../src/strings.en:221
+#, c-format
+msgid "Downloading %s"
+msgstr "Downloader %s"
+
+#: ../src/strings.en:222
+#, c-format
+msgid "You are already trying to download the file %s"
+msgstr "Du prøver allerede at downloade denne fil %s"
+
+#: ../src/strings.en:223
+#, c-format
+msgid "You already have the file %s"
+msgstr "Du har allerede filen %s"
+
+#: ../src/strings.en:224
+msgid "Error: the file known.met is corrupted, unable to load known files"
+msgstr "Fejl: filen known.met er beskadiget, kunne ikke hente kendte filer"
+
+#: ../src/strings.en:225
+#, c-format
+msgid ""
+"Unexpected file error while reading known.met: %s, unable to load known files"
+msgstr ""
+"Uventet fejl ved læsning af known.met: %s, kunne ikke hente kendte filer"
+
+#: ../src/strings.en:226
+#, c-format
+msgid "Error while connecting to %s (%s:%i): %d"
+msgstr "Fejl ved forbindelse til %s (%s:%i): %d"
+
+#: ../src/strings.en:227
+#, c-format
+msgid "Error in serversocket: %s (%s:%i): %u"
+msgstr "Fejl i Serversocket: %s (%s:%i): %u"
+
+#: ../src/strings.en:228
+#, c-format
+msgid "Found %i known shared files"
+msgstr "Fandt %i kendt delt fil"
+
+#: ../src/strings.en:229
+#, c-format
+msgid "Found %i known shared files, hashing %i new files now"
+msgstr "Fandt %i kendt delt fil, hasher %i nye filer nu"
+
+#: ../src/strings.en:230
+msgid "Error while processing incoming extended protocol UDP Packet"
+msgstr "Fejl i inkomende protocol UDP pak"
+
+#: ../src/strings.en:231
+msgid "asked for incomplete block "
+msgstr "Spurgte efter en ikke færdig blok"
+
+#: ../src/strings.en:232
+msgid "failed to open requested file"
+msgstr "Kunne ikke åbne anmodet fil"
+
+#: ../src/strings.en:233
+#, c-format
+msgid ""
+"Client '%s' caused error while creating package (%s) - disconnecting client"
+msgstr ""
+"Klient '%s' lavede fejl ved oprettelse af pakker (%s) - afbryder klient"
+
+#: ../src/strings.en:234
+msgid "requested file not found"
+msgstr "anmodet fil ikke fundet"
+
+#: ../src/strings.en:235
+#, c-format
+msgid ""
+"Client '%s' seems to be an aggressive client and is banned from the "
+"uploadqueue"
+msgstr ""
+"Klient '%s' ser ud til at være en aggresiv klient og er bannet fra "
+"upload køen"
+
+#: ../src/strings.en:236
+msgid "users"
+msgstr "Brugere"
+
+#: ../src/strings.en:237
+msgid "invalid OP_HASHSETREQUEST packet size"
+msgstr "invalid OP_HASHSETREQUEST pakke størrelse"
+
+#: ../src/strings.en:238
+#, c-format
+msgid ""
+"A client caused an error or did something bad: %s. Disconnecting client!"
+msgstr ""
+"En klient lavede en fejl eller gjode noget slemt: %s. Afbryder klient!"
+
+#: ../src/strings.en:239
+msgid "Unknown clients sends extended protocol packet"
+msgstr "Ukendt klient sender udvidet protokol pakker"
+
+#: ../src/strings.en:240
+#, c-format
+msgid "Error: Failed to open part.met file! (%s => %s)"
+msgstr "Kunne ikke åbne part.met fil! (%s => %s)"
+
+#: ../src/strings.en:241
+#, c-format
+msgid "Error: Invalid part.met fileversion! (%s => %s)"
+msgstr "Fejl: Invalid part.met filversion! (%s => %s)"
+
+#: ../src/strings.en:242
+msgid "Invalid Gap-Tag in part.met file"
+msgstr "Invalid Gap-Tag i part.met fil"
+
+#: ../src/strings.en:243
+#, c-format
+msgid "Error: %s (%s) is corrupt, unable to load file"
+msgstr "Fejl: %s (%s) er beskadiget, kunne ikke hente fil"
+
+#: ../src/strings.en:244
+#, c-format
+msgid "Unexpected file error while reading %s (%s): %s"
+msgstr "Uventet fil fejl ved læsning %s (%s): %s"
+
+#: ../src/strings.en:245
+#, c-format
+msgid "Failed to open %s (%s)"
+msgstr "Kunne ikke åbne %s (%s)"
+
+#: ../src/strings.en:246
+#, c-format
+msgid "Warning: %s might be corrupted, performing rehash of completed parts"
+msgstr "Advarsel: %s er måske beskadiget, laver genhash af færdige dele"
+
+#: ../src/strings.en:247
+msgid ".part file not found"
+msgstr ".part fil ikke fundet"
+
+#: ../src/strings.en:248
+msgid "Failed to open part.met file"
+msgstr "Kunne ikke åbne part.met fil"
+
+#: ../src/strings.en:249
+#, c-format
+msgid "ERROR while saving partfile: %s (%s => %s)"
+msgstr "Fejl ved gemning af partfil: %s (%s => %s)"
+
+#: ../src/strings.en:250
+#, c-format
+msgid "Found corrupted part (%i) in %s"
+msgstr "Fandt beskadigede dele (%i) i %s"
+
+#: ../src/strings.en:251
+#, c-format
+msgid "Finished rehashing %s, file seems to be ok"
+msgstr "Færdig med at genhashe %s, fil er i orden"
+
+#: ../src/strings.en:252
+#, c-format
+msgid "Downloaded part %i is corrupt :(  (%s)"
+msgstr "Downloadet del %i er beskadiget :(  (%s)"
+
+#: ../src/strings.en:253
+#, c-format
+msgid "ICH: Recovered corrupted part %i  (%s)"
+msgstr "I.C.H.: Reddede beskadiget del %i (%s)"
+
+#: ../src/strings.en:254
+#, c-format
+msgid "You have insufficient diskspace to download %s!"
+msgstr "Du har ikke nok disk plads til at downloade %s!"
+
+#: ../src/strings.en:255
+#, c-format
+msgid "Unexpected file error while writing %s : %s"
+msgstr "Uventet fil fejl ved skrivning %s : %s"
+
+#: ../src/strings.en:256
+#, c-format
+msgid ""
+"Unexpected file error while completing %s. File paused, restart xMule to "
+"start another completing-try"
+msgstr ""
+"Uventet fil fejl ved færdig gørrelse %s. fil på pause, restart xMule for "
+"prøve at gøre filen færdig"
+
+#: ../src/strings.en:257
+#, c-format
+msgid "Failed to delete %s, you will need to do this by hand"
+msgstr "Kunne ikke slette %s, du må gøre det selv"
+
+#: ../src/strings.en:258
+#, c-format
+msgid "Finished downloading %s :-)"
+msgstr "Færdig med downloading af %s :-)"
+
+#: ../src/strings.en:259
+#, c-format
+msgid "Failed to delete %s"
+msgstr "Kunne ikke slette %s"
+
+#: ../src/strings.en:260
+#, c-format
+msgid "Warning: Unable to hash downloaded part - hashset incomplete (%s)"
+msgstr "Advarsel: kunne ikke hashe downloadede del - hashsæt ikke færdig (%s)"
+
+#: ../src/strings.en:261
+#, c-format
+msgid ""
+"Error: Unable to hash downloaded part - hashset incomplete (%s). This should "
+"never happen"
+msgstr ""
+"Fejl: Kunne ikke hashe downloadede del - hashsæt ikke færdig (%s). Dette skulle "
+"aldrig ske"
+
+#: ../src/strings.en:262
+msgid "Downloading"
+msgstr "Henter"
+
+#: ../src/strings.en:263
+msgid "Waiting"
+msgstr "Venter"
+
+#: ../src/strings.en:264
+msgid "Hashing"
+msgstr "Hasher"
+
+#: ../src/strings.en:265
+msgid "Completing"
+msgstr "Færdiggør"
+
+#: ../src/strings.en:266
+msgid "Complete"
+msgstr "Færdig"
+
+#: ../src/strings.en:267
+msgid "Paused"
+msgstr "Pause"
+
+#: ../src/strings.en:268
+msgid "Erroneous"
+msgstr "Beskadiget"
+
+#: ../src/strings.en:269
+msgid "files"
+msgstr "filer"
+
+#: ../src/strings.en:270
+#, c-format
+msgid "Description: %s"
+msgstr "Beskrivelse: %s"
+
+#: ../src/strings.en:272 ../src/strings.en:278
+msgid "No valid servers to connect in serverlist found"
+msgstr "Ingen brugbare servere i serverliste"
+
+#: ../src/strings.en:273
+#, c-format
+msgid "Connected to %s (%s:%i), sending login request"
+msgstr "Forbundet til %s (%s:%i), sender login anmodning"
+
+#: ../src/strings.en:274
+msgid "Fatal Error while trying to connect. Internet connection might be down"
+msgstr "Kunne ikke forbinde. Internettet må være nede."
+
+#: ../src/strings.en:275
+#, c-format
+msgid "Lost connection to %s (%s:%i)"
+msgstr "Mistede forbindelsen til %s (%s:%i)"
+
+#: ../src/strings.en:276
+#, c-format
+msgid "%s (%s:%i) appears to be dead."
+msgstr "%s (%s:%i) ser ud til at være død"
+
+#: ../src/strings.en:277
+#, c-format
+msgid "%s (%s:%i) appears to be full"
+msgstr "%s (%s:%i) ser ud til at være fuld"
+
+#: ../src/strings.en:279
+#, c-format
+msgid "Connection established on: %s"
+msgstr "Forbindelse oprettet til: %s"
+
+#: ../src/strings.en:280
+msgid "Preview"
+msgstr "Smug Kig"
+
+#: ../src/strings.en:281
+msgid "Show Queue"
+msgstr "Vis Køen"
+
+#: ../src/strings.en:282
+msgid "Show Uploads"
+msgstr "Vis Uploads"
+
+#: ../src/strings.en:285
+msgid "Clients on Queue:"
+msgstr "Klienter i kø:"
+
+#: ../src/strings.en:296
+msgid "Download Selected"
+msgstr "Download"
+
+#: ../src/strings.en:312
+msgid "Accepted Uploads:"
+msgstr "Accepteret Uploads:"
+
+#: ../src/strings.en:313
+msgid "Requested:"
+msgstr "anmodede:"
+
+#: ../src/strings.en:320
+msgid "waiting uploads"
+msgstr "ventende uploads"
+
+#: ../src/strings.en:328
+msgid "Incoming Files"
+msgstr "Indkommende Filer"
+
+#: ../src/strings.en:329
+msgid "Temporary Files"
+msgstr "Midlertidige Filer"
+
+#: ../src/strings.en:330
+msgid "Browse"
+msgstr "søg"
+
+#: ../src/strings.en:331
+msgid "Shared directories"
+msgstr "Delte Mapper"
+
+#: ../src/strings.en:333
+msgid "Download capacity"
+msgstr "Download Kapasitet"
+
+#: ../src/strings.en:334
+msgid "Download limit"
+msgstr "Download Grænse"
+
+#: ../src/strings.en:335
+msgid "Upload capacity"
+msgstr "Download Kapasitet"
+
+#: ../src/strings.en:336
+msgid "Upload limit"
+msgstr "Upload Grænse"
+
+#: ../src/strings.en:347
+msgid "always filter bad IPs"
+msgstr "Filtrer altid dårlige IPer"
+
+#: ../src/strings.en:350
+msgid "Minimi&ze to trayicon"
+msgstr "Minimer til værktøjslinje"
+
+#: ../src/strings.en:353
+msgid "Show Splashscreen"
+msgstr "Vis Velkomstskærm"
+
+#: ../src/strings.en:359
+msgid "&Intelligent Corruption Handling"
+msgstr "&Intelligent Fejlkorrektur"
+
+#: ../src/strings.en:366
+msgid "&Transfers"
+msgstr "&Overførsler"
+
+#: ../src/strings.en:367
+msgid "&Servers"
+msgstr "&Serverer"
+
+#: ../src/strings.en:368
+msgid "S&earch"
+msgstr "S&øg"
+
+#: ../src/strings.en:369
+msgid "Shared &Files"
+msgstr "Delte Filer"
+
+#: ../src/strings.en:370
+msgid "&Messages"
+msgstr "&Beskeder"
+
+#: ../src/strings.en:371
+msgid "St&atistics"
+msgstr "St&atistik"
+
+#: ../src/strings.en:372
+msgid "&Preferences"
+msgstr "&Indstillinger"
+
+#: ../src/strings.en:373
+msgid ""
+"A default language was selected. You can change the language setting any "
+"time in the preferences tab."
+msgstr ""
+
+#: ../src/strings.en:386
+msgid "Completed Size:"
+msgstr "Færdig:"
+
+#: ../src/strings.en:388
+msgid "File Details"
+msgstr "Fil Detaljer"
+
+#: ../src/strings.en:400
+msgid "Average Downloadrate:"
+msgstr "Gennemsnitlig Download-Hastighed:"
+
+#: ../src/strings.en:409
+msgid "Uploadqueue Score:"
+msgstr "Uploads Kø Point:"
+
+#: ../src/strings.en:410
+msgid "Client Details"
+msgstr "Klient Detaljer"
+
+#: ../src/strings.en:411
+msgid "Click "
+msgstr "Klik "
+
+#: ../src/strings.en:412
+msgid "to check if a new version is available"
+msgstr "for at se om en ny version er tilgængelig"
+
+#: ../src/strings.en:413
+msgid "here"
+msgstr "her"
+
+#: ../src/strings.en:415
+#, c-format
+msgid "Number of Shared Files: %i"
+msgstr "Antal Delte Filer: %i"
+
+#: ../src/strings.en:416
+#, c-format
+msgid "Total size of Shared Files: %s"
+msgstr "Total Størrelse Af Delte Filer: %s"
+
+#: ../src/strings.en:417
+msgid "wrong part number"
+msgstr "forkert del nummer"
+
+#: ../src/strings.en:418
+msgid "bad port number"
+msgstr "forkert Port-Nummer"
+
+#: ../src/strings.en:419
+msgid "Asks for something without saying hello"
+msgstr "Spørg efter noget uden at sige hej"
+
+#: ../src/strings.en:420
+msgid "Invalid or corrupted packet received"
+msgstr "Invalid eller beskadiget pakke modtaget"
+
+#: ../src/strings.en:421
+#, c-format
+msgid "Client '%s' (IP:%s) caused an error: %s. Disconnecting client!"
+msgstr ""
+"Klient '%s' (IP:%s) lavede en fejl: %s. Afbryder Klient"
+
+#: ../src/strings.en:422
+msgid "invalid size (OP_QUEUERANKING)"
+msgstr "invalid størrelse (OP_QUEUERANKING)"
+
+#: ../src/strings.en:423
+#, c-format
+msgid "Client '%s' (IP:%s) caused an error: %u. Disconnecting client!"
+msgstr ""
+
+#: ../src/strings.en:424
+msgid "Not a file link"
+msgstr "Ikke et fil link"
+
+#: ../src/strings.en:425
+msgid "ERROR: Failed to create partfile)"
+msgstr "Fejl: Kunne ikke oprette partfil"
+
+#: ../src/strings.en:426
+msgid ""
+"Error while processing incoming UDP Packet (Most likely a misconfigured "
+"server)"
+msgstr ""
+
+#: ../src/strings.en:427
+msgid "*** Chatsession Start : "
+msgstr "*** Chat Begyndt : "
+
+#: ../src/strings.en:428
+msgid "File Priority"
+msgstr "Fil Priotet"
+
+#: ../src/strings.en:429
+msgid "Score"
+msgstr "Point"
+
+#: ../src/strings.en:430
+msgid "Asked"
+msgstr "Spurgte"
+
+#: ../src/strings.en:431
+msgid "Last Seen"
+msgstr "Sidst Set"
+
+#: ../src/strings.en:432
+msgid "Banned"
+msgstr "Bannet"
+
+#: ../src/strings.en:433
+msgid "Very high"
+msgstr "Meget høj"
+
+#: ../src/strings.en:436
+msgid "Open file"
+msgstr "Åben fil"
+
+#: ../src/strings.en:437
+msgid "Date"
+msgstr "Dato"
+
+#: ../src/strings.en:438
+#, c-format
+msgid ""
+"Partfilename: %s\n"
+"Parts: %d , %s: %d (%.1f%%)\n"
+msgstr ""
+"Partfilnavn: %s\n"
+"Dele: %d , %s: %d (%.1f%%)\n"
+
+#: ../src/strings.en:439
+#, c-format
+msgid "%d%% done (%s) - Transferring from %d sources"
+msgstr "%d%% færdig (%s) - Overfører fra %d kilder"
+
+#: ../src/strings.en:440
+msgid "UserID"
+msgstr "BrugerID"
+
+#: ../src/strings.en:441
+msgid "Client"
+msgstr "Klient"
+
+#: ../src/strings.en:443
+#, c-format
+msgid "Asked: %d times - AvailablePartCount: %d"
+msgstr "Spurgte: %d gange - TilgængeligPartTæller: %d"
+
+#: ../src/strings.en:445
+#, c-format
+msgid "NickName: %s\n"
+msgstr "KaldeNavn: %s\n"
+
+#: ../src/strings.en:446
+#, c-format
+msgid ""
+"Filestats for this session: Accepted %d of %d requests, %d bytes "
+"transferred\n"
+msgstr ""
+
+#: ../src/strings.en:447
+#, c-format
+msgid ""
+"Filestats for all sessions: Accepted %d of %d requests, %d bytes transferred"
+msgstr ""
+
+#: ../src/strings.en:448
+msgid "Requested unknown file"
+msgstr "Anmodet om ukendt fil"
+
+#: ../src/strings.en:449
+#, c-format
+msgid "Time Since First Transfer: %s"
+msgstr "Tid Siden Første Overførsel: %s"
+
+#: ../src/strings.en:450
+#, c-format
+msgid "Average filesize: %s"
+msgstr "Gennemsnitlig filstørrelse: %s"
+
+#: ../src/strings.en:451
+msgid "Requests"
+msgstr "Anmodninger"
+
+#: ../src/strings.en:452
+msgid "Accepted Requests"
+msgstr "Godtaget Anmodninger"
+
+#: ../src/strings.en:453
+msgid "Transferred Data"
+msgstr "Overført Data"
+
+#: ../src/strings.en:454
+msgid "Close this Searchresult"
+msgstr "Luk Dette Søgeresultat"
+
+#: ../src/strings.en:455
+msgid "Remove Selected"
+msgstr "Fjern Valgte"
+
+#: ../src/strings.en:457
+msgid "Entered Queue"
+msgstr "Kom I Kø"
+
+#: ../src/strings.en:458
+msgid "Failed Servers"
+msgstr "Fejlede Servere"
+
+#: ../src/strings.en:459
+msgid "Users on Working Servers"
+msgstr "Brugere På Virkende Servere"
+
+#: ../src/strings.en:460
+msgid "Files on Working Servers"
+msgstr "Filer På Virkende Servere"
+
+#: ../src/strings.en:461
+msgid "Total Users"
+msgstr "Antal Brugere Total"
+
+#: ../src/strings.en:462
+msgid "Total Files"
+msgstr "Antal Filer Total"
+
+#: ../src/strings.en:463
+msgid "Upload Time"
+msgstr "Upload Tid"
+
+#: ../src/strings.en:464
+msgid "Last Seen Complete:"
+msgstr "Sidst Set Færdig:"
+
+#: ../src/strings.en:467
+msgid "Unban"
+msgstr ""
+
+#: ../src/strings.en:468
+msgid "Working Servers"
+msgstr "Virkende Servere"
+
+#: ../src/strings.en:469
+msgid "Add to static server list"
+msgstr "Tilføj til statisk server liste"
+
+#: ../src/strings.en:470
+msgid "added to static server list"
+msgstr "Tilføjet til statisk server liste"
+
+#: ../src/strings.en:472
+msgid "Failed to open staticservers.dat"
+msgstr "Kunne ikke åbne staticservers.dat"
+
+#: ../src/strings.en:473
+#, c-format
+msgid ""
+"Critical error while processing datapacket for %s (wrong size) - datablock "
+"droped"
+msgstr ""
+
+#: ../src/strings.en:474
+msgid "Active Connections (estimate)"
+msgstr "Aktive Forbindelser (anslået)"
+
+#: ../src/strings.en:475
+msgid "Max Connection Limit Reached"
+msgstr "Max Forbindelses Grænse Nået"
+
+#: ../src/strings.en:476
+msgid "Average Connections (estimate)"
+msgstr "Gennemsnitlige Forbindelser (anslået)"
+
+#: ../src/strings.en:477
+msgid "Peak Connections (estimate)"
+msgstr "Peak Forbindelser (anslået)"
+
+#: ../src/strings.en:479
+msgid "Network"
+msgstr "Netværk"
+
+#: ../src/strings.en:480
+msgid "Deleted Servers"
+msgstr "Slettede Servere"
+
+#: ../src/strings.en:481
+msgid "Queue Full"
+msgstr "Kø Fuld"
+
+#: ../src/strings.en:482
+msgid "Average"
+msgstr "Gennemsnitlig"
+
+#: ../src/strings.en:483
+msgid "Bytes"
+msgstr "Bytes"
+
+#: ../src/strings.en:484
+msgid "KB"
+msgstr "KB"
+
+#: ../src/strings.en:485
+msgid "MB"
+msgstr "MB"
+
+#: ../src/strings.en:486
+msgid "GB"
+msgstr "GB"
+
+#: ../src/strings.en:487
+msgid "TB"
+msgstr "TB"
+
+#: ../src/strings.en:488
+msgid "secs"
+msgstr "sek"
+
+#: ../src/strings.en:489
+msgid "mins"
+msgstr "min"
+
+#: ../src/strings.en:490
+msgid "h"
+msgstr "T"
+
+#: ../src/strings.en:491
+msgid "D"
+msgstr "Dag(e)"
+
+#: ../src/strings.en:493
+#, c-format
+msgid "Automatic connection to server will retry in %d seconds"
+msgstr "Automatisk forbindelse til server vil prøve igen om %d sekunder"
+
+#: ../src/strings.en:494
+msgid "Server added: "
+msgstr "Servere tilføjet: "
+
+#: ../src/strings.en:495
+#, c-format
+msgid "Total successful upload sessions: %i"
+msgstr "Færdige upload sessioner (Total): %i"
+
+#: ../src/strings.en:496
+#, c-format
+msgid "Total failed upload sessions: %i"
+msgstr "Fejlede upload sessioner (Total): %i"
+
+#: ../src/strings.en:497
+#, c-format
+msgid "Average upload time: %s"
+msgstr "Gennemsnitlig upload tid: %s"
+
+#: ../src/strings.en:498
+msgid "min. Size (MB)"
+msgstr "min. Størrelse (MB)"
+
+#: ../src/strings.en:499
+msgid "max. Size (MB)"
+msgstr "max. Størrelse (MB)"
+
+#: ../src/strings.en:501
+msgid "Failed to save"
+msgstr "Kunne ikke gemme"
+
+#: ../src/strings.en:502
+#, c-format
+msgid "User %s (%u) requested your sharedfiles-list -> %s"
+msgstr "Bruger %s (%u) anmodede om din deleliste -> %s"
+
+#: ../src/strings.en:503
+msgid "accepted"
+msgstr "accepteret"
+
+#: ../src/strings.en:504
+msgid "denied"
+msgstr "nægtet"
+
+#: ../src/strings.en:507
+msgid "Autoconnect to servers in static list only"
+msgstr "Autoforbind kun til servere i statik liste"
+
+#: ../src/strings.en:509
+msgid "Try to download first and last chunks first"
+msgstr "Prøv at download første og sidste del først"
+
+#: ../src/strings.en:510
+msgid "Update queue list in real time"
+msgstr "Opdater kø liste i realtid"
+
+#: ../src/strings.en:511
+msgid "1 file recovered."
+msgstr "1 fil reddet."
+
+#: ../src/strings.en:512
+#, c-format
+msgid "%ld files recovered."
+msgstr "%ld filer reddet."
+
+#: ../src/strings.en:513
+msgid "Attempting archive recovery..."
+msgstr "Forsøger at redde arkiv..."
+
+#: ../src/strings.en:514
+msgid "Archive recovery successful."
+msgstr "Arkiv reddet."
+
+#: ../src/strings.en:515
+msgid "Archive recovery failed."
+msgstr "Arkiv kunne ikke reddes."
+
+#: ../src/strings.en:516
+msgid "Start next paused file when a file completes"
+msgstr "Start næste pausede fil, når en fil er færdig"
+
+#: ../src/strings.en:517
+msgid "Try to transfer full chunks to all uploads"
+msgstr ""
+
+#: ../src/strings.en:518
+msgid "Set manually added servers to High Priority"
+msgstr "Sæt manuelt tilføjede servere til Høj Priotet"
+
+#: ../src/strings.en:519
+msgid "Verbose (additional program feedback)"
+msgstr ""
+
+#: ../src/strings.en:520
+msgid "flat"
+msgstr "flad"
+
+#: ../src/strings.en:521
+msgid "round"
+msgstr "rund"
+
+#: ../src/strings.en:522
+#, c-format
+msgid "Client '%s' and '%s' have the same userhash or IP - removed '%s'"
+msgstr ""
+
+#: ../src/strings.en:523
+msgid "Extension"
+msgstr "Endelse"
+
+#: ../src/strings.en:524
+msgid "Availability"
+msgstr "Tilgængelig"
+
+#: ../src/strings.en:525
+msgid "I.C.H active"
+msgstr "I.C.H aktiveret"
+
+#: ../src/strings.en:526
+#, c-format
+msgid "Time for average graph: %i mins"
+msgstr "Tid for gennemsnitlig graf: %i mins"
+
+#: ../src/strings.en:527
+msgid "Graphs"
+msgstr "Grafer"
+
+#: ../src/strings.en:528
+msgid "Statistic Tree"
+msgstr "Statistik Træ"
+
+#: ../src/strings.en:531
+msgid "more..."
+msgstr "mere"
+
+#: ../src/strings.en:533
+msgid "Too many connections"
+msgstr "For mange forbindelser"
+
+#: ../src/strings.en:534
+#, c-format
+msgid "A file with that name already exists, the file has been saved as %s"
+msgstr ""
+
+#: ../src/strings.en:535
+msgid "Downloaded:"
+msgstr "Downloaded:"
+
+#: ../src/strings.en:536
+msgid "Added to downloads:"
+msgstr "Tilføjet til downloads:"
+
+#: ../src/strings.en:537
+msgid "Use sound"
+msgstr "Brug lyd"
+
+#: ../src/strings.en:538
+msgid "New entry on log"
+msgstr "Ny tekst i log"
+
+#: ../src/strings.en:539
+msgid "Starts a new chat session"
+msgstr "Starter en ny chat session"
+
+#: ../src/strings.en:540
+msgid "A new chat message is received"
+msgstr "En ny chat besked er modtaget"
+
+#: ../src/strings.en:541
+msgid "A download is added or finished"
+msgstr "En download er tilføjet eller færdig"
+
+#: ../src/strings.en:542
+msgid "Notifications"
+msgstr ""
+
+#: ../src/strings.en:543
+msgid "Msg popup"
+msgstr "Besked Popup"
+
+#: ../src/strings.en:544
+msgid "Pop out when"
+msgstr "Pop op når"
+
+#: ../src/strings.en:545
+msgid "Message from"
+msgstr "Besked fra"
+
+#: ../src/strings.en:547
+msgid "Status Log"
+msgstr "Status Log"
+
+#: ../src/strings.en:549
+msgid "* Private chat session started"
+msgstr "* Privat chat session startet"
+
+#: ../src/strings.en:550
+#, c-format
+msgid "* %s slaps %s around with a large Babelfish!"
+msgstr ""
+
+#: ../src/strings.en:551
+msgid "Private Message"
+msgstr "Privat Besked"
+
+#: ../src/strings.en:552
+msgid "Op"
+msgstr "Op"
+
+#: ../src/strings.en:553
+msgid "DeOp"
+msgstr "DeOp"
+
+#: ../src/strings.en:554
+msgid "Voice"
+msgstr "Lyd"
+
+#: ../src/strings.en:555
+msgid "HalfOp"
+msgstr "HalvOp"
+
+#: ../src/strings.en:556
+msgid "DeHalfOp"
+msgstr "DeHalvOp"
+
+#: ../src/strings.en:557
+msgid "Kick"
+msgstr "Spark"
+
+#: ../src/strings.en:558
+msgid "Slap"
+msgstr "Smæk"
+
+#: ../src/strings.en:559
+msgid "Join"
+msgstr "Tilslutte"
+
+#: ../src/strings.en:560
+msgid "Channel List"
+msgstr "Kanal Liste"
+
+#: ../src/strings.en:563
+#, c-format
+msgid "* %s has joined %s"
+msgstr "* %s er tilsluttet %s"
+
+#: ../src/strings.en:564
+#, c-format
+msgid "* %s has parted %s (%s)"
+msgstr ""
+
+#: ../src/strings.en:565
+#, c-format
+msgid "* %s was kicked by %s (%s)"
+msgstr "* %s er sparket af %s (%s)"
+
+#: ../src/strings.en:566
+msgid ""
+"Your nick is already being used in the IRC server. Please choose a different "
+"nick in the IRC tab in Preferences."
+msgstr ""
+
+#: ../src/strings.en:567
+msgid "DeVoice"
+msgstr "DeVoice"
+
+#: ../src/strings.en:568
+#, c-format
+msgid "* %s has quit (%s)"
+msgstr "* %s afslutter (%s)"
+
+#: ../src/strings.en:569
+#, c-format
+msgid "* %s is now known as %s"
+msgstr "* %s er nu kendt som %s"
+
+#: ../src/strings.en:570
+#, c-format
+msgid "* %s sets mode: %s %s"
+msgstr "* %s sæt Mode: %s %s"
+
+#: ../src/strings.en:571
+msgid ""
+"** Some modes have been set that is not supported yet. You may need to leave "
+"and reenter channel to update nicklist.."
+msgstr ""
+
+#: ../src/strings.en:572
+msgid "Channel"
+msgstr "Rum"
+
+#: ../src/strings.en:576
+#, c-format
+msgid "PRIVMSG %s :ACTION slaps %s around with a large Babelfish!"
+msgstr "PRIVMSG %s :ACTION schlägt %s mit einem großen Babelfish!"
+
+#: ../src/strings.en:577
+msgid "Add timestamp to messages."
+msgstr "Tilføj tidsstempel til besked"
+
+#: ../src/strings.en:578
+msgid "Use Channel List Filter"
+msgstr "Brug kanal liste filter"
+
+#: ../src/strings.en:579
+msgid "Perform"
+msgstr "udføre"
+
+#: ../src/strings.en:580
+msgid "Use perform string on connect"
+msgstr ""
+
+#: ../src/strings.en:581
+msgid "Add to friends list"
+msgstr "Tilføj til venne liste"
+
+#: ../src/strings.en:582
+msgid "Load server channel list on connect"
+msgstr "Hent server kanal liste ved forbindelse"
+
+#: ../src/strings.en:583
+msgid "added you as friend!"
+msgstr "tilføjede dig som ven!"
+
+#: ../src/strings.en:584
+#, c-format
+msgid ""
+"The number you have selected for %s is larger than your OS supports:  %d\n"
+"This may cause your system to become unstable.\n"
+"\n"
+"Are you sure you want to do this?"
+msgstr ""
+
+#: ../src/strings.en:585
+msgid "Take over"
+msgstr "Overtag"
+
+#: ../src/strings.en:588
+msgid "Add this to the IRC clipboard to send to friends"
+msgstr "Tilføj dette til IRC udklipsholderen for at sende det til venner"
+
+#: ../src/strings.en:589
+msgid "Send this to friend: "
+msgstr "Send dette til ven:"
+
+#: ../src/strings.en:590
+#, c-format
+msgid "%s sent (%s) to be auto started."
+msgstr ""
+
+#: ../src/strings.en:591
+msgid "Accept ED2K links in IRC. (Use this with caution!)"
+msgstr "Brug ED2K links i IRC. (Brug dette med omtanke!)"
+
+#: ../src/strings.en:593
+msgid "Start minimized"
+msgstr "Start minimeret"
+
+#: ../src/strings.en:594
+msgid "Urgent: Out of diskspace, serverconnection lost"
+msgstr "Vigtigt: Der er ikke mere plads på disken, forbindelse til server tabt"
+
+#: ../src/strings.en:595
+msgid "Colors"
+msgstr "Farver"
+
+#: ../src/strings.en:596
+msgid "Background"
+msgstr "Baggrund"
+
+#: ../src/strings.en:597
+msgid "Grid"
+msgstr ""
+
+#: ../src/strings.en:598
+msgid "Download current"
+msgstr "Download nu"
+
+#: ../src/strings.en:599
+msgid "Download time-average"
+msgstr "Download gennemsnitlig (Tid)"
+
+#: ../src/strings.en:600
+msgid "Download session-average"
+msgstr "Download gennemsnitlig (Session)"
+
+#: ../src/strings.en:601
+msgid "Upload current"
+msgstr "Upload nu"
+
+#: ../src/strings.en:602
+msgid "Upload time-average"
+msgstr "Upload gennemsnitlig (Zeit)"
+
+#: ../src/strings.en:603
+msgid "Upload session-average"
+msgstr "Upload gennemsnitlig (Session)"
+
+#: ../src/strings.en:604
+msgid "Active connections"
+msgstr "Aktive Forbindelser"
+
+#: ../src/strings.en:605
+msgid "Active downloads"
+msgstr "aktive Downloads"
+
+#: ../src/strings.en:606
+msgid "Active uploads"
+msgstr "aktive Uploads"
+
+#: ../src/strings.en:607
+msgid "Set Upload-Speedlimit"
+msgstr "ændre Upload-Grænse"
+
+#: ../src/strings.en:608
+msgid "Set Download-Speedlimit"
+msgstr "ændre Download-Grænse"
+
+#: ../src/strings.en:609
+msgid "Unlimited"
+msgstr "Ubegrænset"
+
+#: ../src/strings.en:610
+#, c-format
+msgid "minimum recommended\t%i "
+msgstr "Anbefalet Minimum\t%i "
+
+#: ../src/strings.en:611
+msgid "Set full up/down-speed"
+msgstr "Grænser deaktiveret"
+
+#: ../src/strings.en:612
+msgid "Throttle up/down-speed"
+msgstr "Up/Down-Grænse på 1kB/s"
+
+#: ../src/strings.en:613
+msgid "Ignore info messages"
+msgstr "Ignorer Info Beskeder"
+
+#: ../src/strings.en:614
+msgid "Connection lost"
+msgstr "Forbindelse afbrudt"
+
+#: ../src/strings.en:616
+msgid "How many downloads do you usually have going at once?"
+msgstr "Hvor mange downloads har du normalt gang i på engang?"
+
+#: ../src/strings.en:617
+msgid "If you tested your connection speed, put results here"
+msgstr "Hvis du har tested din forbindelses hastighed, indsæt resultaterne her"
+
+#: ../src/strings.en:618
+msgid "Preset Buttons"
+msgstr ""
+
+#: ../src/strings.en:619
+msgid "True Upload Bandwidth"
+msgstr "Upload-Grænse"
+
+#: ../src/strings.en:620
+msgid "True Download Bandwidth"
+msgstr "Download-Grænse"
+
+#: ../src/strings.en:622
+msgid "*** Disconnected"
+msgstr "*** Ikke Forbundet"
+
+#: ../src/strings.en:624
+msgid "Add to Friends"
+msgstr "Tilføj til Venner"
+
+#: ../src/strings.en:625
+msgid "Remove Friend"
+msgstr "Fjern Ven"
+
+#: ../src/strings.en:626
+msgid "removed from static server list"
+msgstr "Fjern fra static server liste"
+
+#: ../src/strings.en:627
+msgid "Remove from static server list"
+msgstr "Fjern fra static server liste"
+
+#: ../src/strings.en:628
+msgid "Length"
+msgstr "Længde"
+
+#: ../src/strings.en:631
+msgid "File &Info"
+msgstr "Fil &Info"
+
+#: ../src/strings.en:632
+msgid "Codec"
+msgstr "Codec"
+
+#: ../src/strings.en:633
+msgid "Bitrate"
+msgstr "Bitrate"
+
+#: ../src/strings.en:634
+msgid "Width"
+msgstr "Bredde"
+
+#: ../src/strings.en:635
+msgid "Fps"
+msgstr "Billeder/sek"
+
+#: ../src/strings.en:636
+msgid "Channels"
+msgstr "Kanaler"
+
+#: ../src/strings.en:637
+msgid "Samplerate"
+msgstr ""
+
+#: ../src/strings.en:638
+msgid "Round Bitrate"
+msgstr ""
+
+#: ../src/strings.en:639
+msgid "Height"
+msgstr "Højde"
+
+#: ../src/strings.en:640
+#, c-format
+msgid "Unable to retrieve shared files from '%s'"
+msgstr "Kunne ikke modtage delte filer fra '%s'"
+
+#: ../src/strings.en:641
+#, c-format
+msgid "Requesting shared files from '%s'"
+msgstr "Anmoder om delte filer fra '%s'"
+
+#: ../src/strings.en:642
+msgid "View Files"
+msgstr "Se Filer"
+
+#: ../src/strings.en:643
+msgid "Establish Friend Slot"
+msgstr ""
+
+#: ../src/strings.en:644
+msgid "(Friend Slot)"
+msgstr ""
+
+#: ../src/strings.en:645
+msgid "UDP Port"
+msgstr "UDP Port"
+
+#: ../src/strings.en:651
+msgid "Custom"
+msgstr "manuel"
+
+#: ../src/strings.en:652
+msgid "(enter below!)"
+msgstr "(indsæt nedenfor!)"
+
+#: ../src/strings.en:653
+#, c-format
+msgid "Max Downloadrate Average (Session): %.2f kB/s"
+msgstr "Max Gennemsnitlig Download Hastighed (Session): %.2f kB/s"
+
+#: ../src/strings.en:654
+#, c-format
+msgid "Max Downloadrate (Session): %.2f kB/s"
+msgstr "Max Download Hastighed (Session): %.2f kB/s"
+
+#: ../src/strings.en:655
+msgid "Safe Connect."
+msgstr "Sikker Forbindelse"
+
+#: ../src/strings.en:656
+msgid "You need a HighID to create a valid sourcelink"
+msgstr ""
+
+#: ../src/strings.en:657
+msgid "Copy ED2k link to clipboard (source)"
+msgstr "Kopier ED2k link til udklipsholder (kilder)"
+
+#: ../src/strings.en:659
+#, c-format
+msgid "Corrupted compressed packet for %s received (error %i)"
+msgstr "Beskadiget pakket pakke fra %s modtaget (fejl %i)"
+
+#: ../src/strings.en:660
+msgid "The file emfriends.met is invalid or corrupted!"
+msgstr "Filen emfriends.met er invalid eller beskadiget!"
+
+#: ../src/strings.en:661
+#, c-format
+msgid "Unknown error while reading emfriends.met: %s"
+msgstr ""
+
+#: ../src/strings.en:662
+msgid "Unknown server info received!"
+msgstr "Ukendt Serverinformation modtaget!"
+
+#: ../src/strings.en:663
+msgid "Fatal Error: Failed to create Timer"
+msgstr "Fatal Fejl: Kunne ikke oprette timer"
+
+#: ../src/strings.en:664
+msgid "Down (kbit/s)"
+msgstr "Ned (kbit/s)"
+
+#: ../src/strings.en:665
+msgid "Up (kbit/s)"
+msgstr "Up (kbit/s)"
+
+#: ../src/strings.en:668
+msgid "Auto"
+msgstr "Auto"
+
+#: ../src/strings.en:669
+msgid "Auto [No]"
+msgstr "Auto [No]"
+
+#: ../src/strings.en:670
+msgid "Auto [Ho]"
+msgstr "Auto [Hj]"
+
+#: ../src/strings.en:671
+msgid "Auto [Re]"
+msgstr "Auto [Re]"
+
+#: ../src/strings.en:672
+msgid "Auto [Lo]"
+msgstr "Auto [La]"
+
+#: ../src/strings.en:673
+#, c-format
+msgid "Connection attempt to %s (%s:%i ) timed out"
+msgstr "Forbindelses forsøg til %s (%s:%i ) tid gik"
+
+#: ../src/strings.en:674
+#, c-format
+msgid "Connecting to %s (%s:%i ) failed."
+msgstr "Forbindelse til %s (%s:%i ) fejlede."
+
+#: ../src/strings.en:675
+msgid "Failed to connect to all servers listed. Making another pass."
+msgstr ""
+
+#: ../src/strings.en:677
+msgid "max. new connections / 5secs"
+msgstr "max. nye forbindelser. pr 5 Sek."
+
+#: ../src/strings.en:679
+msgid "Max Users"
+msgstr "Maximum"
+
+#: ../src/strings.en:680
+msgid "Extended Settings"
+msgstr "Udvidet Indstillinger"
+
+#: ../src/strings.en:681
+msgid ""
+"Warning:  Do not change these setting unless you know what you are doing.\n"
+"Otherwise you can easily make things worse for yourself.\n"
+"xMule will run fine without adjusting any of these settings."
+msgstr ""
+"Advarsel: Ændre ikke disse indstillinger, med mindre do ved hvad du laver.\n"
+"Ellers kan du nemt lave tingene værrer for dig selv.\n"
+"xMule vil køre fint uden at ændre disse indstillinger."
+
+#: ../src/strings.en:682
+msgid "Add a friend"
+msgstr "Tilføj en ven"
+
+#: ../src/strings.en:685
+msgid "You have to enter a valid username and userhash !"
+msgstr "Du skal skrive et gyldig brugernavn og bruger hash!"
+
+#: ../src/strings.en:687
+#, c-format
+msgid "Recovered part.met file for: %s"
+msgstr "Reddede part.met fil fra: %s"
+
+#: ../src/strings.en:688
+msgid "Comment this file! (This text will be shown to all users)"
+msgstr ""
+
+#: ../src/strings.en:689
+msgid ""
+"For a film, you can say it's length, it's story, the language... And if it "
+"is a fake, you can inform other xMule users..."
+msgstr ""
+
+#: ../src/strings.en:690
+#, c-format
+msgid "%s file comment"
+msgstr "%'s Kommentar"
+
+#: ../src/strings.en:691
+msgid "Change this file's comment..."
+msgstr "Ændre kommentaren til denne fil"
+
+#: ../src/strings.en:692
+msgid "No comments"
+msgstr "Ingen kommentarer"
+
+#: ../src/strings.en:693
+msgid "File comment:"
+msgstr "Fil Kommentar:"
+
+#: ../src/strings.en:694
+msgid "Not connected yet..."
+msgstr "Ikke forbundet endnu..."
+
+#: ../src/strings.en:696
+msgid "&Refresh"
+msgstr "&Opdater"
+
+#: ../src/strings.en:697
+msgid "All Comments"
+msgstr "Alle Kommentarer"
+
+#: ../src/strings.en:698
+msgid "No comments entered..."
+msgstr "Ingen Kommentarer."
+
+#: ../src/strings.en:699
+msgid "File quality"
+msgstr "Fil kvalitet"
+
+#: ../src/strings.en:707
+msgid "K"
+msgstr "K"
+
+#: ../src/strings.en:708
+msgid "M"
+msgstr "M"
+
+#: ../src/strings.en:709
+msgid "G"
+msgstr "G"
+
+#: ../src/strings.en:710
+msgid "T"
+msgstr "T"
+
+#: ../src/strings.en:711
+msgid "Ignore Emule Proto Messages"
+msgstr "Ignorer Emule-IRC-Protokol Beskeder"
+
+#: ../src/strings.en:713
+#, c-format
+msgid "Server Occupation: %.2f%%"
+msgstr ""
+
+#: ../src/strings.en:714
+msgid "Progressbar Style"
+msgstr "Værktøjslinje Stil"
+
+#: ../src/strings.en:715
+msgid "Autotake ED2K Links only during runtime"
+msgstr "Overtag kun ED2K links når xmule kører"
+
+#: ../src/strings.en:716
+msgid "Add files to download in paused mode"
+msgstr "Tilføj filer til download i paused mode"
+
+#: ../src/strings.en:717
+#, c-format
+msgid ""
+"Lost to corruption: %s       Gained by compression: %s\n"
+"Packages saved by I.C.H.: %i"
+msgstr ""
+
+#: ../src/strings.en:718
+msgid ""
+"No help-file found.\n"
+" Please visit our homepage to get a copy of the newest help-file! (download "
+"section)"
+msgstr ""
+
+#: ../src/strings.en:719
+msgid "Show overhead bandwidth"
+msgstr ""
+
+#: ../src/strings.en:720
+#, c-format
+msgid "Up: %.1f | Down: %.1f"
+msgstr "Op: %.1f | Ned: %.1f"
+
+#: ../src/strings.en:721
+msgid "List"
+msgstr "Liste"
+
+#: ../src/strings.en:722
+msgid "Systrayicon Speedbar"
+msgstr "Værktøjslinje Hastighedmåler"
+
+#: ../src/strings.en:723
+#, c-format
+msgid "Rating for file '%s' received: %i"
+msgstr ""
+
+#: ../src/strings.en:724
+#, c-format
+msgid "Description for file '%s' received: %s"
+msgstr ""
+
+#: ../src/strings.en:725
+msgid "Web Services"
+msgstr "Web Services"
+
+#: ../src/strings.en:726
+msgid "Edit Webservices"
+msgstr "Ændre Webservices"
+
+#: ../src/strings.en:727
+msgid "Check for new version"
+msgstr "Se efter ny version"
+
+#: ../src/strings.en:728
+msgid "Startup"
+msgstr "Programm start"
+
+#: ../src/strings.en:729
+msgid ""
+"A new version of xMule is available! Check the project-homepage for more "
+"information."
+msgstr ""
+
+#: ../src/strings.en:730
+msgid ""
+"A new version of xMule is available. Click here to read about the new "
+"version!"
+msgstr ""
+
+#: ../src/strings.en:731
+msgid "Unable to check for new version."
+msgstr "Kunne ikke tjekke for nye versioner."
+
+#: ../src/strings.en:732
+msgid "New xMule-version detected"
+msgstr "Der blev fundet en ny version af xMule"
+
+#: ../src/strings.en:733
+msgid "No new xMule-version detected."
+msgstr "Der blev ikke fundet nogen ny version af xMule."
+
+#: ../src/strings.en:734
+msgid "&Versioncheck"
+msgstr "&Versionstjek"
+
+#: ../src/strings.en:735
+msgid ""
+"\n"
+"\n"
+"Do you want do visit the Informationpage now?"
+msgstr ""
+
+#: ../src/strings.en:736
+msgid "Video Player"
+msgstr "Video Afspiller"
+
+#: ../src/strings.en:737
+msgid "Create backup to preview"
+msgstr ""
+
+#: ../src/strings.en:738
+msgid "(empty=default)"
+msgstr "(Tom=Standard)"
+
+#: ../src/strings.en:739
+msgid "My Info"
+msgstr "Mine Info"
+
+#: ../src/strings.en:740
+msgid "ID"
+msgstr "ID"
+
+#: ../src/strings.en:741
+msgid "Low ID"
+msgstr "Lav ID"
+
+#: ../src/strings.en:742
+msgid "High ID"
+msgstr "høj ID"
+
+#: ../src/strings.en:743
+msgid "Obtained Parts"
+msgstr "Sendte Dele"
+
+#: ../src/strings.en:744
+#, c-format
+msgid "Total Overhead (Packets): %s (%s)"
+msgstr ""
+
+#: ../src/strings.en:745
+#, c-format
+msgid "File Request Overhead (Packets): %s (%s)"
+msgstr ""
+
+#: ../src/strings.en:746
+#, c-format
+msgid "Source Exchange Overhead (Packets): %s (%s)"
+msgstr ""
+
+#: ../src/strings.en:747
+#, c-format
+msgid "Server Overhead (Packets): %s (%s)"
+msgstr ""
+
+#: ../src/strings.en:748
+msgid "Creating file completion thread failed"
+msgstr ""
+
+#: ../src/strings.en:749
+msgid "Last Reception:"
+msgstr "Sidst Aktiv"
+
