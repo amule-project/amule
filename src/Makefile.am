@@ -271,6 +271,7 @@ amulewebDLG_CXXFLAGS = $(WX_CXXFLAGS) -DAMULEWEBDLG
 amulewebDLG_LDADD = $(WX_LIBS) $(ZLIB_LIBS)
 
 noinst_HEADERS = AddFileThread.h \
+		 AICHSyncThread.h \
 		 CryptoPP.h \
 		 AddFriend.h \
 		 amuleDlg.h \
@@ -351,6 +352,8 @@ noinst_HEADERS = AddFileThread.h \
 		 ServerList.h \
 		 ServerSocket.h \
 		 ServerWnd.h \
+		 SHA.h \
+		 SHAHashSet.h \
 		 SharedFileList.h \
 		 SharedFilesCtrl.h \
 		 SharedFilesWnd.h \
