@@ -252,7 +252,7 @@ struct CUploadingView
 	/**
 	 * Helperfunction which draws a simple bar-span over the clients requested file.
 	 */
-	static void DrawStatusBar( CUpDownClient* client, wxDC* dc, wxRect rect );
+	static void DrawStatusBar( CUpDownClient* client, wxDC* dc, wxRect &rect );
 };
 
 

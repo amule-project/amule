@@ -683,7 +683,7 @@ int CUploadingView::SortProc( long item1, long item2, long sortData )
 }
 
 
-void CUploadingView::DrawStatusBar( CUpDownClient* client, wxDC* dc, wxRect rect )
+void CUploadingView::DrawStatusBar( CUpDownClient* client, wxDC* dc, wxRect &rect )
 {
 	rect.y		+= 2;
 	rect.height	-= 2;
@@ -911,7 +911,7 @@ void CClientsView::Initialize( CClientListCtrl* list )
 	const CClientList::IDMap& clist = theApp.clientlist->GetClientList();
 	CClientList::IDMap::const_iterator it = clist.begin();
 	
-	for ( ; it != clist.end(); it++ ) {
+	for ( ; it != clist.end(); ++it ) {
 		list->InsertClient( it->second, list->GetListView() );
 	}
 }
