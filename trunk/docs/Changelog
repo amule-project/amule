@@ -23,7 +23,7 @@ Version 2.0.0rc4 - The 'Rabbits and Mules love carrots' version.
                   - reload sharedfiles
                   - switch upload/uploadqueue
                   - clear completed files
-		* Added 3 new columns in upload windatch to colorize the download listow (Client Software , Upload/Download , Remote Status)
+		* Added 3 new columns in upload window (Client Software , Upload/Download , Remote Status)
 		* Added 'Client Software' column in upload-queue window
 		* "Asked for another file" on sources now with the filename that is asked for ( i.e. A4AF -> xyz.avi)
                 * Added 'copy file feedback to clipboard' function
@@ -44,9 +44,20 @@ Version 2.0.0rc4 - The 'Rabbits and Mules love carrots' version.
 		* Fixed unicode issues that stopped adding files to download from ed2k utility 
 		  and internal link handler
 
+	Jacobo221:
+		* New feature to open webpages in new tab instead of new window
+		* Fixed a compatibility bug in OnlineSig with eMule's and added connecting support
+		* Fixed bug in Statistics limits in Preferences
+		* Fixed bug in Upload/UpQueue button
+		* Fixed SERV.4 bug
+		* Fixed DISP.14 bug
+		* Added DOS compatibility into CAS and update onlinesig support
+		* Several features in XAS (see XAS's changelog)
+
 	Kry:	
 		* Fixed wxWidgets 2.5.x socket code. aMule now works on wx2.5.1 perfectly, wx2.5.2 introduces some GUI bugs.
 		* Rewrote Preferences engine to be much nicer, and Mac compatible :) Thanks to deltaHF for the new icons.
+		* Wrong .part.met files no longer make aMule abort on startup. Now a warning is displayed on log and aMule ignores that file.
 		* Added the new compatible client flags tag agreed with lphant devs and eMule devs. xMule devs refused to use it.
 		* Overloaded the wxSocketClient::Destroy to a safer version, to check cases when deletion is not called from Destroy()
 		* Fixed the disconnection of clients that have MS_CHATTING state.
@@ -182,12 +193,17 @@ Version 2.0.0rc4 - The 'Rabbits and Mules love carrots' version.
 		* Added support for memory usage and binary name (on xas)
 		
 	Phoenix:
+		* code cleaning in several modules due to making the members
+		  size, opcode and prot private in packets.h.
+		* CFile Close(), Read() and Seek() made const. Seek() needed
+		  the use of mutable with m_fd to be const.
+		* put lots of consts around the code in the routines that
+		  should be so.
 		* Patch to --enable-stdin to aid in debug with valgrind.
 		* code cleaning in module Packets, made a lot of stuff private
 		  now.
 		* small hacks to print debug messages and avoid crashes,
 		  mainly in PartFile.cpp.
-		* lots of consts around the code.
 		* sanity checks in debug mode (MagicNumbers) to aid finding
 		  bogus clients and files.
 		* created debugstuff module, debug build only.
@@ -214,6 +230,15 @@ Version 2.0.0rc4 - The 'Rabbits and Mules love carrots' version.
 		  aLinkCreator. Using wxAppConsole when wx > 2.5.0.
 		* Fixed compilation and linking in 2.5.x for amuleweb. Now
 		  uses wxAppConsole when wx > 2.5.0.
+		* Added a test for the return value of
+		  theApp.serverlist->GetServerByAddress(), which could be
+		  NULL. This was the reason why aMule was crashing when trying
+		  to connect to server with wxWidgets-2.5.2.
+		* Fixed compilation and linking in 2.5.x for amulecmd. Same
+		  problem as amuleweb.
+		* commited a patch from wolti that fixes compilation on 
+		  sparc/Solaris systems.
+		* More sparc compilation fixes, thanks to wimms.
 
 	shakraw:
 		* Fixed the "remote connect" bug
@@ -304,6 +329,9 @@ Version 2.0.0rc4 - The 'Rabbits and Mules love carrots' version.
 		* Fixed the possibility of sources being added to multiple source-lists at the same time (No more mis-matching hashes warnings).
 		* Fixed the new columns added by deltaHF not being displayed and added checks in case the same thing happens again.
 		* Almost completly eleminated flicker on the download list and did a cleanup of the drawing routines associated the the download list widget.
+		* Fixed some lists (Server list, maybe others) not being sorted when aMule is started.
+		* Fix mem-corruption bug in SysTray code if the systray was compiled in but hidden.
+		* Fixed the problem with deleting the last (connected) server on the server list.
 		* Removed the following files:
 		  - ini2.*
 		  - CString.h
@@ -442,7 +470,6 @@ Version 2.0.0rc3 - The 'Target: Stability' version.
   		* WebServer cleanly stopped before exit	
 		* Fixed max 2Gb display bug in amuleweb
 		* Updated aMule.tmpl: added file %complete support in transfer list
-
 	thepolish:
 
 		* Wrote wxcas based on cas from falso
