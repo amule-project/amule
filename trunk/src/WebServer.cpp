@@ -34,6 +34,9 @@
 #include <ctype.h>
 #include <stdlib.h>
 
+#include <map>
+#include <vector>
+
 //-------------------------------------------------------------------
 
 #include <wx/arrimpl.cpp>	// this is a magic incantation which must be done!
@@ -721,9 +724,9 @@ wxString CWebServer::_GetHeader(ThreadData Data, long lSession) {
 	
 	Out.Replace(wxT("[Session]"), sSession);
 	pThis->webInterface->Show(_("*** replaced session with ") + sSession + wxT("\n"));
-	Out.Replace(wxT("[HeaderMeta]"), wxT("")); // In case there are no meta
+	Out.Replace(wxT("[HeaderMeta]"), wxEmptyString); // In case there are no meta
 	Out.Replace(wxT("[aMuleAppName]"), wxT("aMule"));
-	Out.Replace(wxT("[version]"), wxString::Format(wxT("%s"), VERSION)); //shakraw - was CURRENT_VERSION_LONG);
+	Out.Replace(wxT("[version]"), wxString::Format(wxT("%s"), VERSION));
 	Out.Replace(wxT("[StyleSheet]"), pThis->m_Templates.sHeaderStylesheet);
 	Out.Replace(wxT("[WebControl]"), _("Web Control Panel"));
 	Out.Replace(wxT("[Transfer]"), _("Transfer"));
@@ -829,7 +832,7 @@ wxString CWebServer::_GetServerList(ThreadData Data) {
 	}
 	
 	wxString sSort = _ParseURL(Data, wxT("sort"));
-	if (sSort != wxT("")) {
+	if (!sSort.IsEmpty()) {
 		if (sSort == wxT("name"))
 			pThis->m_Params.ServerSort = SERVER_SORT_NAME;
 		else if(sSort == wxT("description"))
@@ -1005,7 +1008,6 @@ wxString CWebServer::_GetServerList(ThreadData Data) {
 	return Out;
 }
 
-
 wxString CWebServer::_GetTransferList(ThreadData Data) {
 	CWebServer *pThis = (CWebServer *)Data.pThis;
 	if (pThis == NULL) {
@@ -1023,15 +1025,15 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	wxString sOp = _ParseURL(Data, wxT("op"));
 	wxString sFileHash = _ParseURL(Data, wxT("file"));
 	wxString sSort = _ParseURL(Data, wxT("sort"));
-	wxString sSortReverse = _ParseURL(Data, wxT("sortreverse"));
+	wxString sDownloadSortRev = _ParseURL(Data, wxT("sortreverse"));
 	//
 	if (clcompl && IsSessionAdmin(Data, sSession)) {
 		pThis->webInterface->SendRecvMsg(wxT("TRANSFER CLEARCOMPLETE"));
 	}
 	//
 	wxString Out;
-	if (!_ParseURL(Data, wxT("c")).IsEmpty() && IsSessionAdmin(Data, sSession)) {
-		wxString HTTPTemp = _ParseURL(Data, wxT("c"));
+	wxString HTTPTemp = _ParseURL(Data, wxT("c"));
+	if (!HTTPTemp.IsEmpty() && IsSessionAdmin(Data, sSession)) {
 		if (HTTPTemp.Right(1) != wxT("/")) {
 			HTTPTemp += wxT("/");
 		}
@@ -1098,9 +1100,8 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 			pThis->m_Params.DownloadSort = DOWN_SORT_PROGRESS;
 		}
 	}
-	pThis->m_Params.bDownloadSortReverse = sSortReverse == wxT("true");
 	pThis->m_Params.bShowUploadQueue = _ParseURL(Data, wxT("showuploadqueue")) == wxT("true");
-	wxString sDownloadSortRev = pThis->m_Params.bDownloadSortReverse ?  wxT("true") : wxT("false");
+	pThis->m_Params.bDownloadSortReverse = sDownloadSortRev == wxT("true");
 
 	Out += pThis->m_Templates.sTransferImages;
 	Out += pThis->m_Templates.sTransferList;
@@ -1163,61 +1164,64 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	wxString OutE = pThis->m_Templates.sTransferDownLine;
 	wxString OutE2 = pThis->m_Templates.sTransferDownLineGood;
 
-	float fTotalSize = 0, fTotalTransferred = 0, fTotalCompleted = 0, fTotalSpeed = 0;
-	ArrayOfDownloadFiles FilesArray;
+	double fTotalSize = 0, fTotalTransferred = 0, fTotalCompleted = 0, fTotalSpeed = 0;
+	//
+	// Sorting maps
+	//
+	typedef std::multimap<wxString, DownloadFiles *> strMap;
+	typedef std::multimap<unsigned long, DownloadFiles *> ulongMap;
+	typedef std::multimap<double, DownloadFiles *> doubleMap;
+	typedef std::pair<wxString, DownloadFiles *> strPair;
+	typedef std::pair<unsigned long, DownloadFiles *> ulongPair;
+	typedef std::pair<double, DownloadFiles *> doublePair;
+	strMap strFilesMap;
+	ulongMap ulongFilesMap;
+	doubleMap doubleFilesMap;
 
 	// Populating array
+	bool completedAv = false;
 	wxString sTransferDLList = pThis->webInterface->SendRecvMsg(wxT("TRANSFER DL_LIST"));
-	bool completedAv=false;
-	wxString sEntry;
-	int newLinePos, brk=0;
-	while (sTransferDLList.Length()>0) {
-		newLinePos=sTransferDLList.First(wxT("\n"));
-
-		sEntry = sTransferDLList.Left(newLinePos);
-		sTransferDLList = sTransferDLList.Mid(newLinePos+1);
-
+	wxStringTokenizer sTransferDLTokens( sTransferDLList, wxT("\n") );
+	while (sTransferDLTokens.HasMoreTokens()) {
+		//
+		// Get download entry and tokenize
+		//
+		wxString sEntry = sTransferDLTokens.GetNextToken();
+		wxStringTokenizer sEntryTokens( sEntry, wxT("\t"), wxTOKEN_RET_EMPTY_ALL );
+		//
+		// Fill DownloadFiles structure
+		//
 		DownloadFiles *dFile = new DownloadFiles;
-
-		brk=sEntry.First(wxT("\t"));
-		dFile->sFileName = _SpecialChars(sEntry.Left(brk));
-		sEntry = sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
-		sEntry.Left(brk).ToULong(&dFile->lFileSize);
-		sEntry = sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
-		sEntry.Left(brk).ToULong(&dFile->lFileCompleted);
-		sEntry = sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
-		sEntry.Left(brk).ToULong(&dFile->lFileTransferred);
-		sEntry = sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
-		dFile->fCompleted = atof((char*) sEntry.Left(brk).GetData());
-		sEntry = sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
-		sEntry.Left(brk).ToULong(&dFile->lFileSpeed);
-		sEntry = sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
-		dFile->nFileStatus = atoi((char*) sEntry.Left(brk).GetData());
-		sEntry = sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
-		dFile->sFileStatus = sEntry.Left(brk);
-		sEntry = sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
-		dFile->nFilePrio = atoi((char*) sEntry.Left(brk).GetData());
-		sEntry = sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
-		dFile->sFileHash = sEntry.Left(brk);
-		sEntry = sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
-		dFile->lSourceCount = atoi((char*) sEntry.Left(brk).GetData());
-		sEntry = sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
-		dFile->lNotCurrentSourceCount = atoi((char*) sEntry.Left(brk).GetData());
-		sEntry = sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
-		dFile->lTransferringSourceCount = atoi((char*) sEntry.Left(brk).GetData());
-		sEntry = sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
-		dFile->sED2kLink = sEntry.Left(brk);
-		sEntry = sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
-		dFile->sFileInfo = _SpecialChars(sEntry.Left(brk));
-		sEntry = sEntry.Mid(brk+1);
-		completedAv = (atoi((char*) sEntry.GetData()) == 0) ? false : true;
-
+		wxString sAux;
+		sAux = sEntryTokens.GetNextToken(); dFile->sFileName = sAux;
+		sAux = sEntryTokens.GetNextToken(); sAux.ToULong(&dFile->lFileSize);
+		sAux = sEntryTokens.GetNextToken(); sAux.ToULong(&dFile->lFileCompleted);
+		sAux = sEntryTokens.GetNextToken(); sAux.ToULong(&dFile->lFileTransferred);
+		sAux = sEntryTokens.GetNextToken(); sAux.ToDouble(&dFile->fCompleted);
+		sAux = sEntryTokens.GetNextToken(); sAux.ToULong(&dFile->lFileSpeed);
+		sAux = sEntryTokens.GetNextToken(); sAux.ToLong(&dFile->lFileStatus);
+		sAux = sEntryTokens.GetNextToken(); dFile->sFileStatus = sAux;
+		sAux = sEntryTokens.GetNextToken(); sAux.ToLong(&dFile->lFilePrio);
+		sAux = sEntryTokens.GetNextToken(); dFile->sFileHash = sAux;
+		sAux = sEntryTokens.GetNextToken(); sAux.ToLong(&dFile->lSourceCount);
+		sAux = sEntryTokens.GetNextToken(); sAux.ToLong(&dFile->lNotCurrentSourceCount);
+		sAux = sEntryTokens.GetNextToken(); sAux.ToLong(&dFile->lTransferringSourceCount);
+		sAux = sEntryTokens.GetNextToken(); dFile->sED2kLink = sAux;
+		sAux = sEntryTokens.GetNextToken(); dFile->sFileInfo = _SpecialChars(sAux);
+		sAux = sEntryTokens.GetNextToken(); completedAv = completedAv || (sAux == wxT("1"));
+		//
 		// categories
-		int catVal = atoi((char*) pThis->webInterface->SendRecvMsg(wxString::Format(wxT("CATEGORIES GETCATEGORY %s"), dFile->sFileHash.GetData())).GetData());
-		if ((cat > 0) && (catVal != cat)) continue;
-			
+		//
+		long catVal;
+		wxString sCatVal = pThis->webInterface->SendRecvMsg(
+			wxT("CATEGORIES GETCATEGORY ") + dFile->sFileHash);
+		sCatVal.ToLong(&catVal);
+		if ((cat > 0) && (catVal != cat)) {
+			continue;
+		}			
 		if (cat < 0) {
-			wxString fileInfos = pThis->webInterface->SendRecvMsg(wxString::Format(wxT("CATEGORIES GETFILEINFO %s"), dFile->sFileHash.GetData()));
+			wxString fileInfos = pThis->webInterface->SendRecvMsg(
+				wxT("CATEGORIES GETFILEINFO ") + dFile->sFileHash);
 			int brk = fileInfos.First(wxT("\t"));
 			int fileStatus = atoi((char*) fileInfos.Left(brk).GetData());
 			fileInfos = fileInfos.Mid(brk+1);
@@ -1276,66 +1280,125 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 					break;
 			}
 		}
-
-		FilesArray.Add(dFile);
-	}
-	
-	// Sorting (simple bubble sort, we don't have tons of data here)
-	bool bSorted = true;
-	for (size_t nMax = 0;bSorted && nMax < FilesArray.GetCount()*2; nMax++) {
-		bSorted = false;
-		for (size_t i = 0; i < FilesArray.GetCount() - 1; i++) {
-			bool bSwap = false;
-			switch (pThis->m_Params.DownloadSort) {
-				case DOWN_SORT_NAME:
-					bSwap = FilesArray[i]->sFileName.CmpNoCase(FilesArray[i+1]->sFileName) > 0;
-					break;
-				case DOWN_SORT_SIZE:
-					bSwap = FilesArray[i]->lFileSize < FilesArray[i+1]->lFileSize;
-					break;
-				case DOWN_SORT_COMPLETED:
-					bSwap = FilesArray[i]->lFileCompleted < FilesArray[i+1]->lFileCompleted;
-					break;
-				case DOWN_SORT_TRANSFERRED:
-					bSwap = FilesArray[i]->lFileTransferred < FilesArray[i+1]->lFileTransferred;
-					break;
-				case DOWN_SORT_SPEED:
-					bSwap = FilesArray[i]->lFileSpeed < FilesArray[i+1]->lFileSpeed;
-					break;
-				case DOWN_SORT_PROGRESS:
-					bSwap = FilesArray[i]->fCompleted  < FilesArray[i+1]->fCompleted ;
-					break;
-			}
-			
-			if (pThis->m_Params.bDownloadSortReverse) {
-				bSwap = !bSwap;
-			}
-			
-			if (bSwap) {
-				bSorted = true;
-				DownloadFiles* TmpFile = FilesArray[i];
-				FilesArray[i] = FilesArray[i+1];
-				FilesArray[i+1] = TmpFile;
-			}
+		switch (pThis->m_Params.DownloadSort) {
+		case DOWN_SORT_NAME:
+			strFilesMap.insert(strPair(dFile->sFileName, dFile));
+			break;
+		case DOWN_SORT_SIZE:
+			ulongFilesMap.insert(ulongPair(dFile->lFileSize, dFile));
+			break;
+		case DOWN_SORT_COMPLETED:
+			ulongFilesMap.insert(ulongPair(dFile->lFileCompleted, dFile));
+			break;
+		case DOWN_SORT_TRANSFERRED:
+			ulongFilesMap.insert(ulongPair(dFile->lFileTransferred, dFile));
+			break;
+		case DOWN_SORT_SPEED:
+			ulongFilesMap.insert(ulongPair(dFile->lFileSpeed, dFile));
+			break;
+		case DOWN_SORT_PROGRESS:
+			doubleFilesMap.insert(doublePair(dFile->fCompleted, dFile));
+			break;
 		}
 	}
+	//
+	// Sorting
+	//
+	std::vector<DownloadFiles *> FilesArray;
+	switch (pThis->m_Params.DownloadSort) {
+	case DOWN_SORT_NAME:
+		if (pThis->m_Params.bDownloadSortReverse) {
+			for(strMap::reverse_iterator it = strFilesMap.rbegin(); it != strFilesMap.rend(); ++it) {
+				FilesArray.push_back(it->second);
+			}
+		} else {
+			for(strMap::iterator it = strFilesMap.begin(); it != strFilesMap.end(); ++it) {
+				FilesArray.push_back(it->second);
+			}
+		}
+		break;
+	case DOWN_SORT_SIZE:
+		if (pThis->m_Params.bDownloadSortReverse) {
+			for(ulongMap::reverse_iterator it = ulongFilesMap.rbegin(); it != ulongFilesMap.rend(); ++it) {
+				FilesArray.push_back(it->second);
+			}
+		} else {
+			for(ulongMap::iterator it = ulongFilesMap.begin(); it != ulongFilesMap.end(); ++it) {
+				FilesArray.push_back(it->second);
+			}
+		}
+		break;
+	case DOWN_SORT_COMPLETED:
+		if (pThis->m_Params.bDownloadSortReverse) {
+			for(ulongMap::reverse_iterator it = ulongFilesMap.rbegin(); it != ulongFilesMap.rend(); ++it) {
+				FilesArray.push_back(it->second);
+			}
+		} else {
+			for(ulongMap::iterator it = ulongFilesMap.begin(); it != ulongFilesMap.end(); ++it) {
+				FilesArray.push_back(it->second);
+			}
+		}
+		break;
+	case DOWN_SORT_TRANSFERRED:
+		if (pThis->m_Params.bDownloadSortReverse) {
+			for(ulongMap::reverse_iterator it = ulongFilesMap.rbegin(); it != ulongFilesMap.rend(); ++it) {
+				FilesArray.push_back(it->second);
+			}
+		} else {
+			for(ulongMap::iterator it = ulongFilesMap.begin(); it != ulongFilesMap.end(); ++it) {
+				FilesArray.push_back(it->second);
+			}
+		}
+		break;
+	case DOWN_SORT_SPEED:
+		if (pThis->m_Params.bDownloadSortReverse) {
+			for(ulongMap::reverse_iterator it = ulongFilesMap.rbegin(); it != ulongFilesMap.rend(); ++it) {
+				FilesArray.push_back(it->second);
+			}
+		} else {
+			for(ulongMap::iterator it = ulongFilesMap.begin(); it != ulongFilesMap.end(); ++it) {
+				FilesArray.push_back(it->second);
+			}
+		}
+		break;
+	case DOWN_SORT_PROGRESS:
+		if (pThis->m_Params.bDownloadSortReverse) {
+			for(doubleMap::reverse_iterator it = doubleFilesMap.rbegin(); it != doubleFilesMap.rend(); ++it) {
+				FilesArray.push_back(it->second);
+			}
+		} else {
+			for(doubleMap::iterator it = doubleFilesMap.begin(); it != doubleFilesMap.end(); ++it) {
+				FilesArray.push_back(it->second);
+			}
+		}
+		break;
+	}
 	
+	//
 	// Displaying
-	wxString sDownList = wxT("");
-	wxString HTTPTemp;
-
-	for (size_t i = 0; i < FilesArray.GetCount(); i++) {
-		wxString JSfileinfo=FilesArray[i]->sFileInfo;
+	//
+	wxString sDownList;
+	for (unsigned int i = 0; i < FilesArray.size(); ++i) {
+		wxString JSfileinfo = FilesArray[i]->sFileInfo;
 		//JSfileinfo.Replace("\n","\\n");
 		JSfileinfo.Replace(wxT("|"),wxT("\\n"));
-		wxString sActions = sActions.Format(wxT("<acronym title=\"%s\"><a ref=\"javascript:alert(\'%s')\"><img src=\"l_info.gif\" alt=\"%s\"></a></acronym>"), FilesArray[i]->sFileStatus.GetData(),	JSfileinfo.GetData(), FilesArray[i]->sFileStatus.GetData());
-
-		wxString sED2kLink = sED2kLink.Format(wxT("<acronym title=\"[Ed2klink]\"><a href=\"%s\"><img src=\"l_ed2klink.gif\" alt=\"[Ed2klink]\"></a></acronym>"), FilesArray[i]->sED2kLink.GetData());
+		wxString sActions = 
+			wxT("<acronym title=\"") +
+			FilesArray[i]->sFileStatus +
+			wxT("\"><a ref=\"javascript:alert('") +
+			JSfileinfo +
+			wxT("')\"><img src=\"l_info.gif\" alt=\"") +
+			FilesArray[i]->sFileStatus +
+			wxT("\"></a></acronym>");
+		wxString sED2kLink =
+			wxT("<acronym title=\"[Ed2klink]\"><a href=\"") +
+			FilesArray[i]->sED2kLink +
+			wxT("\"><img src=\"l_ed2klink.gif\" alt=\"[Ed2klink]\"></a></acronym>");
 		sED2kLink.Replace(wxT("[Ed2klink]"), _("ED2K Link(s)"));
 		sActions += sED2kLink;
 
 		bool bCanBeDeleted = true;
-		switch (FilesArray[i]->nFileStatus) {
+		switch (FilesArray[i]->lFileStatus) {
 			case PS_COMPLETING:
 			case PS_COMPLETE:
 				bCanBeDeleted = false;
@@ -1377,7 +1440,7 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 			sActions.Replace(wxT("[Cancel]"), _("Cancel"));
 			sActions.Replace(wxT("[ConfirmCancel]"), _("Are you sure that you want to cancel and delete this file?\\n"));
 
-			if (FilesArray[i]->nFileStatus!=PS_COMPLETE && FilesArray[i]->nFileStatus!=PS_COMPLETING) {
+			if (FilesArray[i]->lFileStatus != PS_COMPLETE && FilesArray[i]->lFileStatus != PS_COMPLETING) {
 				sActions.Append(wxString::Format(wxT("<acronym title=\"[PriorityUp]\"><a href=\"?ses=[Session]&amp;w=transfer&op=prioup&file=%s%s\"><img src=\"l_up.gif\" alt=\"[PriorityUp]\"></a></acronym>"), FilesArray[i]->sFileHash.GetData(), sCat.GetData()));
 				sActions.Append(wxString::Format(wxT("&nbsp;<acronym title=\"[PriorityDown]\"><a href=\"?ses=[Session]&amp;w=transfer&op=priodown&file=%s%s\"><img src=\"l_down.gif\" alt=\"[PriorityDown]\"></a></acronym>"), FilesArray[i]->sFileHash.GetData(), sCat.GetData()));
 			}
@@ -1435,7 +1498,7 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 		} else
 			HTTPProcessData.Replace(wxT("[6]"), wxT("-"));
 		
-		switch (FilesArray[i]->nFilePrio) {
+		switch (FilesArray[i]->lFilePrio) {
 			case 0: HTTPTemp=_("Low");break;
 			case 10: HTTPTemp=_("Auto [Lo]");break;
 
@@ -1465,7 +1528,8 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	Out.Replace(wxT("[TotalDownCompleted]"), castItoXBytes((uint64)fTotalCompleted));
 	Out.Replace(wxT("[TotalDownTransferred]"), castItoXBytes((uint64)fTotalTransferred));
 	
-	Out.Replace(wxT("[ClearCompletedButton]"),(completedAv && IsSessionAdmin(Data,sSession)) ? pThis->m_Templates.sClearCompleted : wxT(""));
+	Out.Replace(wxT("[ClearCompletedButton]"),(completedAv && IsSessionAdmin(Data,sSession)) ?
+		pThis->m_Templates.sClearCompleted : wxString(wxEmptyString));
 
 	HTTPTemp.Printf(wxT("%8.2f %s"), fTotalSpeed/1024.0,_("kB/s"));
 	Out.Replace(wxT("[TotalDownSpeed]"), HTTPTemp);
@@ -1478,7 +1542,7 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	fTotalTransferred = 0;
 	fTotalSpeed = 0;
 
-	wxString sUpList = wxT("");
+	wxString sUpList;
 
 	//upload list
 	wxString sTransferULList = pThis->webInterface->SendRecvMsg(wxT("TRANSFER UL_LIST"));
@@ -1486,14 +1550,14 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	unsigned long transfDown, transfUp;
 	long transfDatarate; 
 	while (sTransferULList.Length()>0) {
-		newLinePos=sTransferULList.First(wxT("\n"));
+		int newLinePos = sTransferULList.First(wxT("\n"));
 
-		sEntry = sTransferULList.Left(newLinePos);
+		wxString sEntry = sTransferULList.Left(newLinePos);
 		sTransferULList = sTransferULList.Mid(newLinePos+1);
 
 		HTTPProcessData = OutE;
 
-		brk=sEntry.First(wxT("\t"));
+		int brk=sEntry.First(wxT("\t"));
 		HTTPProcessData.Replace(wxT("[1]"), _SpecialChars(sEntry.Left(brk)));
 		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
 		HTTPProcessData.Replace(wxT("[FileInfo]"), _SpecialChars(sEntry.Left(brk)));		
@@ -1540,20 +1604,20 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 
 		OutE = pThis->m_Templates.sTransferUpQueueLine;
 		// Replace [xx]
-		wxString sQueue = wxT("");
+		wxString sQueue;
 
 		//waiting list
 		wxString sTransferWList = pThis->webInterface->SendRecvMsg(wxT("TRANSFER W_LIST"));
 		while (sTransferWList.Length()>0) {
-			newLinePos=sTransferWList.First(wxT("\n"));
+			int newLinePos=sTransferWList.First(wxT("\n"));
 
-			sEntry = sTransferWList.Left(newLinePos);
+			wxString sEntry = sTransferWList.Left(newLinePos);
 			sTransferWList = sTransferWList.Mid(newLinePos+1);
 
 			char HTTPTempC[100] = "";
 			HTTPProcessData = OutE;
 
-			brk=sTransferWList.First(wxT("\t"));
+			int brk = sTransferWList.First(wxT("\t"));
 			if (brk==-1) {
 				HTTPProcessData.Replace(wxT("[UserName]"), _SpecialChars(sEntry));
 				continue;
@@ -1585,7 +1649,7 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	Out.Replace(wxT("[CLEARCOMPLETED]"), _("C&lear completed"));
 
 	wxString buffer;
-	buffer.Printf(wxT("%s (%i)"), _("Downloads"),FilesArray.GetCount());
+	buffer.Printf(wxT("%s (%u)"), _("Downloads"), FilesArray.size());
 	Out.Replace(wxT("[DownloadList]"),buffer);
 	buffer.Printf(wxT("%s (%i)"), _("Upload"), atoi((char*) pThis->webInterface->SendRecvMsg(wxT("QUEUE UL_GETLENGTH")).GetData()));
 	Out.Replace(wxT("[UploadList]"), buffer);
