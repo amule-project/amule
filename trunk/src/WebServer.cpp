@@ -760,6 +760,7 @@ wxString CWebServer::_GetHeader(ThreadData Data, long lSession) {
 	wxString sConnected;
 
 	CECPacket stat_req(EC_OP_STAT_REQ);
+	stat_req.AddTag(CECTag(EC_TAG_DETAIL_LEVEL, (uint8)EC_DETAIL_CMD));
 	CECPacket *stats = pThis->webInterface->SendRecvMsg_v2(&stat_req);
 	if ( !stats ) {
 		return wxEmptyString;
@@ -2151,6 +2152,7 @@ wxString CWebServer::_GetConnectedServer(ThreadData Data) {
 	OutS.Replace(wxT("[WebSearch]"), _("Web-based Search"));
 
 	CECPacket connstate_req(EC_OP_GET_CONNSTATE);
+	connstate_req.AddTag(CECTag(EC_TAG_DETAIL_LEVEL, (uint8)EC_DETAIL_WEB));
 	CECPacket *sServerStat = pThis->webInterface->SendRecvMsg_v2(&connstate_req);
 	if ( !sServerStat ) {
 		return wxEmptyString;
@@ -2622,6 +2624,7 @@ ServersInfo::ServersInfo(CamulewebApp *webApp) : ItemsContainer<ServerEntry, xSe
 bool ServersInfo::ServersInfo::ReQuery()
 {
 	CECPacket srv_req(EC_OP_GET_SERVER_LIST);
+	srv_req.AddTag(CECTag(EC_TAG_DETAIL_LEVEL, (uint8)EC_DETAIL_WEB));
 	CECPacket *srv_reply = m_webApp->SendRecvMsg_v2(&srv_req);
 	if ( !srv_reply ) {
 		return false;

@@ -26,7 +26,8 @@
 #include "ECcodes.h"	// Needed for EC types
 #include "endianfix.h"	// Needed for ENDIAN_SWAP_* macros
 
-#pragma interface
+// Commented out, because with current code it'll most likely scew up gcc optimizations
+//#pragma interface
 
 // Define this to keep partial packets
 // (those that had an error upon reception/creation)
@@ -94,15 +95,15 @@ class CECTag {
  * High level EC packet handler class
  */
 
-class CECPacket : public CECTag {
+class CECPacket : private CECTag {
 	friend class ECSocket;
 	public:
 				CECPacket(ec_opcode_t opCode) : CECTag(0, 0, NULL, false), m_opCode(opCode) {};
 				~CECPacket(void) {};
-//				CECTag::AddTag;
-//				CECTag::GetTagByIndex;
-//				CECTag::GetTagByName;
-//				CECTag::GetTagCount;
+				CECTag::AddTag;
+				CECTag::GetTagByIndex;
+				CECTag::GetTagByName;
+				CECTag::GetTagCount;
 		ec_opcode_t	GetOpCode(void) const { return m_opCode; }
 		uint32		GetPacketLength(void) const { return CECTag::GetTagLen(); }
 	private:
@@ -111,19 +112,22 @@ class CECPacket : public CECTag {
 		ec_opcode_t	m_opCode;
 };
 
-class CServer;
-class CPartFile;
-/*!
+
+/*
  * Specific tags for specific requests
  */
+
+class CServer;
+class CPartFile;
+
 class CEC_Server_Tag : public CECTag {
  	public:
- 		CEC_Server_Tag(CServer *);
+ 		CEC_Server_Tag(CServer *, unsigned int);
 };
 
 class CEC_ConnState_Tag : public CECTag {
  	public:
- 		CEC_ConnState_Tag();
+ 		CEC_ConnState_Tag(unsigned int);
 };
 
 class CEC_PartFile_Tag : public CECTag {
@@ -149,4 +153,4 @@ class CEC_PartStatus_Tag : public CECTag {
  		CEC_PartStatus_Tag(CPartFile *file, int statussize);
 };
 
-#endif /* ECPACKET_H */
+#endif /* ECPacket.h */

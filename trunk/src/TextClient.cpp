@@ -250,6 +250,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
  		case CMD_ID_SRVSTAT:
 		case CMD_ID_STATS:
 			request = new CECPacket(EC_OP_STAT_REQ);
+			request->AddTag(CECTag(EC_TAG_DETAIL_LEVEL, (uint8)EC_DETAIL_CMD));
 			request_list.push_back(request);
 			break;
 			
@@ -291,6 +292,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 
 		case CMD_ID_SERVERLIST:
 			request = new CECPacket(EC_OP_GET_SERVER_LIST);
+			request->AddTag(CECTag(EC_TAG_DETAIL_LEVEL, (uint8)EC_DETAIL_CMD));
 			request_list.push_back(request);
 			break;
 
@@ -489,7 +491,7 @@ void CamulecmdApp::Process_Answer_v2(CECPacket *response)
 						CECTag *server = response->GetTagByName(EC_TAG_STATS_CONNSTATE)->GetTagByIndex(0);
 						s = _("Connected to ");
 						s += server->GetTagByName(EC_TAG_SERVER_NAME)->GetStringData();
-						s += server->GetIPv4Data().StringIP();
+						s += wxT(" ") + server->GetIPv4Data().StringIP() + wxT(" ");
 						s += response->GetTagByName(EC_TAG_STATS_CONNSTATE)->GetInt8Data() == 2 ? _("with LowID") : _("with HighID");
 					}
 					break;

@@ -301,7 +301,7 @@ enum {
 	 * otherwise it will be "any server"
 	 * 
 	 * \par Tags:
-	 *  ::EC_TAG_ITEM_ID (0-1) identifies server to use
+	 *  ::EC_TAG_SERVER (0-1) identifies server to use
 	 */
 	EC_OP_SERVER_CONNECT,
 
@@ -394,25 +394,25 @@ enum {
 	EC_TAG_ITEM_ID,
 
 	/*!
-	 * \brief Tag for passing flags
+	 * \brief Selects response detail level.
+	 *
+	 * Selects response detail level in all packets that contain
+	 * a server, part/knownfile or updownclient tag. Value type is
+	 * \c uint8, and possible values are the EC_DETAIL_* enum values.
+	 *
+	 * May be included in any request packet, its default value is
+	 * highest detail - to save some bandwidth on GUI transfers.
 	 */
-	 EC_TAG_FLAGS,
-	 
-	/*!
-	 * \brief Tags for status (or stats) info
+	EC_TAG_DETAIL_LEVEL,
+
+	/*
+	 * Tags for status (or stats) info
 	 */
-	/*!
-	 * \brief Connection status: high/low id or disconnected
-	 * 
-	 * Values (uin32): ed2k ID, 0 if disconnected, 0xffffffff if connection in progress
-	 */
-	EC_TAG_STATS_ED2K_ID,
-	EC_TAG_STATS_SERVER,
 
 	/*!
 	 * \brief Connection state.
 	 *
-	 * Possible values (uint8):
+	 * Possible values (\c uint8):
 	 *	<ul>
 	 *		<li>0 - Not Connected</li>
 	 *		<li>1 - Connecting</li>
@@ -582,5 +582,16 @@ enum {
 
 };
 
+
+/*!
+ * EC detail level values
+ *
+ * All higher levels contain all the lower level information aswell.
+ */
+enum {
+	EC_DETAIL_CMD,		///< aMuleCmd uses this level to obtain only basic information
+	EC_DETAIL_WEB,		///< aMuleWeb uses this level to obtain represenative (but not full) information
+	EC_DETAIL_GUI		///< the (upcoming) remote gui will use this (default) value, to obtain full information
+};
 
 #endif	/* ECCODES_H */
