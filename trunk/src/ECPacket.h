@@ -100,6 +100,37 @@ class CECTag {
 		EC_IPv4_t 	GetIPv4Data(void) const;
 		CMD4Hash	GetMD4Data(void) const { return CMD4Hash((const unsigned char *)m_tagData); }
 		
+		void AssignIfExist(ec_tagname_t tagname, uint8 &target)
+		{
+			CECTag *tag = GetTagByName(tagname);
+			if ( tag ) target = tag->GetInt8Data();
+		}
+		void AssignIfExist(ec_tagname_t tagname, uint16 &target)
+		{
+			CECTag *tag = GetTagByName(tagname);
+			if ( tag ) target = tag->GetInt16Data();
+		}
+		void AssignIfExist(ec_tagname_t tagname, uint32 &target)
+		{
+			CECTag *tag = GetTagByName(tagname);
+			if ( tag ) target = tag->GetInt32Data();
+		}
+		void AssignIfExist(ec_tagname_t tagname, uint64 &target)
+		{
+			CECTag *tag = GetTagByName(tagname);
+			if ( tag ) target = tag->GetInt64Data();
+		}
+		void AssignIfExist(ec_tagname_t tagname, CMD4Hash &target)
+		{
+			CECTag *tag = GetTagByName(tagname);
+			if ( tag ) target = tag->GetMD4Data();
+		}
+		void AssignIfExist(ec_tagname_t tagname, wxString &target)
+		{
+			CECTag *tag = GetTagByName(tagname);
+			if ( tag ) target = tag->GetStringData();
+		}
+
 	protected:
 		CECTag(wxSocketBase *sock, ECSocket& socket, void *opaque);
 		
