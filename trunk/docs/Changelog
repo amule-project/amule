@@ -8,6 +8,15 @@ Version 2.0.0-rc2 - The Unnamed version.
 	Ariel:
 		* Implemented completed parts count on file rehash.
 		   Prevents your downloads to completely lost on a wrong .part.met write.
+		   
+	croakerc:
+	        * Added zlib version check
+		* *BSD compatibility
+		
+	deltaHF:
+	        * New icon for aMule in DL/UP window ;)
+		* curl-config now >= 7.9.5 (for debian)
+		* i18n stuff
 
 	falso:
 		* Added cas (C aMule Statistics), a remake of aStats but 10 times faster (still lack online sign).
@@ -20,6 +29,9 @@ Version 2.0.0-rc2 - The Unnamed version.
 		* Modified configure scripts, only amule is compiled by default
 		* Added cas, ed2k, amulecmd, amulegui, amule webserver, amule webserver gui
 		* fixed wrong zlib check in configure    
+		
+	hoschy, one-2-one:
+	        * MacOSX stuff
 		  	
 	Kry:
 		* Implemented the Complete count on search results and on file publishing.
@@ -84,10 +96,18 @@ Version 2.0.0-rc2 - The Unnamed version.
 		* Fixed SysTray and gtk-files being compiled even when disabled on configure.
 		* Fixed several warnings.
 		* Make aMule compile on wxWidgets 2.5 (and CVS) version.
+		
+	Madcat:
+	        * win32 LaunchUrl() function
+		* Added amule-win32.HOWTO.txt
+		* Better win32 version of Hostname() function
 
 	shakraw:
 		* rewrote WebSocket.* and modified WebServer.*: they use wxThreads and
 		  wxSockets to be used on other platform too.
+		  
+	the-polish:
+	        * win32 stuff
 		  
 	Xaignar:
 		* Amule no longer writes met files when priority is changed through the
