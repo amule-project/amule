@@ -28,9 +28,8 @@
 
 
 class Category_Struct;
-class CUploadListCtrl;
+class CClientListCtrl;
 class CDownloadListCtrl;
-class CQueueListCtrl;
 class CMuleNotebook;
 class wxListCtrl;
 class wxSplitterEvent;
@@ -110,16 +109,21 @@ public:
 	 */
 	void	UpdateCatTabTitles();
 
+	
+	/**
+	 * Call this function before displaying the dialog.
+	 *
+	 * This functions does a few tasks to ensure that the dialog is looking the right way.
+	 */
+	void	Prepare();
 
-	//! Pointer to the list of recieving files.
-	CUploadListCtrl*	uploadlistctrl;
 	//! Pointer to the download-queue.
 	CDownloadListCtrl*	downloadlistctrl;
-	//! Pointer to the list of clients waiting to recieve files.
-	CQueueListCtrl*		queuelistctrl;
+	//! Pointer to the list of clients.
+	CClientListCtrl*	clientlistctrl;
 	
-	//! Used to signify which of the two upload lists are showed.
-	bool				windowtransferstate;
+	//! Contains the current (or last if the clientlist is hidden) position of the splitter.
+	int m_splitter;
 
 private:
 	/**
@@ -168,9 +172,15 @@ private:
 	void OnNMRclickDLtab(wxMouseEvent& evt);
 
 	/**
-	 * Event-handler for saving the position of the splitter-widget.
-	 */    
-	void OnSashPositionChanged(wxSplitterEvent& evt);
+	 * Event-handler for the list-toggle button.
+	 */
+	void OnToggleClientList( wxCommandEvent& event );
+    
+	/**
+	 * Event-handler for automatic show/hide of the clientlistctrl.
+	 */
+	void OnSashPositionChanging(wxSplitterEvent& evt);
+
 
 	//! Variable used to ensure that the category menu doesn't get displayed twice.
 	wxMenu* m_menu;

@@ -44,11 +44,12 @@
 // members of CUpDownClient
 // which are mainly used for downloading functions
 #ifndef AMULE_DAEMON
-#include "DownloadListCtrl.h"  // Needed for CDownloadListCtrl
-#include "TransferWnd.h"       // Needed for CTransferWnd
+#include <wx/dcmemory.h>		// Needed for wxMemoryDC
+#include <wx/gdicmn.h>			// Needed for wxRect
+
 #include "color.h"             // Needed for RGB
 
-void CUpDownClient::DrawStatusBar(wxMemoryDC* dc, wxRect rect, bool onlygreyrect, bool  bFlat)
+void CUpDownClient::DrawStatusBar(wxMemoryDC* dc, const wxRect& rect, bool onlygreyrect, bool  bFlat)
 {
 	static CBarShader s_StatusBar(16);
 

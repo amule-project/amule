@@ -46,7 +46,6 @@
 #include "KnownFileList.h"	// Needed for CKnownFileList
 #include "SysTray.h"		// Needed for TBN_DLOAD
 #include "UploadQueue.h"	// Needed for CFileHash
-#include "TransferWnd.h"	// Needed for CTransferWnd
 #include "IPFilter.h"		// Needed for CIPFilter
 #include "server.h"		// Needed for CServer
 #include "sockets.h"		// Needed for CServerConnect
@@ -1434,6 +1433,9 @@ void CPartFile::UpdateCompletedInfos()
 
 
 #ifndef AMULE_DAEMON
+#include <wx/dcmemory.h>		// Needed for wxMemoryDC
+#include <wx/gdicmn.h>			// Needed for wxRect
+ 
 void CPartFile::DrawStatusBar( wxMemoryDC* dc, wxRect rect, bool bFlat )
 {
 	static CBarShader s_ChunkBar(16);

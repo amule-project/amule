@@ -234,7 +234,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				// Socket might die because of sending in InfoPacketsReceived, so check
 				if (m_client) {
 					m_client->ConnectionEstablished();
-					//theApp.amuledlg->transferwnd->clientlistctrl.RefreshClient(client);
+					Notify_UploadCtrlRefreshClient( m_client );
 				}
 				
 				break;
@@ -288,7 +288,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					theApp.clientlist->AddClient(m_client);
 					m_client->SetCommentDirty();
 				}
-				//theApp.amuledlg->transferwnd->clientlistctrl.RefreshClient(client);
+				Notify_UploadCtrlRefreshClient( m_client );
 				// send a response packet with standart informations
 				if ((m_client->GetHashType() == SO_EMULE) && !bIsMuleHello) {
 					m_client->SendMuleInfoPacket(false);				

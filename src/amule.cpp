@@ -117,8 +117,7 @@
 #include "SearchDlg.h"			// Needed for CSearchDlg
 #include "ServerListCtrl.h"		// Needed for CServerListCtrl
 #include "SharedFilesCtrl.h"		// Needed for CSharedFilesCtrl
-#include "QueueListCtrl.h"		// Needed for CQueueListCtrl
-#include "UploadListCtrl.h"		// Needed for CUploadListCtrl
+#include "ClientListCtrl.h"		// Needed for CClientListCtrl
 #include "DownloadListCtrl.h"		// Needed for CDownloadListCtrl
 #include "ChatWnd.h"
 
@@ -1848,18 +1847,18 @@ void CamuleApp::NotifyEvent(GUIEvent event)
 		// CORE->GUI
 		// queue list
 		case QLIST_CTRL_ADD_CLIENT:
-			if ( amuledlg->transferwnd && amuledlg->transferwnd->queuelistctrl ) {
-				amuledlg->transferwnd->queuelistctrl->AddClient((CUpDownClient*)event.ptr_value);
+			if ( amuledlg->transferwnd && amuledlg->transferwnd->clientlistctrl ) {
+				amuledlg->transferwnd->clientlistctrl->InsertClient((CUpDownClient*)event.ptr_value, vtQueued);
 			}
 			break;
 		case QLIST_CTRL_RM_CLIENT:
-			if ( amuledlg->transferwnd && amuledlg->transferwnd->queuelistctrl ) {
-				amuledlg->transferwnd->queuelistctrl->RemoveClient((CUpDownClient*)event.ptr_value);
+			if ( amuledlg->transferwnd && amuledlg->transferwnd->clientlistctrl ) {
+				amuledlg->transferwnd->clientlistctrl->RemoveClient((CUpDownClient*)event.ptr_value, vtQueued);
 			}
 			break;
 		case QLIST_CTRL_REFRESH_CLIENT:
-			if ( amuledlg->transferwnd && amuledlg->transferwnd->queuelistctrl ) {
-				amuledlg->transferwnd->queuelistctrl->RefreshClient((CUpDownClient*)event.ptr_value);
+			if ( amuledlg->transferwnd && amuledlg->transferwnd->clientlistctrl ) {
+				amuledlg->transferwnd->clientlistctrl->UpdateClient((CUpDownClient*)event.ptr_value, vtQueued);
 			}
 			break;
 		// shared files
@@ -1956,18 +1955,34 @@ void CamuleApp::NotifyEvent(GUIEvent event)
 			break;
 		// upload ctrl
 			case UPLOAD_CTRL_ADD_CLIENT:
-			if ( amuledlg->transferwnd && amuledlg->transferwnd->uploadlistctrl ) {
-				amuledlg->transferwnd->uploadlistctrl->AddClient((CUpDownClient*)event.ptr_value);
+			if ( amuledlg->transferwnd && amuledlg->transferwnd->clientlistctrl ) {
+				amuledlg->transferwnd->clientlistctrl->InsertClient((CUpDownClient*)event.ptr_value, vtUploading);
 			}
 			break;
 		case UPLOAD_CTRL_REFRESH_CLIENT:
-			if ( amuledlg->transferwnd && amuledlg->transferwnd->uploadlistctrl ) {
-				amuledlg->transferwnd->uploadlistctrl->RefreshClient((CUpDownClient*)event.ptr_value);
+			if ( amuledlg->transferwnd && amuledlg->transferwnd->clientlistctrl ) {
+				amuledlg->transferwnd->clientlistctrl->UpdateClient((CUpDownClient*)event.ptr_value, vtUploading);
 			}
 			break;
 		case UPLOAD_CTRL_RM_CLIENT:
-			if ( amuledlg->transferwnd && amuledlg->transferwnd->uploadlistctrl ) {
-				amuledlg->transferwnd->uploadlistctrl->RemoveClient((CUpDownClient*)event.ptr_value);
+			if ( amuledlg->transferwnd && amuledlg->transferwnd->clientlistctrl ) {
+				amuledlg->transferwnd->clientlistctrl->RemoveClient((CUpDownClient*)event.ptr_value, vtUploading);
+			}
+			break;
+		// client ctrl
+			case CLIENT_CTRL_ADD_CLIENT:
+			if ( amuledlg->transferwnd && amuledlg->transferwnd->clientlistctrl ) {
+				amuledlg->transferwnd->clientlistctrl->InsertClient((CUpDownClient*)event.ptr_value, vtClients);
+			}
+			break;
+		case CLIENT_CTRL_REFRESH_CLIENT:
+			if ( amuledlg->transferwnd && amuledlg->transferwnd->clientlistctrl ) {
+				amuledlg->transferwnd->clientlistctrl->UpdateClient((CUpDownClient*)event.ptr_value, vtClients);
+			}
+			break;
+		case CLIENT_CTRL_RM_CLIENT:
+			if ( amuledlg->transferwnd && amuledlg->transferwnd->clientlistctrl ) {
+				amuledlg->transferwnd->clientlistctrl->RemoveClient((CUpDownClient*)event.ptr_value, vtClients);
 			}
 			break;
 		// server

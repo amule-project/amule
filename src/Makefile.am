@@ -80,7 +80,6 @@ amulegui_SOURCES = \
 	packets.cpp \
 	Preferences.cpp \
 	PrefsUnifiedDlg.cpp \
-	QueueListCtrl.cpp \
 	SearchDlg.cpp \
 	SearchList.cpp \
 	SearchListCtrl.cpp \
@@ -89,7 +88,7 @@ amulegui_SOURCES = \
 	ServerListCtrl.cpp \
 	StatisticsDlg.cpp \
 	TransferWnd.cpp \
-	UploadListCtrl.cpp \
+	ClientListCtrl.cpp \
 	amuleDlg.cpp 
 
 amule_SOURCES = ListenSocket.cpp \
@@ -144,7 +143,6 @@ amule_SOURCES = ListenSocket.cpp \
 	Preferences.cpp \
 	PrefsUnifiedDlg.cpp \
 	Preview.cpp \
-	QueueListCtrl.cpp \
 	SafeFile.cpp \
 	SearchDlg.cpp \
 	SearchList.cpp \
@@ -164,7 +162,7 @@ amule_SOURCES = ListenSocket.cpp \
 	TransferWnd.cpp \
 	UDPSocket.cpp \
 	UploadClient.cpp \
-	UploadListCtrl.cpp \
+	ClientListCtrl.cpp \
 	UploadQueue.cpp \
 	amule.cpp \
 	amuleDlg.cpp \
@@ -353,7 +351,7 @@ noinst_HEADERS = AddFileThread.h \
 		 Preferences.h \
 		 PrefsUnifiedDlg.h \
 		 Preview.h \
-		 QueueListCtrl.h \
+		 ClientListCtrl.h \
 		 SafeFile.h \
 		 SearchDlg.h \
 		 SearchListCtrl.h \
@@ -377,7 +375,6 @@ noinst_HEADERS = AddFileThread.h \
 		 UDPSocket.h \
 		 updownclient.h \
 		 UploadBandwidthThrottler.h \
-		 UploadListCtrl.h \
 		 UploadQueue.h \
 		 WebInterface.h \
 		 WebServer.h \

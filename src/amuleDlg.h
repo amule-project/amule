@@ -123,7 +123,6 @@ public:
 	CStatisticsDlg*		statisticswnd;
 	CKadDlg*		kadwnd;
 
-	int			split_pos;
 	int			srv_split_pos;
 	
 	wxImageList imagelist;

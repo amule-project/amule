@@ -36,8 +36,6 @@
 #include "amule.h"
 #include "ServerListCtrl.h"
 #include "DownloadListCtrl.h"
-#include "UploadListCtrl.h"
-#include "QueueListCtrl.h"
 #include "SharedFilesCtrl.h"
 #include "OScopeCtrl.h"
 #include "ColorFrameCtrl.h"
@@ -48,7 +46,7 @@
 #include "ChatSelector.h"
 #include "DirectoryTreeCtrl.h"	// Needed for CDirectoryTreeCtrl
 #include "MuleTextCtrl.h" // Needed for CMuleTextCtrl
-
+#include "ClientListCtrl.h"
 
 // Implement window functions
 
@@ -418,26 +416,30 @@ wxSizer *transferBottomPane( wxWindow *parent, bool call_fit, bool set_sizer )
 
     wxBoxSizer *item1 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxStaticBitmap *item2 = new wxStaticBitmap( parent, ID_STATICBITMAP, amuleDlgImages( 11 ), wxDefaultPosition, wxDefaultSize );
-    item1->Add( item2, 0, wxALIGN_CENTER, 5 );
+    wxBitmapButton *item2 = new wxBitmapButton( parent, ID_CLIENTTOGGLE, amuleDlgImages( 10 ), wxDefaultPosition, wxDefaultSize );
+    item1->Add( item2, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    wxBitmapButton *item3 = new wxBitmapButton( parent, ID_BTNSWITCHUP, amuleDlgImages( 19 ), wxDefaultPosition, wxSize(20,20) );
+    wxBitmapButton *item3 = new wxBitmapButton( parent, ID_BTNSWITCHUP, amuleDlgImages( 19 ), wxDefaultPosition, wxDefaultSize );
     item3->SetToolTip( _("Shows Upload / Up-queue") );
-    item1->Add( item3, 0, wxALIGN_CENTER|wxLEFT|wxTOP|wxBOTTOM, 5 );
+    item1->Add( item3, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    wxStaticText *item4 = new wxStaticText( parent, ID_TEXT, _("Uploads"), wxDefaultPosition, wxSize(150,-1), 0 );
+    wxStaticText *item4 = new wxStaticText( parent, ID_TEXT, _("Uploads"), wxDefaultPosition, wxDefaultSize, 0 );
     item4->SetName( wxT("uploadTitle") );
-    item1->Add( item4, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
+    item1->Add( item4, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxALL, 5 );
 
-    item0->Add( item1, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    item1->Add( 20, 20, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 
-    CQueueListCtrl *item5 = new CQueueListCtrl( parent, ID_QUEUELIST, wxDefaultPosition, wxSize(160,120), wxLC_REPORT|wxLC_SINGLE_SEL|wxSUNKEN_BORDER );
-    item5->SetName( wxT("uploadQueue") );
-    item0->Add( item5, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticText *item5 = new wxStaticText( parent, ID_TEXT, _("Clients on queue :"), wxDefaultPosition, wxDefaultSize, 0 );
+    item1->Add( item5, 0, wxALIGN_CENTER, 5 );
 
-    CUploadListCtrl *item6 = new CUploadListCtrl( parent, ID_UPLOADLIST, wxDefaultPosition, wxSize(160,120), wxLC_REPORT|wxLC_SINGLE_SEL|wxSUNKEN_BORDER );
-    item6->SetName( wxT("uploadList") );
-    item0->Add( item6, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticText *item6 = new wxStaticText( parent, ID_CLIENTCOUNT, _("0"), wxDefaultPosition, wxDefaultSize, wxST_NO_AUTORESIZE );
+    item6->SetForegroundColour( *wxBLUE );
+    item1->Add( item6, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
+
+    item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+
+    CClientListCtrl *item7 = new CClientListCtrl( parent, ID_CLIENTLIST, wxDefaultPosition, wxSize(160,120), wxLC_REPORT|wxLC_SINGLE_SEL|wxSUNKEN_BORDER );
+    item0->Add( item7, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
     if (set_sizer)
     {
@@ -2881,7 +2883,7 @@ wxSizer *transferDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticBoxSizer *item0 = new wxStaticBoxSizer( item1, wxVERTICAL );
 
     wxSplitterWindow *item2 = new wxSplitterWindow( parent, ID_SPLATTER, wxDefaultPosition, wxDefaultSize, wxSP_LIVE_UPDATE );
-    item2->SetMinimumPaneSize( 90 );
+    item2->SetMinimumPaneSize( 20 );
     wxPanel *item3 = new wxPanel( item2, -1 );
     transferTopPane( item3, FALSE, TRUE );
     wxPanel *item4 = new wxPanel( item2, -1 );
@@ -2889,18 +2891,6 @@ wxSizer *transferDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     item2->SplitHorizontally( item3, item4 );
     item2->SetName( wxT("splitterWnd") );
     item0->Add( item2, 1, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
-
-    wxBoxSizer *item5 = new wxBoxSizer( wxHORIZONTAL );
-
-    wxStaticText *item6 = new wxStaticText( parent, ID_TEXT, _("Clients on queue :"), wxDefaultPosition, wxDefaultSize, 0 );
-    item5->Add( item6, 0, wxALIGN_CENTER, 5 );
-
-    wxStaticText *item7 = new wxStaticText( parent, ID_TEXT, _("0"), wxDefaultPosition, wxDefaultSize, wxST_NO_AUTORESIZE );
-    item7->SetForegroundColour( *wxBLUE );
-    item7->SetName( wxT("clientCount") );
-    item5->Add( item7, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
-
-    item0->Add( item5, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
     if (set_sizer)
     {
