@@ -100,8 +100,11 @@ CServerSocket::~CServerSocket()
 		delete cur_server;
 	}
 	cur_server = NULL;
-	
+#ifdef AMULE_DAEMON
+	my_handler->Delete();
+#else
 	delete my_handler;
+#endif
 }
 
 
