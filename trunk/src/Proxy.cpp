@@ -132,17 +132,53 @@ bool wxSocketProxy::DoSocks4(wxIPaddress& address, wxProxyCommand cmd)
 
 bool wxSocketProxy::DoSocks4Request(wxIPaddress& address, unsigned char cmd)
 {
-	// TODO
-	bool ok = false;
+	// Prepare the request command buffer
+	m_buffer[0] = SOCKS4_VERSION;
+	m_buffer[1] = cmd;
+	*((uint16 *)(m_buffer+2)) = htons(address.Service());
+	*((uint32 *)(m_buffer+4)) = StringIPtoUint32(address.IPAddress());
+	unsigned int OffsetUser = 8;
+	unsigned char LenUser = m_ProxyData.Username.Len();
+	memcpy(m_buffer+OffsetUser, unicode2char(m_ProxyData.Username),
+		LenUser);
+	unsigned int LenPacket = 1 + 1 + 2 + 4 + LenUser + 1 ;
 	
+	// Send the command packet
+	m_ProxyClientSocket->Write(m_buffer, LenPacket);
+
+	// Check the if the write operation succeded
+	bool ok =
+		!m_ProxyClientSocket->Error() &&
+		m_ProxyClientSocket->LastCount() == LenPacket;
+
 	return ok;
 }
 
 bool wxSocketProxy::DoSocks4Reply(void)
 {
-	// TODO
-	bool ok = false;
-	
+	// Receive the server's reply
+	unsigned int LenPacket = 8;
+	m_ProxyClientSocket->Read(m_buffer, LenPacket);
+	m_LastReply = m_buffer[1];
+
+	// Process the server's reply
+	bool ok =
+		!m_ProxyClientSocket->Error() &&
+		m_ProxyClientSocket->LastCount() == LenPacket &&
+		m_buffer[0] == SOCKS4_VERSION &&
+		m_buffer[1] == SOCKS4_REPLY_SUCCEED;
+	if (ok) {
+		// Read BND.PORT
+		const unsigned int Port_offset = 2;
+		m_TargetAddress->Service(ntohs(
+			*((uint16 *)(m_buffer+Port_offset)) ));
+		// Read BND.ADDR
+		const unsigned int Addr_offset = 4;
+		m_TargetAddressIPV4.Hostname(Uint32toStringIP(
+			*((uint32 *)(m_buffer+Addr_offset)) ));
+		m_TargetAddress = &m_TargetAddressIPV4;
+	}
+
 	return ok;
 }
 
@@ -256,9 +292,11 @@ bool wxSocketProxy::DoSocks5AuthenticationUsernamePassword(void)
 	// Prepare username/password buffer
 	m_buffer[0] = SOCKS5_VERSION;
 	m_buffer[OffsetUser-1] = LenUser;
-	memcpy(m_buffer+OffsetUser, NULL, LenUser);
+	memcpy(m_buffer+OffsetUser, unicode2char(m_ProxyData.Username),
+		LenUser);
 	m_buffer[OffsetPassword-1] = LenPassword;
-	memcpy(m_buffer+OffsetPassword, NULL, LenPassword);
+	memcpy(m_buffer+OffsetPassword, unicode2char(m_ProxyData.Password),
+		LenPassword);
 
 	// Send the username/password packet
 	m_ProxyClientSocket->Write(m_buffer, LenPacket);
