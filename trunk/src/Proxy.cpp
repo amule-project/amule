@@ -51,10 +51,16 @@ void wxProxyEventHandler::m_ProxySocketHandler(wxSocketEvent& event)
 	{
 	case wxSOCKET_INPUT:
 		break;
+		
+	case wxSOCKET_OUTPUT:
+		break;
+		
 	case wxSOCKET_LOST:
 		break;
+		
 	case wxSOCKET_CONNECTION:
 		break;
+		
 	default:
 		break;
 	}
@@ -137,6 +143,7 @@ address.Service());
 	m_ProxyClientSocket->SetNotify(
 		wxSOCKET_CONNECTION_FLAG |
 		wxSOCKET_INPUT_FLAG |
+		wxSOCKET_OUTPUT_FLAG |
 		wxSOCKET_LOST_FLAG);
 	m_ProxyClientSocket->Notify(true);
 #endif
@@ -644,7 +651,7 @@ wxSocketClientProxy::wxSocketClientProxy(
 wxSocketClient(flags),
 m_SocketProxy(ProxyData)
 {
-	m_UseProxy = (ProxyData != NULL) && (ProxyData->m_ProxyEnable);
+	m_UseProxy = ProxyData != NULL && ProxyData->m_ProxyEnable;
 }
 
 /*
@@ -668,6 +675,11 @@ bool wxSocketClientProxy::Connect(wxIPaddress &address, bool wait)
 		 * event to make things go undetected. A wxSOCKET_OUTPUT event is
 		 * also necessary to start sending data to the server. */
 		if(m_UseProxy) {
+			/* If the wxSocket had a GetEventHandler method, this could be 
+			 * much more cleaner. All this fuzz is because GetEventHandler()
+			 * is implemented in CClientReqSocket and CServerSocket, both
+			 * are aMule classes. Maybe we can add this method to a common
+			 * ancestor. */
 			wxSocketEvent e(SERVERSOCKET_HANDLER);
 			e.m_event = wxSOCKET_CONNECTION;
 			e.SetEventObject(this);
