@@ -828,7 +828,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				theApp.statistics->AddDownDataOverheadFileRequest(size);
 				theApp.uploadqueue->RemoveFromUploadQueue(m_client);
 				if (thePrefs::GetVerbose()) {
-					AddDebugLogLineM(false, m_client->GetUserName() + _(": Upload session ended due canceled transfer."));
+					AddDebugLogLineM(false, m_client->GetUserName() + wxT(": Upload session ended due canceled transfer."));
 				}
 				break;
 			}
@@ -1377,7 +1377,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			}
 			m_client->SetDownloadState(DS_ERROR);
 			// TODO write this into a debugfile
-			AddDebugLogLineM(false,_("Client '") + m_client->GetUserName() + _(" (IP:") + m_client->GetFullIP() + _(") caused an error: ") + error + _(". Disconnecting client!"));
+			AddDebugLogLineM(false, wxT("Client '") + m_client->GetUserName() + wxT(" (IP:") + m_client->GetFullIP() + wxT(") caused an error: ") + error + wxT(". Disconnecting client!"));
 		} else {
 			if (thePrefs::GetVerbosePacketError()) {
 				if (error.IsEmpty()) {
@@ -1386,7 +1386,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					printf("\tCaught error:\n\t\tError: %s\n\t\tClientData: Unknown\n\ton ListenSocket::ProcessPacket\n", unicode2char(error));
 				}
 			}
-			AddDebugLogLineM(false,wxString(_("A unknown client caused an error or did something bad: ")) + error + _(". Disconnecting client!"));
+			AddDebugLogLineM(false,wxString(wxT("A unknown client caused an error or did something bad: ")) + error + wxT(". Disconnecting client!"));
 		}
 		Disconnect(wxT("Client error on ListenSocket::ProcessPacket: ") + wxString(error));
 		return false;
@@ -2183,7 +2183,7 @@ void CClientReqSocket::OnError(int nErrorCode)
 			} else {
 				strError = wxT("An unnamed client");
 			}
-			strError += wxT(" (IP:") + m_client->GetFullIP() + _(") caused a socket blocking error or closed connection.");
+			strError += wxT(" (IP:") + m_client->GetFullIP() + wxT(") caused a socket blocking error or closed connection.");
 		} else {
 			strError = wxT("A client caused a socket blocking error or closed connection.");
 		}
@@ -2214,20 +2214,20 @@ void CClientReqSocket::OnError(int nErrorCode)
 			// 107  -> Transport endpoint is not connected
 			if (m_client) {
 				if (m_client->GetUserName()) {
-					strError = _("OnError: Client '") + m_client->GetUserName() +
-								 _("' (IP:") + m_client->GetFullIP() + 
-								wxString::Format(_(") caused an error: %u. Disconnecting client!"),nErrorCode);
+					strError = wxT("OnError: Client '") + m_client->GetUserName() +
+								 wxT("' (IP:") + m_client->GetFullIP() + 
+								wxString::Format(wxT(") caused an error: %u. Disconnecting client!"),nErrorCode);
 				} else {
-					strError = _("OnError: Unknown client (IP:") + 
-					  m_client->GetFullIP() + wxString::Format(_(") caused an error: %u. Disconnecting client!"),nErrorCode);
+					strError = wxT("OnError: Unknown client (IP:") + 
+					  m_client->GetFullIP() + wxString::Format(wxT(") caused an error: %u. Disconnecting client!"),nErrorCode);
 				}
 			} else {
-				strError = wxString::Format(_("OnError: A client caused an error or did something bad (error %u). Disconnecting client !"),
+				strError = wxString::Format(wxT("OnError: A client caused an error or did something bad (error %u). Disconnecting client !"),
 					nErrorCode);
 			}
 			AddDebugLogLineM(false, strError);
 		} else {
-			strError = _("Error 107 (Transport endpoint is not connected)");
+			strError = wxT("Error 107 (Transport endpoint is not connected)");
 		}	
 	}
 	
