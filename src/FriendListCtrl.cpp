@@ -55,12 +55,12 @@ BEGIN_EVENT_TABLE(CFriendListCtrl, CMuleListCtrl)
 	EVT_LIST_ITEM_SELECTED(ID_FRIENDLIST, CFriendListCtrl::OnItemSelected)
 	EVT_LIST_ITEM_ACTIVATED(ID_FRIENDLIST, CFriendListCtrl::OnItemActivated) 
 	
-	EVT_MENU(MP_MESSAGE, CFriendListCtrl::OnPopupMenu)
-	EVT_MENU(MP_REMOVEFRIEND, CFriendListCtrl::OnPopupMenu)
-	EVT_MENU(MP_ADDFRIEND, CFriendListCtrl::OnPopupMenu)
-	EVT_MENU(MP_DETAIL, CFriendListCtrl::OnPopupMenu)
-	EVT_MENU(MP_SHOWLIST, CFriendListCtrl::OnPopupMenu)
-	EVT_MENU(MP_FRIENDSLOT, CFriendListCtrl::OnPopupMenu)
+	EVT_MENU(MP_MESSAGE, CFriendListCtrl::OnSendMessage)
+	EVT_MENU(MP_REMOVEFRIEND, CFriendListCtrl::OnRemoveFriend)
+	EVT_MENU(MP_ADDFRIEND, CFriendListCtrl::OnAddFriend)
+	EVT_MENU(MP_DETAIL, CFriendListCtrl::OnShowDetails)
+	EVT_MENU(MP_SHOWLIST, CFriendListCtrl::OnViewFiles)
+	EVT_MENU(MP_FRIENDSLOT, CFriendListCtrl::OnSetFriendslot)
 END_EVENT_TABLE()
 
 
@@ -256,90 +256,80 @@ void CFriendListCtrl::OnRightClick(wxMouseEvent& event)
 	PopupMenu(menu, event.GetPosition());
 }
 
-
-void CFriendListCtrl::OnPopupMenu(wxCommandEvent& event)
-{
+void CFriendListCtrl::OnSendMessage(wxCommandEvent& WXUNUSED(event)) {
+	long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	
-	int cursel = GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
-	
-	CDlgFriend* cur_friend = NULL;
+	while( index != -1 ) {
+		CDlgFriend* cur_friend = (CDlgFriend*)GetItemData(index);
+		theApp.amuledlg->chatwnd->StartSession(cur_friend);			
+		#warning CORE/GUI!			
+		#ifndef CLIENT_GUI
+		theApp.friendlist->StartChatSession(cur_friend->m_hash, cur_friend->m_ip, cur_friend->m_port);
+		#endif		
 
-	bool end=false;
-	while (((cursel != -1) || (event.GetId() == MP_ADDFRIEND)) && !end) {
-		if (cursel != -1) {
-			cur_friend = (CDlgFriend*)GetItemData(cursel);
-		}
-		
-		switch (event.GetId()) {
-			case MP_MESSAGE: {
-				wxASSERT(cur_friend);
-				theApp.amuledlg->chatwnd->StartSession(cur_friend);			
-				#warning CORE/GUI!			
-				#ifndef CLIENT_GUI
-				theApp.friendlist->StartChatSession(cur_friend->m_hash, cur_friend->m_ip, cur_friend->m_port);
-				#endif
-				break;
-			}
-		
-			case MP_REMOVEFRIEND: {
-				wxASSERT(cur_friend);				
-				RemoveFriend(cur_friend);
-				break;
-			}
-		
-			case MP_ADDFRIEND: {
-				CAddFriend* dialog2 = new CAddFriend(this);
-				dialog2->ShowModal();			
-				delete dialog2;			
-				// We don't want to add more than one friend ;)
-				end = true;
-				break;
-			}
-		
-			case MP_DETAIL: {
-				wxASSERT(cur_friend);
-				if (cur_friend->islinked) {
-					#warning EC: We need a reply packet with a full CUpDownClient
-					#ifndef CLIENT_GUI
-					CClientDetailDialog* dialog = new CClientDetailDialog(this, theApp.friendlist->FindFriend(cur_friend->m_hash, cur_friend->m_ip, cur_friend->m_port)->GetLinkedClient());
-					dialog->ShowModal();
-					delete dialog;
-					#endif
-				}
-				// I included no "end = true;" here, tho could be needed. However, if a user selects 
-				// several friends and clicks show details.. must expect several dialogs.
-				break;
-			}
-		
-			case MP_SHOWLIST: {
-				wxASSERT(cur_friend);
-				#warning CORE/GUI!
-				#ifndef CLIENT_GUI
-				theApp.friendlist->RequestSharedFileList(cur_friend->m_hash, cur_friend->m_ip, cur_friend->m_port);
-				#endif
-				break;
-			}
-		
-			case MP_FRIENDSLOT: {
-				wxASSERT(cur_friend);
-				#warning CORE/GUI!
-				#ifndef CLIENT_GUI
-				theApp.friendlist->ToogleFriendSlot(cur_friend->m_hash, cur_friend->m_ip, cur_friend->m_port);
-				#endif
-				// Friendslot only for the first friend!
-				end = true;
-				break;
-			}
-		}
-		
-		// If we ended, nothing more to do.
-		if (!end) {
-			cursel = GetNextItem( cursel, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-		} else {
-			// Safe check for leechers that expect more than 1 friendslot.
-			if ((event.GetId() == MP_FRIENDSLOT) && (GetNextItem( cursel, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED ) != -1)) {
-				wxMessageBox(_("You are not allowed to set more than one friendslot."), _("Multiple selection"), wxICON_ERROR);
-			}			
-		}
+		index = GetNextItem( index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+	}	
+}
+
+void CFriendListCtrl::OnRemoveFriend(wxCommandEvent& WXUNUSED(event)) {
+	long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+	
+	while( index != -1 ) {
+		CDlgFriend* cur_friend = (CDlgFriend*)GetItemData(index);
+		RemoveFriend(cur_friend);
+		// -1 because we changed the list and removed that item.
+		index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+	}	
+	
+}
+
+void CFriendListCtrl::OnAddFriend(wxCommandEvent& WXUNUSED(event)) {
+	CAddFriend* dialog2 = new CAddFriend(this);
+	dialog2->ShowModal();			
+	delete dialog2;		
+}
+
+void CFriendListCtrl::OnShowDetails(wxCommandEvent& WXUNUSED(event)) {
+	long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+	
+	while( index != -1 ) {
+		CDlgFriend* cur_friend = (CDlgFriend*)GetItemData(index);
+		if (cur_friend->islinked) {
+			#warning EC: We need a reply packet with a full CUpDownClient
+			#ifndef CLIENT_GUI
+			CClientDetailDialog* dialog = new CClientDetailDialog(this, theApp.friendlist->FindFriend(cur_friend->m_hash, cur_friend->m_ip, cur_friend->m_port)->GetLinkedClient());
+			dialog->ShowModal();
+			delete dialog;
+			#endif
+		}		
+		index = GetNextItem( index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+	}	
+	
+}
+
+void CFriendListCtrl::OnViewFiles(wxCommandEvent& WXUNUSED(event)) {
+	long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+	
+	while( index != -1 ) {
+		#warning CORE/GUI!
+		#ifndef CLIENT_GUI
+			CDlgFriend* cur_friend = (CDlgFriend*)GetItemData(index);
+			theApp.friendlist->RequestSharedFileList(cur_friend->m_hash, cur_friend->m_ip, cur_friend->m_port);
+		#endif
+		index = GetNextItem( index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+	}	
+	
+}
+
+void CFriendListCtrl::OnSetFriendslot(wxCommandEvent& WXUNUSED(event)) {
+	long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+	#warning CORE/GUI!
+	#ifndef CLIENT_GUI
+		CDlgFriend* cur_friend = (CDlgFriend*)GetItemData(index);	
+		theApp.friendlist->ToogleFriendSlot(cur_friend->m_hash, cur_friend->m_ip, cur_friend->m_port);
+	#endif
+	index = GetNextItem( index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+	if (index != -1) {
+		wxMessageBox(_("You are not allowed to set more than one friendslot.\n Only one slot was assigned."), _("Multiple selection"), wxICON_ERROR);
 	}
 }

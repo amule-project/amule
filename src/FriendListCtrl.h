@@ -68,12 +68,19 @@ protected:
 	DECLARE_EVENT_TABLE()
 
 	void	OnRightClick(wxMouseEvent& event);
-	void	OnPopupMenu(wxCommandEvent& evt);
 		
 private:
-	void 	OnItemSelected(wxListEvent& evt);
-	void	OnItemActivated(wxListEvent& evt);
-	
+	void 	OnItemSelected(wxListEvent& event);
+	void	OnItemActivated(wxListEvent& event);
+
+	// Menu Items
+	void	OnShowDetails(wxCommandEvent& event);
+	void	OnSendMessage(wxCommandEvent& event);
+	void	OnRemoveFriend(wxCommandEvent& event);
+	void	OnSetFriendslot(wxCommandEvent& event);
+	void	OnAddFriend(wxCommandEvent& event);
+	void	OnViewFiles(wxCommandEvent& event);
+
 };
 
 #endif
