@@ -61,6 +61,36 @@ Version 2.0.0rc4 - The 'Target: REAL Stability' version.
                 * Fixed two unhandled events in amule.cpp: CHAT_REFRESH_FRIEND and CHAT_FIND_FRIEND.
         
 	thepolish:
+		* wxCas:
+			- Fixed for amulesig.dat changes
+			- Solved localized decimal separator pb
+			- Embeded all pixmaps in src files and remove now unused pixmaps dir (better for portability)
+			- Win32 toolbar pixmaps have transparency now
+			- Added variable refresh timers
+			- Added user preference system
+			- Added statistic image creation
+			- Added FTP support for an automatic upload of the statistic image
+		
+		* aLinkCreator:
+			- Added this new maaarvellous tool suggested by DeltaHF to compute ed2k links from a file (same behavior as eMule link creator, but no shared code)
+			- Rewrote md4hash and ed2khash code to avoid external dependencies (libcryptopp free), and to be Big Endian proof (works on Mac afaik)
+			- Thanks to Phoenix (Unicode) and one_2_one (Mac tests)
+			
+		* aMule:
+			- Rewrote Makefile.am tree to fit to GNU standards
+			- Removed Makefiles stuff for wxwidgets < 2.2.6
+			- With >= wx-2.5, use wx-config --libs=base,net instead wxbase-config (because base in buggy on 2.5), and keep using both on 2.4 versions
+			- Check for wx >= 2.4.2 instead of 2.4.0
+			- Removed GTK2 warning with wx >= 2.5
+			- Fixed GTK2 not detected
+			- Enabled documentation installation
+			- Install xas in $(libdir)/xchat/plugins. Will work if aMule and xchat are installed with same DESTDIR
+			- Suppressed widlcats in makefile (not fully supported in all make)
+			- Enabled make dist and make distcheck targets
+			- Force automake scripts update (missing...) to suppress warning in configure
+			- Force autogen.sh to regenerate intl at each call to keep sychronised with system gettext templates
+			- Some minor i18n and unicode fixes
+			- Updated POTFILE.in
 	
 	Xaignar:
 		* Merged lists used to identify file-types to avoid duplicity.
