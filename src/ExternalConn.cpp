@@ -510,16 +510,11 @@ CECPacket *Get_EC_Response_PartFile_Cmd(const CECPacket *request)
 				}
 				pfile->Delete();
 				break;
-/*
+
 			case EC_OP_PARTFILE_SET_CAT:
-				if ( !valtag ) {
-					response = new CECPacket(EC_OP_FAILED);
-					response->AddTag(CECTag(EC_TAG_STRING,
-								wxTRANSLATE("no value tag in EC_OP_PARTFILE_CAT_SET")));
-					return response;
-				}
+				pfile->SetCategory(hashtag->GetTagByIndexSafe(0)->GetInt8Data());
 				break;
-*/
+
 			default:
 				response = new CECPacket(EC_OP_FAILED);
 				response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("OOPS! OpCode processing error!")));
