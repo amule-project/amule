@@ -112,7 +112,7 @@ void CServerSocket::OnConnect(wxSocketError nErrorCode)
 				memset(&sockAddr, 0, sizeof(sockAddr));
 				wxIPV4address tmpaddr;
 				GetPeer(tmpaddr);
-				sockAddr.sin_addr.s_addr = inet_addr(tmpaddr.IPAddress().c_str());
+				sockAddr.sin_addr.s_addr = inet_addr(unicode2char(tmpaddr.IPAddress()));
 				cur_server->SetID(sockAddr.sin_addr.s_addr);
 				theApp.serverlist->GetServerByAddress(cur_server->GetAddress(),cur_server->GetPort())->SetID(sockAddr.sin_addr.s_addr);
 			}
@@ -184,14 +184,14 @@ bool CServerSocket::ProcessPacket(char* packet, uint32 size, int8 opcode)
 				// instead of this they are sending all text lines with one OP_SERVERMESSAGE packet.
 				//CString message = strMessages.Tokenize("\r\n", iPos);
 
-				wxStringTokenizer token(strMessages,"\r\n",wxTOKEN_DEFAULT );
+				wxStringTokenizer token(strMessages,wxT("\r\n"),wxTOKEN_DEFAULT );
 
 				while (token.HasMoreTokens()) {
 					wxString wxMessage = token.GetNextToken();
 					CString message = wxMessage.GetData();
 
 					bool bOutputMessage = true;
-					if (strncmp(message.GetData(), "server version", 14) == 0) {
+					if (strncmp(unicode2char(message.GetData()), "server version", 14) == 0) {
 						CString strVer = message.Mid(15,64); // truncate string to avoid misuse by servers in showing ads
 						strVer.Trim();
 						CServer* eserver = theApp.serverlist->GetServerByAddress(cur_server->GetAddress(),cur_server->GetPort());
@@ -201,7 +201,7 @@ bool CServerSocket::ProcessPacket(char* packet, uint32 size, int8 opcode)
 						}
 
 					/* Give it a try ... (Creteil) BEGIN */
-					} else if (strncmp(message.GetData(), "ERROR", 5) == 0) {
+					} else if (strncmp(unicode2char(message.GetData()), "ERROR", 5) == 0) {
 
 #if 0 // Why is this commented out, don't we need to handle an ERROR?
 						CServer* pServer = theApp.serverlist->GetServerByAddress(cur_server->GetAddress(),cur_server->GetPort());
@@ -212,7 +212,7 @@ bool CServerSocket::ProcessPacket(char* packet, uint32 size, int8 opcode)
 #endif
 
 						bOutputMessage = false;
-					} else if (strncmp(message.GetData(), "WARNING", 7) == 0) {
+					} else if (strncmp(unicode2char(message.GetData()), "WARNING", 7) == 0) {
 
 #if 0 // Why is this commented out, don't we need to handle a WARNING?
 						CServer* pServer = theApp.serverlist->GetServerByAddress(cur_server->GetAddress(),cur_server->GetPort());
@@ -406,7 +406,7 @@ bool CServerSocket::ProcessPacket(char* packet, uint32 size, int8 opcode)
 				memcpy (temp,&buffer[num+8],num2);
 				temp[num2]=0; //close the string
 				update->SetDescription(temp);
-				theApp.amuledlg->ShowConnectionState(true,update->GetListName());
+				theApp.amuledlg->ShowConnectionState(true,char2unicode(update->GetListName()));
 				theApp.amuledlg->serverwnd->serverlistctrl->RefreshServer(update);
 				delete[] temp;
 				delete[] buffer;
@@ -448,7 +448,7 @@ bool CServerSocket::ProcessPacket(char* packet, uint32 size, int8 opcode)
 					theApp.amuledlg->AddLogLine(false,CString(_("Received %d new servers")), addcount);
 				}
 				theApp.serverlist->SaveServermetToFile();
-				theApp.amuledlg->AddLogLine(true,"Saving of server.met file Done !!!\n");
+				theApp.amuledlg->AddLogLine(true,wxT("Saving of server.met file Done !!!\n"));
 				break;
 			}
 			case OP_CALLBACKREQUESTED: {
@@ -506,10 +506,10 @@ void CServerSocket::ConnectToServer(CServer* server)
 	theApp.amuledlg->AddLogLine(false,CString(_("Connecting to %s (%s:%i)...")),cur_server->GetListName(),cur_server->GetFullIP(),cur_server->GetPort());
 	SetConnectionState(CS_CONNECTING);
 	wxIPV4address addr;
-	addr.Hostname(server->GetAddress());
+	addr.Hostname(char2unicode(server->GetAddress()));
 	addr.Service(server->GetPort());
-	theApp.amuledlg->AddLogLine(true,"Server %s Port %i",server->GetAddress(),server->GetPort());
-	theApp.amuledlg->AddLogLine(true,"Addr %s Port %i",addr.Hostname().c_str(),addr.Service());
+	theApp.amuledlg->AddLogLine(true,CString(_("Server %s Port %i")),server->GetAddress(),server->GetPort());
+	theApp.amuledlg->AddLogLine(true,CString(_("Addr %s Port %i")),addr.Hostname().c_str(),addr.Service());
 	this->Connect(addr,FALSE);
 	// We will handle the result on the event.
 	/*

@@ -70,10 +70,10 @@ CStatisticsDlg::CStatisticsDlg(wxWindow* pParent)
 	// resolution if the graphs are rebuilt based on the history list.
 	nPointsPerRange = wxGetTopLevelParent(this)->GetMaxSize().GetWidth()/2 - 80;
 
-	pscopeDL=(COScopeCtrl*)FindWindowByName("dloadScope");
-	pscopeUL=(COScopeCtrl*)FindWindowByName("uloadScope");
-	pscopeConn=(COScopeCtrl*)FindWindowByName("otherScope");
-	stattree=wxStaticCast(FindWindowByName("statTree"),wxTreeCtrl);
+	pscopeDL=(COScopeCtrl*)FindWindowByName(wxT("dloadScope"));
+	pscopeUL=(COScopeCtrl*)FindWindowByName(wxT("uloadScope"));
+	pscopeConn=(COScopeCtrl*)FindWindowByName(wxT("otherScope"));
+	stattree=wxStaticCast(FindWindowByName(wxT("statTree")),wxTreeCtrl);
 
 	m_ilastMaxConnReached = 0;
 	peakconnections = 0;
@@ -811,10 +811,10 @@ void CStatisticsDlg::ShowStatistics()
 
 	if (theApp.stat_sessionReceivedBytes>0 && theApp.stat_sessionSentBytes>0 ) {
 		if (theApp.stat_sessionReceivedBytes<theApp.stat_sessionSentBytes) {
-			cbuffer.Format("%s %.2f : 1",CString(_("Session UL:DL Ratio (Total):")).GetData(),(float)theApp.stat_sessionSentBytes/theApp.stat_sessionReceivedBytes);
+			cbuffer.Format(wxT("%s %.2f : 1"),CString(_("Session UL:DL Ratio (Total):")).GetData(),(float)theApp.stat_sessionSentBytes/theApp.stat_sessionReceivedBytes);
 			stattree->SetItemText(tran0, cbuffer);
 		} else {
-			cbuffer.Format("%s 1 : %.2f",CString(_("Session UL:DL Ratio (Total):")).GetData(),(float)theApp.stat_sessionReceivedBytes/theApp.stat_sessionSentBytes);
+			cbuffer.Format(wxT("%s 1 : %.2f"),CString(_("Session UL:DL Ratio (Total):")).GetData(),(float)theApp.stat_sessionReceivedBytes/theApp.stat_sessionSentBytes);
 			stattree->SetItemText(tran0, cbuffer);
 		}
 	} else {
@@ -830,7 +830,7 @@ void CStatisticsDlg::ShowStatistics()
 	cbuffer.Format(CString(_("Total size of Shared Files: %s")),CastItoXBytes(allsize).GetData());stattree->SetItemText(shar2, cbuffer);
 	
 	if(theApp.sharedfiles->GetCount() != 0) {
-		cbuffer2.Format( "%s", CastItoXBytes((uint64)allsize/theApp.sharedfiles->GetCount()).GetData());
+		cbuffer2.Format( wxT("%s"), CastItoXBytes((uint64)allsize/theApp.sharedfiles->GetCount()).GetData());
 	} else {
 		cbuffer2 = "-";
 	}
@@ -919,7 +919,7 @@ void CStatisticsDlg::ShowStatistics()
 				UINT verMaj = topver/(100*10*100);
 				UINT verMin = (topver - (verMaj*100*10*100))/(100*10);
 				UINT verUp = (topver - (verMaj*100*10*100) - (verMin*100*10))/(100);
-				cbuffer.Format("v%u.%u.%u: %i (%1.1f%%)", verMaj, verMin, verUp, topcnt, topper*100);							
+				cbuffer.Format(wxT("v%u.%u.%u: %i (%1.1f%%)"), verMaj, verMin, verUp, topcnt, topper*100);							
 			} else {
 				cbuffer="";
 			}
@@ -972,7 +972,7 @@ void CStatisticsDlg::ShowStatistics()
 				UINT verMaj = topver/(100*10*100);
 				UINT verMin = (topver - (verMaj*100*10*100))/(100*10);
 				UINT verUp = (topver - (verMaj*100*10*100) - (verMin*100*10))/(100);
-				cbuffer.Format("v%u.%u.%u: %i (%1.1f%%)", verMaj, verMin, verUp, topcnt, topper*100);
+				cbuffer.Format(wxT("v%u.%u.%u: %i (%1.1f%%)"), verMaj, verMin, verUp, topcnt, topper*100);
 			} else {
 				cbuffer="";
 			}
@@ -1024,7 +1024,7 @@ void CStatisticsDlg::ShowStatistics()
 				UINT verMaj = topver/(100*10*100);
 				UINT verMin = (topver - (verMaj*100*10*100))/(100*10);
 				UINT verUp = (topver - (verMaj*100*10*100) - (verMin*100*10))/(100);
-				cbuffer.Format(" v%u.%u%c: %i (%1.1f%%)",verMaj, verMin, 'a' + verUp, topcnt, topper*100);
+				cbuffer.Format(wxT(" v%u.%u%c: %i (%1.1f%%)"),verMaj, verMin, 'a' + verUp, topcnt, topper*100);
 			} else {
 				cbuffer="";
 			}
@@ -1077,9 +1077,9 @@ void CStatisticsDlg::ShowStatistics()
 				uint8 verMin = (topver - (verMaj*100*10*100))/(100*10);
 				uint8 verUp = (topver - (verMaj*100*10*100) - (verMin*100*10))/(100);
 				if ((verMaj == 0) && (verUp == 0)) {
-					cbuffer.Format(" v1.x: %i (%1.1f%%)", topcnt, topper*100);
+					cbuffer.Format(wxT(" v1.x: %i (%1.1f%%)"), topcnt, topper*100);
 				} else {
-					cbuffer.Format(" v%u.%u.%u: %i (%1.1f%%)",verMaj, verMin, verUp, topcnt, topper*100);
+					cbuffer.Format(wxT(" v%u.%u.%u: %i (%1.1f%%)"),verMaj, verMin, verUp, topcnt, topper*100);
 				}
 			} else {
 				cbuffer="";
@@ -1109,15 +1109,15 @@ void CStatisticsDlg::ShowStatistics()
 	uint32 servtfile;
 	float servocc;
 	theApp.serverlist->GetStatus( servtotal, servfail, servuser, servfile, servtuser, servtfile,servocc);
-	cbuffer.Format("%s: %i",CString(_("Working Servers")).GetData(),servtotal-servfail);stattree->SetItemText(srv1, cbuffer);
-	cbuffer.Format("%s: %i",CString(_("Failed Servers")).GetData(),servfail);stattree->SetItemText(srv2, cbuffer);
-	cbuffer.Format("%s: %i",CString(_("Total")).GetData(),servtotal);stattree->SetItemText(srv3, cbuffer);
-	cbuffer.Format("%s: %i",CString(_("Deleted Servers")).GetData(),theApp.serverlist->GetDeletedServerCount());stattree->SetItemText(srv4, cbuffer);
-	cbuffer.Format("%s: %i",CString(_("Users on Working Servers")).GetData(),servuser);stattree->SetItemText(srv5, cbuffer);
-	cbuffer.Format("%s: %i",CString(_("Files on Working Servers")).GetData(),servfile);stattree->SetItemText(srv6, cbuffer);
-	cbuffer.Format("%s: %i",CString(_("Total Users")).GetData(),servtuser);stattree->SetItemText(srv7, cbuffer);
-	cbuffer.Format("%s: %i",CString(_("Total Files")).GetData(),servtfile);stattree->SetItemText(srv8, cbuffer);
-	cbuffer.Format("%s: %i",CString(_("Active Connections (estimate)")).GetData(),activeconnections);stattree->SetItemText(con6, cbuffer);
+	cbuffer.Format(wxT("%s: %i"),CString(_("Working Servers")).GetData(),servtotal-servfail);stattree->SetItemText(srv1, cbuffer);
+	cbuffer.Format(wxT("%s: %i"),CString(_("Failed Servers")).GetData(),servfail);stattree->SetItemText(srv2, cbuffer);
+	cbuffer.Format(wxT("%s: %i"),CString(_("Total")).GetData(),servtotal);stattree->SetItemText(srv3, cbuffer);
+	cbuffer.Format(wxT("%s: %i"),CString(_("Deleted Servers")).GetData(),theApp.serverlist->GetDeletedServerCount());stattree->SetItemText(srv4, cbuffer);
+	cbuffer.Format(wxT("%s: %i"),CString(_("Users on Working Servers")).GetData(),servuser);stattree->SetItemText(srv5, cbuffer);
+	cbuffer.Format(wxT("%s: %i"),CString(_("Files on Working Servers")).GetData(),servfile);stattree->SetItemText(srv6, cbuffer);
+	cbuffer.Format(wxT("%s: %i"),CString(_("Total Users")).GetData(),servtuser);stattree->SetItemText(srv7, cbuffer);
+	cbuffer.Format(wxT("%s: %i"),CString(_("Total Files")).GetData(),servtfile);stattree->SetItemText(srv8, cbuffer);
+	cbuffer.Format(wxT("%s: %i"),CString(_("Active Connections (estimate)")).GetData(),activeconnections);stattree->SetItemText(con6, cbuffer);
 	cbuffer.Format(CString(_("Server Occupation: %.2f%%")),servocc);stattree->SetItemText(srv9, cbuffer);
 	uint32 m_itemp = theApp.listensocket->GetMaxConnectionReached();
 	if( m_itemp != m_ilastMaxConnReached ) {
@@ -1129,20 +1129,20 @@ void CStatisticsDlg::ShowStatistics()
 		struct tm* now=localtime(&mytime);
 		strftime(osDate,sizeof(osDate)-1,"%d.%m.%Y %H:%M:%S",now);
 
-		cbuffer.Format("%s: %i : %s",CString(_("Max Connection Limit Reached")).GetData(),m_itemp,osDate);stattree->SetItemText(con7, cbuffer);
+		cbuffer.Format(wxT("%s: %i : %s"),CString(_("Max Connection Limit Reached")).GetData(),m_itemp,osDate);stattree->SetItemText(con7, cbuffer);
 		m_ilastMaxConnReached = m_itemp;
 	} else if( m_itemp == 0 ) {
-		cbuffer.Format("%s: %i",CString(_("Max Connection Limit Reached")).GetData(),m_itemp);
+		cbuffer.Format(wxT("%s: %i"),CString(_("Max Connection Limit Reached")).GetData(),m_itemp);
 		stattree->SetItemText(con7, cbuffer);
 	}
 
 	if(theApp.serverconnect->IsConnected()) {
-		cbuffer.Format("%s: %i",CString(_("Average Connections (estimate)")).GetData(),(int)averageconnections);
+		cbuffer.Format(wxT("%s: %i"),CString(_("Average Connections (estimate)")).GetData(),(int)averageconnections);
 		stattree->SetItemText(con8, cbuffer);
 	} else {
 		stattree->SetItemText(con8, CString(_("waiting for connection...")));
 	}
-	cbuffer.Format("%s: %i",CString(_("Peak Connections (estimate)")).GetData(),peakconnections);
+	cbuffer.Format(wxT("%s: %i"),CString(_("Peak Connections (estimate)")).GetData(),peakconnections);
 	stattree->SetItemText(con9, cbuffer);
 }
 
@@ -1179,7 +1179,7 @@ void CStatisticsDlg::ExportHTMLEvent(wxCommandEvent& evt)
 {
 	int8 ix;
 	wxString temp;
-	wxString text="";
+	wxString text=wxT("");
 	wxTreeItemId item;
 
 	// update it
@@ -1194,11 +1194,11 @@ void CStatisticsDlg::ExportHTMLEvent(wxCommandEvent& evt)
 		}
 		stattree->Expand(item);//,TVE_EXPAND);
 
-		temp="";
+		temp=wxT("");
 		for (ix=0;ix<3*(int)stattree->GetItemData(item);ix++) {
-			temp+="&nbsp;";
+			temp+=wxT("&nbsp;");
 			}
-		text+="<br>"+temp+stattree->GetItemText(item);
+		text+=wxT("<br>")+temp+stattree->GetItemText(item);
 		}
  
 	// set the string
@@ -1215,10 +1215,10 @@ wxString CStatisticsDlg::GetHTML() {
 	
 	int8 ix;
 	wxString temp;
-	wxString strBuffer="";
+	wxString strBuffer=wxT("");
 	wxTreeItemId item;
 
-	strBuffer.Printf("<font face=\"Verdana,Courier New,Helvetica\" size=\"2\">\r\n<b>aMule v%s %s [%s]</b>\r\n<br><br>\r\n", PACKAGE_VERSION, _("Statistics"), theApp.glob_prefs->GetUserNick());
+	strBuffer.Printf(wxT("<font face=\"Verdana,Courier New,Helvetica\" size=\"2\">\r\n<b>aMule v%s %s [%s]</b>\r\n<br><br>\r\n"), PACKAGE_VERSION, _("Statistics"), theApp.glob_prefs->GetUserNick());
 	// update it
 	ShowStatistics();
 
@@ -1231,16 +1231,16 @@ wxString CStatisticsDlg::GetHTML() {
 		}
 		stattree->Expand(item);
 
-		temp="";
+		temp=wxT("");
 		wxTreeItemId tempItem = item;
 		int level = 0;
 		while (tempItem = stattree->GetItemParent(tempItem)) level+=1;
 		for (ix=0;ix<level;ix++)
-			temp+="&nbsp;&nbsp;&nbsp;";
+			temp+=wxT("&nbsp;&nbsp;&nbsp;");
 		
-		strBuffer+="<br>"+temp+stattree->GetItemText(item);
+		strBuffer+=wxT("<br>")+temp+stattree->GetItemText(item);
 	}
- 	strBuffer+="</font>";
+ 	strBuffer+=wxT("</font>");
 
 	// return the string
 	return(strBuffer);

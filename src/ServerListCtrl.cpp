@@ -204,9 +204,9 @@ void CServerListCtrl::OnCopyLink(wxCommandEvent& event)
 	wxString buffer,link;
 	while((item=GetNextItem(item,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED)) != -1) {
 		CServer* change = (CServer*) this->GetItemData(item);
-		buffer=buffer.Format("ed2k:|server|%s|%d|", change->GetFullIP(), change->GetPort());
+		buffer=buffer.Format(wxT("ed2k:|server|%s|%d|"), change->GetFullIP(), change->GetPort());
 		if(link.Length()>0) {
-			buffer="\n"+buffer;
+			buffer=wxT("\n")+buffer;
 		}
 		link += buffer;
 	}
@@ -321,7 +321,7 @@ bool CServerListCtrl::AddServer(CServer* toadd,bool bAddToList)
 	}
 	if (bAddToList) {
 		uint32 itemnr=GetItemCount();
-		uint32 newid=InsertItem(itemnr,toadd->GetListName());
+		uint32 newid=InsertItem(itemnr,char2unicode(toadd->GetListName()));
 		SetItemData(newid,(long)toadd);
 		wxListItem myitem;
 		myitem.m_itemId=newid;
@@ -364,37 +364,37 @@ void CServerListCtrl::RefreshServer(CServer* server)
 	if(!server) {
 		return;
 	}
-	temp=wxString::Format( "%s : %i",server->GetAddress(),server->GetPort());
+	temp=wxString::Format( wxT("%s : %i"),server->GetAddress(),server->GetPort());
 	SetItem(itemnr,1,temp);
 	if(server->GetListName()) {
-		temp=server->GetListName();
+		temp=char2unicode(server->GetListName());
 		SetItem(itemnr,0,temp);
 	}
 	if(server->GetDescription()) {
-		temp=server->GetDescription();
+		temp=char2unicode(server->GetDescription());
 		SetItem(itemnr,2,temp);
 	}
 	if(1) {
 		if(server->GetPing()) {
-			temp=wxString::Format( "%i",server->GetPing());
+			temp=wxString::Format( wxT("%i"),server->GetPing());
 		} else {
-			temp="";
+			temp=wxT("");
 		}
 		SetItem(itemnr,3,temp);
 	} else {
 		printf("%lx: ei ping\n",(long)server);
-		SetItem(itemnr,3,"Ei ei");
+		SetItem(itemnr,3,wxT("Ei ei"));
 	}
 	if(server->GetUsers()) {
-		temp=wxString::Format( "%i",server->GetUsers());
+		temp=wxString::Format( wxT("%i"),server->GetUsers());
 		SetItem(itemnr,4,temp);
 	}
 	if(server->GetFiles()) {
-		temp=wxString::Format( "%i",server->GetFiles());
+		temp=wxString::Format( wxT("%i"),server->GetFiles());
 		SetItem(itemnr,5,temp);
 	}
 	if(server->GetPreferences()) {
-		temp=wxString::Format( "%i",server->GetPreferences());
+		temp=wxString::Format( wxT("%i"),server->GetPreferences());
 		SetItem(itemnr,6,temp);
 	}
 	switch(server->GetPreferences()) {
@@ -417,7 +417,7 @@ void CServerListCtrl::RefreshServer(CServer* server)
 	if(server->GetFailedCount() < 0) {
 		server->ResetFailedCount();
 	}
-	temp=wxString::Format( "%i",server->GetFailedCount());
+	temp=wxString::Format( wxT("%i"),server->GetFailedCount());
 	SetItem(itemnr,7,temp);
 	if (server->IsStaticMember()) {
 		SetItem(itemnr,8,_("Yes"));
@@ -556,9 +556,9 @@ bool CServerListCtrl::ProcessEvent(wxEvent& evt)
 					wxString buffer, link;
 					while(pos != -1) {
 						CServer* change = (CServer*)this->GetItemData(pos);
-						buffer.Printf("ed2k://|server|%s|%d|/", change->GetFullIP(), change->GetPort());
+						buffer.Printf(wxT("ed2k://|server|%s|%d|/"), change->GetFullIP(), change->GetPort());
 						if (link.Length()>0) {
-							buffer="\n"+buffer;
+							buffer=wxT("\n")+buffer;
 						}
 						link += buffer;
 						pos=GetNextItem(pos,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
@@ -613,12 +613,12 @@ int CServerListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 	int counter2;
 	switch(lParamSort) {
 		case 0: //(List) Server-name asc
-			return CString(item1->GetListName()).CmpNoCase(item2->GetListName());
+			return CString(char2unicode(item1->GetListName())).CmpNoCase(char2unicode(item2->GetListName()));
 		case 100: //(List) Server-name desc
-			return CString(item2->GetListName()).CmpNoCase(item1->GetListName());
+			return CString(char2unicode(item2->GetListName())).CmpNoCase(char2unicode(item1->GetListName()));
 		case 1: { //IP asc
 			if (item1->HasDynIP() && item2->HasDynIP()) {
-				return CString(item1->GetDynIP()).CmpNoCase(item2->GetDynIP());
+				return CString(char2unicode(item1->GetDynIP())).CmpNoCase(char2unicode(item2->GetDynIP()));
 			} else if (item1->HasDynIP()) {
 				return 1;
 			} else if (item2->HasDynIP()) {
@@ -629,8 +629,8 @@ int CServerListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 				sIP1 = item2->GetFullIP();
 				sIP2 = item1->GetFullIP();
 				int a[4],b[4];
-				sscanf(sIP1.GetData(),"%d.%d.%d.%d",&a[0],&a[1],&a[2],&a[3]);
-				sscanf(sIP2.GetData(),"%d.%d.%d.%d",&b[0],&b[1],&b[2],&b[3]);
+				sscanf(unicode2char(sIP1),"%d.%d.%d.%d",&a[0],&a[1],&a[2],&a[3]);
+				sscanf(unicode2char(sIP2),"%d.%d.%d.%d",&b[0],&b[1],&b[2],&b[3]);
 				for(int i=0;iTemp==0;i++) {
 					iTemp=b[i]-a[i];
 					if(i>3) {
@@ -642,7 +642,7 @@ int CServerListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 		}
 		case 101: { //IP desc
 			if(item1->HasDynIP() && item2->HasDynIP()) {
-				return CString(item2->GetDynIP()).CmpNoCase(item1->GetDynIP());
+				return CString(char2unicode(item2->GetDynIP())).CmpNoCase(char2unicode(item1->GetDynIP()));
 			} else if(item1->HasDynIP()) {
 				return 0;
 			} else if(item2->HasDynIP()) {
@@ -653,8 +653,8 @@ int CServerListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 				s2IP1 = item2->GetFullIP();
 				s2IP2 = item1->GetFullIP();
 				int a[4],b[4];
-				sscanf(s2IP1.GetData(),"%d.%d.%d.%d",&a[0],&a[1],&a[2],&a[3]);
-				sscanf(s2IP2.GetData(),"%d.%d.%d.%d",&b[0],&b[1],&b[2],&b[3]);
+				sscanf(unicode2char(s2IP1),"%d.%d.%d.%d",&a[0],&a[1],&a[2],&a[3]);
+				sscanf(unicode2char(s2IP2),"%d.%d.%d.%d",&b[0],&b[1],&b[2],&b[3]);
 				for(int i=0;iTemp==0;i++) {
 					iTemp=a[i]-b[i];
 					if(i>3) {
@@ -668,7 +668,7 @@ int CServerListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 			if((item1->GetDescription() != NULL) && (item2->GetDescription() != NULL)) {
 				//the 'if' is necessary, because the Description-String is not
 				//always initialisized in server.cpp
-				return CString(item2->GetDescription()).CmpNoCase(item1->GetDescription());
+				return CString(char2unicode(item2->GetDescription())).CmpNoCase(char2unicode(item1->GetDescription()));
 			} else if (item1->GetDescription() == NULL) {
 				return 1;
 			} else {
@@ -677,7 +677,7 @@ int CServerListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 		}
 		case 102: { //Desciption desc
 			if((item1->GetDescription() != NULL) && (item2->GetDescription() != NULL)) {
-				return CString(item1->GetDescription()).CmpNoCase(item2->GetDescription());
+				return CString(char2unicode(item1->GetDescription())).CmpNoCase(char2unicode(item2->GetDescription()));
 			} else if (item1->GetDescription() == NULL) {
 				return 1;
 			} else {
@@ -722,7 +722,7 @@ bool CServerListCtrl::StaticServerFileAppend(CServer *server)
 	try {
 		// Remove any entry before writing to avoid duplicates
 		StaticServerFileRemove(server);
-		FILE* staticservers = fopen(theApp.glob_prefs->GetAppDir() + wxString("staticservers.dat"), "a");
+		FILE* staticservers = fopen(unicode2char(theApp.glob_prefs->GetAppDir() + wxString(wxT("staticservers.dat"))), "a");
 		if (staticservers==NULL) {
 			theApp.amuledlg->AddLogLine( false, CString(_("Failed to open staticservers.dat")));
 			return false;
@@ -757,10 +757,10 @@ bool CServerListCtrl::StaticServerFileRemove(CServer *server)
 		char buffer[1024];
 		int lenBuf = 1024;
 		int pos;
-		wxString StaticFilePath = theApp.glob_prefs->GetAppDir() + wxString("staticservers.dat");
-		wxString StaticTempPath = theApp.glob_prefs->GetAppDir() + wxString("statictemp.dat");
-		FILE* staticservers = fopen(StaticFilePath , "r");
-		FILE* statictemp = fopen(StaticTempPath , "w");
+		wxString StaticFilePath = wxString::Format(wxT("%s"),unicode2char(theApp.glob_prefs->GetAppDir())) + wxT("staticservers.dat");
+		wxString StaticTempPath = wxString::Format(wxT("%s"),unicode2char(theApp.glob_prefs->GetAppDir())) + wxT("statictemp.dat");
+		FILE* staticservers = fopen(unicode2char(StaticFilePath) , "r");
+		FILE* statictemp = fopen(unicode2char(StaticTempPath) , "w");
 		if ((staticservers == NULL) || (statictemp == NULL)) {
 			if ( staticservers ) {
 				fclose(staticservers);
@@ -776,7 +776,7 @@ bool CServerListCtrl::StaticServerFileRemove(CServer *server)
 			if (fgets(buffer, lenBuf, staticservers) == 0) {
 				break;
 			}
-			strLine = buffer;
+			strLine = char2unicode(buffer);
 			// ignore comments or invalid lines
 			if (strLine.GetChar(0) == '#' || strLine.GetChar(0) == '/') {
 				continue;
@@ -785,13 +785,13 @@ bool CServerListCtrl::StaticServerFileRemove(CServer *server)
 				continue;
 			}
 			// Only interested in "host:port"
-			pos = strLine.Find(",");
+			pos = strLine.Find(wxT(","));
 			if (pos == -1) {
 				continue;
 			}
 			strLine = strLine.Left(pos);
 			// Get host and port from given server
-			strTest.Printf("%s:%i", server->GetAddress(), server->GetPort());
+			strTest.Printf(wxT("%s:%i"), server->GetAddress(), server->GetPort());
 			// Compare, if not the same server write original line to temp file
 			if (strLine.Cmp(strTest) != 0) {
 				fprintf(statictemp, "%s", buffer);

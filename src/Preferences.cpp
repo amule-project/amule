@@ -30,6 +30,7 @@
 #include <sys/types.h>
 #include <wx/filename.h>
 #include "otherfunctions.h"	// Needed for atoll
+#include "ini2.h"			// Needed for CIni
 #ifdef __WXMSW__
 	#include <wx/msw/winundef.h>
 #endif
@@ -37,9 +38,7 @@
 #include "opcodes.h"		// Needed for PREFFILE_VERSION
 #include "color.h"			// Needed for RGB
 
-#include <wx/config.h>
 #include <wx/arrimpl.cpp> // this is a magic incantation which must be done!
-#include "amule.h"
 
 WX_DEFINE_OBJARRAY(ArrayOfCategory_Struct);
 
@@ -448,76 +447,107 @@ int32 CPreferences::GetRecommendedMaxConnections()
 
 void CPreferences::SavePreferences()
 {
-	wxConfigBase* cfg = wxConfig::Get();
+	CString buffer;
+	CString fullpath = appdir + wxT("preferences.ini");
+	wxString bf(wxT("eMule"));
+	
+	CIni ini(fullpath, bf);
+	//---
+	ini.WriteString(wxT("AppVersion"), wxT(PACKAGE_STRING));
+	//---
 
-	cfg->Write( wxT("/eMule/AppVersion"), wxT(PACKAGE_STRING) );
+	PrefsUnifiedDlg::SaveAllItems(ini);
 
-	PrefsUnifiedDlg::SaveAllItems((*cfg));
-
-	// Ensure that the changes are saved to disk.
-	cfg->Flush();
 }
 
 void CPreferences::SaveCats()
 {
-	if ( GetCatCount() ) {
-		wxConfigBase* cfg = wxConfig::Get();
+	CIni ini( appdir + wxT("preferences.ini") , "Category" );
 
-		// The first category is the default one and should not be counte
-
-		cfg->Write( wxT("/General/Count"), (long)(catMap.GetCount() - 1) );
-
-		for ( size_t i = 1; i < catMap.GetCount(); i++ ) {
-			cfg->SetPath( wxString::Format(wxT("/Cat#%i"), i) );
-
-			cfg->Write( wxT("Title"), catMap[i]->title );
-			cfg->Write( wxT("Incoming"), catMap[i]->incomingpath );
-			cfg->Write( wxT("Comment"), catMap[i]->comment );
-			cfg->Write( wxT("Color"), wxString::Format(wxT("%lu"), catMap[i]->color) );
-			cfg->Write( wxT("Priority"), catMap[i]->prio );
+	// Cats
+	CString catinif,ixStr,buffer;
+	catinif = appdir + wxT("Category.ini");
+	if(wxFileName::FileExists(catinif)) {
+		BackupFile(catinif, wxT(".old"));
+	}
+	if (GetCatCount()>0) {
+		CIni catini( catinif, "Category" );
+		printf("Opening %s\n",catinif.GetData());
+		catini.WriteInt(wxT("Count"),catMap.GetCount()-1,"General");
+		for (size_t ix=1;ix<catMap.GetCount();ix++) {
+			ixStr.Format(wxT("Cat#%i"),ix);
+			catini.WriteString(wxT("Title"),char2unicode(catMap[ix]->title),unicode2char(ixStr));
+			catini.WriteString(wxT("Incoming"),char2unicode(catMap[ix]->incomingpath),unicode2char(ixStr));
+			catini.WriteString(wxT("Comment"),char2unicode(catMap[ix]->comment),unicode2char(ixStr));
+			buffer.Format(wxT("%lu"),(uint32)catMap[ix]->color);
+			catini.WriteString(wxT("Color"),buffer,unicode2char(ixStr));
+			catini.WriteInt(wxT("Priority"),catMap[ix]->prio,(char*)ixStr.GetData());
 		}
 	}
 }
 
 void CPreferences::LoadPreferences()
 {
-	wxConfigBase* cfg = wxConfig::Get();
+	//--- Quick hack to add version tag to preferences.ini-file and solve the issue with the FlatStatusBar tag...
+	CString strFileName = appdir + wxT("preferences.ini");
+	CIni* pIni = new CIni(strFileName, "eMule");
 
-	PrefsUnifiedDlg::LoadAllItems( (*cfg) );
+	CString strCurrVersion, strPrefsVersion;
+
+	strCurrVersion = CURRENT_VERSION_LONG;
+	strPrefsVersion = CString(pIni->GetString(wxT("AppVersion")).GetData());
+	delete pIni;
+	prefs->m_bFirstStart = false;
+
+	if ((strCurrVersion != strPrefsVersion) && wxFileName::FileExists(strFileName)) {
+		// CFile file;
+	  	BackupFile(strFileName, wxT(".old"));
+		strFileName += wxT(".old");
+	}
+	
+	CIni ini(strFileName, wxT("eMule"));
+	//--- end Ozon :)
+
+	PrefsUnifiedDlg::LoadAllItems(ini);
 
 	LoadCats();
+	
 }
 
 void CPreferences::LoadCats() {
-	// default cat ... Meow! =(^.^)=
+	CString ixStr,catinif,cat_a,cat_b,cat_c;
+	char buffer[100];
+
+	catinif = appdir + wxT("Category.ini");
+
+	// default cat
 	Category_Struct* newcat=new Category_Struct;
 	newcat->title[0] = 0;
 	newcat->incomingpath[0] = 0;
 	newcat->comment[0] = 0;
 	newcat->prio=0;
 	newcat->color=0;
-	AddCat( newcat );
+	AddCat(newcat);
 
-	wxConfigBase* cfg = wxConfig::Get();
-	
-	long max = cfg->Read( "/General/Count", 0l );
-	
-	for ( int i = 1; i <= max ; i++ ) {
-		cfg->SetPath( wxString::Format(wxT("/Cat#%i"), i) );
+	// if (!PathFileExists(catinif)) return;
+	// surprise, surprise it won't exist
+	// the system is now stupid enough to put everything in .eMule :(
+	// if(!wxFileName::FileExists(catinif)) return;
 
-		Category_Struct* newcat = new Category_Struct;
+	CIni catini( catinif, "Category" );
+	int max=catini.GetInt(wxT("Count"),0,"General");
 
-	
-		sprintf(newcat->title, wxT("%s"), unicode2char( cfg->Read( wxT("Title"), wxT("") )));
-		sprintf(newcat->incomingpath, wxT("%s"), unicode2char( cfg->Read( wxT("Incoming"), wxT("") )));
+	for (int ix=1;ix<=max;ix++) {
+		ixStr.Format(wxT("Cat#%i"),ix);
 
+		Category_Struct* newcat=new Category_Struct;
+		sprintf(newcat->title,"%s",unicode2char(catini.GetString(wxT("Title"),"",unicode2char(ixStr))));
+		sprintf(newcat->incomingpath,"%s",unicode2char(catini.GetString(wxT("Incoming"),"",unicode2char(ixStr))));
 		MakeFoldername(newcat->incomingpath);
-		sprintf(newcat->comment, wxT("%s"), unicode2char( cfg->Read( wxT("Comment"), wxT("") )));
-
-		newcat->prio = cfg->Read( wxT("Priority"), 0l );
-
-		wxString color = cfg->Read( wxT("Color"), wxT("0") );
-		newcat->color = atoll( unicode2char(color) );
+		sprintf(newcat->comment,"%s",unicode2char(catini.GetString(wxT("Comment"),"",unicode2char(ixStr))));
+		newcat->prio =catini.GetInt(wxT("Priority"),0,unicode2char(ixStr));
+		sprintf(buffer,"%s",unicode2char(catini.GetString(wxT("Color"),"0",unicode2char(ixStr))));
+		newcat->color=atoll(buffer);
 
 		AddCat(newcat);
 		if (!wxFileName::DirExists(char2unicode(newcat->incomingpath))) {
@@ -644,7 +674,7 @@ void CPreferences::SetColumnSortAscending(Table t, bool sortAscending)
 
 void CPreferences::RemoveCat(size_t index)
 {
-	if (index < catMap.GetCount()) {
+	if (index>=0 && index<catMap.GetCount()) {
 		catMap.RemoveAt(index);
 	}
 }

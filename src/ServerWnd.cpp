@@ -66,8 +66,8 @@ CServerWnd::CServerWnd(wxWindow* pParent /*=NULL*/)
 	serverlistctrl=list;
 
 	wxTextCtrl* cv=(wxTextCtrl*)FindWindowById(ID_SERVERINFO);
-	cv->AppendText(wxString(_("This is "))+wxString("aMule")+wxString(" ")+wxString(VERSION)+wxString(_(" (based on "))+wxString("eMule")+wxString(")\n"));
-	cv->AppendText(wxString(_("Visit http://www.amule.org to check if a new version is available.\n")));
+	cv->AppendText(wxT("This is aMule")+wxString(wxT(" "))+wxString(wxT(VERSION))+wxT(" (based on eMule)\n"));
+	cv->AppendText(wxT("Visit http://www.amule.org to check if a new version is available.\n"));
 }
 
 CServerWnd::~CServerWnd()
@@ -76,12 +76,12 @@ CServerWnd::~CServerWnd()
 
 void CServerWnd::UpdateServerMetFromURL(wxString strURL)
 {
-	if (strURL.Find("://") == -1) {
+	if (strURL.Find(wxT("://")) == -1) {
 		theApp.amuledlg->AddLogLine(true, CString(_("Invalid URL")));
 		return;
 	}
 	CString strTempFilename;
-	strTempFilename = theApp.glob_prefs->GetAppDir() + wxString::Format("temp-%d-server.met", ::GetTickCount());
+	strTempFilename = theApp.glob_prefs->GetAppDir() + wxString::Format(wxT("temp-%d-server.met"), ::GetTickCount());
 	CHTTPDownloadDlg *dlg=new CHTTPDownloadDlg(this,strURL,strTempFilename);
 	int retval=dlg->ShowModal();
 	if(retval==0) {
@@ -118,7 +118,7 @@ void CServerWnd::OnBnClickedAddserver(wxCommandEvent& evt)
   
 	wxString portstr;
 	portstr=((wxTextCtrl*)FindWindowById(IDC_SPORT))->GetLineText(0);
-	CServer* toadd = new CServer(atoi(portstr.GetData()),(char*)serveraddr.GetData());
+	CServer* toadd = new CServer(atoi(unicode2char(portstr.GetData())),(unicode2char(serveraddr.GetData())));
 	wxString servername;
 	servername=((wxTextCtrl*)FindWindowById(IDC_SERVERNAME))->GetLineText(0);
 	if (!servername.IsEmpty()) {
@@ -135,13 +135,13 @@ void CServerWnd::OnBnClickedAddserver(wxCommandEvent& evt)
 		delete toadd;
 		theApp.amuledlg->AddLogLine(true, CString(_("Server not added!")));
 	} else {
-		theApp.amuledlg->AddLogLine(true, CString(_("Server added: ")) + "%s", toadd->GetListName());
+		theApp.amuledlg->AddLogLine(true, CString(_("Server added: ")) + wxT("%s"), toadd->GetListName());
 	}
 	theApp.serverlist->SaveServermetToFile();
 	printf("Saving of server.met file Done !!!\n");
-	((wxTextCtrl*)FindWindowById(IDC_SERVERNAME))->SetValue("");
-	((wxTextCtrl*)FindWindowById(IDC_IPADDRESS))->SetValue("");
-	((wxTextCtrl*)FindWindowById(IDC_SPORT))->SetValue("");
+	((wxTextCtrl*)FindWindowById(IDC_SERVERNAME))->SetValue(wxT(""));
+	((wxTextCtrl*)FindWindowById(IDC_IPADDRESS))->SetValue(wxT(""));
+	((wxTextCtrl*)FindWindowById(IDC_SPORT))->SetValue(wxT(""));
 }
 
 void CServerWnd::OnBnClickedUpdateservermetfromurl(wxCommandEvent& evt)
@@ -206,5 +206,5 @@ void CServerWnd::UpdateMyInfo()
 
 void CServerWnd::OnSashPositionChanged(wxSplitterEvent& evt)
 {
-	theApp.amuledlg->srv_split_pos = ((wxSplitterWindow*)FindWindow("SrvSplitterWnd"))->GetSashPosition();
+	theApp.amuledlg->srv_split_pos = ((wxSplitterWindow*)FindWindow(wxT("SrvSplitterWnd")))->GetSashPosition();
 }
