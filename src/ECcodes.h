@@ -236,6 +236,22 @@ enum {
 		 */
 	EC_OP_GET_SHARED_FILES,
 	
+		/*!
+		 * \brief Set priority for shared file(s)
+		 * 
+		 * \par Tags:
+		 *  ::EC_TAG_KNOWNFILE (1+) file to process
+		 */
+	EC_OP_SHARED_SET_PRIO,
+
+		/*
+		 * \brief Add 1 or more of found files to download queue
+		 * 
+		 * \par Tags:
+		 *  ::EC_TAG_SEARCHFILE (1+) file to download
+		 */
+	EC_OP_DOWNLOAD_SEARCH_RESULT,
+	
 		/*
 		 * \brief Perform action on file in queue.
 		 *
