@@ -141,7 +141,7 @@ CUDPSocket::~CUDPSocket(){
 	//m_udpwnd.DestroyWindow();
 }
 
-void CUDPSocket::OnReceive(int nErrorCode){
+void CUDPSocket::OnReceive(int WXUNUSED(nErrorCode)){
 	char buffer[5000];
 	wxString serverbuffer;
 	//uint32 port;
@@ -314,7 +314,8 @@ bool CUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, const wxSt
 					if (update->GetDescReqChallenge() != 0 && get_uint32(packet) == update->GetDescReqChallenge())
 					{
 						update->SetDescReqChallenge(0);
-						uint32 challenge = srvinfo.ReadUInt32(); // skip challenge
+						// skip challenge
+						/* uint32 challenge = */ srvinfo.ReadUInt32();
 						
 						uint32 uTags = srvinfo.ReadUInt32();
 						for (uint32 i = 0; i < uTags; i++)
@@ -330,7 +331,8 @@ bool CUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, const wxSt
 								update->SetVersion(char2unicode(tag.tag.stringvalue));
 							else if (tag.tag.specialtag == ST_VERSION && tag.tag.type == 3){
 								wxString strVersion;
-								strVersion.Printf(_("%u.%u"), tag.tag.intvalue >> 16, tag.tag.intvalue & 0xFFFF);
+								strVersion.Printf(_("%u.%u"), tag.tag.intvalue >> 16,
+									tag.tag.intvalue & 0xFFFF);
 								update->SetVersion(strVersion);
 							}
 							else if (tag.tag.specialtag == ST_AUXPORTSLIST && tag.tag.type == 2)
