@@ -98,7 +98,8 @@ wxThread::ExitCode AsyncDNS::Entry()
     unsigned long addr=*(unsigned long*)ret.h_addr;
     #endif
     struct sockaddr_in* newsi=(struct sockaddr_in*)malloc(sizeof(struct sockaddr_in));//new struct sockaddr_in;
-    newsi->sin_addr.s_addr=addr;
+    // addr is in network byte order
+    newsi->sin_addr.s_addr = addr;
 
     wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED,TM_DNSDONE);
     evt.SetClientData(socket);
@@ -466,19 +467,24 @@ void CUDPSocket::DnsLookupDone(struct sockaddr_in* inaddr) {
 
 void CUDPSocket::SendBuffer(){
 	if(cur_server && sendbuffer){
-	  //SendTo(sendbuffer,sendblen,(SOCKADDR*)&m_SaveAddr, sizeof(m_SaveAddr));
-	  //wxIPV4address addr;
-	  amuleIPV4Address addr;
-	  struct in_addr tmpa;
-	  tmpa.s_addr=m_SaveAddr.sin_addr.s_addr;
-	  addr.Hostname(m_SaveAddr.sin_addr.s_addr);
-	  addr.Service(m_SaveAddr.sin_port);
-	  // don't send if socket isn't there
-	  if(Ok()) SendTo(addr,sendbuffer,sendblen);
-	  delete[] sendbuffer;
-	  sendbuffer = 0;
-	  delete cur_server;
-	  cur_server = 0;
+		//SendTo(sendbuffer,sendblen,(SOCKADDR*)&m_SaveAddr, sizeof(m_SaveAddr));
+		//wxIPV4address addr;
+		amuleIPV4Address addr;
+		struct in_addr tmpa;
+		tmpa.s_addr = m_SaveAddr.sin_addr.s_addr;
+#if wxCHECK_VERSION(2,5,2)
+		addr.Hostname(ntohl(m_SaveAddr.sin_addr.s_addr));
+#else
+		addr.Hostname(m_SaveAddr.sin_addr.s_addr);
+#endif
+		addr.Service(m_SaveAddr.sin_port);
+		// don't send if socket isn't there
+		if ( Ok() ) 
+			SendTo(addr,sendbuffer,sendblen);
+		delete[] sendbuffer;
+		sendbuffer = 0;
+		delete cur_server;
+		cur_server = 0;
 	}
 }
 
