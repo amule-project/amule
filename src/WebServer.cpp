@@ -626,7 +626,7 @@ wxString CWebServer::_ParseURLArray(ThreadData Data, wxString fieldname) {
 		int pos=URL.MakeLower().Find(fieldname.MakeLower() + wxString(wxT("=")));
 		if (pos>-1) {
 			temp=_ParseURL(Data,fieldname);
-			if (temp==wxT("")) break;
+			if (temp==wxEmptyString) break;
 			res.Append(temp+wxT("|"));
 			Data.sURL.Remove(pos, 10);
 			URL=Data.sURL;
@@ -844,12 +844,12 @@ wxString CWebServer::_GetServerList(ThreadData Data) {
 		else if(sSort == wxT("files"))
 			pThis->m_Params.ServerSort = SERVER_SORT_FILES;
 
-		if(_ParseURL(Data, wxT("sortreverse")) == wxEmptyString ))
+		if(_ParseURL(Data, wxT("sortreverse")) == wxEmptyString )
 			pThis->m_Params.bServerSortReverse = false;
 	}
 	
 	wxString sSortRev = _ParseURL(Data, wxT("sortreverse"));
-	if (sSortRev != wxT("")) {
+	if (sSortRev != wxEmptyString) {
 		pThis->m_Params.bServerSortReverse = (sSortRev == wxT("true"));
 	}
 	
@@ -867,27 +867,27 @@ wxString CWebServer::_GetServerList(ThreadData Data) {
 	if (pThis->m_Params.ServerSort == SERVER_SORT_NAME)
 		Out.Replace(wxT("[SortName]"), wxString::Format(wxT("&sortreverse=%s"), sServerSortRev.GetData()));
 	else
-		Out.Replace(wxT("[SortName]"), wxT(""));
+		Out.Replace(wxT("[SortName]"), wxEmptyString);
 	
 	if (pThis->m_Params.ServerSort == SERVER_SORT_DESCRIPTION)
 		Out.Replace(wxT("[SortDescription]"), wxString::Format(wxT("&sortreverse=%s"), sServerSortRev.GetData()));
 	else
-		Out.Replace(wxT("[SortDescription]"), wxT(""));
+		Out.Replace(wxT("[SortDescription]"), wxEmptyString);
 	
 	if (pThis->m_Params.ServerSort == SERVER_SORT_IP)
 		Out.Replace(wxT("[SortIP]"), wxString::Format(wxT("&sortreverse=%s"), sServerSortRev.GetData()));
 	else
-		Out.Replace(wxT("[SortIP]"), wxT(""));
+		Out.Replace(wxT("[SortIP]"), wxEmptyString);
 	
 	if (pThis->m_Params.ServerSort == SERVER_SORT_USERS)
 		Out.Replace(wxT("[SortUsers]"), wxString::Format(wxT("&sortreverse=%s"), sServerSortRev.GetData()));
 	else
-		Out.Replace(wxT("[SortUsers]"), wxT(""));
+		Out.Replace(wxT("[SortUsers]"), wxEmptyString);
 	
 	if (pThis->m_Params.ServerSort == SERVER_SORT_FILES)
 		Out.Replace(wxT("[SortFiles]"), wxString::Format(wxT("&sortreverse=%s"), sServerSortRev.GetData()));
 	else
-		Out.Replace(wxT("[SortFiles]"), wxT(""));
+		Out.Replace(wxT("[SortFiles]"), wxEmptyString);
 	
 	Out.Replace(wxT("[ServerList]"), _("Server list"));
 	Out.Replace(wxT("[Servername]"), _("Server name"));
@@ -990,7 +990,7 @@ wxString CWebServer::_GetServerList(ThreadData Data) {
 		}
 		
 		HTTPProcessData.Replace(wxT("[4]"), sT);
-		sT = wxT("");
+		sT = wxEmptyString;
 		if (ServerArray[i]->nServerFiles > 0)
 			sT.Printf(wxT("%d"), ServerArray[i]->nServerFiles);
 		
@@ -1670,7 +1670,7 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 wxString CWebServer::_GetDownloadLink(ThreadData Data) {
 	CWebServer *pThis = (CWebServer *)Data.pThis;
 	if (pThis == NULL)
-		return wxT("");
+		return wxEmptyString;
 
 	wxString sSession = _ParseURL(Data, wxT("ses"));
 
@@ -1691,7 +1691,7 @@ wxString CWebServer::_GetDownloadLink(ThreadData Data) {
 	if (atoi((char*) pThis->webInterface->SendRecvMsg(wxT("CATEGORIES GETCATCOUNT")).GetData()) > 1)
 		InsertCatBox(pThis, Out, 0, pThis->m_Templates.sCatArrow );
 	else 
-		Out.Replace(wxT("[CATBOX]"),wxT(""));
+		Out.Replace(wxT("[CATBOX]"),wxEmptyString);
 
 	return Out;
 }
@@ -1700,11 +1700,11 @@ wxString CWebServer::_GetDownloadLink(ThreadData Data) {
 wxString CWebServer::_GetSharedFilesList(ThreadData Data) {
 	CWebServer *pThis = (CWebServer *)Data.pThis;
 	if (pThis == NULL)
-		return wxT("");
+		return wxEmptyString;
 
 	wxString sSession = _ParseURL(Data, wxT("ses"));
 	
-	if (_ParseURL(Data, wxT("sort")) != wxT(""))  {
+	if (_ParseURL(Data, wxT("sort")) != wxEmptyString)  {
 		if (_ParseURL(Data, wxT("sort")) == wxT("name"))
 			pThis->m_Params.SharedSort = SHARED_SORT_NAME;
 		else if (_ParseURL(Data, wxT("sort")) == wxT("size"))
@@ -1724,14 +1724,14 @@ wxString CWebServer::_GetSharedFilesList(ThreadData Data) {
 		else if (_ParseURL(Data, wxT("sort")) == wxT("priority"))
 			pThis->m_Params.SharedSort = SHARED_SORT_PRIORITY;
 
-		if (_ParseURL(Data, wxT("sortreverse")) == wxT(""))
+		if (_ParseURL(Data, wxT("sortreverse")) == wxEmptyString)
 			pThis->m_Params.bSharedSortReverse = false;
 	}
 	
-	if (_ParseURL(Data, wxT("sortreverse")) != wxT(""))
+	if (_ParseURL(Data, wxT("sortreverse")) != wxEmptyString)
 		pThis->m_Params.bSharedSortReverse = (_ParseURL(Data, wxT("sortreverse")) == wxT("true"));
 
-	if (_ParseURL(Data, wxT("hash")) != wxT("") && _ParseURL(Data, wxT("setpriority")) != wxT("") && IsSessionAdmin(Data,sSession)) 
+	if (_ParseURL(Data, wxT("hash")) != wxEmptyString && _ParseURL(Data, wxT("setpriority")) != wxEmptyString && IsSessionAdmin(Data,sSession)) 
 		_SetSharedFilePriority(pThis, _ParseURL(Data, wxT("hash")), atoi((char*) _ParseURL(Data, wxT("setpriority")).GetData()));
 
 	if (_ParseURL(Data, wxT("reload")) == wxT("true")) {
@@ -1807,12 +1807,12 @@ wxString CWebServer::_GetSharedFilesList(ThreadData Data) {
 
 	if (_ParseURL(Data, wxT("reload")) == wxT("true")) {
 #warning fix GetLastLogEntry()
-		wxString resultlog = wxT(""); //_SpecialChars(theApp.amuledlg->GetLastLogEntry());
+		wxString resultlog = wxEmptyString; //_SpecialChars(theApp.amuledlg->GetLastLogEntry());
 		//resultlog = resultlog.TrimRight('\n');
 		//resultlog = resultlog.Mid(resultlog.ReverseFind('\n'));
 		Out.Replace(wxT("[Message]"),resultlog);
 	} else
-		Out.Replace(wxT("[Message]"),wxT(""));
+		Out.Replace(wxT("[Message]"),wxEmptyString);
 
 	Out.Replace(wxT("[Filename]"), _("File Name"));
 	Out.Replace(wxT("[Priority]"),  _("Priority"));
@@ -1950,7 +1950,7 @@ wxString CWebServer::_GetSharedFilesList(ThreadData Data) {
 	}
 
 	// Displaying
-	wxString sSharedList = wxT("");
+	wxString sSharedList = wxEmptyString;
 	for (size_t i = 0; i < SharedArray.GetCount(); i++) {
 		char HTTPTempC[100] = "";
 		wxString HTTPProcessData;
@@ -2025,12 +2025,12 @@ wxString CWebServer::_GetSharedFilesList(ThreadData Data) {
 wxString CWebServer::_GetGraphs(ThreadData Data) {
 	CWebServer *pThis = (CWebServer *)Data.pThis;
 	if (pThis == NULL)
-		return wxT("");
+		return wxEmptyString;
 
 	wxString Out = pThis->m_Templates.sGraphs;
 	
-	wxString sGraphDownload = wxT(""), sGraphUpload = wxT(""), sGraphCons = wxT("");
-	wxString sTmp = wxT("");
+	wxString sGraphDownload = wxEmptyString, sGraphUpload = wxEmptyString, sGraphCons = wxEmptyString;
+	wxString sTmp = wxEmptyString;
 	
 	for (size_t i = 0; i < WEB_GRAPH_WIDTH; i++) {
 		if (i < pThis->m_Params.PointsForWeb.GetCount()) {
@@ -2089,11 +2089,11 @@ wxString CWebServer::_GetGraphs(ThreadData Data) {
 wxString CWebServer::_GetAddServerBox(ThreadData Data) {	
 	CWebServer *pThis = (CWebServer *)Data.pThis;
 	if (pThis == NULL)
-		return wxT("");
+		return wxEmptyString;
 
 	wxString sSession = _ParseURL(Data, wxT("ses"));
 
-	if (!IsSessionAdmin(Data,sSession)) return wxT("");
+	if (!IsSessionAdmin(Data,sSession)) return wxEmptyString;
 
 	wxString Out = pThis->m_Templates.sAddServerBox;
 	if (_ParseURL(Data, wxT("addserver")) == wxT("true")) {
@@ -2105,7 +2105,7 @@ wxString CWebServer::_GetAddServerBox(ThreadData Data) {
 		pThis->webInterface->SendRecvMsg(request);
 
 #warning fix GetLastLogEntry
-		wxString resultlog = wxT(""); //_SpecialChars(theApp.amuledlg->GetLastLogEntry());
+		wxString resultlog = wxEmptyString; //_SpecialChars(theApp.amuledlg->GetLastLogEntry());
 		//resultlog = resultlog.TrimRight('\n');
 		//resultlog = resultlog.Mid(resultlog.ReverseFind('\n'));
 		Out.Replace(wxT("[Message]"),resultlog);
@@ -2114,12 +2114,12 @@ wxString CWebServer::_GetAddServerBox(ThreadData Data) {
 		pThis->webInterface->SendRecvMsg(request);
 		
 #warning fix GetLastLogEntry
-		wxString resultlog = wxT(""); //_SpecialChars(theApp.amuledlg->GetLastLogEntry());
+		wxString resultlog = wxEmptyString; //_SpecialChars(theApp.amuledlg->GetLastLogEntry());
 		//resultlog = resultlog.TrimRight('\n');
 		//resultlog = resultlog.Mid(resultlog.ReverseFind('\n'));
 		Out.Replace(wxT("[Message]"),resultlog);
 	} else
-		Out.Replace(wxT("[Message]"), wxT(""));
+		Out.Replace(wxT("[Message]"), wxEmptyString);
 	
 	Out.Replace(wxT("[AddServer]"), _("Received %d new servers"));
 	Out.Replace(wxT("[IP]"), _("IP or Address"));
@@ -2137,12 +2137,12 @@ wxString CWebServer::_GetAddServerBox(ThreadData Data) {
 wxString CWebServer::_GetWebSearch(ThreadData Data) {
 	CWebServer *pThis = (CWebServer *)Data.pThis;
 	if (pThis == NULL)
-		return wxT("");
+		return wxEmptyString;
 
 	wxString sSession = _ParseURL(Data, wxT("ses"));
     
 	wxString Out = pThis->m_Templates.sWebSearch;
-	if (_ParseURL(Data, wxT("tosearch")) != wxT("")) {
+	if (_ParseURL(Data, wxT("tosearch")) != wxEmptyString) {
 		wxString query = query.Format(wxT("http://www.filedonkey.com/fdsearch/index.php?media=%s&pattern=%s&action=search&name=FD-Search&op=modload&file=index&requestby=amule"), _ParseURL(Data, wxT("media")).GetData(), _ParseURL(Data, wxT("tosearch")).GetData());
 		
 		wxString tosearch = tosearch.Format(wxT("%s"), _ParseURL(Data, wxT("tosearch")).GetData());
@@ -2175,7 +2175,7 @@ wxString CWebServer::_GetWebSearch(ThreadData Data) {
 wxString CWebServer::_GetLog(ThreadData Data) {
 	CWebServer *pThis = (CWebServer *)Data.pThis;
 	if (pThis == NULL)
-		return wxT("");
+		return wxEmptyString;
 
 	wxString sSession = _ParseURL(Data, wxT("ses"));
 
@@ -2196,7 +2196,7 @@ wxString CWebServer::_GetLog(ThreadData Data) {
 wxString CWebServer::_GetServerInfo(ThreadData Data) {
 	CWebServer *pThis = (CWebServer *)Data.pThis;
 	if (pThis == NULL)
-		return wxT("");
+		return wxEmptyString;
 
 	wxString sSession = _ParseURL(Data, wxT("ses"));
 
@@ -2220,7 +2220,7 @@ wxString CWebServer::_GetServerInfo(ThreadData Data) {
 wxString CWebServer::_GetDebugLog(ThreadData Data) {
 	CWebServer *pThis = (CWebServer *)Data.pThis;
 	if (pThis == NULL)
-		return wxT("");
+		return wxEmptyString;
 
 	wxString sSession = _ParseURL(Data, wxT("ses"));
 
@@ -2241,7 +2241,7 @@ wxString CWebServer::_GetDebugLog(ThreadData Data) {
 wxString CWebServer::_GetStats(ThreadData Data) {
 	CWebServer *pThis = (CWebServer *)Data.pThis;
 	if (pThis == NULL)
-		return wxT("");
+		return wxEmptyString;
 
 	pThis->webInterface->Show(_("***_GetStats arrived\n"));
 
@@ -2266,7 +2266,7 @@ wxString CWebServer::_GetStats(ThreadData Data) {
 wxString CWebServer::_GetPreferences(ThreadData Data) {
 	CWebServer *pThis = (CWebServer *)Data.pThis;
 	if (pThis == NULL)
-		return wxT("");
+		return wxEmptyString;
 
 	int brk;
 	
@@ -2276,41 +2276,41 @@ wxString CWebServer::_GetPreferences(ThreadData Data) {
 	Out.Replace(wxT("[Session]"), sSession);
 
 	if ((_ParseURL(Data, wxT("saveprefs")) == wxT("true")) && IsSessionAdmin(Data,sSession) ) {
-		wxString prefList(wxT(""));
+		wxString prefList(wxEmptyString);
 		if (_ParseURL(Data, wxT("gzip")) == wxT("true") || _ParseURL(Data, wxT("gzip")) == wxT("on")) {
 			prefList.Append(wxT("1\t"));
 		}
-		if (_ParseURL(Data, wxT("gzip")) == wxT("false") || _ParseURL(Data, wxT("gzip")) == wxT("")) {
+		if (_ParseURL(Data, wxT("gzip")) == wxT("false") || _ParseURL(Data, wxT("gzip")) == wxEmptyString) {
 			prefList.Append(wxT("0\t"));
 		}
 		if (_ParseURL(Data, wxT("showuploadqueue")) == wxT("true") || _ParseURL(Data, wxT("showuploadqueue")) == wxT("on") ) {
 			pThis->m_Params.bShowUploadQueue = true;
 		}
-		if(_ParseURL(Data, wxT("showuploadqueue")) == wxT("false") || _ParseURL(Data, wxT("showuploadqueue")) == wxT("")) {
+		if(_ParseURL(Data, wxT("showuploadqueue")) == wxT("false") || _ParseURL(Data, wxT("showuploadqueue")) == wxEmptyString) {
 			pThis->m_Params.bShowUploadQueue = false;
 		}
-		if (_ParseURL(Data, wxT("refresh")) != wxT("")) {
+		if (_ParseURL(Data, wxT("refresh")) != wxEmptyString) {
 			prefList+=wxString::Format(wxT("%d\t"), atoi((char*) _ParseURL(Data, wxT("refresh")).GetData()));
 		}
-		if (_ParseURL(Data, wxT("maxdown")) != wxT("")) {
+		if (_ParseURL(Data, wxT("maxdown")) != wxEmptyString) {
 			prefList+=wxString::Format(wxT("%d\t"), atoi((char*) _ParseURL(Data, wxT("maxdown")).GetData()));
 		}
-		if (_ParseURL(Data, wxT("maxup")) != wxT("")) {
+		if (_ParseURL(Data, wxT("maxup")) != wxEmptyString) {
 			prefList+=wxString::Format(wxT("%d\t"), atoi((char*) _ParseURL(Data, wxT("maxup")).GetData()));
 		}
-		if (_ParseURL(Data, wxT("maxcapdown")) != wxT("")) {
+		if (_ParseURL(Data, wxT("maxcapdown")) != wxEmptyString) {
 			prefList+=wxString::Format(wxT("%d\t"), atoi((char*) _ParseURL(Data, wxT("maxcapdown")).GetData()));
 		}
-		if (_ParseURL(Data, wxT("maxcapup")) != wxT("")) {
+		if (_ParseURL(Data, wxT("maxcapup")) != wxEmptyString) {
 			prefList+=wxString::Format(wxT("%d\t"), atoi((char*) _ParseURL(Data, wxT("maxcapup")).GetData()));
 		}
-		if (_ParseURL(Data, wxT("maxsources")) != wxT("")) {
+		if (_ParseURL(Data, wxT("maxsources")) != wxEmptyString) {
 			prefList+=wxString::Format(wxT("%d\t"), atoi((char*) _ParseURL(Data, wxT("maxsources")).GetData()));
 		}
-		if (_ParseURL(Data, wxT("maxconnections")) != wxT("")) {
+		if (_ParseURL(Data, wxT("maxconnections")) != wxEmptyString) {
 			prefList+=wxString::Format(wxT("%d\t"), atoi((char*) _ParseURL(Data, wxT("maxconnections")).GetData()));
 		}
-		if (_ParseURL(Data, wxT("maxconnectionsperfive")) != wxT("")) {
+		if (_ParseURL(Data, wxT("maxconnectionsperfive")) != wxEmptyString) {
 			prefList+=wxString::Format(wxT("%d\t"), atoi((char*) _ParseURL(Data, wxT("maxconnectionsperfive")).GetData()));
 		}
 
@@ -2327,24 +2327,24 @@ wxString CWebServer::_GetPreferences(ThreadData Data) {
 	if (atoi((char*) sPreferences.Left(brk).GetData())) {
 		Out.Replace(wxT("[UseGzipVal]"), wxT("checked"));
 	} else {
-		Out.Replace(wxT("[UseGzipVal]"), wxT(""));
+		Out.Replace(wxT("[UseGzipVal]"), wxEmptyString);
 	}
 	if(pThis->m_Params.bShowUploadQueue) {
 		Out.Replace(wxT("[ShowUploadQueueVal]"), wxT("checked"));
 	} else {
-		Out.Replace(wxT("[ShowUploadQueueVal]"), wxT(""));
+		Out.Replace(wxT("[ShowUploadQueueVal]"), wxEmptyString);
 	}
 	sPreferences=sPreferences.Mid(brk+1); brk=sPreferences.First(wxT("\t"));
 	if (atoi((char*) sPreferences.Left(brk).GetData())) {
 		Out.Replace(wxT("[FirstAndLastVal]"), wxT("checked"));
 	} else {
-		Out.Replace(wxT("[FirstAndLastVal]"), wxT(""));
+		Out.Replace(wxT("[FirstAndLastVal]"), wxEmptyString);
 	}
 	sPreferences=sPreferences.Mid(brk+1); brk=sPreferences.First(wxT("\t"));
 	if (atoi((char*) sPreferences.Left(brk).GetData())) {
 		Out.Replace(wxT("[FullChunksVal]"), wxT("checked"));
 	} else {
-		Out.Replace(wxT("[FullChunksVal]"), wxT(""));
+		Out.Replace(wxT("[FullChunksVal]"), wxEmptyString);
 	}
 	
 	sPreferences=sPreferences.Mid(brk+1); brk=sPreferences.First(wxT("\t"));
@@ -2412,11 +2412,11 @@ wxString CWebServer::_GetPreferences(ThreadData Data) {
 wxString CWebServer::_GetLoginScreen(ThreadData Data) {
 	CWebServer *pThis = (CWebServer *)Data.pThis;
 	if (pThis == NULL)
-		return wxT("");
+		return wxEmptyString;
 
 	wxString sSession = _ParseURL(Data, wxT("ses"));
 
-	wxString Out = wxT("");
+	wxString Out = wxEmptyString;
 
 	Out += pThis->m_Templates.sLogin;
 
@@ -2436,11 +2436,11 @@ wxString CWebServer::_GetLoginScreen(ThreadData Data) {
 wxString CWebServer::_GetConnectedServer(ThreadData Data) {
 	CWebServer *pThis = (CWebServer *)Data.pThis;
 	if (pThis == NULL)
-		return wxT("");
+		return wxEmptyString;
 
 	wxString sSession = _ParseURL(Data, wxT("ses"));
 
-	wxString HTTPTemp = wxT("");
+	wxString HTTPTemp = wxEmptyString;
 	char	HTTPTempC[100] = "";
 	wxString OutS = pThis->m_Templates.sConnectedServer;
 	OutS.Replace(wxT("[ConnectedServer]"), _("Server"));
@@ -2474,12 +2474,12 @@ wxString CWebServer::_GetConnectedServer(ThreadData Data) {
 		OutS.Replace(wxT("[3]"), HTTPTemp);
 	} else if (sServerStat.Left(brk) == wxT("Connecting")) {
 		OutS.Replace(wxT("[1]"), _("Connecting"));
-		OutS.Replace(wxT("[2]"), wxT(""));
-		OutS.Replace(wxT("[3]"), wxT(""));
+		OutS.Replace(wxT("[2]"), wxEmptyString);
+		OutS.Replace(wxT("[3]"), wxEmptyString);
 	} else {
 		OutS.Replace(wxT("[1]"), _("Disconnected"));
-		OutS.Replace(wxT("[2]"), wxT(""));
-		OutS.Replace(wxT("[3]"), wxT(""));
+		OutS.Replace(wxT("[2]"), wxEmptyString);
+		OutS.Replace(wxT("[3]"), wxEmptyString);
 	}
 
 	return OutS;
@@ -2654,7 +2654,7 @@ wxString CWebServer::_GetWebCharSet() {
 wxString CWebServer::_GetDownloadGraph(ThreadData Data,wxString filehash) {
 	CWebServer *pThis = (CWebServer *)Data.pThis;
 	if (pThis == NULL)
-		return wxT("");
+		return wxEmptyString;
 	
 	// cool style
 	wxString progresscolor[12];
@@ -2673,7 +2673,7 @@ wxString CWebServer::_GetDownloadGraph(ThreadData Data,wxString filehash) {
 	progresscolor[10]=wxT("green.gif");
 	progresscolor[11]=wxT("greenpercent.gif");
 
-	wxString Out = wxT("");
+	wxString Out = wxEmptyString;
 	wxString temp;
 
 	wxString response = pThis->webInterface->SendRecvMsg(wxString::Format(wxT("WEBPAGE PROGRESSBAR %d %s"), pThis->m_Templates.iProgressbarWidth, filehash.GetData()).GetData());
@@ -2719,13 +2719,13 @@ wxString CWebServer::_GetDownloadGraph(ThreadData Data,wxString filehash) {
 wxString CWebServer::_GetSearch(ThreadData Data) {
 	CWebServer *pThis = (CWebServer *)Data.pThis;
 	if (pThis == NULL)
-		return wxT("");
+		return wxEmptyString;
 
 	wxString sSession = _ParseURL(Data, wxT("ses"));
 	wxString Out = pThis->m_Templates.sSearch;
 
 	wxString downloads=_ParseURLArray(Data,wxT("downloads"));
-	if (downloads != wxT("") && IsSessionAdmin(Data,sSession) ) {
+	if (downloads != wxEmptyString && IsSessionAdmin(Data,sSession) ) {
 		int brk;
 		while (downloads.Length()>0) {
 			brk=downloads.First(wxT("|"));
@@ -2735,7 +2735,7 @@ wxString CWebServer::_GetSearch(ThreadData Data) {
 	}
 
 	wxString sToSearch = _ParseURL(Data, wxT("tosearch"));
-	if (sToSearch != wxT("") && IsSessionAdmin(Data,sSession)) {
+	if (sToSearch != wxEmptyString && IsSessionAdmin(Data,sSession)) {
 		wxString sParams;
 		sParams.Printf(sToSearch+wxT("\n"));
 		sParams.Append(_ParseURL(Data, wxT("type"))+wxT("\n"));
@@ -2747,10 +2747,10 @@ wxString CWebServer::_GetSearch(ThreadData Data) {
 
 		pThis->webInterface->SendRecvMsg(wxString::Format(wxT("SEARCH DONEWSEARCH %s"), sParams.GetData()));
 		Out.Replace(wxT("[Message]"),_("Search in progress. Refetch results in a moment!"));
-	} else if (sToSearch != wxT("") && !IsSessionAdmin(Data,sSession) ) {
+	} else if (sToSearch != wxEmptyString && !IsSessionAdmin(Data,sSession) ) {
 		Out.Replace(wxT("[Message]"),_("Access denied!"));
 	} else 
-		Out.Replace(wxT("[Message]"),wxT(""));
+		Out.Replace(wxT("[Message]"),wxEmptyString);
 
 	wxString sSort = _ParseURL(Data, wxT("sort"));
 	if (sSort.Length()>0) pThis->m_iSearchSortby=atoi((char*) sSort.GetData());
@@ -2763,9 +2763,9 @@ wxString CWebServer::_GetSearch(ThreadData Data) {
 	if (atoi((char*) pThis->webInterface->SendRecvMsg(wxT("CATEGORIES GETCATCOUNT")).GetData()) > 1)
 		InsertCatBox(pThis, Out, 0, pThis->m_Templates.sCatArrow);
 	else
-		Out.Replace(wxT("[CATBOX]"),wxT(""));
+		Out.Replace(wxT("[CATBOX]"),wxEmptyString);
 
-	Out.Replace(wxT("[SEARCHINFOMSG]"),wxT(""));
+	Out.Replace(wxT("[SEARCHINFOMSG]"),wxEmptyString);
 	Out.Replace(wxT("[RESULTLIST]"), result);
 	Out.Replace(wxT("[Result]"), _("Search Results"));
 	Out.Replace(wxT("[Session]"), sSession);
@@ -2851,7 +2851,7 @@ void CWebServer::InsertCatBox(CWebServer *pThis, wxString &Out, int preselect, w
 
 	int catCount = atoi((char*) pThis->webInterface->SendRecvMsg(wxT("CATEGORIES GETCATCOUNT")).GetData());
 	for (int i=0;i<catCount;i++) {
-		tempBuf3 = (i==preselect) ? wxString(wxT(" selected")) : wxEmptyString;
+		tempBuf3 = (i==preselect) ? wxString(wxT(" selected")) : wxString(wxT(""));
 		catTitle = pThis->webInterface->SendRecvMsg(wxString::Format(wxT("CATEGORIES GETCATTITLE %d"), i));
 		tempBuf2.Printf(wxT("<option%s value=\"%i\">%s</option>"), tempBuf3.GetData(), i, (i==0) ? _("all") : catTitle.GetData());
 		tempBuf.Append(tempBuf2);
@@ -2864,7 +2864,7 @@ void CWebServer::InsertCatBox(CWebServer *pThis, wxString &Out, int preselect, w
 		}
 		
 		for (int i = ((catCount>1) ? 1 : 2); i <= 12; i++) {
-			tempBuf3 = ((-i)==preselect) ? wxString(wxT(" selected")) : wxEmptyString;
+			tempBuf3 = ((-i)==preselect) ? wxString(wxT(" selected")) : wxString(wxT(""));
 			tempBuf2.Printf(wxT("<option%s value=\"%i\">%s</option>"), tempBuf3.GetData(), -i, GetSubCatLabel(-i).GetData());
 			tempBuf.Append(tempBuf2);
 		}
