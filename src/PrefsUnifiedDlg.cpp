@@ -905,8 +905,12 @@ void PrefsUnifiedDlg::BuildItemList(Preferences_Struct *prefs, char * appdir)  /
 	listRse.Append(new RseBool(IDC_PROGBAR, prefs->ProgBar, "ShowProgressBar", true)); 	 
 	listRse.Append(new RseBool(IDC_PERCENT, prefs->Percent, "ShowPercent", false)); 	
 	listRse.Append(new RseBool(IDC_METADATA, prefs->ExtractMetaData, "ExtractMetaDataTags", false)); 	
-	listRse.Append(new RseBool(IDC_SECIDENT, prefs->SecIdent, "UseSecIdent", true)); 		
+	listRse.Append(new RseBool(IDC_CHUNKALLOC, prefs->AllocFullChunk, "FullChunkAlloc", false)); 		
+	listRse.Append(new RseBool(IDC_FULLALLOCATE, prefs->AllocFullPart, "FullPartAlloc", false)); 		
+	listRse.Append(new RseString(IDC_FCHECKSELF, prefs->CustomBrowser, sizeof(prefs->CustomBrowser), "CustomBrowser", "", "FakeCheck"));
+	listRse.Append(new RseInt(IDC_FCHECK, prefs->Browser, "Browser", 0));	
 
+	
 }
 
 //==============================================================================
