@@ -80,7 +80,7 @@ void CBarShader::FillRange(uint32 start, uint32 end, const DWORD color)
 	// Sanity check
 	wxASSERT( start <= end );
 
-	if( end > m_FileSize ) {
+	if( end >= m_FileSize-1 ) {
 		end = m_FileSize;
 	}
 
