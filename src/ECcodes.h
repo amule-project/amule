@@ -199,12 +199,17 @@ enum {
 	EC_OP_DLOAD_QUEUE,
 
 		/*!
-		 * \brief Change IPFilter settings: on, off, level, reload
+		 * \brief Change/query IPFilter settings: on, off, level, reload
+		 *
+		 * Set/get IPFilter settings, both TAGs may be present or omitted.
+		 * When used without TAGs, just query current IPFilter level.
+		 * The server will reply with an ::EC_OP_MISC_DATA packet, with
+		 * EC_TAG_IPFILTER_* tags, that contain the current IPFilter
+		 * values.
 		 *
 		 * \par Tags:
-		 *	\b ::EC_TAG_STRING (0-1) holds action to peform:
-		 *  'ON', 'OFF', 'RELOAD', [0-9]{2} - set level. When used without
-		 *  tag just query current settings
+		 *	::EC_TAG_IPFILTER_STATUS (0-1) Sets IPFilter ON, OFF or RELOAD.\n
+		 *	::EC_TAG_IPFILTER_LEVEL (0-1) Sets IPFilter level.
 		 */
 	EC_OP_IPFILTER_CMD,
 
