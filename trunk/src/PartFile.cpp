@@ -2477,7 +2477,10 @@ wxThread::ExitCode completingThread::Entry()
 		*newname = strTestName;
 	}
 
-	if (!FS_wxRenameFile(partfilename, *newname)) {
+	if (rename(unicode2char(partfilename),unicode2char( *newname))) {
+		completing_result |= UNEXP_FILE_ERROR;
+		return NULL;
+		/*
 		if (!FS_wxCopyFile(partfilename, *newname)) {
 			completing_result |= UNEXP_FILE_ERROR;
 			return NULL;
@@ -2485,6 +2488,7 @@ wxThread::ExitCode completingThread::Entry()
 		if ( !wxRemoveFile(partfilename) ) {
 			completing_result |= DELETE_FAIL_PART;
 		}
+		*/
 	}
 	
 	if (!wxRemoveFile(Completing_Fullname)) {
