@@ -112,12 +112,12 @@ void CServerListCtrl::AddServer( CServer* toadd )
 }
 
 
-void CServerListCtrl::RemoveServer( const CServer* server )
+void CServerListCtrl::RemoveServer( const CServer* server, bool ask_static)
 {
 	long result = FindItem( -1, (long)server );
 	if ( result != -1 ) {
 		CServer* cur_server = (CServer*) GetItemData( result );
-		if ( wxMessageBox(_("Are you sure you want to delete the static server ") + cur_server->GetListName(), _("Cancel"), wxICON_QUESTION | wxYES_NO) == wxYES ) {
+		if ( !ask_static || wxMessageBox(_("Are you sure you want to delete the static server ") + cur_server->GetListName(), _("Cancel"), wxICON_QUESTION | wxYES_NO) == wxYES ) {
 			theApp.serverlist->RemoveServer( cur_server );
 			DeleteItem( result );
 		}
@@ -126,7 +126,7 @@ void CServerListCtrl::RemoveServer( const CServer* server )
 }
 
 
-void CServerListCtrl::RemoveAllServers( int state )
+void CServerListCtrl::RemoveAllServers( int state, bool ask_static )
 {
 	int pos = GetNextItem( -1, wxLIST_NEXT_ALL, state);
 	bool connected = theApp.serverconnect->IsConnected() ||
@@ -138,7 +138,7 @@ void CServerListCtrl::RemoveAllServers( int state )
 			++pos;
 		} else {
 			CServer* cur_server = (CServer*) GetItemData( pos );
-			if ( wxMessageBox(_("Are you sure you want to delete the static server ") + cur_server->GetListName(), _("Cancel"), wxICON_QUESTION | wxYES_NO) == wxYES ) {
+			if ( !ask_static || wxMessageBox(_("Are you sure you want to delete the static server ") + cur_server->GetListName(), _("Cancel"), wxICON_QUESTION | wxYES_NO) == wxYES ) {
 				theApp.serverlist->RemoveServer( cur_server );
 				DeleteItem( pos );
 			} else {
@@ -532,7 +532,7 @@ void CServerListCtrl::OnRemoveServers( wxCommandEvent& event )
 					theApp.amuledlg->ShowConnectionState( false );
 				}
 			
-				RemoveAllServers( wxLIST_STATE_DONTCARE );
+				RemoveAllServers( wxLIST_STATE_DONTCARE, true);
 			}
 		}
 	} else if ( event.GetId() == MP_REMOVE ) {
@@ -540,7 +540,7 @@ void CServerListCtrl::OnRemoveServers( wxCommandEvent& event )
 			wxString question = _("Are you sure that you wish to delete the selected server(s)?\n");
 	
 			if ( wxMessageBox( question, _("Cancel"), wxICON_QUESTION | wxYES_NO) == wxYES ) {
-				RemoveAllServers( wxLIST_STATE_SELECTED );
+				RemoveAllServers( wxLIST_STATE_SELECTED, true);
 			}
 		}
 	}
