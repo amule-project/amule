@@ -2092,6 +2092,7 @@ bool CClientReqSocket::IsMessageFiltered(wxString Message, CUpDownClient* client
 			}
 		}
 	}
+	return filtered;
 }
 
 
