@@ -98,7 +98,7 @@ void CMemFile::enlargeBuffer(unsigned long size)
 {
   unsigned long newsize=fBufferSize;
 
-  // hmm.. mitähän jos growbytes==0??
+  // hmm.. mitï¿½hï¿½n jos growbytes==0??
   while(newsize<size)
     newsize+=fGrowBytes;
 
@@ -107,7 +107,7 @@ void CMemFile::enlargeBuffer(unsigned long size)
   else fBuffer=(BYTE*)malloc(newsize);
 
   if(fBuffer==NULL) {
-    // jaa-a. mitähän tekis
+    // jaa-a. mitï¿½hï¿½n tekis
     printf("out of memory experience\n");
     exit(1);
   }
@@ -168,6 +168,26 @@ inline off_t CMemFile::Read(uint8& v)
 	return ReadRaw(&v, 1);
 }
 
+
+#if wxBYTE_ORDER == wxLITTLE_ENDIAN
+
+inline off_t CMemFile::Read(uint16& v)
+{
+	return ReadRaw(&v, 2);;
+}
+
+inline off_t CMemFile::Read(uint32& v)
+{
+	return ReadRaw(&v, 4);;
+}
+
+inline off_t CMemFile::Read(uint8 v[16])
+{
+	return ReadRaw(v, 16);
+}
+
+#else
+
 inline off_t CMemFile::Read(uint16& v)
 {
 	off_t off = ReadRaw(&v, 2);
@@ -186,6 +206,8 @@ inline off_t CMemFile::Read(uint8 v[16])
 {
 	return ReadRaw(v, 16);
 }
+
+#endif
 
 inline off_t CMemFile::Read(wxString& v)
 {
@@ -208,7 +230,24 @@ inline size_t CMemFile::Write(const uint8& v)
 {
 	return WriteRaw(&v, 1);
 }
+
+#if wxBYTE_ORDER == wxLITTLE_ENDIAN
+inline size_t CMemFile::Write(const uint16& v)
+{
+	return WriteRaw(&v, 2);
+}
 	
+inline size_t CMemFile::Write(const uint32& v)
+{
+	return WriteRaw(&v, 4);
+}
+
+inline size_t CMemFile::Write(const uint8 v[16])
+{
+	return WriteRaw(v, 16);
+}
+
+#else 
 inline size_t CMemFile::Write(const uint16& v)
 {
 	int16 tmp = ENDIAN_SWAP_16(v);
@@ -225,6 +264,7 @@ inline size_t CMemFile::Write(const uint8 v[16])
 {
 	return WriteRaw(v, 16);
 }
+#endif
 
 inline size_t CMemFile::Write(const wxString& v)
 {
