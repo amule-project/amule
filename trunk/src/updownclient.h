@@ -187,10 +187,13 @@ private:
 	~CUpDownClient();
 	
 public:
+#ifdef CLIENT_GUI
+	CUpDownClient(class CEC_UpDownClient_Tag *);
+#else
 	//base
 	CUpDownClient(CClientReqSocket* sender = 0);
 	CUpDownClient(uint16 in_port, uint32 in_userid, uint32 in_serverup, uint16 in_serverport,CPartFile* in_reqfile);
-
+#endif
 	/**
 	 * This function should be called when the client object is to be deleted.
 	 * It'll close the socket of the client and add it to the deletion queue
