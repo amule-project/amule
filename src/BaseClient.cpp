@@ -218,6 +218,7 @@ void CUpDownClient::Init()
 
 	ClearHelloProperties();	
 	
+	
 }	
 
 
@@ -327,6 +328,7 @@ void CUpDownClient::ClearHelloProperties()
 	m_fSharedDirectories = 0;
 	m_bMultiPacket = 0;
 	m_SoftLen = 0;
+	SecIdentSupRec = 0;
 }
 
 bool CUpDownClient::ProcessHelloPacket(char* pachPacket, uint32 nSize)
@@ -446,7 +448,7 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
 					printf("m_fSupportsPreview = %i\n",m_fSharedDirectories);
 					printf("That's all.\n");
 					#endif					
-
+					SecIdentSupRec +=  1;
 					break;				
 				case CT_EMULE_VERSION:
 					//  8 Compatible Client ID
@@ -797,6 +799,7 @@ void CUpDownClient::ProcessMuleInfoPacket(char* pachPacket, uint32 nSize)
 					// Bit   6- 0: secure identification
 					m_bySupportSecIdent = temptag.tag.intvalue & 3;
 					m_bSupportsPreview = (temptag.tag.intvalue & 128) > 0;
+					SecIdentSupRec +=  2;
 					break;
 				case ET_MOD_VERSION:
 					if (temptag.tag.type == 2) {
@@ -1414,11 +1417,17 @@ void CUpDownClient::ReGetClientSoft()
 		} else if (m_byEmuleVersion != 0x99) {		
 			UINT nClientMinVersion = (m_byEmuleVersion >> 4)*10 + (m_byEmuleVersion & 0x0f);
 			m_nClientVersion = MAKE_CLIENT_VERSION(0,nClientMinVersion,0);
-			if (m_clientSoft == SO_AMULE) {
-				Extended_aMule_SO = 1; // no CVS flag for 1.x, so no &= right now
-				m_clientVerString += wxString::Format(" 1.x (based on eMule v0.%u)", nClientMinVersion);
-			} else {
-				m_clientVerString +=  wxString::Format(" v0.%u", nClientMinVersion);
+			switch (m_clientSoft) {
+				case SO_AMULE:
+					Extended_aMule_SO = 1; // no CVS flag for 1.x, so no &= right now					
+					m_clientVerString += wxString::Format(" v1.x.y (based on eMule v0.%u)", nClientMinVersion);
+					break;
+				case SO_LPHANT:
+					m_clientVerString += wxString::Format(" < v0.05 ", nClientMinVersion);
+					break;
+				default:
+					m_clientVerString +=  wxString::Format(" v0.%u", nClientMinVersion);				
+					break;
 			}
 		} else {					
 			UINT nClientMajVersion = (m_nClientVersion >> 17) & 0x7f;
@@ -1427,11 +1436,17 @@ void CUpDownClient::ReGetClientSoft()
 		
 			m_nClientVersion = MAKE_CLIENT_VERSION(nClientMajVersion, nClientMinVersion, nClientUpVersion);
 			
-			if (m_clientSoft == SO_AMULE) {				
-				m_clientVerString +=  wxString::Format(" v%u.%u.%u", nClientMajVersion, nClientMinVersion, nClientUpVersion);						
-			} else {
-				m_clientVerString +=  wxString::Format(" v%u.%u%c", nClientMajVersion, nClientMinVersion, 'a' + nClientUpVersion);
-			}			
+			switch (m_clientSoft) {
+				case SO_AMULE:
+					m_clientVerString +=  wxString::Format(" v%u.%u.%u", nClientMajVersion, nClientMinVersion, nClientUpVersion);						
+					break;
+				case SO_LPHANT:
+					m_clientVerString +=  wxString::Format(" v%u.%.2u%c", nClientMajVersion-1, nClientMinVersion, 'a' + nClientUpVersion);					
+					break;
+				default:
+					m_clientVerString +=  wxString::Format(" v%u.%u%c", nClientMajVersion, nClientMinVersion, 'a' + nClientUpVersion);
+					break;
+			}
 		}
 		return;
 	}		
