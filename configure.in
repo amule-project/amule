@@ -234,7 +234,7 @@ case "${target_os}" in
 	;;
 darwin*)
 	SYS=darwin
-	CFLAGS="${CFLAGS} -no-cpp-precomp -D_INTL_REDIRECT_MACROS";
+	CFLAGS="${CFLAGS} -no-cpp-precomp -D_INTL_REDIRECT_MACROS -DNOPCH";
 	LDFLAGS="$LDFLAGS -bind_at_load"
 	USE_GSOCKET="no"
 	USE_USS="no"
