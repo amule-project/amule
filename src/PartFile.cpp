@@ -343,9 +343,6 @@ void CPartFile::CreatePartFile()
 		SetPartFileStatus(PS_ERROR);
 	}
 
-	// Update last-changed date
-	m_lastDateChanged = wxFileName( strPartPath ).GetModificationTime();
-	
 	SetFilePath( thePrefs::GetTempDir() );
 			
 	if (thePrefs::GetAllocFullPart()) {
@@ -735,8 +732,10 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 		return false;
 	}
 	
-	// Update last-changed date
-	m_lastDateChanged = wxFileName( strSearchPath ).GetModificationTime();
+	// Update last-changed date if anything has been written
+	if ( transfered ) {
+		m_lastDateChanged = wxFileName( strSearchPath ).GetModificationTime();
+	}
 
 	// SLUGFILLER: SafeHash - final safety, make sure any missing part of the file is gap
 	if ((uint64)m_hpartfile.GetLength() < m_nFileSize)
