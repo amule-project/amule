@@ -335,7 +335,7 @@ bool CSharedFilesCtrl::ProcessEvent(wxEvent& evt)
 					if (((CPartFile*)file)->IsPartFile()) {
 						wxMessageBox(_("You cannot change permissions while a file is still downloading!"));
 					} else {
-						file->SetPermissions(PERM_NOONE);
+						CoreNotify_KnownFile_Perm_Set(file, PERM_NOONE);
 						SetItem(iSel,4,_("Hidden"));
 					}
 					pos=GetNextItem(pos,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
@@ -351,7 +351,7 @@ bool CSharedFilesCtrl::ProcessEvent(wxEvent& evt)
 					if (((CPartFile*)file)->IsPartFile()) {
 						wxMessageBox(_("You cannot change permissions while a file is still downloading!"));
 					} else {
-						file->SetPermissions(PERM_FRIENDS);
+						CoreNotify_KnownFile_Perm_Set(file, PERM_FRIENDS);
 						SetItem(iSel,4,_("Friends only"));
 					}
 					pos=GetNextItem(pos,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
@@ -364,7 +364,7 @@ bool CSharedFilesCtrl::ProcessEvent(wxEvent& evt)
 				while( pos != (-1) ) {
 					int iSel=pos;
 					file = (CKnownFile*)this->GetItemData(iSel);
-					file->SetPermissions(PERM_ALL);
+					CoreNotify_KnownFile_Perm_Set(file, PERM_ALL);
 					SetItem(iSel,4,_("Public"));
 					pos=GetNextItem(pos,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
 				}
@@ -382,8 +382,7 @@ bool CSharedFilesCtrl::ProcessEvent(wxEvent& evt)
 				while( pos != (-1) ) {
 					int iSel=pos;
 					file = (CKnownFile*)this->GetItemData(iSel);
-					file->SetAutoUpPriority(false);
-					file->SetUpPriority(PR_VERYLOW);
+					CoreNotify_KnownFile_Up_Prio_Set(file, PR_VERYLOW);
 					SetItem(iSel,3,_("Very low"));
 					pos=GetNextItem(pos,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
 				}
@@ -395,8 +394,7 @@ bool CSharedFilesCtrl::ProcessEvent(wxEvent& evt)
 				while( pos != (-1) ) {
 					int iSel=pos;
 					file = (CKnownFile*)this->GetItemData(iSel);
-					file->SetAutoUpPriority(false);
-					file->SetUpPriority(PR_LOW);
+					CoreNotify_KnownFile_Up_Prio_Set(file, PR_LOW);
 					SetItem(iSel,3,_("Low"));
 					pos=GetNextItem(pos,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
 				}
@@ -408,8 +406,7 @@ bool CSharedFilesCtrl::ProcessEvent(wxEvent& evt)
 				while( pos != (-1) ) {
 					int iSel=pos;
 					file = (CKnownFile*)this->GetItemData(iSel);
-					file->SetAutoUpPriority(false);
-					file->SetUpPriority(PR_NORMAL);
+					CoreNotify_KnownFile_Up_Prio_Set(file, PR_NORMAL);
 					SetItem(iSel,3,_("Normal"));
 					pos=GetNextItem(pos,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
 				}
@@ -421,8 +418,7 @@ bool CSharedFilesCtrl::ProcessEvent(wxEvent& evt)
 				while( pos != (-1) ) {
 					int iSel=pos;
 					file = (CKnownFile*)this->GetItemData(iSel);
-					file->SetAutoUpPriority(false);
-					file->SetUpPriority(PR_HIGH);
+					CoreNotify_KnownFile_Up_Prio_Set(file, PR_HIGH);
 					SetItem(iSel,3,_("High"));
 					pos=GetNextItem(pos,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
 				}
@@ -434,8 +430,7 @@ bool CSharedFilesCtrl::ProcessEvent(wxEvent& evt)
 				while( pos != (-1) ) {
 					int iSel=pos;
 					file = (CKnownFile*)this->GetItemData(iSel);
-					file->SetAutoUpPriority(false);
-					file->SetUpPriority(PR_VERYHIGH);
+					CoreNotify_KnownFile_Up_Prio_Set(file, PR_VERYHIGH);
 					SetItem(iSel,3,_("Very High"));
 					pos=GetNextItem(pos,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
 				}
@@ -447,8 +442,7 @@ bool CSharedFilesCtrl::ProcessEvent(wxEvent& evt)
 				while( pos != (-1) ) {
 					int iSel=pos;
 					file = (CKnownFile*)this->GetItemData(iSel);
-					file->SetAutoUpPriority(false);
-					file->SetUpPriority(PR_POWERSHARE);
+					CoreNotify_KnownFile_Up_Prio_Set(file, PR_POWERSHARE);
 					SetItem(iSel,3,_("PowerShare[Release]"));
 					pos=GetNextItem(pos,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
 				}
@@ -460,8 +454,7 @@ bool CSharedFilesCtrl::ProcessEvent(wxEvent& evt)
 				while( pos != (-1) ) {
 					int iSel=pos;
 					file = (CKnownFile*)this->GetItemData(iSel);
-					file->SetAutoUpPriority(true);
-					file->UpdateAutoUpPriority();
+					CoreNotify_KnownFile_Up_Prio_Auto(file);
 					SetItem(iSel,3,_("Auto [No]"));
 					pos=GetNextItem(pos,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
 				}

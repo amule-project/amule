@@ -93,6 +93,10 @@ enum GUI_Event_ID {
 	PARTFILE_PRIO_AUTO,
 	PARTFILE_PRIO_SET,
 	PARTFILE_DELETE,
+	PARTFILE_SET_CAT,
+	KNOWNFILE_SET_UP_PRIO,
+	KNOWNFILE_SET_UP_PRIO_AUTO,
+	KNOWNFILE_SET_PERM,
 	// search
 	SEARCH_LOCAL_REQ,
 	SEARCH_GLOBAL_REQ,
@@ -266,6 +270,11 @@ class GUIEvent {
 #define CoreNotify_PartFile_PrioAuto(ptr, val)      Notify_3_ValEvent(PARTFILE_PRIO_AUTO,(CPartFile *)ptr, (uint32)val, (uint64)0);
 #define CoreNotify_PartFile_PrioSet(p, v0, v1)      Notify_3_ValEvent(PARTFILE_PRIO_SET,(CPartFile *)p, (uint32)v0, (uint64)v1);
 #define CoreNotify_PartFile_Delete(ptr)             Notify_1_ValEvent(PARTFILE_DELETE,(CPartFile *)ptr);
+#define CoreNotify_PartFile_SetCat(ptr, val)        Notify_2_ValEvent(PARTFILE_SET_CAT,(CPartFile *)ptr, val);
+// KnownFile
+#define CoreNotify_KnownFile_Up_Prio_Set(ptr, val)  Notify_2_ValEvent(KNOWNFILE_SET_UP_PRIO,(CKnownFile *)ptr, (uint8)val);
+#define CoreNotify_KnownFile_Up_Prio_Auto(ptr)      Notify_1_ValEvent(KNOWNFILE_SET_UP_PRIO_AUTO,(CKnownFile *)ptr);
+#define CoreNotify_KnownFile_Perm_Set(ptr, val)     Notify_2_ValEvent(KNOWNFILE_SET_PERM,(CKnownFile *)ptr, (uint8)val);
 
 // Search
 #define CoreNotify_Search_Local_Req(ptr)            Notify_1_ValEvent(SEARCH_LOCAL_REQ,(Packet *)ptr);

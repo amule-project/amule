@@ -2027,6 +2027,7 @@ void CamuleApp::NotifyEvent(GUIEvent event) {
 			break;
 	        case PARTFILE_RESUME:
 			((CPartFile *)event.ptr_value)->ResumeFile();
+			((CPartFile *)event.ptr_value)->SavePartFile();
 			break;
 	        case PARTFILE_STOP:
 			((CPartFile *)event.ptr_value)->StopFile(event.byte_value);
@@ -2037,8 +2038,27 @@ void CamuleApp::NotifyEvent(GUIEvent event) {
 	        case PARTFILE_PRIO_SET:
 			((CPartFile *)event.ptr_value)->SetDownPriority(event.long_value,
 									event.longlong_value, event.longlong_value);
+	        case PARTFILE_SET_CAT:
+			((CPartFile *)event.ptr_value)->SetCategory(event.byte_value);
 			break;
 	        case PARTFILE_DELETE:
+			if ( theApp.glob_prefs->StartNextFile() &&
+			     (((CPartFile *)event.ptr_value)->GetStatus() == PS_PAUSED) ) {
+				downloadqueue->StartNextFile();
+			}
+			((CPartFile *)event.ptr_value)->Delete();
+			break;
+	        case KNOWNFILE_SET_UP_PRIO:
+			((CKnownFile *)event.ptr_value)->SetAutoUpPriority(false);
+			((CKnownFile *)event.ptr_value)->SetUpPriority(event.byte_value);
+			break;
+	        case KNOWNFILE_SET_UP_PRIO_AUTO:
+			((CKnownFile *)event.ptr_value)->SetAutoUpPriority(true);
+			((CKnownFile *)event.ptr_value)->UpdateAutoUpPriority();
+			break;
+	        case KNOWNFILE_SET_PERM:
+			((CKnownFile *)event.ptr_value)->SetPermissions(event.byte_value);
+			break;
 		// CORE->GUI
 		// queue list
 		case QLIST_CTRL_ADD_CLIENT:
