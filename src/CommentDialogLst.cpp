@@ -79,7 +79,6 @@ bool CCommentDialogLst::OnInitDialog()
 
 void CCommentDialogLst::CompleteList()
 {
-	CUpDownClient* cur_src;
 	int count=0;
 	pmyListCtrl->DeleteAllItems();
   
