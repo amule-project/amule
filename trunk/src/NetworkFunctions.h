@@ -56,11 +56,11 @@ inline uint32 CStringIPtoUint32(const char* str_ip) {
 	}
 }
 
-inline uint32 StringIPtoUint32(wxString str_ip) {
+inline uint32 StringIPtoUint32(const wxString &str_ip) {
 	return CStringIPtoUint32(unicode2char(str_ip));
 }
 
-inline uint32 StringHosttoUint32(wxString Host) {
+inline uint32 StringHosttoUint32(const wxString &Host) {
 	// Why using native things when we have a wrapper for it :)
 	wxIPV4address solver;
 	solver.Hostname(Host);
