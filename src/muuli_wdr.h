@@ -456,18 +456,30 @@ wxSizer *preferencesDlgLeft( wxWindow *parent, bool call_fit = TRUE, bool set_si
 #define ID_LOCALENEVERAGAIN 10334
 wxSizer *LocaleWarning( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
+#define ID_NODELIST 10335
+#define ID_NODE_IP1 10336
+#define ID_NODE_IP2 10337
+#define ID_NODE_IP3 10338
+#define ID_NODE_IP4 10339
+#define ID_NODE_PORT 10340
+#define ID_NODECONNECT 10341
+#define ID_KNOWNNODECONNECT 10342
+#define ID_KADSEARCHLIST 10343
+wxSizer *KadDlg( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
+
 // Declare menubar functions
 
 // Declare toolbar functions
 
-#define ID_BUTTONCONNECT 10335
-#define ID_BUTTONSERVERS 10336
-#define ID_BUTTONSEARCH 10337
-#define ID_BUTTONTRANSFER 10338
-#define ID_BUTTONSHARED 10339
-#define ID_BUTTONMESSAGES 10340
-#define ID_BUTTONSTATISTICS 10341
-#define ID_BUTTONNEWPREFERENCES 10342
+#define ID_BUTTONCONNECT 10344
+#define ID_BUTTONSERVERS 10345
+#define ID_BUTTONKAD 10346
+#define ID_BUTTONSEARCH 10347
+#define ID_BUTTONTRANSFER 10348
+#define ID_BUTTONSHARED 10349
+#define ID_BUTTONMESSAGES 10350
+#define ID_BUTTONSTATISTICS 10351
+#define ID_BUTTONNEWPREFERENCES 10352
 void muleToolbar( wxToolBar *parent );
 
 // Declare bitmap functions

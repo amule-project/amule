@@ -63,6 +63,7 @@
 #include "Preferences.h"	// Needed for CPreferences
 #include "ChatWnd.h"		// Needed for CChatWnd
 #include "StatisticsDlg.h"	// Needed for CStatisticsDlg
+#include "KadDlg.h"			// Needed for CKadDlg
 #include "SharedFilesWnd.h"	// Needed for CSharedFilesWnd
 #include "TransferWnd.h"	// Needed for CTransferWnd
 #include "SearchDlg.h"		// Needed for CSearchDlg
@@ -92,6 +93,7 @@ BEGIN_EVENT_TABLE(CamuleDlg, wxFrame)
 	EVT_TOOL(ID_BUTTONSHARED, CamuleDlg::OnToolBarButton)
 	EVT_TOOL(ID_BUTTONMESSAGES, CamuleDlg::OnToolBarButton)
 	EVT_TOOL(ID_BUTTONSTATISTICS, CamuleDlg::OnToolBarButton)
+	EVT_TOOL(ID_BUTTONKAD, CamuleDlg::OnToolBarButton)
 
 	EVT_TOOL(ID_BUTTONNEWPREFERENCES, CamuleDlg::OnPrefButton)
 
@@ -177,6 +179,7 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, wxString title, wxPoint where, wxSize dl
 	sharedfileswnd = new CSharedFilesWnd(p_cnt);
 	statisticswnd = new CStatisticsDlg(p_cnt);
 	chatwnd = new CChatWnd(p_cnt);
+	kadwnd = new CKadDlg(p_cnt);
 
 	serverwnd->Show(FALSE);
 	searchwnd->Show(FALSE);
@@ -184,6 +187,7 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, wxString title, wxPoint where, wxSize dl
 	sharedfileswnd->Show(FALSE);
 	statisticswnd->Show(FALSE);
 	chatwnd->Show(FALSE);
+	kadwnd->Show(FALSE);	
 
 	// Create the GUI timer
 	gui_timer=new wxTimer(this,ID_GUITIMER);
@@ -195,7 +199,9 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, wxString title, wxPoint where, wxSize dl
 	activewnd=NULL;
 	SetActiveDialog(ServerWnd, serverwnd);
 	m_wndToolbar->ToggleTool(ID_BUTTONSERVERS, true );
-
+	#ifndef __USE_KAD__
+	m_wndToolbar->RemoveTool(ID_BUTTONKAD);
+	#endif
 	ToggleFastED2KLinksHandler();
 
 	is_safe_state = true;
@@ -385,6 +391,10 @@ void CamuleDlg::OnToolBarButton(wxCommandEvent& ev)
 
 				case ID_BUTTONSTATISTICS:
 					SetActiveDialog(StatsWnd, statisticswnd);
+					break;
+
+				case ID_BUTTONKAD:
+					SetActiveDialog(KadWnd, kadwnd);
 					break;
 
 				// This shouldn't happen, but just in case

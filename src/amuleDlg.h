@@ -38,6 +38,7 @@ class CSearchDlg;
 class CChatWnd;
 class CStatisticsDlg;
 class PrefsUnifiedDlg;
+class CKadDlg;
 
 class wxTimerEvent;
 class wxTextCtrl;
@@ -74,7 +75,7 @@ public:
 	bool StatisticsWindowActive()	{return (activewnd == (wxWindow*)statisticswnd);}
 	
 	/* Returns the active dialog. Needed to check what to redraw. */
-	enum DialogType { TransferWnd, ServerWnd, SearchWnd, SharedWnd, ChatWnd, StatsWnd };
+	enum DialogType { TransferWnd, ServerWnd, SearchWnd, SharedWnd, ChatWnd, StatsWnd, KadWnd };
 	DialogType GetActiveDialog()	{return m_nActiveDialog;}
 	void SetActiveDialog(DialogType type, wxWindow* dlg);
 	
@@ -105,6 +106,7 @@ public:
 	CChatWnd*			chatwnd;
 	wxWindow*			activewnd;
 	CStatisticsDlg*		statisticswnd;
+	CKadDlg*			kadwnd;
 
 	int					split_pos;
 	int					srv_split_pos;
