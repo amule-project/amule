@@ -293,6 +293,7 @@ void CServerConnect::ConnectionFailed(CServerSocket* sender){
 		}
 		case CS_DISCONNECTED:{
 			connected = false;
+			theApp.amuledlg->serverwnd->serverlistctrl->HighlightServer(sender->cur_server,false);
 			if (connectedsocket) 
 				connectedsocket->Close();
 			connectedsocket = NULL;
