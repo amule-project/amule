@@ -205,9 +205,6 @@ wxSizer *serverListDlg( wxWindow *parent, bool call_fit, bool set_sizer )
 wxSizer *s_searchdlgsizer;
 wxSizer *s_searchsizer;
 wxSizer *s_extendedsizer;
-wxSizer *s_searchresults;
-wxSizer *s_stext;
-wxSizer *s_sresults;
 wxSizer *searchDlg( wxWindow *parent, bool call_fit, bool set_sizer )
 {
     wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
@@ -381,40 +378,13 @@ wxSizer *searchDlg( wxWindow *parent, bool call_fit, bool set_sizer )
 
     wxStaticBox *item42 = new wxStaticBox( parent, -1, _("Results") );
     wxStaticBoxSizer *item41 = new wxStaticBoxSizer( item42, wxVERTICAL );
-    s_searchresults = item41;
 
-    wxBoxSizer *item43 = new wxBoxSizer( wxHORIZONTAL );
-    s_stext = item43;
+    wxWindow *item43 = new CMuleNotebook(parent, ID_NOTEBOOK, wxDefaultPosition,wxDefaultSize,0);
+    wxASSERT( item43 );
+    item41->Add( item43, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticText *item44 = new wxStaticText( parent, ID_TEXT, 
-        _("There are no active search requests.\n"
-          "\n"
-          "To start a new search, input the name of the file\n"
-          "you want to search in the textbox and click on the\n"
-          "\"Start\" button right below the text box.\n"
-          "\n"
-          "You can choose the type of search you wish to perform:\n"
-          "Local, Global or WWW. Read aMule's documentation to\n"
-          "learn the differences between search types.\n"
-          "\n"
-          "Other search parameters can be set by clicking on the\n"
-          "\"Extended Parameters\" button."),
-        wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
-    item43->Add( item44, 0, wxALIGN_CENTER|wxALL, 40 );
-
-    item41->Add( item43, 0, wxALIGN_CENTER, 5 );
-
-    wxBoxSizer *item45 = new wxBoxSizer( wxVERTICAL );
-    s_sresults = item45;
-
-    wxWindow *item46 = new CMuleNotebook(parent, ID_NOTEBOOK, wxDefaultPosition,wxDefaultSize,0);
-    wxASSERT( item46 );
-    item45->Add( item46, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-
-    wxGauge *item47 = new wxGauge( parent, ID_SEARCHPROGRESS, 100, wxDefaultPosition, wxSize(-1,10), 0 );
-    item45->Add( item47, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-
-    item41->Add( item45, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+    wxGauge *item44 = new wxGauge( parent, ID_SEARCHPROGRESS, 100, wxDefaultPosition, wxSize(-1,10), 0 );
+    item41->Add( item44, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     item0->Add( item41, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
