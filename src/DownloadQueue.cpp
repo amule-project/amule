@@ -145,7 +145,7 @@ void CDownloadQueue::Init()
 		AddLogLineM(false, _("No part files found"));
 	} else {
 		AddLogLineM(false, wxString::Format(_("Found %i part files"), count));
-		SortByPriority();
+		//SortByPriority();
 		CheckDiskspace();
 	}
 }
@@ -252,7 +252,7 @@ void CDownloadQueue::AddDownload(CPartFile* newfile, bool paused, uint8 category
 	}
 
 	filelist.push_back(newfile);
-	SortByPriority();
+	//SortByPriority();
 	CheckDiskspace();
 
 	newfile->SetCategory(category);
@@ -565,7 +565,7 @@ void CDownloadQueue::RemoveFile(CPartFile* toremove)
 		}
 	}
 	do_not_sort_please = false;
-	SortByPriority();
+	//SortByPriority();
 	CheckDiskspace();
 }
 
