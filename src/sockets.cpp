@@ -454,8 +454,8 @@ void CServerConnect::DestroySocket(CServerSocket* pSck){
 	  //pSck->Close();
 	  //}
 
-	//delete pSck;
-	pSck->Destroy();
+	delete pSck;
+	//pSck->Destroy();
 }
 
 bool CServerConnect::IsLocalServer(uint32 dwIP, uint16 nPort){
