@@ -46,6 +46,7 @@
 #include "server.h"		// Needed for CServer
 #include "updownclient.h"
 #include "StringFunctions.h" // Needed for unicode2char
+#include "Statistics.h"		// Needed for CStatistics
 
 #ifndef AMULE_DAEMON
 	#include "muuli_wdr.h"		// Needed for IDC_RELOADSHAREDFILES
@@ -260,7 +261,7 @@ void CSharedFileList::SafeAddKFile(CKnownFile* toadd, bool bOnlyAdd){
 		packet->PackPacket();
 	}
 	delete files;
-	theApp.uploadqueue->AddUpDataOverheadServer(packet->GetPacketSize());
+	theApp.statistics->AddUpDataOverheadServer(packet->GetPacketSize());
 	server->SendPacket(packet,true);
 }
 
@@ -313,7 +314,7 @@ void CSharedFileList::SendListToServer(){
 		packet->PackPacket();
 	}
 	delete files;
-	theApp.uploadqueue->AddUpDataOverheadServer(packet->GetPacketSize());
+	theApp.statistics->AddUpDataOverheadServer(packet->GetPacketSize());
 	server->SendPacket(packet,true);
 }
 

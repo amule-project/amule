@@ -69,17 +69,6 @@ CUploadQueue::CUploadQueue()
 	successfullupcount = 0;
 	failedupcount = 0;
 	totaluploadtime = 0;
-	m_nUpDatarateTotal = 0;
-	m_nUpDataRateMSOverhead = 0;
-	m_nUpDatarateOverhead = 0;
-	m_nUpDataOverheadSourceExchange = 0;
-	m_nUpDataOverheadFileRequest = 0;
-	m_nUpDataOverheadOther = 0;
-	m_nUpDataOverheadServer = 0;
-	m_nUpDataOverheadSourceExchangePackets = 0;
-	m_nUpDataOverheadFileRequestPackets = 0;
-	m_nUpDataOverheadOtherPackets = 0;
-	m_nUpDataOverheadServerPackets = 0;
 	m_nLastStartUpload = 0;
 
 	lastupslotHighID = true;
@@ -168,7 +157,7 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd){
 		}
 	} else {
 		Packet* packet = new Packet(OP_ACCEPTUPLOADREQ,0);
-		theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->GetPacketSize());
+		theApp.statistics->AddUpDataOverheadFileRequest(packet->GetPacketSize());
 		newclient->SendPacket(packet,true);
 		newclient->SetUploadState(US_UPLOADING);
 	}
@@ -397,7 +386,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client)
 	if (client->IsDownloading()) {
 		// he's already downloading and wants probably only another file
 		Packet* packet = new Packet(OP_ACCEPTUPLOADREQ,0);
-		theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->GetPacketSize());
+		theApp.statistics->AddUpDataOverheadFileRequest(packet->GetPacketSize());
 		client->SendPacket(packet,true);
 		return;
 	}
@@ -465,11 +454,13 @@ bool CUploadQueue::CheckForTimeOver(CUpDownClient* client)
 	return false;
 }
 
+
 void CUploadQueue::DeleteAll()
 {
 	waitinglist.RemoveAll();
 	uploadinglist.RemoveAll();
 }
+
 
 uint16 CUploadQueue::GetWaitingPosition(CUpDownClient* client)
 {
@@ -485,40 +476,6 @@ uint16 CUploadQueue::GetWaitingPosition(CUpDownClient* client)
 		}
 	}
 	return rank;
-}
-
-void CUploadQueue::CompUpDatarateOverhead()
-{
-	// Adding the new overhead
-	m_nUpDatarateTotal += m_nUpDataRateMSOverhead * 10;
-	m_AverageUDRO_list.push_back( m_nUpDataRateMSOverhead * 10 );
-	
-	// Reset the overhead count
-	m_nUpDataRateMSOverhead = 0;
-	
-	// We want at least 11 elements before we will start doing averages
-	if ( m_AverageUDRO_list.size() > 10 ) {
-		
-		// We want 50 elements at most (5s)
-		if ( m_AverageUDRO_list.size() > 50 ) {
-			m_nUpDatarateTotal -= m_AverageUDRO_list.front();
-		
-			m_AverageUDRO_list.pop_front();
-		
-			m_nUpDatarateOverhead = m_nUpDatarateTotal / 50.0f;
-		} else {
-			m_nUpDatarateOverhead = m_nUpDatarateTotal / (double)m_AverageUDRO_list.size();
-		}
-	} else if ( m_AverageUDRO_list.size() == 10 ) {
-		// Create the starting average once we have 10 items
-		m_nUpDatarateTotal = std::accumulate( m_AverageUDRO_list.begin(),
-		                                      m_AverageUDRO_list.end(), 0 );
-	
-		m_nUpDatarateOverhead = m_nUpDatarateTotal / 10.0;
-		
-	} else {
-		m_nUpDatarateOverhead = 0;
-	}
 }
 
 

@@ -1360,7 +1360,7 @@ void CamuleApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 	uploadqueue->Process();
 	downloadqueue->Process();
 	//theApp.clientcredits->Process();
-	uploadqueue->CompUpDatarateOverhead();
+	statistics->CompUpDatarateOverhead();
 	statistics->CompDownDatarateOverhead();
 
 	if (msCur-msPrevHist > 1000) {

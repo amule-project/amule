@@ -165,7 +165,30 @@ public:
 	uint64	GetDownDataOverheadServerPackets()		{return m_nDownDataOverheadServerPackets;}
 	uint64	GetDownDataOverheadOtherPackets()		{return m_nDownDataOverheadOtherPackets;}
 	void	CompDownDatarateOverhead();
-	
+
+	// Upload related
+	void	AddUpDataOverheadSourceExchange(uint32 data)	{ m_nUpDataRateMSOverhead += data;
+															  m_nUpDataOverheadSourceExchange += data;
+															  m_nUpDataOverheadSourceExchangePackets++;}
+	void	AddUpDataOverheadFileRequest(uint32 data)		{ m_nUpDataRateMSOverhead += data;
+															  m_nUpDataOverheadFileRequest += data;
+															  m_nUpDataOverheadFileRequestPackets++;}
+	void	AddUpDataOverheadServer(uint32 data)			{ m_nUpDataRateMSOverhead += data;
+															  m_nUpDataOverheadServer += data;
+															  m_nUpDataOverheadServerPackets++;}
+	void	AddUpDataOverheadOther(uint32 data)				{ m_nUpDataRateMSOverhead += data;
+															  m_nUpDataOverheadOther += data;
+															  m_nUpDataOverheadOtherPackets++;}
+	double	GetUpDatarateOverhead()						{return m_nUpDatarateOverhead;}
+	uint64	GetUpDataOverheadSourceExchange()			{return m_nUpDataOverheadSourceExchange;}
+	uint64	GetUpDataOverheadFileRequest()				{return m_nUpDataOverheadFileRequest;}
+	uint64	GetUpDataOverheadServer()					{return m_nUpDataOverheadServer;}
+	uint64	GetUpDataOverheadOther()					{return m_nUpDataOverheadOther;}
+	uint64	GetUpDataOverheadSourceExchangePackets()	{return m_nUpDataOverheadSourceExchangePackets;}
+	uint64	GetUpDataOverheadFileRequestPackets()		{return m_nUpDataOverheadFileRequestPackets;}
+	uint64	GetUpDataOverheadServerPackets()			{return m_nUpDataOverheadServerPackets;}
+	uint64	GetUpDataOverheadOtherPackets()				{return m_nUpDataOverheadOtherPackets;}
+	void	CompUpDatarateOverhead();
 private:
 
 	/* Graph-related functions */
@@ -259,7 +282,21 @@ private:
 	uint64		m_nDownDataOverheadServerPackets;
 	uint64		m_nDownDataOverheadOther;
 	uint64		m_nDownDataOverheadOtherPackets;
-	std::deque<int>	m_AverageDDRO_list;	
+	std::deque<int>	m_AverageDDRO_list;
+
+	// Upload-related vars.
+	long	m_nUpDatarateTotal;
+	double	m_nUpDatarateOverhead;
+	uint32	m_nUpDataRateMSOverhead;
+	uint64	m_nUpDataOverheadSourceExchange;
+	uint64	m_nUpDataOverheadFileRequest;
+	uint64	m_nUpDataOverheadServer;
+	uint64	m_nUpDataOverheadOther;
+	uint64	m_nUpDataOverheadSourceExchangePackets;
+	uint64	m_nUpDataOverheadFileRequestPackets;
+	uint64	m_nUpDataOverheadServerPackets;
+	uint64	m_nUpDataOverheadOtherPackets;
+	std::deque<int>	m_AverageUDRO_list;
 };
 
 #endif // STATISTICS_H

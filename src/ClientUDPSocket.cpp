@@ -137,7 +137,7 @@ bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, uint
 				CKnownFile* reqfile = theApp.sharedfiles->GetFileByID(reqfilehash);
 				if (!reqfile) {
 					Packet* response = new Packet(OP_FILENOTFOUND,0,OP_EMULEPROT);
-					theApp.uploadqueue->AddUpDataOverheadFileRequest(response->GetPacketSize());
+					theApp.statistics->AddUpDataOverheadFileRequest(response->GetPacketSize());
 					SendPacket(response,host,port);
 					break;
 				}
@@ -180,7 +180,7 @@ bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, uint
 						#endif
 						Packet* response = new Packet(&data_out, OP_EMULEPROT);
 						response->SetOpCode(OP_REASKACK);
-						theApp.uploadqueue->AddUpDataOverheadFileRequest(response->GetPacketSize());
+						theApp.statistics->AddUpDataOverheadFileRequest(response->GetPacketSize());
 						theApp.clientudp->SendPacket(response, host, port);
 					} else {					
 						AddDebugLogLineM(false, wxT("Client UDP socket; ReaskFilePing; reqfile does not match"));
@@ -188,7 +188,7 @@ bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, uint
 				} else {
 					if (((uint32)theApp.uploadqueue->GetWaitingUserCount() + 50) > thePrefs::GetQueueSize()) {
 						Packet* response = new Packet(OP_QUEUEFULL,0,OP_EMULEPROT);
-						theApp.uploadqueue->AddUpDataOverheadFileRequest(response->GetPacketSize());
+						theApp.statistics->AddUpDataOverheadFileRequest(response->GetPacketSize());
 						SendPacket(response,host,port);
 					}
 				}

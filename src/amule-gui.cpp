@@ -477,7 +477,7 @@ void CamuleGuiApp::NotifyEvent(GUIEvent event)
 		
 		// search
 	        case SEARCH_REQ:
-			uploadqueue->AddUpDataOverheadServer(((Packet *)event.ptr_value)->GetPacketSize());
+			statistics->AddUpDataOverheadServer(((Packet *)event.ptr_value)->GetPacketSize());
 			serverconnect->SendPacket( (Packet *)event.ptr_value, 0 );
 			if ( event.byte_value ) {
 				searchlist->m_searchpacket = (Packet *)event.ptr_value;

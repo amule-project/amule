@@ -67,6 +67,7 @@
 #include "amule.h"			// Needed for theApp
 #include "GetTickCount.h" // Neeed for GetTickCount
 #include "NetworkFunctions.h" // Needed for StringIPtoUint32
+#include "Statistics.h"		// Needed for CStatistics
 
 //WX_DEFINE_LIST(CServerListList);
 
@@ -255,7 +256,7 @@ void CServerList::ServerStats()
 		//ping_server->SetLastPingedTime(temp);
 		ping_server->AddFailedCount();
 		Notify_ServerRefresh(ping_server);
-		theApp.uploadqueue->AddUpDataOverheadServer(packet->GetPacketSize());
+		theApp.statistics->AddUpDataOverheadServer(packet->GetPacketSize());
 		theApp.serverconnect->SendUDPPacket(packet, ping_server, true);
 		
 		ping_server->SetLastDescPingedCount(false);
@@ -268,7 +269,7 @@ void CServerList::ServerStats()
 			uint32 uDescReqChallenge = ((uint32)randomness << 16) + INV_SERV_DESC_LEN; // 0xF0FF = an 'invalid' string length.
 			packet = new Packet( OP_SERVER_DESC_REQ,4);
 			packet->CopyUInt32ToDataBuffer(uDescReqChallenge);
-			theApp.uploadqueue->AddUpDataOverheadServer(packet->GetPacketSize());
+			theApp.statistics->AddUpDataOverheadServer(packet->GetPacketSize());
 			theApp.serverconnect->SendUDPPacket(packet, ping_server, true);
 		} else {
 			ping_server->SetLastDescPingedCount(true);
@@ -655,7 +656,7 @@ void CServerList::SendNextPacket()
 	if (broadcastpos != 0) {
 		CServer* cur_server = list.GetAt(broadcastpos);
 		if (cur_server != theApp.serverconnect->GetCurrentServer()) {
-			theApp.uploadqueue->AddUpDataOverheadServer(broadcastpacket->GetPacketSize());
+			theApp.statistics->AddUpDataOverheadServer(broadcastpacket->GetPacketSize());
 			theApp.serverconnect->SendUDPPacket(broadcastpacket,cur_server,false);
 		}
 		list.GetNext(broadcastpos);

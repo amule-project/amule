@@ -52,6 +52,8 @@
 #include "opcodes.h"		// Needed for MINWAIT_BEFORE_DLDISPLAY_WINDOWUPDATE
 #include "otherfunctions.h"	// Needed for GetTickCount
 #include "NetworkFunctions.h" // Needed for CAsyncDNS
+#include "Statistics.h"		// Needed for CStatistics
+
 #include <algorithm>
 #include <numeric>
 #include <sys/types.h>
@@ -867,7 +869,7 @@ void CDownloadQueue::ProcessLocalRequests()
 			dataTcpFrame.Read(packet->GetPacket(), iSize);
 			uint32 size = packet->GetPacketSize();
 			theApp.serverconnect->SendPacket(packet, true);	// Deletes `packet'.
-			theApp.uploadqueue->AddUpDataOverheadServer(size);
+			theApp.statistics->AddUpDataOverheadServer(size);
 		}
 
 		// next TCP frame with up to 15 source requests is allowed to be sent in..
@@ -1192,7 +1194,7 @@ bool CDownloadQueue::SendGlobGetSourcesUDPPacket(CSafeMemFile& data)
 	Packet packet(&data);
 
 	packet.SetOpCode(OP_GLOBGETSOURCES);
-	theApp.uploadqueue->AddUpDataOverheadServer(packet.GetPacketSize());
+	theApp.statistics->AddUpDataOverheadServer(packet.GetPacketSize());
 	theApp.serverconnect->SendUDPPacket(&packet,cur_udpserver,false);
 
 	m_cRequestsSentToServer += iFileIDs;

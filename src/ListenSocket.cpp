@@ -396,7 +396,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 						DebugSend("OP__FileReqAnswer", m_client, (char*)reqfile->GetFileHash());
 					}
 					#endif
-					theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->GetPacketSize());
+					theApp.statistics->AddUpDataOverheadFileRequest(packet->GetPacketSize());
 					SendPacket(packet,true);
 	
 					// SendPacket might kill the socket, so check
@@ -442,7 +442,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 							#endif				
 							Packet* replypacket = new Packet(OP_FILEREQANSNOFIL, 16);
 							replypacket->Copy16ToDataBuffer(packet);
-							theApp.uploadqueue->AddUpDataOverheadFileRequest(replypacket->GetPacketSize());
+							theApp.statistics->AddUpDataOverheadFileRequest(replypacket->GetPacketSize());
 							SendPacket(replypacket, true);
 							break;
 						}
@@ -469,7 +469,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 		    				DebugSend("OP__FileStatus", m_client);
 					}
 					#endif				
-					theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->GetPacketSize());
+					theApp.statistics->AddUpDataOverheadFileRequest(packet->GetPacketSize());
 					SendPacket(packet, true);
 					break;
 				}
@@ -627,7 +627,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 						}
 						#endif
 						Packet* packet = new Packet(OP_CANCELTRANSFER,0);
-						theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->GetPacketSize());
+						theApp.statistics->AddUpDataOverheadFileRequest(packet->GetPacketSize());
 						m_client->SendPacket(packet,true,true);
 						
 						// SendPacket can cause the socket to die, so check
@@ -783,7 +783,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 						  m_client->GetRequestFile()->GetStatus() == PS_ERROR) ) {
 						if (!m_client->GetSentCancelTransfer()) {
 							Packet* packet = new Packet(OP_CANCELTRANSFER,0);
-							theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->GetPacketSize());
+							theApp.statistics->AddUpDataOverheadFileRequest(packet->GetPacketSize());
 							m_client->SendPacket(packet,true,true);
 							
 							// Socket might die because of SendPacket, so check
@@ -797,7 +797,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				} else {
 					if (!m_client->GetSentCancelTransfer()) {
 						Packet* packet = new Packet(OP_CANCELTRANSFER,0);
-						theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->GetPacketSize());
+						theApp.statistics->AddUpDataOverheadFileRequest(packet->GetPacketSize());
 						m_client->SendPacket(packet,true,true);
 						
 						// Socket might die because of SendPacket, so check
@@ -957,7 +957,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				#endif
 				Packet* replypacket = new Packet(&tempfile);
 				replypacket->SetOpCode(OP_ASKSHAREDFILESANSWER);
-				theApp.uploadqueue->AddUpDataOverheadOther(replypacket->GetPacketSize());
+				theApp.statistics->AddUpDataOverheadOther(replypacket->GetPacketSize());
 				SendPacket(replypacket, true, true);
 				break;
 			}
@@ -1052,7 +1052,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					#endif				
 					Packet* replypacket = new Packet(&tempfile);
 					replypacket->SetOpCode(OP_ASKSHAREDDIRSANS);
-					theApp.uploadqueue->AddUpDataOverheadOther(replypacket->GetPacketSize());
+					theApp.statistics->AddUpDataOverheadOther(replypacket->GetPacketSize());
 					SendPacket(replypacket, true, true);
 				} else {
 					#ifdef __USE_DEBUG__
@@ -1062,7 +1062,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					#endif
 					AddLogLineM(true,wxString(_("User ")) + m_client->GetUserName() + wxString::Format(_(" (%u) requested your shareddirectories-list -> "),m_client->GetUserID()) + _("denied"));			
 					Packet* replypacket = new Packet(OP_ASKSHAREDDENIEDANS, 0);
-					theApp.uploadqueue->AddUpDataOverheadOther(replypacket->GetPacketSize());
+					theApp.statistics->AddUpDataOverheadOther(replypacket->GetPacketSize());
 					SendPacket(replypacket, true, true);
 				}
 
@@ -1119,7 +1119,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					#endif
 					Packet* replypacket = new Packet(&tempfile);
 					replypacket->SetOpCode(OP_ASKSHAREDFILESDIRANS);
-					theApp.uploadqueue->AddUpDataOverheadOther(replypacket->GetPacketSize());
+					theApp.statistics->AddUpDataOverheadOther(replypacket->GetPacketSize());
 					SendPacket(replypacket, true, true);
 				} else {
 					AddLogLineM(true,wxString(_("User ")) + m_client->GetUserName() + wxString::Format(_(" (%u) requested your sharedfiles-list for directory "),m_client->GetUserID()) + strReqDir + wxT(" -> ") + _("denied"));			
@@ -1129,7 +1129,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					}
 					#endif
 					Packet* replypacket = new Packet(OP_ASKSHAREDDENIEDANS, 0);
-					theApp.uploadqueue->AddUpDataOverheadOther(replypacket->GetPacketSize());
+					theApp.statistics->AddUpDataOverheadOther(replypacket->GetPacketSize());
 					SendPacket(replypacket, true, true);
 				}
 				break;
@@ -1163,7 +1163,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 						tempfile.WriteString(strDir);
 						Packet* replypacket = new Packet(&tempfile);
 						replypacket->SetOpCode(OP_ASKSHAREDFILESDIR);
-						theApp.uploadqueue->AddUpDataOverheadOther(replypacket->GetPacketSize());
+						theApp.statistics->AddUpDataOverheadOther(replypacket->GetPacketSize());
 						SendPacket(replypacket, true, true);
 					}
 					wxASSERT( data.GetPosition() == data.GetLength() );
@@ -1329,7 +1329,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 						#endif
 						Packet* replypacket = new Packet(OP_FILEREQANSNOFIL, 16);
 						replypacket->Copy16ToDataBuffer(packet);
-						theApp.uploadqueue->AddUpDataOverheadFileRequest(replypacket->GetPacketSize());
+						theApp.statistics->AddUpDataOverheadFileRequest(replypacket->GetPacketSize());
 						SendPacket(replypacket, true);
 						break;
 					}
@@ -1408,7 +1408,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 											AddDebugLogLine( false, "RCV:Source Request User(%s) File(%s)", m_client->GetUserName(), reqfile->GetFileName() );
 										}
 										#endif
-										theApp.uploadqueue->AddUpDataOverheadSourceExchange(tosend->GetPacketSize());
+										theApp.statistics->AddUpDataOverheadSourceExchange(tosend->GetPacketSize());
 										SendPacket(tosend, true);
 									}
 								} //else {
@@ -1429,7 +1429,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 					#endif
 					Packet* reply = new Packet(&data_out, OP_EMULEPROT);
 					reply->SetOpCode(OP_MULTIPACKETANSWER);
-					theApp.uploadqueue->AddUpDataOverheadFileRequest(reply->GetPacketSize());
+					theApp.statistics->AddUpDataOverheadFileRequest(reply->GetPacketSize());
 					SendPacket(reply, true);
 				}
 				break;
@@ -1654,7 +1654,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 							}
 							#endif
 							Packet* packet = new Packet(OP_CANCELTRANSFER,0);
-							theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
+							theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());
 							m_client->SendPacket(packet,true,true);					
 							
 							if (m_client)
@@ -1672,7 +1672,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 						}
 						#endif
 						Packet* packet = new Packet(OP_CANCELTRANSFER,0);
-						theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->GetPacketSize());
+						theApp.statistics->AddUpDataOverheadFileRequest(packet->GetPacketSize());
 						m_client->SendPacket(packet,true,true);
 						
 						if ( m_client )
@@ -1758,7 +1758,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 							m_client->SetLastSrcReqTime();
 							Packet* tosend = file->CreateSrcInfoPacket(m_client);
 							if(tosend) {
-								theApp.uploadqueue->AddUpDataOverheadSourceExchange(tosend->GetPacketSize());
+								theApp.statistics->AddUpDataOverheadSourceExchange(tosend->GetPacketSize());
 								SendPacket(tosend, true, true);
 								#ifdef __USE_DEBUG_
 								if (thePrefs.GetDebugClientTCPLevel() > 0) {
@@ -1886,7 +1886,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				theApp.statistics->AddDownDataOverheadOther(size);
 				Packet* pPacket = new Packet(OP_PUBLICIP_ANSWER, 4, OP_EMULEPROT);
 				pPacket->CopyUInt32ToDataBuffer(m_client->GetIP());
-				theApp.uploadqueue->AddUpDataOverheadOther(pPacket->GetPacketSize());
+				theApp.statistics->AddUpDataOverheadOther(pPacket->GetPacketSize());
 				SendPacket(pPacket);
 				break;
 			}			
@@ -1923,7 +1923,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 					data_out.WriteHash16(abyHash);
 					pPartFile->GetAICHHashset()->GetMasterHash().Write(&data_out);
 					Packet* packet = new Packet(&data_out, OP_EMULEPROT, OP_AICHFILEHASHANS);
-					theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
+					theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());
 					SendPacket(packet);
 				}
 				break;

@@ -102,6 +102,19 @@ CStatistics::CStatistics() {
 	m_nDownDataOverheadFileRequestPackets = 0;
 	m_nDownDataOverheadOtherPackets = 0;
 	m_nDownDataOverheadServerPackets = 0;
+
+	// Upload-values
+	m_nUpDatarateTotal = 0;
+	m_nUpDataRateMSOverhead = 0;
+	m_nUpDatarateOverhead = 0;
+	m_nUpDataOverheadSourceExchange = 0;
+	m_nUpDataOverheadFileRequest = 0;
+	m_nUpDataOverheadOther = 0;
+	m_nUpDataOverheadServer = 0;
+	m_nUpDataOverheadSourceExchangePackets = 0;
+	m_nUpDataOverheadFileRequestPackets = 0;
+	m_nUpDataOverheadOtherPackets = 0;
+	m_nUpDataOverheadServerPackets = 0;
 }
 
 
@@ -144,7 +157,32 @@ void CStatistics::CompDownDatarateOverhead()
 }
 
 
-
+void CStatistics::CompUpDatarateOverhead()
+{
+	// Adding the new overhead
+	m_nUpDatarateTotal += m_nUpDataRateMSOverhead * 10;
+	m_AverageUDRO_list.push_back( m_nUpDataRateMSOverhead * 10 );
+	
+	// Reset the overhead count
+	m_nUpDataRateMSOverhead = 0;
+	
+	// We want at least 11 elements before we will start doing averages
+	if ( m_AverageUDRO_list.size() > 10 ) {
+		
+		// We want 50 elements at most (5s)
+		if ( m_AverageUDRO_list.size() > 50 ) {
+			m_nUpDatarateTotal -= m_AverageUDRO_list.front();
+		
+			m_AverageUDRO_list.pop_front();
+		
+			m_nUpDatarateOverhead = m_nUpDatarateTotal / 50.0f;
+		} else {
+			m_nUpDatarateOverhead = m_nUpDatarateTotal / (double)m_AverageUDRO_list.size();
+		}
+	} else {
+		m_nUpDatarateOverhead = 0;
+	}
+}
 
 
 
@@ -745,14 +783,14 @@ void CStatistics::UpdateStatsTree() {
 											CastItoXBytes( stat_sessionSentBytes+thePrefs::GetTotalUploaded()));
 
 
-	uint64 UpOHTotal = theApp.uploadqueue->GetUpDataOverheadFileRequest() 
-							+ theApp.uploadqueue->GetUpDataOverheadSourceExchange() 
-							+ theApp.uploadqueue->GetUpDataOverheadServer() 
-							+ theApp.uploadqueue->GetUpDataOverheadOther();
-	uint64 UpOHTotalPackets = theApp.uploadqueue->GetUpDataOverheadFileRequestPackets() 
-									+ theApp.uploadqueue->GetUpDataOverheadSourceExchangePackets() 
-									+ theApp.uploadqueue->GetUpDataOverheadServerPackets() 
-									+ theApp.uploadqueue->GetUpDataOverheadOtherPackets();		
+	uint64 UpOHTotal = GetUpDataOverheadFileRequest() 
+							+ GetUpDataOverheadSourceExchange() 
+							+ GetUpDataOverheadServer() 
+							+ GetUpDataOverheadOther();
+	uint64 UpOHTotalPackets = GetUpDataOverheadFileRequestPackets() 
+									+ GetUpDataOverheadSourceExchangePackets() 
+									+ GetUpDataOverheadServerPackets() 
+									+ GetUpDataOverheadOtherPackets();		
 
 	(*up2) = _("Total Overhead (Packets): ") + 
 										a_brackets_b(
@@ -761,18 +799,18 @@ void CStatistics::UpdateStatsTree() {
 
 	(*up3) = _("File Request Overhead (Packets): ") + 
 										a_brackets_b(
-											CastItoXBytes(theApp.uploadqueue->GetUpDataOverheadFileRequest()),
-											CastItoIShort(theApp.uploadqueue->GetUpDataOverheadFileRequestPackets()));
+											CastItoXBytes(GetUpDataOverheadFileRequest()),
+											CastItoIShort(GetUpDataOverheadFileRequestPackets()));
 											
 	(*up4) = _("Source Exchange Overhead (Packets): ") +
 										a_brackets_b(
-											CastItoXBytes(theApp.uploadqueue->GetUpDataOverheadSourceExchange()),
-											CastItoIShort(theApp.uploadqueue->GetUpDataOverheadSourceExchangePackets()));
+											CastItoXBytes(GetUpDataOverheadSourceExchange()),
+											CastItoIShort(GetUpDataOverheadSourceExchangePackets()));
 											
 	(*up5) = _("Server Overhead (Packets): ") +
 										a_brackets_b(
-											CastItoXBytes(theApp.uploadqueue->GetUpDataOverheadServer()),
-											CastItoIShort(theApp.uploadqueue->GetUpDataOverheadServerPackets()));
+											CastItoXBytes(GetUpDataOverheadServer()),
+											CastItoIShort(GetUpDataOverheadServerPackets()));
 											
 	(*up6) = wxString::Format(_("Active Uploads: %i"),theApp.uploadqueue->GetUploadQueueLength());
 	(*up7) = wxString::Format(_("Waiting Uploads: %i"),theApp.uploadqueue->GetWaitingUserCount());

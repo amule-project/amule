@@ -34,6 +34,7 @@
 #include "SharedFileList.h" // Needed for GetFileByID
 #include "DownloadQueue.h"  // Needed for GetFileByID
 #include "UploadQueue.h"	// Needed for AddUpDataOverheadServer
+#include "Statistics.h"		// Needed for CStatistics
 
 #include <algorithm>
 
@@ -79,7 +80,7 @@ void *CGlobalSearchThread::Entry()
 		
 		Sleep(750);
 	
-		theApp.uploadqueue->AddUpDataOverheadServer( m_packet->GetPacketSize() );
+		theApp.statistics->AddUpDataOverheadServer( m_packet->GetPacketSize() );
 		theApp.serverconnect->SendUDPPacket( m_packet, server, false );
 		
 		CoreNotify_Search_Update_Progress( i * 100 / theApp.serverlist->GetServerCount() );

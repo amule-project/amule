@@ -595,7 +595,7 @@ bool CUpDownClient::SendHelloPacket() {
 	
 	Packet* packet = new Packet(&data);
 	packet->SetOpCode(OP_HELLO);
-	theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
+	theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());
 	SendPacket(packet,true);
 	m_bHelloAnswerPending = true;
 	#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
@@ -692,7 +692,7 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer, bool OSInfo) {
 	}
 	
 	if (m_socket) {
-		theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
+		theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());
 		SendPacket(packet,true,true);
 		#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
 		if (!bAnswer) {
@@ -901,7 +901,7 @@ void CUpDownClient::SendHelloAnswer()
 	Packet* packet = new Packet(&data);
 	packet->SetOpCode(OP_HELLOANSWER);
 
-	theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
+	theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());
 	SendPacket(packet,true);
 
 	#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
@@ -1317,7 +1317,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 			Packet* packet = new Packet(&data);
 			packet->SetOpCode(OP_CALLBACKREQUEST);
 
-			theApp.uploadqueue->AddUpDataOverheadServer(packet->GetPacketSize());
+			theApp.statistics->AddUpDataOverheadServer(packet->GetPacketSize());
 			theApp.serverconnect->SendPacket(packet);
 			#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
 			AddDebugLogLineM(true, wxT("Local Client: OP_CALLBACKREQUEST\n"));
@@ -1394,7 +1394,7 @@ void CUpDownClient::ConnectionEstablished()
 			if (theApp.uploadqueue->IsDownloading(this)) {
 				SetUploadState(US_UPLOADING);
 				Packet* packet = new Packet(OP_ACCEPTUPLOADREQ,0);
-				theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->GetPacketSize());
+				theApp.statistics->AddUpDataOverheadFileRequest(packet->GetPacketSize());
 				SendPacket(packet,true);
 				#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
 				AddDebugLogLineM(true, wxT("Local Client: OP_ACCEPTUPLOADREQ\n"));
@@ -1403,7 +1403,7 @@ void CUpDownClient::ConnectionEstablished()
 	}
 	if (m_iFileListRequested == 1) {
 		Packet* packet = new Packet(m_fSharedDirectories ? OP_ASKSHAREDDIRS : OP_ASKSHAREDFILES,0);
-		theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
+		theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());
 		SendPacket(packet,true,true);
 		#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
 		if (m_fSharedDirectories) {
@@ -1766,7 +1766,7 @@ void CUpDownClient::SendPublicKeyPacket(){
 	Packet* packet = new Packet(&data, OP_EMULEPROT);
 	packet->SetOpCode(OP_PUBLICKEY);
 
-	theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
+	theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());
 	SendPacket(packet,true,true);
 	m_SecureIdentState = IS_SIGNATURENEEDED;
 	#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
@@ -1831,7 +1831,7 @@ void CUpDownClient::SendSignaturePacket(){
 	Packet* packet = new Packet(&data, OP_EMULEPROT);
 	packet->SetOpCode(OP_SIGNATURE);
 
-	theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
+	theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());
 	SendPacket(packet,true,true);
 	m_SecureIdentState = IS_ALLREQUESTSSEND;
 	#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
@@ -1941,7 +1941,7 @@ void CUpDownClient::SendSecIdentStatePacket(){
 		Packet* packet = new Packet(&data, OP_EMULEPROT);
 		packet->SetOpCode(OP_SECIDENTSTATE);
 
-		theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
+		theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());
 		SendPacket(packet,true,true);
 		#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
 		AddDebugLogLineM(true, wxT("Local Client: OP_SECIDENTSTATE\n"));
@@ -2032,7 +2032,7 @@ wxString CUpDownClient::GetClientFullInfo() {
 void CUpDownClient::SendPublicIPRequest(){
 	if (IsConnected()){
 		Packet* packet = new Packet(OP_PUBLICIP_REQ,0,OP_EMULEPROT);
-		theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
+		theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());
 		SendPacket(packet,true);
 		m_fNeedOurPublicIP = true;
 		#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
