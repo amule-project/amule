@@ -1180,7 +1180,7 @@ void CamuleApp::Localize_mule()
 	}
 
 	if ((!m_locale.Init(language)) && (language != wxLANGUAGE_DEFAULT)) {	
-		theApp.amuledlg->AddLogLine(false,"The selected locale seems not to be installed on your box. (Note: I'll try to set it anyway)");
+		printf("The selected locale seems not to be installed on your box. (Note: I'll try to set it anyway)");
 	}
 	
 	m_locale.AddCatalogLookupPathPrefix(LOCALEDIR);
