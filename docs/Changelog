@@ -56,6 +56,10 @@ Version 2.0.0rc7 - The "99,6% Final" version.
 		* Patch adding "Directory" column to the shared-files dialog.
 		* Patch to add "Swap to this file" option for sources marked as 
 		  "Asked For Another File" on download queue.
+
+	Unleashed:
+		* Better fix for amuleweb's high CPU usage problem. Now main thread only gets
+		  woken up when absolutely needed.
 		  
 	Xaignar:
 		* Ensured that the statistics-dialog would be updated when preferences

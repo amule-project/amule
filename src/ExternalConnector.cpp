@@ -27,7 +27,7 @@
 //-------------------------------------------------------------------
 
 #if !wxUSE_GUI
-	#include <unistd.h>	// For getpass()
+	#include <unistd.h>	// For getpass() and pause()
 #endif
 
 //-------------------------------------------------------------------
@@ -298,7 +298,7 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, CmdId *UNU
 #else
 			if (m_KeepQuiet) {
 				while(true) {
-					sleep(2);
+					pause();
 				}
 			} else {
 				TextShell(ProgName, commands);
