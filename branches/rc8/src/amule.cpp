@@ -840,7 +840,7 @@ wxString CamuleApp::CreateHTMLED2kLink(const CAbstractFile* f)
 wxString validateURI(const wxString url)
 {
 	wxString strURI;
-#if wxCHECK_VERSION(2,5,3)
+#if wxCHECK_VERSION_FULL(2,5,3,3)
 	wxURI* uri = new wxURI(url);
 	strURI=uri->BuildURI();
 #else
