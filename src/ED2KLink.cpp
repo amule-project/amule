@@ -40,6 +40,12 @@ CED2KLink::CED2KLink( LinkType type )
 
 CED2KLink::~CED2KLink()
 {
+	if (m_sources) {
+		delete m_sources;
+	}
+	if (m_hashset) {
+		delete m_hashset;
+	}	
 }
 
 
@@ -231,7 +237,7 @@ CED2KFileLink::CED2KFileLink( const wxString& name, const wxString& size, const 
 			m_sources->Seek(0);
 		} else {
 			delete m_sources;
-			m_sources = 0;
+			m_sources = NULL;
 		}
 	}
 	
