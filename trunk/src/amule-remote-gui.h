@@ -4,6 +4,8 @@
 #include "CTypedPtrList.h"
 #include "ECSpecialTags.h"
 #include "Statistics.h"
+#include "Preferences.h"
+#include "Statistics.h"
 
 #include <map>
 #include <list>
@@ -18,12 +20,21 @@ class CUpDownClient;
 
 class CRemoteConnect {
 		ECSocket *m_ECSocket;
+		bool m_isConnected;
 	public:
 		CRemoteConnect();
 		~CRemoteConnect();
+		
+		bool Connect(const char *host, int port);
 
 		CECPacket *SendRecv(CECPacket *);
 		void Send(CECPacket *);
+};
+
+class CPreferencesRem : public CPreferences {
+		CRemoteConnect *m_conn;
+	public:
+		CPreferencesRem(CRemoteConnect *);
 };
 
 //
@@ -216,6 +227,8 @@ class CUpQueueRem : public CRemoteContainer<CUpDownClient, uint32, CEC_UpDownCli
 		uint32 m_waiting_user_count;
 		uint32 m_kbps;
 		uint32 m_data_overhead;
+
+		std::list<CUpDownClient *>::iterator it;
 	public:
 		CUpQueueRem(CRemoteConnect *);
 		
@@ -240,6 +253,8 @@ class CUpQueueRem : public CRemoteContainer<CUpDownClient, uint32, CEC_UpDownCli
 class CDownQueueRem : public CRemoteContainer<CPartFile, CMD4Hash, CEC_PartFile_Tag> {
 		uint32 m_kbps;
 		uint32 m_data_overhead;
+		
+		std::list<CUpDownClient *>::iterator it;
 	public:
 		CDownQueueRem(CRemoteConnect *);
 		
@@ -342,6 +357,10 @@ class CListenSocketRem {
 		uint32 GetPeakConnections() { return m_peak_connections; }
 };
 
+class CStatisticsRem : public CStatistics {
+};
+
+/*
 class CStatisticsRem {
 		uint32 m_Uptime;
 		uint32 m_SendBytes, m_RecvBytes;
@@ -359,5 +378,5 @@ class CStatisticsRem {
 		GraphUpdateInfo GetPointsForUpdate();
 		StatsTree statstree;
 };
-
+*/
 #endif /* AMULE_REMOTE_GUI_H */

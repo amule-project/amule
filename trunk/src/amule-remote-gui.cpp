@@ -76,7 +76,10 @@
 #include "SharedFilesCtrl.h"		// Needed for CSharedFilesCtrl
 #include "DownloadListCtrl.h"		// Needed for CDownloadListCtrl
 #include "ClientListCtrl.h"
-#include "ChatWnd.h"
+
+#include "ECSocket.h"
+#include "ECPacket.h"
+#include "ECcodes.h"
 
 BEGIN_EVENT_TABLE(CamuleRemoteGuiApp, wxApp)
 
@@ -111,6 +114,8 @@ bool CamuleRemoteGuiApp::OnInit()
 	if ( !wxApp::OnInit() ) {
 		return false;
 	}
+
+	glob_prefs = new CPreferencesRem(0);
 	
 	// Create the Core timer
 	core_timer=new wxTimer(this,ID_CORETIMER);
@@ -119,11 +124,50 @@ bool CamuleRemoteGuiApp::OnInit()
 		OnExit();
 	}
 
-	// Start the Core Timer
+	// Parse cmdline arguments.
+	wxCmdLineParser cmdline(wxApp::argc, wxApp::argv);
+	cmdline.AddSwitch(wxT("v"), wxT("version"), wxT("Displays the current version number."));
+	cmdline.AddSwitch(wxT("h"), wxT("help"), wxT("Displays this information."));
+	cmdline.AddOption(wxT("geometry"), wxEmptyString, wxT("Sets the geometry of the app.\n\t\t\t<str> uses the same format as standard X11 apps:\n\t\t\t[=][<width>{xX}<height>][{+-}<xoffset>{+-}<yoffset>]"));
+	cmdline.Parse();
 
+	
+	bool geometry_enabled = false;
+	wxString geom_string;
+	if ( cmdline.Found(wxT("geometry"), &geom_string) ) {
+		geometry_enabled = true;
+	}
+
+	CRemoteConnect *connect = new CRemoteConnect;
+	
+	statistics = new CStatisticsRem();
+	
+	clientlist = new CClientListRem(connect);
+	searchlist = new CSearchListRem(connect);
+	//knownfiles = new CKnownFilesRem(connect);
+	serverlist = new CServerListRem(connect);
+	
+	//sharedfiles	= new CSharedFileList(knownfiles);
+	clientcredits = new CClientCreditsRem();
+	
+	// bugfix - do this before creating the uploadqueue
+	downloadqueue = new CDownQueueRem(connect);
+	uploadqueue = new CUpQueueRem(connect);
+	ipfilter = new CIPFilterRem();
+
+
+	// Create main dialog
+	InitGui(0, geom_string);
+
+	connect->Connect("localhost", 4712);
+	
+	//m_app_state = APP_STATE_RUNNING;
+	IsReady = true;
+	
+	// Start the Core Timer
 	core_timer->Start(100);	
 
-	amuledlg->StartGuiTimer();
+    //amuledlg->StartGuiTimer();
 
 	return true;
 
@@ -136,8 +180,9 @@ void CamuleRemoteGuiApp::ShowAlert(wxString msg, wxString title, int flags)
 
 int CamuleRemoteGuiApp::InitGui(bool geometry_enabled, wxString &geom_string)
 {
-
-	return CamuleGuiBase::InitGui(geometry_enabled, geom_string);
+	CamuleGuiBase::InitGui(geometry_enabled, geom_string);
+	SetTopWindow(amuledlg);
+	return 0;
 }
 
 bool CamuleRemoteGuiApp::CopyTextToClipboard(wxString strText)
@@ -169,6 +214,16 @@ wxString CamuleRemoteGuiApp::GetServerLog(bool)
 // Remote gui can't create links by itself. Pass request or retrieve from container ?
 //
 wxString CamuleRemoteGuiApp::CreateED2kLink(CAbstractFile const*)
+{
+	return wxEmptyString;
+}
+
+wxString CamuleRemoteGuiApp::CreateED2kSourceLink(CAbstractFile const *)
+{
+	return wxEmptyString;
+}
+
+wxString CamuleRemoteGuiApp::CreateED2kHostnameSourceLink(CAbstractFile const *)
 {
 	return wxEmptyString;
 }
@@ -267,12 +322,20 @@ void CamuleRemoteGuiApp::NotifyEvent(GUIEvent event)
 			break;
 	        case DLOAD_SET_CAT_STATUS:
 			break;
+			case ADDLOGLINE:
+			case ADDDEBUGLOGLINE:
+				printf("LOG: %s\n", event.string_value.GetData());
+				break;
 			default:
 				printf("ERROR: bad event %d\n", event.ID);
 				wxASSERT(0);
 	}
 }
 
+CPreferencesRem::CPreferencesRem(CRemoteConnect *conn)
+{
+	m_conn = conn;
+}
 //
 // Container implementation
 //
@@ -342,6 +405,26 @@ CServer *CServerListRem::GetServerByAddress(const wxString& address, uint16 port
 	return 0;
 }
 
+/*
+unsigned CStatisticsRem::GetHistory(  // Assemble arrays of sample points for a graph
+        unsigned cntPoints,             // number of sample points to assemble
+        double sStep,                   // time difference between sample points
+        double sFinal,                  // latest allowed timestamp
+        float** ppf,                    // an array of pointers to arrays of floats for the result
+        StatsGraphType which_graph)     // the graph which will receive the points
+{
+	// FIXME: hard to implement
+	return 0;
+}
+
+GraphUpdateInfo CStatisticsRem::GetPointsForUpdate()
+{
+	GraphUpdateInfo info;
+	
+	return info;
+}
+*/
+
 void CIPFilterRem::Reload()
 {
 	CECPacket req(EC_OP_IPFILTER_RELOAD);
@@ -368,14 +451,69 @@ void CSharedFilesRem::AddFilesFromDirectory(wxString)
 /*!
  * Connection to remote core
  * 
- * FIXME: implementation is waiting
  */
 CRemoteConnect::CRemoteConnect()
 {
+	m_ECSocket = new ECSocket;
+	m_isConnected = false;
+}
+
+bool CRemoteConnect::Connect(const char *host, int port)
+{
+	wxIPV4address addr;
+
+	addr.Hostname(host);
+	addr.Service(port);
+
+	m_ECSocket->Connect(addr, false);
+	m_ECSocket->WaitOnConnect(10);
+
+   if (!m_ECSocket->IsConnected()) {
+            // no connection => close gracefully
+            AddLogLineM(true, _("Connection Failed. Unable to connect to the specified host"));
+            return false;
+    } 
+    // Authenticate ourselves
+    CECPacket packet(EC_OP_AUTH_REQ);
+    packet.AddTag(CECTag(EC_TAG_CLIENT_NAME, wxString("amule-remote")));
+    packet.AddTag(CECTag(EC_TAG_CLIENT_VERSION, wxString("0x0001")));
+    packet.AddTag(CECTag(EC_TAG_PROTOCOL_VERSION, (uint16)0x01f1));
+
+    wxString pass_hash = "81dc9bdb52d04dc20036dbd8313ed055";
+	packet.AddTag(CECTag(EC_TAG_PASSWD_HASH, pass_hash));
+
+    if (! m_ECSocket->WritePacket(&packet) ) {
+    	return false;
+    }
+    CECPacket *reply = m_ECSocket->ReadPacket();
+    if (!reply) {
+    	return false;
+    }
+	if (reply->GetOpCode() == EC_OP_AUTH_FAIL) {
+		if (reply->GetTagCount() > 0) {
+			CECTag *reason = reply->GetTagByName(EC_TAG_STRING);
+	            AddLogLineM(true, wxString(_("ExternalConn: Access denied because: ")) + 
+	            	wxGetTranslation(reason->GetStringData()));
+		} else {
+		    AddLogLineM(true, _("ExternalConn: Access denied"));
+		}
+    } else if (reply->GetOpCode() != EC_OP_AUTH_OK) {
+        AddLogLineM(true,_("ExternalConn: Bad reply from server. Connection closed.\n"));
+    } else {
+        m_isConnected = true;
+        if (reply->GetTagByName(EC_TAG_SERVER_VERSION)) {
+                AddLogLineM(true, _("Succeeded! Connection established to aMule ") +
+                	reply->GetTagByName(EC_TAG_SERVER_VERSION)->GetStringData() + wxT("\n"));
+        } else {
+                AddLogLineM(true, _("Succeeded! Connection established.\n"));
+        }
+    }
+
 }
 
 CECPacket *CRemoteConnect::SendRecv(CECPacket *)
 {
+
 	return 0;
 }
 
@@ -383,11 +521,15 @@ void CRemoteConnect::Send(CECPacket *)
 {
 }
 
+CUpQueueRem::CUpQueueRem(CRemoteConnect *conn) : CRemoteContainer<CUpDownClient, uint32, CEC_UpDownClient_Tag>(conn)
+{
+}
+
 POSITION CUpQueueRem::GetFirstFromUploadList()
 {
-	std::list<CUpDownClient *>::iterator i = m_items.begin();
+	it = m_items.begin();
 	POSITION pos;
-	pos.m_ptr = (void *)&i;
+	pos.m_ptr = (void *)&it;
 	return pos;
 }
 
@@ -395,8 +537,11 @@ CUpDownClient *CUpQueueRem::GetNextFromUploadList(POSITION &pos)
 {
 	std::list<CUpDownClient *>::iterator *i = (std::list<CUpDownClient *>::iterator *)pos.m_ptr;
 	(*i)++;
-	CUpDownClient *client = (*i == m_items.end()) ? NULL : *(*i);
-	return client;
+	if ( *i == m_items.end() ) {
+		pos = 0;
+		return 0;
+	}
+	return *(*i);
 }
 
 // waiting list can be quite long. i see no point transferring it
@@ -410,6 +555,10 @@ POSITION CUpQueueRem::GetFirstFromWaitingList()
 CUpDownClient *CUpQueueRem::GetNextFromWaitingList(POSITION &)
 {
 	return NULL;
+}
+
+CDownQueueRem::CDownQueueRem(CRemoteConnect *conn) : CRemoteContainer<CPartFile, CMD4Hash, CEC_PartFile_Tag>(conn)
+{
 }
 
 bool CDownQueueRem::AddED2KLink(const wxString &link, int)
@@ -445,31 +594,135 @@ CClientListRem::CClientListRem(CRemoteConnect *conn)
 
 void CClientListRem::FilterQueues()
 {
-	// add code
+	// FIXME: add code
 	wxASSERT(0);
+}
+
+CSearchListRem::CSearchListRem(CRemoteConnect *conn) : CRemoteContainer<CSearchFile, CMD4Hash, CEC_SearchFile_Tag>(conn)
+{
 }
 
 void CSearchListRem::Clear()
 {
-	// add code
+	// FIXME: add code
 	wxASSERT(0);
 }
 
 void CSearchListRem::NewSearch(wxString type, uint32 search_id)
 {
-	// add code
+	// FIXME: add code
 	wxASSERT(0);
 }
 
 void CSearchListRem::StopGlobalSearch()
 {
-	// add code
+	// FIXME: add code
 	wxASSERT(0);
+}
+
+const std::multimap<uint32, CUpDownClient*>& CClientListRem::GetClientList()
+{
+	std::multimap<uint32, CUpDownClient*> dummy;
+	
+	return dummy;
 }
 
 bool CUpDownClient::IsBanned() const
 {
-	// add code
+	// FIXME: add code
+	return false;
+}
+
+//
+// Those functions have different implementation in remote gui
+//
+void  CUpDownClient::Ban()
+{
+	// FIXME: add code
+	wxASSERT(0);
+}
+
+void  CUpDownClient::UnBan()
+{
+	// FIXME: add code
+	wxASSERT(0);
+}
+
+void CUpDownClient::RequestSharedFileList()
+{
+	// FIXME: add code
+	wxASSERT(0);
+}
+
+void CKnownFile::SetFileComment(const wxString &)
+{
+	// FIXME: add code
+	wxASSERT(0);
+}
+
+void CKnownFile::SetFileRate(unsigned char)
+{
+	// FIXME: add code
+	wxASSERT(0);
+}
+
+// I don't think it will be implemented - too match data transfer. But who knows ?
+wxString CUpDownClient::ShowDownloadingParts() const
+{
+	return wxEmptyString;
+}
+bool CUpDownClient::SwapToAnotherFile(bool bIgnoreNoNeeded, bool ignoreSuspensions,
+										bool bRemoveCompletely, CPartFile* toFile)
+{
+	// FIXME: add code
+	wxASSERT(0);
+	return false;
+}
+//
+// Those functions are virtual. So even they don't get called they must
+// be defined so linker will be happy
+//
+CPacket* CKnownFile::CreateSrcInfoPacket(CUpDownClient const*)
+{
+	wxASSERT(0);
+	return 0;
+}
+
+bool CKnownFile::LoadFromFile(class CFileDataIO const*)
+{
+	wxASSERT(0);
+	return false;
+}
+
+void CKnownFile::UpdatePartsInfo()
+{
+	wxASSERT(0);
+}
+
+void CKnownFile::SetFileSize(uint32)
+{
+	wxASSERT(0);
+}
+
+CPacket* CPartFile::CreateSrcInfoPacket(CUpDownClient const*)
+{
+	wxASSERT(0);
+	return 0;
+}
+
+void CPartFile::UpdatePartsInfo()
+{
+	wxASSERT(0);
+}
+
+void CPartFile::UpdateFileRatingCommentAvail()
+{
+	wxASSERT(0);
+}
+
+bool CPartFile::SavePartFile(bool)
+{
+	wxASSERT(0);
 	return false;
 }
 
