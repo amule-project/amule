@@ -21,6 +21,7 @@ Version 2.0.0rc8 - The "???????????" version.
 		* Fixed: Setting "A4AF to others" was broken.
 
 	Phoenix:
+		* Lots of unicode fixes.
 		* Added readline and history support to amuleweb/amulecmd text
 		  clients.
 		* Added template loading capability to amuleweb with the new
