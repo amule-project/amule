@@ -284,7 +284,10 @@ bool CFile::Open(const wxChar *szFileName, OpenMode mode, int accessMode)
 	if ( accessMode == -1 )
 		accessMode = CPreferences::GetFilePermissions();
 
-    int flags = O_BINARY | O_LARGEFILE;
+    int flags = O_BINARY;
+#ifdef __linux__
+    flags |= O_LARGEFILE;
+#endif
 
     fFilePath=szFileName;
 
