@@ -1,50 +1,64 @@
-aMule online signature specification
-------------------------------------
 
-1. Introduction
 
-The online signature does export statistics in a simple text oriented format.
+                ------------------------------------
+                aMule Online Signature specification
+                ------------------------------------
 
-It can be enabled within the Preferences dialogs of aMule.
 
-Currently two formats of online signature are supported:
+ Introduction
+--------------
+
+  The online signature exports aMule's statistics in a simple text oriented format.
+
+  It can be enabled within the Preferences dialogs of aMule (Preferenes -> Online Signature).
+
+  Currently two formats of online signature are supported:
     * the original eMule online signature written to onlinesig.dat
     * the aMule online signature written to amulesig.dat
 
-This document will detail on the later one.
+  This document will detail on the later one.
 
 
-2. Format
+ Format
+--------
 
-The format of the file is a text file with 1 field peer line.
+  The format of the file is a text file with 1 field per line.
 
-Following fields are defined by now:
+  The following fields are defined by now in the order they appear in the signature file:
 
-ordinal	content
-	not-running	offline		online
-  1	0		0		1
-  2	0		0		server name
-  3	0		0		IP of server as dot-quad
-  4	0		0		port of server
-  5	0		0		'H' or 'L' for High-/Low-ID
-  6	0.0		as online	download speed in kB/s
-  7	0.0		as online	upload speed in kB/s
-  8	0		as online	number of clients waiting for upload
-  9	0		as online	number of shared files
- 10	as online	as online	nick used on the ed2k network
- 11	as online	as online	total download in bytes 
- 12	as online	as online	total upload in bytes
- 13	as online	as online	aMule version
- 14     as online	as online	Total Downloaded in Session in bytes
- 15	as online	as online	Total Uploaded in Session in bytes
- 16	as online	as online	aMule Uptime
+  Ordinal	Content
+		Not-running	Offline		Online					connecting
+   1		0		0		1					2
+   2		0		0		Server name				0
+   3		0		0		IP of server as dot-quad		0
+   4		0		0		Port of server				0
+   5		0		0		'H' or 'L' for High-/Low-ID		0
+   6		0.0		As online	Download speed in kB/s			As online
+   7		0.0		As online	Upload speed in kB/s			As online
+   8		0		As online	Number of clients waiting for upload	As online
+   9		0		As online	Number of shared files			As online
+  10		As online	As online	Nick used on the ed2k network		As online
+  11		As online	As online	Total download in bytes 		As online
+  12		As online	As online	Total upload in bytes			As online
+  13		As online	As online	aMule version				As online
+  14		0		As online	Total Downloaded in Session in bytes	As online
+  15		0		As online	Total Uploaded in Session in bytes	As online
+  16		0		As online	aMule Uptime				As online
 
-For comments and additions on this format please contact
-<smallbob@users.sourceforge.net>.
+  For comments and additions on this format please contact <deltahf@amule.org>
 
 
-3. Notes for implementors of tools accessing the online signature
+ Notes for implementors of tools accessing the online signature
+----------------------------------------------------------------
 
-* Be prepared to see linefeeds being in either Unix or DOS format.
-* Be prepared of new fields/lines being added.
+  - Be prepared to see linefeeds being in either Unix or DOS format.
+  - Be prepared of new fields/lines being added.
 
+ Links
+-------
+
+  Please visit:
+  * amulesig.dat
+      http://www.amule.org/wiki/index.php/Amulesig.dat_file
+  * onlinesig.dat
+      http://www.amule.org/wiki/index.php/Onlinesig.dat_file
