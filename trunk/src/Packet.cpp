@@ -49,17 +49,17 @@ CPacket::CPacket(CPacket &p)
 	tempbuffer	= NULL;
 	if (p.completebuffer) {
 		completebuffer 	= new char[size + 10];;
-		pBuffer 	= completebuffer + 6;
+		pBuffer 	= completebuffer + sizeof(Header_Struct);
 	} else {
 		completebuffer 	= NULL;
 		if (p.pBuffer) {
-			pBuffer = new char[size + 1];
+			pBuffer = new char[size];
 		} else {
 			pBuffer = NULL;
 		}
 	}
 	if (pBuffer)
-		memcpy( pBuffer, p.pBuffer, size + 1);
+		memcpy( pBuffer, p.pBuffer, size );
 }
 
 CPacket::CPacket(uint8 protocol)
