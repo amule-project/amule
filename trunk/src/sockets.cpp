@@ -204,7 +204,7 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 		CTag tagport(CT_PORT,thePrefs::GetPort());
 		tagport.WriteTagToFile(&data);
 		
-		CTag tagflags(CT_SERVER_FLAGS,CAPABLE_ZLIB); // FLAGS for server connection
+		CTag tagflags(CT_SERVER_FLAGS,CAPABLE_ZLIB | CAPABLE_NEWTAGS); // FLAGS for server connection
 		tagflags.WriteTagToFile(&data);
 
 		// eMule Version (14-Mar-2004: requested by lugdunummaster (need for LowID clients which have no chance 
