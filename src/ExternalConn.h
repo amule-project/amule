@@ -46,13 +46,11 @@ class ExternalConn : public EXTERNAL_CONN_BASE {
 		wxString ProcessRequest(const wxString& item);
 		CECPacket *ProcessRequest2(const CECPacket *request);
 	
-	public:
 		CECPacket *Authenticate(const CECPacket *);
 		ECSocket *m_ECServer;
 
-	private:
-		wxString GetDownloadFileInfo(const CPartFile* file);
 #ifdef AMULE_DAEMON
+	private:
 		void *Entry();
 #else
 	private:

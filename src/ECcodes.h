@@ -76,10 +76,7 @@ class EC_IPv4_t {
 enum {
 
 		/*!
-		 * \brief Perform no operation.
-		 *
-		 * \par Tags:
-		 *	(none)
+		 * \brief Perform no operation, aka do nothing.
 		 */
 	EC_OP_NOOP = 0x0001,
 
@@ -116,29 +113,30 @@ enum {
 	EC_OP_AUTH_OK,
 
 	//
-	// general commands - both way
+	// Misc commands
 	//
+
+		/*!
+		 * \brief General error reply.
+		 */
+	EC_OP_FAILED,
 
 		/*!
 		 * \brief Used when need to transfer text message without
 		 * particular meaning - like logging message in reply to command
 		 *
 		 * \par Tags:
-		 *	::EC_TAG_STRING (1) string message
+		 *	::EC_TAG_STRING (1+) string message
 		 */
 	EC_OP_STRINGS,
 
 		/*!
-		 * \brief Miscanelous data.
+		 * \brief Miscannelous data.
 		 *
 		 * \par Tags:
 		 *	(any tag)
 		 */
 	EC_OP_MISC_DATA,
-
-	//
-	// client -> server commands
-	//
 
 		/*!
 		 * \brief Request to shut down aMule.
@@ -147,6 +145,19 @@ enum {
 		 *	(none)
 		 */
 	EC_OP_SHUTDOWN,
+
+		/*!
+		 * \brief Handle ED2k link.
+		 *
+		 * \par Tags:
+		 *	\b ::EC_TAG_STRING (1+) holding ED2k link.
+		 */
+	EC_OP_ED2K_LINK,
+
+
+	//
+	// Statistics
+	//
 
 		/*!
 		 * \brief Request statistics.
@@ -179,13 +190,10 @@ enum {
 		 */
 	EC_OP_STATS,
 
-		/*!
-		 * \brief Handle ED2k link.
-		 *
-		 * \par Tags:
-		 *	\b ::EC_TAG_STRING (1+) holding ED2k link.
-		 */
-	EC_OP_ED2K_LINK,
+
+	//
+	//
+	//
 
 		/*!
 		 * \brief Request for download queue.
@@ -239,10 +247,6 @@ enum {
 	EC_OP_KNOWNFILE_SET_PERM,
 	EC_OP_KNOWNFILE_SET_COMMENT,
 
-	//
-	// server -> client response
-	//
-
 		/*!
 		 * \brief Get download queue.
 		 *
@@ -259,6 +263,16 @@ enum {
 		 */
 	EC_OP_ULOAD_QUEUE,
 
+		/*
+		 * \brief Reloads the shared files list.
+		 */
+	EC_OP_SHAREDFILES_RELOAD,
+
+
+	//
+	// IPFilter
+	//
+
 		/*!
 		 * \brief Change/query IPFilter settings: on, off, level, reload
 		 *
@@ -274,44 +288,187 @@ enum {
 		 */
 	EC_OP_IPFILTER_CMD,
 
-	/*!
-	 * \brief Request list of servers
-	 */
+
+	//
+	// Server commands
+	//
+
+		/*!
+		 * \brief Request list of servers
+		 */
 	EC_OP_GET_SERVER_LIST,
 	
-	/*!
-	 * \brief List of servers, reply to EC_OP_GET_SERVER_LIST
-	 * 
-	 * \par Tags:
-	 *  ::EC_TAG_SERVER (1+)
-	 */
+		/*!
+		 * \brief List of servers, reply to EC_OP_GET_SERVER_LIST
+		 *
+		 * \par Tags:
+		 *	::EC_TAG_SERVER (1+)
+		 */
 	EC_OP_SERVER_LIST,
 	
-	/*!
-	 *  \brief Disconnect from current server
-	 * 
-	 * No tags
-	 */
+		/*!
+		 *  \brief Disconnect from current server
+		 * 
+		 * No tags
+		 */
 	EC_OP_SERVER_DISCONNECT,
 	
-	/*!
-	 * \brief Connect to server
-	 * 
-	 * Connect to server - when tag is present it identifies server to use,
-	 * otherwise it will be "any server"
-	 * 
-	 * \par Tags:
-	 *  ::EC_TAG_SERVER (0-1) identifies server to use
-	 */
+		/*!
+		 * \brief Connect to server
+		 *
+		 * Connect to server - when tag is present it identifies server to use,
+		 * otherwise it will be "any server"
+		 *
+		 * \par Tags:
+		 *	::EC_TAG_SERVER (0-1) identifies server to use
+		 */
 	EC_OP_SERVER_CONNECT,
 
+		/*
+		 * \brief Remove server from list.
+		 *
+		 * \par Tags:
+		 *	::EC_TAG_SERVER (1) identified the server to be removed
+		 */
 	EC_OP_SERVER_REMOVE,
+
+		/*
+		 * \brief Update server.met from given URL
+		 *
+		 * \par Tags:
+		 *	::EC_TAG_STRING containing the URL
+		 */
+	EC_OP_SERVER_UPDATE_FROM_URL,
+
+
+	//
+	// Logging
+	//
+
+		/*!
+		 * \brief Adds a new LogLine.
+		 *
+		 * \par Tags:
+		 *	::EC_TAG_LOG_TO_STATUS
+		 *	::EC_TAG_STRING
+		 */
+	EC_OP_ADDLOGLINE,
+
+		/*!
+		 * \brief Adds a new debog log line.
+		 *
+		 * \par Tags:
+		 *	::EC_TAG_LOG_TO_STATUS
+		 *	::EC_TAG_STRING
+		 */
+	EC_OP_ADDDEBUGLOGLINE,
+
+		/*!
+		 * \brief Retrieves the log.
+		 *
+		 * Server replies with an ::EC_OP_LOG packet.
+		 */
+	EC_OP_GET_LOG,
+
+		/*!
+		 * \brief Retrieves the debug log.
+		 *
+		 * Server replies with an ::EC_OP_DEBUGLOG packet.
+		 */
+	EC_OP_GET_DEBUGLOG,
+
+		/*!
+		 * \brief Retrieves the server info log.
+		 *
+		 * Server replies with an ::EC_OP_SERVERINFO packet.
+		 */
+	EC_OP_GET_SERVERINFO,
+		/*!
+		 * \brief The log.
+		 *
+		 * Server replies with this to an ::EC_OP_GET_LOG packet.
+		 *
+		 * \par Tags:
+		 *	::EC_TAG_STRING (1+)	The log lines.
+		 */
+	EC_OP_LOG,
+
+		/*!
+		 * \brief The debug log.
+		 *
+		 * Server replies with this to an ::EC_OP_GET_DEBUGLOG packet.
+		 *
+		 * \par Tags:
+		 *	::EC_TAG_STRING (1+)	The log lines.
+		 */
+	EC_OP_DEBUGLOG,
+
+		/*!
+		 * \brief The server info log.
+		 *
+		 * Server replies with this to an ::EC_OP_GET_SERVERINFO packet.
+		 *
+		 * \par Tags:
+		 *	::EC_TAG_STRING (1+)	The log lines.
+		 */
+	EC_OP_SERVERINFO,
+
+	EC_OP_RESET_LOG,	///< Clears the log.
+	EC_OP_RESET_DEBUGLOG,	///< Clears the debug log.
+	EC_OP_CLEAR_SERVERINFO,	///< Clears server info log.
+
+		/*!
+		 * \brief Returns the last log line.
+		 *
+		 * Response is an ::EC_OP_LOG packet, conatining only
+		 * the last log line.
+		 */
+	EC_OP_GET_LAST_LOG_ENTRY,
+
 
 	//
 	// Preferences
 	//
 
-	EC_OP_GET_PREFERENCES_WEBSERVER,	///< Request for WebServer preferences.
+		/*!
+		 * \brief Request for Preferences.
+		 *
+		 * This request must hold an ::EC_TAG_SELECT_PREFS tag,
+		 * to select which kinds of preferences are required.
+		 *
+		 * \note Tags marked as (boolean) contain no data, their
+		 * presence means \c true, their absence means \c false.
+		 */
+	EC_OP_GET_PREFERENCES,
+
+		/*!
+		 * \brief Setting the Preferences.
+		 *
+		 * Setting preferences values to the provided ones.
+		 * If a tag is omitted, the respective preference value
+		 * will be left unchanged.
+		 *
+		 * \par Possible tags:
+		 *	::EC_TAG_PREFS_CATEGORIES\n
+		 *	::EC_TAG_PREFS_GENERAL\n
+		 *	::EC_TAG_PREFS_CONNECTIONS\n
+		 *	::EC_TAG_PREFS_MESSAGEFILTER\n
+		 *	::EC_TAG_PREFS_REMOTECONTROLS\n
+		 *	::EC_TAG_PREFS_ONLINESIG\n
+		 *	::EC_TAG_PREFS_SERVERS\n
+		 *	::EC_TAG_PREFS_FILES\n
+		 *	::EC_TAG_PREFS_SRCDROP\n
+		 *	::EC_TAG_PREFS_DIRECTORIES\n
+		 *	::EC_TAG_PREFS_STATISTICS\n
+		 *	::EC_TAG_PREFS_SECURITY\n
+		 *	::EC_TAG_PREFS_CORETWEAKS
+		 *
+		 * \note Tags marked as (boolean) are set the following way:
+		 * not present, they're left unchanged. If they are present,
+		 * they should countain an \c uint8 value, which means \c true
+		 * non-zero.
+		 */
+	EC_OP_SET_PREFERENCES,
 
 		/*!
 		 * \brief Preference values.
@@ -320,9 +477,22 @@ enum {
 		 * what preferences were actually required.
 		 *
 		 * \par Possible tags:
-		 *  ::EC_TAG_PREFS_WEBSERVER
+		 *	::EC_TAG_PREFS_CATEGORIES\n
+		 *	::EC_TAG_PREFS_GENERAL\n
+		 *	::EC_TAG_PREFS_CONNECTIONS\n
+		 *	::EC_TAG_PREFS_MESSAGEFILTER\n
+		 *	::EC_TAG_PREFS_REMOTECONTROLS\n
+		 *	::EC_TAG_PREFS_ONLINESIG\n
+		 *	::EC_TAG_PREFS_SERVERS\n
+		 *	::EC_TAG_PREFS_FILES\n
+		 *	::EC_TAG_PREFS_SRCDROP\n
+		 *	::EC_TAG_PREFS_DIRECTORIES\n
+		 *	::EC_TAG_PREFS_STATISTICS\n
+		 *	::EC_TAG_PREFS_SECURITY\n
+		 *	::EC_TAG_PREFS_CORETWEAKS
 		 */
 	EC_OP_PREFERENCES,
+
 
 	EC_OP_COMPAT	= 0x00ff	// compatibility opcode, for testing purposes only
 					// tags: EC_TAG_STRING: v1.0 message
@@ -410,36 +580,37 @@ enum {
 
 	EC_TAG_ITEM_ID,
 
-	/*!
-	 * \brief Selects response detail level.
-	 *
-	 * Selects response detail level in all packets that contain
-	 * a server, part/knownfile or updownclient tag. Value type is
-	 * \c uint8, and possible values are the EC_DETAIL_* enum values.
-	 *
-	 * May be included in any request packet, its default value is
-	 * highest detail - to save some bandwidth on GUI transfers.
-	 */
+		/*!
+		 * \brief Selects response detail level.
+		 *
+		 * Selects response detail level in all packets that contain
+		 * a server, part/knownfile or updownclient tag. Value type is
+		 * \c uint8, and possible values are the EC_DETAIL_* enum values.
+		 *
+		 * May be included in any request packet, its default value is
+		 * highest detail - to save some bandwidth on GUI transfers.
+		 */
 	EC_TAG_DETAIL_LEVEL,
 
-	/*
-	 * Tags for status (or stats) info
-	 */
 
-	/*!
-	 * \brief Connection state.
-	 *
-	 * Possible values (\c uint8):
-	 *	<ul>
-	 *		<li>0 - Not Connected</li>
-	 *		<li>1 - Connecting</li>
-	 *		<li>2 - Connected with LowID</li>
-	 *		<li>3 - Connected with HighID</li>
-	 *	</ul>
-	 *
-	 * When connected, it contains an ::EC_TAG_SERVER child, describing the
-	 * server we're connected to.
-	 */
+	//
+	// Tags for status (or stats) info
+	//
+
+		/*!
+		 * \brief Connection state.
+		 *
+		 * Possible values (\c uint8):
+		 *	<ul>
+		 *		<li>0 - Not Connected</li>
+		 *		<li>1 - Connecting</li>
+		 *		<li>2 - Connected with LowID</li>
+		 *		<li>3 - Connected with HighID</li>
+		 *	</ul>
+		 *
+		 * When connected, it contains an ::EC_TAG_SERVER child, describing the
+		 * server we're connected to.
+		 */
 	EC_TAG_CONNSTATE,
 	EC_TAG_STATS_UL_SPEED,
 	EC_TAG_STATS_DL_SPEED,
@@ -473,6 +644,11 @@ enum {
 	 * \brief Number of users on currectly conected server
 	 */
 	EC_TAG_STATS_USERS_ON_SERVER,
+
+
+	//
+	// Partfile
+	//
 	
 	/*!
 	 * \brief Info about CPartFile
@@ -503,6 +679,11 @@ enum {
 	 */	
 	EC_TAG_PARTFILE_PART_STATUS,
 
+
+	//
+	// KnownFile
+	//
+
 	/*!
 	 * \brief Info about CKnownFile (shared file)
 	 * 
@@ -517,6 +698,31 @@ enum {
 	EC_TAG_KNOWNFILE_REQ_COUNT_ALL,
 	EC_TAG_KNOWNFILE_ACCEPT_COUNT,
 	EC_TAG_KNOWNFILE_ACCEPT_COUNT_ALL,
+
+
+	//
+	// Server
+	//
+
+		/*!
+		 * \brief Info about server
+		 *
+		 * Value: (EC_IPv4_t) IP:port of the server
+		 *
+		 * When any of the childs are missing, their default value should be used
+		 *
+		 * \par Child TAGs:
+		 *	::EC_TAG_SERVER_NAME\n
+		 *	::EC_TAG_SERVER_DESC\n
+		 *	::EC_TAG_SERVER_PING\n
+		 *	::EC_TAG_SERVER_USERS\n
+		 *	::EC_TAG_SERVER_USERS_MAX\n
+		 *	::EC_TAG_SERVER_FILES\n
+		 *	::EC_TAG_SERVER_PRIO\n
+		 *	::EC_TAG_SERVER_FAILED\n
+		 *	::EC_TAG_SERVER_STATIC\n
+		 *	::EC_TAG_SERVER_VERSION
+		 */
 	
 	/*!
 	 * \brief Info about server
@@ -558,6 +764,11 @@ enum {
 	EC_TAG_SERVER_STATIC,		///< (\c uint8) Nonzero, when server is static. Default: 0 (not static)
 	EC_TAG_SERVER_VERSION,		///< (\c string) Server version. Default: unknown.
 
+
+	//
+	// Up-Down Client
+	//
+
 	/*!
 	 * \brief Info about up-down client
 	 * 
@@ -569,6 +780,11 @@ enum {
 	 *  ::EC_TAG_PARTFILE_SPEED
 	 */
 	EC_TAG_UPDOWN_CLIENT,
+
+
+	//
+	// IPFilter
+	//
 
 		/*!
 		 * \brief Status of IPFilter (current/desired)
@@ -596,24 +812,294 @@ enum {
 		 */
 	EC_TAG_IPFILTER_LEVEL,
 
+
+	//
+	// Preferences
+	//
+
+		/*!
+		 * \brief Selects which preference tables are to be returned.
+		 *
+		 * Value is (\c uint32) bitmask, OR-ing the EC_PREFS_* values.
+		 */
+	EC_TAG_SELECT_PREFS,
+
+
+	//
+	// Preferences - Categories
+	//
+
+		/*!
+		 * \brief Categories
+		 *
+		 * Holds one or more ::EC_TAG_CATEGORY tags, depending on
+		 * the current category count.
+		 *
+		 * \note When there are no categories, even the
+		 * EC_TAG_PREFS_CATEGORIES tag is omitted from the response!
+		 */
+	EC_TAG_PREFS_CATEGORIES,
+
 		/*
-		* \brief WebServer Preferences.
+		 * \brief A Category.
+		 *
+		 * Value: (\c uint32) Category index.
+		 *
+		 * \par Child TAGs:
+		 *	::EC_TAG_CATEGORY_TITLE\n
+		 *	::EC_TAG_CATEGORY_PATH\n
+		 *	::EC_TAG_CATEGORY_COMMENT\n
+		 *	::EC_TAG_CATEGORY_COLOR\n
+		 *	::EC_TAG_CATEGORY_PRIO
+		 */
+	EC_TAG_CATEGORY,
+	EC_TAG_CATEGORY_TITLE,		///< (\c string) Category title.
+	EC_TAG_CATEGORY_PATH,		///< (\c string) Incoming files folder.
+	EC_TAG_CATEGORY_COMMENT,	///< (\c string) Category comment.
+	EC_TAG_CATEGORY_COLOR,		///< (\c uint32) Category color.
+	EC_TAG_CATEGORY_PRIO,		///< (\c uint8) Category priority.
+
+
+	//
+	// Preferences - General
+	//
+
+		/*
+		* \brief Preferences - General.
+		*
+		* \par Child TAGs:
+		*/
+	EC_TAG_PREFS_GENERAL,
+/* <---> */
+
+
+	//
+	// Preferences - Connections
+	//
+
+		/*
+		* \brief Preferences - Connections.
+		*
+		* \par Child TAGs:
+		*	::EC_TAG_CONN_DL_CAP\n
+		*	::EC_TAG_CONN_UL_CAP\n
+		*	::EC_TAG_CONN_MAX_DL\n
+		*	::EC_TAG_CONN_MAX_UL\n
+		*	::EC_TAG_CONN_SLOT_ALLOCATION\n
+		*	::EC_TAG_CONN_TCP_PORT\n
+		*	::EC_TAG_CONN_UDP_PORT\n
+		*	::EC_TAG_CONN_UDP_DISABLE\n
+		*	::EC_TAG_CONN_MAX_FILE_SOURCES\n
+		*	::EC_TAG_CONN_MAX_CONN\n
+		*	::EC_TAG_CONN_AUTOCONNECT\n
+		*	::EC_TAG_CONN_RECONNECT
+		*/
+	EC_TAG_PREFS_CONNECTIONS,
+	EC_TAG_CONN_DL_CAP,		///< (\c uint32) Line download capacity.
+	EC_TAG_CONN_UL_CAP,		///< (\c uint32) Line upload capacity.
+	EC_TAG_CONN_MAX_DL,		///< (\c uint16) Maximum download speed.
+	EC_TAG_CONN_MAX_UL,		///< (\c uint16) Maximum upload speed.
+	EC_TAG_CONN_SLOT_ALLOCATION,	///< (\c uint16) Upload slot allocation.
+	EC_TAG_CONN_TCP_PORT,		///< (\c uint16) TCP listening port number.
+	EC_TAG_CONN_UDP_PORT,		///< (\c uint16) UDP listening port number.
+	EC_TAG_CONN_UDP_DISABLE,	///< (boolean) Whether to disable UDP port or not.
+	EC_TAG_CONN_MAX_FILE_SOURCES,	///< (\c uint16) Maximum sources per file allowed.
+	EC_TAG_CONN_MAX_CONN,		///< (\c uint16) Maximum total connections allowed.
+	EC_TAG_CONN_AUTOCONNECT,	///< (boolean) Whether to automatically connect at startup or not.
+	EC_TAG_CONN_RECONNECT,		///< (boolean) Whether to reconnect to server upon connection loss or not.
+
+
+	//
+	// Preferences - Message Filter
+	//
+
+		/*
+		* \brief Preferences - Message Filter.
+		*
+		* \par Child TAGs:
+		*/
+	EC_TAG_PREFS_MESSAGEFILTER,
+/* <---> */
+
+
+	//
+	// Preferences - Remote Controls
+	//
+
+		/*
+		* \brief WebServer Preferences (aka Remote Controls).
 		*
 		* \par Child TAGs:
 		*	::EC_TAG_WEBSERVER_PORT (required)\n
 		*	::EC_TAG_PASSWD_HASH (0-1) Admin Password. Omitted, when admin password is blank.\n
 		*	::EC_TAG_WEBSERVER_GUEST (0-1)
 		*/
-	EC_TAG_PREFS_WEBSERVER,
+	EC_TAG_PREFS_REMOTECTRL,
 	EC_TAG_WEBSERVER_PORT,		///< (\c uint16) WebServer listening port
 	EC_TAG_WEBSERVER_GUEST,		///< WebServer Guest account information
-					/*!< The presence of this tag means that the guest account is enabled.
+					/*!< (boolean) The presence of this tag means that the guest account is enabled.
 						It contains an ::EC_TAG_PASSWD_HASH tag, if the guest
 						password is not empty.
 					*/
-	EC_TAG_WEBSERVER_USEGZIP,	///< When present, webserver uses gzip compression. Default: no.
-	EC_TAG_WEBSERVER_REFRESH,	///< (\c uint32) Refresh interval of web pages in seconds. Default: 120.
+	EC_TAG_WEBSERVER_USEGZIP,	///< (boolean) When present, webserver uses gzip compression.
+	EC_TAG_WEBSERVER_REFRESH,	///< (\c uint32) Refresh interval of web pages in seconds.
 
+
+	//
+	// Preferences - Online Signature
+	//
+
+		/*
+		* \brief Preferences - Online Signature.
+		*
+		* \par Child TAGs:
+		*/
+	EC_TAG_PREFS_ONLINESIG,
+/* <---> */
+
+
+	//
+	// Preferences - Servers
+	//
+
+		/*
+		* \brief Preferences - Servers.
+		*
+		* \par Child TAGs:
+		*/
+	EC_TAG_PREFS_SERVERS,
+/* <---> */
+
+
+	//
+	// Preferences - Files
+	//
+
+		/*
+		* \brief Preferences - Files.
+		*
+		* \par Child TAGs:
+		*	::EC_TAG_FILES_ICH_ENABLED\n
+		*	::EC_TAG_FILES_AICH_TRUST\n
+		*	::EC_TAG_FILES_NEW_PAUSED\n
+		*	::EC_TAG_FILES_NEW_AUTO_DL_PRIO\n
+		*	::EC_TAG_FILES_PREVIEW_PRIO\n
+		*	::EC_TAG_FILES_NEW_AUTO_UL_PRIO\n
+		*	::EC_TAG_FILES_UL_FULL_CHUNKS\n
+		*	::EC_TAG_FILES_START_NEXT_PAUSED\n
+		*	::EC_TAG_FILES_SAVE_SOURCES\n
+		*	::EC_TAG_FILES_EXTRACT_METADATA\n
+		*	::EC_TAG_FILES_ALLOC_FULL_CHUNKS\n
+		*	::EC_TAG_FILES_ALLOC_FULL_SIZE\n
+		*	::EC_TAG_FILES_CHECK_FREE_SPACE\n
+		*	::EC_TAG_FILES_MIN_FREE_SPACE
+		*/
+	EC_TAG_PREFS_FILES,
+	EC_TAG_FILES_ICH_ENABLED,	///< (boolean) Is ICH enabled?
+	EC_TAG_FILES_AICH_TRUST,	///< (boolean) Does AICH trust every hash?
+	EC_TAG_FILES_NEW_PAUSED,	///< (boolean) Add new files paused.
+	EC_TAG_FILES_NEW_AUTO_DL_PRIO,	///< (boolean) Auto-priority on new downloads.
+	EC_TAG_FILES_PREVIEW_PRIO,	///< (boolean) Try to download first and last chunk first.
+	EC_TAG_FILES_NEW_AUTO_UL_PRIO,	///< (boolean) Add new shared files with auto-priority.
+	EC_TAG_FILES_UL_FULL_CHUNKS,	///< (boolean) Transfer full chunks in uploads.
+	EC_TAG_FILES_START_NEXT_PAUSED,	///< (boolean) Start next paused file when a download completes.
+	EC_TAG_FILES_SAVE_SOURCES,	///< (boolean) Save 5 sources on rare files.
+	EC_TAG_FILES_EXTRACT_METADATA,	///< (boolean) Extract metadata tags.
+	EC_TAG_FILES_ALLOC_FULL_CHUNKS,	///< (boolean) Allocate full chunks.
+	EC_TAG_FILES_ALLOC_FULL_SIZE,	///< (boolean) Aloocate full filesize.
+	EC_TAG_FILES_CHECK_FREE_SPACE,	///< (boolean) Check disk free space.
+	EC_TAG_FILES_MIN_FREE_SPACE,	///< (\c uint32) Minimum disk free space. Omitted, when CHECK_FREE_SPACE is false.
+
+
+	//
+	// Preferences - Source Dropping
+	//
+
+		/*
+		* \brief Preferences - Source Dropping.
+		*
+		* \par Child TAGs:
+		*/
+	EC_TAG_PREFS_SRCDROP,
+/* <---> */
+
+
+	//
+	// Preferences - Directories
+	//
+
+		/*
+		* \brief Preferences - Directories.
+		*
+		* \par Child TAGs:
+		*/
+	EC_TAG_PREFS_DIRECTORIES,
+/* <---> */
+
+
+	//
+	// Preferences - Statistics
+	//
+
+		/*
+		* \brief Preferences - Statistics.
+		*
+		* \par Child TAGs:
+		*/
+	EC_TAG_PREFS_STATISTICS,
+/* <---> */
+
+
+	//
+	// Preferences - Security
+	//
+
+		/*
+		* \brief Preferences - Security.
+		*
+		* \par Child TAGs:
+		*/
+	EC_TAG_PREFS_SECURITY,
+/* <---> */
+
+
+	//
+	// Preferences - Core Tweaks
+	//
+
+		/*
+		* \brief Preferences - Core Tweaks.
+		*
+		* \par Child TAGs:
+		*	::EC_TAG_CORETW_MAX_CONN_PER_FIVE\n
+		*	::EC_TAG_CORETW_SAFE_MAXCONN\n
+		*	::EC_TAG_CORETW_VERBOSE\n
+		*	::EC_TAG_CORETW_VERBOSE_PACKET\n
+		*	::EC_TAG_CORETW_FILEBUFFER\n
+		*	::EC_TAG_CORETW_UL_QUEUE\n
+		*	::EC_TAG_CORETW_SRV_KEEPALIVE_TIMEOUT
+		*/
+	EC_TAG_PREFS_CORETWEAKS,
+	EC_TAG_CORETW_MAX_CONN_PER_FIVE,	///< (\c uint16) Max connections per 5 seconds.
+	EC_TAG_CORETW_SAFE_MAXCONN,		///< (boolean) Safe max connections.
+	EC_TAG_CORETW_VERBOSE,			///< (boolean) Verbose debug messages.
+	EC_TAG_CORETW_VERBOSE_PACKET,		///< (boolean) Verbose packet debug messages.
+	EC_TAG_CORETW_FILEBUFFER,		///< (\c uint32) File buffer size.
+	EC_TAG_CORETW_UL_QUEUE,			///< (\c uint32) Upload queue size.
+	EC_TAG_CORETW_SRV_KEEPALIVE_TIMEOUT,	///< (\c uint32) Server connection keepalive timeout.
+
+
+	//
+	// Logging
+	//
+
+		/*!
+		 * \brief Whether to add logline to statusline or not.
+		 *
+		 * The presence of this tag means (true), to add logline also
+		 * to statusline.
+		 */
+	EC_TAG_LOG_TO_STATUS,
 };
 
 
@@ -628,5 +1114,25 @@ enum EC_DETAIL_LEVEL {
 	EC_DETAIL_GUI,		///< the (upcoming) remote gui will use this (default) value, to obtain full information
 	EC_DETAIL_UPDATE,   ///< return only fields that constatly change (rate, ping, part status)
 };
+
+
+/*
+ * EC Preferences selection bit values.
+ */
+
+#define EC_PREFS_CATEGORIES	0x00000001
+#define EC_PREFS_GENERAL	0x00000002
+#define EC_PREFS_CONNECTIONS	0x00000004
+#define EC_PREFS_MESSAGEFILTER	0x00000008
+#define EC_PREFS_REMOTECONTROLS	0x00000010
+#define EC_PREFS_ONLINESIG	0x00000020
+#define EC_PREFS_SERVERS	0x00000040
+#define EC_PREFS_FILES		0x00000080
+#define EC_PREFS_SRCDROP	0x00000100
+#define EC_PREFS_DIRECTORIES	0x00000200
+#define EC_PREFS_STATISTICS	0x00000400
+#define EC_PREFS_SECURITY	0x00000800
+// there's no need to do GUI Tweaks on EC :)
+#define EC_PREFS_CORETWEAKS	0x00001000
 
 #endif	/* ECCODES_H */

@@ -26,8 +26,7 @@
 #include "StringFunctions.h"	// Needed for aMuleConvToUTF8
 #include "ECcodes.h"	// Needed for EC types
 
-// Commented out, because with current code it'll most likely scew up gcc optimizations
-//#pragma interface
+#pragma interface
 
 // Define this to keep partial packets
 // (those that had an error upon reception/creation)
@@ -92,20 +91,32 @@ class CECTag {
 
 
 /**
+ * An empty TAG
+ *
+ * Note, that an "empty" tag is empty because it contains no data, but it still
+ * may contain children.
+ */
+
+class CECEmptyTag : public CECTag {
+	public:
+				CECEmptyTag(ec_tagname_t name) : CECTag(name, 0, NULL, false) {}
+};
+
+
+/**
  * High level EC packet handler class
  */
 
-class CECPacket : private CECTag {
+class CECPacket : private CECEmptyTag {
 	friend class ECSocket;
 	public:
-				CECPacket(ec_opcode_t opCode, EC_DETAIL_LEVEL detail_level = EC_DETAIL_GUI) : CECTag(0, 0, NULL, false), m_opCode(opCode)
+				CECPacket(ec_opcode_t opCode, EC_DETAIL_LEVEL detail_level = EC_DETAIL_GUI) : CECEmptyTag(0), m_opCode(opCode)
 				{
 					// since EC_DETAIL_GUI is default - no point transmit it
 					if ( detail_level != EC_DETAIL_GUI ) {
 						AddTag(CECTag(EC_TAG_DETAIL_LEVEL, (uint8)detail_level));
 					}
 				}
-				~CECPacket(void) {};
 				CECTag::AddTag;
 				CECTag::GetTagByIndex;
 				CECTag::GetTagByName;
@@ -121,66 +132,6 @@ class CECPacket : private CECTag {
 				CECPacket(wxSocketBase *sock, ECSocket& socket);
 		bool		WritePacket(wxSocketBase *sock, ECSocket& socket) const;
 		ec_opcode_t	m_opCode;
-};
-
-
-/*
- * Specific tags for specific requests
- */
-
-class CServer;
-class CPartFile;
-class CKnownFile;
-
-class CEC_Server_Tag : public CECTag {
- 	public:
- 		CEC_Server_Tag(CServer *, EC_DETAIL_LEVEL);
-};
-
-class CEC_ConnState_Tag : public CECTag {
- 	public:
- 		CEC_ConnState_Tag(EC_DETAIL_LEVEL);
-};
-
-class CEC_PartFile_Tag : public CECTag {
- 	public:
- 		CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level);
- 		
- 		uint32 FileID() { return GetInt32Data(); }
- 		wxString FileName() { return GetTagByName(EC_TAG_PARTFILE_NAME)->GetStringData(); }
- 		uint32 SizeFull() { return GetTagByName(EC_TAG_PARTFILE_SIZE_FULL)->GetInt32Data(); }
- 		uint32 SizeXfer() { return GetTagByName(EC_TAG_PARTFILE_SIZE_XFER)->GetInt32Data(); }
-  		uint32 SizeDone() { return GetTagByName(EC_TAG_PARTFILE_SIZE_DONE)->GetInt32Data(); }
- 		wxString FileEd2kLink() { return GetTagByName(EC_TAG_PARTFILE_ED2K_LINK)->GetStringData(); }
- 		wxString FileStatus() { return GetTagByName(EC_TAG_PARTFILE_STATUS)->GetStringData(); }
-  		uint32 SourceCount() { return GetTagByName(EC_TAG_PARTFILE_SOURCE_COUNT)->GetInt32Data(); }
-  		uint32 SourceNotCurrCount() { return GetTagByName(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT)->GetInt32Data(); }
-  		uint32 SourceXferCount() { return GetTagByName(EC_TAG_PARTFILE_SOURCE_COUNT_XFER)->GetInt32Data(); }
-  		uint32 Speed() { return GetTagByName(EC_TAG_PARTFILE_SPEED)->GetInt32Data(); }
-  		uint32 Prio() { return GetTagByName(EC_TAG_PARTFILE_PRIO)->GetInt32Data(); }
-  		wxString PartStatus() { return GetTagByName(EC_TAG_PARTFILE_PART_STATUS)->GetStringData(); }
-};
-
-class CEC_PartStatus_Tag : public CECTag {
- 	public:
- 		CEC_PartStatus_Tag(CPartFile *file, int statussize);
-};
-
-class CEC_SharedFile_Tag : public CECTag {
-	public:
-		CEC_SharedFile_Tag(CKnownFile *file, EC_DETAIL_LEVEL detail_level);
-		
- 		uint32 FileID() { return GetInt32Data(); }
- 		wxString FileName() { return GetTagByName(EC_TAG_PARTFILE_NAME)->GetStringData(); }
- 		uint32 SizeFull() { return GetTagByName(EC_TAG_PARTFILE_SIZE_FULL)->GetInt32Data(); }
-  		uint32 Prio() { return GetTagByName(EC_TAG_PARTFILE_PRIO)->GetInt32Data(); }
- 		wxString FileEd2kLink() { return GetTagByName(EC_TAG_PARTFILE_ED2K_LINK)->GetStringData(); }
-
- 		uint32 GetRequests() { return GetTagByName(EC_TAG_KNOWNFILE_REQ_COUNT)->GetInt32Data(); }
- 		uint32 GetAllRequests() { return GetTagByName(EC_TAG_KNOWNFILE_REQ_COUNT_ALL)->GetInt32Data(); }
-
- 		uint32 GetAccepts() { return GetTagByName(EC_TAG_KNOWNFILE_ACCEPT_COUNT)->GetInt32Data(); }
- 		uint32 GetAllAccepts() { return GetTagByName(EC_TAG_KNOWNFILE_ACCEPT_COUNT_ALL)->GetInt32Data(); }
 };
 
 #endif /* ECPACKET_H */

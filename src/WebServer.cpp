@@ -41,13 +41,13 @@
 
 //-------------------------------------------------------------------
 
-#include "ECSocket.h"	
-#include "ED2KLink.h"
+#include "ECSocket.h"
+#include "ECSpecialTags.h"
 #include "GetTickCount.h"	// Needed for GetTickCount
 #include "MD5Sum.h"
 #include "otherstructs.h"	// Needed for TransferredData
 #include "otherfunctions.h"	// Needed for atoll, ED2KFT_*
-#include  "NetworkFunctions.h" // Needed for StringIPtoUint32
+#include "NetworkFunctions.h" // Needed for StringIPtoUint32
 #include "types.h"
 #include "WebSocket.h"		// Needed for StopSockets()
 
@@ -156,15 +156,15 @@ void CWebServer::StopServer(void) {
 //returns web server listening port
 int CWebServer::GetWSPrefs(void)
 {
-	CECPacket req(EC_OP_GET_PREFERENCES_WEBSERVER);
+	CECPacket req(EC_OP_GET_PREFERENCES);
+	req.AddTag(CECTag(EC_TAG_SELECT_PREFS, (uint32)EC_PREFS_REMOTECONTROLS));
 	CECPacket *reply = webInterface->SendRecvMsg_v2(&req);
 
 	if ( ! reply ) {
 		return 0;
 	}
 
-	CECTag *wsprefs = reply->GetTagByIndex(0); 
-		// as of now, reply doesn't have anything else than a EC_TAG_PREFS_WEBSERVER tag.
+	CECTag *wsprefs = reply->GetTagByIndex(0); // we have selected only the webserver preferences
 	CECTag *tag;
 	int wsport = wsprefs->GetTagByName(EC_TAG_WEBSERVER_PORT)->GetInt16Data();
 
@@ -254,7 +254,10 @@ void CWebServer::ReloadTemplates(void) {
 	}
 	if (!wxFileName::FileExists(sFile)) {
 		// no file. do nothing.
-		webInterface->SendRecvMsg(wxT("LOGGING ADDLOGLINE (true) ") + (_("Can't load templates: Can't open file ") + sFile));
+		CECPacket req(EC_OP_ADDLOGLINE);
+		req.AddTag(CECEmptyTag(EC_TAG_LOG_TO_STATUS));	// to log to statusbar also
+		req.AddTag(CECTag(EC_TAG_STRING, wxString(_("Can't load templates: Can't open file ")) + sFile));
+		Send_Discard_V2_Request(&req);
 		return;
 	}
 
@@ -269,7 +272,10 @@ void CWebServer::ReloadTemplates(void) {
 		wxString sVersion = _LoadTemplate(sAll,wxT("TMPL_VERSION"));
 		long lVersion = StrToLong(sVersion);
 		if (lVersion < WEB_SERVER_TEMPLATES_VERSION) {
-			webInterface->SendRecvMsg(wxT("LOGGING ADDLOGLINE (true) ") + (_("Can't load templates: Can't open file ") + sFile));
+			CECPacket req(EC_OP_ADDLOGLINE);
+			req.AddTag(CECEmptyTag(EC_TAG_LOG_TO_STATUS));	// to log to statusbar also
+			req.AddTag(CECTag(EC_TAG_STRING, wxString(_("Can't load templates: Can't open file ")) + sFile));
+			Send_Discard_V2_Request(&req);
 		} else {
 			m_Templates.sHeader = _LoadTemplate(sAll,wxT("TMPL_HEADER"));
 			m_Templates.sHeaderMetaRefresh = _LoadTemplate(sAll,wxT("TMPL_HEADER_META_REFRESH"));
@@ -319,7 +325,10 @@ void CWebServer::ReloadTemplates(void) {
 			m_Templates.sProgressbarImgs.Replace(wxT("[PROGRESSGIFINTERNAL]"),wxT("%i"));
 		}
 	} else {
-		webInterface->SendRecvMsg(wxT("LOGGING ADDLOGLINE (true) ") + (_("Can't load templates: Can't open file %s") + sFile));
+		CECPacket req(EC_OP_ADDLOGLINE);
+		req.AddTag(CECEmptyTag(EC_TAG_LOG_TO_STATUS));	// to log to statusbar also
+		req.AddTag(CECTag(EC_TAG_STRING, wxString(_("Can't load templates: Can't open file ")) + sFile));
+		Send_Discard_V2_Request(&req);
 	}
 }
 
@@ -903,13 +912,16 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 		if (HTTPTemp.Right(1) != wxT("/")) {
 			HTTPTemp += wxT("/");
 		}
-		wxString request = wxT("TRANSFER ADDFILELINK ") + HTTPTemp;
-		if (pThis->webInterface->SendRecvMsg(request) == wxT("Bad Link")) {
-			wxString HTTPTempC = wxT("This ed2k link is invalid (") + HTTPTemp + wxT(")");
+		CECPacket req(EC_OP_ED2K_LINK);
+		req.AddTag(CECTag(EC_TAG_STRING, HTTPTemp));
+		CECPacket *response = pThis->webInterface->SendRecvMsg_v2(&req);
+		if ( response->GetOpCode() == EC_OP_FAILED) {
+			wxString HTTPTempC = _("This ed2k link is invalid (") + HTTPTemp + wxT(")");
 			Out = pThis->m_Templates.sTransferBadLink;
 			Out.Replace(wxT("[InvalidLink]"), HTTPTempC);
 			Out.Replace(wxT("[Link]"), HTTPTemp);
 		}
+		delete response;
 	}
 	//
 	// Commands
@@ -1254,11 +1266,15 @@ wxString CWebServer::_GetDownloadLink(ThreadData Data) {
 	Out.Replace(wxT("[Session]"), sSession);
 
 	// categories
-	if (StrToLong(pThis->webInterface->SendRecvMsg(wxT("CATEGORIES GETCATCOUNT"))) > 1) {
-		InsertCatBox(pThis, Out, 0, pThis->m_Templates.sCatArrow );
+	CECPacket req(EC_OP_GET_PREFERENCES, EC_DETAIL_WEB);
+	req.AddTag(CECTag(EC_TAG_SELECT_PREFS, (uint32)EC_PREFS_CATEGORIES));
+	CECPacket *reply = pThis->webInterface->SendRecvMsg_v2(&req);
+	if ( reply->GetTagCount() ) { 	// if there are no categories, not even the EC_TAG_PREFS_CATEGORIES will be included :)
+		InsertCatBox(Out, 0, pThis->m_Templates.sCatArrow, reply->GetTagByIndex(0));
 	} else {
 		Out.Replace(wxT("[CATBOX]"),wxEmptyString);
 	}
+	delete reply;
 
 	return Out;
 }
@@ -1277,7 +1293,8 @@ wxString CWebServer::_GetSharedFilesList(ThreadData Data) {
 		_SetSharedFilePriority(pThis, _ParseURL(Data, wxT("hash")), StrToLong(_ParseURL(Data, wxT("setpriority"))));
 
 	if (_ParseURL(Data, wxT("reload")) == wxT("true")) {
-		pThis->webInterface->SendRecvMsg(wxT("SHAREDFILES RELOAD"));
+		CECPacket req(EC_OP_SHAREDFILES_RELOAD);
+		pThis->Send_Discard_V2_Request(&req);
 	}
 
 	wxString sSortRev = _ParseURL(Data, wxT("sortreverse"));
@@ -1443,23 +1460,24 @@ wxString CWebServer::_GetAddServerBox(ThreadData Data) {
 		wxString sPort = _ParseURL(Data, wxT("serverport"));
 		wxString sName = _ParseURL(Data, wxT("servername"));
 		
-		wxString request = request.Format(wxT("SERVER ADD %s %s %s"), sIP.GetData(), sPort.GetData(), sName.GetData());
-		pThis->webInterface->SendRecvMsg(request);
+		wxString ed2k = wxT("ed2k://|server|") + sIP + wxT("|") + sPort + wxT("|/");
+		CECPacket request(EC_OP_ED2K_LINK);
+		request.AddTag(CECTag(EC_TAG_STRING, ed2k)),
+		pThis->Send_Discard_V2_Request(&request);
 
-#warning fix GetLastLogEntry
-		wxString resultlog = wxEmptyString; //_SpecialChars(theApp.amuledlg->GetLastLogEntry());
-		//resultlog = resultlog.TrimRight('\n');
-		//resultlog = resultlog.Mid(resultlog.ReverseFind('\n'));
-		Out.Replace(wxT("[Message]"),resultlog);
+		CECPacket req(EC_OP_GET_LAST_LOG_ENTRY);
+		CECPacket *response = pThis->webInterface->SendRecvMsg_v2(&req);
+		Out.Replace(wxT("[Message]"),_SpecialChars(response->GetTagByIndex(0)->GetStringData()));
+		delete response;
 	} else if (_ParseURL(Data, wxT("updateservermetfromurl")) == wxT("true")) {
-		wxString request = request.Format(wxT("SERVER UPDATEMET %s"), _ParseURL(Data, wxT("servermeturl")).GetData());
-		pThis->webInterface->SendRecvMsg(request);
+		CECPacket request(EC_OP_SERVER_UPDATE_FROM_URL);
+		request.AddTag(CECTag(EC_TAG_STRING, _ParseURL(Data, wxT("servermeturl"))));
+		pThis->Send_Discard_V2_Request(&request);
 		
-#warning fix GetLastLogEntry
-		wxString resultlog = wxEmptyString; //_SpecialChars(theApp.amuledlg->GetLastLogEntry());
-		//resultlog = resultlog.TrimRight('\n');
-		//resultlog = resultlog.Mid(resultlog.ReverseFind('\n'));
-		Out.Replace(wxT("[Message]"),resultlog);
+		CECPacket req(EC_OP_GET_LAST_LOG_ENTRY);
+		CECPacket *response = pThis->webInterface->SendRecvMsg_v2(&req);
+		Out.Replace(wxT("[Message]"),_SpecialChars(response->GetTagByIndex(0)->GetStringData()));
+		delete response;
 	} else
 		Out.Replace(wxT("[Message]"), wxEmptyString);
 	
@@ -1522,12 +1540,15 @@ wxString CWebServer::_GetLog(ThreadData Data) {
 	wxString Out = pThis->m_Templates.sLog;
 
 	if (_ParseURL(Data, wxT("clear")) == wxT("yes") && IsSessionAdmin(Data,sSession)) {
-		pThis->webInterface->SendRecvMsg(wxT("LOG RESETLOG"));
+		CECPacket req(EC_OP_RESET_LOG);
+		pThis->Send_Discard_V2_Request(&req);
 	}
 	
 	Out.Replace(wxT("[Clear]"), _("Reset"));
-	Out.Replace(wxT("[Log]"), _SpecialChars(pThis->webInterface->SendRecvMsg(wxT("LOG GETALLLOGENTRIES"))) + 
-										wxT("<br><a name=\"end\"></a>"));
+	CECPacket req(EC_OP_GET_LOG);
+	CECPacket *response = pThis->webInterface->SendRecvMsg_v2(&req);
+	Out.Replace(wxT("[Log]"), _SpecialChars(response->GetTagByIndex(0)->GetStringData()) + wxT("<br><a name=\"end\"></a>"));
+	delete response;
 	Out.Replace(wxT("[Session]"), sSession);
 
 	return Out;
@@ -1544,12 +1565,16 @@ wxString CWebServer::_GetServerInfo(ThreadData Data) {
 	wxString Out = pThis->m_Templates.sServerInfo;
 
 	if (_ParseURL(Data, wxT("clear")) == wxT("yes")) {
-		pThis->webInterface->SendRecvMsg(wxT("LOG CLEARSERVERINFO"));
+		CECPacket req(EC_OP_CLEAR_SERVERINFO);
+		pThis->Send_Discard_V2_Request(&req);
 	}
 	
+	CECPacket req(EC_OP_GET_SERVERINFO);
+	CECPacket *response = pThis->webInterface->SendRecvMsg_v2(&req);
 	Out.Replace(wxT("[Clear]"), _("Reset"));
-	Out.Replace(wxT("[ServerInfo]"), _SpecialChars(pThis->webInterface->SendRecvMsg(wxT("LOG GETSERVERINFO"))));
+	Out.Replace(wxT("[ServerInfo]"), _SpecialChars(response->GetTagByIndex(0)->GetStringData()));
 	Out.Replace(wxT("[Session]"), sSession);
+	delete response;
 
 	return Out;
 }
@@ -1568,12 +1593,15 @@ wxString CWebServer::_GetDebugLog(ThreadData Data) {
 	wxString Out = pThis->m_Templates.sDebugLog;
 
 	if (_ParseURL(Data, wxT("clear")) == wxT("yes") && IsSessionAdmin(Data,sSession)) {
-		pThis->webInterface->SendRecvMsg(wxT("LOG RESETDEBUGLOG"));
+		CECPacket req(EC_OP_RESET_DEBUGLOG);
+		pThis->Send_Discard_V2_Request(&req);
 	}
 	Out.Replace(wxT("[Clear]"), _("Reset"));
 
-	Out.Replace(wxT("[DebugLog]"), _SpecialChars(pThis->webInterface->SendRecvMsg(wxT("LOG GETALLDEBUGLOGENTRIES"))) +
-											wxT("<br><a name=\"end\"></a>"));
+	CECPacket req(EC_OP_GET_DEBUGLOG);
+	CECPacket *response = pThis->webInterface->SendRecvMsg_v2(&req);
+	Out.Replace(wxT("[DebugLog]"), _SpecialChars(response->GetTagByIndex(0)->GetStringData()) + wxT("<br><a name=\"end\"></a>"));
+	delete response;
 	Out.Replace(wxT("[Session]"), sSession);
 
 	return Out;
@@ -1610,8 +1638,6 @@ wxString CWebServer::_GetPreferences(ThreadData Data) {
 	if (!pThis)
 		return wxEmptyString;
 
-	int brk;
-	
 	wxString sSession = _ParseURL(Data, wxT("ses"));
 
 	wxString Out = pThis->m_Templates.sPreferences;
@@ -1662,11 +1688,13 @@ wxString CWebServer::_GetPreferences(ThreadData Data) {
 		pThis->webInterface->SendRecvMsg(wxString::Format(wxT("WEBPAGE SETPREFERENCES %s"), prefList.GetData()).GetData());
 	}
 
-	// Fill form
-	//sPreferencesList formatted as: %d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d
-	wxString sPreferences = pThis->webInterface->SendRecvMsg(wxT("WEBPAGE GETPREFERENCES"));
-	brk = sPreferences.First(wxT("\t"));
-	if (StrToLong(sPreferences.Left(brk))) {
+	CECPacket req(EC_OP_GET_PREFERENCES);
+	req.AddTag(CECTag(EC_TAG_SELECT_PREFS, (uint32)(EC_PREFS_CONNECTIONS | EC_PREFS_REMOTECONTROLS | EC_PREFS_FILES | EC_PREFS_CORETWEAKS)));
+	CECPacket *response = pThis->webInterface->SendRecvMsg_v2(&req);
+	CECTag *filePrefs = response->GetTagByName(EC_TAG_PREFS_FILES);
+	CECTag *connPrefs = response->GetTagByName(EC_TAG_PREFS_CONNECTIONS);
+	CECTag *webPrefs = response->GetTagByName(EC_TAG_PREFS_REMOTECTRL);
+	if (webPrefs->GetTagByName(EC_TAG_WEBSERVER_USEGZIP)) {
 		Out.Replace(wxT("[UseGzipVal]"), wxT("checked"));
 	} else {
 		Out.Replace(wxT("[UseGzipVal]"), wxEmptyString);
@@ -1676,30 +1704,24 @@ wxString CWebServer::_GetPreferences(ThreadData Data) {
 	} else {
 		Out.Replace(wxT("[ShowUploadQueueVal]"), wxEmptyString);
 	}
-	sPreferences=sPreferences.Mid(brk+1); brk=sPreferences.First(wxT("\t"));
-	if (StrToLong(sPreferences.Left(brk))) {
+	if (filePrefs->GetTagByName(EC_TAG_FILES_PREVIEW_PRIO)) {
 		Out.Replace(wxT("[FirstAndLastVal]"), wxT("checked"));
 	} else {
 		Out.Replace(wxT("[FirstAndLastVal]"), wxEmptyString);
 	}
-	sPreferences=sPreferences.Mid(brk+1); brk=sPreferences.First(wxT("\t"));
-	if (StrToLong(sPreferences.Left(brk))) {
+	if (filePrefs->GetTagByName(EC_TAG_FILES_UL_FULL_CHUNKS)) {
 		Out.Replace(wxT("[FullChunksVal]"), wxT("checked"));
 	} else {
 		Out.Replace(wxT("[FullChunksVal]"), wxEmptyString);
 	}
-	
-	sPreferences=sPreferences.Mid(brk+1); brk=sPreferences.First(wxT("\t"));
-	wxString sRefresh = sRefresh.Format(wxT("%li"), StrToLong(sPreferences.Left(brk)));
+
+	wxString sRefresh = sRefresh.Format(wxT("%i"), webPrefs->GetTagByName(EC_TAG_WEBSERVER_REFRESH)->GetInt32Data());
 	Out.Replace(wxT("[RefreshVal]"), sRefresh);
-	sPreferences=sPreferences.Mid(brk+1); brk=sPreferences.First(wxT("\t"));
-	sRefresh.Printf(wxT("%li"), StrToLong(sPreferences.Left(brk)));
+	sRefresh.Printf(wxT("%i"), connPrefs->GetTagByName(EC_TAG_CONN_MAX_FILE_SOURCES)->GetInt16Data());
 	Out.Replace(wxT("[MaxSourcesVal]"), sRefresh);
-	sPreferences=sPreferences.Mid(brk+1); brk=sPreferences.First(wxT("\t"));
-	sRefresh.Printf(wxT("%li"), StrToLong(sPreferences.Left(brk)));
+	sRefresh.Printf(wxT("%i"), connPrefs->GetTagByName(EC_TAG_CONN_MAX_CONN)->GetInt16Data());
 	Out.Replace(wxT("[MaxConnectionsVal]"), sRefresh);
-	sPreferences=sPreferences.Mid(brk+1); brk=sPreferences.First(wxT("\t"));
-	sRefresh.Printf(wxT("%li"), StrToLong(sPreferences.Left(brk)));
+	sRefresh.Printf(wxT("%i"), response->GetTagByName(EC_TAG_PREFS_CORETWEAKS)->GetTagByName(EC_TAG_CORETW_MAX_CONN_PER_FIVE)->GetInt16Data());
 	Out.Replace(wxT("[MaxConnectionsPer5Val]"), sRefresh);
 
 	wxString colon(wxT(":"));
@@ -1729,29 +1751,23 @@ wxString CWebServer::_GetPreferences(ThreadData Data) {
 	Out.Replace(wxT("[aMuleAppName]"), wxT("aMule"));
 	Out.Replace(wxT("[Apply]"), _("Apply"));
 
-	sPreferences=sPreferences.Mid(brk+1); 
-	brk=sPreferences.First(wxT("\t"));
-	int n = StrToLong(sPreferences.Left(brk));
+	int n = connPrefs->GetTagByName(EC_TAG_CONN_MAX_DL)->GetInt16Data();
 	if (n < 0 || n == 65535) {
 		n = 0;
 	}
 	Out.Replace(wxT("[MaxDownVal]"), wxString::Format(wxT("%d"), n));
 	
-	sPreferences=sPreferences.Mid(brk+1); 
-	brk=sPreferences.First(wxT("\t"));
-	n = StrToLong(sPreferences.Left(brk));
+	n = connPrefs->GetTagByName(EC_TAG_CONN_MAX_UL)->GetInt16Data();
 	if (n < 0 || n == 65535)  {
 		n = 0;
 	}
 	Out.Replace(wxT("[MaxUpVal]"), wxString::Format(wxT("%d"), n));
 	
-	sPreferences=sPreferences.Mid(brk+1); 
-	brk=sPreferences.First(wxT("\t"));
-	Out.Replace(wxT("[MaxCapDownVal]"), sPreferences.Left(brk));
+	Out.Replace(wxT("[MaxCapDownVal]"), wxString::Format(wxT("%i"), connPrefs->GetTagByName(EC_TAG_CONN_DL_CAP)->GetInt32Data()));
 	
-	sPreferences=sPreferences.Mid(brk+1);
-	Out.Replace(wxT("[MaxCapUpVal]"), sPreferences);
+	Out.Replace(wxT("[MaxCapUpVal]"), wxString::Format(wxT("%i"), connPrefs->GetTagByName(EC_TAG_CONN_UL_CAP)->GetInt32Data()));
 
+	delete response;
 	return Out;
 }
 
@@ -1787,8 +1803,6 @@ wxString CWebServer::_GetConnectedServer(ThreadData Data) {
 
 	wxString sSession = _ParseURL(Data, wxT("ses"));
 
-	wxString HTTPTemp = wxEmptyString;
-	char	HTTPTempC[100] = "";
 	wxString OutS = pThis->m_Templates.sConnectedServer;
 	OutS.Replace(wxT("[ConnectedServer]"), _("Server"));
 	OutS.Replace(wxT("[Servername]"), _("Server name"));
@@ -1916,7 +1930,9 @@ bool CWebServer::_RemoveSession(ThreadData Data, long lSession) {
 	for (size_t i = 0; i < pThis->m_Params.Sessions.GetCount(); ++i) {
 		if (pThis->m_Params.Sessions[i]->lSession == lSession && lSession != 0) {
 			pThis->m_Params.Sessions.RemoveAt(i);
-			pThis->webInterface->SendRecvMsg(wxString::Format(wxT("LOG ADDLOGLINE %s"), _("Webserver: Logout")));
+			CECPacket req(EC_OP_ADDLOGLINE);
+			req.AddTag(CECTag(EC_TAG_STRING, wxString(_("Webserver: Logout"))));
+			pThis->Send_Discard_V2_Request(&req);
 			return true;
 		}
 	}
@@ -2080,11 +2096,15 @@ wxString CWebServer::_GetSearch(ThreadData Data) {
 	wxString result = pThis->m_Templates.sSearchHeader + pThis->webInterface->SendRecvMsg(wxString::Format(wxT("SEARCH WEBLIST %s\t%d\t%d"), pThis->m_Templates.sSearchResultLine.GetData(), pThis->m_iSearchSortby, pThis->m_bSearchAsc));
 	
 	// categoriesa
-	if (StrToLong(pThis->webInterface->SendRecvMsg(wxT("CATEGORIES GETCATCOUNT"))) > 1) {
-		InsertCatBox(pThis, Out, 0, pThis->m_Templates.sCatArrow);
+	CECPacket req(EC_OP_GET_PREFERENCES, EC_DETAIL_WEB);
+	req.AddTag(CECTag(EC_TAG_SELECT_PREFS, (uint32)EC_PREFS_CATEGORIES));
+	CECPacket *reply = pThis->webInterface->SendRecvMsg_v2(&req);
+	if ( reply->GetTagCount() ) { 	// if there are no categories, not even the EC_TAG_PREFS_CATEGORIES will be included :)
+		InsertCatBox(Out, 0, pThis->m_Templates.sCatArrow, reply->GetTagByIndex(0));
 	} else {
 		Out.Replace(wxT("[CATBOX]"),wxEmptyString);
 	}
+	delete reply;
 
 	Out.Replace(wxT("[SEARCHINFOMSG]"),wxEmptyString);
 	Out.Replace(wxT("[RESULTLIST]"), result);
@@ -2183,8 +2203,8 @@ wxString CWebServer::GetStatusBox(wxString &preselect)
 	return result;
 }
 
-void CWebServer::InsertCatBox(CWebServer *pThis, wxString &Out, int preselect, wxString boxlabel, bool jump, bool extraCats) {
-	wxString tempBuf, tempBuf2, tempBuf3;
+void CWebServer::InsertCatBox(wxString &Out, int preselect, wxString boxlabel, CECTag *cats, bool jump) {
+	wxString tempBuf;
 	wxString catTitle;
 	
 	tempBuf = wxT("<form><select name=\"cat\" size=\"1\"");
@@ -2196,17 +2216,13 @@ void CWebServer::InsertCatBox(CWebServer *pThis, wxString &Out, int preselect, w
 	}
 
 	// Construct the categories options string.
-	int catCount = StrToLong(pThis->webInterface->SendRecvMsg(wxT("CATEGORIES GETCATCOUNT")));
+	int catCount = cats->GetTagCount();
 	for (int i = 0; i < catCount; ++i) {
-		catTitle = pThis->webInterface->SendRecvMsg(wxString::Format(wxT("CATEGORIES GETCATTITLE %d"), i));
+		catTitle = cats->GetTagByIndex(i)->GetTagByName(EC_TAG_CATEGORY_TITLE)->GetStringData();
 		tempBuf += wxString() + 
 						wxT("<option") + ((i==preselect) ? wxT(" selected") : wxT(""))	+ 
 						wxString::Format(wxT(" value=\"%i\">"),i) + ((i==0) ? wxString(_("all")) : catTitle) + 
 						wxT("</option>");
-	}
-	
-	if (extraCats) {
-		// code moved to CWebServer::GetStatusBox
 	}
 	
 	Out.Replace(wxT("[CATBOX]"), boxlabel + tempBuf + wxT("</select></form>"));
