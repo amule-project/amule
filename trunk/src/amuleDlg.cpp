@@ -1015,9 +1015,6 @@ void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 		return;
 	}
 
-#warning BIG WARNING: FIX STATS ON MAC!
-#warning Can it be related to the fact we have two timers now?
-#warning I guess so - there MUST be a reason Tiku only added one.
 	if (msCur-msPrevHist > 1000) {
 		// unlike the other loop counters in this function this one will sometimes
 		// produce two calls in quick succession (if there was a gap of more than one
