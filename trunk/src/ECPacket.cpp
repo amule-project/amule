@@ -68,9 +68,9 @@ CECTag::CECTag(ec_tagname_t name, unsigned int length, const void *data, bool co
  * This function takes care of the endianness of the port number.
  *
  * @param name TAG name
- * @param data The EC_IPv4_t structure containing the IPv4 address.
+ * @param data The EC_IPv4_t class containing the IPv4 address.
  *
- * \sa GetIPv4Data()
+ * @see GetIPv4Data()
  */
 CECTag::CECTag(ec_tagname_t name, const EC_IPv4_t &data) : m_tagName(name), m_dynamic(true)
 {
@@ -79,7 +79,7 @@ CECTag::CECTag(ec_tagname_t name, const EC_IPv4_t &data) : m_tagName(name), m_dy
 	m_tagData = new EC_IPv4_t;
 	if (m_tagData != NULL) {
 		*((uint32 *)(((EC_IPv4_t *)m_tagData)->ip)) = *((uint32 *)(data.ip));
-		((EC_IPv4_t *)m_tagData)->port = ENDIAN_SWAP_16(data.port);
+		((EC_IPv4_t *)m_tagData)->port = htons(data.port);
 		m_error = 0;
 	} else {
 		m_error = 1;
@@ -94,7 +94,7 @@ CECTag::CECTag(ec_tagname_t name, const EC_IPv4_t &data) : m_tagName(name), m_dy
  * @param name TAG name
  * @param data wxString object, it's contents are converted to UTF-8.
  *
- * \sa GetStringData()
+ * @see GetStringData()
  */
 CECTag::CECTag(ec_tagname_t name, const wxString& data) : m_tagName(name), m_dynamic(true)
 {
@@ -175,7 +175,7 @@ CECTag::CECTag(const CECTag& tag) : m_tagName( tag.m_tagName ), m_dynamic( tag.m
  * @param name TAG name.
  * @param data uint8 number.
  *
- * \sa GetInt8Data()
+ * @see GetInt8Data()
  */
 CECTag::CECTag(ec_tagname_t name, uint8 data) : m_tagName(name), m_dynamic(true)
 {
@@ -199,14 +199,14 @@ CECTag::CECTag(ec_tagname_t name, uint8 data) : m_tagName(name), m_dynamic(true)
  * @param name TAG name.
  * @param data uint16 number.
  *
- * \sa GetInt16Data()
+ * @see GetInt16Data()
  */
 CECTag::CECTag(ec_tagname_t name, uint16 data) : m_tagName(name), m_dynamic(true)
 {
 	m_dataLen = 2;
 	m_tagData = malloc(m_dataLen);
 	if (m_tagData != NULL) {
-		*((uint16 *)m_tagData) = ENDIAN_SWAP_16(data);
+		*((uint16 *)m_tagData) = htons(data);
 		m_error = 0;
 	} else {
 		m_error = 1;
@@ -223,14 +223,14 @@ CECTag::CECTag(ec_tagname_t name, uint16 data) : m_tagName(name), m_dynamic(true
  * @param name TAG name.
  * @param data uint32 number.
  *
- * \sa GetInt32Data()
+ * @see GetInt32Data()
  */
 CECTag::CECTag(ec_tagname_t name, uint32 data) : m_tagName(name), m_dynamic(true)
 {
 	m_dataLen = 4;
 	m_tagData = malloc(m_dataLen);
 	if (m_tagData != NULL) {
-		*((uint32 *)m_tagData) = ENDIAN_SWAP_32(data);
+		*((uint32 *)m_tagData) = htonl(data);
 		m_error = 0;
 	} else {
 		m_error = 1;
@@ -479,20 +479,20 @@ uint32 CECTag::GetTagLen(void) const
 }
 
 /**
- * Returns a pointer to an EC_IPv4_t structure.
+ * Returns an EC_IPv4_t class.
  *
  * This function takes care of the enadianness of the port number.
  *
- * @return EC_IPv4_t structure.
+ * @return EC_IPv4_t class.
  *
- * \sa CECTag(ec_tagname_t, const EC_IPv4_t *)
+ * @see CECTag(ec_tagname_t, const EC_IPv4_t *)
  */
 EC_IPv4_t CECTag::GetIPv4Data(void) const
 {
 	EC_IPv4_t p;
 
 	*((uint32 *)(p.ip)) = *((uint32 *)(((EC_IPv4_t *)m_tagData)->ip));
-	p.port = ENDIAN_SWAP_16(((EC_IPv4_t *)m_tagData)->port);
+	p.port = ntohs(((EC_IPv4_t *)m_tagData)->port);
 
 	return p;
 }

@@ -2721,7 +2721,7 @@ CEC_Server_Tag::CEC_Server_Tag(CServer *server, EC_DETAIL_LEVEL detail_level) :
 				AddTag(CECTag(EC_TAG_SERVER_PING, tmpInt));
 			}
 			if ((tmpShort = (uint8)server->GetPreferences()) != SRV_PR_NORMAL) {
-				AddTag(CECTag(EC_TAG_SERVER_PREF, tmpShort));
+				AddTag(CECTag(EC_TAG_SERVER_PRIO, tmpShort));
 			}
 			if ((tmpShort = (uint8)server->GetFailedCount()) != 0) {
 				AddTag(CECTag(EC_TAG_SERVER_FAILED, tmpShort));
