@@ -134,6 +134,7 @@ public:
 	CKnownFile();
 #ifdef CLIENT_GUI
 	CKnownFile(CEC_SharedFile_Tag *);
+	friend class CSharedFilesRem;
 #endif
 
 	virtual ~CKnownFile();
