@@ -544,7 +544,7 @@ then
 	AC_DEFINE_UNQUOTED(CVSDATE, "`cat CVSDATE`", [The checkout date.])
 elif test -f "CVS/Entries" # CVSDATE for cvs
 then
-	cvsdate="$(echo `stat -c %y CVS/Entries` | sed s/.000000000//)"
+	cvsdate="$(stat -c %y CVS/Entries | sed -e 's#\..*##')"
 	test "$cvsdate" && AC_DEFINE_UNQUOTED(CVSDATE, "$cvsdate", [The checkout date.])
 fi
 
