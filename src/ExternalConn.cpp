@@ -37,14 +37,9 @@
 #include "server.h"		// Needed for CServer
 #include "ServerList.h"		// Needed for CServerList
 #include "SharedFileList.h"	// Needed for CSharedFileList
-#include "StatisticsDlg.h"	// Needed for CStatisticsDlg
-#include "ServerWnd.h"		// Needed for CServerWnd
-#include "muuli_wdr.h"		// Needed for ID_SERVERINFO
 #include "PartFile.h"		// Needed for CPartFile
 #include "sockets.h"		// Needed for CServerConnect
 #include "DownloadListCtrl.h"	// Needed for CDownloadListCtrl
-#include "TransferWnd.h"	// Needed for CTransferWnd
-#include "amuleDlg.h"		// Needed for CamuleDlg
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "amule.h"		// Needed for theApp
@@ -53,6 +48,13 @@
 #include "ClientList.h"
 #include "gsocket-fix.h"	// Needed for wxSOCKET_REUSEADDR
 
+#ifndef AMULE_DAEMON
+#include "StatisticsDlg.h"	// Needed for CStatisticsDlg
+#include "ServerWnd.h"		// Needed for CServerWnd
+#include "muuli_wdr.h"		// Needed for ID_SERVERINFO
+#include "TransferWnd.h"	// Needed for CTransferWnd
+#include "amuleDlg.h"		// Needed for CamuleDlg
+#endif
 
 enum
 {	// id for sockets
@@ -335,6 +337,9 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 		return buffer;
 	}
 	if (item == wxT("WEBPAGE STATISTICS")) {
+#ifdef AMULE_DAEMON
+		return wxT("FIXME: remove code from gui");
+#else
 		int filecount = theApp.downloadqueue->GetFileCount();
 		uint32 stats[2]; // get the source count
 		theApp.downloadqueue->GetDownloadStats(stats);
@@ -351,6 +356,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			theApp.uploadqueue->GetWaitingUserCount());
 		
 		return buffer;
+#endif
 	}
 	if (item == wxT("WEBPAGE GETPREFERENCES")) {
 		// returns one string formatted as:
@@ -390,6 +396,8 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			theApp.glob_prefs->SetMaxUpload( StrToLong(prefList.Left(brk)) );
 			prefList = prefList.Mid(brk+1); brk = prefList.First(wxT("\t"));
 			
+			// FIXME: this code must be moved away !
+#ifndef AMULE_DAEMON
 			if ((int32)StrToLong(prefList.Left(brk)) != theApp.glob_prefs->GetMaxGraphDownloadRate()) {
 				theApp.amuledlg->statisticswnd->SetARange(true, theApp.glob_prefs->GetMaxGraphDownloadRate());
 			}
@@ -399,6 +407,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			if ((int32)StrToLong(prefList.Left(brk)) != theApp.glob_prefs->GetMaxGraphUploadRate()) {
 				theApp.amuledlg->statisticswnd->SetARange(false, theApp.glob_prefs->GetMaxGraphUploadRate());
 			}
+#endif
 			theApp.glob_prefs->SetMaxGraphUploadRate( StrToLong(prefList.Left(brk)) );
 			prefList=prefList.Mid(brk+1); brk=prefList.First(wxT("\t"));
 				
@@ -519,9 +528,11 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			return wxEmptyString;
 		}
 		if (item.Left(16) == wxT("SERVER UPDATEMET")) {
+#ifndef AMULE_DAEMON
 			if (item.Length() > 16) {
 				theApp.amuledlg->serverwnd->UpdateServerMetFromURL(item.Mid(17));
 			}
+#endif
 			return wxEmptyString;
 		}
 		if (item == wxT("SERVER STAT")) {
@@ -1329,26 +1340,37 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 		
 		// STATISTICS
 		if (item.Left(10).Cmp(wxT("STATISTICS")) == 0) {
+#ifdef AMULE_DAEMON
+			return wxT("FIXME: remove code from gui");
+#else
 			if (item.Mid(11).Cmp(wxT("GETHTML")) == 0) {
 				return theApp.amuledlg->statisticswnd->GetHTML();
 			}
-			
+#endif			
 			if (item.Mid(11,11).Cmp(wxT("SETARANGEUL")) == 0) {
+#ifdef AMULE_DAEMON
+				return wxT("FIXME: move code away from here");
+#else
 				if ((item.Length() > 22) && item.Mid(23).IsNumber()) {
 					bool flag = StrToLong(item.Mid(23));
 					theApp.amuledlg->statisticswnd->SetARange(flag,theApp.glob_prefs->GetMaxGraphUploadRate());
 					return wxT("SetARangeUL Saved");
 				}
 				return wxT("Bad SETARANGE request");
+#endif
 			}
 
 			if (item.Mid(11,11).Cmp(wxT("SETARANGEDL")) == 0) {
+#ifdef AMULE_DAEMON
+				return wxT("FIXME: move code away from here");
+#else
 				if ((item.Length() > 22) && item.Mid(23).IsNumber()) {
 					bool flag = StrToLong(item.Mid(23));
 					theApp.amuledlg->statisticswnd->SetARange(flag,theApp.glob_prefs->GetMaxGraphDownloadRate());
 					return wxT("SetARangeDL Saved");
 				}
 				return wxT("Bad SETARANGE request");
+#endif
 			}
 
 			if (item.Mid(11).Cmp(wxT("GETTRAFFICOMETERINTERVAL")) == 0) {
@@ -1777,11 +1799,15 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			}
 			
 			if (item.Mid(7,9).Cmp(wxT("UPDATEMET")) == 0) {
+#ifdef AMULE_DAEMON
+				return wxT("Daemon cant do that");
+#else
 				if (item.Length() > 16) {
 					theApp.amuledlg->serverwnd->UpdateServerMetFromURL(item.Mid(17));
 					return wxT("Updated");
 				}
 				return wxT("Not Updated");
+#endif
 			}
 			
 			return wxT("Bad SERVER Request");
