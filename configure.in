@@ -1,6 +1,8 @@
 # Process this file with autoconf to produce a configure script.
 AC_INIT([aMule],[CVS],[deltahf@amule.org])
+AC_CANONICAL_TARGET
 AM_INIT_AUTOMAKE
+
 AC_CONFIG_SRCDIR([src/SharedFileList.h])
 AM_CONFIG_HEADER([config.h])
 AM_MAINTAINER_MODE
@@ -25,11 +27,9 @@ AC_CHECK_TOOL(AR, ar)
 AC_CHECK_TOOL(LD, ld)
 AC_CHECK_TOOL(WINDRES, windres)
 
-
 # Checks for gettext.
 AM_GNU_GETTEXT
 AM_GNU_GETTEXT_VERSION(0.11.5)
-
 
 # Checks for libraries.
 AM_OPTIONS_WXCONFIG
@@ -222,7 +222,7 @@ yes)	DEBUG_FLAGS="-Wall -g -ggdb -fno-inline -D__DEBUG__"
     ;;
 esac
 
-# System detection
+# System detection, need AC_CANONICAL_TARGET
 case "${target_os}" in
 "")
 	SYS=unknown
