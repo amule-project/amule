@@ -95,6 +95,13 @@ int alcc::OnRun ()
   return 0;
 }
 
+// On exit
+int
+alcc::OnExit()
+{
+  delete wxLog::SetActiveTarget(NULL);
+  return 0;
+}
 
 /// Parse command line
 void alcc::OnInitCmdLine(wxCmdLineParser& cmdline)
