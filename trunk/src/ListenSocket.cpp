@@ -2102,7 +2102,7 @@ void *CListenSocket::Entry()
 			OnAccept(0);
 		} else {
 			// lfroen - can't Yield from non-main thead
-			wxSleep(10);
+			wxThread::Sleep(10);
 		}
 	}
 	return 0;
