@@ -298,8 +298,8 @@ CHECK_WX_PARTIAL_VERSION
 
 if test x"$WX_PARTIAL_VERSION" = x"5"; then
   WX_VERSION="2_5"
-#dnl  systray=no
-#dnl  utf8_systray=no
+  systray=no
+  utf8_systray=no
 else
   WX_VERSION="any"
 fi
