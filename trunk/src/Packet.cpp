@@ -551,28 +551,22 @@ wxString CTag::GetFullInfo() const
 		strTag += _T('\"');
 	}
 	else{
-		strTag.Printf(_T("0x%02X"), tag.specialtag);
+		strTag = wxString::Format(wxT("0x%02X"), tag.specialtag);
 	}
-	strTag += _T("=");
+	strTag += wxT("=");
 	if (tag.type == 2){
-		strTag += _T("\"");
+		strTag += wxT("\"");
 		strTag += tag.stringvalue;
-		strTag += _T("\"");
+		strTag += wxT("\"");
 	}
 	else if (tag.type == 3){
-		TCHAR szBuff[16];
-		snprintf(szBuff, 10, "%i",tag.intvalue);
-		strTag += (char2unicode(szBuff));
+		strTag += wxString::Format(wxT("%i"),tag.intvalue);
 	}
 	else if (tag.type == 4){
-		TCHAR szBuff[16];
-		snprintf(szBuff, ELEMENT_COUNT(szBuff), "%f", tag.floatvalue);
-		strTag += (char2unicode(szBuff));
+		strTag += wxString::Format(wxT("%f"),tag.floatvalue);
 	}
 	else{
-		wxString strBuff;
-		strBuff.Printf(_T("Type=%u"), tag.type);
-		strTag += strBuff;
+		strTag += wxString::Format(wxT("Type=%u"), tag.type);
 	}
 	return strTag;
 }
