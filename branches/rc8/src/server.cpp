@@ -225,7 +225,7 @@ bool CServer::AddTagFromFile(CFile* servermet){
 		break;
 	case ST_AUXPORTSLIST:
 		if (tag->tag.type == 2)
-			m_auxPorts = tag->tag.stringvalue;
+			m_auxPorts = char2unicode(tag->tag.stringvalue);
 			realport = port;
 			port = atoi(unicode2char(m_auxPorts.BeforeFirst(',')));
 		delete tag;
