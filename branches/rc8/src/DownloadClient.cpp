@@ -260,7 +260,10 @@ void CUpDownClient::SendFileRequest()
 		// 26-Jul-2003: removed requesting the file status for files <= PARTSIZE for better compatibility with ed2k protocol (eDonkeyHybrid).
 		// if the remote client answers the OP_REQUESTFILENAME with OP_REQFILENAMEANSWER the file is shared by the remote client. if we
 		// know that the file is shared, we know also that the file is complete and don't need to request the file status.
-		if (m_reqfile->GetPartCount() > 1) {
+		
+		// Sending the packet could have deleted the client, check m_reqfile
+		
+		if (m_reqfile && (m_reqfile->GetPartCount() > 1)) {
 			CSafeMemFile dataSetReqFileID(16);
 			dataSetReqFileID.WriteHash16(m_reqfile->GetFileHash());
 			packet = new Packet(&dataSetReqFileID);
@@ -273,7 +276,10 @@ void CUpDownClient::SendFileRequest()
 			SetRemoteQueueFull( true );
 			SetRemoteQueueRank(0);
 		}	
-		if(IsSourceRequestAllowed()) {
+		
+		// Sending the packet could have deleted the client, check m_reqfile
+		
+		if(IsSourceRequestAllowed() && m_reqfile) {
 			m_reqfile->SetLastAnsweredTimeTimeout();
 			Packet* packet = new Packet(OP_REQUESTSOURCES,16,OP_EMULEPROT);
 			packet->Copy16ToDataBuffer((const char *)m_reqfile->GetFileHash().GetHash());
@@ -281,7 +287,10 @@ void CUpDownClient::SendFileRequest()
 			SendPacket(packet,true,true);
 			SetLastAskedForSources();
 		}
-		if (IsSupportingAICH()){
+		
+		// Sending the packet could have deleted the client, check m_reqfile
+		
+		if (IsSupportingAICH() && m_reqfile){
 			Packet* packet = new Packet(OP_AICHFILEHASHREQ,16,OP_EMULEPROT);
 			packet->Copy16ToDataBuffer((const char *)m_reqfile->GetFileHash().GetHash());
 			SendPacket(packet,true,true);
