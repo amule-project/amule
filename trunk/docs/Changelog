@@ -7,6 +7,58 @@ Version 2.0.0rc4 - The 'Target: REAL Stability' version.
 		* updated italian and napoletanean translations
 		* fixed unicode issues in serverlist updates and download tab
 
+			
+	Xaignar:
+		* Merged lists used to identify file-types to avoid duplicity.
+		* Added wrapper-class around MD4 hashes.
+		  * Fixed a number of places where the hashes where used as NULL-terminated strings, despite
+		    them not having a NULL-terminator.
+		  * Most functions using hashes now use the MD4 wrapper class for arguments.
+		* Fixed rare possibility of ending with an unclosed file in CServerListCtrl.
+		* Fixed unsafe parsing of OP_SERVERIDENT type packets.
+		* Fixed unsafe passing of strings as arguments to functions using format-strings.
+		* Changed the chat-dialogs to textctrls, which means that it is now possible to copy text (the unix way) by highlighting it.
+		* Fixed some mem-leaks.
+		* Fixed "&"s not being escaped on status-bar.
+		* Fixed incorrect source exchange packet format (Many thanks to the eMule Plus team for reporting).
+		* Started to document source-files with a Doxygen compatible comment format.
+		* Fixed the height of the barshaders used on the download list, it was 2 pixels too high, resulting in a slight cutoff.
+		* Reducing CPU-usage of auto-priority by not forcing a redraw every time the priority was automatically changed.
+		* Fixed that some overloaded functions hadn't been declared virtual in the base class.
+		* Replaced gif-animation widget with something more lightweight.
+		* Added sainity checks to CMemFile::Read.
+		* Fixed a number of uninitialized variables.
+		* Fixed several warnings about non-existing files.
+		* Fixes warning about not being able to create dir "" on first run.
+		* Changed "Extended Drop Sources" preferences, with the result that the option will be reset to "Swap Sources" when this version of aMule is first run.
+		* Got rid of most warnings when compiling.
+		* Lots of work on getting rid of c-strings.
+		* Fixed bug that would cause deleted sources not to be removed from the A4AF lists. This was a major source of crashes.
+		* Improved performance and safety of the source lists used with PartFiles.
+		* Lots of small imports from eMule.
+		* Made reqfile attribute of CUpDownClient private and added wrapper functions to fix the avilable-part information getting out of sync.
+		* Cleanup of includes.
+		* Fixed that we were always sending an OP_REASKACK packet and then the correct packet when recieving an OP_REASKFILEPING.
+		* Fixed Bug 45: URLs are now properly escaped when opening browsers for Fake-check and such.
+		* Fixed Bug 62: aMule will now be brought to front when left-clicking on the tray icon and when it is redisplayed after having been hidden.
+		* Added checks against aggressive clients (clients who reask for files too often).
+		* Imported checks for known leech-clients from the BlackRat eMule mod ( Many thanks to Le Rat Noir and inoteb for allowing us to use their work ).
+		* Removed the following files:
+		  * ini2.*
+		  * CString.h
+		  * mfc.h
+		  * position.h
+		* Cleaned up the following files:
+		  * CTypedPtrList.h
+		  * BarShader.*
+		* Many other smaller changes.
+	
+	
+	Special thanks to:
+		* Le Rat Noir and Inoteb of the BlackRat eMule mod (http://www.blackrat.fr.tc/) for allowing us to make use of their work on detecting bad clients.
+		* Optimazer and the eMule Plus team for reporting a bug in source-exchange packets.
+
+		
 Version 2.0.0rc3 - The 'Target: Stability' version.
 -------------
 2004-04-22
