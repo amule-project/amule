@@ -294,6 +294,7 @@ bool CamuleApp::OnInit()
 	// Handle these arguments.
 	cmdline.AddSwitch(wxT("v"), wxT("version"), wxT("Displays the current version number."));
 	cmdline.AddSwitch(wxT("h"), wxT("help"), wxT("Displays this information."));
+	cmdline.AddSwitch(wxT("i"), wxT("enable-stdin"), wxT("Does not disable stdin."));
 	cmdline.AddOption(wxT("geometry"), wxT(""), wxT("Sets the geometry of the app.\n\t\t\t<str> uses the same format as standard X11 apps:\n\t\t\t[=][<width>{xX}<height>][{+-}<xoffset>{+-}<yoffset>]"));
 	cmdline.Parse();
 
@@ -424,7 +425,9 @@ bool CamuleApp::OnInit()
 
 
 	// Close standard-input
-	close(0);
+	if ( !cmdline.Found(wxT("enable-stdin")) ) {
+		close(0);
+	}
 
 	/* If no aMule configuration files exist, see if either lmule or xmule config
 	   exists, so that we can use those. */
