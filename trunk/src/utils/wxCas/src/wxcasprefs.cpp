@@ -66,17 +66,20 @@ WxCasPrefs::WxCasPrefs (wxWindow * parent):wxDialog (parent, -1,
     new wxStaticBox (this, -1, _("Directory containing amulesig.dat file"));
   m_osPathSBoxSizer = new wxStaticBoxSizer (m_osPathSBox, wxHORIZONTAL);
 
-
   m_osPathTextCtrl = new wxTextCtrl (this, -1, wxEmptyString);
   m_osPathBrowseButton =
     new wxButton (this, ID_OSPATH_BROWSE_BUTTON, wxString (_("Browse")));
 
   wxString str;
-  wxInt32 x, y;
+
   prefs->Read (WxCasCte::AMULESIG_DIR_KEY, &str,
                WxCasCte::DEFAULT_AMULESIG_PATH);
-  m_osPathTextCtrl->GetTextExtent (wxT("8"), &x, &y);
-  m_osPathTextCtrl->SetSize (wxSize (x * (str.Length () + 1), -1));
+
+  // Text extent
+  wxInt32 charExtent, y;
+  m_osPathTextCtrl->GetTextExtent (wxT("8"), &charExtent, &y);
+  m_osPathTextCtrl->SetSize (wxSize (charExtent * (str.Length () + 1), -1));
+
   m_osPathTextCtrl->SetValue (str);
   m_osPathTextCtrl->
   SetToolTip (_
@@ -99,7 +102,7 @@ WxCasPrefs::WxCasPrefs (wxWindow * parent):wxDialog (parent, -1,
                                  Read (WxCasCte::REFRESH_RATE_KEY,
                                        WxCasCte::DEFAULT_REFRESH_RATE));
   m_refreshStaticText =
-    new wxStaticText (this, -1, _("Refresh rate interval"), wxDefaultPosition,
+    new wxStaticText (this, -1, _("Refresh rate interval in seconds"), wxDefaultPosition,
                       wxDefaultSize, wxALIGN_CENTRE);
   m_refreshSBoxSizer->Add (m_refreshSpinButton, 0, wxALL | wxALIGN_CENTER, 5);
   m_refreshSBoxSizer->Add (m_refreshStaticText, 1, wxALL | wxALIGN_CENTER, 5);
@@ -113,10 +116,9 @@ WxCasPrefs::WxCasPrefs (wxWindow * parent):wxDialog (parent, -1,
     new wxStaticBoxSizer (m_autoStatImgSBox, wxVERTICAL);
 
   m_autoStatImgCheck =
-    new wxCheckBox (this, ID_AUTOSTATIMG_RADIO,
+    new wxCheckBox (this, ID_AUTOSTATIMG_CHECK,
                     _
-                    ("Generate a stat image at every refresh event (Eat CPU)"),
-                    wxDefaultPosition, wxDefaultSize, wxRB_SINGLE);
+                    ("Generate a stat image at every refresh event"));
   m_autoStatImgSBoxSizer->Add (m_autoStatImgCheck, 0,
                                wxGROW | wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
@@ -133,7 +135,6 @@ WxCasPrefs::WxCasPrefs (wxWindow * parent):wxDialog (parent, -1,
                           WxCasCte::DEFAULT_AUTOSTATIMG_TYPE),
                     wxDefaultPosition, wxDefaultSize, 3, strs,
                     wxCB_DROPDOWN | wxCB_READONLY);
-  m_autoStatImgCombo->Enable (FALSE);
 
   m_autoStatImgTextCtrl = new wxTextCtrl (this, -1, wxEmptyString);
   m_autoStatImgTextCtrl->SetValue (prefs->
@@ -142,11 +143,9 @@ WxCasPrefs::WxCasPrefs (wxWindow * parent):wxDialog (parent, -1,
   m_autoStatImgTextCtrl->
   SetToolTip (_
               ("Enter here the directory where you want to generate the statistic image"));
-  m_autoStatImgTextCtrl->Enable (FALSE);
 
   m_autoStatImgButton =
     new wxButton (this, ID_AUTOSTATIMG_BROWSE_BUTTON, wxString (_("Browse")));
-  m_autoStatImgButton->Enable (FALSE);
 
   m_autoStatImgHBoxSizer->Add (m_autoStatImgCombo, 0, wxALIGN_CENTER | wxALL,
                                5);
@@ -161,15 +160,142 @@ WxCasPrefs::WxCasPrefs (wxWindow * parent):wxDialog (parent, -1,
   m_mainVBox->Add (m_autoStatImgSBoxSizer, 0, wxGROW | wxALIGN_CENTER | wxALL,
                    5);
 
+  // Auto FTP update stat image
+  m_ftpUpdateSBox = new wxStaticBox (this, -1, wxEmptyString);
+  m_ftpUpdateSBoxSizer =
+    new wxStaticBoxSizer (m_ftpUpdateSBox, wxVERTICAL);
+
+  // Check
+  m_ftpUpdateCheck =
+    new wxCheckBox (this, ID_FTP_UPDATE_CHECK,
+                    _
+                    ("Upload periodicaly your stat image to FTP server"));
+  m_ftpUpdateSBoxSizer->Add (m_ftpUpdateCheck, 0,
+                             wxGROW | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+
+  // Grid size
+  m_ftpUpdateGridSizer = new wxGridSizer(2);
+
+  // FTP Static text
+  m_ftpUrlStaticText = new wxStaticText (this, -1, _("FTP Url"));
+  m_ftpUpdateGridSizer->Add (m_ftpUrlStaticText, 1,
+                             wxALIGN_LEFT | wxALIGN_BOTTOM | wxALL, 5);
+
+  m_ftpPathStaticText = new wxStaticText (this, -1, _("FTP Path"));
+  m_ftpUpdateGridSizer->Add (m_ftpPathStaticText, 1,
+                             wxALIGN_LEFT | wxALIGN_BOTTOM | wxALL, 5);
+  // Url
+  m_ftpUrlTextCtrl = new wxTextCtrl (this, -1, wxEmptyString);
+  m_ftpUrlTextCtrl->SetValue (prefs->
+                              Read (WxCasCte::FTP_URL_KEY,
+                                    WxCasCte::DEFAULT_FTP_URL));
+  m_ftpUrlTextCtrl->
+  SetToolTip (_
+              ("Enter here the URL of your FTP server"));
+
+  m_ftpUpdateGridSizer->Add (m_ftpUrlTextCtrl, 1,
+                             wxGROW | wxALIGN_LEFT | wxALIGN_TOP | wxALL, 5);
+
+  // Path
+  m_ftpPathTextCtrl = new wxTextCtrl (this, -1, wxEmptyString);
+  m_ftpPathTextCtrl->SetValue (prefs->
+                               Read (WxCasCte::FTP_PATH_KEY,
+                                     WxCasCte::DEFAULT_FTP_PATH));
+  m_ftpPathTextCtrl->
+  SetToolTip (_
+              ("Enter here the directory where putting your stat image on FTP server"));
+
+  m_ftpUpdateGridSizer->Add (m_ftpPathTextCtrl, 1,
+                             wxGROW | wxALIGN_LEFT | wxALIGN_TOP | wxALL, 5);
+
+  // Login Static text
+  m_ftpUserStaticText = new wxStaticText (this, -1, _("User"));
+  m_ftpUpdateGridSizer->Add (m_ftpUserStaticText, 1,
+                             wxALIGN_LEFT | wxALIGN_BOTTOM | wxALL, 5);
+
+  m_ftpPasswdStaticText = new wxStaticText (this, -1, _("Password"));
+  m_ftpUpdateGridSizer->Add (m_ftpPasswdStaticText, 1,
+                             wxALIGN_LEFT | wxALIGN_BOTTOM | wxALL, 5);
+
+  // User
+  m_ftpUserTextCtrl = new wxTextCtrl (this, -1, wxEmptyString);
+  m_ftpUserTextCtrl->SetValue (prefs->
+                               Read (WxCasCte::FTP_USER_KEY,
+                                     WxCasCte::DEFAULT_FTP_USER));
+  m_ftpUserTextCtrl->
+  SetToolTip (_
+              ("Enter here the User name to log into your FTP server"));
+
+  m_ftpUpdateGridSizer->Add (m_ftpUserTextCtrl, 1,
+                             wxGROW | wxALIGN_LEFT | wxALIGN_TOP | wxALL, 5);
+
+  // Passwd
+  m_ftpPasswdTextCtrl = new wxTextCtrl (this, -1, wxEmptyString,wxDefaultPosition,wxDefaultSize,wxTE_PASSWORD );
+  m_ftpPasswdTextCtrl->SetValue (prefs->
+                                 Read (WxCasCte::FTP_PASSWD_KEY,
+                                       WxCasCte::DEFAULT_FTP_PASSWD));
+  m_ftpPasswdTextCtrl->
+  SetToolTip (_
+              ("Enter here the User password to log into your FTP server"));
+
+  m_ftpUpdateGridSizer->Add (m_ftpPasswdTextCtrl, 1,
+                             wxGROW | wxALIGN_LEFT | wxALIGN_TOP | wxALL, 5);
+
+
+  // Add to static sizer
+  m_ftpUpdateSBoxSizer->Add (m_ftpUpdateGridSizer, 1,
+                             wxGROW | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+
+  // Upload rate
+  m_ftpRateHBoxSizer = new wxBoxSizer(wxHORIZONTAL);
+  m_ftpUpdateSpinButton = new wxSpinCtrl (this, -1);
+  m_ftpUpdateSpinButton->SetRange (WxCasCte::MIN_FTP_RATE,
+                                   WxCasCte::MAX_FTP_RATE);
+  m_ftpUpdateSpinButton->SetValue (prefs->
+                                   Read (WxCasCte::FTP_UPDATE_RATE_KEY,
+                                         WxCasCte::DEFAULT_FTP_UPDATE_RATE));
+  m_ftpUpdateStaticText =
+    new wxStaticText (this, -1, _("FTP update rate interval in minutes"), wxDefaultPosition,
+                      wxDefaultSize, wxALIGN_CENTRE);
+  m_ftpRateHBoxSizer->Add (m_ftpUpdateSpinButton, 0, wxALL | wxALIGN_CENTER, 5);
+  m_ftpRateHBoxSizer->Add (m_ftpUpdateStaticText, 1, wxALL | wxALIGN_CENTER, 5);
+
+  m_ftpUpdateSBoxSizer->Add (m_ftpRateHBoxSizer, 0,
+                             wxGROW | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+
+  // Add to main sizer
+  m_mainVBox->Add (m_ftpUpdateSBoxSizer, 0, wxGROW | wxALIGN_CENTER | wxALL,
+                   5);
+
+  // Mask auto stat img disabled controls
   if ((bool)
       (prefs->
        Read (WxCasCte::ENABLE_AUTOSTATIMG_KEY,
              WxCasCte::DEFAULT_AUTOSTATIMG_ISENABLED)))
     {
-      m_autoStatImgTextCtrl->Enable (TRUE);
-      m_autoStatImgButton->Enable (TRUE);
-      m_autoStatImgCombo->Enable (TRUE);
-      m_autoStatImgCheck->SetValue (TRUE);
+      m_autoStatImgCheck->SetValue(TRUE);
+    }
+  else
+    {
+      m_autoStatImgCheck->SetValue (FALSE);
+      EnableAutoStatImgCtrls(FALSE);
+
+      m_ftpUpdateCheck->Enable (FALSE);
+      EnableFtpUpdateCtrls(FALSE);
+    }
+
+  // Mask Ftp update disabled controls
+  if ((bool)
+      (prefs->
+       Read (WxCasCte::ENABLE_FTP_UPDATE_KEY,
+             WxCasCte::DEFAULT_FTP_UPDATE_ISENABLED)))
+    {
+      m_ftpUpdateCheck->SetValue(TRUE);
+    }
+  else
+    {
+      m_ftpUpdateCheck->SetValue (FALSE);
+      EnableFtpUpdateCtrls(FALSE);
     }
 
   // Separator line
@@ -206,7 +332,8 @@ EVT_BUTTON (ID_OSPATH_BROWSE_BUTTON, WxCasPrefs::OnOSPathBrowseButton)
 EVT_BUTTON (ID_AUTOSTATIMG_BROWSE_BUTTON, WxCasPrefs::OnAutoStatImgBrowseButton)
 EVT_BUTTON (ID_VALIDATE_BUTTON, WxCasPrefs::OnValidateButton)
 EVT_BUTTON (ID_CANCEL_BUTTON, WxCasPrefs::OnCancel)	// Defined in wxDialog
-EVT_CHECKBOX (ID_AUTOSTATIMG_RADIO, WxCasPrefs::OnAutoStatImgRadio)
+EVT_CHECKBOX (ID_AUTOSTATIMG_CHECK, WxCasPrefs::OnAutoStatImgCheck)
+EVT_CHECKBOX (ID_FTP_UPDATE_CHECK, WxCasPrefs::OnFtpUpdateCheck)
 END_EVENT_TABLE ()
 
 // Browse for OS Path
@@ -236,26 +363,42 @@ WxCasPrefs::OnAutoStatImgBrowseButton (wxCommandEvent & event)
     }
 }
 
-// Auto Generate Stat Image
+// Auto Generate Stat Image Check Button
 void
-WxCasPrefs::OnAutoStatImgRadio (wxCommandEvent & event)
+WxCasPrefs::OnAutoStatImgCheck (wxCommandEvent & event)
 {
-  if (m_autoStatImgTextCtrl->IsEnabled ())
+  if (m_autoStatImgCheck->GetValue ())
     {
-      m_autoStatImgTextCtrl->Enable (FALSE);
-      m_autoStatImgButton->Enable (FALSE);
-      m_autoStatImgCombo->Enable (FALSE);
-      m_autoStatImgCheck->SetValue (FALSE);
+      EnableAutoStatImgCtrls(TRUE);
+
+      m_ftpUpdateCheck->Enable (TRUE);
+      if(m_ftpUpdateCheck->GetValue ())
+        {
+          EnableFtpUpdateCtrls(TRUE);
+        }
     }
   else
     {
-      m_autoStatImgTextCtrl->Enable (TRUE);
-      m_autoStatImgButton->Enable (TRUE);
-      m_autoStatImgCombo->Enable (TRUE);
-      m_autoStatImgCheck->SetValue (TRUE);
+      EnableAutoStatImgCtrls(FALSE);
+
+      m_ftpUpdateCheck->Enable (FALSE);
+      EnableFtpUpdateCtrls(FALSE);
     }
 }
 
+// Ftp update Check Button
+void
+WxCasPrefs::OnFtpUpdateCheck (wxCommandEvent & event)
+{
+  if (m_ftpUpdateCheck->GetValue ())
+    {
+      EnableFtpUpdateCtrls(TRUE);
+    }
+  else
+    {
+      EnableFtpUpdateCtrls(FALSE);
+    }
+}
 // Validate Prefs
 void
 WxCasPrefs::OnValidateButton (wxCommandEvent & event)
@@ -278,8 +421,54 @@ WxCasPrefs::OnValidateButton (wxCommandEvent & event)
 
       prefs->Write (WxCasCte::AUTOSTATIMG_TYPE_KEY,
                     m_autoStatImgCombo->GetValue ());
+
+      prefs->Write (WxCasCte::ENABLE_FTP_UPDATE_KEY,
+                    m_ftpUpdateCheck->GetValue ());
+
+      if (m_ftpUpdateCheck->GetValue ())
+        {
+          prefs->Write (WxCasCte::FTP_UPDATE_RATE_KEY,
+                        m_ftpUpdateSpinButton->GetValue ());
+
+          prefs->Write (WxCasCte::FTP_URL_KEY,
+                        m_ftpUrlTextCtrl->GetValue ());
+
+          prefs->Write (WxCasCte::FTP_PATH_KEY,
+                        m_ftpPathTextCtrl->GetValue ());
+
+          prefs->Write (WxCasCte::FTP_USER_KEY,
+                        m_ftpUserTextCtrl->GetValue ());
+
+          prefs->Write (WxCasCte::FTP_PASSWD_KEY,
+                        m_ftpPasswdTextCtrl->GetValue ());
+        }
     }
 
   // Close window
   this->EndModal (this->GetReturnCode ());
+}
+
+// Enable/Disable auto img ctrls
+void
+WxCasPrefs::EnableAutoStatImgCtrls(bool state)
+{
+  m_autoStatImgTextCtrl->Enable (state);
+  m_autoStatImgButton->Enable (state);
+  m_autoStatImgCombo->Enable (state);
+}
+
+// Enable/Disable Ftp update ctrls
+void
+WxCasPrefs::EnableFtpUpdateCtrls(bool state)
+{
+  m_ftpUpdateSpinButton->Enable (state);
+  m_ftpUpdateStaticText->Enable (state);
+  m_ftpUrlTextCtrl->Enable (state);
+  m_ftpUrlStaticText->Enable (state);
+  m_ftpPathTextCtrl->Enable (state);
+  m_ftpPathStaticText->Enable (state);
+  m_ftpUserTextCtrl->Enable (state);
+  m_ftpUserStaticText->Enable (state);
+  m_ftpPasswdTextCtrl->Enable (state);
+  m_ftpPasswdStaticText->Enable (state);
 }
