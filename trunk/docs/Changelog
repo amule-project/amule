@@ -189,8 +189,12 @@ Version 2.0.0-rc1 - The 'Mules and Rabbits love carrots' version.
 		* Fixed ECSocket compilation with gcc < 3.3
 		* Fixed segfault on close.
 		* Some other fixes
+
+	Citroklar:
+		* External Connections are now only done when configuration tells us so (thanks to tonar from #amule)
+		* crypto++ detection fix
 		
-	aquatroll:
+ 	aquatroll:
 	        * Win32 compilation Support & Development.
 		
 	hellimod, PowerMike, godard, hoschy007:
