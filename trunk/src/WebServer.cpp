@@ -220,7 +220,7 @@ void CWebServer::StopServer(void) {
 
 //returns web server listening port
 int CWebServer::GetWSPort(void) {
-	wxString msg = webInterface->SendRecvMsg(unicode2char(wxT("PREFERENCES GETWSPORT")));
+	wxString msg = webInterface->SendRecvMsg(wxT("PREFERENCES GETWSPORT"));
 	long i;
 	msg.ToLong(&i);
 	
