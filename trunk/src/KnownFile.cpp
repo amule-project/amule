@@ -948,8 +948,5 @@ void CKnownFile::UpdatePartsInfo()
 		m_nCompleteSourcesTime = time(NULL) + (60);
 	}
 	
-	GUIEvent event(SHAREDFILES_UPDATEITEM);
-	event.ptr_value = this;
-	theApp.NotifyEvent(event);
-		
+	Notify_SharedFilesUpdateItem(this);
 }

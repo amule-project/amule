@@ -303,7 +303,12 @@ void CSearchListCtrl::ShowResults(long nResultsID)
 {
 	DeleteAllItems();
 	m_nResultsID = nResultsID;
-	searchlist->ShowResults(m_nResultsID);
+	//searchlist->ShowResults(m_nResultsID);
+	for (POSITION pos = searchlist->list.GetHeadPosition(); pos != 0; searchlist->list.GetNext(pos)) {
+		if ( ((CSearchFile*)searchlist->list.GetAt(pos))->GetSearchID() == m_nResultsID) {
+			AddResult(searchlist->list.GetAt(pos));
+		}
+	}
 }
 
 int CSearchListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)

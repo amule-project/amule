@@ -48,7 +48,6 @@ public:
 	void	SendListToServer();
 	void 	Reload(bool sendtoserver = true, bool firstload = false);
 	void	SafeAddKFile(CKnownFile* toadd, bool bOnlyAdd = false);
-	void	SetOutputCtrl(CSharedFilesCtrl* in_ctrl);
 	void	RemoveFile(CKnownFile* toremove);
 	wxMutex	list_mut;
 	CKnownFile*	GetFileByID(const CMD4Hash& filehash);
@@ -70,7 +69,6 @@ private:
 	CKnownFileMap		m_Files_map;
 	CPreferences*		app_prefs;
 	CServerConnect*		server;
-	CSharedFilesCtrl*	output;
 };
 
 #endif // SHAREDFILELIST_H

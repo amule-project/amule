@@ -37,7 +37,13 @@ enum GUI_Event_ID {
 	QLIST_CTRL_RM_CLIENT,
 	QLIST_CTRL_REFRESH_CLIENT,
 	// shared files
-	SHAREDFILES_UPDATEITEM,
+	SHAREDFILES_UPDATE_ITEM,
+	SHAREDFILES_REMOVE_ITEM,
+	SHAREDFILES_REMOVE_ALL_ITEMS,
+	SHAREDFILES_SHOW_ITEM,
+	SHAREDFILES_SHOW_ITEM_LIST,
+	SHAREDFILES_INIT_SORT,
+	
 	// download control
 	DOWNLOAD_CTRL_UPDATEITEM,
 	DOWNLOAD_CTRL_ADD_FILE,
@@ -216,8 +222,12 @@ class GUIEvent {
 #define Notify_2_ValEvent(id, val0, val1) theApp.NotifyEvent(GUIEvent(id, val0, val1))
 #define Notify_3_ValEvent(id, val0, val1, val2) theApp.NotifyEvent(GUIEvent(id, val0, val1, val2))
 
-
-#define Notify_SharedFilesUpdateItem(ptr)           Notify_1_ValEvent(SHAREDFILES_UPDATEITEM, ptr)
+#define Notify_SharedFilesShowFile(file)            Notify_1_ValEvent(SHAREDFILES_SHOW_ITEM, file)
+#define Notify_SharedFilesRemoveFile(file)          Notify_1_ValEvent(SHAREDFILES_REMOVE_ITEM, file)
+#define Notify_SharedFilesRemoveAllItems()          Notify_0_ValEvent(SHAREDFILES_REMOVE_ALL_ITEMS)
+#define Notify_SharedFilesShowFileList(list)        Notify_1_ValEvent(SHAREDFILES_SHOW_ITEM_LIST, list)
+#define Notify_SharedFilesInitSort()                Notify_0_ValEvent(SHAREDFILES_INIT_SORT)
+#define Notify_SharedFilesUpdateItem(ptr)           Notify_1_ValEvent(SHAREDFILES_UPDATE_ITEM, ptr)
 
 // download ctrl
 #define Notify_DownloadCtrlUpdateItem(ptr)          Notify_1_ValEvent(DOWNLOAD_CTRL_UPDATEITEM, ptr)
