@@ -434,6 +434,14 @@ off_t CFile::Length() const
     else
         return (off_t)iRc;
 }
+bool CFile::SetLength(off_t new_len) {
+
+	#ifdef __WXMSW__
+	chsize(this->fd(), new_len);
+	#else
+	ftruncate(this->fd(), new_len);
+	#endif
+}	
 
 // is end of file reached?
 bool CFile::Eof() const
