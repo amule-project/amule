@@ -48,11 +48,13 @@
 // No more Mod Version unless we're cvs
 
 // RELEASERS: REMOVE THE DEFINE ON THE RELEASES, PLEASE
+// AND FIX THE MOD_VERSION_LONG
+
 #define __CVS__
 
 #ifdef __CVS__
 	#define	MOD_VERSION_LONG				"aMule 2.0.0 CVS"
-	#define	MOD_VERSION_SHORT				"aMule CVS"
+	#define	MOD_VERSION_SHORT				"CVS"
 #else
 	#define	MOD_VERSION_LONG				"aMule 2.0.0-rc3"
 	#define	MOD_VERSION_SHORT				"Would Never Happen" // Really!
