@@ -199,6 +199,8 @@ CamuleApp::CamuleApp()
 	sTransferDelay = 0.0;
 	m_ilastMaxConnReached = 0;
 	
+	webserver_pid = 0;
+	
 	// Apprently needed for *BSD
 	SetResourceLimits();
 	InitStatsTree();
@@ -307,7 +309,15 @@ int CamuleApp::OnExit()
 	
 	// Save IPFilter file.
 	ipfilter->SaveToFile();
-
+	
+	// Kill amuleweb if running
+	if (webserver_pid) {
+		wxKillError rc;
+		printf("Killing amuleweb instance...\n");
+		wxKill(webserver_pid,wxSIGTERM, &rc);
+		printf("Killed!\n");
+	}
+	
 	// Return 0 for succesful program termination
 	return AMULE_APP_BASE::OnExit();
 }
@@ -668,6 +678,14 @@ bool CamuleApp::OnInit()
 		theApp.serverconnect->ConnectToAnyServer();
 	}
 	
+	// Run webserver?
+	if (thePrefs::GetWSIsEnabled()) {
+		webserver_pid = wxExecute(wxString::Format(wxT("amuleweb -f -p %d"),thePrefs::GetWSPort()));
+		if (!webserver_pid) {
+			AddLogLineM(false, _("You requested to run webserver from startup, but the amuleweb binnary cannot be run. Please install the package containing aMule webserver, or compile aMule using --enable-amule-webserver and run make install"));
+		}
+	}
+ 		
 	return true;
 }
 
