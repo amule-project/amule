@@ -38,7 +38,7 @@
 #endif
 
 // Switch between themes (select just one of them)
-//#define WANT_KDE_THEME 1
+#define WANT_KDE_THEME 1
 
 class AlcPix
   {
