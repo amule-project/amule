@@ -71,6 +71,10 @@ Version 2.0.0
 		* Check if we're able to use TCP ports (lacks what todo if not but we
 		  can accept EC. do nothing atm = EC disabled).
 		  Added "AMULEDLG SHOW" to EC available commands.
+        * WebServer now use the more correct _("") for localized strings
+        * Created WebInterface.{h,cpp} for the web interface, and
+          cleaned WebServer.{h,cpp} code.
+                          
 		
 	neiro:
 		* Helped with OpenBSD port by providing a workbench
