@@ -1496,6 +1496,10 @@ void CUpDownClient::ReGetClientSoft()
 				m_clientSoft = SO_LPHANT;
 				m_clientVerString = wxT("lphant");
 				break;
+			case SO_EMULEPLUS:
+				m_clientSoft = SO_EMULE;
+				m_clientVerString = wxT("eMule+");
+				break;
 			case SO_HYDRANODE:
 				m_clientSoft = SO_HYDRANODE;
 				m_clientVerString = wxT("HydraNode");
