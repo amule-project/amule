@@ -29,7 +29,6 @@
 #include <map>			// Needed for std::map
 
 struct IPRange_Struct {
-	uint32		IPStart;
 	uint32		IPEnd;
 	uint8		AccessLevel;
 	wxString	Description;
