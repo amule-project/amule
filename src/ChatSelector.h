@@ -42,6 +42,9 @@ class CFriend;
 class CDlgFriend;
 
 
+/**
+ * This class is used to display chat sessions.
+ */
 class CChatSession : public CMuleTextCtrl
 {
 public:
@@ -49,9 +52,20 @@ public:
 	~CChatSession();
 
 	uint64	m_client_id;
-	bool			m_active;
+	bool	m_active;
 	
-	void AddText( const wxString& text, const wxTextAttr& style );
+	/**
+	 * Appends the specified text.
+	 *
+	 * @param text The text to add.
+	 * @param style The style of the new text.
+	 * @param newline If a newline should be added to the end of the line.
+	 *
+	 * If newline is false, then no newlines will be at the end of added text,
+	 * even if the passed string ends with newlines. Multiline strings are
+	 * broken into indivudual lines and each are timestamped with the same date.
+	 */
+	void AddText( const wxString& text, const wxTextAttr& style, bool newline = true );
 };
 
 
