@@ -478,6 +478,7 @@ class CSearchListRem : public CRemoteContainer<CSearchFile, CMD4Hash, CEC_Search
 	public:
 		CSearchListRem(CRemoteConnect *);
 		
+		uint32 m_curr_search;
 		std::map<long, std::vector<CSearchFile *> > m_Results;
 		//
 		// Actions
@@ -488,6 +489,14 @@ class CSearchListRem : public CRemoteContainer<CSearchFile, CMD4Hash, CEC_Search
 			wxString& typeText, wxString &extension, uint32 min, uint32 max, uint32 availability);
 			
 		void StopGlobalSearch();
+
+		//
+		// template
+		//
+		CSearchFile *CreateItem(CEC_SearchFile_Tag *);
+		void DeleteItem(CSearchFile *);
+		CMD4Hash GetItemID(CSearchFile *);
+		void ProcessItemUpdate(CEC_SearchFile_Tag *, CSearchFile *);
 };
 
 class CListenSocketRem {
