@@ -63,6 +63,7 @@ wxString ECv2_Response2String(CECPacket *response);
 #if wxUSE_GUI
 #include <wx/textctrl.h>	// For wxTextCtrl
 #include <wx/timer.h>		// For wxTimer
+#include <wx/frame.h>		// Fro wxFrame
 class CamulecmdFrame : public wxFrame
 {
 public:
