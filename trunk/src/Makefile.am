@@ -68,6 +68,7 @@ amulegui_SOURCES = amule-gui.cpp \
 	listctrl.cpp \
 	muuli_wdr.cpp \
 	MuleListCtrl.cpp \
+	MuleTextCtrl.cpp \
 	MuleNotebook.cpp \
 	MuleGifCtrl.cpp \
 	otherfunctions.cpp \
@@ -128,6 +129,7 @@ amule_SOURCES = ListenSocket.cpp \
 	MD5Sum.cpp \
 	MuleListCtrl.cpp \
 	MuleNotebook.cpp \
+	MuleTextCtrl.cpp \
 	muuli_wdr.cpp \
 	OScopeCtrl.cpp \
 	otherfunctions.cpp \
