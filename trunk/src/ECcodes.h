@@ -117,7 +117,8 @@ enum {
 		 *	::EC_TAG_CLIENT_NAME\n
 		 *	::EC_TAG_CLIENT_VERSION\n
 		 *	::EC_TAG_CLIENT_MOD\n
-		 *	::EC_TAG_PROTOCOL_VERSION (required)
+		 *	::EC_TAG_PROTOCOL_VERSION (required)\n
+		 *	::EC_TAG_CVSDATE
 		 */
 	EC_OP_AUTH_REQ,
 
@@ -337,7 +338,7 @@ enum {
 	EC_OP_GET_SERVER_LIST,
 	
 		/*!
-		 * \brief List of servers, reply to EC_OP_GET_SERVER_LIST
+		 * \brief List of servers, reply to ::EC_OP_GET_SERVER_LIST
 		 *
 		 * \par Tags:
 		 *	::EC_TAG_SERVER (1+)
@@ -491,7 +492,7 @@ enum {
 		 *	::EC_TAG_PREFS_GENERAL\n
 		 *	::EC_TAG_PREFS_CONNECTIONS\n
 		 *	::EC_TAG_PREFS_MESSAGEFILTER\n
-		 *	::EC_TAG_PREFS_REMOTECONTROLS\n
+		 *	::EC_TAG_PREFS_REMOTECTRL\n
 		 *	::EC_TAG_PREFS_ONLINESIG\n
 		 *	::EC_TAG_PREFS_SERVERS\n
 		 *	::EC_TAG_PREFS_FILES\n
@@ -519,7 +520,7 @@ enum {
 		 *	::EC_TAG_PREFS_GENERAL\n
 		 *	::EC_TAG_PREFS_CONNECTIONS\n
 		 *	::EC_TAG_PREFS_MESSAGEFILTER\n
-		 *	::EC_TAG_PREFS_REMOTECONTROLS\n
+		 *	::EC_TAG_PREFS_REMOTECTRL\n
 		 *	::EC_TAG_PREFS_ONLINESIG\n
 		 *	::EC_TAG_PREFS_SERVERS\n
 		 *	::EC_TAG_PREFS_FILES\n
@@ -817,27 +818,8 @@ enum {
 		 *	::EC_TAG_SERVER_STATIC\n
 		 *	::EC_TAG_SERVER_VERSION
 		 */
-	
-	/*!
-	 * \brief Info about server
-	 *
-	 * Value: (EC_IPv4_t) IP:port of the server
-	 *
-	 * When any of the childs are missing, their default value should be used
-	 *
-	 * \par Child TAGs:
-	 *	::EC_TAG_SERVER_NAME\n
-	 *	::EC_TAG_SERVER_DESC\n
-	 *	::EC_TAG_SERVER_PING\n
-	 *	::EC_TAG_SERVER_USERS\n
-	 *	::EC_TAG_SERVER_USERS_MAX\n
-	 *	::EC_TAG_SERVER_FILES\n
-	 *	::EC_TAG_SERVER_PRIO\n
-	 *	::EC_TAG_SERVER_FAILED\n
-	 *	::EC_TAG_SERVER_STATIC\n
-	 *	::EC_TAG_SERVER_VERSION
-	 */
 	EC_TAG_SERVER,
+
 	EC_TAG_SERVER_NAME,		///< (\c string) Server name. Default: none.
 	EC_TAG_SERVER_DESC,		///< (\c string) Server description. Default: none.
 	EC_TAG_SERVER_ADDRESS,
@@ -929,7 +911,7 @@ enum {
 		 */
 	EC_TAG_PREFS_CATEGORIES,
 
-		/*
+		/*!
 		 * \brief A Category.
 		 *
 		 * Value: (\c uint32) Category index.
@@ -942,6 +924,7 @@ enum {
 		 *	::EC_TAG_CATEGORY_PRIO
 		 */
 	EC_TAG_CATEGORY,
+
 	EC_TAG_CATEGORY_TITLE,		///< (\c string) Category title.
 	EC_TAG_CATEGORY_PATH,		///< (\c string) Incoming files folder.
 	EC_TAG_CATEGORY_COMMENT,	///< (\c string) Category comment.
@@ -953,7 +936,7 @@ enum {
 	// Preferences - General
 	//
 
-		/*
+		/*!
 		* \brief Preferences - General.
 		*
 		* \par Child TAGs:
@@ -961,6 +944,7 @@ enum {
 		*	::EC_TAG_USER_ID
 		*/
 	EC_TAG_PREFS_GENERAL,
+
 	EC_TAG_USER_NICK,		///< (\c string) Nickname of the user.
 	EC_TAG_USER_USERHASH,		///< (!!TODO!!) Our userhash. Read only! (i.e. in a SET operation it will be ignored)
 
@@ -969,7 +953,7 @@ enum {
 	// Preferences - Connections
 	//
 
-		/*
+		/*!
 		* \brief Preferences - Connections.
 		*
 		* \par Child TAGs:
@@ -987,6 +971,7 @@ enum {
 		*	::EC_TAG_CONN_RECONNECT
 		*/
 	EC_TAG_PREFS_CONNECTIONS,
+
 	EC_TAG_CONN_DL_CAP,		///< (\c uint32) Line download capacity.
 	EC_TAG_CONN_UL_CAP,		///< (\c uint32) Line upload capacity.
 	EC_TAG_CONN_MAX_DL,		///< (\c uint16) Maximum download speed.
@@ -1005,7 +990,7 @@ enum {
 	// Preferences - Message Filter
 	//
 
-		/*
+		/*!
 		* \brief Preferences - Message Filter.
 		*
 		* \par Child TAGs:
@@ -1017,6 +1002,7 @@ enum {
 		*	::EC_TAG_MSGFILTER_KEYWORDS
 		*/
 	EC_TAG_PREFS_MESSAGEFILTER,
+
 	EC_TAG_MSGFILTER_ENABLED,	///< (boolean) Whether the Message Filter is enabled.
 	EC_TAG_MSGFILTER_ALL,		///< (boolean) Whether to filter all messages.
 	EC_TAG_MSGFILTER_FRIENDS,	///< (boolean) Whether to allow messages only from friends.
@@ -1029,7 +1015,7 @@ enum {
 	// Preferences - Remote Controls
 	//
 
-		/*
+		/*!
 		* \brief WebServer Preferences (aka Remote Controls).
 		*
 		* \par Child TAGs:
@@ -1039,6 +1025,7 @@ enum {
 		*	::EC_TAG_WEBSERVER_GUEST (0-1)
 		*/
 	EC_TAG_PREFS_REMOTECTRL,
+
 	EC_TAG_WEBSERVER_AUTORUN,	///< (boolean) Whether to run webserver on startup.
 	EC_TAG_WEBSERVER_PORT,		///< (\c uint16) WebServer listening port
 	EC_TAG_WEBSERVER_GUEST,		///< WebServer Guest account information
@@ -1054,13 +1041,14 @@ enum {
 	// Preferences - Online Signature
 	//
 
-		/*
+		/*!
 		* \brief Preferences - Online Signature.
 		*
 		* \par Child TAGs:
 		*	::EC_TAG_ONLINESIG_ENABLED
 		*/
 	EC_TAG_PREFS_ONLINESIG,
+
 	EC_TAG_ONLINESIG_ENABLED,	///< (boolean) Whether Online Signature is enabled.
 
 
@@ -1068,7 +1056,7 @@ enum {
 	// Preferences - Servers
 	//
 
-		/*
+		/*!
 		* \brief Preferences - Servers.
 		*
 		* \par Child TAGs:
@@ -1085,6 +1073,7 @@ enum {
 		*	::EC_TAG_SERVERS_MANUAL_HIGH_PRIO
 		*/
 	EC_TAG_PREFS_SERVERS,
+
 	EC_TAG_SERVERS_REMOVE_DEAD,		///< (boolean) Remove dead servers.
 	EC_TAG_SERVERS_DEAD_SERVER_RETRIES,	///< (\c uint16) Retries before removing dead servers.
 	EC_TAG_SERVERS_AUTO_UPDATE,		///< (boolean) Auto-update server list on startup.
@@ -1102,7 +1091,7 @@ enum {
 	// Preferences - Files
 	//
 
-		/*
+		/*!
 		* \brief Preferences - Files.
 		*
 		* \par Child TAGs:
@@ -1122,6 +1111,7 @@ enum {
 		*	::EC_TAG_FILES_MIN_FREE_SPACE
 		*/
 	EC_TAG_PREFS_FILES,
+
 	EC_TAG_FILES_ICH_ENABLED,	///< (boolean) Is ICH enabled?
 	EC_TAG_FILES_AICH_TRUST,	///< (boolean) Does AICH trust every hash?
 	EC_TAG_FILES_NEW_PAUSED,	///< (boolean) Add new files paused.
@@ -1142,7 +1132,7 @@ enum {
 	// Preferences - Source Dropping
 	//
 
-		/*
+		/*!
 		* \brief Preferences - Source Dropping.
 		*
 		* \par Child TAGs:
@@ -1153,6 +1143,7 @@ enum {
 		*	::EC_TAG_SRCDROP_AUTODROP_TIMER
 		*/
 	EC_TAG_PREFS_SRCDROP,
+
 	EC_TAG_SRCDROP_NONEEDED,	///< (\c uint8) How to handle no-needed-sources: 0: keep, 1: drop, 2: swap
 	EC_TAG_SRCDROP_DROP_FQS,	///< (boolean) Whether to auto-drop Full Queue Sources
 	EC_TAG_SRCDROP_DROP_HQRS,	///< (boolean) Whether to auto-drop High Queue Rating Sources
@@ -1164,7 +1155,7 @@ enum {
 	// Preferences - Directories
 	//
 
-		/*
+		/*!
 		* \brief Preferences - Directories.
 		*
 		* \par Child TAGs:
@@ -1177,7 +1168,7 @@ enum {
 	// Preferences - Statistics
 	//
 
-		/*
+		/*!
 		* \brief Preferences - Statistics.
 		*
 		* \par Child TAGs:
@@ -1190,7 +1181,7 @@ enum {
 	// Preferences - Security
 	//
 
-		/*
+		/*!
 		* \brief Preferences - Security.
 		*
 		* \par Child TAGs:
@@ -1206,6 +1197,7 @@ enum {
 		*	::EC_TAG_SECURITY_USE_SECIDENT
 		*/
 	EC_TAG_PREFS_SECURITY,
+
 	EC_TAG_SECURITY_CAN_SEE_SHARES,		///< (\c uint8) Who can see shared files?
 						/*!< <ul>
 							<li>0 - Everybody</li>
@@ -1227,7 +1219,7 @@ enum {
 	// Preferences - Core Tweaks
 	//
 
-		/*
+		/*!
 		* \brief Preferences - Core Tweaks.
 		*
 		* \par Child TAGs:
@@ -1238,6 +1230,7 @@ enum {
 		*	::EC_TAG_CORETW_SRV_KEEPALIVE_TIMEOUT
 		*/
 	EC_TAG_PREFS_CORETWEAKS,
+
 	EC_TAG_CORETW_MAX_CONN_PER_FIVE,	///< (\c uint16) Max connections per 5 seconds.
 	EC_TAG_CORETW_VERBOSE,			///< (boolean) Verbose debug messages.
 	EC_TAG_CORETW_FILEBUFFER,		///< (\c uint32) File buffer size.
@@ -1272,7 +1265,7 @@ enum {
 		 * Value: (string) Stats label.
 		 *
 		 * Children:
-		 *	zero or more EC_TAG_TREE tags, containing the subtree for this item
+		 *	zero or more ::EC_TAG_TREE tags, containing the subtree for this item
 		 */
 	EC_TAG_TREE,
 
@@ -1319,5 +1312,6 @@ enum EC_SEARCH_TYPE {
 #define EC_PREFS_SECURITY	0x00000800
 // there's no need to do GUI Tweaks on EC :)
 #define EC_PREFS_CORETWEAKS	0x00001000
+// Is there any need to change Debug prefs via EC?
 
 #endif	/* ECCODES_H */
