@@ -96,27 +96,33 @@ CEMSocket::CEMSocket(void)
 	sendbuffer = 0;
 	sendblen = 0;
 	sent = 0;
+
 	m_bLinkedPackets = false;
 }
 
 CEMSocket::~CEMSocket(){
    //EMTrace("CEMSocket::~CEMSocket() on %d",(SOCKET)this);
   //printf("CEMSocket::~CEMSocket() on %d\n",this);
-  SetNotify(0);
-  Notify(FALSE);
-  ClearQueues();
-  OnClose(0);
+    
+	byConnected = ES_DISCONNECTED;
+
+	SetNotify(0);
+	Notify(FALSE);
+	ClearQueues();
+	OnClose(0);
   //AsyncSelect(0);
 }
 
 
 void CEMSocket::ClearQueues(){
   //EMTrace("CEMSocket::ClearQueues on %d",(SOCKET)this);
-	for (POSITION pos = controlpacket_queue.GetHeadPosition();pos != 0;controlpacket_queue.GetNext(pos))
-		delete controlpacket_queue.GetAt(pos);
+	for (POSITION pos = controlpacket_queue.GetHeadPosition();pos != 0;) {
+		delete controlpacket_queue.GetNext(pos);
+	}
 	controlpacket_queue.RemoveAll();
-	for (POSITION pos = standartpacket_queue.GetHeadPosition();pos != 0;standartpacket_queue.GetNext(pos))
-		delete standartpacket_queue.GetAt(pos);
+	for (POSITION pos = standartpacket_queue.GetHeadPosition();pos != 0;) {
+		delete standartpacket_queue.GetNext(pos);
+	}
 	standartpacket_queue.RemoveAll();
 	
 	limitenabled = false;	
@@ -146,8 +152,9 @@ void CEMSocket::ClearQueues(){
 }
 
 void CEMSocket::OnClose(int nErrorCode){
+	
 	byConnected = ES_DISCONNECTED;
-	//CAsyncSocket::OnClose(nErrorCode);
+	
 	ClearQueues();
 };
 
@@ -280,10 +287,13 @@ void CEMSocket::OnReceive(int nErrorCode){
 		if(pendingPacket->size == pendingPacketSize){
 
 			// Process packet
-			PacketReceived(pendingPacket);
+			bool bPacketResult = PacketReceived(pendingPacket);
 			delete pendingPacket;	
 			pendingPacket = NULL;
 			pendingPacketSize = 0;
+			
+			if (!bPacketResult)
+				return;			
 		}
 	}
 
@@ -296,101 +306,6 @@ void CEMSocket::OnReceive(int nErrorCode){
 		memcpy(pendingHeader, rptr, pendingHeaderSize);
 	}	
 }
-
-
-/*
-void CEMSocket::OnReceive(int nErrorCode)
-{
-	// the 2 meg size was taken from another place
-	static char GlobalReadBuffer[MAX_SIZE];
-
-	if (nErrorCode){
-		OnError(nErrorCode);
-		return;
-	}
-	if (byConnected == ES_DISCONNECTED) {
-		return;
-	} else {
-		byConnected = ES_CONNECTED;
-	}
-
-	uint32 readMax = sizeof(GlobalReadBuffer) - readbuf_size;
-
-	// Buffer overflow
-	if (readMax == 0) {
-		delete readbuf;
-		readbuf = NULL;
-		readbuf_size = 0;
-		OnError(ERR_TOOBIG);
-		return;
-	}
-
-	if (limitenabled && readMax > downloadlimit) {
-		readMax = downloadlimit;
-	}
-
-	// We attempt to read up to 2 megs at a time (minus whatever is in our internal read buffer)
-	Read(GlobalReadBuffer+readbuf_size,readMax);
-	uint32 ret=LastCount();
-
-	if (Error() || ret == 0) {
-		return;
-	}
-
-	if (limitenabled) {
-		downloadlimit -= ret;
-	}
-
-	// Copy over our temporary read buffer into the global read buffer for processing
-	if (readbuf) {
-  		memcpy(GlobalReadBuffer, readbuf, readbuf_size);
-		ret += readbuf_size;
-		delete[] readbuf;
-		readbuf = NULL;
-		readbuf_size = 0;
-	}
-
-	char *rptr = GlobalReadBuffer;
-	char *rend = GlobalReadBuffer + ret;
-
-	// Loop, processing packets until we run out of them
-	while (rend - rptr >= 6) {
-		Packet *packet = new Packet(rptr);
-
-		rptr += 6;
-
-		if (packet->size > sizeof(GlobalReadBuffer)) {
-			delete packet;
-			OnError(ERR_TOOBIG);
-			return;
-		}
-
-		if (packet->size > rend - rptr) {
-			rptr -= 6;
-			delete packet;
-			break;
-		}
-
-
-		char *packetBuffer = new char[packet->size + 1];
-		memcpy(packetBuffer, rptr, packet->size);
-
-		rptr += packet->size;
-		packet->pBuffer = packetBuffer;
-		PacketReceived(packet);
-		delete packet;
-	}
-
-	// Finally, if there is any data left over, save it for next time
-	//ASSERT(rptr <= rend);
-	if (rptr != rend) {
-		readbuf_size = rend - rptr;
-		readbuf = new char[readbuf_size];
-		memcpy(readbuf, rptr, readbuf_size);
-	}	
-}
-
-*/
 
 void CEMSocket::SetDownloadLimit(uint32 limit){
 	limitenabled = true;
