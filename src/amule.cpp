@@ -196,13 +196,9 @@ CamuleApp::CamuleApp()
 		<< wxT(" - http://www.amule.org\n")
 		<< wxT(" - http://wiki.amule.org\n\n")
 
-		<< wxT("Current version is: aMule ") << GetMuleVersion() << "\n";
+		<< wxT("Current version is: aMule ") << GetMuleVersion() << wxT("\n");
 
-#ifdef AMULE_DAEMON
-	printf("FATAL ERROR! %s\n", (const char*)unicode2char(msg));
-#else
-	wxMessageBox( msg, "FATAL ERROR!", wxICON_ERROR );
-#endif	
+	printf("FATAL ERROR! %s\n", (const char*)unicode2char(message));
 
 	exit(1);
 #endif
