@@ -1,3 +1,30 @@
+Version 2.0.1 - The "xx" version.
+----------
+2005-XX-XX
+
+--------------------------------------------------------------------------------
+
+Version 2.0.0 FINAL - The "Tiku - the one and only" version.
+----------
+2004-12-XX
+
+    CosmicDJ:
+	    * NetBSD compilation fixes.
+		
+    deltaHF:
+	    * Preferences for auto-sort download queue.
+		* TCP and UDP port start now at 0 (remember - running amule as root is insecure!!)
+		* Added aMule version info into "About" popup.
+
+	GonoszTopi:
+		* Unicode fixes:
+			- UTF-8 conversion (found by littletux)
+			- webserver search results (found by poulpe)
+	
+	Kry:
+	
+--------------------------------------------------------------------------------
+
 Version 2.0.0rc8 - The "last rc" version.
 ----------
 2004-12-21
