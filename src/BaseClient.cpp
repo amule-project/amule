@@ -889,7 +889,7 @@ void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 	#endif
 	
 	
-	CTag tagname(CT_NAME,theApp.glob_prefs->GetUserNick());
+	CTag tagname(CT_NAME,unicode2char(theApp.glob_prefs->GetUserNick()));
 	tagname.WriteTagToFile(data);
 	
 	CTag tagversion(CT_VERSION,EDONKEYVERSION);

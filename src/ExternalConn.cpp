@@ -394,7 +394,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				AddLogLineM(false, wxString::Format(wxT("Webserver-Admin-Login")));
 				return wxT("AdminLogin");
 			} else if (theApp.glob_prefs->GetWSIsLowUserEnabled() && 
-					theApp.glob_prefs->GetWSLowPass()!= wxT("") && 
+					!theApp.glob_prefs->GetWSLowPass().IsEmpty() && 
 					pwdHash == theApp.glob_prefs->GetWSLowPass()) {
 					AddLogLineM(false, wxString::Format(wxT("Webserver-Guest-Login")));
 				return wxT("GuestLogin");
@@ -1017,7 +1017,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				if (pwdHash == theApp.glob_prefs->GetWSPass())
 					return wxT("Admin Session");
 				else if (theApp.glob_prefs->GetWSIsLowUserEnabled() && 
-						theApp.glob_prefs->GetWSLowPass()!=wxT("") && 
+						!theApp.glob_prefs->GetWSLowPass().IsEmpty() && 
 						pwdHash == theApp.glob_prefs->GetWSLowPass())
 					return wxT("LowUser Session");
 				else

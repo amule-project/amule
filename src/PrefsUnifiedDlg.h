@@ -22,10 +22,6 @@
 #ifndef __PrefsUnifiedDlg_H__
 #define __PrefsUnifiedDlg_H__
 
-#ifdef __GNUG__
-    #pragma interface "PrefsUnifiedDlg.cpp"
-#endif
-
 #ifndef WX_PRECOMP
     #include "wx/wx.h"
 #endif
@@ -35,18 +31,15 @@
 #include <wx/choice.h>
 #include <wx/config.h>
 #include "muuli_wdr.h"
-#include "Preferences.h"
 
-class CDirectoryTreeCtrl;
 	
-// WDR: class declarations
-
 //----------------------------------------------------------------------------
 // PrefsUnifiedDlg
 //----------------------------------------------------------------------------
 
 class Rse;
-struct Preferences_Struct;
+class CPreferences;
+class CDirectoryTreeCtrl;
 
 
 class PrefsUnifiedDlg: public wxDialog
@@ -67,7 +60,7 @@ public:
 	static void ForceUlDlRateCorrelation(int id);
 	static void CheckRateUnlimited(Rse* prse);
 
-	static void BuildItemList(Preferences_Struct *prefs, const wxString appdir);
+	static void BuildItemList(CPreferences *prefs, const wxString& appdir);
 	static void LoadAllItems(wxConfigBase& ini);
 	static void SaveAllItems(wxConfigBase& ini);
 

@@ -86,7 +86,7 @@ bool CTransferWnd::OnInitDialog()
 	// show & cat-tabs
 	theApp.glob_prefs->GetCategory(0)->title = GetCatTitle(theApp.glob_prefs->GetAllcatType());
 
-	theApp.glob_prefs->GetCategory(0)->incomingpath = char2unicode(theApp.glob_prefs->GetIncomingDir());
+	theApp.glob_prefs->GetCategory(0)->incomingpath = theApp.glob_prefs->GetIncomingDir();
 	
 	for (uint32 ix=0;ix<theApp.glob_prefs->GetCatCount();ix++) {
 		wxPanel* nullPanel=new wxPanel(m_dlTab);
@@ -238,7 +238,7 @@ bool CTransferWnd::ProcessEvent(wxEvent& evt)
 		}
 
 		case MP_CAT_ADD: {
-			int newindex=AddCategorie(wxT("?"),char2unicode(theApp.glob_prefs->GetIncomingDir()),wxEmptyString,false);
+			int newindex=AddCategorie(wxT("?"),theApp.glob_prefs->GetIncomingDir(),wxEmptyString,false);
 			//m_dlTab.InsertItem(newindex,theApp.glob_prefs->GetCatego
 			//	       ry(newindex)->title);
 			wxPanel* nullPanel=new wxPanel(m_dlTab,-1);

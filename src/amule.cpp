@@ -479,7 +479,7 @@ bool CamuleApp::OnInit()
 	glob_prefs = new CPreferences();
 
 	// Build the filenames for the two OS files
-	SetOSFiles(char2unicode(glob_prefs->GetOSDir()));
+	SetOSFiles(glob_prefs->GetOSDir());
 
 	// Create the Core timer
 	core_timer=new wxTimer(this,ID_CORETIMER);
@@ -527,8 +527,8 @@ bool CamuleApp::OnInit()
 #ifndef __OPENBSD__
 	FILE* mnt_tab = setmntent("/etc/mtab","r");
 	if ( mnt_tab ) {
-		wxString incomingdir = char2unicode(glob_prefs->GetIncomingDir());
-		wxString tempdir = char2unicode(glob_prefs->GetTempDir());
+		wxString incomingdir = glob_prefs->GetIncomingDir();
+		wxString tempdir = glob_prefs->GetTempDir();
 		struct mntent* entries;
 
 		entries = getmntent(mnt_tab);
@@ -851,7 +851,7 @@ wxString CamuleApp::CreateED2kHostnameSourceLink(CAbstractFile* f)
 
 	// Append the source information: "|sources,<host>:port|/"
 	strURL << wxT("|sources,")
-	       << char2unicode(glob_prefs->GetYourHostname()) << wxT(":")
+	       << glob_prefs->GetYourHostname() << wxT(":")
 		   << glob_prefs->GetPort() << wxT("|/");
 
 	// Result is "ed2k://|file|<filename>|<size>|<hash>|/|sources,<host>:<port>|/"
@@ -1023,7 +1023,7 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 	}	/* if (!zero) */
 
 	// Nick on the network
-	sprintf(buffer, "%s", glob_prefs->GetUserNick());
+	sprintf(buffer, "%s", unicode2char(glob_prefs->GetUserNick()));
 	amulesig_out.Write(buffer, strlen(buffer));
 	amulesig_out.Write("\n",1);
 

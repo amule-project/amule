@@ -283,7 +283,7 @@ tray_menu (GtkWidget *widget, GdkEventButton *event, gpointer data)
 	info_menu=gtk_menu_new();
 	gtk_menu_set_title(GTK_MENU(info_menu),_("aMule Tray Menu Info"));
 
-	if (theApp.glob_prefs->GetUserNick()!=NULL)
+	if (!theApp.glob_prefs->GetUserNick().IsEmpty())
 	info_item=gtk_menu_item_new_with_label(wxString(_("Nick: "))+theApp.glob_prefs->GetUserNick());
 	else info_item=gtk_menu_item_new_with_label(_("Nick: Not Ready"));
 	gtk_container_add (GTK_CONTAINER (info_menu), info_item);

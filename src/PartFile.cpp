@@ -362,11 +362,11 @@ void CPartFile::CreatePartFile()
 	wxString filename; 	
 	do { 
 		i++; 
-		filename.Printf(wxT("%s/%03i.part"), theApp.glob_prefs->GetTempDir(), i); 
+		filename.Printf(wxT("%s/%03i.part"), unicode2char(theApp.glob_prefs->GetTempDir()), i); 
 	} while (wxFileName::FileExists(filename));
 	
 	m_partmetfilename.Printf(wxT("%03i.part.met"), i);
-	m_fullname = wxString(char2unicode(theApp.glob_prefs->GetTempDir())) + wxT("/") + m_partmetfilename;
+	m_fullname = theApp.glob_prefs->GetTempDir() + wxT("/") + m_partmetfilename;
 	
 	wxString strPartName = m_partmetfilename.Left( m_partmetfilename.Length() - 4);
 	taglist.Add( new CTag(FT_PARTFILENAME, strPartName ) );
@@ -780,7 +780,7 @@ bool CPartFile::SavePartFile(bool Initial)
 	}
 	/* Don't write anything to disk if less than 5000 bytes of free space is left. */
 	wxLongLong total = 0, free = 0;
-	if (wxGetDiskSpace(char2unicode(theApp.glob_prefs->GetTempDir()), &total, &free) && free < 5000) {
+	if (wxGetDiskSpace(theApp.glob_prefs->GetTempDir(), &total, &free) && free < 5000) {
 		return false;
 	}
 	
@@ -2306,7 +2306,7 @@ void CPartFile::CompleteFile(bool bIsHashingDone)
 		kBpsDown = 0.0;
 
 		wxString strPartFile = m_partmetfilename.Left( m_partmetfilename.Length() - 4 );
-		CAddFileThread::AddFile( char2unicode(theApp.glob_prefs->GetTempDir()), strPartFile, this );
+		CAddFileThread::AddFile(theApp.glob_prefs->GetTempDir(), strPartFile, this );
 		return;
 	} else {
 		printf("HashDone\n");		
@@ -2354,7 +2354,7 @@ void CPartFile::CompleteFileEnded(int completing_result, wxString* newname) {
 		if(wxFileName::DirExists(theApp.glob_prefs->GetCategory(GetCategory())->incomingpath)) {
 			m_strFilePath = theApp.glob_prefs->GetCategory(m_category)->incomingpath;
 		} else {
-			m_strFilePath = char2unicode(theApp.glob_prefs->GetIncomingDir());
+			m_strFilePath = theApp.glob_prefs->GetIncomingDir();
 		}	
 	
 		SetPartFileStatus(PS_COMPLETE);
@@ -2442,7 +2442,7 @@ wxThread::ExitCode completingThread::Entry()
 	if(wxFileName::DirExists(theApp.glob_prefs->GetCategory(Completing_Category)->incomingpath)) {
 		(*newname) =  theApp.glob_prefs->GetCategory(Completing_Category)->incomingpath;
 	} else {
-		(*newname) =  char2unicode(theApp.glob_prefs->GetIncomingDir());
+		(*newname) =  theApp.glob_prefs->GetIncomingDir();
 	}	
 	(*newname) += wxT("/");
 	(*newname) += Completing_FileName;
@@ -2460,11 +2460,11 @@ wxThread::ExitCode completingThread::Entry()
 		do {
 			namecount++;
 			if (ext.IsEmpty()) {
-				strTestName = char2unicode(theApp.glob_prefs->GetIncomingDir()); 
+				strTestName = theApp.glob_prefs->GetIncomingDir(); 
 				strTestName += wxT("/");
 				strTestName += filename + wxString::Format(wxT("(%d)"), namecount);
 			} else {
-				strTestName = char2unicode(theApp.glob_prefs->GetIncomingDir()); 
+				strTestName = theApp.glob_prefs->GetIncomingDir(); 
 				strTestName += wxT("/");
 				strTestName += filename + wxString::Format(wxT("(%d)."), namecount);
 				strTestName += ext;
@@ -2906,7 +2906,7 @@ void CPartFile::PreviewFile()
 	wxString command;
 
 	// If no player set in preferences, use mplayer.
-	if (theApp.glob_prefs->GetVideoPlayer()==wxT("")) {
+	if (theApp.glob_prefs->GetVideoPlayer().IsEmpty()) {
 		command.Append(wxT("mplayer"));
 	} else {
 		command.Append(theApp.glob_prefs->GetVideoPlayer());
@@ -3345,7 +3345,7 @@ void CPartFile::FlushBuffer(void)
 	add log line and abort flushing.
 	*/
 	wxLongLong total = 0, free = 0;
-	if (wxGetDiskSpace(char2unicode(theApp.glob_prefs->GetTempDir()), &total, &free) && free < PARTSIZE) {
+	if (wxGetDiskSpace(theApp.glob_prefs->GetTempDir(), &total, &free) && free < PARTSIZE) {
 		theApp.amuledlg->AddLogLine(true, _("ERROR: Cannot write to disk"));
 		PauseFile();
 		return;
@@ -3363,7 +3363,7 @@ void CPartFile::FlushBuffer(void)
 		bool bCheckDiskspace = theApp.glob_prefs->IsCheckDiskspaceEnabled() && theApp.glob_prefs->GetMinFreeDiskSpace() > 0;
 
 		wxLongLong total = 0, free = 0;
-		wxGetDiskSpace(char2unicode(theApp.glob_prefs->GetTempDir()), &total, &free);
+		wxGetDiskSpace(theApp.glob_prefs->GetTempDir(), &total, &free);
 		typedef unsigned long long uint64;
 		// WHY IS THIS NOT USED? ... //uint64 GetFreeDiskSpaceX = free.GetValue();
 		// WHY IS THIS NOT USED? ... //ULONGLONG uFreeDiskSpace = bCheckDiskspace ? GetFreeDiskSpaceX : 0;
@@ -3482,7 +3482,7 @@ void CPartFile::FlushBuffer(void)
 						break;
 					default: {
 						wxLongLong total = 0, free = 0;
-						wxGetDiskSpace(char2unicode(theApp.glob_prefs->GetTempDir()), &total, &free);
+						wxGetDiskSpace(theApp.glob_prefs->GetTempDir(), &total, &free);
 						typedef unsigned long long uint64;
 						uint64 GetFreeDiskSpaceX = free.GetValue();
 						if (GetFreeDiskSpaceX < (unsigned)theApp.glob_prefs->GetMinFreeDiskSpace()) {

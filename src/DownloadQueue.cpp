@@ -149,7 +149,7 @@ void CDownloadQueue::Init()
 	// find all part files, read & hash them if needed and store into a list
 	int count = 0;
 
-	wxString searchPath(char2unicode(app_prefs->GetTempDir()));
+	wxString searchPath(app_prefs->GetTempDir());
 	searchPath += wxT("/*.part.met");
 
 	// check all part.met files
@@ -159,7 +159,7 @@ void CDownloadQueue::Init()
 		wxFileName myFileName(fileName);
 		printf("Loading %s... ",unicode2char(myFileName.GetFullName()));
 		CPartFile* toadd = new CPartFile();
-		if (toadd->LoadPartFile(char2unicode(app_prefs->GetTempDir()),myFileName.GetFullName())) {
+		if (toadd->LoadPartFile(app_prefs->GetTempDir(),myFileName.GetFullName())) {
 			count++;
 			printf("Done.\n");
 			filelist.push_back(toadd); // to downloadqueue
@@ -1131,7 +1131,7 @@ void CDownloadQueue::CheckDiskspace(bool bNotEnoughSpaceLeft)
 		return;
 	}
 	wxLongLong total = 0, free = 0;
-	wxGetDiskSpace(char2unicode(theApp.glob_prefs->GetTempDir()), &total, &free);
+	wxGetDiskSpace(theApp.glob_prefs->GetTempDir(), &total, &free);
 	// 'bNotEnoughSpaceLeft' - avoid worse case, if we already had 'disk full'
 	uint64 nTotalAvailableSpace = bNotEnoughSpaceLeft ? 0 : free.GetValue();
 	if (theApp.glob_prefs->GetMinFreeDiskSpace() == 0) {

@@ -1730,7 +1730,7 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 							break;
 						}
 						char *buffer = new char[250];
-						sprintf(buffer, "%s/%s", theApp.glob_prefs->GetIncomingDir(), unicode2char(file->GetFileName()));
+						sprintf(buffer, "%s/%s", unicode2char(theApp.glob_prefs->GetIncomingDir()), unicode2char(file->GetFileName()));
 						//ShellOpenFile(buffer);
 						printf("===> open %s\n", buffer);
 						delete[] buffer;
