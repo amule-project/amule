@@ -79,8 +79,7 @@ void CUpDownClient::DrawStatusBar(wxMemoryDC* dc, wxRect rect, bool onlygreyrect
 	s_StatusBar.Set3dDepth( theApp.glob_prefs->Get3DDepth() );
 
 	// Barry - was only showing one part from client, even when reserved bits from 2 parts
-	CString gettingParts;
-	ShowDownloadingParts(&gettingParts);
+	wxString gettingParts = ShowDownloadingParts();
 
 	if (!onlygreyrect && reqfile && m_abyPartStatus) {
 		for (uint32 i = 0;i != m_nPartCount;i++) {
@@ -1123,17 +1122,16 @@ void CUpDownClient::UDPReaskForDownload()
 
 // Barry - Sets string to show parts downloading, eg NNNYNNNNYYNYN
 
-void CUpDownClient::ShowDownloadingParts(CString *partsYN)
+wxString CUpDownClient::ShowDownloadingParts()
 {
 	// Initialise to all N's
-	//char *n = partsYN->GetWriteBuf(m_nPartCount+1);
-	//memset(n,'N',m_nPartCount);
-	//n[m_nPartCount] = 0;
-	//partsYN->UngetWriteBuf();
-
+	wxString Parts('N', m_nPartCount);
+	
 	for (POSITION pos = m_PendingBlocks_list.GetHeadPosition(); pos != 0; ) {
-		partsYN->SetChar((m_PendingBlocks_list.GetNext(pos)->block->StartOffset / PARTSIZE), 'Y');
+		Parts.SetChar((m_PendingBlocks_list.GetNext(pos)->block->StartOffset / PARTSIZE), 'Y');
 	}
+	
+	return Parts;
 }
 
 void CUpDownClient::UpdateDisplayedInfo(bool force)
