@@ -67,7 +67,7 @@
 #include "amuleIPV4Address.h"	// Needed for amuleIPV4Address
 #include "Statistics.h"		// Needed for CStatistics
 
-#define DEBUG_SERVER_PROTOCOL
+//#define DEBUG_SERVER_PROTOCOL
 
 #ifndef AMULE_DAEMON
 #include "SearchDlg.h"		// Needed for CSearchDlg
