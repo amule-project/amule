@@ -118,16 +118,19 @@ void CServerListCtrl::RemoveServer( const CServer* server )
 void CServerListCtrl::RemoveAllServers( int state )
 {
 	int pos = GetNextItem( -1, wxLIST_NEXT_ALL, state);
-	
+	bool connected = theApp.serverconnect->IsConnected() ||
+	  theApp.serverconnect->IsConnecting();
+
 	while ( pos != -1 ) {
-		if ( GetItemData(pos) == m_connected) {
+		if ( GetItemData(pos) == m_connected && connected == true) {
 			wxMessageBox(_("You are connected to a server you are trying to delete. Please disconnect first. The server was NOT deleted."), _("Info"), wxOK);
+			pos++;
 		} else {
 			theApp.serverlist->RemoveServer( (CServer*)GetItemData( pos ) );
 			DeleteItem( pos );
 		}
 		
-		pos = GetNextItem( pos, wxLIST_NEXT_ALL, state );
+		pos = GetNextItem( pos-1, wxLIST_NEXT_ALL, state );
 	}
 
 	ShowServerCount();
