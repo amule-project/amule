@@ -436,6 +436,8 @@ class CamuleDaemonApp : public CamuleApp {
 	
 	virtual int InitGui(bool geometry_enable, wxString &geometry_string);
 public:
+	CamuleDaemonApp();
+	
 	void ExitMainLoop() { m_Exit = true; }
 
 	virtual void NotifyEvent(const GUIEvent& event);

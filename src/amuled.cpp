@@ -131,6 +131,11 @@ CamuleLocker::~CamuleLocker()
 	assert( (msDone - msStart) < 100);
 }
 
+CamuleDaemonApp::CamuleDaemonApp()
+{
+	wxPendingEventsLocker = new wxCriticalSection;
+}
+
 int CamuleDaemonApp::OnRun()
 {
 	const uint uLoop = 100;
@@ -168,8 +173,6 @@ int CamuleDaemonApp::OnRun()
 
 int CamuleDaemonApp::InitGui(bool ,wxString &)
 {
-	wxPendingEventsLocker = new wxCriticalSection;
-	
 	return 0;
 }
 
