@@ -51,13 +51,16 @@ class CSysTray;
 #define MP_DISCONNECT	4003
 #define MP_EXIT			4004
 
+#define DEFAULT_SIZE_X  800
+#define DEFAULT_SIZE_Y  600
+
 // CamuleDlg Dialogfeld
 class CamuleDlg : public wxFrame 
 {
 public:
 	enum { IDD = IDD_EMULE_DIALOG };
 	
-	CamuleDlg(wxWindow* pParent=NULL, wxString title=wxT(""));
+	CamuleDlg(wxWindow* pParent=NULL, wxString title=wxT(""),wxPoint where = wxDefaultPosition, wxSize dlg_size = wxSize(DEFAULT_SIZE_X,DEFAULT_SIZE_Y));
 	~CamuleDlg();
 
 	void AddLogLine(bool addtostatusbar, const wxChar* line, ...);
@@ -122,7 +125,7 @@ protected:
 private:
 
 	wxToolBar*	m_wndToolbar;
-	bool		LoadGUIPrefs(); 
+	bool		LoadGUIPrefs(bool override_pos, bool override_size); 
 	bool		SaveGUIPrefs();
 
 	wxTimer* gui_timer;
@@ -137,6 +140,8 @@ private:
 	int			m_nActiveDialog;
 
 	bool is_safe_state;
+
+	bool is_hidden;
 
 	DECLARE_EVENT_TABLE()
 };

@@ -96,12 +96,13 @@ END_EVENT_TABLE()
 #	define wxCLOSE_BOX 0
 #endif
 
-CamuleDlg::CamuleDlg(wxWindow* pParent, wxString title) : wxFrame(
-	pParent, CamuleDlg::IDD, title, wxDefaultPosition, wxSize(800, 600),
+CamuleDlg::CamuleDlg(wxWindow* pParent, wxString title, wxPoint where, wxSize dlg_size) : wxFrame(
+	pParent, CamuleDlg::IDD, title, where, dlg_size,
 	wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxDIALOG_NO_PARENT|
 	wxTHICK_FRAME|wxMINIMIZE_BOX|wxMAXIMIZE_BOX|wxCLOSE_BOX )
 {
 	is_safe_state = false;
+	is_hidden = false;
 	
 	SetIcon(wxICON(aMule));
 
@@ -151,7 +152,10 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, wxString title) : wxFrame(
 		AddLogLine(false, CString(_("Fatal Error: Failed to create Timer")));
 	}
 	
-	if (!LoadGUIPrefs()) {
+	bool override_where = (where != wxDefaultPosition);
+	bool override_size = ((dlg_size.x == DEFAULT_SIZE_X) && (dlg_size.y == DEFAULT_SIZE_Y));
+	
+	if (!LoadGUIPrefs(override_where, override_size)) {
 		// Prefs not loaded for some reason, exit
 		printf("ERROR!!! Unable to load Preferences\n");
 		return;
@@ -745,7 +749,7 @@ ctl->SetValue("");
 
 
 // Formerly known as LoadRazorPrefs()
-bool CamuleDlg::LoadGUIPrefs()
+bool CamuleDlg::LoadGUIPrefs(bool override_pos, bool override_size)
 {
 	// Create a config base for loading razor preferences
 	wxConfigBase *config = wxConfigBase::Get();
@@ -767,15 +771,17 @@ bool CamuleDlg::LoadGUIPrefs()
 	// Kry - Random usable pos for srv_split_pos
 	srv_split_pos = config->Read(_T(section+"SRV_SPLITTER_POS"), 463l);
 
-	// If x1 and y1 != 0 Redefine location
-	if((x1 != -1) && (y1 != -1)) {
-		Move(x1, y1);
+	if (!override_pos) {
+		// If x1 and y1 != 0 Redefine location
+		if((x1 != -1) && (y1 != -1)) {
+			Move(x1, y1);
+		}
 	}
 
-	if (x2 > 0 && y2 > 0) {
-		SetClientSize(x2, y2 - 58);
-	} else {
-		SetClientSize(800, 542);
+	if (!override_size) {
+		if (x2 > 0 && y2 > 0) {
+			SetClientSize(x2, y2 - 58);
+		}
 	}
 
 	return true;
@@ -824,23 +830,26 @@ bool CamuleDlg::SaveGUIPrefs()
 //hides amule
 void CamuleDlg::Hide_aMule(bool iconize)
 {
-	if (theApp.amuledlg->IsShown()) {
-		theApp.amuledlg->transferwnd->downloadlistctrl->Freeze();
-		theApp.amuledlg->transferwnd->uploadlistctrl->Freeze();
-		theApp.amuledlg->serverwnd->serverlistctrl->Freeze();
-		theApp.amuledlg->sharedfileswnd->sharedfilesctrl->Freeze();
-		theApp.amuledlg->transferwnd->downloadlistctrl->Show(FALSE);
-		theApp.amuledlg->serverwnd->serverlistctrl->Show(FALSE);
-		theApp.amuledlg->transferwnd->uploadlistctrl->Show(FALSE);
-		theApp.amuledlg->sharedfileswnd->sharedfilesctrl->Show(FALSE);
-		theApp.amuledlg->Freeze();
+	
+	if (!is_hidden) {
+		transferwnd->downloadlistctrl->Freeze();
+		transferwnd->uploadlistctrl->Freeze();
+		serverwnd->serverlistctrl->Freeze();
+		sharedfileswnd->sharedfilesctrl->Freeze();
+		transferwnd->downloadlistctrl->Show(FALSE);
+		serverwnd->serverlistctrl->Show(FALSE);
+		transferwnd->uploadlistctrl->Show(FALSE);
+		sharedfileswnd->sharedfilesctrl->Show(FALSE);
+		Freeze();
 		if (iconize) {
-			theApp.amuledlg->Iconize(TRUE);
+			Iconize(TRUE);
 		}
-		theApp.amuledlg->Show(FALSE);
-	} else {
-		printf("aMule is already hidden!\n");
-	}
+		Show(FALSE);
+		
+		is_hidden = true;
+		
+	} 
+	
 }
 
 
@@ -848,47 +857,41 @@ void CamuleDlg::Hide_aMule(bool iconize)
 void CamuleDlg::Show_aMule(bool uniconize)
 {
 
-	if (!theApp.amuledlg->IsShown()) {
-
-		theApp.amuledlg->transferwnd->downloadlistctrl->Show(TRUE);
-		theApp.amuledlg->serverwnd->serverlistctrl->Show(TRUE);
-		theApp.amuledlg->transferwnd->uploadlistctrl->Show(TRUE);
-		theApp.amuledlg->sharedfileswnd->sharedfilesctrl->Show(TRUE);
-		theApp.amuledlg->transferwnd->downloadlistctrl->Thaw();
-		theApp.amuledlg->serverwnd->serverlistctrl->Thaw();
-		theApp.amuledlg->transferwnd->uploadlistctrl->Thaw();
-		theApp.amuledlg->sharedfileswnd->sharedfilesctrl->Thaw();
-		theApp.amuledlg->Thaw();
-		theApp.amuledlg->Update();
-		theApp.amuledlg->Refresh();
+	if (is_hidden) {
+		
+		transferwnd->downloadlistctrl->Show(TRUE);
+		transferwnd->uploadlistctrl->Show(TRUE);
+		serverwnd->serverlistctrl->Show(TRUE);
+		sharedfileswnd->sharedfilesctrl->Show(TRUE);
+		transferwnd->downloadlistctrl->Thaw();
+		serverwnd->serverlistctrl->Thaw();
+		transferwnd->uploadlistctrl->Thaw();
+		sharedfileswnd->sharedfilesctrl->Thaw();
+		Thaw();
+		Update();
+		Refresh();
 		if (uniconize) {
-			theApp.amuledlg->Show(TRUE);
+			Show(TRUE);
 		}
+		
+		is_hidden = false;
 
-	} else {
-		printf("aMule is already shown!\n");
-	}
+	} 
+	
 }
 
 
 void CamuleDlg::OnMinimize(wxIconizeEvent& evt)
 {
 #ifndef __SYSTRAY_DISABLED__
-	wxPoint unused;
-	if (!wxFindWindowAtPointer(unused)) {
-		return;
-	}
-	
-	if (theApp.amuledlg->IsIconized()) {
-		if (theApp.glob_prefs->DoMinToTray()) {
-			theApp.amuledlg->Hide_aMule(false);
-		}
-	} else {
-		if (theApp.glob_prefs->DoMinToTray()) {
-			if (theApp.IsReady) {
-				theApp.amuledlg->Show_aMule(false);
+	if (theApp.glob_prefs->DoMinToTray()) {
+		if (evt.Iconized()) {
+			Hide_aMule(false);
+		} else {
+			if (SafeState()) {
+				Show_aMule(true);
 			} else {
-				theApp.amuledlg->Show_aMule(true);
+				Show_aMule(false);
 			}
 		}
 	}
