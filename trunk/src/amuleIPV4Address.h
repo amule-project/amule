@@ -1,5 +1,6 @@
 // This file is part of the aMule project.
 //
+// Copyright (c) 2004 aMule Project ( http://www.amule-project.net )
 // Copyright (c) 2002, Merkur <merkur-@users.sourceforge.net>
 // Copyright (c) 2004, Carlo Wood <carlo@alinoe.com>
 //

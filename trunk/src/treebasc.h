@@ -1,6 +1,7 @@
 // Definition of classes wxCTreeCtrl base classes and types
 // This file is part of the aMule project.
-//
+// 
+// Copyright (c) 2004 aMule Team ( http://www.amule-project.net )
 // Copyright (c) 1997, 1998, Robert Roebling
 // Copyright (c) 2004, Carlo Wood <carlo@alinoe.com>
 //

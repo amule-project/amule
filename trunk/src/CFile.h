@@ -1,3 +1,7 @@
+// This file is part of the aMule project.
+//
+// Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
+//
 /////////////////////////////////////////////////////////////////////////////
 // Name:        file.h
 // Purpose:     CFile - encapsulates low-level "file descriptor"

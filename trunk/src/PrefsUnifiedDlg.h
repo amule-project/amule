@@ -1,6 +1,7 @@
 // This file is part of the aMule Project
-//Copyright (C)2004 The aMule Project
-//Original author: Emilio Sandoz
+// 
+// Copyright (c) 2004 aMule Project ( http://www.amule-project.net )
+// Original author: Emilio Sandoz
 //
 //This program is free software; you can redistribute it and/or
 //modify it under the terms of the GNU General Public License

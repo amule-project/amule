@@ -1,3 +1,9 @@
+// This file is part of the aMule Project.
+//
+// Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
+// Copyright (c) 2004 Carlo Wood ( carlo@alinoe.com )
+//
+
 #ifndef POSITION_H
 #define POSITION_H
 
