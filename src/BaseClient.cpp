@@ -221,7 +221,7 @@ void CUpDownClient::Init()
 	ClearHelloProperties();	
 }
 
-bool CUpDownClient::IsASaneUpDownClient() const
+bool CUpDownClient::IsASaneUpDownClient(char *function, char *file, int line) const
 {
 	int sane;
 	
@@ -231,7 +231,7 @@ bool CUpDownClient::IsASaneUpDownClient() const
 #if defined( __DEBUG__ )
 	if( !sane ) {
 		// scream loud!
-		printf("Bogus pointer to UpDownClient detected!\n");
+		printf("Bogus pointer to UpDownClient detected in %s(%s:%d)!\n", function, file, line);
 		if(this) {
 			printf("MN1 = %u, MN2 = %u\n", MagicNumber1, MagicNumber2);
 		} else {

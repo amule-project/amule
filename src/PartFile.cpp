@@ -1597,7 +1597,7 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 			it != m_downloadingSourcesList.end(); 
 			it++ ) {
 			CUpDownClient *cur_src = *it;
-			if(cur_src->IsASaneUpDownClient() && cur_src && (cur_src->GetDownloadState() == DS_DOWNLOADING)) {
+			if(cur_src->IsASaneUpDownClient("CPartFile::Process", __FILE__, __LINE__ ) && cur_src && (cur_src->GetDownloadState() == DS_DOWNLOADING)) {
 				wxASSERT( cur_src->socket );
 				if (cur_src->socket) {
 					transferingsrc++;
@@ -3808,7 +3808,7 @@ void CPartFile::AddDownloadingSource(CUpDownClient* client)
 	std::list<CUpDownClient *>::iterator it = 
 		std::find(m_downloadingSourcesList.begin(), m_downloadingSourcesList.end(), client);
 	if (it == m_downloadingSourcesList.end()) {
-		if(client->IsASaneUpDownClient()) {
+		if(client->IsASaneUpDownClient("CPartFile::AddDownloadingSource", __FILE__, __LINE__)) {
 			m_downloadingSourcesList.push_back(client);
 		}
 	}

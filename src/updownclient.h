@@ -141,7 +141,7 @@ public:
 	CUpDownClient(uint16 in_port, uint32 in_userid, uint32 in_serverup, uint16 in_serverport,CPartFile* in_reqfile);
 	~CUpDownClient();
 #if defined( __DEBUG__ )
-	bool	IsASaneUpDownClient() const;
+	bool	IsASaneUpDownClient(char *function, char *file, int line) const;
 #endif // __DEBUG__
 //	void		Destroy();
 	bool		Disconnected(const wxString& strReason, bool bFromSocket = false);
