@@ -341,8 +341,12 @@ int CUploadListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 		case 108:
 			return item2->GetUpPartCount() - item1->GetUpPartCount();
 		case 9:
-			return item1->GetRemoteQueueRank() - item2->GetRemoteQueueRank();
+			return item2->Credits()->GetDownloadedTotal() - item1->Credits()->GetDownloadedTotal();
 		case 109:
+			return item2->Credits()->GetUploadedTotal() - item1->Credits()->GetUploadedTotal();
+		case 10:
+			return item1->GetRemoteQueueRank() - item2->GetRemoteQueueRank();
+		case 110:
 			return item2->GetRemoteQueueRank() - item1->GetRemoteQueueRank();
 		default:
 			return 0;
