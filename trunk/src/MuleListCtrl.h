@@ -25,8 +25,8 @@
 #pragma interface "MuleListCtrl.h"
 #endif
 
-// Defines base class of CMuleListCtrl so that we only need this one ifdef
 
+#include <vector>
 
 
 //! This value will be added to the user-data of the sorter-funtion when sorting ascending.
@@ -128,6 +128,22 @@ public:
 	 */
 	virtual void SortList();
 
+
+	//! The type of the list of item specific data
+	typedef std::vector<long> ItemDataList;
+
+	/**
+	 * Returns a list the user-data of all selected items.
+	 *
+	 * @return A list of data assosiated with the selected items.
+	 *
+	 * This function will return the user-data for each selected item in a
+	 * vector, which can then be manipulated with regards to changes made
+	 * in the current order of the listctrl items.
+	 */
+	ItemDataList GetSelectedItems() const;	
+
+	
 	/**
 	 * Helper-function which returns true if the offset is for sorting descending.
 	 *
@@ -141,7 +157,7 @@ public:
 	 * Use this function in the Sorter functions to cut the cases in half.
 	 */
 	static bool IsOffsetDec( long offset );
-	
+
 	
 protected:
 

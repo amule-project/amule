@@ -566,7 +566,7 @@ ItemList GetSelectedItems( CDownloadListCtrl* list, int types )
 
 void CDownloadListCtrl::OnCleanUpSources( wxCommandEvent& event )
 {
-	ItemList files = GetSelectedItems( this, itFILES );
+	ItemList files = ::GetSelectedItems( this, itFILES );
 
 	for ( ItemList::iterator it = files.begin(); it != files.end(); ++it ) {
 		CPartFile* file = (CPartFile*)(*it)->value;
@@ -594,7 +594,7 @@ void CDownloadListCtrl::OnCleanUpSources( wxCommandEvent& event )
 
 void CDownloadListCtrl::OnCancelFile( wxCommandEvent& WXUNUSED(event) )
 {
-	ItemList files = GetSelectedItems( this, itFILES );
+	ItemList files = ::GetSelectedItems( this, itFILES );
 	
 	if ( files.size() ) {
 	
@@ -633,7 +633,7 @@ void CDownloadListCtrl::OnSetPriority( wxCommandEvent& event )
 	}
 
 
-	ItemList files = GetSelectedItems( this, itFILES );
+	ItemList files = ::GetSelectedItems( this, itFILES );
 
 	for ( ItemList::iterator it = files.begin(); it != files.end(); ++it ) {
 		CPartFile* file = (CPartFile*)(*it)->value;
@@ -651,7 +651,7 @@ void CDownloadListCtrl::OnSetPriority( wxCommandEvent& event )
 
 void CDownloadListCtrl::OnSwapSources( wxCommandEvent& event )
 {
-	ItemList files = GetSelectedItems( this, itFILES );
+	ItemList files = ::GetSelectedItems( this, itFILES );
 
 	for ( ItemList::iterator it = files.begin(); it != files.end(); ++it ) {
 		CPartFile* file = (CPartFile*)(*it)->value;
@@ -675,7 +675,7 @@ void CDownloadListCtrl::OnSwapSources( wxCommandEvent& event )
 
 void CDownloadListCtrl::OnSetCategory( wxCommandEvent& event )
 {
-	ItemList files = GetSelectedItems( this, itFILES );
+	ItemList files = ::GetSelectedItems( this, itFILES );
 
 	for ( ItemList::iterator it = files.begin(); it != files.end(); ++it ) {
 		CPartFile* file = (CPartFile*)(*it)->value;
@@ -689,7 +689,7 @@ void CDownloadListCtrl::OnSetCategory( wxCommandEvent& event )
 
 void CDownloadListCtrl::OnSetStatus( wxCommandEvent& event )
 {
-	ItemList files = GetSelectedItems( this, itFILES );
+	ItemList files = ::GetSelectedItems( this, itFILES );
 
 	for ( ItemList::iterator it = files.begin(); it != files.end(); ++it ) {
 		CPartFile* file = (CPartFile*)(*it)->value;
@@ -720,7 +720,7 @@ void CDownloadListCtrl::OnClearCompleted( wxCommandEvent& WXUNUSED(event) )
 
 void CDownloadListCtrl::OnGetED2KLink( wxCommandEvent& event )
 {
-	ItemList files = GetSelectedItems( this, itFILES );
+	ItemList files = ::GetSelectedItems( this, itFILES );
 
 	wxString URIs;
 
@@ -741,7 +741,7 @@ void CDownloadListCtrl::OnGetED2KLink( wxCommandEvent& event )
 
 void CDownloadListCtrl::OnGetFeedback( wxCommandEvent& WXUNUSED(event) )
 {
-	ItemList files = GetSelectedItems( this, itFILES );
+	ItemList files = ::GetSelectedItems( this, itFILES );
 
 	wxString feed;
 
@@ -766,7 +766,7 @@ void CDownloadListCtrl::OnGetFeedback( wxCommandEvent& WXUNUSED(event) )
 
 void CDownloadListCtrl::OnGetRazorStats( wxCommandEvent& WXUNUSED(event) )
 {
-	ItemList files = GetSelectedItems( this, itFILES );
+	ItemList files = ::GetSelectedItems( this, itFILES );
 
 	if ( files.size() == 1 ) {
 		CPartFile* file = (CPartFile*)files.front()->value;
@@ -778,7 +778,7 @@ void CDownloadListCtrl::OnGetRazorStats( wxCommandEvent& WXUNUSED(event) )
 
 void CDownloadListCtrl::OnViewFileInfo( wxCommandEvent& WXUNUSED(event) )
 {
-	ItemList files = GetSelectedItems( this, itFILES );
+	ItemList files = ::GetSelectedItems( this, itFILES );
 
 	if ( files.size() == 1 ) {
 		CPartFile* file = (CPartFile*)files.front()->value;
@@ -791,7 +791,7 @@ void CDownloadListCtrl::OnViewFileInfo( wxCommandEvent& WXUNUSED(event) )
 
 void CDownloadListCtrl::OnViewFileComments( wxCommandEvent& WXUNUSED(event) )
 {
-	ItemList files = GetSelectedItems( this, itFILES );
+	ItemList files = ::GetSelectedItems( this, itFILES );
 
 	if ( files.size() == 1 ) {
 		CPartFile* file = (CPartFile*)files.front()->value;
@@ -804,7 +804,7 @@ void CDownloadListCtrl::OnViewFileComments( wxCommandEvent& WXUNUSED(event) )
 
 void CDownloadListCtrl::OnPreviewFile( wxCommandEvent& WXUNUSED(event) )
 {
-	ItemList files = GetSelectedItems( this, itFILES );
+	ItemList files = ::GetSelectedItems( this, itFILES );
 
 	if ( files.size() == 1 ) {
 		PreviewFile( (CPartFile*)files.front()->value );
@@ -814,7 +814,7 @@ void CDownloadListCtrl::OnPreviewFile( wxCommandEvent& WXUNUSED(event) )
 
 void CDownloadListCtrl::OnFakeCheckFile( wxCommandEvent& event )
 {
-	ItemList files = GetSelectedItems( this, itFILES );
+	ItemList files = ::GetSelectedItems( this, itFILES );
 
 	if ( files.size() == 1 ) {
 		CPartFile* file = (CPartFile*)files.front()->value;
@@ -833,7 +833,7 @@ void CDownloadListCtrl::OnFakeCheckFile( wxCommandEvent& event )
 
 void CDownloadListCtrl::OnSwapSource( wxCommandEvent& WXUNUSED(event) )
 {
-	ItemList sources = GetSelectedItems( this, itSOURCES );
+	ItemList sources = ::GetSelectedItems( this, itSOURCES );
 
 	for ( ItemList::iterator it = sources.begin(); it != sources.end(); ++it ) {
 		CPartFile* file = (CPartFile*)(*it)->owner;
@@ -846,7 +846,7 @@ void CDownloadListCtrl::OnSwapSource( wxCommandEvent& WXUNUSED(event) )
 
 void CDownloadListCtrl::OnViewFiles( wxCommandEvent& WXUNUSED(event) )
 {
-	ItemList sources = GetSelectedItems( this, itSOURCES );
+	ItemList sources = ::GetSelectedItems( this, itSOURCES );
 
 	if ( sources.size() == 1 ) {
 		CUpDownClient* source = (CUpDownClient*)sources.front()->value;
@@ -859,7 +859,7 @@ void CDownloadListCtrl::OnViewFiles( wxCommandEvent& WXUNUSED(event) )
 void CDownloadListCtrl::OnAddFriend( wxCommandEvent& WXUNUSED(event) )
 {
 #ifndef CLIENT_GUI
-	ItemList sources = GetSelectedItems( this, itSOURCES );
+	ItemList sources = ::GetSelectedItems( this, itSOURCES );
 
 	for ( ItemList::iterator it = sources.begin(); it != sources.end(); ++it ) {
 		CUpDownClient* source = (CUpDownClient*)(*it)->value;
@@ -873,7 +873,7 @@ void CDownloadListCtrl::OnAddFriend( wxCommandEvent& WXUNUSED(event) )
 void CDownloadListCtrl::OnSendMessage( wxCommandEvent& WXUNUSED(event) )
 {
 #ifndef CLIENT_GUI
-	ItemList sources = GetSelectedItems( this, itSOURCES );
+	ItemList sources = ::GetSelectedItems( this, itSOURCES );
 
 	if ( sources.size() == 1 ) {
 		CUpDownClient* source = (CUpDownClient*)(sources.front())->value;
@@ -890,7 +890,7 @@ void CDownloadListCtrl::OnSendMessage( wxCommandEvent& WXUNUSED(event) )
 
 void CDownloadListCtrl::OnViewClientInfo( wxCommandEvent& WXUNUSED(event) )
 {
-	ItemList sources = GetSelectedItems( this, itSOURCES );
+	ItemList sources = ::GetSelectedItems( this, itSOURCES );
 
 	if ( sources.size() == 1 ) {
 		CUpDownClient* source = (CUpDownClient*)(sources.front())->value;

@@ -440,14 +440,14 @@ void CServerListCtrl::OnPriorityChange( wxCommandEvent& event )
 			return;
 	}
 
-	int pos = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-	while ( pos != -1 ) {
-		CServer* server = (CServer*)GetItemData(pos);
+	
+	ItemDataList items = GetSelectedItems();
+	
+	for ( int i = 0; i < items.size(); ++i ) {
+		CServer* server = (CServer*)items[ i ];
 		
 		server->SetPreference( priority );
-		RefreshServer( server );
-
-		pos = GetNextItem( pos, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+		RefreshServer( server );	
 	}
 }
 
@@ -456,20 +456,22 @@ void CServerListCtrl::OnStaticChange( wxCommandEvent& event )
 {
 	bool isStatic = ( event.GetId() == MP_ADDTOSTATIC );
 
-	int pos = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-	while ( pos != -1 ) {
-		CServer* server = (CServer*)GetItemData(pos);
-		
+	ItemDataList items = GetSelectedItems();
+	
+	for ( int i = 0; i < items.size(); ++i ) {
+		CServer* server = (CServer*)items[ i ];
+
 		// Only update items that have the wrong setting
 		if ( server->IsStaticMember() != isStatic ) {
-			if ( !SetStaticServer( server, isStatic ) )
+			if ( !SetStaticServer( server, isStatic ) ) {
+				wxASSERT( false );
+
 				return;
+			}
 				
 			server->SetIsStaticMember( isStatic );
 			RefreshServer( server );
 		}
-	
-		pos = GetNextItem( pos, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	}
 }
 
