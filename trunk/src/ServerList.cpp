@@ -852,8 +852,12 @@ bool CServerList::SaveServermetToFile()
 	char* oldservermet = new char[strlen(app_prefs->GetAppDir())+20];
 	sprintf(curservermet,"%sserver.met",app_prefs->GetAppDir());
 	sprintf(oldservermet,"%sserver_met.old",app_prefs->GetAppDir());
-	wxRemoveFile(oldservermet);
-	wxRenameFile(curservermet,oldservermet);
+	if ( wxFileExists(oldservermet) ) {
+		wxRemoveFile(oldservermet);
+	}
+	if ( wxFileExists(curservermet) ) {
+		wxRenameFile(curservermet,oldservermet);
+	}
 	wxRenameFile(newservermet,curservermet);
 	delete[] oldservermet;
 	delete[] curservermet;
