@@ -298,7 +298,7 @@ bool CFile::Close() const
 {
 
 	#ifdef __WXMAC__
-		AddLogLineM(false,wxString(wxT("Closing file ")) + fFilePath + wxString::Format(wxT(" with file descriptor %u"),fd));
+		AddLogLineM(false,wxString(wxT("Closing file ")) + fFilePath + wxString::Format(wxT(" with file descriptor %u"),m_fd));
 	#endif
 
 	if ( IsOpened() ) {
