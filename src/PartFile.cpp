@@ -3619,7 +3619,8 @@ CPartFile::CPartFile(CEC_PartFile_Tag *tag)
 	m_nFileSize = tag->SizeFull();
     m_iPartCount = (m_nFileSize + (PARTSIZE - 1)) / PARTSIZE;
     status = tag->FileStatus();
-    
+	m_showSources = false;
+	
     // is it ok ?
     m_stopped = 0;
     
