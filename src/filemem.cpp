@@ -131,8 +131,10 @@ off_t CMemFile::ReadRaw(void* buf,off_t length)
   if(length==0) 
     return 0;
   // dont' read over buffer end
-  if(fPosition>fFileSize)
-    return 0;
+  if (fPosition>fFileSize) {
+		throw CInvalidPacket("short packet on read (corrupted tag?)");
+	  	return 0;
+  }
   unsigned int readlen=length;
   if(length+fPosition>fFileSize)
     readlen=fFileSize-fPosition;

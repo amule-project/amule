@@ -255,26 +255,6 @@ void CSearchList::ShowResults( uint32 nSearchID){
 	UngetSearchListControl(outputwnd);
 }
 
-// Ok, nobody knows why is this here, so disabling it until someone needs it.
-#if 0
-	void CSearchList::RemoveResults( CSearchFile* todel ){
-		for (POSITION pos = list.GetHeadPosition(); pos !=0;list.GetNext(pos)){
-			if( (CSearchFile*)list.GetAt(pos) == todel ){
-			// this should also be routed to the selected page only
-			CMuleNotebook* nb=(CMuleNotebook*)theApp.amuledlg->searchwnd->FindWindowById(ID_NOTEBOOK);
-			if(nb->GetSelection()==-1)
-			return;
-			CSearchListCtrl* ctrl=(CSearchListCtrl*)nb->FindWindowById(ID_SEARCHLISTCTRL,nb->GetPage(nb->GetSelection()));
-			//theApp.amuledlg->searchwnd->searchlistctrl->RemoveResult( todel );
-				ctrl->RemoveResult(todel);
-				list.RemoveAt(pos);
-				delete todel;
-				return;
-			}
-		}
-	}
-#endif
-
 void CSearchList::NewSearch(CString resTypes, uint16 nSearchID){
 	resultType=resTypes;
 	m_nCurrentSearch = nSearchID;
@@ -294,8 +274,9 @@ uint16 CSearchList::ProcessSearchanswer(char* in_packet, uint32 size, CUpDownCli
 	{
 		uint32 results;
 		// Why? Emule don't catch anything. I assume it's safe not to do that.
-//		if ( 4 != packet->Read(&results,4) )
-//			throw CInvalidPacket("short packet reading search result count");
+		if ( 4 != packet->Read(results) ) {
+			throw CInvalidPacket("short packet reading search result count");
+		}	
 		uint32 mySearchID=( (Sender != NULL)? (uint32)Sender : m_nCurrentSearch);
 		foundFilesCount.SetAt(mySearchID,0);
 
@@ -307,14 +288,21 @@ uint16 CSearchList::ProcessSearchanswer(char* in_packet, uint32 size, CUpDownCli
 			}
 		}
 		catch ( CStrangePacket )
-		{ }
+		{
+			printf("Strange search result on packet\n");
+		}
+		catch ( CInvalidPacket )
+		{
+			printf("Invalid search result on packet\n");
+		}
+		
 	}
 	catch ( CInvalidPacket e )
 	{
-#if 0
+
 		printf("Invalid search result packet: %s\n", e.what());
-		HexDump(in_packet, size);
-#endif
+		DumpMem(in_packet, size);
+
 	}
 
 	packet->Close();
