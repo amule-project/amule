@@ -29,6 +29,12 @@
 
 #include <deque>
 
+// If wx version is less than 2.5.2, we need this defined. This new flag 
+// is needed to ensure the old behaviour of sizers.
+#if !wxCHECK_VERSION(2,5,2)
+	#define wxFIXED_MINSIZE 0
+#endif
+
 // __VA_ARGS__ is not ansi standard 
 void AddDebugLogLineF(bool addtostatus, const wxChar *line, ...);
 void AddLogLineF(bool addtostatus, const wxChar *line, ...);
