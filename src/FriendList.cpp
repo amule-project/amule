@@ -19,7 +19,7 @@
 
 #include <wx/utils.h>
 
-#include "CamuleAppBase.h"	// Needed for theApp
+#include "amule.h"			// Needed for theApp
 #include "FriendList.h"		// Interface declarations.
 #include "FriendListCtrl.h"	// Needed for CFriendListCtrl
 #include "updownclient.h"	// Needed for CUpDownClient

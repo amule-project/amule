@@ -23,7 +23,7 @@
 #include "AddFileThread.h"	// Interface declarations
 #include "otherfunctions.h"	// Needed for nstrdup
 #include "opcodes.h"		// Needed for TM_HASHTHREADFINISHED
-#include "CamuleAppBase.h"	// Needed for theApp
+#include "amule.h"			// Needed for theApp
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "KnownFile.h"		// Needed for CKnownFile
 

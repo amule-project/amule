@@ -47,7 +47,7 @@
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "GetTickCount.h"	// Needed for GetTickCount
 #include "ClientCredits.h"	// Interface declarations
-#include "CamuleAppBase.h"	// Needed for theApp
+#include "amule.h"			// Needed for theApp
 #include "SafeFile.h"		// Needed for CSafeFile
 #include "otherfunctions.h"	// Needed for GetTickCount
 #include "sockets.h"

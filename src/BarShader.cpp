@@ -25,7 +25,7 @@
 
 #include "BarShader.h"		// Interface declarations.
 #include "Preferences.h"	// Needed for CPreferences
-#include "CamuleAppBase.h"	// Needed for theApp
+#include "amule.h"			// Needed for theApp
 
 #ifndef M_PI_2
 #define M_PI_2     1.57079632679489661923

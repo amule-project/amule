@@ -22,7 +22,7 @@
 
 #include "UploadListCtrl.h"	// Interface declarations
 #include "otherfunctions.h"	// Needed for CastItoXBytes
-#include "CamuleAppBase.h"	// Needed for theApp
+#include "amule.h"			// Needed for theApp
 #include "TransferWnd.h"	// Needed for CTransferWnd
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "ClientDetailDialog.h"	// Needed for CClientDetailDialog

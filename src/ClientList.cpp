@@ -17,7 +17,7 @@
 //along with this program; if not, write to the Free Software
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-#include "CamuleAppBase.h"	// Needed for theApp
+#include "amule.h"			// Needed for theApp
 #include "ClientList.h"		// Interface declarations.
 #include "ListenSocket.h"	// Needed for CClientReqSocket
 #include "DownloadQueue.h"	// Needed for CDownloadQueue

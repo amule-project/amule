@@ -36,7 +36,7 @@
 #include "Preferences.h"	// Needed for CPreferences
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "CString.h"		// Needed for CString
-#include "CamuleAppBase.h"	// Needed for theApp
+#include "amule.h"			// Needed for theApp
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"		// Needed for VERSION

@@ -45,7 +45,7 @@
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "opcodes.h"		// Needed for OP_EMULEPROT
 #include "amuleDlg.h"		// Needed for CamuleDlg
-#include "CamuleAppBase.h"	// Needed for theApp
+#include "amule.h"			// Needed for theApp
 
 // CClientUDPSocket
 #define ID_SOKETTI 7772

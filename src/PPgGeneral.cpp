@@ -27,7 +27,6 @@
 #include "PPgGeneral.h"		// Interface declarations.
 #include "Preferences.h"	// Needed for CPreferences
 #include "amuleDlg.h"		// Needed for CamuleDlg
-#include "CamuleAppBase.h"	// Needed for theApp
 #include "muuli_wdr.h"		// Needed for PreferencesGeneralTab
 #include "amule.h"		// Needed for Localize_mule
 

@@ -45,7 +45,7 @@
 #include "SharedFileList.h"	// Needed for CSharedFileList
 #include "otherfunctions.h"	// Needed for MakeFoldername
 #include "Preferences.h"	// Needed for CPreferences
-#include "CamuleAppBase.h"	// Needed for theApp
+#include "amule.h"			// Needed for theApp
 #include "muuli_wdr.h"		// Needed for CategoriesEditWindow
 #include "color.h"		// Needed for RGB, GetColour, GetRValue, GetGValue and GetBValue
 

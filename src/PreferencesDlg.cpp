@@ -20,7 +20,7 @@
 
 #include "PreferencesDlg.h"	// Interface declarations
 #include "Preferences.h"	// Needed for CPreferences
-#include "CamuleAppBase.h"	// Needed for theApp
+#include "amule.h"			// Needed for theApp
 #include "PPgGuiTweaks.h"	// Needed for CPPgGuiTweaks
 #include "PPgSourcesDropping.h"	// Needed for CPPgSourcesDropping
 #include "PPgTweaks.h"		// Needed for CPPgTweaks

@@ -31,7 +31,7 @@
 #include "listctrl_gen.h"	// Needed for wxODListCtrl
 #include "PartFile.h"		// Needed for CPartFile
 #include "SharedFileList.h"	// Needed for CSharedFileList
-#include "CamuleAppBase.h"	// Needed for theApp
+#include "amule.h"			// Needed for theApp
 
 // CSharedFilesWnd dialog
 #define GetDlgItem(X) (wxStaticCast(wxWindow::FindWindowById((X)),wxStaticText))

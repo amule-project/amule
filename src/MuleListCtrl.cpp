@@ -25,7 +25,7 @@
 
 #include "MuleListCtrl.h"	// Interface declarations
 #include "opcodes.h"		// Needed for MP_LISTCOL_1
-#include "CamuleAppBase.h"	// Needed for theApp
+#include "amule.h"			// Needed for theApp
 
 #if 0
 #define MLC_BLEND(A, B, X) ((A + B * (X-1) + ((X+1)/2)) / X)

@@ -27,7 +27,7 @@
 
 #include "PPgDirectories.h"	// Interface declarations
 #include "SharedFileList.h"	// Needed for CSharedFileList
-#include "CamuleAppBase.h"	// Needed for theApp
+#include "amule.h"			// Needed for theApp
 #include "DirectoryTreeCtrl.h"	// Needed for CDirectoryTreeCtrl
 #include "Preferences.h"	// Needed for CPreferences
 #include "muuli_wdr.h"		// Needed for PreferencesDirectoriesTab

@@ -24,7 +24,7 @@
 #include "IPFilter.h"		// Interface declarations.
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "Preferences.h"	// Needed for CPreferences
-#include "CamuleAppBase.h"	// Needed for theApp
+#include "amule.h"			// Needed for theApp
 
 #include <wx/arrimpl.cpp> // this is a magic incantation which must be done!
 

@@ -28,7 +28,7 @@
 #include "PPgConnection.h"	// Interface declarations
 #include "StatisticsDlg.h"	// Needed for CStatisticsDlg
 #include "amuleDlg.h"		// Needed for CamuleDlg
-#include "CamuleAppBase.h"	// Needed for theApp
+#include "amule.h"			// Needed for theApp
 #include "opcodes.h"		// Needed for UNLIMITED
 #include "Preferences.h"	// Needed for CPreferences
 #include "CString.h"	// Needed for CString
