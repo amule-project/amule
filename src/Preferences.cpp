@@ -255,8 +255,9 @@ CPreferences::CPreferences()
 	wxTextFile sdirfile(theApp.ConfigDir + wxT("shareddir.dat"));
 	if( sdirfile.Exists() && sdirfile.Open() ) {
 		if (sdirfile.GetLineCount()) {
-			for (wxString str = sdirfile.GetFirstLine(); !sdirfile.Eof(); str = sdirfile.GetNextLine() ) {
-    				shareddir_list.Add(str);
+			shareddir_list.Add(sdirfile.GetFirstLine());				
+			while (!sdirfile.Eof()) {
+				shareddir_list.Add(sdirfile.GetNextLine());
 			}
 		}
 		sdirfile.Close();
