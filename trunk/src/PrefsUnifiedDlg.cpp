@@ -43,7 +43,7 @@
 #include <wx/config.h>
 #include <wx/tokenzr.h>
 
-#include "amule.h"			// Needed for theApp
+#include "amule.h"		// Needed for theApp
 #include "otherfunctions.h"	// Needed for MakeFoldername
 #include "PrefsUnifiedDlg.h"
 #include "CTypedPtrList.h"	// Needed for CList
@@ -101,28 +101,28 @@ public:
 			StoreDlgValue(); 
 	}
 	
-	virtual void SetDlgValue() 				{}
-	virtual void SetPrevValue()				{}
+	virtual void SetDlgValue() 			{}
+	virtual void SetPrevValue()			{}
 	virtual void RestorePrevValue()			{}
 	virtual void StoreDlgValue()			{}
-	virtual bool WasChanged()				{ return false; }
-	virtual void SetWxControl(wxControl *pc){}
+	virtual bool WasChanged()			{ return false; }
+	virtual void SetWxControl(wxControl *pc)	{}
 		
-	int Id() 								{ return id; }
-	virtual int GetMemValue()				{ return 0; }
-	virtual wxString GetMemStringValue()	{ return wxT(""); }
+	int Id() 					{ return id; }
+	virtual int GetMemValue()			{ return 0; }
+	virtual wxString GetMemStringValue()		{ return wxT(""); }
 	virtual void SetMemValue(int val)		{}
-	virtual int GetCtrlValue()				{ return 0; }
+	virtual int GetCtrlValue()			{ return 0; }
 	virtual void SetCtrlValue(int val)		{}
-	virtual void SetCtrlValue(wxString str)	{}
-	virtual void SetCtrlRange(int iMin, int iMax) {}
+	virtual void SetCtrlValue(wxString str)		{}
+	virtual void SetCtrlRange(int iMin, int iMax) 	{}
 	virtual int GetDefaultValue()			{ return 0; }
-	virtual int GetPrevValue()				{ return 0; }
-	virtual int GetCtrlCount()				{ wxASSERT(false); return 0;}
+	virtual int GetPrevValue()			{ return 0; }
+	virtual int GetCtrlCount()			{ wxASSERT(false); return 0;}
 
-	void Propagate()						{ if (prseLink!=NULL) prseLink->SetCtrlValue(GetCtrlValue()); }
-	void SetLink(Rse *prse)					{ prseLink = prse;}
-	virtual int IdLinkedTo()				{ return 0; }
+	void Propagate() { if (prseLink!=NULL) prseLink->SetCtrlValue(GetCtrlValue()); }
+	void SetLink(Rse *prse)				{ prseLink = prse;}
+	virtual int IdLinkedTo()			{ return 0; }
 		
 	virtual void SetEnabled(bool Enable) {
 		((wxTextCtrl*)pctrl)->Enable(Enable);		
@@ -130,16 +130,16 @@ public:
 	
 protected:
 	enum wxcType { wxcNone, wxcCheck, wxcSlider, wxcSpin, wxcText, wxcChoice, wxcStatic, 
-					wxcButton, wxcRadioButton, wxcRadioBox };	
+		wxcButton, wxcRadioButton, wxcRadioBox };	
 
 	Rse()  {}
 
-	int			id;				// item ID in the prefs dlg
+	int		id;			// item ID in the prefs dlg
 	wxString	strName;		// name of item in the ini file
 	wxString	szSection;		// (optional) section in the ini file
 	wxControl	*pctrl;			// pointer to wxControl in dlg
 	wxcType		wxc;			// the type of control
-	Rse			*prseLink;		// points to a linked dlg item, e.g. a dynamic label
+	Rse		*prseLink;		// points to a linked dlg item, e.g. a dynamic label
 };
 
 
@@ -158,11 +158,11 @@ public:
 		ini.Write( wxT("/") + szSection + wxT("/") + strName, *pbSet );
 	}
 	
-	virtual void SetDlgValue() 				{ SetCtrlValue(*pbSet);  Propagate(); }
-	virtual void SetPrevValue()				{ bPrev = *pbSet; }
+	virtual void SetDlgValue() 			{ SetCtrlValue(*pbSet);  Propagate(); }
+	virtual void SetPrevValue()			{ bPrev = *pbSet; }
 	virtual void RestorePrevValue() 		{ *pbSet = bPrev; }
 	virtual void StoreDlgValue() 			{ *pbSet = GetCtrlValue(); }
-	virtual bool WasChanged()				{ return (*pbSet != bPrev); }
+	virtual bool WasChanged()			{ return (*pbSet != bPrev); }
 	
 	virtual void SetWxControl(wxControl *pc)
 	{ 
@@ -181,11 +181,11 @@ public:
 		((wxCheckBox *)pctrl)->SetValue( val ); 
 	}
 	
-	virtual int GetMemValue()				{ return *pbSet; }
+	virtual int GetMemValue()			{ return *pbSet; }
 	virtual void SetMemValue(int val)		{ *pbSet = (val != 0); }
 	
 	virtual int GetDefaultValue()			{ return bDef; }
-	virtual int GetPrevValue()				{ return bPrev; }
+	virtual int GetPrevValue()			{ return bPrev; }
 	
 private:
 	bool	*pbSet;
@@ -231,14 +231,14 @@ public:
 	}
 	
 	virtual void RestorePrevValue() 		{ WriteMem(iPrev); }
-	virtual void SetPrevValue()				{ iPrev = ReadMem(); }
-	virtual void SetDlgValue() 				{ SetCtrlValue(ReadMem());  Propagate(); }
+	virtual void SetPrevValue()			{ iPrev = ReadMem(); }
+	virtual void SetDlgValue() 			{ SetCtrlValue(ReadMem());  Propagate(); }
 	virtual void StoreDlgValue() 			{ WriteMem(GetCtrlValue()); }
-	virtual bool WasChanged()				{ return (ReadMem() != iPrev); }
-	virtual int GetMemValue()				{ return ReadMem(); }
+	virtual bool WasChanged()			{ return (ReadMem() != iPrev); }
+	virtual int GetMemValue()			{ return ReadMem(); }
 	virtual void SetMemValue(int val)		{ WriteMem(val); }
 	virtual int GetDefaultValue()			{ return iDef; }
-	virtual int GetPrevValue()				{ return iPrev; }
+	virtual int GetPrevValue()			{ return iPrev; }
 	
 	virtual int GetCtrlValue()
 	{
@@ -346,7 +346,7 @@ private:
 		}
 	}
 
-	int			cb;
+	int		cb;
 	void		*piSet;
 	int32		iDef;
 	int32		iPrev;
@@ -361,11 +361,11 @@ class RseDynLabel: public Rse {
 
 public:
 	RseDynLabel(int ID_label, 		// dlg ID of wxStaticText
-			  int ID_ctrl, 			// dlg ID of linked control
-			  int iMultiplier, 		// ctrl val * iMultiplier = output in string
+			  int ID_ctrl, 		// dlg ID of linked control
+			  int iMultiplier, 	// ctrl val * iMultiplier = output in string
 			  wxString strSeveral, 	// format string to use for val*multiplier > 1
-			  wxString strOne,	 	//							ditto == 1 ("" if not used)
-			  wxString strZero)		//							ditto == 0 ("" if not used)
+			  wxString strOne,	// ditto == 1 ("" if not used)
+			  wxString strZero)	// ditto == 0 ("" if not used)
 		: Rse(ID_label, wxT("label")), idLinkedTo(ID_ctrl), iMult(iMultiplier), 
 			strSev(strSeveral), str1(strOne), str0(strZero)  {}
 				
@@ -395,7 +395,7 @@ public:
 	
 private:
 	int	idLinkedTo;
-	int iMult;
+	int	iMult;
 	wxString strSev;
 	wxString str1;
 	wxString str0;
