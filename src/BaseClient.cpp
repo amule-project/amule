@@ -1526,7 +1526,7 @@ void CUpDownClient::ReGetClientSoft()
 				} else {
 					m_clientVerString = wxT("xMule");
 				}
-				if (GetMuleVersion() > 0x26) {
+				if ((GetMuleVersion() > 0x26) && (GetMuleVersion() != 0x99)) {
 					m_clientVerString += wxString::Format(_(" (Fake eMule version %x)"),GetMuleVersion());
 				}
 				break;
@@ -1621,6 +1621,12 @@ void CUpDownClient::ReGetClientSoft()
 			
 			switch (m_clientSoft) {
 				case SO_AMULE:
+				case SO_LXMULE: 
+					// Kry - xMule started sending correct version tags on 1.9.1b.
+					// It only took them 4 months, and being told by me and the 
+					// eMule+ developers, so I think they're slowly getting smarter.
+					// They are based on our implementation, so we use the same format
+					// for the version string.
 					m_clientVerString +=  wxString::Format(wxT(" v%u.%u.%u"), nClientMajVersion, nClientMinVersion, nClientUpVersion);						
 					break;
 				case SO_LPHANT:
