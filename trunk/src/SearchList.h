@@ -53,8 +53,7 @@ public:
 	uint32	GetClientServerIP() const		{ return m_nClientServerIP; }
 	void	SetClientServerIP(uint32 uIP)   	{ m_nClientServerIP = uIP; }
 	uint16	GetClientServerPort() const		{ return m_nClientServerPort; }
-	void		SetClientServerPort(uint16 nPort) { m_nClientServerPort = nPort; }
-	
+	void	SetClientServerPort(uint16 nPort)	{ m_nClientServerPort = nPort; }
 	CSearchFile* GetListParent() const		{ return m_list_parent; }
 	
 	struct SClient {
