@@ -68,6 +68,9 @@ Version 2.0.0
 		* Modified RseStringEncrypted. Now we encrypt passwd just (and only)
 		  when changing them in prefs' dialog. So, now we use always encrypted
 		  passwords, noone in clear neither in memory or disk.
+		* Check if we're able to use TCP ports (lacks what todo if not but we
+		  can accept EC. do nothing atm = EC disabled).
+		  Added "AMULEDLG SHOW" to EC available commands.
 		
 	neiro:
 		* Helped with OpenBSD port by providing a workbench
