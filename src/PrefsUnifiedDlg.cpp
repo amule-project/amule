@@ -78,9 +78,9 @@ class Rse: public wxObject {  // Remembered Settings Element - root class
 friend class PrefsUnifiedDlg;
 friend class RseInt;
 public:
-	Rse(int ID, char * szIniName, char * szIniSection=NULL) 
+	Rse(int ID, const wxString& szIniName, const wxString& szIniSection=wxT("")) 
 		: id(ID), strName(szIniName), szSection(szIniSection), pctrl(NULL), wxc(wxcNone), prseLink(NULL)  {}
-	Rse(char * szIniName, char * szIniSection=NULL) 
+	Rse(const wxString& szIniName, const wxString& szIniSection=wxT("")) 
 		: id(0), strName(szIniName), szSection(szIniSection), pctrl(NULL), wxc(wxcNone), prseLink(NULL)  {}
 	virtual ~Rse() {}
 
@@ -109,7 +109,7 @@ public:
 		
 	int Id() 								{ return id; }
 	virtual int GetMemValue()				{ return 0; }
-	virtual char* GetMemStringValue()	{ return NULL; }
+	virtual wxString GetMemStringValue()	{ return wxT(""); }
 	virtual void SetMemValue(int val)		{}
 	virtual int GetCtrlValue()				{ return 0; }
 	virtual void SetCtrlValue(int val)		{}
@@ -123,27 +123,6 @@ public:
 	void SetLink(Rse *prse)					{ prseLink = prse;}
 	virtual int IdLinkedTo()				{ return 0; }
 		
-	#ifdef __DEBUG__	
-	const char * GetIniName() 				{ return strName.c_str(); }
-
-	void CheckCtrlType()
-	{
-		if (pctrl == NULL)
-			printf("MISSING CONTROL for %s \n", GetIniName());
-		else if (wxc == wxcNone)
-			printf("unsupported wxControl type for item %s [ID=%i]\n", GetIniName(), id);
-//		else
-//			printf("found control of type %s for item %s  [ID=%i]\n", SzCtrlTypeName(), GetIniName(), id);
-	}
-
-	char * SzCtrlTypeName()
-	{
-		static char * aszWxc[] = { "unknown", "wxCheckBox", "wxSlider", "wxSpinCtrl", "wxTextCtrl", 
-								"wxChoice", "wxStaticText", "wxButton", "wxRadioButton" };
-		return aszWxc[wxc];
-	}
-	#endif
-	
 	virtual void SetEnabled(bool Enable) {
 		((wxTextCtrl*)pctrl)->Enable(Enable);		
 	}
@@ -167,14 +146,14 @@ protected:
 class RseBool: public Rse {
 // Handles all bool and pseudo-bool (int8 and uint8 used like bool) preference vars
 public:
-	RseBool(int ID, bool& bSetting, char * szIniName, bool bDefault, char * szIniSection)
+	RseBool(int ID, bool& bSetting, const wxString& szIniName, bool bDefault, const wxString& szIniSection)
 		: Rse(ID, szIniName, szIniSection), pbSet(&bSetting), bDef(bDefault)  {}
 
-	RseBool(int ID, sint8& bSetting, char * szIniName, bool bDefault, char * szIniSection)
+	RseBool(int ID, sint8& bSetting, const wxString& szIniName, bool bDefault, const wxString& szIniSection)
 		: Rse(ID, szIniName, szIniSection), pbSet((bool*)&bSetting), bDef(bDefault) 
 			{ wxASSERT(sizeof(bool)==sizeof(sint8)); }
 
-	RseBool(int ID, uint8& bSetting, char * szIniName, bool bDefault, char * szIniSection)
+	RseBool(int ID, uint8& bSetting, const wxString&  szIniName, bool bDefault, const wxString& szIniSection)
 		: Rse(ID, szIniName, szIniSection), pbSet((bool*)&bSetting), bDef(bDefault) 
 			{ wxASSERT(sizeof(bool)==sizeof(uint8)); }
 
@@ -246,28 +225,28 @@ private:
 class RseInt: public Rse {
 // Handles all signed and unsigned integer preference vars
 public:
-	RseInt(int ID, sint8& iSetting, char *szIniName, sint8 iDefault, char *szIniSection)
+	RseInt(int ID, sint8& iSetting, const wxString& szIniName, sint8 iDefault, const wxString& szIniSection)
 		: Rse(ID, szIniName, szIniSection), cb(sizeof(iSetting)), piSet(&iSetting), iDef(iDefault)  {}
 
-	RseInt(int ID, sint16& iSetting, char *szIniName, sint16 iDefault, char *szIniSection)
+	RseInt(int ID, sint16& iSetting, const wxString& szIniName, sint16 iDefault, const wxString& szIniSection)
 		: Rse(ID, szIniName, szIniSection), cb(sizeof(iSetting)), piSet(&iSetting), iDef(iDefault)  {}
 
-	RseInt(int ID, sint32& iSetting, char *szIniName, sint32 iDefault, char *szIniSection)
+	RseInt(int ID, sint32& iSetting, const wxString& szIniName, sint32 iDefault, const wxString& szIniSection)
 		: Rse(ID, szIniName, szIniSection), cb(sizeof(iSetting)), piSet(&iSetting), iDef(iDefault)  {}
 
-	RseInt(int ID, uint8& iSetting, char *szIniName, uint8 iDefault, char *szIniSection)
+	RseInt(int ID, uint8& iSetting, const wxString& szIniName, uint8 iDefault, const wxString& szIniSection)
 		: Rse(ID, szIniName, szIniSection), cb(sizeof(iSetting)), piSet(&iSetting), iDef(iDefault)  {}
 
-	RseInt(int ID, uint16& iSetting, char *szIniName, uint16 iDefault, char *szIniSection)
+	RseInt(int ID, uint16& iSetting, const wxString& szIniName, uint16 iDefault, const wxString& szIniSection)
 		: Rse(ID, szIniName, szIniSection), cb(sizeof(iSetting)), piSet(&iSetting), iDef(iDefault)  {}
 
-	RseInt(int ID, uint32& iSetting, char *szIniName, uint32 iDefault, char *szIniSection)
+	RseInt(int ID, uint32& iSetting, const wxString& szIniName, uint32 iDefault, const wxString& szIniSection)
 		: Rse(ID, szIniName, szIniSection), cb(sizeof(iSetting)), piSet(&iSetting), iDef(iDefault)  {}
 #ifdef __WXMSW__
-	RseInt(int ID, COLORREF& iSetting, char *szIniName, COLORREF iDefault, char *szIniSection)
+	RseInt(int ID, COLORREF& iSetting, const wxString& szIniName, COLORREF iDefault, const wxString& szIniSection)
 		: Rse(ID, szIniName, szIniSection), cb(sizeof(iSetting)), piSet(&iSetting), iDef(iDefault)  {}
 #endif
-//	RseInt(int ID, int& iSetting, char *szIniName, int32 iDefault, char *szIniSection)
+//	RseInt(int ID, int& iSetting, const wxString& szIniName, int32 iDefault, const wxString& szIniSection)
 //		: Rse(ID, szIniName, szIniSection), cb(sizeof(iSetting)), piSet(&iSetting), iDef(iDefault)  {}
 
 	virtual void LoadFromFile(wxConfigBase& ini) {
@@ -402,7 +381,7 @@ class RseRadio: public Rse {
 // provide a simpler interface).  All control access handled by parent RseInt.
 	
 public:
-	RseRadio(int ID, int ID_predecessor): Rse(ID, "radio follower", NULL), idPred(ID_predecessor)  {}
+	RseRadio(int ID, int ID_predecessor): Rse(ID, wxT("radio follower")), idPred(ID_predecessor)  {}
 		
 	virtual void SetWxControl(wxControl *pc)
 	{ 
@@ -431,7 +410,7 @@ public:
 			  wxString strSeveral, 	// format string to use for val*multiplier > 1
 			  wxString strOne,	 	//							ditto == 1 ("" if not used)
 			  wxString strZero)		//							ditto == 0 ("" if not used)
-		: Rse(ID_label, "label", NULL), idLinkedTo(ID_ctrl), iMult(iMultiplier), 
+		: Rse(ID_label, wxT("label")), idLinkedTo(ID_ctrl), iMult(iMultiplier), 
 			strSev(strSeveral), str1(strOne), str0(strZero)  {}
 				
 	virtual void SetWxControl(wxControl *pc)
@@ -444,16 +423,16 @@ public:
 	virtual void SetCtrlValue(int val)		
 	{
 		int i = val * iMult;
-		const char * sz;
+		wxString str;
 		
 		if (i == 0) 
-			sz = (strcmp(str0.c_str(), "") ? str0.c_str() : strSev.c_str());
+			str = (str0.IsEmpty()) ? str0 : strSev;
 		else if (i == 1)
-			sz = (strcmp(str1.c_str(), "") ? str1.c_str() : strSev.c_str());
+			str = (str1.IsEmpty()) ? str1 : strSev;
 		else
-			sz = strSev.c_str();
+			str = strSev.c_str();
 		
-		((wxStaticText*)pctrl)->SetLabel(wxString::Format(sz, i));
+		((wxStaticText*)pctrl)->SetLabel(wxString::Format(str, i));
 	}
 	
 	virtual int IdLinkedTo()	{ return idLinkedTo; }
@@ -471,7 +450,7 @@ private:
 class RseCounter: public Rse {
 // Used for long-term statistics counters, e.g. for total bytes received; no dlg use
 public:
-	RseCounter(uint64& iSetting, char * szIniName, char *szIniSection)
+	RseCounter(uint64& iSetting, const wxString&  szIniName, const wxString& szIniSection)
 		: Rse(szIniName, szIniSection), piSet(&iSetting)  {}
 
 	virtual void LoadFromFile(wxConfigBase& ini) { 
@@ -482,7 +461,7 @@ public:
 		*piSet = atoll(buffer);
 	}
 	virtual void SaveToFile(wxConfigBase& ini)		{ 
-		wxString str = wxString::Format("%llu",(unsigned long long)*piSet);
+		wxString str = wxString::Format(wxT("%llu"),(unsigned long long)*piSet);
 		
 		ini.Write( wxT("/") + szSection + wxT("/") + strName, str);
 	}
@@ -496,7 +475,7 @@ private:
 class RseString: public Rse {
 // all settable strings, e.g. name of video viewer
 public:
-	RseString(int ID, char * pchSetting, int cchMax, char * szIniName, char *szDefault, char *szIniSection)
+	RseString(int ID, char * pchSetting, int cchMax, const wxString&  szIniName, const wxString& szDefault, const wxString& szIniSection)
 		: Rse(ID, szIniName, szIniSection), pchSet(pchSetting), szDef(szDefault), cch(cchMax)  {}
 
 	virtual void LoadFromFile(wxConfigBase& ini) {
@@ -504,7 +483,7 @@ public:
 
 		buffer = ini.Read( wxT("/") + szSection + wxT("/") + strName, szDef);
 
-		snprintf(pchSet, cch, "%s", buffer.c_str() );
+		snprintf(pchSet, cch, "%s", unicode2char(buffer));
 	}
 	
 	virtual void SaveToFile(wxConfigBase& ini) {
@@ -528,10 +507,9 @@ public:
 	virtual void StoreDlgValue()			
 	{
 		wxString test = ((wxTextCtrl*)pctrl)->GetValue();
-		const char * sz = test.GetData();
-		bWasChanged = (strcmp(pchSet, sz) != 0);
+		bWasChanged =  test.Cmp( char2unicode( pchSet ) );
 		if (wxc==wxcText)
-			snprintf(pchSet, cch, "%s", sz);		
+			snprintf(pchSet, cch, "%s", unicode2char(test));		
 	}
 		
 	virtual bool WasChanged()					{ return bWasChanged; }
@@ -545,7 +523,7 @@ public:
 			wxc = wxcText; 
 	}
 	
-	char* GetMemStringValue() { wxASSERT(pchSet); return pchSet; }
+	wxString GetMemStringValue() { wxASSERT(pchSet); return pchSet; }
 	
 protected:
 	RseString() {};
@@ -564,8 +542,8 @@ class RseStringEncrypted: public RseString {
 // used for passwords, which should not appear in clear text on disk - no default value
 // the password will be encrypted on disk, in the clear in memory.
 public:
-	RseStringEncrypted(int ID, char * pchSetting, int cchMax, char * szIniName, char *szIniSection)
-		: RseString(ID, pchSetting, cchMax, szIniName, "", szIniSection)  {}
+	RseStringEncrypted(int ID, char * pchSetting, int cchMax, const wxString&  szIniName, const wxString& szIniSection)
+		: RseString(ID, pchSetting, cchMax, szIniName, wxT(""), szIniSection)  {}
 
 	//shakraw, when storing value, store it encrypted here (only if changed in prefs)
 	virtual void StoreDlgValue()
@@ -573,7 +551,7 @@ public:
 		const char * sz = ((wxTextCtrl*)pctrl)->GetValue().c_str();
 		bWasChanged = (strcmp(pchSet, sz) != 0);
 		if ((wxc==wxcText) && (bWasChanged))
-			snprintf(pchSet, cch, "%s", MD5Sum(wxT(sz)).GetHash().GetData());
+			snprintf(pchSet, cch, "%s", unicode2char(MD5Sum(wxT(sz)).GetHash()));
 	}
 	
 private:
@@ -586,7 +564,7 @@ class RseDirAssured: public RseString {
 // A special string: the name of a directory which will be created if it does not already exist
 // (used for Temp and Incoming directories) the name gets prepended with the app dir
 public:
-	RseDirAssured(int ID, char * pchSetting, const char * szAppDir, char * szIniName, char *szDefault, char *szIniSection)
+	RseDirAssured(int ID, char * pchSetting, const wxString&  szAppDir, const wxString&  szIniName, const wxString& szDefault, const wxString& szIniSection)
 		: RseString(ID, pchSetting, MAX_PATH, szIniName, szDefault, szIniSection), strAppDir(szAppDir)  {}
 		
 	virtual void LoadFromFile(wxConfigBase& ini)  {
@@ -594,13 +572,13 @@ public:
 
 		buffer = ini.Read( wxT("/") + szSection + wxT("/") + strName, strAppDir + szDef);
 
-		sprintf(pchSet, "%s", buffer.c_str() );
+		sprintf(pchSet, "%s", unicode2char(buffer) );
 		MakeFoldername(pchSet);
 	}
 	
 	void SelectDir()
 	{
-		wxString str = wxDirSelector(_("Choose a folder for ")+wxString(szDef), "");
+		wxString str = wxDirSelector(_("Choose a folder for ")+wxString(szDef), wxT(""));
 		if (!str.IsEmpty())
 			SetCtrlValue(str);
 	}
@@ -618,7 +596,7 @@ class RseColumns: public Rse {
 // behavior appears to rely on a bug in CIni::SerGet, which now is a feature - we need to keep 
 // doing it because we have always done it that way, and eMule does it that way.
 public:
-	RseColumns(int16 *piSetting, int count, char * szIniName, int16 iDefault, char * szIniSection)
+	RseColumns(int16 *piSetting, int count, const wxString&  szIniName, int16 iDefault, const wxString&  szIniSection)
 		: Rse(szIniName, szIniSection), piSet(piSetting), iDef(iDefault), cnt(count)  {}
 
 	virtual void LoadFromFile(wxConfigBase& ini) {
@@ -631,7 +609,7 @@ public:
 		
 		
 		int counter = 0;	
-		wxStringTokenizer tokenizer( buffer, "," );
+		wxStringTokenizer tokenizer( buffer, wxT(",") );
 		while ( tokenizer.HasMoreTokens() && ( counter < cnt ) )
 		{
     		wxString token = tokenizer.GetNextToken();
@@ -648,7 +626,7 @@ public:
 
 		for ( int i = 0; i < cnt; i++ ) {
 			if ( i ) 
-				buffer << ",";
+				buffer << wxT(",");
 
 			buffer << piSet[i];
 		}
@@ -716,260 +694,261 @@ Rse*	aprseColor[cntStatColors];  // this array helps in accessing stat colors th
 
 void PrefsUnifiedDlg::BuildItemList(Preferences_Struct *prefs, const char * appdir)  // gets called at init time
 {
-	listRse.Append(new Rse("Missing ID of dlg item in listRse"));  // LEAVE AT HEAD OF LIST - handles missing dlg IDs gracefully
+	listRse.Append(new Rse(wxT("Missing ID of dlg item in listRse")));  // LEAVE AT HEAD OF LIST - handles missing dlg IDs gracefully
 	
-	listRse.Append(new RseDirAssured(IDC_TEMPFILES, prefs->tempdir, appdir, "TempDir", "Temp", "eMule"));
-	listRse.Append(new RseString(IDC_NICK, prefs->nick, sizeof(prefs->nick), "Nick", "http://www.aMule.org", "eMule"));
-	listRse.Append(new RseDirAssured(IDC_INCFILES, prefs->incomingdir, appdir, "IncomingDir", "Incoming","eMule"));
+	listRse.Append(new RseDirAssured(IDC_TEMPFILES, prefs->tempdir, appdir, wxT("TempDir"), wxT("Temp"), wxT("eMule")));
+	listRse.Append(new RseString(IDC_NICK, prefs->nick, sizeof(prefs->nick), wxT("Nick"), wxT("http://www.aMule.org"), wxT("eMule")));
+	listRse.Append(new RseDirAssured(IDC_INCFILES, prefs->incomingdir, appdir, wxT("IncomingDir"), wxT("Incoming"),wxT("eMule")));
 
-	listRse.Append(prseMaxUp = new RseInt(IDC_MAXUP, prefs->maxupload, "MaxUpload", UNLIMITED, "eMule")); // see note in ForceUlDlRateCorrelation
-	listRse.Append(prseMaxDown = new RseInt(IDC_MAXDOWN, prefs->maxdownload, "MaxDownload", UNLIMITED, "eMule")); // ditto
+	listRse.Append(prseMaxUp = new RseInt(IDC_MAXUP, prefs->maxupload, wxT("MaxUpload"), UNLIMITED, wxT("eMule"))); // see note in ForceUlDlRateCorrelation
+	listRse.Append(prseMaxDown = new RseInt(IDC_MAXDOWN, prefs->maxdownload, wxT("MaxDownload"), UNLIMITED, wxT("eMule"))); // ditto
 
-	listRse.Append(new RseInt(IDC_SLOTALLOC, prefs->slotallocation, "SlotAllocation", 2, "eMule"));
-	listRse.Append(new RseInt(IDC_MAXCON, prefs->maxconnections, "MaxConnections", CPreferences::GetRecommendedMaxConnections(), "eMule"));
-	listRse.Append(new RseBool(IDC_REMOVEDEAD, prefs->deadserver, "RemoveDeadServer", 1, "eMule"));
-	listRse.Append(new RseInt(IDC_PORT, prefs->port, "Port", 4662, "eMule"));
-	listRse.Append(new RseInt(IDC_UDPPORT, prefs->udpport, "UDPPort", 4672, "eMule"));
-	listRse.Append(new RseBool(IDC_UDPDISABLE, prefs->UDPDisable, "UDPDisable", false, "eMule")); 		
-	listRse.Append(new RseInt(IDC_MAXSOURCEPERFILE, prefs->maxsourceperfile, "MaxSourcesPerFile", 300,"eMule"));
-	listRse.Append(new RseInt(IDC_LANGUAGE, prefs->languageID, "Language", 0,"eMule"));
+	listRse.Append(new RseInt(IDC_SLOTALLOC, prefs->slotallocation, wxT("SlotAllocation"), 2, wxT("eMule")));
+	listRse.Append(new RseInt(IDC_MAXCON, prefs->maxconnections, wxT("MaxConnections"), CPreferences::GetRecommendedMaxConnections(), wxT("eMule")));
+	listRse.Append(new RseBool(IDC_REMOVEDEAD, prefs->deadserver,wxT("RemoveDeadServer"), 1, wxT("eMule")));
+	listRse.Append(new RseInt(IDC_PORT, prefs->port, wxT("Port"), 4662, wxT("eMule")));
+	listRse.Append(new RseInt(IDC_UDPPORT, prefs->udpport, wxT("UDPPort"), 4672, wxT("eMule")));
+	listRse.Append(new RseBool(IDC_UDPDISABLE, prefs->UDPDisable, wxT("UDPDisable"), false, wxT("eMule"))); 		
+	listRse.Append(new RseInt(IDC_MAXSOURCEPERFILE, prefs->maxsourceperfile, wxT("MaxSourcesPerFile"), 300,wxT("eMule")));
+	listRse.Append(new RseInt(IDC_LANGUAGE, prefs->languageID, wxT("Language"), 0,wxT("eMule")));
 
-	listRse.Append(new RseInt(IDC_SEESHARE1, prefs->m_iSeeShares, "SeeShare", 2,"eMule"));
+	listRse.Append(new RseInt(IDC_SEESHARE1, prefs->m_iSeeShares, wxT("SeeShare"), 2,wxT("eMule")));
 	listRse.Append(new RseRadio(IDC_SEESHARE2, IDC_SEESHARE1));  // to be subsumed by wxRadioBox
 	listRse.Append(new RseRadio(IDC_SEESHARE3, IDC_SEESHARE2));  // to be subsumed by wxRadioBox
-	listRse.Append(new RseInt(IDC_TOOLTIPDELAY, prefs->m_iToolDelayTime, "ToolTipDelay", 1, "eMule"));
+	listRse.Append(new RseInt(IDC_TOOLTIPDELAY, prefs->m_iToolDelayTime, wxT("ToolTipDelay"), 1, wxT("eMule")));
 
-	listRse.Append(new RseInt(IDC_SLIDER, prefs->trafficOMeterInterval, "StatGraphsInterval", 3, "eMule"));
+	listRse.Append(new RseInt(IDC_SLIDER, prefs->trafficOMeterInterval, wxT("StatGraphsInterval"), 3, wxT("eMule")));
 	listRse.Append(new RseDynLabel(IDC_SLIDERINFO, IDC_SLIDER, 1, _("Update period: %i secs"), _("Update period: %i sec"), _("Update: Disabled")));
-	listRse.Append(new RseInt(IDC_SLIDER2, prefs->statsInterval, "statsInterval", 30, "eMule"));
+	listRse.Append(new RseInt(IDC_SLIDER2, prefs->statsInterval, wxT("statsInterval"), 30, wxT("eMule")));
 	listRse.Append(new RseDynLabel(IDC_SLIDERINFO2, IDC_SLIDER2, 1, _("Update period: %i secs"), _("Update period: %i sec"), _("Update: Disabled")));
 
-	listRse.Append(new RseInt(IDC_DOWNLOAD_CAP, prefs->maxGraphDownloadRate, "DownloadCapacity", 3, "eMule")); // see note in ForceUlDlRateCorrelation
-	listRse.Append(new RseInt(IDC_UPLOAD_CAP, prefs->maxGraphUploadRate, "UploadCapacity", 3, "eMule")); // ditto
-	listRse.Append(new RseInt(IDC_SERVERRETRIES, prefs->deadserverretries, "DeadServerRetry", 2, "eMule"));
+	listRse.Append(new RseInt(IDC_DOWNLOAD_CAP, prefs->maxGraphDownloadRate, wxT("DownloadCapacity"), 3, wxT("eMule"))); // see note in ForceUlDlRateCorrelation
+	listRse.Append(new RseInt(IDC_UPLOAD_CAP, prefs->maxGraphUploadRate, wxT("UploadCapacity"), 3, wxT("eMule"))); // ditto
+	listRse.Append(new RseInt(IDC_SERVERRETRIES, prefs->deadserverretries, wxT("DeadServerRetry"), 2, wxT("eMule")));
 
-	listRse.Append(new RseInt(IDC_SERVERKEEPALIVE, prefs->m_dwServerKeepAliveTimeoutMins, "ServerKeepAliveTimeout", 0, "eMule"));
+	listRse.Append(new RseInt(IDC_SERVERKEEPALIVE, prefs->m_dwServerKeepAliveTimeoutMins, wxT("ServerKeepAliveTimeout"), 0, wxT("eMule")));
 	listRse.Append(new RseDynLabel(IDC_SERVERKEEPALIVE_LABEL, IDC_SERVERKEEPALIVE, 1,
 		_("Server connection refresh interval %i mins"), _("Server connection refresh interval %i min"), _("Server connection refresh interval: Disabled")));
 
-	listRse.Append(new RseInt(0, prefs->splitterbarPosition, "SplitterbarPosition", 75, "eMule"));	// no GUI needed (window layout)
+	listRse.Append(new RseInt(0, prefs->splitterbarPosition, wxT("SplitterbarPosition"), 75, wxT("eMule")));	// no GUI needed (window layout)
 
 
-	listRse.Append(new RseInt(IDC_SLIDER4, prefs->statsMax, "VariousStatisticsMaxValue", 100, "eMule"));	
-	listRse.Append(new RseDynLabel(IDC_SLIDERINFO4, IDC_SLIDER4, 1, _("Connections Graph Scale: %i"), "", ""));
+	listRse.Append(new RseInt(IDC_SLIDER4, prefs->statsMax, wxT("VariousStatisticsMaxValue"), 100, wxT("eMule")));	
+	listRse.Append(new RseDynLabel(IDC_SLIDERINFO4, IDC_SLIDER4, 1, _("Connections Graph Scale: %i"), wxT(""), wxT("")));
 
-	listRse.Append(new RseInt(IDC_SLIDER3, prefs->statsAverageMinutes, "StatsAverageMinutes", 5, "eMule")); 
-	listRse.Append(new RseDynLabel(IDC_SLIDERINFO3, IDC_SLIDER3, 1, _("Time for running averages: %i mins"), "", ""));
+	listRse.Append(new RseInt(IDC_SLIDER3, prefs->statsAverageMinutes, wxT("StatsAverageMinutes"), 5, wxT("eMule"))); 
+	listRse.Append(new RseDynLabel(IDC_SLIDERINFO3, IDC_SLIDER3, 1, _("Time for running averages: %i mins"), wxT(""), wxT("")));
 
-	listRse.Append(new RseInt(IDC_MAXCON5SEC, prefs->MaxConperFive, "MaxConnectionsPerFiveSeconds",prefs->MaxConperFive, "eMule"));
+	listRse.Append(new RseInt(IDC_MAXCON5SEC, prefs->MaxConperFive, wxT("MaxConnectionsPerFiveSeconds"),prefs->MaxConperFive, wxT("eMule")));
 
-	listRse.Append(new RseBool(IDC_RECONN, prefs->reconnect, "Reconnect", true, "eMule"));
-	listRse.Append(new RseBool(IDC_SCORE, prefs->scorsystem, "Scoresystem", true, "eMule"));
-	listRse.Append(new RseBool(IDC_ICH, prefs->ICH, "ICH", true, "eMule"));
-	listRse.Append(new RseBool(IDC_AUTOSERVER, prefs->autoserverlist, "Serverlist", false, "eMule"));
+	listRse.Append(new RseBool(IDC_RECONN, prefs->reconnect, wxT("Reconnect"), true, wxT("eMule")));
+	listRse.Append(new RseBool(IDC_SCORE, prefs->scorsystem, wxT("Scoresystem"), true, wxT("eMule")));
+	listRse.Append(new RseBool(IDC_ICH, prefs->ICH, wxT("ICH"), true, wxT("eMule")));
+	listRse.Append(new RseBool(IDC_AUTOSERVER, prefs->autoserverlist, wxT("Serverlist"), false, wxT("eMule")));
 
-	listRse.Append(new RseString(0, prefs->m_szLRUServermetURL,sizeof(prefs->m_szLRUServermetURL), "LRUServermetURL", NULL, "eMule")); // no GUI yet
+	listRse.Append(new RseString(0, prefs->m_szLRUServermetURL,sizeof(prefs->m_szLRUServermetURL), wxT("LRUServermetURL"), wxT(""), wxT("eMule"))); // no GUI yet
 
-	listRse.Append(new RseBool(IDC_CHECK4UPDATE, prefs->updatenotify, "UpdateNotify", false, "eMule"));
-	listRse.Append(new RseBool(IDC_MINTRAY, prefs->mintotray, "MinToTray", false, "eMule"));
-	listRse.Append(new RseBool(IDC_UPDATESERVERCONNECT, prefs->addserversfromserver, "AddServersFromServer", true, "eMule"));
-	listRse.Append(new RseBool(IDC_UPDATESERVERCLIENT, prefs->addserversfromclient, "AddServersFromClient", true, "eMule"));
-	listRse.Append(new RseBool(IDC_SPLASHON, prefs->splashscreen, "Splashscreen", true, "eMule"));
-	listRse.Append(new RseBool(IDC_BRINGTOFOREGROUND, prefs->bringtoforeground, "BringToFront", true, "eMule"));
-	listRse.Append(new RseBool(IDC_DBLCLICK, prefs->transferDoubleclick, "TransferDoubleClick", true, "eMule"));
-	listRse.Append(new RseBool(IDC_BEEPER, prefs->beepOnError, "BeepOnError", true, "eMule"));
-	listRse.Append(new RseBool(IDC_EXIT, prefs->confirmExit, "ConfirmExit",false, "eMule"));
-	listRse.Append(new RseBool(IDC_FILTER, prefs->filterBadIP, "FilterBadIPs", true, "eMule"));
-	listRse.Append(new RseBool(IDC_AUTOCONNECT, prefs->autoconnect, "Autoconnect", false, "eMule"));
-	listRse.Append(new RseBool(IDC_SHOWRATEONTITLE, prefs->showRatesInTitle, "ShowRatesOnTitle", false, "eMule"));
+	listRse.Append(new RseBool(IDC_CHECK4UPDATE, prefs->updatenotify, wxT("UpdateNotify"), false, wxT("eMule")));
+	listRse.Append(new RseBool(IDC_MINTRAY, prefs->mintotray, wxT("MinToTray"), false, wxT("eMule")));
+	listRse.Append(new RseBool(IDC_UPDATESERVERCONNECT, prefs->addserversfromserver, wxT("AddServersFromServer"), true, wxT("eMule")));
+	listRse.Append(new RseBool(IDC_UPDATESERVERCLIENT, prefs->addserversfromclient, wxT("AddServersFromClient"), true, wxT("eMule")));
+	listRse.Append(new RseBool(IDC_SPLASHON, prefs->splashscreen, wxT("Splashscreen"), true, wxT("eMule")));
+	listRse.Append(new RseBool(IDC_BRINGTOFOREGROUND, prefs->bringtoforeground, wxT("BringToFront"), true, wxT("eMule")));
+	listRse.Append(new RseBool(IDC_DBLCLICK, prefs->transferDoubleclick, wxT("TransferDoubleClick"), true, wxT("eMule")));
+	listRse.Append(new RseBool(IDC_BEEPER, prefs->beepOnError, wxT("BeepOnError"), true, wxT("eMule")));
+	listRse.Append(new RseBool(IDC_EXIT, prefs->confirmExit, wxT("ConfirmExit"),false, wxT("eMule")));
+	listRse.Append(new RseBool(IDC_FILTER, prefs->filterBadIP, wxT("FilterBadIPs"), true, wxT("eMule")));
+	listRse.Append(new RseBool(IDC_AUTOCONNECT, prefs->autoconnect, wxT("Autoconnect"), false, wxT("eMule")));
+	listRse.Append(new RseBool(IDC_SHOWRATEONTITLE, prefs->showRatesInTitle, wxT("ShowRatesOnTitle"), false, wxT("eMule")));
 
-	listRse.Append(new RseBool(IDC_ONLINESIG, prefs->onlineSig, "OnlineSignature", false, "eMule"));
-	listRse.Append(new RseBool(IDC_STARTMIN, prefs->startMinimized, "StartupMinimized", false, "eMule"));
-	listRse.Append(new RseBool(IDC_SAFESERVERCONNECT, prefs->safeServerConnect, "SafeServerConnect", false, "eMule"));
+	listRse.Append(new RseBool(IDC_ONLINESIG, prefs->onlineSig, wxT("OnlineSignature"), false, wxT("eMule")));
+	listRse.Append(new RseBool(IDC_STARTMIN, prefs->startMinimized, wxT("StartupMinimized"), false, wxT("eMule")));
+	listRse.Append(new RseBool(IDC_SAFESERVERCONNECT, prefs->safeServerConnect, wxT("SafeServerConnect"), false, wxT("eMule")));
 
-	listRse.Append(new RseBool(0, prefs->filterserverbyip, "FilterServersByIP", false, "eMule"));	// no GUI yet
-	listRse.Append(new RseInt(0, prefs->filterlevel, "FilterLevel", 127, "eMule"));					// no GUI yet
-	listRse.Append(new RseBool(IDC_CHECKDISKSPACE, prefs->checkDiskspace, "CheckDiskspace", true, "eMule"));			// no GUI yet
-	listRse.Append(new RseInt(IDC_MINDISKSPACE, prefs->m_uMinFreeDiskSpace, "MinFreeDiskSpace", 1, "eMule"));		// no GUI yet
-	listRse.Append(new RseString(0, prefs->yourHostname,sizeof(prefs->yourHostname), "YourHostname", "", "eMule")); // no GUI yet
+	listRse.Append(new RseBool(0, prefs->filterserverbyip, wxT("FilterServersByIP"), false, wxT("eMule")));	// no GUI yet
+	listRse.Append(new RseInt(0, prefs->filterlevel, wxT("FilterLevel"), 127, wxT("eMule")));					// no GUI yet
+	listRse.Append(new RseBool(IDC_CHECKDISKSPACE, prefs->checkDiskspace, wxT("CheckDiskspace"), true, wxT("eMule")));			// no GUI yet
+	listRse.Append(new RseInt(IDC_MINDISKSPACE, prefs->m_uMinFreeDiskSpace, wxT("MinFreeDiskSpace"), 1, wxT("eMule")));		// no GUI yet
+	listRse.Append(new RseString(0, prefs->yourHostname,sizeof(prefs->yourHostname), wxT("YourHostname"), wxT(""), wxT("eMule"))); // no GUI yet
 
-	listRse.Append(new RseBool(IDC_AUTOCONNECTSTATICONLY, prefs->autoconnectstaticonly, "AutoConnectStaticOnly", false, "eMule")); 
-	listRse.Append(new RseBool(IDC_AUTOTAKEED2KLINKS, prefs->autotakeed2klinks, "AutoTakeED2KLinks", true, "eMule")); 
-	listRse.Append(new RseBool(IDC_ADDNEWFILESPAUSED, prefs->addnewfilespaused, "AddNewFilesPaused", false, "eMule")); 
-	listRse.Append(new RseInt(IDC_3DDEPTH, prefs->depth3D, "3DDepth", 10, "eMule"));
+	listRse.Append(new RseBool(IDC_AUTOCONNECTSTATICONLY, prefs->autoconnectstaticonly, wxT("AutoConnectStaticOnly"), false, wxT("eMule"))); 
+	listRse.Append(new RseBool(IDC_AUTOTAKEED2KLINKS, prefs->autotakeed2klinks, wxT("AutoTakeED2KLinks"), true, wxT("eMule"))); 
+	listRse.Append(new RseBool(IDC_ADDNEWFILESPAUSED, prefs->addnewfilespaused, wxT("AddNewFilesPaused"), false, wxT("eMule"))); 
+	listRse.Append(new RseInt(IDC_3DDEPTH, prefs->depth3D, wxT("3DDepth"), 10, wxT("eMule")));
 
-	listRse.Append(new RseBool(IDC_CB_TBN_USESOUND, prefs->useSoundInNotifier, "NotifierUseSound", false, "eMule"));
-	listRse.Append(new RseBool(IDC_CB_TBN_ONLOG, prefs->useLogNotifier, "NotifyOnLog", false, "eMule"));
-	listRse.Append(new RseBool(IDC_CB_TBN_ONCHAT, prefs->useChatNotifier, "NotifyOnChat", false, "eMule"));
-	listRse.Append(new RseBool(IDC_CB_TBN_POP_ALWAYS, prefs->notifierPopsEveryChatMsg, "NotifierPopEveryChatMessage", false, "eMule"));
-	listRse.Append(new RseBool(IDC_CB_TBN_ONDOWNLOAD, prefs->useDownloadNotifier, "NotifyOnDownload", false, "eMule"));
-	listRse.Append(new RseBool(IDC_CB_TBN_ONNEWVERSION, prefs->notifierNewVersion, "NotifierPopNewVersion", false, "eMule"));
-	listRse.Append(new RseBool(IDC_CB_TBN_IMPORTATNT, prefs->notifierImportantError, "NotifyOnImportantError", false, "eMule"));
-	listRse.Append(new RseBool(IDC_SENDMAIL, prefs->sendEmailNotifier, "NotifyByMail", false, "eMule"));
-	listRse.Append(new RseString(IDC_EDIT_TBN_WAVFILE, prefs->notifierSoundFilePath, sizeof(prefs->notifierSoundFilePath), "NotifierSoundPath","", "eMule"));
+	listRse.Append(new RseBool(IDC_CB_TBN_USESOUND, prefs->useSoundInNotifier, wxT("NotifierUseSound"), false, wxT("eMule")));
+	listRse.Append(new RseBool(IDC_CB_TBN_ONLOG, prefs->useLogNotifier, wxT("NotifyOnLog"), false, wxT("eMule")));
+	listRse.Append(new RseBool(IDC_CB_TBN_ONCHAT, prefs->useChatNotifier, wxT("NotifyOnChat"), false, wxT("eMule")));
+	listRse.Append(new RseBool(IDC_CB_TBN_POP_ALWAYS, prefs->notifierPopsEveryChatMsg, wxT("NotifierPopEveryChatMessage"), false, wxT("eMule")));
+	listRse.Append(new RseBool(IDC_CB_TBN_ONDOWNLOAD, prefs->useDownloadNotifier, wxT("NotifyOnDownload"), false, wxT("eMule")));
+	listRse.Append(new RseBool(IDC_CB_TBN_ONNEWVERSION, prefs->notifierNewVersion, wxT("NotifierPopNewVersion"), false, wxT("eMule")));
+	listRse.Append(new RseBool(IDC_CB_TBN_IMPORTATNT, prefs->notifierImportantError, wxT("NotifyOnImportantError"), false, wxT("eMule")));
+	listRse.Append(new RseBool(IDC_SENDMAIL, prefs->sendEmailNotifier, wxT("NotifyByMail"), false, wxT("eMule")));
+	listRse.Append(new RseString(IDC_EDIT_TBN_WAVFILE, prefs->notifierSoundFilePath, sizeof(prefs->notifierSoundFilePath), wxT("NotifierSoundPath"),wxT(""), wxT("eMule")));
 
-	listRse.Append(new RseString(0, prefs->notifierConfiguration, sizeof(prefs->notifierConfiguration), "NotifierConfiguration","", "eMule"));  // no GUI yet
-	listRse.Append(new RseString(0, prefs->datetimeformat, sizeof(prefs->datetimeformat), "DateTimeFormat","%A, %x, %X", "eMule"));    // no GUI yet
+	listRse.Append(new RseString(0, prefs->notifierConfiguration, sizeof(prefs->notifierConfiguration), wxT("NotifierConfiguration"),wxT(""), wxT("eMule")));  // no GUI yet
+	listRse.Append(new RseString(0, prefs->datetimeformat, sizeof(prefs->datetimeformat), wxT("DateTimeFormat"),wxT("%A, %x, %X"), wxT("eMule")));    // no GUI yet
 
 /* We don't import irc shitty stuff from eMule so no need to handle ... */
-	listRse.Append(new RseString(0, prefs->m_sircserver, sizeof(prefs->m_sircserver), "DefaultIRCServer", "irc.emule-project.net", "eMule"));
-	listRse.Append(new RseString(0, prefs->m_sircnick, sizeof(prefs->m_sircnick), "IRCNick", "eMule", "eMule"));
-	listRse.Append(new RseBool(0, prefs->m_bircaddtimestamp, "IRCAddTimestamp", true, "eMule"));
-	listRse.Append(new RseString(0, prefs->m_sircchannamefilter, sizeof(prefs->m_sircchannamefilter), "IRCFilterName", "", "eMule"));
-	listRse.Append(new RseBool(0, prefs->m_bircusechanfilter, "IRCUseFilter", false, "eMule"));
-	listRse.Append(new RseInt(0, prefs->m_iircchanneluserfilter, "IRCFilterUser", 0, "eMule"));
-	listRse.Append(new RseString(0, prefs->m_sircperformstring, sizeof(prefs->m_sircperformstring), "IRCPerformString", "/join #emule", "eMule"));
-	listRse.Append(new RseBool(0, prefs->m_bircuseperform, "IRCUsePerform", false, "eMule"));
-	listRse.Append(new RseBool(0, prefs->m_birclistonconnect, "IRCListOnConnect", true, "eMule"));
-	listRse.Append(new RseBool(0, prefs->m_bircacceptlinks, "IRCAcceptLinks", false, "eMule"));
-	listRse.Append(new RseBool(0, prefs->m_bircignoreinfomessage, "IRCIgnoreInfoMessage", false, "eMule"));
-	listRse.Append(new RseBool(0, prefs->m_bircignoreemuleprotoinfomessage, "IRCIgnoreEmuleProtoInfoMessage", true, "eMule"));
+	listRse.Append(new RseString(0, prefs->m_sircserver, sizeof(prefs->m_sircserver), wxT("DefaultIRCServer"), wxT("irc.emule-project.net"), wxT("eMule")));
+	listRse.Append(new RseString(0, prefs->m_sircnick, sizeof(prefs->m_sircnick), wxT("IRCNick"), wxT("eMule"), wxT("eMule")));
+	listRse.Append(new RseBool(0, prefs->m_bircaddtimestamp, wxT("IRCAddTimestamp"), true, wxT("eMule")));
+	listRse.Append(new RseString(0, prefs->m_sircchannamefilter, sizeof(prefs->m_sircchannamefilter), wxT("IRCFilterName"), wxT(""), wxT("eMule")));
+	listRse.Append(new RseBool(0, prefs->m_bircusechanfilter, wxT("IRCUseFilter"), false, wxT("eMule")));
+	listRse.Append(new RseInt(0, prefs->m_iircchanneluserfilter, wxT("IRCFilterUser"), 0, wxT("eMule")));
+	listRse.Append(new RseString(0, prefs->m_sircperformstring, sizeof(prefs->m_sircperformstring), wxT("IRCPerformString"), wxT("/join #emule"), wxT("eMule")));
+	listRse.Append(new RseBool(0, prefs->m_bircuseperform, wxT("IRCUsePerform"), false, wxT("eMule")));
+	listRse.Append(new RseBool(0, prefs->m_birclistonconnect, wxT("IRCListOnConnect"), true, wxT("eMule")));
+	listRse.Append(new RseBool(0, prefs->m_bircacceptlinks, wxT("IRCAcceptLinks"), false, wxT("eMule")));
+	listRse.Append(new RseBool(0, prefs->m_bircignoreinfomessage, wxT("IRCIgnoreInfoMessage"), false, wxT("eMule")));
+	listRse.Append(new RseBool(0, prefs->m_bircignoreemuleprotoinfomessage, wxT("IRCIgnoreEmuleProtoInfoMessage"), true, wxT("eMule")));
 /* end of irc stuff */
 
-	listRse.Append(new RseBool(IDC_SMARTIDCHECK, prefs->smartidcheck, "SmartIdCheck", true, "eMule"));
-	listRse.Append(new RseBool(IDC_VERBOSE, prefs->m_bVerbose, "Verbose", false, "eMule"));
-	listRse.Append(new RseBool(IDC_PREVIEWPRIO, prefs->m_bpreviewprio, "PreviewPrio", false, "eMule"));
-	listRse.Append(new RseBool(IDC_MANUALSERVERHIGHPRIO, prefs->m_bmanualhighprio, "ManualHighPrio", false, "eMule"));
-	listRse.Append(new RseBool(IDC_FULLCHUNKTRANS, prefs->m_btransferfullchunks, "FullChunkTransfers", true, "eMule"));
-	listRse.Append(new RseBool(IDC_STARTNEXTFILE, prefs->m_bstartnextfile, "StartNextFile", false, "eMule"));
-	listRse.Append(new RseBool(IDC_SHOWOVERHEAD, prefs->m_bshowoverhead, "ShowOverhead", false, "eMule"));
-	listRse.Append(new RseBool(IDC_VIDEOBACKUP, prefs->moviePreviewBackup, "VideoPreviewBackupped", true, "eMule"));
-	listRse.Append(new RseInt(IDC_FILEBUFFERSIZE, prefs->m_iFileBufferSize, "FileBufferSizePref", 16, "eMule"));
-	listRse.Append(new RseDynLabel(IDC_FILEBUFFERSIZE_STATIC, IDC_FILEBUFFERSIZE, 15000, _("File Buffer Size %i bytes"), "", ""));
-	listRse.Append(new RseInt(IDC_QUEUESIZE, prefs->m_iQueueSize, "QueueSizePref", 50, "eMule"));
-	listRse.Append(new RseDynLabel(IDC_QUEUESIZE_STATIC, IDC_QUEUESIZE, 100, _("Upload Queue Size %i clients"), "", ""));
-	listRse.Append(new RseInt(IDC_CHECKDAYS, prefs->versioncheckdays, "Check4NewVersionDelay", 5, "eMule"));
-	listRse.Append(new RseDynLabel(IDC_DAYS, IDC_CHECKDAYS, 1, _("%i days"), _("%i day"), ""));
-	listRse.Append(new RseBool(IDC_DAP, prefs->m_bDAP, "DAPPref", true, "eMule"));
-	listRse.Append(new RseBool(IDC_UAP, prefs->m_bUAP, "UAPPref", true, "eMule"));
+	listRse.Append(new RseBool(IDC_SMARTIDCHECK, prefs->smartidcheck, wxT("SmartIdCheck"), true, wxT("eMule")));
+	listRse.Append(new RseBool(IDC_VERBOSE, prefs->m_bVerbose, wxT("Verbose"), false, wxT("eMule")));
+	listRse.Append(new RseBool(IDC_PREVIEWPRIO, prefs->m_bpreviewprio, wxT("PreviewPrio"), false, wxT("eMule")));
+	listRse.Append(new RseBool(IDC_MANUALSERVERHIGHPRIO, prefs->m_bmanualhighprio, wxT("ManualHighPrio"), false, wxT("eMule")));
+	listRse.Append(new RseBool(IDC_FULLCHUNKTRANS, prefs->m_btransferfullchunks, wxT("FullChunkTransfers"), true, wxT("eMule")));
+	listRse.Append(new RseBool(IDC_STARTNEXTFILE, prefs->m_bstartnextfile, wxT("StartNextFile"), false, wxT("eMule")));
+	listRse.Append(new RseBool(IDC_SHOWOVERHEAD, prefs->m_bshowoverhead, wxT("ShowOverhead"), false, wxT("eMule")));
+	listRse.Append(new RseBool(IDC_VIDEOBACKUP, prefs->moviePreviewBackup, wxT("VideoPreviewBackupped"), true, wxT("eMule")));
+	listRse.Append(new RseInt(IDC_FILEBUFFERSIZE, prefs->m_iFileBufferSize, wxT("FileBufferSizePref"), 16, wxT("eMule")));
+	listRse.Append(new RseDynLabel(IDC_FILEBUFFERSIZE_STATIC, IDC_FILEBUFFERSIZE, 15000, _("File Buffer Size %i bytes"), wxT(""), wxT("")));
+	
+	listRse.Append(new RseInt(IDC_QUEUESIZE, prefs->m_iQueueSize, wxT("QueueSizePref"), 50, wxT("eMule")));
+	listRse.Append(new RseDynLabel(IDC_QUEUESIZE_STATIC, IDC_QUEUESIZE, 100, _("Upload Queue Size %i clients"), wxT(""), wxT("")));
+	listRse.Append(new RseInt(IDC_CHECKDAYS, prefs->versioncheckdays, wxT("Check4NewVersionDelay"), 5, wxT("eMule")));
+	listRse.Append(new RseDynLabel(IDC_DAYS, IDC_CHECKDAYS, 1, _("%i days"), _("%i day"), wxT("")));
+	listRse.Append(new RseBool(IDC_DAP, prefs->m_bDAP, wxT("DAPPref"), true, wxT("eMule")));
+	listRse.Append(new RseBool(IDC_UAP, prefs->m_bUAP, wxT("UAPPref"), true, wxT("eMule")));
 
 /* No traces of evidence for theses in old GUI prefs handling :-) */
-	listRse.Append(new RseBool(0, prefs->indicateratings, "IndicateRatings", true, "eMule"));
-	listRse.Append(new RseInt(0, prefs->allcatType, "AllcatType", 0, "eMule"));
-	listRse.Append(new RseBool(0, prefs->showAllNotCats, "ShowAllNotCats", false, "eMule"));
-	listRse.Append(new RseBool(0, prefs->watchclipboard, "WatchClipboard4ED2kFilelinks", false, "eMule"));
-	listRse.Append(new RseBool(0, prefs->log2disk, "SaveLogToDisk", false, "eMule"));
-	listRse.Append(new RseBool(0, prefs->debug2disk, "SaveDebugToDisk", false, "eMule"));
-	listRse.Append(new RseInt(0, prefs->iMaxLogMessages, "MaxLogMessages", 1000, "eMule"));
-	listRse.Append(new RseBool(0, prefs->showCatTabInfos, "ShowInfoOnCatTabs", false, "eMule"));
-	listRse.Append(new RseBool(0, prefs->resumeSameCat, "ResumeNextFromSameCat", false, "eMule"));
-	listRse.Append(new RseBool(0, prefs->resumeSameCat, "DontRecreateStatGraphsOnResize", false, "eMule"));
-	listRse.Append(new RseInt(0, prefs->versioncheckLastAutomatic, "VersionCheckLastAutomatic", 0, "eMule"));
-	listRse.Append(new RseBool(0, prefs->m_bDisableKnownClientList, "DisableKnownClientList", false, "eMule"));
-	listRse.Append(new RseBool(0, prefs->m_bDisableQueueList, "DisableQueueList", false, "eMule"));
-	listRse.Append(new RseBool(0, prefs->m_bCreditSystem, "UseCreditSystem", true, "eMule"));
-	listRse.Append(new RseBool(0, prefs->scheduler, "EnableScheduler", false, "eMule"));
-	listRse.Append(new RseBool(0, prefs->msgonlyfriends, "MessagesFromFriendsOnly", false, "eMule"));
-	listRse.Append(new RseBool(0, prefs->msgsecure, "MessageFromValidSourcesOnly", true, "eMule"));
-	listRse.Append(new RseInt(0, prefs->maxmsgsessions, "MaxMessageSessions", 50, "eMule"));
-	listRse.Append(new RseString(0, prefs->TxtEditor, sizeof(prefs->TxtEditor), "TxtEditor", "", "eMule"));
-	listRse.Append(new RseString(0, prefs->m_sTemplateFile, sizeof(prefs->m_sTemplateFile), "WebTemplateFile", "eMule.tmpl", "eMule"));
-	listRse.Append(new RseString(0, prefs->messageFilter, sizeof(prefs->messageFilter), "MessageFilter", "Your client has an infinite queue", "eMule"));
-	listRse.Append(new RseString(0, prefs->commentFilter, sizeof(prefs->commentFilter), "CommentFilter", "http://", "eMule"));
+	listRse.Append(new RseBool(0, prefs->indicateratings, wxT("IndicateRatings"), true, wxT("eMule")));
+	listRse.Append(new RseInt(0, prefs->allcatType, wxT("AllcatType"), 0, wxT("eMule")));
+	listRse.Append(new RseBool(0, prefs->showAllNotCats, wxT("ShowAllNotCats"), false, wxT("eMule")));
+	listRse.Append(new RseBool(0, prefs->watchclipboard, wxT("WatchClipboard4ED2kFilelinks"), false, wxT("eMule")));
+	listRse.Append(new RseBool(0, prefs->log2disk, wxT("SaveLogToDisk"), false, wxT("eMule")));
+	listRse.Append(new RseBool(0, prefs->debug2disk, wxT("SaveDebugToDisk"), false, wxT("eMule")));
+	listRse.Append(new RseInt(0, prefs->iMaxLogMessages, wxT("MaxLogMessages"), 1000, wxT("eMule")));
+	listRse.Append(new RseBool(0, prefs->showCatTabInfos, wxT("ShowInfoOnCatTabs"), false, wxT("eMule")));
+	listRse.Append(new RseBool(0, prefs->resumeSameCat, wxT("ResumeNextFromSameCat"), false, wxT("eMule")));
+	listRse.Append(new RseBool(0, prefs->resumeSameCat, wxT("DontRecreateStatGraphsOnResize"), false, wxT("eMule")));
+	listRse.Append(new RseInt(0, prefs->versioncheckLastAutomatic, wxT("VersionCheckLastAutomatic"), 0, wxT("eMule")));
+	listRse.Append(new RseBool(0, prefs->m_bDisableKnownClientList, wxT("DisableKnownClientList"), false, wxT("eMule")));
+	listRse.Append(new RseBool(0, prefs->m_bDisableQueueList, wxT("DisableQueueList"), false, wxT("eMule")));
+	listRse.Append(new RseBool(0, prefs->m_bCreditSystem, wxT("UseCreditSystem"), true, wxT("eMule")));
+	listRse.Append(new RseBool(0, prefs->scheduler, wxT("EnableScheduler"), false, wxT("eMule")));
+	listRse.Append(new RseBool(0, prefs->msgonlyfriends, wxT("MessagesFromFriendsOnly"), false, wxT("eMule")));
+	listRse.Append(new RseBool(0, prefs->msgsecure, wxT("MessageFromValidSourcesOnly"), true, wxT("eMule")));
+	listRse.Append(new RseInt(0, prefs->maxmsgsessions, wxT("MaxMessageSessions"), 50, wxT("eMule")));
+	listRse.Append(new RseString(0, prefs->TxtEditor, sizeof(prefs->TxtEditor), wxT("TxtEditor"), wxT(""), wxT("eMule")));
+	listRse.Append(new RseString(0, prefs->m_sTemplateFile, sizeof(prefs->m_sTemplateFile), wxT("WebTemplateFile"), wxT("eMule.tmpl"), wxT("eMule")));
+	listRse.Append(new RseString(0, prefs->messageFilter, sizeof(prefs->messageFilter), wxT("MessageFilter"), wxT("Your client has an infinite queue"), wxT("eMule")));
+	listRse.Append(new RseString(0, prefs->commentFilter, sizeof(prefs->commentFilter), wxT("CommentFilter"), wxT("http://"), wxT("eMule")));
 
-	listRse.Append(new RseString(IDC_VIDEOPLAYER, prefs->VideoPlayer, sizeof(prefs->VideoPlayer), "VideoPlayer", "", "eMule"));
+	listRse.Append(new RseString(IDC_VIDEOPLAYER, prefs->VideoPlayer, sizeof(prefs->VideoPlayer), wxT("VideoPlayer"), wxT(""), wxT("eMule")));
 	
 /* window colum widths, no dialog interaction - BEGIN */
-	listRse.Append(new RseColumns(prefs->downloadColumnWidths, ELEMENT_COUNT(prefs->downloadColumnWidths), "DownloadColumnWidths", DEFAULT_COL_SIZE, "eMule"));
-	listRse.Append(new RseColumns(prefs->downloadColumnHidden, ELEMENT_COUNT(prefs->downloadColumnHidden), "DownloadColumnHidden",0, "eMule"));
-	listRse.Append(new RseColumns(prefs->downloadColumnOrder, ELEMENT_COUNT(prefs->downloadColumnOrder), "DownloadColumnOrder",0, "eMule"));
-	listRse.Append(new RseColumns(prefs->uploadColumnWidths, ELEMENT_COUNT(prefs->uploadColumnWidths), "UploadColumnWidths", DEFAULT_COL_SIZE, "eMule"));
-	listRse.Append(new RseColumns(prefs->uploadColumnHidden, ELEMENT_COUNT(prefs->uploadColumnHidden), "UploadColumnHidden",0, "eMule"));
-	listRse.Append(new RseColumns(prefs->uploadColumnOrder, ELEMENT_COUNT(prefs->uploadColumnOrder), "UploadColumnOrder",0, "eMule"));
-	listRse.Append(new RseColumns(prefs->queueColumnWidths, ELEMENT_COUNT(prefs->queueColumnWidths), "QueueColumnWidths", DEFAULT_COL_SIZE, "eMule"));
-	listRse.Append(new RseColumns(prefs->queueColumnHidden, ELEMENT_COUNT(prefs->queueColumnHidden), "QueueColumnHidden",0, "eMule"));
-	listRse.Append(new RseColumns(prefs->queueColumnOrder, ELEMENT_COUNT(prefs->queueColumnOrder), "QueueColumnOrder",0, "eMule"));
-	listRse.Append(new RseColumns(prefs->searchColumnWidths, ELEMENT_COUNT(prefs->searchColumnWidths), "SearchColumnWidths", DEFAULT_COL_SIZE, "eMule"));
-	listRse.Append(new RseColumns(prefs->searchColumnHidden, ELEMENT_COUNT(prefs->searchColumnHidden), "SearchColumnHidden",0, "eMule"));
-	listRse.Append(new RseColumns(prefs->searchColumnOrder, ELEMENT_COUNT(prefs->searchColumnOrder), "SearchColumnOrder",0, "eMule"));
-	listRse.Append(new RseColumns(prefs->sharedColumnWidths, ELEMENT_COUNT(prefs->sharedColumnWidths), "SharedColumnWidths", DEFAULT_COL_SIZE, "eMule"));
-	listRse.Append(new RseColumns(prefs->sharedColumnHidden, ELEMENT_COUNT(prefs->sharedColumnHidden), "SharedColumnHidden",0, "eMule"));
-	listRse.Append(new RseColumns(prefs->sharedColumnOrder, ELEMENT_COUNT(prefs->sharedColumnOrder), "SharedColumnOrder",0, "eMule"));
-	listRse.Append(new RseColumns(prefs->serverColumnWidths, ELEMENT_COUNT(prefs->serverColumnWidths), "ServerColumnWidths", DEFAULT_COL_SIZE, "eMule"));
-	listRse.Append(new RseColumns(prefs->serverColumnHidden, ELEMENT_COUNT(prefs->serverColumnHidden), "ServerColumnHidden",0, "eMule"));
-	listRse.Append(new RseColumns(prefs->serverColumnOrder, ELEMENT_COUNT(prefs->serverColumnOrder), "ServerColumnOrder",0, "eMule"));
-	listRse.Append(new RseColumns(prefs->clientListColumnWidths, ELEMENT_COUNT(prefs->clientListColumnWidths), "ClientListColumnWidths", DEFAULT_COL_SIZE, "eMule"));
-	listRse.Append(new RseColumns(prefs->clientListColumnHidden, ELEMENT_COUNT(prefs->clientListColumnHidden), "ClientListColumnHidden",0, "eMule"));
-	listRse.Append(new RseColumns(prefs->clientListColumnOrder, ELEMENT_COUNT(prefs->clientListColumnOrder), "ClientListColumnOrder",0, "eMule"));
+	listRse.Append(new RseColumns(prefs->downloadColumnWidths, ELEMENT_COUNT(prefs->downloadColumnWidths), wxT("DownloadColumnWidths"), DEFAULT_COL_SIZE, wxT("eMule")));
+	listRse.Append(new RseColumns(prefs->downloadColumnHidden, ELEMENT_COUNT(prefs->downloadColumnHidden), wxT("DownloadColumnHidden"),0, wxT("eMule")));
+	listRse.Append(new RseColumns(prefs->downloadColumnOrder, ELEMENT_COUNT(prefs->downloadColumnOrder), wxT("DownloadColumnOrder"),0, wxT("eMule")));
+	listRse.Append(new RseColumns(prefs->uploadColumnWidths, ELEMENT_COUNT(prefs->uploadColumnWidths), wxT("UploadColumnWidths"), DEFAULT_COL_SIZE, wxT("eMule")));
+	listRse.Append(new RseColumns(prefs->uploadColumnHidden, ELEMENT_COUNT(prefs->uploadColumnHidden), wxT("UploadColumnHidden"),0, wxT("eMule")));
+	listRse.Append(new RseColumns(prefs->uploadColumnOrder, ELEMENT_COUNT(prefs->uploadColumnOrder), wxT("UploadColumnOrder"),0, wxT("eMule")));
+	listRse.Append(new RseColumns(prefs->queueColumnWidths, ELEMENT_COUNT(prefs->queueColumnWidths), wxT("QueueColumnWidths"), DEFAULT_COL_SIZE, wxT("eMule")));
+	listRse.Append(new RseColumns(prefs->queueColumnHidden, ELEMENT_COUNT(prefs->queueColumnHidden), wxT("QueueColumnHidden"),0, wxT("eMule")));
+	listRse.Append(new RseColumns(prefs->queueColumnOrder, ELEMENT_COUNT(prefs->queueColumnOrder), wxT("QueueColumnOrder"),0, wxT("eMule")));
+	listRse.Append(new RseColumns(prefs->searchColumnWidths, ELEMENT_COUNT(prefs->searchColumnWidths), wxT("SearchColumnWidths"), DEFAULT_COL_SIZE, wxT("eMule")));
+	listRse.Append(new RseColumns(prefs->searchColumnHidden, ELEMENT_COUNT(prefs->searchColumnHidden), wxT("SearchColumnHidden"),0, wxT("eMule")));
+	listRse.Append(new RseColumns(prefs->searchColumnOrder, ELEMENT_COUNT(prefs->searchColumnOrder), wxT("SearchColumnOrder"),0, wxT("eMule")));
+	listRse.Append(new RseColumns(prefs->sharedColumnWidths, ELEMENT_COUNT(prefs->sharedColumnWidths), wxT("SharedColumnWidths"), DEFAULT_COL_SIZE, wxT("eMule")));
+	listRse.Append(new RseColumns(prefs->sharedColumnHidden, ELEMENT_COUNT(prefs->sharedColumnHidden), wxT("SharedColumnHidden"),0, wxT("eMule")));
+	listRse.Append(new RseColumns(prefs->sharedColumnOrder, ELEMENT_COUNT(prefs->sharedColumnOrder), wxT("SharedColumnOrder"),0, wxT("eMule")));
+	listRse.Append(new RseColumns(prefs->serverColumnWidths, ELEMENT_COUNT(prefs->serverColumnWidths), wxT("ServerColumnWidths"), DEFAULT_COL_SIZE, wxT("eMule")));
+	listRse.Append(new RseColumns(prefs->serverColumnHidden, ELEMENT_COUNT(prefs->serverColumnHidden), wxT("ServerColumnHidden"),0, wxT("eMule")));
+	listRse.Append(new RseColumns(prefs->serverColumnOrder, ELEMENT_COUNT(prefs->serverColumnOrder), wxT("ServerColumnOrder"),0, wxT("eMule")));
+	listRse.Append(new RseColumns(prefs->clientListColumnWidths, ELEMENT_COUNT(prefs->clientListColumnWidths), wxT("ClientListColumnWidths"), DEFAULT_COL_SIZE, wxT("eMule")));
+	listRse.Append(new RseColumns(prefs->clientListColumnHidden, ELEMENT_COUNT(prefs->clientListColumnHidden), wxT("ClientListColumnHidden"),0, wxT("eMule")));
+	listRse.Append(new RseColumns(prefs->clientListColumnOrder, ELEMENT_COUNT(prefs->clientListColumnOrder), wxT("ClientListColumnOrder"),0, wxT("eMule")));
 /*  window colum widths - END */
 
 	// Barry - Provide a mechanism for all tables to store/retrieve sort order
-	listRse.Append(new RseInt(0, prefs->tableSortItemDownload, "TableSortItemDownload", 0, "eMule"));
-	listRse.Append(new RseInt(0, prefs->tableSortItemUpload, "TableSortItemUpload", 0, "eMule"));
-	listRse.Append(new RseInt(0, prefs->tableSortItemQueue, "TableSortItemQueue", 0, "eMule"));
-	listRse.Append(new RseInt(0, prefs->tableSortItemSearch, "TableSortItemSearch", 0, "eMule"));
-	listRse.Append(new RseInt(0, prefs->tableSortItemShared, "TableSortItemShared", 0, "eMule"));
-	listRse.Append(new RseInt(0, prefs->tableSortItemServer, "TableSortItemServer", 0, "eMule"));
-	listRse.Append(new RseInt(0, prefs->tableSortItemClientList, "TableSortItemClientList", 0, "eMule"));
-	listRse.Append(new RseBool(0, prefs->tableSortAscendingDownload, "TableSortAscendingDownload", true, "eMule"));
-	listRse.Append(new RseBool(0, prefs->tableSortAscendingUpload, "TableSortAscendingUpload", true, "eMule"));
-	listRse.Append(new RseBool(0, prefs->tableSortAscendingQueue, "TableSortAscendingQueue", true, "eMule"));
-	listRse.Append(new RseBool(0, prefs->tableSortAscendingSearch, "TableSortAscendingSearch", true, "eMule"));
-	listRse.Append(new RseBool(0, prefs->tableSortAscendingShared, "TableSortAscendingShared", true, "eMule"));
-	listRse.Append(new RseBool(0, prefs->tableSortAscendingServer, "TableSortAscendingServer", true, "eMule"));
-	listRse.Append(new RseBool(0, prefs->tableSortAscendingClientList, "TableSortAscendingClientList", true, "eMule"));
+	listRse.Append(new RseInt(0, prefs->tableSortItemDownload, wxT("TableSortItemDownload"), 0, wxT("eMule")));
+	listRse.Append(new RseInt(0, prefs->tableSortItemUpload, wxT("TableSortItemUpload"), 0, wxT("eMule")));
+	listRse.Append(new RseInt(0, prefs->tableSortItemQueue, wxT("TableSortItemQueue"), 0, wxT("eMule")));
+	listRse.Append(new RseInt(0, prefs->tableSortItemSearch, wxT("TableSortItemSearch"), 0, wxT("eMule")));
+	listRse.Append(new RseInt(0, prefs->tableSortItemShared, wxT("TableSortItemShared"), 0, wxT("eMule")));
+	listRse.Append(new RseInt(0, prefs->tableSortItemServer, wxT("TableSortItemServer"), 0, wxT("eMule")));
+	listRse.Append(new RseInt(0, prefs->tableSortItemClientList, wxT("TableSortItemClientList"), 0, wxT("eMule")));
+	listRse.Append(new RseBool(0, prefs->tableSortAscendingDownload, wxT("TableSortAscendingDownload"), true, wxT("eMule")));
+	listRse.Append(new RseBool(0, prefs->tableSortAscendingUpload, wxT("TableSortAscendingUpload"), true, wxT("eMule")));
+	listRse.Append(new RseBool(0, prefs->tableSortAscendingQueue, wxT("TableSortAscendingQueue"), true, wxT("eMule")));
+	listRse.Append(new RseBool(0, prefs->tableSortAscendingSearch, wxT("TableSortAscendingSearch"), true, wxT("eMule")));
+	listRse.Append(new RseBool(0, prefs->tableSortAscendingShared, wxT("TableSortAscendingShared"), true, wxT("eMule")));
+	listRse.Append(new RseBool(0, prefs->tableSortAscendingServer, wxT("TableSortAscendingServer"), true, wxT("eMule")));
+	listRse.Append(new RseBool(0, prefs->tableSortAscendingClientList, wxT("TableSortAscendingClientList"), true, wxT("eMule")));
 
 	// deadlake PROXYSUPPORT - no GUI in aMule yet
-	listRse.Append(new RseBool(0, prefs->proxy.EnablePassword, "ProxyEnablePassword", false, "Proxy"));
-	listRse.Append(new RseBool(0, prefs->proxy.UseProxy, "ProxyEnableProxy", false, "Proxy"));
-	listRse.Append(new RseString(0, prefs->proxy.name, sizeof(prefs->proxy.name), "ProxyName", "", "Proxy"));
-	listRse.Append(new RseStringEncrypted(0, prefs->proxy.password, sizeof(prefs->proxy.password), "ProxyPassword", "Proxy"));
-	listRse.Append(new RseString(0, prefs->proxy.user, sizeof(prefs->proxy.user), "ProxyUser", "", "Proxy"));
-	listRse.Append(new RseInt(0, prefs->proxy.port, "ProxyPort", 1080, "Proxy"));
-	listRse.Append(new RseInt(0, prefs->proxy.type, "ProxyType", PROXYTYPE_NOPROXY, "Proxy"));
+	listRse.Append(new RseBool(0, prefs->proxy.EnablePassword, wxT("ProxyEnablePassword"), false, wxT("Proxy")));
+	listRse.Append(new RseBool(0, prefs->proxy.UseProxy, wxT("ProxyEnableProxy"), false, wxT("Proxy")));
+	listRse.Append(new RseString(0, prefs->proxy.name, sizeof(prefs->proxy.name), wxT("ProxyName"), wxT(""), wxT("Proxy")));
+	listRse.Append(new RseStringEncrypted(0, prefs->proxy.password, sizeof(prefs->proxy.password), wxT("ProxyPassword"), wxT("Proxy")));
+	listRse.Append(new RseString(0, prefs->proxy.user, sizeof(prefs->proxy.user), wxT("ProxyUser"), wxT(""), wxT("Proxy")));
+	listRse.Append(new RseInt(0, prefs->proxy.port, wxT("ProxyPort"), 1080, wxT("Proxy")));
+	listRse.Append(new RseInt(0, prefs->proxy.type, wxT("ProxyType"), PROXYTYPE_NOPROXY, wxT("Proxy")));
 
 	for (int i=0; i<cntStatColors; i++) {  // colors have been moved from global prefs to CStatisticsDlg
-		wxString str = wxString::Format("StatColor%i",i);
-		listRse.Append(aprseColor[i] = new RseInt(0, CStatisticsDlg::acrStat[i], (char*)(str.c_str()), CStatisticsDlg::acrStat[i], "eMule"));
+		wxString str = wxString::Format(wxT("StatColor%i"),i);
+		listRse.Append(aprseColor[i] = new RseInt(0, CStatisticsDlg::acrStat[i], (char*)(str.c_str()), CStatisticsDlg::acrStat[i], wxT("eMule")));
 	}
 
-	listRse.Append(new RseCounter(prefs->totalDownloadedBytes, "TotalDownloadedBytes", "Statistics")); // no GUI needed
-	listRse.Append(new RseCounter(prefs->totalUploadedBytes, "TotalUploadedBytes", "Statistics"));		// no GUI needed
+	listRse.Append(new RseCounter(prefs->totalDownloadedBytes, wxT("TotalDownloadedBytes"), wxT("Statistics"))); // no GUI needed
+	listRse.Append(new RseCounter(prefs->totalUploadedBytes, wxT("TotalUploadedBytes"), wxT("Statistics")));		// no GUI needed
 	
-	listRse.Append(new RseInt(0, prefs->desktopMode, "DesktopMode", 4, "Statistics"));
+	listRse.Append(new RseInt(0, prefs->desktopMode, wxT("DesktopMode"), 4, wxT("Statistics")));
 
-	listRse.Append(new RseStringEncrypted(IDC_WEB_PASSWD, prefs->m_sWebPassword, sizeof(prefs->m_sWebPassword), "Password", "WebServer"));
-	listRse.Append(new RseStringEncrypted(IDC_WEB_PASSWD_LOW, prefs->m_sWebLowPassword, sizeof(prefs->m_sWebLowPassword), "PasswordLow", "WebServer"));
-	listRse.Append(new RseInt(IDC_WEB_PORT, prefs->m_nWebPort, "Port", 4711, "WebServer"));
-	listRse.Append(new RseBool(IDC_ENABLE_WEB, prefs->m_bWebEnabled, "Enabled", false, "WebServer"));
-	listRse.Append(new RseBool(IDC_WEB_GZIP, prefs->m_bWebUseGzip, "UseGzip", true, "WebServer"));
-	listRse.Append(new RseBool(IDC_ENABLE_WEB_LOW, prefs->m_bWebLowEnabled, "UseLowRightsUser", false, "WebServer"));
-	listRse.Append(new RseInt(IDC_WEB_REFRESH_TIMEOUT, prefs->m_nWebPageRefresh, "PageRefreshTime", 120, "WebServer"));
+	listRse.Append(new RseStringEncrypted(IDC_WEB_PASSWD, prefs->m_sWebPassword, sizeof(prefs->m_sWebPassword), wxT("Password"), wxT("WebServer")));
+	listRse.Append(new RseStringEncrypted(IDC_WEB_PASSWD_LOW, prefs->m_sWebLowPassword, sizeof(prefs->m_sWebLowPassword), wxT("PasswordLow"), wxT("WebServer")));
+	listRse.Append(new RseInt(IDC_WEB_PORT, prefs->m_nWebPort, wxT("Port"), 4711, wxT("WebServer")));
+	listRse.Append(new RseBool(IDC_ENABLE_WEB, prefs->m_bWebEnabled, wxT("Enabled"), false, wxT("WebServer")));
+	listRse.Append(new RseBool(IDC_WEB_GZIP, prefs->m_bWebUseGzip, wxT("UseGzip"), true, wxT("WebServer")));
+	listRse.Append(new RseBool(IDC_ENABLE_WEB_LOW, prefs->m_bWebLowEnabled, wxT("UseLowRightsUser"), false, wxT("WebServer")));
+	listRse.Append(new RseInt(IDC_WEB_REFRESH_TIMEOUT, prefs->m_nWebPageRefresh, wxT("PageRefreshTime"), 120, wxT("WebServer")));
 
-	listRse.Append(new RseBool(0, prefs->dontcompressavi, "DontCompressAvi", false, "WebServer"));  // no GUI yet
+	listRse.Append(new RseBool(0, prefs->dontcompressavi, wxT("DontCompressAvi"), false, wxT("WebServer")));  // no GUI yet
 
-	listRse.Append(new RseBool(IDC_ENABLE_AUTO_NNS, prefs->DropNoNeededSources, "NoNeededSources", false, "Razor_Preferences"));
+	listRse.Append(new RseBool(IDC_ENABLE_AUTO_NNS, prefs->DropNoNeededSources, wxT("NoNeededSources"), false, wxT("Razor_Preferences")));
 /* These two wxRadioButtons are handled like : if one checked then the other unchecked */
 /* Note: two mutually exclusive bool vars should be combined into one, and shown as a checkbox [Emilio] */
 /* Addendum:  something is wrong in muuli.wdr: a checkbox AND a radio button with the same ID=IDC_ENABLE_AUTO_NNS */ 
-	listRse.Append(new RseBool(IDC_AUTO_NNS_EXTENDED_RADIO, prefs->SwapNoNeededSources, "SwapNoNeededSources", false, "Razor_Preferences"));
+	listRse.Append(new RseBool(IDC_AUTO_NNS_EXTENDED_RADIO, prefs->SwapNoNeededSources, wxT("SwapNoNeededSources"), false, wxT("Razor_Preferences")));
 
-	listRse.Append(new RseBool(IDC_ENABLE_AUTO_FQS, prefs->DropFullQueueSources, "FullQueueSources", false, "Razor_Preferences"));
-	listRse.Append(new RseBool(IDC_ENABLE_AUTO_HQRS, prefs->DropHighQueueRankingSources, "HighQueueRankingSources", false, "Razor_Preferences"));
-	listRse.Append(new RseInt(IDC_HQR_VALUE, prefs->HighQueueRanking, "HighQueueRanking", 1200, "Razor_Preferences"));
-	listRse.Append(new RseInt(IDC_AUTO_DROP_TIMER, prefs->AutoDropTimer, "AutoDropTimer", 240, "Razor_Preferences"));
-	listRse.Append(new RseBool(IDC_FED2KLH, prefs->FastED2KLinksHandler, "FastED2KLinksHandler", true, "Razor_Preferences"));
+	listRse.Append(new RseBool(IDC_ENABLE_AUTO_FQS, prefs->DropFullQueueSources, wxT("FullQueueSources"), false, wxT("Razor_Preferences")));
+	listRse.Append(new RseBool(IDC_ENABLE_AUTO_HQRS, prefs->DropHighQueueRankingSources, wxT("HighQueueRankingSources"), false, wxT("Razor_Preferences")));
+	listRse.Append(new RseInt(IDC_HQR_VALUE, prefs->HighQueueRanking, wxT("HighQueueRanking"), 1200, wxT("Razor_Preferences")));
+	listRse.Append(new RseInt(IDC_AUTO_DROP_TIMER, prefs->AutoDropTimer, wxT("AutoDropTimer"), 240, wxT("Razor_Preferences")));
+	listRse.Append(new RseBool(IDC_FED2KLH, prefs->FastED2KLinksHandler, wxT("FastED2KLinksHandler"), true, wxT("Razor_Preferences")));
 
-	listRse.Append(new RseBool(IDC_EXT_CONN_ACCEPT, prefs->AcceptExternalConnections, "AcceptExternalConnections", true,"ExternalConnect"));
-	listRse.Append(new RseBool(IDC_EXT_CONN_USETCP, prefs->ECUseTCPPort, "ECUseTCPPort", false,"ExternalConnect"));
-	listRse.Append(new RseInt(IDC_EXT_CONN_TCP_PORT, prefs->ECPort, "ECPort", 4712, "ExternalConnect"));
-	listRse.Append(new RseStringEncrypted(IDC_EXT_CONN_PASSWD, prefs->ECPassword, sizeof(prefs->ECPassword), "ECPassword", "ExternalConnect"));
-	listRse.Append(new RseBool(IDC_NEWSTYLETABS, prefs->bDlgTabsOnTop, "DlgTabsOnTop", false,"ExternalConnect"));  
+	listRse.Append(new RseBool(IDC_EXT_CONN_ACCEPT, prefs->AcceptExternalConnections, wxT("AcceptExternalConnections"), true,wxT("ExternalConnect")));
+	listRse.Append(new RseBool(IDC_EXT_CONN_USETCP, prefs->ECUseTCPPort, wxT("ECUseTCPPort"), false,wxT("ExternalConnect")));
+	listRse.Append(new RseInt(IDC_EXT_CONN_TCP_PORT, prefs->ECPort, wxT("ECPort"), 4712, wxT("ExternalConnect")));
+	listRse.Append(new RseStringEncrypted(IDC_EXT_CONN_PASSWD, prefs->ECPassword, sizeof(prefs->ECPassword), wxT("ECPassword"), wxT("ExternalConnect")));
+	listRse.Append(new RseBool(IDC_NEWSTYLETABS, prefs->bDlgTabsOnTop, wxT("DlgTabsOnTop"), false,wxT("ExternalConnect")));  
 
 	// Kry
-	listRse.Append(new RseBool(IDC_SECIDENT, prefs->SecIdent, "UseSecIdent", true,"ExternalConnect"));
-	listRse.Append(new RseBool(IDC_IPFONOFF, prefs->IPFilterOn, "IpFilterOn", true,"ExternalConnect")); 	 
-	listRse.Append(new RseBool(IDC_SRCSEEDS, prefs->UseSrcSeeds, "UseSrcSeeds", false,"ExternalConnect")); 	 
-	listRse.Append(new RseBool(IDC_PROGBAR, prefs->ProgBar, "ShowProgressBar", true,"ExternalConnect")); 	 
-	listRse.Append(new RseBool(IDC_PERCENT, prefs->Percent, "ShowPercent", false,"ExternalConnect")); 	
-	listRse.Append(new RseBool(IDC_METADATA, prefs->ExtractMetaData, "ExtractMetaDataTags", false,"ExternalConnect")); 	
-	listRse.Append(new RseBool(IDC_CHUNKALLOC, prefs->AllocFullChunk, "FullChunkAlloc", false,"ExternalConnect")); 		
-	listRse.Append(new RseBool(IDC_FULLALLOCATE, prefs->AllocFullPart, "FullPartAlloc", false,"ExternalConnect")); 		
-	listRse.Append(new RseString(IDC_FCHECKSELF, prefs->CustomBrowser, sizeof(prefs->CustomBrowser), "CustomBrowser", "", "FakeCheck"));
-	listRse.Append(new RseInt(IDC_FCHECK, prefs->Browser, "Browser", 0,"FakeCheck"));	
-	listRse.Append(new RseBool(IDC_SAFEMAXCONN, prefs->UseSafeMaxConn, "SafeMaxConn", false, "FakeCheck")); 		
-	listRse.Append(new RseBool(IDC_VERBOSEPACKETERROR, prefs->VerbosePacketError, "VerbosePacketError", false, "FakeCheck")); 
-	listRse.Append(new RseDirAssured(IDC_OSDIR, prefs->OSDirectory, appdir, "OSDirectory", "", "FakeCheck"));	
+	listRse.Append(new RseBool(IDC_SECIDENT, prefs->SecIdent, wxT("UseSecIdent"), true,wxT("ExternalConnect")));
+	listRse.Append(new RseBool(IDC_IPFONOFF, prefs->IPFilterOn, wxT("IpFilterOn"), true,wxT("ExternalConnect"))); 	 
+	listRse.Append(new RseBool(IDC_SRCSEEDS, prefs->UseSrcSeeds, wxT("UseSrcSeeds"), false,wxT("ExternalConnect"))); 	 
+	listRse.Append(new RseBool(IDC_PROGBAR, prefs->ProgBar, wxT("ShowProgressBar"), true,wxT("ExternalConnect"))); 	 
+	listRse.Append(new RseBool(IDC_PERCENT, prefs->Percent, wxT("ShowPercent"), false,wxT("ExternalConnect"))); 	
+	listRse.Append(new RseBool(IDC_METADATA, prefs->ExtractMetaData, wxT("ExtractMetaDataTags"), false,wxT("ExternalConnect"))); 	
+	listRse.Append(new RseBool(IDC_CHUNKALLOC, prefs->AllocFullChunk, wxT("FullChunkAlloc"), false,wxT("ExternalConnect"))); 		
+	listRse.Append(new RseBool(IDC_FULLALLOCATE, prefs->AllocFullPart, wxT("FullPartAlloc"), false,wxT("ExternalConnect"))); 		
+	listRse.Append(new RseString(IDC_FCHECKSELF, prefs->CustomBrowser, sizeof(prefs->CustomBrowser), wxT("CustomBrowser"), wxT(""), wxT("FakeCheck")));
+	listRse.Append(new RseInt(IDC_FCHECK, prefs->Browser, wxT("Browser"), 0,wxT("FakeCheck")));	
+	listRse.Append(new RseBool(IDC_SAFEMAXCONN, prefs->UseSafeMaxConn, wxT("SafeMaxConn"), false, wxT("FakeCheck"))); 		
+	listRse.Append(new RseBool(IDC_VERBOSEPACKETERROR, prefs->VerbosePacketError, wxT("VerbosePacketError"), false, wxT("FakeCheck"))); 
+	listRse.Append(new RseDirAssured(IDC_OSDIR, prefs->OSDirectory, appdir, wxT("OSDirectory"), wxT(""), wxT("FakeCheck")));	
 }
 
 //==============================================================================
@@ -1054,17 +1033,11 @@ PrefsUnifiedDlg::PrefsUnifiedDlg(wxWindow *parent)
 			// does not seem to handle a non-existent ID gracefully inside FindWindowById().
 			wxControl *pctrl = (wxControl *)FindWindowById(id, this);
 			prse->SetWxControl(pctrl);
-	#ifdef __DEBUG__
-			prse->CheckCtrlType();
-	#endif
 		}
 		
 		pos = pos->GetNext();
 	}			
 	wxASSERT(idMin<=idMax);
-#ifdef __DEBUG__
-//	printf("%i elements in access array, indexed %i...%i\n", idMax-idMin+1, idMin, idMax);
-#endif
 	// Second pass: build an array of pointers into listRse for fast access
 	// [Note: the wxControl class lacks a "backpointer" facility - as a kludge
 	// one could in principle use SetName / GetName with bent pointers, but that
@@ -1159,11 +1132,6 @@ bool PrefsUnifiedDlg::TransferDataFromWindow()
 	
 	while (pos) 	{	
 		(pos->GetData())->TransferFromDlg();
-#ifdef __DEBUG__
-//		Rse * prse = pos->GetData();
-//		if (prse->Id() != 0)
-//			printf("%s set\n", prse->GetIniName());
-#endif	
 		pos = pos->GetNext();
 	}		
 	
@@ -1399,7 +1367,7 @@ void PrefsUnifiedDlg::OnButtonDir(wxCommandEvent& event)
 
 void PrefsUnifiedDlg::OnButtonBrowseWav(wxCommandEvent& evt)
 {
-	wxString str = wxFileSelector(_("Browse wav"),"","","*.wav",_("File wav (*.wav)|*.wav||"));
+	wxString str = wxFileSelector(_("Browse wav"),wxT(""),wxT(""),wxT("*.wav"),_("File wav (*.wav)|*.wav||"));
 	Prse(IDC_EDIT_TBN_WAVFILE)->SetCtrlValue(str);
 }
 
@@ -1407,7 +1375,7 @@ void PrefsUnifiedDlg::OnButtonBrowseWav(wxCommandEvent& evt)
 
 void PrefsUnifiedDlg::OnButtonBrowseVideoplayer(wxCommandEvent& e)
 {
-	wxString str=wxFileSelector(_("Browse for videoplayer"),"","","",_("Executable (*)|*||"));
+	wxString str=wxFileSelector(_("Browse for videoplayer"),wxT(""),wxT(""),wxT(""),_("Executable (*)|*||"));
 	if(!str.IsEmpty()) 
 		Prse(IDC_VIDEOPLAYER)->SetCtrlValue(str);
 }
@@ -1435,10 +1403,6 @@ void PrefsUnifiedDlg::LoadAllItems(wxConfigBase& ini)
 	pos = listRse.GetFirst();
 	while (pos) 	{	
 		(pos->GetData())->LoadFromFile(ini);
-		#ifdef __DEBUG__
-		//		static int c;
-		//		printf(" %i [%s] loaded = %i\n", ++c, listRse.GetAt(pos)->GetIniName(), listRse.GetAt(pos)->GetMemValue());
-		#endif
 	
 		pos = pos->GetNext();
 	}
@@ -1456,10 +1420,6 @@ void PrefsUnifiedDlg::SaveAllItems(wxConfigBase& ini)
 	
 	pos = listRse.GetFirst();
 	while (pos) 	{	
-		#ifdef __DEBUG__
-		//		static int c;
-		//		printf(" %i [%s] saved = %i\n", ++c, listRse.GetAt(pos)->GetIniName(), listRse.GetAt(pos)->GetMemValue());
-		#endif
 		(pos->GetData())->SaveToFile(ini);
 		pos = pos->GetNext();
 	}
