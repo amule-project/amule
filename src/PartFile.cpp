@@ -1411,19 +1411,19 @@ void CPartFile::FillGap(uint32 start, uint32 end)
 
 void CPartFile::UpdateCompletedInfos()
 {
-   	uint32 allgaps = 0; 
+   	uint64 allgaps = 0; 
 	for (POSITION pos = gaplist.GetHeadPosition(); pos != 0;) {
 		POSITION prev = pos;
 		Gap_Struct* cur_gap = gaplist.GetNext(pos);
 		if ((cur_gap->end > m_nFileSize) || (cur_gap->start >= m_nFileSize)) {
 			gaplist.RemoveAt(prev);
 		} else {
-			allgaps += cur_gap->end - cur_gap->start;
+			allgaps += cur_gap->end - cur_gap->start + 1;
 		}
 	}
 	if (gaplist.GetCount() || requestedblocks_list.GetCount()) {
 		percentcompleted = (1.0f-(float)allgaps/m_nFileSize) * 100;
-		completedsize = m_nFileSize - allgaps - 1;
+		completedsize = m_nFileSize - allgaps;
 	} else {
 		percentcompleted = 100;
 		completedsize = m_nFileSize;
@@ -1486,7 +1486,7 @@ void CPartFile::DrawStatusBar(wxMemoryDC* dc, wxRect rect, bool bFlat)
 	s_ChunkBar.SetFileSize(m_nFileSize);
 	s_ChunkBar.Fill(crHave);
 
-	uint32 allgaps = 0;
+	uint64 allgaps = 0;
 
 	if(status == PS_COMPLETE || status == PS_COMPLETING) {
 		s_ChunkBar.FillRange(0, m_nFileSize, crProgress);
@@ -1498,7 +1498,7 @@ void CPartFile::DrawStatusBar(wxMemoryDC* dc, wxRect rect, bool bFlat)
 	// red gaps
 	for (POSITION pos = gaplist.GetHeadPosition();pos !=  0;gaplist.GetNext(pos)) {
 		Gap_Struct* cur_gap = gaplist.GetAt(pos);
-		allgaps += cur_gap->end - cur_gap->start;
+		allgaps += cur_gap->end - cur_gap->start + 1;
 		bool gapdone = false;
 		uint32 gapstart = cur_gap->start;
 		uint32 gapend = cur_gap->end;
@@ -1562,7 +1562,7 @@ void CPartFile::DrawStatusBar(wxMemoryDC* dc, wxRect rect, bool bFlat)
 	}
 	if ((gaplist.GetCount() || requestedblocks_list.GetCount())) {
 		percentcompleted = ((1.0f-(float)allgaps/m_nFileSize)) * 100;
-		completedsize = m_nFileSize - allgaps - 1;
+		completedsize = m_nFileSize - allgaps;
 	} else {
 		percentcompleted = 100;
 		completedsize=m_nFileSize;
@@ -3780,7 +3780,7 @@ wxString CPartFile::GetProgressString(uint16 size)
 		// red gaps
 		for (POSITION pos = gaplist.GetHeadPosition();pos !=  0;gaplist.GetNext(pos)) {
 			Gap_Struct* cur_gap = gaplist.GetAt(pos);
-			allgaps += cur_gap->end - cur_gap->start;
+			allgaps += cur_gap->end - cur_gap->start + 1;
 			bool gapdone = false;
 			uint32 gapstart = cur_gap->start;
 			uint32 gapend = cur_gap->end;
