@@ -46,10 +46,11 @@
 
 // members of CUpDownClient
 // which are mainly used for downloading functions
-CBarShader CUpDownClient::s_StatusBar(16);
 
 void CUpDownClient::DrawStatusBar(wxMemoryDC* dc, wxRect rect, bool onlygreyrect, bool  bFlat)
 {
+	static CBarShader s_StatusBar(16);
+
 	// 0.42e
 	DWORD crBoth;
 	DWORD crNeither;
