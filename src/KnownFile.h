@@ -50,9 +50,9 @@
 #define PR_VERYHIGH			3
 #define PR_AUTO				5
 #define PR_POWERSHARE                   6 //added for powershare (deltaHF)
-#define SRV_PR_LOW			2
-#define SRV_PR_NORMAL			0
-#define SRV_PR_HIGH			1
+#define SRV_PR_LOW			0
+#define SRV_PR_NORMAL			1
+#define SRV_PR_HIGH			2
 
 class CUpDownClient;
 class CFile;
