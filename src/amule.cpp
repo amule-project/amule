@@ -2155,6 +2155,11 @@ void CamuleApp::NotifyEvent(GUIEvent event) {
 				amuledlg->searchwnd->OnBnClickedCancels(*(wxCommandEvent *)event.ptr_value);
 			}
 			break;
+		case SEARCH_LOCAL_END:
+			if ( amuledlg->searchwnd ) {
+				amuledlg->searchwnd->LocalSearchEnd(event.long_value);
+			}
+			break;
 
 		// chat window
 		case CHAT_REFRESH_FRIEND:

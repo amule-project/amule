@@ -62,6 +62,7 @@ enum GUI_Event_ID {
 	SERVER_THAW,
 	// search window
 	SEARCH_CANCEL,
+	SEARCH_LOCAL_END,
 	// chat window
 	CHAT_REFRESH_FRIEND,
 	CHAT_FIND_FRIEND,
@@ -128,7 +129,6 @@ class GUIEvent {
 		short_value	= 0;
 		long_value      = 0;
 		longlong_value  = 0;
-		string_value    = wxEmptyString;
 		ptr_value       = new_ptr;
 		ptr_aux_value   = new_aux_ptr;
 	}
@@ -139,7 +139,6 @@ class GUIEvent {
 		short_value	= 0;
 		long_value      = 0;
 		longlong_value  = 0;
-		string_value    = wxEmptyString;
 		ptr_value       = new_ptr;
 		ptr_aux_value   = NULL;
 	}
@@ -150,7 +149,6 @@ class GUIEvent {
 		short_value	= 0;
                 long_value      = value32;
                 longlong_value  = value64;
-                string_value    = wxEmptyString;
                 ptr_value       = new_ptr;
                 ptr_aux_value   = NULL;
         }
@@ -161,7 +159,6 @@ class GUIEvent {
 		short_value	= 0;
                 long_value      = new_val;
                 longlong_value  = 0;
-                string_value    = wxEmptyString;
                 ptr_value       = NULL;
                 ptr_aux_value   = NULL;
         }
@@ -172,7 +169,6 @@ class GUIEvent {
 		short_value	= value16;
                 long_value      = value32;
                 longlong_value  = 0;
-                string_value    = wxEmptyString;
                 ptr_value       = NULL;
                 ptr_aux_value   = NULL;
         }
@@ -244,6 +240,7 @@ class GUIEvent {
 
 // search
 #define Notify_SearchCancel(ptr)                    Notify_1_ValEvent(SEARCH_CANCEL, ptr)
+#define Notify_SearchLocalEnd(ptr)                  Notify_1_ValEvent(SEARCH_LOCAL_END, ptr)
 
 // chat
 #define Notify_ChatRefreshFriend(ptr)               Notify_1_ValEvent(CHAT_REFRESH_FRIEND, ptr)
