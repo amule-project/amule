@@ -286,6 +286,31 @@ CECTag::CECTag(ec_tagname_t name, uint32 data) : m_tagName(name), m_dynamic(true
 }
 
 /**
+ * Creates a new CECTag instance, which contains an uint64 value.
+ *
+ * This takes care of endianness problems with numbers.
+ *
+ * @param name TAG name.
+ * @param data uint64 number.
+ *
+ * @see GetInt32Data()
+ */
+CECTag::CECTag(ec_tagname_t name, uint64 data) : m_tagName(name), m_dynamic(true)
+{
+	m_dataLen = 8;
+	m_tagData = malloc(m_dataLen);
+	uint32 low = data & 0xffffffff;
+	uint32 high = data >> 32;
+	if (m_tagData != NULL) {
+		RawPokeUInt32( (void *)m_tagData, ENDIAN_HTONL( low ) );
+		RawPokeUInt32( ((unsigned char*)m_tagData) + sizeof(uint32), ENDIAN_HTONL( high ) );
+		m_error = 0;
+	} else {
+		m_error = 1;
+	}
+}
+
+/**
  * Destructor - frees allocated data and deletes child TAGs.
  */
 CECTag::~CECTag(void)

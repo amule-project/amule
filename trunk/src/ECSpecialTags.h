@@ -155,8 +155,8 @@ class CEC_UpDownClient_Tag : public CECTag {
  		uint32 SpeedUp() { return GetTagByNameSafe(EC_TAG_CLIENT_UP_SPEED)->GetInt32Data(); }
  		uint32 SpeedDown() { return GetTagByNameSafe(EC_TAG_CLIENT_DOWN_SPEED)->GetInt32Data(); }
  		
- 		uint32 XferUp() { return GetTagByNameSafe(EC_TAG_CLIENT_UPLOAD_TOTAL)->GetInt32Data(); };
- 		uint32 XferDown() { return GetTagByNameSafe(EC_TAG_CLIENT_DOWNLOAD_TOTAL)->GetInt32Data(); }
+ 		uint64 XferUp() { return GetTagByNameSafe(EC_TAG_CLIENT_UPLOAD_TOTAL)->GetInt64Data(); };
+ 		uint64 XferDown() { return GetTagByNameSafe(EC_TAG_CLIENT_DOWNLOAD_TOTAL)->GetInt64Data(); }
  		uint32 XferUpSession() { return GetTagByNameSafe(EC_TAG_CLIENT_UPLOAD_SESSION)->GetInt32Data(); }
  		
  		bool IsFriend() { return (GetTagByName(EC_TAG_CLIENT_FRIEND) != 0); }
