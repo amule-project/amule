@@ -8,11 +8,11 @@ AC_DEFUN([AM_PATH_GTK],
 [dnl 
 dnl Get the cflags and libraries from the gtk-config script
 dnl
-AC_ARG_WITH(gtk-prefix,[  --with-gtk-prefix=PREFIX         prefix where GTK is installed (optional)],
+AC_ARG_WITH(gtk-prefix,[  --with-gtk-prefix=PREFIX         prefix where GTK (not GTK2) is installed],
             gtk_config_prefix="$withval", gtk_config_prefix="")
-AC_ARG_WITH(gtk-exec-prefix,[  --with-gtk-exec-prefix=PREFIX    exec prefix where GTK is installed (optional)],
+AC_ARG_WITH(gtk-exec-prefix,[  --with-gtk-exec-prefix=PREFIX    exec prefix where GTK (not GTK2) is installed],
             gtk_config_exec_prefix="$withval", gtk_config_exec_prefix="")
-AC_ARG_ENABLE(gtktest, [  --disable-gtktest       do not try to compile and run a test GTK program],
+#AC_ARG_ENABLE(gtktest, [  --disable-gtktest       do not try to compile and run a test GTK program],
 		    , enable_gtktest=yes)
 
   for module in . $4
