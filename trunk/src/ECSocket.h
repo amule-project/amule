@@ -1,7 +1,7 @@
+//
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2004 aMule Team ( http://www.amule-project.net )
-//
+// Copyright (c) 2004 aMule Team (http://www.amule-project.net)
 // Copyright (c) Angel Vidal Veiga (kry@users.sourceforge.net)
 //
 // This program is free software; you can redistribute it and/or
@@ -17,6 +17,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+//
+
 
 #ifndef ECSOCKET_H
 #define ECSOCKET_H
@@ -24,86 +26,102 @@
 #include <wx/string.h>
 #include <wx/socket.h>
 #include "types.h"
-#include "endianfix.h"
 
+enum aMuleECSocketType {
+	AMULE_EC_CLIENT,
+	AMULE_EC_SERVER
+};
 
-class ECSocket : public wxSocketClient {
+class ECSocket {
 public:
-	wxString SendRecvMsg(const wxChar *msg);
+	//
+	// Constructors
+	//
+	ECSocket();
+	ECSocket(wxSockAddress& address, wxSocketFlags flags = wxSOCKET_NONE);
 	
-	ECSocket& Read(uint8& v) {
-		return ReadRaw(&v, 1);
-	};
+	//
+	// Send/receive string
+	//
+	wxString SendRecvMsg(const wxString &msg);
 	
-	ECSocket& Read(uint16& v) {
-		ReadRaw(&v, 2);
-		ENDIAN_SWAP_I_16(v);
-		return *this;
-	};
+	//
+	// Base
+	//
+	bool Destroy()
+	{
+		return m_sock->Destroy();
+	}
 	
-	ECSocket& Read(uint32& v) {
-		ReadRaw(&v, 4);
-		ENDIAN_SWAP_I_32(v);
-		return *this;
-	};
+	bool Ok() const
+	{
+		return m_sock->Ok();
+	}
+	void Notify(bool notify)
+	{
+		m_sock->Notify(notify);
+	}
 	
-	#if 0
-	ECSocket& Read(uint64& v) {
-		ReadRaw(&v, 8);
-		ENDIAN_SWAP_I_64(v);
-		return *this;
-	};
-	#endif
+	void SetNotify(wxSocketEventFlags flags)
+	{
+		m_sock->SetNotify(flags);
+	}
 	
-	ECSocket& Read(wxString& v) {
-		uint16 len;
-		Read(len);
-		wxChar *buf = new wxChar[len+1];
-		ReadRaw(buf, len);
-		buf[len] = 0;
-		v = wxString(buf,len);
-		delete[] buf;
-		if (Error()) {
-			printf("Wrong wxString Reading Packet!!!\n");
-		}
-		return *this;
-	};
+	void SetEventHandler(wxEvtHandler& handler, int id = -1)
+	{
+		m_sock->SetEventHandler(handler, id);
+	}
+	
+	//
+	// Client
+	//
+	bool Connect(wxSockAddress& address, bool wait = true)
+	{
+		return ((wxSocketClient *)m_sock)->Connect(address, wait);
+	}
+	
+	bool WaitOnConnect(long seconds = -1, long milliseconds = 0)
+	{
+		return ((wxSocketClient *)m_sock)->WaitOnConnect(seconds, milliseconds);
+	}
 
-	ECSocket& Write(const uint8& v) {
-		return WriteRaw(&v, 1);
-	};
-
-	ECSocket& Write(const uint16& v) {
-		int16 tmp = ENDIAN_SWAP_16(v);
-		return WriteRaw(&tmp, 2);
-	};
+	bool IsConnected()
+	{
+		return ((wxSocketClient *)m_sock)->IsConnected();
+	}
 	
-	ECSocket& Write(const uint32& v) {
-		int32 tmp = ENDIAN_SWAP_32(v);
-		return WriteRaw(&tmp, 4);
-	};
+	//
+	// Server
+	//
+	wxSocketBase *Accept(bool wait = true)
+	{
+		return ((wxSocketServer *)m_sock)->Accept(wait);
+	}
 	
-	#if 0
-	ECSocket& Write(const uint64& v) {
-		int64 tmp = ENDIAN_SWAP_32(v);
-		return WriteRaw(&tmp, 8);
-	};
-	#endif
+private:
+	// 8 bits
+	void Read(uint8& i);
+	void Write(const uint8& i);
 	
-	ECSocket& Write(const wxString& v) {
-		Write((uint16)v.Length());
-		return WriteRaw(v.c_str(), v.Length());
-	};
+	// 16 bis
+	void Read(uint16& v);
+	void Write(const uint16& i);
 	
-	ECSocket& ReadRaw(void* buffer, off_t length) { 
-		wxSocketClient::Read(buffer,length); 
-		return *this;
-	};
+	// 32 bits
+	void Read(uint32& v);
+	void Write(const uint32& i);
+#if 0
+	// 64 bits
+	void Read(uint64& i);
+	void Write(const uint64& i);
+#endif
+	// String
+	void Read(wxString& s);
+	void Write(const wxString& s);
 	
-	ECSocket& WriteRaw(const void* buffer, size_t length) { 
-		wxSocketClient::Write(buffer,length); 
-		return *this;
-	};		
+private:
+	aMuleECSocketType m_type;
+	wxSocketBase *m_sock;
 };
 
 #endif // ECSOCKET_H

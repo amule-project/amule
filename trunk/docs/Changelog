@@ -96,6 +96,14 @@ Version 2.0.0rc6 - The '???' version.
 		  to the number of bytes in a multibyte encoded string. This way, 
 		  amule will also not crash with locale search strings like korean,
 		  japanese and chinese.
+		* Several amuleweb/ExternalConn bug fixes. Now the
+		  communication is in UTF8, so that soon amuleweb non-unicode can 
+		  communicate with amule unicode and vice-versa. There was a
+		  bug when the number of files was more than approximately 90
+		  because the communication routines could not handle strings
+		  greater than 64K chars. There is still some replicated code
+		  in ExternalConn.cpp, but the idea is that it will use the
+		  code in ECSocket.cpp.
 
 	rommel:
 		* Patch to implement the commands serverconnect and reloadipf

@@ -1181,12 +1181,17 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	// Populating array
 	bool completedAv = false;
 	wxString sTransferDLList = pThis->webInterface->SendRecvMsg(wxT("TRANSFER DL_LIST"));
+// This is debug code, to be removed later
+//pThis->webInterface->Dump(sTransferDLList);
 	wxStringTokenizer sTransferDLTokens( sTransferDLList, wxT("\n") );
+	int cnt = 0;
 	while (sTransferDLTokens.HasMoreTokens()) {
 		//
 		// Get download entry and tokenize
 		//
 		wxString sEntry = sTransferDLTokens.GetNextToken();
+// This is debug code, to be removed later
+//pThis->webInterface->Show(sEntry << wxT("\n\n") << ++cnt << wxT("\n\n"));
 		wxStringTokenizer sEntryTokens( sEntry, wxT("\t"), wxTOKEN_RET_EMPTY_ALL );
 		//
 		// Fill DownloadFiles structure
@@ -1301,6 +1306,9 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 			break;
 		}
 	}
+// This is debug code, to be removed later
+//pThis->webInterface->Show(wxString(wxT("Size: ")) << strFilesMap.size() << wxT("\n"));
+//pThis->webInterface->Show(wxString(wxT("Transfer len: ")) << sTransferDLList.size() << wxT("\n"));
 	//
 	// Sorting
 	//
