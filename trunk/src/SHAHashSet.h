@@ -73,6 +73,7 @@ Example
 #endif
 
 #include <deque>
+#include <set>
 #include <list>
 #include "OtherFunctions.h"
 
@@ -178,7 +179,7 @@ public:
 	bool	AddSigningIP(uint32 dwIP);	
 
 	CAICHHash				m_Hash;
-	deque<uint32>	m_adwIpsSigning;
+	set<uint32>	m_adwIpsSigning;
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////
