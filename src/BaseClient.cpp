@@ -188,6 +188,7 @@ void CUpDownClient::Init()
 	
 	m_bRemoteQueueFull = false;
 	memset( m_achUserHash, 0, 16);
+	m_HasValidHash = false;
 	SetWaitStartTime();
 	if (socket) {
 		wxIPV4address address;
@@ -368,6 +369,7 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
 	try {	
 	
 		data->ReadHash16(m_achUserHash);
+		ValidateHash();
 		data->Read(m_nUserID);
 		uint16 nUserPort = 0;
 		data->Read(nUserPort); // hmm clientport is sent twice - why?
