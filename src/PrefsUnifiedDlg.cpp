@@ -53,6 +53,7 @@
 #include "StatisticsDlg.h"	// Needed for graph parameters, colors
 #include "IPFilter.h"		// Needed for CIPFilter
 #include "SearchList.h"
+#include "DownloadQueue.h"
 
 // The following classes are used for table-driven access to user-definable settings,
 // most of which appear in the Preferences dialog.  All other items in the preference file
@@ -1215,7 +1216,12 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent &event)
 	if (Prse(IDC_INCFILES)->WasChanged() || Prse(IDC_TEMPFILES)->WasChanged() || pdtcShareSelector->HasChanged) {
 		theApp.sharedfiles->Reload(true, false);
 	}
-
+	
+	if (Prse(IDC_PERCENT)->WasChanged() || Prse(IDC_PROGBAR)->WasChanged()) {		
+		// Force upload of the donwload queue 
+		theApp.downloadqueue->UpdateDisplayedInfo(true);
+	}
+	
     EndModal(ID_PREFS_OK_LEFT);
 }
 
