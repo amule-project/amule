@@ -25,8 +25,6 @@
 #include <wx/timer.h>
 #include <wx/valgen.h>
 #include <wx/tokenzr.h>
-#include <wx/control.h>
-#include <wx/slider.h>
 #include <wx/filename.h>
 #include <wx/textfile.h>
 #include <wx/config.h>
@@ -46,9 +44,12 @@
 #include "opcodes.h"		// Needed for PREFFILE_VERSION
 #include "Preferences.h"
 #include "CFile.h"
+#include "MD5Sum.h"
+
+#include <wx/control.h>
+#include <wx/slider.h>
 #include "muuli_wdr.h"
 #include "StatisticsDlg.h"
-#include "MD5Sum.h"
 
 using namespace otherfunctions;
 

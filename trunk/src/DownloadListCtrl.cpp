@@ -2071,7 +2071,7 @@ bool CDownloadListCtrl::this_is_the_moment() {
 	}
 }
 
-bool CDownloadListCtrl::PreviewFile(CPartFile* file) {
+void CDownloadListCtrl::PreviewFile(CPartFile* file) {
 
 	wxString command;
 
@@ -2084,7 +2084,7 @@ bool CDownloadListCtrl::PreviewFile(CPartFile* file) {
 	// Need to use quotes in case filename contains spaces.
 	command.Append(wxT(" \""));
 	if ( file->GetStatus() == PS_COMPLETE ) {
-		command.Append(thePrefs::GetIncomingDir() + wxFileName::GetPathSeparator() + fle->GetFileName());
+		command.Append(thePrefs::GetIncomingDir() + wxFileName::GetPathSeparator() + file->GetFileName());
 	} else {
 		command.Append(file->GetFullName());
 		// Remove the .met from filename.

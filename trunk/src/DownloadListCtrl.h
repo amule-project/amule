@@ -100,7 +100,7 @@ protected:
 
 private:
 	bool ShowItemInCurrentCat(CPartFile* file,int newsel);
-	void PreviewFile();
+	void PreviewFile(CPartFile* file);
 	bool 	this_is_the_moment();
 	int	last_moment;
 

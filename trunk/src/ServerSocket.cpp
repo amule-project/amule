@@ -629,8 +629,6 @@ bool CServerSocket::Connect(wxIPV4address &addr, bool wait)
 #endif
 
 void CServerSocketHandler::ServerSocketHandler(wxSocketEvent& event) {
-	//printf("Got a server event\n");
-	//wxMessageBox(wxString::Format("Got Server Event %u",event.GetSocketEvent()));
 	
 	if (!socket) {
 		return;
