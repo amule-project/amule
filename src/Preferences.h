@@ -111,22 +111,22 @@ struct Preferences_Struct{
 	uint16	udpport;
 	bool		UDPDisable;
 	uint16	maxconnections;
-	int8	reconnect;
-	int8	deadserver;
-	int8	scorsystem;
+	bool	reconnect;
+	bool	deadserver;
+	bool	scorsystem;
 	char	incomingdir[MAX_PATH];
 	char	tempdir[MAX_PATH];
-	int8	ICH;
-	int8	autoserverlist;
-	int8	updatenotify;
-	int8	mintotray;
-	int8	autoconnect;
-	int8	autoconnectstaticonly; // Barry
-	int8	autotakeed2klinks;     // Barry
-	int8	addnewfilespaused;     // Barry
+	bool	ICH;
+	bool	autoserverlist;
+	bool	updatenotify;
+	bool	mintotray;
+	bool	autoconnect;
+	bool	autoconnectstaticonly; // Barry
+	bool	autotakeed2klinks;     // Barry
+	bool	addnewfilespaused;     // Barry
 	int8	depth3D;			   // Barry
-	int8	addserversfromserver;
-	int8	addserversfromclient;
+	bool	addserversfromserver;
+	bool	addserversfromclient;
 	int16	maxsourceperfile;
 	int16	trafficOMeterInterval;
 	int16	statsInterval;
@@ -134,8 +134,8 @@ struct Preferences_Struct{
 	WINDOWPLACEMENT EmuleWindowPlacement;
 	int	maxGraphDownloadRate;
 	int	maxGraphUploadRate;
-	uint8	beepOnError;
-	uint8	confirmExit;
+	bool	beepOnError;
+	bool	confirmExit;
 	int16	downloadColumnWidths[13];
 	Bool	downloadColumnHidden[13];
 	int16	downloadColumnOrder[13];
@@ -158,17 +158,17 @@ struct Preferences_Struct{
 	Bool	clientListColumnHidden[8];
 	int16 	clientListColumnOrder[8];
 
-	uint8	splashscreen;
-	uint8	filterBadIP;
-	uint8	onlineSig;
+	bool	splashscreen;
+	bool	filterBadIP;
+	bool	onlineSig;
 
 	uint64  totalDownloadedBytes;
 	uint64	totalUploadedBytes;
 	uint16	languageID;
-	int8	transferDoubleclick;
+	bool	transferDoubleclick;
 	int8	m_iSeeShares;		// 0=everybody 1=friends only 2=noone
 	int8	m_iToolDelayTime;	// tooltip delay time in seconds
-	int8	bringtoforeground;
+	bool	bringtoforeground;
 	int8	splitterbarPosition;
 	uint16	deadserverretries;
 	uint32	m_dwServerKeepAliveTimeoutMins;
@@ -176,14 +176,14 @@ struct Preferences_Struct{
 	uint8   statsMax;
 	int8	statsAverageMinutes;
 
-	int8    useDownloadNotifier;
-	int8    useChatNotifier;
-	int8    useLogNotifier;	
-	int8    useSoundInNotifier;
-	int8	sendEmailNotifier;
-	int8    notifierPopsEveryChatMsg;
-	int8	notifierImportantError;
-	int8	notifierNewVersion;
+	bool    useDownloadNotifier;
+	bool    useChatNotifier;
+	bool    useLogNotifier;	
+	bool    useSoundInNotifier;
+	bool	sendEmailNotifier;
+	bool    notifierPopsEveryChatMsg;
+	bool	notifierImportantError;
+	bool	notifierNewVersion;
 	char    notifierSoundFilePath[510];
 
 	char	m_sircserver[50];
@@ -507,7 +507,7 @@ public:
 	CStringList adresses_list;
 
 	void 	SetLanguage();
-	int8 	AutoConnectStaticOnly()		{return prefs->autoconnectstaticonly;}	
+	bool 	AutoConnectStaticOnly()		{return prefs->autoconnectstaticonly;}	
 //	int8 	GetUpdateDays()			{return prefs->versioncheckdays;}
 //	uint32 	GetLastVC()			{return prefs->versioncheckLastAutomatic;}
 //	void   	UpdateLastVC()			{prefs->versioncheckLastAutomatic=time(NULL);}
