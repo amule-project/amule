@@ -185,8 +185,8 @@ void CUploadListCtrl::RefreshClient(CUpDownClient* client)
 	} else {
 		SetItem(itemnr,1,wxT("?"));
 	}
-	sprintf(buffer,"%.1f kB/s",client->GetKBpsUp());
 	SetItem(itemnr,2,client->GetClientVerString());
+	sprintf(buffer,"%.1f kB/s",client->GetKBpsUp());
 	SetItem(itemnr,3,char2unicode(buffer));
 	SetItem(itemnr,5,CastItoXBytes(client->GetTransferedUp()));
 	SetItem(itemnr,6,CastSecondsToHM((client->GetUpStartTimeDelay())/1000));
