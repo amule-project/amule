@@ -182,22 +182,27 @@ enum wxProxyCommand {
 	wxPROXY_CMD_UDP_ASSOCIATE
 };
 
+enum ProxyState {
+	PROXY_STATE_START = 0,
+	PROXY_STATE_END = 1
+};
+
 class ProxyStateMachine : public StateMachine
 {
 public:
 	ProxyStateMachine(
 		const wxString &name,
 		const unsigned int max_states,
-		const t_sm_state initial_state,
 		const wxProxyData &ProxyData,
 		wxProxyCommand cmd);
 	virtual ~ProxyStateMachine();
 	/* Interface */
 	bool		Start(const wxIPaddress &PeerAddress, wxSocketClient *ProxyClientSocket);
+	t_sm_state	HandleEvent(t_sm_event event);
 	char 		*GetBuffer() const			{ return (char *)m_buffer; }
 	wxIPaddress	&GetProxyBoundAddress(void) const	{ return *m_ProxyBoundAddress; }
 	unsigned char	GetLastReply(void) const		{ return m_LastReply; }
-	virtual bool	IsEndState() const = 0;
+	bool IsEndState() const					{ return m_state == PROXY_STATE_END; }
 
 protected:
 	wxSocketBase		&ProxyWrite(wxSocketBase &socket, const void *buffer, wxUint32 nbytes);
@@ -238,29 +243,30 @@ protected:
 //------------------------------------------------------------------------------
 // Socks5StateMachine
 //------------------------------------------------------------------------------
-const unsigned int SOCKS5_MAX_STATES = 14;
-
-enum Socks5State {
-	SOCKS5_STATE_START = 0,
-	SOCKS5_STATE_SEND_QUERY_AUTHENTICATION_METHOD,
-	SOCKS5_STATE_RECEIVE_AUTHENTICATION_METHOD,
-	SOCKS5_STATE_PROCESS_AUTHENTICATION_METHOD,
-	SOCKS5_STATE_SEND_AUTHENTICATION_GSSAPI,
-	SOCKS5_STATE_RECEIVE_AUTHENTICATION_GSSAPI,
-	SOCKS5_STATE_PROCESS_AUTHENTICATION_GSSAPI,
-	SOCKS5_STATE_SEND_AUTHENTICATION_USERNAME_PASSWORD,
-	SOCKS5_STATE_RECEIVE_AUTHENTICATION_USERNAME_PASSWORD,
-	SOCKS5_STATE_PROCESS_AUTHENTICATION_USERNAME_PASSWORD,
-	SOCKS5_STATE_SEND_COMMAND_REQUEST,
-	SOCKS5_STATE_RECEIVE_COMMAND_REPLY,
-	SOCKS5_STATE_PROCESS_COMMAND_REPLY,
-	SOCKS5_STATE_END
-};
-
 class Socks5StateMachine;
 typedef void (Socks5StateMachine::*Socks5StateProcessor)(bool entry);
 class Socks5StateMachine : public ProxyStateMachine
 {
+private:
+	static const unsigned int SOCKS5_MAX_STATES = 14;
+
+	enum Socks5State {
+		SOCKS5_STATE_START = PROXY_STATE_START,
+		SOCKS5_STATE_END = PROXY_STATE_END,
+		SOCKS5_STATE_SEND_QUERY_AUTHENTICATION_METHOD,
+		SOCKS5_STATE_RECEIVE_AUTHENTICATION_METHOD,
+		SOCKS5_STATE_PROCESS_AUTHENTICATION_METHOD,
+		SOCKS5_STATE_SEND_AUTHENTICATION_GSSAPI,
+		SOCKS5_STATE_RECEIVE_AUTHENTICATION_GSSAPI,
+		SOCKS5_STATE_PROCESS_AUTHENTICATION_GSSAPI,
+		SOCKS5_STATE_SEND_AUTHENTICATION_USERNAME_PASSWORD,
+		SOCKS5_STATE_RECEIVE_AUTHENTICATION_USERNAME_PASSWORD,
+		SOCKS5_STATE_PROCESS_AUTHENTICATION_USERNAME_PASSWORD,
+		SOCKS5_STATE_SEND_COMMAND_REQUEST,
+		SOCKS5_STATE_RECEIVE_COMMAND_REPLY,
+		SOCKS5_STATE_PROCESS_COMMAND_REPLY
+	};
+
 public:
 	/* Constructor */
 	Socks5StateMachine(
@@ -268,7 +274,6 @@ public:
 		wxProxyCommand ProxyCommand);
 	void process_state(t_sm_state state, bool entry);
 	t_sm_state next_state(t_sm_event event);
-	bool IsEndState() const { return m_state == SOCKS5_STATE_END; }
 	
 private:
 	/* State Processors */
@@ -293,21 +298,21 @@ private:
 //------------------------------------------------------------------------------
 // Socks4StateMachine
 //------------------------------------------------------------------------------
-const unsigned int SOCKS4_MAX_STATES = 5;
-
-// Declare this inside the class and always start at state 0!
-enum Socks4State {
-	SOCKS4_STATE_START = 0,
-	SOCKS4_STATE_SEND_COMMAND_REQUEST,
-	SOCKS4_STATE_RECEIVE_COMMAND_REPLY,
-	SOCKS4_STATE_PROCESS_COMMAND_REPLY,
-	SOCKS4_STATE_END
-};
-
 class Socks4StateMachine;
 typedef void (Socks4StateMachine::*Socks4StateProcessor)(bool entry);
 class Socks4StateMachine : public ProxyStateMachine
 {
+private:
+	static const unsigned int SOCKS4_MAX_STATES = 5;
+
+	enum Socks4State {
+		SOCKS4_STATE_START = PROXY_STATE_START,
+		SOCKS4_STATE_END = PROXY_STATE_END,
+		SOCKS4_STATE_SEND_COMMAND_REQUEST,
+		SOCKS4_STATE_RECEIVE_COMMAND_REPLY,
+		SOCKS4_STATE_PROCESS_COMMAND_REPLY
+	};
+
 public:
 	/* Constructor */
 	Socks4StateMachine(
@@ -315,7 +320,6 @@ public:
 		wxProxyCommand ProxyCommand);
 	void process_state(t_sm_state state, bool entry);
 	t_sm_state next_state(t_sm_event event);
-	bool IsEndState() const { return m_state == SOCKS4_STATE_END; }
 	
 private:
 	/* State Processors */

@@ -138,11 +138,10 @@ static ProxyEventHandler TheProxyEventHandler;
 ProxyStateMachine::ProxyStateMachine(
 		const wxString &name,
 		const unsigned int max_states,
-		const t_sm_state initial_state,
 		const wxProxyData &ProxyData,
 		wxProxyCommand ProxyCommand)
 :
-StateMachine(name, max_states, initial_state),
+StateMachine(name, max_states, PROXY_STATE_START),
 m_ProxyData(ProxyData)
 {
 	m_IsLost = false;
@@ -201,6 +200,49 @@ bool ProxyStateMachine::Start(const wxIPaddress &PeerAddress, wxSocketClient *Pr
 	return m_ok;
 }
 
+t_sm_state ProxyStateMachine::HandleEvent(t_sm_event event)
+{
+	// Default is stay in current state	
+	t_sm_state ret = m_state;
+	switch(event)
+	{
+	case wxSOCKET_CONNECTION:
+		printf("Connection event\n");
+		m_IsConnected = true;
+		break;
+		
+	case wxSOCKET_INPUT:
+		printf("Input event\n");
+		m_CanReceive = true;
+		break;
+		
+	case wxSOCKET_OUTPUT:
+		printf("Output event\n");
+		m_CanSend = true;
+		break;
+		
+	case wxSOCKET_LOST:
+		printf("Lost connection event\n");
+		m_IsLost = true;
+		break;
+		
+	default:
+		printf("No event\n");
+		break;
+	}
+	
+	if (m_IsLost) {
+		ret = PROXY_STATE_END;
+	}
+	
+	// Should not last too long, something is wrong, abort.
+	if (GetClocksInCurrentState() > 10) {
+		ret = PROXY_STATE_END;
+	}
+	
+	return ret;
+}
+
 wxSocketBase &ProxyStateMachine::ProxyWrite(wxSocketBase &socket, const void *buffer, wxUint32 nbytes)
 {
 	wxSocketBase &ret = socket.Write(buffer, nbytes);
@@ -242,23 +284,22 @@ Socks5StateMachine::Socks5StateMachine(
 	wxProxyCommand ProxyCommand)
 :
 ProxyStateMachine(
-	wxString(wxT("Socks5")), SOCKS5_MAX_STATES, SOCKS5_STATE_START,
-	ProxyData, ProxyCommand)
+	wxString(wxT("Socks5")), SOCKS5_MAX_STATES, ProxyData, ProxyCommand)
 {
 	m_process_state[ 0] = &Socks5StateMachine::process_start;
-	m_process_state[ 1] = &Socks5StateMachine::process_send_query_authentication_method;
-	m_process_state[ 2] = &Socks5StateMachine::process_receive_authentication_method;
-	m_process_state[ 3] = &Socks5StateMachine::process_process_authentication_method;
-	m_process_state[ 4] = &Socks5StateMachine::process_send_authentication_gssapi;
-	m_process_state[ 5] = &Socks5StateMachine::process_receive_authentication_gssapi;
-	m_process_state[ 6] = &Socks5StateMachine::process_process_authentication_gssapi;
-	m_process_state[ 7] = &Socks5StateMachine::process_send_authentication_username_password;
-	m_process_state[ 8] = &Socks5StateMachine::process_receive_authentication_username_password;
-	m_process_state[ 9] = &Socks5StateMachine::process_process_authentication_username_password;
-	m_process_state[10] = &Socks5StateMachine::process_send_command_request;
-	m_process_state[11] = &Socks5StateMachine::process_receive_command_reply;
-	m_process_state[12] = &Socks5StateMachine::process_process_command_reply;
-	m_process_state[13] = &Socks5StateMachine::process_end;
+	m_process_state[ 1] = &Socks5StateMachine::process_end;
+	m_process_state[ 2] = &Socks5StateMachine::process_send_query_authentication_method;
+	m_process_state[ 3] = &Socks5StateMachine::process_receive_authentication_method;
+	m_process_state[ 4] = &Socks5StateMachine::process_process_authentication_method;
+	m_process_state[ 5] = &Socks5StateMachine::process_send_authentication_gssapi;
+	m_process_state[ 6] = &Socks5StateMachine::process_receive_authentication_gssapi;
+	m_process_state[ 7] = &Socks5StateMachine::process_process_authentication_gssapi;
+	m_process_state[ 8] = &Socks5StateMachine::process_send_authentication_username_password;
+	m_process_state[ 9] = &Socks5StateMachine::process_receive_authentication_username_password;
+	m_process_state[10] = &Socks5StateMachine::process_process_authentication_username_password;
+	m_process_state[11] = &Socks5StateMachine::process_send_command_request;
+	m_process_state[12] = &Socks5StateMachine::process_receive_command_reply;
+	m_process_state[13] = &Socks5StateMachine::process_process_command_reply;
 }
 
 void Socks5StateMachine::process_state(t_sm_state state, bool entry)
@@ -268,42 +309,8 @@ void Socks5StateMachine::process_state(t_sm_state state, bool entry)
 
 t_sm_state Socks5StateMachine::next_state(t_sm_event event)
 {
-	// Default is stay in current state	
-	t_sm_state ret = m_state;
-	
-	switch(event)
-	{
-	case wxSOCKET_CONNECTION:
-		printf("Connection event\n");
-		m_IsConnected = true;
-		break;
-		
-	case wxSOCKET_INPUT:
-		printf("Input event\n");
-		m_CanReceive = true;
-		break;
-		
-	case wxSOCKET_OUTPUT:
-		printf("Output event\n");
-		m_CanSend = true;
-		break;
-		
-	case wxSOCKET_LOST:
-		printf("Lost connection vent\n");
-		m_IsLost = true;
-		break;
-		
-	default:
-		printf("No event\n");
-		break;
-	}
-	
-	if (m_IsLost) {
-		ret = SOCKS5_STATE_END;
-		
-		return ret;
-	}
-	
+	// Default is stay in current state
+	t_sm_state ret = HandleEvent(event);
 	switch (m_state) {
 	case SOCKS5_STATE_START:
 		if (m_IsConnected && !m_IsLost && CanSend()) {
@@ -430,6 +437,11 @@ dump("process_start", m_ok, NULL, 0);
 	} else {
 printf("wait state -- process_start\n");
 	}
+}
+
+void Socks5StateMachine::process_end(bool)
+{
+dump("process_end", m_ok, NULL, 0);
 }
 
 void Socks5StateMachine::process_send_query_authentication_method(bool entry)
@@ -659,11 +671,6 @@ printf("wait state -- process_receive_command_reply\n");
 	}
 }
 
-void Socks5StateMachine::process_end(bool)
-{
-dump("process_end", m_ok, NULL, 0);
-}
-
 //------------------------------------------------------------------------------
 // Socks4StateMachine
 //------------------------------------------------------------------------------
@@ -673,14 +680,13 @@ Socks4StateMachine::Socks4StateMachine(
 	wxProxyCommand ProxyCommand)
 :
 ProxyStateMachine(
-	wxString(wxT("Socks4")), SOCKS4_MAX_STATES, SOCKS4_STATE_START,
-	ProxyData, ProxyCommand)
+	wxString(wxT("Socks4")), SOCKS4_MAX_STATES, ProxyData, ProxyCommand)
 {
 	m_process_state[0] = &Socks4StateMachine::process_start;
-	m_process_state[1] = &Socks4StateMachine::process_send_command_request;
-	m_process_state[2] = &Socks4StateMachine::process_receive_command_reply;
-	m_process_state[3] = &Socks4StateMachine::process_process_command_reply;
-	m_process_state[4] = &Socks4StateMachine::process_end;
+	m_process_state[1] = &Socks4StateMachine::process_end;
+	m_process_state[2] = &Socks4StateMachine::process_send_command_request;
+	m_process_state[3] = &Socks4StateMachine::process_receive_command_reply;
+	m_process_state[4] = &Socks4StateMachine::process_process_command_reply;
 }
 
 void Socks4StateMachine::process_state(t_sm_state state, bool entry)
@@ -690,42 +696,8 @@ void Socks4StateMachine::process_state(t_sm_state state, bool entry)
 
 t_sm_state Socks4StateMachine::next_state(t_sm_event event)
 {
-	// Default is stay in current state	
-	t_sm_state ret = m_state;
-	
-	switch(event)
-	{
-	case wxSOCKET_CONNECTION:
-		printf("Connection event\n");
-		m_IsConnected = true;
-		break;
-		
-	case wxSOCKET_INPUT:
-		printf("Input event\n");
-		m_CanReceive = true;
-		break;
-		
-	case wxSOCKET_OUTPUT:
-		printf("Output event\n");
-		m_CanSend = true;
-		break;
-		
-	case wxSOCKET_LOST:
-		printf("Lost connection event\n");
-		m_IsLost = true;
-		break;
-		
-	default:
-		printf("No event\n");
-		break;
-	}
-	
-	if (m_IsLost) {
-		ret = SOCKS5_STATE_END;
-		
-		return ret;
-	}
-	
+	// Default is stay in current state
+	t_sm_state ret = HandleEvent(event);
 	switch (m_state) {
 	case SOCKS4_STATE_START:
 		if (m_IsConnected && !m_IsLost && CanSend()) {
@@ -768,6 +740,11 @@ dump("process_start", m_ok, NULL, 0);
 	} else {
 printf("wait state -- process_start\n");
 	}
+}
+
+void Socks4StateMachine::process_end(bool)
+{
+dump("process_end", m_ok, NULL, 0);
 }
 
 void Socks4StateMachine::process_send_command_request(bool entry)
@@ -841,11 +818,6 @@ dump("process_process_command_reply", m_ok, m_buffer, m_PacketLenght);
 	} else {
 printf("wait state -- process_receive_command_reply\n");
 	}
-}
-
-void Socks4StateMachine::process_end(bool)
-{
-dump("process_end", m_ok, NULL, 0);
 }
 
 //------------------------------------------------------------------------------
