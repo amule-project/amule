@@ -35,8 +35,9 @@
 // Include wxWindows' headers
 #ifndef WX_PRECOMP
 #include <wx/wx.h>
-#include <wx/filename.h>
 #endif
+
+#include <wx/filename.h>
 
 #include "md4.h"
 
