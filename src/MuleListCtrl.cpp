@@ -96,6 +96,9 @@ CMuleListCtrl::~CMuleListCtrl()
 	// If the user specified a name for the list, then its options will be
 	// saved upon destruction of the listctrl.
 	SaveSettings();
+
+	// Delete the arrow-image list
+	delete GetImageList( wxIMAGE_LIST_SMALL );
 }
 
 
