@@ -74,6 +74,9 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		port to show the value of the client UDP port.
 		* Fixed a crash on webserver, all return values of
 		SendRecvMsg_v2 must be checked for NULL return value.
+		* Fixed an uncountable number of potential segfaults on
+		amuleweb because almost no return value of GetTagByIndex and
+		GetTagByName were beeing checked for NULL.
 
 	Ken:
 		* Fixed Mac bug: window was a little larger each restart
