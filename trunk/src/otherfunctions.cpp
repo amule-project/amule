@@ -621,7 +621,7 @@ void RLE_Data::Realloc(int size)
 	m_len = size;
 }
 
-const unsigned char *RLE_Data::Decode(const unsigned char *buff)
+const unsigned char *RLE_Data::Decode(const unsigned char *buff, int len)
 {
 	//
 	// Open RLE
@@ -630,17 +630,27 @@ const unsigned char *RLE_Data::Decode(const unsigned char *buff)
 	int i = 0, j = 0;
 	while ( j != m_len ) {
 
-		if (buff[i+1] == buff[i]) {
-			// this is sequence
-			memset(m_enc_buff + j, buff[i], buff[i + 2]);
-			j += buff[i + 2];
-			i += 3;
+		if ( i < (len -1) ) {
+			if (buff[i+1] == buff[i]) {
+				// this is sequence
+				memset(m_enc_buff + j, buff[i], buff[i + 2]);
+				j += buff[i + 2];
+				i += 3;
+			} else {
+				// this is single byte
+				m_enc_buff[j++] = buff[i++];
+			}
 		} else {
-			// this is single byte
+			// only 1 byte left in encoded data - it can't be sequence
 			m_enc_buff[j++] = buff[i++];
+			// if there's no more data, but buffer end is not reached,
+			// it must be error in some point
+			if ( j != m_len ) {
+				printf("RLE_Data: decoding error. %d bytes decoded to %d instead of %d\n", len, j, m_len);
+			}
+			break;
 		}
-	}
-	
+	}	
 	//
 	// Recreate data from diff
 	//
@@ -658,12 +668,13 @@ void PartFileEncoderData::Decode(unsigned char *data, int len)
 	// get size of RLE data for part_status
 	uint32 partsize = *((uint32 *)data);
 	data += sizeof(uint32);
-	m_part_status.Decode(data);
+	m_part_status.Decode(data, partsize);
 	// following is RLE data and size for gap_status
 	data += partsize;
 	uint32 gapsize = *((uint32 *)data);
+	data += sizeof(uint32);
 	m_gap_status.Realloc(gapsize);
-	m_gap_status.Decode(data + sizeof(uint32));
+	m_gap_status.Decode(data, len - 2*sizeof(uint32) - partsize);
 }
 
 } // End namespace
