@@ -91,6 +91,14 @@ extraResourceOptions=
 [Other]
 1=src\Makefile.am
 [History]
-src\alcc.cpp,2563
-src\alcc.h,1308
-src\Makefile.am,489
+src\Makefile.am,369
+src\md4.h,1881
+src\ed2khash.h,1600
+src\ed2khash.cpp,1566
+src\alc.cpp,1378
+src\alc.h,1650
+src\alcframe.cpp,1426
+src\alcframe.h,1710
+src\alcpix.cpp,1632
+src\alcpix.h,1416
+src\md4.cpp,1855
