@@ -617,11 +617,18 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer, bool OSInfo) {
 	}
 
 	CSafeMemFile* data = new CSafeMemFile();
-	data->WriteUInt8(CURRENT_VERSION_SHORT);
-	data->WriteUInt8(EMULE_PROTOCOL);
 
+	data->WriteUInt8(CURRENT_VERSION_SHORT);
+	
 	if (OSInfo) {
+		
 		// Special MuleInfo packet for aMule >= 2.0.0 (Multiplatform support)
+		
+		// Violently mark it as aMule 2.0.0 packet
+		// Sending this makes older clients or non-aMule clients to refuse to read 
+		// this packet. Anyway, this packet should NEVER get to non-aMule clients.
+		
+		data->WriteUInt8(/*EMULE_PROTOCOL*/ 0xFF);		
 
 		data->WriteUInt32(1); // One Tag (OS_INFO)
 
@@ -641,7 +648,9 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer, bool OSInfo) {
 
 		// Normal MuleInfo packet
 
-		// Support for ET_MOD_VERSION [BlackRat]
+		data->WriteUInt8(EMULE_PROTOCOL);
+
+		// Tag number
 		data->WriteUInt32(9);
 
 		CTag tag1(ET_COMPRESSION,1);
@@ -681,10 +690,13 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer, bool OSInfo) {
 
 	Packet* packet = new Packet(data,OP_EMULEPROT);
 	delete data;
-	if (!bAnswer)
+	
+	if (!bAnswer) {
 		packet->SetOpCode(OP_EMULEINFO);
-	else
+	} else {
 		packet->SetOpCode(OP_EMULEINFOANSWER);
+	}
+	
 	if (m_socket) {
 		theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
 		SendPacket(packet,true,true);
@@ -715,111 +727,111 @@ void CUpDownClient::ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize)
 			m_byEmuleVersion = 0x22;
 		}
 
-		m_bEmuleProtocol = (data.ReadUInt8() == EMULE_PROTOCOL);
-
-		if (!m_bEmuleProtocol) {
-			return;
-		}
+		uint8 protocol_version = data.ReadUInt8();
 
 		uint32 tagcount = data.ReadUInt32();
-
-		for (uint32 i = 0;i < tagcount; i++){
-			CTag temptag(data);
-			switch(temptag.tag.specialtag){
-				case ET_COMPRESSION:
-					// Bits 31- 8: 0 - reserved
-					// Bits  7- 0: data compression version
-					m_byDataCompVer = temptag.tag.intvalue;
-					break;
-				case ET_UDPPORT:
-					// Bits 31-16: 0 - reserved
-					// Bits 15- 0: UDP port
-					m_nUDPPort = temptag.tag.intvalue;
-					break;
-				case ET_UDPVER:
-					// Bits 31- 8: 0 - reserved
-					// Bits  7- 0: UDP protocol version
-					m_byUDPVer = temptag.tag.intvalue;
-					break;
-				case ET_SOURCEEXCHANGE:
-					// Bits 31- 8: 0 - reserved
-					// Bits  7- 0: source exchange protocol version
-					m_bySourceExchangeVer = temptag.tag.intvalue;
-					break;
-				case ET_COMMENTS:
-					// Bits 31- 8: 0 - reserved
-					// Bits  7- 0: comments version
-					m_byAcceptCommentVer = temptag.tag.intvalue;
-					break;
-				case ET_EXTENDEDREQUEST:
-						// Bits 31- 8: 0 - reserved
-					// Bits  7- 0: extended requests version
-					m_byExtendedRequestsVer = temptag.tag.intvalue;
-					break;
-				case ET_COMPATIBLECLIENT:
-					// Bits 31- 8: 0 - reserved
-					// Bits  7- 0: compatible client ID
-					m_byCompatibleClient = temptag.tag.intvalue;
-					break;
-				case ET_FEATURES:
-					// Bits 31- 8: 0 - reserved
-					// Bit	    7: Preview
-					// Bit   6- 0: secure identification
-					m_bySupportSecIdent = temptag.tag.intvalue & 3;
-					m_bSupportsPreview = (temptag.tag.intvalue & 128) > 0;
-					SecIdentSupRec +=  2;
-					break;
-				case ET_MOD_VERSION:
-					if (temptag.tag.type == 2) {
-						m_strModVersion = char2unicode(temptag.tag.stringvalue);
-					} else if (temptag.tag.type == 3) {
-						m_strModVersion.Printf(wxT("ModID=%u"), temptag.tag.intvalue);
-					} else {
-						m_strModVersion = wxT("ModID=<Unknown>");
-					}
-
-					break;
-				case ET_OS_INFO:
-					// Special tag, aMule 2.0.0rc8 sends it to other aMules.
-					// It was recycled from a mod's tag, so we need to make sure
-					// that there's an aMule on the other side.
-
-					if ((m_clientSoft == SO_AMULE) && (m_nClientVersion >= MAKE_CLIENT_VERSION(2,0,0))) {
-						wxASSERT(temptag.tag.type == 2); // tag must be a string
+		
+		if (protocol_version == 0xFF) {
+			m_bEmuleProtocol = true;
+			// aMule >= 2.0.0-rc8 seding OS info
+			for (uint32 i = 0;i < tagcount; i++){
+				CTag temptag(data);
+				switch(temptag.tag.specialtag){
+					case ET_OS_INFO:
+						// Special tag, >= aMule 2.0.0rc8 sends it to other aMules.
+	
+						// It was recycled from a mod's tag, so if the other side
+						// is not an aMule 2.0.0 at least, we're seriously fucked up :)
+							
+						wxASSERT((temptag.tag.type == 2) // tag must be a string
+									&& (m_clientSoft == SO_AMULE) 
+									&& (m_nClientVersion >= MAKE_CLIENT_VERSION(2,0,0)));
 
 						m_sClientOSInfo = char2unicode(temptag.tag.stringvalue);
-					}
 
-					break;
-
-				default:
-					//printf("Mule Unk Tag 0x%02x=%x\n", temptag.tag.specialtag, (UINT)temptag.tag.intvalue);
-					break;
+	
+						break;	
+					
+					// Your ad... er... I mean TAG, here
+						
+					default:
+						break;
+				}
 			}
+			
+		} else {
+			
+			if (!(m_bEmuleProtocol = (protocol_version == EMULE_PROTOCOL))) {
+				return;	
+			}
+			
+			// Old eMule sending tags
+			
+			for (uint32 i = 0;i < tagcount; i++){
+				CTag temptag(data);
+				switch(temptag.tag.specialtag){
+					case ET_COMPRESSION:
+						// Bits 31- 8: 0 - reserved
+						// Bits  7- 0: data compression version
+						m_byDataCompVer = temptag.tag.intvalue;
+						break;
+					case ET_UDPPORT:
+						// Bits 31-16: 0 - reserved
+						// Bits 15- 0: UDP port
+						m_nUDPPort = temptag.tag.intvalue;
+						break;
+					case ET_UDPVER:
+						// Bits 31- 8: 0 - reserved
+						// Bits  7- 0: UDP protocol version
+						m_byUDPVer = temptag.tag.intvalue;
+						break;
+					case ET_SOURCEEXCHANGE:
+						// Bits 31- 8: 0 - reserved
+						// Bits  7- 0: source exchange protocol version
+						m_bySourceExchangeVer = temptag.tag.intvalue;
+						break;
+					case ET_COMMENTS:
+						// Bits 31- 8: 0 - reserved
+						// Bits  7- 0: comments version
+						m_byAcceptCommentVer = temptag.tag.intvalue;
+						break;
+					case ET_EXTENDEDREQUEST:
+							// Bits 31- 8: 0 - reserved
+						// Bits  7- 0: extended requests version
+						m_byExtendedRequestsVer = temptag.tag.intvalue;
+						break;
+					case ET_COMPATIBLECLIENT:
+						// Bits 31- 8: 0 - reserved
+						// Bits  7- 0: compatible client ID
+						m_byCompatibleClient = temptag.tag.intvalue;
+						break;
+					case ET_FEATURES:
+						// Bits 31- 8: 0 - reserved
+						// Bit	    7: Preview
+						// Bit   6- 0: secure identification
+						m_bySupportSecIdent = temptag.tag.intvalue & 3;
+						m_bSupportsPreview = (temptag.tag.intvalue & 128) > 0;
+						SecIdentSupRec +=  2;
+						break;
+					case ET_MOD_VERSION:
+						if (temptag.tag.type == 2) {
+							m_strModVersion = char2unicode(temptag.tag.stringvalue);
+						} else if (temptag.tag.type == 3) {
+							m_strModVersion.Printf(wxT("ModID=%u"), temptag.tag.intvalue);
+						} else {
+							m_strModVersion = wxT("ModID=<Unknown>");
+						}
+	
+						break;
+
+					default:
+						//printf("Mule Unk Tag 0x%02x=%x\n", temptag.tag.specialtag, (UINT)temptag.tag.intvalue);
+						break;
+				}
+			}				
 		}
-	}
-	catch ( CStrangePacket )
-	{
-		printf("\nWrong Tags on Mule Info packet!!\n");
-		printf("Sent by %s on ip %s port %i using client %x version %x\n",unicode2char(GetUserName()),unicode2char(GetFullIP()),GetUserPort(),GetClientSoft(),GetMuleVersion());
-		printf("User Disconnected.\n");
-		printf("Packet Dump:\n");
-		DumpMem(pachPacket,nSize);
-		throw wxString(wxT("Wrong Tags on Mule Info packet"));
-	}
-	catch ( CInvalidPacket (e))
-	{
-		printf("Wrong Tags on Mule Info packet - %s\n\n",e.what());
-		printf("Sent by %s on ip %s port %i using client %x version %x\n",unicode2char(GetUserName()),unicode2char(GetFullIP()),GetUserPort(),GetClientSoft(),GetMuleVersion());
-		printf("User Disconnected.\n");
-		printf("Packet Dump:\n");
-		DumpMem(pachPacket,nSize);
-		throw wxString(wxT("Wrong Tags on Mule Info packet"));
-	}
 
-	if (m_sClientOSInfo.IsEmpty()) {
-		// If the client info is empty, is because it's not a special aMule tag.
-
+		
 		if( m_byDataCompVer == 0 ){
 			m_bySourceExchangeVer = 0;
 			m_byExtendedRequestsVer = 0;
@@ -850,7 +862,26 @@ void CUpDownClient::ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize)
 
 		ReGetClientSoft();
 
-		m_byInfopacketsReceived |= IP_EMULEPROTPACK;
+		m_byInfopacketsReceived |= IP_EMULEPROTPACK;		
+		
+	}
+	catch ( CStrangePacket )
+	{
+		printf("\nWrong Tags on Mule Info packet!!\n");
+		printf("Sent by %s on ip %s port %i using client %x version %x\n",unicode2char(GetUserName()),unicode2char(GetFullIP()),GetUserPort(),GetClientSoft(),GetMuleVersion());
+		printf("User Disconnected.\n");
+		printf("Packet Dump:\n");
+		DumpMem(pachPacket,nSize);
+		throw wxString(wxT("Wrong Tags on Mule Info packet"));
+	}
+	catch ( CInvalidPacket (e))
+	{
+		printf("Wrong Tags on Mule Info packet - %s\n\n",e.what());
+		printf("Sent by %s on ip %s port %i using client %x version %x\n",unicode2char(GetUserName()),unicode2char(GetFullIP()),GetUserPort(),GetClientSoft(),GetMuleVersion());
+		printf("User Disconnected.\n");
+		printf("Packet Dump:\n");
+		DumpMem(pachPacket,nSize);
+		throw wxString(wxT("Wrong Tags on Mule Info packet"));
 	}
 
 }
