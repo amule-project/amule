@@ -229,7 +229,7 @@ bool CFile::Create(const wxChar *szFileName, bool bOverwrite, int accessMode)
 #endif
 	
 	#ifdef __WXMAC__
-		AddLogLineM(false,wxString(wxT("Created file ")) + *szFileName + wxString::Format(wxT(" with file descriptor %u"),fd));
+		AddLogLineM(false,wxString(wxT("Created file ")) + fFilePath + wxString::Format(wxT(" with file descriptor %i"),fd));
 	#endif
 	
 	if ( fd == -1 ) {
@@ -279,7 +279,7 @@ bool CFile::Open(const wxChar *szFileName, OpenMode mode, int accessMode)
     int fd = wxOpen( szFileName, flags ACCESS(accessMode));
     
 	#ifdef __WXMAC__
-		AddLogLineM(false,wxString(wxT("Opened file ")) + *szFileName + wxString::Format(wxT(" with file descriptor %u"),fd));
+		AddLogLineM(false,wxString(wxT("Opened file ")) + fFilePath  + wxString::Format(wxT(" with file descriptor %i"),fd));
 	#endif
     
     if ( fd == -1 )
@@ -298,7 +298,7 @@ bool CFile::Close() const
 {
 
 	#ifdef __WXMAC__
-		AddLogLineM(false,wxString(wxT("Closing file ")) + fFilePath + wxString::Format(wxT(" with file descriptor %u"),m_fd));
+		AddLogLineM(false,wxString(wxT("Closing file ")) + fFilePath + wxString::Format(wxT(" with file descriptor %i"),m_fd));
 	#endif
 
 	if ( IsOpened() ) {
