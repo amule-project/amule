@@ -211,53 +211,148 @@ void CFileDetailDialog::OnBnClickedRename(wxCommandEvent& WXUNUSED(evt))
 	FindWindow(IDC_METFILE)->SetLabel(m_file->GetFullName());
 	
 	CastChild( IDC_FILENAME, wxTextCtrl )->SetValue(m_file->GetFileName());
-} 
+}
+
+bool IsDigit(const wxChar ch)
+{
+	switch (ch) {
+		case '0':
+		case '1':
+		case '2':
+		case '3':
+		case '4':
+		case '5':
+		case '6':
+		case '7':
+		case '8':
+		case '9': return true;
+	}
+	return false;
+}
+
+bool IsWordSeparator(const wxChar ch)
+{
+	switch (ch) {
+		case '.':
+		case '(':
+		case ')':
+		case '[':
+		case ']':
+		case '{':
+		case '}':
+		case '-':
+		case '\'':
+		case '"':
+		case ' ': return true;
+	}
+	return false;
+}
+
+void ReplaceWord(wxString& str, const wxString& replaceFrom, const wxString& replaceTo, bool numbers = false)
+{
+	unsigned int i = 0;
+	unsigned int l = replaceFrom.Length();
+	while (i < str.Length()) {
+		if (str.Mid(i, l) == replaceFrom) {
+			if ((i == 0 || IsWordSeparator(str.GetChar(i-1))) &&
+				((i == str.Length() - l || IsWordSeparator(str.GetChar(i+l))) ||
+					(numbers && IsDigit(str.GetChar(i+l))))) {
+				str.replace(i, l, replaceTo);
+			}
+			i += replaceTo.Length() - 1;
+		}
+		i++;
+	}
+}
 
 void CFileDetailDialog::OnBnClickedButtonStrip(wxCommandEvent& WXUNUSED(evt)) {
-	wxString filename,tempStr;
-	char c;
+	wxString filename;
 	filename=CastChild(IDC_FILENAME,wxTextCtrl)->GetValue();
 	
-	// Replace . with - except the last one (extention-dot)
-	int extpos=filename.Find('.',TRUE);
-	if (extpos>=0) {
-		filename.Replace(wxT("."),wxT("-"));
-		filename.SetChar(extpos,'.');
+	int extpos = filename.Find('.', true);
+	wxString ext;
+	if (extpos > 0) {
+		// get the extension - we do not modify it except make it lowercase
+		ext = filename.Mid(extpos);
+		ext.MakeLower();
+		// get rid of extension and replace . with space
+		filename.Truncate(extpos);
+		filename.Replace(wxT("."),wxT(" "));
 	}
 
 	// Replace Space-holders with Spaces
-	filename.Replace(wxT("_"),wxT("-"));
-	filename.Replace(wxT("%20"),wxT("-"));
+	filename.Replace(wxT("_"),wxT(" "));
+	filename.Replace(wxT("%20"),wxT(" "));
 
-	// Barry - Some additional formatting
+	// Some additional formatting
+	filename.Replace(wxT("hYPNOTiC"), wxEmptyString);
 	filename.MakeLower();
+	filename.Replace(wxT("xxx"), wxT("XXX"));
+//	filename.Replace(wxT("xdmnx"), wxEmptyString);
+//	filename.Replace(wxT("pmp"), wxEmptyString);
+//	filename.Replace(wxT("dws"), wxEmptyString);
+	filename.Replace(wxT("www pornreactor com"), wxEmptyString);
 	filename.Replace(wxT("sharereactor"), wxEmptyString);
+	filename.Replace(wxT("found via www filedonkey com"), wxEmptyString);
 	filename.Replace(wxT("deviance"), wxEmptyString);
+	filename.Replace(wxT("adunanza"), wxEmptyString);
 	filename.Replace(wxT("-ftv"), wxEmptyString);
 	filename.Replace(wxT("flt"), wxEmptyString);
 	filename.Replace(wxT("[]"), wxEmptyString);
 	filename.Replace(wxT("()"), wxEmptyString);
-	filename.Replace(wxT("  "), wxT("-"));
 
-	// Make leading Caps 
+	// Change CD, CD#, VCD{,#}, DVD{,#}, ISO, PC to uppercase
+	ReplaceWord(filename, wxT("cd"), wxT("CD"), true);
+	ReplaceWord(filename, wxT("vcd"), wxT("VCD"), true);
+	ReplaceWord(filename, wxT("dvd"), wxT("DVD"), true);
+	ReplaceWord(filename, wxT("iso"), wxT("ISO"), false);
+	ReplaceWord(filename, wxT("pc"), wxT("PC"), false);
+
+	// Make leading Caps
+	// and delete 1+ spaces
 	if (filename.Length()>1)
 	{
-		tempStr=filename.GetChar(0);
-		tempStr.MakeUpper();
-		c = tempStr.GetChar(0);
-		filename.SetChar(0, c);
-		
-		for (unsigned int ix = 0; ix < filename.Length() - 1; ++ix)
-		{
-			if (filename.GetChar(ix) == ' ') 
-			{
-				tempStr=filename.GetChar(ix+1);
-				tempStr.MakeUpper();
-				c=tempStr.GetChar(0);
-				filename.SetChar(ix+1,c);
+		bool last_char_space = true;
+		bool last_char_wordseparator = true;
+		unsigned int i = 0;
+
+		do {
+			wxChar c = filename.GetChar(i);
+			if (c == ' ') {
+				if (last_char_space) {
+					filename.Remove(i, 1);
+					i--;
+				} else {
+					last_char_space = true;
+				}
+			} else if (c == '.') {
+				if (last_char_space && i > 0) {
+					i--;
+					filename.Remove(i, 1);
+				}
+				last_char_space = false;
+			} else {
+				if (last_char_wordseparator) {
+					wxString tempStr(c);
+					tempStr.MakeUpper();
+					filename.SetChar(i, tempStr.GetChar(0));
+					last_char_space = false;
+				}
 			}
+			last_char_wordseparator = IsWordSeparator(c);
+			i++;
+		} while (i < filename.Length());
+
+		if (last_char_space && i > 0) {
+			filename.Remove(i-1, 1);
 		}
 	}
+
+	// should stay lowercase
+	ReplaceWord(filename, wxT("By"), wxT("by"));
+
+	// re-add extension
+	filename += ext;
 
 	CastChild(IDC_FILENAME,wxTextCtrl)->SetValue(filename);
 }
