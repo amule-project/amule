@@ -95,8 +95,8 @@ CWebServer::CWebServer(CamulewebApp *webApp):
 	m_iSearchSortby = 3;
 	m_bSearchAsc = 0;
 
-	imgs_folder = wxString::Format(wxT("%s/.aMule/webserver/"), getenv("HOME"));
-		
+	imgs_folder = wxString(char2unicode(getenv("HOME"))) + wxT("/.aMule/webserver/");
+
 	m_bServerWorking = false; // not running (listening) yet
 }
 
@@ -243,15 +243,16 @@ void CWebServer::ReloadTemplates(void) {
 	time_t t = time(NULL);
 	char *s = new char[255];
 	strftime(s, 255, "%a, %d %b %Y %H:%M:%S GMT", localtime(&t));
-	m_Params.sLastModified = m_Params.sLastModified.Format(wxT("%s"), s);
+	m_Params.sLastModified = char2unicode(s);
 	delete[] s;
 	
 	m_Params.sETag = MD5Sum(m_Params.sLastModified).GetHash();
 	
-	wxString sFileMask(wxT("%s/.aMule/aMule.tmpl"));
-	wxString sFile = sFile.Format(sFileMask, getenv("HOME"));
+	wxString sFile;
 	if( webInterface->m_HasTemplate) {
 		sFile = webInterface->m_TemplateFileName;
+	} else {
+		sFile = wxString(char2unicode(getenv("HOME"))) + wxT("/.aMule/aMule.tmpl");
 	}
 	if (!wxFileName::FileExists(sFile)) {
 		// no file. do nothing.
