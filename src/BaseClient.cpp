@@ -123,7 +123,7 @@ void CUpDownClient::Init()
 	// m_nAvDownDatarate = 0;  // unused
 	m_byChatstate = 0;
 	m_cShowDR = 0;
-	m_reqfile = 0;	
+	m_reqfile = NULL;	 // No file required yet
 	m_cFailed = 0;
 	m_nMaxSendAllowed = 0;
 	m_nTransferedUp = 0;
@@ -233,7 +233,9 @@ CUpDownClient::~CUpDownClient()
 		socket->client = NULL; 
 		socket->Safe_Delete(); 
 		// We're going down anyway....
-		socket->Destroy();
+		//socket->Destroy();
+		// Ah, fuck it. As we said, we're going down.
+		delete socket;
 		// Paranoia
 		socket = NULL;
 	}
@@ -277,7 +279,7 @@ CUpDownClient::~CUpDownClient()
 	
 	if (m_iRate>0 || m_strComment.Length()>0) {
 		m_iRate=0; 
-		m_strComment.Clear();
+		m_strComment = wxEmptyString;
 		if (m_reqfile) {
 			m_reqfile->UpdateFileRatingCommentAvail();
 		}
@@ -1035,8 +1037,9 @@ void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 
 void CUpDownClient::ProcessMuleCommentPacket(const char *pachPacket, uint32 nSize)
 {
+	char* desc =  NULL;
 	try
-	{
+	{	
 		if (!m_reqfile) {
 			throw CInvalidPacket("comment packet for unknown file");
 		}
@@ -1050,40 +1053,58 @@ void CUpDownClient::ProcessMuleCommentPacket(const char *pachPacket, uint32 nSiz
 		
 		m_reqfile->SetHasRating(true);
 		AddDebugLogLineM(false,wxT("Rating for file '") + ClientFilename + wxString::Format(wxT("' received: %i"),m_iRate));
-		if (length>50) length=50;
+		if (length>50)  {
+			length=50;
+		}
 		if (length>0){
 			#warning Lacks Comment Filtering
-			char* desc=new char[length+1];
+			desc=new char[length+1];
 			memset(desc,0,length+1);
 			if ( (unsigned int)length != data.ReadRaw(desc,length) ) {
 				throw CInvalidPacket("short packet reading comment string");
-			}		
+			}
 			m_strComment = char2unicode(desc);
+			//m_strComment = wxT("Whatever");
 			AddDebugLogLineM(false,wxT("Description for file '") +ClientFilename + wxT("' received: ") + m_strComment);
 			m_reqfile->SetHasComment(true);
-			delete[] desc;
 		}
 
 	}
 	catch ( CStrangePacket )
 	{
+		if (desc) {
+			delete[] desc;
+		}
 		printf("\nInvalid MuleComment packet!\n");
 		printf("Sent by %s on ip %s port %i using client %i version %i\n",unicode2char(GetUserName()),unicode2char(GetFullIP()),GetUserPort(),GetClientSoft(),GetMuleVersion());
 		printf("User Disconnected.\n");
-		return;
 		throw wxString(wxT("Wrong MuleComment packet"));
 	}
 	catch ( CInvalidPacket (e))
 	{
+		if (desc) {
+			delete[] desc;
+		}
 		printf("\nInvalid MuleComment packet - %s\n\n",e.what());
 		printf("Sent by %s on ip %s port %i using client %i version %i\n",unicode2char(GetUserName()),unicode2char(GetFullIP()),GetUserPort(),GetClientSoft(),GetMuleVersion());
 		printf("User Disconnected.\n");		
 		throw wxString(wxT("Wrong MuleComment packet"));
-		return;
-	}		
+	}
+	catch (...) {
+		if (desc) {
+			delete[] desc;
+		}
+		printf("\nInvalid MuleComment packet - Uncatched exception\n\n");
+		printf("Sent by %s on ip %s port %i using client %i version %i\n",unicode2char(GetUserName()),unicode2char(GetFullIP()),GetUserPort(),GetClientSoft(),GetMuleVersion());
+		printf("User Disconnected.\n");		
+		throw wxString(wxT("Wrong MuleComment packet"));
+	}
 
 	if (m_reqfile->HasRating() || m_reqfile->HasComment()) { 
 		Notify_DownloadCtrlUpdateItem(m_reqfile);
+	}
+	if (desc) {
+		delete[] desc;
 	}
 }
 
@@ -1662,7 +1683,7 @@ void CUpDownClient::ResetFileStatusInfo()
 	m_bCompleteSource = false;
 	m_dwLastAskedTime = 0;
 	m_iRate=0;
-	m_strComment.Clear();
+	m_strComment = wxEmptyString;
 }
 
 wxString CUpDownClient::GetUploadFileInfo()
