@@ -190,6 +190,7 @@ void CStatistics::CompUpDatarateOverhead()
 
 
 
+#ifndef CLIENT_GUI
 
 /* ------------------------------- GRAPHS ---------------------------- */
 
@@ -297,6 +298,8 @@ void CStatistics::RecordHistory()
 #endif
 }
 
+#endif
+
 void CStatistics::ComputeSessionAvg(float& kBpsSession, float& kBpsCur, double& kBytesTrans, double& sCur, double& sTrans)
 {
 	if (sTransferDelay == 0.0  ||  sCur <= sTransferDelay) {
@@ -309,6 +312,7 @@ void CStatistics::ComputeSessionAvg(float& kBpsSession, float& kBpsCur, double& 
 			kBpsSession = kBpsCur;	// avoid spiking of the first few values due to small sTrans
 	}
 }
+
 
 void CStatistics::ComputeRunningAvg(float& kBpsRunning, float& kBpsSession, double& kBytesTrans, 
 						double& kBytesTransPrev, double& sTrans, double& sPrev, float& sAvg)
@@ -323,6 +327,7 @@ void CStatistics::ComputeRunningAvg(float& kBpsRunning, float& kBpsSession, doub
 		kBytesTransPrev = kBytesTrans;
 	}							// if sPeriod is zero then leave the average unchanged
 }
+
 
 
 unsigned CStatistics::GetHistory(  // Assemble arrays of sample points for a graph
@@ -726,6 +731,9 @@ void CStatistics::InitStatsTree() {
 }
 
 using namespace otherfunctions;
+
+
+#ifndef CLIENT_GUI
 
 void CStatistics::UpdateStatsTree() {
 	wxString cbuffer;
@@ -1181,6 +1189,8 @@ void CStatistics::UpdateStatsTree() {
 	(*srv9) = wxString::Format(_("Server Occupation: %.2f%%"),servocc);
 	
 }
+
+#endif // CLIENT_GUI
 
 /* Left here so amulecmd can copy it.
 void CStatistics::ShowStatsTree() {

@@ -836,6 +836,8 @@ void CAICHHashSet::UntrustedHashReceived(const CAICHHash& Hash, uint32 dwFromIP)
 	}
 }
 
+#ifndef CLIENT_GUI
+
 void CAICHHashSet::ClientAICHRequestFailed(CUpDownClient* pClient){
 	pClient->SetReqFileAICHHash(NULL);
 	CAICHRequestedData data = GetAICHReqDetails(pClient);
@@ -848,6 +850,8 @@ void CAICHHashSet::ClientAICHRequestFailed(CUpDownClient* pClient){
 		data.m_pPartFile->RequestAICHRecovery(data.m_nPart);
 	}
 }
+
+#endif
 
 void CAICHHashSet::RemoveClientAICHRequest(const CUpDownClient* pClient) {
 	
