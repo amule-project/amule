@@ -400,7 +400,7 @@ wxSizer *transferTopPane( wxWindow *parent, bool call_fit, bool set_sizer )
 
     CMuleNotebook *item5 = new CMuleNotebook( parent, ID_CATEGORIES, wxDefaultPosition, wxSize(15,30), 0 );
     wxASSERT( item5 );
-    item1->Add( item5, 1, wxALIGN_CENTER, 5 );
+    item1->Add( item5, 1, wxALIGN_CENTER|wxFIXED_MINSIZE, 5 );
 
     wxBitmapButton *item6 = new wxBitmapButton( parent, ID_BTNSWWINDOW, amuleDlgImages( 16 ), wxDefaultPosition, wxSize(20,20) );
     item6->SetToolTip( _("switch download list to clients you're downloading from, with files also (some day)") );
@@ -479,7 +479,7 @@ wxSizer *messagePage( wxWindow *parent, bool call_fit, bool set_sizer )
     item1->Add( item3, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
     CFriendListCtrl *item6 = new CFriendListCtrl( parent, ID_FRIENDLIST, wxDefaultPosition, wxSize(160,120), wxLC_REPORT|wxSUNKEN_BORDER );
-    item1->Add( item6, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxRIGHT|wxBOTTOM, 5 );
+    item1->Add( item6, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxRIGHT|wxBOTTOM|wxFIXED_MINSIZE, 5 );
 
     item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
 
@@ -909,7 +909,7 @@ wxSizer *downloadDlg( wxWindow *parent, bool call_fit, bool set_sizer )
 
     MuleGifCtrl *item1 = new MuleGifCtrl(parent,ID_ANIMATE,wxPoint(0,0),wxSize(272,60),wxNO_BORDER);
     wxASSERT( item1 );
-    item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL|wxFIXED_MINSIZE, 5 );
 
     wxStaticText *item2 = new wxStaticText( parent, ID_TEXT, _("Downloading, please wait ..."), wxDefaultPosition, wxDefaultSize, 0 );
     item0->Add( item2, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
