@@ -528,15 +528,10 @@ wxSocketClientProxy::wxSocketClientProxy(
 	wxSocketFlags flags,
 	const wxProxyData *ProxyData)
 :
+wxSocketClient(flags),
 m_SocketProxy(ProxyData)
 {
 	m_UseProxy = ProxyData != NULL;
-	m_SocketClient = new wxSocketClient(flags);
-}
-
-wxSocketClientProxy::~wxSocketClientProxy()
-{
-	delete m_SocketClient;
 }
 
 bool wxSocketClientProxy::Connect(wxIPaddress &address, bool wait, bool UseProxy)
@@ -546,11 +541,10 @@ bool wxSocketClientProxy::Connect(wxIPaddress &address, bool wait, bool UseProxy
 	if (UseProxy && m_UseProxy) {
 		ok = m_SocketProxy.Start(address, wxPROXY_CMD_CONNECT);
 		if (ok) {
-			ok = m_SocketClient->Connect(
-				m_SocketProxy.GetTargetAddress(), wait);
+			ok = wxSocketClient::Connect(m_SocketProxy.GetTargetAddress(), wait);
 		}
 	} else {
-		ok = m_SocketClient->Connect(address, wait);
+		ok = wxSocketClient::Connect(address, wait);
 	}
 
 	return ok;
@@ -558,6 +552,12 @@ bool wxSocketClientProxy::Connect(wxIPaddress &address, bool wait, bool UseProxy
 
 /******************************************************************************/
 
+/*
+ * RANT: If it was possible to bind the wxServerSocket later, i.e., 
+ * after the object creation, it would be possible to derive wxSocketServerProxy
+ * from wxSocketServer and it would be much cleaner. All those useless functions
+ * replicating the wxSocketServer interface in Proxy.h would disappear.
+ */
 wxSocketServerProxy::wxSocketServerProxy(
 	wxIPaddress &address,
 	wxSocketFlags flags,
