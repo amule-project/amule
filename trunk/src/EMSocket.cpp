@@ -264,7 +264,7 @@ void CEMSocket::OnReceive(int nErrorCode){
 		}
 
 		// Bytes ready to be copied into packet's internal buffer
-		//ASSERT(rptr <= rend);
+		wxASSERT(rptr <= rend);
 		uint32 toCopy = ((pendingPacket->size - pendingPacketSize) < (uint32)(rend - rptr)) ? 
 			             (pendingPacket->size - pendingPacketSize) : (uint32)(rend - rptr);
 
@@ -274,7 +274,7 @@ void CEMSocket::OnReceive(int nErrorCode){
 		rptr += toCopy;
 		
 		// Check if packet is complet
-		//ASSERT(pendingPacket->size >= pendingPacketSize);
+		wxASSERT(pendingPacket->size >= pendingPacketSize);
 		if(pendingPacket->size == pendingPacketSize){
 
 			// Process packet
@@ -286,8 +286,8 @@ void CEMSocket::OnReceive(int nErrorCode){
 	}
 
 	// Finally, if there is any data left over, save it for next time
-//	ASSERT(rptr <= rend);
-//	ASSERT(rend - rptr < PACKET_HEADER_SIZE);
+	wxASSERT(rptr <= rend);
+	wxASSERT(rend - rptr < PACKET_HEADER_SIZE);
 	if(rptr != rend) {
 		// Keep the partial head
 		pendingHeaderSize = rend - rptr;
