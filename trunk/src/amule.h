@@ -74,14 +74,6 @@ class wxTimerEvent;
 class wxCommandEvent;
 class wxFFileOutputStream;
 
-#ifdef __DEBUG__
-	typedef struct {
-		uint32 socket_n;
-		uint32 creation_time;
-		wxString backtrace;
-	} socket_deletion_log_item;
-#endif
-
 #define theApp wxGetApp()
 
 enum APPState {
@@ -93,6 +85,7 @@ enum APPState {
 
 
 #include <wx/event.h>
+#include <list>
 
 DECLARE_EVENT_TYPE(wxEVT_CORE_FILE_HASHING_FINISHED, wxEVT_USER_FIRST+FILE_HASHING_FINISHED)
 DECLARE_EVENT_TYPE(wxEVT_CORE_FILE_HASHING_SHUTDOWN, wxEVT_USER_FIRST+FILE_HASHING_SHUTDOWN)
@@ -281,9 +274,7 @@ protected:
 			
 	wxCriticalSection m_LogQueueLock;
 	std::list<QueuedLogLine> QueuedAddLogLines;
-#ifdef __DEBUG__
-	std::deque<socket_deletion_log_item>	SocketDeletionList;
-#endif
+	
 	wxLocale m_locale;
 
 	APPState m_app_state;	
