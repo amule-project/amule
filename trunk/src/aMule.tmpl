@@ -451,13 +451,22 @@ function GotoCat(cat) {
 <font face=Tahoma style="font-size:8pt;">
 <table align=center border=0 cellpadding=4 cellspacing=0 width="95%">
 <tr>
- <td valign=middle class="shared-header-left"><a href="?ses=[Session]&amp;w=shared&[SortName]"><b>[Filename]</b></a></td>
- <td valign=middle class="shared-header"><a href="?ses=[Session]&amp;w=shared&[SortTransferred]"><b>[FileTransferred]</b></a></td>
- <td valign=middle class="shared-header"><a href="?ses=[Session]&amp;w=shared&[SortRequests]"><b>[FileRequests]</b></a></td>
- <td valign=middle class="shared-header"><a href="?ses=[Session]&amp;w=shared&[SortAccepts]"><b>[FileAccepts]</b></a></td>
- <td valign=middle class="shared-header"><a href="?ses=[Session]&amp;w=shared&[SortSize]"><b>[Size]</b></a></td>
- <td valign=middle class="shared-header"><a href="?ses=[Session]&amp;w=shared&[SortPriority]"><b>[Priority]</b></a></td>
- <td valign=middle width="10%" class="shared-header"><b>[Ed2klink]</b></td>
+<td valign=middle class="shared-header-left"><a href="?ses=[Session]&amp;w=shared&amp;sort=name[SortName]"><b>File Name</b></a></td>
+<td valign=middle class="shared-header">
+	<a href="?ses=[Session]&amp;w=shared&amp;sort=transferred[SortTransferred]"><b>Transferred Data</b></a>&nbsp
+	<a href="?ses=[Session]&amp;w=shared&amp;sort=alltimetransferred[SortAllTimeTransferred]">(Total)
+</td>
+<td valign=middle class="shared-header">
+	<a href="?ses=[Session]&amp;w=shared&amp;sort=requests[SortRequests]"><b>Requests</b></a>&nbsp
+	<a href="?ses=[Session]&amp;w=shared&amp;sort=alltimerequests[SortAllTimeRequests]"><b>(Total)</b></a>&nbsp
+</td>
+<td valign=middle class="shared-header">
+	<a href="?ses=[Session]&amp;w=shared&amp;sort=accepts[SortAccepts]"><b>Accepted Requests</b></a>&nbsp
+	<a href="?ses=[Session]&amp;w=shared&amp;sort=alltimeaccepts[SortAllTimeAccepts]"><b>(Total)</b></a>
+</td>
+<td valign=middle class="shared-header"><a href="?ses=[Session]&amp;w=shared&amp;sort=size[SortSize]"><b>Size</b></a></td>
+<td valign=middle class="shared-header"><a href="?ses=[Session]&amp;w=shared&amp;sort=priority[SortPriority]"><b>Priority</b></a></td>
+<td valign=middle width="10%" class="shared-header"><b>ED2K Link(s)</b></td>
 </tr>
 <p align=center><div class="message">[Message]</div></p><br>
 [SharedFilesList]
@@ -477,9 +486,9 @@ function GotoCat(cat) {
  <td valign=top class="shared-line">[FileSize]</td>
  <td valign=top class="shared-line">[Priority]</td>
  <td valign=top class="shared-line">
-<acronym title="[Ed2klink]"><a href="[FileLink]"><img src="l_ed2klink.gif" alt="[Ed2klink]"></a></acronym>
-<acronym title="[PriorityUp]"><a href="?ses=[Session]&amp;w=shared&[PriorityUpLink]"><img src="l_up.gif" alt="[PriorityUp]"></a></acronym>
-<acronym title="[PriorityDown]"><a href="?ses=[Session]&amp;w=shared&[PriorityDownLink]"><img src="l_down.gif" alt="[PriorityDown]"></a></acronym>
+<acronym title="ED2K Link(s)"><a href="[FileLink]"><img src="l_ed2klink.gif" alt="ED2K Link(s)"></a></acronym>
+<acronym title="Increase Priority"><a href="?ses=[Session]&amp;w=shared&[PriorityUpLink]"><img src="l_up.gif" alt="Increase Priority"></a></acronym>
+<acronym title="Decrease Priority"><a href="?ses=[Session]&amp;w=shared&[PriorityDownLink]"><img src="l_down.gif" alt="Decrease Priority"></a></acronym>
 </td>
 </tr>
 <--TMPL_SHARED_LINE_END-->
@@ -493,9 +502,9 @@ function GotoCat(cat) {
  <td valign=top class="shared-line-changed">[FileSize]</td>
  <td valign=top class="shared-line-changed">[Priority]</td>
  <td valign=top class="shared-line-changed">
-<acronym title="[Ed2klink]"><a href="[FileLink]"><img src="l_ed2klink.gif" alt="[Ed2klink]"></a></acronym>
-<acronym title="[PriorityUp]"><a href="?ses=[Session]&amp;w=shared&[PriorityUpLink]"><img src="l_up.gif" alt="[PriorityUp]"></a></acronym>
-<acronym title="[PriorityDown]"><a href="?ses=[Session]&amp;w=shared&[PriorityDownLink]"><img src="l_down.gif" alt="[PriorityDown]"></a></acronym>
+<acronym title="ED2K Link(s)"><a href="[FileLink]"><img src="l_ed2klink.gif" alt=""ED2K Link(s)></a></acronym>
+<acronym title="Increase Priority"><a href="?ses=[Session]&amp;w=shared&[PriorityUpLink]"><img src="l_up.gif" alt="Increase Priority"></a></acronym>
+<acronym title="Decrease Priority"><a href="?ses=[Session]&amp;w=shared&[PriorityDownLink]"><img src="l_down.gif" alt="Decrease Priority"></a></acronym>
 </td>
 </tr>
 </font>

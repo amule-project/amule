@@ -69,8 +69,6 @@ uint64 MyTimer::tic64 = 0;
 WX_DEFINE_OBJARRAY(ArrayOfUpDown);
 WX_DEFINE_OBJARRAY(ArrayOfSession);
 WX_DEFINE_OBJARRAY(ArrayOfTransferredData);
-WX_DEFINE_OBJARRAY(ArrayOfSharedFiles);
-WX_DEFINE_OBJARRAY(ArrayOfServerEntry);
 WX_DEFINE_OBJARRAY(ArrayOfDownloadFiles);
 
 #define HTTPInit "Server: aMule\r\nPragma: no-cache\r\nExpires: 0\r\nCache-Control: no-cache, no-store, must-revalidate\r\nConnection: close\r\nContent-Type: text/html\r\n"
@@ -155,8 +153,16 @@ wxString castSecondsToHM(sint32 count) {
 } 
 //common functions -- end
 
+wxString _SpecialChars(wxString str) {
+	str.Replace(wxT("&"),wxT("&amp;"));
+	str.Replace(wxT("<"),wxT("&lt;"));
+	str.Replace(wxT(">"),wxT("&gt;"));
+	str.Replace(wxT("\""),wxT("&quot;"));
+	return str;
+}
 
-CWebServer::CWebServer(CamulewebApp *webApp) {
+CWebServer::CWebServer(CamulewebApp *webApp):
+	m_ServersInfo(webApp), m_SharedFilesInfo(webApp) {
 	webInterface = webApp;
 	
 	m_Params.bShowUploadQueue = false;
@@ -391,15 +397,6 @@ void CWebServer::AddStatsLine(UpDown* line) {
 		delete m_Params.PointsForWeb[0];
 		m_Params.PointsForWeb.RemoveAt(0);
 	}
-}
-
-
-wxString CWebServer::_SpecialChars(wxString str) {
-	str.Replace(wxT("&"),wxT("&amp;"));
-	str.Replace(wxT("<"),wxT("&lt;"));
-	str.Replace(wxT(">"),wxT("&gt;"));
-	str.Replace(wxT("\""),wxT("&quot;"));
-	return str;
 }
 
 
@@ -871,63 +868,18 @@ wxString CWebServer::_GetServerList(ThreadData Data) {
 		sAddServerBox = _GetAddServerBox(Data);
 	}
 	
-	wxString sSort = _ParseURL(Data, wxT("sort"));
-	if (!sSort.IsEmpty()) {
-		if (sSort == wxT("name"))
-			pThis->m_Params.ServerSort = SERVER_SORT_NAME;
-		else if(sSort == wxT("description"))
-			pThis->m_Params.ServerSort = SERVER_SORT_DESCRIPTION;
-		else if(sSort == wxT("ip"))
-			pThis->m_Params.ServerSort = SERVER_SORT_IP;
-		else if(sSort == wxT("users"))
-			pThis->m_Params.ServerSort = SERVER_SORT_USERS;
-		else if(sSort == wxT("files"))
-			pThis->m_Params.ServerSort = SERVER_SORT_FILES;
-
-		if(_ParseURL(Data, wxT("sortreverse")).IsEmpty())
-			pThis->m_Params.bServerSortReverse = false;
-	}
-	
 	wxString sSortRev = _ParseURL(Data, wxT("sortreverse"));
-	if (sSortRev != wxEmptyString) {
-		pThis->m_Params.bServerSortReverse = (sSortRev == wxT("true"));
-	}
-	
-	wxString sServerSortRev;
-	if (pThis->m_Params.bServerSortReverse)
-		sServerSortRev = wxT("false");
-	else
-		sServerSortRev = wxT("true");
+	wxString sSort = _ParseURL(Data, wxT("sort"));
+
+	// reverse sort direction in link
+	pThis->m_ServersInfo.SetSortOrder(sSort, (sSortRev == wxT("true")));
 
 	wxString Out = pThis->m_Templates.sServerList;
 	Out.Replace(wxT("[ConnectedServerData]"), _GetConnectedServer(Data));
 	Out.Replace(wxT("[AddServerBox]"), sAddServerBox);
 	Out.Replace(wxT("[Session]"), sSession);
-	
-	if (pThis->m_Params.ServerSort == SERVER_SORT_NAME)
-		Out.Replace(wxT("[SortName]"), wxString::Format(wxT("&sortreverse=%s"), sServerSortRev.GetData()));
-	else
-		Out.Replace(wxT("[SortName]"), wxEmptyString);
-	
-	if (pThis->m_Params.ServerSort == SERVER_SORT_DESCRIPTION)
-		Out.Replace(wxT("[SortDescription]"), wxString::Format(wxT("&sortreverse=%s"), sServerSortRev.GetData()));
-	else
-		Out.Replace(wxT("[SortDescription]"), wxEmptyString);
-	
-	if (pThis->m_Params.ServerSort == SERVER_SORT_IP)
-		Out.Replace(wxT("[SortIP]"), wxString::Format(wxT("&sortreverse=%s"), sServerSortRev.GetData()));
-	else
-		Out.Replace(wxT("[SortIP]"), wxEmptyString);
-	
-	if (pThis->m_Params.ServerSort == SERVER_SORT_USERS)
-		Out.Replace(wxT("[SortUsers]"), wxString::Format(wxT("&sortreverse=%s"), sServerSortRev.GetData()));
-	else
-		Out.Replace(wxT("[SortUsers]"), wxEmptyString);
-	
-	if (pThis->m_Params.ServerSort == SERVER_SORT_FILES)
-		Out.Replace(wxT("[SortFiles]"), wxString::Format(wxT("&sortreverse=%s"), sServerSortRev.GetData()));
-	else
-		Out.Replace(wxT("[SortFiles]"), wxEmptyString);
+
+	pThis->m_ServersInfo.ProcessHeadersLine(Out);
 	
 	Out.Replace(wxT("[ServerList]"), _("Server list"));
 	Out.Replace(wxT("[Servername]"), _("Server name"));
@@ -943,126 +895,48 @@ wxString CWebServer::_GetServerList(ThreadData Data) {
 	OutE.Replace(wxT("[RemoveServer]"), _("Remove selected server"));
 	OutE.Replace(wxT("[ConfirmRemove]"), _("Are you sure to remove this server from list?"));
 
-	ArrayOfServerEntry ServerArray;
 
-	// Populating array
-	CECPacket srv_req(EC_OP_GET_SERVER_LIST);
-	CECPacket *srv_reply = pThis->webInterface->SendRecvMsg_v2(&srv_req);
-	if ( !srv_reply ) {
-		return wxEmptyString;
-	}
-	for(int i = 0; i < srv_reply->GetTagCount(); i ++) {
-		CECTag *tag = srv_reply->GetTagByIndex(i);
-		CECTag *tmpTag;
-		
-		ServerEntry* Entry = new ServerEntry;
-		Entry->sServerName = tag->GetTagByName(EC_TAG_SERVER_NAME)->GetStringData();
-		if ((tmpTag = tag->GetTagByName(EC_TAG_SERVER_DESC)) != NULL) {
-			Entry->sServerDescription = tmpTag->GetStringData();
-		} else {
-			Entry->sServerDescription = wxEmptyString;
-		}
-		Entry->sServerIP = tag->GetIPv4Data().StringIP();
-		Entry->nServerIP = tag->GetIPv4Data().IP();
-		Entry->nServerPort = tag->GetIPv4Data().port;
+	// Populating array - query core and sort
+	pThis->m_ServersInfo.ReQuery();
 
-		if ((tmpTag = tag->GetTagByName(EC_TAG_SERVER_USERS)) != NULL) {
-			Entry->nServerUsers = tmpTag->GetInt32Data();
-		} else {
-			Entry->nServerUsers = 0;
-		}
-		if ((tmpTag = tag->GetTagByName(EC_TAG_SERVER_USERS_MAX)) != NULL) {
-			Entry->nServerMaxUsers = tmpTag->GetInt32Data();
-		} else {
-			Entry->nServerMaxUsers = 0;
-		}
-		if ((tmpTag = tag->GetTagByName(EC_TAG_SERVER_FILES)) != NULL) {
-			Entry->nServerFiles = tmpTag->GetInt32Data();
-		} else {
-			Entry->nServerFiles = 0;
-		}
-		ServerArray.Add(Entry);
-	}
-	delete srv_reply;
-
-	// Sorting (simple bubble sort, we don't have tons of data here)
-	bool bSorted = true;
-	for (size_t nMax = 0;bSorted && nMax < ServerArray.GetCount()*2; ++nMax) {
-		bSorted = false;
-		for (size_t i = 0; i < ServerArray.GetCount() - 1; ++i) {
-			bool bSwap = false;
-			switch(pThis->m_Params.ServerSort) {
-				case SERVER_SORT_NAME:
-					bSwap = ServerArray[i]->sServerName.CmpNoCase(ServerArray[i+1]->sServerName) > 0;
-					break;
-				case SERVER_SORT_DESCRIPTION:
-					bSwap = ServerArray[i]->sServerDescription.CmpNoCase(ServerArray[i+1]->sServerDescription) < 0;
-					break;
-				case SERVER_SORT_IP:
-					bSwap = ServerArray[i]->sServerIP.CmpNoCase(ServerArray[i+1]->sServerIP) > 0;
-					break;
-				case SERVER_SORT_USERS:
-					bSwap = ServerArray[i]->nServerUsers < ServerArray[i+1]->nServerUsers;
-					break;
-				case SERVER_SORT_FILES:
-					bSwap = ServerArray[i]->nServerFiles < ServerArray[i+1]->nServerFiles;
-					break;
-			}
-			
-			if (pThis->m_Params.bServerSortReverse) {
-				bSwap = !bSwap;
-			}
-			
-			if (bSwap) {
-				bSorted = true;
-				ServerEntry* TmpEntry = ServerArray[i];
-				ServerArray[i] = ServerArray[i+1];
-				ServerArray[i+1] = TmpEntry;
-			}
-		}
-	}
-	
 	// Displaying
 	wxString sList;
-	for (size_t i = 0; i < ServerArray.GetCount(); ++i) {
+	ServersInfo::ItemIterator i = pThis->m_ServersInfo.GetBeginIterator();
+	while (i != pThis->m_ServersInfo.GetEndIterator()) {
 		wxString HTTPProcessData = OutE; // Copy Entry Line to Temp
-		HTTPProcessData.Replace(wxT("[1]"), ServerArray[i]->sServerName);
-		HTTPProcessData.Replace(wxT("[2]"), ServerArray[i]->sServerDescription);
-		HTTPProcessData.Replace(wxT("[3]"), ServerArray[i]->sServerIP );
+		HTTPProcessData.Replace(wxT("[1]"), i->sServerName);
+		HTTPProcessData.Replace(wxT("[2]"), i->sServerDescription);
+		HTTPProcessData.Replace(wxT("[3]"), i->sServerIP );
 		
 		wxString sT;
-		if (ServerArray[i]->nServerUsers > 0) {
-			if (ServerArray[i]->nServerMaxUsers > 0) {
-				sT.Printf(wxT("%d (%d)"), ServerArray[i]->nServerUsers, ServerArray[i]->nServerMaxUsers);
+		if (i->nServerUsers > 0) {
+			if (i->nServerMaxUsers > 0) {
+				sT.Printf(wxT("%d (%d)"), i->nServerUsers, i->nServerMaxUsers);
 			} else {
-				sT.Printf(wxT("%d"), ServerArray[i]->nServerUsers);
+				sT.Printf(wxT("%d"), i->nServerUsers);
 			}
 		} else {
 			sT = wxT("0");
 		}
 		
 		HTTPProcessData.Replace(wxT("[4]"), sT);
-		sT = wxEmptyString;
-		if (ServerArray[i]->nServerFiles > 0) {
-			sT.Printf(wxT("%d"), ServerArray[i]->nServerFiles);
-		} else {
-			sT = wxT("0");
-		}
+		sT = wxString::Format(wxT("%d"), i->nServerFiles);
 		
 		HTTPProcessData.Replace(wxT("[5]"), sT);
 		if ( IsSessionAdmin(Data,sSession) ) {
 			HTTPProcessData.Replace(wxT("[6]"),
 						wxString::Format(wxT("?ses=%s&w=server&c=connect&ip=%08x&port=%d"),
-								 sSession.GetData(), ServerArray[i]->nServerIP, ServerArray[i]->nServerPort));
+								 sSession.GetData(), i->nServerIP, i->nServerPort));
 			HTTPProcessData.Replace(wxT("[LinkRemove]"),
 						wxString::Format(wxT("?ses=%s&w=server&c=remove&ip=%08x&port=%d"),
-								 sSession.GetData(), ServerArray[i]->nServerIP, ServerArray[i]->nServerPort));
+								 sSession.GetData(), i->nServerIP, i->nServerPort));
 		} else {
 			HTTPProcessData.Replace(wxT("[6]"), GetPermissionDenied());
 			HTTPProcessData.Replace(wxT("[LinkRemove]"), GetPermissionDenied());
 		}
 
 		sList += HTTPProcessData;
+		i++;
 	}
 	Out.Replace(wxT("[ServersList]"), sList);
 
@@ -1765,33 +1639,8 @@ wxString CWebServer::_GetSharedFilesList(ThreadData Data) {
 
 	wxString sSession = _ParseURL(Data, wxT("ses"));
 	
-	if (!_ParseURL(Data, wxT("sort")).IsEmpty())  {
-		if (_ParseURL(Data, wxT("sort")) == wxT("name"))
-			pThis->m_Params.SharedSort = SHARED_SORT_NAME;
-		else if (_ParseURL(Data, wxT("sort")) == wxT("size"))
-			pThis->m_Params.SharedSort = SHARED_SORT_SIZE;
-		else if (_ParseURL(Data, wxT("sort")) == wxT("transferred"))
-			pThis->m_Params.SharedSort = SHARED_SORT_TRANSFERRED;
-		else if (_ParseURL(Data, wxT("sort")) == wxT("alltimetransferred"))
-			pThis->m_Params.SharedSort = SHARED_SORT_ALL_TIME_TRANSFERRED;
-		else if (_ParseURL(Data, wxT("sort")) == wxT("requests"))
-			pThis->m_Params.SharedSort = SHARED_SORT_REQUESTS;
-		else if (_ParseURL(Data, wxT("sort")) == wxT("alltimerequests"))
-			pThis->m_Params.SharedSort = SHARED_SORT_ALL_TIME_REQUESTS;
-		else if (_ParseURL(Data, wxT("sort")) == wxT("accepts"))
-			pThis->m_Params.SharedSort = SHARED_SORT_ACCEPTS;
-		else if (_ParseURL(Data, wxT("sort")) == wxT("alltimeaccepts"))
-			pThis->m_Params.SharedSort = SHARED_SORT_ALL_TIME_ACCEPTS;
-		else if (_ParseURL(Data, wxT("sort")) == wxT("priority"))
-			pThis->m_Params.SharedSort = SHARED_SORT_PRIORITY;
-
-		if (_ParseURL(Data, wxT("sortreverse")).IsEmpty())
-			pThis->m_Params.bSharedSortReverse = false;
-	}
-	
-	if (!_ParseURL(Data, wxT("sortreverse")).IsEmpty())
-		pThis->m_Params.bSharedSortReverse = (_ParseURL(Data, wxT("sortreverse")) == wxT("true"));
-
+	//
+	// commands: setpriority, reload
 	if (!_ParseURL(Data, wxT("hash")).IsEmpty() && !_ParseURL(Data, wxT("setpriority")).IsEmpty() && IsSessionAdmin(Data,sSession)) 
 		_SetSharedFilePriority(pThis, _ParseURL(Data, wxT("hash")), atoi((char*) _ParseURL(Data, wxT("setpriority")).GetData()));
 
@@ -1799,282 +1648,83 @@ wxString CWebServer::_GetSharedFilesList(ThreadData Data) {
 		pThis->webInterface->SendRecvMsg(wxT("SHAREDFILES RELOAD"));
 	}
 
-	wxString sSharedSortRev;
-	if (pThis->m_Params.bSharedSortReverse) 
-		sSharedSortRev = wxT("false");
-	else
-		sSharedSortRev = wxT("true");
-	
+	wxString sSortRev = _ParseURL(Data, wxT("sortreverse"));
+	wxString sSort = _ParseURL(Data, wxT("sort"));
+
+	pThis->m_SharedFilesInfo.SetSortOrder(sSort, (sSortRev == wxT("true")));
+
 	//Name sorting link
 	wxString Out = pThis->m_Templates.sSharedList;
-	if (pThis->m_Params.SharedSort == SHARED_SORT_NAME)
-		Out.Replace(wxT("[SortName]"), wxString::Format(wxT("sort=name&sortreverse=%s"), sSharedSortRev.GetData()));
-	else
-		Out.Replace(wxT("[SortName]"), wxT("sort=name"));
-	
-	//Size sorting Link
-	if (pThis->m_Params.SharedSort == SHARED_SORT_SIZE)
-		Out.Replace(wxT("[SortSize]"), wxString::Format(wxT("sort=size&sortreverse=%s"), sSharedSortRev.GetData()));
-	else
-		Out.Replace(wxT("[SortSize]"), wxT("sort=size"));
-	
-	//Priority sorting Link
-	if (pThis->m_Params.SharedSort == SHARED_SORT_PRIORITY)
-		Out.Replace(wxT("[SortPriority]"), wxString::Format(wxT("sort=priority&sortreverse=%s"), sSharedSortRev.GetData()));
-	else
-		Out.Replace(wxT("[SortPriority]"), wxT("sort=priority"));
-	
-	//Transferred sorting link
-	if (pThis->m_Params.SharedSort == SHARED_SORT_TRANSFERRED) {
-		if (pThis->m_Params.bSharedSortReverse)
-            Out.Replace(wxT("[SortTransferred]"), wxString::Format(wxT("sort=alltimetransferred&sortreverse=%s"), sSharedSortRev.GetData()));
-		else
-			Out.Replace(wxT("[SortTransferred]"), wxString::Format(wxT("sort=transferred&sortreverse=%s"), sSharedSortRev.GetData()));
-	} else if(pThis->m_Params.SharedSort == SHARED_SORT_ALL_TIME_TRANSFERRED) {
-		if (pThis->m_Params.bSharedSortReverse)
-            Out.Replace(wxT("[SortTransferred]"), wxString::Format(wxT("sort=transferred&sortreverse=%s"), sSharedSortRev.GetData()));
-		else
-			Out.Replace(wxT("[SortTransferred]"), wxString::Format(wxT("sort=alltimetransferred&sortreverse=%s"), sSharedSortRev.GetData()));
-	} else
-        Out.Replace(wxT("[SortTransferred]"), wxT("&sort=transferred&sortreverse=false"));
-	
-	//Request sorting link
-	if (pThis->m_Params.SharedSort == SHARED_SORT_REQUESTS) {
-		if (pThis->m_Params.bSharedSortReverse)
-			Out.Replace(wxT("[SortRequests]"), wxString::Format(wxT("sort=alltimerequests&sortreverse=%s"), sSharedSortRev.GetData()));
-		else
-			Out.Replace(wxT("[SortRequests]"), wxString::Format(wxT("sort=requests&sortreverse=%s"), sSharedSortRev.GetData()));
-	} else if(pThis->m_Params.SharedSort == SHARED_SORT_ALL_TIME_REQUESTS) {
-		if (pThis->m_Params.bSharedSortReverse)
-			Out.Replace(wxT("[SortRequests]"), wxString::Format(wxT("sort=requests&sortreverse=%s"), sSharedSortRev.GetData()));
-		else
-			Out.Replace(wxT("[SortRequests]"), wxString::Format(wxT("sort=alltimerequests&sortreverse=%s"), sSharedSortRev.GetData()));
-	} else
-        	Out.Replace(wxT("[SortRequests]"), wxT("&sort=requests&sortreverse=false"));
-	
-	//Accepts sorting link
-	if (pThis->m_Params.SharedSort == SHARED_SORT_ACCEPTS) {
-		if (pThis->m_Params.bSharedSortReverse)
-			Out.Replace(wxT("[SortAccepts]"), wxString::Format(wxT("sort=alltimeaccepts&sortreverse=%s"), sSharedSortRev.GetData()));
-		else
-			Out.Replace(wxT("[SortAccepts]"), wxString::Format(wxT("sort=accepts&sortreverse=%s"), sSharedSortRev.GetData()));
-	} else if (pThis->m_Params.SharedSort == SHARED_SORT_ALL_TIME_ACCEPTS) {
-		if (pThis->m_Params.bSharedSortReverse)
-			Out.Replace(wxT("[SortAccepts]"), wxString::Format(wxT("sort=accepts&sortreverse=%s"), sSharedSortRev.GetData()));
-		else
-			Out.Replace(wxT("[SortAccepts]"), wxString::Format(wxT("sort=alltimeaccepts&sortreverse=%s"), sSharedSortRev.GetData()));
-	} else
-		Out.Replace(wxT("[SortAccepts]"), wxT("&sort=accepts&sortreverse=false"));
+	pThis->m_SharedFilesInfo.ProcessHeadersLine(Out);
 
-	if (_ParseURL(Data, wxT("reload")) == wxT("true")) {
-#warning fix GetLastLogEntry()
-		wxString resultlog = wxEmptyString; //_SpecialChars(theApp.amuledlg->GetLastLogEntry());
-		//resultlog = resultlog.TrimRight('\n');
-		//resultlog = resultlog.Mid(resultlog.ReverseFind('\n'));
-		Out.Replace(wxT("[Message]"),resultlog);
-	} else
-		Out.Replace(wxT("[Message]"),wxEmptyString);
-
-	Out.Replace(wxT("[Filename]"), _("File Name"));
-	Out.Replace(wxT("[Priority]"),  _("Priority"));
-	Out.Replace(wxT("[FileTransferred]"),  _("Transferred Data"));
-	Out.Replace(wxT("[FileRequests]"),  _("Requests"));
-	Out.Replace(wxT("[FileAccepts]"),  _("Accepted Requests"));
-	Out.Replace(wxT("[Size]"), _("Size"));
-	Out.Replace(wxT("[Ed2klink]"), _("ED2K Link(s)"));
-	Out.Replace(wxT("[Reload]"), _("Reload"));
 	Out.Replace(wxT("[Session]"), sSession);
 
+	Out.Replace(wxT("[Message]"), wxEmptyString);
+
 	wxString OutE = pThis->m_Templates.sSharedLine; 
-	OutE.Replace(wxT("[Ed2klink]"), _("ED2K Link(s)"));
-	OutE.Replace(wxT("[PriorityUp]"), _("Increase Priority"));
-	OutE.Replace(wxT("[PriorityDown]"), _("Decrease Priority"));
 
 	wxString OutE2 = pThis->m_Templates.sSharedLineChanged; 
-	OutE2.Replace(wxT("[Ed2klink]"), _("ED2K Link(s)"));
-	OutE2.Replace(wxT("[PriorityUp]"), _("Increase Priority"));
-	OutE2.Replace(wxT("[PriorityUp]"), _("Decrease Priority"));
-
-	ArrayOfSharedFiles SharedArray;
 	
 	// Populating array
-	// sSharedFilesList as:
-	// %s\t%ld\t%s\t%ld\t%ll\t%d\t%d\t%d\t%d\t%s\t%s\t%d\t%d\n
-	wxString sSharedFilesList = pThis->webInterface->SendRecvMsg(wxT("SHAREDFILES LIST"));
-	wxString sEntry;
-	int brk=0, newLinePos;
-	while (sSharedFilesList.Length()>0) {
-		newLinePos=sSharedFilesList.First(wxT("\n"));
-
-		sEntry = sSharedFilesList.Left(newLinePos);
-		
-		sSharedFilesList = sSharedFilesList.Mid(newLinePos+1);
-
-		SharedFiles* dFile=new SharedFiles();
-		//%s\t%ld\t%s\t%ld\t%ll\t%d\t%d\t%d\t%d\t%s\t%s\t%d\t%d\n
-		brk=sEntry.First(wxT("\t"));
-		dFile->sFileName = _SpecialChars(sEntry.Left(brk));
-		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
-		dFile->lFileSize = atol((char*) sEntry.Left(brk).GetData());
-		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
-		dFile->sED2kLink = sEntry.Left(brk);
-		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
-		dFile->nFileTransferred = atol((char*) sEntry.Left(brk).GetData());
-		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
-		dFile->nFileAllTimeTransferred = atoll((char*) sEntry.Left(brk).GetData());
-		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
-		dFile->nFileRequests = atoi((char*) sEntry.Left(brk).GetData());
-		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
-		dFile->nFileAllTimeRequests = atol((char*) sEntry.Left(brk).GetData());
-		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
-		dFile->nFileAccepts = atoi((char*) sEntry.Left(brk).GetData());
-		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
-		dFile->nFileAllTimeAccepts = atol((char*) sEntry.Left(brk).GetData());
-		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
-		dFile->sFileHash = sEntry.Left(brk);
-		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
-		dFile->sFilePriority = sEntry.Left(brk);
-		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
-		dFile->nFilePriority = atoi((char*) sEntry.Left(brk).GetData());
-		sEntry=sEntry.Mid(brk+1);
-		if (atoi((char*) sEntry.GetData())==0) {
-			dFile->bFileAutoPriority = false;
-		} else {
-			dFile->bFileAutoPriority = true;
-		}
-
-		SharedArray.Add(dFile);
-	}
-	
-	// Sorting (simple bubble sort, we don't have tons of data here)
-	bool bSorted = true;
-	
-	for (size_t nMax = 0;bSorted && nMax < SharedArray.GetCount()*2; ++nMax) {
-		bSorted = false;
-		for (size_t i = 0; i < SharedArray.GetCount() - 1; ++i) {
-			bool bSwap = false;
-			switch (pThis->m_Params.SharedSort) {
-				case SHARED_SORT_NAME:
-					bSwap = SharedArray[i]->sFileName.CmpNoCase(SharedArray[i+1]->sFileName) > 0;
-					break;
-				case SHARED_SORT_SIZE:
-					bSwap = SharedArray[i]->lFileSize < SharedArray[i+1]->lFileSize;
-					break;
-				case SHARED_SORT_TRANSFERRED:
-					bSwap = SharedArray[i]->nFileTransferred < SharedArray[i+1]->nFileTransferred;
-					break;
-				case SHARED_SORT_ALL_TIME_TRANSFERRED:
-					bSwap = SharedArray[i]->nFileAllTimeTransferred < SharedArray[i+1]->nFileAllTimeTransferred;
-					break;
-				case SHARED_SORT_REQUESTS:
-					bSwap = SharedArray[i]->nFileRequests < SharedArray[i+1]->nFileRequests;
-					break;
-				case SHARED_SORT_ALL_TIME_REQUESTS:
-					bSwap = SharedArray[i]->nFileAllTimeRequests < SharedArray[i+1]->nFileAllTimeRequests;
-					break;
-				case SHARED_SORT_ACCEPTS:
-					bSwap = SharedArray[i]->nFileAccepts < SharedArray[i+1]->nFileAccepts;
-					break;
-				case SHARED_SORT_ALL_TIME_ACCEPTS:
-					bSwap = SharedArray[i]->nFileAllTimeAccepts < SharedArray[i+1]->nFileAllTimeAccepts;
-					break;
-				case SHARED_SORT_PRIORITY:
-					//Very low priority is define equal to 4 ! Must adapte sorting code
-					if (SharedArray[i]->nFilePriority == 4) {
-						if (SharedArray[i+1]->nFilePriority == 4)
-							bSwap = false;
-						else
-							bSwap = true;
-					} else {
-						if (SharedArray[i+1]->nFilePriority == 4) {
-							if (SharedArray[i]->nFilePriority == 4)
-								bSwap = true;
-							else
-								bSwap = false;
-						} else
-							bSwap = SharedArray[i]->nFilePriority < SharedArray[i+1]->nFilePriority;
-					}
-					break;
-			}
-			
-			if (pThis->m_Params.bSharedSortReverse) {
-				bSwap = !bSwap;
-			}
-			
-			if (bSwap) {
-				bSorted = true;
-				SharedFiles* TmpFile = SharedArray[i];
-				SharedArray[i] = SharedArray[i+1];
-				SharedArray[i+1] = TmpFile;
-			}
-		}
-	}
+	pThis->m_SharedFilesInfo.ReQuery();	
 
 	// Displaying
 	wxString sSharedList = wxEmptyString;
-	for (size_t i = 0; i < SharedArray.GetCount(); ++i) {
-		char HTTPTempC[100] = "";
+	SharedFilesInfo::ItemIterator i = pThis->m_SharedFilesInfo.GetBeginIterator();
+	while (i != pThis->m_SharedFilesInfo.GetEndIterator()) {
 		wxString HTTPProcessData;
-		if (SharedArray[i]->sFileHash == _ParseURL(Data,wxT("hash")))
+		if (i->sFileHash == _ParseURL(Data,wxT("hash")))
 			HTTPProcessData = OutE2;
 		else
 			HTTPProcessData = OutE;
 
-		HTTPProcessData.Replace(wxT("[FileName]"), _SpecialChars(SharedArray[i]->sFileName));
-		if (SharedArray[i]->sFileName.Length() > SHORT_FILENAME_LENGTH)
-			HTTPProcessData.Replace(wxT("[ShortFileName]"), _SpecialChars(SharedArray[i]->sFileName.Left(SHORT_FILENAME_LENGTH)) + wxT("..."));
+		HTTPProcessData.Replace(wxT("[FileName]"), _SpecialChars(i->sFileName));
+		if (i->sFileName.Length() > SHORT_FILENAME_LENGTH)
+			HTTPProcessData.Replace(wxT("[ShortFileName]"), _SpecialChars(i->sFileName.Left(SHORT_FILENAME_LENGTH)) + wxT("..."));
 		else
-			HTTPProcessData.Replace(wxT("[ShortFileName]"), _SpecialChars(SharedArray[i]->sFileName));
+			HTTPProcessData.Replace(wxT("[ShortFileName]"), _SpecialChars(i->sFileName));
 
-		sprintf(HTTPTempC, "%s", unicode2char(castItoXBytes(SharedArray[i]->lFileSize)));
-		HTTPProcessData.Replace(wxT("[FileSize]"), wxString::Format(wxT("%s"), HTTPTempC));
-		HTTPProcessData.Replace(wxT("[FileLink]"), SharedArray[i]->sED2kLink);
+		HTTPProcessData.Replace(wxT("[FileSize]"), castItoXBytes(i->lFileSize));
+		HTTPProcessData.Replace(wxT("[FileLink]"), i->sED2kLink);
 
-		sprintf(HTTPTempC, "%s",unicode2char(castItoXBytes(SharedArray[i]->nFileTransferred)));
-		HTTPProcessData.Replace(wxT("[FileTransferred]"), wxString::Format(wxT("%s"), HTTPTempC));
+		HTTPProcessData.Replace(wxT("[FileTransferred]"), castItoXBytes(i->nFileTransferred));
 
-		sprintf(HTTPTempC, "%s", unicode2char(castItoXBytes(SharedArray[i]->nFileAllTimeTransferred)));
-		HTTPProcessData.Replace(wxT("[FileAllTimeTransferred]"), wxString::Format(wxT("%s"), HTTPTempC));
+		HTTPProcessData.Replace(wxT("[FileAllTimeTransferred]"), castItoXBytes(i->nFileAllTimeTransferred));
 
-		sprintf(HTTPTempC, "%i", SharedArray[i]->nFileRequests);
-		HTTPProcessData.Replace(wxT("[FileRequests]"), wxString::Format(wxT("%s"), HTTPTempC));
+		HTTPProcessData.Replace(wxT("[FileRequests]"), wxString::Format(wxT("%i"), i->nFileRequests));
 
-		sprintf(HTTPTempC, "%i", SharedArray[i]->nFileAllTimeRequests);
-		HTTPProcessData.Replace(wxT("[FileAllTimeRequests]"), wxString::Format(wxT("%s"), HTTPTempC));
+		HTTPProcessData.Replace(wxT("[FileAllTimeRequests]"), wxString::Format(wxT("%i"), i->nFileAllTimeRequests));
 
-		sprintf(HTTPTempC, "%i", SharedArray[i]->nFileAccepts);
-		HTTPProcessData.Replace(wxT("[FileAccepts]"), wxString::Format(wxT("%s"), HTTPTempC));
+		HTTPProcessData.Replace(wxT("[FileAccepts]"), wxString::Format(wxT("%i"), i->nFileAccepts));
 
-		sprintf(HTTPTempC, "%i", SharedArray[i]->nFileAllTimeAccepts);
-		HTTPProcessData.Replace(wxT("[FileAllTimeAccepts]"), wxString::Format(wxT("%s"), HTTPTempC));
+		HTTPProcessData.Replace(wxT("[FileAllTimeAccepts]"), wxString::Format(wxT("%i"), i->nFileAllTimeAccepts));
 
-		HTTPProcessData.Replace(wxT("[Priority]"), SharedArray[i]->sFilePriority);
+		HTTPProcessData.Replace(wxT("[Priority]"), i->sFilePriority);
 
-		HTTPProcessData.Replace(wxT("[FileHash]"), SharedArray[i]->sFileHash);
+		HTTPProcessData.Replace(wxT("[FileHash]"), i->sFileHash);
 
 		uint8 upperpriority=0, lesserpriority=0;
-		if (SharedArray[i]->nFilePriority == 4) {
-			upperpriority = 0;	lesserpriority = 4;
-		} else if (SharedArray[i]->nFilePriority == 0) {
-			upperpriority = 1;	lesserpriority = 4;
-		} else if (SharedArray[i]->nFilePriority == 1) {
-			upperpriority = 2;	lesserpriority = 0;
-		} else if (SharedArray[i]->nFilePriority == 2) {
-			upperpriority = 3;	lesserpriority = 1;
-		} else if (SharedArray[i]->nFilePriority == 3) {
-			upperpriority = 5;	lesserpriority = 2;
-		} else if (SharedArray[i]->nFilePriority == 5) {
+		if (i->bFileAutoPriority) {
 			upperpriority = 5;	lesserpriority = 3;
-		} if (SharedArray[i]->bFileAutoPriority) {
-			upperpriority = 5;	lesserpriority = 3;
+		} else {
+			switch (i->nFilePriority) {
+				case 0: upperpriority = 1;	lesserpriority = 4; break;
+				case 1: upperpriority = 2;	lesserpriority = 0; break;
+				case 2: upperpriority = 3;	lesserpriority = 1; break;
+				case 3: upperpriority = 5;	lesserpriority = 2; break;
+				case 4: upperpriority = 0;	lesserpriority = 4; break;
+				case 5: upperpriority = 5;	lesserpriority = 3; break;
+			}
 		}
 		
-		sprintf(HTTPTempC, "%i", upperpriority);
-		HTTPProcessData.Replace(wxT("[PriorityUpLink]"), wxString::Format(wxT("hash=%s&setpriority=%s"), SharedArray[i]->sFileHash.GetData(), HTTPTempC));
-		sprintf(HTTPTempC, "%i", lesserpriority);
-		HTTPProcessData.Replace(wxT("[PriorityDownLink]"), wxString::Format(wxT("hash=%s&setpriority=%s"), SharedArray[i]->sFileHash.GetData(), HTTPTempC));
+		HTTPProcessData.Replace(wxT("[PriorityUpLink]"),
+			wxString::Format(wxT("hash=%s&setpriority=%i"), i->sFileHash.GetData(), upperpriority));
+
+		HTTPProcessData.Replace(wxT("[PriorityDownLink]"),
+			wxString::Format(wxT("hash=%s&setpriority=%i"), i->sFileHash.GetData(), lesserpriority));
 
 		sSharedList += HTTPProcessData;
+		i++;
 	}
 	Out.Replace(wxT("[SharedFilesList]"), sSharedList);
 	Out.Replace(wxT("[Session]"), sSession);
@@ -2516,6 +2166,9 @@ wxString CWebServer::_GetConnectedServer(ThreadData Data) {
 
 	CECPacket connstate_req(EC_OP_GET_CONNSTATE);
 	CECPacket *sServerStat = pThis->webInterface->SendRecvMsg_v2(&connstate_req);
+	if ( !sServerStat ) {
+		return wxEmptyString;
+	}
 	uint8 connstate = sServerStat->GetTagByIndex(0)->GetInt8Data();
 	switch (connstate) {
 		case 0:
@@ -2948,3 +2601,261 @@ wxString CWebServer::GetSubCatLabel(int cat) {
 	}
 	return wxT("?");
 }
+
+
+/* 
+ * Item container implementation
+ */
+
+ServersInfo *ServerEntry::GetContainerInstance()
+{
+	return ServersInfo::m_This;
+}
+
+ServersInfo *ServersInfo::m_This = 0;
+
+ServersInfo::ServersInfo(CamulewebApp *webApp) : ItemsContainer<ServerEntry, xServerSort>(webApp)
+{
+	m_This = this;
+	
+	 // Init sorting order maps
+	 m_SortHeaders[SERVER_SORT_NAME] = wxT("[SortName]");
+	 m_SortHeaders[SERVER_SORT_DESCRIPTION] = wxT("[SortDescription]");
+	 m_SortHeaders[SERVER_SORT_IP] = wxT("[SortIP]");
+	 m_SortHeaders[SERVER_SORT_USERS] = wxT("[SortUsers]");
+	 m_SortHeaders[SERVER_SORT_FILES] = wxT("[SortFiles]");
+	 
+	 m_SortStrVals[wxT("name")] = SERVER_SORT_NAME;
+	 m_SortStrVals[wxT("description")] = SERVER_SORT_DESCRIPTION;
+	 m_SortStrVals[wxT("ip")] = SERVER_SORT_IP;
+	 m_SortStrVals[wxT("users")] = SERVER_SORT_USERS;
+	 m_SortStrVals[wxT("files")] = SERVER_SORT_FILES;
+	 
+}
+
+bool ServersInfo::ServersInfo::ReQuery()
+{
+	CECPacket srv_req(EC_OP_GET_SERVER_LIST);
+	CECPacket *srv_reply = m_webApp->SendRecvMsg_v2(&srv_req);
+	if ( !srv_reply ) {
+		return false;
+	}
+	//
+	// query succeded - flush existing values and refill
+	EraseAll();
+	for(int i = 0; i < srv_reply->GetTagCount(); i ++) {
+		CECTag *tag = srv_reply->GetTagByIndex(i);
+		CECTag *tmpTag;
+		
+		ServerEntry Entry;
+		Entry.sServerName = tag->GetTagByName(EC_TAG_SERVER_NAME)->GetStringData();
+		if ((tmpTag = tag->GetTagByName(EC_TAG_SERVER_DESC)) != NULL) {
+			Entry.sServerDescription = tmpTag->GetStringData();
+		} else {
+			Entry.sServerDescription = wxEmptyString;
+		}
+
+		Entry.sServerIP = tag->GetIPv4Data().StringIP();
+		Entry.nServerIP = tag->GetIPv4Data().IP();
+		Entry.nServerPort = tag->GetIPv4Data().port;
+
+		if ((tmpTag = tag->GetTagByName(EC_TAG_SERVER_USERS)) != NULL) {
+			Entry.nServerUsers = tmpTag->GetInt32Data();
+		} else {
+			Entry.nServerUsers = 0;
+		}
+		if ((tmpTag = tag->GetTagByName(EC_TAG_SERVER_USERS_MAX)) != NULL) {
+			Entry.nServerMaxUsers = tmpTag->GetInt32Data();
+		} else {
+			Entry.nServerMaxUsers = 0;
+		}
+		if ((tmpTag = tag->GetTagByName(EC_TAG_SERVER_FILES)) != NULL) {
+			Entry.nServerFiles = tmpTag->GetInt32Data();
+		} else {
+			Entry.nServerFiles = 0;
+		}
+		
+		AddItem(Entry);
+	}
+	delete srv_reply;
+	SortItems();
+	
+	return true;
+}
+
+bool ServersInfo::ProcessUpdate(CECPacket *)
+{
+	// no updates expected
+	return false;
+}
+
+bool ServersInfo::CompareItems(const ServerEntry &i1, const ServerEntry &i2)
+{
+	bool Result;
+	switch(m_SortOrder) {
+		case SERVER_SORT_NAME:
+			Result = i1.sServerName.CmpNoCase(i2.sServerName) > 0;
+			break;
+		case SERVER_SORT_DESCRIPTION:
+			Result = i1.sServerDescription.CmpNoCase(i2.sServerDescription) > 0;
+			break;
+		case SERVER_SORT_IP:
+			Result = i1.sServerIP.CmpNoCase(i2.sServerIP) > 0;
+			break;
+		case SERVER_SORT_USERS:
+			Result = i1.nServerUsers > i2.nServerUsers;
+			break;
+		case SERVER_SORT_FILES:
+			Result = i1.nServerFiles > i2.nServerFiles;
+			break;
+	}
+	return Result ^ m_SortReverse;
+}
+
+SharedFilesInfo *SharedFiles::GetContainerInstance()
+{
+	return SharedFilesInfo::m_This;
+}
+
+SharedFilesInfo *SharedFilesInfo::m_This = 0;
+
+SharedFilesInfo::SharedFilesInfo(CamulewebApp *webApp) : ItemsContainer<SharedFiles, xSharedSort>(webApp)
+{
+	m_This = this;
+	m_SortOrder = SHARED_SORT_NAME;
+	/*
+	 * */
+	 // Init sorting order maps
+	 m_SortHeaders[SHARED_SORT_NAME] = wxT("[SortName]");
+	 m_SortHeaders[SHARED_SORT_SIZE] = wxT("[SortSize]");
+	 m_SortHeaders[SHARED_SORT_TRANSFERRED] = wxT("[SortTransferred]");
+	 m_SortHeaders[SHARED_SORT_ALL_TIME_TRANSFERRED] = wxT("[SortAllTimeTransferred]");
+	 m_SortHeaders[SHARED_SORT_REQUESTS] = wxT("[SortRequests]");
+	 m_SortHeaders[SHARED_SORT_ALL_TIME_REQUESTS] = wxT("[SortAllTimeRequests]");
+	 m_SortHeaders[SHARED_SORT_ACCEPTS] = wxT("[SortAccepts]");
+	 m_SortHeaders[SHARED_SORT_ALL_TIME_ACCEPTS] = wxT("[SortAllTimeAccepts]");
+	 m_SortHeaders[SHARED_SORT_PRIORITY] = wxT("[SortPriority]");
+
+	 m_SortStrVals[wxT("")] = SHARED_SORT_NAME;
+	 m_SortStrVals[wxT("name")] = SHARED_SORT_NAME;
+	 m_SortStrVals[wxT("size")] = SHARED_SORT_SIZE;
+	 m_SortStrVals[wxT("transferred")] = SHARED_SORT_TRANSFERRED;
+	 m_SortStrVals[wxT("alltimetransferred")] = SHARED_SORT_ALL_TIME_TRANSFERRED;
+	 m_SortStrVals[wxT("requests")] = SHARED_SORT_REQUESTS;
+	 m_SortStrVals[wxT("alltimerequests")] = SHARED_SORT_ALL_TIME_REQUESTS;
+	 m_SortStrVals[wxT("accepts")] = SHARED_SORT_ACCEPTS;
+	 m_SortStrVals[wxT("alltimeaccepts")] = SHARED_SORT_ALL_TIME_ACCEPTS;
+	 m_SortStrVals[wxT("priority")] = SHARED_SORT_PRIORITY;
+
+}
+
+bool SharedFilesInfo::ProcessUpdate(CECPacket *)
+{
+	// no updates expected
+	return false;
+}
+
+//
+// Using v1 interface ! - FIXME
+bool SharedFilesInfo::ReQuery()
+{
+	// sSharedFilesList as:
+	// %s\t%ld\t%s\t%ld\t%ll\t%d\t%d\t%d\t%d\t%s\t%s\t%d\t%d\n
+	wxString sSharedFilesList = m_webApp->SendRecvMsg(wxT("SHAREDFILES LIST"));
+	//
+	// query succeded - flush existing values and refill
+	EraseAll();
+	wxString sEntry;
+	int brk=0, newLinePos;
+	while (sSharedFilesList.Length()>0) {
+		newLinePos=sSharedFilesList.First(wxT("\n"));
+
+		sEntry = sSharedFilesList.Left(newLinePos);
+		
+		sSharedFilesList = sSharedFilesList.Mid(newLinePos+1);
+
+		SharedFiles dFile;
+		
+		//%s\t%ld\t%s\t%ld\t%ll\t%d\t%d\t%d\t%d\t%s\t%s\t%d\t%d\n
+		brk=sEntry.First(wxT("\t"));
+		dFile.sFileName = _SpecialChars(sEntry.Left(brk));
+		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
+		dFile.lFileSize = atol((char*) sEntry.Left(brk).GetData());
+		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
+		dFile.sED2kLink = sEntry.Left(brk);
+		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
+		dFile.nFileTransferred = atol((char*) sEntry.Left(brk).GetData());
+		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
+		dFile.nFileAllTimeTransferred = atoll((char*) sEntry.Left(brk).GetData());
+		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
+		dFile.nFileRequests = atoi((char*) sEntry.Left(brk).GetData());
+		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
+		dFile.nFileAllTimeRequests = atol((char*) sEntry.Left(brk).GetData());
+		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
+		dFile.nFileAccepts = atoi((char*) sEntry.Left(brk).GetData());
+		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
+		dFile.nFileAllTimeAccepts = atol((char*) sEntry.Left(brk).GetData());
+		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
+		dFile.sFileHash = sEntry.Left(brk);
+		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
+		dFile.sFilePriority = sEntry.Left(brk);
+		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
+		dFile.nFilePriority = atoi((char*) sEntry.Left(brk).GetData());
+		sEntry=sEntry.Mid(brk+1);
+		if (atoi((char*) sEntry.GetData())==0) {
+			dFile.bFileAutoPriority = false;
+		} else {
+			dFile.bFileAutoPriority = true;
+		}
+
+		AddItem(dFile);
+	}
+
+	SortItems();
+
+	return true;
+}
+
+bool SharedFilesInfo::CompareItems(const SharedFiles &i1, const SharedFiles &i2)
+{
+	bool Result;
+	switch(m_SortOrder) {
+       case SHARED_SORT_NAME:
+            Result = i1.sFileName.CmpNoCase(i2.sFileName) > 0;
+            break;
+        case SHARED_SORT_SIZE:
+            Result = i1.lFileSize < i2.lFileSize;
+            break;
+        case SHARED_SORT_TRANSFERRED:
+            Result = i1.nFileTransferred < i2.nFileTransferred;
+            break;
+        case SHARED_SORT_ALL_TIME_TRANSFERRED:
+            Result = i1.nFileAllTimeTransferred < i2.nFileAllTimeTransferred;
+            break;
+        case SHARED_SORT_REQUESTS:
+            Result = i1.nFileRequests < i2.nFileRequests;
+            break;
+       case SHARED_SORT_ALL_TIME_REQUESTS:
+            Result = i1.nFileAllTimeRequests < i2.nFileAllTimeRequests;
+            break;
+        case SHARED_SORT_ACCEPTS:
+            Result = i1.nFileAccepts < i2.nFileAccepts;
+            break;
+        case SHARED_SORT_ALL_TIME_ACCEPTS:
+            Result = i1.nFileAllTimeAccepts < i2.nFileAllTimeAccepts;
+            break;
+        case SHARED_SORT_PRIORITY:
+           //Very low priority is define equal to 4 ! Must adapte sorting code
+            if (i1.nFilePriority == 4) {
+                Result = (i2.nFilePriority != 4);
+            } else {
+                if (i2.nFilePriority == 4) {
+                        Result = (i1.nFilePriority == 4);
+                } else
+                        Result = i1.nFilePriority < i2.nFilePriority;
+            }
+            break;
+	}
+	return Result ^ m_SortReverse;
+}
+
