@@ -2,17 +2,19 @@ EXTRA_DIST = README
 
 bin_PROGRAMS = cas
 
-dist_icon_DATA = stat.png
-icondir = $(datadir)/pixmaps
+dist_cas_DATA = tmp.html stat.png
+casdir = $(datadir)/cas
 
 cas_SOURCES = cas.c \
-	      functions.c \
 	      configfile.c \
-	      graphics.c
+	      functions.c \
+	      graphics.c \
+	      html.c
 
 noinst_HEADERS = configfile.h \
 	      functions.h \
 	      graphics.h \
+	      html.h \
 	      version.h
 
 cas_CFLAGS= $(GDLIB_CFLAGS) $(CAS_DEFS)
