@@ -419,6 +419,56 @@ AC_DEFUN([AM_PATH_CURLCONFIG],[
 ])
 
 
+
+dnl --------------------------------------------------------------------------
+dnl Check for crypto++ library
+dnl --------------------------------------------------------------------------
+ 
+
+AC_DEFUN([CHECK_CRYPTO],[AC_MSG_CHECKING([for crypto++ version >= 5.1])
+          
+if test x$USE_EMBEDDED_CRYPTO = xno; then
+	  if test x$crypto_prefix == x ; then
+          crypto_prefix="/usr/include/"
+          fi
+          CRYPTO_PP_STYLE="gentoo_debian"
+          
+	  grep "5.1" $crypto_prefix/crypto++/cryptlib.h > /dev/null 2>&1
+          CRYPTO=$?
+          
+	  if test "$CRYPTO" != 0; then
+          grep "5.1" $crypto_prefix/cryptopp/cryptlib.h > /dev/null 2>&1
+          CRYPTO_PP_STYLE="mdk_suse_fc"
+          
+	  CRYPTO=$?
+          fi
+          
+	  if test "$CRYPTO" != 0; then
+          grep "5.1" $crypto_prefix/crypto-5.1/cryptlib.h > /dev/null 2>&1
+          CRYPTO_PP_STYLE="sources"
+          CRYPTO=$?
+          fi
+          
+	  if test "$CRYPTO" != 0; then
+          result="no"
+          else
+          result="yes"
+          fi
+else
+echo "crypto check disabled, using embedded libs"
+fi
+          AC_MSG_RESULT($result)
+          AC_SUBST(CRYPTO)
+          AC_SUBST(crypto_prefix)
+          AC_SUBST(CRYPTO_PP_STYLE)
+
+])
+
+AC_DEFUN([AM_OPTIONS_CRYPTO], [
+     AC_ARG_WITH( crypto-prefix,[  --with-crypto-prefix=PFX   Prefix where crypto++ is installed (optional)],
+       crypto_prefix="$withval", crypto_prefix="")
+])
+
 dnl --------------------------------------------------------------------------
 dnl CCache support
 dnl --------------------------------------------------------------------------

@@ -10,6 +10,8 @@ Version 2.0.0rc6 - The '???' version.
 		* Lots of 3.4.x compilation fixes, due to -DWX_PRECOMP
 		  and wx headers checks.
 		* Configure cleanup, safetray remove and nice cosmetics for tools
+		* Configure option added: --enable-embedded_crypto to use amule crypto code
+		and bypass crypto libs. Also fix freeze problem.
 
 	Jacobo:
 		* Fixed issue on the About button.
