@@ -100,16 +100,10 @@ bool CServerList::Init()
 
 bool CServerList::AddServermetToList(const wxString& strFile, bool merge)
 {
-	/*
-	  lfroen - this checked in CamuleApp::NotifyEvent if needed
-	if (!theApp.amuledlg || !theApp.amuledlg->serverwnd || !theApp.amuledlg->serverwnd->serverlistctrl) {
-		return false;
-	}
-	*/
 	
 	if (!merge) {
 		Notify_ServerRemoveAll();
-		this->RemoveAllServers();
+		RemoveAllServers();
 	}
 	CSafeFile servermet;
 	if(!wxFileExists(strFile)) {
@@ -117,7 +111,7 @@ bool CServerList::AddServermetToList(const wxString& strFile, bool merge)
 		return false;
 	}
 
-	if (!servermet.Open(strFile,CFile::read)){ //CFile::modeRead|CFile::osSequentialScan)) {
+	if (!servermet.Open(strFile,CFile::read)){ 
 		AddLogLineM(false, _("Failed to load server.met!"));
 		return false;
 	}
@@ -155,9 +149,12 @@ bool CServerList::AddServermetToList(const wxString& strFile, bool merge)
 			//add tags
 			for (uint32 i=0;i < sbuffer.tagcount; ++i) {
 				newserver->AddTagFromFile(&servermet);
-				if (newserver->GetPreferences() < SRV_PR_LOW || newserver->GetPreferences() > SRV_PR_HIGH)
-					newserver->SetPreference(SRV_PR_NORMAL);
 			}
+
+			if (newserver->GetPreferences() < SRV_PR_LOW || newserver->GetPreferences() > SRV_PR_HIGH) {
+				newserver->SetPreference(SRV_PR_NORMAL);
+			}
+			
 			// set listname for server
 			if (newserver->GetListName().IsEmpty()) {
 				newserver->SetListName(wxT("Server ") +newserver->GetAddress());
