@@ -32,7 +32,9 @@
 
 #include "amule.h"
 #include "HTTPDownload.h"	// Interface declarations
+#ifndef AMULE_DAEMON
 #include "inetdownload.h"	// Needed for inetDownload
+#endif
 #include "StringFunctions.h"	// Needed for unicode2char
 #include "otherfunctions.h" 	// Needed for CatChild
 

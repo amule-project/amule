@@ -43,7 +43,6 @@
 #ifndef AMULE_DAEMON
 	#include <wx/msgdlg.h>		// Needed for wxMessageBox
 	#include <wx/gdicmn.h>
-	#include "color.h"
 #else 
 	#define wxMessageBox(x) AddLogLineM(true,x)
 #endif
