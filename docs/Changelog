@@ -28,6 +28,8 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 	Phoenix:
 		* Fixed crash in CClientReqSocket::ProcessExtPacket()
 		  processing of OP_COMPRESSEDPART.
+		* Small UI bug: double click on a server did not change the
+		  "Connect" button to "Cancel".
 		* Fixed crash in CUpDownClient::SendFileRequest(), short
 		  circuit evaluation was reversed.
 
