@@ -1,28 +1,32 @@
-- Hetfield
-	- Add proxy support for server list fetching (when global proxy support enabled)
-	- Add a script that updates server list from all urls in address.dat
-	- Implement some features in the Preferences but not implemented:
-	  check for a new version
-	  beep on errors
-	  bring to front on link click
-	  autoupdateserverlist at start
-	  all notify events...mail too (should set mail app??)
-        -
-- Kry
-	- Fix internal sources handling to avoid too much CPU use.
-	- Add ed2k server adding
+Code Reorganization. BEFORE 2.0 FINAL!!!
+
+I think that we should clean the amule cvs and sources management.
+Considering that core and gui is pretty splitted i propose to:
+a) move "project" directory into "src/gui" and use it to contain it!
+b) move all GUI staff in gui directory
+c) add "core" directory to "src"
+d) add "EC" directory and move webserver and amulecmd apps there
+e) add a "libs_patch" directory to manage all possibile/probably/future patch
+to wx and similar libs
+
+f) reduce the number of files! 89.cpp files and 105.h ones
+are incredibily high for a p2p app! can be a kernel.
+Let's merge some files and about all reduce 105-89=16 .h only files
+these *should* be included only files, so can be merged in 1-2 max 3 files,
+cause they're protected by #ifdef for duplicated inclusions.
+
+of course all the file modification/moving should be managed in Makefile stuff.
+
+g) Keep on using this TODO file cause it's readed by everyone, while forum a bit less 
+ (me for example :PPP)
+
+Hetfield
 
 - Team
 	- Add an option "Send a mail when transfert complete"
 	- Add an option "Change U/L & D/L Speed from time to time"
 	  (example change U/L & D/L Speed to max From 11h00s00 pm to 7h59m59s am and
 	  change U/L & D/L to 4/4 from 8h00m00s am to 10h59m59s pm.
-	- Change Preferences dialog to vertical one and add more tabs.
-
-	- Aspect tab
-	  + add cpu and ram optmizations
-	- Directory tab
-	  + add UNC Dir
 
 	- File Tab
 	   + Move preview app setting from Directory to File tab
@@ -37,72 +41,19 @@
 	- Add Security Tab
 	  + add ipfilter settings
 	  + add spam filtering
-	  + add secure identification checkbox
 	  + ignore user definited comments
 
 	- Add Scheduler Tab
 	  + add actions menu
 	  + add time and details menu
 
-	- Add lots of options in Tweak tab...too long ot list here.
-
-- falso:
-- seneca:
-	- Readd and fix i18n (done - testing)
-	- Unicode support
 	
-- shak:
-	- web interface features (high):
-		+ Graphs
-	- ssl support for communication protocol
-
-- hellimod:
-	- Check little/big endian access to mem/files that must be fixed.
-
-- pure_ascii:
-	- fixing problems with i18n for systray
-
-WHOLE TEAM:
-try to reduce and optimize the following functions:
-sorted by cpu usage, the second column.
-as u can see it's always sources related problem.
-
- 457776    8.6075  amule                    CPartFile::Process(unsigned)
- # Done by Kry  
- 222868    4.1905  amule                    CPartFile::GetSourceCount() 
- # end DONE
- 189675    3.5664  amule                    CList<CUpDownClient*, CUpDownClient*>::GetCount() const
- 87707     1.6491  amule                    CList<CUpDownClient*, CUpDownClient*>::GetNext(_POSITION*&)
- 77380     1.4550  amule                    CList<CUpDownClient*, CUpDownClient*>::Find(CUpDownClient*, _POSITION*) const
- 68544     1.2888  amule                    CPartFile::UpdateAvailablePartsCount()
- 54433     1.0235  amule                    CList<CUpDownClient*, CUpDownClient*>::IsEmpty() const
- 47096     0.8855  amule                    CUpDownClient::HasValidHash()
- 33736     0.6343  amule                    CUpDownClient::Compare(CUpDownClient*)
- 30521     0.5739  amule                    CUpDownClient::IsPartAvailable(unsigned short)
- 28353     0.5331  amule                    CDownloadQueue::RemoveSource(CUpDownClient*, bool, bool)
- 26867     0.5052  amule                    CDownloadQueue::CheckAndAddSource(CPartFile*, CUpDownClient*)
-
-IMPROVEMENTS: (all low priority)
- 	- Remove all GTK code possibile (only Tray can't be removed)
-	- Remove all posix related commands and functions
-	- Try to use wxWindows only functions to improve portability.
-	- Check Mac and all UNIX family systems compatibility
-
-FIXES: (all high priority)
-	- Fix messsaging slidebar
-	- The 'hang on connection lost' "feature" :P must be fixed.
-	- Fix messages dialog tabs don't work.
-	- Fix Download Queue updated too often (maybe real_time?)
-	- Fix a random bug when adding files to download from search list
-
 NEW FEATURES 
-	- Add secure identification (preferences too) (high priority)
 	- Keep porting eMule features (medium-high priority)
 	- Implement Overnet support (preferences too) (low priority)
 	- Implement Kademlia support (preferences too) (medium priority)	
 	- Implement Proxy support (preferences too) (low priority)
 	- Implement Scheduling (preferences too) (low priority)
-	- Add all features that Creteil will add in new Preferences dialog.
 
 - Many others ideas but it seem we have a big work already ... :-)
 
