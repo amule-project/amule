@@ -264,7 +264,7 @@ void CFriendListCtrl::OnNMRclick(wxMouseEvent& evt)
 	if ( cursel != -1 ) {
 		cur_friend = (CFriend*)GetItemData(cursel);
 		menu->Append(MP_DETAIL, _("Show &Details"));
-		menu->Enable(MP_DETAIL, ( (cur_friend->m_LinkedClient) ? true : true ) );
+		menu->Enable(MP_DETAIL, cur_friend->m_LinkedClient);
 	}
 	
 	menu->Append(MP_ADDFRIEND, _("Add a friend"));
@@ -277,7 +277,7 @@ void CFriendListCtrl::OnNMRclick(wxMouseEvent& evt)
 		
 		if (cur_friend->m_LinkedClient) {
 			menu->Enable(MP_FRIENDSLOT, true);
-			menu->Check(MP_FRIENDSLOT, ((cur_friend->m_LinkedClient->GetFriendSlot()) ? true : false));
+			menu->Check(MP_FRIENDSLOT, cur_friend->m_LinkedClient->GetFriendSlot());
 		} else {
 			menu->Enable(MP_FRIENDSLOT, false);
 		}
