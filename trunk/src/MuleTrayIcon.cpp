@@ -192,11 +192,11 @@ void  CMuleTrayIcon::Close(wxCommandEvent& WXUNUSED(event)){
 CMuleTrayIcon::CMuleTrayIcon()
 {
 	Old_Icon = -1;
-	Old_SpeedSize = -1;
+	Old_SpeedSize = 0xFFFF; // must be > any possible one.
 	// Create the background icons (speed improvement)
-	HighId_Icon = wxIcon(mule_TrayIcon_big_ico_xpm);
-	LowId_Icon = wxIcon(mule_Tr_yellow_big_ico_xpm);
-	Disconnected_Icon= wxIcon(mule_Tr_grey_big_ico_xpm);
+	HighId_Icon_size = wxIcon(mule_TrayIcon_big_ico_xpm).GetHeight()-2;
+	LowId_Icon_size = wxIcon(mule_Tr_yellow_big_ico_xpm).GetHeight()-2;
+	Disconnected_Icon_size = wxIcon(mule_Tr_grey_big_ico_xpm).GetHeight()-2;
 }
 
 CMuleTrayIcon::~CMuleTrayIcon() 
@@ -213,48 +213,50 @@ CMuleTrayIcon::~CMuleTrayIcon()
 
 void CMuleTrayIcon::SetTrayIcon(int Icon, uint32 percent)
 {
+	int Bar_ySize;
+
 	switch (Icon) {
 		case TRAY_ICON_HIGHID:
 			// Most likely case, test first
-			CurrentIcon = HighId_Icon;
+			Bar_ySize = HighId_Icon_size; 
 			break;
 		case TRAY_ICON_LOWID:
-			CurrentIcon = LowId_Icon;
+			Bar_ySize = LowId_Icon_size; 
 			break;
 		case TRAY_ICON_DISCONNECTED:
-			CurrentIcon = Disconnected_Icon;
+			Bar_ySize = Disconnected_Icon_size; 
 			break;
 		default:
 			wxASSERT(0);
 	}
-
-#warning speed bar commented out cause it corrupts icons too, need reworking
-
 	// Lookup this values for speed improvement: don't draw if not needed
-	int Bar_ySize = CurrentIcon.GetHeight()-2; 
-	int NewSize = ((Bar_ySize -2) * percent) *0.2; 
+	int NewSize = ((Bar_ySize -2) * percent) / 100;
 	
 	if ((Old_Icon != Icon) || (Old_SpeedSize != NewSize)) {
 
-		
+		if (Old_SpeedSize > NewSize) {
+			// We have to rebuild the icon, because bar is lower now.
+			switch (Icon) {
+				case TRAY_ICON_HIGHID:
+					// Most likely case, test first
+					CurrentIcon = wxIcon(mule_TrayIcon_big_ico_xpm);
+					break;
+				case TRAY_ICON_LOWID:
+					CurrentIcon = wxIcon(mule_Tr_yellow_big_ico_xpm);
+					break;
+				case TRAY_ICON_DISCONNECTED:
+					CurrentIcon = wxIcon(mule_Tr_grey_big_ico_xpm);
+					break;
+				default:
+					wxASSERT(0);
+			}
+		}
+
 		Old_Icon = Icon;
 		Old_SpeedSize = NewSize;
 		
 		// Do whatever to the icon before drawing it (percent)
-	
-	//	wxColour temp;
-		
-	//	IconWithSpeed.SelectObject(CurrentIcon);
-	
-		// Get the transparency colour.
-	//	IconWithSpeed.GetPixel(0,0, &temp);
-	
-	//	IconWithSpeed.SelectObject(wxNullBitmap);
-		
-		// Set a new mask with transparency removed
-	//	wxMask* new_mask = new wxMask(CurrentIcon, temp);
-		
-		//CurrentIcon.SetMask(new_mask);
+		CurrentIcon.SetMask(NULL);
 		
 		IconWithSpeed.SelectObject(CurrentIcon);
 		
@@ -275,11 +277,15 @@ void CMuleTrayIcon::SetTrayIcon(int Icon, uint32 percent)
 		
 		// Unselect the icon.
 		IconWithSpeed.SelectObject(wxNullBitmap);
-		//CRAZY USELESS TEST
-/*		wxImage i=CurrentIcon.ConvertToImage();
-		CurrentIcon.SetMask(new wxMask());
-		CurrentIcon.CopyFromBitmap(wxBitmap(i,-1));
-*/		UpdateTray();
+		
+		// Do transparency
+		
+		// Set a new mask with transparency set to red.
+		wxMask* new_mask = new wxMask(CurrentIcon, wxColour(0xFF, 0x00, 0x00));
+		
+		CurrentIcon.SetMask(new_mask);
+
+		UpdateTray();
 	}
 }
 		
