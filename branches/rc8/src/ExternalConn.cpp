@@ -398,8 +398,6 @@ CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request,
 		if ( detail_level != EC_DETAIL_UPDATE ) {
 			enc.ResetEncoder();
 		}
-		//CECTag *etag = enc.Encode();
-		//filetag.AddTag(etag);
 		enc.Encode(&filetag);
 
 		response->AddTag(filetag);
@@ -491,46 +489,16 @@ CECPacket *Get_EC_Response_PartFile_Cmd(const CECPacket *request)
 			case EC_OP_PARTFILE_STOP:
 				pfile->StopFile();
 				break;
-/*
-			case EC_OP_PARTFILE_PRIO_AUTO:
-				if ( !valtag ) {
-					response = new CECPacket(EC_OP_FAILED);
-					response->AddTag(CECTag(EC_TAG_STRING,
-								wxTRANSLATE("no value tag in EC_OP_PARTFILE_PRIO_AUTO")));
-					return response;
-				}
-				if ( valtag->GetStringData() == wxT("1") ) {
-					pfile->SetAutoDownPriority(true);
-				} else if ( valtag->GetStringData() == wxT("0") ) {
-					pfile->SetAutoDownPriority(false);
-				} else {
-					response = new CECPacket(EC_OP_FAILED);
-					response->AddTag(CECTag(EC_TAG_STRING,
-								wxTRANSLATE("value for EC_OP_PARTFILE_PRIO_AUTO is bad")));
-					return response;
+			case EC_OP_PARTFILE_PRIO_SET: {
+					int prio = hashtag->GetTagByIndex(0)->GetInt32Data();
+					if ( prio == PR_AUTO ) {
+						pfile->SetAutoDownPriority(1);
+					} else {
+						pfile->SetAutoDownPriority(0);
+						pfile->SetDownPriority(prio);
+					}
 				}
 				break;
-			case EC_OP_PARTFILE_PRIO_SET:
-				if ( !valtag ) {
-					response = new CECPacket(EC_OP_FAILED);
-					response->AddTag(CECTag(EC_TAG_STRING,
-								wxTRANSLATE("no value tag in EC_OP_PARTFILE_PRIO_SET")));
-					return response;
-				}
-				if ( valtag->GetStringData() == wxT("PR_LOW") ) {
-					pfile->SetDownPriority(PR_LOW);
-				} else if ( valtag->GetStringData() == wxT("PR_NORMAL") ) {
-					pfile->SetDownPriority(PR_NORMAL);
-				} else if ( valtag->GetStringData() == wxT("PR_HIGH") ) {
-					pfile->SetDownPriority(PR_HIGH);
-				} else {
-					response = new CECPacket(EC_OP_FAILED);
-					response->AddTag(CECTag(EC_TAG_STRING,
-								wxTRANSLATE("value for EC_OP_PARTFILE_PRIO_SET is bad")));
-					return response;
-				}
-				break;
-*/
 			case EC_OP_PARTFILE_DELETE:
 				if ( thePrefs::StartNextFile() && (pfile->GetStatus() == PS_PAUSED) ) {
 					theApp.downloadqueue->StartNextFile();
@@ -615,6 +583,96 @@ CECPacket *Get_EC_Response_Server(const CECPacket *request)
 	return response;
 }
 
+CECPacket *Get_EC_Response_Search_Results(const CECPacket *request)
+{
+	CECPacket *response = new CECPacket(EC_OP_SEARCH_RESULTS);
+	EC_DETAIL_LEVEL detail_level = request->GetDetailLevel();
+	//
+	// request can contain list of queried items
+	std::set<CMD4Hash> queryitems;
+	for (int i = 0;i < request->GetTagCount();i++) {
+		CECTag *tag = request->GetTagByIndex(i);
+		if ( tag->GetTagName() == EC_TAG_SEARCHFILE ) {
+			queryitems.insert(tag->GetMD4Data());
+		}
+	}
+	std::vector<CSearchFile*> list(theApp.searchlist->GetSearchResults(0xffff));
+	std::vector<CSearchFile*>::const_iterator it = list.begin();
+	while (it != list.end()) {
+		CSearchFile* sf = *it++;
+		if ( !queryitems.empty() && !queryitems.count(sf->GetFileHash()) ) {
+			continue;
+		}
+		response->AddTag(CEC_SearchFile_Tag(sf, detail_level));
+	}	
+	return response;
+}
+
+CECPacket *Get_EC_Response_Search_Results_Download(const CECPacket *request)
+{
+	CECPacket *response = new CECPacket(EC_OP_STRINGS);
+	for (int i = 0;i < request->GetTagCount();i++) {
+		CECTag *tag = request->GetTagByIndex(i);
+		CMD4Hash hash = tag->GetMD4Data();
+		theApp.searchlist->AddFileToDownloadByHash(hash);
+	}
+	return response;
+}
+
+CECPacket *Get_EC_Response_Search(const CECPacket *request)
+{
+	CEC_Search_Tag *search_request = (CEC_Search_Tag *)request->GetTagByIndex(0);
+	theApp.searchlist->RemoveResults(0xffff);
+	theApp.searchlist->NewSearch(search_request->SearchFileType(), 0xffff);
+	
+	wxString text = search_request->SearchText();
+	wxString file_type = search_request->SearchFileType();
+	wxString ext = search_request->SearchExt();
+	Packet *packet = CreateSearchPacket(text, file_type, ext,
+		search_request->MinSize(), search_request->MaxSize(), search_request->Avail());
+	
+	CECPacket *response = new CECPacket(EC_OP_FAILED);
+	EC_SEARCH_TYPE search_type = search_request->SearchType();
+	switch(search_type) {
+		case EC_SEARCH_LOCAL:
+			// this is internal core call, but macro is useful anyway
+			CoreNotify_Search_Req(packet, false);
+			break;
+		case EC_SEARCH_GLOBAL:
+			// this is internal core call, but macro is useful anyway
+			CoreNotify_Search_Req(packet, true);
+			break;
+		case EC_SEARCH_WEB:
+			break;
+	}
+	// no reply - search in progress
+	response->AddTag(CECTag(EC_TAG_STRING,
+		wxTRANSLATE("Search in progress. Refetch results in a moment!")));
+	return response;
+}
+
+CECPacket *Get_EC_Response_Set_SharedFile_Prio(const CECPacket *request)
+{
+	CECPacket *response = new CECPacket(EC_OP_STRINGS);
+	for (int i = 0;i < request->GetTagCount();i++) {
+		CECTag *tag = request->GetTagByIndex(i);
+		CMD4Hash hash = tag->GetMD4Data();
+		uint8 prio = tag->GetTagByIndex(0)->GetInt32Data();
+		CKnownFile* cur_file = theApp.sharedfiles->GetFileByID(hash);
+		if ( !cur_file ) {
+			continue;
+		}
+		if (prio == PR_AUTO) {
+			cur_file->SetAutoUpPriority(1);
+			cur_file->UpdateAutoUpPriority();
+		} else {
+			cur_file->SetUpPriority(prio);
+		}
+	}
+
+	return response;
+}
+
 CECPacket *ProcessPreferencesRequest(const CECPacket *request)
 {
 	CECPacket *response = new CECPacket(EC_OP_PREFERENCES);
@@ -651,7 +709,7 @@ CECPacket *ProcessPreferencesRequest(const CECPacket *request)
 	if (selection & EC_PREFS_GENERAL) {
 		CECEmptyTag user_prefs(EC_TAG_PREFS_GENERAL);
 		user_prefs.AddTag(CECTag(EC_TAG_USER_NICK, thePrefs::GetUserNick()));
-		// TODO: Add userhash
+		user_prefs.AddTag(CECTag(EC_TAG_USER_USERHASH, thePrefs::GetUserHash()));
 		response->AddTag(user_prefs);
 	}
 
@@ -1250,6 +1308,7 @@ void CPartFile_Encoder::Encode(CECTag *parent)
 		m_file->requestedblocks_list.GetCount() * 2 * sizeof(uint32), (void *)m_gap_buffer));
 }
 
+
 #ifndef AMULE_DAEMON
 // FIXME: remove code from GUI
 CECPacket *GetStatsGraphs(const CECPacket *request)
@@ -1370,24 +1429,20 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request, CPartFile_Enc
 		case EC_OP_PARTFILE_PAUSE:
 		case EC_OP_PARTFILE_RESUME:
 		case EC_OP_PARTFILE_STOP:
-		case EC_OP_PARTFILE_PRIO_AUTO:
 		case EC_OP_PARTFILE_PRIO_SET:
 		case EC_OP_PARTFILE_DELETE:
 		case EC_OP_PARTFILE_SET_CAT:
 			response = Get_EC_Response_PartFile_Cmd(request);
 			break;
-		case EC_OP_KNOWNFILE_SET_UP_PRIO:
-			break;
-		case EC_OP_KNOWNFILE_SET_UP_PRIO_AUTO:
-			break;
-		case EC_OP_KNOWNFILE_SET_PERM:
-			break;
-		case EC_OP_KNOWNFILE_SET_COMMENT:
-			break;
 		case EC_OP_SHAREDFILES_RELOAD:
 			theApp.sharedfiles->Reload();
 			response = new CECPacket(EC_OP_NOOP);
 			break;
+
+		case EC_OP_SHARED_SET_PRIO:
+			response = Get_EC_Response_Set_SharedFile_Prio(request);
+			break;
+			
 		//
 		// Server commands
 		//
@@ -1414,6 +1469,20 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request, CPartFile_Enc
 		case EC_OP_IPFILTER_RELOAD:
 			theApp.ipfilter->Reload();
 			response = new CECPacket(EC_OP_NOOP);
+			break;
+		//
+		// Search
+		//
+		case EC_OP_SEARCH_START:
+			response = Get_EC_Response_Search(request);
+			break;
+
+		case EC_OP_SEARCH_RESULTS:
+			response = Get_EC_Response_Search_Results(request);
+			break;
+
+		case EC_OP_DOWNLOAD_SEARCH_RESULT:
+			response = Get_EC_Response_Search_Results_Download(request);
 			break;
 		//
 		// Preferences
@@ -1506,222 +1575,6 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 
 	AddLogLineM(false, wxT("Remote command: ") + item);
 
-	//---------------------------------------------------------------------
-	// TRANSFER
-	//---------------------------------------------------------------------
-	if (item == wxT("TRANSFER UL_LIST")) {
-		// returns one string where each line is formatted as:
-		// %s\t%s\t%s\t%ul\t%ul\t%li\n"
-		wxString tempFileInfo;
-		for (POSITION pos = theApp.uploadqueue->GetFirstFromUploadList();
-			 pos != 0;theApp.uploadqueue->GetNextFromUploadList(pos)) {
-			CUpDownClient* cur_client = theApp.uploadqueue->GetQueueClientAt(pos);
-			if (cur_client) {
-				buffer += cur_client->GetUserName() + wxT("\t");
-				tempFileInfo = cur_client->GetUploadFileInfo();
-				tempFileInfo.Replace(wxT("\n"), wxT("|"));
-				buffer += tempFileInfo + wxT("\t");
-				CKnownFile* file = theApp.sharedfiles->GetFileByID(cur_client->GetUploadFileID());
-				if (file) {
-					buffer+=file->GetFileName();
-				} else {
-					buffer+=wxT("?");
-				}
-				buffer += wxT("\t");
-				buffer+=wxString::Format(wxT("%ul\t"), cur_client->GetTransferedDown());
-				buffer+=wxString::Format(wxT("%ul\t"), cur_client->GetTransferedUp());
-				buffer+=wxString::Format(wxT("%li\n"), (long)(cur_client->GetKBpsUp()*1024.0));
-			}
-		}
-		return buffer;
-	}
-	//---------------------------------------------------------------------
-	// SHAREDFILES
-	//---------------------------------------------------------------------
-	if (item == wxT("SHAREDFILES LIST")) {
-		// returns one string where each line is formatted as:
-		// %s\t%ld\t%s\t%ld\t%ll\t%d\t%d\t%d\t%d\t%s\t%s\t%d\t%d\n
-		for (int i = 0; i < theApp.sharedfiles->GetCount(); ++i) {
-			const CKnownFile *cur_file = theApp.sharedfiles->GetFileByIndex(i);
-			if (cur_file) {
-				buffer += cur_file->GetFileName() + wxT("\t") << 
-					(long)cur_file->GetFileSize() << wxT("\t") +
-					( theApp.serverconnect->IsConnected() && theApp.serverconnect->IsLowID() ?
-						theApp.CreateED2kSourceLink(cur_file) :
-						theApp.CreateED2kLink(cur_file)	) + wxT("\t") +
-						wxString::Format(wxT("%ld\t%ld\t%d\t%d\t%d\t%d\t"),
-							(long)cur_file->statistic.GetTransfered(),
-							(long)cur_file->statistic.GetAllTimeTransfered(),
-							cur_file->statistic.GetRequests(),
-							cur_file->statistic.GetAllTimeRequests(),
-							cur_file->statistic.GetAccepts(),
-							cur_file->statistic.GetAllTimeAccepts() ) +
-						EncodeBase16(cur_file->GetFileHash(), 16) + wxT("\t");					
-				int prio = cur_file->GetUpPriority();
-				if (cur_file->IsAutoUpPriority()) {
-					switch (prio) {
-						case PR_LOW: 
-							buffer.Append(wxT("Auto [Lo]")); break;
-						case PR_NORMAL:
-							buffer.Append(wxT("Auto [No]")); break;
-						case PR_HIGH:
-							buffer.Append(wxT("Auto [Hi]")); break;
-						case PR_VERYHIGH:
-							buffer.Append(wxT("Auto [Re]")); break;
-						default:
-							buffer.Append(wxT("-")); break;
-					}
-				} else {
-					switch (prio) {
-						case PR_VERYLOW:
-							buffer.Append(wxT("Very Low")); break;
-						case PR_LOW:
-							buffer.Append(wxT("Low")); break;
-						case PR_NORMAL:
-							buffer.Append(wxT("Normal")); break;
-						case PR_HIGH:
-							buffer.Append(wxT("High")); break;
-						case PR_VERYHIGH:
-							buffer.Append(wxT("Very High")); break;
-						case PR_POWERSHARE:
-							buffer.Append(wxT("PowerShare[Release]")); break;
-						default:
-							buffer.Append(wxT("-")); break;
-					}
-				}
-				buffer +=
-					wxString::Format(wxT("\t%d\t"), prio) +
-					( cur_file->IsAutoUpPriority() ? wxT("1\n") : wxT("0\n") );
-			}
-		}
-		return buffer;
-	}
-/**********************************************/
-/* Must still do a check from here to the end */
-/**********************************************/
-		//SEARCH
-		if (item.Left(19) == wxT("SEARCH DOWNLOADFILE")) {
-			if (item.Length() > 19) {
-				uchar fileid[16];
-				DecodeBase16(unicode2char(item.Mid(20)),item.Mid(20).Length(),fileid);
-				theApp.searchlist->AddFileToDownloadByHash(fileid);
-			}
-			return wxEmptyString;
-		}
-		if (item.Left(18) == wxT("SEARCH DONEWSEARCH")) {
-			if (item.Length() > 18) {
-				//int curIndex, nextIndex;
-				wxString sParams = item.Mid(19);
-				int brk = sParams.First(wxT("\n"));
-				
-				wxString searchString = sParams.Left(brk);
-				searchString.Trim(true);
-				searchString.Trim(false);
-				sParams=sParams.Mid(brk+1); brk=sParams.First(wxT("\n"));
-				
-				wxString typeText = sParams.Left(brk);
-				sParams=sParams.Mid(brk+1); brk=sParams.First(wxT("\n"));
-					
-				uint32 min = StrToLong(sParams.Left(brk));
-				sParams=sParams.Mid(brk+1); brk=sParams.First(wxT("\n"));
-				
-				uint32 max = StrToLong(sParams.Left(brk));
-				sParams=sParams.Mid(brk+1); brk=sParams.First(wxT("\n"));
-					
-				uint32 avaibility = StrToLong(sParams.Left(brk));
-				sParams=sParams.Mid(brk+1); brk=sParams.First(wxT("\n"));
-				
-				wxString extension = sParams.Left(brk);
-				sParams=sParams.Mid(brk+1);
-				
-				bool globalsearch = (sParams == wxT("global")) ? true : false;
-					
-				theApp.searchlist->RemoveResults(0xffff);
-				theApp.searchlist->NewSearch(typeText, 0xffff);				
-				Packet *packet = CreateSearchPacket(searchString, typeText, extension, min, max, avaibility);
-				
-				// this is internal core call, but macro is useful anyway
-				CoreNotify_Search_Req(packet, globalsearch);
-			}
-		}
-		if (item.Left(14) == wxT("SEARCH WEBLIST")) {
-			if (item.Length() > 14) {
-				wxString sItem = item.Mid(15);
-				int brk=sItem.First(wxT("\t"));
-				wxString sResultLine=sItem.Left(brk);
-				sItem=sItem.Mid(brk+1); brk=sItem.First(wxT("\t"));
-				int sortBy = StrToLong(sItem.Left(brk));
-				bool searchAsc = StrToLong(sItem.Mid(brk+1));
-				return(theApp.searchlist->GetWebList(sResultLine, sortBy, searchAsc));
-			}
-		}
-		// SHAREDFILES
-		if (item.Left(11).Cmp(wxT("SHAREDFILES")) == 0) {
-			if (item.Mid(12,17).Cmp(wxT("SETAUTOUPPRIORITY")) == 0) {
-				if (item.Length() > 29) {
-					int separator = item.Mid(30).Find(wxT(" "));
-					if (separator!=-1) {
-						wxString hash = item.Mid(30,separator);
-						if (item.Mid(30+separator+1).IsNumber()) {
-							bool flag = StrToLong(item.Mid(30+separator+1));
-						
-							uchar fileid[16];
-							DecodeBase16(unicode2char(hash),hash.Length(),fileid);
-							CKnownFile* cur_file = theApp.sharedfiles->GetFileByID(fileid);
-					
-							if (cur_file) {
-								cur_file->SetAutoUpPriority(flag);
-								return wxT("AutoUpPriority Saved");
-							}
-							return wxT("Bad file");
-						}
-					}
-				}
-				return wxT("Bad SETAUTOUPPRIORITY request");
-			}
-			if (item.Mid(12,13).Cmp(wxT("SETUPPRIORITY")) == 0) {
-				if (item.Length() > 25) {
-					int separator = item.Mid(26).Find(wxT(" "));
-					if (separator!=-1) {
-						wxString hash = item.Mid(26,separator);
-						if (item.Mid(26+separator+1).IsNumber()) {
-							int priority = StrToLong(item.Mid(26+separator+1));
-						
-							uchar fileid[16];
-							DecodeBase16(unicode2char(hash),hash.Length(),fileid);
-							CKnownFile* cur_file = theApp.sharedfiles->GetFileByID(fileid);
-					
-							if (cur_file) {
-								cur_file->SetUpPriority(priority);
-								return wxT("UpPriority Saved");
-							}
-							return wxT("Bad file");
-						}
-					}
-				}
-				return wxT("Bad SETUPPRIORITY request");
-			}
-			if (item.Mid(12,20).Cmp(wxT("UPDATEAUTOUPPRIORITY")) == 0) {
-				if (item.Length() > 32) {
-					int separator = item.Mid(33).Find(wxT(" "));
-					if (separator!=-1) {
-						wxString hash = item.Mid(33,separator);
-						uchar fileid[16];
-						DecodeBase16(unicode2char(hash),hash.Length(),fileid);
-						CKnownFile* cur_file = theApp.sharedfiles->GetFileByID(fileid);
-					
-						if (cur_file) {
-							cur_file->UpdateAutoUpPriority();
-							return wxT("UpPriority Saved");
-						}
-						return wxT("Bad file");
-					}
-				}
-				return wxT("Bad UPDATEAUTOUPPRIORITY request");
-			}
-			return wxT("Bad SHAREDFILES request");
-		} //end - shared files
-		
 		// QUEUE
 		if (item.Left(5).Cmp(wxT("QUEUE")) == 0) { //Get queue data information
 

@@ -27,6 +27,7 @@
 #include "ECcodes.h"	// Needed for EC types
 #include "ECPacket.h"	// Needed for CECTag
 #include "CMD4Hash.h"	// Needed for CMD4Hash
+#include <vector>
 
 #if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
 #pragma interface "ECSpecialTags.h"
@@ -45,6 +46,7 @@
 class CServer;
 class CKnownFile;
 class CPartFile;
+class CSearchFile;
 class CUpDownClient;
 
 class CEC_Server_Tag : public CECTag {
@@ -78,6 +80,7 @@ class CEC_PartFile_Tag : public CECTag {
   		uint32		SourceCount()	{ return GetTagByName(EC_TAG_PARTFILE_SOURCE_COUNT)->GetInt32Data(); }
   		uint32		SourceNotCurrCount()	{ return GetTagByName(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT)->GetInt32Data(); }
   		uint32		SourceXferCount()	{ return GetTagByName(EC_TAG_PARTFILE_SOURCE_COUNT_XFER)->GetInt32Data(); }
+  		uint32		SourceCountA4AF()	{ return GetTagByName(EC_TAG_PARTFILE_SOURCE_COUNT_A4AF)->GetInt32Data(); }
   		uint32		Speed()		{ return GetTagByName(EC_TAG_PARTFILE_SPEED)->GetInt32Data(); }
   		uint32		Prio()		{ return GetTagByName(EC_TAG_PARTFILE_PRIO)->GetInt32Data(); }
   		wxString	PartStatus()	{ return GetTagByName(EC_TAG_PARTFILE_PART_STATUS)->GetStringData(); }
@@ -123,6 +126,57 @@ class CEC_UpDownClient_Tag : public CECTag {
  		uint32 Speed() { return GetTagByName(EC_TAG_PARTFILE_SPEED)->GetInt32Data(); }
  		uint32 XferUp() { return GetTagByName(EC_TAG_PARTFILE_SIZE_XFER_UP)->GetInt32Data(); };
  		uint32 XferDown() { return GetTagByName(EC_TAG_PARTFILE_SIZE_XFER)->GetInt32Data(); }
+};
+
+class CEC_SearchFile_Tag : public CECTag {
+	public:
+		CEC_SearchFile_Tag(CSearchFile *file, EC_DETAIL_LEVEL detail_level);
+
+		// template needs it
+ 		CMD4Hash	ID()	{ return GetMD4Data(); }
+
+ 		CMD4Hash	FileHash()	{ return GetMD4Data(); }
+		wxString	FileHashString() { return GetMD4Data().Encode(); }
+
+ 		wxString	FileName()	{ return GetTagByName(EC_TAG_PARTFILE_NAME)->GetStringData(); }
+ 		uint32		SizeFull()	{ return GetTagByName(EC_TAG_PARTFILE_SIZE_FULL)->GetInt32Data(); }
+  		uint32		SourceCount()	{ return GetTagByName(EC_TAG_PARTFILE_SOURCE_COUNT)->GetInt32Data(); }
+  		bool		AlreadyHave()	{ return GetTagByName(EC_TAG_KNOWNFILE) != 0; }
+};
+
+class CEC_Search_Tag : public CECTag {
+	public:
+		// search request
+		CEC_Search_Tag(wxString &name, EC_SEARCH_TYPE search_type, wxString &file_type,
+			wxString &extension, uint32 avail, uint32 min_size, uint32 max_size);
+			
+		wxString SearchText() { return GetTagByName(EC_TAG_SEARCH_NAME)->GetStringData(); }
+		EC_SEARCH_TYPE SearchType() { return (EC_SEARCH_TYPE)GetInt32Data(); }
+		uint32 MinSize()
+		{
+			CECTag *tag =  GetTagByName(EC_TAG_SEARCH_MIN_SIZE);
+			return tag ? tag->GetInt32Data() : 0;
+		}
+		uint32 MaxSize()
+		{
+			CECTag *tag =  GetTagByName(EC_TAG_SEARCH_MAX_SIZE);
+			return tag ? tag->GetInt32Data() : 0;
+		}
+		uint32 Avail()
+		{
+			CECTag *tag =  GetTagByName(EC_TAG_SEARCH_AVAILABILITY);
+			return tag ? tag->GetInt32Data() : 0;
+		}
+		wxString SearchExt()
+		{
+			CECTag *tag =  GetTagByName(EC_TAG_SEARCH_EXTENSION);
+			return tag ? tag->GetStringData() : wxT("");
+		}
+		wxString SearchFileType()
+		{
+			CECTag *tag =  GetTagByName(EC_TAG_SEARCH_FILE_TYPE);
+			return tag ? tag->GetStringData() : wxT("");
+		}
 };
 
 #endif /* ECSPEACIALTAGS_H */

@@ -23,6 +23,8 @@
 #pragma implementation "ECSpecialTags.h"
 #endif
 
+#include <vector>
+
 #include "ECPacket.h"		// Needed for CECTag
 #include "ECcodes.h"		// Needed for TAGnames
 #include "ECSpecialTags.h"	// Needed for special EC tag creator classes
@@ -36,6 +38,7 @@
 #include "sockets.h"		// Needed for CServerConnect
 #include "updownclient.h"
 #include "SharedFileList.h"
+#include "SearchList.h"
 #include "amule.h"		// Needed for theApp
 
 #else
@@ -116,6 +119,7 @@ CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level
 	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT, (uint32)file->GetSourceCount()));
 	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT, (uint32)file->GetNotCurrentSourcesCount()));
 	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT_XFER, (uint32)file->GetTransferingSrcCount()));
+	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT_A4AF, (uint32)file->GetSrcA4AFCount()));
 		
 	if ( (file->GetTransferingSrcCount() > 0) || (detail_level != EC_DETAIL_UPDATE) ) {
 		
@@ -221,4 +225,42 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAI
 	
 }
 
+//
+// Search reply
+//
+CEC_SearchFile_Tag::CEC_SearchFile_Tag(CSearchFile *file, EC_DETAIL_LEVEL detail_level) : CECTag(EC_TAG_KNOWNFILE, file->GetFileHash())
+{
+	if ( detail_level != EC_DETAIL_WEB ) {
+		AddTag(CECTag(EC_TAG_PARTFILE_NAME, file->GetFileName()));
+		AddTag(CECTag(EC_TAG_PARTFILE_SIZE_FULL, file->GetFileSize()));
+		if ( theApp.sharedfiles->GetFileByID(file->GetFileHash()) ) {
+			AddTag(CECTag(EC_TAG_KNOWNFILE, (uint8)0));
+		}
+	}
+	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT, file->GetSourceCount()));
+}
+
 #endif /* ! EC_REMOTE */
+
+//
+// Search request
+//
+CEC_Search_Tag::CEC_Search_Tag(wxString &name, EC_SEARCH_TYPE search_type, wxString &file_type,
+			wxString &extension, uint32 avail, uint32 min_size, uint32 max_size) : CECTag(EC_TAG_SEARCH_TYPE, (uint32)search_type)
+{
+	AddTag(CECTag(EC_TAG_SEARCH_NAME, name));
+	AddTag(CECTag(EC_TAG_SEARCH_FILE_TYPE, file_type));
+	if ( !extension.IsEmpty() ) {
+		AddTag(CECTag(EC_TAG_SEARCH_EXTENSION, extension));
+	}
+	if ( avail ) {
+		AddTag(CECTag(EC_TAG_SEARCH_AVAILABILITY, avail));
+	}
+	if ( min_size != 0 ) {
+		AddTag(CECTag(EC_TAG_SEARCH_MIN_SIZE, min_size));
+	}
+	if ( max_size != 0 ) {
+		AddTag(CECTag(EC_TAG_SEARCH_MAX_SIZE, max_size));
+	}
+}
+
