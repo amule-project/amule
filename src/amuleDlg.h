@@ -146,6 +146,7 @@ protected:
 	void OnMinimize(wxIconizeEvent& evt);
 
 	void OnBnClickedFast(wxCommandEvent& evt);
+	void OnBnStatusText(wxCommandEvent& evt);
 
 	void OnGUITimer(wxTimerEvent& evt);
 
