@@ -1090,7 +1090,7 @@ void CamuleApp::Localize_mule()
 			language = wxLANGUAGE_ARABIC;
 			break;			
 		case 2:
-			//strcpy(newlang,"eu_ES");
+			//strcpy(newlang,"eu");
 			language = wxLANGUAGE_BASQUE;
 			break;
 		case 3:
