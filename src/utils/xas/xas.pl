@@ -1,7 +1,7 @@
 #!/usr/bin/perl 
 # we register the script
 # if someone knows how to unload it clean....do tell
-IRC::register("xas", "1.5", "", "Xchat Amule Statistics");
+IRC::register("xas", "1.6", "", "Xchat Amule Statistics");
 # welcome message
 IRC::print "\n\0033  Follow the \0034 white\0033 rabbit\0038...\003\n";
 IRC::print "\n\0035 Use command \0038/xas\0035 to print out aMule statistics\003";
@@ -10,6 +10,7 @@ IRC::print "\0035 (#amule @ irc.freenode.net)\003";
 # command that we use
 IRC::add_command_handler("xas","xas");
 
+#16.6.2004 - niet      : added support for memory usage and binary name
 #05.5.2004 - Jacobo221 : fixed typos, sig 2 support, new outputs, crash detect 
 #29.4.2004 - niet      : renamed astats to xas (X-Chat Amule statistics)
 #22.4.2004 - citroklar : added smp support
@@ -19,6 +20,10 @@ IRC::add_command_handler("xas","xas");
 # Five status currently: online, connecting, offline, closed, crashed
 sub xas
 {
+	#amule program name
+	chomp(my $amulename = `ps --no-header -u $ENV{USER} -o ucmd --sort start_time|grep amule|head -n 1`);
+	#amule binary date (because we still don't have date in CVS version). GRRRRRR
+	#ls -lAF `ps --no-header -u j -o cmd --sort start_time|grep amule|head -n 1|awk '{print $2}'`
 	# system uptime
 	chomp(my $uptime = `uptime|cut -d " " -f 4- | tr -s " "`);
 	# number of cpu's calculated from /proc/cpuinfo
@@ -28,7 +33,9 @@ sub xas
 	# cpu speed
 	chomp(my $mhz = `cat /proc/cpuinfo | grep "cpu MHz" -m 1 | cut -f 2 -d ":" | cut -c 2-`);
 	# what is the aMule's load on cpu
-	chomp(my $amulecpu = `ps --no-header -C amule -o %cpu --sort start_time|head -1`);
+	chomp(my $amulecpu = `ps --no-header -C $amulename -o %cpu --sort start_time|head -n 1`);
+	# how much memory is aMule using
+	chomp(my $amulemem = (sprintf("%.02f", `ps --no-header -C $amulename  -o rss --sort start_time|head -n 1` / 1024 )));
 
 	# bootstrap
 	# there is no spoon...err.... signature
@@ -82,7 +89,7 @@ sub xas
 	# if aMule is running
 	else {
 		IRC::command "/say $amulesigdata[9] is $amulestatus $amulextatus";
-		IRC::command "/say aMule $amulesigdata[12] is using $amulecpu% CPU and it has been running for $amulesigdata[15]";
+		IRC::command "/say aMule $amulesigdata[12] is using $amulecpu% CPU, $amulemem MB of memory and it has been running for $amulesigdata[15]";
 
 		# we only display "number of cpus" when we have more then one
 		if ($number_cpus > 1) {
