@@ -553,7 +553,7 @@ void CDownloadQueue::RemoveFile(CPartFile* toremove)
 	CheckDiskspace( thePrefs::GetTempDir() );
 }
 
-void CDownloadQueue::DeleteAll(){
+void CDownloadQueue::ClearAllSources(){
 	do_not_sort_please = true;
 	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
 		CPartFile* cur_file = filelist[i];

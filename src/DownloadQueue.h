@@ -65,7 +65,7 @@ public:
 	void    CheckAndAddSource(CPartFile* sender,CUpDownClient* source);
 	void    CheckAndAddKnownSource(CPartFile* sender,CUpDownClient* source);
 	bool	RemoveSource(CUpDownClient* toremove, bool updatewindow = true, bool bDoStatsUpdate = true); // delete later ->{ return RemoveSource(toremove,NULL,updatewindow);}
-	void	DeleteAll();
+	void	ClearAllSources();
 	void	RemoveFile(CPartFile* toremove);
 	float	GetKBps() const						{return datarate/1024.0;}
 	void	SortByPriority();
