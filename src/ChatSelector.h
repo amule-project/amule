@@ -22,8 +22,7 @@
 
 #include <wx/defs.h>			// Needed before any other wx/*.h
 #include <wx/imaglist.h>		// Needed for wxImageList (at least on wx2.5)
-#include <wx/textctrl.h>
- 
+#include "MuleTextCtrl.h" 
 #include "MuleNotebook.h"
 #include "types.h"				// Needed for uint16
 #include "color.h"				// Needed for COLORREF
@@ -32,7 +31,7 @@ class CUpDownClient;
 class CFriend;
 
 
-class CChatSession : public wxTextCtrl
+class CChatSession : public CMuleTextCtrl
 {
 public:
 	CChatSession(wxWindow *parent, wxWindowID id = -1, const wxString& value = wxT(""), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = 0, const wxValidator& validator = wxDefaultValidator, const wxString& name = wxTextCtrlNameStr );
