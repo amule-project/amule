@@ -279,14 +279,17 @@ bool CServerConnect::SendPacket(CPacket* packet,bool delpacket, CServerSocket* t
 {
 	if (!to) {
 		if (connected) {
-			connectedsocket->SendPacket(packet, delpacket, true);
+			return connectedsocket->SendPacket(packet, delpacket, true);
 		} else {
+			if ( delpacket ) {
+				delete packet;
+			}
+			
 			return false;
 		}
 	} else {
-		to->SendPacket(packet, delpacket, true);
+		return to->SendPacket(packet, delpacket, true);
 	}
-	return true;
 }
 
 
