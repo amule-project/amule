@@ -442,12 +442,14 @@ wxSizer *transferTopPane( wxWindow *parent, bool call_fit, bool set_sizer )
 }
 
 wxSizer *queueSizer;
+wxSizer *s_clientlistHeader;
 wxSizer *transferBottomPane( wxWindow *parent, bool call_fit, bool set_sizer )
 {
     wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
     queueSizer = item0;
 
     wxBoxSizer *item1 = new wxBoxSizer( wxHORIZONTAL );
+    s_clientlistHeader = item1;
 
     wxBitmapButton *item2 = new wxBitmapButton( parent, ID_CLIENTTOGGLE, amuleDlgImages( 10 ), wxDefaultPosition, wxDefaultSize );
     item1->Add( item2, 0, wxALIGN_CENTER|wxALL, 5 );
@@ -1344,220 +1346,212 @@ wxSizer *clientDetails( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticBox *item2 = new wxStaticBox( parent, -1, _("General") );
     wxStaticBoxSizer *item1 = new wxStaticBoxSizer( item2, wxVERTICAL );
 
-    wxFlexGridSizer *item3 = new wxFlexGridSizer( 2, 0, 0, 0 );
-    item3->AddGrowableCol( 1 );
+    wxBoxSizer *item3 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxStaticText *item4 = new wxStaticText( parent, ID_TEXT, _("Username :"), wxDefaultPosition, wxDefaultSize, 0 );
-    item3->Add( item4, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    wxBoxSizer *item4 = new wxBoxSizer( wxVERTICAL );
 
-    wxStaticText *item5 = new wxStaticText( parent, ID_DNAME, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item5->SetForegroundColour( *wxBLUE );
-    item3->Add( item5, 0, wxADJUST_MINSIZE, 5 );
+    wxStaticText *item5 = new wxStaticText( parent, ID_TEXT, _("Username:"), wxDefaultPosition, wxDefaultSize, 0 );
+    item4->Add( item5, 0, wxADJUST_MINSIZE|wxGROW|wxALL, 5 );
 
-    wxStaticText *item6 = new wxStaticText( parent, ID_TEXT, _("Userhash :"), wxDefaultPosition, wxDefaultSize, 0 );
-    item3->Add( item6, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticText *item6 = new wxStaticText( parent, ID_TEXT, _("Userhash:"), wxDefaultPosition, wxDefaultSize, 0 );
+    item4->Add( item6, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
-    wxStaticText *item7 = new wxStaticText( parent, ID_DHASH, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item7->SetForegroundColour( *wxBLUE );
-    item3->Add( item7, 0, wxADJUST_MINSIZE, 5 );
+    item3->Add( item4, 0, wxALIGN_CENTER, 5 );
 
-    item1->Add( item3, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
+    wxBoxSizer *item7 = new wxBoxSizer( wxVERTICAL );
 
-    wxBoxSizer *item8 = new wxBoxSizer( wxHORIZONTAL );
+    wxStaticText *item8 = new wxStaticText( parent, ID_DNAME, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
+    item8->SetForegroundColour( *wxBLUE );
+    item7->Add( item8, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxBoxSizer *item9 = new wxBoxSizer( wxVERTICAL );
+    wxStaticText *item9 = new wxStaticText( parent, ID_DHASH, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
+    item9->SetForegroundColour( *wxBLUE );
+    item7->Add( item9, 0, wxADJUST_MINSIZE|wxGROW|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
-    wxStaticText *item10 = new wxStaticText( parent, ID_TEXT, _("Clientsoftware :"), wxDefaultPosition, wxDefaultSize, 0 );
-    item9->Add( item10, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    item3->Add( item7, 0, wxALIGN_CENTER, 5 );
 
-    wxStaticText *item11 = new wxStaticText( parent, ID_TEXT, _("IP Address :"), wxDefaultPosition, wxDefaultSize, 0 );
-    item9->Add( item11, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    item1->Add( item3, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticText *item12 = new wxStaticText( parent, ID_TEXT, _("Server IP :"), wxDefaultPosition, wxDefaultSize, 0 );
-    item9->Add( item12, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    wxFlexGridSizer *item10 = new wxFlexGridSizer( 5, 0, 0 );
+    item10->AddGrowableCol( 1 );
+    item10->AddGrowableCol( 4 );
 
-    item8->Add( item9, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxLEFT, 5 );
+    wxStaticText *item11 = new wxStaticText( parent, ID_TEXT, _("Client software:"), wxDefaultPosition, wxDefaultSize, 0 );
+    item10->Add( item11, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
-    wxBoxSizer *item13 = new wxBoxSizer( wxVERTICAL );
+    wxStaticText *item12 = new wxStaticText( parent, ID_DSOFT, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
+    item12->SetForegroundColour( *wxBLUE );
+    item10->Add( item12, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
-    wxStaticText *item14 = new wxStaticText( parent, ID_DSOFT, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
+    item10->Add( 20, 20, 0, wxALIGN_CENTER, 5 );
+
+    wxStaticText *item13 = new wxStaticText( parent, ID_TEXT, _("Client version:"), wxDefaultPosition, wxDefaultSize, 0 );
+    item10->Add( item13, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
+
+    wxStaticText *item14 = new wxStaticText( parent, ID_DVERSION, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
     item14->SetForegroundColour( *wxBLUE );
-    item13->Add( item14, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    item10->Add( item14, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
-    wxStaticText *item15 = new wxStaticText( parent, ID_DIP, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item15->SetForegroundColour( *wxBLUE );
-    item13->Add( item15, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticText *item15 = new wxStaticText( parent, ID_TEXT, _("IP address:"), wxDefaultPosition, wxDefaultSize, 0 );
+    item10->Add( item15, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
-    wxStaticText *item16 = new wxStaticText( parent, ID_DSIP, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxStaticText *item16 = new wxStaticText( parent, ID_DIP, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
     item16->SetForegroundColour( *wxBLUE );
-    item13->Add( item16, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    item10->Add( item16, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
-    item8->Add( item13, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxLEFT|wxRIGHT, 5 );
+    item10->Add( 20, 20, 0, wxALIGN_CENTER, 5 );
 
-    wxBoxSizer *item17 = new wxBoxSizer( wxVERTICAL );
+    wxStaticText *item17 = new wxStaticText( parent, ID_TEXT, _("User ID:"), wxDefaultPosition, wxDefaultSize, 0 );
+    item10->Add( item17, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
-    wxStaticText *item18 = new wxStaticText( parent, ID_TEXT, _("Clientversion :"), wxDefaultPosition, wxDefaultSize, 0 );
-    item17->Add( item18, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
+    wxStaticText *item18 = new wxStaticText( parent, ID_DID, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
+    item18->SetForegroundColour( *wxBLUE );
+    item10->Add( item18, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
-    wxStaticText *item19 = new wxStaticText( parent, ID_TEXT, _("ID :"), wxDefaultPosition, wxDefaultSize, 0 );
-    item17->Add( item19, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
+    wxStaticText *item19 = new wxStaticText( parent, ID_TEXT, _("Server IP:"), wxDefaultPosition, wxDefaultSize, 0 );
+    item10->Add( item19, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
-    wxStaticText *item20 = new wxStaticText( parent, ID_TEXT, _("Servername :"), wxDefaultPosition, wxDefaultSize, 0 );
-    item17->Add( item20, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
+    wxStaticText *item20 = new wxStaticText( parent, ID_DSIP, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
+    item20->SetForegroundColour( *wxBLUE );
+    item10->Add( item20, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
-    item8->Add( item17, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxLEFT, 5 );
+    item10->Add( 20, 20, 0, wxALIGN_CENTER, 5 );
 
-    wxBoxSizer *item21 = new wxBoxSizer( wxVERTICAL );
+    wxStaticText *item21 = new wxStaticText( parent, ID_TEXT, _("Server name:"), wxDefaultPosition, wxDefaultSize, 0 );
+    item10->Add( item21, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
-    wxStaticText *item22 = new wxStaticText( parent, ID_DVERSION, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxStaticText *item22 = new wxStaticText( parent, ID_DSNAME, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
     item22->SetForegroundColour( *wxBLUE );
-    item21->Add( item22, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    item10->Add( item22, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
-    wxStaticText *item23 = new wxStaticText( parent, ID_DID, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item23->SetForegroundColour( *wxBLUE );
-    item21->Add( item23, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
-
-    wxStaticText *item24 = new wxStaticText( parent, ID_DSNAME, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item24->SetForegroundColour( *wxBLUE );
-    item21->Add( item24, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
-
-    item8->Add( item21, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxLEFT|wxRIGHT, 5 );
-
-    item1->Add( item8, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    item1->Add( item10, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
     item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticBox *item26 = new wxStaticBox( parent, -1, _("Transfer") );
-    wxStaticBoxSizer *item25 = new wxStaticBoxSizer( item26, wxVERTICAL );
+    wxStaticBox *item24 = new wxStaticBox( parent, -1, _("Transfers to client") );
+    wxStaticBoxSizer *item23 = new wxStaticBoxSizer( item24, wxVERTICAL );
 
-    wxFlexGridSizer *item27 = new wxFlexGridSizer( 1, 0, 0, 0 );
-    item27->AddGrowableCol( 1 );
+    wxBoxSizer *item25 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxStaticText *item28 = new wxStaticText( parent, ID_TEXT, _("Currently downloading :"), wxDefaultPosition, wxDefaultSize, 0 );
-    item27->Add( item28, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    wxBoxSizer *item26 = new wxBoxSizer( wxVERTICAL );
+
+    wxStaticText *item27 = new wxStaticText( parent, ID_TEXT, _("Current request:"), wxDefaultPosition, wxDefaultSize, 0 );
+    item26->Add( item27, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    item25->Add( item26, 0, wxALIGN_CENTER, 5 );
+
+    wxBoxSizer *item28 = new wxBoxSizer( wxVERTICAL );
 
     wxStaticText *item29 = new wxStaticText( parent, ID_DDOWNLOADING, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
     item29->SetForegroundColour( *wxBLUE );
-    item27->Add( item29, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
+    item28->Add( item29, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    item25->Add( item27, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
+    item25->Add( item28, 1, wxALIGN_CENTER, 5 );
 
-    wxBoxSizer *item30 = new wxBoxSizer( wxHORIZONTAL );
+    item23->Add( item25, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 0 );
 
-    wxBoxSizer *item31 = new wxBoxSizer( wxVERTICAL );
+    wxFlexGridSizer *item30 = new wxFlexGridSizer( 5, 0, 0 );
+    item30->AddGrowableCol( 1 );
+    item30->AddGrowableCol( 4 );
 
-    wxStaticText *item32 = new wxStaticText( parent, ID_TEXT, _("Downloaded (this session) :"), wxDefaultPosition, wxDefaultSize, 0 );
-    item31->Add( item32, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticText *item31 = new wxStaticText( parent, ID_TEXT, _("Average upload rate:"), wxDefaultPosition, wxDefaultSize, 0 );
+    item30->Add( item31, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
-    wxStaticText *item33 = new wxStaticText( parent, ID_TEXT, _("Average downloadrate :"), wxDefaultPosition, wxDefaultSize, 0 );
-    item31->Add( item33, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticText *item32 = new wxStaticText( parent, ID_DAVDR, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
+    item32->SetForegroundColour( *wxBLUE );
+    item30->Add( item32, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
-    wxStaticText *item34 = new wxStaticText( parent, ID_TEXT, _("Downloaded total :"), wxDefaultPosition, wxDefaultSize, 0 );
-    item31->Add( item34, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    item30->Add( 20, 20, 0, wxALIGN_CENTER, 5 );
 
-    item30->Add( item31, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxLEFT, 5 );
+    wxStaticText *item33 = new wxStaticText( parent, ID_TEXT, _("Average download rate:"), wxDefaultPosition, wxDefaultSize, 0 );
+    item30->Add( item33, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
-    wxBoxSizer *item35 = new wxBoxSizer( wxVERTICAL );
+    wxStaticText *item34 = new wxStaticText( parent, ID_DAVUR, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
+    item34->SetForegroundColour( *wxBLUE );
+    item30->Add( item34, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
+
+    wxStaticText *item35 = new wxStaticText( parent, ID_TEXT, _("Uploaded (session):"), wxDefaultPosition, wxDefaultSize, 0 );
+    item30->Add( item35, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
     wxStaticText *item36 = new wxStaticText( parent, ID_DDOWN, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
     item36->SetForegroundColour( *wxBLUE );
-    item35->Add( item36, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    item30->Add( item36, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
-    wxStaticText *item37 = new wxStaticText( parent, ID_DAVDR, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item37->SetForegroundColour( *wxBLUE );
-    item35->Add( item37, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    item30->Add( 20, 20, 0, wxALIGN_CENTER, 5 );
 
-    wxStaticText *item38 = new wxStaticText( parent, ID_DDOWNTOTAL, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxStaticText *item37 = new wxStaticText( parent, ID_TEXT, _("Downloaded (session):"), wxDefaultPosition, wxDefaultSize, 0 );
+    item30->Add( item37, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
+
+    wxStaticText *item38 = new wxStaticText( parent, ID_DDUP, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
     item38->SetForegroundColour( *wxBLUE );
-    item35->Add( item38, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    item30->Add( item38, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
-    item30->Add( item35, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxLEFT|wxRIGHT, 5 );
+    wxStaticText *item39 = new wxStaticText( parent, ID_TEXT, _("Uploaded (total):"), wxDefaultPosition, wxDefaultSize, 0 );
+    item30->Add( item39, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
-    wxBoxSizer *item39 = new wxBoxSizer( wxVERTICAL );
+    wxStaticText *item40 = new wxStaticText( parent, ID_DDOWNTOTAL, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
+    item40->SetForegroundColour( *wxBLUE );
+    item30->Add( item40, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
-    wxStaticText *item40 = new wxStaticText( parent, ID_TEXT, _("Uploaded (this session) :"), wxDefaultPosition, wxDefaultSize, 0 );
-    item39->Add( item40, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
+    item30->Add( 20, 20, 0, wxALIGN_CENTER, 5 );
 
-    wxStaticText *item41 = new wxStaticText( parent, ID_TEXT, _("Average Uploadrate :"), wxDefaultPosition, wxDefaultSize, 0 );
-    item39->Add( item41, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
+    wxStaticText *item41 = new wxStaticText( parent, ID_TEXT, _("Downloaded (total):"), wxDefaultPosition, wxDefaultSize, 0 );
+    item30->Add( item41, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
-    wxStaticText *item42 = new wxStaticText( parent, ID_TEXT, _("Uploaded total :"), wxDefaultPosition, wxDefaultSize, 0 );
-    item39->Add( item42, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
+    wxStaticText *item42 = new wxStaticText( parent, ID_DUPTOTAL, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
+    item42->SetForegroundColour( *wxBLUE );
+    item30->Add( item42, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
-    item30->Add( item39, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxLEFT, 5 );
+    item23->Add( item30, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxBoxSizer *item43 = new wxBoxSizer( wxVERTICAL );
+    item0->Add( item23, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticText *item44 = new wxStaticText( parent, ID_DDUP, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item44->SetForegroundColour( *wxBLUE );
-    item43->Add( item44, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticBox *item44 = new wxStaticBox( parent, -1, _("Scores") );
+    wxStaticBoxSizer *item43 = new wxStaticBoxSizer( item44, wxVERTICAL );
 
-    wxStaticText *item45 = new wxStaticText( parent, ID_DAVUR, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item45->SetForegroundColour( *wxBLUE );
-    item43->Add( item45, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    wxFlexGridSizer *item45 = new wxFlexGridSizer( 5, 0, 0 );
+    item45->AddGrowableCol( 1 );
+    item45->AddGrowableCol( 4 );
 
-    wxStaticText *item46 = new wxStaticText( parent, ID_DUPTOTAL, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item46->SetForegroundColour( *wxBLUE );
-    item43->Add( item46, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticText *item46 = new wxStaticText( parent, ID_TEXT, _("DL/UP modifier:"), wxDefaultPosition, wxDefaultSize, 0 );
+    item45->Add( item46, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    item30->Add( item43, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxLEFT|wxRIGHT, 5 );
+    wxStaticText *item47 = new wxStaticText( parent, ID_DRATIO, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
+    item47->SetForegroundColour( *wxBLUE );
+    item45->Add( item47, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    item25->Add( item30, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    item45->Add( 20, 20, 0, wxALIGN_CENTER, 5 );
 
-    item0->Add( item25, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
+    wxStaticText *item48 = new wxStaticText( parent, ID_TEXT, _("Secure ident:"), wxDefaultPosition, wxDefaultSize, 0 );
+    item45->Add( item48, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticBox *item48 = new wxStaticBox( parent, -1, _("Scores") );
-    wxStaticBoxSizer *item47 = new wxStaticBoxSizer( item48, wxHORIZONTAL );
+    wxStaticText *item49 = new wxStaticText( parent, IDC_CDIDENT, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
+    item49->SetForegroundColour( *wxBLUE );
+    item45->Add( item49, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxBoxSizer *item49 = new wxBoxSizer( wxVERTICAL );
+    wxStaticText *item50 = new wxStaticText( parent, ID_TEXT, _("Rating (total):"), wxDefaultPosition, wxDefaultSize, 0 );
+    item45->Add( item50, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
-    wxStaticText *item50 = new wxStaticText( parent, ID_TEXT, _("DL/UP Modifier :"), wxDefaultPosition, wxDefaultSize, 0 );
-    item49->Add( item50, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticText *item51 = new wxStaticText( parent, ID_DRATING, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
+    item51->SetForegroundColour( *wxBLUE );
+    item45->Add( item51, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
-    wxStaticText *item51 = new wxStaticText( parent, ID_TEXT, _("Rating (total) :"), wxDefaultPosition, wxDefaultSize, 0 );
-    item49->Add( item51, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    item45->Add( 20, 20, 0, wxALIGN_CENTER, 5 );
 
-    item47->Add( item49, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxLEFT, 5 );
+    wxStaticText *item52 = new wxStaticText( parent, ID_TEXT, _("Queue score:"), wxDefaultPosition, wxDefaultSize, 0 );
+    item45->Add( item52, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
-    wxBoxSizer *item52 = new wxBoxSizer( wxVERTICAL );
-
-    wxStaticText *item53 = new wxStaticText( parent, ID_DRATIO, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxStaticText *item53 = new wxStaticText( parent, ID_DSCORE, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
     item53->SetForegroundColour( *wxBLUE );
-    item52->Add( item53, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    item45->Add( item53, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
-    wxStaticText *item54 = new wxStaticText( parent, ID_DRATING, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item54->SetForegroundColour( *wxBLUE );
-    item52->Add( item54, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    item43->Add( item45, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    item47->Add( item52, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxLEFT|wxRIGHT, 5 );
+    item0->Add( item43, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxBoxSizer *item55 = new wxBoxSizer( wxVERTICAL );
-
-    wxStaticText *item56 = new wxStaticText( parent, ID_TEXT, _("Secure Ident :"), wxDefaultPosition, wxDefaultSize, 0 );
-    item55->Add( item56, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
-
-    wxStaticText *item57 = new wxStaticText( parent, ID_TEXT, _("Uploadqueue score :"), wxDefaultPosition, wxDefaultSize, 0 );
-    item55->Add( item57, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
-
-    item47->Add( item55, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxLEFT, 5 );
-
-    wxBoxSizer *item58 = new wxBoxSizer( wxVERTICAL );
-
-    wxStaticText *item59 = new wxStaticText( parent, IDC_CDIDENT, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item59->SetForegroundColour( *wxBLUE );
-    item58->Add( item59, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
-
-    wxStaticText *item60 = new wxStaticText( parent, ID_DSCORE, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item60->SetForegroundColour( *wxBLUE );
-    item58->Add( item60, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
-
-    item47->Add( item58, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxLEFT|wxRIGHT, 5 );
-
-    item0->Add( item47, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxTOP, 5 );
-
-    wxButton *item61 = new wxButton( parent, ID_CLOSEWND, _("Close"), wxDefaultPosition, wxDefaultSize, 0 );
-    item61->SetDefault();
-    item0->Add( item61, 0, wxALIGN_CENTER|wxALL, 5 );
+    wxButton *item54 = new wxButton( parent, ID_CLOSEWND, _("Close"), wxDefaultPosition, wxDefaultSize, 0 );
+    item54->SetDefault();
+    item0->Add( item54, 0, wxALIGN_CENTER|wxALL, 5 );
 
     if (set_sizer)
     {
