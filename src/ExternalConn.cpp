@@ -1000,7 +1000,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				theApp.OnlineSig(); // Added By Bouc7
 				return wxT("Disconnected");
 			} else {
-				return wxT("Already conected");
+				return wxT("Already Disconnected");
 			}
 		}
 		
