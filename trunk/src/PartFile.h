@@ -69,6 +69,7 @@ public:
 	void InitializeFromLink(CED2KFileLink* fileLink);
 	virtual ~CPartFile();
 	
+	bool	CreateFromFile(wxString directory, wxString filename, void* pvProgressParam) {return false;}// not supported in this class
 	void 	SetPartFileStatus(uint8 newstatus);
 	virtual bool LoadFromFile(const CFile* WXUNUSED(file)) const { return false; }
 	bool	WriteToFile(CFile* file) const	{ return false; }
@@ -91,6 +92,8 @@ public:
 	bool	IsComplete(uint32 start, uint32 end);
 	bool	IsPureGap(uint32 start, uint32 end);
 	bool	IsCorruptedPart(uint16 partnumber);
+	uint32	GetTotalGapSizeInRange(uint32 uRangeStart, uint32 uRangeEnd) const;	
+	uint32	GetTotalGapSizeInPart(UINT uPart) const;
 	void	UpdateCompletedInfos();
 
 	bool	GetNextRequestedBlock(CUpDownClient* sender,Requested_Block_Struct** newblocks,uint16* count);
@@ -119,7 +122,7 @@ public:
 
 	// Barry - Added as replacement for BlockReceived to buffer data before writing to disk
 	uint32	WriteToBuffer(uint32 transize, BYTE *data, uint32 start, uint32 end, Requested_Block_Struct *block);
-	void	FlushBuffer(void);
+	void	FlushBuffer(bool forcewait=false, bool bForceICH = false, bool bNoAICH = false);	
 	// Barry - This will invert the gap list, up to caller to delete gaps when done
 	// 'Gaps' returned are really the filled areas, and guaranteed to be in order
 	void	GetFilledList(CTypedPtrList<CPtrList, Gap_Struct*> *filled);
