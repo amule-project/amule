@@ -361,38 +361,40 @@ void CWebSocket::SendContent(LPCSTR szStdResponse, const void* pContent, wxUint3
 
 
 void CWebSocket::SendData(const void* pData, wxUint32 dwDataSize) {
-    if (m_bValid && m_bCanSend) {
-        if (!m_pHead) {
-            // try to send it directly
+	if (m_bValid && m_bCanSend) {
+		if (!m_pHead) {
+			// try to send it directly
 			m_hSocket->Write((const char*) pData, dwDataSize);
 			uint32 nRes = m_hSocket->LastCount();
-            if (((nRes < 0) || (nRes > dwDataSize)) && m_hSocket->Error() && (m_hSocket->LastError() != wxSOCKET_WOULDBLOCK))
-                m_bValid = false;
-            else {
-                ((const char*&) pData) += nRes;
-                dwDataSize -= nRes;
-            }
-        }
-
-        if (dwDataSize && m_bValid) {
-            // push it to our tails
-            CChunk* pChunk = new CChunk;
-            if (pChunk) {
-                pChunk->m_pNext = NULL;
-                pChunk->m_dwSize = dwDataSize;
-                if ((pChunk->m_pData = new char[dwDataSize])) {
-                    // push it to the end of our queue
-                    pChunk->m_pToSend = pChunk->m_pData;
-                    if (m_pTail)
-                        m_pTail->m_pNext = pChunk;
-                    else
-                        m_pHead = pChunk;
-					
-                    m_pTail = pChunk;
-                } else {
-                    delete pChunk; // oops, no memory (???)
+			if (	(nRes > dwDataSize) && 
+				m_hSocket->Error() && 
+				(m_hSocket->LastError() != wxSOCKET_WOULDBLOCK)) {
+				m_bValid = false;
+			} else {
+				((const char*&) pData) += nRes;
+				dwDataSize -= nRes;
+			}
+		}
+		if (dwDataSize && m_bValid) {
+			// push it to our tails
+			CChunk* pChunk = new CChunk;
+			if (pChunk) {
+				pChunk->m_pNext = NULL;
+				pChunk->m_dwSize = dwDataSize;
+				if ((pChunk->m_pData = new char[dwDataSize])) {
+					// push it to the end of our queue
+					pChunk->m_pToSend = pChunk->m_pData;
+					if (m_pTail) {
+						m_pTail->m_pNext = pChunk;
+					} else {
+						m_pHead = pChunk;
+					}
+					m_pTail = pChunk;
+				} else {
+					delete pChunk; // oops, no memory (???)
 				}
-            }
-        }
-    }
+			}
+		}
+	}
 }
+
