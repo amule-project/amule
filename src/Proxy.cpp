@@ -129,6 +129,8 @@ void CProxyData::Clear()
 	m_password.Clear();
 }
 
+#ifndef CLIENT_GUI
+
 //------------------------------------------------------------------------------
 // ProxyEventHandler
 //------------------------------------------------------------------------------
@@ -1509,5 +1511,7 @@ wxUint32 CDatagramSocketProxy::LastCount(void) const
 	
 	return ret;
 }
+
+#endif // CLIENT_GUI
 
 /******************************************************************************/
