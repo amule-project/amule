@@ -92,42 +92,72 @@ CString CastSecondsToHM(sint32 count)
 }
 
 
-// Returns the Typename, examining the extention of the given filename
-wxString GetFiletypeByName(wxString infile)
+// Examins a filename and determines the filetype
+FileType GetFiletype(const wxString& filename)
 {
-	if( infile.Find('.' ) == -1 )
-		return wxString(_("Any"));
+	if( filename.Find('.' ) == -1 )
+		return ftAny;
 
+	wxString ext = filename.AfterLast('.').MakeLower();
 
-	wxString ext = infile.AfterLast('.').MakeLower();
-
-	if ( ext=="mpc"  || ext=="mp4"  || ext=="aac"  || ext=="ape"  ||
-	     ext=="mp3"  || ext=="mp2"  || ext=="wav"  || ext=="au"   ||
-		 ext=="ogg"  || ext=="wma" )
-		 return wxString( _("Audio") );
-
-	if ( ext=="jpg"  || ext=="jpeg" || ext=="bmp"  || ext=="gif"  ||
-	     ext=="tif"  || ext=="png" )
-		 return wxString( _("Pictures") );
-
-	if ( ext=="avi"  || ext=="mpg"  || ext=="mpeg" || ext=="ram"  ||
-	     ext=="rm"   || ext=="asf"  || ext=="vob"  || ext=="divx" ||
-		 ext=="vivo" || ext=="ogm"  || ext=="mov"  || ext=="wmv" )
-		 return wxString( _("Videos") );
-
-	if ( ext=="gz"   || ext=="zip"  || ext=="ace"  || ext=="rar" ) 
-		return wxString( _("Archives") );
-
-	if ( ext=="exe"  || ext=="com" )
-		return wxString( _("Programs") );
-
-	if ( ext=="ccd"  || ext=="sub"  || ext=="cue"  || ext=="bin"  ||
-	     ext=="iso"  || ext=="nrg"  || ext=="img"  || ext=="bwa"  ||
+	if ( ext=="avi"  || ext=="mpg"  || ext=="mpeg" || ext=="ogm"  ||
+		 ext=="ram"  || ext=="rm"   || ext=="asf"  || ext=="vob"  ||
+		 ext=="divx" || ext=="vivo" || ext=="mov"  || ext=="wmv"  ||
+		 ext=="m2v"  || ext=="swf"  || ext=="qt" )
+		 return ftVideo;
+		 
+	if ( ext=="cue"  || ext=="bin"  || ext=="iso"  || ext=="ccd"  ||
+		 ext=="sub"  || ext=="nrg"  || ext=="img"  || ext=="bwa"  ||
 		 ext=="bwi"  || ext=="bws"  || ext=="bwt"  || ext=="mds"  ||
 		 ext=="mdf" )
-	  return wxString( _("CD-Images") );
+	  return ftCDImage;
+		
+	if ( ext=="mpc"  || ext=="mp4"  || ext=="aac"  || ext=="ape"  ||
+	     ext=="mp3"  || ext=="mp2"  || ext=="wav"  || ext=="au"   ||
+		 ext=="ogg"  || ext=="wma"  || ext=="rma"  || ext=="mid" )
+		 return ftAudio;
 
-	return wxString(_("Any"));
+	if ( ext=="jpg"  || ext=="jpeg" || ext=="bmp"  || ext=="gif"  ||
+	     ext=="tiff" || ext=="png"  || ext=="rle"  || ext=="psp"  ||
+		 ext=="tga"  || ext=="wmf"  || ext=="xpm"  || ext=="pcx" )
+		 return ftPicture;
+
+	if ( ext=="rar"  || ext=="zip"  || ext=="ace"  || ext=="gz"   ||
+	     ext=="bz2"  || ext=="tar"  || ext=="arj"  || ext=="lhz"  ||
+		 ext=="bz" )
+		return ftArchive;
+
+	if ( ext=="exe"  || ext=="com" )
+		return ftProgram;
+
+	if ( ext=="txt"  || ext=="html" || ext=="htm"  || ext=="doc"  ||
+	     ext=="pdf"  || ext=="ps"   || ext=="sxw"  || ext=="log" )
+		return ftText;
+
+	return ftAny;
+}
+
+
+// Returns the (translated) description assosiated with a FileType
+wxString GetFiletypeDesc(FileType type)
+{
+	switch ( type ) {
+		case ftVideo:	return wxString( _("Videos") );
+		case ftAudio:	return wxString( _("Audio") );
+		case ftArchive:	return wxString( _("Archives") );
+		case ftCDImage:	return wxString( _("CD-Images") );
+		case ftPicture:	return wxString( _("Pictures") );
+		case ftText:	return wxString( _("Texts") ); // ?
+		case ftProgram:	return wxString( _("Programs") );
+		default:		return wxString(_("Any"));
+	}
+}
+
+
+// Returns the Typename, examining the extention of the given filename
+wxString GetFiletypeByName(const wxString& filename)
+{
+	return GetFiletypeDesc( GetFiletype( filename ) );
 }
 
 
@@ -355,22 +385,22 @@ bool CheckShowItemInGivenCat(CPartFile* file, int inCategory)
 			IsNotFiltered = file->IsStopped();
 			break;
 		case 9:
-			IsNotFiltered = file->IsMovie();
+			IsNotFiltered = GetFiletype(file->GetFileName()) == ftVideo;
 			break;
 		case 10:
-			IsNotFiltered = file->IsSound();
+			IsNotFiltered = GetFiletype(file->GetFileName()) == ftAudio;
 			break;
 		case 11:
-			IsNotFiltered = file->IsArchive();
+			IsNotFiltered = GetFiletype(file->GetFileName()) == ftArchive;
 			break;
 		case 12:
-			IsNotFiltered = file->IsCDImage();
+			IsNotFiltered = GetFiletype(file->GetFileName()) == ftCDImage;
 			break;
 		case 13:
-			IsNotFiltered = file->IsImage();
+			IsNotFiltered = GetFiletype(file->GetFileName()) == ftPicture;
 			break;
 		case 14:
-			IsNotFiltered = file->IsText();
+			IsNotFiltered = GetFiletype(file->GetFileName()) == ftText;
 			break;
 	}
 	

@@ -18,105 +18,6 @@
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 
-/*
-	Functions in this file. Please update this list if you change something.
-
-	
-	Hash functions:
-		From Gnucleus project [found by Tarod]:
-		These functions deal with the base16 hashes that aMule uses.
-		
-		CString EncodeBase16( buffer, bufLen )
-			Converts 'buffer' with length 'bufLen' to a CString
-				
-		void DecodeBase16( base16Buffer,  base16BufLen,  buffer )
-			Converts the string 'base16Buffer' with length 'base16BufLen' 
-			to a hash in 'buffer'.
-
-		int md4cmp( hash1,  hash2 )
-			Compares two hashes. Returns 0 on equality and !0 otherwise.
-			
-		void md4clr( hash )
-			Clears a hash
-			
-		void md4cpy( dst,  src )
-			Copies the hash 'src' to the hash 'dst'
-				
-
-	Cast function:
-		These functions make a specific type of data usable for displaying.
-	
-		CString CastItoXBytes( count )
-			Converts the number of bytes to human readable form.
-			
-		CString CastItoIShort( number )
-			Converts the possibly large number 'count', to human readable form.
-			
-		CString CastSecondsToHM( seconds)
-			Converts the number seconds to human readable time.
-		
-		
-	Informational functions:
-		These functions return various information.
-		
-		wxString GetFiletypeByName( infile )
-			Identify the filetype of a file, by looking at the extension.
-			
-		int GetMaxConnections()
-			Returns the max number of connections the current OS can handle.
-			Currently anything but windows will return the default value -1;
-
-		CString GetCatTitle( catid )
-			Returns the string assosiated with a category value.
-
-		bool IsGoodIP( nIP )
-			Checks an ip to see if it is valid, depending on current preferences.
-		
-		CString GetRateString( rate )
-			Returns the string assosiated with a file-rating value.
-
-
-	String manipulation:
-		These functions perform various tasks on strings
-		
-		wxString URLEncode( sIn )
-			Makes sIn suitable for inclusion in an URL, by escaping all chars
-			that could cause trouble.
-			
-		CString MakeStringEscaped( in )
-			Replaces "&" with "&&" in 'in' for use with text-labels
-			
-		void MakeFoldername(char* path);
-
-
-	File manipulation:
-		Functions that act on files.
-		
-		bool BackupFile( filename,  appendix )
-			Makes a backup of a file, by copying the original file to filename + appendix
-
-		bool FS_wxCopyFile( file1, file2, overwrite )
-			This function is a replacement for wxCopyFile, with the added feature,
-			that chmoding of the target file can be disabled. The reason for this
-			is, that FAT partitons under linux generate warnings when chmoding.
-			
-		bool FS_wxRenameFile( file1,  file2 );
-			Same as above, but renames rather than copies.
-
-
-	Other functions:
-	
-	void HexDump( buffer,  buflen )
-	
-	bool CheckShowItemInGivenCat( file, inCategory )
-	
-	int wxCMPFUNC_CONV Uint16CompareValues( first, second );
-		Compares first and second. For uint16 arrays sorting.
-
-*/
-
-
-
 #ifndef OTHERFUNCTIONS_H
 #define OTHERFUNCTIONS_H
 
@@ -131,24 +32,42 @@ class CString;
 class CPartFile;
 
 
-/* Hash functions */
 // From Gnucleus project [found by Tarod]
+// Converts 'buffer' with length 'bufLen' to a CString
 CString EncodeBase16(const unsigned char* buffer, unsigned int bufLen);
+// Converts the string 'base16Buffer' with length 'base16BufLen' to a hash in 'buffer'.
 void DecodeBase16(const char *base16Buffer, unsigned int base16BufLen, unsigned char *buffer);
 
 
-/* Cast function */
+// Converts the number of bytes to human readable form.
 CString CastItoXBytes(uint64 count);
+// Converts the number to human readable form, abbreviating when nessecary.
 CString CastItoIShort(uint64 number);
+// Converts an ammount of seconds to human readable time.
 CString CastSecondsToHM(sint32 seconds);
+// Returns the string assosiated with a file-rating value.
 CString GetRateString(uint16 rate);
 
 
-/* Informational functions */
-wxString GetFiletypeByName(wxString infile);
+// The following functions are used to identify and/or name the type of a file
+enum FileType { ftAny, ftVideo, ftAudio, ftArchive, ftCDImage, ftPicture, ftText, ftProgram };
+// Examins a filename and returns the enumerated value assosiated with it, or ftAny if unknown extension
+FileType GetFiletype(const wxString& filename);
+// Returns the description of a filetype: Movies, Audio, Pictures and so on...
+wxString GetFiletypeDesc(FileType type);
+// Shorthand for GetFiletypeDesc(GetFiletype(filename))
+wxString GetFiletypeByName(const wxString& filename);
+
+
+// Returns the max number of connections the current OS can handle.
+// Currently anything but windows will return the default value (-1);
 int GetMaxConnections();
+// Returns the name assosiated with a category value.
 CString GetCatTitle(int catid);
+// Checks an ip to see if it is valid, depending on current preferences.
 bool IsGoodIP(uint32 nIP);
+
+// Tests if a ID is low (behind firewall/router/...)
 #define HIGHEST_LOWID_HYBRID	16777216
 #define HIGHEST_LOWID_ED2K		16777216
 inline bool IsLowIDHybrid(uint32 id){
@@ -158,22 +77,29 @@ inline bool IsLowIDED2K(uint32 id){
 	return (id < HIGHEST_LOWID_ED2K); //Need to verify what the highest LowID can be returned by the server.
 }
 
-/* String manipulation */
+
+// Makes sIn suitable for inclusion in an URL, by escaping all chars that could cause trouble.
 wxString URLEncode(wxString sIn);
+// Replaces "&" with "&&" in 'in' for use with text-labels
 CString MakeStringEscaped(CString in);
+// Removes the last '\' from a path
 void MakeFoldername(char* path);
 
 
-/* File manipulation */
+// Makes a backup of a file, by copying the original file to filename + appendix
 bool BackupFile(const wxString& filename, const wxString& appendix);
+// This function is a replacement for wxCopyFile, with the added feature,
+// that chmoding of the target file can be disabled. The reason for this
+// is, that FAT partitons under linux generate warnings when chmoding.
 bool FS_wxCopyFile(const wxString& file1, const wxString& file2,bool overwrite = TRUE);
+// Same as above, but renames rather than copies.
 bool FS_wxRenameFile(const wxString& file1, const wxString& file2);
 
 
 /* Other */
 void HexDump(const void *buffer, unsigned long buflen);
 bool CheckShowItemInGivenCat(CPartFile* file,int inCategory);
-// For uint16 arrays sorting
+// Compares first and second. For uint16 arrays sorting.
 int wxCMPFUNC_CONV Uint16CompareValues(uint16* first, uint16* second);
 
 
