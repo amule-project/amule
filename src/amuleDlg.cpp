@@ -336,7 +336,11 @@ void CamuleDlg::changeDesktopMode()
 
 
 #ifndef __SYSTRAY_DISABLED__
+#if USE_WX_TRAY
+void CamuleDlg::CreateSystray(const wxString& WXUNUSED(title))
+#else
 void CamuleDlg::CreateSystray(const wxString& title)
+#endif
 {
 	// create the docklet (at this point we already have preferences!)
 	if( !thePrefs::GetDesktopMode() ) {

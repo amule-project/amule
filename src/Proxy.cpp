@@ -39,7 +39,7 @@ BEGIN_EVENT_TABLE(wxProxyEventHandler, wxEvtHandler)
 	EVT_SOCKET(PROXY_SOCKET_HANDLER, wxProxyEventHandler::m_ProxySocketHandler)
 END_EVENT_TABLE()
 
-wxProxyEventHandler::wxProxyEventHandler(wxSocketProxy *parent)
+wxProxyEventHandler::wxProxyEventHandler(wxSocketProxy *WXUNUSED(parent))
 {
 }
 

@@ -286,7 +286,7 @@ bool CamuleGuiBase::CopyTextToClipboard(wxString strText)
 }
 
 
-void CamuleGuiBase::NotifyEvent(GUIEvent event)
+void CamuleGuiBase::NotifyEvent(GUIEvent WXUNUSED(event))
 {
 }
 
