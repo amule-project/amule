@@ -1980,7 +1980,7 @@ wxString CDownloadListCtrl::getTextList()
 /*			if (file->IsPartFile() == false && CheckShowItemInGivenCat(file, curTab)) {
 				RemoveFile(file);
 			}
-*/			//theApp.amuledlg->AddLogLine(false, wxT("%s"), file->GetFileName());
+*/			//AddLogLineF(false, wxT("%s"), file->GetFileName());
 
 			i++;
 			out += wxString::Format(wxT("%i: %s\t [%.1f%%] %i/%i - %s"),i, file->GetFileName().c_str(), file->GetPercentCompleted(), file->GetTransferingSrcCount(), file->GetSourceCount(), file->getPartfileStatus().GetData());

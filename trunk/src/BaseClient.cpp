@@ -609,7 +609,7 @@ bool CUpDownClient::SendHelloPacket() {
 	wxIPV4address address;
 	socket->GetPeer(address);
 	if ( theApp.ipfilter->IsFiltered(inet_addr(unicode2char(address.IPAddress())))) {
-		theApp.amuledlg->AddDebugLogLine(true,_("Filtered IP: ") +GetFullIP() + wxT("(") + theApp.ipfilter->GetLastHit() + wxT(")"));
+		AddDebugLogLineM(true,_("Filtered IP: ") +GetFullIP() + wxT("(") + theApp.ipfilter->GetLastHit() + wxT(")"));
 		theApp.stat_filteredclients++;
 		if (Disconnected(wxT("IPFilter"))) {
 			delete this;
@@ -1535,11 +1535,11 @@ void CUpDownClient::ReGetClientSoft()
 void CUpDownClient::RequestSharedFileList()
 {
 	if (m_iFileListRequested == 0) {
-		theApp.amuledlg->AddDebugLogLine(true,wxString(_("Requesting shared files from ")) + GetUserName());
+		AddDebugLogLineM(true,wxString(_("Requesting shared files from ")) + GetUserName());
 		m_iFileListRequested = 1;
 		TryToConnect(true);
 	} else {
-		theApp.amuledlg->AddDebugLogLine(true,wxString(_("Requesting shared files from user ")) + GetUserName() + wxString::Format(_(" (%u) is already in progress"),GetUserID()));
+		AddDebugLogLineM(true,wxString(_("Requesting shared files from user ")) + GetUserName() + wxString::Format(_(" (%u) is already in progress"),GetUserID()));
 	}
 }
 
@@ -1724,11 +1724,11 @@ void CUpDownClient::ProcessPublicKeyPacket(const uchar* pachPacket, uint32 nSize
 		}
 		else if(m_SecureIdentState == IS_KEYANDSIGNEEDED){
 			// something is wrong
-			theApp.amuledlg->AddDebugLogLine(false, wxT("Invalid State error: IS_KEYANDSIGNEEDED in ProcessPublicKeyPacket"));
+			AddDebugLogLineM(false, wxT("Invalid State error: IS_KEYANDSIGNEEDED in ProcessPublicKeyPacket"));
 		}
 	}
 	else{
-		theApp.amuledlg->AddDebugLogLine(false, wxT("Failed to use new recieved public key"));
+		AddDebugLogLineM(false, wxT("Failed to use new recieved public key"));
 	}
 }
 
@@ -1756,17 +1756,17 @@ void CUpDownClient::ProcessSignaturePacket(const uchar* pachPacket, uint32 nSize
 	
 	// we accept only one signature per IP, to avoid floods which need a lot cpu time for cryptfunctions
 	if (m_dwLastSignatureIP == GetIP()){
-		theApp.amuledlg->AddDebugLogLine(false, wxT("recieved multiple signatures from one client"));
+		AddDebugLogLineM(false, wxT("recieved multiple signatures from one client"));
 		return;
 	}
 	// also make sure this client has a public key
 	if (credits->GetSecIDKeyLen() == 0){
-		theApp.amuledlg->AddDebugLogLine(false, wxT("recieved signature for client without public key"));
+		AddDebugLogLineM(false, wxT("recieved signature for client without public key"));
 		return;
 	}
 	// and one more check: did we ask for a signature and sent a challange packet?
 	if (credits->m_dwCryptRndChallengeFor == 0){
-		theApp.amuledlg->AddDebugLogLine(false, wxT("recieved signature for client with invalid challenge value - User ") + GetUserName());
+		AddDebugLogLineM(false, wxT("recieved signature for client with invalid challenge value - User ") + GetUserName());
 		return;
 	}
 
@@ -1775,7 +1775,7 @@ void CUpDownClient::ProcessSignaturePacket(const uchar* pachPacket, uint32 nSize
 		//AddDebugLogLine(false, "'%s' has passed the secure identification, V2 State: %i", GetUserName(), byChaIPKind);
 	}
 	else {
-		theApp.amuledlg->AddDebugLogLine(false,  GetUserName() + _(" has failed the secure identification, V2 State: %i"), byChaIPKind);
+		AddDebugLogLineF(false,  GetUserName() + _(" has failed the secure identification, V2 State: %i"), byChaIPKind);
 	}
 	m_dwLastSignatureIP = GetIP(); 
 }
@@ -1792,14 +1792,14 @@ void CUpDownClient::SendSecIdentStatePacket(){
 			}
 		}
 		if (nValue == 0){
-			theApp.amuledlg->AddDebugLogLine(false, wxT("Not sending SecIdentState Packet, because State is Zero"));
+			AddDebugLogLineM(false, wxT("Not sending SecIdentState Packet, because State is Zero"));
 			return;
 		}
 		// crypt: send random data to sign
 		uint32 dwRandom = rand()+1;
 		credits->m_dwCryptRndChallengeFor = dwRandom;
 		// Kry - Too much output, it already works.
-		//theApp.amuledlg->AddDebugLogLine(false, "sending SecIdentState Packet, state: %i (to '%s')", nValue, GetUserName() );
+		//AddDebugLogLineM(false, "sending SecIdentState Packet, state: %i (to '%s')", nValue, GetUserName() );
 
 		CMemFile data;
 		data.Write(nValue);
@@ -1882,7 +1882,7 @@ bool CUpDownClient::CheckHandshakeFinished(UINT WXUNUSED(protocol), UINT WXUNUSE
 		//	throw CString(wxT("Handshake not finished")); // -> disconnect client
 		// this triggers way too often.. need more time to look at this -> only create a warning
 		if (theApp.glob_prefs->GetVerbose()) {
-			theApp.amuledlg->AddLogLine(false, wxT("Handshake not finished while processing packet."));
+			AddLogLineM(false, wxT("Handshake not finished while processing packet."));
 		}
 		return false;
 	}

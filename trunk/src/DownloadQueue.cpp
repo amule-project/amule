@@ -174,9 +174,9 @@ void CDownloadQueue::Init()
 		fileName=::wxFindNextFile();
 	}
 	if(count == 0) {
-		theApp.amuledlg->AddLogLine(false, _("No part files found"));
+		AddLogLineM(false, _("No part files found"));
 	} else {
-		theApp.amuledlg->AddLogLine(false, _("Found %i part files"),count);
+		AddLogLineF(false, _("Found %i part files"),count);
 		SortByPriority();
 		CheckDiskspace();
 	}
@@ -323,7 +323,7 @@ void CDownloadQueue::AddDownload(CPartFile* newfile, bool paused)
 
 	newfile->SetCategory(theApp.amuledlg->searchwnd->GetCatChoice());
 	theApp.amuledlg->transferwnd->downloadlistctrl->AddFile(newfile);
-	theApp.amuledlg->AddLogLine(true, _("Downloading %s"),newfile->GetFileName().GetData());
+	AddLogLineF(true, _("Downloading %s"),newfile->GetFileName().GetData());
 	wxString msgTemp;
 	msgTemp.Printf(wxString(wxT("Downloading %s"))+wxT("\n"),newfile->GetFileName().GetData());
 	theApp.amuledlg->ShowNotifier(msgTemp, TBN_DLOAD);
@@ -337,13 +337,13 @@ bool CDownloadQueue::IsFileExisting(const CMD4Hash& fileid) const
 {
 	if (const CKnownFile* file = sharedfilelist->GetFileByID(fileid)) {
 		if (file->IsPartFile()) {
-			theApp.amuledlg->AddLogLine(true, _("You are already trying to download the file %s"), file->GetFileName().GetData());
+			AddLogLineF(true, _("You are already trying to download the file %s"), file->GetFileName().GetData());
 		} else {
-			theApp.amuledlg->AddLogLine(true, _("You already have the file %s"), file->GetFileName().GetData());
+			AddLogLineF(true, _("You already have the file %s"), file->GetFileName().GetData());
 		}
 		return true;
 	} else if ((file = GetFileByID(fileid))) {
-		theApp.amuledlg->AddLogLine(true, _("You are already trying to download the file %s"), file->GetFileName().GetData());
+		AddLogLineF(true, _("You are already trying to download the file %s"), file->GetFileName().GetData());
 		return true;
 	}
 	return false;
@@ -951,7 +951,7 @@ void CDownloadQueue::AddLinksFromFile()
 			} catch(wxString error) {
 				char buffer[200];
 				sprintf(buffer,unicode2char(_("This ed2k link is invalid (%s)")),error.GetData());
-				theApp.amuledlg->AddLogLine(true,_("Invalid link: %s"),buffer);
+				AddLogLineF(true,_("Invalid link: %s"),buffer);
 			}
 			// We must double-check here where are we, because GetNextLine moves reading head
 			// one line below, and we must make sure that line exists. Thus check if we are

@@ -26,7 +26,7 @@
 #include "PartFile.h"		// Needed for CPartFile
 #include "otherfunctions.h" // md4cmp
 #include "amule.h"
-#include "amuleDlg.h"
+//#include "amuleDlg.h"
 #include "CMD4Hash.h"		// Needed for CMD4Hash
 
 
@@ -83,11 +83,11 @@ bool CKnownFileList::Init() {
 #if 0
 	catch(CFileException* error) {
 		if (error->m_cause == CFileException::endOfFile)
-			theApp.amuledlg->AddLogLine(true, _("Error: the file known.met is corrupted, unable to load known files"));
+			AddLogLineM(true, _("Error: the file known.met is corrupted, unable to load known files"));
 		else{
 			char buffer[150];
 			error->GetErrorMessage(buffer,150);
-			theApp.amuledlg->AddLogLine(true, _("Unexpected file error while reading known.met: %s, unable to load known files"), buffer);
+			AddLogLineM(true, _("Unexpected file error while reading known.met: %s, unable to load known files"), buffer);
 		}
 		error->Delete();	//memleak fix
 		return false;
@@ -111,14 +111,14 @@ void CKnownFileList::Save() {
 
 
 	wxMutexLocker sLock(list_mut);
-	//theApp.amuledlg->AddLogLine(false,_("KnownFileList Save Starts"));
+	//AddLogLineM(false,_("KnownFileList Save Starts"));
 	uint8 ucHeader = MET_HEADER;
-	//theApp.amuledlg->AddLogLine(false,_("Saved MET_HEADER"));
+	//AddLogLineM(false,_("Saved MET_HEADER"));
 	file->Write(&ucHeader, 1);
 	uint32 RecordsNumber = m_map.size() + duplicates.GetCount();
-	//theApp.amuledlg->AddLogLine(false,_("RecordsNumber = %i"), RecordsNumber);
+	//AddLogLineF(false,_("RecordsNumber = %i"), RecordsNumber);
 	ENDIAN_SWAP_I_32(RecordsNumber);
-	//theApp.amuledlg->AddLogLine(false,_("Endian RecordsNumber = %i"), RecordsNumber);		
+	//AddLogLineF(false,_("Endian RecordsNumber = %i"), RecordsNumber);		
 	file->Write(&RecordsNumber,4);
 	RecordsNumber = m_map.size();
 	CKnownFileMap::iterator it = m_map.begin();
@@ -137,7 +137,7 @@ void CKnownFileList::Save() {
 	
 	file->Flush();
 	file->Close();
-	//theApp.amuledlg->AddLogLine(false,_("KnownFileList Save Ends"));	
+	//AddLogLineM(false,_("KnownFileList Save Ends"));	
 	delete file;
 }
 

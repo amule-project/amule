@@ -210,7 +210,7 @@ speed_check();
 void connect_any_server() {
 
 if (theApp.serverconnect->IsConnected()) theApp.serverconnect->Disconnect();
-theApp.amuledlg->AddLogLine(true, _("Connecting"));
+AddLogLineM(true, _("Connecting"));
 theApp.serverconnect->ConnectToAnyServer();
 theApp.amuledlg->ShowConnectionState(false);
 

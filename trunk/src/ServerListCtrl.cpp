@@ -677,11 +677,11 @@ bool CServerListCtrl::StaticServerFileAppend(CServer *server)
 			error = staticservers.Create();
 		}
 		if (error) {
-			theApp.amuledlg->AddLogLine( false, wxString(_("Failed to open staticservers.dat")));
+			AddLogLineM( false, wxString(_("Failed to open staticservers.dat")));
 			return false;
 		}
 		staticservers.AddLine(server->GetAddress() + wxString::Format(wxT(":%i,%i,"),server->GetPort(), server->GetPreferences()) + server->GetListName());
-		theApp.amuledlg->AddLogLine(false, wxT("\"") + server->GetAddress() + wxString::Format(wxT(":%i,%i,"),server->GetPort(), server->GetPreferences()) + server->GetListName() + _("\" Added to static server list"));
+		AddLogLineM(false, wxT("\"") + server->GetAddress() + wxString::Format(wxT(":%i,%i,"),server->GetPort(), server->GetPreferences()) + server->GetListName() + _("\" Added to static server list"));
 		server->SetIsStaticMember(true);
 		theApp.amuledlg->serverwnd->serverlistctrl->RefreshServer(server);
 		staticservers.Write();
@@ -719,7 +719,7 @@ bool CServerListCtrl::StaticServerFileRemove(CServer *server)
 				statictemp.Close();
 			}
 
-			theApp.amuledlg->AddLogLine( false, _("Failed to open staticservers.dat"));
+			AddLogLineM( false, _("Failed to open staticservers.dat"));
 			return false;
 		}
 		for (wxString strLine = staticservers.GetFirstLine(); !staticservers.Eof(); strLine = staticservers.GetNextLine() ) {

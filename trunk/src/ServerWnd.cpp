@@ -76,7 +76,7 @@ CServerWnd::~CServerWnd()
 void CServerWnd::UpdateServerMetFromURL(wxString strURL)
 {
 	if (strURL.Find(wxT("://")) == -1) {
-		theApp.amuledlg->AddLogLine(true, _("Invalid URL"));
+		AddLogLineM(true, _("Invalid URL"));
 		return;
 	}
 	wxString strTempFilename(theApp.ConfigDir + wxString::Format(wxT("temp-%d-server.met"), ::GetTickCount()));
@@ -89,7 +89,7 @@ void CServerWnd::UpdateServerMetFromURL(wxString strURL)
 		theApp.serverlist->SaveServermetToFile();
 		printf("Saving of server.met file Done !!!\n");
 	} else {
-		theApp.amuledlg->AddLogLine(true, _("Failed to download the serverlist from %s"), strURL.GetData());
+		AddLogLineF(true, _("Failed to download the serverlist from %s"), strURL.GetData());
 	}
 	delete dlg;
 }
@@ -104,13 +104,13 @@ void CServerWnd::OnBnClickedAddserver(wxCommandEvent& WXUNUSED(evt))
 {
 	wxString serveraddr;
 	if(((wxTextCtrl*)FindWindowById(IDC_IPADDRESS))->GetLineText(0).IsEmpty()) {
-		theApp.amuledlg->AddLogLine(true, _("Please enter a serveraddress"));
+		AddLogLineM(true, _("Please enter a serveraddress"));
 		return;
 	} else {
 		serveraddr=((wxTextCtrl*)FindWindowById(IDC_IPADDRESS))->GetLineText(0);
 	}
 	if (((wxTextCtrl*)FindWindowById(IDC_SPORT))->GetLineText(0).IsEmpty()) {
-		theApp.amuledlg->AddLogLine(true, _("Incomplete serverport: Please enter a serverport"));
+		AddLogLineM(true, _("Incomplete serverport: Please enter a serverport"));
 		return;
 	}
   
