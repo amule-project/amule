@@ -118,19 +118,25 @@ private:
 	static void CreateNewThread();
 
 	/**
-	 * Helper function for getting the next file on the queue.
+	 * Helper function for getting the next file on the queue, or removed a hashed file from the queue.
 	 *
-	 * @return The first file on the list (which gets removed) or NULL if the list is empty.
+	 * @param remove Remove this file from the queue.
+	 * @return A viable file on the queue or NULL if the list is empty.
+	 *
+	 * Returns the first non-busy file on the queue and sets it's busy flag. 
+	 * However, if remove isn't NULL, it'll remove that file instead and return
+	 * NULL.
 	 */
-	static QueuedFile* PopQueuedFile();
+	static QueuedFile* PopQueuedFile(QueuedFile* remove = false);
 
 	/**
 	 * Helper function for adding a file to the queue.
 	 *
 	 * @param file The object to be added to the queue
 	 * @param addLast If true then add the file to the back of the queue, otherwise, insert it at the front.
+	 * @return True if the file was added, false otherwise.
 	 */
-	static void PushQueuedFile(QueuedFile* file, bool addLast = true);
+	static bool PushQueuedFile(QueuedFile* file, bool addLast = true);
 	 
 
 	//! Sets the IsRunning status
@@ -156,8 +162,10 @@ private:
 	//! Number of currently existing threads.
 	static uint8		s_count;
 
+	//! The queue-type
+	typedef std::list<QueuedFile*> FileQueue;
 	//! The queue of files to be hashed
-	static std::list<QueuedFile*> s_queue;
+	static FileQueue s_queue;
 };
 
 #endif // ADDFILETHREAD_H
