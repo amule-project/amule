@@ -26,7 +26,14 @@
 #include <cstdio>
 #include <cstdlib>
 
-#include <wx/stopwatch.h>
+#include <wx/defs.h>
+
+#if wxCHECK_VERSION(2,5,1)
+	#include <wx/stopwatch.h>
+#else
+	#include <wx/timer.h>
+#endif
+
 #include <wx/tokenzr.h>
 #include <wx/filename.h>
 #include <wx/textfile.h>
