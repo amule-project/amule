@@ -634,8 +634,10 @@ CSysTray::CSysTray(wxWindow* _parent,int _desktopMode, const wxString& title)
 
 
   // set image
+  GtkStyle *style;
+  style = gtk_widget_get_style(status_docklet);
   GdkBitmap* mask=NULL;
-  GdkPixmap* img=gdk_pixmap_create_from_xpm_d(status_docklet->window,&mask,NULL,mule_Tr_grey_ico);
+  GdkPixmap* img=gdk_pixmap_create_from_xpm_d(status_docklet->window,&mask,&style->bg[GTK_STATE_NORMAL],mule_Tr_grey_ico);
   status_image=gtk_pixmap_new(img,mask);
 
   eventbox = gtk_event_box_new ();
