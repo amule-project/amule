@@ -188,7 +188,7 @@ void CSearchDlg::OnSearchClosed(wxNotebookEvent& evt)
 }
 
 
-void CSearchDlg::OnSearchPageChanged(wxNotebookEvent& evt)
+void CSearchDlg::OnSearchPageChanged(wxNotebookEvent& WXUNUSED(evt))
 {
 	int selection = m_notebook->GetSelection();
 
