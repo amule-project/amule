@@ -1339,7 +1339,7 @@ void CamuleApp::Trigger_New_version(wxString old_version, wxString new_version)
 		info += wxT(_("For a full changes review, check Changelog file or www.amule.org, section Changelog.\n"));
 	}
 	
-	info += wxT(_("You locale has been changed to System Default due to version change. Sorry."));
+	info += wxT(_("You locale has been changed to System Default due to version change. Sorry.\n"));
 	info += wxT(_("Feel free to report any bugs to forum.amule.org"));
 	
 		
