@@ -1350,6 +1350,10 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 
 void CUpDownClient::ConnectionEstablished()
 {
+	// check if we should use this client to retrieve our public IP
+	if (theApp.GetPublicIP() == 0 && theApp.serverconnect->IsConnected() /* && m_fPeerCache */)
+		SendPublicIPRequest();
+
 // 0.42e
 	#ifdef __USE_KAD__
 	switch(GetKadState())
