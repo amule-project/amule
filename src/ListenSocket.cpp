@@ -2369,6 +2369,7 @@ CListenSocket::~CListenSocket()
 #ifdef AMULE_DAEMON
 	AddLogLineM(true,wxT("CListenSocket: destroy"));
 	global_sock_thread.Delete();
+	global_sock_thread.Wait();
 #endif
 	KillAllSockets();
 }
