@@ -214,7 +214,7 @@ void CamuleDaemonApp::NotifyEvent(const GUIEvent& event)
 		case SHOW_CONN_STATE:
 			if ( event.byte_value ) {
 				const wxString id = theApp.serverconnect->IsLowID() ? _("with LowID") : _("with HighID");
-				AddLogLine(_("Connected to ") + event.string_value + id);
+				AddLogLine(_("Connected to ") + event.string_value + wxT(" ") + id);
 			} else {
 				if ( theApp.serverconnect->IsConnecting() ) {
 					AddLogLine(_("Connecting to ") + event.string_value);
