@@ -26,9 +26,7 @@
 
 #include "ClientUDPSocket.h"	// Needed for CClientUDPSocket
 #include "ClientCredits.h"	// Needed for CClientCredits
-#include "UploadListCtrl.h"	// Needed for CUploadListCtrl
 #include "packets.h"		// Needed for Packet
-#include "QueueListCtrl.h"	// Needed for CQueueListCtrl
 #include "TransferWnd.h"	// Needed for CTransferWnd
 #include "SafeFile.h"		// Needed for CSafeMemFile
 #include "UploadQueue.h"	// Needed for CUploadQueue
@@ -49,44 +47,7 @@
 
 //	members of CUpDownClient
 //	which are mainly used for uploading functions 
-#ifndef AMULE_DAEMON
-void CUpDownClient::DrawUpStatusBar(wxMemoryDC* dc, wxRect rect, bool onlygreyrect) {
-	RECT gaprect;
-	gaprect.top = rect.y + 2;
-	gaprect.bottom = (rect.y+rect.height) - 2;
-	gaprect.left = rect.x;//rect->left;
-	gaprect.right = (rect.x+rect.width);//rect->right;
-	//dc->FillRect(&gaprect,&CBrush(RGB(220,220,220)));
-	wxBrush suti(wxColour(220,220,220),wxSOLID);
-	dc->SetPen(*wxTRANSPARENT_PEN);
-	dc->SetBrush(suti);
-	wxRect mygaprect;
-	mygaprect.x=gaprect.left; mygaprect.y=gaprect.top;
-	mygaprect.width=gaprect.right-gaprect.left;
-	mygaprect.height=gaprect.bottom-gaprect.top;
-	dc->DrawRectangle(mygaprect);
-	dc->SetBrush(*wxWHITE_BRUSH);
 
-	if( onlygreyrect ) {
-		return;
-	}
-	float blockpixel = (float)(rect.width)/((float)(PARTSIZE*(m_nUpPartCount))/1024);
-	for (uint32 i = 0;i != m_nUpPartCount;i++){
-#warning We have a problem here, segfaults with m_abyUpPartStatus == NULL
-		assert(m_abyUpPartStatus);
-		if (m_abyUpPartStatus && m_abyUpPartStatus[i]){ 
-			gaprect.right = rect.x + (uint32)(((float)PARTSIZE*i/1024)*blockpixel);
-			gaprect.left  = rect.x + (uint32)((float)((float)PARTSIZE*(i+1)/1024)*blockpixel);
-			//dc->FillRect(&gaprect,&CBrush(RGB(0,0,0)));
-			dc->SetBrush(*wxBLACK_BRUSH);
-			mygaprect.x=gaprect.left; mygaprect.y=gaprect.top;
-			mygaprect.width=gaprect.right-gaprect.left;
-			mygaprect.height=gaprect.bottom-gaprect.top;
-			dc->DrawRectangle(mygaprect);
-		}
-	}
-}
-#endif
 #ifndef CLIENT_GUI
 uint32 CUpDownClient::GetScore(bool sysvalue, bool isdownloading, bool onlybasevalue) const
 {

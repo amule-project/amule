@@ -397,7 +397,9 @@ const unsigned int UNLIMITED	= 	0;
 #define MP_WS                   10212
 //For comments 
 #define	MP_CMT					10208
-#define	MP_SWITCHCTRL				10401
+#define	MP_SWITCHCTRL_0			10250
+#define	MP_SWITCHCTRL_9			10259
+
 
 #define	MP_PRIOVERYLOW				10300
 #define	MP_PRIOLOW				10301

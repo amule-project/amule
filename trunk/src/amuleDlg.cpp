@@ -50,8 +50,7 @@
 #include "ED2KLink.h"		// Needed for CED2KLink
 #include "ServerListCtrl.h"	// Needed for CServerListCtrl
 #include "SharedFilesCtrl.h"	// Needed for CSharedFilesCtrl
-#include "QueueListCtrl.h"	// Needed for CQueueListCtrl
-#include "UploadListCtrl.h"	// Needed for CUploadListCtrl
+#include "ClientListCtrl.h"	// Needed for CClientListCtrl
 #include "DownloadListCtrl.h"	// Needed for CDownloadListCtrl
 #include "sockets.h"		// Needed for CServerConnect
 #include "ClientList.h"		// Needed for CClientList
@@ -371,8 +370,8 @@ void CamuleDlg::OnToolBarButton(wxCommandEvent& ev)
 
 				case ID_BUTTONTRANSFER:
 					SetActiveDialog(TransferWnd, transferwnd);
-					// Set splitter position
-					((wxSplitterWindow*)FindWindow(wxT("splitterWnd")))->SetSashPosition(split_pos, true);
+					// Prepare the dialog, sets the splitter-position
+					transferwnd->Prepare();
 					break;
 
 				case ID_BUTTONSHARED:
@@ -848,7 +847,6 @@ bool CamuleDlg::LoadGUIPrefs(bool override_pos, bool override_size)
 	int x2 = config->Read(section+wxT("MAIN_X_SIZE"), 0l);
 	int y2 = config->Read(section+wxT("MAIN_Y_SIZE"), 0l);
 
-	split_pos = config->Read(section+wxT("SPLITTER_POS"), 463l);
 	// Kry - Random usable pos for srv_split_pos
 	srv_split_pos = config->Read(section+wxT("SRV_SPLITTER_POS"), 463l);
 
@@ -898,9 +896,6 @@ bool CamuleDlg::SaveGUIPrefs()
 	config->Write(section+wxT("MAIN_Y_POS"), (long) y1);
 	config->Write(section+wxT("MAIN_X_SIZE"), (long) x2);
 	config->Write(section+wxT("MAIN_Y_SIZE"), (long) y2);
-
-	// Saving sash position of splitter in transfer window
-	config->Write(section+wxT("SPLITTER_POS"), (long) split_pos);
 
 	// Saving sash position of splitter in server window
 	config->Write(section+wxT("SRV_SPLITTER_POS"), (long) srv_split_pos);
