@@ -254,10 +254,11 @@ bool CDirectoryTreeCtrl::HasSubdirectories(wxString folder)
 }
 
 
+#include "StringFunctions.h"
 void CDirectoryTreeCtrl::GetSharedDirectories(wxArrayString* list)
 {
 	for(unsigned int i = 0; i < m_lstShared.GetCount(); ++i) {
-		list->Add(m_lstShared[i]); 
+		list->Add(m_lstShared[i]);
 	}
 }
 
@@ -278,7 +279,6 @@ void CDirectoryTreeCtrl::SetSharedDirectories(wxArrayString* list)
 			wxASSERT(folder.Len() > 0); // was modified by while
 			folder.Append(ROOT_CHAR);
 		}
-
 		m_lstShared.Add(list->Item(i));
 	}
 	
