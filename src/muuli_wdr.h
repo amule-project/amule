@@ -376,6 +376,7 @@ wxSizer *PreferencesRemoteControlsTab( wxWindow *parent, bool call_fit = TRUE, b
 
 extern wxSizer *prefs_main_sizer;
 extern wxSizer *prefs_sizer;
+extern wxSizer *prefs_list_sizer;
 #define ID_PREFSLISTCTRL 10276
 #define ID_PREFS_OK_TOP 10277
 #define ID_PREFS_CANCEL_TOP 10278

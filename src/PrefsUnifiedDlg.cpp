@@ -133,8 +133,8 @@ PrefsPage pages[] =
         { _("Security"),			PreferencesSecurityTab,		 	0,	NULL },
         //	Notications are disabled since they havent been implemented
         //	{ _("Notifications"),	PreferencesNotifyTab,			18,	NULL },
-        { _("Core Tweaks"),			PreferencesaMuleTweaksTab,		12,	NULL },
-        { _("Gui Tweaks"),			PreferencesGuiTweaksTab,		19,	NULL }
+        { _("Gui Tweaks"),			PreferencesGuiTweaksTab,		19,	NULL },
+        { _("Core Tweaks"),			PreferencesaMuleTweaksTab,		12,	NULL }
     };
 
 
@@ -158,8 +158,6 @@ PrefsUnifiedDlg::PrefsUnifiedDlg(wxWindow* parent)
 	preferencesDlgTop( this, FALSE );
 	wxListCtrl* PrefsIcons = (wxListCtrl*) FindWindowById(ID_PREFSLISTCTRL,this);
 
-	PrefsIcons->SetSize(wxSize(150,-1));
-
 	wxImageList* icon_list = new wxImageList(16, 16);
 	PrefsIcons->AssignImageList( icon_list, wxIMAGE_LIST_SMALL);
 
@@ -170,12 +168,19 @@ PrefsUnifiedDlg::PrefsUnifiedDlg(wxWindow* parent)
 	int width = 0;
 	int height = 0;
 
-	// Create and add each page
+	// Add each page to the page-list
 	for ( unsigned int i = 0; i < ELEMENT_COUNT(pages); i++ ) {
 		// Add the icon and label assosiated with the page
 		icon_list->Add( amuleSpecial(pages[i].m_imageidx) );
 		PrefsIcons->InsertItem(i, pages[i].m_title, i);
+	}
+	
+	// Set list-width so that there arn't any scrollers
+	PrefsIcons->SetColumnWidth( 0, wxLIST_AUTOSIZE );
+	prefs_list_sizer->SetMinSize( PrefsIcons->GetColumnWidth( 0 ) + 10, 0 );
 
+	// Now add the pages and calculate the minimum size	
+	for ( unsigned int i = 0; i < ELEMENT_COUNT(pages); i++ ) {
 		// Create a container widget and the contents of the page
 		pages[i].m_widget = new wxPanel( this, -1 );
 		pages[i].m_function( pages[i].m_widget, true, true );
