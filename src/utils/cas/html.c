@@ -39,7 +39,7 @@
 #include "version.h"
 
 
-int create_html(char stats[20][80], char lines[6][80], char template[120])
+int create_html(char stats[20][80], char *lines[6], char template[120])
 {
 	// strings
 	char version[25], upload[25], download[25];

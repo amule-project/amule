@@ -35,6 +35,18 @@
 #include "graphics.h"
 #include "html.h"
 
+/*
+ * History:
+ *
+ * ????.??.?? - falso: creation of cas.
+ * ????.??.?? - Jacobo221: Detect connecting state
+ * ????.??.?? - falso: HTML page generation
+ * 2004.08.27 - GonoszTopi: New line handling routines, to cope with lines
+ *		longer than 80 characters. Fixes buffer overflow.
+ */
+
+#include "lines.h"
+
 void usage(char *myname)
 {
 	printf	("   ___    _ _   ___    c aMule statistics\n"
@@ -58,8 +70,7 @@ int main(int argc, char *argv[])
 	FILE *amulesig;
 	char *path;
 	char stats[20][80];
-	char lines[6][80];
-	//char *lines[][];
+	char *lines[6];
 	int ler, i;
 	CONF config;
 
@@ -93,7 +104,7 @@ int main(int argc, char *argv[])
 
 		if (!feof(amulesig)) {
 
-			// Jacobo221 - Make it DOS compatible.
+			/* Make it DOS compatible.*/
 			if (ler == 13) ler = fgetc(amulesig);
 			if (ler != 10) {
 				if (strlen(stats[i]) < 80)
@@ -106,41 +117,41 @@ int main(int argc, char *argv[])
 	}
 	fclose(amulesig);
 
-	/* if amule isnt running say that and exit else print out the stuff */
-	// Jacobo221 - Detect connecting state
-	//             [ToDo] States 0 & 2 mean offline/connecting not "not running"...
+	/* if amule isnt running say that and exit else print out the stuff
+	 * [ToDo] States 0 & 2 mean offline/connecting not "not running"...
+	 */
 	if (stats[0][0] == '0') {
 		printf("aMule is not running\n");
 		exit(3);
 	}
 
 	if (stats[0][0] == '2')
-		sprintf(lines[0],"aMule %s is connecting\n",stats[12]);
+		CreateLine(lines, 0 ,"aMule %s is connecting\n", stats[12]);
 	else
-		sprintf(lines[0], "aMule %s has been running for %s\n",
+		CreateLine(lines, 0, "aMule %s has been running for %s\n",
 				stats[12], timeconv(stats[15]));
 
-	sprintf(lines[1], "%s is on %s [%s:%s] with ", stats[9],
+	CreateLine(lines, 1, "%s is on %s [%s:%s] with ", stats[9],
 			stats[1], stats[2], stats[3]);
 	if (stats[4][0] == 'H')
-		sprintf(lines[1], "%sHighID\n", lines[1]);
+		AppendToLine(lines, 1, "HighID\n");
 	else
-		sprintf(lines[1], "%sLowID\n", lines[1]);
+		AppendToLine(lines, 1, "LowID\n");
 
 
-	strcpy(stats[10], convbytes(stats[10]));// total download
-	strcpy(stats[11], convbytes(stats[11]));// total upload
-	sprintf(lines[2], "Total Download: %s, Upload: %s\n",
+	strcpy(stats[10], convbytes(stats[10])); /* total download */
+	strcpy(stats[11], convbytes(stats[11])); /* total upload */
+	CreateLine(lines, 2, "Total Download: %s, Upload: %s\n",
 			stats[10], stats[11]);
 
-	strcpy(stats[13], convbytes(stats[13]));// sess. download
-	strcpy(stats[14], convbytes(stats[14]));// sess. upload
-	sprintf(lines[3], "Session Download: %s, Upload: %s\n",
+	strcpy(stats[13], convbytes(stats[13])); /* sess. download */
+	strcpy(stats[14], convbytes(stats[14])); /* sess. upload */
+	CreateLine(lines, 3, "Session Download: %s, Upload: %s\n",
 			stats[13], stats[14]);
 
-	sprintf(lines[4], "Download: %s kB/s, Upload: %s kB/s\n",
+	CreateLine(lines, 4, "Download: %s kB/s, Upload: %s kB/s\n",
 			stats[5], stats[6]);
-	sprintf(lines[5],
+	CreateLine(lines, 5,
 			"Sharing: %s file(s), Clients on queue: %s\n",
 			stats[8], stats[7]);
 #ifdef __GD__
@@ -179,8 +190,11 @@ int main(int argc, char *argv[])
 		exit(0);
 	}
 
-	for (i = 0; i <= 5; i++)
+	for (i = 0; i <= 5; i++) {
 		printf("%s", lines[i]);
+		free(lines[i]);
+	}
 
 	exit(0);
 }
+
