@@ -184,6 +184,11 @@ void CSharedFileList::AddFilesFromDirectory(wxString directory)
 			fname=fname.Mid(fname.Find(wxFileName::GetPathSeparator(),TRUE)+1);
 		}
 
+		if (!thePrefs::ShareHiddenFiles() && fname.StartsWith(wxT("."))) {
+			fname = SharedDir.FindNextFile();
+			continue;			
+		}
+		
 		CKnownFile* toadd=filelist->FindKnownFile(fname,fdate,new_file.Length());
 		//theApp.Yield();
 		if (toadd) {
