@@ -595,7 +595,6 @@ public:
 	bool		m_bReaskPending;
 	bool		m_bUDPPending;
 	bool		m_bHashsetRequested;
-	bool		m_bMsgFiltered;
 
 	CList<Pending_Block_Struct*>	m_PendingBlocks_list;
 	CList<Requested_Block_Struct*>	m_DownloadBlocks_list;
