@@ -118,7 +118,7 @@ bool CClientReqSocket::CheckTimeOut()
 	
 	if (::GetTickCount() - timeout_timer > uTimeout){
 		timeout_timer = ::GetTickCount();
-		Disconnect("Timeout");
+		Disconnect(wxT("Timeout"));
 		return true;
 	}
 	return false;	
@@ -134,7 +134,7 @@ void CClientReqSocket::OnClose(int nErrorCode)
 		strError.Printf(wxT("Closed: %u"),nErrorCode);
 		Disconnect(strError);
 	} else {
-		Disconnect("Close");
+		Disconnect(wxT("Close"));
 	}
 }
 
@@ -246,7 +246,7 @@ bool CClientReqSocket::ProcessPacket(char* packet, uint32 size, uint8 opcode)
 						delete client;
 						client = NULL;
 					}
-					Disconnect("IPFilter");
+					Disconnect(wxT("IPFilter"));
 					return false;
 				}
 						
@@ -1690,7 +1690,7 @@ void CClientReqSocket::OnError(int nErrorCode)
 		}
 		theApp.amuledlg->AddLogLine(false,strError);
 	} else {
-		strError = "No error or error 107 (Transport endpoint is not connected)";
+		strError = wxT("No error or error 107 (Transport endpoint is not connected)");
 	}
 	
 	Disconnect(strError);
@@ -1728,7 +1728,7 @@ bool CClientReqSocket::PacketReceived(Packet* packet)
 			if (client) {
 				client->SetDownloadState(DS_ERROR);
 			}
-			Disconnect("Unknown protocol");
+			Disconnect(wxT("Unknown protocol"));
 			bResult = false;
 		}
 	}

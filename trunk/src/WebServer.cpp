@@ -61,7 +61,6 @@ WX_DEFINE_OBJARRAY(ArrayOfDownloadFiles);
 
 #define WEB_SERVER_TEMPLATES_VERSION	4
 
-
 //common functions -- start
 //shakraw, same as CastItoXBytes() from otherfunctions.h
 wxString castItoXBytes(uint64 count) {
@@ -778,7 +777,7 @@ wxString CWebServer::_GetHeader(ThreadData Data, long lSession) {
 		sHeaderList = sHeaderList.Mid(brk+1); brk=sHeaderList.First(wxT("\t"));
 		sConnected += wxString::Format(wxT(": %s"), sHeaderList.Left(brk).GetData());
 		sHeaderList = sHeaderList.Mid(brk+1); brk=sHeaderList.First(wxT("\t"));
-		sprintf(HTTPTempC, "%s ", sHeaderList.Left(brk).GetData());
+		sprintf(HTTPTempC, "%s ", unicode2char(sHeaderList.Left(brk)));
 		sConnected += wxString::Format(wxT(" [%s users]"), HTTPTempC);
 	} else if (sHeaderList.Left(brk) == wxT("Connecting")) {
 		sConnected = wxT("Connecting");
@@ -1057,7 +1056,7 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 		wxString request = request.Format(wxT("TRANSFER ADDFILELINK %s"), HTTPTemp.GetData());
 		if (pThis->webInterface->SendRecvMsg(request) == wxT("Bad Link")) {
 			char HTTPTempC[100] = "";
-			sprintf(HTTPTempC,"This ed2k link is invalid (%s)", HTTPTemp.GetData());//error.GetData());
+			sprintf(HTTPTempC,"This ed2k link is invalid (%s)", unicode2char(HTTPTemp));//error.GetData());
 			Out += pThis->m_Templates.sTransferBadLink;
 			Out.Replace(wxT("[InvalidLink]"), wxString::Format(wxT("%s"), HTTPTempC));
 			Out.Replace(wxT("[Link]"), HTTPTemp);
@@ -1943,14 +1942,14 @@ wxString CWebServer::_GetSharedFilesList(ThreadData Data) {
 		else
 			HTTPProcessData.Replace(wxT("[ShortFileName]"), _SpecialChars(SharedArray[i]->sFileName));
 
-		sprintf(HTTPTempC, "%s",castItoXBytes(SharedArray[i]->lFileSize).GetData());
+		sprintf(HTTPTempC, "%s", unicode2char(castItoXBytes(SharedArray[i]->lFileSize)));
 		HTTPProcessData.Replace(wxT("[FileSize]"), wxString::Format(wxT("%s"), HTTPTempC));
 		HTTPProcessData.Replace(wxT("[FileLink]"), SharedArray[i]->sED2kLink);
 
-		sprintf(HTTPTempC, "%s",castItoXBytes(SharedArray[i]->nFileTransferred).GetData());
+		sprintf(HTTPTempC, "%s",unicode2char(castItoXBytes(SharedArray[i]->nFileTransferred)));
 		HTTPProcessData.Replace(wxT("[FileTransferred]"), wxString::Format(wxT("%s"), HTTPTempC));
 
-		sprintf(HTTPTempC, "%s",castItoXBytes(SharedArray[i]->nFileAllTimeTransferred).GetData());
+		sprintf(HTTPTempC, "%s", unicode2char(castItoXBytes(SharedArray[i]->nFileAllTimeTransferred)));
 		HTTPProcessData.Replace(wxT("[FileAllTimeTransferred]"), wxString::Format(wxT("%s"), HTTPTempC));
 
 		sprintf(HTTPTempC, "%i", SharedArray[i]->nFileRequests);

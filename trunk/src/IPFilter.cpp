@@ -32,7 +32,7 @@
 WX_DEFINE_OBJARRAY(ArrayOfIPRange_Struct);
 
 CIPFilter::CIPFilter(){
-	lasthit="";
+	lasthit=wxT("");
 	LoadFromFile();
 }
 
@@ -43,7 +43,7 @@ CIPFilter::~CIPFilter(){
 void CIPFilter::Reload(){
 	wxMutexLocker lock(s_IPfilter_Data_mutex);
 	RemoveAllIPs();
-	lasthit="";
+	lasthit=wxT("");
 	LoadFromFile();
 }
 
