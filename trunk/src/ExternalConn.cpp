@@ -987,7 +987,7 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 		//
 		case EC_OP_SHUTDOWN:
 			response = new CECPacket(EC_OP_NOOP);
-			AddLogLineM(true, wxT("ExternalConn: shutdown requested"));
+			AddLogLineM(true, _("ExternalConn: shutdown requested"));
 			theApp.ExitMainLoop();
 			break;
 		case EC_OP_ED2K_LINK: 
@@ -1203,7 +1203,7 @@ ExternalConnClientThread::ExternalConnClientThread(ExternalConn *owner, wxSocket
 	m_owner = owner;
 	m_sock = sock;
 	if ( Create() != wxTHREAD_NO_ERROR ) {
-		AddLogLineM(false, _("ExternalConnClientThread: failed to Create thread\n"));
+		AddLogLineM(false, _("ExternalConnClientThread: Failed to Create thread."));
 	}
 	RegisterSocket(sock);
 }
@@ -1223,7 +1223,7 @@ void *ExternalConnClientThread::Entry()
 		//
 		// Access denied!
 		//
-		AddLogLineM(false, _("Unauthorized access attempt. Connection closed.\n"));
+		AddLogLineM(false, _("Unauthorized access attempt. Connection closed."));
 		return 0;
 	}
 	//
@@ -1231,7 +1231,7 @@ void *ExternalConnClientThread::Entry()
 	//
 	while ( !TestDestroy() ) {
 		if ( m_sock->WaitForLost(0, 0) ) {
-			AddLogLineM(false, _("ExternalConnClientThread: connection closed\n"));
+			AddLogLineM(false, _("ExternalConnClientThread: Connection closed."));
 			break;
 		}
 		if (m_sock->WaitForRead(1, 0)) {

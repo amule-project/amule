@@ -734,7 +734,7 @@ bool CClientList::SendMessage(uint64 client_id, const wxString& message)
 		AddDebugLogLineM( false, logClient, wxT("Sending.") );
 	} else {
 		AddDebugLogLineM( true, logClient, 
-			CFormat( wxT("No client (GUI_ID %lli [%s:%llu]) found in CClientList::SendMessage(). Creating\n") ) 
+			CFormat( wxT("No client (GUI_ID %lli [%s:%llu]) found in CClientList::SendMessage(). Creating") ) 
 				% client_id 
 				% Uint32toStringIP(IP_FROM_GUI_ID(client_id))
 				% PORT_FROM_GUI_ID(client_id) );

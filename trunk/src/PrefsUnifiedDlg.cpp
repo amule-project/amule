@@ -505,7 +505,7 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 		thePrefs::UnsetAutoServerStart();
 		wxMessageBox(wxString::wxString( _(
 			"Your Auto-update servers list is in blank.\n"
-			"'Auto-update serverlist at startup' will be disabled\n")));
+			"'Auto-update serverlist at startup' will be disabled.")));
 	}
 
 	if ( thePrefs::AcceptExternalConnections() && thePrefs::ECPassword().IsEmpty() ) {
@@ -513,7 +513,7 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 
 		wxMessageBox( _(
 			"You have enabled external connections but have not specified a password.\n"
-			"External connections cannot be enabled unless a valid password is specified.\n") );
+			"External connections cannot be enabled unless a valid password is specified.") );
 	}
 	
 	// save the preferences on ok
@@ -638,7 +638,7 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 				wxMessageBox(wxString::wxString( _(
 					"Your Auto-update servers list is in blank.\n"
 					"Please fill in at least one URL to point to a valid server.met file.\n"
-					"Click on the button \"List\" by this checkbox to enter an URL.\n")));
+					"Click on the button \"List\" by this checkbox to enter an URL.")));
 				CastChild(event.GetId(), wxCheckBox)->SetValue(false);
 			}
 			break;
@@ -830,8 +830,8 @@ void PrefsUnifiedDlg::OnButtonBrowseSkin(wxCommandEvent& WXUNUSED(evt))
 void PrefsUnifiedDlg::OnButtonBrowseVideoplayer(wxCommandEvent& WXUNUSED(e))
 {
 	wxString str = wxFileSelector(
-		_("Browse for videoplayer"), wxT(""), wxT(""),
-		wxT(""), _("Executable (*)|*||") );
+		_("Browse for videoplayer"), wxEmptyString, wxEmptyString,
+		wxEmptyString, _("Executable (*)|*||") );
 
 	if ( !str.IsEmpty() ) {
 		wxTextCtrl* widget = CastChild( IDC_VIDEOPLAYER, wxTextCtrl );

@@ -589,7 +589,7 @@ void CDownloadListCtrl::OnCancelFile(wxCommandEvent& WXUNUSED(event))
 	ItemList files = ::GetSelectedItems(this, itFILES);
 	if (files.size()) {	
 		wxString question = 
-			_("Are you sure that you wish to delete the selected file(s)?\n");	
+			_("Are you sure that you wish to delete the selected file(s)?");	
 		if (wxMessageBox( question, _("Cancel"), wxICON_QUESTION | wxYES_NO) == wxYES) {
 			for (ItemList::iterator it = files.begin(); it != files.end(); ++it) {
 				CPartFile* file = (CPartFile*)(*it)->value;		

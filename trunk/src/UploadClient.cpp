@@ -340,7 +340,7 @@ void CUpDownClient::CreateStandartPackets(const byte* data,uint32 togo, Requeste
 			m_BlockSend_queue.AddTail(packet);
 		}
 	} catch (...) {
-		throw wxString(wxT("Caught exception in CUpDownClient::CreateStandartPackets!\n"));
+		throw wxString(wxT("Caught exception in CUpDownClient::CreateStandartPackets!"));
 	}
 }
 
@@ -381,7 +381,7 @@ void CUpDownClient::CreatePackedPackets(const byte* data,uint32 togo, Requested_
 		}
 		delete[] output;
 	} catch (...) {
-		throw wxString(wxT("Caught exception in CUpDownClient::CreatePackedPackets!\n"));
+		throw wxString(wxT("Caught exception in CUpDownClient::CreatePackedPackets!"));
 	}
 }
 
@@ -769,7 +769,7 @@ void CUpDownClient::CheckForAggressive()
 		
 		// Is the client EVIL?
 		if ( m_Aggressiveness >= 10 && (!IsBanned() && m_nDownloadState != DS_DOWNLOADING )) {
-			AddDebugLogLineM( false, logClient, CFormat( wxT("Aggressive client banned (score: %d): %s -- %s -- %s\n") ) 
+			AddDebugLogLineM( false, logClient, CFormat( wxT("Aggressive client banned (score: %d): %s -- %s -- %s") ) 
 				% m_Aggressiveness
 				% m_Username
 				% m_strModVersion

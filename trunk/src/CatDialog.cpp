@@ -96,7 +96,7 @@ CCatDialog::CCatDialog( wxWindow* parent, int index )
 		// Default values for new categories
 		CastChild(IDC_TITLE,	wxTextCtrl)->SetValue( _("New Category") );
 		CastChild(IDC_INCOMING,	wxTextCtrl)->SetValue( CPreferences::GetIncomingDir() );
-		CastChild(IDC_COMMENT,	wxTextCtrl)->SetValue( wxT("") );
+		CastChild(IDC_COMMENT,	wxTextCtrl)->SetValue( wxEmptyString );
 		CastChild(IDC_PRIOCOMBO,wxChoice)->SetSelection( 0 );
 
 		m_color = RGB( rand() % 255, rand() % 255, rand() % 255 );

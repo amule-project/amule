@@ -333,7 +333,7 @@ void CClientListCtrl::InsertClient( CUpDownClient* client, ViewType view )
 		return;
 	}
 	
-	long index = InsertItem( GetItemCount(), wxT("") );
+	long index = InsertItem( GetItemCount(), wxEmptyString );
 	SetItemData( index, (long)client );
 
 	wxListItem myitem;
@@ -537,7 +537,7 @@ void CUploadingView::DrawCell( CUpDownClient* client, int column, wxDC* dc, cons
 			if ( client->GetUploadFile() ) {
 				buffer = client->GetUploadFile()->GetFileName();
 			} else {
-				buffer = wxT("N/A");
+				buffer = _("N/A");
 			}
 			break;
 	

@@ -84,7 +84,7 @@ bool CKnownFileList::Init()
 		file.Close();
 		result = true;
 	} catch (...) {
-		AddLogLineM(true,_("Error reading known.met file! (corrupted?)\n"));
+		AddLogLineM(true,_("Error reading known.met file! (corrupted?)"));
 	}
 	
 	return result;

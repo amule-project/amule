@@ -273,7 +273,7 @@ bool CServer::AddTagFromFile(CFileDataIO* servermet){
 		throw;
 	} catch (const wxString& error) {
 		AddDebugLogLineM( true, logPacketErrors,
-			CFormat( wxT("Caught exception in CServer::AddTagFromFile! server.met is corrupted.\nError: %s\n") )
+			CFormat( wxT("Caught exception in CServer::AddTagFromFile! server.met is corrupted.\nError: %s") )
 				% error
 		);
 		
