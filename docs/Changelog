@@ -1,14 +1,23 @@
+Version 2.0.0rc8 - The "???????????" version.
+----------
+2004-10-??
+
+	Phoenix:
+		* Added readline and history support to amuleweb/amulecmd text
+		  clients.
+
+--------------------------------------------------------------------------------
+
 Version 2.0.0rc7 - The "99,6% Final" version.
 ----------
 2004-10-19
 
-        
 	bisley:
 		* Added session ratio and total ratio to XAS
 
 	deltaHF:
 	        * Got back from hell and changed one icon on the GUI ;)
-		
+
 	Jacobo221:
 		aMule GUI:
 		* Fixed two almost-the-same bugs when clicked download button and no items where selected (as reported by powtrix/willy, thanks)
@@ -28,7 +37,7 @@ Version 2.0.0rc7 - The "99,6% Final" version.
 
 	KingFish:
 		* Fixed broken compilation in SysTray.cpp with gcc 3.3.4.
-		
+
 	Kry:
 		* Fixed: 	Crashes related to animation deletion on http download dialog
 		* Fixed: 	0-size server.met file crashing aMule on startup and on download.
@@ -48,18 +57,18 @@ Version 2.0.0rc7 - The "99,6% Final" version.
 	lfroen:
 	        * Removed debug printf's in timer.cpp
 		* Fix for deadlock on connection timeout in ServerSocket.cpp
-                * Fixed assert when build with wx-cvs
+		* Fixed assert when build with wx-cvs
 		* Added option for disabling SIGSEG handling: useful for debuging in amuled.cpp
 		* EMSocket.h cleanup
 		* Fixed unclosed sockets (CLOSE_WAIT) and few stability problems
 		* Make CEMSocket::OnReceive thread safe. MAX_SIZE reduced, cause even theoretically tcp can buffer up to 64K
 		* amuled fixes
-		
+
 	mfs:
 		* Fixed crashes on friendlist when keeping keys pressed
 		* Fixed one server not being removed when several servers selected
 		* Fixed access problems on deleting the ipfilter while accessing it
-		
+
 	Phoenix:
 		* Fixed '&' char next to Preferences in amuleweb web page, as
 		  reported by DreamWalker.
@@ -69,13 +78,13 @@ Version 2.0.0rc7 - The "99,6% Final" version.
 		* Fixed high CPU usage problem in amuleweb, thanks to jaguarwan for
 		  the report. Daemonizing amuleweb should be done using the -q
 		  switch.
-		  
+
 	ThePolish:
 		* Implemented new hits system in wxCas to display and save download rate records.
 		* Changed wxCas layout to try to avoid display bug with wx-cvs
 		* Added translations update (Thanks to all translators)
 		* Removed wxCas documentation to slim source tree (now downloadable from berlios)
-		  
+
 	Seagull:
 		* Patch adding "Directory" column to the shared-files dialog.
 		* Patch to add "Swap to this file" option for sources marked as 
@@ -84,7 +93,7 @@ Version 2.0.0rc7 - The "99,6% Final" version.
 	Unleashed:
 		* Better fix for amuleweb's high CPU usage problem. Now main thread only gets
 		  woken up when absolutely needed.
-		  
+
 	Xaignar:
 		* Reinsured that the preferences will be saved upon clicking "Ok".
 		* Removed SSE2 specific optimizations from the embedded Crypto++ sources,
@@ -124,7 +133,7 @@ Version 2.0.0rc7 - The "99,6% Final" version.
 		  rc6 was release. Whoops. :p
 		* Ampersands will no longer be doubled when lines are added to the log-view.
 
-        Special Thanks To:
+	Special Thanks To:
 
 		* Translators in this release:
 		   biger [HUN]:		(Hungarian / hu_HU)	

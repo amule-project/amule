@@ -100,7 +100,8 @@ private:
 	bool		m_HasConfigFromFile;
 	bool		m_KeepQuiet;
 	wxString 	m_sPort;
-	wxString 	m_sHostName;	
+	wxString 	m_sHostName;
+	char *		m_InputLine;
 
 #if wxUSE_GUI
 private:
