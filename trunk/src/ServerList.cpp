@@ -345,7 +345,7 @@ void CServerList::RemoveServer(CServer* out_server)
 #ifdef AMULE_DAEMON
 		AddLogLineM(true, _("You are connected to the server you are trying to delete. please disconnect first."));
 #else
-		wxMessageBox(_("You are connected to the server you are trying to delete. please disconnect first."), _("Info"), wxOK);	
+		wxMessageBox(_("You are connected to the server you are trying to delete. please disconnect first."), _("Error deleting server"), wxOK, (wxWindow*)theApp.amuledlg);	
 #endif
 	} else {
 	

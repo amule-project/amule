@@ -229,9 +229,7 @@ void CBarShader::Draw( wxDC* dc, int iLeft, int iTop, bool bFlat )
 	rectSpan.height = m_Height;
 	rectSpan.width  = 0;
 
-#ifdef AMULE_DAEMON
 	dc->SetPen(*wxTRANSPARENT_PEN);
-#endif
 	
 	double m_PixelsPerByte = (double)m_Width / m_FileSize;
 	double m_BytesPerPixel = (double)m_FileSize / m_Width;

@@ -1622,34 +1622,35 @@ wxSizer *PreferencesGeneralTab( wxWindow *parent, bool call_fit, bool set_sizer 
         _("Arabic"), 
         _("Basque"), 
         _("Bulgarian"), 
+        _("Catalan"), 
         _("Chinese (Simplified)"), 
+        _("Chinese (Traditional)"), 
+        _("Croatian"), 
         _("Danish"), 
         _("Dutch"), 
         _("English"), 
         _("Estonian"), 
         _("Finnish"), 
         _("French"), 
-        _("Galego"), 
+        _("Galician"), 
         _("German"), 
+        _("Hungarian"), 
         _("Italian"), 
+        _("Italian (Napoletan)"), 
         _("Korean"), 
         _("Lithuanian"), 
         _("Polish"), 
         _("Portuguese"), 
         _("Portuguese (Brazil)"), 
         _("Russian"), 
+        _("Slovenian"), 
         _("Spanish"), 
         _("Spanish (Chile)"), 
         _("Spanish (Mexico)"), 
         _("Turkey"), 
-        _("Hungarian"), 
-        _("Catalan"), 
-        _("Croatian"), 
-        _("Italian (Napoletan)"), 
-        _("Custom"), 
-        _("Chinese (Traditional)")
+        _("Custom")
     };
-    wxChoice *item10 = new wxChoice( parent, IDC_LANGUAGE, wxDefaultPosition, wxSize(100,30), 30, strs10, 0 );
+    wxChoice *item10 = new wxChoice( parent, IDC_LANGUAGE, wxDefaultPosition, wxSize(100,30), 31, strs10, 0 );
     item10->SetToolTip( _("This specifies the language used on controls.") );
     item8->Add( item10, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 

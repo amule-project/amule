@@ -63,7 +63,7 @@ END_EVENT_TABLE()
 
 
 CCatDialog::CCatDialog( wxWindow* parent, int index )
-	: wxDialog( parent, -1, _("Category"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxSYSTEM_MENU )
+	: wxDialog(parent, -1, _("Category"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxSYSTEM_MENU )
 {
 	wxSizer* content = CategoriesEditWindow( this, TRUE );
 	content->Show( this, TRUE );
@@ -128,7 +128,7 @@ void CCatDialog::OnBnClickedBrowse(wxCommandEvent& WXUNUSED(evt))
 {	
 	wxString dir = CastChild(IDC_INCOMING, wxTextCtrl)->GetValue();
 	
-	dir = wxDirSelector( _("Choose a folder for incoming files"), dir );
+	dir = wxDirSelector( _("Choose a folder for incoming files"), dir, wxDD_DEFAULT_STYLE, wxDefaultPosition, this);
 	if ( !dir.IsEmpty() ) {
 		CastChild(IDC_INCOMING, wxTextCtrl)->SetValue( dir );
 	}
@@ -142,7 +142,7 @@ void CCatDialog::OnBnClickedOk(wxCommandEvent& WXUNUSED(evt))
 
 	// No empty names
 	if ( newname.IsEmpty() ) {
-		wxMessageBox(_("You must specify a name for the category!"), _("Info"), wxOK);
+		wxMessageBox(_("You must specify a name for the category!"), _("Error creating category"), wxOK, this);
 		
 		return;
 	}
@@ -151,14 +151,14 @@ void CCatDialog::OnBnClickedOk(wxCommandEvent& WXUNUSED(evt))
 
 	// No empty dirs please 
 	if ( newpath.IsEmpty() ) {
-		wxMessageBox(_("You must specify a path for the category!"), _("Info"), wxOK);
+		wxMessageBox(_("You must specify a path for the category!"), _("Error creating category"), wxOK, this);
 		
 		return;
 	}
 
 	if ( !::wxDirExists( newpath ) ) {
 		if ( !wxMkdir( newpath, CPreferences::GetDirPermissions() ) ) {
-			wxMessageBox(_("Failed to create incoming dir for category. Please specify a valid path!"), _("Info"), wxOK);
+			wxMessageBox(_("Failed to create incoming dir for category. Please specify a valid path!"), _("Error creating category"), wxOK, this);
 			
 			return;
 		}

@@ -1402,7 +1402,7 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 							// for multiple selections
 							quest=_("Are you sure that you want to cancel and delete these files ?\n");
 						}
-						if (validdelete && wxMessageBox((quest + fileList), _("Cancel"), wxICON_QUESTION | wxYES_NO) == wxYES) {
+						if (validdelete && wxMessageBox((quest + fileList), _("Cancel"), wxICON_QUESTION | wxYES_NO, (wxWindow*)theApp.amuledlg) == wxYES) {
 							while (!selectedList.IsEmpty()) {
 								HideSources(selectedList.GetHead());
 								switch (selectedList.GetHead()->GetStatus()) {
@@ -1548,7 +1548,7 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 					done = true;
 					break;
 				case MP_METINFO: {
-					CFileDetailDialog *dialog = new CFileDetailDialog(this, file);
+					CFileDetailDialog *dialog = new CFileDetailDialog((wxWindow*)theApp.amuledlg, file);
 					dialog->ShowModal();
 					delete dialog;
 					done = true;
@@ -1618,7 +1618,7 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 					break;
 				}
 				case MP_VIEWFILECOMMENTS: {
-					CCommentDialogLst dialog(this, file);
+					CCommentDialogLst dialog((wxWindow*)theApp.amuledlg, file);
 					dialog.ShowModal();
 					done = true;
 					break;
@@ -1641,7 +1641,7 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 					done = true;
 					break;
 				case MP_SENDMESSAGE: {
-					wxString message = ::wxGetTextFromUser(_("Send message to user"),_("Message to send:"));
+					wxString message = ::wxGetTextFromUser(_("Send message to user"),_("Message to send:"),"",(wxWindow*)theApp.amuledlg);
 					if (!message.IsEmpty()) {
 						// false -> no focus set
 						theApp.amuledlg->chatwnd->StartSession(client, false);
@@ -1651,7 +1651,7 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 					break;
 				}
 				case MP_DETAIL:
-					CClientDetailDialog * dialog = new CClientDetailDialog(this, client);
+					CClientDetailDialog * dialog = new CClientDetailDialog((wxWindow*)theApp.amuledlg, client);
 					dialog->ShowModal();
 					delete dialog;
 					done = true;

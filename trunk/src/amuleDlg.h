@@ -102,7 +102,7 @@ public:
 	void Hide_aMule(bool iconize = true);
 	void Show_aMule(bool uniconize = true);
 	// has to be done in own method
-	void changeDesktopMode();
+	void changeDesktopMode(wxWindow* parent);
 	
 	bool SafeState() { return is_safe_state; }
 
