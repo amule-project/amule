@@ -1,20 +1,23 @@
-/*
-Copyright (C)2003 Barry Dunne (http://www.emule-project.net)
+//
+// This file is part of aMule Project
+//
+// Copyright (c) 2004-2005 Angel Vidal (Kry) ( kry@amule.org )
+// Copyright (c) 2004-2005 aMule Project ( http://www.amule-project.net )
+// Copyright (C)2003 Barry Dunne (http://www.emule-project.net)
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either
-version 2 of the License, or (at your option) any later version.
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either
+// version 2 of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-*/
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 // Note To Mods //
 /*
@@ -27,18 +30,17 @@ what all it does can cause great harm to the network if released in mass form..
 Any mod that changes anything within the Kademlia side will not be allowed to advertise
 there client on the eMule forum..
 */
-#include "stdafx.h"
-#include "resource.h"
+
 #include "DataIO.h"
 #include "../kademlia/Kademlia.h"
 #include "../kademlia/Tag.h"
 #include "../utils/LittleEndian.h"
 #include "../utils/UInt128.h"
 #include "IOException.h"
-#include "StringConversion.h"
-#include "SafeFile.h"
-#include <atlenc.h>
-#include "Log.h"
+#include "../../SafeFile.h"
+#include "../../EndianFix.h"
+#include "../../StringFunctions.h"
+//#include "../../Log.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -72,18 +74,19 @@ uint16 CDataIO::readUInt16()
 {
 	uint16 retVal;
 	readArray(&retVal, sizeof(uint16));
-	return retVal;
+	return ENDIAN_SWAP_16(retVal);
 }
 
 uint32 CDataIO::readUInt32()
 {
 	uint32 retVal;
 	readArray(&retVal, sizeof(uint32));
-	return retVal;
+	return ENDIAN_SWAP_32(retVal);
 }
 
 void CDataIO::readUInt128(CUInt128* value)
 {
+	#warning NOT ENDIAN SAFE!
 	readArray(value->getDataPtr(), sizeof(uint32)*4);
 }
 
@@ -94,70 +97,72 @@ float CDataIO::readFloat()
 	return retVal;
 }
 
-void CDataIO::readHash(BYTE* value)
+void CDataIO::readHash(unsigned char* value)
 {
 	readArray(value, 16);
 }
 
-BYTE* CDataIO::readBsob(uint8* puSize)
+unsigned char* CDataIO::readBsob(uint8* puSize)
 {
 	*puSize = readUInt8();
 	if (getAvailable() < *puSize)
 		throw new CIOException(ERR_BUFFER_TOO_SMALL);
-	BYTE* pucBsob = new BYTE[*puSize];
+	unsigned char* pucBsob = new unsigned char[*puSize];
 	try{
 		readArray(pucBsob, *puSize);
 	}
-	catch(CException*){
+	catch(...){
 		delete[] pucBsob;
 		throw;
 	}
 	return pucBsob;
 }
 
-CStringW CDataIO::readStringUTF8(bool bOptACP)
+wxString CDataIO::readStringUTF8(bool bOptACP)
 {
-	UINT uRawSize = readUInt16();
-	const UINT uMaxShortRawSize = SHORT_RAW_ED2K_UTF8_STR;
-	if (uRawSize <= uMaxShortRawSize)
-	{
-		char acRaw[uMaxShortRawSize];
-		readArray(acRaw, uRawSize);
-		WCHAR awc[uMaxShortRawSize];
-		int iChars = bOptACP
-					   ? utf8towc(acRaw, uRawSize, awc, ARRSIZE(awc))
-					   : ByteStreamToWideChar(acRaw, uRawSize, awc, ARRSIZE(awc));
-		if (iChars >= 0)
-			return CStringW(awc, iChars);
-		return CStringW(acRaw, uRawSize); // use local codepage
-	}
-	else
-	{
-		Array<char> acRaw(uRawSize);
-		readArray(acRaw, uRawSize);
-		Array<WCHAR> awc(uRawSize);
-		int iChars = bOptACP
-					   ? utf8towc(acRaw, uRawSize, awc, uRawSize)
-					   : ByteStreamToWideChar(acRaw, uRawSize, awc, uRawSize);
-		if (iChars >= 0)
-			return CStringW(awc, iChars);
-		return CStringW(acRaw, uRawSize); // use local codepage
+	uint32 length = readUInt16();
+	
+	char* val = NULL;
+	try {
+		val = new char[length + 1];
+		// We only need to set the the NULL terminator, since we know that
+		// reads will either succeed or throw an exception, in which case
+		// we wont be returning anything
+		val[length] = 0;
+		
+		readArray(val, length);
+		wxString str;
+		
+		if (bOptACP) {
+			str = UTF82unicode(val);
+			if (str.IsEmpty()) {
+				// Fallback to system locale
+				str = char2unicode(val);
+			}					
+		} else {
+			str = char2unicode(val);
+		}
+		delete[] val;
+
+		return str;
+	} catch ( ... ) {
+		// Have to avoid mem-leaks
+		delete[] val;
+		
+		// Re-throw
+		throw;
 	}
 }
 
 CTag *CDataIO::readTag(bool bOptACP)
 {
 	CTag *retVal = NULL;
-	char *name = NULL;
+	wxString name;
 	byte type = 0;
-	uint16 lenName = 0;
 	try
 	{
 		type = readByte();
-		lenName = readUInt16();
-		name = new char[lenName+1];
-		name[lenName] = 0;
-		readArray(name, lenName);
+		name = readStringUTF8(false);
 
 		switch (type)
 		{
@@ -207,11 +212,11 @@ CTag *CDataIO::readTag(bool bOptACP)
 			case TAGTYPE_BSOB:
 			{
 				uint8 size;
-				BYTE* value = readBsob(&size);
+				unsigned char* value = readBsob(&size);
 				try{
 					retVal = new CTagBsob(name, value, size);
 				}
-				catch(CException*){
+				catch(...){
 					delete[] value;
 					throw;
 				}
@@ -228,15 +233,12 @@ CTag *CDataIO::readTag(bool bOptACP)
 				break;
 
 			default:
-				throw new CNotSupportedException;
+				throw;
 		}
-		delete [] name;
-		name = NULL;
 	}
 	catch (...)
 	{
-		DebugLogError(_T("Invalid Kad tag; type=0x%02x  lenName=%u  name=0x%02x"), type, lenName, name!=NULL ? (BYTE)name[0] : 0);
-		delete[] name;
+		printf("Invalid Kad tag; type=0x%02x name=0x%02x", type, (unicode2char(name))[0]);
 		delete retVal;
 		throw;
 	}
@@ -265,16 +267,19 @@ void CDataIO::writeUInt8(uint8 val)
 
 void CDataIO::writeUInt16(uint16 val)
 {
+	ENDIAN_SWAP_I_16(val);
 	writeArray(&val, sizeof(uint16));
 }
 
 void CDataIO::writeUInt32(uint32 val)
 {
+	ENDIAN_SWAP_I_32(val);
 	writeArray(&val, sizeof(uint32));
 }
 
 void CDataIO::writeUInt128(const CUInt128& val)
 {
+	#warning NOT ENDIAN SAFE!
 	writeArray(val.getData(), sizeof(uint32)*4);
 }
 
@@ -294,6 +299,45 @@ void CDataIO::writeBsob(const BYTE* value, uint8 size)
 	writeArray(value, size);
 }
 
+void CDataIO::writeString(const wxString& rstr,  bool UTF8)
+{
+	//
+	// We dont include the NULL terminator. Dont know why.
+	// It is because we write the size, so the NULL is not necessary.
+	// 
+	// From wx docs: 
+	// The macro wxWX2MBbuf reflects the correct return value of cWX2MB 
+	// (either char* or wxCharBuffer), except for the const.
+	
+	if (UTF8) {
+		wxCharBuffer s = wxConvUTF8.cWC2MB(rstr.wc_str(aMuleConv));
+		unsigned int sLength = s ? strlen(s) : 0;
+		if (sLength == 0) {
+			// Something failed on UTF8 enconding.
+			wxCharBuffer s2 = aMuleConv.cWX2MB(rstr);
+			sLength = s2 ? strlen(s2) : 0;
+			writeUInt16(sLength);
+			if (sLength) {
+				writeArray(s2, sLength);
+			}
+		} else {
+			writeUInt16(sLength);
+			if (sLength) {
+				writeArray(s, sLength);
+			}
+		}
+	} else {
+		wxCharBuffer s = aMuleConv.cWX2MB(rstr);
+		unsigned int sLength = s ? strlen(s) : 0;
+		writeUInt16(sLength);
+		if (sLength) {
+			writeArray(s, sLength);
+		}
+	}
+}
+
+
+
 void CDataIO::writeTag(const CTag* tag)
 {
 	try
@@ -312,23 +356,19 @@ void CDataIO::writeTag(const CTag* tag)
 			type = tag->m_type;
 
 		writeByte(type);
-
-		const CTagNameString& name = tag->m_name;
-		writeUInt16(name.GetLength());
-		writeArray((LPCSTR)name, name.GetLength());
-
+		
+		writeString(tag->m_name.GetString(),false); // No utf8
+		
 		switch (type)
 		{
 			case TAGTYPE_HASH:
 				// Do NOT use this to transfer any tags for at least half a year!!
 				writeHash(tag->GetHash());
-				ASSERT(0);
+				wxASSERT(0);
 				break;
 			case TAGTYPE_STRING:
 			{
-				CUnicodeToUTF8 utf8(tag->GetStr());
-				writeUInt16(utf8.GetLength());
-				writeArray(utf8, utf8.GetLength());
+				writeString(tag->GetStr(), true); // Always UTF8
 				break;
 			}
 			case TAGTYPE_UINT32:
@@ -340,7 +380,7 @@ void CDataIO::writeTag(const CTag* tag)
 			case TAGTYPE_BSOB:
 				// Do NOT use this to transfer any tags for at least half a year!!
 				writeBsob(tag->GetBsob(), tag->GetBsobSize());
-				ASSERT(0);
+				wxASSERT(0);
 				break;
 			case TAGTYPE_UINT16:
 				writeUInt16(tag->GetInt());
@@ -352,35 +392,37 @@ void CDataIO::writeTag(const CTag* tag)
 	} 
 	catch (CIOException *ioe)
 	{
-		AddDebugLogLine( false, _T("Exception in CDataIO:writeTag (IO Error(%i))"), ioe->m_cause);
+		//AddDebugLogLine( false, _T("Exception in CDataIO:writeTag (IO Error(%i))"), ioe->m_cause);
+		printf("Exception in CDataIO:writeTag (IO Error(%i))", ioe->m_cause);
 		throw ioe;
 	}
 	catch (...) 
 	{
-		AddDebugLogLine(false, _T("Exception in CDataIO:writeTag"));
+		//AddDebugLogLine(false, _T("Exception in CDataIO:writeTag"));
+		printf("Exception in CDataIO:writeTag");
 		throw;
 	}
 }
 
-void CDataIO::writeTag(LPCSTR name, uint32 value)
+void CDataIO::writeTag(const wxString& name, uint32 value)
 {
 	CTagUInt32 tag(name, value);
 	writeTag(&tag);
 }
 
-void CDataIO::writeTag(LPCSTR name, uint16 value)
+void CDataIO::writeTag(const wxString& name, uint16 value)
 {
 	CTagUInt16 tag(name, value);
 	writeTag(&tag);
 }
 
-void CDataIO::writeTag(LPCSTR name, uint8 value)
+void CDataIO::writeTag(const wxString& name, uint8 value)
 {
 	CTagUInt8 tag(name, value);
 	writeTag(&tag);
 }
 
-void CDataIO::writeTag(LPCSTR name, float value)
+void CDataIO::writeTag(const wxString& name, float value)
 {
 	CTagFloat tag(name, value);
 	writeTag(&tag);
@@ -389,7 +431,7 @@ void CDataIO::writeTag(LPCSTR name, float value)
 void CDataIO::writeTagList(const TagList& tagList)
 {
 	uint32 count = (uint32)tagList.size();
-	ASSERT( count <= 0xFF );
+	wxASSERT( count <= 0xFF );
 	writeByte(count);
 	TagList::const_iterator it;
 	for (it = tagList.begin(); it != tagList.end(); it++)
@@ -406,63 +448,7 @@ void deleteTagListEntries(TagList* taglist)
 }
 }
 
-static WCHAR _awcLowerMap[0x10000];
-
-bool CKademlia::initUnicode(HMODULE hInst)
-{
-	bool bResult = false;
-	HRSRC hResInfo = FindResource(hInst, MAKEINTRESOURCE(IDR_WIDECHARLOWERMAP), _T("WIDECHARMAP"));
-	if (hResInfo)
-	{
-		HGLOBAL hRes = LoadResource(hInst, hResInfo);
-		if (hRes)
-		{
-			LPBYTE pRes = (LPBYTE)LockResource(hRes);
-			if (pRes)
-			{
-				if (SizeofResource(hInst, hResInfo) == sizeof _awcLowerMap)
-				{
-					memcpy(_awcLowerMap, pRes, sizeof _awcLowerMap);
-					if (_awcLowerMap[L'A'] == L'a' && _awcLowerMap[L'Z'] == L'z')
-						bResult = true;
-				}
-				UnlockResource(hRes);
-			}
-			FreeResource(hRes);
-		}
-	}
-	return bResult;
-}
-
 void KadTagStrMakeLower(CTagValueString& rwstr)
 {
-	// NOTE: We can *not* use any locale dependant string functions here. All clients in the network have to
-	// use the same character mapping whereby it actually does not matter if they 'understand' the strings
-	// or not -- they just have to use the same mapping. That's why we hardcode to 'LANG_ENGLISH' here!
-	// Note also, using 'LANG_ENGLISH' is not the same as using the "C" locale. The "C" locale would only
-	// handle ASCII-7 characters while the 'LANG_ENGLISH' locale also handles chars from 0x80-0xFF and more.
-	//rwstr.MakeLower();
-
-#if 0
-	//PROBLEM: LCMapStringW does not work on Win9x (the string is not changed and LCMapStringW returns 0!)
-	// Possible solution: use a pre-computed static character map..
-	int iLen = rwstr.GetLength();
-	LPWSTR pwsz = rwstr.GetBuffer(iLen);
-	int iSize = LCMapStringW(MAKELCID(MAKELANGID(LANG_ENGLISH, SUBLANG_ENGLISH_US), SORT_DEFAULT),
-							 LCMAP_LOWERCASE, pwsz, -1, pwsz, iLen + 1);
-	ASSERT( iSize - 1 == iLen );
-	rwstr.ReleaseBuffer(iLen);
-#else
-	// NOTE: It's very important that the Unicode->LowerCase map already was initialized!
-	if (_awcLowerMap[L'A'] != L'a'){
-		AfxMessageBox(_T("Kad Unicode lowercase character map not initialized!"));
-		exit(1);
-	}
-
-	int iLen = rwstr.GetLength();
-	LPWSTR pwsz = rwstr.GetBuffer(iLen);
-	while ((*pwsz = _awcLowerMap[*pwsz]) != L'\0')
-		pwsz++;
-	rwstr.ReleaseBuffer(iLen);
-#endif
+	rwstr.MakeLower();
 }

@@ -82,6 +82,10 @@ public:
 		return *this;
 	}
 	
+	const wxString	GetString() const {
+		return (wxString) GetData();
+	}
+	
 	wxChar* GetBuffer(int nMinBufferLength)
 	{
 		return wxString::GetWriteBuf(nMinBufferLength);
@@ -280,7 +284,7 @@ public:
 		: CTag(TAGTYPE_HASH, name)
 	{ 
 		m_value = new BYTE[16];
-		md4cpy(m_value, value);
+		otherfunctions::md4cpy(m_value, value);
 	}
 
 	~CTagHash()

@@ -1,20 +1,23 @@
-/*
-Copyright (C)2003 Barry Dunne (http://www.emule-project.net)
+//
+// This file is part of aMule Project
+//
+// Copyright (c) 2004-2005 Angel Vidal (Kry) ( kry@amule.org )
+// Copyright (c) 2004-2005 aMule Project ( http://www.amule-project.net )
+// Copyright (C)2003 Barry Dunne (http://www.emule-project.net)
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either
-version 2 of the License, or (at your option) any later version.
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either
+// version 2 of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-*/
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 // Note To Mods //
 /*
@@ -28,9 +31,12 @@ Any mod that changes anything within the Kademlia side will not be allowed to ad
 there client on the eMule forum..
 */
 
-#pragma once
+#ifndef __KAD_DATAIO_H__
+#define __KAD_DATAIO_H__
 
 #include <list>
+#include "../../Types.h"
+#include <wx/string.h>
 
 ////////////////////////////////////////
 namespace Kademlia {
@@ -48,10 +54,10 @@ public:
 	uint16		readUInt16();
 	uint32		readUInt32();
 	void		readUInt128(CUInt128* value);
-	void		readHash(BYTE* value);
-	BYTE*		readBsob(uint8* size);
+	void		readHash(unsigned char* value);
+	unsigned char*		readBsob(uint8* size);
 	float		readFloat();
-	CStringW	readStringUTF8(bool bOptACP = false);
+	wxString	readStringUTF8(bool bOptACP = false);
 	CTag*		readTag(bool bOptACP = false);
 	void		readTagList(TagList* taglist, bool bOptACP = false);
 
@@ -60,19 +66,22 @@ public:
 	void		writeUInt16(uint16 val);
 	void		writeUInt32(uint32 val);
 	void		writeUInt128(const CUInt128& val);
-	void		writeHash( const BYTE* val);
-	void		writeBsob( const BYTE* val, uint8 size);
+	void		writeHash( const unsigned char* val);
+	void		writeBsob( const unsigned char* val, uint8 size);
+	void		writeString(const wxString& rstr,  bool UTF8);
 	void		writeFloat(float val);
 	void		writeTag(const CTag* tag);
-	void		writeTag(LPCSTR name, uint8 value);
-	void		writeTag(LPCSTR name, uint16 value);
-	void		writeTag(LPCSTR name, uint32 value);
-	void		writeTag(LPCSTR name, float value);
+	void		writeTag(const wxString& name, uint8 value);
+	void		writeTag(const wxString& name, uint16 value);
+	void		writeTag(const wxString& name, uint32 value);
+	void		writeTag(const wxString& name, float value);
 	void		writeTagList(const TagList& tagList);
 
-	virtual void readArray(LPVOID lpResult, uint32 byteCount) = 0;
-	virtual void writeArray(LPCVOID lpVal, uint32 byteCount) = 0;
-	virtual UINT getAvailable() const = 0;
+	virtual void readArray(void* lpResult, uint32 byteCount) = 0;
+	virtual void writeArray(const void* lpVal, uint32 byteCount) = 0;
+	virtual uint32 getAvailable() const = 0;
 };
 
 } // End namespace
+
+#endif // __KAD_DATAIO_H__
