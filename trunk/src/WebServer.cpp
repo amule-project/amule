@@ -2024,28 +2024,26 @@ wxString CWebServer::_GetConnectedServer(ThreadData Data) {
 
 	CECPacket connstate_req(EC_OP_GET_CONNSTATE, EC_DETAIL_WEB);
 	CECPacket *sServerStat = webInterface->SendRecvMsg_v2(&connstate_req);
-	CECTag *tag = sServerStat ? sServerStat->GetTagByIndex(0) : NULL;
+	CEC_ConnState_Tag *tag = sServerStat ? (CEC_ConnState_Tag *)sServerStat->GetTagByIndexSafe(0) : NULL;
 	if (sServerStat && tag) {
-		uint8 connstate = tag->GetInt8Data();
-		switch (connstate) {
+		switch (tag->ClientID()) {
 		case 0:
 			OutS.Replace(wxT("[1]"), _("Disconnected"));
 			OutS.Replace(wxT("[2]"), wxEmptyString);
 			OutS.Replace(wxT("[3]"), wxEmptyString);
 			break;
-		case 1:
+		case 0xffffffff:
 			OutS.Replace(wxT("[1]"), _("Connecting"));
 			OutS.Replace(wxT("[2]"), wxEmptyString);
 			OutS.Replace(wxT("[3]"), wxEmptyString);
 			break;
-		case 2:
-		case 3:
+		default:
 			CECTag *server = tag->GetTagByIndex(0);
 			CECTag *serverName = server ? server->GetTagByName(EC_TAG_SERVER_NAME) : NULL;
 			CECTag *serverUsers = server ? server->GetTagByName(EC_TAG_SERVER_USERS) : NULL;
 			if (server && serverName && serverUsers) {
 				OutS.Replace(wxT("[1]"), wxString(_("Connected ")) +
-					((connstate == 2) ? wxString(_("with LowID")) : wxString(_("with HighID"))));
+					(tag->HaveLowID() ? wxString(_("with LowID")) : wxString(_("with HighID"))));
 				OutS.Replace(wxT("[2]"), serverName->GetStringData());
 				OutS.Replace(wxT("[3]"), wxString::Format(wxT("%10i"), serverUsers->GetInt32Data()));
 			} else {
