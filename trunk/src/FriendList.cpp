@@ -125,10 +125,10 @@ void CFriendList::LoadList()
 			}
 			file.Close();
 		} else if ( wxFileExists(metfile) ) {
-			AddLogLineM(false, _("Failed to open friendlist file 'emfriends.met' for reading!\n"));
+			AddLogLineM(false, _("Failed to open friendlist file 'emfriends.met' for reading!"));
 		}
 	} catch (...) {
-		AddLogLineM(false, _("Failed to read corrupted friendlist file 'emfriends.met'!\n"));
+		AddLogLineM(false, _("Failed to read corrupted friendlist file 'emfriends.met'!"));
 	}
 	
 }
@@ -149,7 +149,7 @@ void CFriendList::SaveList()
 		
 		file.Close();	
 	} else {
-		AddLogLineM(false, _("Failed to open friendlist file 'emfriends.met' for writing!\n"));
+		AddLogLineM(false, _("Failed to open friendlist file 'emfriends.met' for writing!"));
 	}
 }
 

@@ -87,5 +87,5 @@ void EditServerListDlg::OnOK(wxCommandEvent& WXUNUSED(event) )
 	if (m_textctrl->SaveFile(m_file))
 		EndModal(1);
 	else
-		wxLogSysError(_("can't write to file '") +  m_file + wxT("'"));
+		wxLogSysError(wxT("Can't write to file '") +  m_file + wxT("'"));
 }

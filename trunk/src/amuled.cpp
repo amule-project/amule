@@ -206,7 +206,7 @@ int CamuleDaemonApp::OnExit()
 void CamuleDaemonApp::ShowAlert(wxString msg, wxString title, int flags)
 {
 	if ( flags | wxICON_ERROR ) {
-		title = _("ERROR:") + title;
+		title = CFormat(_("ERROR: %s")) % title;
 	}
 	AddLogLine(title + wxT(" ") + msg);
 }
@@ -220,12 +220,12 @@ void CamuleDaemonApp::NotifyEvent(const GUIEvent& event)
 		case SHOW_CONN_STATE:
 			if ( event.byte_value ) {
 				const wxString id = theApp.serverconnect->IsLowID() ? _("with LowID") : _("with HighID");
-				AddLogLine(_("Connected to ") + event.string_value + wxT(" ") + id);
+				AddLogLine(CFormat(_("Connected to %s %s")) % event.string_value % id);
 			} else {
 				if ( theApp.serverconnect->IsConnecting() ) {
-					AddLogLine(_("Connecting to ") + event.string_value);
+					AddLogLine(CFormat(_("Connecting to %s")) % event.string_value)
 				} else {
-					AddLogLine(_("Disconnected\n"));
+					AddLogLine(_("Disconnected"));
 				}
 			}
 			break;

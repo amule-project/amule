@@ -54,6 +54,7 @@
 #include "StringFunctions.h" // Needed for unicode2char
 #include "Statistics.h"		// Needed for CStatistics
 #include "Logger.h"
+#include "Format.h"
 
 #ifndef AMULE_DAEMON
 	#include "muuli_wdr.h"		// Needed for IDC_RELOADSHAREDFILES
@@ -165,9 +166,9 @@ bool CheckDirectory( const wxString& a, const wxString& b, bool fatal )
 		wxString msg;
 
 		if ( fatal ) {
-			msg = _("ERROR! Attempted to share ") + a;
+			msg = CFormat( _("ERROR! Attempted to share %s") ) % a;
 		} else {
-			msg = _("WARNING! Sharing the following directory is not recommended: ") + a;
+			msg = CFormat( _("WARNING! Sharing the following directory is not recommended: %s") ) % a;
 		}
 		
 		AddLogLineM(true, msg);

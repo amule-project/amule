@@ -305,8 +305,8 @@ void CTransferWnd::OnNMRclickDLtab(wxMouseEvent& evt)
 		if ( m_dlTab->GetSelection() == 0 ) {
 			wxMenu* catmenu = new wxMenu();
 
-			catmenu->Append( MP_CAT_SET0,      _("all") );
-			catmenu->Append( MP_CAT_SET0 + 1,  _("all others") );
+			catmenu->Append( MP_CAT_SET0,      _("All") );
+			catmenu->Append( MP_CAT_SET0 + 1,  _("All others") );
 			
 			catmenu->AppendSeparator();
 			

@@ -40,6 +40,7 @@
 #include "StringFunctions.h"
 #include "amule.h"			// Needed for theApp
 #include "Color.h"			// Needed for COLORREF, GetRValue, GetGValue and GetBValue
+#include "Format.h"
 
 BEGIN_EVENT_TABLE(COScopeCtrl,wxControl)
   EVT_PAINT(COScopeCtrl::OnPaint)
@@ -280,7 +281,7 @@ void COScopeCtrl::RecreateGrid()
 	strTemp = otherfunctions::CastSecondsToHM((nPlotWidth/nShiftPixels) * (int)floor(sLastPeriod+0.5));
 		// floor(x + 0.5) is a way of doing round(x) that works with gcc < 3 ...
 	if (bStopped) {
-		strXUnits = _("Disabled [") + strTemp + wxT("]");
+		strXUnits = CFormat( _("Disabled [%s]") ) % strTemp;
 	} else {
 		strXUnits = strTemp;
 	}	

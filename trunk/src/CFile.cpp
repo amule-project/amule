@@ -309,7 +309,7 @@ bool CFile::Create(const wxString& sFileName, bool bOverwrite, int accessMode)
 #endif
 	
 	if (m_fd == fd_invalid) {
-		wxLogSysError(_("can't create file '") + sFileName + wxT("'"));
+		wxLogSysError( wxT("Can't create file '") + sFileName + wxT("'") );
 		return false;
 	} else {
 		//Attach(m_fd);
@@ -389,8 +389,8 @@ bool CFile::Open(const wxString& sFileName, OpenMode mode, int accessMode)
       
 #ifdef FILE_TRACKER
 	AddDebugLogLineM( false, logCFile, 
-		wxString(_("Opened file ")) << fFilePath <<
-		_(" with file descriptor ") << m_fd );
+		wxString(wxT("Opened file ")) << fFilePath <<
+		wxT(" with file descriptor ") << m_fd );
     	if (fromConstructor) {
 		get_caller(3);    
 	} else {
@@ -419,14 +419,14 @@ bool CFile::Close()
 {
 #ifdef FILE_TRACKER
 	AddDebugLogLineM( false, logCFile,
-		wxString(_("Closing file ")) << fFilePath <<
-		_(" with file descriptor ") << m_fd );
+		wxString(wxT("Closing file ")) << fFilePath <<
+		wxT(" with file descriptor ") << m_fd );
 	get_caller(2);
 	wxASSERT(!fFilePath.IsEmpty());
 #endif
 	if ( IsOpened() ) {
 		if (close(m_fd) == -1) {
-			wxLogSysError(_("Can't close file descriptor %d"), m_fd);
+			wxLogSysError( wxT("Can't close file descriptor %d"), m_fd);
 			m_fd = fd_invalid;
 			return false;
 		} else {
@@ -454,7 +454,7 @@ off_t CFile::Read(void *pBuf, off_t nCount) const
 	off_t iRc = ::read(m_fd, pBuf, nCount);
 #endif
 	if ( iRc == -1 ) {
-		wxLogSysError(_("can't read from file descriptor %d"), m_fd);
+		wxLogSysError( wxT("Can't read from file descriptor %d"), m_fd);
 		m_error = true;
 		return wxInvalidOffset;
 	} else {
@@ -477,7 +477,7 @@ size_t CFile::Write(const void *pBuf, size_t nCount)
 	size_t iRc = ::write(m_fd, pBuf, nCount);
 #endif
 	if ( ((int)iRc) == -1 ) {
-		wxLogSysError(_("can't write to file descriptor %d"), m_fd);
+		wxLogSysError( wxT("can't write to file descriptor %d"), m_fd);
 		m_error = true;
 		return (size_t)0;
 	} else {
@@ -494,7 +494,7 @@ bool CFile::Flush()
 #else
 	        if ( fsync(m_fd) == -1 ) {
 #endif
-			wxLogSysError(_("can't flush file descriptor %d"), m_fd);
+			wxLogSysError( wxT("Can't flush file descriptor %d"), m_fd);
 			m_error = true;			
 			return false;
 		}
@@ -516,7 +516,7 @@ off_t CFile::Seek(off_t ofs, CFile::SeekMode mode) const
 	int origin;
 	switch ( mode ) {
 	default:
-		wxFAIL_MSG(_("unknown seek origin"));
+		wxFAIL_MSG(wxT("Unknown seek origin"));
 
 	case wxFromStart:
 		origin = SEEK_SET;
@@ -548,7 +548,7 @@ off_t CFile::GetPosition() const
 	
 	off_t iRc = wxTell(m_fd);
 	if (iRc == -1) {
-		wxLogSysError(_("can't get seek position on file descriptor %d"), m_fd);
+		wxLogSysError( wxT("can't get seek position on file descriptor %d"), m_fd);
 		return wxInvalidOffset;
 	} else {
 		return (off_t)iRc;
@@ -579,7 +579,7 @@ off_t CFile::Length() const
 #endif  // VC++
 	
 	if ( iRc == -1 ) {
-		wxLogSysError(_("can't find length of file on file descriptor %d"), m_fd);
+		wxLogSysError( wxT("can't find length of file on file descriptor %d"), m_fd);
 		return wxInvalidOffset;
 	} else {
 		return (off_t)iRc;
@@ -621,11 +621,11 @@ bool CFile::Eof() const
 		return false;
 	
 	case -1:
-		wxLogSysError(_("can't determine if the end of file is reached on descriptor %d"), m_fd);
+		wxLogSysError( wxT("can't determine if the end of file is reached on descriptor %d"), m_fd);
 		break;
 	
 	default:
-		wxFAIL_MSG(_("invalid eof() return value."));
+		wxFAIL_MSG(wxT("invalid eof() return value."));
 	}
 	
 	return true;

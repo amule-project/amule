@@ -38,6 +38,7 @@
 #include "PartFile.h"		// Needed for CPartFile
 #include "OPCodes.h"		// Needed for SOURCESSLOTS
 #include "updownclient.h"	// Needed for CUpDownClient
+#include "Format.h"
 
 using namespace otherfunctions;
 
@@ -106,7 +107,7 @@ void CCommentDialogLst::CompleteList()
 	if (count==0) {
 		info = _("No comments");
 	} else {
-		info = CastItoIShort(count) + _(" comment(s)");
+		info = CFormat( _("%s comment(s)")) % CastItoIShort(count);
 	}
 	FindWindow(IDC_CMSTATUS)->SetLabel(info);
 	m_file->UpdateFileRatingCommentAvail();

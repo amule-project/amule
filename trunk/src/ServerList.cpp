@@ -91,7 +91,7 @@ bool CServerList::Init()
 
 bool CServerList::LoadServerMet(const wxString& strFile)
 {
-	AddLogLineM( false, _("Loading server.met file: ") + strFile );
+	AddLogLineM( false, CFormat( _("Loading server.met file: %s") ) % strFile );
 	
 	bool merge = !list.IsEmpty();
 	
@@ -699,7 +699,7 @@ void CServerList::DownloadFinished(uint32 result) {
 		// So, file is loaded and merged, and also saved
 		wxRemoveFile(strTempFilename);
 	} else {
-		AddLogLineM(true, _("Failed to download the server list from ") + URLUpdate);
+		AddLogLineM(true, CFormat( _("Failed to download the server list from %s") ) % URLUpdate);
 	}
 }
 
@@ -732,7 +732,7 @@ void CServerList::AutoUpdate() {
 		
 			return;
 		} else {
-			AddLogLineM(true, _("Warning, invalid URL specified for auto-updating of servers: ") + URI);
+			AddLogLineM(true, CFormat( _("Warning, invalid URL specified for auto-updating of servers: %s") ) % URI);
 		}
 		
 		current_url_index++;
@@ -751,7 +751,7 @@ void CServerList::AutoDownloadFinished(uint32 result) {
 		// So, file is loaded and merged, and also saved
 		wxRemoveFile(strTempFilename);
 	} else {
-		AddLogLineM(true, _("Failed to download the server list from ") + URLUpdate);
+		AddLogLineM(true, CFormat( _("Failed to download the server list from ") ) % URLUpdate);
 	}
 	
 	++current_url_index;

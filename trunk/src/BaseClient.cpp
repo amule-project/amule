@@ -1170,7 +1170,7 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket){
 	m_socket = NULL;
 
 	if (m_iFileListRequested){
-		AddLogLineM( false, wxString(_("Failed to retrieve shared files from ")) + GetUserName() );
+		AddLogLineM( false, CFormat(_("Failed to retrieve shared files from user '%s'")) % GetUserName() );
 		m_iFileListRequested = 0;
 	}
 	if (m_Friend) {
@@ -1455,7 +1455,7 @@ void CUpDownClient::ReGetClientSoft()
 				#ifdef __DEBUG__
 				printf("Compatible client found with ET_COMPATIBLECLIENT of 0x%x\n",m_byCompatibleClient);
 				#endif
-				m_clientVerString = GetSoftName(m_clientSoft) + wxString::Format(_("(0x%x)"),m_byCompatibleClient);
+				m_clientVerString = GetSoftName(m_clientSoft) + wxString::Format(wxT("(0x%x)"),m_byCompatibleClient);
 			} else {
 				// If we step here, it might mean 2 things:
 				// a eMule
@@ -1946,15 +1946,11 @@ wxString CUpDownClient::GetClientFullInfo() {
 		ReGetClientSoft();
 	}
 
-	wxString FullVerName;
-	FullVerName = _("Client ");
-	if (m_Username.IsEmpty()) {
-		FullVerName += _("(Unknown)");
-	} else {
-		FullVerName += m_Username;
-	}
-	FullVerName += _(" on IP ") + GetFullIP() + wxString::Format(_(" port %u using "),GetUserPort()) + m_clientVerString;
-	return (FullVerName);
+	return CFormat( _("Client %s on IP:Port %s:%d using %s") )
+		% ( m_Username.IsEmpty() ? wxString(_("Unknown")) : m_Username )
+		% GetFullIP()
+		% GetUserPort()
+		% m_clientVerString;
 }
 
 

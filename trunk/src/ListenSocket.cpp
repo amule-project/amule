@@ -882,9 +882,15 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					for (CKnownFileMap::iterator pos = filemap.begin();pos != filemap.end(); pos++ ) {
 						list.AddTail((void*&)pos->second);
 					}
-					AddLogLineM( true, _("User ") + m_client->GetUserName() + wxString::Format(_(" (%u) requested your sharedfiles-list -> %s"),m_client->GetUserID(),_("Accepted")));
+					AddLogLineM( true, CFormat( _("User %s (%u) requested your requested your sharedfiles-list -> %s"))
+						% m_client->GetUserName() 
+						% m_client->GetUserID()
+						% _("Accepted") );
 				} else {
-					AddLogLineM( true, _("User ") + m_client->GetUserName() + wxString::Format(_(" (%u) requested your sharedfiles-list -> %s"),m_client->GetUserID(),_("Denied")));
+					AddLogLineM( true, CFormat( _("User %s (%u) requested your requested your sharedfiles-list -> %s"))
+						% m_client->GetUserName() 
+						% m_client->GetUserID()
+						% _("Denied") );
 				}
 				// now create the memfile for the packet
 				CSafeMemFile tempfile(80);
@@ -921,7 +927,10 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					break;
 				}
 				if ((thePrefs::CanSeeShares()==vsfaEverybody) || ((thePrefs::CanSeeShares()==vsfaFriends) && m_client->IsFriend())) {
-					AddLogLineM( true, _("User ") + m_client->GetUserName() + wxString::Format(_(" (%u) requested your shareddirectories-list -> "),m_client->GetUserID()) + _("accepted"));
+					AddLogLineM( true, CFormat( _("User %s (%u) requested your shareddirectories-list -> %s") )
+						% m_client->GetUserName()
+						% m_client->GetUserID()
+						% _("Accepted") );
 
 					// Kry - This new code from eMule will avoid duplicated folders
 					ArrayOfwxStrings folders_to_send;
@@ -977,7 +986,11 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					theApp.statistics->AddUpDataOverheadOther(replypacket->GetPacketSize());
 					SendPacket(replypacket, true, true);
 				} else {
-					AddLogLineM( true, _("User ") + m_client->GetUserName() + wxString::Format(_(" (%u) requested your shareddirectories-list -> "),m_client->GetUserID()) + _("denied"));
+					AddLogLineM( true, CFormat( _("User %s (%u) requested your shareddirectories-list -> %s") )
+						% m_client->GetUserName()
+						% m_client->GetUserID()
+						% _("Denied") );
+
 					CPacket* replypacket = new CPacket(OP_ASKSHAREDDENIEDANS, 0);
 					theApp.statistics->AddUpDataOverheadOther(replypacket->GetPacketSize());
 					SendPacket(replypacket, true, true);
@@ -1047,7 +1060,10 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					uint32 uDirs = data.ReadUInt32();
 					for (uint32 i = 0; i < uDirs; i++){
 						wxString strDir = data.ReadString(m_client->GetUnicodeSupport());
-						AddLogLineM( true, _("User ") + m_client->GetUserName() + wxString::Format(_(" (%u) shares directory "),m_client->GetUserID()) + strDir);
+						AddLogLineM( true, CFormat( _("User %s (%u) shares directory %s") )
+							% m_client->GetUserName()
+							% m_client->GetUserID()
+							% strDir );
 				
 						CSafeMemFile tempfile(80);
 						tempfile.WriteString(strDir);
@@ -1059,7 +1075,9 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					wxASSERT( data.GetPosition() == data.GetLength() );
 					m_client->SetFileListRequested(uDirs);
 				} else {
-					AddLogLineM( true, _("User ") + m_client->GetUserName() + wxString::Format(_(" (%u) sent unasked shared dirs."),m_client->GetUserID()));
+					AddLogLineM( true, CFormat( _("User %s (%u) sent unrequested shared dirs.") )
+						% m_client->GetUserName() 
+						% m_client->GetUserID() );
 				}
       			break;
       		}
@@ -1072,14 +1090,21 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				wxString strDir = data.ReadString(m_client->GetUnicodeSupport());
 
 				if (m_client->GetFileListRequested() > 0){
-					AddLogLineM( true, _("User ") + m_client->GetUserName() + wxString::Format(_(" (%u) sent sharedfiles-list for directory "),m_client->GetUserID()) + strDir);
+					AddLogLineM( true, CFormat( _("User %s (%u) sent sharedfiles-list for directory ") )
+						% m_client->GetUserName()
+						% m_client->GetUserID()
+						% strDir );
 					
 					m_client->ProcessSharedFileList(packet + data.GetPosition(), size - data.GetPosition(), strDir);
 					if (m_client->GetFileListRequested() == 0) {
-						AddLogLineM( true, _("User ") + m_client->GetUserName() + wxString::Format(_(" (%u) finished sending sharedfiles-list"),m_client->GetUserID()));
+						AddLogLineM( true, CFormat( _("User %s (%u) finished sending sharedfiles-list") )
+							% m_client->GetUserName()
+							% m_client->GetUserID() );
 					}
 				} else {
-					AddLogLineM( true, _("User ") + m_client->GetUserName() + wxString::Format(_(" (%u) sent unwanted sharedfiles-list"),m_client->GetUserID()));
+					AddLogLineM( true, CFormat( _("User %s (%u) sent unwanted sharedfiles-list") )
+						% m_client->GetUserName()
+						% m_client->GetUserID() );
 				}
 				break;
 			}
@@ -1089,7 +1114,10 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				
 				theApp.statistics->AddDownDataOverheadOther(size);
 				wxASSERT( size == 0 );
-				AddLogLineM( true, _("User ") + m_client->GetUserName() + wxString::Format(_(" (%u) denied access to shareddirectories/files-list"),m_client->GetUserID()));
+				AddLogLineM( true, CFormat( _("User %s (%u) denied access to shareddirectories/files-list") )
+					% m_client->GetUserName()
+					% m_client->GetUserID() );
+						
 				m_client->SetFileListRequested(0);			
 				break;
 			
@@ -1655,7 +1683,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 	} catch (const wxString& error) {
 		AddDebugLogLineM( false, logClient,
 			wxT("A client caused an error or did something bad: ") +
-			error + _(". Disconnecting client!"));
+			error + wxT(". Disconnecting client!"));
 		
 		
 		AddDebugLogLineM( false, logPacketErrors,
@@ -1900,7 +1928,7 @@ CSocketServerProxy(addr, wxSOCKET_NOWAIT|wxSOCKET_REUSEADDR, ProxyData)
 	if (Ok()) {
 #ifdef AMULE_DAEMON
 		if ( Create() != wxTHREAD_NO_ERROR ) {
-			AddLogLineM( true, _("CListenSocket: can not create my thread") );
+			AddLogLineM( true, _("CListenSocket: Cannot create thread") );
 		}
 		Notify(false);
 #else
@@ -1921,7 +1949,7 @@ CListenSocket::~CListenSocket()
 	Discard();
 	Close();
 #ifdef AMULE_DAEMON
-	AddLogLineM( true, _("CListenSocket: destroy") );
+	AddLogLineM( true, _("CListenSocket: Destroying") );
 	global_sock_thread.Delete();
 	global_sock_thread.Wait();
 #endif
@@ -2155,7 +2183,7 @@ float CListenSocket::GetMaxConperFiveModifier()
 CSocketGlobalThread::CSocketGlobalThread() : wxThread(wxTHREAD_JOINABLE)
 {
 	if ( Create() != wxTHREAD_NO_ERROR ) {
-		AddLogLineM( true, _("CSocketGlobalThread: call to Create failed") );
+		AddLogLineM( true, _("CSocketGlobalThread: Call to Create failed") );
 	}
 }
 
@@ -2230,7 +2258,7 @@ void *CSocketGlobalThread::Entry()
 		}
  
 	}
-	AddLogLineM( false, _("CSocketGlobalThread: exited") );
+	AddLogLineM( false, _("CSocketGlobalThread: Exited") );
 	return 0;
 }
 

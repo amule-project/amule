@@ -634,7 +634,7 @@ void CUpDownClient::SendHashsetPacket(const CMD4Hash& forfileid)
 		file = theApp.downloadqueue->GetFileByID(forfileid);
 
 		if ( !file ) {
-			AddLogLineM(false, _("Hashset requested for unknown file: ") + forfileid.Encode() );
+			AddLogLineM(false, CFormat( _("Hashset requested for unknown file: %s") ) % forfileid.Encode() );
 		
 			return;
 		} else if ( !file->GetHashCount() ) {

@@ -45,6 +45,7 @@
 #include "CFile.h"			// Needed for CFile
 #include "AICHSyncThread.h"	// Needed for CAICHSyncThread
 #include "Logger.h"			// Needed for AddLogLine
+#include "Format.h"
 
 #include <algorithm>
 
@@ -267,9 +268,9 @@ wxThread::ExitCode CAddFileThread::Entry()
 		if ( needsAICH ) {
 			knownfile->GetAICHHashset()->FreeHashSet();
 		
-			AddLogLineM( false, _("Hasher: Starting to create MD4 and AICH hash for file: ") + current.m_name );
+			AddLogLineM( false, CFormat( _("Hasher: Starting to create MD4 and AICH hash for file: %s")) % current.m_name );
 		} else {
-			AddLogLineM( false, _("Hasher: Starting to create MD4 hash for file: ") + current.m_name );
+			AddLogLineM( false, CFormat( _("Hasher: Starting to create MD4 hash for file: ")) % current.m_name );
 		}
 		
 		
@@ -333,7 +334,7 @@ wxThread::ExitCode CAddFileThread::Entry()
 			evt.SetClientData( knownfile );
 			evt.SetExtraLong( (long)current.m_owner );
 
-			AddLogLineM( false, _("Hasher: Finished hashing file: ") + current.m_name );
+			AddLogLineM( false, CFormat( _("Hasher: Finished hashing file: %s")) % current.m_name );
 			
 			wxPostEvent(&theApp, evt);
 		} else {

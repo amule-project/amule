@@ -52,6 +52,7 @@
 #include "NetworkFunctions.h" // Needed for CAsyncDNS
 #include "Statistics.h"		// Needed for CStatistics
 #include "Logger.h"
+#include "Format.h"
 
 #include <algorithm>
 #include <numeric>
@@ -309,13 +310,13 @@ bool CDownloadQueue::IsFileExisting( const CMD4Hash& fileid ) const
 {
 	if (const CKnownFile* file = theApp.sharedfiles->GetFileByID(fileid)) {
 		if (file->IsPartFile()) {
-			AddLogLineM(true, _("You are already trying to download the file ") + file->GetFileName());
+			AddLogLineM(true, CFormat( _("You are already trying to download the file '%s'") ) % file->GetFileName());
 		} else {
-			AddLogLineM(true, _("You already have the file ") + file->GetFileName());
+			AddLogLineM(true, CFormat( _("You already have the file '%s'") ) % file->GetFileName());
 		}
 		return true;
 	} else if ((file = GetFileByID(fileid))) {
-		AddLogLineM(true, _("You are already trying to download the file ") + file->GetFileName());
+		AddLogLineM(true, CFormat( _("You are already trying to download the file ") ) % file->GetFileName());
 		return true;
 	}
 	return false;
@@ -1232,7 +1233,7 @@ bool CDownloadQueue::AddED2KLink( const wxString& link, int category )
 		
 		return result;
 	} catch ( const wxString& err ) {
-		AddLogLineM( true, _("Invalid ed2k link! Error: ") + err);
+		AddLogLineM( true, CFormat( _("Invalid ed2k link! Error: %s") ) % err);
 	}
 	
 	return false;

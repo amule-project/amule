@@ -71,7 +71,7 @@ void CAddFriend::OnAddBtn(wxCommandEvent& WXUNUSED(evt))
 	
 	ip = StringIPtoUint32(fullip);
 	
-	if (!ip) {
+	if (!ip || !port) {
 		wxMessageBox(_("You have to enter a valid IP and port!"));
 		return;		
 	}

@@ -231,13 +231,13 @@ void CUpDownClient::ProcessFileInfo(const CSafeMemFile* data, const CPartFile* f
 {
 	// 0.42e
 	if (file==NULL) {
-		throw wxString(_("ERROR: Wrong file ID (ProcessFileInfo; file==NULL)"));
+		throw wxString(wxT("ERROR: Wrong file ID (ProcessFileInfo; file==NULL)"));
 	}
 	if (m_reqfile==NULL) {
-		throw wxString(_("ERROR: Wrong file ID (ProcessFileInfo; m_reqfile==NULL)"));
+		throw wxString(wxT("ERROR: Wrong file ID (ProcessFileInfo; m_reqfile==NULL)"));
 	}
 	if (file != m_reqfile) {
-		throw wxString(_("ERROR: Wrong file ID (ProcessFileInfo; m_reqfile!=file)"));
+		throw wxString(wxT("ERROR: Wrong file ID (ProcessFileInfo; m_reqfile!=file)"));
 	}	
 
 	m_clientFilename = data->ReadString(GetUnicodeSupport());
@@ -284,13 +284,13 @@ void CUpDownClient::ProcessFileInfo(const CSafeMemFile* data, const CPartFile* f
 void CUpDownClient::ProcessFileStatus(bool bUdpPacket, const CSafeMemFile* data, const CPartFile* file)
 {
 	// 0.42e
-	wxString strReqFileNull(_("ERROR: Wrong file ID (ProcessFileStatus; m_reqfile==NULL)"));
+	wxString strReqFileNull(wxT("ERROR: Wrong file ID (ProcessFileStatus; m_reqfile==NULL)"));
 	
 	if ( !m_reqfile || file != m_reqfile ){
 		if (!m_reqfile) {
 			throw strReqFileNull;
 		}
-		throw wxString(_("ERROR: Wrong file ID (ProcessFileStatus; m_reqfile!=file)"));
+		throw wxString(wxT("ERROR: Wrong file ID (ProcessFileStatus; m_reqfile!=file)"));
 	}
 	
 	uint16 nED2KPartCount = data->ReadUInt16();
@@ -316,8 +316,8 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, const CSafeMemFile* data,
 		if (m_reqfile->GetED2KPartCount() != nED2KPartCount)
 		{
 			wxString strError;
-			strError << _("ProcessFileStatus - wrong part number recv=") << nED2KPartCount <<
-				_("  expected=") << m_reqfile->GetED2KPartCount() << wxT(" ") <<
+			strError << wxT("ProcessFileStatus - wrong part number recv=") << nED2KPartCount <<
+				wxT("  expected=") << m_reqfile->GetED2KPartCount() << wxT(" ") <<
 				EncodeBase16(m_reqfile->GetFileHash(), 16);
 			m_nPartCount = 0;
 			throw strError;
@@ -1254,7 +1254,7 @@ void CUpDownClient::SendAICHRequest(CPartFile* pForFile, uint16 nPart){
 void CUpDownClient::ProcessAICHAnswer(const char* packet, uint32 size)
 {
 	if (m_fAICHRequested == FALSE){
-		throw wxString(_("Received unrequested AICH Packet"));
+		throw wxString(wxT("Received unrequested AICH Packet"));
 	}
 	m_fAICHRequested = FALSE;
 

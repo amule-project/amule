@@ -279,11 +279,9 @@ void CChatSelector::ConnectionResult(bool success, const wxString& message, uint
 	}
 	
 	if ( !success ) {
-
 		ci->AddText( _("*** Failed to Connect to client / Connection lost ***\n"), COLOR_RED );
 	
 		ci->m_active = false;
-		
 	} else {
 		// Kry - Woops, fix for the everlasting void message sending.
 		if ( !message.IsEmpty() ) {

@@ -96,6 +96,7 @@
 #include "StringFunctions.h"	// Needed for unicode2char
 #include "Statistics.h"		// Needed for CStatistics
 #include "Logger.h"
+#include "Format.h"
 
 #ifndef __WXMSW__
 #include "aMule.xpm"
@@ -190,9 +191,9 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 	serverwnd = new CServerWnd(p_cnt, srv_split_pos);
 
 	AddLogLineM(false, wxEmptyString);
-	AddLogLineM(false, _(" - This is aMule ") + GetMuleVersion() + _(" based on eMule."));
+	AddLogLineM(false, CFormat(_(" - This is aMule %s based on eMule.")) % GetMuleVersion());
 	#if wxCHECK_VERSION(2,5,0)
-	AddLogLineM(false, _("   Running on ") + wxGetOsDescription());
+	AddLogLineM(false, CFormat(_("   Running on %s")) % wxGetOsDescription());
 	#endif
 	AddLogLineM(false, _(" - Visit http://www.amule.org to check if a new version is available."));
 	AddLogLineM(false, wxEmptyString);
@@ -215,6 +216,7 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 	gui_timer=new wxTimer(this,ID_GUITIMER);
 	if (!gui_timer) {
 		AddLogLine(false, _("Fatal Error: Failed to create Timer"));
+		exit(1);
 	}
 
 	// Set Serverlist as active window
@@ -683,7 +685,7 @@ void CamuleDlg::ShowConnectionState(bool connected, const wxString &server)
 					connButImg(1), wxNullBitmap, wxITEM_NORMAL,
 					_("Disconnect from current server"));
 				wxStaticText* tx = CastChild( wxT("infoLabel"), wxStaticText );
-				tx->SetLabel(_("Connection established on: ") + server);
+				tx->SetLabel(CFormat(_("Connection established on: %s")) % server);
 				connLabel->SetLabel(server);
 				break;
 			}
@@ -722,13 +724,9 @@ void CamuleDlg::ShowUserCount(uint32 user_toshow, uint32 file_toshow)
 		theApp.serverlist->GetUserFileStatus( totaluser, totalfile );
 	}
 
-	wxString buffer =
-		_("Users: ") +
-		CastItoIShort(user_toshow) + wxT(" (") + CastItoIShort(totaluser) +
-		wxT(") | ") +
-		 _("Files: ") +
-		CastItoIShort(file_toshow) + wxT(" (") + CastItoIShort(totalfile) +
-		wxT(")");
+	wxString buffer = 
+		CFormat(_("Users: %s (%s) | Files %s (%s)")) % CastItoIShort(user_toshow) % 
+		CastItoIShort(totaluser) % CastItoIShort(file_toshow) % CastItoIShort(totalfile);
 
 	wxStaticText* label = CastChild( wxT("userLabel"), wxStaticText );
 
@@ -769,9 +767,9 @@ void CamuleDlg::ShowTransferRate()
 	
 		wxString buffer2;
 		if ( theApp.serverconnect->IsConnected() ) {
-			buffer2 = wxT("aMule (") +buffer + wxT(" | ") + _("Connected") + wxT(")");
+			buffer2 = wxT(CFormat(_("aMule (%s | Connected)")) % buffer);
 		} else {
-			buffer2 = wxT("aMule (") +buffer + wxT(" | ") +  _("Disconnected") + wxT(")");
+			buffer2 = wxT(CFormat(_("aMule (%s | Disconnected)")) % buffer);
 		}
 		m_wndTaskbarNotifier->SetTrayToolTip(buffer2);
 	}
@@ -1091,7 +1089,7 @@ wxFileType *ft;                            /* Temporary storage for filetype. */
 
 	// Unable to execute browser. But this error message doesn't make sense,
 	// cosidering that you _can't_ set the browser executable path... =/
-	wxLogError( _("Unable to launch browser. Please set correct browser executable path in Preferences.") );
+	wxLogError( wxT("Unable to launch browser. Please set correct browser executable path in Preferences.") );
 
 #endif
 
@@ -1171,17 +1169,17 @@ void CamuleDlg::Apply_Clients_Skin(wxString file) {
 		
 		if (file.IsEmpty()) {
 			
-			throw(wxString(_("Skin file name is empty - loading defaults")));
+			throw wxString(_("Skin file name is empty - loading defaults"));
 		}
 
 		
 		if (!::wxFileExists(file)) {
-			throw(_("Skin file ") + file + _(" does not exist - loading defaults"));
+			throw (CFormat(_("Skin file %s does not exist - loading defaults")) % file ).GetString();
 		}
 	
 		
 		if (!skinfile.Open(file)) {
-			throw(_("Unable to open skin file: ") + file);
+			throw (CFormat(_("Unable to open skin file: %s")) % file).GetString();
 		}
 		
 		uint32 client_header_found = 0;
