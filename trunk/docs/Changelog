@@ -211,6 +211,8 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		curl-lib and curl-devel is enough.
 		* Fixed an assertion in CFile.cpp, when browsing broken
 		symbolic links. Now aMule is aware of them.
+		* Added a test to the spec file to discover UTF-8 enbled LANG,
+		so that we build the rpm with --enable-utf8-systray.
 
 	volpol:
 		* Patch to fix use of deprecated functions in wxGTK-2.5.3.

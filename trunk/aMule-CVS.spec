@@ -26,21 +26,51 @@ which makes it the first multi-platform edonkey network client. A Windows port
 is planned soon :)
 
 %pre
-echo "***"
-echo "This is a cvs release!"
-echo "This release is made for testing purpose and it may cause several problems."
-echo "If you like to test some of the great new features go on and install."
+echo "************************************************************************************"
+echo "Warning: This is a cvs release!"
+echo "This release is made for testing purpose and it may cause several problems,"
+echo "burn your house, kill your dog, etc, but it *should* be safe to use anyway."
+echo "If you would like to test some of the great new features go on and install."
 echo "Otherwise you may press ctrl-c within the next 10 seconds to abort the installation."
-echo -n "Waiting for user"
-for l in $(seq 1 10); do
-    echo -n "."
+echo -n "Waiting for user... "
+for i in $(seq 10 -1 1); do
+    echo -n "$i, "
     sleep 1
 done
-echo " looks good, installing."
+echo " 0, ok, here we go then... Muhahaha :), installing."
 
 %prep
 %setup -q -n amule-cvs
-CFLAGS="$RPM_OPT_FLAGS" ./configure \
+#
+# Tests for Fedora Core distro and then for UTF-8 enabled locale.
+# For some reason, rpmbuild sets LANG="C" before executing prep section,
+# so, don't waste your time :)
+#
+# I can put other hacks here to identify the distro and the LANG, just provide me the test.
+#
+if test -f /etc/redhat-release; then 
+	DISTRO=FedoraCore
+elif test -f /etc/whatever; then
+	DISTRO=Whatever
+fi
+
+case $DISTRO in
+	FedoraCore)
+		if grep -i "LANG" /etc/sysconfig/i18n | grep -i "UTF-8"; then
+			UTF8_SYSTRAY="--enable-utf8-systray"
+		fi
+		;;
+	Whatever)
+		# Do whatever.
+		;;
+	*)
+		# Unable to determine system locale, will not use UTF-8 systray.
+		;;
+esac
+#
+# ./configure
+#
+CFLAGS="$RPM_OPT_FLAGS" ./configure $UTF8_SYSTRAY \
         --prefix=%{_prefix} \
         --disable-optimize \
         --enable-debug \
@@ -87,6 +117,10 @@ CFLAGS="$RPM_OPT_FLAGS" ./configure \
 %{_datadir}/amule/webserver/*
 
 %changelog
+* Mon Mar 26 2005 Marcelo Jimenez <phoenix@amule.org>
+- Added a distro test, so we know the distro.
+- Tests for UTF-8 enabled LANG to use UTF-8 systray.
+
 * Mon Mar 21 2005 Marcelo Jimenez <phoenix@amule.org>
 - Removed krb5-libs require and krb5-devel buildprereq. curl-lib and 
 curl-devel is enough.
