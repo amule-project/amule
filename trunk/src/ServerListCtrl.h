@@ -52,8 +52,9 @@ public:
 	void InitSort();
 	bool	AddServer(CServer* toadd,bool bAddToList = true);
 	void	RemoveServer(CServer* todel,bool bDelToList = true);
+	void	RemoveAllServers(int state);
 	bool	AddServermetToList(wxString strFile);
-	void	HighlightServer(const CServer* server);
+	void	HighlightServer(const CServer* server, bool highlight);
 	void	RefreshServer(CServer* server);
 	void	RemoveDeadServer();
 	//void	Hide() {ShowWindow(SW_HIDE);}
@@ -78,6 +79,8 @@ public:
 	// Barry - New methods
 	bool StaticServerFileAppend(CServer *server);
 	bool StaticServerFileRemove(CServer *server);
+	
+	long connected;
 
 protected:
 	CPreferences::Table TablePrefs()	{ return CPreferences::tableServer; }

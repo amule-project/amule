@@ -362,28 +362,35 @@ bool CServerList::IsGoodServerIP(CServer* in_server)
 
 void CServerList::RemoveServer(CServer* out_server)
 {
-	for(POSITION pos = list.GetHeadPosition(); pos != NULL;) {
-		POSITION pos2 = pos;
-		CServer* test_server = list.GetNext(pos);
-		if (test_server == out_server) {
-			if (theApp.downloadqueue->cur_udpserver == out_server) {
-				theApp.downloadqueue->cur_udpserver = 0;
+	if (out_server == theApp.serverconnect->GetCurrentServer()) {
+			wxMessageBox(wxT("You are connected to the server you are trying to delete. please disconnect first."), wxT("Info"), wxOK);	
+	} else {
+	
+		for(POSITION pos = list.GetHeadPosition(); pos != NULL;) {
+			POSITION pos2 = pos;
+			CServer* test_server = list.GetNext(pos);
+			if (test_server == out_server) {
+				if (theApp.downloadqueue->cur_udpserver == out_server) {
+					theApp.downloadqueue->cur_udpserver = 0;
+				}	
+				list.RemoveAt(pos2);
+				delservercount++;
+				delete test_server;
+				return;
 			}
-			list.RemoveAt(pos2);
-			delservercount++;
-			delete test_server;
-			return;
 		}
 	}
 }
 
 void CServerList::RemoveAllServers()
 {
+	// no connection, safely remove all servers
 	for(POSITION pos = list.GetHeadPosition(); pos != NULL; pos = list.GetHeadPosition()) {
 		delete list.GetAt(pos);
 		list.RemoveAt(pos);
 		delservercount++;
-	}
+	}	
+
 }
 
 void CServerList::GetStatus(uint32 &total, uint32 &failed, uint32 &user, uint32 &file, uint32 &tuser, uint32 &tfile,float &occ)

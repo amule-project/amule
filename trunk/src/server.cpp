@@ -148,6 +148,7 @@ void CServer::Init() {
 	challenge = 0;
 	softfiles = 0;
 	hardfiles = 0;	
+	m_strVersion = "Unknown";
 	
 }	
 
