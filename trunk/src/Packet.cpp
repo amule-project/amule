@@ -99,8 +99,8 @@ CPacket::CPacket(CMemFile* datafile, uint8 protocol, uint8 ucOpcode)
 	m_bFromPF 	= false;
 	memset(head, 0, sizeof head);
 	tempbuffer = NULL;
-	completebuffer = new char[size + 10];
-	pBuffer = completebuffer + 6;
+	completebuffer = new char[size + sizeof(Header_Struct)/*Why this 4?*/];
+	pBuffer = completebuffer + sizeof(Header_Struct);
 
 	BYTE* tmp = datafile->Detach();
 	memcpy(pBuffer, tmp, size);
@@ -119,9 +119,9 @@ CPacket::CPacket(int8 in_opcode, uint32 in_size, uint8 protocol, bool bFromPF)
 	memset(head, 0, sizeof head);
 	tempbuffer	= NULL;
 	if (in_size) {
-		completebuffer = new char[in_size + 10];
-		pBuffer = completebuffer + 6;
-		memset(completebuffer, 0, in_size + 10);
+		completebuffer = new char[in_size + sizeof(Header_Struct) + 4 /*Why this 4?*/];
+		pBuffer = completebuffer + sizeof(Header_Struct);
+		memset(completebuffer, 0, in_size + sizeof(Header_Struct) + 4 /*Why this 4?*/);
 	} else {
 		completebuffer = NULL;
 		pBuffer = NULL;
@@ -131,7 +131,7 @@ CPacket::CPacket(int8 in_opcode, uint32 in_size, uint8 protocol, bool bFromPF)
 // only used for splitted packets!
 CPacket::CPacket(char* pPacketPart, uint32 nSize, bool bLast, bool bFromPF)
 {
-	size		= nSize - 6;
+	size		= nSize - sizeof(Header_Struct);
 	opcode		= 0;
 	prot		= 0;
 	m_bSplitted	= true;
@@ -174,7 +174,7 @@ void CPacket::CopyToDataBuffer(unsigned int offset, const char *data, unsigned i
 char* CPacket::GetPacket() {
 	if (completebuffer) {
 		if (!m_bSplitted) {
-			memcpy(completebuffer, GetHeader(), 6);
+			memcpy(completebuffer, GetHeader(), sizeof(Header_Struct));
 		}
 		return completebuffer;
 	} else {
@@ -182,9 +182,9 @@ char* CPacket::GetPacket() {
 			delete [] tempbuffer;
 			tempbuffer = NULL; // 'new' may throw an exception
 		}
-		tempbuffer = new char[size+10];
-		memcpy(tempbuffer    , GetHeader(), 6   );
-		memcpy(tempbuffer + 6, pBuffer    , size);
+		tempbuffer = new char[size+sizeof(Header_Struct) + 4 /* why this 4?*/];
+		memcpy(tempbuffer    , GetHeader(), sizeof(Header_Struct));
+		memcpy(tempbuffer + sizeof(Header_Struct), pBuffer    , size);
 		return tempbuffer;
 	}
 }
@@ -192,7 +192,7 @@ char* CPacket::GetPacket() {
 char* CPacket::DetachPacket() {
 	if (completebuffer) {
 		if (!m_bSplitted) {
-			memcpy(completebuffer, GetHeader(), 6);
+			memcpy(completebuffer, GetHeader(), sizeof(Header_Struct));
 		}
 		char* result = completebuffer;
 		completebuffer = pBuffer = NULL;
@@ -202,9 +202,9 @@ char* CPacket::DetachPacket() {
 			delete[] tempbuffer;
 			tempbuffer = NULL; // 'new' may throw an exception
 		}
-		tempbuffer = new char[size+10];
-		memcpy(tempbuffer,GetHeader(),6);
-		memcpy(tempbuffer+6,pBuffer,size);
+		tempbuffer = new char[size+sizeof(Header_Struct)+4 /* Why this 4?*/];
+		memcpy(tempbuffer,GetHeader(),sizeof(Header_Struct));
+		memcpy(tempbuffer+sizeof(Header_Struct),pBuffer,size);
 		char* result = tempbuffer;
 		tempbuffer = 0;
 		return result;
@@ -282,288 +282,368 @@ bool CPacket::UnPackPacket(UINT uMaxDecompressedSize) {
 	return false;
 }
 
-
-///////////////////////////////////////////////////////////////////////////////
-// STag
-
-STag::STag()
-{
-	type = 0;
-	tagname = NULL;
-	intvalue = 0;
-	specialtag = 0;
-}
-
-STag::STag(const STag& in)
-{
-	type = in.type;
-	tagname = in.tagname!=NULL ? nstrdup(in.tagname) : NULL;
-	if (in.type == 2)
-		stringvalue = in.stringvalue;
-	else if (in.type == 3)
-		intvalue = in.intvalue;
-	else if (in.type == 4)
-		floatvalue = in.floatvalue;
-	else{
-		//wxASSERT(0);
-		intvalue = 0;
-	}
-
-	specialtag = in.specialtag;
-}
-
-STag::~STag()
-{
-	if (tagname) {
-		delete[] tagname;
-	}
-}
-
-
 ///////////////////////////////////////////////////////////////////////////////
 // CTag
 
-CTag::CTag(LPCSTR name,uint32 intvalue){
-	tag.tagname = nstrdup(name);
-	tag.type = 3;
-	tag.intvalue = intvalue;
-}
-
-CTag::CTag(int8 special,uint32 intvalue){
-	tag.type = 3;
-	tag.intvalue = intvalue;
-	tag.specialtag = special;
-}
-
-CTag::CTag(LPCSTR name,LPCSTR strvalue){
-	tag.tagname = nstrdup(name);
-	tag.type = 2;
-	tag.stringvalue = char2unicode(strvalue);
-}
-
-CTag::CTag(int8 special, LPCSTR strvalue){
-	tag.type = 2;
-	tag.stringvalue = char2unicode(strvalue);
-	tag.specialtag = special;
-}
-
-CTag::CTag(LPCSTR name, const wxString& strvalue){
-	tag.tagname = nstrdup(name);
-	tag.type = 2;
-	tag.stringvalue = strvalue;
-}
-
-CTag::CTag(uint8 special, const wxString& strvalue){
-	tag.type = 2;
-	tag.stringvalue = strvalue;
-	tag.specialtag = special;
-}
-
-CTag::CTag(const STag& in_tag)
-	: tag(in_tag)
+CTag::CTag(char* pszName, uint32 uVal)
 {
+	m_uType = TAGTYPE_UINT32;
+	m_uName = 0;
+	m_pszName = nstrdup(pszName);
+	m_uVal = uVal;
+	m_nBlobSize = 0;
 }
 
-#if 0
-CTag::CTag(CFile *file)
+CTag::CTag(uint8 uName, uint32 uVal)
 {
-	// Use the constructor below
-	CTag(*file);
+	m_uType = TAGTYPE_UINT32;
+	m_uName = uName;
+	m_pszName = NULL;
+	m_uVal = uVal;
+	m_nBlobSize = 0;
 }
-#endif
+
+CTag::CTag(char* pszName, const wxString& rstrVal)
+{
+	m_uType = TAGTYPE_STRING;
+	m_uName = 0;
+	m_pszName = nstrdup(pszName);
+	m_pstrVal = new wxString(rstrVal);
+	m_nBlobSize = 0;
+}
+
+CTag::CTag(uint8 uName, const wxString& rstrVal)
+{
+	m_uType = TAGTYPE_STRING;
+	m_uName = uName;
+	m_pszName = NULL;
+	m_pstrVal = new wxString(rstrVal);
+	m_nBlobSize = 0;
+}
+
+CTag::CTag(uint8 uName, const unsigned char* pucHash)
+{
+	m_uType = TAGTYPE_HASH;
+	m_uName = uName;
+	m_pszName = NULL;
+	m_pData = new unsigned char[16];
+	md4cpy(m_pData, pucHash);
+	m_nBlobSize = 0;
+}
+
+CTag::CTag(uint8 uName, uint32 nSize, const unsigned char* pucData){
+	m_uType = TAGTYPE_BLOB;
+	m_uName = uName;
+	m_pszName = NULL;
+	m_pData = new unsigned char[nSize];
+	memcpy(m_pData, pucData, nSize);
+	m_nBlobSize = nSize;
+}
+
+CTag::CTag(const CTag& rTag)
+{
+	m_uType = rTag.m_uType;
+	m_uName = rTag.m_uName;
+	m_pszName = rTag.m_pszName!=NULL ? nstrdup(rTag.m_pszName) : NULL;
+	m_nBlobSize = 0;
+	if (rTag.IsStr()) {
+		m_pstrVal = new wxString(rTag.GetStr());
+	} else if (rTag.IsInt()) {
+		m_uVal = rTag.GetInt();
+	} else if (rTag.IsFloat()) {
+		m_fVal = rTag.GetFloat();
+	} else if (rTag.IsHash()) {
+		m_pData = new unsigned char[16];
+		md4cpy(m_pData, rTag.GetHash());
+	} else if (rTag.IsBlob()) {
+		m_nBlobSize = rTag.GetBlobSize();
+		m_pData = new unsigned char[rTag.GetBlobSize()];
+		memcpy(m_pData, rTag.GetBlob(), rTag.GetBlobSize());
+	} else {
+		wxASSERT(0);
+		m_uVal = 0;
+	}
+}
 
 CTag::CTag(const CFileDataIO& data, bool bOptUTF8)
 {
-	uchar* discard = NULL;
-	char* stringvalue = NULL;
-	try {
-		off_t off;
-		if ((off = data.Read(&tag.type,1)) == (off_t)wxInvalidOffset) {
-			throw CInvalidPacket("Bad Met File");
-		}
-		
-		uint16 length = 0;
-		
-		if (tag.type & 0x80)
-		{
-			tag.type &= 0x7F;
-			
-			#warning we need to add the new tag types before 2.0.0
-			tag.specialtag = data.ReadUInt8();
-			tag.tagname = NULL;
-		} else {
-		
-			length = data.ReadUInt16();
-			
-			if (length == 1) {
-				tag.specialtag = data.ReadUInt8();
-			} else {
-				tag.tagname = new char[length+1];
-				if ((off = data.Read(tag.tagname,length)) == (off_t)wxInvalidOffset) {
-					tag.tagname[length] = 0;
-					throw CInvalidPacket("Bad Met File");
-				}
-				tag.tagname[length] = 0;
-			}
-		}
+	#define BAD_TAG_MSG "Error reading tag from met file"
 	
-		// NOTE: It's very important that we read the *entire* packet data, even if we do
-		// not use each tag. Otherwise we will get troubles when the packets are returned in 
-		// a list - like the search results from a server.
-		
-		if (tag.type == 2){ // STRING
-			tag.stringvalue = data.ReadString(bOptUTF8);
+	m_uType = data.ReadUInt8();
+	if (m_uType & 0x80) {
+		m_uType &= 0x7F;
+		m_uName = data.ReadUInt8();
+		m_pszName = NULL;
+	} else {
+		uint16 length = data.ReadUInt16();
+		if (length == 1) {
+			m_uName = data.ReadUInt8();
+			m_pszName = NULL;
+		} else {
+			m_uName = 0;
+			m_pszName = new char[length+1];
+			try {
+				data.Read(m_pszName, length);
+			} catch(...) {
+				delete[] m_pszName;
+				throw CInvalidPacket(BAD_TAG_MSG);
+			}
+			m_pszName[length] = '\0';
 		}
-		else if (tag.type == 3){ // DWORD
-			tag.intvalue = data.ReadUInt32();
-		}
-		else if (tag.type == 4){ // FLOAT (used by Hybrid 0.48)
-			// What to do with them?
-			data.ReadUInt32();
-		}
-		else if (tag.type == 1){ // HASH (never seen)
-			printf("CTag::CTag(CFile*); Reading *unverified* HASH tag\n");
-			wxASSERT(!discard);
-			discard = new uchar[16];
-			data.ReadHash16(discard);
-			delete[] discard;
-			discard = NULL;
-		}
-		else if (tag.type == 5){ // BOOL (never seen; propably 1 byte)
-			// NOTE: This is preventive code, it was never tested
-			printf("CTag::CTag(CFile*); Reading *unverified* BOOL tag\n");
-			data.ReadUInt8();
-		}
-		else if (tag.type == 6){ // BOOL Array (never seen; propably <numbytes> <bytes>)
-			// NOTE: This is preventive code, it was never tested
-			printf("CTag::CTag(CFile*); Reading *unverified* BOOL Array tag\n");
-			uint16 len = data.ReadUInt16();
-			wxASSERT(!discard);
-			discard = new uchar[(len/8) +1];
-			data.Read(discard, (len/8) +1);
-			delete[] discard;
-			discard = NULL;
-		}
-		else if (tag.type == 7){ // BLOB (never seen; propably <len> <byte>)
-			// NOTE: This is preventive code, it was never tested
-			printf("CTag::CTag(CFile*); Reading *unverified* BLOB tag\n");
-			uint32 len = data.ReadUInt32();
-			wxASSERT(!discard);
-			discard = new uchar[len];
-			data.Read(discard, len);
-			delete[] discard;
-			discard = NULL;
-		}
-		else if (tag.type == TAGTYPE_UINT16){ 
-			tag.type = 3;
-			tag.intvalue = data.ReadUInt16();
-		}
-		else if (tag.type == TAGTYPE_UINT8){ 
-			tag.type = 3;
-			tag.intvalue = data.ReadUInt8();
-		}	
-		else if (tag.type >= TAGTYPE_STR1 && tag.type <= TAGTYPE_STR16) {
-			length = tag.type - TAGTYPE_STR1 + 1;
-			wxASSERT(!stringvalue);
-			stringvalue = new char[length+1];
-			if (data.Read(stringvalue,length) == wxInvalidOffset) {
-				throw CInvalidPacket("Bad Met File");
-			}		
-			stringvalue[length] = '\0';		
-			// NETWORK UNICODE!
-			tag.stringvalue = char2unicode(stringvalue);
-			delete[] stringvalue;
-			stringvalue = NULL;
-			tag.type = 2;
-		}
-		else{
-			if (tag.type==0x00) throw(CInvalidPacket("Bad met file"));
-			if (length == 1)
-				printf("CTag::CTag(CFile*); Unknown tag: type=0x%02X  specialtag=%u\n", tag.type, tag.specialtag);
-			else
-				printf("CTag::CTag(CFile*); Unknown tag: type=0x%02X  name=\"%s\"\n", tag.type, tag.tagname);
-		}
-	} catch(...) {
-		if (discard) {
-			delete[] discard;
-		}
-		if (stringvalue) {
-			delete[] stringvalue;
-		}		
-		throw;
 	}
 	
+	m_nBlobSize = 0;
+
+	// NOTE: It's very important that we read the *entire* packet data, even if we do
+	// not use each tag. Otherwise we will get troubles when the packets are returned in 
+	// a list - like the search results from a server.
+	switch (m_uType) {
+		case TAGTYPE_STRING:
+			m_pstrVal = new wxString(data.ReadString(bOptUTF8));
+			break;
+		case TAGTYPE_UINT32:
+			m_uVal = data.ReadUInt32();
+			break;
+		case TAGTYPE_UINT16:
+			m_uVal = data.ReadUInt16();
+			m_uType = TAGTYPE_UINT32;
+			break;
+		case TAGTYPE_UINT8:
+			m_uVal = data.ReadUInt8();
+			m_uType = TAGTYPE_UINT32;
+			break;
+		case TAGTYPE_FLOAT32:
+			#warning Endianess problem?
+			data.Read(&m_fVal, 4);
+			break;
+		case TAGTYPE_HASH:
+			m_pData = new BYTE[16];
+			try{
+				data.ReadHash16(m_pData);
+			} catch (...){
+				delete[] m_pData;
+				throw CInvalidPacket(BAD_TAG_MSG);
+			}
+			break;
+		case TAGTYPE_BOOL: {
+			printf("***NOTE: %s; Reading BOOL tag\n", __FUNCTION__);
+			data.ReadUInt8();
+			break;
+		}
+		case TAGTYPE_BOOLARRAY: {
+			printf("***NOTE: %s; Reading BOOL Array tag\n", __FUNCTION__);
+			uint16 len = data.ReadUInt16();
+			// 07-Apr-2004: eMule versions prior to 0.42e.29 used the formula "(len+7)/8"!
+			char discard[(len/8)+1];
+			data.Read(discard,(len/8)+1);
+			break;
+		}
+		case TAGTYPE_BLOB:
+			// 07-Apr-2004: eMule versions prior to 0.42e.29 handled the "len" as int16!
+			m_nBlobSize = data.ReadUInt32();
+			if (m_nBlobSize <= data.GetLength() - data.GetPosition()) {
+				m_pData = new unsigned char[m_nBlobSize];
+				data.Read(m_pData, m_nBlobSize);
+			} else{
+				wxASSERT( false );
+				m_nBlobSize = 0;
+				m_pData = NULL;
+			}
+			break;
+		default:
+			// <Kry> I do really HATE that switch() doesn't handle ranges
+			// <Kry> :(
+			// <pho3nix> yes, switches should handle ranges.
+			// <pho3nix> after all, what are compilers for? :)
+			if (m_uType >= TAGTYPE_STR1 && m_uType <= TAGTYPE_STR16) {
+				uint8 length = m_uType - TAGTYPE_STR1 + 1;
+				m_pstrVal = new wxString(data.ReadOnlyString(bOptUTF8, length));
+				m_uType = TAGTYPE_STRING;
+			} else {
+				if (m_uName != 0) {
+					printf("%s; Unknown tag: type=0x%02X  specialtag=%u\n", __FUNCTION__, m_uType, m_uName);
+				} else {
+					printf("%s; Unknown tag: type=0x%02X  name=\"%s\"\n", __FUNCTION__, m_uType, m_pszName);
+				}
+				m_uVal = 0;
+			}
+	}
 }
 
 CTag::~CTag()
 {
+	delete[] m_pszName;
+	if (IsStr()) {
+		delete m_pstrVal;
+	} else if (IsHash()) {
+		delete[] m_pData;
+	} else if (IsBlob()) {
+		delete[] m_pData;
+	}
+}
+
+bool CTag::WriteNewEd2kTag(CFileDataIO* data, EUtf8Str eStrEncode) const
+{
+
+	// Write tag type
+	uint8 uType;
+	
+	if (IsInt()) {
+		if (m_uVal <= 0xFF) {
+			uType = TAGTYPE_UINT8;
+		} else if (m_uVal <= 0xFFFF) {
+			uType = TAGTYPE_UINT16;
+		} else {
+			uType = TAGTYPE_UINT32;
+		}
+	} else if (IsStr()) {
+		uint16 uStrValLen = GetRawSize(*m_pstrVal, eStrEncode);
+		if (uStrValLen >= 1 && uStrValLen <= 16) {
+			uType = TAGTYPE_STR1 + uStrValLen - 1;
+		} else {
+			uType = TAGTYPE_STRING;
+		}
+	} else {
+		uType = m_uType;
+	}
+
+	// Write tag name
+	if (m_pszName) {
+		data->WriteUInt8(uType);
+		uint16 uTagNameLen = strlen(m_pszName);
+		data->WriteUInt16(uTagNameLen);
+		data->Write(m_pszName, uTagNameLen);
+	} else {
+		wxASSERT( m_uName != 0 );
+		data->WriteUInt8(uType | 0x80);
+		data->WriteUInt8(m_uName);
+	}
+
+	// Write tag data
+	switch (uType) {
+		case TAGTYPE_STRING:
+			data->WriteString(*m_pstrVal,eStrEncode);
+			break;
+		case TAGTYPE_UINT32:
+			data->WriteUInt32(m_uVal);
+			break;
+		case TAGTYPE_UINT16:
+			data->WriteUInt16(m_uVal);
+			break;
+		case TAGTYPE_UINT8:
+			data->WriteUInt8(m_uVal);
+			break;
+		case TAGTYPE_FLOAT32:
+			#warning Endianess problem?
+			data->Write(&m_fVal, 4);
+			break;
+		case TAGTYPE_HASH:
+			data->WriteHash16(m_pData);
+			break;
+		case TAGTYPE_BLOB:
+			data->WriteUInt32(m_nBlobSize);
+			data->Write(m_pData, m_nBlobSize);
+			break;
+		default:
+			// See comment on the default: of CTag::CTag(const CFileDataIO& data, bool bOptUTF8)
+			if (uType >= TAGTYPE_STR1 && uType <= TAGTYPE_STR16) {
+				// Sending '0' as len size makes it not write the len on the IO file.
+				// This is because this tag types send the len as their type.
+				data->WriteString(*m_pstrVal,eStrEncode,0); 
+			} else {
+				printf("%s; Unknown tag: type=0x%02X\n", __FUNCTION__, uType);
+				wxASSERT(0);
+				return false;
+			}
+			break;
+	}
+
+	return true;
 }
 
 bool CTag::WriteTagToFile(CFileDataIO* file, EUtf8Str eStrEncode) const
 {
-	// don't write tags of unknown types, we wouldn't be able to read them in again 
+	// Don't write tags of unknown types, we wouldn't be able to read them in again 
 	// and the met file would be corrupted
-	if (tag.type==2 || tag.type==3 || tag.type==4){
-		file->WriteUInt8(tag.type);
+	if (IsStr() || IsInt() || IsFloat() || IsBlob()) {
 		
-		if (tag.tagname){
-			file->WriteString(char2unicode(tag.tagname));
-		}
-		else{
+		file->WriteUInt8(m_uType);
+		
+		if (m_pszName) {
+			// Don't change this for a WriteString, will only make things slower.
+			uint16 tagname_len = strlen(m_pszName);
+			file->WriteUInt16(tagname_len);
+			file->Write(m_pszName, tagname_len);
+		} else {
 			file->WriteUInt16(1);
-			file->WriteUInt8(tag.specialtag);
+			file->WriteUInt8(m_uName);
 		}
 
-		if (tag.type == 2){
-			file->WriteString(tag.stringvalue, eStrEncode);
-		}
-		else if (tag.type == 3){
-			file->WriteUInt32(tag.intvalue);
-		}
-		else if (tag.type == 4){
-			// What to to with them on ppc?
-			file->Write(&tag.floatvalue,4);
-		}
-		//TODO: Support more tag types
-		else{
-			printf("CTag::WriteTagToFile(CFile*); Unknown tag: type=0x%02X\n", tag.type);
-			//wxASSERT(0);
+		if (IsStr()) {
+			file->WriteString(GetStr(), eStrEncode);
+		} else if (IsInt()) {
+			file->WriteUInt32(m_uVal);
+		} else if (IsFloat()) {
+			#warning Endianess problem?
+			file->Write(&m_fVal, 4);
+		} else if (IsBlob()) {
+			// NOTE: This will break backward compatibility with met files for eMule versions prior to 0.44a
+			// and any aMule prior to CVS 26/02/2005
+			file->WriteUInt32(m_nBlobSize);
+			file->Write(m_pData, m_nBlobSize);
+		} else { //TODO: Support more tag types
+			// With the if above, this should NEVER happen.
+			printf("%s; Unknown tag: type=0x%02X\n", __FUNCTION__, m_uType);
+			wxASSERT(0);
 			return false;
 		}
+		//TODO: Support more tag types
 		return true;
-	}
-	else{
-		printf("CTag::WriteTagToFile(CFile*); Ignored tag with unknown type=0x%02X\n", tag.type);
+	} else {
+		printf("%s; Ignored tag with unknown type=0x%02X\n", __FUNCTION__, m_uType);
 		wxASSERT(0);
 		return false;
+	}
+}
+
+void CTag::SetInt(uint32 uVal)
+{
+	wxASSERT( IsInt() );
+	if (IsInt()) {
+		m_uVal = uVal;
 	}
 }
 
 wxString CTag::GetFullInfo() const
 {
 	wxString strTag;
-	if (tag.tagname){
-		strTag = _T('\"');
-		strTag += (char2unicode(tag.tagname));
-		strTag += _T('\"');
-	}
-	else{
-		strTag = wxString::Format(wxT("0x%02X"), tag.specialtag);
+	if (m_pszName) {
+		strTag = wxT('\"');
+		strTag += char2unicode(m_pszName);
+		strTag += wxT('\"');
+	} else {
+		strTag = wxString::Format(wxT("0x%02X"), m_uName);
 	}
 	strTag += wxT("=");
-	if (tag.type == 2){
-		strTag += wxT("\"");
-		strTag += tag.stringvalue;
-		strTag += wxT("\"");
-	}
-	else if (tag.type == 3){
-		strTag += wxString::Format(wxT("%i"),tag.intvalue);
-	}
-	else if (tag.type == 4){
-		strTag += wxString::Format(wxT("%f"),tag.floatvalue);
-	}
-	else{
-		strTag += wxString::Format(wxT("Type=%u"), tag.type);
+	if (m_uType == TAGTYPE_STRING) {
+		strTag += _T("\"");
+		strTag += *m_pstrVal;
+		strTag += _T("\"");
+	} else if (m_uType >= TAGTYPE_STR1 && m_uType <= TAGTYPE_STR16) {
+		strTag += wxString::Format(wxT("(Str%u)\""), m_uType - TAGTYPE_STR1 + 1)
+					+  *m_pstrVal + wxT("\"");
+	} else if (m_uType == TAGTYPE_UINT32) {
+		strTag += wxString::Format(wxT("(Int32)%u"), m_uVal);
+	} else if (m_uType == TAGTYPE_UINT16) {
+		strTag += wxString::Format(wxT("(Int16)%u"), m_uVal);
+	} else if (m_uType == TAGTYPE_UINT8) {
+		strTag += wxString::Format(wxT("(Int8)%u"), m_uVal);
+	} else if (m_uType == TAGTYPE_FLOAT32) {
+		strTag += wxString::Format(wxT("(Float32)%f"), m_fVal);
+	} else if (m_uType == TAGTYPE_BLOB) {
+		strTag += wxString::Format(wxT("(Blob)%u"), m_nBlobSize);
+	} else {
+		strTag += wxString::Format(wxT("Type=%u"), m_uType);
 	}
 	return strTag;
 }

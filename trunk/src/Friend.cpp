@@ -96,17 +96,15 @@ void CFriend::LoadFromFile(CFileDataIO* file)
 		uint32 tagcount;
 		file->Read(&tagcount, 4);
 		for ( uint32 j = 0; j != tagcount; j++) {
-			CTag *newtag = new CTag(*file, true);
-			switch ( newtag->tag.specialtag ) {
+			CTag newtag(*file, true);
+			switch ( newtag.GetNameID() ) {
 				case FF_NAME:
 					#if wxUSE_UNICODE
 					if (m_strName.IsEmpty()) 
 					#endif
-						m_strName = newtag->tag.stringvalue;
+						m_strName = newtag.GetStr();
 					break;
 			}
-		
-			delete newtag;
 		}
 	} catch (...) {
 		printf("Caught exception in CFriend::LoadFromFile!\n");

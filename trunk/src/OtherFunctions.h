@@ -221,7 +221,11 @@ int wxCMPFUNC_CONV Uint16CompareValues(uint16* first, uint16* second);
 #define ELEMENT_COUNT(X) (sizeof(X) / sizeof(X[0]))
 
 
-enum EED2KFileType {
+///////////////////////////////////////////////////////////////////////////////
+// ED2K File Type
+//
+enum EED2KFileType
+{
 	ED2KFT_ANY,
 	ED2KFT_AUDIO,
 	ED2KFT_VIDEO,
@@ -232,6 +236,13 @@ enum EED2KFileType {
 	ED2KFT_CDIMAGE
 };
 
+#if 0
+// Need a lot of work and I run out of time.
+wxString GetFileTypeByName(char* pszFileName);
+wxString GetFileTypeDisplayStrFromED2KFileType(char* pszED2KFileType);
+char* GetED2KFileTypeSearchTerm(EED2KFileType iFileID);
+EED2KFileType GetED2KFileTypeID(char* pszFileName);
+#endif
 
 const uint8 PMT_UNKNOWN=0;
 const uint8 PMT_DEFAULTOLD=1;

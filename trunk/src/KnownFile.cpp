@@ -379,45 +379,39 @@ bool CKnownFile::LoadTagsFromFile(const CFileDataIO* file)
 		uint32 tagcount;
 		tagcount = file->ReadUInt32();
 		for (uint32 j = 0; j != tagcount;j++){
-			CTag* newtag = new CTag(*file, true);
-			switch(newtag->tag.specialtag){
+			CTag newtag(*file, true);
+			switch(newtag.GetNameID()){
 				case FT_FILENAME:{
 					#if wxUSE_UNICODE
 					if (GetFileName().IsEmpty())
 					#endif
-						SetFileName(newtag->tag.stringvalue);
-					delete newtag;
+						SetFileName(newtag.GetStr());
 					break;
 				}
 				case FT_FILESIZE:{
-					SetFileSize(newtag->tag.intvalue);
+					SetFileSize(newtag.GetInt());
 					m_AvailPartFrequency.Clear();
 					m_AvailPartFrequency.Add(0, GetPartCount());
-					delete newtag;
 					break;
 				}
 				case FT_ATTRANSFERED:{
-					statistic.alltimetransferred += newtag->tag.intvalue;
-					delete newtag;
+					statistic.alltimetransferred += newtag.GetInt();
 					break;
 				}
 				case FT_ATTRANSFEREDHI:{
-					statistic.alltimetransferred = (((uint64)newtag->tag.intvalue) << 32) + ((uint64)statistic.alltimetransferred);
-					delete newtag;
+					statistic.alltimetransferred = (((uint64)newtag.GetInt()) << 32) + ((uint64)statistic.alltimetransferred);
 					break;
 				}
 				case FT_ATREQUESTED:{
-					statistic.alltimerequested = newtag->tag.intvalue;
-					delete newtag;
+					statistic.alltimerequested = newtag.GetInt();
 					break;
 				}
  				case FT_ATACCEPTED:{
-					statistic.alltimeaccepted = newtag->tag.intvalue;
-					delete newtag;
+					statistic.alltimeaccepted = newtag.GetInt();
 					break;
 				}
 				case FT_ULPRIORITY:{
-					m_iUpPriority = newtag->tag.intvalue;
+					m_iUpPriority = newtag.GetInt();
 					if( m_iUpPriority == PR_AUTO ){
 						m_iUpPriority = PR_HIGH;
 						m_bAutoUpPriority = true;
@@ -428,26 +422,24 @@ bool CKnownFile::LoadTagsFromFile(const CFileDataIO* file)
 						}					
 						m_bAutoUpPriority = false;
 					}
-					delete newtag;
 					break;
 				}
 				case FT_PERMISSIONS:{
 					// Ignore it, it's not used anymore.
-					delete newtag;
 					break;
 				}
-				case FT_AICH_HASH:{
+				case FT_AICH_HASH: {
 					CAICHHash hash;
-					if (hash.DecodeBase32(unicode2char(newtag->tag.stringvalue)) == CAICHHash::GetHashSize()) {
+					if (hash.DecodeBase32(unicode2char(newtag.GetStr())) == CAICHHash::GetHashSize()) {
 						m_pAICHHashSet->SetMasterHash(hash, AICH_HASHSETCOMPLETE);
 					} else {
 						wxASSERT( false );
 					}
-					delete newtag;
 					break;
 				}				
 				default:
-					taglist.Add(newtag);
+					// Store them here and write them back on saving.
+					taglist.Add(new CTag(newtag));
 			}	
 		}
 		return true;
@@ -501,8 +493,9 @@ bool CKnownFile::WriteToFile(CFileDataIO* file){
 	// The code for writing the float tags SHOULD BE ENABLED in SOME MONTHS (after most 
 	// people are using the newer eMule versions which do not write broken float tags).	
 	for (size_t j = 0; j < taglist.GetCount(); j++){
-		if (taglist[j]->tag.type == 2 || taglist[j]->tag.type == 3)
+		if (taglist[j]->IsInt() || taglist[j]->IsStr()) {
 			tagcount++;
+		}
 	}
 	
 	#if wxUSE_UNICODE
@@ -553,8 +546,9 @@ bool CKnownFile::WriteToFile(CFileDataIO* file){
 
 	//other tags
 	for (size_t j = 0; j < taglist.GetCount(); j++){
-		if (taglist[j]->tag.type == 2 || taglist[j]->tag.type == 3)
+		if (taglist[j]->IsInt() || taglist[j]->IsStr()) {
 			taglist[j]->WriteTagToFile(file);
+		}
 	}
 	return true;
 }

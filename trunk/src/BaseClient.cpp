@@ -347,43 +347,37 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 		uint32 tagcount = data.ReadUInt32();
 		for (uint32 i = 0;i < tagcount; i++){
 			CTag temptag(data, true);
-			switch(temptag.tag.specialtag){
+			switch(temptag.GetNameID()){
 				case CT_NAME:
-					if ( !temptag.tag.stringvalue.IsEmpty() ) {
-						m_Username = temptag.tag.stringvalue;
-					} else {
-						m_Username.Clear();
-					}
-
+					m_Username = temptag.GetStr();
 					break;
 				case CT_VERSION:
-					m_nClientVersion = temptag.tag.intvalue;
+					m_nClientVersion = temptag.GetInt();
 					break;
 				case ET_MOD_VERSION:
-					if (temptag.tag.type == 2) {
-						m_strModVersion = temptag.tag.stringvalue;
-					} else if (temptag.tag.type == 3) {
-						m_strModVersion.Printf( wxT("ModID=%u"), temptag.tag.intvalue);
+					if (temptag.IsStr()) {
+						m_strModVersion = temptag.GetStr();
+					} else if (temptag.IsInt()) {
+						m_strModVersion = wxString::Format(wxT("ModID=%u"), temptag.GetInt());
 					} else {
 						m_strModVersion = wxT("ModID=<Unknown>");
 					}
 
 					break;
 				case CT_PORT:
-					nUserPort = temptag.tag.intvalue;
-
+					nUserPort = temptag.GetInt();
 					break;
 				case CT_EMULE_UDPPORTS:
 					// 16 KAD Port
 					// 16 UDP Port
-					m_nKadPort = (uint16)(temptag.tag.intvalue >> 16);
-					m_nUDPPort = (uint16)temptag.tag.intvalue;
+					m_nKadPort = (temptag.GetInt() >> 16) & 0xFFFF;
+					m_nUDPPort = temptag.GetInt() & 0xFFFF;
 					dwEmuleTags |= 1;
 					#ifdef __PACKET_DEBUG__
 					printf("Hello type packet processing with eMule ports UDP=%i KAD=%i\n",m_nUDPPort,m_nKadPort);
 					#endif
 					break;
-				case CT_EMULE_MISCOPTIONS1:
+				case CT_EMULE_MISCOPTIONS1: {
 					//  3 AICH Version (0 = not supported)
 					//  1 Unicode
 					//  4 UDP version
@@ -396,17 +390,18 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 					//	 1 No 'View Shared Files' supported
 					//	 1 MultiPacket
 					//  1 Preview
-					m_fSupportsAICH			= (temptag.tag.intvalue >> (4*7+1)) & 0x07;
-					m_bUnicodeSupport		= (temptag.tag.intvalue >> 4*7) & 0x01;
-					m_byUDPVer				= (temptag.tag.intvalue >> 4*6) & 0x0f;
-					m_byDataCompVer			= (temptag.tag.intvalue >> 4*5) & 0x0f;
-					m_bySupportSecIdent		= (temptag.tag.intvalue >> 4*4) & 0x0f;
-					m_bySourceExchangeVer	= (temptag.tag.intvalue >> 4*3) & 0x0f;
-					m_byExtendedRequestsVer	= (temptag.tag.intvalue >> 4*2) & 0x0f;
-					m_byAcceptCommentVer	= (temptag.tag.intvalue >> 4*1) & 0x0f;
-					m_fNoViewSharedFiles	= (temptag.tag.intvalue >> 1*2) & 0x01;
-					m_bMultiPacket			= (temptag.tag.intvalue >> 1*1) & 0x01;
-					m_fSupportsPreview		= (temptag.tag.intvalue >> 1*0) & 0x01;
+					uint32 flags = temptag.GetInt();
+					m_fSupportsAICH			= (flags >> (4*7+1)) & 0x07;
+					m_bUnicodeSupport		= (flags >> 4*7) & 0x01;
+					m_byUDPVer				= (flags >> 4*6) & 0x0f;
+					m_byDataCompVer			= (flags >> 4*5) & 0x0f;
+					m_bySupportSecIdent		= (flags >> 4*4) & 0x0f;
+					m_bySourceExchangeVer	= (flags >> 4*3) & 0x0f;
+					m_byExtendedRequestsVer	= (flags >> 4*2) & 0x0f;
+					m_byAcceptCommentVer	= (flags >> 4*1) & 0x0f;
+					m_fNoViewSharedFiles	= (flags >> 1*2) & 0x01;
+					m_bMultiPacket			= (flags >> 1*1) & 0x01;
+					m_fSupportsPreview		= (flags >> 1*0) & 0x01;
 					dwEmuleTags |= 2;
 					#ifdef __PACKET_DEBUG__
 					printf("Hello type packet processing with eMule Misc Options:\n");
@@ -423,10 +418,11 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 					#endif
 					SecIdentSupRec +=  1;
 					break;
+				}
 				// Special tag fo Compat. Clients Misc options.
 				case CT_EMULECOMPAT_OPTIONS:
 					//  1 Operative System Info
-					m_fOsInfoSupport		= (temptag.tag.intvalue >> 1*0) & 0x01;
+					m_fOsInfoSupport		= (temptag.GetInt() >> 1*0) & 0x01;
 					break;
 				case CT_EMULE_VERSION:
 					//  8 Compatible Client ID
@@ -434,8 +430,8 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 					//  7 Min Version (Only need 0-99)
 					//  3 Upd Version (Only need 0-5)
 					//  7 Bld Version (Only need 0-99)
-					m_byCompatibleClient = (temptag.tag.intvalue >> 24);
-					m_nClientVersion = temptag.tag.intvalue & 0x00ffffff;
+					m_byCompatibleClient = (temptag.GetInt() >> 24);
+					m_nClientVersion = temptag.GetInt() & 0x00ffffff;
 					m_byEmuleVersion = 0x99;
 					m_fSharedDirectories = 1;
 					dwEmuleTags |= 4;
@@ -736,17 +732,14 @@ bool CUpDownClient::ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize)
 			// OS Info supporting clients sending a recycled Mule info packet
 			for (uint32 i = 0;i < tagcount; i++){
 				CTag temptag(data, true);
-				switch(temptag.tag.specialtag){
+				switch(temptag.GetNameID()){
 					case ET_OS_INFO:
 						// Special tag, only supporting clients (aMule/Hydranode)
 	
 						// It was recycled from a mod's tag, so if the other side
-						// is not supporting OS Info, we're seriously fucked up :)
-							
-						wxASSERT(temptag.tag.type == 2); // tag must be a string
-					
+						// is not supporting OS Info, we're seriously fucked up :)					
 				
-						m_sClientOSInfo = temptag.tag.stringvalue;
+						m_sClientOSInfo = temptag.GetStr();
 	
 						break;	
 					
@@ -775,55 +768,55 @@ bool CUpDownClient::ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize)
 			
 			for (uint32 i = 0;i < tagcount; i++){
 				CTag temptag(data, false);
-				switch(temptag.tag.specialtag){
+				switch(temptag.GetNameID()){
 					case ET_COMPRESSION:
 						// Bits 31- 8: 0 - reserved
 						// Bits  7- 0: data compression version
-						m_byDataCompVer = temptag.tag.intvalue;
+						m_byDataCompVer = temptag.GetInt();
 						break;
 					case ET_UDPPORT:
 						// Bits 31-16: 0 - reserved
 						// Bits 15- 0: UDP port
-						m_nUDPPort = temptag.tag.intvalue;
+						m_nUDPPort = temptag.GetInt();
 						break;
 					case ET_UDPVER:
 						// Bits 31- 8: 0 - reserved
 						// Bits  7- 0: UDP protocol version
-						m_byUDPVer = temptag.tag.intvalue;
+						m_byUDPVer = temptag.GetInt();
 						break;
 					case ET_SOURCEEXCHANGE:
 						// Bits 31- 8: 0 - reserved
 						// Bits  7- 0: source exchange protocol version
-						m_bySourceExchangeVer = temptag.tag.intvalue;
+						m_bySourceExchangeVer = temptag.GetInt();
 						break;
 					case ET_COMMENTS:
 						// Bits 31- 8: 0 - reserved
 						// Bits  7- 0: comments version
-						m_byAcceptCommentVer = temptag.tag.intvalue;
+						m_byAcceptCommentVer = temptag.GetInt();
 						break;
 					case ET_EXTENDEDREQUEST:
 							// Bits 31- 8: 0 - reserved
 						// Bits  7- 0: extended requests version
-						m_byExtendedRequestsVer = temptag.tag.intvalue;
+						m_byExtendedRequestsVer = temptag.GetInt();
 						break;
 					case ET_COMPATIBLECLIENT:
 						// Bits 31- 8: 0 - reserved
 						// Bits  7- 0: compatible client ID
-						m_byCompatibleClient = temptag.tag.intvalue;
+						m_byCompatibleClient = temptag.GetInt();
 						break;
 					case ET_FEATURES:
 						// Bits 31- 8: 0 - reserved
 						// Bit	    7: Preview
 						// Bit   6- 0: secure identification
-						m_bySupportSecIdent = temptag.tag.intvalue & 3;
-						m_bSupportsPreview = (temptag.tag.intvalue & 128) > 0;
+						m_bySupportSecIdent = temptag.GetInt() & 3;
+						m_bSupportsPreview = (temptag.GetInt() & 128) > 0;
 						SecIdentSupRec +=  2;
 						break;
 					case ET_MOD_VERSION:
-						if (temptag.tag.type == 2) {
-							m_strModVersion = temptag.tag.stringvalue;
-						} else if (temptag.tag.type == 3) {
-							m_strModVersion.Printf(wxT("ModID=%u"), temptag.tag.intvalue);
+						if (temptag.IsStr()) {
+							m_strModVersion = temptag.GetStr();
+						} else if (temptag.IsInt()) {
+							m_strModVersion = wxString::Format(wxT("ModID=%u"), temptag.GetInt());
 						} else {
 							m_strModVersion = wxT("ModID=<Unknown>");
 						}

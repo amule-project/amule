@@ -115,7 +115,8 @@ public:
 	CStrangePacket(const char* w = "not specified") : CInvalidPacket(w) { }
 };
 
-
+#if 0
+// Old CTags.
 struct STag{
 	STag();
 	STag(const STag& in);
@@ -151,6 +152,72 @@ public:
 	STag tag;
 	wxString GetFullInfo() const;
 };
+#endif
 
+///////////////////////////////////////////////////////////////////////////////
+// CTag
+
+class CTag
+{
+public:
+	CTag(char* pszName, uint32 uVal);
+	CTag(uint8 uName, uint32 uVal);
+	CTag(char* pszName, const wxString& rstrVal);
+	CTag(uint8 uName, const wxString& rstrVal);
+	CTag(uint8 uName, const unsigned char* pucHash);
+	CTag(uint8 uName, uint32 nSize, const unsigned char* pucData);
+	CTag(const CTag& rTag);
+	CTag(const CFileDataIO& data, bool bOptUTF8);
+	~CTag();
+
+	uint8 GetType() const			{ return m_uType; }
+	uint8 GetNameID() const			{ return m_uName; }
+	char* GetName() const			{ return m_pszName; }
+	
+	bool IsStr() const				{ return m_uType == TAGTYPE_STRING; }
+	bool IsInt() const				{ return m_uType == TAGTYPE_UINT32; }
+	bool IsFloat() const			{ return m_uType == TAGTYPE_FLOAT32; }
+	bool IsHash() const				{ return m_uType == TAGTYPE_HASH; }
+	bool IsBlob() const				{ return m_uType == TAGTYPE_BLOB; }
+	
+	uint32 GetInt() const				{ wxASSERT(IsInt());		return m_uVal; }
+	const wxString& GetStr() const	{ wxASSERT(IsStr());		return *m_pstrVal; }
+	float GetFloat() const			{ wxASSERT(IsFloat());	return m_fVal; }
+	const BYTE* GetHash() const		{ wxASSERT(IsHash());		return m_pData; }
+	uint32 GetBlobSize() const		{ wxASSERT(IsBlob());		return m_nBlobSize; }
+	const BYTE* GetBlob() const		{ wxASSERT(IsBlob());		return m_pData; }
+
+	void SetInt(UINT uVal);
+	
+	CTag* CloneTag()				{ return new CTag(*this); }
+	
+	bool WriteTagToFile(CFileDataIO* file, EUtf8Str eStrEncode = utf8strNone) const;	// old eD2K tags
+	bool WriteNewEd2kTag(CFileDataIO* file, EUtf8Str eStrEncode = utf8strNone) const;	// new eD2K tags
+	
+	wxString GetFullInfo() const;
+
+protected:
+	uint8	m_uType;
+	uint8	m_uName;
+	char*	m_pszName;
+	uint32	m_nBlobSize;
+	union{
+	  wxString*	m_pstrVal;
+	  uint32	m_uVal;
+	  float		m_fVal;
+	  unsigned char*		m_pData;
+	};
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// CTag and tag string helpers
+
+inline int CmpED2KTagName(char* pszTagName1, char* pszTagName2){
+	// string compare is independant from any codepage and/or LC_CTYPE setting.
+	return strcasecmp(pszTagName1, pszTagName2);
+}
+void ConvertED2KTag(CTag*& pTag);
+
+bool WriteOptED2KUTF8Tag(CFileDataIO* data, LPCWSTR pwsz, uint8 uTagName);
 
 #endif // PACKET_H

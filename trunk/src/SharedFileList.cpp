@@ -481,6 +481,8 @@ void CSharedFileList::CreateOfferedFilePacket(
 	// shared files to some other client. In each case we send our IP+Port only, if
 	// we have a HighID.
 
+	#warning Max. Priority to add the new tags.
+		
 	cur_file->SetPublishedED2K(true);
 	files->WriteHash16(cur_file->GetFileHash());
 
