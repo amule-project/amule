@@ -385,6 +385,8 @@ public:
 	CClientListRem *clientlist;
 	CIPFilterRem *ipfilter;
 	CSearchListRem *searchlist;
+	CListenSocketRem *listensocket;
+	CStatisticsRem *statistics;
 	
 	bool AddServer(CServer *srv);
 	

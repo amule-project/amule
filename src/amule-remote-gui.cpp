@@ -90,12 +90,8 @@ END_EVENT_TABLE()
 
 IMPLEMENT_APP(CamuleRemoteGuiApp)
 
-// Initialization of the static MyTimer member variables.
-uint32 MyTimer::tic32 = 0;
-uint64 MyTimer::tic64 = 0;
-	
 // Global timer. Used to cache GetTickCount() results for better performance.
-class MyTimer* mytimer = NULL;
+MyTimer* mytimer = NULL;
 
 int CamuleRemoteGuiApp::OnExit()
 {
@@ -135,26 +131,8 @@ bool CamuleRemoteGuiApp::OnInit()
 
 	// Start the Core Timer
 
-	// Note: wxTimer can be off by more than 10% !!!
-	// In addition to the systematic error introduced by wxTimer, we are losing
-	// timer cycles due to high CPU load.  I've observed about 0.5% random loss of cycles under
-	// low load, and more than 6% lost cycles with heavy download traffic and/or other tasks
-	// in the system, such as a video player or a VMware virtual machine.
-	// The upload queue process loop has now been rewritten to compensate for timer errors.
-	// When adding functionality, assume that the timer is only approximately correct;
-	// for measurements, always use the system clock [::GetTickCount()].
 	core_timer->Start(100);	
 
-	// Start the Gui Timer
-	
-	// Note: wxTimer can be off by more than 10% !!!
-	// In addition to the systematic error introduced by wxTimer, we are losing
-	// timer cycles due to high CPU load.  I've observed about 0.5% random loss of cycles under
-	// low load, and more than 6% lost cycles with heavy download traffic and/or other tasks
-	// in the system, such as a video player or a VMware virtual machine.
-	// The upload queue process loop has now been rewritten to compensate for timer errors.
-	// When adding functionality, assume that the timer is only approximately correct;
-	// for measurements, always use the system clock [::GetTickCount()].
 	amuledlg->StartGuiTimer();
 
 	return true;
@@ -163,92 +141,146 @@ bool CamuleRemoteGuiApp::OnInit()
 
 void CamuleRemoteGuiApp::ShowAlert(wxString msg, wxString title, int flags)
 {
-	wxMessageBox(msg, title, flags);
+	CamuleGuiBase::ShowAlert(msg, title, flags);
 }
 
 int CamuleRemoteGuiApp::InitGui(bool geometry_enabled, wxString &geom_string)
 {
-	// Standard size is 800x600 at position (0,0)
-	int geometry_x = 0;
-	int geometry_y = 0;
-	unsigned int geometry_width = 800;
-	unsigned int geometry_height = 600;
 
-	if ( geometry_enabled ) {	
-		// I plan on moving this to a seperate function, as it just clutters up OnInit()
-#ifdef __WXGTK__
-		XParseGeometry(unicode2char(geom_string), &geometry_x, &geometry_y, &geometry_width, &geometry_height);
-		geometry_enabled = true;
-#elif defined (__WXMSW__)
-		/*
-			This implementation might work with mac, provided that the
-			SetSize() function works as expected.
-		*/
+	return CamuleGuiBase::InitGui(geometry_enabled, geom_string);
+}
 
-		// Remove possible prefix
-		if ( geom_string.GetChar(0) == '=' )
-			geom_string.Remove( 0, 1 );
+bool CamuleRemoteGuiApp::CopyTextToClipboard(wxString strText)
+{
+	return CamuleGuiBase::CopyTextToClipboard(strText);
+}
 
-		// Stupid ToLong functions forces me to use longs =(
-		long width = geometry_width;
-		long height = geometry_height;
-
-		// Get the avilable display area
-		wxRect display = wxGetClientDisplayRect();
-
-		// We want to place aMule inside the client area by default
-		long x = display.x;
-		long y = display.y;
-
-		// Tokenize the string
-		wxStringTokenizer tokens(geom_string, "xX+-");
-
-		// First part: Program width
-		if ( tokens.GetNextToken().ToLong( &width ) ) {
-			wxString prefix = geom_string[ tokens.GetPosition() - 1 ];
-			if ( prefix == "x" || prefix == "X" ) {
-				// Second part: Program height
-				if ( tokens.GetNextToken().ToLong( &height ) ) {
-					prefix = geom_string[ tokens.GetPosition() - 1 ];
-					if ( prefix == "+" || prefix == "-" ) {
-						// Third part: X-Offset
-						if ( tokens.GetNextToken().ToLong( &x ) ) {
-							if ( prefix == "-" )
-								x = display.GetRight() - ( width + x );
-							prefix = geom_string[ tokens.GetPosition() - 1 ];
-							if ( prefix == "+" || prefix == "-" ) {
-								// Fourth part: Y-Offset
-								if ( tokens.GetNextToken().ToLong( &y ) ) {
-									if ( prefix == "-" )
-										y = display.GetBottom() - ( height + y );
-								}
-							}
-						}
-					}
-					// We need at least height and width to override default geomtry
-					geometry_enabled = true;
-					geometry_x = x;
-					geometry_y = y;
-					geometry_width = width;
-					geometry_height = height;
-				}
-			}
-		}
-#else
-		#warning Need to parse the geometry for non-GTK/WIN platforms
-#endif
-		printf("geometry:  x: %d y: %d width: %d height: %d\n", geometry_x, geometry_y, geometry_width, geometry_height);
-	}
-	// Should default/last-used position be overridden?
-	m_FrameTitle = wxString::Format(wxT("aMule %s"), wxT(VERSION));
-	if ( geometry_enabled ) {
-		amuledlg = new CamuleDlg(NULL, m_FrameTitle,
-			wxPoint(geometry_x,geometry_y),
-			wxSize( geometry_width, geometry_height - 58 ));
-	} else {
-		amuledlg = new CamuleDlg(NULL, m_FrameTitle);
-	}
-	SetTopWindow(amuledlg);
-
+uint32 CamuleRemoteGuiApp::GetPublicIP()
+{
 	return 0;
 }
+
+// remote gui doesn't have it's own log
+void CamuleRemoteGuiApp::QueueLogLine(bool, wxString const&)
+{
+}
+
+wxString CamuleRemoteGuiApp::GetLog(bool)
+{
+	return wxEmptyString;
+}
+
+wxString CamuleRemoteGuiApp::GetServerLog(bool)
+{
+	return wxEmptyString;
+}
+
+//
+// Container implenentation
+//
+CServerConnectRem::CServerConnectRem(CRemoteConnect *conn)
+{
+	m_Conn = conn;
+}
+
+void CServerConnectRem::ConnectToAnyServer()
+{
+	CECPacket req(EC_OP_SERVER_CONNECT);
+	m_Conn->Send(&req);
+}
+
+void CServerConnectRem::StopConnectionTry()
+{
+	// lfroen: isn't Disconnect the same ?
+}
+
+void CServerConnectRem::Disconnect()
+{
+	CECPacket req(EC_OP_SERVER_DISCONNECT);
+	m_Conn->Send(&req);
+}
+
+void CServerConnectRem::ConnectToServer(CServer *server)
+{
+	CECPacket req(EC_OP_SERVER_CONNECT);
+	uint32 ip = server->GetIP();
+	uint16 port = server->GetPort();
+	req.AddTag(CECTag(EC_TAG_SERVER, EC_IPv4_t(ip, port)));
+	m_Conn->Send(&req);
+}
+
+CServer *CServerConnectRem::GetCurrentServer()
+{
+	// lfroen: must find out how to do such
+	return 0;
+}
+
+CServerListRem::CServerListRem(CRemoteConnect *conn) : CRemoteContainer<CServer, uint32, CEC_Server_Tag>(conn)
+{
+}
+
+void CServerListRem::UpdateServerMetFromURL(wxString url)
+{
+	// FIXME: add command
+}
+
+void CServerListRem::SaveServermetToFile()
+{
+	// lfroen: stub, nothing to do
+}
+
+void CServerListRem::RemoveServer(CServer* server)
+{
+	CECPacket req(EC_OP_SERVER_REMOVE);
+	uint32 ip = server->GetIP();
+	uint16 port = server->GetPort();
+	req.AddTag(CECTag(EC_TAG_SERVER, EC_IPv4_t(ip, port)));
+	m_conn->Send(&req);
+}
+
+
+void CIPFilterRem::Reload()
+{
+	CECPacket req(EC_OP_IPFILTER_RELOAD);
+	m_conn->Send(&req);
+}
+
+
+void CSharedFilesRem::Reload(bool, bool)
+{
+	CECPacket req(EC_OP_SHAREDFILES_RELOAD);
+	m_conn->Send(&req);
+}
+
+
+/*!
+ * Connection to remote core
+ * 
+ * FIXME: implementation is waiting
+ */
+CRemoteConnect::CRemoteConnect()
+{
+}
+
+CECPacket *CRemoteConnect::SendRecv(CECPacket *)
+{
+	return 0;
+}
+
+void CRemoteConnect::Send(CECPacket *)
+{
+}
+
+
+//
+// since gui is not linked with amule.cpp - define events here
+//
+DEFINE_EVENT_TYPE(wxEVT_NOTIFY_EVENT)
+DEFINE_EVENT_TYPE(wxEVT_AMULE_TIMER)
+
+DEFINE_EVENT_TYPE(wxEVT_CORE_FILE_HASHING_FINISHED)
+DEFINE_EVENT_TYPE(wxEVT_CORE_FILE_HASHING_SHUTDOWN)
+DEFINE_EVENT_TYPE(wxEVT_CORE_FINISHED_FILE_COMPLETION)
+DEFINE_EVENT_TYPE(wxEVT_CORE_FINISHED_HTTP_DOWNLOAD)
+DEFINE_EVENT_TYPE(wxEVT_CORE_SOURCE_DNS_DONE)
+DEFINE_EVENT_TYPE(wxEVT_CORE_DNS_DONE)
