@@ -37,6 +37,13 @@
 
 class wxString;	
 class wxMenu;
+	
+enum {
+	TRAY_ICON_DISCONNECTED,
+	TRAY_ICON_LOWID,
+	TRAY_ICON_HIGHID
+};
+
 
 /**
  * The mule tray icon class is responsible for drawing the mule systray icon 
@@ -59,7 +66,7 @@ class CMuleTrayIcon : public wxTaskBarIcon {
 		 * Set the Tray icon. 
 		 * @param Icon The wxIcon object with the new tray icon
 	 	 */			
-		void SetTrayIcon(wxIcon& Icon, uint32 percent);
+		void SetTrayIcon(int Icon, uint32 percent);
 		
 		/**
 		 * Set the Tray tooltip
@@ -74,6 +81,13 @@ class CMuleTrayIcon : public wxTaskBarIcon {
 		void UpdateTray();
 	
 		void SwitchShow(wxTaskBarIconEvent&);
+	
+		int Old_Icon;
+		int Old_SpeedSize;
+	
+		wxIcon Disconnected_Icon;
+		wxIcon LowId_Icon;
+		wxIcon HighId_Icon;
 	
 		wxIcon CurrentIcon;
 		wxMemoryDC IconWithSpeed;

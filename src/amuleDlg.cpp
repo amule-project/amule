@@ -40,16 +40,16 @@
 #include "config.h"
 #endif // HAVE_CONFIG_H
 
-#ifndef __SYSTRAY_DISABLED__
-	#ifdef USE_WX_TRAY
-		#include "pixmaps/mule_TrayIcon_big.ico.xpm"
-	#else
-		#include "pixmaps/mule_TrayIcon.ico.xpm"
-	#endif
-	#include "pixmaps/mule_Tr_yellow.ico.xpm"
-	#include "pixmaps/mule_Tr_grey.ico.xpm"
-#endif // __SYSTRAY_DISABLED__
 #include "amuleDlg.h"		// Interface declarations.
+
+#ifndef __SYSTRAY_DISABLED__
+	#ifndef USE_WX_TRAY // WX_TRAY icons are on MuleTrayIcon class
+		#include "pixmaps/mule_TrayIcon.ico.xpm"
+		#include "pixmaps/mule_Tr_yellow.ico.xpm"
+		#include "pixmaps/mule_Tr_grey.ico.xpm"
+	#endif // USE_WX_TRAY
+#endif // __SYSTRAY_DISABLED__
+
 #include "otherfunctions.h"	// Needed for CastItoIShort
 #include "ED2KLink.h"		// Needed for CED2KLink
 #include "ServerListCtrl.h"	// Needed for CServerListCtrl
@@ -728,21 +728,19 @@ void CamuleDlg::UpdateTrayIcon(int percent)
 	// Whatever that means, it's working now.
 	
 	#ifdef USE_WX_TRAY
-		wxIcon NewTrayIcon;
 		if(!theApp.serverconnect) {
-			NewTrayIcon = wxIcon(mule_Tr_grey_ico);
+			m_wndTaskbarNotifier->SetTrayIcon(TRAY_ICON_DISCONNECTED, percent);
 		} else {
 			if (theApp.serverconnect->IsConnected()) {
 				if(!theApp.serverconnect->IsLowID()) {
-					NewTrayIcon = wxIcon(mule_TrayIcon_ico);
+					m_wndTaskbarNotifier->SetTrayIcon(TRAY_ICON_HIGHID, percent);
 				} else {
-					NewTrayIcon = wxIcon(mule_Tr_yellow_ico);
+					m_wndTaskbarNotifier->SetTrayIcon(TRAY_ICON_LOWID, percent);
 				}
 			} else {
-				NewTrayIcon = wxIcon(mule_Tr_grey_ico);
+				m_wndTaskbarNotifier->SetTrayIcon(TRAY_ICON_DISCONNECTED, percent);
 			}
 		}
-		m_wndTaskbarNotifier->SetTrayIcon(NewTrayIcon, percent);
 	#else
 		int pVals16[1] = {percent};
 		char** data;

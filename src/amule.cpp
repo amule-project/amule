@@ -144,21 +144,54 @@ static void SetResourceLimits()
 
 CamuleApp::CamuleApp()
 {
+	// Initialization
+	
+	printf("Initialising aMule\n");
+	SetVendorName(wxT("TikuWarez"));
+	
+	// Do NOT change this string to aMule nor anything else, it WILL fuck you up.
+	SetAppName(wxT("eMule"));
+	
+	ConfigDir = wxGetHomeDir() + wxFileName::GetPathSeparator() + 
+	wxT(".aMule") + wxFileName::GetPathSeparator();
+	
+	IsReady		= false;
+	clientlist	= NULL;
+	searchlist	= NULL;
+	knownfiles	= NULL;
+	serverlist	= NULL;
+	serverconnect	= NULL;
+	sharedfiles	= NULL;
+	listensocket	= NULL;
+	clientudp	= NULL;
+	clientcredits	= NULL;
+	downloadqueue	= NULL;
+	uploadqueue	= NULL;
+	ipfilter	= NULL;
+	
+	m_dwPublicIP	= 0;
+
+	// reset statistic values
+	stat_sessionReceivedBytes = 0;
+	stat_sessionSentBytes = 0;
+	stat_reconnects = 0;
+	stat_transferStarttime = 0;
+	stat_serverConnectTime = 0;
+	sTransferDelay = 0.0;
+	
+	// Apprently needed for *BSD
+	SetResourceLimits();
+
 }
 
 CamuleApp::~CamuleApp()
 {
-}
-
-int CamuleApp::OnExit()
-{
+	
 	if (m_app_state!=APP_STATE_STARTING) {
-		printf("Now, exiting main app...\n");
+		printf("aMule shutdown: removing local data.\n");
 	}
 	
-	// Save IPFilter file.
-	ipfilter->SaveToFile();
-
+	// Delete associated objects
 	if (serverlist) {
 		delete serverlist;
 		serverlist = NULL;
@@ -172,7 +205,7 @@ int CamuleApp::OnExit()
 	if (clientcredits) {
 		delete clientcredits;
 		clientcredits = NULL;
-	}
+	}		
 	
 	// Destroying CDownloadQueue calls destructor for CPartFile
 	// calling CSharedFileList::SafeAddKFile occasally.
@@ -231,10 +264,24 @@ int CamuleApp::OnExit()
 		delete localserver;
 		localserver = NULL;
 	}
-	
+
 	if (m_app_state!=APP_STATE_STARTING) {
 		printf("aMule shutdown completed.\n");
 	}
+	
+}
+
+int CamuleApp::OnExit()
+{
+	if (m_app_state!=APP_STATE_STARTING) {
+		printf("Now, exiting main app...\n");
+	}
+	
+	// Save credits
+	clientcredits->SaveList();
+	
+	// Save IPFilter file.
+	ipfilter->SaveToFile();
 
 	// Return 0 for succesful program termination
 	return AMULE_APP_BASE::OnExit();
@@ -249,40 +296,8 @@ int CamuleApp::InitGui(bool ,wxString &)
 bool CamuleApp::OnInit()
 {
 	m_app_state = APP_STATE_STARTING;
-	ConfigDir = wxGetHomeDir() + wxFileName::GetPathSeparator() + 
-		wxT(".aMule") + wxFileName::GetPathSeparator();
 
-	// Initialization
-	IsReady		= false;
-	clientlist	= NULL;
-	searchlist	= NULL;
-	knownfiles	= NULL;
-	serverlist	= NULL;
-	serverconnect	= NULL;
-	sharedfiles	= NULL;
-	listensocket	= NULL;
-	clientudp	= NULL;
-	clientcredits	= NULL;
-	downloadqueue	= NULL;
-	uploadqueue	= NULL;
-	ipfilter	= NULL;
-	
-	m_dwPublicIP	= 0;
-
-	// Default geometry of the GUI. Can be changed with a cmdline argument...
-	bool geometry_enabled = false;
-
-	// reset statistic values
-	stat_sessionReceivedBytes = 0;
-	stat_sessionSentBytes = 0;
-	stat_reconnects = 0;
-	stat_transferStarttime = 0;
-	stat_serverConnectTime = 0;
-	sTransferDelay = 0.0;
 	Start_time = GetTickCount64();
-
-	// Apprently needed for *BSD
-	SetResourceLimits();
 
 	// Parse cmdline arguments.
 	wxCmdLineParser cmdline(AMULE_APP_BASE::argc, AMULE_APP_BASE::argv);
@@ -320,15 +335,13 @@ bool CamuleApp::OnInit()
 		return false;
 	}
 
+	// Default geometry of the GUI. Can be changed with a cmdline argument...
+	bool geometry_enabled = false;
+
 	wxString geom_string;
 	if ( cmdline.Found(wxT("geometry"), &geom_string) ) {
 		geometry_enabled = true;
 	}
-	printf("Initialising aMule\n");
-	SetVendorName(wxT("TikuWarez"));
-
-	// Do NOT change this string to aMule nor anything else, it WILL fuck you up.
-	SetAppName(wxT("eMule"));
 
 	// see if there is another instance running
 	wxString server = ConfigDir + wxFileName::GetPathSeparator() + wxT("muleconn");
@@ -419,7 +432,7 @@ bool CamuleApp::OnInit()
 		// use std err as last resolt to indicate problem
 		fputs("ERROR: unable to open log file\n", stderr);
 		delete applog;
-		applog = 0;
+		applog = NULL;
 		// failure to open log is serious problem
 		return false;
 	}
@@ -437,8 +450,9 @@ bool CamuleApp::OnInit()
 	wxTextFile vfile( ConfigDir + wxFileName::GetPathSeparator() + wxT("lastversion") );
 	wxString newMule(wxT(VERSION));
 
-	if ( !wxFileExists( vfile.GetName() ) )
+	if ( !wxFileExists( vfile.GetName() ) ) {
 		vfile.Create();
+	}
 	
 	if ( vfile.Open() ) {
 		// Check if this version has been run before
@@ -540,10 +554,6 @@ bool CamuleApp::OnInit()
 	serverconnect	= new CServerConnect(serverlist);
 	sharedfiles	= new CSharedFileList(serverconnect, knownfiles);
 
-	wxIPV4address myaddr;
-	myaddr.AnyAddress();
-	myaddr.Service(thePrefs::GetUDPPort());
-	clientudp	= new CClientUDPSocket(myaddr);
 	clientcredits	= new CClientCreditsList();
 	
 	// bugfix - do this before creating the uploadqueue
@@ -567,10 +577,19 @@ bool CamuleApp::OnInit()
 	// reload shared files
 	sharedfiles->Reload(true, true);
 
+	// Temp addr
+	wxIPV4address myaddr;
+	myaddr.AnyAddress();
+
 	// Create listen socket 
 	printf("*** TCP socket at %d\n", thePrefs::GetPort());
 	myaddr.Service(thePrefs::GetPort());
 	listensocket = new CListenSocket(myaddr);
+	
+	// Create UDP socket
+	myaddr.Service(thePrefs::GetUDPPort());
+	clientudp	= new CClientUDPSocket(myaddr);
+	
 
 	// This command just sets a flag to control maximun number of connections.
 	// Notify(true) has already been called to the ListenSocket, so events may
@@ -587,15 +606,8 @@ bool CamuleApp::OnInit()
 			thePrefs::GetPort()), _("Error"), wxOK | wxICON_ERROR);
 	}
 
-	// Autoconnect if that option is enabled
-	if (thePrefs::DoAutoConnect()) {
-		AddLogLineM(true, _("Connecting"));
-		theApp.serverconnect->ConnectToAnyServer();
-	}
-	
 	// Ensure that the up/down ratio is used
 	CPreferences::CheckUlDlRatio();
-
 
 	// The user may now click on buttons
 	IsReady = true;
@@ -604,7 +616,13 @@ bool CamuleApp::OnInit()
 	if (thePrefs::GetSrcSeedsOn()) {
 		downloadqueue->LoadSourceSeeds();
 	}
-
+	
+	// Autoconnect if that option is enabled
+	if (thePrefs::DoAutoConnect()) {
+		AddLogLineM(true, _("Connecting"));
+		theApp.serverconnect->ConnectToAnyServer();
+	}
+	
 	return true;
 }
 
