@@ -92,7 +92,7 @@ WxCasFrame::WxCasFrame (const wxString & title):
   m_staticLine = new wxStaticLine (m_mainPanel, -1);
 
   // Statistics Static Vertical Box Sizer
-  m_sigPanelSBox = new wxStaticBox (m_mainPanel, -1, wxEmptyString);
+  m_sigPanelSBox = new wxStaticBox (m_mainPanel, -1, long_line);
   m_sigPanelSBoxSizer = new wxStaticBoxSizer (m_sigPanelSBox, wxVERTICAL);
 
   // Statistic labels
@@ -140,6 +140,7 @@ WxCasFrame::WxCasFrame (const wxString & title):
                    wxTB_HORIZONTAL | wxTB_FLAT);
 
   m_toolbar->SetToolBitmapSize (wxSize (32, 32));
+  m_toolbar->SetMargins (2, 2);
 
   m_toolbar->AddTool (ID_BAR_REFRESH, wxT("Refresh"), m_toolBarBitmaps[0],
                       _("Stop Auto Refresh"));
@@ -160,7 +161,6 @@ WxCasFrame::WxCasFrame (const wxString & title):
   m_toolbar->AddTool (ID_BAR_ABOUT, wxT("About"), m_toolBarBitmaps[3],
                       _("About wxCas"));
 
-  m_toolbar->SetMargins (2, 2);
   m_toolbar->Realize ();
 
   SetToolBar (m_toolbar);
