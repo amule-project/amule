@@ -603,7 +603,12 @@ echo "  **** General Libraries and Tools ****"
 echo "  Should ccache support be enabled?                        ${ccache:-no}"
 echo "  Libraries aMule will use to build:"
 echo "                                       wxWidgets          ${WXGTK_VERSION:-Not detected}"
-echo "                                       GTK                ${GTK_VERSION:-Not detected}"
+echo -n "                                       GTK                ${GTK_VERSION:-Not detected}"
+if test x"$gtk" == x"yes" ; then
+echo ""
+else
+echo " (Not used)"
+fi
 
 if test x"$WX_VERSION" = x"any" ; then
 echo
