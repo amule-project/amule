@@ -1,4 +1,2 @@
-- Stat image génération for web (unused toolbar icon for now)
-- Printing support for this image (unused toolbar icon for now)
-
-- Add system monitoring ? Dunno if its possible for multiplatform ...
+- Fix multiplatform compilation
+- Add session max dl rate
