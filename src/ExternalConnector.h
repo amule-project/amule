@@ -68,6 +68,7 @@ public:
 	virtual void Pre_Shell() {}
 	virtual void Post_Shell() {}
 	virtual int ProcessCommand(int) { return -1; }
+	virtual void TextShell(const wxString &prompt, CmdId *commands);
 
 	//
 	// Other functions
@@ -80,7 +81,6 @@ public:
 	void Process_Answer(const wxString& answer);
 	bool Parse_Command(wxString &buffer, CmdId *commands);
 	void GetCommand(const wxString &prompt, char* buffer, size_t buffer_size);
-	void TextShell(const wxString &prompt, CmdId *commands);
 	wxString SendRecvMsg(const wxChar *msg);
 	void ConnectAndRun(const wxString &ProgName, CmdId *commands);
 	//

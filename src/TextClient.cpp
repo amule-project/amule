@@ -216,6 +216,26 @@ void CamulecmdApp::LocalShow(const wxString &s)
 	}
 	frame->log_text->AppendText(s);
 }
+#else
+void CamulecmdApp::OnInitCmdLine(wxCmdLineParser& amuleweb_parser)
+{
+	CaMuleExternalConnector::OnInitCmdLine(amuleweb_parser);
+	amuleweb_parser.AddOption(wxT("c"), wxT("command"), wxT("execute <str> and exit"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL);
+}
+
+bool CamulecmdApp::OnCmdLineParsed(wxCmdLineParser& parser)
+{
+	m_HasCmdOnCmdLine = parser.Found(wxT("command"), &m_CmdString);
+	return CaMuleExternalConnector::OnCmdLineParsed(parser);
+}
+
+void CamulecmdApp::TextShell(const wxString& prompt, CmdId commands[])
+{
+	if (m_HasCmdOnCmdLine)
+		Parse_Command(m_CmdString, commands);
+	else
+		CaMuleExternalConnector::TextShell(prompt, commands);
+}
 #endif
 
 int CamulecmdApp::ProcessCommand(int CmdId)
@@ -335,12 +355,12 @@ void CamulecmdApp::ShowGreet() {
 bool CamulecmdApp::OnInit() {
 	CaMuleExternalConnector::OnInit();
 	frame = new CamulecmdFrame(wxT("amulecmd DLG"), wxPoint(50, 50), wxSize(APP_INIT_SIZE_X, APP_INIT_SIZE_Y));
-	frame->Show(TRUE);
+	frame->Show(true);
 #else
 int CamulecmdApp::OnRun() {
 #endif
 	ConnectAndRun(wxT("aMulecmd"), commands);
 	
-	return TRUE;
+	return true;
 }
 

@@ -6,6 +6,8 @@ Version 2.0.0rc6 - The '???' version.
 		* Patch to fix buffer overflow in cas when line had more than
 		  80 chars.
 		* Patch to fix help switch in ExternalConnector.cpp
+		* Patch to create -c switch in amulecmd: now the command line
+		  version can connect, execute a command and exit.
 
 	Hetfield:
 		* Lots of 3.4.x compilation fixes, due to -DWX_PRECOMP
