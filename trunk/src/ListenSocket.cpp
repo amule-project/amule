@@ -69,7 +69,6 @@ CEMSocket(ProxyData)
 	if (m_client) {
 		m_client->SetSocket(this);
 	}
-	theApp.listensocket->AddSocket(this);
 	ResetTimeOutTimer();
 	deletethis = false;
 	connection_retries = 0;
@@ -87,10 +86,12 @@ CEMSocket(ProxyData)
 		wxSOCKET_LOST_FLAG);
 	Notify(true);
 #endif
+	theApp.listensocket->AddSocket(this);
 }
 
 void CClientReqSocket::OnInit()
 {
+	last_action = ACTION_CONNECT;
 }
 
 bool CClientReqSocket::Close()
@@ -2432,7 +2433,7 @@ void CListenSocket::OnAccept(int nErrorCode)
 			CClientReqSocket* newclient = new CClientReqSocket();
 			// Accept the connection and give it to the newly created socket
 			if (AcceptWith(*newclient, false)) {
-				// OnInit currently does nothing
+				// OnInit currently sets the last_action to ACTION_CONNECT
 				newclient->OnInit();
 			} else {
 				newclient->Safe_Delete();
