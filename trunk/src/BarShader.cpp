@@ -1,4 +1,4 @@
-// This file is part of the aMule project.
+ // This file is part of the aMule project.
 //
 // Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
 //
@@ -26,7 +26,7 @@
 #include "BarShader.h"		// Interface declarations.
 
 
-const float Pi = 3.14159265358979323846264338328;
+const double Pi = 3.14159265358979323846264338328;
 
 #define HALF(X) (((X) + 1) / 2)
 #define DEFAULT_DEPTH 10
@@ -64,22 +64,12 @@ void CBarShader::BuildModifiers()
 	}
 
 	int count = HALF(m_Height);
-	float increment = ( Pi / m_Height );
-	float depth = m_used3dlevel / 10.0;
+	double increment = ( Pi / m_Height );
+	double depth = m_used3dlevel / 10.0;
 
-	m_Modifiers = new float[count];
+	m_Modifiers = new double[count];
 	for (int i = 0; i < count; i++)
 		m_Modifiers[i] = sin(i * increment) * depth;
-}
-
-
-void CBarShader::SetFileSize(uint32 fileSize)
-{
-	if ( m_FileSize != fileSize ) {
-		m_FileSize = fileSize;
-		m_PixelsPerByte = (double)m_Width / m_FileSize;
-		m_BytesPerPixel = (double)m_FileSize / m_Width;
-	}
 }
 
 
@@ -220,7 +210,9 @@ void CBarShader::Draw( wxDC* dc, int iLeft, int iTop, bool bFlat )
 	rectSpan.width  = 0;
 
 	dc->SetPen(*wxTRANSPARENT_PEN);
-
+	
+	double m_PixelsPerByte = (double)m_Width / m_FileSize;
+	double m_BytesPerPixel = (double)m_FileSize / m_Width;
 	int iBytesInOnePixel = (int)(m_BytesPerPixel + 0.5f);
 	uint32 start = 0;
 
@@ -250,14 +242,14 @@ void CBarShader::Draw( wxDC* dc, int iLeft, int iTop, bool bFlat )
 			   span. This means that we wont get sharp "streaks" from small
 			   gaps, but rather blured lines, which fade in with the next span. */
 		
-			float fRed = 0;
-			float fGreen = 0;
-			float fBlue = 0;
+			double fRed = 0;
+			double fGreen = 0;
+			double fBlue = 0;
 			
 			uint32 iEnd = start + iBytesInOnePixel;
 			uint32 iLast = start;
 			do {
-				float fWeight = (std::min(bsCurrent->end, iEnd) - iLast) * m_PixelsPerByte;
+				double fWeight = (std::min(bsCurrent->end, iEnd) - iLast) * m_PixelsPerByte;
 				fRed   += GetRValue(bsCurrent->color) * fWeight;
 				fGreen += GetGValue(bsCurrent->color) * fWeight;
 				fBlue  += GetBValue(bsCurrent->color) * fWeight;
