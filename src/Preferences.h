@@ -301,8 +301,9 @@ public:
 	static void		SetTransferFullChunks( bool m_bintransferfullchunks ) 
 					{s_btransferfullchunks = m_bintransferfullchunks; }
 	static bool		StartNextFile()			{ return s_bstartnextfile; }
-	static bool		StartNextFileSame()			{ return s_bstartnextfilesame; }
+	static bool		StartNextFileSame()		{ return s_bstartnextfilesame; }
 	static void		SetStartNextFile(bool val)	{ s_bstartnextfile = val; }
+	static void		SetStartNextFileSame(bool val)	{ s_bstartnextfilesame; }
 	static bool		ShowOverhead()			{ return s_bshowoverhead; }
 	static void		SetNewAutoUp(bool m_bInUAP) 	{ s_bUAP = m_bInUAP; }
 	static bool		GetNewAutoUp() 			{ return s_bUAP; }

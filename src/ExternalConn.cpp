@@ -801,28 +801,6 @@ CECPacket *Get_EC_Response_Set_SharedFile_Prio(const CECPacket *request)
 	return response;
 }
 
-CECPacket *ProcessPreferencesRequest(const CECPacket *request)
-{
-	uint32 selection = request->GetTagByNameSafe(EC_TAG_SELECT_PREFS)->GetInt32Data();	
-	EC_DETAIL_LEVEL dl = request->GetDetailLevel();
-
-	CECPacket *response = new CEC_Prefs_Packet(selection, dl);
-
-	return response;
-}
-
-CECPacket *SetPreferencesFromRequest(const CECPacket *request)
-{
-
-	((CEC_Prefs_Packet *)request)->Apply();
-	
-	// Save the preferences
-	theApp.glob_prefs->Save();
-
-	CECPacket *response = new CECPacket(EC_OP_NOOP);
-	return response;
-}
-
 // init with some default size
 CPartFile_Encoder::GapBuffer CPartFile_Encoder::m_gap_buffer(128);
 
@@ -1143,10 +1121,12 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 		// Preferences
 		//
 		case EC_OP_GET_PREFERENCES:
-			response = ProcessPreferencesRequest(request);
+			response = new CEC_Prefs_Packet(request->GetTagByNameSafe(EC_TAG_SELECT_PREFS)->GetInt32Data(), request->GetDetailLevel());
 			break;
 		case EC_OP_SET_PREFERENCES:
-			response = SetPreferencesFromRequest(request);
+			((CEC_Prefs_Packet *)request)->Apply(true);
+			theApp.glob_prefs->Save();
+			response = new CECPacket(EC_OP_NOOP);
 			break;
 		//
 		// Logging
