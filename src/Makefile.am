@@ -14,7 +14,7 @@ SUBDIRS = utils pixmaps $(OPT_WEB)
 
 EXTRA_DIST = strings.en Makengfile aMule.xpm aMule.tmpl
 
-bin_PROGRAMS = amule
+bin_PROGRAMS = 
 
 if WEB
 bin_PROGRAMS += amuleweb
@@ -36,11 +36,14 @@ if ED2K
 bin_PROGRAMS += ed2k
 endif
 
+bin_PROGRAMS += amule
+
 DEFS = -DHAVE_CONFIG_H
 
 BUILT_SOURCES =
 
-LIBS = @LIBS@ 
+#LIBS = @LIBS@ 
+
 amule_SOURCES = ListenSocket.cpp \
 	ECSocket.cpp \
 	EMSocket.cpp \
