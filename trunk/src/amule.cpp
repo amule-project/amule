@@ -1300,14 +1300,20 @@ void CamuleApp::Trigger_New_version(wxString new_version)
 }
 
 
-void CamuleApp::SetOSFiles(const wxString new_path) {
-	if (thePrefs::IsOnlineSignatureEnabled() && ::wxDirExists(new_path)) {
-		emulesig_path = new_path + wxFileName::GetPathSeparator() + wxT("onlinesig.dat");
-		amulesig_path = new_path + wxFileName::GetPathSeparator() + wxT("amulesig.dat");
+void CamuleApp::SetOSFiles(const wxString new_path)
+{
+	if ( thePrefs::IsOnlineSignatureEnabled() ) {
+		if ( ::wxDirExists(new_path) ) {
+			emulesig_path = new_path + wxFileName::GetPathSeparator() + wxT("onlinesig.dat");
+			amulesig_path = new_path + wxFileName::GetPathSeparator() + wxT("amulesig.dat");
+		} else {
+			ShowAlert(_("The folder for Online Signature files you specified is INVALID!\n OnlineSignature will be DISABLED until you fix it on preferences."), _("Error"), wxOK | wxICON_ERROR);
+			emulesig_path = wxEmptyString;
+			amulesig_path = wxEmptyString;
+		}
 	} else {
-		ShowAlert(_("The folder for Online Signature files you specified is INVALID!\n OnlineSignature will be DISABLED until you fix it on preferences."), _("Error"), wxOK | wxICON_ERROR);
 		emulesig_path = wxEmptyString;
-		amulesig_path = wxEmptyString;
+		amulesig_path = wxEmptyString;	
 	}
 }
 
