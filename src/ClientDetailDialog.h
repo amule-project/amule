@@ -20,7 +20,6 @@
 #ifndef CLIENTDETAILDIALOG_H
 #define CLIENTDETAILDIALOG_H
 
-#include <sys/time.h>		// Needed for gettimeofday(2)
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #ifdef __WXMSW__
 	#include <wx/msw/winundef.h>
@@ -29,20 +28,55 @@
 
 class CUpDownClient;
 
-// CClientDetailDialog dialog
+/**
+ * The ClientDetailDialog class is responsible for showing the info about a client.
+ *
+ * It shows all releavant data about the client: ip, port, hash, name, client
+ * type and version, uploading/downloading data, credits, server... etc
+ *
+ * It's  wxDialog, modal, with return value always '0'.
+ *
+ */
 
 class CClientDetailDialog : public wxDialog
 {
 public:
-	CClientDetailDialog(wxWindow*parent,CUpDownClient* client);   // standard constructor
+	/**
+	 * Constructor. 
+	 *
+	 * @param parent The window that created the dialog.
+	 * @param client The client whose details we're showing.
+	 */
+	CClientDetailDialog(wxWindow*parent,CUpDownClient* client);   
+	
+	/**
+	 * Destructor. 
+	 *
+	 * Does nothing currently.
+	 */
 	virtual ~CClientDetailDialog();
-	virtual bool OnInitDialog();
 
 protected:
+
+	/**
+	 * Creates all the data objects in the dialog, filling them accordingly.
+	 * 
+	 * Called when the dialog object is created.
+	 */
+	virtual bool OnInitDialog();	
+	
+	/**
+	 * Ends the dialog, calling EndModal with return value 0
+	 * 
+	 * @param evt The close event, unused right now
+	 */
 	void OnBnClose(wxCommandEvent& evt);
+
 	DECLARE_EVENT_TABLE()
 
 private:
+	
+	//! The CUpDownClient whose data is drawn
 	CUpDownClient* m_client;
 };
 #endif // CLIENTDETAILDIALOG_H
