@@ -31,8 +31,6 @@
 #include <wx/txtstrm.h>		// Needed for wxTextInputStream
 #include <wx/zipstrm.h>		// Needed for wxZipInputStream
 
-#include <netinet/in.h>
-
 #include "IPFilter.h"		// Interface declarations.
 #include "NetworkFunctions.h"
 #include "Preferences.h"	// Needed for CPreferences
