@@ -47,8 +47,6 @@
 #include "PartFile.h"		// Needed for SavePartFile
 #include "endianfix.h"
 
-#include "CryptoPP_Inc.h"	// Needed for MD4
-
 #include <wx/arrimpl.cpp> // this is a magic incantation which must be done!
 
 WX_DEFINE_OBJARRAY(ArrayOfCMD4Hash);
@@ -737,21 +735,6 @@ bool CKnownFile::WriteToFile(CFile* file){
 	return true;
 }
 
-
-void CKnownFile::CreateHashFromInput(CFile* file, int Length, uchar* Output, uchar* in_string)
-{
-	CryptoPP::MD4 a;
-
-	if (in_string) {
-		a.CalculateDigest(Output,in_string,Length);
-	} else { 
-		unsigned char* input = new unsigned char[Length];
-		file->Read(input,Length);
-		a.CalculateDigest(Output,input,Length);
-		delete[] input;
-	}
-}
-
 #ifndef _AFX
 #ifndef VERIFY
 #define VERIFY(x) (void(x))
@@ -780,7 +763,7 @@ void byteReverse(unsigned char *buf, unsigned longs) {
 #define byteReverse(buf, len)	do { } while (0)
 #endif
 
-void CKnownFile::CreateHashFromInput(FILE* file,CFile* file2, int Length, uchar* Output, uchar* in_string, CAICHHashTree* pShaHashOut) const
+void CKnownFile::CreateHashFromInput(FILE* file,CFile* file2, uint32 Length, uchar* Output, uchar* in_string, CAICHHashTree* pShaHashOut) const
 {
 	wxASSERT( Output != NULL || pShaHashOut != NULL);
 	// time critial
