@@ -47,6 +47,7 @@
 #include "Statistics.h"
 #include "NetworkFunctions.h" // for StringHosttoUint32
 #include "Logger.h"
+#include "Format.h"
 
 #ifndef AMULE_DAEMON
 	#include "SearchDlg.h"		// Needed for CSearchDlg
@@ -186,7 +187,11 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 	InitLocalIP();
 	
 	if (sender->GetConnectionState() == CS_WAITFORLOGIN) {
-		AddLogLineM(false,_("Connected to ") + sender->cur_server->GetListName() + wxT(" (") + sender->cur_server->GetFullIP() + wxString::Format(wxT(":%i)"),sender->cur_server->GetPort()));
+		AddLogLineM(false, CFormat( _("Connected to %s (%s:%i)") )
+			% sender->cur_server->GetListName()
+			% sender->cur_server->GetFullIP()
+			% sender->cur_server->GetPort() );
+
 		//send loginpacket
 		CServer* update = theApp.serverlist->GetServerByAddress( sender->cur_server->GetAddress(), sender->cur_server->GetPort() );
 		if (update){
@@ -246,7 +251,7 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 		theApp.statistics->AddReconnect();
 		theApp.statistics->SetServerConnectTime(GetTickCount64());
 		connected = true;
-		AddLogLineM(true, _("Connection established on: ") + sender->cur_server->GetListName());
+		AddLogLineM(true, CFormat( _("Connection established on: %s") ) % sender->cur_server->GetListName());
 		connectedsocket = sender;
 		Notify_ShowConnState(true,connectedsocket->cur_server->GetListName());
 		
@@ -319,14 +324,22 @@ void CServerConnect::ConnectionFailed(CServerSocket* sender){
 			break;
 		case CS_DISCONNECTED:
 			theApp.sharedfiles->ClearED2KPublishInfo();
-			AddLogLineM(false,_("Lost connection to ") + sender->cur_server->GetListName() + wxT("(") + sender->cur_server->GetFullIP() + wxString::Format(wxT(":%i)"),sender->cur_server->GetPort()));
+			AddLogLineM(false,CFormat( _("Lost connection to %s (%s:%i)") )
+				% sender->cur_server->GetListName()
+				% sender->cur_server->GetFullIP()
+				% sender->cur_server->GetPort() );
+
 			update = theApp.serverlist->GetServerByAddress( sender->cur_server->GetAddress(), sender->cur_server->GetPort() );
 			if (update){
 				Notify_ServerHighlight(update, false);
 			}
 			break;
 		case CS_SERVERDEAD:
-			AddLogLineM(false,sender->cur_server->GetListName() + wxT("(") + sender->cur_server->GetFullIP() + wxString::Format(_(":%i) appears to be dead."),sender->cur_server->GetPort()));			
+			AddLogLineM(false, CFormat( _("%s (%s:%i) appears to be dead.") )
+				% sender->cur_server->GetListName()
+				% sender->cur_server->GetFullIP()
+				% sender->cur_server->GetPort() );
+
 			update = theApp.serverlist->GetServerByAddress( sender->cur_server->GetAddress(), sender->cur_server->GetPort() );
 			if (update) {
 				update->AddFailedCount();
@@ -336,7 +349,11 @@ void CServerConnect::ConnectionFailed(CServerSocket* sender){
 		case CS_ERROR:
 			break;
 		case CS_SERVERFULL:
-			AddLogLineM(false,sender->cur_server->GetListName() + wxT("(") + sender->cur_server->GetFullIP() + wxString::Format(_(":%i) appears to be full."),sender->cur_server->GetPort()));			
+			AddLogLineM(false, CFormat( _("%s (%s:%i) appears to be full.") )
+				% sender->cur_server->GetListName()
+				% sender->cur_server->GetFullIP()
+				% sender->cur_server->GetPort() );
+			
 			break;
 		case CS_NOTCONNECTED:; 
 			break; 
@@ -352,7 +369,7 @@ void CServerConnect::ConnectionFailed(CServerSocket* sender){
 			StopConnectionTry();
 			if ((thePrefs::Reconnect()) && (autoretry) && (!m_idRetryTimer.IsRunning())){ 
 				AddLogLineM(false, wxString::Format(_("Automatic connection to server will retry in %d seconds"), CS_RETRYCONNECTTIME)); 
-				//m_idRetryTimer= SetTimer(NULL, 0, 1000*CS_RETRYCONNECTTIME, (TIMERPROC)RetryConnectCallback);
+				
 				m_idRetryTimer.SetOwner(&theApp,TM_TCPSOCKET);
 				m_idRetryTimer.Start(1000*CS_RETRYCONNECTTIME);
 			}
@@ -381,7 +398,10 @@ void CServerConnect::ConnectionFailed(CServerSocket* sender){
 		case CS_NOTCONNECTED:{
 			if (!connecting)
 				break;
-			AddLogLineM(false,wxString(_("Connecting to ")) + sender->info + wxT(" (") + sender->cur_server->GetFullIP() + wxString::Format(_(":%i) failed"),sender->cur_server->GetPort()));			
+			AddLogLineM(false, CFormat( _("Connecting to %s (%s:%i) failed.") )
+				% sender->info
+				% sender->cur_server->GetFullIP()
+				% sender->cur_server->GetPort() );
 		}
 		case CS_SERVERDEAD:
 		case CS_SERVERFULL:{
@@ -423,7 +443,10 @@ void CServerConnect::CheckForTimeout()
 			CServerSocket* value = it->second;
 			++it;
 			if (!value->IsSolving()) {
-				AddLogLineM(false,wxString(_("Connection attempt to ")) + value->info + wxT(" (") + value->cur_server->GetFullIP() + wxString::Format(_(":%i) timed out."),value->cur_server->GetPort()));
+				AddLogLineM(false, CFormat( _("Connection attempt to %s (%s:%i) timed out.") )
+					% value->info
+					% value->cur_server->GetFullIP()
+					% value->cur_server->GetPort() );
 			
 				connectionattemps.erase( key );
 	

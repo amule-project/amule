@@ -51,6 +51,7 @@
 #include "amuleIPV4Address.h"	// Needed for amuleIPV4Address
 #include "Statistics.h"		// Needed for CStatistics
 #include "Logger.h"
+#include "Format.h"
 
 #ifndef AMULE_DAEMON
 #include "SearchDlg.h"		// Needed for CSearchDlg
@@ -305,9 +306,10 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 						} else {	
 							servername = _("Server");
 						}
-						AddLogLineM(false, _("Error: ") + servername +
-														wxT(" (") + Uint32_16toStringIP_Port(cur_server->GetIP(), cur_server->GetPort()) + wxT(") - ") +
-														message.Mid(5,message.Len()).Trim(_T(" :")));
+						AddLogLineM(false, CFormat( _("Error: %s (%s) - %s") )
+							% servername
+							% Uint32_16toStringIP_Port(cur_server->GetIP(), cur_server->GetPort())
+							% message.Mid(5,message.Len()).Trim(_T(" :")));
 						bOutputMessage = false;
 
 					} else if (message.StartsWith(wxT("WARNING"))) {
@@ -319,9 +321,10 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 						} else {	
 							servername = _("Server");
 						}
-						AddLogLineM(false, _("Warning: ") + servername +
-										wxT(" (") + Uint32_16toStringIP_Port(cur_server->GetIP(), cur_server->GetPort()) + wxT(") - ") +
-										message.Mid(5,message.Len()).Trim(_T(" :")));
+						AddLogLineM(false, CFormat( _("Warning: %s (%s) - %s") )
+							% servername
+							% Uint32_16toStringIP_Port(cur_server->GetIP(), cur_server->GetPort())
+							% message.Mid(5,message.Len()).Trim(_T(" :")));
 
 						bOutputMessage = false;
 					}
@@ -351,7 +354,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				theApp.statistics->AddDownDataOverheadServer(size);
 				
 				if (size < 4 /* uint32 (ID)*/) {
-					throw wxString(_("Corrupt or invalid loginanswer from server received"));
+					throw wxString(wxT("Corrupt or invalid loginanswer from server received"));
 				}
 
 				CSafeMemFile data((byte*)packet, size);			
@@ -469,7 +472,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				AddDebugLogLineM(false,logServer,wxT("Server: OP_SERVERSTATUS"));
 				// FIXME some statuspackets have a different size -> why? structur?
 				if (size < 8) {
-					throw wxString(_("Invalid server status packet"));
+					throw wxString(wxT("Invalid server status packet"));
 					break;
 				}
 				update = theApp.serverlist->GetServerByAddress(cur_server->GetAddress(), cur_server->GetPort());
@@ -596,9 +599,9 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 		}
 		return true;
 	} catch (const CInvalidPacket& e) {
-		AddLogLineM(false,wxString(_("Bogus packet received from server - ")) + e.what());
+		AddLogLineM(false,CFormat( _("Bogus packet received from server: %s") ) % e.what());
 	} catch (const wxString& error) {
-		AddLogLineM(false,_("Unhandled error while processing packet from server - ") + error);
+		AddLogLineM(false,CFormat( _("Unhandled error while processing packet from server: %s") ) % error);
 	} catch (...) {
 		AddLogLineM(false, _("Unknown exception while processing packet from server!"));
 	}
@@ -617,7 +620,11 @@ void CServerSocket::ConnectToServer(CServer* server)
 	AddDebugLogLineM(true,logServer,wxT("Trying to connect"));
 	
 	cur_server = new CServer(server);
-	AddLogLineM(false, _("Connecting to ") + cur_server->GetListName() + wxT(" (") + server->GetAddress() + wxT(" - ") + cur_server->GetFullIP() + wxString::Format(wxT(":%i)"),cur_server->GetConnPort()));
+	AddLogLineM(false, CFormat( _("Connecting to %s (%s - %s:%i)") )
+		% cur_server->GetListName()
+		% server->GetAddress()
+		% cur_server->GetFullIP()
+		% cur_server->GetConnPort() );
 	SetConnectionState(CS_CONNECTING);
 	
 	info = cur_server->GetListName();		
@@ -631,11 +638,11 @@ void CServerSocket::ConnectToServer(CServer* server)
 		if ( dns->Create() == wxTHREAD_NO_ERROR ) {
 			if ( dns->Run() != wxTHREAD_NO_ERROR ) {
 				dns->Delete();
-				AddLogLineM(false, _("Cannot create DNS solving thread for connecting to ")+cur_server->GetAddress());
+				AddLogLineM(false, CFormat( _("Cannot create DNS solving thread for connecting to %s") ) % cur_server->GetAddress());
 			}
 		} else {
 			dns->Delete();
-			AddLogLineM(false, _("Cannot create DNS solving thread for connecting to ")+cur_server->GetAddress());
+			AddLogLineM(false, CFormat( _("Cannot create DNS solving thread for connecting to %s") ) % cur_server->GetAddress());
 		}
 	} else {
 		// Nothing to solve, we already have the IP
@@ -646,7 +653,7 @@ void CServerSocket::ConnectToServer(CServer* server)
 
 void CServerSocket::OnError(wxSocketError nErrorCode)
 {
-	AddDebugLogLineM(false, logServer, _("Error in serversocket: ") + cur_server->GetListName() + wxT("(") + cur_server->GetFullIP() + wxString::Format(wxT(":%i): %u"),cur_server->GetPort(), (int)nErrorCode));
+	AddDebugLogLineM(false, logServer, wxT("Error in serversocket: ") + cur_server->GetListName() + wxT("(") + cur_server->GetFullIP() + wxString::Format(wxT(":%i): %u"),cur_server->GetPort(), (int)nErrorCode));
 	SetConnectionState(CS_DISCONNECTED);
 }
 
@@ -720,7 +727,8 @@ void CServerSocket::OnHostnameResolved(uint32 ip) {
 		AddDebugLogLineM(false, logServer, wxT("Server ") + cur_server->GetAddress() + wxT("(") + Uint32toStringIP(ip) + wxT(")") + wxString::Format(wxT(" Port %i"), cur_server->GetConnPort()));
 		Connect(addr, false);
 	} else {
-		AddLogLineM(true, _("Could not solve dns for server ") + cur_server->GetAddress() + _(" : Unable to connect!"));
+		AddLogLineM(true, CFormat( _("Could not solve dns for server %s: Unable to connect!") )
+			% cur_server->GetAddress() );
 		OnConnect(wxSOCKET_NOHOST);
 	}
 	

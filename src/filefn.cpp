@@ -105,6 +105,7 @@
 #include "filefn.h"		// Interface declarations.
 #include "CFile.h"
 #include "amule.h"
+#include "Format.h"
 
 // we need to translate Mac filenames before passing them to OS functions
 #define MY_OS_FILENAME(s) (s.fn_str())
@@ -120,8 +121,8 @@ wxCopyFile_fat32 (const wxString& file1, const wxString& file2, bool overwrite, 
     // NB: 3rd parameter is bFailIfExists i.e. the inverse of overwrite
     if ( !::CopyFile(file1, file2, !overwrite) )
     {
-        wxLogSysError(_("Failed to copy the file '%s' to '%s'"),
-                      file1.c_str(), file2.c_str());
+        wxLogSysError((CFormat(wxT("Failed to copy the file '%s' to '%s'")) %
+                      file1.c_str() % file2.c_str()).GetString());
 
         return FALSE;
     }
@@ -136,8 +137,8 @@ wxCopyFile_fat32 (const wxString& file1, const wxString& file2, bool overwrite, 
     {
         // the file probably doesn't exist or we haven't the rights to read
         // from it anyhow
-        wxLogSysError(_("Impossible to get permissions for file '%s'"),
-                      file1.c_str());
+        wxLogSysError((CFormat(wxT("Impossible to get permissions for file '%s'")) %
+                      file1.c_str()).GetString());
         return FALSE;
     }
 
@@ -150,8 +151,8 @@ wxCopyFile_fat32 (const wxString& file1, const wxString& file2, bool overwrite, 
     // file2 with the correct permissions in the next step
     if ( wxFileExists(file2)  && (!overwrite || !wxRemoveFile(file2)))
     {
-        wxLogSysError(_("Impossible to overwrite the file '%s'"),
-                      file2.c_str());
+        wxLogSysError((CFormat(wxT("Impossible to overwrite the file '%s'")) %
+                      file2.c_str()).GetString());
         return FALSE;
     }
 
@@ -203,8 +204,8 @@ wxCopyFile_fat32 (const wxString& file1, const wxString& file2, bool overwrite, 
     if (do_chmod) {
     	if ( chmod(MY_OS_FILENAME(file2), fbuf.st_mode) != 0 )
     		{
-        		wxLogSysError(_("Impossible to set permissions for the file '%s'"),
-                      file2.c_str());
+        		wxLogSysError((CFormat(wxT("Impossible to set permissions for the file '%s'")) %
+                      file2.c_str()).GetString());
         	return FALSE;
     		}
 	}
@@ -267,7 +268,7 @@ bool BackupFile(const wxString& filename, const wxString& appendix)
 {
 
 	if ( !FS_wxCopyFile(filename, filename + appendix) ) {
-		wxLogSysError( _("info: Could not create backup of '%s'\n"), filename.c_str() );
+		wxLogSysError( (CFormat(wxT("info: Could not create backup of '%s'")) % filename.c_str()).GetString());
 		return false;
 	}
 	

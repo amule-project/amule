@@ -54,6 +54,7 @@
 #include "ECcodes.h"		// Needed for OPcodes, TAGnames
 #include "ECSpecialTags.h"	// Needed for special EC tag creator classes
 #include "Statistics.h"
+#include "Format.h"
 
 using namespace otherfunctions;
 
@@ -259,8 +260,10 @@ CECPacket *ExternalConn::Authenticate(const CECPacket *request)
 	if (request->GetOpCode() == EC_OP_AUTH_REQ) {
 		const CECTag *clientName = request->GetTagByName(EC_TAG_CLIENT_NAME);
 		const CECTag *clientVersion = request->GetTagByName(EC_TAG_CLIENT_VERSION);
-		AddLogLineM(false, _("Connecting client: ") + ((clientName == NULL) ? wxString(_("Unknown")) : clientName->GetStringData()) +
-			wxT(" ") + ((clientVersion == NULL) ? wxString(_("Unknown version")) : clientVersion->GetStringData()));
+		
+		AddLogLineM(false, CFormat( _("Connecting client: %s %s") )
+			% ( clientName ? clientName->GetStringData() : wxString(_("Unknown")) )
+			% ( clientVersion ? clientVersion->GetStringData() : wxString(_("Unknown version")) ) );
 		const CECTag *passwd = request->GetTagByName(EC_TAG_PASSWD_HASH);
 		const CECTag *protocol = request->GetTagByName(EC_TAG_PROTOCOL_VERSION);
 #ifdef CVSDATE

@@ -274,25 +274,15 @@ void CClientCreditsList::LoadList()
 		}
 		file.Close();
 
-		GUIEvent event(ADDLOGLINE);
-		
 		if ( error ) {
 			AddDebugLogLineM( true, logCredits, wxT("WARNING: Corruptions found while reading Creditfile!\n") );
-			
-			event.string_value = _("WARNING: Failed to load Creditfile due to corruptions!");	
-			event.byte_value = true;
 		} else {
-			event.string_value = wxString::Format(_("Creditfile loaded, %u clients are known"),count-cDeleted);	
-			event.byte_value = false;
+			AddLogLineM(false, wxString::Format(_("Creditfile loaded, %u clients are known"),count-cDeleted) );
 	
 			if (cDeleted) {
-				event.string_value += wxString::Format(_(" - Credits expired for %u clients!"),cDeleted);
+				AddLogLineM(false, wxString::Format(_(" - Credits expired for %u clients!"),cDeleted));
 			}
 		}
-	
-		
-		theApp.NotifyEvent(event);
-		
 	} catch (const wxString& error) {
 		AddDebugLogLineM( true, logCredits, wxT("Unable to load clients.met file! ") + error);
 	} catch (...) {

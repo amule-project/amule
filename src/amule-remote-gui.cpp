@@ -110,6 +110,7 @@
 #include "ClientListCtrl.h"
 #include "ServerListCtrl.h"
 #include "ClientCredits.h"
+#include "Format.h"
 
 #include "CMD4Hash.h"
 #include "ECSocket.h"
@@ -306,7 +307,7 @@ bool CamuleRemoteGuiApp::OnInit()
 			return false;
 		}
 	} while ( !connect->Connect(dialog->Host(), dialog->Port(), dialog->Login(), dialog->PassHash()) );
-	amuledlg->AddLogLine(true, _("Connected to amule at ") + dialog->Host());
+	amuledlg->AddLogLine(true, CFormat(_("Connected to amule at %s")) % dialog->Host());
 	
 	if ( dialog->SaveUserPass() ) {
 		wxConfig::Get()->Write(wxT("/EC/Host" ), dialog->Host());
@@ -856,7 +857,7 @@ bool CRemoteConnect::Connect(const wxString &host, int port,
 	if (reply->GetOpCode() == EC_OP_AUTH_FAIL) {
 		const CECTag *reason = reply->GetTagByName(EC_TAG_STRING);
 		if (reason != NULL) {
-			AddLogLineM(true, wxString(_("ExternalConn: Access denied because: ")) + 
+			AddLogLineM(true, CFormat(_("ExternalConn: Access denied because: %s")) % 
 				wxGetTranslation(reason->GetStringData()));
 		} else {
 		    AddLogLineM(true, _("ExternalConn: Access denied"));
@@ -864,16 +865,16 @@ bool CRemoteConnect::Connect(const wxString &host, int port,
 		delete reply;
 		return false;
     } else if (reply->GetOpCode() != EC_OP_AUTH_OK) {
-        AddLogLineM(true,_("ExternalConn: Bad reply from server. Connection closed.\n"));
+        AddLogLineM(true,_("ExternalConn: Bad reply from server. Connection closed."));
 		delete reply;
 		return false;
     } else {
         m_isConnected = true;
         if (reply->GetTagByName(EC_TAG_SERVER_VERSION)) {
-                AddLogLineM(true, _("Succeeded! Connection established to aMule ") +
-                	reply->GetTagByName(EC_TAG_SERVER_VERSION)->GetStringData() + wxT("\n"));
+                AddLogLineM(true, CFormat(_("Succeeded! Connection established to aMule %s")) %
+                	reply->GetTagByName(EC_TAG_SERVER_VERSION)->GetStringData());
         } else {
-                AddLogLineM(true, _("Succeeded! Connection established.\n"));
+                AddLogLineM(true, _("Succeeded! Connection established."));
         }
     }
     m_isConnected = true;
