@@ -328,7 +328,7 @@ class Notify_Event_Msg {
 
 	bool PtrLooksGood()
 	{
-		return ((data_len < 1024) && ( ((uint32)ptr_value > 0x04000000) ) );
+		return ((data_len < 1024) && ( ((unsigned long)ptr_value > 0x04000000) ) );
 	}
 	Notify_Event_Msg(GUIEvent &event);
 	Notify_Event_Msg() {}
@@ -366,7 +366,7 @@ class PtrsXferClient : public wxThread {
 	uint32 data_buff_size;
 	void *data_buff;
 
-	typedef unsigned int ptr_type;
+	typedef unsigned long ptr_type;
 	// assuming that sizeof(ptr) == sizeof(int)
 	std::map<ptr_type, ptr_type> ptr_hash;
 
