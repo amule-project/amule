@@ -72,7 +72,7 @@ public:
 
 	//void static CALLBACK UDPTimerProc(HWND hwnd, unsigned int uMsg,unsigned int* idEvent,DWORD dwTime);
 protected:
-	void		AutoUpdate();
+	uint8		AutoUpdate();
 private:
 	uint32		serverpos;
 	uint32		searchserverpos;
