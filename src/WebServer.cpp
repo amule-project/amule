@@ -1679,7 +1679,7 @@ wxString CWebServer::_GetLog(ThreadData Data) {
 	CECPacket *response = webInterface->SendRecvMsg_v2(&req);
 	if (response) {
 		if (CECTag *tag = response->GetTagByIndex(0)) {
-			Out.Replace(wxT("[Log]"), _SpecialChars(tag->GetStringData()) +
+			Out.Replace(wxT("[Log]"), _SpecialChars(wxGetTranslation(tag->GetStringData())) +
 				wxT("<br><a name=\"end\"></a>"));
 		} else {
 			Out.Replace(wxT("[Log]"), wxT("<br><a name=\"end\"></a>"));
