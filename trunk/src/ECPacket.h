@@ -72,7 +72,7 @@ class CECTag {
 		uint16		GetInt16Data(void) const { return ENDIAN_SWAP_16(*((uint16 *)m_tagData)); }
 		uint32		GetInt32Data(void) const { return ENDIAN_SWAP_32(*((uint32 *)m_tagData)); }
 		wxString	GetStringData(void) const { return wxString(wxConvUTF8.cMB2WC((const char *)m_tagData), aMuleConv); }
-		EC_IPv4_t *	GetIPv4Data(void) const;
+		EC_IPv4_t 	GetIPv4Data(void) const;
 	protected:
 				CECTag(wxSocketBase *sock, ECSocket& socket);
 		bool		WriteTag(wxSocketBase *sock, ECSocket& socket) const;

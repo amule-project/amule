@@ -47,6 +47,16 @@ class EC_IPv4_t {
 			EC_IPv4_t::ip[3] = (ip >> 24) & 0xff;
 			EC_IPv4_t::port = port;
 		}
+		
+		uint32 IP()
+		{
+			return ip[0] | (ip[1] << 8) | (ip[2] << 16) | (ip[3] << 24);
+		}
+		wxString StringIP()
+		{
+			return wxString::Format(wxT("%d.%d.%d.%d : %d"), ip[0], ip[1], ip[2], ip[3], port);
+		}
+		
 		uint8 ip[4];
 		uint16 port;
 };

@@ -542,11 +542,11 @@ CECPacket *Get_EC_Response_Server(const CECPacket *request)
 	CECTag *srv_tag = request->GetTagByIndex(0);
 	CServer *srv = 0;
 	if ( srv_tag ) {
-		EC_IPv4_t *addr = srv_tag->GetIPv4Data();
-		uint32 srv_ip = addr->ip[0] | (addr->ip[1] << 8) | (addr->ip[2] << 16) | (addr->ip[3] << 24);
+		uint32 srv_ip = srv_tag->GetIPv4Data().IP();
 		for(uint32 i = 0; i < theApp.serverlist->GetServerCount(); i++) {
 			CServer *curr_srv = theApp.serverlist->GetServerAt(i);
-			if ( curr_srv->GetIP() == srv_ip && curr_srv->GetPort() == addr->port) {
+			// lfroen: never saw 2 servers on same IP !
+			if ( curr_srv->GetIP() == srv_ip) {
 				srv = curr_srv;
 				break;
 			}
@@ -554,11 +554,9 @@ CECPacket *Get_EC_Response_Server(const CECPacket *request)
 		// server tag passed, but server not found
 		if ( !srv ) {
 			response->AddTag(CECTag(EC_TAG_STRING,
-						wxString::Format(_("ERROR: server [%d.%d.%d.%d:%d] not found"), addr->ip[0], addr->ip[1], addr->ip[2], addr->ip[3], addr->port)));
-			delete addr;
+						wxString(_("ERROR: server not found: ")) + srv_tag->GetIPv4Data().StringIP()));
 			return response;
 		}
-		delete addr;
 	}
 	switch (request->GetOpCode()) {
 		case EC_OP_SERVER_DISCONNECT:

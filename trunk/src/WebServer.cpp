@@ -787,13 +787,10 @@ wxString CWebServer::_GetHeader(ThreadData Data, long lSession) {
 		case 2:
 		case 3: {
 				CECTag *server = stats->GetTagByName(EC_TAG_STATS_CONNSTATE)->GetTagByIndex(0);
-				EC_IPv4_t * addr = server->GetIPv4Data();
 				sConnected = _("Connected to ");
-				sConnected += server->GetTagByName(EC_TAG_SERVER_NAME)->GetStringData();
-				sConnected += wxString::Format(wxT(" [%d.%d.%d.%d:%d] "),
-					addr->ip[0], addr->ip[1], addr->ip[2], addr->ip[3], addr->port);
+				sConnected += server->GetTagByName(EC_TAG_SERVER_NAME)->GetStringData() + _(" ");
+				sConnected += server->GetIPv4Data().StringIP();
 				sConnected += stats->GetTagByName(EC_TAG_STATS_CONNSTATE)->GetInt8Data() == 2 ? _("with LowID") : _("with HighID");
-				delete addr;
 			}
 			break;
 	}
@@ -960,13 +957,10 @@ wxString CWebServer::_GetServerList(ThreadData Data) {
 		} else {
 			Entry->sServerDescription = wxEmptyString;
 		}
-		{
-			EC_IPv4_t *addr = tag->GetIPv4Data();
-			Entry->sServerIP = wxString::Format(wxT("%d.%d.%d.%d : %d"), addr->ip[0], addr->ip[1], addr->ip[2], addr->ip[3], addr->port);
-			Entry->nServerIP = addr->ip[0] | (addr->ip[1] << 8) | (addr->ip[2] << 16) | (addr->ip[3] << 24);
-			Entry->nServerPort = addr->port;
-			delete addr;
-		}
+		Entry->sServerIP = tag->GetIPv4Data().StringIP();
+		Entry->nServerIP = tag->GetIPv4Data().IP();
+		Entry->nServerPort = tag->GetIPv4Data().port;
+
 		if ((tmpTag = tag->GetTagByName(EC_TAG_SERVER_USERS)) != NULL) {
 			Entry->nServerUsers = tmpTag->GetInt32Data();
 		} else {
