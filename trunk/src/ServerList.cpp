@@ -317,7 +317,7 @@ bool CServerList::IsGoodServerIP(CServer* in_server)
 			char* ipmask = strdup(filtered_blocks[i]);
 			char* addr = strtok(ipmask, "/");
 			char* n = strtok(NULL, "/");
-			filters[i].addr = StringIPtoUint32(addr);
+			filters[i].addr = StringIPtoUint32(char2unicode(addr));
 			#warning ENDIANESS -> Take care of this htonl
 			filters[i].mask = htonl((1 << (32 - atoi(n))) - 1);
 			free(ipmask);
