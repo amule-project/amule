@@ -58,15 +58,12 @@ waitinglist.GetHeadPosition();}
         CUpDownClient* GetWaitClientAt(POSITION &curpos)        {return waitinglist.GetAt(curpos);}
  
 
-	void	UpdateBanCount();
 	CUpDownClient*	GetWaitingClientByIP(uint32 dwIP);
 	CUpDownClient*	GetNextClient(CUpDownClient* update);
 
 	
 	void	DeleteAll();
 	uint16	GetWaitingPosition(CUpDownClient* client);
-	void	SetBanCount(uint32 in_count)			{bannedcount = in_count;}
-	uint32	GetBanCount()							{return bannedcount;}
 	uint32	GetSuccessfullUpCount()					{return successfullupcount;}
 	uint32	GetFailedUpCount()						{return failedupcount;}
 	uint32	GetAverageUpTime();
@@ -111,7 +108,6 @@ private:
 	float	kBpsUp;
 	float	kBpsEst;
 	CPreferences* app_prefs;
-	uint32	bannedcount;
 	uint32	successfullupcount;
 	uint32	failedupcount;
 	uint32	totaluploadtime;

@@ -472,9 +472,16 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				}
 				#endif
 				theApp.downloadqueue->AddDownDataOverheadFileRequest(size);
+			
 				if (!client->CheckHandshakeFinished(OP_EDONKEYPROT, opcode)) {
 					break;
 				}
+				
+				client->CheckForAggressive();
+				if ( client->IsBanned() ) {
+					break;
+				}
+				
 				if (size == 16) {
 					CKnownFile* reqfile = theApp.sharedfiles->GetFileByID((uchar*)packet);
 					if (reqfile) {

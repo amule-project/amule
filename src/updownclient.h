@@ -166,8 +166,7 @@ public:
 	bool		ExtProtocolAvailable() const	{ return m_bEmuleProtocol;}
 	bool		IsEmuleClient()	const		{ return m_byEmuleVersion;}
 	CClientCredits*	Credits()			{ return credits;}
-	bool		IsBanned() const
-		{ return (m_bBanned && m_nDownloadState != DS_DOWNLOADING); }
+	bool		IsBanned() const;
 	const wxString&	GetClientFilename() const	{ return ClientFilename; }
 	bool		SupportsUDP() const		{ return m_byUDPVer != 0 && m_nUDPPort != 0; }
 	uint16		GetUDPPort() const		{ return m_nUDPPort; }
@@ -243,8 +242,8 @@ public:
 	uint32  	notcompressed; // Add show compression
 	uint8		GetUploadState() const		{ return m_nUploadState; }
 	void		SetUploadState(uint8 news)	{ m_nUploadState = news; }
-	uint32		GetWaitStartTime() const	{ return m_dwWaitTime; }
-	uint32		GetWaitTime() const 		{ return m_dwUploadTime-m_dwWaitTime; }
+	uint32		GetWaitStartTime() const;
+	uint32		GetWaitTime() const 		{ return m_dwUploadTime - GetWaitStartTime(); }
 	bool		IsDownloading()	const 		{ return (m_nUploadState == US_UPLOADING); }
 	bool		HasBlocks() const
 		{ return !(m_BlockSend_queue.IsEmpty() && m_BlockRequests_queue.IsEmpty()); }
@@ -252,9 +251,10 @@ public:
 	uint32		GetScore(bool sysvalue, bool isdownloading = false, bool onlybasevalue = false) const;
 	void		AddReqBlock(Requested_Block_Struct* reqblock);
 	bool		CreateNextBlockPackage();
-	void		SetUpStartTime(uint32 dwTime = 0);
+	void		SetUpStartTime() 			{ m_dwUploadTime = ::GetTickCount(); }
 	uint32		GetUpStartTimeDelay() const	{ return ::GetTickCount() - m_dwUploadTime; }
-	void		SetWaitStartTime(uint32 dwTime = 0);
+	void		SetWaitStartTime();
+	void		ClearWaitStartTime();
 	void		SendHashsetPacket(const CMD4Hash& forfileid);
 	bool		SupportMultiPacket() const { return m_bMultiPacket;	}
 
@@ -269,12 +269,12 @@ public:
 	void		ClearUploadBlockRequests();
 	void		SendRankingInfo();
 	void		SendCommentInfo(CKnownFile *file);
-	void		AddRequestCount(const CMD4Hash& fileid);
+	// This function has been replaced by CheckForAggressive()
+	// void		AddRequestCount(const CMD4Hash& fileid);
 	bool 		IsDifferentPartBlock() const;
 	void		UnBan();
 	void		Ban();
 	bool		m_bAddNextConnect;	// VQB Fix for LowID slots only on connection
-	uint32		GetBanTime() const		{ return m_dwBanTime; }
 	uint32		GetAskedCount() const 		{ return m_cAsked; }
 	void		AddAskedCount()			{ m_cAsked++; }
 	void		SetAskedCount(uint32 m_cInAsked){ m_cAsked = m_cInAsked; }
@@ -453,15 +453,12 @@ private:
 	
 	float		kBpsUp;
 	uint32		msSentPrev;
-	bool		m_bBanned;
 	uint32		m_nTransferedUp;
 	uint8		m_nUploadState;
-	uint32		m_dwWaitTime;
 	uint32		m_dwUploadTime;
 	uint32		m_nMaxSendAllowed;
 	uint32		m_cAsked;
 	uint32		m_dwLastUpRequest;
-	uint32		m_dwBanTime;
 	bool		m_bUsedComprUp;	//only used for interface output
 	uint32		m_nCurSessionUp;
 	uint16		m_nUpPartCount;
@@ -477,7 +474,6 @@ public:
 	CTypedPtrList<CPtrList, Packet*>		 m_BlockSend_queue;
 	CTypedPtrList<CPtrList, Requested_Block_Struct*> m_BlockRequests_queue;
 	CTypedPtrList<CPtrList, Requested_Block_Struct*> m_DoneBlocks_list;
-	CTypedPtrList<CPtrList, Requested_File_Struct*>	 m_RequestedFiles_list;
 	//download
 	bool		m_bRemoteQueueFull;
 	bool		usedcompressiondown; //only used for interface output
@@ -559,7 +555,35 @@ public:
 
 	uint8 GetExtended_aMule_SO() const{ return Extended_aMule_SO; };
 	
+	/**
+	 * Checks that a client isn't aggressively re-asking for files.
+	 * 
+	 * Call this when a file is requested. If the time since the last request is
+	 * less than MIN_REQUESTTIME, 3 is added to the m_Aggressiveness variable.
+	 * If the time since the last request is >= MIN_REQUESTTIME, the variable is
+	 * decremented by 1. The client is banned if the variable reaches 10 or above.
+	 *
+	 * To check if a client is aggressive use the IsClientAggressive() function.
+	 * 
+	 * Currently this function is called when the following packets are recieved:
+	 *  - OP_STARTUPLOADREQ
+	 *  - OP_REASKFILEPING
+	 */
+	void CheckForAggressive();
+
+	/**
+	 * Specifies if a client has aggressivly requested files.
+	 *
+	 * @return True if the client is EVIL, false otherwise.
+	 */
+	bool IsClientAggressive() const { return ( m_Aggressiveness >= 10 ); }
+	
 private:
+	//! This keeps track of aggressive requests for files. 
+	uint16 m_Aggressiveness;
+	//! This tracks the time of the last time since a file was requested
+	uint32 m_LastFileRequest;
+
 
 	/* valid source attribute */
 	bool m_ValidSource;
