@@ -81,6 +81,8 @@ Version 2.0.0rc6 - The '???' version.
 		* Changed configure.in to no longer use gsocket-2.5.c for 
 		  wx-2.5.3 and up.
 		* Fixed the Random Lowid Bug.
+		* Cleaner solution to RLB: Accept() the connection and
+		  Destroy() the socket immediately.
 
 	rommel:
 		* Patch to implement the commands serverconnect and reloadipf
