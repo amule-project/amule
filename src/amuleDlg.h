@@ -90,7 +90,7 @@ public:
 	// Barry - To find out if app is running or shutting/shut down
 	bool IsRunning();
 
-	/* Public function to check which tab is active. Needed to check what to redraw. */
+	/* Returns the ID of the active dialog. Needed to check what to redraw. */
 	int GetActiveDialog()	{return m_nActiveDialog;}
 	void SetActiveDialog(wxWindow* dlg);
 	
@@ -106,6 +106,10 @@ public:
 	void Show_aMule(bool uniconize = true);
 	// has to be done in own method
 	void changeDesktopMode();
+
+#ifndef __SYSTRAY_DISABLED__
+	void CreateSystray(const wxString& title);
+#endif
 
 	CTransferWnd*		transferwnd;
 	CServerWnd*			serverwnd;
@@ -144,7 +148,6 @@ private:
 
 // Systray functions
 #ifndef __SYSTRAY_DISABLED__
-	void CreateSystray(const wxString& title);
 	void RemoveSystray();
 	void UpdateTrayIcon(int procent);
 	CSysTray*			m_wndTaskbarNotifier;
