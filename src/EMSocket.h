@@ -53,6 +53,7 @@ public:
 	void	SetDownloadLimit(uint32 limit);
 	void	DisableDownloadLimit();
 	bool	AsyncSelect(long lEvent);
+	bool		OnDestroy;  
 	//protected:
  public:
 	virtual void	PacketReceived(Packet* packet)		{}

@@ -61,7 +61,6 @@ CClientReqSocket::CClientReqSocket(CPreferences* in_prefs,CUpDownClient* in_clie
 	theApp.listensocket->AddSocket(this);
 	ResetTimeOutTimer();
 	deletethis = false;
-	OnDestroy = false;
 
 	SetEventHandler(*theApp.amuledlg,ID_SOKETTI);
 	SetNotify(wxSOCKET_CONNECTION_FLAG|wxSOCKET_INPUT_FLAG|wxSOCKET_OUTPUT_FLAG|wxSOCKET_LOST_FLAG);
