@@ -77,6 +77,7 @@ class DownloadFiles {
 	public:
 		wxString	sFileName;
 		uint8		nFileStatus;
+		wxString	sFileStatus;
 		unsigned long	lFileSize;
 		unsigned long	lFileCompleted;
 		unsigned long	lFileTransferred;
@@ -90,8 +91,6 @@ class DownloadFiles {
 		wxString	sED2kLink;
 		wxString	sFileInfo;
 		wxString	sPartStatus;
-
-		wxString	GetFileStatus();
 
 		static class DownloadFilesInfo *GetContainerInstance();
 
