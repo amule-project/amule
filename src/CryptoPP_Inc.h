@@ -1,3 +1,8 @@
+
+#ifndef CRYPTOPP_INC_H
+
+#define CRYPTOPP_INC_H
+
 #ifdef USE_EMBEDDED_CRYPTO
 	#include "CryptoPP.h"
 #else
@@ -27,4 +32,6 @@
 		#include <cryptopp/sha.h>
 	#endif
 #endif
+
+#endif /* CRYPTOPP_INC_H */
 
