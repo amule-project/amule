@@ -55,7 +55,7 @@
 #endif
 
 // Needed for 2.4.2 backward compatibility
-#if !wxCHECK_VERSION(2,5,1)
+#if (wxMINOR_VERSION < 5)
 #define wxCLOSE_BOX 0
 #endif
 
