@@ -58,6 +58,8 @@
 #include "otherfunctions.h"	// Needed for GetTickCount
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "amule.h"			// Needed for theApp
+#include "GetTickCount.h"
+
 
 //WX_DEFINE_LIST(CServerListList);
 

@@ -51,6 +51,7 @@
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "amule.h"			// Needed for theApp
 #include "amuleIPV4Address.h"	// Needed for wxIPV4address
+#include "GetTickCount.h"
 
 class AsyncDNS : public wxThread
 {

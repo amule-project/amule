@@ -846,7 +846,9 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 					//int\tint\tint\twxstring\twxstring\twxstring\twxstring
 					buffer=wxString::Format("%d\t", cur_file->GetStatus());
 					buffer.Append(wxString::Format("%d\t", cur_file->GetTransferingSrcCount()));
-					buffer.Append(wxString::Format("%d\t", cur_file->GetFileType()));
+					// Needed because GetFileType() no longer exists (and returned always returned 2 anyway)
+					// buffer.Append(wxString::Format("%d\t", cur_file->GetFileType()));
+					buffer.Append(wxString::Format("%d\t", 2));
 					buffer.Append((cur_file->IsPartFile()) ? "Is PartFile\t" : "Is Not PartFile\t");
 					buffer.Append((cur_file->IsStopped()) ? "Is Stopped\t" : "Is Not Stopped\t");
 					buffer.Append(( GetFiletype(cur_file->GetFileName()) == ftVideo ) ? "Is Movie\t" : "Is Not Movie\t");
