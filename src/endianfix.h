@@ -32,7 +32,6 @@
                 #define ENDIAN_SWAP_I_64(x) {}
         #endif
 #else
-        #warning BIG ENDIAN BOX
         #define ENDIAN_SWAP_16(x) (wxUINT16_SWAP_ALWAYS(x))
         #define ENDIAN_SWAP_I_16(x) x = wxUINT16_SWAP_ALWAYS(x)
         #define ENDIAN_SWAP_32(x) (wxUINT32_SWAP_ALWAYS(x))
@@ -45,4 +44,3 @@
 
 
 #endif // ENDIANFIX_H
-
