@@ -469,13 +469,12 @@ wxString CSearchList::GetWebList( const wxString& linePattern, int sortby, bool 
 
 	SearchList list;
 
-	// WTF? Why do we use all results, not just a specific search?
-	{
-		ResultMap::const_iterator it = m_Results.begin();
-		for ( ; it != m_Results.end(); ++it )
-			list.insert( list.end(), it->second.begin(), it->second.end() );
-	}
-
+	ResultMap::const_iterator rit = m_Results.find( 0xffff );
+		
+	if ( rit != m_Results.end() ) {
+		list = rit->second;
+	} 
+	
 	// Sorts the entire list using the specified parameters
 	std::sort( list.begin(), list.end(), CmpFiles( sortby, asc ) );
 	
