@@ -20,9 +20,9 @@
 #include <wx/defs.h>		// Needed before any other wx/*.h
 
 #include <wx/settings.h>	// Needed for wxSYS_COLOUR_WINDOW
-#include <wx/accel.h>
 #include <wx/sizer.h>
 #include <wx/menu.h>
+#include <wx/accel.h>
 #include "ChatWnd.h"		// Interface declarations.
 #include "amule.h"			// Needed for theApp
 #include "amuleDlg.h"		// Needed for CamuleDlg
