@@ -784,7 +784,9 @@ uint8 CPartFile::LoadPartFile(LPCTSTR in_directory, LPCTSTR filename, bool getsi
 		//fstat(m_hpartfile.fd(),&statbuf);
 		//if ((time_t)date != (time_t)statbuf.st_mtime) {
 
-		if ((time_t)date != wxFileModificationTime(wxString::wxString(fullname))) {
+		printf("SavedTime = %u, FileModificationTime = %u\n",date, wxFileModificationTime(wxString::wxString(fullname)));
+		time_t file_date = wxFileModificationTime(wxString::wxString(fullname));
+		if ( (((time_t)date) < (time_t)(file_date - 10)) || (((time_t)date) > (time_t)(file_date + 10))) {
 			theApp.amuledlg->AddLogLine(false, CString(_("Warning: %s might be corrupted")), buffer, m_strFileName.GetData());
 			// rehash
 			SetPartFileStatus(PS_WAITINGFORHASH);
