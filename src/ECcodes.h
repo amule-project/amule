@@ -951,7 +951,7 @@ enum {
 	EC_TAG_PREFS_GENERAL,
 
 	EC_TAG_USER_NICK,		///< (\c string) Nickname of the user.
-	EC_TAG_USER_USERHASH,		///< (!!TODO!!) Our userhash. Read only! (i.e. in a SET operation it will be ignored)
+	EC_TAG_USER_USERHASH,		///< (\c hash) Our userhash. Read only! (i.e. in a SET operation it will be ignored)
 
 
 	//
