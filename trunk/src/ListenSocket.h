@@ -59,7 +59,7 @@ friend class CClientReqSocketHandler;
 	DECLARE_DYNAMIC_CLASS(CClientReqSocket)
 
 public:
-	CClientReqSocket(CUpDownClient* in_client = 0);	
+	CClientReqSocket(CUpDownClient* in_client = 0, const wxProxyData *ProxyData = NULL);	
 	virtual ~CClientReqSocket();
 	virtual	void 	OnInit();
 	virtual	bool 	Close(); /*	{return wxSocketBase::Close();}*/
@@ -88,6 +88,7 @@ public:
 
 	void		SetClient(CUpDownClient* client) { m_client = client; }
 	CUpDownClient* GetClient() { return m_client; }
+	CClientReqSocketHandler *GetEventHandler(void) const { return my_handler; }
 #ifdef AMULE_DAEMON
 	void Destroy();
 #endif

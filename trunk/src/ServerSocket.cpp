@@ -537,21 +537,6 @@ void CServerSocket::ConnectToServer(CServer* server)
 	AddDebugLogLineM(true, wxT("Addr ") + addr.Hostname() + wxString::Format(wxT(" Port %i"),server->GetPort()));
 	#endif
 	Connect(addr, false);
-#ifndef AMULE_DAEMON
-	/* If proxy is beeing used, CServerSocketHandler will not receive a 
-	 * wxSOCKET_CONNECTION event, because the connection has already 
-	 * started with the proxy. So we must add a wxSOCKET_CONNECTION
-	 * event to make things go undetected. A wxSOCKET_OUTPUT event is
-	 * also necessary to start sending data to the server. */
-	if(UseProxy()) {
-		wxSocketEvent e(SERVERSOCKET_HANDLER);
-		e.m_event = wxSOCKET_CONNECTION;
-		e.SetEventObject(this);
-		my_handler->AddPendingEvent(e);
-		e.m_event = wxSOCKET_OUTPUT;
-		my_handler->AddPendingEvent(e);
-	}
-#endif
 
 	info = server->GetListName();
 }

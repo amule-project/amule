@@ -99,6 +99,7 @@ void wxSocketProxy::SetProxyData(const wxProxyData *ProxyData)
 	} else {
 		m_ProxyData.Empty();
 	}
+	m_ProxyBoundAddress = NULL;
 }
 
 bool wxSocketProxy::Start(wxIPaddress &address, enum wxProxyCommand cmd, wxSocketClient *socket)
@@ -150,9 +151,11 @@ address.Service());
 		}
 	}
 	m_ProxyClientSocket->RestoreState();
+if (m_ProxyBoundAddress) {
 printf("Proxy Bound Address: IP:%s, Port:%u, ok:%d\n",
 unicode2char(GetProxyBoundAddress().IPAddress()),
 GetProxyBoundAddress().Service(), ok);
+}
 	
 	return ok;
 }
@@ -624,16 +627,55 @@ m_SocketProxy(ProxyData)
 	m_UseProxy = ProxyData != NULL;
 }
 
+/*
+ * Notice! These includes are here as long as it is impossible to retrieve 
+ * the event handler from the socket. They should be removed. For now,
+ * please leave it here.
+ */
+#include "ListenSocket.h"	// For CClientReqSocketHandler
+#include "ServerSocket.h"	// For CServerSocketHandler
+
 bool wxSocketClientProxy::Connect(wxIPaddress &address, bool wait)
 {
 	bool ok;
 	
 	if (m_UseProxy) {
 		ok = m_SocketProxy.Start(address, wxPROXY_CMD_CONNECT, this);
+#ifndef AMULE_DAEMON
+		/* If proxy is beeing used, CServerSocketHandler will not receive a 
+		 * wxSOCKET_CONNECTION event, because the connection has already 
+		 * started with the proxy. So we must add a wxSOCKET_CONNECTION
+		 * event to make things go undetected. A wxSOCKET_OUTPUT event is
+		 * also necessary to start sending data to the server. */
+		if(m_UseProxy) {
+			wxSocketEvent e(SERVERSOCKET_HANDLER);
+			e.m_event = wxSOCKET_CONNECTION;
+			e.SetEventObject(this);
+			CClientReqSocket *s1 = wxDynamicCast(this, CClientReqSocket);
+			if (s1) {
+				CClientReqSocketHandler *h = s1->GetEventHandler();
+				h->AddPendingEvent(e);
+				e.m_event = wxSOCKET_OUTPUT;
+				h->AddPendingEvent(e);
+				goto end;
+			}
+			CServerSocket *s2 = wxDynamicCast(this, CServerSocket);
+			if (s2) {
+				CServerSocketHandler *h = s2->GetEventHandler();
+				h->AddPendingEvent(e);
+				e.m_event = wxSOCKET_OUTPUT;
+				h->AddPendingEvent(e);
+				goto end;
+			}
+		}
+#endif
 	} else {
 		ok = wxSocketClient::Connect(address, wait);
 	}
 
+#ifndef AMULE_DAEMON
+end:
+#endif
 	return ok;
 }
 

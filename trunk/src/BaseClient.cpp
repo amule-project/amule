@@ -1291,15 +1291,33 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 		return true;
 	}
 
+#ifdef TESTING_PROXY
+	class wxProxyData pd;
+	pd.ProxyHostName = wxT("localhost");
+	pd.ProxyPort = 1080;
+	pd.ProxyType = wxPROXY_SOCKS5;
+	pd.Username = wxT("");
+	pd.Password = wxT("");
+#endif
 	if (!m_socket) {
+#ifdef TESTING_PROXY
+		m_socket = new CClientReqSocket(this, &pd);
+//		m_socket = new CClientReqSocket(this);
+#else
 		m_socket = new CClientReqSocket(this);
+#endif
 		if (!m_socket->Create()) {
 			m_socket->Safe_Delete();
 			return true;
 		}
 	} else if (!m_socket->IsConnected()) {
 		m_socket->Safe_Delete();
+#ifdef TESTING_PROXY
+		m_socket = new CClientReqSocket(this, &pd);
+//		m_socket = new CClientReqSocket(this);
+#else
 		m_socket = new CClientReqSocket(this);
+#endif
 		if (!m_socket->Create()) {
 			m_socket->Safe_Delete();
 			return true;
@@ -1353,7 +1371,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 		tmp.Hostname(GetConnectIP());
 		tmp.Service(GetUserPort());
 		//printf("Connecting to source %x\n",this);
-		m_socket->Connect(tmp,FALSE);
+		m_socket->Connect(tmp, false);
 		// We should send hello packets AFTER connecting!
 		// so I moved it to OnConnect
 	}

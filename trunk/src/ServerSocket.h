@@ -54,8 +54,9 @@ public:
 	void	OnReceive(wxSocketError nErrorCode);
 	void	OnError(wxSocketError nErrorCode);
 	bool	PacketReceived(Packet* packet);
-	bool   SendPacket(Packet* packet, bool delpacket = true,bool controlpacket = true);
- 	CServer*	GetServerConnected() const { return serverconnect->GetCurrentServer(); }
+	bool	SendPacket(Packet* packet, bool delpacket = true,bool controlpacket = true);
+ 	CServer *GetServerConnected() const { return serverconnect->GetCurrentServer(); }
+	CServerSocketHandler *GetEventHandler(void) const { return my_handler; }
 	
 #ifdef AMULE_DAEMON
 	bool Connect(wxIPV4address &addr, bool wait);

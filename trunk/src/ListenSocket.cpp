@@ -60,7 +60,9 @@ WX_DEFINE_OBJARRAY(ArrayOfwxStrings);
 
 IMPLEMENT_DYNAMIC_CLASS(CClientReqSocket,CEMSocket)
 
-CClientReqSocket::CClientReqSocket(CUpDownClient* in_client)
+CClientReqSocket::CClientReqSocket(CUpDownClient* in_client, const wxProxyData *ProxyData)
+:
+CEMSocket(ProxyData)
 {
 	m_client = in_client;
 	if (m_client) {
@@ -1971,7 +1973,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 
 bool CClientReqSocket::Connect(amuleIPV4Address addr, bool wait) {
 	last_action = ACTION_CONNECT;
-	return CEMSocket::Connect(addr,wait);
+	return CEMSocket::Connect(addr, wait);
 }
 
 void CClientReqSocket::OnConnect(int nErrorCode)
