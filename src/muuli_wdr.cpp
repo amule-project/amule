@@ -390,11 +390,13 @@ wxSizer *searchDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     return item0;
 }
 
+wxSizer *transfer_top_boxsizer;
 wxSizer *transferTopPane( wxWindow *parent, bool call_fit, bool set_sizer )
 {
     wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
 
     wxBoxSizer *item1 = new wxBoxSizer( wxHORIZONTAL );
+    transfer_top_boxsizer = item1;
 
     wxStaticBitmap *item2 = new wxStaticBitmap( parent, ID_STATICBITMAP, amuleDlgImages( 10 ), wxDefaultPosition, wxDefaultSize );
     item1->Add( item2, 0, wxALIGN_CENTER, 5 );
