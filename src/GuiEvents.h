@@ -116,7 +116,6 @@ enum GUI_Event_ID {
 	PARTFILE_SET_CAT,
 	KNOWNFILE_SET_UP_PRIO,
 	KNOWNFILE_SET_UP_PRIO_AUTO,
-	KNOWNFILE_SET_PERM,
 	KNOWNFILE_SET_COMMENT,
 	// search
 	SEARCH_REQ,
@@ -385,8 +384,7 @@ class GUIEvent : public wxEvent {
 // KnownFile
 #define CoreNotify_KnownFile_Up_Prio_Set(ptr, val)  Notify_2_ValEvent(KNOWNFILE_SET_UP_PRIO,(CKnownFile *)ptr, (uint8)val);
 #define CoreNotify_KnownFile_Up_Prio_Auto(ptr)      Notify_1_ValEvent(KNOWNFILE_SET_UP_PRIO_AUTO,(CKnownFile *)ptr);
-#define CoreNotify_KnownFile_Perm_Set(ptr, val)     Notify_2_ValEvent(KNOWNFILE_SET_PERM,(CKnownFile *)ptr, (uint8)val);
-#define CoreNotify_KnownFile_Comment_Set(ptr, val)  Notify_2_ValEvent(KNOWNFILE_SET_PERM,(CKnownFile *)ptr, val);
+#define CoreNotify_KnownFile_Comment_Set(ptr, val)  Notify_2_ValEvent(KNOWNFILE_SET_COMMENT,(CKnownFile *)ptr, val);
 
 // Search
 #define CoreNotify_Search_Req(ptr, global)          Notify_2_ValEvent(SEARCH_REQ,(Packet *)ptr, (uint8)global);

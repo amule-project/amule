@@ -55,10 +55,6 @@ BEGIN_EVENT_TABLE(CSharedFilesCtrl,CMuleListCtrl)
 	EVT_MENU( MP_POWERSHARE,	CSharedFilesCtrl::OnSetPriority )
 	EVT_MENU( MP_PRIOAUTO,		CSharedFilesCtrl::OnSetPriorityAuto )
 
-	EVT_MENU( MP_PERMNONE,		CSharedFilesCtrl::OnSetPermissions )
-	EVT_MENU( MP_PERMFRIENDS,	CSharedFilesCtrl::OnSetPermissions )
-	EVT_MENU( MP_PERMALL,		CSharedFilesCtrl::OnSetPermissions )
-	
 	EVT_MENU( MP_CMT,			CSharedFilesCtrl::OnEditComment )
 	EVT_MENU( MP_GETCOMMENTS,   CSharedFilesCtrl::OnGetComment )  
 	
@@ -67,6 +63,20 @@ BEGIN_EVENT_TABLE(CSharedFilesCtrl,CMuleListCtrl)
 	EVT_MENU( MP_GETSOURCEED2KLINK,			CSharedFilesCtrl::OnCreateURI )
 	EVT_MENU( MP_GETHOSTNAMESOURCEED2KLINK,	CSharedFilesCtrl::OnCreateURI )
 END_EVENT_TABLE()
+
+enum SharedFilesListColumns {
+	ID_SHARED_COL_NAME = 0,
+	ID_SHARED_COL_SIZE,
+	ID_SHARED_COL_TYPE,
+	ID_SHARED_COL_PRIO,
+	ID_SHARED_COL_ID,
+	ID_SHARED_COL_REQ,
+	ID_SHARED_COL_AREQ,
+	ID_SHARED_COL_TRA,
+	ID_SHARED_COL_PART,
+	ID_SHARED_COL_CMPL,
+	ID_SHARED_COL_PATH
+};
 
 using namespace otherfunctions;
 CSharedFilesCtrl::CSharedFilesCtrl(wxWindow* parent, int id, const wxPoint& pos, wxSize size, int flags)
@@ -80,18 +90,17 @@ CSharedFilesCtrl::CSharedFilesCtrl(wxWindow* parent, int id, const wxPoint& pos,
 
 	m_menu=NULL;
 
-	InsertColumn(0,  _("File Name"),			wxLIST_FORMAT_LEFT, 250);
-	InsertColumn(1,  _("Size"),					wxLIST_FORMAT_LEFT, 100);
-	InsertColumn(2,  _("Type"),					wxLIST_FORMAT_LEFT,  50);
-	InsertColumn(3,  _("Priority"),				wxLIST_FORMAT_LEFT,  70);
-	InsertColumn(4,  _("Permission"),			wxLIST_FORMAT_LEFT, 100);
-	InsertColumn(5,  _("FileID"),				wxLIST_FORMAT_LEFT, 220);
-	InsertColumn(6,  _("Requests"),				wxLIST_FORMAT_LEFT, 100);
-	InsertColumn(7,  _("Accepted Requests"),	wxLIST_FORMAT_LEFT, 100);
-	InsertColumn(8,  _("Transferred Data"),		wxLIST_FORMAT_LEFT, 120);
-	InsertColumn(9,  _("Obtained Parts"),		wxLIST_FORMAT_LEFT, 120);
-	InsertColumn(10, _("Complete Sources"),		wxLIST_FORMAT_LEFT, 120);
-	InsertColumn(11, _("Directory Path"),		wxLIST_FORMAT_LEFT, 220);
+	InsertColumn(ID_SHARED_COL_NAME,  _("File Name"),			wxLIST_FORMAT_LEFT, 250);
+	InsertColumn(ID_SHARED_COL_SIZE,  _("Size"),					wxLIST_FORMAT_LEFT, 100);
+	InsertColumn(ID_SHARED_COL_TYPE,  _("Type"),					wxLIST_FORMAT_LEFT,  50);
+	InsertColumn(ID_SHARED_COL_PRIO,  _("Priority"),				wxLIST_FORMAT_LEFT,  70);
+	InsertColumn(ID_SHARED_COL_ID,  _("FileID"),				wxLIST_FORMAT_LEFT, 220);
+	InsertColumn(ID_SHARED_COL_REQ,  _("Requests"),				wxLIST_FORMAT_LEFT, 100);
+	InsertColumn(ID_SHARED_COL_AREQ,  _("Accepted Requests"),	wxLIST_FORMAT_LEFT, 100);
+	InsertColumn(ID_SHARED_COL_TRA,  _("Transferred Data"),		wxLIST_FORMAT_LEFT, 120);
+	InsertColumn(ID_SHARED_COL_PART,  _("Obtained Parts"),		wxLIST_FORMAT_LEFT, 120);
+	InsertColumn(ID_SHARED_COL_CMPL, _("Complete Sources"),		wxLIST_FORMAT_LEFT, 120);
+	InsertColumn(ID_SHARED_COL_PATH, _("Directory Path"),		wxLIST_FORMAT_LEFT, 220);
 
 	LoadSettings();
 }
@@ -130,13 +139,7 @@ void CSharedFilesCtrl::OnRightClick(wxListEvent& evt)
 		prioMenu->Append(MP_POWERSHARE, _("Release"));
 		prioMenu->Append(MP_PRIOAUTO, _("Auto"));
 
-		wxMenu* permMenu = new wxMenu();
-		permMenu->Append(MP_PERMALL, _("Public"));
-		permMenu->Append(MP_PERMFRIENDS, _("Friends only"));
-		permMenu->Append(MP_PERMNONE, _("Locked"));
-
 		m_menu->Append(0,_("Priority"),prioMenu);
-		m_menu->Append(0,_("Permissions"),permMenu);
 		m_menu->AppendSeparator();
 		m_menu->Append(MP_CMT, _("Change this file's comment..."));
 		m_menu->Append(MP_GETCOMMENTS,_("Show all comments"));
@@ -186,47 +189,41 @@ void CSharedFilesCtrl::UpdateFile( CKnownFile* file, long itemnr )
 	
 	SetItemData( itemnr, (long)file );
 	
-	SetItem(itemnr, 1, CastItoXBytes(file->GetFileSize()) );
-	SetItem(itemnr, 2, GetFiletypeByName(file->GetFileName()) );
+	SetItem(itemnr, ID_SHARED_COL_TYPE, GetFiletypeByName(file->GetFileName()) );
+	SetItem(itemnr, ID_SHARED_COL_SIZE, CastItoXBytes(file->GetFileSize()) );
 	
 	if ( file->IsAutoUpPriority() ) {
 		switch ( file->GetUpPriority() ) {
-			case PR_LOW:		SetItem( itemnr, 3, _("Auto [Lo]") ); break;
-			case PR_NORMAL:		SetItem( itemnr, 3, _("Auto [No]") ); break;
-			case PR_HIGH:		SetItem( itemnr, 3, _("Auto [Hi]") ); break;
-			case PR_VERYHIGH:	SetItem( itemnr, 3, _("Auto [Re]") ); break;
+			case PR_LOW:		SetItem( itemnr, ID_SHARED_COL_PRIO, _("Auto [Lo]") ); break;
+			case PR_NORMAL:		SetItem( itemnr, ID_SHARED_COL_PRIO, _("Auto [No]") ); break;
+			case PR_HIGH:		SetItem( itemnr, ID_SHARED_COL_PRIO, _("Auto [Hi]") ); break;
+			case PR_VERYHIGH:	SetItem( itemnr, ID_SHARED_COL_PRIO, _("Auto [Re]") ); break;
 			default:
-				SetItem( itemnr, 3, _("Auto [UNK]") );
+				SetItem( itemnr, ID_SHARED_COL_PRIO, _("Auto [UNK]") );
 		}
 	} else {
 		switch ( file->GetUpPriority() ) {
-		case PR_VERYLOW:	SetItem( itemnr, 3, _("Very low") );	break;
-		case PR_LOW:		SetItem( itemnr, 3, _("Low") );			break;
-		case PR_NORMAL:		SetItem( itemnr, 3, _("Normal") );		break;
-		case PR_HIGH:		SetItem( itemnr, 3, _("High") );		break;
-		case PR_VERYHIGH:	SetItem( itemnr, 3, _("Very High") );	break;
-		case PR_POWERSHARE:	SetItem( itemnr, 3, _("Release") );		break;
+		case PR_VERYLOW:	SetItem( itemnr, ID_SHARED_COL_PRIO, _("Very low") );	break;
+		case PR_LOW:		SetItem( itemnr, ID_SHARED_COL_PRIO, _("Low") );			break;
+		case PR_NORMAL:		SetItem( itemnr, ID_SHARED_COL_PRIO, _("Normal") );		break;
+		case PR_HIGH:		SetItem( itemnr, ID_SHARED_COL_PRIO, _("High") );		break;
+		case PR_VERYHIGH:	SetItem( itemnr, ID_SHARED_COL_PRIO, _("Very High") );	break;
+		case PR_POWERSHARE:	SetItem( itemnr, ID_SHARED_COL_PRIO, _("Release") );		break;
 		default:
-			SetItem( itemnr, 3, _("Unknown") );
+			SetItem( itemnr, ID_SHARED_COL_PRIO, _("Unknown") );
 		}
 	}
 
-	switch ( file->GetPermissions() ) {
-		case PERM_NOONE:	SetItem(itemnr, 4, _("Hidden") );		break;
-		case PERM_FRIENDS:	SetItem(itemnr, 4, _("Friends only") );	break;
-		case PERM_ALL:		SetItem(itemnr, 4, _("Public") );		break;
-	}
-
-	SetItem( itemnr, 5, file->GetFileHash().Encode() );
+	SetItem( itemnr, ID_SHARED_COL_ID, file->GetFileHash().Encode() );
 
 	buffer.Printf( wxT("%u (%u)"), file->statistic.GetRequests(), file->statistic.GetAllTimeRequests() );
-	SetItem( itemnr, 6, buffer );
+	SetItem( itemnr, ID_SHARED_COL_REQ, buffer );
 	
 	buffer.Printf( wxT("%u (%u)"), file->statistic.GetAccepts(), file->statistic.GetAllTimeAccepts() );
-	SetItem( itemnr, 7, buffer );
+	SetItem( itemnr, ID_SHARED_COL_AREQ, buffer );
 	
 	buffer = CastItoXBytes(file->statistic.GetTransfered()) + wxT(" (") + CastItoXBytes(file->statistic.GetAllTimeTransfered()) + wxT(")");
-	SetItem( itemnr, 8, buffer );
+	SetItem( itemnr, ID_SHARED_COL_TRA, buffer );
 
 	if ( file->m_nCompleteSourcesCountLo == 0 ) {
 		if ( file->m_nCompleteSourcesCountHi ) {
@@ -240,12 +237,12 @@ void CSharedFilesCtrl::UpdateFile( CKnownFile* file, long itemnr )
 		buffer.Printf(wxT("%u - %u"), file->m_nCompleteSourcesCountLo, file->m_nCompleteSourcesCountHi);
 	}
 
-	SetItem( itemnr, 10, buffer );
+	SetItem( itemnr, ID_SHARED_COL_CMPL, buffer );
 
 	if ( file->IsPartFile() ) {
-		SetItem( itemnr, 11, _("[PartFile]") );
+		SetItem( itemnr, ID_SHARED_COL_PATH, _("[PartFile]") );
 	} else {
-		SetItem( itemnr, 11, file->GetFilePath() );
+		SetItem( itemnr, ID_SHARED_COL_PATH, file->GetFilePath() );
 	}
 }
 
@@ -266,43 +263,6 @@ void CSharedFilesCtrl::ShowFile(CKnownFile* file)
 	
 	ShowFilesCount();
 }
-
-
-void CSharedFilesCtrl::OnSetPermissions( wxCommandEvent& event )
-{
-	int permission = 0;
-	bool warned = false;
-
-	// Sainity checks
-	switch ( event.GetId() ) {
-		case MP_PERMNONE: permission = PERM_NOONE; 			break;
-		case MP_PERMFRIENDS:	permission = PERM_FRIENDS;	break;
-		case MP_PERMALL:		permission = PERM_ALL;		break;
-	}
-
-
-	long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-	
-	while( index > -1 ) {
-		CKnownFile* file = (CKnownFile*)GetItemData( index );
-
-		if ( file->IsPartFile() ) {
-			if ( !warned ) { 
-				// Only show the message once
-				warned = true;
-
-				wxMessageBox( _("You cannot change permissions while a file is still downloading!") );
-			}
-		} else {
-			CoreNotify_KnownFile_Perm_Set( file, permission );
-
-			UpdateFile( file, index );
-		}
-		
-		index = GetNextItem( index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-	}
-}
-
 
 void CSharedFilesCtrl::OnSetPriority( wxCommandEvent& event )
 {
@@ -420,16 +380,16 @@ int CSharedFilesCtrl::SortProc( long item1, long item2, long sortData )
 
 	switch ( sortData ) {
 		// Sort by filename. Ascending.
-		case  0: return mod * file1->GetFileName().CmpNoCase( file2->GetFileName() );
+		case  ID_SHARED_COL_NAME: return mod * file1->GetFileName().CmpNoCase( file2->GetFileName() );
 		
 		// Sort by filesize. Ascending.
-		case  1: return mod * CmpAny( file1->GetFileSize(), file2->GetFileSize() );
+		case  ID_SHARED_COL_SIZE: return mod * CmpAny( file1->GetFileSize(), file2->GetFileSize() );
 
 		// Sort by filetype. Ascending.
-		case  2: return mod * GetFiletypeByName(file1->GetFileName()).CmpNoCase(GetFiletypeByName( file2->GetFileName()) );
+		case  ID_SHARED_COL_TYPE: return mod * GetFiletypeByName(file1->GetFileName()).CmpNoCase(GetFiletypeByName( file2->GetFileName()) );
 
 		// Sort by priority. Ascending.
-		case  3: {
+		case  ID_SHARED_COL_PRIO: {
 			int8 prioA = file1->GetUpPriority();
 			int8 prioB = file2->GetUpPriority();
 
@@ -437,26 +397,23 @@ int CSharedFilesCtrl::SortProc( long item1, long item2, long sortData )
 			return mod * CmpAny( ( prioB != PR_VERYLOW ? prioB : -1 ), ( prioA != PR_VERYLOW ? prioA : -1 ) );
 		}
 
-		// Sort by permission. Ascending.
-		case  4: return mod * CmpAny( file2->GetPermissions(), file1->GetPermissions() );
-
 		// Sort by fileID. Ascending.
-		case  5: return mod * file1->GetFileHash().Encode().Cmp( file2->GetFileHash().Encode() );
+		case  ID_SHARED_COL_ID: return mod * file1->GetFileHash().Encode().Cmp( file2->GetFileHash().Encode() );
 
 		// Sort by Requests this session. Ascending.
-		case  6: return mod * CmpAny( file1->statistic.GetRequests(), file2->statistic.GetRequests() );
+		case  ID_SHARED_COL_REQ: return mod * CmpAny( file1->statistic.GetRequests(), file2->statistic.GetRequests() );
 
 		// Sort by accepted requests. Ascending.
-		case  7: return mod * CmpAny( file1->statistic.GetAccepts(), file2->statistic.GetAccepts() );
+		case  ID_SHARED_COL_AREQ: return mod * CmpAny( file1->statistic.GetAccepts(), file2->statistic.GetAccepts() );
 
 		// Sort by transferred. Ascending.
-		case  8: return mod * CmpAny( file1->statistic.GetTransfered(), file2->statistic.GetTransfered() );
+		case  ID_SHARED_COL_TRA: return mod * CmpAny( file1->statistic.GetTransfered(), file2->statistic.GetTransfered() );
 
 		// Complete sources asc
-		case 10: return mod * CmpAny( file1->m_nCompleteSourcesCount, file2->m_nCompleteSourcesCount );
+		case ID_SHARED_COL_CMPL: return mod * CmpAny( file1->m_nCompleteSourcesCount, file2->m_nCompleteSourcesCount );
 
 		// Folders ascending
-		case 11: {
+		case ID_SHARED_COL_PATH: {
 			if ( file1->IsPartFile() && file2->IsPartFile() )
 				return mod *  0;
 			if ( file1->IsPartFile() )
@@ -468,13 +425,13 @@ int CSharedFilesCtrl::SortProc( long item1, long item2, long sortData )
 		}
 		
 		// Sort by requests (All). Ascending.
-		case 2006: return mod * CmpAny( file1->statistic.GetAllTimeRequests(), file2->statistic.GetAllTimeRequests() );
+		case (2000 + ID_SHARED_COL_REQ): return mod * CmpAny( file1->statistic.GetAllTimeRequests(), file2->statistic.GetAllTimeRequests() );
 
 		// Sort by accepted requests (All). Ascending.
-		case 2007: return mod * CmpAny( file1->statistic.GetAllTimeAccepts(), file2->statistic.GetAllTimeAccepts() );
+		case (2000 + ID_SHARED_COL_AREQ): return mod * CmpAny( file1->statistic.GetAllTimeAccepts(), file2->statistic.GetAllTimeAccepts() );
 
 		// Sort by transferred (All). Ascending.
-		case 2008: return mod * CmpAny( file1->statistic.GetAllTimeTransfered(), file2->statistic.GetAllTimeTransfered() );
+		case (2000 + ID_SHARED_COL_TRA): return mod * CmpAny( file1->statistic.GetAllTimeTransfered(), file2->statistic.GetAllTimeTransfered() );
 	
 		default:
 			return 0;
@@ -563,7 +520,7 @@ void CSharedFilesCtrl::OnDrawItem( int item, wxDC* dc, const wxRect& rect, const
 			wxDCClipper clipper(*dc, columnRect);
 					
 			switch ( i ) {
-				case 9: {
+				case ID_SHARED_COL_PART: {
 					if ( file->GetPartCount() ) {
 						--columnRect.height;
 						++columnRect.y;
@@ -592,9 +549,9 @@ void CSharedFilesCtrl::OnDrawItem( int item, wxDC* dc, const wxRect& rect, const
 bool CSharedFilesCtrl::AltSortAllowed( int column )
 {
 	switch ( column ) {
-		case 6:
-		case 7:
-		case 8:
+		case ID_SHARED_COL_REQ:
+		case ID_SHARED_COL_AREQ:
+		case ID_SHARED_COL_TRA:
 			return true;
 
 		default:

@@ -160,10 +160,6 @@ public:
 	void	SubQueuedCount() {if(m_iQueuedCount) m_iQueuedCount--; UpdateAutoUpPriority();}
 	uint32	GetQueuedCount() const {return m_iQueuedCount;}
 
-	// shared file view permissions (all, only friends, no one)
-	uint8	GetPermissions() const	{ return m_iPermissions; };
-	void	SetPermissions(uint8 iNewPermissions) {m_iPermissions = iNewPermissions;};
-
 	bool	LoadHashsetFromFile(const CFileDataIO* file, bool checkhash);
 	void	AddUploadingClient(CUpDownClient* client);
 	void	RemoveUploadingClient(CUpDownClient* client);
@@ -236,7 +232,6 @@ private:
 	uint16  m_iED2KPartCount;
 	uint16	m_iED2KPartHashCount;
 	uint8	m_iUpPriority;
-	uint8	m_iPermissions;
 	bool	m_bAutoUpPriority;
 	uint32	m_iQueuedCount;
 	bool	m_PublishedED2K;
