@@ -418,7 +418,7 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 		version = metFile.ReadUInt8();
 		if (version != PARTFILE_VERSION  && version!= PARTFILE_SPLITTEDVERSION ){
 			metFile.Close();
-			AddLogLineM(false, wxString::Format(_("Error: Invalid part.met fileversion! (%s => %s)"), unicode2char(m_partmetfilename), unicode2char(m_strFileName)));
+			AddLogLineM(false, _("Error: Invalid part.met fileversion! (") + m_partmetfilename + wxT(" => ") + m_strFileName +wxT(")"));
 			return false;
 		}
 
@@ -471,7 +471,7 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 						#ifdef wxUSE_UNICODE
 						if (GetFileName().IsEmpty()) {
 							// If it's not empty, we already loaded the unicoded one
-							printf(" - filename (u) %s - ",unicode2char(newtag->tag.stringvalue));
+							printf(" - filename (u) %s - ",unicode2UTF8(newtag->tag.stringvalue));
 							SetFileName(newtag->tag.stringvalue);
 						}
 						#else
@@ -589,6 +589,7 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 					case FT_AICH_HASH:{
 						//wxASSERT( newtag->IsStr() );
 						CAICHHash hash;
+						// Nothing we can do against this unicode2char :/
 						if (hash.DecodeBase32(unicode2char(newtag->tag.stringvalue)) == CAICHHash::GetHashSize())
 							m_pAICHHashSet->SetMasterHash(hash, AICH_VERIFIED);
 						else

@@ -57,6 +57,7 @@ wxString MD5Sum::Calculate(wxString sSource)
 	unsigned char digest[16];
 
 	MD5Init (&context);
+	// Nothing we can do against this unicode2char
 	MD5Update (&context, (const unsigned char*)unicode2char(sSource), sSource.Length());
 	MD5Final (digest, &context);
 
