@@ -155,7 +155,10 @@ bool CClientReqSocket::CheckTimeOut()
 			uTimeout += CONNECTION_TIMEOUT;
 		}
 	}
-	if (::GetTickCount() - timeout_timer > uTimeout){
+	
+	// Kry - Last action check added so we don't remove sources before trying to 
+	// connect to them.
+	if ((::GetTickCount() - timeout_timer > uTimeout) && (last_action != ACTION_NONE)){
 		timeout_timer = ::GetTickCount();
 		Disconnect(wxT("Timeout"));
 		return true;
