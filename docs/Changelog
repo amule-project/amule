@@ -118,7 +118,8 @@ Version 2.0.0rc3 - The 'Target: Stability' version.
 	thepolish:
 
 		* Wrote wxcas based on cas from falso
-		* Enable auto-refresh and Fix GPL headers
+		* Enable auto-refresh and Fix GPL headers (wxcas)
+		* Add system load and uptime (wxcas, Linux only)
 
 	Unleashed:
 
