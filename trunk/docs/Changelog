@@ -36,7 +36,8 @@ Version 2.0.0rc8 - The "???????????" version.
 		* Fixed: Server names sorting now differences between names
 		  and IPs.
 		* Fixed: Last byte is now drawn in bar progress.
-		* Fixed: Stop button not working after second global search.
+		* Fixed: Stop button not working after second global search
+		  and another hidden bug in global searches' progress bar.
 		  (reported by ecforum)
 
 	Phoenix:
