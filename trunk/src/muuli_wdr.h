@@ -77,6 +77,7 @@ extern wxSizer *s_srced2klh;
 #define IDC_SDOWNLOAD 10032
 wxSizer *searchDlg( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
+extern wxSizer *transfer_top_boxsizer;
 #define ID_BTNCLRCOMPL 10033
 #define ID_CATEGORIES 10034
 #define ID_BTNSWWINDOW 10035
