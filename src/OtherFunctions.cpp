@@ -903,30 +903,35 @@ static SED2KFileType _aED2KFileTypes[] =
 	SED2KFileType(wxT(".xlt"),   ED2KFT_DOCUMENT),
 };
 
-// Just for debug
-#include "StringFunctions.h"
-int CompareE2DKFileType(const void* p1, const void* p2)
+bool CompareE2DKFileType(const SED2KFileType &p1, const SED2KFileType &p2)
 {
-#if 0
-	printf("%s-%s\n",
-		(const char *)unicode2char(((const SED2KFileType *)p1)->GetExt()),
-		(const char *)unicode2char(((const SED2KFileType *)p2)->GetExt()));
-#endif
-	return
-		((const SED2KFileType *)p1)->GetExt().CmpNoCase(
-		((const SED2KFileType *)p2)->GetExt());
-}
-
-bool CompareE2DKFileType2(const SED2KFileType &p1, const SED2KFileType &p2)
-{
-#if 0
-	printf("%s-%s\n",
-		(const char *)unicode2char(p1.GetExt()),
-		(const char *)unicode2char(p2.GetExt()));
-#endif
 	return p1.GetExt().CmpNoCase(p2.GetExt()) < 0;
 }
 
+class CED2KFileTypes{
+public:
+	CED2KFileTypes() {
+		std::sort(_aED2KFileTypes,
+			_aED2KFileTypes + ARRSIZE(_aED2KFileTypes),
+			CompareE2DKFileType);
+#ifdef __DEBUG__
+		// check for duplicate entries
+		wxString strLast = _aED2KFileTypes[0].GetExt();
+		for (int i = 1; i < ARRSIZE(_aED2KFileTypes); ++i) {
+			bool duplicates = strLast.CmpNoCase(_aED2KFileTypes[i].GetExt()) == 0;
+			if (duplicates) {
+				printf("Ooops! duplicated string:(%d)%s-%s.\n", i,
+					(const char *)strLast.mb_str(),
+					(const char *)_aED2KFileTypes[i].GetExt().mb_str());
+			}
+			wxASSERT(!duplicates);
+			strLast = _aED2KFileTypes[i].GetExt();
+		}
+#endif
+	}
+};
+// get the list sorted *before* any code is accessing it
+CED2KFileTypes theED2KFileTypes;
 
 EED2KFileType GetED2KFileTypeID(const wxString &strFileName)
 {
@@ -939,12 +944,12 @@ EED2KFileType GetED2KFileTypeID(const wxString &strFileName)
 	strExt.MakeLower();
 
 	SED2KFileType ft(strExt, ED2KFT_ANY);
-	const SED2KFileType *pFound =
-		(SED2KFileType *)bsearch(&ft, _aED2KFileTypes,
-			ARRSIZE(_aED2KFileTypes), sizeof _aED2KFileTypes[0],
-			CompareE2DKFileType);
+	SED2KFileType *last = _aED2KFileTypes + ARRSIZE(_aED2KFileTypes);
+	SED2KFileType *result =
+		std::lower_bound(_aED2KFileTypes, last, ft, CompareE2DKFileType);
+	bool pFound = result != last && result->GetExt() == ft.GetExt();
 	if (pFound) {
-		return pFound->GetFileType();
+		return result->GetFileType();
 	} else {	
 		return ED2KFT_ANY;
 	}
@@ -980,30 +985,6 @@ wxString GetFileTypeByName(const wxString &strFileName)
 		default:		return wxEmptyString;
 	}
 }
-
-class CED2KFileTypes{
-public:
-	CED2KFileTypes() {
-//		qsort(_aED2KFileTypes, ARRSIZE(_aED2KFileTypes), sizeof _aED2KFileTypes[0], CompareE2DKFileType);
-		std::sort(_aED2KFileTypes, _aED2KFileTypes + ARRSIZE(_aED2KFileTypes), CompareE2DKFileType2);
-//#ifdef DEBUG
-		// check for duplicate entries
-		wxString strLast = _aED2KFileTypes[0].GetExt();
-		for (int i = 1; i < ARRSIZE(_aED2KFileTypes); ++i) {
-			bool duplicates = strLast.CmpNoCase(_aED2KFileTypes[i].GetExt()) == 0;
-			if (duplicates) {
-				printf("Ooops! duplicated string:(%d)%s-%s.\n", i,
-					(const char *)strLast.mb_str(),
-					(const char *)_aED2KFileTypes[i].GetExt().mb_str());
-			}
-			wxASSERT(!duplicates);
-			strLast = _aED2KFileTypes[i].GetExt();
-		}
-//#endif
-	}
-};
-// get the list sorted *before* any code is accessing it
-CED2KFileTypes theED2KFileTypes;
 
 /**
  * Dumps a buffer to stdout
