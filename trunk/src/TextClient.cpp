@@ -707,7 +707,7 @@ void CamulecmdApp::Process_Answer_v2(CECPacket *response)
 void CamulecmdApp::ShowHelp() {
 //                                  1         2         3         4         5         6         7         8
 //                         12345678901234567890123456789012345678901234567890123456789012345678901234567890
-	Show(_("\n----------------> Help: Available commands (case insensitive): <----------------\n\n"));
+	Show(_("\n--------------------> Available commands (case insensitive): <------------------\n\n"));
 	Show(wxString(wxT("Connect [")) + wxString(_("server IP")) + wxString(wxT("]\t")) + wxString(_("Connect to given/random server. No warn if failed!\n")));
 //	Show(wxString(wxT("ConnectTo [")) + wxString(_("name")) + wxString(wxT("] [")) + wxString(_("port")) + wxString(wxT("]:\t")) + wxString(_("Connect to specified server and port.\n")));
 	Show(wxString(wxT("Disconnect:\t\t")) + wxString(_("Disconnect from server.\n")));
@@ -739,7 +739,7 @@ void CamulecmdApp::ShowGreet() {
 	Show(wxT("\n---------------------------------\n"));
 	Show(wxString(wxT("|       ")) + wxString(_("aMule text client")) + wxString(wxT("       |\n")));
 	Show(wxT("---------------------------------\n\n"));
-	Show(_("\nUse 'Help' for command list\n\n"));
+	Show(wxString::Format(_("\nUse '%s' for command list\n\n"), wxT("'Help'")));
 }
 
 #if wxUSE_GUI
