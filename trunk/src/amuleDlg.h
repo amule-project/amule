@@ -34,7 +34,7 @@
 	#include <wx/msw/winundef.h> // Needed to be able to include wx headers
 #endif
 
-#ifndef __SYSTRAY_DISABLED__
+#if !defined( __SYSTRAY_DISABLED__) || wxCHECK_VERSION(2, 5, 3)
 	#include "MuleTrayIcon.h"
 #endif
 
@@ -57,7 +57,7 @@ class PrefsUnifiedDlg;
 class wxTimerEvent;
 class wxTextCtrl;
 
-#ifndef __SYSTRAY_DISABLED__
+#if !defined(__SYSTRAY_DISABLED__) || USE_WX_TRAY
 class CSysTray;
 #endif
 
@@ -122,7 +122,7 @@ public:
 	wxString GenWebSearchUrl( const wxString &filename, WebSearch provider );
 
 
-#ifndef __SYSTRAY_DISABLED__
+#if !defined(__SYSTRAY_DISABLED__) || USE_WX_TRAY
 	#if !USE_WX_TRAY
 		// Has to be done in own method
 		void changeDesktopMode();
@@ -177,7 +177,7 @@ private:
 	wxTimer* gui_timer;
 
 // Systray functions
-#ifndef __SYSTRAY_DISABLED__
+#if !defined( __SYSTRAY_DISABLED__) || USE_WX_TRAY
 	void UpdateTrayIcon(int percent);
 	#if USE_WX_TRAY
 		CMuleTrayIcon* m_wndTaskbarNotifier;

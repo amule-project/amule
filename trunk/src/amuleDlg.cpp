@@ -52,7 +52,7 @@
 
 #include "amuleDlg.h"		// Interface declarations.
 
-#ifndef __SYSTRAY_DISABLED__
+#if !defined(__SYSTRAY_DISABLED__)
 	#if !USE_WX_TRAY // WX_TRAY icons are on MuleTrayIcon class
 		#include "pixmaps/mule_TrayIcon.ico.xpm"
 		#include "pixmaps/mule_Tr_yellow.ico.xpm"
@@ -143,7 +143,7 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 	last_iconizing = 0;
 	prefs_dialog = NULL;
 	
-	#ifndef __SYSTRAY_DISABLED__
+	#if defined(__SYSTRAY_DISABLED__) || USE_WX_TRAY
 		m_wndTaskbarNotifier = NULL;
 	#endif
 	
@@ -233,7 +233,7 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 
 	searchwnd->UpdateCatChoice();
 
-#ifndef __SYSTRAY_DISABLED__
+#if !defined( __SYSTRAY_DISABLED__) || USE_WX_TRAY
 	if (thePrefs::UseTrayIcon()) {
 		CreateSystray();
 	}
@@ -243,7 +243,7 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 
 	// Must we start minimized?
 	if (thePrefs::GetStartMinimized()) { 
-		#ifndef __SYSTRAY_DISABLED__
+		#if !defined(__SYSTRAY_DISABLED__) || USE_WX_TRAY
 		 	if (thePrefs::UseTrayIcon() && 
 			#if !USE_WX_TRAY
 				(thePrefs::GetDesktopMode() != 4) &&
@@ -310,7 +310,7 @@ void CamuleDlg::SetActiveDialog(DialogType type, wxWindow* dlg)
 	dlg->Refresh( true );
 }
 
-#ifndef __SYSTRAY_DISABLED__
+#if !def(__SYSTRAY_DISABLED__) || USE_WX_TRAY
 
 	#if !USE_WX_TRAY
 		class QueryDlg : public wxDialog {
@@ -759,7 +759,7 @@ void CamuleDlg::ShowTransferRate()
 		SetTitle(theApp.m_FrameTitle + UpDownSpeed);
 	}
 
-#ifndef __SYSTRAY_DISABLED__
+#if !def (__SYSTRAY_DISABLED__) || USE_WX_TRAY
 	if (m_wndTaskbarNotifier) {
 		// set trayicon-icon
 		int percentDown = (int)ceil((kBpsDown*100) / thePrefs::GetMaxGraphDownloadRate());
@@ -800,7 +800,7 @@ void CamuleDlg::OnClose(wxCloseEvent& evt)
 	delete gui_timer;
 	transferwnd->downloadlistctrl->DeleteAllItems();
 
-#ifndef __SYSTRAY_DISABLED__
+#if !defined(__SYSTRAY_DISABLED__) || USE_WX_TRAY
 	//We want to delete the systray too!
 	RemoveSystray();
 #endif
@@ -958,7 +958,7 @@ void CamuleDlg::Show_aMule(bool uniconize)
 }
 
 
-#ifndef __SYSTRAY_DISABLED__
+#if !defined(__SYSTRAY_DISABLED__) || USE_WX_TRAY
 void CamuleDlg::OnMinimize(wxIconizeEvent& evt)
 {
 	if (m_wndTaskbarNotifier && thePrefs::DoMinToTray() 
