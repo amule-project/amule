@@ -54,6 +54,11 @@ static wxString empty_name = wxT("[Empty User Name]");
 //	members of CUpDownClient
 //	which are used by down and uploading functions
 
+#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
+#undef AddDebugLogLineM
+#define AddDebugLogLineM(x,y) printf("%s\n",unicode2char(y));
+#endif 
+
 CUpDownClient::CUpDownClient(CClientReqSocket* sender)
 {
 	m_socket = sender;
@@ -911,7 +916,7 @@ void CUpDownClient::SendHelloAnswer()
 	SendPacket(packet,true);
 
 	#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
-	AddDebugLogLineM(true, wxT("Local Client: OP_HELLOANSWER to \n") + GetFullIP());
+	AddDebugLogLineM(true, wxT("Local Client: OP_HELLOANSWER to ") + GetFullIP());
 	#endif
 }
 
@@ -1125,14 +1130,16 @@ void CUpDownClient::ClearDownloadBlockRequests()
 	m_PendingBlocks_list.RemoveAll();
 }
 
-bool CUpDownClient::Disconnected(const wxString& WXUNUSED(strReason), bool bFromSocket){
+bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket){
 	//If this is a KAD client object, just delete it!
 	//wxASSERT(theApp.clientlist->IsValidClient(this));
 
 	#ifdef __USE_KAD__
 	SetKadState(KS_NONE);
 	#endif
-
+	
+	//printf("Client disconnected! (%s)\n",unicode2char(strReason));
+	
 	if (GetUploadState() == US_UPLOADING) {
 		theApp.uploadqueue->RemoveFromUploadQueue(this);
 	}
@@ -1349,10 +1356,10 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 		amuleIPV4Address tmp;
 		tmp.Hostname(GetConnectIP());
 		tmp.Service(GetUserPort());
+		//printf("Connecting to source %x\n",this);
 		m_socket->Connect(tmp,FALSE);
-		if (!SendHelloPacket()) {
-			return false; // client was deleted!
-		}
+		// We should send hello packets AFTER connecting!
+		// so I moved it to OnConnect
 	}
 	return true;
 }
@@ -1975,15 +1982,12 @@ void CUpDownClient::ProcessSecIdentStatePacket(const uchar* pachPacket, uint32 n
 	switch ( data.ReadUInt8() ) {
 		case 0:
 			m_SecureIdentState = IS_UNAVAILABLE;
-			AddDebugLogLineM(false, wxT("SUIS: IS_UNAVAILABLE\n"));
 			break;
 		case 1:
 			m_SecureIdentState = IS_SIGNATURENEEDED;
-			AddDebugLogLineM(false, wxT("SUIS: IS_SIGNATURENEEDED\n"));
 			break;
 		case 2:
 			m_SecureIdentState = IS_KEYANDSIGNEEDED;
-			AddDebugLogLineM(false, wxT("SUIS: IS_KEYANDSIGNEEDED\n"));
 			break;
 		default:
 			return;
@@ -2076,9 +2080,9 @@ bool CUpDownClient::SendPacket(Packet* packet, bool delpacket, bool controlpacke
 	if ( m_socket ) {
 		return m_socket->SendPacket(packet, delpacket, controlpacket );
 	} else {
-#ifndef AMULE_DAEMON
+//#ifndef AMULE_DAEMON
 		printf("CAUGHT DEAD SOCKET IN SENDPACKET()\n");
-#endif
+//#endif
 		return false;
 	}
 }

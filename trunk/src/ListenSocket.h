@@ -26,6 +26,7 @@
 #include "types.h"		// Needed for uint8, uint16, uint32 and uint64
 #include "EMSocket.h"		// Needed for CEMSocket
 #include "gsocket-fix.h"	// Needed for wxSOCKET_REUSEADDR
+#include "amuleIPV4Address.h"
 
 #include <wx/dynarray.h>
 
@@ -40,6 +41,13 @@ class CTimerWnd;
 
 class CClientReqSocketHandler;
 
+enum LastActionType {
+	ACTION_NONE,
+	ACTION_CONNECT,
+	ACTION_SEND,
+	ACTION_RECEIVE
+};
+
 class CClientReqSocket : public CEMSocket
 {
 friend class CClientReqSocketHandler;
@@ -51,6 +59,7 @@ public:
 	virtual ~CClientReqSocket();
 	virtual	void 	OnInit();
 	virtual	bool 	Close(); /*	{return wxSocketBase::Close();}*/
+	virtual	bool 	Connect(amuleIPV4Address addr, bool wait);
 	bool		Create();
 	void		Disconnect(const wxString& strReason);
 
@@ -60,11 +69,15 @@ public:
 
 	bool		deletethis; // 0.30c (Creteil), set as bool
 
-	void		OnClose(int nErrorCode);
+	void		OnConnect(int nErrorCode);
 	void		OnSend(int nErrorCode);
 	void		OnReceive(int nErrorCode);
+	
+	LastActionType	last_action;	
+	void		RepeatLastAction();
+
+	void		OnClose(int nErrorCode);
 	void		OnError(int nErrorCode);
-	void		OnConnect(int nErrorCode);
 	
 	uint32		timeout_timer;
 	bool		hotrank;
