@@ -48,7 +48,7 @@ CServer::CServer(ServerMet_Struct* in_data)
 	Init();
 }
 
-CServer::CServer(uint16 in_port, char* i_addr)
+CServer::CServer(uint16 in_port, const char* i_addr)
 {
 
 	port = in_port;
