@@ -390,6 +390,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				if (update) {
 					update->SetUserCount(cur_user);
 					update->SetFileCount(cur_files);
+					Notify_ServerRefresh( update );
 					Notify_ShowUserCount(update);
 				}
 				break;
