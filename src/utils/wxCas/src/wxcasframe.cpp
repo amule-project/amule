@@ -158,7 +158,7 @@ wxFrame ((wxFrame *) NULL, -1, title, wxDefaultPosition, wxDefaultSize,
 
   m_toolbar->AddTool (ID_BAR_SAVE, "Save", *(m_toolBarBitmaps[1]),
 		      _
-		      ("Save Online Statistics image (NOT implemented Yet)"));
+		      ("Save Online Statistics image"));
 
   m_toolbar->AddTool (ID_BAR_PRINT, "Print", *(m_toolBarBitmaps[2]),
 		      _
