@@ -563,6 +563,12 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 	}
 	#endif
 
+	// Kry - If the other side is aMule 2.0.0, send it the O.S info.
+	
+	if ((m_clientSoft == SO_AMULE) && (m_nClientVersion >= MAKE_CLIENT_VERSION(2,0,0))) {
+		SendMuleInfoPacket(false,true); // Send the aMule OS Info tag
+	}
+	
 	return bIsMule;
 }
 
@@ -601,7 +607,7 @@ bool CUpDownClient::SendHelloPacket() {
 	return true;
 }
 
-void CUpDownClient::SendMuleInfoPacket(bool bAnswer) {
+void CUpDownClient::SendMuleInfoPacket(bool bAnswer, bool OSInfo) {
 
 	if (m_socket == NULL){
 		wxASSERT(0);
@@ -612,41 +618,55 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer) {
 	data->WriteUInt8(CURRENT_VERSION_SHORT);
 	data->WriteUInt8(EMULE_PROTOCOL);
 
-	// Support for ET_MOD_VERSION [BlackRat]
-	data->WriteUInt32(9); 
-
-	CTag tag1(ET_COMPRESSION,1);
-	tag1.WriteTagToFile(data);
-	CTag tag2(ET_UDPVER,4);
-	tag2.WriteTagToFile(data);
-	CTag tag3(ET_UDPPORT,thePrefs::GetUDPPort());
-	tag3.WriteTagToFile(data);
-	CTag tag4(ET_SOURCEEXCHANGE,2);
-	tag4.WriteTagToFile(data);
-	CTag tag5(ET_COMMENTS,1);
-	tag5.WriteTagToFile(data);
-	CTag tag6(ET_EXTENDEDREQUEST,2);
-	tag6.WriteTagToFile(data);
+	if (OSInfo) {
+		// Special MuleInfo packet for aMule >= 2.0.0 (Multiplatform support)
+		
+		data->WriteUInt32(1); // One Tag (OS_INFO)
+		
+		CTag tag1(ET_OS_INFO,wxGetOsDescription());
+		tag1.WriteTagToFile(data);
+		
+	} else {
+		
+		// Normal MuleInfo packet
+		
+		// Support for ET_MOD_VERSION [BlackRat]
+		data->WriteUInt32(9); 
 	
-	uint32 dwTagValue = (theApp.clientcredits->CryptoAvailable() ? 3 : 0);
-	// Kry - Needs the preview code from eMule	
-	/*
-	// set 'Preview supported' only if 'View Shared Files' allowed
-	if (thePrefs::CanSeeShares() != vsfaNobody) {
-		dwTagValue |= 128;
+		CTag tag1(ET_COMPRESSION,1);
+		tag1.WriteTagToFile(data);
+		CTag tag2(ET_UDPVER,4);
+		tag2.WriteTagToFile(data);
+		CTag tag3(ET_UDPPORT,thePrefs::GetUDPPort());
+		tag3.WriteTagToFile(data);
+		CTag tag4(ET_SOURCEEXCHANGE,2);
+		tag4.WriteTagToFile(data);
+		CTag tag5(ET_COMMENTS,1);
+		tag5.WriteTagToFile(data);
+		CTag tag6(ET_EXTENDEDREQUEST,2);
+		tag6.WriteTagToFile(data);
+		
+		uint32 dwTagValue = (theApp.clientcredits->CryptoAvailable() ? 3 : 0);
+		// Kry - Needs the preview code from eMule	
+		/*
+		// set 'Preview supported' only if 'View Shared Files' allowed
+		if (thePrefs::CanSeeShares() != vsfaNobody) {
+			dwTagValue |= 128;
+		}
+		*/
+		CTag tag7(ET_FEATURES, dwTagValue);
+		tag7.WriteTagToFile(data);
+		
+		CTag tag8(ET_COMPATIBLECLIENT,SO_AMULE);
+		tag8.WriteTagToFile(data);
+	
+		// Support for tag ET_MOD_VERSION
+		wxString mod_name(MOD_VERSION_LONG);
+		CTag tag9(ET_MOD_VERSION, mod_name);
+		tag9.WriteTagToFile(data);
+		// Maella end
+
 	}
-	*/
-	CTag tag7(ET_FEATURES, dwTagValue);
-	tag7.WriteTagToFile(data);
-	
-	CTag tag8(ET_COMPATIBLECLIENT,SO_AMULE);
-	tag8.WriteTagToFile(data);
-
-	// Support for tag ET_MOD_VERSION
-	wxString mod_name(MOD_VERSION_LONG);
-	CTag tag9(ET_MOD_VERSION, mod_name);
-	tag9.WriteTagToFile(data);
-	// Maella end
 
 	Packet* packet = new Packet(data,OP_EMULEPROT);
 	delete data;
@@ -680,35 +700,16 @@ void CUpDownClient::ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize)
 		//Therefore, sooner or later, we are going to have to switch over to using the eDonkey hello packet to set the version.
 		//No sense making a third value sent for versions..
 		m_byEmuleVersion = data.ReadUInt8();
+
 		if( m_byEmuleVersion == 0x2B ) {
 			m_byEmuleVersion = 0x22;
 		}	
-		uint8 protversion = data.ReadUInt8();
-
-		//implicitly supported options by older clients
-		if (protversion == EMULE_PROTOCOL) {
-			//in the future do not use version to guess about new features
-
-			if(m_byEmuleVersion < 0x25 && m_byEmuleVersion > 0x22)
-				m_byUDPVer = 1;
-
-			if(m_byEmuleVersion < 0x25 && m_byEmuleVersion > 0x21)
-				m_bySourceExchangeVer = 1;		
-
-			if(m_byEmuleVersion == 0x24)
-				m_byAcceptCommentVer = 1;
-
-			// Shared directories are requested from eMule 0.28+ because eMule 0.27 has a bug in 
-			// the OP_ASKSHAREDFILESDIR handler, which does not return the shared files for a 
-			// directory which has a trailing backslash.
-			if(m_byEmuleVersion >= 0x28 && !m_bIsML) // MLdonkey currently does not support shared directories
-				m_fSharedDirectories = 1;
-
-		} else {
-			return;
-		}	
+			
+		m_bEmuleProtocol = (data.ReadUInt8() == EMULE_PROTOCOL);
 		
-		m_bEmuleProtocol = true;
+		if (!m_bEmuleProtocol) {
+			return;
+		}
 
 		uint32 tagcount = data.ReadUInt32();
 		
@@ -768,6 +769,12 @@ void CUpDownClient::ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize)
 					}
 
 					break;
+				case ET_OS_INFO:
+					// Special tag, sent only from aMule 2.0.0rc8 to other 2.0.0 aMules
+					wxASSERT(temptag.tag.type == 2); // tag must be a string
+
+					m_sClientOSInfo = char2unicode(temptag.tag.stringvalue);
+					
 				default:
 					//printf("Mule Unk Tag 0x%02x=%x\n", temptag.tag.specialtag, (UINT)temptag.tag.intvalue);
 					break;
@@ -793,17 +800,42 @@ void CUpDownClient::ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize)
 		throw wxString(wxT("Wrong Tags on Mule Info packet"));
 	}
 	
-	if( m_byDataCompVer == 0 ){
-		m_bySourceExchangeVer = 0;
-		m_byExtendedRequestsVer = 0;
-		m_byAcceptCommentVer = 0;
-		m_nUDPPort = 0;
+	if (m_sClientOSInfo.IsEmpty()) {
+		// If the client info is empty, is because it's not a special aMule tag.
+		
+		if( m_byDataCompVer == 0 ){
+			m_bySourceExchangeVer = 0;
+			m_byExtendedRequestsVer = 0;
+			m_byAcceptCommentVer = 0;
+			m_nUDPPort = 0;
+		}
+
+		//implicitly supported options by older clients
+		//in the future do not use version to guess about new features
+		if(m_byEmuleVersion < 0x25 && m_byEmuleVersion > 0x22) {
+			m_byUDPVer = 1;
+		}
+		
+		if(m_byEmuleVersion < 0x25 && m_byEmuleVersion > 0x21) {
+			m_bySourceExchangeVer = 1;		
+		}
+		
+		if(m_byEmuleVersion == 0x24) {
+			m_byAcceptCommentVer = 1;
+		}
+		
+		// Shared directories are requested from eMule 0.28+ because eMule 0.27 has a bug in 
+		// the OP_ASKSHAREDFILESDIR handler, which does not return the shared files for a 
+		// directory which has a trailing backslash.
+		if(m_byEmuleVersion >= 0x28 && !m_bIsML) {// MLdonkey currently does not support shared directories
+				m_fSharedDirectories = 1;
+		}
+		
+		ReGetClientSoft();
+	
+		m_byInfopacketsReceived |= IP_EMULEPROTPACK;
 	}
-
-	ReGetClientSoft();
-
-	m_byInfopacketsReceived |= IP_EMULEPROTPACK;
-
+		
 }
 
 void CUpDownClient::SendHelloAnswer()

@@ -158,5 +158,12 @@ bool CClientDetailDialog::OnInitDialog() {
 		CastChild(ID_DSCORE,wxStaticText)->SetLabel(wxT("-"));
 	}
 	Layout();
+	
+	wxString OSInfo = m_client->GetClientOSInfo();
+	if (!OSInfo.IsEmpty()) {
+		#warning Debug message, remove ASAP.
+		wxMessageBox(wxT("aMule O.S. info is: ") + OSInfo);
+	}
+	
 	return true;
 }
