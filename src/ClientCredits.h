@@ -112,9 +112,9 @@ public:
 	uint8	GetPubKeyLen() const 			{return m_nMyPublicKeyLen;}
 	const byte*	GetPublicKey() const		{return m_abyMyPublicKey;}
 	bool	CryptoAvailable() const;
+	void	SaveList();
 protected:
 	void	LoadList();
-	void	SaveList();
 	void	InitalizeCrypting();
 	bool	CreateKeyPair();
 #ifdef _DEBUG
