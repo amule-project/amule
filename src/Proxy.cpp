@@ -91,6 +91,7 @@ bool wxSocketProxy::Connect(wxIPaddress& address)
 			switch(m_ProxyData.ProxyType)
 			{
 			case wxPROXY_SOCKS4:
+				ok = DoSocks4(address, wxPROXY_CMD_CONNECT);
 				break;
 				
 			case wxPROXY_SOCKS5:
@@ -100,6 +101,62 @@ bool wxSocketProxy::Connect(wxIPaddress& address)
 			m_ProxyClientSocket->Destroy();
 		}
 	}
+	
+	return ok;
+}
+
+bool wxSocketProxy::DoSocks4(wxIPaddress& address, wxProxyCommand cmd)
+{
+	bool ok =
+		DoSocks4Request(address, cmd) &&
+		DoSocks4Reply();
+	if (ok) {
+		switch(cmd)
+		{
+		case wxPROXY_CMD_CONNECT:
+			ok = DoSocks4CmdConnect();
+			break;
+		
+		case wxPROXY_CMD_BIND:
+			ok = DoSocks4CmdBind();
+			break;
+		
+		case wxPROXY_CMD_UDP_ASSOCIATE:
+			// No UDP in SOCKS4
+			ok = false;
+			break;
+		}
+	}
+	return ok;
+}
+
+bool wxSocketProxy::DoSocks4Request(wxIPaddress& address, unsigned char cmd)
+{
+	// TODO
+	bool ok = false;
+	
+	return ok;
+}
+
+bool wxSocketProxy::DoSocks4Reply(void)
+{
+	// TODO
+	bool ok = false;
+	
+	return ok;
+}
+
+bool wxSocketProxy::DoSocks4CmdConnect(void)
+{
+	// Nothing to do here.
+	
+	return true;
+}
+
+bool wxSocketProxy::DoSocks4CmdBind(void)
+{
+	// TODO
+	bool ok = false;
 	
 	return ok;
 }

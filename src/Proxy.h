@@ -31,6 +31,21 @@
 /******************************************************************************/
 
 /*
+ * SOCKS4 protocol implementation according to:
+ * - "SOCKS: A protocol for TCP proxy across firewalls":
+ *   amule-root/docs/socks4.protocol
+ */
+const unsigned char SOCKS4_VERSION = 0x04;
+
+const unsigned char SOCKS4_CMD_CONNECT	= 0x01;
+const unsigned char SOCKS4_CMD_BIND	= 0x02;
+
+const unsigned char SOCKS4_REPLY_SUCCEED		= 90;
+const unsigned char SOCKS4_REPLY_FAILED			= 91;
+const unsigned char SOCKS4_REPLY_FAILED_NO_IDENTD	= 92;
+const unsigned char SOCKS4_REPLY_FAILED_NO_USERID	= 93;
+
+/*
  * SOCKS5 protocol implementation according to:
  * - RFC-1928: SOCKS Protocol Version 5
  * - RFC-1929: Username/Password Authentication for SOCKS V5
@@ -109,6 +124,14 @@ public:
 	unsigned char	GetLastReply(void) { return m_LastReply; }
 
 private:
+	/* SOCKS4 */
+	bool DoSocks4(wxIPaddress& address, wxProxyCommand cmd);
+	bool DoSocks4Request(wxIPaddress& address, unsigned char cmd);
+	bool DoSocks4Reply(void);
+	bool DoSocks4CmdConnect(void);
+	bool DoSocks4CmdBind(void);
+	
+	/* SOCKS5 */
 	bool DoSocks5(wxIPaddress& address, wxProxyCommand cmd);
 	bool DoSocks5Authentication(void);
 	bool DoSocks5AuthenticationUsernamePassword(void);
