@@ -199,7 +199,7 @@ amuled_SOURCES = ListenSocket.cpp \
         ServerSocket.cpp \
         SharedFileList.cpp \
         sockets.cpp \
-        #timer.cpp \
+	timer.cpp \
         UDPSocket.cpp \
         UploadClient.cpp \
         UploadQueue.cpp \
