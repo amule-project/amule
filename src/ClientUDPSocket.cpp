@@ -58,6 +58,9 @@ IMPLEMENT_DYNAMIC_CLASS(CClientUDPSocket,wxDatagramSocket)
 
 CClientUDPSocket::CClientUDPSocket(wxIPV4address address)
 : wxDatagramSocket(address,wxSOCKET_NOWAIT)
+#ifdef AMULE_DAEMON
+ , wxThread(wxTHREAD_JOINABLE)
+#endif
 {
 	m_bWouldBlock = false;
 
