@@ -160,20 +160,23 @@ bool CaMuleExternalConnector::Parse_Command(wxString &buffer, CmdId commands[])
 
 void CaMuleExternalConnector::GetCommand(const wxString &prompt, char* buffer, size_t buffer_size)
 {
+	if( !m_KeepQuiet ) {
 #if wxUSE_GUI
-	char const *text = unicode2char(wxGetTextFromUser(prompt, _T("Enter Command")));
-	size_t len = strlen(text);
-	if (len > buffer_size - 2) {
-		len = buffer_size - 2;
-	}
-	strncpy(buffer, text, len);
-	buffer[len] = '\n';
-	buffer[len + 1] = 0;
+		char const *text = 
+			unicode2char(wxGetTextFromUser(prompt, _T("Enter Command")));
+		size_t len = strlen(text);
+		if (len > buffer_size - 2) {
+			len = buffer_size - 2;
+		}
+		strncpy(buffer, text, len);
+		buffer[len] = '\n';
+		buffer[len + 1] = 0;
 #else
-	Show(prompt + wxT("$ "));
-	fflush(stdin);
-	fgets(buffer, buffer_size, stdin);
+		Show(prompt + wxT("$ "));
+		fflush(stdin);
+		fgets(buffer, buffer_size, stdin);
 #endif
+	}
 }
 
 void CaMuleExternalConnector::TextShell(const wxString &prompt, CmdId commands[])
