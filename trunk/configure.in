@@ -222,23 +222,81 @@ esac
 
 AC_SUBST(CAS_DEFS)
 
+
+# Check if we need the GUI
+AC_MSG_CHECKING([whether we need the GUI])
+if test x"$MONOLITHIC" = x"yes" ; then
+  need_gui="yes"
+fi
+
+if test x"$WXCAS" = x"yes" ; then
+  need_gui="yes"
+fi
+
+if test x"$ALC" = x"yes" ; then
+  need_gui="yes"
+fi
+
+if test x"$AMULE_GUI" = x"yes" ; then
+  need_gui="yes"
+fi
+
+if test x"$GUI" = x"yes" ; then
+  need_gui="yes"
+fi
+
+if test x"$WEBGUI" = x"yes" ; then
+  need_gui="yes"
+fi
+
+if test "x${need_gui:+set}" != "xset" ; then
+  need_gui="no"
+fi
+AC_MSG_RESULT($need_gui)
+
+
 # Check for wx
 AM_OPTIONS_WXCONFIG
 AM_OPTIONS_WXBASECONFIG
 
 AM_PATH_WXCONFIG(2.4.2)
 
-CHECK_WX_BUILT_WITH_GTK2
 
-if test x"$GTK_USEDVERSION" = x"2" ; then
-  AM_PATH_GTK_2_0(2.0.3, havegtk2=yes, havegtk2=no)
-  GTK_DEFS="-D__GTK2__"
-  GET_GTK2_VERSION
+if test "x${need_gui}" = "xyes" ; then
+
+  CHECK_WX_BUILT_WITH_GTK2
+
+  if test x"$GTK_USEDVERSION" = x"2" ; then
+    AM_PATH_GTK_2_0(2.0.3, havegtk2=yes, havegtk2=no)
+    GTK_DEFS="-D__GTK2__"
+    GET_GTK2_VERSION
+  else
+    AM_PATH_GTK(1.2.0, havegtk=yes, havegtk=no)
+    GTK_DEFS=""
+    GET_GTK_VERSION
+  fi
+
 else
-  AM_PATH_GTK(1.2.0, havegtk=yes, havegtk=no)
+
   GTK_DEFS=""
-  GET_GTK_VERSION
+  GTK_CFLAGS=""
+  GTK_LIBS=""
+  AC_SUBST(GTK_CFLAGS)
+  AC_SUBST(GTK_LIBS)
+  havegtk=no
+  havegtk2=no
+  if test "x${gtk}" = "xyes" ; then
+    AC_MSG_WARN([Disabling pure GTK code as we have no GUI.])
+  fi
+  gtk=no
+  if test "x${systray}" = "xyes" ; then
+    AC_MSG_WARN([Disabling systray as we have no GUI.])
+  fi
+  systray=no
+  utf8_systray=no
+
 fi
+
 
 CHECK_WX_PARTIAL_VERSION
 
