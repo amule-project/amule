@@ -474,6 +474,9 @@ void CamuleDlg::AddLogLine(bool addtostatusbar, const wxChar* line, ...)
 	while ( bufferline.Last() == '\n' )
 		bufferline.RemoveLast();
 
+	// Escape "&"s, which would otherwise not show up
+	bufferline.Replace("&", "&&");
+
 	if (addtostatusbar) {
 		wxStaticText* text=(wxStaticText*)FindWindow("infoLabel");
 		text->SetLabel(bufferline);
