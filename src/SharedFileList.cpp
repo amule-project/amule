@@ -55,7 +55,6 @@
 
 
 CSharedFileList::CSharedFileList(CKnownFileList* in_filelist){
-	server = NULL;
 	filelist = in_filelist;
 	reloading = false;
 	FindSharedFiles();
@@ -230,7 +229,6 @@ void CSharedFileList::AddFilesFromDirectory(wxString directory)
 
 void CSharedFileList::SafeAddKFile(CKnownFile* toadd, bool bOnlyAdd){
 	// TODO: Check if the file is already known - only with another date
-	wxASSERT(server); // Server must NEVER be null when reaching here.
 	
 	//CSingleLock sLock(&list_mut,true);
 	list_mut.Lock();
@@ -250,14 +248,18 @@ void CSharedFileList::SafeAddKFile(CKnownFile* toadd, bool bOnlyAdd){
 	Notify_SharedFilesShowFile(toadd);
 
 	// offer new file to server
-	if (!server->IsConnected()) {
+	if (!theApp.serverconnect->IsConnected()) {
 		return;
 	}
+
+	CServer* server = theApp.serverconnect->GetCurrentServer();
+	wxASSERT(server);
 	
 	CSafeMemFile* files = new CSafeMemFile(100);
 
 	files->WriteUInt32(1); // filecount
-	CreateOfferedFilePacket(toadd,files, server->GetCurrentServer(), NULL);
+
+	CreateOfferedFilePacket(toadd,files, server, NULL);
 	CPacket* packet = new CPacket(files);
 	packet->SetOpCode(OP_OFFERFILES);
 	// compress packet
@@ -266,12 +268,12 @@ void CSharedFileList::SafeAddKFile(CKnownFile* toadd, bool bOnlyAdd){
 	//   - this function is called once when connecting to a server and when a file becomes shareable - so, it's called rarely.
 	//   - if the compressed size is still >= the original size, we send the uncompressed packet
 	// therefor we always try to compress the packet
-	if (server->GetCurrentServer() && (server->GetCurrentServer()->GetTCPFlags() & SRV_TCPFLG_COMPRESSION)){
+	if (server->GetTCPFlags() & SRV_TCPFLG_COMPRESSION){
 		packet->PackPacket();
 	}
 	delete files;
 	theApp.statistics->AddUpDataOverheadServer(packet->GetPacketSize());
-	server->SendPacket(packet,true);
+	theApp.serverconnect->SendPacket(packet,true);
 }
 
 // removes first occurrence of 'toremove' in 'list'
@@ -301,16 +303,19 @@ void CSharedFileList::Reload(bool sendtoserver, bool firstload){
 }
 
 void CSharedFileList::SendListToServer(){
-	wxASSERT(server); // Server must NEVER be null when reaching here.
-	if (m_Files_map.empty() || !server->IsConnected() )
+	
+	if (m_Files_map.empty() || !theApp.serverconnect->IsConnected() ) {
 		return;
+	}
+	
 	CSafeMemFile* files = new CSafeMemFile();
+	CServer* server = theApp.serverconnect->GetCurrentServer();
 
 	files->WriteUInt32(m_Files_map.size());
 
 	for (CKnownFileMap::iterator pos = m_Files_map.begin();
 	     pos != m_Files_map.end(); ++pos ) {
-		CreateOfferedFilePacket(pos->second,files,server->GetCurrentServer(), NULL);
+		CreateOfferedFilePacket(pos->second,files,server, NULL);
 	}
 	CPacket* packet = new CPacket(files);
 	packet->SetOpCode(OP_OFFERFILES);
@@ -320,12 +325,12 @@ void CSharedFileList::SendListToServer(){
 	//   - this function is called once when connecting to a server and when a file becomes shareable - so, it's called rarely.
 	//   - if the compressed size is still >= the original size, we send the uncompressed packet
 	// therefor we always try to compress the packet
-	if (server->GetCurrentServer() && (server->GetCurrentServer()->GetTCPFlags() & SRV_TCPFLG_COMPRESSION)){
+	if (server->GetTCPFlags() & SRV_TCPFLG_COMPRESSION){
 		packet->PackPacket();
 	}
 	delete files;
 	theApp.statistics->AddUpDataOverheadServer(packet->GetPacketSize());
-	server->SendPacket(packet,true);
+	theApp.serverconnect->SendPacket(packet,true);
 }
 
 const CKnownFile *CSharedFileList::GetFileByIndex(unsigned int index) const {
