@@ -19,14 +19,8 @@
 
 #include <cmath>
 #include <algorithm>		// Needed for std::min
-
-#include <wx/defs.h> // Needed for right value of wxUSE_GUI
-
-#if wxUSE_GUI
 #include <wx/gdicmn.h>
 #include <wx/dc.h>
-#endif
-
 #include "color.h"		// Needed for RGB
 
 #include "BarShader.h"		// Interface declarations.
@@ -235,7 +229,7 @@ void CBarShader::Draw( wxDC* dc, int iLeft, int iTop, bool bFlat )
 	rectSpan.height = m_Height;
 	rectSpan.width  = 0;
 
-#if wxUSE_GUI
+#ifndef AMULE_DAEMON
 	dc->SetPen(*wxTRANSPARENT_PEN);
 #endif
 	
@@ -299,7 +293,17 @@ void CBarShader::Draw( wxDC* dc, int iLeft, int iTop, bool bFlat )
 	}
 }
 
-#if wxUSE_GUI
+/*!
+ * Daemon will create only 1 line of the bar, and remote side will
+ * replicate it as needed, even with 3D effect
+ */
+#ifdef AMULE_DAEMON
+
+void CBarShader::FillRect(wxDC *dc, const wxRect& rectSpan, DWORD color, bool bFlat)
+{
+}
+
+#else
 
 void CBarShader::FillRect(wxDC *dc, const wxRect& rectSpan, DWORD color, bool bFlat)
 {
@@ -338,9 +342,4 @@ void CBarShader::FillRect(wxDC *dc, const wxRect& rectSpan, DWORD color, bool bF
 
 	dc->SetBrush(wxNullBrush);
 }
-
-#else
-void CBarShader::FillRect(wxDC *dc, const wxRect& rectSpan, DWORD color, bool bFlat)
-{
-}
-#endif
+#endif // AMULE_DAEMON
