@@ -70,11 +70,11 @@ enum {
 		 * \brief Authentication request.
 		 *
 		 * \par Tags:
-		 *	\b ::EC_TAG_PASSWD_HASH (required)\n
+		 *	::EC_TAG_PASSWD_HASH (required)\n
 		 *	::EC_TAG_CLIENT_NAME\n
 		 *	::EC_TAG_CLIENT_VERSION\n
 		 *	::EC_TAG_CLIENT_MOD\n
-		 *	\b ::EC_TAG_PROTOCOL_VERSION (required)
+		 *	::EC_TAG_PROTOCOL_VERSION (required)
 		 */
 	EC_OP_AUTH_REQ,
 
@@ -341,7 +341,7 @@ enum {
 		 * \brief EC protocol version.
 		 *
 		 * An uint16 value, MSB = major, LSB = minor.
-		 * Defaults to 0x0200 for v2.0.
+		 * Defaults to \c 0x0200 for v2.0.
 		 *
 		 * \par Child TAGs:
 		 *	(none)
@@ -360,6 +360,22 @@ enum {
 	 */
 	EC_TAG_STATS_ED2K_ID,
 	EC_TAG_STATS_SERVER,
+
+	/*!
+	 * \brief Connection state.
+	 *
+	 * Possible values (uint8):
+	 *	<ul>
+	 *		<li>0 - Not Connected</li>
+	 *		<li>1 - Connecting</li>
+	 *		<li>2 - Connected with LowID</li>
+	 *		<li>3 - Connected with HighID</li>
+	 *	</ul>
+	 *
+	 * When connected, it contains an ::EC_TAG_SERVER child, describing the
+	 * server we're connected to.
+	 */
+	EC_TAG_STATS_CONNSTATE,
 	EC_TAG_STATS_UL_SPEED,
 	EC_TAG_STATS_DL_SPEED,
 	/*!
@@ -413,29 +429,39 @@ enum {
 
 	/*!
 	 * \brief Info about server
-	 * 
-	 * Value (string): name of server
-	 * 
-	 *  \par Child TAGs:
-	 *  ::EC_TAG_ITEM_ID
-	 *  ::EC_TAG_SERVER_ADDRESS
+	 *
+	 * Value: (EC_IPv4_t) IP:port of the server
+	 *
+	 * When any of the childs are missing, their default value should be used
+	 *
+	 * \par Child TAGs:
+	 *	::EC_TAG_SERVER_NAME\n
+	 *	::EC_TAG_SERVER_DESC\n
+	 *	::EC_TAG_SERVER_PING\n
+	 *	::EC_TAG_SERVER_USERS\n
+	 *	::EC_TAG_SERVER_FILES\n
+	 *	::EC_TAG_SERVER_PREF\n
+	 *	::EC_TAG_SERVER_FAILED\n
+	 *	::EC_TAG_SERVER_STATIC\n
+	 *	::EC_TAG_SERVER_VERSION
 	 */
 	EC_TAG_SERVER,
-	/*!
-	 * \brief server description
-	 * 
-	 * Value (string)
-	*/	
-	EC_TAG_SERVER_DESC,
-	/*!
-	 * \brief server IP address in format xx.xx.xx.xx:port
-	 * 
-	 * Value (string)
-	*/	
+
+	EC_TAG_SERVER_NAME,		///< (\c string) Server name. Default: none.
+	EC_TAG_SERVER_DESC,		///< (\c string) Server description. Default: none.
 	EC_TAG_SERVER_ADDRESS,
-	EC_TAG_SERVER_USERS,
+	EC_TAG_SERVER_PING,		///< (\c uint32) Server ping time. Default: N/A.
+	EC_TAG_SERVER_USERS,		///< (\c uint32) User count. Default: N/A.
 	EC_TAG_SERVER_USERS_MAX,
-	EC_TAG_SERVER_FILES,
+	EC_TAG_SERVER_FILES,		///< (\c uint32) File count. Default: N/A.
+	EC_TAG_SERVER_PREF,		///< (\c uint8) Server preference (priority). Default: 1 (normal)
+					/*!< <ul><li>0 - Low Priority</li>
+						<li>1 - Normal</li>
+						<li>2 - High Priority</li></ul>
+					*/
+	EC_TAG_SERVER_FAILED,		///< (\c uint8) Fail count. Default: 0
+	EC_TAG_SERVER_STATIC,		///< (\c uint8) Nonzero, when server is static. Default: 0 (not static)
+	EC_TAG_SERVER_VERSION,		///< (\c string) Server version. Default: unknown.
 
 	/*!
 	 * \brief Info about up-down client

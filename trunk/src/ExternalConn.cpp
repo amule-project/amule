@@ -270,24 +270,86 @@ CECPacket *ExternalConn::Authenticate(const CECPacket *request)
 }
 
 
-CECPacket *Get_EC_Response_StatRequest(const CECPacket *request)
+void AddServerTo(CECTag *tag, CServer *server)
+{
+	EC_IPv4_t addr;
+
+	if (!server || !tag) {
+		return;
+	}
+
+	uint32 serverip = server->GetIP();
+	addr.ip[0] = (uint8)serverip;
+	addr.ip[1] = (uint8)(serverip >> 8);
+	addr.ip[2] = (uint8)(serverip >> 16);
+	addr.ip[3] = (uint8)(serverip >> 24);
+	addr.port = server->GetPort();
+
+	CECTag ecServer(EC_TAG_SERVER, &addr);
+	wxString tmpStr;
+	uint32 tmpInt;
+	uint8 tmpShort;
+
+	if (!(tmpStr = server->GetListName()).IsEmpty()) {
+		ecServer.AddTag(CECTag(EC_TAG_SERVER_NAME, tmpStr));
+	}
+
+	if (!(tmpStr = server->GetDescription()).IsEmpty()) {
+		ecServer.AddTag(CECTag(EC_TAG_SERVER_DESC, tmpStr));
+	}
+
+	if ((tmpInt = server->GetPing()) != 0) {
+		ecServer.AddTag(CECTag(EC_TAG_SERVER_PING, tmpInt));
+	}
+
+	if ((tmpInt = server->GetUsers()) != 0) {
+		ecServer.AddTag(CECTag(EC_TAG_SERVER_USERS, tmpInt));
+	}
+
+	if ((tmpInt = server->GetFiles()) != 0) {
+		ecServer.AddTag(CECTag(EC_TAG_SERVER_FILES, tmpInt));
+	}
+
+//	if ((tmpShort pref = (uint8)server.GetPreferences()) != 0) {
+//		ecServer.AddTag(CECTag(EC_TAG_SERVER_PREF, tmpShort));
+//	}
+
+	if ((tmpShort = (uint8)server->GetFailedCount()) != 0) {
+		ecServer.AddTag(CECTag(EC_TAG_SERVER_FAILED, tmpShort));
+	}
+
+	if ((tmpShort = (uint8)server->IsStaticMember()) != 0) {
+		ecServer.AddTag(CECTag(EC_TAG_SERVER_STATIC, tmpShort));
+	}
+
+	if (!(tmpStr = server->GetVersion()).IsEmpty()) {
+		ecServer.AddTag(CECTag(EC_TAG_SERVER_VERSION, tmpStr));
+	}
+
+	tag->AddTag(ecServer);
+}
+
+
+CECPacket *Get_EC_Response_StatRequest(const CECPacket *WXUNUSED(request))
 {
 	wxASSERT(request->GetOpCode() == EC_OP_STAT_REQ);
 	
 	CECPacket *response = new CECPacket(EC_OP_STATS);
 	if ( theApp.serverconnect->IsConnected() ) {
-		response->AddTag(CECTag(EC_TAG_STATS_ED2K_ID, (uint32)theApp.serverconnect->clientid));
-		response->AddTag(CECTag(EC_TAG_STATS_SERVER,
-			theApp.serverconnect->GetCurrentServer()->GetListName()));
-		response->AddTag(CECTag(EC_TAG_STATS_USERS_ON_SERVER,
-			theApp.serverconnect->GetCurrentServer()->GetUsers()));
+		CECTag *connstate;
+		if (theApp.serverconnect->IsLowID()) {
+			connstate = new CECTag(EC_TAG_STATS_CONNSTATE, (uint8)2);
+		} else {
+			connstate = new CECTag(EC_TAG_STATS_CONNSTATE, (uint8)3);
+		}
+		AddServerTo(connstate, theApp.serverconnect->GetCurrentServer());
+		response->AddTag(*connstate);
+		delete connstate;
 	} else {
 		if (theApp.serverconnect->IsConnecting()) {
-			response->AddTag(CECTag(EC_TAG_STATS_ED2K_ID, (uint32)0xffffffff));
-			response->AddTag(CECTag(EC_TAG_STATS_SERVER, _("connecting")));
+			response->AddTag(CECTag(EC_TAG_STATS_CONNSTATE, (uint8)1));
 		} else {
-			response->AddTag(CECTag(EC_TAG_STATS_ED2K_ID, (uint32)0));
-			response->AddTag(CECTag(EC_TAG_STATS_SERVER, _("disconnected")));
+			response->AddTag(CECTag(EC_TAG_STATS_CONNSTATE, (uint8)0));
 		}
 	}
 	//
