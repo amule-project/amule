@@ -427,7 +427,7 @@ void CUploadListCtrl::OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxRe
 					
 					imagelist.Draw(clientImage,*dc,cur_rec.left,cur_rec.top+1,wxIMAGELIST_DRAW_TRANSPARENT);
 										
-					if (client->credits->GetScoreRatio(client->GetIP()) > 1) {					
+					if (client->credits && client->credits->GetScoreRatio(client->GetIP()) > 1) {					
 						// Has credits, draw the gold star
 						// (wtf is the grey star?)
 						imagelist.Draw(11,*dc,cur_rec.left,cur_rec.top+1,wxIMAGELIST_DRAW_TRANSPARENT);						
@@ -564,5 +564,3 @@ void CUploadListCtrl::ShowSelectedUserDetails()
 		}
 	}
 }
-
-
