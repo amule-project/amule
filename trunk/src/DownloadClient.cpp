@@ -836,7 +836,7 @@ void CUpDownClient::ProcessBlockPacket(char *packet, uint32 size, bool packed)
 						if (cur_block->zStream && cur_block->zStream->msg) {
 							strZipError.Format(_T(" - %s"), cur_block->zStream->msg);
 						} 
-						AddDebugLogLine(false, CString(_("Corrupted compressed packet for %s received (error %i)")) + strZipError, reqfile->GetFileName().GetData(), result);
+						AddDebugLogLine(false, "%s %s", wxString::Format(_("Corrupted compressed packet for %s received (error %i)"), reqfile->GetFileName().c_str(), result).c_str(), strZipError.c_str() );
 						reqfile->RemoveBlockFromList(cur_block->block->StartOffset, cur_block->block->EndOffset);
 
 						// If we had an zstream error, there is no chance that we could recover from it nor that we
