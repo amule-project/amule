@@ -2340,7 +2340,7 @@ void CListenSocket::OnAccept(int nErrorCode)
 			// Create a new socket to deal with the connection
 			CClientReqSocket* newclient = new CClientReqSocket();
 			// Accept the connection and give it to the newly created socket
-			if (AcceptWith(*newclient, true)) {
+			if (AcceptWith(*newclient, false)) {
 				// OnInit currently does nothing
 				newclient->OnInit();
 			} else {
