@@ -658,22 +658,26 @@ void  CStatisticsDlg::InitTree()
 	h_clients = stattree->AppendItem(root,CString(_("Clients")));
 	cli15= stattree->AppendItem(h_clients,_("Waiting..."));
 	cli1= stattree->AppendItem(h_clients,_("Waiting..."));
-	cli_versions[0]= stattree->AppendItem(cli1,_("Waiting..."));
-	cli_versions[1]= stattree->AppendItem(cli1,_("Waiting..."));
-	cli_versions[2]= stattree->AppendItem(cli1,_("Waiting..."));
-	cli_versions[3]= stattree->AppendItem(cli1,_("Waiting..."));
+	cli_versions[0].active = false;
+	cli_versions[1].active = false;
+	cli_versions[2].active = false;
+	cli_versions[3].active = false;
 	cli10= stattree->AppendItem(h_clients,_("Waiting..."));
+	cli_versions[12].active = false;
+	cli_versions[13].active = false;
+	cli_versions[14].active = false;
+	cli_versions[15].active = false;	
 	cli8= stattree->AppendItem(h_clients,_("Waiting..."));
 	cli2= stattree->AppendItem(h_clients,_("Waiting..."));
-	cli_versions[4]= stattree->AppendItem(cli2,_("Waiting..."));
-	cli_versions[5]= stattree->AppendItem(cli2,_("Waiting..."));
-	cli_versions[6]= stattree->AppendItem(cli2,_("Waiting..."));
-	cli_versions[7]= stattree->AppendItem(cli2,_("Waiting..."));
+	cli_versions[4].active = false;
+	cli_versions[5].active = false;
+	cli_versions[6].active = false;
+	cli_versions[7].active = false;	
 	cli3= stattree->AppendItem(h_clients,_("Waiting..."));
-	cli_versions[8]= stattree->AppendItem(cli3,_("Waiting..."));
-	cli_versions[9]= stattree->AppendItem(cli3,_("Waiting..."));
-	cli_versions[10]= stattree->AppendItem(cli3,_("Waiting..."));
-	cli_versions[11]= stattree->AppendItem(cli3,_("Waiting..."));
+	cli_versions[8].active = false;
+	cli_versions[9].active = false;
+	cli_versions[10].active = false;
+	cli_versions[11].active = false;	
 	cli4= stattree->AppendItem(h_clients,_("Waiting..."));
 	cli5= stattree->AppendItem(h_clients,_("Waiting..."));
 	cli9= stattree->AppendItem(h_clients,_("Waiting..."));
@@ -836,12 +840,13 @@ void CStatisticsDlg::ShowStatistics()
 
 	// statsclientstatus : original idea and code by xrmb
 	
-	CMap<uint8, uint8, uint32, uint32> clientStatus;
-	CMap<uint16, uint16, uint32, uint32> clientVersionEDonkey;
-	CMap<uint16, uint16, uint32, uint32> clientVersionEDonkeyHybrid;
-	CMap<uint8, uint8, uint32, uint32> clientVersionEMule;
+	CMap<uint16, uint16, uint32, uint32> clientStatus;
+	CMap<uint32, uint32, uint32, uint32> clientVersionEDonkey;
+	CMap<uint32, uint32, uint32, uint32> clientVersionEDonkeyHybrid;
+	CMap<uint32, uint32, uint32, uint32> clientVersionEMule;
+	CMap<uint32, uint32, uint32, uint32> clientVersionAMule;
 	uint32 totalclient;
-	theApp.clientlist->GetStatistics(totalclient, myStats, &clientStatus, &clientVersionEDonkey, &clientVersionEDonkeyHybrid, &clientVersionEMule);
+	theApp.clientlist->GetStatistics(totalclient, myStats, &clientStatus, &clientVersionEDonkey, &clientVersionEDonkeyHybrid, &clientVersionEMule, &clientVersionAMule);
 	totalclient -= myStats[0];
 	if( !totalclient ) {
 		totalclient = 1;
@@ -878,7 +883,7 @@ void CStatisticsDlg::ShowStatistics()
 	cbuffer.Format(_("SecIdent On/Off: %u (%.2f%%) : %u (%.2f%%)"), myStats[12] , ((myStats[2]+myStats[8])>0)?((double)100*myStats[12] / (myStats[2]+myStats[8])):0, myStats[13] , ((myStats[2]+myStats[8])>0)?((double)100*myStats[13] /(myStats[2]+myStats[8]) ):0);
 	stattree->SetItemText(cli14, cbuffer);
 	
-	if(stattree->IsExpanded(cli3)) {
+	if(stattree->IsExpanded(cli3) || (myStats[1] > 0)) {
 
 		uint32 totcnt = myStats[1];
 
@@ -891,7 +896,7 @@ void CStatisticsDlg::ShowStatistics()
 			uint32 topcnt=0;
 			double topper=0;
 			while(pos) {
-				uint16	ver;
+				uint32	ver;
 				uint32	cnt;
 				clientVersionEDonkey.GetNextAssoc(pos, ver, cnt);
 				if(currtop<ver && ver<lasttop && ver != 0x91) {
@@ -911,15 +916,27 @@ void CStatisticsDlg::ShowStatistics()
 				UINT verMaj = topver/(100*10*100);
 				UINT verMin = (topver - (verMaj*100*10*100))/(100*10);
 				UINT verUp = (topver - (verMaj*100*10*100) - (verMin*100*10))/(100);
-				cbuffer.Format("v%u.%u.%u: %i (%1.1f%%)", verMaj, verMin, verUp, topcnt, topper*100);			
+				cbuffer.Format("v%u.%u.%u: %i (%1.1f%%)", verMaj, verMin, verUp, topcnt, topper*100);							
 			} else {
 				cbuffer="";
 			}
-			stattree->SetItemText(cli_versions[i+8], cbuffer);
+			if (cbuffer.IsEmpty()) {
+				if (cli_versions[i+8].active) {
+					stattree->Delete(cli_versions[i+8].TreeItem);
+					cli_versions[i+8].active = false;
+				}
+			} else {
+				if (cli_versions[i+8].active) {
+					stattree->SetItemText(cli_versions[i+8].TreeItem,cbuffer);
+				} else {
+					cli_versions[i+8].TreeItem = stattree->AppendItem(cli3,cbuffer);
+					cli_versions[i+8].active = true;
+				}
+			}
 		}
 	}
 
-	if(stattree->IsExpanded(cli2)) {
+	if(stattree->IsExpanded(cli2) || (myStats[4] >0)) {
 
 		uint32 totcnt = myStats[4];
 
@@ -932,7 +949,7 @@ void CStatisticsDlg::ShowStatistics()
 			uint32 topcnt=0;
 			double topper=0;
 			while(pos) {
-				uint16	ver;
+				uint32	ver;
 				uint32	cnt;
 				clientVersionEDonkeyHybrid.GetNextAssoc(pos, ver, cnt);
 				if(currtop<ver && ver<lasttop && ver != 0x91) {
@@ -956,11 +973,23 @@ void CStatisticsDlg::ShowStatistics()
 			} else {
 				cbuffer="";
 			}
-			stattree->SetItemText(cli_versions[i+4], cbuffer);
+			if (cbuffer.IsEmpty()) {
+				if (cli_versions[i+4].active) {
+					stattree->Delete(cli_versions[i+4].TreeItem);
+					cli_versions[i+4].active = false;
+				}
+			} else {
+				if (cli_versions[i+4].active) {
+					stattree->SetItemText(cli_versions[i+4].TreeItem,cbuffer);
+				} else {
+					cli_versions[i+4].TreeItem = stattree->AppendItem(cli2,cbuffer);
+					cli_versions[i+4].active = true;
+				}
+			}
 		}
 	}
 
-	if(stattree->IsExpanded(cli1)) {
+	if(stattree->IsExpanded(cli1) || (myStats[2] > 0)) {
 		uint32 totcnt = myStats[2];
 
 		//--- find top 4 eMule client versions ---
@@ -972,7 +1001,7 @@ void CStatisticsDlg::ShowStatistics()
 			uint32 topcnt=0;
 			double topper=0;
 			while(pos) {
-				uint8	ver;
+				uint32	ver;
 				uint32	cnt;
 				clientVersionEMule.GetNextAssoc(pos, ver, cnt);
 				if(currtop<ver && ver<lasttop )	{
@@ -992,11 +1021,79 @@ void CStatisticsDlg::ShowStatistics()
 				UINT verMaj = topver/(100*10*100);
 				UINT verMin = (topver - (verMaj*100*10*100))/(100*10);
 				UINT verUp = (topver - (verMaj*100*10*100) - (verMin*100*10))/(100);
-				cbuffer.Format("v%u.%u.%u: %i (%1.1f%%)", verMaj, verMin, verUp, topcnt, topper*100);
+				cbuffer.Format(" v%u.%u%c: %i (%1.1f%%)",verMaj, verMin, 'a' + verUp, topcnt, topper*100);
 			} else {
 				cbuffer="";
 			}
-			stattree->SetItemText(cli_versions[i], cbuffer);
+			if (cbuffer.IsEmpty()) {
+				if (cli_versions[i].active) {
+					stattree->Delete(cli_versions[i].TreeItem);
+					cli_versions[i].active = false;
+				}
+			} else {
+				if (cli_versions[i].active) {
+					stattree->SetItemText(cli_versions[i].TreeItem,cbuffer);
+				} else {
+					cli_versions[i].TreeItem = stattree->AppendItem(cli1,cbuffer);
+					cli_versions[i].active = true;
+				}
+			}
+		}
+	}
+
+	if(stattree->IsExpanded(cli10) || (myStats[8] > 0)) {
+		uint32 totcnt = myStats[8];
+
+		//--- find top 4 aMule client versions ---
+		uint32	currtop = 0;
+		uint32	lasttop = 0xFFFFFFFF;
+		for(uint32 i=0; i<4; i++) {
+			POSITION pos=clientVersionAMule.GetStartPosition();
+			uint32 topver=0;
+			uint32 topcnt=0;
+			double topper=0;
+			while(pos) {
+				uint32	ver;
+				uint32	cnt;
+				clientVersionAMule.GetNextAssoc(pos, ver, cnt);
+				if(currtop<ver && ver<lasttop )	{
+					double percent = (double)cnt/totcnt;
+					if( lasttop == 0xFFFFFFFF && ((totcnt > 75 && ((cnt <= 2) || percent < 0.01)) || (totcnt > 50 && cnt <= 1))) {
+						continue;
+					}
+					topper=percent;
+					topver=ver;
+					topcnt=cnt;
+					currtop=ver;
+				}
+			}
+			lasttop=currtop;
+			currtop=0;
+			if(topcnt) {
+				uint8 verMaj = topver/(100*10*100);
+				uint8 verMin = (topver - (verMaj*100*10*100))/(100*10);
+				uint8 verUp = (topver - (verMaj*100*10*100) - (verMin*100*10))/(100);
+				if ((verMaj == 0) && (verUp == 0)) {
+					cbuffer.Format(" v1.x: %i (%1.1f%%)", topcnt, topper*100);
+				} else {
+					cbuffer.Format(" v%u.%u.%u: %i (%1.1f%%)",verMaj, verMin, verUp, topcnt, topper*100);
+				}
+			} else {
+				cbuffer="";
+			}
+			if (cbuffer.IsEmpty()) {
+				if (cli_versions[i+12].active) {
+					stattree->Delete(cli_versions[i+12].TreeItem);
+					cli_versions[i+12].active = false;
+				}
+			} else {
+				if (cli_versions[i+12].active) {
+					stattree->SetItemText(cli_versions[i+12].TreeItem,cbuffer);
+				} else {
+					cli_versions[i+12].TreeItem = stattree->AppendItem(cli10,cbuffer);
+					cli_versions[i+12].active = true;
+				}
+			}
 		}
 	}
 

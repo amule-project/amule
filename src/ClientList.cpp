@@ -51,11 +51,13 @@ CClientList::~CClientList(){
 }
 
 // xrmb : statsclientstatus
-void CClientList::GetStatistics(uint32 &totalclient, uint32 stats[], CMap<uint8, uint8, uint32, uint32> *clientStatus, CMap<uint16, uint16, uint32, uint32> *clientVersionEDonkey, CMap<uint16, uint16, uint32, uint32> *clientVersionEDonkeyHybrid, CMap<uint8, uint8, uint32, uint32> *clientVersionEMule){
+void CClientList::GetStatistics(uint32 &totalclient, uint32 stats[], CMap<uint16, uint16, uint32, uint32> *clientStatus, CMap<uint32, uint32, uint32, uint32> *clientVersionEDonkey, CMap<uint32, uint32, uint32, uint32> *clientVersionEDonkeyHybrid, CMap<uint32, uint32, uint32, uint32> *clientVersionEMule, CMap<uint32, uint32, uint32, uint32> *clientVersionAMule){
 	//if(clientStatus)		clientStatus->RemoveAll();
 	totalclient = list.GetCount();
 	if(clientVersionEDonkey)	clientVersionEDonkey->RemoveAll();
 	if(clientVersionEMule)		clientVersionEMule->RemoveAll();
+	if(clientVersionEDonkeyHybrid)	clientVersionEDonkeyHybrid->RemoveAll();
+	if(clientVersionAMule)		clientVersionAMule->RemoveAll();
 	POSITION pos1, pos2;
 
 	for (int i=0;i<15;i++) stats[i]=0;
@@ -90,7 +92,7 @@ void CClientList::GetStatistics(uint32 &totalclient, uint32 stats[], CMap<uint8,
 					if (version == 0xFF || version == 0x66 || version==0x69 || version==0x90 || version==0x33 || version==0x60) {
 						continue;					
 					}
-					(*clientVersionEMule)[version]++;
+					(*clientVersionEMule)[cur_client->GetVersion()]++;
 				}
 				break;
 			case SO_CDONKEY : 
@@ -101,6 +103,13 @@ void CClientList::GetStatistics(uint32 &totalclient, uint32 stats[], CMap<uint8,
 				break;
 			case SO_AMULE:
 				stats[8]++;
+				if(clientVersionAMule) {
+					uint8 version = cur_client->GetMuleVersion();
+					if (version == 0xFF || version == 0x66 || version==0x69 || version==0x90 || version==0x33 || version==0x60) {
+						continue;					
+					}
+					(*clientVersionAMule)[cur_client->GetVersion()]++;
+				}
 				break;
 			case SO_MLDONKEY:
 				stats[3]++;
