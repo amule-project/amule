@@ -326,6 +326,7 @@ void CSearchDlg::OnBnClickedCancels(wxCommandEvent& WXUNUSED(evt))
 
 	if (globalsearch) {
 		delete searchpacket;
+		searchpacket = NULL;
 		globalsearch = false;
 	}
 
