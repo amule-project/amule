@@ -24,6 +24,7 @@
 #include <wx/string.h>
 #include <wx/socket.h>
 #include "types.h"
+#include "endianfix.h"
 
 
 class ECSocket : public wxSocketClient {
@@ -32,24 +33,76 @@ public:
 	
 	wxString SendRecvMsg(const wxChar *msg);
 	
-	virtual ECSocket& Read(uint8&);
-	virtual ECSocket& Read(uint16&);
-	virtual ECSocket& Read(uint32&);
-	#if 0
-	virtual ECSocket& Read(uint64&);
-	#endif
-	virtual ECSocket& Read(wxString&);
-
-	virtual ECSocket& Write(const uint8&);
-	virtual ECSocket& Write(const uint16&);
-	virtual ECSocket& Write(const uint32&);
-	#if 0
-	virtual ECSocket& Write(const uint64&);
-	#endif
-	virtual ECSocket& Write(const wxString&);
+	inline ECSocket& Read(uint8& v) {
+		return ReadRaw(&v, 1);
+	};
 	
-	virtual ECSocket& ReadRaw(void* buffer,off_t length) { wxSocketClient::Read(buffer,length); return *this; };
-	virtual ECSocket& WriteRaw(const void* buffer,size_t length) { wxSocketClient::Write(buffer,length); return *this;};		
+	inline ECSocket& Read(uint16& v) {
+		ReadRaw(&v, 2);
+		ENDIAN_SWAP_I_16(v);
+		return *this;
+	};
+	
+	inline ECSocket& Read(uint32& v) {
+		ReadRaw(&v, 4);
+		ENDIAN_SWAP_I_32(v);
+		return *this;
+	};
+	
+	#if 0
+	inline ECSocket& Read(uint64& v) {
+		ReadRaw(&v, 8);
+		ENDIAN_SWAP_I_64(v);
+		return *this;
+	};
+	#endif
+	
+	inline ECSocket& Read(wxString& v) {
+		uint16 len;
+		Read(len);
+		ReadRaw(v.GetWriteBuf(len), len);
+		v.UngetWriteBuf(len);
+		if (Error()) {
+			printf("Wrong wxString Reading Packet!!!\n");
+		}
+		return *this;
+	};
+
+	inline ECSocket& Write(const uint8& v) {
+		return WriteRaw(&v, 1);
+	};
+
+	inline ECSocket& Write(const uint16& v) {
+		int16 tmp = ENDIAN_SWAP_16(v);
+		return WriteRaw(&tmp, 2);
+	};
+	
+	inline ECSocket& Write(const uint32& v) {
+		int32 tmp = ENDIAN_SWAP_32(v);
+		return WriteRaw(&tmp, 4);
+	};
+	
+	#if 0
+	inline ECSocket& Write(const uint64& v) {
+		int64 tmp = ENDIAN_SWAP_32(v);
+		return WriteRaw(&tmp, 8);
+	};
+	#endif
+	
+	inline ECSocket& Write(const wxString& v) {
+		Write((uint16)v.Length());
+		return WriteRaw(v.c_str(), v.Length());
+	};
+	
+	inline ECSocket& ReadRaw(void* buffer, off_t length) { 
+		wxSocketClient::Read(buffer,length); 
+		return *this;
+	};
+	
+	inline ECSocket& WriteRaw(const void* buffer, size_t length) { 
+		wxSocketClient::Write(buffer,length); 
+		return *this;
+	};		
 };
 
 

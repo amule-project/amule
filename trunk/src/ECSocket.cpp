@@ -19,7 +19,6 @@
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 #include "ECSocket.h"
-#include "endianfix.h"
 
 
 //shakraw - sends and receive string data to/from ECServer
@@ -50,73 +49,3 @@ wxString ECSocket::SendRecvMsg(const wxChar *msg) {
 	return(response);
 }
 
-inline ECSocket& ECSocket::Read(uint8& v)
-{
-	return ReadRaw(&v, 1);
-}
-
-inline ECSocket& ECSocket::Read(uint16& v)
-{
-	ReadRaw(&v, 2);
-	ENDIAN_SWAP_I_16(v);
-	return *this;
-}
-
-inline ECSocket& ECSocket::Read(uint32& v)
-{
-	ReadRaw(&v, 4);
-	ENDIAN_SWAP_I_32(v);
-	return *this;
-}
-
-#if 0
-inline ECSocket& ECSocket::Read(uint64& v)
-{
-	ReadRaw(&v, 8);
-	ENDIAN_SWAP_I_64(v);
-	return *this;
-}
-#endif
-
-inline ECSocket& ECSocket::Read(wxString& v)
-{
-	uint16 len;
-	Read(len);
-	ReadRaw(v.GetWriteBuf(len), len);
-	v.UngetWriteBuf(len);
-	if (Error()) {
-		printf("Wrong wxString Reading Packet!!!\n");
-	}
-	return *this;
-}
-
-inline ECSocket& ECSocket::Write(const uint8& v)
-{
-	return WriteRaw(&v, 1);
-}
-
-inline ECSocket& ECSocket::Write(const uint16& v)
-{
-	int16 tmp = ENDIAN_SWAP_16(v);
-	return WriteRaw(&tmp, 2);
-}
-	
-inline ECSocket& ECSocket::Write(const uint32& v)
-{
-	int32 tmp = ENDIAN_SWAP_32(v);
-	return WriteRaw(&tmp, 4);
-}
-
-#if 0
-inline ECSocket& ECSocket::Write(const uint64& v)
-{
-	int64 tmp = ENDIAN_SWAP_32(v);
-	return WriteRaw(&tmp, 8);
-}
-#endif
-
-inline ECSocket& ECSocket::Write(const wxString& v)
-{
-	Write((uint16)v.Length());
-	return WriteRaw(v.c_str(), v.Length());
-}
