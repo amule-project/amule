@@ -1,4 +1,4 @@
-.TH AMULEWEB 1
+.TH AMULEWEB 1 "March 2005" "aMule webserver v2.0.0" "aMule utilities"
 .SH NAME
 amuleweb \- aMule web server
 .SH SYNOPSIS
@@ -27,10 +27,12 @@ amuleweb \- aMule web server
 .B amuleweb
 .RB [ \-\-amule\-config\-file=\fI<path> ]
 .SH DESCRIPTION
-amuleweb manages your access to amule through a webbrowser.
+\fBamuleweb\fR manages your access to amule through a webbrowser.
 You can start amuleweb together with \fBamule\fR(1), or separately, any time later.
 Options can be specified via command-line or via config-file.
 Command-line options take precedence over config-file options.
+.PP
+\fBamulewebDLG\fR is the GUI version of \fBamuleweb\fR, and they are exactly the same (except for the interface, of course).
 .TP
 \fB\-h\fR, \fB\-\-host\fR=\fI<host>\fR
 host where aMule is running (default: \fIlocalhost\fR).
@@ -111,8 +113,6 @@ For example, the default template (named 'default') is in webserver/default/, an
 .SH FILES
 ~/.aMule/remote.conf
 .br
-~/.eMule
-.br
 ~/.aMule/webserver/
 .br
 \fI$(pkgdatadir)\fR/webserver/
@@ -132,4 +132,4 @@ Please do not report bugs in e-mail, neither to our mailing list nor directly to
 .SH COPYRIGHT
 aMule and all of its related utilities are distributed under the GNU General Public License.
 .SH SEE ALSO
-\fBamule\fR(1), \fBamulecmd\fR(1), \fBamulewebDLG\fR(1)
+\fBamule\fR(1), \fBamulecmd\fR(1)
