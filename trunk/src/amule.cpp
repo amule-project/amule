@@ -1448,7 +1448,7 @@ void CamuleApp::QueueLogLine(bool addtostatusbar, const wxChar* line, ...)
 	new_line_to_log.line = bufferline;
 	new_line_to_log.addtostatus = addtostatusbar;
 
-	QueuedAddLogLines.AddTail(new_line_to_log);
+	QueuedAddLogLines.push_back(new_line_to_log);
 
 	m_LogQueueLock.Leave();
 }
@@ -1462,8 +1462,9 @@ void CamuleApp::FlushQueuedLogLines() {
 
 	wxASSERT(amuledlg);
 
-	while (!QueuedAddLogLines.IsEmpty()) {
-		line_to_add = QueuedAddLogLines.RemoveHead();
+	while (!QueuedAddLogLines.empty()) {
+		line_to_add = QueuedAddLogLines.front();
+		QueuedAddLogLines.pop_front();
 		amuledlg->AddLogLine(line_to_add.addtostatus, line_to_add.line);
 	}
 
@@ -1827,10 +1828,9 @@ void CamuleApp::ShutDown() {
 			}
 		}
 
-		POSITION pos = SocketDeletionList.GetHeadPosition();
-		while (pos) {
-			temp_socket = SocketDeletionList.GetNext(pos);
-			if ((temp_socket.socket_n == socket_pointer) && (temp_socket.creation_time == creation_time)) {
+		uint32 size = SocketDeletionList.size();
+		for ( uint32 i = 0; i < size; ++i ) {
+			if (( SocketDeletionList[i].socket_n == socket_pointer) && ( SocketDeletionList[i].creation_time == creation_time)) {
 
 				printf("\n-----------------------RSB FOUND!!!!!!!!!!!!!!!!!!!!!!!!!------------\n");
 				printf("First deletion  (ptr: %u time: %u) BT:\n",temp_socket.socket_n, temp_socket.creation_time);
@@ -1845,7 +1845,7 @@ void CamuleApp::ShutDown() {
 			}
 		}
 
-		SocketDeletionList.AddTail(current_socket);
+		SocketDeletionList.push_back(current_socket);
 
 	}
 
