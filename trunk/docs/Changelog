@@ -186,6 +186,9 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		* Added a spec file to the CVS tarball. Now users can do
 		rpmbuild -ta aMule-CVS-20050309.tar.bz2 and generate rpms for
 		the tarball of the same day.
+		* Fixed a bug in the spec file. The testing was beeing done
+		with files from amule-dev-cvs, but CVS snapshots tarballs are
+		done in amule-cvs directory.
 
 	volpol:
 		* Patch to fix use of deprecated functions in wxGTK-2.5.3.
