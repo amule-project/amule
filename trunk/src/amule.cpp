@@ -1077,101 +1077,105 @@ void CamuleApp::Localize_mule()
 			language = wxLANGUAGE_BULGARIAN;
 			break;
 		case 4:
-			//strcpy(newlang,"ca_ES")
-			language = wxLANGUAGE_CATALAN;
-			break;
-		case 5:
 			//strcpy(newlang,"zh_CN");
 			language = wxLANGUAGE_CHINESE;
 			break;		
-		case 6:
+		case 5:
 			//strcpy(newlang,"da_DK");
 			language = wxLANGUAGE_DANISH;
 			break;
-		case 7:
+		case 6:
 			//strcpy(newlang,"nl_NL");
 			language = wxLANGUAGE_DUTCH;
 			break;
-		case 8:
+		case 7:
 			//strcpy(newlang,"en_GB");
 			language = wxLANGUAGE_ENGLISH;
 			break;
-		case 9:
+		case 8:
 			//strcpy(newlang,"et_EE");
 			language = wxLANGUAGE_ESTONIAN;
 			break;
-		case 10:
+		case 9:
 			//strcpy(newlang,"fi");
 			language = wxLANGUAGE_FINNISH;
 			break;
-		case 11:
+		case 10:
 			//strcpy(newlang,"fr_FR");
 			language = wxLANGUAGE_FRENCH;
 			break;
-		case 12:
+		case 11:
 			//strcpy(newlang,"gl_ES");
 			language = wxLANGUAGE_GALICIAN;
 			break;
-		case 13:
+		case 12:
 			//strcpy(newlang,"de_DE");
 			language = wxLANGUAGE_GERMAN;
 			break;
-		case 14:
+		case 13:
 			//strcpy(newlang,"de_CH");
 			language = wxLANGUAGE_GERMAN_SWISS;
 			break;
-		case 15:
+		case 14:
 			//strcpy(newlang,"it_IT");
 			language = wxLANGUAGE_ITALIAN;
 			break;
-		case 16:
+		case 15:
 			//strcpy(newlang,"ko_KR");
 			language = wxLANGUAGE_KOREAN;
 			break;
-		case 17:
+		case 16:
 			//strcpy(newlang,"lt_LT");
 			language = wxLANGUAGE_LITHUANIAN;
 			break;
-		case 18:
+		case 17:
 			//strcpy(newlang,"pl_PL");
 			language = wxLANGUAGE_POLISH;
 			break;
-		case 19:
+		case 18:
 			//strcpy(newlang,"pt_PT");
 			language = wxLANGUAGE_PORTUGUESE;
 			break;
-		case 20:
+		case 19:
 			//strcpy(newlang,"pt_BR");
 			language = wxLANGUAGE_PORTUGUESE_BRAZILIAN;
 			break;
-		case 21:
+		case 20:
 			//strcpy(newlang,"ru_RU");
 			language = wxLANGUAGE_RUSSIAN;
 			break;
-		case 22:
+		case 21:
 			//strcpy(newlang,"es_ES");
 			language = wxLANGUAGE_SPANISH;
 			break;
-		case 23:
+		case 22:
 			//strcpy(newlang,"es_CH");
 			language = wxLANGUAGE_SPANISH_CHILE;
 			break;
-		case 24:
+		case 23:
 			//strcpy(newlang,"es_MX");
 			language = wxLANGUAGE_SPANISH_MEXICAN;
 			break;
-		case 25:
+		case 24:
 			//Turkish makes weird things with .eMule file!!! why?
 			//language = wxLANGUAGE_TURKISH;
 			language = wxLANGUAGE_DEFAULT;
 			break;
-		case 26:
+		case 25:
 			//strcpy(newlang,"hu");
 			language = wxLANGUAGE_HUNGARIAN;
 			break;
-		case 27:
+		case 26:
 			//strcpy(newlang,"ca_ES");
 			language = wxLANGUAGE_CATALAN;
+			break;
+		case 27:
+			//strcpy(newlang,"hr");
+			language = wxLANGUAGE_CROATIAN;
+			break;
+		case 28:
+			//strcpy(newlang,"it_NA");
+			language = wxLANGUAGE_ITALIAN;
 			break;
 		default:
 			language = wxLANGUAGE_DEFAULT;
