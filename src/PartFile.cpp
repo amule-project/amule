@@ -87,6 +87,8 @@ void dump16(uchar* d16)
 
 extern void dump16(uchar*);
 
+wxMutex CPartFile::m_FileCompleteMutex; 
+
 CBarShader CPartFile::s_LoadBar(PROGRESS_HEIGHT); 
 CBarShader CPartFile::s_ChunkBar(16); 
 
@@ -436,12 +438,37 @@ uint8 CPartFile::LoadPartFile(LPCTSTR in_directory, LPCTSTR filename, bool getsi
 	}
 	
 	CSafeFile metFile;
+	bool load_from_backup = false;
 	// readfile data form part.met file
-	if (!metFile.Open(fullname,CFile::read)){
+	if (!metFile.Open(fullname,CFile::read)) {
 		theApp.amuledlg->AddLogLine(false, CString(_("Error: Failed to open part.met file! (%s => %s)")), m_partmetfilename, m_strFileName.GetData());
-		return false;
+		load_from_backup = true;
+	} else {
+		if (!(metFile.Length()>0)) {
+			theApp.amuledlg->AddLogLine(false, CString(_("Error: part.met fileis 0 size! (%s => %s)")), m_partmetfilename, m_strFileName.GetData());
+			metFile.Close();
+			load_from_backup = true;
+		}
 	}
 
+	if (load_from_backup) {
+		theApp.amuledlg->AddLogLine(false, CString(_("Trying backup of met file on (%s%s)")), m_partmetfilename, PARTMET_BAK_EXT);
+		wxString BackupFile;
+		BackupFile.Printf("%s%s",fullname,PARTMET_BAK_EXT);
+		if (!metFile.Open(BackupFile)) {
+			theApp.amuledlg->AddLogLine(false, CString(_("Error: Failed to load backup file. Search http://forum.amule.org for .part.met recovery solutions")), m_partmetfilename, m_strFileName.GetData());				
+			delete[] buffer;
+			return false;
+		} else {
+			if (!(metFile.Length()>0)) {
+				theApp.amuledlg->AddLogLine(false, CString(_("Error: part.met fileis 0 size! (%s => %s)")), m_partmetfilename, m_strFileName.GetData());
+				metFile.Close();			
+				delete[] buffer;
+				return false;
+			}
+		}
+	}
+	
 	try {
 		metFile.Read(&version,1);
 		if (version != PARTFILE_VERSION  && version!= PARTFILE_SPLITTEDVERSION ){
@@ -781,6 +808,7 @@ bool CPartFile::SavePartFile(bool Initial)
 	switch (status) {
 		case PS_WAITINGFORHASH:
 		case PS_HASHING:
+		case PS_COMPLETE:
 			return false;
 	}
 	/* Don't write anything to disk if less than 5000 bytes of free space is left. */
@@ -933,7 +961,7 @@ bool CPartFile::SavePartFile(bool Initial)
 	
 	file.Close();
 
-	file.Flush();
+	//file.Flush();
 	
 	if (!Initial) {
 		wxRemoveFile(wxString(fullname) + ".backup");
@@ -942,7 +970,7 @@ bool CPartFile::SavePartFile(bool Initial)
 	// Kry -don't backup if it's 0 size but raise a warning!!!
 	wxFile newpartmet;
 	if (newpartmet.Open(fullname)!=TRUE) {
-		wxMessageBox(wxString::Format(_("Unable to open %s file - using .bak file.\n"),fullname));
+		wxMessageBox(wxString::Format(_("Unable to open %s file - using %s file.\n"),fullname, PARTMET_BAK_EXT));
 		FS_wxCopyFile(wxString(fullname) + PARTMET_BAK_EXT,fullname);
 	} else {
 		if (newpartmet.Length()>0) {			
@@ -951,7 +979,7 @@ bool CPartFile::SavePartFile(bool Initial)
 			BackupFile(fullname, PARTMET_BAK_EXT);
 		} else {
 			newpartmet.Close();
-			wxMessageBox(wxString::Format(_("%s file is 0 size somehow - using .bak file.\n Please report on http://forum.amule.org\n"),fullname));
+			wxMessageBox(wxString::Format(_("%s file is 0 size somehow - using %s file.\n Please report on http://forum.amule.org\n"),fullname, PARTMET_BAK_EXT));
 			FS_wxCopyFile(wxString(fullname) + PARTMET_BAK_EXT,fullname);			
 		}
 	}
@@ -1068,13 +1096,12 @@ void CPartFile::SaveSourceSeeds() {
 		CUpDownClient* cur_src = source_seeds.GetNext(pos1);		
 		uint32 dwID = cur_src->GetUserID();
 		uint16 nPort = cur_src->GetUserPort();
-		uint32 dwServerIP = cur_src->GetServerIP();
-		uint16 nServerPort = cur_src->GetServerPort();
+		//uint32 dwServerIP = cur_src->GetServerIP();
+		//uint16 nServerPort =cur_src->GetServerPort();
 		file.Write(&dwID,4);
 		file.Write(&nPort,2);
-		file.Write(&dwServerIP,4);
-		file.Write(&nServerPort,2);
-		file.Write(cur_src->GetUserHash(),16);
+		//file.Write(&dwServerIP,4);
+		//file.Write(&nServerPort,2);
 	}	
 	file.Flush();
 	file.Close();
@@ -1088,6 +1115,7 @@ void CPartFile::LoadSourceSeeds() {
 	
 	wxString fName;
 	CFile file;
+	CMemFile sources_data;
 	
 	if (!wxFileName::FileExists(wxString(fullname) + ".seeds")) {
 		return;
@@ -1107,43 +1135,26 @@ void CPartFile::LoadSourceSeeds() {
 	
 	uint8 src_count;
 	file.Read(&src_count,1);	
+	
+	sources_data.Write((uint16)src_count);
 
 	for (int i=0;i<src_count;i++) {
 	
 		uint32 dwID;
 		uint16 nPort;
-		uint32 dwServerIP;
-		uint16 nServerPort;
-		uint8 achUserHash[16];
 		file.Read(&dwID,4);
 		file.Read(&nPort,2);
-		file.Read(&dwServerIP,4);
-		file.Read(&nServerPort,2);
-		file.Read(achUserHash,16);
 		
-		if (theApp.serverconnect->IsConnected()) {
-			// check first if we are this source
-			if (theApp.serverconnect->GetClientID() < 16777216) {
-				if ((theApp.serverconnect->GetClientID() == dwID) && theApp.serverconnect->GetCurrentServer()->GetIP() == dwServerIP) {
-					continue;
-				}
-			} else if (theApp.serverconnect->GetClientID() == dwID) {
-				continue;
-			} 
-		} 
-		
-		if (dwID < 16777216) {
-			continue;
-		}			
-		
-		if(theApp.glob_prefs->GetMaxSourcePerFile() > this->GetSourceCount()) {
-			CUpDownClient* newsource = new CUpDownClient(nPort,dwID,dwServerIP,nServerPort,this);
-			newsource->SetUserHash(achUserHash);
-			theApp.downloadqueue->CheckAndAddSource(this,newsource);
-		} else {
-			break;
-		}				
+		sources_data.Write(dwID);
+		sources_data.Write(nPort);
+		sources_data.Write((uint32) 0);
+		sources_data.Write((uint16) 0);	
 	}
+	
+	sources_data.Seek(0);
+	
+	AddClientSources(&sources_data, 1 );
+	
 	file.Close();	
 }		
 
@@ -1648,40 +1659,6 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 	datarate = 0;  
 #endif
 
-	if (m_icounter < 10) {
-		for(POSITION pos = m_downloadingSourcesList.GetHeadPosition();pos!=0;)
-		{
-			cur_src = m_downloadingSourcesList.GetNext(pos);
-			if(cur_src && cur_src->GetDownloadState() == DS_DOWNLOADING)
-			{
-				wxASSERT( cur_src->socket );
-				if (cur_src->socket)
-				{
-					transferingsrc++;
-	#ifdef DOWNLOADRATE_FILTERED
-					float kBpsClient = cur_src->CalculateKBpsDown();
-					kBpsDown += kBpsClient;
-//					printf("ReduceDownload %i",reducedownload);
-					if (reducedownload) {
-						uint32 limit = (uint32)((float)reducedownload*kBpsClient);
-//						printf(" Limit %i\n",limit);
-	#else
-					uint32 cur_datarate = cur_src->CalculateDownloadRate();
-					datarate += cur_datarate;
-					if (reducedownload) {
-						uint32 limit = reducedownload*cur_datarate/1000;
-	#endif
-						if(limit<1000 && reducedownload == 200)
-							limit +=1000;
-						else if(limit<1)
-							limit = 1;
-						cur_src->socket->SetDownloadLimit(limit);
-					}
-				}
-			}
-		}
-	} else {
-		
 		POSITION pos1, pos2;
 		for (uint32 sl = 0; sl < SOURCESSLOTS; sl++) {
 			if (!srclists[sl].IsEmpty()) {
@@ -1863,7 +1840,7 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 	
 		// calculate datarate, set limit etc.
 		
-	}			
+
 
 	count++;
 	
@@ -2378,16 +2355,12 @@ void CPartFile::CompleteFile(bool bIsHashingDone)
 		cthread=new completingThread(this);
 		cthread->Create();
 		cthread->Run();
+		//PerformFileComplete();
 
 
 	}
 	theApp.amuledlg->transferwnd->downloadlistctrl->ShowFilesCount();
 	UpdateDisplayedInfo(true);
-}
-
-completingThread::completingThread():wxThread(wxTHREAD_DETACHED)
-{
-
 }
 
 completingThread::completingThread(CPartFile* pFile):wxThread(wxTHREAD_DETACHED)
@@ -2401,6 +2374,7 @@ completingThread::~completingThread()
 {
 	//maybe a thread deletion needed
 }
+
 #define UNEXP_FILE_ERROR		1
 #define DELETE_FAIL_MET 		2
 #define DELETE_FAIL_MET_BAK	4
@@ -2412,13 +2386,26 @@ completingThread::~completingThread()
 //#define UNEXP_FILE_ERROR 64
 //#define UNEXP_FILE_ERROR 128
 
-void* completingThread::Entry()
+wxThread::ExitCode completingThread::Entry()
 {
 	if (completing==NULL) {
 		printf("NOT completing !!!\n");
 	} else {
 		printf("completing->PerformFileComplete(%s); !!!\n",completing->GetFileName().GetData());
-   		uint8 completing_result = completing->PerformFileComplete();
+   		completing_result = completing->PerformFileComplete();
+	}
+	return NULL;
+}
+
+void completingThread::setFile(CPartFile* pFile)
+{
+	if (pFile!=NULL) {
+		completing = pFile;
+	}
+}
+
+void completingThread::OnExit()
+{
 		wxMutexGuiEnter();
 		if (completing_result & UNEXP_FILE_ERROR) {
 			theApp.amuledlg->AddLogLine(true,CString(_("Unexpected file error while completing %s. File paused")),completing->GetFileName().GetData());
@@ -2436,20 +2423,8 @@ void* completingThread::Entry()
 		theApp.amuledlg->AddLogLine(true,CString(_("Finished downloading %s :-)")),completing->GetFileName().GetData());
 		theApp.amuledlg->ShowNotifier(CString(_("Downloaded:"))+"\n"+completing->GetFileName(), TBN_DLOAD);
 		
-		wxMutexGuiLeave();
-	}
-	return NULL;
-}
-
-void completingThread::setFile(CPartFile* pFile)
-{
-	if (pFile!=NULL) {
-		completing = pFile;
-	}
-}
-
-void completingThread::OnExit()
-{
+		wxMutexGuiLeave();	
+	
 }
 
 /*
@@ -2478,6 +2453,7 @@ uint8 CPartFile::PerformFileComplete()
 	
 	//CSingleLock(&m_FileCompleteMutex,TRUE); // will be unlocked on exit
 	wxMutexLocker sLock(m_FileCompleteMutex);
+	
 	char* partfilename = nstrdup(fullname);
 	partfilename[strlen(fullname)-4] = 0;	// assumes ".met" at the end
 	char* newfilename = nstrdup(GetFileName().c_str());
@@ -2553,9 +2529,9 @@ uint8 CPartFile::PerformFileComplete()
 			completed_errno |= UNEXP_FILE_ERROR;
 			paused = true;
 			SetPartFileStatus(PS_ERROR);
-			wxMutexGuiEnter();
+		//	wxMutexGuiEnter();
 			theApp.downloadqueue->StartNextFile();
-			wxMutexGuiLeave();
+		//	wxMutexGuiLeave();
 			return FALSE;
 		}
 		if ( !wxRemoveFile(partfilename) ) {
@@ -2584,16 +2560,16 @@ uint8 CPartFile::PerformFileComplete()
 	SetAutoUpPriority(false);
 	theApp.downloadqueue->RemoveFile(this);
 	//theApp.amuledlg->transferwnd.downloadlistctrl.UpdateItem(this);
-	wxMutexGuiEnter();
+	//wxMutexGuiEnter();
 	UpdateDisplayedInfo();
 	theApp.amuledlg->transferwnd->downloadlistctrl->ShowFilesCount();
-	wxMutexGuiLeave();
+//	wxMutexGuiLeave();
 	//SHAddToRecentDocs(SHARD_PATH, fullname); // This is a real nasty call that takes ~110 ms on my 1.4 GHz Athlon and isn't really needed afai see...[ozon]
 	// Barry - Just in case
-	//		transfered = m_nFileSize;
-	wxMutexGuiEnter();
+	transfered = m_nFileSize;
+//	wxMutexGuiEnter();
 	theApp.downloadqueue->StartNextFile();
-	wxMutexGuiLeave();
+//	wxMutexGuiLeave();
 	
 	return completed_errno;
 }
@@ -3028,10 +3004,16 @@ void CPartFile::PreviewFile()
 	// Need to use quotes in case filename contains spaces.
 	command.Append(wxT(" \""));
 	command.Append(GetFullName());
-	// Remove the .met from filename.
-	for (int i=0;i<4;i++) command.RemoveLast();
+	
+	if (!(GetStatus() == PS_COMPLETE)) {
+		// Remove the .met from filename.
+		for (int i=0;i<4;i++) {
+			command.RemoveLast();
+		}
+	}
+	
 	command.Append(wxT("\""));
-        wxShell(command.c_str());
+     wxShell(command.c_str());
 }
 
 bool CPartFile::PreviewAvailable()
