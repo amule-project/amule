@@ -1923,7 +1923,7 @@ void CPartFile::UpdatePartsInfo() {
 		cur_src = m_SrcList.GetNext(pos);
 		for (uint16 i = 0; i < partcount; i++)	{
 			#warning Phoenix - hack to see the mixed sources problem - III
-			if(!IsASaneFileClientCombination(cur_src)) {
+			if(!IsASaneFileClientCombination(false, cur_src)) {
 				continue;
 			}
 			if (cur_src->IsPartAvailable(i)) {
@@ -3040,8 +3040,8 @@ void CPartFile::SetLastAnsweredTimeTimeout()
 	m_ClientSrcAnswered = 2 * CONNECTION_LATENCY + ::GetTickCount() - SOURCECLIENTREASKS;
 }
 
-
-bool CPartFile::IsASaneFileClientCombination(const CUpDownClient* cur_src, const CUpDownClient* forClient) const
+bool CPartFile::IsASaneFileClientCombination(
+	bool verbose, const CUpDownClient* cur_src, const CUpDownClient* forClient) const
 {
 	int n = GetPartCount();	
 	bool sane = (GetFileHash() == cur_src->reqfile->GetFileHash());
@@ -3106,7 +3106,7 @@ Packet *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 			if (reqstatus) {
 				// only send sources which have needed parts for this client
 				#warning Phoenix - hack to see the mixed sources problem - I
-				if(!IsASaneFileClientCombination(cur_src, forClient)) {
+				if(!IsASaneFileClientCombination(true, cur_src, forClient)) {
 					continue;
 				}
 				for (int x = 0; x < n; x++) {
@@ -3120,7 +3120,7 @@ Packet *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 				// return any source currently a client sends it's 
 				// file status only after it has at least one complete part
 				#warning Phoenix - hack to see the mixed sources problem - II
-				if(!IsASaneFileClientCombination(cur_src)) {
+				if(!IsASaneFileClientCombination(true, cur_src)) {
 					continue;
 				}
 				for (int x = 0; x < GetPartCount(); x++){
