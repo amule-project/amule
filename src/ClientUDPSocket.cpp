@@ -138,7 +138,7 @@ bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, uint
 						}
 						
 						data_out.Write((uint16)theApp.uploadqueue->GetWaitingPosition(sender));
-						#ifdef __USE_DEBUG__						
+						#ifdef __DEBUG__						
 						if (thePrefs.GetDebugClientUDPLevel() > 0) {
 							DebugSend("OP__ReaskAck", sender);
 						}
