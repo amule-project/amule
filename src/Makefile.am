@@ -106,7 +106,6 @@ amule_SOURCES = ListenSocket.cpp \
 	SharedFilesCtrl.cpp \
 	SharedFilesWnd.cpp \
 	sockets.cpp \
-	SplitterControl.cpp \
 	StatisticsDlg.cpp \
 	TransferWnd.cpp \
 	UDPSocket.cpp \
