@@ -83,11 +83,12 @@ class DownloadFiles {
 		long		lNotCurrentSourceCount;
 		long		lTransferringSourceCount;
 		double		fCompleted;
-		long		lFileStatus;
 		long		lFilePrio;
 		wxString	sFileHash;
 		wxString	sED2kLink;
 		wxString	sFileInfo;
+		wxString	sPartStatus;
+		
 	
 		static class DownloadFilesInfo *GetContainerInstance();
 		
@@ -222,6 +223,11 @@ class ItemsContainer {
 			return m_SortOrder;
 		}
 
+		int ItemCount()
+		{
+			return m_items.size();
+		}
+		
 		bool IsSortingReverse()
 		{
 			return m_SortReverse;
@@ -390,6 +396,8 @@ class CWebServer {
 
 	ServersInfo m_ServersInfo;
 	SharedFilesInfo m_SharedFilesInfo;
+	DownloadFilesInfo m_DownloadFilesInfo;
+	
 	public:
 		CWebServer(CamulewebApp *webApp);
 		~CWebServer(void);
@@ -448,9 +456,11 @@ class CWebServer {
 		static Session	GetSessionByID(ThreadData Data,long sessionID);
 		static bool	IsSessionAdmin(ThreadData Data,wxString SsessionID);
 		static wxString	GetPermissionDenied();
-		static wxString	_GetDownloadGraph(ThreadData Data,wxString filehash);
+		static wxString	_GetDownloadGraph(ThreadData Data,int percent, wxString &s_ChunkBar);
+
 		static void	InsertCatBox(CWebServer *pThis, wxString &Out, int preselect, wxString boxlabel, bool jump=false, bool extraCats=false);
-		static wxString	GetSubCatLabel(int cat);
+		static wxString GetStatusBox(wxString &preselect);
+
 		// Common data
 		CamulewebApp	*webInterface;
 		CWSThread	*wsThread;

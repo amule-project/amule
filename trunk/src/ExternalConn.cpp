@@ -365,14 +365,15 @@ CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request)
 {	
 	CECPacket *response = new CECPacket(EC_OP_DLOAD_QUEUE);
 	
-	bool OnlyStatus = (request->GetOpCode() == EC_OP_GET_DLOAD_QUEUE_STATUS);
-	bool IncludeParts = (request->GetOpCode() == EC_OP_GET_DLOAD_QUEUE_PARTS_STATUS);
+	EC_DETAIL_LEVEL detail_level = request->GetDetailLevel();
 	//
 	// request can contain list of queried items
 	std::set<uint32> queryitems;
 	for (int i = 0;i < request->GetTagCount();i++) {
 		CECTag *tag = request->GetTagByIndex(i);
-		queryitems.insert(tag->GetInt32Data());
+		if ( tag->GetTagName() == EC_TAG_PARTFILE ) {
+			queryitems.insert(tag->GetInt32Data());
+		}
 	}
 	for (unsigned int i = 0; i < theApp.downloadqueue->GetFileCount(); i++) {
 		CPartFile *cur_file = theApp.downloadqueue->GetFileByIndex(i);
@@ -381,7 +382,7 @@ CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request)
 			continue;
 		}
 
-		CEC_PartFile_Tag filetag(cur_file, OnlyStatus, IncludeParts);
+		CEC_PartFile_Tag filetag(cur_file, detail_level);
 
 		response->AddTag(filetag);
 	}
@@ -580,7 +581,7 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request)
 
 	CECPacket *response = NULL;
 
-	unsigned int detail_level = (request->GetTagByName(EC_TAG_DETAIL_LEVEL) != NULL) ? request->GetTagByName(EC_TAG_DETAIL_LEVEL)->GetInt8Data() : EC_DETAIL_GUI;
+	EC_DETAIL_LEVEL detail_level = request->GetDetailLevel();
 
 	switch (request->GetOpCode()) {
 		case EC_OP_COMPAT: 
@@ -601,8 +602,6 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request)
 			response->AddTag(CEC_ConnState_Tag(detail_level));
 			break;
 		case EC_OP_GET_DLOAD_QUEUE:
-		case EC_OP_GET_DLOAD_QUEUE_STATUS:
-		case EC_OP_GET_DLOAD_QUEUE_PARTS_STATUS:
 			response = Get_EC_Response_GetDownloadQueue(request);
 			break;
 		case EC_OP_GET_ULOAD_QUEUE:
@@ -2701,7 +2700,7 @@ void *ExternalConnClientThread::Entry()
 }
 
 
-CEC_Server_Tag::CEC_Server_Tag(CServer *server, unsigned int detail_level) :
+CEC_Server_Tag::CEC_Server_Tag(CServer *server, EC_DETAIL_LEVEL detail_level) :
 	CECTag(EC_TAG_SERVER, EC_IPv4_t(server->GetIP(), server->GetPort()))
 {
 	wxString tmpStr;
@@ -2709,6 +2708,14 @@ CEC_Server_Tag::CEC_Server_Tag(CServer *server, unsigned int detail_level) :
 	uint8 tmpShort;
 
 	switch (detail_level) {
+		case EC_DETAIL_UPDATE:
+			if ((tmpInt = server->GetPing()) != 0) {
+				AddTag(CECTag(EC_TAG_SERVER_PING, tmpInt));
+			}
+			if ((tmpShort = (uint8)server->GetFailedCount()) != 0) {
+				AddTag(CECTag(EC_TAG_SERVER_FAILED, tmpShort));
+			}
+			break;
 		case EC_DETAIL_GUI:
 			if ((tmpInt = server->GetPing()) != 0) {
 				AddTag(CECTag(EC_TAG_SERVER_PING, tmpInt));
@@ -2746,7 +2753,7 @@ CEC_Server_Tag::CEC_Server_Tag(CServer *server, unsigned int detail_level) :
 }
 
 
-CEC_ConnState_Tag::CEC_ConnState_Tag(unsigned int detail_level) : CECTag(EC_TAG_STATS_CONNSTATE,
+CEC_ConnState_Tag::CEC_ConnState_Tag(EC_DETAIL_LEVEL detail_level) : CECTag(EC_TAG_STATS_CONNSTATE,
 	(uint8) (theApp.serverconnect->IsConnected() ? (theApp.serverconnect->IsLowID() ? 2 : 3) : 
 		theApp.serverconnect->IsConnecting() ? 1 : 0))
 {
@@ -2756,29 +2763,34 @@ CEC_ConnState_Tag::CEC_ConnState_Tag(unsigned int detail_level) : CECTag(EC_TAG_
 }
 
 
-CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, bool onlystatus, bool includeparts) : CECTag(EC_TAG_PARTFILE, PTR_2_ID(file))
+CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level) : CECTag(EC_TAG_PARTFILE, PTR_2_ID(file))
 {
 	AddTag(CECTag(EC_TAG_PARTFILE_STATUS, file->getPartfileStatus()));
 
-	if ( includeparts || (file->getPartfileStatus() == wxT("Downloading")) ) {
-		AddTag(CEC_PartStatus_Tag(file, 100));
+	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT, (uint32)file->GetSourceCount()));
+	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT, (uint32)file->GetNotCurrentSourcesCount()));
+	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT_XFER, (uint32)file->GetTransferingSrcCount()));
+
+	if ( (file->getPartfileStatus() == wxT("Downloading")) || (detail_level != EC_DETAIL_UPDATE) ) {
+		AddTag(CEC_PartStatus_Tag(file, 200));
+		
+		AddTag(CECTag(EC_TAG_PARTFILE_SIZE_XFER, (uint32)file->GetTransfered()));
+		AddTag(CECTag(EC_TAG_PARTFILE_SIZE_DONE, (uint32)file->GetCompletedSize()));
+		AddTag(CECTag(EC_TAG_PARTFILE_SPEED, (uint32)(file->GetKBpsDown()*1024)));
 	}
-	if ( onlystatus ) {
-		return;
+	
+	if (detail_level == EC_DETAIL_UPDATE) {
+			return;
 	}
 	
 	AddTag(CECTag(EC_TAG_PARTFILE_NAME,file->GetFileName()));
 
 	AddTag(CECTag(EC_TAG_PARTFILE_SIZE_FULL, (uint32)file->GetFileSize()));
-	AddTag(CECTag(EC_TAG_PARTFILE_SIZE_XFER, (uint32)file->GetTransfered()));
-	AddTag(CECTag(EC_TAG_PARTFILE_SIZE_DONE, (uint32)file->GetCompletedSize()));
-	AddTag(CECTag(EC_TAG_PARTFILE_SPEED, (uint32)(file->GetKBpsDown()*1024)));
+
 	AddTag(CECTag(EC_TAG_PARTFILE_PRIO,
 		(uint32)(file->IsAutoDownPriority() ? 
 						file->GetDownPriority() + 10 : file->GetDownPriority())));
-	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT, (uint32)file->GetSourceCount()));
-	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT, (uint32)file->GetNotCurrentSourcesCount()));
-	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT_XFER, (uint32)file->GetTransferingSrcCount()));
+
 	AddTag(CECTag(EC_TAG_PARTFILE_ED2K_LINK,
 				(theApp.serverconnect->IsConnected() && !theApp.serverconnect->IsLowID()) ?
 					theApp.CreateED2kSourceLink(file) : theApp.CreateED2kLink(file)));
