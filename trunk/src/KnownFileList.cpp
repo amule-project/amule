@@ -27,17 +27,7 @@
 #include "otherfunctions.h" // md4cmp
 #include "amule.h"
 #include "amuleDlg.h"
-
-static wxString KnownFileHash(const char* filename, uint32 date, uint32 size)
-{
-	return wxString::Format("%s%08x%08x", filename, date, size);
-}
-
-static wxString KnownFileHash(CKnownFile *file)
-{
-	return KnownFileHash(file->GetFileName().c_str(), file->GetFileDate(),
-	                     file->GetFileSize());
-}
+#include "MapKey.h"		// Needed for CCKey
 
 CKnownFileList::CKnownFileList(char* in_appdir) {
 	appdir = in_appdir;
@@ -55,7 +45,7 @@ CKnownFileList::~CKnownFileList() {
 
 bool CKnownFileList::Init() {
 	CSafeFile file;
-	/*try*/ {
+	try {
 		char* fullpath = new char[strlen(appdir)+10];
 		strcpy(fullpath,appdir);
 		strcat(fullpath,"known.met");
@@ -104,6 +94,10 @@ bool CKnownFileList::Init() {
 		return false;
 	}
 #endif
+	catch (...) {
+		printf("Caught unknown exception on CKnownFileList::Init()\n");
+		return false;
+	}
 }
 
 void CKnownFileList::Save() {
@@ -132,7 +126,7 @@ void CKnownFileList::Save() {
 	theApp.amuledlg->AddLogLine(false,CString(_("Endian RecordsNumber = %i")).GetData(), RecordsNumber);		
 	file->Write(&RecordsNumber,4);
 	RecordsNumber = m_map.size();
-	KnownFileMap::iterator it = m_map.begin();
+	CKnownFileMap::iterator it = m_map.begin();
 	for (uint32 i = 0; i != RecordsNumber; i++,it++) {
 		if ( it == m_map.end() )
 			break;		// TODO: Throw an exception
@@ -148,30 +142,43 @@ void CKnownFileList::Save() {
 
 void CKnownFileList::Clear() {	
 	wxMutexLocker sLock(list_mut);
-	for ( KnownFileMap::iterator it = m_map.begin(); it != m_map.end(); it++ )
+	for ( CKnownFileMap::iterator it = m_map.begin(); it != m_map.end(); it++ )
 		delete it->second;
 	m_map.clear();
 }
 
 CKnownFile* CKnownFileList::FindKnownFile(char* filename,uint32 in_date,uint32 in_size) {
 	wxMutexLocker sLock(list_mut);
-	KnownFileMap::iterator it = m_map.find(KnownFileHash(filename, in_date, in_size));
-	if ( it != m_map.end() ) {
-		return it->second;
+	
+	CKnownFile* cur_file;
+	CCKey bufKey;
+
+	for (CKnownFileMap::iterator pos = m_map.begin(); pos != m_map.end(); pos++ ) {
+		cur_file = pos->second;
+		if (cur_file->GetFileDate() == in_date && cur_file->GetFileSize() == in_size && !cur_file->GetFileName().Cmp(filename)) {
+			return cur_file;
+		}
 	}
-	return 0;
+	
+	return NULL;	
+	
 }
 
 CKnownFile* CKnownFileList::FindKnownFileByID(const uchar* hash)
 {
 	wxMutexLocker sLock(list_mut);
-	if (hash) {
-		KnownFileMap::iterator it = m_map.find(hash);
-		if ( it != m_map.end() ) {
-			return it->second;
+	
+	if (hash)
+	{
+		CCKey tkey(hash);
+		if (m_map.find(tkey) != m_map.end()) {
+			return m_map[tkey];
+		} else {
+			return NULL;	
 		}
 	}
-	return NULL;
+	return NULL;	
+
 }
 
 bool CKnownFileList::SafeAddKFile(CKnownFile* toadd) {
@@ -182,10 +189,10 @@ bool CKnownFileList::SafeAddKFile(CKnownFile* toadd) {
 bool CKnownFileList::Append(CKnownFile* Record)
 {
 	if (Record->GetFileSize() > 0) {
-		wxString HashString = KnownFileHash(Record);
-		KnownFileMap::iterator it = m_map.find(HashString);
+		CCKey tkey(Record->GetFileHash());
+		CKnownFileMap::iterator it = m_map.find(tkey);
 		if ( it == m_map.end() ) {
-			m_map[HashString] = Record;
+			m_map[tkey] = Record;
 			return true;
 		} else {
 			return false;
