@@ -744,7 +744,7 @@ void TimerProc()
 	if ((sStatsUpdate > 0) && ((int)(msCur - msPrevStats) > sStatsUpdate*1000)) {
 		if (bStatsVisible) {
 			msPrevStats = msCur;
-			theApp.amuledlg->ShowStatistics();
+			theApp.amuledlg->statisticswnd->ShowStatistics();
 		}
 	}
 
