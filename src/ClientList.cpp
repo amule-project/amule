@@ -51,21 +51,23 @@ CClientList::~CClientList(){
 }
 
 // xrmb : statsclientstatus
-void CClientList::GetStatistics(uint32 &totalclient, int stats[], CMap<uint8, uint8, uint32, uint32> *clientStatus, CMap<uint16, uint16, uint32, uint32> *clientVersionEDonkey, CMap<uint16, uint16, uint32, uint32> *clientVersionEDonkeyHybrid, CMap<uint8, uint8, uint32, uint32> *clientVersionEMule){
+void CClientList::GetStatistics(uint32 &totalclient, uint32 stats[], CMap<uint8, uint8, uint32, uint32> *clientStatus, CMap<uint16, uint16, uint32, uint32> *clientVersionEDonkey, CMap<uint16, uint16, uint32, uint32> *clientVersionEDonkeyHybrid, CMap<uint8, uint8, uint32, uint32> *clientVersionEMule){
 	//if(clientStatus)		clientStatus->RemoveAll();
 	totalclient = list.GetCount();
 	if(clientVersionEDonkey)	clientVersionEDonkey->RemoveAll();
 	if(clientVersionEMule)		clientVersionEMule->RemoveAll();
 	POSITION pos1, pos2;
 
-	for (int i=0;i<9;i++) stats[i]=0;
+	for (int i=0;i<10;i++) stats[i]=0;
 
 	for (pos1 = list.GetHeadPosition();( pos2 = pos1 ) != NULL;){
 		list.GetNext(pos1);
 		CUpDownClient* cur_client =	list.GetAt(pos2);
 		
 		switch (cur_client->GetClientSoft()) {
-			case SO_UNKNOWN : stats[0]++;break;
+			case SO_UNKNOWN : 
+				stats[0]++;
+				break;
 			case SO_EDONKEY : 
 				stats[1]++;
 				if(clientVersionEDonkey)
@@ -84,7 +86,7 @@ void CClientList::GetStatistics(uint32 &totalclient, int stats[], CMap<uint8, ui
 					(*clientVersionEMule)[version]++;
 				}
 				break;
-			case SO_CDONKEY : //Didn't get much time to test this "aMule Compatable" feature.
+			case SO_CDONKEY : 
 				stats[5]++;
 				break;
 			case SO_LXMULE:
@@ -98,6 +100,9 @@ void CClientList::GetStatistics(uint32 &totalclient, int stats[], CMap<uint8, ui
 				break;
 			case SO_NEW_MLDONKEY:
 				stats[7]++;
+				break;
+			case SO_COMPAT_UNK:
+				stats[9]++;
 				break;
 		}
 

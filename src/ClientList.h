@@ -65,7 +65,7 @@ public:
 	~CClientList();
 	void	AddClient(CUpDownClient* toadd,bool bSkipDupTest = false);
 	void	RemoveClient(CUpDownClient* toremove);
-	void	GetStatistics(uint32 &totalclient, int stats[], CMap<uint8, uint8, uint32, uint32> *clientStatus=NULL, CMap<uint16, uint16, uint32, uint32> *clientVersionEDonkey=NULL, CMap<uint16, uint16, uint32, uint32> *clientVersionEDonkeyHybrid=NULL, CMap<uint8, uint8, uint32, uint32> *clientVersionEMule=NULL); // xrmb : statsclientstatus
+	void	GetStatistics(uint32 &totalclient, uint32 stats[], CMap<uint8, uint8, uint32, uint32> *clientStatus=NULL, CMap<uint16, uint16, uint32, uint32> *clientVersionEDonkey=NULL, CMap<uint16, uint16, uint32, uint32> *clientVersionEDonkeyHybrid=NULL, CMap<uint8, uint8, uint32, uint32> *clientVersionEMule=NULL); // xrmb : statsclientstatus
 	void	DeleteAll();
 	bool	AttachToAlreadyKnown(CUpDownClient** client, CClientReqSocket* sender);
 	CUpDownClient* FindClientByIP(uint32 clientip,uint16 port);

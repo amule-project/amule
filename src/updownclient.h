@@ -103,6 +103,9 @@ enum EClientSoftware{
 	SO_NEW_MLDONKEY		= 152
 };
 
+// For ET_COMPATIBLE unknown
+#define SO_COMPAT_UNK	0xFF
+
 enum ESecureIdentState{
 	IS_UNAVAILABLE		= 0,
 	IS_ALLREQUESTSSEND  = 0,
