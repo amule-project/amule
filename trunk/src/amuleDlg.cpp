@@ -495,7 +495,11 @@ void CamuleDlg::OnToolBarButton(wxCommandEvent& ev)
 void CamuleDlg::OnAboutButton(wxCommandEvent& WXUNUSED(ev))
 {
 	wxString msg;
+#ifdef CLIENT_GUI
+	msg << _(" aMule remote control") << wxT(VERSION);
+#else
 	msg << _(" aMule ") << wxT(VERSION);
+#endif
 #ifdef CVSDATE
 	msg << wxT(" Snapshot:\n ") << wxT(CVSDATE);
 #endif
