@@ -45,7 +45,7 @@
 #include "PartFile.h"		// Needed for SavePartFile
 #include "endianfix.h"
 
-#include "CryptoPP.h"		// Needed for MD4
+#include "CryptoPP_Inc.h"	// Needed for MD4
 
 #include <wx/arrimpl.cpp> // this is a magic incantation which must be done!
 

@@ -39,7 +39,7 @@
 #include "sockets.h"
 #include "CFile.h"
 
-#include "CryptoPP.h"
+#include "CryptoPP_Inc.h"
 
 //#include "StdAfx.h"
 
