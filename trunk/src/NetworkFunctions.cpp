@@ -24,6 +24,99 @@
 #endif
 
 #include "NetworkFunctions.h"
+
+#ifdef __WXMSW__
+	#include <winsock.h>
+#else
+#ifdef __BSD__
+       #include <sys/types.h>
+#endif /* __BSD__ */
+	#include <sys/socket.h>		//
+	#include <netinet/in.h>		// Needed for inet_addr, htonl
+	#include <arpa/inet.h>		//
+#endif
+
+
+/**
+ * Used to store the ranges.
+ */
+struct IPRange
+{
+	const char* addr;
+	unsigned int mask;
+};
+
+
+//	Here is reserved blocks from RFC 3330 at http://www.rfc-editor.org/rfc/rfc3330.txt
+//
+//	Address Block             Present Use                             Reference
+//	---------------------------------------------------------------------------
+const IPRange ranges[] = {
+	{ "0.0.0.0",		 8 },	// "This" Network             [RFC1700, page 4]
+	{ "10.0.0.0",		 8 },	// Private-Use Networks               [RFC1918]
+	{ "14.0.0.0",		 8 },	// Public-Data Networks     [RFC1700, page 181]
+	{ "24.0.0.0",		 8 },	// Cable Television Networks                 --
+	{ "39.0.0.0",		 8 },	// Reserved but subject
+								//    to allocation                   [RFC1797]
+	{ "127.0.0.0",		 8 },	// Loopback                   [RFC1700, page 5]
+	{ "128.0.0.0",		16 },	// Reserved but subject
+								//    to allocation                          --
+	{ "169.254.0.0",	16 },	// Link Local                                --
+	{ "172.16.0.0",		12 },	// Private-Use Networks               [RFC1918]
+	{ "191.255.0.0",	16 },	// Reserved but subject
+								//    to allocation                          --
+	{ "192.0.0.0",		24 },	// Reserved but subject          
+								//    to allocation                          --
+	{ "192.0.2.0",		24 },	// Test-Net
+	{ "192.88.99.0",	24 },	// 6to4 Relay Anycast                 [RFC3068]
+	{ "192.168.0.0",	16 },	// Private-Use Networks               [RFC1918]
+	{ "198.18.0.0",		15 },	// Network Interconnect
+								//    Device Benchmark Testing        [RFC2544]
+	{ "223.255.255.0",	24 },	// Reserved but subject
+								//    to allocation                          --
+	{ "224.0.0.0",		 4 },	// Multicast                          [RFC3171]
+	{ "240.0.0.0",		 4 }	// Reserved for Future Use    [RFC1700, page 4]
+};
+
+
+struct filter_st {
+	in_addr_t addr;		// Address and mask in anti-host order.
+	in_addr_t mask;
+};
+
+const int number_of_ranges = sizeof(ranges) / sizeof(IPRange*);
+static filter_st filters[number_of_ranges];
+
+
+// This function is used to initialize the IP filter
+bool SetupFilter()
+{
+	for (int i = 0; i < number_of_ranges; ++i) {
+		filters[i].addr = CStringIPtoUint32( ranges[i].addr );
+		filters[i].mask = ~wxUINT32_SWAP_ALWAYS((1 << (32 - ranges[i].mask)) - 1);
+	}
+	return true;
+}
+
+
+// This is a little trick to ensure that the filter-list is initialized before
+// it gets used, while not risking threading problems.
+static bool filterSetup = SetupFilter();
+
+
+bool IsGoodIP(uint32 IP)
+{
+	for (int i = 0; i < number_of_ranges; ++i) {
+		if (((IP ^ filters[i].addr) & filters[i].mask) == 0) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+
+
 #ifndef EC_REMOTE
 // Not needed for remote apps.
 

@@ -60,7 +60,6 @@ public:
 	CServer*	GetServerByAddress(const wxString& address, uint16 port);
 	CServer*	GetServerByIP(uint32 nIP);
 	CServer*	GetServerByIP(uint32 nIP, uint16 nPort);	
-	bool		IsGoodServerIP( CServer* in_server ); //<<--
 	void		GetStatus( uint32 &total, uint32 &failed, uint32 &user, uint32 &file, uint32 &tuser, uint32 &tfile, float &occ);
 	void		GetUserFileStatus( uint32 &user, uint32 &file);
 	void		Sort();

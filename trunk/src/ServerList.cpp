@@ -23,17 +23,6 @@
 
 #include "Types.h"
 
-#ifdef __WXMSW__
-	#include <winsock.h>
-#else
-#ifdef __BSD__
-       #include <sys/types.h>
-#endif /* __BSD__ */
-	#include <sys/socket.h>		//
-	#include <netinet/in.h>		// Needed for inet_addr, htonl
-	#include <arpa/inet.h>		//
-#endif
-
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #ifdef __WXMSW__
 	#include <wx/msw/winundef.h>
@@ -203,7 +192,7 @@ bool CServerList::AddServermetToList(const wxString& strFile, bool merge)
 bool CServerList::AddServer(CServer* in_server)
 {
 	if (thePrefs::FilterBadIPs()) {
-		if ( !IsGoodServerIP( in_server )) {
+		if ( !in_server->HasDynIP() && !IsGoodIP( in_server->GetIP() )) {
 			return false;
 		}
 	}
@@ -270,72 +259,6 @@ void CServerList::ServerStats()
 	}
 }
 
-//	Filter Servers with invalid IP's and Port.
-//
-//	Here is reserved blocks from RFC 3330 at http://www.rfc-editor.org/rfc/rfc3330.txt
-//
-//	Address Block             Present Use                       Reference
-//	---------------------------------------------------------------------
-static char const* const filtered_blocks [] = {
-	"0.0.0.0/8",       // "This" Network                 [RFC1700, page 4]
-	"10.0.0.0/8",      // Private-Use Networks                   [RFC1918]
-	"14.0.0.0/8",      // Public-Data Networks         [RFC1700, page 181]
-	"24.0.0.0/8",      // Cable Television Networks                    --
-	"39.0.0.0/8",      // Reserved but subject
-	                   //    to allocation                       [RFC1797]
-	"127.0.0.0/8",     // Loopback                       [RFC1700, page 5]
-	"128.0.0.0/16",    // Reserved but subject
-	                   //    to allocation                             --
-	"169.254.0.0/16",  // Link Local                                   --
-	"172.16.0.0/12",   // Private-Use Networks                   [RFC1918]
-	"191.255.0.0/16",  // Reserved but subject
-	                   //    to allocation                             --
-	"192.0.0.0/24",    // Reserved but subject
-	                   //    to allocation                             --
-	"192.0.2.0/24",    // Test-Net
-	"192.88.99.0/24",  // 6to4 Relay Anycast                     [RFC3068]
-	"192.168.0.0/16",  // Private-Use Networks                   [RFC1918]
-	"198.18.0.0/15",   // Network Interconnect
-	                   //    Device Benchmark Testing            [RFC2544]
-	"223.255.255.0/24",// Reserved but subject
-	                   //    to allocation                             --
-	"224.0.0.0/4",     // Multicast                              [RFC3171]
-	"240.0.0.0/4"      // Reserved for Future Use        [RFC1700, page 4]
-};
-
-struct filter_st {
-	in_addr_t addr;		// Address and mask in network order.
-	in_addr_t mask;
-};
-
-int const number_of_filtered_blocks = sizeof(filtered_blocks) / sizeof(char const*);
-static filter_st filters[number_of_filtered_blocks];
-
-bool CServerList::IsGoodServerIP(CServer* in_server)
-{
-	static bool initialized = false;
-	if (!initialized) {
-		for (int i = 0; i < number_of_filtered_blocks; ++i) {
-			char* ipmask = strdup(filtered_blocks[i]);
-			char* addr = strtok(ipmask, "/");
-			char* n = strtok(NULL, "/");
-			filters[i].addr = htonl(CStringIPtoUint32(addr));
-			filters[i].mask = htonl((1 << (32 - atoi(n))) - 1);
-			free(ipmask);
-		}
-		initialized = true;
-	}
-	if (in_server->HasDynIP()) {
-		return true;
-	}
-	in_addr_t ip = in_server->GetIP();	// Also network order.
-	for (int i = 0; i < number_of_filtered_blocks; ++i) {
-		if (((ip ^ filters[i].addr) & ~(filters[i].mask)) == 0) {
-			return false;
-		}
-	}
-	return true;
-}
 
 void CServerList::RemoveServer(CServer* out_server)
 {
