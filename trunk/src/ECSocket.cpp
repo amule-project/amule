@@ -29,6 +29,8 @@
 
 #include "ECPacket.h"		// Needed for CECPacket
 
+
+#include "StringFunctions.h"	// Needed for unicode2char()
 wxString GetSocketError(wxSocketError code)
 {
 	switch(code) {
@@ -140,7 +142,7 @@ bool ECSocket::ReadBuffer(wxSocketBase *sock, void *buffer, unsigned int len)
 		wxString msg = GetSocketError(sock->LastError());
 		//
 		// some better logging must be here
-		printf("ECSocket::ReadBuffer error %s\n", msg.GetData());
+		printf("ECSocket::ReadBuffer error %s\n", unicode2char(msg));
 	}
 	return !error;
 }
@@ -169,7 +171,7 @@ bool ECSocket::WriteBuffer(wxSocketBase *sock, const void *buffer, unsigned int 
 		wxString msg = GetSocketError(sock->LastError());
 		//
 		// some better logging must be here
-		printf("ECSocket::WriteBuffer error %s\n", msg.GetData());
+		printf("ECSocket::WriteBuffer error %s\n", unicode2char(msg));
 	}
 	return !error;
 }
