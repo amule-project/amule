@@ -783,6 +783,7 @@ wxString  CDirIterator::FindNextFile() {
 				int stat_error = -1;
 				if (tmpFullName) {
 					stat_error = stat(tmpFullName, buf);
+#ifndef __WXMSW__
 					// Check if it is a broken symlink
 					if (stat_error) {
 						stat_error = lstat(tmpFullName, buf);
@@ -792,11 +793,13 @@ wxString  CDirIterator::FindNextFile() {
 							continue;
 						}
 					}
+#endif
 				}
 				// Fallback to UTF-8
 				if (stat_error) {
 					Unicode2CharBuf tmpUTF8FullName(unicode2UTF8(FullName));
 					stat_error = stat(tmpUTF8FullName, buf);
+#ifndef __WXMSW__
 					// Check if it is a broken symlink
 					if (stat_error) {
 						stat_error = lstat(tmpUTF8FullName, buf);
@@ -806,6 +809,7 @@ wxString  CDirIterator::FindNextFile() {
 							continue;
 						}
 					}
+#endif
 				}
 				
 				if (!stat_error) {
