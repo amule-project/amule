@@ -41,7 +41,7 @@ Section 1.1: Transmission layer
 
     This four-byte value is the only one in the whole protocol, that is
     transmitted LSB first, and zero bytes omitted (therefore an empty
-    transmission flags value is sent as 0x20).
+    transmission flags value is sent as 0x20, not 0x20 0x0 0x0 0x0).
 
     Bit description:
 
@@ -106,7 +106,7 @@ Section 1.2: Application layer
     TagCount is the number of first level tags this packet has. Then are the
     tags themselves.
 
-    A tags consist of:
+    A tag consist of:
 	[ec_tagname_t] TAGNAME
 	[ec_taglen_t] TAGLEN
 	<[uint16] TAGCOUNT>?
@@ -129,3 +129,40 @@ Section 1.2: Application layer
     data. So, tag data length can be calculated by substracting all sub-tags'
     length from the tagLen value, and the remainder is the data length, if
     non-zero.
+
+
+Section 2: Data Types
+---------------------
+
+    Integer types
+    -------------
+
+    Integer types (such as uint8, uint16, uint32) are always transmitted in
+    network byte order (MSB first).
+
+
+    Strings
+    -------
+
+    Strings are always UTF-8 strings, with the trailing zero byte included.
+    All strings coming from the server are untranslated, but their translations
+    are included in amule's translation database (amule.mo).
+
+
+    Boolean
+    -------
+
+    This one is tricky. When reading, the tag's presence means true, and
+    false when omitted. When writing, the should always be present -
+    if not, it's considered 'unchanged' - and should hold an uint8 value.
+    This value determines the boolean value in the standard way, i.e.
+    zero means false and non-zero means true.
+
+    Boolean values are mostly used in reading/writing preferences.
+
+
+    MD5 Hashes
+    ----------
+
+    They are always MSB first.
+
