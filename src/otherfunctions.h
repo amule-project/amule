@@ -219,6 +219,8 @@ inline void md4cpy(const void* dst, const void* src) {
 // DumpMem ... Dumps mem ;)
 void DumpMem(const void* where, uint32 size);
 
+void DumpMem_DW(const uint32 *ptr, int count);
+
 /*!
  * General purpose RLE implementation. Just encode or create
  * differential data with previous
@@ -306,6 +308,11 @@ class RLE_Data {
 		
 		const unsigned char *Decode(const unsigned char *data, int len);	
 		
+		void ResetEncoder()
+		{
+			memset(m_buff, 0, m_len);
+		}
+
 		// change size of internal buffers
 		void Realloc(int size);
 		
@@ -321,6 +328,14 @@ class PartFileEncoderData {
 public:
 	RLE_Data m_part_status;
 	RLE_Data m_gap_status;
+	
+	//
+	// Encoder may reset history if full info requested
+	void ResetEncoder()
+	{
+		m_part_status.ResetEncoder();
+		m_gap_status.ResetEncoder();
+	}
 	
 	//
 	// decoder side - can be used everywhere
