@@ -20,6 +20,10 @@
 #ifndef DOWNLOADLISTCTRL_H
 #define DOWNLOADLISTCTRL_H
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma interface "DownloadListCtrl.h"
+#endif
+
 #include <utility>		// Needed for std::pair
 #include <map>			// Needed for std::multimap
 #include <wx/defs.h>		// Needed before any other wx/*.h

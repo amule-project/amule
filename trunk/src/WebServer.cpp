@@ -33,6 +33,8 @@
 
 #if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
 #pragma implementation "WebServer.h"
+// needs GetTickCount implementation too
+#pragma implementation "GetTickCount.h"
 #endif
 #include "WebServer.h"
 

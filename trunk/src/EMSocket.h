@@ -20,6 +20,10 @@
 #ifndef EMSOCKET_H
 #define EMSOCKET_H
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma interface "EMSocket.h"
+#endif
+
 #include <wx/socket.h>		// Needed for wxSocketClient
 #include <wx/event.h>
 

@@ -20,6 +20,10 @@
 #ifndef CLIENTUDPSOCKET_H
 #define CLIENTUDPSOCKET_H
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma interface "ClientUDPSocket.h"
+#endif
+
 #include <wx/socket.h>		// Needed for wxDatagramSocket and wxIPV4address
 
 #include "types.h"		// Needed for uint16 and uint32

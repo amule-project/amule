@@ -17,6 +17,10 @@
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma implementation "CMemFile.h"
+#endif
+
 #include "CMemFile.h"		// Needed for CMemFile
 #include "packets.h"
 

@@ -17,6 +17,10 @@
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma implementation "BarShader.h"
+#endif
+
 #include <cmath>
 #include <algorithm>		// Needed for std::min
 #include <wx/gdicmn.h>

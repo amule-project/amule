@@ -20,6 +20,11 @@
 #ifndef CMD4HASH_H
 #define CMD4HASH_H
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+// implementation in ECPacket.cpp
+#pragma interface "CMD4Hash.h"
+#endif
+
 #include <wx/string.h>
 #include <ctype.h>
 #include "types.h"

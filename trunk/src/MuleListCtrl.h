@@ -21,6 +21,10 @@
 #define MULELISTCTRL_H
 
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma interface "MuleListCtrl.h"
+#endif
+
 // Defines base class of CMuleListCtrl so that we only need this one ifdef
 
 

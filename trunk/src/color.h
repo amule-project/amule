@@ -22,6 +22,11 @@
 #ifndef COLOR_H
 #define COLOR_H
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+// implementation in ColorFrameCtrl.cpp
+#pragma interface "color.h"
+#endif
+
 #include <inttypes.h>		// Needed for uint32_t
 #include <wx/defs.h>            // Needed before any other wx/*.h, possibly needed for COLORREF
 #include <wx/settings.h>        // Needed for wxSystemColour

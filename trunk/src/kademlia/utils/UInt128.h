@@ -34,6 +34,10 @@ there client on the eMule forum..
 #ifndef __UINT128_H__
 #define __UINT128_H__
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma interface "UInt128.h"
+#endif
+
 #include "../../types.h"
 #include <wx/string.h>
 

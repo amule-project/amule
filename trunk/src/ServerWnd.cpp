@@ -22,6 +22,10 @@
 //
 
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma implementation "ServerWnd.h"
+#endif
+
 #include <wx/settings.h>
 #include <wx/textctrl.h>
 #include <wx/sizer.h>

@@ -18,6 +18,9 @@
 
 /******************************************************************************/
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma implementation "Proxy.h"
+#endif
 
 #include "Proxy.h"		/* for Interface		*/
 

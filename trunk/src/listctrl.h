@@ -16,6 +16,10 @@
 #ifndef LISTCTRL_H
 #define LISTCTRL_H
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma interface "listctrl.h"
+#endif
+
 #if wxUSE_LISTCTRL
 
 #include "listbase.h"

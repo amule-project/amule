@@ -23,6 +23,9 @@
 #ifndef MULENOTEBOOK_H
 #define MULENOTEBOOK_H
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma interface "MuleNotebook.h"
+#endif
 
 #include <wx/notebook.h>
 

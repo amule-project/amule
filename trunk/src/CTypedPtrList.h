@@ -20,6 +20,11 @@
 #ifndef CTYPEDPTRLIST_H
 #define CTYPEDPTRLIST_H
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+// implementation in amule.cpp
+#pragma interface "CTypedPtrList.h"
+#endif
+
 #include <cstddef> 
 
 /**

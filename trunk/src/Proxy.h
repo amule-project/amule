@@ -17,12 +17,14 @@
  */
 
 #ifndef __PROXY_H__
-
 #define __PROXY_H__
 
 
 /******************************************************************************/
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma interface "Proxy.h"
+#endif
 
 #include <wx/socket.h>		// For wxSocket*
 #include <wx/string.h>		// For wxString

@@ -22,6 +22,9 @@
 #ifndef TRANSFERWND_H
 #define TRANSFERWND_H
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma interface "TransferWnd.h"
+#endif
 
 #include <wx/panel.h>	// Needed for wxPanel
 #include "types.h"		// Needed for uint32

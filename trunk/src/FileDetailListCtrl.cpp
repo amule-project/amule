@@ -17,8 +17,9 @@
 //along with this program; if not, write to the Free Software
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-// FileDetailDialog.cpp : implementation file
-//
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma implementation "FileDetailListCtrl.h"
+#endif
 
 #include <wx/intl.h>		
 #include "muuli_wdr.h"		// Needed for ID_CLOSEWNDFD

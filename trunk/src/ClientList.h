@@ -22,6 +22,10 @@
 #ifndef CLIENTLIST_H
 #define CLIENTLIST_H
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma interface "ClientList.h"
+#endif
+
 #include "types.h"		// Needed for uint16 and uint32
 #include "CMD4Hash.h"	// Needed for CMD4Hash
 

@@ -20,6 +20,10 @@
 // StatisticsDlg.cpp : implementation file
 //
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma implementation "StatisticsDlg.h"
+#endif
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif // HAVE_CONFIG_H

@@ -20,6 +20,10 @@
 #ifndef PREVIEW_H
 #define PREVIEW_H
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma interface "Preview.h"
+#endif
+
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/thread.h>		// Needed for wxThread
 

@@ -20,6 +20,10 @@
 #ifndef UPLOADQUEUE_H
 #define UPLOADQUEUE_H
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma interface "UploadQueue.h"
+#endif
+
 #include <wx/defs.h>		// Needed before any other wx/*.h
 
 #include "types.h"		// Needed for uint16, uint32 and uint64

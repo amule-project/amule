@@ -23,6 +23,10 @@
 #ifndef ECSOCKET_H
 #define ECSOCKET_H
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma interface "ECSocket.h"
+#endif
+
 #include <wx/string.h>
 #include <wx/socket.h>
 #include "types.h"

@@ -22,6 +22,10 @@
 #ifndef OTHERFUNCTIONS_H
 #define OTHERFUNCTIONS_H
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma interface "otherfunctions.h"
+#endif
+
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/string.h>		// Needed for wxString
 #include <wx/dynarray.h>

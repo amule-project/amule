@@ -22,6 +22,12 @@
 
 #ifndef GETTICKCOUNT_H
 #define GETTICKCOUNT_H
+
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+// implementation in amule.cpp & WebServer.cpp
+#pragma interface "GetTickCount.h"
+#endif
+
 #include "types.h"		// Needed for uint32
 
 #ifdef __WXMSW__

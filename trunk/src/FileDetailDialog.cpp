@@ -20,6 +20,10 @@
 // FileDetailDialog.cpp : implementation file
 //
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma implementation "FileDetailDialog.h"
+#endif
+
 #include <wx/settings.h>	// Needed for wxSYS_COLOUR_WINDOW
 #include <wx/stattext.h>	// Needed for wxStaticText
 #include <wx/sizer.h>

@@ -20,6 +20,10 @@
 #ifndef ADDFILETHREAD_H
 #define ADDFILETHREAD_H
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma interface "AddFileThread.h"
+#endif
+
 #include <wx/thread.h>		// Needed for wxThread
 
 #include <list>				// Needed for std::list

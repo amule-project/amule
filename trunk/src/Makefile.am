@@ -92,7 +92,7 @@ amulegui_SOURCES = \
 	SharedFilesWnd.cpp \
 	ServerListCtrl.cpp \
 	StatisticsDlg.cpp \
-	StringFunctions.cpp 
+	StringFunctions.cpp \
 	TransferWnd.cpp 
 
 amule_SOURCES = ListenSocket.cpp \
@@ -223,7 +223,8 @@ amuled_SOURCES = ListenSocket.cpp \
         UploadClient.cpp \
         UploadQueue.cpp \
         amule.cpp \
-        amuled.cpp
+        amuled.cpp \
+	kademlia/utils/UInt128.cpp
 
 if ADD_GSOCKET
 if ADD_24GSOCKET
@@ -272,24 +273,24 @@ amuled_LDADD = $(WXBASE_LIBS) $(ZLIB_LIBS) $(CURL_LIBS) $(CRYPTOLIBS)
 ed2k_SOURCES = ED2KLinkParser.cpp
 ed2k_CFLAGS =
 
-amulecmd_SOURCES = TextClient.cpp MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp ECSpecialTags.cpp otherfunctions.cpp
+amulecmd_SOURCES = TextClient.cpp MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp ECSpecialTags.cpp otherfunctions.cpp StringFunctions.cpp
 amulecmd_CFLAGS = $(WXBASE_CFLAGS) -DEC_REMOTE
 amulecmd_CXXFLAGS = $(WXBASE_CXXFLAGS) -DEC_REMOTE
 amulecmd_LDADD = $(WXBASE_LIBS) $(READLINE_LIBS)
 
-amulecmdDLG_SOURCES = TextClient.cpp MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp ECSpecialTags.cpp otherfunctions.cpp
+amulecmdDLG_SOURCES = TextClient.cpp MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp ECSpecialTags.cpp otherfunctions.cpp StringFunctions.cpp
 amulecmdDLG_CFLAGS = $(WX_CFLAGS) -DAMULECMDDLG -DEC_REMOTE
 amulecmdDLG_CXXFLAGS = $(WX_CXXFLAGS) -DAMULECMDDLG  -DEC_REMOTE
 amulecmdDLG_LDADD = $(WX_LIBS)
 
 amuleweb_SOURCES =  WebServer.cpp WebInterface.cpp WebSocket.cpp \
-	MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp otherfunctions.cpp ECSpecialTags.cpp
+	MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp otherfunctions.cpp ECSpecialTags.cpp StringFunctions.cpp NetworkFunctions.cpp
 amuleweb_CFLAGS = $(WXBASE_CFLAGS) $(LIBPNG_CFLAGS) $(AMULEWEB_DEFS) -DEC_REMOTE
 amuleweb_CXXFLAGS = $(WXBASE_CXXFLAGS) $(LIBPNG_CXXFLAGS) $(AMULEWEB_DEFS) -DEC_REMOTE
 amuleweb_LDADD = $(WXBASE_LIBS) $(ZLIB_LIBS) $(READLINE_LIBS) $(LIBPNG_LDFLAGS) $(LIBPNG_LIBS)
 
 amulewebDLG_SOURCES = WebServer.cpp WebInterface.cpp WebSocket.cpp \
-	 MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp otherfunctions.cpp ECSpecialTags.cpp
+	 MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp otherfunctions.cpp ECSpecialTags.cpp StringFunctions.cpp NetworkFunctions.cpp
 amulewebDLG_CFLAGS = $(WX_CFLAGS) $(LIBPNG_CFLAGS) $(AMULEWEB_DEFS) -DAMULEWEBDLG -DEC_REMOTE
 amulewebDLG_CXXFLAGS = $(WX_CXXFLAGS) $(LIBPNG_CXXFLAGS) $(AMULEWEB_DEFS) -DAMULEWEBDLG  -DEC_REMOTE
 amulewebDLG_LDADD = $(WX_LIBS) $(ZLIB_LIBS) $(LIBPNG_LDFLAGS) $(LIBPNG_LIBS)

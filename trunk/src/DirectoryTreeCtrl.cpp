@@ -18,6 +18,10 @@
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma implementation "DirectoryTreeCtrl.h"
+#endif
+
 #include <wx/log.h>
 
 #include <wx/imaglist.h>

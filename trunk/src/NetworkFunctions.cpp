@@ -19,7 +19,14 @@
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma implementation "NetworkFunctions.h"
+#endif
+
 #include "NetworkFunctions.h"
+#ifndef EC_REMOTE
+// Not needed for remote apps.
+
 #warning deprecate this: Intenal Events should be on a separate file
 #include "amule.h"
 
@@ -47,3 +54,4 @@ wxThread::ExitCode CAsyncDNS::Entry()
 
 	return NULL;
 }
+#endif /* ! EC_REMOTE */

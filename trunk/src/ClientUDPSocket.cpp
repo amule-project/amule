@@ -19,6 +19,11 @@
 
 // ClientUDPSocket.cpp : implementation file
 //
+
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma implementation "ClientUDPSocket.h"
+#endif
+
 #include "types.h"
 
 #include <cerrno>

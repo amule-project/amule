@@ -1,4 +1,5 @@
- // This file is part of the aMule Project
+//
+// This file is part of the aMule Project
 //
 // Copyright (c) 2003-2004 Angel Vidal (Kry) ( kry@amule.org )
 // Copyright (c) 2003-2004 Patrizio Bassi (Hetfield) ( hetfield@amule.org )
@@ -19,6 +20,9 @@
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma implementation "MuleTrayIcon.h"
+#endif
 
 #include "MuleTrayIcon.h"
 

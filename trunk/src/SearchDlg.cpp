@@ -21,6 +21,10 @@
 // SearchDlg.cpp : implementation file
 //
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma implementation "SearchDlg.h"
+#endif
+
 #include <wx/sizer.h>
 #include <wx/gauge.h>
 #include <wx/textctrl.h>

@@ -20,6 +20,10 @@
 #ifndef COLORFRAMECTRL_H
 #define COLORFRAMECTRL_H
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma interface "ColorFrameCtrl.h"
+#endif
+
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/control.h>		// Needed for wxControl
 

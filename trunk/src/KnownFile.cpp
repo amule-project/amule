@@ -22,6 +22,10 @@
 //
 
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma implementation "KnownFile.h"
+#endif
+
 #include <wx/filefn.h>
 
 #include <wx/file.h>

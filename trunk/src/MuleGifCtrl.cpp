@@ -17,6 +17,10 @@
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma implementation "MuleGifCtrl.h"
+#endif
+
 #include <wx/mstream.h>
 #include <wx/gifdecod.h>
 #include <wx/window.h>

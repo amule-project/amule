@@ -25,6 +25,11 @@
 #ifndef	ECCODES_H
 #define	ECCODES_H
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma interface "ECcodes.h"
+#endif
+
+
 /*
  * EC types
  */
