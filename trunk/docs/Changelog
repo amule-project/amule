@@ -2,6 +2,9 @@ Version 2.0.0rc7 - The "xxxxxxxxxxxxxxxx" version.
 ----------
 2004-10-XX
 
+	bisley:
+		* Added session ratio and total ratio to XAS
+
 	Jacobo221:
 		On aMuleCMD:
 		* Added 'list' (or 'find') command to search for a file in the downloads queue by name or by number (or just show all)
