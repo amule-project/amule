@@ -474,6 +474,7 @@ wxSizer *MyInfoLog( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRU
 #define ID_BUTTONMESSAGES 10343
 #define ID_BUTTONSTATISTICS 10344
 #define ID_BUTTONNEWPREFERENCES 10345
+#define ID_ABOUT 10346
 void muleToolbar( wxToolBar *parent );
 
 // Declare bitmap functions
