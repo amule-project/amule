@@ -77,10 +77,12 @@ wv_zlib=""
 found_zlib="no"
 
 ZLIB_DIR=""
-ZVER="1.1.4"
+ZVERMAX="1"
+ZVERMED="1"
+ZVERMIN="4"
 AC_ARG_WITH(zlib,[  --with-zlib=DIR       use zlib in DIR],[
 	if [ test "$withval" = "no" ]; then
-		AC_MSG_ERROR([zlib is required by amule])
+		AC_MSG_ERROR([zlib is required by aMule])
         elif [ test "$withval" = "yes" ]; then
 		zlib=check
         elif [ test "$withval" = "peer" ]; then
@@ -102,11 +104,17 @@ else
 	fi
 	AC_CHECK_HEADER(zlib.h,[
 		z=sys
-        	grep $ZVER /usr/include/zlib.h > /dev/null 2>&1
-        	CZVER=$?
-	        if test "$CZVER" != 0; then
-       		        result="no"
-                	AC_MSG_ERROR([ zlib 1.1.14 is required by amule])
+        	CZVER=`grep "define ZLIB_VERSION" /usr/include/zlib.h|sed 's/#define ZLIB_VERSION "//' |sed 's/"//'`
+		CZMIN=`echo $CZVER |sed 's/....//'`
+		CZMED=`echo $CZVER |sed s/.$CZMIN//| sed 's/^..//'`
+		CZMAX=`echo $CZVER |sed s/...$CZMIN//`
+		if test ["$CZMAX" -lt "$ZVERMAX"]; then
+		        result="no"
+                	AC_MSG_ERROR([ zlib >=1.1.4 is required by aMule])
+		fi
+		if test [ "$CZMED" -lt "$ZVERMED"]; then
+				result="no"
+                		AC_MSG_ERROR([ zlib >=1.1.4 is required by aMule])
 		fi;
 		
 	],[	if test $zlib = sys; then
@@ -124,11 +132,19 @@ if test $z = peer; then
 	if test -d ../zlib; then
 		if test -r ../zlib/libz.a; then
 			AC_MSG_RESULT(yes)
-        		grep $ZVER ../include/zlib.h > /dev/null 2>&1
-        		CZVER=$?
-	        	if test "$CZVER" != 0; then
-                		AC_MSG_ERROR([ zlib 1.1.4 is required by amule])
-			fi;
+			CZVER=`grep "define ZLIB_VERSION" ../include/zlib.h|sed 's/#define ZLIB_VERSION "//' |sed 's/"//'`
+		CZMIN=`echo $CZVER |sed 's/....//'`
+		CZMED=`echo $CZVER |sed s/.$CZMIN//| sed 's/^..//'`
+		CZMAX=`echo $CZVER |sed s/...$CZMIN//`
+		if test ["$CZMAX" -lt "$ZVERMAX"]; then
+		        result="no"
+                	AC_MSG_ERROR([ zlib >=1.1.4 is required by amule])
+		fi
+		if test [ "$CZMED" -lt "$ZVERMED"]; then
+				result="no"
+                		AC_MSG_ERROR([ zlib >=1.1.4 is required by aMule])
+		fi;
+        	
 		else
 			AC_MSG_RESULT(no)
 			AC_MSG_ERROR([unable to use peer zlib - zlib/libz.a not found])
