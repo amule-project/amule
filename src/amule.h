@@ -328,6 +328,8 @@ protected:
 	
 	uint32 m_dwPublicIP;
 	
+	long webserver_pid;
+	
 	wxFile *applog;
 	bool enable_stdout_log;
 	wxString server_msg;
