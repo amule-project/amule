@@ -30,6 +30,7 @@
 #include <ctype.h>
 #include <stdlib.h>
 
+#pragma implementation
 #include "WebServer.h"
 
 //-------------------------------------------------------------------
@@ -380,7 +381,7 @@ void CWebServer::ProcessImgFileReq(ThreadData Data) {
 	wxString filename=Data.sURL;
 	wxString contenttype;
 
-	pThis->webInterface->Show(wxT("inc. fname=") + filename + wxT("\n"));
+	pThis->webInterface->DebugShow(wxT("inc. fname=") + filename + wxT("\n"));
 	if (filename.Right(4).MakeLower()==wxT(".gif")) contenttype=wxT("Content-Type: image/gif\r\n");
 	else if (filename.Right(4).MakeLower()==wxT(".jpg") || filename.Right(5).MakeLower()==wxT(".jpeg")) contenttype=wxT("Content-Type: image/jpg\r\n");
 	else if (filename.Right(4).MakeLower()==wxT(".bmp")) contenttype=wxT("Content-Type: image/bmp\r\n");
@@ -393,17 +394,17 @@ void CWebServer::ProcessImgFileReq(ThreadData Data) {
 	contenttype += wxT("Last-Modified: ") + pThis->m_Params.sLastModified + wxT("\r\n");
 	contenttype += wxT("ETag: ") + pThis->m_Params.sETag + wxT("\r\n");
 	
-	pThis->webInterface->Show(wxT("**** imgrequest: ") + filename + wxT("\n"));
+	pThis->webInterface->DebugShow(wxT("**** imgrequest: ") + filename + wxT("\n"));
 
 	wxFFile fis(imgs_folder + filename.Right(filename.Length()-1));
 	if (!fis.IsOpened()) {
-		pThis->webInterface->Show(wxT("**** imgrequest: file ") + filename + wxT(" does not exists or you have no permisions\n"));
+		pThis->webInterface->DebugShow(wxT("**** imgrequest: file ") + filename + wxT(" does not exists or you have no permisions\n"));
 	} else {
 		size_t file_size = fis.Length();
 		char* img_data = new char[file_size];
 		size_t bytes_read;
 		if ((bytes_read = fis.Read(img_data,file_size)) != file_size) {
-			pThis->webInterface->Show(wxT("**** imgrequest: file ") + filename + wxT(" was not fully read\n"));				
+			pThis->webInterface->DebugShow(wxT("**** imgrequest: file ") + filename + wxT(" was not fully read\n"));				
 		}
 		// Try to send as much as possible if it failed
 		Data.pSocket->SendContent(unicode2char(contenttype),(void*)img_data,bytes_read);	
@@ -421,20 +422,20 @@ void CWebServer::ProcessStyleFileReq(ThreadData Data) {
 	}
 	wxString filename = Data.sURL;
 	wxString contenttype;
-	pThis->webInterface->Show(wxT("inc. fname=") + filename + wxT("\n"));
+	pThis->webInterface->DebugShow(wxT("inc. fname=") + filename + wxT("\n"));
 	contenttype = wxT("Content-Type: text/css\r\n");
 	
-	pThis->webInterface->Show(wxT("**** cssrequest: ") + filename + wxT("\n"));
+	pThis->webInterface->DebugShow(wxT("**** cssrequest: ") + filename + wxT("\n"));
 	
 	wxFFile fis(imgs_folder + filename.Right(filename.Length()-1));
 	if (!fis.IsOpened()) {
-		pThis->webInterface->Show(wxT("**** cssrequest: file ") + filename + wxT(" does not exists or you have no permisions\n"));
+		pThis->webInterface->DebugShow(wxT("**** cssrequest: file ") + filename + wxT(" does not exists or you have no permisions\n"));
 	} else {
 		size_t file_size = fis.Length();
 		char* css_data = new char[file_size];
 		size_t bytes_read;
 		if ((bytes_read = fis.Read(css_data,file_size)) != file_size) {
-			pThis->webInterface->Show(wxT("**** cssrequest: file ") + filename + wxT(" was not fully read\n"));				
+			pThis->webInterface->DebugShow(wxT("**** cssrequest: file ") + filename + wxT(" was not fully read\n"));				
 		}
 		// Try to send as much as possible if it failed
 		Data.pSocket->SendContent(unicode2char(contenttype),(void*)css_data,bytes_read);	
@@ -481,7 +482,7 @@ void CWebServer::ProcessURL(ThreadData Data) {
 			ses->lSession = lSession = rand() * 10000L + rand();
 			pThis->m_Params.Sessions.Add(ses);
 			login = true;
-			pThis->webInterface->Show(wxT("*** logged in as admin\n"));
+			pThis->webInterface->DebugShow(wxT("*** logged in as admin\n"));
 		} else if ( (pThis->webInterface->m_AllowGuest) &&
 				( (PwHash == pThis->webInterface->m_GuestPass) || (PwStr.IsEmpty() && pThis->webInterface->m_GuestPass.IsEmpty()) )) {
 			Session* ses = new Session();
@@ -490,7 +491,7 @@ void CWebServer::ProcessURL(ThreadData Data) {
 			ses->lSession = lSession = rand() * 10000L + rand();
 			pThis->m_Params.Sessions.Add(ses);
 			login = true;
-			pThis->webInterface->Show(wxT("*** logged in as guest\n"));
+			pThis->webInterface->DebugShow(wxT("*** logged in as guest\n"));
 		} else {
 			// This call to ::GetTickCount has segfaulted once with this == 0x0, because
 			// wxUSE_GUI was set to 1 in a console only application. This may happen due
@@ -500,7 +501,7 @@ void CWebServer::ProcessURL(ThreadData Data) {
 			TransferredData newban = {StringIPtoUint32(ip), ::GetTickCount()}; 
 			pThis->m_Params.badlogins.Add(&newban);
 			login = false;
-			pThis->webInterface->Show(wxT("*** login failed\n"));
+			pThis->webInterface->DebugShow(wxT("*** login failed\n"));
 		}
 		isUseGzip = false;
 		if (login) {
@@ -520,8 +521,8 @@ void CWebServer::ProcessURL(ThreadData Data) {
 	if (_IsLoggedIn(Data, lSession)) {
 		Out += _GetHeader(Data, lSession);		
 		wxString sPage = sW;
-		pThis->webInterface->Show(_("***** logged in, getting page ") + sPage + wxT("\n"));
-		pThis->webInterface->Show(_("***** session is ") + sSession + wxT("\n"));		
+		pThis->webInterface->DebugShow(wxT("***** logged in, getting page ") + sPage + wxT("\n"));
+		pThis->webInterface->DebugShow(wxT("***** session is ") + sSession + wxT("\n"));		
 		if (sPage == wxT("server")) {
 			Out += _GetServerList(Data);
 		} else if (sPage == wxT("download")) {
@@ -639,7 +640,7 @@ wxString CWebServer::_ParseURL(ThreadData Data, wxString fieldname) {
 	int i = 0;
 	int findPos = -1;
 	int findLength = 0;
-	pThis->webInterface->Show(wxT("*** parsing url ") + URL + _(" :: field ") + fieldname + wxT("\n"));
+	pThis->webInterface->DebugShow(wxT("*** parsing url ") + URL + wxT(" :: field ") + fieldname + wxT("\n"));
 	if (URL.Find(wxT("?")) > -1) {
 		Parameter = URL.Mid(URL.Find(wxT("?"))+1, URL.Length()-URL.Find(wxT("?"))-1);
 		// search the fieldname beginning / middle and strip the rest...
@@ -706,7 +707,7 @@ wxString CWebServer::_GetHeader(ThreadData Data, long lSession) {
 	}
 	
 	Out.Replace(wxT("[Session]"), sSession);
-	pThis->webInterface->Show(_("*** replaced session with ") + sSession + wxT("\n"));
+	pThis->webInterface->DebugShow(wxT("*** replaced session with ") + sSession + wxT("\n"));
 	Out.Replace(wxT("[HeaderMeta]"), wxEmptyString); // In case there are no meta
 	Out.Replace(wxT("[aMuleAppName]"), wxT("aMule"));
 	Out.Replace(wxT("[version]"), wxString::Format(wxT("%s"), VERSION));
@@ -1613,7 +1614,7 @@ wxString CWebServer::_GetStats(ThreadData Data) {
 	if (!pThis)
 		return wxEmptyString;
 
-	pThis->webInterface->Show(_("***_GetStats arrived\n"));
+	pThis->webInterface->DebugShow(wxT("***_GetStats arrived\n"));
 
 	wxString sSession = _ParseURL(Data, wxT("ses"));
 
