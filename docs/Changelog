@@ -193,21 +193,21 @@ Version 2.0.0rc4 - The 'Rabbits and Mules love carrots' version.
 		* Added support for memory usage and binary name (on xas)
 
 	Phoenix:
-		* code cleaning in several modules due to making the members
+		* Code cleaning in several modules due to making the members
 		  size, opcode and prot private in packets.h.
 		* CFile Close(), Read() and Seek() made const. Seek() needed
 		  the use of mutable with m_fd to be const.
-		* put lots of consts around the code in the routines that
+		* Put lots of consts around the code in the routines that
 		  should be so.
 		* Patch to --enable-stdin to aid in debug with valgrind.
-		* code cleaning in module Packets, made a lot of stuff private
+		* Code cleaning in module Packets, made a lot of stuff private
 		  now.
-		* small hacks to print debug messages and avoid crashes,
+		* Small hacks to print debug messages and avoid crashes,
 		  mainly in PartFile.cpp.
-		* sanity checks in debug mode (MagicNumbers) to aid finding
+		* Sanity checks in debug mode (MagicNumbers) to aid finding
 		  bogus clients and files.
-		* created debugstuff module, debug build only.
-		* new configure option --enale-verbose, so that normal users
+		* Created debugstuff module, debug build only.
+		* New configure option --enale-verbose, so that normal users
 		  are not flooded with debug messages.
 		* MagicNumbers are swapped to signal deleted source/PartFile.
 		* Removed deprecated wxArrayString::Remove(size_t nIndex,
@@ -235,7 +235,7 @@ Version 2.0.0rc4 - The 'Rabbits and Mules love carrots' version.
 		  to connect to server with wxWidgets-2.5.2.
 		* Fixed compilation and linking in 2.5.x for amulecmd. Same
 		  problem as amuleweb.
-		* commited a patch from wolti that fixes compilation on 
+		* Commited a patch from wolti that fixes compilation on 
 		  sparc/Solaris systems.
 		* More sparc compilation fixes, thanks to wimms.
 
@@ -293,7 +293,7 @@ Version 2.0.0rc4 - The 'Rabbits and Mules love carrots' version.
 		* More sparc compilation fixes.
 
 	wolti:
-		* patch that fixes compilation on sparc/Solaris systems.
+		* Patch that fixes compilation on sparc/Solaris systems.
 
 	Xaignar:
 		* Merged lists used to identify file-types to avoid duplicity.
