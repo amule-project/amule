@@ -32,11 +32,9 @@
 #pragma implementation "DownloadListCtrl.h"
 #endif
 
-/*
 #ifdef HAVE_CONFIG_H
-#include "config.h"		// Needed for DISABLE_PROGRESS
+#include "config.h"		// Needed for VERSION
 #endif
-*/
 
 #include <cmath>		// Needed for floor
 
