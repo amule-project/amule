@@ -67,6 +67,18 @@ CSharedFileList::CSharedFileList(CKnownFileList* in_filelist){
 CSharedFileList::~CSharedFileList(){
 }
 
+static int wxStat( const wxChar *file_name, wxStructStat *buf, wxMBConv &wxConv )
+{
+	return stat( wxConv.cWX2MB( file_name ), buf );
+}
+
+static bool wxDirExists(const wxChar *pszPathName, wxMBConv &wxConv)
+{
+	wxString strPath(pszPathName);
+	wxStructStat st;
+	return wxStat(strPath.c_str(), &st, wxConv) == 0 && ((st.st_mode & S_IFMT) == S_IFDIR);
+}
+
 void CSharedFileList::FindSharedFiles() {
 	/* Abort loading if we are shutting down. */
 	if(!theApp.IsRunning()) {
@@ -93,31 +105,40 @@ void CSharedFileList::FindSharedFiles() {
 	/* Global incoming dir and all category incoming directories are automatically shared. */
 
 	AddFilesFromDirectory(thePrefs::GetIncomingDir());
-	for (uint32 i = 1;i < theApp.glob_prefs->GetCatCount(); ++i) {
+	for (unsigned int i = 1;i < theApp.glob_prefs->GetCatCount(); ++i) {
 		AddFilesFromDirectory(theApp.glob_prefs->GetCatPath(i));
 	}
 
 	// remove bogus entries first
 	for (unsigned int i = 0; i < theApp.glob_prefs->shareddir_list.GetCount(); ) {
-		if(!wxFileName::DirExists(theApp.glob_prefs->shareddir_list.Item(i))) {
+		const wxString &fileName = theApp.glob_prefs->shareddir_list.Item(i);
+		// In ANSI builds, the first call is enough. In UNICODE builds,
+		// the second call makes sure we are able to read an extended
+		// ANSI chars directory name.
+		if(	!wxFileName::DirExists(fileName) &&
+			!wxDirExists(fileName, aMuleConv)) {
 			theApp.glob_prefs->shareddir_list.RemoveAt(i);
 		} else {
 			++i;
 		}
 	}
 
-	for (unsigned int ii = 0; ii < theApp.glob_prefs->shareddir_list.GetCount(); ++ii) {
-		AddFilesFromDirectory(theApp.glob_prefs->shareddir_list.Item(ii));
+	for (unsigned int i = 0; i < theApp.glob_prefs->shareddir_list.GetCount(); ++i) {
+		AddFilesFromDirectory(theApp.glob_prefs->shareddir_list.Item(i));
 	}
 
 	uint32 newFiles = CAddFileThread::GetFileCount();
 	if (!newFiles) {
-		AddLogLineM(false, wxString::Format(_("Found %i known shared files"),m_Files_map.size()));
+		AddLogLineM(false,
+			wxString::Format(_("Found %i known shared files"),
+				m_Files_map.size()));
 		// No new files, run AICH thread
 		theApp.RunAICHThread();
 	} else {	
 		// New files, AICH thread will be run at the end of the hashing thread.
-		AddLogLineM(false, wxString::Format(_("Found %i known shared files, %i unknown"),m_Files_map.size(),newFiles));
+		AddLogLineM(false,
+			wxString::Format(_("Found %i known shared files, %i unknown"),
+				m_Files_map.size(),newFiles));
 	}
 }
 
