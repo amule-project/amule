@@ -3479,8 +3479,8 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart)
 		// make sure that MD4 agrres to this fact too
 		if (!HashSinglePart(nPart)){
 			AddDebugLogLineM( false, logAICHRecovery, 
-				wxT("Processing AICH Recovery data: The part (%u) got completed while recovering "
-				"- but MD4 says it corrupt! Setting hashset to error state, deleting part"));
+				wxString::Format(wxT("Processing AICH Recovery data: The part (%u) got completed while recovering "
+				"- but MD4 says it corrupt! Setting hashset to error state, deleting part"), nPart));
 			// now we are fu... unhappy
 			m_pAICHHashSet->SetStatus(AICH_ERROR);
 			AddGap(PARTSIZE*nPart, ((nPart*PARTSIZE)+length)-1);
@@ -3490,7 +3490,7 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart)
 		else{
 			AddDebugLogLineM( false, logAICHRecovery, wxString::Format( 
 				wxT("Processing AICH Recovery data: The part (%u) "
-				"got completed while recovering and MD4 agrees") ) );
+				"got completed while recovering and MD4 agrees"), nPart) );
 			// alrighty not so bad
 			POSITION posCorrupted = corrupted_list.Find(nPart);
 			if (posCorrupted)
