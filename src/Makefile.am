@@ -27,7 +27,7 @@ DEFS = -DHAVE_CONFIG_H
 BUILT_SOURCES =
 EXTRA_DIST =  strings.en *.h pixmaps bitmaps Makengfile
 
-LIBS = @LIBS@
+LIBS = @LIBS@ 
 amule_SOURCES = ListenSocket.cpp \
 	ECSocket.cpp \
 	EMSocket.cpp \
@@ -129,11 +129,15 @@ amule_LDADD = $(WX_LIBS) $(GTK_LIBS) $(ZLIB_LIBS)
 ed2k_SOURCES = ED2KLinkParser.cpp
 ed2k_CFLAGS =
 
-cas_SOURCES = utils/cas/cas.c
+cas_SOURCES = utils/cas/cas.c \
+	      utils/cas/functions.c \
+              utils/cas/configfile.c \
+              utils/cas/graphics.c
+
 #cas_CXXFLAGS= ""
-#cas_LIBS= ""
-#cas_CFLAGS= ""
-#cas_LDADD= ""
+#cas_LIBS= "" 
+cas_CFLAGS= $(GDLIB_CFLAGS)
+cas_LDADD= $(GDLIB_LDFLAGS) $(GDLIB_LIBS) -lgd
 
 wxcas_SOURCES = utils/wxCas/src/onlinesig.cpp \
 		utils/wxCas/src/wxcas.cpp \
