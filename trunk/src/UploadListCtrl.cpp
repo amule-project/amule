@@ -36,6 +36,7 @@
 #include "color.h"		// Needed for G_BLEND and SYSCOLOR
 
 #include <wx/menu.h>
+#include <wx/textdlg.h>
 
 // CUploadListCtrl
 
