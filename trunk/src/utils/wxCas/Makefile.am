@@ -1,4 +1,4 @@
-SUBDIRS = doc src pixmaps
+SUBDIRS = doc src
 
 EXTRA_DIST =  wxcas.msp wxcas.rc \
 	      ABOUT-NLS  ChangeLog \
