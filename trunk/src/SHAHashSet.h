@@ -68,6 +68,7 @@ Example
 #define __SHAHAHSET_H__
 
 #include <deque>
+#include <list>
 #include "otherfunctions.h"
 
 #define HASHSIZE		20
@@ -181,7 +182,10 @@ public:
 	CUpDownClient*	m_pClient;
 };
 
-WX_DECLARE_LIST(CAICHRequestedData, CAICHRequestedDataList);
+
+using namespace std;
+	
+typedef std::list<CAICHRequestedData> CAICHRequestedDataList;
 
 /////////////////////////////////////////////////////////////////////////////////////////
 ///CAICHHashSet
