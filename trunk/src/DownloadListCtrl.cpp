@@ -1530,11 +1530,11 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 					CoreNotify_PartFile_Stop(file);
 					return true;					
 					break;
-					case MP_FAKECHECK1:	// deltahf -> fakecheck
-					    theApp.LaunchUrl(theApp.GenFakeCheckUrl(file));
+				case MP_FAKECHECK1:	// deltahf -> fakecheck
+					    theApp.amuledlg->LaunchUrl(theApp.GenFakeCheckUrl(file));
 					break;
-					case MP_FAKECHECK2:
-						theApp.LaunchUrl(theApp.GenFakeCheckUrl2(file));
+				case MP_FAKECHECK2:
+						theApp.amuledlg->LaunchUrl(theApp.GenFakeCheckUrl2(file));
 					break;
 				case MP_CLEARCOMPLETED:
 					Freeze();

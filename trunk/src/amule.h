@@ -106,9 +106,6 @@ public:
 	wxString		GenFakeCheckUrl(CAbstractFile *file);
 	wxString        GenFakeCheckUrl2(CAbstractFile *file);
 	
-	// websearch function
-	wxString        GenWebSearchUrl( const wxString &filename );
-	
 	void QueueLogLine(bool addtostatusbar, const wxString& line);
 	void FlushQueuedLogLines();
 		
@@ -117,9 +114,7 @@ public:
 	void			OnlineSig(bool zero = false); 
 	void			Localize_mule();
 	void			Trigger_New_version(wxString old_version, wxString new_version);
-	void			LaunchUrl(const wxString &url);
 	
-
 	// Kry - External connections
 	wxServer*		localserver;	
 	

@@ -377,11 +377,11 @@ bool CSearchListCtrl::ProcessEvent(wxEvent& evt)
 				break;
 			}
 			case MP_FAKECHECK1: {	// deltahf -> fakecheck
-				theApp.LaunchUrl(theApp.GenFakeCheckUrl(file));
+				theApp.amuledlg->LaunchUrl(theApp.GenFakeCheckUrl(file));
 				break;
 			}
 			case MP_FAKECHECK2: {
-				theApp.LaunchUrl(theApp.GenFakeCheckUrl2(file));
+				theApp.amuledlg->LaunchUrl(theApp.GenFakeCheckUrl2(file));
 				break;
 			}
 			case MP_RESUME: {

@@ -37,6 +37,7 @@ class CServer;
 
 class wxListEvent;
 class wxNotebookEvent;
+class wxSpinEvent;
 class wxGauge;
 
 class CSearchDlg : public wxPanel {
@@ -53,6 +54,10 @@ public:
 	void		LocalSearchEnd(uint16 count);
 	void		UpdateCatChoice();
 
+	void		UpdateHitCount(CSearchListCtrl* page);
+
+	void		FieldsChanged();
+
 	// Event handlers
 	void		OnBnClickedStarts(wxCommandEvent& evt);
 	void		OnBnClickedSdownload(wxCommandEvent& ev);
@@ -65,7 +70,8 @@ public:
 	CMuleNotebook*	notebook;
 private:
 	// Event handlers
-	void		OnFieldsChange(wxCommandEvent& evt);
+	void		OnEditFieldsChange(wxCommandEvent& evt);
+	void		OnSpinFieldsChange(wxSpinEvent& evt);
 	void		OnTimer(wxTimerEvent &evt);
 	void		OnListItemSelected(wxListEvent& ev);
 	void		OnBnClickedSearchReset(wxCommandEvent& ev);
@@ -76,6 +82,7 @@ private:
 
 	void		StartNewSearch();
 	void		OnSearchClosed(wxNotebookEvent& evt);
+	void		OnSearchPageChanged(wxNotebookEvent& evt);
 	void		DirectDownload(wxCommandEvent &event);
 
 	Packet*		searchpacket;

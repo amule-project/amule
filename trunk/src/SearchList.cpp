@@ -57,7 +57,7 @@ static CSearchListCtrl* GetSearchListControl(uint32 nSearchID)
 
 	for (int tabCounter=0; tabCounter < nb->GetPageCount(); tabCounter++) {
 		if(nb->GetUserData(tabCounter)==nSearchID) {
-			return (CSearchListCtrl*)(nb->GetPage(tabCounter)->FindWindow(ID_SEARCHLISTCTRL));
+			return (CSearchListCtrl*)(nb->GetPage(tabCounter));
 		}
 	}
 
@@ -259,7 +259,11 @@ void CSearchList::ShowResults( uint32 nSearchID){
 			}
 		}
 		//outputwnd->SetRedraw(true);
+	
+		// Update the result count
+		theApp.amuledlg->searchwnd->UpdateHitCount( outputwnd );
 	}
+
 	UngetSearchListControl(outputwnd);
 }
 
@@ -275,7 +279,7 @@ uint16 CSearchList::ProcessSearchanswer(const char *in_packet, uint32 size, CUpD
 	const CSafeMemFile *packet = new CSafeMemFile((BYTE*)in_packet,size,0);
 
 	if(Sender) {
-	  theApp.amuledlg->searchwnd->CreateNewTab(Sender->GetUserName(),(uint32)Sender);
+	  theApp.amuledlg->searchwnd->CreateNewTab(Sender->GetUserName() + wxT(" (0)"),(uint32)Sender);
 	}
 
 	try
@@ -322,7 +326,7 @@ uint16 CSearchList::ProcessSearchanswer(const char *in_packet, uint32 size,
 	uint32 nSearchID = (uint32)Sender;
 
 	if (!theApp.amuledlg->searchwnd->CheckTabNameExists(Sender->GetUserName())) {
-		theApp.amuledlg->searchwnd->CreateNewTab(Sender->GetUserName(),nSearchID);
+		theApp.amuledlg->searchwnd->CreateNewTab(Sender->GetUserName() + wxT(" (0)"),nSearchID);
 	}
 	
 	const CSafeMemFile packet((BYTE*)in_packet,size);
@@ -440,6 +444,9 @@ bool CSearchList::AddToList(CSearchFile* toadd, bool bClientResponse){
 			cur_file->AddSources(toadd->GetIntTagValue(FT_SOURCES),toadd->GetIntTagValue(FT_COMPLETE_SOURCES));
 			if (outputwnd) {
 				outputwnd->UpdateSources(cur_file);
+	
+				// Update the result count
+				theApp.amuledlg->searchwnd->UpdateHitCount( outputwnd );
 			}
 			delete toadd;
 			UngetSearchListControl(outputwnd);
@@ -451,6 +458,9 @@ bool CSearchList::AddToList(CSearchFile* toadd, bool bClientResponse){
 	}
 	if (outputwnd) {
 		outputwnd->AddResult(toadd);
+			
+		// Update the result count
+		theApp.amuledlg->searchwnd->UpdateHitCount( outputwnd );
 	}
 	UngetSearchListControl(outputwnd);
 	return true;

@@ -49,6 +49,7 @@
 #include "GetTickCount.h"
 
 #define ID_SEARCHTIMER 55219
+#define ID_SEARCHLISTCTRL wxID_HIGHEST+666
 
 // just to keep compiler happy
 static wxCommandEvent nullEvent;
@@ -58,16 +59,14 @@ BEGIN_EVENT_TABLE(CSearchDlg, wxPanel)
 	EVT_BUTTON(IDC_STARTS, CSearchDlg::OnBnClickedStarts)
 	
 	EVT_TEXT_ENTER(IDC_SEARCHNAME, CSearchDlg::OnBnClickedStarts)
-	EVT_TEXT_ENTER(IDC_EDITSEARCHMIN, CSearchDlg::OnBnClickedStarts)
-	EVT_TEXT_ENTER(IDC_EDITSEARCHMAX, CSearchDlg::OnBnClickedStarts)
 	EVT_TEXT_ENTER(IDC_EDITSEARCHEXTENSION, CSearchDlg::OnBnClickedStarts)
-	EVT_TEXT_ENTER(IDC_EDITSEARCHAVAIBILITY, CSearchDlg::OnBnClickedStarts)
 	
-	EVT_TEXT(IDC_SEARCHNAME, CSearchDlg::OnFieldsChange)
-	EVT_TEXT(IDC_EDITSEARCHMIN, CSearchDlg::OnFieldsChange)
-	EVT_TEXT(IDC_EDITSEARCHMAX, CSearchDlg::OnFieldsChange)
-	EVT_TEXT(IDC_EDITSEARCHEXTENSION, CSearchDlg::OnFieldsChange)
-	EVT_TEXT(IDC_EDITSEARCHAVAIBILITY, CSearchDlg::OnFieldsChange)
+	EVT_TEXT(IDC_SEARCHNAME, CSearchDlg::OnEditFieldsChange)
+	EVT_TEXT(IDC_EDITSEARCHEXTENSION, CSearchDlg::OnEditFieldsChange)
+	
+	EVT_SPINCTRL(IDC_SPINSEARCHMIN, CSearchDlg::OnSpinFieldsChange)
+	EVT_SPINCTRL(IDC_SPINSEARCHMAX, CSearchDlg::OnSpinFieldsChange)
+	EVT_SPINCTRL(IDC_SPINSEARCHAVAIBILITY, CSearchDlg::OnSpinFieldsChange)
 	
 	EVT_BUTTON(IDC_CANCELS, CSearchDlg::OnBnClickedCancels)
 	EVT_BUTTON(IDC_CLEARALL, CSearchDlg::OnBnClickedClearall)
@@ -76,10 +75,8 @@ BEGIN_EVENT_TABLE(CSearchDlg, wxPanel)
 	EVT_LIST_ITEM_SELECTED(ID_SEARCHLISTCTRL, CSearchDlg::OnListItemSelected)
 	EVT_BUTTON(IDC_SDOWNLOAD, CSearchDlg::OnBnClickedSdownload)
 	EVT_BUTTON(IDC_SEARCH_RESET, CSearchDlg::OnBnClickedSearchReset)
-	EVT_MULENOTEBOOK_PAGE_CLOSED(ID_NOTEBOOK, CSearchDlg::OnSearchClosed)
 	EVT_BUTTON(ID_BTN_DDLOAD, CSearchDlg::DirectDownload)
 	EVT_RIGHT_DOWN(CSearchDlg::OnRMButton)
-	EVT_BUTTON(ID_WEBSEARCH_SUBMIT, CSearchDlg::OnBtnWebSearch)
 
 	EVT_MENU(MP_CLOSE_TAB, CSearchDlg::OnPopupClose)
 	EVT_MENU(MP_CLOSE_ALL_TABS, CSearchDlg::OnPopupCloseAll)
@@ -87,6 +84,8 @@ BEGIN_EVENT_TABLE(CSearchDlg, wxPanel)
 	
 	EVT_CHECKBOX(ID_EXTENDEDSEARCHCHECK,CSearchDlg::OnExtendedSearchChange)
 	
+	EVT_MULENOTEBOOK_PAGE_CLOSED(ID_NOTEBOOK, CSearchDlg::OnSearchClosed)
+	EVT_NOTEBOOK_PAGE_CHANGED(ID_NOTEBOOK, CSearchDlg::OnSearchPageChanged)
 END_EVENT_TABLE()
 
 
@@ -103,10 +102,10 @@ CSearchDlg::CSearchDlg(wxWindow* pParent)
 	wxSizer* content=searchDlg(this, true);
 	content->Show(this, true);
 
-	progressbar = (wxGauge*)FindWindowById(ID_SEARCHPROGRESS);
+	progressbar = (wxGauge*)FindWindow(ID_SEARCHPROGRESS);
 	wxASSERT( progressbar );
 	
-	notebook = (CMuleNotebook*)FindWindowById(ID_NOTEBOOK);
+	notebook = (CMuleNotebook*)FindWindow(ID_NOTEBOOK);
 	wxASSERT( notebook );
 
 	// Initialise the image list
@@ -118,26 +117,25 @@ CSearchDlg::CSearchDlg(wxWindow* pParent)
 	// allow notebook to dispatch right mouse clicks to us
 	notebook->SetMouseListener(GetEventHandler());
 	
-	// Not there initially.
-	IDC_SEARCH_FRM->Show(ExtendedSearchSizer,FALSE);
-	IDC_SEARCH_FRM->Layout();
-
 	ToggleLinksHandler();
+	
+	// Not there initially.
+	s_searchsizer->Show(s_extendedsizer, false);
+	Layout();
 }
 
 
 // Enable the download button when there are items selected
 void CSearchDlg::OnListItemSelected(wxListEvent& WXUNUSED(event))
 {
-	FindWindowById(IDC_SDOWNLOAD)->Enable(true);
+	FindWindow(IDC_SDOWNLOAD)->Enable(true);
 }
 
 // Enable the extended options 
 void CSearchDlg::OnExtendedSearchChange(wxCommandEvent& event)
 {
-	IDC_SEARCH_FRM->Show(ExtendedSearchSizer, event.IsChecked());
-	IDC_SEARCH_FRM->Layout();
-	Search_Main_sizer->Layout();
+	s_searchsizer->Show(s_extendedsizer, event.IsChecked());
+	Layout();
 }
 
 
@@ -149,42 +147,103 @@ void CSearchDlg::OnSearchClosed(wxNotebookEvent& evt)
 	}
 }
 
+void CSearchDlg::OnSearchPageChanged(wxNotebookEvent& evt)
+{
+	// Only enable the Download button for pages where files have been selected
+	if ( evt.GetSelection() != -1 ) {
+		bool enable = ((CSearchListCtrl*)notebook->GetPage(evt.GetSelection()))->GetSelectedItemCount();
+
+		FindWindow(IDC_SDOWNLOAD)->Enable( enable );
+	}
+
+}
+
 void CSearchDlg::OnBnClickedStarts(wxCommandEvent& WXUNUSED(evt))
 {
-	// lugdunum will kill us if we don't fix this ;)
-	if ((GetTickCount() - last_search_time)  > 2000) /* 2 secs */{
+	wxString searchString = ((wxTextCtrl*)FindWindow(IDC_SEARCHNAME))->GetValue();
+	searchString.Trim(true);
+	searchString.Trim(false);	
+	
+	if ( searchString.IsEmpty() ) {
+		return;
+	}
+
+
+	wxChoice* choice = (wxChoice*)FindWindow(ID_SEARCHTYPE);
+
+	// Web seaches
+	switch ( choice->GetSelection() ) {
+		// Local Search
+		case 0: 
+		// Global Search
+		case 1:
+			// lugdunum will kill us if we don't fix this ;)
+			if ((GetTickCount() - last_search_time)  > 2000) {
+				last_search_time = GetTickCount();
 		
-		last_search_time = GetTickCount();
+				OnBnClickedCancels(nullEvent);
 		
-		OnBnClickedCancels(nullEvent);
-		
-		StartNewSearch();
-		
+				StartNewSearch();
+			}
+
+			break;
+
+		// Web Search (FileHash.com)
+		case 2:
+    		theApp.amuledlg->LaunchUrl(theApp.amuledlg->GenWebSearchUrl(searchString, CamuleDlg::wsFileHash));
+			break;
+
+		// Web Search (Jugle.net)
+		case 3:
+    		theApp.amuledlg->LaunchUrl(theApp.amuledlg->GenWebSearchUrl(searchString, CamuleDlg::wsFileHash));
+			break;
+
+		// Error
+		default:
+			wxASSERT(0);
 	}
 }
 
 
-// Enables or disables the Reset and Start button depending on the conents of the text fields
-void CSearchDlg::OnFieldsChange(wxCommandEvent& WXUNUSED(evt))
+void CSearchDlg::FieldsChanged()
 {
-	// These are the IDs of the search-fields 
-	int textfields[] = { IDC_SEARCHNAME, IDC_EDITSEARCHMIN, IDC_EDITSEARCHMAX, IDC_EDITSEARCHEXTENSION, IDC_EDITSEARCHAVAIBILITY};
-
 	bool enable = false;
+	
+	// These are the IDs of the search-fields 
+	int textfields[] = { IDC_SEARCHNAME, IDC_EDITSEARCHEXTENSION };
+
 	for ( uint16 i = 0; i < itemsof(textfields); i++ ) {
-		enable |= ((wxTextCtrl*)FindWindowById( textfields[i] ))->GetLineLength(0);
+		enable |= ((wxTextCtrl*)FindWindow( textfields[i] ))->GetLineLength(0);
 	}
-	
-	// Enable the Clear button if any fields contain text
-	FindWindowById(IDC_SEARCH_RESET)->Enable( enable );
-	
-	enable = ((wxTextCtrl*)FindWindowById(IDC_SEARCHNAME))->GetLineLength(0);
-	
-	// enable web search button if the Name field contains text
-	FindWindowById(ID_WEBSEARCH_SUBMIT)->Enable( enable );
+
+	// These are the IDs of the search-fields
+	int spinfields[] = { IDC_SPINSEARCHMIN, IDC_SPINSEARCHMAX, IDC_SPINSEARCHAVAIBILITY };
+
+	for ( uint16 i = 0; i < itemsof(spinfields); i++ ) {
+		enable |= ((wxSpinCtrl*)FindWindow( spinfields[i] ))->GetValue();
+	}
+
+	// Enable the Clear and Clear-All button if any fields contain text
+	FindWindow(IDC_SEARCH_RESET)->Enable( enable );
+	FindWindow(IDC_CLEARALL)->Enable( enable || notebook->GetPageCount() );
+
 	
 	// Enable the Server Search button if the Name field contains text
-	FindWindowById(IDC_STARTS)->Enable( enable );
+	enable = ((wxTextCtrl*)FindWindow(IDC_SEARCHNAME))->GetLineLength(0);
+	FindWindow(IDC_STARTS)->Enable( enable );
+}
+
+// Enables or disables the Reset and Start button depending on the conents of the text fields
+void CSearchDlg::OnEditFieldsChange(wxCommandEvent& WXUNUSED(evt))
+{
+	FieldsChanged();
+}
+
+
+// Enables or disables the Reset and Start button depending on the conents of the text fields
+void CSearchDlg::OnSpinFieldsChange(wxSpinEvent& WXUNUSED(evt))
+{
+	FieldsChanged();
 }
 
 
@@ -235,7 +294,7 @@ bool CSearchDlg::CheckTabNameExists(wxString searchString)
 {
 	int nPages = notebook->GetPageCount();
 	for ( int i = 0; i < nPages ; i++ ) {
-		if ( notebook->GetPageText(i) == searchString ) {
+		if ( notebook->GetPageText(i).BeforeLast(wxT(' ')) == searchString ) {
 			return true;
 		}
 	}
@@ -246,19 +305,18 @@ bool CSearchDlg::CheckTabNameExists(wxString searchString)
 
 void CSearchDlg::CreateNewTab(wxString searchString, uint32 nSearchID)
 {
-	wxPanel* sizCont = new wxPanel(notebook, -1);
-	searchPage(sizCont, true);
-	notebook->AddPage(sizCont, searchString, true, 0, nSearchID);
-
+    CSearchListCtrl* list = new CSearchListCtrl( (wxWindow*)notebook, ID_SEARCHLISTCTRL, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxNO_BORDER );
+	
 	progressbar->SetRange( theApp.serverlist->GetServerCount() - 1 );
 
-	GetParent()->Layout();
+	list->Init(theApp.searchlist);
+	list->ShowResults(nSearchID);
 	
-	CSearchListCtrl* searchlistctrl = (CSearchListCtrl*)FindWindowById(ID_SEARCHLISTCTRL, sizCont);
-	searchlistctrl->Init(theApp.searchlist);
-	searchlistctrl->ShowResults(nSearchID);
+	notebook->AddPage(list, searchString, true, 0, nSearchID);
 	
-	FindWindowById(IDC_CLEARALL)->Enable(true);
+	Layout();
+
+	FindWindow(IDC_CLEARALL)->Enable(true);
 }
 
 
@@ -274,8 +332,8 @@ void CSearchDlg::OnBnClickedCancels(wxCommandEvent& WXUNUSED(evt))
 	m_timer.Stop();
 	progressbar->SetValue(0);
 
-	FindWindowById(IDC_CANCELS)->Disable();
-	FindWindowById(IDC_STARTS)->Enable();
+	FindWindow(IDC_CANCELS)->Disable();
+	FindWindow(IDC_STARTS)->Enable();
 }
 
 
@@ -283,8 +341,8 @@ void CSearchDlg::LocalSearchEnd(uint16 WXUNUSED(count))
 {
 	if (!canceld) {
 		if (!globalsearch) {
-			FindWindowById(IDC_CANCELS)->Disable();
-			FindWindowById(IDC_STARTS)->Enable();
+			FindWindow(IDC_CANCELS)->Disable();
+			FindWindow(IDC_STARTS)->Enable();
 		} else {
 			m_timer.Start(750);
 		}
@@ -298,12 +356,7 @@ void CSearchDlg::OnBnClickedSdownload(wxCommandEvent& WXUNUSED(evt))
 		return;
 	}
 	
-	wxNotebookPage* page = notebook->GetPage(notebook->GetSelection());
-	if ( page == NULL ) {
-		printf("page == NULL in CSearchDlg::OnBnClickedSdownload -- please, report this on amule forums: www.amule.org");
-		return;
-	}
-	CSearchListCtrl* searchlistctrl = (CSearchListCtrl*)FindWindowById(ID_SEARCHLISTCTRL, page);
+	CSearchListCtrl* searchlistctrl = (CSearchListCtrl*)notebook->GetPage(notebook->GetSelection());
 	if ( searchlistctrl == NULL ) {
 		printf("searchlistctrl == NULL in CSearchDlg::OnBnClickedSdownload -- please, report this on amule forums: www.amule.org");
 		return;
@@ -312,7 +365,7 @@ void CSearchDlg::OnBnClickedSdownload(wxCommandEvent& WXUNUSED(evt))
 	int index = searchlistctrl->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
 	while ( (index > -1) ) {
 		theApp.downloadqueue->AddSearchToDownload( (CSearchFile*)searchlistctrl->GetItemData(index), GetCatChoice());
-		FindWindowById(IDC_SDOWNLOAD)->Enable(FALSE);
+		FindWindow(IDC_SDOWNLOAD)->Enable(FALSE);
 
 		index = searchlistctrl->GetNextItem(index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
 	}
@@ -340,8 +393,8 @@ void CSearchDlg::StartNewSearch()
 		return;
 	}
 
-	FindWindowById(IDC_STARTS)->Disable();
-	FindWindowById(IDC_CANCELS)->Enable();
+	FindWindow(IDC_STARTS)->Disable();
+	FindWindow(IDC_CANCELS)->Enable();
 
 	canceld = false;
 	
@@ -357,37 +410,34 @@ void CSearchDlg::StartNewSearch()
 	uint32 extensionNemonic = 0x00040001;
 				
 			
-	wxString searchString = ((wxTextCtrl*)FindWindowById(IDC_SEARCHNAME))->GetValue();
+	wxString searchString = ((wxTextCtrl*)FindWindow(IDC_SEARCHNAME))->GetValue();
 	searchString.Trim(true);
 	searchString.Trim(false);	
 	if ( searchString.IsEmpty() ) {
 		return;
 	}
 	
-	wxString extension = ((wxTextCtrl*)FindWindowById(IDC_EDITSEARCHEXTENSION))->GetValue();
+	wxString extension = ((wxTextCtrl*)FindWindow(IDC_EDITSEARCHEXTENSION))->GetValue();
 	if ( !extension.IsEmpty() && !extension.StartsWith(wxT(".")) ) {
 		extension = wxT(".") + extension;
 	}		
 		
-	wxString typeText = ((wxChoice*)FindWindowById(IDC_TypeSearch))->GetStringSelection();
+	wxString typeText = ((wxChoice*)FindWindow(IDC_TypeSearch))->GetStringSelection();
 	theApp.searchlist->NewSearch(typeText, m_nSearchID);
 
 	// Parameter Minimum Size
-	wxString sizeMin=((wxTextCtrl*)FindWindowById(IDC_EDITSEARCHMIN))->GetValue();
-	uint32 min = StrToLong(sizeMin) * 1048576;
+	uint32 min = ((wxSpinCtrl*)FindWindow(IDC_SPINSEARCHMIN))->GetValue() * 1048576;
 	
 	// Parameter Maximum Size
-	wxString sizeMax=((wxTextCtrl*)FindWindowById(IDC_EDITSEARCHMAX))->GetValue();
-	uint32 max = StrToLong(sizeMax) * 1048576;
+	uint32 max = ((wxSpinCtrl*)FindWindow(IDC_SPINSEARCHMAX))->GetValue() * 1048576;
 	
 	if ( max < min ) max = 0;
 	
 	// Parameter Availability
-	wxString avaibilitystr = ((wxTextCtrl*)FindWindowById(IDC_EDITSEARCHAVAIBILITY))->GetValue();
-	uint32 avaibility = StrToLong(avaibilitystr);
+	uint32 avaibility = ((wxSpinCtrl*)FindWindow(IDC_SPINSEARCHAVAIBILITY))->GetValue();
 	
 	
-	switch ( ((wxChoice*)FindWindowById(IDC_TypeSearch))->GetSelection() ) {
+	switch ( ((wxChoice*)FindWindow(IDC_TypeSearch))->GetSelection() ) {
 		case 0: typeText = wxT("Any"); break;
 		case 1: typeText = wxT("Archives"); break;
 		case 2: typeText = wxT("Audio"); break;
@@ -469,7 +519,7 @@ void CSearchDlg::StartNewSearch()
 	packet->SetOpCode(OP_SEARCHREQUEST);
 	delete data;
 		
-	globalsearch = ((wxCheckBox*)FindWindowById(IDC_SGLOBAL))->IsChecked();
+	globalsearch = ((wxChoice*)FindWindow(ID_SEARCHTYPE))->GetSelection() == 1;
 
 	CoreNotify_Search_Local_Req(packet);
 	if ( globalsearch ) {
@@ -485,7 +535,7 @@ void CSearchDlg::StartNewSearch()
 		globalsearch = true;
 	}
 	
-	CreateNewTab(searchString, m_nSearchID);
+	CreateNewTab(searchString + wxT(" (0)"), m_nSearchID);
 }
 
 
@@ -495,8 +545,7 @@ void CSearchDlg::DeleteSearch(uint16 nSearchID)
 	theApp.searchlist->RemoveResults(nSearchID);
 
 	for ( int i = 0; i < notebook->GetPageCount(); i++ ) {
-		wxWindow * page = (wxWindow *)notebook->GetPage( i );
-		wxWindow * slctrl = FindWindowById(ID_SEARCHLISTCTRL, page);
+		wxWindow * slctrl = (wxWindow *)notebook->GetPage( i );
 		
 		// Make sure we have a valid pointer
 		if( slctrl ) {
@@ -518,23 +567,40 @@ void CSearchDlg::DeleteAllSearchs()
 	
 	notebook->DeleteAllPages();
 
-	FindWindowById(IDC_CLEARALL)->Enable(FALSE);
+	FindWindow(IDC_CLEARALL)->Enable(FALSE);
+}
+
+
+void CSearchDlg::UpdateHitCount(CSearchListCtrl* page)
+{
+	for ( int i = 0; i < notebook->GetPageCount(); ++i ) {
+		if ( notebook->GetPage(i) == page ) {
+			wxString searchtxt = notebook->GetPageText(i).BeforeLast(wxT(' '));
+		
+			if ( !searchtxt.IsEmpty() ) {
+				notebook->SetPageText( i, searchtxt + wxString::Format(" (%i)", page->GetItemCount()));
+			}
+		
+			break;
+		}
+	}
 }
 
 
 void CSearchDlg::OnBnClickedSearchReset(wxCommandEvent& WXUNUSED(evt))
 {
-	((wxTextCtrl*)FindWindowById(IDC_SEARCHNAME))->Clear();
-	((wxTextCtrl*)FindWindowById(IDC_EDITSEARCHMIN))->Clear();
-	((wxTextCtrl*)FindWindowById(IDC_EDITSEARCHMAX))->Clear();
-	((wxTextCtrl*)FindWindowById(IDC_EDITSEARCHEXTENSION))->Clear();
-	((wxTextCtrl*)FindWindowById(IDC_EDITSEARCHAVAIBILITY))->Clear();
-	((wxTextCtrl*)FindWindowById(ID_ED2KLINKHANDLER))->Clear();
+	((wxTextCtrl*)FindWindow(IDC_SEARCHNAME))->Clear();
+	((wxTextCtrl*)FindWindow(IDC_EDITSEARCHEXTENSION))->Clear();
 	
-	wxChoice* Stypebox = (wxChoice*)FindWindowById(IDC_TypeSearch);
-	Stypebox->SetSelection(Stypebox->FindString(wxString(_("Any"))));
+	((wxSpinCtrl*)FindWindow(IDC_SPINSEARCHMIN))->SetValue(0);
+	((wxSpinCtrl*)FindWindow(IDC_SPINSEARCHMAX))->SetValue(0);
+	((wxSpinCtrl*)FindWindow(IDC_SPINSEARCHAVAIBILITY))->SetValue(0);
+
+	FindWindow(IDC_CLEARALL)->Enable( notebook->GetPageCount() );
+
+	((wxChoice*)FindWindow(IDC_TypeSearch))->SetSelection(0);
 	
-	FindWindowById(IDC_SEARCH_RESET)->Enable(FALSE);
+	FindWindow(IDC_SEARCH_RESET)->Enable(FALSE);
 }
 
 
@@ -571,7 +637,7 @@ void CSearchDlg::UpdateCatChoice()
  **/
 uint8 CSearchDlg::GetCatChoice()
 {
-	wxChoice *c_cat = (wxChoice*)FindWindowById(ID_AUTOCATASSIGN);
+	wxChoice *c_cat = (wxChoice*)FindWindow(ID_AUTOCATASSIGN);
 	return (uint8)c_cat->GetSelection();
 }
 
@@ -582,7 +648,11 @@ uint8 CSearchDlg::GetCatChoice()
  **/
 void CSearchDlg::ToggleLinksHandler()
 {
-	s_srcopts->Show(s_srced2klh, !theApp.glob_prefs->GetFED2KLH());
+	s_searchdlgsizer->Show(s_ed2ksizer, !theApp.glob_prefs->GetFED2KLH());
+	
+	// Doesn't get entirely hidden for some reason =/
+	((wxStaticBoxSizer*)s_ed2ksizer)->GetStaticBox()->Show( !theApp.glob_prefs->GetFED2KLH() );
+	
 	Layout();
 }
 
@@ -647,15 +717,3 @@ void CSearchDlg::OnPopupCloseOthers(wxCommandEvent& WXUNUSED(evt))
 }
 
 
-
-void CSearchDlg::OnBtnWebSearch(wxCommandEvent& WXUNUSED(evt))
-{	
-	wxString searchString = ((wxTextCtrl*)FindWindowById(IDC_SEARCHNAME))->GetValue();
-	searchString.Trim(true);
-	searchString.Trim(false);	
-	if ( searchString.IsEmpty() ) {
-		return;
-	}
-	
-    theApp.LaunchUrl(theApp.GenWebSearchUrl(searchString));
-}
