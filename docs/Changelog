@@ -2,6 +2,9 @@ Version 2.0.0rc8 - The "???????????" version.
 ----------
 2004-10-??
 
+	Jacobo221:
+		* When "Extended Parameters" in Search tab is not selected, defaults are used
+
 	Phoenix:
 		* Added readline and history support to amuleweb/amulecmd text
 		  clients.

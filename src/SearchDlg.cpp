@@ -405,42 +405,47 @@ void CSearchDlg::StartNewSearch()
 	if ( searchString.IsEmpty() ) {
 		return;
 	}
-	
-	wxString extension = ((wxTextCtrl*)FindWindow(IDC_EDITSEARCHEXTENSION))->GetValue();
-	if ( !extension.IsEmpty() && !extension.StartsWith(wxT(".")) ) {
-		extension = wxT(".") + extension;
-	}		
-		
-	wxString typeText = ((wxChoice*)FindWindow(IDC_TypeSearch))->GetStringSelection();
-	theApp.searchlist->NewSearch(typeText, m_nSearchID);
 
-	// Parameter Minimum Size
-	uint32 min = ((wxSpinCtrl*)FindWindow(IDC_SPINSEARCHMIN))->GetValue() * 1048576;
+	wxString typeText = "Any", extension = "";
+	uint32 min = 0, max = 0, availability = 0;
 	
-	// Parameter Maximum Size
-	uint32 max = ((wxSpinCtrl*)FindWindow(IDC_SPINSEARCHMAX))->GetValue() * 1048576;
-	
-	if ( max < min ) max = 0;
-	
-	// Parameter Availability
-	uint32 avaibility = ((wxSpinCtrl*)FindWindow(IDC_SPINSEARCHAVAIBILITY))->GetValue();
-	
-	
-	switch ( ((wxChoice*)FindWindow(IDC_TypeSearch))->GetSelection() ) {
-		case 0: typeText = wxT("Any"); break;
-		case 1: typeText = wxT("Archives"); break;
-		case 2: typeText = wxT("Audio"); break;
-		case 3: typeText = wxT("CD-Images"); break;
-		case 4: typeText = wxT("Pictures"); break;
-		case 5: typeText = wxT("Programs"); break;
-		case 6: typeText = wxT("Texts"); break;
-		case 7: typeText = wxT("Videos"); break;
-		default:
-			printf("Warning! Unknown search-category ( %s ) selected!\n", unicode2char(typeText));
-			break;
+	if (CastChild(ID_EXTENDEDSEARCHCHECK, wxCheckBox)->GetValue()) {
+
+		extension = ((wxTextCtrl*)FindWindow(IDC_EDITSEARCHEXTENSION))->GetValue();
+		if ( !extension.IsEmpty() && !extension.StartsWith(wxT(".")) ) {
+			extension = wxT(".") + extension;
+		}		
+
+		typeText = ((wxChoice*)FindWindow(IDC_TypeSearch))->GetStringSelection();
+
+		// Parameter Minimum Size
+		min = ((wxSpinCtrl*)FindWindow(IDC_SPINSEARCHMIN))->GetValue() * 1048576;
+
+		// Parameter Maximum Size
+		max = ((wxSpinCtrl*)FindWindow(IDC_SPINSEARCHMAX))->GetValue() * 1048576;
+
+		if ( max < min ) max = 0;
+
+		// Parameter Availability
+		availability = ((wxSpinCtrl*)FindWindow(IDC_SPINSEARCHAVAIBILITY))->GetValue();
+
+		switch ( ((wxChoice*)FindWindow(IDC_TypeSearch))->GetSelection() ) {
+			case 0: typeText = wxT("Any"); break;
+			case 1: typeText = wxT("Archives"); break;
+			case 2: typeText = wxT("Audio"); break;
+			case 3: typeText = wxT("CD-Images"); break;
+			case 4: typeText = wxT("Pictures"); break;
+			case 5: typeText = wxT("Programs"); break;
+			case 6: typeText = wxT("Texts"); break;
+			case 7: typeText = wxT("Videos"); break;
+			default:
+				printf("Warning! Unknown search-category ( %s ) selected!\n", unicode2char(typeText));
+				break;
+		}
 	}
 
-	Packet *packet = CreateSearchPacket(searchString, typeText, extension, min, max, avaibility);
+	theApp.searchlist->NewSearch(typeText, m_nSearchID);
+	Packet *packet = CreateSearchPacket(searchString, typeText, extension, min, max, availability);
 	
 	m_globalsearch = ((wxChoice*)FindWindow(ID_SEARCHTYPE))->GetSelection() == 1;
 
