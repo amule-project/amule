@@ -365,11 +365,10 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				prefList=prefList.Mid(brk+1);
 				theApp.glob_prefs->SetPreviewPrio( StrToLong(prefList) == 1 );
 			}
-			return wxT("");
+			return wxEmptyString;
 		}
 		if (item.Left(19) == wxT("WEBPAGE PROGRESSBAR")) {
-			wxString buffer(wxT(""));
-			
+			wxString buffer;			
 			if (item.Length() > 20) {
 				int idx = item.Mid(20).Find(wxT(" "));
 				uint16 progressbarWidth = StrToLong(item.Mid(20,idx));
@@ -426,13 +425,13 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			theApp.serverconnect->ConnectToAnyServer();
 			theApp.amuledlg->ShowConnectionState(false);
 			
-			return wxT("");
+			return wxEmptyString;
 		}
 		if (item == wxT("SERVER DISCONNECT")) {
 			if (theApp.serverconnect->IsConnected() || theApp.serverconnect->IsConnecting())
 				theApp.serverconnect->Disconnect();
 			
-			return wxT("");
+			return wxEmptyString;
 		}
 		if (item == wxT("SERVER LIST")) {
 			// returns one string where each line is formatted 
@@ -466,13 +465,13 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				nsrv->SetListName(sName);
 				theApp.AddServer(nsrv);
 			}
-			return wxT("");
+			return wxEmptyString;
 		}
 		if (item.Left(16) == wxT("SERVER UPDATEMET")) {
 			if (item.Length() > 16) {
 				theApp.amuledlg->serverwnd->UpdateServerMetFromURL(item.Mid(17));
 			}
-			return wxT("");
+			return wxEmptyString;
 		}
 		if (item == wxT("SERVER STAT")) {
 			// returns one string where each line is formatted 
@@ -495,7 +494,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 		//TRANSFER
 		if (item == wxT("TRANSFER CLEARCOMPLETE")) {
 				theApp.amuledlg->transferwnd->downloadlistctrl->ClearCompleted();
-				return wxT("");
+				return wxEmptyString;
 		}
 		if (item.Left(20) == wxT("TRANSFER ADDFILELINK")) {
 			wxString buffer= wxT("Bad Link");
@@ -533,7 +532,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 					cur_file->PauseFile();
 				}
 			}
-			return wxT("");
+			return wxEmptyString;
 		}
 		if (item.Left(21) == wxT("TRANSFER DL_FILERESUME")) {
 			if ((item.Length() > 22) && (item.Mid(23).IsNumber())) {
@@ -542,7 +541,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 					cur_file->ResumeFile();
 				}
 			}
-			return wxT("");
+			return wxEmptyString;
 		}
 		if (item.Left(21) == wxT("TRANSFER DL_FILEDELETE")) {
 			if ((item.Length() > 22) && (item.Mid(23).IsNumber())) {
@@ -551,7 +550,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 					cur_file->Delete();
 				}
 			}
-			return wxT("");
+			return wxEmptyString;
 		}
 		if (item.Left(22) == wxT("TRANSFER DL_FILEPRIOUP")) {
 			if ((item.Length() > 23) && (item.Mid(24).IsNumber())) {
@@ -578,7 +577,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 					}
 				}
 			}
-			return wxT("");
+			return wxEmptyString;
 		}
 		if (item.Left(24) == wxT("TRANSFER DL_FILEPRIODOWN")) {
 			if ((item.Length() > 25) && (item.Mid(26).IsNumber())) {
@@ -605,64 +604,64 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 					}
 				}
 			}
-			return wxT("");
+			return wxEmptyString;
 		}
 		if (item == wxT("TRANSFER DL_LIST")) {
 			// returns one string where each line is formatted as:
 			// %s\t%ul\t%ul\t%ul\t%f\t%li\t%u\t%s\t%u\t%s\t%u\t%u\t%u\t%s\t%s\t%d\n
-			wxString buffer(wxT(""));
-			wxString tempFileInfo(wxT(""));
+			wxString buffer;
+			wxString tempFileInfo;
 			//int tempPrio;
 			for (int i=0; i < theApp.downloadqueue->GetFileCount(); i++) {
 				CPartFile *cur_file = theApp.downloadqueue->GetFileByIndex(i);
 				if (cur_file) {
-					buffer+=wxString::Format(wxT("%s\t"), cur_file->GetFileName().c_str());
-					buffer+=wxString::Format(wxT("%ul\t"), cur_file->GetFileSize());
-					buffer+=wxString::Format(wxT("%ul\t"), cur_file->GetCompletedSize());
-					buffer+=wxString::Format(wxT("%ul\t"), cur_file->GetTransfered());
-					buffer+=wxString::Format(wxT("%f\t"), cur_file->GetPercentCompleted());
-					buffer+=wxString::Format(wxT("%li\t"), (long)(cur_file->GetKBpsDown()*1024));
-					buffer+=wxString::Format(wxT("%u\t"), cur_file->GetStatus());
-					buffer+=wxString::Format(wxT("%s\t"), cur_file->getPartfileStatus().c_str());
-					if (cur_file->IsAutoDownPriority()) {
-						buffer+=wxString::Format(wxT("%u\t"), cur_file->GetDownPriority()+10);
-					} else {
-						buffer+=wxString::Format(wxT("%u\t"), cur_file->GetDownPriority());
-					}
-					buffer+=EncodeBase16(cur_file->GetFileHash(), 16)+wxString(wxT("\t"));
-					buffer+=wxString::Format(wxT("%u\t"), cur_file->GetSourceCount());
-					buffer+=wxString::Format(wxT("%u\t"), cur_file->GetNotCurrentSourcesCount());
-					buffer+=wxString::Format(wxT("%u\t"), cur_file->GetTransferingSrcCount());
-					if (theApp.serverconnect->IsConnected() && theApp.serverconnect->IsLowID()) {
-						buffer+=theApp.CreateED2kSourceLink(cur_file)+wxString(wxT("\t"));
-					} else {
-						buffer+=theApp.CreateED2kLink(cur_file)+wxString(wxT("\t"));
-					}
 					tempFileInfo = GetDownloadFileInfo(cur_file);
-					tempFileInfo.Replace(wxT("\n"),wxT("|"));
-					buffer+=tempFileInfo+wxString(wxT("\t"));
-					if (!cur_file->IsPartFile()) {
-						buffer+=wxString(wxT("1\n"));
-					} else {
-						buffer+=wxString(wxT("0\n"));
-					}
+					tempFileInfo.Replace(wxT("\n"), wxT("|"));
+					buffer +=
+						cur_file->GetFileName() +
+						wxString::Format(wxT("\t%ul\t%ul\t%ul\t%f\t%li\t%u\t"),
+							cur_file->GetFileSize(),
+							cur_file->GetCompletedSize(),
+							cur_file->GetTransfered(),
+							cur_file->GetPercentCompleted(),
+							(long)(cur_file->GetKBpsDown()*1024),
+							cur_file->GetStatus() 
+						) +
+						cur_file->getPartfileStatus() +
+						wxString::Format(wxT("\t%u\t"),
+							cur_file->IsAutoDownPriority() ? 
+								cur_file->GetDownPriority() + 10 :
+								cur_file->GetDownPriority()
+						) +
+						EncodeBase16(cur_file->GetFileHash(), 16) +
+						wxString::Format(wxT("\t%u\t%u\t%u\t"),
+							cur_file->GetSourceCount(),
+							cur_file->GetNotCurrentSourcesCount(),
+							cur_file->GetTransferingSrcCount()
+						) +
+						( ( theApp.serverconnect->IsConnected() && theApp.serverconnect->IsLowID() ) ?
+							theApp.CreateED2kSourceLink(cur_file) :
+							theApp.CreateED2kLink(cur_file) ) +
+						wxT("\t") + tempFileInfo + wxT("\t") +
+						( (!cur_file->IsPartFile()) ?
+							wxT("1\n") : wxT("0\n") );
 				}
 			}
-			return((wxChar *)buffer.GetData());
+			return buffer;
 		}
 		if (item == wxT("TRANSFER UL_LIST")) {
 			// returns one string where each line is formatted as:
 			// %s\t%s\t%s\t%ul\t%ul\t%li\n"
-			wxString buffer(wxT(""));
-			wxString tempFileInfo(wxT(""));
+			wxString buffer;
+			wxString tempFileInfo;
 			for (POSITION pos = theApp.uploadqueue->GetFirstFromUploadList();
 				 pos != 0;theApp.uploadqueue->GetNextFromUploadList(pos)) {
 				CUpDownClient* cur_client = theApp.uploadqueue->GetQueueClientAt(pos);
 				if (cur_client) {
-					buffer+= cur_client->GetUserName() + wxT("\t");
-					tempFileInfo=cur_client->GetUploadFileInfo();
+					buffer += cur_client->GetUserName() + wxT("\t");
+					tempFileInfo = cur_client->GetUploadFileInfo();
 					tempFileInfo.Replace(wxT("\n"), wxT("|"));
-					buffer+=wxString::Format(wxT("%s\t"), tempFileInfo.GetData());
+					buffer += wxString::Format(wxT("%s\t"), tempFileInfo.GetData());
 					CKnownFile* file = theApp.sharedfiles->GetFileByID(cur_client->GetUploadFileID());
 					if (file) {
 						buffer+=wxString::Format(wxT("%s\t"), file->GetFileName().GetData());
@@ -674,70 +673,60 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 					buffer+=wxString::Format(wxT("%li\n"), (long)(cur_client->GetKBpsUp()*1024.0));
 				}
 			}
-			return((wxChar*)buffer.GetData());
+			return buffer;
 		}
 		if (item == wxT("TRANSFER W_LIST")) {
 			// returns one string where each line is formatted as:
 			// %s\n 
 			// or as:
 			// %s\t%s\t%d\t%d\n"
-			wxString buffer(wxT(""));
+			wxString buffer;
 			for (POSITION pos = theApp.uploadqueue->GetFirstFromWaitingList();
-				 pos != 0;theApp.uploadqueue->GetNextFromWaitingList(pos)) {
+				pos != 0; theApp.uploadqueue->GetNextFromWaitingList(pos)) {
 				CUpDownClient* cur_client = theApp.uploadqueue->GetWaitClientAt(pos);
 				if (cur_client) {
 					buffer += cur_client->GetUserName();
 					if (cur_client->GetRequestFile()) {
-						buffer.Append(wxT("\t"));
+						buffer += wxT("\t");
 					} else {
-						buffer.Append(wxT("\n"));
+						buffer += wxT("\n");
 						continue;
-					}
-					
+					}					
 					CKnownFile* file = theApp.sharedfiles->GetFileByID(cur_client->GetRequestFile()->GetFileHash());
-					if (file) {
-						buffer.Append(wxString::Format(wxT("%s\t"), cur_client->GetDownloadFile()->GetFileName().GetData()));
-					} else {
-						buffer.Append(wxT("?\t"));
-					}
-					
-					buffer+=wxString::Format(wxT("%d\t"), cur_client->GetScore(false));
-					if (cur_client->IsBanned())
-						buffer.Append(wxT("1\n"));
-					else
-						buffer.Append(wxT("0\n"));
+					buffer +=
+						file ? cur_client->GetDownloadFile()->GetFileName() : wxT("?") +
+						wxString::Format(wxT("\t%d\t"), cur_client->GetScore(false)) +
+						( cur_client->IsBanned() ? wxT("1\n") : wxT("0\n") );
 				}
 			}
-			return((wxChar*)buffer.GetData());
+			return buffer;
 		}
 
 		//SHAREDFILES
 		if (item == wxT("SHAREDFILES RELOAD")) {
 			theApp.sharedfiles->Reload(true, false);
-			return wxT("");
+			return wxEmptyString;
 		}
 		if (item == wxT("SHAREDFILES LIST")) {
 			// returns one string where each line is formatted as:
 			// %s\t%ld\t%s\t%ld\t%ll\t%d\t%d\t%d\t%d\t%s\t%s\t%d\t%d\n
-			wxString buffer(wxT(""));
+			wxString buffer;
 			for (int i=0; i< theApp.sharedfiles->GetCount(); i++) {
 				CKnownFile* cur_file = theApp.sharedfiles->GetFileByIndex(i);
 				if (cur_file) {
-					buffer+=wxString::Format(wxT("%s\t"), cur_file->GetFileName().c_str());
-					buffer+=wxString::Format(wxT("%ld\t"), (long)cur_file->GetFileSize());
-					if (theApp.serverconnect->IsConnected()) {
-						buffer+=theApp.CreateED2kSourceLink(cur_file)+wxString(wxT("\t"));
-					} else {
-						buffer+=theApp.CreateED2kLink(cur_file)+wxString(wxT("\t"));
-					}
-					buffer+=wxString::Format(wxT("%ld\t"), (long)cur_file->statistic.GetTransfered());
-					buffer+=wxString::Format(wxT("%ld\t"), (long)cur_file->statistic.GetAllTimeTransfered());
-					buffer+=wxString::Format(wxT("%d\t"), cur_file->statistic.GetRequests());
-					buffer+=wxString::Format(wxT("%d\t"), cur_file->statistic.GetAllTimeRequests());
-					buffer+=wxString::Format(wxT("%d\t"), cur_file->statistic.GetAccepts());
-					buffer+=wxString::Format(wxT("%d\t"), cur_file->statistic.GetAllTimeAccepts());
-					buffer+=EncodeBase16(cur_file->GetFileHash(), 16)+wxString(wxT("\t"));
-					
+					buffer += cur_file->GetFileName() + wxT("\t") << 
+						(long)cur_file->GetFileSize() << wxT("\t") +
+						( theApp.serverconnect->IsConnected() && theApp.serverconnect->IsLowID() ?
+							theApp.CreateED2kSourceLink(cur_file) :
+							theApp.CreateED2kLink(cur_file)	) + wxT("\t") +
+							wxString::Format(wxT("%ld\t%ld\t%d\t%d\t%d\t%d\t"),
+								(long)cur_file->statistic.GetTransfered(),
+								(long)cur_file->statistic.GetAllTimeTransfered(),
+								cur_file->statistic.GetRequests(),
+								cur_file->statistic.GetAllTimeRequests(),
+								cur_file->statistic.GetAccepts(),
+								cur_file->statistic.GetAllTimeAccepts() ) +
+						EncodeBase16(cur_file->GetFileHash(), 16) + wxT("\t");					
 					int prio = cur_file->GetUpPriority();
 					if (cur_file->IsAutoUpPriority()) {
 						switch (prio) {
@@ -770,61 +759,56 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 								buffer.Append(wxT("-")); break;
 						}
 					}
-					buffer.Append(wxT("\t"));
-					buffer+=wxString::Format(wxT("%d\t"), prio);
-					if (cur_file->IsAutoUpPriority()) {
-						buffer+=wxString(wxT("1\n"));
-					} else {
-						buffer+=wxString(wxT("0\n"));
-					}
+					buffer +=
+						wxString::Format(wxT("\t%d\t"), prio) +
+						( cur_file->IsAutoUpPriority() ? wxT("1\n") : wxT("0\n") );
 				}
 			}
-			return(buffer);
+			return buffer;
 		}
 		
 		//LOG
 		if (item == wxT("LOG RESETLOG")) {
 			theApp.amuledlg->ResetLog();
-			return wxT("");
+			return wxEmptyString;
 		}
 		if (item == wxT("LOG GETALLLOGENTRIES")) {
 			wxTextCtrl* logview =(wxTextCtrl*)theApp.amuledlg->serverwnd->FindWindow(ID_LOGVIEW);
-			return(logview->GetValue());
+			return logview->GetValue();
 		}
 		if (item == wxT("LOG CLEARSERVERINFO")) {
 			((wxTextCtrl*)theApp.amuledlg->serverwnd->FindWindow(ID_SERVERINFO))->Clear();
-			return wxT("");
+			return wxEmptyString;
 		}
 		if (item == wxT("LOG GETSERVERINFO")) {
 			wxTextCtrl* cv=(wxTextCtrl*)theApp.amuledlg->serverwnd->FindWindow(ID_SERVERINFO);
-			return((wxChar*) cv->GetValue().GetData());
+			return cv->GetValue().GetData();
 		}
 		if (item == wxT("LOG RESETDEBUGLOG")) {
 			theApp.amuledlg->ResetDebugLog();
-			return wxT("");
+			return wxEmptyString;
 		}
 		if (item == wxT("LOG GETALLDEBUGLOGENTRIES")) {
 			wxTextCtrl* logview =(wxTextCtrl*)theApp.amuledlg->serverwnd->FindWindow(ID_LOGVIEW);
-			return(logview->GetValue());
+			return logview->GetValue();
 		}
 		if (item.Left(14) == wxT("LOG ADDLOGLINE")) {
 			if (item.Length() > 15) {
-				AddLogLineM(false,wxString::Format(wxT("%s"), item.Mid(15).GetData()));
+				AddLogLineM(false, item.Mid(15));
 			}
-			return wxT("");
+			return wxEmptyString;
 		}
 		
 		//CATEGORIES
 		if (item == wxT("CATEGORIES GETCATCOUNT")) {
-			wxString buffer(wxT(""));
-			buffer=wxString::Format(wxT("%d"), theApp.glob_prefs->GetCatCount());
-			return((wxChar*) buffer.GetData());
+			wxString buffer = wxString::Format(wxT("%d"), theApp.glob_prefs->GetCatCount());
+			return buffer;
 		}
 		
 		if (item.Left(22) == wxT("CATEGORIES GETCATTITLE")) {
 			if (item.Length() > 22) {
 				int catIndex = StrToLong(item.Mid(23));
-				return((wxChar*) theApp.glob_prefs->GetCategory(catIndex)->title.GetData());
+				return theApp.glob_prefs->GetCategory(catIndex)->title;
 			}
 		}
 		
@@ -832,14 +816,12 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			if (item.Length() > 22) {
 				wxString fileHash = item.Mid(23);
 				uchar fileid[16];
-				DecodeBase16(unicode2char(fileHash), fileHash.Length(), fileid);
-				
+				DecodeBase16(unicode2char(fileHash), fileHash.Length(), fileid);				
 				CPartFile *cur_file = theApp.downloadqueue->GetFileByID(fileid);
 				if (cur_file) {
 					// we've found the file
-					wxString buffer(wxT(""));
-					buffer=wxString::Format(wxT("%d"), cur_file->GetCategory());
-					return((wxChar *) buffer.GetData());
+					wxString buffer = wxString::Format(wxT("%d"), cur_file->GetCategory());
+					return buffer;
 				}
 				return wxT("0");
 			}
@@ -850,28 +832,30 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				wxString fileHash = item.Mid(23);
 				uchar fileid[16];
 				DecodeBase16(unicode2char(fileHash), fileHash.Length(), fileid);
-
 				CPartFile *cur_file = theApp.downloadqueue->GetFileByID(fileid);
 				if (cur_file) {
 					// we've found the file
-					wxString buffer (wxT(""));
 					//buffer:
 					//int\tint\tint\twxstring\twxstring\twxstring\twxstring
-					buffer=wxString::Format(wxT("%d\t"), cur_file->GetStatus());
-					buffer.Append(wxString::Format(wxT("%d\t"), cur_file->GetTransferingSrcCount()));
+					wxString buffer = wxString::Format(wxT("%d\t%d\t2\t"),
+						cur_file->GetStatus(),
+						cur_file->GetTransferingSrcCount()
+						) +
 					// Needed because GetFileType() no longer exists (and returned always returned 2 anyway)
 					// buffer.Append(wxString::Format("%d\t", cur_file->GetFileType()));
-					buffer.Append(wxString::Format(wxT("%d\t"), 2));
-					buffer.Append((cur_file->IsPartFile()) ? wxT("Is PartFile\t") : wxT("Is Not PartFile\t"));
-					buffer.Append((cur_file->IsStopped()) ? wxT("Is Stopped\t") : wxT("Is Not Stopped\t"));
-					buffer.Append(( GetFiletype(cur_file->GetFileName()) == ftVideo ) ? wxT("Is Movie\t") : wxT("Is Not Movie\t"));
-					buffer.Append(( GetFiletype(cur_file->GetFileName()) == ftArchive ) ? wxT("Is Archive") : wxT("Is Not Archive"));
-					return((wxChar*) buffer.GetData());
+					// buffer.Append(wxString::Format(wxT("%d\t"), 2));
+						( cur_file->IsPartFile() ? wxT("Is PartFile\t") : wxT("Is Not PartFile\t") ) +
+						( cur_file->IsStopped()  ? wxT("Is Stopped\t")  : wxT("Is Not Stopped\t")  ) +
+						( GetFiletype(cur_file->GetFileName()) == ftVideo ? 
+							wxT("Is Movie\t") : wxT("Is Not Movie\t") ) +
+						( GetFiletype(cur_file->GetFileName()) == ftArchive ?
+							wxT("Is Archive") : wxT("Is Not Archive") );
+					return buffer;
 				}
 			}
-			return wxT("");
+			return wxEmptyString;
 		}
-				
+		
 		//SEARCH
 		if (item.Left(19) == wxT("SEARCH DOWNLOADFILE")) {
 			if (item.Length() > 19) {
@@ -879,7 +863,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				DecodeBase16(unicode2char(item.Mid(20)),item.Mid(20).Length(),fileid);
 				theApp.searchlist->AddFileToDownloadByHash(fileid);
 			}
-			return wxT("");
+			return wxEmptyString;
 		}
 		if (item.Left(18) == wxT("SEARCH DONEWSEARCH")) {
 			if (item.Length() > 18) {
@@ -908,7 +892,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				
 				wxCommandEvent evt;
 				theApp.amuledlg->searchwnd->OnBnClickedStarts(evt); //do a new search
-				return wxT("");
+				return wxEmptyString;
 			}
 		}
 		if (item.Left(14) == wxT("SEARCH WEBLIST")) {
@@ -926,7 +910,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 		//Special command :)
 		if (item == wxT("AMULEDLG SHOW")) {
 			theApp.amuledlg->Show_aMule(true);
-			return wxT("");
+			return wxEmptyString;
 		}
 		
 				
@@ -943,7 +927,16 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			// get the source count
 			uint32 stats[2];
 			theApp.downloadqueue->GetDownloadStats(stats);
-			return wxString::Format( wxT("Statistics: \n Downloading files: %d\n Found sources: %d\n Active downloads: %d\n Active Uploads: %d\n Users on upload queue: %d"), filecount, stats[0], stats[1], theApp.uploadqueue->GetUploadQueueLength(), theApp.uploadqueue->GetWaitingUserCount());
+			return wxString::Format( wxT(
+				"Statistics: \n"
+				" Downloading files: %d\n"
+				" Found sources: %d\n"
+				" Active downloads: %d\n"
+				" Active Uploads: %d\n"
+				" Users on upload queue: %d"), 
+					filecount, stats[0], stats[1],
+					theApp.uploadqueue->GetUploadQueueLength(),
+					theApp.uploadqueue->GetWaitingUserCount());
 		}
 
 		if (item == wxT("DL_QUEUE")) {
@@ -1238,28 +1231,28 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			
 			if (item.Mid(8).Cmp(wxT("SERVERINFO CLEAR")) == 0) {
 				//theApp.amuledlg->serverwnd->servermsgbox->SetWindowText("");
-				wxTextCtrl* cv=(wxTextCtrl*)theApp.amuledlg->serverwnd->FindWindow(ID_SERVERINFO);
+				wxTextCtrl* cv = (wxTextCtrl*)theApp.amuledlg->serverwnd->FindWindow(ID_SERVERINFO);
 				cv->Clear();
 				return wxT("ServerInfo Cleared");
 			}
 
 			if (item.Mid(8).Cmp(wxT("SERVERINFO GETTEXT")) == 0) {
 				//theApp.amuledlg->serverwnd->servermsgbox->GetText()));
-				wxTextCtrl* cv=(wxTextCtrl*)theApp.amuledlg->serverwnd->FindWindow(ID_SERVERINFO);
+				wxTextCtrl* cv = (wxTextCtrl*)theApp.amuledlg->serverwnd->FindWindow(ID_SERVERINFO);
 				return cv->GetValue();
 			}
 			
 			if (item.Mid(8).Cmp(wxT("GETALLLOGENTRIES")) == 0) {
-				wxTextCtrl* logview =(wxTextCtrl*)theApp.amuledlg->serverwnd->FindWindow(ID_LOGVIEW);
-				return(logview->GetValue());
+				wxTextCtrl* logview = (wxTextCtrl*)theApp.amuledlg->serverwnd->FindWindow(ID_LOGVIEW);
+				return logview->GetValue();
 			}
 			
 			if (item.Mid(8).Cmp(wxT("GETALLDEBUGLOGENTRIES")) == 0) {
 				//shakraw, the same as above, but please DO NOT remove!
 				//I like to have separated requests for this (say for future use)
 				//also see comments in WebServer.cpp
-				wxTextCtrl* logview =(wxTextCtrl*)theApp.amuledlg->serverwnd->FindWindow(ID_LOGVIEW);
-				return((logview->GetValue()));
+				wxTextCtrl* logview = (wxTextCtrl*)theApp.amuledlg->serverwnd->FindWindow(ID_LOGVIEW);
+				return logview->GetValue();
 			}
 
 			return wxT("Bad LOGGING request");
@@ -1269,7 +1262,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 		// STATISTICS
 		if (item.Left(10).Cmp(wxT("STATISTICS")) == 0) {
 			if (item.Mid(11).Cmp(wxT("GETHTML")) == 0) {
-				return((wxChar*)theApp.amuledlg->statisticswnd->GetHTML().GetData());
+				return theApp.amuledlg->statisticswnd->GetHTML();
 			}
 			
 			if (item.Mid(11,11).Cmp(wxT("SETARANGEUL")) == 0) {
@@ -1567,22 +1560,22 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			if (item.Mid(7).Cmp(wxT("LIST")) == 0) {
 				// shakraw - return a unique string where each line is formatted 
 				// as: wxString\twxString\tint\twxString\tint\tint\tint\n
-				wxString buffer(wxT(""));
+				wxString buffer;
 				for (uint i=0; i < theApp.serverlist->GetServerCount(); i++) {
 					CServer *server = theApp.serverlist->GetServerAt(i);
 					if (server) {
-						buffer.Append(
+						buffer +=
 							server->GetListName() + wxT("\t") +
 							server->GetDescription() + wxT("\t") +
-							wxString::Format(wxT("%i"),server->GetPort()) + wxT("\t") +
+							wxString::Format(wxT("%i"), server->GetPort()) + wxT("\t") +
 							server->GetAddress() + wxT("\t") +
-							wxString::Format(wxT("%i"),server->GetUsers()) + wxT("\t") +
-							wxString::Format(wxT("%i"),server->GetMaxUsers()) + wxT("\t") +
-							wxString::Format(wxT("%i"),server->GetFiles()) + wxT("\n")
-						);
+							wxString::Format(wxT("%i\t%i\t%i\n"),
+								server->GetUsers(),
+								server->GetMaxUsers(),
+								server->GetFiles() );
 					}
 				}
-				return((wxChar *)buffer.GetData());
+				return buffer;
 			}
 			
 			if (item.Mid(7).Cmp(wxT("COUNT")) == 0) { //get number of server in serverlist
@@ -1596,15 +1589,15 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				} else if (theApp.serverconnect->IsConnected()) {
 					return(theApp.serverconnect->GetCurrentServer()->GetListName());
 				} else
-					return wxT("");
+					return wxEmptyString;
 			}
 			
 			if (item.Mid(7,4).Cmp(wxT("DESC")) == 0) { // get the server description
 				if ((item.Length() > 11) && (item.Mid(12).IsNumber())) {
 					CServer* server = theApp.serverlist->GetServerAt( StrToLong(item.Mid(12)) );
-					return(server->GetDescription());
+					return server->GetDescription();
 				} else if (theApp.serverconnect->IsConnected())
-					return(theApp.serverconnect->GetCurrentServer()->GetDescription());
+					return theApp.serverconnect->GetCurrentServer()->GetDescription();
 				else
 					return wxEmptyString;
 			}
@@ -1622,11 +1615,11 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			if (item.Mid(7,2).Cmp(wxT("IP")) == 0) { // get the server address
 				if ((item.Length() > 9) && (item.Mid(10).IsNumber())) {
 					CServer* server = theApp.serverlist->GetServerAt( StrToLong(item.Mid(10)) );
-					return(server->GetAddress());
+					return server->GetAddress();
 				} else if (theApp.serverconnect->IsConnected())
-					return(theApp.serverconnect->GetCurrentServer()->GetAddress());
+					return theApp.serverconnect->GetCurrentServer()->GetAddress();
 				else	
-					return(wxEmptyString);
+					return wxEmptyString;
 			}
 			
 			if (item.Mid(7,5).Cmp(wxT("USERS")) == 0) { //get the number of users in the server we are connected to
@@ -1636,7 +1629,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				} else if (theApp.serverconnect->IsConnected())
 					return wxString::Format( wxT("%i"), theApp.serverconnect->GetCurrentServer()->GetUsers() );
 				else 
-					return wxT("");
+					return wxEmptyString;
 			}
 			
 			if (item.Mid(7,8).Cmp(wxT("MAXUSERS")) == 0) { // get the max number of users in a server
@@ -1659,7 +1652,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				else
 					buffer = wxEmptyString;
 
-				return(buffer);
+				return buffer;
 			}
 			
 			if (item.Mid(7,7).Cmp(wxT("CONNECT")) == 0) { //Connect to a server (if specified) or to any server
@@ -1732,86 +1725,81 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			if (item.Mid(9) == wxT("DL_LIST")) {
 				// shakraw - return a big string where each line is formatted as:
 				// wxString\tlong\tlong\tdouble\tlong\tint\twxString\tint\twxString\tlong\tlong\tlong\twxString\twxString\tint\n
-				wxString buffer(wxT(""));
-				wxString tempFileInfo(wxT(""));
+				wxString buffer;
+				wxString tempFileInfo;
 				//int tempPrio;
-				for (int i=0; i < theApp.downloadqueue->GetFileCount(); i++) {
+				for (int i = 0; i < theApp.downloadqueue->GetFileCount(); i++) {
 					CPartFile *cur_file = theApp.downloadqueue->GetFileByIndex(i);
 					if (cur_file) {
-						buffer+=wxString::Format(wxT("%s\t"), cur_file->GetFileName().c_str());
-						buffer+=wxString::Format(wxT("%li\t"), (long)cur_file->GetFileSize());
-						buffer+=wxString::Format(wxT("%li\t"), (long)cur_file->GetTransfered());
-						buffer+=wxString::Format(wxT("%f\t"), cur_file->GetPercentCompleted());
-						buffer+=wxString::Format(wxT("%li\t"), (long)(cur_file->GetKBpsDown()*1024));
-						buffer+=wxString::Format(wxT("%d\t"), cur_file->GetStatus());
-						buffer+=wxString::Format(wxT("%s\t"), cur_file->getPartfileStatus().c_str());
-						if (cur_file->IsAutoDownPriority())
-							buffer+=wxString::Format(wxT("%d\t"), cur_file->GetDownPriority()+10);
-						else
-							buffer+=wxString::Format(wxT("%d\t"), cur_file->GetDownPriority());
-						buffer+=EncodeBase16(cur_file->GetFileHash(), 16)+wxString(wxT("\t"));
-						buffer+=wxString::Format(wxT("%d\t"), cur_file->GetSourceCount());
-						buffer+=wxString::Format(wxT("%d\t"), cur_file->GetNotCurrentSourcesCount());
-						buffer+=wxString::Format(wxT("%d\t"), cur_file->GetTransferingSrcCount());
-						if (theApp.serverconnect->IsConnected() && theApp.serverconnect->IsLowID())
-							buffer+=theApp.CreateED2kSourceLink(cur_file)+wxString(wxT("\t"));
-						else
-							buffer+=theApp.CreateED2kLink(cur_file)+wxString(wxT("\t"));
-
 						tempFileInfo = GetDownloadFileInfo(cur_file);
 						tempFileInfo.Replace(wxT("\n"),wxT("|"));
-						buffer+=tempFileInfo+wxString(wxT("\t"));
-						if (!cur_file->IsPartFile())
-							buffer+=wxString(wxT("1\n"));
-						else
-							buffer+=wxString(wxT("0\n"));
+						buffer += 
+							cur_file->GetFileName() +
+							wxString::Format(wxT("\t%li\t%li\t%f\t%li\t%d\t"),
+								(long)cur_file->GetFileSize(),
+								(long)cur_file->GetTransfered(),
+								cur_file->GetPercentCompleted(),
+								(long)(cur_file->GetKBpsDown()*1024),
+								cur_file->GetStatus() ) +
+							cur_file->getPartfileStatus() +
+							wxString::Format(wxT("\t%d\t"), cur_file->GetDownPriority() +
+								( cur_file->IsAutoDownPriority() ? 10 : 0 ) ) +
+							EncodeBase16(cur_file->GetFileHash(), 16) +
+							wxString::Format(wxT("\t%d\t%d\t%d\t"),
+								cur_file->GetSourceCount(),
+								cur_file->GetNotCurrentSourcesCount(),
+								cur_file->GetTransferingSrcCount() ) +
+							( theApp.serverconnect->IsConnected() && theApp.serverconnect->IsLowID() ?
+								theApp.CreateED2kSourceLink(cur_file) :
+								theApp.CreateED2kLink(cur_file) ) +
+							wxT("\t") + tempFileInfo + wxT("\t") +
+							( !cur_file->IsPartFile() ? wxT("1\n") : wxT("0\n") );
 					}
 				}
-				return((wxChar *)buffer.GetData());
+				return buffer;
 			}
 			
 			if (item.Mid(9) == wxT("UL_LIST")) {
 				// shakraw - return one string where each line is formatted as:
 				// %s\t%s\t%s\t%f\t%f\t%li\n"
-				wxString buffer(wxT(""));
-				wxString tempFileInfo(wxT(""));
+				wxString buffer;
+				wxString tempFileInfo;
 				for (POSITION pos = theApp.uploadqueue->GetFirstFromUploadList();
 					 pos != 0;theApp.uploadqueue->GetNextFromUploadList(pos)) {
 					CUpDownClient* cur_client = theApp.uploadqueue->GetQueueClientAt(pos);
 					if (cur_client) {
-						buffer+= cur_client->GetUserName() + wxT("\t");
 						tempFileInfo=cur_client->GetUploadFileInfo();
 						tempFileInfo.Replace(wxT("\n"), wxT("|"));
-						buffer+=wxString::Format(wxT("%s\t"), tempFileInfo.GetData());
 						CKnownFile* file = theApp.sharedfiles->GetFileByID(cur_client->GetUploadFileID());
-						if (file)
-							buffer+=wxString::Format(wxT("%s\t"), file->GetFileName().GetData());
-						else
-							buffer+=wxString(wxT("?\t"));
-						buffer+=wxString::Format(wxT("%li\t"), (long)cur_client->GetTransferedDown());
-						buffer+=wxString::Format(wxT("%li\t"), (long)cur_client->GetTransferedUp());
-						buffer+=wxString::Format(wxT("%li\n"), (long)(cur_client->GetKBpsUp()*1024.0));
+						buffer +=
+							cur_client->GetUserName() + wxT("\t");
+							tempFileInfo + wxT("\t") +
+							( file ? file->GetFileName() : wxT("?") ) + wxT("\t") +
+							wxString::Format(wxT("%li\t%li\t%li\n"),
+								(long)cur_client->GetTransferedDown(),
+								(long)cur_client->GetTransferedUp(),
+								(long)(cur_client->GetKBpsUp()*1024.0) );
 					}
 				}
-				return((wxChar*)buffer.GetData());
+				return buffer;
 			}
 			
 			if (item.Mid(9) == wxT("DL_FILEHASH")) {
 				// shakraw - return a big string where each line is formatted as:
 				// fhash\tfhash\t...\tfhash
-				wxString buffer(wxT(""));
-				for (int i=0; i < theApp.downloadqueue->GetFileCount(); i++) {
+				wxString buffer;
+				for (int i = 0; i < theApp.downloadqueue->GetFileCount(); i++) {
 					CPartFile *cur_file = theApp.downloadqueue->GetFileByIndex(i);
 					if (cur_file) {
 						const unsigned char* hash = cur_file->GetFileHash();
 						for ( int u = 0; i < 16; i++ ) {
-							buffer.Append(hash[u]);
+							buffer += hash[u];
 						}
 						if (i != theApp.downloadqueue->GetFileCount()-1)
-							buffer.Append(wxT("\t"));
+							buffer += wxT("\t");
 					}
 				}
-				return((wxChar *)buffer.GetData());
+				return buffer;
 			}
 
 			
@@ -1848,35 +1836,40 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 
 			if (item.Mid(9,11).Cmp(wxT("DL_FILESIZE")) == 0) { //get the n-th file size
 				if ((item.Length() > 20) && (item.Mid(21).IsNumber())) {
-					return wxString::Format( wxT("%i"), theApp.downloadqueue->GetFileByIndex( StrToLong(item.Mid(21)))->GetFileSize());
+					return wxString::Format( wxT("%i"),
+						theApp.downloadqueue->GetFileByIndex( StrToLong(item.Mid(21)))->GetFileSize() );
 				}
 				return wxT("Bad DL_FILESIZE request");
 			}
 
 			if (item.Mid(9,17).Cmp(wxT("DL_FILETRANSFERED")) == 0) {
 				if ((item.Length() > 26) && (item.Mid(27).IsNumber())) {
-					return wxString::Format( wxT("%i"), theApp.downloadqueue->GetFileByIndex( StrToLong(item.Mid(27)))->GetTransfered() );
+					return wxString::Format( wxT("%i"),
+						theApp.downloadqueue->GetFileByIndex( StrToLong(item.Mid(27)))->GetTransfered() );
 				}
 				return wxT("Bad DL_FILETRANSFERED request");
 			}
 
 			if (item.Mid(9,14).Cmp(wxT("DL_FILEPERCENT")) == 0) {
 				if ((item.Length() > 23) && (item.Mid(24).IsNumber())) {
-					return wxString::Format( wxT("%f"), theApp.downloadqueue->GetFileByIndex( StrToLong(item.Mid(24)) )->GetPercentCompleted() );
+					return wxString::Format( wxT("%f"),
+						theApp.downloadqueue->GetFileByIndex( StrToLong(item.Mid(24)) )->GetPercentCompleted() );
 				}
 				return wxT("Bad DL_FILEPERCENT request");
 			}	
 			
 			if (item.Mid(9,15).Cmp(wxT("DL_FILEDATARATE")) == 0) {
 				if ((item.Length() > 24) && (item.Mid(25).IsNumber())) {
-					return wxString::Format( wxT("%i"), (int)(theApp.downloadqueue->GetFileByIndex( StrToLong(item.Mid(25)) )->GetKBpsDown())*1024);
+					return wxString::Format( wxT("%i"), 
+						(int)(theApp.downloadqueue->GetFileByIndex( StrToLong(item.Mid(25)) )->GetKBpsDown())*1024);
 				}
 				return wxT("Bad DL_FILEDATARATE request");
 			}	
 
 			if (item.Mid(9,13).Cmp(wxT("DL_FILESTATUS")) == 0) {
 				if ((item.Length() > 22) && (item.Mid(23).IsNumber())) {
-					return wxString::Format( wxT("%i"), theApp.downloadqueue->GetFileByIndex( StrToLong(item.Mid(23)))->GetStatus() );
+					return wxString::Format( wxT("%i"),
+						theApp.downloadqueue->GetFileByIndex( StrToLong(item.Mid(23)))->GetStatus() );
 				}
 				return wxT("Bad DL_FILESTATUS request");
 			}	
@@ -1890,7 +1883,8 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			
 			if (item.Mid(9,18).Cmp(wxT("DL_FILEGETDOWNPRIO")) == 0) {
 				if ((item.Length() > 27) && (item.Mid(28).IsNumber())) {
-					return wxString::Format( wxT("%i"), theApp.downloadqueue->GetFileByIndex( StrToLong(item.Mid(28)) )->GetDownPriority() );
+					return wxString::Format( wxT("%i"),
+						theApp.downloadqueue->GetFileByIndex( StrToLong(item.Mid(28)) )->GetDownPriority() );
 				}
 				return wxT("Bad DL_FILEGETDOWNPRIO request");
 			}	
@@ -1928,21 +1922,24 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 
 			if (item.Mid(9,18).Cmp(wxT("DL_FILESOURCECOUNT")) == 0) {
 				if ((item.Length() > 27) && (item.Mid(28).IsNumber())) {
-					return wxString::Format( wxT("%i"), theApp.downloadqueue->GetFileByIndex( StrToLong(item.Mid(28)) )->GetSourceCount() );
+					return wxString::Format( wxT("%i"),
+						theApp.downloadqueue->GetFileByIndex( StrToLong(item.Mid(28)) )->GetSourceCount() );
 				}
 				return wxT("Bad DL_FILESOURCECOUNT request");
 			}	
 			
 			if (item.Mid(9,19).Cmp(wxT("DL_FILENOCURRSOURCE")) == 0) {
 				if ((item.Length() > 28) && (item.Mid(29).IsNumber())) {
-					return wxString::Format( wxT("%i"), theApp.downloadqueue->GetFileByIndex( StrToLong(item.Mid(29)) )->GetNotCurrentSourcesCount() );
+					return wxString::Format( wxT("%i"),
+						theApp.downloadqueue->GetFileByIndex( StrToLong(item.Mid(29)) )->GetNotCurrentSourcesCount() );
 				}
 				return wxT("Bad DL_FILENOCURRSOURCE request");
 			}	
 			
 			if (item.Mid(9,17).Cmp(wxT("DL_FILETRSRCCOUNT")) == 0) {
 				if ((item.Length() > 26) && (item.Mid(27).IsNumber())) {
-					return wxString::Format( wxT("%i"), theApp.downloadqueue->GetFileByIndex( StrToLong(item.Mid(27)) )->GetTransferingSrcCount() );
+					return wxString::Format( wxT("%i"),
+						theApp.downloadqueue->GetFileByIndex( StrToLong(item.Mid(27)) )->GetTransferingSrcCount() );
 				}
 				return wxT("Bad DL_FILETRSRCCOUNT request");
 			}	
@@ -2138,55 +2135,50 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 		// QUEUE
 		if (item.Left(5).Cmp(wxT("QUEUE")) == 0) { //Get queue data information
 			if (item.Mid(6).Cmp(wxT("W_GETSHOWDATA")) == 0) {
-				wxString buffer = wxT("");
+				wxString buffer;
 				for (POSITION pos = theApp.uploadqueue->GetFirstFromWaitingList();
 					 pos != 0;theApp.uploadqueue->GetNextFromWaitingList(pos)) {
 					CUpDownClient* cur_client = theApp.uploadqueue->GetWaitClientAt(pos);
 					if (cur_client) {
 						buffer += cur_client->GetUserName();
 						if (!cur_client->GetRequestFile()) {
-							buffer.Append(wxT("\n"));
+							buffer += wxT("\n");
 							continue;
 						} else {
-							buffer.Append(wxT("\t"));
+							buffer += wxT("\t");
 						}
-						CKnownFile* file = theApp.sharedfiles->GetFileByID(cur_client->GetRequestFile()->GetFileHash());
-						if (file)
-							buffer.Append(wxString::Format(wxT("%s\t"), cur_client->GetDownloadFile()->GetFileName().GetData()));
-						else
-							buffer.Append(wxT("?\t"));
-						buffer.Append(wxString::Format(wxT("%i\t"), cur_client->GetScore(false)));
-						if (cur_client->IsBanned())
-							buffer.Append(wxT("1\n"));
-						else
-							buffer.Append(wxT("0\n"));
+						CKnownFile* file = theApp.sharedfiles->GetFileByID(
+							cur_client->GetRequestFile()->GetFileHash());
+						buffer +=
+							( file ? cur_client->GetDownloadFile()->GetFileName() : wxT("?") ) + wxT("\t") +
+							wxString::Format(wxT("%i\t"), cur_client->GetScore(false)) +
+							( cur_client->IsBanned() ? wxT("1\n") : wxT("0\n") );
 					}
 				}
-				return((wxChar*)buffer.GetData());
+				return buffer;
 			}
 			
 			if (item.Mid(6).Cmp(wxT("UL_GETSHOWDATA")) == 0) {
-				wxString buffer = wxT("");
-				wxString temp = wxT("");
+				wxString buffer;
+				wxString temp;
 				for (POSITION pos = theApp.uploadqueue->GetFirstFromUploadList();
 					 pos != 0;theApp.uploadqueue->GetNextFromUploadList(pos)) {
 					CUpDownClient* cur_client = theApp.uploadqueue->GetQueueClientAt(pos);
 					if (cur_client) {
-						buffer += cur_client->GetUserName() + wxT("\t");
 						temp = cur_client->GetUploadFileInfo(); 
 						temp.Replace(wxT("\n"), wxT(" | "));
-						buffer +=  temp + wxT("\t");
 						CKnownFile* file = theApp.sharedfiles->GetFileByID(cur_client->GetUploadFileID());
-						if (file)
-							buffer.Append(wxString::Format(wxT("%s\t"), file->GetFileName().GetData()));
-						else
-							buffer.Append(wxT("?\t"));
-						buffer.Append(wxString::Format(wxT("%i\t"), cur_client->GetTransferedDown()));
-						buffer.Append(wxString::Format(wxT("%i\t"), cur_client->GetTransferedUp()));
-						buffer.Append(wxString::Format(wxT("%i\n"), (uint32)(cur_client->GetKBpsUp()*1024.0)));
+						buffer +=
+							cur_client->GetUserName() + wxT("\t") +
+							temp + wxT("\t") +
+							( file ? file->GetFileName() : wxT("?") ) + wxT("\t") +
+							wxString::Format(wxT("%i\t%i\t%i\n"),
+								cur_client->GetTransferedDown(),
+								cur_client->GetTransferedUp(),
+								(uint32)(cur_client->GetKBpsUp()*1024.0) );
 					}
 				}
-				return((wxChar*)buffer.GetData());
+				return buffer;
 			}
 
 			if (item.Mid(6).Cmp(wxT("UL_GETLENGTH")) == 0) {
@@ -2263,15 +2255,12 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				}
 				return wxT("Bad WEBLIST request");
 			}
-			
 			return wxT("Bad SEARCH request");
 		} // end - SEARCH
+		
 		//shakraw, amuleweb protocol communication START
-		
 		// New item: for release goups only, TOTALULREQ HASH replies the total upload for the file HASH
-		
 		if (item.Left(10).Cmp(wxT("TOTALULREQ")) == 0) { 
-			
 			wxString buffer;
 			#ifdef RELEASE_GROUP_MODE
 			if (item.Mid(11).Length() == 16) {
@@ -2291,10 +2280,8 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			return buffer;
 		}		
 		
-		
-		return wxT("");
+		return wxEmptyString;
 }
-
 
 wxString ExternalConn::GetDownloadFileInfo(CPartFile* file)
 {
@@ -2332,3 +2319,4 @@ wxString ExternalConn::GetDownloadFileInfo(CPartFile* file)
 	
 	return sRet;
 }
+

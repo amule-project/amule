@@ -52,8 +52,12 @@ Version 2.0.0rc6 - The '???' version.
 		* Changed amulewebDLG and amulecmdDLG to use sizers.
 		* Removed a bug in WebSocket.cpp: was not testing the return
 		  value of Accept, this could create a thread with a NULL socket.
-		* Added two new commands to amulecmd(DLG), getiplevel and
-		  setipelevel <new level>.
+		* Added two new commands to amulecmd(DLG), GetIPLevel and
+		  SetIPLevel <new level>.
+		* Rewrote most of the wxString usage of amule web server in
+		  ExternalConn.cpp. There should be some speed improovement.
+		* Removed pop up when web server requested ed2k source link
+		  and amule was low id.
 
 	rommel:
 		* Patch to implement the commands serverconnect and reloadipf

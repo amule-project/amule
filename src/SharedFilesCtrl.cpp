@@ -33,6 +33,7 @@
 #include "opcodes.h"		// Needed for MP_PRIOVERYLOW
 #include "amule.h"		// Needed for theApp
 #include "color.h"		// Needed for SYSCOLOR
+#include "sockets.h"		// Needed for CServerConnect
 #include "BarShader.h"
 
 #include <wx/msgdlg.h>
@@ -283,6 +284,14 @@ bool CSharedFilesCtrl::ProcessEvent(wxEvent& evt)
 				break;
 			}
 			case MP_GETSOURCEED2KLINK: {
+				if ( !theApp.serverconnect->IsConnected() || theApp.serverconnect->IsLowID() ) {
+					wxMessageBox(_("You need a HighID to create a valid sourcelink"));
+					if (selectedCount > 1) {
+						break;
+					} else {
+						return true;
+					}
+				}
 				if(selectedCount > 1) {
 					int i = iSel;
 					wxString str;

@@ -890,32 +890,25 @@ wxString CamuleApp::CreateED2kLink(CAbstractFile* f)
 	return strURL;
 }
 
-
 // Returns a ed2k source URL
 wxString CamuleApp::CreateED2kSourceLink(CAbstractFile* f)
 {
 	if ( !serverconnect->IsConnected() || serverconnect->IsLowID() ) {
-		wxMessageBox(_("You need a HighID to create a valid sourcelink"));
-		return wxT("");
+		return wxEmptyString;
 	}
-
 	uint32 clientID = serverconnect->GetClientID();
-
 	// Create the first part of the URL
 	wxString strURL = CreateED2kLink( f );
-
 	// And append the source information: "|sources,<ip>:<port>|/"
 	strURL << wxT("|sources,")
-	       << (uint8) clientID << wxT(".")
-		   << (uint8) (clientID >> 8) << wxT(".")
-		   << (uint8) (clientID >> 16) << wxT(".")
-		   << (uint8) (clientID >> 24) << wxT(":")
-		   << glob_prefs->GetPort() << wxT("|/");
-
+		<< (uint8) clientID << wxT(".")
+		<< (uint8) (clientID >> 8) << wxT(".")
+		<< (uint8) (clientID >> 16) << wxT(".")
+		<< (uint8) (clientID >> 24) << wxT(":")
+		<< glob_prefs->GetPort() << wxT("|/");
 	// Result is "ed2k://|file|<filename>|<size>|<hash>|/|sources,<ip>:<port>|/"
 	return strURL;
 }
-
 
 // Returns a ed2k source URL using a hostname rather than IP. Currently, the
 // hostname doesn't appear to be set, thus this function wont work as intended.
