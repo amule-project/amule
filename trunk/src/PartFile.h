@@ -242,7 +242,7 @@ private:
 	DWORD	m_LastSourceDropTime;
 
 public:
-	CTypedPtrList<CPtrList, CUpDownClient*> srclists[SOURCESSLOTS];
+	CTypedPtrList<CPtrList, CUpDownClient*> m_SrcList;
 	
 	// Kry - Avoid counting again and again (mayor cpu leak)
 	bool	IsCountDirty;

@@ -471,18 +471,16 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender,CUpDownClient* source)
 	// uses this only for temp. clients
 	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
 		CPartFile* cur_file = filelist[i];
-		for (int sl=0;sl<SOURCESSLOTS;sl++) if (!cur_file->srclists[sl].IsEmpty())
-		for (POSITION pos2 = cur_file->srclists[sl].GetHeadPosition();pos2 != 0; cur_file->srclists[sl].GetNext(pos2)) {
-			if (cur_file->srclists[sl].GetAt(pos2)->Compare(source)) {
-			//if (cur_file->srclists[sl].GetAt(pos2)->Compare(source) || cur_file->srclists[sl].GetAt(pos2)->Compare(source, false)) {
+		for (POSITION pos2 = cur_file->m_SrcList.GetHeadPosition();pos2 != 0; cur_file->m_SrcList.GetNext(pos2)) {
+			if (cur_file->m_SrcList.GetAt(pos2)->Compare(source)) {
 				if (cur_file == sender) { // this file has already this source
 					delete source;
 					return;
 				}
 				// set request for this source
-				if (cur_file->srclists[sl].GetAt(pos2)->AddRequestForAnotherFile(sender)) {
+				if (cur_file->m_SrcList.GetAt(pos2)->AddRequestForAnotherFile(sender)) {
 					// add it to uploadlistctrl
-					theApp.amuledlg->transferwnd->downloadlistctrl->AddSource(sender,cur_file->srclists[sl].GetAt(pos2),true);
+					theApp.amuledlg->transferwnd->downloadlistctrl->AddSource(sender,cur_file->m_SrcList.GetAt(pos2),true);
 					delete source;
 					return;
 				}
@@ -509,7 +507,7 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender,CUpDownClient* source)
 		sender->UpdateFileRatingCommentAvail();
 	}
 
-	sender->srclists[source->sourcesslot].AddTail(source);
+	sender->m_SrcList.AddTail(source);
 	sender->IsCountDirty = true;
 	theApp.amuledlg->transferwnd->downloadlistctrl->AddSource(sender,source,false);
 	UpdateDisplayedInfo();
@@ -530,18 +528,14 @@ void CDownloadQueue::CheckAndAddKnownSource(CPartFile* sender,CUpDownClient* sou
 	// use this for client which are already know (downloading for example)
 	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
 		CPartFile* cur_file = filelist[i];
-		for (int sl=0;sl<SOURCESSLOTS;sl++) {
-			if (!cur_file->srclists[sl].IsEmpty()) {
-				if (cur_file->srclists[sl].Find(source)) {
-					if (cur_file == sender) {
-						return;
-					}
-					if (source->AddRequestForAnotherFile(sender)) {
-						theApp.amuledlg->transferwnd->downloadlistctrl->AddSource(sender,source,true);
-					}
-					return;
-				}
+		if (cur_file->m_SrcList.Find(source)) {
+			if (cur_file == sender) {
+				return;
 			}
+			if (source->AddRequestForAnotherFile(sender)) {
+				theApp.amuledlg->transferwnd->downloadlistctrl->AddSource(sender,source,true);
+			}
+			return;
 		}
 	}
 	source->reqfile = sender;
@@ -552,7 +546,7 @@ void CDownloadQueue::CheckAndAddKnownSource(CPartFile* sender,CUpDownClient* sou
 		sender->UpdateFileRatingCommentAvail();
 	}
 
-	sender->srclists[source->sourcesslot].AddTail(source);
+	sender->m_SrcList.AddTail(source);
 	sender->IsCountDirty = true;
 	theApp.amuledlg->transferwnd->downloadlistctrl->AddSource(sender,source,false);
 	UpdateDisplayedInfo();
@@ -564,41 +558,16 @@ bool CDownloadQueue::RemoveSource(CUpDownClient* toremove, bool	updatewindow, bo
 	bool removed = false;
 	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
 		CPartFile* cur_file = filelist[i];
-		for (int sl=0;sl<SOURCESSLOTS;sl++) if (!cur_file->srclists[sl].IsEmpty()) {
-			for (POSITION pos2 = cur_file->srclists[sl].GetHeadPosition();pos2 != 0; cur_file->srclists[sl].GetNext(pos2)) {
-				if (toremove == cur_file->srclists[sl].GetAt(pos2)) {
-					cur_file->srclists[sl].RemoveAt(pos2);
-					cur_file->IsCountDirty = true;
-					removed = true;
-					if ( bDoStatsUpdate ){
-						cur_file->RemoveDownloadingSource(toremove);
-						cur_file->UpdatePartsInfo();
-					}
-					#if 0
-					/* Razor 1a - Modif by MikaelB */
-					if(!toremove->m_OtherRequests_list.IsEmpty())  {
-						POSITION pos3, pos4;
-						for(pos3=toremove->m_OtherRequests_list.GetHeadPosition();(pos4=pos3)!=NULL;) {
-							toremove->m_OtherRequests_list.GetNext(pos3);
-							POSITION pos5 = toremove->m_OtherRequests_list.GetAt(pos4)->A4AFSourcesList.Find(toremove);
-							if(pos5) {
-								toremove->m_OtherRequests_list.GetAt(pos4)->A4AFSourcesList.RemoveAt(pos5);
-								theApp.amuledlg->transferwnd->downloadlistctrl->RemoveSource(toremove,toremove->m_OtherRequests_list.GetAt(pos4));
-								toremove->m_OtherRequests_list.RemoveAt(pos4);
-							}
-						}
-					}
+		for (POSITION pos2 = cur_file->m_SrcList.GetHeadPosition();pos2 != 0; cur_file->m_SrcList.GetNext(pos2)) {
+			if (toremove == cur_file->m_SrcList.GetAt(pos2)) {
+				cur_file->m_SrcList.RemoveAt(pos2);
+				cur_file->IsCountDirty = true;
+				removed = true;
+				if ( bDoStatsUpdate ){
 					cur_file->RemoveDownloadingSource(toremove);
-					if (updatewindow) {
-						toremove->SetDownloadState(DS_NONE);
-						theApp.amuledlg->transferwnd->downloadlistctrl->RemoveSource(toremove, cur_file);
-					}
-					toremove->ResetFileStatusInfo();
-					toremove->reqfile = 0;				
-					/* End modif */
-					#endif
-					break;
+					cur_file->UpdatePartsInfo();
 				}
+				break;
 			}
 		}
 		if (bDoStatsUpdate) {
@@ -674,8 +643,7 @@ void CDownloadQueue::RemoveFile(CPartFile* toremove)
 void CDownloadQueue::DeleteAll(){
 	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
 		CPartFile* cur_file = filelist[i];
-		for (int sl=0;sl<SOURCESSLOTS;sl++) if (!cur_file->srclists[sl].IsEmpty())
-			cur_file->srclists[sl].RemoveAll();
+		cur_file->m_SrcList.RemoveAll();
 		cur_file->IsCountDirty = true;
 		// Barry - Should also remove all requested blocks
 		// Don't worry about deleting the blocks, that gets handled 
@@ -950,10 +918,9 @@ CUpDownClient* CDownloadQueue::GetDownloadClientByIP(uint32 dwIP)
 {
 	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
 		CPartFile* cur_file = filelist[i];
-		for (int sl=0;sl<SOURCESSLOTS;sl++) if (!cur_file->srclists[sl].IsEmpty())
-		for (POSITION pos2 = cur_file->srclists[sl].GetHeadPosition();pos2 != 0; cur_file->srclists[sl].GetNext(pos2)) {
-			if (dwIP == cur_file->srclists[sl].GetAt(pos2)->GetIP()) {
-				return cur_file->srclists[sl].GetAt(pos2);
+		for (POSITION pos2 = cur_file->m_SrcList.GetHeadPosition();pos2 != 0; cur_file->m_SrcList.GetNext(pos2)) {
+			if (dwIP == cur_file->m_SrcList.GetAt(pos2)->GetIP()) {
+				return cur_file->m_SrcList.GetAt(pos2);
 			}
 		}
 	}
@@ -1010,7 +977,7 @@ void CDownloadQueue::AddLinksFromFile()
    
 void CDownloadQueue::RemoveSourceFromPartFile(CPartFile* file, CUpDownClient* client, POSITION position)
 {
-	file->srclists[client->sourcesslot].RemoveAt(position);
+	file->m_SrcList.RemoveAt(position);
 	file->IsCountDirty = true;
 	file->UpdatePartsInfo();
 	file->UpdateAvailablePartsCount();

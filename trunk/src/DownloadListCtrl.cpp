@@ -1496,14 +1496,11 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 					if (selectedCount == 1 
 					&& (file->GetStatus(false) == PS_READY || file->GetStatus(false) == PS_EMPTY)) {
 						theApp.downloadqueue->DisableAllA4AFAuto();
-						for (int sl=0;sl<SOURCESSLOTS;sl++) {
-							if (!file->srclists[sl].IsEmpty()) {
-								POSITION pos1, pos2;
-								for(pos1 = file->srclists[sl].GetHeadPosition(); (pos2 = pos1) != NULL;) {
-									file->srclists[sl].GetNext(pos1);
-									file->srclists[sl].GetAt(pos2)->SwapToAnotherFile(false, false, false, NULL);
-								}
-							}
+
+						POSITION pos1, pos2;
+						for(pos1 = file->m_SrcList.GetHeadPosition(); (pos2 = pos1) != NULL;) {
+							file->m_SrcList.GetNext(pos1);
+							file->m_SrcList.GetAt(pos2)->SwapToAnotherFile(false, false, false, NULL);
 						}
 					}
 					Thaw();

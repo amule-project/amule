@@ -146,32 +146,30 @@ void CFileDetailDialog::FillSourcenameList()
 	}
 
 	// update
-	for (int sl=0;sl<SOURCESSLOTS;sl++) {
-		for (POSITION pos = m_file->srclists[sl].GetHeadPosition(); pos != NULL; ) { 
-			cur_src = m_file->srclists[sl].GetNext(pos); 
-			if (cur_src->reqfile!=m_file || CString(cur_src->GetClientFilename()).GetLength()==0)
-				continue;
+	for (POSITION pos = m_file->m_SrcList.GetHeadPosition(); pos != NULL; ) { 
+		cur_src = m_file->m_SrcList.GetNext(pos); 
+		if (cur_src->reqfile!=m_file || CString(cur_src->GetClientFilename()).GetLength()==0)
+			continue;
 
-			if ((itempos=pmyListCtrl->FindItem(-1,wxString(cur_src->GetClientFilename()))) == -1) { 
-				int itemid = pmyListCtrl->InsertItem(0, cur_src->GetClientFilename()); 
-				pmyListCtrl->SetItem(0, 1, "1"); 
-				SourcenameItem *item = new SourcenameItem;
-				item->name = cur_src->GetClientFilename();
-				item->count = 1;
-				pmyListCtrl->SetItemData(0, (long)item); 
-				// background.. argh -- PA: was in old version - do we still need this?
-				wxListItem tmpitem;
-				tmpitem.m_itemId=itemid;
-				tmpitem.SetBackgroundColour(SYSCOLOR(wxSYS_COLOUR_LISTBOX));
-				pmyListCtrl->SetItem(tmpitem);
-			} else { 
-				SourcenameItem *item = (SourcenameItem *) pmyListCtrl->GetItemData(itempos); 
-				item->count++;
-				nameCountStr.Format("%i", item->count); 
-				pmyListCtrl->SetItem(itempos, 1, nameCountStr); 
-			} 
-			pmyListCtrl->UpdateSort();
+		if ((itempos=pmyListCtrl->FindItem(-1,wxString(cur_src->GetClientFilename()))) == -1) { 
+			int itemid = pmyListCtrl->InsertItem(0, cur_src->GetClientFilename()); 
+			pmyListCtrl->SetItem(0, 1, "1"); 
+			SourcenameItem *item = new SourcenameItem;
+			item->name = cur_src->GetClientFilename();
+			item->count = 1;
+			pmyListCtrl->SetItemData(0, (long)item); 
+			// background.. argh -- PA: was in old version - do we still need this?
+			wxListItem tmpitem;
+			tmpitem.m_itemId=itemid;
+			tmpitem.SetBackgroundColour(SYSCOLOR(wxSYS_COLOUR_LISTBOX));
+			pmyListCtrl->SetItem(tmpitem);
+		} else { 
+			SourcenameItem *item = (SourcenameItem *) pmyListCtrl->GetItemData(itempos); 
+			item->count++;
+			nameCountStr.Format("%i", item->count); 
+			pmyListCtrl->SetItem(itempos, 1, nameCountStr); 
 		} 
+		pmyListCtrl->UpdateSort();
 	}
 
 	// remove 0'er
