@@ -19,6 +19,10 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma implementation "WebInterface.h"
+#endif
+
 #ifdef HAVE_CONFIG_H
 	#include "config.h"	// For VERSION
 #endif
@@ -27,37 +31,29 @@
 	#include <unistd.h>
 #endif
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma implementation "WebInterface.h"
-#endif
-//-------------------------------------------------------------------
-#include "MD5Sum.h"
-
-#include "WebInterface.h"
-
-//-------------------------------------------------------------------
-
-#if wxUSE_GUI
-	#include <wx/statline.h>
-#endif
-
-//-------------------------------------------------------------------
-
 #include <wx/filename.h>	// Needed for wxFileName
-#include "OtherFunctions.h"
-#include "WebServer.h"
-
 #if wxCHECK_VERSION(2,4,2)
 	#include <wx/config.h>	// For wxFileConfig in wx-2.4.2
 #endif
 #include <wx/fileconf.h>	// For wxFileConfig
 
+#if wxUSE_GUI
+	#include <wx/statline.h>
+#endif
+
+#include <iostream>
+
+#include "MD5Sum.h"
+#include "OtherFunctions.h"
+#include "WebInterface.h"
+#include "WebServer.h"
+
 //-------------------------------------------------------------------
 
 #define CMD_ID_HELP	1
-#define CMD_ID_STOP	2
-#define CMD_ID_START	3
-#define CMD_ID_RESTART	4
+//#define CMD_ID_STOP	2
+//#define CMD_ID_START	3
+//#define CMD_ID_RESTART	4
 
 #define APP_INIT_SIZE_X 640
 #define APP_INIT_SIZE_Y 480
@@ -68,9 +64,9 @@ static CmdId commands[] = {
 	{ wxT("quit"),		CMD_ID_QUIT },
 	{ wxT("exit"),		CMD_ID_QUIT },
 	{ wxT("help"),		CMD_ID_HELP },
-	{ wxT("stop"),		CMD_ID_STOP },
-	{ wxT("start"),		CMD_ID_START },
-	{ wxT("restart"),	CMD_ID_RESTART },
+//	{ wxT("stop"),		CMD_ID_STOP },
+//	{ wxT("start"),		CMD_ID_START },
+//	{ wxT("restart"),	CMD_ID_RESTART },
 	{ wxEmptyString,	0 },
 };
 
@@ -285,64 +281,124 @@ void CamulewebApp::OnInitCmdLine(wxCmdLineParser& amuleweb_parser)
 		wxT("loads template <str>"), 
 		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL);
 		
-	amuleweb_parser.AddSwitch(wxT("z"), wxT("gzip"), 
+	amuleweb_parser.AddOption(wxT("s"), wxT("server-port"), 
+		wxT("Webserver HTTP port"),
+		wxCMD_LINE_VAL_NUMBER, wxCMD_LINE_PARAM_OPTIONAL);
+
+	amuleweb_parser.AddSwitch(wxT("z"), wxT("enable-gzip"), 
 		wxT("Use gzip compression"));
 	
-	amuleweb_parser.AddOption(wxT("apw"), wxT("admin-pass"), 
+	amuleweb_parser.AddSwitch(wxT("Z"), wxT("disable-gzip"), 
+		wxT("Do not use gzip compression"));
+	
+	amuleweb_parser.AddOption(wxT("A"), wxT("admin-pass"), 
 		wxT("Full access password for webserver"), 
 		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL);
 
-	amuleweb_parser.AddOption(wxT("gpw"), wxT("guest-pass"), 
+	amuleweb_parser.AddOption(wxT("G"), wxT("guest-pass"), 
 		wxT("Guest password for webserver"), 
 		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL);
 
-	amuleweb_parser.AddSwitch(wxT("g"), wxT("guest"), 
+	amuleweb_parser.AddSwitch(wxT("a"), wxT("allow-guest"), 
 		wxT("Allow guest access"));
+
+	amuleweb_parser.AddSwitch(wxT("d"), wxT("deny-guest"), 
+		wxT("Deny guest access"));
+
+	amuleweb_parser.AddSwitch(wxT("L"), wxT("load-settings"), 
+		wxT("Load/save webserver settings from/to remote aMule"));
+
+	amuleweb_parser.AddOption(wxEmptyString, wxT("amule-config-file"),
+		wxT("aMule config file path. DO NOT USE DIRECTLY!"));
 }
 
 bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 {
-	bool retval = CaMuleExternalConnector::OnCmdLineParsed(parser);
+	wxString aMuleConfigFile;
+	if (parser.Found(wxT("amule-config-file"), &aMuleConfigFile)) {
+		if (!::wxFileExists(aMuleConfigFile)) {
+			std::cerr << "FATAL ERROR: "  << (const char *)unicode2char(aMuleConfigFile) << " does not exist.\n";
+			exit(1);
+		}
+		wxFileConfig cfg(wxEmptyString, wxEmptyString, wxGetHomeDir() + wxFileName::GetPathSeparator() + wxT(".eMule"), wxEmptyString, wxCONFIG_USE_LOCAL_FILE);
+		m_host = wxT("localhost");
+		m_port = cfg.Read(wxT("/ExternalConnect/ECPort"), 4712l);
+		cfg.Read(wxT("/ExternalConnect/ECPassword"), &m_password);
+		m_UseGzip = (cfg.Read(wxT("/Webserver/UseGzip"), 0l) == 1l);
+		m_AllowGuest = (cfg.Read(wxT("/Webserver/UseLowRightsUser"), 0l) == 1l);
+		cfg.Read(wxT("/Webserver/Password"), &m_AdminPass);
+		cfg.Read(wxT("/Webserver/PasswordLow"), &m_GuestPass);
+		m_WebserverPort = cfg.Read(wxT("/Webserver/Port"), -1l);
+		m_PageRefresh = cfg.Read(wxT("/Webserver/PageRefreshTime"), 120l);
+		// do not process any other command-line parameters, use defaults instead
+		m_TemplateName = wxT("default");
+		if (!GetTemplateDir(m_TemplateName, m_TemplateDir)) {
+			// no reason to run webserver without a template
+			std::cerr << _("FATAL ERROR: Cannot find template: ") << m_TemplateName << wxT("\n");
+			std::cerr << _("You should have a look at http://www.amule.org/wiki/index.php/Webserver#Webserver_with_aMule_2.0.0_or_later_(starting_from_CVS_2005.02.27)\n");
+			exit(1);
+			// cmd-line versions exit after a return false; but DLG versions not - that's why the exit()
+			//return false;
+		}
+		m_TemplateFileName = m_TemplateDir + wxFileName::GetPathSeparator() + wxT("aMule.tmpl");
+		m_Verbose = false;
+		m_KeepQuiet = true;
+		m_LoadSettingsFromAmule = true;
+		return true;
+	}
 
-	if ( parser.Found(wxT("file-config")) ) {
-		wxFileConfig eMuleIni(
-			wxT("eMule"),
-			wxT("eMule-project"),
-			wxT(".eMule")
-		);
-		m_AdminPass = eMuleIni.Read(wxT("/WebServer/Password"));
-		m_GuestPass = eMuleIni.Read(wxT("/WebServer/PasswordLow"));
-		wxString AllowGuest = eMuleIni.Read(wxT("/WebServer/UseLowRightsUser"));
-		m_AllowGuest = (AllowGuest == wxT("1")) ? true : false;
-	}
-	wxString templateName;
-	if (!parser.Found(wxT("template"), &templateName)) {
-		templateName = wxT("default");
-	}
-	if (!GetTemplateDir(templateName, m_TemplateDir)) {
-		// no reason to run webserver without a template
-		Show(_("FATAL ERROR: Cannot find template: ") + templateName + wxT("\n"));
-		Show(_("You should have a look at http://www.amule.org/wiki/index.php/Webserver#Webserver_with_aMule_2.0.0_or_later_(starting_from_CVS_2005.02.27)\n"));
+	if (CaMuleExternalConnector::OnCmdLineParsed(parser)) {
+
+		parser.Found(wxT("template"), &m_TemplateName);
+		if (!GetTemplateDir(m_TemplateName, m_TemplateDir)) {
+			// no reason to run webserver without a template
+			std::cerr << _("FATAL ERROR: Cannot find template: ") << m_TemplateName << wxT("\n");
+			std::cerr << _("You should have a look at http://www.amule.org/wiki/index.php/Webserver#Webserver_with_aMule_2.0.0_or_later_(starting_from_CVS_2005.02.27)\n");
+			exit(1);
+			//return false;
+		}
+		m_TemplateFileName = m_TemplateDir + wxFileName::GetPathSeparator() + wxT("aMule.tmpl");
+		DebugShow(wxT("*** Using template: ") + m_TemplateFileName + wxT("\n"));
+
+		long port;
+		if (parser.Found(wxT("server-port"), &port)) {
+			m_WebserverPort = port;
+		}
+		if (parser.Found(wxT("enable-gzip"))) {
+			m_UseGzip = true;
+		}
+		if (parser.Found(wxT("disable-gzip"))) {
+			m_UseGzip = false;
+		}
+
+		if (parser.Found(wxT("allow-guest"))) {
+			m_AllowGuest = true;
+		}
+		if (parser.Found(wxT("deny-guest"))) {
+			m_AllowGuest = false;
+		}
+
+		wxString tmp;
+		if ( parser.Found(wxT("admin-pass"), &tmp) ) {
+			if (tmp.IsEmpty()) {
+				m_AdminPass = wxEmptyString;
+			} else {
+				m_AdminPass = MD5Sum(tmp).GetHash();
+			}
+		}
+		if ( parser.Found(wxT("guest-pass"), &tmp) ) {
+			if (tmp.IsEmpty()) {
+				m_GuestPass = wxEmptyString;
+			} else {
+				m_GuestPass = MD5Sum(tmp).GetHash();
+			}
+		}
+
+		m_LoadSettingsFromAmule = parser.Found(wxT("load-settings"));
+		return true;
+	} else {
 		return false;
 	}
-	m_TemplateFileName = m_TemplateDir + wxFileName::GetPathSeparator() + wxT("aMule.tmpl");
-	DebugShow(wxT("*** Using template: ") + m_TemplateFileName + wxT("\n"));
-	m_bForcedUseGzip = m_UseGzip = parser.Found(wxT("gzip"));
-	m_bForcedAllowGuest = m_AllowGuest = parser.Found(wxT("guest"));
-	// file already contain password in hashed form
-	if ( !parser.Found(wxT("admin-pass"), &m_AdminPass) ) {
-		m_bForcedAdminPassword = false;
-	} else {
-		m_AdminPass = MD5Sum(m_AdminPass).GetHash();
-		m_bForcedAdminPassword = true;
-	}
-	if ( !parser.Found(wxT("guest-pass"), &m_GuestPass) ) {
-		m_bForcedGuestPassword = false;
-	} else {
-		m_GuestPass = MD5Sum(m_GuestPass).GetHash();
-		m_bForcedGuestPassword = true;
-	}
-	return retval;
 }
 
 int CamulewebApp::ProcessCommand(int ID) {
@@ -350,7 +406,7 @@ int CamulewebApp::ProcessCommand(int ID) {
 		case CMD_ID_HELP:
 			ShowHelp();
 			break;
-		case CMD_ID_STOP:
+/*		case CMD_ID_STOP:
 			//webserver->StopServer();
 			break;
 		case CMD_ID_START:
@@ -358,7 +414,7 @@ int CamulewebApp::ProcessCommand(int ID) {
 			break;
 		case CMD_ID_RESTART:
 			//webserver->RestartServer();
-			break;
+			break;	*/
 		default:
 			return -1;
 			break;
@@ -390,4 +446,30 @@ void CamulewebApp::Pre_Shell() {
 	//Creating the web server
 	webserver = new CWebServer(this, m_TemplateDir);
 	webserver->StartServer();
+}
+
+void CamulewebApp::LoadConfigFile()
+{
+	CaMuleExternalConnector::LoadConfigFile();
+	if (m_configFile) {
+		m_WebserverPort = m_configFile->Read(wxT("/Webserver/Port"), -1l);
+		m_TemplateName = m_configFile->Read(wxT("/Webserver/Template"), wxT("default"));
+		m_configFile->Read(wxT("/Webserver/UseGzip"), &m_UseGzip, false);
+		m_configFile->Read(wxT("/Webserver/AllowGuest"), &m_AllowGuest, false);
+		m_AdminPass = m_configFile->Read(wxT("/Webserver/AdminPassword"), wxEmptyString);
+		m_GuestPass = m_configFile->Read(wxT("/Webserver/GuestPassword"), wxEmptyString);
+	}
+}
+
+void CamulewebApp::SaveConfigFile()
+{
+	CaMuleExternalConnector::SaveConfigFile();
+	if (m_configFile) {
+		m_configFile->Write(wxT("/Webserver/Port"), m_WebserverPort);
+		m_configFile->Write(wxT("/Webserver/Template"), m_TemplateName);
+		m_configFile->Write(wxT("/Webserver/UseGzip"), m_UseGzip);
+		m_configFile->Write(wxT("/Webserver/AllowGuest"), m_AllowGuest);
+		m_configFile->Write(wxT("/Webserver/AdminPassword"), m_AdminPass);
+		m_configFile->Write(wxT("/Webserver/GuestPassword"), m_GuestPass);
+	}
 }

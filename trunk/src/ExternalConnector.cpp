@@ -73,13 +73,8 @@
 #include <wx/intl.h>		// For _()
 #include <wx/tokenzr.h>		// For wxStringTokenizer
 
-//-------------------------------------------------------------------
-
 #include "ECPacket.h"		// Needed for CECPacket, CECTag
 #include "ECcodes.h"		// Needed for OPcodes and TAGnames
-
-//-------------------------------------------------------------------
-
 #include "MD5Sum.h"
 #include "OtherFunctions.h"
 
@@ -88,28 +83,34 @@
 // Static data initialization -- memorize this, you'll need some day!
 // 
 //-------------------------------------------------------------------
-const wxCmdLineEntryDesc CaMuleExternalConnector::cmdLineDesc[8] = 
+const wxCmdLineEntryDesc CaMuleExternalConnector::cmdLineDesc[10] =
 {
-	{ wxCMD_LINE_SWITCH, wxT("h"), wxT("help"),
+	{ wxCMD_LINE_SWITCH, wxEmptyString, wxT("help"),
 		wxT("show this help"),
 		wxCMD_LINE_VAL_STRING, wxCMD_LINE_OPTION_HELP },
-	{ wxCMD_LINE_OPTION, wxT("rh"), wxT("remote-host"),
+	{ wxCMD_LINE_OPTION, wxT("h"), wxT("host"),
 		wxT("host where aMule is running (default localhost)"),
 		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL },
 	{ wxCMD_LINE_OPTION, wxT("p"), wxT("port"),
 		wxT("aMule's port for External Connection"),
 		wxCMD_LINE_VAL_NUMBER, wxCMD_LINE_PARAM_OPTIONAL },
-	{ wxCMD_LINE_OPTION, wxT("pw"), wxT("password"), 
-		wxT("Password."),
+	{ wxCMD_LINE_OPTION, wxT("P"), wxT("password"), 
+		wxT("External Connection password."),
 		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL },
-	{ wxCMD_LINE_SWITCH, wxT("f"), wxT("file-config"), 
-		wxT("Read configuration (password/port) from file."),
+	{ wxCMD_LINE_OPTION, wxT("f"), wxT("config-file"), 
+		wxT("Read configuration from file."),
 		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL },
 	{ wxCMD_LINE_SWITCH, wxT("q"), wxT("quiet"), 
 		wxT("Do not print any output to stdout."),
 		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL },
 	{ wxCMD_LINE_SWITCH, wxT("v"), wxT("verbose"), 
 		wxT("Be verbose - show also debug messages."),
+		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL },
+	{ wxCMD_LINE_SWITCH, wxT("w"), wxT("write-config"),
+		wxT("Write command line options to config file."),
+		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL },
+	{ wxCMD_LINE_SWITCH, wxEmptyString, wxT("version"),
+		wxT("Print program version."),
 		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL },
 	{ wxCMD_LINE_NONE, wxEmptyString, wxEmptyString,
 		wxEmptyString,
@@ -122,10 +123,17 @@ CaMuleExternalConnector::CaMuleExternalConnector()
 {
 	m_ECClient = NULL;
 	m_isConnected = false;
-	m_HasCommandLinePassword = false;
-	m_HasConfigFromFile = false;
 	m_KeepQuiet = false;
 	m_InputLine = NULL;
+	m_port = -1;
+	m_NeedsConfigSave = false;
+	m_Verbose = false;
+	m_configFile = NULL;
+}
+
+CaMuleExternalConnector::~CaMuleExternalConnector()
+{
+	delete m_configFile;
 }
 
 void CaMuleExternalConnector::Show(const wxString &s)
@@ -281,28 +289,32 @@ CECPacket *CaMuleExternalConnector::SendRecvMsg_v2(CECPacket *request)
 void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxString& ProgVersion, CmdId *UNUSED_IN_GUI(commands))
 {
 	wxString pass_plain;
-	wxString pass_hash;
+
+	if (m_NeedsConfigSave) {
+		SaveConfigFile();
+		return;
+	}
 
 	// HostName, Port and Password
-	if ( m_HasConfigFromFile ) {
-		// Do nothing, just don't do the rest ;)
-		// m_sHostName and m_sPort have already been set in OnCmdLineParsed()
-	} else if ( m_HasCommandLinePassword ) {
-		pass_plain = m_CommandLinePassword;
-	} else {
+	if ( m_password.IsEmpty() ) {
 #if wxUSE_GUI
-		m_sHostName = wxGetTextFromUser(
+		m_host = wxGetTextFromUser(
 			_T("Enter hostname or ip of the box running aMule"),
 			_T("Enter Hostname"), wxT("localhost"));
-		m_sPort = wxGetTextFromUser(
+		wxString sPort = wxGetTextFromUser(
 			_T("Enter port for aMule's External Connection"),
 			_T("Enter Port"), wxT("4712"));
+		if (!sPort.ToLong(&m_port)) {
+			// invalid input, use default
+			m_port = 4712;
+		}
 		pass_plain = ::wxGetPasswordFromUser(
 			_T("Enter password for mule connection (OK if no pass defined)"), 
 			_T("Enter Password"));
 #else  // wxUse_GUI
 		pass_plain = char2unicode(
 			getpass("Enter password for mule connection (return if no pass defined): "));
+		m_password = MD5Sum(pass_plain).GetHash();
 #endif // wxUse_GUI
 	}
 	
@@ -312,26 +324,12 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxSt
 	packet.AddTag(CECTag(EC_TAG_CLIENT_VERSION, ProgVersion));
 	packet.AddTag(CECTag(EC_TAG_PROTOCOL_VERSION, (uint16)EC_CURRENT_PROTOCOL_VERSION));
 
-	if ( m_HasConfigFromFile ) {
-		wxFileConfig eMuleIni(
-			wxT("eMule"),
-			wxT("eMule-project"),
-			wxT(".eMule")
-		);
-		m_sPort   = eMuleIni.Read(wxT("/ExternalConnect/ECPort"));
-		pass_hash = eMuleIni.Read(wxT("/ExternalConnect/ECPassword"));
-	} else if ( !pass_plain.IsEmpty() ) {
-		pass_hash = MD5Sum(pass_plain).GetHash();
-	}
-
-	if (!pass_hash.IsEmpty()) {
-		packet.AddTag(CECTag(EC_TAG_PASSWD_HASH, pass_hash));
+	if (!m_password.IsEmpty()) {
+		packet.AddTag(CECTag(EC_TAG_PASSWD_HASH, m_password));
 	}
 
 	// Clear passwords
-	m_CommandLinePassword	= wxT("01234567890123456789");
 	pass_plain		= wxT("01234567890123456789");
-	pass_hash		= wxT("01234567890123456789");
 
 	// Create the socket
 	Show(_("\nCreating client...\n"));
@@ -339,8 +337,8 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxSt
 
 	Show(_("Now, doing connection....\n"));
 	wxIPV4address addr;
-	addr.Hostname(m_sHostName);
-	addr.Service(m_sPort);
+	addr.Hostname(m_host);
+	addr.Service(m_port);
 
 	Show(	_("Using host '") + addr.Hostname() + 
 		_("' port:") + wxString::Format(wxT("%d"), addr.Service()) + 
@@ -417,28 +415,86 @@ void CaMuleExternalConnector::OnInitCmdLine(wxCmdLineParser& parser)
 
 bool CaMuleExternalConnector::OnCmdLineParsed(wxCmdLineParser& parser)
 {
+	if (parser.Found(wxT("version"))) {
+		const char *appName =
+			// Find out Application Name
+			#ifdef AMULECMDDLG
+				"amulecmd DLG"
+			#else
+				#ifdef AMULEWEBDLG
+					"amuleweb DLG"
+				#else
+					#ifdef WEBSERVERDIR
+						"amuleweb"
+					#else
+						"amulecmd"
+					#endif
+				#endif
+			#endif
+		;
+		printf("%s %s\n", appName, (const char *)unicode2char(otherfunctions::GetMuleVersion()));
+		return false;
+	}
 
-	bool result = true;
+	if (!parser.Found(wxT("config-file"), &m_configFileName)) {
+		m_configFileName = otherfunctions::GetConfigDir() + wxT("remote.conf");
+	}
 
-	// Call base class version to process standard command line options
-	//result = wxAppConsole::OnCmdLineParsed(amuleweb_parser);
+	LoadConfigFile();
 
-	if ( !parser.Found(wxT("rh"), &m_sHostName) ) {
-		m_sHostName = wxT("localhost");
+	if ( !parser.Found(wxT("host"), &m_host) ) {
+		if ( m_host.IsEmpty() ) {
+			m_host = wxT("localhost");
+		}
 	}
 
 	long port;
-	if (!parser.Found(wxT("p"), &port)) {
-		//get the default port
-		m_sPort = wxT("4712"); 
+	if (!parser.Found(wxT("port"), &port)) {
+		if (m_port == -1) {
+			m_port = 4712;
+		}
 	} else {
-		m_sPort = wxString::Format(wxT("%li"), port);
+		m_port = port;
 	}
 
-	m_HasCommandLinePassword = parser.Found(wxT("password"), &m_CommandLinePassword);
-	m_HasConfigFromFile = parser.Found(wxT("file-config"));
+	wxString pass_plain;
+	if (parser.Found(wxT("password"), &pass_plain)) {
+		m_password = MD5Sum(pass_plain).GetHash();
+	}
+
+	if (parser.Found(wxT("write-config"))) {
+		m_NeedsConfigSave = true;
+	}
+
 	m_KeepQuiet = parser.Found(wxT("quiet"));
 	m_Verbose = parser.Found(wxT("verbose"));
 
-	return result;
+	return true;
+}
+
+void CaMuleExternalConnector::LoadConfigFile()
+{
+	if (!m_configFile) {
+		m_configFile = new wxFileConfig(wxEmptyString, wxEmptyString, m_configFileName, wxEmptyString, wxCONFIG_USE_LOCAL_FILE);
+	}
+	if (m_configFile) {
+		m_host = m_configFile->Read(wxT("/EC/Host"), wxEmptyString);
+		m_port = m_configFile->Read(wxT("/EC/Port"), -1l);
+		m_password = m_configFile->Read(wxT("/EC/Password"), wxEmptyString);
+	}
+}
+
+void CaMuleExternalConnector::SaveConfigFile()
+{
+	if (!wxFileName::DirExists(otherfunctions::GetConfigDir())) {
+		wxFileName::Mkdir(otherfunctions::GetConfigDir());
+	}
+	if (!m_configFile) {
+		m_configFile = new wxFileConfig(wxEmptyString, wxEmptyString, m_configFileName, wxEmptyString, wxCONFIG_USE_LOCAL_FILE);
+	}
+	if (m_configFile) {
+		m_configFile->Write(wxT("/EC/Host"), m_host);
+		m_configFile->Write(wxT("/EC/Port"), m_port);
+		m_configFile->Write(wxT("/EC/Password"), m_password);
+	}
 }

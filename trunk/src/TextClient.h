@@ -25,10 +25,6 @@
 #pragma interface "TextClient.h"
 #endif
 
-#ifndef WIN32
-	#include "config.h"
-#endif
-
 //-------------------------------------------------------------------
 enum {
 	CMD_ID_HELP	= 1,

@@ -26,10 +26,6 @@
 	#include <wx/msw/winundef.h>
 #endif
 
-#ifndef WIN32
-	#include "config.h"
-#endif
-
 #if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
 #pragma interface "WebInterface.h"
 #endif
@@ -43,6 +39,7 @@
 #if wxUSE_GUI
 #include <wx/textctrl.h>	// For wxTextCtrl
 #include <wx/timer.h>		// For wxTimer
+
 class CamulewebFrame : public wxFrame
 {
 public:
@@ -73,21 +70,26 @@ public:
 	void ShowGreet();
 	void Pre_Shell();
 	int ProcessCommand(int ID);
+	void LoadConfigFile();
+	void SaveConfigFile();
 	bool GetTemplateDir(const wxString& templateName, wxString& templateDir);
 	bool CheckDirForTemplate(wxString& dir, const wxString& tmpl);
 
 	// other command line switches
 	void	OnInitCmdLine(wxCmdLineParser& amuleweb_parser);
 	bool	OnCmdLineParsed(wxCmdLineParser& parser);
+
+	// class data
+	wxString m_TemplateName;
 	wxString m_TemplateDir;
 	wxString m_TemplateFileName;
 	bool	m_UseGzip;
 	wxString m_AdminPass, m_GuestPass;
 	bool	m_AllowGuest;
-	bool	m_bForcedUseGzip;
-	bool	m_bForcedAdminPassword;
-	bool	m_bForcedAllowGuest;
-	bool	m_bForcedGuestPassword;
+
+	long		m_WebserverPort;
+	unsigned int	m_PageRefresh;
+	bool		m_LoadSettingsFromAmule;
 
 #if wxUSE_GUI
 public:
@@ -105,26 +107,6 @@ private:
 	virtual int 	OnRun();
 #endif
 };
-
-/******************************************************************************
- * The next set of conditionals are used to find out the value of wxUSE_GUI
- ******************************************************************************/
-#if 0
-#ifdef wxUSE_GUI
-	#warning wxUSE_GUI defined
-#else
-	#warning wxUSE_GUI undefined
-	#error wxUSE_GUI cannot be undefined
-#endif
-
-#if wxUSE_GUI
-	#warning wxUSE_GUI non-zero
-	#error wxUSE_GUI cannot be non-zero
-#else
-	#warning wxUSE_GUI zero
-#endif
-#endif
-/******************************************************************************/
 
 #endif // WEBINTERFACE_H
 
