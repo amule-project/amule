@@ -256,6 +256,7 @@ noinst_HEADERS = AddFileThread.h \
 		 FriendListCtrl.h \
 		 GetTickCount.h \
 		 gsocket-2.5.h \
+		 gsocket-fix.h \
 		 gsocket.h \
 		 gtk2-funcs.h \
 		 gtkplugxembed.h \

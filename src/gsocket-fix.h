@@ -21,13 +21,11 @@
 #define __GSOCKET_FIX_H__
 
 
-// This flag is only defined from version 2.5.3 and up.
-//#if !wxCHECK_VERSION(2,5,3)
-// We have to use 2.5.2 while the wx cvs version is not updated to 2.5.3
-#if !wxCHECK_VERSION(2,5,2)
+// This flag is only defined from version 2.5.2.3 and up.
+#if !wxCHECK_VERSION_FULL(2,5,2,3)
 	// If wx < 2.5.3
-	#if wxCHECK_VERSION(2,5,0)
-		// If 2.5.0 <= wx < 2.5.3, we use our gsocket-2.5.c
+	#if wxCHECK_VERSION_FULL(2,5,0,0)
+		// If 2.5.0.0 <= wx < 2.5.2.3, we use our gsocket-2.5.c
 		#define wxSOCKET_REUSEADDR 8
 		#define GSOCK_OPTERR 10
 	#else
@@ -35,7 +33,7 @@
 		#define wxSOCKET_REUSEADDR 0
 	#endif
 #else
-	// If wx >= 2.5.3, there is nothing to do, wx socket.c is fine now.
+	// If wx >= 2.5.2.3, there is nothing to do, wx socket.c is fine now.
 #endif
 
 
