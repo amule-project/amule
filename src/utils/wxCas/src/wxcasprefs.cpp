@@ -325,7 +325,7 @@ BEGIN_EVENT_TABLE ( WxCasPrefs, wxDialog )
 EVT_BUTTON ( ID_OSPATH_BROWSE_BUTTON, WxCasPrefs::OnOSPathBrowseButton )
 EVT_BUTTON ( ID_AUTOSTATIMG_BROWSE_BUTTON, WxCasPrefs::OnAutoStatImgBrowseButton )
 EVT_BUTTON ( ID_VALIDATE_BUTTON, WxCasPrefs::OnValidateButton )
-EVT_BUTTON ( ID_CANCEL_BUTTON, WxCasPrefs::OnCancel )  	// Defined in wxDialog
+EVT_BUTTON ( ID_CANCEL_BUTTON, WxCasPrefs::OnCancel )   	// Defined in wxDialog
 EVT_CHECKBOX ( ID_AUTOSTATIMG_CHECK, WxCasPrefs::OnAutoStatImgCheck )
 EVT_CHECKBOX ( ID_FTP_UPDATE_CHECK, WxCasPrefs::OnFtpUpdateCheck )
 END_EVENT_TABLE ()

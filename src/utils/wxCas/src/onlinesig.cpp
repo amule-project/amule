@@ -49,40 +49,23 @@
 #include <wx/txtstrm.h>
 #include <wx/wfstream.h>
 
-// Constructors
-OnLineSig::OnLineSig ()
-{
-
-	m_amuleState = 0;
-	m_serverName = _( "Unknown" );
-	m_serverIP = wxT( "0.0.0.0" );
-	m_serverPort = wxT( "00" );
-	m_connexionID = wxT( "?" );
-	m_DLRate = wxT( "0.00" );
-	m_ULRate = wxT( "0.00" );
-	m_queue = wxT( "0" );
-	m_sharedFiles = wxT( "0" );
-	m_user = _( "Someone" );
-	m_totalDL = wxT( "0" );
-	m_totalUL = wxT( "0" );
-	m_version = wxT( "0" );
-	m_sessionDL = wxT( "0" );
-	m_sessionUL = wxT( "0" );
-	m_runTimeS = 0;
-
-	m_maxSessionDL = 0.0;
-	m_maxSessionDlDate = wxDateTime::Now();
-
-	m_amulesig = wxFileName ();
-}
-
-// Constructor 2
-OnLineSig::OnLineSig ( const wxFileName& file )
+// Constructor
+OnLineSig::OnLineSig ( const wxFileName& file,
+                       const double absoluteMaxDL,
+                       const wxDateTime absoluteMaxDlDate )
 {
 	m_amulesig = file;
-	m_maxSessionDL = 0.0;
-	m_maxSessionDlDate = wxDateTime::Now();
+
+	m_sessionMaxDL = 0.0;
+	m_sessionMaxDLDate = wxDateTime::Now();
+
+	m_absoluteMaxDL = absoluteMaxDL;
+	m_absoluteMaxDlDate = absoluteMaxDlDate;
+
 	Refresh ();
+
+	m_isSessionMaxDlChanged = true;
+	m_isAbsoluteMaxDlChanged = true;
 }
 
 // Destructor
@@ -122,12 +105,22 @@ OnLineSig::Refresh ()
 	text >> m_sessionUL;
 	text >> m_runTimeS;
 
+	m_isSessionMaxDlChanged = false;
+	m_isAbsoluteMaxDlChanged = false;
+
 	double dl;
 	m_DLRate.ToDouble ( &dl );
 
-	if ( dl > m_maxSessionDL ) {
-		m_maxSessionDL = dl;
-		m_maxSessionDlDate = wxDateTime::Now();
+	if ( dl > m_sessionMaxDL ) {
+		m_sessionMaxDL = dl;
+		m_sessionMaxDLDate = wxDateTime::Now();
+		m_isSessionMaxDlChanged = true;
+	}
+
+	if ( dl > m_absoluteMaxDL ) {
+		m_absoluteMaxDL = dl;
+		m_absoluteMaxDlDate = wxDateTime::Now();
+		m_isAbsoluteMaxDlChanged = true;
 	}
 }
 
@@ -260,18 +253,46 @@ wxString OnLineSig::GetConnexionIDType () const
 
 wxString OnLineSig::GetSessionMaxDL () const
 {
-	return ( wxString::Format ( _( "%.2f kB/s" ), m_maxSessionDL ) );
+	return ( wxString::Format ( _( "%.2f kB/s" ), m_sessionMaxDL ) );
 }
 
 wxDateTime OnLineSig::GetSessionMaxDlDate () const
 {
-	return ( m_maxSessionDlDate );
+	return ( m_sessionMaxDLDate );
 }
 
-void OnLineSig::ResetSessionMaxDl ()
+void OnLineSig::ResetSessionMaxDL ()
 {
-	m_maxSessionDL = 0.0;
-	m_maxSessionDlDate = wxDateTime::Now();
+	m_sessionMaxDL = 0.0;
+	m_sessionMaxDLDate = wxDateTime::Now();
+	m_isSessionMaxDlChanged = true;
+}
+
+bool OnLineSig::IsSessionMaxDlChanged() const
+{
+	return ( m_isSessionMaxDlChanged );
+}
+
+wxString OnLineSig::GetAbsoluteMaxDL () const
+{
+	return ( wxString::Format ( _( "%.2f kB/s" ), m_absoluteMaxDL ) );
+}
+
+wxDateTime OnLineSig::GetAbsoluteMaxDlDate () const
+{
+	return ( m_absoluteMaxDlDate );
+}
+
+void OnLineSig::ResetAbsoluteMaxDL ()
+{
+	m_absoluteMaxDL = 0.0;
+	m_absoluteMaxDlDate = wxDateTime::Now();
+	m_isAbsoluteMaxDlChanged = true;
+}
+
+bool OnLineSig::IsAbsoluteMaxDlChanged() const
+{
+	return ( m_isAbsoluteMaxDlChanged );
 }
 
 // Private use
