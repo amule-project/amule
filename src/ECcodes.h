@@ -35,7 +35,7 @@ typedef uint32 ec_taglen_t;
 
 
 /**
- * Type to hold IPv4 address.
+ * Class to hold IPv4 address.
  */
 class EC_IPv4_t {
 	public:

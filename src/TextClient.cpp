@@ -238,7 +238,6 @@ void CamulecmdApp::TextShell(const wxString& prompt, CmdId commands[])
 int CamulecmdApp::ProcessCommand(int CmdId)
 {
 	uint32 FileId;
-	wxString msg;
 	wxString args = GetCmdArgs();
 	CECPacket *request = 0;
 	std::list<CECPacket *> request_list;
@@ -413,7 +412,6 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			return -1;
 	}
 	
-	// v1 or v2 command format
 	if ( ! request_list.empty() ) {
 		std::list<CECPacket *>::iterator it = request_list.begin();
 		while ( it != request_list.end() ) {
@@ -426,8 +424,6 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			}
 		}
 		request_list.resize(0);
-	} else {
-		Process_Answer(SendRecvMsg(msg));
 	}
 	
 	return 0;
@@ -546,9 +542,6 @@ void CamulecmdApp::Process_Answer_v2(CECPacket *response)
 				wxString ip = wxString::Format(wxT("[%d.%d.%d.%d:%d]"), addr->ip[0], addr->ip[1], addr->ip[2], addr->ip[3], addr->port);
 				delete addr;
 				ip.Append(' ', 24 - ip.Length());
-//				while (ip.Length() < 24) {
-//					ip += wxT(" ");
-//				}
 				s += ip;
 				s += tag->GetTagByName(EC_TAG_SERVER_NAME)->GetStringData();
 				s += wxT("\n");
