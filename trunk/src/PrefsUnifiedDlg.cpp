@@ -1010,10 +1010,10 @@ PrefsUnifiedDlg::PrefsUnifiedDlg(wxWindow *parent)
 		#endif
 		
 		prefs_sizer->Show(CurrentPrefsPanel,TRUE);
-		prefs_sizer->SetMinSize(GetSize());
+		prefs_sizer->SetMinSize(w, h-45);
 		prefs_sizer->Layout();
 		//this->Fit();
-		this->SetSize(w,h+30); // Max size.
+		this->SetSize(w,h+5); // Max size.
 		
 	} else {
     		preferencesDlgLeft( this, TRUE ); 
