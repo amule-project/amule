@@ -239,19 +239,23 @@ CUpDownClient::~CUpDownClient()
 	//printf("3...");
 	if (m_pszUsername) {
 		delete[] m_pszUsername;
+		m_pszUsername = NULL;
 	}
 	
 	if (m_pszClientFilename) {
 		delete[] m_pszClientFilename;
+		m_pszClientFilename = NULL;
 	}
 	
 	//printf("4...");
 	if (m_abyPartStatus) {
 		delete[] m_abyPartStatus;
+		m_abyPartStatus = NULL;
 	}
 	//printf("5...");
 	if (m_abyUpPartStatus) {
 		delete[] m_abyUpPartStatus;
+		m_abyUpPartStatus = NULL;
 	}
 	//printf("6...");
 	ClearUploadBlockRequests();
