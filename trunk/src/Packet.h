@@ -153,13 +153,4 @@ public:
 };
 
 
-/**
- * Helper-function for writing CTags to files.
- */
-template <typename TypeName, typename ValueType>
-bool WriteCTagToFile( TypeName name, ValueType value, CFileDataIO* file, EUtf8Str eStrEncode = utf8strNone )
-{
-	return CTag( name, value ).WriteTagToFile( file, eStrEncode );
-}
-
 #endif // PACKET_H

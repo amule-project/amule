@@ -853,33 +853,33 @@ bool CPartFile::SavePartFile(bool Initial)
 		#if wxUSE_UNICODE					
 		// 0 (unicoded part file name) 
 		// We write it with BOM to kep eMule compatibility
-		WriteCTagToFile( FT_FILENAME, m_strFileName, &file, utf8strOptBOM );
+		CTag( FT_FILENAME, m_strFileName ).WriteTagToFile( &file, utf8strOptBOM );
 		#endif
 		
-		WriteCTagToFile( FT_FILENAME,	m_strFileName,	&file );	// 1
-		WriteCTagToFile( FT_FILESIZE,	m_nFileSize,	&file );	// 2
-		WriteCTagToFile( FT_TRANSFERED,	transfered,		&file );	// 3
-		WriteCTagToFile( FT_STATUS,		(m_paused?1:0),	&file );	// 4
+		CTag( FT_FILENAME,		m_strFileName	).WriteTagToFile( &file );	// 1
+		CTag( FT_FILESIZE,		m_nFileSize		).WriteTagToFile( &file );	// 2
+		CTag( FT_TRANSFERED,	transfered		).WriteTagToFile( &file );	// 3
+		CTag( FT_STATUS,		(m_paused?1:0)	).WriteTagToFile( &file );	// 4
 
 		if ( IsAutoDownPriority() ) {
-			WriteCTagToFile( FT_DLPRIORITY,		(uint8)PR_AUTO,		&file );	// 5
-			WriteCTagToFile( FT_OLDDLPRIORITY,	(uint8)PR_AUTO,		&file );	// 6
+			CTag( FT_DLPRIORITY,	(uint8)PR_AUTO	).WriteTagToFile( &file );	// 5
+			CTag( FT_OLDDLPRIORITY,	(uint8)PR_AUTO	).WriteTagToFile( &file );	// 6
 		} else {
-			WriteCTagToFile( FT_DLPRIORITY,		m_iDownPriority,	&file );	// 5
-			WriteCTagToFile( FT_OLDDLPRIORITY,	m_iDownPriority,	&file );	// 6
+			CTag( FT_DLPRIORITY,	m_iDownPriority	).WriteTagToFile( &file );	// 5
+			CTag( FT_OLDDLPRIORITY,	m_iDownPriority	).WriteTagToFile( &file );	// 6
 		}
 
-		WriteCTagToFile( FT_LASTSEENCOMPLETE, lsc, 		&file );	// 7
+		CTag( FT_LASTSEENCOMPLETE,	lsc			).WriteTagToFile( &file );	// 7
 
 		if ( IsAutoUpPriority() ) {
-			WriteCTagToFile( FT_ULPRIORITY,		(uint8)PR_AUTO,		&file );	// 8
-			WriteCTagToFile( FT_OLDULPRIORITY,	(uint8)PR_AUTO,		&file );	// 9
+			CTag( FT_ULPRIORITY,	(uint8)PR_AUTO	).WriteTagToFile( &file );	// 8
+			CTag( FT_OLDULPRIORITY,	(uint8)PR_AUTO	).WriteTagToFile( &file );	// 9
 		} else {
-			WriteCTagToFile( FT_ULPRIORITY,		GetUpPriority(),	&file );	// 8
-			WriteCTagToFile( FT_OLDULPRIORITY,	GetUpPriority(),	&file );	// 9
+			CTag( FT_ULPRIORITY,	GetUpPriority() ).WriteTagToFile( &file );	// 8
+			CTag( FT_OLDULPRIORITY,	GetUpPriority() ).WriteTagToFile( &file );	// 9
 		}
 	
-		WriteCTagToFile( FT_CATEGORY, 	m_category,		&file ); 	// 10
+		CTag( FT_CATEGORY, 		m_category		).WriteTagToFile( &file ); 	// 10
 
 		// currupt part infos
 		POSITION posCorruptedPart = corrupted_list.GetHeadPosition();
@@ -894,7 +894,7 @@ bool CPartFile::SavePartFile(bool Initial)
 			}
 			wxASSERT( !strCorruptedParts.IsEmpty() );
 			
-			WriteCTagToFile( FT_CORRUPTEDPARTS, strCorruptedParts, &file); // 11?
+			CTag( FT_CORRUPTEDPARTS, strCorruptedParts ).WriteTagToFile( &file); // 11?
 		}
 
 		//AICH Filehash
@@ -916,12 +916,12 @@ bool CPartFile::SavePartFile(bool Initial)
 			sprintf(number,"%d",i_pos);
 			namebuffer[0] = FT_GAPSTART;
 			
-			WriteCTagToFile( namebuffer, gaplist.GetAt(pos)->start, &file );
+			CTag( namebuffer, 	gaplist.GetAt(pos)->start	).WriteTagToFile( &file );
 			// gap start = first missing byte but gap ends = first non-missing byte
 			// in edonkey but I think its easier to user the real limits
 			namebuffer[0] = FT_GAPEND;
 			
-			WriteCTagToFile( namebuffer, gaplist.GetAt(pos)->end + 1, &file );
+			CTag( namebuffer,	gaplist.GetAt(pos)->end + 1	).WriteTagToFile( &file );
 			
 			++i_pos;
 		}
