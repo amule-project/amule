@@ -89,7 +89,7 @@ AC_DEFUN(AM_PATH_WXCONFIG,
     WX_VERSION=""
     no_wx=""
 
-    min_wx_version=ifelse([$1], ,2.2.1,$1)
+    min_wx_version=ifelse([$1], ,2.2.6,$1)
     AC_MSG_CHECKING(for wxWidgets version >= $min_wx_version)
 
     WX_CONFIG_WITH_ARGS="$WX_CONFIG_PATH $wx_config_args"
@@ -132,41 +132,13 @@ AC_DEFUN(AM_PATH_WXCONFIG,
       WX_LIBS=`$WX_CONFIG_WITH_ARGS --libs`
       WX_LIBS_STATIC=`$WX_CONFIG_WITH_ARGS --static --libs`
 
-      dnl starting with version 2.2.6 wx-config has --cppflags argument
-      wx_has_cppflags=""
-      if test $wx_config_major_version -gt 2; then
-        wx_has_cppflags=yes
-      else
-        if test $wx_config_major_version -eq 2; then
-           if test $wx_config_minor_version -gt 2; then
-              wx_has_cppflags=yes
-           else
-              if test $wx_config_minor_version -eq 2; then
-                 if test $wx_config_micro_version -ge 6; then
-                    wx_has_cppflags=yes
-                 fi
-              fi
-           fi
-        fi
-      fi
+      dnl we have CPPFLAGS included in CFLAGS included in CXXFLAGS
+      WX_CPPFLAGS=`$WX_CONFIG_WITH_ARGS --cppflags`
+      WX_CXXFLAGS=`$WX_CONFIG_WITH_ARGS --cxxflags`
+      WX_CFLAGS=`$WX_CONFIG_WITH_ARGS --cflags`
 
-      if test "x$wx_has_cppflags" = x ; then
-         dnl no choice but to define all flags like CFLAGS
-         WX_CFLAGS=`$WX_CONFIG_WITH_ARGS --cflags`
-         WX_CPPFLAGS=$WX_CFLAGS
-         WX_CXXFLAGS=$WX_CFLAGS
-
-         WX_CFLAGS_ONLY=$WX_CFLAGS
-         WX_CXXFLAGS_ONLY=$WX_CFLAGS
-      else
-         dnl we have CPPFLAGS included in CFLAGS included in CXXFLAGS
-         WX_CPPFLAGS=`$WX_CONFIG_WITH_ARGS --cppflags`
-         WX_CXXFLAGS=`$WX_CONFIG_WITH_ARGS --cxxflags`
-         WX_CFLAGS=`$WX_CONFIG_WITH_ARGS --cflags`
-
-         WX_CFLAGS_ONLY=`echo $WX_CFLAGS | sed "s@^$WX_CPPFLAGS *@@"`
-         WX_CXXFLAGS_ONLY=`echo $WX_CXXFLAGS | sed "s@^$WX_CFLAGS *@@"`
-      fi
+      WX_CFLAGS_ONLY=`echo $WX_CFLAGS | sed "s@^$WX_CPPFLAGS *@@"`
+      WX_CXXFLAGS_ONLY=`echo $WX_CXXFLAGS | sed "s@^$WX_CFLAGS *@@"`
     fi
 
     if test "x$no_wx" = x ; then

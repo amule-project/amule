@@ -267,7 +267,7 @@ AC_DEFUN(AM_PATH_WXBASECONFIG,
     WXBASE_VERSION=""
     no_wxbase=""
 
-    min_wxbase_version=ifelse([$1], ,2.2.1,$1)
+    min_wxbase_version=ifelse([$1], ,2.2.6,$1)
     AC_MSG_CHECKING(for wxWidgets base version >= $min_wxbase_version)
 
     WXBASE_CONFIG_WITH_ARGS="$WXBASE_CONFIG_PATH $wxbase_config_args"
@@ -309,42 +309,14 @@ AC_DEFUN(AM_PATH_WXBASECONFIG,
     else
       WXBASE_LIBS=`$WXBASE_CONFIG_WITH_ARGS --libs`
       WXBASE_LIBS_STATIC=`$WXBASE_CONFIG_WITH_ARGS --static --libs`
+      
+      dnl we have CPPFLAGS included in CFLAGS included in CXXFLAGS
+      WXBASE_CPPFLAGS=`$WXBASE_CONFIG_WITH_ARGS --cppflags`
+      WXBASE_CXXFLAGS=`$WXBASE_CONFIG_WITH_ARGS --cxxflags`
+      WXBASE_CFLAGS=`$WXBASE_CONFIG_WITH_ARGS --cflags`
 
-      dnl starting with version 2.2.6 wxbase-config has --cppflags argument
-      wxbase_has_cppflags=""
-      if test $wxbase_config_major_version -gt 2; then
-        wxbase_has_cppflags=yes
-      else
-        if test $wxbase_config_major_version -eq 2; then
-           if test $wxbase_config_minor_version -gt 2; then
-              wxbase_has_cppflags=yes
-           else
-              if test $wxbase_config_minor_version -eq 2; then
-                 if test $wxbase_config_micro_version -ge 6; then
-                    wxbase_has_cppflags=yes
-                 fi
-              fi
-           fi
-        fi
-      fi
-
-      if test "x$wxbase_has_cppflags" = x ; then
-         dnl no choice but to define all flags like CFLAGS
-         WXBASE_CFLAGS=`$WXBASE_CONFIG_WITH_ARGS --cflags`
-         WXBASE_CPPFLAGS=$WXBASE_CFLAGS
-         WXBASE_CXXFLAGS=$WXBASE_CFLAGS
-
-         WXBASE_CFLAGS_ONLY=$WXBASE_CFLAGS
-         WXBASE_CXXFLAGS_ONLY=$WXBASE_CFLAGS
-      else
-         dnl we have CPPFLAGS included in CFLAGS included in CXXFLAGS
-         WXBASE_CPPFLAGS=`$WXBASE_CONFIG_WITH_ARGS --cppflags`
-         WXBASE_CXXFLAGS=`$WXBASE_CONFIG_WITH_ARGS --cxxflags`
-         WXBASE_CFLAGS=`$WXBASE_CONFIG_WITH_ARGS --cflags`
-
-         WXBASE_CFLAGS_ONLY=`echo $WXBASE_CFLAGS | sed "s@^$WXBASE_CPPFLAGS *@@"`
-         WXBASE_CXXFLAGS_ONLY=`echo $WXBASE_CXXFLAGS | sed "s@^$WXBASE_CFLAGS *@@"`
-      fi
+      WXBASE_CFLAGS_ONLY=`echo $WXBASE_CFLAGS | sed "s@^$WXBASE_CPPFLAGS *@@"`
+      WXBASE_CXXFLAGS_ONLY=`echo $WXBASE_CXXFLAGS | sed "s@^$WXBASE_CFLAGS *@@"`
     fi
 
     if test "x$no_wxbase" = x ; then
