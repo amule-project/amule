@@ -2124,8 +2124,8 @@ void CUpDownClient::SetUserHash(const CMD4Hash& userhash)
 EUtf8Str CUpDownClient::GetUnicodeSupport() const
 {
 #if wxUSE_UNICODE
-	if (m_bUnicodeSupport)
-		return utf8strRaw;
-#endif
+	return m_bUnicodeSupport ? utf8strRaw : utf8strNone;
+#else 
 	return utf8strNone;
+#endif
 }
