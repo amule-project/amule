@@ -604,9 +604,14 @@ bool CamuleApp::OnInit()
 	myaddr.Service(thePrefs::GetPort());
 	listensocket = new CListenSocket(myaddr);
 	
-	// Create UDP socket
-	myaddr.Service(thePrefs::GetUDPPort());
-	clientudp	= new CClientUDPSocket(myaddr);
+	if (!thePrefs::IsUDPDisabled()) {
+		// Create UDP socket
+		myaddr.Service(thePrefs::GetUDPPort());
+		clientudp	= new CClientUDPSocket(myaddr);
+	} else {
+		printf("*** UDP socket disabled on preferences\n");
+		clientudp = NULL;
+	}
 	
 
 	// This command just sets a flag to control maximun number of connections.
