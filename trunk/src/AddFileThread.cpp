@@ -150,8 +150,14 @@ void CAddFileThread::Start()
 	} else {
 		SetRunning(true);
 
-		// Start as many threads as needed, but avoid looping
-		for ( int i = GetThreadCount(); i < MAXTHREADCOUNT; i++ ) {
+		// No threads are running yet, so all files are non-busy.
+		uint32 files = GetFileCount();
+		// We wont start on more files than the max number of threads.
+		if ( files > MAXTHREADCOUNT )
+			files = MAXTHREADCOUNT;
+
+		// Start as many threads as we can and as needed
+		for ( ; files; files-- ) {
 			CreateNewThread();
 		}
 	}
