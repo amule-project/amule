@@ -253,7 +253,7 @@ void CServerSocket::OnConnect(wxSocketError nErrorCode)
 
 void CServerSocket::OnReceive(wxSocketError nErrorCode)
 {
-	if (connectionstate != CS_CONNECTED && !this->serverconnect->IsConnecting()) {
+	if (connectionstate != CS_CONNECTED && !serverconnect->IsConnecting()) {
 		serverconnect->DestroySocket(this);
 		return;
 	}

@@ -349,7 +349,6 @@ public:
 	wxArrayString shareddir_list;
 	wxArrayString adresses_list;
 
-	static void 		SetLanguage();
 	static bool 		AutoConnectStaticOnly() 	{ return s_autoconnectstaticonly; }
 	static void		SetAutoConnectStaticOnly(bool val) { s_autoconnectstaticonly = val; }
 	static bool		IsManualHighPrio()		{ return s_bmanualhighprio; }
@@ -372,7 +371,7 @@ public:
 	static uint16 		GetWSPort() 			{ return s_nWebPort; }
 	static void		SetWSPort(uint16 uPort) 	{ s_nWebPort=uPort; }
 	static const wxString&	GetWSPass() 			{ return s_sWebPassword; }
-	static void		SetWSPass(wxString pass)	{ s_sWebPassword = pass; }
+	static void		SetWSPass(const wxString& pass)	{ s_sWebPassword = pass; }
 	static bool		GetWSIsEnabled() 		{ return s_bWebEnabled; }
 	static void		SetWSIsEnabled(bool bEnable) 	{ s_bWebEnabled=bEnable; }
 	static bool		GetWebUseGzip() 		{ return s_bWebUseGzip; }
@@ -382,7 +381,7 @@ public:
 	static bool		GetWSIsLowUserEnabled() 	{ return s_bWebLowEnabled; }
 	static void		SetWSIsLowUserEnabled(bool in) 	{ s_bWebLowEnabled=in; }
 	static const wxString&	GetWSLowPass() 			{ return s_sWebLowPassword; }
-	static void		SetWSLowPass(wxString pass)	{ s_sWebLowPassword = pass; }
+	static void		SetWSLowPass(const wxString& pass)	{ s_sWebLowPassword = pass; }
 
 	static void		SetMaxSourcesPerFile(uint16 in) { s_maxsourceperfile=in;}
 	static void		SetMaxConnections(uint16 in) 	{ s_maxconnections =in;}
@@ -424,7 +423,7 @@ public:
 	static bool		IPFilterAutoLoad()		{ return s_IPFilterAutoLoad; }
 	static void		SetIPFilterAutoLoad(bool val)	{ s_IPFilterAutoLoad = val; }
 	static const wxString&	IPFilterURL()			{ return s_IPFilterURL; }
-	static void		SetIPFilterURL(wxString url)	{ s_IPFilterURL = url; }
+	static void		SetIPFilterURL(const wxString& url)	{ s_IPFilterURL = url; }
 
 	// Kry - Source seeds On/Off
 	static bool		GetSrcSeedsOn() 		{ return s_UseSrcSeeds; }
@@ -484,7 +483,7 @@ public:
 	static bool		IsFilterByKeywords()		{ return s_FilterSomeMessages; }
 	static void		SetFilterByKeywords(bool val)	{ s_FilterSomeMessages = val; }
 	static const wxString&	GetMessageFilterString()	{ return s_MessageFilterString; }
-	static void		SetMessageFilterString(wxString val) { s_MessageFilterString = val; }
+	static void		SetMessageFilterString(const wxString& val) { s_MessageFilterString = val; }
 	static wxString 	MessageFilter() { 
 		if (s_FilterAllMessages) { 
 			return wxT("*");

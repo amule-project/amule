@@ -61,7 +61,7 @@
 
 // Mario Sergio Fujikawa Ferreira <lioux@FreeBSD.org>
 // to detect if this is a *BSD system
-#if defined(HAVE_SYS_PARAM_H)
+#ifdef HAVE_SYS_PARAM_H
 #include <sys/param.h>
 #endif
 
@@ -204,7 +204,7 @@ enum {
 				int starter = wherefrom.Find('(');
 				int ender = wherefrom.Find(')');
 				wherefrom = wherefrom.Mid(starter, ender-starter+1);
-				AddDebugLogLineM( false, logCFile, _("Called From: ") + wherefrom );
+				AddDebugLogLineM( false, logCFile, wxT("Called From: ") + wherefrom );
 			}
 		}	
 	#else // __LINUX__
@@ -634,7 +634,7 @@ bool CFile::Eof() const
 //
 // When moving file, first try an ANSI move, only then try UTF-8.
 // 
-bool UTF8_MoveFile(wxString& from, wxString& to) {
+bool UTF8_MoveFile(const wxString& from, const wxString& to) {
 	bool ret = false;
 	Unicode2CharBuf tmpFrom(unicode2char(from));
 	Unicode2CharBuf tmpTo(unicode2char(to));
@@ -661,7 +661,7 @@ bool UTF8_MoveFile(wxString& from, wxString& to) {
 // When copying file, first try an ANSI name, only then try UTF-8.
 // This is done in the CFile constructor.
 // 
-bool UTF8_CopyFile(wxString& from, wxString& to)
+bool UTF8_CopyFile(const wxString& from, const wxString& to)
 {
 	char buffer[FILE_COPY_BUFFER];
 	CFile input_file(from, CFile::read);
@@ -692,7 +692,7 @@ bool UTF8_CopyFile(wxString& from, wxString& to)
 }
 
 // When iterating dir, first try an ANSI file name, then try an UTF-8 file name.
-CDirIterator::CDirIterator(wxString dir) {
+CDirIterator::CDirIterator(const wxString& dir) {
 	DirStr = dir;
 	if (DirStr.Last() != wxFileName::GetPathSeparator()) {
 		DirStr += wxFileName::GetPathSeparator();
@@ -721,7 +721,7 @@ CDirIterator::~CDirIterator() {
 	}
 }
 
-wxString CDirIterator::FindFirstFile(FileType search_type, wxString search_mask) {
+wxString CDirIterator::FindFirstFile(FileType search_type, const wxString& search_mask) {
 	if (!DirPtr) {
 		return wxEmptyString;
 	}
@@ -826,7 +826,7 @@ wxString  CDirIterator::FindNextFile() {
 }
 
 // First try an ANSI name, only then try UTF-8.
-time_t GetLastModificationTime(wxString& file) {
+time_t GetLastModificationTime(const wxString& file) {
 	struct stat buf;
 	Unicode2CharBuf tmpFile(unicode2char(file));
 	if (tmpFile) {

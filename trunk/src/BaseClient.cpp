@@ -241,7 +241,7 @@ CUpDownClient::~CUpDownClient()
 
 	if (m_iRate>0 || !m_strComment.IsEmpty()) {
 		m_iRate=0;
-		m_strComment = wxEmptyString;
+		m_strComment.Clear();
 		if (m_reqfile) {
 			m_reqfile->UpdateFileRatingCommentAvail();
 		}
@@ -1661,7 +1661,7 @@ void CUpDownClient::ResetFileStatusInfo()
 	m_bCompleteSource = false;
 	m_dwLastAskedTime = 0;
 	m_iRate=0;
-	m_strComment = wxEmptyString;
+	m_strComment.Clear();
 
 	if (m_pReqFileAICHHash != NULL) {
 		delete m_pReqFileAICHHash;
@@ -1948,7 +1948,7 @@ bool CUpDownClient::CheckHandshakeFinished(UINT WXUNUSED(protocol), UINT WXUNUSE
 {
 	if (m_bHelloAnswerPending){
 		// this triggers way too often.. need more time to look at this -> only create a warning
-		AddDebugLogLineM( false, logClient, _("Handshake not finished while processing packet.") );
+		AddDebugLogLineM( false, logClient, wxT("Handshake not finished while processing packet.") );
 		return false;
 	}
 

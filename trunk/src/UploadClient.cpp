@@ -229,7 +229,7 @@ bool CUpDownClient::CreateNextBlockPackage()
 	}
 	CFile file;
 	byte* filedata = 0;
-	wxString fullname = wxEmptyString;
+	wxString fullname;
 	try{
 		while (!m_BlockRequests_queue.IsEmpty()){
 			Requested_Block_Struct* currentblock = m_BlockRequests_queue.GetHead();

@@ -65,7 +65,6 @@ public:
 	void	SetDownloadLimit(uint32 limit);
 	void	DisableDownloadLimit();
 	void	Destroy();
-	bool	AsyncSelect(long lEvent);
 	bool OnDestroy() { return DoingDestroy; };
 	//protected:
 	// this functions are public on our code because of the amuleDlg::socketHandler

@@ -229,7 +229,7 @@ void CServerList::ServerStats()
 			return;
 		}
 	        while(ping_server->GetLastPinged() != 0 && (::GetTickCount() - ping_server->GetLastPinged()) < UDPSERVSTATREASKTIME) {
-			ping_server = this->GetNextStatServer();
+			ping_server = GetNextStatServer();
 			if(ping_server == test) {
 				return;
 			}
@@ -657,7 +657,7 @@ void CServerList::RemoveDeadServers()
 	}
 }
 
-void CServerList::UpdateServerMetFromURL(wxString strURL)
+void CServerList::UpdateServerMetFromURL(const wxString& strURL)
 {
 	if (strURL.Find(wxT("://")) == -1) {
 		AddLogLineM(true, _("Invalid URL"));

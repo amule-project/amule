@@ -47,19 +47,21 @@ CKnownFileList::CKnownFileList() {
 	Init();
 }
 
-CKnownFileList::~CKnownFileList() {
-// TODO: Rather find the source of the lock leakage
-//	list_mut.Unlock();
+
+CKnownFileList::~CKnownFileList()
+{
 	Clear();
 }
 
-bool CKnownFileList::Init() {
+
+bool CKnownFileList::Init()
+{
 	CSafeFile file;
 	uint32 result = false;
 	try {
 		
 		wxString fullpath(theApp.ConfigDir + wxT("known.met"));
-		if (!wxFileExists(fullpath)) {//CFile::modeRead|CFile::osSequentialScan)) {
+		if (!wxFileExists(fullpath)) {
 			return false;
 		}
 		
@@ -68,19 +70,16 @@ bool CKnownFileList::Init() {
 			file.Close();
 			return false;
 		}
-		//CSingleLock sLock(&list_mut,true); // to make sure that its thread-safe
 		wxMutexLocker sLock(list_mut);
 		uint32 RecordsNumber = file.ReadUInt32();
 		for (uint32 i = 0; i != RecordsNumber; i++) {
 			CKnownFile* pRecord =  new CKnownFile();
 			if (!pRecord->LoadFromFile(&file)){
-				//printf("*** Failed to load entry %u (name=%s  hash=%s  size=%u  parthashs=%u expected parthashs=%u) from known.met\n", i, pRecord->GetFileName(), md4str(pRecord->GetFileHash()).c_str(), pRecord->GetFileSize(), pRecord->GetHashCount(), pRecord->GetED2KPartHashCount());
 				delete pRecord;
 				continue;
 			}
 			Append(pRecord);
 		}
-		//sLock.Unlock();
 		file.Close();
 		result = true;
 	} catch (...) {

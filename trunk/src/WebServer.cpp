@@ -732,7 +732,7 @@ wxString CWebServer::_GetHeader(ThreadData Data, long lSession) {
 			wxString sRefresh = sRefresh.Format(wxT("%d"), webInterface->m_PageRefresh);
 			sT.Replace(wxT("[RefreshVal]"), sRefresh);
 			
-			wxString catadd = wxEmptyString;
+			wxString catadd;
 			if (sPage == wxT("transfer"))
 				catadd=wxT("&cat=") + _ParseURL(Data, wxT("cat"));
 			sT.Replace(wxT("[wCommand]"), sPage+catadd);
@@ -1032,7 +1032,7 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	Out.Replace(wxT("[TotalUp]"), _("Uploaded total"));
 	Out.Replace(wxT("[Prio]"), _("Priority"));
 
-	Out.Replace(wxT("[CatSel]"), sCat.Length() ? (wxT("&cat=") + sCat) : wxString(wxEmptyString));
+	Out.Replace(wxT("[CatSel]"), sCat.Length() ? (wxT("&cat=") + sCat) : wxString());
 
 	wxString OutE = m_Templates.sTransferDownLine;
 	wxString OutE2 = m_Templates.sTransferDownLineGood;
@@ -1374,7 +1374,7 @@ wxString CWebServer::_GetSharedFilesList(ThreadData Data) {
 	m_SharedFilesInfo.ReQuery();	
 
 	// Displaying
-	wxString sSharedList = wxEmptyString;
+	wxString sSharedList;
 	SharedFilesInfo::ItemIterator i = m_SharedFilesInfo.GetBeginIterator();
 	while (i != m_SharedFilesInfo.GetEndIterator()) {
 		wxString HTTPProcessData;
@@ -2012,9 +2012,7 @@ wxString CWebServer::_GetLoginScreen(ThreadData Data) {
 
 	wxString sSession = _ParseURL(Data, wxT("ses"));
 
-	wxString Out = wxEmptyString;
-
-	Out += m_Templates.sLogin;
+	wxString Out = m_Templates.sLogin;
 
 	Out.Replace(wxT("[CharSet]"), WEBCHARSET);
 	Out.Replace(wxT("[aMulePlus]"), wxT("aMule"));

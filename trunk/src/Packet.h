@@ -110,45 +110,6 @@ struct CStrangePacket : public CInvalidPacket
 	{ CStrangePacket(const std::string& arg = "strange packet") : CInvalidPacket(arg) { } };
 
 
-#if 0
-// Old CTags.
-struct STag{
-	STag();
-	STag(const STag& in);
-	~STag();
-
-	int8	type;
-	LPSTR	tagname;
-	union{
-		uint32	intvalue;
-		float floatvalue;
-	};
-	wxString	stringvalue;	
-	uint8	specialtag;
-};
-
-
-class CTag {
-public:
-	CTag(LPCSTR name, uint32 intvalue);
-	CTag(int8 special, uint32 intvalue);
-	CTag(LPCSTR name, LPCSTR strvalue);
-	CTag(int8 special, LPCSTR strvalue);
-	CTag(LPCSTR name,  const wxString& strvalue);
-	CTag(int8 special, const wxString& strvalue);
-	CTag(const STag &in_tag);
-	CTag(const CFileDataIO& data, bool bOptUTF8);
-	~CTag();
-	
-	CTag* CloneTag() { return new CTag(tag); }
-	
-	bool WriteTagToFile(CFileDataIO* file, EUtf8Str eStrEncode = utf8strNone) const; //used for CMemfiles
-	
-	STag tag;
-	wxString GetFullInfo() const;
-};
-#endif
-
 ///////////////////////////////////////////////////////////////////////////////
 // CTag
 

@@ -175,7 +175,6 @@ public:
 	bool	LoadHashsetFromFile(const CFileDataIO* file, bool checkhash);
 	void	AddUploadingClient(CUpDownClient* client);
 	void	RemoveUploadingClient(CUpDownClient* client);
-	void	NewAvailPartsInfo();
 	
 	// comment 
 #ifdef CLIENT_GUI

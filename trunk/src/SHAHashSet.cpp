@@ -612,9 +612,9 @@ bool CAICHHashSet::SaveHashSet(){
 	}
 	catch (const wxString& error){
 		if (file.Eof()) {
-		   AddDebugLogLineM( true, logSHAHashSet, _("Error: EOF on ") + error);
+		   AddDebugLogLineM( true, logSHAHashSet, wxT("Error: EOF on ") + error);
 		} else {
-			AddDebugLogLineM( true, logSHAHashSet, _("Error: wrong format on ")  + error);
+			AddDebugLogLineM( true, logSHAHashSet, wxT("Error: wrong format on ")  + error);
 		}
 		return false;
 	}

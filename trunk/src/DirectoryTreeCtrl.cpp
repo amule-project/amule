@@ -172,7 +172,7 @@ void CDirectoryTreeCtrl::MarkChildren(wxTreeItemId hChild,bool mark)
 	Toggle(hChild);
 }
 
-void CDirectoryTreeCtrl::AddChildItem(wxTreeItemId hBranch, wxString const& strText)
+void CDirectoryTreeCtrl::AddChildItem(wxTreeItemId hBranch, const wxString& strText)
 {
 	wxASSERT(hBranch.IsOk()); // The place to add it is ok
 	
@@ -219,7 +219,7 @@ wxString CDirectoryTreeCtrl::GetFullPath(wxTreeItemId hItem)
 	}
 }
 
-void CDirectoryTreeCtrl::AddSubdirectories(wxTreeItemId hBranch, wxString folder)
+void CDirectoryTreeCtrl::AddSubdirectories(wxTreeItemId hBranch, const wxString& folder)
 {
 	// we must collect values first because we'll call FindFirstFile() again in AddChildItem() ...
 	wxArrayString ary;
@@ -246,7 +246,7 @@ void CDirectoryTreeCtrl::AddSubdirectories(wxTreeItemId hBranch, wxString folder
 	}
 }
 
-bool CDirectoryTreeCtrl::HasSubdirectories(wxString folder)
+bool CDirectoryTreeCtrl::HasSubdirectories(const wxString& folder)
 {
 	wxLogNull logNo; // prevent stupid log windows if we try to traverse somewhere we have no access.
 
@@ -300,7 +300,7 @@ void CDirectoryTreeCtrl::SetSharedDirectories(wxArrayString* list)
 	
 }
 
-bool CDirectoryTreeCtrl::HasSharedSubdirectory(wxString const& strDir)
+bool CDirectoryTreeCtrl::HasSharedSubdirectory(const wxString& strDir)
 {
 	wxString tStrDir = strDir;
 
@@ -342,7 +342,7 @@ void CDirectoryTreeCtrl::CheckChanged(wxTreeItemId hItem, bool bChecked)
 	}
 }
 
-bool CDirectoryTreeCtrl::IsShared(wxString const& strDir)
+bool CDirectoryTreeCtrl::IsShared(const wxString& strDir)
 {	
 #ifdef __WXMSW__
 	return (m_lstShared.Index(strDir,FALSE) != wxNOT_FOUND); // case insensitive		
@@ -351,7 +351,7 @@ bool CDirectoryTreeCtrl::IsShared(wxString const& strDir)
 #endif
 }
 
-void CDirectoryTreeCtrl::AddShare(wxString strDir)
+void CDirectoryTreeCtrl::AddShare(const wxString& strDir)
 {
 		
 	wxASSERT(strDir.Len() > 0);
@@ -363,7 +363,7 @@ void CDirectoryTreeCtrl::AddShare(wxString strDir)
 	m_lstShared.Add(strDir);
 }
 
-void CDirectoryTreeCtrl::DelShare(wxString strDir)
+void CDirectoryTreeCtrl::DelShare(const wxString& strDir)
 {
 	wxASSERT(strDir.Len() > 0);
 	

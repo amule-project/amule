@@ -39,23 +39,12 @@ class CPartFile;
 
 class CFileDetailDialog : public wxDialog //CDialog
 {
-  //DECLARE_DYNAMIC(CFileDetailDialog)
-
 public:
 	CFileDetailDialog(wxWindow* parent, CPartFile* file);   // standard constructor
 	virtual ~CFileDetailDialog();
-	//virtual bool OnInitDialog();
 
 protected:
 	void OnTimer(wxTimerEvent& evt);
-#if 0
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	void OnTimer(unsigned int nIDEvent);
-	void OnDestroy();
-	DECLARE_MESSAGE_MAP()
-
-	static int CALLBACK CompareListNameItems(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);	// Tarod [Juanjo]
-#endif
 	DECLARE_EVENT_TABLE()
 
 private:
@@ -65,18 +54,13 @@ private:
 		wxString	name;
 		long		count;
 	};
-	//uint32 m_timer;
+	
 	wxTimer m_timer;
 	void OnClosewnd(wxCommandEvent& evt);
-	//afx_msg void OnBnClickedButtonrename();	// Tarod [Juanjo]
-	//afx_msg void OnBnClickedButtonStrip();
-	//afx_msg void TakeOver();
 	void FillSourcenameList();
 
-	void OnBnClickedButtonrename(wxCommandEvent& evt);
 	void OnBnClickedButtonStrip(wxCommandEvent& evt);
-	void OnBnClickedFileinfo(wxCommandEvent& evt);
-	void OnBnClickedShowComment(wxCommandEvent& evt);//for Comment//
+	void OnBnClickedShowComment(wxCommandEvent& evt);
 	void OnBnClickedTakeOver(wxCommandEvent& evt);
 	void OnListClickedTakeOver(wxListEvent& evt);
 	void OnBnClickedRename(wxCommandEvent& evt);

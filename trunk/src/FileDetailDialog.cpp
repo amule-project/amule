@@ -132,7 +132,7 @@ void CFileDetailDialog::UpdateData()
 	}
 
 	CastChild(IDC_LASTSEENCOMPL,wxControl)->SetLabel(bufferS);
-	CastChild(IDC_RENAME,wxControl)->Enable((m_file->GetStatus() == PS_COMPLETE || m_file->GetStatus() == PS_COMPLETING) ? false:true);//add by CML 
+	CastChild(IDC_RENAME,wxControl)->Enable((m_file->GetStatus() == PS_COMPLETE || m_file->GetStatus() == PS_COMPLETING) );//add by CML 
 	FillSourcenameList();
 	Layout();
 }

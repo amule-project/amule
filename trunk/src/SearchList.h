@@ -59,7 +59,7 @@ class CSearchFile : public CAbstractFile
 {
 	friend class CPartFile;
 public:
-	CSearchFile(const CSafeMemFile& in_data, bool bOptUTF8, long nSearchID, uint32 nServerIP=0, uint16 nServerPort=0, wxString pszDirectory = wxEmptyString);
+	CSearchFile(const CSafeMemFile& in_data, bool bOptUTF8, long nSearchID, uint32 nServerIP=0, uint16 nServerPort=0, const wxString& pszDirectory = wxEmptyString);
 	
 	virtual ~CSearchFile();
 
@@ -113,18 +113,17 @@ public:
 
 	bool	StartNewSearch(long nSearchID, 
 								bool global_search, 
-								wxString &searchString, 
-								wxString& typeText,
-								wxString &extension, 
+								const wxString& searchString, 
+								const wxString& typeText,
+								const wxString& extension, 
 								uint32 min, 
 								uint32 max, 
 								uint32 availability);
-	void	ProcessSearchanswer(const char* in_packet, uint32 size, CUpDownClient* Sender, bool* pbMoreResultsAvailable, wxString& pszDirectory);
+	void	ProcessSearchanswer(const char* in_packet, uint32 size, CUpDownClient* Sender, bool* pbMoreResultsAvailable, const wxString& pszDirectory);
 	void	ProcessSearchanswer(const char* packet, uint32 size, bool bOptUTF8, uint32 nServerIP, uint16 nServerPort);
 	void	ProcessUDPSearchanswer(const CSafeMemFile& packet, bool bOptUTF8, uint32 nServerIP, uint16 nServerPort);	
 
 	void	RemoveResults(long nSearchID);
-	void	ShowResults(long nSearchID);
 
 	const SearchList GetSearchResults(long nSearchID);
 	
@@ -149,8 +148,8 @@ public:
 	bool SearchInProgress() { return m_SearchInProgress; }
 private:
 
-	CPacket *CreateSearchPacket(wxString &searchString, wxString& typeText,
-				wxString &extension, uint32 min, uint32 max, uint32 avaibility);
+	CPacket *CreateSearchPacket(const wxString &searchString, const wxString& typeText,
+				const wxString &extension, uint32 min, uint32 max, uint32 avaibility);
 
 	CPacket* m_searchpacket;
 

@@ -50,7 +50,7 @@ typedef uint8_t		BYTE;
 
 WX_DEFINE_ARRAY_SHORT(uint16, ArrayOfUInts16);
 
-#if !defined(__cplusplus)
+#ifndef __cplusplus
 	typedef int bool;
 #endif
 
@@ -168,11 +168,11 @@ class CTimer {
 /*
  * Check version stuff
  */
-#if !defined(wxSUBRELEASE_NUMBER)
+#ifndef wxSUBRELEASE_NUMBER
 	#define wxSUBRELEASE_NUMBER 0
 #endif
 
-#if !defined(wxCHECK_VERSION_FULL)
+#ifndef wxCHECK_VERSION_FULL
 
 	#define wxCHECK_VERSION_FULL(major,minor,release,subrel) \
 		(wxMAJOR_VERSION > (major) || \

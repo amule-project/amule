@@ -42,7 +42,6 @@ CFriend::CFriend()
 	m_dwLastUsedIP = 0;
 	m_nLastUsedPort = 0;
 	m_dwLastChatted = 0;
-	m_strName = wxEmptyString;
 	m_LinkedClient = NULL;
 }
 

@@ -92,7 +92,6 @@ public:
 	bool	SavePartFile(bool Initial = false);
 	void	PartFileHashFinished(CKnownFile* result);
 	bool	HashSinglePart(uint16 partnumber); // true = ok , false = corrupted
-	uint64	GetRealFileSize();
 	
 	bool    CheckShowItemInGivenCat(int inCategory);
 	void	AddGap(uint32 start, uint32 end);
@@ -322,8 +321,6 @@ private:
 	bool	hasBadRating;
 	bool	hasComment;
 	uint8 	PerformFileComplete(); // Lord KiRon
-	//static unsigned int CompleteThreadProc(CPartFile* pFile); // Lord KiRon - Used as separate thread to complete file
-	void    CharFillRange(wxString* buffer,uint32 start, uint32 end, char color);
 
 	DWORD		m_lastRefreshedDLDisplay;
 	wxDateTime	m_lastDateChanged;

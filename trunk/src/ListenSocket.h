@@ -142,7 +142,7 @@ private:
 //	void	Delete_Timed();
 	bool	ProcessPacket(const char *packet, uint32 size, uint8 opcode);
 	bool	ProcessExtPacket(const char *packet, uint32 size, uint8 opcode);
-	bool	IsMessageFiltered(wxString Message, CUpDownClient* client);
+	bool	IsMessageFiltered(const wxString& Message, CUpDownClient* client);
 
 	CClientReqSocketHandler* my_handler;
 #ifdef AMULE_DAEMON

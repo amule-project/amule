@@ -782,7 +782,7 @@ CPacket*	CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 //void CKnownFile::UpdateUploadAutoPriority(void)
 void CKnownFile::UpdateAutoUpPriority(void)
 {
-		if (!this->IsAutoUpPriority())
+		if (!IsAutoUpPriority())
 			return;
 
 		if ( GetQueuedCount() > 20 ) {
@@ -851,7 +851,7 @@ void CKnownFile::SetFileRate(int8 iNewRate)
 
 void CKnownFile::SetUpPriority(uint8 iNewUpPriority, bool m_bsave){
 	m_iUpPriority = iNewUpPriority;
-	if( this->IsPartFile() && m_bsave )
+	if( IsPartFile() && m_bsave )
 		((CPartFile*)this)->SavePartFile();
 }
 

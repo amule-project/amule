@@ -46,7 +46,7 @@
 
 
 // Global constants
-#if defined(__WXGTK__)
+#ifdef __WXGTK__
 	const int COL_SIZE_MIN = 10;
 #elif defined(__WXMSW__)
 	const int COL_SIZE_MIN = 0;

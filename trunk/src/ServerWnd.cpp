@@ -87,7 +87,7 @@ CServerWnd::~CServerWnd()
 {
 }
 
-void CServerWnd::UpdateServerMetFromURL(wxString strURL)
+void CServerWnd::UpdateServerMetFromURL(const wxString& strURL)
 {
 	theApp.serverlist->UpdateServerMetFromURL(strURL);
 }
