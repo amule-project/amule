@@ -181,8 +181,6 @@ void OnShutdownSignal( int /* sig */ )
 CamuleApp::CamuleApp()
 {
 	// Initialization	
-	printf("Initialising aMule\n");
-
 #if !wxCHECK_VERSION(2,5,1) && defined(__WXGTK20__)
 	wxString msg;
 	
@@ -410,7 +408,14 @@ bool CamuleApp::OnInit()
 #endif
 	cmdline.AddSwitch(wxT("d"), wxT("disable-fatal"), wxT("Does not handle fatal exception."));
 	cmdline.AddSwitch(wxT("o"), wxT("log-stdout"), wxT("Print log messages to stdout."));
-	cmdline.Parse();
+
+	// Show help on --help or invalid commands
+	if ( cmdline.Parse() ) {
+		return false;		
+	} else if ( cmdline.Found(wxT("help")) ) {
+		cmdline.Usage();
+		return false;
+	}	
 
 	if ( !cmdline.Found(wxT("disable-fatal")) ) {
 #ifndef __WXMSW__
@@ -434,11 +439,6 @@ bool CamuleApp::OnInit()
 #endif
 		return false;
 	}
-
-	if ( cmdline.Found(wxT("help")) ) {
-		cmdline.Usage();
-		return false;
-	}
 	
 	// Default geometry of the GUI. Can be changed with a cmdline argument...
 	bool geometry_enabled = false;
@@ -448,6 +448,9 @@ bool CamuleApp::OnInit()
 		geometry_enabled = true;
 	}
 	#endif
+
+
+	printf("Initialising aMule\n");
 
 	printf("Checking if there is an instance already running...\n");
 	// see if there is another instance running
