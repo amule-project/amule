@@ -930,15 +930,37 @@ wxString CWebServer::_GetServerList(ThreadData Data) {
 	CECPacket *srv_reply = pThis->webInterface->SendRecvMsg_v2(&srv_req);
 	for(int i = 0; i < srv_reply->GetTagCount(); i ++) {
 		CECTag *tag = srv_reply->GetTagByIndex(i);
+		CECTag *tmpTag;
 		
 		ServerEntry* Entry = new ServerEntry;
-		Entry->sServerName = tag->GetStringData();
-		Entry->sServerDescription = tag->GetTagByName(EC_TAG_SERVER_DESC)->GetStringData();
-		Entry->sServerIP = tag->GetTagByName(EC_TAG_SERVER_ADDRESS)->GetStringData();
-		Entry->nServerUsers = tag->GetTagByName(EC_TAG_SERVER_USERS)->GetInt32Data();
-		Entry->nServerMaxUsers = tag->GetTagByName(EC_TAG_SERVER_USERS_MAX)->GetInt32Data();
-		Entry->nServerFiles = tag->GetTagByName(EC_TAG_SERVER_FILES)->GetInt32Data();
-		Entry->nServerID = tag->GetTagByName(EC_TAG_ITEM_ID)->GetInt32Data();
+		Entry->sServerName = tag->GetTagByName(EC_TAG_SERVER_NAME)->GetStringData();
+		if ((tmpTag = tag->GetTagByName(EC_TAG_SERVER_DESC)) != NULL) {
+			Entry->sServerDescription = tmpTag->GetStringData();
+		} else {
+			Entry->sServerDescription = wxEmptyString;
+		}
+		{
+			EC_IPv4_t *addr = tag->GetIPv4Data();
+			Entry->sServerIP = wxString::Format(wxT("%d.%d.%d.%d : %d"), addr->ip[0], addr->ip[1], addr->ip[2], addr->ip[3], addr->port);
+			// will be removed in the near future
+			Entry->nServerID = (uint32)addr->ip;
+			delete addr;
+		}
+		if ((tmpTag = tag->GetTagByName(EC_TAG_SERVER_USERS)) != NULL) {
+			Entry->nServerUsers = tmpTag->GetInt32Data();
+		} else {
+			Entry->nServerUsers = 0;
+		}
+		if ((tmpTag = tag->GetTagByName(EC_TAG_SERVER_USERS_MAX)) != NULL) {
+			Entry->nServerMaxUsers = tmpTag->GetInt32Data();
+		} else {
+			Entry->nServerMaxUsers = 0;
+		}
+		if ((tmpTag = tag->GetTagByName(EC_TAG_SERVER_FILES)) != NULL) {
+			Entry->nServerFiles = tmpTag->GetInt32Data();
+		} else {
+			Entry->nServerFiles = 0;
+		}
 		ServerArray.Add(Entry);
 	}
 	delete srv_reply;
