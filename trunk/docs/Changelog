@@ -18,15 +18,15 @@ Version 2.0.0rc8 - The "???????????" version.
 		* Added bitmap button wich pops-up the last status log line
 		  (useful when it doesn't fit the window).
 		* Merged Preview and Open File and enabled Open File.
-		* Fixed: Servers priority not working (reported by Sir)
-		* Fixed: Now all unset Server Priorities are set to normal
-		  (reported by plaenky)
-		* Fixed: Sorting Servers by priority works now.
-		* Fixed: Setting "A4AF to others" was broken.
 		* Moved "Always filter bad IPs" from Server to Security
 		  in Preferences
 		* Changed "Preference" in servers tab as suggested by Sir
-		* Also servers.met's priority is now compatible with eMule's
+		* Fixed: Servers priority now working (reported by Sir)
+		* Fixed: Now all unset Server Priorities are set to normal
+		  (reported by plaenky)
+		* Fixed: Sorting Servers by priority works now.
+		* Fixed: Setting "A4AF to others" works now.
+		* Fixed: Server names sorting now differences between names and IPs
 
 	Phoenix:
 		* Lots of unicode fixes.

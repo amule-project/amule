@@ -39,6 +39,15 @@ class CSafeFile;
 #define SRV_UDPFLG_EXT_GETSOURCES	0x00000001
 #define SRV_UDPFLG_EXT_GETFILES		0x00000002
 
+// Server priority
+#define SRV_PR_LOW                      2
+#define SRV_PR_NORMAL                   0
+#define SRV_PR_HIGH                     1
+// Server priority max and min values
+#define SRV_PR_MAX			2
+#define SRV_PR_MID			1
+#define SRV_PR_MIN			0
+
 WX_DECLARE_LIST(CTag,TagList);
 
 class CServer {
