@@ -208,7 +208,8 @@ public:
 	uint8		GetMuleVersion() const		{ return m_byEmuleVersion;}
 	bool		ExtProtocolAvailable() const	{ return m_bEmuleProtocol;}
 	bool		IsEmuleClient()	const		{ return m_byEmuleVersion;}
-	CClientCredits*	Credits()			{ return credits;}
+	CClientCredits*	Credits()		{ return credits;}
+	const CClientCredits*	Credits() const { return credits;}
 	bool		IsBanned() const;
 	const wxString&	GetClientFilename() const	{ return m_clientFilename; }
 	uint16		GetUDPPort() const		{ return m_nUDPPort; }
@@ -407,7 +408,7 @@ public:
 	// Barry - Process zip file as it arrives, don't need to wait until end of block
 	int unzip(Pending_Block_Struct *block, BYTE *zipped, uint32 lenZipped, BYTE **unzipped, uint32 *lenUnzipped, int iRecursion = 0);
 	// Barry - Sets string to show parts downloading, eg NNNYNNNNYYNYN
-	wxString	ShowDownloadingParts();
+	wxString	ShowDownloadingParts() const;
 	void 		UpdateDisplayedInfo(bool force = false);
 	int 		GetFileListRequested() const 	{ return m_iFileListRequested; }
 	void 		SetFileListRequested(int iFileListRequested) 

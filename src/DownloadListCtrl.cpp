@@ -298,7 +298,7 @@ void CDownloadListCtrl::AddSource(CPartFile* owner, CUpDownClient* source, bool 
 }
 
 
-void CDownloadListCtrl::RemoveSource( CUpDownClient* source, CPartFile* owner )
+void CDownloadListCtrl::RemoveSource( const CUpDownClient* source, const CPartFile* owner )
 {
 	wxASSERT( source );
 	
@@ -356,7 +356,7 @@ void CDownloadListCtrl::RemoveFile( CPartFile* file )
 }
 
 
-void CDownloadListCtrl::UpdateItem(void* toupdate)
+void CDownloadListCtrl::UpdateItem(const void* toupdate)
 {
 	if ( theApp.amuledlg->IsDialogVisible( CamuleDlg::TransferWnd ) && !theApp.amuledlg->IsIconized() ) {
 		// Retrieve all entries matching the source
@@ -505,7 +505,7 @@ void CDownloadListCtrl::ChangeCategory( int newCategory )
 	Freeze();
 
 	// remove all displayed files with a different cat and show the correct ones
-	for (ListItems::iterator it = m_ListItems.begin(); it != m_ListItems.end(); it++) {
+	for (ListItems::const_iterator it = m_ListItems.begin(); it != m_ListItems.end(); it++) {
 		const CtrlItem_Struct *cur_item = it->second;
 		
 		if ( cur_item->type == FILE_TYPE ) {
@@ -529,7 +529,7 @@ void CDownloadListCtrl::ChangeCategory( int newCategory )
 }
 
 
-uint8 CDownloadListCtrl::GetCategory()
+uint8 CDownloadListCtrl::GetCategory() const
 {
 	return m_category;
 }
@@ -1247,12 +1247,12 @@ void CDownloadListCtrl::OnDrawItem(int item, wxDC* dc, const wxRect& rect, const
 }
 
 
-void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect, CtrlItem_Struct* item )
+void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect, CtrlItem_Struct* item ) const
 {
 	// force clipper (clip 2 px more than the rectangle from the right side)
 	wxDCClipper clipper( *dc, rect.GetX(), rect.GetY(), rect.GetWidth() - 2, rect.GetHeight() );
 
-	CPartFile* file = (CPartFile*)item->value;
+	const CPartFile* file = (const CPartFile*)item->value;
 
 	// Used to contain the contenst of cells that dont need any fancy drawing, just text.
 	wxString text;
@@ -1345,6 +1345,9 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 					wxString buffer = wxString::Format( wxT("%.1f%%"), percent );
 					int middlex = (2*rect.GetX() + rect.GetWidth()) >> 1;
 					int middley = (2*rect.GetY() + rect.GetHeight()) >> 1;
+					
+					wxCoord textwidth, textheight;
+					
 					dc->GetTextExtent(buffer, &textwidth, &textheight);
 					wxColour AktColor = dc->GetTextForeground();
 					if (thePrefs::ShowProgBar()) {
@@ -1431,13 +1434,13 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 }
 
 
-void CDownloadListCtrl::DrawSourceItem( wxDC* dc, int nColumn, const wxRect& rect, CtrlItem_Struct* item )
+void CDownloadListCtrl::DrawSourceItem( wxDC* dc, int nColumn, const wxRect& rect, CtrlItem_Struct* item ) const
 {
 	// Force clipper (clip 2 px more than the rectangle from the right side)
 	wxDCClipper clipper( *dc, rect.GetX(), rect.GetY(), rect.GetWidth() - 2, rect.GetHeight() );
 	wxString buffer;
 	
-	CUpDownClient* client = (CUpDownClient*)item->value;
+	const CUpDownClient* client = (const CUpDownClient*)item->value;
 
 	switch (nColumn) {
 		// Client name + various icons
@@ -1802,7 +1805,7 @@ int CDownloadListCtrl::Compare( const CPartFile* file1, const CPartFile* file2, 
 }
 
 
-int CDownloadListCtrl::Compare(CUpDownClient* client1, CUpDownClient* client2, long lParamSort)
+int CDownloadListCtrl::Compare( const CUpDownClient* client1, const CUpDownClient* client2, long lParamSort)
 {
 	switch (lParamSort) {
 		// Sort by name
@@ -1903,12 +1906,12 @@ void CDownloadListCtrl::ClearCompleted()
 }
 
 
-void CDownloadListCtrl::ShowFilesCount()
+void CDownloadListCtrl::ShowFilesCount() const
 {
 	int count = 0;
 
 	// remove all displayed files with a different cat
-	for (ListItems::iterator it = m_ListItems.begin(); it != m_ListItems.end(); it++) {
+	for (ListItems::const_iterator it = m_ListItems.begin(); it != m_ListItems.end(); it++) {
 		const CtrlItem_Struct* cur_item = it->second;
 		if (cur_item->type == FILE_TYPE) {
 			if ( ShowItemInCurrentCat( (CPartFile *)cur_item->value, m_category ) ) {
@@ -1924,14 +1927,14 @@ void CDownloadListCtrl::ShowFilesCount()
 
 
 
-bool CDownloadListCtrl::ShowItemInCurrentCat( CPartFile* file, int newsel )
+bool CDownloadListCtrl::ShowItemInCurrentCat( const CPartFile* file, int newsel ) const
 {
 	return ((newsel == 0 && !thePrefs::ShowAllNotCats()) || (newsel == 0 && thePrefs::ShowAllNotCats() && file->GetCategory() == 0)) || (newsel > 0 && newsel == file->GetCategory());
 }
 
 
 
-void CDownloadListCtrl::DrawFileStatusBar( CPartFile* file, wxDC* dc, const wxRect& rect, bool bFlat )
+void CDownloadListCtrl::DrawFileStatusBar( const CPartFile* file, wxDC* dc, const wxRect& rect, bool bFlat ) const
 {
 	static CBarShader s_ChunkBar(16);
 	
@@ -2024,7 +2027,7 @@ void CDownloadListCtrl::DrawFileStatusBar( CPartFile* file, wxDC* dc, const wxRe
 }
 
 
-void CDownloadListCtrl::DrawSourceStatusBar( CUpDownClient* source, wxDC* dc, const wxRect& rect, bool  bFlat)
+void CDownloadListCtrl::DrawSourceStatusBar( const CUpDownClient* source, wxDC* dc, const wxRect& rect, bool bFlat) const
 {
 	static CBarShader s_StatusBar(16);
 

@@ -168,8 +168,8 @@ public:
 	void	UpdateDisplayedInfo(bool force = false);
 	
 	const wxDateTime& GetLastChangeDatetime() const;
-	uint8	GetCategory();
-	void	SetCategory(uint8 cat)		{ m_category = cat; SavePartFile(); }
+	uint8	GetCategory() const;
+	void	SetCategory(uint8 cat);
 
 	CFile	m_hpartfile;	//permanent opened handle to avoid write conflicts
 	volatile bool m_bPreviewing;
@@ -288,6 +288,7 @@ private:
 	CTypedPtrList<CPtrList, PartFileBufferedData*> m_BufferedData_list;
 	uint32 m_nTotalBufferData;
 	uint32 m_nLastBufferFlushTime;
+
 	uint8	m_category;
 	bool	m_is_A4AF_auto;
 

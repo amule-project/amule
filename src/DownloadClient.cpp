@@ -991,7 +991,7 @@ void CUpDownClient::UDPReaskForDownload()
 
 // Barry - Sets string to show parts downloading, eg NNNYNNNNYYNYN
 
-wxString CUpDownClient::ShowDownloadingParts()
+wxString CUpDownClient::ShowDownloadingParts() const
 {
 	// Initialise to all N's
 	wxString Parts(wxT('N'), m_nPartCount);
