@@ -963,7 +963,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				ServerStatus = wxString(_("Not connected"));
 			theApp.downloadqueue->GetDownloadStats(stats);
 			return wxString::Format(_(
-				"Server: " + ServerStatus + "\n"
+				"Server: ") + ServerStatus + _("\n"
 				"Statistics: \n"
 				" Downloading files: %u\n"
 				" Found sources: %d\n"
