@@ -28,6 +28,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
 #include "version.h"
 #include "configfile.h"
@@ -90,6 +93,15 @@ int main(int argc, char *argv[])
 	if ((amulesig = fopen(path, "r")) == NULL) {
 		printf("Unable to open file %s\nCheck if you have amule online signature enabled.\n", path);
 		exit(2);
+	} else {
+		struct stat s_file;
+		if ( stat(path, &s_file) == 0 ) {
+			time_t t_now = time(0);
+			if ( (t_now - s_file.st_mtime) > 60 ) {
+				printf("aMule online signature last updated more then 60 sec ago\n");
+				printf("Check that your aMule is running\n");
+			}
+		}
 	}
 	free(path);
 
