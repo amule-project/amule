@@ -796,7 +796,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				auEndOffsets[2] = data.ReadUInt32();
 
 
-				#ifdef __DEBUG__
+				#ifdef DEBUG_REMOTE_CLIENT_PROTOCOL
 				if (thePrefs::GetVerbose()) {
 						printf("  Start1=%u  End1=%u  Size=%u\n", auStartOffsets[0], auEndOffsets[0], auEndOffsets[0] - auStartOffsets[0]);
 						printf("  Start2=%u  End2=%u  Size=%u\n", auStartOffsets[1], auEndOffsets[1], auEndOffsets[1] - auStartOffsets[1]);
