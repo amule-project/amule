@@ -218,13 +218,12 @@ CPartFile::CPartFile(CED2KFileLink* fileLink)
 	InitializeFromLink(fileLink);
 }
 
-#warning Dont forget to remove this and the magic numbers when the bug is gone.
-#define MAGIC_1 1234567890
-#define MAGIC_2 1357902468
 void CPartFile::Init()
 {
+#ifdef __DEBUG__
 	MagicNumber1 = MAGIC_1;
 	MagicNumber2 = MAGIC_2;
+#endif __DEBUG__
 	m_nLastBufferFlushTime = 0;
 
 	newdate = true;
@@ -329,29 +328,6 @@ CPartFile::~CPartFile()
 		delete[] item->data;
 		delete item;
 	}	
-}
-
-#warning Dont forget to remove this and the magic numbers when the bug is gone.
-bool CPartFile::IsASanePartFile(bool verbose, char *function, char *file, int line) const {
-	bool sane = this != NULL;
-	// The problem here is that if this is invalid, we are not even able to
-	// access the magic numbers without segfaulting.
-	if( !sane ) {
-		// scream loud!
-		debugprintf(verbose, "Bogus pointer to CPartFile detected!\n");
-		debugprintf(verbose, "\t'this' is a NULL pointer.\n");
-		debugprintf(verbose, "\tfunction: %s(%s:%d)\n", function, file, line);
-	} else {
-		sane = 	MagicNumber1 == MAGIC_1 && 
-			MagicNumber2 == MAGIC_2; 
-		if(!sane) {
-			debugprintf(verbose, "Bogus CPartFile detected!\n");
-			debugprintf(verbose, "\tMN1 = %u, MN2 = %u\n", MagicNumber1, MagicNumber2);
-			debugprintf(verbose, "\tfunction: %s(%s:%d)\n", function, file, line);
-		}
-	}
-
-	return sane;
 }
 
 void CPartFile::CreatePartFile()
@@ -1598,12 +1574,14 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 		for(	std::list<CUpDownClient *>::iterator it = m_downloadingSourcesList.begin();
 			it != m_downloadingSourcesList.end(); ) {
 			CUpDownClient *cur_src = *it++;
-			#warning Phoenix - caught one insane source here - I
+#ifdef __DEBUG__
+#warning phoenix - caught one insane source here in a backtrace - I
 			// if(!IsASaneFileClientCombination(false, "CPartFile::Process", __FILE__, __LINE__, cur_src)) {
-			if(!cur_src->IsASaneUpDownClient(false, "CPartFile::Process", __FILE__, __LINE__)) {
-				// debugprintf(true,"continue1\n");
+			if(!cur_src->IsASaneUpDownClient(true, "CPartFile::Process", __FILE__, __LINE__)) {
+				debugprintf(true, "\tcontinue1\n");
 				continue;
 			}
+#endif // __DEBUG__
 			if(cur_src->GetDownloadState() == DS_DOWNLOADING) {
 				wxASSERT( cur_src->socket );
 				if (cur_src->socket) {
@@ -1632,13 +1610,15 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 		for (pos1 = m_SrcList.GetHeadPosition();( pos2 = pos1 ) != NULL;) {
 			m_SrcList.GetNext(pos1);
 			cur_src = m_SrcList.GetAt(pos2);
-			#warning Phoenix - caught one insane source here - II
+#ifdef __DEBUG__
+#warning phoenix - caught one insane source here in a backtrace - II
 			//if(!IsASaneFileClientCombination(false, "CPartFile::Process", __FILE__, __LINE__, cur_src)) {
-			if(!cur_src->IsASaneUpDownClient(false, "CPartFile::Process", __FILE__, __LINE__)) {
+			if(!cur_src->IsASaneUpDownClient(true, "CPartFile::Process", __FILE__, __LINE__)) {
 				// this happens all the time.
-				// debugprintf(true,"continue2\n");
+				debugprintf(true, "\tcontinue2\n");
 				continue;
 			}
+#endif // __DEBUG__
 			uint8 download_state=cur_src->GetDownloadState();
 			switch (download_state) {
 				case DS_DOWNLOADING: {
@@ -1937,11 +1917,13 @@ void CPartFile::UpdatePartsInfo() {
 	for (POSITION pos = m_SrcList.GetHeadPosition(); pos != 0; )	{
 		cur_src = m_SrcList.GetNext(pos);
 		for (uint16 i = 0; i < partcount; i++)	{
-			#warning Phoenix - caught an insane source here - III
-			if(!IsASaneFileClientCombination(false, "CPartFile::UpdatePartsInfo", __FILE__, __LINE__, cur_src)) {
-				// debugprintf(true,"continue3\n");
+#ifdef __DEBUG__
+#warning phoenix - caught an insane source here in a backtrace - III
+			if(!IsASaneFileClientCombination(true, "CPartFile::UpdatePartsInfo", __FILE__, __LINE__, cur_src)) {
+				debugprintf(true, "\tcontinue3\n");
 				continue;
 			}
+#endif __DEBUG__
 			if (cur_src->IsPartAvailable(i)) {
 				m_SrcpartFrequency[i] +=1;
 			}
@@ -3056,72 +3038,6 @@ void CPartFile::SetLastAnsweredTimeTimeout()
 	m_ClientSrcAnswered = 2 * CONNECTION_LATENCY + ::GetTickCount() - SOURCECLIENTREASKS;
 }
 
-/** 
- * Sometimes this function is beeing called whitout the last parameter. In that case, 
- * forClient == 0
- */
-bool CPartFile::IsASaneFileClientCombination(
-	bool verbose, char *function, char *file, int line, 
-	const CUpDownClient* cur_src, const CUpDownClient* forClient) const
-{
-	bool sane_this = IsASanePartFile(true, function, file, line);
-	bool sane_cur_src = 
-		cur_src->IsASaneUpDownClient(true, function, file, line);
-	bool sane_forClient = true;
-	if (forClient) {
-		sane_forClient =
-			forClient->IsASaneUpDownClient(true, function, file, line);
-	}
-	
-	// So, we only enter here if:
-	// 1) this is sane
-	// 2) cur_src is sane
-	// 3) forClient != NULL and forClient is sane
-	bool sane = sane_this && sane_cur_src && sane_forClient;
-	if (sane) {
-		sane = (GetFileHash() == cur_src->reqfile->GetFileHash());
-		if (forClient) {
-			sane = sane && (GetFileHash() == forClient->reqfile->GetFileHash());
-		}
-		if (!sane && verbose) {
-			debugprintf(verbose, "Mismatching hashes!\n");
-			debugprintf(verbose, "\tthis   : %s\n", 	unicode2char(GetFileHash().Encode().c_str()));
-			debugprintf(verbose, "\tcur_src: %s\n", unicode2char(cur_src->reqfile->GetFileHash().Encode().c_str()));
-			if (forClient && forClient->reqfile)
-				debugprintf(verbose, "\tfor_clt: %s\n", unicode2char(forClient->reqfile->GetFileHash().Encode().c_str()));
-			debugprintf(verbose, "\tFilenames are: \n");
-			debugprintf(verbose, "\tthis   : %s\n", unicode2char(GetFileName().c_str()));
-			debugprintf(verbose, "\tcur_src: %s\n", unicode2char(cur_src->reqfile->GetFileName().c_str()));
-			if (forClient && forClient->reqfile)
-				debugprintf(verbose, "\tfor_clt: %s\n", unicode2char(forClient->reqfile->GetFileName().c_str()));
-			debugprintf(verbose, "\tfunction: %s(%s:%d)\n", function, file, line);
-		} else {
-			int n = GetPartCount();
-			sane = (n == cur_src->m_nPartCount);
-			if (forClient) {
-				sane = sane && (n == forClient->m_nPartCount);
-			}
-			if (!sane && verbose) {
-				debugprintf(verbose, "Mismatching Part Counts!\n");
-				debugprintf(verbose, "CPartFile->GetPartStatus() = %d\n", n);
-				debugprintf(verbose, "cur_src->m_nPartCount      = %d\n", cur_src->m_nPartCount);
-				if (forClient) {
-					debugprintf(verbose, "forClient->m_nPartCount    = %d\n", forClient->m_nPartCount);
-				}
-				debugprintf(verbose, "\tFilenames are: \n");
-				debugprintf(verbose, "\tthis   : %s\n", unicode2char(GetFileName().c_str()));
-				debugprintf(verbose, "\tcur_src: %s\n", unicode2char(cur_src->reqfile->GetFileName().c_str()));
-				if (forClient) {
-					debugprintf(verbose, "\tfor_clt: %s\n", 	unicode2char(forClient->reqfile->GetFileName().c_str()));
-				}
-				debugprintf(verbose, "\tfunction: %s(%s:%d)\n", function, file, line);
-			}
-		}
-	}
-	
-	return sane;
-}
-
 Packet *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 {
 	if ( m_SrcList.IsEmpty() )
@@ -3146,10 +3062,12 @@ Packet *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 			int n = GetPartCount();
 			if (reqstatus) {
 				// only send sources which have needed parts for this client
-				#warning Phoenix - hack to see the mixed sources problem - I
+#ifdef __DEBUG__
+#warning phoenix - hack to see the mixed sources problem - I
 				if(!IsASaneFileClientCombination(true, "CPartFile::CreateSrcInfoPacket", __FILE__, __LINE__, cur_src, forClient)) {
 					continue;
 				}
+#endif // __DEBUG__
 				for (int x = 0; x < n; x++) {
 					if (srcstatus[x] && !reqstatus[x]) {
 						bNeeded = true;
@@ -3160,10 +3078,12 @@ Packet *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 				// if we don't know the need parts for this client, 
 				// return any source currently a client sends it's 
 				// file status only after it has at least one complete part
-				#warning Phoenix - hack to see the mixed sources problem - II
+#ifdef __DEBUG__
+#warning phoenix - hack to see the mixed sources problem - II
 				if(!IsASaneFileClientCombination(true, "CPartFile::CreateSrcInfoPacket", __FILE__, __LINE__, cur_src)) {
 					continue;
 				}
+#endif // __DEBUG__
 				for (int x = 0; x < GetPartCount(); x++){
 					if (srcstatus[x]) {
 						bNeeded = true;
@@ -3843,9 +3763,13 @@ void CPartFile::AddDownloadingSource(CUpDownClient* client)
 	std::list<CUpDownClient *>::iterator it = 
 		std::find(m_downloadingSourcesList.begin(), m_downloadingSourcesList.end(), client);
 	if (it == m_downloadingSourcesList.end()) {
+#ifdef __DEBUG__
 		if(client->IsASaneUpDownClient(true, "CPartFile::AddDownloadingSource", __FILE__, __LINE__)) {
 			m_downloadingSourcesList.push_back(client);
 		}
+#else // __DEBUG__
+		m_downloadingSourcesList.push_back(client);
+#endif // __DEBUG__
 	}
 }
 
@@ -3914,3 +3838,117 @@ void CPartFile::SetStatus(uint8 in)
 		}
 	}
 }
+
+#ifdef __DEBUG__
+#warning Dont forget to remove this and the magic numbers when the bug is gone.
+bool CPartFile::IsASanePartFile(bool verbose, char *function, char *file, int line) const {
+	bool sane = this != NULL;
+	// The problem here is that if this is invalid, we are not even able to
+	// access the magic numbers without segfaulting. Anyway, sooner or later we
+	// would segfault.
+	if (sane) {
+		sane = 	MagicNumber1 == MAGIC_1 && 
+			MagicNumber2 == MAGIC_2; 
+		if(sane) {
+			// we're ok, add more sanity checks here
+		}
+#ifdef __DEBUG__
+		else {
+			debugprintf(verbose, "Bogus CPartFile detected!\n");
+			debugprintf(verbose, "\tMN1 = %u, MN2 = %u\n", MagicNumber1, MagicNumber2);
+			debugprintf(verbose, "\tfunction: %s(%s:%d)\n", function, file, line);
+		}
+#endif // __DEBUG__
+	}
+#ifdef __DEBUG__
+	else {
+		debugprintf(verbose, "Bogus pointer to CPartFile detected!\n");
+		debugprintf(verbose, "\t'this' is a NULL pointer.\n");
+		debugprintf(verbose, "\tfunction: %s(%s:%d)\n", function, file, line);
+	}
+#endif // __DEBUG__
+	
+	return sane;
+}
+
+/** 
+ * Sometimes this function is beeing called whitout the last parameter. 
+ * When this happens, forClient == 0.
+ */
+bool CPartFile::IsASaneFileClientCombination(
+	bool verbose, char *function, char *file, int line, 
+	const CUpDownClient* cur_src, const CUpDownClient* forClient) const
+{
+	bool sane_this = IsASanePartFile(true, function, file, line);
+	bool sane_cur_src = 
+		cur_src->IsASaneUpDownClient(true, function, file, line);
+	bool sane_forClient = true;
+	if (forClient) {
+		sane_forClient =
+			forClient->IsASaneUpDownClient(true, function, file, line);
+	}
+	
+	// So, we only enter here if:
+	// 1) this is sane
+	// 2) cur_src is sane
+	// 3) forClient != NULL and forClient is sane
+	// By processing the sane == true case first, we can ifdef the else without
+	// loosing the functionality.
+	bool sane = sane_this && sane_cur_src && sane_forClient;
+	if (sane) {
+		// Test for hash equality
+		sane = (GetFileHash() == cur_src->reqfile->GetFileHash());
+		if (forClient) {
+			sane = sane && (GetFileHash() == forClient->reqfile->GetFileHash());
+		}
+		if (sane) {
+			// Test for part count equality
+			// If m_nPartCount is zero in the source, it's ok
+			int n = GetPartCount();
+			int ncur = cur_src->m_nPartCount;
+			sane = (n == ncur) || (ncur == 0);
+			if (forClient) {
+				int nfor = forClient->m_nPartCount;
+				sane = sane && ( (n == nfor) || (nfor == 0) );
+			}
+			if (sane) {
+				// we're ok, if you want, add other sanity checks here.
+			}
+#ifdef __DEBUG__
+			else if (verbose) {
+				debugprintf(verbose, "Mismatching Part Counts!\n");
+				debugprintf(verbose, "CPartFile->GetPartStatus() = %d\n", n);
+				debugprintf(verbose, "cur_src->m_nPartCount      = %d\n", cur_src->m_nPartCount);
+				if (forClient) {
+					debugprintf(verbose, "forClient->m_nPartCount    = %d\n", forClient->m_nPartCount);
+				}
+				debugprintf(verbose, "\tFilenames are: \n");
+				debugprintf(verbose, "\tthis   : %s\n", (const char *)(GetFileName().mb_str()));
+				debugprintf(verbose, "\tcur_src: %s\n", (const char *)(cur_src->reqfile->GetFileName().mb_str()));
+				if (forClient) {
+					debugprintf(verbose, "\tfor_clt: %s\n", (const char *)(forClient->reqfile->GetFileName().mb_str()));
+				}
+				debugprintf(verbose, "\tfunction: %s(%s:%d)\n", function, file, line);
+			}
+#endif // __DEBUG__
+		}
+#ifdef __DEBUG__
+		else if (verbose) {
+			debugprintf(verbose, "Mismatching hashes!\n");
+			debugprintf(verbose, "\tthis   : %s\n", (const char *)(GetFileHash().Encode().mb_str()));
+			debugprintf(verbose, "\tcur_src: %s\n", (const char *)(cur_src->reqfile->GetFileHash().Encode().mb_str()));
+			if (forClient && forClient->reqfile)
+				debugprintf(verbose, "\tfor_clt: %s\n", (const char *)(forClient->reqfile->GetFileHash().Encode().mb_str()));
+			debugprintf(verbose, "\tFilenames are: \n");
+			debugprintf(verbose, "\tthis   : %s\n", (const char *)(GetFileName().mb_str()));
+			debugprintf(verbose, "\tcur_src: %s\n", (const char *)(cur_src->reqfile->GetFileName().mb_str()));
+			if (forClient && forClient->reqfile)
+				debugprintf(verbose, "\tfor_clt: %s\n", (const char *)(forClient->reqfile->GetFileName().mb_str()));
+			debugprintf(verbose, "\tfunction: %s(%s:%d)\n", function, file, line);
+		}
+#endif // __DEBUG__
+	}
+	
+	return sane;
+}
+#endif // __DEBUG__

@@ -307,9 +307,11 @@ void CDownloadQueue::AddFileLinkToDownload(CED2KFileLink* pLink)
 
 void CDownloadQueue::AddDownload(CPartFile* newfile, bool paused)
 {
+#ifdef __DEBUG__
 	if( !newfile->IsASanePartFile(true, "CDownloadQueue::AddDownload", __FILE__, __LINE__) ) {
 		return;
 	}
+#endif // __DEBUG__
 	// Creteil - Add in paused mode if there is already file(s) downloading
 	if (paused && !filelist.empty()) {
 		newfile->StopFile();
