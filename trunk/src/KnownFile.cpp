@@ -384,7 +384,7 @@ bool CKnownFile::CreateAICHHashSetOnly()
 	wxASSERT( !IsPartFile() );
 	m_pAICHHashSet->FreeHashSet();
 	
-	CFile file(GetFilePath(),CFile::read);
+	CFile file(GetFilePath()+GetFileName(),CFile::read);
 	if (!file.IsOpened()){
 // TODO
 		//theApp.QueueLogLine(false, GetResString(IDS_ERR_FILEOPEN) + _T(" - %hs"), GetFilePath(), _T(""), strerror(errno));
@@ -435,7 +435,8 @@ bool CKnownFile::CreateAICHHashSetOnly()
 void CKnownFile::SetFileSize(uint32 nFileSize)
 {
 	CAbstractFile::SetFileSize(nFileSize);
-
+	m_pAICHHashSet->SetFileSize(nFileSize);
+	
 	// Examples of parthashs, hashsets and filehashs for different filesizes
 	// according the ed2k protocol
 	//----------------------------------------------------------------------
@@ -634,6 +635,16 @@ bool CKnownFile::LoadTagsFromFile(const CFile* file)
 					delete newtag;
 					break;
 				}
+				case FT_AICH_HASH:{
+					CAICHHash hash;
+					if (DecodeBase32(newtag->tag.stringvalue,hash) == CAICHHash::GetHashSize()) {
+						m_pAICHHashSet->SetMasterHash(hash, AICH_HASHSETCOMPLETE);
+					} else {
+						wxASSERT( false );
+					}
+					delete newtag;
+					break;
+				}				
 				default:
 					taglist.Add(newtag);
 			}	
@@ -680,6 +691,9 @@ bool CKnownFile::WriteToFile(CFile* file){
 	//tags
 	const int iFixedTags = 8;
 	uint32 tagcount = iFixedTags;
+	if (m_pAICHHashSet->HasValidMasterHash() && (m_pAICHHashSet->GetStatus() == AICH_HASHSETCOMPLETE || m_pAICHHashSet->GetStatus() == AICH_VERIFIED)) {	
+		tagcount++;
+	}
 	// Float meta tags are currently not written. All older eMule versions < 0.28a have 
 	// a bug in the meta tag reading+writing code. To achive maximum backward 
 	// compatibility for met files with older eMule versions we just don't write float 
@@ -727,6 +741,12 @@ bool CKnownFile::WriteToFile(CFile* file){
 
 	CTag permtag(FT_PERMISSIONS, m_iPermissions);
 	permtag.WriteTagToFile(file);
+
+	//AICH Filehash
+	if (m_pAICHHashSet->HasValidMasterHash() && (m_pAICHHashSet->GetStatus() == AICH_HASHSETCOMPLETE || m_pAICHHashSet->GetStatus() == AICH_VERIFIED)){
+		CTag aichtag(FT_AICH_HASH, m_pAICHHashSet->GetMasterHash().GetString());
+		aichtag.WriteTagToFile(file);
+	}
 
 	//other tags
 	for (size_t j = 0; j < taglist.GetCount(); j++){

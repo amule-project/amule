@@ -91,6 +91,7 @@ CAICHHashTree* CAICHHashTree::FindHash(uint32 nStartPos, uint32 nSize, uint8* nL
 		return false;
 	}
 	if (nStartPos + nSize > m_nDataSize){ // sanity
+		printf("SP: %i | nS %i | DS %i\n", nStartPos,nSize,m_nDataSize);
 		wxASSERT ( false );
 		return NULL;
 	}
@@ -896,9 +897,13 @@ bool CAICHHashSet::IsPartDataAvailable(uint32 nPartStartPos){
 	return true;
 }
 
+// VC++ defines Assert as ASSERT. VC++ also defines VERIFY MACRO, which is the equivalent of ASSERT but also works in Released builds.
+
+#define VERIFY(x) wxASSERT(x)
+
 void CAICHHashSet::DbgTest(){
 // TODO: DEBUG TEST.
-#if 0 
+
 	//define TESTSIZE 4294567295
 	uint8 maxLevel = 0;
 	uint32 cHash = 1;
@@ -922,6 +927,7 @@ void CAICHHashSet::DbgTest(){
 	TestHashSet.SetFileSize(m_pOwner->GetFileSize());
 	TestHashSet.SetMasterHash(GetMasterHash(), AICH_VERIFIED);
 	CSafeMemFile file;
+	uint64 i;
 	for (uint64 i = 0; i+9728000 < TESTSIZE; i += 9728000){
 		VERIFY( CreatePartRecoveryData(i, &file) );
 		
@@ -929,11 +935,12 @@ void CAICHHashSet::DbgTest(){
 		file.Seek(nRandomCorruption, CFile::begin);
 		file.Write(&nRandomCorruption, 4);*/
 
-		file.SeekToBegin();
+		file.Seek(0,wxFromStart);
 		VERIFY( TestHashSet.ReadRecoveryData(i, &file) );
-		file.SeekToBegin();
+		file.Seek(0,wxFromStart);
 		TestHashSet.FreeHashSet();
-		for (uint32 j = 0; j+EMBLOCKSIZE < 9728000; j += EMBLOCKSIZE){
+		uint32 j;
+		for (j = 0; j+EMBLOCKSIZE < 9728000; j += EMBLOCKSIZE){
 			VERIFY( m_pHashTree.FindHash(i+j, EMBLOCKSIZE, &curLevel) );
 			//TRACE(_T("%u - %s\r\n"), cHash, m_pHashTree.FindHash(i+j, EMBLOCKSIZE, &curLevel)->m_Hash.GetString());
 			maxLevel = max(curLevel, maxLevel);
@@ -948,11 +955,12 @@ void CAICHHashSet::DbgTest(){
 
 	}
 	VERIFY( CreatePartRecoveryData(i, &file) );
-	file.SeekToBegin();
+	file.Seek(0,wxFromStart);
 	VERIFY( TestHashSet.ReadRecoveryData(i, &file) );
-	file.SeekToBegin();
+	file.Seek(0,wxFromStart);
 	TestHashSet.FreeHashSet();
-	for (uint64 j = 0; j+EMBLOCKSIZE < TESTSIZE-i; j += EMBLOCKSIZE){
+	uint64 j;
+	for (j = 0; j+EMBLOCKSIZE < TESTSIZE-i; j += EMBLOCKSIZE){
 		VERIFY( m_pHashTree.FindHash(i+j, EMBLOCKSIZE, &curLevel) );
 		//TRACE(_T("%u - %s\r\n"), cHash,m_pHashTree.FindHash(i+j, EMBLOCKSIZE, &curLevel)->m_Hash.GetString());
 		maxLevel = max(curLevel, maxLevel);
@@ -960,7 +968,7 @@ void CAICHHashSet::DbgTest(){
 		cHash++;
 	}
 	//VERIFY( m_pHashTree.FindHash(i+j, (TESTSIZE-i)-j, &curLevel) );
-	TRACE(_T("%u - %s\r\n"), cHash,m_pHashTree.FindHash(i+j, (TESTSIZE-i)-j, &curLevel)->m_Hash.GetString());
+//	TRACE(_T("%u - %s\r\n"), cHash,m_pHashTree.FindHash(i+j, (TESTSIZE-i)-j, &curLevel)->m_Hash.GetString());
 	maxLevel = max(curLevel, maxLevel);
-#endif
+
 }

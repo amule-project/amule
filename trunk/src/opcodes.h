@@ -297,7 +297,6 @@ const unsigned int UNLIMITED	= 	0;
 #define	FT_FILETYPE				0x03	// <string>
 #define	FT_FILEFORMAT				0x04	// <string>
 #define	FT_LASTSEENCOMPLETE			0x05
-#define	FT_COMPLETE_SOURCES			0x30	// <int>
 
 // additional media meta data tags from eDonkeyHybrid (note also the uppercase/lowercase)
 #define	FT_MEDIA_ARTIST			"Artist"
@@ -323,6 +322,13 @@ const unsigned int UNLIMITED	= 	0;
 // Aditional Kademlia tags
 #define	FT_KADLASTPUBLISHSRC   0x21   // <uint32>
 #define	FT_KADLASTPUBLISHKEY   0x20   // <uint32>
+
+#define	FT_FLAGS				 0x22	// <uint32>
+#define	FT_DL_ACTIVE_TIME		 0x23	// <uint32>
+#define	FT_CORRUPTEDPARTS		 0x24	// <string>
+#define	FT_DL_PREVIEW            0x25
+#define	FT_AICH_HASH			 0x27
+#define	FT_COMPLETE_SOURCES		 0x30	// nr. of sources which share a complete version of the associated file (supported by eserver 16.46+)
 
 #define	FT_CATEGORY 				0x53
 

@@ -1104,6 +1104,18 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
 			}						
 		}
 	}
+
+	if (!errorfound && result->GetAICHHashset()->GetStatus() == AICH_HASHSETCOMPLETE  && status == PS_COMPLETING){
+		delete m_pAICHHashSet;
+		m_pAICHHashSet = result->GetAICHHashset();
+		result->SetAICHHashset(NULL);
+		m_pAICHHashSet->SetOwner(this); 
+	}
+	else if (status == PS_COMPLETING) {
+		AddDebugLogLineM(false, _("Failed to store new AICH Hashset for completed file %s") + GetFileName());
+	}
+
+	
 	delete result;
 	if (!errorfound){
 		if (status == PS_COMPLETING){

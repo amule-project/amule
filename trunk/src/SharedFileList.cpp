@@ -114,7 +114,10 @@ void CSharedFileList::AddFilesFromDirectory(wxString directory)
 
 		CFile new_file(fname, CFile::read);
 
-		wxASSERT(new_file.IsOpened());
+		if (!new_file.IsOpened()) {
+			printf("No permisions to open %s, skipping\n",unicode2char(fname));
+			return;
+		}
 
 		if(fname.Find(wxFileName::GetPathSeparator(),TRUE) != -1) {  // starts at end
 			// Take just the file from the path

@@ -28,6 +28,7 @@
 #include "types.h"		// Needed for uint16, uint32 and uint64
 #include "endianfix.h"
 
+class CAICHHash;
 
 static wxCSConv aMuleConv(wxT("iso8859-1"));
 #if wxUSE_UNICODE
@@ -89,7 +90,9 @@ wxString EncodeBase32(const unsigned char* buffer, unsigned int bufLen);
 wxString EncodeBase16(const unsigned char* buffer, unsigned int bufLen);
 // Converts the string 'base16Buffer' with length 'base16BufLen' to a hash in 'buffer'.
 void DecodeBase16(const char *base16Buffer, unsigned int base16BufLen, unsigned char *buffer);
-
+// Converts the string 'pszInput' with length 'nBufferLen' to a hash in 'paucOutput'.
+uint32 DecodeBase32(const char* pszInput, uchar* paucOutput, uint32 nBufferLen);
+uint32 DecodeBase32(const char* pszInput, CAICHHash& Hash);
 
 // Converts the number of bytes to human readable form.
 wxString CastItoXBytes(uint64 count);
