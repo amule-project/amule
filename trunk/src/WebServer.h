@@ -124,7 +124,8 @@ typedef enum {
 typedef struct {
 	wxString	sServerName;
 	wxString	sServerDescription;
-	uint32		nServerID;
+	uint32		nServerIP;
+	uint16		nServerPort;
 	wxString	sServerIP;
 	int		nServerUsers;
 	int		nServerMaxUsers;
