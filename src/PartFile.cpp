@@ -36,11 +36,8 @@
 #include <wx/tokenzr.h> // Needed for wxStringTokenizer
 
 #ifndef AMULE_DAEMON
-	#include <wx/msgdlg.h>		// Needed for wxMessageBox
 	#include <wx/gdicmn.h>
 	#include "Color.h"              // Needed for RGB, DarkenColour
-#else 
-	#define wxMessageBox(x) AddLogLineM(true,x)
 #endif
 
 #include "PartFile.h"		// Interface declarations.
@@ -963,8 +960,8 @@ bool CPartFile::SavePartFile(bool Initial)
 	// Kry -don't backup if it's 0 size but raise a warning!!!
 	CFile newpartmet;
 	if (newpartmet.Open(m_fullname)!=TRUE) {
-		wxMessageBox(_("Unable to open ") + m_fullname +
-			_(" file - using ") + PARTMET_BAK_EXT + _(" file.\n"));
+		theApp.ShowAlert(_("Unable to open ") + m_fullname +
+			_(" file - using ") + PARTMET_BAK_EXT + _(" file.\n"), _("Message"), wxOK);
 		FS_wxCopyFile(m_fullname + PARTMET_BAK_EXT, m_fullname);
 	} else {
 		if (newpartmet.Length()>0) {			
@@ -973,8 +970,8 @@ bool CPartFile::SavePartFile(bool Initial)
 			BackupFile(m_fullname, PARTMET_BAK_EXT);
 		} else {
 			newpartmet.Close();
-			wxMessageBox(m_fullname + _("file is 0 size somehow - using ") +
-				PARTMET_BAK_EXT + _(" file.\n"));
+			theApp.ShowAlert(m_fullname + _("file is 0 size somehow - using ") +
+				PARTMET_BAK_EXT + _(" file.\n"), _("Message"), wxOK);
 			FS_wxCopyFile(m_fullname + PARTMET_BAK_EXT,m_fullname);
 		}
 	}
