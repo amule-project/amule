@@ -175,8 +175,6 @@ Version 2.0.0-rc1
 
 	lemonfan:
 		* Modified network code for big-endian systems
-		   The code is already used by xMule too, so I guess they liked it.
-		   They gave no credit to us anyway :( I hope they will on next release.
 		* Fixed preferences bug
 		* Fixed copy ed2k link to clipboard
 		* Fixed CArray for MFC compatibility
