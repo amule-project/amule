@@ -33,7 +33,6 @@
 #endif
 
 #include "UploadQueue.h"	// Interface declarations
-#include "ini2.h"		// Needed for CIni
 #include "ServerList.h"		// Needed for CServerList
 #include "ClientCredits.h"	// Needed for CClientCreditsList
 #include "StatisticsDlg.h"	// Needed for CStatisticsDlg
