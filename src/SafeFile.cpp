@@ -20,6 +20,7 @@
 #include "SafeFile.h"		// Interface declarations.
 #include "otherfunctions.h"
 #include "packets.h"
+#include "kademlia/utils/UInt128.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 // CFileDataIO
@@ -51,12 +52,11 @@ uint32 CFileDataIO::ReadUInt32() const
 }
 
 
-/*
+
 void CFileDataIO::ReadUInt128(Kademlia::CUInt128 *pVal) const
 {
 	Read(pVal->getDataPtr(), 16);
 }
-*/
 
 
 void CFileDataIO::ReadHash16(uchar* pVal) const
@@ -112,12 +112,12 @@ void CFileDataIO::WriteUInt32(uint32 nVal)
 	Write(&nVal, sizeof nVal);
 }
 
-/*
+
 void CFileDataIO::WriteUInt128(const Kademlia::CUInt128 *pVal)
 {
 	Write(pVal->getData(), 16);
 }
-*/
+
 
 void CFileDataIO::WriteHash16(const uchar* pVal)
 {
@@ -177,20 +177,14 @@ size_t CSafeFile::Write(const void *pBuf, size_t nCount)
 ///////////////////////////////////////////////////////////////////////////////
 // CSafeMemFile
 
-/*
+
 void CSafeMemFile::ReadUInt128(Kademlia::CUInt128* pVal) const
 {
-	if (m_position + sizeof(uint32)*4 > m_nFileSize)
+	if (m_position + sizeof(uint32)*4 > m_BufferSize)
 		throw CInvalidPacket("EOF");
-	uint32* pUInt32Val = (uint32*)pVal->getDataPtr();
-	const uint32* pUInt32 = (uint32*)(m_buffer + m_position);
-	pUInt32Val[0] = pUInt32[0];
-	pUInt32Val[1] = pUInt32[1];
-	pUInt32Val[2] = pUInt32[2];
-	pUInt32Val[3] = pUInt32[3];
-	m_position += sizeof(uint32)*4;
+	CFileDataIO::ReadUInt128(pVal);
 }
-*/
+
 
 void CSafeMemFile::WriteUInt8(uint8 nVal)
 {
@@ -213,23 +207,14 @@ void CSafeMemFile::WriteUInt32(uint32 nVal)
 	CFileDataIO::WriteUInt32(nVal);
 }
 
-/*
+
 void CSafeMemFile::WriteUInt128(const Kademlia::CUInt128* pVal)
 {
 	if (m_position + sizeof(uint32)*4 > m_BufferSize)
 		enlargeBuffer(m_position + sizeof(uint32)*4);
-	
-	uint32* pUInt32 = (uint32*)(m_buffer + m_position);
-	const uint32* pUInt32Val = (uint32*)pVal->getData();
-	pUInt32[0] = pUInt32Val[0];
-	pUInt32[1] = pUInt32Val[1];
-	pUInt32[2] = pUInt32Val[2];
-	pUInt32[3] = pUInt32Val[3];
-	m_position += sizeof(uint32)*4;
-	if (m_position > m_nFileSize)
-		m_nFileSize = m_position;
+	CFileDataIO::WriteUInt128(pVal);
 }
-*/
+
 
 void CSafeMemFile::WriteHash16(const uchar* pVal)
 {
