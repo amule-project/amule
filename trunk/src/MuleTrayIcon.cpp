@@ -234,7 +234,7 @@ void CMuleTrayIcon::SetTrayIcon(int Icon, uint32 percent)
 	
 	if ((Old_Icon != Icon) || (Old_SpeedSize != NewSize)) {
 
-		if (Old_SpeedSize > NewSize) {
+		if ((Old_SpeedSize > NewSize) || (Old_Icon != Icon)) {
 			// We have to rebuild the icon, because bar is lower now.
 			switch (Icon) {
 				case TRAY_ICON_HIGHID:
