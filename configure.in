@@ -257,7 +257,7 @@ openbsd*)
 	AC_MSG_ERROR([
 		"You are trying to compile aMule using configure under Windows.
 		This is not possible. Please use the provided MakefineWIN32 instead.
-		Just type make -f MakefineWIN32.
+		Just type make -f MakefineWIN32."
 	])
 	;;
 esac
@@ -266,6 +266,10 @@ esac
 case "$WXGTK_VERSION" in
 2.4.2)
 	USE_24GSOCKET="yes"
+	if test x$AMULE_DAEMON == xyes; then
+		echo "******** Warning: aMuled cannot be used with wx-2.4.2, disabling it."
+	fi
+	AMULE_DAEMON="no"
 	;;
 2.5.1 | 2.5.2)
 	USE_24GSOCKET="no"
