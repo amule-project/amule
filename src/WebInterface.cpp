@@ -29,18 +29,6 @@
 	#define AMULEWEBDLG 1
 #endif
 
-// This is kludgy test to warn people about the well-known wxBase rpm bug.
-#if !defined(WXBASE) && !defined(__WXUNIVERSAL__) && !defined(__WXMSW__) && !defined(__WXMOTIF__) && \
-    !defined(__WXGTK__) && !defined(__WXMAC__) && !defined(__WXPM__) && !defined(__WXSTUBS__)
-#error ============================================================================
-#error There is a problem with the WX_CXXFLAGS.
-#error This is probably caused by having a link from wx-config to wxbase-*-config.
-#error PLEASE MAKE SURE THAT YOUR wx-config POINTS TO THE CORRECT CONFIGURE SCRIPT!
-#error Then run: config.status --recheck; config.status
-#error ============================================================================
-#endif
-
-
 #include "WebInterface.h"
 #include "WebServer.h"
 #include "ECSocket.h"
