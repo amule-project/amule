@@ -81,9 +81,14 @@ CDownloadQueue::CDownloadQueue()
 
 CDownloadQueue::~CDownloadQueue()
 {
+	printf("Flushing partfiles");
+	fflush(stdout);
 	for ( uint16 i = 0; i < m_filelist.size(); i++ ) {
 		delete m_filelist[i];
+		printf(".");
+		fflush(stdout);
 	}
+	printf("\ndone!\n");
 }
 
 
