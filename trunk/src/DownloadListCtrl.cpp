@@ -1938,7 +1938,7 @@ void CDownloadListCtrl::ShowFilesCount()
 	}
 
 	wxString fmtstr = wxString::Format(_("Downloads (%i)"), GetItemCount());
-	wxStaticCast(FindWindowByName(wxT("downloadsLabel")), wxStaticText)->SetLabel(fmtstr);
+	CastByName( wxT("downloadsLabel"), GetParent(), wxStaticText )->SetLabel(fmtstr);
 }
 
 void CDownloadListCtrl::ShowSelectedFileDetails()

@@ -77,107 +77,105 @@ void CClientDetailDialog::OnBnClose(wxCommandEvent& WXUNUSED(evt))
 	EndModal(0);
 }
 
-#define GetDlgItem(a,b) wxStaticCast(FindWindowById((a)),b)
-
 bool CClientDetailDialog::OnInitDialog() {
 	
 	if (!m_client->GetUserName().IsEmpty()) {
-		GetDlgItem(ID_DNAME,wxStaticText)->SetLabel(m_client->GetUserName());
+		CastChild(ID_DNAME,wxStaticText)->SetLabel(m_client->GetUserName());
 
 		wxASSERT(!m_client->GetUserHash().IsEmpty()); // if we have client name we have userhash
-		GetDlgItem(ID_DHASH,wxStaticText)->SetLabel(m_client->GetUserHash().Encode());
+		CastChild(ID_DHASH,wxStaticText)->SetLabel(m_client->GetUserHash().Encode());
 
-		GetDlgItem(ID_DRATING,wxStaticText)->SetLabel(wxString::Format(wxT("%.1f"),(float)m_client->GetScore(false,m_client->IsDownloading(),true)));
+		CastChild(ID_DRATING,wxStaticText)->SetLabel(wxString::Format(wxT("%.1f"),(float)m_client->GetScore(false,m_client->IsDownloading(),true)));
 	} else {
-		GetDlgItem(ID_DNAME,wxStaticText)->SetLabel(_("Unknown"));
-		GetDlgItem(ID_DHASH,wxStaticText)->SetLabel(_("Unknown"));
-		GetDlgItem(ID_DRATING,wxStaticText)->SetLabel(wxT("Unknown"));;
+		CastChild(ID_DNAME,wxStaticText)->SetLabel(_("Unknown"));
+		CastChild(ID_DHASH,wxStaticText)->SetLabel(_("Unknown"));
+		CastChild(ID_DRATING,wxStaticText)->SetLabel(wxT("Unknown"));;
 	}	
 
 	printf("ClientSoftware ->%.2x<- ClientVersion ->v%.2x<- ClientModString ->%s\n",m_client->GetClientSoft(), m_client->GetMuleVersion(), unicode2char(m_client->GetClientModString()));
 
-	GetDlgItem(ID_DSOFT,wxStaticText)->SetLabel(m_client->GetSoftStr());
-	GetDlgItem(ID_DVERSION,wxStaticText)->SetLabel(m_client->GetSoftVerStr());
+	CastChild(ID_DSOFT,wxStaticText)->SetLabel(m_client->GetSoftStr());
+	CastChild(ID_DVERSION,wxStaticText)->SetLabel(m_client->GetSoftVerStr());
 
-	GetDlgItem(ID_DID,wxStaticText)->SetLabel(wxString::Format(wxT("%u (%s)"),m_client->GetUserID(),(m_client->HasLowID() ? _("Low"):_("High"))));
+	CastChild(ID_DID,wxStaticText)->SetLabel(wxString::Format(wxT("%u (%s)"),m_client->GetUserID(),(m_client->HasLowID() ? _("Low"):_("High"))));
 	
-	GetDlgItem(ID_DIP,wxStaticText)->SetLabel(m_client->GetFullIP() + wxString::Format(wxT(":%i"),m_client->GetUserPort()));
+	CastChild(ID_DIP,wxStaticText)->SetLabel(m_client->GetFullIP() + wxString::Format(wxT(":%i"),m_client->GetUserPort()));
 
 	if (m_client->GetServerIP()) {
 		in_addr server;
 		server.s_addr = m_client->GetServerIP();
 		wxString srvaddr = char2unicode(inet_ntoa(server));
-		GetDlgItem(ID_DSIP,wxStaticText)->SetLabel(srvaddr);
+		CastChild(ID_DSIP,wxStaticText)->SetLabel(srvaddr);
 		
 		CServer* cserver = theApp.serverlist->GetServerByAddress(srvaddr, m_client->GetServerPort()); 
 		if (cserver) {
-			GetDlgItem(ID_DSNAME,wxStaticText)->SetLabel(cserver->GetListName());
+			CastChild(ID_DSNAME,wxStaticText)->SetLabel(cserver->GetListName());
 		} else {
-			GetDlgItem(ID_DSNAME,wxStaticText)->SetLabel(wxT("Unknown"));
+			CastChild(ID_DSNAME,wxStaticText)->SetLabel(wxT("Unknown"));
 		}
 	} else {
-		GetDlgItem(ID_DSIP,wxStaticText)->SetLabel(wxT("Unknown"));
-		GetDlgItem(ID_DSNAME,wxStaticText)->SetLabel(wxT("Unknown"));
+		CastChild(ID_DSIP,wxStaticText)->SetLabel(wxT("Unknown"));
+		CastChild(ID_DSNAME,wxStaticText)->SetLabel(wxT("Unknown"));
 	}
 
 	CKnownFile* file = theApp.sharedfiles->GetFileByID(m_client->GetUploadFileID());
 
 	if (file) {
-		GetDlgItem(ID_DDOWNLOADING,wxStaticText)->SetLabel(file->GetFileName());
+		CastChild(ID_DDOWNLOADING,wxStaticText)->SetLabel(file->GetFileName());
 	} else {
-		GetDlgItem(ID_DDOWNLOADING,wxStaticText)->SetLabel(wxT("-"));
+		CastChild(ID_DDOWNLOADING,wxStaticText)->SetLabel(wxT("-"));
 	}
 
-	GetDlgItem(ID_DDUP,wxStaticText)->SetLabel(CastItoXBytes(m_client->GetTransferedDown()));
-	GetDlgItem(ID_DDOWN,wxStaticText)->SetLabel(CastItoXBytes(m_client->GetTransferedUp()));
-	GetDlgItem(ID_DAVUR,wxStaticText)->SetLabel(wxString::Format(wxT("%.1f kB/s"),m_client->GetKBpsDown()));
-	GetDlgItem(ID_DAVDR,wxStaticText)->SetLabel(wxString::Format(wxT("%.1f kB/s"),m_client->GetKBpsUp()));
+	CastChild(ID_DDUP,wxStaticText)->SetLabel(CastItoXBytes(m_client->GetTransferedDown()));
+	CastChild(ID_DDOWN,wxStaticText)->SetLabel(CastItoXBytes(m_client->GetTransferedUp()));
+	CastChild(ID_DAVUR,wxStaticText)->SetLabel(wxString::Format(wxT("%.1f kB/s"),m_client->GetKBpsDown()));
+	CastChild(ID_DAVDR,wxStaticText)->SetLabel(wxString::Format(wxT("%.1f kB/s"),m_client->GetKBpsUp()));
 
 	if (m_client->Credits()) {
-		GetDlgItem(ID_DUPTOTAL,wxStaticText)->SetLabel(CastItoXBytes(m_client->Credits()->GetDownloadedTotal()));		
-		GetDlgItem(ID_DDOWNTOTAL,wxStaticText)->SetLabel(CastItoXBytes(m_client->Credits()->GetUploadedTotal()));
-		GetDlgItem(ID_DRATIO,wxStaticText)->SetLabel(wxString::Format(wxT("%.1f"),(float)m_client->Credits()->GetScoreRatio(m_client->GetIP())));
+		CastChild(ID_DUPTOTAL,wxStaticText)->SetLabel(CastItoXBytes(m_client->Credits()->GetDownloadedTotal()));		
+		CastChild(ID_DDOWNTOTAL,wxStaticText)->SetLabel(CastItoXBytes(m_client->Credits()->GetUploadedTotal()));
+		CastChild(ID_DRATIO,wxStaticText)->SetLabel(wxString::Format(wxT("%.1f"),(float)m_client->Credits()->GetScoreRatio(m_client->GetIP())));
 		
 		if (theApp.clientcredits->CryptoAvailable()){
 			printf("Crypto available\n");
 			switch(m_client->Credits()->GetCurrentIdentState(m_client->GetIP())){
 				case IS_NOTAVAILABLE:
 					printf("CurrentIdentState not available\n");
-					GetDlgItem(IDC_CDIDENT,wxStaticText)->SetLabel(wxT("Not Supported"));
+					CastChild(IDC_CDIDENT,wxStaticText)->SetLabel(wxT("Not Supported"));
 					break;
 				case IS_IDFAILED:
 					printf("CurrentIdentState failed\n");
-					GetDlgItem(IDC_CDIDENT,wxStaticText)->SetLabel(wxT("Failed"));
+					CastChild(IDC_CDIDENT,wxStaticText)->SetLabel(wxT("Failed"));
 					break;
 				case IS_IDNEEDED:
 					printf("CurrentIdentState needed\n");
-					GetDlgItem(IDC_CDIDENT,wxStaticText)->SetLabel(wxT("Not complete"));
+					CastChild(IDC_CDIDENT,wxStaticText)->SetLabel(wxT("Not complete"));
 					break;
 				case IS_IDBADGUY:
 					printf("CurrentIdentState badguy\n");
-					GetDlgItem(IDC_CDIDENT,wxStaticText)->SetLabel(wxT("Bad Guy"));
+					CastChild(IDC_CDIDENT,wxStaticText)->SetLabel(wxT("Bad Guy"));
 					break;
 				case IS_IDENTIFIED:
 					printf("CurrentIdentState Ident OK\n");
-					GetDlgItem(IDC_CDIDENT,wxStaticText)->SetLabel(wxT("Verified - OK"));
+					CastChild(IDC_CDIDENT,wxStaticText)->SetLabel(wxT("Verified - OK"));
 					break;
 			}
 		} else {
 			printf("Crypto not available\n");
-			GetDlgItem(IDC_CDIDENT,wxStaticText)->SetLabel(wxT("Not Available"));
+			CastChild(IDC_CDIDENT,wxStaticText)->SetLabel(wxT("Not Available"));
 		}
 		
 		
 	} else {
-		GetDlgItem(ID_DDOWNTOTAL,wxStaticText)->SetLabel(wxT("Unknown"));
-		GetDlgItem(ID_DUPTOTAL,wxStaticText)->SetLabel(wxT("Unknown"));
-		GetDlgItem(ID_DRATIO,wxStaticText)->SetLabel(wxT("Unknown"));
+		CastChild(ID_DDOWNTOTAL,wxStaticText)->SetLabel(wxT("Unknown"));
+		CastChild(ID_DUPTOTAL,wxStaticText)->SetLabel(wxT("Unknown"));
+		CastChild(ID_DRATIO,wxStaticText)->SetLabel(wxT("Unknown"));
 	}
 	
 	if (m_client->GetUploadState() != US_NONE) {
-		GetDlgItem(ID_DSCORE,wxStaticText)->SetLabel(wxString::Format(wxT("%u"),m_client->GetScore(m_client->IsDownloading(),false)));
+		CastChild(ID_DSCORE,wxStaticText)->SetLabel(wxString::Format(wxT("%u"),m_client->GetScore(m_client->IsDownloading(),false)));
 	} else {
-		GetDlgItem(ID_DSCORE,wxStaticText)->SetLabel(wxT("-"));
+		CastChild(ID_DSCORE,wxStaticText)->SetLabel(wxT("-"));
 	}
 	Layout();
 	return true;

@@ -54,11 +54,11 @@ CHTTPDownloadThreadDlg::CHTTPDownloadThreadDlg(wxWindow* parent, CHTTPDownloadTh
 {
 	downloadDlg(this,TRUE)->Show(this,TRUE);
 	
-	m_progressbar = (wxGauge*)FindWindow(ID_HTTPDOWNLOADPROGRESS);
+	m_progressbar = CastChild(ID_HTTPDOWNLOADPROGRESS,wxGauge);
 	wxASSERT(m_progressbar);
 	m_progressbar->SetRange(100);	// Just Temp
 	
-	m_ani = (MuleGifCtrl*)FindWindowById(ID_ANIMATE);
+	m_ani = CastChild(ID_ANIMATE, MuleGifCtrl);
 	m_ani->LoadData((char*)inetDownload,sizeof(inetDownload));
 	m_ani->Start();
 
