@@ -223,8 +223,8 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 		theApp.stat_serverConnectTime=GetTickCount64();
 		connected = true;
 		AddLogLineM(true, _("Connection established on: ") + sender->cur_server->GetListName());
-		Notify_ShowConnState(true,sender->cur_server->GetListName(), false);
 		connectedsocket = sender;
+		Notify_ShowConnState(true,connectedsocket->cur_server->GetListName(), false);
 		
 		StopConnectionTry();
 		
