@@ -288,19 +288,6 @@ bool CamuleApp::OnInit()
 	stat_transferStarttime = 0;
 	stat_serverConnectTime = 0;
 	sTransferDelay = 0.0;
-
-	applog = new wxFile();
-	applog->Create(ConfigDir + wxFileName::GetPathSeparator() + wxT("logfile"),
-	                 wxFile::read_write);
-	if ( !applog->IsOpened() ) {
-		// use std err as last resolt to indicate problem
-		fputs("ERROR: unable to open log file\n", stderr);
-		delete applog;
-		applog = 0;
-		// failure to open log is serious problem
-		return false;
-	}
-
 	Start_time = GetTickCount64();
 
 	// Apprently needed for *BSD
@@ -431,6 +418,19 @@ bool CamuleApp::OnInit()
 		}
 	}
 
+
+	applog = new wxFile();
+	applog->Create(ConfigDir + wxFileName::GetPathSeparator() + wxT("logfile"),
+	                 wxFile::read_write);
+	if ( !applog->IsOpened() ) {
+		// use std err as last resolt to indicate problem
+		fputs("ERROR: unable to open log file\n", stderr);
+		delete applog;
+		applog = 0;
+		// failure to open log is serious problem
+		return false;
+	}
+	
 
 	// Load Preferences
 	CPreferences::BuildItemList( theApp.ConfigDir);
