@@ -91,10 +91,10 @@ AC_ARG_ENABLE(embedded_crypto,[  --enable-embedded_crypto    Use embedded Crypto
 AC_ARG_ENABLE(amulecmd,  [  --enable-amulecmd       Compile aMule command line client],
               BUILDAMULECMD="$enableval", BUILDAMULECMD="no")
 
-AC_ARG_ENABLE(amulecmdgui,  [  --enable-amulecmdgui    Compile aMule GUI client],
+AC_ARG_ENABLE(amulecmdgui,  [  --enable-amulecmdgui    Compile aMule command line client (GUI version)],
              GUI="$enableval", GUI="no")
 
-AC_ARG_ENABLE(amule-gui,  [  --enable-amule-gui    Compile aMule remote GUI > WARNING - don't use it. It DOESN'T work yet! <],
+AC_ARG_ENABLE(amule-gui,  [  --enable-amule-gui    Compile aMule remote GUI (EXPERIMENTAL)],
              AMULE_GUI="$enableval", AMULE_GUI="no")
 
 AC_ARG_ENABLE(amule-daemon,  [  --enable-amule-daemon    Compile aMule daemon version],
