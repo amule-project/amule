@@ -622,6 +622,9 @@ void CamuleDlg::ShowConnectionState(bool connected, const wxString &server)
 		m_wndToolbar->Realize();
 		theApp.OnlineSig();
 		ShowUserCount(0, 0);
+	} else if (connected) {
+		wxStaticText* connLabel = CastChild( wxT("connLabel"), wxStaticText );
+		connLabel->SetLabel(server);
 	}
 	LastState = NewState;
 }
