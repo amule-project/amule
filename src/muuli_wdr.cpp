@@ -553,14 +553,13 @@ wxSizer *messagePage( wxWindow *parent, bool call_fit, bool set_sizer )
 }
 
 wxSizer *IDC_FD_X0;
-wxSizer *IDC_MINF_0;
 wxSizer *IDC_FD_X6;
 wxSizer *IDC_FD_ICH;
 wxSizer *fileDetails( wxWindow *parent, bool call_fit, bool set_sizer )
 {
     wxFlexGridSizer *item0 = new wxFlexGridSizer( 1, 0, 0 );
     item0->AddGrowableCol( 0 );
-    item0->AddGrowableRow( 5 );
+    item0->AddGrowableRow( 4 );
 
     wxStaticBox *item2 = new wxStaticBox( parent, -1, _("General") );
     wxStaticBoxSizer *item1 = new wxStaticBoxSizer( item2, wxVERTICAL );
@@ -616,214 +615,183 @@ wxSizer *fileDetails( wxWindow *parent, bool call_fit, bool set_sizer )
 
     item1->Add( item10, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    item0->Add( item1, 0, wxGROW|wxALL, 5 );
+    item0->Add( item1, 1, wxGROW|wxALL, 5 );
 
-    wxStaticBox *item18 = new wxStaticBox( parent, -1, _("Media Info") );
-    wxStaticBoxSizer *item17 = new wxStaticBoxSizer( item18, wxVERTICAL );
-    IDC_MINF_0 = item17;
+    wxStaticBox *item18 = new wxStaticBox( parent, -1, _("Transfer") );
+    wxStaticBoxSizer *item17 = new wxStaticBoxSizer( item18, wxHORIZONTAL );
+    IDC_FD_X6 = item17;
 
-    wxFlexGridSizer *item19 = new wxFlexGridSizer( 6, 0, 0 );
+    wxFlexGridSizer *item19 = new wxFlexGridSizer( 3, 0, 0 );
 
-    wxStaticText *item20 = new wxStaticText( parent, IDC_MINF_1, _("Codec:"), wxDefaultPosition, wxDefaultSize, 0 );
-    item19->Add( item20, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
+    wxStaticText *item20 = new wxStaticText( parent, IDC_FD_X7, _("Found Sources :"), wxDefaultPosition, wxSize(88,-1), 0 );
+    item19->Add( item20, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticText *item21 = new wxStaticText( parent, IDC_MINFCODEC, _("N/A"), wxDefaultPosition, wxSize(100,-1), 0 );
+    wxStaticText *item21 = new wxStaticText( parent, IDC_SOURCECOUNT, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
     item21->SetForegroundColour( *wxBLUE );
-    item19->Add( item21, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
+    item19->Add( item21, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
 
-    wxStaticText *item22 = new wxStaticText( parent, IDC_MINF_2, _("Bitrate:"), wxDefaultPosition, wxDefaultSize, 0 );
-    item19->Add( item22, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
+    wxStaticText *item22 = new wxStaticText( parent, IDC_FD_X10, _("Transferring Sources :"), wxDefaultPosition, wxSize(88,-1), 0 );
+    item19->Add( item22, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
 
-    wxStaticText *item23 = new wxStaticText( parent, IDC_MINFBIT, _("N/A"), wxDefaultPosition, wxSize(50,-1), 0 );
-    item23->SetForegroundColour( *wxBLUE );
-    item19->Add( item23, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
+    wxStaticText *item23 = new wxStaticText( parent, IDC_FD_X9, _("Filepart-Count :"), wxDefaultPosition, wxSize(88,-1), 0 );
+    item19->Add( item23, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticText *item24 = new wxStaticText( parent, IDC_MINF_3, _("Length:"), wxDefaultPosition, wxDefaultSize, 0 );
-    item19->Add( item24, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
+    wxStaticText *item24 = new wxStaticText( parent, IDC_PARTCOUNT, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
+    item24->SetForegroundColour( *wxBLUE );
+    item19->Add( item24, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
 
-    wxStaticText *item25 = new wxStaticText( parent, IDC_MINFLEN, _("N/A"), wxDefaultPosition, wxSize(100,-1), 0 );
-    item25->SetForegroundColour( *wxBLUE );
-    item19->Add( item25, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
+    wxStaticText *item25 = new wxStaticText( parent, IDC_FD_X11, _("Available :"), wxDefaultPosition, wxSize(88,-1), 0 );
+    item19->Add( item25, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
 
-    item17->Add( item19, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxStaticText *item26 = new wxStaticText( parent, IDC_FD_X13, _("Datarate :"), wxDefaultPosition, wxDefaultSize, 0 );
+    item19->Add( item26, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+
+    wxStaticText *item27 = new wxStaticText( parent, IDC_DATARATE, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
+    item27->SetForegroundColour( *wxBLUE );
+    item19->Add( item27, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
+
+    wxStaticText *item28 = new wxStaticText( parent, ID_TEXT, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
+    item19->Add( item28, 0, wxALIGN_CENTER, 5 );
+
+    wxStaticText *item29 = new wxStaticText( parent, IDC_FD_X14, _("Transferred :"), wxDefaultPosition, wxSize(88,-1), 0 );
+    item19->Add( item29, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+
+    wxStaticText *item30 = new wxStaticText( parent, IDC_TRANSFERED, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
+    item30->SetForegroundColour( *wxBLUE );
+    item19->Add( item30, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
+
+    wxStaticText *item31 = new wxStaticText( parent, IDC_FD_X12, _("Completed Size :"), wxDefaultPosition, wxDefaultSize, 0 );
+    item19->Add( item31, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
+
+    item17->Add( item19, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+
+    wxBoxSizer *item32 = new wxBoxSizer( wxVERTICAL );
+
+    wxStaticText *item33 = new wxStaticText( parent, IDC_SOURCECOUNT2, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
+    item33->SetForegroundColour( *wxBLUE );
+    item32->Add( item33, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
+
+    wxStaticText *item34 = new wxStaticText( parent, IDC_PARTAVAILABLE, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
+    item34->SetForegroundColour( *wxBLUE );
+    item32->Add( item34, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
+
+    wxStaticText *item35 = new wxStaticText( parent, ID_TEXT, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
+    item32->Add( item35, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+
+    wxBoxSizer *item36 = new wxBoxSizer( wxHORIZONTAL );
+
+    wxStaticText *item37 = new wxStaticText( parent, IDC_COMPLSIZE, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
+    item37->SetForegroundColour( *wxBLUE );
+    item36->Add( item37, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
+
+    wxStaticText *item38 = new wxStaticText( parent, ID_TEXT, _(" / ("), wxDefaultPosition, wxDefaultSize, 0 );
+    item36->Add( item38, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+
+    wxStaticText *item39 = new wxStaticText( parent, IDC_PROCCOMPL, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
+    item39->SetForegroundColour( *wxBLUE );
+    item36->Add( item39, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+
+    wxStaticText *item40 = new wxStaticText( parent, ID_TEXT, _(")"), wxDefaultPosition, wxDefaultSize, 0 );
+    item36->Add( item40, 0, wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
+
+    item32->Add( item36, 0, wxALIGN_CENTER, 5 );
+
+    item17->Add( item32, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
 
     item0->Add( item17, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
-    wxStaticBox *item27 = new wxStaticBox( parent, -1, _("Transfer") );
-    wxStaticBoxSizer *item26 = new wxStaticBoxSizer( item27, wxHORIZONTAL );
-    IDC_FD_X6 = item26;
+    wxStaticBox *item42 = new wxStaticBox( parent, -1, _("Intelligent Corruption Handling") );
+    wxStaticBoxSizer *item41 = new wxStaticBoxSizer( item42, wxVERTICAL );
+    IDC_FD_ICH = item41;
 
-    wxFlexGridSizer *item28 = new wxFlexGridSizer( 3, 0, 0 );
+    wxFlexGridSizer *item43 = new wxFlexGridSizer( 4, 0, 0 );
 
-    wxStaticText *item29 = new wxStaticText( parent, IDC_FD_X7, _("Found Sources :"), wxDefaultPosition, wxSize(88,-1), 0 );
-    item28->Add( item29, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticText *item44 = new wxStaticText( parent, IDC_FD_LSTATS1, _("Lost to corruption :"), wxDefaultPosition, wxDefaultSize, 0 );
+    item43->Add( item44, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticText *item30 = new wxStaticText( parent, IDC_SOURCECOUNT, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item30->SetForegroundColour( *wxBLUE );
-    item28->Add( item30, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
+    wxStaticText *item45 = new wxStaticText( parent, IDC_FD_STATS1, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
+    item45->SetForegroundColour( *wxBLUE );
+    item43->Add( item45, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
 
-    wxStaticText *item31 = new wxStaticText( parent, IDC_FD_X10, _("Transferring Sources :"), wxDefaultPosition, wxSize(88,-1), 0 );
-    item28->Add( item31, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
+    wxStaticText *item46 = new wxStaticText( parent, IDC_FD_LSTATS2, _("Gained by compression :"), wxDefaultPosition, wxDefaultSize, 0 );
+    item43->Add( item46, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
 
-    wxStaticText *item32 = new wxStaticText( parent, IDC_FD_X9, _("Filepart-Count :"), wxDefaultPosition, wxSize(88,-1), 0 );
-    item28->Add( item32, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticText *item47 = new wxStaticText( parent, IDC_FD_STATS2, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
+    item47->SetForegroundColour( *wxBLUE );
+    item43->Add( item47, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
 
-    wxStaticText *item33 = new wxStaticText( parent, IDC_PARTCOUNT, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item33->SetForegroundColour( *wxBLUE );
-    item28->Add( item33, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
+    wxStaticText *item48 = new wxStaticText( parent, IDC_FD_LSTATS3, _("Packages saved by I.C.H. :"), wxDefaultPosition, wxDefaultSize, 0 );
+    item43->Add( item48, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticText *item34 = new wxStaticText( parent, IDC_FD_X11, _("Available :"), wxDefaultPosition, wxSize(88,-1), 0 );
-    item28->Add( item34, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
+    wxStaticText *item49 = new wxStaticText( parent, IDC_FD_STATS3, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
+    item49->SetForegroundColour( *wxBLUE );
+    item43->Add( item49, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
 
-    wxStaticText *item35 = new wxStaticText( parent, IDC_FD_X13, _("Datarate :"), wxDefaultPosition, wxDefaultSize, 0 );
-    item28->Add( item35, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticText *item50 = new wxStaticText( parent, ID_TEXT, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
+    item43->Add( item50, 0, wxALIGN_CENTER, 5 );
 
-    wxStaticText *item36 = new wxStaticText( parent, IDC_DATARATE, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item36->SetForegroundColour( *wxBLUE );
-    item28->Add( item36, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
+    wxStaticText *item51 = new wxStaticText( parent, ID_TEXT, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
+    item43->Add( item51, 0, wxALIGN_CENTER, 5 );
 
-    wxStaticText *item37 = new wxStaticText( parent, ID_TEXT, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
-    item28->Add( item37, 0, wxALIGN_CENTER, 5 );
+    item41->Add( item43, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticText *item38 = new wxStaticText( parent, IDC_FD_X14, _("Transferred :"), wxDefaultPosition, wxSize(88,-1), 0 );
-    item28->Add( item38, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    item0->Add( item41, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
-    wxStaticText *item39 = new wxStaticText( parent, IDC_TRANSFERED, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item39->SetForegroundColour( *wxBLUE );
-    item28->Add( item39, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
+    wxFlexGridSizer *item52 = new wxFlexGridSizer( 1, 0, 0, 0 );
+    item52->AddGrowableCol( 0 );
+    item52->AddGrowableCol( 2 );
 
-    wxStaticText *item40 = new wxStaticText( parent, IDC_FD_X12, _("Completed Size :"), wxDefaultPosition, wxDefaultSize, 0 );
-    item28->Add( item40, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
+    wxStaticLine *item53 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(20,-1), wxLI_HORIZONTAL );
+    item52->Add( item53, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
 
-    item26->Add( item28, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticText *item54 = new wxStaticText( parent, ID_TEXT, _("File Names"), wxDefaultPosition, wxDefaultSize, 0 );
+    item52->Add( item54, 0, wxALIGN_CENTER|wxTOP|wxBOTTOM, 5 );
 
-    wxBoxSizer *item41 = new wxBoxSizer( wxVERTICAL );
+    wxStaticLine *item55 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(20,-1), wxLI_HORIZONTAL );
+    item52->Add( item55, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
 
-    wxStaticText *item42 = new wxStaticText( parent, IDC_SOURCECOUNT2, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item42->SetForegroundColour( *wxBLUE );
-    item41->Add( item42, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
+    item0->Add( item52, 0, wxGROW, 5 );
 
-    wxStaticText *item43 = new wxStaticText( parent, IDC_PARTAVAILABLE, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item43->SetForegroundColour( *wxBLUE );
-    item41->Add( item43, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
+    CFileDetailListCtrl *item56 = new CFileDetailListCtrl( parent, IDC_LISTCTRLFILENAMES, wxDefaultPosition, wxSize(-1,130), wxLC_REPORT|wxSUNKEN_BORDER );
+    wxASSERT( item56 );
+    item0->Add( item56, 1, wxADJUST_MINSIZE|wxFIXED_MINSIZE|wxGROW|wxALIGN_BOTTOM|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
-    wxStaticText *item44 = new wxStaticText( parent, ID_TEXT, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
-    item41->Add( item44, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    wxBoxSizer *item57 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxBoxSizer *item45 = new wxBoxSizer( wxHORIZONTAL );
+    wxButton *item58 = new wxButton( parent, IDC_TAKEOVER, _("Takeover"), wxDefaultPosition, wxDefaultSize, 0 );
+    item57->Add( item58, 0, wxALIGN_CENTER, 5 );
 
-    wxStaticText *item46 = new wxStaticText( parent, IDC_COMPLSIZE, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item46->SetForegroundColour( *wxBLUE );
-    item45->Add( item46, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
+    item57->Add( 20, 20, 1, wxALIGN_CENTER|wxALL, 5 );
 
-    wxStaticText *item47 = new wxStaticText( parent, ID_TEXT, _(" / ("), wxDefaultPosition, wxDefaultSize, 0 );
-    item45->Add( item47, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    wxButton *item59 = new wxButton( parent, IDC_BUTTONSTRIP, _("Cleanup"), wxDefaultPosition, wxDefaultSize, 0 );
+    item57->Add( item59, 0, wxALIGN_CENTER, 5 );
 
-    wxStaticText *item48 = new wxStaticText( parent, IDC_PROCCOMPL, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item48->SetForegroundColour( *wxBLUE );
-    item45->Add( item48, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    item0->Add( item57, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
 
-    wxStaticText *item49 = new wxStaticText( parent, ID_TEXT, _(")"), wxDefaultPosition, wxDefaultSize, 0 );
-    item45->Add( item49, 0, wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
+    wxBoxSizer *item60 = new wxBoxSizer( wxHORIZONTAL );
 
-    item41->Add( item45, 0, wxALIGN_CENTER, 5 );
+    CMuleTextCtrl *item61 = new CMuleTextCtrl( parent, IDC_FILENAME, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
+    item60->Add( item61, 1, wxALIGN_CENTER|wxRIGHT, 5 );
 
-    item26->Add( item41, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
+    wxButton *item62 = new wxButton( parent, IDC_RENAME, _("Rename"), wxDefaultPosition, wxDefaultSize, 0 );
+    item60->Add( item62, 0, wxALIGN_CENTER, 5 );
 
-    item0->Add( item26, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
+    item0->Add( item60, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
 
-    wxStaticBox *item51 = new wxStaticBox( parent, -1, _("Intelligent Corruption Handling") );
-    wxStaticBoxSizer *item50 = new wxStaticBoxSizer( item51, wxVERTICAL );
-    IDC_FD_ICH = item50;
+    wxBoxSizer *item63 = new wxBoxSizer( wxVERTICAL );
 
-    wxFlexGridSizer *item52 = new wxFlexGridSizer( 4, 0, 0 );
+    wxBoxSizer *item64 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxStaticText *item53 = new wxStaticText( parent, IDC_FD_LSTATS1, _("Lost to corruption :"), wxDefaultPosition, wxDefaultSize, 0 );
-    item52->Add( item53, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    wxButton *item65 = new wxButton( parent, ID_CLOSEWNDFD, _("Close"), wxDefaultPosition, wxDefaultSize, 0 );
+    item65->SetDefault();
+    item64->Add( item65, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticText *item54 = new wxStaticText( parent, IDC_FD_STATS1, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item54->SetForegroundColour( *wxBLUE );
-    item52->Add( item54, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
+    wxButton *item66 = new wxButton( parent, IDC_CMTBT, _("Show all comments"), wxDefaultPosition, wxDefaultSize, 0 );
+    item64->Add( item66, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticText *item55 = new wxStaticText( parent, IDC_FD_LSTATS2, _("Gained by compression :"), wxDefaultPosition, wxDefaultSize, 0 );
-    item52->Add( item55, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
+    item63->Add( item64, 0, wxALIGN_CENTER, 5 );
 
-    wxStaticText *item56 = new wxStaticText( parent, IDC_FD_STATS2, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item56->SetForegroundColour( *wxBLUE );
-    item52->Add( item56, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
-
-    wxStaticText *item57 = new wxStaticText( parent, IDC_FD_LSTATS3, _("Packages saved by I.C.H. :"), wxDefaultPosition, wxDefaultSize, 0 );
-    item52->Add( item57, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
-
-    wxStaticText *item58 = new wxStaticText( parent, IDC_FD_STATS3, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item58->SetForegroundColour( *wxBLUE );
-    item52->Add( item58, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
-
-    wxStaticText *item59 = new wxStaticText( parent, ID_TEXT, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
-    item52->Add( item59, 0, wxALIGN_CENTER, 5 );
-
-    wxStaticText *item60 = new wxStaticText( parent, ID_TEXT, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
-    item52->Add( item60, 0, wxALIGN_CENTER, 5 );
-
-    item50->Add( item52, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
-
-    item0->Add( item50, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
-
-    wxFlexGridSizer *item61 = new wxFlexGridSizer( 1, 0, 0, 0 );
-    item61->AddGrowableCol( 0 );
-    item61->AddGrowableCol( 2 );
-
-    wxStaticLine *item62 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(20,-1), wxLI_HORIZONTAL );
-    item61->Add( item62, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
-
-    wxStaticText *item63 = new wxStaticText( parent, ID_TEXT, _("File name"), wxDefaultPosition, wxDefaultSize, 0 );
-    item61->Add( item63, 0, wxALIGN_CENTER|wxTOP|wxBOTTOM, 5 );
-
-    wxStaticLine *item64 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(20,-1), wxLI_HORIZONTAL );
-    item61->Add( item64, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
-
-    item0->Add( item61, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
-
-    CFileDetailListCtrl *item65 = new CFileDetailListCtrl( parent, IDC_LISTCTRLFILENAMES, wxDefaultPosition, wxSize(-1,130), wxLC_REPORT|wxSUNKEN_BORDER );
-    wxASSERT( item65 );
-    item0->Add( item65, 0, wxADJUST_MINSIZE|wxFIXED_MINSIZE|wxGROW|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
-
-    wxBoxSizer *item66 = new wxBoxSizer( wxHORIZONTAL );
-
-    wxButton *item67 = new wxButton( parent, IDC_TAKEOVER, _("Takeover"), wxDefaultPosition, wxDefaultSize, 0 );
-    item66->Add( item67, 0, wxALIGN_CENTER, 5 );
-
-    item66->Add( 20, 20, 1, wxALIGN_CENTER|wxALL, 5 );
-
-    wxButton *item68 = new wxButton( parent, IDC_BUTTONSTRIP, _("Cleanup"), wxDefaultPosition, wxDefaultSize, 0 );
-    item66->Add( item68, 0, wxALIGN_CENTER, 5 );
-
-    item0->Add( item66, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
-
-    wxBoxSizer *item69 = new wxBoxSizer( wxHORIZONTAL );
-
-    CMuleTextCtrl *item70 = new CMuleTextCtrl( parent, IDC_FILENAME, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
-    item69->Add( item70, 1, wxALIGN_CENTER|wxRIGHT, 5 );
-
-    wxButton *item71 = new wxButton( parent, IDC_RENAME, _("Rename"), wxDefaultPosition, wxDefaultSize, 0 );
-    item69->Add( item71, 0, wxALIGN_CENTER, 5 );
-
-    item0->Add( item69, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
-
-    wxBoxSizer *item72 = new wxBoxSizer( wxVERTICAL );
-
-    wxBoxSizer *item73 = new wxBoxSizer( wxHORIZONTAL );
-
-    wxButton *item74 = new wxButton( parent, ID_CLOSEWNDFD, _("Close"), wxDefaultPosition, wxDefaultSize, 0 );
-    item74->SetDefault();
-    item73->Add( item74, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-
-    wxButton *item75 = new wxButton( parent, IDC_CMTBT, _("Show all comments"), wxDefaultPosition, wxDefaultSize, 0 );
-    item73->Add( item75, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-
-    item72->Add( item73, 0, wxALIGN_CENTER, 5 );
-
-    item0->Add( item72, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
+    item0->Add( item63, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
     if (set_sizer)
     {
@@ -1630,40 +1598,8 @@ wxSizer *PreferencesGeneralTab( wxWindow *parent, bool call_fit, bool set_sizer 
     wxStaticBox *item9 = new wxStaticBox( parent, -1, _("Language") );
     wxStaticBoxSizer *item8 = new wxStaticBoxSizer( item9, wxVERTICAL );
 
-    wxString strs10[] = 
-    {
-        _("System default"), 
-        _("Arabic"), 
-        _("Basque"), 
-        _("Bulgarian"), 
-        _("Chinese (Simplified)"), 
-        _("Danish"), 
-        _("Dutch"), 
-        _("English"), 
-        _("Estonian"), 
-        _("Finnish"), 
-        _("French"), 
-        _("Galego"), 
-        _("German"), 
-        _("Italian"), 
-        _("Korean"), 
-        _("Lithuanian"), 
-        _("Polish"), 
-        _("Portuguese"), 
-        _("Portuguese (Brazil)"), 
-        _("Russian"), 
-        _("Spanish"), 
-        _("Spanish (Chile)"), 
-        _("Spanish (Mexico)"), 
-        _("Turkey"), 
-        _("Hungarian"), 
-        _("Catalan"), 
-        _("Croatian"), 
-        _("Italian (Napoletan)"), 
-        _("Custom"), 
-        _("Chinese (Traditional)")
-    };
-    wxChoice *item10 = new wxChoice( parent, IDC_LANGUAGE, wxDefaultPosition, wxSize(100,30), 30, strs10, 0 );
+    wxString *strs10 = (wxString*) NULL;
+    wxChoice *item10 = new wxChoice( parent, IDC_LANGUAGE, wxDefaultPosition, wxSize(100,30), 0, strs10, 0 );
     item10->SetToolTip( _("This specifies the language used on controls.") );
     item8->Add( item10, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -3542,7 +3478,7 @@ wxSizer *PreferencesMessagesTab( wxWindow *parent, bool call_fit, bool set_sizer
     wxCheckBox *item12 = new wxCheckBox( parent, IDC_MSGFILTER_WORD, _("Filter messages containing (use ',' as separator):"), wxDefaultPosition, wxDefaultSize, 0 );
     item7->Add( item12, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 25 );
 
-    wxTextCtrl *item13 = new wxTextCtrl( parent, IDC_MSGWORD, _("leech,leecher,Ketamine"), wxDefaultPosition, wxSize(80,-1), 0 );
+    wxTextCtrl *item13 = new wxTextCtrl( parent, IDC_MSGWORD, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
     item13->SetToolTip( _("add here the words amule should filter and block messages including it") );
     item7->Add( item13, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT, 50 );
 
