@@ -1,21 +1,23 @@
+//
 // This file is part of the aMule Project
 //
 // Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
 // Copyright (C) 2002 Merkur ( merkur-@users.sourceforge.net / http://www.emule-project.net )
 //
-//This program is free software; you can redistribute it and/or
-//modify it under the terms of the GNU General Public License
-//as published by the Free Software Foundation; either
-//version 2 of the License, or (at your option) any later version.
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either
+// version 2 of the License, or (at your option) any later version.
 //
-//This program is distributed in the hope that it will be useful,
-//but WITHOUT ANY WARRANTY; without even the implied warranty of
-//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//GNU General Public License for more details.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 //
-//You should have received a copy of the GNU General Public License
-//along with this program; if not, write to the Free Software
-//Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+//
 
 #ifndef OPCODES_H
 #define OPCODES_H
@@ -75,25 +77,25 @@ enum {
 #define __CVS__
 
 #ifdef __CVS__
-	#define	MOD_VERSION_LONG				wxT("aMule CVS")
+	#define	MOD_VERSION_LONG		wxT("aMule CVS")
 #else
-	#define	MOD_VERSION_LONG				wxT("aMule 2.0.0")
+	#define	MOD_VERSION_LONG		wxT("aMule 2.0.0")
 #endif
 
 #define	VERSION_MJR		0x02
 #define	VERSION_MIN		0
-#define	VERSION_UPDATE	0 
+#define	VERSION_UPDATE		0 
 
 #define	EDONKEYVERSION				0x3c
-#define	PREFFILE_VERSION			0x14	//<<-- last change: reduced .dat, by using .ini
+#define	PREFFILE_VERSION			0x14 //<<-- last change: reduced .dat, by using .ini
 #define	PARTFILE_VERSION			0xe0
 #define	PARTFILE_SPLITTEDVERSION		0xe1 // For edonkey part files importing.
-#define	CREDITFILE_VERSION		0x12
-#define	CREDITFILE_VERSION_29	0x11
+#define	CREDITFILE_VERSION			0x12
+#define	CREDITFILE_VERSION_29			0x11
 
-#define RSAKEYSIZE                         384             //384 bits
+#define RSAKEYSIZE				384             //384 bits
 
-#define EMBLOCKSIZE                               (uint32)184320
+#define EMBLOCKSIZE				(uint32)184320
 
 #define COMPILE_DATE				__DATE__
 #define COMPILE_TIME				__TIME__
@@ -108,8 +110,8 @@ enum {
 #define	SERVERREASKTIME				800000  // don't set this too low, it wont speed up anything, but it could kill amule or your internetconnection
 #define	UDPSERVERREASKTIME			1300000	// 1300000 <- original value ***
 //#define	SOURCECLIENTREASK			600000
-#define	SOURCECLIENTREASKS		MIN2MS(40)	//40 mins
-#define	SOURCECLIENTREASKF		MIN2MS(5)	//5 mins
+#define	SOURCECLIENTREASKS			MIN2MS(40)	//40 mins
+#define	SOURCECLIENTREASKF			MIN2MS(5)	//5 mins
 #define	MINCOMMONPENALTY			4
 #define	UDPSERVERSTATTIME			5000
 #define	UDPSERVSTATREASKTIME			14400
@@ -120,7 +122,8 @@ enum {
 #define	MAXCONPER5SEC				20
 #define	MAXCON5WIN9X				10
 #define	UPLOAD_CHECK_CLIENT_DR			1000
-#define	UPLOAD_LOW_CLIENT_DR			2400	// uploadspeed per client in bytes - you may want to adjust this if you have a slow connection or T1-T3 ;)
+#define	UPLOAD_LOW_CLIENT_DR			2400	// uploadspeed per client in bytes - you may want to adjust
+							// this if you have a slow connection or T1-T3 ;)
 #define	UPLOAD_CLIENT_DATARATE			2048
 #define	MAX_UP_CLIENTS_ALLOWED			100	// max. clients allowed regardless UPLOAD_CLIENT_DATARATE or any other factors. Don't set this too low, use DATARATE to adjust uploadspeed per client
 #define	DOWNLOADTIMEOUT				100000
@@ -141,7 +144,7 @@ enum {
 // you shouldn't change anything here if you are not really sure, or amule will probaly not work
 #define	MAXFRAGSIZE				1300
 #define	PARTSIZE				(uint32)9728000
-const int	BLOCKSIZE =			184320;
+const int BLOCKSIZE =				184320;
 #define	OP_EDONKEYHEADER			0xE3
 #define	OP_EDONKEYPROT				OP_EDONKEYHEADER
 #define	OP_PACKEDPROT				0xD4
@@ -149,7 +152,7 @@ const int	BLOCKSIZE =			184320;
 #define	OP_MLDONKEYPROT				0x00
 #define	MET_HEADER				0x0E
 	
-const unsigned int UNLIMITED	= 	0;
+const unsigned int UNLIMITED =	 		0;
 
 //Proxytypes deadlake
 #define	PROXYTYPE_NOPROXY			0
@@ -203,7 +206,7 @@ const unsigned int UNLIMITED	= 	0;
 #define	OP_SERVER_DESC_RES			0xA3	// <name_len 2><name name_len><desc_len 2 desc_en>
 #define	OP_SERVER_LIST_REQ2			0xA4	// (null)
 
-#define INV_SERV_DESC_LEN		0xF0FF	// used as an 'invalid' string len for OP_SERVER_DESC_REQ/RES
+#define INV_SERV_DESC_LEN			0xF0FF	// used as an 'invalid' string len for OP_SERVER_DESC_REQ/RES
 
 // client <-> client
 #define	OP_HELLO				0x01	// 0x10<HASH 16><ID 4><PORT 2><1 Tag_set>
@@ -221,18 +224,18 @@ const unsigned int UNLIMITED	= 	0;
 #define	OP_HASHSETREQUEST			0x51	// <HASH 16>
 #define	OP_HASHSETANSWER			0x52	// <count 2><HASH[count] 16*count>
 #define	OP_STARTUPLOADREQ			0x54	// <HASH 16>
-#define	OP_ACCEPTUPLOADREQ		0x55	// (null)
+#define	OP_ACCEPTUPLOADREQ			0x55	// (null)
 #define	OP_CANCELTRANSFER			0x56	// (null)	
 #define	OP_OUTOFPARTREQS			0x57	// (null)
-#define	OP_REQUESTFILENAME		0x58	// <HASH 16>	(more correctly file_name_request)
-#define	OP_REQFILENAMEANSWER	0x59	// <HASH 16><len 4><NAME len>
+#define	OP_REQUESTFILENAME			0x58	// <HASH 16>	(more correctly file_name_request)
+#define	OP_REQFILENAMEANSWER			0x59	// <HASH 16><len 4><NAME len>
 #define	OP_CHANGE_SLOT				0x5B	// <HASH 16>
 #define	OP_QUEUERANK				0x5C	// <wert  4> (slot index of the request)
 #define	OP_ASKSHAREDDIRS			0x5D	// (null)
-#define	OP_ASKSHAREDFILESDIR		0x5E	// <len 2><Directory len>
-#define	OP_ASKSHAREDDIRSANS		0x5F	// <count 4>(<len 2><Directory len>)[count]
-#define	OP_ASKSHAREDFILESDIRANS	0x60	// <len 2><Directory len><count 4>(<HASH 16><ID 4><PORT 2><1 T
-#define	OP_ASKSHAREDDENIEDANS	0x61	// (null)
+#define	OP_ASKSHAREDFILESDIR			0x5E	// <len 2><Directory len>
+#define	OP_ASKSHAREDDIRSANS			0x5F	// <count 4>(<len 2><Directory len>)[count]
+#define	OP_ASKSHAREDFILESDIRANS			0x60	// <len 2><Directory len><count 4>(<HASH 16><ID 4><PORT 2><1 T
+#define	OP_ASKSHAREDDENIEDANS			0x61	// (null)
 
 // this 'identifier' is used for referencing shared part (incomplete) files with the OP_ASKSHAREDDIRS and related opcodes
 // it was introduced with eDonkeyHybrid and is considered as part of the protocol.
@@ -250,24 +253,25 @@ const unsigned int UNLIMITED	= 	0;
 #define	OP_UDPVERIFYUPA				0x74	// (never used)
 #define	OP_REQUESTSOURCES			0x81	// <HASH 16>
 #define	OP_ANSWERSOURCES			0x82	//
-#define OP_PUBLICKEY			0x85	// <len 1><pubkey len>
-#define OP_SIGNATURE			0x86	// v1: <len 1><signature len>  v2:<len 1><signature len><sigIPused 1>
-#define OP_SECIDENTSTATE		0x87	// <state 1><rndchallenge 4>
-#define OP_REQUESTPREVIEW		0x90	// <HASH 16>
-#define OP_PREVIEWANSWER		0x91	// <HASH 16><frames 1>{frames * <len 4><frame len>}
-#define OP_MULTIPACKET			0x92
-#define OP_MULTIPACKETANSWER	0x93
-#define	OP_PEERCACHE_QUERY		0x94
-#define	OP_PEERCACHE_ANSWER		0x95
-#define	OP_PEERCACHE_ACK		0x96
-#define	OP_PUBLICIP_REQ			0x97
-#define	OP_PUBLICIP_ANSWER		0x98
+#define OP_PUBLICKEY				0x85	// <len 1><pubkey len>
+#define OP_SIGNATURE				0x86	// v1: <len 1><signature len>
+							// v2:<len 1><signature len><sigIPused 1>
+#define OP_SECIDENTSTATE			0x87	// <state 1><rndchallenge 4>
+#define OP_REQUESTPREVIEW			0x90	// <HASH 16>
+#define OP_PREVIEWANSWER			0x91	// <HASH 16><frames 1>{frames * <len 4><frame len>}
+#define OP_MULTIPACKET				0x92
+#define OP_MULTIPACKETANSWER			0x93
+#define	OP_PEERCACHE_QUERY			0x94
+#define	OP_PEERCACHE_ANSWER			0x95
+#define	OP_PEERCACHE_ACK			0x96
+#define	OP_PUBLICIP_REQ				0x97
+#define	OP_PUBLICIP_ANSWER			0x98
 #define OP_CALLBACK				0x99	// <HASH 16><HASH 16><uint 16>
-#define OP_REASKCALLBACKTCP		0x9A
-#define OP_AICHREQUEST			0x9B	// <HASH 16><uint16><HASH aichhashlen>
-#define OP_AICHANSWER			0x9C	// <HASH 16><uint16><HASH aichhashlen> <data>
-#define OP_AICHFILEHASHANS		0x9D	  
-#define OP_AICHFILEHASHREQ		0x9E
+#define OP_REASKCALLBACKTCP			0x9A
+#define OP_AICHREQUEST				0x9B	// <HASH 16><uint16><HASH aichhashlen>
+#define OP_AICHANSWER				0x9C	// <HASH 16><uint16><HASH aichhashlen> <data>
+#define OP_AICHFILEHASHANS			0x9D	  
+#define OP_AICHFILEHASHREQ			0x9E
 
 // extened prot client <-> extened prot client UDP
 #define	OP_REASKFILEPING			0x90	// <HASH 16>
@@ -276,21 +280,21 @@ const unsigned int UNLIMITED	= 	0;
 #define	OP_QUEUEFULL				0x93	// (null)
 	
 // server.met
-#define	ST_SERVERNAME			0x01	// <string>
-#define	ST_DESCRIPTION			0x0B	// <string>
-#define	ST_PING						0x0C	// <uint32>
-#define	ST_PREFERENCE			0x0E	// <uint32>
-#define	ST_FAIL						0x0D	// <uint32>
-#define	ST_DYNIP						0x85
+#define	ST_SERVERNAME				0x01	// <string>
+#define	ST_DESCRIPTION				0x0B	// <string>
+#define	ST_PING					0x0C	// <uint32>
+#define	ST_PREFERENCE				0x0E	// <uint32>
+#define	ST_FAIL					0x0D	// <uint32>
+#define	ST_DYNIP				0x85
 // #define ST_LASTPING				0x86	// <uint32>
-#define 	ST_MAXUSERS				0x87
+#define 	ST_MAXUSERS			0x87
 #define	ST_SOFTFILES				0x88
 #define	ST_HARDFILES				0x89
 #define	ST_LASTPING				0x90	// <uint32>
-#define	ST_VERSION					0x91	// <string>
+#define	ST_VERSION				0x91	// <string>
 #define	ST_UDPFLAGS				0x92	// <uint32>
-#define	ST_AUXPORTSLIST			0x93	// <string>
-#define	ST_LOWIDUSERS			0x94	// <uint32>
+#define	ST_AUXPORTSLIST				0x93	// <string>
+#define	ST_LOWIDUSERS				0x94	// <uint32>
 
 //file tags
 
@@ -301,52 +305,53 @@ const unsigned int UNLIMITED	= 	0;
 #define TAG_SIZE				"\x02"	// <uint32>
 #define FT_FILETYPE				 0x03	// <string>
 #define TAG_TYPE				"\x03"	// <string>
-#define FT_FILEFORMAT			 0x04	// <string>
+#define FT_FILEFORMAT				 0x04	// <string>
 #define TAG_FORMAT				"\x04"	// <string>
-#define FT_LASTSEENCOMPLETE		 0x05	// <uint32>
-#define TAG_COLLECTION			"\x05"
-#define	TAG_PART_PATH			"\x06"	// <string>
-#define	TAG_PART_HASH			"\x07"
-#define FT_TRANSFERED			 0x08	// <uint32>
+#define FT_LASTSEENCOMPLETE			 0x05	// <uint32>
+#define TAG_COLLECTION				"\x05"
+#define	TAG_PART_PATH				"\x06"	// <string>
+#define	TAG_PART_HASH				"\x07"
+#define FT_TRANSFERED				 0x08	// <uint32>
 #define	TAG_COPIED				"\x08"	// <uint32>
 #define FT_GAPSTART				 0x09	// <uint32>
-#define	TAG_GAP_START			"\x09"	// <uint32>
+#define	TAG_GAP_START				"\x09"	// <uint32>
 #define FT_GAPEND				 0x0A	// <uint32>
 #define	TAG_GAP_END				"\x0A"	// <uint32>
-#define	TAG_DESCRIPTION			"\x0B"	// <string>
+#define	TAG_DESCRIPTION				"\x0B"	// <string>
 #define	TAG_PING				"\x0C"
 #define	TAG_FAIL				"\x0D"
-#define	TAG_PREFERENCE			"\x0E"
+#define	TAG_PREFERENCE				"\x0E"
 #define TAG_PORT				"\x0F"
-#define TAG_IP_ADDRESS			"\x10"
+#define TAG_IP_ADDRESS				"\x10"
 #define TAG_VERSION				"\x11"	// <string>
-#define FT_PARTFILENAME			 0x12	// <string>
-#define TAG_TEMPFILE			"\x12"	// <string>
+#define FT_PARTFILENAME				 0x12	// <string>
+#define TAG_TEMPFILE				"\x12"	// <string>
 #define FT_OLDDLPRIORITY			 0x13	// Not used anymore
-#define TAG_PRIORITY			"\x13"	// <uint32>
+#define TAG_PRIORITY				"\x13"	// <uint32>
 #define FT_STATUS				 0x14	// <uint32>
 #define TAG_STATUS				"\x14"	// <uint32>
 #define FT_SOURCES				 0x15	// <uint32>
-#define TAG_AVAILABILITY		"\x15"	// <uint32>
-#define FT_PERMISSIONS			 0x16	// <uint32>
+#define TAG_AVAILABILITY			"\x15"	// <uint32>
+#define FT_PERMISSIONS				 0x16	// <uint32>
 #define TAG_QTIME				"\x16"
 #define FT_OLDULPRIORITY			 0x17	// Not used anymore
 #define TAG_PARTS				"\x17"
-#define FT_DLPRIORITY			 0x18	// Was 13
-#define FT_ULPRIORITY			 0x19	// Was 17
-#define FT_KADLASTPUBLISHKEY	 0x20	// <uint32>
-#define FT_KADLASTPUBLISHSRC	 0x21	// <uint32>
+#define FT_DLPRIORITY				 0x18	// Was 13
+#define FT_ULPRIORITY				 0x19	// Was 17
+#define FT_KADLASTPUBLISHKEY			 0x20	// <uint32>
+#define FT_KADLASTPUBLISHSRC			 0x21	// <uint32>
 #define	FT_FLAGS				 0x22	// <uint32>
-#define	FT_DL_ACTIVE_TIME		 0x23	// <uint32>
-#define	FT_CORRUPTEDPARTS		 0x24	// <string>
-#define FT_DL_PREVIEW            0x25
-#define FT_AICH_HASH			 0x27
-#define	FT_COMPLETE_SOURCES		 0x30	// nr. of sources which share a complete version of the associated file (supported by eserver 16.46+)
+#define	FT_DL_ACTIVE_TIME			 0x23	// <uint32>
+#define	FT_CORRUPTEDPARTS			 0x24	// <string>
+#define FT_DL_PREVIEW				 0x25
+#define FT_AICH_HASH				 0x27
+#define	FT_COMPLETE_SOURCES			 0x30	// nr. of sources which share a complete version
+							 //of the associated file (supported by eserver 16.46+)
 // statistic
 #define FT_ATTRANSFERED			 0x50	// <uint32>
 #define FT_ATREQUESTED			 0x51	// <uint32>
 #define FT_ATACCEPTED			 0x52	// <uint32>
-#define FT_CATEGORY				 0x53	// <uint32>
+#define FT_CATEGORY			 0x53	// <uint32>
 #define	FT_ATTRANSFEREDHI		 0x54	// <uint32>
 #define	TAG_MEDIA_ARTIST		"\xD0"	// <string>
 #define	 FT_MEDIA_ARTIST		 0xD0	// <string>
@@ -396,12 +401,24 @@ const unsigned int UNLIMITED	= 	0;
 #define TAGTYPE_STR14			0x1E
 #define TAGTYPE_STR15			0x1F
 #define TAGTYPE_STR16			0x20
-#define TAGTYPE_STR17			0x21	// accepted by eMule 0.42f (02-Mai-2004) in receiving code only because of a flaw, those tags are handled correctly, but should not be handled at all
-#define TAGTYPE_STR18			0x22	// accepted by eMule 0.42f (02-Mai-2004) in receiving code only because of a flaw, those tags are handled correctly, but should not be handled at all
-#define TAGTYPE_STR19			0x23	// accepted by eMule 0.42f (02-Mai-2004) in receiving code only because of a flaw, those tags are handled correctly, but should not be handled at all
-#define TAGTYPE_STR20			0x24	// accepted by eMule 0.42f (02-Mai-2004) in receiving code only because of a flaw, those tags are handled correctly, but should not be handled at all
-#define TAGTYPE_STR21			0x25	// accepted by eMule 0.42f (02-Mai-2004) in receiving code only because of a flaw, those tags are handled correctly, but should not be handled at all
-#define TAGTYPE_STR22			0x26	// accepted by eMule 0.42f (02-Mai-2004) in receiving code only because of a flaw, those tags are handled correctly, but should not be handled at all
+#define TAGTYPE_STR17			0x21	// accepted by eMule 0.42f (02-Mai-2004) in receiving code
+						// only because of a flaw, those tags are handled correctly,
+						// but should not be handled at all
+#define TAGTYPE_STR18			0x22	// accepted by eMule 0.42f (02-Mai-2004) in receiving code
+						//  only because of a flaw, those tags are handled correctly,
+						// but should not be handled at all
+#define TAGTYPE_STR19			0x23	// accepted by eMule 0.42f (02-Mai-2004) in receiving code
+						// only because of a flaw, those tags are handled correctly,
+						// but should not be handled at all
+#define TAGTYPE_STR20			0x24	// accepted by eMule 0.42f (02-Mai-2004) in receiving code
+						// only because of a flaw, those tags are handled correctly,
+						// but should not be handled at all
+#define TAGTYPE_STR21			0x25	// accepted by eMule 0.42f (02-Mai-2004) in receiving code
+						// only because of a flaw, those tags are handled correctly,
+						// but should not be handled at all
+#define TAGTYPE_STR22			0x26	// accepted by eMule 0.42f (02-Mai-2004) in receiving code
+						// only because of a flaw, those tags are handled correctly,
+						// but should not be handled at all
 
 
 #define	ED2KFTSTR_AUDIO			"Audio"	// value for eD2K tag FT_FILETYPE
@@ -413,15 +430,15 @@ const unsigned int UNLIMITED	= 	0;
 #define	ED2KFTSTR_CDIMAGE		"Iso"	// eMule internal use only
 
 // additional media meta data tags from eDonkeyHybrid (note also the uppercase/lowercase)
-#define	FT_ED2K_MEDIA_ARTIST	"Artist"	// <string>
+#define	FT_ED2K_MEDIA_ARTIST		"Artist"	// <string>
 #define	FT_ED2K_MEDIA_ALBUM		"Album"		// <string>
 #define	FT_ED2K_MEDIA_TITLE		"Title"		// <string>
-#define	FT_ED2K_MEDIA_LENGTH	"length"	// <string> !!!
-#define	FT_ED2K_MEDIA_BITRATE	"bitrate"	// <uint32>
+#define	FT_ED2K_MEDIA_LENGTH		"length"	// <string> !!!
+#define	FT_ED2K_MEDIA_BITRATE		"bitrate"	// <uint32>
 #define	FT_ED2K_MEDIA_CODEC		"codec"		// <string>
-#define TAG_NSENT				"# Sent"
-#define TAG_ONIP				"ip"
-#define TAG_ONPORT				"port"
+#define TAG_NSENT			"# Sent"
+#define TAG_ONIP			"ip"
+#define TAG_ONPORT			"port"
 
 // ed2k search expression comparison operators
 #define ED2K_SEARCH_OP_EQUAL         0 // eserver 16.45+
@@ -439,11 +456,11 @@ const unsigned int UNLIMITED	= 	0;
 #define KAD_SEARCH_OP_LESS          4 // eMule 0.43+; NOTE: this different than ED2K!
 #define KAD_SEARCH_OP_NOTEQUAL      5 // eMule 0.43+
 
-#define	CT_NAME					0x01
-#define	CT_PORT					0x0f
-#define	CT_VERSION				0x11
+#define	CT_NAME				0x01
+#define	CT_PORT				0x0f
+#define	CT_VERSION			0x11
 #define	CT_SERVER_FLAGS			0x20	// currently only used to inform a server about supported features
-#define	CT_EMULECOMPAT_OPTIONS	0xef
+#define	CT_EMULECOMPAT_OPTIONS		0xef
 #define	CT_EMULE_RESERVED1		0xf0
 #define	CT_EMULE_RESERVED2		0xf1
 #define	CT_EMULE_RESERVED3		0xf2
@@ -454,34 +471,34 @@ const unsigned int UNLIMITED	= 	0;
 #define	CT_EMULE_RESERVED8		0xf7
 #define	CT_EMULE_RESERVED9		0xf8
 #define	CT_EMULE_UDPPORTS		0xf9
-#define	CT_EMULE_MISCOPTIONS1	0xfa
+#define	CT_EMULE_MISCOPTIONS1		0xfa
 #define	CT_EMULE_VERSION		0xfb
 #define CT_EMULE_RESERVED10		0xfc
 #define CT_EMULE_RESERVED11		0xfd
 #define CT_EMULE_RESERVED12		0xfe
 #define CT_EMULE_RESERVED13		0xff
 
-#define	MP_MESSAGE				10102
-#define	MP_DETAIL				10103
-#define	MP_ADDFRIEND				10104
-#define	MP_REMOVEFRIEND				10105
-#define	MP_SHOWLIST				10106
-#define	MP_FRIENDSLOT				10107
-#define MP_CHANGE2FILE				10108
-#define	MP_CANCEL				10201
-#define	MP_STOP					10202
-#define	MP_RESUME				10204
-#define	MP_PAUSE				10203
-#define	MP_CLEARCOMPLETED			10205
-#define	MP_VIEW					30207
-#define	MP_SENDMESSAGE		30208
-#define	MP_FAKECHECK1           10210   // deltaHF -> fakecheck
-#define	MP_FAKECHECK2		10211
-#define	MP_WS					10212
-#define	MP_RAZORSTATS		10213
-#define MP_GETCOMMENTS      10214
+#define	MP_MESSAGE			10102
+#define	MP_DETAIL			10103
+#define	MP_ADDFRIEND			10104
+#define	MP_REMOVEFRIEND			10105
+#define	MP_SHOWLIST			10106
+#define	MP_FRIENDSLOT			10107
+#define MP_CHANGE2FILE			10108
+#define	MP_CANCEL			10201
+#define	MP_STOP				10202
+#define	MP_RESUME			10204
+#define	MP_PAUSE			10203
+#define	MP_CLEARCOMPLETED		10205
+#define	MP_VIEW				30207
+#define	MP_SENDMESSAGE			30208
+#define	MP_FAKECHECK1			10210   // deltaHF -> fakecheck
+#define	MP_FAKECHECK2			10211
+#define	MP_WS				10212
+#define	MP_RAZORSTATS			10213
+#define MP_GETCOMMENTS			10214
 //For comments 
-#define	MP_CMT					10208
+#define	MP_CMT				10208
 #define	MP_SWITCHCTRL_0			10250
 #define	MP_SWITCHCTRL_9			10259
 
@@ -517,7 +534,7 @@ const unsigned int UNLIMITED	= 	0;
 #define	MP_CAT_REMOVE				10323
 #define MP_TOOGLELIST				10324
 #define MP_CLOSE_TAB				10325
-#define MP_CLOSE_ALL_TABS			10326		
+#define MP_CLOSE_ALL_TABS			10326
 #define MP_CLOSE_OTHER_TABS			10327
 
 /* Razor 1a - Modif by MikaelB
@@ -570,7 +587,7 @@ const unsigned int UNLIMITED	= 	0;
 // reserve some for change all-cats (about 20)
 	
 // amule tagnames
-#define 	ET_COMPRESSION				0x20
+#define 	ET_COMPRESSION			0x20
 #define	ET_UDPPORT				0x21
 #define	ET_UDPVER				0x22
 #define	ET_SOURCEEXCHANGE			0x23
@@ -613,7 +630,7 @@ const unsigned int UNLIMITED	= 	0;
 //thread messages
 #define	TM_FINISHEDHASHING			(WM_APP+10)
 #define	TM_HASHTHREADFINISHED			(WM_APP+20)
-#define	TM_FILECOMPLETIONFINISHED			(WM_APP+30)
+#define	TM_FILECOMPLETIONFINISHED		(WM_APP+30)
 
 // quick-speed changer
 #define	MP_QS_U10				10501
