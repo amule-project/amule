@@ -65,13 +65,27 @@ wxProxyData::wxProxyData()
 	Empty();
 }
 
+wxProxyData::wxProxyData(
+	const wxString	&ProxyHostName,
+	unsigned short	ProxyPort,
+	wxProxyType	ProxyType,
+	const wxString	&Username,
+	const wxString	&Password)
+{
+	m_ProxyHostName	= ProxyHostName;
+	m_ProxyPort	= ProxyPort;
+	m_ProxyType	= ProxyType;
+	m_Username	= Username;
+	m_Password	= Password;
+}
+
 void wxProxyData::Empty()
 {
-	ProxyHostName.Clear();
-	ProxyPort = 0;
-	ProxyType = wxPROXY_NONE;
-	Username.Clear();
-	Password.Clear();
+	m_ProxyHostName.Clear();
+	m_ProxyPort = 0;
+	m_ProxyType = wxPROXY_NONE;
+	m_Username.Clear();
+	m_Password.Clear();
 }
 
 /******************************************************************************/
@@ -94,8 +108,8 @@ void wxSocketProxy::SetProxyData(const wxProxyData *ProxyData)
 {
 	if (ProxyData) {
 		m_ProxyData = *ProxyData;
-		m_ProxyAddress.Hostname(m_ProxyData.ProxyHostName);
-		m_ProxyAddress.Service(m_ProxyData.ProxyPort);
+		m_ProxyAddress.Hostname(m_ProxyData.m_ProxyHostName);
+		m_ProxyAddress.Service(m_ProxyData.m_ProxyPort);
 	} else {
 		m_ProxyData.Empty();
 	}
@@ -130,7 +144,7 @@ address.Service());
 			m_ProxyClientSocket->SetFlags(wxSOCKET_WAITALL);
 
 			/* Call the proxy stuff routine */
-			switch(m_ProxyData.ProxyType)
+			switch(m_ProxyData.m_ProxyType)
 			{
 			case wxPROXY_NONE:
 				ok = false;
@@ -205,8 +219,8 @@ bool wxSocketProxy::DoSocks4Request(wxIPaddress &address, wxProxyCommand cmd)
 	*((uint16 *)(m_buffer+2)) = htons(address.Service());
 	*((uint32 *)(m_buffer+4)) = StringIPtoUint32(address.IPAddress());
 	unsigned int OffsetUser = 8;
-	unsigned char LenUser = m_ProxyData.Username.Len();
-	memcpy(m_buffer+OffsetUser, unicode2char(m_ProxyData.Username),
+	unsigned char LenUser = m_ProxyData.m_Username.Len();
+	memcpy(m_buffer+OffsetUser, unicode2char(m_ProxyData.m_Username),
 		LenUser);
 	unsigned int LenPacket = 1 + 1 + 2 + 4 + LenUser + 1 ;
 	
@@ -350,8 +364,8 @@ bool wxSocketProxy::DoSocks5AuthenticationGSSAPI(void)
 
 bool wxSocketProxy::DoSocks5AuthenticationUsernamePassword(void)
 {
-	unsigned char LenUser = m_ProxyData.Username.Len();
-	unsigned char LenPassword = m_ProxyData.Password.Len();
+	unsigned char LenUser = m_ProxyData.m_Username.Len();
+	unsigned char LenPassword = m_ProxyData.m_Password.Len();
 	unsigned int LenPacket = 1 + 1 + LenUser + 1 + LenPassword;
 	unsigned int OffsetUser = 2;
 	unsigned int OffsetPassword = OffsetUser + LenUser + 1;
@@ -359,10 +373,10 @@ bool wxSocketProxy::DoSocks5AuthenticationUsernamePassword(void)
 	// Prepare username/password buffer
 	m_buffer[0] = SOCKS5_VERSION;
 	m_buffer[OffsetUser-1] = LenUser;
-	memcpy(m_buffer+OffsetUser, unicode2char(m_ProxyData.Username),
+	memcpy(m_buffer+OffsetUser, unicode2char(m_ProxyData.m_Username),
 		LenUser);
 	m_buffer[OffsetPassword-1] = LenPassword;
-	memcpy(m_buffer+OffsetPassword, unicode2char(m_ProxyData.Password),
+	memcpy(m_buffer+OffsetPassword, unicode2char(m_ProxyData.m_Password),
 		LenPassword);
 
 	// Send the username/password packet
@@ -565,7 +579,7 @@ bool wxSocketProxy::DoHttpRequest(wxIPaddress &address, wxProxyCommand cmd)
 	wxCharBuffer buf(unicode2charbuf(address.IPAddress()));
 	const char *host = (const char *)buf;
 	uint16 port = address.Service();
-	wxString UserPass = m_ProxyData.Username + wxT(":") + m_ProxyData.Password;
+	wxString UserPass = m_ProxyData.m_Username + wxT(":") + m_ProxyData.m_Password;
 	wxString UserPassEncoded =
 		otherfunctions::EncodeBase64(m_buffer, wxPROXY_BUFFER_SIZE);
 	wxString msg;

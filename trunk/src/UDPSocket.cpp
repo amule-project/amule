@@ -1,4 +1,6 @@
 //
+// This file is part of the aMule Project
+//
 // Copyright (c) 2003-2004 aMule Team ( http://www.amule-project.net )
 // Copyright (C) 2002 Merkur ( merkur-@users.sourceforge.net / http://www.emule-project.net )
 //
@@ -39,15 +41,14 @@
 #include "ServerSocket.h"
 #include <sys/types.h>
 
-IMPLEMENT_DYNAMIC_CLASS(CUDPSocket,wxDatagramSocket)
+IMPLEMENT_DYNAMIC_CLASS(CUDPSocket,wxDatagramSocketProxy)
 
-CUDPSocket::CUDPSocket(CServerConnect* in_serverconnect, amuleIPV4Address& address)
-: wxDatagramSocket(address,wxSOCKET_NOWAIT)
+CUDPSocket::CUDPSocket(CServerConnect* in_serverconnect, amuleIPV4Address& address, const wxProxyData *ProxyData)
+: wxDatagramSocketProxy(address, wxSOCKET_NOWAIT, ProxyData)
 #ifdef AMULE_DAEMON
-	, wxThread(wxTHREAD_JOINABLE)
+, wxThread(wxTHREAD_JOINABLE)
 #endif
 {
-
 	sendbuffer = NULL;
 	cur_server = NULL;
 	serverconnect = in_serverconnect;

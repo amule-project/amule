@@ -56,6 +56,15 @@
 
 //#define DEBUG_CLIENT_PROTOCOL
 
+#ifdef TESTING_PROXY
+	static class wxProxyData pd(
+		wxT("localhost"),
+		1080,
+		wxPROXY_SOCKS5,
+		wxT(""),
+		wxT("")
+	);
+#endif
 
 void CServerConnect::TryAnotherConnectionrequest()
 {
@@ -140,12 +149,6 @@ void CServerConnect::ConnectToServer(CServer* server, bool multiconnect)
 	singleconnecting = !multiconnect;
 
 #ifdef TESTING_PROXY
-	class wxProxyData pd;
-	pd.ProxyHostName = wxT("localhost");
-	pd.ProxyPort = 1080;
-	pd.ProxyType = wxPROXY_SOCKS5;
-	pd.Username = wxT("");
-	pd.Password = wxT("");
 	CServerSocket* newsocket = new CServerSocket(this, &pd);
 //	CServerSocket* newsocket = new CServerSocket(this);
 #else
@@ -483,7 +486,8 @@ CServerConnect::CServerConnect(CServerList* in_serverlist)
 	amuleIPV4Address tmp;
 	tmp.AnyAddress();
 	tmp.Service(thePrefs::GetPort()+3);
-	udpsocket = new CUDPSocket(this,tmp); // initalize socket for udp packets
+	// initalize socket for udp packets
+	udpsocket = new CUDPSocket(this,tmp);
 	m_idRetryTimer.SetOwner(&theApp,TM_TCPSOCKET);
 	lastStartAt=0;	
 	InitLocalIP();	
