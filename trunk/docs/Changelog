@@ -27,8 +27,25 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 	Hetfield:
 		* New popup menu and events management for new wx SysTray
 
+	Ken:
+		* Fixed Mac bug: window was a little larger each restart
+		* Fixed aMule.tmpl so Safari can work with amuleweb
+		* On Mac, enabled Command-clicking in lists to toggle selection
+		* Solved the DECLARE_ABSTRACT_CLASS() mystery on wx-2.4.2. Now
+		we can have UDP socks5 with wx-2.4.2.
+		* Included CVSDATE with version in amulesig.dat
+		* Fixed an endianness bug with webserver
+		* Fixed last (I hope!) endianness bug with IPFilter
+		* Fixed a major endianness bug with widespread effects.  On Mac,
+		  servers don't fail continuously until eventually removed from the
+		  list; server pings work.  Global search seems to work better.
+		  DNS lookup of servers and ED2K link sources should now work.
+
 	Kry:
 		* New SysTray Core written in wxWidgets (portable and transparent icon)
+
+	ObsessionAl:
+		* Patch to include CVS date in about box.
 
 	Phoenix:
 		* Fixed crash in CClientReqSocket::ProcessExtPacket()
@@ -90,20 +107,8 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		on transfer link was not showing.
 		* Fixed amuleweb template processing, Reload List button was
 		not beeing translated.
-
-	Ken:
-		* Fixed Mac bug: window was a little larger each restart
-		* Fixed aMule.tmpl so Safari can work with amuleweb
-		* On Mac, enabled Command-clicking in lists to toggle selection
-		* Solved the DECLARE_ABSTRACT_CLASS() mystery on wx-2.4.2. Now
-		we can have UDP socks5 with wx-2.4.2.
-		* Included CVSDATE with version in amulesig.dat
-		* Fixed an endianness bug with webserver
-		* Fixed last (I hope!) endianness bug with IPFilter
-		* Fixed a major endianness bug with widespread effects.  On Mac,
-		  servers don't fail continuously until eventually removed from the
-		  list; server pings work.  Global search seems to work better.
-		  DNS lookup of servers and ED2K link sources should now work.
+		* Small adjusts to ObsessionAl patch to include CVS date in
+		about box.
 
 	volpol
 		* Patch to fix use of deprecated functions in wxGTK-2.5.3.

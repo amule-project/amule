@@ -419,9 +419,23 @@ void CamuleDlg::OnToolBarButton(wxCommandEvent& ev)
 
 void CamuleDlg::OnAboutButton(wxCommandEvent& WXUNUSED(ev))
 {
-	if ( theApp.IsReady )
-        wxMessageBox(wxString(_(" aMule ")) +  wxString(wxT(VERSION)) + wxString(_("\n\n 'All-Platform' p2p client based on eMule \n\n Website: http://www.amule.org \n Forum: http://forum.amule.org \n FAQ: http://wiki.amule.org \n\n Copyright (C) 2003-2004 aMule Project \n")));
+	wxString msg;
+	msg << _(" aMule ") << wxT(VERSION);
+#ifdef CVSDATE
+	msg << wxT(" Snapshot:\n ") << wxT(CVSDATE);
+#endif
+	msg << _(
+		"\n\n"
+		" 'All-Platform' p2p client based on eMule \n\n"
+		" Website: http://www.amule.org \n"
+		" Forum: http://forum.amule.org \n"
+		" FAQ: http://wiki.amule.org \n\n"
+		" Copyright (C) 2003-2005 aMule Project \n");
+	if (theApp.IsReady) {
+		wxMessageBox(msg);
+	}
 }
+
 
 void CamuleDlg::OnPrefButton(wxCommandEvent& WXUNUSED(ev))
 {
