@@ -255,13 +255,13 @@ wxString GetFiletypeByName(const wxString& filename, bool translated)
 
 bool IsEmptyFile(const wxString& filename)
 {
-  if (wxFile::Exists(filename)) {
-       wxFile file(filename);
-       if (file.IsOpened()) {
-            return ( file.Length() == 0 );
-	  }
-  }
-  return true;
+	if (wxFile::Exists(filename)) {
+		wxFile file(filename);
+		if (file.IsOpened()) {
+			return ( file.Length() == 0 );
+		}
+	}
+	return true;
 }
 
 // Get the max number of connections that the OS supports, or -1 for default
@@ -326,17 +326,17 @@ wxString GetRateString(uint16 rate)
 
 uint32 GetTypeSize(uint8 type)
 {
-        enum {Bytes, KB, MB, GB};
-        int size;
+	enum {Bytes, KB, MB, GB};
+	int size;
 
-        switch(type) {
-                case Bytes: size = 1; break;
-                case KB: size = 1024; break;
-                case MB: size = 1048576; break;
-                case GB: size = 1073741824; break;
-                default: size = -1; break;
-        }
-        return size;
+	switch(type) {
+		case Bytes: size = 1; break;
+		case KB: size = 1024; break;
+		case MB: size = 1048576; break;
+		case GB: size = 1073741824; break;
+		default: size = -1; break;
+	}
+	return size;
 }
 
 // Base16 chars for encode an decode functions
@@ -432,7 +432,7 @@ void DecodeBase16(const char *base16Buffer, unsigned int base16BufLen, byte *buf
 //   wxString object with BASE32 encoded byte array
 wxString EncodeBase32(const unsigned char* buffer, unsigned int bufLen)
 {
-	wxString Base32Buff;    
+	wxString Base32Buff;
 	unsigned int i, index;
 	unsigned char word;
 
@@ -508,16 +508,274 @@ unsigned int DecodeBase32(const char *base32Buffer, unsigned int base32BufLen, u
 	return nDecodeLen;
 }
 
-wxString EncodeBase64(const char* /*buffer*/, unsigned int /*bufLen*/)
+/*
+ * base64.c
+ *
+ * Base64 encoding/decoding command line filter
+ *
+ * Copyright (c) 2002 Matthias Gaertner 29.06.2002
+ * Adapted by Phoenix.
+ *
+ */
+#define B64_OK             0
+#define B64_ERR_CMDLINE    1
+#define B64_ERR_INPUT      2
+#define B64_ERR_OUTPUT     3
+#define B64_ERR_MEMORY     4
+#define B64_ERR_READING    5
+#define B64_ERR_WRITING    6
+#define B64_ERR_SYNTAX     7
+
+#define ENCODE_BUFFER_SIZE_IN (8192*3)
+#define ENCODE_BUFFER_SIZE_OUT (8192*6)
+
+#define DECODE_BUFFER_SIZE_IN (8192*4)
+#define DECODE_BUFFER_SIZE_OUT (8192*3)
+
+static const char* to_b64 =
+	"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+
+/* Option variables */
+static int g_fUseCRLF = FALSE;
+static unsigned int g_nCharsPerLine = 64;
+
+static wxString strHeaderLine;
+
+wxString EncodeBase64(const char *pbBufferIn, unsigned int bufLen)
 {
-	// TODO
-	return wxEmptyString;
+	wxString pbBufferOut;
+
+	for(;;)
+	{
+		if( !strHeaderLine.IsEmpty() )
+		{
+			pbBufferOut = wxT("-----BEGIN ") + strHeaderLine + wxT("-----");
+			if( g_fUseCRLF )
+			{
+				pbBufferOut += wxT("\r");
+			}
+			pbBufferOut += wxT("\n");
+		}
+
+		for(;;)
+		{
+			unsigned long nDiv = 0;
+			unsigned long nRem = 0;
+			unsigned long nChars = 0;
+			unsigned char* pIn = (unsigned char*) pbBufferIn;
+			unsigned int nOut = 0;
+			size_t nWritten = 0;
+
+			nDiv = ((unsigned long)bufLen) / 3;
+			nRem = ((unsigned long)bufLen) % 3;
+			nChars = 0;
+
+			while( nDiv > 0 )
+			{
+				pbBufferOut[nOut+0] = to_b64[ (pIn[0] >> 2) & 0x3f];
+				pbBufferOut[nOut+1] = to_b64[((pIn[0] << 4) & 0x30) + ((pIn[1] >> 4) & 0xf)];
+				pbBufferOut[nOut+2] = to_b64[((pIn[1] << 2) & 0x3c) + ((pIn[2] >> 6) & 0x3)];
+				pbBufferOut[nOut+3] = to_b64[  pIn[2] & 0x3f];
+				pIn += 3;
+				nOut += 4;
+				nDiv--;
+				nChars += 4;
+				if( nChars >= g_nCharsPerLine && g_nCharsPerLine != 0 )
+				{
+					nChars = 0;
+					if( g_fUseCRLF )
+					{
+						pbBufferOut[nOut++] = '\r';
+					}
+					pbBufferOut[nOut++] = '\n';
+				}
+			}
+
+			switch( nRem )
+			{
+				case 2:
+					pbBufferOut[nOut+0] = to_b64[ (pIn[0] >> 2) & 0x3f];
+					pbBufferOut[nOut+1] = to_b64[((pIn[0] << 4) & 0x30) + ((pIn[1] >> 4) & 0xf)];
+					pbBufferOut[nOut+2] = to_b64[ (pIn[1] << 2) & 0x3c];
+					pbBufferOut[nOut+3] = '=';
+					nOut += 4;
+					nChars += 4;
+					if( nChars >= g_nCharsPerLine && g_nCharsPerLine != 0 )
+					{
+						nChars = 0;
+						if( g_fUseCRLF )
+						{
+							pbBufferOut[nOut++] = '\r';
+						}
+						pbBufferOut[nOut++] = '\n';
+					}
+					break;
+				case 1:
+					pbBufferOut[nOut+0] = to_b64[ (pIn[0] >> 2) & 0x3f];
+					pbBufferOut[nOut+1] = to_b64[ (pIn[0] << 4) & 0x30];
+					pbBufferOut[nOut+2] = '=';
+					pbBufferOut[nOut+3] = '=';
+					nOut += 4;
+					nChars += 4;
+					if( nChars >= g_nCharsPerLine && g_nCharsPerLine != 0 )
+					{
+						nChars = 0;
+						if( g_fUseCRLF )
+						{
+							pbBufferOut[nOut++] = '\r';
+						}
+						pbBufferOut[nOut++] = '\n';
+					}
+					break;
+			}
+
+			if( nRem > 0 )
+			{
+				if( nChars > 0 )
+				{
+					nChars = 0;
+					if( g_fUseCRLF )
+					{
+						pbBufferOut[nOut++] = '\r';
+					}
+					pbBufferOut[nOut++] = '\n';
+				}
+			}
+
+			nWritten = (size_t) (nOut);
+			if( nWritten > 0 )
+			{
+//				size_t n = fwrite( (void*)pbBufferOut, 1, nWritten, g_fOut );
+			}
+
+			if( nRem > 0 )
+			{
+				break;
+			}
+		}
+		break;
+	}
+
+	if( !strHeaderLine.IsEmpty() )
+	{
+		pbBufferOut = wxT("-----END ") + strHeaderLine + wxT("-----");
+		if( g_fUseCRLF )
+		{
+			pbBufferOut += wxT("\r");
+		}
+		pbBufferOut += wxT("\n");
+	}
+	
+	return pbBufferOut;
 }
 
-unsigned int DecodeBase64(const char */*base32Buffer*/, unsigned int /*base32BufLen*/, unsigned char */*buffer*/)
+unsigned int DecodeBase64(
+	const char *base32Buffer,
+	unsigned int base32BufLen,
+	unsigned char *buffer)
 {
-	// TODO
-	return 0;
+	int r = B64_OK;
+	int z = 0;  // 0 Normal, 1 skip MIME separator (---) to end of line
+	char c = '\0';
+	unsigned char data[3];
+	unsigned int nData = 0;
+
+	for(;;)
+	{
+		unsigned char bits = 'z';
+//		size_t nRead = fread( (void*)&c, 1, 1, g_fIn );
+//		if( nRead == 0 )
+		{
+			break;
+		}
+
+		if( z > 0 )
+		{
+			if( c == '\n' )
+			{
+				z = 0;
+			}
+		}
+		else if( c >= 'A' && c <= 'Z' )
+		{
+			bits = (unsigned char) (c - 'A');
+		}
+		else if( c >= 'a' && c <= 'z' )
+		{
+			bits = (unsigned char) (c - 'a' + (char)26);
+		}
+		else if( c >= '0' && c <= '9' )
+		{
+			bits = (unsigned char) (c - '0' + (char)52);
+		}
+		else if( c == '+' )
+		{
+			bits = (unsigned char) 62;
+		}
+		else if( c == '/' )
+		{
+			bits = (unsigned char) 63;
+		}
+		else if( c == '-' )
+		{
+			z = 1;
+		}
+		else if( c == '=' )
+		{
+			break;
+		}
+		else
+		{
+			bits = (unsigned char) 'y';
+		}
+
+		if( bits < (unsigned char) 64 )
+		{
+			switch(nData++)
+			{
+				case 0:
+					data[0] = (bits << 2) & 0xfc;
+					break;
+				case 1:
+					data[0] |= (bits >> 4) & 0x03;
+					data[1] = (bits << 4) & 0xf0;
+					break;
+				case 2:
+					data[1] |= (bits >> 2) & 0x0f;
+					data[2] = (bits << 6) & 0xc0;
+					break;
+				case 3:
+					data[2] |= bits & 0x3f;
+					break;
+			}
+
+			if( nData == 4 )
+			{
+				nData = 0;
+			}
+		}
+
+//		if( feof( g_fIn ) )
+		{
+			break;
+		}
+	}
+	if( r == B64_OK && nData > 0 )
+	{
+		if( nData == 1 )
+		{
+			r = B64_ERR_SYNTAX;
+		}
+		else
+		{
+//			size_t n = fwrite( (void*)data, 1, nData-1, g_fOut );
+//			if( ferror( g_fOut ) || n < (nData-1) )
+			{
+				r = B64_ERR_WRITING;
+			}
+		}
+	}
+	return r;
 }
 
 // Returns the text assosiated with a category type
@@ -547,8 +805,8 @@ wxString GetCatTitle(int catid)
 
 
 int wxCMPFUNC_CONV Uint16CompareValues(uint16* first, uint16* second) {
-       return (((int)*first) - ((int)*second)) ;
-}      
+	   return (((int)*first) - ((int)*second)) ;
+}	  
 
 
 // DumpMem ... Dumps mem ;)
