@@ -2183,33 +2183,36 @@ wxSizer *PreferencesDirectoriesTab( wxWindow *parent, bool call_fit, bool set_si
     wxStaticBox *item13 = new wxStaticBox( parent, -1, _("Shared Directories") );
     wxStaticBoxSizer *item12 = new wxStaticBoxSizer( item13, wxVERTICAL );
 
-    CDirectoryTreeCtrl *item14 = new CDirectoryTreeCtrl(parent, IDC_SHARESELECTOR,wxPoint(0,0),  wxSize(100, 100),wxSUNKEN_BORDER|wxTR_DEFAULT_STYLE);
-    wxASSERT( item14 );
-    item12->Add( item14, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxStaticText *item14 = new wxStaticText( parent, ID_TEXT, _("(Right click on folder icon for recursive share)"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
+    item12->Add( item14, 0, wxALIGN_CENTER|wxLEFT|wxTOP|wxBOTTOM, 5 );
 
-    wxCheckBox *item15 = new wxCheckBox( parent, IDC_SHAREHIDDENFILES, _("Share hidden files"), wxDefaultPosition, wxDefaultSize, 0 );
-    item15->SetValue( TRUE );
-    item12->Add( item15, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    CDirectoryTreeCtrl *item15 = new CDirectoryTreeCtrl(parent, IDC_SHARESELECTOR,wxPoint(0,0),  wxSize(100, 100),wxSUNKEN_BORDER|wxTR_DEFAULT_STYLE);
+    wxASSERT( item15 );
+    item12->Add( item15, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    wxCheckBox *item16 = new wxCheckBox( parent, IDC_SHAREHIDDENFILES, _("Share hidden files"), wxDefaultPosition, wxDefaultSize, 0 );
+    item16->SetValue( TRUE );
+    item12->Add( item16, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
     item0->Add( item12, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticBox *item17 = new wxStaticBox( parent, -1, _("Video Player") );
-    wxStaticBoxSizer *item16 = new wxStaticBoxSizer( item17, wxVERTICAL );
+    wxStaticBox *item18 = new wxStaticBox( parent, -1, _("Video Player") );
+    wxStaticBoxSizer *item17 = new wxStaticBoxSizer( item18, wxVERTICAL );
 
-    wxBoxSizer *item18 = new wxBoxSizer( wxHORIZONTAL );
+    wxBoxSizer *item19 = new wxBoxSizer( wxHORIZONTAL );
 
-    CMuleTextCtrl *item19 = new CMuleTextCtrl( parent, IDC_VIDEOPLAYER, _("mplayer -idx"), wxDefaultPosition, wxSize(80,-1), 0 );
-    item18->Add( item19, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+    CMuleTextCtrl *item20 = new CMuleTextCtrl( parent, IDC_VIDEOPLAYER, _("mplayer -idx"), wxDefaultPosition, wxSize(80,-1), 0 );
+    item19->Add( item20, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 
-    wxButton *item20 = new wxButton( parent, IDC_BROWSEV, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
-    item18->Add( item20, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+    wxButton *item21 = new wxButton( parent, IDC_BROWSEV, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
+    item19->Add( item21, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 
-    item16->Add( item18, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    item17->Add( item19, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item21 = new wxCheckBox( parent, IDC_VIDEOBACKUP, _("Create Backup to preview"), wxDefaultPosition, wxDefaultSize, 0 );
-    item16->Add( item21, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxCheckBox *item22 = new wxCheckBox( parent, IDC_VIDEOBACKUP, _("Create Backup to preview"), wxDefaultPosition, wxDefaultSize, 0 );
+    item17->Add( item22, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    item0->Add( item16, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item0->Add( item17, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     if (set_sizer)
     {
@@ -2798,7 +2801,7 @@ wxSizer *preferencesDlgTop( wxWindow *parent, bool call_fit, bool set_sizer )
     wxBoxSizer *item2 = new wxBoxSizer( wxVERTICAL );
     prefs_list_sizer = item2;
 
-    wxListCtrl *item3 = new wxListCtrl( parent, ID_PREFSLISTCTRL, wxDefaultPosition, wxSize(150,290), wxLC_REPORT|wxLC_NO_HEADER|wxLC_SINGLE_SEL|wxSUNKEN_BORDER );
+    wxListCtrl *item3 = new wxListCtrl( parent, ID_PREFSLISTCTRL, wxDefaultPosition, wxSize(150,320), wxLC_REPORT|wxLC_NO_HEADER|wxLC_SINGLE_SEL|wxSUNKEN_BORDER );
     item2->Add( item3, 0, wxGROW|wxALL, 5 );
 
     item1->Add( item2, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
