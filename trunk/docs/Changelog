@@ -28,7 +28,7 @@ Version 2.0.0rc4 - The 'Target: REAL Stability' version.
 		* Fixed unicode issues in serverlist updates and download tab
 		* Fixed unicode issues that stopped adding files to download from ed2k utility 
 		  and internal link handler
-        
+
 	Kry:
 		  
 	Phoenix:
@@ -58,8 +58,13 @@ Version 2.0.0rc4 - The 'Target: REAL Stability' version.
 		  work in download list control.
 		* Fixed broken sort arrow after flicker free clean up.
 		* Enabled mouse wheel scrolling in all aMule list controls.
-                * Fixed two unhandled events in amule.cpp: CHAT_REFRESH_FRIEND and CHAT_FIND_FRIEND.
-        
+		* Fixed two unhandled events in amule.cpp: CHAT_REFRESH_FRIEND
+		  and CHAT_FIND_FRIEND.
+		* Fixed compilation in 2.5.x and some unicode issues in
+		  aLinkCreator. Using wxAppConsole when wx > 2.5.0.
+		* Fixed compilation and linking in 2.5.x for amuleweb. Now
+		  uses wxAppConsole when wx > 2.5.0.
+
 	thepolish:
 		* wxCas:
 			- Fixed for amulesig.dat changes

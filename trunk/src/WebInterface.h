@@ -71,27 +71,47 @@ class CamulewebFrame : public wxFrame {
 };
 #endif
 
+#ifdef AMULEWEBDLG
 
-class CamulewebApp : public wxApp { 
+// GUI Version
+class CamulewebApp : public wxApp
+
+#else // AMULEWEBDLG
+
+// Command line version
+#if wxCHECK_VERSION(2,5,0)
+class CamulewebApp : public wxAppConsole
+#else  // wxCHECK_VERSION
+class CamulewebApp : public wxApp
+#endif // wxCHECK_VERSION
+
+#endif // AMULEWEBDLG
+{
 	public:
 		void 		Print(char *sFormat, ...);
 		wxString	SendRecvMsg(const wxChar *msg);
-#ifndef AMULEWEBDLG
-		virtual int 	OnRun();
-		virtual void 	OnInitCmdLine(wxCmdLineParser& amuleweb_parser) { amuleweb_parser.SetDesc(cmdLineDesc); }
-		virtual bool 	OnCmdLineParsed(wxCmdLineParser& amuleweb_parser);
-		void 		ParseCommandLine();
-		
+#ifdef AMULEWEBDLG
 	private:
-		bool 		m_HasCommandLinePassword;
-		wxString	m_CommandLinePassword;
-#else
+		// GUI Version
 		virtual bool	OnInit();
 		int		OnExit();
 		CamulewebFrame 	*frame;
-#endif
+#else // AMULEWEBDLG
+	private:
+		// Command line version
+		virtual int 	OnRun();
+		virtual void 	OnInitCmdLine(wxCmdLineParser& amuleweb_parser)
+			{ amuleweb_parser.SetDesc(cmdLineDesc); }
+		virtual bool 	OnCmdLineParsed(wxCmdLineParser& amuleweb_parser);
+		void 		ParseCommandLine();
+		
+		bool 		m_HasCommandLinePassword;
+		wxString	m_CommandLinePassword;
+#endif // AMULEWEBDLG
+	private:
 		wxString 	sPort;
 		wxString 	hostName;
 };
 
 #endif //WEBINTERFACE_H
+
