@@ -135,8 +135,8 @@ public:
 	
 	/* Interface */
 	void		SetProxyData(const wxProxyData *ProxyData);
-	bool		Start(wxIPaddress &address, enum wxProxyCommand cmd);
-	wxIPaddress	&GetTargetAddress(void) { return *m_TargetAddress; }
+	bool		Start(wxIPaddress &address, enum wxProxyCommand cmd, wxSocketClient *socket);
+	wxIPaddress	&GetProxyBoundAddress(void) { return *m_ProxyBoundAddress; }
 	unsigned char	GetLastReply(void) { return m_LastReply; }
 
 private:
@@ -169,12 +169,9 @@ private:
 	char			m_buffer[wxPROXY_BUFFER_SIZE];
 	amuleIPV4Address	m_ProxyAddress;
 	wxSocketClient		*m_ProxyClientSocket;
-	wxIPaddress		*m_TargetAddress;
-//
-//	I need this one resolving DNS, please leave it.
-//	amuleIPV4Address	m_TargetAddressIPV4;
-	wxIPV4address		m_TargetAddressIPV4;
-	//wxIPV6address		m_TargetAddressIPV6;
+	wxIPaddress		*m_ProxyBoundAddress;
+	amuleIPV4Address	m_ProxyBoundAddressIPV4;
+	//wxIPV6address		m_ProxyBoundAddressIPV6;
 	unsigned char		m_LastReply;
 	unsigned char		m_AddressType;
 };
@@ -206,6 +203,7 @@ public:
 	/* Interface */
 	bool Connect(wxIPaddress &address, bool wait);
 	void SetProxyData(const wxProxyData *ProxyData);
+	bool UseProxy(void) { return m_UseProxy; }
 	
 private:
 	wxSocketProxy	m_SocketProxy;
@@ -214,7 +212,7 @@ private:
 
 /******************************************************************************/
 
-class wxSocketServerProxy
+class wxSocketServerProxy : public wxSocketServer
 {
 public:
 	/* Constructor */
@@ -223,38 +221,12 @@ public:
 		wxSocketFlags flags = wxSOCKET_NONE,
 		const wxProxyData *ProxyData = NULL);
 		
-	/* Destructor */
-	~wxSocketServerProxy();
-		
 	/* Interface */
 	void SetProxyData(const wxProxyData *ProxyData);
-	
-	/* wxSocketServer interface */
-	wxSocketBase *Accept(bool wait = true) {
-		return m_SocketServer ? m_SocketServer->Accept(wait) : NULL; }
-	bool AcceptWith(wxSocketBase& socket, bool wait = true) {
-		return m_SocketServer ? m_SocketServer->AcceptWith(socket, wait) : false; }
-	void Close(void) {
-		if (m_SocketServer) m_SocketServer->Close(); }
-	/* Changed Discard interface */
-	/* wxSocketBase &Discard(void) {*/
-	void Discard(void) {
-		if (m_SocketServer) m_SocketServer->Discard(); }
-	void Notify(bool notify) {
-		if (m_SocketServer) m_SocketServer->Notify(notify); }
-	bool Ok() const	{
-		return m_SocketServer ? m_SocketServer->Ok() : false; }
-	void SetEventHandler(wxEvtHandler& handler, int id = -1) {
-		if (m_SocketServer) m_SocketServer->SetEventHandler(handler, id); }
-	void SetNotify(wxSocketEventFlags flags) {
-		if (m_SocketServer) m_SocketServer->SetNotify(flags); }
-	bool WaitForAccept(long seconds = -1, long millisecond = 0) {
-		return m_SocketServer ? m_SocketServer->WaitForAccept(seconds, millisecond) : false; }
 	
 private:
 	wxSocketProxy	m_SocketProxy;
 	bool 		m_UseProxy;
-	wxSocketServer	*m_SocketServer;
 };
 
 /******************************************************************************/

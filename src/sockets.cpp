@@ -139,7 +139,18 @@ void CServerConnect::ConnectToServer(CServer* server, bool multiconnect)
 	connecting = true;
 	singleconnecting = !multiconnect;
 
+#ifdef TESTING_PROXY
+	class wxProxyData pd;
+	pd.ProxyHostName = wxT("localhost");
+	pd.ProxyPort = 1080;
+	pd.ProxyType = wxPROXY_SOCKS5;
+	pd.Username = wxT("");
+	pd.Password = wxT("");
+	CServerSocket* newsocket = new CServerSocket(this, &pd);
+//	CServerSocket* newsocket = new CServerSocket(this);
+#else
 	CServerSocket* newsocket = new CServerSocket(this);
+#endif
 	m_lstOpenSockets.AddTail(newsocket);
 	newsocket->ConnectToServer(server);
 

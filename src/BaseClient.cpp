@@ -1230,11 +1230,13 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket){
 	Notify_ClientCtrlRefreshClient( this );
 
 	if (bDelete){
-		AddDebugLogLineM(false, wxString::Format(wxT("--- Deleted client ") + GetClientFullInfo() + wxT("; Reason=") + strReason + wxT("\n")));
+		AddDebugLogLineM(false, wxString::Format(wxT("--- Deleted client \"") + 
+			GetClientFullInfo() + wxT("\"; Reason was ") + strReason + wxT("\n")));
 		return true;
 	}
 	else{
-		AddDebugLogLineM(false, wxString::Format(wxT("--- Disconnected client ") + GetClientFullInfo() + wxT("; Reason=") + strReason + wxT("\n")));
+		AddDebugLogLineM(false, wxString::Format(wxT("--- Disconnected client \"") + 
+			GetClientFullInfo() + wxT("\"; Reason was ") + strReason + wxT("\n")));
 		m_fHashsetRequesting = 0;
 		SetSentCancelTransfer(0);
 		m_bHelloAnswerPending = false;
