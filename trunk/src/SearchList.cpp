@@ -48,7 +48,6 @@ CGlobalSearchThread::CGlobalSearchThread( Packet *packet )
 	
 	m_packet->SetOpCode(OP_GLOBSEARCHREQ);
 
-	Create();
 }
 
 
@@ -319,9 +318,25 @@ void CSearchList::NewSearch(const wxString& resTypes, long nSearchID)
 
 void CSearchList::LocalSearchEnd()
 {
+	wxThreadError result;
+	
 	if ( m_searchpacket ) {
 		m_searchthread = new CGlobalSearchThread(m_searchpacket);
-		m_searchthread->Run();
+		if (m_searchthread->Create() == wxTHREAD_NO_ERROR) {
+			m_searchthread->Run();
+		} else {
+			printf("THREAD CREATION ERROR FOR GLOBAL SEARCH: ");
+			switch (result) {
+				case wxTHREAD_NO_RESOURCE:
+					printf("NOT ENOUGH RESOURCES!\n");
+					break;
+				case wxTHREAD_RUNNING:
+					printf("ALREADY RUNNING!\n");
+					break;
+				default:
+					break;
+			}
+		}
 	}
 	Notify_SearchLocalEnd();
 }
