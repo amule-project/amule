@@ -319,7 +319,7 @@ bool CClientReqSocket::ProcessPacket(char* packet, uint32 size, uint8 opcode)
 					client->SendCommentInfo(reqfile);
 					break;
 				}
-				throw wxString(wxT("Invalid OP_FILEREQUEST packet size"));
+				throw wxString(wxT("Invalid OP_REQUESTFILENAME packet size"));
 				break;  
 			}
 			case OP_SETREQFILEID: {
