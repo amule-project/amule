@@ -90,7 +90,7 @@ AlcFrame::AlcFrame (const wxString & title):
 
 
   wxInt32 x, y;
-  m_md4HashTextCtrl->GetTextExtent ("8", &x, &y);
+  m_md4HashTextCtrl->GetTextExtent (wxT("8"), &x, &y);
   m_md4HashTextCtrl->SetSize (wxSize (33 * x, -1)); // 32 + 1 characters
   
   m_md4HashSBoxSizer->Add (m_md4HashTextCtrl, 1, wxALL | wxALIGN_CENTER, 5);
