@@ -1018,6 +1018,43 @@ void CDownloadQueue::SetCatPrio(int cat, uint8 newprio)
 	}
 }
 
+void CDownloadQueue::SetCatStatus(int cat, int newstatus)
+{
+	std::list<CPartFile*> fileList;
+
+	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
+		CPartFile* cur_file = filelist[i];
+		
+		if ( cur_file->CheckShowItemInGivenCat(cat) ) {
+			fileList.push_back( cur_file );
+		}
+		
+	}
+	if ( !fileList.empty() ) {
+		std::list<CPartFile*>::iterator it = fileList.begin();
+		
+		for ( ; it != fileList.end(); it++ ) {
+			switch ( newstatus ) {
+				case MP_CANCEL:
+					(*it)->Delete();
+					break;
+				case MP_PAUSE:
+					(*it)->PauseFile();
+					break;
+				case MP_STOP:
+					(*it)->StopFile();
+					break;
+				case MP_RESUME:
+					if ( (*it)->GetStatus() == PS_PAUSED ) {
+						(*it)->ResumeFile();
+					}
+					break;
+			}
+		}
+	}
+	
+}
+
 
 uint16 CDownloadQueue::GetDownloadingFileCount()
 {

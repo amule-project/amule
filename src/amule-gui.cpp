@@ -536,8 +536,7 @@ void CamuleGuiApp::NotifyEvent(GUIEvent event)
 			downloadqueue->SetCatPrio(event.long_value, event.short_value);
 			break;
 	        case DLOAD_SET_CAT_STATUS:
-			// FIXME - move code out of downloadlistctrl
-			//downloadqueue->SetCatStatus(event.long_value, event.short_value);
+			downloadqueue->SetCatStatus(event.long_value, event.short_value);
 			break;
 		
 		// CORE->GUI
