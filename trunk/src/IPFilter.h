@@ -48,11 +48,11 @@ public:
 	int		LoadFromFile();
 	void	SaveToFile();
 	bool	IsFiltered(uint32 IP2test);
-	CString GetLastHit()				{ return lasthit;}
+	const wxString& GetLastHit()				{ return lasthit;}
 	uint16	BanCount()					{ return iplist.GetCount(); }
 	void 	Reload();
 private: 
-	CString lasthit;
+	wxString lasthit;
 	ArrayOfIPRange_Struct iplist;
 };
 

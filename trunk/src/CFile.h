@@ -77,7 +77,7 @@ public:
     // attach to (already opened) file
   CFile(int fd) { m_fd = fd; }
 
-  wxString GetFilePath() {return fFilePath;}; 
+  const wxString& GetFilePath() {return fFilePath;}; 
 
   // open/close
     // create a new file (with the default value of bOverwrite, it will fail if
