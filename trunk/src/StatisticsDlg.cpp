@@ -702,49 +702,6 @@ wxString CStatisticsDlg::IterateChilds(wxTreeItemId hChild, int level) {
 	return strBuffer;
 }
 
-// FIXME: 
-// lfroen: must be reworked without taking data from gui controls
-#ifndef CLIENT_GUI
-
-// This is the primary function for generating HTML output of the statistics tree.
-wxString CStatisticsDlg::GetHTML() {
-	
-	wxString strBuffer;
-	wxTreeItemId item;
-
-	strBuffer.Printf(wxT("<font face=\"Verdana,Courier New,Helvetica\" size=\"2\">\r\n<b>aMule v%s %s [%s]</b>\r\n<br><br>\r\n"), wxT(PACKAGE_VERSION), _("Statistics"), thePrefs::GetUserNick().c_str());
-	// update it
-	ShowStatistics();
-	stattree->GetFirstVisibleItem();
-	item=stattree->GetRootItem();
-	strBuffer+=stattree->GetItemText(item);
-	
-	strBuffer += IterateChilds(item, 0);
-			
- 	strBuffer+=wxT("</font>");
-
-	// return the string
-	
-	int filecount = theApp.downloadqueue->GetFileCount();
-	uint32 stats[2]; // get the source count
-	theApp.downloadqueue->GetDownloadStats(stats);
-	strBuffer += 
-		wxString::Format(wxT(
-		"\tStatistics: \n"
-		"\t\tDownloading files: %d\n"
-		"\t\tFound sources: %d\n"
-		"\t\tActive downloads: %d\n"
-		"\t\tActive Uploads: %d\n"
-		"\t\tUsers on upload queue: %d"),
-		filecount, stats[0], stats[1], 
-		theApp.uploadqueue->GetUploadQueueLength(), 
-		theApp.uploadqueue->GetWaitingUserCount());
-	
-	return(strBuffer);
-}
-
-#endif // CLIENT_GUI
-
 void CStatisticsDlg::ComputeSessionAvg(float& kBpsSession, float& kBpsCur, double& kBytesTrans, double& sCur, double& sTrans)
 {
 	if (theApp.sTransferDelay == 0.0  ||  sCur <= theApp.sTransferDelay) {

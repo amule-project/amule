@@ -66,7 +66,6 @@ public:
 	void ApplyStatsColor(int index);
 	COLORREF GetTrayBarColor()		{return acrStat[11];}
 
-	wxString GetHTML();
 	wxString IterateChilds(wxTreeItemId hChild, int level);
 	
 	COScopeCtrl* GetDLScope()	{ return pscopeDL; };
