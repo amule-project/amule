@@ -1318,17 +1318,20 @@ bool CDownloadQueue::OnHostnameResolved(struct sockaddr_in* inaddr)
 	return TRUE;
 }
 
-wxString CDownloadQueue::getTextList()
+wxString CDownloadQueue::getTextList() const
 {
-	wxString out = wxT("");
-	int i=0;
+	wxString out;
 	// Search for file(s)
-	for (std::deque<CPartFile*>::iterator it = filelist.begin();it != filelist.end(); it++) {
-		CPartFile *file = *it;
-			
-		i++;
-		out += wxString::Format(wxT("%i: %s\t [%.1f%%] %i/%i - %s"),i, file->GetFileName().c_str(), file->GetPercentCompleted(), file->GetTransferingSrcCount(), file->GetSourceCount(), file->getPartfileStatus().GetData());
-		if (file->GetKBpsDown()>0.001) {
+	int i = 0;
+	for ( 	std::deque<CPartFile *>::const_iterator it = filelist.begin();
+		it != filelist.end();
+		++it, ++i) {
+		CPartFile *file = *it;			
+		out += wxString::Format(wxT("%i: %s\t [%.1f%%] %i/%i - %s"),
+			i, unicode2char(file->GetFileName()), file->GetPercentCompleted(),
+			file->GetTransferingSrcCount(), file->GetSourceCount(), 
+			unicode2char(file->getPartfileStatus()));
+		if (file->GetKBpsDown() > 0.001) {
 			out += wxString::Format(wxT(" %.1f "),(float)file->GetKBpsDown()) + _("kB/s");
 		}
 		out += wxT("\n");

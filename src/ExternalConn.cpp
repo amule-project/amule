@@ -198,7 +198,7 @@ void ExternalConn::OnSocketEvent(wxSocketEvent& event) {
 			sock->ReadMsg(buf, len);
 
 			wxString response = ProcessRequest(wxString(buf));
-			len=(wxString(response).Length() + 1) * sizeof(wxChar);
+			len = (response.Length() + 1) * sizeof(wxChar);
 			sock->Write(&len, sizeof(uint16));
 			sock->WriteMsg(response.c_str(), len);
   			delete[] buf;
@@ -1025,12 +1025,12 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				
 		if ( item.Left(5).Cmp(wxT("PAUSE")) == 0 ) {
 			if ( item.Mid(5).IsNumber() ) {
-				unsigned int fileID = theApp.downloadqueue->GetFileCount() - StrToLong(item.Mid(5));
+				unsigned int fileID = StrToLong(item.Mid(5));
 				if ( fileID < theApp.downloadqueue->GetFileCount() ) {
 					if (theApp.downloadqueue->GetFileByIndex(fileID)->IsPartFile()) {
 						theApp.downloadqueue->GetFileByIndex(fileID)->PauseFile();
 						printf("Paused\n");
-						return (theApp.downloadqueue->getTextList());
+						return theApp.downloadqueue->getTextList();
 					} else return wxT("Not part file");
 				} else return wxT("Out of range");
 			} else return wxT("Not a number");
@@ -1038,13 +1038,13 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 		
 		if ( item.Left(6).Cmp(wxT("RESUME")) == 0 ) {
 			if (item.Mid(6).IsNumber()) {
-				unsigned int fileID = theApp.downloadqueue->GetFileCount() - StrToLong(item.Mid(6));
+				unsigned int fileID = StrToLong(item.Mid(6));
 				if ( fileID < theApp.downloadqueue->GetFileCount() ) {
 					if (theApp.downloadqueue->GetFileByIndex(fileID)->IsPartFile()) {
 						theApp.downloadqueue->GetFileByIndex(fileID)->ResumeFile();
 						theApp.downloadqueue->GetFileByIndex(fileID)->SavePartFile();
 						printf("Resumed\n");
-						return(theApp.downloadqueue->getTextList());
+						return theApp.downloadqueue->getTextList();
 					} else return wxT("Not part file");
 				} else return wxT("Out of range");				
 			} else return wxT("Not a number");
