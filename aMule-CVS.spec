@@ -6,14 +6,14 @@ Version:     CVS
 Release:     %{cvsdate}
 License:     GPL
 Group:       Applications/Internet
-Packager:    Ariano Bertacca <ariano@hirnriss.net>
-Vendor:      the aMule project
+Packager:    The aMule Team (http://forum.amule.org/)
+Vendor:      The aMule Project
 URL:         http://www.amule.org
 Source:      aMule-%{version}-%{release}.tar.bz2
 Prefix:      %{_prefix}
 BuildRoot:   %{_builddir}/%{name}-%{version}-root
-Requires:    wxGTK >= 2.4.2, wxBase >= 2.4.2, libcryptopp >= 5.1, krb5-libs >= 1.3.1, curl >= 7.10.6
-BuildPreReq: wxGTK-devel >= 2.4.2, libcryptopp-devel >= 5.1, krb5-devel >= 1.3.1, grep, curl-devel >= 7.10.6, automake >= 1.7
+Requires:    wxGTK >= 2.4.2, wxBase >= 2.4.2, krb5-libs >= 1.3.1, curl >= 7.10.6
+BuildPreReq: wxGTK-devel >= 2.4.2, krb5-devel >= 1.3.1, grep, curl-devel >= 7.10.6, automake >= 1.7
 Provides:    %{name}
 Obsoletes:   %{name}
 
@@ -21,24 +21,9 @@ AutoReq:     0
 
 %description
 aMule is a peer to peer file sharing client, based on the well known eMule.
-Starting with 2.0.0 aMule is supposed to work on Linux, Windows and *BSD,
-which makes it the first multi-platform edonkey network client.
-
-%package webserver
-Summary:     This package contains the necessary files to use the aMule webserver.
-Group:       Applications/Internet
-Requires:    aMule = %{version}-%{release}
-
-%package tools
-Summary:     This package contains several tools for aMule.
-Group:       Applications/Internet
-Requires:    aMule = %{version}-%{release}
-
-%description webserver
-This package contains the necessary files to use the aMule webserver.
-
-%description tools
-This package contains several tools for aMule.
+Starting with 2.0.0 aMule is supposed to work on Linux, and *BSD,
+which makes it the first multi-platform edonkey network client. A Windows port
+is planned soon :)
 
 %pre
 echo "***"
@@ -85,25 +70,19 @@ CFLAGS="$RPM_OPT_FLAGS" ./configure \
 %defattr(-,root,root)
 %{_bindir}/amule
 %{_bindir}/ed2k
+%{_bindir}/amulecmd
+%{_bindir}/cas
+%{_bindir}/wxcas
+%{_bindir}/amuleweb
+%{_libdir}/xchat/plugins/xas.pl
 %{_datadir}/applications/*
 %{_datadir}/locale/*
 %{_datadir}/pixmaps/*
 %{_prefix}/man/*/*
 %dir %{_datadir}/doc/%{name}-%{version}
 %doc %{_datadir}/doc/%{name}-%{version}/*
-
-%files tools
-%defattr(-,root,root)
-%{_bindir}/amulecmd
-%{_bindir}/cas
-%{_bindir}/wxcas
-%{_libdir}/xchat/plugins/xas.pl
 %dir %{_datadir}/cas
 %{_datadir}/cas/*
-
-%files webserver
-%defattr(-,root,root)
-%{_bindir}/amuleweb
 %dir %{_datadir}/amule
 %dir %{_datadir}/amule/webserver
 %{_datadir}/amule/webserver/*
@@ -131,3 +110,4 @@ CFLAGS="$RPM_OPT_FLAGS" ./configure \
 
 * Sat Jan 23 2004 Ariano Bertacca <ariano@hirnriss.net>
 - initial amule.spec release
+

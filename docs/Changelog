@@ -189,6 +189,9 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		* Fixed a bug in the spec file. The testing was beeing done
 		with files from amule-dev-cvs, but CVS snapshots tarballs are
 		done in amule-cvs directory.
+		* Implemented changes suggested by bootstrap in aMule-CVS.spec,
+		merged all the packages in a single rpm, changed the packager
+		to "The aMule Team" and updated %BuildPreReq.
 
 	volpol:
 		* Patch to fix use of deprecated functions in wxGTK-2.5.3.
