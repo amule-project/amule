@@ -1,6 +1,9 @@
 Version 2.0.0rc6 - The '???' version.
 ----------
 2004-0?-??
+        Hetfield:
+                * Lots of 3.4.x compilation fixes, due to -DWX_PRECOMP
+		  and wx headers checks.
 
 	phoenix:
 		* Fixed a compilation warning + appartently useless code in 
