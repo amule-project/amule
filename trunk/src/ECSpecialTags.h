@@ -57,6 +57,10 @@ class CPartFile;
 class CSearchFile;
 class CUpDownClient;
 
+class CEC_Prefs_Packet : public CECPacket {
+ 	public:
+ 		CEC_Prefs_Packet(uint32 selection, EC_DETAIL_LEVEL);
+};
 
 class CEC_Server_Tag : public CECTag {
  	public:
