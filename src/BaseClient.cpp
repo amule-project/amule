@@ -1423,7 +1423,7 @@ void CUpDownClient::ReGetClientSoft()
 					m_clientVerString += wxString::Format(" v1.x.y (based on eMule v0.%u)", nClientMinVersion);
 					break;
 				case SO_LPHANT:
-					m_clientVerString += wxString::Format(" < v0.05 ", nClientMinVersion);
+					m_clientVerString += " < v0.05 ";
 					break;
 				default:
 					m_clientVerString +=  wxString::Format(" v0.%u", nClientMinVersion);				
