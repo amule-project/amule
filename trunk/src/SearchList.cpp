@@ -280,6 +280,10 @@ CSearchList::CSearchList()
 
 CSearchList::~CSearchList()
 {
+	StopGlobalSearch();
+	if (m_searchpacket) {
+		delete m_searchpacket;
+	}
 	Clear();
 }
 
