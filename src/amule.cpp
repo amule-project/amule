@@ -129,6 +129,12 @@
 # define RLIMIT_RESOURCE int
 #endif
 
+#ifdef HAVE_SYS_TYPES_H
+# include <sys/types.h>
+#endif
+#ifdef HAVE_SYS_WAIT_H
+# include <sys/wait.h>
+#endif
 
 static void UnlimitResource(RLIMIT_RESOURCE resType)
 {
@@ -836,8 +842,16 @@ bool CamuleApp::OnInit()
 				printf("execlp failed with code %d\n", errno);
 				exit(0);
 			} else {
-				printf("aMuleweb is running on pid %d\n", pid);
-				webserver_pid = pid;
+				int status;
+				// wait few seconds to give amuleweb chance to start or forked child to exit
+				sleep(3);
+				waitpid(pid, &status, WNOHANG);
+				if ( WIFEXITED(status) ) {
+					printf("ERROR: aMuleweb not started\n");
+				} else {
+					printf("aMuleweb is running on pid %d\n", pid);
+					webserver_pid = pid;
+				}
 			}
 		}
 		#endif
