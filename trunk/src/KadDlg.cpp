@@ -72,10 +72,10 @@ void	CKadDlg::OnFieldsChange(wxCommandEvent& WXUNUSED(evt))
 
 	bool enable = false;
 	for ( uint16 i = 0; i < itemsof(textfields); i++ ) {
-		enable &= ((wxTextCtrl*)FindWindowById( textfields[i] ))->GetLineLength(0);
+		enable &= !((wxTextCtrl*)FindWindowById( textfields[i] ))->GetValue().IsEmpty();
 	}
 	
-	// Enable the node connect button if any fields contain text
+	// Enable the node connect button if all fields contain text
 	FindWindowById(ID_NODECONNECT)->Enable( enable );
 }
 
