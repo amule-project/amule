@@ -2006,7 +2006,7 @@ void CPartFile::UpdatePartsInfo() {
 	m_SrcpartFrequency.Clear();
 	m_SrcpartFrequency.Alloc(partcount);
 	
-	m_SrcpartFrequency.Insert(/*Item*/0, /*pos*/0, partcount);
+	m_SrcpartFrequency.Insert(/*Item*/(uint16)0, /*pos*/0, partcount);
 
 	ArrayOfUInts16 count;	
 	
