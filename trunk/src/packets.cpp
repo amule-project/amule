@@ -486,7 +486,6 @@ bool CTag::WriteTagToFile(CFileDataIO* file, EUtf8Str eStrEncode) const
 		file->WriteUInt8(tag.type);
 		
 		if (tag.tagname){
-			wxString tagname = char2unicode(tag.tagname);
 			file->WriteString(char2unicode(tag.tagname));
 		}
 		else{
