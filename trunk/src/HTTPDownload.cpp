@@ -40,7 +40,7 @@
 #include "inetdownload.h"	// Needed for inetDownload
 #endif
 #include "StringFunctions.h"	// Needed for unicode2char
-#include "OtherFunctions.h" 	// Needed for CatChild
+#include "OtherFunctions.h" 	// Needed for CastChild
 
 #ifndef AMULE_DAEMON 
 	#include "muuli_wdr.h"		// Needed for ID_CANCEL: Let it here or will fail on win32
