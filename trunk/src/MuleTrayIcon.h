@@ -21,7 +21,7 @@
 #include <wx/defs.h>		// Needed before any other wx/*.h
 
 #if wxCHECK_VERSION(2, 5, 3)
-// #define USE_WX_TRAY 1
+ #define USE_WX_TRAY 1
 #endif
 
 #ifndef MULETRAYICON_H
