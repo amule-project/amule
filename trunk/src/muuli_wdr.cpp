@@ -231,17 +231,25 @@ wxSizer *searchDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     item11->Enable( FALSE );
     item8->Add( item11, 0, wxADJUST_MINSIZE|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
 
+    wxTextCtrl *item12 = new wxTextCtrl( parent, IDC_SEARCHWEBNAME, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER );
+    item8->Add( item12, 0, wxGROW|wxTOP|wxBOTTOM, 5 );
+
+    wxButton *item13 = new wxButton( parent, ID_WEBSEARCH_SUBMIT, _("Web Search"), wxDefaultPosition, wxDefaultSize, 0 );
+    item13->SetToolTip( _("web search by filedonkey.com") );
+    item13->Enable( FALSE );
+    item8->Add( item13, 0, wxADJUST_MINSIZE|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
+
     item7->Add( item8, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxFlexGridSizer *item12 = new wxFlexGridSizer( 2, 0, 0 );
+    wxFlexGridSizer *item14 = new wxFlexGridSizer( 2, 0, 0 );
 
-    wxStaticText *item13 = new wxStaticText( parent, IDC_MSTATIC4, _("Type"), wxDefaultPosition, wxDefaultSize, 0 );
-    item12->Add( item13, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticText *item15 = new wxStaticText( parent, IDC_MSTATIC4, _("Type"), wxDefaultPosition, wxDefaultSize, 0 );
+    item14->Add( item15, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticText *item14 = new wxStaticText( parent, IDC_MSTATIC4, _("Category"), wxDefaultPosition, wxDefaultSize, 0 );
-    item12->Add( item14, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticText *item16 = new wxStaticText( parent, IDC_MSTATIC4, _("Category"), wxDefaultPosition, wxDefaultSize, 0 );
+    item14->Add( item16, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxString strs15[] = 
+    wxString strs17[] = 
     {
         _("Any"), 
         _("Archives"), 
@@ -251,123 +259,124 @@ wxSizer *searchDlg( wxWindow *parent, bool call_fit, bool set_sizer )
         _("Programs"), 
         _("Videos")
     };
-    wxChoice *item15 = new wxChoice( parent, IDC_TypeSearch, wxDefaultPosition, wxSize(100,30), 7, strs15, 0 );
-    item15->SetName( "SearchSearchType" );
-    item12->Add( item15, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxChoice *item17 = new wxChoice( parent, IDC_TypeSearch, wxDefaultPosition, wxSize(100,30), 7, strs17, 0 );
+    item17->SetName( "SearchSearchType" );
+    item14->Add( item17, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxString *strs16 = (wxString*) NULL;
-    wxChoice *item16 = new wxChoice( parent, ID_AUTOCATASSIGN, wxDefaultPosition, wxSize(100,30), 0, strs16, 0 );
-    item16->SetToolTip( _("Automatically assign new downloads to selected category") );
-    item12->Add( item16, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxString *strs18 = (wxString*) NULL;
+    wxChoice *item18 = new wxChoice( parent, ID_AUTOCATASSIGN, wxDefaultPosition, wxSize(100,30), 0, strs18, 0 );
+    item18->SetToolTip( _("Automatically assign new downloads to selected category") );
+    item14->Add( item18, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    item7->Add( item12, 1, wxGROW|wxRIGHT, 5 );
+    item7->Add( item14, 1, wxGROW|wxRIGHT, 5 );
 
     item5->Add( item7, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxRIGHT, 5 );
 
-    wxBoxSizer *item17 = new wxBoxSizer( wxHORIZONTAL );
-    s_srced2klh = item17;
+    wxBoxSizer *item19 = new wxBoxSizer( wxHORIZONTAL );
+    s_srced2klh = item19;
 
-    wxTextCtrl *item18 = new wxTextCtrl( parent, ID_ED2KLINKHANDLER, wxT(""), wxDefaultPosition, wxSize(80,40), wxTE_MULTILINE );
-    item17->Add( item18, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxTextCtrl *item20 = new wxTextCtrl( parent, ID_ED2KLINKHANDLER, wxT(""), wxDefaultPosition, wxSize(50,40), wxTE_MULTILINE );
+    item19->Add( item20, 1, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxButton *item19 = new wxButton( parent, ID_BTN_DDLOAD, _("Commit"), wxDefaultPosition, wxDefaultSize, 0 );
-    item17->Add( item19, 0, wxADJUST_MINSIZE|wxGROW, 5 );
+    wxButton *item21 = new wxButton( parent, ID_BTN_DDLOAD, _("Commit"), wxDefaultPosition, wxSize(-1,20), 0 );
+    item21->SetToolTip( _("ed2k link handler") );
+    item19->Add( item21, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
 
-    item5->Add( item17, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
+    item5->Add( item19, 1, wxALIGN_CENTER_HORIZONTAL, 5 );
 
-    wxBoxSizer *item20 = new wxBoxSizer( wxHORIZONTAL );
+    wxBoxSizer *item22 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxFlexGridSizer *item21 = new wxFlexGridSizer( 2, 0, 0 );
+    wxFlexGridSizer *item23 = new wxFlexGridSizer( 2, 0, 0 );
 
-    wxTextCtrl *item22 = new wxTextCtrl( parent, IDC_EDITSEARCHMIN, wxT(""), wxDefaultPosition, wxSize(80,-1), wxTE_PROCESS_ENTER );
-    item21->Add( item22, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
+    wxTextCtrl *item24 = new wxTextCtrl( parent, IDC_EDITSEARCHMIN, wxT(""), wxDefaultPosition, wxSize(80,-1), wxTE_PROCESS_ENTER );
+    item23->Add( item24, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
 
-    wxStaticText *item23 = new wxStaticText( parent, IDC_SEARCHMINSIZE, _("Min Size"), wxDefaultPosition, wxDefaultSize, 0 );
-    item21->Add( item23, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticText *item25 = new wxStaticText( parent, IDC_SEARCHMINSIZE, _("Min Size"), wxDefaultPosition, wxDefaultSize, 0 );
+    item23->Add( item25, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxTextCtrl *item24 = new wxTextCtrl( parent, IDC_EDITSEARCHMAX, wxT(""), wxDefaultPosition, wxSize(80,-1), wxTE_PROCESS_ENTER );
-    item21->Add( item24, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
+    wxTextCtrl *item26 = new wxTextCtrl( parent, IDC_EDITSEARCHMAX, wxT(""), wxDefaultPosition, wxSize(80,-1), wxTE_PROCESS_ENTER );
+    item23->Add( item26, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
 
-    wxStaticText *item25 = new wxStaticText( parent, IDC_SEARCHMAXSIZE, _("Max Size"), wxDefaultPosition, wxDefaultSize, 0 );
-    item21->Add( item25, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticText *item27 = new wxStaticText( parent, IDC_SEARCHMAXSIZE, _("Max Size"), wxDefaultPosition, wxDefaultSize, 0 );
+    item23->Add( item27, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxTextCtrl *item26 = new wxTextCtrl( parent, IDC_EDITSEARCHEXTENSION, wxT(""), wxDefaultPosition, wxSize(80,-1), wxTE_PROCESS_ENTER );
-    item21->Add( item26, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
+    wxTextCtrl *item28 = new wxTextCtrl( parent, IDC_EDITSEARCHEXTENSION, wxT(""), wxDefaultPosition, wxSize(80,-1), wxTE_PROCESS_ENTER );
+    item23->Add( item28, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
 
-    wxStaticText *item27 = new wxStaticText( parent, IDC_SEARCHEXTENSION, _("Extension"), wxDefaultPosition, wxDefaultSize, 0 );
-    item21->Add( item27, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticText *item29 = new wxStaticText( parent, IDC_SEARCHEXTENSION, _("Extension"), wxDefaultPosition, wxDefaultSize, 0 );
+    item23->Add( item29, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxTextCtrl *item28 = new wxTextCtrl( parent, IDC_EDITSEARCHAVAIBILITY, wxT(""), wxDefaultPosition, wxSize(80,-1), wxTE_PROCESS_ENTER );
-    item21->Add( item28, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
+    wxTextCtrl *item30 = new wxTextCtrl( parent, IDC_EDITSEARCHAVAIBILITY, wxT(""), wxDefaultPosition, wxSize(80,-1), wxTE_PROCESS_ENTER );
+    item23->Add( item30, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
 
-    wxStaticText *item29 = new wxStaticText( parent, IDC_SEARCHAVAIL, _("Min Availability"), wxDefaultPosition, wxDefaultSize, 0 );
-    item21->Add( item29, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticText *item31 = new wxStaticText( parent, IDC_SEARCHAVAIL, _("Min Availability"), wxDefaultPosition, wxDefaultSize, 0 );
+    item23->Add( item31, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    item20->Add( item21, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
+    item22->Add( item23, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
 
-    item5->Add( item20, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxLEFT, 5 );
+    item5->Add( item22, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxLEFT, 5 );
 
     item3->Add( item5, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxFlexGridSizer *item30 = new wxFlexGridSizer( 2, 0, 0 );
-    item30->AddGrowableCol( 0 );
-
-    wxBoxSizer *item31 = new wxBoxSizer( wxHORIZONTAL );
-
-    wxCheckBox *item32 = new wxCheckBox( parent, IDC_SGLOBAL, _("Search global"), wxDefaultPosition, wxDefaultSize, 0 );
-    item32->SetValue( TRUE );
-    item32->SetName( "globalSearch" );
-    item31->Add( item32, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 0 );
-
-    item30->Add( item31, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxFlexGridSizer *item32 = new wxFlexGridSizer( 2, 0, 0 );
+    item32->AddGrowableCol( 0 );
 
     wxBoxSizer *item33 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxGridSizer *item34 = new wxGridSizer( 3, 0, 0 );
+    wxCheckBox *item34 = new wxCheckBox( parent, IDC_SGLOBAL, _("Search global"), wxDefaultPosition, wxDefaultSize, 0 );
+    item34->SetValue( TRUE );
+    item34->SetName( "globalSearch" );
+    item33->Add( item34, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 0 );
 
-    wxButton *item35 = new wxButton( parent, IDC_STARTS, _("Start"), wxDefaultPosition, wxDefaultSize, 0 );
-    item35->SetName( "StartSearch" );
-    item35->Enable( FALSE );
-    item34->Add( item35, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    item32->Add( item33, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxButton *item36 = new wxButton( parent, IDC_CANCELS, _("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
-    item36->SetName( "CancelSearch" );
-    item36->Enable( FALSE );
-    item34->Add( item36, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxBoxSizer *item35 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxButton *item37 = new wxButton( parent, IDC_CLEARALL, _("Clear All"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxGridSizer *item36 = new wxGridSizer( 3, 0, 0 );
+
+    wxButton *item37 = new wxButton( parent, IDC_STARTS, _("Start"), wxDefaultPosition, wxDefaultSize, 0 );
+    item37->SetName( "StartSearch" );
     item37->Enable( FALSE );
-    item34->Add( item37, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    item36->Add( item37, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    item33->Add( item34, 0, wxALIGN_CENTER, 5 );
+    wxButton *item38 = new wxButton( parent, IDC_CANCELS, _("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
+    item38->SetName( "CancelSearch" );
+    item38->Enable( FALSE );
+    item36->Add( item38, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    item30->Add( item33, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
+    wxButton *item39 = new wxButton( parent, IDC_CLEARALL, _("Clear All"), wxDefaultPosition, wxDefaultSize, 0 );
+    item39->Enable( FALSE );
+    item36->Add( item39, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    item3->Add( item30, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxTOP, 5 );
+    item35->Add( item36, 0, wxALIGN_CENTER, 5 );
+
+    item32->Add( item35, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
+
+    item3->Add( item32, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxTOP, 5 );
 
     item2->Add( item3, 1, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
     item1->Add( item2, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticBox *item39 = new wxStaticBox( parent, -1, wxT("") );
-    wxStaticBoxSizer *item38 = new wxStaticBoxSizer( item39, wxVERTICAL );
+    wxStaticBox *item41 = new wxStaticBox( parent, -1, wxT("") );
+    wxStaticBoxSizer *item40 = new wxStaticBoxSizer( item41, wxVERTICAL );
 
-    wxWindow *item40 = new CMuleNotebook(parent, ID_NOTEBOOK, wxDefaultPosition,wxDefaultSize,0);
-    wxASSERT( item40 );
-    item38->Add( item40, 1, wxGROW, 5 );
+    wxWindow *item42 = new CMuleNotebook(parent, ID_NOTEBOOK, wxDefaultPosition,wxDefaultSize,0);
+    wxASSERT( item42 );
+    item40->Add( item42, 1, wxGROW, 5 );
 
-    wxGauge *item41 = new wxGauge( parent, ID_SEARCHPROGRESS, 100, wxDefaultPosition, wxSize(-1,10), 0 );
-    item38->Add( item41, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxGauge *item43 = new wxGauge( parent, ID_SEARCHPROGRESS, 100, wxDefaultPosition, wxSize(-1,10), 0 );
+    item40->Add( item43, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxBoxSizer *item42 = new wxBoxSizer( wxHORIZONTAL );
+    wxBoxSizer *item44 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxButton *item43 = new wxButton( parent, IDC_SDOWNLOAD, _("Download selected"), wxDefaultPosition, wxDefaultSize, 0 );
-    item43->Enable( FALSE );
-    item42->Add( item43, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxTOP, 5 );
+    wxButton *item45 = new wxButton( parent, IDC_SDOWNLOAD, _("Download selected"), wxDefaultPosition, wxDefaultSize, 0 );
+    item45->Enable( FALSE );
+    item44->Add( item45, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxTOP, 5 );
 
-    item38->Add( item42, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    item40->Add( item44, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    item1->Add( item38, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    item1->Add( item40, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
     item0->Add( item1, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 0 );
 

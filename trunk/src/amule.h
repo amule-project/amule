@@ -138,6 +138,9 @@ public:
 	wxString		GenFakeCheckUrl(CAbstractFile *file);
 	wxString        GenFakeCheckUrl2(CAbstractFile *file);
 	
+	// websearch function
+	wxString        GenWebSearchUrl( const wxString &filename );
+	
 	void QueueLogLine(bool addtostatusbar, const wxChar* line, ...);
 	void FlushQueuedLogLines();
 		

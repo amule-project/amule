@@ -58,6 +58,7 @@ BEGIN_EVENT_TABLE(CSearchDlg, wxPanel)
 	EVT_TEXT_ENTER(IDC_EDITSEARCHAVAIBILITY, CSearchDlg::OnBnClickedStarts)
 	
 	EVT_TEXT(IDC_SEARCHNAME, CSearchDlg::OnFieldsChange)
+	EVT_TEXT(IDC_SEARCHWEBNAME, CSearchDlg::OnFieldsChange)
 	EVT_TEXT(IDC_EDITSEARCHMIN, CSearchDlg::OnFieldsChange)
 	EVT_TEXT(IDC_EDITSEARCHMAX, CSearchDlg::OnFieldsChange)
 	EVT_TEXT(IDC_EDITSEARCHEXTENSION, CSearchDlg::OnFieldsChange)
@@ -73,6 +74,7 @@ BEGIN_EVENT_TABLE(CSearchDlg, wxPanel)
 	EVT_MULENOTEBOOK_PAGE_CLOSED(ID_NOTEBOOK, CSearchDlg::OnSearchClosed)
 	EVT_BUTTON(ID_BTN_DDLOAD, CSearchDlg::DirectDownload)
 	EVT_RIGHT_DOWN(CSearchDlg::OnRMButton)
+	EVT_BUTTON(ID_WEBSEARCH_SUBMIT, CSearchDlg::OnBtnWebSearch)
 
 	EVT_MENU(MP_CLOSE_TAB, CSearchDlg::OnPopupClose)
 	EVT_MENU(MP_CLOSE_ALL_TABS, CSearchDlg::OnPopupCloseAll)
@@ -116,7 +118,6 @@ void CSearchDlg::OnListItemSelected(wxListEvent& WXUNUSED(event))
 	FindWindowById(IDC_SDOWNLOAD)->Enable(true);
 }
 
-
 void CSearchDlg::OnSearchClosed(wxNotebookEvent& evt) 
 {
 	// Abort global search if it was last tab that was closed.
@@ -137,7 +138,7 @@ void CSearchDlg::OnBnClickedStarts(wxCommandEvent& WXUNUSED(evt))
 void CSearchDlg::OnFieldsChange(wxCommandEvent& WXUNUSED(evt))
 {
 	// These are the IDs of the search-fields 
-	int textfields[] = { IDC_SEARCHNAME, IDC_EDITSEARCHMIN, IDC_EDITSEARCHMAX, IDC_EDITSEARCHEXTENSION, IDC_EDITSEARCHAVAIBILITY };
+	int textfields[] = { IDC_SEARCHNAME, IDC_EDITSEARCHMIN, IDC_EDITSEARCHMAX, IDC_EDITSEARCHEXTENSION, IDC_EDITSEARCHAVAIBILITY, IDC_SEARCHWEBNAME};
 
 	bool enable = false;
 	for ( uint16 i = 0; i < itemsof(textfields); i++ ) {
@@ -146,7 +147,10 @@ void CSearchDlg::OnFieldsChange(wxCommandEvent& WXUNUSED(evt))
 	
 	// Enable the Reset button if any fields contain text
 	FindWindowById(IDC_SEARCH_RESET)->Enable( enable );
-
+	
+	// enable web search button
+	FindWindowById(ID_WEBSEARCH_SUBMIT)->Enable( enable );
+	
 	// Enable the Start button if the Name field contains text
 	FindWindowById(IDC_STARTS)->Enable( ((wxTextCtrl*)FindWindowById(IDC_SEARCHNAME))->GetLineLength(0) );
 }
@@ -474,6 +478,7 @@ void CSearchDlg::OnBnClickedSearchReset(wxCommandEvent& WXUNUSED(evt))
 	((wxTextCtrl*)FindWindowById(IDC_EDITSEARCHEXTENSION))->Clear();
 	((wxTextCtrl*)FindWindowById(IDC_EDITSEARCHAVAIBILITY))->Clear();
 	((wxTextCtrl*)FindWindowById(ID_ED2KLINKHANDLER))->Clear();
+	((wxTextCtrl*)FindWindowById(IDC_SEARCHWEBNAME))->Clear();
 	
 	wxChoice* Stypebox = (wxChoice*)FindWindowById(IDC_TypeSearch);
 	Stypebox->SetSelection(Stypebox->FindString(wxString(_("Any"))));
@@ -588,4 +593,12 @@ void CSearchDlg::OnPopupCloseOthers(wxCommandEvent& WXUNUSED(evt))
 		
 		notebook->DeletePage( i );
 	}
+}
+
+
+
+void CSearchDlg::OnBtnWebSearch(wxCommandEvent &evt)
+{
+	wxTextCtrl* txtctrl = (wxTextCtrl*)FindWindow(IDC_SEARCHWEBNAME);
+    theApp.LaunchUrl(theApp.GenWebSearchUrl(txtctrl->GetValue()));
 }
