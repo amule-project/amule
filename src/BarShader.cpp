@@ -95,8 +95,7 @@ void CBarShader::FillRange(uint32 start, uint32 end, const DWORD color)
 		if ( start < it->start ) {
 			// Never touches the current span
 			if ( end < it->start - 1 ) {
-				it++;
-				continue;
+				break;
 			}
 
 			// Stops just before the current span
