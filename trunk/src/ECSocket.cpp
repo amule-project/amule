@@ -68,8 +68,8 @@ struct utf8_table {
 	int     cmask;
 	int     cval;
 	int     shift;
-	long    lmask;
-	long    lval;
+	uint32  lmask;
+	uint32  lval;
 };
 
 static struct utf8_table utf8_table[] =
@@ -83,9 +83,9 @@ static struct utf8_table utf8_table[] =
     {0,     0,      0,      0,              0,         /* end of table    */}
 };
 
-int utf8_mbtowc(wchar_t *p, const unsigned char *s, int n)
+int utf8_mbtowc(uint32 *p, const unsigned char *s, int n)
 {
-	long l;
+	uint32 l;
 	int c0, c, nc;
 	struct utf8_table *t;
 
@@ -112,9 +112,9 @@ int utf8_mbtowc(wchar_t *p, const unsigned char *s, int n)
 	return -1;
 }
 
-int utf8_wctomb(unsigned char *s, wchar_t wc, int maxlen)
+int utf8_wctomb(unsigned char *s, uint32 wc, int maxlen)
 {
-	long l;
+	uint32 l;
 	int c, nc;
 	struct utf8_table *t;
 
@@ -438,7 +438,7 @@ bool ECSocket::ReadNumber(wxSocketBase *sock, void *buffer, unsigned int len, vo
 {
 	if (((struct socket_desc *)opaque)->used_flags & EC_FLAG_UTF8_NUMBERS) {
 		unsigned char mb[6];
-		wchar_t wc;
+		uint32 wc;
 		if (!ReadBuffer(sock, mb, 1, opaque)) return false;
 		int remains = utf8_mb_remain(mb[0]);
 		if (remains) if (!ReadBuffer(sock, &(mb[1]), remains, opaque)) return false;
@@ -467,7 +467,7 @@ bool ECSocket::WriteNumber(wxSocketBase *sock, const void *buffer, unsigned int 
 {
 	if (((struct socket_desc *)opaque)->used_flags & EC_FLAG_UTF8_NUMBERS) {
 		unsigned char mb[6];
-		wchar_t wc;
+		uint32 wc;
 		int mb_len;
 		switch (len) {
 			case 1: wc = *((uint8 *)buffer); break;
