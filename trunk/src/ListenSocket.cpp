@@ -1513,17 +1513,18 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 					// Here comes a extended packet without finishing the hanshake.
 					// IMHO, we should disconnect the client.
 					throw wxString(wxT("Client send OP_SECIDENTSTATE before finishing handshake"));
-				}
-								
+				}								
 				m_client->ProcessSecIdentStatePacket((uchar*)packet,size);
-				if (m_client->GetSecureIdentState() == IS_SIGNATURENEEDED)
-					m_client->SendSignaturePacket();
-				else if (m_client->GetSecureIdentState() == IS_KEYANDSIGNEEDED){
-					m_client->SendPublicKeyPacket();
-					
-					// SendPublicKeyPacket might cause the socket to die, so check
-					if ( m_client )
+				// ProcessSecIdentStatePacket() might cause the socket to die, so check
+				if (m_client) {
+					int SecureIdentState = m_client->GetSecureIdentState();
+					if (SecureIdentState == IS_SIGNATURENEEDED) {
 						m_client->SendSignaturePacket();
+					} else if (SecureIdentState == IS_KEYANDSIGNEEDED) {
+						m_client->SendPublicKeyPacket();
+						// SendPublicKeyPacket() might cause the socket to die, so check
+						if ( m_client ) m_client->SendSignaturePacket();
+					}
 				}
 				break;
 			}
