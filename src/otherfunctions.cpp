@@ -592,6 +592,29 @@ RLE_Data::~RLE_Data()
 	}
 }
 
+void RLE_Data::Realloc(int size)
+{
+	unsigned char *buff = new unsigned char[size];
+	if ( size > m_len ) {
+		memset(buff + m_len, 0, size - m_len);
+		memcpy(buff, m_buff, m_len);
+	} else {
+		memcpy(buff, m_buff, size);
+	}
+	delete m_buff;
+	m_buff = buff;
+	
+	m_enc_buff = new unsigned char[size*4/3 + 1];
+	if ( size > m_len ) {
+		memset(buff + m_len*4/3 + 1, 0, (size - m_len)*4/3);
+		memcpy(buff, m_enc_buff, m_len*4/3 + 1);
+	} else {
+		memcpy(buff, m_enc_buff, size*4/3 + 1);
+	}
+	delete [] m_enc_buff;
+	m_enc_buff = buff;
+}
+
 const unsigned char *RLE_Data::Decode(const unsigned char *buff)
 {
 	//
