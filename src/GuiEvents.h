@@ -136,7 +136,9 @@ enum Core_Event_ID {
 
 enum HTTP_Download_File {
 	HTTP_IPFilter = 1,
-	HTTP_ServerMet
+	HTTP_ServerMet,
+	// Auto-updating server.met has a different callback.
+	HTTP_ServerMetAuto
 };
 
 DECLARE_EVENT_TYPE(wxEVT_NOTIFY_EVENT, wxEVT_USER_FIRST+NOTIFY_EVENT)

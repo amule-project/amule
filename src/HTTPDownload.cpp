@@ -84,12 +84,12 @@ CHTTPThreadDlg::~CHTTPThreadDlg() {
 
 void CHTTPThreadDlg::UpdateGauge(int dltotal,int dlnow) {	
 	
-	if (dltotal != m_progressbar->GetRange()) {
+	if ((dltotal != m_progressbar->GetRange()) && (dltotal > 0)) {
 		m_progressbar->SetRange(dltotal);
 	}
-	
-	m_progressbar->SetValue(dlnow);
-
+	if ((dlnow > 0) && (dlnow <= dltotal))  {
+		m_progressbar->SetValue(dlnow);
+	}
 }
 
 #endif
@@ -187,7 +187,7 @@ void HTTPThread::OnExit() {
 
 
 #ifndef AMULE_DAEMON 
-int CurlGaugeCallback(void *HTTPDlDlg, double dltotal, double dlnow, double ultotal, double ulnow) {	
+int CurlGaugeCallback(void *HTTPDlDlg, double dltotal, double dlnow, double WXUNUSED(ultotal), double WXUNUSED(ulnow)) {	
 //	printf("CB: %f %f - %i %i\n",dltotal, dlnow, int(dltotal),int(dlnow));
 	wxMutexGuiEnter();
 	((CHTTPThreadDlg*)HTTPDlDlg)->UpdateGauge(int(dltotal),int(dlnow));

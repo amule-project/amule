@@ -125,7 +125,6 @@ amule_SOURCES = ListenSocket.cpp \
 	Friend.cpp \
 	FriendListCtrl.cpp \
 	MuleGifCtrl.cpp \
-	HTTPDownloadDlg.cpp \
 	HTTPDownload.cpp \
 	IPFilter.cpp \
 	KnownFile.cpp \
@@ -324,7 +323,7 @@ noinst_HEADERS = AddFileThread.h \
 		 gtk2-funcs.h \
 		 gtkplugxembed.h \
 		 GuiEvents.h \
-		 HTTPDownloadDlg.h \
+		 HTTPDownload.h \
 		 inetdownload.h \
 		 IPFilter.h \
 		 KadDlg.h \
