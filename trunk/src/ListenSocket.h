@@ -80,7 +80,7 @@ public:
 	virtual	bool Close(); /*	{return wxSocketBase::Close();}*/
 	
 	uint32		timeout_timer;
-	uint32		deltimer;  
+	bool		OnDestroy;  
 	bool		hotrank;
 	CUpDownClient*	client;
 	CPreferences* 	app_prefs;
@@ -89,7 +89,7 @@ public:
 protected:
 	void		 PacketReceived(Packet* packet);
 private:
-	void		Delete_Timed();
+//	void		Delete_Timed();
 	bool		ProcessPacket(char* packet, uint32 size,uint8 opcode);
 	bool		ProcessExtPacket(char* packet, uint32 size,uint8 opcode);
 };
