@@ -1,27 +1,28 @@
-Version CVS
-------------
-2004-02-?
-
----------------------------------------------------------------------------
-
-Version 2.0.0
+Version 2.0.0-rc1
 -------------
-2004-02-20 (delayed until 2 big bugs get fixed)
+2004-03-26
 
 	Kry:
-		* Implemented Securehash (imported from eMule 0.30x)
-		  This mean your credits will be lost on first run. 
+		* Implemented SecureIdent (SUI) (imported from eMule 0.30x)
+		  This mean your credits will be lost on first run 
 		  There is no way to avoid that. Sorry :) Same happened with eMule.
 		* Fixed CTag new structure (imported from eMule 0.30x)
 		* Send sources request for files added from search page
 		* Even safer .met saving
 		* Now client detail dialog show Securehash State 
 		  (Not Supported/BadGuy/Not Complete/Verified)
-		* Added itoa to the MFC layer.
-		* Added the first version run detection.
+		* Added itoa to the MFC layer
+		* Added the first version run detection
 		* Added the Arabic, Chinese & Finnish compatibility on loading
-		* OpenBSD compatibility fixed.
-		* Mac port 99% operative, next version will be Mac compatible.
+		* OpenBSD compatibility fixed
+		* Mac port 99% operative, next version will be Mac compatible
+		* Starting sync with eMule 0.42
+		* Fixed hangup on message sending
+		* New IPFilter code (reload & on/off)
+		* Save sources (rare files only <20 sources)
+		* The file pause because of diskpace shows now on aMule logs
+		* Fixed several bugs, memleaks and one mem corruption
+		* Code cleanup
 
 	Creteil:
 		* Added the client detail dialog item for Securehash 
@@ -35,20 +36,20 @@ Version 2.0.0
 		* Added ccache support to configure, no variables tricks needed
 		* Added --with-ccache-prefix option to configure
 		* deleted --enable-libcwd option from configure
-		* deleted useless libcwd debug files and code from whole project.
+		* deleted useless libcwd debug files and code from whole project
 
 	Madcat:
-		* Made Fast ED2K Links Handler optional.
+		* Made Fast ED2K Links Handler optional
 		        Something like the old Frankk's ED2K Links Handler patch.
-		* FakeCheck using donkeyfakes.gambri.net.
+		* FakeCheck using donkeyfakes.gambri.net
 			Original idea and implementation by deltaHF.
-		* Clean(er) fix for splashscreen-creation compiler warning (unused variable)	
-		* Moved project/muuli.wdr to src/muuli.wdr.
+		* Clean(er) fix for splashscreen-creation compiler warning (unused variable
+		* Moved project/muuli.wdr to src/muuli.wdr
 		* ED2K-Links.HOWTO fix for some aMule/eMule error
-		* Added -ggdb -fno-inline to debug compilation flags.
-		* Automatic category assignment for new downloads.
+		* Added -ggdb -fno-inline to debug compilation flags
+		* Automatic category assignment for new downloads
 		* Updated AUTHORS file to reflect original eMule authors and give 
-			credit to original Linux port author (Timo Kujala aka Tiku).
+			credit to original Linux port author (Timo Kujala aka Tiku)
 		* Win32 port 99% operative, next version will be Win32 compatible
 
         Emilio Sandoz:
@@ -67,13 +68,13 @@ Version 2.0.0
 		  messages
 		* Modified RseStringEncrypted. Now we encrypt passwd just (and only)
 		  when changing them in prefs' dialog. So, now we use always encrypted
-		  passwords, noone in clear neither in memory or disk.
+		  passwords, noone in clear neither in memory or disk
 		* Check if we're able to use TCP ports (lacks what todo if not but we
-		  can accept EC. do nothing atm = EC disabled).
-		  Added "AMULEDLG SHOW" to EC available commands.
-        * WebServer now use the more correct _("") for localized strings
-        * Created WebInterface.{h,cpp} for the web interface, and
-          cleaned WebServer.{h,cpp} code.
+		  can accept EC. do nothing atm = EC disabled)
+		  Added "AMULEDLG SHOW" to EC available commands
+                * WebServer now use the more correct _("") for localized strings
+                * Created WebInterface.{h,cpp} for the web interface, and
+                  cleaned WebServer.{h,cpp} code
                           
 		
 	neiro:
@@ -98,20 +99,36 @@ Version 2.0.0
 		  remove dead servers after: 1 >
 		  tcp port: 80 > (for users with bad ISP's .. but remember -> running aMule as root is unsecure !!!)
 		  add new files (dl & share) with auto priority: off by default now (if running aMule for the first time)
-		
+		* Updated the header of all files
+		* Changed wxWindows to wxWidgets
+		* "Donated" amule-project.de
 	niet:
 	        * Donated amule-project.net :-)
 
 	lemonfan:
-		* modified network code for big-endian systems
-		* fixed preferences bug
-		* fixed copy ed2k link to clipboard
-		* fixed CArray for MFC compatibility
+		* Modified network code for big-endian systems
+		* Fixed preferences bug
+		* Fixed copy ed2k link to clipboard
+		* Fixed CArray for MFC compatibility
+		* More rigid compatibility to MFC types
+		* Fixed misformatted strings and several warnings in WebServer.cpp
 		
 	Xaignar:
-		* Code cleanup in amule.* and otherfunctions.* and other files.
-		* The Cleanup button in the File Details dialog no longer replaces "&" with "&&".
-		* Max connections should be correctly set on windows platforms, instead of defaulting to 500.
+		* Code cleanup in amule.* and otherfunctions.* and other files
+		* The Cleanup button in the File Details dialog no longer replaces "&" with "&&"
+		* Max connections should be correctly set on windows platforms, instead of defaulting to 500
+		* Fixed amulecmd compilation with gcc-3.2
+		* Fixed segfault on close.
+		* Some other fixes
+		
+	aquatroll:
+	        * Win32 compilation support
+		
+	hellimod & PowerMike:
+	        * MacOSX compilation support
+		
+	dom:    
+	        * Fixed the > 2GB bug ;)
 	
 		
 	Special Thanks To:
@@ -124,16 +141,18 @@ Version 2.0.0
 		
 		* New translators:
 		
-		Chinese: nbfnw
-		Arabic:  hathalsal
-		Finnish: eQualizer
-		Russian: Elf
-		Italian: GhePeU
+		Chinese:   nbfnw
+		Arabic:    hathalsal
+		Finnish:   eQualizer
+		Russian:   Elf
+		Italian:   GhePeU, sNeo
 		Portuguese (BR): KamiKazeNH
-		Korean: BlueSpring
-		Spanish: JonathanShields
-		Danish: nowlin
+		Korean:    BlueSpring
+		Spanish:   JonathanShields
+		Danish:    nowlin
 		Hungarian: biger [HUN]
+		Galician:  thorero
+		Hebrew:    denisliber
 	
 		* All aMule users!!!
 
