@@ -536,8 +536,8 @@ void DumpMem(const void* where, uint32 size) {
  
 RLE_Data::RLE_Data(int len, bool use_diff)
 {
-	// since we using char, length limited to 255. also there's no point encoding with len <=3 
-	wxASSERT((len < 0xff) && (len > 3));
+	// there's no point encoding with len <=3 
+	wxASSERT((len > 3));
 	
 	m_len = len;
 	m_use_diff = use_diff;

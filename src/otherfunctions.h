@@ -254,7 +254,7 @@ class RLE_Data {
 			while ( i != m_len ) {
 				unsigned char curr_val = m_buff[i];
 				int seq_start = i;
-				while ( (i != m_len) && (curr_val == m_buff[i]) ) {
+				while ( (i != m_len) && (curr_val == m_buff[i]) && ((i - seq_start) < 0xff)) {
 					i++;
 				}
 				if (i - seq_start > 1) {
