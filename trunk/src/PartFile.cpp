@@ -746,15 +746,13 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool get
 
 bool CPartFile::SavePartFile(bool Initial)
 {
-	//struct stat sbf;
-	wxString fName;
-	
 	switch (status) {
 		case PS_WAITINGFORHASH:
 		case PS_HASHING:
 		case PS_COMPLETE:
 			return false;
 	}
+	
 	/* Don't write anything to disk if less than 5000 bytes of free space is left. */
 	wxLongLong total = 0, free = 0;
 	if (wxGetDiskSpace(theApp.glob_prefs->GetTempDir(), &total, &free) && free < 5000) {
@@ -763,17 +761,11 @@ bool CPartFile::SavePartFile(bool Initial)
 	
 	CFile file;
 	try {
-		wxString strSearchPath = m_fullname.Left( m_fullname.Length() - 4 );
-		fName = ::wxFindFirstFile(strSearchPath, wxFILE);
-		if(fName.IsEmpty()) {
-			if (file.IsOpened()) {
-				file.Close();
-			}
-			AddLogLineF(false,_("ERROR while saving partfile: %s (%s => %s)"), _(".part file not found"), m_partmetfilename.c_str(), m_strFileName.c_str());
-			return false;
+		if ( !wxFileExists( m_fullname.Left(m_fullname.Length() - 4) ) ) {
+			throw wxString(wxT(".part file not found"));
 		}
-
-		uint32 lsc = lastseencomplete; //mktime(lastseencomplete.GetLocalTm());
+		
+		uint32 lsc = lastseencomplete;
 
 		if (!Initial) {
 			BackupFile(m_fullname, wxT(".backup"));
@@ -792,7 +784,7 @@ bool CPartFile::SavePartFile(bool Initial)
 		date = ENDIAN_SWAP_32(wxFileModificationTime(m_fullname));
 		file.Write(&date,4);
 		// hash
-		file.Write(&m_abyFileHash,16);
+		file.Write(m_abyFileHash,16);
 		uint16 parts = ENDIAN_SWAP_16(hashlist.GetCount());
 		file.Write(&parts,2);
 		parts = hashlist.GetCount();
@@ -811,14 +803,14 @@ bool CPartFile::SavePartFile(bool Initial)
 
 		CTag* prioritytag;
 		uint8 autoprio = PR_AUTO;
-		if(this->IsAutoDownPriority()) {
+		if(IsAutoDownPriority()) {
 			prioritytag = new CTag(FT_DLPRIORITY,autoprio);
 		} else {
 			prioritytag = new CTag(FT_DLPRIORITY,m_iDownPriority);
 		}
 		prioritytag->WriteTagToFile(&file);			// 5
 		delete prioritytag;
-		if(this->IsAutoDownPriority()) {
+		if(IsAutoDownPriority()) {
 			prioritytag = new CTag(FT_OLDDLPRIORITY,autoprio);
 		} else {
 			prioritytag = new CTag(FT_OLDDLPRIORITY,m_iDownPriority);
@@ -831,7 +823,7 @@ bool CPartFile::SavePartFile(bool Initial)
 		delete lsctag;
 
 		CTag* ulprioritytag;
-		if(this->IsAutoUpPriority()) {
+		if(IsAutoUpPriority()) {
 			ulprioritytag = new CTag(FT_ULPRIORITY,autoprio);
 		} else {
 			ulprioritytag = new CTag(FT_ULPRIORITY,GetUpPriority());
@@ -839,7 +831,7 @@ bool CPartFile::SavePartFile(bool Initial)
 		ulprioritytag->WriteTagToFile(&file);			// 8
 		delete ulprioritytag;
 		
-		if(this->IsAutoUpPriority()) {
+		if(IsAutoUpPriority()) {
 			ulprioritytag = new CTag(FT_OLDULPRIORITY,autoprio);
 		} else {
 			ulprioritytag = new CTag(FT_OLDULPRIORITY,GetUpPriority());
@@ -876,27 +868,17 @@ bool CPartFile::SavePartFile(bool Initial)
 		}
 		delete[] namebuffer;
 		
-		// Breaks the app for some reason
-		/*
-		if (ferror((FILE*)file.fd())) {
+		if ( file.Error() ) {
 			throw wxString(wxT("Unexpected write error"));
 		}
-		*/
 
-	} catch(char* error) {
-		if (file.IsOpened()) {
-			file.Close();
-		}
-		AddLogLineF(false, _("ERROR while saving partfile: %s (%s => %s)"), error, m_partmetfilename.c_str(), m_strFileName.c_str());
-		return false;
 	} catch(wxString error) {
 		if (file.IsOpened()) {
 			file.Close();
 		}
+		
 		AddLogLineF(false, _("ERROR while saving partfile: %s (%s => %s)"), error.c_str(), m_partmetfilename.c_str(), m_strFileName.c_str());
 		return false;
-
-
 	}
 	
 	file.Close();
@@ -983,7 +965,6 @@ void CPartFile::SaveSourceSeeds() {
 	
 
 	CFile file;
-	wxString fName;
 	
 	file.Create(m_fullname + wxT(".seeds"), true);
 	
@@ -1015,7 +996,6 @@ void CPartFile::SaveSourceSeeds() {
 
 void CPartFile::LoadSourceSeeds() {
 	
-	wxString fName;
 	CFile file;
 	CMemFile sources_data;
 	
@@ -1082,15 +1062,15 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
 			
 			/*
 			if (IsComplete(i*PARTSIZE,((i+1)*PARTSIZE)-1)){
-				if (!(result->GetPartHash(i) && !md4cmp(result->GetPartHash(i),this->GetPartHash(i)))){
-					AddLogLineF(false, _("Found corrupted part (%i) in %i parts file %s - FileResultHash |%s| FileHash |%s|"), i+1, GetED2KPartHashCount(), m_strFileName.c_str(),result->GetPartHash(i),this->GetPartHash(i));							
+				if (!(result->GetPartHash(i) && !md4cmp(result->GetPartHash(i),GetPartHash(i)))){
+					AddLogLineF(false, _("Found corrupted part (%i) in %i parts file %s - FileResultHash |%s| FileHash |%s|"), i+1, GetED2KPartHashCount(), m_strFileName.c_str(),result->GetPartHash(i),GetPartHash(i));							
 //					AddLogLineF(false, _("Found corrupted part (%i) in %s"), i+1, m_strFileName.c_str());		
 					AddGap(i*PARTSIZE,((((i+1)*PARTSIZE)-1) >= m_nFileSize) ? m_nFileSize-1 : ((i+1)*PARTSIZE)-1);
 					errorfound = true;
 				}
 			}
 			*/
-			if (!( i < result->GetHashCount() && (result->GetPartHash(i) == this->GetPartHash(i)))){
+			if (!( i < result->GetHashCount() && (result->GetPartHash(i) == GetPartHash(i)))){
 				if (IsComplete(i*PARTSIZE,((i+1)*PARTSIZE)-1)) {
 					CMD4Hash wronghash;
 					if ( i < result->GetHashCount() )
@@ -1354,7 +1334,7 @@ void CPartFile::DrawShareStatusBar(CDC* dc, RECT* rect, bool onlygreyrect, bool 
 		crPending = RGB(255, 208, 0);
 	} 
 
-	s_ChunkBar.SetFileSize(this->GetFileSize()); 
+	s_ChunkBar.SetFileSize(GetFileSize()); 
 	s_ChunkBar.SetHeight(rect->bottom - rect->top); 
 	s_ChunkBar.SetWidth(rect->right - rect->left); 
 	s_ChunkBar.Fill(crMissing); 
@@ -1656,7 +1636,7 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 				case DS_LOWTOLOWIP: {
 					if( cur_src->HasLowID() && (theApp.serverconnect->GetClientID() < 16777216) ) {
 						//If we are almost maxed on sources, slowly remove these client to see if we can find a better source.
-						if( ((dwCurTick - lastpurgetime) > 30000) && (this->GetSourceCount() >= (theApp.glob_prefs->GetMaxSourcePerFile()*.8))) {
+						if( ((dwCurTick - lastpurgetime) > 30000) && (GetSourceCount() >= (theApp.glob_prefs->GetMaxSourcePerFile()*.8))) {
 							theApp.downloadqueue->RemoveSource( cur_src );
 							lastpurgetime = dwCurTick;
 							break;
@@ -1694,7 +1674,7 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 					cur_src->SetValidSource(true);
 					if( cur_src->IsRemoteQueueFull()) {
 						cur_src->SetValidSource(false);
-						if( ((dwCurTick - lastpurgetime) > 60000) && (this->GetSourceCount() >= (theApp.glob_prefs->GetMaxSourcePerFile()*.8 )) ){
+						if( ((dwCurTick - lastpurgetime) > 60000) && (GetSourceCount() >= (theApp.glob_prefs->GetMaxSourcePerFile()*.8 )) ){
 							theApp.downloadqueue->RemoveSource( cur_src );
 							lastpurgetime = dwCurTick;
 							break; //Johnny-B - nothing more to do here (good eye!)
@@ -1871,7 +1851,7 @@ void CPartFile::AddSources(CMemFile* sources,uint32 serverip, uint16 serverport)
 		if (!CanAddSource(userid, port, serverip, serverport, &debug_lowiddropped)) {
 			continue;
 		}
-		if(theApp.glob_prefs->GetMaxSourcePerFile() > this->GetSourceCount()) {
+		if(theApp.glob_prefs->GetMaxSourcePerFile() > GetSourceCount()) {
 			debug_possiblesources++;
 			CUpDownClient* newsource = new CUpDownClient(port,userid,serverip,serverport,this);
 			theApp.downloadqueue->CheckAndAddSource(this,newsource);
@@ -2290,7 +2270,7 @@ void CPartFile::CompleteFile(bool bIsHashingDone)
 {
 	theApp.downloadqueue->RemoveLocalServerRequest(this);
 
-	if(this->srcarevisible) {
+	if(srcarevisible) {
 		Notify_DownloadCtrlHideSource(this);
 	}
 	if (!bIsHashingDone) {
@@ -2634,11 +2614,11 @@ bool CPartFile::HashSinglePart(uint16 partnumber)
 {
 	if ((GetHashCount() <= partnumber) && (GetPartCount() > 1)) {
 		AddLogLineF(true, _("Warning: Unable to hash downloaded part - hashset incomplete (%s)"), GetFileName().c_str());
-		this->hashsetneeded = true;
+		hashsetneeded = true;
 		return true;
 	} else if ((GetHashCount() <= partnumber) && GetPartCount() != 1) {
 		AddLogLineF(true, _("Error: Unable to hash downloaded part - hashset incomplete (%s). This should never happen"),GetFileName().c_str());
-		this->hashsetneeded = true;
+		hashsetneeded = true;
 		return true;		
 	} else {
 		CMD4Hash hashresult;
@@ -3135,7 +3115,7 @@ void CPartFile::AddClientSources(CMemFile* sources,uint8 sourceexchangeversion)
 		} else if (dwID < 16777216) {
 			continue;
 		}
-		if(theApp.glob_prefs->GetMaxSourcePerFile() > this->GetSourceCount()) {
+		if(theApp.glob_prefs->GetMaxSourcePerFile() > GetSourceCount()) {
 			CUpDownClient* newsource = new CUpDownClient(nPort,dwID,dwServerIP,nServerPort,this);
 			if (sourceexchangeversion > 1) {
 				newsource->SetUserHash(achUserHash);
@@ -3358,7 +3338,7 @@ void CPartFile::FlushBuffer(void)
 					AddGap(PARTSIZE*partNumber, (PARTSIZE*partNumber + partRange));
 					corrupted_list.AddTail(partNumber);
 					// Reduce transfered amount by corrupt amount
-					this->m_iLostDueToCorruption += (partRange + 1);
+					m_iLostDueToCorruption += (partRange + 1);
 				} else {
 					if (!hashsetneeded) {
 						AddDebugLogLineF(false, wxT("Finished part %u of \"%s\""), partNumber, GetFileName().c_str());
