@@ -363,12 +363,6 @@ wxString CWebServer::_LoadTemplate(wxString sAll, wxString sTemplateName) {
 }
 
 
-void CWebServer::_RemoveServer(CWebServer *pThis, wxString sIP, wxString sPort) {
-	wxString request = wxString::Format(wxT("SERVER REMOVE %s %s"), sIP.GetData(), sPort.GetData());
-	pThis->webInterface->SendRecvMsg(request.GetData());
-}
-
-
 void CWebServer::_SetSharedFilePriority(CWebServer *pThis, wxString hash, uint8 priority) {	
 	int prio = (int) priority;
 	if (prio >= 0 && prio < 5) {
@@ -387,12 +381,6 @@ void CWebServer::AddStatsLine(UpDown* line) {
 		delete m_Params.PointsForWeb[0];
 		m_Params.PointsForWeb.RemoveAt(0);
 	}
-}
-
-
-void CWebServer::_ConnectToServer(CWebServer *pThis, wxString sIP, wxString sPort) {
-	wxString request = request.Format(wxT("SERVER CONNECT %s %s"), sIP.GetData(), sPort.GetData());
-	pThis->webInterface->SendRecvMsg(request.GetData());
 }
 
 
@@ -495,9 +483,6 @@ void CWebServer::ProcessURL(ThreadData Data) {
 	}
 	wxString sSession = sSession.Format(wxT("%ld"), lSession);
 	wxString sW = _ParseURL(Data, wxT("w"));
-	//
-	// WE CANT TOUCH THE MAIN THREAD'S GUI!!!
-	//
 	if (sW == wxT("password")) {
 		wxString PwStr = _ParseURL(Data, wxT("p"));
 		wxString PwHash = MD5Sum(PwStr).GetHash();
@@ -1840,8 +1825,7 @@ wxString CWebServer::_GetConnectedServer(ThreadData Data) {
 	OutS.Replace(wxT("[ServerOptions]"), _("Server Preferences"));
 	OutS.Replace(wxT("[WebSearch]"), _("Web-based Search"));
 
-	CECPacket connstate_req(EC_OP_GET_CONNSTATE);
-	connstate_req.AddTag(CECTag(EC_TAG_DETAIL_LEVEL, (uint8)EC_DETAIL_WEB));
+	CECPacket connstate_req(EC_OP_GET_CONNSTATE, EC_DETAIL_WEB);
 	CECPacket *sServerStat = pThis->webInterface->SendRecvMsg_v2(&connstate_req);
 	if ( !sServerStat ) {
 		return wxEmptyString;
@@ -2215,7 +2199,7 @@ wxString CWebServer::GetStatusBox(wxString &preselect)
 		} else {
 			result += wxT("<option value=\"");
 		}
-		result += wxString(catvalues[i]) + wxT("\">\"") + catnames[i] + wxT("</option>");
+		result += wxString(catvalues[i]) + wxT("\">") + catnames[i] + wxT("</option>");
 	}
 
 	result == wxT("</select></form>");
@@ -2282,8 +2266,7 @@ ServersInfo::ServersInfo(CamulewebApp *webApp) : ItemsContainer<ServerEntry, xSe
 
 bool ServersInfo::ServersInfo::ReQuery()
 {
-	CECPacket srv_req(EC_OP_GET_SERVER_LIST);
-	srv_req.AddTag(CECTag(EC_TAG_DETAIL_LEVEL, (uint8)EC_DETAIL_WEB));
+	CECPacket srv_req(EC_OP_GET_SERVER_LIST, EC_DETAIL_WEB);
 	CECPacket *srv_reply = m_webApp->SendRecvMsg_v2(&srv_req);
 	if ( !srv_reply ) {
 		return false;
