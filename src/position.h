@@ -19,10 +19,10 @@
 WX_DECLARE_LIST(void, VoidList);
 WX_DECLARE_HASH_MAP(unsigned int, void*, wxIntegerHash, wxIntegerEqual, VoidHash);
 
-struct _POSITION {
+typedef struct  {
   VoidHash::iterator it;
   VoidList::Node* node;
-};
+} _POSITION;
 
 typedef _POSITION* POSITION;
 
