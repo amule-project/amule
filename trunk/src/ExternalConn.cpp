@@ -369,7 +369,9 @@ CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request,
 		CEC_PartFile_Tag filetag(cur_file, detail_level);
 		
 		CPartFile_Encoder &enc = encoders[cur_file];
-//		CECTag *etag = encoders[cur_file].Encode();
+		if ( detail_level != EC_DETAIL_UPDATE ) {
+			enc.ResetEncoder();
+		}
 		CECTag *etag = enc.Encode();
 		filetag.AddTag(etag);
 
@@ -1015,12 +1017,16 @@ CPartFile_Encoder &CPartFile_Encoder::operator=(const CPartFile_Encoder &obj)
 
 CECTag *CPartFile_Encoder::Encode()
 {
-	if ( m_gap_buffer_size < m_file->gaplist.GetCount()*2 ) {
-		m_gap_buffer_size = m_file->gaplist.GetCount()*2;
+	int gap_list_size = m_file->gaplist.GetCount();
+	
+	if ( m_gap_buffer_size < gap_list_size*2 ) {
+		m_gap_buffer_size = gap_list_size*2;
 		uint32 *buf = new uint32[m_gap_buffer_size];
 		delete [] m_gap_buffer;
 		m_gap_buffer = buf;
 	} 
+	
+	//printf("GapList have %d entries\n", gap_list_size);
 	
 	POSITION curr_pos = m_file->gaplist.GetHeadPosition();
 	uint32 *gap_buff_ptr = m_gap_buffer;
@@ -1028,11 +1034,20 @@ CECTag *CPartFile_Encoder::Encode()
 		Gap_Struct *curr = m_file->gaplist.GetNext(curr_pos);
 		*gap_buff_ptr++ = ENDIAN_SWAP_32(curr->start);
 		*gap_buff_ptr++ = ENDIAN_SWAP_32(curr->end);
+		//printf("GAP to buffer [%08x %08x]\n", curr->start, curr->end);
 	}
 
-	m_enc_data.m_gap_status.Realloc(m_gap_buffer_size);
+//	printf("DEBUG: gap data to send %d dwords [:\n", gap_list_size);
+//	otherfunctions::DumpMem_DW(m_gap_buffer, gap_list_size);
+//	printf("]\n");
+	
+	m_enc_data.m_gap_status.Realloc(gap_list_size*2*sizeof(uint32));
 	int gap_enc_size = 0;
 	const unsigned char *gap_enc_data = m_enc_data.m_gap_status.Encode((unsigned char *)m_gap_buffer, gap_enc_size);
+
+//	printf("DEBUG: gap data encoded %d bytes [:\n", gap_enc_size);
+//	otherfunctions::DumpMem(gap_enc_data, gap_enc_size);
+//	printf("]\n");
 	
 	int part_enc_size;
 	const unsigned char *part_enc_data = m_enc_data.m_part_status.Encode(m_file->m_SrcpartFrequency, part_enc_size);
@@ -1053,7 +1068,7 @@ CECTag *CPartFile_Encoder::Encode()
 	tagdata += part_enc_size;
 
 	// real number of gaps - so remote size can realloc
-	*((uint32 *)tagdata) = m_gap_buffer_size;
+	*((uint32 *)tagdata) = gap_list_size;
 	tagdata += sizeof(uint32);
 	memcpy(tagdata, gap_enc_data, gap_enc_size);
 
