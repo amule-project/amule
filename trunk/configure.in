@@ -121,10 +121,10 @@ AC_ARG_ENABLE(alc,  [  --enable-alc               compile aMuleLinkCreator GUI v
 AC_ARG_ENABLE(alcc,  [  --enable-alcc              compile aMuleLinkCreator for console],
               ALCC="$enableval", ALCC="no")
 
-AC_ARG_ENABLE(systray, [  --disable-systray          disable GTK SysTray compilation (for wx 2.4.x only)],
+AC_ARG_ENABLE(systray, [  --disable-systray          disable taskbar icon support],
 			systray="$enableval", systray="yes")
 
-AC_ARG_ENABLE(utf8_systray, [  --enable-utf8-systray      use UTF-8 encoded strings in the GTK SysTray (wx 2.4.x only)],
+AC_ARG_ENABLE(utf8_systray, [  --enable-utf8-systray      compile taskbar icon with support for UTF-8 encoded strings)],
 		utf8_systray="$enableval", utf8_systray="no")
 
 AC_ARG_ENABLE(embedded_crypto,[  --disable-embedded_crypto  do not use embedded Crypto code],
@@ -286,7 +286,7 @@ else
   AC_SUBST(GTK_LIBS)
   havegtk="not_needed"
   if test "x${systray}" = "xyes" ; then
-    AC_MSG_WARN([Disabling GTK SysTray as we have no GUI.])
+    AC_MSG_WARN([Disabling taskbar icon support as we have no GUI.])
   fi
   systray=no
   utf8_systray=no
@@ -298,8 +298,6 @@ CHECK_WX_PARTIAL_VERSION
 
 if test x"$WX_PARTIAL_VERSION" = x"5"; then
   WX_VERSION="2_5"
-  systray=no
-  utf8_systray=no
 else
   WX_VERSION="any"
 fi
@@ -402,50 +400,6 @@ AC_CHECK_FUNCS([mkdir getrlimit setrlimit])
 # Flush standard test results for speeding cache
 AC_CACHE_SAVE
 
-# aMule options
-
-# systray disable
-AC_MSG_CHECKING([whether GTK SysTray (wx 2.4.x only) should be used/compiled])
-AC_MSG_RESULT($systray)
-
-case "$systray" in
-no) TRAY_FLAGS="-D__SYSTRAY_DISABLED__"
-     USE_SAFE_TRAY="no"
-     ;;
-esac
-
-AC_SUBST(TRAY_FLAGS)
-
-# utf8_systray enable
-AC_MSG_CHECKING([whether GTK SysTray should use UTF-8 strings])
-AC_MSG_RESULT($utf8_systray)
-
-case "$utf8_systray" in
-yes)
-	if test x"$systray" = xyes; then
-		UTF8_SYSTRAY_FLAGS="-D__UTF8_SYSTRAY_ENABLED__"
-		USE_UTF8_SYSTRAY="yes"
-	else
-		
-		if test x"$WX_VERSION" = x"2_5"; then
-			echo "UTF-8 GTK SysTray disabled, wx native settings will be used"
-		else
-			echo "***** Warning if you want to enable UTF-8 GTK SysTray, --enable-systray must be active"
-		fi
-		utf8_systray="no"		
-	fi
-	;;
-esac
-
-AC_SUBST(UTF8_SYSTRAY_FLAGS)
-
-# gtk code strip
-if test x"$systray" != xyes -a x"$WXGTK_VERSION" != x"2.4.2" -a x"$havegtk" != x"not_needed"; then
-	  GTK_DEFS="$GTK_DEFS -D__NOGTK__"
-fi
-
-AC_SUBST(GTK_DEFS)
-
 # Other tests
 
 case "$USE_DEBUG" in
@@ -464,15 +418,65 @@ case "$WXGTK_VERSION" in
 	 AC_MSG_NOTICE([WARNING: aMuled cannot be used with wxWidgets-2.4: disabling it])
 	fi
 	AMULE_DAEMON="no"
+	gtk_tray="yes"
 	;;
-2.5.1 | 2.5.2)
+2.5.1)
 	USE_24GSOCKET="no"
+	gtk_tray="yes"
+	;;
+2.5.2)
+	USE_24GSOCKET="no"
+	gtk_tray="no"
 	;;
 *)
 	USE_GSOCKET="no"
 	USE_24GSOCKET="no"
+	HAVE_OLD_TRAY="no"
+	gtk_tray="no"
 	;;
 esac
+
+#aMule options
+
+# systray disable
+AC_MSG_CHECKING([whether taskbar icon support should be compiled])
+AC_MSG_RESULT($systray)
+
+case "$systray" in
+no) TRAY_FLAGS="-D__SYSTRAY_DISABLED__"
+     USE_SAFE_TRAY="no"
+     ;;
+esac
+
+#systray type (GTK/WX)
+
+case "$gtk_tray" in
+no) TRAY_FLAGS="$TRAY_FLAGS -DUSE_WX_TRAY"
+     USE_SAFE_TRAY="no"
+     ;;
+esac
+
+AC_SUBST(TRAY_FLAGS)
+
+# utf8_systray enable
+AC_MSG_CHECKING([whether taskbar icon should use UTF-8 strings])
+AC_MSG_RESULT($utf8_systray)
+
+case "$utf8_systray" in
+yes)
+	if test x"$systray" = xyes; then
+		UTF8_SYSTRAY_FLAGS="-D__UTF8_SYSTRAY_ENABLED__"
+		USE_UTF8_SYSTRAY="yes"
+	else
+		echo "***** Warning if you want to enable UTF-8 asupport for taskbar icon, --enable-systray must be active"
+		utf8_systray="no"		
+	fi
+	;;
+esac
+
+AC_SUBST(UTF8_SYSTRAY_FLAGS)
+
+AC_SUBST(GTK_DEFS)
 
 # Command line tools
 case "$BUILDAMULECMD" in
@@ -526,12 +530,6 @@ yes)	LDFLAGS="$LDFLAGS -static"
 	;;
 esac
 
-dnl case "$DISABLE_PROGRESS" in
-dnl yes)     AC_DEFINE_UNQUOTED(DISABLE_PROGRESS, 1,
-dnl      [Define if progress bar drawing should be disabled.])
-dnl  ;;
-dnl esac
-
 if test "x$prefix" != "xNONE"; then
 	aMuleInstallPrefix=$prefix
 else
@@ -580,6 +578,7 @@ AM_CONDITIONAL(COMPILE_CMD, test x$BUILD_AMULECMD = xyes)
 AM_CONDITIONAL(ADD_24GSOCKET, test x$USE_24GSOCKET = xyes)
 AM_CONDITIONAL(ADD_GSOCKET, test x$USE_GSOCKET = xyes)
 AM_CONDITIONAL(HAVE_TRAY, test x$systray = xyes)
+AM_CONDITIONAL(HAVE_OLD_TRAY, test x$gtk_tray = xyes)
 AM_CONDITIONAL(HAVE_UTF8_TRAY, test x$utf8_systray = xyes)
 AM_CONDITIONAL(HAVE_GTK, test x$systray = xyes)
 AM_CONDITIONAL(MONOLITHIC, test x$MONOLITHIC = xyes)
@@ -663,45 +662,46 @@ echo
 echo "  aMule enabled options:"
 echo 
 echo "  **** aMule Core ****" 
-echo "  Prefix where aMule should be installed?                  ${prefix:-none}"
-echo "  Should aMule be compiled in debug mode?                  ${USE_DEBUG:-no}"
-echo "  Should aMule be compiled with profiling?                 ${USE_PROFILE:-no}"
-echo "  Should aMule be compiled with optimizations?             ${USE_OPTIMIZE:-no}"
-echo "  Should aMule be compiled with GTK SysTray?               ${systray}"
-echo "  Should aMule be compiled with UTF-8 GTK SysTray?         ${utf8_systray}"
-echo "  Should aMule be linked against patched gsocket?          ${USE_GSOCKET:-no}"
-echo "  Should aMule monolithic application be built?            ${MONOLITHIC:-no}"
-echo "  Should aMule daemon version be built? (EXPERIMENTAL)     ${AMULE_DAEMON:-no}"
-echo "  Should aMule remote gui be built? (EXPERIMENTAL)         ${AMULE_GUI:-no}"
-echo "  Crypto++ library/headers style?                          ${CRYPTO_PP_STYLE}"
+echo "  Prefix where aMule should be installed?                    ${prefix:-none}"
+echo "  Should aMule be compiled in debug mode?                    ${USE_DEBUG:-no}"
+echo "  Should aMule be compiled with profiling?                   ${USE_PROFILE:-no}"
+echo "  Should aMule be compiled with optimizations?               ${USE_OPTIMIZE:-no}"
+echo "  Should aMule be compiled with taskbar icon support?        ${systray}"
+echo "  Should aMule be compiled with old GTK taskbar icon?        ${gtk_tray}"
+echo "  Should aMule be compiled with UTF-8 taskbar icon support?  ${utf8_systray}"
+echo "  Should aMule be linked against patched gsocket?            ${USE_GSOCKET:-no}"
+echo "  Should aMule monolithic application be built?              ${MONOLITHIC:-no}"
+echo "  Should aMule daemon version be built? (EXPERIMENTAL)       ${AMULE_DAEMON:-no}"
+echo "  Should aMule remote gui be built? (EXPERIMENTAL)           ${AMULE_GUI:-no}"
+echo "  Crypto++ library/headers style?                            ${CRYPTO_PP_STYLE}"
 
 echo
 echo "  **** aMule TextClient ****"
-echo "  Should aMule Command Line Client be built?               ${BUILD_AMULECMD:-no}"
-echo "  Should aMule GUI Client be built?                        ${GUI:-no}"
+echo "  Should aMule Command Line Client be built?                 ${BUILD_AMULECMD:-no}"
+echo "  Should aMule GUI Client be built?                          ${GUI:-no}"
 echo
 echo "  **** aMule WebServer ****"
-echo "  Should aMule WebServer be built?                         ${WEB:-no}"
-echo "  Should aMule WebServer GUI be built?                     ${WEBGUI:-no}"
+echo "  Should aMule WebServer be built?                           ${WEB:-no}"
+echo "  Should aMule WebServer GUI be built?                       ${WEBGUI:-no}"
 echo
 echo "  **** aMule ED2K Links Handler ****"
-echo "  Should aMule ED2K Links Handler be built?                ${ED2K:-no}"
+echo "  Should aMule ED2K Links Handler be built?                  ${ED2K:-no}"
 echo
 echo "  **** aMuleLinkCreator ****"
-echo "  Should aMuleLinkCreator GUI version (alc) be built?      ${ALC:-no}"
-echo "  Should aMuleLinkCreator for console (alcc) be built?     ${ALCC:-no}"
+echo "  Should aMuleLinkCreator GUI version (alc) be built?        ${ALC:-no}"
+echo "  Should aMuleLinkCreator for console (alcc) be built?       ${ALCC:-no}"
 echo
 echo "  **** aMule Statistics ****"
-echo "  Should C aMule Statistics (CAS) be built?                ${CAS:-no}"
-echo "  Should aMule GUI Statistics (wxCas) be built?            ${WXCAS:-no}"
+echo "  Should C aMule Statistics (CAS) be built?                  ${CAS:-no}"
+echo "  Should aMule GUI Statistics (wxCas) be built?              ${WXCAS:-no}"
 
 echo
 echo "  **** General Libraries and Tools ****"
-echo "  Should ccache support be enabled?                        ${ccache:-no}"
+echo "  Should ccache support be enabled?                          ${ccache:-no}"
 echo "  Libraries aMule will use to build:"
-echo "                                       wxWidgets           ${WXGTK_VERSION:-Not detected}"
+echo "                                       wxWidgets             ${WXGTK_VERSION:-Not detected}"
 if test x"$havegtk" != x"not_needed"; then
-	echo "                                       GTK                 ${GTK_VERSION:-Not detected}"
+	echo "                                       GTK                   ${GTK_VERSION:-Not detected}"
 fi
 
 if test x"$NEEDSWX25" = x"yes" ; then

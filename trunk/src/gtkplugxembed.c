@@ -29,7 +29,6 @@
 #include "xembed.h"
 #include "gtkplugxembed.h"
 
-#if !USE_WX_TRAY
 #ifdef __WXGTK__
 
 #include <gtk/gtk.h>
@@ -1181,5 +1180,3 @@ gtk_plug_xembed_filter_func (GdkXEvent *gdk_xevent, GdkEvent *event, gpointer da
 }
 
 #endif /* __WXGTK__ */
-
-#endif /* USE_WX_TRAY */

@@ -272,13 +272,13 @@ endif
 endif
 
 if HAVE_TRAY
-amule_SOURCES += eggtrayicon.c SysTray.cpp MuleTrayIcon.cpp
-amulegui_SOURCES += eggtrayicon.c SysTray.cpp MuleTrayIcon.cpp
+if HAVE_OLD_TRAY
+amule_SOURCES += eggtrayicon.c gtk2-funcs.c gtkplugxembed.c SysTray.cpp 
+amulegui_SOURCES += eggtrayicon.c gtk2-funcs.c gtkplugxembed.c SysTray.cpp
+else
+amule_SOURCES += MuleTrayIcon.cpp
+amulegui_SOURCES += MuleTrayIcon.cpp
 endif
-
-if HAVE_GTK
-amule_SOURCES += gtk2-funcs.c gtkplugxembed.c 
-amulegui_SOURCES += gtk2-funcs.c gtkplugxembed.c 
 endif
 
 if USE_EMBEDDED_CRYPTO
