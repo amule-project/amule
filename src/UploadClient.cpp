@@ -713,7 +713,18 @@ void CUpDownClient::SendCommentInfo(CKnownFile *file)
 	}
 	CMemFile data;
 	data.Write(rating);
-	data.Write(desc.Left(128));
+	// Kry - The mule comment length is a uin32, even when we limit it's length 
+	// to 128. The reason for this is unknown :) But we cannot use the standard
+	// wxString write functions.
+	// data.Write(desc.Left(128));
+	
+	uint32 length = desc.GetLength();
+	if (length > 128) {
+		length = 128;
+	}
+	data.Write(length);
+	data.WriteRaw(desc.c_str(),length);
+	
 	Packet *packet = new Packet(&data,OP_EMULEPROT);
 	packet->opcode = OP_FILEDESC;
 	theApp.uploadqueue->AddUpDataOverheadOther(packet->size);
