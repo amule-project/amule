@@ -268,7 +268,7 @@ amuled_SOURCES += CryptoPP.cpp
 endif
 
 if ADD_THROTTLER
-amule_SOURCES += UploadBandwidthThrottler.cpp LastCommonRouteFinder.cpp 
+amule_SOURCES += UploadBandwidthThrottler.cpp
 endif
 
 amule_CFLAGS = $(UTF8_SYSTRAY_FLAGS) $(TRAY_FLAGS) $(WX_CXXFLAGS) $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFLAGS)
@@ -370,7 +370,6 @@ noinst_HEADERS = AddFileThread.h \
 		 KadDlg.h \
 		 KnownFile.h \
 		 KnownFileList.h \
-		 LastCommonRouteFinder.h \
 		 listbase.h \
 		 listctrl_gen.h \
 		 listctrl.h \
