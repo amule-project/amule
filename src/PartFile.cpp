@@ -71,6 +71,7 @@
 #include <map>
 #include <algorithm>
 
+#ifndef CLIENT_GUI
 
 wxMutex CPartFile::m_FileCompleteMutex; 
 
@@ -147,8 +148,6 @@ void CPartFile::Init()
 	m_validSources = 0;
 	m_notCurrentSources = 0;
 }
-
-#ifndef CLIENT_GUI
 
 CPartFile::CPartFile(CSearchFile* searchresult)
 {
@@ -3704,6 +3703,7 @@ uint8 CPartFile::GetStatus(bool ignorepause) const
 	}
 }
 
+#ifndef CLIENT_GUI
 
 void CPartFile::AddDeadSource(const CUpDownClient* client)
 {
@@ -3715,4 +3715,4 @@ bool CPartFile::IsDeadSource(const CUpDownClient* client)
 {
 	return m_deadSources.IsDeadSource( client );
 }
-
+#endif
