@@ -224,12 +224,12 @@ void CUpDownClient::SendFileRequest()
 			dataFileReq.Write((uint8)OP_REQUESTSOURCES);
 			reqfile->SetLastAnsweredTimeTimeout();
 			SetLastAskedForSources();
-			#ifdef __DEBUG__
+			#ifdef __USE_DEBUG__
 			if (thePrefs.GetDebugSourceExchange()) 
 				AddDebugLogLine( false, "Send:Source Request User(%s) File(%s)", unicode2char(GetUserName()), reqfile->GetFileName() );
 			#endif
 		}
-		#ifdef __DEBUG__
+		#ifdef __USE_DEBUG__
 		if (thePrefs.GetDebugClientTCPLevel() > 0)
 			DebugSend("OP__MultiPacket", this, (char*)reqfile->GetFileHash());
 		#endif
@@ -245,7 +245,7 @@ void CUpDownClient::SendFileRequest()
 		if( GetExtendedRequestsVersion() > 1 ){
 			reqfile->WriteCompleteSourcesCount(&dataFileReq);
 		}
-		#ifdef __DEBUG__
+		#ifdef __USE_DEBUG__
 		if (thePrefs.GetDebugClientTCPLevel() > 0)
 			DebugSend("OP__FileRequest", this, (char*)reqfile->GetFileHash());
 		#endif
@@ -258,7 +258,7 @@ void CUpDownClient::SendFileRequest()
 		// if the remote client answers the OP_REQUESTFILENAME with OP_REQFILENAMEANSWER the file is shared by the remote client. if we
 		// know that the file is shared, we know also that the file is complete and don't need to request the file status.
 		if (reqfile->GetPartCount() > 1) {
-			#ifdef __DEBUG__
+			#ifdef __USE_DEBUG__
 			if (thePrefs.GetDebugClientTCPLevel() > 0)
 				DebugSend("OP__SetReqFileID", this, (char*)reqfile->GetFileHash());
 			#endif
@@ -275,7 +275,7 @@ void CUpDownClient::SendFileRequest()
 			SetRemoteQueueRank(0);
 		}	
 		if(IsSourceRequestAllowed()) {
-			#ifdef __DEBUG__
+			#ifdef __USE_DEBUG__
 		    if (thePrefs.GetDebugClientTCPLevel() > 0){
 			    DebugSend("OP__RequestSources", this, (char*)reqfile->GetFileHash());
 			    if (GetLastAskedForSources() == 0)
@@ -290,7 +290,7 @@ void CUpDownClient::SendFileRequest()
 			theApp.uploadqueue->AddUpDataOverheadSourceExchange(packet->GetPacketSize());
 			socket->SendPacket(packet,true,true);
 			SetLastAskedForSources();
-		    #ifdef __DEBUG__
+		    #ifdef __USE_DEBUG__
 			if (thePrefs.GetDebugSourceExchange())
 				AddDebugLogLine( false, "Send:Source Request User(%s) File(%s)", unicode2char(GetUserName()), reqfile->GetFileName() );
 			#endif
@@ -328,7 +328,7 @@ void CUpDownClient::ProcessFileInfo(const CSafeMemFile* data, const CPartFile* f
 		memset(m_abyPartStatus,1,m_nPartCount);
 		m_bCompleteSource = true;
 
-		#if __DEBUG__
+		#if __USE_DEBUG__
 		if (thePrefs.GetDebugClientTCPLevel() > 0)
 		{
 		    int iNeeded = 0;
@@ -397,7 +397,7 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, const CSafeMemFile* data,
 		bPartsNeeded = true;
 		m_bCompleteSource = true;
 
-		#if __DEBUG__
+		#if __USE_DEBUG__
 		if (bUdpPacket ? (thePrefs.GetDebugClientUDPLevel() > 0) : (thePrefs.GetDebugClientTCPLevel() > 0)) 		{
 			for (int i = 0; i < m_nPartCount; i++) {
 				if (!reqfile->IsComplete(i*PARTSIZE,((i+1)*PARTSIZE)-1)) {
@@ -444,7 +444,7 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, const CSafeMemFile* data,
 		}
 	}
 	
-	#ifdef __DEBUG__	
+	#ifdef __USE_DEBUG__	
 	if (bUdpPacket ? (thePrefs.GetDebugClientUDPLevel() > 0) : (thePrefs.GetDebugClientTCPLevel() > 0))
 	{
 		char* psz = new char[m_nPartCount + 1];
@@ -466,7 +466,7 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, const CSafeMemFile* data,
 		} else if (reqfile->hashsetneeded) {
 			//If we are using the eMule filerequest packets, this is taken care of in the Multipacket!
 			if (socket) {
-				#ifdef __DEBUG__
+				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
 					DebugSend("OP__HashSetRequest", this, (char*)reqfile->GetFileHash());
 				}
