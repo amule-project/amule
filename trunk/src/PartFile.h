@@ -177,8 +177,6 @@ public:
 	void	SetHasRating(bool in)		{ hasRating = in; }
 	void	UpdateFileRatingCommentAvail();
 
-        wxString GetProgressString(uint16 size);
-
 	int	GetCommonFilePenalty();
 	void	UpdateDisplayedInfo(bool force = false);
 	
