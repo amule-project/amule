@@ -31,13 +31,6 @@
 #ifndef GTKPLUGXEMBED_H
 #define GTKPLUGXEMBED_H
 
-#include <wx/version.h>
-#if wxCHECK_VERSION(2, 5, 3)
- #define USE_WX_TRAY 1
-#endif
-
-#if !USE_WX_TRAY
-
 #ifdef __WXGTK__
 
 #include <gdk/gdk.h>
@@ -106,7 +99,5 @@ void _gtk_plug_xembed_remove_from_socket (GtkPlugXEmbed   *plug,
 #endif /* __cplusplus */
 
 #endif /* __WXGTK__ */
-
-#endif /* USE_WX_TRAY */
 
 #endif /* GTKPLUGXEMBED_H */

@@ -34,7 +34,7 @@
 #include "StringFunctions.h"
 #include "MuleTrayIcon.h"
 
-#if !USE_WX_TRAY
+#ifndef USE_WX_TRAY
 
 enum TaskbarNotifier
 {

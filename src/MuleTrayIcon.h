@@ -34,11 +34,7 @@
 
 #include <wx/defs.h>	// Needed before any other wx/*.h
 
-#if wxCHECK_VERSION(2, 5, 3)
- #define USE_WX_TRAY 1
-#endif
-
-#if USE_WX_TRAY 
+#ifndef __SYSTRAY_DISABLED__
 
 enum TaskbarNotifier
 {
@@ -121,8 +117,8 @@ class CMuleTrayIcon : public wxTaskBarIcon {
 		DECLARE_EVENT_TABLE()
 };
 
-#endif // USE_WX_TRAY
-
 #endif // DAEMON
+
+#endif // __SYSTRAY_DISABLED__
 
 #endif //MULETRAYICON_H

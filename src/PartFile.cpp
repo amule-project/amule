@@ -2204,8 +2204,10 @@ void CPartFile::CompleteFileEnded(int completing_result, wxString* newname) {
 	}	
 
 	AddLogLineM(true, _("Finished downloading ") + GetFileName() +wxT(" :-)"));
-
+	
+#ifndef __SYSTRAY_DISABLED__
 	Notify_ShowNotifier(wxString(_("Downloaded:"))+wxT("\n")+GetFileName(), TBN_DLOAD, 0);
+#endif
 }
 
 completingThread::completingThread(wxString FileName, wxString fullname, uint32 Category, CPartFile* caller)

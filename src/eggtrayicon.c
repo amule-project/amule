@@ -20,8 +20,6 @@
 
 #include "eggtrayicon.h"
 
-#if !USE_WX_TRAY
-
 #ifdef __WXGTK__ /* Uses GTK headers, don't use this on other platforms. */
 
 #include <string.h>
@@ -348,7 +346,5 @@ egg_tray_icon_cancel_message (EggTrayIcon *icon,
 				      (Window)gtk_plug_xembed_get_id (GTK_PLUG_XEMBED (icon)),
 				      id, 0, 0);
 }
-
-#endif /* USE_WX_TRAY */
 
 #endif /* __WXGTK__ */

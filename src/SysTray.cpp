@@ -34,8 +34,6 @@
 
 #include "SysTray.h"		// Interface declarations.
 
-#if !USE_WX_TRAY
-
 #ifndef __WXMSW__
 	#include <sys/types.h>
 
@@ -697,5 +695,4 @@ CSysTray::~CSysTray()
 	gtk_widget_destroy(GTK_WIDGET(m_status_docklet));
 }
 
-#endif // !USE_WX_TRAY
 #endif // __WXGTK__

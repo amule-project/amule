@@ -230,7 +230,7 @@ wxDialog(parent, -1, _("Preferences"), wxDefaultPosition, wxDefaultSize,
 
 		if (pages[i].m_function == PreferencesGeneralTab) {
 			// This must be done now or pages won't Fit();
-			#if USE_WX_TRAY
+			#ifdef USE_WX_TRAY
 				FindWindow(IDC_DESKTOPMODE)->Show(false);
 				IDC_MISC_OPTIONS->Remove(FindWindow(IDC_DESKTOPMODE));
 			#endif
@@ -289,12 +289,12 @@ wxDialog(parent, -1, _("Preferences"), wxDefaultPosition, wxDefaultSize,
 	wxSize size = GetClientSize();
 	SetSizeHints( size.GetWidth(), size.GetHeight() );
 	
-	#if defined(__SYSTRAY_DISABLED__) && !USE_WX_TRAY
+	#ifdef __SYSTRAY_DISABLED__
 		FindWindow(IDC_ENABLETRAYICON)->Enable(false);
 		FindWindow(IDC_MINTRAY)->Enable(false);
-		//#if !USE_WX_TRAY
+		#ifndef USE_WX_TRAY
 			FindWindow(IDC_DESKTOPMODE)->Enable(false);
-		//#endif
+		#endif
 	#endif
 	
 }
@@ -377,7 +377,7 @@ bool PrefsUnifiedDlg::TransferToWindow()
 	FindWindow( IDC_STARTNEXTFILE_SAME )->Enable(thePrefs::StartNextFile());
 	
 	FindWindow(IDC_MINTRAY)->Enable(thePrefs::UseTrayIcon());
-	#if !USE_WX_TRAY
+	#ifndef USE_WX_TRAY
 		FindWindow(IDC_DESKTOPMODE)->Enable(thePrefs::UseTrayIcon());
 	#endif
 
@@ -695,14 +695,17 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 			break;
 		
 		case IDC_ENABLETRAYICON:
-			#if !defined(__SYSTRAY_DISABLED__) || USE_WX_TRAY
-			FindWindow(IDC_MINTRAY)->Enable(value);
-			FindWindow(IDC_DESKTOPMODE)->Enable(value);
-			if (value) {
-				theApp.amuledlg->CreateSystray();
-			} else {
-				theApp.amuledlg->RemoveSystray();
-			}
+			#ifndef __SYSTRAY_DISABLED__
+				FindWindow(IDC_MINTRAY)->Enable(value);
+				FindWindow(IDC_DESKTOPMODE)->Enable(value);
+				if (value) {
+					theApp.amuledlg->CreateSystray();
+				} else {
+					theApp.amuledlg->RemoveSystray();
+				}
+			#else
+				// This should never happen as button is disabled
+				wxASSERT(0);
 			#endif
 			break;
 		
@@ -742,22 +745,21 @@ void PrefsUnifiedDlg::OnFakeBrowserChange( wxCommandEvent& evt )
 
 void PrefsUnifiedDlg::OnButtonSystray(wxCommandEvent& WXUNUSED(evt))
 {
-	#if !defined (__SYSTRAY_DISABLED__) || USE_WX_TRAY
-//		#if !USE_WX_TRAY
+	#ifndef __SYSTRAY_DISABLED__
+		#ifndef USE_WX_TRAY
 			theApp.amuledlg->changeDesktopMode();
 
 			// Ensure that the dialog is still visible afterwards
 			Raise();
 			SetFocus();
-/*		#else
+		#else
 			// Should never happen, button is not shown.
 			wxASSERT(0);
-*/		#endif
-/*	#else
+		#endif
+	#else
 			// Should never happen, button is not enabled.
 			wxASSERT(0);	
 	#endif
-*/
 }
 
 
