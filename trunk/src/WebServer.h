@@ -691,11 +691,12 @@ typedef struct {
 
 } GlobalParams;
 
-typedef struct {
+// Changing this to a typedef struct{} makes egcs compiler do it all wrong and crash on run
+struct ThreadData {
 	wxString	sURL;
 	in_addr		inadr;
 	CWebSocket	*pSocket;
-} ThreadData;
+};
 
 typedef struct {
 	wxString	sHeader;
