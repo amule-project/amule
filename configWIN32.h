@@ -267,7 +267,7 @@
 #define PACKAGE "amule"
 
 /* Define to the address where bug reports for this package should be sent. */
-#define PACKAGE_BUGREPORT "deltahf@amule.org"
+#define PACKAGE_BUGREPORT "admin@amule.org"
 
 /* Define to the full name of this package. */
 #define PACKAGE_NAME "aMule"
