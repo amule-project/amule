@@ -17,7 +17,7 @@
 ///
 /// This code implements the MD4 message-digest algorithm.
 ///
-/// Pixmaps from http://www.everaldo.com and http://www.amule.org
+/// Pixmaps from http://jimmac.musichall.cz/ikony.php3 | http://www.everaldo.com | http://www.amule.org 
 ///
 /// This program is free software; you can redistribute it and/or modify
 /// it under the terms of the GNU General Public License as published by
