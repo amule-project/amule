@@ -774,15 +774,15 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			return("");
 		}
 		if (item == "LOG GETALLLOGENTRIES") {
-			wxTextCtrl* logview =(wxTextCtrl*)theApp.amuledlg->serverwnd->FindWindowById(ID_LOGVIEW);
+			wxTextCtrl* logview =(wxTextCtrl*)theApp.amuledlg->serverwnd->FindWindow(ID_LOGVIEW);
 			return((char*)logview->GetValue().GetData());
 		}
 		if (item == "LOG CLEARSERVERINFO") {
-			((wxTextCtrl*)theApp.amuledlg->serverwnd->FindWindowById(ID_SERVERINFO))->Clear();
+			((wxTextCtrl*)theApp.amuledlg->serverwnd->FindWindow(ID_SERVERINFO))->Clear();
 			return("");
 		}
 		if (item == "LOG GETSERVERINFO") {
-			wxTextCtrl* cv=(wxTextCtrl*)theApp.amuledlg->serverwnd->FindWindowById(ID_SERVERINFO);
+			wxTextCtrl* cv=(wxTextCtrl*)theApp.amuledlg->serverwnd->FindWindow(ID_SERVERINFO);
 			return((wxChar*) cv->GetValue().GetData());
 		}
 		if (item == "LOG RESETDEBUGLOG") {
@@ -790,7 +790,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			return("");
 		}
 		if (item == "LOG GETALLDEBUGLOGENTRIES") {
-			wxTextCtrl* logview =(wxTextCtrl*)theApp.amuledlg->serverwnd->FindWindowById(ID_LOGVIEW);
+			wxTextCtrl* logview =(wxTextCtrl*)theApp.amuledlg->serverwnd->FindWindow(ID_LOGVIEW);
 			return((char*)logview->GetValue().GetData());
 		}
 		if (item.Left(14) == "LOG ADDLOGLINE") {
@@ -1210,21 +1210,21 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			
 			if (item.Mid(8).Cmp("SERVERINFO CLEAR") == 0) {
 				//theApp.amuledlg->serverwnd->servermsgbox->SetWindowText("");
-				wxTextCtrl* cv=(wxTextCtrl*)theApp.amuledlg->serverwnd->FindWindowById(ID_SERVERINFO);
+				wxTextCtrl* cv=(wxTextCtrl*)theApp.amuledlg->serverwnd->FindWindow(ID_SERVERINFO);
 				cv->Clear();
 				return("ServerInfo Cleared");
 			}
 
 			if (item.Mid(8).Cmp("SERVERINFO GETTEXT") == 0) {
 				//theApp.amuledlg->serverwnd->servermsgbox->GetText()));
-				wxTextCtrl* cv=(wxTextCtrl*)theApp.amuledlg->serverwnd->FindWindowById(ID_SERVERINFO);
+				wxTextCtrl* cv=(wxTextCtrl*)theApp.amuledlg->serverwnd->FindWindow(ID_SERVERINFO);
 				static char buffer[1024];
 				sprintf(buffer,"%s", cv->GetValue().GetData());
 				return(buffer);
 			}
 			
 			if (item.Mid(8).Cmp("GETALLLOGENTRIES") == 0) {
-				wxTextCtrl* logview =(wxTextCtrl*)theApp.amuledlg->serverwnd->FindWindowById(ID_LOGVIEW);
+				wxTextCtrl* logview =(wxTextCtrl*)theApp.amuledlg->serverwnd->FindWindow(ID_LOGVIEW);
 				return((char*)logview->GetValue().GetData());
 			}
 			
@@ -1232,7 +1232,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				//shakraw, the same as above, but please DO NOT remove!
 				//I like to have separated requests for this (say for future use)
 				//also see comments in WebServer.cpp
-				wxTextCtrl* logview =(wxTextCtrl*)theApp.amuledlg->serverwnd->FindWindowById(ID_LOGVIEW);
+				wxTextCtrl* logview =(wxTextCtrl*)theApp.amuledlg->serverwnd->FindWindow(ID_LOGVIEW);
 				return((char*)logview->GetValue().GetData());
 			}
 

@@ -539,10 +539,10 @@ bool CamuleApp::OnInit()
 	downloadqueue->Init();
 	amuledlg->AddLogLine(true, PACKAGE_STRING);
 
-	sharedfiles->SetOutputCtrl((CSharedFilesCtrl *) amuledlg->sharedfileswnd->FindWindowByName("sharedFilesCt"));
+	sharedfiles->SetOutputCtrl((CSharedFilesCtrl *) amuledlg->sharedfileswnd->FindWindow("sharedFilesCt"));
 
 	// then init firend list
-	friendlist->SetWindow((CFriendListCtrl *) amuledlg->transferwnd->FindWindowById(ID_FRIENDLIST));
+	friendlist->SetWindow((CFriendListCtrl *) amuledlg->transferwnd->FindWindow(ID_FRIENDLIST));
 	friendlist->ShowFriends();
 
 
