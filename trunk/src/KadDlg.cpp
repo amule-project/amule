@@ -79,7 +79,7 @@ void	CKadDlg::OnFieldsChange(wxCommandEvent& WXUNUSED(evt))
 	FindWindowById(ID_NODECONNECT)->Enable( enable );
 }
 
-void	CKadDlg::OnBnClickedBootstrapClient(wxCommandEvent& evt) {
+void	CKadDlg::OnBnClickedBootstrapClient(wxCommandEvent& WXUNUSED(evt)) {
 	if (FindWindowById(ID_NODECONNECT)->IsEnabled()) {
 		// Connect to node
 	} else {
@@ -87,18 +87,18 @@ void	CKadDlg::OnBnClickedBootstrapClient(wxCommandEvent& evt) {
 	}
 }
 
-void	CKadDlg::OnBnClickedBootstrapKnown(wxCommandEvent& evt) {
+void	CKadDlg::OnBnClickedBootstrapKnown(wxCommandEvent& WXUNUSED(evt)) {
 	
 }
 
-void	CKadDlg::OnNodeListItemSelected(wxListEvent& evt) {
+void	CKadDlg::OnNodeListItemSelected(wxListEvent& WXUNUSED(evt)) {
 	
 }
 
-void	CKadDlg::OnKadSearchListItemSelected(wxListEvent& evt) {
+void	CKadDlg::OnKadSearchListItemSelected(wxListEvent& WXUNUSED(evt)) {
 	
 }
 
-void	CKadDlg::OnRMButton(wxMouseEvent& evt) {
+void	CKadDlg::OnRMButton(wxMouseEvent& WXUNUSED(evt)) {
 
 }
