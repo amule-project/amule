@@ -695,6 +695,12 @@ enum {
 	 */
 	EC_TAG_PARTFILE_GAP_STATUS,
 
+	/*!
+	 * Info about requested parts: data inside consist of 
+	 * pairs of dwords [ start_offset, end_offset]. This data
+	 * is not encoded, since it's expected to change quite often
+	 */
+	 EC_TAG_PARTFILE_REQ_STATUS,
 
 	//
 	// KnownFile
