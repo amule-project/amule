@@ -69,16 +69,17 @@ void *CWSThread::Entry() {
 				//Accept the incoming connection and returns immediately
 				//Here we should always have a connection pending.
 				sock = m_WSSocket->Accept(FALSE);
-
-				CWCThread *wct = new CWCThread(ws, sock);
-				wcThreads.Add(wct);
-				
-				if ( wcThreads.Last()->Create() != wxTHREAD_NO_ERROR ) {
-					ws->Print(wxT("WSThread: Can't create web client socket thread\n"));
-					sock->Destroy(); //destroy the socket
-				} else {
-					//...and run it
-					wcThreads.Last()->Run();
+				if (sock) {
+					CWCThread *wct = new CWCThread(ws, sock);
+					wcThreads.Add(wct);
+					
+					if ( wcThreads.Last()->Create() != wxTHREAD_NO_ERROR ) {
+						ws->Print(wxT("WSThread: Can't create web client socket thread\n"));
+						sock->Destroy(); //destroy the socket
+					} else {
+						//...and run it
+						wcThreads.Last()->Run();
+					}
 				}
 			}
 
