@@ -59,6 +59,7 @@
 #include <wx/filefn.h>
 #include <wx/ffile.h>
 #include <wx/file.h>
+#include <wx/filename.h>                // Needed for wxFileName::GetPathSeparator()
 #include <wx/log.h>
 #include <wx/timer.h>
 #include <wx/config.h>
@@ -292,7 +293,7 @@ int CamuleApp::OnExit()
 bool CamuleApp::OnInit()
 {
 	m_app_state = APP_STATE_STARTING;
-	ConfigDir = wxGetHomeDir() + wxT("/.aMule/");
+	ConfigDir = wxGetHomeDir() + wxFileName::GetPathSeparator() + wxT(".aMule") + wxFileName::GetPathSeparator();
 
 	// Initialization
 	IsReady			= false;
@@ -456,7 +457,7 @@ bool CamuleApp::OnInit()
 
 
 	// see if there is another instance running
-	wxString server = ConfigDir + wxT("/muleconn");
+	wxString server = ConfigDir + wxFileName::GetPathSeparator() + wxT("muleconn");
 	wxString host = wxT("localhost");
 	wxString IPC = wxT("aMule IPC TESTRUN");
 	wxClient* client = new wxClient();
@@ -502,8 +503,8 @@ bool CamuleApp::OnInit()
 
 	/* If no aMule configuration files exist, see if either lmule or xmule config
 	   exists, so that we can use those. */
-	wxString lMulePrefDir = wxGetHomeDir() + wxT("/.lmule");
-	wxString xMulePrefDir = wxGetHomeDir() + wxT("/.xmule");
+	wxString lMulePrefDir = wxGetHomeDir() + wxFileName::GetPathSeparator() + wxT(".lmule");
+	wxString xMulePrefDir = wxGetHomeDir() + wxFileName::GetPathSeparator() + wxT(".xmule");
 
 	if ( !wxDirExists( ConfigDir ) ) {
 		if ( wxDirExists( lMulePrefDir ) ) {
@@ -515,17 +516,17 @@ bool CamuleApp::OnInit()
 			wxMkdir(ConfigDir);
 
 			// Copy .dat files to the aMule dir
-			wxString file = wxFindFirstFile(xMulePrefDir + wxT("/*.dat"), wxFILE);
+			wxString file = wxFindFirstFile(xMulePrefDir + wxFileName::GetPathSeparator() + wxT("*.dat"), wxFILE);
   			while ( !file.IsEmpty() ) {
-				wxCopyFile( file, ConfigDir + wxT("/") + file.AfterLast('/'));
+				wxCopyFile( file, ConfigDir + wxFileName::GetPathSeparator() + file.AfterLast('/'));
 
 				file = wxFindNextFile();
   			}
 
 			// Copy .met files to the aMule dir
-			file = wxFindFirstFile(xMulePrefDir + wxT("/*.met"), wxFILE);
+			file = wxFindFirstFile(xMulePrefDir + wxFileName::GetPathSeparator() + wxT("*.met"), wxFILE);
   			while ( !file.IsEmpty() ) {
-				wxCopyFile( file, ConfigDir + wxT("/") + file.AfterLast('/'));
+				wxCopyFile( file, ConfigDir + wxFileName::GetPathSeparator() + file.AfterLast(wxFileName::GetPathSeparator()));
 
 				file = wxFindNextFile();
   			}
@@ -560,7 +561,7 @@ bool CamuleApp::OnInit()
 	}
 
 	// Display notification on new version or first run
-	wxTextFile vfile( ConfigDir + wxT("/lastversion") );
+	wxTextFile vfile( ConfigDir + wxFileName::GetPathSeparator() + wxT("lastversion") );
 	wxString newMule(wxT(VERSION));
 	if ( wxFileExists( vfile.GetName() ) && vfile.Open() && !vfile.Eof() ) {
 		if ( vfile.GetFirstLine() != newMule ) {
@@ -1472,8 +1473,8 @@ void CamuleApp::FlushQueuedLogLines() {
 
 void CamuleApp::SetOSFiles(const wxString new_path) {
 	if (::wxDirExists(new_path)) {
-		emulesig_path = new_path + wxT("/onlinesig.dat");
-		amulesig_path = new_path + wxT("/amulesig.dat");
+		emulesig_path = new_path + wxFileName::GetPathSeparator() + wxT("onlinesig.dat");
+		amulesig_path = new_path + wxFileName::GetPathSeparator() + wxT("amulesig.dat");
 	} else {
 		::wxMessageBox(_("The folder for Online Signature files you specified is INVALID!\n OnlineSignature will be DISABLED until you fix it on preferences."), _("Error"), wxOK | wxICON_ERROR);
 		emulesig_path = wxEmptyString;
