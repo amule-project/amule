@@ -171,7 +171,7 @@ void CClientReqSocket::Safe_Delete()
 	wxASSERT(!deletethis); 
 	
 	if (!deletethis) {
-		theApp.AddSocketDeleteDebug((uint32) this,created);
+		//theApp.AddSocketDeleteDebug((uint32) this,created);
 		// Paranoia is back.
 		SetNotify(0);
 		Notify(FALSE);		
