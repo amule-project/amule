@@ -1164,3 +1164,8 @@ void *ExternalConnClientThread::Entry()
 	}
 	return 0;
 }
+
+CECTag *CObjTagMap::Encode(CKnownFile *file)
+{
+	return new CEC_SharedFile_Tag(file, m_obj_map[file]);
+}

@@ -648,6 +648,25 @@ CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, EC_DETAIL_LEVEL d
 					theApp.CreateED2kSourceLink(file) : theApp.CreateED2kLink(file)));
 }
 
+CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, CValueMap &valuemap) : CECTag(EC_TAG_KNOWNFILE, file->GetFileHash())
+{
+	valuemap.CreateTag(EC_TAG_KNOWNFILE_REQ_COUNT, (uint32)file->statistic.GetRequests(), this);
+	valuemap.CreateTag(EC_TAG_KNOWNFILE_REQ_COUNT_ALL, (uint32)file->statistic.GetAllTimeRequests(), this);
+	valuemap.CreateTag(EC_TAG_KNOWNFILE_ACCEPT_COUNT, (uint32)file->statistic.GetAccepts(), this);
+	valuemap.CreateTag(EC_TAG_KNOWNFILE_ACCEPT_COUNT_ALL, (uint32)file->statistic.GetAllTimeAccepts(), this);
+	valuemap.CreateTag(EC_TAG_KNOWNFILE_XFERRED, (uint32)file->statistic.GetTransfered(), this);
+	valuemap.CreateTag(EC_TAG_KNOWNFILE_XFERRED_ALL, (uint32)file->statistic.GetAllTimeTransfered(), this);
+	
+	valuemap.CreateTag(EC_TAG_PARTFILE_PRIO,
+		(uint32)(file->IsAutoUpPriority() ? file->GetUpPriority() + 10 : file->GetUpPriority()), this);
+	
+	valuemap.CreateTag(EC_TAG_PARTFILE_NAME, file->GetFileName(), this);
+	valuemap.CreateTag(EC_TAG_PARTFILE_SIZE_FULL, (uint32)file->GetFileSize(), this);
+	valuemap.CreateTag(EC_TAG_PARTFILE_ED2K_LINK,
+		(theApp.serverconnect->IsConnected() && !theApp.serverconnect->IsLowID()) ?
+					theApp.CreateED2kSourceLink(file) : theApp.CreateED2kLink(file), this);
+}
+
 CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAIL_LEVEL detail_level) :
 	CECTag(EC_TAG_UPDOWN_CLIENT, client->GetUserID())
 {
