@@ -24,6 +24,7 @@
 #include "CTypedPtrList.h"	// Needed for CTypedPtrList
 #include "otherfunctions.h" // Needed for unicode2char & char2unicode
 #include "CMD4Hash.h"
+#include "SHAHashSet.h"
 
 class CSafeMemFile;
 
@@ -72,7 +73,7 @@ private:
 
 class CED2KFileLink : public CED2KLink {
 public:
-	CED2KFileLink(const TCHAR* name,const TCHAR* size, const TCHAR* hash,const TCHAR* sources);
+	CED2KFileLink(const TCHAR* name,const TCHAR* size, const TCHAR* hash, const TCHAR* hashset, const TCHAR* masterhash, const TCHAR* sources);
 	virtual ~CED2KFileLink();
 	virtual LinkType GetKind() const;
 	virtual CED2KServerListLink* GetServerListLink();
@@ -83,11 +84,16 @@ public:
 	uint64 GetSize() const { return atoll(unicode2char(m_size)); }
 	const CMD4Hash& GetHashKey() const { return m_hash;}
 	bool HasValidSources() const {return (SourcesList!=NULL); }
-	CSafeMemFile* SourcesList;
-	// Imported from 0.30d
+	
 	bool HasHostnameSources() const {return (!m_HostnameSourcesList.IsEmpty()); }
+
+	// AICH data
+	bool	HasValidAICHHash() const			{ return m_bAICHHashValid; }
+	const CAICHHash&	GetAICHHash() const		{ return m_AICHHash;}	
+	
+	CSafeMemFile* SourcesList;
+	CSafeMemFile* m_hashset;
 	CTypedPtrList<CPtrList, SUnresolvedHostname*> m_HostnameSourcesList;
-	// EOI
 	
 private:
 	CED2KFileLink(){}; 
@@ -96,6 +102,8 @@ private:
 	wxString m_name;
 	wxString m_size;
 	CMD4Hash m_hash;
+	bool	m_bAICHHashValid;
+	CAICHHash	m_AICHHash;		
 };
 
 class CED2KServerListLink : public CED2KLink {
