@@ -370,9 +370,6 @@ void CDownloadListCtrl::OnNMRclick(wxListEvent & evt)
 			menu->Enable(MP_CANCEL, MF_ENABLED);
 
 			wxMenu *priomenu = m_PrioMenu;
-			//priomenu->Check(MP_PRIOHIGH, (file->GetPriority() == PR_HIGH) ? MF_CHECKED : MF_UNCHECKED);
-			//priomenu->Check(MP_PRIONORMAL, (file->GetPriority() == PR_NORMAL) ? MF_CHECKED : MF_UNCHECKED);
-			//priomenu->Check(MP_PRIOLOW, (file->GetPriority() == PR_LOW) ? MF_CHECKED : MF_UNCHECKED);
 			priomenu->Check(MP_PRIOHIGH, (!file->IsAutoDownPriority() && (file->GetDownPriority() == PR_HIGH)) ? MF_CHECKED : MF_UNCHECKED);
 			priomenu->Check(MP_PRIONORMAL, (!file->IsAutoDownPriority() && (file->GetDownPriority() == PR_NORMAL)) ? MF_CHECKED : MF_UNCHECKED);
 			priomenu->Check(MP_PRIOLOW, (!file->IsAutoDownPriority() && (file->GetDownPriority() == PR_LOW)) ? MF_CHECKED : MF_UNCHECKED);
@@ -2071,4 +2068,3 @@ bool CDownloadListCtrl::this_is_the_moment() {
 		return false;	
 	}
 }
-
