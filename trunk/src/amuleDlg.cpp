@@ -913,7 +913,11 @@ void CamuleDlg::Show_aMule(bool uniconize)
 void CamuleDlg::OnMinimize(wxIconizeEvent& evt)
 {
 #ifndef __SYSTRAY_DISABLED__
-	if (thePrefs::DoMinToTray() && (thePrefs::GetDesktopMode() != 4)) {
+	if (m_wndTaskbarNotifier && thePrefs::DoMinToTray() 
+		#if !USE_WX_TRAY
+			&& (thePrefs::GetDesktopMode() != 4)
+		#endif
+		) {
 		if (evt.Iconized()) {
 			Hide_aMule(false);
 		} else {
