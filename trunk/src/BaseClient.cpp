@@ -1544,7 +1544,7 @@ void CUpDownClient::ReGetClientSoft()
 }
 
 
-void CUpDownClient::SetUserName(char* pszNewName)
+void CUpDownClient::SetUserName(const char* pszNewName)
 {
 	if (m_pszUsername) {
 		delete[] m_pszUsername;

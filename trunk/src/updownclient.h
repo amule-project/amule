@@ -180,7 +180,7 @@ public:
 	
 	void			CheckForGPLEvilDoer();
 
-	void			SetUserName(char* pszNewName);
+	void			SetUserName(const char* pszNewName);
 	uint8			GetClientSoft()				{return m_clientSoft;}
 	void			ReGetClientSoft();
 	bool			ProcessHelloAnswer(char* pachPacket, uint32 nSize);
