@@ -1442,7 +1442,11 @@ void CUpDownClient::ReGetClientSoft()
 			if (m_clientSoft == SO_AMULE) {
 				m_clientVerString +=  wxString::Format(" v%u.%u.%u", nClientMajVersion, nClientMinVersion, nClientUpVersion);
 				if (nClientRcVersion > 0) {
-					m_clientVerString +=  wxString::Format("-rc%i",nClientRcVersion);
+					if (nClientRcVersion == 0x0f) {
+						m_clientVerString +=  "-CVS";
+					} else {
+						m_clientVerString +=  wxString::Format("-rc%i",nClientRcVersion);
+					}
 				}
 			} else {
 				m_clientVerString +=  wxString::Format(" v%u.%u%c", nClientMajVersion, nClientMinVersion, 'a' + nClientUpVersion);
