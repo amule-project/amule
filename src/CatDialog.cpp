@@ -1,5 +1,7 @@
-//this file is part of eMule
-//created by Ornis
+// This file is part of the aMule Project
+//
+// Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
+// Copyright (c) created by Ornis
 //
 //This program is free software; you can redistribute it and/or
 //modify it under the terms of the GNU General Public License

@@ -1,4 +1,4 @@
-//this file is part of amule
+// This file is part of the aMule Project
 //Copyright (C)2002 Tiku ( ) & Hetfield <hetfield@email.it>
 //
 //This program is free software; you can redistribute it and/or

@@ -1,4 +1,4 @@
-// This file is part of aMule.
+// This file is part of the aMule Project.
 //
 // Copyright (C) 2004 Carlo Wood
 //

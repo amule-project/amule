@@ -1,8 +1,7 @@
 // This file is part of the aMule project.
 //
-// Copyright (c) 2004, aMule team
-//
-// Copyright (c) Angel Vidal Veiga (kry@users.sourceforge.net)
+// Copyright (c) 2004 aMule Project ( http://www.amule-prpject.net )
+// Copyright (c) 2004 Angel Vidal Veiga ( kry@users.sourceforge.net )
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License

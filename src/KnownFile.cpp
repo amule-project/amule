@@ -1,6 +1,6 @@
-//this file is part of aMule
+// This file is part of the aMule Project
 //
-//parts of this file are based on work from pan One (http://home-3.tiscali.nl/~meost/pms/)
+// parts of this file are based on work from pan One (http://home-3.tiscali.nl/~meost/pms/)
 //
 // Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
 // Copyright (C) 2002 Merkur ( merkur-@users.sourceforge.net / http://www.emule-project.net )
