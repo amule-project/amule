@@ -52,6 +52,8 @@ Version 2.0.0rc6 - The '???' version.
 		* Changed amulewebDLG and amulecmdDLG to use sizers.
 		* Removed a bug in WebSocket.cpp: was not testing the return
 		  value of Accept, this could create a thread with a NULL socket.
+		* Added two new commands to amulecmd(DLG), getiplevel and
+		  setipelevel <new level>.
 
 	rommel:
 		* Patch to implement the commands serverconnect and reloadipf

@@ -1001,7 +1001,32 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			AddLogLineM(true, msg);
 			return msg;
 		}
+
+		if (item == wxT("GETIPLEVEL") ) {
+			wxString msg = wxString::Format(_("aMule IP Filter level is %d."), theApp.glob_prefs->GetIPFilterLevel());
+			AddLogLineM(true, msg);
+			return msg;
+		}
 		
+		if (item.Left(10) == wxT("SETIPLEVEL") ) {
+			wxString args = item.Mid(11);
+			int32 level = StrToLong(args);
+			int32 oldLevel = theApp.glob_prefs->GetIPFilterLevel();
+			wxString msg;
+			if ( level >= 0 && level <= 255 ) {
+				if ( level != oldLevel ) {
+					theApp.glob_prefs->SetIPFilterLevel(level);
+					msg = wxString::Format(_("aMule IP Filter level changed from %d to %d."), oldLevel, level);
+				} else {
+					msg = wxString::Format(_("aMule IP Filter level was already %d. Nothing changed."), level);
+				}
+			} else {
+				msg = _("Invalid IP Filter level entered: ") + args + wxT(".");
+			}
+			AddLogLineM(true, msg);
+			return msg;
+		}
+				
 		if (item.Left(5).Cmp( wxT("PAUSE"))==0) { 
 			if (item.Mid(5).IsNumber()) {
 				int fileID=theApp.downloadqueue->GetFileCount() - StrToLong(item.Mid(5));
