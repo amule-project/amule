@@ -83,7 +83,7 @@ public:
 	bool	IsBannedClient(uint32 dwIP);
 	void	RemoveBannedClient(uint32 dwIP);
 	uint16	GetBannedCount() const		{return m_bannedList.size(); }
-
+	uint32	GetCount() const { return list.GetCount(); }
 
 	void	Process();
 	
