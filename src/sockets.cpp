@@ -172,29 +172,29 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender){
 			update->ResetFailedCount();
 			theApp.amuledlg->serverwnd->serverlistctrl->RefreshServer( update );
 		}
-		CMemFile* data = new CMemFile();
-		data->Write((const uint8*)theApp.glob_prefs->GetUserHash());
-		data->Write(GetClientID());
-		data->Write(app_prefs->GetPort());
-		data->Write((uint32)4); // tagcount
+		CMemFile data;
+		data.WriteRaw(theApp.glob_prefs->GetUserHash(),16);
+		data.Write(GetClientID());
+		data.Write(app_prefs->GetPort());
+		data.Write((uint32)4); // tagcount
 
-		CTag* tag = new CTag(CT_NAME,app_prefs->GetUserNick());
-		tag->WriteTagToFile(data);
-		delete tag;
-		tag = new CTag(CT_VERSION,EDONKEYVERSION);
-		tag->WriteTagToFile(data);
-		delete tag;
-		tag = new CTag(CT_PORT,app_prefs->GetPort());
-		tag->WriteTagToFile(data);
-		delete tag;
-		tag = new CTag(0x20,0x00000001); // FLAGS for server connection : zlib awareness
-		tag->WriteTagToFile(data);
-		delete tag;
+		CTag tagname(CT_NAME,app_prefs->GetUserNick());
+		tagname.WriteTagToFile(&data);
 
-		Packet* packet = new Packet(data);
+		CTag tagversion(CT_VERSION,EDONKEYVERSION);
+		tagversion.WriteTagToFile(&data);
+		
+		CTag tagport(CT_PORT,app_prefs->GetPort());
+		tagport.WriteTagToFile(&data);
+		
+		CTag tagflags(0x20,0x00000001); // FLAGS for server connection : zlib awareness
+		tagflags.WriteTagToFile(&data);
+
+
+		Packet* packet = new Packet(&data);
 		packet->opcode = OP_LOGINREQUEST;
 		this->SendPacket(packet,true,sender);
-		delete data;
+
 	}
 	else if (sender->GetConnectionState() == CS_CONNECTED){
 		theApp.stat_reconnects++;
