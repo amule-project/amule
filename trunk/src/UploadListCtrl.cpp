@@ -376,7 +376,7 @@ void CUploadListCtrl::OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxRe
 
 	for(int iCurrent = 0; iCurrent < iCount; iCurrent++) {
 		int iColumn = iCurrent; //pHeaderCtrl->OrderToIndex(iCurrent);
-		if(1) { // !IsColumnHidden(iColumn)) { (column's can't be hidden :)
+		if ( GetColumnWidth( iCurrent ) ) {
 			wxListItem listitem;
 			GetColumn(iColumn,listitem);
 			int cx=listitem.GetWidth();
