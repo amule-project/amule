@@ -1776,7 +1776,7 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 						cur_src->UDPReaskForDownload();
 					}
 					
-					break;
+					// No break here, since the next case takes care of asking for downloads.
 				}
 				case DS_CONNECTING: 
 				case DS_TOOMANYCONNS: 
