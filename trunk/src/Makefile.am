@@ -1,8 +1,24 @@
 bin_PROGRAMS =
-if COMPILE_CMD
-bin_PROGRAMS += amulecmd amulecmdDLG amuleweb amulewebDLG
+if GUI
+bin_PROGRAMS += amulecmdDLG
 endif
-bin_PROGRAMS += ed2k amule
+if COMPILE_CMD
+bin_PROGRAMS += amulecmd   
+endif
+if WEB
+bin_PROGRAMS += amuleweb
+endif
+if WEBGUI
+bin_PROGRAMS += amulewebDLG
+endif
+if CAS
+bin_PROGRAMS += cas
+endif
+if ED2K
+bin_PROGRAMS += ed2k
+endif
+bin_PROGRAMS += amule
+
 DEFS = -DHAVE_CONFIG_H
 
 BUILT_SOURCES =
@@ -106,6 +122,12 @@ amule_LDADD = $(WX_LIBS) $(GTK_LIBS) $(ZLIB_LIBS)
 ed2k_SOURCES = ED2KLinkParser.cpp
 ed2k_CFLAGS =
 
+cas_SOURCES = utils/cas/cas.c
+#cas_CXXFLAGS= ""
+#cas_LIBS= ""
+#cas_CFLAGS= ""
+#cas_LDADD= ""
+
 amulecmd_SOURCES = TextClient.cpp MD5Sum.cpp ECSocket.cpp
 if HAVE_WXBASE
 amulecmd_CFLAGS = $(WXBASE_CFLAGS)
@@ -159,6 +181,7 @@ MAINTAINERCLEANFILES = Makefile.in
 #
 # implementation
 
+	
 SUFFIXES=.cpp .c .cpp
 	
 .c.cpp :
@@ -169,8 +192,6 @@ SUFFIXES=.cpp .c .cpp
 
 all: $(bin_PROGRAMS)
 
-#$(bin_PROGRAMS): $(OBJECTS)
-#	$(CXX) -o $(bin_PROGRAMS) $(OBJECTS) $(GTK_LIBS) `$(WX_CONFIG_PATH) --libs` $(LIBS)
 
 clean:
 	rm -f *.o
