@@ -340,7 +340,7 @@ public:
 
 	//File Comment 
 	const wxString&	GetFileComment()			{return m_strComment;} 
-	void			SetFileComment(char *desc)		{m_strComment.Format(wxT("%s"),desc);}
+	void			SetFileComment(char *desc)		{m_strComment = char2unicode(desc);}
 	uint8			GetFileRate()				{return m_iRate;}
 	
 	wxString		GetSoftStr() { return m_clientVerString.Left(m_SoftLen); }
