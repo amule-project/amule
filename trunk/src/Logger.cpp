@@ -137,7 +137,7 @@ void CLogger::AddDebugLogLine( bool critical, DebugType type, const wxString& st
 			wxPostEvent( &theApp, event );
 		}
 #else
-		printf("%s\n", unicode2char( line ) );
+		printf("%s\n", (const char*)unicode2char( line ) );
 #endif
 	} else {
 		wxASSERT( false );
@@ -157,7 +157,3 @@ unsigned int CLogger::GetDebugCategoryCount()
 {
 	return categoryCount;
 }
-
-
-
-
