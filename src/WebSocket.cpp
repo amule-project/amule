@@ -77,14 +77,10 @@ void *CWSThread::Entry() {
 				}
 			}
 
-#ifdef DEBUG			
-			ws->Print("*** WSThread: %d threads\n", wcThreads.GetCount());
-#endif
+			//ws->Print("*** WSThread: %d threads\n", wcThreads.GetCount());
 			for (size_t i=0; i<wcThreads.GetCount(); i++) {
 				if (!wcThreads.Item(i)->IsAlive()) {
-#ifdef DEBUF
-					ws->Print("*** WSThread: thread %d removed\n", i);
-#endif
+					//ws->Print("*** WSThread: thread %d removed\n", i);
 					wcThreads.RemoveAt(i); //remove terminated thread from array to save memory
 				}
 			}
