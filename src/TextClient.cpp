@@ -672,7 +672,7 @@ void CamulecmdApp::Process_Answer_v2(CECPacket *response)
 				CECTag *clientName = tag ? tag->GetTagByName(EC_TAG_CLIENT_NAME) : NULL;
 				CECTag *partfileName = tag ? tag->GetTagByName(EC_TAG_PARTFILE_NAME) : NULL;
 				CECTag *partfileSizeXfer = tag ? tag->GetTagByName(EC_TAG_PARTFILE_SIZE_XFER) : NULL;
-				CECTag *partfileSpeed = tag ? tag->GetTagByName(EC_TAG_PARTFILE_SPEED) : NULL;
+				CECTag *partfileSpeed = tag ? tag->GetTagByName(EC_TAG_CLIENT_UP_SPEED) : NULL;
 				if (tag && clientName && partfileName && partfileSizeXfer && partfileSpeed) {
 					s <<	wxT("\n") <<
 						wxString::Format(wxT("%10u "), tag->GetInt32Data()) <<
