@@ -139,7 +139,7 @@ int main(int argc, char *argv[])
 	sprintf(lines[5],
 			"Sharing: %s file(s), Clients on queue: %s\n",
 			stats[8], stats[7]);
-
+#ifdef __GD__
 	if (argc == 2 && strcmp(argv[1], "-o") == 0) {
 		if (!readconfig(&config)) {
 			printf("Could not read config file\n");
@@ -152,7 +152,7 @@ int main(int argc, char *argv[])
 		}
 		exit(0);
 	}
-
+#endif
 	for (i = 0; i <= 5; i++)
 		printf("%s", lines[i]);
 
