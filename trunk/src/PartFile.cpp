@@ -75,6 +75,7 @@
 #include "StringFunctions.h"	// Needed for CleanupFilename
 #include "filefn.h"
 #include "color.h"              // Needed for RGB, DarkenColour
+#include "Statistics.h"		// Needed for CStatistics
 
 #include <map>
 #include <algorithm>
@@ -2580,7 +2581,7 @@ void CPartFile::PauseFile(bool bInsufficient)
 		CUpDownClient* cur_src = *it++;
 		if (cur_src->GetDownloadState() == DS_DOWNLOADING) {
 			if (!cur_src->GetSentCancelTransfer()) {				
-				theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
+				theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());
 				cur_src->SendPacket(packet,false,true);
 				cur_src->SetDownloadState(DS_ONQUEUE);
 				cur_src->SetSentCancelTransfer(1);

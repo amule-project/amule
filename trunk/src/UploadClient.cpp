@@ -607,7 +607,7 @@ void CUpDownClient::FlushSendBlocks()
 { // call this when you stop upload, or the socket might be not able to send
 	while (!m_BlockSend_queue.IsEmpty() && m_BlockSend_queue.GetHead()->IsSplitted() && IsConnected() ) {	
 		Packet* tosend = m_BlockSend_queue.RemoveHead();
-		theApp.uploadqueue->AddUpDataOverheadOther(tosend->GetPacketSize());
+		theApp.statistics->AddUpDataOverheadOther(tosend->GetPacketSize());
 		SendPacket(tosend,true,false);
 	}
 }
@@ -629,7 +629,7 @@ void CUpDownClient::SendHashsetPacket(const CMD4Hash& forfileid) {
 	Packet* packet = new Packet(data);
 	delete data;
 	packet->SetOpCode(OP_HASHSETANSWER);
-	theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->GetPacketSize());
+	theApp.statistics->AddUpDataOverheadFileRequest(packet->GetPacketSize());
 	SendPacket(packet,true,true);
 }
 
@@ -663,7 +663,7 @@ void CUpDownClient::SendRankingInfo(){
 	Packet* packet = new Packet(&data,OP_EMULEPROT);
 	packet->SetOpCode(OP_QUEUERANKING);
 	
-	theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
+	theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());
 	SendPacket(packet,true,true);
 }
 
@@ -689,7 +689,7 @@ void CUpDownClient::SendCommentInfo(CKnownFile* file)
 	
 	Packet *packet = new Packet(&data,OP_EMULEPROT);
 	packet->SetOpCode(OP_FILEDESC);
-	theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
+	theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());
 	SendPacket(packet,true);
 }
 

@@ -43,7 +43,7 @@
 #include "otherfunctions.h"
 #include "Friend.h"
 #include "muuli_wdr.h"            // Needed for amuleSpecial
-
+#include "Statistics.h"		// Needed for CStatistics
 
 
 // Default colors, 
@@ -214,7 +214,7 @@ bool CChatSelector::SendMessage( const wxString& message )
 		data.WriteString(message);
 		Packet* packet = new Packet(&data);
 		packet->SetOpCode(OP_MESSAGE);
-		theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
+		theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());
 		if ( ci->m_client->SendPacket(packet, true, true) ) {
 			ci->AddText( thePrefs::GetUserNick(), COLOR_GREEN );
 			ci->AddText( wxT(": ") + message + wxT("\n"), COLOR_BLACK );
@@ -272,7 +272,7 @@ void CChatSelector::ConnectionResult(CUpDownClient* sender, bool success)
 			data.WriteString(ci->m_pending);
 			Packet* packet = new Packet(&data);
 			packet->SetOpCode(OP_MESSAGE);
-			theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
+			theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());
 			if ( ci->m_client->SendPacket(packet, true, true) ) {
 				ci->AddText( thePrefs::GetUserNick(), COLOR_GREEN );
 				ci->AddText( wxT(": ") + ci->m_pending + wxT("\n"), COLOR_BLACK );

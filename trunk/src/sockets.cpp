@@ -235,7 +235,7 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 		AddLogLineM(true,wxString(wxT("        User Nick: ")) << thePrefs::GetUserNick() << wxT("\n"));
 		AddLogLineM(true,wxString(wxT("        Edonkey  : ")) << EDONKEYVERSION << wxT("\n"));
 		#endif
-		theApp.uploadqueue->AddUpDataOverheadServer(packet->GetPacketSize());
+		theApp.statistics->AddUpDataOverheadServer(packet->GetPacketSize());
 		SendPacket(packet, true, sender);
 	} else if (sender->GetConnectionState() == CS_CONNECTED){
 		theApp.statistics->AddReconnect();
@@ -259,7 +259,7 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 		if (thePrefs::AddServersFromServer())
 		{
 			Packet* packet = new Packet(OP_GETSERVERLIST,0);
-			theApp.uploadqueue->AddUpDataOverheadServer(packet->GetPacketSize());
+			theApp.statistics->AddUpDataOverheadServer(packet->GetPacketSize());
 			SendPacket(packet, true);
 			#ifdef DEBUG_CLIENT_PROTOCOL
 			AddLogLineM(true,wxT("Client: OP_GETSERVERLIST\n"));
@@ -568,7 +568,7 @@ void CServerConnect::KeepConnectionAlive()
 		//   - this function is called once when connecting to a server and when a file becomes shareable - so, it's called rarely.
 		//   - if the compressed size is still >= the original size, we send the uncompressed packet
 		// therefor we always try to compress the packet
-		theApp.uploadqueue->AddUpDataOverheadServer(packet->GetPacketSize());
+		theApp.statistics->AddUpDataOverheadServer(packet->GetPacketSize());
 		connectedsocket->SendPacket(packet,true);
 		
 		AddDebugLogLineM(false, wxT("Refreshing server connection"));
