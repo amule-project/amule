@@ -78,6 +78,7 @@ typedef struct { float download; float upload; long connections; } UpDown;
 
 typedef struct { time_t startTime; long lSession; bool admin;} Session;
 
+class CProgressImage;
 class DownloadFiles {
 	public:
 		wxString	sFileName;
@@ -102,6 +103,7 @@ class DownloadFiles {
 		static class DownloadFilesInfo *GetContainerInstance();
 
 		uint32 file_id;
+		CProgressImage *m_Image;
 };
 
 class SharedFiles {
@@ -317,16 +319,24 @@ class SharedFilesInfo : public ItemsContainer<SharedFiles, xSharedSort> {
 		bool CompareItems(const SharedFiles &i1, const SharedFiles &i2);
 };
 
+class CImageLib;
 class DownloadFilesInfo : public ItemsContainer<DownloadFiles, xDownloadSort> {
 		// need duplicate list with a map, so check "do we already have"
 		// will take O(log(n)) instead of O(n)
 		// map will contain pointers to items in list 
 		std::map<uint32, DownloadFiles *> m_files;
+		CImageLib *m_ImageLib;
+		
+		// parameters of progress images
+		wxString m_Template;
+		int m_width, m_height;
 	public:
 		// can be only one instance.
 		static DownloadFilesInfo *m_This;
 		
-		DownloadFilesInfo(CamulewebApp *webApp);
+		DownloadFilesInfo(CamulewebApp *webApp, CImageLib *imlib);
+		
+		void LoadImageParams(wxString &tpl, int width, int height);
 		
 		virtual bool ReQuery();
 		virtual bool ProcessUpdate(CECPacket *update);
@@ -342,7 +352,7 @@ class CAnyImage {
 		
 		void Realloc(int size);
 		
-		void SetHttpType(wxString &ext);
+		void SetHttpType(wxString ext);
 	public:
 		CAnyImage(int size);
 		virtual ~CAnyImage();
@@ -360,14 +370,21 @@ class CFileImage : public CAnyImage {
 		bool OpenOk() { return m_size != 0; }
 };
 
+
 class CProgressImage : public CAnyImage {
 	protected:
-		wxString m_tmpl;
+		wxString m_template;
+		int m_width, m_height;
+		otherfunctions::PartFileEncoderData &m_Encoder;
+		wxString m_name;
 	public:
-		CProgressImage(int size, wxString &tmpl) : CAnyImage(size), m_tmpl(tmpl)
+		CProgressImage(int size, wxString &tmpl, otherfunctions::PartFileEncoderData &encoder) :
+			CAnyImage(size), m_template(tmpl), m_Encoder(encoder)
 		{
 		}
-		
+
+		const wxString &Name() { return m_name; }
+				
 		virtual wxString GetHTML() = 0;
 };
 
@@ -377,9 +394,6 @@ class CProgressImage : public CAnyImage {
 // Dynamic png image generation from gap info
 class CDynImage : public CProgressImage {
 		uint32 m_id;
-		otherfunctions::PartFileEncoderData &m_Encoder;
-		wxString m_name;
-		int m_width, m_height;
 		unsigned char **m_row_ptrs;
 		
 		int m_write_idx;
@@ -401,13 +415,12 @@ class CDynImage : public CProgressImage {
 // Fallback to original implementation
 class CDynImage : public CProgressImage {
 	private:
-		DownloadFiles *m_file;
 		wxString m_name;
 		int m_width;
 	public:
-		CDynImage(DownloadFiles *file, wxString &tmpl) : CProgressImage(0, tmpl)
+		CDynImage(uint32 id, int w, int h, wxString &tmpl, otherfunctions::PartFileEncoderData &encoder) :
+			CProgressImage(0, tmpl, encoder)
 		{
-			m_file = file;
 		}
 
 		virtual wxString GetHTML();
@@ -423,8 +436,8 @@ class CImageLib {
 		~CImageLib();
 		
 		CAnyImage *GetImage(wxString &name);
-		void AddImage(CAnyImage *img, wxString &name);
-		void RemoveImage(wxString &name);
+		void AddImage(CAnyImage *img, const wxString &name);
+		void RemoveImage(const wxString &name);
 };
 
 typedef struct {
@@ -564,7 +577,7 @@ class CWebServer {
 		int		m_iSearchSortby;
 		bool		m_bSearchAsc;
 		unsigned int	m_nRefresh;
-		wxString imgs_folder;
+
 };
 
 #endif // WEBSERVER_H

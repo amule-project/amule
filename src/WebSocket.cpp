@@ -262,8 +262,6 @@ void CWebSocket::OnRequestReceived(char* pHeader, wxUint32 dwHeaderLen, char* pD
 	wxString sData(char2unicode(pData));
 	sData=sData.Left(dwDataLen);
 	wxString sURL;
-	bool imgreq=false;
-	bool stylereq=false;
 	
 	if (sHeader.Left(3) == wxT("GET"))
 		sURL = sHeader.Trim();
@@ -276,21 +274,17 @@ void CWebSocket::OnRequestReceived(char* pHeader, wxUint32 dwHeaderLen, char* pD
 	if (sURL.Find(wxT(" ")) > -1)
 		sURL = sURL.Left(sURL.Find(wxT(" ")));
 
-	if (sURL.Length()>4 && sURL.Right(4).MakeLower()==wxT(".gif") || sURL.Right(4).MakeLower()==wxT(".jpg") || 
-		sURL.Right(4).MakeLower()==wxT(".png") || sURL.Right(4).MakeLower()==wxT(".bmp") ||
-		sURL.Right(5).MakeLower()==wxT(".jpeg"))
-		imgreq=true;
-	
-	if (sURL.Length()>4 && sURL.Right(4).MakeLower()==wxT(".css"))
-		stylereq=true;
-
 	ThreadData Data;
 	Data.sURL = sURL;
 	Data.pSocket = this;
-
-	if (!imgreq && !stylereq) m_pParent->ProcessURL(Data);
-	else if (!imgreq) m_pParent->ProcessStyleFileReq(Data);
-	else m_pParent->ProcessImgFileReq(Data);
+	if (sURL.Length()>4 && sURL.Right(4).MakeLower()==wxT(".gif") || sURL.Right(4).MakeLower()==wxT(".jpg") || 
+		sURL.Right(4).MakeLower()==wxT(".png") || sURL.Right(4).MakeLower()==wxT(".bmp") ||
+		sURL.Right(4).MakeLower()==wxT(".css") ||
+		sURL.Right(5).MakeLower()==wxT(".jpeg")) {
+		m_pParent->ProcessImgFileReq(Data);
+	} else {
+		m_pParent->ProcessURL(Data);
+	}
 
 	Disconnect();
 }
