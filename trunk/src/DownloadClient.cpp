@@ -92,15 +92,23 @@ void CUpDownClient::DrawStatusBar(wxMemoryDC* dc, const wxRect& rect, bool onlyg
 				} else {
 					uEnd = PARTSIZE*(i+1);
 				}
+				DWORD chunk_color;
 				if (m_reqfile->IsComplete(PARTSIZE*i,PARTSIZE*(i+1)-1)) {
-					s_StatusBar.FillRange(PARTSIZE*i, uEnd, crBoth);
+					chunk_color = crBoth;
 				} else if (m_nDownloadState == DS_DOWNLOADING && m_nLastBlockOffset < uEnd && m_nLastBlockOffset >= PARTSIZE*i) {
-					s_StatusBar.FillRange(PARTSIZE*i, uEnd, crPending);
+					chunk_color = crPending;
 				} else if (gettingParts.GetChar((uint16)i) == 'Y') {
-					s_StatusBar.FillRange(PARTSIZE*i, uEnd, crNextPending);
+					chunk_color = crNextPending;
 				} else {
-					s_StatusBar.FillRange(PARTSIZE*i, uEnd, crClientOnly);
+					chunk_color = crClientOnly;
 				}
+				
+				if (m_reqfile->IsStopped()) {
+					chunk_color = DarkenColour(chunk_color,2);
+				}
+				
+				s_StatusBar.FillRange(PARTSIZE*i, uEnd, chunk_color);
+				
 			}
 		}
 	}
