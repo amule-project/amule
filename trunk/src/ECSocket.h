@@ -92,20 +92,20 @@ public:
 	
 private:
 	// 8 bits
-	bool Read(wxSocketBase *sock, uint8& i);
-	bool Write(wxSocketBase *sock, const uint8& i);
+	void Read(wxSocketBase *sock, uint8& i);
+	void Write(wxSocketBase *sock, const uint8& i);
 	
 	// 16 bis
-	bool Read(wxSocketBase *sock, uint16& v);
-	bool Write(wxSocketBase *sock, const uint16& i);
+	void Read(wxSocketBase *sock, uint16& v);
+	void Write(wxSocketBase *sock, const uint16& i);
 	
 	// 32 bits
-	bool Read(wxSocketBase *sock, uint32& v);
-	bool Write(wxSocketBase *sock, const uint32& i);
+	void Read(wxSocketBase *sock, uint32& v);
+	void Write(wxSocketBase *sock, const uint32& i);
 #if 0
 	// 64 bits
-	bool Read(wxSocketBase *sock, uint64& i);
-	bool Write(wxSocketBase *sock, const uint64& i);
+	void Read(wxSocketBase *sock, uint64& i);
+	void Write(wxSocketBase *sock, const uint64& i);
 #endif
 	// String
 public:
@@ -115,6 +115,7 @@ public:
 private:
 	aMuleECSocketType m_type;
 	wxSocketBase *m_sock;
+	bool m_firstMessage;
 };
 
 #endif // ECSOCKET_H
