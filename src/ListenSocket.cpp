@@ -52,12 +52,130 @@
 //#define DEBUG_REMOTE_CLIENT_PROTOCOL
 //#define __PACKET_RECV_DUMP__
 
-WX_DEFINE_OBJARRAY(ArrayOfwxStrings);
-
 #ifdef DEBUG_REMOTE_CLIENT_PROTOCOL
 #undef AddDebugLogLineM
 #define AddDebugLogLineM(x,y) printf("%s\n",unicode2char(y));
 #endif 
+
+//------------------------------------------------------------------------------
+// CClientReqSocketHandler
+//------------------------------------------------------------------------------
+#ifndef AMULE_DAEMON
+BEGIN_EVENT_TABLE(CClientReqSocketHandler, wxEvtHandler)
+	EVT_SOCKET(CLIENTREQSOCKET_HANDLER, CClientReqSocketHandler::ClientReqSocketHandler)
+END_EVENT_TABLE()
+
+CClientReqSocketHandler::CClientReqSocketHandler(CClientReqSocket* )
+{
+}
+
+void CClientReqSocketHandler::ClientReqSocketHandler(wxSocketEvent& event)
+{
+	CClientReqSocket *socket = dynamic_cast<CClientReqSocket *>(event.GetSocket());
+	wxASSERT(socket);
+	if (!socket) {
+		return;
+	}
+	
+	if (socket->OnDestroy()) {
+		return;
+	}
+	
+	switch(event.GetSocketEvent()) {
+		case wxSOCKET_LOST:
+			socket->OnError(0 /* SOCKET_LOST is not an error */);
+			break;
+		case wxSOCKET_INPUT:
+			socket->OnReceive(0);
+			break;
+		case wxSOCKET_OUTPUT:
+			socket->OnSend(0);
+			break;
+		case wxSOCKET_CONNECTION:
+			// connection stablished, nothing to do about it?
+			socket->OnConnect(socket->Error() ? socket->LastError() : 0);
+			break;
+		default:
+			// connection requests should not arrive here..
+			wxASSERT(0);
+			break;
+	}
+}
+#else
+CClientReqSocketHandler::CClientReqSocketHandler(CClientReqSocket* socket)
+{
+	m_socket = socket;
+	if ( Create() != wxTHREAD_NO_ERROR ) {
+		printf("ERROR: CClientReqSocketHandler failed create\n");
+		wxASSERT(0);
+	}
+}
+
+CClientReqSocketHandler::~CClientReqSocketHandler()
+{
+	wxASSERT(m_socket == 0);
+}
+
+void *CClientReqSocketHandler::Entry()
+{
+	if (m_socket->GetClient()) {
+		if (m_socket->GetClient()->HasLowID()) {
+			printf("DL from lowid\n");
+		} else {
+			printf("DL from highid\n");
+		}
+	} else {
+		printf("Socket with no client\n");
+	}
+	
+	while ( !TestDestroy() ) {
+		if ( m_socket->deletethis ) {
+			printf("CClientReqSocketHandler: socket %p in %ld being deleted\n",
+				m_socket, GetId());
+			break;
+		}
+		if ( m_socket->Error()) {
+			if ( m_socket->LastError() == wxSOCKET_WOULDBLOCK ) {
+				if ( m_socket->WaitForWrite(0, 0) ) {
+					m_socket->OnSend(0);
+				}
+			} else  {
+				break;
+			}
+		}
+		if ( m_socket->WaitForLost(0, 0) ) {
+			break;
+		}
+		// lfroen: tradeof here - short wait time for high performance on delete
+		// but long wait time for low cpu usage
+		if ( m_socket->WaitForRead(0, 100) ) {
+			if ( m_socket->RecievePending() ) {
+				Sleep(50);
+			} else {
+				CALL_APP_DATA_LOCK;
+				m_socket->OnReceive(0);
+			}
+		}
+	}
+	printf("CClientReqSocketHandler: thread %ld for %p exited\n", GetId(), m_socket);
+	m_socket->my_handler = 0;
+	m_socket->Safe_Delete();
+	m_socket = NULL;
+
+	return 0;
+}
+#endif
+
+//
+// There can be only one. :)
+//
+static CClientReqSocketHandler TheClientReqSocketHandler;
+
+//------------------------------------------------------------------------------
+// CClientReqSocket
+//------------------------------------------------------------------------------
+
+WX_DEFINE_OBJARRAY(ArrayOfwxStrings);
 
 IMPLEMENT_DYNAMIC_CLASS(CClientReqSocket,CEMSocket)
 
@@ -73,11 +191,8 @@ CEMSocket(ProxyData)
 	deletethis = false;
 	connection_retries = 0;
 	last_action = ACTION_NONE;
-#ifdef AMULE_DAEMON
-	my_handler = 0;
-	Notify(false);
-#else
-	my_handler = new CClientReqSocketHandler(this);
+#ifndef AMULE_DAEMON
+	my_handler = &TheClientReqSocketHandler;
 	SetEventHandler(*my_handler, CLIENTREQSOCKET_HANDLER);
 	SetNotify(
 		wxSOCKET_CONNECTION_FLAG|
@@ -85,6 +200,15 @@ CEMSocket(ProxyData)
 		wxSOCKET_OUTPUT_FLAG|
 		wxSOCKET_LOST_FLAG);
 	Notify(true);
+#else
+#warning lfroen, read this comment below
+	// Shouldn't this line be: my_handler = new CClientReqSocketHandler(this); ?
+	// my_handler is not set anywhere else in the code, so it will be zero forever
+	// in amuled. So, all the "if (my_handler)"'s around the code will fail, not
+	// to mention that "delete my_handler" is void. I wont touch this code now, but
+	// I recommend that you clean this code, you certainly know better than me.
+	my_handler = 0;
+	Notify(false);
 #endif
 	theApp.listensocket->AddSocket(this);
 }
@@ -125,8 +249,6 @@ CClientReqSocket::~CClientReqSocket()
 	}
 #ifdef AMULE_DAEMON
 	wxASSERT(deletethis && !my_handler);
-#else
-	delete my_handler;
 #endif
 }
 
@@ -2181,119 +2303,11 @@ bool CClientReqSocket::IsMessageFiltered(wxString Message, CUpDownClient* client
 	return filtered;
 }
 
-
-//-----------------------------------------------------------------------------
-// CClientReqSocketHandler
-//-----------------------------------------------------------------------------
-CClientReqSocketHandler::CClientReqSocketHandler(CClientReqSocket* parent)
-{
-	socket = parent;
-	socket->my_handler = this;
-
 #ifdef AMULE_DAEMON
-	if ( Create() != wxTHREAD_NO_ERROR ) {
-		printf("ERROR: CClientReqSocketHandler failed create\n");
-		wxASSERT(0);
-	}
-#endif
-}
-
-#ifdef AMULE_DAEMON
-CClientReqSocketHandler::~CClientReqSocketHandler()
-{
-	wxASSERT(socket == 0);
-}
-
 void CClientReqSocket::Destroy()
 {
 	if ( !my_handler ) {
 		CEMSocket::Destroy();
-	}
-}
-
-void *CClientReqSocketHandler::Entry()
-{
-	if (socket->GetClient()) {
-		if (socket->GetClient()->HasLowID()) {
-			printf("DL from lowid\n");
-		} else {
-			printf("DL from highid\n");
-		}
-	} else {
-		printf("Socket with no client\n");
-	}
-	
-	while ( !TestDestroy() ) {
-		if ( socket->deletethis ) {
-			printf("CClientReqSocketHandler: socket %p in %ld being deleted\n", socket, GetId());
-			break;
-		}
-		if ( socket->Error()) {
-			if ( socket->LastError() == wxSOCKET_WOULDBLOCK ) {
-				if ( socket->WaitForWrite(0, 0) ) {
-					socket->OnSend(0);
-				}
-			} else  {
-				break;
-			}
-		}
-		if ( socket->WaitForLost(0, 0) ) {
-			break;
-		}
-		// lfroen: tradeof here - short wait time for high performance on delete
-		// but long wait time for low cpu usage
-		if ( socket->WaitForRead(0, 100) ) {
-	        if ( socket->RecievePending() ) {
-	                Sleep(50);
-	        } else {
-	                CALL_APP_DATA_LOCK;
-	                socket->OnReceive(0);
-	        }
-		}
-	}
-	printf("CClientReqSocketHandler: thread %ld for %p exited\n", GetId(), socket);
-	socket->my_handler = 0;
-	socket->Safe_Delete();
-	socket = 0;
-
-	return 0;
-}
-
-#else
-
-BEGIN_EVENT_TABLE(CClientReqSocketHandler, wxEvtHandler)
-	EVT_SOCKET(CLIENTREQSOCKET_HANDLER, CClientReqSocketHandler::ClientReqSocketHandler)
-END_EVENT_TABLE()
-
-void CClientReqSocketHandler::ClientReqSocketHandler(wxSocketEvent& event)
-{
-	if(!socket) {
-		// we are not mentally ready to receive anything
-		// or there is no socket on the event (got deleted?)
-		return;
-	}
-	if (socket->OnDestroy()) {
-		return;
-	}
-	//printf("request at clientreqsocket\n");
-	switch(event.GetSocketEvent()) {
-		case wxSOCKET_LOST:
-			socket->OnError(0 /* SOCKET_LOST is not an error */);
-			break;
-		case wxSOCKET_INPUT:
-			socket->OnReceive(0);
-			break;
-		case wxSOCKET_OUTPUT:
-			socket->OnSend(0);
-			break;
-		case wxSOCKET_CONNECTION:
-			// connection stablished, nothing to do about it?
-			socket->OnConnect(socket->Error() ? socket->LastError() : 0);
-			break;
-		default:
-			// connection requests should not arrive here..
-			wxASSERT(0);
-			break;
 	}
 }
 #endif

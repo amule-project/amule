@@ -37,13 +37,47 @@
 #include <set> 
 #include <list>
 
+#ifdef AMULE_DAEMON
+#define CLIENT_REQ_SOCK_HANDLER_BASE wxThread
+#else
+#define CLIENT_REQ_SOCK_HANDLER_BASE wxEvtHandler
+#endif
+
+//------------------------------------------------------------------------------
+// CClientReqSocketHandler
+//------------------------------------------------------------------------------
+
+class CClientReqSocket;
+
+class CClientReqSocketHandler: public CLIENT_REQ_SOCK_HANDLER_BASE
+{
+public:
+	CClientReqSocketHandler(CClientReqSocket* socket = NULL);
+
+#ifdef AMULE_DAEMON
+public:
+	// lfroen: for some reason wx can't Wait for detached threads
+	~CClientReqSocketHandler();
+
+private:
+	CClientReqSocket* m_socket;
+	void *Entry();
+#else
+private:
+	void ClientReqSocketHandler(wxSocketEvent& event);
+	DECLARE_EVENT_TABLE();
+#endif
+};
+
+//------------------------------------------------------------------------------
+// CClientReqSocket
+//------------------------------------------------------------------------------
+
 WX_DECLARE_OBJARRAY(wxString, ArrayOfwxStrings);
 
 class CUpDownClient;
 class CPacket;
 class CTimerWnd;
-
-class CClientReqSocketHandler;
 
 enum LastActionType {
 	ACTION_NONE,
@@ -107,33 +141,6 @@ private:
 	CClientReqSocketHandler* my_handler;
 #ifdef AMULE_DAEMON
 	wxMutex handler_exit;
-#endif
-};
-
-#ifdef AMULE_DAEMON
-#define CLIENT_REQ_SOCK_HANDLER_BASE wxThread
-#else
-#define CLIENT_REQ_SOCK_HANDLER_BASE wxEvtHandler
-#endif
-
-class CClientReqSocketHandler: public CLIENT_REQ_SOCK_HANDLER_BASE
-{
-public:
-	CClientReqSocketHandler(CClientReqSocket* parent);
-
-private:
-	void ClientReqSocketHandler(wxSocketEvent& event);
-	CClientReqSocket* socket;
-	
-#ifdef AMULE_DAEMON
-public:
-	// lfroen: for some reason wx can't Wait for detached threads
-	~CClientReqSocketHandler();
-
-private:
-	void *Entry();
-#else
-	DECLARE_EVENT_TABLE();
 #endif
 };
 
