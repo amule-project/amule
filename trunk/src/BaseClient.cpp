@@ -291,6 +291,12 @@ CUpDownClient::~CUpDownClient()
 	//DEBUG_ONLY (theApp.listensocket->Debug_ClientDeleted(this));
 	SetUploadFileID(NULL);
 	
+	#ifdef __DEBUG__
+
+	MagicNumber1 = MAGIC_2;
+	MagicNumber2 = MAGIC_1;
+
+	#endif
 }
 
 void CUpDownClient::ClearHelloProperties()
