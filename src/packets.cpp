@@ -278,12 +278,12 @@ CTag::CTag(int8 special, LPCSTR strvalue){
 CTag::CTag(LPCSTR name, const wxString& strvalue){
 	tag.tagname = nstrdup(name);
 	tag.type = 2;
-	tag.stringvalue = nstrdup(strvalue.GetData());
+	tag.stringvalue = nstrdup(strvalue.c_str());
 }
 
 CTag::CTag(uint8 special, const wxString& strvalue){
 	tag.type = 2;
-	tag.stringvalue = nstrdup(strvalue.GetData());
+	tag.stringvalue = nstrdup(strvalue.c_str());
 	tag.specialtag = special;
 }
 
@@ -351,11 +351,11 @@ CTag::CTag(CFile* in_data)
 		in_data->Seek(len, wxFromCurrent);
 	}
 	else{
+		if (tag.type==0x00) wxASSERT(0);
 		if (length == 1)
 			printf("CTag::CTag(CFile*); Unknown tag: type=0x%02X  specialtag=%u\n", tag.type, tag.specialtag);
 		else
 			printf("CTag::CTag(CFile*); Unknown tag: type=0x%02X  name=\"%s\"\n", tag.type, tag.tagname);
-//		if (tag.type==0x00) wxASSERT(0);
 	}
 }
 
@@ -406,7 +406,7 @@ bool CTag::WriteTagToFile(CFile* file)
 	}
 	else{
 		printf("CTag::WriteTagToFile(CFile*); Ignored tag with unknown type=0x%02X\n", tag.type);
-		//wxASSERT(0);
+		wxASSERT(0);
 		return false;
 	}
 }
