@@ -92,7 +92,6 @@
 #include "FriendList.h"			// Needed for CFriendList
 #include "SearchList.h"			// Needed for CSearchList
 #include "ClientList.h"			// Needed for CClientList
-#include "PreferencesDlg.h"		// Needed for CPreferencesDlg
 #include "Preferences.h"		// Needed for CPreferences
 #include "amuleDlg.h"			// Needed for CamuleDlg
 #include "ListenSocket.h"		// Needed for CListenSocket
@@ -487,11 +486,6 @@ bool CamuleApp::OnInit()
 	}
 	
 	amuledlg->Show(TRUE);
-
-
-#ifndef DISABLE_OLDPREFS
-	amuledlg->preferenceswnd->SetPrefs(glob_prefs);
-#endif
 
 
 	// Get ready to handle connections from apps like amulecmd
