@@ -81,6 +81,7 @@ CUpDownClient::CUpDownClient(uint16 in_port, uint32 in_userid,uint32 in_serverip
 		} else {
 			m_nConnectIP = ENDIAN_NTOHL(in_userid);
 		}
+	}
 	#else
  	if(!HasLowID()) {
 		m_nConnectIP = in_userid;
@@ -205,7 +206,7 @@ CUpDownClient::~CUpDownClient()
 	}
 
 	if (m_Friend) {
-		m_Friend->m_LinkedClient = NULL;
+		m_Friend->UnLinkClient();
 		Notify_ChatRefreshFriend(m_Friend);
 		m_Friend = NULL;
 	}
@@ -517,29 +518,9 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 	}
 
 	if ((m_Friend = theApp.FindFriend(&m_UserHash, m_dwUserIP, m_nUserPort)) != NULL){
-		// Link the friend to that client
-		if (m_Friend->m_LinkedClient){
-			if (m_Friend->m_LinkedClient != this){
-				bool bFriendSlot = m_Friend->m_LinkedClient->GetFriendSlot();
-				// avoid that an unwanted client instance keeps a friend slot
-				m_Friend->m_LinkedClient->SetFriendSlot(false);
-				m_Friend->m_LinkedClient->m_Friend = NULL;
-				m_Friend->m_LinkedClient = this;
-				// move an assigned friend slot between different client instances which are/were also friends
-				m_Friend->m_LinkedClient->SetFriendSlot(bFriendSlot);
-			}
-		} else {
-			m_Friend->m_LinkedClient = this;
-		}
-		m_Friend->m_Userhash = GetUserHash();
-		m_Friend->m_dwHasHash = !m_Friend->m_Userhash.IsEmpty();
-		m_Friend->m_strName = m_Username;
-		m_Friend->m_dwLastUsedIP = m_dwUserIP;
-		m_Friend->m_nLastUsedPort = m_nUserPort;
-		m_Friend->m_dwLastSeen = time(NULL);
+		m_Friend->LinkClient(this);
 		Notify_ChatRefreshFriend(m_Friend);
-	}
-	else{
+	} else{
 		// avoid that an unwanted client instance keeps a friend slot
 		SetFriendSlot(false);
 	}

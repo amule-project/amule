@@ -39,7 +39,6 @@ CFriend::CFriend()
 	m_dwLastChatted = 0;
 	m_strName = wxEmptyString;
 	m_LinkedClient = NULL;
-	m_dwHasHash = 0;
 }
 
 
@@ -50,10 +49,7 @@ CFriend::CFriend( const CMD4Hash& userhash, uint32 tm_dwLastSeen, uint32 tm_dwLa
 	m_nLastUsedPort = tm_nLastUsedPort;
 	m_dwLastChatted = tm_dwLastChatted;
 	if( tm_dwHasHash ) {
-		m_Userhash = userhash;
-		m_dwHasHash = 1;
-	} else {
-		m_dwHasHash = 0;
+		m_UserHash = userhash;
 	}
 	m_strName = tm_strName;
 	m_LinkedClient = NULL;
@@ -64,20 +60,37 @@ CFriend::CFriend(CUpDownClient* client)
 {
 	wxASSERT( client );
 	
-	m_dwLastSeen = time(NULL);
-	m_dwLastUsedIP = client->GetIP();
-	m_nLastUsedPort = client->GetUserPort();
-	m_dwLastChatted = 0;
+	LinkClient(client, false); // On init, no need to unlink. BETTER not to unlink.	
 	
+	m_dwLastChatted = 0;
+}
+
+
+void	CFriend::LinkClient(CUpDownClient* client, bool unlink) {
+	// Link the friend to that client
+	if (unlink && m_LinkedClient) { // What, is already linked?
+		if (m_LinkedClient != client){
+			bool bFriendSlot = m_LinkedClient->GetFriendSlot();
+			// avoid that an unwanted client instance keeps a friend slot
+			m_LinkedClient->SetFriendSlot(false);
+			m_LinkedClient->m_Friend = NULL;
+			m_LinkedClient = client;
+			// move an assigned friend slot between different client instances which are/were also friends
+			m_LinkedClient->SetFriendSlot(bFriendSlot);
+		}
+	} else {
+		m_LinkedClient = client;
+	}
+
 	if ( !client->GetUserName().IsEmpty() ) {
 		m_strName = client->GetUserName();
 	} else {
 		m_strName = wxT("?");
-	}
-	
-	m_Userhash = client->GetUserHash();
-	m_LinkedClient = client;
-	m_dwHasHash = 1;
+	}	
+	m_UserHash = client->GetUserHash();
+	m_dwLastUsedIP = client->GetIP();
+	m_nLastUsedPort = client->GetUserPort();
+	m_dwLastSeen = time(NULL);
 }
 
 
@@ -85,16 +98,16 @@ void CFriend::LoadFromFile(CFileDataIO* file)
 {
 	wxASSERT( file );
 
-	file->Read(m_Userhash, 16);
-	m_dwHasHash = !m_Userhash.IsEmpty();
-	file->Read(&m_dwLastUsedIP, 4);
-	file->Read(&m_nLastUsedPort, 2);
-	file->Read(&m_dwLastSeen, 4);
-	file->Read(&m_dwLastChatted, 4);
+	unsigned char friend_hash[16];
+	file->ReadHash16(friend_hash);
+	m_UserHash = friend_hash;
+	m_dwLastUsedIP = file->ReadUInt32();
+	m_nLastUsedPort = file->ReadUInt16();
+	m_dwLastSeen = file->ReadUInt32();
+	m_dwLastChatted = file->ReadUInt32();
 	
 	try {
-		uint32 tagcount;
-		file->Read(&tagcount, 4);
+		uint32 tagcount = file->ReadUInt32();
 		for ( uint32 j = 0; j != tagcount; j++) {
 			CTag newtag(*file, true);
 			switch ( newtag.GetNameID() ) {
@@ -116,7 +129,7 @@ void CFriend::WriteToFile(CFileDataIO* file)
 {
 	wxASSERT( file );
 	
-	file->WriteHash16(m_Userhash);
+	file->WriteHash16(m_UserHash);
 	file->WriteUInt32(m_dwLastUsedIP);
 	file->WriteUInt16(m_nLastUsedPort);
 	file->WriteUInt32(m_dwLastSeen);

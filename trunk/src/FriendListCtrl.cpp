@@ -103,14 +103,15 @@ CFriendListCtrl::~CFriendListCtrl()
 {
 	SaveList();
 
-	for ( int i = 0; i < GetItemCount(); i++ ) 
+	for ( int i = 0; i < GetItemCount(); i++ )  {
 		delete (CFriend*)GetItemData(i);
+	}
 }
 
 
 void CFriendListCtrl::AddFriend(CFriend* toadd)
 {
-	uint32 itemnr = InsertItem(GetItemCount(), toadd->m_strName);
+	uint32 itemnr = InsertItem(GetItemCount(), toadd->GetName());
 	SetItemData(itemnr, (long)toadd);
 }
 
@@ -143,10 +144,10 @@ void CFriendListCtrl::RemoveFriend(CFriend* toremove)
 	if ( itemnr == -1 )
 		return;
 	
-	if ( toremove->m_LinkedClient ){
-		toremove->m_LinkedClient->SetFriendSlot(false);
-		toremove->m_LinkedClient->m_Friend = NULL;
-		toremove->m_LinkedClient = NULL;
+	if ( toremove->GetLinkedClient() ){
+		toremove->GetLinkedClient()->SetFriendSlot(false);
+		toremove->GetLinkedClient()->m_Friend = NULL;
+		toremove->UnLinkClient();
 	}
 	delete toremove;
 	
@@ -158,7 +159,7 @@ void CFriendListCtrl::RefreshFriend(CFriend* toupdate)
 {
 	sint32 itemnr = FindItem(-1, (long)toupdate);
 	if (itemnr != -1) {
-		SetItem(itemnr, 0, toupdate->m_strName);
+		SetItem(itemnr, 0, toupdate->GetName());
 		SaveList();
 	}	
 }
@@ -184,11 +185,11 @@ void CFriendListCtrl::OnItemActivated(wxListEvent& WXUNUSED(evt))
 		return;
 	}
 
-	if (cur_friend->m_LinkedClient) {
-		theApp.amuledlg->chatwnd->StartSession(cur_friend->m_LinkedClient);
+	if (cur_friend->GetLinkedClient()) {
+		theApp.amuledlg->chatwnd->StartSession(cur_friend->GetLinkedClient());
 	} else {
-		CUpDownClient* chatclient = new CUpDownClient(cur_friend->m_nLastUsedPort, cur_friend->m_dwLastUsedIP, 0, 0, 0);
-		chatclient->SetUserName(cur_friend->m_strName);
+		CUpDownClient* chatclient = new CUpDownClient(cur_friend->GetPort(), cur_friend->GetIP(), 0, 0, 0);
+		chatclient->SetUserName(cur_friend->GetName());
 		theApp.clientlist->AddClient(chatclient);
 		theApp.amuledlg->chatwnd->StartSession(chatclient);
 	}
@@ -256,12 +257,13 @@ CFriend* CFriendListCtrl::FindFriend(const CMD4Hash& userhash, uint32 dwIP, uint
 		
 		// to avoid that unwanted clients become a friend, we have to distinguish between friends with
 		// a userhash and of friends which are identified by IP+port only.
-		if ( !userhash.IsEmpty() && cur_friend->m_dwHasHash ) {
+		if ( !userhash.IsEmpty() && cur_friend->HasHash() ) {
 			// check for a friend which has the same userhash as the specified one
-			if (cur_friend->m_Userhash == userhash)
+			if (cur_friend->GetUserHash() == userhash) {
 				return cur_friend;
+			}
 		}
-		else if (cur_friend->m_dwLastUsedIP == dwIP && cur_friend->m_nLastUsedPort == nPort) {
+		else if (cur_friend->GetIP() == dwIP && cur_friend->GetPort() == nPort) {
 				return cur_friend;
 		}
 	}
@@ -281,8 +283,8 @@ void CFriendListCtrl::RemoveAllFriendSlots()
 	for ( int i = 0; i < GetItemCount(); i++ ) {
 		CFriend* cur_friend = (CFriend*)GetItemData(i);
 		
-		if ( cur_friend->m_LinkedClient ) {
-				cur_friend->m_LinkedClient->SetFriendSlot(false);
+		if ( cur_friend->GetLinkedClient() ) {
+				cur_friend->GetLinkedClient()->SetFriendSlot(false);
 		}
 	}	
 }
@@ -298,7 +300,7 @@ void CFriendListCtrl::OnNMRclick(wxMouseEvent& evt)
 	if ( cursel != -1 ) {
 		cur_friend = (CFriend*)GetItemData(cursel);
 		menu->Append(MP_DETAIL, _("Show &Details"));
-		menu->Enable(MP_DETAIL, cur_friend->m_LinkedClient);
+		menu->Enable(MP_DETAIL, cur_friend->GetLinkedClient());
 	}
 	
 	menu->Append(MP_ADDFRIEND, _("Add a friend"));
@@ -309,9 +311,9 @@ void CFriendListCtrl::OnNMRclick(wxMouseEvent& evt)
 		menu->Append(MP_SHOWLIST, _("View Files"));
 		menu->AppendCheckItem(MP_FRIENDSLOT, _("Establish Friend Slot"));
 		
-		if (cur_friend->m_LinkedClient) {
+		if (cur_friend->GetLinkedClient()) {
 			menu->Enable(MP_FRIENDSLOT, true);
-			menu->Check(MP_FRIENDSLOT, cur_friend->m_LinkedClient->GetFriendSlot());
+			menu->Check(MP_FRIENDSLOT, cur_friend->GetLinkedClient()->GetFriendSlot());
 		} else {
 			menu->Enable(MP_FRIENDSLOT, false);
 		}
@@ -333,11 +335,11 @@ void CFriendListCtrl::OnPopupMenu(wxCommandEvent& evt)
 	
 	switch (evt.GetId()) {
 		case MP_MESSAGE: {
-			if (cur_friend->m_LinkedClient) {
-				theApp.amuledlg->chatwnd->StartSession(cur_friend->m_LinkedClient);
+			if (cur_friend->GetLinkedClient()) {
+				theApp.amuledlg->chatwnd->StartSession(cur_friend->GetLinkedClient());
 			} else {
-				CUpDownClient* chatclient = new CUpDownClient(cur_friend->m_nLastUsedPort, cur_friend->m_dwLastUsedIP, 0, 0, 0);
-				chatclient->SetUserName(cur_friend->m_strName);
+				CUpDownClient* chatclient = new CUpDownClient(cur_friend->GetPort(), cur_friend->GetIP(), 0, 0, 0);
+				chatclient->SetUserName(cur_friend->GetName());
 				theApp.clientlist->AddClient(chatclient);
 				theApp.amuledlg->chatwnd->StartSession(chatclient);
 			}
@@ -360,8 +362,8 @@ void CFriendListCtrl::OnPopupMenu(wxCommandEvent& evt)
 		}
 		
 		case MP_DETAIL: {
-			if (cur_friend->m_LinkedClient) {
-				CClientDetailDialog* dialog = new CClientDetailDialog(this, cur_friend->m_LinkedClient);
+			if (cur_friend->GetLinkedClient()) {
+				CClientDetailDialog* dialog = new CClientDetailDialog(this, cur_friend->GetLinkedClient());
 				dialog->ShowModal();
 				delete dialog;
 			}
@@ -369,11 +371,11 @@ void CFriendListCtrl::OnPopupMenu(wxCommandEvent& evt)
 		}
 		
 		case MP_SHOWLIST: {
-			if (cur_friend->m_LinkedClient) {
-				cur_friend->m_LinkedClient->RequestSharedFileList();
+			if (cur_friend->GetLinkedClient()) {
+				cur_friend->GetLinkedClient()->RequestSharedFileList();
 			} else {
-				CUpDownClient* newclient = new CUpDownClient(cur_friend->m_nLastUsedPort, cur_friend->m_dwLastUsedIP, 0, 0, 0);
-				newclient->SetUserName(cur_friend->m_strName);
+				CUpDownClient* newclient = new CUpDownClient(cur_friend->GetPort(), cur_friend->GetIP(), 0, 0, 0);
+				newclient->SetUserName(cur_friend->GetName());
 				theApp.clientlist->AddClient(newclient);
 				newclient->RequestSharedFileList();
 			}
@@ -381,11 +383,11 @@ void CFriendListCtrl::OnPopupMenu(wxCommandEvent& evt)
 		}
 		
 		case MP_FRIENDSLOT: {
-			if (cur_friend && cur_friend->m_LinkedClient) {
-				bool IsAlready = cur_friend->m_LinkedClient->GetFriendSlot();
+			if (cur_friend && cur_friend->GetLinkedClient()) {
+				bool IsAlready = cur_friend->GetLinkedClient()->GetFriendSlot();
 				RemoveAllFriendSlots();
 				if( !IsAlready ) {
-					cur_friend->m_LinkedClient->SetFriendSlot(true);
+					cur_friend->GetLinkedClient()->SetFriendSlot(true);
 				}
 			}
 			break;

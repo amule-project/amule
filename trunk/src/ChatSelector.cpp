@@ -303,9 +303,6 @@ void CChatSelector::EndSession(CUpDownClient* client)
 	GetParent()->FindWindow(IDC_CCLOSE)->Enable(GetPageCount());
 }
 
-
-
-
 // Refresh the tab assosiated with a friend
 void CChatSelector::RefreshFriend(CFriend* toupdate)
 {
@@ -314,8 +311,8 @@ void CChatSelector::RefreshFriend(CFriend* toupdate)
 	for ( unsigned int i = 0; i < (unsigned int)GetPageCount(); i++ ) {
 		CChatSession* page = (CChatSession*)GetPage( i );
 
-		if ( page->m_client == toupdate->m_LinkedClient ) {
-			SetPageText( i, toupdate->m_strName );
+		if ( page->m_client == toupdate->GetLinkedClient() ) {
+			SetPageText( i, toupdate->GetName() );
 			break;
 		};
 	}	
