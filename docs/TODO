@@ -1,6 +1,3 @@
-- bootstrap
-	- remove this comment
-
 - Hetfield
 	- If we use CXX & CC vars then disable -O2 default flag overriding.
 	(should check for gcc optimizations...i've a different idea)
