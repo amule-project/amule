@@ -389,6 +389,8 @@ void CServerConnect::CheckForTimeout()
 			
 			TryAnotherConnectionrequest();
 			DestroySocket( value );
+		} else {
+			++it;
 		}
 	}
 }
