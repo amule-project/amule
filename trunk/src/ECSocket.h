@@ -60,8 +60,11 @@ public:
 	inline ECSocket& Read(wxString& v) {
 		uint16 len;
 		Read(len);
-		ReadRaw(v.GetWriteBuf(len), len);
-		v.UngetWriteBuf(len);
+		char *buf = new char[len+1];
+		ReadRaw(buf, len);
+		buf[len] = 0;
+		v = wxString(buf,len);
+		delete[] buf;
 		if (Error()) {
 			printf("Wrong wxString Reading Packet!!!\n");
 		}
