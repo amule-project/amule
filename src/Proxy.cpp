@@ -59,21 +59,32 @@ void wxProxyEventHandler::m_ProxySocketHandler(wxSocketEvent& event)
 
 wxSocketProxy::wxSocketProxy(const wxProxyData *ProxyData)
 {
+	m_ProxyClientSocket = new wxSocketClient();
+/*
+	m_ProxyClientSocket->SetEventHandler(
+		wxProxyEventHandler, PROXY_SOCKET_HANDLER);
+*/
+	m_ProxyClientSocket->SetNotify(
+		wxSOCKET_CONNECTION_FLAG |
+		wxSOCKET_INPUT_FLAG |
+		wxSOCKET_LOST_FLAG);
+	m_ProxyClientSocket->Notify(true);
+	SetProxyData(ProxyData);
+}
+
+wxSocketProxy::~wxSocketProxy()
+{
+	delete m_ProxyClientSocket;
+}
+
+void wxSocketProxy::SetProxyData(const wxProxyData *ProxyData)
+{
 	if (ProxyData) {
 		m_ProxyData = *ProxyData;
-		m_ProxyClientSocket = new wxSocketClient();
-/*
-		m_ProxyClientSocket->SetEventHandler(
-			wxProxyEventHandler, PROXY_SOCKET_HANDLER);
-*/
-		m_ProxyClientSocket->SetNotify(
-			wxSOCKET_CONNECTION_FLAG |
-			wxSOCKET_INPUT_FLAG |
-			wxSOCKET_LOST_FLAG);
-		m_ProxyClientSocket->Notify(true);
-	
 		m_ProxyAddress.Hostname(m_ProxyData.ProxyHostName);
 		m_ProxyAddress.Service(m_ProxyData.ProxyPort);
+	} else {
+		memset(&m_ProxyData, 0, sizeof(wxProxyData));
 	}
 }
 
@@ -534,11 +545,11 @@ m_SocketProxy(ProxyData)
 	m_UseProxy = ProxyData != NULL;
 }
 
-bool wxSocketClientProxy::Connect(wxIPaddress &address, bool wait, bool UseProxy)
+bool wxSocketClientProxy::Connect(wxIPaddress &address, bool wait)
 {
 	bool ok;
 	
-	if (UseProxy && m_UseProxy) {
+	if (m_UseProxy) {
 		ok = m_SocketProxy.Start(address, wxPROXY_CMD_CONNECT);
 		if (ok) {
 			ok = wxSocketClient::Connect(m_SocketProxy.GetTargetAddress(), wait);
@@ -548,6 +559,12 @@ bool wxSocketClientProxy::Connect(wxIPaddress &address, bool wait, bool UseProxy
 	}
 
 	return ok;
+}
+
+void wxSocketClientProxy::SetProxyData(const wxProxyData *ProxyData)
+{
+	m_UseProxy = ProxyData != NULL;
+	m_SocketProxy.SetProxyData(ProxyData);
 }
 
 /******************************************************************************/
@@ -571,6 +588,8 @@ m_SocketProxy(ProxyData)
 		if (ok) {
 			m_SocketServer = new wxSocketServer(
 				m_SocketProxy.GetTargetAddress(), flags);
+		} else {
+			m_SocketServer = NULL;
 		}
 	} else {
 		m_SocketServer = new wxSocketServer(address, flags);
@@ -580,6 +599,12 @@ m_SocketProxy(ProxyData)
 wxSocketServerProxy::~wxSocketServerProxy()
 {
 	delete m_SocketServer;
+}
+
+void wxSocketServerProxy::SetProxyData(const wxProxyData *ProxyData)
+{
+	m_UseProxy = ProxyData != NULL;
+	m_SocketProxy.SetProxyData(ProxyData);
 }
 
 /******************************************************************************/
