@@ -2534,6 +2534,49 @@ void Portable::Multiply8Bottom(word *R, const word *A, const word *B)
 
 #ifdef CRYPTOPP_X86ASM_AVAILABLE
 
+// ************** x86 feature detection ***************
+
+static bool s_sse2Enabled = true;
+
+static void CpuId(word32 input, word32 *output)
+{
+#ifdef __GNUC__
+	__asm__
+	(
+		// save ebx in case -fPIC is being used
+		"push %%ebx; cpuid; mov %%ebx, %%edi; pop %%ebx"
+		: "=a" (output[0]), "=D" (output[1]), "=c" (output[2]), "=d" (output[3])
+		: "a" (input)
+	);
+#else
+	__asm
+	{
+		mov eax, input
+		cpuid
+		mov edi, output
+		mov [edi], eax
+		mov [edi+4], ebx
+		mov [edi+8], ecx
+		mov [edi+12], edx
+	}
+#endif
+}
+
+static bool IsP4()
+{
+	word32 cpuid[4];
+
+	CpuId(0, cpuid);
+	std::swap(cpuid[2], cpuid[3]);
+	if (memcmp(cpuid+1, "GenuineIntel", 12) != 0)
+		return false;
+
+	CpuId(1, cpuid);
+	return ((cpuid[0] >> 8) & 0xf) == 0xf;
+
+}
+
+
 // ************** Pentium/P4 optimizations ***************
 
 class PentiumOptimized : public Portable
@@ -2546,6 +2589,13 @@ public:
 	static void CRYPTOPP_CDECL Multiply8Bottom(word *C, const word *A, const word *B);
 };
 
+class P4Optimized
+{
+public:
+	static word CRYPTOPP_CDECL Add(word *C, const word *A, const word *B, unsigned int N);
+	static word CRYPTOPP_CDECL Subtract(word *C, const word *A, const word *B, unsigned int N);
+};
+
 typedef word (CRYPTOPP_CDECL * PAddSub)(word *C, const word *A, const word *B, unsigned int N);
 typedef void (CRYPTOPP_CDECL * PMul)(word *C, const word *A, const word *B);
 
@@ -2556,8 +2606,16 @@ static PMul s_pMul4, s_pMul8, s_pMul8B;
 
 static void SetPentiumFunctionPointers()
 {
-	s_pAdd = &PentiumOptimized::Add;
-	s_pSub = &PentiumOptimized::Subtract;
+	if (IsP4())
+	{
+		s_pAdd = &P4Optimized::Add;
+		s_pSub = &P4Optimized::Subtract;
+	}
+	else
+	{
+		s_pAdd = &PentiumOptimized::Add;
+		s_pSub = &PentiumOptimized::Subtract;
+	}
 
 #ifdef SSE2_INTRINSICS_AVAILABLE
 	s_pMul4 = &PentiumOptimized::Multiply4;
@@ -2731,6 +2789,102 @@ CRYPTOPP_NAKED word PentiumOptimized::Subtract(word *C, const word *A, const wor
 
 	AS1(loopendSub:)
 	AS2(	adc eax, 0)		// store carry into eax (return result register)
+
+	AddEpilogue
+}
+
+// On Pentium 4, the adc and sbb instructions are very expensive, so avoid them.
+
+CRYPTOPP_NAKED word P4Optimized::Add(word *C, const word *A, const word *B, unsigned int N)
+{
+	AddPrologue
+
+	// now: ebx = B, ecx = C, edx = A, esi = N
+	AS2(	xor		eax, eax)
+	AS1(	neg		esi)
+	AS1(	jz		loopendAddP4)		// if no dwords then nothing to do
+
+	AS2(	mov		edi, [edx])
+	AS2(	mov		ebp, [ebx])
+	AS1(	jmp		carry1AddP4)
+
+	AS1(loopstartAddP4:)
+	AS2(	mov		edi, [edx+8])
+	AS2(	add		ecx, 8)
+	AS2(	add		edx, 8)
+	AS2(	mov		ebp, [ebx])
+	AS2(	add		edi, eax)
+	AS1(	jc		carry1AddP4)
+	AS2(	xor		eax, eax)
+
+	AS1(carry1AddP4:)
+	AS2(	add		edi, ebp)
+	AS2(	mov		ebp, 1)
+	AS2(	mov		[ecx], edi)
+	AS2(	mov		edi, [edx+4])
+	AS2(	cmovc	eax, ebp)
+	AS2(	mov		ebp, [ebx+4])
+	AS2(	add		ebx, 8)
+	AS2(	add		edi, eax)
+	AS1(	jc		carry2AddP4)
+	AS2(	xor		eax, eax)
+
+	AS1(carry2AddP4:)
+	AS2(	add		edi, ebp)
+	AS2(	mov		ebp, 1)
+	AS2(	cmovc	eax, ebp)
+	AS2(	mov		[ecx+4], edi)
+	AS2(	add		esi, 2)
+	AS1(	jnz		loopstartAddP4)
+
+	AS1(loopendAddP4:)
+
+	AddEpilogue
+}
+
+CRYPTOPP_NAKED word P4Optimized::Subtract(word *C, const word *A, const word *B, unsigned int N)
+{
+	AddPrologue
+
+	// now: ebx = B, ecx = C, edx = A, esi = N
+	AS2(	xor		eax, eax)
+	AS1(	neg		esi)
+	AS1(	jz		loopendSubP4)		// if no dwords then nothing to do
+
+	AS2(	mov		edi, [edx])
+	AS2(	mov		ebp, [ebx])
+	AS1(	jmp		carry1SubP4)
+
+	AS1(loopstartSubP4:)
+	AS2(	mov		edi, [edx+8])
+	AS2(	add		edx, 8)
+	AS2(	add		ecx, 8)
+	AS2(	mov		ebp, [ebx])
+	AS2(	sub		edi, eax)
+	AS1(	jc		carry1SubP4)
+	AS2(	xor		eax, eax)
+
+	AS1(carry1SubP4:)
+	AS2(	sub		edi, ebp)
+	AS2(	mov		ebp, 1)
+	AS2(	mov		[ecx], edi)
+	AS2(	mov		edi, [edx+4])
+	AS2(	cmovc	eax, ebp)
+	AS2(	mov		ebp, [ebx+4])
+	AS2(	add		ebx, 8)
+	AS2(	sub		edi, eax)
+	AS1(	jc		carry2SubP4)
+	AS2(	xor		eax, eax)
+
+	AS1(carry2SubP4:)
+	AS2(	sub		edi, ebp)
+	AS2(	mov		ebp, 1)
+	AS2(	cmovc	eax, ebp)
+	AS2(	mov		[ecx+4], edi)
+	AS2(	add		esi, 2)
+	AS1(	jnz		loopstartSubP4)
+
+	AS1(loopendSubP4:)
 
 	AddEpilogue
 }
