@@ -265,7 +265,9 @@ Version 2.0.0rc4 - The 'Rabbits and Mules love carrots' version.
 		* aLinkCreator:
 			- Added this new maaarvellous tool suggested by DeltaHF to compute ed2k links from a file (same behavior as eMule link creator, but no shared code)
 			- Rewrote md4hash and ed2khash code to avoid external dependencies (libcryptopp free), and to be Big Endian proof (works on Mac afaik)
-			- Thanks to Phoenix (Unicode) and one_2_one (Mac tests)
+			- Added alcc, the "alc for console" command line client
+			- Added toolbar themes (KDE and DeltaHF's default for now)
+			- Thanks to Phoenix (Unicode, Hook, commandline...) and one_2_one (Mac tests)
 			
 		* aMule:
 			- Rewrote Makefile.am tree to fit to GNU standards
@@ -282,6 +284,8 @@ Version 2.0.0rc4 - The 'Rabbits and Mules love carrots' version.
 			- Force autogen.sh to regenerate intl at each call to keep sychronised with system gettext templates
 			- Some minor i18n and unicode fixes
 			- Updated POTFILE.in
+			- Removed Win32 stuff from autotools scripts
+			- Added static MakefileWIN32 for win32 compilation
 	
 	Unleashed:
 		[ From rc3 (not on changelog)]
