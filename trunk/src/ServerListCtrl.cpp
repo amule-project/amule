@@ -535,12 +535,20 @@ int CServerListCtrl::SortProc( long item1, long item2, long sortData )
 				} else if (server2->HasDynIP()) {
 					return mode * 1;
 				} else {
-					if (int bigger = (server1->GetIP() - server2->GetIP())) {
-						return (mode * bigger);
-					} else {
-						// Same ip, different port (Shouldn't happen!)
-						return mode * CmpAny( server1->GetPort(), server2->GetPort() );
+					uint32 a = server1->GetIP();
+					uint32 b = server2->GetIP();
+					uint32 tester;
+					if (!(tester = ((a & 0x000000FF) - (b & 0x000000FF)))) {
+						if (!(tester = ((a & 0x0000FF00) - (b & 0x0000FF00)))) {
+							if (!(tester = ((a & 0x00FF0000) - (b & 0x00FF0000)))) {
+								if (!(tester = ((a & 0xFF000000) - (b & 0xFF000000)))) {
+									// Same ip, different port (Shouldn't happen!)
+									return mode * CmpAny( server1->GetPort(), server2->GetPort() );
+								}
+							}
+						}
 					}
+					return (mode * tester);					
 				}
 			}
 		// Sort by description
