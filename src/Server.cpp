@@ -152,9 +152,9 @@ void CServer::Init() {
 	users = 0;
 	preferences = 0;
 	ping = 0;
-	description = wxEmptyString;
-	listname = wxEmptyString;
-	dynip = wxEmptyString;
+	description.Clear();
+	listname.Clear();
+	dynip.Clear();
 	failedcount = 0; 
 	lastpinged = 0;
 	staticservermember=0;
@@ -168,7 +168,7 @@ void CServer::Init() {
 	m_uLowIDUsers = 0;
 	m_uDescReqChallenge = 0;
 	lastdescpingedcout = 0;
-	m_auxPorts = wxEmptyString;
+	m_auxPorts.Clear();
 }	
 
 bool CServer::AddTagFromFile(CFileDataIO* servermet){

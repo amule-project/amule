@@ -856,7 +856,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			case OP_MESSAGE: {		// 0.43b
 				AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_MESSAGE") );
 				
-				AddLogLineM( true, _("New message from '") + m_client->GetUserName() + _("' (IP:") + m_client->GetFullIP() + wxT(")"));
+				AddLogLineM( true, wxT("New message from '") + m_client->GetUserName() + wxT("' (IP:") + m_client->GetFullIP() + wxT(")"));
 				theApp.statistics->AddDownDataOverheadOther(size);
 				
 				CSafeMemFile message_file((BYTE*)packet,size);
@@ -865,7 +865,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				wxString message = message_file.ReadString(m_client->GetUnicodeSupport());
 				if (IsMessageFiltered(message, m_client)) {
 					if (!m_client->m_bMsgFiltered) {
-						AddLogLineM( true, _("Message filtered from '") + m_client->GetUserName() + _("' (IP:") + m_client->GetFullIP() + wxT(")"));
+						AddLogLineM( true, wxT("Message filtered from '") + m_client->GetUserName() + wxT("' (IP:") + m_client->GetFullIP() + wxT(")"));
 					}
 					m_client->m_bMsgFiltered=true;
 				} else {
@@ -1005,7 +1005,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 											
 				wxString strReqDir = data.ReadString(m_client->GetUnicodeSupport());
 				if (thePrefs::CanSeeShares()==vsfaEverybody || (thePrefs::CanSeeShares()==vsfaFriends && m_client->IsFriend())) {
-					AddLogLineM( true, _("User ") + m_client->GetUserName() + wxString::Format(_(" (%u) requested your sharedfiles-list for directory "),m_client->GetUserID()) + strReqDir + wxT(" -> ") + _("accepted"));
+					AddLogLineM( true, wxT("User ") + m_client->GetUserName() + wxString::Format( wxT(" (%u) requested your sharedfiles-list for directory "),m_client->GetUserID()) + strReqDir + wxT(" -> ") + wxT("accepted"));
 					wxASSERT( data.GetPosition() == data.GetLength() );
 					CTypedPtrList<CPtrList, CKnownFile*> list;
 					
@@ -1036,7 +1036,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					theApp.statistics->AddUpDataOverheadOther(replypacket->GetPacketSize());
 					SendPacket(replypacket, true, true);
 				} else {
-					AddLogLineM( true, _("User ") + m_client->GetUserName() + wxString::Format(_(" (%u) requested your sharedfiles-list for directory "),m_client->GetUserID()) + strReqDir + wxT(" -> ") + _("denied"));
+					AddLogLineM( true, wxT("User ") + m_client->GetUserName() + wxString::Format( wxT(" (%u) requested your sharedfiles-list for directory "),m_client->GetUserID()) + strReqDir + wxT(" -> ") + wxT("denied"));
 					
 					CPacket* replypacket = new CPacket(OP_ASKSHAREDDENIEDANS, 0);
 					theApp.statistics->AddUpDataOverheadOther(replypacket->GetPacketSize());
@@ -1837,14 +1837,14 @@ bool CClientReqSocket::PacketReceived(CPacket* packet)
 	return bResult;
 }
 
-bool CClientReqSocket::IsMessageFiltered(wxString Message, CUpDownClient* client) {
+bool CClientReqSocket::IsMessageFiltered(const wxString& Message, CUpDownClient* client) {
 	
 	bool filtered = false;
 	// If we're chatting to the guy, we don't want to filter!
 	if (client->GetChatState() != MS_CHATTING) {
 		if (thePrefs::MsgOnlyFriends() && !client->IsFriend()) {
 			filtered = true;
-		} else if (thePrefs::MsgOnlySecure() && client->GetUserName()==wxEmptyString) {
+		} else if (thePrefs::MsgOnlySecure() && client->GetUserName().IsEmpty() ) {
 			filtered = true;
 		} else if (thePrefs::MustFilterMessages()) {
 			if (thePrefs::MessageFilter().IsSameAs(wxT("*"))){  
@@ -1853,8 +1853,8 @@ bool CClientReqSocket::IsMessageFiltered(wxString Message, CUpDownClient* client
 			} else {
 				wxStringTokenizer tokenizer( thePrefs::MessageFilter(), wxT(",") );
 				while (tokenizer.HasMoreTokens() && !filtered) {
-					if ( Message.MakeLower().Trim(false).Trim(true).Contains(
-							tokenizer.GetNextToken().MakeLower().Trim(false).Trim(true))) {
+					if ( Message.Lower().Trim(false).Trim(true).Contains(
+							tokenizer.GetNextToken().Lower().Trim(false).Trim(true))) {
 						filtered = true;
 					}
 				}
@@ -1907,7 +1907,7 @@ CSocketServerProxy(addr, wxSOCKET_NOWAIT|wxSOCKET_REUSEADDR, ProxyData)
 	if (Ok()) {
 #ifdef AMULE_DAEMON
 		if ( Create() != wxTHREAD_NO_ERROR ) {
-			AddLogLineM( true, wxT("CListenSocket: can not create my thread") );
+			AddLogLineM( true, _("CListenSocket: can not create my thread") );
 		}
 		Notify(false);
 #else
@@ -1917,7 +1917,7 @@ CSocketServerProxy(addr, wxSOCKET_NOWAIT|wxSOCKET_REUSEADDR, ProxyData)
 #endif	
 		printf("ListenSocket: Ok.\n");
 	} else {
-		AddLogLineM( true, wxT("Error: Could not listen to TCP port.") );
+		AddLogLineM( true, _("Error: Could not listen to TCP port.") );
 		printf("ListenSocket: Could not listen to TCP port.");
 	}
 }
@@ -1928,7 +1928,7 @@ CListenSocket::~CListenSocket()
 	Discard();
 	Close();
 #ifdef AMULE_DAEMON
-	AddLogLineM( true, wxT("CListenSocket: destroy") );
+	AddLogLineM( true, _("CListenSocket: destroy") );
 	global_sock_thread.Delete();
 	global_sock_thread.Wait();
 #endif

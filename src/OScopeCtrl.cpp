@@ -267,13 +267,6 @@ void COScopeCtrl::RecreateGrid()
 	wxCoord sizX,sizY;
 	dcGrid->GetTextExtent(strTemp,&sizX,&sizY);
 	dcGrid->DrawText(strTemp,rectPlot.left-4-sizX,rectPlot.top-7);
-//	dcGrid->SetPen(wxNullPen);
-/*
-	// y/2
-	strTemp = wxString::Format("%.*lf", nYDecimals, pdsTrends[ 0 ].fUpperLimit / 2) ;
-	dcGrid->GetTextExtent(strTemp,&sizX,&sizY);
-	dcGrid->DrawText(strTemp,rectPlot.left-2-sizX,rectPlot.bottom+((rectPlot.top-rectPlot.bottom)/2)-7);
-*/
 	// y min
 	if( strYMin.IsEmpty() ) {
 		strTemp = wxString::Format(wxT("%.*lf"), nYDecimals, pdsTrends[ 0 ].fLowerLimit) ;
@@ -538,10 +531,6 @@ void COScopeCtrl::Reset(double sNewPeriod)
 void COScopeCtrl::Stop()
 { 
 	bStopped = true;
-	#if 0
-	if (nDelayedPoints>0)
-		bRecreateGraph = true;
-	#endif
 	bRecreateGraph = false;
 	RecreateGrid();
 } // Stop

@@ -81,10 +81,10 @@ enum EUtf8Str
 
 static wxCSConv aMuleConv(wxT("iso8859-1"));
 
-inline Unicode2CharBuf unicode2char(wxString    x) { return (const char *)aMuleConv.cWX2MB(x); }
+inline Unicode2CharBuf unicode2char(const wxString& x) { return (const char *)aMuleConv.cWX2MB(x); }
 inline Char2UnicodeBuf char2unicode(const char *x) { return               aMuleConv.cMB2WX(x); }
 
-inline Unicode2CharBuf unicode2UTF8(wxString    x) { return (const char *)wxConvUTF8.cWX2MB(x); }
+inline Unicode2CharBuf unicode2UTF8(const wxString& x) { return (const char *)wxConvUTF8.cWX2MB(x); }
 inline Char2UnicodeBuf UTF82unicode(const char *x) { return               wxConvUTF8.cMB2WX(x); }
 
 inline const wxCharBuffer char2UTF8(const char *x) { return unicode2UTF8(char2unicode(x)); }
@@ -188,6 +188,6 @@ wxString TruncateFilename(const wxString& filename, size_t length, bool isFilePa
 wxString CleanupFilename(const wxString& filename, bool keepSpaces = true);
 
 // Makes sIn suitable for inclusion in an URL, by escaping all chars that could cause trouble.
-wxString URLEncode(wxString sIn);
+wxString URLEncode(const wxString& sIn);
 	
 #endif // STRING_FUNCTIONS_H

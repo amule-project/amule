@@ -139,11 +139,11 @@ int CaMuleExternalConnector::GetIDFromString(wxString &buffer, CmdId commands[])
 	wxStringTokenizer tokens(buffer);
 	wxString cmd = tokens.GetNextToken().MakeLower();
 
-	if (cmd == wxEmptyString) {
+	if ( cmd.IsEmpty() ) {
 		return 0;
 	}
 	
-	m_cmdargs = wxEmptyString;
+	m_cmdargs.Clear();
 	while ( tokens.HasMoreTokens() ) {
 		m_cmdargs += tokens.GetNextToken().MakeLower() + wxT(" ");
 	}
@@ -152,7 +152,7 @@ int CaMuleExternalConnector::GetIDFromString(wxString &buffer, CmdId commands[])
 
 	register int i = 0;
 	bool found = false;
-	while ( !found && (commands[i].cmd != wxEmptyString) ) {
+	while ( !found && ( commands[i].cmd.IsEmpty() == false ) ) {
 		found = commands[i].cmd == cmd;
 		if (!found) {
 			i++;
@@ -194,7 +194,7 @@ void CaMuleExternalConnector::GetCommand(const wxString &prompt, char* buffer, s
 			wxGetTextFromUser(prompt, _T("Enter Command")));
 		const char *text = (const char *)buf;
 #else
-#if defined(HAVE_LIBREADLINE)
+#ifdef HAVE_LIBREADLINE
 		if (m_InputLine) {
 			free(m_InputLine);
 			m_InputLine = (char *)NULL;

@@ -143,7 +143,7 @@ public:
 	void	SetLastDescPingedCount(bool reset);
 	bool	GetUnicodeSupport() const				{return GetTCPFlags() & SRV_TCPFLG_UNICODE;}
 	const wxString& GetAuxPortsList() const	{return m_auxPorts;}
-	void	SetAuxPortsList(wxString val)	{m_auxPorts = val;}
+	void	SetAuxPortsList(const wxString& val)	{m_auxPorts = val;}
 	
 private:
 	uint32		challenge;

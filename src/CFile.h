@@ -164,9 +164,9 @@ private:
 	wxString fFilePath;
 };
 
-bool UTF8_MoveFile(wxString& from, wxString& to); // Move file with safe UTF8 name.
-bool UTF8_CopyFile(wxString& from, wxString& to); // Copy file with safe UTF8 name.
-time_t GetLastModificationTime(wxString& file);
+bool UTF8_MoveFile(const wxString& from, const wxString& to); // Move file with safe UTF8 name.
+bool UTF8_CopyFile(const wxString& from, const wxString& to); // Copy file with safe UTF8 name.
+time_t GetLastModificationTime(const wxString& file);
 
 // Dir iterator: needed because wxWidget's wxFindNextFile and 
 // wxFindFirstFile are bugged like hell.
@@ -178,14 +178,14 @@ class CDirIterator {
 public:
 	enum FileType { File, Dir, Any}; 
 
-	CDirIterator(const wxString dir);
+	CDirIterator(const wxString& dir);
 	~CDirIterator();
 
 	bool IsValid() const {
 		return (DirPtr != NULL);
 	}
 
-	wxString FindFirstFile(FileType search_type, wxString search_mask = wxEmptyString);
+	wxString FindFirstFile(FileType search_type, const wxString& search_mask = wxEmptyString);
 	wxString FindNextFile();
 
 private:

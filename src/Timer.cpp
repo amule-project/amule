@@ -55,7 +55,7 @@ void CTimer::SetOwner(wxEvtHandler *owner, int id)
 
 bool CTimer::IsRunning() const
 {
-	return thread ? true : false;
+	return thread;
 }
 
 bool CTimer::Start( int millisecs, bool oneShot )

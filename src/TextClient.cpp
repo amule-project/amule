@@ -28,7 +28,7 @@
 	#include "config.h"		// Needed for VERSION
 #endif
 
-#if !defined( __WXMSW__ )
+#ifndef __WXMSW__
 	#include <unistd.h>
 #endif
 

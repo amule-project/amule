@@ -121,7 +121,7 @@ void *CGlobalSearchThread::Entry()
 	return NULL;
 }
 
-CSearchFile::CSearchFile(const CSafeMemFile& in_data, bool bOptUTF8, long nSearchID, uint32 WXUNUSED(nServerIP), uint16 WXUNUSED(nServerPort), wxString pszDirectory)
+CSearchFile::CSearchFile(const CSafeMemFile& in_data, bool bOptUTF8, long nSearchID, uint32 WXUNUSED(nServerIP), uint16 WXUNUSED(nServerPort), const wxString& pszDirectory)
 {
 	m_nSearchID = nSearchID;
 	
@@ -269,8 +269,8 @@ void CSearchList::RemoveResults(long nSearchID)
 }
 
 
-bool CSearchList::StartNewSearch(long nSearchID, bool global_search, wxString &searchString, wxString& typeText, 
-											wxString &extension, uint32 min, uint32 max, uint32 availability)
+bool CSearchList::StartNewSearch(long nSearchID, bool global_search, const wxString& searchString, const wxString& typeText, 
+											const wxString& extension, uint32 min, uint32 max, uint32 availability)
 {
 	
 	if(!theApp.serverconnect->IsConnected()) {
@@ -340,7 +340,7 @@ void CSearchList::LocalSearchEnd()
 
 
 void CSearchList::ProcessSearchanswer(const char *in_packet, uint32 size, 
-	CUpDownClient *Sender, bool *pbMoreResultsAvailable, wxString& pszDirectory)
+	CUpDownClient *Sender, bool *pbMoreResultsAvailable, const wxString& pszDirectory)
 {
 	wxASSERT( Sender != NULL );
 	
@@ -516,8 +516,8 @@ void CSearchList::StopGlobalSearch()
 }
 
 
-CPacket* CSearchList::CreateSearchPacket(wxString &searchString, wxString& typeText,
-				wxString &extension, uint32 min, uint32 max, uint32 avaibility)
+CPacket* CSearchList::CreateSearchPacket(const wxString& searchString, const wxString& typeText,
+				const wxString &extension, uint32 min, uint32 max, uint32 avaibility)
 {
 	// Count the number of used parameters
 	int parametercount = 0;

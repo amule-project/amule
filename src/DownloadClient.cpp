@@ -825,7 +825,7 @@ int CUpDownClient::unzip(Pending_Block_Struct *block, BYTE *zipped, uint32 lenZi
 		}
 		// Copy any data that was successfully unzipped to new array
 		BYTE *temp = new BYTE[newLength];
-		assert( zS->total_out - block->totalUnzipped <= newLength );
+		wxASSERT( zS->total_out - block->totalUnzipped <= newLength );
 		memcpy(temp, (*unzipped), (zS->total_out - block->totalUnzipped));
 		delete [] (*unzipped);
 		(*unzipped) = temp;

@@ -181,7 +181,7 @@ void CEMSocket::OnReceive(int nErrorCode){
 
 	// CPU load improvement
 	// Detect if the socket's buffer is empty (or the size did match...)
-	pendingOnReceive = (ret == readMax) ? true : false;
+	pendingOnReceive = (ret == readMax);
 
 	// Copy back the partial header into the global read buffer for processing
 	if(pendingHeaderSize > 0) {
@@ -382,7 +382,7 @@ int CEMSocket::Send(char* lpBuf,int nBufLen,int WXUNUSED(nFlags))
 	printf("Send\n");
 	DumpMem(lpBuf,nBufLen);
 	#endif
-	assert (sendbuffer == NULL || lpBuf == NULL );
+	wxASSERT(sendbuffer == NULL || lpBuf == NULL );
 	if (lpBuf) {
 		sendbuffer = lpBuf;
 		sendblen = nBufLen;
@@ -408,7 +408,7 @@ int CEMSocket::Send(char* lpBuf,int nBufLen,int WXUNUSED(nFlags))
 			}
 		}
 		sent += result;
-		assert (sent <= sendblen);
+		wxASSERT(sent <= sendblen);
 		if (sent == sendblen) {
 			delete[] sendbuffer;
 			sendbuffer = 0;

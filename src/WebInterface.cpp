@@ -32,7 +32,7 @@
 	#include "config.h"	// For VERSION
 #endif
 
-#if !defined( __WXMSW__ )
+#ifndef __WXMSW__
 	#include <unistd.h>
 #endif
 

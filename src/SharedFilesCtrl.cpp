@@ -543,7 +543,7 @@ bool CSharedFilesCtrl::AltSortAllowed( int column )
 }
 
 
-void CSharedFilesCtrl::DrawAvailabilityBar(CKnownFile* file, wxDC* dc, wxRect rect ) const
+void CSharedFilesCtrl::DrawAvailabilityBar(CKnownFile* file, wxDC* dc, const wxRect& rect ) const
 {
 	// Reference to the availability list
 	const ArrayOfUInts16& list = ( file->IsPartFile() ? ((CPartFile*)file)->m_SrcpartFrequency : file->m_AvailPartFrequency );

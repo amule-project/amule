@@ -46,7 +46,7 @@ public:
 	CServerWnd(wxWindow* pParent, int splitter_pos);   // standard constructor
 	virtual ~CServerWnd();
 
-	void UpdateServerMetFromURL(wxString strURL);
+	void UpdateServerMetFromURL(const wxString& strURL);
 	void UpdateMyInfo();
 
 	CServerListCtrl* serverlistctrl;

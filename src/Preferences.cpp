@@ -357,7 +357,7 @@ public:
 	/**
 	 * Constructor.
 	 */
-	Cfg_Str( const wxString& keyname, wxString& value, const wxString& defaultVal = wxT("") )
+	Cfg_Str( const wxString& keyname, wxString& value, const wxString& defaultVal = wxEmptyString )
 	 : Cfg_Tmpl<wxString>( keyname, value, defaultVal )
 	{}
 
@@ -390,7 +390,7 @@ public:
 class Cfg_Str_Encrypted : public Cfg_Str
 {
 public:
-	Cfg_Str_Encrypted( const wxString& keyname, wxString& value, const wxString& defaultVal = wxT("") )
+	Cfg_Str_Encrypted( const wxString& keyname, wxString& value, const wxString& defaultVal = wxEmptyString )
 	 : Cfg_Str( keyname, value, defaultVal )
 	{}
 
@@ -1018,20 +1018,6 @@ void CPreferences::BuildItemList( const wxString& appdir )
 		s_MiscList.push_back( MkCfg_Int( str, CStatisticsDlg::acrStat[i], CStatisticsDlg::acrStat[i] ) );
 	}
 #endif
-
-// These options are currently not used 
-#if 0
-	////// Notify
-	NewCfgItem(IDC_CB_TBN_USESOUND,	(new Cfg_Bool( wxT("/eMule/NotifierUseSound"), s_useSoundInNotifier, false )));
-	NewCfgItem(IDC_CB_TBN_ONLOG,	(new Cfg_Bool( wxT("/eMule/NotifyOnLog"), s_useLogNotifier, false )));
-	NewCfgItem(IDC_CB_TBN_ONCHAT,	(new Cfg_Bool( wxT("/eMule/NotifyOnChat"), s_useChatNotifier, false )));
-	NewCfgItem(IDC_CB_TBN_POP_ALWAYS,	(new Cfg_Bool( wxT("/eMule/NotifierPopEveryChatMessage"), s_notifierPopsEveryChatMsg, false )));
-	NewCfgItem(IDC_CB_TBN_ONDOWNLOAD,	(new Cfg_Bool( wxT("/eMule/NotifyOnDownload"), s_useDownloadNotifier, false )));
-	NewCfgItem(IDC_CB_TBN_ONNEWVERSION,	(new Cfg_Bool( wxT("/eMule/NotifierPopNewVersion"), s_notifierNewVersion, false )));
-	NewCfgItem(IDC_CB_TBN_IMPORTATNT,	(new Cfg_Bool( wxT("/eMule/NotifyOnImportantError"), s_notifierImportantError, false )));
-	NewCfgItem(IDC_SENDMAIL,		(new Cfg_Bool( wxT("/eMule/NotifyByMail"), s_sendEmailNotifier, false )));
-	NewCfgItem(IDC_EDIT_TBN_WAVFILE,	(new Cfg_Str(  wxT("/eMule/NotifierSoundPath"), s_notifierSoundFilePath, wxEmptyString )));
-#endif
 }
 
 
@@ -1351,12 +1337,10 @@ void CPreferences::LoadPreferences()
 
 void CPreferences::LoadCats() {
 	// default cat ... Meow! =(^.^)=
-	Category_Struct* newcat=new Category_Struct;
-	newcat->title = wxEmptyString;
-	newcat->incomingpath = wxEmptyString;
-	newcat->comment = wxEmptyString;
-	newcat->prio=0;
-	newcat->color=0;
+	Category_Struct* newcat = new Category_Struct;
+	newcat->prio = 0;
+	newcat->color = 0;
+
 	AddCat( newcat );
 
 	wxConfigBase* cfg = wxConfigBase::Get();

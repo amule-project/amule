@@ -35,8 +35,8 @@
 class MD5Sum {
 public:
 	MD5Sum();
-	MD5Sum(wxString sSource);
-	wxString Calculate(wxString sSource);
+	MD5Sum(const wxString& sSource);
+	wxString Calculate(const wxString& sSource);
 	wxString GetHash();
 
 private:

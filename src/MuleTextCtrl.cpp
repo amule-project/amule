@@ -55,7 +55,7 @@ enum CMTC_Events
 
 
 BEGIN_EVENT_TABLE(CMuleTextCtrl, wxTextCtrl)
-#if !defined(__WXGTK20__)
+#ifndef __WXGTK20__
 	EVT_RIGHT_DOWN	(CMuleTextCtrl::OnRightDown)
 
 	EVT_MENU    	(CMTCE_Paste,	CMuleTextCtrl::OnPaste)

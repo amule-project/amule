@@ -65,14 +65,9 @@ public:
 protected:
 	static COLORREF	acrStat[13];
 	
- private:
-
     COScopeCtrl* pscopeDL,*pscopeUL,*pscopeConn;
     wxTreeCtrl* stattree;
 
-	void SetStatsRanges(int min, int max);
-				
-protected:
 	DECLARE_EVENT_TABLE()
 
 };

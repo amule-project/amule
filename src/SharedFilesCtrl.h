@@ -117,7 +117,7 @@ private:
 	 * is determined using the currently known sources, while availability for 
 	 * Known-files is determined using the sources requesting that file.
 	 */
-	void	DrawAvailabilityBar( CKnownFile* file, wxDC* dc, wxRect rect ) const;
+	void	DrawAvailabilityBar( CKnownFile* file, wxDC* dc, const wxRect& rect ) const;
 	
 	/**
 	 * Overloaded function needed to do custom drawing of the items.

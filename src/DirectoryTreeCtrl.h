@@ -58,36 +58,36 @@ private:
 	wxImageList m_image; 
 	wxTreeItemId hRoot;
 	// add a new item
-	void AddChildItem(wxTreeItemId hBranch, wxString const& strText);
+	void AddChildItem(wxTreeItemId hBranch, const wxString& strText);
 	// add subdirectory items
-	void AddSubdirectories(wxTreeItemId hBranch, wxString folder);
+	void AddSubdirectories(wxTreeItemId hBranch, const wxString& folder);
 	// returns true if folder has at least one subdirectory
-	bool HasSubdirectories(wxString folder);
+	bool HasSubdirectories(const wxString& folder);
 	// return the full path of an item (like C:\abc\somewhere\inheaven\)
 	wxString GetFullPath(wxTreeItemId hItem);
 	// check status of an item has changed
 	void CheckChanged(wxTreeItemId hItem, bool bChecked);
 	// returns true if a subdirectory of strDir is shared
-	bool HasSharedSubdirectory(wxString const& strDir);
+	bool HasSharedSubdirectory(const wxString& strDir);
 	// when sharing a directory, make all parent directories red
 	void UpdateParentItems(wxTreeItemId hChild, bool add);
 
 	// share list access
-	bool IsShared(wxString const& strDir);
-	void AddShare(wxString strDir);
-	void DelShare(wxString strDir);
+	bool IsShared(const wxString& strDir);
+	void AddShare(const wxString& strDir);
+	void DelShare(const wxString& strDir);
 	void MarkChildren(wxTreeItemId hChild,bool mark);
 	
-	wxArrayString m_lstShared;
-	  //CTitleMenu  m_SharedMenu;
-	wxString m_strLastRightClicked;
-	bool m_bSelectSubDirs;
-
 protected:
 	void OnTvnItemexpanding(wxTreeEvent& evt);
 	void OnRButtonDown(wxTreeEvent& evt);
 	void OnItemActivated(wxTreeEvent& evt);
 
+	wxArrayString m_lstShared;
+	wxString m_strLastRightClicked;
+	bool m_bSelectSubDirs;
+	
+	
 	DECLARE_EVENT_TABLE()
 };
 

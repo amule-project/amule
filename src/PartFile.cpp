@@ -2237,7 +2237,7 @@ void CPartFile::CompleteFileEnded(int completing_result, wxString* newname) {
 		AddLogLineM(true, _("WARNING: Failed to delete ") + m_partmetfilename + wxT(".seeds"));
 	}	
 
-	AddLogLineM(true, wxT("Finished downloading ") + GetFileName() +wxT(" :-)"));
+	AddLogLineM(true, _("Finished downloading ") + GetFileName() +wxT(" :-)"));
 
 	Notify_ShowNotifier(wxString(_("Downloaded:"))+wxT("\n")+GetFileName(), TBN_DLOAD, 0);
 }

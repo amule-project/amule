@@ -36,7 +36,7 @@
 // Implementation of the non-inlines
 static byte base16Chars[17] = "0123456789ABCDEF";
 
-wxString URLEncode(wxString sIn)
+wxString URLEncode(const wxString& sIn)
 {
 	wxString sOut;
 	unsigned char curChar;
