@@ -504,8 +504,10 @@ void CSearchDlg::UpdateCatChoice()
 {
 	wxChoice* c_cat = CastChild( ID_AUTOCATASSIGN, wxChoice );
 	c_cat->Clear();
+	
+	c_cat->Append(_("Main"));
 
-	for ( unsigned i = 0; i < theApp.glob_prefs->GetCatCount(); i++ ) {
+	for ( unsigned i = 1; i < theApp.glob_prefs->GetCatCount(); i++ ) {
 		c_cat->Append( theApp.glob_prefs->GetCategory( i )->title );
 	}
 	
