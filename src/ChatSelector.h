@@ -38,8 +38,9 @@ public:
 	CChatSession(wxWindow *parent, wxWindowID id = -1, const wxString& value = wxT(""), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = 0, const wxValidator& validator = wxDefaultValidator, const wxString& name = wxTextCtrlNameStr );
 	~CChatSession();
 
-	CUpDownClient*	client;
-	wxString		messagepending;
+	CUpDownClient*	m_client;
+	wxString		m_pending;
+	bool			m_active;
 	
 	void AddText( const wxString& text, const wxTextAttr& style );
 };
