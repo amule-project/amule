@@ -7,7 +7,7 @@
 ///
 /// Copyright (C) 2004 by ThePolish
 ///
-/// Pixmaps from http://www.everaldo.com and http://www.amule.org
+/// Pixmaps from http://jimmac.musichall.cz/ikony.php3 | http://www.everaldo.com | http://www.amule.org
 ///
 /// This program is free software; you can redistribute it and/or modify
 /// it under the terms of the GNU General Public License as published by
@@ -371,7 +371,7 @@ AlcFrame::OnBarAbout (wxCommandEvent & event)
   wxMessageBox (_
                 ("aLinkCreator, the aMule ed2k link creator\n\n"
                  "(c) 2004 ThePolish <thepolish@vipmail.ru>\n\n"
-                 "Pixmaps from http://www.everaldo.com and http://www.amule.org\n\n"
+                 "Pixmaps from http://jimmac.musichall.cz/ikony.php3 | http://www.everaldo.com | http://www.amule.org\n\n"
                  "Distributed under GPL"),
                 _("About aLinkCreator"), wxOK | wxCENTRE | wxICON_INFORMATION);
 }
