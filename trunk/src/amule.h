@@ -150,13 +150,11 @@ class wxMuleInternalEvent : public wxEvent {
 class CamuleApp : public AMULE_APP_BASE
 {
 public:
-			CamuleApp() {};
-	virtual		~CamuleApp() {};
 #ifdef AMULE_DAEMON
 	virtual int	OnRun();
 #endif
 
-	virtual bool	OnInit();
+	bool	OnInit();
 	int		OnExit();
 	void		OnFatalException();
 
@@ -316,7 +314,6 @@ DECLARE_APP(CamuleApp)
 
 #ifdef AMULE_DAEMON
 #define CALL_APP_DATA_LOCK wxMutexLocker locker(theApp.data_mutex)
-//#define CALL_APP_DATA_LOCK
 
 #else
 #define CALL_APP_DATA_LOCK
