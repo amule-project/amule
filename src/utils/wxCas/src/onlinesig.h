@@ -47,7 +47,7 @@ class OnLineSig
   private:
     double m_maxDL;
 
-    wxString m_isRunning;
+    wxInt32  m_amuleState;
     wxString m_serverName;
     wxString m_serverIP;
     wxString m_serverPort;
@@ -86,7 +86,7 @@ class OnLineSig
     void Refresh ();
 
     /// Return TRUE if aMule is running
-    bool IsRunning () const;
+    wxInt32 GetAmuleState () const;
 
     /// Get server name
     wxString GetServerName () const;

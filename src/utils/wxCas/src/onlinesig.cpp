@@ -43,13 +43,12 @@
 
 #include <wx/txtstrm.h>
 #include <wx/wfstream.h>
-#include <wx/config.h>
 
 // Constructors
 OnLineSig::OnLineSig ()
 {
 
-  m_isRunning = wxT("0");
+  m_amuleState = 0;
   m_serverName = _("Unknown");
   m_serverIP = wxT("0.0.0.0");
   m_serverPort = wxT("00");
@@ -69,10 +68,7 @@ OnLineSig::OnLineSig ()
   m_maxDL = 0.0;
 
   m_amulesig=
-    wxFileName (wxConfigBase::Get()->
-                Read (WxCasCte::AMULESIG_PATH_KEY,
-                      WxCasCte::DEFAULT_AMULESIG_PATH),
-                WxCasCte::AMULESIG_FILENAME);
+    wxFileName ();
 }
 
 // Constructor 2
@@ -102,7 +98,7 @@ OnLineSig::Refresh ()
   wxTextInputStream text (input);
   text.SetStringSeparators (wxT("\n"));
 
-  text >> m_isRunning;
+  text >> m_amuleState;
   text >> m_serverName;
   text >> m_serverIP;
   text >> m_serverPort;
@@ -134,15 +130,15 @@ OnLineSig::Refresh ()
 #endif
 }
 
-bool OnLineSig::IsRunning () const
+wxInt32 OnLineSig::GetAmuleState() const
   {
-    if (m_isRunning == wxT("1"))
+    if (m_amuleState >= 0 &&  m_amuleState <= 2)
       {
-        return TRUE;
+        return (m_amuleState);
       }
     else
       {
-        return FALSE;
+        return (-1);
       }
   }
 
