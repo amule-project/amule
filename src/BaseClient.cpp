@@ -1779,7 +1779,7 @@ void CUpDownClient::ProcessSignaturePacket(uchar* pachPacket, uint32 nSize){
 		//AddDebugLogLine(false, "'%s' has passed the secure identification, V2 State: %i", GetUserName(), byChaIPKind);
 	}
 	else {
-		theApp.amuledlg->AddDebugLogLine(false, wxT("'%s' has failed the secure identification, V2 State: %i"), GetUserName(), byChaIPKind);
+		theApp.amuledlg->AddDebugLogLine(false,  GetUserName() + _(" has failed the secure identification, V2 State: %i"), byChaIPKind);
 	}
 	m_dwLastSignatureIP = GetIP(); 
 }
