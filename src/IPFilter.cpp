@@ -500,7 +500,7 @@ bool CIPFilter::IsFiltered(uint32 IPTest)
 
 		if ( it != m_iplist.end() ) {
 			if ( it->AccessLevel < thePrefs::GetIPFilterLevel() ) {
-				AddDebugLogLineM( true, wxT("Filtered IP: ") + Uint32toStringIP( IPTest ) + wxT("(") + it->Description + wxT(")") );
+				AddDebugLogLineM( true, wxT("Filtered IP: ") + Uint32toStringIP( IPTest ) + wxT(" (") + it->Description + wxT(")") );
 				theApp.statistics->AddFilteredClient();
 				
 				return true;
