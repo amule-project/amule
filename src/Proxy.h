@@ -41,10 +41,10 @@ const unsigned char SOCKS4_VERSION = 0x04;
 const unsigned char SOCKS4_CMD_CONNECT	= 0x01;
 const unsigned char SOCKS4_CMD_BIND	= 0x02;
 
-const unsigned char SOCKS4_REPLY_SUCCEED		= 90;
-const unsigned char SOCKS4_REPLY_FAILED			= 91;
-const unsigned char SOCKS4_REPLY_FAILED_NO_IDENTD	= 92;
-const unsigned char SOCKS4_REPLY_FAILED_NO_USERID	= 93;
+const unsigned char SOCKS4_REPLY_GRANTED			= 90;
+const unsigned char SOCKS4_REPLY_FAILED				= 91;
+const unsigned char SOCKS4_REPLY_FAILED_NO_IDENTD		= 92;
+const unsigned char SOCKS4_REPLY_FAILED_DIFFERENT_USERIDS	= 93;
 
 /*
  * SOCKS5 protocol implementation according to:
@@ -122,7 +122,7 @@ class wxSocketProxy
 public:
 	/* Constructor */
 	wxSocketProxy(const wxProxyData *ProxyData);
-	bool		Connect(wxIPaddress& address);
+	bool		Start(wxIPaddress& address, enum wxProxyCommand cmd);
 	wxIPaddress	&GetTargetAddress(void) { return *m_TargetAddress; }
 	unsigned char	GetLastReply(void) { return m_LastReply; }
 
@@ -177,34 +177,44 @@ private:
 
 /******************************************************************************/
 
-class wxSocketClientProxy : public wxSocketClient
+class wxSocketClientProxy
 {
 	/* Constructor */
 	wxSocketClientProxy(
 		wxSocketFlags flags = wxSOCKET_NONE,
 		const wxProxyData *ProxyData = NULL);
-
+		
+	/* Destructor */
+	~wxSocketClientProxy();
+	
 	/* Interface */
-	virtual bool Connect(wxIPaddress& address, bool wait);
+	bool Connect(wxIPaddress& address, bool wait, bool UseProxy = false);
 	
 private:
 	wxSocketProxy	m_SocketProxy;
+	bool 		m_UseProxy;
+	wxSocketClient	*m_SocketClient;
 };
 
 /******************************************************************************/
 
-class wxSocketServerProxy : public wxSocketServer
+class wxSocketServerProxy
 {
 	/* Constructor */
 	wxSocketServerProxy(
 		wxIPaddress& address,
 		wxSocketFlags flags = wxSOCKET_NONE,
 		const wxProxyData *ProxyData = NULL);
-	
+		
+	/* Destructor */
+	~wxSocketServerProxy();
+		
 	/* Interface */
 	
 private:
 	wxSocketProxy	m_SocketProxy;
+	bool 		m_UseProxy;
+	wxSocketServer	*m_SocketServer;
 };
 
 /******************************************************************************/
