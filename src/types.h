@@ -57,14 +57,11 @@ typedef uint8_t		BYTE;
 	typedef uint32_t*	UINT_PTR;
 	typedef uint32_t*	PUINT;
 
-	typedef long		LONG;
-	typedef unsigned LONG	ULONG;
-
-
 	typedef uint8_t		byte;
 	typedef uint32_t	DWORD;
-	typedef int32_t		LONG;
-	typedef uint64_t	ULONGLONG;
+	typedef long		LONG;
+	typedef unsigned long ULONG;
+	typedef unsigned long long	ULONGLONG;
 	typedef char*   	LPBYTE;
 	typedef int32_t		INT;
 	typedef uint16_t	WORD;
