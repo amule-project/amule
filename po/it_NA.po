@@ -27,12 +27,12 @@ msgstr "Mitt n'indiriz IP e na port bona!"
 
 #: src/AddFriend.cpp:76
 msgid "The specified userhash is not valid!"
-msgstr "O UserHash specificat nun è valid!"
+msgstr "O UserHash specificat nun e' valid!"
 
 #: src/amule.cpp:577
 #, c-format
 msgid "Port %d is not available. You will be LOWID"
-msgstr "A port %d nun è disponibl. Avrai nu bell LowID"
+msgstr "A port %d nun e' disponibl. Avrai nu bell LowID"
 
 #: src/amule.cpp:579
 #, c-format
@@ -44,11 +44,11 @@ msgid ""
 "Use netstat to determine when port becomes available\n"
 "and try starting amule again."
 msgstr ""
-"A port %d nun è disponibl!!\n"
+"A port %d nun e' disponibl!!\n"
 "\n"
 "Chest signific che avrai nu LowID.\n"
 "\n"
-"A usà netstat pe sapè quann a porta torn a ess disponibl\n"
+"A usa' netstat pe sape' quann a porta torn a ess disponibl\n"
 "e pruov riavvien aMule."
 
 #: src/amule.cpp:581 src/ServerSocket.cpp:198 src/ServerSocket.cpp:209
@@ -57,11 +57,11 @@ msgstr "Erroor"
 
 #: src/amule.cpp:750
 msgid "You need a HighID to create a valid sourcelink"
-msgstr "Hai bisogn e nu HighID pe creà nu sourcelink buon"
+msgstr "Hai bisogn e nu HighID pe crea' nu sourcelink buon"
 
 #: src/amule.cpp:851 src/amule.cpp:854
 msgid "Failed to save"
-msgstr "Nun pozz salvà"
+msgstr "Nun pozz salva'"
 
 #: src/amule.cpp:851
 msgid " OnlineSig File"
@@ -69,14 +69,14 @@ msgstr " File Firm Online"
 
 #: src/amule.cpp:1247
 msgid "Could not determine the command for running the browser."
-msgstr "Nun è possibl determinà o comand pe lancià o browser."
+msgstr "Nun e' possibl determina' o comand pe lancia' o browser."
 
 #: src/amule.cpp:1286
 msgid ""
 "Unable to launch browser. Please set correct browser executable path in "
 "Preferences."
 msgstr ""
-"Impossibl lancià o browser. Sett no corrett path e esecuzion int  e "
+"Impossibl lancia' o browser. Sett no corrett path e esecuzion int  e "
 "Preferenz."
 
 #: src/amule.cpp:1299
@@ -85,20 +85,20 @@ msgid ""
 " --- This is the first time you run aMule %s ---\n"
 "\n"
 msgstr ""
-" --- Chest è a primma vot che stai eseguenn aMule %s ---\n"
+" --- Chest e' a primma vot che stai eseguenn aMule %s ---\n"
 "\n"
 
 #: src/amule.cpp:1303
 msgid "This version is a testing version, updated daily, and \n"
-msgstr "Chesta version è inda a fase e test, aggiornat quasi semp, e \n"
+msgstr "Chesta version e' inda a fase e test, aggiornat quasi semp, e \n"
 
 #: src/amule.cpp:1304
 msgid "we give no warranty it won't break anything, burn your house,\n"
-msgstr "nun putimm garantì a vuj che nun dà problem, nun brucerà a cas vostr,\n"
+msgstr "nun putimm garanti' a vuj che nun da' problem, nun brucera' a cas vostr,\n"
 
 #: src/amule.cpp:1305
 msgid "or kill your dog. But it *should* be safe to use anyway. \n"
-msgstr "o nun accir o can vuostr. Comunque *aessì* buon sicur. \n"
+msgstr "o nun accir o can vuostr. Comunque *aessi'* buon sicur. \n"
 
 #: src/amule.cpp:1307
 msgid "This version has new SecureIdent support, so your \n"
@@ -110,11 +110,11 @@ msgstr "i credit tuoj saran pers o primm avvij. \n"
 
 #: src/amule.cpp:1309
 msgid "There is no way to fix that, and eMule did the same.\n"
-msgstr "Nun c'è sta nat mod pe agì e pur eMule facia a stessa cos.\n"
+msgstr "Nun c'e' sta nat mod pe agi' e pur eMule facia a stessa cos.\n"
 
 #: src/amule.cpp:1310
 msgid "But your hash will be safe against stealers now, and your\n"
-msgstr "Mo però o tuoj hash sarà a ripar da furt, e i tuoj file\n"
+msgstr "Mo pero' o tuoj hash sara' a ripar da furt, e i tuoj file\n"
 
 #: src/amule.cpp:1311
 msgid "cryptkey.dat, clients.met and preferences.dat are eMule compatible now.\n"
@@ -122,7 +122,7 @@ msgstr "cryptkey.dat, clients.met e preferences.dat song compatibl con eMule.\n"
 
 #: src/amule.cpp:1312
 msgid "Just take them from your eMule config dir and put then on ~/.aMule.\n"
-msgstr "È sufficient che e cuopj ra directory e configurazion e eMule int ~/.aMule.\n"
+msgstr "e' sufficient che e cuopj ra directory e configurazion e eMule int ~/.aMule.\n"
 
 #: src/amule.cpp:1314
 msgid "This rc2 version fixes most of the rc1 version bugs and adds new features.\n"
@@ -140,7 +140,7 @@ msgstr ""
 
 #: src/amule.cpp:1318
 msgid "You locale has been changed to System Default due to version change. Sorry."
-msgstr "A lengua è stat impostat a Default e Sistem pe colp ro cambiament e version."
+msgstr "A lengua e' stat impostat a Default e Sistem pe colp ro cambiament e version."
 
 #: src/amule.cpp:1319
 msgid "Feel free to report any bugs to forum.amule.org"
@@ -229,11 +229,11 @@ msgstr "Sta Conness"
 
 #: src/amuleDlg.cpp:775
 msgid "Do you really want to exit aMule?"
-msgstr "Verament vuò uscì ra aMule?"
+msgstr "Verament vuo' usci' ra aMule?"
 
 #: src/amuleDlg.cpp:775
 msgid "Exit confirmation"
-msgstr "Chier a conferm prim e uscì"
+msgstr "Chier a conferm prim e usci'"
 
 #: src/amuleDlg.cpp:905 src/SearchDlg.cpp:322
 msgid "You are not connected to a server!"
@@ -243,7 +243,7 @@ msgstr "Nun si conness ra nisciun server!"
 #: src/PartFile.cpp:230 src/WebServer.cpp:1056
 #, c-format
 msgid "This ed2k link is invalid (%s)"
-msgstr "Chist indiriz ed2k nun è valid (%s)"
+msgstr "Chist indiriz ed2k nun e' valid (%s)"
 
 #: src/amuleDlg.cpp:943 src/DownloadQueue.cpp:1055 src/PartFile.cpp:209
 #: src/PartFile.cpp:231
@@ -269,7 +269,7 @@ msgstr "Spiecazion po file '%s' ricevut: %s"
 #: src/BaseClient.cpp:1102
 #, c-format
 msgid "Unable to retrieve shared files from '%s'"
-msgstr "Impossibl verè i file condivisi ra '%s'"
+msgstr "Impossibl vere' i file condivisi ra '%s'"
 
 #: src/BaseClient.cpp:1360 src/ClientDetailDialog.cpp:86
 #: src/ClientDetailDialog.cpp:96 src/ClientDetailDialog.cpp:120
@@ -326,12 +326,12 @@ msgstr "eMule"
 #: src/BaseClient.cpp:1555
 #, c-format
 msgid "Requesting shared files from '%s'"
-msgstr "Requésta re file condivis ra '%s' in cors"
+msgstr "Reque'sta re file condivis ra '%s' in cors"
 
 #: src/BaseClient.cpp:1559
 #, c-format
 msgid "Requesting shared files from user %s (%u) is already in progress"
-msgstr "A requésta re file condivis dall'utent %s (%u) già  è in cors"
+msgstr "A reque'sta re file condivis dall'utent %s (%u) gia'  e' in cors"
 
 #: src/BaseClient.cpp:1592
 #, c-format
@@ -340,23 +340,23 @@ msgstr "Nickname: %s\n"
 
 #: src/BaseClient.cpp:1594
 msgid "Requested:"
-msgstr "Requést:"
+msgstr "Reque'st:"
 
 #: src/BaseClient.cpp:1596
 #, c-format
 msgid "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
 msgstr ""
-"Statistic pa session corrent: %d e %d  requéste accettat, %s trasferiment "
+"Statistic pa session corrent: %d e %d  reque'ste accettat, %s trasferiment "
 "completat\n"
 
 #: src/BaseClient.cpp:1596
 #, c-format
 msgid "Filestats for all sessions: Accepted %d of %d requests"
-msgstr "Statistic e tutt e session: accettat %d di %d requèste"
+msgstr "Statistic e tutt e session: accettat %d di %d reque'ste"
 
 #: src/BaseClient.cpp:1602
 msgid "Requested unknown file"
-msgstr "Requèsto file sconosciut"
+msgstr "Reque'sto file sconosciut"
 
 #: src/BaseClient.cpp:1898
 msgid "Handshake not finished while processing packet."
@@ -365,7 +365,7 @@ msgstr "Handshake non completat durant l'elaborazion ro pacchett."
 #: src/CatDialog.cpp:57 src/DownloadListCtrl.cpp:318 src/muuli_wdr.cpp:252
 #: src/TransferWnd.cpp:153
 msgid "Category"
-msgstr "Categorì"
+msgstr "Categori'"
 
 #: src/CatDialog.cpp:111
 msgid "Choose a folder for incoming files"
@@ -374,12 +374,12 @@ msgstr "Scigl na directory pe e file scaricat"
 #: src/CFile.cpp:225
 #, c-format
 msgid "can't create file '%s'"
-msgstr "impossibl creà o file '%s'"
+msgstr "impossibl crea' o file '%s'"
 
 #: src/CFile.cpp:271
 #, c-format
 msgid "Can't open file '%s'"
-msgstr "Impossibl aprì o file '%s'"
+msgstr "Impossibl apri' o file '%s'"
 
 #: src/CFile.cpp:285
 #, c-format
@@ -399,7 +399,7 @@ msgstr "impossibl scriv int o descrittor ro file %d"
 #: src/CFile.cpp:351
 #, c-format
 msgid "can't flush file descriptor %d"
-msgstr "impossibl liberà o descrittor ro file %d"
+msgstr "impossibl libera' o descrittor ro file %d"
 
 #: src/CFile.cpp:372
 msgid "unknown seek origin"
@@ -408,21 +408,21 @@ msgstr "origin ricerc nun se sap"
 #: src/CFile.cpp:403
 #, c-format
 msgid "can't get seek position on file descriptor %d"
-msgstr "impossibl ottenè a posizion e ricerc int o descrittor ro file %d"
+msgstr "impossibl ottene' a posizion e ricerc int o descrittor ro file %d"
 
 #: src/CFile.cpp:435
 #, c-format
 msgid "can't find length of file on file descriptor %d"
-msgstr "impossibl trovà a lunghezz ro file int o descrittor %d"
+msgstr "impossibl trova' a lunghezz ro file int o descrittor %d"
 
 #: src/CFile.cpp:477
 #, c-format
 msgid "can't determine if the end of file is reached on descriptor %d"
-msgstr "impossibl determinà se a fin ro file è stat raggiunta int o descrittor %d"
+msgstr "impossibl determina' se a fin ro file e' stat raggiunta int o descrittor %d"
 
 #: src/CFile.cpp:481
 msgid "invalid eof() return value."
-msgstr "o valor ro eof() nun è valid."
+msgstr "o valor ro eof() nun e' valid."
 
 #: src/ChatSelector.cpp:103
 msgid "*** Chatsession Start : "
@@ -438,11 +438,11 @@ msgstr "**** Disconness"
 
 #: src/ClientCredits.cpp:198 src/ClientCredits.cpp:248
 msgid "Failed to load creditfile"
-msgstr "Impossibl caricà o file re credit"
+msgstr "Impossibl carica' o file re credit"
 
 #: src/ClientCredits.cpp:207
 msgid "Creditfile is out of date and will be replaced"
-msgstr "O file re Credit è viecch e sarà sovrascritt"
+msgstr "O file re Credit e' viecch e sara' sovrascritt"
 
 #: src/ClientCredits.cpp:283 src/ClientCredits.cpp:285
 #, c-format
@@ -455,7 +455,7 @@ msgstr "Credit scarut!"
 
 #: src/ClientCredits.cpp:300
 msgid "Failed to save creditfile"
-msgstr "Impossibl salvà o file re credit"
+msgstr "Impossibl salva' o file re credit"
 
 #: src/ClientCredits.cpp:475
 msgid "IDS_CRYPT_INITFAILED\n"
@@ -516,7 +516,7 @@ msgstr "Falliment"
 
 #: src/ClientDetailDialog.cpp:161
 msgid "Not complete"
-msgstr "Nun è complet"
+msgstr "Nun e' complet"
 
 #: src/ClientDetailDialog.cpp:165
 msgid "Bad Guy"
@@ -544,7 +544,7 @@ msgid ""
 "Error while processing incoming UDP Packet (Most likely a misconfigured "
 "server)"
 msgstr ""
-"Error nell'elaborar pacchet UDP in entrat (Probabilment o server nun è stat "
+"Error nell'elaborar pacchet UDP in entrat (Probabilment o server nun e' stat "
 "configurat buon)"
 
 #: src/CommentDialog.cpp:36 src/CommentDialogLst.cpp:38
@@ -673,7 +673,7 @@ msgstr "Rilasc e Font Che nun so necessarj"
 
 #: src/DownloadListCtrl.cpp:292
 msgid "Drop Full Queue Sources now"
-msgstr "Rilasc e Font ca Còr Pien"
+msgstr "Rilasc e Font ca Co'r Pien"
 
 #: src/DownloadListCtrl.cpp:293
 msgid "Drop High Queue Rating Sources now"
@@ -697,15 +697,15 @@ msgstr "Anteprim"
 
 #: src/DownloadListCtrl.cpp:302
 msgid "Show file &details"
-msgstr "Fa verè &dettagl ro file"
+msgstr "Fa vere' &dettagl ro file"
 
 #: src/DownloadListCtrl.cpp:303 src/muuli_wdr.cpp:799
 msgid "Show all comments"
-msgstr "Fa verè tutt i comment"
+msgstr "Fa vere' tutt i comment"
 
 #: src/DownloadListCtrl.cpp:304 src/SearchListCtrl.cpp:134
 msgid "Check Fake"
-msgstr "Controll si è favs"
+msgstr "Controll si e' favs"
 
 #: src/DownloadListCtrl.cpp:306 src/WebServer.cpp:1609
 msgid "C&lear completed"
@@ -714,11 +714,11 @@ msgstr "&Rimuov i file completat"
 #: src/DownloadListCtrl.cpp:308 src/ServerListCtrl.cpp:120
 #: src/SharedFilesCtrl.cpp:128
 msgid "Copy ED2k &link to clipboard"
-msgstr "Copiàt o ed2k &link int gl'appunt"
+msgstr "Copia't o ed2k &link int gl'appunt"
 
 #: src/DownloadListCtrl.cpp:309 src/SharedFilesCtrl.cpp:131
 msgid "Copy ED2k link to clipboard (&HTML)"
-msgstr "Copiàt o link ed2k int gl'appunt (&HTML)"
+msgstr "Copia't o link ed2k int gl'appunt (&HTML)"
 
 #: src/DownloadListCtrl.cpp:321
 msgid "unassign"
@@ -736,7 +736,7 @@ msgstr "Anteprim ["
 #: src/QueueListCtrl.cpp:143 src/QueueListCtrl.cpp:177
 #: src/UploadListCtrl.cpp:148
 msgid "Show &Details"
-msgstr "Fa verè i &Dettagl"
+msgstr "Fa vere' i &Dettagl"
 
 #: src/DownloadListCtrl.cpp:386 src/QueueListCtrl.cpp:178
 #: src/UploadListCtrl.cpp:149
@@ -766,7 +766,7 @@ msgstr "Completat"
 #: src/DownloadListCtrl.cpp:627 src/UploadListCtrl.cpp:89
 #: src/WebServer.cpp:806 src/WebServer.cpp:1192
 msgid "Speed"
-msgstr "Velocità"
+msgstr "Velocita'"
 
 #: src/DownloadListCtrl.cpp:628 src/WebServer.cpp:1191
 msgid "Progress"
@@ -815,7 +815,7 @@ msgstr "Cora pien"
 
 #: src/DownloadListCtrl.cpp:1260
 msgid "Asking"
-msgstr "Requèst in cors"
+msgstr "Reque'st in cors"
 
 #: src/DownloadListCtrl.cpp:1263 src/UploadListCtrl.cpp:238
 #: src/UploadListCtrl.cpp:531
@@ -850,15 +850,15 @@ msgstr "Tropp connession"
 
 #: src/DownloadListCtrl.cpp:1291
 msgid "Asked for another file"
-msgstr "Nat file requèst"
+msgstr "Nat file reque'st"
 
 #: src/DownloadListCtrl.cpp:1510
 msgid "Are you sure that you want to cancel and delete this file ?\n"
-msgstr "Si sicur e volè interromp e cancellà sto file ?\n"
+msgstr "Si sicur e vole' interromp e cancella' sto file ?\n"
 
 #: src/DownloadListCtrl.cpp:1513
 msgid "Are you sure that you want to cancel and delete these files ?\n"
-msgstr "Si sicur e volè interrompr e cancellà sti file ?\n"
+msgstr "Si sicur e vole' interrompr e cancella' sti file ?\n"
 
 #: src/DownloadListCtrl.cpp:2028
 #, c-format
@@ -867,7 +867,7 @@ msgstr "Scaricamienti (%i)"
 
 #: src/DownloadQueue.cpp:174
 msgid "No part files found"
-msgstr "Nun è stat trovat nisciuno file incomplet"
+msgstr "Nun e' stat trovat nisciuno file incomplet"
 
 #: src/DownloadQueue.cpp:176
 #, c-format
@@ -882,24 +882,24 @@ msgstr "Accumingenn o download e %s"
 #: src/DownloadQueue.cpp:338 src/DownloadQueue.cpp:344
 #, c-format
 msgid "You are already trying to download the file %s"
-msgstr "Staj già cerchenn e scaricà o file %s"
+msgstr "Staj gia' cerchenn e scarica' o file %s"
 
 #: src/DownloadQueue.cpp:340
 #, c-format
 msgid "You already have the file %s"
-msgstr "Già tien o file %s"
+msgstr "Gia' tien o file %s"
 
 #: src/DownloadQueue.cpp:1049
 msgid "Bad link."
-msgstr "Link nun è buon."
+msgstr "Link nun e' buon."
 
 #: src/ED2KLink.cpp:437 src/ED2KLink.cpp:446
 msgid "not a well-formed ed2k link"
-msgstr "Format ro link ed2k nun è buon"
+msgstr "Format ro link ed2k nun e' buon"
 
 #: src/ED2KLink.cpp:458
 msgid "Not an ED2K server or file link"
-msgstr "Nun è nu server ED2K o nu link file"
+msgstr "Nun e' nu server ED2K o nu link file"
 
 #: src/EditServerListDlg.cpp:80
 #, c-format
@@ -915,7 +915,7 @@ msgid ""
 "Error: couldn't accept a new external connection\n"
 "\n"
 msgstr ""
-"Error: nun poss accettà na nuov connession ra l'estern\n"
+"Error: nun poss accetta' na nuov connession ra l'estern\n"
 "\n"
 
 #: src/FileDetailDialog.cpp:99
@@ -925,12 +925,12 @@ msgstr "aggiu fatt"
 #: src/filefn.cpp:138
 #, c-format
 msgid "Failed to copy the file '%s' to '%s'"
-msgstr "Impossibl copià o file '%s' in '%s'"
+msgstr "Impossibl copia' o file '%s' in '%s'"
 
 #: src/filefn.cpp:154
 #, c-format
 msgid "Impossible to get permissions for file '%s'"
-msgstr "Impossibl ottenè o permes po file '%s'"
+msgstr "Impossibl ottene' o permes po file '%s'"
 
 #: src/filefn.cpp:168
 #, c-format
@@ -940,7 +940,7 @@ msgstr "Impossibl sovrascrivr o file '%s'"
 #: src/filefn.cpp:221
 #, c-format
 msgid "Impossible to set permissions for the file '%s'"
-msgstr "Impossibl attribuì i permess po file '%s'"
+msgstr "Impossibl attribui' i permess po file '%s'"
 
 #: src/FriendListCtrl.cpp:67 src/QueueListCtrl.cpp:102
 #: src/QueueListCtrl.cpp:124 src/QueueListCtrl.cpp:197
@@ -999,13 +999,13 @@ msgstr "Cont tag Endian = %i"
 
 #: src/KnownFileList.cpp:97
 msgid "Error: the file known.met is corrupted, unable to load known files"
-msgstr "Error: o file known.met è corrot, impossibl caricà o file"
+msgstr "Error: o file known.met e' corrot, impossibl carica' o file"
 
 #: src/KnownFileList.cpp:101
 #, c-format
 msgid "Unexpected file error while reading known.met: %s, unable to load known files"
 msgstr ""
-"Error inaspettat nel corso ra lettur ro file known.met: %s, impossibl caricà "
+"Error inaspettat nel corso ra lettur ro file known.met: %s, impossibl carica' "
 "o file"
 
 #: src/KnownFileList.cpp:125
@@ -1033,26 +1033,26 @@ msgstr "Fin salvatagg list file conosciut"
 #: src/ListenSocket.cpp:621 src/ListenSocket.cpp:623
 #, c-format
 msgid "User %s (%u) requested your sharedfiles-list -> %s"
-msgstr "L'utent %s (%u) ha requèst a list re tuoj file condivis -> %s"
+msgstr "L'utent %s (%u) ha reque'st a list re tuoj file condivis -> %s"
 
 #: src/ListenSocket.cpp:621 src/ListenSocket.cpp:653 src/ListenSocket.cpp:704
 msgid "accepted"
-msgstr "requèst accettat"
+msgstr "reque'st accettat"
 
 #: src/ListenSocket.cpp:623 src/ListenSocket.cpp:684 src/ListenSocket.cpp:722
 msgid "denied"
-msgstr "requèst negat, stu pezzott"
+msgstr "reque'st negat, stu pezzott"
 
 #: src/ListenSocket.cpp:653 src/ListenSocket.cpp:684
 #, c-format
 msgid "User %s (%u) requested your shareddirectories-list -> %s"
-msgstr "L'utent %s (%u) ha requèst a list re toje directory condivis -> %s"
+msgstr "L'utent %s (%u) ha reque'st a list re toje directory condivis -> %s"
 
 #: src/ListenSocket.cpp:704 src/ListenSocket.cpp:722
 #, c-format
 msgid "User %s (%u) requested your sharedfiles-list for directory %s -> %s"
 msgstr ""
-"L'utent %s (%u) ha requèst a list re tuoj file condivisi int a directory %s -"
+"L'utent %s (%u) ha reque'st a list re tuoj file condivisi int a directory %s -"
 "> %s"
 
 #: src/ListenSocket.cpp:739
@@ -1073,7 +1073,7 @@ msgstr "L'utent %s (%u) ha fernut o trasferiment ra list re file condivis"
 #: src/ListenSocket.cpp:771
 #, c-format
 msgid "User %s (%u) sent unwanted sharedfiles-list"
-msgstr "L'utent %s (%u) ha trasmess na list re file condivis non requèst"
+msgstr "L'utent %s (%u) ha trasmess na list re file condivis non reque'st"
 
 #: src/ListenSocket.cpp:778
 #, c-format
@@ -1138,8 +1138,8 @@ msgid ""
 "You can change this later from preferences."
 msgstr ""
 "Po corrett funzionament re l'integrazion int o system tray,\n"
-"a specificà qual desktop environment staj utilizzenn.\n"
-"Puo' modificà aropp chest informazion gop o pannell re Preferenz."
+"a specifica' qual desktop environment staj utilizzenn.\n"
+"Puo' modifica' aropp chest informazion gop o pannell re Preferenz."
 
 #: src/muuli_wdr.cpp:57
 msgid "Gnome 2.x (or other XEMBED compatible)"
@@ -1180,7 +1180,7 @@ msgstr "Caricament in cors..."
 
 #: src/muuli_wdr.cpp:134
 msgid "Number of users on the server you are connected to ..."
-msgstr "Numer re utent gop o server al qual sì conness..."
+msgstr "Numer re utent gop o server al qual si' conness..."
 
 #: src/muuli_wdr.cpp:137
 msgid "Users: 0"
@@ -1389,7 +1389,7 @@ msgstr "Disponibl :"
 
 #: src/muuli_wdr.cpp:668
 msgid "Datarate :"
-msgstr "Velocità :"
+msgstr "Velocita' :"
 
 #: src/muuli_wdr.cpp:678 src/muuli_wdr.cpp:1140 src/muuli_wdr.cpp:1151
 msgid "Transferred :"
@@ -1441,7 +1441,7 @@ msgstr "Rinomin"
 
 #: src/muuli_wdr.cpp:828
 msgid "Comment this file (this text will be show by all users)"
-msgstr "Comment sto file (o test sarà visibl ra tutt l'at utent)"
+msgstr "Comment sto file (o test sara' visibl ra tutt l'at utent)"
 
 #: src/muuli_wdr.cpp:836
 msgid "Clear"
@@ -1452,12 +1452,12 @@ msgid ""
 "For a film you can say its length, its story, language ...\n"
 "and if it's a fake, you can tell that to other users of aMule."
 msgstr ""
-"Pe no film può indicà a lunghezz, a tram, a lengua...\n"
-"e, se è nu pezzott, o può dicr a lati utent aMule."
+"Pe no film puo' indica' a lunghezz, a tram, a lengua...\n"
+"e, se e' nu pezzott, o puo' dicr a lati utent aMule."
 
 #: src/muuli_wdr.cpp:851
 msgid "File Quality"
-msgstr "Qualità ro file"
+msgstr "Qualita' ro file"
 
 #: src/muuli_wdr.cpp:856 src/otherfunctions.cpp:181 src/otherfunctions.cpp:187
 msgid "Not rated"
@@ -1485,7 +1485,7 @@ msgstr "Eccellent"
 
 #: src/muuli_wdr.cpp:866
 msgid "Choose the file rating or advice users if the file is invalid ..."
-msgstr "Giudic o file o avvis lati utent se o file non è bbuon..."
+msgstr "Giudic o file o avvis lati utent se o file non e' bbuon..."
 
 #: src/muuli_wdr.cpp:874 src/muuli_wdr.cpp:2697 src/WebServer.cpp:2083
 #: src/WebServer.cpp:2341
@@ -1510,7 +1510,7 @@ msgstr "Download in cors, attendr..."
 
 #: src/muuli_wdr.cpp:988
 msgid "Required Information"
-msgstr "Informazion Requèst"
+msgstr "Informazion Reque'st"
 
 #: src/muuli_wdr.cpp:993 src/muuli_wdr.cpp:1475
 msgid "IP Address :"
@@ -1570,7 +1570,7 @@ msgstr "Ricaric"
 
 #: src/muuli_wdr.cpp:1237
 msgid "Download-Speed"
-msgstr "Velocità e download"
+msgstr "Velocita' e download"
 
 #: src/muuli_wdr.cpp:1246 src/muuli_wdr.cpp:1371
 msgid "Current"
@@ -1598,7 +1598,7 @@ msgstr "Upload attiv"
 
 #: src/muuli_wdr.cpp:1362
 msgid "Upload-Speed"
-msgstr "Velocità ro upload"
+msgstr "Velocita' ro upload"
 
 #: src/muuli_wdr.cpp:1472
 msgid "Clientsoftware :"
@@ -1630,7 +1630,7 @@ msgstr "Scaricat (in sta session) :"
 
 #: src/muuli_wdr.cpp:1553
 msgid "Average downloadrate :"
-msgstr "Velocità medj e download :"
+msgstr "Velocita' medj e download :"
 
 #: src/muuli_wdr.cpp:1556
 msgid "Downloaded total :"
@@ -1642,7 +1642,7 @@ msgstr "Inviat (in sta session) :"
 
 #: src/muuli_wdr.cpp:1582
 msgid "Average Uploadrate :"
-msgstr "Velocità media e upload :"
+msgstr "Velocita' media e upload :"
 
 #: src/muuli_wdr.cpp:1585
 msgid "Uploaded total :"
@@ -1822,7 +1822,7 @@ msgstr "Abilit a Firm Online"
 
 #: src/muuli_wdr.cpp:1759
 msgid "Prompt on exit"
-msgstr "Chier a conferm primm e uscì"
+msgstr "Chier a conferm primm e usci'"
 
 #: src/muuli_wdr.cpp:1765
 msgid "Tooltip Delay Time in secs (1s to 5s)"
@@ -1854,7 +1854,7 @@ msgstr "Avvij ridott a icon"
 
 #: src/muuli_wdr.cpp:1815
 msgid "Fake Check"
-msgstr "Verific autenticità"
+msgstr "Verific autenticita'"
 
 #: src/muuli_wdr.cpp:1820
 msgid "Konqueror"
@@ -1910,7 +1910,7 @@ msgstr "Inserisc o nomm ro tuo browser"
 
 #: src/muuli_wdr.cpp:1870
 msgid "Line Capacities"
-msgstr "Capacità ra linea"
+msgstr "Capacita' ra linea"
 
 #: src/muuli_wdr.cpp:1877 src/muuli_wdr.cpp:1916 src/SearchListCtrl.cpp:131
 #: src/WebServer.cpp:2010 src/WebServer.cpp:2332 src/WebServer.cpp:2335
@@ -2017,7 +2017,7 @@ msgstr "Aggiorn a list server quan nu client se connett"
 
 #: src/muuli_wdr.cpp:2145
 msgid "Use priority system"
-msgstr "Us o sistem e priorità"
+msgstr "Us o sistem e priorita'"
 
 #: src/muuli_wdr.cpp:2149
 msgid "Use smart LowID check on connect"
@@ -2033,7 +2033,7 @@ msgstr "Connett automaticament sul gopp i server ra list static"
 
 #: src/muuli_wdr.cpp:2159
 msgid "Set manually added servers to High Priority"
-msgstr "Assegn a priorità avt ai server aggiunt a man"
+msgstr "Assegn a priorita' avt ai server aggiunt a man"
 
 #: src/muuli_wdr.cpp:2183
 msgid "See my shares"
@@ -2053,27 +2053,27 @@ msgstr "I.C.H attiv"
 
 #: src/muuli_wdr.cpp:2210
 msgid "Add files to download in pause mode"
-msgstr "Aggiung in paus i nuov file da scaricà"
+msgstr "Aggiung in paus i nuov file da scarica'"
 
 #: src/muuli_wdr.cpp:2214
 msgid "Add files to download with auto priority"
-msgstr "Aggiung i nuov file da scaricà con priorità automatic"
+msgstr "Aggiung i nuov file da scarica' con priorita' automatic"
 
 #: src/muuli_wdr.cpp:2217 src/WebServer.cpp:2338
 msgid "Try to download first and last chunks first"
-msgstr "Cerc e scaricà prim a part inizial e final re file"
+msgstr "Cerc e scarica' prim a part inizial e final re file"
 
 #: src/muuli_wdr.cpp:2221
 msgid "Add new shared files with auto priority"
-msgstr "Assegn a priorità automatic ai nuov file condivis"
+msgstr "Assegn a priorita' automatic ai nuov file condivis"
 
 #: src/muuli_wdr.cpp:2224 src/WebServer.cpp:2337
 msgid "Try to transfer full chunks to all uploads"
-msgstr "Cerc e trasferì part complet in ogn upload"
+msgstr "Cerc e trasferi' part complet in ogn upload"
 
 #: src/muuli_wdr.cpp:2228
 msgid "Start next paused file when a file completed"
-msgstr "Avvij nu file in paus ropp che nato file è stat completat"
+msgstr "Avvij nu file in paus ropp che nato file e' stat completat"
 
 #: src/muuli_wdr.cpp:2232
 msgid "Save 5 sources on rare files (< 20 sources)"
@@ -2117,7 +2117,7 @@ msgstr "Verific spazio disc"
 
 #: src/muuli_wdr.cpp:2265
 msgid "Select this if you want aMule to check your Disk Space"
-msgstr "Selezionar perchè aMule verifich o spazio gop o disc"
+msgstr "Selezionar perche' aMule verifich o spazio gop o disc"
 
 #: src/muuli_wdr.cpp:2271
 msgid "    Min Disk Space:    "
@@ -2258,7 +2258,7 @@ msgstr "Aggiunt o conclusion e nu download"
 
 #: src/muuli_wdr.cpp:2498
 msgid "New aMule version detected"
-msgstr "Disponibilità e na nuov version e aMule"
+msgstr "Disponibilita' e na nuov version e aMule"
 
 #: src/muuli_wdr.cpp:2502
 msgid "Urgent OOD, serverconnection lost"
@@ -2270,7 +2270,7 @@ msgstr "Notific tramit Mail"
 
 #: src/muuli_wdr.cpp:2514
 msgid "Send an Email when transfer complete."
-msgstr "Invia ni email quan o download è completat."
+msgstr "Invia ni email quan o download e' completat."
 
 #: src/muuli_wdr.cpp:2521
 msgid "SMTP server :"
@@ -2299,9 +2299,9 @@ msgid ""
 msgstr ""
 "Non modificat ste impostazion se non sapet\n"
 "esattament che stat facenn:\n"
-" potrest ottenè effet indesiderat.\n"
+" potrest ottene' effet indesiderat.\n"
 "\n"
-"aMule funzionerà perfettament anche senz modificà\n"
+"aMule funzionera' perfettament anche senz modifica'\n"
 "sti parametr."
 
 #: src/muuli_wdr.cpp:2584
@@ -2318,7 +2318,7 @@ msgstr "Pigl automaticament o link ed2k sol durant l'esecuzion"
 
 #: src/muuli_wdr.cpp:2597
 msgid "Show transfer rates on title"
-msgstr "Mostr a velocità e trasferiment gop o titl"
+msgstr "Mostr a velocita' e trasferiment gop o titl"
 
 #: src/muuli_wdr.cpp:2601
 msgid "File Buffer Size: 240000 bytes"
@@ -2342,7 +2342,7 @@ msgstr "Abilit l'ordinament automatic re list e download "
 
 #: src/muuli_wdr.cpp:2645
 msgid "Download speed"
-msgstr "Velocità e download"
+msgstr "Velocita' e download"
 
 #: src/muuli_wdr.cpp:2648
 msgid "Number of sources"
@@ -2418,7 +2418,7 @@ msgstr "Rilasc e font in ogni cas"
 
 #: src/muuli_wdr.cpp:2799
 msgid "Send sources to any other file before dropping (High CPU)"
-msgstr "Invia e font a tutti l'ati file primm re rilascià (elevat us ra CPU)"
+msgstr "Invia e font a tutti l'ati file primm re rilascia' (elevat us ra CPU)"
 
 #: src/muuli_wdr.cpp:2804
 msgid "Full Queue Sources Handling"
@@ -2557,7 +2557,7 @@ msgstr "..."
 
 #: src/muuli_wdr.cpp:3089
 msgid "Change priority for new assigned files :"
-msgstr "Cambia a priorità pe i nuov file assegnat :"
+msgstr "Cambia a priorita' pe i nuov file assegnat :"
 
 #: src/muuli_wdr.cpp:3094
 msgid "Dont change"
@@ -2589,7 +2589,7 @@ msgstr "Log e aMule"
 
 #: src/muuli_wdr.cpp:3318
 msgid "Click on this button to update the servers list from URL ..."
-msgstr "Clicc ca pe aggiornà a list re server dall'indirizz ..."
+msgstr "Clicc ca pe aggiorna' a list re server dall'indirizz ..."
 
 #: src/muuli_wdr.cpp:3322
 msgid "Serverlist"
@@ -2624,15 +2624,15 @@ msgid ""
 "Good luck!\n"
 "(Note: I'll try to set it anyway)"
 msgstr ""
-"A localizzazion selezionat sembr che nun è installat\n"
-"Non sarà dunqu possibl selezionà sta lengua.\n"
+"A localizzazion selezionat sembr che nun e' installat\n"
+"Non sara' dunqu possibl seleziona' sta lengua.\n"
 "Int i sistem linux verific o file /etc/locale.gen e o programm 'locales'\n"
 "Buon Fortun!\n"
-"(NB: aMule prov comunque a impostà a lengua selezionat)"
+"(NB: aMule prov comunque a imposta' a lengua selezionat)"
 
 #: src/muuli_wdr.cpp:3518
 msgid "Never show this again"
-msgstr "Nun fa verè chiù"
+msgstr "Nun fa vere' chiu'"
 
 #: src/muuli_wdr.cpp:3545 src/StatisticsDlg.cpp:683
 msgid "Servers"
@@ -2797,12 +2797,12 @@ msgstr "?"
 
 #: src/PartFile.cpp:395 src/PartFile.cpp:401
 msgid "ERROR: Failed to create partfile)"
-msgstr "Error: impossibl creà nu file .part)"
+msgstr "Error: impossibl crea' nu file .part)"
 
 #: src/PartFile.cpp:449
 #, c-format
 msgid "Error: Failed to open part.met file! (%s => %s)"
-msgstr "Error: impossibl aprì o file part.met (%s => %s)"
+msgstr "Error: impossibl apri' o file part.met (%s => %s)"
 
 #: src/PartFile.cpp:453 src/PartFile.cpp:469
 #, c-format
@@ -2819,35 +2819,35 @@ msgid ""
 "Error: Failed to load backup file. Search http://forum.amule.org for .part."
 "met recovery solutions"
 msgstr ""
-"Error: impossibl caricà o file ro backup. Cerc gop http://forum.amule.org e "
+"Error: impossibl carica' o file ro backup. Cerc gop http://forum.amule.org e "
 "soluzion pe o recuper re i .part.met"
 
 #: src/PartFile.cpp:481
 #, c-format
 msgid "Error: Invalid part.met fileversion! (%s => %s)"
-msgstr "Error: a versione re file part.met nun è bon! (%s => %s)"
+msgstr "Error: a versione re file part.met nun e' bon! (%s => %s)"
 
 #: src/PartFile.cpp:531
 #, c-format
 msgid "Error: %s (%s) is corrupt"
-msgstr "Error: %s (%s) è corrott"
+msgstr "Error: %s (%s) e' corrott"
 
 #: src/PartFile.cpp:688
 #, c-format
 msgid "Error: %s (%s) is corrupt, unable to load file"
-msgstr "Error: %s (%s) è corrott, impossibl caricà o file"
+msgstr "Error: %s (%s) e' corrott, impossibl carica' o file"
 
 #: src/PartFile.cpp:690
 #, c-format
 msgid "Unexpected file error while reading server.met: %s, unable to load serverlist"
 msgstr ""
-"Inaspettat error mentr stev leggen o file server.met: %s, impossibl caricà a "
+"Inaspettat error mentr stev leggen o file server.met: %s, impossibl carica' a "
 "list re server"
 
 #: src/PartFile.cpp:732
 #, c-format
 msgid "Failed to open %s (%s)"
-msgstr "Impossibl aprì %s (%s)"
+msgstr "Impossibl apri' %s (%s)"
 
 #: src/PartFile.cpp:785
 #, c-format
@@ -2857,7 +2857,7 @@ msgstr "Attenzion: %s potrebb esser corrott"
 #: src/PartFile.cpp:836 src/PartFile.cpp:956 src/PartFile.cpp:962
 #, c-format
 msgid "ERROR while saving partfile: %s (%s => %s)"
-msgstr "Error nel salvà o file .part: %s (%s=>%s)"
+msgstr "Error nel salva' o file .part: %s (%s=>%s)"
 
 #: src/PartFile.cpp:836
 msgid ".part file not found"
@@ -2866,7 +2866,7 @@ msgstr "naggiu trovat o file .part"
 #: src/PartFile.cpp:979
 #, c-format
 msgid "Unable to open %s file - using %s file.\n"
-msgstr "Impossibl aprì o file %s - us o file %s.\n"
+msgstr "Impossibl apri' o file %s - us o file %s.\n"
 
 #: src/PartFile.cpp:988
 #, c-format
@@ -2875,12 +2875,12 @@ msgid ""
 " Please report on http://forum.amule.org\n"
 msgstr ""
 "O file %s ha accidentalment dimension 0 - us o file %s\n"
-"Pe favor notific chell che è succies gop http://forum.amule.org\n"
+"Pe favor notific chell che e' succies gop http://forum.amule.org\n"
 
 #: src/PartFile.cpp:1094
 #, c-format
 msgid "Failed to save part.met.seeds file for %s"
-msgstr "Impossibl salvà o file part.met.seeds pe %s"
+msgstr "Impossibl salva' o file part.met.seeds pe %s"
 
 #: src/PartFile.cpp:1115
 #, c-format
@@ -2923,26 +2923,26 @@ msgstr "Trovat part completat (%i) in %s"
 #: src/PartFile.cpp:1219
 #, c-format
 msgid "Finished rehashing %s"
-msgstr "Nuov hashing completat, assafàDie %s"
+msgstr "Nuov hashing completat, assafa'Die %s"
 
 #: src/PartFile.cpp:2496
 #, c-format
 msgid "Unexpected file error while completing %s. File paused"
-msgstr "Si è verificat n'error inaspettat int o completament ro file %s. File in paus"
+msgstr "Si e' verificat n'error inaspettat int o completament ro file %s. File in paus"
 
 #: src/PartFile.cpp:2502
 #, c-format
 msgid "WARNING: Failed to delete %s"
-msgstr "Attenzion: impossibl cancellà %s"
+msgstr "Attenzion: impossibl cancella' %s"
 
 #: src/PartFile.cpp:2506
 #, c-format
 msgid "WARNING: Failed to delete %s%s"
-msgstr "Attenzion: impossibl cancellà %s%s"
+msgstr "Attenzion: impossibl cancella' %s%s"
 
 #: src/PartFile.cpp:2510
 msgid "WARNING: A file with that name already exists, the file has been renamed"
-msgstr "Attenzion: nu file co chillu nomm esist già, o file è stat rinominat"
+msgstr "Attenzion: nu file co chillu nomm esist gia', o file e' stat rinominat"
 
 #: src/PartFile.cpp:2522
 #, c-format
@@ -2957,13 +2957,13 @@ msgstr "Scaricat:"
 #: src/PartFile.cpp:2782
 #, c-format
 msgid "Failed to delete %s"
-msgstr "Impossibil cancellà %s"
+msgstr "Impossibil cancella' %s"
 
 #: src/PartFile.cpp:2796
 #, c-format
 msgid "Warning: Unable to hash downloaded part - hashset incomplete (%s)"
 msgstr ""
-"Attenzion: impossibl calcolà l'hash ro file part scaricat - hashset "
+"Attenzion: impossibl calcola' l'hash ro file part scaricat - hashset "
 "incomplet (%s)"
 
 #: src/PartFile.cpp:2800
@@ -2972,7 +2972,7 @@ msgid ""
 "Error: Unable to hash downloaded part - hashset incomplete (%s). This should "
 "never happen"
 msgstr ""
-"Error: impossibl calcolà l'hash ro file part scaricat - hashset incomplet (%"
+"Error: impossibl calcola' l'hash ro file part scaricat - hashset incomplet (%"
 "s). Chest non dovrebb mai succer"
 
 #: src/PartFile.cpp:3053
@@ -2994,12 +2994,12 @@ msgstr "Error: impossibl scrivr gop o disc"
 #: src/PartFile.cpp:3569
 #, c-format
 msgid "Downloaded part %i is corrupt :(  (%s)"
-msgstr "A part ro file scaricat %i è corrott :(  (%s)"
+msgstr "A part ro file scaricat %i e' corrott :(  (%s)"
 
 #: src/PartFile.cpp:3591
 #, c-format
 msgid "ICH: Recovered corrupted part %i  (%s)"
-msgstr "I.C.H.: a part ro file corrot %i è stat recuperat (%s)"
+msgstr "I.C.H.: a part ro file corrot %i e' stat recuperat (%s)"
 
 #: src/PartFile.cpp:3641
 #, c-format
@@ -3096,7 +3096,7 @@ msgstr "%i giorn"
 
 #: src/PrefsUnifiedDlg.cpp:1219
 msgid "Language change will not be applied until aMule is restarted."
-msgstr "A nova lengua sarà attiv ro avè riavviat aMule."
+msgstr "A nova lengua sara' attiv ro ave' riavviat aMule."
 
 #: src/PrefsUnifiedDlg.cpp:1322
 msgid "Browse wav"
@@ -3108,7 +3108,7 @@ msgstr "File wav (*.wav)|*.wav||"
 
 #: src/PrefsUnifiedDlg.cpp:1330
 msgid "Browse for videoplayer"
-msgstr "Sfogl pe trovà nu riproduttor video"
+msgstr "Sfogl pe trova' nu riproduttor video"
 
 #: src/PrefsUnifiedDlg.cpp:1330
 msgid "Executable (*)|*||"
@@ -3123,7 +3123,7 @@ msgid ""
 "Add here URL's to download server.met files.\n"
 "Only one url on each line."
 msgstr ""
-"Inserisc ca l'URL pe scaricà o file server.met.\n"
+"Inserisc ca l'URL pe scarica' o file server.met.\n"
 "Sol nu URL pe rig."
 
 #: src/QueueListCtrl.cpp:103 src/QueueListCtrl.cpp:125
@@ -3135,7 +3135,7 @@ msgstr "File"
 #: src/QueueListCtrl.cpp:104 src/QueueListCtrl.cpp:126
 #: src/QueueListCtrl.cpp:207
 msgid "File Priority"
-msgstr "Priorità ro file"
+msgstr "Priorita' ro file"
 
 #: src/QueueListCtrl.cpp:106 src/QueueListCtrl.cpp:128
 #: src/QueueListCtrl.cpp:217 src/WebServer.cpp:1562
@@ -3263,22 +3263,22 @@ msgid ""
 "No serverlist address entry in 'addresses.dat' found. Please paste a valid "
 "serverlist address into this file in order to auto-update your serverlist"
 msgstr ""
-"Nun è stat truvat nisciun indirizz int o file 'addresses.dat'.\n"
-"Copia n'indirizz che conteng a list re server in sto file in mod e potè "
-"aggiornà automaticament a list"
+"Nun e' stat truvat nisciun indirizz int o file 'addresses.dat'.\n"
+"Copia n'indirizz che conteng a list re server in sto file in mod e pote' "
+"aggiorna' automaticament a list"
 
 #: src/ServerList.cpp:81
 msgid "Unable to retrieve serverlist"
-msgstr "Impossibl ottenè a list re server"
+msgstr "Impossibl ottene' a list re server"
 
 #: src/ServerList.cpp:103 src/ServerWnd.cpp:94
 #, c-format
 msgid "Failed to download the serverlist from %s"
-msgstr "Impossibl scaricà a list re server da %s"
+msgstr "Impossibl scarica' a list re server da %s"
 
 #: src/ServerList.cpp:151 src/ServerList.cpp:156
 msgid "Failed to load server.met!"
-msgstr "Impossibl caricà o file server.met!"
+msgstr "Impossibl carica' o file server.met!"
 
 #: src/ServerList.cpp:162
 #, c-format
@@ -3297,7 +3297,7 @@ msgstr "Aggiunt %d server"
 
 #: src/ServerList.cpp:232
 msgid "Error: the file server.met is corrupted"
-msgstr "Error: o file server.met è corrott"
+msgstr "Error: o file server.met e' corrott"
 
 #: src/ServerList.cpp:546 src/ServerWnd.cpp:138
 msgid "Server added: "
@@ -3305,7 +3305,7 @@ msgstr "Server aggiunt: "
 
 #: src/ServerList.cpp:782
 msgid "Failed to save server.met!"
-msgstr "Impossibl salvà o file server.met!"
+msgstr "Impossibl salva' o file server.met!"
 
 #: src/ServerListCtrl.cpp:111 src/ServerListCtrl.cpp:149
 msgid "Connect to this server"
@@ -3357,7 +3357,7 @@ msgstr "Nisciun gradiment"
 
 #: src/ServerListCtrl.cpp:727 src/ServerListCtrl.cpp:765
 msgid "Failed to open staticservers.dat"
-msgstr "Impossibl aprì o file staticservers.dat"
+msgstr "Impossibl apri' o file staticservers.dat"
 
 #: src/ServerListCtrl.cpp:736
 msgid "Added to static server list"
@@ -3371,7 +3371,7 @@ msgstr "Server (%i)"
 #: src/ServerSocket.cpp:302
 #, c-format
 msgid "New clientid is %u"
-msgstr "O nuovo ID ro client è %u"
+msgstr "O nuovo ID ro client e' %u"
 
 #: src/ServerSocket.cpp:373
 msgid "Unknown server info received !"
@@ -3403,7 +3403,7 @@ msgstr "Error int o socket ro server: %s (%s:%i): %u"
 
 #: src/ServerWnd.cpp:69
 msgid "This is "
-msgstr "Quest è "
+msgstr "Quest e' "
 
 #: src/ServerWnd.cpp:69
 msgid " (based on "
@@ -3411,7 +3411,7 @@ msgstr " (basat gop "
 
 #: src/ServerWnd.cpp:70
 msgid "Visit http://www.amule.org to check if a new version is available.\n"
-msgstr "Verific gop http://www.amule.org se è disponibl na nuov version.\n"
+msgstr "Verific gop http://www.amule.org se e' disponibl na nuov version.\n"
 
 #: src/ServerWnd.cpp:80
 msgid "Invalid URL"
@@ -3515,7 +3515,7 @@ msgstr "Nascost"
 
 #: src/SharedFilesCtrl.cpp:333 src/SharedFilesCtrl.cpp:349
 msgid "You cannot change permissions while a file is still downloading!"
-msgstr "Non puoi modificà i permess durant o download e no file!"
+msgstr "Non puoi modifica' i permess durant o download e no file!"
 
 #: src/SharedFilesCtrl.cpp:604
 #, c-format
@@ -3528,7 +3528,7 @@ msgstr "Impossibl connetter a tutt i server in list. Proced con nat tentativ."
 
 #: src/sockets.cpp:103 src/sockets.cpp:113
 msgid "No valid servers to connect in serverlist found"
-msgstr "Int a list re server nun è stat trovat nisciun server valid a cui connetter"
+msgstr "Int a list re server nun e' stat trovat nisciun server valid a cui connetter"
 
 #: src/sockets.cpp:170
 #, c-format
@@ -3705,22 +3705,22 @@ msgstr "Durat media e upload: %s"
 #: src/StatisticsDlg.cpp:765
 #, c-format
 msgid "Average Downloadrate (Session): %.2f kB/s"
-msgstr "Velocità media e download (Session): %.2f kB/s"
+msgstr "Velocita' media e download (Session): %.2f kB/s"
 
 #: src/StatisticsDlg.cpp:768
 #, c-format
 msgid "Average Uploadrate (Session): %.2f kB/s"
-msgstr "Velocità media e upload (Session): %.2f kB/s"
+msgstr "Velocita' media e upload (Session): %.2f kB/s"
 
 #: src/StatisticsDlg.cpp:771
 #, c-format
 msgid "Max Downloadrate Average (Session): %.2f kB/s"
-msgstr "Massim velocità media e download (Session): %.2f kB/s"
+msgstr "Massim velocita' media e download (Session): %.2f kB/s"
 
 #: src/StatisticsDlg.cpp:773
 #, c-format
 msgid "Max Downloadrate (Session): %.2f kB/s"
-msgstr "Velocità e download massim (Session): %.2f kB/s"
+msgstr "Velocita' e download massim (Session): %.2f kB/s"
 
 #: src/StatisticsDlg.cpp:777 src/StatisticsDlg.cpp:779
 #, c-format
@@ -3893,7 +3893,7 @@ msgstr "aMule "
 
 #: src/SysTray.cpp:280
 msgid "Actual Speed Limits:"
-msgstr "Limit e Velocità Attual:"
+msgstr "Limit e Velocita' Attual:"
 
 #: src/SysTray.cpp:280
 msgid "DL: "
@@ -4028,11 +4028,11 @@ msgstr "Mostr"
 
 #: src/SysTray.cpp:499
 msgid "All To Max Speed"
-msgstr "Tutt a massim velocità"
+msgstr "Tutt a massim velocita'"
 
 #: src/SysTray.cpp:508
 msgid "All To Min Speed"
-msgstr "Tutt a minm velocità"
+msgstr "Tutt a minm velocita'"
 
 #: src/SysTray.cpp:517
 msgid "Download Limit"
@@ -4072,7 +4072,7 @@ msgstr "Elimin categoria"
 
 #: src/TransferWnd.cpp:305
 msgid "Are you sure you wish to cancel and delete all files in this category?"
-msgstr "Si sicur e volè interromp e rimuovr tut i file contenut in sta categoria?"
+msgstr "Si sicur e vole' interromp e rimuovr tut i file contenut in sta categoria?"
 
 #: src/TransferWnd.cpp:305
 msgid "Confirmation Required"
@@ -4080,7 +4080,7 @@ msgstr "Richiest a conferm"
 
 #: src/UDPSocket.cpp:356
 msgid "Error while processing incoming extended protocol UDP Packet"
-msgstr "Error nell'elaborà i pacchett in entrat eo protocoll UDP estes"
+msgstr "Error nell'elabora' i pacchett in entrat eo protocoll UDP estes"
 
 #: src/UploadClient.cpp:367
 #, c-format
@@ -4099,7 +4099,7 @@ msgid ""
 "Client '%s' seems to be an aggressive client and is banned from the "
 "uploadqueue"
 msgstr ""
-"O client '%s' sembr esser nu client aggressiv ed è pecciò bannat ra cora e "
+"O client '%s' sembr esser nu client aggressiv ed e' peccio' bannat ra cora e "
 "upload"
 
 #: src/UploadListCtrl.cpp:91
@@ -4117,7 +4117,7 @@ msgstr "Mostr a cora"
 
 #: src/UploadQueue.cpp:70
 msgid "Fatal Error: Failed to create Timer"
-msgstr "Error fatal: impossibl creà o Timer"
+msgstr "Error fatal: impossibl crea' o Timer"
 
 #: src/UploadQueue.cpp:167
 #, c-format
@@ -4162,20 +4162,20 @@ msgstr "E client '%s' e '%s' hann o stess userhash o indirizz IP - '%s' rimoss"
 #: src/WebServer.cpp:267 src/WebServer.cpp:285 src/WebServer.cpp:335
 #, c-format
 msgid "Can't load templates: Can't open file %s"
-msgstr "Impossibl caricà o  templates: impossibl arapì o file %s"
+msgstr "Impossibl carica' o  templates: impossibl arapi' o file %s"
 
 #: src/WebServer.cpp:352
 msgid ""
 "Can't find template version number!\n"
 "Please replace aMule.tmpl with a newer version!"
 msgstr ""
-"Impossibl truvà o nummr e version ro template!\n"
-"Pe favor sovrascriv o file aMule.tmpl co na version chiù nov!"
+"Impossibl truva' o nummr e version ro template!\n"
+"Pe favor sovrascriv o file aMule.tmpl co na version chiu' nov!"
 
 #: src/WebServer.cpp:353
 #, c-format
 msgid "Failed to load template %s\n"
-msgstr "Impossibl caricà o template %s\n"
+msgstr "Impossibl carica' o template %s\n"
 
 #: src/WebServer.cpp:611 src/WebServer.cpp:1631 src/WebServer.cpp:2567
 #: src/WebServer.cpp:2704
@@ -4241,7 +4241,7 @@ msgstr "Rimuov o server selezionat"
 
 #: src/WebServer.cpp:923
 msgid "Are you sure to remove this server from list?"
-msgstr "Si sicur e levà sto serve ra a list?"
+msgstr "Si sicur e leva' sto serve ra a list?"
 
 #: src/WebServer.cpp:1196
 msgid "Downloaded total"
@@ -4253,15 +4253,15 @@ msgstr "Upload total"
 
 #: src/WebServer.cpp:1411
 msgid "Are you sure that you want to cancel and delete this file?\\n"
-msgstr "Si sicur che vuò cancellà stu file?\\n"
+msgstr "Si sicur che vuo' cancella' stu file?\\n"
 
 #: src/WebServer.cpp:1486 src/WebServer.cpp:1781 src/WebServer.cpp:1786
 msgid "Increase Priority"
-msgstr "Increment a Priorità"
+msgstr "Increment a Priorita'"
 
 #: src/WebServer.cpp:1487 src/WebServer.cpp:1782 src/WebServer.cpp:1787
 msgid "Decrease Priority"
-msgstr "Decrecmnt a Priorità"
+msgstr "Decrecmnt a Priorita'"
 
 #: src/WebServer.cpp:1607 src/WebServer.cpp:2328
 msgid "Hide Queue"
@@ -4334,7 +4334,7 @@ msgstr "Temp in second (zer=disattiv):"
 
 #: src/WebServer.cpp:2331
 msgid "Speed Limits"
-msgstr "Limit e Velocità"
+msgstr "Limit e Velocita'"
 
 #: src/WebServer.cpp:2334
 msgid "Bandwidth Limits"
@@ -4350,7 +4350,7 @@ msgstr "Inserisc a password ca"
 
 #: src/WebServer.cpp:2382
 msgid "Login Now"
-msgstr "Connett mò"
+msgstr "Connett mo'"
 
 #: src/WebServer.cpp:2526
 msgid "Webserver: Logout"
