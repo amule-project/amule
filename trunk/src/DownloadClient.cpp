@@ -116,11 +116,18 @@ bool CUpDownClient::Compare(CUpDownClient* tocomp, bool bIgnoreUserhash){
 /* eMule 0.30c implementation, i give it a try (Creteil) BEGIN ... */
 void CUpDownClient::AskForDownload()
 {
-	if (theApp.listensocket->TooManySockets() && !(socket && socket->IsConnected())) {
-		if (GetDownloadState() != DS_TOOMANYCONNS) {
-			SetDownloadState(DS_TOOMANYCONNS);
+	if (theApp.listensocket->TooManySockets()) {
+		if (!socket) {
+			if (GetDownloadState() != DS_TOOMANYCONNS) {
+				SetDownloadState(DS_TOOMANYCONNS);
+			}
+			return;
+		} else if (!socket->IsConnected()) {
+			if (GetDownloadState() != DS_TOOMANYCONNS) {
+				SetDownloadState(DS_TOOMANYCONNS);
+			}
+			return;
 		}
-		return;
 	}
 	m_bUDPPending = false;
 	m_dwLastAskedTime = ::GetTickCount();
@@ -979,18 +986,39 @@ void CUpDownClient::UDPReaskForDownload()
 
 	//the line "m_bUDPPending = true;" use to be here
 
+	
 	if(m_nUDPPort != 0 && theApp.glob_prefs->GetUDPPort() != 0 &&
-	!theApp.serverconnect->IsLowID() && !HasLowID() && !(socket && socket->IsConnected())) {
-
+	   !HasLowID() && !(socket && socket->IsConnected()))
+	{ 
+		// deadlake PROXYSUPPORT
 		//don't use udp to ask for sources
 		if(IsSourceRequestAllowed()) {
 			return;
 		}
 		m_bUDPPending = true;
-		Packet* response = new Packet(OP_REASKFILEPING,16,OP_EMULEPROT);
-		memcpy(response->pBuffer,reqfile->GetFileHash(),16);
+		CSafeMemFile data(128);
+		data.WriteRaw(reqfile->GetFileHash(),16);
+		if (GetUDPVersion() > 3)
+		{
+			if (reqfile->IsPartFile()) {
+				((CPartFile*)reqfile)->WritePartStatus(&data);
+			}
+			else {
+				data.Write((uint16) 0);
+			}
+		}
+		if (GetUDPVersion() > 2) {
+			data.Write(reqfile->m_nCompleteSourcesCount);
+		}
+		/*
+		if (thePrefs.GetDebugClientUDPLevel() > 0)
+			DebugSend("OP__ReaskFilePing", this, (char*)reqfile->GetFileHash());
+		*/
+		Packet* response = new Packet(&data, OP_EMULEPROT);
+		response->opcode = OP_REASKFILEPING;
 		theApp.uploadqueue->AddUpDataOverheadFileRequest(response->size);
 		theApp.clientudp->SendPacket(response,GetIP(),GetUDPPort());
+	
 	}
 }
 
