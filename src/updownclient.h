@@ -306,6 +306,7 @@ public:
 	bool 		IsDifferentPartBlock() const;
 	void		UnBan();
 	void		Ban();
+	bool		m_bAddNextConnect;      // VQB Fix for LowID slots only on connection
 	uint32		GetAskedCount() const 		{ return m_cAsked; }
 	void		AddAskedCount()			{ m_cAsked++; }
 	void		FlushSendBlocks();	// call this when you stop upload, 
@@ -607,7 +608,16 @@ public:
 	
 	int		GetHashType() const;
 	bool		m_bHelloAnswerPending;
-	
+
+	// Kry - Atribute to get the 1.x / 2.x / CVS flags
+	// Why this way? Well, on future is expected that count(2.x) > count(1x)
+	// So I prefer to set the 1.x flag because it will be less CPU.
+	// I know. I'm paranoid on CPU.
+	// (Extended_aMule_SO & 1)  -> 1.x
+	// !(Extended_aMule_SO & 1) -> 2.x
+	// (Extended_aMule_SO & 2)  -> CVS
+	uint8		Extended_aMule_SO;
+
 	uint8*		m_abyPartStatus;
 	
 	CAICHHash*  m_pReqFileAICHHash; 
@@ -635,7 +645,8 @@ public:
 	 * @return True if the client is EVIL, false otherwise.
 	 */
 	bool IsClientAggressive() const { return ( m_Aggressiveness >= 10 ); }
-	
+
+	uint8 GetExtended_aMule_SO() const{ return Extended_aMule_SO; };
 private:
 	//! This keeps track of aggressive requests for files. 
 	uint16 m_Aggressiveness;

@@ -57,6 +57,9 @@
 #include "amuleIPV4Address.h"	// Needed for amuleIPV4Address
 
 
+//#define DEBUG_LOCAL_CLIENT_PROTOCOL
+
+
 // some client testing variables
 static wxString crash_name = wxT("[Invalid User Name]"); 
 static wxString empty_name = wxT("[Empty User Name]");
@@ -101,6 +104,8 @@ CUpDownClient::CUpDownClient(uint16 in_port, uint32 in_userid,uint32 in_serverip
 
 void CUpDownClient::Init()
 {
+	Extended_aMule_SO = 0;
+	m_bAddNextConnect = false;
 	credits = 0;
 	m_byChatstate = 0;
 	m_cShowDR = 0;
@@ -619,6 +624,9 @@ bool CUpDownClient::SendHelloPacket() {
 	theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
 	SendPacket(packet,true);
 	m_bHelloAnswerPending = true;
+	#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
+	AddLogLineM(true,_("Local Client: OP_HELLO\n"));
+	#endif
 	return true;
 }
 
@@ -678,6 +686,13 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer) {
 	if (m_socket) {
 		theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
 		SendPacket(packet,true,true);
+		#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
+		if (!bAnswer) {
+			AddLogLineM(true,_("Local Client: OP_EMULEINFO\n"));
+		} else {
+			AddLogLineM(true,_("Local Client: OP_EMULEINFOANSWER\n"));
+		}
+		#endif
 	}
 }
 
@@ -836,7 +851,11 @@ void CUpDownClient::SendHelloAnswer()
 	theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
 	SendPacket(packet,true);
 
+	#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
+	AddLogLineM(true,_("Local Client: OP_HELLOANSWER\n"));
+	#endif
 }
+
 
 void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
 {
@@ -1239,6 +1258,9 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 
 			theApp.uploadqueue->AddUpDataOverheadServer(packet->GetPacketSize());
 			theApp.serverconnect->SendPacket(packet);
+			#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
+			AddLogLineM(true,_("Local Client: OP_CALLBACKREQUEST\n"));
+			#endif
 		} else {
 			if (GetUploadState() == US_NONE && (!GetRemoteQueueRank() || m_bReaskPending)) {
 				theApp.downloadqueue->RemoveSource(this);
@@ -1314,12 +1336,22 @@ void CUpDownClient::ConnectionEstablished()
 				Packet* packet = new Packet(OP_ACCEPTUPLOADREQ,0);
 				theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->GetPacketSize());
 				SendPacket(packet,true);
+				#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
+				AddLogLineM(true,_("Local Client: OP_ACCEPTUPLOADREQ\n"));
+				#endif
 			}
 	}
 	if (m_iFileListRequested == 1) {
 		Packet* packet = new Packet(m_fSharedDirectories ? OP_ASKSHAREDDIRS : OP_ASKSHAREDFILES,0);
 		theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
 		SendPacket(packet,true,true);
+		#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
+		if (m_fSharedDirectories) {
+			AddLogLineM(true,_("Local Client: OP_ASKSHAREDDIRS\n"));
+		} else {
+			AddLogLineM(true,_("Local Client: OP_ASKSHAREDFILES\n"));
+		}
+		#endif
 	}
 	while (!m_WaitingPackets_list.IsEmpty()) {
 		SendPacket(m_WaitingPackets_list.RemoveHead());
@@ -1376,6 +1408,7 @@ void CUpDownClient::ReGetClientSoft()
 			case SO_AMULE:
 				m_clientSoft = SO_AMULE;
 				if(GetClientModString().IsEmpty() == false) {
+					Extended_aMule_SO &= 2;
 					m_clientVerString = GetClientModString();
 				} else {
 					m_clientVerString = wxT("aMule");
@@ -1440,6 +1473,7 @@ void CUpDownClient::ReGetClientSoft()
 			m_nClientVersion = MAKE_CLIENT_VERSION(0,nClientMinVersion,0);
 			switch (m_clientSoft) {
 				case SO_AMULE:
+					Extended_aMule_SO = 1; // no CVS flag for 1.x, so no &= right now
 					m_clientVerString += wxString::Format(_(" (based on eMule v0.%u)"), nClientMinVersion);
 					break;
 				case SO_LPHANT:
@@ -1665,7 +1699,11 @@ void CUpDownClient::SendPublicKeyPacket(){
 	theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
 	SendPacket(packet,true,true);
 	m_SecureIdentState = IS_SIGNATURENEEDED;
+	#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
+	AddLogLineM(true,_("Local Client: OP_PUBLICKEY\n"));
+	#endif
 }
+
 
 void CUpDownClient::SendSignaturePacket(){
 	// signate the public key of this client and send it
@@ -1725,7 +1763,11 @@ void CUpDownClient::SendSignaturePacket(){
 	theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
 	SendPacket(packet,true,true);
 	m_SecureIdentState = IS_ALLREQUESTSSEND;
+	#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
+	AddLogLineM(true,_("Local Client: OP_SIGNATURE\n"));
+	#endif
 }
+
 
 void CUpDownClient::ProcessPublicKeyPacket(const uchar* pachPacket, uint32 nSize)
 {
@@ -1830,8 +1872,10 @@ void CUpDownClient::SendSecIdentStatePacket(){
 
 		theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
 		SendPacket(packet,true,true);
-	}
-	else {
+		#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
+		AddLogLineM(true,_("Local Client: OP_SECIDENTSTATE\n"));
+		#endif
+	} else {
 		wxASSERT ( false );
 	}
 }
@@ -1917,6 +1961,9 @@ void CUpDownClient::SendPublicIPRequest(){
 		theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
 		SendPacket(packet,true);
 		m_fNeedOurPublicIP = true;
+		#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
+		AddLogLineM(true,_("Local Client: OP_PUBLICIP_REQ\n"));
+		#endif
 	}
 }
 
