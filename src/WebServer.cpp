@@ -1373,25 +1373,13 @@ wxString CWebServer::_GetSharedFilesList(ThreadData Data) {
 
 		HTTPProcessData.Replace(wxT("[FileHash]"), i->sFileHash);
 
-		uint8 upperpriority=0, lesserpriority=0;
-		if (i->bFileAutoPriority) {
-			upperpriority = PR_AUTO;	lesserpriority = PR_VERYHIGH;
-		} else {
-			switch (i->nFilePriority) {
-				case PR_LOW: upperpriority = PR_NORMAL;	lesserpriority = PR_VERYLOW; break;
-				case PR_NORMAL: upperpriority = PR_HIGH;	lesserpriority = PR_LOW; break;
-				case PR_HIGH: upperpriority = PR_VERYHIGH;	lesserpriority = PR_NORMAL; break;
-				case PR_VERYHIGH: upperpriority = PR_AUTO;	lesserpriority = PR_HIGH; break;
-				case PR_VERYLOW: upperpriority = PR_LOW;	lesserpriority = PR_VERYLOW; break;
-				case PR_AUTO: upperpriority = PR_AUTO;	lesserpriority = PR_VERYHIGH; break;
-			}
-		}
-		
 		HTTPProcessData.Replace(wxT("[PriorityUpLink]"),
-			wxT("hash=") +  i->sFileHash + wxString::Format(wxT("&setpriority=%i"), upperpriority));
+			wxT("hash=") +  i->sFileHash + wxString::Format(wxT("&setpriority=%i"),
+				GetHigherPrio(i->nFilePriority, i->bFileAutoPriority)));
 
 		HTTPProcessData.Replace(wxT("[PriorityDownLink]"),
-			wxT("hash=") +  i->sFileHash + wxString::Format(wxT("&setpriority=%i"), lesserpriority));
+			wxT("hash=") +  i->sFileHash + wxString::Format(wxT("&setpriority=%i"),
+				GetLowerPrio(i->nFilePriority, i->bFileAutoPriority)));
 
 		sSharedList += HTTPProcessData;
 		i++;
