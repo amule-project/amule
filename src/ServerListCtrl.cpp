@@ -537,6 +537,7 @@ int CServerListCtrl::SortProc( long item1, long item2, long sortData )
 				} else {
 					uint32 a = server1->GetIP();
 					uint32 b = server2->GetIP();
+					// This might break on big endian, but who's gonna notice? ;)
 					uint32 tester;
 					if (!(tester = ((a & 0x000000FF) - (b & 0x000000FF)))) {
 						if (!(tester = ((a & 0x0000FF00) - (b & 0x0000FF00)))) {

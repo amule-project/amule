@@ -149,11 +149,7 @@ CamuleApp::CamuleApp()
 	// Initialization
 	
 	printf("Initialising aMule\n");
-	SetVendorName(wxT("TikuWarez"));
-	
-	// Do NOT change this string to aMule nor anything else, it WILL fuck you up.
-	SetAppName(wxT("eMule"));
-	
+
 	ConfigDir = wxGetHomeDir() + wxFileName::GetPathSeparator() + 
 	wxT(".aMule") + wxFileName::GetPathSeparator();
 	
@@ -297,6 +293,13 @@ int CamuleApp::InitGui(bool ,wxString &)
 
 bool CamuleApp::OnInit()
 {
+
+	// This can't be on constructor or wx2.4.2 doesn't set it.	
+	SetVendorName(wxT("TikuWarez"));
+	
+	// Do NOT change this string to aMule nor anything else, it WILL fuck you up.
+	SetAppName(wxT("eMule"));
+	
 	m_app_state = APP_STATE_STARTING;
 
 	Start_time = GetTickCount64();
@@ -1318,18 +1321,17 @@ void CamuleApp::OnDnsDone(wxEvent& e)
 	socket->DnsLookupDone(evt.GetExtraLong());
 }
 
+void CamuleApp::OnSourcesDnsDone(wxEvent& e)
+{
+	wxMuleInternalEvent& evt = *((wxMuleInternalEvent*)&e);	
+	downloadqueue->OnHostnameResolved(evt.GetExtraLong());
+}
+
+
 void CamuleApp::OnNotifyEvent(wxEvent& e)
 {
 	GUIEvent& evt = *((GUIEvent*)&e);
 	NotifyEvent(evt);
-}
-
-
-void CamuleApp::OnSourcesDnsDone(wxEvent& e)
-{
-	wxMuleInternalEvent& evt = *((wxMuleInternalEvent*)&e);
-	struct sockaddr_in *si=(struct sockaddr_in*)evt.GetExtraLong();
-	downloadqueue->OnHostnameResolved(si);
 }
 
 void CamuleApp::OnUDPTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))

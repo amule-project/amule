@@ -35,7 +35,7 @@
 #include <wx/sckaddr.h>		// Needed for wxIPV4address
 #include <wx/log.h>		// Needed for wxLogWarning
 
-#include "otherfunctions.h"	// Needed for unicode2char
+#include "NetworkFunctions.h"	// Needed for unicode2char
 
 
 // This is fscking hard to maintain. wxWidgets 2.5.2 has changed internal
@@ -44,7 +44,6 @@
 class amuleIPV4Address : public wxIPV4address {
   public:
   amuleIPV4Address(void) { }
-#ifndef __WXMSW__  
 
 	virtual bool Hostname(const wxString& name) {
 		// Some people are sometimes fool.
@@ -69,8 +68,6 @@ class amuleIPV4Address : public wxIPV4address {
 		#endif
 	}
 	
-#endif
-
 };
 
 #endif // AMULEIPV4ADDRESS_H

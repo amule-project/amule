@@ -29,7 +29,7 @@
 #include "amule.h"		// Needed for theApp
 #include "amuleDlg.h"	// Needed for amuleDlg
 #include "ChatWnd.h"
-#include "otherfunctions.h"
+#include "NetworkFunctions.h"
 #include "CMD4Hash.h"
 #include <wx/textctrl.h>
 #include <wx/msgdlg.h>

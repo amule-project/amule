@@ -24,6 +24,7 @@
 
 #include "ED2KLink.h"		// Interface declarations.
 #include "SafeFile.h"		// Needed for CSafeMemFile
+#include "NetworkFunctions.h" // Needed for Uint32toStringIP
 
 namespace {
 	struct autoFree {

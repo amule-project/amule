@@ -40,7 +40,7 @@
 #endif
 
 #include "IPFilter.h"		// Interface declarations.
-#include "otherfunctions.h"
+#include "NetworkFunctions.h"
 #include "Preferences.h"	// Needed for CPreferences
 #include "amule.h"		// Needed for theApp
 #include "HTTPDownload.h"

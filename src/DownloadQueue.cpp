@@ -18,15 +18,6 @@
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 #include <wx/defs.h>		// Needed before any other wx/*.h
-#ifdef __WXMSW__
-	#include <winsock.h>
-	#include <wx/msw/winundef.h>
-#else
-	#include <netdb.h>		// Needed for gethostbyname_r
-	#include <sys/socket.h>		//
-	#include <netinet/in.h>		// These three are needed for inet_*
-	#include <arpa/inet.h>		//
-#endif
 #ifdef __WXMAC__
 	#include <wx/wx.h>
 #endif
@@ -56,6 +47,7 @@
 #include "amule.h"			// Needed for theApp
 #include "opcodes.h"		// Needed for MINWAIT_BEFORE_DLDISPLAY_WINDOWUPDATE
 #include "otherfunctions.h"	// Needed for GetTickCount
+#include "NetworkFunctions.h" // Needed for CAsyncDNS
 #include <algorithm>
 #include <numeric>
 
@@ -1210,58 +1202,6 @@ bool CDownloadQueue::SendGlobGetSourcesUDPPacket(CSafeMemFile& data)
 }
 
 
-// Kry  - Implementation of HasHostNameSources using wxThread functions, taken from UDPSocket.cpp
-
-class SourcesAsyncDNS : public wxThread
-{
-public:
-	SourcesAsyncDNS();
-	virtual ExitCode Entry();
-
-	wxString ipName;
-	uint16 port;
-	CMD4Hash fileid;
-};
-
-SourcesAsyncDNS::SourcesAsyncDNS() : wxThread(wxTHREAD_DETACHED)
-{
-}
-
-wxThread::ExitCode SourcesAsyncDNS::Entry()
-{
-    struct hostent *result=NULL;
-#ifndef __WXMSW__
-    struct hostent ret; //only used if no _WXMSW_
-	int errorno=0;
-	char dataBuf[512]={0};
-#endif
-
-#if defined(__linux__)
-	gethostbyname_r(unicode2char(ipName.GetData()),&ret,dataBuf,sizeof(dataBuf),&result,&errorno);
-#elif defined(__WXMSW__)
-	result = gethostbyname(ipName.GetData());
-#else
-	result = gethostbyname_r(unicode2char(ipName.GetData()),&ret,dataBuf,sizeof(dataBuf),&errorno);
-#endif
-
-	if(result) {
-        #if defined(__WXMSW__)
-        unsigned long addr=*(unsigned long*)result->h_addr;
-        #else
-        unsigned long addr=*(unsigned long*)ret.h_addr;
-        #endif
-		struct sockaddr_in* newsi=(struct sockaddr_in*)malloc(sizeof(struct sockaddr_in)); // new struct sockaddr_in;
-		newsi->sin_addr.s_addr=addr;
-		//wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED,TM_SOURCESDNSDONE);
-		wxMuleInternalEvent evt(SOURCE_DNS_DONE);
-		evt.SetExtraLong((long)newsi);
-		wxPostEvent(&theApp,evt);
-	}
-
-	return NULL;
-}
-
-
 void CDownloadQueue::AddToResolve(const CMD4Hash& fileid, const wxString& pszHostname, uint16 port)
 {
 	bool bResolving = !m_toresolve.empty();
@@ -1279,16 +1219,14 @@ void CDownloadQueue::AddToResolve(const CMD4Hash& fileid, const wxString& pszHos
 	if (bResolving) {
 		return;
 	}
-	printf(unicode2char(wxString(wxT("Opening thread for resolving ")) + pszHostname + wxT("\n")));
-	SourcesAsyncDNS* dns=new SourcesAsyncDNS();
+	printf("Opening thread for resolving %s\n",unicode2char(pszHostname));
+	CAsyncDNS* dns=new CAsyncDNS();
 	if(dns->Create()!=wxTHREAD_NO_ERROR) {
 		// Cannot create (Already there?)
 		dns->Delete();
 		return;
 	}
 	dns->ipName= pszHostname;
-	dns->port=port;
-	dns->fileid = fileid;
 	if (dns->Run() != wxTHREAD_NO_ERROR) {
 		// Cannot run (Already there?)
 		dns->Delete();
@@ -1300,18 +1238,18 @@ void CDownloadQueue::AddToResolve(const CMD4Hash& fileid, const wxString& pszHos
 
 
 
-bool CDownloadQueue::OnHostnameResolved(struct sockaddr_in* inaddr)
+bool CDownloadQueue::OnHostnameResolved(uint32 ip)
 {
 	Hostname_Entry* resolved = m_toresolve.front();
 	m_toresolve.pop_front();
 
 	if (resolved) {		
-		if (inaddr!=NULL) {
+		if (ip!=0) {
 			CPartFile* file = theApp.downloadqueue->GetFileByID(resolved->fileid);
 			if (file) {
 				CSafeMemFile sources(1+4+2);
 				sources.WriteUInt8(1); // No. Sources
-				sources.WriteUInt32(inaddr->sin_addr.s_addr);
+				sources.WriteUInt32(ip);
 				sources.WriteUInt16(resolved->port);
 				sources.Seek(0,wxFromStart);
 				file->AddSources(&sources,0,0);
@@ -1319,22 +1257,15 @@ bool CDownloadQueue::OnHostnameResolved(struct sockaddr_in* inaddr)
 		}
 		delete resolved;
 	}
-	if(inaddr) {
-		// must free it
-		//delete inaddr;
-		free(inaddr);
-	}
 	while (!m_toresolve.empty()) {
 		Hostname_Entry* entry = m_toresolve.front();
-		SourcesAsyncDNS* dns=new SourcesAsyncDNS();
+		CAsyncDNS* dns=new CAsyncDNS();
 		if(dns->Create()!=wxTHREAD_NO_ERROR) {
 			// Cannot create (Already there?)
 			dns->Delete();
 			return false;
 	 	}
 		dns->ipName= entry->strHostname;
-		dns->port=entry->port;
-		dns->fileid = entry->fileid;
 		if (dns->Run() != wxTHREAD_NO_ERROR) {
 			// Cannot run (Already there?)
 			dns->Delete();

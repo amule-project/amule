@@ -138,6 +138,7 @@ amule_SOURCES = ListenSocket.cpp \
 	MuleTextCtrl.cpp \
 	MuleTrayIcon.cpp \
 	muuli_wdr.cpp \
+	NetworkFunctions.cpp \
 	OScopeCtrl.cpp \
 	otherfunctions.cpp \
 	packets.cpp \
@@ -196,6 +197,7 @@ amuled_SOURCES = ListenSocket.cpp \
         KnownFile.cpp \
         KnownFileList.cpp \
         MD5Sum.cpp \
+	NetworkFunctions.cpp \
         otherfunctions.cpp \
         packets.cpp \
         PartFile.cpp \
@@ -346,6 +348,7 @@ noinst_HEADERS = AddFileThread.h \
 		 MuleTextCtrl.h \
 		 MuleTrayIcon.h \
 		 muuli_wdr.h \
+		 NetworkFunctions.h \
 		 opcodes.h \
 		 OScopeCtrl.h \
 		 otherfunctions.h \
