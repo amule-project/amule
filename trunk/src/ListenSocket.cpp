@@ -85,7 +85,10 @@ CClientReqSocket::~CClientReqSocket()
 		client->socket = NULL;
 	}
 	client = NULL;
-	theApp.listensocket->RemoveSocket(this);
+	if (theApp.listensocket) {
+		#warning check closing method to change order and get rid of this
+		theApp.listensocket->RemoveSocket(this);
+	}
 	
 	delete my_handler;
 
