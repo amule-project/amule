@@ -23,12 +23,12 @@ CONFIGURATION:
 - Enter a nice nickname ;)
 
 - Enter the "Download Capacity" and "Upload Capacity" according to your internet connection.
-  All values in aMule are kiloBytes (KB), your Internet Service Provider's (ISP) numbers
-  are most likely kiloBits (kB). 8 kiloBits make up 1 kiloByte, so when your Internet Connection
-  is 768kB Downstrean and 128kB Upstrean (like German Telekom DSL), your correct values are:
+  All values in aMule are kiloBytes (kB), your Internet Service Provider's (ISP) numbers
+  are most likely kiloBits (kb). 8 kiloBits make up 1 kiloByte, so when your Internet Connection
+  is 768kb Downstream and 128kb Upstream (like German Telekom DSL), your correct values are:
 
- Downstrean: 768kB / 8 = 96KB, you enter 96 as "Download Capacity"
- Upstream: 128kB / 8 = 16 KB, you enter 16 as "Upload Capacity"
+ Downstream: 768kb / 8 = 96kB, you enter 96 as "Download Capacity"
+ Upstream: 128kb / 8 = 16kB, you enter 16 as "Upload Capacity"
 
  These values are used to calculate the current bandwidth usage for display purposes only!
  Nevertheless, you need to know them to determine the following down/upload limits:

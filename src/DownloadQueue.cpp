@@ -947,6 +947,14 @@ void CDownloadQueue::AddLinksFromFile()
 		// starts from zero. Thus we must loop until i = GetLineCount()-1.
 		for (unsigned int i = 0; i < linksfile.GetLineCount(); i++) {
 			// Need the links to end with /, otherwise CreateLinkFromUrl crashes us.
+			
+			// Special case! used by a secondary running mule to raise this one.
+			if (link.Cmp(wxT("RAISE_DIALOG")) == 0) {
+				printf("Rising dialog at secondary aMule running request\n");
+				Notify_ShowGUI();
+				continue;
+			}
+			
 			if (link.Right(1) != wxT("/")) {
 				link+=wxT("/");
 			}
