@@ -28,6 +28,14 @@
 #include "muuli_wdr.h"		// Needed for amuleSpecial
 #include <wx/event.h>
 
+#ifdef __WXMSW__
+	#define ROOT_CHAR		wxT('\\')
+	#define ROOT_STRING	wxT("\\")
+#else
+	#define ROOT_CHAR		wxT('/')
+	#define ROOT_STRING	wxT("/")
+#endif
+
 // CDirectoryTreeCtrl
 
 IMPLEMENT_DYNAMIC_CLASS(CDirectoryTreeCtrl, wxTreeCtrl)
@@ -78,7 +86,7 @@ void CDirectoryTreeCtrl::Init(void)
 	SetImageList(&m_image);
 
 	CDirectoryTreeItemData* ItemData = new CDirectoryTreeItemData();
-	hRoot=AddRoot(wxT("/"),IMAGE_FOLDER,-1,ItemData);
+	hRoot=AddRoot(ROOT_STRING,IMAGE_FOLDER,-1,ItemData);
 	AppendItem(hRoot,wxT("Cool. Works")); // will be deleted on expanding it
 
 	HasChanged = false;
@@ -168,9 +176,9 @@ void CDirectoryTreeCtrl::AddChildItem(wxTreeItemId hBranch, wxString const& strT
 
 	wxASSERT(!strDir.IsEmpty()); // non-empty path (cannot add root dir)
 	
-	wxASSERT(strText.Find(wxT('/')) == -1); // Folder label has no '/' on the name
+	wxASSERT(strText.Find(ROOT_CHAR) == -1); // Folder label has no '/' on the name
 	
-	strDir += strText + wxT('/');
+	strDir += strText + ROOT_CHAR;
 	
 	CDirectoryTreeItemData* ItemData = new CDirectoryTreeItemData();
 	wxTreeItemId item=AppendItem(hBranch,strText,IMAGE_FOLDER,-1,ItemData);
@@ -194,15 +202,15 @@ wxString CDirectoryTreeCtrl::GetFullPath(wxTreeItemId hItem)
 	wxASSERT(hItem.IsOk());
 	// don't traverse to the root item ... it will cause extra / to the path
 	if (hItem == hRoot) {
-		return wxT("/");
+		return ROOT_STRING;
 	} else {
-		wxString strDir = wxT("/");
+		wxString strDir = ROOT_STRING;
 		while(hItem.IsOk() && (hItem != hRoot))  {	
-			strDir = wxT("/") + GetItemText(hItem)  + strDir;
+			strDir = ROOT_STRING + GetItemText(hItem)  + strDir;
 			hItem = GetItemParent(hItem);		
 		}
 		// Allways has a '/' at the end
-		wxASSERT(strDir.Last() == wxT('/'));
+		wxASSERT(strDir.Last() == ROOT_CHAR);
 		return strDir;
 	}
 }
@@ -225,11 +233,11 @@ void CDirectoryTreeCtrl::AddSubdirectories(wxTreeItemId hBranch, wxString folder
 		
 		if(fname.Find(wxT('/'),TRUE) != -1) {  // starts at end
 			// Take just the last folder of the path
-			fname=fname.Mid(fname.Find('/',TRUE)+1);  
+			fname=fname.Mid(fname.Find(ROOT_CHAR,TRUE)+1);  
 		}
 		
 		wxASSERT(fname.Len() > 0);
-		wxASSERT(fname.Last() != wxT('/'));
+		wxASSERT(fname.Last() != ROOT_CHAR);
 
 		ary.Add(fname);
 		fname=wxFindNextFile();
@@ -270,24 +278,24 @@ void CDirectoryTreeCtrl::SetSharedDirectories(wxArrayString* list)
 		
 		wxASSERT(folder.Len() > 0);
 
-		if (folder.Cmp(wxT("/"))) { // no removal for root dir
-			while(folder.Len() > 0 && folder.Last() == wxT('/')) {
+		if (folder.Cmp(ROOT_STRING)) { // no removal for root dir
+			while(folder.Len() > 0 && folder.Last() == ROOT_CHAR) {
 				folder.RemoveLast();	// Minus possible trailing slashes.
 			}
 			wxASSERT(folder.Len() > 0); // was modified by while
-			folder.Append(wxT('/'));
+			folder.Append(ROOT_CHAR);
 		}
 
 		m_lstShared.Add(list->Item(i));
 	}
 	
 	// Has root dir a subdir shared?
-	if(HasSharedSubdirectory(wxT("/"))) { // root folder
+	if(HasSharedSubdirectory(ROOT_STRING)) { // root folder
 		SetItemImage(hRoot,IMAGE_FOLDER_SUB_SHARED);
 	}
 	
 	// Is root dir shared?
-	if(IsShared(wxT("/"))) {
+	if(IsShared(ROOT_STRING)) {
 		SetItemBold(hRoot,TRUE);
 	}
 	
