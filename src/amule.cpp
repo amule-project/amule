@@ -200,6 +200,9 @@ int CamuleApp::OnExit()
 	delete glob_prefs; 
 	glob_prefs = NULL;	
 	
+	delete localserver;
+	delete mytimer;
+	
 	printf("aMule shutdown completed.\n");
 	
 	// Return 0 for succesful program termination
@@ -380,6 +383,7 @@ bool CamuleApp::OnInit()
 		printf("aMule already running: exiting\n");
 		return false;
 	}
+	delete client;
 
 	// If there was no server, start one 
 	localserver = new wxServer();
