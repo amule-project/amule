@@ -41,7 +41,11 @@ openbsd*)
 		Just type make -f MakefileWIN32."
 	])
 	;;
+solaris*)
+	RESOLV_LIB="-lresolv"
 esac
+
+AC_SUBST(RESOLV_LIB)
 
 # Checks for programs.
 AC_PROG_CXX
@@ -622,10 +626,10 @@ AC_CONFIG_FILES([Makefile
                  src/Makefile
                  src/kademlia/Makefile
                  src/kademlia/utils/Makefile
-		 src/kademlia/io/Makefile
-		 src/kademlia/kademlia/Makefile
-		 src/kademlia/routing/Makefile
-		 src/kademlia/net/Makefile
+                 src/kademlia/io/Makefile
+                 src/kademlia/kademlia/Makefile
+                 src/kademlia/routing/Makefile
+                 src/kademlia/net/Makefile
                  src/pixmaps/Makefile
                  src/utils/Makefile
                  src/utils/aLinkCreator/Makefile
@@ -651,6 +655,7 @@ echo
 echo "  aMule enabled options:"
 echo 
 echo "  **** aMule Core ****" 
+echo "  Prefix where aMule should be installed?                  ${prefix:-none}"
 echo "  Should aMule be compiled in debug mode?                  ${USE_DEBUG:-no}"
 echo "  Should aMule be compiled with verbose console output?    ${VERBOSE_OUTPUT:-no}"
 echo "  Should aMule be compiled with profiling?                 ${USE_PROFILE:-no}"
