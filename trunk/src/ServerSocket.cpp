@@ -201,7 +201,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 						}
 
 					/* Give it a try ... (Creteil) BEGIN */
-					} else if (message.StartsWith(_("ERROR"))) {
+					} else if (message.StartsWith(wxT("ERROR"))) {
 						CServer* pServer = theApp.serverlist->GetServerByAddress(cur_server->GetAddress(),cur_server->GetPort());
 						wxString servername;
 						if (pServer) {
@@ -214,7 +214,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 														+ message.Mid(5,message.Len()).Trim(_T(" :")))
 						bOutputMessage = false;
 
-					} else if (message.StartsWith(_("WARNING"))) {
+					} else if (message.StartsWith(wxT("WARNING"))) {
 
 						CServer* pServer = theApp.serverlist->GetServerByAddress(cur_server->GetAddress(),cur_server->GetPort());
 						wxString servername;
