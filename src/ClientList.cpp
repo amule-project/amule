@@ -141,7 +141,7 @@ void CClientList::UpdateClientID( CUpDownClient* client, uint32 newID )
 void CClientList::UpdateClientIP( CUpDownClient* client, uint32 newIP )
 {
 	// Sainity check
-	if ( ( client->GetClientState() != CS_LISTED ) || ( client->GetIP() == newIP ) )
+	if ( !client || ( client->GetClientState() != CS_LISTED ) || ( client->GetIP() == newIP ) )
 		return;
 
 	// Remove the old IP entry
@@ -156,7 +156,7 @@ void CClientList::UpdateClientIP( CUpDownClient* client, uint32 newIP )
 void CClientList::UpdateClientHash( CUpDownClient* client, const CMD4Hash& newHash )
 {
 	// Sainity check
-	if ( ( client->GetClientState() != CS_LISTED ) || ( client->GetUserHash() == newHash ) )
+	if ( !client || ( client->GetClientState() != CS_LISTED ) || ( client->GetUserHash() == newHash ) )
 		return;
 
 
@@ -638,7 +638,7 @@ void CClientList::FilterQueues()
 	for ( IDMap::iterator it = m_ipList.begin(); it != m_ipList.end(); ) {
 		IDMap::iterator tmp = it++;
 		
-		if ( theApp.ipfilter->IsFiltered( it->second->GetIP() ) ) {
+		if ( it->second && theApp.ipfilter->IsFiltered( it->second->GetIP() ) ) {
 			it->second->Safe_Delete();
 		}
 	}
