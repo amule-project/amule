@@ -577,10 +577,7 @@ bool CamuleApp::OnInit()
 	// If we wern't able to start listening, we need to warn the user
 	if ( !listensocket->Ok() ) {
 		amuledlg->AddLogLine(false, wxT(_("Port %d is not available. You will be LOWID")), glob_prefs->GetPort());
-		wxString str;
-		str.Format(_("Port %d is not available !!\n\nThis will mean that you will be LOWID.\n\nUse netstat to determine when port becomes available\nand try starting amule again."), glob_prefs->GetPort());
-		
-		wxMessageBox(str, _("Error"), wxCENTRE | wxOK | wxICON_ERROR);
+		wxMessageBox(wxT(wxString::Format(_("Port %d is not available !!\n\nThis mean that you will be LOWID.\n\nCheck your network to make sure the port is open for output and input."), glob_prefs->GetPort())), _("Error"), wxOK | wxICON_ERROR);
 	}
 
 
