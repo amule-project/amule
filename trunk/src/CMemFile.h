@@ -40,9 +40,6 @@ public:
 //	virtual void Abort();
 //	virtual void Flush();
 	virtual bool Close();
-	
-	// Kry - DANGEROUS! JUST FOR USE ON DEBUG BUILD TO DUMP MEMFILES!
-	BYTE* GetCurrentBuffer() { return (fBuffer + fPosition); };
 
   virtual off_t Read(uint8&);
   virtual off_t Read(uint16&);
@@ -58,9 +55,7 @@ public:
 
 	virtual off_t  ReadRaw(void* buf,off_t length);
 	virtual size_t WriteRaw(const void* buf,size_t length);
-	
-	
-
+  
 protected:
 	virtual off_t  Read(void* buf,off_t length);
 	virtual size_t Write(const void* buf,size_t length);
@@ -68,14 +63,13 @@ protected:
 private:
 	void enlargeBuffer(unsigned long size);
 	
-	BYTE* fBuffer;  
 	unsigned long fLength;
 	unsigned int fGrowBytes;
 	unsigned long fPosition;
 	unsigned long fBufferSize;
 	unsigned long fFileSize;
 	int deleteBuffer;
-
+	BYTE* fBuffer;
 };
 
 #endif // CMEMFILE_H
