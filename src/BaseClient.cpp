@@ -1899,3 +1899,23 @@ void CUpDownClient::CheckForGPLEvilDoer(){
 		m_bGPLEvildoer = true;
 	}
 }
+
+wxString CUpDownClient::GetClientFullInfo() {
+
+	if (m_clientVerString.IsEmpty()) {
+		ReGetClientSoft();		
+	}
+	
+	wxString FullVerName;
+	FullVerName = "Client ";
+	if (!m_pszUsername) {
+		FullVerName += "(Unknown)";
+	} else {
+		FullVerName += m_pszUsername;
+	}
+	FullVerName += wxString::Format(" on ip %s port %u using ",GetFullIP(),GetUserPort()) + m_clientVerString;
+	if (!GetClientModString().IsEmpty()) {		
+		FullVerName += " Mod " + GetClientModString();
+	}
+	return (FullVerName);
+}

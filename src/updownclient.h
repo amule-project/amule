@@ -267,7 +267,6 @@ public:
 	void			UDPFileReasked();
 	uint32			GetSessionUp()			{return m_nTransferedUp - m_nCurSessionUp;}
 	void			ResetSessionUp()		{m_nCurSessionUp = m_nTransferedUp;} 
-	void			ProcessUpFileStatus(char* packet,uint32 size);
 	uint16			GetUpPartCount()			{return m_nUpPartCount;}
 	void			DrawUpStatusBar(wxMemoryDC* dc, wxRect rect, bool onlygreyrect, bool  bFlat);
 
@@ -278,8 +277,11 @@ public:
 	uint8			GetDownloadState()			{return m_nDownloadState;}
 	void			SetDownloadState(uint8 byNewState);
 	uint32			GetLastAskedTime()			{return m_dwLastAskedTime;}
-	inline bool		IsPartAvailable(uint16 iPart)	{return	( (iPart >= m_nPartCount) || (!m_abyPartStatus) )? 0:m_abyPartStatus[iPart];}
+
+	inline bool		IsPartAvailable(uint16 iPart)	{return	( (iPart >= m_nPartCount) || (!m_abyPartStatus) )? 0:m_abyPartStatus[iPart];}	
+	
 	bool			IsUpPartAvailable(uint16 iPart) {return ( (iPart >= m_nUpPartCount) || (!m_abyUpPartStatus) )? 0:m_abyUpPartStatus[iPart];}
+
 	uint8*			GetPartStatus()				{return m_abyPartStatus;}
 #ifdef DOWNLOADRATE_FILTERED
 	float			GetKBpsDown()				{return kBpsDown;}	// Emilio
@@ -372,6 +374,8 @@ public:
 						m_fSentCancelTransfer = bVal;
 					}	
 	
+	wxString GetClientFullInfo();
+					
 private:
 
 	// base
@@ -466,7 +470,6 @@ private:
 	uint8		m_nDownloadState;
 	uint16		m_nPartCount;
 	uint32		m_cDownAsked;
-	uint8*		m_abyPartStatus;
 	uint32		m_dwLastAskedTime;
 	char*		m_pszClientFilename;
 	uint32		m_nTransferedDown;
@@ -515,7 +518,7 @@ private:
 	
 	int				GetHashType() const;
 	bool	m_bHelloAnswerPending;
-	
+	uint8*		m_abyPartStatus;	
 public:
 
 	/* m_OtherRequests_list --> public instead of private */
