@@ -598,6 +598,10 @@ bool CamuleApp::OnInit()
 	uploadqueue		= new CUploadQueue(glob_prefs);
 	ipfilter		= new CIPFilter();
 
+	// Create listen socket 
+	myaddr.Service(glob_prefs->GetPort());
+	listensocket = new CListenSocket(glob_prefs, myaddr);
+
 	// Create main dialog
 	// Should default/last-used position be overridden?
 	if (geometry_enabled ) {
@@ -637,10 +641,6 @@ bool CamuleApp::OnInit()
 	// reload shared files
 	sharedfiles->Reload(true, true);
 
-
-	// Create a socket and start listening
-	myaddr.Service(glob_prefs->GetPort());
-	listensocket = new CListenSocket(glob_prefs, myaddr);
 	listensocket->StartListening();
 
 	// If we wern't able to start listening, we need to warn the user
