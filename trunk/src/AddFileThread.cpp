@@ -6,12 +6,12 @@
 // modify it under the terms of the GNU General Public License
 // as published by the Free Software Foundation; either
 // version 2 of the License, or (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -21,10 +21,10 @@
 #include <wx/event.h>		// Needed for wxCommandEvent
 #include <wx/timer.h>		// Needed for wxStopWatch
 
+#include "amule.h"			// Needed for theApp
 #include "AddFileThread.h"	// Interface declarations
 #include "otherfunctions.h"	// Needed for nstrdup
 #include "opcodes.h"		// Needed for TM_HASHTHREADFINISHED
-#include "amule.h"			// Needed for theApp
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "KnownFile.h"		// Needed for CKnownFile
 
@@ -66,7 +66,7 @@ void CAddFileThread::Shutdown()
 
 	if (DeadThread || m_endWaitingForHashList) {
 		printf("Already dead\n");
-	} else {		
+	} else {
 		m_lockWaitingForHashList.Lock();
 		m_endWaitingForHashList = 1;
 		m_lockWaitingForHashList.Unlock();
@@ -83,7 +83,7 @@ void CAddFileThread::Shutdown()
 
 	printf("Sending death event to the app\n");
 	wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED,TM_HASHTHREADFINISHED);
-	wxPostEvent(&theApp,evt);		
+	wxPostEvent(&theApp,evt);
 
 }
 
@@ -105,9 +105,9 @@ void CAddFileThread::AddFile(const wxString path, const wxString name, CPartFile
 
 wxThread::ExitCode CAddFileThread::Entry()
 {
-	
+
 	while (!m_endWaitingForHashList) {
-		   
+
 		  if (m_sWaitingForHashList.IsEmpty()) {
 			  if ((GetTickCount() - dwLastAddTime) > THREAD_ADDING_TIMEOUT) {
 				printf("Hashing thread timed out with no aditions - removing thread\n");
@@ -119,21 +119,21 @@ wxThread::ExitCode CAddFileThread::Entry()
 			  } else {
 				this->Yield();
 				this->Sleep(1);
-			  }				  
-			  continue;	  
+			  }
+			  continue;
 		  }
-			
+
 		m_lockWaitingForHashList.Lock();
 		UnknownFile_Struct* hashfile = m_sWaitingForHashList.RemoveHead();
 		m_lockWaitingForHashList.Unlock();
-	
+
 		CKnownFile* newrecord = new CKnownFile();
 		printf("Sharing %s/%s\n",unicode2char(hashfile->directory),unicode2char(hashfile->name));
-	
+
 		// TODO: What we are supposed to do if the following does fail?
 		// Kry - Exit, afaik
 		bool finished = newrecord->CreateFromFile(hashfile->directory,hashfile->name,&m_endWaitingForHashList);
-		
+
 		if (!finished) {
 			// Kry -Hashing thread interrupted
 			m_lockWaitingForHashList.Lock();
@@ -141,7 +141,7 @@ wxThread::ExitCode CAddFileThread::Entry()
 			m_lockWaitingForHashList.Unlock();
 			continue;
 		}
-		
+
 		if (!m_endWaitingForHashList) {
 			wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED,TM_FINISHEDHASHING);
 			evt.SetClientData(newrecord);
@@ -149,10 +149,10 @@ wxThread::ExitCode CAddFileThread::Entry()
 			wxPostEvent(&theApp,evt);
 			dwLastAddTime = GetTickCount();
 		}
-	
+
 		delete hashfile;
     }
-    
+
     // Just to be sure
 	m_lockWaitingForHashList.Lock();
 	m_endWaitingForHashList = 1;
