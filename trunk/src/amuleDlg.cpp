@@ -758,11 +758,11 @@ void CamuleDlg::ShowTransferRate()
 }
 
 
-void CamuleDlg::OnHashingShutdown(wxCommandEvent&)
+void CamuleDlg::OnHashingShutdown(wxCommandEvent& evt)
 {
 	if ( m_app_state != APP_STATE_SHUTINGDOWN ) {
-		printf("Hashing thread ended, restarting\n");
-		CAddFileThread::Setup();
+		printf("Hashing thread ended\n");
+		// CAddFileThread::Setup();
 	} else {
 		printf("Hashing thread terminated, ready to shutdown\n");
 		Destroy();
