@@ -116,7 +116,7 @@ protected:
 	void OnAutoStatImgCheck ( wxCommandEvent & event );
 	void OnFtpUpdateCheck ( wxCommandEvent & event );
 
-	DECLARE_EVENT_TABLE ();
+	DECLARE_EVENT_TABLE ()
 
 public:
 

@@ -115,7 +115,7 @@ private:
 	AMULE_TIMER_CLASS	m_idRetryTimer;
 	uint32	m_nLocalIP;
 
-	std::map<DWORD, CServerSocket*> connectionattemps;
+	std::map<uint32, CServerSocket*> connectionattemps;
 };
 
 #endif // SERVERCONNECT_H

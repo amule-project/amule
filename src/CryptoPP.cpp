@@ -121,7 +121,11 @@
 	}
 
 #define FILTER_OUTPUT(site, output, length, messageEnd)	\
-	FILTER_OUTPUT2(site, 0, output, length, messageEnd)
+	{\
+	case site:	\
+	if (Output(site, output, length, messageEnd, blocking))	\
+		return STDMAX(1U, (unsigned int)length-m_inputPosition);\
+	}
 
 #endif
 ////////////////////////////////////////////////////////////////////////////////
@@ -147,14 +151,14 @@
 
 NAMESPACE_BEGIN(CryptoPP)
 
-CRYPTOPP_COMPILE_ASSERT(sizeof(byte) == 1);
-CRYPTOPP_COMPILE_ASSERT(sizeof(word16) == 2);
-CRYPTOPP_COMPILE_ASSERT(sizeof(word32) == 4);
+CRYPTOPP_COMPILE_ASSERT_GLOBAL(sizeof(byte) == 1);
+CRYPTOPP_COMPILE_ASSERT_GLOBAL(sizeof(word16) == 2);
+CRYPTOPP_COMPILE_ASSERT_GLOBAL(sizeof(word32) == 4);
 #ifdef WORD64_AVAILABLE
-CRYPTOPP_COMPILE_ASSERT(sizeof(word64) == 8);
+CRYPTOPP_COMPILE_ASSERT_GLOBAL(sizeof(word64) == 8);
 #endif
 #ifdef CRYPTOPP_NATIVE_DWORD_AVAILABLE
-CRYPTOPP_COMPILE_ASSERT(sizeof(dword) == 2*sizeof(word));
+CRYPTOPP_COMPILE_ASSERT_GLOBAL(sizeof(dword) == 2*sizeof(word));
 #endif
 
 const std::string BufferedTransformation::NULL_CHANNEL;
@@ -1588,53 +1592,53 @@ DEFINE_OID(1, iso)
 			DEFINE_OID(iso_us()+113549, rsadsi)
 				DEFINE_OID(rsadsi()+1, pkcs)
 					DEFINE_OID(pkcs()+1, pkcs_1)
-						DEFINE_OID(pkcs_1()+1, rsaEncryption);
+						DEFINE_OID(pkcs_1()+1, rsaEncryption)
 				DEFINE_OID(rsadsi()+2, rsadsi_digestAlgorithm)
 					DEFINE_OID(rsadsi_digestAlgorithm()+2, id_md2)
 					DEFINE_OID(rsadsi_digestAlgorithm()+5, id_md5)
-	DEFINE_OID(iso()+3, identified_organization);
-		DEFINE_OID(identified_organization()+14, oiw);
-			DEFINE_OID(oiw()+14, oiw_secsig);
-				DEFINE_OID(oiw_secsig()+2, oiw_secsig_algorithms);
-					DEFINE_OID(oiw_secsig_algorithms()+26, id_sha1);
-		DEFINE_OID(identified_organization()+36, teletrust);
+	DEFINE_OID(iso()+3, identified_organization)
+		DEFINE_OID(identified_organization()+14, oiw)
+			DEFINE_OID(oiw()+14, oiw_secsig)
+				DEFINE_OID(oiw_secsig()+2, oiw_secsig_algorithms)
+					DEFINE_OID(oiw_secsig_algorithms()+26, id_sha1)
+		DEFINE_OID(identified_organization()+36, teletrust)
 			DEFINE_OID(teletrust()+3+2+1, id_ripemd160)
-		DEFINE_OID(identified_organization()+132, certicom);
-			DEFINE_OID(certicom()+0, certicom_ellipticCurve);
+		DEFINE_OID(identified_organization()+132, certicom)
+			DEFINE_OID(certicom()+0, certicom_ellipticCurve)
 				// these are sorted by curve type and then by OID
 				// first curves based on GF(p)
-				DEFINE_OID(certicom_ellipticCurve()+6, secp112r1);
-				DEFINE_OID(certicom_ellipticCurve()+7, secp112r2);
-				DEFINE_OID(certicom_ellipticCurve()+8, secp160r1);
-				DEFINE_OID(certicom_ellipticCurve()+9, secp160k1);
-				DEFINE_OID(certicom_ellipticCurve()+10, secp256k1);
-				DEFINE_OID(certicom_ellipticCurve()+28, secp128r1);
-				DEFINE_OID(certicom_ellipticCurve()+29, secp128r2);
-				DEFINE_OID(certicom_ellipticCurve()+30, secp160r2);
-				DEFINE_OID(certicom_ellipticCurve()+31, secp192k1);
-				DEFINE_OID(certicom_ellipticCurve()+32, secp224k1);
-				DEFINE_OID(certicom_ellipticCurve()+33, secp224r1);
-				DEFINE_OID(certicom_ellipticCurve()+34, secp384r1);
-				DEFINE_OID(certicom_ellipticCurve()+35, secp521r1);
+				DEFINE_OID(certicom_ellipticCurve()+6, secp112r1)
+				DEFINE_OID(certicom_ellipticCurve()+7, secp112r2)
+				DEFINE_OID(certicom_ellipticCurve()+8, secp160r1)
+				DEFINE_OID(certicom_ellipticCurve()+9, secp160k1)
+				DEFINE_OID(certicom_ellipticCurve()+10, secp256k1)
+				DEFINE_OID(certicom_ellipticCurve()+28, secp128r1)
+				DEFINE_OID(certicom_ellipticCurve()+29, secp128r2)
+				DEFINE_OID(certicom_ellipticCurve()+30, secp160r2)
+				DEFINE_OID(certicom_ellipticCurve()+31, secp192k1)
+				DEFINE_OID(certicom_ellipticCurve()+32, secp224k1)
+				DEFINE_OID(certicom_ellipticCurve()+33, secp224r1)
+				DEFINE_OID(certicom_ellipticCurve()+34, secp384r1)
+				DEFINE_OID(certicom_ellipticCurve()+35, secp521r1)
 				// then curves based on GF(2^n)
-				DEFINE_OID(certicom_ellipticCurve()+1, sect163k1);
-				DEFINE_OID(certicom_ellipticCurve()+2, sect163r1);
-				DEFINE_OID(certicom_ellipticCurve()+3, sect239k1);
-				DEFINE_OID(certicom_ellipticCurve()+4, sect113r1);
-				DEFINE_OID(certicom_ellipticCurve()+5, sect113r2);
-				DEFINE_OID(certicom_ellipticCurve()+15, sect163r2);
-				DEFINE_OID(certicom_ellipticCurve()+16, sect283k1);
-				DEFINE_OID(certicom_ellipticCurve()+17, sect283r1);
-				DEFINE_OID(certicom_ellipticCurve()+22, sect131r1);
-				DEFINE_OID(certicom_ellipticCurve()+23, sect131r2);
-				DEFINE_OID(certicom_ellipticCurve()+24, sect193r1);
-				DEFINE_OID(certicom_ellipticCurve()+25, sect193r2);
-				DEFINE_OID(certicom_ellipticCurve()+26, sect233k1);
-				DEFINE_OID(certicom_ellipticCurve()+27, sect233r1);
-				DEFINE_OID(certicom_ellipticCurve()+36, sect409k1);
-				DEFINE_OID(certicom_ellipticCurve()+37, sect409r1);
-				DEFINE_OID(certicom_ellipticCurve()+38, sect571k1);
-				DEFINE_OID(certicom_ellipticCurve()+39, sect571r1);
+				DEFINE_OID(certicom_ellipticCurve()+1, sect163k1)
+				DEFINE_OID(certicom_ellipticCurve()+2, sect163r1)
+				DEFINE_OID(certicom_ellipticCurve()+3, sect239k1)
+				DEFINE_OID(certicom_ellipticCurve()+4, sect113r1)
+				DEFINE_OID(certicom_ellipticCurve()+5, sect113r2)
+				DEFINE_OID(certicom_ellipticCurve()+15, sect163r2)
+				DEFINE_OID(certicom_ellipticCurve()+16, sect283k1)
+				DEFINE_OID(certicom_ellipticCurve()+17, sect283r1)
+				DEFINE_OID(certicom_ellipticCurve()+22, sect131r1)
+				DEFINE_OID(certicom_ellipticCurve()+23, sect131r2)
+				DEFINE_OID(certicom_ellipticCurve()+24, sect193r1)
+				DEFINE_OID(certicom_ellipticCurve()+25, sect193r2)
+				DEFINE_OID(certicom_ellipticCurve()+26, sect233k1)
+				DEFINE_OID(certicom_ellipticCurve()+27, sect233r1)
+				DEFINE_OID(certicom_ellipticCurve()+36, sect409k1)
+				DEFINE_OID(certicom_ellipticCurve()+37, sect409r1)
+				DEFINE_OID(certicom_ellipticCurve()+38, sect571k1)
+				DEFINE_OID(certicom_ellipticCurve()+39, sect571r1)
 DEFINE_OID(2, joint_iso_ccitt)
 	DEFINE_OID(joint_iso_ccitt()+16, country)
 		DEFINE_OID(country()+840, joint_iso_ccitt_us)
@@ -2536,8 +2540,6 @@ void Portable::Multiply8Bottom(word *R, const word *A, const word *B)
 
 // ************** x86 feature detection ***************
 
-static bool s_sse2Enabled = true;
-
 static void CpuId(word32 input, word32 *output)
 {
 #ifdef __GNUC__
@@ -2695,10 +2697,10 @@ public:
 			"pop ebp;" \
 			".att_syntax prefix;" \
 			"pop %%ebx;" \
-					: \
+		  			: \
 					: "c" (C), "d" (A), "m" (B), "S" (N) \
 					: "%edi", "memory", "cc" \
-		);
+		); 
 	#define MulPrologue \
 		__asm__ __volatile__ \
 		( \
@@ -2753,6 +2755,9 @@ CRYPTOPP_NAKED word PentiumOptimized::Add(word *C, const word *A, const word *B,
 	AS2(	adc eax, 0)		// store carry into eax (return result register)
 
 	AddEpilogue
+
+	// Just to get rid of warnings
+	// return 0;
 }
 
 CRYPTOPP_NAKED word PentiumOptimized::Subtract(word *C, const word *A, const word *B, unsigned int N)
@@ -2791,6 +2796,9 @@ CRYPTOPP_NAKED word PentiumOptimized::Subtract(word *C, const word *A, const wor
 	AS2(	adc eax, 0)		// store carry into eax (return result register)
 
 	AddEpilogue
+
+	// Just to get rid of warnings
+	// return 0;
 }
 
 // On Pentium 4, the adc and sbb instructions are very expensive, so avoid them.
@@ -2840,6 +2848,9 @@ CRYPTOPP_NAKED word P4Optimized::Add(word *C, const word *A, const word *B, unsi
 	AS1(loopendAddP4:)
 
 	AddEpilogue
+
+	// Just to get rid of warnings
+	// return 0;
 }
 
 CRYPTOPP_NAKED word P4Optimized::Subtract(word *C, const word *A, const word *B, unsigned int N)
@@ -2887,6 +2898,9 @@ CRYPTOPP_NAKED word P4Optimized::Subtract(word *C, const word *A, const word *B,
 	AS1(loopendSubP4:)
 
 	AddEpilogue
+
+	// Just to get rid of warnings
+	// return 0;
 }
 
 // multiply assembly code originally contributed by Leonard Janke
@@ -3916,7 +3930,7 @@ Integer::Integer()
 }
 
 Integer::Integer(const Integer& t)
-	: reg(RoundupSize(t.WordCount())), sign(t.sign)
+	: ASN1Object(), reg(RoundupSize(t.WordCount())), sign(t.sign)
 {
 	CopyWords(reg, t.reg, reg.size());
 }
@@ -5791,6 +5805,7 @@ void ByteQueue::SetNodeSize(unsigned int nodeSize)
 }
 
 ByteQueue::ByteQueue(const ByteQueue &copy)
+	: Bufferless<BufferedTransformation>()
 {
 	CopyFrom(copy);
 }
@@ -6628,7 +6643,7 @@ FilterWithBufferedInput::FilterWithBufferedInput(unsigned int firstSize, unsigne
 	: Filter(attachment), m_firstSize(firstSize), m_blockSize(blockSize), m_lastSize(lastSize)
 	, m_firstInputDone(false)
 {
-	if (m_firstSize < 0 || m_blockSize < 1 || m_lastSize < 0)
+	if (m_blockSize < 1)
 		throw InvalidArgument("FilterWithBufferedInput: invalid buffer size");
 
 	m_queue.ResetQueue(1, m_firstSize);
@@ -6637,7 +6652,7 @@ FilterWithBufferedInput::FilterWithBufferedInput(unsigned int firstSize, unsigne
 void FilterWithBufferedInput::IsolatedInitialize(const NameValuePairs &parameters)
 {
 	InitializeDerivedAndReturnNewSizes(parameters, m_firstSize, m_blockSize, m_lastSize);
-	if (m_firstSize < 0 || m_blockSize < 1 || m_lastSize < 0)
+	if (m_blockSize < 1)
 		throw InvalidArgument("FilterWithBufferedInput: invalid buffer size");
 	m_queue.ResetQueue(1, m_firstSize);
 	m_firstInputDone = false;
@@ -7677,7 +7692,7 @@ DERGeneralEncoder::DERGeneralEncoder(BufferedTransformation &outQueue, byte asnT
 }
 
 DERGeneralEncoder::DERGeneralEncoder(DERGeneralEncoder &outQueue, byte asnTag)
-	: m_outQueue(outQueue), m_finished(false), m_asnTag(asnTag)
+	: ByteQueue(), m_outQueue(outQueue), m_finished(false), m_asnTag(asnTag)
 {
 }
 
@@ -7865,6 +7880,8 @@ class RSAPrimeSelector : public PrimeSelector
 {
 public:
 	RSAPrimeSelector(const Integer &e) : m_e(e) {}
+	virtual ~RSAPrimeSelector() {};
+	
 	bool IsAcceptable(const Integer &candidate) const {return RelativelyPrime(m_e, candidate-Integer::One());}
 	Integer m_e;
 };
@@ -8452,7 +8469,6 @@ unsigned int FileStore::CopyRangeTo2(BufferedTransformation &target, unsigned lo
 		return 0;	// don't try to seek beyond the end of file
 	}
 	m_stream->seekg(newPosition);
-	unsigned long total = 0;
 	try
 	{
 		assert(!m_waiting);
@@ -9239,10 +9255,10 @@ void NonblockingRng::GenerateBlock(byte *output, unsigned int size)
 	if (!CryptGenRandom(m_Provider.GetProviderHandle(), size, output))
 		throw OS_RNG_Err("CryptGenRandom");
 #else
-	if (read(m_fd, output, size) != size) {
+	if ((unsigned int)read(m_fd, output, size) != size) {
 		// Kernel 2.6.10 has non-concurrent access to /dev/urandom, retry at least once
 		printf("Shamelessly retrying a random generation attempt\n");
-		if (read(m_fd, output, size) != size) {
+		if ((unsigned int)read(m_fd, output, size) != size) {
 			printf("Error reading /dev/urandom! (kernel 2.6.10?)\n");
 			throw OS_RNG_Err("read /dev/urandom");
 		}

@@ -353,7 +353,7 @@ void CSearchList::ProcessSearchanswer(const char *in_packet, uint32 size,
 	}
 #endif
 
-	const CSafeMemFile packet((BYTE*)in_packet, size);
+	const CSafeMemFile packet((byte*)in_packet, size);
 	uint32 results = packet.ReadUInt32();
 	bool unicoded = (Sender && Sender->GetUnicodeSupport());
 	for (unsigned int i = 0; i != results; ++i){			
@@ -381,7 +381,7 @@ void CSearchList::ProcessSearchanswer(const char *in_packet, uint32 size,
 
 void CSearchList::ProcessSearchanswer(const char* in_packet, uint32 size, bool bOptUTF8, uint32 WXUNUSED(nServerIP), uint16 WXUNUSED(nServerPort))
 {
-	CSafeMemFile packet((BYTE*)in_packet,size,0);
+	CSafeMemFile packet((byte*)in_packet,size,0);
 
 	uint32 results = packet.ReadUInt32();
 

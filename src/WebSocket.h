@@ -44,7 +44,7 @@ class CWebSocket {
 		void OnReceived(char* pData, uint32 dwDataSize);
 		void OnRequestReceived(char* pHeader, uint32 dwHeaderLen, char* pData, uint32 dwDataLen);
 		void Disconnect();
-		void SendContent(LPCSTR szStdResponse, const void* pContent, uint32 dwContentSize);
+		void SendContent(const char* szStdResponse, const void* pContent, uint32 dwContentSize);
 		void SendData(const void* pData, uint32 dwDataSize);
 	
 		CWebServer *m_pParent;

@@ -119,7 +119,7 @@ int CClientUDPSocket::DoReceive(amuleIPV4Address& addr, char* buffer, uint32 max
 	}
 	#endif
 	return length;
-};
+}
 
 bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, uint32 host, uint16 port)
 {
@@ -131,8 +131,8 @@ bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, uint
 					break;
 				}
 				
-				CSafeMemFile data_in((BYTE*)packet, size);
-				uchar reqfilehash[16];
+				CSafeMemFile data_in((byte*)packet, size);
+				byte reqfilehash[16];
 				data_in.ReadHash16(reqfilehash);
 				CKnownFile* reqfile = theApp.sharedfiles->GetFileByID(reqfilehash);
 				if (!reqfile) {
@@ -207,7 +207,7 @@ bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, uint
 				theApp.statistics->AddDownDataOverheadFileRequest(size);
 				CUpDownClient* sender = theApp.downloadqueue->GetDownloadClientByIP_UDP(host,port);
 				if (sender) {
-					CSafeMemFile data_in((BYTE*)packet,size);
+					CSafeMemFile data_in((byte*)packet,size);
 					if ( sender->GetUDPVersion() > 3 ) {
 						sender->ProcessFileStatus(true, &data_in, sender->GetRequestFile());
 					}

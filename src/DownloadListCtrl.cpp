@@ -84,7 +84,7 @@ struct CtrlItem_Struct
 	ItemType	type;
 	CPartFile*	owner;
 	void*		value;
-	DWORD		dwUpdated;
+	uint32		dwUpdated;
 	wxBitmap*	status;
 
 	CtrlItem_Struct()
@@ -1354,7 +1354,7 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 			int iHeight = rect.GetHeight();
 
 			// DO NOT DRAW IT ALL THE TIME
-			DWORD dwTicks = GetTickCount();
+			uint32 dwTicks = GetTickCount();
 			wxMemoryDC cdcStatus;
 			
 			if ( item->dwUpdated < dwTicks || !item->status || iWidth != item->status->GetWidth() ) {
@@ -1491,7 +1491,7 @@ void CDownloadListCtrl::DrawSourceItem(
 			wxRect cur_rec = rect;
 			// +3 is added by OnDrawItem()... so take it off
 			// Kry - eMule says +1, so I'm trusting it
-			POINT point = { cur_rec.GetX(), cur_rec.GetY()+1 };
+			wxPoint point( cur_rec.GetX(), cur_rec.GetY()+1 );
 
 			if (item->type == AVAILABLE_SOURCE) {
 				uint8 image = 0;
@@ -1530,7 +1530,7 @@ void CDownloadListCtrl::DrawSourceItem(
 				}
 
 				cur_rec.x += 20;
-				POINT point2 = { cur_rec.GetX(), cur_rec.GetY() + 1 };
+				wxPoint point2( cur_rec.GetX(), cur_rec.GetY() + 1 );
 
 				uint8 clientImage;
 				
@@ -1634,7 +1634,7 @@ void CDownloadListCtrl::DrawSourceItem(
 					int iWidth = rect.GetWidth();
 					int iHeight = rect.GetHeight() - 2;
 
-					DWORD dwTicks = GetTickCount();
+					uint32 dwTicks = GetTickCount();
 					wxMemoryDC cdcStatus;
 
 					if (	item->dwUpdated < dwTicks ||
@@ -2149,11 +2149,11 @@ void CDownloadListCtrl::DrawSourceStatusBar(
 {
 	static CBarShader s_StatusBar(16);
 
-	DWORD crBoth		= ( bFlat ? RGB(   0, 150,   0 ) : RGB(   0, 192,   0 ) );
-	DWORD crNeither		= ( bFlat ? RGB( 224, 224, 224 ) : RGB( 240, 240, 240 ) );
-	DWORD crClientOnly	= ( bFlat ? RGB(   0,   0,   0 ) : RGB( 104, 104, 104 ) );
-	DWORD crPending		= ( bFlat ? RGB( 255, 208,   0 ) : RGB( 255, 208,   0 ) );
-	DWORD crNextPending	= ( bFlat ? RGB( 255, 255, 100 ) : RGB( 255, 255, 100 ) );
+	uint32 crBoth		= ( bFlat ? RGB(   0, 150,   0 ) : RGB(   0, 192,   0 ) );
+	uint32 crNeither		= ( bFlat ? RGB( 224, 224, 224 ) : RGB( 240, 240, 240 ) );
+	uint32 crClientOnly	= ( bFlat ? RGB(   0,   0,   0 ) : RGB( 104, 104, 104 ) );
+	uint32 crPending		= ( bFlat ? RGB( 255, 208,   0 ) : RGB( 255, 208,   0 ) );
+	uint32 crNextPending	= ( bFlat ? RGB( 255, 255, 100 ) : RGB( 255, 255, 100 ) );
 
 	CPartFile* reqfile = source->GetRequestFile();
 
@@ -2177,7 +2177,7 @@ void CDownloadListCtrl::DrawSourceStatusBar(
 				uEnd = PARTSIZE*(i+1);
 			}
 			
-			DWORD color = 0;
+			uint32 color = 0;
 			if ( reqfile->IsComplete(PARTSIZE*i,PARTSIZE*(i+1)-1)) {
 				color = crBoth;
 			} else if (	source->GetDownloadState() == DS_DOWNLOADING &&

@@ -156,7 +156,7 @@ public:
 	const CMD4Hash&	GetPartHash(uint16 part) const;
 
 	// nr. of part hashs according the file size wrt ED2K protocol
-	UINT	GetED2KPartHashCount() const { return m_iED2KPartHashCount; }
+	uint32	GetED2KPartHashCount() const { return m_iED2KPartHashCount; }
 
 	// nr. of 9MB parts (file data)
 	inline uint16 GetPartCount() const { return m_iPartCount; }
@@ -227,18 +227,18 @@ public:
 	 */
 	void UpdateUpPartsFrequency( CUpDownClient* client, bool increment );
 
-	void	CreateHashFromString(uchar* in_string, uint32 Length, uchar* Output, CAICHHashTree* pShaHashOut = NULL)	{CreateHashFromInput(NULL, Length,Output,in_string,pShaHashOut);}
+	void	CreateHashFromString(byte* in_string, uint32 Length, byte* Output, CAICHHashTree* pShaHashOut = NULL)	{CreateHashFromInput(NULL, Length,Output,in_string,pShaHashOut);}
 protected:
 	bool	LoadTagsFromFile(const CFileDataIO* file);
 	bool	LoadDateFromFile(const CFileDataIO* file);
-	void	CreateHashFromFile(CFile* file, uint32 Length, uchar* Output, CAICHHashTree* pShaHashOut = NULL) const { CreateHashFromInput(file, Length, Output, NULL, pShaHashOut); }	
+	void	CreateHashFromFile(CFile* file, uint32 Length, byte* Output, CAICHHashTree* pShaHashOut = NULL) const { CreateHashFromInput(file, Length, Output, NULL, pShaHashOut); }	
 	void	LoadComment();//comment
 	ArrayOfCMD4Hash hashlist;
 	ArrayOfCTag taglist;
 	wxString m_strFilePath;	
 	CAICHHashSet*			m_pAICHHashSet;
 
-	void	CreateHashFromInput(CFile* file, uint32 Length, uchar* Output, uchar* in_string, CAICHHashTree* pShaHashOut) const;
+	void	CreateHashFromInput(CFile* file, uint32 Length, byte* Output, byte* in_string, CAICHHashTree* pShaHashOut) const;
 	bool	m_bCommentLoaded;
 	uint16	m_iPartCount;
 	uint16  m_iED2KPartCount;

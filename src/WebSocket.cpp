@@ -349,7 +349,7 @@ void CWebSocket::Disconnect() {
 }
 
 
-void CWebSocket::SendContent(LPCSTR szStdResponse, const void* pContent, uint32 dwContentSize) {
+void CWebSocket::SendContent(const char* szStdResponse, const void* pContent, uint32 dwContentSize) {
 	char szBuf[0x1000]; // 0x1000 is safe because it's just used for the header
 	int nLen = sprintf(szBuf, "HTTP/1.1 200 OK\r\n%sContent-Length: %d\r\n\r\n", szStdResponse, dwContentSize);
 	SendData(szBuf, nLen);

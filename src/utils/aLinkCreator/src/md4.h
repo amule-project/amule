@@ -63,6 +63,12 @@
 // Hook for external progress bar
 typedef bool (*MD4Hook)(int percent);
 
+
+const unsigned int MD4_HASHLEN_BYTE = 128 / 8;
+const unsigned int BUFSIZE = 64*1024;
+const unsigned int PARTSIZE = 9500*1024;
+
+
 class MD4
   {
   private:
@@ -75,10 +81,6 @@ class MD4
         uint32_t bits[2];
         unsigned char in[64];
       };
-
-    static const unsigned int MD4_HASHLEN_BYTE;
-    static const unsigned int BUFSIZE;
-    static const unsigned int PARTSIZE;
 
     void MD4Init(struct MD4Context *context);
     void MD4Update(struct MD4Context *context,

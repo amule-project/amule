@@ -133,10 +133,10 @@ public:
 	virtual CTagValueString GetStr() const { wxASSERT(0); return wxT(""); }
 	virtual uint32 GetInt() const { wxASSERT(0); return 0; }
 	virtual float GetFloat() const { wxASSERT(0); return 0.0F; }
-	virtual const BYTE* GetBsob() const { wxASSERT(0); return NULL; }
+	virtual const byte* GetBsob() const { wxASSERT(0); return NULL; }
 	virtual uint8 GetBsobSize() const { wxASSERT(0); return 0; }
 	virtual bool GetBool() const { wxASSERT(0); return false; }
-	virtual const BYTE* GetHash() const { wxASSERT(0); return NULL; }
+	virtual const byte* GetHash() const { wxASSERT(0); return NULL; }
 
 protected:
 	CTag() {}
@@ -260,10 +260,10 @@ protected:
 class CTagBsob : public CTag
 {
 public:
-	CTagBsob(const wxString& name, const BYTE* value, uint8 nSize)
+	CTagBsob(const wxString& name, const byte* value, uint8 nSize)
 		: CTag(TAGTYPE_BSOB, name)
 	{
-		m_value = new BYTE[nSize];
+		m_value = new byte[nSize];
 		memcpy(m_value, value, nSize);
 		m_size = nSize;
 	}
@@ -273,11 +273,11 @@ public:
 		delete[] m_value;
 	}
 
-	virtual const BYTE* GetBsob() const { return m_value; }
+	virtual const byte* GetBsob() const { return m_value; }
 	virtual uint8 GetBsobSize() const { return m_size; }
 
 protected:
-	BYTE* m_value;
+	byte* m_value;
 	uint8 m_size;
 };
 
@@ -285,10 +285,10 @@ protected:
 class CTagHash : public CTag
 {
 public:
-	CTagHash(const wxString& name, const BYTE* value) 
+	CTagHash(const wxString& name, const byte* value) 
 		: CTag(TAGTYPE_HASH, name)
 	{ 
-		m_value = new BYTE[16];
+		m_value = new byte[16];
 		otherfunctions::md4cpy(m_value, value);
 	}
 
@@ -297,10 +297,10 @@ public:
 		delete[] m_value;
 	}
 
-	virtual const BYTE* GetHash() const { return m_value; }
+	virtual const byte* GetHash() const { return m_value; }
 
 protected:
-	BYTE* m_value;
+	byte* m_value;
 };
 
 typedef std::list<CTag*> TagList;

@@ -50,7 +50,7 @@ static char THIS_FILE[] = __FILE__;
 using namespace Kademlia;
 ////////////////////////////////////////
 
-BOOL CIOException::GetErrorMessage(wxString* lpszError, UINT nMaxError, PUINT pnHelpContext)
+bool CIOException::GetErrorMessage(wxString* lpszError, uint32 nMaxError, uint32* pnHelpContext)
 {
 	wxString msg = wxT("ONLY AVAILABLE WITH EMULE INTEGRATION");
 

@@ -61,7 +61,6 @@ struct Preferences_Ext_Struct
 {
 	int8	version;
 	unsigned char	userhash[16];
-	WINDOWPLACEMENT EmuleWindowPlacement;
 };
 #pragma pack()
 
@@ -71,7 +70,7 @@ struct Category_Struct
 	wxString	incomingpath;
 	wxString	title;
 	wxString	comment;
-	DWORD		color;
+	uint32		color;
 	uint8		prio;
 };
 
@@ -357,7 +356,7 @@ public:
 	uint32			GetCatCount();
 	Category_Struct* GetCategory(size_t index);
 	const wxString&	GetCatPath(uint8 index);
-	DWORD			GetCatColor(size_t index);
+	uint32			GetCatColor(size_t index);
 
 	static uint32		GetAllcatType() 		{ return s_allcatType; }
 	static void		SetAllcatType(uint32 in)	{ s_allcatType = in; }

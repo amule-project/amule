@@ -38,7 +38,7 @@
 #include "Logger.h"
 
 #include <wx/listimpl.cpp> // ye old magic incantation
-WX_DEFINE_LIST(KnownFileList);
+WX_DEFINE_LIST(KnownFileList)
 
 CKnownFileList::CKnownFileList() {
 	accepted = 0;

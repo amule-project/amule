@@ -439,7 +439,7 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 			if (temp==0) {	// 0.48 partmets - different again
 				LoadHashsetFromFile(&metFile, false);
 			} else {
-				uchar gethash[16];
+				byte gethash[16];
 				metFile.Seek(2, CFile::start);
 				LoadDateFromFile(&metFile);
 				metFile.ReadHash16(gethash);
@@ -631,7 +631,7 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 
 			CMD4Hash checkhash;
 			if (!hashlist.IsEmpty()){
-				uchar* buffer = new uchar[hashlist.GetCount()*16];
+				byte* buffer = new byte[hashlist.GetCount()*16];
 				for (size_t i = 0; i < hashlist.GetCount(); ++i)
 					md4cpy(buffer+(i*16), hashlist[i]);
 				CreateHashFromString(buffer, hashlist.GetCount()*16, checkhash);
@@ -892,7 +892,7 @@ bool CPartFile::SavePartFile(bool Initial)
 				if (!strCorruptedParts.IsEmpty()) {
 					strCorruptedParts += wxT(",");
 				}
-				strCorruptedParts += wxString::Format(wxT("%u"), (UINT)uCorruptedPart);
+				strCorruptedParts += wxString::Format(wxT("%u"), (unsigned)uCorruptedPart);
 			}
 			wxASSERT( !strCorruptedParts.IsEmpty() );
 			
@@ -1419,7 +1419,7 @@ void CPartFile::WriteCompleteSourcesCount(CSafeMemFile* file)
 uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 {
 	uint16 old_trans;
-	DWORD dwCurTick = ::GetTickCount();
+	uint32 dwCurTick = ::GetTickCount();
 
 	// If buffer size exceeds limit, or if not written within time limit, flush data
 	if (	(m_nTotalBufferData > thePrefs::GetFileBufferSize()) ||
@@ -2452,8 +2452,8 @@ bool CPartFile::HashSinglePart(uint16 partnumber)
 		CMD4Hash hashresult;
 		m_hpartfile.Seek((off_t)PARTSIZE*partnumber,CFile::start);
 		uint32 length = PARTSIZE;
-		if (((ULONGLONG)PARTSIZE*(partnumber+1)) > (ULONGLONG)m_hpartfile.GetLength()){
-			length = (m_hpartfile.GetLength() - ((ULONGLONG)PARTSIZE*partnumber));
+		if (((uint64)PARTSIZE*(partnumber+1)) > (uint64)m_hpartfile.GetLength()){
+			length = (m_hpartfile.GetLength() - ((uint64)PARTSIZE*partnumber));
 			wxASSERT( length <= PARTSIZE );
 		}
 		CreateHashFromFile(&m_hpartfile,length,hashresult);
@@ -2519,7 +2519,7 @@ void CPartFile::StopFile(bool bCancel)
 void CPartFile::StopPausedFile()
 {
 	//Once an hour, remove any sources for files which are no longer active downloads
-	UINT uState = GetStatus();
+	uint32 uState = GetStatus();
 	if( 	(uState==PS_PAUSED || uState==PS_INSUFFICIENT || uState==PS_ERROR) &&
 		!m_stopped &&
 		time(NULL) - m_iLastPausePurge > (60*60)) {
@@ -2738,7 +2738,7 @@ void CPartFile::AddClientSources(CSafeMemFile* sources,uint8 sourceexchangeversi
 		uint32 dwServerIP = sources->ReadUInt32();
 		uint16 nServerPort = sources->ReadUInt16();
 		
-		uchar achUserHash[16];
+		byte achUserHash[16];
 		if (sourceexchangeversion > 1) {
 			sources->ReadHash16(achUserHash);
 		}
@@ -2809,7 +2809,7 @@ int CPartFile::GetCommonFilePenalty()
 	fill a gap.
 */
 
-uint32 CPartFile::WriteToBuffer(uint32 transize, BYTE *data, uint32 start, uint32 end, Requested_Block_Struct *block)
+uint32 CPartFile::WriteToBuffer(uint32 transize, byte* data, uint32 start, uint32 end, Requested_Block_Struct *block)
 {
 	// Increment transfered bytes counter for this file
 	transfered += transize;
@@ -2830,7 +2830,7 @@ uint32 CPartFile::WriteToBuffer(uint32 transize, BYTE *data, uint32 start, uint3
 	}
 
 	// Create copy of data as new buffer
-	BYTE *buffer = new BYTE[lenData];
+	byte *buffer = new byte[lenData];
 	memcpy(buffer, data, lenData);
 
 	// Create a new buffered queue entry
@@ -3128,7 +3128,7 @@ void CPartFile::UpdateFileRatingCommentAvail()
 
 void CPartFile::UpdateDisplayedInfo(bool force)
 {
-	DWORD curTick = ::GetTickCount();
+	uint32 curTick = ::GetTickCount();
 
 	 // Wait 1.5s between each redraw
 	 if(force || curTick-m_lastRefreshedDLDisplay > MINWAIT_BEFORE_DLDISPLAY_WINDOWUPDATE ) {
@@ -3279,7 +3279,7 @@ uint32 CPartFile::GetTotalGapSizeInRange(uint32 uRangeStart, uint32 uRangeEnd) c
 	return uTotalGapSize;
 }
 
-uint32 CPartFile::GetTotalGapSizeInPart(UINT uPart) const
+uint32 CPartFile::GetTotalGapSizeInPart(uint32 uPart) const
 {
 	uint32 uRangeStart = uPart * PARTSIZE;
 	uint32 uRangeEnd = uRangeStart + PARTSIZE - 1;
@@ -3381,7 +3381,7 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart)
 	FlushBuffer(true,true,true);
 	uint32 length = PARTSIZE;
 	if ((off_t)PARTSIZE*(nPart+1) > m_hpartfile.GetLength()){
-		length = (m_hpartfile.GetLength() - ((ULONGLONG)PARTSIZE*nPart));
+		length = (m_hpartfile.GetLength() - ((uint64)PARTSIZE*nPart));
 		wxASSERT( length <= PARTSIZE );
 	}	
 	// if the part was already ok, it would now be complete

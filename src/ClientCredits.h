@@ -47,7 +47,7 @@
 
 #pragma pack(1)
 struct CreditStruct{
-	uchar		abyKey[16];
+	byte		abyKey[16];
 	uint32		nUploadedLo;	// uploaded TO him
 	uint32		nDownloadedLo;	// downloaded from him
 	uint32		nLastSeen;
@@ -55,7 +55,7 @@ struct CreditStruct{
 	uint32		nDownloadedHi;	// download high 32
 	uint16		nReserved3;
 	uint8		nKeySize;
-	uchar		abySecureIdent[MAXPUBKEYSIZE];
+	byte		abySecureIdent[MAXPUBKEYSIZE];
 };
 #pragma pack()
 
@@ -64,7 +64,7 @@ enum EIdentState{
 	IS_IDNEEDED,
 	IS_IDENTIFIED,
 	IS_IDFAILED,
-	IS_IDBADGUY,
+	IS_IDBADGUY
 };
 
 class CClientCredits
@@ -75,8 +75,8 @@ public:
 	CClientCredits(const CMD4Hash& key);
 	~CClientCredits();
 
-	const uchar* GetKey() const 			{return m_pCredits->abyKey;}
-	const uchar*	GetSecureIdent() const	{return m_abyPublicKey;}
+	const byte* GetKey() const 			{return m_pCredits->abyKey;}
+	const byte*	GetSecureIdent() const	{return m_abyPublicKey;}
 	uint8	GetSecIDKeyLen() const 			{return m_nPublicKeyLen;}
 	const CreditStruct* GetDataStruct() const	{return m_pCredits;}
 	void	ClearWaitStartTime();
@@ -86,7 +86,7 @@ public:
 	uint64	GetDownloadedTotal() const;
 	float	GetScoreRatio(uint32 dwForIP);
 	void	SetLastSeen()					{m_pCredits->nLastSeen = time(NULL);}
-	bool	SetSecureIdent(const uchar* pachIdent, uint8 nIdentLen); // Public key cannot change, use only if there is not public key yet
+	bool	SetSecureIdent(const byte* pachIdent, uint8 nIdentLen); // Public key cannot change, use only if there is not public key yet
 	uint32	m_dwCryptRndChallengeFor;
 	uint32	m_dwCryptRndChallengeFrom;
 	EIdentState	GetCurrentIdentState(uint32 dwForIP) const; // can be != IdentState
@@ -114,8 +114,8 @@ public:
 	~CClientCreditsList();
 	
 			// return signature size, 0 = Failed | use sigkey param for debug only
-	uint8	CreateSignature(CClientCredits* pTarget, uchar* pachOutput, uint8 nMaxSize, uint32 ChallengeIP, uint8 byChaIPKind, void* sigkey = NULL);
-	bool	VerifyIdent(CClientCredits* pTarget, const uchar* pachSignature, uint8 nInputSize, uint32 dwForIP, uint8 byChaIPKind);	
+	uint8	CreateSignature(CClientCredits* pTarget, byte* pachOutput, uint8 nMaxSize, uint32 ChallengeIP, uint8 byChaIPKind, void* sigkey = NULL);
+	bool	VerifyIdent(CClientCredits* pTarget, const byte* pachSignature, uint8 nInputSize, uint32 dwForIP, uint8 byChaIPKind);	
 
 	CClientCredits* GetCredit(const CMD4Hash& key);
 	void	Process();

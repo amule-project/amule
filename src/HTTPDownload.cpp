@@ -94,7 +94,7 @@ void CHTTPDownloadThreadDlg::StopAnimation()
 	if (m_ani) {
 		m_ani->Stop();
 	}
-};
+}
 
 CHTTPDownloadThreadDlg::~CHTTPDownloadThreadDlg() 
 {
@@ -127,7 +127,7 @@ CHTTPDownloadThread::CHTTPDownloadThread(wxString urlname, wxString filename,HTT
   		m_myDlg= new CHTTPDownloadThreadDlg(theApp.GetTopWindow(), this);
 		m_myDlg->Show(true);
 	#endif
-};
+}
 
 CHTTPDownloadThread::~CHTTPDownloadThread()
 {	

@@ -57,7 +57,7 @@
 #include "wxcas.h"
 
 // Application implementation
-IMPLEMENT_APP ( WxCas );
+IMPLEMENT_APP ( WxCas )
 
 bool
 WxCas::OnInit ()

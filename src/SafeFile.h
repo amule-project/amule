@@ -37,7 +37,7 @@
 
 namespace Kademlia{
 	class CUInt128;
-};
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 class CFileDataIO
@@ -63,7 +63,7 @@ public:
 	virtual void WriteHash16(const unsigned char* pVal);
 	virtual void WriteString(const wxString& rstr, EUtf8Str eEncode = utf8strNone, uint8 SizeLen = 2 /* bytes */);
 private:
-	void CFileDataIO::WriteStringCore(const char *s, EUtf8Str eEncode, uint8 SizeLen);
+	void WriteStringCore(const char *s, EUtf8Str eEncode, uint8 SizeLen);
  };
  
 
@@ -95,9 +95,9 @@ class CSafeFile : public CFile, public CFileDataIO
 class CSafeMemFile : public CMemFile, public CFileDataIO
 {
 public:
-	CSafeMemFile(UINT nGrowBytes = 512)
+	CSafeMemFile(uint32 nGrowBytes = 512)
 		: CMemFile(nGrowBytes) {}
-	CSafeMemFile(BYTE* lpBuffer, UINT nBufferSize, UINT nGrowBytes = 0)
+	CSafeMemFile(byte* lpBuffer, uint32 nBufferSize, uint32 nGrowBytes = 0)
 		: CMemFile(lpBuffer, nBufferSize, nGrowBytes) {}
 
 	// CMemFile already does the needed checks

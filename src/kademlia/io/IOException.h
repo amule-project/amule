@@ -55,7 +55,7 @@ public:
 
 	CIOException(int cause = ERR_SUCCESS) {m_cause = cause;}
 
-	BOOL GetErrorMessage(wxString* lpszError, UINT nMaxError, PUINT pnHelpContext = NULL);
+	bool GetErrorMessage(wxString* lpszError, uint32 nMaxError, uint32* pnHelpContext = NULL);
 };
 
 } // End namespace

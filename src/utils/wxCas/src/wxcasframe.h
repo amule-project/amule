@@ -167,7 +167,7 @@ protected:
 	void OnHitButton ( wxCommandEvent & event );
 	void OnAbsHitButton ( wxCommandEvent & event );
 
-	DECLARE_EVENT_TABLE ();
+	DECLARE_EVENT_TABLE ()
 
 public:
 	/// Constructor

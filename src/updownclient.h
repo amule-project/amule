@@ -157,13 +157,13 @@ enum ESecureIdentState{
 	IS_UNAVAILABLE		= 0,
 	IS_ALLREQUESTSSEND	= 0,
 	IS_SIGNATURENEEDED	= 1,
-	IS_KEYANDSIGNEEDED	= 2,
+	IS_KEYANDSIGNEEDED	= 2
 };
 enum EInfoPacketState{
 	IP_NONE			= 0,
 	IP_EDONKEYPROTPACK	= 1,
 	IP_EMULEPROTPACK	= 2,
-	IP_BOTH			= 3,
+	IP_BOTH			= 3
 };
 
 
@@ -295,12 +295,12 @@ public:
 	
 	void		SendPublicKeyPacket();
 	void		SendSignaturePacket();
-	void		ProcessPublicKeyPacket(const uchar* pachPacket, uint32 nSize);
-	void		ProcessSignaturePacket(const uchar* pachPacket, uint32 nSize);
+	void		ProcessPublicKeyPacket(const byte* pachPacket, uint32 nSize);
+	void		ProcessSignaturePacket(const byte* pachPacket, uint32 nSize);
 	uint8		GetSecureIdentState(); 
 
 	void		SendSecIdentStatePacket();
-	void		ProcessSecIdentStatePacket(const uchar* pachPacket, uint32 nSize);
+	void		ProcessSecIdentStatePacket(const byte* pachPacket, uint32 nSize);
 
 	uint8		GetInfoPacketsReceived() const { return m_byInfopacketsReceived; }
 	void		InfoPacketsReceived();
@@ -452,14 +452,14 @@ public:
 	bool			IsSupportingAICH() const					{return m_fSupportsAICH & 0x01;}
 	void			SendAICHRequest(CPartFile* pForFile, uint16 nPart);
 	bool			IsAICHReqPending() const					{return m_fAICHRequested; }
-	void			ProcessAICHAnswer(const char* packet, UINT size);
-	void			ProcessAICHRequest(const char* packet, UINT size);
+	void			ProcessAICHAnswer(const char* packet, uint32 size);
+	void			ProcessAICHRequest(const char* packet, uint32 size);
 	void			ProcessAICHFileHash(CSafeMemFile* data, const CPartFile* file);	
 
 	EUtf8Str		GetUnicodeSupport() const;
 	
 	// Barry - Process zip file as it arrives, don't need to wait until end of block
-	int unzip(Pending_Block_Struct *block, BYTE *zipped, uint32 lenZipped, BYTE **unzipped, uint32 *lenUnzipped, int iRecursion = 0);
+	int unzip(Pending_Block_Struct *block, byte *zipped, uint32 lenZipped, byte **unzipped, uint32 *lenUnzipped, int iRecursion = 0);
 	// Barry - Sets string to show parts downloading, eg NNNYNNNNYYNYN
 	wxString	ShowDownloadingParts() const;
 	void 		UpdateDisplayedInfo(bool force = false);
@@ -469,7 +469,7 @@ public:
 	
 	void		ResetFileStatusInfo();
 	
-	bool		CheckHandshakeFinished(UINT protocol, UINT opcode) const;
+	bool		CheckHandshakeFinished(uint32 protocol, uint32 opcode) const;
 		
 	bool		GetSentCancelTransfer() const { return m_fSentCancelTransfer; }
 	void		SetSentCancelTransfer(bool bVal) { m_fSentCancelTransfer = bVal; }
@@ -478,7 +478,7 @@ public:
 	
 	const wxString& GetClientOSInfo() const { return m_sClientOSInfo; }
 
-	void			ProcessPublicIPAnswer(const BYTE* pbyData, UINT uSize);
+	void			ProcessPublicIPAnswer(const byte* pbyData, uint32 uSize);
 	void			SendPublicIPRequest();
 
 	/**
@@ -540,7 +540,7 @@ private:
 		//! Signifies if this sources has needed parts for this file. 
 		bool NeededParts;
 		//! This is set when we wish to avoid swapping to this file for a while.
-		DWORD timestamp;
+		uint32 timestamp;
 	};
 	
 	//! I typedef in the name of readability!
@@ -615,7 +615,7 @@ private:
 	
 	uint32		m_byCompatibleClient;
 	CList<CPacket*>	m_WaitingPackets_list;
-	DWORD		m_lastRefreshedDLDisplay;
+	uint32		m_lastRefreshedDLDisplay;
 
 	//upload
 	void CreateStandartPackets(const unsigned char* data,uint32 togo, Requested_Block_Struct* currentblock);
@@ -758,7 +758,7 @@ private:
 
 
 #define	MAKE_CLIENT_VERSION(mjr, min, upd) \
-	((UINT)(mjr)*100U*10U*100U + (UINT)(min)*100U*10U + (UINT)(upd)*100U)
+	((uint32)(mjr)*100U*10U*100U + (uint32)(min)*100U*10U + (uint32)(upd)*100U)
 
 
 #endif // UPDOWNCLIENT_H

@@ -129,7 +129,7 @@ void CEMSocket::OnClose(int WXUNUSED(nErrorCode)){
 	byConnected = ES_DISCONNECTED;
 	
 	ClearQueues();
-};
+}
 
 void CEMSocket::OnReceive(int nErrorCode){
 	// the 2 meg size was taken from another place

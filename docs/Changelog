@@ -218,6 +218,26 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		* Patch to fix use of deprecated functions in wxGTK-2.5.3.
 
 	Xaignar:
+		* Escape-codes in ED2k links are now properly unescaped.
+		* Cleaned up and improved the readability of the clients-details dialog.
+		* Updated the modified listctrl widget used by aMule, so that
+		  wxWidgets 2.4.x and 2.5.x will use a modified version from 
+		  that branch rather than a more generic hacked version. For one
+		  thing, the headers are now drawn using the current GTK theme.
+		  Please note that Mac builds still make use of the old listctrl
+		  due to bugs in wxMac-2.5.4.
+		* Properly handle rehashing of empty part-files.
+		* Changed the "Filter Bad IPs" option to "Filter LAN IPs". Invalid
+		  IPs will always be filtered, but LAN IPs will now only be filtered
+		  if the option is enabled.
+		* Added back-traces to asserts, in order to help debugging efforts.
+		* Made usage of wxASSERT thread-safe.
+		* Attempted to fix some longstanding problems with the notebooks.
+		* Removed unused files: Preview.h and Preview.cpp
+		* Updated, cleaned and unified license-headers for all aMule 
+		  related source files.
+		* Improved the error-message displayed when a server couldn't
+		  be added, so that it is clear as to why it couldn't be added.
 		* Avoid flooding the console when searching for filetypes,
 		  mismatches are now logged as debugloglines instead.
 		* The "Clear" button on the search page now also clears the

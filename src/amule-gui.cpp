@@ -28,11 +28,7 @@
 #include <wx/textctrl.h>
 
 #ifdef __WXGTK__
-
 	#include <X11/Xlib.h>		// Needed for XParseGeometry
-	#include <gdk/gdk.h>
-	#include <gtk/gtk.h>
-
 #endif
 
 #ifdef HAVE_CONFIG_H
@@ -861,7 +857,7 @@ void CamuleGuiApp::NotifyEvent(const GUIEvent& event)
 			printf("Unknown event notified to wxApp\n");
 			wxASSERT(0);
 	}
-};
+}
 
 
 wxString CamuleGuiApp::GetLog(bool reset)

@@ -260,7 +260,7 @@ void COScopeCtrl::RecreateGrid()
 	// y max
 	dcGrid->SetTextForeground(wxColour(GetRValue(crGrid),GetGValue(crGrid),GetBValue(crGrid)));
 	if( strYMax.IsEmpty() ) {
-		strTemp = wxString::Format(wxT("%.*lf"), nYDecimals, pdsTrends[ 0 ].fUpperLimit);
+		strTemp = wxString::Format(wxT("%.*f"), nYDecimals, pdsTrends[ 0 ].fUpperLimit);
 	} else {
 		strTemp = strYMax;
 	}
@@ -269,7 +269,7 @@ void COScopeCtrl::RecreateGrid()
 	dcGrid->DrawText(strTemp,rectPlot.left-4-sizX,rectPlot.top-7);
 	// y min
 	if( strYMin.IsEmpty() ) {
-		strTemp = wxString::Format(wxT("%.*lf"), nYDecimals, pdsTrends[ 0 ].fLowerLimit) ;
+		strTemp = wxString::Format(wxT("%.*f"), nYDecimals, pdsTrends[ 0 ].fLowerLimit) ;
 	} else {
 		strTemp = strYMin;
 	}
@@ -482,7 +482,7 @@ void COScopeCtrl::PlotHistory(unsigned cntPoints, bool bShiftGraph, bool bRefres
 {
 	wxASSERT(graph_type != GRAPH_INVALID);
 	unsigned i, cntFilled;
-	float *apf[nTrends];  
+	float** apf = new float*[nTrends];
 	for (i=0; i<nTrends; ++i)
 		apf[i] = new float[cntPoints];
 	double sFinal = (bStopped ? sLastTimestamp : -1.0);
@@ -502,6 +502,8 @@ void COScopeCtrl::PlotHistory(unsigned cntPoints, bool bShiftGraph, bool bRefres
 	}
 	for (i=0; i<nTrends; ++i)
 		delete[] apf[i];
+
+	delete[] apf;
 } // PlotHistory
 
 

@@ -109,16 +109,16 @@ public:
 	~CAICHHash()									{;}
 	CAICHHash()										{ memset(m_abyBuffer, 0, HASHSIZE); }
 	CAICHHash(CFileDataIO* file)					{ Read(file); }
-	CAICHHash(uchar* data)							{ Read(data); }
+	CAICHHash(byte* data)							{ Read(data); }
 	CAICHHash(const CAICHHash& k1)					{ *this = k1; }
 	CAICHHash&	operator=(const CAICHHash& k1)		{ memcpy(m_abyBuffer, k1.m_abyBuffer, HASHSIZE); return *this; }
 	friend bool operator==(const CAICHHash& k1,const CAICHHash& k2)	{ return memcmp(k1.m_abyBuffer, k2.m_abyBuffer, HASHSIZE) == 0;}
 	friend bool operator!=(const CAICHHash& k1,const CAICHHash& k2)	{ return !(k1 == k2); }
 	void		Read(CFileDataIO* file);
 	void		Write(CFileDataIO* file) const;
-	void		Read(uchar* data)					{ memcpy(m_abyBuffer, data, HASHSIZE); }
+	void		Read(byte* data)					{ memcpy(m_abyBuffer, data, HASHSIZE); }
 	wxString		GetString() const;
-	uchar*		GetRawHash()						{ return m_abyBuffer; }
+	byte*		GetRawHash()						{ return m_abyBuffer; }
 
 	static uint32	GetHashSize()						{ return HASHSIZE;}
 	
@@ -127,7 +127,7 @@ public:
 	}	
 	
 private:
-	uchar m_abyBuffer[HASHSIZE];
+	byte m_abyBuffer[HASHSIZE];
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -136,7 +136,7 @@ class CAICHHashAlgo
 {
 public:
 	virtual void	Reset() = 0;
-	virtual void	Add(LPCVOID pData, DWORD nLength) = 0;
+	virtual void	Add(const void* pData, uint32 nLength) = 0;
 	virtual void	Finish(CAICHHash& Hash) = 0;
 	virtual void	GetHash(CAICHHash& Hash) = 0;
 };

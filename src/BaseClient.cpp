@@ -282,7 +282,7 @@ void CUpDownClient::ClearHelloProperties()
 
 bool CUpDownClient::ProcessHelloPacket(const char *pachPacket, uint32 nSize)
 {
-	const CSafeMemFile data((BYTE*)pachPacket,nSize);
+	const CSafeMemFile data((byte*)pachPacket,nSize);
 	uint8 hashsize = data.ReadUInt8();
 	if ( 16 != hashsize ) {
 		/*
@@ -328,7 +328,7 @@ void CUpDownClient::Safe_Delete()
 
 bool CUpDownClient::ProcessHelloAnswer(const char *pachPacket, uint32 nSize)
 {
-	const CSafeMemFile data((BYTE*)pachPacket,nSize);
+	const CSafeMemFile data((byte*)pachPacket,nSize);
 	bool bIsMule = ProcessHelloTypePacket(data);
 	m_bHelloAnswerPending = false;
 	return bIsMule;
@@ -341,7 +341,7 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 	m_bIsML = false;
 	m_fNoViewSharedFiles = 0;
 	m_bUnicodeSupport = false;
-	DWORD dwEmuleTags = 0;
+	uint32 dwEmuleTags = 0;
 
 	try {
 		CMD4Hash hash;
@@ -689,7 +689,7 @@ bool CUpDownClient::ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize)
 	uint8 protocol_version;
 	
 	try {
-		const CSafeMemFile data((BYTE*)pachPacket,nSize);
+		const CSafeMemFile data((byte*)pachPacket,nSize);
 
 		//The version number part of this packet will soon be useless since it is only able to go to v.99.
 		//Why the version is a uint8 and why it was not done as a tag like the eDonkey hello packet is not known..
@@ -933,23 +933,23 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
 
 
 	// eMule Misc. Options #1
-	const UINT uUdpVer				= 4;
-	const UINT uDataCompVer			= 1;
-	const UINT uSupportSecIdent		= theApp.clientcredits->CryptoAvailable() ? 3 : 0;
-	const UINT uSourceExchangeVer	= 3; 
-	const UINT uExtendedRequestsVer	= 2;
-	const UINT uAcceptCommentVer	= 1;
-	const UINT uNoViewSharedFiles	= (thePrefs::CanSeeShares() == vsfaNobody) ? 1 : 0; // for backward compatibility this has to be a 'negative' flag
-	const UINT uMultiPacket			= 1;
-	const UINT uSupportPreview		= 0; // No network preview at all.
-	const UINT uPeerCache			= 0; // No peercache for aMule, baby
-	const UINT uUnicodeSupport		= 
+	const uint32 uUdpVer				= 4;
+	const uint32 uDataCompVer			= 1;
+	const uint32 uSupportSecIdent		= theApp.clientcredits->CryptoAvailable() ? 3 : 0;
+	const uint32 uSourceExchangeVer	= 3; 
+	const uint32 uExtendedRequestsVer	= 2;
+	const uint32 uAcceptCommentVer	= 1;
+	const uint32 uNoViewSharedFiles	= (thePrefs::CanSeeShares() == vsfaNobody) ? 1 : 0; // for backward compatibility this has to be a 'negative' flag
+	const uint32 uMultiPacket			= 1;
+	const uint32 uSupportPreview		= 0; // No network preview at all.
+	const uint32 uPeerCache			= 0; // No peercache for aMule, baby
+	const uint32 uUnicodeSupport		= 
 #if wxUSE_UNICODE	
 												1; 
 #else
 												0; 
 #endif
-	const UINT nAICHVer				= 1; // AICH is ENABLED right now.
+	const uint32 nAICHVer				= 1; // AICH is ENABLED right now.
 
 	CTag tagMisOptions(CT_EMULE_MISCOPTIONS1,
 				(nAICHVer				<< ((4*7)+1)) |
@@ -967,7 +967,7 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
 	tagMisOptions.WriteTagToFile(data);
 
 
-	const UINT nOSInfoSupport			= 1; // We support OS_INFO
+	const uint32 nOSInfoSupport			= 1; // We support OS_INFO
 	
 	CTag tagMisCompatOptions(CT_EMULECOMPAT_OPTIONS,
 				(nOSInfoSupport		<< 1*0) );
@@ -1005,7 +1005,7 @@ void CUpDownClient::ProcessMuleCommentPacket(const char *pachPacket, uint32 nSiz
 			throw CInvalidPacket("Comment packet for completed file");
 		}
 
-		const CSafeMemFile data((BYTE*)pachPacket, nSize);
+		const CSafeMemFile data((byte*)pachPacket, nSize);
 
 		m_iRate = data.ReadUInt8();
 		m_reqfile->SetHasRating(true);
@@ -1486,7 +1486,7 @@ void CUpDownClient::ReGetClientSoft()
 		if (m_byEmuleVersion == 0){
 			m_nClientVersion = MAKE_CLIENT_VERSION(0,0,0);
 		} else if (m_byEmuleVersion != 0x99) {
-			UINT nClientMinVersion = (m_byEmuleVersion >> 4)*10 + (m_byEmuleVersion & 0x0f);
+			uint32 nClientMinVersion = (m_byEmuleVersion >> 4)*10 + (m_byEmuleVersion & 0x0f);
 			m_nClientVersion = MAKE_CLIENT_VERSION(0,nClientMinVersion,0);
 			switch (m_clientSoft) {
 				case SO_AMULE:
@@ -1505,9 +1505,9 @@ void CUpDownClient::ReGetClientSoft()
 					break;
 			}
 		} else {
-			UINT nClientMajVersion = (m_nClientVersion >> 17) & 0x7f;
-			UINT nClientMinVersion = (m_nClientVersion >> 10) & 0x7f;
-			UINT nClientUpVersion  = (m_nClientVersion >>  7) & 0x07;
+			uint32 nClientMajVersion = (m_nClientVersion >> 17) & 0x7f;
+			uint32 nClientMinVersion = (m_nClientVersion >> 10) & 0x7f;
+			uint32 nClientUpVersion  = (m_nClientVersion >>  7) & 0x07;
 
 			m_nClientVersion = MAKE_CLIENT_VERSION(nClientMajVersion, nClientMinVersion, nClientUpVersion);
 
@@ -1557,29 +1557,29 @@ void CUpDownClient::ReGetClientSoft()
 		m_clientVerString = GetSoftName(m_clientSoft);
 		m_SoftLen = m_clientVerString.Length();
 
-		UINT nClientMajVersion;
-		UINT nClientMinVersion;
-		UINT nClientUpVersion;
+		uint32 nClientMajVersion;
+		uint32 nClientMinVersion;
+		uint32 nClientUpVersion;
 		if (m_nClientVersion > 100000){
-			UINT uMaj = m_nClientVersion/100000;
+			uint32 uMaj = m_nClientVersion/100000;
 			nClientMajVersion = uMaj - 1;
 			nClientMinVersion = (m_nClientVersion - uMaj*100000) / 100;
 			nClientUpVersion = m_nClientVersion % 100;
 		}
 		else if (m_nClientVersion > 10000){
-			UINT uMaj = m_nClientVersion/10000;
+			uint32 uMaj = m_nClientVersion/10000;
 			nClientMajVersion = uMaj - 1;
 			nClientMinVersion = (m_nClientVersion - uMaj*10000) / 10;
 			nClientUpVersion = m_nClientVersion % 10;
 		}
 		else if (m_nClientVersion > 1000){
-			UINT uMaj = m_nClientVersion/1000;
+			uint32 uMaj = m_nClientVersion/1000;
 			nClientMajVersion = uMaj - 1;
 			nClientMinVersion = m_nClientVersion - uMaj*1000;
 			nClientUpVersion = 0;
 		}
 		else if (m_nClientVersion > 100){
-			UINT uMin = m_nClientVersion/10;
+			uint32 uMin = m_nClientVersion/10;
 			nClientMajVersion = 0;
 			nClientMinVersion = uMin;
 			nClientUpVersion = m_nClientVersion - uMin*10;
@@ -1603,7 +1603,7 @@ void CUpDownClient::ReGetClientSoft()
 		m_clientSoft = SO_MLDONKEY;
 		m_clientVerString = GetSoftName(m_clientSoft);
 		m_SoftLen = m_clientVerString.Length();
-		UINT nClientMinVersion = m_nClientVersion;
+		uint32 nClientMinVersion = m_nClientVersion;
 		m_nClientVersion = MAKE_CLIENT_VERSION(0, nClientMinVersion, 0);
 		m_clientVerString += wxString::Format(wxT(" v0.%u"), nClientMinVersion);
 		return;
@@ -1614,7 +1614,7 @@ void CUpDownClient::ReGetClientSoft()
 		m_clientSoft = SO_OLDEMULE;
 		m_clientVerString = GetSoftName(m_clientSoft);
 		m_SoftLen = m_clientVerString.Length();
-		UINT nClientMinVersion = m_nClientVersion;
+		uint32 nClientMinVersion = m_nClientVersion;
 		m_nClientVersion = MAKE_CLIENT_VERSION(0, nClientMinVersion, 0);
 		m_clientVerString += wxString::Format(wxT(" v0.%u"), nClientMinVersion);
 		return;
@@ -1623,7 +1623,7 @@ void CUpDownClient::ReGetClientSoft()
 	m_clientSoft = SO_EDONKEY;
 	m_clientVerString = GetSoftName(m_clientSoft);
 	m_SoftLen = m_clientVerString.Length();
-	UINT nClientMinVersion = m_nClientVersion;
+	uint32 nClientMinVersion = m_nClientVersion;
 	m_nClientVersion = MAKE_CLIENT_VERSION(0, nClientMinVersion, 0);
 	m_clientVerString += wxString::Format(wxT(" v0.%u"), nClientMinVersion);
 
@@ -1766,7 +1766,7 @@ void CUpDownClient::SendSignaturePacket(){
 		}
 	}
 	//end v2
-	uchar achBuffer[250];
+	byte achBuffer[250];
 
 	uint8 siglen = theApp.clientcredits->CreateSignature(credits, achBuffer,  250, ChallengeIP, byChaIPKind );
 	if (siglen == 0){
@@ -1790,7 +1790,7 @@ void CUpDownClient::SendSignaturePacket(){
 }
 
 
-void CUpDownClient::ProcessPublicKeyPacket(const uchar* pachPacket, uint32 nSize)
+void CUpDownClient::ProcessPublicKeyPacket(const byte* pachPacket, uint32 nSize)
 {
 	theApp.clientlist->AddTrackClient(this);
 
@@ -1817,7 +1817,7 @@ void CUpDownClient::ProcessPublicKeyPacket(const uchar* pachPacket, uint32 nSize
 }
 
 
-void CUpDownClient::ProcessSignaturePacket(const uchar* pachPacket, uint32 nSize)
+void CUpDownClient::ProcessSignaturePacket(const byte* pachPacket, uint32 nSize)
 {
 	// here we spread the good guys from the bad ones ;)
 
@@ -1900,7 +1900,7 @@ void CUpDownClient::SendSecIdentStatePacket(){
 }
 
 
-void CUpDownClient::ProcessSecIdentStatePacket(const uchar* pachPacket, uint32 nSize)
+void CUpDownClient::ProcessSecIdentStatePacket(const byte* pachPacket, uint32 nSize)
 {
 	if ( nSize != 5 ) {
 		return;
@@ -1911,7 +1911,7 @@ void CUpDownClient::ProcessSecIdentStatePacket(const uchar* pachPacket, uint32 n
 		return;
 	}
 
-	CSafeMemFile data((BYTE*)pachPacket,nSize);
+	CSafeMemFile data((byte*)pachPacket,nSize);
 
 	switch ( data.ReadUInt8() ) {
 		case 0:
@@ -1944,7 +1944,7 @@ void CUpDownClient::InfoPacketsReceived()
 }
 
 
-bool CUpDownClient::CheckHandshakeFinished(UINT WXUNUSED(protocol), UINT WXUNUSED(opcode)) const
+bool CUpDownClient::CheckHandshakeFinished(uint32 WXUNUSED(protocol), uint32 WXUNUSED(opcode)) const
 {
 	if (m_bHelloAnswerPending){
 		// this triggers way too often.. need more time to look at this -> only create a warning
@@ -1985,7 +1985,7 @@ void CUpDownClient::SendPublicIPRequest(){
 	}
 }
 
-void CUpDownClient::ProcessPublicIPAnswer(const BYTE* pbyData, UINT uSize){
+void CUpDownClient::ProcessPublicIPAnswer(const byte* pbyData, uint32 uSize){
 	if (uSize != 4)
 		throw wxString(wxT("Wrong Packet size on Public IP answer\n"));
 	uint32 dwIP = PeekUInt32(pbyData);

@@ -57,7 +57,7 @@ CMuleNotebook::CMuleNotebook( wxWindow *parent, wxWindowID id, const wxPoint& po
 {
 	m_popup_enable = true;
 	m_popup_widget = NULL;
-};
+}
 
 
 CMuleNotebook::~CMuleNotebook()
@@ -81,7 +81,7 @@ bool CMuleNotebook::DeletePage(int nPage)
 	if ( GetPageCount() && (int)GetSelection() >= (int)GetPageCount() ) {
 		SetSelection( GetPageCount() - 1 );
 	}
-	
+
 	return result;
 }
 

@@ -316,7 +316,9 @@ unsigned int ReadBufferFromSocket(wxSocketBase *sock, void *buffer, unsigned int
 	unsigned int ReadSoFar = 0;
 	char *iobuf = (char *)buffer;
 	bool error = sock->Error();
+#ifdef AMULE_DAEMON
 	bool FirstRead = true;
+#endif
 	wxSocketError LastErrorValue = sock->LastError();
 
 	while ((required_len > ReadSoFar) && !error) {

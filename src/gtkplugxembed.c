@@ -41,7 +41,7 @@
 
 static void            gtk_plug_xembed_class_init            (GtkPlugXEmbedClass *klass);
 static void            gtk_plug_xembed_init                  (GtkPlugXEmbed      *plug);
-//static void            gtk_plug_xembed_finalize              (GtkObject          *object);
+/*static void            gtk_plug_xembed_finalize              (GtkObject          *object);*/
 static void            gtk_plug_xembed_realize               (GtkWidget          *widget);
 static void            gtk_plug_xembed_unrealize             (GtkWidget          *widget);
 static void            gtk_plug_xembed_show                  (GtkWidget          *widget);
@@ -127,9 +127,10 @@ gtk_plug_xembed_class_init (GtkPlugXEmbedClass *class)
   parent_class = gtk_type_class (GTK_TYPE_WINDOW);
   bin_class = gtk_type_class (GTK_TYPE_BIN);
 
-  // breaks gtk2
-  //gtk_object_class->finalize = gtk_plug_xembed_finalize;
-  
+  /* breaks gtk2
+   *gtk_object_class->finalize = gtk_plug_xembed_finalize;
+   */
+
   widget_class->realize = gtk_plug_xembed_realize;
   widget_class->unrealize = gtk_plug_xembed_unrealize;
   widget_class->key_press_event = gtk_plug_xembed_key_press_event;
@@ -155,8 +156,8 @@ gtk_plug_xembed_class_init (GtkPlugXEmbedClass *class)
 #endif
 
 #if SIGNAL_ENABLED
-   // for some reason, this _will_ segfault
-   // so I removed it. it is not needed anyway
+   /* for some reason, this _will_ segfault
+      so I removed it. it is not needed anyway */
   plug_signals[EMBEDDED] =
 	  gtk_signal_new ("embedded",
 			  GTK_RUN_LAST,
@@ -924,7 +925,7 @@ handle_modality_on (GtkPlugXEmbed *plug)
       gtk_grab_add (plug->modality_window);
     }
 #else
-  // g_print("Modality On for plug %p\n", plug);
+  /* g_print("Modality On for plug %p\n", plug); */
 #endif
 }
 
@@ -938,7 +939,7 @@ handle_modality_off (GtkPlugXEmbed *plug)
       plug->modality_window = NULL;
     }
 #else
-  // g_print("Modality Off for plug %p\n", plug);
+  /* g_print("Modality Off for plug %p\n", plug); */
 #endif
 }
 
@@ -1179,6 +1180,6 @@ gtk_plug_xembed_filter_func (GdkXEvent *gdk_xevent, GdkEvent *event, gpointer da
   return GDK_FILTER_CONTINUE;
 }
 
-#endif // __WXGTK__
+#endif /* __WXGTK__ */
 
-#endif // USE_WX_TRAY
+#endif /* USE_WX_TRAY */

@@ -862,7 +862,7 @@ void CDownloadQueue::ProcessLocalRequests()
 
 				// create request packet
 				CSafeMemFile data(20);
-				data.WriteHash16((const uchar *)cur_file->GetFileHash().GetHash());
+				data.WriteHash16(cur_file->GetFileHash());
 				// Kry - lugdunum extended protocol on 17.3 to handle filesize properly.
 				// There is no need to check anything, old server ignore the extra 4 bytes.
 				data.WriteUInt32(cur_file->GetFileSize());

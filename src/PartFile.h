@@ -66,7 +66,7 @@ class CED2KFileLink;
 
 struct PartFileBufferedData
 {
-	BYTE *data;						// Barry - This is the data to be written
+	byte *data;						// Barry - This is the data to be written
 	uint32 start;					// Barry - This is the start offset of the data
 	uint32 end;						// Barry - This is the end offset of the data
 	Requested_Block_Struct *block;	// Barry - This is the requested block that this data relates to
@@ -101,7 +101,7 @@ public:
 	bool	IsPureGap(uint32 start, uint32 end);
 	bool	IsCorruptedPart(uint16 partnumber);
 	uint32	GetTotalGapSizeInRange(uint32 uRangeStart, uint32 uRangeEnd) const;	
-	uint32	GetTotalGapSizeInPart(UINT uPart) const;
+	uint32	GetTotalGapSizeInPart(uint32 uPart) const;
 	void	UpdateCompletedInfos();
 
 	bool	GetNextRequestedBlock(CUpDownClient* sender,Requested_Block_Struct** newblocks,uint16* count);
@@ -142,7 +142,7 @@ public:
 	int	getPartfileStatusRang() const;
 
 	// Barry - Added as replacement for BlockReceived to buffer data before writing to disk
-	uint32	WriteToBuffer(uint32 transize, BYTE *data, uint32 start, uint32 end, Requested_Block_Struct *block);
+	uint32	WriteToBuffer(uint32 transize, byte *data, uint32 start, uint32 end, Requested_Block_Struct *block);
 	void	FlushBuffer(bool forcewait=false, bool bForceICH = false, bool bNoAICH = false);	
 	// Barry - This will invert the gap list, up to caller to delete gaps when done
 	// 'Gaps' returned are really the filled areas, and guaranteed to be in order
@@ -322,7 +322,7 @@ private:
 	bool	hasComment;
 	uint8 	PerformFileComplete(); // Lord KiRon
 
-	DWORD		m_lastRefreshedDLDisplay;
+	uint32		m_lastRefreshedDLDisplay;
 	wxDateTime	m_lastDateChanged;
 
 	// Barry - Buffered data to be written
@@ -333,7 +333,7 @@ private:
 	uint8	m_category;
 	bool	m_is_A4AF_auto;
 
-	DWORD	m_LastSourceDropTime;
+	uint32	m_LastSourceDropTime;
 
 public:
 	SourceSet m_SrcList;

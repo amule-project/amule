@@ -85,6 +85,8 @@
 #ifndef CRYPTOPP_H
 #define CRYPTOPP_H
 
+#include <inttypes.h>
+
 ////////////////////////////////////////////////////////////////////////////////
 #ifndef CRYPTOPP_CONFIG_H5392
 #define CRYPTOPP_CONFIG_H
@@ -188,7 +190,7 @@ typedef unsigned int word32;
 
 #if defined(__GNUC__) || defined(__MWERKS__)
 	#define WORD64_AVAILABLE
-	typedef unsigned long long word64;
+	typedef uint64_t word64;
 	#define W64LIT(x) x##LL
 #elif defined(_MSC_VER) || defined(__BCPLUSPLUS__)
 	#define WORD64_AVAILABLE
@@ -1729,17 +1731,22 @@ NAMESPACE_BEGIN(CryptoPP)
 
 // ************** compile-time assertion ***************
 
-template <bool b>
-struct CompileAssert
-{
-	static char dummy[2*b-1];
-};
+template<int>
+struct CompileTimeAssert;
 
-#define CRYPTOPP_COMPILE_ASSERT(assertion) CRYPTOPP_COMPILE_ASSERT_INSTANCE(assertion, __LINE__)
+template<>
+struct CompileTimeAssert<true> {};
+
+
+#define CRYPTOPP_COMPILE_ASSERT( x ) \
+    { CompileTimeAssert<((x) != 0)> ERROR; (void)ERROR; } 
+
+#define CRYPTOPP_COMPILE_ASSERT_GLOBAL(assertion) CRYPTOPP_COMPILE_ASSERT_INSTANCE(assertion, __LINE__)
 #if defined(CRYPTOPP_EXPORTS) || defined(CRYPTOPP_IMPORTS)
 #define CRYPTOPP_COMPILE_ASSERT_INSTANCE(assertion, instance)
 #else
-#define CRYPTOPP_COMPILE_ASSERT_INSTANCE(assertion, instance) static CompileAssert<(assertion)> CRYPTOPP_ASSERT_JOIN(cryptopp_assert_, instance)
+#define CRYPTOPP_COMPILE_ASSERT_INSTANCE(assertion, instance) \
+	CompileTimeAssert<(assertion)> CRYPTOPP_ASSERT_JOIN(cryptopp_assert_, instance)
 #endif
 #define CRYPTOPP_ASSERT_JOIN(X, Y) CRYPTOPP_DO_ASSERT_JOIN(X, Y)
 #define CRYPTOPP_DO_ASSERT_JOIN(X, Y) X##Y
@@ -1939,7 +1946,7 @@ inline bool NativeByteOrderIs(ByteOrder order)
 }
 
 template <class T>		// can't use <sstream> because GCC 2.95.2 doesn't have it
-std::string IntToString(T a, unsigned int base = 10)
+inline std::string IntToString(T a, unsigned int base = 10)
 {
 	if (a == 0)
 		return "0";
@@ -1961,11 +1968,27 @@ std::string IntToString(T a, unsigned int base = 10)
 	return result;
 }
 
+// Avoid warnings about compare against zero for unsigned
+template <>        // can't use <sstream> because GCC 2.95.2 doesn't have it 
+inline std::string IntToString<unsigned int>(unsigned int a, unsigned int base) 
+{
+	if (a == 0)
+		return "0";
+	std::string result;
+	while (a > 0)
+	{
+		unsigned digit = a % base;
+		result = char((digit < 10 ? '0' : ('a' - 10)) + digit) + result;
+		a /= base;
+	}
+	return result;
+}
+
 template <class T1, class T2>
 inline T1 SaturatingSubtract(T1 a, T2 b)
 {
-	CRYPTOPP_COMPILE_ASSERT_INSTANCE(T1(-1)>0, 0);	// T1 is unsigned type
-	CRYPTOPP_COMPILE_ASSERT_INSTANCE(T2(-1)>0, 1);	// T2 is unsigned type
+	CRYPTOPP_COMPILE_ASSERT(T1(-1)>0);	// T1 is unsigned type
+	CRYPTOPP_COMPILE_ASSERT(T2(-1)>0);	// T2 is unsigned type
 	return T1((a > b) ? (a - b) : 0);
 }
 
@@ -2728,11 +2751,11 @@ public:
 
 	template <typename I>
 	T& operator[](I index)
-		{assert(index >= 0 && (unsigned int)index < m_size); return m_ptr[index];}
+		{assert((unsigned int)index < m_size); return m_ptr[index];}
 
 	template <typename I>
 	const T& operator[](I index) const
-		{assert(index >= 0 && (unsigned int)index < m_size); return m_ptr[index];}
+		{assert((unsigned int)index < m_size); return m_ptr[index];}
 
 	typedef typename A::value_type value_type;
 	typedef typename A::pointer iterator;
@@ -5505,7 +5528,7 @@ class CRYPTOPP_NO_VTABLE IteratedHash : public IteratedHashBase2<T_HashWordType,
 {
 public:
 	enum {BLOCKSIZE = T_BlockSize};
-	CRYPTOPP_COMPILE_ASSERT((BLOCKSIZE & (BLOCKSIZE - 1)) == 0);		// blockSize is a power of 2
+	CRYPTOPP_COMPILE_ASSERT_GLOBAL((BLOCKSIZE & (BLOCKSIZE - 1)) == 0);		// blockSize is a power of 2
 
 protected:
 	IteratedHash() 

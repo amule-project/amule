@@ -120,7 +120,7 @@ wxString CastItoIShort(uint64 count)
 {
 
 	if (count < 1000)
-		return wxString::Format(wxT("%llu"), count);
+		return wxString::Format(wxT("%u"), (unsigned)count);
 	else if (count < 1000000)
 		return wxString::Format(wxT("%.0f%s"),(float)count/1000, _("K") );
 	else if (count < 1000000000)
@@ -506,7 +506,7 @@ unsigned int DecodeBase32(const wxString &base32Buffer, unsigned int base32BufLe
 		return 0;
 	}
 
-	DWORD nBits = 0;
+	uint32 nBits = 0;
 	int nCount = 0;
 	for (size_t i = 0; i < nInputLen; ++i)
 	{
@@ -524,7 +524,7 @@ unsigned int DecodeBase32(const wxString &base32Buffer, unsigned int base32BufLe
 		nCount += 5;
 		if (nCount >= 8)
 		{
-			*buffer++ = (BYTE)( nBits >> (nCount - 8) );
+			*buffer++ = (byte)( nBits >> (nCount - 8) );
 			nCount -= 8;
 		}
 		nBits <<= 5;

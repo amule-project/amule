@@ -132,7 +132,7 @@ private:
 	wxBitmap		m_frame;
     
 	//! Enables the event functions OnErase(), OnTimer() and OnPaint().
-	DECLARE_EVENT_TABLE();
+	DECLARE_EVENT_TABLE()
 };
 
 #endif

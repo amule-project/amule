@@ -54,7 +54,7 @@ enum {
 	CMD_ID_SETDOWNBWLIMIT,
 	CMD_ID_GETBWLIMITS,
 	CMD_ID_STATTREE,
-	CMD_ID_RELOADSHARED,
+	CMD_ID_RELOADSHARED
 };
 //-------------------------------------------------------------------
 //

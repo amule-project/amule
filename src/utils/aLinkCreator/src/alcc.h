@@ -103,7 +103,7 @@ class alcc : public wxApp
     virtual int OnExit();
   };
 
-DECLARE_APP(alcc);
+DECLARE_APP(alcc)
 
 #endif /* _ALCC_H */
 

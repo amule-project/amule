@@ -57,10 +57,10 @@ class alc:public wxApp
     
   public:
     virtual bool OnInit ();
-    AlcFrame *alc::GetMainFrame();
+    AlcFrame *GetMainFrame();
   };
 
-DECLARE_APP (alc);
+DECLARE_APP (alc)
 
 
 #endif /* _ALC_H */

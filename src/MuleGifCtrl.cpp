@@ -58,7 +58,7 @@ MuleGifCtrl::~MuleGifCtrl()
 		delete m_decoder;
 		m_decoder = NULL;
 	}
-};
+}
 
 
 bool MuleGifCtrl::LoadData(const char* data, int size)

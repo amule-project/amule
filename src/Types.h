@@ -29,6 +29,45 @@
 #include <wx/defs.h>
 #include <inttypes.h>
 #include <wx/dynarray.h>
+
+
+// These are MSVC defines used in eMule. They should 
+// not be used in aMule, instead, use this table to 
+// find the type to use in order to get the desired 
+// effect. 
+//////////////////////////////////////////////////
+// Name              // Type To Use In Amule    //
+//////////////////////////////////////////////////
+// BOOL              // bool                    //
+// WORD              // uint16                  //
+// INT               // int32                   //
+// UINT              // uint32                  //
+// UINT_PTR          // uint32*                 //
+// PUINT             // uint32*                 //
+// DWORD             // uint32                  //
+// LONG              // long                    //
+// ULONG             // unsigned long           //
+// LONGLONG          // long long               //
+// ULONGLONG         // unsigned long long      //
+// LPBYTE            // char*                   //
+// VOID              // void                    //
+// PVOID             // void*                   //
+// LPVOID            // void*                   //
+// LPCVOID           // const void*             //
+// CHAR              // char                    //
+// LPSTR             // char*                   //
+// LPCSTR            // const char*             //
+// TCHAR             // char                    //
+// LPTSTR            // char*                   //
+// LPCTSTR           // const char*             //
+// WCHAR             // wchar_t                 //
+// LPWSTR            // wchar_t*                //
+// LPCWSTR           // const wchar_t*          //
+// WPARAM            // uint16                  //
+// LPARAM            // uint32                  //
+// POINT             // wxPoint                 //
+//////////////////////////////////////////////////
+
 /* 
  * Backwards compatibility with emule.
  * Note that the int* types are indeed unsigned.
@@ -45,14 +84,14 @@ typedef int8_t		sint8;
 typedef int16_t		sint16;
 typedef int32_t		sint32;
 typedef int64_t		sint64;
-typedef uint8_t		uchar;
-typedef uint8_t		BYTE;
+typedef uint8_t		byte;
 
 WX_DEFINE_ARRAY_SHORT(uint16, ArrayOfUInts16);
 
 #ifndef __cplusplus
 	typedef int bool;
 #endif
+
 
 #ifdef __WXMSW__
 	#include <windef.h>
@@ -61,70 +100,20 @@ WX_DEFINE_ARRAY_SHORT(uint16, ArrayOfUInts16);
 	#include <wx/msw/winundef.h>	/* Needed to be able to include mingw headers */
 
 	typedef uint32_t	in_addr_t;
-	typedef uint8_t		byte;
-	typedef uint32_t	uint;
-	typedef uint16_t	WORD;
-	typedef uint32_t	UINT;
 #else 
-	typedef bool		BOOL;
-
-	typedef uint32_t	UINT;
-	typedef uint32_t*	UINT_PTR;
-	typedef uint32_t*	PUINT;
-
-	typedef uint8_t		byte;
-	typedef uint32_t	DWORD;
-	typedef long		LONG;
-	typedef unsigned long	ULONG;
-	typedef unsigned long long	ULONGLONG;
-	typedef char*   	LPBYTE;
-	typedef int32_t		INT;
-	typedef uint16_t	WORD;
-	typedef uint16_t	word;
-	
-	typedef void       	VOID;
-	typedef VOID*      	PVOID;
-	typedef VOID*      	LPVOID;
-	typedef const VOID*	LPCVOID;
-
-	typedef char        	CHAR;
-	typedef CHAR*       	LPSTR;
-	typedef const CHAR* 	LPCSTR;
-	typedef char        	TCHAR;
-	typedef TCHAR*      	LPTSTR;
-	typedef const TCHAR*	LPCTSTR;
-
-	typedef wchar_t		WCHAR;
-	typedef WCHAR*		LPWSTR;
-	typedef const WCHAR*	LPCWSTR;
 
 	typedef uint32_t	COLORREF;
-	typedef int16_t 	WPARAM;
-	typedef int32_t 	LPARAM;
-
-	typedef struct sPOINT {
-	  UINT x;
-	  UINT y;
-	} POINT;
 
 	typedef struct sRECT {
-	  UINT left;
-	  UINT top;
-	  UINT right;
-	  UINT bottom;
+	  uint32 left;
+	  uint32 top;
+	  uint32 right;
+	  uint32 bottom;
 	} RECT;
 
 	typedef RECT		*LPRECT;
-
-	typedef struct sWINDOWPLACEMENT {
-	  UINT length;
-	  UINT flags;
-	  UINT showCmd;
-	  POINT ptMinPosition;
-	  POINT ptMaxPosition;
-	  RECT rcNormalPosition;
-	} WINDOWPLACEMENT;
 #endif /* __WXMSW__ */
+
 
 #ifdef AMULE_DAEMON
 #define AMULE_TIMER_CLASS CTimer

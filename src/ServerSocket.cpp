@@ -197,7 +197,7 @@ CServerSocket::~CServerSocket()
 	}
 	cur_server = NULL;
 #ifdef AMULE_DAEMON
-	printf("CServerSocket: destroying socket %p\n", this);
+	printf("CServerSocket: destroying socket %p\n", (void*)this);
 	my_handler->Delete();
 #endif
 }
@@ -359,7 +359,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 					throw wxString(_("Corrupt or invalid loginanswer from server received"));
 				}
 
-				CSafeMemFile data((BYTE*)packet, size);			
+				CSafeMemFile data((byte*)packet, size);			
 				
 				uint32 new_id = data.ReadUInt32();
 
@@ -463,10 +463,10 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 			}
 			case OP_FOUNDSOURCES: {
 				#ifdef DEBUG_SERVER_PROTOCOL
-				AddLogLineM(true,wxString::Format(wxT("ServerMsg - OP_FoundSources; sources = %u\n"), (UINT)(uchar)packet[16]));
+				AddLogLineM(true,wxString::Format(wxT("ServerMsg - OP_FoundSources; sources = %u\n"), (uint32)(byte)packet[16]));
 				#endif
 				theApp.statistics->AddDownDataOverheadServer(size);
-				CSafeMemFile sources((BYTE*)packet,size);
+				CSafeMemFile sources((byte*)packet,size);
 				uint8 fileid[16];
 				sources.ReadHash16(fileid);
 				if (CPartFile* file = theApp.downloadqueue->GetFileByID(fileid)) {
@@ -485,7 +485,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				}
 				update = theApp.serverlist->GetServerByAddress(cur_server->GetAddress(), cur_server->GetPort());
 				if (update) {
-					CSafeMemFile data((BYTE*)packet, size);
+					CSafeMemFile data((byte*)packet, size);
 					update->SetUserCount(data.ReadUInt32());
 					update->SetFileCount(data.ReadUInt32());
 					Notify_ServerRefresh( update );
@@ -508,7 +508,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				}
 				CServer* update = theApp.serverlist->GetServerByAddress(cur_server->GetAddress(),cur_server->GetPort());
 				if (update) {
-					CSafeMemFile data((BYTE*)packet,size);
+					CSafeMemFile data((byte*)packet,size);
 					uint8 aucHash[16];
 					data.ReadHash16(aucHash);				
 					if (RawPeekUInt32(aucHash) == 0x2A2A2A2A){ // No endian problem here
@@ -548,7 +548,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				#ifdef DEBUG_SERVER_PROTOCOL
 				AddLogLineM(true,wxT("Server: OP_SERVERLIST\n"));
 				#endif
-				CSafeMemFile* servers = new CSafeMemFile((BYTE*)packet,size);
+				CSafeMemFile* servers = new CSafeMemFile((byte*)packet,size);
 				uint8 count = servers->ReadUInt8();
 				if (((int32)(count*6 + 1) > size)) {
 					count = 0;
@@ -582,7 +582,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				#endif
 				theApp.statistics->AddDownDataOverheadServer(size);
 				if (size == 6) {
-					CSafeMemFile data((BYTE*)packet,size);
+					CSafeMemFile data((byte*)packet,size);
 					uint32 dwIP = data.ReadUInt32();
 					uint16 nPort = data.ReadUInt16();
 					CUpDownClient* client = theApp.clientlist->FindClientByIP(dwIP,nPort);

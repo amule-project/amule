@@ -60,7 +60,7 @@ using namespace CryptoPP;
 
 CUInt128::CUInt128()
 {
-	setValue((ULONG)0);
+	setValue((uint32)0);
 }
 
 CUInt128::CUInt128(bool fill)
@@ -68,16 +68,16 @@ CUInt128::CUInt128(bool fill)
 	if( fill )
 	{
 		// Endian safe (-1 = 0xFFFF)
-		m_data[0] = (ULONG)-1;
-		m_data[1] = (ULONG)-1;
-		m_data[2] = (ULONG)-1;
-		m_data[3] = (ULONG)-1;
+		m_data[0] = (uint32)-1;
+		m_data[1] = (uint32)-1;
+		m_data[2] = (uint32)-1;
+		m_data[3] = (uint32)-1;
 	}
 	else
-		setValue((ULONG)0);
+		setValue((uint32)0);
 }
 
-CUInt128::CUInt128(ULONG value)
+CUInt128::CUInt128(uint32 value)
 {
 	setValue(value);
 }
@@ -87,19 +87,19 @@ CUInt128::CUInt128(const byte *valueBE)
 	setValueBE(valueBE);
 }
 
-CUInt128::CUInt128(const CUInt128 &value, UINT numBits)
+CUInt128::CUInt128(const CUInt128 &value, uint32 numBits)
 {
-	// Copy the whole ULONGs
-	UINT numULONGs = numBits / 32;
-	for (UINT i=0; i<numULONGs; ++i)
+	// Copy the whole uint32s
+	uint32 numULONGs = numBits / 32;
+	for (uint32 i=0; i<numULONGs; ++i)
 		m_data[i] = value.m_data[i];
 
 	// Copy the remaining bits
-	for (UINT i=(32*numULONGs); i<numBits; ++i)
+	for (uint32 i=(32*numULONGs); i<numBits; ++i)
 		setBitNumber(i, value.getBitNumber(i));
 
 	// Pad with random bytes (Not seeding based on time to allow multiple different ones to be created in quick succession)
-	for (UINT i=numBits; i<128; ++i)
+	for (uint32 i=numBits; i<128; ++i)
 		setBitNumber(i, (rand()%2));
 }
 
@@ -112,7 +112,7 @@ CUInt128& CUInt128::setValue(const CUInt128 &value)
 	return *this;
 }
 
-CUInt128& CUInt128::setValue(ULONG value)
+CUInt128& CUInt128::setValue(uint32 value)
 {
 	m_data[0] = 0;
 	m_data[1] = 0;
@@ -123,9 +123,9 @@ CUInt128& CUInt128::setValue(ULONG value)
 
 CUInt128& CUInt128::setValueBE(const byte *valueBE)
 {
-	setValue((ULONG)0);
+	setValue((uint32)0);
 	for (int i=0; i<16; ++i)
-		m_data[i/4] |= ((ULONG)valueBE[i]) << (8*(3-(i%4)));
+		m_data[i/4] |= ((uint32)valueBE[i]) << (8*(3-(i%4)));
 	return *this;
 }
 
@@ -138,7 +138,7 @@ CUInt128& CUInt128::setValueRandom(void)
 	return *this;
 }
 
-UINT CUInt128::getBitNumber(UINT bit) const
+uint32 CUInt128::getBitNumber(uint32 bit) const
 {
 	if (bit > 127)
 		return 0;
@@ -148,7 +148,7 @@ UINT CUInt128::getBitNumber(UINT bit) const
 	return ((m_data[ulongNum] >> shift) & 1);
 }
 
-CUInt128& CUInt128::setBitNumber(UINT bit, UINT value) 
+CUInt128& CUInt128::setBitNumber(uint32 bit, uint32 value) 
 {
 	int ulongNum = bit / 32;
 	int shift = 31 - (bit % 32);
@@ -176,7 +176,7 @@ void CUInt128::toHexString(wxString *str) const
 	str->Clear();
 	for (int i=0; i<4; ++i)
 	{
-		str->Append(wxString::Format(wxT("%08lX"), m_data[i]));
+		str->Append(wxString::Format(wxT("%08X"), m_data[i]));
 	}
 }
 
@@ -229,7 +229,7 @@ int CUInt128::compareTo(const CUInt128 &other) const
 	return 0;
 }
 
-int CUInt128::compareTo(ULONG value) const
+int CUInt128::compareTo(uint32 value) const
 {
 	if ((m_data[0] > 0) || (m_data[1] > 0) || (m_data[2] > 0) || (m_data[3] > value))
 		return 1;
@@ -247,13 +247,13 @@ CUInt128& CUInt128::add(const CUInt128 &value)
 	{
 		sum += m_data[i];
 		sum += value.m_data[i];
-		m_data[i] = (ULONG)sum;
+		m_data[i] = (uint32)sum;
 		sum = sum >> 32;
 	}
 	return *this;
 }
 
-CUInt128& CUInt128::add(ULONG value)
+CUInt128& CUInt128::add(uint32 value)
 {
 	if (value == 0)
 		return *this;
@@ -271,13 +271,13 @@ CUInt128& CUInt128::subtract(const CUInt128 &value)
 	{
 		sum += m_data[i];
 		sum -= value.m_data[i];
-		m_data[i] = (ULONG)sum;
+		m_data[i] = (uint32)sum;
 		sum = sum >> 32;
 	}
 	return *this;
 }
 
-CUInt128& CUInt128::subtract(ULONG value)
+CUInt128& CUInt128::subtract(uint32 value)
 {
 	if (value == 0)
 		return *this;
@@ -286,23 +286,23 @@ CUInt128& CUInt128::subtract(ULONG value)
 	return *this;
 }
 
-CUInt128& CUInt128::shiftLeft(UINT bits)
+CUInt128& CUInt128::shiftLeft(uint32 bits)
 {
     if ((bits == 0) || (compareTo(0) == 0))
         return *this;
 	if (bits > 127)
 	{
-		setValue((ULONG)0);
+		setValue((uint32)0);
 		return *this;
 	}
 
-	ULONG result[] = {0,0,0,0};
+	uint32 result[] = {0,0,0,0};
 	int indexShift = (int)bits / 32;
 	int64 shifted = 0;
 	for (int i=3; i>=indexShift; i--)
 	{
 		shifted += ((int64)m_data[i]) << (bits % 32);
-		result[i-indexShift] = (ULONG)shifted;
+		result[i-indexShift] = (uint32)shifted;
 		shifted = shifted >> 32;
 	}
 	for (int i=0; i<4; ++i)

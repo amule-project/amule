@@ -59,8 +59,8 @@
 
 #include "CryptoPP_Inc.h"       // Needed for MD4
 
-WX_DEFINE_OBJARRAY(ArrayOfCMD4Hash);
-WX_DEFINE_OBJARRAY(ArrayOfCTag);
+WX_DEFINE_OBJARRAY(ArrayOfCMD4Hash)
+WX_DEFINE_OBJARRAY(ArrayOfCTag)
 
 CFileStatistic::CFileStatistic() : 
 	requested(0), 
@@ -364,7 +364,7 @@ bool CKnownFile::LoadHashsetFromFile(const CFileDataIO* file, bool checkhash){
 	// lol, useless comment but made me lmao
 
 	if (!hashlist.IsEmpty()){
-		uchar* buffer = new uchar[hashlist.GetCount()*16];
+		byte* buffer = new byte[hashlist.GetCount()*16];
 		for (size_t i = 0;i != hashlist.GetCount();i++) {
 			md4cpy(buffer+(i*16),hashlist[i]);
 		}
@@ -579,7 +579,7 @@ bool CKnownFile::WriteToFile(CFileDataIO* file){
 #endif //VERIFY
 #endif //_AFX
 
-void CKnownFile::CreateHashFromInput(CFile* file, uint32 Length, uchar* Output, uchar* in_string, CAICHHashTree* pShaHashOut) const
+void CKnownFile::CreateHashFromInput(CFile* file, uint32 Length, byte* Output, byte* in_string, CAICHHashTree* pShaHashOut) const
 {
 	wxASSERT( Output != NULL || pShaHashOut != NULL);
 
@@ -597,7 +597,7 @@ void CKnownFile::CreateHashFromInput(CFile* file, uint32 Length, uchar* Output, 
 	data = new CMemFile(in_string,Length);
 		
 	uint32 Required = Length;
-	uchar   X[64*128];
+	byte   X[64*128];
 	
 	uint32	posCurrentEMBlock = 0;
 	uint32	nIACHPos = 0;
