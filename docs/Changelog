@@ -66,6 +66,7 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		  on the web interface.
 		* Added CVSDATE checks to EC, to make sure that core and remote
 		  apps are from the CVS tarball (for CVS users).
+		* Improved filename cleanup.
 
 		**** For users, who already got used to amulecmd's or amuleweb's
 		**** command-line parameters: PLEASE READ DOCUMENTATION CAREFULLY!
