@@ -47,7 +47,6 @@
 //	members of CUpDownClient
 //	which are mainly used for uploading functions 
 
-CBarShader CUpDownClient::s_UpStatusBar(16);
 void CUpDownClient::DrawUpStatusBar(wxMemoryDC* dc, wxRect rect, bool onlygreyrect, bool  bFlat){
 	RECT gaprect;
 	gaprect.top = rect.y + 2;

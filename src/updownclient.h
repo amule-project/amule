@@ -39,7 +39,6 @@ class CKnownFile;
 class Pending_Block_Struct;
 class CSafeMemFile;
 class CMemFile;
-class CBarShader;
 class Requested_File_Struct;
 class TransferredData;
 
@@ -452,7 +451,6 @@ private:
 	bool			m_bUsedComprUp;	//only used for interface output
 	uint32		m_nCurSessionUp;
 	uint16		m_nUpPartCount;
-	static		CBarShader s_UpStatusBar;
 	uchar		requpfileid[16];
 	uint16		m_nUpCompleteSourcesCount;
 	public:
@@ -494,7 +492,6 @@ private:
 	float		fDownAvgFilter;
 	uint32		msReceivedPrev;
 	uint32		bytesReceivedCycle;
-	static CBarShader s_StatusBar;
 	// chat
 	uint8 m_byChatstate;
 	CString m_strComment;
