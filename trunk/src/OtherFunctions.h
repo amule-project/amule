@@ -30,6 +30,7 @@
 #include <wx/string.h>		// Needed for wxString
 #include <wx/utils.h>		// Needed for wxGetHomeDir()
 #include <wx/filename.h>	// Needed for wxFileName::GetPathSeparator()
+#include <wx/intl.h>		// Needed for wxLANGUAGE_ constants
 
 #ifdef __WXBASE__
 	#include <time.h>
@@ -480,6 +481,53 @@ inline void MilliSleep(uint32 msecs) {
 
 inline wxString GetConfigDir(void) {
 	return wxGetHomeDir() + wxFileName::GetPathSeparator() + wxT(".aMule") + wxFileName::GetPathSeparator();
+}
+
+#define  wxLANGUAGE_CUSTOM 		wxLANGUAGE_USER_DEFINED+1
+#define  wxLANGUAGE_ITALIAN_NAPOLITAN 	wxLANGUAGE_USER_DEFINED+2
+
+/**
+ * Adds aMule's custom languages to db.
+ */
+void InitCustomLanguages();
+
+/**
+ * Initializes locale
+ */
+void InitLocale(wxLocale& locale, int language);
+
+/**
+ * Converts a string locale definition to a wxLANGUAGE id.
+ */
+inline int StrLang2wx(const wxString& lang)
+{
+	if (!lang.IsEmpty()) {
+		const wxLanguageInfo *lng = wxLocale::FindLanguageInfo(lang);
+		if (lng) {
+			return lng->Language;
+		} else {
+			return wxLANGUAGE_DEFAULT;
+		}
+	} else {
+		return wxLANGUAGE_DEFAULT;
+	}
+}
+
+/**
+ * Converts a wxLANGUAGE id to a string locale name.
+ */
+inline wxString wxLang2Str(const int lang)
+{
+	if (lang != wxLANGUAGE_DEFAULT) {
+		const wxLanguageInfo *lng = wxLocale::GetLanguageInfo(lang);
+		if (lng) {
+			return lng->CanonicalName;
+		} else {
+			return wxEmptyString;
+		}
+	} else {
+		return wxEmptyString;
+	}
 }
 
 } // End namespace

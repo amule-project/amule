@@ -33,6 +33,7 @@
 
 #include <wx/app.h>		// For wxApp and mainly, for wxUSE_GUI
 #include <wx/cmdline.h>		// For wxCmdLineEntryDesc
+#include <wx/intl.h>		// For wxLocale
 #include <wx/string.h>		// For wxString
 
 #if wxUSE_GUI
@@ -113,13 +114,15 @@ protected:
 	bool		m_Verbose;
 
 private:
-	static const wxCmdLineEntryDesc cmdLineDesc[11];
+	static const wxCmdLineEntryDesc cmdLineDesc[12];
 	
 	wxString	m_cmdargs;
 	ECSocket* 	m_ECClient;
 	bool 		m_isConnected;
 	char *		m_InputLine;
 	bool		m_NeedsConfigSave;
+	wxString	m_language;
+	wxLocale	m_locale;
 
 #if wxUSE_GUI
 private:

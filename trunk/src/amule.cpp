@@ -81,7 +81,7 @@
 #include "ClientUDPSocket.h"		// Needed for CClientUDPSocket
 #include "ServerSocket.h"		// Needed for CServerSocket
 #include "SharedFileList.h"		// Needed for CSharedFileList
-#include "ServerConnect.h"			// Needed for CServerConnect
+#include "ServerConnect.h"		// Needed for CServerConnect
 #include "ServerList.h"			// Needed for CServerList
 #include "KnownFileList.h"		// Needed for CKnownFileList
 #include "SearchList.h"			// Needed for CSearchList
@@ -89,7 +89,7 @@
 #include "Preferences.h"		// Needed for CPreferences
 #include "ListenSocket.h"		// Needed for CListenSocket
 #include "ExternalConn.h"		// Needed for ExternalConn & MuleConnection
-#include "ServerUDPSocket.h"			// Needed for CServerUDPSocket
+#include "ServerUDPSocket.h"		// Needed for CServerUDPSocket
 #include "PartFile.h"			// Needed for CPartFile
 #include "AddFileThread.h"		// Needed for CAddFileThread
 #include "FriendList.h"			// Needed for CFriendList
@@ -803,7 +803,7 @@ bool CamuleApp::OnInit()
 		theApp.serverconnect->ConnectToAnyServer();
 	}
 
-	// No webserver on Win at all (yet)	
+	// No webserver on Win at all (yet)
 #ifndef __WXMSW__
 	// Run webserver?
 	if (thePrefs::GetWSIsEnabled()) {
@@ -1244,6 +1244,7 @@ void CamuleApp::Localize_mule()
 {
 	int language;
 
+/*
 	#define  wxLANGUAGE_CUSTOM 		wxLANGUAGE_USER_DEFINED+1
 	#define  wxLANGUAGE_ITALIAN_NAPOLITAN 	wxLANGUAGE_USER_DEFINED+2
 
@@ -1256,6 +1257,8 @@ void CamuleApp::Localize_mule()
 	CustomLanguage.Language = wxLANGUAGE_CUSTOM;
 	CustomLanguage.CanonicalName = wxT("aMule_custom");
 	CustomLanguage.Description = wxT("aMule's custom language");
+*/
+	InitCustomLanguages();
 
 	switch ( thePrefs::GetLanguageID()) {
 		case 0:
@@ -1386,6 +1389,13 @@ void CamuleApp::Localize_mule()
 			break;
 	}
 
+	InitLocale(m_locale, language);
+	if (!m_locale.IsOk()) {
+		AddLogLineM(false,_("The selected locale seems not to be installed on your box."
+				    " (Note: I'll try to set it anyway)"));
+	}
+
+/*
 	int language_flags = 0;
 	if ((language != wxLANGUAGE_CUSTOM) && (language != wxLANGUAGE_ITALIAN_NAPOLITAN)) {
 		language_flags = wxLOCALE_LOAD_DEFAULT | wxLOCALE_CONV_ENCODING;
@@ -1405,6 +1415,7 @@ void CamuleApp::Localize_mule()
 		m_locale.AddCatalogLookupPathPrefix(wxString::Format(wxT("%s/.aMule"), getenv("HOME")));
 		m_locale.AddCatalog(wxT("custom"));
 	}
+*/
 }
 
 
