@@ -285,7 +285,7 @@ bool CamulecmdApp::OnCmdLineParsed(wxCmdLineParser& amulecmd_parser) {
 	
 	bool result = true;
 	
-	result = wxApp::OnCmdLineParsed(amulecmd_parser);
+	//result = wxApp::OnCmdLineParsed(amulecmd_parser);
 	
 	wxString TempStr;
 	TempStr = wxT("rh");

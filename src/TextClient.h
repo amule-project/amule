@@ -72,7 +72,13 @@ private:
 };
 #endif
 
-class CamulecmdApp : public wxApp {
+#if wxCHECK_VERSION(2,5,0)
+//#if 0
+class CamulecmdApp : public wxAppConsole
+#else  // wxCHECK_VERSION
+class CamulecmdApp : public wxApp
+#endif // wxCHECK_VERSION
+{
 public:
 	
 #ifndef AMULECMDDLG
