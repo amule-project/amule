@@ -140,8 +140,8 @@ CKnownFile::CKnownFile(CEC_SharedFile_Tag *tag)
 	m_AvailPartFrequency.SetCount(m_iPartCount);
 	#else
 	// wx2.4 has no SetCount.
-	if (m_AvailPartCount.Count() < m_iPartCount) {
-		m_AvailPartCount.Add(0, m_iPartCount - m_AvailPartCount.Count());
+	if (m_AvailPartFrequency.Count() < m_iPartCount) {
+		m_AvailPartFrequency.Add(0, m_iPartCount - m_AvailPartFrequency.Count());
 	}
 	#endif
 	m_iUpPriority = tag->Prio();
