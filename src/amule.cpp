@@ -1610,7 +1610,8 @@ void CamuleApp::OnTCPTimer(wxTimerEvent& WXUNUSED(evt))
 	serverconnect->ConnectToAnyServer();
 }
 
-#ifdef __DEBUG__
+#ifdef defined(__DEBUG__) && !(defined(__OPENBSD__))
+
 	void CamuleApp::AddSocketDeleteDebug(uint32 socket_pointer, uint32 creation_time) {
 		
 		socket_deletion_log_item current_socket;
