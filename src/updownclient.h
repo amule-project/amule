@@ -640,6 +640,8 @@ public:
 	
 	CAICHHash*  m_pReqFileAICHHash; 
 	
+	bool m_bMsgFiltered;
+	
 public:
 	/**
 	 * Checks that a client isn't aggressively re-asking for files.
