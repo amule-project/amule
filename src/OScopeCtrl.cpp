@@ -89,8 +89,8 @@ COLORREF crPreset [ 16 ] = {
 	crGrid  = RGB(  0, 255, 255) ;  // see also SetGridColor
 	brushBack=*(wxTheBrushList->FindOrCreateBrush(wxColour(GetRValue(crBackground),GetGValue(crBackground),GetBValue(crBackground)),wxSOLID));
 
-	strXUnits.Printf(wxT("X")) ;  // can also be set with SetXUnits
-	strYUnits.Printf(wxT("Y")) ;  // can also be set with SetYUnits
+	strXUnits = wxT("X");  // can also be set with SetXUnits
+	strYUnits = wxT("Y");  // can also be set with SetYUnits
 
 	bmapOldGrid = NULL ;
 	bmapOldPlot = NULL ;
@@ -253,10 +253,11 @@ void COScopeCtrl::RecreateGrid()
 
 	// y max
 	dcGrid->SetTextForeground(wxColour(GetRValue(crGrid),GetGValue(crGrid),GetBValue(crGrid)));
-	if( strYMax.IsEmpty() )
-		strTemp.Printf(wxT("%.*lf"), nYDecimals, pdsTrends[ 0 ].fUpperLimit) ;
-	else
+	if( strYMax.IsEmpty() ) {
+		strTemp = wxString::Format(wxT("%.*lf"), nYDecimals, pdsTrends[ 0 ].fUpperLimit);
+	} else {
 		strTemp = strYMax;
+	}
 	wxCoord sizX,sizY;
 	dcGrid->GetTextExtent(strTemp,&sizX,&sizY);
 	dcGrid->DrawText(strTemp,rectPlot.left-4-sizX,rectPlot.top-7);
@@ -268,17 +269,22 @@ void COScopeCtrl::RecreateGrid()
 	dcGrid->DrawText(strTemp,rectPlot.left-2-sizX,rectPlot.bottom+((rectPlot.top-rectPlot.bottom)/2)-7);
 */
 	// y min
-	if( strYMin.IsEmpty() )
-		strTemp.Printf(wxT("%.*lf"), nYDecimals, pdsTrends[ 0 ].fLowerLimit) ;
-	else
+	if( strYMin.IsEmpty() ) {
+		strTemp = wxString::Format(wxT("%.*lf"), nYDecimals, pdsTrends[ 0 ].fLowerLimit) ;
+	} else {
 		strTemp = strYMin;
+	}
 	dcGrid->GetTextExtent(strTemp,&sizX,&sizY);
 	dcGrid->DrawText(strTemp,rectPlot.left-4-sizX, rectPlot.bottom);
 
 	// x units
 	strTemp = otherfunctions::CastSecondsToHM((nPlotWidth/nShiftPixels) * (int)floor(sLastPeriod+0.5));
 		// floor(x + 0.5) is a way of doing round(x) that works with gcc < 3 ...
-	strXUnits.Printf((bStopped ? _("Disabled [%s]") : wxT("%s")), unicode2char(strTemp));
+	if (bStopped) {
+		strXUnits = _("Disabled [") + strTemp + wxT("]");
+	} else {
+		strXUnits = strTemp;
+	}	
 	
 	dcGrid->GetTextExtent(strXUnits,&sizX,&sizY);
 	dcGrid->DrawText(strXUnits,(rectPlot.left+rectPlot.right)/2-sizX/2,rectPlot.bottom+4);
