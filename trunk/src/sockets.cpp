@@ -32,7 +32,6 @@
 #include "GetTickCount.h"	// Needed for GetTickCount
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "SysTray.h"		// Needed for TBN_IMPORTANTEVENT
-#include "SearchDlg.h"		// Needed for CSearchDlg
 #include "UDPSocket.h"		// Needed for CUDPSocket
 #include "SharedFileList.h"	// Needed for CSharedFileList
 #include "packets.h"		// Needed for CTag
@@ -47,6 +46,9 @@
 #include "Preferences.h"	// Needed for CPreferences
 #include "updownclient.h"	// for SO_AMULE
 
+#ifndef AMULE_DAEMON
+	#include "SearchDlg.h"		// Needed for CSearchDlg
+#endif
 
 //#define DEBUG_CLIENT_PROTOCOL
 

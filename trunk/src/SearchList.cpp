@@ -17,26 +17,29 @@
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 // 
 
-#include "muuli_wdr.h"		// Needed for ID_NOTEBOOK
 #include "SearchList.h"		// Interface declarations.
 #include "otherfunctions.h"	// Needed for GetFiletypeByName
 #include "NetworkFunctions.h" // Needed for IsGoodIP
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "SafeFile.h"		// Needed for CSafeMemFile
-#include "SearchListCtrl.h"	// Needed for CSearchListCtrl
 #include "packets.h"		// Needed for CTag
 #include "CFile.h"		// Needed for CFile
-#include "SearchDlg.h"		// Needed for CSearchDlg
-#include "amuleDlg.h"		// Needed for CamuleDlg
 #include "amule.h"			// Needed for theApp
 #include "ServerSocket.h"
 #include "server.h"
 #include "ServerList.h"
-#include "MuleNotebook.h"	// Needed for CMuleNotebook
 #include "SharedFileList.h" // Needed for GetFileByID
 #include "DownloadQueue.h"  // Needed for GetFileByID
 
 #include <algorithm>
+
+#ifndef AMULE_DAEMON
+#include "SearchDlg.h"		// Needed for CSearchDlg
+#include "amuleDlg.h"		// Needed for CamuleDlg
+#include "MuleNotebook.h"	// Needed for CMuleNotebook
+#include "SearchListCtrl.h"	// Needed for CSearchListCtrl
+#include "muuli_wdr.h"		// Needed for ID_NOTEBOOK
+#endif
 
 CGlobalSearchThread::CGlobalSearchThread( Packet *packet )
 	: wxThread(wxTHREAD_JOINABLE)

@@ -22,11 +22,10 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#include <wx/msgdlg.h>
+#include <wx/utils.h>
 #include <wx/file.h>
 #include <wx/filename.h>
 
-#include "muuli_wdr.h"		// Needed for IDC_RELOADSHAREDFILES
 #include "SharedFileList.h"	// Interface declarations
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "packets.h"		// Needed for Packet
@@ -42,6 +41,11 @@
 #include "PartFile.h"		// Needed for PartFile
 #include "server.h"		// Needed for CServer
 #include "StringFunctions.h" // Needed for unicode2char
+
+#ifndef AMULE_DAEMON
+	#include "muuli_wdr.h"		// Needed for IDC_RELOADSHAREDFILES
+	#include <wx/msgdlg.h>
+#endif
 
 
 CSharedFileList::CSharedFileList(CServerConnect* in_server,CKnownFileList* in_filelist){

@@ -21,8 +21,6 @@
 
 #include <unistd.h>			// Needed for close(2) and sleep(3)
 #include <wx/defs.h>
-#include <wx/gauge.h>
-#include <wx/textctrl.h>
 
 #ifdef __WXMSW__
 	#include <winsock.h>
@@ -61,9 +59,7 @@
 #include <wx/log.h>
 #include <wx/timer.h>
 #include <wx/config.h>
-#include <wx/clipbrd.h>			// Needed for wxClipBoard
 #include <wx/socket.h>			// Needed for wxSocket
-#include <wx/splash.h>			// Needed for wxSplashScreen
 #include <wx/utils.h>
 #include <wx/ipc.h>
 #include <wx/intl.h>			// Needed for i18n
@@ -78,10 +74,6 @@
 #include "server.h"			// Needed for GetListName
 #include "CFile.h"			// Needed for CFile
 #include "otherfunctions.h"		// Needed for GetTickCount
-#include "TransferWnd.h"		// Needed for CTransferWnd
-#include "SharedFilesWnd.h"		// Needed for CSharedFilesWnd
-#include "ServerWnd.h"			// Needed for CServerWnd
-#include "StatisticsDlg.h"		// Needed for CStatisticsDlg
 #include "IPFilter.h"			// Needed for CIPFilter
 #include "UploadQueue.h"		// Needed for CUploadQueue
 #include "DownloadQueue.h"		// Needed for CDownloadQueue
@@ -104,6 +96,17 @@
 #include "packets.h"
 #include "AICHSyncThread.h"
 
+#ifndef AMULE_DAEMON
+	#include <wx/splash.h>			// Needed for wxSplashScreen
+	#include <wx/gauge.h>
+	#include <wx/textctrl.h>
+	#include <wx/clipbrd.h>			// Needed for wxClipBoard	
+	
+	#include "TransferWnd.h"		// Needed for CTransferWnd
+	#include "SharedFilesWnd.h"		// Needed for CSharedFilesWnd
+	#include "ServerWnd.h"			// Needed for CServerWnd
+	#include "StatisticsDlg.h"		// Needed for CStatisticsDlg
+#endif
 
 #ifdef HAVE_SYS_RESOURCE_H
 #include <sys/resource.h>
@@ -1390,6 +1393,8 @@ void CamuleApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 		if (serverconnect->IsConnecting()) {
 			serverconnect->CheckForTimeout();
 		}
+	
+		
 	}
 
 	if (msCur-msPrev5 > 5000) {  // every 5 seconds
