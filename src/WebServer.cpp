@@ -953,8 +953,8 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 		CECPacket req(EC_OP_ED2K_LINK);
 		CECTag link_tag(EC_TAG_STRING, HTTPTemp);
 		long category = StrToLong(sCat);
-		req.AddTag(link_tag);
 		link_tag.AddTag(CECTag(EC_TAG_PARTFILE_CAT, (uint8)category));
+		req.AddTag(link_tag);
 		CECPacket *response = webInterface->SendRecvMsg_v2(&req);
 		if (response) {
 			if ( response->GetOpCode() == EC_OP_FAILED) {
