@@ -313,10 +313,13 @@ CECPacket *Get_EC_Response_IPFilter(const CECPacket *request)
 		wxString cmd = request->GetTagByIndex(0)->GetStringData();
 		if ( cmd == wxT("ON") ) {
 			thePrefs::SetIPFilterOn(true);
+			msg = _("OK: ipfilter turned ON");
 		} else if ( cmd == wxT("OFF") ) {
 			thePrefs::SetIPFilterOn(false);
+			msg = _("OK: ipfilter turned OFF");
 		} else if ( cmd == wxT("RELOAD") ) {
 			theApp.ipfilter->Reload();
+			msg = _("OK: ipfilter reloaded");
 		} else if ( cmd.IsNumber() ) {
 			long level;
 			cmd.ToLong(&level);
@@ -355,6 +358,7 @@ CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request)
 		filetag.AddTag(CECTag(EC_TAG_ITEM_ID,
 			wxString::Format(wxT("%lx"), (unsigned long)(cur_file))));
 		filetag.AddTag(CECTag(EC_TAG_PARTFILE_SIZE_FULL,
+			//(uint32)cur_file->GetFileSize()));
 			wxString::Format(wxT("%ul"),cur_file->GetFileSize())));
 		filetag.AddTag(CECTag(EC_TAG_PARTFILE_SIZE_XFER,
 			wxString::Format(wxT("%ul"),cur_file->GetTransfered())));
@@ -385,6 +389,140 @@ CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request)
 	return 	response;
 }
 
+
+CECPacket *Get_EC_Response_PartFile_Cmd(const CECPacket *request)
+{
+	CECPacket *response = new CECPacket(EC_OP_STRINGS);
+
+	CPartFile *pfile = 0;
+	CECTag *idtag = request->GetTagByIndex(0);
+	CECTag *valtag = request->GetTagByIndex(1);
+
+	wxASSERT(idtag->GetTagName() == EC_TAG_ITEM_ID);
+
+	unsigned long id;
+	idtag->GetStringData().ToULong(&id, 16);
+	for (unsigned int j = 0; j < theApp.downloadqueue->GetFileCount(); j++) {
+		CPartFile *curr_file = theApp.downloadqueue->GetFileByIndex(j);
+		if ( PTR_2_ID(curr_file) == id ) {
+			pfile = curr_file;
+			break;
+		}
+	}
+	if ( !pfile ) {
+		AddLogLineM(false,_("Remote PartFile command failed: id not found"));
+		response->AddTag(CECTag(EC_TAG_STRING, _("ERROR: id not found")));
+		return response;
+	}
+	switch (request->GetOpCode()) {
+		case EC_OP_PARTFILE_REMOVE_NO_NEEDED:
+			pfile->CleanUpSources(true,  false, false);
+			break;
+		case EC_OP_PARTFILE_REMOVE_FULL_QUEUE:
+			pfile->CleanUpSources(false, true, false);
+			break;
+		case EC_OP_PARTFILE_REMOVE_HIGH_QUEUE:
+			pfile->CleanUpSources(false, false, true);
+			break;
+		case EC_OP_PARTFILE_CLEANUP_SOURCES:
+			pfile->CleanUpSources(true, true, true);
+			break;
+		case EC_OP_PARTFILE_SWAP_A4AF_THIS:
+			if ((pfile->GetStatus(false) == PS_READY) ||
+			    (pfile->GetStatus(false) == PS_EMPTY)) {
+				theApp.downloadqueue->DisableAllA4AFAuto();
+				
+				CPartFile::SourceSet::iterator it = pfile->A4AFsrclist.begin();
+				while ( it != pfile->A4AFsrclist.end() ) {
+					CUpDownClient *cur_source = *it++;
+					if ((cur_source->GetDownloadState() != DS_DOWNLOADING) &&
+					    cur_source->GetRequestFile() &&
+					    ( (!cur_source->GetRequestFile()->IsA4AFAuto()) ||
+					      (cur_source->GetDownloadState() == DS_NONEEDEDPARTS))) {
+						cur_source->SwapToAnotherFile(true, false, false, pfile);
+					}
+				}
+			}
+			break;
+		case EC_OP_PARTFILE_SWAP_A4AF_THIS_AUTO:
+			pfile->SetA4AFAuto(!pfile->IsA4AFAuto());
+			break;
+		case EC_OP_PARTFILE_SWAP_A4AF_OTHERS:
+			if ((pfile->GetStatus(false) == PS_READY) ||
+			    (pfile->GetStatus(false) == PS_EMPTY)) {
+				theApp.downloadqueue->DisableAllA4AFAuto();
+				
+				CPartFile::SourceSet::iterator it = pfile->m_SrcList.begin();
+				while ( it != pfile->m_SrcList.end() ) {
+					CUpDownClient* cur_source = *it++;
+					
+					cur_source->SwapToAnotherFile(false, false, false, NULL);
+				}
+			}
+			break;
+		case EC_OP_PARTFILE_PAUSE:
+			pfile->PauseFile();
+			break;
+		case EC_OP_PARTFILE_RESUME:
+			pfile->ResumeFile();
+			pfile->SavePartFile();
+			break;
+		case EC_OP_PARTFILE_STOP:
+			pfile->StopFile();
+			break;
+		case EC_OP_PARTFILE_PRIO_AUTO:
+			if ( !valtag ) {
+				response->AddTag(CECTag(EC_TAG_STRING,
+							_("ERROR: no value tag in EC_OP_PARTFILE_PRIO_AUTO")));
+				return response;
+			}
+			if ( valtag->GetStringData() == wxT("1") ) {
+				pfile->SetAutoDownPriority(true);
+			} else if ( valtag->GetStringData() == wxT("0") ) {
+				pfile->SetAutoDownPriority(false);
+			} else {
+				response->AddTag(CECTag(EC_TAG_STRING,
+							_("ERROR: value for EC_OP_PARTFILE_PRIO_AUTO is bad")));
+				return response;
+			}
+			break;
+		case EC_OP_PARTFILE_PRIO_SET:
+			if ( !valtag ) {
+				response->AddTag(CECTag(EC_TAG_STRING,
+							_("ERROR: no value tag in EC_OP_PARTFILE_PRIO_SET")));
+				return response;
+			}
+			if ( valtag->GetStringData() == wxT("PR_LOW") ) {
+				pfile->SetDownPriority(PR_LOW);
+			} else if ( valtag->GetStringData() == wxT("PR_NORMAL") ) {
+				pfile->SetDownPriority(PR_NORMAL);
+			} else if ( valtag->GetStringData() == wxT("PR_HIGH") ) {
+				pfile->SetDownPriority(PR_HIGH);
+			} else {
+				response->AddTag(CECTag(EC_TAG_STRING,
+							_("ERROR: value for EC_OP_PARTFILE_PRIO_SET is bad")));
+				return response;
+			}
+			break;
+		case EC_OP_PARTFILE_DELETE:
+			if ( thePrefs::StartNextFile() && (pfile->GetStatus() == PS_PAUSED) ) {
+				theApp.downloadqueue->StartNextFile();
+			}
+			pfile->Delete();
+			break;
+		case EC_OP_PARTFILE_SET_CAT:
+			if ( !valtag ) {
+				response->AddTag(CECTag(EC_TAG_STRING,
+							_("ERROR: no value tag in EC_OP_PARTFILE_CAT_SET")));
+				return response;
+			}
+			break;
+	}
+
+	response->AddTag(CECTag(EC_TAG_STRING, _("OK: PartFile command dispatched")));
+	return response;
+}
+
 CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request)
 {
 	if ( !request ) {
@@ -412,6 +550,31 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request)
 		case EC_OP_IPFILTER_CMD:
 			response = Get_EC_Response_IPFilter(request);
 			break;
+		case EC_OP_PARTFILE_REMOVE_NO_NEEDED:
+		case EC_OP_PARTFILE_REMOVE_FULL_QUEUE:
+		case EC_OP_PARTFILE_REMOVE_HIGH_QUEUE:
+		case EC_OP_PARTFILE_CLEANUP_SOURCES:
+		case EC_OP_PARTFILE_SWAP_A4AF_THIS:
+		case EC_OP_PARTFILE_SWAP_A4AF_THIS_AUTO:
+		case EC_OP_PARTFILE_SWAP_A4AF_OTHERS:
+		case EC_OP_PARTFILE_PAUSE:
+		case EC_OP_PARTFILE_RESUME:
+		case EC_OP_PARTFILE_STOP:
+		case EC_OP_PARTFILE_PRIO_AUTO:
+		case EC_OP_PARTFILE_PRIO_SET:
+		case EC_OP_PARTFILE_DELETE:
+		case EC_OP_PARTFILE_SET_CAT:
+			response = Get_EC_Response_PartFile_Cmd(request);
+			break;
+		case EC_OP_KNOWNFILE_SET_UP_PRIO:
+			break;
+		case EC_OP_KNOWNFILE_SET_UP_PRIO_AUTO:
+			break;
+		case EC_OP_KNOWNFILE_SET_PERM:
+			break;
+		case EC_OP_KNOWNFILE_SET_COMMENT:
+			break;
+
 		case EC_OP_ED2K_LINK: 
 			for(int i = 0; i < request->GetTagCount();i++) {
 				CECTag *tag = request->GetTagByIndex(i);
@@ -422,17 +585,6 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request)
 				} else {
 					AddLogLineM(true, _("ExternalConn: ed2k link is not a file"));
 				}
-			}
-			break;
-		case EC_OP_Q_FILE_CMD:
-			for(int i = 0; i < request->GetTagCount();i++) {
-				CECTag *tag = request->GetTagByIndex(i);
-				wxString cmd = tag->GetStringData();
-				/*
-				 * command format:
-				 *  PartFile id: [0-9a-f]{8}
-				 *  command id : [0-9]{2}
-				 */
 			}
 			break;
 		default:
@@ -2470,8 +2622,6 @@ void *ExternalConnClientThread::Entry()
 			if ( response ) {
 				m_owner->m_ECServer->WritePacket(m_sock, response);
 				delete response;
-			} else {
-				break;
 			}
 		}
 	}

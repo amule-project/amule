@@ -165,9 +165,26 @@ enum {
 		 * \brief Perform action on file in queue.
 		 *
 		 * \par Tags:
-		 *	\b ::EC_TAG_PARTFILE (1+) file to perform command on
+		 *	\b ::EC_TAG_ITEM_ID (1+) item (object) to perform command on
 		 */
-	EC_OP_Q_FILE_CMD,
+	EC_OP_PARTFILE_REMOVE_NO_NEEDED,
+	EC_OP_PARTFILE_REMOVE_FULL_QUEUE,
+	EC_OP_PARTFILE_REMOVE_HIGH_QUEUE,
+	EC_OP_PARTFILE_CLEANUP_SOURCES,
+	EC_OP_PARTFILE_SWAP_A4AF_THIS,
+	EC_OP_PARTFILE_SWAP_A4AF_THIS_AUTO,
+	EC_OP_PARTFILE_SWAP_A4AF_OTHERS,
+	EC_OP_PARTFILE_PAUSE,
+	EC_OP_PARTFILE_RESUME,
+	EC_OP_PARTFILE_STOP,
+	EC_OP_PARTFILE_PRIO_AUTO,
+	EC_OP_PARTFILE_PRIO_SET,
+	EC_OP_PARTFILE_DELETE,
+	EC_OP_PARTFILE_SET_CAT,
+	EC_OP_KNOWNFILE_SET_UP_PRIO,
+	EC_OP_KNOWNFILE_SET_UP_PRIO_AUTO,
+	EC_OP_KNOWNFILE_SET_PERM,
+	EC_OP_KNOWNFILE_SET_COMMENT,
 
 	//
 	// server -> client response
@@ -196,6 +213,10 @@ enum {
 					// tags: EC_TAG_STRING: v1.0 message
 };
 
+/*!
+ * Turn pointer into 32-bit thingie int aka ID
+ */
+#define PTR_2_ID(ptr) ((uint32)ptr)
 
 /******************************************************************************/
 
