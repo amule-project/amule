@@ -280,12 +280,12 @@ CTag::CTag(int8 special, LPCSTR strvalue){
 CTag::CTag(LPCSTR name, const wxString& strvalue){
 	tag.tagname = nstrdup(name);
 	tag.type = 2;
-	tag.stringvalue = nstrdup(unicode2char(strvalue.c_str()));
+	tag.stringvalue = nstrdup(unicode2char(strvalue));
 }
 
 CTag::CTag(uint8 special, const wxString& strvalue){
 	tag.type = 2;
-	tag.stringvalue = nstrdup(unicode2char(strvalue.c_str()));
+	tag.stringvalue = nstrdup(unicode2char(strvalue));
 	tag.specialtag = special;
 }
 
