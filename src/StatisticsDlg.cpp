@@ -1180,9 +1180,7 @@ wxString CStatisticsDlg::ExportHTML()
 
 	// post the message
 	wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED,ID_EXPORT_HTML);
-	wxMutexGuiEnter();
 	wxPostEvent(this,evt);
-	wxMutexGuiLeave();
 
 	// and wait until it is completed
 	exportCondition->Wait();

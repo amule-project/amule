@@ -74,18 +74,14 @@ void *CTimer::CTimerThread::Entry()
 	if ( m_oneShot ) {
 		Sleep(m_period);
 		wxMuleInternalEvent evt(wxEVT_AMULE_TIMER, m_id);
-		wxMutexGuiEnter();
 		wxPostEvent(m_owner, evt);
-		wxMutexGuiLeave();
 	} else {
 		while ( !TestDestroy() ) {
 			Sleep(m_period);
 			wxMuleInternalEvent evt(wxEVT_AMULE_TIMER, m_id);
 			if ( m_id != -1 ) {
 			}
-			wxMutexGuiEnter();
 			wxPostEvent(m_owner, evt);
-			wxMutexGuiLeave();
 		}
 	}
 	return 0;
