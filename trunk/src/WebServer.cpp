@@ -776,7 +776,7 @@ wxString CWebServer::_GetHeader(ThreadData Data, long lSession) {
 	// EC 25-12-2003
 	sHeaderList = sHeaderList.Mid(brk+1); brk=sHeaderList.First(wxT("\t"));
 	wxString MaxUpload = sHeaderList.Left(brk);
-	sHeaderList = sHeaderList.Mid(brk+1);
+	sHeaderList = sHeaderList.Mid(brk+1); brk=sHeaderList.First(wxT("\t"));
 	wxString MaxDownload = sHeaderList.Left(brk);
 	
 	if (MaxUpload == wxT("65535"))  MaxUpload = wxT("Unlimited");

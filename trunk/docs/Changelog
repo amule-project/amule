@@ -13,7 +13,10 @@ Version 2.0.0rc7 - The "99,6% Final" version.
 		aMule GUI:
 		* Fixed two almost-the-same bugs when clicked download button and no items where selected (as reported by powtrix/willy, thanks)
 
-		On aMuleCMD:
+		aMuleWeb:
+		* Fixed a bug where up/down limits woudln't be displayed correctly if their string length were different
+
+		aMuleCMD:
 		* Added 'list' (or 'find') command to search for a file in the downloads queue by name or by number (or just show all)
 		* Added the ability to resume/pause all downloads at the same time through amulecmd (very handy when all downloads have been paused due   to lack of space)
 		* Fixed two bugs on amulecmd by which using 'pause' or 'resume' without arguments would pause/resume the oldest download.
