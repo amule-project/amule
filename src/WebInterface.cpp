@@ -320,6 +320,7 @@ bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 	if (!GetTemplateDir(templateName, m_TemplateDir)) {
 		// no reason to run webserver without a template
 		Show(_("FATAL ERROR: Cannot find template: ") + templateName + wxT("\n"));
+		Show(_("You should have a look at http://www.amule.org/wiki/index.php/Webserver#Webserver_with_aMule_2.0.0_or_later_(starting_from_CVS_2005.02.27)\n"));
 		return false;
 	}
 	m_TemplateFileName = m_TemplateDir + wxFileName::GetPathSeparator() + wxT("aMule.tmpl");
