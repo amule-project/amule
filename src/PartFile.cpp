@@ -44,10 +44,15 @@
 	#include "Color.h"              // Needed for RGB, DarkenColour
 #endif
 
+#ifdef USE_WX_TRAY
+	#include "MuleTrayIcon.h"		// Needed for TBN_DLOAD
+#else
+	#include "SysTray.h"		// Needed for TBN_DLOAD
+#endif
+
 #include "PartFile.h"		// Interface declarations.
 #include "OtherFunctions.h"	// Needed for nstrdup
 #include "KnownFileList.h"	// Needed for CKnownFileList
-#include "SysTray.h"		// Needed for TBN_DLOAD
 #include "UploadQueue.h"	// Needed for CFileHash
 #include "IPFilter.h"		// Needed for CIPFilter
 #include "Server.h"		// Needed for CServer
