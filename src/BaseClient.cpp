@@ -835,41 +835,39 @@ bool CUpDownClient::ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize)
 						break;
 				}
 			}				
-		}
-
 		
-		if( m_byDataCompVer == 0 ){
-			m_bySourceExchangeVer = 0;
-			m_byExtendedRequestsVer = 0;
-			m_byAcceptCommentVer = 0;
-			m_nUDPPort = 0;
+			if( m_byDataCompVer == 0 ){
+				m_bySourceExchangeVer = 0;
+				m_byExtendedRequestsVer = 0;
+				m_byAcceptCommentVer = 0;
+				m_nUDPPort = 0;
+			}
+
+			//implicitly supported options by older clients
+			//in the future do not use version to guess about new features
+			if(m_byEmuleVersion < 0x25 && m_byEmuleVersion > 0x22) {
+				m_byUDPVer = 1;
+			}
+	
+			if(m_byEmuleVersion < 0x25 && m_byEmuleVersion > 0x21) {
+				m_bySourceExchangeVer = 1;
+			}
+	
+			if(m_byEmuleVersion == 0x24) {
+				m_byAcceptCommentVer = 1;
+			}
+	
+			// Shared directories are requested from eMule 0.28+ because eMule 0.27 has a bug in
+			// the OP_ASKSHAREDFILESDIR handler, which does not return the shared files for a
+			// directory which has a trailing backslash.
+			if(m_byEmuleVersion >= 0x28 && !m_bIsML) {// MLdonkey currently does not support shared directories
+					m_fSharedDirectories = 1;
+			}
+	
+			ReGetClientSoft();
+	
+			m_byInfopacketsReceived |= IP_EMULEPROTPACK;		
 		}
-
-		//implicitly supported options by older clients
-		//in the future do not use version to guess about new features
-		if(m_byEmuleVersion < 0x25 && m_byEmuleVersion > 0x22) {
-			m_byUDPVer = 1;
-		}
-
-		if(m_byEmuleVersion < 0x25 && m_byEmuleVersion > 0x21) {
-			m_bySourceExchangeVer = 1;
-		}
-
-		if(m_byEmuleVersion == 0x24) {
-			m_byAcceptCommentVer = 1;
-		}
-
-		// Shared directories are requested from eMule 0.28+ because eMule 0.27 has a bug in
-		// the OP_ASKSHAREDFILESDIR handler, which does not return the shared files for a
-		// directory which has a trailing backslash.
-		if(m_byEmuleVersion >= 0x28 && !m_bIsML) {// MLdonkey currently does not support shared directories
-				m_fSharedDirectories = 1;
-		}
-
-		ReGetClientSoft();
-
-		m_byInfopacketsReceived |= IP_EMULEPROTPACK;		
-		
 	}
 	catch ( CStrangePacket )
 	{
