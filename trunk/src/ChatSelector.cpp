@@ -70,7 +70,9 @@ CChatSession::CChatSession(wxWindow* parent, wxWindowID id, const wxString& valu
 CChatSession::~CChatSession()
 {
 	#warning EC NEEDED
+	#ifndef CLIENT_GUI
 	theApp.clientlist->SetChatState(m_client_id,MS_NONE);
+	#endif
 }
 
 
