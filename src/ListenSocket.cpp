@@ -149,7 +149,7 @@ void *CClientReqSocketHandler::Entry()
 				break;
 			}
 		}
-		if ( m_socket->WaitForLost(0, 0) ) {
+		if ( m_socket->deletethis || m_socket->WaitForLost(0, 0) ) {
 			break;
 		}
 		// lfroen: tradeof here - short wait time for high performance on delete
