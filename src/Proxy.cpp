@@ -38,53 +38,6 @@
 #include "OtherFunctions.h"	/* for EncodeBase64()		*/
 #include "StringFunctions.h" /* for unicode2char */
 
-/**
- * Dumps a buffer to stdout
- */
-static void dump(const wxString &msg, bool ok, const void *buff, int n)
-{
-	register const unsigned char *p = (const unsigned char *)buff;
-	register int lines = (n + 15)/ 16;
-	register int chars = 0;
-	
-	if (msg) {
-		printf(	"%s - ok=%d, %d bytes\n",
-			(const char *)unicode2char(msg), ok, n);
-	}
-	for( int i = 0; i < lines; ++i) {
-		int chars_save = chars;
-		int j;
-		// Prints the hexadecimal codes
-		for( j = 0; j < 16 && chars < n; ++j) {
-			printf("%02X ", p[chars++]);
-		}
-		// Completes the missing spaces
-		for( int k = j; k < 16; ++k)
-		{
-			printf("   ");
-		}
-		// Rewind and print the ASCII codes
-		chars = chars_save;
-		printf("|");
-		for( j = 0; j < 16 && chars < n; ++j) {
-			char l = p[chars++];
-			if (isspace(l)) {
-				l = ' ';
-			} else if (!isgraph(l)) {
-				l = '.';
-			}
-			printf("%c", l);
-		}
-		// Completes the missing spaces
-		for( int k = j; k < 16; ++k)
-		{
-			printf(" ");
-		}
-		printf("|\n");
-	}
-	printf("\n");
-}
-
 //------------------------------------------------------------------------------
 // CProxyData
 //------------------------------------------------------------------------------
@@ -467,7 +420,7 @@ void CSocks5StateMachine::process_state(t_sm_state state, bool entry)
 	}
 	
 	if (entry) {
-		dump(m_state_name[state], m_ok, m_buffer, n);
+		otherfunctions::DumpMem(m_buffer, n, &m_state_name[state], m_ok);
 	} else {
 		printf(	"wait state -- %s\n",
 			(const char *)unicode2char(m_state_name[state]));
@@ -876,7 +829,7 @@ void CSocks4StateMachine::process_state(t_sm_state state, bool entry)
 	}
 	
 	if (entry) {
-		dump(m_state_name[state], m_ok, m_buffer, n);
+		otherfunctions::DumpMem(m_buffer, n, &m_state_name[state], m_ok);
 	} else {
 		printf(	"wait state -- %s\n",
 			(const char *)unicode2char(m_state_name[state]));
@@ -1048,7 +1001,7 @@ void CHttpStateMachine::process_state(t_sm_state state, bool entry)
 	}
 	
 	if (entry) {
-		dump(m_state_name[state], m_ok, m_buffer, n);
+		otherfunctions::DumpMem(m_buffer, n, &m_state_name[state], m_ok);
 	} else {
 		printf(	"wait state -- %s\n",
 			(const char *)unicode2char(m_state_name[state]));
@@ -1415,7 +1368,7 @@ wxDatagramSocket &CDatagramSocketProxy::RecvFrom(
 			}
 			memcpy(buf, bufUDP + offset, nBytes);
 			// Uncomment here to see the buffer contents on console
-			// dump("RecvFrom", 3, bufUDP, wxDatagramSocket::LastCount());
+			// otherfunctions::DumpMem(bufUDP, wxDatagramSocket::LastCount(), wxT("RecvFrom"), 3);
 			
 			/* Only delete buffer if it was dynamically created */
 			if (bufUDP != m_proxyTCPSocket.GetBuffer()) {
@@ -1456,7 +1409,7 @@ wxDatagramSocket &CDatagramSocketProxy::SendTo(
 				m_proxyTCPSocket.GetProxyBoundAddress(),
 				m_proxyTCPSocket.GetBuffer(), nBytes);
 			// Uncomment here to see the buffer contents on console
-			// dump("SendTo", 3, m_proxyTCPSocket.GetBuffer(), nBytes);
+			// otherfunctions::DumpMem(m_proxyTCPSocket.GetBuffer(), nBytes, wxT("SendTo"), 3);
 		}
 	} else {
 		wxDatagramSocket::SendTo(addr, buf, nBytes);

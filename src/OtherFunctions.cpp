@@ -905,8 +905,8 @@ static SED2KFileType _aED2KFileTypes[] =
 int CompareE2DKFileType(const void* p1, const void* p2)
 {
 	return
-		((const SED2KFileType*)p1)->GetExt().CmpNoCase(
-		((const SED2KFileType*)p2)->GetExt());
+		((const SED2KFileType *)p1)->GetExt().CmpNoCase(
+		((const SED2KFileType *)p2)->GetExt());
 }
 
 EED2KFileType GetED2KFileTypeID(const wxString &strFileName)
@@ -983,30 +983,73 @@ wxString GetFileTypeDisplayStrFromED2KFileType(const wxString &strED2KFileType)
 
 class CED2KFileTypes{
 public:
-	CED2KFileTypes(){
+	CED2KFileTypes() {
 		qsort(_aED2KFileTypes, ARRSIZE(_aED2KFileTypes), sizeof _aED2KFileTypes[0], CompareE2DKFileType);
-//#ifdef _DEBUG
+#warning Kry, this code is not working, must check why. Now I have to go.
+#ifdef DEBUG
 		// check for duplicate entries
 		wxString strLast = _aED2KFileTypes[0].GetExt();
 		for (int i = 1; i < ARRSIZE(_aED2KFileTypes); ++i) {
-			wxASSERT( strLast.CmpNoCase(_aED2KFileTypes[i].GetExt()) != 0 );
+			bool duplicates = strLast.CmpNoCase(_aED2KFileTypes[i].GetExt()) == 0;
+			if (duplicates) {
+				printf("Ooops! duplicated string:(%d)%s-%s.\n", i,
+					(const char *)strLast.mb_str(),
+					(const char *)_aED2KFileTypes[i].GetExt().mb_str());
+			}
+			wxASSERT(!duplicates);
 			strLast = _aED2KFileTypes[i].GetExt();
 		}
-//#endif
+#endif
 	}
 };
 // get the list sorted *before* any code is accessing it
 CED2KFileTypes theED2KFileTypes;
 
-// DumpMem ... Dumps mem ;)
-void DumpMem(const void* where, uint32 size) {
-	for (uint32 i = 0; i< size; ++i) {
-		printf("|%2x",(uint8)((char*)where)[i]);
-		if ((i % 16) == 15) {
-			printf("\n");
-		}			
-	}	
-	printf("\n");	
+/**
+ * Dumps a buffer to stdout
+ */
+void DumpMem(const void *buff, int n, const wxString *msg, bool ok)
+{
+	register const unsigned char *p = (const unsigned char *)buff;
+	register int lines = (n + 15)/ 16;
+	register int chars = 0;
+	
+	if (msg) {
+		printf(	"%s - ok=%d, ",	(const char *)msg->mb_str(), ok);
+	}
+	printf("%d bytes\n", n);
+	for( int i = 0; i < lines; ++i) {
+		int chars_save = chars;
+		int j;
+		// Prints the hexadecimal codes
+		for( j = 0; j < 16 && chars < n; ++j) {
+			printf("%02X ", p[chars++]);
+		}
+		// Completes the missing spaces
+		for( int k = j; k < 16; ++k)
+		{
+			printf("   ");
+		}
+		// Rewind and print the ASCII codes
+		chars = chars_save;
+		printf("|");
+		for( j = 0; j < 16 && chars < n; ++j) {
+			char l = p[chars++];
+			if (isspace(l)) {
+				l = ' ';
+			} else if (!isgraph(l)) {
+				l = '.';
+			}
+			printf("%c", l);
+		}
+		// Completes the missing spaces
+		for( int k = j; k < 16; ++k)
+		{
+			printf(" ");
+		}
+		printf("|\n");
+	}
+	printf("\n");
 }
 
 //
