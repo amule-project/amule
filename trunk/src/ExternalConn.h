@@ -40,6 +40,7 @@
 
 #include "ECSocket.h"
 #include "ECPacket.h"
+#include "ECSpecialTags.h"
 
 #include "amuleIPV4Address.h"	// for amuleIPV4Address
 #include "OtherFunctions.h"	// for RLE
@@ -188,7 +189,18 @@ class CTagSet : public std::set<T> {
 		}
 };
 
+
+class CObjTagMap {
+		std::map<void *, CValueMap> m_obj_map;
+	public:
+		CECTag *Encode(CPartFile *);
+		CECTag *Encode(CKnownFile *);
+		CECTag *Encode(CSearchFile *);
+		CECTag *Encode(CUpDownClient *);
 		
+		void RemoveDeleted(std::set<void *> &current_set);
+};
+
 #ifdef AMULE_DAEMON
 #define EXTERNAL_CONN_BASE wxThread
 #else

@@ -57,6 +57,66 @@ class CPartFile;
 class CSearchFile;
 class CUpDownClient;
 
+/*
+ * EC tags encoder. Idea: if for an object <X>, client <Z> tag <Y> have value equal to previous
+ * request, skip this tag.
+ */
+
+class CValueMap {
+		/*
+		 * Tag -> LastValue map. Hold last value that transmitted to remote side
+		 */
+		std::map<ec_tagname_t, uint8> m_map_uint8;
+		std::map<ec_tagname_t, uint16> m_map_uint16;
+		std::map<ec_tagname_t, uint32> m_map_uint32;
+		std::map<ec_tagname_t, uint64> m_map_uint64;
+		std::map<ec_tagname_t, CMD4Hash> m_map_md4;
+		std::map<ec_tagname_t, wxString> m_map_string;
+		
+		template <class T>
+		void CreateTagT(ec_tagname_t tagname, T value, std::map<ec_tagname_t, T> &map, CECTag *parent)
+		{
+			if ( (map.count(tagname) == 0) || (map[tagname] != value) ) {
+				parent->AddTag(CECTag(tagname, value));
+				map[tagname] = value;
+			}
+		}
+	public:
+		CValueMap()
+		{
+		}
+		
+		void CreateTag(ec_tagname_t tagname, uint8 value, CECTag *parent)
+		{
+			CreateTagT<uint8>(tagname, value, m_map_uint8, parent);
+		}
+		
+		void CreateTag(ec_tagname_t tagname, uint16 value, CECTag *parent)
+		{
+			CreateTagT<uint16>(tagname, value, m_map_uint16, parent);
+		}
+		
+		void CreateTag(ec_tagname_t tagname, uint32 value, CECTag *parent)
+		{
+			CreateTagT<uint32>(tagname, value, m_map_uint32, parent);
+		}
+		
+		void CreateTag(ec_tagname_t tagname, uint64 value, CECTag *parent)
+		{
+			CreateTagT<uint64>(tagname, value, m_map_uint64, parent);
+		}
+		
+		void CreateTag(ec_tagname_t tagname, CMD4Hash value, CECTag *parent)
+		{
+			CreateTagT<CMD4Hash>(tagname, value, m_map_md4, parent);
+		}
+		
+		void CreateTag(ec_tagname_t tagname, wxString value, CECTag *parent)
+		{
+			CreateTagT<wxString>(tagname, value, m_map_string, parent);
+		}
+};
+
 class CEC_Prefs_Packet : public CECPacket {
  	public:
  		CEC_Prefs_Packet(uint32 selection, EC_DETAIL_LEVEL);
@@ -141,6 +201,7 @@ class CEC_PartFile_Tag : public CECTag {
 class CEC_SharedFile_Tag : public CECTag {
 	public:
 		CEC_SharedFile_Tag(const CKnownFile *file, EC_DETAIL_LEVEL detail_level);
+		CEC_SharedFile_Tag(const CKnownFile *file, CValueMap &valuemap);
 
 		// template needs it
  		CMD4Hash	ID()		{ return GetMD4Data(); }
