@@ -140,3 +140,53 @@ wxString CleanupFilename(const wxString& filename, bool keepSpaces)
 	return result;
 }
 
+
+wxChar HexToDec( const wxString& hex )
+{
+	wxChar result = 0;
+	wxString str = hex.Upper();
+	
+	for ( size_t i = 0; i < str.Len(); ++i ) {
+		result *= 16;
+		wxChar cur = str.GetChar(i);
+		
+		if ( isdigit( cur ) ) {
+			result += cur - wxT('0');
+		} else if ( cur >= wxT('A') && cur <= wxT('F') ) {
+			result += cur - wxT('A') + 10;
+		} else {
+			return wxT('\0');
+		}
+	}
+
+	return result;
+}
+
+
+wxString UnescapeHTML( const wxString& str )
+{
+	wxString result;
+	result.Alloc( str.Len() );
+	
+	for ( size_t i = 0; i < str.Len(); ++i ) {
+		if ( str.GetChar(i) == wxT('%') && ( i + 2 < str.Len() ) ) {
+			wxChar unesc = HexToDec( str.Mid( i + 1, 2 ) );
+
+			if ( unesc ) {
+				i += 2;
+
+				result += unesc;
+			} else {
+				// If conversion failed, then we just add the escape-code
+				// and continue past it like nothing happened.
+				result += str.at(i);
+			}
+		} else {
+			result += str.at(i);
+		}
+	}
+
+	return result;
+}
+
+

@@ -93,9 +93,15 @@ CED2KLink* CED2KLink::CreateLinkFromUrl( const wxString& uri )
 				hashMaster = fields[i];
 			}
 		}
+
+		// Unescape the file-name
+		fields[1] = UnescapeHTML( fields[1] );
 	
 		return new CED2KFileLink( fields[1], fields[2], fields[3], hashSet, hashMaster, sources );
 	} else if ( type == wxT("server") && fields.size() >= 3 ) {
+		// Unescape the server-name
+		fields[1] = UnescapeHTML( fields[1] );
+		
 		return new CED2KServerLink( fields[1], fields[2] );
 	} else if ( type == wxT("serverlist") && fields.size() >= 2 ) {
 		return new CED2KServerListLink( fields[1] );
