@@ -53,18 +53,26 @@
 const wxCmdLineEntryDesc CaMuleExternalConnector::cmdLineDesc[7] = 
 {
 	{ wxCMD_LINE_OPTION, wxT("h"), wxT("help"),
-		wxT("show this help") },
+		wxT("show this help"),
+		wxCMD_LINE_VAL_STRING, wxCMD_LINE_OPTION_HELP },
 	{ wxCMD_LINE_OPTION, wxT("rh"), wxT("remote-host"),
-		wxT("host where aMule is running (default localhost)") },
+		wxT("host where aMule is running (default localhost)"),
+		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL },
 	{ wxCMD_LINE_OPTION, wxT("p"), wxT("port"),
-		wxT("aMule's port for External Connection"), wxCMD_LINE_VAL_NUMBER },
+		wxT("aMule's port for External Connection"),
+		wxCMD_LINE_VAL_NUMBER, wxCMD_LINE_PARAM_OPTIONAL },
 	{ wxCMD_LINE_OPTION, wxT("pw"), wxT("password"), 
-		wxT("Password.") },
+		wxT("Password."),
+		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL },
 	{ wxCMD_LINE_SWITCH, wxT("f"), wxT("file-config"), 
-		wxT("Read configuration (password/port) from file.") },
+		wxT("Read configuration (password/port) from file."),
+		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL },
 	{ wxCMD_LINE_SWITCH, wxT("q"), wxT("quiet"), 
-		wxT("Do not print any output to stdout.") },
-	{ wxCMD_LINE_NONE }
+		wxT("Do not print any output to stdout."),
+		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL },
+	{ wxCMD_LINE_NONE, wxEmptyString, wxEmptyString,
+		wxEmptyString,
+		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL }
 };
 
 //-------------------------------------------------------------------
@@ -199,7 +207,7 @@ wxString CaMuleExternalConnector::SendRecvMsg(const wxChar *msg)
 	return m_ECClient->SendRecvMsg(msg);
 }
 
-void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, CmdId commands[])
+void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, CmdId *UNUSED_IN_GUI(commands))
 {
 	wxString pass_plain;
 	wxString pass_hash;

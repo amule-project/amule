@@ -41,6 +41,12 @@
 #define CMD_ID_QUIT		-1
 #define CMD_ID_SYNTAX_ERROR	-2
 
+#if wxUSE_GUI
+	#define UNUSED_IN_GUI(x)
+#else
+	#define UNUSED_IN_GUI(x) x
+#endif
+
 typedef struct s_CmdId {
 	const wxString cmd;
 	int id;
@@ -57,11 +63,11 @@ public:
 	//
 	// Virtual functions
 	//
-	virtual void LocalShow(const wxString &s) {};
+	virtual void LocalShow(const wxString &) {};
 	virtual void ShowGreet() {}
 	virtual void Pre_Shell() {}
 	virtual void Post_Shell() {}
-	virtual int ProcessCommand(int cmd_id) { return -1; }
+	virtual int ProcessCommand(int) { return -1; }
 
 	//
 	// Other functions
@@ -69,13 +75,13 @@ public:
 	void Show(const wxString &s);
 	void MainThreadIdleNow();
 	const wxString& GetCmdArgs() const { return m_cmdargs; }
-	int GetIDFromString(wxString &buffer, CmdId commands[]);
+	int GetIDFromString(wxString &buffer, CmdId *commands);
 	void Process_Answer(const wxString& answer);
-	bool Parse_Command(wxString &buffer, CmdId commands[]);
+	bool Parse_Command(wxString &buffer, CmdId *commands);
 	void GetCommand(const wxString &prompt, char* buffer, size_t buffer_size);
-	void TextShell(const wxString &prompt, CmdId commands[]);
+	void TextShell(const wxString &prompt, CmdId *commands);
 	wxString SendRecvMsg(const wxChar *msg);
-	void ConnectAndRun(const wxString &ProgName, CmdId commands[]);
+	void ConnectAndRun(const wxString &ProgName, CmdId *commands);
 	//
 	// Command line processing
 	// 

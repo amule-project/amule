@@ -2452,10 +2452,10 @@ wxString CWebServer::_GetConnectedServer(ThreadData Data) {
 // We have to add gz-header and some other stuff
 // to standard zlib functions in order to use gzip in web pages
 int CWebServer::_GzipCompress(Bytef *dest, uLongf *destLen, const Bytef *source, uLong sourceLen, int level) { 
-	const static int gz_magic[2] = {0x1f, 0x8b}; // gzip magic header
+	static const int gz_magic[2] = {0x1f, 0x8b}; // gzip magic header
 	int err;
 	uLong crc;
-	z_stream stream = {0};
+	z_stream stream = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 	stream.zalloc = (alloc_func)0;
 	stream.zfree = (free_func)0;
 	stream.opaque = (voidpf)0;
@@ -2517,7 +2517,7 @@ bool CWebServer::_IsLoggedIn(ThreadData Data, long lSession) {
 }
 
 
-void CWebServer::_RemoveTimeOuts(ThreadData Data, long lSession) {
+void CWebServer::_RemoveTimeOuts(ThreadData Data, long WXUNUSED(lSession)) {
 	// remove expired sessions
 	CWebServer *pThis = (CWebServer *)Data.pThis;
 	pThis->UpdateSessionCount();
