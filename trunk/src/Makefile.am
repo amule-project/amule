@@ -181,7 +181,7 @@ amule_SOURCES = \
 	UploadQueue.cpp \
 	amule.cpp \
 	amule-gui.cpp \
-	amuleDlg.cpp \
+	amuleDlg.cpp 
 
 amuled_SOURCES = \
 	kademlia/utils/UInt128.cpp \
