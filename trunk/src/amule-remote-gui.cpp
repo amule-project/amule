@@ -84,7 +84,7 @@
 BEGIN_EVENT_TABLE(CamuleRemoteGuiApp, wxApp)
 
 	// Core timer
-//		EVT_TIMER(ID_CORETIMER, CamuleRemoteGuiApp::OnCoreTimer)
+		EVT_TIMER(ID_CORETIMER, CamuleRemoteGuiApp::OnCoreTimer)
 		
 //		EVT_CUSTOM(wxEVT_NOTIFY_EVENT, -1, CamuleRemoteGuiApp::OnNotifyEvent)
 		
@@ -103,6 +103,11 @@ int CamuleRemoteGuiApp::OnExit()
 	return wxApp::OnExit();
 }
 
+void CamuleRemoteGuiApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS&)
+{
+	sharedfiles->DoRequery(EC_OP_GET_SHARED_FILES, EC_TAG_KNOWNFILE);
+}
+
 void CamuleRemoteGuiApp::ShutDown() {
 	amuledlg->Destroy();
 }
@@ -118,7 +123,7 @@ bool CamuleRemoteGuiApp::OnInit()
 	glob_prefs = new CPreferencesRem(0);
 	
 	// Create the Core timer
-	core_timer=new wxTimer(this,ID_CORETIMER);
+	core_timer = new wxTimer(this,ID_CORETIMER);
 	if (!core_timer) {
 		printf("Fatal Error: Failed to create Core Timer");
 		OnExit();
@@ -147,7 +152,7 @@ bool CamuleRemoteGuiApp::OnInit()
 	//knownfiles = new CKnownFilesRem(connect);
 	serverlist = new CServerListRem(connect);
 	
-	//sharedfiles	= new CSharedFileList(knownfiles);
+	sharedfiles	= new CSharedFilesRem(connect);
 	clientcredits = new CClientCreditsRem();
 	
 	// bugfix - do this before creating the uploadqueue
@@ -165,7 +170,7 @@ bool CamuleRemoteGuiApp::OnInit()
 	IsReady = true;
 	
 	// Start the Core Timer
-	core_timer->Start(100);	
+	core_timer->Start(1000);	
 
     //amuledlg->StartGuiTimer();
 
@@ -405,25 +410,23 @@ CServer *CServerListRem::GetServerByAddress(const wxString& address, uint16 port
 	return 0;
 }
 
-/*
-unsigned CStatisticsRem::GetHistory(  // Assemble arrays of sample points for a graph
-        unsigned cntPoints,             // number of sample points to assemble
-        double sStep,                   // time difference between sample points
-        double sFinal,                  // latest allowed timestamp
-        float** ppf,                    // an array of pointers to arrays of floats for the result
-        StatsGraphType which_graph)     // the graph which will receive the points
+CServer *CServerListRem::CreateItem(CEC_Server_Tag *)
 {
-	// FIXME: hard to implement
 	return 0;
 }
 
-GraphUpdateInfo CStatisticsRem::GetPointsForUpdate()
+void CServerListRem::DeleteItem(CServer *)
 {
-	GraphUpdateInfo info;
-	
-	return info;
 }
-*/
+
+uint32 CServerListRem::GetItemID(CServer *)
+{
+	return 0;
+}
+
+void CServerListRem::ProcessItemUpdate(CEC_Server_Tag *, CServer *)
+{
+}
 
 void CIPFilterRem::Reload()
 {
@@ -437,6 +440,10 @@ void CIPFilterRem::Update(wxString /*url*/)
 	wxASSERT(0);
 }
 
+CSharedFilesRem::CSharedFilesRem(CRemoteConnect *conn) : CRemoteContainer<CKnownFile, CMD4Hash, CEC_SharedFile_Tag>(conn)
+{
+}
+
 void CSharedFilesRem::Reload(bool, bool)
 {
 	CECPacket req(EC_OP_SHAREDFILES_RELOAD);
@@ -446,6 +453,23 @@ void CSharedFilesRem::Reload(bool, bool)
 void CSharedFilesRem::AddFilesFromDirectory(wxString)
 {
 	// should not get here. You can't do it remotely.
+}
+
+CKnownFile *CSharedFilesRem::CreateItem(CEC_SharedFile_Tag *)
+{
+	return 0;
+}
+
+void CSharedFilesRem::DeleteItem(CKnownFile *)
+{
+}
+
+CMD4Hash CSharedFilesRem::GetItemID(CKnownFile *)
+{
+}
+
+void CSharedFilesRem::ProcessItemUpdate(CEC_SharedFile_Tag *, CKnownFile *)
+{
 }
 
 /*!
@@ -511,10 +535,14 @@ bool CRemoteConnect::Connect(const char *host, int port)
 
 }
 
-CECPacket *CRemoteConnect::SendRecv(CECPacket *)
+CECPacket *CRemoteConnect::SendRecv(CECPacket *packet)
 {
+    if (! m_ECSocket->WritePacket(packet) ) {
+    	return 0;
+    }
+    CECPacket *reply = m_ECSocket->ReadPacket();
 
-	return 0;
+	return reply;
 }
 
 void CRemoteConnect::Send(CECPacket *)
@@ -557,6 +585,23 @@ CUpDownClient *CUpQueueRem::GetNextFromWaitingList(POSITION &)
 	return NULL;
 }
 
+CUpDownClient *CUpQueueRem::CreateItem(CEC_UpDownClient_Tag *)
+{
+	return 0;
+}
+
+void CUpQueueRem::DeleteItem(CUpDownClient *)
+{
+}
+
+uint32 CUpQueueRem::GetItemID(CUpDownClient *)
+{
+	return 0;
+}
+void CUpQueueRem::ProcessItemUpdate(CEC_UpDownClient_Tag *, CUpDownClient *)
+{
+}
+
 CDownQueueRem::CDownQueueRem(CRemoteConnect *conn) : CRemoteContainer<CPartFile, CMD4Hash, CEC_PartFile_Tag>(conn)
 {
 }
@@ -585,6 +630,20 @@ bool CDownQueueRem::IsPartFile(const CKnownFile *) const
 {
 	// hope i understand it right
 	return false;
+}
+
+CPartFile *CDownQueueRem::CreateItem(CEC_PartFile_Tag *)
+{
+}
+
+void CDownQueueRem::DeleteItem(CPartFile *)
+{
+}
+CMD4Hash CDownQueueRem::GetItemID(CPartFile *)
+{
+}
+void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *, CPartFile *)
+{
 }
 
 CClientListRem::CClientListRem(CRemoteConnect *conn)

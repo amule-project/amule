@@ -364,6 +364,8 @@ class CamuleRemoteGuiApp : public wxApp, public CamuleGuiBase {
 
 	int OnExit();
 	bool OnInit();
+	
+	void OnCoreTimer(AMULE_TIMER_EVENT_CLASS& evt);
 
 public:
 	wxString	m_FrameTitle;
