@@ -2706,7 +2706,7 @@ wxSizer *PreferencesSourcesDroppingTab( wxWindow *parent, bool call_fit, bool se
         _("Send sources to any other file before dropping (High CPU)")
     };
     wxRadioBox *item4 = new wxRadioBox( parent, IDC_EXTENDED_DROP, _("Extended Dropping"), wxDefaultPosition, wxDefaultSize, 2, strs4, 1, wxRA_SPECIFY_COLS );
-    item0->Add( item4, 0, wxALIGN_CENTER|wxALL, 5 );
+    item0->Add( item4, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     wxStaticBox *item6 = new wxStaticBox( parent, -1, _("Full Queue Sources Handling") );
     wxStaticBoxSizer *item5 = new wxStaticBoxSizer( item6, wxVERTICAL );
