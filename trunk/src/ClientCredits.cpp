@@ -17,12 +17,6 @@
 //along with this program; if not, write to the Free Software
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-#ifdef USE_OPENSSL
-	#include <openssl/rsa.h>
-	#include <openssl/evp.h>
-	#include <openssl/pkcs12.h>
-#else
-
 #ifdef __CRYPTO_DEBIAN_GENTOO__
 //	#include <crypto++/config.h>
 	#include <crypto++/base64.h>
@@ -53,8 +47,6 @@
 	#endif
 #endif
 
-#endif
-
 #include <cmath>
 #include <ctime>
 #include <sys/types.h>		//
@@ -75,6 +67,7 @@
 #include "SafeFile.h"		// Needed for CSafeFile
 #include "otherfunctions.h"	// Needed for GetTickCount
 #include "sockets.h"
+#include "CFile.h"
 
 //#include "StdAfx.h"
 
@@ -223,7 +216,7 @@ void CClientCreditsList::LoadList()
 	bool bCreateBackup = TRUE;
 	if (wxFileExists(strBakFileName)) {
 		// Ok, the backup exist, get the size
-		wxFile hBakFile(strBakFileName);
+		CFile hBakFile(strBakFileName);
 		if ( hBakFile.Length() > file.Length()) {
 			// the size of the backup was larger then the org. file, something is wrong here, don't overwrite old backup..
 			bCreateBackup = FALSE;
@@ -411,36 +404,6 @@ using namespace CryptoPP;
 
 bool CClientCreditsList::CreateKeyPair(){
 	try{
-		
-	#if USE_OPENSSL
-		
-		FILE* file;
-		char 	buffer_pkcs8[1024 + 1];
-		
-		RSA* privkey = RSA_generate_key(RSAKEYSIZE, 3, NULL, NULL);
-	
-		EVP_PKEY *pkey = EVP_PKEY_new();
-
-		EVP_PKEY_assign_RSA(pkey,privkey);
-
-		privkey = NULL;
-		
-		file = fopen(unicode2char(theApp.ConfigDir + CRYPTKEY_FILENAME), "w");
-
-		PEM_write_PKCS8PrivateKey(file, pkey, NULL, NULL, 0, NULL, NULL);
-
-		fclose(file);
-		
-		// Remove -----BEGIN PRIVATE KEY----- and -----END PRIVATE KEY-----
-		wxTextFile	to_clean;
-		to_clean.Open(theApp.ConfigDir + CRYPTKEY_FILENAME);
-		to_clean.RemoveLine(0);
-		to_clean.RemoveLine(to_clean.GetLineCount()-1);
-		to_clean.Write();
-		to_clean.Close();
-
-	#else 
-
 		AutoSeededRandomPool rng;
 		InvertibleRSAFunction privkey;
 		privkey.Initialize(rng,RSAKEYSIZE);
@@ -451,7 +414,6 @@ bool CClientCreditsList::CreateKeyPair(){
 		
 		privkeysink.MessageEnd();
 
-	#endif
 		AddDebugLogLineM(false,wxT("Created new RSA keypair"));
 	}
 	catch(...)

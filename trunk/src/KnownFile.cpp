@@ -37,7 +37,6 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <wx/string.h>
-#include <wx/filefn.h>
 #include <wx/ffile.h>
 #include <wx/file.h>
 #include <wx/filename.h>
@@ -167,29 +166,20 @@ bool CKnownFile::CreateFromFile(const wxString& in_directory, const wxString& in
 	m_strFileName = in_filename;
 	
 	// open file
-	wxString namebuffer;
-	namebuffer = in_directory + wxT("/") + in_filename;
+	wxString namebuffer = in_directory + wxT("/") + in_filename;
 	//SetFilePath(namebuffer); ??
-	FILE* file = fopen(unicode2char(namebuffer), "rbS");
-	if (!file){
-		printf("Error opening %s !\n",unicode2char(namebuffer));
+	CFile file;
+	if ( !file.Open(namebuffer, CFile::read ) ) {
+		printf("Error opening %s !\n", unicode2char(namebuffer));
 		return false;
 	}
 	
-	struct stat file_stats;
-	if (fstat(fileno(file),&file_stats)) {
-		printf("ERROR ON STAT!!!\n");	
-		fclose(file);
-		return false;		
-	}
-
-	if ((uint64) file_stats.st_size >= (uint64)(4294967295U)){
-		fclose(file);
+	if ((uint64) file.GetLength() >= (uint64)(4294967295U)){
 		return false; // not supported by network
 	}
 	
-	SetFileSize(file_stats.st_size);
-	date = file_stats.st_mtime;
+	SetFileSize(file.GetLength());
+	date = wxFileModificationTime( namebuffer );
 	
 	// we are reading the file data later in 8K blocks, adjust the internal file stream buffer accordingly
 	//	setvbuf(file, NULL, _IOFBF, 1024*8*2);
@@ -203,14 +193,13 @@ bool CKnownFile::CreateFromFile(const wxString& in_directory, const wxString& in
 	uint16 hashcount;
 	for (hashcount = 0; togo >= PARTSIZE; ) {
 		CMD4Hash newhash;
-		CreateHashFromFile(file, PARTSIZE, newhash);
+		CreateHashFromFile(&file, PARTSIZE, newhash);
 
 		hashlist.Add(newhash);
 		togo -= PARTSIZE;
 		
 		// What's this? signaling to terminate?
 		if ( notify && *notify ) {
-			fclose(file);
 			printf("Hashing thread dying?\n");
 			return false;
 		}
@@ -218,7 +207,7 @@ bool CKnownFile::CreateFromFile(const wxString& in_directory, const wxString& in
 	}
 	
 	CMD4Hash lasthash;
-	CreateHashFromFile(file, togo, lasthash);
+	CreateHashFromFile(&file, togo, lasthash);
 	if (!hashcount){
 		m_abyFileHash = lasthash;
 	} else {
@@ -236,8 +225,6 @@ bool CKnownFile::CreateFromFile(const wxString& in_directory, const wxString& in
 	}
 	
 	//finished
-	fclose(file);
-	file = NULL;
 	return true;	
 }
 
@@ -771,7 +758,7 @@ bool CKnownFile::WriteToFile(CFile* file){
 #define USE_CRYPTO_HASH
 using namespace CryptoPP;
 
-void CKnownFile::CreateHashFromInput(FILE* file, CFile* file2, int Length, uchar* Output, uchar* in_string) {
+void CKnownFile::CreateHashFromInput(CFile* file, int Length, uchar* Output, uchar* in_string) {
 
 #ifdef USE_CRYPTO_HASH
 	
@@ -782,11 +769,7 @@ void CKnownFile::CreateHashFromInput(FILE* file, CFile* file2, int Length, uchar
 			a.CalculateDigest(Output,in_string,Length);
 		} else { 
 			unsigned char* input = new unsigned char[Length];
-			if (file) {
-				fread(input,Length,1,file); 
-			} else if (file2) {
-				file2->Read(input,Length);
-			}
+			file->Read(input,Length);
 			a.CalculateDigest(Output,input,Length);
 			//MD4(input,Length,Output);
 			delete[] input;
@@ -813,10 +796,8 @@ void CKnownFile::CreateHashFromInput(FILE* file, CFile* file2, int Length, uchar
              len = sizeof(X)/(64 * sizeof(X[0])); 
 		if (in_string)
 			data->Read(&X,len*64);
-		else if (file)
-            fread(&X,len*64,1,file); 
-		else if (file2)
-			file2->Read(&X,len*64);
+		else
+			file->Read(&X,len*64);
 		for (uint32 i = 0; i < len; i++) 
         { 
            MD4Transform(Hash, (uint32*)(X + i*64)); 
@@ -828,10 +809,8 @@ void CKnownFile::CreateHashFromInput(FILE* file, CFile* file2, int Length, uchar
 	if (Required != 0){
 		if (in_string)
 			data->Read(&X,Required);
-		else if (file)
-			fread(&X,Required,1,file);
-		else if (file2)
-			file2->Read(&X,Required);
+		else 
+			file->Read(&X,Required);
 	}
 	// in byte scale 512 = 64, 448 = 56
 	if (Required >= 56){

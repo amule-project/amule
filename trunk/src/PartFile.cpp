@@ -37,7 +37,6 @@
 #include <wx/setup.h>
 #include <wx/gdicmn.h>
 #include <wx/filename.h>	// Needed for wxFileName
-#include <wx/file.h>		// Needed for wxFile
 #include <wx/msgdlg.h>		// Needed for wxMessageBox
 
 #include "PartFile.h"		// Interface declarations.
@@ -896,7 +895,7 @@ bool CPartFile::SavePartFile(bool Initial)
 	}
 	
 	// Kry -don't backup if it's 0 size but raise a warning!!!
-	wxFile newpartmet;
+	CFile newpartmet;
 	if (newpartmet.Open(m_fullname)!=TRUE) {
 		wxMessageBox(wxString(_("Unable to open ")) + m_fullname + wxT("file - using ") + PARTMET_BAK_EXT + wxT(" file.\n"));
 		FS_wxCopyFile(m_fullname + PARTMET_BAK_EXT, m_fullname);

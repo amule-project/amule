@@ -531,37 +531,6 @@ wxString CTag::GetFullInfo() const
 	return strTag;
 }
 
-bool CTag::WriteTagToFile(FILE* file) {
-	fputc(tag.type, file);
-
-	if (tag.tagname && (!tag.specialtag)) {
-		uint16 taglen = (uint16) strlen(tag.tagname);
-		ENDIAN_SWAP_I_16(taglen);
-		fwrite(&taglen, 2, 1, file);
-                ENDIAN_SWAP_I_16(taglen);
-		fwrite(tag.tagname, taglen, 1, file);
-	} else {
-		uint16 taglen = 1;
-		ENDIAN_SWAP_I_16(taglen);
-		fwrite(&taglen, 2, 1, file);
-                ENDIAN_SWAP_I_16(taglen);
-		fwrite(&tag.specialtag, taglen, 1, file);
-	}
-
-	if ( tag.type == 2) {
-		uint16 len = (uint16) strlen(tag.stringvalue);
-		ENDIAN_SWAP_I_16(len);
-		fwrite(&len, 2, 1, file);
-                ENDIAN_SWAP_I_16(len);
-		fwrite(tag.stringvalue, len, 1, file);
-	} else if (tag.type == 3) {
-		uint32 intvalue_endian = ENDIAN_SWAP_32(tag.intvalue);
-		fwrite(&intvalue_endian, 4, 1, file);
-	}
-	
-	return ferror(file);
-}
-
 CInvalidPacket::CInvalidPacket(const char* reason)
 {
 	// that was _bad_ practice unless length is guaranteed - Unleashed

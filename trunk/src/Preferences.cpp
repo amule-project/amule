@@ -43,6 +43,7 @@
 #include "amule.h"
 
 #include "Preferences.h"
+#include "CFile.h"
 
 
 wxString	CPreferences::s_nick;
@@ -233,20 +234,23 @@ CPreferences::CPreferences()
 	// load preferences.dat or set standart values
 	wxString fullpath(theApp.ConfigDir + wxT("preferences.dat"));
 
-	FILE* preffile = fopen(unicode2char(fullpath),"rb");
+	CFile preffile;
+	if ( preffile.Open(fullpath, CFile::read) ) {
+		off_t read = preffile.Read(prefsExt, sizeof(Preferences_Ext_Struct));
 
-	if (!preffile) {
-		SetStandartValues();
-	} else {
-		fread(prefsExt,sizeof(Preferences_Ext_Struct),1,preffile);
-		if (ferror(preffile)) {
+		if ( read != sizeof(Preferences_Ext_Struct) ) {
 			SetStandartValues();
 		}
+		
 		md4cpy(m_userhash,prefsExt->userhash);
-		fclose(preffile);
-		s_smartidstate=0;
-	}
+		s_smartidstate = 0;
 
+		preffile.Close();	
+	
+	} else {
+		SetStandartValues();
+	}
+	
 	PrefsUnifiedDlg::BuildItemList(this, theApp.ConfigDir);
 
 	LoadPreferences();
@@ -311,16 +315,18 @@ bool CPreferences::Save()
 	wxString fullpath(theApp.ConfigDir + wxT("preferences.dat"));
 
 	bool error = false;
-
-	FILE* preffile = fopen(unicode2char(fullpath),"wb");
 	prefsExt->version = PREFFILE_VERSION;
 
-	if (preffile) {
-		prefsExt->version=PREFFILE_VERSION;
+	CFile preffile;
+	if ( preffile.Open(fullpath, CFile::read_write) ) {
 		printf("Saving userhash: %s\n", unicode2char(m_userhash.Encode()));
-		md4cpy(prefsExt->userhash,m_userhash.GetHash());
-		error = fwrite(prefsExt,sizeof(Preferences_Ext_Struct),1,preffile);
-		fclose(preffile);
+		
+		md4cpy(prefsExt->userhash, m_userhash.GetHash());
+		off_t read = preffile.Write(prefsExt, sizeof(Preferences_Ext_Struct) );
+
+		error = read != sizeof(Preferences_Ext_Struct);
+		
+		preffile.Close();
 	} else {
 		error = true;
 	}

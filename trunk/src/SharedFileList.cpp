@@ -121,7 +121,7 @@ void CSharedFileList::AddFilesFromDirectory(wxString directory)
 		int b = open(unicode2char(fname), O_RDONLY);
 		#endif
 		wxASSERT(b!=-1);
-		wxFile new_file(b);
+		CFile new_file(b);
 
 		wxASSERT(new_file.IsOpened());
 
