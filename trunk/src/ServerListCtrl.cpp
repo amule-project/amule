@@ -62,6 +62,8 @@ BEGIN_EVENT_TABLE(CServerListCtrl,CMuleListCtrl)
 	EVT_MENU( MP_REMOVEALL,			CServerListCtrl::OnRemoveServers )
 	
 	EVT_MENU( MP_GETED2KLINK,		CServerListCtrl::OnGetED2kURL )
+
+	EVT_CHAR( CServerListCtrl::OnKeyPressed )
 END_EVENT_TABLE()
 
 
@@ -509,16 +511,41 @@ void CServerListCtrl::OnGetED2kURL( wxCommandEvent& WXUNUSED(event) )
 void CServerListCtrl::OnRemoveServers( wxCommandEvent& event )
 {
 	if ( event.GetId() == MP_REMOVEALL ) {
-		if ( theApp.serverconnect->IsConnecting() ) {
-			theApp.downloadqueue->StopUDPRequests();
-			theApp.serverconnect->StopConnectionTry();
-			theApp.serverconnect->Disconnect();
-			theApp.amuledlg->ShowConnectionState( false );
+		if ( GetItemCount() ) {
+			wxString question = _("Are you sure that you wish to delete all servers?\n");
+	
+			if ( wxMessageBox( question, _("Cancel"), wxICON_QUESTION | wxYES_NO) == wxYES ) {
+				if ( theApp.serverconnect->IsConnecting() ) {
+					theApp.downloadqueue->StopUDPRequests();
+					theApp.serverconnect->StopConnectionTry();
+					theApp.serverconnect->Disconnect();
+					theApp.amuledlg->ShowConnectionState( false );
+				}
+			
+				RemoveAllServers( wxLIST_STATE_DONTCARE );
+			}
 		}
+	} else if ( event.GetId() == MP_REMOVE ) {
+		if ( GetSelectedItemCount() ) {
+			wxString question = _("Are you sure that you wish to delete the selected server(s)?\n");
+	
+			if ( wxMessageBox( question, _("Cancel"), wxICON_QUESTION | wxYES_NO) == wxYES ) {
+				RemoveAllServers( wxLIST_STATE_SELECTED );
+			}
+		}
+	}
+}
 
-		RemoveAllServers( wxLIST_STATE_DONTCARE );
+
+void CServerListCtrl::OnKeyPressed( wxKeyEvent& event )
+{
+	// Check if delete was pressed
+	if ( event.GetKeyCode() == WXK_DELETE ) {
+		wxCommandEvent evt;
+		evt.SetId( MP_REMOVE );
+		OnRemoveServers( evt );
 	} else {
-		RemoveAllServers( wxLIST_STATE_SELECTED );
+		event.Skip();
 	}
 }
 
