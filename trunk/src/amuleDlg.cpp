@@ -220,7 +220,7 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, wxString title) : wxFrame(
 	
 	if (!LoadGUIPrefs()) {
 		// Prefs not loaded for some reason, exit
-		printf("ERROR!!! Unable to load Razor Preferences\n");
+		printf("ERROR!!! Unable to load Preferences\n");
 		return;
 	}
 
