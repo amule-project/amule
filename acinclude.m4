@@ -449,11 +449,11 @@ AC_DEFUN(CHECK_CRYPTO,
 	fi
 	grep "5.1" $crypto_prefix/crypto++/cryptlib.h > /dev/null 2>&1
 	CRYPTO=$?
-	if test "$CRYPTO" == 0; then
+	if test "$CRYPTO" != 0; then
 	grep "5.1" $crypto_prefix/cryptopp/cryptlib.h > /dev/null 2>&1
 	CRYPTO=$?
 	fi
-	if test "$CRYPTO" == 0; then
+	if test "$CRYPTO" != 0; then
 		result="no"
 	else
 		result="yes"
