@@ -13,28 +13,38 @@
 char *get_path(char *file)
 {
 	char *ret, *home;	/* caller should free return value */
+	static char *saved_home = NULL;
+	static size_t home_len = 0;
 
-	if ( (home = getenv("HOME")) == NULL) {
-		/* if $HOME is not available try user database */
-		uid_t uid;
-		struct passwd *pwd;
+	if (saved_home == NULL) {
+		/* get home directory */
+		if ( (home = getenv("HOME")) == NULL) {
+			/* if $HOME is not available try user database */
+			uid_t uid;
+			struct passwd *pwd;
 
-		uid = getuid();
-		pwd = getpwuid(uid);
-		endpwent();
+			uid = getuid();
+			pwd = getpwuid(uid);
+			endpwent();
 
-		if (pwd == NULL || pwd->pw_dir == NULL)
+			if (pwd == NULL || pwd->pw_dir == NULL)
+				return NULL;
+
+			home = pwd->pw_dir;
+		}
+
+		/* save the result for future calls */
+		home_len = strlen(home);
+		if ( (saved_home = strdup(home)) == NULL)
 			return NULL;
-
-		home = pwd->pw_dir;
 	}
 
 	/* get full path space */
-	ret = malloc((strlen(home) + strlen(file) + 2) * sizeof(char));
+	ret = malloc((home_len + strlen(file) + 2) * sizeof(char));
 	if (ret == NULL)
 		return NULL;
 
-	strcpy(ret, home);
+	strcpy(ret, saved_home);
 	strcat(ret, "/");
 	strcat(ret, file);
 
