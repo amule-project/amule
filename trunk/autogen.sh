@@ -41,7 +41,9 @@ if [ -d intl/CVS ]; then
     cvs update -P
 fi
 
-if [ ! -d intl ]; then
+# Force intl regenration to get last update from installed gettext templates
+rm -rf intl
+#if [ ! -d intl ]; then
     echo "Setting up internationalization files."
     autopoint --force
     if [ -f Makefile -a -x config.status ]; then
@@ -51,7 +53,7 @@ if [ ! -d intl ]; then
 #   echo "restoring Makefile.am and configure.in"
 #   cp -f Makefile.am~ Makefile.am
 #   cp -f configure.in~ configure.in
-fi
+#fi
 
 echo "Running aclocal -I m4"
 aclocal -I m4
