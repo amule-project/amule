@@ -21,5 +21,5 @@ noinst_HEADERS = configfile.h \
 	      lines.h \
 	      version.h
 
-cas_CFLAGS= $(GDLIB_CFLAGS) $(GDLIB_DEFS)
+cas_CFLAGS= $(GDLIB_CFLAGS) $(CAS_DEFS)
 cas_LDADD= $(GDLIB_LDFLAGS) $(GDLIB_LIBS) 
