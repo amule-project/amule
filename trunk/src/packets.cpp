@@ -413,16 +413,16 @@ bool CTag::WriteTagToFile(CFile* file)
 	}
 }
 
-CString CTag::GetFullInfo() const
+wxString CTag::GetFullInfo() const
 {
-	CString strTag;
+	wxString strTag;
 	if (tag.tagname){
 		strTag = _T('\"');
 		strTag += (char2unicode(tag.tagname));
 		strTag += _T('\"');
 	}
 	else{
-		strTag.Format(_T("0x%02X"), tag.specialtag);
+		strTag.Printf(_T("0x%02X"), tag.specialtag);
 	}
 	strTag += _T("=");
 	if (tag.type == 2){
@@ -441,8 +441,8 @@ CString CTag::GetFullInfo() const
 		strTag += (char2unicode(szBuff));
 	}
 	else{
-		CString strBuff;
-		strBuff.Format(_T("Type=%u"), tag.type);
+		wxString strBuff;
+		strBuff.Printf(_T("Type=%u"), tag.type);
 		strTag += strBuff;
 	}
 	return strTag;

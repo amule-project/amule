@@ -203,7 +203,7 @@ void CClientCreditsList::LoadList()
 {
 	
 	CSafeFile file;
-	CString strFileName(theApp.ConfigDir + CLIENTS_MET_FILENAME);
+	wxString strFileName(theApp.ConfigDir + CLIENTS_MET_FILENAME);
 	if (!::wxFileExists(strFileName)) {
 		AddLogLineM(true, wxT("Failed to load creditfile"));
 		return;
@@ -220,7 +220,7 @@ void CClientCreditsList::LoadList()
 	}
 
 	// everything is ok, lets see if the backup exist...
-	CString strBakFileName(theApp.ConfigDir + CLIENTS_MET_BAK_FILENAME);
+	wxString strBakFileName(theApp.ConfigDir + CLIENTS_MET_BAK_FILENAME);
 	
 	bool bCreateBackup = TRUE;
 	if (wxFileExists(strBakFileName)) {
@@ -273,11 +273,11 @@ void CClientCreditsList::LoadList()
 	file.Close();
 
 	GUIEvent event(ADDLOGLINE);
-	event.string_value = wxString::Format(CString(_("Creditfile loaded, %u clients are known")),count-cDeleted);	
+	event.string_value = wxString::Format(_("Creditfile loaded, %u clients are known"),count-cDeleted);	
 	event.byte_value = false;
 	
 	if (cDeleted>0) {
-		event.string_value += wxString::Format(CString(_(" - Credits expired for %u clients!")),cDeleted);
+		event.string_value += wxString::Format(_(" - Credits expired for %u clients!"),cDeleted);
 	}
 	
 	theApp.NotifyEvent(event);
@@ -289,11 +289,11 @@ void CClientCreditsList::SaveList()
 	theApp.amuledlg->AddDebugLogLine(false, wxT("Saved Credit list"));
 	m_nLastSaved = ::GetTickCount();
 
-	CString name(theApp.ConfigDir + CLIENTS_MET_FILENAME);
+	wxString name(theApp.ConfigDir + CLIENTS_MET_FILENAME);
 	CFile file;
 
 	if (!file.Create(name,TRUE)) {
-		theApp.amuledlg->AddLogLine(true, CString(_("Failed to save creditfile")));
+		theApp.amuledlg->AddLogLine(true, _("Failed to save creditfile"));
 		return;
 	}
 	
@@ -689,9 +689,9 @@ uint32 CClientCredits::GetSecureWaitStartTime(uint32 dwForIP){
 			}
 			else{	// bad boy
 				// this can also happen if the client has not identified himself yet, but will do later - so maybe he is not a bad boy :) .
-				CString buffer2, buffer;
-				/*for (uint16 i = 0;i != 16;i++){
-					buffer2.Format("%02X",this->m_pCredits->abyKey[i]);
+				/*wxString buffer2, buffer;
+				for (uint16 i = 0;i != 16;i++){
+					buffer2.Printf("%02X",this->m_pCredits->abyKey[i]);
 					buffer+=buffer2;
 				}
 				AddDebugLogLine(false,"Warning: WaitTime resetted due to Invalid Ident for Userhash %s",buffer.GetBuffer());*/

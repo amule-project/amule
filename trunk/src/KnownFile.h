@@ -24,7 +24,6 @@
 #include <wx/dynarray.h>
 
 #include "types.h"		// Needed for int8, uint8, uint16, uint32 and uint64
-#include "CString.h"		// Needed for CString
 #include "opcodes.h"		// Needed for PARTSIZE
 #include "CTypedPtrList.h"	// Needed for CTypedPtrList
 #include "CMD4Hash.h"
@@ -111,7 +110,7 @@ protected:
 	wxString	m_strFileName;
 	CMD4Hash	m_abyFileHash;
 	uint32		m_nFileSize;
-	CString		m_strComment;
+	wxString		m_strComment;
 	int8		m_iRate;
 };
 
@@ -168,8 +167,8 @@ public:
 	void	NewAvailPartsInfo();
 	
 	// comment 
-	const CString&	GetFileComment()		{if (!m_bCommentLoaded) LoadComment(); return m_strComment;} 
-	void	SetFileComment(CString strNewComment);
+	const wxString&	GetFileComment()		{if (!m_bCommentLoaded) LoadComment(); return m_strComment;} 
+	void	SetFileComment(const wxString& strNewComment);
 	void	SetFileRate(int8 iNewRate); 
 	int8	GetFileRate()			{if (!m_bCommentLoaded) LoadComment(); return m_iRate;}
 	void	SetPublishedED2K( bool val );

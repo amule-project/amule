@@ -47,7 +47,7 @@ void CIPFilter::Reload(){
 	LoadFromFile();
 }
 
-void CIPFilter::AddBannedIPRange(uint32 IPfrom,uint32 IPto,uint8 filter, CString desc){
+void CIPFilter::AddBannedIPRange(uint32 IPfrom,uint32 IPto,uint8 filter, const wxString& desc){
 	IPRange_Struct* newFilter=new IPRange_Struct();
 	IPRange_Struct* search;
 	bool inserted=false;
@@ -108,7 +108,7 @@ int CIPFilter::LoadFromFile(){
 			sbuffer4=sbuffer2.Right(sbuffer2.Length()-pos-1).Trim();
 
 			ip1=ip2=0;
-			CString temp;
+			wxString temp;
 			bool skip=false;
 
 			unsigned int s3[4];
@@ -155,7 +155,7 @@ int CIPFilter::LoadFromFile(){
 			if (sbuffer2.GetChar(sbuffer2.Length()-1)==10) sbuffer2.Remove(sbuffer2.Length()-1);
 
 			// add a filter
-			AddBannedIPRange(ip1,ip2,filter,CString(sbuffer2.GetData()) );
+			AddBannedIPRange(ip1,ip2,filter,sbuffer2);
 			filtercounter++;
 
 		}

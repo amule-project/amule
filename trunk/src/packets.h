@@ -23,9 +23,10 @@
 #include <cstdio>		// Needed for FILE
 #include <exception>
 
+#include <wx/string.h>
+
 #include "types.h"		// Needed for int8, int32, uint8 and uint32
 #include "opcodes.h"		// Needed for OP_EDONKEYPROT
-#include "CString.h"		
 
 class CMemFile;
 class CFile;
@@ -126,7 +127,7 @@ public:
 	bool WriteTagToFile(FILE* file); //used for CMemfiles
 	
 	STag tag;
-	CString GetFullInfo() const;
+	wxString GetFullInfo() const;
 };
 
 #endif // PACKETS_H

@@ -67,11 +67,11 @@ void CSearchListCtrl::Init(CSearchList* in_searchlist)
 	searchlist = in_searchlist;
   
 	#define LVCFMT_LEFT wxLIST_FORMAT_LEFT
-	InsertColumn(0,CString(_("File Name")),LVCFMT_LEFT,500);
-	InsertColumn(1,CString(_("Size")),LVCFMT_LEFT,100);
-	InsertColumn(2,CString(_("Sources")),LVCFMT_LEFT,50);
-	InsertColumn(3,CString(_("Type")),LVCFMT_LEFT,65);
-	InsertColumn(4,CString(_("FileID")),LVCFMT_LEFT,280);
+	InsertColumn(0,_("File Name"),LVCFMT_LEFT,500);
+	InsertColumn(1,_("Size"),LVCFMT_LEFT,100);
+	InsertColumn(2,_("Sources"),LVCFMT_LEFT,50);
+	InsertColumn(3,_("Type"),LVCFMT_LEFT,65);
+	InsertColumn(4,_("FileID"),LVCFMT_LEFT,280);
 	
 	// contrary to other lists, here we can set everything in constructor
 	// as this control is created only in run-time

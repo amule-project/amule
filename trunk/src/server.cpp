@@ -340,23 +340,23 @@ void CServer::FillWindowTags(wxTreeCtrl* wnd,wxTreeItemId rootitem)
 	POSITION pos;
 	char buffer[255];
 	if (description) {
-		sprintf(buffer,CString(_("Description: %s")),description);
+		sprintf(buffer,_("Description: %s"),description);
 		wnd->InsertItem(buffer,-1,-1,rootitem);
 	}
-	sprintf(buffer,CString(_("IP"))+": %s",ipfull);
+	sprintf(buffer,wxString(_("IP"))+": %s",ipfull);
 	wnd->InsertItem(buffer,-1,-1,rootitem);
-	sprintf(buffer,CString(_("Port"))+": %i",port);
+	sprintf(buffer,wxString(_("Port"))+": %i",port);
 	wnd->InsertItem(buffer,-1,-1,rootitem);
 	if (ping) {
-		sprintf(buffer,CString(_("Ping"))+": %i",ping);
+		sprintf(buffer,wxString(_("Ping"))+": %i",ping);
 		wnd->InsertItem(buffer,-1,-1,rootitem);
 	}
 	if (users) {
-		sprintf(buffer,CString(_("User: %i")),users);
+		sprintf(buffer,_("User: %i"),users);
 		wnd->InsertItem(buffer,-1,-1,rootitem);
 	}
 	if (files) {
-		sprintf(buffer,CString(_("Files"))+": %i",files);
+		sprintf(buffer,wxString(_("Files"))+": %i",files);
 		wnd->InsertItem(buffer,-1,-1,rootitem);
 	}
 	CTag* cur_tag;

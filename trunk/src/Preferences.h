@@ -31,7 +31,6 @@
 
 #include "MD5Sum.h"		// Needed for MD5Sum
 #include "otherfunctions.h"
-#include "CString.h"
 #include "PrefsUnifiedDlg.h"			// Needed for UNIFIED_PREF_HANDLING
 #include <wx/dynarray.h>
 
@@ -502,7 +501,7 @@ public:
 //	void SetWindowLayout(WINDOWPLACEMENT in)	{prefs->EmuleWindowPlacement=in; }
 
 	wxArrayString shareddir_list;
-	CStringList adresses_list;
+	wxArrayString adresses_list;
 
 	void 	SetLanguage();
 	bool 	AutoConnectStaticOnly()		{return prefs->autoconnectstaticonly;}	
@@ -512,7 +511,6 @@ public:
 	int32	GetIPFilterLevel()		{ return prefs->filterlevel;}
 //	bool	ShowRatesOnTitle()		{ return prefs->showRatesInTitle;}
 //	char*   GetNotifierConfiguration()   	{return prefs->notifierConfiguration;}; //<<-- enkeyDEV(kei-kun) -skinnable notifier-
-	//void    SetNotifierConfiguration(CString configFullPath) {sprintf(prefs->notifierConfiguration,"%s",configFullPath.GetData()); } //<<-- enkeyDEV(kei-kun) -skinnable notifier-
 	void	LoadCats();
 	wxString	GetDateTimeFormat()		{ return wxString(char2unicode(prefs->datetimeformat));}
 	// Download Categories (Ornis)

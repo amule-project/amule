@@ -21,8 +21,7 @@
 #define XBMDRAW_H
 
 #include "types.h"		// Needed for BYTE
-#include "CString.h"		// Needed for CString
-
+#include <wx/string.h>
 
 #if _MSC_VER > 1000
 #pragma once
@@ -32,14 +31,14 @@ class XBMDraw
 {
 public:
 	bool Line(int x1, int y1, int x2, int y2, bool bXOR = false);
-	CString GetImageTag();
+	wxString GetImageTag();
 	bool Plot(int x, int y, bool bXOR = false);
-	bool GetImage(CString &sImage);
-	bool CreateImage(CString sName, int nWidth, int nHeight, BYTE bBackground = 0x00);
+	bool GetImage(wxString &sImage);
+	bool CreateImage(const wxString& sName, int nWidth, int nHeight, BYTE bBackground = 0x00);
 	XBMDraw();
 	virtual ~XBMDraw();
 private:
-	CString	m_sName;
+	wxString	m_sName;
 	int		m_nWidth;
 	int		m_nHeight;
 	BYTE*	m_pImage;

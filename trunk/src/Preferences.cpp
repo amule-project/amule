@@ -58,7 +58,7 @@ CPreferences::CPreferences()
 	md4cpy(&prefs->userhash,&userhash);
 
 	// load preferences.dat or set standart values
-	CString fullpath(theApp.ConfigDir + wxT("preferences.dat"));
+	wxString fullpath(theApp.ConfigDir + wxT("preferences.dat"));
 
 	FILE* preffile = fopen(unicode2char(fullpath),"rb");
 
@@ -96,7 +96,7 @@ CPreferences::CPreferences()
 	if ( slistfile.Exists() && slistfile.Open()) {
 		if (slistfile.GetLineCount()) {
 			for (wxString str = slistfile.GetFirstLine(); !slistfile.Eof(); str = slistfile.GetNextLine() ) {
-    				adresses_list.Append(new CString(str));
+    				adresses_list.Add(str);
 			}
 		}
 		slistfile.Close();
@@ -141,7 +141,7 @@ uint16 CPreferences::GetMaxDownload()
 
 bool CPreferences::Save()
 {
-	CString fullpath(theApp.ConfigDir + wxT("preferences.dat"));
+	wxString fullpath(theApp.ConfigDir + wxT("preferences.dat"));
 
 	bool error = false;
 
@@ -360,11 +360,6 @@ CPreferences::~CPreferences()
 	}
 
 	catMap.Clear();
-
-	if (adresses_list.GetCount()>0) {
-		// the 'true' tells wxList to do 'delete' on the nodes.
-		adresses_list.DeleteContents(true);
-	}
 
 	delete prefs;
 	delete prefsExt;

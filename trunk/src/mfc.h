@@ -36,13 +36,6 @@ template<class BASE_CLASS, class TYPE>
   class CTypedPtrList : public CList<TYPE,TYPE>
 */
 
-/*
-These are moved to "CString.h"
-class CString : public wxString
-#define CStringA ...
-WX_DECLARE_LIST(CString, stringList);
-class CStringList : public stringList
-*/
 
 // default hasher
 template<class ARG_KEY>

@@ -153,7 +153,7 @@ bool CKnownFile::CreateFromFile(const wxString& in_directory, const wxString& in
 	m_strFileName = in_filename;
 	
 	// open file
-	CString namebuffer;
+	wxString namebuffer;
 	namebuffer = in_directory + wxT("/") + in_filename;
 	//SetFilePath(namebuffer); ??
 	FILE* file = fopen(unicode2char(namebuffer), "rbS");
@@ -253,8 +253,8 @@ void CKnownFile::GetMetaDataTags()
 		return;
 
 	// open file
-	CString namebuffer;
-	namebuffer.Format("%s/%s", directory, m_strFilename);
+	wxString namebuffer;
+	namebuffer.Printf("%s/%s", directory, m_strFilename);
 	
 	if ((namebufer.Right(4).ToLower() == wxT(".mp3")) || (namebufer.Right(4).ToLower() == wxT(".mp2")) || (namebufer.Right(4).ToLower() == wxT(".mp1")) || (namebufer.Right(4).ToLower() == wxT(".mpa")))
 	{
@@ -270,7 +270,7 @@ void CKnownFile::GetMetaDataTags()
 				// length
 				if (mp3info->time){
 					// the "length" ed2k meta tag was introduced by eDonkeyHybrid with the data type 'string' :/
-					CString strLength;
+					wxString strLength;
 					SecToTimeLength(mp3info->time, strLength);
 					CTag* pTag = new CTag(FT_MEDIA_LENGTH, strLength);
 					AddTagUnique(pTag);
@@ -416,7 +416,7 @@ void CKnownFile::GetMetaDataTags()
 						}
 
 						uint32 uLengthSec = 0.0;
-						CStringA strCodec;
+						wxString strCodec;
 						uint32 uBitrate = 0;
 						if (fVideoStreamLengthSec > 0.0){
 							uLengthSec = fVideoStreamLengthSec;
@@ -442,7 +442,7 @@ void CKnownFile::GetMetaDataTags()
 
 						if (uLengthSec){
 							// the "length" ed2k meta tag was introduced by eDonkeyHybrid with the data type 'string' :/
-							CStringA strLength;
+							wxString strLength;
 							SecToTimeLength(uLengthSec, strLength);
 							CTag* pTag = new CTag(FT_MEDIA_LENGTH, strLength);
 							AddTagUnique(pTag);
@@ -1004,7 +1004,7 @@ void CKnownFile::LoadComment()
 	m_bCommentLoaded = true;
 }    
 
-void CKnownFile::SetFileComment(CString strNewComment)
+void CKnownFile::SetFileComment(const wxString& strNewComment)
 { 
 	wxString strCfgPath = wxT("/") + m_abyFileHash.Encode() + wxT("/");
 

@@ -303,7 +303,7 @@ bool CUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, char* host
 	}
 	catch(...){
 	  //OUTPUT_DEBUG_TRACE();
-		theApp.amuledlg->AddDebugLogLine(false,CString(_("Error while processing incoming UDP Packet (Most likely a misconfigured server)")));
+		theApp.amuledlg->AddDebugLogLine(false,_("Error while processing incoming UDP Packet (Most likely a misconfigured server)"));
 		return false;
 	}
 }
@@ -338,7 +338,7 @@ bool CUDPSocket::ProcessExtPacket(char* packet, int16 size, int8 opcode, char* h
 	}
 	catch(...){
 	  //OUTPUT_DEBUG_TRACE();
-		theApp.amuledlg->AddDebugLogLine(false,CString(_("Error while processing incoming extended protocol UDP Packet")));
+		theApp.amuledlg->AddDebugLogLine(false,_("Error while processing incoming extended protocol UDP Packet"));
 		return false;
 	}
 }

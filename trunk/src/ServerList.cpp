@@ -91,9 +91,8 @@ uint8 CServerList::AutoUpdate()
 	wxString strTempFilename;
 
 	uint8 temp_count =0;	
-	POSITION Pos = app_prefs->adresses_list.GetHeadPosition(); 
-	while (Pos != NULL) {
-		strURLToDownload = app_prefs->adresses_list.GetNext(Pos); 
+	for ( uint8 i = 0; i < url_count; i++ ) {
+		strURLToDownload = app_prefs->adresses_list[i]; 
 		if (strURLToDownload.Find(wxT("://")) == -1) {
 			theApp.amuledlg->AddLogLine(true, _("Invalid URL ") + strURLToDownload);
 		} else {
