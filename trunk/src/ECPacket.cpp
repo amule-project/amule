@@ -24,6 +24,7 @@
 #include "ECSocket.h"	// Needed for ECSocket
 #include <stdlib.h>	// Needed for malloc(), realloc(), free(), NULL
 #include <string.h>	// Needed for memcpy(), strlen()
+#include "CMD4Hash.h"	// Needed for CMD4Hash
 
 #define	ARRAY_ALLOC_CHUNKS	16
 
@@ -98,7 +99,7 @@ CECTag::CECTag(ec_tagname_t name, unsigned int length, void **dataptr)  : m_tagN
  *
  * @see GetIPv4Data()
  */
-CECTag::CECTag(ec_tagname_t name, const EC_IPv4_t &data) : m_tagName(name), m_dynamic(true)
+CECTag::CECTag(ec_tagname_t name, const EC_IPv4_t& data) : m_tagName(name), m_dynamic(true)
 {
 
 	m_dataLen = sizeof(EC_IPv4_t);
@@ -106,6 +107,37 @@ CECTag::CECTag(ec_tagname_t name, const EC_IPv4_t &data) : m_tagName(name), m_dy
 	if (m_tagData != NULL) {
 		*((uint32 *)(((EC_IPv4_t *)m_tagData)->ip)) = *((uint32 *)(data.ip));
 		((EC_IPv4_t *)m_tagData)->port = htons(data.port);
+		m_error = 0;
+	} else {
+		m_error = 1;
+	}
+	m_tagCount = m_listSize = 0;
+	m_tagList = NULL;
+}
+
+/**
+ * Creates a new CECTag instance, which contains a MD4 hash.
+ *
+ * This function takes care to store hash in network byte order.
+ *
+ * @param name TAG name
+ * @param data The CMD4Hash class containing the MD4 hash.
+ *
+ * @see GetMD4Data()
+ */
+CECTag::CECTag(ec_tagname_t name, const CMD4Hash& data) : m_tagName(name), m_dynamic(true)
+{
+
+	m_dataLen = 16;
+	m_tagData = new unsigned char[16];
+	if (m_tagData != NULL) {
+#if wxBYTE_ORDER == wxLITTLE_ENDIAN
+		for (int i = 0; i < 16; ++i)
+			((unsigned char *)m_tagData)[i] = ((const unsigned char *)data)[15-i];
+#else
+		((uint64 *)m_tagData)[0] = ((uint64 *)data.GetHash())[0];
+		((uint64 *)m_tagData)[1] = ((uint64 *)data.GetHash())[1];
+#endif
 		m_error = 0;
 	} else {
 		m_error = 1;
@@ -529,7 +561,7 @@ uint32 CECTag::GetTagLen(void) const
  *
  * @return EC_IPv4_t class.
  *
- * @see CECTag(ec_tagname_t, const EC_IPv4_t *)
+ * @see CECTag(ec_tagname_t, const EC_IPv4_t&)
  */
 EC_IPv4_t CECTag::GetIPv4Data(void) const
 {
@@ -539,6 +571,28 @@ EC_IPv4_t CECTag::GetIPv4Data(void) const
 	p.port = ntohs(((EC_IPv4_t *)m_tagData)->port);
 
 	return p;
+}
+
+/**
+ * Returns a CMD4Hash class.
+ *
+ * This function takes care of converting from MSB to LSB as necessary.
+ *
+ * @return CMD4Hash class.
+ *
+ * @see CECTag(ec_tagname_t, const CMD4Hash&)
+ */
+CMD4Hash CECTag::GetMD4Data(void) const
+{
+#if wxBYTE_ORDER == wxLITTLE_ENDIAN
+	unsigned char p[16];
+
+	for (int i = 0; i < 16; ++i)
+		p[i] = ((const unsigned char *)m_tagData)[15-i];
+	return CMD4Hash(p);
+#else
+	return CMD4Hash((const unsigned char *)m_tagData);
+#endif
 }
 
 /*!

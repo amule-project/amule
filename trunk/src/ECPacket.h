@@ -40,7 +40,7 @@
 class CECTag;
 class ECSocket;
 class wxSocketBase;
-
+class CMD4Hash;
 
 
 /**
@@ -57,7 +57,8 @@ class CECTag {
 				CECTag(ec_tagname_t name, uint16 data);
 				CECTag(ec_tagname_t name, uint32 data);
 				CECTag(ec_tagname_t name, const wxString& data);
-				CECTag(ec_tagname_t name, const EC_IPv4_t &data);
+				CECTag(ec_tagname_t name, const EC_IPv4_t& data);
+				CECTag(ec_tagname_t name, const CMD4Hash& data);
 				CECTag(const CECTag& tag);
 				~CECTag(void);
 		bool		AddTag(const CECTag& tag);
@@ -75,6 +76,7 @@ class CECTag {
 		uint32		GetInt32Data(void) const { return ntohl(*((uint32 *)m_tagData)); }
 		wxString	GetStringData(void) const { return wxString(wxConvUTF8.cMB2WC((const char *)m_tagData), aMuleConv); }
 		EC_IPv4_t 	GetIPv4Data(void) const;
+		CMD4Hash	GetMD4Data(void) const;
 	protected:
 				CECTag(wxSocketBase *sock, ECSocket& socket);
 		bool		WriteTag(wxSocketBase *sock, ECSocket& socket) const;
