@@ -1591,7 +1591,7 @@ void CamuleApp::ShutDown() {
 bool CamuleApp::AddServer(CServer *srv)
 {
 	if ( serverlist->AddServer(srv) ) {
-		Notify_ServerAdd(srv)
+		Notify_ServerAdd(srv);
 		return true;
 	}
 	return false;
