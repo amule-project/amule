@@ -45,7 +45,6 @@
 #include "KnownFileList.h"	// Needed for CKnownFileList
 #include "SysTray.h"		// Needed for TBN_DLOAD
 #include "UploadQueue.h"	// Needed for CFileHash
-#include "DownloadListCtrl.h"	// Needed for CDownloadListCtrl
 #include "TransferWnd.h"	// Needed for CTransferWnd
 #include "IPFilter.h"		// Needed for CIPFilter
 #include "server.h"		// Needed for CServer
@@ -57,7 +56,6 @@
 #include "SafeFile.h"		// Needed for CSafeFile
 #include "Preferences.h"	// Needed for CPreferences
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
-#include "amuleDlg.h"		// Needed for CamuleDlg
 #include "amule.h"		// Needed for theApp
 #include "ED2KLink.h"		// Needed for CED2KLink
 #include "packets.h"		// Needed for CTag
@@ -1165,7 +1163,6 @@ void CPartFile::AddGap(uint32 start, uint32 end)
 	new_gap->start = start;
 	new_gap->end = end;
 	gaplist.AddTail(new_gap);
-	//theApp.amuledlg->transferwnd.downloadlistctrl.UpdateItem(this);
 	UpdateDisplayedInfo();
 	newdate = true;
 }
@@ -1804,7 +1801,7 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 		}
 		m_bPercentUpdated = false;
 		if (theApp.glob_prefs->ShowCatTabInfos()) {
-			theApp.amuledlg->transferwnd->UpdateCatTabTitles();	
+			Notify_ShowUpdateCatTabTitles();
 		}				
 	}
 	
@@ -2294,7 +2291,7 @@ void CPartFile::CompleteFile(bool bIsHashingDone)
 	theApp.downloadqueue->RemoveLocalServerRequest(this);
 
 	if(this->srcarevisible) {
-		theApp.amuledlg->transferwnd->downloadlistctrl->HideSources(this);
+		Notify_DownloadCtrlHideSource(this);
 	}
 	if (!bIsHashingDone) {
 		printf("HashNotDone\n");
@@ -2318,9 +2315,9 @@ void CPartFile::CompleteFile(bool bIsHashingDone)
 
 
 	}
-	theApp.amuledlg->transferwnd->downloadlistctrl->ShowFilesCount();
+	Notify_DownloadCtrlShowFilesCount();
 	if (theApp.glob_prefs->ShowCatTabInfos()) {
-		theApp.amuledlg->transferwnd->UpdateCatTabTitles();	
+		Notify_ShowUpdateCatTabTitles();
 	}			
 	UpdateDisplayedInfo(true);
 }
@@ -2361,9 +2358,8 @@ void CPartFile::CompleteFileEnded(int completing_result, wxString* newname) {
 		theApp.uploadqueue->ResumeUpload(GetFileHash());
 		SetAutoUpPriority(false);
 		theApp.downloadqueue->RemoveFile(this);
-		//theApp.amuledlg->transferwnd.downloadlistctrl.UpdateItem(this);
 		UpdateDisplayedInfo();
-		theApp.amuledlg->transferwnd->downloadlistctrl->ShowFilesCount();
+		Notify_DownloadCtrlShowFilesCount();
 
 		//SHAddToRecentDocs(SHARD_PATH, fullname); // This is a real nasty call that takes ~110 ms on my 1.4 GHz Athlon and isn't really needed afai see...[ozon]
 		// Barry - Just in case
@@ -2402,8 +2398,7 @@ void CPartFile::CompleteFileEnded(int completing_result, wxString* newname) {
 
 	
 	AddLogLineF(true, _("Finished downloading %s :-)"), GetFileName().c_str());
-	theApp.amuledlg->ShowNotifier(wxString(char2unicode("Downloaded:"))+wxT("\n")+GetFileName(), TBN_DLOAD);
-	
+	Notify_ShowNotifier(wxString(_("Downloaded:"))+wxT("\n")+GetFileName(), TBN_DLOAD, 0);
 }
 
 completingThread::completingThread(wxString FileName, wxString fullname, uint32 Category, CPartFile* caller):wxThread(wxTHREAD_DETACHED)
@@ -2566,12 +2561,12 @@ void  CPartFile::RemoveAllSources(bool bTryToSwap)
 			POSITION pos3 = cur_src->m_OtherRequests_list.Find(this);
 			if(pos3) {
 				cur_src->m_OtherRequests_list.RemoveAt(pos3);
-				theApp.amuledlg->transferwnd->downloadlistctrl->RemoveSource(cur_src, this);
+				Notify_DownloadCtrlRemoveSource(cur_src,this);
 			} else {
 				pos3 = cur_src->m_OtherNoNeeded_list.Find(this);
 				if(pos3) {
 					cur_src->m_OtherNoNeeded_list.RemoveAt(pos3);
-					theApp.amuledlg->transferwnd->downloadlistctrl->RemoveSource(cur_src, this);
+					Notify_DownloadCtrlRemoveSource(cur_src,this);
 				}
 			}
 		}
@@ -2592,7 +2587,7 @@ void CPartFile::Delete()
 	printf("\tRemoved from shared\n");
 	theApp.downloadqueue->RemoveFile(this);
 	printf("\tRemoved from download queue\n");
-	theApp.amuledlg->transferwnd->downloadlistctrl->RemoveFile(this);
+	Notify_DownloadCtrlRemoveFile(this);
 	printf("\tRemoved transferwnd\n");
 
 	// Kry - WTF? 
@@ -3400,7 +3395,7 @@ void CPartFile::FlushBuffer(void)
 					if (posCorrupted)
 						corrupted_list.RemoveAt(posCorrupted);
 					
-					theApp.amuledlg->AddLogLine(true, _("ICH: Recovered corrupted part %i  (%s)"), partNumber,GetFileName().c_str());
+					AddLogLineF(true, _("ICH: Recovered corrupted part %i  (%s)"), partNumber,GetFileName().c_str());
 					
 					// Successfully recovered part, make it available for sharing
 					if (status == PS_EMPTY) {
@@ -3563,7 +3558,7 @@ void CPartFile::UpdateDisplayedInfo(bool force)
 
 	 // Wait 1.5s between each redraw
 	 if(force || curTick-m_lastRefreshedDLDisplay > MINWAIT_BEFORE_DLDISPLAY_WINDOWUPDATE + 500 ) {
-		theApp.amuledlg->transferwnd->downloadlistctrl->UpdateItem(this);
+		 Notify_DownloadCtrlUpdateItem(this);
 		m_lastRefreshedDLDisplay = curTick;
 	}
 	
@@ -3778,19 +3773,11 @@ void CPartFile::SetPartFileStatus(uint8 newstatus)
 	status=newstatus;
 	
 	if (theApp.glob_prefs->GetAllcatType()) {
-		theApp.amuledlg->transferwnd->downloadlistctrl->Freeze();
-		
-		if (!CheckShowItemInGivenCat(this, theApp.amuledlg->transferwnd->downloadlistctrl->curTab)) {
-			theApp.amuledlg->transferwnd->downloadlistctrl->HideFile(this);
-		} else {
-			theApp.amuledlg->transferwnd->downloadlistctrl->ShowFile(this);
-		}
-		
-		theApp.amuledlg->transferwnd->downloadlistctrl->Thaw();
-
-		theApp.amuledlg->transferwnd->downloadlistctrl->ShowFilesCount();
+		// lfroen - just notify gui that show-hide status is changing
+		Notify_DownloadCtrlShowHideFileStatus(this);
+		Notify_DownloadCtrlShowFilesCount();
 	}
-	theApp.amuledlg->transferwnd->downloadlistctrl->InitSort();
+	Notify_DownloadCtrlInitSort();
 }
 
 void CPartFile::ResumeFileInsufficient()
@@ -3820,12 +3807,13 @@ void CPartFile::SetStatus(uint8 in)
 	
 	status=in;
 	if (theApp.IsRunning()) {
-		if (theApp.amuledlg->transferwnd->downloadlistctrl->curTab==0) {
-			theApp.amuledlg->transferwnd->downloadlistctrl->ChangeCategory(0);
-		}
+		// lfroen - if needed, must be on gui side, not here anyway
+		//if (Notify_DownloadCtrlGetCurrCat()==0) {
+			//Notify_DownloadCtrlChangeCat(0);
+		//}
 		UpdateDisplayedInfo(true);
 		if (theApp.glob_prefs->ShowCatTabInfos()) {
-			theApp.amuledlg->transferwnd->UpdateCatTabTitles();		
+			Notify_ShowUpdateCatTabTitles();
 		}
 	}
 }

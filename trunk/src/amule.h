@@ -41,6 +41,9 @@ class CDownloadQueue;
 class CUploadQueue;
 class CServerConnect;
 class CSharedFileList;
+class CServer;
+class CFriend;
+class CMD4Hash;
 class CServerList;
 class CListenSocket;
 class CClientList;
@@ -164,6 +167,8 @@ public:
 	void ShutDown();
 	
 	void NotifyEvent(GUIEvent event);
+	bool AddServer(CServer *srv);
+	CFriend *FindFriend(CMD4Hash *hash, uint32 ip, uint16 port);
 
 #ifdef __DEBUG__
 	void AddSocketDeleteDebug(uint32 socket_pointer, uint32 creation_time);

@@ -824,7 +824,8 @@ void CamuleDlg::StartFast(wxTextCtrl *ctl)
 
 			if ( pLink ) {
 				if( pLink->GetKind() == CED2KLink::kFile ) {
-					theApp.downloadqueue->AddFileLinkToDownload(pLink->GetFileLink());
+					uint8 cat = transferwnd->downloadlistctrl->curTab;
+					theApp.downloadqueue->AddFileLinkToDownload(pLink->GetFileLink(), cat);
 				} else {
 					throw wxString(wxT("Bad link"));
 				}

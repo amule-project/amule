@@ -36,7 +36,6 @@
 #include "SafeFile.h"		// Needed for CSafeMemFile
 #include "ListenSocket.h"	// Needed for CListenSocket
 #include "amule.h"		// Needed for theApp
-#include "amuleDlg.h"		// Needed for CamuleDlg
 #include "PartFile.h"		// Needed for CPartFile
 #include "BarShader.h"		// Needed for CBarShader
 #include "updownclient.h"	// Needed for CUpDownClient
@@ -1130,7 +1129,7 @@ void CUpDownClient::UpdateDisplayedInfo(bool force)
 {
 	DWORD curTick = ::GetTickCount();
 	if(force || curTick-m_lastRefreshedDLDisplay > MINWAIT_BEFORE_DLDISPLAY_WINDOWUPDATE+(uint32)(rand()/(RAND_MAX/1000))) {
-		theApp.amuledlg->transferwnd->downloadlistctrl->UpdateItem(this);
+		Notify_DownloadCtrlUpdateItem(this);
 		m_lastRefreshedDLDisplay = curTick;
 	}
 }
@@ -1145,7 +1144,7 @@ bool CUpDownClient::DoSwap(CPartFile* SwapTo, bool bRemoveCompletely)
 		if ( m_reqfile->m_SrcList.erase( this ) ) {
 			// remove this client from the A4AF list of our new m_reqfile
 			if ( SwapTo->A4AFsrclist.erase( this ) ) {
-				theApp.amuledlg->transferwnd->downloadlistctrl->RemoveSource(this,SwapTo);
+				Notify_DownloadCtrlRemoveSource(this,SwapTo);
 			}
 
 			m_reqfile->IsCountDirty = true;
@@ -1159,7 +1158,7 @@ bool CUpDownClient::DoSwap(CPartFile* SwapTo, bool bRemoveCompletely)
 					m_OtherRequests_list.AddTail(m_reqfile);
 				}
 				if (!bRemoveCompletely) {
-					theApp.amuledlg->transferwnd->downloadlistctrl->AddSource(m_reqfile,this,true);
+					Notify_DownloadCtrlAddSource(m_reqfile,this,true);
 				}
 			}
 			SetDownloadState(DS_NONE);
@@ -1173,7 +1172,7 @@ bool CUpDownClient::DoSwap(CPartFile* SwapTo, bool bRemoveCompletely)
 
 			SwapTo->m_SrcList.insert(this);
 			SwapTo->IsCountDirty = true;
-			theApp.amuledlg->transferwnd->downloadlistctrl->AddSource(SwapTo,this,false);
+			Notify_DownloadCtrlAddSource(SwapTo,this,false);
 
 			return true;
 		}

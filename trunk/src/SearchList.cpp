@@ -559,11 +559,11 @@ wxString CSearchList::GetWebList(const wxString& linePattern,int sortby,bool asc
 	return buffer;
 }
 
-void CSearchList::AddFileToDownloadByHash(const CMD4Hash& hash,uint8 WXUNUSED(cat)) {
+void CSearchList::AddFileToDownloadByHash(const CMD4Hash& hash,uint8 cat) {
 	for (POSITION pos = list.GetHeadPosition(); pos !=0; ){
 		CSearchFile* sf=list.GetNext(pos);
 		if (hash == sf->GetFileHash()) {
-			theApp.downloadqueue->AddSearchToDownload(sf);
+			theApp.downloadqueue->AddSearchToDownload(sf, cat);
 			break;
 		}
 	}

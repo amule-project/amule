@@ -37,13 +37,10 @@
 #include "packets.h"		// Needed for CTag
 #include "opcodes.h"		// Needed for CT_NAME
 #include "CMemFile.h"		// Needed for CMemFile
-#include "ServerListCtrl.h"	// Needed for CServerListCtrl
-#include "ServerWnd.h"		// Needed for CServerWnd
 #include "otherfunctions.h"	// Needed for GetTickCount
 #include "ServerSocket.h"	// Needed for CServerSocket
 #include "ListenSocket.h"	// Needed for CListenSocket
 #include "server.h"		// Needed for CServer
-#include "amuleDlg.h"		// Needed for CamuleDlg
 #include "amule.h"		// Needed for theApp
 #include "ServerList.h"		// Needed for CServerList
 #include "Preferences.h"	// Needed for CPreferences
@@ -80,7 +77,7 @@ void CServerConnect::ConnectToAnyServer(uint32 startAt,bool prioSort,bool isAuto
 	lastStartAt=startAt;
 	StopConnectionTry();
 	Disconnect();
-	theApp.amuledlg->ShowConnectionState(false,wxT(""),true);
+	Notify_ShowConnState(false,wxT(""),true);
 	connecting = true;
 	singleconnecting = false;
 
@@ -125,7 +122,7 @@ void CServerConnect::ConnectToServer(CServer* server, bool multiconnect){
 		Disconnect();
 	}
 	connecting = true;
-	theApp.amuledlg->ShowConnectionState(false,wxT(""),true);
+	Notify_ShowConnState(false,wxT(""),true);
 	singleconnecting = !multiconnect;
 
 	CServerSocket* newsocket = new CServerSocket(this);
@@ -178,7 +175,7 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender){
 		CServer* update = theApp.serverlist->GetServerByAddress( sender->cur_server->GetAddress(), sender->cur_server->GetPort() );
 		if (update){
 			update->ResetFailedCount();
-			theApp.amuledlg->serverwnd->serverlistctrl->RefreshServer( update );
+			Notify_ServerRefresh( update );
 		}
 		CMemFile data;
 		data.WriteRaw(theApp.glob_prefs->GetUserHash(),16);
@@ -218,13 +215,14 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender){
 		connected = true;
 		AddLogLineM(true, _("Connection established on: ") + sender->cur_server->GetListName());
 		connectedsocket = sender;
-		theApp.amuledlg->ShowConnectionState(true,connectedsocket->cur_server->GetListName());
+		Notify_ShowConnState(true,connectedsocket->cur_server->GetListName(), false);
+		
 		CServer* update = theApp.serverlist->GetServerByAddress(connectedsocket->cur_server->GetAddress(),sender->cur_server->GetPort());
 		StopConnectionTry();
-		theApp.amuledlg->serverwnd->serverlistctrl->HighlightServer(update, true);
+		Notify_ServerHighlight(update, true);
 		theApp.sharedfiles->ClearED2KPublishInfo();
 		theApp.sharedfiles->SendListToServer();
-		theApp.amuledlg->serverwnd->serverlistctrl->RemoveDeadServer();
+		Notify_ServerRemoveDead();
 		// tecxx 1609 2002 - serverlist update
 		if (theApp.glob_prefs->AddServersFromServer())
 		{
@@ -273,7 +271,7 @@ void CServerConnect::ConnectionFailed(CServerSocket* sender){
 			AddLogLineM(false,_("Lost connection to ") + sender->cur_server->GetListName() + wxT("(") + sender->cur_server->GetFullIP() + wxString::Format(wxT(":%i)"),sender->cur_server->GetPort()));
 			update = theApp.serverlist->GetServerByAddress( sender->cur_server->GetAddress(), sender->cur_server->GetPort() );
 			if(update){
-				theApp.amuledlg->serverwnd->serverlistctrl->HighlightServer(update, false);
+				Notify_ServerHighlight(update, false);
 			}
 			break;
 		case CS_SERVERDEAD:
@@ -281,7 +279,7 @@ void CServerConnect::ConnectionFailed(CServerSocket* sender){
 			update = theApp.serverlist->GetServerByAddress( sender->cur_server->GetAddress(), sender->cur_server->GetPort() );
 			if(update){
 				update->AddFailedCount();
-				theApp.amuledlg->serverwnd->serverlistctrl->RefreshServer( update );
+				Notify_ServerRefresh( update );
 			}
 			break;
 		case CS_ERROR:
@@ -307,25 +305,25 @@ void CServerConnect::ConnectionFailed(CServerSocket* sender){
 				m_idRetryTimer.SetOwner(&theApp,TM_TCPSOCKET);
 				m_idRetryTimer.Start(1000*CS_RETRYCONNECTTIME);
 			}
-			theApp.amuledlg->ShowConnectionState(false,wxT(""),true);
+			Notify_ShowConnState(false,wxT(""),true);
 			break;
 		}
 		case CS_DISCONNECTED:{
 			connected = false;
-			theApp.amuledlg->serverwnd->serverlistctrl->HighlightServer(sender->cur_server,false);
+			Notify_ServerHighlight(sender->cur_server,false);
 			if (connectedsocket) 
 				connectedsocket->Close();
 			connectedsocket = NULL;
 			wxCommandEvent evt;
-			theApp.amuledlg->searchwnd->OnBnClickedCancels(evt);
+			Notify_SearchCancel(&evt);
 //			printf("Reconn %d conn %d\n",app_prefs->Reconnect(),connecting);
 			if (app_prefs->Reconnect() && !connecting){
 				ConnectToAnyServer();		
 			}
 			if (theApp.glob_prefs->GetNotifierPopOnImportantError()) {
-				theApp.amuledlg->ShowNotifier(_("Connection lost"), TBN_IMPORTANTEVENT, false);
+				Notify_ShowNotifier(wxString(_("Connection lost")), TBN_IMPORTANTEVENT, false);
 			}
-			theApp.amuledlg->ShowConnectionState(false,wxT(""),true);
+			Notify_ShowConnState(false,wxT(""),true);
 			break;
 		}
 		case CS_ERROR:
@@ -354,7 +352,7 @@ void CServerConnect::ConnectionFailed(CServerSocket* sender){
 			TryAnotherConnectionrequest();
 		}
 	}
-	theApp.amuledlg->ShowConnectionState(false,wxT(""),true);
+	Notify_ShowConnState(false,wxT(""),true);
 }
 
 #if 0
@@ -403,11 +401,11 @@ void CServerConnect::CheckForTimeout()
 bool CServerConnect::Disconnect(){
 	if (connected && connectedsocket){
 		CServer* update = theApp.serverlist->GetServerByAddress(this->connectedsocket->cur_server->GetAddress(),this->connectedsocket->cur_server->GetPort());
-		theApp.amuledlg->serverwnd->serverlistctrl->HighlightServer(update, false);
+		Notify_ServerHighlight(update, false);
 		DestroySocket(connectedsocket);
 		connectedsocket = NULL;
 		connected = false;
-		theApp.amuledlg->ShowConnectionState(false,wxT(""));
+		Notify_ShowConnState(false,wxT(""),0);
 		theApp.stat_serverConnectTime=0;
 		return true;
 	}
@@ -453,7 +451,7 @@ CServer* CServerConnect::GetCurrentServer(){
 
 void CServerConnect::SetClientID(uint32 newid){
 	clientid = newid;
-	theApp.amuledlg->ShowConnectionState(IsConnected(),GetCurrentServer()->GetListName());
+	Notify_ShowConnState(IsConnected(),GetCurrentServer()->GetListName(), 0);
 }
 
 void CServerConnect::DestroySocket(CServerSocket* pSck){

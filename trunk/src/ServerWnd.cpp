@@ -125,7 +125,7 @@ void CServerWnd::OnBnClickedAddserver(wxCommandEvent& WXUNUSED(evt))
 	} else {
 		toadd->SetListName(serveraddr);
 	}
-	if (!serverlistctrl->AddServer(toadd,true)) {
+	if (!theApp.AddServer(toadd)) {
 		CServer* update = theApp.serverlist->GetServerByAddress(toadd->GetAddress(), toadd->GetPort());
 		if(update) {
 			update->SetListName(toadd->GetListName());

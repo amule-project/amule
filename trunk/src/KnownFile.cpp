@@ -29,7 +29,6 @@
 #include <wx/config.h>
 
 #include "KnownFile.h"		// Interface declarations.
-#include "amuleDlg.h"		// Needed for CamuleDlg
 #include "otherfunctions.h"	// Needed for nstrdup
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "CMemFile.h"		// Needed for CMemFile
@@ -957,7 +956,7 @@ void CKnownFile::UpdateAutoUpPriority(void)
 		if ( GetQueuedCount() > 20 ) {
 			if ( GetUpPriority() != PR_LOW ) {
 				SetUpPriority(PR_LOW, false);
-				theApp.amuledlg->sharedfileswnd->sharedfilesctrl->UpdateItem(this);
+				Notify_SharedFilesUpdateItem(this);
 			}
 			return;
 		}
@@ -965,13 +964,13 @@ void CKnownFile::UpdateAutoUpPriority(void)
 		if ( GetQueuedCount() > 1 ) {
 			if ( GetUpPriority() != PR_NORMAL ) {
 				SetUpPriority(PR_NORMAL, false);
-				theApp.amuledlg->sharedfileswnd->sharedfilesctrl->UpdateItem(this);
+				Notify_SharedFilesUpdateItem(this);
 		}
 		return;
 	}
 	if ( GetUpPriority() != PR_HIGH ) {
 		SetUpPriority(PR_HIGH, false);
-		theApp.amuledlg->sharedfileswnd->sharedfilesctrl->UpdateItem(this);
+		Notify_SharedFilesUpdateItem(this);
 	}
 }
 
@@ -1029,7 +1028,7 @@ void CKnownFile::SetUpPriority(uint8 iNewUpPriority, bool m_bsave){
 
 void CKnownFile::SetPublishedED2K(bool val){
 	m_PublishedED2K = val;
-	theApp.amuledlg->sharedfileswnd->sharedfilesctrl->UpdateItem(this);
+	Notify_SharedFilesUpdateItem(this);
 }
 
 

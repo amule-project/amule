@@ -39,16 +39,12 @@
 #include "UDPSocket.h"		// Interface declarations.
 #include "packets.h"		// Needed for Packet
 #include "PartFile.h"		// Needed for CPartFile
-#include "SearchDlg.h"		// Needed for CSearchDlg
 #include "SearchList.h"		// Needed for CSearchList
 #include "SafeFile.h"		// Needed for CSafeMemFile
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
-#include "ServerListCtrl.h"	// Needed for CServerListCtrl
-#include "ServerWnd.h"		// Needed for CServerWnd
 #include "ServerList.h"		// Needed for CServerList
 #include "opcodes.h"		// Needed for OP_EDONKEYPROT
 #include "server.h"		// Needed for CServer
-#include "amuleDlg.h"		// Needed for CamuleDlg
 #include "amule.h"			// Needed for theApp
 #include "amuleIPV4Address.h"	// Needed for wxIPV4address
 #include "GetTickCount.h"
@@ -156,7 +152,7 @@ bool CUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, const wxSt
 		update = theApp.serverlist->GetServerByAddress( host, port-4 );
 		if( update ){
 			update->ResetFailedCount();
-			theApp.amuledlg->serverwnd->serverlistctrl->RefreshServer( update );
+			Notify_ServerRefresh( update );
 		}
 		// Imported: OP_GLOBSEARCHRES, OP_GLOBFOUNDSORUCES (yes, soruces)  & OP_GLOBSERVSTATRES
 		// This makes Server UDP Flags to be set correctly so we use less bandwith on asking servers for sources
@@ -278,7 +274,7 @@ bool CUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, const wxSt
 					update->SetHardFiles( cur_hardfiles );
 					//printf("->> reading Stats from server, flags are %i\n",uUDPFlags);
 					update->SetUDPFlags( uUDPFlags );
-					theApp.amuledlg->serverwnd->serverlistctrl->RefreshServer( update );
+					Notify_ServerRefresh( update );
 				}
 				break;
 			}

@@ -81,9 +81,9 @@ public:
 	~CDownloadQueue();
 	void	Process();
 	void	Init();
-	void	AddSearchToDownload(CSearchFile* toadd);
-	void	AddSearchToDownload(const wxString& link);
-	void	AddFileLinkToDownload(class CED2KFileLink* pLink);
+	void	AddSearchToDownload(CSearchFile* toadd, uint8 category);
+	void	AddSearchToDownload(const wxString& link, uint8 category);
+	void	AddFileLinkToDownload(class CED2KFileLink* pLink, uint8 category);
 	bool	IsFileExisting(const CMD4Hash& fileid) const;
 	bool	IsPartFile(const CKnownFile* totest) const;
 	CPartFile*	GetFileByID(const CMD4Hash& filehash) const;
@@ -101,7 +101,7 @@ public:
 	CServer*	cur_udpserver;
 	void	GetDownloadStats(uint32 results[]);
 	void	AddPartFilesToShare();
-	void	AddDownload(CPartFile* newfile, bool paused);
+	void	AddDownload(CPartFile* newfile, bool paused, uint8 category);
 	CUpDownClient* 	GetDownloadClientByIP(uint32 dwIP);
 	void	UpdateDisplayedInfo(bool force=false);
 	void	StartNextFile();
@@ -154,7 +154,7 @@ protected:
 	bool	SendGlobGetSourcesUDPPacket(CSafeMemFile& data);
 
 private:
-	void AddSearchToDownloadCommon(CPartFile *newfile);
+	void AddSearchToDownloadCommon(CPartFile *newfile, uint8 category);
 
 private:
 	std::deque<CPartFile*> filelist;
