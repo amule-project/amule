@@ -160,6 +160,9 @@ void CEMSocket::OnReceive(int nErrorCode){
 	Read(GlobalReadBuffer + pendingHeaderSize, readMax);
 	uint32 ret=LastCount();
 	if (Error() || ret == 0) {
+		if (LastError() == wxSOCKET_WOULDBLOCK) {
+			pendingOnReceive = true;
+		}
 		return;
 	}
 	
