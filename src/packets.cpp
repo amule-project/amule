@@ -232,7 +232,7 @@ STag::STag(const STag& in)
 	else if (in.type == 4)
 		floatvalue = in.floatvalue;
 	else{
-		wxASSERT(0);
+		//wxASSERT(0);
 		intvalue = 0;
 	}
 
@@ -355,6 +355,7 @@ CTag::CTag(CFile* in_data)
 			printf("CTag::CTag(CFile*); Unknown tag: type=0x%02X  specialtag=%u\n", tag.type, tag.specialtag);
 		else
 			printf("CTag::CTag(CFile*); Unknown tag: type=0x%02X  name=\"%s\"\n", tag.type, tag.tagname);
+//		if (tag.type==0x00) wxASSERT(0);
 	}
 }
 
@@ -398,14 +399,14 @@ bool CTag::WriteTagToFile(CFile* file)
 		//TODO: Support more tag types
 		else{
 			printf("CTag::WriteTagToFile(CFile*); Unknown tag: type=0x%02X\n", tag.type);
-			wxASSERT(0);
+			//wxASSERT(0);
 			return false;
 		}
 		return true;
 	}
 	else{
 		printf("CTag::WriteTagToFile(CFile*); Ignored tag with unknown type=0x%02X\n", tag.type);
-		wxASSERT(0);
+		//wxASSERT(0);
 		return false;
 	}
 }

@@ -88,9 +88,8 @@
 #define ID_BUTTONSTATS 42116
 #endif
 
-#define ID_UQTIMER 59742
-#define TM_DNSDONE 17851
-#define TM_SOURCESDNSDONE 17869
+
+
 
 BEGIN_EVENT_TABLE(CamuleDlg,wxFrame)
 	EVT_SOCKET(ID_SOKETTI, CamuleDlg::socketHandler)
@@ -106,8 +105,8 @@ BEGIN_EVENT_TABLE(CamuleDlg,wxFrame)
 #endif
 	EVT_TOOL(ID_BUTTONNEWPREFERENCES,CamuleDlg::OnBnNewPreferences)
 	EVT_TIMER(ID_UQTIMER,CamuleDlg::OnUQTimer)
-	EVT_TIMER(4322,CamuleDlg::OnUDPTimer)
-	EVT_TIMER(4333,CamuleDlg::OnSocketTimer)
+	EVT_TIMER(TM_UDPSOCKET,CamuleDlg::OnUDPTimer)
+	EVT_TIMER(TM_TCPSOCKET,CamuleDlg::OnSocketTimer)
 	EVT_MENU(TM_FINISHEDHASHING,CamuleDlg::OnFinishedHashing)
 	EVT_MENU(TM_DNSDONE,CamuleDlg::OnDnsDone)
 	EVT_MENU(TM_SOURCESDNSDONE,CamuleDlg::OnSourcesDnsDone)
