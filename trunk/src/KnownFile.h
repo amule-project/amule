@@ -208,7 +208,9 @@ public:
 	CAICHHashSet*	GetAICHHashset() const							{return m_pAICHHashSet;}
 	void			SetAICHHashset(CAICHHashSet* val)				{m_pAICHHashSet = val;}		
 	
+#ifndef AMULE_DAEMON
 	virtual void DrawShareStatusBar(wxDC* dc, wxRect rect, bool onlygreyrect, bool bFlat) const;
+#endif
 
 protected:
 	bool	LoadTagsFromFile(const CFile* file);

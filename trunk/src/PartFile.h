@@ -85,8 +85,12 @@ public:
 	bool    CheckShowItemInGivenCat(int inCategory);
 	void	AddGap(uint32 start, uint32 end);
 	void	FillGap(uint32 start, uint32 end);
+
+#ifndef AMULE_DAEMON
 	void	DrawStatusBar(wxMemoryDC* dc, wxRect rect, bool bFlat);
 	virtual void DrawShareStatusBar(wxDC* dc, wxRect rect, bool onlygreyrect, bool bFlat) const;
+#endif
+	
 	bool	IsComplete(uint32 start, uint32 end);
 	bool	IsPureGap(uint32 start, uint32 end);
 	bool	IsCorruptedPart(uint16 partnumber);
