@@ -788,12 +788,14 @@ void CUpDownClient::ProcessMuleCommentPacket(char* pachPacket, uint32 nSize)
 		if (length>0){
 			char* desc=new char[length+1];
 			memset(desc,0,length+1);
-			if ( (unsigned int)length != data.ReadRaw(desc,length) )
+			if ( (unsigned int)length != data.ReadRaw(desc,length) ) {
 				throw CInvalidPacket("short packet reading comment string");
+			}
 			theApp.amuledlg->AddDebugLogLine(false,_("Description for file '%s' received: %s"), m_pszClientFilename, desc);
 			m_strComment.Format("%s",desc);				
 			theApp.amuledlg->AddDebugLogLine(false,_("Description for file '%s' received: %s"), m_pszClientFilename, m_strComment.GetData());
 			reqfile->SetHasComment(true);
+			delete desc;
 		}
 
 	}
