@@ -598,40 +598,37 @@ bool UTF8_MoveFile(wxString& from, wxString& to) {
 
 bool UTF8_CopyFile(wxString& from, wxString& to) {
 	char buffer[FILE_COPY_BUFFER];
-	#if wxUSE_UNICODE
-	int file_1 = open(unicode2UTF8(from), O_RDONLY);
-	#else
-	int file_1 = open(unicode2char(from), O_RDONLY);
-	#endif
-	if (file_1 == -1) {
+	CFile input_file(from,CFile::read);
+	if (!input_file.IsOpened()) {
 		printf("Error on file copy (can't open original file)\n");
 		return false;
 	}
-	int file_2 = open(unicode2UTF8(to), O_WRONLY | O_CREAT | O_TRUNC);
-	if (file_2 == -1) {
+	CFile output_file(to,CFile::write);
+	if (!output_file.IsOpened()) {
 		printf("Error on file copy (can't create destination file)\n");
-		close(file_1);
+		input_file.Close();
 		return false;
 	}
 	
-	int total_read;
+	int total_read, total_write;
 	
-	while ((total_read = read(file_1,buffer,FILE_COPY_BUFFER))) {
+	while ((total_read = input_file.Read(buffer,FILE_COPY_BUFFER))) {
 		if (total_read == -1) {
 			printf("Unexpected error copying file! (read error)\n");
-			close(file_1);
-			close(file_2);
+			input_file.Close();
+			output_file.Close();
 			return false;
 		}
-		if (write(file_2,buffer,FILE_COPY_BUFFER) == -1) {
+		total_write = output_file.Write(buffer,total_read);
+		if (total_write != total_read) {
 			printf("Unexpected error copying file! (write error)\n");
-			close(file_1);
-			close(file_2);
+			input_file.Close();
+			output_file.Close();
 			return false;			
 		}	
 	}
-	close(file_1);
-	close(file_2);
+	input_file.Close();
+	output_file.Close();
 	return true;
 }
 
