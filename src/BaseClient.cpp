@@ -44,7 +44,7 @@
 #include "opcodes.h"		// Needed for OP_*
 #include "updownclient.h"	// Needed for CUpDownClient
 
-//#define DEBUG_LOCAL_CLIENT_PROTOCOL
+#define DEBUG_LOCAL_CLIENT_PROTOCOL
 //#define __PACKET_DEBUG__
 
 // some client testing variables
@@ -570,12 +570,6 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 	}
 	#endif
 
-	// Kry - If the other side supports it, send OS_INFO
-
-	if (m_fOsInfoSupport) {
-		SendMuleInfoPacket(false,true); // Send the OS Info tag on the recycled Mule Info
-	}
-
 	return bIsMule;
 }
 
@@ -609,7 +603,7 @@ bool CUpDownClient::SendHelloPacket() {
 	SendPacket(packet,true);
 	m_bHelloAnswerPending = true;
 	#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
-	AddDebugLogLineM(true, wxT("Local Client: OP_HELLO\n"));
+	AddDebugLogLineM(true, wxT("Local Client: OP_HELLO to \n") + GetFullIP() + wxT("\n"));
 	#endif
 	return true;
 }
@@ -706,9 +700,13 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer, bool OSInfo) {
 		SendPacket(packet,true,true);
 		#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
 		if (!bAnswer) {
-			AddDebugLogLineM(true, wxT("Local Client: OP_EMULEINFO\n"));
+			if (!OSInfo) {
+				AddDebugLogLineM(true, wxT("Local Client: OP_EMULEINFO to ") + GetFullIP() + wxT("\n"));
+			} else {
+				AddDebugLogLineM(true, wxT("Local Client: OP_EMULEINFO/OS_INFO to \n") + GetFullIP() + wxT("\n"));
+			}
 		} else {
-			AddDebugLogLineM(true, wxT("Local Client: OP_EMULEINFOANSWER\n"));
+			AddDebugLogLineM(true, wxT("Local Client: OP_EMULEINFOANSWER to \n") + GetFullIP() + wxT("\n"));
 		}
 		#endif
 	}
@@ -911,7 +909,7 @@ void CUpDownClient::SendHelloAnswer()
 	SendPacket(packet,true);
 
 	#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
-	AddDebugLogLineM(true, wxT("Local Client: OP_HELLOANSWER\n"));
+	AddDebugLogLineM(true, wxT("Local Client: OP_HELLOANSWER to \n") + GetFullIP());
 	#endif
 }
 
