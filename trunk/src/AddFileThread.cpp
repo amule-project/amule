@@ -356,6 +356,14 @@ wxThread::ExitCode CAddFileThread::Entry()
 			continue;
 		}
 
+		if (!file.GetLength()) {
+			printf("Hasher: 0-size file, skipping: %s\n", unicode2char(filename));
+			
+			// Delete and continue 
+			RemoveFromQueue( current );
+			continue;			
+		}
+		
 
 		// Create a CKnownFile to contain the result
 		knownfile = new CKnownFile();
