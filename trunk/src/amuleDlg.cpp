@@ -190,21 +190,14 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 	transferwnd = new CTransferWnd(p_cnt);
 	sharedfileswnd = new CSharedFilesWnd(p_cnt);
 	statisticswnd = new CStatisticsDlg(p_cnt);
-#ifdef CLIENT_GUI
-	m_wndToolbar->RemoveTool(ID_BUTTONMESSAGES);
-	chatwnd = 0;
-#else
 	chatwnd = new CChatWnd(p_cnt);
-#endif
 	kadwnd = new CKadDlg(p_cnt);
 	serverwnd->Show(FALSE);
 	searchwnd->Show(FALSE);
 	transferwnd->Show(FALSE);
 	sharedfileswnd->Show(FALSE);
 	statisticswnd->Show(FALSE);
-#ifndef CLIENT_GUI
 	chatwnd->Show(FALSE);
-#endif
 	kadwnd->Show(FALSE);	
 
 	// Create the GUI timer

@@ -59,41 +59,6 @@ BEGIN_EVENT_TABLE(CFriendListCtrl, CMuleListCtrl)
 END_EVENT_TABLE()
 
 
-
-#ifdef CLIENT_GUI
-/*
- * This GUI is not functional (yet, if ever). So functions are replaced with their stubs
- * for compile/link to work
- */
-
-CFriendListCtrl::CFriendListCtrl(wxWindow* parent, int id, const wxPoint& pos, wxSize siz, int flags)
-: CMuleListCtrl(parent, id, pos, siz, flags)
-{
-}
-
-CFriendListCtrl::~CFriendListCtrl()
-{
-}
-
-void CFriendListCtrl::OnPopupMenu(wxCommandEvent& )
-{
-}
-
-void CFriendListCtrl::OnItemSelected(wxListEvent& )
-{
-}
-
-
-void CFriendListCtrl::OnItemActivated(wxListEvent& )
-{
-}
-
-void CFriendListCtrl::OnNMRclick(wxMouseEvent& )
-{
-}
-
-#else
-
 CDlgFriend::CDlgFriend(const CMD4Hash& hash, const wxString& name, uint32 ip, uint16 port, bool IsLinked, bool HasFriendSlot) {
 	m_hash = hash;
 	m_name = name;
@@ -127,7 +92,9 @@ void CFriendListCtrl::AddFriend(CDlgFriend* toadd, bool send_to_core)
 	
 	#warning CORE/GUI
 	if (send_to_core) {
+	#ifndef CLIENT_GUI
 		theApp.friendlist->AddFriend(toadd->m_hash, 0, toadd->m_ip, toadd->m_port, 0,toadd->m_name);
+	#endif		
 	}
 }
 
@@ -148,7 +115,9 @@ void CFriendListCtrl::AddFriend(CUpDownClient* toadd)
 	
 	#warning CORE/GUI
 	// This links the friend to the client also
+	#ifndef CLIENT_GUI
 	theApp.friendlist->AddFriend(toadd);
+	#endif
 	
 	CDlgFriend* NewFriend = new CDlgFriend( toadd->GetUserHash(), toadd->GetUserName(), toadd->GetIP(), toadd->GetUserPort(), true, false);
 	
@@ -164,7 +133,9 @@ void CFriendListCtrl::RemoveFriend(CDlgFriend* toremove)
 		return;
 	
 	#warning CORE/GUI
+	#ifndef CLIENT_GUI
 	theApp.friendlist->RemoveFriend(toremove->m_hash, toremove->m_ip, toremove->m_port);
+	#endif
 	
 	DeleteItem(itemnr);
 }
@@ -177,7 +148,9 @@ void CFriendListCtrl::RefreshFriend(CDlgFriend* toupdate)
 		SetItem(itemnr, 0, toupdate->m_name);
 	}	
 	#warning CORE/GUI
+	#ifndef CLIENT_GUI
 	theApp.friendlist->UpdateFriendName(toupdate->m_hash, toupdate->m_name, toupdate->m_ip, toupdate->m_port);
+	#endif
 }
 
 
@@ -210,10 +183,12 @@ void CFriendListCtrl::LoadList()
 {
 	#warning EC: ASK THE LIST TO CORE!
 	
+	#ifndef CLIENT_GUI
 	for(FriendList::iterator it = theApp.friendlist->m_FriendList.begin(); it != theApp.friendlist->m_FriendList.end(); ++it) {
 		CFriend* core_friend = *it;
 		AddFriend(core_friend->GetUserHash(), core_friend->GetName(), core_friend->GetIP(), core_friend->GetPort(), core_friend->GetLinkedClient(), core_friend->HasFriendSlot(), false);
 	}
+	#endif
 	
 }
 
@@ -290,7 +265,9 @@ void CFriendListCtrl::OnPopupMenu(wxCommandEvent& evt)
 		case MP_MESSAGE: {
 			theApp.amuledlg->chatwnd->StartSession(cur_friend);			
 			#warning CORE/GUI!			
+			#ifndef CLIENT_GUI
 			theApp.friendlist->StartChatSession(cur_friend->m_hash, cur_friend->m_ip, cur_friend->m_port);
+			#endif
 			break;
 		}
 		
@@ -309,24 +286,29 @@ void CFriendListCtrl::OnPopupMenu(wxCommandEvent& evt)
 		case MP_DETAIL: {
 			if (cur_friend->islinked) {
 				#warning EC: We need a reply packet with a full CUpDownClient
+				#ifndef CLIENT_GUI
 				CClientDetailDialog* dialog = new CClientDetailDialog(this, theApp.friendlist->FindFriend(cur_friend->m_hash, cur_friend->m_ip, cur_friend->m_port)->GetLinkedClient());
 				dialog->ShowModal();
 				delete dialog;
+				#endif
 			}
 			break;
 		}
 		
 		case MP_SHOWLIST: {
 			#warning CORE/GUI!
+			#ifndef CLIENT_GUI
 			theApp.friendlist->RequestSharedFileList(cur_friend->m_hash, cur_friend->m_ip, cur_friend->m_port);
+			#endif
 			break;
 		}
 		
 		case MP_FRIENDSLOT: {
 			#warning CORE/GUI!
+			#ifndef CLIENT_GUI
 			theApp.friendlist->ToogleFriendSlot(cur_friend->m_hash, cur_friend->m_ip, cur_friend->m_port);
+			#endif
 			break;
 		}
 	}
 }
-#endif

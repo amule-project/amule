@@ -852,7 +852,6 @@ void CDownloadListCtrl::OnViewFiles( wxCommandEvent& WXUNUSED(event) )
 
 void CDownloadListCtrl::OnAddFriend( wxCommandEvent& WXUNUSED(event) )
 {
-#ifndef CLIENT_GUI
 	ItemList sources = ::GetSelectedItems( this, itSOURCES );
 
 	for ( ItemList::iterator it = sources.begin(); it != sources.end(); ++it ) {
@@ -860,13 +859,11 @@ void CDownloadListCtrl::OnAddFriend( wxCommandEvent& WXUNUSED(event) )
 
 		theApp.amuledlg->chatwnd->AddFriend( source );
 	}
-#endif
 }
 
 
 void CDownloadListCtrl::OnSendMessage( wxCommandEvent& WXUNUSED(event) )
 {
-#ifndef CLIENT_GUI
 	ItemList sources = ::GetSelectedItems( this, itSOURCES );
 
 	if ( sources.size() == 1 ) {
@@ -876,11 +873,9 @@ void CDownloadListCtrl::OnSendMessage( wxCommandEvent& WXUNUSED(event) )
 			_("Send message to user"),
 			_("Message to send:"));
 		if ( !message.IsEmpty() ) {
-			#warning EC NEEDED
 			theApp.amuledlg->chatwnd->SendMessage(message, source->GetUserName(),GUI_ID(source->GetIP(),source->GetUserPort()));
 		}
 	}
-#endif
 }
 
 

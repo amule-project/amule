@@ -212,8 +212,6 @@ void CChatSelector::ProcessMessage(uint64 sender_id, const wxString& message)
 	session->AddText( wxT(": ") + client_message + wxT("\n"), COLOR_BLACK );
 }
 
-#ifndef CLIENT_GUI
-
 bool CChatSelector::SendMessage( const wxString& message, const wxString& client_name, uint64 to_id )
 {
 	// Dont let the user send empty messages
@@ -242,13 +240,17 @@ bool CChatSelector::SendMessage( const wxString& message, const wxString& client
 	CChatSession* ci = (CChatSession*)GetPage( usedtab );
 
 	ci->m_active = true;
+	
 	#warning EC needed here.
+	
+	#ifndef CLIENT_GUI
 	if (theApp.clientlist->SendMessage(ci->m_client_id, message)) {
 		ci->AddText( thePrefs::GetUserNick(), COLOR_GREEN );
 		ci->AddText( wxT(": ") + message + wxT("\n"), COLOR_BLACK );
 	} else {
 		ci->AddText( _("*** Connecting to Client ***\n") , COLOR_RED );
 	}
+	#endif
 
 	return true;
 }
@@ -326,4 +328,3 @@ void CChatSelector::RefreshFriend(uint64 toupdate_id, const wxString& new_name)
 		wxASSERT(0);
 	}
 }
-#endif
