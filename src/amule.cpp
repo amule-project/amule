@@ -124,7 +124,7 @@ BEGIN_EVENT_TABLE(CamuleApp, wxApp)
 		// UDP Socket (clients)
 		EVT_SOCKET(CLIENTUDPSOCKET_HANDLER, CamuleApp::ClientUDPSocketHandler)	
 		// Server Socket
-		EVT_SOCKET(SERVERSOCKET_HANDLER, CamuleApp::ServerSocketHandler)	
+		//EVT_SOCKET(SERVERSOCKET_HANDLER, CamuleApp::ServerSocketHandler)	
 
 	// Socket timers (TCP + UDO)
 		EVT_TIMER(TM_UDPSOCKET, CamuleApp::OnUDPTimer)
