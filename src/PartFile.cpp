@@ -422,7 +422,7 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool fro
 		version = metFile.ReadUInt8();
 		if (version != PARTFILE_VERSION  && version!= PARTFILE_SPLITTEDVERSION ){
 			metFile.Close();
-			AddLogLineM(false, wxString::Format(_("Error: Invalid part.met fileversion! (%s => %s)"), m_partmetfilename.c_str(), m_strFileName.c_str()));
+			AddLogLineM(false, wxString::Format(_("Error: Invalid part.met fileversion! (%s => %s)"), unicode2char(m_partmetfilename), unicode2char(m_strFileName)));
 			return false;
 		}
 
@@ -468,7 +468,7 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool fro
 				switch(newtag->tag.specialtag) {
 					case FT_FILENAME: {
 						if(newtag->tag.stringvalue.IsEmpty()) {
-							AddLogLineM(true, wxString::Format(_("Error: %s (%s) is corrupt"), m_partmetfilename.c_str(), m_strFileName.c_str()));
+							AddLogLineM(true, wxString::Format(_("Error: %s (%s) is corrupt"), unicode2char(m_partmetfilename), unicode2char(m_strFileName)));
 							delete newtag;
 							return false;
 						}
@@ -661,7 +661,7 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool fro
 			
 	} catch (CInvalidPacket e) {
 		if (metFile.Eof()) {
-			AddLogLineM(true, wxString::Format(_("Error: %s (%s) is corrupt (wrong tagcount), unable to load file"), m_partmetfilename.c_str(), GetFileName().c_str()));
+			AddLogLineM(true, wxString::Format(_("Error: %s (%s) is corrupt (wrong tagcount), unable to load file"), unicode2char(m_partmetfilename), unicode2char(GetFileName())));
 			AddLogLineM(true, wxString(_("Trying to recover file info...")));
 			// Safe file is that who have 
 			// - FileSize
@@ -688,7 +688,7 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool fro
 			}				
 				
 		} else {
-			AddLogLineM(true, wxString::Format(_("Error: %s (%s) is corrupt, unable to load file"), m_partmetfilename.c_str(), GetFileName().c_str()));			
+			AddLogLineM(true, wxString::Format(_("Error: %s (%s) is corrupt, unable to load file"), unicode2char(m_partmetfilename), unicode2char(GetFileName())));			
 			if (metFile.IsOpened()) {
 			metFile.Close();		
 			}
@@ -723,7 +723,7 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool fro
 	// open permanent handle
 	wxString strSearchPath = m_fullname.Left( m_fullname.Length() - 4 );
 	if ( !m_hpartfile.Open(strSearchPath, CFile::read_write)) {
-		AddLogLineM(false, wxString::Format(_("Failed to open %s (%s)"), m_fullname.c_str(), m_strFileName.c_str()));
+		AddLogLineM(false, wxString::Format(_("Failed to open %s (%s)"), unicode2char(m_fullname), unicode2char(m_strFileName)));
 		return false;
 	}
 	
@@ -770,7 +770,7 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool fro
 
 		time_t file_date = wxFileModificationTime(m_fullname);
 		if ( (((time_t)date) < (time_t)(file_date - 10)) || (((time_t)date) > (time_t)(file_date + 10))) {
-			AddLogLineM(false, wxString::Format(_("Warning: %s might be corrupted (%i)"), m_fullname.c_str(), (date - file_date)));
+			AddLogLineM(false, wxString::Format(_("Warning: %s might be corrupted (%i)"), unicode2char(m_fullname), (date - file_date)));
 			// rehash
 			SetPartFileStatus(PS_WAITINGFORHASH);
 			
@@ -947,7 +947,7 @@ bool CPartFile::SavePartFile(bool Initial)
 			file.Close();
 		}
 		
-		AddLogLineM(false, wxString::Format(_("ERROR while saving partfile: %s (%s => %s)"), error.c_str(), m_partmetfilename.c_str(), m_strFileName.c_str()));
+		AddLogLineM(false, wxString::Format(_("ERROR while saving partfile: %s (%s => %s)"), unicode2char(error), unicode2char(m_partmetfilename), unicode2char(m_strFileName)));
 		return false;
 	} catch (...) {
 		if (file.IsOpened()) {
@@ -1044,7 +1044,7 @@ void CPartFile::SaveSourceSeeds() {
 	file.Create(m_fullname + wxT(".seeds"), true);
 	
 	if (!file.IsOpened()) {
-		AddLogLineM(false, wxString::Format(_("Failed to save part.met.seeds file for %s"), m_fullname.c_str()));
+		AddLogLineM(false, wxString::Format(_("Failed to save part.met.seeds file for %s"), unicode2char(m_fullname)));
 	}	
 
 	uint8 src_count = source_seeds.GetCount();
@@ -1064,7 +1064,7 @@ void CPartFile::SaveSourceSeeds() {
 	file.Flush();
 	file.Close();
 
-	AddLogLineM(false, wxString::Format(_("Saved %i sources seeds for partfile: %s (%s)"), n_sources, m_fullname.c_str(), m_strFileName.c_str()));
+	AddLogLineM(false, wxString::Format(_("Saved %i sources seeds for partfile: %s (%s)"), n_sources, unicode2char(m_fullname), unicode2char(m_strFileName)));
 	
 }	
 
@@ -1081,12 +1081,12 @@ void CPartFile::LoadSourceSeeds() {
 	file.Open(m_fullname + wxT(".seeds"),CFile::read);
 
 	if (!file.IsOpened()) {
-		AddLogLineM(false, wxString::Format(_("Partfile %s (%s) has no seeds file"), m_partmetfilename.c_str(), m_strFileName.c_str()));
+		AddLogLineM(false, wxString::Format(_("Partfile %s (%s) has no seeds file"), unicode2char(m_partmetfilename), unicode2char(m_strFileName)));
 		return;
 	}	
 	
 	if (!file.Length()>1) {
-		AddLogLineM(false, wxString::Format(_("Partfile %s (%s) has void seeds file"), m_partmetfilename.c_str(), m_strFileName.c_str()));
+		AddLogLineM(false, wxString::Format(_("Partfile %s (%s) has void seeds file"), unicode2char(m_partmetfilename), unicode2char(m_strFileName)));
 		return;
 	}	
 	
@@ -1123,7 +1123,7 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
 	if (GetED2KPartHashCount() == 0){
 		if (IsComplete(0, m_nFileSize-1)){
 			if (result->GetFileHash() != GetFileHash()){
-				AddLogLineM(false, wxString::Format(_("Found corrupted part (%i) in 0 parts file %s - FileResultHash |%s| FileHash |%s|"), 1, m_strFileName.c_str(), EncodeBase16(result->GetFileHash(), 16).c_str(), EncodeBase16(GetFileHash(), 16).c_str()));
+				AddLogLineM(false, wxString::Format(_("Found corrupted part (%i) in 0 parts file %s - FileResultHash |%s| FileHash |%s|"), 1, unicode2char(m_strFileName), unicode2char(EncodeBase16(result->GetFileHash(), 16)), unicode2char(EncodeBase16(GetFileHash(), 16))));
 				AddGap(0, m_nFileSize-1);
 				errorfound = true;
 			}
@@ -1139,7 +1139,7 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
 			if (IsComplete(i*PARTSIZE,((i+1)*PARTSIZE)-1)){
 				if (!(result->GetPartHash(i) && !md4cmp(result->GetPartHash(i),GetPartHash(i)))){
 					AddLogLineM(false, wxString::Format(_("Found corrupted part (%i) in %i parts file %s - FileResultHash |%s| FileHash |%s|"), i+1, GetED2KPartHashCount(), m_strFileName.c_str(),result->GetPartHash(i),GetPartHash(i)));
-//					AddLogLineM(false, wxString::Format(_("Found corrupted part (%i) in %s"), i+1, m_strFileName.c_str()));
+					AddLogLineM(false, wxString::Format(_("Found corrupted part (%i) in %s"), i+1, m_strFileName.c_str()));
 					AddGap(i*PARTSIZE,((((i+1)*PARTSIZE)-1) >= m_nFileSize) ? m_nFileSize-1 : ((i+1)*PARTSIZE)-1);
 					errorfound = true;
 				}
@@ -1151,14 +1151,14 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
 					if ( i < result->GetHashCount() )
 						wronghash = result->GetPartHash(i);
 				
-					AddLogLineM(false, wxString::Format(_("Found corrupted part (%i) in %i parts file %s - FileResultHash |%s| FileHash |%s|"), i + 1, GetED2KPartHashCount(), m_strFileName.c_str(), wronghash.Encode().c_str(), GetPartHash(i).Encode().c_str()));
+					AddLogLineM(false, wxString::Format(_("Found corrupted part (%i) in %i parts file %s - FileResultHash |%s| FileHash |%s|"), i + 1, GetED2KPartHashCount(), unicode2char(m_strFileName), unicode2char(wronghash.Encode()), unicode2char(GetPartHash(i).Encode())));
 				
 					AddGap(i*PARTSIZE,((((i+1)*PARTSIZE)-1) >= m_nFileSize) ? m_nFileSize-1 : ((i+1)*PARTSIZE)-1);
 					errorfound = true;
 				}
 			} else {
 				if (!IsComplete(i*PARTSIZE,((i+1)*PARTSIZE)-1)){
-					AddLogLineM(false, wxString::Format(_("Found completed part (%i) in %s"), i+1, m_strFileName.c_str()));
+					AddLogLineM(false, wxString::Format(_("Found completed part (%i) in "), i+1) + m_strFileName);
 					FillGap(i*PARTSIZE,((((i+1)*PARTSIZE)-1) >= m_nFileSize) ? m_nFileSize-1 : ((i+1)*PARTSIZE)-1);
 					RemoveBlockFromList(i*PARTSIZE,((((i+1)*PARTSIZE)-1) >= m_nFileSize) ? m_nFileSize-1 : ((i+1)*PARTSIZE)-1);
 				}
@@ -1184,7 +1184,7 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
 			return;
 		}
 		else {
-			AddLogLineM(false, wxString::Format(_("Finished rehashing %s"), m_strFileName.c_str()));
+			AddLogLineM(false, _("Finished rehashing ") + m_strFileName);
 		}
 	}
 	else{
@@ -2204,17 +2204,17 @@ void CPartFile::CompleteFileEnded(int completing_result, wxString* newname) {
 		paused = true;
 		SetPartFileStatus(PS_ERROR);
 		theApp.downloadqueue->StartNextFile();	
-		AddLogLineM(true, wxString::Format(_("Unexpected file error while completing %s. File paused"), GetFileName().c_str()));
+		AddLogLineM(true, wxString::Format(_("Unexpected file error while completing %s. File paused"), unicode2char(GetFileName())));
 		delete newname;
 		return;
 	}	
 	
 	if (completing_result & DELETE_FAIL_MET) {
-		AddLogLineM(true, wxString::Format(_("WARNING: Failed to delete %s"), m_fullname.c_str()));
+		AddLogLineM(true, wxString::Format(_("WARNING: Failed to delete %s"), unicode2char(m_fullname)));
 	}	
 	
 	if (completing_result & DELETE_FAIL_MET_BAK) {
-		AddLogLineM(true, wxString::Format(_("WARNING: Failed to delete %s%s"), m_fullname.c_str(), PARTMET_BAK_EXT));
+		AddLogLineM(true, wxString::Format(_("WARNING: Failed to delete %s%s"), unicode2char(m_fullname), PARTMET_BAK_EXT));
 	}	
 	
 	if (completing_result & SAME_NAME_RENAMED) {
@@ -2222,17 +2222,17 @@ void CPartFile::CompleteFileEnded(int completing_result, wxString* newname) {
 	}		
 
 	if (completing_result & DELETE_FAIL_PART) {
-		AddLogLineM(true, wxString::Format(_("WARNING: could not remove original '%s' after creating backup\n"), m_partmetfilename.Left(m_partmetfilename.Length()-4).c_str()));
+		AddLogLineM(true, wxString::Format(_("WARNING: could not remove original '%s' after creating backup\n"), unicode2char(m_partmetfilename.Left(m_partmetfilename.Length()-4))));
 	}	
 	
 	if (completing_result & DELETE_FAIL_SEEDS) {
-		AddLogLineM(true, wxString::Format(_("WARNING: Failed to delete %s.seeds\n"), m_partmetfilename.c_str()));
+		AddLogLineM(true, wxString::Format(_("WARNING: Failed to delete %s.seeds\n"), unicode2char(m_partmetfilename)));
 	}	
 
 	theApp.downloadqueue->SetCompletedFilesExist();
 	Notify_0_ValEvent(DLOAD_UPDATE_COMPLETED);
 	
-	AddLogLineM(true, wxString::Format(_("Finished downloading %s :-)"), GetFileName().c_str()));
+	AddLogLineM(true, wxString::Format(_("Finished downloading %s :-)"), unicode2char(GetFileName())));
 	Notify_ShowNotifier(wxString(_("Downloaded:"))+wxT("\n")+GetFileName(), TBN_DLOAD, 0);
 }
 
@@ -2472,11 +2472,11 @@ void CPartFile::Delete()
 bool CPartFile::HashSinglePart(uint16 partnumber)
 {
 	if ((GetHashCount() <= partnumber) && (GetPartCount() > 1)) {
-		AddLogLineM(true, wxString::Format(_("Warning: Unable to hash downloaded part - hashset incomplete (%s)"), GetFileName().c_str()));
+		AddLogLineM(true, wxString::Format(_("Warning: Unable to hash downloaded part - hashset incomplete (%s)"), unicode2char(GetFileName())));
 		hashsetneeded = true;
 		return true;
 	} else if ((GetHashCount() <= partnumber) && GetPartCount() != 1) {
-		AddLogLineM(true, wxString::Format(_("Error: Unable to hash downloaded part - hashset incomplete (%s). This should never happen"),GetFileName().c_str()));
+		AddLogLineM(true, wxString::Format(_("Error: Unable to hash downloaded part - hashset incomplete (%s). This should never happen"),unicode2char(GetFileName())));
 		hashsetneeded = true;
 		return true;		
 	} else {
@@ -2815,7 +2815,7 @@ Packet *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 		result->PackPacket();
 	}
 	//if (thePrefs.GetDebugSourceExchange()) {
-		AddDebugLogLineM( false, wxString::Format(wxT("Send:Source User(%s) File(%s) Count(%i)"), forClient->GetUserName().c_str(), GetFileName().c_str(), nCount ));
+	//	AddDebugLogLineM( false, wxString::Format(wxT("Send:Source User(%s) File(%s) Count(%i)"), forClient->GetUserName().c_str(), GetFileName().c_str(), nCount ));
 	//}
 	return result;
 }
@@ -2922,7 +2922,7 @@ uint32 CPartFile::WriteToBuffer(uint32 transize, BYTE *data, uint32 start, uint3
 
 	// Occasionally packets are duplicated, no point writing it twice
 	if (IsComplete(start, end)) {
-		AddDebugLogLineM(false, wxString::Format(wxT("File '%s' has already been written from %lu to %lu\n"), GetFileName().c_str(), (long)start, (long)end));
+		AddDebugLogLineM(false, wxString::Format(wxT("File '%s' has already been written from %lu to %lu\n"), unicode2char(GetFileName()), (long)start, (long)end));
 		return 0;
 	}
 
@@ -3113,7 +3113,7 @@ void CPartFile::FlushBuffer(bool forcewait, bool bForceICH, bool bNoAICH)
 			if (IsComplete(PARTSIZE * partNumber, (PARTSIZE * (partNumber + 1)) - 1)) {
 				// Is part corrupt
 				if (!HashSinglePart(partNumber)) {
-					AddLogLineM(true, wxString::Format(_("Downloaded part %i is corrupt :(  (%s)"), partNumber, GetFileName().c_str()));
+					AddLogLineM(true, wxString::Format(_("Downloaded part %i is corrupt :(  File: "), partNumber) + GetFileName());
 					AddGap(PARTSIZE*partNumber, (PARTSIZE*partNumber + partRange));
 					// add part to corrupted list, if not already there
 					if (!IsCorruptedPart(partNumber)) {
@@ -3127,7 +3127,7 @@ void CPartFile::FlushBuffer(bool forcewait, bool bForceICH, bool bNoAICH)
 					m_iLostDueToCorruption += (partRange + 1);
 				} else {
 					if (!hashsetneeded) {
-						AddDebugLogLineM(false, wxString::Format(wxT("Finished part %u of \"%s\""), partNumber, GetFileName().c_str()));
+						AddDebugLogLineM(false, wxString::Format(wxT("Finished part %u of \"%s\""), partNumber, unicode2char(GetFileName())));
 					}
 					
 					// if this part was successfully completed (although ICH is active), remove from corrupted list
@@ -3158,7 +3158,7 @@ void CPartFile::FlushBuffer(bool forcewait, bool bForceICH, bool bNoAICH)
 					if (posCorrupted)
 						corrupted_list.RemoveAt(posCorrupted);
 					
-					AddLogLineM(true, wxString::Format(_("ICH: Recovered corrupted part %i  (%s)-> Saved bytes: "), partNumber,GetFileName().c_str()) + CastItoXBytes(uMissingInPart));
+					AddLogLineM(true, wxString::Format(_("ICH: Recovered corrupted part %i  (%s)-> Saved bytes: "), partNumber,unicode2char(GetFileName())) + CastItoXBytes(uMissingInPart));
 					
 					if (GetHashCount() == GetED2KPartHashCount() && !hashsetneeded) {
 						if (status == PS_EMPTY) {
@@ -3215,7 +3215,7 @@ void CPartFile::FlushBuffer(bool forcewait, bool bForceICH, bool bNoAICH)
 		}
 	}
 	catch(...) {
-		AddLogLineM(true, wxString::Format(_("Unexpected file error while writing %s : %s"), GetFileName().c_str(), _("Unknown")));
+		AddLogLineM(true, wxString::Format(_("Unexpected file error while writing %s : %s"), unicode2char(GetFileName()), _("Unknown")));
 		SetPartFileStatus(PS_ERROR);
 		paused = true;
 		m_iLastPausePurge = time(NULL);

@@ -105,13 +105,15 @@ public:
 	const wxString& GetPartMetFileName() const { return m_partmetfilename; }
 	uint32	GetTransfered() const		{ return transfered; }
 	const wxString& GetFullName() const	{ return m_fullname; }
+	float	GetKBpsDown() const		{ return kBpsDown; }
+	double	GetPercentCompleted() const	{ return percentcompleted; }
+	
 	uint16	GetSourceCount() const		{ return m_SrcList.size(); }
 	uint16	GetSrcA4AFCount() const		{ return A4AFsrclist.size(); }
 	uint16	GetTransferingSrcCount() const	{ return transferingsrc; }
-	float	GetKBpsDown() const		{ return kBpsDown; }
-	double	GetPercentCompleted() const	{ return percentcompleted; }
-	uint16  GetNotCurrentSourcesCount()	const	{ return m_notCurrentSources; };
-	int	GetValidSourcesCount()			const	{ return m_validSources; };
+	uint16  	GetNotCurrentSourcesCount()	const	{ return m_notCurrentSources; };
+	int			GetValidSourcesCount()			const	{ return m_validSources; };
+	
 	uint32	GetNeededSpace();
 	
 	wxString getPartfileStatus() const; //<<--9/21/02

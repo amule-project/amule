@@ -917,7 +917,7 @@ void CServerList::AutoUpdate() {
 		
 			return;
 		} else {
-			AddLogLineM(true, wxString::Format( _("Warning, invalid URL specified for auto-updating of servers: %s"), URI.c_str()) );
+			AddLogLineM(true, _("Warning, invalid URL specified for auto-updating of servers: ") + URI);
 		}
 		
 		current_url_index++;
