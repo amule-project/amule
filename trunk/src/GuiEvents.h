@@ -236,31 +236,46 @@ class GUIEvent : public wxEvent {
 	void*			ptr_aux_value; 
 };
 
-
 //
 // macros for creation of notification events
 #define Notify_0_ValEvent(id) \
 	do { \
-	GUIEvent e(id);\
-	wxPostEvent(&theApp,e);\
+		GUIEvent e(id);\
+		if ( wxThread::IsMain() ) { \
+			theApp.NotifyEvent(e); \
+		} else { \
+			wxPostEvent(&theApp,e); \
+		} \
 	} while (0);
 	
 #define Notify_1_ValEvent(id, val) \
 	do { \
-	GUIEvent e(id, val);\
-	wxPostEvent(&theApp,e);\
+		GUIEvent e(id, val);\
+		if ( wxThread::IsMain() ) { \
+			theApp.NotifyEvent(e); \
+		} else { \
+			wxPostEvent(&theApp,e); \
+		} \
 	} while (0);
 	
 #define Notify_2_ValEvent(id, val0, val1) \
 	do { \
-	GUIEvent e(id, val0, val1);\
-	wxPostEvent(&theApp,e);\
+		GUIEvent e(id, val0, val1);\
+		if ( wxThread::IsMain() ) { \
+			theApp.NotifyEvent(e); \
+		} else { \
+			wxPostEvent(&theApp,e); \
+		} \
 	} while (0);
 	
 #define Notify_3_ValEvent(id, val0, val1, val2) \
 	do { \
-	GUIEvent e(id, val0, val1, val2);\
-	wxPostEvent(&theApp,e);\
+		GUIEvent e(id, val0, val1, val2);\
+		if ( wxThread::IsMain() ) { \
+			theApp.NotifyEvent(e); \
+		} else { \
+			wxPostEvent(&theApp,e); \
+		} \
 	} while (0);
 
 #define Notify_SharedFilesShowFile(file)            Notify_1_ValEvent(SHAREDFILES_SHOW_ITEM, file)
