@@ -35,7 +35,6 @@
 #include <wx/wx.h>
 #endif
 
-#include <wx/config.h>
 #include "wxcasframe.h"
 
 // Application
@@ -43,13 +42,11 @@ class WxCas:public wxApp
   {
   private:
     WxCasFrame * m_frame;
-    wxConfig *m_config;
 
   public:
     virtual bool OnInit ();
     virtual int OnExit();
     WxCasFrame *GetMainFrame () const;
-    wxConfig *GetConfig () const;
   };
 
 DECLARE_APP (WxCas);

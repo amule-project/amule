@@ -35,15 +35,16 @@
 #endif
 
 #include "onlinesig.h"
-#include "wxcas.h"
 #include "wxcascte.h"
 
 #include <wx/txtstrm.h>
 #include <wx/wfstream.h>
+#include <wx/config.h>
 
 // Constructors
 OnLineSig::OnLineSig ()
 {
+
   m_isRunning = "0";
   m_serverName = "Unknown";
   m_serverIP = "0.0.0.0";
@@ -64,7 +65,7 @@ OnLineSig::OnLineSig ()
   m_maxDL = 0.0;
 
   m_amulesig =
-    new wxFileName (wxGetApp ().GetConfig ()->
+    new wxFileName (wxConfigBase::Get()->
                     Read (WxCasCte::AMULESIG_DIR_KEY,
                           WxCasCte::DEFAULT_AMULESIG_PATH),
                     WxCasCte::AMULESIG_FILENAME);

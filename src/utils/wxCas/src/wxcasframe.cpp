@@ -36,12 +36,12 @@
 
 #include <wx/image.h>
 #include <wx/version.h>
+#include <wx/config.h>
 
 #include "wxcasframe.h"
 #include "wxcasprint.h"
 #include "wxcasprefs.h"
 #include "wxcascte.h"
-#include "wxcas.h"
 
 #ifndef __WXMSW__
 #include "../pixmaps/wxcas.xpm"
@@ -66,6 +66,9 @@ WxCasFrame::WxCasFrame (const wxString & title):
 {
   // Give it an icon
   SetIcon (wxICON (wxcas));
+
+  // Prefs
+  wxConfigBase * prefs = wxConfigBase::Get();
 
   m_maxLineCount = 0;
 
@@ -191,7 +194,7 @@ WxCasFrame::WxCasFrame (const wxString & title):
 
   // Add timer
   m_timer = new wxTimer (this, ID_TIMER);
-  m_timer->Start (1000 * wxGetApp ().GetConfig ()->Read (WxCasCte::REFRESH_RATE_KEY, WxCasCte::DEFAULT_REFRESH_RATE));	// s to ms
+  m_timer->Start (1000 * prefs->Read (WxCasCte::REFRESH_RATE_KEY, WxCasCte::DEFAULT_REFRESH_RATE));	// s to ms
 
   // Update stats
   UpdateAll ();
@@ -359,21 +362,24 @@ WxCasFrame::OnBarAbout (wxCommandEvent & event)
 void
 WxCasFrame::OnTimer (wxTimerEvent & event)
 {
+  // Prefs
+  wxConfigBase * prefs = wxConfigBase::Get();
+
   UpdateAll ();
 
   // Generate stat image if asked in config
   if ((bool)
-      (wxGetApp ().GetConfig ()->
+      (prefs->
        Read (WxCasCte::ENABLE_AUTOSTATIMG_KEY,
              WxCasCte::DEFAULT_AUTOSTATIMG_ISENABLED)))
     {
       wxImage *statImage = GetStatImage ();
 
-      wxFileName fileName (wxGetApp ().GetConfig ()->
+      wxFileName fileName (prefs->
                            Read (WxCasCte::AUTOSTATIMG_DIR_KEY,
                                  WxCasCte::DEFAULT_AUTOSTATIMG_PATH),
                            WxCasCte::AMULESIG_IMG_NAME,
-                           wxGetApp ().GetConfig ()->
+                           prefs->
                            Read (WxCasCte::AUTOSTATIMG_TYPE_KEY,
                                  WxCasCte::DEFAULT_AUTOSTATIMG_TYPE).
                            Lower ());

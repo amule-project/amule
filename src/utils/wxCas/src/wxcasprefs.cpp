@@ -35,19 +35,21 @@
 #endif
 
 #include <wx/dirdlg.h>
+#include <wx/config.h>
 
 #include "wxcasprefs.h"
 #include "wxcascte.h"
-#include "wxcas.h"
 
 // Constructor
 WxCasPrefs::WxCasPrefs (wxWindow * parent):wxDialog (parent, -1,
         wxString (_
                   ("Preferences")))
 {
+  // Prefs
+  wxConfigBase * prefs = wxConfigBase::Get();
+
   // Main vertical Sizer
   m_mainVBox = new wxBoxSizer (wxVERTICAL);
-
 
   // Note
   m_noteStaticText =
@@ -71,8 +73,8 @@ WxCasPrefs::WxCasPrefs (wxWindow * parent):wxDialog (parent, -1,
 
   wxString str;
   wxInt32 x, y;
-  wxGetApp ().GetConfig ()->Read (WxCasCte::AMULESIG_DIR_KEY, &str,
-                                  WxCasCte::DEFAULT_AMULESIG_PATH);
+  prefs->Read (WxCasCte::AMULESIG_DIR_KEY, &str,
+               WxCasCte::DEFAULT_AMULESIG_PATH);
   m_osPathTextCtrl->GetTextExtent ("8", &x, &y);
   m_osPathTextCtrl->SetSize (wxSize (x * (str.Length () + 1), -1));
   m_osPathTextCtrl->SetValue (str);
@@ -93,7 +95,7 @@ WxCasPrefs::WxCasPrefs (wxWindow * parent):wxDialog (parent, -1,
   m_refreshSpinButton = new wxSpinCtrl (this, -1);
   m_refreshSpinButton->SetRange (WxCasCte::MIN_REFRESH_RATE,
                                  WxCasCte::MAX_REFRESH_RATE);
-  m_refreshSpinButton->SetValue (wxGetApp ().GetConfig ()->
+  m_refreshSpinButton->SetValue (prefs->
                                  Read (WxCasCte::REFRESH_RATE_KEY,
                                        WxCasCte::DEFAULT_REFRESH_RATE));
   m_refreshStaticText =
@@ -110,12 +112,12 @@ WxCasPrefs::WxCasPrefs (wxWindow * parent):wxDialog (parent, -1,
   m_autoStatImgSBoxSizer =
     new wxStaticBoxSizer (m_autoStatImgSBox, wxVERTICAL);
 
-  m_autoStatImgRadio =
-    new wxRadioButton (this, ID_AUTOSTATIMG_RADIO,
-                       _
-                       ("Generate a stat image at every refresh event (Eat CPU)"),
-                       wxDefaultPosition, wxDefaultSize, wxRB_SINGLE);
-  m_autoStatImgSBoxSizer->Add (m_autoStatImgRadio, 0,
+  m_autoStatImgCheck =
+    new wxCheckBox (this, ID_AUTOSTATIMG_RADIO,
+                    _
+                    ("Generate a stat image at every refresh event (Eat CPU)"),
+                    wxDefaultPosition, wxDefaultSize, wxRB_SINGLE);
+  m_autoStatImgSBoxSizer->Add (m_autoStatImgCheck, 0,
                                wxGROW | wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
   m_autoStatImgHBoxSizer = new wxBoxSizer (wxHORIZONTAL);
@@ -126,7 +128,7 @@ WxCasPrefs::WxCasPrefs (wxWindow * parent):wxDialog (parent, -1,
 
   m_autoStatImgCombo =
     new wxComboBox (this, ID_AUTOSTATIMG_COMBO,
-                    wxGetApp ().GetConfig ()->
+                    prefs->
                     Read (WxCasCte::AUTOSTATIMG_TYPE_KEY,
                           WxCasCte::DEFAULT_AUTOSTATIMG_TYPE),
                     wxDefaultPosition, wxDefaultSize, 3, strs,
@@ -134,7 +136,7 @@ WxCasPrefs::WxCasPrefs (wxWindow * parent):wxDialog (parent, -1,
   m_autoStatImgCombo->Enable (FALSE);
 
   m_autoStatImgTextCtrl = new wxTextCtrl (this, -1, wxEmptyString);
-  m_autoStatImgTextCtrl->SetValue (wxGetApp ().GetConfig ()->
+  m_autoStatImgTextCtrl->SetValue (prefs->
                                    Read (WxCasCte::AUTOSTATIMG_DIR_KEY,
                                          WxCasCte::DEFAULT_AUTOSTATIMG_PATH));
   m_autoStatImgTextCtrl->
@@ -160,14 +162,14 @@ WxCasPrefs::WxCasPrefs (wxWindow * parent):wxDialog (parent, -1,
                    5);
 
   if ((bool)
-      (wxGetApp ().GetConfig ()->
+      (prefs->
        Read (WxCasCte::ENABLE_AUTOSTATIMG_KEY,
              WxCasCte::DEFAULT_AUTOSTATIMG_ISENABLED)))
     {
       m_autoStatImgTextCtrl->Enable (TRUE);
       m_autoStatImgButton->Enable (TRUE);
       m_autoStatImgCombo->Enable (TRUE);
-      m_autoStatImgRadio->SetValue (TRUE);
+      m_autoStatImgCheck->SetValue (TRUE);
     }
 
   // Separator line
@@ -204,7 +206,7 @@ EVT_BUTTON (ID_OSPATH_BROWSE_BUTTON, WxCasPrefs::OnOSPathBrowseButton)
 EVT_BUTTON (ID_AUTOSTATIMG_BROWSE_BUTTON, WxCasPrefs::OnAutoStatImgBrowseButton)
 EVT_BUTTON (ID_VALIDATE_BUTTON, WxCasPrefs::OnValidateButton)
 EVT_BUTTON (ID_CANCEL_BUTTON, WxCasPrefs::OnCancel)	// Defined in wxDialog
-EVT_RADIOBUTTON (ID_AUTOSTATIMG_RADIO, WxCasPrefs::OnAutoStatImgRadio)
+EVT_CHECKBOX (ID_AUTOSTATIMG_RADIO, WxCasPrefs::OnAutoStatImgRadio)
 END_EVENT_TABLE ()
 
 // Browse for OS Path
@@ -243,14 +245,14 @@ WxCasPrefs::OnAutoStatImgRadio (wxCommandEvent & event)
       m_autoStatImgTextCtrl->Enable (FALSE);
       m_autoStatImgButton->Enable (FALSE);
       m_autoStatImgCombo->Enable (FALSE);
-      m_autoStatImgRadio->SetValue (FALSE);
+      m_autoStatImgCheck->SetValue (FALSE);
     }
   else
     {
       m_autoStatImgTextCtrl->Enable (TRUE);
       m_autoStatImgButton->Enable (TRUE);
       m_autoStatImgCombo->Enable (TRUE);
-      m_autoStatImgRadio->SetValue (TRUE);
+      m_autoStatImgCheck->SetValue (TRUE);
     }
 }
 
@@ -258,22 +260,26 @@ WxCasPrefs::OnAutoStatImgRadio (wxCommandEvent & event)
 void
 WxCasPrefs::OnValidateButton (wxCommandEvent & event)
 {
-  wxGetApp ().GetConfig ()->Write (WxCasCte::AMULESIG_DIR_KEY,
-                                   m_osPathTextCtrl->GetValue ());
-  wxGetApp ().GetConfig ()->Write (WxCasCte::REFRESH_RATE_KEY,
-                                   m_refreshSpinButton->GetValue ());
+  // Prefs
+  wxConfigBase * prefs = wxConfigBase::Get();
 
-  wxGetApp ().GetConfig ()->Write (WxCasCte::ENABLE_AUTOSTATIMG_KEY,
-                                   m_autoStatImgRadio->GetValue ());
+  prefs->Write (WxCasCte::AMULESIG_DIR_KEY,
+                m_osPathTextCtrl->GetValue ());
+  prefs->Write (WxCasCte::REFRESH_RATE_KEY,
+                m_refreshSpinButton->GetValue ());
 
-  if (m_autoStatImgRadio->GetValue ())
+  prefs->Write (WxCasCte::ENABLE_AUTOSTATIMG_KEY,
+                m_autoStatImgCheck->GetValue ());
+
+  if (m_autoStatImgCheck->GetValue ())
     {
-      wxGetApp ().GetConfig ()->Write (WxCasCte::AUTOSTATIMG_DIR_KEY,
-                                       m_autoStatImgTextCtrl->GetValue ());
+      prefs->Write (WxCasCte::AUTOSTATIMG_DIR_KEY,
+                    m_autoStatImgTextCtrl->GetValue ());
 
-      wxGetApp ().GetConfig ()->Write (WxCasCte::AUTOSTATIMG_TYPE_KEY,
-                                       m_autoStatImgCombo->GetValue ());
+      prefs->Write (WxCasCte::AUTOSTATIMG_TYPE_KEY,
+                    m_autoStatImgCombo->GetValue ());
     }
 
+  // Close window
   this->EndModal (this->GetReturnCode ());
 }
