@@ -168,6 +168,78 @@ CECTag::CECTag(const CECTag& tag) : m_tagName( tag.m_tagName ), m_dynamic( tag.m
 }
 
 /**
+ * Creates a new CECTag instance, which contains an uint8 value.
+ *
+ * This takes care of endianness problems with numbers.
+ *
+ * @param name TAG name.
+ * @param data uint8 number.
+ *
+ * \sa GetInt8Data()
+ */
+CECTag::CECTag(ec_tagname_t name, uint8 data) : m_tagName(name), m_dynamic(true)
+{
+	m_dataLen = 1;
+	m_tagData = malloc(m_dataLen);
+	if (m_tagData != NULL) {
+		*((uint8 *)m_tagData) = data;
+		m_error = 0;
+	} else {
+		m_error = 1;
+	}
+	m_tagCount = m_listSize = 0;
+	m_tagList = NULL;
+}
+
+/**
+ * Creates a new CECTag instance, which contains an uint16 value.
+ *
+ * This takes care of endianness problems with numbers.
+ *
+ * @param name TAG name.
+ * @param data uint16 number.
+ *
+ * \sa GetInt16Data()
+ */
+CECTag::CECTag(ec_tagname_t name, uint16 data) : m_tagName(name), m_dynamic(true)
+{
+	m_dataLen = 2;
+	m_tagData = malloc(m_dataLen);
+	if (m_tagData != NULL) {
+		*((uint16 *)m_tagData) = ENDIAN_SWAP_16(data);
+		m_error = 0;
+	} else {
+		m_error = 1;
+	}
+	m_tagCount = m_listSize = 0;
+	m_tagList = NULL;
+}
+
+/**
+ * Creates a new CECTag instance, which contains an uint32 value.
+ *
+ * This takes care of endianness problems with numbers.
+ *
+ * @param name TAG name.
+ * @param data uint32 number.
+ *
+ * \sa GetInt32Data()
+ */
+CECTag::CECTag(ec_tagname_t name, uint32 data) : m_tagName(name), m_dynamic(true)
+{
+	m_dataLen = 1;
+	m_tagData = malloc(m_dataLen);
+	if (m_tagData != NULL) {
+		*((uint32 *)m_tagData) = ENDIAN_SWAP_32(data);
+		m_error = 0;
+	} else {
+		m_error = 1;
+	}
+	m_tagCount = m_listSize = 0;
+	m_tagList = NULL;
+}
+
+/**
  * Destructor - frees allocated data and deletes child TAGs.
  */
 CECTag::~CECTag(void)
@@ -415,7 +487,7 @@ uint32 CECTag::GetTagLen(void) const
  *
  * \note You must free the returned structure with \b delete.
  *
- * \sa CECTag::CECTag(ec_tagname_t, const EC_IPv4_t *)
+ * \sa CECTag(ec_tagname_t, const EC_IPv4_t *)
  */
 EC_IPv4_t *CECTag::GetIPv4Data(void) const
 {
@@ -489,6 +561,41 @@ EC_IPv4_t *CECTag::GetIPv4Data(void) const
  * \sa CECTag(ec_tagname_t, const wxString&)
  */
 
+/*!
+ * \fn uint8 CECTag::GetInt8Data(void) const
+ *
+ * \brief Returns the uint8 data of the tag.
+ *
+ * This function takes care of the endianness problems with numbers.
+ *
+ * \return The uint8 data of the tag.
+ *
+ * \sa CECTag(ec_tagname_t, uint8)
+ */
+
+/*!
+ * \fn uint8 CECTag::GetInt16Data(void) const
+ *
+ * \brief Returns the uint16 data of the tag.
+ *
+ * This function takes care of the endianness problems with numbers.
+ *
+ * \return The uint16 data of the tag.
+ *
+ * \sa CECTag(ec_tagname_t, uint16)
+ */
+
+/*!
+ * \fn uint8 CECTag::GetInt32Data(void) const
+ *
+ * \brief Returns the uint32 data of the tag.
+ *
+ * This function takes care of the endianness problems with numbers.
+ *
+ * \return The uint32 data of the tag.
+ *
+ * \sa CECTag(ec_tagname_t, uint32)
+ */
 
 /**********************************************************
  *							  *

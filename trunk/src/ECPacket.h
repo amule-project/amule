@@ -24,6 +24,7 @@
 #include <wx/string.h>	// Needed for wxString
 #include "otherfunctions.h"	// Needed for aMuleConv
 #include "ECcodes.h"	// Needed for EC types
+#include "endianfix.h"	// Needed for ENDIAN_SWAP_* macros
 
 
 // Define this to keep partial packets
@@ -49,6 +50,10 @@ typedef CECTag* (*_taglist_t)[];
 class CECTag {
 	public:
 				CECTag(ec_tagname_t name, unsigned int length, const void *data, bool copy = true);
+			// Routines for special data types.
+				CECTag(ec_tagname_t name, uint8 data);
+				CECTag(ec_tagname_t name, uint16 data);
+				CECTag(ec_tagname_t name, uint32 data);
 				CECTag(ec_tagname_t name, const wxString& data);
 				CECTag(ec_tagname_t name, const EC_IPv4_t * data);
 				CECTag(const CECTag& tag);
@@ -61,6 +66,10 @@ class CECTag {
 		uint16		GetTagDataLen(void) const { return m_dataLen; }
 		uint32		GetTagLen(void) const;
 		ec_tagname_t	GetTagName(void) const { return m_tagName; }
+			// Retrieving special data types
+		uint8		GetInt8Data(void) const { return *((uint8 *)m_tagData); }
+		uint16		GetInt16Data(void) const { return ENDIAN_SWAP_16(*((uint16 *))m_tagData); }
+		uint32		GetInt32Data(void) const { return ENDIAN_SWAP_32(*((uint16 *))m_tagData); }
 		wxString	GetStringData(void) const { return wxString(wxConvUTF8.cMB2WC((const char *)m_tagData), aMuleConv); }
 		EC_IPv4_t *	GetIPv4Data(void) const;
 	protected:
