@@ -623,10 +623,10 @@ CECPacket *Get_EC_Response_Search_Results_Download(const CECPacket *request)
 	return response;
 }
 
-CECPacket *Get_EC_Response_Search_Stop(const CECPacket *request)
+CECPacket *Get_EC_Response_Search_Stop(const CECPacket *WXUNUSED(request))
 {
 	CECPacket *reply = new CECPacket(EC_OP_MISC_DATA);
-
+	theApp.searchlist->StopGlobalSearch();
 	return reply;
 }
 
