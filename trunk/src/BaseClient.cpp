@@ -605,15 +605,8 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer, bool OSInfo) {
 
 		data->WriteUInt32(1); // One Tag (OS_INFO)
 
-		wxStringTokenizer tkz(wxGetOsDescription(), wxT(" "));
-
-		if (tkz.HasMoreTokens()) {
-			CTag tag1(ET_OS_INFO,tkz.GetNextToken());
-			tag1.WriteTagToFile(data);
-		} else {
-			CTag tag1(ET_OS_INFO,wxT("Unknown"));
-			tag1.WriteTagToFile(data);
-		}	
+		CTag tag1(ET_OS_INFO,theApp.GetOSType());
+		tag1.WriteTagToFile(data);
 
 	} else {
 

@@ -381,6 +381,14 @@ bool CamuleApp::OnInit()
 	// Do NOT change this string to aMule nor anything else, it WILL fuck you up.
 	SetAppName(wxT("eMule"));
 	
+	wxStringTokenizer tkz(wxGetOsDescription(), wxT(" "));
+
+	if (tkz.HasMoreTokens()) {
+		OSType = tkz.GetNextToken();
+	} else {
+		OSType = wxT("Unknown");
+	}	
+	
 	// Parse cmdline arguments.
 	wxCmdLineParser cmdline(AMULE_APP_BASE::argc, AMULE_APP_BASE::argv);
 
@@ -411,9 +419,9 @@ bool CamuleApp::OnInit()
 	
 	if ( cmdline.Found(wxT("version")) ) {
 #ifndef AMULE_DAEMON		
-		printf("aMule %s\n", (const char *)unicode2char(GetMuleVersion()));
+		printf("aMule %s (OS: %s)\n", (const char *)unicode2char(GetMuleVersion()), (const char*)unicode2char(OSType));
 #else
-		printf("aMule Daemon %s\n", (const char *)unicode2char(GetMuleVersion()));
+		printf("aMule Daemon %s (OS: %s)\n", (const char *)unicode2char(GetMuleVersion()), (const char*)unicode2char(OSType));
 #endif
 		return false;
 	}

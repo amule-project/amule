@@ -235,6 +235,8 @@ public:
 
 	void AddLogLine(const wxString &msg);
 	
+	const wxString& GetOSType() const { return OSType; }
+	
 	uint32 sent;
 
 protected:
@@ -278,6 +280,8 @@ protected:
 	wxTextFile emulesig_out;
 	wxString emulesig_path;
 	wxString amulesig_path;
+	
+	wxString OSType;
 	
 	uint32 m_dwPublicIP;
 	
