@@ -427,7 +427,7 @@ void CDownloadListCtrl::OnDrawItem(int item, wxDC* dc, const wxRect& rect, const
 	
 	dc->SetPen(*wxTRANSPARENT_PEN);
 
-	if ( content->type == FILE_TYPE ) {
+	if ( content->type == FILE_TYPE && !GetFocus() ) {
 		// If we have category, override textforeground with what category tells us.
 		CPartFile *file = (CPartFile *) content->value;
 		if ( file->GetCategory() ) {
