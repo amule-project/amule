@@ -81,47 +81,11 @@ void CUpDownClient::DrawUpStatusBar(wxMemoryDC* dc, wxRect rect, bool onlygreyre
 		}
 	}
 }
-/*
-	COLORREF crBoth; 
-	COLORREF crNeither; 
-	COLORREF crClientOnly; 
-	COLORREF crPending;
-	COLORREF crNextPending;
-
-	if(bFlat) { 
-		crBoth = RGB(0, 150, 0);
-		crNeither = RGB(224, 224, 224);
-		crClientOnly = RGB(0, 0, 0);
-		crPending = RGB(255,208,0);
-		crNextPending = RGB(255,255,100);
-	} else { 
-		crBoth = RGB(0, 192, 0);
-		crNeither = RGB(240, 240, 240);
-		crClientOnly = RGB(104, 104, 104);
-		crPending = RGB(255, 208, 0);
-		crNextPending = RGB(255,255,100);
-	} 
-
-	s_UpStatusBar.SetFileSize(PARTSIZE*(m_nUpPartCount));
-	s_UpStatusBar.SetHeight(rect->bottom - rect->top); 
-	s_UpStatusBar.SetWidth(rect->right - rect->left); 
-	s_UpStatusBar.Fill(crNeither); 
-
-	if (!onlygreyrect && m_abyUpPartStatus) { 
-		for (uint32 i = 0;i != m_nUpPartCount;i++){ 
-			if (m_abyUpPartStatus[i]){ 
-				s_StatusBar.FillRange(PARTSIZE*(i), PARTSIZE*(i+1), crClientOnly);
-			} 
-		} 
-	} 
-	s_StatusBar.Draw(dc, rect->left, rect->top, bFlat); 
-} 
-*/
 
 uint32 CUpDownClient::GetScore(bool sysvalue, bool isdownloading, bool onlybasevalue)
 {
 	//TODO: complete this (friends, uploadspeed, amuleuser etc etc)
-	if (!Username.IsEmpty()) {
+	if (Username.IsEmpty()) {
 		return 0;
 	}
 
