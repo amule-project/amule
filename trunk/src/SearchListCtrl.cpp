@@ -172,14 +172,14 @@ void CSearchListCtrl::AddResult(CSearchFile* toshow)
 	uint32 filesize=toshow->GetIntTagValue(FT_FILESIZE);
 	SetItem(newid,1,CastItoXBytes(filesize));
 	sprintf(buffer,"%d (%d)",toshow->GetIntTagValue(FT_SOURCES), toshow->GetIntTagValue(FT_COMPLETE_SOURCES));
-	SetItem(newid,2,buffer);
+	SetItem(newid,2,char2unicode(buffer));
 	wxString pim=toshow->GetFileName();
 	SetItem(newid,3,GetFiletypeByName(pim));
 	buffer[0]=0;
 	for(uint16 i=0;i!=16;i++) {
 		sprintf(buffer,"%s%02X",buffer,toshow->GetFileHash()[i]);
 	}
-	SetItem(newid,4,buffer);
+	SetItem(newid,4,char2unicode(buffer));
 	// set color
 	UpdateColor(newid,toshow->GetIntTagValue(FT_SOURCES));
 	// Re-sort the items after each added item to keep the sort order.
@@ -244,7 +244,7 @@ void CSearchListCtrl::UpdateSources(CSearchFile* toupdate)
 	if(index!=(-1)) {
 		char buffer[50];
 		sprintf(buffer,"%d (%d)",toupdate->GetSourceCount(),toupdate->GetCompleteSourceCount());
-		SetItem(index,2,buffer);
+		SetItem(index,2,char2unicode(buffer));
 		UpdateColor(index,toupdate->GetSourceCount());
 	}
   
@@ -278,9 +278,9 @@ int CSearchListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 	CSearchFile* item2 = (CSearchFile*)lParam2;	
 	switch(lParamSort){
 		case 0: //filename asc
-			return strcasecmp(item1->GetFileName().c_str(),item2->GetFileName().c_str());
+		    return item1->GetFileName().CmpNoCase(item2->GetFileName());
 		case 10: //filename desc
-			return strcasecmp(item2->GetFileName().c_str(),item1->GetFileName().c_str());
+			return item2->GetFileName().CmpNoCase(item1->GetFileName());
 		case 1: //size asc
 			// Need to avoid nasty bug on files >2.4Gb
 			// return item1->GetIntTagValue(FT_FILESIZE) - item2->GetIntTagValue(FT_FILESIZE);

@@ -53,13 +53,13 @@ CPreferences::CPreferences()
 	memset(prefsExt,0,sizeof(Preferences_Ext_Struct));
 
 	//get application start directory
-	appdir = wxString::Format( "%s/." PACKAGE_NAME, getenv("HOME") );
+	appdir = wxString::Format( wxT("%s/.") PACKAGE_NAME, getenv("HOME") );
 	
 	if (!wxFileName::DirExists( appdir )) {
 		wxFileName::Mkdir( appdir );
 	}
 	
-	appdir += "/";
+	appdir += wxT("/");
 
 	CreateUserHash();
 	md4cpy(&prefs->userhash,&userhash);
@@ -140,7 +140,7 @@ CPreferences::CPreferences()
 				*ptr=0;
 			}
 			if(strlen(buffer)>1) {
-				shareddir_list.Add(buffer);//new CString(buffer));
+				shareddir_list.Add(char2unicode(buffer));//new CString(buffer));
 			}
 		}
 		fclose(sdirfile);
@@ -167,11 +167,11 @@ CPreferences::CPreferences()
 
 	userhash[5] = 14;
 	userhash[14] = 111;
-	if (!wxFileName::DirExists(GetIncomingDir())) {
-		wxFileName::Mkdir(GetIncomingDir(),0777);
+	if (!wxFileName::DirExists(char2unicode(GetIncomingDir()))) {
+		wxFileName::Mkdir(char2unicode(GetIncomingDir()),0777);
 	}
-	if (!wxFileName::DirExists(GetTempDir())) {
-		wxFileName::Mkdir(GetTempDir(),0777);
+	if (!wxFileName::DirExists(char2unicode(GetTempDir()))) {
+		wxFileName::Mkdir(char2unicode(GetTempDir()),0777);
 	}
 
 	if (((int*)prefs->userhash)[0] == 0 && ((int*)prefs->userhash)[1] == 0 && ((int*)prefs->userhash)[2] == 0 && ((int*)prefs->userhash)[3] == 0) {
@@ -230,11 +230,11 @@ bool CPreferences::Save()
 		error = true;
 	}
 
-	if (!wxFileName::DirExists(GetIncomingDir())) {
-		wxFileName::Mkdir(GetIncomingDir(),0777);
+	if (!wxFileName::DirExists(char2unicode(GetIncomingDir()))) {
+		wxFileName::Mkdir(char2unicode(GetIncomingDir()),0777);
 	}
-	if (!wxFileName::DirExists(GetTempDir())) {
-		wxFileName::Mkdir(GetTempDir(),0777);
+	if (!wxFileName::DirExists(char2unicode(GetTempDir()))) {
+		wxFileName::Mkdir(char2unicode(GetTempDir()),0777);
 	}
 	return error;
 }
@@ -449,11 +449,11 @@ void CPreferences::SavePreferences()
 {
 	CString buffer;
 	CString fullpath = appdir + wxT("preferences.ini");
-	wxString bf("eMule");
+	wxString bf(wxT("eMule"));
 	
 	CIni ini(fullpath, bf);
 	//---
-	ini.WriteString("AppVersion", PACKAGE_STRING);
+	ini.WriteString(wxT("AppVersion"), wxT(PACKAGE_STRING));
 	//---
 
 	PrefsUnifiedDlg::SaveAllItems(ini);
@@ -468,24 +468,23 @@ void CPreferences::SaveCats()
 	CString catinif,ixStr,buffer;
 	catinif = appdir + wxT("Category.ini");
 	if(wxFileName::FileExists(catinif)) {
-		BackupFile(catinif, ".old");
+		BackupFile(catinif, wxT(".old"));
 	}
 	if (GetCatCount()>0) {
 		CIni catini( catinif, "Category" );
 		printf("Opening %s\n",catinif.GetData());
-		catini.WriteInt("Count",catMap.GetCount()-1,"General");
+		catini.WriteInt(wxT("Count"),catMap.GetCount()-1,"General");
 		for (size_t ix=1;ix<catMap.GetCount();ix++) {
-			ixStr.Format("Cat#%i",ix);
-			catini.WriteString("Title",catMap[ix]->title,(char*)ixStr.GetData());
-			catini.WriteString("Incoming",catMap[ix]->incomingpath,(char*)ixStr.GetData());
-			catini.WriteString("Comment",catMap[ix]->comment,(char*)ixStr.GetData());
-			buffer.Format("%lu",(uint32)catMap[ix]->color);
-			catini.WriteString("Color",buffer,(char*)ixStr.GetData());
-			catini.WriteInt("Priority",catMap[ix]->prio,(char*)ixStr.GetData());
+			ixStr.Format(wxT("Cat#%i"),ix);
+			catini.WriteString(wxT("Title"),char2unicode(catMap[ix]->title),unicode2char(ixStr));
+			catini.WriteString(wxT("Incoming"),char2unicode(catMap[ix]->incomingpath),unicode2char(ixStr));
+			catini.WriteString(wxT("Comment"),char2unicode(catMap[ix]->comment),unicode2char(ixStr));
+			buffer.Format(wxT("%lu"),(uint32)catMap[ix]->color);
+			catini.WriteString(wxT("Color"),buffer,unicode2char(ixStr));
+			catini.WriteInt(wxT("Priority"),catMap[ix]->prio,(char*)ixStr.GetData());
 		}
 	}
 }
-
 
 void CPreferences::LoadPreferences()
 {
@@ -496,17 +495,17 @@ void CPreferences::LoadPreferences()
 	CString strCurrVersion, strPrefsVersion;
 
 	strCurrVersion = CURRENT_VERSION_LONG;
-	strPrefsVersion = CString(pIni->GetString("AppVersion").GetData());
+	strPrefsVersion = CString(pIni->GetString(wxT("AppVersion")).GetData());
 	delete pIni;
 	prefs->m_bFirstStart = false;
 
 	if ((strCurrVersion != strPrefsVersion) && wxFileName::FileExists(strFileName)) {
 		// CFile file;
-	  	BackupFile(strFileName, ".old");
-		strFileName += ".old";
+	  	BackupFile(strFileName, wxT(".old"));
+		strFileName += wxT(".old");
 	}
 	
-	CIni ini(strFileName, "eMule");
+	CIni ini(strFileName, wxT("eMule"));
 	//--- end Ozon :)
 
 	PrefsUnifiedDlg::LoadAllItems(ini);
@@ -536,23 +535,23 @@ void CPreferences::LoadCats() {
 	// if(!wxFileName::FileExists(catinif)) return;
 
 	CIni catini( catinif, "Category" );
-	int max=catini.GetInt("Count",0,"General");
+	int max=catini.GetInt(wxT("Count"),0,"General");
 
 	for (int ix=1;ix<=max;ix++) {
-		ixStr.Format("Cat#%i",ix);
+		ixStr.Format(wxT("Cat#%i"),ix);
 
 		Category_Struct* newcat=new Category_Struct;
-		sprintf(newcat->title,"%s",catini.GetString("Title","",(char*)ixStr.GetData()).c_str());
-		sprintf(newcat->incomingpath,"%s",catini.GetString("Incoming","",(char*)ixStr.GetData()).c_str());
+		sprintf(newcat->title,"%s",unicode2char(catini.GetString(wxT("Title"),"",unicode2char(ixStr))));
+		sprintf(newcat->incomingpath,"%s",unicode2char(catini.GetString(wxT("Incoming"),"",unicode2char(ixStr))));
 		MakeFoldername(newcat->incomingpath);
-		sprintf(newcat->comment,"%s",catini.GetString("Comment","",(char*)ixStr.GetData()).c_str());
-		newcat->prio =catini.GetInt("Priority",0,(char*)ixStr.GetData());
-		sprintf(buffer,"%s",catini.GetString("Color","0",(char*)ixStr.GetData()).c_str());
+		sprintf(newcat->comment,"%s",unicode2char(catini.GetString(wxT("Comment"),"",unicode2char(ixStr))));
+		newcat->prio =catini.GetInt(wxT("Priority"),0,unicode2char(ixStr));
+		sprintf(buffer,"%s",unicode2char(catini.GetString(wxT("Color"),"0",unicode2char(ixStr))));
 		newcat->color=atoll(buffer);
 
 		AddCat(newcat);
-		if (!wxFileName::DirExists(newcat->incomingpath)) {
-			wxFileName::Mkdir(newcat->incomingpath,0777);
+		if (!wxFileName::DirExists(char2unicode(newcat->incomingpath))) {
+			wxFileName::Mkdir(char2unicode(newcat->incomingpath),0777);
 		}
 	}
 }
@@ -684,15 +683,15 @@ wxString CPreferences::GetBrowser()
 {
 	wxString cmd;
 	switch ( prefs->Browser ) {
-		case 0: cmd = "konqueror '%s'"; break;
-		case 1: cmd = "xterm -e sh -c 'mozilla %s'"; break;
-		case 2: cmd = "firefox '%s'"; break;
-		case 3:	cmd = "firebird '%s'"; break;
-		case 4:	cmd = "opera '%s'"; break;
-		case 5: cmd = "netscape '%s'"; break;
-		case 6: cmd = "galeon '%s'"; break;
-		case 7: cmd = "epiphany '%s'"; break;
-		case 8: cmd = prefs->CustomBrowser; break;
+		case 0: cmd = wxT("konqueror '%s'"); break;
+		case 1: cmd = wxT("xterm -e sh -c 'mozilla %s'"); break;
+		case 2: cmd = wxT("firefox '%s'"); break;
+		case 3:	cmd = wxT("firebird '%s'"); break;
+		case 4:	cmd = wxT("opera '%s'"); break;
+		case 5: cmd = wxT("netscape '%s'"); break;
+		case 6: cmd = wxT("galeon '%s'"); break;
+		case 7: cmd = wxT("epiphany '%s'"); break;
+		case 8: cmd = char2unicode(prefs->CustomBrowser); break;
 		default:
 			printf("Unable to determine selected browser!\n");
 	}

@@ -91,21 +91,21 @@ int CIPFilter::LoadFromFile(){
 
 	RemoveAllIPs();
 
-	FILE* readFile= fopen(wxString(theApp.glob_prefs->GetAppDir())+"ipfilter.dat", "r");
+	FILE* readFile= fopen(unicode2char(wxString(theApp.glob_prefs->GetAppDir())+wxT("ipfilter.dat")),"r");
 	if (readFile!=NULL) {
 		while (!feof(readFile)) {
 			if (fgets(buffer,lenBuf,readFile)==0) break;
-			sbuffer=buffer;
+			sbuffer=(char2unicode(buffer));
 			
 			// ignore comments & too short lines
 			if (sbuffer.GetChar(0) == '#' || sbuffer.GetChar(0) == '/' || sbuffer.Length()<5)
 				continue;
 			
 			// get & test & process IP range
-			pos=sbuffer.Find(",");
+			pos=sbuffer.Find(wxT(","));
 			if (pos==-1) continue;
 			sbuffer2=sbuffer.Left(pos).Trim();
-			pos=sbuffer2.Find("-");
+			pos=sbuffer2.Find(wxT("-"));
 			if (pos==-1) continue;
 			sbuffer3=sbuffer2.Left(pos).Trim();
 			sbuffer4=sbuffer2.Right(sbuffer2.Length()-pos-1).Trim();
@@ -118,8 +118,8 @@ int CIPFilter::LoadFromFile(){
 			unsigned int s4[4];
 			memset(s3,0,sizeof(s3));
 			memset(s4,0,sizeof(s4));
-			sscanf(sbuffer3.GetData(),"%d.%d.%d.%d",&s3[0],&s3[1],&s3[2],&s3[3]);
-			sscanf(sbuffer4.GetData(),"%d.%d.%d.%d",&s4[0],&s4[1],&s4[2],&s4[3]);
+			sscanf(unicode2char(sbuffer3.GetData()),"%d.%d.%d.%d",&s3[0],&s3[1],&s3[2],&s3[3]);
+			sscanf(unicode2char(sbuffer4.GetData()),"%d.%d.%d.%d",&s4[0],&s4[1],&s4[2],&s4[3]);
 
 			if ((s3[0]==s3[1]==s3[2]==s3[3]==0) || (s4[0]==s4[1]==s4[2]==s4[3]==0)) {
 				skip=true;
@@ -176,7 +176,7 @@ int CIPFilter::LoadFromFile(){
 
 			if (pos2==-1) continue;
 			sbuffer2=sbuffer.Mid(pos+1,pos2-pos-1).Trim();
-			filter=atoi(sbuffer2);
+			filter=atoi(unicode2char(sbuffer2));
 
 			sbuffer2=sbuffer.Right(sbuffer.Length()-pos2-1);
 			if (sbuffer2.GetChar(sbuffer2.Length()-1)==10) sbuffer2.Remove(sbuffer2.Length()-1);

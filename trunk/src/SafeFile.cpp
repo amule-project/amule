@@ -21,10 +21,10 @@
 #include "SafeFile.h"		// Interface declarations.
 
 CSafeFile::CSafeFile(LPCSTR lpszFileName,UINT nOpenFlags)
-:CFile(lpszFileName,(CFile::OpenMode)nOpenFlags)
-//:CFile(lpszFileName,nOpenFlags)
+  :CFile(char2unicode(lpszFileName),(CFile::OpenMode)nOpenFlags)
+   //:CFile(lpszFileName,nOpenFlags)
 {
-	// Nothing to do here
+   // Nothing to do here
 }
 
 CSafeFile::CSafeFile() : CFile() {}
@@ -61,7 +61,7 @@ off_t CSafeMemFile::ReadRaw(void* lpBuf,UINT nCount) {
 //Kry - This is just a workaround for Buffered files
  
 CSafeBufferedFile::CSafeBufferedFile(LPCSTR lpszFileName,UINT nOpenFlags)
-	:CFile(lpszFileName,(CFile::OpenMode)nOpenFlags)
+  :CFile(char2unicode(lpszFileName),(CFile::OpenMode)nOpenFlags)
 {}
 
 CSafeBufferedFile::CSafeBufferedFile() : CFile() {}

@@ -47,7 +47,7 @@ wxThread::ExitCode CPreviewThread::Entry(){
 		wxString strExtension = CString(strrchr(m_pPartfile->GetFileName(), '.'));
 		wxString strPreviewName = CString(theApp.glob_prefs->GetTempDir())+ CString("\\") + CString(m_pPartfile->GetFileName()).Mid(0,5) + CString("_preview") + strExtension;
 		bool bFullSized = true;
-		if (!strExtension.CompareNoCase(".mpg") || !strExtension.CompareNoCase(".mpeg"))
+		if (!strExtension.CompareNoCase(wxT(".mpg")) || !strExtension.CompareNoCase(wxT(".mpeg")))
 			bFullSized = false;
 		destFile.Open(strPreviewName, CFile::modeWrite | CFile::shareExclusive | CFile::modeCreate);
 		srcFile->SeekToBegin();
@@ -78,7 +78,7 @@ wxThread::ExitCode CPreviewThread::Entry(){
 		SHELLEXECUTEINFO SE;
 		memset(&SE,0,sizeof(SE));
 		SE.fMask = SEE_MASK_NOCLOSEPROCESS ;
-		SE.lpVerb = "open";
+		SE.lpVerb = wxT("open");
 		SE.lpFile = strPreviewName.GetBuffer();
 		SE.nShow = SW_SHOW;
 		SE.cbSize = sizeof(SE);

@@ -154,9 +154,9 @@ bool CKnownFile::CreateFromFile(const wxString& in_directory, const wxString& in
 	
 	// open file
 	CString namebuffer;
-	namebuffer.Format("%s/%s", in_directory.c_str(), in_filename.c_str());
+	namebuffer.Format(wxT("%s/%s"), in_directory.c_str(), in_filename.c_str());
 	//SetFilePath(namebuffer); ??
-	FILE* file = fopen(namebuffer.c_str(), "rbS");
+	FILE* file = fopen(unicode2char(namebuffer.c_str()), "rbS");
 	if (!file){
 		printf("Error opening %s !\n",namebuffer.c_str());
 		return false;
@@ -618,7 +618,7 @@ bool CKnownFile::LoadTagsFromFile(CFile* file){
 		CTag* newtag = new CTag(file);
 		switch(newtag->tag.specialtag){
 			case FT_FILENAME:{
-				SetFileName(newtag->tag.stringvalue);
+				SetFileName(char2unicode(newtag->tag.stringvalue));
 				delete newtag;
 				break;
 			}
@@ -1000,8 +1000,8 @@ void CKnownFile::LoadComment()
 
 	CIni ini( strFullPath, strHash );
 	
-	m_strComment = ini.GetString("Comment"); 
-	m_iRate = ini.GetInt("Rate", 0);
+	m_strComment = ini.GetString(wxT("Comment")); 
+	m_iRate = ini.GetInt(wxT("Rate"), 0);
 	m_bCommentLoaded = true;
 }    
 
@@ -1012,7 +1012,7 @@ void CKnownFile::SetFileComment(CString strNewComment)
 
 	CIni ini( strFullPath, strHash );
     
-	ini.WriteString ("Comment", strNewComment); 
+	ini.WriteString (wxT("Comment"), strNewComment); 
 	m_strComment = strNewComment;
    
 	CTypedPtrList<CPtrList, CUpDownClient*> srclist;
@@ -1033,7 +1033,7 @@ void CKnownFile::SetFileRate(int8 iNewRate)
 
 	CIni ini( strFullPath, strHash );
 	    
-	ini.WriteInt ("Rate", iNewRate); 
+	ini.WriteInt (wxT("Rate"), iNewRate); 
 	m_iRate = iNewRate; 
 
 	CTypedPtrList<CPtrList, CUpDownClient*> srclist;
