@@ -1042,20 +1042,18 @@ void CamuleApp::OnFatalException()
 	wxExecute(command, out);
 
 	/* Print the backtrace */
+	fprintf(stderr, "\n--------------------------------------------------------------------------------\n");	
 	if (wxString(MOD_VERSION_LONG) == wxT("aMule CVS")) {
-		fprintf(stderr, "\n--------------------------------------------------------------------------------\n");
 		fprintf(stderr, "Oops, aMule crashed!\n");
 		fprintf(stderr, "Hey, stop crying! You wanted the edge, and now you fell down?!\n");
-		fprintf(stderr, "Please, post these lines on the backtrace forum on http:\\\\www.amule.org\n");
-		fprintf(stderr, "Program version is: %s\n", unicode2char(GetMuleVersion()));
-		fprintf(stderr, "----------------------------=| BACKTRACE FOLLOWS: |=----------------------------\n\n");
 	} else {
 		fprintf(stderr, "\n--------------------------------------------------------------------------------\n");
 		fprintf(stderr, "OOPS! Houston, we have a situation: seems like aMule crashed!\n");
-		fprintf(stderr, "Please, post these lines on the backtrace forum on http:\\\\www.amule.org\n");
-		fprintf(stderr, "Program version is: %s\n", unicode2char(GetMuleVersion()));
-		fprintf(stderr, "----------------------------=| BACKTRACE FOLLOWS: |=----------------------------\n\n");
 	}
+	fprintf(stderr, "Please, post these lines on the backtrace forum on http:\\\\www.amule.org\n");
+	fprintf(stderr, "Program version is: %s\n", unicode2char(GetMuleVersion()));
+	fprintf(stderr, "----------------------------=| BACKTRACE FOLLOWS: |=----------------------------\n\n");
+	
 	for (int i = 0; i < num_entries; ++i) {
 		/* If we have no function name, use the result from addr2line */
 		if (funcname[i].IsEmpty()) {
