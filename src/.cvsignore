@@ -1,2 +1,12 @@
-Makefile.in
 .DS_Store
+.deps
+amule
+amulecmd
+amulecmdDLG
+amuled
+amulegui
+amuleweb
+amulewebDLG
+ed2k
+Makefile
+Makefile.in
