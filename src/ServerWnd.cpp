@@ -206,6 +206,10 @@ void CServerWnd::UpdateMyInfo()
 			MyInfoList->SetItem(3, 1,_("High ID"));
 		}
 	}
+
+	// Fit the width of the columns
+	MyInfoList->SetColumnWidth(0, -1);
+	MyInfoList->SetColumnWidth(1, -1);
 }
 
 void CServerWnd::OnSashPositionChanged(wxSplitterEvent& WXUNUSED(evt))
