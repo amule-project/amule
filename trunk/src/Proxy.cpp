@@ -346,13 +346,13 @@ void ProxyStateMachine::ReactivateSocket()
 	 * SaveState()/RestoreState() also saved/restored the event handler, 
 	 * which is currently not the case, and will probably never be, because
 	 * most certainly will break wxWidgets code compatibility. */
-	wxSocketEvent e(SERVERSOCKET_HANDLER);
-	e.m_event = wxSOCKET_CONNECTION;
-	e.SetEventObject(m_ProxyClientSocket);
 	if (CClientReqSocket *s1 =
 		dynamic_cast<CClientReqSocket *>(m_ProxyClientSocket)) {
 		CClientReqSocketHandler *h = s1->GetEventHandler();
 		m_ProxyClientSocket->SetEventHandler(*h, CLIENTREQSOCKET_HANDLER);
+		wxSocketEvent e(CLIENTREQSOCKET_HANDLER);
+		e.m_event = wxSOCKET_CONNECTION;
+		e.SetEventObject(m_ProxyClientSocket);
 		h->AddPendingEvent(e);
 		e.m_event = wxSOCKET_OUTPUT;
 		h->AddPendingEvent(e);
@@ -365,6 +365,9 @@ void ProxyStateMachine::ReactivateSocket()
 		dynamic_cast<CServerSocket *>(m_ProxyClientSocket)) {
 		CServerSocketHandler *h = s2->GetEventHandler();
 		m_ProxyClientSocket->SetEventHandler(*h, SERVERSOCKET_HANDLER);
+		wxSocketEvent e(SERVERSOCKET_HANDLER);
+		e.m_event = wxSOCKET_CONNECTION;
+		e.SetEventObject(m_ProxyClientSocket);
 		h->AddPendingEvent(e);
 		e.m_event = wxSOCKET_OUTPUT;
 		h->AddPendingEvent(e);
