@@ -107,7 +107,6 @@ BEGIN_EVENT_TABLE(CamuleDlg, wxFrame)
 	EVT_ICONIZE(CamuleDlg::OnMinimize)
 
 	EVT_BUTTON(ID_BUTTON_FAST, CamuleDlg::OnBnClickedFast)
-	EVT_BUTTON(ID_PREFS_OK_TOP, CamuleDlg::OnBnClickedPrefOk)
 	
 
 	EVT_TIMER(ID_GUITIMER, CamuleDlg::OnGUITimer)
@@ -189,7 +188,6 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 
 	searchwnd = new CSearchDlg(p_cnt);
 	transferwnd = new CTransferWnd(p_cnt);
-	prefsunifiedwnd = new PrefsUnifiedDlg(p_cnt);
 	sharedfileswnd = new CSharedFilesWnd(p_cnt);
 	statisticswnd = new CStatisticsDlg(p_cnt);
 	chatwnd = new CChatWnd(p_cnt);
@@ -433,8 +431,18 @@ void CamuleDlg::OnAboutButton(wxCommandEvent& WXUNUSED(ev))
 void CamuleDlg::OnPrefButton(wxCommandEvent& WXUNUSED(ev))
 {
 	if ( theApp.IsReady ) {
-		prefsunifiedwnd->TransferDataToWindow();
-		prefsunifiedwnd->ShowModal();
+		// Check if there's already a dialog
+		if ( PrefsUnifiedDlg::GetPrefsID() ) {
+			// Raise the preferences-dialog.
+			FindWindow( PrefsUnifiedDlg::GetPrefsID() )->Raise();
+		} else {
+			// No existing dialog, create a new one	
+			PrefsUnifiedDlg* prefswnd = new PrefsUnifiedDlg( this );
+		
+			prefswnd->TransferToWindow();
+		
+			prefswnd->Show();
+		}
 	}
 }
 
@@ -736,7 +744,7 @@ void CamuleDlg::OnClose(wxCloseEvent& evt)
 
 	if (theApp.glob_prefs) {
 		theApp.glob_prefs->Save();
-		PrefsUnifiedDlg::SaveAllItems(*(wxConfig::Get()));
+		PrefsUnifiedDlg::SaveAllItems( wxConfig::Get() );
 	}
 
 	transferwnd->downloadlistctrl->DeleteAllItems();
@@ -989,11 +997,6 @@ void CamuleDlg::OnMinimize(wxIconizeEvent& evt)
 #endif
 }
 
-
-void CamuleDlg::OnBnClickedPrefOk(wxCommandEvent& WXUNUSED(event))
-{
-	prefsunifiedwnd->EndModal(TRUE);
-}
 
 void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 {

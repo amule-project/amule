@@ -29,7 +29,7 @@
 #include "OScopeCtrl.h"		// Needed for graphs
 #include "CTypedPtrList.h"	// Needed for CList
 #include "amule.h"			// Needed for theApp
-#include "Preferences.h"	// Needed for cntStatColors
+#include "PrefsUnifiedDlg.h"	// Needed for cntStatColors
 
 class COScopeCtrl;
 

@@ -33,72 +33,88 @@
 #include <wx/choice.h>
 #include <wx/button.h>
 
+#include <map>
+#include <list>
+
+
+#include "color.h"
 //----------------------------------------------------------------------------
 // PrefsUnifiedDlg
 //----------------------------------------------------------------------------
 
-class Rse;
+class Cfg_Base;
 class CPreferences;
 class CDirectoryTreeCtrl;
 //class wxChoice;
 
-class PrefsUnifiedDlg: public wxDialog
+
+
+const int cntStatColors = 13;
+
+
+class PrefsUnifiedDlg : public wxDialog
 {
-	DECLARE_DYNAMIC_CLASS(PrefsUnifiedDlg)
-	PrefsUnifiedDlg()  {}
-		
 public:
     // constructors and destructors
 	PrefsUnifiedDlg(wxWindow* parent);
-	virtual ~PrefsUnifiedDlg();
-    
-    // WDR: method declarations for PrefsUnifiedDlg
-    virtual bool Validate();
-    virtual bool TransferDataToWindow();
-    virtual bool TransferDataFromWindow();
+	~PrefsUnifiedDlg();
+   
+    bool TransferFromWindow();
+	bool TransferToWindow();
 
-	static void ForceUlDlRateCorrelation(int id);
-	static void CheckRateUnlimited(Rse* prse);
+	static int  GetPrefsID()		{ return s_ID; }
 
-	static void BuildItemList(CPreferences *prefs, const wxString& appdir);
-	static void LoadAllItems(wxConfigBase& ini);
-	static void SaveAllItems(wxConfigBase& ini);
+	static void BuildItemList( const wxString& appdir );
+	static void LoadAllItems(wxConfigBase* cfg);
+	static void SaveAllItems(wxConfigBase* cfg);
 
-	Rse	*Prse(int id);	// returns the Rse* corresponding to an item ID
+protected:
+	static void SetPrefsID(int ID)	{ s_ID = ID; }
 
-	int GetColorIndex()  { return pchoiceColor->GetSelection(); }
-	    
-private:
-    // WDR: member variable declarations for PrefsUnifiedDlg
-	int	idMin;	// lowest dlg item ID
-	int	idMax;	// highest
-	Rse	**trse;	// pointer to table of Rse's from idMin to idMax
-	CDirectoryTreeCtrl* pdtcShareSelector;
-	wxChoice*	pchoiceColor;
-	wxButton*	pbuttonColor;
-	wxPanel*		CurrentPrefsPanel;
-	wxPanel*		PrefsPanels[11];
-private:
-    // WDR: handler declarations for PrefsUnifiedDlg
+	//! Contains the ID of the current window or zero if no preferences window has been created.
+	static int s_ID;
+
+	//! Temporary storage for statistic-colors.
+	static COLORREF	s_colors[cntStatColors];
+	//! Reference for checking if the colors has changed.
+	static COLORREF	s_colors_ref[cntStatColors];
+
+	typedef std::list<Cfg_Base*>		CFGList;
+	typedef std::map<int, Cfg_Base*>	CFGMap;
+
+	static CFGMap	s_CfgList;
+	static CFGList	s_MiscList;
+
+
+	bool			CfgChanged(int ID);
+	Cfg_Base*		GetCfg(int id);	
+	
+	
+	CDirectoryTreeCtrl* 	m_ShareSelector;
+	wxChoice*				m_choiceColor;
+	wxButton*				m_buttonColor;
+	wxPanel*				m_CurrentPanel;
+	
+	
 	void OnOk(wxCommandEvent &event);
 	void OnCancel(wxCommandEvent &event);
+	
 	void OnButtonBrowseWav(wxCommandEvent &event);
 	void OnButtonBrowseSkin(wxCommandEvent &event);
 	void OnButtonBrowseVideoplayer(wxCommandEvent &event);
-	void OnButtonWizard(wxCommandEvent &event);
 	void OnButtonDir(wxCommandEvent& event);
 	void OnButtonSystray(wxCommandEvent& event);
 	void OnButtonEditAddr(wxCommandEvent& event);
 	void OnButtonColorChange(wxCommandEvent &event);
 	void OnButtonIPFilterReload(wxCommandEvent &event);
-	void OnSpinMaxDLR(wxSpinEvent &event);
 	void OnColorCategorySelected(wxCommandEvent &event);
 	void OnCheckBoxChange(wxCommandEvent &event);
 	void OnFakeBrowserChange(wxCommandEvent &event);
-	void OnScroll(wxScrollEvent &event);
 	void OnPrefsPageChange(wxListEvent& event);
+	void OnToolTipDelayChange(wxSpinEvent& event);
 
-private:
+	void OnInitDialog( wxInitDialogEvent& evt );
+	
     DECLARE_EVENT_TABLE()
 };
 
