@@ -306,8 +306,10 @@ GSocketError GSocket_GetSockOpt(GSocket *socket, int level, int optname,
 GSocketError GSocket_SetSockOpt(GSocket *socket, int level, int optname, 
                                 const void *optval, int optlen);
 
+#if !wxCHECK_VERSION_FULL(2,5,2,3)
 void GSocket_Streamed(GSocket *socket);
 void GSocket_Unstreamed(GSocket *socket);
+#endif
 
 /* Attributes */
 

@@ -488,7 +488,9 @@ GSocketError GSocket_SetServer(GSocket *sck)
   /* Initialize all fields */
   sck->m_stream   = TRUE;
   sck->m_server   = TRUE;
+#if !wxCHECK_VERSION_FULL(2,5,2,3)
   sck->m_oriented = TRUE;
+#endif
 
   /* Create the socket */
   sck->m_fd = socket(sck->m_local->m_realfamily, SOCK_STREAM, 0);
@@ -508,8 +510,8 @@ GSocketError GSocket_SetServer(GSocket *sck)
   /* allow a socket to re-bind if the socket is in the TIME_WAIT
      state after being previously closed.
    */
-#warning when 2.5.3 is released, change 2.5.2 to 2.5.3. For the moment, cvs is 2.5.2
-// This will make every socket reusable in wx-2.5.1
+
+// This will make every socket reusable in wx-2.5.1 and wx-2.5.2
 #if wxCHECK_VERSION_FULL(2,5,2,3)
   if (sck->m_reusable)
 #endif
@@ -598,7 +600,9 @@ GSocket *GSocket_WaitConnection(GSocket *socket)
   /* Initialize all fields */
   connection->m_server   = FALSE;
   connection->m_stream   = TRUE;
+#if !wxCHECK_VERSION_FULL(2,5,2,3)
   connection->m_oriented = TRUE;
+#endif
 
   /* Setup the peer address field */
   connection->m_peer = GAddress_new();
@@ -630,8 +634,6 @@ int GSocket_SetReusable(GSocket *socket)
 {
     /* socket must not be null, and must not be in use/already bound */
     if (NULL != socket && socket->m_fd == INVALID_SOCKET) {
-#warning when 2.5.3 is released, change 2.5.2 to 2.5.3. For the moment, cvs is 2.5.2
-// This function will be void in 2.5.1
 #if wxCHECK_VERSION_FULL(2,5,2,3)
         socket->m_reusable = TRUE;
 #endif
@@ -689,7 +691,9 @@ GSocketError GSocket_Connect(GSocket *sck, GSocketStream stream)
 
   /* Streamed or dgram socket? */
   sck->m_stream   = (stream == GSOCK_STREAMED);
+#if !wxCHECK_VERSION_FULL(2,5,2,3)
   sck->m_oriented = TRUE;
+#endif
   sck->m_server   = FALSE;
   sck->m_establishing = FALSE;
 
@@ -799,7 +803,9 @@ GSocketError GSocket_SetNonOriented(GSocket *sck)
   /* Initialize all fields */
   sck->m_stream   = FALSE;
   sck->m_server   = FALSE;
+#if !wxCHECK_VERSION_FULL(2,5,2,3)
   sck->m_oriented = FALSE;
+#endif
 
   /* Create the socket */
   sck->m_fd = socket(sck->m_local->m_realfamily, SOCK_DGRAM, 0);
@@ -1190,6 +1196,7 @@ GSocketError GSocket_SetSockOpt(GSocket *socket, int level, int optname,
     return GSOCK_OPTERR;
 }
 
+#if !wxCHECK_VERSION_FULL(2,5,2,3)
 void GSocket_Streamed(GSocket *socket)
 {
     socket->m_stream = TRUE;
@@ -1199,6 +1206,7 @@ void GSocket_Unstreamed(GSocket *socket)
 {
     socket->m_stream = FALSE;
 }
+#endif
 
 #define CALL_CALLBACK(socket, event) {                                  \
   _GSocket_Disable(socket, event);                                      \
