@@ -532,7 +532,7 @@ void DumpMem_DW(const uint32 *ptr, int count)
 RLE_Data::RLE_Data(int len, bool use_diff)
 {
 	// there's no point encoding with len <=3 
-	wxASSERT((len > 3));
+	//wxASSERT((len > 3));
 	
 	m_len = len;
 	m_use_diff = use_diff;
