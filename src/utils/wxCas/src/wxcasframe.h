@@ -92,7 +92,8 @@ private:
 	wxStaticText *m_statLine_5;
 	wxStaticText *m_statLine_6;
 
-	wxStaticText *m_hitLine_1;
+	wxStaticText *m_hitLine;
+	wxButton *m_hitButton;
 
 	wxTimer * m_refresh_timer;
 	wxTimer * m_ftp_update_timer;
@@ -115,7 +116,8 @@ private:
 	    ID_BAR_PREFS,
 	    ID_BAR_ABOUT,
 	    ID_REFRESH_TIMER,
-	    ID_FTP_UPDATE_TIMER
+	    ID_FTP_UPDATE_TIMER,
+	    ID_HIT_BUTTON
 	};
 
 	// Get maximum of 2 uint
@@ -135,6 +137,7 @@ protected:
 	void OnBarPrefs ( wxCommandEvent & event );
 	void OnRefreshTimer ( wxTimerEvent & event );
 	void OnFtpUpdateTimer ( wxTimerEvent & event );
+	void OnHitButton ( wxCommandEvent & event );
 
 	DECLARE_EVENT_TABLE ();
 

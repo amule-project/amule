@@ -70,7 +70,8 @@ OnLineSig::OnLineSig ()
 	m_sessionUL = wxT( "0" );
 	m_runTimeS = 0;
 
-	m_maxDL = 0.0;
+	m_maxSessionDL = 0.0;
+	m_maxSessionDlDate = wxDateTime::Now();
 
 	m_amulesig = wxFileName ();
 }
@@ -79,7 +80,8 @@ OnLineSig::OnLineSig ()
 OnLineSig::OnLineSig ( const wxFileName& file )
 {
 	m_amulesig = file;
-	m_maxDL = 0.0;
+	m_maxSessionDL = 0.0;
+	m_maxSessionDlDate = wxDateTime::Now();
 	Refresh ();
 }
 
@@ -123,15 +125,10 @@ OnLineSig::Refresh ()
 	double dl;
 	m_DLRate.ToDouble ( &dl );
 
-#ifdef __GNUG__
-
-	m_maxDL = m_maxDL >? dl;
-#else
-
-	if ( dl > m_maxDL ) {
-		m_maxDL = dl;
+	if ( dl > m_maxSessionDL ) {
+		m_maxSessionDL = dl;
+		m_maxSessionDlDate = wxDateTime::Now();
 	}
-#endif
 }
 
 int OnLineSig::GetAmuleState() const
@@ -261,9 +258,20 @@ wxString OnLineSig::GetConnexionIDType () const
 	}
 }
 
-wxString OnLineSig::GetMaxDL () const
+wxString OnLineSig::GetSessionMaxDL () const
 {
-	return ( wxString::Format ( _( "%.2f kB/s" ), m_maxDL ) );
+	return ( wxString::Format ( _( "%.2f kB/s" ), m_maxSessionDL ) );
+}
+
+wxDateTime OnLineSig::GetSessionMaxDlDate () const
+{
+	return ( m_maxSessionDlDate );
+}
+
+void OnLineSig::ResetSessionMaxDl ()
+{
+	m_maxSessionDL = 0.0;
+	m_maxSessionDlDate = wxDateTime::Now();
 }
 
 // Private use
@@ -285,7 +293,7 @@ wxString OnLineSig::BytesConvertion ( const wxString & bytes )
 
 	switch ( i ) {
 	case 0:
-			c_bytes = wxString::Format ( _( "%.0f B" ), d_bytes );
+		c_bytes = wxString::Format ( _( "%.0f B" ), d_bytes );
 		break;
 	case 1:
 		c_bytes = wxString::Format ( _( "%.2f KB" ), d_bytes );
