@@ -1,11 +1,11 @@
 dnl ----------------------------------------------------
 dnl CHECK_WX_BUILT_WITH_GTK2
-dnl check gtk version wx windows was compiled
+dnl check gtk version wx widgets was compiled
 dnl ----------------------------------------------------
 
 AC_DEFUN(CHECK_WX_BUILT_WITH_GTK2,
 [
-  AC_MSG_CHECKING(if wxWindows was linked with GTK2)
+  AC_MSG_CHECKING(if wxWidgets was linked with GTK2)
   if $WX_CONFIG_NAME --cppflags | grep -q 'gtk2' ; then
      GTK_USEDVERSION=2
      AC_MSG_RESULT(yes)
@@ -18,12 +18,12 @@ AC_DEFUN(CHECK_WX_BUILT_WITH_GTK2,
 
 dnl ----------------------------------------------------
 dnl CHECK_WX_PARTIAL_VERSION
-dnl check wx windows 2.x version
+dnl check wx widgets 2.x version
 dnl ----------------------------------------------------
 
 AC_DEFUN(CHECK_WX_PARTIAL_VERSION,
 [
-  AC_MSG_CHECKING(if wxWindows version >=2.5.0 )
+  AC_MSG_CHECKING(if wxWidgets version >=2.5.0 )
   if $WX_CONFIG_NAME --version | grep -q '2.5' ; then
      WX_PARTIAL_VERSION=5
      AC_MSG_RESULT(yes)
@@ -35,7 +35,7 @@ AC_DEFUN(CHECK_WX_PARTIAL_VERSION,
 
 dnl ----------------------------------------------------
 dnl GET_WXGTK_VERSION
-dnl get wx windows
+dnl get wx widgets
 dnl ----------------------------------------------------
 
 AC_DEFUN(GET_WXGTK_VERSION,
@@ -148,7 +148,7 @@ AC_SUBST(ZLIB_LIBS)
 ])
 
 dnl ---------------------------------------------------------------------------
-dnl Macros for wxWindows base detection. Typically used in configure.in as:
+dnl Macros for wxWidgets base detection. Typically used in configure.in as:
 dnl
 dnl 	AC_ARG_ENABLE(...)
 dnl 	AC_ARG_WITH(...)
@@ -159,13 +159,13 @@ dnl	...
 dnl	AM_PATH_WXBASECONFIG(2.3.4, wxWin=1)
 dnl     if test "$wxWin" != 1; then
 dnl        AC_MSG_ERROR([
-dnl     	   wxWindows must be installed on your system
+dnl     	   wxWidgets must be installed on your system
 dnl     	   but wx-config script couldn't be found.
 dnl     
 dnl     	   Please check that wx-config is in path, the directory
-dnl     	   where wxWindows libraries are installed (returned by
+dnl     	   where wxWidgets libraries are installed (returned by
 dnl     	   'wx-config --libs' command) is in LD_LIBRARY_PATH or
-dnl     	   equivalent variable and wxWindows version is 2.3.4 or above.
+dnl     	   equivalent variable and wxWidgets version is 2.4.0 or above.
 dnl        ])
 dnl     fi
 dnl     CPPFLAGS="$CPPFLAGS $WXBASE_CPPFLAGS"
@@ -184,9 +184,9 @@ dnl ---------------------------------------------------------------------------
 
 AC_DEFUN(AM_OPTIONS_WXBASECONFIG,
 [
-   AC_ARG_WITH(wxbase-prefix, [  --with-wxbase-prefix=PREFIX   Prefix where wxWindows base is installed (optional)],
+   AC_ARG_WITH(wxbase-prefix, [  --with-wxbase-prefix=PREFIX   Prefix where wxWidgets base is installed (optional)],
                wxbase_config_prefix="$withval", wx_config_prefix="")
-   AC_ARG_WITH(wxbase-exec-prefix,[  --with-wxbase-exec-prefix=PREFIX Exec prefix where wxWindowsbase  is installed (optional)],
+   AC_ARG_WITH(wxbase-exec-prefix,[  --with-wxbase-exec-prefix=PREFIX Exec prefix where wxWidgetsbase  is installed (optional)],
                wxbase_config_exec_prefix="$withval", wxbase_config_exec_prefix="")
    AC_ARG_WITH(wxbase-config,[  --with-wxbase-config=CONFIG   wxbase-config script to use (optional)],
                wxbase_config_name="$withval", wxbase_config_name="")
@@ -195,8 +195,8 @@ AC_DEFUN(AM_OPTIONS_WXBASECONFIG,
 dnl ---------------------------------------------------------------------------
 dnl AM_PATH_WXBASECONFIG(VERSION, [ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
 dnl
-dnl Test for wxWindows, and define WX_C*FLAGS, WX_LIBS and WX_LIBS_STATIC
-dnl (the latter is for static linking against wxWindows). Set WX_CONFIG_NAME
+dnl Test for wxWidgets, and define WX_C*FLAGS, WX_LIBS and WX_LIBS_STATIC
+dnl (the latter is for static linking against wxWidgets). Set WX_CONFIG_NAME
 dnl environment variable to override the default name of the wx-config script
 dnl to use. Set WX_CONFIG_PATH to specify the full path to wx-config - in this
 dnl case the macro won't even waste time on tests for its existence.
@@ -239,7 +239,7 @@ AC_DEFUN(AM_PATH_WXBASECONFIG,
     no_wxbase=""
 
     min_wxbase_version=ifelse([$1], ,2.2.1,$1)
-    AC_MSG_CHECKING(for wxWindows base version >= $min_wxbase_version)
+    AC_MSG_CHECKING(for wxWidgets base version >= $min_wxbase_version)
 
     WXBASE_CONFIG_WITH_ARGS="$WXBASE_CONFIG_PATH $wxbase_config_args"
 
