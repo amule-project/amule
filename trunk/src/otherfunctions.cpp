@@ -39,7 +39,10 @@
 #endif
 
 #include "otherfunctions.h"	// Interface declarations
+
+#ifdef HAVE_CONFIG_H
 #include "config.h"		// Needed for VERSION
+#endif
 
 #include <cctype>
 
