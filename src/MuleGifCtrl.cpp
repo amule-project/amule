@@ -6,12 +6,12 @@
 // modify it under the terms of the GNU General Public License
 // as published by the Free Software Foundation; either
 // version 2 of the License, or (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -29,7 +29,7 @@ BEGIN_EVENT_TABLE(MuleGifCtrl, wxControl)
 	EVT_ERASE_BACKGROUND(MuleGifCtrl::OnErase)
 END_EVENT_TABLE()
 
-	
+
 MuleGifCtrl::MuleGifCtrl( wxWindow *parent, wxWindowID id, const wxPoint& pos,
                           const wxSize& size, long style, const wxValidator& validator,
                           const wxString& name )
@@ -43,7 +43,7 @@ MuleGifCtrl::MuleGifCtrl( wxWindow *parent, wxWindowID id, const wxPoint& pos,
 MuleGifCtrl::~MuleGifCtrl()
 {
 	m_timer.Stop();
-	
+
 	if ( m_decoder ) {
 		delete m_decoder;
 		m_decoder = NULL;
@@ -58,7 +58,7 @@ bool MuleGifCtrl::LoadData(const char* data, int size)
    		delete m_decoder;
   		m_decoder = NULL;
 	}
- 
+
   	wxMemoryInputStream stream(data, size);
   	m_decoder = new wxGIFDecoder(&stream, TRUE);
   	if ( m_decoder->ReadGIF() != wxGIF_OK ) {
@@ -69,19 +69,19 @@ bool MuleGifCtrl::LoadData(const char* data, int size)
 
 	m_decoder->GoFirstFrame();
 	wxImage frame;
-	m_decoder->ConvertToImage( &frame ); 
-	m_frame = frame;
- 
+	m_decoder->ConvertToImage( &frame );
+	m_frame = wxBitmap(frame);
+
 	return true;
 }
-	
-	
+
+
 void MuleGifCtrl::Start()
 {
 	if ( m_decoder && m_decoder->IsAnimation() ) {
 		m_timer.Stop();
 		m_decoder->GoLastFrame();
-	
+
 		wxTimerEvent evt;
 		OnTimer( evt );
 	}
@@ -107,11 +107,11 @@ void MuleGifCtrl::OnTimer( wxTimerEvent& WXUNUSED(event) )
 			m_decoder->GoNextFrame( true );
 
 		wxImage frame;
-		m_decoder->ConvertToImage( &frame ); 
-		m_frame = frame;
-		
+		m_decoder->ConvertToImage( &frame );
+		m_frame = wxBitmap(frame);
+
 		Refresh();
-			
+
 		if ( m_decoder->IsAnimation() )
 			m_timer.Start( m_decoder->GetDelay(), true );
 	}
@@ -121,7 +121,7 @@ void MuleGifCtrl::OnTimer( wxTimerEvent& WXUNUSED(event) )
 void MuleGifCtrl::OnPaint( wxPaintEvent& WXUNUSED(event) )
 {
 	wxBufferedPaintDC dc(this);
-   
+
     wxSize size = GetClientSize();
 	int x = (size.GetWidth()-m_frame.GetWidth())/2;
 	int y = (size.GetHeight()-m_frame.GetHeight())/2;
