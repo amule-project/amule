@@ -962,10 +962,11 @@ void CamuleDlg::Show_aMule(bool uniconize)
 		Thaw();
 		Update();
 		Refresh();
+		
 		if (uniconize) {
 			Show(TRUE);
+			Raise();
 		}
-
 	}
 
 }

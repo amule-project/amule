@@ -102,7 +102,6 @@ void do_hide()
 void do_show()
 {
 	theApp.amuledlg->Show_aMule();
-	theApp.amuledlg->Raise();
 }
 
 
