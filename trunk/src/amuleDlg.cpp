@@ -1064,9 +1064,9 @@ enum ClientSkinEnum {
 	Client_Red_Smiley,
 	Client_Yellow_Smiley,
 	Client_Grey_Smiley,
-	Client_Question_Smiley,
-	Client_Bad_Rating,
-	Client_Good_Rating,
+	Client_White_Smiley,
+	Client_BadComment_Smiley,
+	Client_GoodComment_Smiley,
 	Client_Extended_Protocol,
 	Client_Sec_Ident,
 	Client_Bad_Guy,
@@ -1141,9 +1141,34 @@ void CamuleDlg::Apply_Clients_Skin(wxString file) {
 					bitmaps_found[Client_Red_Smiley].found = true;
 					bitmaps_found[Client_Red_Smiley].filename=skinfile[i].AfterLast(wxT('='));
 				}
-				// Please someone complete this.
+				// Client_Yellow_Smiley
+				if (skinfile[i].StartsWith(wxT("Client_OnQueue="))) {
+					bitmaps_found[Client_Yellow_Smiley].found = true;
+				    bitmaps_found[Client_Yellow_Smiley].filename=skinfile[i].AfterLast(wxT('='));
+				}
+				// Client_Grey_Smiley
+				if (skinfile[i].StartsWith(wxT("Client_A4AFNoNeededPartsQueueFull="))) {
+				    bitmaps_found[Client_Yellow_Smiley].found = true;
+				    bitmaps_found[Client_Yellow_Smiley].filename=skinfile[i].AfterLast(wxT('='));
+				}
+				// Client_Unknown_Smiley
+				if (skinfile[i].StartsWith(wxT("Client_Unknown="))) {
+					bitmaps_found[Client_White_Smiley].found = true;
+				    bitmaps_found[Client_White_Smiley].filename=skinfile[i].AfterLast(wxT('='));
+				}
+				// Client_Bad_Comment_On_File
+				if (skinfile[i].StartsWith(wxT("Client_BadCommentOnFile="))) {
+					bitmaps_found[Client_BadComment_Smiley].found = true;
+				    bitmaps_found[Client_BadComment_Smiley].filename=skinfile[i].AfterLast(wxT('='));
+				}
+				// Client_Good_Comment_On_File
+				if (skinfile[i].StartsWith(wxT("Client_GoodCommentOnFile="))) {
+					bitmaps_found[Client_GoodComment_Smiley].found = true;
+				    bitmaps_found[Client_GoodComment_Smiley].filename=skinfile[i].AfterLast(wxT('='));
+				}
+				// Start
 				
-				#warning Lacks fill
+				#warning Code isnt complete
 				
 				// End of completion
 			}
