@@ -94,6 +94,11 @@
 #include "ClientListCtrl.h"
 #include "ChatWnd.h"
 
+#ifdef __WXMAC__
+	#include <CoreFoundation/CFBundle.h>
+	#include <ApplicationServices/ApplicationServices.h>	// For LSRegisterURL
+#endif
+
 #ifndef CLIENT_GUI
 
 BEGIN_EVENT_TABLE(CamuleGuiApp, wxApp)
@@ -360,6 +365,48 @@ bool CamuleGuiApp::OnInit()
 	// When adding functionality, assume that the timer is only approximately correct;
 	// for measurements, always use the system clock [::GetTickCount()].
 	amuledlg->StartGuiTimer();
+
+#ifdef __WXMAC__
+	// This tells the OS to notice the ed2kHelperScript.app inside aMule.app.
+	// ed2kHelperScript.app describes itself (Info.plist) as handling ed2k URLs.
+	// So, from then on the OS will know to pass ed2k URLs to the helper app.
+	CFURLRef bundleUrl = CFBundleCopyBundleURL(CFBundleGetMainBundle());
+	
+	if (bundleUrl)
+	{
+		CFURLRef contentsFolderUrl =
+			CFURLCreateCopyAppendingPathComponent(NULL, bundleUrl, CFSTR("Contents"), true);
+
+		if (contentsFolderUrl)
+		{
+			CFURLRef macOsFolderUrl =
+				CFURLCreateCopyAppendingPathComponent(NULL, contentsFolderUrl, CFSTR("MacOS"), true);
+	
+			if (macOsFolderUrl)
+			{
+				CFURLRef ed2kHelperUrl = CFURLCreateCopyAppendingPathComponent
+					(
+					NULL,
+					macOsFolderUrl,
+					CFSTR("ed2kHelperScript.app"),
+					false
+					);
+	
+				if (ed2kHelperUrl)
+				{
+					LSRegisterURL(ed2kHelperUrl, false);
+					CFRelease(ed2kHelperUrl);
+				}
+	
+				CFRelease(macOsFolderUrl);
+			}
+
+			CFRelease(contentsFolderUrl);
+		}
+
+		CFRelease(bundleUrl);
+	}
+#endif
 
 	return true;
 }
