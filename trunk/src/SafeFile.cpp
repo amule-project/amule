@@ -64,6 +64,7 @@ uint32 CFileDataIO::ReadUInt32() const
 
 void CFileDataIO::ReadUInt128(Kademlia::CUInt128 *pVal) const
 {
+	#warning NOT ENDIAN SAFE!
 	Read(pVal->getDataPtr(), 16);
 }
 
@@ -168,6 +169,7 @@ void CFileDataIO::WriteUInt32(uint32 nVal)
 
 void CFileDataIO::WriteUInt128(const Kademlia::CUInt128 *pVal)
 {
+	#warning NOT ENDIAN SAFE!
 	Write(pVal->getData(), 16);
 }
 
