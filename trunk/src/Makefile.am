@@ -381,9 +381,10 @@ noinst_HEADERS = AddFileThread.h \
 		 KadDlg.h \
 		 KnownFile.h \
 		 KnownFileList.h \
-		 listbase.h \
-		 listctrl_gen.h \
 		 listctrl.h \
+		 extern/listctrl.242.h \
+		 extern/listctrl.252.h \
+		 extern/listctrl.old.h \
 		 ListenSocket.h \
 		 MD5Sum.h \
 		 MemFile.h \

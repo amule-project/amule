@@ -47,8 +47,10 @@
 #include <wx/dcclient.h>
 #include <wx/scrolwin.h>
 #include <wx/settings.h>
+#include <wx/listbase.h>
 
-#include "listbase.h"
+#define wxLC_OWNERDRAW 0x10000
+
 
 #if wxUSE_DRAG_AND_DROP
 class WXDLLEXPORT wxDropTarget;
