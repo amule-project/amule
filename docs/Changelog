@@ -44,6 +44,10 @@ Version 2.0.0rc7 - The "xxxxxxxxxxxxxxxx" version.
 		  "Asked For Another File" on download queue.
 		  
 	Xaignar:
+		* Added sainity checks to category-loading, to avoid adding categories
+		  without incomming dir or name.
+		* Initial fix for crashes if aMule tried to share an inaccessible folder.
+		* The redraw problems on restoring from minimized state should be fixed.
 		* Fixed the shared-files list, which would draw columns regardless 
 		  of whenever or not they were hidden.
 		* Fixed the progress-bars in the shared-files dialog. It should now
