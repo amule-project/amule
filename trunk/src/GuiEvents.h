@@ -71,18 +71,20 @@ enum GUI_Event_ID {
 class GUIEvent {
 	public:
 	GUIEvent(GUI_Event_ID new_id, byte value8, wxString value_s, uint32 value_long = 0) {
-		ID 					= new_id;	
-		byte_value 		= value8;
+		ID 		= new_id;
+		byte_value 	= value8;
+		short_value	= 0;
 		long_value 	= value_long;
 		longlong_value 	= 0;
 		string_value 	= value_s;
-		ptr_value			= NULL;
-                ptr_aux_value                   = NULL;
+		ptr_value	= NULL;
+                ptr_aux_value	= NULL;
 	}
 
 	GUIEvent(GUI_Event_ID new_id, void *new_ptr = NULL, void* new_aux_ptr = NULL, byte value8 = 0) {
-		ID              = new_id;       
+		ID              = new_id;
 		byte_value      = value8;
+		short_value	= 0;
 		long_value      = 0;
 		longlong_value  = 0;
 		string_value    = wxEmptyString;
@@ -91,8 +93,9 @@ class GUIEvent {
 	}
 
 	GUIEvent(GUI_Event_ID new_id, void *new_ptr,  byte value8) {
-		ID              = new_id;       
+		ID              = new_id;
 		byte_value      = value8;
+		short_value	= 0;
 		long_value      = 0;
 		longlong_value  = 0;
 		string_value    = wxEmptyString;
@@ -101,8 +104,9 @@ class GUIEvent {
 	}
 
         GUIEvent(GUI_Event_ID new_id, void *new_ptr,  uint32 value32, uint64 value64) {
-                ID              = new_id;       
+                ID              = new_id;
                 byte_value      = 0;
+		short_value	= 0;
                 long_value      = value32;
                 longlong_value  = value64;
                 string_value    = wxEmptyString;
@@ -111,9 +115,21 @@ class GUIEvent {
         }
 
         GUIEvent(GUI_Event_ID new_id, uint32 new_val) {
-                ID              = new_id;       
+                ID              = new_id;
                 byte_value      = 0;
+		short_value	= 0;
                 long_value      = new_val;
+                longlong_value  = 0;
+                string_value    = wxEmptyString;
+                ptr_value       = NULL;
+                ptr_aux_value   = NULL;
+        }
+
+        GUIEvent(GUI_Event_ID new_id, uint32 value32, uint16 value16) {
+                ID              = new_id;
+                byte_value      = 0;
+		short_value	= value16;
+                long_value      = value32;
                 longlong_value  = 0;
                 string_value    = wxEmptyString;
                 ptr_value       = NULL;
@@ -122,8 +138,9 @@ class GUIEvent {
 
 	GUI_Event_ID ID;
 	byte			byte_value;
-	uint32		long_value;
-	uint64		longlong_value;
+	uint16			short_value;
+	uint32			long_value;
+	uint64			longlong_value;
 	wxString		string_value;
 
 	// this should NEVER be needed
@@ -177,9 +194,9 @@ class GUIEvent {
 #define Notify_SearchCancel(ptr)                    Notify_1_ValEvent(SEARCH_CANCEL, ptr)
 
 // chat
-#define Notify_ChatConnResult(ptr, val)             Notify_2_ValEvent(CHAT_CONN_RESULT, (void *)ptr, (byte)val)
-
 #define Notify_ChatRefreshFriend(ptr)               Notify_1_ValEvent(CHAT_REFRESH_FRIEND, ptr)
+#define Notify_ChatFindFriend(ptr, val0, val1)      Notify_3_ValEvent(CHAT_FIND_FRIEND, ptr, (uint32)val0, (uint16)val1)
+#define Notify_ChatConnResult(ptr, val)             Notify_2_ValEvent(CHAT_CONN_RESULT, (void *)ptr, (byte)val)
 
 // misc
 #define Notify_ShowNotifier(str, val0, val1)        Notify_3_ValEvent(SHOW_NOTIFIER, val0, str, val1)
