@@ -44,13 +44,13 @@ class alcc : public wxAppConsole
 #else
 class alcc : public wxApp
 #endif
-{
-private:
-	int computeEd2kLinks(const wxCmdLineParser& cmdline);
+  {
+  private:
+    int computeEd2kLinks(const wxCmdLineParser& cmdline);
 
-public:
-	virtual int OnRun ();
-};
+  public:
+    virtual int OnRun ();
+  };
 
 DECLARE_APP(alcc);
 
