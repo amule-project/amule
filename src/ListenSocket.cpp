@@ -1974,23 +1974,30 @@ void CClientReqSocket::OnSend(int nErrorCode)
 	CEMSocket::OnSend(nErrorCode);
 }
 
+#ifdef __LINUX__ 
+	#include <unistd.h>
+	#include <execinfo.h>
+#endif
+
+
 void CClientReqSocket::OnError(int nErrorCode)
 {
-	// 0.42e
+	// 0.42e + Kry changes for handling of socket lost events
 	wxString strError;
 	
-	wxASSERT(wxSOCKET_WOULDBLOCK == 7);
+	bool disconnect = true;
 	
-	if (nErrorCode == 7) {
+	if (nErrorCode == 0) {	
+		
 		if (m_client) {
 			if (!m_client->GetUserName().IsEmpty()) {
 				strError = wxT("Client '") + m_client->GetUserName() + wxT("'");
 			} else {
 				strError = wxT("An unnamed client");
 			}
-			strError += wxString::Format(wxT(" (IP:%s) caused a socket blocking error."),unicode2char(m_client->GetFullIP()));
+			strError += wxString::Format(wxT(" (IP:%s) closed it's socket connection."),unicode2char(m_client->GetFullIP()));
 		} else {
-			strError = wxT("A client caused a socket blocking error.");
+			strError = wxT("A client closed it's socket connection.");
 		}
 		
 		strError += wxString::Format(wxT(" Retries: %u. "), connection_retries);
@@ -1999,7 +2006,6 @@ void CClientReqSocket::OnError(int nErrorCode)
 		
 		if ((connection_retries > MAX_RETRIES) || (!m_client)) {
 			strError += wxT("Client disconnected (max retries allowed reached)");
-			Disconnect(strError);
 		} else {
 			strError += wxString::Format(wxT("Trying to reconnect... (retries left: %u)"), MAX_RETRIES-connection_retries);
 			byConnected = ES_DISCONNECTED;
@@ -2007,7 +2013,9 @@ void CClientReqSocket::OnError(int nErrorCode)
 			amuleIPV4Address tmp;
 			tmp.Hostname(m_client->GetConnectIP());
 			tmp.Service(m_client->GetUserPort());
-		
+
+			disconnect = false;
+			
 			Connect(tmp,FALSE);			
 			
 			connection_retries++;			
@@ -2015,30 +2023,34 @@ void CClientReqSocket::OnError(int nErrorCode)
 		
 		AddDebugLogLineM(false, strError);
 		
-		return;
-	}
-
-	if (thePrefs::GetVerbose() && (nErrorCode != 0) && (nErrorCode != 107)) {
-		// 0    -> No Error / Disconect
-		// 107  -> Transport endpoint is not connected
-		if (m_client) {
-			if (m_client->GetUserName()) {
-				strError = wxString(_("OnError: Client '")) + m_client->GetUserName();
-				strError += wxString::Format(_("' (IP:%s) caused an error: %u. Disconnecting client!"),
-					m_client->GetFullIP().c_str(), nErrorCode);
-			} else {
-				strError.Printf(_("OnError: Unknown client (IP:%s) caused an error: %u. Disconnecting client!"),
-					m_client->GetFullIP().c_str(), nErrorCode);
-			}
-		} else {
-			strError.Printf(_("OnError: A client caused an error or did something bad (error %u). Disconnecting client !"),
-				nErrorCode);
-		}
-		AddLogLineM(false, strError);
 	} else {
-		strError = _("No error or error 107 (Transport endpoint is not connected)");
-	}	
-	Disconnect(strError);
+
+		if (thePrefs::GetVerbose() && (nErrorCode != 107)) {
+			// 0    -> No Error / Disconect
+			// 107  -> Transport endpoint is not connected
+			if (m_client) {
+				if (m_client->GetUserName()) {
+					strError = wxString(_("OnError: Client '")) + m_client->GetUserName();
+					strError += wxString::Format(_("' (IP:%s) caused an error: %u. Disconnecting client!"),
+						m_client->GetFullIP().c_str(), nErrorCode);
+				} else {
+					strError.Printf(_("OnError: Unknown client (IP:%s) caused an error: %u. Disconnecting client!"),
+						m_client->GetFullIP().c_str(), nErrorCode);
+				}
+			} else {
+				strError.Printf(_("OnError: A client caused an error or did something bad (error %u). Disconnecting client !"),
+					nErrorCode);
+			}
+			AddLogLineM(false, strError);
+		} else {
+			strError = _("Error 107 (Transport endpoint is not connected)");
+		}	
+	}
+	
+	if (disconnect) {
+		Disconnect(strError);
+	}
+	
 }
 
 bool CClientReqSocket::PacketReceived(Packet* packet)
@@ -2202,7 +2214,7 @@ void CClientReqSocketHandler::ClientReqSocketHandler(wxSocketEvent& event)
 	//printf("request at clientreqsocket\n");
 	switch(event.GetSocketEvent()) {
 		case wxSOCKET_LOST:
-			socket->OnError(socket->LastError());
+			socket->OnError(0 /* SOCKET_LOST is not an error */);
 			break;
 		case wxSOCKET_INPUT:
 			socket->OnReceive(0);
