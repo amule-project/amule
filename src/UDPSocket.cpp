@@ -360,6 +360,12 @@ void CUDPSocket::SendBuffer(){
 		sendbuffer = 0;
 		delete cur_server;
 		cur_server = NULL;
+	} else if (cur_server) {	
+		delete cur_server;
+		cur_server = NULL;		
+	} else  if (sendbuffer) {
+		delete[] sendbuffer;
+		sendbuffer = 0;		
 	}
 }
 
