@@ -280,7 +280,7 @@ bool CClientUDPSocket::SendTo(char* lpBuf,int nBufLen,uint32 dwIP, uint16 nPort)
 		uint32 error = LastError();
 		if (error == wxSOCKET_WOULDBLOCK) {
 			m_bWouldBlock = true;
-			return false;
+			return true;
 		} else {
 			return false;
 		}
