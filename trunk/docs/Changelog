@@ -21,10 +21,12 @@ Version 2.0.0rc8 - The "???????????" version.
 		* Fixed: Servers priority not working (reported by Sir)
 		* Fixed: Now all unset Server Priorities are set to normal
 		  (reported by plaenky)
+		* Fixed: Sorting Servers by priority works now.
 		* Fixed: Setting "A4AF to others" was broken.
 		* Moved "Always filter bad IPs" from Server to Security
 		  in Preferences
 		* Changed "Preference" in servers tab as suggested by Sir
+		* Also servers.met's priority is now compatible with eMule's
 
 	Phoenix:
 		* Lots of unicode fixes.

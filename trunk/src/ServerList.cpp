@@ -550,10 +550,10 @@ void CServerList::Sort()
 	for( pos1 = list.GetHeadPosition(); (pos2 = pos1 ) != NULL;) {
 		list.GetNext(pos1);
 		CServer* cur_server = list.GetAt(pos2);
-		if (cur_server->GetPreferences()== PR_HIGH) {
+		if (cur_server->GetPreferences()== SRV_PR_HIGH) {
 			list.AddHead(cur_server);
 			list.RemoveAt(pos2);
-		} else if (cur_server->GetPreferences() == PR_LOW) {
+		} else if (cur_server->GetPreferences() == SRV_PR_LOW) {
 			list.AddTail(cur_server);
 			list.RemoveAt(pos2);
 		}
