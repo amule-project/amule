@@ -25,6 +25,8 @@
 #ifdef __WXMSW__
 	#include <wx/msw/winundef.h>
 #endif
+
+// wxUSE_GUI gets defined inside this include
 #include <wx/wx.h>
 
 #ifdef AMULEWEBDLG
@@ -78,8 +80,31 @@ class CamulewebApp : public wxApp
 
 #else // AMULEWEBDLG
 
+/******************************************************************************
+ * The next set of conditionals are used to find out the value of wxUSE_GUI
+ ******************************************************************************/
+#if 0
+#ifdef wxUSE_GUI
+	#warning wxUSE_GUI defined
+#else
+	#warning wxUSE_GUI undefined
+	#error wxUSE_GUI cannot be undefined
+#endif
+
+#if wxUSE_GUI
+	#warning wxUSE_GUI non-zero
+	#error wxUSE_GUI cannot be non-zero
+#else
+	#warning wxUSE_GUI zero
+#endif
+#endif
+/******************************************************************************/
+
 // Command line version
+// This wxCHECK_VERSION should not be necessary, it is only here until the 
+// wxApp -> wxAppConsole mapping issue is not resolved in wxWidgets.
 #if wxCHECK_VERSION(2,5,0)
+//#if 0
 class CamulewebApp : public wxAppConsole
 #else  // wxCHECK_VERSION
 class CamulewebApp : public wxApp
