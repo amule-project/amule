@@ -46,6 +46,9 @@ Version 2.0.0-rc2 - The Unnamed version.
 		* Fixed several warnings.
 		* Make aMule compile on wxWidgets 2.5 (and CVS) version.
 
+	falso:
+		* Added cas (C aMule Statistics), a remake of aStats but like
+		10 times faster
 
 	 Ariel:
 		* Implemented completed parts count on file rehash.
