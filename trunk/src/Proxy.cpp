@@ -378,7 +378,7 @@ bool wxSocketProxy::DoSocks5AuthenticationUsernamePassword(void)
 	unsigned int OffsetPassword = OffsetUser + LenUser + 1;
 	
 	// Prepare username/password buffer
-	m_buffer[0] = SOCKS5_VERSION;
+	m_buffer[0] = SOCKS5_AUTH_VERSION_USERNAME_PASSWORD;
 	m_buffer[OffsetUser-1] = LenUser;
 	memcpy(m_buffer+OffsetUser, unicode2char(m_ProxyData.m_UserName),
 		LenUser);
