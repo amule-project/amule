@@ -5050,3 +5050,4 @@ msgstr "Metodo"
 #: src/WebServer.cpp:2764
 msgid "Global (Server)"
 msgstr "Globale (server)"
+

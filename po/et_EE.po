@@ -2136,3 +2136,4 @@ msgstr "Ühenduse katse %s'ga (%s:%i ) ebaõnnestus (aegus)"
 #: src/sockets.cpp:470
 msgid "Refreshing server connection"
 msgstr ""
+

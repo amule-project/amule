@@ -3749,3 +3749,4 @@ msgstr "100 Mbits"
 #: src/Wizard.cpp:260
 msgid "155 Mbits (ATM)"
 msgstr "155 Mbits (ATM)"
+

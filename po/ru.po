@@ -2114,3 +2114,4 @@ msgstr "Закончилось время ожидания попытки соединения с %s (%s:%i )"
 #: src/sockets.cpp:470
 msgid "Refreshing server connection"
 msgstr "Обновление соединения с сервером"
+

@@ -5386,3 +5386,4 @@ msgstr "Metoda"
 msgid "Global (Server)"
 msgstr "Globalne (Serwer)"
 
+

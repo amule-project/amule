@@ -2114,3 +2114,4 @@ msgstr ""
 #: src/sockets.cpp:470
 msgid "Refreshing server connection"
 msgstr ""
+

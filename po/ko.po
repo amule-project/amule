@@ -2145,3 +2145,4 @@ msgstr "%s (%s:%i)으로의 연결 시간이 초과되었습니다."
 #: src/sockets.cpp:470
 msgid "Refreshing server connection"
 msgstr ""
+
