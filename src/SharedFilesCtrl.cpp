@@ -38,6 +38,7 @@
 #include "Preferences.h"
 #include "BarShader.h"			// Needed for CBarShader
 #include "listbase.h"
+#include "DataToText.h"			// Needed for PriorityToStr
 
 #include <wx/msgdlg.h>
 #include <wx/stattext.h>
@@ -191,28 +192,7 @@ void CSharedFilesCtrl::UpdateFile( CKnownFile* file, long itemnr )
 	
 	SetItem(itemnr, ID_SHARED_COL_TYPE, GetFiletypeByName(file->GetFileName()) );
 	SetItem(itemnr, ID_SHARED_COL_SIZE, CastItoXBytes(file->GetFileSize()) );
-	
-	if ( file->IsAutoUpPriority() ) {
-		switch ( file->GetUpPriority() ) {
-			case PR_LOW:		SetItem( itemnr, ID_SHARED_COL_PRIO, _("Auto [Lo]") ); break;
-			case PR_NORMAL:		SetItem( itemnr, ID_SHARED_COL_PRIO, _("Auto [No]") ); break;
-			case PR_HIGH:		SetItem( itemnr, ID_SHARED_COL_PRIO, _("Auto [Hi]") ); break;
-			case PR_VERYHIGH:	SetItem( itemnr, ID_SHARED_COL_PRIO, _("Auto [Re]") ); break;
-			default:
-				SetItem( itemnr, ID_SHARED_COL_PRIO, _("Auto [UNK]") );
-		}
-	} else {
-		switch ( file->GetUpPriority() ) {
-		case PR_VERYLOW:	SetItem( itemnr, ID_SHARED_COL_PRIO, _("Very low") );	break;
-		case PR_LOW:		SetItem( itemnr, ID_SHARED_COL_PRIO, _("Low") );			break;
-		case PR_NORMAL:		SetItem( itemnr, ID_SHARED_COL_PRIO, _("Normal") );		break;
-		case PR_HIGH:		SetItem( itemnr, ID_SHARED_COL_PRIO, _("High") );		break;
-		case PR_VERYHIGH:	SetItem( itemnr, ID_SHARED_COL_PRIO, _("Very High") );	break;
-		case PR_POWERSHARE:	SetItem( itemnr, ID_SHARED_COL_PRIO, _("Release") );		break;
-		default:
-			SetItem( itemnr, ID_SHARED_COL_PRIO, _("Unknown") );
-		}
-	}
+	SetItem(itemnr, ID_SHARED_COL_PRIO, PriorityToStr( file->GetUpPriority(), file->IsAutoUpPriority() ) );
 
 	SetItem( itemnr, ID_SHARED_COL_ID, file->GetFileHash().Encode() );
 

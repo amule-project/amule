@@ -82,6 +82,7 @@ amulegui_SOURCES = \
 	MuleTextCtrl.cpp \
 	MuleTrayIcon.cpp \
 	otherfunctions.cpp \
+	DataToText.cpp \
 	OScopeCtrl.cpp \
 	packets.cpp \
 	Preferences.cpp \
@@ -147,6 +148,7 @@ amule_SOURCES = ListenSocket.cpp \
 	NetworkFunctions.cpp \
 	OScopeCtrl.cpp \
 	otherfunctions.cpp \
+	DataToText.cpp \
 	packets.cpp \
 	PartFile.cpp \
 	Preferences.cpp \
