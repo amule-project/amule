@@ -205,6 +205,8 @@ bool CServerList::AddServer(CServer* in_server)
 		return false;
 	}
 	list.AddTail(in_server); //AddTail(in_server);
+	NotifyObservers( EventType( EventType::INSERTED, in_server ) );
+	
 	return true;
 }
 
@@ -271,6 +273,9 @@ void CServerList::RemoveServer(CServer* out_server)
 			if (theApp.downloadqueue->GetUDPServer() == out_server) {
 				theApp.downloadqueue->SetUDPServer( 0 );
 			}	
+			
+			NotifyObservers( EventType( EventType::REMOVED, out_server ) );
+		
 			list.RemoveAt(pos);
 			++delservercount;
 			delete out_server;
@@ -281,6 +286,8 @@ void CServerList::RemoveServer(CServer* out_server)
 
 void CServerList::RemoveAllServers()
 {
+	NotifyObservers( EventType( EventType::CLEARED ) );
+	
 	delservercount += list.GetSize();
 	// no connection, safely remove all servers
 	while ( !list.IsEmpty() ) {
@@ -777,3 +784,19 @@ void CServerList::AutoDownloadFinished(uint32 result) {
 	}
 	
 }
+
+
+void CServerList::ObserverAdded( ObserverType* o )
+{
+	CObservableQueue<CServer*>::ObserverAdded( o );
+
+	EventType::ValueList ilist;
+	ilist.reserve( list.GetSize() );
+	
+	for ( POSITION pos = list.GetHeadPosition(); pos; ) {
+		ilist.push_back( list.GetNext(pos) );
+	}
+
+	NotifyObservers( EventType( EventType::INITIAL, &ilist ), o );
+}
+

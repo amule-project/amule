@@ -31,10 +31,13 @@
 #include "Types.h"		// Needed for int8, uint16 and uint32
 #include "CTypedPtrList.h"	// Needed for CTypedPtrList
 
+#include "ObservableQueue.h"
+
+
 class CServer;
 class CPacket;
 
-class CServerList
+class CServerList : public CObservableQueue<CServer*>
 {
 	friend class CServerListCtrl;
 public:
@@ -69,8 +72,9 @@ public:
 	void 		UpdateServerMetFromURL(wxString strURL);	
 	void		DownloadFinished(uint32 result);	
 	void		AutoDownloadFinished(uint32 result);	
-	
+
 protected:
+	virtual void ObserverAdded( ObserverType* );
 	void			AutoUpdate();
 private:
 	uint8			current_url_index;
