@@ -24,14 +24,15 @@
 	#include <wx/defs.h>
 	#include <wx/msw/winundef.h>
 #endif
+
+#include "muuli_wdr.h"		// Needed for ID_CANCEL: Let it here or will fail on win32
+
 #include <wx/intl.h>
 #include <wx/sizer.h> 
 
 #include <curl/curl.h>
-
 #include "HTTPDownloadDlg.h"	// Interface declarations
 #include "MuleGifCtrl.h"
-#include "muuli_wdr.h"		// Needed for ID_CANCEL
 #include "inetdownload.h"	// Needed for inetDownload
 #include "otherfunctions.h"	// Needed for unicode2char
 
