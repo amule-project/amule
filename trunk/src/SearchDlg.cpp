@@ -470,12 +470,17 @@ void CSearchDlg::StartNewSearch()
 	}
 
 	theApp.searchlist->NewSearch(typeText, m_nSearchID);
-	CPacket* packet = CreateSearchPacket(searchString, typeText, extension, min, max, availability);
-	
+
 	m_searchtype = CastChild( ID_SEARCHTYPE, wxChoice )->GetSelection();
 	m_globalsearch = m_searchtype == 1;
 
+#ifdef CLIENT_GUI
+	// lfroen: implement remote call
+#else
+	CPacket* packet = CreateSearchPacket(searchString, typeText, extension, min, max, availability);
+
 	CoreNotify_Search_Req(packet, m_globalsearch);
+#endif
 	
 	CreateNewTab(searchString + wxT(" (0)"), m_nSearchID);
 }
