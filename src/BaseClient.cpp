@@ -234,10 +234,6 @@ void CUpDownClient::Init()
 
 CUpDownClient::~CUpDownClient()
 {
-	// Ensure that source-counts gets updated in case 
-	// of a source not on the download-queue
-	SetRequestFile( NULL );	
-
 	if (IsAICHReqPending()){
 		m_fAICHRequested = FALSE;
 		CAICHHashSet::ClientAICHRequestFailed(this);
@@ -369,6 +365,9 @@ void CUpDownClient::Safe_Delete()
 	if ( m_SafelyDeleted ) 
 		return;
  
+	// Ensure that source-counts gets updated in case 
+	// of a source not on the download-queue
+	SetRequestFile( NULL );	
 	
 	m_SafelyDeleted = true;
 		
