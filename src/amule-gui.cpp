@@ -615,8 +615,8 @@ void CamuleGuiApp::NotifyEvent(const GUIEvent& event)
 			}
 			break;
 		case SHAREDFILES_REMOVE_ALL_ITEMS:
-			if ( amuledlg->sharedfileswnd && amuledlg->sharedfileswnd->sharedfilesctrl ) {
-				amuledlg->sharedfileswnd->sharedfilesctrl->DeleteAllItems();
+			if ( amuledlg->sharedfileswnd ) {
+				amuledlg->sharedfileswnd->RemoveAllSharedFiles();
 			}
 			break;
 		case SHAREDFILES_SORT:

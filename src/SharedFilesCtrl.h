@@ -88,7 +88,7 @@ public:
 	 * Updates the number of shared files displayed above the list.
 	 */
 	void	ShowFilesCount();
-
+	
 private:
 	/**
 	 * Updates the item at the specified position using the specified file.

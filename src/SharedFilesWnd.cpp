@@ -153,3 +153,9 @@ void CSharedFilesWnd::OnItemActivated(wxListEvent& WXUNUSED(evt))
 {
 	SelectionUpdated();
 }
+
+void CSharedFilesWnd::RemoveAllSharedFiles() {
+	sharedfilesctrl->DeleteAllItems();
+	sharedfilesctrl->ShowFilesCount();
+	SelectionUpdated();
+}
