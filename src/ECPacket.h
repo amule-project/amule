@@ -130,6 +130,7 @@ class CECPacket : private CECTag {
 
 class CServer;
 class CPartFile;
+class CKnownFile;
 
 class CEC_Server_Tag : public CECTag {
  	public:
@@ -163,6 +164,23 @@ class CEC_PartFile_Tag : public CECTag {
 class CEC_PartStatus_Tag : public CECTag {
  	public:
  		CEC_PartStatus_Tag(CPartFile *file, int statussize);
+};
+
+class CEC_SharedFile_Tag : public CECTag {
+	public:
+		CEC_SharedFile_Tag(CKnownFile *file, EC_DETAIL_LEVEL detail_level);
+		
+ 		uint32 FileID() { return GetInt32Data(); }
+ 		wxString FileName() { return GetTagByName(EC_TAG_PARTFILE_NAME)->GetStringData(); }
+ 		uint32 SizeFull() { return GetTagByName(EC_TAG_PARTFILE_SIZE_FULL)->GetInt32Data(); }
+  		uint32 Prio() { return GetTagByName(EC_TAG_PARTFILE_PRIO)->GetInt32Data(); }
+ 		wxString FileEd2kLink() { return GetTagByName(EC_TAG_PARTFILE_ED2K_LINK)->GetStringData(); }
+
+ 		uint32 GetRequests() { return GetTagByName(EC_TAG_KNOWNFILE_REQ_COUNT)->GetInt32Data(); }
+ 		uint32 GetAllRequests() { return GetTagByName(EC_TAG_KNOWNFILE_REQ_COUNT_ALL)->GetInt32Data(); }
+
+ 		uint32 GetAccepts() { return GetTagByName(EC_TAG_KNOWNFILE_ACCEPT_COUNT)->GetInt32Data(); }
+ 		uint32 GetAllAccepts() { return GetTagByName(EC_TAG_KNOWNFILE_ACCEPT_COUNT_ALL)->GetInt32Data(); }
 };
 
 #endif /* ECPACKET_H */
