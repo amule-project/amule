@@ -24,7 +24,9 @@
 
 #include "types.h"	// Needed for uint* types
 #include <wx/string.h>	// Needed for wxString
+#ifndef __WXMSW__
 #include <netinet/in.h>	// Needed for ntoh, hton functions
+#endif
 #include "StringFunctions.h"	// Needed for char2UTF8
 #include "ECcodes.h"	// Needed for EC types
 
