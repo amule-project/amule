@@ -148,7 +148,8 @@ bool CServerList::AddServermetToList(const wxString& strFile, bool merge)
 			//add tags
 			for (uint32 i=0;i < sbuffer.tagcount; ++i) {
 				newserver->AddTagFromFile(&servermet);
-				if (newserver->GetPreferences() < SRV_PR_MIN || newserver->GetPreferences() > SRV_PR_MAX)
+				// Removing warning. As long as SRV_PR_MIN is = 0, no need to compare
+				if ( /* newserver->GetPreferences() < SRV_PR_MIN || */ newserver->GetPreferences() > SRV_PR_MAX)
 					newserver->SetPreference(SRV_PR_NORMAL);
 			}
 

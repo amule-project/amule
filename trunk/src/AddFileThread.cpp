@@ -391,7 +391,7 @@ wxThread::ExitCode CAddFileThread::Entry()
 
 
 		if ( IsRunning() ) {
-			// If the file is >= PARTSIZE, then the filehash is that one hash,
+			// If the file is < PARTSIZE, then the filehash is that one hash,
 			// otherwise, the filehash is the hash of the parthashes
 			if ( knownfile->hashlist.GetCount() == 1 ) {
 				knownfile->m_abyFileHash = knownfile->hashlist[0];
