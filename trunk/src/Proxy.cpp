@@ -121,6 +121,12 @@ const state_processor_vector Socks5StateMachine::process_state[SOCKS5_MAX_STATES
 	process_state_1,
 };
 	
+Socks5StateMachine::Socks5StateMachine()
+:
+StateMachine(wxString(wxT("Socks5")), SOCKS5_MAX_STATES, SOCKS5_STATE_1, process_state)
+{
+}
+
 void Socks5StateMachine::process_state_1(bool entry)
 {
 }

@@ -41,10 +41,10 @@ class StateMachine
 {
 public:
 	StateMachine(
-		wxString &name,
-		unsigned int max_states,
-		t_sm_state initial_state,
-		state_processor_vector *process_state );
+		const wxString &name,
+		const unsigned int max_states,
+		const t_sm_state initial_state,
+		const state_processor_vector *process_state );
 	virtual ~StateMachine() = 0;
 	void clock();
 	void schedule(t_sm_event event);
@@ -54,13 +54,13 @@ private:
 	void reset();
 	void flush_queue();
 
-	wxString			m_name;
-	unsigned int			m_max_states;
+	const wxString			m_name;
+	const unsigned int		m_max_states;
 	const unsigned int		m_initial_state;
+	const state_processor_vector	*m_process_state;
 	t_sm_state			m_state;
 	unsigned int			m_clock_counter;
 	std::queue <t_sm_event>		m_queue;
-	const state_processor_vector	*m_process_state;
 };
 
 #endif // STATE_MACHINE_H
