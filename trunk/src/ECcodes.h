@@ -1135,6 +1135,7 @@ enum {
 		*	::EC_TAG_FILES_NEW_AUTO_UL_PRIO\n
 		*	::EC_TAG_FILES_UL_FULL_CHUNKS\n
 		*	::EC_TAG_FILES_START_NEXT_PAUSED\n
+		*	::EC_TAG_FILES_RESUME_SAME_CAT\n
 		*	::EC_TAG_FILES_SAVE_SOURCES\n
 		*	::EC_TAG_FILES_EXTRACT_METADATA\n
 		*	::EC_TAG_FILES_ALLOC_FULL_CHUNKS\n
@@ -1152,12 +1153,13 @@ enum {
 	EC_TAG_FILES_NEW_AUTO_UL_PRIO,	///< (boolean) Add new shared files with auto-priority.
 	EC_TAG_FILES_UL_FULL_CHUNKS,	///< (boolean) Transfer full chunks in uploads.
 	EC_TAG_FILES_START_NEXT_PAUSED,	///< (boolean) Start next paused file when a download completes.
+	EC_TAG_FILES_RESUME_SAME_CAT,	///< (boolean) Start next paused file from the same category.
 	EC_TAG_FILES_SAVE_SOURCES,	///< (boolean) Save 5 sources on rare files.
 	EC_TAG_FILES_EXTRACT_METADATA,	///< (boolean) Extract metadata tags.
 	EC_TAG_FILES_ALLOC_FULL_CHUNKS,	///< (boolean) Allocate full chunks.
 	EC_TAG_FILES_ALLOC_FULL_SIZE,	///< (boolean) Aloocate full filesize.
 	EC_TAG_FILES_CHECK_FREE_SPACE,	///< (boolean) Check disk free space.
-	EC_TAG_FILES_MIN_FREE_SPACE,	///< (\c uint32) Minimum disk free space. Omitted, when CHECK_FREE_SPACE is false.
+	EC_TAG_FILES_MIN_FREE_SPACE,	///< (\c uint32) Minimum disk free space.
 
 
 	//

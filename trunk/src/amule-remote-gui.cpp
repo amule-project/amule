@@ -526,7 +526,7 @@ bool CPreferencesRem::LoadRemote()
 	if ( !prefs ) {
 		return false;
 	}
-	((CEC_Prefs_Packet *)prefs)->Apply();
+	((CEC_Prefs_Packet *)prefs)->Apply(false);
 
 	if ( prefs->GetTagByName(EC_TAG_PREFS_CATEGORIES) != 0 ) {
 		// start from '1' to skip default category "all"
