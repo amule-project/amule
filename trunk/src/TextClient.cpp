@@ -211,7 +211,9 @@ void CamulecmdApp::LocalShow(const wxString &s)
 void CamulecmdApp::OnInitCmdLine(wxCmdLineParser& amuleweb_parser)
 {
 	CaMuleExternalConnector::OnInitCmdLine(amuleweb_parser);
-	amuleweb_parser.AddOption(wxT("c"), wxT("command"), wxT("execute <str> and exit"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL);
+	amuleweb_parser.AddOption(wxT("c"), wxT("command"), 
+		wxT("execute <str> and exit"), 
+		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL);
 }
 
 bool CamulecmdApp::OnCmdLineParsed(wxCmdLineParser& parser)

@@ -265,30 +265,31 @@ void CaMuleExternalConnector::TextShell(const wxString &prompt, CmdId commands[]
 
 CECPacket *CaMuleExternalConnector::SendRecvMsg_v2(CECPacket *request)
 {
-    if (m_ECClient->WritePacket(request)) {
+	if (m_ECClient->WritePacket(request)) {
 		CECPacket *reply = m_ECClient->ReadPacket();
 		return reply;
-    }
-    return 0;
+	}
+	return 0;
 }
 
 wxString CaMuleExternalConnector::SendRecvMsg(const wxChar *msg)
 {
-    CECPacket request(EC_OP_COMPAT);
-    request.AddTag(CECTag(EC_TAG_STRING, wxString(msg)));
-    if (m_ECClient->WritePacket(&request)) {
-	CECPacket *reply = m_ECClient->ReadPacket();
-	if (reply != NULL) {
-	    wxString s = reply->GetTagByIndex(0)->GetStringData();	// An EC_OP_COMPAT request implies the EC_OP_COMPAT reply.
-	    delete reply;
-	    return s;
+	CECPacket request(EC_OP_COMPAT);
+	request.AddTag(CECTag(EC_TAG_STRING, wxString(msg)));
+	if (m_ECClient->WritePacket(&request)) {
+		CECPacket *reply = m_ECClient->ReadPacket();
+		if (reply != NULL) {
+			// An EC_OP_COMPAT request implies the EC_OP_COMPAT reply.
+			wxString s = reply->GetTagByIndex(0)->GetStringData();
+			delete reply;
+			return s;
+		} else {
+			delete reply;
+			return wxEmptyString;
+		}
 	} else {
-	    delete reply;
-	    return wxEmptyString;
+		return wxEmptyString;
 	}
-    } else {
-	return wxEmptyString;
-    }
 }
 
 void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, CmdId *UNUSED_IN_GUI(commands))
