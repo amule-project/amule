@@ -36,7 +36,7 @@ CFriend::CFriend()
 	m_dwLastUsedIP = 0;
 	m_nLastUsedPort = 0;
 	m_dwLastChatted = 0;
-	m_strName = (wxT(""));
+	m_strName = wxT("");
 	m_LinkedClient = NULL;
 	m_dwHasHash = 0;
 	memset( m_abyUserhash, 0, 16);
