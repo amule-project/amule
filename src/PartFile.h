@@ -81,8 +81,6 @@ public:
 	bool	HashSinglePart(uint16 partnumber); // true = ok , false = corrupted
 	uint64	GetRealFileSize();
 	
-	// TODO: check files atributes
-	//bool	IsNormalFile() const { return (m_dwFileAttributes & (FILE_ATTRIBUTE_COMPRESSED | FILE_ATTRIBUTE_SPARSE_FILE)) == 0; }
 	bool	IsNormalFile() const 		{ return true; }
 	bool    CheckShowItemInGivenCat(int inCategory);
 	void	AddGap(uint32 start, uint32 end);
@@ -111,8 +109,8 @@ public:
 	uint16	GetTransferingSrcCount() const	{ return transferingsrc; }
 	float	GetKBpsDown() const		{ return kBpsDown; }
 	double	GetPercentCompleted() const	{ return percentcompleted; }
-	uint16  GetNotCurrentSourcesCount() const;
-	int	GetValidSourcesCount();
+	uint16  GetNotCurrentSourcesCount()	const	{ return m_notCurrentSources; };
+	int	GetValidSourcesCount()			const	{ return m_validSources; };
 	uint32	GetNeededSpace();
 	
 	wxString getPartfileStatus() const; //<<--9/21/02
@@ -187,8 +185,28 @@ public:
 
 	void	RequestAICHRecovery(uint16 nPart);
 	void	AICHRecoveryDataAvailable(uint16 nPart);	
-	
+
+	/**
+	 * This function is used to update source-counts.
+	 *
+	 * @param oldState The old state of the client, or -1 to ignore.
+	 * @param newState The new state of the client, or -1 to ignore.
+	 *
+	 * Call this function for a client belonging to this file, which has changed 
+	 * its state. The value -1 can be used to make the function ignore one of 
+	 * the two states.
+	 *
+	 * AddSource and DelSource takes care of calling this function when a source is 
+	 * removed, so there's no need to call this function when calling either of those.
+	 */
+	void	ClientStateChanged( int oldState, int newState );
+
+	bool	AddSource( CUpDownClient* client );
+	bool	DelSource( CUpDownClient* client );
 protected:
+	uint32	m_validSources;
+	uint32	m_notCurrentSources;
+	
 	bool	GetNextEmptyBlockInPart(uint16 partnumber,Requested_Block_Struct* result);
 	bool	IsAlreadyRequested(uint32 start, uint32 end);
 	void	CompleteFile(bool hashingdone);

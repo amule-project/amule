@@ -518,8 +518,8 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender,CUpDownClient* source)
 				sender->UpdateFileRatingCommentAvail();
 			}
 	
-			sender->m_SrcList.insert(source);
-	
+			sender->AddSource( source );
+			
 			Notify_DownloadCtrlAddSource(sender, source, false);
 		}
 	} else {
@@ -532,7 +532,7 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender,CUpDownClient* source)
 			sender->UpdateFileRatingCommentAvail();
 		}
 	
-		sender->m_SrcList.insert(source);
+		sender->AddSource( source );
 	
 		Notify_DownloadCtrlAddSource(sender, source, false);
 	}
@@ -565,7 +565,7 @@ void CDownloadQueue::CheckAndAddKnownSource(CPartFile* sender,CUpDownClient* sou
 			sender->UpdateFileRatingCommentAvail();
 		}
 
-		sender->m_SrcList.insert( source );
+		sender->AddSource( source );
 		Notify_DownloadCtrlAddSource( sender, source, false );
 	}
 }
@@ -580,7 +580,7 @@ bool CDownloadQueue::RemoveSource(CUpDownClient* toremove, bool	WXUNUSED(updatew
 		CPartFile* cur_file = filelist[i];
 		
 		// Remove from source-list
-		if ( cur_file->m_SrcList.erase( toremove ) ) {
+		if ( cur_file->DelSource( toremove ) ) {
 			cur_file->RemoveDownloadingSource(toremove);
 			cur_file->IsCountDirty = true;
 			removed = true;

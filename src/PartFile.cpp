@@ -291,7 +291,9 @@ void CPartFile::Init()
 	
 	// Sources dropping
 	m_LastSourceDropTime = 0;
-	
+
+	m_validSources = 0;
+	m_notCurrentSources = 0;
 }
 
 #ifndef CLIENT_GUI
@@ -1582,35 +1584,6 @@ void CPartFile::WriteCompleteSourcesCount(CSafeMemFile* file)
 	file->WriteUInt16(m_nCompleteSourcesCount);
 }
 
-int CPartFile::GetValidSourcesCount()
-{
-	int counter = 0;
-	
-	for (SourceSet::iterator it = m_SrcList.begin(); it != m_SrcList.end(); ++it ){
-		CUpDownClient* cur_src = *it;
-		uint8 state = cur_src->GetDownloadState();
-		
-		if ( state != DS_ONQUEUE && state != DS_DOWNLOADING && state != DS_NONEEDEDPARTS ) {
-			counter++;
-		}
-	}
-	return counter;
-}
-
-uint16 CPartFile::GetNotCurrentSourcesCount() const
-{
-	uint16 counter = 0;
-
-	for ( SourceSet::iterator it = m_SrcList.begin(); it != m_SrcList.end(); ++it ){
-		CUpDownClient* cur_src = *it;
-		uint8 state = cur_src->GetDownloadState();
-	
-		if ( state != DS_ONQUEUE && state != DS_DOWNLOADING ) {
-			counter++;
-		}
-	}
-	return counter;
-}
 
 uint8 CPartFile::GetStatus(bool ignorepause) const
 {
@@ -4102,3 +4075,66 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart){
 //	AddLogLine(true, IDS_AICH_WORKED, CastItoXBytes(nRecovered), CastItoXBytes(length), nPart, GetFileName());
 	//AICH successfully recovered %s of %s from part %u for %s
 }
+
+
+void CPartFile::ClientStateChanged( int oldState, int newState )
+{
+	if ( oldState == newState )
+		return;
+
+	// If the state is -1, then it's an entirely new item
+	if ( oldState != -1 ) {
+		// Was the old state a valid state?
+		if ( oldState == DS_ONQUEUE || oldState == DS_DOWNLOADING ) {
+			m_validSources--;
+		} else {
+			if ( oldState == DS_CONNECTED /* || oldState == DS_REMOTEQUEUEFULL  */ ) {
+				m_validSources--;
+			}
+
+			m_notCurrentSources--;
+		}
+	}
+
+	// If the state is -1, then the source is being removed
+	if ( newState != -1 ) {
+		// Was the old state a valid state?
+		if ( newState == DS_ONQUEUE || newState == DS_DOWNLOADING ) {
+			m_validSources++;
+		} else {
+			if ( newState == DS_CONNECTED /* || newState == DS_REMOTEQUEUEFULL  */ ) {
+				m_validSources++;
+			}
+
+			m_notCurrentSources++;
+		}
+	}
+}
+
+
+bool CPartFile::AddSource( CUpDownClient* client )
+{
+	if ( m_SrcList.insert( client ).second ) {
+		// Update source-counts
+		ClientStateChanged( -1, client->GetDownloadState() );
+
+		return true;
+	}
+
+	return false;
+}
+
+	
+bool CPartFile::DelSource( CUpDownClient* client )
+{
+	if ( m_SrcList.erase( client ) ) {
+		// Update source-counts
+		ClientStateChanged( client->GetDownloadState(), -1 );
+
+		return true;
+	}
+
+	return false;
+}
+
+	
