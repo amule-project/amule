@@ -394,9 +394,6 @@ int CEMSocket::Send(char* lpBuf,int nBufLen,int WXUNUSED(nFlags))
 			tosend = MAXFRAGSIZE;
 		}
 		assert (tosend != 0);
-		#ifndef WIN32
-		signal(SIGPIPE,SIG_IGN);
-		#endif
 		wxSocketBase::Write(sendbuffer+sent,tosend);
 		uint32 result=LastCount();
 		if(Error()) {
