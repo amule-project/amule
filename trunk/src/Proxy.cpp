@@ -741,7 +741,7 @@ wxDatagramSocket(address, flags),
 m_SocketProxy(ProxyData)
 {
 	m_UseProxy = ProxyData != NULL && ProxyData->m_ProxyEnable;
-	bool ok;
+	bool ok = false;
 	
 	if (m_UseProxy) {
 		// Create the TCP socket to talk to the proxy
@@ -749,6 +749,7 @@ m_SocketProxy(ProxyData)
 		ok = m_SocketProxy.Start(address, wxPROXY_CMD_UDP_ASSOCIATE, m_ProxySocket);
 	} else {
 	}
+	m_UDPSocketOk = ok;
 	m_LastUDPOperation = wxUDP_OPERATION_NONE;
 }
 
