@@ -33,6 +33,7 @@
 #endif
 
 // Custom source
+#include "amule.h"
 #include "ServerListCtrl.h"
 #include "DownloadListCtrl.h"
 #include "UploadListCtrl.h"

@@ -1666,9 +1666,9 @@ void CamuleApp::NotifyEvent(GUIEvent event)
 			uploadqueue->AddUpDataOverheadServer(((Packet *)event.ptr_value)->GetPacketSize());
 			serverconnect->SendPacket( (Packet *)event.ptr_value, 0 );
 			if ( event.byte_value ) {
-				searchlist->searchpacket = (Packet *)event.ptr_value;
+				searchlist->m_searchpacket = (Packet *)event.ptr_value;
 			} else {
-				searchlist->searchpacket = 0;
+				searchlist->m_searchpacket = 0;
 			}
 			break;
 		// log is not unicode-compatible. And it shouldn't be.
