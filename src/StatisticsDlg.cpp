@@ -24,10 +24,6 @@
 #pragma implementation "StatisticsDlg.h"
 #endif
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif // HAVE_CONFIG_H
-
 #include <wx/settings.h>
 #include <wx/stattext.h>
 #include <wx/sizer.h>

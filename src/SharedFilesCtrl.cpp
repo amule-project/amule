@@ -37,7 +37,6 @@
 #include "sockets.h"			// Needed for CServerConnect
 #include "Preferences.h"
 #include "BarShader.h"			// Needed for CBarShader
-#include "listbase.h"
 #include "DataToText.h"			// Needed for PriorityToStr
 
 #include <wx/msgdlg.h>
