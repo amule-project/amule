@@ -17,6 +17,7 @@ src/DownloadQueue.cpp
 src/ED2KLink.cpp
 src/EditServerListDlg.cpp
 src/ExternalConn.cpp
+src/ExternalConnector.cpp
 src/FileDetailDialog.cpp
 src/FileDetailListCtrl.cpp
 src/filefn.cpp
@@ -61,4 +62,5 @@ src/utils/wxCas/src/onlinesig.cpp
 src/utils/wxCas/src/wxcas.cpp
 src/utils/wxCas/src/wxcasframe.cpp
 src/utils/wxCas/src/wxcasprefs.cpp
+src/WebInterface.cpp
 src/WebServer.cpp
