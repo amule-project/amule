@@ -39,15 +39,15 @@
     #include "wx/wx.h"
 #endif
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"             // Needed for PACKAGE
+#endif
+
 #include <wx/filename.h>
 #include <wx/log.h>
 
 #include "alcc.h"
 #include "ed2khash.h"
-
-#ifdef HAVE_CONFIG_H
-#include "config.h"             // Needed for PACKAGE
-#endif
 
 // Application implementation
 IMPLEMENT_APP (alcc)
