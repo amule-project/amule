@@ -222,6 +222,7 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender){
 		theApp.amuledlg->serverwnd->serverlistctrl->HighlightServer(update, true);
 		connectedsocket = sender;
 		StopConnectionTry();
+		theApp.sharedfiles->ClearED2KPublishInfo();
 		theApp.sharedfiles->SendListToServer();
 		theApp.amuledlg->serverwnd->serverlistctrl->RemoveDeadServer();
 		// tecxx 1609 2002 - serverlist update
