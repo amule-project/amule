@@ -491,22 +491,6 @@ wxString GetCatTitle(int catid)
 
 
 
-void HexDump(const void *buffer, unsigned long buflen)
-{
-	const uint8* cbuf = (const uint8*)buffer;
-
-	for ( unsigned long ofs = 0; ofs < buflen; /* no increment here */ )
-	{
-		printf("%08lx", ofs);
-
-		for ( unsigned long i = 0; (i<8) && (ofs<buflen); ++i, ++ofs )
-		{
-			printf(" %02x", (int)cbuf[ofs]);
-		}
-		printf("\n");
-	}
-}
-
 
 int wxCMPFUNC_CONV Uint16CompareValues(uint16* first, uint16* second) {
        return (((int)*first) - ((int)*second)) ;
