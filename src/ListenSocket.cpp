@@ -39,20 +39,22 @@
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "otherstructs.h"	// Needed for Requested_Block_Struct
 #include "sockets.h"		// Needed for CServerConnect
-#include "amuleIPV4Address.h"
 #include <wx/listimpl.cpp>
 #include <wx/dynarray.h>
 #include <wx/arrimpl.cpp>	// this is a magic incantation which must be done!
 #include <wx/tokenzr.h> 		// Needed for wxStringTokenizer
 
-#define DEBUG_REMOTE_CLIENT_PROTOCOL
+//#define DEBUG_REMOTE_CLIENT_PROTOCOL
 //#define __PACKET_RECV_DUMP__
 
 WX_DEFINE_OBJARRAY(ArrayOfwxStrings);
 
+#ifdef DEBUG_REMOTE_CLIENT_PROTOCOL
+#undef AddDebugLogLineM
+#define AddDebugLogLineM(x,y) printf("%s\n",unicode2char(y));
+#endif 
 
 IMPLEMENT_DYNAMIC_CLASS(CClientReqSocket,CEMSocket)
-
 
 CClientReqSocket::CClientReqSocket(CUpDownClient* in_client)
 {
@@ -64,6 +66,7 @@ CClientReqSocket::CClientReqSocket(CUpDownClient* in_client)
 	ResetTimeOutTimer();
 	deletethis = false;
 	connection_retries = 0;
+	last_action = ACTION_NONE;
 #ifdef AMULE_DAEMON
 	my_handler = 0;
 	Notify(false);
@@ -130,9 +133,9 @@ bool CClientReqSocket::CheckTimeOut()
 // that when client is downloading, i will only trust
 // tcp timeout
 #ifdef AMULE_DAEMON
-	if (my_handler) {
+//	if (my_handler) {
 		return false;
-	}
+//	}
 #endif
 	// 0.42x
 	UINT uTimeout = CONNECTION_TIMEOUT;
@@ -171,7 +174,7 @@ void CClientReqSocket::OnClose(int nErrorCode)
 void CClientReqSocket::Disconnect(const wxString& strReason)
 {
 	byConnected = ES_DISCONNECTED;
-
+//	printf("Client socket disconnected (%s)\n",unicode2char(strReason));
 	if (m_client) {
 		if (m_client->Disconnected(strReason, true)) {
 			m_client->SetSocket( NULL );
@@ -296,8 +299,9 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				}
 				
 				// Client might die from Sending in SendMuleInfoPacket, so check
-				if ( m_client )
+				if ( m_client ) {
 					m_client->SendHelloAnswer();
+				}
 							
 				// Kry - If the other side supports it, send OS_INFO
 				// Client might die from Sending in SendHelloAnswer, so check				
@@ -1959,23 +1963,69 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 	return true;
 }
 
+bool CClientReqSocket::Connect(amuleIPV4Address addr, bool wait) {
+	last_action = ACTION_CONNECT;
+	return CEMSocket::Connect(addr,wait);
+}
+
 void CClientReqSocket::OnConnect(int nErrorCode)
 {
 	//CEMSocket::OnConnect(nErrorCode);
 	if (nErrorCode) {
-		wxString error = wxString::Format(_("Client TCP socket error (OnConnect): %u"),nErrorCode);
-		AddDebugLogLineM(false, error);
-		Disconnect(error);
+		OnError(nErrorCode);
 	} else {
+		//printf("Sending hello packet\n");
+		if (!m_client) {
+			printf("Couldn't send hello packet (client deleted!)\n");
+			// and now? Disconnect? not?			
+		} else {
+			if (!m_client->SendHelloPacket()) {	
+			printf("Couldn't send hello packet (client deleted?)\n");				
+			// and now? Disconnect? not?				
+			}				
+		}
+
 		connection_retries = 0;
 	}
 }
 
 void CClientReqSocket::OnSend(int nErrorCode)
 {
-	// 0.42e
+	last_action = ACTION_SEND;
 	ResetTimeOutTimer();
 	CEMSocket::OnSend(nErrorCode);
+}
+
+void CClientReqSocket::OnReceive(int nErrorCode)
+{
+	last_action = ACTION_RECEIVE;
+	ResetTimeOutTimer();
+	CEMSocket::OnReceive(nErrorCode);
+}
+
+void CClientReqSocket::RepeatLastAction() {
+	switch (last_action) {
+		case ACTION_NONE:
+			break;
+		case ACTION_SEND:
+			OnSend(0);
+		case ACTION_RECEIVE:
+			OnReceive(0);
+		case ACTION_CONNECT: {
+			byConnected = ES_DISCONNECTED;			
+			amuleIPV4Address addr;
+			if (m_client) {
+				addr.Hostname(m_client->GetConnectIP());
+				addr.Service(m_client->GetUserPort());
+			} else {
+				GetPeer(addr);
+			}
+			Connect(addr,FALSE); // non blocking.
+			break;
+		}
+		default:
+			break;
+	}
 }
 
 void CClientReqSocket::OnError(int nErrorCode)
@@ -1985,7 +2035,7 @@ void CClientReqSocket::OnError(int nErrorCode)
 	
 	bool disconnect = true;
 	
-	if (nErrorCode == 0) {	
+	if ((nErrorCode == 0) || (nErrorCode == 7)) {	
 		
 		if (m_client) {
 			if (!m_client->GetUserName().IsEmpty()) {
@@ -1993,33 +2043,27 @@ void CClientReqSocket::OnError(int nErrorCode)
 			} else {
 				strError = wxT("An unnamed client");
 			}
-			strError += wxString::Format(wxT(" (IP:%s) closed it's socket connection."),unicode2char(m_client->GetFullIP()));
+			strError += wxString::Format(wxT(" (IP:%s) caused a socket blocking error or closed connection."),unicode2char(m_client->GetFullIP()));
 		} else {
-			strError = wxT("A client closed it's socket connection.");
+			strError = wxT("A client caused a socket blocking error or closed connection.");
 		}
 		
 		strError += wxString::Format(wxT(" Retries: %u. "), connection_retries);
 		
 		#define MAX_RETRIES 2
 		
-		if ((connection_retries > MAX_RETRIES) || (!m_client)) {
+		if (connection_retries > MAX_RETRIES) {
 			strError += wxT("Client disconnected (max retries allowed reached)");
 		} else {
 			strError += wxString::Format(wxT("Trying to reconnect... (retries left: %u)"), MAX_RETRIES-connection_retries);
-			byConnected = ES_DISCONNECTED;
 
-			amuleIPV4Address tmp;
-			tmp.Hostname(m_client->GetConnectIP());
-			tmp.Service(m_client->GetUserPort());
+			RepeatLastAction();
 
 			disconnect = false;
-			
-			Connect(tmp,FALSE);			
-			
 			connection_retries++;			
 		}
 		
-		AddDebugLogLineM(false, strError);
+		//AddDebugLogLineM(false, strError);
 		
 	} else {
 
@@ -2039,7 +2083,7 @@ void CClientReqSocket::OnError(int nErrorCode)
 				strError.Printf(_("OnError: A client caused an error or did something bad (error %u). Disconnecting client !"),
 					nErrorCode);
 			}
-			AddLogLineM(false, strError);
+			AddDebugLogLineM(false, strError);
 		} else {
 			strError = _("Error 107 (Transport endpoint is not connected)");
 		}	
@@ -2056,10 +2100,11 @@ bool CClientReqSocket::PacketReceived(Packet* packet)
 	// 0.42e
 	bool bResult;
 	UINT uRawSize = packet->GetPacketSize();	
-
+#ifdef DEBUG_REMOTE_CLIENT_PROTOCOL
 	if (m_client) {
 		AddDebugLogLineM(false, wxT("Packet received from ") + m_client->GetFullIP());		
 	}
+#endif
 	
 	switch (packet->GetProtocol()) {
 		case OP_EDONKEYPROT:		
@@ -2089,14 +2134,6 @@ bool CClientReqSocket::PacketReceived(Packet* packet)
 	}
 	return bResult;
 }
-
-void CClientReqSocket::OnReceive(int nErrorCode)
-{
-	// 0.42e
-	ResetTimeOutTimer();
-	CEMSocket::OnReceive(nErrorCode);
-}
-
 
 bool CClientReqSocket::IsMessageFiltered(wxString Message, CUpDownClient* client) {
 	
@@ -2157,6 +2194,16 @@ void CClientReqSocket::Destroy()
 
 void *CClientReqSocketHandler::Entry()
 {
+	if (socket->GetClient()) {
+		if (socket->GetClient()->HasLowID()) {
+			printf("DL from lowid\n");
+		} else {
+			printf("DL from highid\n");
+		}
+	} else {
+		printf("Socket with no client\n");
+	}
+	
 	while ( !TestDestroy() ) {
 		if ( socket->deletethis ) {
 			printf("CClientReqSocketHandler: socket %p in %ld being deleted\n", socket, GetId());
@@ -2463,6 +2510,7 @@ void CListenSocket::KillAllSockets()
 bool CListenSocket::TooManySockets(bool bIgnoreInterval)
 {
 	if (GetOpenSockets() > thePrefs::GetMaxConnections() || (m_OpenSocketsInterval > (thePrefs::GetMaxConperFive()*GetMaxConperFiveModifier()) && !bIgnoreInterval)) {
+		//printf("TOO MANY SOCKETS!\n");
 		return true;
 	} else {
 		return false;
@@ -2558,23 +2606,34 @@ void *CSocketGlobalThread::Entry()
 		it = socket_list.begin();
 		while (it != socket_list.end()) {
 			CClientReqSocket* cur_sock = *it++;
-			if (cur_sock->deletethis || (cur_sock->Error() && (cur_sock->LastError() != wxSOCKET_WOULDBLOCK))) {
+			if (cur_sock->deletethis) {
+				//printf("Socket deletion was requested (up!)\n");
 				socket_list.erase(cur_sock);
 				continue;
 			}
-			if (cur_sock->Error() && (cur_sock->LastError() == wxSOCKET_WOULDBLOCK)) {
-				cur_sock->OnSend(0);
+			if (cur_sock->Error() && (cur_sock->LastError() != wxSOCKET_WOULDBLOCK)) {
+				//printf("Socket deletion was requested (error!)\n");
+				socket_list.erase(cur_sock);				
+				continue;
 			}
-			if ( !cur_sock->wxSocketBase::IsConnected() ) {
-				if ( cur_sock->WaitOnConnect(0, 0) ) {
-					cur_sock->OnConnect(0);
+/*			if (cur_sock->Error() && (cur_sock->LastError() == wxSOCKET_WOULDBLOCK)) {
+				if (cur_sock->last_action != ACTION_CONNECT) {
+					// Connection state will be handled on next if
+					cur_sock->RepeatLastAction();
 				}
+			}*/
+			if ( !cur_sock->wxSocketBase::IsConnected()) {
+					if ( cur_sock->WaitOnConnect(0, 0) ) {
+						cur_sock->OnConnect(0);
+					}
 			} else {
 				if ( cur_sock->deletethis ) {
+					//printf("Socket deletion was requested\n");
 					socket_list.erase(cur_sock);
 					continue;
 				}
 				if ( cur_sock->WaitForLost(0, 0) ) {
+					//printf("Socket connection lost\n");
 					cur_sock->OnError(cur_sock->LastError());
 					socket_list.erase(cur_sock);
 					continue;
@@ -2582,7 +2641,7 @@ void *CSocketGlobalThread::Entry()
 				if ( !cur_sock->deletethis && cur_sock->WaitForRead(0, 0) ) {
 					cur_sock->OnReceive(0);
 					CUpDownClient *client = cur_sock->GetClient();
-					if ( (client != 0) && (client->GetDownloadState() == DS_DOWNLOADING) ) {
+					if ( client && (client->GetDownloadState() == DS_DOWNLOADING)) {
 						CClientReqSocketHandler *t = new CClientReqSocketHandler(cur_sock);
 						printf("Socket %p started dload\n", cur_sock);
 						socket_list.erase(cur_sock);
