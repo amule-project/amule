@@ -57,7 +57,7 @@ BEGIN_EVENT_TABLE(CSharedFilesCtrl,CMuleListCtrl)
 
 	EVT_MENU( MP_CMT,			CSharedFilesCtrl::OnEditComment )
 	EVT_MENU( MP_GETCOMMENTS,   CSharedFilesCtrl::OnGetComment )  
-	
+	EVT_MENU( MP_RAZORSTATS, 		CSharedFilesCtrl::OnGetRazorStats )	
 	EVT_MENU( MP_GETED2KLINK,				CSharedFilesCtrl::OnCreateURI )
 	EVT_MENU( MP_GETHTMLED2KLINK,			CSharedFilesCtrl::OnCreateURI )
 	EVT_MENU( MP_GETSOURCEED2KLINK,			CSharedFilesCtrl::OnCreateURI )
@@ -118,7 +118,7 @@ void CSharedFilesCtrl::OnRightClick(wxListEvent& evt)
 	if ( !GetItemState(evt.GetIndex(), wxLIST_STATE_SELECTED) ) {
 		long index = GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
 
-		while ( index > -1 ) {
+		while ( index != -1 ) {
 			SetItemState( index, 0, wxLIST_STATE_SELECTED );
 
 			index = GetNextItem(index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
@@ -144,7 +144,8 @@ void CSharedFilesCtrl::OnRightClick(wxListEvent& evt)
 		m_menu->Append(MP_CMT, _("Change this file's comment..."));
 		m_menu->Append(MP_GETCOMMENTS,_("Show all comments"));
 		m_menu->AppendSeparator();
-
+		m_menu->Append( MP_RAZORSTATS, _("Get Razorback 2's stats for this file"));
+		m_menu->AppendSeparator();
 		m_menu->Append(MP_GETED2KLINK,_("Copy ED2k &link to clipboard"));
 		m_menu->Append(MP_GETSOURCEED2KLINK,_("Copy ED2k link to clipboard (&Source)"));
 		m_menu->Append(MP_GETHOSTNAMESOURCEED2KLINK,_("Copy ED2k link to clipboard (Hostname)"));
@@ -175,7 +176,7 @@ void CSharedFilesCtrl::RemoveFile(CKnownFile *toRemove)
 {
 	long index = FindItem( -1, (long)toRemove );
 	
-	if ( index > -1 ) {
+	if ( index != -1 ) {
 		DeleteItem( index );
 		
 		ShowFilesCount();
@@ -258,7 +259,7 @@ void CSharedFilesCtrl::OnSetPriority( wxCommandEvent& event )
 
 	long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	
-	while( index > -1 ) {
+	while( index != -1 ) {
 		CKnownFile* file = (CKnownFile*)GetItemData( index );
 		CoreNotify_KnownFile_Up_Prio_Set( file, priority );
 
@@ -273,7 +274,7 @@ void CSharedFilesCtrl::OnSetPriorityAuto( wxCommandEvent& WXUNUSED(event) )
 {
 	long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	
-	while( index > -1 ) {
+	while( index != -1 ) {
 		CKnownFile* file = (CKnownFile*)GetItemData( index );
 		CoreNotify_KnownFile_Up_Prio_Auto(file);
 
@@ -298,7 +299,7 @@ void CSharedFilesCtrl::OnCreateURI( wxCommandEvent& event )
 
 	long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	
-	while( index > -1 ) {
+	while( index != -1 ) {
 		CKnownFile* file = (CKnownFile*)GetItemData( index );
 
 		switch ( event.GetId() ) {
@@ -321,7 +322,7 @@ void CSharedFilesCtrl::OnEditComment( wxCommandEvent& WXUNUSED(event) )
 {
 	long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	
-	if ( index > -1 ) {
+	if ( index != -1 ) {
 		CKnownFile* file = (CKnownFile*)GetItemData( index );
 
 		CCommentDialog dialog( this, file );
@@ -331,14 +332,13 @@ void CSharedFilesCtrl::OnEditComment( wxCommandEvent& WXUNUSED(event) )
 }
 
 void CSharedFilesCtrl::OnGetComment ( wxCommandEvent& WXUNUSED(event) )
-	{
-			int item = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-	        if ( item == -1 )
-		    return;
+{
+	int item = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+	if ( item != -1 ) {
+		CKnownFile* file = (CKnownFile*)GetItemData( item );
 	
-	CKnownFile* file = (CKnownFile*)GetItemData( item );
-	
-	theApp.amuledlg->LaunchUrl(wxT("http://jugle.net/?comments=") + file->GetFileHash().Encode());
+		theApp.amuledlg->LaunchUrl(wxT("http://jugle.net/?comments=") + file->GetFileHash().Encode());
+	}
 }
 	
 	
@@ -560,4 +560,14 @@ void CSharedFilesCtrl::DrawAvailabilityBar(CKnownFile* file, wxDC* dc, wxRect re
 	}
 
    	s_ChunkBar.Draw(dc, rect.GetLeft(), rect.GetTop(), CPreferences::UseFlatBar() ); 
+}
+
+void CSharedFilesCtrl::OnGetRazorStats( wxCommandEvent& WXUNUSED(event) )
+{
+	int item = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+	if ( item != -1 ) {
+		CKnownFile* file = (CKnownFile*)GetItemData( item );
+	
+		theApp.amuledlg->LaunchUrl(wxT("http://stats.razorback2.com/ed2khistory?ed2k=") + file->GetFileHash().Encode());
+	}
 }
