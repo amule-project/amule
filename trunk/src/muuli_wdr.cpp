@@ -473,7 +473,7 @@ wxSizer *transferBottomPane( wxWindow *parent, bool call_fit, bool set_sizer )
 
     item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    CClientListCtrl *item7 = new CClientListCtrl( parent, ID_CLIENTLIST, wxDefaultPosition, wxSize(160,120), wxLC_REPORT|wxLC_SINGLE_SEL|wxSUNKEN_BORDER );
+    CClientListCtrl *item7 = new CClientListCtrl( parent, ID_CLIENTLIST, wxDefaultPosition, wxSize(160,120), wxLC_REPORT|wxSUNKEN_BORDER );
     item0->Add( item7, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
     if (set_sizer)
