@@ -1812,50 +1812,36 @@ int CDownloadListCtrl::Compare(const CUpDownClient* client1, const CUpDownClient
 		// Sort by Queue-Rank
 		case 7:
 			{
-				/**
-				 * This is the order used to sort the clients:
-				 *  - Downloading
-				 *  - On Queue ( by QR )
-				 *  - Queue Full
-				 *  - Unknown
-				 */
-
-				// Place downloading sources first								
-				if ( client1->GetDownloadState() == DS_DOWNLOADING ) {
-					if ( client2->GetDownloadState() == DS_DOWNLOADING ) {
-						return  0;
-					} else {
-						return -1;
-					}
-				} else if ( client2->GetDownloadState() == DS_DOWNLOADING ) {
-					return 1;
+				// This will sort by download state: Downloading, OnQueue, Connecting ... 
+				// However, Asked For Another will always be placed last, due to sorting in SortProc
+				if ( client1->GetDownloadState() != client2->GetDownloadState() ) {
+					return client1->GetDownloadState() - client2->GetDownloadState();
 				}
-			
-				// Place clients with full queues third
+				
+				// Placing items on queue before items on full queues
 				if ( client1->IsRemoteQueueFull() ) {
 					if ( client2->IsRemoteQueueFull() ) {
 						return 0;
 					} else {
-						return 1;
+						return  1;
 					}
 				} else if ( client2->IsRemoteQueueFull() ) {
 					return -1;
-				}
-			
-				// Place clients on queue second
-				if ( client1->GetRemoteQueueRank() ) {
-					if ( client2->GetRemoteQueueRank() ) {
-						return CmpAny( client1->GetRemoteQueueRank(),  client2->GetRemoteQueueRank() );
+				} else {
+					if ( client1->GetRemoteQueueRank() ) {
+						if ( client2->GetRemoteQueueRank() ) {
+							return CmpAny( client1->GetRemoteQueueRank(), client2->GetRemoteQueueRank() );
+						} else {
+							return -1;
+						}
 					} else {
-						return -1;
+						if ( client2->GetRemoteQueueRank() ) {
+							return  1;
+						} else {
+							return  0;
+						}
 					}
-				} else if ( client2->GetRemoteQueueRank() ) {
-					return 1;
 				}
-
-				
-				// Anything else will be clients with unknown QR
-				return 0;
 			}
 		// Sort by state
 		case 8:
