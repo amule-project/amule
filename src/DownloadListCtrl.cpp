@@ -1474,11 +1474,11 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 							file->A4AFsrclist.GetNext(pos1);
 							CUpDownClient *cur_source = file->A4AFsrclist.GetAt(pos2);
 							if (cur_source->GetDownloadState() != DS_DOWNLOADING
-							&& cur_source->reqfile
-							&& ((!cur_source->reqfile->IsA4AFAuto()) || cur_source->GetDownloadState() == DS_NONEEDEDPARTS)
+							&& cur_source->GetRequestFile()
+							&& ((!cur_source->GetRequestFile()->IsA4AFAuto()) || cur_source->GetDownloadState() == DS_NONEEDEDPARTS)
 							&& !cur_source->IsSwapSuspended(file))
 							{
-								CPartFile* oldfile = cur_source->reqfile;
+								CPartFile* oldfile = cur_source->GetRequestFile();
 								if (cur_source->SwapToAnotherFile(true, false, false, file)) {
 									cur_source->DontSwapTo(oldfile);
 								}

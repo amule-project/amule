@@ -672,14 +672,14 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				CUpDownClient* cur_client = theApp.uploadqueue->GetWaitClientAt(pos);
 				if (cur_client) {
 					buffer += cur_client->GetUserName();
-					if (cur_client->reqfile) {
+					if (cur_client->GetRequestFile()) {
 						buffer.Append(wxT("\t"));
 					} else {
 						buffer.Append(wxT("\n"));
 						continue;
 					}
 					
-					CKnownFile* file = theApp.sharedfiles->GetFileByID(cur_client->reqfile->GetFileHash());
+					CKnownFile* file = theApp.sharedfiles->GetFileByID(cur_client->GetRequestFile()->GetFileHash());
 					if (file) {
 						buffer.Append(wxString::Format(wxT("%s\t"), cur_client->GetDownloadFile()->GetFileName().GetData()));
 					} else {
@@ -2088,13 +2088,13 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 					CUpDownClient* cur_client = theApp.uploadqueue->GetWaitClientAt(pos);
 					if (cur_client) {
 						buffer += cur_client->GetUserName();
-						if (!cur_client->reqfile) {
+						if (!cur_client->GetRequestFile()) {
 							buffer.Append(wxT("\n"));
 							continue;
 						} else {
 							buffer.Append(wxT("\t"));
 						}
-						CKnownFile* file = theApp.sharedfiles->GetFileByID(cur_client->reqfile->GetFileHash());
+						CKnownFile* file = theApp.sharedfiles->GetFileByID(cur_client->GetRequestFile()->GetFileHash());
 						if (file)
 							buffer.Append(wxString::Format(wxT("%s\t"), cur_client->GetDownloadFile()->GetFileName().GetData()));
 						else

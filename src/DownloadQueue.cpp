@@ -496,7 +496,7 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender,CUpDownClient* source)
 	//if yes the known client will be attached to the var "source"
 	//and the old sourceclient will be deleted
 	if (theApp.clientlist->AttachToAlreadyKnown(&source,0)) {
-		source->reqfile = sender;
+		source->SetRequestFile( sender );
 		// No more need for this
 		// source->SetDownloadFile(sender);
 	} else {
@@ -536,7 +536,7 @@ void CDownloadQueue::CheckAndAddKnownSource(CPartFile* sender,CUpDownClient* sou
 			return;
 		}
 	}
-	source->reqfile = sender;
+	source->SetRequestFile( sender );
 	// No more need for this
 	// source->SetDownloadFile(sender);
 
@@ -556,20 +556,16 @@ bool CDownloadQueue::RemoveSource(CUpDownClient* toremove, bool	WXUNUSED(updatew
 	bool removed = false;
 	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
 		CPartFile* cur_file = filelist[i];
-		for (POSITION pos2 = cur_file->m_SrcList.GetHeadPosition();pos2 != 0; cur_file->m_SrcList.GetNext(pos2)) {
-			if (toremove == cur_file->m_SrcList.GetAt(pos2)) {
-				cur_file->m_SrcList.RemoveAt(pos2);
-				cur_file->IsCountDirty = true;
-				removed = true;
-				if ( bDoStatsUpdate ){
-					cur_file->RemoveDownloadingSource(toremove);
-					cur_file->UpdatePartsInfo();
-				}
-				break;
+		POSITION pos2 = cur_file->m_SrcList.Find( toremove );
+		if ( pos2 != NULL ) {
+			cur_file->m_SrcList.RemoveAt(pos2);
+			cur_file->IsCountDirty = true;
+			removed = true;
+			if ( bDoStatsUpdate ) {
+				cur_file->RemoveDownloadingSource(toremove);
+				cur_file->UpdatePartsInfo();
+				cur_file->UpdateAvailablePartsCount();
 			}
-		}
-		if (bDoStatsUpdate) {
-			cur_file->UpdateAvailablePartsCount();
 		}
 	}
 
@@ -597,16 +593,16 @@ bool CDownloadQueue::RemoveSource(CUpDownClient* toremove, bool	WXUNUSED(updatew
 		}
 	}
 
-	if (toremove->GetFileComment().Length()>0 || toremove->GetFileRate()>0) {
-		toremove->reqfile->UpdateFileRatingCommentAvail();
+	if ( !toremove->GetFileComment().IsEmpty() || toremove->GetFileRate()>0) {
+		toremove->GetRequestFile()->UpdateFileRatingCommentAvail();
 	}
-
+	
 	/* Creteil changes END */
 
 	toremove->SetDownloadState(DS_NONE);
 	theApp.amuledlg->transferwnd->downloadlistctrl->RemoveSource(toremove,0);
 	toremove->ResetFileStatusInfo();
-	toremove->reqfile = 0;
+	toremove->SetRequestFile( NULL );
 	return removed;
 }
 
@@ -967,43 +963,6 @@ void CDownloadQueue::AddLinksFromFile()
 	linksfile.Write();
 	wxRemoveFile(theApp.ConfigDir +  wxT("ED2KLinks"));
 }
-
-/* Razor 1a - Modif by MikaelB
-   RemoveSourceFromPartFile function */
-
-void CDownloadQueue::RemoveSourceFromPartFile(CPartFile* file, CUpDownClient* client, POSITION position)
-{
-	file->m_SrcList.RemoveAt(position);
-	file->IsCountDirty = true;
-	file->UpdatePartsInfo();
-	file->UpdateAvailablePartsCount();
-	client->SetDownloadState(DS_NONE);
-	client->SetValidSource(false);
-	file->RemoveDownloadingSource(client);
-	theApp.amuledlg->transferwnd->downloadlistctrl->RemoveSource(client, file);
-	client->reqfile = 0;
-	if(! client->m_OtherRequests_list.IsEmpty()) {
-		POSITION position, temp_position;
-		for(position = client->m_OtherRequests_list.GetHeadPosition(); (temp_position = position) != NULL;) {
-			client->m_OtherRequests_list.GetNext(position);
-			POSITION position2 = client->m_OtherRequests_list.GetAt(temp_position)->A4AFsrclist.Find(client);
-			if(position2) {
-				client->m_OtherRequests_list.GetAt(temp_position)->A4AFsrclist.RemoveAt(position2);
-				theApp.amuledlg->transferwnd->downloadlistctrl->RemoveSource(client, client->m_OtherRequests_list.GetAt(temp_position));
-				client->m_OtherRequests_list.RemoveAt(temp_position);
-			}
-		}
-	}
-	/*
-	// If client's upload status id none
-	if(client->GetUploadState() == US_NONE) {
-		// Disconnect client
-		client->Disconnected();
-	}
-	*/
-}
-
-/* End modif */
 
 /* eMule 0.30c implementation, i give it a try (Creteil) BEGIN ... */
 void CDownloadQueue::DisableAllA4AFAuto(void)

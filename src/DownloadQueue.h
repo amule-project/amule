@@ -194,9 +194,6 @@ private:
 /* Razor 1a - Modif by MikaelB */
 public:
 
-	/* RemoveSourceFromPartFile function */
-	void  RemoveSourceFromPartFile(CPartFile* file, CUpDownClient* client, POSITION position);
-
 	/* DisableAnyA4AFAuto function */
 	void  DisableAllA4AFAuto(void);
 

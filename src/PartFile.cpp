@@ -1749,11 +1749,11 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 				CUpDownClient *cur_source = A4AFsrclist.GetAt(pos2);
 				uint8 download_state=cur_source->GetDownloadState();
 				if( download_state != DS_DOWNLOADING
-				&& cur_source->reqfile 
-				&& ((!cur_source->reqfile->IsA4AFAuto()) || download_state == DS_NONEEDEDPARTS)
+				&& cur_source->GetRequestFile() 
+				&& ((!cur_source->GetRequestFile()->IsA4AFAuto()) || download_state == DS_NONEEDEDPARTS)
 				&& !cur_source->IsSwapSuspended(this))
 				{
-					CPartFile* oldfile = cur_source->reqfile;
+					CPartFile* oldfile = cur_source->GetRequestFile();
 					if (cur_source->SwapToAnotherFile(false, false, false, this)) {
 						cur_source->DontSwapTo(oldfile);
 					}
@@ -3062,7 +3062,7 @@ Packet *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 	if(!IsPartFile())
 		return CKnownFile::CreateSrcInfoPacket(forClient);
 
-	if (forClient->reqfile != this)
+	if (forClient->GetRequestFile() != this)
 		return NULL;
 
 	if ( !(GetStatus() == PS_READY || GetStatus() == PS_EMPTY))
@@ -3729,11 +3729,11 @@ void CPartFile::RemoveNoNeededSources()
 			/* If allowed, try to swap to other file. If swapping fails, remove from this one. */
 			if (theApp.glob_prefs->SwapNoNeededSources()) {
 				if (!client->SwapToAnotherFile(true, true, true, NULL)) {
-					theApp.downloadqueue->RemoveSourceFromPartFile(this, client, temp_position);
+					theApp.downloadqueue->RemoveSource( client );
 				}
 			/* If not allowed to swap, simply remove from this one. */
 			} else {
-				theApp.downloadqueue->RemoveSourceFromPartFile(this, client, temp_position);
+				theApp.downloadqueue->RemoveSource( client );
 			}
 		}
 	}
@@ -3753,7 +3753,7 @@ void CPartFile::RemoveFullQueueSources()
 		m_SrcList.GetNext(position);
 		CUpDownClient* client = m_SrcList.GetAt(temp_position);
 		if ((client->GetDownloadState() == DS_ONQUEUE) && (client->IsRemoteQueueFull())) {
-			theApp.downloadqueue->RemoveSourceFromPartFile(this, client, temp_position);
+			theApp.downloadqueue->RemoveSource( client );
 		}
 	}
 }
@@ -3772,7 +3772,7 @@ void CPartFile::RemoveHighQueueRatingSources()
 		m_SrcList.GetNext(position);
 		CUpDownClient* client = m_SrcList.GetAt(temp_position);
 		if ((client->GetDownloadState() == DS_ONQUEUE) && (client->GetRemoteQueueRank() > theApp.glob_prefs->HighQueueRanking())) {
-			theApp.downloadqueue->RemoveSourceFromPartFile(this, client, temp_position);
+			theApp.downloadqueue->RemoveSource( client );
 		}
 	}
 }
@@ -3792,13 +3792,13 @@ void CPartFile::CleanUpSources()
 		CUpDownClient* client = m_SrcList.GetAt(temp_position);
 		if (client->GetDownloadState() == DS_NONEEDEDPARTS) {
 			if ((theApp.glob_prefs->DropNoNeededSources()) && (!client->SwapToAnotherFile(true, true, true, NULL))) {
-				theApp.downloadqueue->RemoveSourceFromPartFile(this, client, temp_position);
+				theApp.downloadqueue->RemoveSource( client );
 			}
 		}
 		if ((client->GetDownloadState() == DS_ONQUEUE) && (client->IsRemoteQueueFull())) {
-			theApp.downloadqueue->RemoveSourceFromPartFile(this, client, temp_position);
+			theApp.downloadqueue->RemoveSource( client );
 		} else if ((client->GetDownloadState() == DS_ONQUEUE) && (client->GetRemoteQueueRank() > theApp.glob_prefs->HighQueueRanking())) {
-			theApp.downloadqueue->RemoveSourceFromPartFile(this, client, temp_position);
+			theApp.downloadqueue->RemoveSource( client );
 		}
 	}
 }
@@ -3943,9 +3943,9 @@ bool CPartFile::IsASaneFileClientCombination(
 	bool sane = sane_this && sane_cur_src && sane_forClient;
 	if (sane) {
 		// Test for hash equality
-		sane = (GetFileHash() == cur_src->reqfile->GetFileHash());
+		sane = (GetFileHash() == cur_src->GetRequestFile()->GetFileHash());
 		if (forClient) {
-			sane = sane && (GetFileHash() == forClient->reqfile->GetFileHash());
+			sane = sane && (GetFileHash() == forClient->GetRequestFile()->GetFileHash());
 		}
 		if (sane) {
 			// Test for part count equality
@@ -3970,9 +3970,9 @@ bool CPartFile::IsASaneFileClientCombination(
 				}
 				debugprintf(verbose, "\tFilenames are: \n");
 				debugprintf(verbose, "\tthis   : %s\n", (const char *)(GetFileName().mb_str()));
-				debugprintf(verbose, "\tcur_src: %s\n", (const char *)(cur_src->reqfile->GetFileName().mb_str()));
+				debugprintf(verbose, "\tcur_src: %s\n", (const char *)(cur_src->GetRequestFile()->GetFileName().mb_str()));
 				if (forClient) {
-					debugprintf(verbose, "\tfor_clt: %s\n", (const char *)(forClient->reqfile->GetFileName().mb_str()));
+					debugprintf(verbose, "\tfor_clt: %s\n", (const char *)(forClient->GetRequestFile()->GetFileName().mb_str()));
 				}
 				debugprintf(verbose, "\tfunction: %s(%s:%d)\n", function, file, line);
 			}
@@ -3982,14 +3982,14 @@ bool CPartFile::IsASaneFileClientCombination(
 		else if (verbose) {
 			debugprintf(verbose, "Mismatching hashes!\n");
 			debugprintf(verbose, "\tthis   : %s\n", (const char *)(GetFileHash().Encode().mb_str()));
-			debugprintf(verbose, "\tcur_src: %s\n", (const char *)(cur_src->reqfile->GetFileHash().Encode().mb_str()));
-			if (forClient && forClient->reqfile)
-				debugprintf(verbose, "\tfor_clt: %s\n", (const char *)(forClient->reqfile->GetFileHash().Encode().mb_str()));
+			debugprintf(verbose, "\tcur_src: %s\n", (const char *)(cur_src->GetRequestFile()->GetFileHash().Encode().mb_str()));
+			if (forClient && forClient->GetRequestFile())
+				debugprintf(verbose, "\tfor_clt: %s\n", (const char *)(forClient->GetRequestFile()->GetFileHash().Encode().mb_str()));
 			debugprintf(verbose, "\tFilenames are: \n");
 			debugprintf(verbose, "\tthis   : %s\n", (const char *)(GetFileName().mb_str()));
-			debugprintf(verbose, "\tcur_src: %s\n", (const char *)(cur_src->reqfile->GetFileName().mb_str()));
-			if (forClient && forClient->reqfile)
-				debugprintf(verbose, "\tfor_clt: %s\n", (const char *)(forClient->reqfile->GetFileName().mb_str()));
+			debugprintf(verbose, "\tcur_src: %s\n", (const char *)(cur_src->GetRequestFile()->GetFileName().mb_str()));
+			if (forClient && forClient->GetRequestFile())
+				debugprintf(verbose, "\tfor_clt: %s\n", (const char *)(forClient->GetRequestFile()->GetFileName().mb_str()));
 			debugprintf(verbose, "\tfunction: %s(%s:%d)\n", function, file, line);
 		}
 #endif // __DEBUG__

@@ -147,7 +147,7 @@ void CFileDetailDialog::FillSourcenameList()
 	// update
 	for (POSITION pos = m_file->m_SrcList.GetHeadPosition(); pos != NULL; ) { 
 		cur_src = m_file->m_SrcList.GetNext(pos); 
-		if (cur_src->reqfile!=m_file || cur_src->GetClientFilename().Length()==0)
+		if (cur_src->GetRequestFile()!=m_file || cur_src->GetClientFilename().Length()==0)
 			continue;
 
 		if ((itempos=pmyListCtrl->FindItem(-1,cur_src->GetClientFilename())) == -1) { 
