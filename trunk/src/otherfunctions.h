@@ -26,6 +26,13 @@
 #include <wx/string.h>		// Needed for wxString
 #include <wx/dynarray.h>
 
+#ifdef __WXBASE__
+	#include <time.h>
+	#include <errno.h>
+#else
+	#include <wx/utils.h>
+#endif	
+
 #include "types.h"		// Needed for uint16, uint32 and uint64
 #include "endianfix.h"
 #include "otherstructs.h" // for Gap_Struct
@@ -359,6 +366,24 @@ public:
 		return *this;
 	}
 };
+
+inline void MilliSleep(uint32 msecs) {
+	#ifdef __WXBASE__
+		struct timespec waittime;
+			waittime.tv_sec = 0;
+			waittime.tv_nsec = msecs * 1000 /*micro*/* 1000 /*nano*/;
+		struct timespec remtime;
+		while ((nanosleep(&waittime,&remtime)==-1) && (errno == EINTR)) {
+			memcpy(&waittime,&remtime,sizeof(struct timespec));
+		}
+	#else
+		#if wxCHECK_VERSION(2, 5, 3)
+			wxMilliSleep(msecs);
+		#else
+			wxUsleep(msecs);
+		#endif
+	#endif
+}
 
 } // End namespace
 

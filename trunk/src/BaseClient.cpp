@@ -637,6 +637,8 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer, bool OSInfo) {
 
 		data->WriteUInt32(1); // One Tag (OS_INFO)
 
+		#ifndef __WXBASE__
+		
 		wxStringTokenizer tkz(wxGetOsDescription(), wxT(" "));
 
 		if (tkz.HasMoreTokens()) {
@@ -646,6 +648,14 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer, bool OSInfo) {
 			CTag tag1(ET_OS_INFO,wxT("Unknown"));
 			tag1.WriteTagToFile(data);
 		}
+		
+		#else 
+			#warning wxGetOSDescription does not exist in wxBase, what should we do?
+			CTag tag1(ET_OS_INFO,wxT("Unknown"));
+			tag1.WriteTagToFile(data);		
+		
+		#endif
+		
 
 	} else {
 
