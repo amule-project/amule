@@ -101,20 +101,20 @@ AC_ARG_ENABLE(webserver,  [  --enable-webserver      Compile aMule WebServer],
 AC_ARG_ENABLE(webservergui,  [  --enable-webservergui   Compile aMule WebServer GUI],
               WEBGUI="$enableval", WEBGUI="no")
 
-AC_ARG_ENABLE(cas,  [  --disable-cas           Don't compile C aMule Statistics],
-              CAS="$enableval", CAS="yes")
+AC_ARG_ENABLE(cas,  [  --enable-cas           Compile C aMule Statistics],
+              CAS="$enableval", CAS="no")
 
-AC_ARG_ENABLE(wxcas,  [  --disable-wxcas         Don't compile aMule GUI Statistics],
-              WXCAS="$enableval", WXCAS="yes")
+AC_ARG_ENABLE(wxcas,  [  --enable-wxcas        Compile aMule GUI Statistics],
+              WXCAS="$enableval", WXCAS="no")
 
 AC_ARG_ENABLE(ed2k,  [  --disable-ed2k          Don't compile aMule ed2k links handler],
               ED2K="$enableval", ED2K="yes")
 
-AC_ARG_ENABLE(alc,  [  --disable-alc           Don't compile aMuleLinkCreator GUI version],
-              ALC="$enableval", ALC="yes")
+AC_ARG_ENABLE(alc,  [  --enable-alc           Compile aMuleLinkCreator GUI version],
+              ALC="$enableval", ALC="no")
 	      
-AC_ARG_ENABLE(alcc,  [  --disable-alcc          Don't compile aMuleLinkCreator for console],
-              ALCC="$enableval", ALCC="yes")
+AC_ARG_ENABLE(alcc,  [  --enable-alcc          Compile aMuleLinkCreator for console],
+              ALCC="$enableval", ALCC="no")
 
 AC_ARG_ENABLE(gsocket, [  --disable-gsocket       Disable gsocket.c linking],
 		USE_GSOCKET="$enableval", USE_GSOCKET="yes")
