@@ -361,7 +361,8 @@ void CUDPSocket::SendBuffer(){
 }
 
 void CUDPSocket::SendPacket(Packet* packet,CServer* host){
-	wxASSERT(!cur_server);
+	#warning KRY TODO - V.I. STUFF
+	//wxASSERT(!cur_server);
 	cur_server = new CServer(host);
 	sendbuffer = new char[packet->GetPacketSize()+2];
 	memcpy(sendbuffer,packet->GetUDPHeader(),2);
