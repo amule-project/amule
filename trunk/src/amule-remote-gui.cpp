@@ -699,6 +699,7 @@ CKnownFile *CSharedFilesRem::CreateItem(CEC_SharedFile_Tag *tag)
 void CSharedFilesRem::DeleteItem(CKnownFile *file)
 {
 	m_enc_map.erase(file->GetFileHash());
+	delete file;
 }
 
 CMD4Hash CSharedFilesRem::GetItemID(CKnownFile *file)
@@ -843,18 +844,23 @@ CUpDownClient *CUpDownClientListRem::GetNextFromList(POSITION &pos)
 	return *(*i);
 }
 
-CUpDownClient *CUpDownClientListRem::CreateItem(CEC_UpDownClient_Tag *)
+CUpDownClient::CUpDownClient(CEC_UpDownClient_Tag *)
 {
-	return 0;
+}
+
+CUpDownClient *CUpDownClientListRem::CreateItem(CEC_UpDownClient_Tag *tag)
+{
+	CUpDownClient *client = new CUpDownClient(tag);
+	return client;
 }
 
 void CUpDownClientListRem::DeleteItem(CUpDownClient *)
 {
 }
 
-uint32 CUpDownClientListRem::GetItemID(CUpDownClient *)
+uint32 CUpDownClientListRem::GetItemID(CUpDownClient *client)
 {
-	return 0;
+	return client->GetUserID();
 }
 
 void CUpDownClientListRem::ProcessItemUpdate(CEC_UpDownClient_Tag *, CUpDownClient *)
@@ -870,6 +876,11 @@ void CUpQueueRem::UpdateStats(CEC_Stats_Tag *tag)
 	m_kbps = tag->UpSpeed() / 1024;
 }
 
+/*
+ * Download queue container: hold PartFiles with progress status
+ * 
+ */
+ 
 CDownQueueRem::CDownQueueRem(CRemoteConnect *conn) : CRemoteContainer<CPartFile, CMD4Hash, CEC_PartFile_Tag>(conn)
 {
 }
@@ -915,6 +926,8 @@ void CDownQueueRem::DeleteItem(CPartFile *file)
 	theApp.amuledlg->transferwnd->downloadlistctrl->RemoveFile(file);
 	
 	m_enc_map.erase(file->GetFileHash());
+	
+	delete file;
 }
 
 CMD4Hash CDownQueueRem::GetItemID(CPartFile *file)
