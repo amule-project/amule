@@ -116,8 +116,11 @@ void CServerListCtrl::RemoveServer( const CServer* server )
 {
 	long result = FindItem( -1, (long)server );
 	if ( result != -1 ) {
-		theApp.serverlist->RemoveServer( (CServer*)GetItemData( result ) );
-		DeleteItem( result );
+		CServer* cur_server = (CServer*) GetItemData( result );
+		if ( wxMessageBox(_("Are you sure you want to delete the static server ") + cur_server->GetListName(), _("Cancel"), wxICON_QUESTION | wxYES_NO) == wxYES ) {
+			theApp.serverlist->RemoveServer( cur_server );
+			DeleteItem( result );
+		}
 	}
 	ShowServerCount();
 }
@@ -134,8 +137,13 @@ void CServerListCtrl::RemoveAllServers( int state )
 			wxMessageBox(_("You are connected to a server you are trying to delete. Please disconnect first. The server was NOT deleted."), _("Info"), wxOK);
 			++pos;
 		} else {
-			theApp.serverlist->RemoveServer( (CServer*)GetItemData( pos ) );
-			DeleteItem( pos );
+			CServer* cur_server = (CServer*) GetItemData( pos );
+			if ( wxMessageBox(_("Are you sure you want to delete the static server ") + cur_server->GetListName(), _("Cancel"), wxICON_QUESTION | wxYES_NO) == wxYES ) {
+				theApp.serverlist->RemoveServer( cur_server );
+				DeleteItem( pos );
+			} else {
+				++pos;
+			}
 		}
 		
 		pos = GetNextItem( pos-1, wxLIST_NEXT_ALL, state );
