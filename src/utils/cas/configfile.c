@@ -36,7 +36,7 @@ int writeconfig(void)
 {
 	FILE *config;
 	char *path;
-	int i;
+	unsigned int i;
 	char *def[] = {
 		"# cas config file\n",
 		"#\n",

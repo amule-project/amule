@@ -30,7 +30,7 @@
 
 char *get_path(char *file);
 char *convbytes(char *input);
-char *time(char *input);
+char *timeconv(char *input);
 char *replace(char *search, char *replace, char *template, int size);
 
 #endif
