@@ -609,7 +609,7 @@ void CServerListRem::RemoveServer(CServer* server)
 
 CServer *CServerListRem::GetServerByAddress(const wxString& address, uint16 port)
 {
-	// FIXME: add code, nothing special
+	// It's ok to return 0 for context where this code is used in remote gui
 	return 0;
 }
 
@@ -618,8 +618,10 @@ CServer *CServerListRem::CreateItem(CEC_Server_Tag *tag)
 	return new CServer(tag);
 }
 
-void CServerListRem::DeleteItem(CServer *)
+void CServerListRem::DeleteItem(CServer *srv)
 {
+	theApp.amuledlg->serverwnd->serverlistctrl->RemoveServer(srv);
+	delete srv;
 }
 
 uint32 CServerListRem::GetItemID(CServer *server)
