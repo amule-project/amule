@@ -670,13 +670,12 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAI
 	AddTag(CECTag(EC_TAG_CLIENT_XFER_TIME, client->GetUpStartTimeDelay()));
 	AddTag(CECTag(EC_TAG_CLIENT_QUEUE_TIME, ::GetTickCount() - client->GetWaitStartTime()));
 	AddTag(CECTag(EC_TAG_CLIENT_LAST_TIME, ::GetTickCount() - client->GetLastUpRequest()));
-
-	AddTag(CECTag(EC_TAG_CLIENT_HASH, client->GetUserHash()));
 	
 	if (detail_level == EC_DETAIL_UPDATE) {
 			return;
 	}
 
+	AddTag(CECTag(EC_TAG_CLIENT_HASH, client->GetUserHash()));
 	AddTag(CECTag(EC_TAG_CLIENT_NAME, client->GetUserName()));
 	AddTag(CECTag(EC_TAG_CLIENT_SOFTWARE, client->GetClientSoft()));
 	
