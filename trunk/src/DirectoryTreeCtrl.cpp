@@ -279,11 +279,7 @@ bool CDirectoryTreeCtrl::HasSharedSubdirectory(wxString const& strDir)
 #ifdef __UNIX__
                 str.StartsWith(tStrDir)
 #else
-    #ifdef __WXMSW__
-                str.StartsWith(tStrDir)
-    #else
-	            str.MakeLower().StartsWith(tStrDir.MakeLower())
-    #endif
+	            wxString(str.MakeLower()).StartsWith(tStrDir.MakeLower())
 #endif
 				) {
 					return true;
