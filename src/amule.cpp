@@ -98,6 +98,7 @@
 #include "UDPSocket.h"		// Needed for CUDPSocket
 #include "PartFile.h"		// Needed for CPartFile
 #include "AddFileThread.h"	// Needed for CAddFileThread
+#include "packets.h"
 
 #warning This ones must be removed ASAP - exception: amuledlg, will be the LAST one.
 #include "amuleDlg.h"			// Needed for CamuleDlg
@@ -280,7 +281,7 @@ int CamuleApp::OnExit()
 	}
 
 	// Return 0 for succesful program termination
-	return 0;
+	return wxApp::OnExit();
 }
 
 
