@@ -96,6 +96,9 @@ COLORREF crPreset [ 16 ] = {
 
 	nXGrids = 6;
 	nYGrids = 5;
+	
+	graph_type = GRAPH_INVALID;
+	
 	timerRedraw.SetOwner(this);
 }  // COScopeCtrl
 
@@ -303,7 +306,7 @@ void COScopeCtrl::RecreateGrid()
 } // RecreateGrid
 
 
-void COScopeCtrl::AppendPoints(double sTimestamp, float *apf[])
+void COScopeCtrl::AppendPoints(double sTimestamp, const float *apf[])
 {
 	sLastTimestamp = sTimestamp;
 	ShiftGraph(1);
@@ -441,7 +444,7 @@ unsigned COScopeCtrl::GetPlotY(float fPlot, PlotData_t* ppds)
 
 
 
-void COScopeCtrl::DrawPoints(float *apf[], unsigned cntPoints)
+void COScopeCtrl::DrawPoints(const float *apf[], unsigned cntPoints)
 {	// this appends a new set of data points to a graph; all of the plotting is 
 	// directed to the memory based bitmap associated with dcPlot
 	// the will subsequently be BitBlt'd to the client in OnPaint
@@ -450,13 +453,12 @@ void COScopeCtrl::DrawPoints(float *apf[], unsigned cntPoints)
 		return;
 	}
 	// draw the next line segement
-	float *pf;
 	unsigned x, y, yPrev;
 	unsigned cntPixelOffset = std::min((unsigned)(nPlotWidth-1), (cntPoints-1)*nShiftPixels);
 	PlotData_t* ppds = pdsTrends;
 
 	for (unsigned iTrend=0; iTrend<nTrends; ++iTrend, ++ppds) {
-		pf = apf[iTrend] + cntPoints - 1;
+		const float* pf = apf[iTrend] + cntPoints - 1;
 		yPrev = ppds->yPrev;
 		dcPlot->SetPen(ppds->penPlot);
 		for (x=rectPlot.right-cntPixelOffset; x<=rectPlot.right; x+=nShiftPixels) {
@@ -472,12 +474,13 @@ void COScopeCtrl::DrawPoints(float *apf[], unsigned cntPoints)
 
 void COScopeCtrl::PlotHistory(unsigned cntPoints, bool bShiftGraph, bool bRefresh) 
 {
+	wxASSERT(graph_type != GRAPH_INVALID);
 	unsigned i, cntFilled;
 	float *apf[nTrends];  
 	for (i=0; i<nTrends; ++i)
 		apf[i] = new float[cntPoints];
 	double sFinal = (bStopped ? sLastTimestamp : -1.0);
-	cntFilled = theApp.amuledlg->statisticswnd->GetHistory(cntPoints, sLastPeriod, sFinal, apf, this);
+	cntFilled = theApp.GetHistory(cntPoints, sLastPeriod, sFinal, apf, graph_type);
 	if (cntFilled >1  ||  (bShiftGraph && cntFilled!=0)) {
 		if (bShiftGraph) {  // delayed points - we have an fPrev
 			ShiftGraph(cntFilled);
@@ -487,7 +490,7 @@ void COScopeCtrl::PlotHistory(unsigned cntPoints, bool bShiftGraph, bool bRefres
 				ppds->yPrev = GetPlotY(ppds->fPrev = *(apf[i] + cntFilled - 1), ppds);
 			cntFilled--;
 		}
-		DrawPoints(apf, cntFilled);
+		DrawPoints((const float**)apf, cntFilled);
 		if (bRefresh)
 			Refresh(FALSE);
 	}

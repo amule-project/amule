@@ -36,6 +36,7 @@
 
 #include "types.h"		// Needed for RECT
 #include "color.h"			// Needed for COLORREF and RGB
+#include "amule.h"		// Needed for StatsGraphType
 
 class wxMemoryDC;
 
@@ -65,13 +66,15 @@ public:
 	void Stop();
 	void RecreateGraph(bool bRefresh=true);
 	void RecreateGrid();
-	void AppendPoints(double sTimestamp, float *apf[]);
+	void AppendPoints(double sTimestamp, const float *apf[]);
 	void DelayPoints()	{ nDelayedPoints++; }
 	unsigned GetPlotHeightPixels()		{return nPlotHeight;}
 	unsigned GetPlotWidthPoints()		{return nPlotWidth/nShiftPixels;}
 	wxBitmap* GetBitmapPlot()			{return bmapPlot;};
 	wxBitmap* GetBitmapGrid()			{return bmapGrid;};
 
+	StatsGraphType graph_type;
+	
 public:
 	unsigned nTrends;
 	unsigned nXGrids;
@@ -129,7 +132,7 @@ private:
 	void OnSize(wxSizeEvent& evt);
 	void ShiftGraph(unsigned cntPoints);
 	void PlotHistory(unsigned cntPoints, bool bShiftGraph, bool bRefresh);
-	void DrawPoints(float *apf[], unsigned cntPoints);
+	void DrawPoints(const float *apf[], unsigned cntPoints);
 	unsigned GetPlotY(float fPlot, PlotData_t* ppds);
 	void InvalidateCtrl(bool bInvalidateGraph = true, bool bInvalidateGrid = true);
 };
