@@ -38,7 +38,7 @@ CWSThread::CWSThread(CWebServer *ws) {
 	this->ws = ws;
 	
 	//retrieve web server listening port
-	wsport = ws->GetWSPort();
+	wsport = ws->GetWSPrefs();
 	if (wsport == 0) {
 		wsport = 4711;
 		ws->Print(wxT("WSThread: Could not get web server port -- using default value."));

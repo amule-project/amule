@@ -574,6 +574,33 @@ CECPacket *Get_EC_Response_Server(const CECPacket *request)
 	return response;
 }
 
+CECPacket *ProcessPreferencesRequest(const CECPacket *request)
+{
+	CECPacket *response = new CECPacket(EC_OP_PREFERENCES);
+	CECTag ws_prefs(EC_TAG_PREFS_WEBSERVER, 0, NULL, false);
+	
+	ws_prefs.AddTag(CECTag(EC_TAG_WEBSERVER_PORT, thePrefs::GetWSPort()));
+	if (!thePrefs::GetWSPass().IsEmpty()) {
+		ws_prefs.AddTag(CECTag(EC_TAG_PASSWD_HASH, thePrefs::GetWSPass()));
+	}
+	if (thePrefs::GetWSIsLowUserEnabled()) {
+		CECTag lowUser(EC_TAG_WEBSERVER_GUEST, 0, NULL, false);
+		if (!thePrefs::GetWSLowPass().IsEmpty()) {
+			lowUser.AddTag(CECTag(EC_TAG_PASSWD_HASH, thePrefs::GetWSLowPass()));
+		}
+		ws_prefs.AddTag(lowUser);
+	}
+	if (thePrefs::GetWebUseGzip()) {
+		ws_prefs.AddTag(CECTag(EC_TAG_WEBSERVER_USEGZIP, 0, NULL, false));
+	}
+	if (thePrefs::GetWebPageRefresh() != 120) {
+		ws_prefs.AddTag(CECTag(EC_TAG_WEBSERVER_REFRESH, thePrefs::GetWebPageRefresh()));
+	}
+
+	response->AddTag(CECTag(ws_prefs));
+	return response;
+}
+
 CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request)
 {
 
@@ -646,6 +673,10 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request)
 		case EC_OP_KNOWNFILE_SET_PERM:
 			break;
 		case EC_OP_KNOWNFILE_SET_COMMENT:
+			break;
+
+		case EC_OP_GET_PREFERENCES_WEBSERVER:
+			response = ProcessPreferencesRequest(request);
 			break;
 
 		case EC_OP_ED2K_LINK: 
@@ -2756,7 +2787,7 @@ CEC_Server_Tag::CEC_Server_Tag(CServer *server, EC_DETAIL_LEVEL detail_level) :
 }
 
 
-CEC_ConnState_Tag::CEC_ConnState_Tag(EC_DETAIL_LEVEL detail_level) : CECTag(EC_TAG_STATS_CONNSTATE,
+CEC_ConnState_Tag::CEC_ConnState_Tag(EC_DETAIL_LEVEL detail_level) : CECTag(EC_TAG_CONNSTATE,
 	(uint8) (theApp.serverconnect->IsConnected() ? (theApp.serverconnect->IsLowID() ? 2 : 3) : 
 		theApp.serverconnect->IsConnecting() ? 1 : 0))
 {

@@ -162,7 +162,7 @@ enum {
 		 * \brief Request connection state.
 		 *
 		 * Request from client, server replies with an ::EC_OP_MISC_DATA
-		 * packet containing an ::EC_TAG_STATS_CONNSTATE tag.
+		 * packet containing an ::EC_TAG_CONNSTATE tag.
 		 *
 		 * \par Tags:
 		 *	(none)
@@ -307,6 +307,23 @@ enum {
 
 	EC_OP_SERVER_REMOVE,
 
+	//
+	// Preferences
+	//
+
+	EC_OP_GET_PREFERENCES_WEBSERVER,	///< Request for WebServer preferences.
+
+		/*!
+		 * \brief Preference values.
+		 *
+		 * It's tags and contents are depending on
+		 * what preferences were actually required.
+		 *
+		 * \par Possible tags:
+		 *  ::EC_TAG_PREFS_WEBSERVER
+		 */
+	EC_OP_PREFERENCES,
+
 	EC_OP_COMPAT	= 0x00ff	// compatibility opcode, for testing purposes only
 					// tags: EC_TAG_STRING: v1.0 message
 };
@@ -423,7 +440,7 @@ enum {
 	 * When connected, it contains an ::EC_TAG_SERVER child, describing the
 	 * server we're connected to.
 	 */
-	EC_TAG_STATS_CONNSTATE,
+	EC_TAG_CONNSTATE,
 	EC_TAG_STATS_UL_SPEED,
 	EC_TAG_STATS_DL_SPEED,
 	/*!
@@ -521,7 +538,6 @@ enum {
 	 *	::EC_TAG_SERVER_VERSION
 	 */
 	EC_TAG_SERVER,
-
 	EC_TAG_SERVER_NAME,		///< (\c string) Server name. Default: none.
 	EC_TAG_SERVER_DESC,		///< (\c string) Server description. Default: none.
 	EC_TAG_SERVER_ADDRESS,
@@ -579,6 +595,24 @@ enum {
 		 *	(none)
 		 */
 	EC_TAG_IPFILTER_LEVEL,
+
+		/*
+		* \brief WebServer Preferences.
+		*
+		* \par Child TAGs:
+		*	::EC_TAG_WEBSERVER_PORT (required)\n
+		*	::EC_TAG_PASSWD_HASH (0-1) Admin Password. Omitted, when admin password is blank.\n
+		*	::EC_TAG_WEBSERVER_GUEST (0-1)
+		*/
+	EC_TAG_PREFS_WEBSERVER,
+	EC_TAG_WEBSERVER_PORT,		///< (\c uint16) WebServer listening port
+	EC_TAG_WEBSERVER_GUEST,		///< WebServer Guest account information
+					/*!< The presence of this tag means that the guest account is enabled.
+						It contains an ::EC_TAG_PASSWD_HASH tag, if the guest
+						password is not empty.
+					*/
+	EC_TAG_WEBSERVER_USEGZIP,	///< When present, webserver uses gzip compression. Default: no.
+	EC_TAG_WEBSERVER_REFRESH,	///< (\c uint32) Refresh interval of web pages in seconds. Default: 120.
 
 };
 

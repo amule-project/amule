@@ -157,12 +157,65 @@ void CWebServer::StopServer(void) {
 
 
 //returns web server listening port
-int CWebServer::GetWSPort(void) {
-	wxString msg = webInterface->SendRecvMsg(wxT("PREFERENCES GETWSPORT"));
-	long i;
-	msg.ToLong(&i);
-	
-	return (int)i;
+int CWebServer::GetWSPrefs(void)
+{
+	CECPacket req(EC_OP_GET_PREFERENCES_WEBSERVER);
+	CECPacket *reply = webInterface->SendRecvMsg_v2(&req);
+
+	if ( ! reply ) {
+		return 0;
+	}
+
+	CECTag *wsprefs = reply->GetTagByIndex(0); 
+		// as of now, reply doesn't have anything else than a EC_TAG_PREFS_WEBSERVER tag.
+	CECTag *tag;
+	int wsport = wsprefs->GetTagByName(EC_TAG_WEBSERVER_PORT)->GetInt16Data();
+
+	if ( ! webInterface->m_bForcedAdminPassword ) {
+		tag = wsprefs->GetTagByName(EC_TAG_PASSWD_HASH);
+		if (tag) {
+			webInterface->m_AdminPass = tag->GetStringData();
+		} else {
+		webInterface->m_AdminPass = wxEmptyString;
+		}
+	}
+
+	if ( ! webInterface->m_bForcedAllowGuest ) {
+		tag = wsprefs->GetTagByName(EC_TAG_WEBSERVER_GUEST);
+		if (tag) {
+			webInterface->m_AllowGuest = true;
+			if ( ! webInterface->m_bForcedGuestPassword ) {
+				tag = tag->GetTagByName(EC_TAG_PASSWD_HASH);
+				if (tag) {
+					webInterface->m_GuestPass = tag->GetStringData();
+				} else {
+					webInterface->m_GuestPass = wxEmptyString;
+				}
+			}
+		} else {
+			webInterface->m_AllowGuest = false;
+		}
+	}
+
+	if ( ! webInterface->m_bForcedUseGzip ) {
+		// we only need to check the presence of this tag
+		if ( wsprefs->GetTagByName(EC_TAG_WEBSERVER_USEGZIP) ) {
+			webInterface->m_UseGzip = true;
+		} else {
+			webInterface->m_UseGzip = false;
+		}
+	}
+
+	tag = wsprefs->GetTagByName(EC_TAG_WEBSERVER_REFRESH);
+	if (tag) {
+		m_nRefresh = tag->GetInt32Data();
+	} else {
+		m_nRefresh = 120;
+	}
+
+	delete reply;
+
+	return wsport;
 }
 
 //sends output to web interface
@@ -410,6 +463,7 @@ void CWebServer::ProcessURL(ThreadData Data) {
 	wxString sSession = sSession.Format(wxT("%ld"), lSession);
 	wxString sW = _ParseURL(Data, wxT("w"));
 	if (sW == wxT("password")) {
+		pThis->GetWSPrefs();
 		wxString PwStr = _ParseURL(Data, wxT("p"));
 		wxString PwHash = MD5Sum(PwStr).GetHash();
 		bool login = false;
@@ -626,17 +680,14 @@ wxString CWebServer::_GetHeader(ThreadData Data, long lSession) {
 
 	Out.Replace(wxT("[CharSet]"), _GetWebCharSet());
 
-	// TODO: must be taken from prefs
-	const int nRefresh = 120;
-	
-	if (nRefresh) {
+	if (pThis->m_nRefresh) {
 		wxString sPage = _ParseURL(Data, wxT("w"));
 		if ((sPage == wxT("transfer")) || (sPage == wxT("server")) ||
 			(sPage == wxT("graphs")) || (sPage == wxT("log")) ||
 			(sPage == wxT("sinfo")) || (sPage == wxT("debuglog")) ||
 			(sPage == wxT("stats"))) {
 			wxString sT = pThis->m_Templates.sHeaderMetaRefresh;
-			wxString sRefresh = sRefresh.Format(wxT("%d"), nRefresh);
+			wxString sRefresh = sRefresh.Format(wxT("%d"), pThis->m_nRefresh);
 			sT.Replace(wxT("[RefreshVal]"), sRefresh);
 			
 			wxString catadd = wxEmptyString;
@@ -677,7 +728,7 @@ wxString CWebServer::_GetHeader(ThreadData Data, long lSession) {
 		return wxEmptyString;
 	}
 	
-	switch (stats->GetTagByName(EC_TAG_STATS_CONNSTATE)->GetInt8Data()) {
+	switch (stats->GetTagByName(EC_TAG_CONNSTATE)->GetInt8Data()) {
 		case 0:
 			sConnected = _("Not connected");
 			if (IsSessionAdmin(Data,sSession)) {
@@ -690,11 +741,11 @@ wxString CWebServer::_GetHeader(ThreadData Data, long lSession) {
 			break;
 		case 2:
 		case 3: {
-				CECTag *server = stats->GetTagByName(EC_TAG_STATS_CONNSTATE)->GetTagByIndex(0);
+				CECTag *server = stats->GetTagByName(EC_TAG_CONNSTATE)->GetTagByIndex(0);
 				sConnected = _("Connected to ");
 				sConnected += server->GetTagByName(EC_TAG_SERVER_NAME)->GetStringData() + wxT(" ");
 				sConnected += server->GetIPv4Data().StringIP() + wxT(" ");
-				sConnected += stats->GetTagByName(EC_TAG_STATS_CONNSTATE)->GetInt8Data() == 2 ? _("with LowID") : _("with HighID");
+				sConnected += stats->GetTagByName(EC_TAG_CONNSTATE)->GetInt8Data() == 2 ? _("with LowID") : _("with HighID");
 			}
 			break;
 	}
