@@ -79,7 +79,7 @@ public:
 	virtual CED2KFileLink* GetFileLink();
 	virtual void GetLink(wxString& lnk);
 	const char* GetName() const { return m_name; }
-	long GetSize() const { return atol(m_size); }
+	uint64 GetSize() const { return atoll(m_size); }
 	const unsigned char* GetHashKey() const { return m_hash;}
 	bool HasValidSources() const {return (SourcesList!=NULL); }
 	CMemFile* SourcesList;
