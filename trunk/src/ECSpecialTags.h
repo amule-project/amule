@@ -63,8 +63,12 @@ class CEC_PartFile_Tag : public CECTag {
  	public:
  		CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level);
  		
+		// template needs it
+		uint32		ID()	{ return GetMD4Data(); }
+
  		CMD4Hash	FileHash()	{ return GetMD4Data(); }
 		wxString	FileHashString() { return GetMD4Data().Encode(); }
+
  		wxString	FileName()	{ return GetTagByName(EC_TAG_PARTFILE_NAME)->GetStringData(); }
  		uint32		SizeFull()	{ return GetTagByName(EC_TAG_PARTFILE_SIZE_FULL)->GetInt32Data(); }
  		uint32		SizeXfer()	{ return GetTagByName(EC_TAG_PARTFILE_SIZE_XFER)->GetInt32Data(); }
@@ -86,9 +90,13 @@ class CEC_PartFile_Tag : public CECTag {
 class CEC_SharedFile_Tag : public CECTag {
 	public:
 		CEC_SharedFile_Tag(const CKnownFile *file, EC_DETAIL_LEVEL detail_level);
-		
+
+		// template needs it
+ 		uint32		ID()	{ return GetMD4Data(); }
+
  		CMD4Hash	FileHash()	{ return GetMD4Data(); }
 		wxString	FileHashString() { return GetMD4Data().Encode(); }
+
  		wxString	FileName()	{ return GetTagByName(EC_TAG_PARTFILE_NAME)->GetStringData(); }
  		uint32		SizeFull()	{ return GetTagByName(EC_TAG_PARTFILE_SIZE_FULL)->GetInt32Data(); }
   		uint32		Prio()		{ return GetTagByName(EC_TAG_PARTFILE_PRIO)->GetInt32Data(); }
@@ -99,6 +107,9 @@ class CEC_SharedFile_Tag : public CECTag {
 
  		uint32		GetAccepts()	{ return GetTagByName(EC_TAG_KNOWNFILE_ACCEPT_COUNT)->GetInt32Data(); }
  		uint32		GetAllAccepts()	{ return GetTagByName(EC_TAG_KNOWNFILE_ACCEPT_COUNT_ALL)->GetInt32Data(); }
+
+ 		uint32		GetXferred()	{ return GetTagByName(EC_TAG_KNOWNFILE_XFERRED)->GetInt32Data(); }
+ 		uint32		GetAllXferred()	{ return GetTagByName(EC_TAG_KNOWNFILE_XFERRED_ALL)->GetInt32Data(); }
 };
 
 #endif /* ECSPEACIALTAGS_H */
