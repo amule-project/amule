@@ -545,12 +545,12 @@ void CamuleDlg::ResetLog(uint8 whichone)
 
 	switch (whichone){
 		case 1:
-			ct=(wxTextCtrl*)serverwnd->FindWindowById(ID_LOGVIEW);
+			ct=(wxTextCtrl*)serverwnd->FindWindow(ID_LOGVIEW);
 			// Delete log file aswell.
 			wxRemoveFile(wxString::Format("%s/.aMule/logfile", getenv("HOME")));
 			break;
 		case 2:
-			ct=(wxTextCtrl*)serverwnd->FindWindowById(ID_SERVERINFO);
+			ct=(wxTextCtrl*)serverwnd->FindWindow(ID_SERVERINFO);
 			break;
 		default:
 			return;
