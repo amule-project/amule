@@ -209,16 +209,9 @@ public:
 protected:
 	bool	LoadTagsFromFile(const CFile* file);
 	bool	LoadDateFromFile(const CFile* file);
-	void	CreateHashFromFile(CFile* file, int Length, uchar* Output, CAICHHashTree* pShaHashOut = NULL) const { 
-			// This allows big endian build to not get done while I import.
-			#if wxBYTE_ORDER == wxBIG_ENDIAN
-				#error Sorry, no big endian compilation allowed today.
-				#error Will be fixed ASAP.
-			#endif
-			CreateHashFromInput(NULL, file, Length, Output, NULL, pShaHashOut); 
-		}	
-	void	CreateHashFromFile(FILE* file, int Length, uchar* Output, CAICHHashTree* pShaHashOut = NULL) const { CreateHashFromInput(file, NULL, Length, Output, NULL, pShaHashOut); }		
-	void	CreateHashFromString(unsigned char* in_string, int Length, unsigned char* Output)	{CreateHashFromInput(0,Length,Output,in_string);}
+	void	CreateHashFromFile(CFile* file, uint32 Length, uchar* Output, CAICHHashTree* pShaHashOut = NULL) const { CreateHashFromInput(NULL, file, Length, Output, NULL, pShaHashOut); }	
+	void	CreateHashFromFile(FILE* file, uint32 Length, uchar* Output, CAICHHashTree* pShaHashOut = NULL) const { CreateHashFromInput(file, NULL, Length, Output, NULL, pShaHashOut); }
+	void	CreateHashFromString(uchar* in_string, uint32 Length, uchar* Output, CAICHHashTree* pShaHashOut = NULL)	{CreateHashFromInput(NULL, NULL, Length,Output,in_string,pShaHashOut);}
 	void	LoadComment();//comment
 	void GetMetaDataTags();
 	ArrayOfCMD4Hash hashlist;
@@ -226,8 +219,7 @@ protected:
 	wxString m_strFilePath;	
 	CAICHHashSet*			m_pAICHHashSet;
 private:
-	void	CreateHashFromInput(CFile* file, int Length, unsigned char* Output, unsigned char* = 0);
-	void	CreateHashFromInput(FILE* file, CFile* file2, int Length, uchar* Output, uchar* in_string, CAICHHashTree* pShaHashOut) const;
+	void	CreateHashFromInput(FILE* file, CFile* file2, uint32 Length, uchar* Output, uchar* in_string, CAICHHashTree* pShaHashOut) const;
 	void MD4Transform(uint32 Hash[4], uint32 x[16]) const;
 	bool	m_bCommentLoaded;
 	uint16	m_iPartCount;
