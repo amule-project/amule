@@ -95,7 +95,7 @@ int EraseValue( LIST& list, const ITEM& item )
 
 	for ( ; it != list.end(); ) {
 		if ( *it == item ) {
-			list.erase( it++ );
+			it = list.erase( it );
 			count++;
 		} else {
 			++it;
