@@ -3434,8 +3434,8 @@ void wxODListMainWindow::OnMouse( wxMouseEvent &event )
         m_lineLastClicked = current;
 
         size_t oldCurrent = m_current;
-
-        if ( IsSingleSel() || !(event.ControlDown() || event.ShiftDown()) )
+        bool cmdModifierDown = event.CmdDown();
+        if ( IsSingleSel() || !(cmdModifierDown || event.ShiftDown()) )
         {
             HighlightAll( FALSE );
 
@@ -3445,7 +3445,7 @@ void wxODListMainWindow::OnMouse( wxMouseEvent &event )
         }
         else // multi sel & either ctrl or shift is down
         {
-            if (event.ControlDown())
+            if (cmdModifierDown)
             {
                 ChangeCurrent(current);
 
