@@ -254,8 +254,6 @@ void CamulewebApp::OnInitCmdLine(wxCmdLineParser& amuleweb_parser)
 bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 {
 	m_HasTemplate = parser.Found(wxT("template"), &m_TemplateFileName);
-	m_bForcedUseGzip = m_UseGzip = parser.Found(wxT("gzip"));
-	m_bForcedAllowGuest = m_AllowGuest = parser.Found(wxT("guest"));
 	if ( parser.Found(wxT("file-config")) ) {
 		wxFileConfig eMuleIni(
 			wxT("eMule"),
@@ -267,6 +265,8 @@ bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 		wxString AllowGuest = eMuleIni.Read(wxT("/WebServer/UseLowRightsUser"));
 		m_AllowGuest = (AllowGuest == wxT("1")) ? true : false;
 	}
+	m_bForcedUseGzip = m_UseGzip = parser.Found(wxT("gzip"));
+	m_bForcedAllowGuest = m_AllowGuest = parser.Found(wxT("guest"));
 	// file already contain password in hashed form
 	if ( !parser.Found(wxT("admin-pass"), &m_AdminPass) ) {
 		m_bForcedAdminPassword = false;
