@@ -28,13 +28,14 @@
 
 class ECSocket : public wxSocketClient {
 
-public:	
+public:
+	
 	wxString SendRecvMsg(const wxChar *msg);
 	
 	virtual ECSocket& Read(uint8&);
 	virtual ECSocket& Read(uint16&);
 	virtual ECSocket& Read(uint32&);
-	#ifndef __WXMAC__
+	#if 0
 	virtual ECSocket& Read(uint64&);
 	#endif
 	virtual ECSocket& Read(wxString&);
@@ -42,7 +43,7 @@ public:
 	virtual ECSocket& Write(const uint8&);
 	virtual ECSocket& Write(const uint16&);
 	virtual ECSocket& Write(const uint32&);
-	#ifndef __WXMAC__
+	#if 0
 	virtual ECSocket& Write(const uint64&);
 	#endif
 	virtual ECSocket& Write(const wxString&);
