@@ -42,7 +42,7 @@
 #include "NetworkFunctions.h" // Needed for Uint32_16toStringIP_Port
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "amule.h"			// Needed for theApp
-
+#include "StringFunctions.h" // Needed for StrToULong
 #ifdef HAVE_CONFIG_H
 #include "config.h"		// Needed for VERSION
 #endif

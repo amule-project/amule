@@ -41,6 +41,7 @@
 #include "GetTickCount.h"
 #include "ServerSocket.h"
 #include "Statistics.h"		// Needed for CStatistics
+#include "StringFunctions.h" // Needed for unicode2char 
 #include <sys/types.h>
 
 //

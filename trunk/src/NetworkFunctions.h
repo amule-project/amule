@@ -30,9 +30,6 @@
 #include <wx/string.h>
 #include <wx/thread.h>
 #include <wx/socket.h>
-#include "StringFunctions.h"
-
-
 
 // Network ip/host handling functions
 // These functions takes IPs in anti-host order and IPs in anti-host order
