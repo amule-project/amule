@@ -200,8 +200,10 @@ void CUploadQueue::Process()
 			kBpsEst = 1.0;
 		clientsrdy++;
 	} else {
-		if ((kBpsEst += 2.0) > (float)(app_prefs->GetMaxUpload()))
-			kBpsEst = (float)(app_prefs->GetMaxUpload());
+		if (theApp.glob_prefs->GetMaxUpload() != UNLIMITED) {
+			if ((kBpsEst += 2.0) > (float)(app_prefs->GetMaxUpload()))
+				kBpsEst = (float)(app_prefs->GetMaxUpload());
+		}
 	}
 	float	kBpsSendPerClient = kBpsEst/clientsrdy;
 	uint32	bytesSent = 0;
@@ -284,8 +286,9 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client)
 {
 	if (theApp.serverconnect->IsConnected() && theApp.serverconnect->IsLowID() && !theApp.serverconnect->IsLocalServer(client->GetServerIP(),client->GetServerPort()) && client->GetDownloadState() == DS_NONE && !client->IsFriend() && GetWaitingUserCount() > 50) {
 		// Well, all that issues finish in the same: don't allow to add to the queue
-		return;		
+		return;	
 	}
+		
 	
 	if (client->IsBanned()) {
 		return;
