@@ -1997,8 +1997,9 @@ void CUpDownClient::CheckForGPLEvilDoer_Nick()
 	wxString username = m_Username.Lower();
 	
 	// check for known leecher
-	if (Contains( username, char2unicode("§¯å]¹qå[") )			||	// §¯Å]¹qÅ[
-		Contains( username, char2unicode("§¯å]¸tå[") )			||	// §¯Å]¸tÅ[
+	if (
+//		Contains( username, char2unicode("§¯å]¹qå[") )			||	// §¯Å]¹qÅ[
+//		Contains( username, char2unicode("§¯å]¸tå[") )			||	// §¯Å]¸tÅ[
 		Contains( username, wxT("00de") )				||
 		Contains( username, wxT("a-edit") )				||	// a-eDit
 		Contains( username, wxT("agentsmith") )			||	// AgentSmith
@@ -2054,7 +2055,7 @@ void CUpDownClient::CheckForGPLEvilDoer_Nick()
 		Contains( username, wxT("relikt") )				||	// Relikt
 		Contains( username, wxT("reverse") )			||	// Reverse
 		Contains( username, wxT("rocket.t35") )			||
-		Contains( username, char2unicode("safty´s") )			||	// Safty´s
+//		Contains( username, char2unicode("safty´s") )			||	// Safty´s
 		Contains( username, wxT("sauger") )				||	// Sauger
 		Contains( username, wxT("schlumpmule") )		||	// SchlumpMule
 		Contains( username, wxT("speed-unit") )			||	// Speed-Unit
@@ -2102,7 +2103,7 @@ void CUpDownClient::CheckForGPLEvilDoer_Mod()
 		// Added by BlackRat [LSD: irregular Clients Donkeys]
 		((GetVersion() > 589) && (GetSourceExchangeVersion() > 0) && (GetClientSoft() == SO_EDONKEY) ) ||
 		// check for known unrespectful version of eMule
-		Contains( modversion, char2unicode("§¯å]") )				||	// §¯Å]
+//		Contains( modversion, char2unicode("§¯å]") )				||	// §¯Å]
 		Contains( modversion, wxT("aideadsl") )			||	// AideADSL
 		Contains( modversion, wxT("a i d e a d s l") )	||	// A I D E A D S L
 		Contains( modversion, wxT("aldo") )				||
