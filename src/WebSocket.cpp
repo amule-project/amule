@@ -281,9 +281,12 @@ void CWebSocket::OnReceived(char* pData, wxUint32 dwSize) {
 }
 
 
-void CWebSocket::OnRequestReceived(char* pHeader, wxUint32 dwHeaderLen, char* pData, wxUint32 dwDataLen) {
-	wxString sHeader(pHeader); sHeader=sHeader.Left(dwHeaderLen);
-	wxString sData(pData); sData=sData.Left(dwDataLen);
+void CWebSocket::OnRequestReceived(char* pHeader, wxUint32 dwHeaderLen, char* pData, wxUint32 dwDataLen)
+{
+	wxString sHeader(char2unicode(pHeader));
+	sHeader = sHeader.Left(dwHeaderLen);
+	wxString sData(char2unicode(pData));
+	sData=sData.Left(dwDataLen);
 	wxString sURL;
 	bool imgreq=false;
 	bool stylereq=false;
