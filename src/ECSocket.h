@@ -71,6 +71,8 @@ class ECSocket
 		//
 		bool Destroy() { UnregisterSocket(m_sock); return m_sock->Destroy(); }
 		bool Ok() const { return m_sock->Ok(); }
+		void SetFlags(wxSocketFlags flags) { if (m_sock) m_sock->SetFlags(flags); }
+
 
 		//
 		// Client

@@ -316,6 +316,13 @@ unsigned int ReadBufferFromSocket(wxSocketBase *sock, void *buffer, unsigned int
 	wxSocketError LastErrorValue = sock->LastError();
 
 	while ((required_len > ReadSoFar) && !error) {
+		/*
+		 * lfroen: commenting this out becouse it doesn't work this way on gui builds. On wxGTK
+		 * any call to WaitFor<X> will eventually call Yield. As a result, if socket call initiated
+		 * by some gui action (selecting a menu), wxYield is called recoursively.
+		 * So, furure TODO: get rid of WaitFor<X> on gui builds. Thats an only way.
+		 */
+#ifndef CLIENT_GUI
 		//
 		// Give socket a 10 sec chance to recv more data.
 		if (FirstRead && (required_len != max_len)) {
@@ -338,6 +345,7 @@ unsigned int ReadBufferFromSocket(wxSocketBase *sock, void *buffer, unsigned int
 				break;
 			}
 		}
+#endif
 		sock->Read(iobuf, max_len);
 		LastIO = sock->LastCount();
 		error = sock->Error();
