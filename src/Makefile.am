@@ -51,7 +51,8 @@ DEFS = -DHAVE_CONFIG_H
 BUILT_SOURCES =
 
 #LIBS = @LIBS@ 
-amulegui_SOURCES = amule-gui.cpp \
+amulegui_SOURCES = \
+	#amule-gui.cpp \
 	BarShader.cpp \
 	CatDialog.cpp \
 	CFile.cpp \
@@ -198,7 +199,7 @@ amuled_SOURCES = ListenSocket.cpp \
         ServerSocket.cpp \
         SharedFileList.cpp \
         sockets.cpp \
-        timer.cpp \
+        #timer.cpp \
         UDPSocket.cpp \
         UploadClient.cpp \
         UploadQueue.cpp \
@@ -271,9 +272,8 @@ amulewebDLG_CXXFLAGS = $(WX_CXXFLAGS) -DAMULEWEBDLG
 amulewebDLG_LDADD = $(WX_LIBS) $(ZLIB_LIBS)
 
 noinst_HEADERS = AddFileThread.h \
-		 AICHSyncThread.h \
-		 CryptoPP.h \
 		 AddFriend.h \
+		 AICHSyncThread.h \
 		 amuleDlg.h \
 		 amule.h \
 		 amuleIPV4Address.h \
@@ -294,6 +294,7 @@ noinst_HEADERS = AddFileThread.h \
 		 CommentDialog.h \
 		 CommentDialogLst.h \
 		 CryptoPP.h \
+		 CryptoPP_Inc.h \
 		 CTypedPtrList.h \
 		 DirectoryTreeCtrl.h \
 		 DownloadListCtrl.h \
@@ -304,8 +305,8 @@ noinst_HEADERS = AddFileThread.h \
 		 eggtrayicon.h \
 		 EMSocket.h \
 		 endianfix.h \
-		 ExternalConn.h \
 		 ExternalConnector.h \
+		 ExternalConn.h \
 		 FileDetailDialog.h \
 		 FileDetailListCtrl.h \
 		 filefn.h \
@@ -320,8 +321,8 @@ noinst_HEADERS = AddFileThread.h \
 		 HTTPDownloadDlg.h \
 		 inetdownload.h \
 		 IPFilter.h \
-		 KnownFile.h \
 		 KadDlg.h \
+		 KnownFile.h \
 		 KnownFileList.h \
 		 LastCommonRouteFinder.h \
 		 listbase.h \
@@ -332,6 +333,7 @@ noinst_HEADERS = AddFileThread.h \
 		 MuleGifCtrl.h \
 		 MuleListCtrl.h \
 		 MuleNotebook.h \
+		 MuleTextCtrl.h \
 		 muuli_wdr.h \
 		 opcodes.h \
 		 OScopeCtrl.h \
@@ -372,6 +374,7 @@ noinst_HEADERS = AddFileThread.h \
 		 WebServer.h \
 		 WebSocket.h \
 		 xembed.h
+
 
 MAINTAINERCLEANFILES = Makefile.in
 
