@@ -35,8 +35,9 @@
 // Include wxWindows' headers
 #ifndef WX_PRECOMP
 #include <wx/wx.h>
-#include <wx/cmdline.h>
 #endif
+
+#include <wx/cmdline.h>
 
 /// Command line parameters
 static const wxCmdLineEntryDesc cmdLineDesc[] =
