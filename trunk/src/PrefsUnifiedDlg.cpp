@@ -436,6 +436,9 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 	// do sanity checking, special processing, and user notifications here
 	thePrefs::CheckUlDlRatio();
 
+	// Force port checking
+	thePrefs::SetPort(thePrefs::GetPort());
+	
 	if (	otherfunctions::IsEmptyFile(theApp.ConfigDir + wxT("addresses.dat")) && 
 		CastChild(IDC_AUTOSERVER, wxCheckBox)->IsChecked() ) {
 		thePrefs::UnsetAutoServerStart();
@@ -896,5 +899,3 @@ void PrefsUnifiedDlg::OnTCPClientPortChange(wxSpinEvent& WXUNUSED(event))
 	txt << wxT("Client UDP port: ") << port + 3;
 	CastChild(ID_TEXT_CLIENT_UDP_PORT, wxStaticText)->SetLabel(txt);
 }
-
-
