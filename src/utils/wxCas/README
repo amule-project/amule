@@ -1,9 +1,0 @@
-wxCas has been tested to compile successfully on windows (MinGW) and Linux (GCC)
-
-On windows, the MinGW compiler was used as part as MinGW Developper Studio (v2.05).
-The project file for MinGW Developper Studio is wxcas.msp, at the head of wxCas folder.
-
-By default, wxCas is looking for a file named .aMule/amulesig.dat in your home dir,
-$HOME under Linux, %HOME% under win32, i.e. /home/nick/.aMule/amulesig.dat under Linux and
-C:\Documents and Settings\nick\.aMule\amulesig.dat under Windows 2000 or XP
-
