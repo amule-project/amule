@@ -404,8 +404,11 @@ enum {
 	 */
 	EC_TAG_STATS_UL_QUEUE_LEN,
 	
+	/*!
+	 * \brief Number of users on currectly conected server
+	 */
 	EC_TAG_STATS_USERS_ON_SERVER,
-
+	
 	/*!
 	 * \brief Info about CPartFile
 	 * 
@@ -427,6 +430,21 @@ enum {
 	EC_TAG_PARTFILE_SOURCE_COUNT_XFER,
 	EC_TAG_PARTFILE_ED2K_LINK,
 
+	/*!
+	 * \brief Info about CKnownFile (shared file)
+	 * 
+	 * Value (string): (the full one)
+	 * 
+	 * \par Chld TAGs:
+	 *  ::EC_TAG_KNOWNFILE_*
+	 */
+	EC_TAG_KNOWNFILE,
+	EC_TAG_KNOWNFILE_ED2K_LINK,
+	EC_TAG_KNOWNFILE_PRIO,
+	EC_TAG_KNOWNFILE_XFERRED,
+	EC_TAG_KNOWNFILE_REQ_COUNT,
+	EC_TAG_KNOWNFILE_ACCEPT_COUNT,
+	
 	/*!
 	 * \brief Info about server
 	 *
