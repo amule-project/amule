@@ -45,9 +45,8 @@ static char THIS_FILE[]=__FILE__;
 #define MINUNIQUEIPS_TOTRUST		10	// how many unique IPs most have send us a hash to make it trustworthy
 #define	MINPERCENTAGE_TOTRUST		92  // how many percentage of clients most have sent the same hash to make it trustworthy
 
-#warning FILE TODO: LOGLINES AND DbgTest
-// Grep for TODO for needed loglines. I think we can remove DbgTest 
-// anyway, because eMule guys do test it :P
+#warning FILE TODO: LOGLINES
+// Grep for TODO for needed loglines. 
 
 CAICHRequestedDataList CAICHHashSet::m_liRequestedData;
 
@@ -91,7 +90,6 @@ CAICHHashTree* CAICHHashTree::FindHash(uint32 nStartPos, uint32 nSize, uint8* nL
 		return false;
 	}
 	if (nStartPos + nSize > m_nDataSize){ // sanity
-		printf("SP: %i | nS %i | DS %i\n", nStartPos,nSize,m_nDataSize);
 		wxASSERT ( false );
 		return NULL;
 	}
@@ -715,14 +713,15 @@ bool CAICHHashSet::LoadHashSet(){
 		}
 // TODO		
 		//   theApp.QueueDebugLogLine(true, _T("Failed to load HashSet: HashSet not found!"));
-	}
-	catch(wxString error){
+	} catch(wxString error){
 		if (file.Eof()) {
 			   theApp.QueueLogLine(true,_("Error: EOF on ") + error);
 		} else {
 				theApp.QueueLogLine(true,_("Error: wrong format on ")  + error);
 		}
 		return false;
+	} catch (...) {
+		printf("Unexpected error reading known2.met file");
 	}
 	return false;
 }
@@ -902,15 +901,15 @@ bool CAICHHashSet::IsPartDataAvailable(uint32 nPartStartPos){
 #define VERIFY(x) wxASSERT(x)
 
 void CAICHHashSet::DbgTest(){
-// TODO: DEBUG TEST.
 
 	//define TESTSIZE 4294567295
 	uint8 maxLevel = 0;
 	uint32 cHash = 1;
 	uint8 curLevel = 0;
-	uint32 cParts = 0;
 	maxLevel = 0;
-/*	CAICHHashTree* pTest = new CAICHHashTree(TESTSIZE, true, 9728000);
+/*	
+	uint32 cParts = 0;	
+	CAICHHashTree* pTest = new CAICHHashTree(TESTSIZE, true, 9728000);
 	for (uint64 i = 0; i+9728000 < TESTSIZE; i += 9728000){
 		CAICHHashTree* pTest2 = new CAICHHashTree(9728000, true, EMBLOCKSIZE);
 		pTest->ReplaceHashTree(i, 9728000, &pTest2);
@@ -927,8 +926,8 @@ void CAICHHashSet::DbgTest(){
 	TestHashSet.SetFileSize(m_pOwner->GetFileSize());
 	TestHashSet.SetMasterHash(GetMasterHash(), AICH_VERIFIED);
 	CSafeMemFile file;
-	uint64 i;
-	for (uint64 i = 0; i+9728000 < TESTSIZE; i += 9728000){
+	uint64 i = 0;
+	for (i = 0; i+9728000 < TESTSIZE; i += 9728000){
 		VERIFY( CreatePartRecoveryData(i, &file) );
 		
 		/*uint32 nRandomCorruption = (rand() * rand()) % (file.GetLength()-4);
@@ -939,7 +938,7 @@ void CAICHHashSet::DbgTest(){
 		VERIFY( TestHashSet.ReadRecoveryData(i, &file) );
 		file.Seek(0,wxFromStart);
 		TestHashSet.FreeHashSet();
-		uint32 j;
+		uint32 j = 0;
 		for (j = 0; j+EMBLOCKSIZE < 9728000; j += EMBLOCKSIZE){
 			VERIFY( m_pHashTree.FindHash(i+j, EMBLOCKSIZE, &curLevel) );
 			//TRACE(_T("%u - %s\r\n"), cHash, m_pHashTree.FindHash(i+j, EMBLOCKSIZE, &curLevel)->m_Hash.GetString());
@@ -959,7 +958,7 @@ void CAICHHashSet::DbgTest(){
 	VERIFY( TestHashSet.ReadRecoveryData(i, &file) );
 	file.Seek(0,wxFromStart);
 	TestHashSet.FreeHashSet();
-	uint64 j;
+	uint64 j = 0;
 	for (j = 0; j+EMBLOCKSIZE < TESTSIZE-i; j += EMBLOCKSIZE){
 		VERIFY( m_pHashTree.FindHash(i+j, EMBLOCKSIZE, &curLevel) );
 		//TRACE(_T("%u - %s\r\n"), cHash,m_pHashTree.FindHash(i+j, EMBLOCKSIZE, &curLevel)->m_Hash.GetString());
@@ -970,5 +969,5 @@ void CAICHHashSet::DbgTest(){
 	//VERIFY( m_pHashTree.FindHash(i+j, (TESTSIZE-i)-j, &curLevel) );
 //	TRACE(_T("%u - %s\r\n"), cHash,m_pHashTree.FindHash(i+j, (TESTSIZE-i)-j, &curLevel)->m_Hash.GetString());
 	maxLevel = max(curLevel, maxLevel);
-
+	
 }

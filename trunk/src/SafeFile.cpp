@@ -163,7 +163,7 @@ off_t CSafeFile::Read(void *pBuf, off_t nCount) const
 {
 	if ( GetPosition() + nCount > GetLength() )
 		// For lack of better
-		throw wxString::Format(wxT("Read after end of CSafeFile: %s\n"), GetFilePath().c_str());
+		throw CInvalidPacket("Read after end of CSafeFile");
 		// AfxThrowFileException(CFileException::endOfFile, 0, GetFileName());
 	
 	return CFile::Read( pBuf, nCount );
@@ -181,14 +181,14 @@ uint8 CSafeMemFile::ReadUInt8() const
 {
 	
 	if (m_position + sizeof(uint8) > m_FileSize)
-		throw wxT("EOF");
+		throw CInvalidPacket("EOF");
 	return *(m_buffer + m_position++);
 }
 
 uint16 CSafeMemFile::ReadUInt16() const
 {
 	if (m_position + sizeof(uint16) > m_FileSize)
-		throw wxT("EOF");
+		throw CInvalidPacket("EOF");
 	uint16 nResult = *((uint16*)(m_buffer + m_position));
 	m_position += sizeof(uint16);
 	return nResult;
@@ -197,7 +197,7 @@ uint16 CSafeMemFile::ReadUInt16() const
 uint32 CSafeMemFile::ReadUInt32() const
 {
 	if (m_position + sizeof(uint32) > m_FileSize)
-		throw wxT("EOF");
+		throw CInvalidPacket("EOF");
 	uint32 nResult = *((uint32*)(m_buffer + m_position));
 	m_position += sizeof(uint32);
 	return nResult;
@@ -206,7 +206,7 @@ uint32 CSafeMemFile::ReadUInt32() const
 void CSafeMemFile::ReadUInt128(Kademlia::CUInt128* pVal) const
 {
 	if (m_position + sizeof(uint32)*4 > m_nFileSize)
-		throw wxT("EOF");
+		throw CInvalidPacket("EOF");
 	uint32* pUInt32Val = (uint32*)pVal->getDataPtr();
 	const uint32* pUInt32 = (uint32*)(m_buffer + m_position);
 	pUInt32Val[0] = pUInt32[0];
@@ -219,7 +219,7 @@ void CSafeMemFile::ReadUInt128(Kademlia::CUInt128* pVal) const
 void CSafeMemFile::ReadHash16(uchar* pVal) const
 {
 	if (m_position + sizeof(uint32)*4 /*16 bytes*/ > m_FileSize)
-		throw wxT("EOF");
+		throw CInvalidPacket("EOF");
 	const uint32* pUInt32 = (uint32*)(m_buffer + m_position);
 	((uint32*)pVal)[0] = pUInt32[0];
 	((uint32*)pVal)[1] = pUInt32[1];
