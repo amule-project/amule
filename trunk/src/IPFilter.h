@@ -80,7 +80,7 @@ public:
 	 * @param IP2test The IP-Address to test for.
 	 * @return True if it is filtered, false otherwise.
 	 *
-	 * Note: IP2Test must be in network order.
+	 * Note: IP2Test must be in anti-host order (BE on LE platform, LE on BE platform).
 	 */
 	bool	IsFiltered( uint32 IP2test );
 

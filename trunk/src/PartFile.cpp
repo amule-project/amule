@@ -1718,7 +1718,7 @@ void CPartFile::AddSources(CSafeMemFile& sources,uint32 serverip, uint16 serverp
 					continue;
 				}
 			}
-			if (theApp.ipfilter->IsFiltered(ENDIAN_SWAP_32(userid))) {
+			if (theApp.ipfilter->IsFiltered(userid)) {
 				continue;
 			}
 		}
