@@ -990,17 +990,17 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 	amulesig_out.Write("\n",1);
 
         // Total received bytes in session
-	sprintf(buffer, "%llu", (stat_sessionReceivedBytes));
+	sprintf(buffer, "%llu", stat_sessionReceivedBytes);
         amulesig_out.Write(buffer, strlen(buffer));
         amulesig_out.Write("\n",1);
 
         // Total sent bytes in session
-	sprintf(buffer, "%llu", (stat_sessionSentBytes));
+	sprintf(buffer, "%llu", stat_sessionSentBytes);
         amulesig_out.Write(buffer, strlen(buffer));
         amulesig_out.Write("\n",1);
 
 	// Uptime
-	sprintf(buffer,"%s",CastSecondsToHM(GetUptimeSecs()).GetData());
+	sprintf(buffer,"%s",CastSecondsToHM(unicode2char(GetUptimeSecs())));
 	amulesig_out.Write(buffer, strlen(buffer));
 	amulesig_out.Write("\n",1);
 
@@ -1338,7 +1338,7 @@ wxFileType *ft;                            /* Temporary storage for filetype. */
 		}
 
 		if ( wxExecute( cmd, false ) ) {
-			printf( "Launch Command: %s", cmd.c_str() );
+			printf( "Launch Command: %s", unicode2char(cmd));
 			return;
 		}
 	}
