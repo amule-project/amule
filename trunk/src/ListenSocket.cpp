@@ -859,7 +859,7 @@ bool CClientReqSocket::ProcessPacket(char* packet, uint32 size, uint8 opcode)
 					break;
 				}
 				if (theApp.glob_prefs->CanSeeShares()==vsfaEverybody || (theApp.glob_prefs->CanSeeShares()==vsfaFriends && client->IsFriend())) {
-					theApp.amuledlg->AddLogLine(true,CString(_("User %s (%u) requested your shareddirectories-list -> %s")),client->GetUserName(),client->GetUserID(),CString(_("accepted")).GetBuffer());			
+					theApp.amuledlg->AddLogLine(true,CString(_("User %s (%u) requested your shareddirectories-list -> %s")),client->GetUserName(),client->GetUserID(),_("accepted"));			
 
 					// Kry - This new code from eMule will avoid duplicated folders
 					
@@ -1013,7 +1013,7 @@ bool CClientReqSocket::ProcessPacket(char* packet, uint32 size, uint8 opcode)
 					CSafeMemFile data((uchar*)packet, size);
 					uint32 uDirs;
 					data.Read(uDirs);
-					for (UINT i = 0; i < uDirs; i++){
+					for (uint32 i = 0; i < uDirs; i++){
 						wxString strDir;
 						data.Read(strDir);
 						theApp.amuledlg->AddLogLine(true,CString(_("User %s (%u) shares directory %s")),client->GetUserName(),client->GetUserID(),strDir.GetData());
@@ -1030,7 +1030,7 @@ bool CClientReqSocket::ProcessPacket(char* packet, uint32 size, uint8 opcode)
 						theApp.uploadqueue->AddUpDataOverheadOther(replypacket->size);
 						SendPacket(replypacket, true, true);
 					}
-					wxASSERT( data.GetPosition() > data.GetLength() );
+					wxASSERT( data.GetPosition() == data.GetLength() );
 					client->SetFileListRequested(uDirs);
 				} else {
 						theApp.amuledlg->AddLogLine(true,CString("Client %s ID %u sent unasked shared dir files"),client->GetUserName(),client->GetUserID());
