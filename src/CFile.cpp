@@ -309,10 +309,12 @@ off_t CFile::Read(void *pBuf, off_t nCount) const
 #endif
     if ( iRc == -1 ) {
         wxLogSysError(_("can't read from file descriptor %d"), m_fd);
+	    m_error = TRUE;
         return wxInvalidOffset;
     }
-    else
-        return (off_t)iRc;
+    else {
+		return (off_t)iRc;
+    }
 }
 
 // write
@@ -349,6 +351,7 @@ bool CFile::Flush()
 		#endif
 		{
 		    wxLogSysError(_("can't flush file descriptor %d"), m_fd);
+	    		m_error = TRUE;			
 	            return FALSE;
 		}
     }
@@ -387,6 +390,7 @@ off_t CFile::Seek(off_t ofs, wxSeekMode mode) const
 	off_t iRc = lseek(m_fd, ofs, origin);
 	if ( iRc == -1 ) {
 		printf("Error in lseek: %s\n", strerror(errno));
+		m_error = TRUE;
 		return wxInvalidOffset;
 	} else {
 		return (off_t) iRc;
