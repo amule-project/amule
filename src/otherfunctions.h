@@ -145,7 +145,7 @@ inline wxString MakeFoldername(wxString path) {
  * @param isFilePath If true, then the path will be truncated rather than the filename if possible.
  * @return The truncated filename.
  */
-wxString TruncateFilename(const wxString& filename, int length, bool isFilePath = false);
+wxString TruncateFilename(const wxString& filename, size_t length, bool isFilePath = false);
 
 // Makes a backup of a file, by copying the original file to filename + appendix
 bool BackupFile(const wxString& filename, const wxString& appendix);

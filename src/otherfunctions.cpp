@@ -274,7 +274,7 @@ wxString URLEncode(wxString sIn)
 }
 
 
-wxString TruncateFilename(const wxString& filename, int length, bool isFilePath)
+wxString TruncateFilename(const wxString& filename, size_t length, bool isFilePath)
 {
 	// Check if there's anything to do
 	if ( filename.Length() <= length )
