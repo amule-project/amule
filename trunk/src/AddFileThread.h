@@ -22,50 +22,140 @@
 
 #include <wx/thread.h>		// Needed for wxThread
 
-#include "CTypedPtrList.h"	// Needed for CTypedPtrList
-#include "types.h"
-#include "GetTickCount.h"
+#include <list>				// Needed for std::list
 
-#define THREAD_ADDING_TIMEOUT	60000 // 1 min timeout
+#include "types.h"			// Needed for uints
+
 
 class CPartFile;
-class UnknownFile_Struct;
+struct QueuedFile;
 
-class CAddFileThread : protected wxThread
+
+/**
+ * This class takes care of transparently hashing files in seperate threads and
+ * throws events once a file has been completed. By default it only uses a 
+ * single thread, however, this can be changed by incrementing the MAXTHREADCOUNT
+ * constant in AddFileThread.cpp. Each thread works by reading a chunk of the 
+ * file (CRUMBSIZE bytes, see AddFileThread.cpp) and hashing that. Once there 
+ * are no more files to hash, the threads die.
+ *
+ * You need to call Start() before the class will start spawning new threads, 
+ * however, it does not matter if you call it before or after adding the files.
+ * To terminate the threads, simply call Stop().
+ *
+ *
+ * Note:
+ *  I have been very careful to decrease the locking time of this class in order
+ *  to avoid dead-locks. Should you wish to change this class, please keep this 
+ *  in mind.
+ */
+class CAddFileThread : private wxThread
 {
 public:
 	CAddFileThread();
 
-	static void		Setup();
-	static void		Shutdown();
+	/**
+	 * Starts the hasher.
+	 *
+	 * This function does nothing but set if s_running variable unless there are
+	 * already files on the queue. If there are files on the queue, then the 
+	 * maximum number of threads allowed will be created and started.
+	 */
+	static void		Start();
 
-	static void		AddFile(const wxString& path, const wxString& name, const CPartFile* = NULL);
-	static int		GetCount();
-	static bool		IsRunning() { return !DeadThread; }
+	/**
+	 * Stops the hasher and all threads.
+	 *
+	 * This function sets the s_running variable and waits for the currently 
+	 * existing threads to die. It will wait at most 20 seconds, after which 
+	 * it will print a warning and return. In most cases it should return 
+	 * almost immediatly.
+	 */
+	static void		Stop();
 
-protected:
-	virtual	bool		InitInstance()
-		{return true;}
-	virtual wxThread::ExitCode 	Entry();
-	virtual void 		OnExit()
-		{}
+
+	/**
+	 * @return The number of files in the s_queue list.
+	 *
+	 * Please note that this function only returns the number of files not being 
+	 * hashes, as any files that are being hashes are immediatly removed from the 
+	 * queue. Therefore, the number of files will be aproximatly GetFileCount() +
+	 * GetThreadCount()
+	 */
+	static int		GetFileCount();
+	
+	/**
+	 * Speficies the number of existing threads.
+	 *
+	 * @return The current number of existing threads. It is probably safe to
+	 * assume that this reflects the number of files being hashed, as 
+	 */
+	static uint8	GetThreadCount();
+	
+	/**
+	 * Specifies if the hasher is active.
+	 *
+	 * @return True if the hashes is active and threads are allowed to run.
+	 */
+	static bool		IsRunning(); 
+
+
+	/**
+	 * Adds a file to the hashing queue.
+	 *
+	 * @param path The full path of the file.
+	 * @param name The filename.
+	 * @param part The CPartFile object which the file belongs to. Used when verifying completed files.
+	 */
+	static void		AddFile(const wxString& path, const wxString& name, const CPartFile* part = NULL);
 
 private:
-	wxThread*		m_Thread;
+	/**
+	 * Helper function that creates another thread.
+	 */
+	static void CreateNewThread();
 
-	// Setted to non-zero to end the thread
-	static volatile int	m_endWaitingForHashList;
+	/**
+	 * Helper function for getting the next file on the queue.
+	 *
+	 * @return The first file on the list (which gets removed) or NULL if the list is empty.
+	 */
+	static QueuedFile* PopQueuedFile();
 
-	// Lock for the wait list and the conditions
-	static wxMutex 		m_lockWaitingForHashList;
+	/**
+	 * Helper function for adding a file to the queue.
+	 *
+	 * @param file The object to be added to the queue
+	 * @param addLast If true then add the file to the back of the queue, otherwise, insert it at the front.
+	 */
+	static void PushQueuedFile(QueuedFile* file, bool addLast = true);
+	 
 
-	static bool DeadThread;
+	//! Sets the IsRunning status
+	static void		SetRunning(bool running);
+	//! Increments thread count
+	static void		ThreadCountInc();
+	//! Decrements thread count
+	static void		ThreadCountDec();
+	
+	//! Main function
+	virtual ExitCode 	Entry();
+	
+	//! Lock for the s_running variable
+	static wxMutex		s_running_lock;
+	//! Lock for the thread count
+	static wxMutex		s_count_lock;
+	//! Lock for the queue
+	static wxMutex 		s_queue_lock;
 
-	static uint32 dwLastAddTime;
+	//! Is the hasher active. Does not mean that there are any threads running.
+	static bool			s_running;
 
-	// The wait list itself
-	static CTypedPtrList<CPtrList, UnknownFile_Struct*>
-				m_sWaitingForHashList;
+	//! Number of currently existing threads.
+	static uint8		s_count;
+
+	//! The queue of files to be hashed
+	static std::list<QueuedFile*> s_queue;
 };
 
 #endif // ADDFILETHREAD_H

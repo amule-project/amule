@@ -31,7 +31,6 @@
 struct UnknownFile_Struct;
 
 class CKnownFileList;
-class CAddFileThread;
 class CKnownFile;
 class CServerConnect;
 class CPreferences;
@@ -72,7 +71,6 @@ private:
 	CPreferences*		app_prefs;
 	CServerConnect*		server;
 	CSharedFilesCtrl*	output;
-	CAddFileThread*		m_Thread;
 };
 
 #endif // SHAREDFILELIST_H

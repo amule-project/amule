@@ -658,8 +658,8 @@ bool CamuleApp::OnInit()
 	// Load localization settings
 	Localize_mule();
 
-	// Create Hashing thread
-	CAddFileThread::Setup();
+	// Ready file-hasher
+	CAddFileThread::Start();
 
 
 	clientlist		= new CClientList();
@@ -1736,12 +1736,9 @@ void CamuleApp::OnCoreTimer(wxTimerEvent& WXUNUSED(evt))
 void CamuleApp::OnHashingShutdown(wxCommandEvent& WXUNUSED(evt))
 {
 	if ( m_app_state != APP_STATE_SHUTINGDOWN ) {
-		printf("Hashing thread ended\n");
 		// Save the known.met file
 		knownfiles->Save();
-	} else {
-		printf("Hashing thread terminated, ready to shutdown\n");
-	}
+	} 
 }
 
 
@@ -1751,7 +1748,6 @@ void CamuleApp::OnFinishedHashing(wxCommandEvent& evt)
 	static int bytecount = 0;
 
 	CKnownFile* result = (CKnownFile*)evt.GetClientData();
-	printf("Finished Hashing %s\n",unicode2char(result->GetFileName()));
 	if (evt.GetExtraLong()) {
 		CPartFile* requester = (CPartFile*)evt.GetExtraLong();
 		if (downloadqueue->IsPartFile(requester)) {
@@ -1772,7 +1768,7 @@ void CamuleApp::OnFinishedHashing(wxCommandEvent& evt)
 				}
 			}
 		} else {
-			printf("Not added\n");
+			printf("File not added to sharedlist: %s\n", unicode2char(result->GetFileName()));
 			delete result;
 		}
 	}
@@ -1798,7 +1794,7 @@ void CamuleApp::ShutDown() {
 	IsReady =  false;
 	amuledlg->Destroy();
 	if (CAddFileThread::IsRunning()) {
-		CAddFileThread::Shutdown();
+		CAddFileThread::Stop();
 	}
 }
 

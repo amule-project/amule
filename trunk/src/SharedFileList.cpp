@@ -90,7 +90,7 @@ void CSharedFileList::FindSharedFiles() {
 		AddFilesFromDirectory(app_prefs->shareddir_list.Item(ii));
 	}
 
-	uint32 newFiles = CAddFileThread::GetCount();
+	uint32 newFiles = CAddFileThread::GetFileCount();
 	if (!newFiles) {
 		AddLogLineM(false, wxString::Format(_("Found %i known shared files"),m_Files_map.size()));
 	} else {

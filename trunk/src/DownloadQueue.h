@@ -74,7 +74,6 @@ private:
 
 class CDownloadQueue
 {
-	friend class CAddFileThread;
 	friend class CServerSocket;
 public:
 	CDownloadQueue(CPreferences* in_prefs, CSharedFileList* in_sharedfilelist);

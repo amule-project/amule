@@ -729,7 +729,6 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool get
 			AddLogLineM(false, wxString::Format(_("Warning: %s might be corrupted"), m_fullname.c_str(), m_strFileName.c_str()));
 			// rehash
 			SetPartFileStatus(PS_WAITINGFORHASH);
-			//CAddFileThread::AddFile(directory, searchpath, this);
 			
 			wxString strPartFileName = m_partmetfilename.Left( m_partmetfilename.Length() - 4 );
 			CAddFileThread::AddFile(m_strFilePath, strPartFileName, this);
