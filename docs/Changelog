@@ -1,3 +1,15 @@
+Version 2.0.0 FINAL - The "Tiku - the one and only" version.
+----------
+2004-12-XX
+
+    CosmicDJ:
+	    * NetBSD compilation fixes.
+		
+    deltaHF:
+	    * GUI for auto-sort download queue.
+		
+--------------------------------------------------------------------------------
+
 Version 2.0.0rc8 - The "last rc" version.
 ----------
 2004-12-21
