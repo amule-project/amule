@@ -449,7 +449,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				wxString sName = item.Mid(11+idx1+idx2+2);
 					
 				CServer *nsrv = new CServer(atoi(unicode2char(sPort)), sIP);
-				nsrv->SetListName((char*)sName.GetData());
+				nsrv->SetListName(sName);
 				theApp.amuledlg->serverwnd->serverlistctrl->AddServer(nsrv, true);
 			}
 			return wxT("");
@@ -1712,7 +1712,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 					wxString sName = item.Mid(11+separator1+separator2+2);
 					
 					CServer *nsrv = new CServer(atoi(unicode2char(sPort)), sIP);
-					nsrv->SetListName((char*)sName.GetData());
+					nsrv->SetListName(sName);
 					theApp.amuledlg->serverwnd->serverlistctrl->AddServer(nsrv, true);
 					return wxT("Server Added");
 				}
