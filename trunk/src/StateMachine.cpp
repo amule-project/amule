@@ -35,6 +35,7 @@ m_max_states(max_states),
 m_initial_state(initial_state),
 m_clock_counter(0)
 {
+	m_state = initial_state;
 }
 
 StateMachine::~StateMachine()
