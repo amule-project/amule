@@ -202,7 +202,6 @@ private:
 	
 	uint16 m_OpenSocketsInterval;
 	uint32 maxconnectionreached;
-	wxIPV4address happyCompiler;
 	uint16	m_ConnectionStates[3];
 	uint16	m_nPeningConnections;
 	uint32	peakconnections;
