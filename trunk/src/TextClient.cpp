@@ -40,6 +40,8 @@
 	#include <wx/statline.h>	// For wxStaticLine
 #endif
 
+#include <list>
+
 //-------------------------------------------------------------------
 
 #include "otherfunctions.h"
@@ -261,26 +263,26 @@ void CamulecmdApp::Process_Answer_v2(CECPacket *reply)
 
 int CamulecmdApp::ProcessCommand(int CmdId)
 {
-	long FileId;
+	uint32 FileId;
 	wxString msg;
 	wxString args = GetCmdArgs();
 	CECPacket *request = 0;
+	std::list<CECPacket *> request_list;
+	
 	switch (CmdId) {
 		case CMD_ID_HELP:
 			ShowHelp();
 			return 0; // No need to contact core to display help ;)
 			
+ 		case CMD_ID_SRVSTAT:
 		case CMD_ID_STATS:
 			request = new CECPacket(EC_OP_STAT_REQ);
+			request_list.push_back(request);
 			break;
 			
 		case CMD_ID_SHUTDOWN:
 			request = new CECPacket(EC_OP_SHUTDOWN);
-			break;
-
- 		case CMD_ID_SRVSTAT:
-		// kept for backwards compatibility only (now in Stats)
-			msg = wxT("CONNSTAT");
+			request_list.push_back(request);
 			break;
 			
  		case CMD_ID_CONN:
@@ -303,11 +305,13 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 		case CMD_ID_RELOAD_IPFILTER:
 			request = new CECPacket(EC_OP_IPFILTER_CMD);
 			request->AddTag(CECTag(EC_TAG_IPFILTER_STATUS, (uint8)2));
+			request_list.push_back(request);
 			break;
 			
 		case CMD_ID_SET_IPFILTER:
 			if ( ! args.IsEmpty() ) {
 				request = new CECPacket(EC_OP_IPFILTER_CMD);
+				request_list.push_back(request);
 				if (args.IsSameAs(wxT("ON"), false)) {
 					request->AddTag(CECTag(EC_TAG_IPFILTER_STATUS, (uint8)1));
 				} else if (args.IsSameAs(wxT("OFF"), false)) {
@@ -329,13 +333,21 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			if ( args.IsEmpty() ) {
 				Show(_("This command requieres an argument. Valid arguments: 'all', a number.\n"));
 				return 0;
-			} else if (args.IsNumber()) {
-				args.ToLong(&FileId);
-				msg.Printf(wxT("PAUSE%li"), FileId);
-				//request = new CEECPacket(EC_OP_Q_FILE_CMD);
-				//request->AddTag(CECTag(EC_TAG_PARTFILE, args));
+			} else if (args.ToULong((unsigned long *)&FileId, 16)) {
+				request = new CECPacket(EC_OP_PARTFILE_PAUSE);
+				request->AddTag(CECTag(EC_TAG_ITEM_ID, FileId));
+				request_list.push_back(request);
 			} else if ( args.Left(3) == wxT("all") ) {
-				msg = wxT("PAUSEALL");
+				CECPacket request_all (EC_OP_GET_DLOAD_QUEUE);
+				CECPacket *reply_all = SendRecvMsg_v2(&request_all);
+				
+				for(int i = 0;i < reply_all->GetTagCount();i++) {
+					CECTag *tag = reply_all->GetTagByIndex(i);
+					FileId = tag->GetTagByName(EC_TAG_ITEM_ID)->GetInt32Data();
+					request = new CECPacket(EC_OP_PARTFILE_PAUSE);
+					request->AddTag(CECTag(EC_TAG_ITEM_ID, FileId));
+					request_list.push_back(request);
+				}
 			} else {
 				Show(_("Not a valid number\n"));
 				return 0;
@@ -346,11 +358,21 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			if ( args.IsEmpty() ) {
 				Show(_("This command requieres an argument. Valid arguments: 'all' or a number.\n"));
 				return 0;
-			} else if (args.IsNumber()) {
-				args.ToLong(&FileId);
-				msg.Printf(wxT("RESUME%li"), FileId);
+			} else if (args.ToULong((unsigned long *)&FileId, 16)) {
+				request = new CECPacket(EC_OP_PARTFILE_RESUME);
+				request->AddTag(CECTag(EC_TAG_ITEM_ID, FileId));
+				request_list.push_back(request);
 			} else if ( args.Left(3) == wxT("all") ) {
-				msg = wxT("RESUMEALL");
+				CECPacket request_all (EC_OP_GET_DLOAD_QUEUE);
+				CECPacket *reply_all = SendRecvMsg_v2(&request_all);
+				
+				for(int i = 0;i < reply_all->GetTagCount();i++) {
+					CECTag *tag = reply_all->GetTagByIndex(i);
+					FileId = tag->GetTagByName(EC_TAG_ITEM_ID)->GetInt32Data();
+					request = new CECPacket(EC_OP_PARTFILE_RESUME);
+					request->AddTag(CECTag(EC_TAG_ITEM_ID, FileId));
+					request_list.push_back(request);
+				}
 			} else {
 				Show(_("Not a valid number\n"));
 				return 0;
@@ -361,6 +383,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			// kept for backwards compatibility. Now 'list'
 			if ( args.Left(2) == wxT("dl") ) {
 				request = new CECPacket(EC_OP_GET_DLOAD_QUEUE);
+				request_list.push_back(request);
 			} else if ( args.Left(2) == wxT("ul") ) {
 				msg = wxT("UL_QUEUE");
 			} else {
@@ -375,6 +398,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			// kept for backwards compatibility only
 		case CMD_ID_IPLEVEL:
 			request = new CECPacket(EC_OP_IPFILTER_CMD);
+			request_list.push_back(request);
 			if ( !args.IsEmpty() ) {
 				unsigned long int level = 0;
 				if (args.ToULong(&level) == true && level < 256) {
@@ -390,14 +414,18 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 	}
 	
 	// v1 or v2 command format
-	if ( request ) {
-		wxString answer;
-		CECPacket *reply = SendRecvMsg_v2(request);
-		delete request;
-		if ( reply ) {
-			Process_Answer_v2(reply);
-			delete reply;
+	if ( ! request_list.empty() ) {
+		std::list<CECPacket *>::iterator it = request_list.begin();
+		while ( it != request_list.end() ) {
+			CECPacket *curr = *it++;
+			CECPacket *reply = SendRecvMsg_v2(curr);
+			delete curr;
+			if ( reply ) {
+				Process_Answer_v2(reply);
+				delete reply;
+			}
 		}
+		request_list.resize(0);
 	} else {
 		Process_Answer(SendRecvMsg(msg));
 	}
@@ -422,16 +450,16 @@ wxString ECv2_Response2String(CECPacket *response)
 		case EC_OP_DLOAD_QUEUE:
 			for(int i = 0; i < response->GetTagCount(); i ++) {
 				CECTag *tag = response->GetTagByIndex(i);
-				unsigned long filesize, donesize, src_count, src_xfer_count;
-				tag->GetTagByName(EC_TAG_PARTFILE_SIZE_FULL)->GetStringData().ToULong(&filesize);
-				tag->GetTagByName(EC_TAG_PARTFILE_SIZE_DONE)->GetStringData().ToULong(&donesize);
-				tag->GetTagByName(EC_TAG_PARTFILE_SOURCE_COUNT)->GetStringData().ToULong(&src_count);
-				tag->GetTagByName(EC_TAG_PARTFILE_SOURCE_COUNT_XFER)->GetStringData().ToULong(&src_xfer_count);
+				unsigned long filesize, donesize;
+				filesize = tag->GetTagByName(EC_TAG_PARTFILE_SIZE_FULL)->GetInt32Data();
+				donesize = tag->GetTagByName(EC_TAG_PARTFILE_SIZE_DONE)->GetInt32Data();
 					
-				s += tag->GetTagByName(EC_TAG_ITEM_ID)->GetStringData() + _(" ") +
+				s += wxString::Format(wxT("%08x "), tag->GetTagByName(EC_TAG_ITEM_ID)->GetInt32Data()) +
 					tag->GetStringData() +
 					wxString::Format(wxT("\t [%.1f%%] %i/%i - "),
-						((float)donesize) / ((float)filesize)*100.0, (int)src_xfer_count, (int)src_count) +
+						((float)donesize) / ((float)filesize)*100.0,
+						(int)tag->GetTagByName(EC_TAG_PARTFILE_SOURCE_COUNT_XFER)->GetInt32Data(),
+						(int)tag->GetTagByName(EC_TAG_PARTFILE_SOURCE_COUNT)->GetInt32Data()) +
 					tag->GetTagByName(EC_TAG_PARTFILE_STATUS)->GetStringData();
 					
 				s += _("\n");
