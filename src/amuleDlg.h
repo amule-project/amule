@@ -149,6 +149,8 @@ private:
 
 	bool is_hidden;
 
+	void Apply_Clients_Skin(wxString file);
+
 	DECLARE_EVENT_TABLE()
 };
 

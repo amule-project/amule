@@ -108,11 +108,15 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, wxString title, wxPoint where, wxSize dl
 {
 
 	wxInitAllImageHandlers();
-
+	
 	imagelist.Create(16,16);
-
-	for (uint32 i=0; i<22; i++) {
-		imagelist.Add(wxBitmap(clientImages(i)));
+	
+	if (theApp.glob_prefs->UseSkin()) {		
+		Apply_Clients_Skin(theApp.glob_prefs->GetSkinFile());
+	} else {
+		for (uint32 i=0; i<22; i++) {
+			imagelist.Add(wxBitmap(clientImages(i)));
+		}
 	}
 
 	bool override_where = (where != wxDefaultPosition);
@@ -1046,4 +1050,130 @@ void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 		}
 	}
 
+}
+
+struct SkinItem {
+	bool found;
+	wxString filename;
+};
+
+
+enum ClientSkinEnum {
+	
+	Client_Green_Smiley = 0,
+	Client_Red_Smiley,
+	Client_Yellow_Smiley,
+	Client_Grey_Smiley,
+	Client_Question_Smiley,
+	Client_Bad_Rating,
+	Client_Good_Rating,
+	Client_Extended_Protocol,
+	Client_Sec_Ident,
+	Client_Bad_Guy,
+	Client_Credits_Grey,
+	Client_Credits_Yellow,
+	Client_Upload,
+	Client_Friend,
+	Client_eMule,
+	Client_mlDonkey,
+	Client_eDonkeyHybrid,
+	Client_aMule,
+	Client_lphant,
+	Client_Shareazza,
+	Client_xMule,
+	Client_Unknown,
+	// Add items here.
+	UNUSED
+};
+
+
+void CamuleDlg::Apply_Clients_Skin(wxString file) {
+	
+	#define ClientItemNumber UNUSED+1
+	
+	SkinItem bitmaps_found[Client_Unknown];
+	
+	for (uint32 i=0; i<ClientItemNumber; i++) {	
+		bitmaps_found[i].found = false;
+	}
+	
+	wxTextFile skinfile(file);
+	
+	try {
+		
+		if (file.IsEmpty()) {
+			throw(_("Skin file name is empty - loading defaults"));
+		}
+		
+		if (!::wxFileExists(file)) {
+			throw(_("Skin file ") + file + _(" does not exist - loading defaults"));
+		}
+			
+		if (!skinfile.Open()) {
+			throw(_("Unable to open skin file: ") + file);
+		}
+		
+		uint32 client_header_found = 0;
+		
+		for (uint32 i=0; i < skinfile.GetLineCount(); i++) {
+			if (skinfile[i] == wxT("[Client Bitmaps]")) {
+				client_header_found = i;	
+				break;
+			}
+		}
+		
+		
+		if (client_header_found) {
+			
+			wxImage new_image;
+			
+			for (uint32 i=client_header_found; i < skinfile.GetLineCount(); i++) {
+				if (skinfile[i].StartsWith(wxT("["))) {
+					break;
+				}				
+				// Client_Green_Smiley
+				if (skinfile[i].StartsWith(wxT("Client_Transfer="))) {
+					bitmaps_found[Client_Green_Smiley].found = true;
+					bitmaps_found[Client_Green_Smiley].filename = skinfile[i].AfterLast(wxT('='));
+				}
+				// Client_Red_Smiley
+				if (skinfile[i].StartsWith(wxT("Client_Connecting="))) {
+					bitmaps_found[Client_Red_Smiley].found = true;
+					bitmaps_found[Client_Red_Smiley].filename=skinfile[i].AfterLast(wxT('='));
+				}
+				// Please someone complete this.
+				
+				#warning Lacks fill
+				
+				// End of completion
+			}
+		}
+		
+		for (uint32 i=0; i<ClientItemNumber; i++) {
+			if (bitmaps_found[i].found) {
+				wxImage new_image;
+				if (new_image.LoadFile(bitmaps_found[i].filename)) {
+					imagelist.Add(wxBitmap(new_image));
+				} else {
+					printf("Warning: wrong client bitmap file Nº%i: %s",i,unicode2char(bitmaps_found[i].filename));
+					imagelist.Add(wxBitmap(clientImages(i)));
+				}
+			}else {
+				imagelist.Add(wxBitmap(clientImages(i)));
+			}
+		}			
+		
+		skinfile.Close();
+	} catch(wxString error) {
+		wxMessageBox(error);
+		if (skinfile.IsOpened()) {
+			skinfile.Close();
+		}
+		// Load defaults
+		for (uint32 i=0; i<ClientItemNumber; i++) {
+			imagelist.Add(wxBitmap(clientImages(i)));
+		}	
+		return;
+	}
+	
 }
