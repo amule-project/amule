@@ -133,7 +133,7 @@ void CServerUDPSocket::ProcessPacket(CSafeMemFile& packet, int16 size, int8 opco
 	CServer* update = theApp.serverlist->GetServerByAddress( host, port-4 );
 
 	try{
-		// Imported: OP_GLOBSEARCHRES, OP_GLOBFOUNDSORUCES (yes, soruces)  & OP_GLOBSERVSTATRES
+		// Imported: OP_GLOBSEARCHRES, OP_GLOBFOUNDSOURCES & OP_GLOBSERVSTATRES
 		// This makes Server UDP Flags to be set correctly so we use less bandwith on asking servers for sources
 		// Also we process Search results and Found sources correctly now on 16.40 behaviour.
 		switch(opcode){
@@ -170,7 +170,7 @@ void CServerUDPSocket::ProcessPacket(CSafeMemFile& packet, int16 size, int8 opco
 
 				break;
 			}
-			case OP_GLOBFOUNDSORUCES:{
+			case OP_GLOBFOUNDSOURCES:{
 				theApp.statistics->AddDownDataOverheadOther(size);
 				// process all source packets
 				int iLeft;
@@ -198,7 +198,7 @@ void CServerUDPSocket::ProcessPacket(CSafeMemFile& packet, int16 size, int8 opco
 
 						uint8 opcode = packet.ReadUInt8();
 						iLeft--;
-						if (opcode != OP_GLOBFOUNDSORUCES){
+						if (opcode != OP_GLOBFOUNDSOURCES){
 							packet.Seek(-2, wxFromCurrent);
 							iLeft += 2;
 							break;
