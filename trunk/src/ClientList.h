@@ -35,6 +35,9 @@ class CDeletedClient;
 class CMD4Hash;
 
 
+typedef std::map<wxString, uint32> aMuleOSInfoMap;
+
+
 #define BAN_CLEANUP_TIME	1200000 // 20 min
 
 
@@ -165,7 +168,7 @@ public:
 	/**
 	 * Function for generating statistics about the current clients.
 	 */
-	void	GetStatistics(uint32 &totalclient, uint32 stats[], ClientMap *clientVersionEDonkey, ClientMap *clientVersionEDonkeyHybrid, ClientMap *clientVersionEMule, ClientMap *clientVersionAMule); 
+	void	GetStatistics(uint32 &totalclient, uint32 stats[], ClientMap *clientVersionEDonkey, ClientMap *clientVersionEDonkeyHybrid, ClientMap *clientVersionEMule, ClientMap *clientVersionAMule, aMuleOSInfoMap* OSMap); 
 
 
 	/**
@@ -340,4 +343,3 @@ private:
 };
 
 #endif
-
