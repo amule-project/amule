@@ -949,15 +949,15 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 		}
 	}
 	if (!amulesig_out.IsOpened()) {
-		if ( !wxFileExists( emulesig_path ) ) {
-			if ( !amulesig_out.Create(emulesig_path) ) {
+		if ( !wxFileExists( amulesig_path ) ) {
+			if ( !amulesig_out.Create(amulesig_path) ) {
 				AddLogLineM(true, wxString(_("Failed to create"))+_(" aMule OnlineSig File"));
 				// Will never try again.
 				amulesig_path.Clear();
 				emulesig_path.Clear();
 				return;
 			}
-		} else if  ( !amulesig_out.Open(emulesig_path) ) {
+		} else if  ( !amulesig_out.Open(amulesig_path) ) {
 			AddLogLineM(true, wxString(_("Failed to open"))+_(" aMule OnlineSig File"));
 			// Will never try again.
 			amulesig_path.Clear();
