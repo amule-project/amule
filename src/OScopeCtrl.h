@@ -65,6 +65,8 @@ public:
 	void DelayPoints()	{ nDelayedPoints++; }
 	unsigned GetPlotHeightPixels()		{return nPlotHeight;}
 	unsigned GetPlotWidthPoints()		{return nPlotWidth/nShiftPixels;}
+	wxBitmap* GetBitmapPlot()			{return bmapPlot;};
+	wxBitmap* GetBitmapGrid()			{return bmapGrid;};
 
 public:
 	unsigned nTrends;

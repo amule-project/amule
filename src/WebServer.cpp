@@ -77,6 +77,14 @@ WX_DEFINE_OBJARRAY(ArrayOfTransferredData);
 
 using namespace otherfunctions;
 
+inline void set_rgb_color_val(unsigned char *start, uint32 val, unsigned char mod)
+{
+	unsigned char r = val, g = val >> 8, b = val >> 16;
+	start[0] = ( r > mod ) ? (r - mod) : 1;
+	start[1] = ( g > mod ) ? (g - mod) : 1;
+	start[2] = ( b > mod ) ? (b - mod) : 1;
+}
+
 wxString _SpecialChars(wxString str) {
 	str.Replace(wxT("&"),wxT("&amp;"));
 	str.Replace(wxT("<"),wxT("&lt;"));
@@ -1333,6 +1341,7 @@ wxString CWebServer::_GetGraphs(ThreadData WXUNUSED(Data)) {
 	wxString Out = m_Templates.sGraphs;	
 	wxString sGraphDownload, sGraphUpload, sGraphCons;
 	wxString sTmp;	
+/*	
 	for (size_t i = 0; i < WEB_GRAPH_WIDTH; ++i) {
 		if (i < m_Params.PointsForWeb.GetCount()) {
 			if (i != 0) {
@@ -1350,11 +1359,31 @@ wxString CWebServer::_GetGraphs(ThreadData WXUNUSED(Data)) {
 			sTmp.Format(wxT("%d") , (uint32) (m_Params.PointsForWeb[i]->connections));
 			sGraphCons += sTmp;
 		}
-	}	
+	}
+*/	
+
+	//sGraphs formatted as: %d\t%d\t%d\t%d
+	CECPacket req(EC_OP_GET_STATSGRAPHS);
+	CECPacket *response = webInterface->SendRecvMsg_v2(&req);
+	wxString sGraphs =  response->GetTagByIndex(0)->GetStringData();
+	/*
+	#ifdef WITH_LIBPNG 
+	CECTag* ImageTag = response->GetTagByName(EC_TAG_IMAGE);
+	// If we have libpng, we can generate the image, otherwise ignore it
+	CDynPngImage* DLImage =  new CDynPngImage(
+										ImageTag->GetTagByName(EC_TAG_IMAGE_X)->GetInt32Data(),
+										ImageTag->GetTagByName(EC_TAG_IMAGE_Y)->GetInt32Data(),
+				(unsigned char*) 	ImageTag->GetTagByName(EC_TAG_IMAGE_DATA)->GetTagData(),
+										wxT("StatGraphDownload.png"));
+	m_ImageLib.AddImage(DLImage,wxT("/") + DLImage->Name());
+	
+	#endif
+	*/
+	
 	Out.Replace(wxT("[GraphDownload]"), sGraphDownload);
 	Out.Replace(wxT("[GraphUpload]"), sGraphUpload);
 	Out.Replace(wxT("[GraphConnections]"), sGraphCons);
-	
+
 	Out.Replace(wxT("[TxtDownload]"), _("Download"));
 	Out.Replace(wxT("[TxtUpload]"), _("Upload"));
 	Out.Replace(wxT("[TxtTime]"), _("Time"));
@@ -1362,12 +1391,8 @@ wxString CWebServer::_GetGraphs(ThreadData WXUNUSED(Data)) {
 	Out.Replace(wxT("[KByteSec]"), _("kB/s"));
 	Out.Replace(wxT("[TxtTime]"), _("Time"));
 
-	//sGraphs formatted as: %d\t%d\t%d\t%d
-	CECPacket req(EC_OP_GET_STATSGRAPHS);
-	CECPacket *response = webInterface->SendRecvMsg_v2(&req);
-	wxString sGraphs =  response->GetTagByIndex(0)->GetStringData();	
 	delete response;
-	
+
 	int brk = sGraphs.First(wxT("\t"));
 	
 	wxString sScale;
@@ -2876,14 +2901,6 @@ wxString CDynImage::GetHTML()
 	return wxString::Format(m_template, m_name.GetData(), m_width);
 }
 	
-inline void set_rgb_color_val(unsigned char *start, uint32 val, unsigned char mod)
-{
-	unsigned char r = val, g = val >> 8, b = val >> 16;
-	start[0] = ( r > mod ) ? (r - mod) : 1;
-	start[1] = ( g > mod ) ? (g - mod) : 1;
-	start[2] = ( b > mod ) ? (b - mod) : 1;
-}
-
 void CDynImage::DrawImage()
 {
 	CreateSpan();
@@ -2977,6 +2994,71 @@ wxString CDynImage::GetHTML()
 	return str;
 }
 
+#endif
+
+#ifdef WITH_LIBPNG
+CDynPngImage::CDynPngImage(int w, int h, const unsigned char* Data, wxString name) :
+		CAnyImage(w * h * sizeof(uint32)),m_width(w),m_height(h),m_name(name) {
+	
+	//
+	// Allocate array of "row pointers" - libpng need it in this form
+	// Fill it also with the image data
+	//
+	
+	// When allocating an array with a new expression, GCC used to allow 
+	// parentheses around the type name. This is actually ill-formed and it is 
+	// now rejected. From gcc3.4
+
+	m_row_ptrs = new png_bytep [m_height];
+	for (int i = 0; i < m_height;i++) {
+		m_row_ptrs[i] = new png_byte[3*m_width];
+		memcpy(m_row_ptrs[i], (void*)((unsigned char*)Data + (m_height-1)*m_width), 3*m_width);
+	}
+	
+}
+
+CDynPngImage::~CDynPngImage()
+{
+	for (int i = 0; i < m_height;i++) {
+		delete [] m_row_ptrs[i];
+	}
+	delete [] m_row_ptrs;
+}
+
+void CDynPngImage::png_write_fn(png_structp png_ptr, png_bytep data, png_size_t length)
+{
+	CDynPngImage *This = (CDynPngImage *)png_get_io_ptr(png_ptr);
+	wxASSERT((png_size_t)(This->m_size + length) <= (png_size_t)This->m_alloc_size);
+	memcpy(This->m_data + This->m_size, data, length);
+	This->m_size += length;
+}
+
+wxString CDynPngImage::GetHTML()
+{
+	// template contain %s (name) %d (width)
+	return wxString::Format(/*m_template*/wxT("%s %d"), m_name.GetData(), m_width);
+}
+
+unsigned char *CDynPngImage::RequestData(int &size)
+{
+
+	// write png into buffer
+	png_structp png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, 0, 0, 0);
+	png_infop info_ptr = png_create_info_struct(png_ptr);
+	png_set_IHDR(png_ptr, info_ptr, m_width, m_height, 8, PNG_COLOR_TYPE_RGB,
+		PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
+	png_set_write_fn(png_ptr, this, png_write_fn, 0);
+	
+	//printf("PNG: writing %p [ ", this);
+	
+	m_size = 0;
+	png_write_info(png_ptr, info_ptr);
+	png_write_image(png_ptr, (png_bytep *)m_row_ptrs);
+	png_write_end(png_ptr, 0);
+	png_destroy_write_struct(&png_ptr, &info_ptr);
+	
+	return CAnyImage::RequestData(size);
+}
 #endif
 
 CImageLib::CImageLib(wxString image_dir) : m_image_dir(image_dir)
