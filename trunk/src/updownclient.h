@@ -178,6 +178,7 @@ enum ClientState
 class CUpDownClient
 {
 	friend class CClientList;
+	friend class CUpDownClientListRem;
 private:
 	/**
 	 * Please note that only the ClientList is allowed to delete the clients.
