@@ -208,7 +208,12 @@ public:
 	void			SendSignaturePacket();
 	void			ProcessPublicKeyPacket(uchar* pachPacket, uint32 nSize);
 	void			ProcessSignaturePacket(uchar* pachPacket, uint32 nSize);
-	uint8			GetSecureIdentState()		{return m_SecureIdentState;}
+	uint8			GetSecureIdentState()		{
+		if (m_SecureIdentState != IS_UNAVAILABLE) {
+			wxASSERT(SecIdentSupRec);
+		}
+		return m_SecureIdentState;
+		}
 	void			SendSecIdentStatePacket();
 	void			ProcessSecIdentStatePacket(uchar* pachPacket, uint32 nSize);
 
@@ -417,7 +422,7 @@ private:
 	bool	m_bMultiPacket;
 		
  	
-	// Kry - Secure Hash import
+	// Kry - Secure User Ident import
 	ESecureIdentState	m_SecureIdentState; 
 	uint8	m_byInfopacketsReceived;			// have we received the edonkeyprot and emuleprot packet already (see InfoPacketsReceived() )
 	uint32	m_dwLastSignatureIP;

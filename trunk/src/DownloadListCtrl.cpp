@@ -96,16 +96,12 @@ CDownloadListCtrl::CDownloadListCtrl(wxWindow * &parent, int id, const wxPoint &
 	SetImageList(&m_ImageList, wxIMAGE_LIST_SMALL);
 	preloadImages(&m_ImageList);
 	Init();
+	LoadSettings();
 }
 
 void CDownloadListCtrl::InitSort()
 {
-	/* Only load the settings when doing startup time sorting. All other sortings
-	   must manage on their own.
-	*/
-	if (!theApp.amuledlg->IsRunning()) {
-		LoadSettings();
-	}
+	
 	// Barry - Use preferred sort order from preferences
 	int sortItem = theApp.glob_prefs->GetColumnSortItem(CPreferences::tableDownload);
 	bool sortAscending = theApp.glob_prefs->GetColumnSortAscending(CPreferences::tableDownload);
@@ -407,7 +403,7 @@ void CDownloadListCtrl::OnDrawItem(int item, wxDC * dc, const wxRect & rect, con
 {
 	/* Don't do any drawing if there's nobody to see it. */
 
-	if (!theApp.amuledlg->IsRunning() || (theApp.amuledlg->GetActiveDialog() != IDD_TRANSFER)) {
+	if (!theApp.amuledlg->SafeState() || (theApp.amuledlg->GetActiveDialog() != IDD_TRANSFER)) {
 		return;
 	}
 	

@@ -41,6 +41,7 @@ public:
 
 	static void		AddFile(const char *path, const char *name, CPartFile* = NULL);
 	static int		GetCount();
+	static bool		IsRunning() { return !DeadThread; }
 
 protected:
 	virtual	bool		InitInstance()

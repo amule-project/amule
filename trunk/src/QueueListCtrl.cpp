@@ -254,8 +254,9 @@ void CQueueListCtrl::OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxRec
 		return;
 	}
 
-  if(!theApp.amuledlg->IsRunning())
+  if(!theApp.amuledlg->SafeState()) {
     return;
+  }
 
   if(highlighted) {
     if(GetFocus()) {
@@ -633,7 +634,7 @@ int CQueueListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 void CQueueListCtrl::OnTimer(wxTimerEvent& evt)
 {
 	// Don't do anything if the app is shutting down - can cause unhandled exceptions
-	if (!theApp.amuledlg->IsRunning() || !theApp.glob_prefs->GetUpdateQueueList()) {
+	if (!theApp.amuledlg->SafeState() || !theApp.glob_prefs->GetUpdateQueueList()) {
 		return;
 	}
   
@@ -648,7 +649,7 @@ void CQueueListCtrl::OnTimer(wxTimerEvent& evt)
 void  CQueueListCtrl::QueueUpdateTimer() //HWND hwnd, UINT uiMsg, UINT idEvent, DWORD dwTime)
 {
 	// Don't do anything if the app is shutting down - can cause unhandled exceptions
-	if (!theApp.amuledlg->IsRunning() || !theApp.glob_prefs->GetUpdateQueueList()) {
+	if (!theApp.IsRunning() || !theApp.glob_prefs->GetUpdateQueueList()) {
 		return;
 	}
   

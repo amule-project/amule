@@ -44,12 +44,16 @@
 
 // Custom Events
 
-#define ID_UQTIMER 							wxID_HIGHEST + 128
-#define TM_DNSDONE 						wxID_HIGHEST + 129
-#define TM_SOURCESDNSDONE 			wxID_HIGHEST + 130
+#define ID_CORETIMER 						wxID_HIGHEST + 128
+#define ID_GUITIMER 							wxID_HIGHEST + 129
 
-#define TM_TCPSOCKET						wxID_HIGHEST + 131
-#define TM_UDPSOCKET						wxID_HIGHEST + 132
+#define TM_DNSDONE 						wxID_HIGHEST + 130
+#define TM_SOURCESDNSDONE 			wxID_HIGHEST + 131
+
+#define TM_TCPSOCKET						wxID_HIGHEST + 132
+#define TM_UDPSOCKET						wxID_HIGHEST + 133
+
+
 
 // MOD Note: Do not change this part - Merkur
 #define	CURRENT_VERSION_SHORT			0x30
