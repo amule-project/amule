@@ -77,7 +77,7 @@ wxSocketProxy::wxSocketProxy(const wxProxyData *ProxyData)
 	}
 }
 
-bool wxSocketProxy::Start(wxIPaddress& address, enum wxProxyCommand cmd)
+bool wxSocketProxy::Start(wxIPaddress &address, enum wxProxyCommand cmd)
 {
 	bool ok = false;
 
@@ -106,7 +106,7 @@ bool wxSocketProxy::Start(wxIPaddress& address, enum wxProxyCommand cmd)
 	return ok;
 }
 
-bool wxSocketProxy::DoSocks4(wxIPaddress& address, wxProxyCommand cmd)
+bool wxSocketProxy::DoSocks4(wxIPaddress &address, wxProxyCommand cmd)
 {
 	bool ok =
 		DoSocks4Request(address, cmd) &&
@@ -131,7 +131,7 @@ bool wxSocketProxy::DoSocks4(wxIPaddress& address, wxProxyCommand cmd)
 	return ok;
 }
 
-bool wxSocketProxy::DoSocks4Request(wxIPaddress& address, unsigned char cmd)
+bool wxSocketProxy::DoSocks4Request(wxIPaddress &address, unsigned char cmd)
 {
 	// Prepare the request command buffer
 	m_buffer[0] = SOCKS4_VERSION;
@@ -198,7 +198,7 @@ bool wxSocketProxy::DoSocks4CmdBind(void)
 	return ok;
 }
 
-bool wxSocketProxy::DoSocks5(wxIPaddress& address, wxProxyCommand cmd)
+bool wxSocketProxy::DoSocks5(wxIPaddress &address, wxProxyCommand cmd)
 {
 	// Use the short circuit evaluation
 	int ok = 
@@ -320,7 +320,7 @@ bool wxSocketProxy::DoSocks5AuthenticationUsernamePassword(void)
 	return ok;
 }
 
-bool wxSocketProxy::DoSocks5Request(wxIPaddress& address, unsigned char cmd)
+bool wxSocketProxy::DoSocks5Request(wxIPaddress &address, unsigned char cmd)
 {
 	// Prepare the request command buffer
 	m_buffer[0] = SOCKS5_VERSION;
@@ -454,7 +454,7 @@ bool wxSocketProxy::DoSocks5CmdUDPAssociate(void)
 	return ok;
 }
 
-bool wxSocketProxy::DoHttp(wxIPaddress& address, wxProxyCommand cmd)
+bool wxSocketProxy::DoHttp(wxIPaddress &address, wxProxyCommand cmd)
 {
 	// Use the short circuit evaluation
 	int ok = 
@@ -480,7 +480,7 @@ bool wxSocketProxy::DoHttp(wxIPaddress& address, wxProxyCommand cmd)
 	return ok;
 }
 
-bool wxSocketProxy::DoHttpRequest(wxIPaddress& address, unsigned char cmd)
+bool wxSocketProxy::DoHttpRequest(wxIPaddress &address, unsigned char cmd)
 {
 	// Prepare the request command buffer
 	wxCharBuffer buf(unicode2charbuf(address.IPAddress()));
@@ -539,7 +539,7 @@ wxSocketClientProxy::~wxSocketClientProxy()
 	delete m_SocketClient;
 }
 
-bool wxSocketClientProxy::Connect(wxIPaddress& address, bool wait, bool UseProxy)
+bool wxSocketClientProxy::Connect(wxIPaddress &address, bool wait, bool UseProxy)
 {
 	bool ok;
 	
@@ -559,7 +559,7 @@ bool wxSocketClientProxy::Connect(wxIPaddress& address, bool wait, bool UseProxy
 /******************************************************************************/
 
 wxSocketServerProxy::wxSocketServerProxy(
-	wxIPaddress& address,
+	wxIPaddress &address,
 	wxSocketFlags flags,
 	const wxProxyData *ProxyData)
 :
