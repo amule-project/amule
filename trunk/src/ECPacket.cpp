@@ -282,10 +282,9 @@ CECTag::~CECTag(void)
  * \code
  * {
  *	CECPacket *p = new CECPacket(whatever);
- *	CECTag *t1 = new CECTag(whatever);
+ *	CECTag t1(whatever);
  *	t1.AddTag(CECTag(whatever));	// t2 is now created on-the-fly
- *	p.AddTag(*t1);
- *	delete t1;	// now p holds a copy of both t1 and t2
+ *	p.AddTag(t1);	// now p holds a copy of both t1 and t2
  * }
  * \endcode
  *
@@ -293,6 +292,17 @@ CECTag::~CECTag(void)
  * @return \b true on succcess, \b false when an error occured
  */
 bool CECTag::AddTag(const CECTag& tag)
+{
+	CECTag *copy = new CECTag(tag);
+	if ( AddTag(copy) ) {
+		return true;
+	} else {
+		delete copy;
+		return false;
+	}
+}
+
+bool CECTag::AddTag(const CECTag *tag)
 {
 	if (m_listSize == 0) {
 		m_tagList = (_taglist_t)malloc(ARRAY_ALLOC_CHUNKS * sizeof(CECTag *));
@@ -312,8 +322,8 @@ bool CECTag::AddTag(const CECTag& tag)
 			return false;
 		}
 	}
-
-	(*m_tagList)[m_tagCount] = new CECTag(tag);
+	// remove const on assign
+	(*m_tagList)[m_tagCount] = (CECTag *)tag;
 	if (((*m_tagList)[m_tagCount]) != NULL) {
 		if ((*m_tagList)[m_tagCount]->m_error == 0) {
 			m_tagCount++;
@@ -331,7 +341,6 @@ bool CECTag::AddTag(const CECTag& tag)
 		return false;
 	}
 }
-
 
 CECTag::CECTag(wxSocketBase *sock, ECSocket& socket) : m_dynamic(true)
 {
