@@ -1032,12 +1032,12 @@ void CUpDownClient::UDPReaskFNF()
 
 void CUpDownClient::UDPReaskForDownload()
 {
-	if(!m_reqfile || m_bUDPPending) {
+	if(!m_reqfile || m_bUDPPending ) {
 		return;
 	}
 
 	if(m_nUDPPort != 0 && thePrefs::GetUDPPort() != 0 &&
-	   !HasLowID() && !IsConnected())
+	   !HasLowID() && !IsConnected() && !thePrefs::IsUDPDisabled())
 	{ 
 		//don't use udp to ask for sources
 		if(IsSourceRequestAllowed()) {

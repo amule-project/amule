@@ -165,10 +165,11 @@ int CamuleDaemonApp::OnRun()
 	listensocket->Delete();
 	delete listensocket;
 	listensocket = 0;
-
-	clientudp->Delete();
-	delete clientudp;
-	clientudp = 0;
+	if (clientudp) {
+		clientudp->Delete();
+		delete clientudp;
+		clientudp = NULL;
+	}
 	
 	ShutDown();
 	return 0;
