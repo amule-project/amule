@@ -76,11 +76,15 @@ void *CWSThread::Entry() {
 					wcThreads.Last()->Run();
 				}
 			}
-			
+
+#ifdef DEBUG			
 			ws->Print("*** WSThread: %d threads\n", wcThreads.GetCount());
+#endif
 			for (size_t i=0; i<wcThreads.GetCount(); i++) {
 				if (!wcThreads.Item(i)->IsAlive()) {
+#ifdef DEBUF
 					ws->Print("*** WSThread: thread %d removed\n", i);
+#endif
 					wcThreads.RemoveAt(i); //remove terminated thread from array to save memory
 				}
 			}
@@ -99,6 +103,7 @@ void *CWSThread::Entry() {
 	}
 	
 	// Kry - WTF to return here?
+	// shakraw - it must return NULL. it is correct now.
 	return NULL;
 }
 
@@ -122,96 +127,89 @@ CWCThread::CWCThread(CWebServer *ws, wxSocketBase *sock) {
 
 // thread execution starts here
 void *CWCThread::Entry() {
+#ifdef DEBUG
 	stWebSocket.m_pParent->Print("WCThread: Started a new WCThread\n");
-	
+#endif
 	//while (!TestDestroy()) {
 		//check for connection status and return immediately
 		if (stWebSocket.m_hSocket->WaitForLost(0)) {
 			//stWebSocket.m_pParent->Print("*** WCThread - WaitForLost\n");
 			//connection closed/lost. exit thread cicle
-			//break;
-		} 
-		else {
+		} else {
 		
-		//check for read and return immediately
-		if (stWebSocket.m_hSocket->WaitForRead(0)) {
-			//stWebSocket.m_pParent->Print("*** WCThread - WaitForRead\n");
-			char pBuf[0x1000];
-			//READ
-			stWebSocket.m_hSocket->Read(&pBuf, sizeof(pBuf));
-			//stWebSocket.m_pParent->Print("*** WCThread read:\n%s\n", pBuf);
-			if (stWebSocket.m_hSocket->LastCount() == 0) {
-				if (stWebSocket.m_hSocket->Error()) {
-					if (stWebSocket.m_hSocket->LastError() != wxSOCKET_WOULDBLOCK) {
-						//close socket&thread
-						stWebSocket.m_pParent->Print("WCThread: got read error. closing socket and terminating thread\n");			
-						stWebSocket.m_bValid = false;
-						//break;
+			//check for read and return immediately
+			if (stWebSocket.m_hSocket->WaitForRead(0)) {
+				//stWebSocket.m_pParent->Print("*** WCThread - WaitForRead\n");
+				char pBuf[0x1000];
+				//READ
+				stWebSocket.m_hSocket->Read(&pBuf, sizeof(pBuf));
+				//stWebSocket.m_pParent->Print("*** WCThread read:\n%s\n", pBuf);
+				if (stWebSocket.m_hSocket->LastCount() == 0) {
+					if (stWebSocket.m_hSocket->Error()) {
+						if (stWebSocket.m_hSocket->LastError() != wxSOCKET_WOULDBLOCK) {
+							//close socket&thread
+							stWebSocket.m_pParent->Print("WCThread: got read error. closing socket and terminating thread\n");			
+							stWebSocket.m_bValid = false;
+							//break;
+						}
+					} else {
+						//read nothing
+						stWebSocket.m_bCanRecv = false;
+						stWebSocket.OnReceived(NULL, 0);
 					}
-				} else {
-					//read nothing
-					stWebSocket.m_bCanRecv = false;
-					stWebSocket.OnReceived(NULL, 0);
 				}
+				stWebSocket.OnReceived(pBuf, stWebSocket.m_hSocket->LastCount());
 			}
-			stWebSocket.OnReceived(pBuf, stWebSocket.m_hSocket->LastCount());
-		}
 		
-		//check for write and return immediately
-		if (stWebSocket.m_hSocket->WaitForWrite(0)) {
-			//stWebSocket.m_pParent->Print("SHAK: WCThread - WaitForWrite\n");
-			//stWebSocket.m_pParent->Print("SHAK: head: %d\n", (stWebSocket.m_pHead!=NULL));
-			
-			// send what is left in our tails
-			while (stWebSocket.m_pHead) {
-				if (stWebSocket.m_pHead->m_pToSend) {
-					//stWebSocket.m_pParent->Print("*** WCThread write:\n%s\n", stWebSocket.m_pHead->m_pToSend);
-					//WRITE
-					stWebSocket.m_hSocket->Write(stWebSocket.m_pHead->m_pToSend, stWebSocket.m_pHead->m_dwSize);
-					wxUint32 nRes = stWebSocket.m_hSocket->LastCount();
-					if (nRes != stWebSocket.m_pHead->m_dwSize) {
-						if (nRes > 0) {
-							if (/*(nRes > 0) &&*/(nRes < stWebSocket.m_pHead->m_dwSize)) {
-								stWebSocket.m_pHead->m_pToSend += nRes;
-								stWebSocket.m_pHead->m_dwSize -= nRes;
-							}
-						} else {
-							if (stWebSocket.m_hSocket->Error()) {
-								if (stWebSocket.m_hSocket->LastError() != wxSOCKET_WOULDBLOCK) {
-									//got error
-									stWebSocket.m_pParent->Print("WCThread: got write error.\n");
-									stWebSocket.m_bValid = false;
+			//check for write and return immediately
+			if (stWebSocket.m_hSocket->WaitForWrite(0)) {
+				// send what is left in our tails
+				while (stWebSocket.m_pHead) {
+					if (stWebSocket.m_pHead->m_pToSend) {
+						//stWebSocket.m_pParent->Print("*** WCThread write:\n%s\n", stWebSocket.m_pHead->m_pToSend);
+						//WRITE
+						stWebSocket.m_hSocket->Write(stWebSocket.m_pHead->m_pToSend, stWebSocket.m_pHead->m_dwSize);
+						wxUint32 nRes = stWebSocket.m_hSocket->LastCount();
+						if (nRes != stWebSocket.m_pHead->m_dwSize) {
+							if (nRes > 0) {
+								if (/*(nRes > 0) &&*/(nRes < stWebSocket.m_pHead->m_dwSize)) {
+									stWebSocket.m_pHead->m_pToSend += nRes;
+									stWebSocket.m_pHead->m_dwSize -= nRes;
+								}
+							} else {
+								if (stWebSocket.m_hSocket->Error()) {
+									if (stWebSocket.m_hSocket->LastError() != wxSOCKET_WOULDBLOCK) {
+										//got error
+										stWebSocket.m_pParent->Print("WCThread: got write error.\n");
+										stWebSocket.m_bValid = false;
+									}
 								}
 							}
+							break;
 						}
-						break;
 					}
-				}
-				//shakraw
-				//else {	
-				//	if (shutdown(hSocket, SHUT_WR)) {
-				//		stWebSocket.m_bValid = false;
-				//		break;
-				//	}
-				//}
-
-				// erase this chunk
-				CWebSocket::CChunk* pNext = stWebSocket.m_pHead->m_pNext;
-				delete stWebSocket.m_pHead;
-				if (!(stWebSocket.m_pHead = pNext)) {
-					stWebSocket.m_pTail = NULL;
+	
+					// erase this chunk
+					CWebSocket::CChunk* pNext = stWebSocket.m_pHead->m_pNext;
+					delete stWebSocket.m_pHead;
+					if (!(stWebSocket.m_pHead = pNext)) {
+						stWebSocket.m_pTail = NULL;
+					}
 				}
 			}
 		}
-	}
+		
 		//wxThread::Sleep(200);
 	//}
 	
 	//destroy the socket and terminate thread.
 	stWebSocket.m_hSocket->Destroy();
+#ifdef DEBUG
 	stWebSocket.m_pParent->Print("WCThread: exited [WebSocket closed]\n");
+#endif
 
 	// Kry - WTF to return here?
+	// shakraw - it must return NULL. it is correct now.
 	return NULL;	
 }
 
@@ -359,12 +357,6 @@ void CWebSocket::Disconnect() {
             }
 
         }
-		//shakraw
-		//else {
-        //	if (shutdown(m_hSocket, SHUT_WR)) {
-		//		m_bValid = false;
-		//	}
-    	//}
     }
 }
 
