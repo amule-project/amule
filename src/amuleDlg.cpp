@@ -236,7 +236,7 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, wxString title, wxPoint where, wxSize dl
 	searchwnd->UpdateCatChoice();
 
 	// Must we start minimized?
-	if (theApp.glob_prefs->GetStartMinimized()) {
+	if (theApp.glob_prefs->GetStartMinimized() && (theApp.glob_prefs->GetDesktopMode() != 4)) {
 		#ifndef __SYSTRAY_DISABLED__
 		// Send it to tray?
 		if (theApp.glob_prefs->DoMinToTray()) {
@@ -981,7 +981,7 @@ void CamuleDlg::Show_aMule(bool uniconize)
 void CamuleDlg::OnMinimize(wxIconizeEvent& evt)
 {
 #ifndef __SYSTRAY_DISABLED__
-	if (theApp.glob_prefs->DoMinToTray()) {
+	if (theApp.glob_prefs->DoMinToTray() && (theApp.glob_prefs->GetDesktopMode() != 4)) {
 		if (evt.Iconized()) {
 			Hide_aMule(false);
 		} else {
@@ -1056,7 +1056,6 @@ void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 		if (theApp.glob_prefs->ShowCatTabInfos() && theApp.amuledlg->activewnd == theApp.amuledlg->transferwnd) {
 			theApp.amuledlg->transferwnd->UpdateCatTabTitles();
 		}
-		//transfer_top_boxsizer->Fit(theApp.amuledlg->transferwnd->);
 	}
 
 }
