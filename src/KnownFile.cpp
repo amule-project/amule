@@ -129,9 +129,13 @@ CKnownFile::CKnownFile() :
 
 CKnownFile::CKnownFile(CEC_SharedFile_Tag *tag)
 {
+	m_pAICHHashSet = new CAICHHashSet(this);
+	
 	m_strFileName = tag->FileName();
 	m_abyFileHash = tag->ID();
 	m_nFileSize = tag->SizeFull();
+	m_iPartCount = (m_nFileSize + (PARTSIZE - 1)) / PARTSIZE;
+	m_AvailPartFrequency.SetCount(m_iPartCount);
 	m_iUpPriority = tag->Prio();
 	if ( m_iUpPriority >= 10 ) {
 		m_iUpPriority-= 10;
