@@ -39,6 +39,35 @@
 
 // CSearchListCtrl
 
+// CARE: This will lock the notebook when it does find a control.
+//       Call the function UngetSearchListControl() to unlock the notebook. But
+//       only after you are done with the Control returned by this function.
+//
+CSearchListCtrl* GetSearchListControl(long nSearchID)
+{
+	CMuleNotebook* nb=(CMuleNotebook*)wxWindow::FindWindowById(ID_NOTEBOOK);
+	if ( !nb ) return NULL;
+
+	nb->m_LockTabs.Lock();
+
+	for (unsigned int tabCounter=0; tabCounter < nb->GetPageCount(); tabCounter++) {
+		if(nb->GetUserData(tabCounter)==nSearchID) {
+			return (CSearchListCtrl*)(nb->GetPage(tabCounter));
+		}
+	}
+
+	nb->m_LockTabs.Unlock();
+	return NULL;
+}
+
+void UngetSearchListControl(CSearchListCtrl* ctrl)
+{
+	if ( !ctrl ) return;			// NB was already unlocked
+
+	CMuleNotebook* nb=(CMuleNotebook*)wxWindow::FindWindowById(ID_NOTEBOOK);
+	nb->m_LockTabs.Unlock();
+}
+
 //IMPLEMENT_DYNAMIC_CLASS(CSearchListCtrl,CMuleListCtrl)
 
 BEGIN_EVENT_TABLE(CSearchListCtrl, CMuleListCtrl)

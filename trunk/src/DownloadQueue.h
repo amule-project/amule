@@ -144,7 +144,9 @@ public:
 	
 	void SaveSourceSeeds();
 	void LoadSourceSeeds();
-
+	
+	// lfroen for ExternalConn
+	wxString getTextList();
 protected:
 	bool	SendNextUDPPacket();
 	void	ProcessLocalRequests();

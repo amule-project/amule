@@ -493,9 +493,13 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 		
 		//TRANSFER
 		if (item == wxT("TRANSFER CLEARCOMPLETE")) {
+// lfroen - daemon doesn't need it
+#ifndef AMULE_DAEMON
 				theApp.amuledlg->transferwnd->downloadlistctrl->ClearCompleted();
+#endif
 				return wxEmptyString;
 		}
+		
 		if (item.Left(20) == wxT("TRANSFER ADDFILELINK")) {
 			wxString buffer= wxT("Bad Link");
 			if (item.Length() > 20) {
@@ -869,7 +873,6 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			if (item.Length() > 18) {
 				//int curIndex, nextIndex;
 				wxString sParams = item.Mid(19);
-				
 				int brk = sParams.First(wxT("\n"));
 				((wxTextCtrl*)wxWindow::FindWindowById(IDC_SEARCHNAME))->SetValue(sParams.Left(brk));
 				sParams=sParams.Mid(brk+1); brk=sParams.First(wxT("\n"));
@@ -940,7 +943,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 		}
 
 		if (item == wxT("DL_QUEUE")) {
-			return theApp.amuledlg->transferwnd->downloadlistctrl->getTextList();
+			return theApp.downloadqueue->getTextList();
 		}
 
 		if (item == wxT("UL_QUEUE")) {
@@ -1027,7 +1030,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 					if (theApp.downloadqueue->GetFileByIndex(fileID)->IsPartFile()) {
 							theApp.downloadqueue->GetFileByIndex(fileID)->PauseFile();
 							printf("Paused\n");
-							return (theApp.amuledlg->transferwnd->downloadlistctrl->getTextList());
+							return (theApp.downloadqueue->getTextList());
 					} else return wxT("Not part file");
 				} else return wxT("Out of range");
 			} else return wxT("Not a number");
@@ -1041,7 +1044,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 						theApp.downloadqueue->GetFileByIndex(fileID2)->ResumeFile();
 						theApp.downloadqueue->GetFileByIndex(fileID2)->SavePartFile();
 						printf("Resumed\n");
-						return(theApp.amuledlg->transferwnd->downloadlistctrl->getTextList());
+						return(theApp.downloadqueue->getTextList());
 					} else return wxT("Not part file");
 				} else return wxT("Out of range");				
 			} else return wxT("Not a number");
@@ -1805,7 +1808,9 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			
 			
 			if (item.Mid(9).Cmp(wxT("CLEARCOMPLETE")) == 0) { //clear completed transfers
+#ifndef AMULE_DAEMON		
 				theApp.amuledlg->transferwnd->downloadlistctrl->ClearCompleted();
+#endif	
 				return wxT("Clear Completed");
 			}
 			

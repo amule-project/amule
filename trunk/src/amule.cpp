@@ -108,6 +108,7 @@
 #warning This ones must be removed ASAP - exception: amuledlg, will be the LAST one.
 #include "amuleDlg.h"			// Needed for CamuleDlg
 #include "SearchDlg.h"			// Needed for CSearchDlg
+#include "SearchListCtrl.h"
 #include "ServerListCtrl.h"		// Needed for CServerListCtrl
 #include "SharedFilesCtrl.h"	// Needed for CSharedFilesCtrl
 #include "QueueListCtrl.h"		// Needed for CQueueListCtrl
@@ -1879,10 +1880,28 @@ void CamuleApp::NotifyEvent(GUIEvent event) {
 	        case SEARCH_ADD_TO_DLOAD:
 			downloadqueue->AddSearchToDownload((CSearchFile *)event.ptr_value, event.byte_value);
 			break;
-	        case SEARCH_ADD_RESULT:
+	        case SEARCH_ADD_RESULT: {
+			CSearchFile* toadd = (CSearchFile *)event.ptr_value;
+			CSearchListCtrl* outputwnd = GetSearchListControl(toadd->GetSearchID());
+			if (outputwnd) {
+				outputwnd->AddResult(toadd);
+				// Update the result count
+				amuledlg->searchwnd->UpdateHitCount( outputwnd );
+			}
+			UngetSearchListControl(outputwnd);
+		}
 			break;
-	        case SEARCH_UPDATE_SOURCES:
-			
+	        case SEARCH_UPDATE_SOURCES: {
+			CSearchFile* toadd = (CSearchFile *)event.ptr_value;
+			CSearchFile* cur_file = (CSearchFile *)event.ptr_aux_value;
+			CSearchListCtrl* outputwnd = GetSearchListControl(toadd->GetSearchID());
+			if (outputwnd) {
+				outputwnd->UpdateSources(cur_file);
+				// Update the result count
+				amuledlg->searchwnd->UpdateHitCount( outputwnd );
+			}
+			UngetSearchListControl(outputwnd);
+		}
 			break;
 
 		// PartFile

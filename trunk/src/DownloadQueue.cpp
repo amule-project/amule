@@ -1311,3 +1311,27 @@ bool CDownloadQueue::OnHostnameResolved(struct sockaddr_in* inaddr)
 	}
 	return TRUE;
 }
+
+wxString CDownloadQueue::getTextList()
+{
+	wxString out = wxT("");
+	int i=0;
+	// Search for file(s)
+	for (std::deque<CPartFile*>::iterator it = filelist.begin();it != filelist.end(); it++) {
+		CPartFile *file = *it;
+			
+		i++;
+		out += wxString::Format(wxT("%i: %s\t [%.1f%%] %i/%i - %s"),i, file->GetFileName().c_str(), file->GetPercentCompleted(), file->GetTransferingSrcCount(), file->GetSourceCount(), file->getPartfileStatus().GetData());
+		if (file->GetKBpsDown()>0.001) {
+			out += wxString::Format(wxT(" %.1f "),(float)file->GetKBpsDown()) + _("kB/s");
+		}
+		out += wxT("\n");
+	}
+
+	if (out.IsEmpty()) {
+		out = _("Download queue is empty.");
+	}
+	AddLogLineM(false, out);
+	return out;
+}
+
