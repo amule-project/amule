@@ -29,6 +29,7 @@
 #include <cstring>
 #include <ctype.h>
 #include <stdlib.h>
+#include <math.h> // Needed for cos, M_PI
 
 #pragma implementation
 #include "WebServer.h"
@@ -2669,6 +2670,26 @@ CFileImage::CFileImage(const char *name) : CAnyImage(0), m_name(char2unicode(nam
 	}
 }
 
+/*!
+ * "Modifiers" for 3D look of progress bar. Those modifiers must be substracted from
+ * image (with saturation), values, and not multiplied, as amule doesn for some reason.
+ * 
+ */
+CImage3D_Modifiers::CImage3D_Modifiers(int width)
+{
+	m_width = width;
+	m_modifiers = new unsigned char[m_width];
+	for(int i = 0; i < m_width; i++) {
+		// "70" - webserver uses fixed depth
+		double f_curr_mod = 30 * (1 + cos( (2 * M_PI) * ( m_width - (((double)i)/m_width) ) ) );
+		m_modifiers[i] = (unsigned char)f_curr_mod;
+	}
+}
+
+CImage3D_Modifiers::~CImage3D_Modifiers()
+{
+	delete [] m_modifiers;
+}
 
 CProgressImage::CProgressImage(int width, int height, uint32 filesize, wxString &tmpl,
 	otherfunctions::PartFileEncoderData *encoder) :
@@ -2779,7 +2800,7 @@ int CProgressImage::compare_gaps(const void *g1, const void *g2)
 #ifdef WITH_LIBPNG
 
 CDynImage::CDynImage(uint32 id, int width, int height, uint32 file_size, wxString &tmpl, otherfunctions::PartFileEncoderData *encoder) :
-	CProgressImage(width, height, file_size, tmpl, encoder)
+	CProgressImage(width, height, file_size, tmpl, encoder), m_modifiers(height)
 {
 	m_id = id;
 	m_name = wxString::Format(wxT("dyn_%d.png"), id);
@@ -2830,11 +2851,12 @@ void CDynImage::DrawImage()
 	delete [] m_colored_gaps;
 }
 
-inline void set_rgb_color_val(unsigned char *start, uint32 val)
+inline void set_rgb_color_val(unsigned char *start, uint32 val, unsigned char mod)
 {
-	start[0] = (unsigned char)val;
-	start[1] = (unsigned char)((val) >> 8);
-	start[2] = (unsigned char)((val) >> 16);
+	unsigned char r = val, g = val >> 8, b = val >> 16;
+	start[0] = ( r > mod ) ? (r - mod) : 1;
+	start[1] = ( g > mod ) ? (g - mod) : 1;
+	start[2] = ( b > mod ) ? (b - mod) : 1;
 }
 
 
@@ -2848,8 +2870,8 @@ void CDynImage::FillRange(uint32 gap_begin, uint32 gap_end,  COLORREF color)
 		png_bytep u_row = m_row_ptrs[i];
 		png_bytep d_row = m_row_ptrs[m_height-i-1];
 		for(uint32 j = start; j < end; j++) {
-			set_rgb_color_val(u_row+3*j, color);
-			set_rgb_color_val(d_row+3*j, color);
+			set_rgb_color_val(u_row+3*j, color, m_modifiers[i]);
+			set_rgb_color_val(d_row+3*j, color, m_modifiers[i]);
 		}
 	}
 }

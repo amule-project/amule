@@ -370,6 +370,18 @@ class CFileImage : public CAnyImage {
 		bool OpenOk() { return m_size != 0; }
 };
 
+class CImage3D_Modifiers {
+		unsigned char *m_modifiers;
+		int m_width;
+	public:
+		CImage3D_Modifiers(int width);
+		~CImage3D_Modifiers();
+		
+		unsigned char operator[](int i)
+		{
+			return (i < m_width) ? m_modifiers[i] : 0;
+		}
+};
 
 class CProgressImage : public CAnyImage {
 	protected:
@@ -413,6 +425,7 @@ class CProgressImage : public CAnyImage {
 //
 // Dynamic png image generation from gap info
 class CDynImage : public CProgressImage {
+		CImage3D_Modifiers m_modifiers;
 		uint32 m_id;
 		png_bytep *m_row_ptrs;
 		
