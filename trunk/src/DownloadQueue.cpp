@@ -451,7 +451,7 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender,CUpDownClient* source)
 	// if we block loopbacks at this point it should prevent us from connecting to ourself
 	if ( source->HasValidHash() ) {
 		if ( source->GetUserHash() == theApp.glob_prefs->GetUserHash() ) {
-			AddDebugLogLineM(false, wxT("Tried to add source with matching hash to your own."));
+			AddDebugLogLineM(false, _("Tried to add source with matching hash to your own."));
 			source->Safe_Delete();
 			return;
 		}
@@ -853,7 +853,7 @@ void CDownloadQueue::ProcessLocalRequests()
 				else{
 					it = m_localServerReqQueue.erase(it);
 					cur_file->m_bLocalSrcReqQueued = false;
-					AddDebugLogLineM(false, wxString(wxT("Local server source request for file \"")) + cur_file->GetFileName() + wxString(wxT("\" not sent because of status '")) +  cur_file->getPartfileStatus() + wxT("'"));
+					AddDebugLogLineM(false, wxString(_("Local server source request for file \"")) + cur_file->GetFileName() + wxString(_("\" not sent because of status '")) +  cur_file->getPartfileStatus() + wxT("'"));
 				}
 			}
 
@@ -1126,8 +1126,8 @@ void CDownloadQueue::CheckDiskspace(bool bNotEnoughSpaceLeft)
 				cur_file->ResumeFileInsufficient();
 			} else {
 				if (!cur_file->GetInsufficient()) {
-					AddLogLineM(false, wxString::Format(wxT("Free Disk Space (Total): %lli\n"), nTotalAvailableSpace));
-					AddLogLineM(true, wxString::Format(wxT("File : %s, Needed Space : %i - PAUSED !!!\n"), cur_file->GetFileName().GetData(), cur_file->GetNeededSpace()));
+					AddLogLineM(false, wxString::Format(_("Free Disk Space (Total): %lli\n"), nTotalAvailableSpace));
+					AddLogLineM(true, wxString::Format(_("File : %s, Needed Space : %i - PAUSED !!!\n"), cur_file->GetFileName().GetData(), cur_file->GetNeededSpace()));
 					cur_file->PauseFile(true);
 				}
 			}
@@ -1147,8 +1147,8 @@ void CDownloadQueue::CheckDiskspace(bool bNotEnoughSpaceLeft)
 					uint32 nSpaceToGrow = cur_file->GetNeededSpace();
 					if (nSpaceToGrow) {
 						if (!cur_file->GetInsufficient()) {
-							AddLogLineM(false, wxString::Format(wxT("Free Disk Space (Total): %lli\n"), nTotalAvailableSpace));
-							AddLogLineM(true, wxString::Format(wxT("File : %s, Needed Space : %i - PAUSED !!!\n"), cur_file->GetFileName().GetData(), cur_file->GetNeededSpace()));
+							AddLogLineM(false, wxString::Format(_("Free Disk Space (Total): %lli\n"), nTotalAvailableSpace));
+							AddLogLineM(true, wxString::Format(_("File : %s, Needed Space : %i - PAUSED !!!\n"), cur_file->GetFileName().GetData(), cur_file->GetNeededSpace()));
 							// cur_file->PauseFileInsufficient();
 							cur_file->PauseFile(true/*bInsufficient*/);
 						}
