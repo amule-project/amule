@@ -335,7 +335,7 @@ void CDownloadListCtrl::OnNMRclick(wxListEvent & evt)
 			menu->Enable(MP_STOP, ((file->GetStatus() != PS_PAUSED && file->GetStatus() != PS_ERROR) ? MF_ENABLED : MF_GRAYED));
 			menu->Enable(MP_RESUME, ((file->GetStatus() == PS_PAUSED) ? MF_ENABLED : MF_GRAYED));
 			menu->Enable(MP_OPEN, ((file->GetStatus() == PS_COMPLETE) ? MF_ENABLED : MF_GRAYED));	//<<--9/21/02
-			if (file->IsPartFile()) {
+			if (file->IsPartFile() && !(file->GetStatus() == PS_COMPLETE)) {
 			  wxString preview(_("Preview ["));
 			  char* buffer = nstrdup(file->GetPartMetFileName());
 			  int n = strlen(buffer);
