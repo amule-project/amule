@@ -170,7 +170,7 @@ void CAddFileThread::Stop()
 			// Sleep for 1/100 of a second to avoid clobbering the mutex
 			// Termination only takes about 3ms on my system, but I'm taking 
 			// slower systems into consideration.
-			wxMilliSleep(10);
+			wxUSleep(10);
 
 			// Check for timeouts after 20 seconds
 			if ( timer.Time() > 20000 ) {
