@@ -192,10 +192,10 @@ class CEC_PartFile_Tag : public CECTag {
   		uint32		SizeDone()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_SIZE_DONE)->GetInt32Data(); }
  		wxString	FileEd2kLink()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_ED2K_LINK)->GetStringData(); }
  		uint8		FileStatus()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_STATUS)->GetInt8Data(); }
-  		uint32		SourceCount()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_SOURCE_COUNT)->GetInt32Data(); }
-  		uint32		SourceNotCurrCount()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT)->GetInt32Data(); }
-  		uint32		SourceXferCount()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_SOURCE_COUNT_XFER)->GetInt32Data(); }
-  		uint32		SourceCountA4AF()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_SOURCE_COUNT_A4AF)->GetInt32Data(); }
+  		uint16		SourceCount()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_SOURCE_COUNT)->GetInt16Data(); }
+  		uint16		SourceNotCurrCount()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT)->GetInt32Data(); }
+  		uint16		SourceXferCount()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_SOURCE_COUNT_XFER)->GetInt16Data(); }
+  		uint16		SourceCountA4AF()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_SOURCE_COUNT_A4AF)->GetInt16Data(); }
   		uint32		Speed()		{ return GetTagByNameSafe(EC_TAG_PARTFILE_SPEED)->GetInt32Data(); }
   		uint32		Prio()		{ return GetTagByNameSafe(EC_TAG_PARTFILE_PRIO)->GetInt32Data(); }
 
@@ -207,16 +207,16 @@ class CEC_PartFile_Tag : public CECTag {
 
 		void SetFileEd2kLink(uint32 &value) { AssignIfExist(EC_TAG_PARTFILE_ED2K_LINK, value); }
 
-		void SetFileStatus(uint32 &value) { AssignIfExist(EC_TAG_PARTFILE_STATUS, value); }
+		void SetFileStatus(uint8 &value) { AssignIfExist(EC_TAG_PARTFILE_STATUS, value); }
 
-		void SetSourceCount(uint32 &value) { AssignIfExist(EC_TAG_PARTFILE_SOURCE_COUNT, value); }
+		void SetSourceCount(uint16 &value) { AssignIfExist(EC_TAG_PARTFILE_SOURCE_COUNT, value); }
 		void SetSourceNotCurrCount(uint32 &value) { AssignIfExist(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT, value); }
-		void SetSourceXferCount(uint32 &value) { AssignIfExist(EC_TAG_PARTFILE_SOURCE_COUNT_XFER, value); }
-		void SetSourceCountA4AF(uint32 &value) { AssignIfExist(EC_TAG_PARTFILE_SOURCE_COUNT_A4AF, value); }
+		void SetSourceXferCount(uint16 &value) { AssignIfExist(EC_TAG_PARTFILE_SOURCE_COUNT_XFER, value); }
+		void SetSourceCountA4AF(uint16 &value) { AssignIfExist(EC_TAG_PARTFILE_SOURCE_COUNT_A4AF, value); }
 
 		void SetSpeed(uint32 &value) { AssignIfExist(EC_TAG_PARTFILE_SPEED, value); }
 		void SetPrio(uint32 &value) { AssignIfExist(EC_TAG_PARTFILE_PRIO, value); }
-		void SetFileCat(uint32 &value) { AssignIfExist(EC_TAG_PARTFILE_CAT, value); }
+		void SetFileCat(uint8 &value) { AssignIfExist(EC_TAG_PARTFILE_CAT, value); }
 		void SetLastSeenComplete(uint32 &value) { AssignIfExist(EC_TAG_PARTFILE_LAST_SEEN_COMP, value); }
 		
 		#ifdef EC_REMOTE
