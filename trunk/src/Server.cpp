@@ -71,6 +71,7 @@ CServer::CServer(CEC_Server_Tag *tag)
 	    description = tmpTag->GetStringData();
 	}
 	ip = tag->GetIPv4Data().IP();
+	ipfull = Uint32toStringIP(ip);
 	port = tag->GetIPv4Data().port;
     if ((tmpTag = tag->GetTagByName(EC_TAG_SERVER_USERS_MAX)) != NULL) {
         maxusers = tmpTag->GetInt32Data();
@@ -82,6 +83,29 @@ CServer::CServer(CEC_Server_Tag *tag)
     } else {
 	    hardfiles = 0;
     }
+   
+	if ((tmpTag = tag->GetTagByName(EC_TAG_SERVER_PRIO)) != NULL) {
+    	preferences = tmpTag->GetInt8Data();
+    } else {
+	    preferences = SRV_PR_NORMAL;
+    }
+    
+	if ((tmpTag = tag->GetTagByName(EC_TAG_SERVER_STATIC)) != NULL) {
+		staticservermember = tmpTag->GetInt8Data();
+	} else {
+	    staticservermember = 0;
+	}
+	
+	if ((tmpTag = tag->GetTagByName(EC_TAG_SERVER_USERS)) != NULL) {
+		users = tmpTag->GetInt32Data();
+	} else {
+		users = 0;
+	}
+	if ((tmpTag = tag->GetTagByName(EC_TAG_SERVER_FILES)) != NULL) {
+		files = tmpTag->GetInt32Data();
+	} else {
+		files = 0;
+	}
 }
 #endif
 
