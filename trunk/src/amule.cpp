@@ -19,29 +19,33 @@
 
 #include <unistd.h>           // Needed for close(2) and sleep(3)
 #include <wx/defs.h>
+
 #ifdef __WXMSW__
 	#include <winsock.h>
 	#include <wx/msw/winundef.h>
 #else
-#ifdef __OPENBSD__
-       #include <sys/types.h>
-#endif /* __OPENBSD__ */
+	#ifdef __BSD__
+     	  #include <sys/types.h>
+	#endif /* __BSD__ */
 	#include <sys/socket.h>
 	#include <netinet/in.h>
 	#include <arpa/inet.h>
 #endif
+
 #ifdef __WXGTK__
-#ifdef __OPENBSD__
-       #include <sys/param.h>
-       #include <sys/mount.h>
-#endif /* __OPENBSD__ */
-#ifndef __OPENBSD__
-	#include <execinfo.h>
-	#include <mntent.h>
-#endif
+
+	#ifdef __BSD__
+     	#include <sys/param.h>
+       	#include <sys/mount.h>
+	#else 
+		#include <execinfo.h>
+		#include <mntent.h>
+	#endif /* __BSD__ */
+
 	#include <X11/Xlib.h>		// Needed for XParseGeometry
 	#include <gdk/gdk.h>
 	#include <gtk/gtk.h>
+	
 #endif
 
 #ifdef HAVE_CONFIG_H
@@ -524,7 +528,7 @@ bool CamuleApp::OnInit()
 	   that is the case, we need to avoid chmoding to avoid lots of warnings.
 	   This is done by reading through fstab entries and comparing to the
 	   folders used for incomming and temp files. */
-#ifndef __OPENBSD__
+#ifndef __BSD__
 	FILE* mnt_tab = setmntent("/etc/mtab","r");
 	if ( mnt_tab ) {
 		wxString incomingdir = glob_prefs->GetIncomingDir();
@@ -577,7 +581,7 @@ bool CamuleApp::OnInit()
 		}
 	}
 
-#endif // __OPENBSD__
+#endif // __BSD__
 #endif
 
 
@@ -1091,7 +1095,7 @@ void CamuleApp::OnFatalException()
 
 	// (stkn) create backtrace
 #ifdef __WXGTK__
-#ifndef __OPENBSD__
+#ifndef __BSD__
 	void *bt_array[100];	// 100 should be enough ?!?
 	char **bt_strings;
 	int num_entries;
@@ -1112,9 +1116,11 @@ void CamuleApp::OnFatalException()
 	}
 	free(bt_strings);
 #endif
-#ifdef __OPENBSD__
+
+#ifdef __BSD__
 	fprintf(stderr, "\nOOPS! - Seems like aMule crashed\n--== no BACKTRACE yet \n\n");
-#endif
+#endif // __BSD__
+	
 #endif
 #endif
 }
@@ -1818,8 +1824,7 @@ void CamuleApp::ShutDown() {
 }
 
 
-#if defined(__DEBUG__)
-#if !(defined(__OPENBSD__)) && !(defined(__WXMAC__)) && !(defined(__WXMSW__))
+#if defined(__DEBUG__) && defined(__LINUX__)
 
 	void CamuleApp::AddSocketDeleteDebug(uint32 socket_pointer, uint32 creation_time) {
 
@@ -1879,7 +1884,7 @@ void CamuleApp::ShutDown() {
 	// No backtrace on this platform.
 	}
 #endif
-#endif
+	
 
 void CamuleApp::NotifyEvent(GUIEvent event) {
 
