@@ -38,7 +38,7 @@ static wxCSConv aMuleConv(wxT("iso8859-1"));
 	#define unicode2char(x) (const char*)( x )
 	#define char2unicode(x) (x)
 #endif
-
+#define aMuleConvToUTF8(x) (const char*) wxConvUTF8.cWC2MB((wxString(x)).wc_str(aMuleConv))
 
 /**
  * Helper function.

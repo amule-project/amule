@@ -117,8 +117,11 @@ AC_ARG_ENABLE(gsocket, [  --disable-gsocket       Disable gsocket.c linking],
 
 AC_ARG_ENABLE(gtk, [  --disable-gtk           Disable pure GTK code in amule], gtk="$enableval", gtk="yes")
 
+AC_ARG_ENABLE(utf8_systray, [  --enable-utf8-systray   Use UTF-8 encoded strings in the systray],
+		utf8_systray="$enableval", utf8_systray="no")
+
 AC_ARG_ENABLE(systray, [  --disable-systray       Disable SysTray compilation],
-			systray=$enableval, systray=yes)
+			systray=$enableval, systray="yes")
 
 AC_ARG_ENABLE(uss, [  --enable-uss            Enable USS (not working atm)],
 		USE_USS="$enableval", USE_USS="no")
@@ -302,6 +305,23 @@ esac
 
 AC_SUBST(TRAY_FLAGS)
 
+# utf8_systray enable
+AC_MSG_CHECKING([whether SysTray should use UTF-8 strings])
+AC_MSG_RESULT($utf8_systray)
+
+case "$utf8_systray" in
+yes)
+	if test x"USE_SAFE_TRAY" = xyes ; then
+		UTF8_SYSTRAY_FLAGS="-D__UTF8_SYSTRAY_ENABLED__"
+		USE_UTF8_SYSTRAY="yes"
+	else
+		echo "***** Warning if you want to eneble UTF-8 systray, --enable-systray must be active"
+	fi
+	;;
+esac
+
+AC_SUBST(UTF8_SYSTRAY_FLAGS)
+
 # gtk code strip
 AC_MSG_CHECKING([whether pure GTK code should be compiled])
 AC_MSG_RESULT($gtk)
@@ -435,6 +455,7 @@ AM_CONDITIONAL(ADD_24GSOCKET, test x$USE_24GSOCKET = xyes)
 AM_CONDITIONAL(ADD_GSOCKET, test x$USE_GSOCKET = xyes)
 AM_CONDITIONAL(ADD_THROTTLER, test x$USE_USS = xyes)
 AM_CONDITIONAL(HAVE_TRAY, test x$systray = xyes)
+AM_CONDITIONAL(HAVE_UTF8_TRAY, test x$utf8_systray = xyes)
 AM_CONDITIONAL(HAVE_GTK, test x$gtk = xyes)
 AM_CONDITIONAL(VERBOSE_OUTPUT, test x$USE_DEBUG = xyes -a x$VERBOSE_OUTPUT = xyes)
 
@@ -488,6 +509,7 @@ echo "  Should aMule be compiled with upload speed sense?        ${USE_USS:-no}"
 echo "  Should aMule be compiled with profiling?                 ${USE_PROFILE:-no}"
 echo "  Should aMule be compiled with optimizations?             ${USE_OPTIMIZE:-no}"
 echo "  Should aMule be compiled with systray?                   ${systray}"
+echo "  Should aMule be compiled with UTF-8 systray?             ${utf8_systray}"
 echo "  Should aMule be compiled with pure GTK code?             ${gtk}"
 echo "  Should aMule be linked against patched gsocket?          ${USE_GSOCKET:-no}"
 echo "  Should aMule daemon version be built? (EXPERIMENTAL)     ${AMULE_DAEMON:-no}"
