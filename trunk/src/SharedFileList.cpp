@@ -41,6 +41,7 @@
 #include "CMD4Hash.h"		// Needed for CMD4Hash
 #include "PartFile.h"		// Needed for PartFile
 #include "server.h"		// Needed for CServer
+#include "StringFunctions.h" // Needed for unicode2char
 
 
 CSharedFileList::CSharedFileList(CServerConnect* in_server,CKnownFileList* in_filelist){

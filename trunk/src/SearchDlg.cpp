@@ -38,6 +38,7 @@
 #include "SafeFile.h"		// Needed for CSafeMemFile
 #include "SearchList.h"		// Needed for CSearchList
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
+#include "StringFunctions.h"		// Needed for unicode2char
 #include "otherfunctions.h"	// Needed for URLEncode, GetTypeSize
 #include "packets.h"		// Needed for Packet
 #include "server.h"			// Needed for CServer
@@ -505,4 +506,3 @@ void CSearchDlg::UpdateCatChoice()
 	
 	c_cat->SetSelection( 0 );
 }
-

@@ -26,7 +26,7 @@
 #include <wx/tokenzr.h>		// Needed for wxStringTokenizer
 
 #include "MuleListCtrl.h"	// Interface declarations
-#include "otherfunctions.h"	// Needed for StrToLong
+#include "StringFunctions.h"	// Needed for StrToLong
 #include "opcodes.h"		// Needed for MP_LISTCOL_1
 
 
@@ -393,4 +393,3 @@ void CMuleListCtrl::OnMouseWheel(wxMouseEvent &event)
 {
 	event.Skip();
 }
-

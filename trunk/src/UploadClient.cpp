@@ -682,7 +682,7 @@ void CUpDownClient::SendCommentInfo(CKnownFile* file)
 	
 	CSafeMemFile data;
 	data.WriteUInt8(rating);
-	data.WriteUInt32(desc.Length());
+	data.WriteUInt32(desc.Length()); // We can'y use WriteString because len is 32 bits
 	data.Write(unicode2char(desc), desc.Length());
 	
 	Packet *packet = new Packet(&data,OP_EMULEPROT);

@@ -31,7 +31,8 @@
 #include "amule.h"
 #include "HTTPDownload.h"	// Interface declarations
 #include "inetdownload.h"	// Needed for inetDownload
-#include "otherfunctions.h"	// Needed for unicode2char
+#include "StringFunctions.h"	// Needed for unicode2char
+#include "otherfunctions.h" 	// Needed for CatChild
 
 #ifndef AMULE_DAEMON 
 	#include "muuli_wdr.h"		// Needed for ID_CANCEL: Let it here or will fail on win32

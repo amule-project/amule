@@ -48,7 +48,7 @@ class amuleIPV4Address : public wxIPV4address {
 	virtual bool Hostname(const wxString& name) {
 		// Some people are sometimes fool.
 		if (name.IsEmpty()) {
-			wxLogWarning(wxT("Trying to set a NULL host: giving up") );
+//			wxLogWarning(wxT("Trying to set a NULL host: giving up") );
 			return FALSE;
 		}
 		return Hostname(StringIPtoUint32(name));
@@ -57,7 +57,8 @@ class amuleIPV4Address : public wxIPV4address {
 	virtual bool Hostname(uint32 ip) {
 		// Some people are sometimes fool.
 		if (!ip) {
-			wxLogWarning(wxT("Trying to set a wrong ip: giving up") );
+//			wxLogWarning(wxT("Trying to set a wrong ip: giving up") );
+//			wxASSERT(0);
 			return FALSE;
 		}
 		// We have to take care that wxIPV4address's internals changed on 2.5.2

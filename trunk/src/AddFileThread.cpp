@@ -30,7 +30,7 @@
 #include <wx/utils.h>
 
 #include "AddFileThread.h"	// Interface declarations
-#include "otherfunctions.h"	// Needed for unicode2char
+#include "StringFunctions.h"	// Needed for unicode2char
 #include "amule.h"			// Needed for theApp
 #include "opcodes.h"		// Needed for TM_HASHTHREADFINISHED
 #include "PartFile.h"		// Needed for CKnownFile and CPartFile
@@ -509,4 +509,3 @@ bool CAddFileThread::CreateNextPartHash( CFile* file, CKnownFile* owner, bool cr
 
 	return true;
 }
-

@@ -48,6 +48,7 @@
 #include "amuleDlg.h"
 #include "color.h"
 #include "otherfunctions.h"		// Needed for MakeFoldername, IsEmptyFile
+#include "StringFunctions.h"		// Needed for unicode2char
 #include "EditServerListDlg.h"
 #include "SharedFileList.h"		// Needed for CSharedFileList
 #include "StatisticsDlg.h"		// Needed for graph parameters, colors
@@ -757,4 +758,3 @@ void PrefsUnifiedDlg::OnRateLimitChanged( wxSpinEvent& event )
 		}
 	}
 }
-

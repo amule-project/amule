@@ -22,7 +22,7 @@
 
 #include "types.h"		// Needed for uint16 and uint32
 #include "CTypedPtrList.h"	// Needed for CTypedPtrList
-#include "otherfunctions.h" // Needed for unicode2char & char2unicode
+#include "StringFunctions.h" // Needed for unicode2char & char2unicode
 #include "CMD4Hash.h"
 #include "SHAHashSet.h"
 

@@ -37,6 +37,7 @@
 #include "amule.h"
 #include "config.h"		// Needed for PACKAGE_NAME and PACKAGE_STRING
 #include "otherfunctions.h"
+#include "StringFunctions.h"
 #include "opcodes.h"		// Needed for PREFFILE_VERSION
 #include "Preferences.h"
 #include "CFile.h"

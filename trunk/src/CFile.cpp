@@ -29,7 +29,7 @@
 
 #include "Preferences.h"	// Needed for CPreferences
 
-#include "otherfunctions.h" // unicode2char
+#include "StringFunctions.h" // unicode2char
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"             // Needed for HAVE_SYS_PARAM_H

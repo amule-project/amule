@@ -88,6 +88,7 @@ amulegui_SOURCES = \
 	SharedFilesWnd.cpp \
 	ServerListCtrl.cpp \
 	StatisticsDlg.cpp \
+	StringFunctions.cpp \
 	TransferWnd.cpp \
 	ClientListCtrl.cpp \
 	amuleDlg.cpp 
@@ -162,6 +163,7 @@ amule_SOURCES = ListenSocket.cpp \
 	SHAHashSet.cpp \
 	sockets.cpp \
 	StatisticsDlg.cpp \
+	StringFunctions.cpp \
 	TransferWnd.cpp \
 	UDPSocket.cpp \
 	UploadClient.cpp \
@@ -208,6 +210,7 @@ amuled_SOURCES = ListenSocket.cpp \
         ServerList.cpp \
         ServerSocket.cpp \
         SharedFileList.cpp \
+	StringFunctions.cpp \
         sockets.cpp \
 	timer.cpp \
         UDPSocket.cpp \
@@ -374,6 +377,7 @@ noinst_HEADERS = AddFileThread.h \
 		 SharedFilesWnd.h \
 		 sockets.h \
 		 StatisticsDlg.h \
+	  	 StringFunctions.h \
 		 SysTray.h \
 		 TextClient.h \
 		 TransferWnd.h \

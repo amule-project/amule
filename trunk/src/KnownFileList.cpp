@@ -23,7 +23,7 @@
 #include "KnownFileList.h"	// Interface declarations
 #include "SafeFile.h"		// Needed for CSafeFile
 #include "PartFile.h"		// Needed for CPartFile
-#include "otherfunctions.h" // md4cmp
+#include "StringFunctions.h" // Needed for unicode2char
 #include "amule.h"
 #include "CMD4Hash.h"		// Needed for CMD4Hash
 

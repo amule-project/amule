@@ -26,11 +26,15 @@
 #include <wx/string.h>
 #include <wx/thread.h>
 #include <wx/socket.h>
-#warning deprecate this via decoupling of string functions
-#include "otherfunctions.h"
+#include "StringFunctions.h"
 
 // Foward declaration
 class CUDPSocket;
+
+
+/****************************************************/ 
+/******************* Inlines ************************/
+/****************************************************/
 
 // Network ip/host handling functions
 
@@ -62,6 +66,44 @@ inline uint32 StringHosttoUint32(wxString Host) {
 	solver.Hostname(Host);
 	return StringIPtoUint32(solver.IPAddress());
 }
+
+// Checks an ip to see if it is valid, depending on current preferences.
+inline bool IsGoodIP(uint32 nIP)
+{
+	// always filter following IP's
+	// -------------------------------------------
+	//	 0.0.0.0
+	// 127.*.*.*						localhost
+
+	if (nIP==0 || (uint8)nIP==127)
+		return false;
+
+	// filter LAN IP's
+	// -------------------------------------------
+	//	0.*
+	//	10.0.0.0 - 10.255.255.255		class A
+	//	172.16.0.0 - 172.31.255.255		class B
+	//	192.168.0.0 - 192.168.255.255	class C
+
+	uint8 nFirst = (uint8)nIP;
+	uint8 nSecond = (uint8)(nIP >> 8);
+
+	if (nFirst==192 && nSecond==168) // check this 1st, because those LANs IPs are mostly spreaded
+		return false;
+
+	if (nFirst==172 && nSecond>=16 && nSecond<=31)
+		return false;
+
+	if (nFirst==0 || nFirst==10)
+		return false;
+
+	return true;
+}
+
+/****************************************************/ 
+/***************** Non-inlines **********************/
+/****************************************************/
+
 
 // Implementation of Asynchronous dns resolving using wxThread 
 //	 and internal wxIPV4address handling of dns
