@@ -139,6 +139,7 @@ IMPLEMENT_APP(CamuleApp)
 // lfroen: do it simple.
 wxFile *applog = 0;
 bool enable_stdout_log = false;
+wxString server_msg;
 
 int CamuleApp::OnRun()
 {
@@ -283,7 +284,9 @@ bool CamuleApp::OnInit()
 	ConfigDir = wxGetHomeDir() + wxFileName::GetPathSeparator() + wxT(".aMule") + wxFileName::GetPathSeparator();
 
 	// open debug log
-	applog = new wxFile(ConfigDir + wxFileName::GetPathSeparator() + wxT("logfile"), wxFile::read_write);
+	applog = new wxFile();
+	applog->Create(ConfigDir + wxFileName::GetPathSeparator() + wxT("logfile"),
+			 wxFile::read_write);
 	//applog = new wxFFile(ConfigDir + wxT("logfile"), "rw");
 	if ( !applog->IsOpened() ) {
 		printf("ERROR: unable to open log file\n");
@@ -1663,8 +1666,7 @@ wxString CamuleApp::GetLog(bool WXUNUSED(reset))
 
 wxString CamuleApp::GetServerLog(bool WXUNUSED(reset))
 {
-	wxString log = wxT("FIXME");
-	return log;
+	return server_msg;
 }
 
 wxString CamuleApp::GetDebugLog(bool reset)
@@ -1674,7 +1676,9 @@ wxString CamuleApp::GetDebugLog(bool reset)
 
 void CamuleApp::AddServerMessageLine(wxString &msg)
 {
-	printf("ServerMessage: %s", unicode2char(msg));
+	server_msg += msg;
+	AddLogLine(wxT("ServerMessage: ") + msg);
+	//printf("ServerMessage: %s", unicode2char(msg));
 }
 
 void CamuleApp::RunAICHThread()
