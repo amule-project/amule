@@ -1,3 +1,30 @@
+/*
+ *  Name:         Config file functions
+ *
+ *  Purpose:      Read info from casrc ou create one if it doesnt exist
+ *
+ *  Author:       Pedro de Oliveira <falso@rdk.homeip.net>
+ *
+ *  Copyright (C) 2004 by Pedro de Oliveira
+ * 
+ *  This file is part of aMule.
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the
+ *  Free Software Foundation, Inc.,
+ *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -19,13 +46,14 @@ int writeconfig(void)
 		"# *_line - x,y,[1/0] enabled or disabled\n\n",
 		"font /usr/share/fonts/corefonts/times.ttf\n",
 		"font_size 10.5\n",
-		"source_image stat.png\n",
+		"source_image /usr/share/pixmaps/stat.png\n",
 		"first_line 23,19,1\n",
 		"second_line 23,36,1\n",
 		"third_line 23,54,1\n",
 		"fourth_line 23,72,1\n",
 		"fifth_line 23,89,1\n",
-		"sixth_line 23,106,1\n"
+		"sixth_line 23,106,1\n",
+		"template /usr/share/pixmaps/tmp.html\n"
 	};
 
 	path = get_path(".aMule/casrc");
@@ -94,6 +122,9 @@ int readconfig(CONF *config)
 					sscanf(buffer, "%*s %f", &config->size);
 				if (strcmp(option, "source_image") == 0)
 					sscanf(buffer, "%*s %s", config->source);
+				if (strcmp(option, "template") == 0)
+					sscanf(buffer, "%*s %s", config->template);
+					
 				for (i = 0; i <= IMG_TEXTLINES; i++)
 					if (strcmp(option, lines[i]) == 0)
 						sscanf(buffer,
