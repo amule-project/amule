@@ -45,9 +45,7 @@
 #include "OtherFunctions.h"	// Needed for URLEncode, GetTypeSize
 #include "amule.h"			// Needed for theApp
 
-#ifndef CLIENT_GUI
 #include "SearchList.h"		// Needed for CSearchList
-#endif
 
 #define ID_SEARCHLISTCTRL wxID_HIGHEST+667
 
