@@ -482,6 +482,7 @@ CTag::CTag(const CFile &in_data)
 		if (in_data.Read(&value,2) == wxInvalidOffset) {
 			throw CInvalidPacket("Bad Met File");
 		}				
+		tag.type = 3;
 		tag.intvalue = ENDIAN_SWAP_16(value);
 	}
 	else if (tag.type == TAGTYPE_UINT8){ 
@@ -489,6 +490,7 @@ CTag::CTag(const CFile &in_data)
 		if (in_data.Read(&value,1) == wxInvalidOffset) {
 			throw CInvalidPacket("Bad Met File");
 		}				
+		tag.type = 3;
 		tag.intvalue = value;
 	}	
 	else if (tag.type >= TAGTYPE_STR1 && tag.type <= TAGTYPE_STR16) {
