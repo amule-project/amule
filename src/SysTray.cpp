@@ -130,7 +130,7 @@ void disconnect()
 // Set download speed
 void set_dl_speed(GtkWidget* widget, GdkEventButton* WXUNUSED(event), gpointer WXUNUSED(data))
 {
-	unsigned int temp = (unsigned int)gtk_object_get_data (GTK_OBJECT(widget), "label");
+	unsigned long temp = (unsigned long)gtk_object_get_data (GTK_OBJECT(widget), "label");
 	
 	thePrefs::SetMaxDownload(temp);
 }
@@ -139,7 +139,7 @@ void set_dl_speed(GtkWidget* widget, GdkEventButton* WXUNUSED(event), gpointer W
 // Set upload speed
 void set_ul_speed(GtkWidget* widget, GdkEventButton* WXUNUSED(event), gpointer WXUNUSED(data))
 {
-	unsigned int temp = (unsigned int)gtk_object_get_data (GTK_OBJECT(widget), "label");
+	unsigned long temp = (unsigned long)gtk_object_get_data (GTK_OBJECT(widget), "label");
 
 	thePrefs::SetMaxUpload(temp);
 }
