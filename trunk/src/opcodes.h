@@ -41,8 +41,13 @@
 #define	CURRENT_VERSION_SHORT			0x30
 #define	CURRENT_VERSION_CHECK			0x30C
 #define	EMULE_PROTOCOL				0x01
-
 // MOD Note: end
+
+// aMule version 
+#define	VERSION_MJR		2
+#define	VERSION_MIN		0
+#define	VERSION_UPDATE	0
+#define	VERSION_RC			2
 
 #define	EDONKEYVERSION				0x3c
 #define	PREFFILE_VERSION			0x14	//<<-- last change: reduced .dat, by using .ini

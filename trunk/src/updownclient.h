@@ -326,6 +326,10 @@ public:
 	CString			GetFileComment()			{return m_strComment;} 
 	void			SetFileComment(char *desc)		{m_strComment.Format("%s",desc);}
 	uint8			GetFileRate()				{return m_iRate;}
+	
+	wxString		GetSoftStr() { return m_clientVerString.Left(m_SoftLen); }
+	wxString		GetSoftVerStr() { return m_clientVerString.Mid(m_SoftLen+1); }
+	
 	void			SetFileRate(int8 iNewRate)		{m_iRate=iNewRate;}
 
 	uint16			GetKadPort() const	{ return m_nKadPort; }
@@ -361,6 +365,7 @@ private:
 	uint32	m_cSendblock;
 	uint8	m_byEmuleVersion;
 	uint8	m_byDataCompVer;
+	uint8 m_SoftLen;
 	bool	m_bEmuleProtocol;
 	char*	m_pszUsername;
 	char	m_szFullUserIP[21];
@@ -481,7 +486,9 @@ private:
 		m_fSharedDirectories : 1; // client supports OP_ASKSHAREDIRS opcodes
 		
 	/* Razor 1a - Modif by MikaelB */
-
+	
+	int				GetHashType() const;
+	
 public:
 
 	/* m_OtherRequests_list --> public instead of private */

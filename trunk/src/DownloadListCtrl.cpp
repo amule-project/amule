@@ -845,12 +845,12 @@ void CDownloadListCtrl::DrawFileItem(wxDC * dc, int nColumn, LPRECT lpRect, Ctrl
 							}
 						}
 						// it's already centered by OnDrawItem() ... 
-						POINT point = { lpRect->left - 4, lpRect->top /*+3 */  };
+						POINT point = { lpRect->left, lpRect->top /*+3 */  };
 						//m_ImageList.Draw(dc, image, point, ILD_NORMAL);
 						m_ImageList.Draw(image, *dc, point.x, point.y - 1, wxIMAGELIST_DRAW_TRANSPARENT);
-						lpRect->left += 9;
+						lpRect->left += 15;
 						dc->DrawText(lpPartFile->GetFileName(), lpRect->left, lpRect->top);
-						lpRect->left -= 9;
+						lpRect->left -= 15;
 					} else {
 						dc->DrawText(lpPartFile->GetFileName(), lpRect->left, lpRect->top);
 					}
@@ -930,8 +930,8 @@ void CDownloadListCtrl::DrawFileItem(wxDC * dc, int nColumn, LPRECT lpRect, Ctrl
 						// ts: Percentage of completing
 						// Kry - Modified for speed
 						buffer.Format("%.1f %%", lpPartFile->GetPercentCompleted());
-						int middlex = (lpRect->left + lpRect->right) / 2;
-						int middley = (lpRect->bottom + lpRect->top) / 2;
+						int middlex = (lpRect->left + lpRect->right) >> 1;
+						int middley = (lpRect->bottom + lpRect->top) >> 1;
 						dc->GetTextExtent(buffer, &textwidth, &textheight);
 							wxColour AktColor = dc->GetTextForeground();
 						if (theApp.glob_prefs->ShowProgBar()) {	
@@ -939,7 +939,7 @@ void CDownloadListCtrl::DrawFileItem(wxDC * dc, int nColumn, LPRECT lpRect, Ctrl
 						} else {	
 							dc->SetTextForeground(*wxBLACK);
 						}
-						dc->DrawText(buffer, middlex - (textwidth / 2), middley - (textheight / 2));
+						dc->DrawText(buffer, middlex - (textwidth >> 1), middley - (textheight >> 1));
 						dc->SetTextForeground(AktColor);					
 					}
 
@@ -1225,46 +1225,8 @@ void CDownloadListCtrl::DrawSourceItem(wxDC * dc, int nColumn, LPRECT lpRect, Ct
 			#endif
 
 			case 6:{
-				// sources
-				switch (lpUpDownClient->GetClientSoft()) {					
-				case SO_EDONKEY:
-					buffer.Format(_("eDonkey v%i"),lpUpDownClient->GetVersion());
-					break;
-				case SO_EDONKEYHYBRID:
-					buffer.Format(_("eDonkeyHybrid v%i"),lpUpDownClient->GetVersion());
-					break;
-				case SO_EMULE:
-				case SO_OLDEMULE:
-					buffer.Format(_("eMule v%02X"),lpUpDownClient->GetMuleVersion());
-					break;
-				case SO_CDONKEY:
-					buffer.Format("cDonkey v%02X",lpUpDownClient->GetMuleVersion());
-					break;
-				case SO_AMULE:
-					if (lpUpDownClient->GetClientModString().IsEmpty() == false) {
-						buffer.Format(_("aMule [ %s ]"),lpUpDownClient->GetClientModString().c_str());
-					} else {
-						buffer.Format(_("aMule v0.%02X"),lpUpDownClient->GetMuleVersion());
-					}
-					break;
-				case SO_LXMULE:
-					buffer.Format(_("lMule/xMule v0.%02X"),lpUpDownClient->GetMuleVersion());
-					break;
-				case SO_MLDONKEY:
-					buffer.Format(_("Old MLdonkey"));
-					break;
-				case SO_NEW_MLDONKEY:
-					buffer.Format(_("New MLdonkey"));
-					break;
-				/*
-				case SO_SHAREAZA:
-					buffer.Format("Shareaza v%.2f",(float)lpUpDownClient->GetVersion()/1000.0f);
-					break;
-				*/
-				default:
-					buffer.Format(_("Unknown"));
-				}
-				dc->DrawText(buffer, lpRect->left, lpRect->top);
+				// Version				
+				dc->DrawText(lpUpDownClient->GetClientVerString(), lpRect->left, lpRect->top);
 				break;
 			}
 

@@ -99,61 +99,8 @@ bool CClientDetailDialog::OnInitDialog() {
 	wxString software=_("ClientSoftware ->")+(CastItoIShort(m_client->GetClientSoft()))+_("<- ClientVersion ->v")+(CastItoIShort(m_client->GetMuleVersion()))+_("<- ClientModString ->")+(m_client->GetClientModString().c_str())+"<-";
 	printf("%s\n", software.c_str());
 
-	switch(m_client->GetClientSoft()) {
-		case SO_UNKNOWN:
-			GetDlgItem(ID_DSOFT,wxStaticText)->SetLabel(_("Unknown"));
-			GetDlgItem(ID_DVERSION,wxStaticText)->SetLabel(_("Unknown"));
-			break;
-		case SO_EMULE:
-		case SO_OLDEMULE:
-			GetDlgItem(ID_DSOFT,wxStaticText)->SetLabel("eMule");
-			if (m_client->GetMuleVersion()) {
-				sprintf(buffer,"v%X",m_client->GetMuleVersion());
-				if(m_client->GetClientModString().IsEmpty() == false) {
-					sprintf(buffer, "[ %s ]", m_client->GetClientModString().c_str());
-				}
-				GetDlgItem(ID_DVERSION,wxStaticText)->SetLabel(buffer);
-			} else {
-				GetDlgItem(ID_DVERSION,wxStaticText)->SetLabel(_("Unknown"));
-			}
-			break;
-		case SO_LXMULE:
-			GetDlgItem(ID_DSOFT,wxStaticText)->SetLabel("lMule/xMule");
-			sprintf(buffer,"v0.%02X",m_client->GetMuleVersion());
-			GetDlgItem(ID_DVERSION,wxStaticText)->SetLabel(buffer);
-			break;
-		case SO_AMULE:
-			GetDlgItem(ID_DSOFT,wxStaticText)->SetLabel("aMule");
-			if(m_client->GetClientModString().IsEmpty() == false) {
-				sprintf(buffer, "[ %s ]", m_client->GetClientModString().c_str());
-			} else {
-				sprintf(buffer,"v0.%02X",m_client->GetMuleVersion());
-			}
-			GetDlgItem(ID_DVERSION,wxStaticText)->SetLabel(buffer);
-			break;
-		case SO_EDONKEY:
-			GetDlgItem(ID_DSOFT,wxStaticText)->SetLabel("eDonkey");
-			sprintf(buffer,"v%i",m_client->GetVersion());
-			GetDlgItem(ID_DVERSION,wxStaticText)->SetLabel(buffer);
-			break;
-		case SO_MLDONKEY:
-			GetDlgItem(ID_DSOFT,wxStaticText)->SetLabel("Old MlDonkey");
-			sprintf(buffer,"v%i",m_client->GetVersion());
-			GetDlgItem(ID_DVERSION,wxStaticText)->SetLabel(buffer);
-			break;
-		case SO_NEW_MLDONKEY:
-			GetDlgItem(ID_DSOFT,wxStaticText)->SetLabel("New MlDonkey");
-			sprintf(buffer,"v%i",m_client->GetVersion());
-			GetDlgItem(ID_DVERSION,wxStaticText)->SetLabel(buffer);
-			break;
-		case SO_EDONKEYHYBRID:
-			GetDlgItem(ID_DSOFT,wxStaticText)->SetLabel("Hybrid");
-			sprintf(buffer,"v%i",m_client->GetVersion());
-			GetDlgItem(ID_DVERSION,wxStaticText)->SetLabel(buffer);
-			break;
-		default:
-			GetDlgItem(ID_DVERSION,wxStaticText)->SetLabel(_("Unknown"));
-	}
+	GetDlgItem(ID_DSOFT,wxStaticText)->SetLabel(m_client->GetSoftStr());
+	GetDlgItem(ID_DVERSION,wxStaticText)->SetLabel(m_client->GetSoftVerStr());
 
 	sprintf(buffer,"%u (%s)",m_client->GetUserID(),(m_client->HasLowID() ? CString(_("Low")).GetData():CString(_("High")).GetData()));
 	GetDlgItem(ID_DID,wxStaticText)->SetLabel(buffer);
