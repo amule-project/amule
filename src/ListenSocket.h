@@ -119,6 +119,7 @@ private:
 #endif
 };
 
+#ifdef AMULE_DAEMON
 class CSocketGlobalThread : public wxThread {
 	void *Entry();
 	
@@ -128,6 +129,7 @@ public:
 	void AddSocket(CClientReqSocket* sock);
 	void RemoveSocket(CClientReqSocket* sock);
 };
+#endif
 
 // CListenSocket command target
 class CListenSocket : public wxSocketServer
