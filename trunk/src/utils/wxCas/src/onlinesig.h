@@ -61,6 +61,8 @@ private:
 
   wxString BytesConvertion (wxString bytes);
 
+  wxFileName* Default_aMule_onlinesig;
+
 public:
 
   // Constructors
@@ -73,30 +75,135 @@ public:
 
   // Accessor
   void SetFromAmuleSig (wxFileName * file);
-  void SetFromDefaultAmuleSig ();
+  void SetFromDefaultAmuleSig ()
+  {
+    SetFromAmuleSig (Default_aMule_onlinesig);
+  }
 
-  bool IsRunning ();
 
-  wxString GetServerName ();
-  wxString GetServerIP ();
-  wxString GetServerPort ();
-  wxString GetConnexionID ();
-  wxString GetULRate ();
-  wxString GetDLRate ();
-  wxString GetQueue ();
-  wxString GetSharedFiles ();
-  wxString GetUser ();
-  wxString GetTotalUL ();
-  wxString GetTotalDL ();
-  wxString GetVersion ();
-  wxString GetSessionUL ();
-  wxString GetSessionDL ();
-  wxString GetRunTime ();
-  wxString GetConvertedTotalUL ();
-  wxString GetConvertedTotalDL ();
-  wxString GetConvertedSessionUL ();
-  wxString GetConvertedSessionDL ();
-  wxString GetConnexionIDType ();
+	
+	bool IsRunning ()
+	{
+	  if (m_isRunning == "1")
+	    {
+		 return TRUE;
+	    }
+	  else
+	    {
+		 return FALSE;
+	    }
+	}
+	
+	wxString GetServerName ()
+	{
+	  return m_serverName;
+	}
+	
+	wxString GetServerIP ()
+	{
+	  return m_serverIP;
+	}
+	
+	wxString GetServerPort ()
+	{
+	  return m_serverPort;
+	}
+	
+	wxString GetConnexionID ()
+	{
+	  return m_connexionID;
+	}
+	
+	wxString GetULRate ()
+	{
+	  return m_ULRate;
+	}
+	
+	wxString GetDLRate ()
+	{
+	  return m_DLRate;
+	}
+	
+	wxString GetQueue ()
+	{
+	  return m_queue;
+	}
+	
+	wxString GetSharedFiles ()
+	{
+	  return m_sharedFiles;
+	}
+	
+	wxString GetUser ()
+	{
+	  return m_user;
+	}
+	
+	wxString GetTotalUL ()
+	{
+	  return m_totalUL;
+	}
+	
+	
+	wxString GetTotalDL ()
+	{
+	  return m_totalDL;
+	}
+	
+	wxString GetVersion ()
+	{
+	  return m_version;
+	}
+	
+	wxString GetSessionUL ()
+	{
+	  return m_sessionUL;
+	}
+	
+	
+	wxString GetSessionDL ()
+	{
+	  return m_sessionDL;
+	}
+	
+	wxString GetRunTime ()
+	{
+	  return m_runTime;
+	}
+	
+	wxString GetConvertedTotalUL ()
+	{
+	  return (BytesConvertion (m_totalUL));
+	}
+	
+	wxString GetConvertedTotalDL ()
+	{
+	  return (BytesConvertion (m_totalDL));
+	}
+	
+	wxString GetConvertedSessionUL ()
+	{
+	  return (BytesConvertion (m_sessionUL));
+	}
+	
+	wxString GetConvertedSessionDL ()
+	{
+	  return (BytesConvertion (m_sessionDL));
+	}
+	
+	wxString GetConnexionIDType ()
+	{
+	  if (m_connexionID == "H")
+	    {
+		 return (wxString ("HighID"));
+	    }
+	  else
+	    {
+		 return (wxString ("LowID"));
+	    }
+	}
+
+
 };
 
 #endif /* _ONLINESIG_H */
