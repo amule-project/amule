@@ -42,7 +42,10 @@
 #include "amuleDlg.h"		// Needed for ShowStatistics
 
 #define ID_EXPORT_HTML 20001
-
+#ifdef __OPENBSD__
+	// glibc -> bsd libc
+	#define round rint
+#endif /* __OPENBSD__ */
 // CStatisticsDlg dialog
 
 BEGIN_EVENT_TABLE(CStatisticsDlg,wxPanel)
