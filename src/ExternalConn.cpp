@@ -600,8 +600,8 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				CPartFile *cur_file = theApp.downloadqueue->GetFileByIndex(i);
 				if (cur_file) {
 					buffer+=wxString::Format("%s\t", cur_file->GetFileName().c_str());
-					buffer+=wxString::Format("%llu\t", cur_file->GetFileSize());
-					buffer+=wxString::Format("%llu\t", cur_file->GetTransfered());
+					buffer+=wxString::Format("%u\t", cur_file->GetFileSize());
+					buffer+=wxString::Format("%u\t", cur_file->GetTransfered());
 					buffer+=wxString::Format("%f\t", cur_file->GetPercentCompleted());
 #ifdef DOWNLOADRATE_FILTERED
 					buffer+=wxString::Format("%li\t", (long)(cur_file->GetKBpsDown()*1024));
