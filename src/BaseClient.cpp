@@ -703,7 +703,6 @@ void CUpDownClient::ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize)
 
 	try {
 
-		//DumpMem(pachPacket,nSize);
 		const CSafeMemFile data((BYTE*)pachPacket,nSize);
 		m_byCompatibleClient = 0;
 		//The version number part of this packet will soon be useless since it is only able to go to v.99.
