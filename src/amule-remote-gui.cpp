@@ -514,10 +514,10 @@ bool CRemoteConnect::Connect(const char *host, int port)
     	return false;
     }
 	if (reply->GetOpCode() == EC_OP_AUTH_FAIL) {
-		if (reply->GetTagCount() > 0) {
-			CECTag *reason = reply->GetTagByName(EC_TAG_STRING);
-	            AddLogLineM(true, wxString(_("ExternalConn: Access denied because: ")) + 
-	            	wxGetTranslation(reason->GetStringData()));
+		const CECTag *reason = reply->GetTagByName(EC_TAG_STRING);
+		if (reason != NULL) {
+			AddLogLineM(true, wxString(_("ExternalConn: Access denied because: ")) + 
+				wxGetTranslation(reason->GetStringData()));
 		} else {
 		    AddLogLineM(true, _("ExternalConn: Access denied"));
 		}

@@ -258,33 +258,21 @@ int CWebServer::GetWSPrefs(void)
 		return 0;
 	}
 	// we have selected only the webserver preferences
-	CECTag *wsprefs = reply->GetTagByIndex(0);
-	CECTag *webServerPort = wsprefs ? wsprefs->GetTagByName(EC_TAG_WEBSERVER_PORT) : NULL;
-	int wsport = 0;
-	if (wsprefs && webServerPort) {
-		wsport = webServerPort->GetInt16Data();
-	}
+	const CECTag *wsprefs = reply->GetTagByIndexSafe(0);
+	int wsport = wsprefs->GetTagByNameSafe(EC_TAG_WEBSERVER_PORT)->GetInt16Data();
 	
 	if (!webInterface->m_bForcedAdminPassword) {
-		CECTag *passwdHash = wsprefs->GetTagByName(EC_TAG_PASSWD_HASH);
-		if (wsprefs && passwdHash) {
-			webInterface->m_AdminPass = passwdHash->GetStringData();
-		} else {
-			webInterface->m_AdminPass = wxEmptyString;
-		}
+		webInterface->m_AdminPass =
+			wsprefs->GetTagByNameSafe(EC_TAG_PASSWD_HASH)->GetStringData();
 	}
 
 	if (!webInterface->m_bForcedAllowGuest) {
-		CECTag *webserverGuest = wsprefs->GetTagByName(EC_TAG_WEBSERVER_GUEST);
-		if (wsprefs && webserverGuest) {
+		const CECTag *webserverGuest = wsprefs->GetTagByName(EC_TAG_WEBSERVER_GUEST);
+		if (webserverGuest) {
 			webInterface->m_AllowGuest = true;
 			if (!webInterface->m_bForcedGuestPassword) {
-				CECTag *passwdHash = webserverGuest->GetTagByName(EC_TAG_PASSWD_HASH);
-				if (passwdHash) {
-					webInterface->m_GuestPass = passwdHash->GetStringData();
-				} else {
-					webInterface->m_GuestPass = wxEmptyString;
-				}
+				webInterface->m_GuestPass = webserverGuest->
+					GetTagByNameSafe(EC_TAG_PASSWD_HASH)->GetStringData();
 			}
 		} else {
 			webInterface->m_AllowGuest = false;
@@ -293,15 +281,12 @@ int CWebServer::GetWSPrefs(void)
 	
 	if (!webInterface->m_bForcedUseGzip) {
 		// we only need to check the presence of this tag
-		if (wsprefs && wsprefs->GetTagByName(EC_TAG_WEBSERVER_USEGZIP)) {
-			webInterface->m_UseGzip = true;
-		} else {
-			webInterface->m_UseGzip = false;
-		}
+		webInterface->m_UseGzip =
+			wsprefs->GetTagByName(EC_TAG_WEBSERVER_USEGZIP) != NULL;
 	}
 	
-	CECTag *webserverRefresh = wsprefs->GetTagByName(EC_TAG_WEBSERVER_REFRESH);
-	if (wsprefs && webserverRefresh) {
+	const CECTag *webserverRefresh = wsprefs->GetTagByName(EC_TAG_WEBSERVER_REFRESH);
+	if (webserverRefresh) {
 		m_nRefresh = webserverRefresh->GetInt32Data();
 	} else {
 		m_nRefresh = 120;
@@ -1562,6 +1547,8 @@ wxString CWebServer::_GetAddServerBox(ThreadData Data) {
 	if (!IsSessionAdmin(Data,sSession)) return wxEmptyString;
 
 	wxString Out = m_Templates.sAddServerBox;
+	wxString messageString;
+
 	if (_ParseURL(Data, wxT("addserver")) == wxT("true")) {
 		wxString sIP = _ParseURL(Data, wxT("serveraddr"));
 		wxString sPort = _ParseURL(Data, wxT("serverport"));
@@ -1575,14 +1562,9 @@ wxString CWebServer::_GetAddServerBox(ThreadData Data) {
 		CECPacket req(EC_OP_GET_LAST_LOG_ENTRY);
 		CECPacket *response = webInterface->SendRecvMsg_v2(&req);
 		if (response) {
-			if (CECTag *tag = response->GetTagByIndex(0)) {
-				Out.Replace(wxT("[Message]"), _SpecialChars(tag->GetStringData()));
-			} else {
-				Out.Replace(wxT("[Message]"), wxEmptyString);
-			}
+			messageString =
+				_SpecialChars(response->GetTagByIndexSafe(0)->GetStringData());
 			delete response;
-		} else {
-			Out.Replace(wxT("[Message]"), wxEmptyString);
 		}
 	} else if (_ParseURL(Data, wxT("updateservermetfromurl")) == wxT("true")) {
 		CECPacket request(EC_OP_SERVER_UPDATE_FROM_URL);
@@ -1592,18 +1574,13 @@ wxString CWebServer::_GetAddServerBox(ThreadData Data) {
 		CECPacket req(EC_OP_GET_LAST_LOG_ENTRY);
 		CECPacket *response = webInterface->SendRecvMsg_v2(&req);
 		if (response) {
-			if (CECTag *tag = response->GetTagByIndex(0)) {
-				Out.Replace(wxT("[Message]"), _SpecialChars(tag->GetStringData()));
-			} else {
-				Out.Replace(wxT("[Message]"), wxEmptyString);
-			}
+			messageString =
+				_SpecialChars(response->GetTagByIndexSafe(0)->GetStringData());
 			delete response;
-		} else {
-			Out.Replace(wxT("[Message]"), wxEmptyString);
 		}
-	} else
-		Out.Replace(wxT("[Message]"), wxEmptyString);
+	}
 	
+	Out.Replace(wxT("[Message]"), messageString);
 	Out.Replace(wxT("[AddServer]"), _("Received %d new servers"));
 	Out.Replace(wxT("[IP]"), _("IP or Address"));
 	Out.Replace(wxT("[Port]"), _("Port"));
@@ -1664,17 +1641,14 @@ wxString CWebServer::_GetLog(ThreadData Data) {
 	Out.Replace(wxT("[Clear]"), _("Reset"));
 	CECPacket req(EC_OP_GET_LOG);
 	CECPacket *response = webInterface->SendRecvMsg_v2(&req);
+	wxString logString;
 	if (response) {
-		if (CECTag *tag = response->GetTagByIndex(0)) {
-			Out.Replace(wxT("[Log]"), _SpecialChars(wxGetTranslation(tag->GetStringData())) +
-				wxT("<br><a name=\"end\"></a>"));
-		} else {
-			Out.Replace(wxT("[Log]"), wxT("<br><a name=\"end\"></a>"));
-		}
+		logString =
+			_SpecialChars(wxGetTranslation(response->GetTagByIndexSafe(0)->GetStringData()));
 		delete response;
-	} else {
-		Out.Replace(wxT("[Log]"), wxT("<br><a name=\"end\"></a>"));
 	}
+	logString += wxT("<br><a name=\"end\"></a>");
+	Out.Replace(wxT("[Log]"), logString);
 	Out.Replace(wxT("[Session]"), sSession);
 
 	return Out;
@@ -1695,16 +1669,13 @@ wxString CWebServer::_GetServerInfo(ThreadData Data) {
 	CECPacket req(EC_OP_GET_SERVERINFO);
 	CECPacket *response = webInterface->SendRecvMsg_v2(&req);
 	Out.Replace(wxT("[Clear]"), _("Reset"));
+	wxString serverInfoString;
 	if (response) {
-		if (CECTag *tag = response->GetTagByIndex(0)) {
-			Out.Replace(wxT("[ServerInfo]"), _SpecialChars(tag->GetStringData()));
-		} else {
-			Out.Replace(wxT("[ServerInfo]"), wxEmptyString);
-		}
+		serverInfoString =
+			_SpecialChars(response->GetTagByIndexSafe(0)->GetStringData());
 		delete response;
-	} else {
-		Out.Replace(wxT("[ServerInfo]"), wxEmptyString);
 	}
+	Out.Replace(wxT("[ServerInfo]"), serverInfoString);
 	Out.Replace(wxT("[Session]"), sSession);
 
 	return Out;
@@ -1728,17 +1699,14 @@ wxString CWebServer::_GetDebugLog(ThreadData Data) {
 
 	CECPacket req(EC_OP_GET_DEBUGLOG);
 	CECPacket *response = webInterface->SendRecvMsg_v2(&req);
+	wxString debugLogString;
 	if (response) {
-		if (CECTag *tag = response->GetTagByIndex(0)) {
-			Out.Replace(wxT("[DebugLog]"), _SpecialChars(tag->GetStringData()) +
-				wxT("<br><a name=\"end\"></a>"));
-		} else {
-			Out.Replace(wxT("[DebugLog]"), wxT("<br><a name=\"end\"></a>"));
-		}
+		debugLogString =
+			_SpecialChars(response->GetTagByIndexSafe(0)->GetStringData());
 		delete response;
-	} else {
-		Out.Replace(wxT("[DebugLog]"), wxT("<br><a name=\"end\"></a>"));
 	}
+	debugLogString += wxT("<br><a name=\"end\"></a>");
+	Out.Replace(wxT("[DebugLog]"), debugLogString);
 	Out.Replace(wxT("[Session]"), sSession);
 
 	return Out;
@@ -1769,6 +1737,7 @@ wxString CWebServer::_GetStats(ThreadData Data) {
 	wxString sSession = _ParseURL(Data, wxT("ses"));
 
 	wxString Out = m_Templates.sStats;
+	wxString sStats;
 	
 	CECPacket req(EC_OP_GET_STATSTREE, EC_DETAIL_WEB);
 	CECPacket *response = webInterface->SendRecvMsg_v2(&req);
@@ -1776,18 +1745,15 @@ wxString CWebServer::_GetStats(ThreadData Data) {
 		CECTag *serverVersion = response->GetTagByName(EC_TAG_SERVER_VERSION);
 		CECTag *userNick = response->GetTagByName(EC_TAG_USER_NICK);
 		if (serverVersion && userNick) {
-			wxString sStats = wxString::Format(wxT("<b>aMule v%s %s [%s]</b>\r\n<br><br>\r\n"),
+			sStats = wxString::Format(wxT("<b>aMule v%s %s [%s]</b>\r\n<br><br>\r\n"),
 				serverVersion->GetStringData().GetData(), _("Statistics"),
 				userNick->GetStringData().GetData());
 			sStats += ECTree2Html(response->GetTagByName(EC_TAG_TREE), 0);
-			Out.Replace(wxT("[STATSDATA]"), sStats);
-		} else {
-			Out.Replace(wxT("[STATSDATA]"), wxEmptyString);
 		}
 		delete response;
-	} else {
-		Out.Replace(wxT("[STATSDATA]"), wxEmptyString);
 	}
+
+	Out.Replace(wxT("[STATSDATA]"), sStats);
 
 	return Out;
 }
@@ -2221,6 +2187,8 @@ wxString CWebServer::_GetSearch(ThreadData Data) {
 		}
 	}
 
+	wxString messageString;
+
 	wxString sToSearch = _ParseURL(Data, wxT("tosearch"));
 	if (!sToSearch.IsEmpty() && IsSessionAdmin(Data,sSession)) {
 		long min_size = 0, max_size = 0, avail = 0;
@@ -2240,19 +2208,15 @@ wxString CWebServer::_GetSearch(ThreadData Data) {
 		search_req.AddTag(CEC_Search_Tag (sToSearch, search_type, type, ext, avail, min_size, max_size));
 		CECPacket *search_reply = webInterface->SendRecvMsg_v2(&search_req);
 		if (search_reply) {
-			if (CECTag *tag = search_reply->GetTagByIndex(0)) {
-				Out.Replace(wxT("[Message]"), wxGetTranslation(tag->GetStringData()));
-			} else {
-				Out.Replace(wxT("[Message]"), wxEmptyString);
-			}
+			messageString =
+				wxGetTranslation(search_reply->GetTagByIndexSafe(0)->GetStringData());
 			delete search_reply;
-		} else {
-			Out.Replace(wxT("[Message]"), wxEmptyString);
 		}
 	} else if (!sToSearch.IsEmpty() && !IsSessionAdmin(Data,sSession) ) {
-		Out.Replace(wxT("[Message]"),_("Access denied!"));
-	} else 
-		Out.Replace(wxT("[Message]"),wxEmptyString);
+		messageString = _("Access denied!");
+	}
+
+	Out.Replace(wxT("[Message]"), messageString);
 
 	// categoriesa
 	CECPacket req(EC_OP_GET_PREFERENCES, EC_DETAIL_WEB);
@@ -2478,37 +2442,21 @@ bool ServersInfo::ServersInfo::ReQuery()
 	EraseAll();
 	for (int i = 0; i < srv_reply->GetTagCount(); ++i) {
 		CECTag *tag = srv_reply->GetTagByIndex(i);
-		CECTag *tmpTag;
 		
 		ServerEntry Entry;
-		if ((tmpTag = tag->GetTagByName(EC_TAG_SERVER_NAME)) != NULL) {
-			Entry.sServerName = tmpTag->GetStringData();
-		} else {
-			Entry.sServerName.Clear();
-		}
-		if ((tmpTag = tag->GetTagByName(EC_TAG_SERVER_DESC)) != NULL) {
-			Entry.sServerDescription = tmpTag->GetStringData();
-		} else {
-			Entry.sServerDescription = wxEmptyString;
-		}
+		Entry.sServerName =
+			tag->GetTagByNameSafe(EC_TAG_SERVER_NAME)->GetStringData();
+		Entry.sServerDescription =
+			tag->GetTagByNameSafe(EC_TAG_SERVER_DESC)->GetStringData();
 		Entry.sServerIP = tag->GetIPv4Data().StringIP(false);
 		Entry.nServerIP = tag->GetIPv4Data().IP();
 		Entry.nServerPort = tag->GetIPv4Data().port;
-		if ((tmpTag = tag->GetTagByName(EC_TAG_SERVER_USERS)) != NULL) {
-			Entry.nServerUsers = tmpTag->GetInt32Data();
-		} else {
-			Entry.nServerUsers = 0;
-		}
-		if ((tmpTag = tag->GetTagByName(EC_TAG_SERVER_USERS_MAX)) != NULL) {
-			Entry.nServerMaxUsers = tmpTag->GetInt32Data();
-		} else {
-			Entry.nServerMaxUsers = 0;
-		}
-		if ((tmpTag = tag->GetTagByName(EC_TAG_SERVER_FILES)) != NULL) {
-			Entry.nServerFiles = tmpTag->GetInt32Data();
-		} else {
-			Entry.nServerFiles = 0;
-		}
+		Entry.nServerUsers =
+			tag->GetTagByNameSafe(EC_TAG_SERVER_USERS)->GetInt32Data();
+		Entry.nServerMaxUsers =
+			tag->GetTagByNameSafe(EC_TAG_SERVER_USERS_MAX)->GetInt32Data();
+		Entry.nServerFiles =
+			tag->GetTagByNameSafe(EC_TAG_SERVER_FILES)->GetInt32Data();
 		AddItem(Entry);
 	}
 	delete srv_reply;
