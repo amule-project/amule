@@ -24,16 +24,12 @@
 
 #include "resource.h"		// Needed for IDD_ADDFRIEND
 
-// CAddFriend dialog
 
 class CAddFriend : public wxDialog
 {
-	DECLARE_DYNAMIC_CLASS(CAddFriend)
-
 public:
-	CAddFriend() {};
-	CAddFriend(wxWindow* parent);   // standard constructor
-	virtual ~CAddFriend() {};
+	CAddFriend(wxWindow* parent);
+	~CAddFriend() {};
 	enum { IDD = IDD_ADDFRIEND };
 
 protected:
@@ -44,4 +40,4 @@ private:
 	void OnCloseBtn(wxCommandEvent& evt);
 };
 
-#endif // ADDFRIEND_H
+#endif

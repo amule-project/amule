@@ -31,14 +31,15 @@ class CFile;
 
 class CFriend {
 public:
-	CFriend(void);
+	CFriend();
+	~CFriend() {};
+	
 	CFriend(CUpDownClient* client);
 	CFriend( unsigned char t_m_abyUserhash[16], uint32 tm_dwLastSeen, uint32 tm_dwLastUsedIP, uint32 tm_nLastUsedPort, uint32 tm_dwLastChatted, wxString tm_strName, uint32 tm_dwHasHash);
-	~CFriend(void);
 	unsigned char	m_abyUserhash[16];
 	uint32	m_dwLastSeen;
 	uint32	m_dwLastUsedIP;
-	uint32	m_nLastUsedPort;
+	uint16	m_nLastUsedPort;
 	uint32	m_dwLastChatted;
 	uint32	m_dwHasHash;
 	wxString	m_strName;
@@ -50,4 +51,4 @@ public:
 	void	WriteToFile(CFile* file);
 };
 
-#endif // FRIEND_H
+#endif

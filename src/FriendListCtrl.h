@@ -20,47 +20,44 @@
 #ifndef FRIENDLISTCTRL_H
 #define FRIENDLISTCTRL_H
 
-#include <wx/imaglist.h>
-#include "MuleListCtrl.h"		// Needed for CMuleListCtrl
+#include "MuleListCtrl.h"
 
+
+class wxString;
 class CFriend;
-
-// CFriendListCtrl
+class CUpDownClient;
 
 class CFriendListCtrl : public CMuleListCtrl
 {
-  //DECLARE_DYNAMIC(CFriendListCtrl)
-  friend class CFriendList;
-
 public:
-	CFriendListCtrl();
-	CFriendListCtrl(wxWindow*& parent,int id,const wxPoint& pos,wxSize siz,int flags);
-	virtual ~CFriendListCtrl();
-
-	void	Init();
-	void	Localize();
-
+	CFriendListCtrl(wxWindow* parent, int id, const wxPoint& pos, wxSize siz, int flags);
+	~CFriendListCtrl();
+	
+	bool		IsAlreadyFriend( uint32 dwLastUsedIP, uint32 nLastUsedPort ); 
+	void		SaveList();
+	bool		LoadList();
+	CFriend*	FindFriend(const uchar* achUserHash, uint32 dwIP, uint16 nPort) const;	
+	void 		AddFriend(CFriend* toadd);
+	void		AddFriend( CUpDownClient* toadd );
+	void		AddFriend( uchar userhash[16], uint32 lastSeen, uint32 lastUsedIP, uint32 lastUsedPort, uint32 lastChatted, wxString name, uint32 hasHash);
+	void		RemoveFriend(CFriend* todel);
+	void		RemoveFriend(CUpDownClient* todel);
+	void		RefreshFriend(CFriend* toupdate);
+	
 protected:
 	DECLARE_EVENT_TABLE()
-#if 0
-	DECLARE_MESSAGE_MAP()
-#endif
 
 	CPreferences::Table TablePrefs()	{ return CPreferences::tableNone; }
-	void	AddFriend(CFriend* toadd);
-	void	RemoveFriend(CFriend* toremove);
-	void	RefreshFriend(CFriend* toupdate);
-#if 0
-	bool	OnCommand(WPARAM wParam,LPARAM lParam );
-	void	OnNMRclick(NMHDR *pNMHDR, LRESULT *pResult);
-#endif
-	virtual bool ProcessEvent(wxEvent& evt);
-	void OnNMRclick(wxMouseEvent& evt);
-	void OnItemSelected(wxListEvent& evt);
-	
+	void	OnNMRclick(wxMouseEvent& evt);
+	void	OnPopupMenu(wxCommandEvent& evt);
+		
 private:
-	//CTitleMenu m_ClientMenu;
-	wxImageList imagelist;
+	void 	OnItemSelected(wxListEvent& evt);
+	void	OnItemActivated(wxListEvent& evt);
+	
+	void	RemoveAllFriendSlots();
+
+	wxString m_metfile;
 };
 
-#endif // FRIENDLISTCTRL_H
+#endif

@@ -22,11 +22,12 @@
 
 #include <wx/panel.h>		// Needed for wxPanel
 #include "resource.h"		// Needed for IDD_CHAT
+#include "types.h"
 
-
+class CFriend;
 class CUpDownClient;
 class CChatSelector;
-
+class CFriendListCtrl;
 
 class CChatWnd : public wxPanel 
 {
@@ -34,16 +35,32 @@ public:
 	enum { IDD = IDD_CHAT };
 	
 	CChatWnd(wxWindow* pParent = NULL); 
-	virtual ~CChatWnd() {};
+	~CChatWnd() {};
 
 	void StartSession(CUpDownClient* client);
 
-	CChatSelector*	chatselector;
-protected:
-	void OnBnClickedCsend(wxCommandEvent& evt);
-	void OnBnClickedCclose(wxCommandEvent& evt);
+	CFriend*	FindFriend(const uchar* achUserHash, uint32 dwIP, uint16 nPort);	
+	void		AddFriend(CUpDownClient* toadd);
+	void		AddFriend(unsigned char userhash[16], uint32 lastSeen, uint32 lastUsedIP, uint32 lastUsedPort, uint32 lastChatted, wxString name, uint32 hasHash);
+	void		RefreshFriend(CFriend* toupdate);
 	
+	void		ProcessMessage(CUpDownClient* sender, char* message);
+	void 		ConnectionResult(CUpDownClient* sender, bool success);
+		
+protected:
+	void	OnBnClickedCsend(wxCommandEvent& evt);
+	void	OnBnClickedCclose(wxCommandEvent& evt);
+
+	void	OnRMButton(wxMouseEvent& evt);
+	void	OnPopupClose(wxCommandEvent& evt);
+	void	OnPopupCloseAll(wxCommandEvent& evt);
+	void	OnPopupCloseOthers(wxCommandEvent& evt);
+
 	DECLARE_EVENT_TABLE()
+	
+private:
+	CFriendListCtrl* friendlist;
+	CChatSelector*	chatselector;
 };
 
 #endif 

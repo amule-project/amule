@@ -59,7 +59,6 @@ amule_SOURCES = ListenSocket.cpp \
 	filemem.cpp \
 	filefn.cpp \
 	Friend.cpp \
-	FriendList.cpp \
 	FriendListCtrl.cpp \
 	HTTPDownloadDlg.cpp \
 	ini2.cpp \

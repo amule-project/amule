@@ -16,8 +16,6 @@
 //You should have received a copy of the GNU General Public License
 //along with this program; if not, write to the Free Software
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
-// AddFriend.cpp : implementation file
 //
 
 #ifdef __WXMAC__
@@ -28,45 +26,41 @@
 
 #include "AddFriend.h"		// Interface declarations.
 #include "muuli_wdr.h"		// Needed for addFriendDlg
-#include "CString.h"	// Needed for CString
 #include "amule.h"		// Needed for theApp
-#include "FriendList.h"		// Needed for CFriendList
+#include "amuleDlg.h"	// Needed for amuleDlg
+#include "ChatWnd.h"
+#include "otherfunctions.h"
 
-// CAddFriend dialog
-
-//IMPLEMENT_DYNAMIC(CAddFriend, CDialog)
-IMPLEMENT_DYNAMIC_CLASS(CAddFriend,wxDialog)
 
 CAddFriend::CAddFriend(wxWindow* parent)
-: wxDialog(parent,9995,_("Add a Friend"),wxDefaultPosition,wxDefaultSize,
+: wxDialog(parent, 9995, _("Add a Friend"), wxDefaultPosition, wxDefaultSize,
 wxDEFAULT_DIALOG_STYLE|wxSYSTEM_MENU)
 {
-	wxSizer* content=addFriendDlg(this,TRUE);
-	content->Show(this,TRUE);
+	wxSizer* content=addFriendDlg(this, TRUE);
+	content->Show(this, TRUE);
 }
 
-BEGIN_EVENT_TABLE(CAddFriend,wxDialog)
-	EVT_BUTTON(ID_ADDFRIEND,CAddFriend::OnAddBtn)
-	EVT_BUTTON(ID_CLOSEDLG,CAddFriend::OnCloseBtn)
+BEGIN_EVENT_TABLE(CAddFriend, wxDialog)
+	EVT_BUTTON(ID_ADDFRIEND, CAddFriend::OnAddBtn)
+	EVT_BUTTON(ID_CLOSEDLG, CAddFriend::OnCloseBtn)
 END_EVENT_TABLE()
 
-// CAddFriend message handlers
 
-#define GetDlgItem(a,b) wxStaticCast(FindWindowById((a)),b)
+#define GetDlgItem(a,b) wxStaticCast(FindWindow(a),b)
 
-void CAddFriend::OnAddBtn(wxCommandEvent& evt)
+void CAddFriend::OnAddBtn(wxCommandEvent& WXUNUSED(evt))
 {
 	int a, b, c, d, scancount;
-	CString name, fullip, hash;
+	wxString name, fullip, hash;
 	uint32 ip = 0;
 	uint16 port = 0;
 	
-	name = GetDlgItem(ID_USERNAME,wxTextCtrl)->GetValue();
-	hash = GetDlgItem(ID_USERHASH,wxTextCtrl)->GetValue();
-	fullip = GetDlgItem(ID_IPADDRESS,wxTextCtrl)->GetValue();
-	port = atoi( GetDlgItem(ID_IPORT,wxTextCtrl)->GetValue().GetData() );
+	name = GetDlgItem(ID_USERNAME, wxTextCtrl)->GetValue();
+	hash = GetDlgItem(ID_USERHASH, wxTextCtrl)->GetValue();
+	fullip = GetDlgItem(ID_IPADDRESS, wxTextCtrl)->GetValue();
+	port = atoi( GetDlgItem(ID_IPORT, wxTextCtrl)->GetValue().c_str() );
 
-	scancount = sscanf(fullip.GetData(),"%d.%d.%d.%d",&a,&b,&c,&d);
+	scancount = sscanf(fullip.c_str(), "%d.%d.%d.%d", &a, &b, &c, &d);
 	if ( scancount != 4 || port <= 0 ) {
 		wxMessageBox(_("You have to enter a valid IP and port!"));
 		return;
@@ -84,29 +78,19 @@ void CAddFriend::OnAddBtn(wxCommandEvent& evt)
 		name = fullip;
 
 	if ( hash.IsEmpty() ) {
-		theApp.friendlist->AddFriend( NULL, 0, ip, port, 0, name, 0 );
+		theApp.amuledlg->chatwnd->AddFriend( NULL, 0, ip, port, 0, name, 0 );
 	} else {
 		unsigned char userhash[16];
-		char temp[2];
-		int store;
+		DecodeBase16( hash.c_str(), 32, userhash );
 		
-		// Convert userhash to usable form
-		for ( int i = 0; i <= 15; i++ ) {
-			temp[0] = hash.GetData()[ i*2 ];
-			temp[1] = hash.GetData()[ i*2 + 1 ];
-
-			sscanf( temp, "%2x", &store );
-
-			userhash[i] = (char)store;
-		};
-		
-		theApp.friendlist->AddFriend( userhash, 0, ip, port, 0, name, 1 );
+		theApp.amuledlg->chatwnd->AddFriend( userhash, 0, ip, port, 0, name, 1 );
 	};
 	
 	EndModal(1);
 }
 
-void CAddFriend::OnCloseBtn(wxCommandEvent& evt)
+
+void CAddFriend::OnCloseBtn(wxCommandEvent& WXUNUSED(evt))
 {
 	EndModal(0);
 }
