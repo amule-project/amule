@@ -341,19 +341,26 @@ wxString MD4::calcMd4FromFile(const wxString &filename, MD4Hook hook, bool *abor
 
   bufSize = calcBufSize(file.Length());
   char *buf = new char[bufSize];
-  int n = 0;
+
   bool keep_going = true;
+  size_t read = 0;
+  size_t totalread = 0;
 
   MD4Init(&hdc);
-  while (!file.Eof() && keep_going) {
-    if (hook) {
-      keep_going = hook( (n * bufSize)/file.Length() );
+  while (!file.Eof() && keep_going)
+    {
+      if (hook)
+        {
+          keep_going = hook( (int)((double)(100.0 * totalread) / file.Length()));
+        }
+      if (keep_going)
+        {
+          read = file.Read(buf, bufSize);
+          MD4Update(&hdc, reinterpret_cast<unsigned char const *>(buf),
+                    read );
+          totalread += read;
+        }
     }
-    if (keep_going) {
-      MD4Update(&hdc, reinterpret_cast<unsigned char const *>(buf),
-                file.Read(buf, bufSize));
-    }
-  }
   MD4Final(&hdc, ret);
 
   *aborted = keep_going;

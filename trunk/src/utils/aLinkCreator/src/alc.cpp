@@ -43,7 +43,7 @@ IMPLEMENT_APP (aLinkCreator)
 
 bool aLinkCreator::OnInit ()
 {
-  wxFrame *alcFrame = new AlcFrame (_("aLinkCreator, the aMule ed2k link creator"));
+  alcFrame = new AlcFrame (_("aLinkCreator, the aMule ed2k link creator"));
   alcFrame->Show (TRUE);
   SetTopWindow (alcFrame);
   return true;

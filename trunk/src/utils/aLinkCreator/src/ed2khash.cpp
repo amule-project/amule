@@ -60,44 +60,46 @@ Ed2kHash::~Ed2kHash()
 // returns false if aborted
 bool Ed2kHash::SetED2KHashFromFile(const wxFileName& filename, MD4Hook hook)
 {
-  size_t read;
-  unsigned char ret[MD4_HASHLEN_BYTE];
-  MD4Context hdc;
-
-  size_t partcount;
-  size_t dataread;
-
-  char *buf = new char[BUFSIZE];
-  int n;
-  bool keep_going;
-
-#if WANT_STRING_IMPLEMENTATION
-
-  wxString tmpHash(wxEmptyString);
-#else
-
-  unsigned char* tmpCharHash = NULL;
-#endif
-
   // Open file and let wxFFile destructor close the file
   // Closing it explicitly may crash on Win32 ...
   wxFFile file(filename.GetFullPath(), wxT("rbS"));
   if (! file.IsOpened())
     {
       wxLogError (_("Unable to open %$"),filename.GetFullPath().c_str());
+      return (false);
     }
   else if (file.Length() > (size_t)-1)
     {
       wxLogError (_("The file %s is to big for the Donkey: maximum allowed is 4 GB."),
                   filename.GetFullPath().c_str());
+      return (false);
     }
   else
     {
+      unsigned char ret[MD4_HASHLEN_BYTE];
+      MD4Context hdc;
+
+      size_t read;
+      size_t partcount;
+      size_t dataread;
+      size_t totalread;
+
+      char *buf = new char[BUFSIZE];
+
+      bool keep_going;
+
+#if WANT_STRING_IMPLEMENTATION
+
+      wxString tmpHash(wxEmptyString);
+#else
+
+      unsigned char* tmpCharHash = NULL;
+#endif
       // Clear Ed2k Hash
       m_ed2kArrayOfHashes.Clear();
 
       // Processing each block
-      n = 0;
+      totalread=0;
       keep_going = true;
       partcount = 0;
       while (!file.Eof() && keep_going)
@@ -106,22 +108,25 @@ bool Ed2kHash::SetED2KHashFromFile(const wxFileName& filename, MD4Hook hook)
           MD4Init(&hdc);
           while (dataread < PARTSIZE && !file.Eof() && keep_going)
             {
-              if (hook) {
-                  keep_going = hook( (n * BUFSIZE)/file.Length() );
-              }
-	      if (keep_going) {
-                if ((dataread + BUFSIZE) > PARTSIZE)
-                  {
-                    read = file.Read(buf, PARTSIZE - dataread);
-                  }
-                else
-                  {
-                    read = file.Read(buf, BUFSIZE);
-                  }
-                dataread += read;
-                MD4Update(&hdc, reinterpret_cast<unsigned char const *>(buf),
-                          read);
-              }
+              if (hook)
+                {
+                  keep_going = hook( (int)((double)(100.0 * totalread) / file.Length()));
+                }
+              if (keep_going)
+                {
+                  if ((dataread + BUFSIZE) > PARTSIZE)
+                    {
+                      read = file.Read(buf, PARTSIZE - dataread);
+                    }
+                  else
+                    {
+                      read = file.Read(buf, BUFSIZE);
+                    }
+                  dataread += read;
+                  totalread += read;
+                  MD4Update(&hdc, reinterpret_cast<unsigned char const *>(buf),
+                            read);
+                }
             }
           MD4Final(&hdc, ret);
 
@@ -183,9 +188,9 @@ bool Ed2kHash::SetED2KHashFromFile(const wxFileName& filename, MD4Hook hook)
       // Set members
       m_fileSize = file.Length();
       m_filename = filename.GetFullName();
-    }
 
-  return keep_going;
+      return keep_going;
+    }
 }
 
 /// Set Ed2k hash from a file

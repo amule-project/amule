@@ -44,6 +44,8 @@ class aLinkCreator:public wxApp
   {
   public:
     virtual bool OnInit ();
+
+    AlcFrame *alcFrame;
   };
 
 DECLARE_APP (aLinkCreator);

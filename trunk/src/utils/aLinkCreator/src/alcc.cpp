@@ -49,7 +49,9 @@ int alcc::OnRun ()
 {
   static const wxCmdLineEntryDesc cmdLineDesc[] =
     {
-      { wxCMD_LINE_SWITCH, wxT("h"), wxT("help"), wxT("show this help message"), wxCMD_LINE_VAL_NONE, wxCMD_LINE_OPTION_HELP },
+      {
+        wxCMD_LINE_SWITCH, wxT("h"), wxT("help"), wxT("show this help message"), wxCMD_LINE_VAL_NONE, wxCMD_LINE_OPTION_HELP
+      },
       { wxCMD_LINE_SWITCH, _T("v"), _T("verbose"), _T("be verbose") },
 
       { wxCMD_LINE_SWITCH, wxT("p"), wxT("parthashes"), wxT("add part-hashes to ed2k link") },

@@ -50,6 +50,7 @@
 #include "ed2khash.h"
 #include "alcframe.h"
 #include "alcpix.h"
+#include "alc.h"
 
 /// Constructor
 AlcFrame::AlcFrame (const wxString & title):
@@ -68,6 +69,9 @@ AlcFrame::AlcFrame (const wxString & title):
   // Status Bar
   CreateStatusBar ();
   SetStatusText (_("Welcome!"));
+  
+  // Unused dialog for now
+  m_progressBar = NULL;
 
   // Frame Vertical sizer
   m_frameVBox = new wxBoxSizer (wxVERTICAL);
@@ -205,8 +209,8 @@ AlcFrame::AlcFrame (const wxString & title):
   m_mainPanelVBox->Add( m_ed2kSBoxSizer, 1, wxALL | wxGROW, 10 );
 
   // Activitybar
-  m_activityBar = new ActivityBar(m_mainPanel, -1, 100, 10, wxDefaultPosition, wxSize(-1,10));
-  m_mainPanelVBox->Add( m_activityBar, 0, wxLEFT | wxRIGHT | wxGROW, 10 );
+  //m_activityBar = new ActivityBar(m_mainPanel, -1, 100, 10, wxDefaultPosition, wxSize(-1,10));
+  //m_mainPanelVBox->Add( m_activityBar, 0, wxLEFT | wxRIGHT | wxGROW, 10 );
 
   // Button bar
   m_buttonHBox = new wxBoxSizer (wxHORIZONTAL);
@@ -382,9 +386,8 @@ void AlcFrame::OnCloseButton (wxCommandEvent & event)
 static bool alc_frame_hook(int percent);
 bool alc_frame_hook(int percent)
 {
-	::wxSafeYield();
-
-	return true;
+  wxGetApp().alcFrame->m_progressBar->Update(percent);
+  return true;
 }
 
 /// Compute Hashes on Start Button
@@ -409,15 +412,18 @@ void AlcFrame::OnStartButton (wxCommandEvent & event)
       m_md4HashTextCtrl->SetValue(_("Hashing..."));
 #endif
 
-      m_activityBar->Start();
+      // m_activityBar->Start();
+      m_progressBar=new wxProgressDialog  (wxT("aLinkCreator is working for you"), wxT("Computing Hashes..."),
+                                         100, this, wxPD_AUTO_HIDE | wxPD_CAN_ABORT | wxPD_REMAINING_TIME);
 
       // Compute ed2k Hash
       Ed2kHash hash;
-      
+
       // Test the return value to see if was aborted.
       bool finished = hash.SetED2KHashFromFile(filename, alc_frame_hook);
-      if (!finished) return;
-      
+      if (!finished)
+        return;
+
       wxArrayString ed2kHash (hash.GetED2KHash());
 
       // Get URLs
@@ -445,7 +451,9 @@ void AlcFrame::OnStartButton (wxCommandEvent & event)
       // Ed2k link
       m_ed2kTextCtrl->SetValue(hash.GetED2KLink(arrayOfUrls,m_parthashesCheck->IsChecked()));
 
-      m_activityBar->Stop();
+      // m_activityBar->Stop();
+
+      m_progressBar->Destroy();
 
       SetStatusText (wxString::Format(_("Done in %.2f s"),
                                       chrono.Time()*.001));

@@ -36,9 +36,10 @@
 #ifndef WX_PRECOMP
 #include <wx/wx.h>
 #include <wx/statline.h>
+#include <wx/progdlg.h>
 #endif
 
-#include "activitybar.h"
+//#include "activitybar.h"
 
 // Compute and display md4sum or not
 //#define WANT_MD4SUM 1
@@ -88,7 +89,8 @@ class AlcFrame:public wxFrame
     wxStaticBoxSizer* m_ed2kSBoxSizer;
     wxTextCtrl *m_ed2kTextCtrl;
 
-    ActivityBar *m_activityBar;
+    //ActivityBar *m_activityBar;
+
 
     wxBoxSizer* m_buttonHBox;
     wxButton *m_startButton;
@@ -154,6 +156,7 @@ class AlcFrame:public wxFrame
     /// Constructor
     AlcFrame (const wxString& title);
 
+    wxProgressDialog *m_progressBar;
     /// Destructor
     ~AlcFrame ();
   };
