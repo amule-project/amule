@@ -165,6 +165,10 @@ void CSharedFilesCtrl::UpdateFile(CKnownFile* file,uint32 itemnr)
 	SetItem(itemnr,2,GetFiletypeByName(file->GetFileName()));  // added by InterCeptor (show filetype) 11.11.02
 	if ((file->IsAutoUpPriority())&&(theApp.glob_prefs->GetNewAutoUp())) {
 		switch (file->GetUpPriority()) {
+			case PR_LOW: {
+				SetItem(itemnr,3,CString(_("Auto [Lo]")));
+				break;					
+			}
 			case PR_NORMAL : {
 				SetItem(itemnr,3,CString(_("Auto [No]")));
 				break;
@@ -463,6 +467,8 @@ bool CSharedFilesCtrl::ProcessEvent(wxEvent& evt)
 							SetItem(iSel,3,CString(_("Auto [Hi]")));
 						} else if (file->GetUpPriority() == PR_NORMAL) {
 							SetItem(iSel,3,CString(_("Auto [No]")));
+						} else if (file->GetUpPriority() == PR_LOW) {
+							SetItem(iSel,3,CString(_("Auto [Lo]")));
 						}
 					} else {
 						no_partfile_selected = true;
