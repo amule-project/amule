@@ -41,8 +41,8 @@
 
 #include "StringFunctions.h"	// Needed for unicode2char()
 
-#define	EC_SOCKET_BUFFER_SIZE	32768
-#define	EC_COMPRESSION_LEVEL	Z_BEST_COMPRESSION
+#define EC_SOCKET_BUFFER_SIZE	32768
+#define EC_COMPRESSION_LEVEL	Z_BEST_COMPRESSION
 #define EC_MAX_UNCOMPRESSED	1024
 
 
@@ -296,7 +296,7 @@ void ShowZError(int zerror, z_streamp strm)
 		strm->next_in, strm->avail_in, strm->total_in, strm->next_out, strm->avail_out, strm->total_out);
 }
 
-// note that params value MUST be in brackets!
+// note that args value MUST be in brackets!
 #define CALL_Z_FUNCTION(func, args)	{	\
 	int zerror = func args ;		\
 	if (zerror != Z_OK) {			\

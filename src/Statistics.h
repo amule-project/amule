@@ -22,6 +22,10 @@
 #ifndef STATISTICS_H
 #define STATISTICS_H
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma interface "Statistics.h"
+#endif
+
 #include "tree.hh"
 #include "CTypedPtrList.h"
 #include "types.h"
