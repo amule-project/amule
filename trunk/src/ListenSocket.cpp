@@ -2319,3 +2319,55 @@ float CListenSocket::GetMaxConperFiveModifier(){
 	}
 }
 
+CSocketGlobalThread::CSocketGlobalThread() : wxThread(wxTHREAD_JOINABLE)
+{
+	if ( Create() != wxTHREAD_NO_ERROR ) {
+		AddLogLineM(true, _("CSocketGlobalThread: call to Create failed"));
+	}
+}
+
+void CSocketGlobalThread::AddSocket(CClientReqSocket* sock)
+{
+	socket_list.push_back(sock);
+}
+
+void CSocketGlobalThread::RemoveSocket(CClientReqSocket* sock)
+{
+	for (std::list<CClientReqSocket *>::iterator it = socket_list.begin();
+			it != socket_list.end(); it++) {
+			CClientReqSocket* cur_socket = *it;
+			if ( cur_socket == sock ) {
+				socket_list.erase(it);
+				return;
+			}
+		}
+}
+
+void *CSocketGlobalThread::Entry()
+{
+	while ( !TestDestroy() ) {
+		Sleep(100);
+		for (std::list<CClientReqSocket *>::iterator it = socket_list.begin();
+			it != socket_list.end(); it++) {
+			CClientReqSocket* cur_socket = *it;
+			if ( cur_socket->WaitForLost(0, 0) ) {
+				//socket_list.erase(it);
+				continue;
+			}
+			if ( !cur_socket->wxSocketBase::IsConnected() ) {
+				if ( cur_socket->WaitOnConnect(0, 0) ) {
+					wxMutexGuiEnter();
+					cur_socket->OnConnect(0);
+					wxMutexGuiLeave();
+				}
+			} else {
+				if ( cur_socket->WaitForRead(0, 0) ) {
+					wxMutexGuiEnter();
+					cur_socket->OnReceive(0);
+					wxMutexGuiLeave();
+				}
+			}
+		}
+	}
+	return 0;
+}

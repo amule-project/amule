@@ -104,6 +104,15 @@ private:
 };
 
 
+class CSocketGlobalThread : public wxThread {
+	void *Entry();
+	std::list<CClientReqSocket *> socket_list;
+public:
+	CSocketGlobalThread(/*CListenSocket *socket*/);
+	void AddSocket(CClientReqSocket* sock);
+	void RemoveSocket(CClientReqSocket* sock);
+};
+
 // CListenSocket command target
 class CListenSocket : public wxSocketServer
 #ifdef AMULE_DAEMON
@@ -116,6 +125,9 @@ class CListenSocket : public wxSocketServer
 	// in ListenSocket.cpp. Do we really need that?
 	CListenSocket() : wxSocketServer(happyCompiler, wxSOCKET_REUSEADDR){};
 	void *Entry();
+#ifdef AMULE_DAEMON
+	CSocketGlobalThread global_sock_thread;
+#endif
 public:
 	CListenSocket(CPreferences* in_prefs,wxSockAddress& addr);
 	~CListenSocket();
@@ -163,6 +175,7 @@ public:
 	std::map<uint64, uint32> offensecounter;
 	std::map<uint64, uint64> hashbase;  
 };
+
 
 #endif // LISTENSOCKET_H
 

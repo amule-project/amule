@@ -125,6 +125,7 @@ BEGIN_EVENT_TABLE(CamuleApp, wxAppConsole)
 		EVT_CUSTOM(wxEVT_AMULE_TIMER, TM_TCPSOCKET, CamuleApp::OnTCPTimer)
 
 	// Core timer is OnRun
+		EVT_CUSTOM(wxEVT_NOTIFY_EVENT, -1, CamuleApp::OnNotifyEvent)
 
 	// Async dns handling
 	        EVT_CUSTOM(wxEVT_CORE_DNS_DONE, -1, CamuleApp::OnDnsDone)
@@ -143,12 +144,15 @@ IMPLEMENT_APP(CamuleApp)
 
 int CamuleApp::OnRun()
 {
+	wxMutexGuiLeave();
 	// lfroen: this loop is instead core timer.
 	// Actually, using such loop is worst design decision i ever
 	// saw. Right way is to have thread per socket.
 	while ( 1 ) {
+		wxMutexGuiEnter();
 		OnCoreTimer(*((wxEvent *)0));
 		ProcessPendingEvents();
+		wxMutexGuiLeave();
 		wxSleep(100);
 	}
 	return 0;
@@ -1438,6 +1442,11 @@ void CamuleApp::OnDnsDone(wxEvent& e)
 	socket->DnsLookupDone(si);
 }
 
+void CamuleApp::OnNotifyEvent(wxEvent& e)
+{
+	GUIEvent& evt = *((GUIEvent*)&e);
+	NotifyEvent(evt);
+}
 
 void CamuleApp::OnSourcesDnsDone(wxEvent& e)
 {
@@ -1767,6 +1776,8 @@ void CamuleApp::AddServerMessageLine(wxString &msg)
 {
 	printf("ServerMessage: %s",msg.c_str());
 }
+
+DEFINE_EVENT_TYPE(wxEVT_NOTIFY_EVENT)
 
 DEFINE_EVENT_TYPE(wxEVT_CORE_FILE_HASHING_FINISHED)
 DEFINE_EVENT_TYPE(wxEVT_CORE_FILE_HASHING_SHUTDOWN)
