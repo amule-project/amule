@@ -88,6 +88,7 @@ public:
 	void	Process();
 	
 	bool	Debug_IsValidClient(CUpDownClient* tocheck) const;
+	void	FilterQueues();
 private:
 	CTypedPtrList<CPtrList, CUpDownClient*> list;
 	std::map<uint32, uint32> m_bannedList;

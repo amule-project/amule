@@ -47,9 +47,10 @@
 #include "opcodes.h"		// Needed for MAX_PURGEQUEUETIME
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "otherfunctions.h"	// Needed for GetTickCount
-#include "amule.h"			// Needed for theApp
+#include "amule.h"		// Needed for theApp
 #include "Preferences.h"
 #include "ClientList.h"
+#include "IPFilter.h"
 
 #include <numeric>
 
@@ -655,4 +656,32 @@ void CUploadQueue::FindSourcesForFileById(CTypedPtrList<CPtrList, CUpDownClient*
 	}
 }
 
+void CUploadQueue::RemoveFiltered()
+{
+	// Remove filtered clients
+#if 0
+	POSITION pos;
+	CUpDownClient *client;
+	// Filter upload queue
+	pos = uploadinglist.GetHeadPosition();
+	while( pos ) {
+		client = uploadinglist.GetNext(pos);
+		if (theApp.ipfilter->IsFiltered(client->GetIP())) {
+			RemoveFromUploadQueue(client, false);
+		}
+	}
+	// Filter waiting queue
+	pos = waitinglist.GetHeadPosition();
+	while( pos ) {
+		client = waitinglist.GetNext(pos);
+		if (theApp.ipfilter->IsFiltered(client->GetIP())) {
+			RemoveFromWaitingQueue(client, false);
+		}
+	}
+	Notify_UploadCtrlRemoveClient(client);
+	Notify_ShowQueueCount(waitinglist.GetCount());
+#endif
+}
+
 // TimerProc is on amule.cpp now
+

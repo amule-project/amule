@@ -54,6 +54,7 @@
 #include "IPFilter.h"		// Needed for CIPFilter
 #include "SearchList.h"
 #include "DownloadQueue.h"
+#include "ClientList.h"
 #include "DirectoryTreeCtrl.h"	// Needed for CDirectoryTreeCtrl
 #include "MD5Sum.h"
 
@@ -1282,6 +1283,9 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 	if (Prse(IDC_OSDIR)->WasChanged()) {		
 		// Build the filenames for the two OS files
 		theApp.SetOSFiles(Prse(IDC_OSDIR)->GetMemStringValue());
+	}
+	if (theApp.glob_prefs->GetIPFilterOn()) {
+		theApp.clientlist->FilterQueues();
 	}
 	
     EndModal(ID_PREFS_OK_LEFT);

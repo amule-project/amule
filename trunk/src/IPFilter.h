@@ -21,20 +21,15 @@
 #define IPFILTER_H
 
 #include "types.h"		// Needed for uint8, uint16 and uint32
-#include <wx/thread.h>
-#include <wx/dynarray.h>
+
+#include <map>			// Needed for std::map
 
 struct IPRange_Struct {
-   uint32           IPstart;
-   uint32           IPend;
-   uint8			filter;
-   wxString			description;
-   ~IPRange_Struct() {  }
+	uint32		IPStart;
+	uint32		IPEnd;
+	uint8		AccessLevel;
+	wxString	Description;
 };
-
-WX_DECLARE_OBJARRAY(IPRange_Struct*, ArrayOfIPRange_Struct);
-
-static wxMutex s_IPfilter_Data_mutex;
 
 class CIPFilter
 {
@@ -42,17 +37,21 @@ class CIPFilter
 public:
 	CIPFilter();
 	~CIPFilter();
-	void	AddBannedIPRange(uint32 IPfrom,uint32 IPto,uint8 filter, const wxString& desc);
+	void	AddBannedIPRange(uint32 IPstart, uint32 IPend, uint8 AccessLevel, const wxString& Description);
 	void	RemoveAllIPs();
-	int		LoadFromFile();
+	int	LoadFromFile();
 	void	SaveToFile();
 	bool	IsFiltered(uint32 IP2test);
-	const wxString& GetLastHit()				{ return lasthit;}
-	uint16	BanCount()					{ return iplist.GetCount(); }
+	const wxString& GetLastHit()		{ return lasthit;}
+	uint16	BanCount()			{ return iplist.size(); }
 	void 	Reload();
-private: 
+
+private:
+	bool m_inet_atoh(wxString &s, uint32 *ip);
 	wxString lasthit;
-	ArrayOfIPRange_Struct iplist;
+	typedef std::map<uint32, IPRange_Struct *> IPListMap;
+	IPListMap iplist;
 };
 
 #endif // IPFILTER_H
+

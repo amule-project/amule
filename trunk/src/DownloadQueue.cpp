@@ -1347,3 +1347,9 @@ bool CDownloadQueue::OnHostnameResolved(struct sockaddr_in* inaddr)
 	}
 	return TRUE;
 }
+
+void CDownloadQueue::RemoveFiltered()
+{
+	// Remove filtered sources
+}
+
