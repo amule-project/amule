@@ -51,6 +51,12 @@ enum DesktopMode
 #include "color.h"		// Needed for COLORREF, GetRValue, GetGValue and GetBValue
 
 
+#if defined(__UTF8_SYSTRAY_ENABLED__)
+	#define StringToSystray(x) aMuleConvToUTF8(x)
+#else
+	#define StringToSystray(x) unicode2char(x)
+#endif
+
 class wxWindow;
 
 #ifdef __WXMSW__

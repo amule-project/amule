@@ -58,7 +58,6 @@
 	#include "eggtrayicon.h"	// Needed for egg_tray_icon_new
 #endif
 
-
 #ifdef __WXMSW__
 
 
@@ -168,7 +167,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 	
 	// Main menu
 	GtkWidget* status_menu = gtk_menu_new();
-	gtk_menu_set_title(GTK_MENU(status_menu), unicode2char(_("aMule Tray Menu")));
+	gtk_menu_set_title(GTK_MENU(status_menu), StringToSystray(_("aMule Tray Menu")));
 
 
 	// A few stats: Version, Limits and current speeds
@@ -194,14 +193,14 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 			label += wxString::Format( _("DL: %d"), max_download);
 		}
 
-		item = gtk_menu_item_new_with_label( unicode2char( label ) );
+		item = gtk_menu_item_new_with_label( StringToSystray( label ) );
 		gtk_container_add (GTK_CONTAINER (status_menu), item);
 	}
 	
 
 	// Client-Info menu
 	GtkWidget* info_menu = gtk_menu_new();
-	gtk_menu_set_title(GTK_MENU(info_menu),unicode2char(_("aMule Tray Menu Info")));
+	gtk_menu_set_title(GTK_MENU(info_menu),StringToSystray(_("aMule Tray Menu Info")));
 
 
 	//separator
@@ -210,7 +209,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 
 
 	//personal infos item, not linked, only to show them
-	item=gtk_menu_item_new_with_label(unicode2char(_("Client Information")));
+	item=gtk_menu_item_new_with_label(StringToSystray(_("Client Information")));
 	gtk_container_add (GTK_CONTAINER (status_menu), item);
 	gtk_menu_item_set_submenu(GTK_MENU_ITEM(item),info_menu);
 
@@ -224,7 +223,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 		else
 			temp += theApp.glob_prefs->GetUserNick();
 		
-		info_item = gtk_menu_item_new_with_label( unicode2char( temp ) );
+		info_item = gtk_menu_item_new_with_label( StringToSystray( temp ) );
 		gtk_container_add(GTK_CONTAINER(info_menu), info_item);
 	}
 
@@ -241,7 +240,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 			temp += _("Not Connected");
 		}
 
-		info_item=gtk_menu_item_new_with_label( unicode2char( temp ) );
+		info_item=gtk_menu_item_new_with_label( StringToSystray( temp ) );
 		gtk_container_add (GTK_CONTAINER (info_menu), info_item);
 	}
 
@@ -259,10 +258,10 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 			temp_ip   += _("Not Connected");
 		}
 
-		info_item = gtk_menu_item_new_with_label( unicode2char( temp_name ) );
+		info_item = gtk_menu_item_new_with_label( StringToSystray( temp_name ) );
 		gtk_container_add (GTK_CONTAINER (info_menu), info_item);
 		
-		info_item = gtk_menu_item_new_with_label( unicode2char( temp_ip) );
+		info_item = gtk_menu_item_new_with_label( StringToSystray( temp_ip) );
 		gtk_container_add (GTK_CONTAINER (info_menu), info_item);
 	}
 	
@@ -279,7 +278,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 			temp += _("Unknown");
 		}
 	
-		info_item = gtk_menu_item_new_with_label( unicode2char( temp ) );
+		info_item = gtk_menu_item_new_with_label( StringToSystray( temp ) );
 		gtk_container_add (GTK_CONTAINER (info_menu), info_item);
 	}
 
@@ -288,9 +287,9 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 	{
 		if (theApp.glob_prefs->GetPort()) {
 			wxString temp = wxString::Format(wxT("%s%d"), _("TCP Port: "), theApp.glob_prefs->GetPort());
-			info_item=gtk_menu_item_new_with_label( unicode2char( temp ) );
+			info_item=gtk_menu_item_new_with_label( StringToSystray( temp ) );
 		} else
-			info_item=gtk_menu_item_new_with_label(unicode2char(_("TCP Port: Not Ready")));
+			info_item=gtk_menu_item_new_with_label(StringToSystray(_("TCP Port: Not Ready")));
 		
 		gtk_container_add (GTK_CONTAINER (info_menu), info_item);
 	}
@@ -300,9 +299,9 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 	{
 		if (theApp.glob_prefs->GetUDPPort()) {
 			wxString temp = wxString::Format(wxT("%s%d"), _("UDP Port: "), theApp.glob_prefs->GetUDPPort());	
-			info_item=gtk_menu_item_new_with_label( unicode2char( temp ) );
+			info_item=gtk_menu_item_new_with_label( StringToSystray( temp ) );
 		} else
-			info_item=gtk_menu_item_new_with_label(unicode2char(_("UDP Port: Not Ready")));
+			info_item=gtk_menu_item_new_with_label(StringToSystray(_("UDP Port: Not Ready")));
 	
 		gtk_container_add (GTK_CONTAINER (info_menu), info_item);
 	}
@@ -311,9 +310,9 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 	// Online Signature
 	{
 		if (theApp.glob_prefs->IsOnlineSignatureEnabled())
-			info_item=gtk_menu_item_new_with_label(unicode2char(_("Online Signature: Enabled")));
+			info_item=gtk_menu_item_new_with_label(StringToSystray(_("Online Signature: Enabled")));
 		else
-			info_item=gtk_menu_item_new_with_label(unicode2char(_("Online Signature: Disabled")));
+			info_item=gtk_menu_item_new_with_label(StringToSystray(_("Online Signature: Disabled")));
 		
 		gtk_container_add (GTK_CONTAINER (info_menu), info_item);
 	}
@@ -323,7 +322,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 	{
 		wxString temp = wxString::Format(wxT("%s%s"), _("Uptime: "), CastSecondsToHM(theApp.GetUptimeSecs()).c_str());
 								   
-		info_item=gtk_menu_item_new_with_label( unicode2char(temp));
+		info_item=gtk_menu_item_new_with_label( StringToSystray(temp));
 		gtk_container_add (GTK_CONTAINER (info_menu), info_item);
 	}
 
@@ -331,7 +330,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 	// Number of shared files
 	{
 		wxString temp = wxString::Format(wxT("%s%d"), _("Shared Files: "), theApp.sharedfiles->GetCount());
-		info_item=gtk_menu_item_new_with_label( unicode2char( temp ) );
+		info_item=gtk_menu_item_new_with_label( StringToSystray( temp ) );
 		gtk_container_add(GTK_CONTAINER (info_menu), info_item);
 	}
 
@@ -339,7 +338,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 	// Number of queued clients
 	{
 		wxString temp = wxString::Format(wxT("%s%d"), _("Queued Clients: "), theApp.uploadqueue->GetWaitingUserCount() );
-		info_item=gtk_menu_item_new_with_label( unicode2char(temp));
+		info_item=gtk_menu_item_new_with_label( StringToSystray(temp));
 		gtk_container_add (GTK_CONTAINER (info_menu), info_item);
 	}
 	
@@ -348,7 +347,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 	{
 		wxString temp = CastItoXBytes( theApp.stat_sessionReceivedBytes + theApp.glob_prefs->GetTotalDownloaded() );
 	
-		info_item=gtk_menu_item_new_with_label( unicode2char( wxString(_("Total DL: ")) + temp ) );
+		info_item=gtk_menu_item_new_with_label( StringToSystray( wxString(_("Total DL: ")) + temp ) );
 		gtk_container_add (GTK_CONTAINER (info_menu), info_item);
 	}
 	
@@ -357,7 +356,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 	{
 		wxString temp = CastItoXBytes( theApp.stat_sessionSentBytes + theApp.glob_prefs->GetTotalUploaded() );
 		
-		info_item=gtk_menu_item_new_with_label( unicode2char( wxString(_("Total DL: ")) + temp ) );
+		info_item=gtk_menu_item_new_with_label( StringToSystray( wxString(_("Total UL: ")) + temp ) );
 		gtk_container_add (GTK_CONTAINER (info_menu), info_item);
 	}
 
@@ -371,11 +370,11 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 	{
 		GtkWidget* up_speed = gtk_menu_new();
 		
-		item=gtk_menu_item_new_with_label(unicode2char(_("Upload Limit")));
+		item=gtk_menu_item_new_with_label(StringToSystray(_("Upload Limit")));
 		gtk_container_add (GTK_CONTAINER (status_menu), item);
 		gtk_menu_item_set_submenu(GTK_MENU_ITEM(item),up_speed);
 	
-		GtkWidget* up_item = gtk_menu_item_new_with_label(unicode2char(_("Unlimited")));
+		GtkWidget* up_item = gtk_menu_item_new_with_label(StringToSystray(_("Unlimited")));
 		gtk_object_set_data_full(GTK_OBJECT(up_item), "label", 0, NULL);
 		gtk_container_add(GTK_CONTAINER(up_speed), up_item);
 		gtk_signal_connect(GTK_OBJECT(up_item), "activate", GTK_SIGNAL_FUNC(set_ul_speed), up_item);
@@ -394,7 +393,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 
 			wxString temp = wxString::Format(wxT("%u%s"), tempspeed, _(" kb/s"));
 
-			up_item=gtk_menu_item_new_with_label( unicode2char( temp ));
+			up_item=gtk_menu_item_new_with_label( StringToSystray( temp ));
 			gtk_container_add(GTK_CONTAINER(up_speed), up_item);
 			gtk_object_set_data_full(GTK_OBJECT(up_item), "label", (void*)tempspeed, NULL);
 			gtk_signal_connect(GTK_OBJECT(up_item), "activate", GTK_SIGNAL_FUNC(set_ul_speed), up_item);
@@ -406,11 +405,11 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 	{ 
 		GtkWidget* down_speed = gtk_menu_new();
 		
-		item=gtk_menu_item_new_with_label(unicode2char(_("Download Limit")));
+		item=gtk_menu_item_new_with_label(StringToSystray(_("Download Limit")));
 		gtk_container_add (GTK_CONTAINER (status_menu), item);
 		gtk_menu_item_set_submenu(GTK_MENU_ITEM(item), down_speed);
 		
-		GtkWidget* dl_item = gtk_menu_item_new_with_label(unicode2char(_("Unlimited")));
+		GtkWidget* dl_item = gtk_menu_item_new_with_label(StringToSystray(_("Unlimited")));
 		gtk_object_set_data_full(GTK_OBJECT(dl_item), "label", 0 , NULL);
 		gtk_container_add (GTK_CONTAINER (down_speed), dl_item);
 		gtk_signal_connect (GTK_OBJECT(dl_item), "activate",GTK_SIGNAL_FUNC (set_dl_speed),dl_item);
@@ -428,7 +427,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 
 			wxString temp = wxString::Format(wxT("%d%s"), tempspeed, _(" kb/s"));
 		
-			dl_item=gtk_menu_item_new_with_label( unicode2char( temp ) );
+			dl_item=gtk_menu_item_new_with_label( StringToSystray( temp ) );
 			gtk_container_add (GTK_CONTAINER (down_speed), dl_item);
 			gtk_object_set_data_full(GTK_OBJECT(dl_item), "label", (void*)tempspeed, NULL);
 			gtk_signal_connect (GTK_OBJECT(dl_item), "activate",GTK_SIGNAL_FUNC (set_dl_speed),dl_item);	
@@ -443,12 +442,12 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 
 	if (theApp.serverconnect->IsConnected()) {
 		//Disconnection Speed item
-		item=gtk_menu_item_new_with_label(unicode2char(_("Disconnect from server")));
+		item=gtk_menu_item_new_with_label(StringToSystray(_("Disconnect from server")));
 		gtk_container_add (GTK_CONTAINER (status_menu), item);
 		gtk_signal_connect (GTK_OBJECT (item), "activate",GTK_SIGNAL_FUNC (disconnect),NULL);
 	} else {
 		//Connect item
-		item=gtk_menu_item_new_with_label(unicode2char(_("Connect to any server")));
+		item=gtk_menu_item_new_with_label(StringToSystray(_("Connect to any server")));
 		gtk_container_add (GTK_CONTAINER (status_menu), item);
 		gtk_signal_connect (GTK_OBJECT (item), "activate",GTK_SIGNAL_FUNC (connect_any_server),NULL);
 	}
@@ -461,12 +460,12 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 
 	if (theApp.amuledlg->IsShown()) {
 		//hide item
-		item = gtk_menu_item_new_with_label(unicode2char(_("Hide aMule")));
+		item = gtk_menu_item_new_with_label(StringToSystray(_("Hide aMule")));
 		gtk_container_add(GTK_CONTAINER(status_menu), item);
 		gtk_signal_connect(GTK_OBJECT(item), "activate", GTK_SIGNAL_FUNC(do_hide), NULL);
 	} else {
 		//show item
-		item = gtk_menu_item_new_with_label(unicode2char(_("Show aMule")));
+		item = gtk_menu_item_new_with_label(StringToSystray(_("Show aMule")));
 		gtk_container_add(GTK_CONTAINER(status_menu), item);
 		gtk_signal_connect(GTK_OBJECT(item), "activate", GTK_SIGNAL_FUNC(do_show), NULL);
 	}
@@ -478,7 +477,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 
 
 	// Exit item
-	item=gtk_menu_item_new_with_label(unicode2char(_("Exit")));
+	item=gtk_menu_item_new_with_label(StringToSystray(_("Exit")));
 	gtk_container_add (GTK_CONTAINER (status_menu), item);
 	gtk_signal_connect (GTK_OBJECT (item), "activate",GTK_SIGNAL_FUNC (close_amule),NULL);
 
@@ -543,11 +542,11 @@ CSysTray::CSysTray(wxWindow* parent, DesktopMode desktopmode, const wxString& ti
 
 	if(use_legacy) {
 		m_status_docklet=gtk_window_new(GTK_WINDOW_TOPLEVEL);
-		gtk_window_set_title(GTK_WINDOW(m_status_docklet), unicode2char(title));
+		gtk_window_set_title(GTK_WINDOW(m_status_docklet), StringToSystray(title));
 		gtk_window_set_wmclass(GTK_WINDOW(m_status_docklet),"amule_StatusDocklet","aMule");
 		gtk_widget_set_usize(m_status_docklet,22,22);
 	} else {
-		m_status_docklet=GTK_WIDGET(egg_tray_icon_new(unicode2char(_("aMule for Linux"))));
+		m_status_docklet=GTK_WIDGET(egg_tray_icon_new(StringToSystray(_("aMule for Linux"))));
 		if(m_status_docklet==NULL) {
 			printf("**** WARNING: Can't create status docklet. Systray will not be created.\n");
 			m_DesktopMode = dmDisabled;
@@ -574,7 +573,7 @@ CSysTray::CSysTray(wxWindow* parent, DesktopMode desktopmode, const wxString& ti
 	// set tooltips
 	m_status_tooltips=gtk_tooltips_new();
 	gtk_tooltips_enable(m_status_tooltips);
-	gtk_tooltips_set_tip(m_status_tooltips,m_status_docklet,unicode2char(_("aMule for Linux")),"blind text");
+	gtk_tooltips_set_tip(m_status_tooltips,m_status_docklet,StringToSystray(_("aMule for Linux")),"blind text");
 
 	// finalization
 	gtk_widget_show(m_status_image);
@@ -617,7 +616,7 @@ void CSysTray::SetTrayToolTip(const wxString& tip)
 	if ( m_DesktopMode == dmDisabled || m_status_docklet == NULL )
 		return;
 
-	gtk_tooltips_set_tip(m_status_tooltips, m_status_docklet, unicode2char(tip), NULL);
+	gtk_tooltips_set_tip(m_status_tooltips, m_status_docklet, StringToSystray(tip), NULL);
 }
 
 void CSysTray::DrawIconMeter(GdkPixmap* pix,GdkBitmap* mask,int nLevel,int nPos)

@@ -20,7 +20,10 @@ Version 2.0.0rc6 - The '???' version.
 	Kry:
 		* Got back from hell.
 
-	phoenix:
+	Littletux:
+		* Patch to include UTF-8 support in systray.
+
+	Phoenix:
 		* Fixed a compilation warning + appartently useless code in 
 		  DirectoryTree.cpp.
 		* Fixed amuleIPV4Address for wx-2.5.2 and up.
@@ -136,8 +139,9 @@ Version 2.0.0rc6 - The '???' version.
 		* Initial import of new MD4 hash code from emule 0.44a into
 		  KnownFile.{cpp,h}.
 		* Removed amuleweb html template 12 char password limitation.
+		* Small fixes to UTF-8 support patch.
 
-	rommel:
+	Rommel:
 		* Patch to implement the commands serverconnect and reloadipf
 		  in amulecmd.
 
@@ -207,7 +211,7 @@ Version 2.0.0rc5 - The 'Let's recover our release speed' version.
 		* core2gui events added.
 		* Some gcc 3.4 fixes to GUIEvents
 
-	phoenix:
+	Phoenix:
 		* Added a test with a warning to
 		  CSearchDlg::OnBnClickedSdownload in SearchDlg.cpp. A NULL
 		  value has been reported on the foruns, we don't know how
