@@ -544,7 +544,7 @@ bool CClientCreditsList::VerifyIdent(CClientCredits* pTarget, const uchar* pachS
 		memcpy(abyBuffer,m_abyMyPublicKey,m_nMyPublicKeyLen);
 		uint32 challenge = pTarget->m_dwCryptRndChallengeFor;
 		wxASSERT ( challenge != 0 );
-		memcpy(abyBuffer+m_nMyPublicKeyLen,&challenge,4);
+		PokeUInt32(abyBuffer+m_nMyPublicKeyLen, challenge);
 		
 		// v2 security improvments (not supported by 29b, not used as default by 29c)
 		uint8 nChIpSize = 0;
@@ -567,8 +567,8 @@ bool CClientCreditsList::VerifyIdent(CClientCredits* pTarget, const uchar* pachS
 					ChallengeIP = 0;
 					break;
 			}
-			memcpy(abyBuffer+m_nMyPublicKeyLen+4,&ChallengeIP,4);
-			memcpy(abyBuffer+m_nMyPublicKeyLen+4+4,&byChaIPKind,1);
+			PokeUInt32(abyBuffer+m_nMyPublicKeyLen+4, ChallengeIP);
+			PokeUInt8(abyBuffer+m_nMyPublicKeyLen+4+4, byChaIPKind);
 		}
 		//v2 end
 		
