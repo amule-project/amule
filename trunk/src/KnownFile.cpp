@@ -689,9 +689,9 @@ const CMD4Hash& CKnownFile::GetPartHash(uint16 part) const {
 
 CPacket*	CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 {
-	if (m_ClientUploadList.empty() )
+	if (m_ClientUploadList.empty() ) {
 		return NULL;
-
+	}
 
 	CSafeMemFile data(1024);
 	uint16 nCount = 0;
@@ -705,8 +705,9 @@ CPacket*	CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 	for ( ; it != m_ClientUploadList.end(); it++ ) {
 		const CUpDownClient *cur_src = *it;
 		
-		if ( cur_src->HasLowID() || cur_src == forClient || !(cur_src->GetUploadState() == US_UPLOADING || cur_src->GetUploadState() == US_ONUPLOADQUEUE))
+		if ( cur_src->HasLowID() || cur_src == forClient || !(cur_src->GetUploadState() == US_UPLOADING || cur_src->GetUploadState() == US_ONUPLOADQUEUE)) {
 			continue;
+		}
 
 		bool bNeeded = false;
 		const BitVector& rcvstatus = forClient->GetUpPartStatus();
@@ -752,20 +753,23 @@ CPacket*	CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 			uint32 dwID = cur_src->GetIP();
 		    
 			data.WriteUInt32(dwID);
-		    data.WriteUInt16(cur_src->GetUserPort());
-		    data.WriteUInt32(cur_src->GetServerIP());
-		    data.WriteUInt16(cur_src->GetServerPort());
+			data.WriteUInt16(cur_src->GetUserPort());
+			data.WriteUInt32(cur_src->GetServerIP());
+			data.WriteUInt16(cur_src->GetServerPort());
 			
-			if (forClient->GetSourceExchangeVersion() > 1)
-			    data.WriteHash16(cur_src->GetUserHash());
+			if (forClient->GetSourceExchangeVersion() > 1) {
+				data.WriteHash16(cur_src->GetUserHash());
+			}
 			
-			if (nCount > 500)
+			if (nCount > 500) {
 				break;
+			}
 		}
 	}
 	
-	if (!nCount)
+	if (!nCount) {
 		return 0;
+	}
 	
 	data.Seek(16, wxFromStart);
 	data.WriteUInt16(nCount);
@@ -773,8 +777,9 @@ CPacket*	CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 	CPacket* result = new CPacket(&data, OP_EMULEPROT);
 	result->SetOpCode( OP_ANSWERSOURCES );
 	
-	if ( result->GetPacketSize() > 354 )
+	if ( result->GetPacketSize() > 354 ) {
 		result->PackPacket();
+	}
 	
 	return result;
 }
