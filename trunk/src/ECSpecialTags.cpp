@@ -32,6 +32,7 @@
 #include "PartFile.h"		// Needed for CPartFile
 #include "sockets.h"		// Needed for CServerConnect
 #include "amule.h"		// Needed for theApp
+#include "KnownFile.h"		// Needed for CKnownFile
 
 
 CEC_Server_Tag::CEC_Server_Tag(CServer *server, EC_DETAIL_LEVEL detail_level) :

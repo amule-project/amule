@@ -18,9 +18,11 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#pragma implementation
+#pragma implementation "ECPacket.h"
+#pragma implementation "ECcodes.h"
 
 #include "ECPacket.h"	// Needed for ECTag, ECPacket
+#include "ECcodes.h"	// just to be in here for the #pragma
 #include "ECSocket.h"	// Needed for ECSocket
 #include <stdlib.h>	// Needed for malloc(), realloc(), free(), NULL
 #include <string.h>	// Needed for memcpy(), strlen()
