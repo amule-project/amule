@@ -1130,7 +1130,8 @@ void CDownloadQueue::SetCatStatus(int cat, int newstatus)
 		if (!cur_file) {
 			continue;
 		}
-		if (cat == cur_file->GetCategory() || cat == 0) {
+		
+		if (CheckShowItemInGivenCat(cur_file,cat)) {
 			switch (newstatus) {
 				case MP_CANCEL:
 					cur_file->Delete();
