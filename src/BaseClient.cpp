@@ -1505,7 +1505,7 @@ void CUpDownClient::ReGetClientSoft()
 					m_clientVerString = wxString::Format(wxT("eMule Compat(0x%x)"),m_byCompatibleClient);
 				}
 				else if (wxString(GetClientModString()).MakeLower().Find(wxT("xmule"))!=-1 || GetUserName().Find(wxT("xmule."))!=-1) {
-					// FAKE eMule -a newwer xMule faking is ident.
+					// FAKE eMule -a newer xMule faking is ident.
 					m_clientSoft = SO_LXMULE;
 					if (GetClientModString().IsEmpty() == false) {
 						m_clientVerString = GetClientModString() + wxT(" (Fake eMule)");
@@ -2315,4 +2315,3 @@ bool CUpDownClient::DisableDownloadLimit()
 		return false;
 	}
 }
-
