@@ -374,7 +374,7 @@ wxThread::ExitCode CAddFileThread::Entry()
 		// so that the AICH hashset only gets assigned if the MD4 hashset 
 		// matches what we expected. Due to the rareity of post-completion
 		// corruptions, this gives us a nice speedup in almost all cases.
-		bool needsAICH = !current->m_owner || !current->m_owner->GetGapList().IsEmpty();
+		bool needsAICH = !current->m_owner || current->m_owner->GetGapList().IsEmpty();
 		bool error = false;
 		
 		
