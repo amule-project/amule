@@ -900,17 +900,95 @@ BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	EVT_BUTTON(IDC_COLOR_BUTTON, PrefsUnifiedDlg::OnButtonColorChange)
 	EVT_CHOICE(IDC_COLORSELECTOR, PrefsUnifiedDlg::OnColorCategorySelected)
 	EVT_CHOICE(IDC_FCHECK, PrefsUnifiedDlg::OnFakeBrowserChange)
+	EVT_LIST_ITEM_SELECTED(ID_PREFSLISTCTRL, PrefsUnifiedDlg::OnPrefsPageChange)
 END_EVENT_TABLE()
 
 
 PrefsUnifiedDlg::PrefsUnifiedDlg(wxWindow *parent)
-	: wxDialog(parent,9990, _("Preferences"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxSYSTEM_MENU | wxRESIZE_BORDER)
+	: wxDialog(parent,9990, _("Preferences"), wxDefaultPosition, wxSize(820,780), wxDEFAULT_DIALOG_STYLE|wxSYSTEM_MENU | wxRESIZE_BORDER)
 {
 	Rse *prse;
 	int id;
 
+	wxString m_text[] = {	
+		_("General"), _("Connection"), _("Remote Controls"),
+		_("Server"), _("Files"), _("Sources Dropping"), 
+		_("Directories"), wxT("Statistics"), _("Notifications"), 
+		_("Core Tweaks"), _("Gui Tweaks")
+	};	
+	
+	
 	if (theApp.glob_prefs->BDlgTabsOnTop()) {
-		preferencesDlgTop( this, TRUE ); 
+		wxSizer* top_sizer = preferencesDlgTop( this, FALSE ); 
+		wxListCtrl* PrefsIcons = (wxListCtrl*) FindWindowById(ID_PREFSLISTCTRL,this);
+		wxPanel* PrefsPanel = (wxPanel*) FindWindowById(ID_PREFSPANEL,this);
+		PrefsPanel->Show(TRUE);
+		PrefsIcons->SetSize(wxSize(150,-1));
+		wxASSERT(PrefsIcons);
+		wxImageList* icon_list = new wxImageList(16,16);
+		icon_list->Add(amuleSpecial(10));
+		icon_list->Add(amuleSpecial(11));
+		icon_list->Add(amuleSpecial(17));
+		icon_list->Add(amuleSpecial(12));
+		icon_list->Add(amuleSpecial(13));
+		icon_list->Add(amuleSpecial(18));
+		icon_list->Add(amuleSpecial(14));
+		icon_list->Add(amuleSpecial(15));
+		icon_list->Add(amuleSpecial(16));
+		icon_list->Add(amuleSpecial(20));
+		icon_list->Add(amuleSpecial(19));
+		PrefsIcons->AssignImageList(icon_list, wxIMAGE_LIST_SMALL);
+		
+		PrefsIcons->InsertColumn(0, wxT(""), wxLIST_FORMAT_LEFT, 
+				PrefsIcons->GetSize().GetWidth()-5);
+		
+		for (int i = 0; i < 11; i++) {
+			PrefsIcons->InsertItem(i, m_text[i], i);
+		}
+		PrefsPanels[0] = new wxPanel( PrefsPanel , -1 );
+		PreferencesGeneralTab( PrefsPanels[0], TRUE );
+		PrefsPanels[0]->Show(FALSE);
+		PrefsPanels[1] = new wxPanel( PrefsPanel , -1 );
+		PreferencesConnectionTab( PrefsPanels[1], TRUE );
+		PrefsPanels[1]->Show(FALSE);
+		PrefsPanels[2] = new wxPanel( PrefsPanel , -1 );
+		PreferencesRemoteControlsTab( PrefsPanels[2], TRUE );
+		PrefsPanels[2]->Show(FALSE);
+		PrefsPanels[3] = new wxPanel( PrefsPanel , -1 );
+    		PreferencesServerTab( PrefsPanels[3], TRUE );
+		PrefsPanels[3]->Show(FALSE);
+		PrefsPanels[4] = new wxPanel( PrefsPanel , -1 );
+		PreferencesFilesTab( PrefsPanels[4], TRUE );
+		PrefsPanels[4]->Show(FALSE);
+		PrefsPanels[5] = new wxPanel( PrefsPanel , -1 );
+		PreferencesSourcesDroppingTab( PrefsPanels[5], TRUE );
+		PrefsPanels[5]->Show(FALSE);
+		PrefsPanels[6] = new wxPanel( PrefsPanel , -1 );
+		PreferencesDirectoriesTab( PrefsPanels[6], TRUE );
+		PrefsPanels[6]->Show(FALSE);
+		PrefsPanels[7] = new wxPanel( PrefsPanel , -1 );
+		PreferencesStatisticsTab( PrefsPanels[7], TRUE );
+		PrefsPanels[7]->Show(FALSE);
+		PrefsPanels[8] = new wxPanel( PrefsPanel , -1 );
+		PreferencesNotifyTab( PrefsPanels[8], TRUE );
+		PrefsPanels[8]->Show(FALSE);
+		PrefsPanels[9] = new wxPanel( PrefsPanel , -1 );
+		PreferencesaMuleTweaksTab( PrefsPanels[9], TRUE );
+		PrefsPanels[9]->Show(FALSE);
+		PrefsPanels[10] = new wxPanel( PrefsPanel , -1 );
+		PreferencesGuiTweaksTab( PrefsPanels[10], TRUE );
+		PrefsPanels[10]->Show(FALSE);
+
+		PrefsPanels[0]->Show(TRUE);
+		//prefs_select_sizer->Add(new_parent, 0 , wxGROW | wxEXPAND);
+		
+		CurrentPrefsPanel = PrefsPanels[0];
+		//prefs_select_sizer->Fit();
+		//prefs_main_sizer->Fit( this );
+		//top_sizer->Fit( this );
+//		top_sizer->Layout();
+//		Layout();
+		
 	} else {
     		preferencesDlgLeft( this, TRUE ); 
 	}
@@ -941,7 +1019,9 @@ PrefsUnifiedDlg::PrefsUnifiedDlg(wxWindow *parent)
 			// listRse, then the ID used in the new list entry is probably wrong - wxWindows
 			// does not seem to handle a non-existent ID gracefully inside FindWindowById().
 			wxControl *pctrl = (wxControl *)FindWindowById(id, this);
-			prse->SetWxControl(pctrl);
+			if (pctrl) {
+				prse->SetWxControl(pctrl);
+			}
 		}
 		
 		pos = pos->GetNext();
@@ -1021,8 +1101,10 @@ bool PrefsUnifiedDlg::TransferDataToWindow()
 	wxListOfRseNode *pos;
 	
 	pos = listRse.GetFirst();
-	while (pos) 	{	
-		(pos->GetData())->TransferToDlg();	
+	while (pos) 	{
+		if (pos->GetData()) {
+			(pos->GetData())->TransferToDlg();	
+		}
 		pos = pos->GetNext();
 	}		
 
@@ -1040,7 +1122,9 @@ bool PrefsUnifiedDlg::TransferDataFromWindow()
 	pos = listRse.GetFirst();
 	
 	while (pos) 	{	
-		(pos->GetData())->TransferFromDlg();
+		if (pos->GetData()) {		
+			(pos->GetData())->TransferFromDlg();
+		}
 		pos = pos->GetNext();
 	}		
 	
@@ -1339,4 +1423,10 @@ void PrefsUnifiedDlg::SaveAllItems(wxConfigBase& ini)
 		(pos->GetData())->SaveToFile(ini);
 		pos = pos->GetNext();
 	}
+}
+
+void PrefsUnifiedDlg::OnPrefsPageChange(wxListEvent& event) {
+	CurrentPrefsPanel->Show(FALSE);
+	CurrentPrefsPanel = PrefsPanels[event.GetIndex()];
+	CurrentPrefsPanel->Show(TRUE);
 }
