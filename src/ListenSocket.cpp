@@ -1,3 +1,4 @@
+//
 // This file is part of the aMule Project
 //
 // Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
@@ -2444,7 +2445,7 @@ void CSocketGlobalThread::RemoveSocket(CClientReqSocket* sock)
 
 void *CSocketGlobalThread::Entry()
 {
-	AddDebugLogLineM(true, "Socket global thread running\n");
+	AddDebugLogLineM(true, _("Socket global thread running\n"));
 	while ( !TestDestroy() ) {
 		Sleep(10);
 		std::set<CClientReqSocket *> erase_list;
