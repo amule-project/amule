@@ -3009,23 +3009,33 @@ void wxODListMainWindow::OnPaint( wxPaintEvent &WXUNUSED(event) )
 	    	}
         }
 
-		// Clean up after the last item, because we ignore ERASE_BACKGROUND events
-		if ( HasFlag(wxLC_OWNERDRAW) && ( visibleTo + 1 == GetItemCount() ) ) {
-			// Get the last visible item, anything below is cleared
+		// Clean up empty spaces because we ignore ERASE_BACKGROUND events
+		if ( HasFlag(wxLC_OWNERDRAW) ) {
+			// Get the last visible item
 			wxRect last = GetLineRect(visibleTo);
-
+				
 			// The the actual display size
 			int width = 0, height = 0;
 			GetClientSize( &width, &height );
 		
-			// Since visibleTo can include items partly past the bottom, we have
-			// ensure that we dont overwrite items below the visible area
-			if ( last.GetBottom() < height ) {
-				dc.SetPen( wxPen( GetBackgroundColour(), 1, wxSOLID) );
-				dc.SetBrush( wxBrush( GetBackgroundColour(), wxSOLID ) );
+			// Clear below if this is the last item
+			if ( visibleTo + 1 == GetItemCount() ) {
+
+				// Since visibleTo can include items partly past the bottom, we have
+				// ensure that we dont overwrite items below the visible area
+				if ( last.GetBottom() < height ) {
+					dc.SetPen( wxPen( GetBackgroundColour(), 1, wxSOLID) );
+					dc.SetBrush( wxBrush( GetBackgroundColour(), wxSOLID ) );
 		
+					// Clear the area below the last visible item
+					dc.DrawRectangle( 0, last.GetBottom(), last.GetWidth(), height - last.GetBottom() );
+				}
+			}
+
+			// Clear to the right of the last column if the columns dont fill everything
+			if ( last.GetWidth() < width ) {
 				// Clear the area below the last visible item
-				dc.DrawRectangle( 0, last.GetBottom(), last.GetWidth(), height - last.GetBottom() );
+				dc.DrawRectangle( last.GetWidth(), 0, width - last.GetWidth(), height );
 			}
 		}
 
