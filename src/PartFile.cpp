@@ -2204,12 +2204,12 @@ void CPartFile::CompleteFileEnded(int completing_result, wxString* newname) {
 		// Barry - Just in case
 		transfered = m_nFileSize;
 
-		theApp.downloadqueue->StartNextFile();
+		theApp.downloadqueue->StartNextFile(this);
 	
 	} else {
 		m_paused = true;
 		SetPartFileStatus(PS_ERROR);
-		theApp.downloadqueue->StartNextFile();	
+		theApp.downloadqueue->StartNextFile(this);	
 		AddLogLineM(true, _("Unexpected file error while completing ") + m_strFileName + _(". File paused"));
 		delete newname;
 		return;

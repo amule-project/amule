@@ -150,9 +150,9 @@ bool CheckDirectory( const wxString& a, const wxString& b, bool fatal )
 
 void CSharedFileList::AddFilesFromDirectory(wxString directory)
 {
-	if ( !wxDirExists( directory ) )
+	if ( !wxDirExists( directory ) ) {
 		return;
-
+	}
 
 	if (directory.Last() != wxFileName::GetPathSeparator()) {
 		directory += wxFileName::GetPathSeparator();

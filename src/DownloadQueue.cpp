@@ -208,7 +208,7 @@ void CDownloadQueue::AddSearchToDownload(CSearchFile* toadd, uint8 category)
 }
 
 
-void CDownloadQueue::StartNextFile()
+void CDownloadQueue::StartNextFile(CPartFile* oldfile)
 {
 	if ( thePrefs::StartNextFile() ) {
 		m_mutex.Lock();
@@ -219,11 +219,48 @@ void CDownloadQueue::StartNextFile()
 		
 			if ( file->GetStatus() == PS_PAUSED ) {
 				if ( !tFile || file->GetDownPriority() > tFile->GetDownPriority() ) {
-					tFile = file;
-					
-					if ( file->GetDownPriority() == PR_HIGH ) {
-						break;
+					if (tFile && thePrefs::StartNextFileSame()) {
+						if (tFile->GetCategory() == oldfile->GetCategory()) {
+							// Already found a file for this category
+							if (file->GetCategory() == oldfile->GetCategory()) {
+								// But the new one is also for this category
+								if (file->GetDownPriority() > tFile->GetDownPriority()) {
+									// So, higher prio?
+									tFile = file;
+								} else {
+									; // Lower prio, ignore this file.
+								}
+							} else {
+								; // It's not from the same category, so nothing
+							}
+						} else {
+							// Found no file yet with the same category
+							if (file->GetDownPriority() > tFile->GetDownPriority()) {
+								// So, higher prio?
+								tFile = file;
+							} else {
+								; // Lower prio, ignore this file.
+							}
+						}
+					} else {
+						// There is no file found yet or no category selection.
+						tFile = file;
 					}
+					
+					if ( tFile->GetDownPriority() == PR_HIGH ) {
+						if (thePrefs::StartNextFileSame()) {
+							// It's from the same category?
+							if (tFile->GetCategory() == oldfile->GetCategory()) {
+								// There can't be any higher
+								break;
+							} else {
+								; // Maybe we'll find another file from the same category
+							}
+						} else {
+							// There can't be any higher
+							break;							
+						}
+					}	
 				}
 			}
 		}
@@ -289,7 +326,7 @@ void CDownloadQueue::Process()
 	m_mutex.Lock();	
 	uint32 downspeed = 0;
 	if (thePrefs::GetMaxDownload() != UNLIMITED && m_datarate > 1500) {
-		downspeed = (thePrefs::GetMaxDownload()*1024*100)/(m_datarate+1); 
+		downspeed = (((uint32)thePrefs::GetMaxDownload())*1024*100)/(m_datarate+1); 
 		if (downspeed < 50) {
 			downspeed = 50;
 		} else if (downspeed > 200) {
@@ -1288,5 +1325,3 @@ void CDownloadQueue::ObserverAdded( ObserverType* o )
 
 	NotifyObservers( EventType( EventType::INITIAL, &list ), o );
 }
-
-

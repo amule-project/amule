@@ -214,8 +214,9 @@ public:
 
 	/**
 	 * Starts the next paused file on the queue, going after priority.
+	 * Also checks for categories if enabled on preferences.
 	 */
-	void	StartNextFile();
+	void	StartNextFile(CPartFile* oldfile);
 
 
 	/**

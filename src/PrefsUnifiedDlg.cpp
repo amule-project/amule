@@ -87,6 +87,7 @@ BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	EVT_CHECKBOX(IDC_MSGFILTER,		PrefsUnifiedDlg::OnCheckBoxChange)
 	EVT_CHECKBOX(IDC_MSGFILTER_ALL,		PrefsUnifiedDlg::OnCheckBoxChange)
 	EVT_CHECKBOX(IDC_MSGFILTER_WORD,	PrefsUnifiedDlg::OnCheckBoxChange)
+	EVT_CHECKBOX(IDC_STARTNEXTFILE, PrefsUnifiedDlg::OnCheckBoxChange)
 
 	EVT_BUTTON(ID_PREFS_OK_TOP,		PrefsUnifiedDlg::OnOk)
 	EVT_BUTTON(ID_OK,			PrefsUnifiedDlg::OnOk)
@@ -346,10 +347,12 @@ bool PrefsUnifiedDlg::TransferToWindow()
 	FindWindow( IDC_MINDISKSPACE )->Enable( thePrefs::IsCheckDiskspaceEnabled() );
 	FindWindow( IDC_SKINFILE )->Enable( thePrefs::UseSkin() );
 	FindWindow( IDC_OSDIR )->Enable( thePrefs::IsOnlineSignatureEnabled() );
+	FindWindow( IDC_OSUPDATE )->Enable( thePrefs::IsOnlineSignatureEnabled() );
 	FindWindow( IDC_UDPPORT )->Enable( !thePrefs::s_UDPDisable );
 	FindWindow( IDC_SERVERRETRIES )->Enable( thePrefs::DeadServer() );
 	FindWindow( IDC_HQR_VALUE )->Enable( thePrefs::DropHighQueueRankingSources() );
 	FindWindow( IDC_IPFILTERURL )->Enable( thePrefs::IPFilterAutoLoad() );
+	FindWindow( IDC_STARTNEXTFILE_SAME )->Enable(thePrefs::StartNextFile());
 
 	if (!CastChild(IDC_MSGFILTER, wxCheckBox)->IsChecked()) {
 		FindWindow(IDC_MSGFILTER_ALL)->Enable(false);
@@ -570,33 +573,32 @@ void PrefsUnifiedDlg::OnCancel(wxCommandEvent& WXUNUSED(event))
 void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 {
 	bool		value = event.IsChecked();
-	wxWindow*	widget = NULL;
 
 	switch ( event.GetId() ) {
 		case IDC_UDPDISABLE:
 			// UDP is disable rather than enable, so we flip the value
-			value = !value;
-			widget = FindWindow( IDC_UDPPORT ); 
+			FindWindow( IDC_UDPPORT )->Enable(!value);
 			break;
 			
 		case IDC_CHECKDISKSPACE:
-			widget = FindWindow( IDC_MINDISKSPACE );
+			FindWindow( IDC_MINDISKSPACE )->Enable(value);
 			break;	
 		
 		case IDC_USESKIN:
-			widget = FindWindow( IDC_SKINFILE );
+			FindWindow( IDC_SKINFILE )->Enable(value);;
 			break;
 
 		case IDC_ONLINESIG:
-			widget = FindWindow( IDC_OSDIR );
+			FindWindow( IDC_OSDIR )->Enable(value);;
+			FindWindow(IDC_OSUPDATE)->Enable(value);
 			break;
 
 		case IDC_REMOVEDEAD:
-			widget = FindWindow( IDC_SERVERRETRIES );
+			FindWindow( IDC_SERVERRETRIES )->Enable(value);;
 			break;
 
 		case IDC_ENABLE_AUTO_HQRS:
-			widget = FindWindow( IDC_HQR_VALUE );
+			FindWindow( IDC_HQR_VALUE )->Enable(value);;
 			break;
 
 		case IDC_AUTOSERVER:
@@ -611,7 +613,7 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 			break;
 
 		case IDC_AUTOIPFILTER:
-			widget = FindWindow( IDC_IPFILTERURL );
+			FindWindow( IDC_IPFILTERURL )->Enable(value);;
 			break;
 		
 		case IDC_MSGFILTER:
@@ -657,12 +659,12 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 			FindWindow(ID_PROXY_PASSWORD)->Enable(value);
 			break;
 			
+		case IDC_STARTNEXTFILE:
+			FindWindow(IDC_STARTNEXTFILE_SAME)->Enable(value);
+			break;
+		
 		case ID_PROXY_AUTO_SERVER_CONNECT_WITHOUT_PROXY:
 			break;
-	}
-
-	if (widget) {
-		widget->Enable( value );
 	}
 }
 

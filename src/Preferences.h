@@ -298,6 +298,7 @@ public:
 	static void		SetTransferFullChunks( bool m_bintransferfullchunks ) 
 					{s_btransferfullchunks = m_bintransferfullchunks; }
 	static bool		StartNextFile()			{ return s_bstartnextfile; }
+	static bool		StartNextFileSame()			{ return s_bstartnextfilesame; }
 	static void		SetStartNextFile(bool val)	{ s_bstartnextfile = val; }
 	static bool		ShowOverhead()			{ return s_bshowoverhead; }
 	static void		SetNewAutoUp(bool m_bInUAP) 	{ s_bUAP = m_bInUAP; }
@@ -443,6 +444,7 @@ public:
 	static bool		UseSkin()			{ return s_UseSkinFile; }
 	
 	static const wxString&	GetOSDir()			{ return s_OSDirectory; }
+	static uint16	GetOSUpdate()			{ return s_OSUpdate; }
 
 	static uint8		GetToolTipDelay()		{ return s_iToolDelayTime; }
 
@@ -624,6 +626,7 @@ protected:
 	static bool	s_bmanualhighprio;
 	static bool	s_btransferfullchunks;
 	static bool	s_bstartnextfile;
+	static bool	s_bstartnextfilesame;	
 	static bool	s_bshowoverhead;
 	static bool	s_bDAP;
 	static bool	s_bUAP;
@@ -700,6 +703,7 @@ protected:
 	static bool	s_BrowserTab;     // Jacobo221 - Open in tabs if possible
 	
 	static wxString	s_OSDirectory;
+	static uint16	s_OSUpdate;
 	
 	static wxString	s_SkinFile;
 	

@@ -2083,53 +2083,56 @@ wxSizer *PreferencesFilesTab( wxWindow *parent, bool call_fit, bool set_sizer )
     item15->SetValue( TRUE );
     item8->Add( item15, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
 
-    wxCheckBox *item16 = new wxCheckBox( parent, IDC_SRCSEEDS, _("Save 5 sources on rare files (< 20 sources)"), wxDefaultPosition, wxDefaultSize, 0 );
-    item16->SetValue( TRUE );
-    item8->Add( item16, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+    wxCheckBox *item16 = new wxCheckBox( parent, IDC_STARTNEXTFILE_SAME, _("From the same category"), wxDefaultPosition, wxDefaultSize, 0 );
+    item8->Add( item16, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 20 );
 
-    wxCheckBox *item17 = new wxCheckBox( parent, IDC_METADATA, _("Extract Meta Data Tags"), wxDefaultPosition, wxDefaultSize, 0 );
-    item17->Enable( false );
+    wxCheckBox *item17 = new wxCheckBox( parent, IDC_SRCSEEDS, _("Save 5 sources on rare files (< 20 sources)"), wxDefaultPosition, wxDefaultSize, 0 );
+    item17->SetValue( TRUE );
     item8->Add( item17, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+
+    wxCheckBox *item18 = new wxCheckBox( parent, IDC_METADATA, _("Extract Meta Data Tags"), wxDefaultPosition, wxDefaultSize, 0 );
+    item18->Enable( false );
+    item8->Add( item18, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
     item0->Add( item8, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticBox *item19 = new wxStaticBox( parent, -1, _("Reduce Fragmentation") );
-    wxStaticBoxSizer *item18 = new wxStaticBoxSizer( item19, wxVERTICAL );
+    wxStaticBox *item20 = new wxStaticBox( parent, -1, _("Reduce Fragmentation") );
+    wxStaticBoxSizer *item19 = new wxStaticBoxSizer( item20, wxVERTICAL );
 
-    wxCheckBox *item20 = new wxCheckBox( parent, IDC_CHUNKALLOC, _("Allocate full chunks for .part files"), wxDefaultPosition, wxDefaultSize, 0 );
-    item20->SetToolTip( _("Select this to allocate a full chunk each time data is received for it.") );
-    item20->Enable( false );
-    item18->Add( item20, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
-
-    wxCheckBox *item21 = new wxCheckBox( parent, IDC_FULLALLOCATE, _("Allocate full disk space for .part files"), wxDefaultPosition, wxDefaultSize, 0 );
-    item21->SetToolTip( _("This option reduces fragmentation but slows down the part file creation and will disable sparse files") );
+    wxCheckBox *item21 = new wxCheckBox( parent, IDC_CHUNKALLOC, _("Allocate full chunks for .part files"), wxDefaultPosition, wxDefaultSize, 0 );
+    item21->SetToolTip( _("Select this to allocate a full chunk each time data is received for it.") );
     item21->Enable( false );
-    item18->Add( item21, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+    item19->Add( item21, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
-    item0->Add( item18, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxCheckBox *item22 = new wxCheckBox( parent, IDC_FULLALLOCATE, _("Allocate full disk space for .part files"), wxDefaultPosition, wxDefaultSize, 0 );
+    item22->SetToolTip( _("This option reduces fragmentation but slows down the part file creation and will disable sparse files") );
+    item22->Enable( false );
+    item19->Add( item22, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
-    wxStaticBox *item23 = new wxStaticBox( parent, -1, _("Disk Space") );
-    wxStaticBoxSizer *item22 = new wxStaticBoxSizer( item23, wxVERTICAL );
+    item0->Add( item19, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxCheckBox *item24 = new wxCheckBox( parent, IDC_CHECKDISKSPACE, _("Check Disk Space"), wxDefaultPosition, wxDefaultSize, 0 );
-    item24->SetToolTip( _("Select this if you want aMule to check your Disk Space") );
-    item22->Add( item24, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+    wxStaticBox *item24 = new wxStaticBox( parent, -1, _("Disk Space") );
+    wxStaticBoxSizer *item23 = new wxStaticBoxSizer( item24, wxVERTICAL );
 
-    wxBoxSizer *item25 = new wxBoxSizer( wxHORIZONTAL );
+    wxCheckBox *item25 = new wxCheckBox( parent, IDC_CHECKDISKSPACE, _("Check Disk Space"), wxDefaultPosition, wxDefaultSize, 0 );
+    item25->SetToolTip( _("Select this if you want aMule to check your Disk Space") );
+    item23->Add( item25, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
-    wxStaticText *item26 = new wxStaticText( parent, ID_MINDISKTEXT, _("    Min Disk Space:    "), wxDefaultPosition, wxDefaultSize, 0 );
-    item25->Add( item26, 0, wxALIGN_CENTER|wxALL, 0 );
+    wxBoxSizer *item26 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxSpinCtrl *item27 = new wxSpinCtrl( parent, IDC_MINDISKSPACE, wxT("1"), wxDefaultPosition, wxSize(100,-1), 0, 1, 1000000, 1 );
-    item27->SetToolTip( _("Enter here the min disk space desired.") );
-    item25->Add( item27, 0, wxALIGN_CENTER_VERTICAL, 0 );
+    wxStaticText *item27 = new wxStaticText( parent, ID_MINDISKTEXT, _("    Min Disk Space:    "), wxDefaultPosition, wxDefaultSize, 0 );
+    item26->Add( item27, 0, wxALIGN_CENTER|wxALL, 0 );
 
-    wxStaticText *item28 = new wxStaticText( parent, ID_TEXT, _("Mb"), wxDefaultPosition, wxDefaultSize, 0 );
-    item25->Add( item28, 0, wxALIGN_CENTER|wxALL, 5 );
+    wxSpinCtrl *item28 = new wxSpinCtrl( parent, IDC_MINDISKSPACE, wxT("1"), wxDefaultPosition, wxSize(100,-1), 0, 1, 1000000, 1 );
+    item28->SetToolTip( _("Enter here the min disk space desired.") );
+    item26->Add( item28, 0, wxALIGN_CENTER_VERTICAL, 0 );
 
-    item22->Add( item25, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+    wxStaticText *item29 = new wxStaticText( parent, ID_TEXT, _("Mb"), wxDefaultPosition, wxDefaultSize, 0 );
+    item26->Add( item29, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    item0->Add( item22, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item23->Add( item26, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+
+    item0->Add( item23, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     if (set_sizer)
     {
@@ -3471,7 +3474,7 @@ wxSizer *PreferencesOnlineSigTab( wxWindow *parent, bool call_fit, bool set_size
     wxStaticBox *item8 = new wxStaticBox( parent, -1, _("Update Frequency (Secs):") );
     wxStaticBoxSizer *item7 = new wxStaticBoxSizer( item8, wxVERTICAL );
 
-    wxSpinCtrl *item9 = new wxSpinCtrl( parent, ID_SPINCTRL, wxT("5"), wxDefaultPosition, wxSize(60,-1), 0, 0, 100, 5 );
+    wxSpinCtrl *item9 = new wxSpinCtrl( parent, IDC_OSUPDATE, wxT("5"), wxDefaultPosition, wxSize(60,-1), 0, 0, 600, 5 );
     item9->SetToolTip( _("Change the frequency (in seconds) of Online Signature updates.") );
     item9->Enable( false );
     item7->Add( item9, 0, wxALIGN_CENTER|wxALL, 5 );
