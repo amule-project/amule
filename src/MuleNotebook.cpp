@@ -19,7 +19,9 @@
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma implementation "MuleNotebook.h"
+#endif
 
 #include <wx/event.h>
 #include <wx/app.h>

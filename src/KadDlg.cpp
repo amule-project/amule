@@ -21,6 +21,10 @@
 // KadDlg.cpp : implementation file
 //
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma implementation "KadDlg.h"
+#endif
+
 #include <wx/textctrl.h>
 #include "KadDlg.h"
 #include "muuli_wdr.h"

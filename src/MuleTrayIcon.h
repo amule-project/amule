@@ -1,3 +1,4 @@
+//
 // This file is part of the aMule Project
 //
 // Copyright (c) 2003-2004 Angel Vidal (Kry) ( kry@amule.org )
@@ -22,6 +23,10 @@
 #define MULETRAYICON_H
 
 #ifndef AMULE_DAEMON
+
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma interface "MuleTrayIcon.h"
+#endif
 
 #include <wx/defs.h>	// Needed before any other wx/*.h
 

@@ -20,6 +20,10 @@
 #ifndef FRIENDLISTCTRL_H
 #define FRIENDLISTCTRL_H
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma interface "FriendListCtrl.h"
+#endif
+
 #include "MuleListCtrl.h"
 
 

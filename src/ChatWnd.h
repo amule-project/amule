@@ -20,6 +20,10 @@
 #ifndef CHATWND_H
 #define CHATWND_H
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma interface "ChatWnd.h"
+#endif
+
 #include <wx/panel.h>		// Needed for wxPanel
 #include "types.h"
 

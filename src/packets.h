@@ -20,6 +20,10 @@
 #ifndef PACKETS_H
 #define PACKETS_H
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma interface "packets.h"
+#endif
+
 #include <exception>
 
 #include <wx/string.h>

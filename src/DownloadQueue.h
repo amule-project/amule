@@ -20,6 +20,10 @@
 #ifndef DOWNLOADQUEUE_H
 #define DOWNLOADQUEUE_H
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma interface "DownloadQueue.h"
+#endif
+
 #include "types.h"		// Needed for uint8, uint16, uint32 and uint64
 #include "CTypedPtrList.h"
 #include "CMD4Hash.h"

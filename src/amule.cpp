@@ -19,6 +19,15 @@
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 // 
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma implementation "amule.h"
+// implementations of other header files
+#pragma implementation "CTypedPtrList.h"
+#pragma implementation "GetTickCount.h"
+#pragma implementation "GuiEvents.h"
+#pragma implementation "updownclient.h"
+#endif
+
 #include <unistd.h>			// Needed for close(2) and sleep(3)
 #include <wx/defs.h>
 

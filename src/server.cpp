@@ -17,6 +17,10 @@
 //along with this program; if not, write to the Free Software
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma implementation "server.h"
+#endif
+
 #include "types.h" 
 #include "server.h"		// Interface declarations.
 #include "SafeFile.h"		// Needed for CSafeFile

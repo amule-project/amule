@@ -20,6 +20,9 @@
 // ClientDetailDialog.cpp : implementation file
 //
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma implementation "ClientDetailDialog.h"
+#endif
 
 #include "ClientDetailDialog.h"	// Interface declarations
 #include "otherfunctions.h"	// Needed for CastItoIShort

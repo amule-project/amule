@@ -20,6 +20,10 @@
 #ifndef STATISTICSDLG_H
 #define STATISTICSDLG_H
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma interface "StatisticsDlg.h"
+#endif
+
 #include <cmath>			// Needed for std::exp
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/panel.h>		// Needed for wxPanel

@@ -19,9 +19,11 @@
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma implementation "StringFunctions.h"
+#endif
 
 #include <ctype.h>
-
 
 #include "StringFunctions.h"
 #include <wx/filename.h>

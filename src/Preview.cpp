@@ -20,6 +20,10 @@
 // Preview.cpp : implementation file
 //
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma implementation "Preview.h"
+#endif
+
 #include <stdio.h>
 #include "Preview.h"		// Interface declarations.
 

@@ -17,6 +17,10 @@
 //along with this program; if not, write to the Free Software
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma implementation "UploadQueue.h"
+#endif
+
 #include <cstring>
 #include <cmath>			// Needed for std::exp
 #include "types.h"

@@ -24,6 +24,11 @@
 #define __AICHSYNCTHREAD_H__
 
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma interface "AICHSyncThread.h"
+#endif
+
+
 #include <wx/thread.h>
 
 

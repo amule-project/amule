@@ -19,6 +19,10 @@
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma implementation "ClientList.h"
+#endif
+
 #include "amule.h"			// Needed for theApp
 #include "ClientList.h"		// Interface declarations.
 #include "ListenSocket.h"	// Needed for CClientReqSocket

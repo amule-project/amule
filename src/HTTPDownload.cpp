@@ -21,6 +21,10 @@
 // HTTPDownload.cpp : implementation file
 //
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma implementation "HTTPDownload.h"
+#endif
+
 #ifdef __WXMSW__
 	#include <wx/defs.h>
 	#include <wx/msw/winundef.h>

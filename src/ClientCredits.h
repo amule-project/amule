@@ -20,6 +20,10 @@
 #ifndef CLIENTCREDITS_H
 #define CLIENTCREDITS_H
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma interface "ClientCredits.h"
+#endif
+
 #include <cstddef>		// Needed for NULL
 #include <ctime>		// Needed for time(2)
 

@@ -22,6 +22,10 @@
 // DownloadListCtrl.cpp : implementation file
 
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma implementation "DownloadListCtrl.h"
+#endif
+
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"		// Needed for DISABLE_PROGRESS

@@ -22,6 +22,11 @@
 #ifndef UPDOWNCLIENT_H
 #define UPDOWNCLIENT_H
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+// implementation in amule.cpp
+#pragma interface "updownclient.h"
+#endif
+
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/string.h>		// Needed for wxString
 #include "types.h"		// Needed for int8, int16, uint8, uint16, uint32 and uint64

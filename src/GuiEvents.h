@@ -21,6 +21,11 @@
 #ifndef GUIEVENTS_H
 #define GUIEVENTS_H
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+// implementation in amule.cpp
+#pragma interface "GuiEvents.h"
+#endif
+
 #include "types.h"
 #include  <map>
 #include  <list>

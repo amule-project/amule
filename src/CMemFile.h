@@ -20,6 +20,10 @@
 #ifndef CMEMFILE_H
 #define CMEMFILE_H
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+// implementation in filemem.cpp
+#pragma interface "CMemFile.h"
+#endif
 
 #include "CFile.h"		// Needed for CFile
 #include "types.h"		// Needed for uint8, uint16, uint32

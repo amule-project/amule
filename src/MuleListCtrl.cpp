@@ -19,6 +19,10 @@
 //
 
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma implementation "MuleListCtrl.h"
+#endif
+
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/menu.h>		// Needed for wxMenu
 #if wxCHECK_VERSION(2,4,2)

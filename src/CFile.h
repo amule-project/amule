@@ -17,6 +17,10 @@
 #ifndef CFILE_H
 #define CFILE_H
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma interface "CFile.h"
+#endif
+
 #include <wx/string.h>		// Needed for wxString
 #include <wx/filefn.h>		// Needed for wxSeekMode and seek related stuff.
 

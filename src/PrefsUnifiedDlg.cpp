@@ -20,6 +20,11 @@
 //
 
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma implementation "PrefsUnifiedDlg.h"
+#endif
+
+
 #include "PrefsUnifiedDlg.h"
 
 

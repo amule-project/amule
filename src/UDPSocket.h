@@ -20,6 +20,10 @@
 #ifndef UDPSOCKET_H
 #define UDPSOCKET_H
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma interface "UDPSocket.h"
+#endif
+
 #ifdef __WXMSW__
 	#include <winsock.h>
 	#include <wx/defs.h>

@@ -20,6 +20,10 @@
 #ifndef MULEGIFCTRL_H
 #define MULEGIFCTRL_H
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma imterface "MuleGifCtrl.h"
+#endif
+
 #include <wx/control.h>
 #include <wx/timer.h>
 #include <wx/bitmap.h>

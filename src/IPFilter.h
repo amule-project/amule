@@ -20,6 +20,10 @@
 #ifndef IPFILTER_H
 #define IPFILTER_H
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma interface "IPFilter.h"
+#endif
+
 #include "types.h"		// Needed for uint8, uint16 and uint32
 
 #include <map>			// Needed for std::map

@@ -20,6 +20,10 @@
 #ifndef SAFEFILE_H
 #define SAFEFILE_H
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma interface "SafeFile.h"
+#endif
+
 #include "CFile.h"		// Needed for CFile
 #include "types.h"		// Needed for LPCSTR
 #include "CMemFile.h"		// Needed for CMemFile

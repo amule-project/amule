@@ -22,6 +22,10 @@
 #ifndef SEARCHLIST_H
 #define SEARCHLIST_H
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma interface "SearchList.h"
+#endif
+
 #include "types.h"		// Needed for uint8, uint16 and uint32
 #include "KnownFile.h"		// Needed for CAbstractFile
 #include <wx/thread.h>

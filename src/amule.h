@@ -22,6 +22,10 @@
 #ifndef AMULE_H
 #define AMULE_H
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma interface "amule.h"
+#endif
+
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/app.h>			// Needed for wxApp
 #include <wx/intl.h>		// Needed for wxLocale
@@ -303,6 +307,8 @@ protected:
 
 };
 
+#ifndef AMULE_DAEMON
+
 class CamuleGuiApp : public CamuleApp {
 	AMULE_TIMER_CLASS* core_timer;
 
@@ -334,6 +340,12 @@ public:
 	DECLARE_EVENT_TABLE()
 };
 
+#define CALL_APP_DATA_LOCK
+
+DECLARE_APP(CamuleGuiApp)
+
+#else /* ! AMULE_DAEMON */
+
 class CamuleDaemonApp : public CamuleApp {
 	bool m_Exit;
 	int OnRun();
@@ -355,23 +367,17 @@ public:
 };
 
 
-#ifdef AMULE_DAEMON
 class CamuleLocker : public wxMutexLocker {
 	uint msStart;
 public:
 	CamuleLocker();
 	~CamuleLocker();
 };
-#define CALL_APP_DATA_LOCK wxMutexLocker locker(theApp.data_mutex)
-//#define CALL_APP_DATA_LOCK CamuleLocker locker()
-#else
-#define CALL_APP_DATA_LOCK
-#endif
 
-#ifdef AMULE_DAEMON
+#define CALL_APP_DATA_LOCK wxMutexLocker locker(theApp.data_mutex)
+
 DECLARE_APP(CamuleDaemonApp)
-#else
-DECLARE_APP(CamuleGuiApp)
-#endif
+
+#endif /* ! AMULE_DAEMON */
 
 #endif // AMULE_H

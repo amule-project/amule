@@ -20,6 +20,10 @@
 #ifndef SYSTRAY_H
 #define SYSTRAY_H
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma interface "SysTray.h"
+#endif
+
 
 enum TaskbarNotifier
 {

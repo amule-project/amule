@@ -21,6 +21,10 @@
 #ifndef MULETEXTCTRL_H
 #define MULETEXTCTRL_H
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma interface "MuleTextCtrl.h"
+#endif
+
 #include <wx/textctrl.h>
 
 

@@ -20,6 +20,10 @@
 #ifndef ED2KLINK_H
 #define ED2KLINK_H
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma interface "ED2KLink.h"
+#endif
+
 #include "types.h"		// Needed for uint16 and uint32
 #include "CTypedPtrList.h"	// Needed for CTypedPtrList
 #include "StringFunctions.h" // Needed for unicode2char & char2unicode
