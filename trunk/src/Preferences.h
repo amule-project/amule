@@ -265,11 +265,11 @@ public:
 	// Madcat - Fast ED2K Links Handler Toggling
 	static bool	GetFED2KLH() { return s_FastED2KLinksHandler; }
 	static bool	BDlgTabsOnTop() { 
-//		#if defined(__WXMAC__) || defined(__WXMSW__) 
-			return true;
-//		#else
-//			return s_bDlgTabsOnTop; 
-//		#endif
+#if (wxMINOR_VERSION > 4)
+		return true;
+#else
+		return false;
+#endif
 	}
 	
 	// Kry - Ip filter On/Off
