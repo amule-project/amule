@@ -29,6 +29,8 @@
 #include "SharedFileList.h" // CKnownFileMap
 
 class CKnownFile;
+	
+ WX_DECLARE_LIST(CKnownFile, KnownFileList);
 
 //WX_DECLARE_HASH_MAP(wxString,CKnownFile*,wxStringHash,wxStringEqual,KnownFileMap);
 
@@ -42,7 +44,7 @@ public:
 	bool	Init();
 	void	Save();
 	void	Clear();
-	CKnownFile*	FindKnownFile(char* filename,uint32 in_date,uint32 in_size);
+	CKnownFile*	FindKnownFile(const char* filename,uint32 in_date,uint32 in_size);
 	CKnownFile*   FindKnownFileByID(const uchar* hash);
 
 	uint16 requested;
@@ -55,6 +57,9 @@ private:
 	bool	Append(CKnownFile*);
 	char*	appdir;
 
+	CKnownFile* IsOnDuplicates(const char* filename,uint32 in_date,uint32 in_size);
+
+	KnownFileList	duplicates;
 	CKnownFileMap	m_map;
 };
 
