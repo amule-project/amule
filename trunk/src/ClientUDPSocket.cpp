@@ -49,6 +49,8 @@
 #include "opcodes.h"		// Needed for OP_EMULEPROT
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "amule.h"			// Needed for theApp
+#include "otherfunctions.h"
+#include "SafeFile.h"
 
 // CClientUDPSocket
 #define ID_SOKETTI 7772
@@ -101,7 +103,10 @@ bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, char
 				if (size != 16) {
 					break;
 				}
-				CKnownFile* reqfile = theApp.sharedfiles->GetFileByID((uchar*)packet);
+				CSafeMemFile data_in((BYTE*)packet, size);
+				uchar reqfilehash[16];
+				data_in.ReadRaw(reqfilehash,16);		
+				CKnownFile* reqfile = theApp.sharedfiles->GetFileByID(reqfilehash);
 				if (!reqfile) {
 					Packet* response = new Packet(OP_FILENOTFOUND,0,OP_EMULEPROT);
 					theApp.uploadqueue->AddUpDataOverheadFileRequest(response->size);
@@ -110,28 +115,48 @@ bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, char
 				}
 				CUpDownClient* sender = theApp.uploadqueue->GetWaitingClientByIP(inet_addr(host));
 				if (sender){					
-					sender->AddAskedCount();
-					sender->SetUDPPort(port);
-					sender->UDPFileReasked();
+					//Make sure we are still thinking about the same file
+					if (md4cmp(reqfilehash, sender->GetUploadFileID()) == 0) {
+					
+						sender->AddAskedCount();
+						sender->SetUDPPort(port);
+						sender->UDPFileReasked();
 
-					/*
-					printf("sender->GetUDPVersion = %i\n",sender->GetUDPVersion());
-					printf("size = %i\n",size);
-					*/
-
-					if ((sender->GetUDPVersion() > 2) && (size > 17)) {
-						uint16 nCompleteCountLast= sender->GetUpCompleteSourcesCount();
-						uint16 nCompleteCountNew= *(uint16*)(packet+16);
-						sender->SetUpCompleteSourcesCount(nCompleteCountNew);
-						if (nCompleteCountLast != nCompleteCountNew) {
-							if(reqfile->IsPartFile()) {
-								((CPartFile*)reqfile)->NewSrcPartsInfo();
-							} else {
-								reqfile->NewAvailPartsInfo();
+						if (sender->GetUDPVersion() > 3) {
+							sender->ProcessExtendedInfo(&data_in, reqfile);
+						} else  if (sender->GetUDPVersion() > 2) {
+							uint16 nCompleteCountLast= sender->GetUpCompleteSourcesCount();
+							uint16 nCompleteCountNew;
+							data_in.Read(nCompleteCountNew);
+							sender->SetUpCompleteSourcesCount(nCompleteCountNew);							
+							sender->SetUpCompleteSourcesCount(nCompleteCountNew);
+							if (nCompleteCountLast != nCompleteCountNew) {
+								reqfile->UpdatePartsInfo();
 							}
 						}
-					}
-					break;
+						
+						CSafeMemFile data_out(128);
+						if(sender->GetUDPVersion() > 3) {
+							if (reqfile->IsPartFile()) {
+								((CPartFile*)reqfile)->WritePartStatus(&data_out);
+							} else {
+								data_out.Write((uint16)0);
+							}
+						}
+						
+						data_out.Write((uint16)theApp.uploadqueue->GetWaitingPosition(sender));
+						#ifdef __USE_DEBUG__						
+						if (thePrefs.GetDebugClientUDPLevel() > 0) {
+							DebugSend("OP__ReaskAck", sender);
+						}
+						#endif
+						Packet* response = new Packet(&data_out, OP_EMULEPROT);
+						response->opcode = OP_REASKACK;
+						theApp.uploadqueue->AddUpDataOverheadFileRequest(response->size);
+						theApp.clientudp->SendPacket(response, inet_addr(host), port);
+					} else {					
+						theApp.amuledlg->AddLogLine(false, "Client UDP socket; ReaskFilePing; reqfile does not match");
+					}						
 				} else {
 					if (((uint32)theApp.uploadqueue->GetWaitingUserCount() + 50) > theApp.glob_prefs->GetQueueSize()) {
 						Packet* response = new Packet(OP_QUEUEFULL,0,OP_EMULEPROT);

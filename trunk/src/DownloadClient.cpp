@@ -179,6 +179,115 @@ bool CUpDownClient::IsSourceRequestAllowed()
 	);
 }
 
+
+void CUpDownClient::SendFileRequest()
+{
+	wxASSERT(reqfile != NULL);
+	
+	if(!reqfile) {
+		return;
+	}
+	
+	AddAskedCountDown();
+
+	CSafeMemFile dataFileReq(16+16);
+	dataFileReq.WriteRaw(reqfile->GetFileHash(),16);
+
+	if( SupportMultiPacket() ) {
+		dataFileReq.Write((uint8)OP_REQUESTFILENAME);
+		//Extended information
+		if( GetExtendedRequestsVersion() > 0 ) {
+			reqfile->WritePartStatus(&dataFileReq);
+		}
+		if( GetExtendedRequestsVersion() > 1 ) {
+			reqfile->WriteCompleteSourcesCount(&dataFileReq);
+		}
+		if (reqfile->GetPartCount() > 1) {
+			dataFileReq.Write((uint8)OP_SETREQFILEID);
+		}
+		if( IsEmuleClient() ) {
+			SetRemoteQueueFull( true );
+			SetRemoteQueueRank(0);
+		}	
+		if(IsSourceRequestAllowed())	{
+			dataFileReq.Write((uint8)OP_REQUESTSOURCES);
+			reqfile->SetLastAnsweredTimeTimeout();
+			SetLastAskedForSources();
+			#ifdef __USE_DEBUG__
+			if (thePrefs.GetDebugSourceExchange()) 
+				AddDebugLogLine( false, "Send:Source Request User(%s) File(%s)", GetUserName(), reqfile->GetFileName() );
+			#endif
+		}
+		#ifdef __USE_DEBUG__
+		if (thePrefs.GetDebugClientTCPLevel() > 0)
+			DebugSend("OP__MultiPacket", this, (char*)reqfile->GetFileHash());
+		#endif
+		Packet* packet = new Packet(&dataFileReq, OP_EMULEPROT);
+		packet->opcode = OP_MULTIPACKET;
+		theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->size);
+		socket->SendPacket(packet, true);
+	} else {
+		//This is extended information
+		if( GetExtendedRequestsVersion() > 0 ){
+			reqfile->WritePartStatus(&dataFileReq);
+		}
+		if( GetExtendedRequestsVersion() > 1 ){
+			reqfile->WriteCompleteSourcesCount(&dataFileReq);
+		}
+		#ifdef __USE_DEBUG__
+		if (thePrefs.GetDebugClientTCPLevel() > 0)
+			DebugSend("OP__FileRequest", this, (char*)reqfile->GetFileHash());
+		#endif
+		Packet* packet = new Packet(&dataFileReq);
+		packet->opcode=OP_REQUESTFILENAME;
+		theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->size);
+		socket->SendPacket(packet, true);
+	
+		// 26-Jul-2003: removed requesting the file status for files <= PARTSIZE for better compatibility with ed2k protocol (eDonkeyHybrid).
+		// if the remote client answers the OP_REQUESTFILENAME with OP_REQFILENAMEANSWER the file is shared by the remote client. if we
+		// know that the file is shared, we know also that the file is complete and don't need to request the file status.
+		if (reqfile->GetPartCount() > 1) {
+			#ifdef __USE_DEBUG__
+			if (thePrefs.GetDebugClientTCPLevel() > 0)
+				DebugSend("OP__SetReqFileID", this, (char*)reqfile->GetFileHash());
+			#endif
+			CSafeMemFile dataSetReqFileID(16);
+			dataSetReqFileID.WriteRaw(reqfile->GetFileHash(),16);
+			packet = new Packet(&dataSetReqFileID);
+			packet->opcode = OP_SETREQFILEID;
+			theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->size);
+			socket->SendPacket(packet, true);
+		}
+	
+		if( IsEmuleClient() ) {
+			SetRemoteQueueFull( true );
+			SetRemoteQueueRank(0);
+		}	
+		if(IsSourceRequestAllowed()) {
+			#ifdef __USE_DEBUG__
+		    if (thePrefs.GetDebugClientTCPLevel() > 0){
+			    DebugSend("OP__RequestSources", this, (char*)reqfile->GetFileHash());
+			    if (GetLastAskedForSources() == 0)
+				    Debug("  first source request\n");
+			    else
+				    Debug("  last source request was before %s\n", CastSecondsToHM((GetTickCount() - GetLastAskedForSources())/1000));
+		    }
+		    #endif
+			reqfile->SetLastAnsweredTimeTimeout();
+			Packet* packet = new Packet(OP_REQUESTSOURCES,16,OP_EMULEPROT);
+			md4cpy(packet->pBuffer,reqfile->GetFileHash());
+			theApp.uploadqueue->AddUpDataOverheadSourceExchange(packet->size);
+			socket->SendPacket(packet,true,true);
+			SetLastAskedForSources();
+		    #ifdef __USE_DEBUG__
+			if (thePrefs.GetDebugSourceExchange())
+				AddDebugLogLine( false, "Send:Source Request User(%s) File(%s)", GetUserName(), reqfile->GetFileName() );
+			#endif
+		}
+	}
+}
+
+#if 0
 void CUpDownClient::SendFileRequest()
 {
 	if(!reqfile) {
@@ -232,7 +341,9 @@ void CUpDownClient::SendFileRequest()
 	}	
 
 }
+#endif
 
+#warning DEPRECATED
 void CUpDownClient::ProcessFileInfo(char* packet,uint32 size)
 {
 	CSafeMemFile* data = new CSafeMemFile((BYTE*)packet,size);
@@ -296,10 +407,11 @@ void CUpDownClient::ProcessFileInfo(char* packet,uint32 size)
 		} else {
 			SendStartupLoadReq();
 		}
-		reqfile->NewSrcPartsInfo();
+		reqfile->UpdatePartsInfo();
 	}
 }
 
+#warning DEPRECATED
 void CUpDownClient::ProcessFileStatus(char* packet,uint32 size)
 {
 	CSafeMemFile data((BYTE*)packet,size);
@@ -368,7 +480,217 @@ void CUpDownClient::ProcessFileStatus(char* packet,uint32 size)
 	} else {
 		SendStartupLoadReq();
 	}
-	reqfile->NewSrcPartsInfo();
+	reqfile->UpdatePartsInfo();
+}
+
+
+
+
+void CUpDownClient::ProcessFileInfo(CSafeMemFile* data, CPartFile* file)
+{
+	if (file==NULL) {
+		throw CString(_("ERROR: Wrong file ID (ProcessFileInfo; file==NULL)"));
+	}
+	if (reqfile==NULL) {
+		throw CString(_("ERROR: Wrong file ID (ProcessFileInfo; reqfile==NULL)"));
+	}
+	if (file != reqfile) {
+		throw CString(_("ERROR: Wrong file ID (ProcessFileInfo; reqfile!=file)"));
+	}
+	
+	wxString Filename;
+	data->Read(Filename);
+		
+	//data->Read(m_strClientFilename);
+	
+	if (m_pszClientFilename) {
+		delete[] m_pszClientFilename;
+	}
+	m_pszClientFilename = new char[Filename.Length()+1];
+	strncpy(m_pszClientFilename, Filename.GetData(), Filename.Length());
+	// Kry - Hum. Just to be sure.
+	m_pszClientFilename[Filename.Length()] = 0;	
+	
+	
+	// 26-Jul-2003: removed requesting the file status for files <= PARTSIZE for better compatibility with ed2k protocol (eDonkeyHybrid).
+	// if the remote client answers the OP_REQUESTFILENAME with OP_REQFILENAMEANSWER the file is shared by the remote client. if we
+	// know that the file is shared, we know also that the file is complete and don't need to request the file status.
+	if (reqfile->GetPartCount() == 1)
+	{
+		if (m_abyPartStatus)
+		{
+			delete[] m_abyPartStatus;
+			m_abyPartStatus = NULL;
+		}
+		m_nPartCount = reqfile->GetPartCount();
+		m_abyPartStatus = new uint8[m_nPartCount];
+		memset(m_abyPartStatus,1,m_nPartCount);
+		m_bCompleteSource = true;
+
+		#if __USE_DEBUG__
+		if (thePrefs.GetDebugClientTCPLevel() > 0)
+		{
+		    int iNeeded = 0;
+		    for (int i = 0; i < m_nPartCount; i++)
+			    if (!reqfile->IsComplete(i*PARTSIZE,((i+1)*PARTSIZE)-1))
+				    iNeeded++;
+			char* psz = new char[m_nPartCount + 1];
+			for (int i = 0; i < m_nPartCount; i++)
+				psz[i] = m_abyPartStatus[i] ? '#' : '.';
+			psz[i] = '\0';
+			Debug("  Parts=%u  %s  Needed=%u\n", m_nPartCount, psz, iNeeded);
+			delete[] psz;
+		}
+		#endif
+		UpdateDisplayedInfo();
+		reqfile->UpdateAvailablePartsCount();
+		// even if the file is <= PARTSIZE, we _may_ need the hashset for that file (if the file size == PARTSIZE)
+		if (reqfile->hashsetneeded)
+		{
+			if (socket)
+			{
+				Packet* packet = new Packet(OP_HASHSETREQUEST,16);
+				md4cpy(packet->pBuffer,reqfile->GetFileHash());
+				theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->size);
+				socket->SendPacket(packet,true,true);
+				SetDownloadState(DS_REQHASHSET);
+				m_fHashsetRequesting = 1;
+				reqfile->hashsetneeded = false;
+			}
+			else {
+				wxASSERT(0);
+			}
+		}
+		else {
+			SendStartupLoadReq();
+		}
+		reqfile->UpdatePartsInfo();
+	}
+}
+
+void CUpDownClient::ProcessFileStatus(bool bUdpPacket, CSafeMemFile* data, CPartFile* file)
+{
+	
+	if ( !reqfile || file != reqfile ){
+		if (reqfile==NULL) {
+			throw CString(_("ERROR: Wrong file ID (ProcessFileStatus; reqfile==NULL)"));
+		}
+		throw CString(_("ERROR: Wrong file ID (ProcessFileStatus; reqfile!=file)"));
+	}
+	
+	uint16 nED2KPartCount;
+	data->Read(nED2KPartCount);
+	if (m_abyPartStatus)
+	{
+		delete[] m_abyPartStatus;
+		m_abyPartStatus = NULL;
+	}
+	bool bPartsNeeded = false;
+	int iNeeded = 0;
+	if (!nED2KPartCount)
+	{
+		m_nPartCount = reqfile->GetPartCount();
+		m_abyPartStatus = new uint8[m_nPartCount];
+		memset(m_abyPartStatus,1,m_nPartCount);
+		bPartsNeeded = true;
+		m_bCompleteSource = true;
+
+		#if __USE_DEBUG__
+		if (bUdpPacket ? (thePrefs.GetDebugClientUDPLevel() > 0) : (thePrefs.GetDebugClientTCPLevel() > 0)) 		{
+			for (int i = 0; i < m_nPartCount; i++) {
+				if (!reqfile->IsComplete(i*PARTSIZE,((i+1)*PARTSIZE)-1)) {
+					iNeeded++;
+				}
+			}
+		}
+		#endif
+	}
+	else
+	{
+		if (reqfile->GetED2KPartCount() != nED2KPartCount)
+		{
+			CString strError;
+			strError.Format(_("ProcessFileStatus - wrong part number recv=%u  expected=%u  %s"), nED2KPartCount, reqfile->GetED2KPartCount(), reqfile->GetFileHash());
+			m_nPartCount = 0;
+			throw strError;
+		}
+		m_nPartCount = reqfile->GetPartCount();
+
+		m_bCompleteSource = false;
+		m_abyPartStatus = new uint8[m_nPartCount];
+		uint16 done = 0;
+		while (done != m_nPartCount)
+		{
+			uint8 toread;
+			data->Read(toread);
+			for (sint32 i = 0;i != 8;i++)
+			{
+				m_abyPartStatus[done] = ((toread>>i)&1)? 1:0; 	
+				if (m_abyPartStatus[done])
+				{
+					if (!reqfile->IsComplete(done*PARTSIZE,((done+1)*PARTSIZE)-1)){
+						bPartsNeeded = true;
+						iNeeded++;
+					}
+				}
+				done++;
+				if (done == m_nPartCount) {
+					break;
+				}
+			}
+		}
+	}
+	
+	#ifdef __USE_DEBUG__	
+	if (bUdpPacket ? (thePrefs.GetDebugClientUDPLevel() > 0) : (thePrefs.GetDebugClientTCPLevel() > 0))
+	{
+		char* psz = new char[m_nPartCount + 1];
+		for (int i = 0; i < m_nPartCount; i++)
+			psz[i] = m_abyPartStatus[i] ? '#' : '.';
+		psz[i] = '\0';
+		Debug("  Parts=%u  %s  Needed=%u\n", m_nPartCount, psz, iNeeded);
+		delete[] psz;
+	}
+	#endif
+
+	UpdateDisplayedInfo();
+	reqfile->UpdateAvailablePartsCount();
+
+	// NOTE: This function is invoked from TCP and UDP socket!
+	if (!bUdpPacket) {
+		if (!bPartsNeeded) {
+			SetDownloadState(DS_NONEEDEDPARTS);
+		} else if (reqfile->hashsetneeded) {
+			//If we are using the eMule filerequest packets, this is taken care of in the Multipacket!
+			if (socket) {
+				#ifdef __USE__DEBUG__
+				if (thePrefs.GetDebugClientTCPLevel() > 0) {
+					DebugSend("OP__HashSetRequest", this, (char*)reqfile->GetFileHash());
+				}
+				#endif
+				Packet* packet = new Packet(OP_HASHSETREQUEST,16);
+				md4cpy(packet->pBuffer,reqfile->GetFileHash());
+				theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->size);
+				socket->SendPacket(packet, true, true);
+				SetDownloadState(DS_REQHASHSET);
+				m_fHashsetRequesting = 1;
+				reqfile->hashsetneeded = false;
+			} else {
+				wxASSERT(0);
+			}
+		}
+		else {
+			SendStartupLoadReq();
+		}
+	}
+	else {
+		if (!bPartsNeeded) {
+			SetDownloadState(DS_NONEEDEDPARTS);
+		} else {
+			SetDownloadState(DS_ONQUEUE);
+		}
+	}
+	reqfile->UpdatePartsInfo();
 }
 
 bool CUpDownClient::AddRequestForAnotherFile(CPartFile* file)
@@ -1090,7 +1412,7 @@ bool CUpDownClient::DoSwap(CPartFile* SwapTo, bool bRemoveCompletely)
 			ResetFileStatusInfo();
 			m_nRemoteQueueRank = 0;
 			
-			reqfile->NewSrcPartsInfo();
+			reqfile->UpdatePartsInfo();
 			reqfile->UpdateAvailablePartsCount();
 			reqfile = SwapTo;
 	

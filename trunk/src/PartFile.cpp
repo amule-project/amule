@@ -1975,15 +1975,17 @@ void CPartFile::AddSources(CMemFile* sources,uint32 serverip, uint16 serverport)
 	}
 }
 
-void CPartFile::NewSrcPartsInfo(){
+void CPartFile::UpdatePartsInfo() {
+
+	if( !IsPartFile() ) {
+		CKnownFile::UpdatePartsInfo();
+		return;
+	}
+	
 	// Cache part count
 	uint16 partcount = GetPartCount();
 	bool flag = (time(NULL) - m_nCompleteSourcesTime > 0); 
 	
-	ArrayOfUInts16 count;	
-	
-	count.Alloc(m_ClientUploadList.GetCount());	
-
 	// Reset Part Count and allocate it with 0es
 	
 	m_SrcpartFrequency.Clear();
@@ -1991,58 +1993,48 @@ void CPartFile::NewSrcPartsInfo(){
 	
 	m_SrcpartFrequency.Insert(/*Item*/0, /*pos*/0, partcount);
 
+	ArrayOfUInts16 count;	
+	
+	if (flag) {
+		count.Alloc(GetSourceCount());	
+	}
+	
 	CUpDownClient* cur_src;
 	
-	uint16 cur_count = 0;
-	for(int sl=0; sl<SOURCESSLOTS; ++sl) 
-	{
-		if (!srclists[sl].IsEmpty()) 
-		{
-			for (POSITION pos = srclists[sl].GetHeadPosition(); pos != 0; )
-			{
+	for(int sl=0; sl<SOURCESSLOTS; ++sl) {
+		if (!srclists[sl].IsEmpty()) {
+			for (POSITION pos = srclists[sl].GetHeadPosition(); pos != 0; )	{
 				cur_src = srclists[sl].GetNext(pos);
-				for (uint16 i = 0; i < partcount; i++)
-				{
-					if (cur_src->IsPartAvailable(i))
-					{
+				for (uint16 i = 0; i < partcount; i++)	{
+					if (cur_src->IsPartAvailable(i)) {
 						m_SrcpartFrequency[i] +=1;
 					}
 				}
-				cur_count= cur_src->GetUpCompleteSourcesCount();
-				if ( flag && cur_count )
-				{
-					count.Add(cur_count);
+				if ( flag) {
+					count.Add(cur_src->GetUpCompleteSourcesCount());
 				}
 			}
 		}
 	}
 
-	if( flag )
-	{
+	if( flag ) {
 		m_nCompleteSourcesCount = m_nCompleteSourcesCountLo = m_nCompleteSourcesCountHi = 0;
 	
-		for (uint16 i = 0; i < partcount; i++)
-		{
-			if( !i )
-			{
+		for (uint16 i = 0; i < partcount; i++)	{
+			if( !i )	{
 				m_nCompleteSourcesCount = m_SrcpartFrequency[i];
 			}
-			else if( m_nCompleteSourcesCount > m_SrcpartFrequency[i])
-			{
+			else if( m_nCompleteSourcesCount > m_SrcpartFrequency[i]) {
 				m_nCompleteSourcesCount = m_SrcpartFrequency[i];
 			}
 		}
 	
-		if (m_nCompleteSourcesCount)
-		{
-			count.Add(m_nCompleteSourcesCount);
-		}
+		count.Add(m_nCompleteSourcesCount);
 	
 		count.Shrink();
 	
 		int32 n = count.GetCount();
-		if (n > 0)
-		{
+		if (n > 0) {
 
 			// Kry - Native wx functions instead
 			count.Sort(Uint16CompareValues);
@@ -2051,29 +2043,74 @@ void CPartFile::NewSrcPartsInfo(){
 			int32 i= n >> 1;		// (n / 2)
 			int32 j= (n * 3) >> 2;	// (n * 3) / 4
 			int32 k= (n * 7) >> 3;	// (n * 7) / 8
-			if (n < 5)
-			{
+			
+			//When still a part file, adjust your guesses by 20% to what you see..
+
+			
+			if (n < 5) {
+				//Not many sources, so just use what you see..
+				// welcome to 'plain stupid code'
+				// m_nCompleteSourcesCount; 
+				m_nCompleteSourcesCountLo= m_nCompleteSourcesCount;
+				m_nCompleteSourcesCountHi= m_nCompleteSourcesCount;
+/*				
 				m_nCompleteSourcesCount   = count[i];
 				m_nCompleteSourcesCountLo = 0;
 				m_nCompleteSourcesCountHi = m_nCompleteSourcesCount;
-			}
-			else if (n < 10)
-			{
+			} else if (n < 10)	{
+				
 				m_nCompleteSourcesCount   = count[i];
 				m_nCompleteSourcesCountLo = count[i-1];
 				m_nCompleteSourcesCountHi = count[i+1];
-			}
-			else if (n < 20)
-			{
+*/				
+			} else if (n < 20) {
+				// For low guess and normal guess count
+				//	 If we see more sources then the guessed low and normal, use what we see.
+				//	 If we see less sources then the guessed low, adjust network accounts for 80%, 
+				//  we account for 20% with what we see and make sure we are still above the normal.
+				// For high guess
+				//  Adjust 80% network and 20% what we see.
+				if ( count[i] < m_nCompleteSourcesCount ) {
+					m_nCompleteSourcesCountLo = m_nCompleteSourcesCount;
+				} else {
+					m_nCompleteSourcesCountLo = (uint16)((float)(count[i]*.8)+(float)(m_nCompleteSourcesCount*.2));
+				}
+				m_nCompleteSourcesCount= m_nCompleteSourcesCountLo;
+				m_nCompleteSourcesCountHi= (uint16)((float)(count[j]*.8)+(float)(m_nCompleteSourcesCount*.2));
+				if( m_nCompleteSourcesCountHi < m_nCompleteSourcesCount ) {
+					m_nCompleteSourcesCountHi = m_nCompleteSourcesCount;	
+				}					
+				/*
 				m_nCompleteSourcesCount   = count[i];
 				m_nCompleteSourcesCountLo = count[i];
 				m_nCompleteSourcesCountHi = count[j];
-			}
-			else
-			{
+				*/
+			} else {
+				// Many sources
+				// ------------
+				// For low guess
+				//	 Use what we see.
+				// For normal guess
+				//	 Adjust network accounts for 80%, we account for 20% with what 
+				//  we see and make sure we are still above the low.
+				// For high guess
+				//  Adjust network accounts for 80%, we account for 20% with what 
+				//  we see and make sure we are still above the normal.
+
+				m_nCompleteSourcesCountLo= m_nCompleteSourcesCount;
+				m_nCompleteSourcesCount= (uint16)((float)(count[j]*.8)+(float)(m_nCompleteSourcesCount*.2));
+				if( m_nCompleteSourcesCount < m_nCompleteSourcesCountLo ) {
+					m_nCompleteSourcesCount = m_nCompleteSourcesCountLo;
+				}
+				m_nCompleteSourcesCountHi= (uint16)((float)(count[k]*.8)+(float)(m_nCompleteSourcesCount*.2));
+				if( m_nCompleteSourcesCountHi < m_nCompleteSourcesCount ) {
+					m_nCompleteSourcesCountHi = m_nCompleteSourcesCount;
+				}
+				/*
 				m_nCompleteSourcesCount   = count[j];
 				m_nCompleteSourcesCountLo = m_nCompleteSourcesCount;
 				m_nCompleteSourcesCountHi = count[k];
+				*/
 			}
 		}
 		m_nCompleteSourcesTime = time(NULL) + (60);
@@ -2635,7 +2672,7 @@ void  CPartFile::RemoveAllSources(bool bTryToSwap)
 		}
 	}
 
-	NewSrcPartsInfo(); 
+	UpdatePartsInfo(); 
 	UpdateAvailablePartsCount();
 	
 	/* eMule 0.30c implementation, i give it a try (Creteil) BEGIN ... */

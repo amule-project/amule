@@ -74,6 +74,8 @@
 #define	SERVERREASKTIME				800000  // don't set this too low, it wont speed up anything, but it could kill amule or your internetconnection
 #define	UDPSERVERREASKTIME			1300000	// 1300000 <- original value ***
 #define	SOURCECLIENTREASK			600000
+#define	SOURCECLIENTREASKS		MIN2MS(40)	//40 mins
+#define	SOURCECLIENTREASKF		MIN2MS(5)	//5 mins
 #define	MINCOMMONPENALTY			9
 #define	UDPSERVERSTATTIME			5000
 #define	UDPSERVSTATREASKTIME			14400
@@ -183,22 +185,25 @@
 #define	OP_HASHSETREQUEST			0x51	// <HASH 16>
 #define	OP_HASHSETANSWER			0x52	// <count 2><HASH[count] 16*count>
 #define	OP_STARTUPLOADREQ			0x54	// <HASH 16>
-#define	OP_ACCEPTUPLOADREQ			0x55	// (null)
+#define	OP_ACCEPTUPLOADREQ		0x55	// (null)
 #define	OP_CANCELTRANSFER			0x56	// (null)	
 #define	OP_OUTOFPARTREQS			0x57	// (null)
-#define	OP_FILEREQUEST				0x58	// <HASH 16>	(more correctly file_name_request)
-#define	OP_FILEREQANSWER			0x59	// <HASH 16><len 4><NAME len>
+#define	OP_REQUESTFILENAME		0x58	// <HASH 16>	(more correctly file_name_request)
+#define	OP_REQFILENAMEANSWER	0x59	// <HASH 16><len 4><NAME len>
 #define	OP_CHANGE_SLOT				0x5B	// <HASH 16>
 #define	OP_QUEUERANK				0x5C	// <wert  4> (slot index of the request)
 #define	OP_ASKSHAREDDIRS			0x5D	// (null)
-#define	OP_ASKSHAREDFILESDIR			0x5E	// <len 2><Directory len>
-#define	OP_ASKSHAREDDIRSANS			0x5F	// <count 4>(<len 2><Directory len>)[count]
-#define	OP_ASKSHAREDFILESDIRANS			0x60	// <len 2><Directory len><count 4>(<HASH 16><ID 4><PORT 2><1 T
-#define	OP_ASKSHAREDDENIEDANS			0x61	// (null)
-#define	OP_PUBLICKEY			0x85	// <len 1><pubkey len>
-#define	OP_SIGNATURE			0x86	// v1: <len 1><signature len>  v2:<len 1><signature len><sigIPused 1>
-#define	OP_SECIDENTSTATE		0x87	// <state 1><rndchallenge 4>
-
+#define	OP_ASKSHAREDFILESDIR		0x5E	// <len 2><Directory len>
+#define	OP_ASKSHAREDDIRSANS		0x5F	// <count 4>(<len 2><Directory len>)[count]
+#define	OP_ASKSHAREDFILESDIRANS	0x60	// <len 2><Directory len><count 4>(<HASH 16><ID 4><PORT 2><1 T
+#define	OP_ASKSHAREDDENIEDANS	0x61	// (null)
+#define	OP_PUBLICKEY					0x85	// <len 1><pubkey len>
+#define	OP_SIGNATURE					0x86	// v1: <len 1><signature len>  v2:<len 1><signature len><sigIPused 1>
+#define	OP_SECIDENTSTATE			0x87	// <state 1><rndchallenge 4>
+#define	OP_REQUESTPREVIEW			0x90	// <HASH 16>
+#define	OP_PREVIEWANSWER			0x91	// <HASH 16><frames 1>{frames * <len 4><frame len>}
+#define	OP_MULTIPACKET				0x92
+#define	OP_MULTIPACKETANSWER	0x93
 
 
 // extened prot client <-> extened prot client

@@ -156,9 +156,22 @@ void CKnownFileList::Clear() {
 CKnownFile* CKnownFileList::FindKnownFile(char* filename,uint32 in_date,uint32 in_size) {
 	wxMutexLocker sLock(list_mut);
 	KnownFileMap::iterator it = m_map.find(KnownFileHash(filename, in_date, in_size));
-	if ( it != m_map.end() )
+	if ( it != m_map.end() ) {
 		return it->second;
+	}
 	return 0;
+}
+
+CKnownFile* CKnownFileList::FindKnownFileByID(const uchar* hash)
+{
+	wxMutexLocker sLock(list_mut);
+	if (hash) {
+		KnownFileMap::iterator it = m_map.find(hash);
+		if ( it != m_map.end() ) {
+			return it->second;
+		}
+	}
+	return NULL;
 }
 
 bool CKnownFileList::SafeAddKFile(CKnownFile* toadd) {
