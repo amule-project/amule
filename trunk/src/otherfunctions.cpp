@@ -628,11 +628,10 @@ const unsigned char *RLE_Data::Decode(const unsigned char *buff)
 	//
 
 	int i = 0, j = 0;
-	while ( i != m_len ) {
+	while ( j != m_len ) {
 
 		if (buff[i+1] == buff[i]) {
 			// this is sequence
-			j++;
 			memset(m_enc_buff + j, buff[i], buff[i + 2]);
 			j += buff[i + 2];
 			i += 3;
@@ -652,6 +651,19 @@ const unsigned char *RLE_Data::Decode(const unsigned char *buff)
 	}
 		
 	return m_buff;
+}
+
+void PartFileEncoderData::Decode(unsigned char *data, int len)
+{
+	// get size of RLE data for part_status
+	uint32 partsize = *((uint32 *)data);
+	data += sizeof(uint32);
+	m_part_status.Decode(data);
+	// following is RLE data and size for gap_status
+	data += partsize;
+	uint32 gapsize = *((uint32 *)data);
+	m_gap_status.Realloc(gapsize);
+	m_gap_status.Decode(data + sizeof(uint32));
 }
 
 } // End namespace

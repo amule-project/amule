@@ -318,6 +318,9 @@ public:
 	RLE_Data m_part_status;
 	RLE_Data m_gap_status;
 	
+	//
+	// decoder side - can be used everywhere
+	void Decode(unsigned char *data, int len);
 	PartFileEncoderData() { }
 	PartFileEncoderData(int part_count, int gap_count) :
 		m_part_status(part_count, true), m_gap_status(gap_count*sizeof(uint32), true)
