@@ -21,8 +21,6 @@
 // SearchListCtrl.cpp : implementation file
 //
 
-#include <wx/menu.h>
-
 #include "muuli_wdr.h"		// Needed for ID_SERVERLIST
 #include "SearchListCtrl.h"	// Interface declarations
 #include "PartFile.h"		// Needed for CPartFile
@@ -36,6 +34,8 @@
 #include "amule.h"		// Needed for theApp
 #include "color.h"		// Needed for SYSCOLOR
 #include "MuleNotebook.h"	// Needed for CMuleNotebook
+
+#include <wx/menu.h>
 
 // CSearchListCtrl
 

@@ -69,13 +69,6 @@ protected:
 	void UpdateSplitterRange();
 	void SetInitLayout();
 	virtual bool ProcessEvent(wxEvent& evt);
-	/*
-	virtual bool PreTranslateMessage(MSG* pMsg);
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	virtual bool OnInitDialog();
-	virtual LRESULT DefWindowProc(unsigned int message, WPARAM wParam, LPARAM lParam);
-	afx_msg bool OnToolTipNotify(unsigned int id, NMHDR *pNMH, LRESULT *pResult);
-	*/
 
 	void DoSplitResize(int delta);
 	void UpdateToolTips(void);

@@ -92,10 +92,7 @@ bool CTransferWnd::OnInitDialog()
 	
 	for (uint32 ix=0;ix<theApp.glob_prefs->GetCatCount();ix++) {
 		wxPanel* nullPanel=new wxPanel(m_dlTab);
-		m_dlTab->AddPage(nullPanel,wxT("-")); // just temporary string.
-		// for some odd reason, wxwin2.5 and gtk2 will not allow non utf strings for AddPage()
-		// but they will be accepted in SetPageText().. so let's use this as a countermeasure
-		m_dlTab->SetPageText(ix,theApp.glob_prefs->GetCategory(ix)->title);
+		m_dlTab->AddPage(nullPanel,theApp.glob_prefs->GetCategory(ix)->title);
 	}
 	
 	return true;
@@ -103,11 +100,8 @@ bool CTransferWnd::OnInitDialog()
 
 void CTransferWnd::ShowQueueCount(uint32 number)
 {
-	char buffer[100];
-	wxString fmtstr=wxT("%u (%u ")+ wxString(_("Banned")).MakeLower() +wxT(")");
-	sprintf(buffer,unicode2char(fmtstr),number,theApp.uploadqueue->GetBanCount());
-	wxStaticCast(FindWindowByName(wxT("clientCount")),wxStaticText)->SetLabel(char2unicode(buffer));
-	//this->GetDlgItem(IDC_QUEUECOUNT)->SetWindowText(buffer);
+	wxString fmtstr= (wxString::Format(wxT("%u (%u ") ,number,theApp.uploadqueue->GetBanCount()) + ("Banned")) +wxT(")");
+	wxStaticCast(FindWindowByName(wxT("clientCount")),wxStaticText)->SetLabel(fmtstr);
 }
 
 void CTransferWnd::SwitchUploadList(wxCommandEvent& WXUNUSED(evt))
