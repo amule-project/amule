@@ -57,13 +57,16 @@ typedef struct s_CmdId {
 	int id;
 } CmdId;
 
+class wxFileConfig;
+
 class CaMuleExternalConnector : public wxApp
 {
 public:
 	//
-	// Constructor
+	// Constructor & Destructor
 	// 
 	CaMuleExternalConnector();
+	~CaMuleExternalConnector();
 
 	//
 	// Virtual functions
@@ -74,6 +77,8 @@ public:
 	virtual void Post_Shell() {}
 	virtual int ProcessCommand(int) { return -1; }
 	virtual void TextShell(const wxString &prompt, CmdId *commands);
+	virtual void LoadConfigFile();
+	virtual void SaveConfigFile();
 
 	//
 	// Other functions
@@ -95,20 +100,24 @@ public:
 	void OnInitCmdLine(wxCmdLineParser& amuleweb_parser);
 	bool OnCmdLineParsed(wxCmdLineParser& parser);
 
+	wxFileConfig*	m_configFile;
+	wxString	m_configFileName;
+
+protected:
+	long	 	m_port;
+	wxString 	m_host;
+	wxString	m_password;
+	bool		m_KeepQuiet;
+	bool		m_Verbose;
+
 private:
-	static const wxCmdLineEntryDesc cmdLineDesc[8];
+	static const wxCmdLineEntryDesc cmdLineDesc[10];
 	
 	wxString	m_cmdargs;
 	ECSocket* 	m_ECClient;
 	bool 		m_isConnected;
-	bool 		m_HasCommandLinePassword;
-	wxString	m_CommandLinePassword;
-	bool		m_HasConfigFromFile;
-	bool		m_KeepQuiet;
-	wxString 	m_sPort;
-	wxString 	m_sHostName;
 	char *		m_InputLine;
-	bool		m_Verbose;
+	bool		m_NeedsConfigSave;
 
 #if wxUSE_GUI
 private:

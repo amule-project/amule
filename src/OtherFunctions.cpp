@@ -56,9 +56,9 @@ namespace otherfunctions {
 
 wxString GetMuleVersion()
 {
-	wxString ver;
+	wxString ver(wxT(VERSION));
 	
-	ver += wxString::Format(wxT("%s using "), wxT(VERSION));
+	ver += wxT(" using ");
 
 	// Figure out the wx build-type
 	#ifdef __WXGTK__

@@ -764,7 +764,7 @@ class CWebServer {
 	
 		int	UpdateSessionCount();
 		uint16	GetSessionCount()	{ return m_Params.Sessions.GetCount();}
-		int 	GetWSPrefs();
+		long 	GetWSPrefs();
 		void	Print(const wxString &s);
 		void	Send_Discard_V2_Request(CECPacket *request);
 
@@ -789,42 +789,43 @@ class CWebServer {
 		wxString	_GetPreferences(ThreadData);
 		wxString	_GetLoginScreen(ThreadData);
 		wxString	_GetConnectedServer(ThreadData);
-		wxString _GetAddServerBox(ThreadData Data);
+		wxString	_GetAddServerBox(ThreadData Data);
 		wxString	_GetWebSearch(ThreadData Data);
-		wxString _GetSearch(ThreadData);
+		wxString 	_GetSearch(ThreadData);
 
 		wxString	_ParseURL(ThreadData Data, wxString fieldname); 
 		wxString	_ParseURLArray(ThreadData Data, wxString fieldname);
-		bool	_IsLoggedIn(ThreadData Data, long lSession);
-		void	_RemoveTimeOuts(ThreadData Data, long lSession);
-		bool	_RemoveSession(ThreadData Data, long lSession);
-		bool	_GetFileHash(wxString sHash, unsigned char *FileHash);
+		bool		_IsLoggedIn(ThreadData Data, long lSession);
+		void		_RemoveTimeOuts(ThreadData Data, long lSession);
+		bool		_RemoveSession(ThreadData Data, long lSession);
+		bool		_GetFileHash(wxString sHash, unsigned char *FileHash);
 		wxString	_GetPlainResString(UINT nID, bool noquote = false);
-		int	_GzipCompress(Bytef *dest, uLongf *destLen, const Bytef *source, uLong sourceLen, int level);
+		int		_GzipCompress(Bytef *dest, uLongf *destLen, const Bytef *source, uLong sourceLen, int level);
 		wxString	_LoadTemplate(wxString sAll, wxString sTemplateName);
-		Session	GetSessionByID(ThreadData Data,long sessionID);
-		bool	IsSessionAdmin(ThreadData Data,wxString SsessionID);
+		Session		GetSessionByID(ThreadData Data,long sessionID);
+		bool		IsSessionAdmin(ThreadData Data,wxString SsessionID);
 		wxString	GetPermissionDenied();
 
-		void	InsertCatBox(wxString &Out, int preselect, wxString boxlabel, CECTag *cats, bool jump=false);
-		wxString GetStatusBox(wxString &preselect);
+		void		InsertCatBox(wxString &Out, int preselect, wxString boxlabel, CECTag *cats, bool jump=false);
+		wxString	GetStatusBox(wxString &preselect);
 
 		// Common data
-		CamulewebApp	*webInterface;
-		wxMutex *m_mutexChildren;
+		wxMutex		*m_mutexChildren;
 		CWSThread	*wsThread;
 		GlobalParams	m_Params;
 		WebTemplates	m_Templates;
 		bool		m_bServerWorking;
 		int		m_iSearchSortby;
 		bool		m_bSearchAsc;
-		unsigned int	m_nRefresh;
 
 		// Graph related
 		wxString	m_sLastHistoryTimeStamp;
 		uint16		m_nGraphHeight;
 		uint16		m_nGraphWidth;
 		uint16		m_nGraphScale;
+
+public:
+		CamulewebApp	*webInterface;
 };
 
 #endif // WEBSERVER_H

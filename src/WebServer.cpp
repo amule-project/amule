@@ -44,6 +44,11 @@
 #include <wx/tokenzr.h>		// for wxTokenizer
 #include <wx/txtstrm.h>
 #include <wx/wfstream.h>
+#include <wx/filename.h>
+#include <wx/fileconf.h>
+#if wxCHECK_VERSION(2, 4, 2)
+	#include <wx/config.h>	// For wxFileConfig in wx-2.4.2
+#endif
 
 //-------------------------------------------------------------------
 
@@ -202,6 +207,14 @@ CWebServer::~CWebServer(void) {
 //start web socket and reload templates
 void CWebServer::StartServer(void) {
 	if (!m_bServerWorking) {
+		if (!webInterface->m_LoadSettingsFromAmule) {
+			if (webInterface->m_configFile) {
+				webInterface->m_PageRefresh = webInterface->m_configFile->Read(wxT("/Webserver/PageRefreshTime"), 120l);
+				m_nGraphHeight = webInterface->m_configFile->Read(wxT("/Webserver/GraphHeight"), 149l);
+				m_nGraphWidth = webInterface->m_configFile->Read(wxT("/Webserver/GraphWidth"), 500l);
+				m_nGraphScale = webInterface->m_configFile->Read(wxT("/Webserver/GraphScale"), 3l);
+			}
+		}
 		ReloadTemplates();
 
 		//create the thread...
@@ -249,49 +262,40 @@ void CWebServer::StopServer(void) {
 
 
 //returns web server listening port
-int CWebServer::GetWSPrefs(void)
+long CWebServer::GetWSPrefs(void)
 {
 	CECPacket req(EC_OP_GET_PREFERENCES);
 	req.AddTag(CECTag(EC_TAG_SELECT_PREFS, (uint32)EC_PREFS_REMOTECONTROLS));
 	CECPacket *reply = webInterface->SendRecvMsg_v2(&req);
 	if (!reply) {
-		return 0;
+		return -1;
 	}
 	// we have selected only the webserver preferences
 	const CECTag *wsprefs = reply->GetTagByIndexSafe(0);
-	int wsport = wsprefs->GetTagByNameSafe(EC_TAG_WEBSERVER_PORT)->GetInt16Data();
-	
-	if (!webInterface->m_bForcedAdminPassword) {
-		webInterface->m_AdminPass =
-			wsprefs->GetTagByNameSafe(EC_TAG_PASSWD_HASH)->GetStringData();
-	}
+	unsigned int wsport = wsprefs->GetTagByNameSafe(EC_TAG_WEBSERVER_PORT)->GetInt16Data();
 
-	if (!webInterface->m_bForcedAllowGuest) {
+	if (webInterface->m_LoadSettingsFromAmule) {
+		webInterface->m_AdminPass = wsprefs->GetTagByNameSafe(EC_TAG_PASSWD_HASH)->GetStringData();
+
 		const CECTag *webserverGuest = wsprefs->GetTagByName(EC_TAG_WEBSERVER_GUEST);
 		if (webserverGuest) {
 			webInterface->m_AllowGuest = true;
-			if (!webInterface->m_bForcedGuestPassword) {
-				webInterface->m_GuestPass = webserverGuest->
-					GetTagByNameSafe(EC_TAG_PASSWD_HASH)->GetStringData();
-			}
+			webInterface->m_GuestPass = webserverGuest->GetTagByNameSafe(EC_TAG_PASSWD_HASH)->GetStringData();
 		} else {
 			webInterface->m_AllowGuest = false;
 		}
-	}
-	
-	if (!webInterface->m_bForcedUseGzip) {
+
 		// we only need to check the presence of this tag
-		webInterface->m_UseGzip =
-			wsprefs->GetTagByName(EC_TAG_WEBSERVER_USEGZIP) != NULL;
-	}
+		webInterface->m_UseGzip = wsprefs->GetTagByName(EC_TAG_WEBSERVER_USEGZIP) != NULL;
 	
-	const CECTag *webserverRefresh = wsprefs->GetTagByName(EC_TAG_WEBSERVER_REFRESH);
-	if (webserverRefresh) {
-		m_nRefresh = webserverRefresh->GetInt32Data();
-	} else {
-		m_nRefresh = 120;
+		const CECTag *webserverRefresh = wsprefs->GetTagByName(EC_TAG_WEBSERVER_REFRESH);
+		if (webserverRefresh) {
+			webInterface->m_PageRefresh = webserverRefresh->GetInt32Data();
+		} else {
+			webInterface->m_PageRefresh = 120;
+		}
 	}
-	
+
 	delete reply;
 
 	return wsport;
@@ -468,7 +472,6 @@ void CWebServer::ProcessURL(ThreadData Data) {
 	wxString sSession = sSession.Format(wxT("%ld"), lSession);
 	wxString sW = _ParseURL(Data, wxT("w"));
 	if (sW == wxT("password")) {
-		GetWSPrefs();
 		wxString PwStr = _ParseURL(Data, wxT("p"));
 		wxString PwHash = MD5Sum(PwStr).GetHash();
 		bool login = false;
@@ -687,14 +690,14 @@ wxString CWebServer::_GetHeader(ThreadData Data, long lSession) {
 
 	Out.Replace(wxT("[CharSet]"), WEBCHARSET);
 
-	if (m_nRefresh) {
+	if (webInterface->m_PageRefresh) {
 		wxString sPage = _ParseURL(Data, wxT("w"));
 		if ((sPage == wxT("transfer")) || (sPage == wxT("server")) ||
 			(sPage == wxT("graphs")) || (sPage == wxT("log")) ||
 			(sPage == wxT("sinfo")) || (sPage == wxT("debuglog")) ||
 			(sPage == wxT("stats"))) {
 			wxString sT = m_Templates.sHeaderMetaRefresh;
-			wxString sRefresh = sRefresh.Format(wxT("%d"), m_nRefresh);
+			wxString sRefresh = sRefresh.Format(wxT("%d"), webInterface->m_PageRefresh);
 			sT.Replace(wxT("[RefreshVal]"), sRefresh);
 			
 			wxString catadd = wxEmptyString;
@@ -1782,6 +1785,7 @@ wxString CWebServer::_GetPreferences(ThreadData Data) {
 		}
 		if (_ParseURL(Data, wxT("refresh")) != wxEmptyString) {
 			webPrefs.AddTag(CECTag(EC_TAG_WEBSERVER_REFRESH, (uint32)StrToLong(_ParseURL(Data, wxT("refresh")))));
+			webInterface->m_PageRefresh = StrToLong(_ParseURL(Data, wxT("refresh")));
 		}
 		if (_ParseURL(Data, wxT("maxdown")) != wxEmptyString) {
 			connPrefs.AddTag(CECTag(EC_TAG_CONN_MAX_DL, (uint16)StrToLong(_ParseURL(Data, wxT("maxdown")))));
@@ -1824,21 +1828,40 @@ wxString CWebServer::_GetPreferences(ThreadData Data) {
 
 		prefs.AddTag(filePrefs);
 		prefs.AddTag(connPrefs);
-		prefs.AddTag(webPrefs);
-		
+
+		if (webInterface->m_LoadSettingsFromAmule) {
+			prefs.AddTag(webPrefs);
+		} else {
+			if (!wxFileName::DirExists(otherfunctions::GetConfigDir())) {
+				wxFileName::Mkdir(otherfunctions::GetConfigDir());
+			}
+			if (!webInterface->m_configFile) {
+				webInterface->m_configFile = new wxFileConfig(wxEmptyString, wxEmptyString, webInterface->m_configFileName, wxEmptyString, wxCONFIG_USE_LOCAL_FILE);
+			}
+			if (webInterface->m_configFile) {
+				webInterface->m_configFile->Write(wxT("/Webserver/UseGzip"), webInterface->m_UseGzip);
+				webInterface->m_configFile->Write(wxT("/Webserver/PageRefreshTime"), (long)webInterface->m_PageRefresh);
+				webInterface->m_configFile->Write(wxT("/Webserver/GraphHeight"), (long)m_nGraphHeight);
+				webInterface->m_configFile->Write(wxT("/Webserver/GraphWidth"), (long)m_nGraphWidth);
+				webInterface->m_configFile->Write(wxT("/Webserver/GraphScale"), (long)m_nGraphScale);
+				// ensure that changes get written to file in case amuleweb crashes (it won't, just in case)
+				webInterface->m_configFile->Flush();
+			}
+		}
+
 		Send_Discard_V2_Request(&prefs);
 	}
 
 	CECPacket req(EC_OP_GET_PREFERENCES);
-	req.AddTag(CECTag(EC_TAG_SELECT_PREFS, 
-		(uint32)(EC_PREFS_CONNECTIONS | EC_PREFS_REMOTECONTROLS |
-			 EC_PREFS_FILES | EC_PREFS_CORETWEAKS)));
+	uint32 prefsSelect = EC_PREFS_CONNECTIONS | EC_PREFS_FILES | EC_PREFS_CORETWEAKS;
+	if (webInterface->m_LoadSettingsFromAmule) {
+		prefsSelect |= EC_PREFS_REMOTECONTROLS;
+	}
+	req.AddTag(CECTag(EC_TAG_SELECT_PREFS, prefsSelect));
 	CECPacket *response = webInterface->SendRecvMsg_v2(&req);
 	if (response) {
 		CECTag *filePrefs = response->GetTagByName(EC_TAG_PREFS_FILES);
 		CECTag *connPrefs = response->GetTagByName(EC_TAG_PREFS_CONNECTIONS);
-		CECTag *webPrefs = response->GetTagByName(EC_TAG_PREFS_REMOTECTRL);
-		CECTag *webserverRefresh = webPrefs ? webPrefs->GetTagByName(EC_TAG_WEBSERVER_REFRESH) : NULL;
 		CECTag *connMaxFileSources = connPrefs ? connPrefs->GetTagByName(EC_TAG_CONN_MAX_FILE_SOURCES) : NULL;
 		CECTag *connMaxConn = connPrefs ? connPrefs->GetTagByName(EC_TAG_CONN_MAX_CONN) : NULL;
 		CECTag *prefsCoreTweaks = response->GetTagByName(EC_TAG_PREFS_CORETWEAKS);
@@ -1847,11 +1870,21 @@ wxString CWebServer::_GetPreferences(ThreadData Data) {
 		CECTag *connMaxUl = connPrefs ? connPrefs->GetTagByName(EC_TAG_CONN_MAX_UL) : NULL;
 		CECTag *connDlCap = connPrefs ? connPrefs->GetTagByName(EC_TAG_CONN_DL_CAP) : NULL;
 		CECTag *connUlCap = connPrefs ? connPrefs->GetTagByName(EC_TAG_CONN_UL_CAP) : NULL;
-		if (	filePrefs && connPrefs && webPrefs && webserverRefresh &&
+		if (webInterface->m_LoadSettingsFromAmule) {
+			CECTag *webPrefs = response->GetTagByName(EC_TAG_PREFS_REMOTECTRL);
+			CECTag *webserverRefresh = webPrefs ? webPrefs->GetTagByName(EC_TAG_WEBSERVER_REFRESH) : NULL;
+			if (webPrefs) {
+				webInterface->m_UseGzip = (webPrefs->GetTagByName(EC_TAG_WEBSERVER_USEGZIP) != NULL);
+			}
+			if (webserverRefresh) {
+				webInterface->m_PageRefresh = webserverRefresh->GetInt32Data();
+			}
+		}
+		if (	filePrefs && connPrefs && 
 			connMaxFileSources && connMaxConn && prefsCoreTweaks &&
 			coreTwMaxConnPerFive && connMaxDl && connMaxUl && connDlCap &&
 			connUlCap ) {
-			if (webPrefs->GetTagByName(EC_TAG_WEBSERVER_USEGZIP)) {
+			if (webInterface->m_UseGzip) {
 				Out.Replace(wxT("[UseGzipVal]"), wxT("checked"));
 			} else {
 				Out.Replace(wxT("[UseGzipVal]"), wxEmptyString);
@@ -1872,14 +1905,10 @@ wxString CWebServer::_GetPreferences(ThreadData Data) {
 				Out.Replace(wxT("[FullChunksVal]"), wxEmptyString);
 			}
 		
-			wxString sRefresh = sRefresh.Format(wxT("%i"), webserverRefresh->GetInt32Data());
-			Out.Replace(wxT("[RefreshVal]"), sRefresh);
-			sRefresh = wxString::Format(wxT("%i"), connMaxFileSources->GetInt16Data());
-			Out.Replace(wxT("[MaxSourcesVal]"), sRefresh);
-			sRefresh = wxString::Format(wxT("%i"), connMaxConn->GetInt16Data());
-			Out.Replace(wxT("[MaxConnectionsVal]"), sRefresh);
-			sRefresh = wxString::Format(wxT("%i"), coreTwMaxConnPerFive->GetInt16Data());
-			Out.Replace(wxT("[MaxConnectionsPer5Val]"), sRefresh);
+			Out.Replace(wxT("[RefreshVal]"), wxString::Format(wxT("%u"), webInterface->m_PageRefresh));
+			Out.Replace(wxT("[MaxSourcesVal]"), wxString::Format(wxT("%i"), connMaxFileSources->GetInt16Data()));
+			Out.Replace(wxT("[MaxConnectionsVal]"), wxString::Format(wxT("%i"), connMaxConn->GetInt16Data()));
+			Out.Replace(wxT("[MaxConnectionsPer5Val]"), wxString::Format(wxT("%i"), coreTwMaxConnPerFive->GetInt16Data()));
 	
 			wxString colon(wxT(":"));
 			Out.Replace(wxT("[KBS]"), _("kB/s"));

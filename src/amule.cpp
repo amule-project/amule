@@ -730,8 +730,9 @@ bool CamuleApp::OnInit()
 	
 	// Run webserver?
 	if (thePrefs::GetWSIsEnabled()) {
+		wxString aMuleConfigFile(wxGetHomeDir() + wxFileName::GetPathSeparator() + wxT(".eMule"));
 		#ifndef AMULE_DAEMON
-		webserver_pid = wxExecute(wxString(wxT("amuleweb -f -p ")) << thePrefs::GetWSPort());
+		webserver_pid = wxExecute(wxString(wxT("amuleweb --amule-config-file=")) + aMuleConfigFile);
 		if (!webserver_pid) {
 			AddLogLineM(false, _(
 				"You requested to run webserver from startup, "
@@ -746,7 +747,7 @@ bool CamuleApp::OnInit()
 			printf("ERROR: fork failed with code %d\n", errno);
 		} else {
 			if ( pid == 0 ) {
-				execlp("amuleweb", "amuleweb", "-f", "-q", 0);
+				execlp("amuleweb", "amuleweb", (const char *)unicode2char(wxT("--amule-config-file=") + aMuleConfigFile), 0);
 				printf("execlp failed with code %d\n", errno);
 				exit(0);
 			} else {
