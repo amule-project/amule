@@ -71,9 +71,9 @@ CMuleTrayIcon::CMuleTrayIcon()
 	Old_Icon = -1;
 	Old_SpeedSize = -1;
 	// Create the background icons (speed improvement)
-	Disconnected_Icon = wxIcon(mule_TrayIcon_big_ico_xpm);
+	HighId_Icon 			= wxIcon(mule_TrayIcon_big_ico_xpm);
 	LowId_Icon 			= wxIcon(mule_Tr_yellow_big_ico_xpm);
-	HighId_Icon			= wxIcon(mule_Tr_grey_big_ico_xpm);
+	Disconnected_Icon	= wxIcon(mule_Tr_grey_big_ico_xpm);
 }
 
 
@@ -116,30 +116,31 @@ void CMuleTrayIcon::SetTrayIcon(int Icon, uint32 percent)
 	int NewSize = ((Bar_ySize -2) * percent) / 100;
 	
 	if ((Old_Icon != Icon) || (Old_SpeedSize != NewSize)) {
+
 		
 		Old_Icon = Icon;
 		Old_SpeedSize = NewSize;
 		
 		// Do whatever to the icon before drawing it (percent)
 	
-		wxColour temp;
+//		wxColour temp;
 		
-		IconWithSpeed.SelectObject(CurrentIcon);
+//		IconWithSpeed.SelectObject(CurrentIcon);
 	
 		// Get the transparency colour.
-		IconWithSpeed.GetPixel(0,0, &temp);
+//		IconWithSpeed.GetPixel(0,0, &temp);
 	
-		IconWithSpeed.SelectObject(wxNullBitmap);
+//		IconWithSpeed.SelectObject(wxNullBitmap);
 		
 		// Set a new mask with transparency removed
-		wxMask* new_mask = new wxMask(CurrentIcon, temp);
+//		wxMask* new_mask = new wxMask(CurrentIcon, temp);
 		
-		CurrentIcon.SetMask(new_mask);
+//		CurrentIcon.SetMask(new_mask);
 		
 		IconWithSpeed.SelectObject(CurrentIcon);
 		
 		// Get the solid background.
-		IconWithSpeed.GetPixel(0,0, &temp);
+//		IconWithSpeed.GetPixel(0,0, &temp);
 		
 		// Set the colour for the traffic bar.
 		IconWithSpeed.SetBrush(*wxTRANSPARENT_BRUSH);
@@ -166,10 +167,10 @@ void CMuleTrayIcon::SetTrayIcon(int Icon, uint32 percent)
 		IconWithSpeed.SelectObject(wxNullBitmap);	
 		
 	
-		new_mask = new wxMask(CurrentIcon, temp);
+//		new_mask = new wxMask(CurrentIcon, temp);
 		
-		CurrentIcon.SetMask(new_mask);
-			
+//		CurrentIcon.SetMask(new_mask);
+
 		UpdateTray();
 	}
 }
