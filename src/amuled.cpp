@@ -51,10 +51,6 @@
 #include "config.h"		// Needed for HAVE_GETRLIMIT, HAVE_SETRLIMIT, HAVE_SYS_RESOURCE_H,
 #endif				//   LOCALEDIR, PACKAGE, PACKAGE_STRING and VERSION
 
-#ifdef __WXMAC__
-	#warning Kry? Get rid of this!
-	#include <wx/wx.h>
-#endif
 #include <wx/filefn.h>
 #include <wx/ffile.h>
 #include <wx/file.h>
