@@ -458,7 +458,7 @@ unsigned int DecodeBase32(const char* base32Buffer, CAICHHash& Hash){
 	return DecodeBase32(base32Buffer, Hash.GetHashSize(), Hash.GetRawHash());
 }
 
-wxString EncodeBase64(const unsigned char* buffer, unsigned int bufLen)
+wxString EncodeBase64(const char* buffer, unsigned int bufLen)
 {
 	// TODO
 }

@@ -117,7 +117,7 @@ void DecodeBase16(const char *base16Buffer, unsigned int base16BufLen, unsigned 
 wxString EncodeBase32(const unsigned char* buffer, unsigned int bufLen);
 unsigned int DecodeBase32(const char *base32Buffer, unsigned int base32BufLen, unsigned char *buffer);
 unsigned int DecodeBase32(const char* base32Buffer, CAICHHash& Hash);
-wxString EncodeBase64(const unsigned char* buffer, unsigned int bufLen);
+wxString EncodeBase64(const char* buffer, unsigned int bufLen);
 unsigned int DecodeBase64(const char *base32Buffer, unsigned int base32BufLen, unsigned char *buffer);
 
 // Converts the number of bytes to human readable form.
