@@ -94,7 +94,7 @@ enum {
 	EC_OP_AUTH_OK,
 
 	//
-	// Bidirectional commands
+	// general commands - both way
 	//
 
 	EC_OP_STRINGS,		// I don't know if will use this command ...
@@ -153,6 +153,17 @@ enum {
 		 */
 	EC_OP_Q_FILE_CMD,
 
+	//
+	// server -> client response
+	//
+
+		/*!
+		 * \brief Get download queue.
+		 *
+		 * \par Tags:
+		 *	(yet undefined)
+		 */
+	EC_OP_DLOAD_QUEUE,
 
 
 
