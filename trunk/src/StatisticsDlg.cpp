@@ -192,6 +192,11 @@ void CStatisticsDlg::ApplyStatsColor(int index)
 	}
 }
 
+//
+// FIXME:
+// lfroen: all this code should not be here but in core.
+//
+#ifndef CLIENT_GUI
 
 /*
 History List
@@ -299,6 +304,7 @@ void CStatisticsDlg::RecordHistory()
 #endif
 }
 
+#endif // CLIENT_GUI
 
 unsigned CStatisticsDlg::GetHistory(  // Assemble arrays of sample points for a graph
 	unsigned cntPoints,		// number of sample points to assemble
@@ -696,6 +702,10 @@ wxString CStatisticsDlg::IterateChilds(wxTreeItemId hChild, int level) {
 	return strBuffer;
 }
 
+// FIXME: 
+// lfroen: must be reworked without taking data from gui controls
+#ifndef CLIENT_GUI
+
 // This is the primary function for generating HTML output of the statistics tree.
 wxString CStatisticsDlg::GetHTML() {
 	
@@ -732,6 +742,8 @@ wxString CStatisticsDlg::GetHTML() {
 	
 	return(strBuffer);
 }
+
+#endif // CLIENT_GUI
 
 void CStatisticsDlg::ComputeSessionAvg(float& kBpsSession, float& kBpsCur, double& kBytesTrans, double& sCur, double& sTrans)
 {
