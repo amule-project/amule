@@ -23,9 +23,7 @@
 #include <cmath>			// Needed for std:exp
 
 #include "ClientCredits.h"	// Needed for CClientCredits
-#include "DownloadListCtrl.h"	// Needed for CDownloadListCtrl
 #include "otherfunctions.h"	// Needed for md4cmp
-#include "TransferWnd.h"	// Needed for CTransferWnd
 #include "ClientUDPSocket.h"	// Needed for CClientUDPSocket
 #include "sockets.h"		// Needed for CServerConnect
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
@@ -45,6 +43,10 @@
 // members of CUpDownClient
 // which are mainly used for downloading functions
 #ifndef AMULE_DAEMON
+#include "DownloadListCtrl.h"  // Needed for CDownloadListCtrl
+#include "TransferWnd.h"       // Needed for CTransferWnd
+
+
 void CUpDownClient::DrawStatusBar(wxMemoryDC* dc, wxRect rect, bool onlygreyrect, bool  bFlat)
 {
 	static CBarShader s_StatusBar(16);

@@ -25,23 +25,6 @@
 #include  <map>
 #include  <list>
 
-// custom events for core internal messages
-// 'cause - there's no wxCommand etc in wxBase
-enum Core_Event_ID {
-	FILE_HASHING_FINISHED = 1,
-	FILE_COMPLETION_FINISHED,
-};
-
-DECLARE_EVENT_TYPE(wxEVT_CORE_FINISHED_FILE_HASHING, wxEVT_USER_FIRST+FILE_HASHING_FINISHED)
-DECLARE_EVENT_TYPE(wxEVT_CORE_FINISHED_FILE_COMPLETION, wxEVT_USER_FIRST+FILE_COMPLETION_FINISHED)
-
-class wxCoreInternalEvent : public wxEvent {
-	void *m_ptr;
-	long m_value;
-	public:
-	wxCoreInternalEvent(void *ptr, long value);
-	wxEvent *Clone(void) const;
-};
 
 class wxSocketBase;
 class wxSocketServer;

@@ -23,8 +23,6 @@
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "IPFilter.h"		// Needed for CIPFIlter
-#include "amuleDlg.h"
-#include "TransferWnd.h"
 #include "ClientCredits.h"
 #include <wx/intl.h>
 #include <wx/arrimpl.cpp> // this is a magic incantation which must be done!

@@ -78,6 +78,56 @@ enum APPState {
 	APP_STATE_STARTING
 };	
 
+
+#include <wx/event.h>
+
+// lfroen : custom events for core internal messages
+// 'cause - there's no wxCommand etc in wxBase
+enum Core_Event_ID {
+	FILE_HASHING_FINISHED = 1,
+	FILE_HASHING_SHUTDOWN,
+	FILE_COMPLETION_FINISHED,
+	
+	SOURCE_DNS_DONE,
+};
+
+DECLARE_EVENT_TYPE(wxEVT_CORE_FILE_HASHING_FINISHED, wxEVT_USER_FIRST+FILE_HASHING_FINISHED)
+DECLARE_EVENT_TYPE(wxEVT_CORE_FILE_HASHING_SHUTDOWN, wxEVT_USER_FIRST+FILE_HASHING_SHUTDOWN)
+DECLARE_EVENT_TYPE(wxEVT_CORE_FINISHED_FILE_COMPLETION, wxEVT_USER_FIRST+FILE_COMPLETION_FINISHED)
+
+DECLARE_EVENT_TYPE(wxEVT_CORE_SOURCE_DNS_DONE, wxEVT_USER_FIRST+SOURCE_DNS_DONE)
+
+class wxMuleInternalEvent : public wxEvent {
+	void *m_ptr;
+	long m_value;
+	public:
+	wxMuleInternalEvent(int id, void *ptr = 0, long value = 0) : wxEvent(-1, id)
+	{
+		m_ptr = ptr;
+		m_value = value;
+	}
+	wxEvent *Clone(void) const
+	{
+		return new wxMuleInternalEvent(*this);
+	}
+	void SetExtraLong(long value)
+	{
+		m_value = value;
+	}
+	long GetExtraLong()
+	{
+		return m_value;
+	}
+	void SetClientData(void *ptr)
+	{
+		m_ptr = ptr;
+	}
+	void *GetClientData()
+	{
+		return m_ptr;
+	}
+};
+
 #ifdef AMULE_DAEMON
 #define AMULE_APP_BASE wxAppConsole
 #else
@@ -204,16 +254,16 @@ protected:
 
 
 	void OnDnsDone(wxCommandEvent& evt);
-	void OnSourcesDnsDone(wxCommandEvent& evt);
+	void OnSourcesDnsDone(wxEvent& evt);
 
 	void OnUDPTimer(wxTimerEvent& evt);
 	void OnTCPTimer(wxTimerEvent& evt);
 
 	void OnCoreTimer(wxTimerEvent& evt);
 
-	void OnFinishedHashing(wxCommandEvent& evt);
+	void OnFinishedHashing(wxEvent& evt);
 	void OnFinishedCompletion(wxCommandEvent& evt);
-	void OnHashingShutdown(wxCommandEvent&);
+	void OnHashingShutdown(wxEvent&);
 
 	void SetTimeOnTransfer();
 	

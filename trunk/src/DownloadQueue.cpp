@@ -182,7 +182,9 @@ void CDownloadQueue::Init()
 		}
 		fileName=::wxFindNextFile();
 		// Dont leave the gui blank while loading the files, so ugly...
+#ifndef AMULE_DAEMON		
 		if ( !(count % 10) ) ::wxSafeYield();
+#endif
 	}
 	if(count == 0) {
 		AddLogLineM(false, _("No part files found"));
@@ -1224,7 +1226,8 @@ wxThread::ExitCode SourcesAsyncDNS::Entry()
         #endif
 		struct sockaddr_in* newsi=(struct sockaddr_in*)malloc(sizeof(struct sockaddr_in)); // new struct sockaddr_in;
 		newsi->sin_addr.s_addr=addr;
-		wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED,TM_SOURCESDNSDONE);
+		//wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED,TM_SOURCESDNSDONE);
+		wxMuleInternalEvent evt(SOURCE_DNS_DONE);
 		evt.SetExtraLong((long)newsi);
 		wxPostEvent(&theApp,evt);
 	}

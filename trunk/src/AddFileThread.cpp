@@ -36,6 +36,7 @@
 #include <wx/event.h>		// Needed for wxCommandEvent
 #include <wx/timer.h>		// Needed for wxStopWatch
 #include <wx/filename.h>	// Needed for wxFileName::GetPathSeperator()
+#include <wx/utils.h>
 
 #include "AddFileThread.h"	// Interface declarations
 #include "otherfunctions.h"	// Needed for unicode2char
@@ -112,8 +113,7 @@ void CAddFileThread::ThreadCountDec()
 
 		// No threads left? Then let it be known.
 		if ( count == 0 ) {
-			
-			wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED, TM_HASHTHREADFINISHED);
+			wxMuleInternalEvent evt(wxEVT_CORE_FILE_HASHING_SHUTDOWN);
 			wxPostEvent(&theApp, evt);
 		}
 	} else {
@@ -170,7 +170,7 @@ void CAddFileThread::Stop()
 			// Sleep for 1/100 of a second to avoid clobbering the mutex
 			// Termination only takes about 3ms on my system, but I'm taking 
 			// slower systems into consideration.
-			wxUsleep(10);
+			wxMilliSleep(10);
 
 			// Check for timeouts after 20 seconds
 			if ( timer.Time() > 20000 ) {
@@ -391,7 +391,7 @@ wxThread::ExitCode CAddFileThread::Entry()
 			
 			
 			// Pass on the completion
-			wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED, TM_FINISHEDHASHING);
+			wxMuleInternalEvent evt(wxEVT_CORE_FILE_HASHING_FINISHED);
 			evt.SetClientData( knownfile );
 			evt.SetExtraLong( (long)current->m_owner );
 

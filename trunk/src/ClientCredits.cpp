@@ -60,7 +60,6 @@
 #include "Preferences.h"	// Needed for CPreferences
 
 #include "opcodes.h"		// Needed for CREDITFILE_VERSION
-#include "amuleDlg.h"		// Needed for CamuleDlg
 #include "GetTickCount.h"	// Needed for GetTickCount
 #include "ClientCredits.h"	// Interface declarations
 #include "amule.h"			// Needed for theApp
