@@ -1249,7 +1249,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 		}
 	} else {
 		amuleIPV4Address tmp;
-		tmp.Hostname(GetIP());
+		tmp.Hostname(GetConnectIP());
 		tmp.Service(GetUserPort());
 		m_socket->Connect(tmp,FALSE);
 		if (!SendHelloPacket()) {
