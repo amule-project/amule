@@ -92,6 +92,7 @@
 #include "AddFileThread.h"	// Needed for CAddFileThread
 #include "packets.h"
 #include "AICHSyncThread.h"
+#include "Statistics.h"
 
 #ifdef HAVE_SYS_RESOURCE_H
 #include <sys/resource.h>
@@ -220,7 +221,7 @@ void CamuleDaemonApp::NotifyEvent(GUIEvent event)
 			break;
 		// search
 	        case SEARCH_REQ:
-			uploadqueue->AddUpDataOverheadServer(((Packet *)event.ptr_value)->GetPacketSize());
+			statistics->AddUpDataOverheadServer(((Packet *)event.ptr_value)->GetPacketSize());
 			serverconnect->SendPacket( (Packet *)event.ptr_value, 0 );
 			if ( event.byte_value ) {
 				searchlist->m_searchpacket = (Packet *)event.ptr_value;
