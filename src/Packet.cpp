@@ -647,17 +647,3 @@ wxString CTag::GetFullInfo() const
 	}
 	return strTag;
 }
-
-CInvalidPacket::CInvalidPacket(const char* reason)
-{
-	// that was _bad_ practice unless length is guaranteed - Unleashed
-	// strcpy(m_acWhat, "(NULL)");
-
-	strncpy(m_acWhat, reason ? reason : "(NULL)", sizeof(m_acWhat));
-	m_acWhat[sizeof(m_acWhat) - 1] = '\0';
-}
-
-const char* CInvalidPacket::what() const throw()
-{
-	return m_acWhat;
-}

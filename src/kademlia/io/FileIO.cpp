@@ -51,7 +51,7 @@ void CFileIO::readArray(void* lpResult, uint32 byteCount)
 {
 	uint32 test = Read(lpResult, byteCount);
 	if( test != byteCount )
-		throw new CIOException(ERR_END_OF_FILE);
+		throw CIOException(ERR_END_OF_FILE);
 }
 
 void CFileIO::writeArray(const void* lpVal, uint32 byteCount)
@@ -70,7 +70,7 @@ void CBufferedFileIO::readArray(void* lpResult, uint32 byteCount)
 {
 	uint32 test = Read(lpResult, byteCount);
 	if( test != byteCount )
-		throw new CIOException(ERR_END_OF_FILE);
+		throw CIOException(ERR_END_OF_FILE);
 }
 
 void CBufferedFileIO::writeArray(const void*  lpVal, uint32 byteCount)

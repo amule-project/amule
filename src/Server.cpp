@@ -292,10 +292,10 @@ bool CServer::AddTagFromFile(CFileDataIO* servermet){
 				}
 			}
 		}
-	} catch (CInvalidPacket e) {
+	} catch (const CInvalidPacket& e) {
 		printf("Caught CInvalidPacket exception in CServer::AddTagFromFile! server.met is corrupted.\n");
-		throw e;
-	} catch (wxString error) {
+		throw;
+	} catch (const wxString& error) {
 		printf("Caught exception in CServer::AddTagFromFile! server.met is corrupted.\n");
 		printf("Error: %s\n", (const char *)unicode2char(error)); 
 		throw CInvalidPacket("Error reading server.met");		

@@ -1255,7 +1255,7 @@ void CamuleDlg::Apply_Clients_Skin(wxString file) {
 		}			
 		
 		skinfile.Close();
-	} catch(wxString error) {
+	} catch (const wxString& error) {
 		wxMessageBox(error);
 		if (skinfile.IsOpened()) {
 			skinfile.Close();

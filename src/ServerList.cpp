@@ -160,7 +160,7 @@ bool CServerList::LoadServerMet(const wxString& strFile)
 		} else {
 			AddLogLineM(true, wxString::Format(_("%d servers added"), iAddCount));
 		}
-	} catch (CInvalidPacket e) {
+	} catch (const CInvalidPacket& e) {
 		AddLogLineM(true,_("Error: the file server.met is corrupted"));
 		Notify_ServerThaw();
 		return false;

@@ -106,7 +106,7 @@ unsigned char* CDataIO::readBsob(uint8* puSize)
 {
 	*puSize = readUInt8();
 	if (getAvailable() < *puSize)
-		throw new CIOException(ERR_BUFFER_TOO_SMALL);
+		throw CIOException(ERR_BUFFER_TOO_SMALL);
 	unsigned char* pucBsob = new unsigned char[*puSize];
 	try{
 		readArray(pucBsob, *puSize);
@@ -381,11 +381,11 @@ void CDataIO::writeTag(const CTag* tag)
 				break;
 		}
 	} 
-	catch (CIOException *ioe)
+	catch (const CIOException& ioe)
 	{
 		//AddDebugLogLine( false, _T("Exception in CDataIO:writeTag (IO Error(%i))"), ioe->m_cause);
-		printf("Exception in CDataIO:writeTag (IO Error(%i))", ioe->m_cause);
-		throw ioe;
+		printf("Exception in CDataIO:writeTag (IO Error(%i))", ioe.m_cause);
+		throw;
 	}
 	catch (...) 
 	{

@@ -1102,78 +1102,43 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				break;
 		}
 	}
-	catch(CInvalidPacket ErrorPacket) {
+	catch (const CInvalidPacket& ErrorPacket) {
 		if ( CLogger::IsEnabled( logPacketErrors ) ) {
+			printf(	"\tCaught InvalidPacket exception:\n"
+				"\t\tError: %s\n"
+				"\t\tClientData: %s\n"
+				"\ton ListenSocket::ProcesstPacket\n",
+				strlen(ErrorPacket.what()) ? ErrorPacket.what() : "Unknown",
+				m_client ? (const char *)unicode2char(m_client->GetClientFullInfo()) : "Unknown");
 			if (m_client) {
-				if (!strlen(ErrorPacket.what())) {
-					printf(	"\tCaught InvalidPacket exception:\n"
-						"\t\tError: Unknown\n"
-						"\t\tClientData: %s\n"
-						"\ton ListenSocket::ProcesstPacket\n",
-						(const char *)unicode2char(m_client->GetClientFullInfo()));
-				} else {
-					printf(	"\tCaught InvalidPacket exception:\n"
-						"\t\tError: %s\n"
-						"\t\tClientData: %s\n"
-						"\ton ListenSocket::ProcesstPacket\n",
-						ErrorPacket.what(),
-						(const char *)unicode2char(m_client->GetClientFullInfo()));
-				}
-			
 				m_client->SetDownloadState(DS_ERROR);
-			} else {
-				if (!strlen(ErrorPacket.what())) {				
-					printf("\tCaught InvalidPacket exception:\n\t\tError: Unknown\n\t\tClientData: Unknown\n\ton ListenSocket::ProcessPacket\n");
-				} else {
-					printf("\tCaught InvalidPacket exception:\n\t\tError: %s\n\t\tClientData: Unknown\n\ton ListenSocket::ProcessPacket\n", ErrorPacket.what());
-				}
 			}
 		}
 		
 		Disconnect(wxT("UnCaught invalid packet exception On ProcessPacket\n"));
 		return false;
-	} catch (wxString error) {
+	} catch (const wxString& error) {
+		if ( CLogger::IsEnabled( logPacketErrors ) ) {
+			printf(	"\tCaught error:\n"
+				"\t\tError: %s\n"
+				"\t\tClientData: %s\n"
+				"\ton ListenSocket::ProcessPacket\n",
+				error.IsEmpty() ? "Unknown" : (const char *)unicode2char(error),
+				m_client ? (const char *)unicode2char(m_client->GetClientFullInfo()) : "Unknown");
+		}
+		AddDebugLogLineM
+			(
+			false,
+			logClient, 
+			(	m_client ?
+				wxT("Client '") + m_client->GetUserName() + wxT(" (IP:") +
+					m_client->GetFullIP() + wxT(")") :
+				wxString(wxT("An unknown client"))
+			) +
+			wxT(" caused an error: ") + error + wxT(". Disconnecting client!")
+			);
 		if (m_client) {
-			if ( CLogger::IsEnabled( logPacketErrors ) ) {
-				if (error.IsEmpty()) {
-					printf(	"\tCaught error:\n"
-						"\t\tError: Unknown\n"
-						"\t\tClientData: %s\n"
-						"\ton ListenSocket::ProcessPacket\n",
-						(const char *)unicode2char(m_client->GetClientFullInfo()));
-				} else {
-					printf(	"\tCaught error:\n"
-						"\t\tError: %s\n"
-						"\t\tClientData: %s\n"
-						"\ton ListenSocket::ProcessPacket\n",
-						(const char *)unicode2char(error),
-						(const char *)unicode2char(m_client->GetClientFullInfo()));
-				}
-			}
 			m_client->SetDownloadState(DS_ERROR);
-			AddDebugLogLineM( false, logClient, 
-				wxT("Client '") + m_client->GetUserName() +
-				wxT(" (IP:") + m_client->GetFullIP() +
-				wxT(") caused an error: ") + error +
-				wxT(". Disconnecting client!") );
-		} else {
-			if ( CLogger::IsEnabled( logPacketErrors ) ) {
-				if (error.IsEmpty()) {
-					printf(	"\tCaught error:\n"
-						"\t\tError: Unknown\n"
-						"\t\tClientData: Unknown\n"
-						"\ton ListenSocket::ProcessPacket\n");
-				} else {
-					printf(	"\tCaught error:\n"
-						"\t\tError: %s\n"
-						"\t\tClientData: Unknown\n"
-						"\ton ListenSocket::ProcessPacket\n",
-						(const char *)unicode2char(error));
-				}
-			}
-			AddDebugLogLineM( false, logClient, 
-				wxString(wxT("A unknown client caused an error or did something bad: ")) +
-				error + wxT(". Disconnecting client!"));
 		}
 		Disconnect(wxT("Client error on ListenSocket::ProcessPacket: ") + wxString(error));
 		return false;
@@ -1673,79 +1638,34 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				AddDebugLogLineM( false, logRemoteClient, wxString::Format(wxT("eMule packet : unknown opcode: %i %x"),opcode,opcode));
 				break;
 		}
-	} catch(CInvalidPacket ErrorPacket) {
+	} catch (const CInvalidPacket& ErrorPacket) {
+		if ( CLogger::IsEnabled( logPacketErrors ) ) {
+			printf(	"\tCaught InvalidPacket exception:\n"
+				"\t\tError: %s\n"
+				"\t\tClientData: %s\n"
+				"\ton ListenSocket::ProcessExtPacket\n",
+				strlen(ErrorPacket.what()) ? ErrorPacket.what() : "Unknown",
+				m_client ? (const char *)unicode2char(m_client->GetClientFullInfo()) : "Unknown");
+		}
 		if (m_client) {
-			if ( CLogger::IsEnabled( logPacketErrors ) ) {
-				if (!strlen(ErrorPacket.what())) {
-					printf(	"\tCaught InvalidPacket exception:\n"
-						"\t\tError: Unknown\n"
-						"\t\tClientData: %s\n"
-						"\ton ListenSocket::ProcessExtPacket\n",
-						(const char *)unicode2char(m_client->GetClientFullInfo()));
-				} else {
-					printf(	"\tCaught InvalidPacket exception:\n"
-						"\t\tError: %s\n"
-						"\t\tClientData: %s\n"
-						"\ton ListenSocket::ProcessExtPacket\n",
-						ErrorPacket.what(),
-						(const char *)unicode2char(m_client->GetClientFullInfo()));
-				}
-			}
 			m_client->SetDownloadState(DS_ERROR);
-		} else {
-			if ( CLogger::IsEnabled( logPacketErrors ) ) {
-				if (!strlen(ErrorPacket.what())) {				
-					printf(	"\tCaught InvalidPacket exception:\n"
-						"\t\tError: Unknown\n"
-						"\t\tClientData: Unknown\n"
-						"\ton ListenSocket::ProcessExtPacket\n");
-				} else {
-					printf(	"\tCaught InvalidPacket exception:\n"
-						"\t\tError: %s\n"
-						"\t\tClientData: Unknown\n"
-						"\ton ListenSocket::ProcessExtPacket\n",
-						ErrorPacket.what());
-				}
-			}
 		}
 		Disconnect(wxT("UnCaught invalid packet exception On ProcessPacket\n"));
 		return false;
-	} catch(wxString error) {
+	} catch (const wxString& error) {
 		AddDebugLogLineM( false, logClient,
 			wxT("A client caused an error or did something bad: ") +
 			error + _(". Disconnecting client!"));
+		if ( CLogger::IsEnabled( logPacketErrors ) ) {
+			printf(	"\tCaught error:\n"
+				"\t\tError: %s\n"
+				"\t\tClientData: %s\n"
+				"\ton ListenSocket::ProcessExtPacket\n",
+				error.IsEmpty() ? "Unknown" : (const char *)unicode2char(error),
+				m_client ? (const char *)unicode2char(m_client->GetClientFullInfo()) : "Unknown");
+		}
 		if (m_client) {
-			if ( CLogger::IsEnabled( logPacketErrors ) ) {
-				if (error.IsEmpty()) {			
-					printf(	"\tCaught error:\n"
-						"\t\tError: Unknown\n"
-						"\t\tClientData: %s\n"
-						"\ton ListenSocket::ProcessExtPacket\n",
-						(const char *)unicode2char(m_client->GetClientFullInfo()));
-				} else {
-					printf(	"\tCaught error:\n"
-						"\t\tError: %s\n"
-						"\t\tClientData: %s\n"
-						"\ton ListenSocket::ProcessExtPacket\n",
-						(const char *)unicode2char(error),
-						(const char *)unicode2char(m_client->GetClientFullInfo()));
-				}
-			}
 			m_client->SetDownloadState(DS_ERROR);
-		} else {
-			if ( CLogger::IsEnabled( logPacketErrors ) ) {
-				if (error.IsEmpty()) {
-					printf(	"\tCaught error:\n"
-						"\t\tError: Unknown\n"
-						"\t\tClientData: Unknown\n\ton ListenSocket\n");
-				} else {
-					printf(	"\tCaught error:\n"
-						"\t\tError: %s\n"
-						"\t\tClientData: Unknown\n"
-						"\ton ListenSocket\n",
-						(const char *)unicode2char(error));
-				}
-			}
 		}
 		Disconnect(wxT("Client error on ListenSocket::ProcessExtPacket: ") + error);
 		return false;
