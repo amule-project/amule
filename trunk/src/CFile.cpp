@@ -783,9 +783,29 @@ wxString  CDirIterator::FindNextFile() {
 				int stat_error = -1;
 				if (tmpFullName) {
 					stat_error = stat(tmpFullName, buf);
-				} 
+					// Check if it is a broken symlink
+					if (stat_error) {
+						stat_error = lstat(tmpFullName, buf);
+						if (!stat_error && S_ISLNK(buf->st_mode)) {
+							// Ok, just a broken symlink. Next, please!
+							dp = readdir(DirPtr);
+							continue;
+						}
+					}
+				}
+				// Fallback to UTF-8
 				if (stat_error) {
-					stat_error = stat(unicode2UTF8(FullName), buf);
+					Unicode2CharBuf tmpUTF8FullName(unicode2UTF8(FullName));
+					stat_error = stat(tmpUTF8FullName, buf);
+					// Check if it is a broken symlink
+					if (stat_error) {
+						stat_error = lstat(tmpUTF8FullName, buf);
+						if (!stat_error && S_ISLNK(buf->st_mode)) {
+							// Ok, just a broken symlink. Next, please!
+							dp = readdir(DirPtr);
+							continue;
+						}
+					}
 				}
 				
 				if (!stat_error) {
@@ -811,7 +831,8 @@ wxString  CDirIterator::FindNextFile() {
 					// Stat failed. Assert.
 					printf("CFile: serious error, stat failed\n");
 					wxASSERT(0);
-					AddDebugLogLineM( true, logFileIO, wxT("Unexpected error calling stat on a file!") );
+					AddDebugLogLineM( true, logFileIO,
+						wxT("Unexpected error calling stat on a file!") );
 					dp = readdir(DirPtr);
 				}
 #if 0
