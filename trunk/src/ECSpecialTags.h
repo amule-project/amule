@@ -264,6 +264,7 @@ class CEC_SharedFile_Tag : public CECTag {
 class CEC_UpDownClient_Tag : public CECTag {
 	public:
 		CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAIL_LEVEL detail_level);
+		CEC_UpDownClient_Tag(const CUpDownClient* client, CValueMap &valuemap);
 
 		uint32 ID() { return GetInt32Data(); }
 		
@@ -295,6 +296,7 @@ class CEC_UpDownClient_Tag : public CECTag {
 class CEC_SearchFile_Tag : public CECTag {
 	public:
 		CEC_SearchFile_Tag(CSearchFile *file, EC_DETAIL_LEVEL detail_level);
+		CEC_SearchFile_Tag(CSearchFile *file, CValueMap &valuemap);
 
 		// template needs it
  		CMD4Hash	ID()	{ return GetMD4Data(); }
