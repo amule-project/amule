@@ -1529,7 +1529,7 @@ void CamuleApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 	}
 
 	// Special
-	if (msCur-msPrevOS >= thePrefs::GetOSUpdate) {
+	if (msCur-msPrevOS >= thePrefs::GetOSUpdate()) {
 		OnlineSig(); // Added By Bouc7		
 		msPrevOS = msCur;
 	}
