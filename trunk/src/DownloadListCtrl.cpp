@@ -737,7 +737,10 @@ void CDownloadListCtrl::UpdateItem(void* toupdate)
 		long first = 0, last = GetItemCount();
 		
 #ifndef __WXMSW__
-		GetVisibleLines( &first, &last );
+		// Get visible lines if we need them
+		if ( rangeIt.first != rangeIt.second ) {
+			GetVisibleLines( &first, &last );
+		}
 #endif
 		
 		for (ListItems::const_iterator it = rangeIt.first; it != rangeIt.second; it++) {
