@@ -36,7 +36,7 @@
 	#define GetTickCount() mytimer->GetTickCountNow()
 	#define GetTickCount64() mytimer->GetTickCountNow64()
 	extern class MyTimer *mytimer;
-	class MyTimer : public wxTimer {
+	class MyTimer : public AMULE_TIMER_CLASS {
 	public:
 		MyTimer() { tic32 = tic64 = wxGetLocalTimeMillis().GetValue(); Start(20); }
 		uint32 GetTickCountNow() { return tic32; }

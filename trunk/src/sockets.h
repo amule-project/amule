@@ -101,7 +101,7 @@ private:
 	
 	// list of currently opened sockets
 	CTypedPtrList<CPtrList, CServerSocket*>	m_lstOpenSockets;
-	wxTimer	m_idRetryTimer;
+	AMULE_TIMER_CLASS	m_idRetryTimer;
 	uint32	m_nLocalIP;
 
 	std::map<DWORD, CServerSocket*> connectionattemps;

@@ -406,18 +406,6 @@ void CSearchDlg::StartNewSearch()
 
 	canceld = false;
 	
-		
-	byte stringParameter = 1;
-	byte typeParameter = 2;
-	byte numericParameter = 3;
-	uint16 andParameter = 0x0000;	
-	uint32 typeNemonic = 0x00030001;
-	uint32 minNemonic = 0x02000101;
-	uint32 maxNemonic = 0x02000102;
-	uint32 avaibilityNemonic = 0x15000101;
-	uint32 extensionNemonic = 0x00040001;
-				
-			
 	wxString searchString = ((wxTextCtrl*)FindWindow(IDC_SEARCHNAME))->GetValue();
 	searchString.Trim(true);
 	searchString.Trim(false);	
@@ -459,74 +447,8 @@ void CSearchDlg::StartNewSearch()
 			break;
 	}
 
+	Packet *packet = CreateSearchPacket(searchString, typeText, extension, min, max, avaibility);
 	
-	// Count the number of used parameters
-	int parametercount = 0;
-	if ( !searchString.IsEmpty() )	parametercount++;
-	if ( !typeText.IsEmpty() ) 		parametercount++;
-	if ( min > 0 )					parametercount++;
-	if ( max > 0 ) 					parametercount++;
-	if ( avaibility > 0 ) 			parametercount++;
-	if ( !extension.IsEmpty() )		parametercount++;
-
-	// Must write parametercount - 1 parameter headers
-	CSafeMemFile* data = new CSafeMemFile(100);
-	for ( int i = 0; i < parametercount - 1; i++ ) {
-
-		data->WriteUInt16(andParameter);
-	}
-	
-	
-	// Packet body:
-	if ( !searchString.IsEmpty() ) {
-		data->WriteUInt8( stringParameter ); 	// Search-String is a string parameter type
-		data->WriteString( searchString ); 		// Write the value of the string
-	}
-	
-	if ( !typeText.IsEmpty() ) {
-		data->WriteUInt8( typeParameter );		// Search-Type is a type parameter type
-		data->WriteString( typeText ); 			// Write the parameter
-#if wxBYTE_ORDER == wxLITTLE_ENDIAN
-		data->Write(&typeNemonic, 3); 		// Nemonic for this kind of parameter (only 3 bytes!!)
-#else
-		uint32 endian_corrected = ENDIAN_SWAP_32(typeNemonic);
-		data->Write(&endian_corrected, 3); 	// Nemonic for this kind of parameter (only 3 bytes!!)
-#endif
-	}
-	
-	if ( min > 0 ) {
-		data->WriteUInt8( numericParameter );	// Write the parameter type
-		data->WriteUInt32( min );					// Write the parameter
-		data->WriteUInt32( minNemonic );			// Nemonic for this kind of parameter
-	}
-	
-	if ( max > 0 ) {
-		data->WriteUInt8( numericParameter );	// Write the parameter type
-		data->WriteUInt32( max );				// Write the parameter
-		data->WriteUInt32( maxNemonic );		// Nemonic for this kind of parameter
-	}
-	
-	if ( avaibility > 0 ) {
-		data->WriteUInt8( numericParameter );	// Write the parameter type
-		data->WriteUInt32( avaibility );		// Write the parameter
-		data->WriteUInt32( avaibilityNemonic );	// Nemonic for this kind of parameter
-	}
-	
-	if ( !extension.IsEmpty() ) {
-		data->WriteUInt8( stringParameter );	// Write the parameter type
-		data->WriteString( extension );			// Write the parameter
-#if wxBYTE_ORDER == wxLITTLE_ENDIAN
-		data->Write(&extensionNemonic, 3); // Nemonic for this kind of parameter (only 3 bytes!!)
-#else
-		uint32 endian_corrected = ENDIAN_SWAP_32(extensionNemonic);
-		data->Write(&endian_corrected, 3); // Nemonic for this kind of parameter (only 3 bytes!!)
-#endif		
-	}
-	
-	Packet* packet = new Packet(data);
-	packet->SetOpCode(OP_SEARCHREQUEST);
-	delete data;
-		
 	globalsearch = ((wxChoice*)FindWindow(ID_SEARCHTYPE))->GetSelection() == 1;
 
 	CoreNotify_Search_Local_Req(packet);

@@ -81,7 +81,11 @@ uint8 CServerList::AutoUpdate()
 	uint8 url_count = app_prefs->adresses_list.GetCount();
 	
 	if (!url_count) {
+#ifdef AMULE_DAEMON
+		AddLogLineM(true, _("No serverlist address entry in 'addresses.dat' found. Please paste a valid serverlist address into this file in order to auto-update your serverlist"));
+#else
 		wxMessageBox(_("No serverlist address entry in 'addresses.dat' found. Please paste a valid serverlist address into this file in order to auto-update your serverlist"),_("Unable to retrieve serverlist"),wxICON_ERROR|wxCENTRE|wxOK);
+#endif
 		return 0;
 	}
 	
@@ -387,7 +391,11 @@ bool CServerList::IsGoodServerIP(CServer* in_server)
 void CServerList::RemoveServer(CServer* out_server)
 {
 	if (out_server == theApp.serverconnect->GetCurrentServer()) {
-			wxMessageBox(wxT("You are connected to the server you are trying to delete. please disconnect first."), wxT("Info"), wxOK);	
+#ifdef AMULE_DAEMON
+		AddLogLineM(true, _("You are connected to the server you are trying to delete. please disconnect first."));
+#else
+		wxMessageBox(wxT("You are connected to the server you are trying to delete. please disconnect first."), wxT("Info"), wxOK);	
+#endif
 	} else {
 	
 		POSITION pos = list.Find( out_server );

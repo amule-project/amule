@@ -29,9 +29,108 @@
 #include "SearchDlg.h"		// Needed for CSearchDlg
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "amule.h"			// Needed for theApp
+#include "ServerSocket.h"
+#include "server.h"
+#include "ServerList.h"
 #include "MuleNotebook.h"	// Needed for CMuleNotebook
 #include "SharedFileList.h" // Needed for GetFileByID
 #include "DownloadQueue.h"  // Needed for GetFileByID
+
+CGlobalSearchThread::CGlobalSearchThread(Packet *packet)
+{
+	CGlobalSearchThread::packet = packet;
+	
+	CServer* current = theApp.serverconnect->GetCurrentServer();
+	current = theApp.serverlist->GetServerByIP( current->GetIP(), current->GetPort() );
+	askedlist.insert( current );
+	
+	packet->SetOpCode(OP_GLOBSEARCHREQ);
+}
+
+void CGlobalSearchThread::Start()
+{
+}
+
+Packet *CreateSearchPacket(wxString &searchString, wxString& typeText,
+				wxString &extension, uint32 min, uint32 max, uint32 avaibility)
+{
+	// Count the number of used parameters
+	int parametercount = 0;
+	if ( !searchString.IsEmpty() )	parametercount++;
+	if ( !typeText.IsEmpty() ) 	parametercount++;
+	if ( min > 0 )			parametercount++;
+	if ( max > 0 ) 			parametercount++;
+	if ( avaibility > 0 ) 		parametercount++;
+	if ( !extension.IsEmpty() )	parametercount++;
+	
+	// Must write parametercount - 1 parameter headers
+	CSafeMemFile* data = new CSafeMemFile(100);
+	
+	const byte stringParameter = 1;
+	const byte typeParameter = 2;
+	const byte numericParameter = 3;
+	const uint16 andParameter = 0x0000;	
+	const uint32 typeNemonic = 0x00030001;
+	const uint32 minNemonic = 0x02000101;
+	const uint32 maxNemonic = 0x02000102;
+	const uint32 avaibilityNemonic = 0x15000101;
+	const uint32 extensionNemonic = 0x00040001;
+	
+	for ( int i = 0; i < parametercount - 1; i++ ) {
+		data->WriteUInt16(andParameter);
+	}
+
+	// Packet body:
+	if ( !searchString.IsEmpty() ) {
+		data->WriteUInt8( stringParameter ); // Search-String is a string parameter type
+		data->WriteString( searchString );   // Write the value of the string
+	}
+	
+	if ( !typeText.IsEmpty() ) {
+		data->WriteUInt8( typeParameter );		// Search-Type is a type parameter type
+		data->WriteString( typeText ); 			// Write the parameter
+#if wxBYTE_ORDER == wxLITTLE_ENDIAN
+		data->Write(&typeNemonic, 3); 		// Nemonic for this kind of parameter (only 3 bytes!!)
+#else
+		uint32 endian_corrected = ENDIAN_SWAP_32(typeNemonic);
+		data->Write(&endian_corrected, 3); 	// Nemonic for this kind of parameter (only 3 bytes!!)
+#endif
+	}
+	
+	if ( min > 0 ) {
+		data->WriteUInt8( numericParameter );	// Write the parameter type
+		data->WriteUInt32( min );		// Write the parameter
+		data->WriteUInt32( minNemonic );	// Nemonic for this kind of parameter
+	}
+	
+	if ( max > 0 ) {
+		data->WriteUInt8( numericParameter );	// Write the parameter type
+		data->WriteUInt32( max );		// Write the parameter
+		data->WriteUInt32( maxNemonic );	// Nemonic for this kind of parameter
+	}
+	
+	if ( avaibility > 0 ) {
+		data->WriteUInt8( numericParameter );	// Write the parameter type
+		data->WriteUInt32( avaibility );	// Write the parameter
+		data->WriteUInt32( avaibilityNemonic );	// Nemonic for this kind of parameter
+	}
+	
+	if ( !extension.IsEmpty() ) {
+		data->WriteUInt8( stringParameter );	// Write the parameter type
+		data->WriteString( extension );			// Write the parameter
+#if wxBYTE_ORDER == wxLITTLE_ENDIAN
+		data->Write(&extensionNemonic, 3); // Nemonic for this kind of parameter (only 3 bytes!!)
+#else
+		uint32 endian_corrected = ENDIAN_SWAP_32(extensionNemonic);
+		data->Write(&endian_corrected, 3); // Nemonic for this kind of parameter (only 3 bytes!!)
+#endif		
+	}
+	Packet* packet = new Packet(data);
+	packet->SetOpCode(OP_SEARCHREQUEST);
+	delete data;
+	
+	return packet;
+}
 
 bool IsValidClientIPPort(uint32 nIP, uint16 nPort)
 {
@@ -247,60 +346,62 @@ void CSearchList::NewSearch(const wxString& resTypes, long nSearchID){
 	foundFilesCount[nSearchID] = 0;
 }
 
-uint16 CSearchList::ProcessSearchanswer(const char *in_packet, uint32 size, CUpDownClient *Sender) {
-	const CSafeMemFile *packet = new CSafeMemFile((BYTE*)in_packet,size,0);
+// NEVER called: commenting it out untill someone will explain why it's here
+// uint16 CSearchList::ProcessSearchanswer(const char *in_packet, uint32 size, CUpDownClient *Sender) {
+// 	const CSafeMemFile *packet = new CSafeMemFile((BYTE*)in_packet,size,0);
+// #ifndef AMULE_DAEMON
+// 	if(Sender) {
+// 	  theApp.amuledlg->searchwnd->CreateNewTab(Sender->GetUserName() + wxT(" (0)"),(long)Sender);
+// 	}
+// #endif
+// 	try
+// 	{
+// 		uint32 results = packet->ReadUInt32();
+// 		long mySearchID=( (Sender != NULL)? (long)Sender : m_nCurrentSearch);
+// 		foundFilesCount[mySearchID] = 0;
+// 
+// 		try
+// 		{
+// 			for (uint32 i = 0; i != results; i++){
+// 				CSearchFile* toadd = new CSearchFile(packet, mySearchID);
+// 				AddToList(toadd, (Sender != NULL) );
+// 			}
+// 		}
+// 		catch ( CStrangePacket )
+// 		{
+// 			printf("Strange search result on packet\n");
+// 		}
+// 		catch ( CInvalidPacket )
+// 		{
+// 			printf("Invalid search result on packet\n");
+// 		}
+// 		
+// 	}
+// 	catch ( CInvalidPacket e )
+// 	{
+// 
+// 		printf("Invalid search result packet: %s\n", e.what());
+// 		DumpMem(in_packet, size);
+// 
+// 	}
+// 
+// 	packet->Close();
+// 	delete packet;
+// 	return GetResultCount();
+// }
 
-	if(Sender) {
-	  theApp.amuledlg->searchwnd->CreateNewTab(Sender->GetUserName() + wxT(" (0)"),(long)Sender);
-	}
-
-	try
-	{
-		uint32 results = packet->ReadUInt32();
-		long mySearchID=( (Sender != NULL)? (long)Sender : m_nCurrentSearch);
-		foundFilesCount[mySearchID] = 0;
-
-		try
-		{
-			for (uint32 i = 0; i != results; i++){
-				CSearchFile* toadd = new CSearchFile(packet, mySearchID);
-				AddToList(toadd, (Sender != NULL) );
-			}
-		}
-		catch ( CStrangePacket )
-		{
-			printf("Strange search result on packet\n");
-		}
-		catch ( CInvalidPacket )
-		{
-			printf("Invalid search result on packet\n");
-		}
-		
-	}
-	catch ( CInvalidPacket e )
-	{
-
-		printf("Invalid search result packet: %s\n", e.what());
-		DumpMem(in_packet, size);
-
-	}
-
-	packet->Close();
-	delete packet;
-	return GetResultCount();
-}
-
+// Called when some of clients returns list of files
 uint16 CSearchList::ProcessSearchanswer(const char *in_packet, uint32 size, 
 	CUpDownClient *Sender, bool *pbMoreResultsAvailable, LPCTSTR pszDirectory)
 {
 	wxASSERT( Sender != NULL );
 	// Elandal: Assumes sizeof(void*) == sizeof(uint32)
 	long nSearchID = (long)Sender;
-
+#ifndef AMULE_DAEMON
 	if (!theApp.amuledlg->searchwnd->CheckTabNameExists(Sender->GetUserName())) {
 		theApp.amuledlg->searchwnd->CreateNewTab(Sender->GetUserName() + wxT(" (0)"),nSearchID);
 	}
-	
+#endif
 	const CSafeMemFile packet((BYTE*)in_packet,size);
 	uint32 results = packet.ReadUInt32();
 
@@ -338,6 +439,8 @@ uint16 CSearchList::ProcessSearchanswer(const char *in_packet, uint32 size,
 	return GetResultCount(nSearchID);
 }
 
+//
+// Called from ServerSocket when server returns answer about local search
 uint16 CSearchList::ProcessSearchanswer(const char *in_packet, uint32 size, uint32 nServerIP, uint16 nServerPort) {
 
 	//CSafeMemFile packet((BYTE*)in_packet,size);
