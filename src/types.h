@@ -1,3 +1,4 @@
+//
 // This file is part of the aMule project.
 //
 // Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
@@ -145,9 +146,23 @@ class CTimer {
 	void Stop();
 };
 
+#if !wxCHECK_VERSION_FULL(2,5,3,1)
+    typedef off_t wxFileOffset;
+    #ifdef _LARGE_FILES
+        #define wxFileOffsetFmtSpec wxLongLongFmtSpec
+        wxCOMPILE_TIME_ASSERT( sizeof(off_t) == sizeof(wxLongLong_t),
+                                BadFileSizeType );
+        typedef unsigned wxLongLong_t wxFileSize_t;
+    #else
+        #define wxFileOffsetFmtSpec _T("")
+        typedef unsigned long wxFileSize_t;
+    #endif
+#endif
+
 #else
 #define AMULE_TIMER_CLASS wxTimer
 #define AMULE_TIMER_EVENT_CLASS wxTimerEvent
 #endif
 
 #endif // TYPES_H
+
