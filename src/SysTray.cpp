@@ -88,11 +88,11 @@ bool CSysTray::SetColorLevels(int* pLimits, COLORREF* pColors, int nEntries) {
 #ifdef __WXGTK__ // Only use this code in wxGTK since it uses GTK code.
 
 // PA: use pure gettext instead of wx functions 
-#ifdef _
+/*#ifdef _
 #undef _
 #endif
 #define _(String) gettext(String)
-
+*/
 
 #ifdef __SAFE_TRAY__
 
@@ -110,11 +110,10 @@ gchar* getIP()
 gchar* getIP()
 {
 
-  gchar* ip=_("Not Found");
+  gchar* ip=(gchar*)unicode2char(_("Not Found"));
   wxString interface;
-  int index;
-  index=0;
-  int   sfd;
+  int index=0;
+  int sfd;
   struct ifreq ifr;
   struct sockaddr_in *sin = (struct sockaddr_in *) &ifr.ifr_addr;
 
@@ -123,26 +122,29 @@ gchar* getIP()
 
   strcpy(ifr.ifr_name, "ppp0");
   sin->sin_family = AF_INET;
-  if (0 == ioctl(sfd, SIOCGIFADDR, &ifr)) {
+  if (0 == ioctl(sfd, SIOCGIFADDR, &ifr)) 
+  {
 	ip=inet_ntoa(sin->sin_addr);
-	 return ip;
-	 }
-  else {
+	return ip;
+  }
+  else 
+  {
 
 //	printf("Not connected at network with ppp0 direct connection\n");
- 	 do
+	do
   	{
-    	interface="eth"+wxString::Format("%d", index);
-    	strcpy(ifr.ifr_name, interface);
+    	interface=wxT("eth")+wxString::Format(wxT("%d"), index);
+    	strcpy(ifr.ifr_name, unicode2char(interface));
     	sin->sin_family = AF_INET;
-    	if (0 == ioctl(sfd, SIOCGIFADDR, &ifr)) {
+    	if (0 == ioctl(sfd, SIOCGIFADDR, &ifr)) 
+	{
       		ip=inet_ntoa(sin->sin_addr);
 		index++;
     	}
 //    	else printf(wxString("Not connected at network with ")+interface);
 
   	} while (0 == ioctl(sfd, SIOCGIFADDR, &ifr)) ;
-}
+ }
  return ip;
 
 }
@@ -167,7 +169,6 @@ void speed_check(){
 void close_amule() {
 
 	wxCloseEvent SendCloseEvent;
-
 	theApp.amuledlg->OnClose(SendCloseEvent);
 
 }
@@ -184,11 +185,9 @@ void do_show() {
 // shows or hides amule...double click automatic selection
 void showgui(){
 
-	if (theApp.amuledlg->IsShown()) {
-		do_hide();
-	} else {
-		do_show();
-	}
+	if (theApp.amuledlg->IsShown()) do_hide();
+	else do_show();
+
 }
 
 //set download and upload speed to max
@@ -211,7 +210,7 @@ speed_check();
 void connect_any_server() {
 
 if (theApp.serverconnect->IsConnected()) theApp.serverconnect->Disconnect();
-AddLogLineM(true, _("Connecting"));
+AddLogLineM(true, wxString(_("Connecting")));
 theApp.serverconnect->ConnectToAnyServer();
 theApp.amuledlg->ShowConnectionState(false);
 
@@ -219,10 +218,9 @@ theApp.amuledlg->ShowConnectionState(false);
 
 //disconnect
 void disconnect(){
-	if (theApp.serverconnect->IsConnected()) {
-		theApp.serverconnect->Disconnect();
-	}
-	//else printf("Already disconnected!\n");
+
+if (theApp.serverconnect->IsConnected()) theApp.serverconnect->Disconnect();
+
 }
 
 //set download speed
@@ -270,112 +268,109 @@ tray_menu (GtkWidget *widget, GdkEventButton *event, gpointer data)
 	max_dl_speed=theApp.glob_prefs->GetMaxGraphDownloadRate();
 
 	//what will be shown, very nice!
-	if (actual_dl_speed==UNLIMITED || actual_dl_speed==0) dl_speed=_("Unlimited");
-	else { temp = g_strdup_printf("%d", actual_dl_speed ); dl_speed=temp;}
+	if (actual_dl_speed==UNLIMITED || actual_dl_speed==0) dl_speed=(_("Unlimited"));
+	else { temp = g_strdup_printf("%d", actual_dl_speed ); dl_speed=char2unicode(temp);}
 	if (actual_up_speed==UNLIMITED || actual_up_speed==0) upl_speed=_("Unlimited");
-	else { temp = g_strdup_printf("%d", actual_up_speed ); upl_speed=temp;}
+	else { temp = g_strdup_printf("%d", actual_up_speed ); upl_speed=char2unicode(temp);}
 
 	if (max_dl_speed==UNLIMITED || max_dl_speed==0) max_dl_speed=100;
 	if (max_up_speed==UNLIMITED || max_up_speed==0) max_up_speed=100;
 
-	label=_("aMule ")+wxString(VERSION)+"\n"+_("Actual Speed Limits:")+"\n"+_("DL: ")+dl_speed+_(" kb/s ")+_("UP: ")+upl_speed+_(" kb/s");
+	label=wxString(_("aMule "))+wxString(wxT(VERSION))+wxString(wxT("\n"))+wxString(_("Actual Speed Limits:"))+wxString(wxT("\n"))+wxString(_("DL: "))+wxString(wxString::Format(wxT("%d"),dl_speed))+wxString(_(" kb/s "))+wxString(_("UP: "))+wxString(wxString::Format(wxT("%d"),upl_speed))+wxString(_(" kb/s"));
 
 	//info menu
 	info_menu=gtk_menu_new();
-	gtk_menu_set_title(GTK_MENU(info_menu),_("aMule Tray Menu Info"));
+	gtk_menu_set_title(GTK_MENU(info_menu),unicode2char(_("aMule Tray Menu Info")));
 
 	if (!theApp.glob_prefs->GetUserNick().IsEmpty())
-	info_item=gtk_menu_item_new_with_label(wxString(_("Nick: "))+theApp.glob_prefs->GetUserNick());
-	else info_item=gtk_menu_item_new_with_label(_("Nick: Not Ready"));
+	info_item=gtk_menu_item_new_with_label(unicode2char(wxString(_("Nick: "))+wxString(theApp.glob_prefs->GetUserNick())));
+	else info_item=gtk_menu_item_new_with_label(unicode2char(_("Nick: Not Ready")));
 	gtk_container_add (GTK_CONTAINER (info_menu), info_item);
 
 
 	if (!theApp.glob_prefs->GetUserHash().IsEmpty()){
 		wxString hash;
 		hash=EncodeBase16(theApp.glob_prefs->GetUserHash(),16);
-		info_item=gtk_menu_item_new_with_label(wxString(_("Hash: "))+hash);
+		info_item=gtk_menu_item_new_with_label(unicode2char(wxString(_("Hash: "))+hash));
 	}
-	else info_item=gtk_menu_item_new_with_label(_("Hash: Not Ready"));
+	else info_item=gtk_menu_item_new_with_label(unicode2char(_("Hash: Not Ready")));
 	gtk_container_add (GTK_CONTAINER (info_menu), info_item);
 
 	if (theApp.serverconnect->IsConnected()) {
-	info_item=gtk_menu_item_new_with_label(wxString(_("ClientID: "))+wxString::Format("%.0f",(float)theApp.serverconnect->GetClientID()));
+	info_item=gtk_menu_item_new_with_label(unicode2char(wxString(_("ClientID: "))+wxString::Format(wxT("%.0f"),(float)theApp.serverconnect->GetClientID())));
 	}
-	else info_item=gtk_menu_item_new_with_label(_("ID: Not Connected"));
+	else info_item=gtk_menu_item_new_with_label(unicode2char(_("ID: Not Connected")));
 	gtk_container_add (GTK_CONTAINER (info_menu), info_item);
 
-
-
 	tempstring=getIP();
-	info_item=gtk_menu_item_new_with_label(wxString(_("IP: "))+tempstring);
+	info_item=gtk_menu_item_new_with_label(unicode2char(wxString(_("IP: "))+char2unicode(tempstring)));
 	gtk_container_add (GTK_CONTAINER (info_menu), info_item);
 
 	if (theApp.glob_prefs->GetPort()) {
 		tempstring = g_strdup_printf("%d", theApp.glob_prefs->GetPort() );
-		info_item=gtk_menu_item_new_with_label(wxString(_("TCP Port: "))+tempstring);
+		info_item=gtk_menu_item_new_with_label(unicode2char(wxString(_("TCP Port: "))+char2unicode(tempstring)));
 	}
-	else info_item=gtk_menu_item_new_with_label(_("TCP Port: Not Ready"));
+	else info_item=gtk_menu_item_new_with_label(unicode2char(_("TCP Port: Not Ready")));
 	gtk_container_add (GTK_CONTAINER (info_menu), info_item);
 
 	if (theApp.glob_prefs->GetUDPPort()) {
 		tempstring = g_strdup_printf("%d", theApp.glob_prefs->GetUDPPort() );
-		info_item=gtk_menu_item_new_with_label(wxString(_("UDP Port: "))+tempstring);
+		info_item=gtk_menu_item_new_with_label(unicode2char(wxString(_("UDP Port: "))+char2unicode(tempstring)));
 	}
-	else info_item=gtk_menu_item_new_with_label(_("UDP Port: Not Ready"));
+	else info_item=gtk_menu_item_new_with_label(unicode2char(_("UDP Port: Not Ready")));
 	gtk_container_add (GTK_CONTAINER (info_menu), info_item);
 
-	if (theApp.glob_prefs->IsOnlineSignatureEnabled()) info_item=gtk_menu_item_new_with_label(_("Online Signature: Enabled"));
-	else info_item=gtk_menu_item_new_with_label(_("Online Signature: Disabled"));
+	if (theApp.glob_prefs->IsOnlineSignatureEnabled()) info_item=gtk_menu_item_new_with_label(unicode2char(_("Online Signature: Enabled")));
+	else info_item=gtk_menu_item_new_with_label(unicode2char(_("Online Signature: Disabled")));
 	gtk_container_add (GTK_CONTAINER (info_menu), info_item);
 
 	if (theApp.Start_time>0) {
 		tempstring=g_strdup_printf("%s", CastSecondsToHM(theApp.GetUptimeSecs()).GetData() );
-		info_item=gtk_menu_item_new_with_label(wxString(_("Uptime: "))+tempstring);
+		info_item=gtk_menu_item_new_with_label(unicode2char(wxString(_("Uptime: "))+char2unicode(tempstring)));
 	}
-	else info_item=gtk_menu_item_new_with_label(_("Uptime: None"));
+	else info_item=gtk_menu_item_new_with_label(unicode2char(_("Uptime: None")));
  	gtk_container_add (GTK_CONTAINER (info_menu), info_item);
 
 	if (theApp.serverconnect->GetCurrentServer()!=NULL) {
 
-	info_item=gtk_menu_item_new_with_label(_("ServerName: ") + theApp.serverconnect->GetCurrentServer()->GetListName() );
+	info_item=gtk_menu_item_new_with_label(unicode2char(_("ServerName: ") +wxString( theApp.serverconnect->GetCurrentServer()->GetListName())) );
 	gtk_container_add (GTK_CONTAINER (info_menu), info_item);
 
 	tempstring = g_strdup_printf("%d", theApp.serverconnect->GetCurrentServer()->GetPort() );
-	info_item=gtk_menu_item_new_with_label(_("ServerIP: ") + theApp.serverconnect->GetCurrentServer()->GetFullIP() + wxT(" : ") + tempstring );
+	info_item=gtk_menu_item_new_with_label(unicode2char(_("ServerIP: ") + wxString(theApp.serverconnect->GetCurrentServer()->GetFullIP()) + wxT(" : ") + char2unicode(tempstring)) );
 	gtk_container_add (GTK_CONTAINER (info_menu), info_item);
 
 	}
 	else {
-	info_item=gtk_menu_item_new_with_label(_("ServerName: Not Connected"));
+	info_item=gtk_menu_item_new_with_label(unicode2char(_("ServerName: Not Connected")));
 	gtk_container_add (GTK_CONTAINER (info_menu), info_item);
-	info_item=gtk_menu_item_new_with_label(_("ServerIP: Not Connected"));
+	info_item=gtk_menu_item_new_with_label(unicode2char(_("ServerIP: Not Connected")));
 	gtk_container_add (GTK_CONTAINER (info_menu), info_item);
 
 	}
 
 	tempstring = g_strdup_printf("%d", theApp.sharedfiles->GetCount() );
-	info_item=gtk_menu_item_new_with_label(wxString(_("Shared Files: "))+tempstring);
+	info_item=gtk_menu_item_new_with_label(unicode2char(wxString(_("Shared Files: "))+char2unicode(tempstring)));
 	gtk_container_add (GTK_CONTAINER (info_menu), info_item);
 
 	tempstring = g_strdup_printf("%d", theApp.uploadqueue->GetWaitingUserCount() );
-	info_item=gtk_menu_item_new_with_label(wxString(_("Queued Clients: "))+tempstring);
+	info_item=gtk_menu_item_new_with_label(unicode2char(wxString(_("Queued Clients: "))+char2unicode(tempstring)));
 	gtk_container_add (GTK_CONTAINER (info_menu), info_item);
 
 	tempstring = g_strdup_printf("%.2f", ((float)(theApp.stat_sessionReceivedBytes+theApp.glob_prefs->GetTotalDownloaded()) / 1073741824) );
-	info_item=gtk_menu_item_new_with_label(wxString(_("Total DL: "))+tempstring+wxString(_(" GB")));
+	info_item=gtk_menu_item_new_with_label(unicode2char(wxString(_("Total DL: "))+char2unicode(tempstring)+wxString(_(" GB"))));
 	gtk_container_add (GTK_CONTAINER (info_menu), info_item);
 
 	tempstring = g_strdup_printf("%.2f", ((float)(theApp.stat_sessionSentBytes+theApp.glob_prefs->GetTotalUploaded()) / 1073741824));
-	info_item=gtk_menu_item_new_with_label(wxString(_("Total UP: "))+tempstring+wxString(_(" GB")));
+	info_item=gtk_menu_item_new_with_label(unicode2char(wxString(_("Total UP: "))+char2unicode(tempstring)+wxString(_(" GB"))));
 	gtk_container_add (GTK_CONTAINER (info_menu), info_item);
-
 
 	//main menu
 	status_menu = gtk_menu_new();
-	gtk_menu_set_title(GTK_MENU(status_menu),_("aMule Tray Menu"));
+	gtk_menu_set_title(GTK_MENU(status_menu),unicode2char(_("aMule Tray Menu")));
 
 	//first item, not linked, only to show version and speed
-	item=gtk_menu_item_new_with_label(label);
+	item=gtk_menu_item_new_with_label(unicode2char(label));
 	gtk_container_add (GTK_CONTAINER (status_menu), item);
 
 	//separator
@@ -383,7 +378,7 @@ tray_menu (GtkWidget *widget, GdkEventButton *event, gpointer data)
 	gtk_container_add (GTK_CONTAINER (status_menu), item);
 
 	//personal infos item, not linked, only to show them
-	item=gtk_menu_item_new_with_label(_("Personal Infos"));
+	item=gtk_menu_item_new_with_label(unicode2char(_("Personal Infos")));
 	gtk_container_add (GTK_CONTAINER (status_menu), item);
 	gtk_menu_item_set_submenu(GTK_MENU_ITEM(item),info_menu);
 
@@ -394,7 +389,7 @@ tray_menu (GtkWidget *widget, GdkEventButton *event, gpointer data)
 	//download speed submenu
 	down_speed=gtk_menu_new();
 
-	temp=_("Unlimited");
+	temp=(gchar*)unicode2char(_("Unlimited"));
 	dl_item=gtk_menu_item_new_with_label(temp);
 	gtk_object_set_data_full(GTK_OBJECT(dl_item), "label", 0 , NULL);
 	gtk_container_add (GTK_CONTAINER (down_speed), dl_item);
@@ -402,35 +397,35 @@ tray_menu (GtkWidget *widget, GdkEventButton *event, gpointer data)
 
 	tempspeed=max_dl_speed;
 	temp = g_strdup_printf("%d", tempspeed );
-	dl_item=gtk_menu_item_new_with_label(wxString(temp)+_(" kb/s"));
+	dl_item=gtk_menu_item_new_with_label(unicode2char(wxString(char2unicode(temp))+_(" kb/s")));
 	gtk_object_set_data_full(GTK_OBJECT(dl_item), "label", temp , NULL);
 	gtk_container_add (GTK_CONTAINER (down_speed), dl_item);
 	gtk_signal_connect (GTK_OBJECT(dl_item), "activate",GTK_SIGNAL_FUNC (set_dl_speed),dl_item);
 
 	tempspeed=(max_dl_speed/5)*4;
 	temp = g_strdup_printf("%d", tempspeed );
-	dl_item=gtk_menu_item_new_with_label(wxString(temp)+_(" kb/s"));
+	dl_item=gtk_menu_item_new_with_label(unicode2char(wxString(char2unicode(temp))+_(" kb/s")));
 	gtk_container_add (GTK_CONTAINER (down_speed), dl_item);
 	gtk_object_set_data_full(GTK_OBJECT(dl_item), "label", temp, NULL);
 	gtk_signal_connect (GTK_OBJECT(dl_item), "activate",GTK_SIGNAL_FUNC (set_dl_speed),dl_item);
 
 	tempspeed=(max_dl_speed/5)*3;
 	temp = g_strdup_printf("%d", tempspeed );
-	dl_item=gtk_menu_item_new_with_label(wxString(temp)+_(" kb/s"));
+	dl_item=gtk_menu_item_new_with_label(unicode2char(wxString(char2unicode(temp))+_(" kb/s")));
 	gtk_container_add (GTK_CONTAINER (down_speed), dl_item);
 	gtk_object_set_data_full(GTK_OBJECT(dl_item), "label", temp, NULL);
 	gtk_signal_connect (GTK_OBJECT(dl_item), "activate",GTK_SIGNAL_FUNC (set_dl_speed),dl_item);
 
 	tempspeed=(max_dl_speed/5)*2;
 	temp = g_strdup_printf("%d", tempspeed );
-	dl_item=gtk_menu_item_new_with_label(wxString(temp)+_(" kb/s"));
+	dl_item=gtk_menu_item_new_with_label(unicode2char(wxString(char2unicode(temp))+_(" kb/s")));
 	gtk_container_add (GTK_CONTAINER (down_speed), dl_item);
 	gtk_object_set_data_full(GTK_OBJECT(dl_item), "label", temp, NULL);
 	gtk_signal_connect (GTK_OBJECT(dl_item), "activate",GTK_SIGNAL_FUNC (set_dl_speed),dl_item);
 
 	tempspeed=(max_dl_speed/5);
 	temp = g_strdup_printf("%d", tempspeed );
-	dl_item=gtk_menu_item_new_with_label(wxString(temp)+_(" kb/s"));
+	dl_item=gtk_menu_item_new_with_label(unicode2char(wxString(char2unicode(temp))+_(" kb/s")));
 	gtk_container_add (GTK_CONTAINER (down_speed), dl_item);
 	gtk_object_set_data_full(GTK_OBJECT(dl_item), "label", temp, NULL);
 	gtk_signal_connect (GTK_OBJECT(dl_item), "activate",GTK_SIGNAL_FUNC (set_dl_speed),dl_item);
@@ -439,7 +434,7 @@ tray_menu (GtkWidget *widget, GdkEventButton *event, gpointer data)
 	//upload speed submenu
 	up_speed=gtk_menu_new();
 
-	temp=_("Unlimited");
+	temp=(gchar*)unicode2char(_("Unlimited"));
 	up_item=gtk_menu_item_new_with_label(temp);
 	gtk_object_set_data_full(GTK_OBJECT(up_item), "label", 0 , NULL);
 	gtk_container_add (GTK_CONTAINER (up_speed), up_item);
@@ -447,47 +442,47 @@ tray_menu (GtkWidget *widget, GdkEventButton *event, gpointer data)
 
 	tempspeed=max_up_speed;
 	temp = g_strdup_printf("%d", tempspeed );
-	up_item=gtk_menu_item_new_with_label(wxString(temp)+_(" kb/s"));
+	up_item=gtk_menu_item_new_with_label(unicode2char(wxString(char2unicode(temp))+_(" kb/s")));
 	gtk_object_set_data_full(GTK_OBJECT(up_item), "label", temp, NULL);
 	gtk_container_add (GTK_CONTAINER (up_speed), up_item);
 	gtk_signal_connect (GTK_OBJECT(up_item), "activate",GTK_SIGNAL_FUNC (set_up_speed),up_item);
 
 	tempspeed=(max_up_speed/5)*4;
 	temp = g_strdup_printf("%d", tempspeed );
-	up_item=gtk_menu_item_new_with_label(wxString(temp)+_(" kb/s"));
+	up_item=gtk_menu_item_new_with_label(unicode2char(wxString(char2unicode(temp))+_(" kb/s")));
 	gtk_container_add (GTK_CONTAINER (up_speed), up_item);
 	gtk_object_set_data_full(GTK_OBJECT(up_item), "label", temp, NULL);
 	gtk_signal_connect (GTK_OBJECT(up_item), "activate",GTK_SIGNAL_FUNC (set_up_speed),up_item);
 
 	tempspeed=(max_up_speed/5)*3;
 	temp = g_strdup_printf("%d", tempspeed );
-	up_item=gtk_menu_item_new_with_label(wxString(temp)+_(" kb/s"));
+	up_item=gtk_menu_item_new_with_label(unicode2char(wxString(char2unicode(temp))+_(" kb/s")));
 	gtk_container_add (GTK_CONTAINER (up_speed), up_item);
 	gtk_object_set_data_full(GTK_OBJECT(up_item), "label", temp, NULL);
 	gtk_signal_connect (GTK_OBJECT(up_item), "activate",GTK_SIGNAL_FUNC (set_up_speed),up_item);
 
 	tempspeed=(max_up_speed/5)*2;
 	temp = g_strdup_printf("%d", tempspeed );
-	up_item=gtk_menu_item_new_with_label(wxString(temp)+_(" kb/s"));
+	up_item=gtk_menu_item_new_with_label(unicode2char(wxString(char2unicode(temp))+_(" kb/s")));
 	gtk_container_add (GTK_CONTAINER (up_speed), up_item);
 	gtk_object_set_data_full(GTK_OBJECT(up_item), "label", temp, NULL);
 	gtk_signal_connect (GTK_OBJECT(up_item), "activate",GTK_SIGNAL_FUNC (set_up_speed),up_item);
 
 	tempspeed=(max_up_speed/5);
 	temp = g_strdup_printf("%d", tempspeed );
-	up_item=gtk_menu_item_new_with_label(wxString(temp)+_(" kb/s"));
+	up_item=gtk_menu_item_new_with_label(unicode2char(wxString(char2unicode(temp))+_(" kb/s")));
 	gtk_container_add (GTK_CONTAINER (up_speed), up_item);
 	gtk_object_set_data_full(GTK_OBJECT(up_item), "label", temp, NULL);
 	gtk_signal_connect (GTK_OBJECT(up_item), "activate",GTK_SIGNAL_FUNC (set_up_speed),up_item);
 
 	if (theApp.amuledlg->IsShown()) {
 		//hide item
-		item=gtk_menu_item_new_with_label(_("Hide"));
+		item=gtk_menu_item_new_with_label(unicode2char(_("Hide")));
 		gtk_container_add (GTK_CONTAINER (status_menu), item);
 		gtk_signal_connect (GTK_OBJECT (item), "activate",GTK_SIGNAL_FUNC (do_hide),NULL);
 	} else {
 		//show item
-		item=gtk_menu_item_new_with_label(_("Show"));
+		item=gtk_menu_item_new_with_label(unicode2char(_("Show")));
 		gtk_container_add (GTK_CONTAINER (status_menu), item);
 		gtk_signal_connect (GTK_OBJECT (item), "activate",GTK_SIGNAL_FUNC (do_show),NULL);
 	}
@@ -497,7 +492,7 @@ tray_menu (GtkWidget *widget, GdkEventButton *event, gpointer data)
 	gtk_container_add (GTK_CONTAINER (status_menu), item);
 
 	//sets max speed
-	item=gtk_menu_item_new_with_label(_("All To Max Speed"));
+	item=gtk_menu_item_new_with_label(unicode2char(_("All To Max Speed")));
 	gtk_container_add (GTK_CONTAINER (status_menu), item);
 	gtk_signal_connect (GTK_OBJECT (item), "activate",GTK_SIGNAL_FUNC (set_all_max),NULL);
 
@@ -506,7 +501,7 @@ tray_menu (GtkWidget *widget, GdkEventButton *event, gpointer data)
 	gtk_container_add (GTK_CONTAINER (status_menu), item);
 
 	//sets min speed
-	item=gtk_menu_item_new_with_label(_("All To Min Speed"));
+	item=gtk_menu_item_new_with_label(unicode2char(_("All To Min Speed")));
 	gtk_container_add (GTK_CONTAINER (status_menu), item);
 	gtk_signal_connect (GTK_OBJECT (item), "activate",GTK_SIGNAL_FUNC (set_all_min),NULL);
 
@@ -515,7 +510,7 @@ tray_menu (GtkWidget *widget, GdkEventButton *event, gpointer data)
 	gtk_container_add (GTK_CONTAINER (status_menu), item);
 
 	//Download Speed item
-	item=gtk_menu_item_new_with_label(_("Download Limit"));
+	item=gtk_menu_item_new_with_label(unicode2char(_("Download Limit")));
 	gtk_container_add (GTK_CONTAINER (status_menu), item);
 	gtk_menu_item_set_submenu(GTK_MENU_ITEM(item),down_speed);
 
@@ -524,7 +519,7 @@ tray_menu (GtkWidget *widget, GdkEventButton *event, gpointer data)
 	gtk_container_add (GTK_CONTAINER (status_menu), item);
 
 	//Upload Speed item
-	item=gtk_menu_item_new_with_label(_("Upload Limit"));
+	item=gtk_menu_item_new_with_label(unicode2char(_("Upload Limit")));
 	gtk_container_add (GTK_CONTAINER (status_menu), item);
 	gtk_menu_item_set_submenu(GTK_MENU_ITEM(item),up_speed);
 
@@ -534,12 +529,12 @@ tray_menu (GtkWidget *widget, GdkEventButton *event, gpointer data)
 
 	if (theApp.serverconnect->IsConnected()) {
 		//Disconnection Speed item
-		item=gtk_menu_item_new_with_label(_("Disconnect from server"));
+		item=gtk_menu_item_new_with_label(unicode2char(_("Disconnect from server")));
 		gtk_container_add (GTK_CONTAINER (status_menu), item);
 		gtk_signal_connect (GTK_OBJECT (item), "activate",GTK_SIGNAL_FUNC (disconnect),NULL);
 	} else {
 		//Connect item
-		item=gtk_menu_item_new_with_label(_("Connect to any server"));
+		item=gtk_menu_item_new_with_label(unicode2char(_("Connect to any server")));
 		gtk_container_add (GTK_CONTAINER (status_menu), item);
 		gtk_signal_connect (GTK_OBJECT (item), "activate",GTK_SIGNAL_FUNC (connect_any_server),NULL);
 	}
@@ -549,7 +544,7 @@ tray_menu (GtkWidget *widget, GdkEventButton *event, gpointer data)
 	gtk_container_add (GTK_CONTAINER (status_menu), item);
 
 	//Exit item
-	item=gtk_menu_item_new_with_label(_("Exit"));
+	item=gtk_menu_item_new_with_label(unicode2char(_("Exit")));
 	gtk_container_add (GTK_CONTAINER (status_menu), item);
 	gtk_signal_connect (GTK_OBJECT (item), "activate",GTK_SIGNAL_FUNC (close_amule),NULL);
 
@@ -624,11 +619,11 @@ CSysTray::CSysTray(wxWindow* _parent,int _desktopMode, const wxString& title)
 
   if(use_legacy) {
     status_docklet=gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_title(GTK_WINDOW(status_docklet), title);
+    gtk_window_set_title(GTK_WINDOW(status_docklet), unicode2char(title));
     gtk_window_set_wmclass(GTK_WINDOW(status_docklet),"amule_StatusDocklet","aMule");
     gtk_widget_set_usize(status_docklet,22,22);
   } else {
-    status_docklet=GTK_WIDGET(egg_tray_icon_new(_("aMule for Linux")));
+    status_docklet=GTK_WIDGET(egg_tray_icon_new(unicode2char(_("aMule for Linux"))));
       if(status_docklet==NULL) {
       printf("**** WARNING: Can't create status docklet. Systray will not be created.\n");
       desktopMode=4;
@@ -657,7 +652,7 @@ CSysTray::CSysTray(wxWindow* _parent,int _desktopMode, const wxString& title)
   // set tooltips
   status_tooltips=gtk_tooltips_new();
   gtk_tooltips_enable(status_tooltips);
-  gtk_tooltips_set_tip(status_tooltips,status_docklet,_("aMule for Linux"),"blind text");
+  gtk_tooltips_set_tip(status_tooltips,status_docklet,unicode2char(_("aMule for Linux")),"blind text");
 
   // finalization
   gtk_widget_show(status_image);
@@ -704,7 +699,7 @@ void CSysTray::Show(const wxChar* caption,int nMsgType,DWORD dwTimeToShow,DWORD 
     return;
 
   /* this isn't exactly true. notifier must be a widget */
-  gtk_tooltips_set_tip(status_tooltips,status_docklet,caption,NULL);
+  gtk_tooltips_set_tip(status_tooltips,status_docklet,unicode2char(caption),NULL);
 }
 
 
