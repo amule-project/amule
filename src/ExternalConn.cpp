@@ -329,6 +329,8 @@ CECPacket *Get_EC_Response_GetUpQueue(const CECPacket *request)
 	
 	CECPacket *response = new CECPacket(EC_OP_ULOAD_QUEUE);
 	
+	EC_DETAIL_LEVEL detail_level = request->GetDetailLevel();
+	
 	POSITION pos = theApp.uploadqueue->GetFirstFromUploadList();
 	while (	pos ) {
 
@@ -337,17 +339,8 @@ CECPacket *Get_EC_Response_GetUpQueue(const CECPacket *request)
 		if (!cur_client) {
 			continue;
 		}
-		CECTag cli_tag(EC_TAG_UPDOWN_CLIENT, cur_client->GetUserID());
-		cli_tag.AddTag(CECTag(EC_TAG_CLIENT_NAME, cur_client->GetUserName()));
-		CKnownFile* file = theApp.sharedfiles->GetFileByID(cur_client->GetUploadFileID());
-		if (file) {
-			cli_tag.AddTag(CECTag(EC_TAG_PARTFILE, file->GetFileName()));
-		} else {
-			cli_tag.AddTag(CECTag(EC_TAG_PARTFILE, wxString(wxT("?"))));
-		}
-		cli_tag.AddTag(CECTag(EC_TAG_PARTFILE_SIZE_XFER, (uint32)cur_client->GetTransferedDown()));
-		cli_tag.AddTag(CECTag(EC_TAG_PARTFILE_SIZE_XFER_UP, (uint32)cur_client->GetTransferedUp()));
-		cli_tag.AddTag(CECTag(EC_TAG_PARTFILE_SPEED, (uint32)(cur_client->GetKBpsUp()*1024.0)));
+		CEC_UpDownClient_Tag cli_tag(cur_client, detail_level);
+		
 		response->AddTag(cli_tag);
 	}
 	

@@ -608,7 +608,7 @@ void CamulecmdApp::Process_Answer_v2(CECPacket *response)
 				s += wxT("\n");
 				s += wxString::Format(wxT("%10u "), tag->GetInt32Data()) +
 					tag->GetTagByName(EC_TAG_CLIENT_NAME)->GetStringData() + wxT(" ") +
-					tag->GetTagByName(EC_TAG_PARTFILE)->GetStringData() + wxT(" ") +
+					tag->GetTagByName(EC_TAG_PARTFILE_NAME)->GetStringData() + wxT(" ") +
 					CastItoXBytes(tag->GetTagByName(EC_TAG_PARTFILE_SIZE_XFER)->GetInt32Data()) + wxT(" ") +
 					CastItoXBytes(tag->GetTagByName(EC_TAG_PARTFILE_SPEED)->GetInt32Data()) + _("/sec");
 			}
