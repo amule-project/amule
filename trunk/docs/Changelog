@@ -95,7 +95,7 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		amuleweb because almost no return value of GetTagByIndex and
 		GetTagByName were beeing checked for NULL.
 		* Fixed the following bug in the search dialog window: if you
-		type a letter by mistake or if you use the down arrow from 1
+		typed a letter by mistake or if you use the down arrow from 1
 		to 0, both actions on a wxSpinCtrl, aMule would crash.
 		* Fixed the GetTagByIndex and GetTagByName segfaults in
 		amulecmd.
@@ -116,6 +116,10 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		because wxExecute() could be called from the FatalErrorHandler()
 		not from the main thread, which is currently prohibited in
 		wxWidgets.
+		* Fixed preview with mplayer or any other app that needs
+		stdout/stderr.
+		* Fixed lots of segfaults in amuleweb, thanks to alandar and
+		Mr Faber.
 
 	volpol
 		* Patch to fix use of deprecated functions in wxGTK-2.5.3.
@@ -123,6 +127,8 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 	Special Thanks To:
 		* Bug and feature reporters:
 		alandar
+		feralertx
+		Frankk
 		Mr Faber
 		rommel
 
