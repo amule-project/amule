@@ -212,7 +212,7 @@ void CSearchDlg::OnTimer(wxTimerEvent& WXUNUSED(evt))
 			askedlist.insert( toask );
 
 			// Ask the server
-			theApp.serverconnect->SendUDPPacket(searchpacket, toask, false);
+			CoreNotify_Search_Global_Req(searchpacket, toask);
 			
 			// Increment the progress bar only if there are tabs
 			if ( notebook->GetPageCount() && ( progressbar->GetValue() < progressbar->GetRange() ) ) {
@@ -473,9 +473,8 @@ void CSearchDlg::StartNewSearch()
 	delete data;
 		
 	globalsearch = ((wxCheckBox*)FindWindowById(IDC_SGLOBAL))->IsChecked();
-	
-	theApp.uploadqueue->AddUpDataOverheadServer(packet->GetPacketSize());
-	theApp.serverconnect->SendPacket( packet, !globalsearch );
+
+	CoreNotify_Search_Local_Req(packet);
 	if ( globalsearch ) {
 		askedlist.clear();
 		

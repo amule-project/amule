@@ -173,14 +173,12 @@ void CDownloadListCtrl::setPri(int newpri)
 			CPartFile *file = (CPartFile *) content->value;
 			if (selectedCount > 1) {
 				while (!selectedList.IsEmpty()) {
-					//selectedList.GetHead()->SetPriority(newpri);
-					selectedList.GetHead()->SetDownPriority(newpri);
+					CoreNotify_PartFile_PrioSet(selectedList.GetHead(), newpri, true);
 					selectedList.RemoveHead();
 				}
 				return;
 			}
-			//file->SetPriority(newpri);
-			file->SetDownPriority(newpri);
+			CoreNotify_PartFile_PrioSet(file, newpri, true);
 		}
 	}
 }
@@ -1289,7 +1287,7 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 			if (event.GetId() >= MP_ASSIGNCAT && event.GetId() <= MP_ASSIGNCAT + 99) {
 				while (!selectedList.IsEmpty()) {
 					CPartFile *selected = selectedList.GetHead();
-					selected->SetCategory(event.GetId() - MP_ASSIGNCAT);
+					CoreNotify_PartFile_SetCat(selected, event.GetId() - MP_ASSIGNCAT);
 					selectedList.RemoveHead();
 				}
 				ChangeCategory(curTab);
@@ -1302,7 +1300,7 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 					// While selected items aren't empty
 					while (!selectedList.IsEmpty()) {
 						// Remove No Needed sources from the current selected item
-						selectedList.GetHead()->RemoveNoNeededSources();
+						CoreNotify_PartFile_RemoveNoNeeded(selectedList.GetHead());
 						// Remove this item from the selected items list
 						selectedList.RemoveHead();
 					}
@@ -1316,7 +1314,7 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 					// While selected items aren't empty
 					while (!selectedList.IsEmpty()) {
 						// Remove Full Queue sources from the current selected item
-						selectedList.GetHead()->RemoveFullQueueSources();
+						CoreNotify_PartFile_RemoveFullQueue(selectedList.GetHead());
 						// Remove this item from the selected items list
 						selectedList.RemoveHead();
 					}
@@ -1330,7 +1328,7 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 					// While selected items aren't empty
 					while (!selectedList.IsEmpty()) {
 						// Remove High Queue Rating sources from the current selected item
-						selectedList.GetHead()->RemoveHighQueueRatingSources();
+						CoreNotify_PartFile_RemoveHighQueue(selectedList.GetHead());
 						// Remove this item from the selected items list
 						selectedList.RemoveHead();
 					}
@@ -1344,7 +1342,7 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 					// While selected items aren't empty
 					while (!selectedList.IsEmpty()) {
 						// Clean up sources from the current selected item
-						selectedList.GetHead()->CleanUpSources();
+						CoreNotify_PartFile_SourceCleanup(selectedList.GetHead());
 						// Remove this item from the selected items list
 						selectedList.RemoveHead();
 					}
@@ -1353,22 +1351,8 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 					/* End modif */
 				case MP_SWAP_A4AF_TO_THIS: {
 					Freeze();
-					if (selectedCount == 1 
-					&& (file->GetStatus(false) == PS_READY || file->GetStatus(false) == PS_EMPTY))
-					{
-						theApp.downloadqueue->DisableAllA4AFAuto();
-
-						CPartFile::SourceSet::iterator it;
-						for ( it = file->A4AFsrclist.begin(); it != file->A4AFsrclist.end(); ) {
-							CUpDownClient *cur_source = *it++;
-							if (cur_source->GetDownloadState() != DS_DOWNLOADING
-							&& cur_source->GetRequestFile()
-							&& ((!cur_source->GetRequestFile()->IsA4AFAuto()) || cur_source->GetDownloadState() == DS_NONEEDEDPARTS))
-							{
-								cur_source->SwapToAnotherFile(true, false, false, file);
-							}
-						}
-
+					if (selectedCount == 1) {
+						CoreNotify_PartFile_Swap_A4AF(file);
 					}
 					Thaw();
 					this->UpdateItem(file);						
@@ -1376,19 +1360,13 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 					break;
 				}
 				case MP_SWAP_A4AF_TO_THIS_AUTO:
-					file->SetA4AFAuto(!file->IsA4AFAuto());
+					CoreNotify_PartFile_Swap_A4AF_Auto(file);
 					return true;				
 					break;
 				case MP_SWAP_A4AF_TO_ANY_OTHER: {
 					Freeze();
-					if (selectedCount == 1 
-					&& (file->GetStatus(false) == PS_READY || file->GetStatus(false) == PS_EMPTY)) {
-						theApp.downloadqueue->DisableAllA4AFAuto();
-
-						CPartFile::SourceSet::iterator it = file->m_SrcList.begin();
-						for( ; it != file->m_SrcList.end(); ++it ) {
-							(*it)->SwapToAnotherFile(false, false, false, NULL);
-						}
+					if (selectedCount == 1) {
+						CoreNotify_PartFile_Swap_A4AF_Others(file);
 					}
 					Thaw();
 					return true;					
@@ -1428,14 +1406,11 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 										selectedList.RemoveHead();
 										break;
 									case PS_PAUSED:
-										selectedList.GetHead()->Delete();
+										CoreNotify_PartFile_Delete(selectedList.GetHead());
 										selectedList.RemoveHead();
 										break;
 									default:
-										if (theApp.glob_prefs->StartNextFile()) {
-											theApp.downloadqueue->StartNextFile();
-										}
-										selectedList.GetHead()->Delete();
+										CoreNotify_PartFile_Delete(selectedList.GetHead());
 										selectedList.RemoveHead();
 								}
 							}
@@ -1449,94 +1424,92 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 					if (selectedCount > 1) {
 						Freeze();
 						while (!selectedList.IsEmpty()) {
-							selectedList.GetHead()->SetAutoDownPriority(false);	//[Tarod]
-							selectedList.GetHead()->SetDownPriority(PR_HIGH);
+							CoreNotify_PartFile_PrioAuto(selectedList.GetHead(), false);
+							CoreNotify_PartFile_PrioSet(selectedList.GetHead(), PR_HIGH, true);
 							selectedList.RemoveHead();
 						}
 						Thaw();
 						return true;						
 						break;
 					}
-					file->SetAutoDownPriority(false);
-					file->SetDownPriority(PR_HIGH);
+					CoreNotify_PartFile_PrioAuto(file, false);
+					CoreNotify_PartFile_PrioSet(file, PR_HIGH, true);
 					return true;					
 					break;
 				case MP_PRIOLOW:
 					if (selectedCount > 1) {
 						Freeze();
 						while (!selectedList.IsEmpty()) {
-							selectedList.GetHead()->SetAutoDownPriority(false);	//[Tarod]
-							selectedList.GetHead()->SetDownPriority(PR_LOW);
+							CoreNotify_PartFile_PrioAuto(selectedList.GetHead(), false);
+							CoreNotify_PartFile_PrioSet(selectedList.GetHead(), PR_LOW, true);
 							selectedList.RemoveHead();
 						}
 						Thaw();
 						return true;						
 						break;
 					}
-					file->SetAutoDownPriority(false);
-					file->SetDownPriority(PR_LOW);
+					CoreNotify_PartFile_PrioAuto(file, false);
+					CoreNotify_PartFile_PrioSet(file, PR_LOW, true);
 					return true;					
 					break;
 				case MP_PRIONORMAL:
 					if (selectedCount > 1) {
 						Freeze();
 						while (!selectedList.IsEmpty()) {
-							selectedList.GetHead()->SetAutoDownPriority(false);	//[Tarod]
-							selectedList.GetHead()->SetDownPriority(PR_NORMAL);
+							CoreNotify_PartFile_PrioAuto(selectedList.GetHead(), false);
+							CoreNotify_PartFile_PrioSet(selectedList.GetHead(), PR_NORMAL, true);
 							selectedList.RemoveHead();
 						}
 						Thaw();
 						return true;						
 						break;
 					}
-					file->SetAutoDownPriority(false);
-					file->SetDownPriority(PR_NORMAL);
+					CoreNotify_PartFile_PrioAuto(file, false);
+					CoreNotify_PartFile_PrioSet(file, PR_NORMAL, true);
 					return true;					
 					break;
 				case MP_PRIOAUTO:
 					if (selectedCount > 1) {
 						Freeze();
 						while (!selectedList.IsEmpty()) {
-							selectedList.GetHead()->SetAutoDownPriority(true);
-							selectedList.GetHead()->SetDownPriority(PR_HIGH);
+							CoreNotify_PartFile_PrioAuto(selectedList.GetHead(), false);
+							CoreNotify_PartFile_PrioSet(selectedList.GetHead(), PR_HIGH, true);
 							selectedList.RemoveHead();
 						}
 						Thaw();
 						return true;						
 						break;
 					}
-					file->SetAutoDownPriority(true);
-					file->SetDownPriority(PR_HIGH);
+					CoreNotify_PartFile_PrioAuto(file, true);
+					CoreNotify_PartFile_PrioSet(file, PR_HIGH, true);
 					return true;					
 					break;
 				case MP_PAUSE:
 					if (selectedCount > 1) {
 						Freeze();
 						while (!selectedList.IsEmpty()) {
-							selectedList.GetHead()->PauseFile();
+							CoreNotify_PartFile_Pause(selectedList.GetHead());
 							selectedList.RemoveHead();
 						}
 						Thaw();
 						return true;						
 						break;
 					}
-					file->PauseFile();
+					CoreNotify_PartFile_Pause(file);
 					return true;					
 					break;
 				case MP_RESUME:
 					if (selectedCount > 1) {
 						Freeze();
 						while (!selectedList.IsEmpty()) {
-							selectedList.GetHead()->ResumeFile();
-							selectedList.GetHead()->SavePartFile();
+							CoreNotify_PartFile_Resume(selectedList.GetHead());
 							selectedList.RemoveHead();
 						}
 						Thaw();
 						return true;						
 						break;
 					}
-					file->ResumeFile();
-					file->SavePartFile();
+					CoreNotify_PartFile_Resume(file);
 					return true;					
 					break;
 				case MP_STOP:
@@ -1545,7 +1518,7 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 						while (!selectedList.IsEmpty()) {
 							CPartFile *selected = selectedList.GetHead();
 							HideSources(selected);
-							selected->StopFile();
+							CoreNotify_PartFile_Stop(selected);
 							selectedList.RemoveHead();
 						}
 						Thaw();
@@ -1553,7 +1526,7 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 						break;
 					}
 					HideSources(file);
-					file->StopFile();
+					CoreNotify_PartFile_Stop(file);
 					return true;					
 					break;
 					case MP_FAKECHECK1:	// deltahf -> fakecheck

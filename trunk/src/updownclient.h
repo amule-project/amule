@@ -264,7 +264,15 @@ public:
 	bool		HasBlocks() const
 		{ return !(m_BlockSend_queue.IsEmpty() && m_BlockRequests_queue.IsEmpty()); }
 	float		GetKBpsUp()	const 		{ return kBpsUp; }
+#ifdef CLIENT_GUI
+	uint32		GetScore(bool sysvalue, bool isdownloading = false, bool onlybasevalue = false) const
+	{
+		// lfroen:it's calculated
+		return 0;
+	}
+#else
 	uint32		GetScore(bool sysvalue, bool isdownloading = false, bool onlybasevalue = false) const;
+#endif
 	void		AddReqBlock(Requested_Block_Struct* reqblock);
 	bool		CreateNextBlockPackage();
 	void		SetUpStartTime() 			{ m_dwUploadTime = ::GetTickCount(); }
