@@ -1497,14 +1497,22 @@ void CPartFile::DrawStatusBar( wxMemoryDC* dc, wxRect rect, bool bFlat )
 			uint32 gap_begin = ( i == start   ? gap->start : PARTSIZE * i );
 			uint32 gap_end   = ( i == end - 1 ? gap->end   : PARTSIZE * ( i + 1 ) );
 		
+			if (IsStopped()) {
+				color = DarkenColour(color,2);
+			}			
+			
 			s_ChunkBar.FillRange( gap_begin, gap_end,  color);
 		}
 	}
 	
 	// Pending parts
 	for ( POSITION pos = requestedblocks_list.GetHeadPosition(); pos; ) {
+		COLORREF color = crPending;
 		Requested_Block_Struct* block = requestedblocks_list.GetNext( pos );
-		s_ChunkBar.FillRange( block->StartOffset, block->EndOffset, crPending );
+		if (IsStopped()) {
+			color = DarkenColour(color,2);
+		}					
+		s_ChunkBar.FillRange( block->StartOffset, block->EndOffset, color );
 	}
 
 	// Draw the progress-bar
