@@ -152,7 +152,6 @@ wxcas_SOURCES = utils/wxCas/src/onlinesig.cpp \
 		utils/wxCas/src/linuxmon.cpp \
 		utils/wxCas/src/wxcas.cpp \
 		utils/wxCas/src/wxcasprint.cpp \
-		utils/wxCas/src/wxcascanvas.cpp \
 		utils/wxCas/src/wxcasframe.cpp \
 		utils/wxCas/src/wxcasprefs.cpp \
 		utils/wxCas/src/wxcascte.cpp		
