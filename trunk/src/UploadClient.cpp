@@ -384,7 +384,7 @@ void CUpDownClient::ProcessUpFileStatus(char* packet,uint32 size){
 	if( size == 16 )
 		return;
 	CSafeMemFile* data = new CSafeMemFile((BYTE*)packet,size);
-	uchar* cfilehash;
+	uchar cfilehash[16];
 	data->ReadRaw(cfilehash,16);
 	CKnownFile* tempreqfile = theApp.sharedfiles->GetFileByID(cfilehash);
 	uint16 nED2KUpPartCount;
