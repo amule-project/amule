@@ -71,7 +71,28 @@ sub xas
 
 	# session upload traffic in Gb
 	my $sul = (sprintf("%.02f", $amulesigdata[14] / 1048576));
-
+	
+	# convert runtime from sec to string
+	my $seconds = $amulesigdata[15];
+	my $days    = pull_count($seconds, 86400);
+        my $hours   = pull_count($seconds, 3600);
+        my $minutes = pull_count($seconds, 60);
+	
+	my $runtime;
+	
+	if ($days > 0) {
+		$runtime = sprintf "%02iD %02ih %02imin %02is", $days, $hours, $minutes, $seconds;
+	}
+        elsif ($hours > 0) {
+		$runtime = sprintf "%02ih %02imin %02is", $hours, $minutes, $seconds;
+	}
+	elsif ($minutes > 0) {
+		$runtime = sprintf "%02imin %02is", $minutes, $seconds;
+	}
+	else {
+		$runtime = sprintf "%02is", $seconds;
+	}
+	
 	# and display it
 
 	# if current user isn't running aMule
@@ -79,9 +100,9 @@ sub xas
 		IRC::command "/say $amulesigdata[9] is not running";
 		# Crash detection is implemented since v2-rc4, so XAS should be backwards compatible
 		if ( grep(/^1./,$amulesigdata[12]) || $amulesigdata[12]=="2.0.0rc1" || $amulesigdata[12]=="2.0.0rc2" || $amulesigdata[12]=="2.0.0rc3" ) {
-			IRC::command "/say aMule $amulesigdata[12] was closed after $amulesigdata[15]!" }
-		elsif ( ! grep(/^00 /,$amulesigdata[15])) {
-			IRC::command "/say aMule $amulesigdata[12] crashed after $amulesigdata[15]!" }
+			IRC::command "/say aMule $amulesigdata[12] was closed after $runtime!" }
+		elsif ( ! grep(/^00 /,$runtime)) {
+			IRC::command "/say aMule $amulesigdata[12] crashed after $runtime!" }
 		else {
 			IRC::command "/say aMule $amulesigdata[12] was closed" };
 		IRC::command "/say Total download traffic: $tdl Gb";
@@ -89,7 +110,7 @@ sub xas
 	# if aMule is running
 	else {
 		IRC::command "/say $amulesigdata[9] is $amulestatus $amulextatus";
-		IRC::command "/say aMule $amulesigdata[12] is using $amulecpu% CPU, $amulemem MB of memory and it has been running for $amulesigdata[15]";
+		IRC::command "/say aMule $amulesigdata[12] is using $amulecpu% CPU, $amulemem MB of memory and it has been running for $runtime";
 
 		# we only display "number of cpus" when we have more then one
 		if ($number_cpus > 1) {
@@ -105,3 +126,11 @@ sub xas
 	# that's it
 }
 
+# usage: $count = pull_count(seconds, amount)
+# remove from seconds the amount quantity, altering caller's version.
+# return the integral number of those amounts so removed.
+sub pull_count {
+    my($answer) = int($_[0] / $_[1]);
+    $_[0] -= $answer * $_[1];
+    return $answer;
+}
