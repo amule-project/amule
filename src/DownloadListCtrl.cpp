@@ -279,7 +279,9 @@ void CDownloadListCtrl::OnNMRclick(wxListEvent & evt)
 
 				menu->Append(MP_METINFO, CString(_("Show file &details")));
 				menu->Append(MP_VIEWFILECOMMENTS, CString(_("Show all comments")));
-				menu->Append(MP_FAKECHECK1, CString(_("Check Fake")));// deltahf -> fakecheck
+				menu->AppendSeparator();
+				menu->Append(MP_FAKECHECK2, CString(_("jugle.net Fake Check"))); // deltahf -> fakecheck
+				menu->Append(MP_FAKECHECK1, CString(_("'Donkey Fakes' Fake Check")));// deltahf -> fakecheck
 				menu->AppendSeparator();
 				menu->Append(MP_CLEARCOMPLETED, CString(_("C&lear completed")));
 			
@@ -1669,6 +1671,9 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 					break;
 					case MP_FAKECHECK1:	// deltahf -> fakecheck
 					    theApp.LaunchUrl(theApp.GenFakeCheckUrl(file));
+					break;
+					case MP_FAKECHECK2:
+						theApp.LaunchUrl(theApp.GenFakeCheckUrl2(file));
 					break;
 				case MP_CLEARCOMPLETED:
 					Freeze();

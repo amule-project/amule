@@ -131,7 +131,9 @@ void CSearchListCtrl::OnNMRclick(wxMouseEvent& evt)
 		m->Append(MP_RESUME,_("Download"));
 		m->Append(MP_GETED2KLINK,_("Copy ED2k link to clipboard"));
 		m->Append(MP_GETHTMLED2KLINK,_("Copy ED2k link to clipboard (HTML)"));
-		m->Append(MP_FAKECHECK1,_("Check Fake")); // deltahf -> fakecheck
+		m->AppendSeparator();
+		m->Append(MP_FAKECHECK2,_("jugle.net Fake Check")); // deltahf -> fakecheck
+		m->Append(MP_FAKECHECK1,_("'Donkey Fakes' Fake Check"));
 		m->AppendSeparator();
 		//  Removing this entry cause nobody knows why its here :)
 		//  Besides, it crashes amule.
@@ -375,6 +377,10 @@ bool CSearchListCtrl::ProcessEvent(wxEvent& evt)
 			}
 			case MP_FAKECHECK1: {	// deltahf -> fakecheck
 				theApp.LaunchUrl(theApp.GenFakeCheckUrl(file));
+				break;
+			}
+			case MP_FAKECHECK2: {
+				theApp.LaunchUrl(theApp.GenFakeCheckUrl2(file));
 				break;
 			}
 			case MP_RESUME: {

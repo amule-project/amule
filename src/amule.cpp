@@ -869,6 +869,20 @@ wxString CamuleApp::GenFakeCheckUrl(CAbstractFile *f)
 	return strURL;
 }
 
+// jugle.net fake check
+wxString CamuleApp::GenFakeCheckUrl2(CAbstractFile *f)
+{
+	
+    wxString strURL = wxT("http://www.jugle.net/?fakecheck=%s");
+	
+	strURL = wxURL::ConvertToValidURI( strURL +  CreateED2kLink( f ) );
+
+	strURL.Replace(wxT("\""), wxT("%22"));
+	strURL.Replace(wxT("'"),  wxT("%27"));
+	strURL.Replace(wxT("`"),  wxT("%60"));
+
+	return strURL;
+}
 
 // Sets the contents of the clipboard. Prior content  erased.
 bool CamuleApp::CopyTextToClipboard(wxString strText)
