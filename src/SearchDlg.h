@@ -89,6 +89,8 @@ private:
 	bool		globalsearch;
 	wxTimer		m_timer;	
 
+	uint32	last_search_time;
+
 	// Used to keep track of the servers we have sent UDP packet to
 	std::set<CServer*> askedlist;
 	
