@@ -86,7 +86,7 @@ public:
 	// Kry -Added for windoze compatibility.
 	off_t GetLength() const { return Length(); }
 
-	virtual bool Close() const;  // Close is a NOP if not opened
+	virtual bool Close();  // Close is a NOP if not opened
 
 	// assign an existing file descriptor and get it back from CFile object
 	void Attach(int fd) { Close(); m_fd = fd; }
@@ -122,7 +122,11 @@ public:
 	virtual bool Error() const { return m_error; }
 
 	// dtor closes the file if opened
-	virtual ~CFile() { Close(); }
+	virtual ~CFile() { 
+		if (m_fd != fd_invalid) {
+			Close(); 
+		}
+	}
 
 private:
 	// copy ctor and assignment operator are private because

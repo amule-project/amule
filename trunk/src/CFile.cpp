@@ -25,13 +25,8 @@
 
 #include "CFile.h"		// Interface declarations.
 
-//#ifdef __WXMAC__
+#ifdef __WXMAC__
 	#define FILE_TRACKER	1
-//#endif
-
-#ifdef FILE_TRACKER
-	#include <wx/event.h>
-	#include "GuiEvents.h"
 #endif
 
 #include "amule.h"		// Needed for theApp
@@ -167,6 +162,36 @@ enum {
 #include <wx/filefn.h>
 
 
+#ifdef FILE_TRACKER
+	#include <wx/event.h>
+	#include "GuiEvents.h"
+	#include <unistd.h>       
+	#include <execinfo.h>
+	
+	void get_caller(int value) {
+			
+		void *bt_array[4];	
+		char **bt_strings;
+		int num_entries;
+	
+		if ((num_entries = backtrace(bt_array, 4)) < 0) {
+			AddLogLineM(false, wxT("* Could not generate backtrace\n"));
+		} else {
+			if ((bt_strings = backtrace_symbols(bt_array, num_entries)) == NULL) {
+				AddLogLineM(false, wxT("* Could not get symbol names for backtrace\n"));
+			}  else {
+				wxString wherefrom = bt_strings[value];
+				int starter = wherefrom.Find('(');
+				int ender = wherefrom.Find(')');
+				wherefrom = wherefrom.Mid(starter, ender-starter+1);
+				AddLogLineM(false, wxT("Called From: ") + wherefrom);
+			}
+		}	
+	}
+
+#endif
+
+
 // ============================================================================
 // implementation of CFile
 // ============================================================================
@@ -213,7 +238,11 @@ CFile::CFile(const wxChar *szFileName, OpenMode mode)
 	m_fd = fd_invalid;
 	m_error = FALSE;
 
-	Open(szFileName, mode);
+	#ifdef FILE_TRACKER
+		Open(szFileName, mode,12345);
+	#else
+		Open(szFileName, mode);
+	#endif
 }
 
 // create the file, fail if it already exists and bOverwrite
@@ -221,28 +250,33 @@ bool CFile::Create(const wxChar *szFileName, bool bOverwrite, int accessMode)
 {
 	fFilePath=szFileName;
 
+    if (m_fd != fd_invalid) {
+	    Close();	
+    }
+
 	// if bOverwrite we create a new file or truncate the existing one,
 	// otherwise we only create the new file and fail if it already exists
 #if defined(__WXMAC__) && !defined(__UNIX__)
 	// Dominic Mazzoni [dmazzoni+@cs.cmu.edu] reports that open is still broken on the mac, so we replace
 	// int fd = open(wxUnix2MacFilename( szFileName ), O_CREAT | (bOverwrite ? O_TRUNC : O_EXCL), access);
-	int fd = creat( szFileName , accessMode);
+	m_fd = creat( szFileName , accessMode);
 #else
-	int fd = wxOpen( szFileName,
+	m_fd = wxOpen( szFileName,
 			O_BINARY | O_WRONLY | O_CREAT |
 			(bOverwrite ? O_TRUNC : O_EXCL)
 			ACCESS(accessMode) );
 #endif
 	
 	#ifdef FILE_TRACKER
-		AddLogLineM(false,wxString(wxT("Created file ")) + fFilePath + wxString::Format(wxT(" with file descriptor %i"),fd));
+		AddLogLineM(false,wxString(wxT("Created file ")) + fFilePath + wxString::Format(wxT(" with file descriptor %i"),m_fd));
+    		get_caller(2);
 	#endif
 	
-	if ( fd == -1 ) {
+	if ( m_fd == -1 ) {
 		wxLogSysError(_("can't create file '%s'"), szFileName);
 		return FALSE;
 	} else {
-		Attach(fd);
+		//Attach(m_fd);
 		return TRUE;
 	}
 }
@@ -254,6 +288,14 @@ bool CFile::Open(const wxChar *szFileName, OpenMode mode, int accessMode)
 
     fFilePath=szFileName;
 
+	#ifdef FILE_TRACKER
+		bool fromConstructor = false;
+		if (accessMode == 12345) {
+			fromConstructor = true;
+			accessMode = wxS_DEFAULT;
+		} 
+    #endif
+    
     switch ( mode )
     {
         case read:
@@ -282,29 +324,41 @@ bool CFile::Open(const wxChar *szFileName, OpenMode mode, int accessMode)
             break;
     }
 
-    int fd = wxOpen( szFileName, flags ACCESS(accessMode));
-    
+    if (m_fd != fd_invalid) {
+	    Close();	
+    }
+
+    m_fd = wxOpen( szFileName, flags ACCESS(accessMode));
+      
 	#ifdef FILE_TRACKER
-		AddLogLineM(false,wxString(wxT("Opened file ")) + fFilePath  + wxString::Format(wxT(" with file descriptor %i"),fd));
+		AddLogLineM(false,wxString(wxT("Opened file ")) + fFilePath  + wxString::Format(wxT(" with file descriptor %i"),m_fd));
+    		if (fromConstructor) {
+			get_caller(3);    
+		} else {
+			get_caller(2);    
+		}
 	#endif
     
-    if ( fd == -1 )
+    if ( m_fd == -1 )
     {
     	AddLogLineM(true, wxString::Format(_("Can't open file '%s'"), szFileName));
         return FALSE;
     }
-    else {
-        Attach(fd);
+       else {
+   //     Attach(m_fd);
         return TRUE;
     }
+    
 }
 
 // close
-bool CFile::Close() const
+bool CFile::Close() 
 {
 
 	#ifdef FILE_TRACKER
 		AddLogLineM(false,wxString(wxT("Closing file ")) + fFilePath + wxString::Format(wxT(" with file descriptor %i"),m_fd));
+		get_caller(2);
+		wxASSERT(!fFilePath.IsEmpty());
 	#endif
 
 	if ( IsOpened() ) {
@@ -315,7 +369,7 @@ bool CFile::Close() const
         }
         else
             m_fd = fd_invalid;
-    }
+    } else wxASSERT(0);
 
     return TRUE;
 }
