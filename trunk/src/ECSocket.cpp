@@ -326,7 +326,7 @@ unsigned int ReadBufferFromSocket(wxSocketBase *sock, void *buffer, unsigned int
 		 * by some gui action (selecting a menu), wxYield is called recoursively.
 		 * So, furure TODO: get rid of WaitFor<X> on gui builds. Thats an only way.
 		 */
-#ifndef CLIENT_GUI
+#ifdef AMULE_DAEMON
 		//
 		// Give socket a 10 sec chance to recv more data.
 		if (FirstRead && (required_len != max_len)) {
