@@ -53,7 +53,7 @@ protected:
 	DECLARE_EVENT_TABLE()
 
 	void OnLvnItemActivateSflist(wxListEvent& evt);
-	void OnBnClickedReloadsharedfiles();
+	void OnBnClickedReloadsharedfiles(wxCommandEvent& ev);
 	//afx_msg void OnLvnItemActivateSflist(NMHDR *pNMHDR, LRESULT *pResult);
 	//afx_msg void OnNMClickSflist(NMHDR *pNMHDR, LRESULT *pResult);
 private:

@@ -40,7 +40,6 @@
 
 class CTransferWnd;
 class CServerWnd;
-class CPreferencesDlg;
 class CSharedFilesWnd;
 class CSearchDlg;
 class CChatWnd;
@@ -110,12 +109,11 @@ public:
 
 	void StartFast(wxTextCtrl *ctl);
 	void OnClose(wxCloseEvent& evt);
-	void OnBnConnect(wxEvent& evt);
+	void OnBnConnect(wxCommandEvent& evt);
 	void InitDialog();
 
 	CTransferWnd*		transferwnd;
 	CServerWnd*		serverwnd;
-	CPreferencesDlg*	preferenceswnd;
 	PrefsUnifiedDlg*	prefsunifiedwnd;
 	CSharedFilesWnd*	sharedfileswnd;
 	CSearchDlg*		searchwnd;
@@ -140,22 +138,21 @@ protected:
 	void OnSocketTimer(wxTimerEvent& evt);
 	void OnQLTimer(wxTimerEvent& evt);
 
-	void btnServers(wxEvent& ev);
-	void btnSearch(wxEvent& ev);
-	void btnTransfer(wxEvent& ev);
-	void btnPreferences(wxEvent& ev);
-	void OnBnNewPreferences(wxEvent& ev);
+	void btnServers(wxCommandEvent& ev);
+	void btnSearch(wxCommandEvent& ev);
+	void btnTransfer(wxCommandEvent& ev);
+	void OnBnNewPreferences(wxCommandEvent& ev);
 	void OnBnClickedPrefOk(wxCommandEvent &event);
 	void OnBnClickedCancel(wxCommandEvent &event);
-	void OnBnShared(wxEvent& ev);
-	void OnBnStats(wxEvent& ev);
-	void OnBnMessages(wxEvent& ev);
+	void OnBnShared(wxCommandEvent& ev);
+	void OnBnStats(wxCommandEvent& ev);
+	void OnBnMessages(wxCommandEvent& ev);
 	void OnFinishedHashing(wxCommandEvent& evt);
 	void OnDnsDone(wxCommandEvent& evt);
 	void OnSourcesDnsDone(wxCommandEvent& evt);
-	void OnMinimize(wxEvent& evt);
+	void OnMinimize(wxIconizeEvent& evt);
 	void OnHashingShutdown(wxCommandEvent&);
-	void OnBnClickedFast(wxEvent& evt);
+	void OnBnClickedFast(wxCommandEvent& evt);
 private:
 	wxString	logtext;
 	bool		ready;

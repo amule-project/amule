@@ -33,7 +33,7 @@ class CHTTPDownloadDlg : public wxDialog
  private:
   DECLARE_EVENT_TABLE()
 
-  void OnBtnCancel(wxEvent& evt);
+  void OnBtnCancel(wxCommandEvent& evt);
   myThread *thread;
 };
 

@@ -83,7 +83,7 @@ void CChatWnd::StartSession(CUpDownClient* client)
 
 #define GetDlgItem(a,b) wxStaticCast(FindWindowById((a)),b)
 
-void CChatWnd::OnBnClickedCsend(wxEvent& evt)
+void CChatWnd::OnBnClickedCsend(wxCommandEvent& evt)
 {
 	uint16 len = GetDlgItem(IDC_CMESSAGE,wxTextCtrl)->GetValue().Length()+2;
 	char* messagetosend = new char[len+1];
@@ -96,7 +96,7 @@ void CChatWnd::OnBnClickedCsend(wxEvent& evt)
 	GetDlgItem(IDC_CMESSAGE,wxTextCtrl)->SetFocus();
 }
 
-void CChatWnd::OnBnClickedCclose(wxEvent& evt)
+void CChatWnd::OnBnClickedCclose(wxCommandEvent& evt)
 {
 	chatselector->EndSession();
 }

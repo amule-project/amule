@@ -467,7 +467,7 @@ bool CamuleApp::OnInit()
  			}     
 	}
 
-#endif __OPENBSD__
+#endif // __OPENBSD__
 #endif
 
 

@@ -54,8 +54,8 @@ public:
 #endif
 	DECLARE_EVENT_TABLE()
 
-	void OnBnClickedCsend(wxEvent& evt);
-	void OnBnClickedCclose(wxEvent& evt);
+	void OnBnClickedCsend(wxCommandEvent& evt);
+	void OnBnClickedCclose(wxCommandEvent& evt);
 };
 
 #endif // CHATWND_H

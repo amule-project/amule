@@ -25,6 +25,11 @@
 
 class wxCTreeEvent;
 
+#if (wxMINOR_VERSION > 4)
+	#include <wx/treectrl.h>
+	#define wxCTreeCtrl wxTreeCtrl
+#endif
+
 #define USRMSG_ITEMSTATECHANGED		(47101) + 16
 #define MP_SHAREDFOLDERS_FIRST	46901
 
@@ -76,6 +81,12 @@ private:
 	  //CTitleMenu  m_SharedMenu;
 	wxString m_strLastRightClicked;
 	bool m_bSelectSubDirs;
+
+#if (wxMINOR_VERSION > 4)
+	#warning FIXME!!!!!!!!!!!!!
+	bool IsChecked(wxTreeItemId& item) { return false; }
+	void SetChecked(HTREEITEM item, bool check) { }
+#endif
 
 public:
 	// construction / destruction

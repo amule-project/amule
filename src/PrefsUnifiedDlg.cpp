@@ -1162,14 +1162,14 @@ void PrefsUnifiedDlg::ForceUlDlRateCorrelation(int id)
 
 
 
-void PrefsUnifiedDlg::OnSpinMaxDLR(wxCommandEvent &event)
+void PrefsUnifiedDlg::OnSpinMaxDLR(wxSpinEvent &event)
 {
 	ForceUlDlRateCorrelation(((wxControl*)event.GetEventObject())->GetId());
 }
 
 
 
-void PrefsUnifiedDlg::OnScroll(wxCommandEvent &event)
+void PrefsUnifiedDlg::OnScroll(wxScrollEvent &event)
 {
 	wxControl*	pctrl = (wxControl*)event.GetEventObject();
 	int			id = pctrl->GetId();
@@ -1246,7 +1246,7 @@ void PrefsUnifiedDlg::OnCancel(wxCommandEvent &event)
 
 
 
-void PrefsUnifiedDlg::OnCheckBoxChange(wxEvent& event)
+void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 {
 	wxCheckBox*	pbox = (wxCheckBox*)event.GetEventObject();
 	int			id = pbox->GetId();
@@ -1288,14 +1288,14 @@ void PrefsUnifiedDlg::OnColorCategorySelected(wxCommandEvent& evt)
 	pbuttonColor->SetBackgroundColour(WxColourFromCr(aprseColor[GetColorIndex()]->GetMemValue()));
 }
 
-void PrefsUnifiedDlg::OnButtonSystray(wxEvent& evt)
+void PrefsUnifiedDlg::OnButtonSystray(wxCommandEvent& evt)
 {
 	theApp.amuledlg->changeDesktopMode();
 }
 
 
 
-void PrefsUnifiedDlg::OnButtonDir(wxEvent& event)
+void PrefsUnifiedDlg::OnButtonDir(wxCommandEvent& event)
 {
 	wxControl*	pctrl = (wxControl*)event.GetEventObject();
 	int			idButton = pctrl->GetId();
@@ -1312,7 +1312,7 @@ void PrefsUnifiedDlg::OnButtonDir(wxEvent& event)
 
 
 
-void PrefsUnifiedDlg::OnButtonBrowseWav(wxEvent& evt)
+void PrefsUnifiedDlg::OnButtonBrowseWav(wxCommandEvent& evt)
 {
 	wxString str = wxFileSelector(_("Browse wav"),"","","*.wav",_("File wav (*.wav)|*.wav||"));
 	Prse(IDC_EDIT_TBN_WAVFILE)->SetCtrlValue(str);
@@ -1320,7 +1320,7 @@ void PrefsUnifiedDlg::OnButtonBrowseWav(wxEvent& evt)
 
 
 
-void PrefsUnifiedDlg::OnButtonBrowseVideoplayer(wxEvent& e)
+void PrefsUnifiedDlg::OnButtonBrowseVideoplayer(wxCommandEvent& e)
 {
 	wxString str=wxFileSelector(_("Browse for videoplayer"),"","","",_("Executable (*)|*||"));
 	if(!str.IsEmpty()) 
@@ -1329,7 +1329,7 @@ void PrefsUnifiedDlg::OnButtonBrowseVideoplayer(wxEvent& e)
 
 
 
-void PrefsUnifiedDlg::OnButtonEditAddr(wxEvent& evt)
+void PrefsUnifiedDlg::OnButtonEditAddr(wxCommandEvent& evt)
 {
 	char* fullpath = new char[strlen(theApp.glob_prefs->GetAppDir())+13];
 	sprintf(fullpath,"%saddresses.dat",theApp.glob_prefs->GetAppDir());

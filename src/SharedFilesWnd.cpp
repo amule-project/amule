@@ -63,7 +63,7 @@ CSharedFilesWnd::~CSharedFilesWnd()
 }
 
 // CSharedFilesWnd message handlers
-void CSharedFilesWnd::OnBnClickedReloadsharedfiles()
+void CSharedFilesWnd::OnBnClickedReloadsharedfiles(wxCommandEvent& ev)
 {
 	theApp.sharedfiles->Reload(true, false);
 }

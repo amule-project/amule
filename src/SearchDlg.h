@@ -64,16 +64,16 @@ public:
 	CSearchListCtrl* searchlistctrl;
 
 	// event handlers
-	void 		OnBnClickedStarts(wxEvent& evt);
+	void 		OnBnClickedStarts(wxCommandEvent& evt);
 	void 		OnBnClickedSdownload(wxCommandEvent& ev);
-	void 		OnBnClickedCancels(wxEvent& evt);
+	void 		OnBnClickedCancels(wxCommandEvent& evt);
 private:
 	// event handlers
-	void 		OnFieldsChange(wxEvent& evt);
+	void 		OnFieldsChange(wxCommandEvent& evt);
 	void 		OnTimer(wxTimerEvent &evt);
 	void 		OnListItemSelected(wxListEvent& ev);
-	void 		OnBnClickedSearchReset(wxEvent& ev);
-	void 		OnBnClickedClearall();
+	void 		OnBnClickedSearchReset(wxCommandEvent& ev);
+	void 		OnBnClickedClearall(wxCommandEvent& ev);
 	void 		OnRMButton(wxMouseEvent& evt);
 
 	// private methods

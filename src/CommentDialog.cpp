@@ -56,7 +56,7 @@ BEGIN_EVENT_TABLE(CCommentDialog,wxDialog)
 	EVT_BUTTON(IDCCANCEL, CCommentDialog::OnBnClickedCancel)
 END_EVENT_TABLE()
 
-void CCommentDialog::OnBnClickedApply(wxEvent& evt)
+void CCommentDialog::OnBnClickedApply(wxCommandEvent& evt)
 {
 	wxString SValue;
 	SValue=((wxTextCtrl*)FindWindowById(IDC_CMT_TEXT))->GetValue();
@@ -65,12 +65,12 @@ void CCommentDialog::OnBnClickedApply(wxEvent& evt)
 	EndModal(0);
 }
 
-void CCommentDialog::OnBnClickedClear(wxEvent& evt)
+void CCommentDialog::OnBnClickedClear(wxCommandEvent& evt)
 {
 	((wxTextCtrl*)FindWindowById(IDC_CMT_TEXT))->SetValue("");
 } 
 
-void CCommentDialog::OnBnClickedCancel(wxEvent& evt)
+void CCommentDialog::OnBnClickedCancel(wxCommandEvent& evt)
 {
 	EndModal(0);
 } 

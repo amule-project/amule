@@ -377,7 +377,7 @@ void CTransferWnd::EditCatTabLabel(int index,CString newlabel)
 	theApp.amuledlg->searchwnd->UpdateCatChoice();
 }
 
-void CTransferWnd::OnSashPositionChanged()
+void CTransferWnd::OnSashPositionChanged(wxSplitterEvent& evt)
 {
 	theApp.amuledlg->split_pos = ((wxSplitterWindow*)FindWindow("splitterWnd"))->GetSashPosition();
 }

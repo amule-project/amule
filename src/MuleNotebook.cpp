@@ -24,6 +24,7 @@
 
 #include <wx/event.h>
 #include <wx/app.h>
+#include <wx/imaglist.h>
 
 #include <wx/arrimpl.cpp> // this is a magic incantation which must be done!
 
@@ -114,7 +115,7 @@ void CMuleNotebook::OnRMButton(wxMouseEvent& event) {
  * notebook tab is 3 pixels wider than the rest (at least on GTK)!
  */
 void CMuleNotebook::CalculatePositions() {
-int i;                       // Loop counter
+unsigned int i;                       // Loop counter
 int imagesizex, imagesizey;  // Notebookpage image size
 int textsizex, textsizey;    // Notebookpage text size
 
@@ -168,7 +169,7 @@ int textsizex, textsizey;    // Notebookpage text size
  */
 void CMuleNotebook::MouseClick(wxMouseEvent &event) {
 long posx, posy;             // Mouse position at the time of the event
-int i;                       // Loop counter
+unsigned int i;                       // Loop counter
 
 	if (GetImageList() == NULL) {
 		event.Skip();
@@ -216,7 +217,7 @@ int i;                       // Loop counter
  */
 void CMuleNotebook::MouseMotion(wxMouseEvent &event) {
 long posx, posy;                        // Event X and Y positions
-int i;                                  // Loop counter
+unsigned int i;                                  // Loop counter
 	if (GetImageList() == NULL) {
 		event.Skip();
 		return; // No images
