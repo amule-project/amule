@@ -49,7 +49,8 @@ CSafeMemFile::CSafeMemFile(UINT nGrowBytes) : CMemFile(nGrowBytes) {}
 
 off_t CSafeMemFile::ReadRaw(void* lpBuf,UINT nCount) {
 	if (GetPosition()+nCount > this->GetLength()) {
-//		AfxThrowFileException(CFileException::endOfFile,0,GetFileName());
+		printf("Read after safemem file!!!!\n");
+		throw ("short packet on read (corrupted tagcount?)");
 		return 0;
 	}
 	return CMemFile::ReadRaw(lpBuf,nCount);

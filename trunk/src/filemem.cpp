@@ -131,13 +131,17 @@ off_t CMemFile::ReadRaw(void* buf,off_t length)
   if(length==0) 
     return 0;
   // dont' read over buffer end
+  //printf("fPos %i, fFSize %i\n",fPosition,fFileSize);
   if (fPosition>fFileSize) {
 		throw CInvalidPacket("short packet on read (corrupted tag?)");
 	  	return 0;
   }
   unsigned int readlen=length;
-  if(length+fPosition>fFileSize)
+  if(length+fPosition>fFileSize) {
+    printf("Read After End Of File!!!!\n");
+    throw CInvalidPacket("short packet on read (corrupted tagcount?)");
     readlen=fFileSize-fPosition;
+  }
 
   memcpy(buf,fBuffer+fPosition,readlen);
   fPosition+=readlen;

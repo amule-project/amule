@@ -860,7 +860,7 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer) {
 	// Support for ET_MOD_VERSION [BlackRat]
 	// lemonfan - I count 9 tags...
 	// Kry - Yes, my fault
-	data->Write((uint32)9); /* 7 -> 8 */ 
+	data->Write((uint32)8); /* 7 -> 8 */ 
 
 	CTag tag1(ET_COMPRESSION,1);
 	tag1.WriteTagToFile(data);
@@ -888,10 +888,12 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer) {
 	CTag tag8(ET_COMPATIBLECLIENT,SO_AMULE);
 	tag8.WriteTagToFile(data);
 
+/*
 	// Support for tag ET_MOD_VERSION
 	CTag tag9(ET_MOD_VERSION, MOD_VERSION);
 	tag9.WriteTagToFile(data);
 	// Maella end
+*/
 
 	Packet* packet = new Packet(data,OP_EMULEPROT);
 	delete data;
@@ -907,93 +909,123 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer) {
 
 void CUpDownClient::ProcessMuleInfoPacket(char* pachPacket, uint32 nSize)
 {
-	
-	CSafeMemFile data((BYTE*)pachPacket,nSize);
-	m_byCompatibleClient = 0;
-	//The version number part of this packet will soon be useless since it is only able to go to v.99.
-	//Why the version is a uint8 and why it was not done as a tag like the eDonkey hello packet is not known..
-	//Therefore, sooner or later, we are going to have to switch over to using the eDonkey hello packet to set the version.
-	//No sense making a third value sent for versions..
-	data.Read(m_byEmuleVersion);
-	if( m_byEmuleVersion == 0x2B ) {
-		m_byEmuleVersion = 0x22;
-	}	
-	uint8 protversion;
-	data.Read(protversion);
+	try {
+		
+		//DumpMem(pachPacket,nSize);
+		CSafeMemFile data((BYTE*)pachPacket,nSize);
+		m_byCompatibleClient = 0;
+		//The version number part of this packet will soon be useless since it is only able to go to v.99.
+		//Why the version is a uint8 and why it was not done as a tag like the eDonkey hello packet is not known..
+		//Therefore, sooner or later, we are going to have to switch over to using the eDonkey hello packet to set the version.
+		//No sense making a third value sent for versions..
+		data.Read(m_byEmuleVersion);
+		if( m_byEmuleVersion == 0x2B ) {
+			m_byEmuleVersion = 0x22;
+		}	
+		uint8 protversion;
+		data.Read(protversion);
 
-	//implicitly supported options by older clients
-	if (protversion == EMULE_PROTOCOL) {
-		//in the future do not use version to guess about new features
+		//implicitly supported options by older clients
+		if (protversion == EMULE_PROTOCOL) {
+			//in the future do not use version to guess about new features
 
-		if(m_byEmuleVersion < 0x25 && m_byEmuleVersion > 0x22)
-			m_byUDPVer = 1;
+			if(m_byEmuleVersion < 0x25 && m_byEmuleVersion > 0x22)
+				m_byUDPVer = 1;
 
-		if(m_byEmuleVersion < 0x25 && m_byEmuleVersion > 0x21)
-			m_bySourceExchangeVer = 1;
+			if(m_byEmuleVersion < 0x25 && m_byEmuleVersion > 0x21)
+				m_bySourceExchangeVer = 1;		
 
-		if(m_byEmuleVersion == 0x24)
-			m_byAcceptCommentVer = 1;
+			if(m_byEmuleVersion == 0x24)
+				m_byAcceptCommentVer = 1;
 
-		// Shared directories are requested from eMule 0.28+ because eMule 0.27 has a bug in 
-		// the OP_ASKSHAREDFILESDIR handler, which does not return the shared files for a 
-		// directory which has a trailing backslash.
-		if(m_byEmuleVersion >= 0x28 && !m_bIsML) // MLdonkey currently does not support shared directories
-			m_fSharedDirectories = 1;
+			// Shared directories are requested from eMule 0.28+ because eMule 0.27 has a bug in 
+			// the OP_ASKSHAREDFILESDIR handler, which does not return the shared files for a 
+			// directory which has a trailing backslash.
+			if(m_byEmuleVersion >= 0x28 && !m_bIsML) // MLdonkey currently does not support shared directories
+				m_fSharedDirectories = 1;
 
-	} else {
-		return;
-	}
-	m_bEmuleProtocol = true;
+		} else {
+			return;
+		}	
+		
+		m_bEmuleProtocol = true;
 
-	uint32 tagcount;
-	data.Read(tagcount);
-	for (uint32 i = 0;i < tagcount; i++){
-		CTag temptag(&data);
-		switch(temptag.tag.specialtag){
-			case ET_COMPRESSION:
-				// Bits 31- 8: 0 - reserved
-				// Bits  7- 0: data compression version
-				m_byDataCompVer = temptag.tag.intvalue;
-				break;
-			case ET_UDPPORT:
-				// Bits 31-16: 0 - reserved
-				// Bits 15- 0: UDP port
-				m_nUDPPort = temptag.tag.intvalue;
-				break;
-			case ET_UDPVER:
-				// Bits 31- 8: 0 - reserved
-				// Bits  7- 0: UDP protocol version
-				m_byUDPVer = temptag.tag.intvalue;
-				break;
-			case ET_SOURCEEXCHANGE:
-				// Bits 31- 8: 0 - reserved
-				// Bits  7- 0: source exchange protocol version
-				m_bySourceExchangeVer = temptag.tag.intvalue;
-				break;
-			case ET_COMMENTS:
-				// Bits 31- 8: 0 - reserved
-				// Bits  7- 0: comments version
-				m_byAcceptCommentVer = temptag.tag.intvalue;
-				break;
-			case ET_EXTENDEDREQUEST:
-				// Bits 31- 8: 0 - reserved
-				// Bits  7- 0: extended requests version
-				m_byExtendedRequestsVer = temptag.tag.intvalue;
-				break;
-			case ET_COMPATIBLECLIENT:
-				// Bits 31- 8: 0 - reserved
-				// Bits  7- 0: compatible client ID
-				m_byCompatibleClient = temptag.tag.intvalue;
-				break;
-			case ET_FEATURES:
-				// Bits 31- 8: 0 - reserved
-				// Bit	    7: Preview
-				// Bit   6- 0: secure identification
-				m_bySupportSecIdent = temptag.tag.intvalue & 3;
-				m_bSupportsPreview = (temptag.tag.intvalue & 128) > 0;
-				break;
+		uint32 tagcount;
+		data.Read(tagcount);
+		for (uint32 i = 0;i < tagcount; i++){
+			CTag temptag(&data);
+			switch(temptag.tag.specialtag){
+				case ET_COMPRESSION:
+					// Bits 31- 8: 0 - reserved
+					// Bits  7- 0: data compression version
+					m_byDataCompVer = temptag.tag.intvalue;
+					break;
+				case ET_UDPPORT:
+					// Bits 31-16: 0 - reserved
+					// Bits 15- 0: UDP port
+					m_nUDPPort = temptag.tag.intvalue;
+					break;
+				case ET_UDPVER:
+					// Bits 31- 8: 0 - reserved
+					// Bits  7- 0: UDP protocol version
+					m_byUDPVer = temptag.tag.intvalue;
+					break;
+				case ET_SOURCEEXCHANGE:
+					// Bits 31- 8: 0 - reserved
+					// Bits  7- 0: source exchange protocol version
+					m_bySourceExchangeVer = temptag.tag.intvalue;
+					break;
+				case ET_COMMENTS:
+					// Bits 31- 8: 0 - reserved
+					// Bits  7- 0: comments version
+					m_byAcceptCommentVer = temptag.tag.intvalue;
+					break;
+				case ET_EXTENDEDREQUEST:
+						// Bits 31- 8: 0 - reserved
+					// Bits  7- 0: extended requests version
+					m_byExtendedRequestsVer = temptag.tag.intvalue;
+					break;
+				case ET_COMPATIBLECLIENT:
+					// Bits 31- 8: 0 - reserved
+					// Bits  7- 0: compatible client ID
+					m_byCompatibleClient = temptag.tag.intvalue;
+					break;
+				case ET_FEATURES:
+					// Bits 31- 8: 0 - reserved
+					// Bit	    7: Preview
+					// Bit   6- 0: secure identification
+					m_bySupportSecIdent = temptag.tag.intvalue & 3;
+					m_bSupportsPreview = (temptag.tag.intvalue & 128) > 0;
+					break;/*
+				case ET_MOD_VERSION:
+					if (temptag.tag.type == 2)
+						m_strModVersion = temptag.tag.stringvalue;
+					else if (temptag.tag.type == 3)
+						m_strModVersion.Format(_T("ModID=%u"), temptag.tag.intvalue);
+					else
+						m_strModVersion = _T("ModID=<Unknwon>");
+					break;*/
+				default:
+					//printf("Mule Unk Tag 0x%02x=%x\n", temptag.tag.specialtag, (UINT)temptag.tag.intvalue);
+					break;
+			}
 		}
 	}
+	catch ( CStrangePacket )
+	{
+		printf("Wrong Tags on hello packet!!\n");
+		printf("Sent by %s on ip %s using client 5i version %i\n",GetUserName(),GetFullIP(),GetClientSoft(),GetMuleVersion());
+		printf("Packet Dump:\n");
+		DumpMem(pachPacket,nSize);
+	}
+	catch ( CInvalidPacket )
+	{
+		printf("Wrong Tags on hello packet!!!\n\n");
+		printf("Sent by %s on ip %s using client 5i version %i\n",GetUserName(),GetFullIP(),GetClientSoft(),GetMuleVersion());
+		printf("Packet Dump:\n");		
+		DumpMem(pachPacket,nSize);
+	}
+	
 	if( m_byDataCompVer == 0 ){
 		m_bySourceExchangeVer = 0;
 		m_byExtendedRequestsVer = 0;
