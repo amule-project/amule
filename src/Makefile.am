@@ -104,8 +104,6 @@ amule_SOURCES = ListenSocket.cpp \
 	SplitterControl.cpp \
 	StatisticsDlg.cpp \
 	TransferWnd.cpp \
-	treebasc.cpp \
-	treectlc.cpp \
 	UDPSocket.cpp \
 	UploadClient.cpp \
 	UploadListCtrl.cpp \
