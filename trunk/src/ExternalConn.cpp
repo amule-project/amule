@@ -287,7 +287,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			wxString buffer("");
 			
 			int filecount = theApp.downloadqueue->GetFileCount();
-			int stats[2]; // get the source count
+			uint32 stats[2]; // get the source count
 			theApp.downloadqueue->GetDownloadStats(stats);
 
 			buffer+=theApp.amuledlg->statisticswnd->GetHTML()+wxString("\t");
@@ -874,7 +874,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 		if (item == "STATS") {
 			int filecount = theApp.downloadqueue->GetFileCount();
 			// get the source count
-			int stats[2];
+			uint32 stats[2];
 			theApp.downloadqueue->GetDownloadStats(stats);
 			static char buffer[1024];
 			sprintf(buffer, "Statistics: \n Downloading files: %d\n Found sources: %d\n Active downloads: %d\n Active Uploads: %d\n Users on upload queue: %d", filecount, stats[0], stats[1], theApp.uploadqueue->GetUploadQueueLength(), theApp.uploadqueue->GetWaitingUserCount());

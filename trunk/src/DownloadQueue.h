@@ -99,7 +99,7 @@ public:
 	void	CheckDiskspace(bool bNotEnoughSpaceLeft = false);
 	void	StopUDPRequests();
 	CServer*	cur_udpserver;
-	void	GetDownloadStats(int results[]);
+	void	GetDownloadStats(uint32 results[]);
 	void	AddPartFilesToShare();
 	void	AddDownload(CPartFile* newfile, bool paused);
 	CUpDownClient* 	GetDownloadClientByIP(uint32 dwIP);

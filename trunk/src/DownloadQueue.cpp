@@ -997,7 +997,7 @@ void CDownloadQueue::SendLocalSrcRequest(CPartFile* sender)
 	m_localServerReqQueue.AddTail(sender);
 }
 
-void CDownloadQueue::GetDownloadStats(int results[])
+void CDownloadQueue::GetDownloadStats(uint32 results[])
 {
 	
 	results[0]=0;

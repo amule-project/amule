@@ -1408,7 +1408,7 @@ void CUpDownClient::ReGetClientSoft()
 					m_clientVerString = _("eDonkeyHybrid");
 				}
 				else if (m_byCompatibleClient != 0){
-					m_clientSoft = SO_LXMULE;
+					m_clientSoft = SO_COMPAT_UNK;
 					m_clientVerString = _("eMule Compat");
 				}
 				else {

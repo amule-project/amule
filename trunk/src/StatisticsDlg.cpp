@@ -277,7 +277,7 @@ void CStatisticsDlg::RecordHistory()
 	phr->cntUploads = theApp.uploadqueue->GetUploadQueueLength();
 	phr->cntConnections = activeconnections;
 	phr->sTimestamp = sCur;
-	int iStats[6];
+	uint32 iStats[6];
 	theApp.downloadqueue->GetDownloadStats(iStats);
 	phr->cntDownloads = iStats[1];
 #ifdef __DEBUG__
@@ -676,6 +676,7 @@ void  CStatisticsDlg::InitTree()
 	cli4= stattree->AppendItem(h_clients,_("Waiting..."));
 	cli5= stattree->AppendItem(h_clients,_("Waiting..."));
 	cli9= stattree->AppendItem(h_clients,_("Waiting..."));
+	cli11= stattree->AppendItem(h_clients,_("Waiting..."));
 	cli6= stattree->AppendItem(h_clients,_("Waiting..."));
 	cli7= stattree->AppendItem(h_clients,CString(_("Filtered: %i")));
 
@@ -713,7 +714,7 @@ void CStatisticsDlg::ShowStatistics()
 	CString cbuffer2;
 	bool resize;
 	DWORD running;
-	int myStats[11];
+	uint32 myStats[11];
 
 	resize=false;
 	theApp.downloadqueue->GetDownloadStats(myStats);
@@ -848,7 +849,8 @@ void CStatisticsDlg::ShowStatistics()
 	cbuffer.Format(_("cDonkey: %i (%1.1f%%)"),myStats[5],(double)100*myStats[5]/totalclient);stattree->SetItemText(cli4, cbuffer);
 	cbuffer.Format(_("Old MLDonkey: %i (%1.1f%%)"),myStats[3],(double)100*myStats[3]/totalclient);stattree->SetItemText(cli5, cbuffer);
 	cbuffer.Format(_("New MLDonkey: %i (%1.1f%%)"),myStats[7],(double)100*myStats[7]/totalclient);stattree->SetItemText(cli9, cbuffer);
-	cbuffer.Format(CString(_("Unknown: %i")).GetData(),myStats[0]);stattree->SetItemText(cli6, cbuffer);
+	cbuffer.Format(_("Compatible: %i (%1.1f%%)"),myStats[9],(double)100*myStats[9]/totalclient);stattree->SetItemText(cli11, cbuffer);
+	cbuffer.Format(CString(_("Unknown: %i")).GetData(),myStats[0]);stattree->SetItemText(cli6, cbuffer);	
 	cbuffer.Format(CString(_("Filtered: %i")).GetData(),theApp.stat_filteredclients);stattree->SetItemText(cli7, cbuffer);
 	
 	if(stattree->IsExpanded(cli3)) {
