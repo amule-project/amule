@@ -64,6 +64,7 @@ public:
 	virtual ~CSearchFile();
 
 #ifdef CLIENT_GUI
+	friend class CSearchListRem;
 	CSearchFile(class CEC_SearchFile_Tag *);
 	
 	uint32	GetSourceCount() { return m_SourceCount; }
