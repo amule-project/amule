@@ -700,10 +700,10 @@ void PrefsUnifiedDlg::BuildItemList(CPreferences *prefs, const wxString& appdir)
 	listRse.Append(new RseBool(IDC_BEEPER, prefs->s_beepOnError, wxT("BeepOnError"), true, wxT("eMule")));
 	listRse.Append(new RseBool(IDC_EXIT, prefs->s_confirmExit, wxT("ConfirmExit"),false, wxT("eMule")));
 	listRse.Append(new RseBool(IDC_FILTER, prefs->s_filterBadIP, wxT("FilterBadIPs"), true, wxT("eMule")));
-	listRse.Append(new RseBool(IDC_AUTOCONNECT, prefs->s_autoconnect, wxT("Autoconnect"), false, wxT("eMule")));
+	listRse.Append(new RseBool(IDC_AUTOCONNECT, prefs->s_autoconnect, wxT("Autoconnect"), true, wxT("eMule")));
 	listRse.Append(new RseBool(IDC_SHOWRATEONTITLE, prefs->s_showRatesInTitle, wxT("ShowRatesOnTitle"), false, wxT("eMule")));
 
-	listRse.Append(new RseBool(IDC_ONLINESIG, prefs->s_onlineSig, wxT("OnlineSignature"), false, wxT("eMule")));
+	listRse.Append(new RseBool(IDC_ONLINESIG, prefs->s_onlineSig, wxT("OnlineSignature"), true, wxT("eMule")));
 	listRse.Append(new RseBool(IDC_STARTMIN, prefs->s_startMinimized, wxT("StartupMinimized"), false, wxT("eMule")));
 	listRse.Append(new RseBool(IDC_SAFESERVERCONNECT, prefs->s_safeServerConnect, wxT("SafeServerConnect"), false, wxT("eMule")));
 
