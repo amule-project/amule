@@ -24,13 +24,13 @@
 
 #if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
 // implementation in ColorFrameCtrl.cpp
-#pragma interface "color.h"
+#pragma interface "Color.h"
 #endif
 
 #include <inttypes.h>		// Needed for uint32_t
 #include <wx/defs.h>            // Needed before any other wx/*.h, possibly needed for COLORREF
 #include <wx/settings.h>        // Needed for wxSystemColour
-#include "types.h"
+#include "Types.h"
 
 
 #if !defined(__WXPM__) && !defined(__WXMSW__)  // Otherwise already defined in wx/defs.h.

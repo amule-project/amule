@@ -38,10 +38,10 @@
 #include "PartFile.h"		// Needed for PR_LOW
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "CatDialog.h"		// Needed for CCatDialog
-#include "opcodes.h"		// Needed for MP_CAT_SET0
+#include "OPCodes.h"		// Needed for MP_CAT_SET0
 #include "DownloadListCtrl.h"	// Needed for CDownloadListCtrl
 #include "ClientListCtrl.h"	// Needed for CClientListCtrl
-#include "otherfunctions.h"	// Needed for GetCatTitle
+#include "OtherFunctions.h"	// Needed for GetCatTitle
 #include "amule.h"			// Needed for theApp
 #include "muuli_wdr.h"		// Needed for ID_CATEGORIES
 #include "SearchDlg.h"		// Needed for CSearchDlg->UpdateCatChoice()

@@ -31,7 +31,7 @@
 #include "amuleDlg.h"	// Needed for amuleDlg
 #include "ChatWnd.h"
 #include "NetworkFunctions.h"
-#include "otherfunctions.h"
+#include "OtherFunctions.h"
 #include "CMD4Hash.h"
 #include <wx/textctrl.h>
 #include <wx/msgdlg.h>

@@ -50,7 +50,7 @@ enum TaskbarNotifier
 #include <wx/icon.h>
 #include <wx/dcmemory.h>
 
-#include "types.h"	// Needed for uint32
+#include "Types.h"	// Needed for uint32
 
 class wxString;
 class wxMenu;

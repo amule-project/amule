@@ -34,12 +34,12 @@
 #include "amule.h"			// Needed for theApp
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
-#include "otherfunctions.h"		// Needed for CastByName
+#include "OtherFunctions.h"		// Needed for CastByName
 #include "ServerList.h"		// Needed for CServerList
 #include "ServerWnd.h"		// Needed for CServerWnd
 #include "ServerConnect.h"		// Needed for CServerConnect
-#include "server.h"			// Needed for CServer and SRV_PR_*
-#include "opcodes.h"		// Needed for MP_PRIO*
+#include "Server.h"			// Needed for CServer and SRV_PR_*
+#include "OPCodes.h"		// Needed for MP_PRIO*
 
 
 #define SYSCOLOR(x) (wxSystemSettings::GetColour(x))

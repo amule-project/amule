@@ -39,7 +39,7 @@
 #include <wx/config.h>
 
 #include "KnownFile.h"		// Interface declarations.
-#include "otherfunctions.h"	// Needed for nstrdup
+#include "OtherFunctions.h"	// Needed for nstrdup
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "SafeFile.h"		// Needed for CSafeMemFile
 #include "updownclient.h"	// Needed for CUpDownClient
@@ -49,7 +49,7 @@
 #include "KnownFileList.h"	// Needed for CKnownFileList
 #include "amule.h"			// Needed for theApp
 #include "PartFile.h"		// Needed for SavePartFile
-#include "endianfix.h"
+#include "EndianFix.h"
 
 #include <wx/arrimpl.cpp> // this is a magic incantation which must be done!
 

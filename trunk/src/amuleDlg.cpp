@@ -56,7 +56,7 @@
 	#endif // USE_WX_TRAY
 #endif // __SYSTRAY_DISABLED__
 
-#include "otherfunctions.h"	// Needed for CastItoIShort
+#include "OtherFunctions.h"	// Needed for CastItoIShort
 #include "ServerListCtrl.h"	// Needed for CServerListCtrl
 #include "SharedFilesCtrl.h"	// Needed for CSharedFilesCtrl
 #include "ClientListCtrl.h"	// Needed for CClientListCtrl
@@ -84,7 +84,7 @@
 #include "ListenSocket.h"	// Needed for CListenSocket
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "amule.h"		// Needed for theApp
-#include "opcodes.h"		// Needed for TM_FINISHEDHASHING
+#include "OPCodes.h"		// Needed for TM_FINISHEDHASHING
 #include "muuli_wdr.h"		// Needed for ID_BUTTONSERVERS
 #include "PrefsUnifiedDlg.h"
 #include "GetTickCount.h"	// Needed for GetTickCount()

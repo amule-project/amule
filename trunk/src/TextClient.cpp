@@ -45,7 +45,7 @@
 
 //-------------------------------------------------------------------
 
-#include "otherfunctions.h"
+#include "OtherFunctions.h"
 #include "ECcodes.h"
 #include "ECPacket.h"
 #include "ECSpecialTags.h"

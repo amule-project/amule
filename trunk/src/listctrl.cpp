@@ -47,7 +47,7 @@
 #pragma implementation "listctrl_gen.h"
 #endif
 
-#include "types.h"		// For wxCHECK_VERSION_FULL
+#include "Types.h"		// For wxCHECK_VERSION_FULL
 
 // For compilers that support precompilation, includes "wx.h".
 #include "wx/wxprec.h"

@@ -25,15 +25,15 @@
 
 #include "muuli_wdr.h"			// Needed for ID_SHFILELIST
 #include "SharedFilesCtrl.h"	// Interface declarations
-#include "otherfunctions.h"		// Needed for CastItoXBytes
+#include "OtherFunctions.h"		// Needed for CastItoXBytes
 #include "SharedFilesWnd.h"		// Needed for CSharedFilesWnd
 #include "amuleDlg.h"			// Needed for CamuleDlg
 #include "CommentDialog.h"		// Needed for CCommentDialog
 #include "PartFile.h"			// Needed for CPartFile
 #include "SharedFileList.h"		// Needed for CKnownFileMap
-#include "opcodes.h"			// Needed for MP_PRIOVERYLOW
+#include "OPCodes.h"			// Needed for MP_PRIOVERYLOW
 #include "amule.h"				// Needed for theApp
-#include "color.h"				// Needed for SYSCOLOR
+#include "Color.h"				// Needed for SYSCOLOR
 #include "ServerConnect.h"			// Needed for CServerConnect
 #include "Preferences.h"
 #include "BarShader.h"			// Needed for CBarShader

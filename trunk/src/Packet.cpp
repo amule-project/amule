@@ -26,8 +26,8 @@
 #include "Packet.h"		// Interface declarations
 #include "StringFunctions.h"	// Needed for nstrdup
 #include "MemFile.h"		// Needed for CMemFile
-#include "otherstructs.h"	// Needed for Header_Struct
-#include "types.h"		// Needed for wxFileSize_t
+#include "OtherStructs.h"	// Needed for Header_Struct
+#include "Types.h"		// Needed for wxFileSize_t
 
 // Copy constructor
 CPacket::CPacket(CPacket &p)

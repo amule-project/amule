@@ -30,10 +30,10 @@
 #include "OScopeCtrl.h"		// Interface declarations.
 #include "StatisticsDlg.h"	// Needed for GetHistory()
 #include "amuleDlg.h"		// Needed for CamuleDlg
-#include "otherfunctions.h"	// Needed for CastSecondsToHM
+#include "OtherFunctions.h"	// Needed for CastSecondsToHM
 #include "StringFunctions.h"
 #include "amule.h"			// Needed for theApp
-#include "color.h"			// Needed for COLORREF, GetRValue, GetGValue and GetBValue
+#include "Color.h"			// Needed for COLORREF, GetRValue, GetGValue and GetBValue
 
 BEGIN_EVENT_TABLE(COScopeCtrl,wxControl)
   EVT_PAINT(COScopeCtrl::OnPaint)

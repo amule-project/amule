@@ -22,7 +22,7 @@
 #ifndef ECSPECIALTAGS_H
 #define ECSPECIALTAGS_H
 
-#include "types.h"	// Needed for uint* types
+#include "Types.h"	// Needed for uint* types
 #include <wx/string.h>	// Needed for wxString
 #include "ECcodes.h"	// Needed for EC types
 #include "ECPacket.h"	// Needed for CECTag

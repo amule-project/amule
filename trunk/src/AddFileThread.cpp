@@ -35,7 +35,7 @@
 #include "AddFileThread.h"	// Interface declarations
 #include "StringFunctions.h"	// Needed for unicode2char
 #include "amule.h"			// Needed for theApp
-#include "opcodes.h"		// Needed for TM_HASHTHREADFINISHED
+#include "OPCodes.h"		// Needed for TM_HASHTHREADFINISHED
 #include "PartFile.h"		// Needed for CKnownFile and CPartFile
 #include "CFile.h"			// Needed for CFile
 #include "AICHSyncThread.h"	// Needed for CAICHSyncThread

@@ -29,7 +29,7 @@
 #include "config.h"		// Needed for HAVE_GETRLIMIT, HAVE_SETRLIMIT, HAVE_SYS_RESOURCE_H,
 #endif				//   LOCALEDIR, PACKAGE, PACKAGE_STRING and VERSION
 
-#include "types.h"
+#include "Types.h"
 #include "amule.h"
 
 CTimer::~CTimer()

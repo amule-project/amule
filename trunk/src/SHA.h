@@ -63,7 +63,7 @@
 #pragma interface "SHA.h"
 #endif
 
-#include "types.h"
+#include "Types.h"
 #include "SHAHashSet.h"
 
 class CSHA : public CAICHHashAlgo

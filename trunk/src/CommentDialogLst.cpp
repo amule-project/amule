@@ -28,9 +28,9 @@
 #include <wx/sizer.h>
 #include "CommentDialogLst.h"	// Interface declarations
 #include "muuli_wdr.h"		// Needed for commentLstDlg
-#include "otherfunctions.h"	// Needed for GetRateString
+#include "OtherFunctions.h"	// Needed for GetRateString
 #include "PartFile.h"		// Needed for CPartFile
-#include "opcodes.h"		// Needed for SOURCESSLOTS
+#include "OPCodes.h"		// Needed for SOURCESSLOTS
 #include "updownclient.h"	// Needed for CUpDownClient
 
 using namespace otherfunctions;

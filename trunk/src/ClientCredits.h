@@ -27,7 +27,7 @@
 #include <cstddef>		// Needed for NULL
 #include <ctime>		// Needed for time(2)
 
-#include "types.h"		// Needed for uint16 and uint32
+#include "Types.h"		// Needed for uint16 and uint32
 #include <map>
 
 #include "CMD4Hash.h"

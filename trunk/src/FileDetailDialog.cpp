@@ -33,11 +33,11 @@
 #include "muuli_wdr.h"		// Needed for ID_CLOSEWNDFD,...,IDC_RENAME
 #include "FileDetailDialog.h"	// Interface declarations
 #include "FileDetailListCtrl.h"	// Needed for CFileDetailListCtrl
-#include "otherfunctions.h"	// Needed for MakeStringEscaped
+#include "OtherFunctions.h"	// Needed for MakeStringEscaped
 #include "CommentDialogLst.h"	// Needed for CCommentDialogLst
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "PartFile.h"		// Needed for CPartFile
-#include "color.h"		// Needed for SYSCOLOR
+#include "Color.h"		// Needed for SYSCOLOR
 
 #define ID_MY_TIMER 1652
 

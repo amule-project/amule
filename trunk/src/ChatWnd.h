@@ -25,7 +25,7 @@
 #endif
 
 #include <wx/panel.h>		// Needed for wxPanel
-#include "types.h"
+#include "Types.h"
 
 class CFriend;
 class CUpDownClient;

@@ -28,7 +28,7 @@
 
 #include "tree.hh"
 #include "CTypedPtrList.h"
-#include "types.h"
+#include "Types.h"
 #include "GetTickCount.h"
 
 #include <wx/string.h>

@@ -27,7 +27,7 @@
 #endif
 
 #include <wx/dialog.h>		// Needed for wxDialog
-#include "types.h"		// Needed for DWORD
+#include "Types.h"		// Needed for DWORD
 
 
 class Category_Struct;

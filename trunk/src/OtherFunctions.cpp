@@ -18,7 +18,7 @@
 //
 
 #if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma implementation "otherfunctions.h"
+#pragma implementation "OtherFunctions.h"
 #endif
 
 #include <wx/defs.h>		// Needed before any other wx/*.h
@@ -38,7 +38,7 @@
 	#include "winsock.h"
 #endif
 
-#include "otherfunctions.h"	// Interface declarations
+#include "OtherFunctions.h"	// Interface declarations
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"		// Needed for VERSION

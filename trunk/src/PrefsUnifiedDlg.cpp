@@ -49,8 +49,8 @@
 
 #include "amule.h"			// Needed for theApp
 #include "amuleDlg.h"
-#include "color.h"
-#include "otherfunctions.h"		// Needed for IsEmptyFile
+#include "Color.h"
+#include "OtherFunctions.h"		// Needed for IsEmptyFile
 #include "StringFunctions.h"		// Needed for unicode2char
 #include "EditServerListDlg.h"
 #include "SharedFileList.h"		// Needed for CSharedFileList

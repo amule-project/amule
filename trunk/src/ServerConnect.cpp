@@ -41,12 +41,12 @@
 #include "ServerUDPSocket.h"		// Needed for CServerUDPSocket
 #include "SharedFileList.h"	// Needed for CSharedFileList
 #include "Packet.h"		// Needed for CTag
-#include "opcodes.h"		// Needed for CT_NAME
+#include "OPCodes.h"		// Needed for CT_NAME
 #include "SafeFile.h"		// Needed for CSafeMemFile
-#include "otherfunctions.h"	// Needed for GetTickCount
+#include "OtherFunctions.h"	// Needed for GetTickCount
 #include "ServerSocket.h"	// Needed for CServerSocket
 #include "ListenSocket.h"	// Needed for CListenSocket
-#include "server.h"		// Needed for CServer
+#include "Server.h"		// Needed for CServer
 #include "amule.h"		// Needed for theApp
 #include "ServerList.h"		// Needed for CServerList
 #include "Preferences.h"	// Needed for CPreferences

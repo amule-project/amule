@@ -17,7 +17,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-#include "types.h"
+#include "Types.h"
 
 #include <zlib.h>		// Needed for inflateEnd
 #include <wx/defs.h>		// Needed before any other wx/*.h
@@ -31,17 +31,17 @@
 #include "IPFilter.h"		// Needed for CIPFilter
 #include "ServerConnect.h"		// Needed for CServerConnect
 #include "ClientCredits.h"	// Needed for CClientCreditsList
-#include "server.h"		// Needed for CServer
+#include "Server.h"		// Needed for CServer
 #include "Preferences.h"	// Needed for CPreferences
 #include "SafeFile.h"		// Needed for CSafeMemFile
 #include "Packet.h"		// Needed for CPacket
-#include "otherstructs.h"	// Needed for Requested_Block_Struct
+#include "OtherStructs.h"	// Needed for Requested_Block_Struct
 #include "Friend.h"		// Needed for CFriend
 #include "ClientList.h"		// Needed for CClientList
 #include "amule.h"		// Needed for theApp
 #include "PartFile.h"		// Needed for CPartFile
 #include "ListenSocket.h"	// Needed for CClientReqSocket
-#include "opcodes.h"		// Needed for OP_*
+#include "OPCodes.h"		// Needed for OP_*
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "Statistics.h"
 

@@ -44,8 +44,8 @@
 #include "DownloadQueue.h"	// Needed for GetKBps()
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "SharedFileList.h"	// Needed for CSharedFileList
-#include "server.h"		// Needed for GetListName
-#include "otherfunctions.h"	// Needed for EncodeBase16
+#include "Server.h"		// Needed for GetListName
+#include "OtherFunctions.h"	// Needed for EncodeBase16
 #include "ServerConnect.h"		// Needed for CServerConnect
 #include "SharedFilesCtrl.h"	// Needed for CSharedFilesCtrl
 #include "SharedFilesWnd.h"	// Needed for CSharedFilesWnd
@@ -53,7 +53,7 @@
 #include "ServerWnd.h"		// Needed for CServerWnd
 #include "Statistics.h"
 #include "TransferWnd.h"	// Needed for CTransferWnd
-#include "opcodes.h"		// Needed for UNLIMITED
+#include "OPCodes.h"		// Needed for UNLIMITED
 #include "Preferences.h"	// Needed for CPreferences
 #include "amule.h"		// Needed for theApp
 #include "NetworkFunctions.h" // Needed for Uint32toStringIP

@@ -33,10 +33,10 @@
 #include "muuli_wdr.h"		// Needed for ID_ADDTOLIST
 #include "ServerWnd.h"		// Interface declarations.
 #include "GetTickCount.h"	// Needed for GetTickCount
-#include "server.h"		// Needed for CServer
+#include "Server.h"		// Needed for CServer
 #include "ServerList.h"		// Needed for CServerList
 #include "ServerListCtrl.h"	// Needed for CServerListCtrl
-#include "otherfunctions.h"	// Needed for GetTickCount
+#include "OtherFunctions.h"	// Needed for GetTickCount
 #include "Preferences.h"	// Needed for CPreferences
 #include "ServerConnect.h"
 #include "NetworkFunctions.h" // Needed for Uint32_16toStringIP_Port

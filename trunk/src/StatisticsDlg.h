@@ -25,7 +25,7 @@
 #include <wx/panel.h>		// Needed for wxPanel
 #include <wx/treebase.h>	// Needed for wxTreeItemId (HTREEITEM) and wxTreeCtrl
 
-#include "types.h"			// Needed for uint32 and uint64
+#include "Types.h"			// Needed for uint32 and uint64
 #include "CTypedPtrList.h"	// Needed for CList
 #include "Statistics.h"
 

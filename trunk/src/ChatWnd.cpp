@@ -34,9 +34,9 @@
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "ChatSelector.h"	// Needed for CChatSelector
 #include "muuli_wdr.h"		// Needed for messagePage
-#include "color.h"			// Needed for GetColour
-#include "opcodes.h"
-#include "otherfunctions.h"
+#include "Color.h"			// Needed for GetColour
+#include "OPCodes.h"
+#include "OtherFunctions.h"
 
 BEGIN_EVENT_TABLE(CChatWnd, wxPanel)
 	EVT_BUTTON(IDC_CSEND, CChatWnd::OnBnClickedCsend)

@@ -36,7 +36,7 @@
 
 #include <wx/defs.h>		// Needed before any other wx/*.h
 
-#include "types.h"		// Needed for uint16 and uint32
+#include "Types.h"		// Needed for uint16 and uint32
 #include "CTypedPtrList.h"	// Needed for CTypedPtrList
 #include "Proxy.h"		// Needed for CDatagramSocketProxy and amuleIPV4Address
 

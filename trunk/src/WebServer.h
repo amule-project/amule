@@ -61,8 +61,8 @@
 	#include <wx/msw/winundef.h>
 #endif
 
-#include "types.h"
-#include "otherfunctions.h"
+#include "Types.h"
+#include "OtherFunctions.h"
 #include "WebInterface.h"
 #include "KnownFile.h"
 #include "ECPacket.h"

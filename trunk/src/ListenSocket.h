@@ -28,7 +28,7 @@
 #pragma interface "ListenSocket.h"
 #endif
 
-#include "types.h"		// Needed for uint8, uint16, uint32 and uint64
+#include "Types.h"		// Needed for uint8, uint16, uint32 and uint64
 #include "EMSocket.h"		// Needed for CEMSocket
 #include "gsocket-fix.h"	// Needed for wxSOCKET_REUSEADDR
 #include "amuleIPV4Address.h"

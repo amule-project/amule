@@ -25,9 +25,9 @@
 #endif
 
 #include "CFile.h"		// Needed for CFile
-#include "types.h"		// Needed for LPCSTR
+#include "Types.h"		// Needed for LPCSTR
 #include "MemFile.h"		// Needed for CMemFile
-#include "endianfix.h"		// Needed for ENDIAN_SWAP_*
+#include "EndianFix.h"		// Needed for ENDIAN_SWAP_*
 
 namespace Kademlia{
 	class CUInt128;

@@ -42,7 +42,7 @@
 #include <wx/filename.h>
 
 #include "DownloadListCtrl.h"	// Interface declarations
-#include "otherfunctions.h"		// Needed for CheckShowItemInGivenCat
+#include "OtherFunctions.h"		// Needed for CheckShowItemInGivenCat
 #include "DataToText.h"			// Needed for PriorityToStr
 #include "amule.h"				// Needed for theApp
 #include "ClientDetailDialog.h"	// Needed for CClientDetailDialog
@@ -53,7 +53,7 @@
 #include "updownclient.h"		// Needed for CUpDownClient
 #include "amuleDlg.h"			// Needed for CamuleDlg
 #include "muuli_wdr.h"			// Needed for ID_DLOADLIST
-#include "color.h"				// Needed for BLEND and SYSCOLOR
+#include "Color.h"				// Needed for BLEND and SYSCOLOR
 #include "ClientCredits.h"		// Needed for GetCurrentIdentState
 #include "BarShader.h"			// Needed for CBarShader
 #include "Preferences.h"

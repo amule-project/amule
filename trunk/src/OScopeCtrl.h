@@ -34,8 +34,8 @@
 #include <wx/pen.h>
 #include <wx/brush.h>
 
-#include "types.h"		// Needed for RECT
-#include "color.h"			// Needed for COLORREF and RGB
+#include "Types.h"		// Needed for RECT
+#include "Color.h"			// Needed for COLORREF and RGB
 #include "Statistics.h"		// Needed for StatsGraphType
 
 class wxMemoryDC;

@@ -27,7 +27,7 @@
 #include "Proxy.h"		// Needed for CSocketClientProxy
 #include <wx/event.h>
 
-#include "types.h"		// Needed for uint8 and uint32
+#include "Types.h"		// Needed for uint8 and uint32
 #include "CTypedPtrList.h"	// Needed for CTypedPtrList
 
 #ifdef __DEBUG__

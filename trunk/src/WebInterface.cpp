@@ -43,7 +43,7 @@
 
 //-------------------------------------------------------------------
 
-#include "otherfunctions.h"
+#include "OtherFunctions.h"
 #include "WebServer.h"
 
 #if wxCHECK_VERSION(2,4,2)

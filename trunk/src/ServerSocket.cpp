@@ -26,7 +26,7 @@
 
 #include <ctime>
 #include <cerrno>
-#include "types.h"
+#include "Types.h"
 #ifdef __WXMSW__
 	#include <winsock.h>
 	#include <wx/defs.h>
@@ -55,14 +55,14 @@
 #include "PartFile.h"		// Needed for CPartFile
 #include "MemFile.h"		// Needed for CMemFile
 #include "SearchList.h"		// Needed for CSearchList
-#include "otherstructs.h"	// Needed for LoginAnswer_Struct
+#include "OtherStructs.h"	// Needed for LoginAnswer_Struct
 #include "Preferences.h"	// Needed for CPreferences
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
-#include "opcodes.h"		// Needed for OP_SERVERMESSAGE
-#include "otherfunctions.h"	// Needed for GetTickCount
+#include "OPCodes.h"		// Needed for OP_SERVERMESSAGE
+#include "OtherFunctions.h"	// Needed for GetTickCount
 #include "ServerConnect.h"		// Needed for CS_WAITFORLOGIN
 #include "ServerList.h"		// Needed for CServerList
-#include "server.h"		// Needed for CServer
+#include "Server.h"		// Needed for CServer
 #include "amule.h"		// Needed for theApp
 #include "amuleIPV4Address.h"	// Needed for amuleIPV4Address
 #include "Statistics.h"		// Needed for CStatistics

@@ -22,7 +22,7 @@
 #ifndef ECPACKET_H
 #define ECPACKET_H
 
-#include "types.h"	// Needed for uint* types
+#include "Types.h"	// Needed for uint* types
 #include <wx/string.h>	// Needed for wxString
 #ifndef __WXMSW__
 #include <netinet/in.h>	// Needed for ntoh, hton functions

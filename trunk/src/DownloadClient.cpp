@@ -24,11 +24,11 @@
 #include <cmath>		// Needed for std:exp
 
 #include "ClientCredits.h"	// Needed for CClientCredits
-#include "otherfunctions.h"	// Needed for md4cmp
+#include "OtherFunctions.h"	// Needed for md4cmp
 #include "ClientUDPSocket.h"	// Needed for CClientUDPSocket
 #include "ServerConnect.h"		// Needed for CServerConnect
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
-#include "otherstructs.h"	// Needed for Requested_Block_Struct
+#include "OtherStructs.h"	// Needed for Requested_Block_Struct
 #include "Preferences.h"	// Needed for CPreferences
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "Packet.h"		// Needed for CPacket
@@ -37,7 +37,7 @@
 #include "amule.h"		// Needed for theApp
 #include "PartFile.h"		// Needed for CPartFile
 #include "updownclient.h"	// Needed for CUpDownClient
-#include "otherfunctions.h" // md4hash
+#include "OtherFunctions.h" // md4hash
 #include "SHAHashSet.h"
 #include "SharedFileList.h"
 #include "Statistics.h"

@@ -37,7 +37,7 @@
 #include <wx/timer.h>
 #include <wx/imaglist.h>
 
-#include "types.h"			// Needed for uint32
+#include "Types.h"			// Needed for uint32
 
 class CTransferWnd;
 class CServerWnd;

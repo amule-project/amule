@@ -47,11 +47,11 @@
 #include "SharedFileList.h"		// Needed for CSharedFileList
 #include "SearchDlg.h"				// Needed for UpdateCatChoice
 #include "StringFunctions.h"		// Needed for MakeFoldername
-#include "otherfunctions.h"		// Needed for CastChild
+#include "OtherFunctions.h"		// Needed for CastChild
 #include "Preferences.h"		// Needed for CPreferences
 #include "amule.h"				// Needed for theApp
 #include "muuli_wdr.h"			// Needed for CategoriesEditWindow
-#include "color.h"				// Needed for RGB, GetColour, GetRValue, GetGValue and GetBValue
+#include "Color.h"				// Needed for RGB, GetColour, GetRValue, GetGValue and GetBValue
 
 
 

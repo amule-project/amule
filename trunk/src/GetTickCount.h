@@ -28,7 +28,7 @@
 #pragma interface "GetTickCount.h"
 #endif
 
-#include "types.h"		// Needed for uint32
+#include "Types.h"		// Needed for uint32
 
 #ifdef __WXMSW__
 #include <winbase.h>

@@ -55,8 +55,8 @@ enum DesktopMode
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/string.h>		// Needed for wxString
 
-#include "types.h"		// Needed for DWORD
-#include "color.h"		// Needed for COLORREF, GetRValue, GetGValue and GetBValue
+#include "Types.h"		// Needed for DWORD
+#include "Color.h"		// Needed for COLORREF, GetRValue, GetGValue and GetBValue
 
 
 #if defined(__UTF8_SYSTRAY_ENABLED__) || wxUSE_UNICODE 

@@ -18,15 +18,14 @@
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 #if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma implementation "server.h"
+#pragma implementation "Server.h"
 #endif
 
-#include "types.h" 
-#include "server.h"		// Interface declarations.
+#include "Server.h"		// Interface declarations.
 #include "SafeFile.h"		// Needed for CSafeFile
-#include "otherfunctions.h"	// Needed for nstrdup
+#include "OtherFunctions.h"	// Needed for nstrdup
 #include "NetworkFunctions.h" // Needed for StringIPtoUint32
-#include "otherstructs.h"	// Needed for ServerMet_Struct
+#include "OtherStructs.h"	// Needed for ServerMet_Struct
 #include "Packet.h"		// Needed for CTag
 
 #include <wx/intl.h>	// Needed for _

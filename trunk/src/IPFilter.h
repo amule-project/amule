@@ -28,7 +28,7 @@
 
 #include <wx/thread.h>	// Needed for wxMutex;
 
-#include "types.h"		// Needed for uint8, uint16 and uint32
+#include "Types.h"		// Needed for uint8, uint16 and uint32
 #include "RangeMap.h"	// Needed for CRangeMap
 
 

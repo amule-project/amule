@@ -30,7 +30,7 @@
 
 #include "muuli_wdr.h"		// Needed for statsDlg
 #include "StatisticsDlg.h"	// Interface declarations
-#include "otherfunctions.h"	// Needed for GetTickCount
+#include "OtherFunctions.h"	// Needed for GetTickCount
 #include "ColorFrameCtrl.h"	// Needed for CColorFrameCtrl
 #include "Preferences.h"	// Needed for CPreferences
 #include "OScopeCtrl.h"		// Needed for COScopeCtrl

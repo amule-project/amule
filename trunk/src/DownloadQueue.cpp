@@ -31,7 +31,7 @@
 #include <wx/utils.h>
 
 #include "DownloadQueue.h"	// Interface declarations
-#include "server.h"		// Needed for CServer
+#include "Server.h"		// Needed for CServer
 #include "Packet.h"		// Needed for CPacket
 #include "SafeFile.h"		// Needed for CSafeMemFile
 #include "ClientList.h"		// Needed for CClientList

@@ -27,8 +27,8 @@
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/control.h>		// Needed for wxControl
 
-#include "types.h"		// Needed for RECT
-#include "color.h"		// Needed for COLORREF
+#include "Types.h"		// Needed for RECT
+#include "Color.h"		// Needed for COLORREF
 
 /////////////////////////////////////////////////////////////////////////////
 // CColorFrameCtrl window

@@ -33,7 +33,7 @@
 
 #include "MuleListCtrl.h"	// Interface declarations
 #include "StringFunctions.h"	// Needed for StrToLong
-#include "opcodes.h"		// Needed for MP_LISTCOL_1
+#include "OPCodes.h"		// Needed for MP_LISTCOL_1
 
 
 // Global constants

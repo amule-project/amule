@@ -34,8 +34,8 @@
 #include "SafeFile.h"		// Needed for CSafeMemFile
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "ServerList.h"		// Needed for CServerList
-#include "opcodes.h"		// Needed for OP_EDONKEYPROT
-#include "server.h"		// Needed for CServer
+#include "OPCodes.h"		// Needed for OP_EDONKEYPROT
+#include "Server.h"		// Needed for CServer
 #include "amule.h"			// Needed for theApp
 #include "NetworkFunctions.h" // Needed for CAsyncDNS
 #include "GetTickCount.h"

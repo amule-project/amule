@@ -29,7 +29,7 @@
 #include <wx/thread.h>		// Needed for wxMutex
 
 
-#include "types.h"		// Needed for uint16 and uint32
+#include "Types.h"		// Needed for uint16 and uint32
 #include "SharedFileList.h" // CKnownFileMap
 
 class CKnownFile;

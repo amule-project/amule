@@ -18,8 +18,8 @@
 #include <math.h>
 #include "UploadBandwidthThrottler.h"
 #include "EMSocket.h"
-#include "opcodes.h"
-#include "otherfunctions.h"
+#include "OPCodes.h"
+#include "OtherFunctions.h"
 #include "GetTickCount.h"
 #include "ThrottledSocket.h"
 

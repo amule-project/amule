@@ -33,13 +33,13 @@
 
 #include "Preferences.h"	// Needed for CPreferences
 
-#include "opcodes.h"		// Needed for CREDITFILE_VERSION
+#include "OPCodes.h"		// Needed for CREDITFILE_VERSION
 #include "GetTickCount.h"	// Needed for GetTickCount
 #include "ClientCredits.h"	// Interface declarations
 #include "amule.h"			// Needed for theApp
 #include "SafeFile.h"		// Needed for CSafeFile
 #include "StringFunctions.h"	// Needed for unicode2char
-#include "otherfunctions.h" 	// Needed for md4cpy
+#include "OtherFunctions.h" 	// Needed for md4cpy
 
 #include "ServerConnect.h" // Needed for CServerConnect
 #include "CFile.h"
