@@ -173,7 +173,7 @@ private:
 
 	bool is_safe_state;
 
-	bool is_hidden;
+	//bool is_hidden;
 
 	uint32 last_iconizing;
 

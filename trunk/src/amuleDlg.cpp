@@ -232,9 +232,9 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 	statisticswnd->SetUpdatePeriod();
 
 	searchwnd->UpdateCatChoice();
-
+#warning desktopmode! should check for wx version too!
 	// Must we start minimized?
-	if (thePrefs::GetStartMinimized() /*&& (thePrefs::GetDesktopMode() != 4)*/) {
+	if (thePrefs::GetStartMinimized() /*&& (thePrefs::GetDesktopMode() != 4) */) { 
 		#ifndef __SYSTRAY_DISABLED__
 		// Send it to tray?
 		if (thePrefs::DoMinToTray()) {
@@ -904,8 +904,8 @@ bool CamuleDlg::SaveGUIPrefs()
 //hides amule
 void CamuleDlg::Hide_aMule(bool iconize)
 {
-	if ((!is_hidden) && ((last_iconizing + 2000) < GetTickCount())) { // 1 secs for sanity
-		is_hidden = true;
+	if (IsShown() && ((last_iconizing + 2000) < GetTickCount())) { // 1 secs for sanity
+	//	is_hidden = true;
 		last_iconizing = GetTickCount();
 		
 		if (iconize) {
@@ -921,8 +921,8 @@ void CamuleDlg::Hide_aMule(bool iconize)
 //shows amule
 void CamuleDlg::Show_aMule(bool uniconize)
 {
-	if ((is_hidden) && ((last_iconizing + 1000) < GetTickCount())) { // 1 secs for sanity
-		is_hidden = false;
+	if (!IsShown() && ((last_iconizing + 1000) < GetTickCount())) { // 1 secs for sanity
+	//	is_hidden = false;
 		last_iconizing = GetTickCount();
 		
 		if (uniconize) {
@@ -936,8 +936,9 @@ void CamuleDlg::Show_aMule(bool uniconize)
 
 void CamuleDlg::OnMinimize(wxIconizeEvent& evt)
 {
+#warning desktopmode! should check for wx version too!
 #ifndef __SYSTRAY_DISABLED__
-	if (thePrefs::DoMinToTray() /*&& (thePrefs::GetDesktopMode() != 4)*/) {
+	if (thePrefs::DoMinToTray() /*&& (thePrefs::GetDesktopMode() != 4) */) {
 		if (evt.Iconized()) {
 			Hide_aMule(false);
 		} else {
