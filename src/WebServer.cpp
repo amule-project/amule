@@ -261,7 +261,7 @@ void CWebServer::ReloadTemplates(void) {
 		while (!input.Eof()) {
 			wxString sLine = file.ReadString();
 
-			sAll += sLine + wxT("\n");
+			sAll += sLine + wxString(wxT("\n"));
 		}
 
 		wxString sVersion = _LoadTemplate(sAll,wxT("TMPL_VERSION"));
@@ -323,9 +323,9 @@ void CWebServer::ReloadTemplates(void) {
 
 
 wxString CWebServer::_LoadTemplate(wxString sAll, wxString sTemplateName) {
-	wxString sRet = wxT("");
-	int nStart = sAll.Find(wxT("<--") + sTemplateName + wxT("-->"));
-	int nEnd = sAll.Find(wxT("<--") + sTemplateName + wxT("_END-->"));
+	wxString sRet;
+	int nStart = sAll.Find(wxT("<--") + sTemplateName + wxString(wxT("-->")));
+	int nEnd = sAll.Find(wxT("<--") + sTemplateName + wxString(wxT("_END-->")));
 	
 	if (nStart != -1 && nEnd != -1)	{
 		nStart += sTemplateName.Length() + 7;
@@ -335,7 +335,7 @@ wxString CWebServer::_LoadTemplate(wxString sAll, wxString sTemplateName) {
 	if (sRet.IsEmpty()) {
 		if (sTemplateName==wxT("TMPL_VERSION"))
 			webInterface->Show(_("Can't find template version number!\nPlease replace aMule.tmpl with a newer version!"));
-		webInterface->Show(_("Failed to load template ") + sTemplateName + wxT("\n"));
+		webInterface->Show(_("Failed to load template ") + sTemplateName + wxString(wxT("\n")));
 	}
 	return sRet;
 }
@@ -390,7 +390,7 @@ void CWebServer::ProcessImgFileReq(ThreadData Data) {
 	wxString filename=Data.sURL;
 	wxString contenttype;
 
-	pThis->webInterface->Show(wxT("inc. fname=") + filename + wxT("\n"));
+	pThis->webInterface->Show(wxString(wxT("inc. fname=")) + filename + wxString(wxT("\n")));
 	if (filename.Right(4).MakeLower()==wxT(".gif")) contenttype=wxT("Content-Type: image/gif\r\n");
 	else if (filename.Right(4).MakeLower()==wxT(".jpg") || filename.Right(5).MakeLower()==wxT(".jpeg")) contenttype=wxT("Content-Type: image/jpg\r\n");
 	else if (filename.Right(4).MakeLower()==wxT(".bmp")) contenttype=wxT("Content-Type: image/bmp\r\n");
@@ -400,18 +400,18 @@ void CWebServer::ProcessImgFileReq(ThreadData Data) {
 	else if (filename.Right(4).MakeLower()==wxT(".css")) contenttype=wxT("Content-Type: text/css\r\n");
 	else if (filename.Right(3).MakeLower()==wxT(".js")) contenttype=wxT("Content-Type: text/javascript\r\n");
 		
-	contenttype += wxT("Last-Modified: ") + pThis->m_Params.sLastModified + wxT("\r\n");
-	contenttype += wxT("ETag: ") + pThis->m_Params.sETag + wxT("\r\n");
+	contenttype += wxString(wxT("Last-Modified: ")) + pThis->m_Params.sLastModified + wxString(wxT("\r\n"));
+	contenttype += wxString(wxT("ETag: ")) + pThis->m_Params.sETag + wxString(wxT("\r\n"));
 		
 	filename=filename.Right(filename.Length()-1);
 	//filename.Replace("/","\\");
 	//filename=wxString(theApp.glob_prefs->GetAppDir())+"webserver/"+filename;
 	//filename=getenv("HOME") + wxString("/.aMule/webserver/") + wxString(filename);
 	filename.Printf(wxT("%s/.aMule/webserver/%s"), getenv("HOME"), filename.GetData());
-	pThis->webInterface->Show(wxT("**** imgrequest: ") + filename + wxT("\n"));
+	pThis->webInterface->Show(wxString(wxT("**** imgrequest: ")) + filename + wxString(wxT("\n")));
 
 	if (!wxFileName::FileExists(filename)) {
-		pThis->webInterface->Show(wxT("**** imgrequest: file ") + filename + wxT(" does not exists\n"));
+		pThis->webInterface->Show(wxString(wxT("**** imgrequest: file ")) + filename + wxString(wxT(" does not exists\n")));
 	}
 
 	wxFileInputStream* fis = new wxFileInputStream(filename);
@@ -435,11 +435,11 @@ void CWebServer::ProcessStyleFileReq(ThreadData Data) {
 	}
 	wxString filename = Data.sURL;
 	wxString contenttype;
-	pThis->webInterface->Show(wxT("inc. fname=") + filename + wxT("\n"));
+	pThis->webInterface->Show(wxString(wxT("inc. fname=")) + filename + wxString(wxT("\n")));
 	contenttype = wxT("Content-Type: text/css\r\n");
 	filename = filename.Right(filename.Length()-1);
 	filename = wxString() << char2unicode(getenv("HOME")) << wxT("/.aMule/webserver/") << filename;
-	pThis->webInterface->Show(wxT("**** cssrequest: ") + filename + wxT("\n"));
+	pThis->webInterface->Show(wxString(wxT("**** cssrequest: ")) + filename + wxString(wxT("\n")));
 	if (wxFileName::FileExists(filename)) {
 		wxFileInputStream* fis = new wxFileInputStream(filename);
 		if(fis->Ok()) {
@@ -453,7 +453,7 @@ void CWebServer::ProcessStyleFileReq(ThreadData Data) {
 			delete[] buffer;
 		}
 	} else {
-		pThis->webInterface->Show(wxT("**** imgrequest: file") + filename + wxT(" does not exists\n"));
+		pThis->webInterface->Show(wxString(wxT("**** imgrequest: file")) + filename + wxString(wxT(" does not exists\n")));
 	}
 }
 
@@ -531,8 +531,8 @@ void CWebServer::ProcessURL(ThreadData Data) {
 	if (_IsLoggedIn(Data, lSession)) {
 		Out += _GetHeader(Data, lSession);		
 		wxString sPage = sW;
-		pThis->webInterface->Show(_("***** logged in, getting page ") + sPage + wxT("\n"));
-		pThis->webInterface->Show(_("***** session is ") + sSession + wxT("\n"));		
+		pThis->webInterface->Show(wxString(_("***** logged in, getting page ")) + sPage + wxString(wxT("\n")));
+		pThis->webInterface->Show(wxString(_("***** session is ")) + sSession + wxString(wxT("\n")));		
 		if (sPage == wxT("server")) {
 			Out += _GetServerList(Data);
 		} else if (sPage == wxT("download")) {
@@ -623,7 +623,7 @@ wxString CWebServer::_ParseURLArray(ThreadData Data, wxString fieldname) {
 	wxString URL = Data.sURL;
 	wxString res,temp;
 	while (URL.Length()>0) {
-		int pos=URL.MakeLower().Find(fieldname.MakeLower() + wxT("="));
+		int pos=URL.MakeLower().Find(fieldname.MakeLower() + wxString(wxT("=")));
 		if (pos>-1) {
 			temp=_ParseURL(Data,fieldname);
 			if (temp==wxT("")) break;
@@ -650,16 +650,16 @@ wxString CWebServer::_ParseURL(ThreadData Data, wxString fieldname) {
 	int i = 0;
 	int findPos = -1;
 	int findLength = 0;
-	pThis->webInterface->Show(wxT("*** parsing url ") + URL + _(" :: field ") + fieldname + wxT("\n"));
+	pThis->webInterface->Show(wxString(wxT("*** parsing url ")) + URL + wxString(_(" :: field ")) + fieldname + wxString(wxT("\n")));
 	if (URL.Find(wxT("?")) > -1) {
 		Parameter = URL.Mid(URL.Find(wxT("?"))+1, URL.Length()-URL.Find(wxT("?"))-1);
 		// search the fieldname beginning / middle and strip the rest...
-		if (Parameter.Find(fieldname + wxT("=")) == 0) {
+		if (Parameter.Find(fieldname + wxString(wxT("="))) == 0) {
 			findPos = 0;
 			findLength = fieldname.Length() + 1;
 		}
-		if (Parameter.Find(wxT("&") + fieldname + wxT("=")) > -1) {
-			findPos = Parameter.Find(wxT("&") + fieldname + wxT("="));
+		if (Parameter.Find(wxString(wxT("&")) + fieldname + wxString(wxT("="))) > -1) {
+			findPos = Parameter.Find(wxString(wxT("&")) + fieldname + wxString(wxT("=")));
 			findLength = fieldname.Length() + 2;
 		}
 		if (findPos > -1) {
@@ -680,7 +680,7 @@ wxString CWebServer::_ParseURL(ThreadData Data, wxString fieldname) {
 			}
 		}
 	}
-	pThis->webInterface->Show(_("*** URL parsed. returning ") + value + wxT("\n"));
+	pThis->webInterface->Show(wxString(_("*** URL parsed. returning ")) + value + wxString(wxT("\n")));
 	return value;
 }
 
@@ -688,7 +688,7 @@ wxString CWebServer::_ParseURL(ThreadData Data, wxString fieldname) {
 wxString CWebServer::_GetHeader(ThreadData Data, long lSession) {
 	CWebServer *pThis = (CWebServer *)Data.pThis;
 	if (pThis == NULL)
-		return wxT("");
+		return wxEmptyString;
 
 	wxString sSession = sSession.Format(wxT("%ld"), lSession);
 
@@ -713,7 +713,7 @@ wxString CWebServer::_GetHeader(ThreadData Data, long lSession) {
 			wxString sRefresh = sRefresh.Format(wxT("%d"), nRefresh);
 			sT.Replace(wxT("[RefreshVal]"), sRefresh);
 			
-			wxString catadd = wxT("");
+			wxString catadd = wxEmptyString;
 			if (sPage == wxT("transfer"))
 				catadd=wxT("&cat=") + _ParseURL(Data, wxT("cat"));
 			sT.Replace(wxT("[wCommand]"), sPage+catadd);
@@ -723,7 +723,7 @@ wxString CWebServer::_GetHeader(ThreadData Data, long lSession) {
 	}
 	
 	Out.Replace(wxT("[Session]"), sSession);
-	pThis->webInterface->Show(_("*** replaced session with ") + sSession + wxT("\n"));
+	pThis->webInterface->Show(wxString(_("*** replaced session with ")) + sSession + wxString(wxT("\n")));
 	Out.Replace(wxT("[HeaderMeta]"), wxEmptyString); // In case there are no meta
 	Out.Replace(wxT("[aMuleAppName]"), wxT("aMule"));
 	Out.Replace(wxT("[version]"), wxString::Format(wxT("%s"), VERSION));
@@ -743,7 +743,7 @@ wxString CWebServer::_GetHeader(ThreadData Data, long lSession) {
 	Out.Replace(wxT("[Search]"), _("Search"));
 
 	char HTTPTempC[100] = "";
-	wxString sConnected = wxT("");
+	wxString sConnected ;
 	
 	if (sHeaderList.Left(brk) == wxT("Connected")) {
 		sHeaderList = sHeaderList.Mid(brk+1); brk=sHeaderList.First(wxT("\t"));
@@ -793,7 +793,7 @@ wxString CWebServer::_GetHeader(ThreadData Data, long lSession) {
 wxString CWebServer::_GetFooter(ThreadData Data) {
 	CWebServer *pThis = (CWebServer *)Data.pThis;
 	if (pThis == NULL)
-		return wxT("");
+		return wxEmptyString;
 
 	return pThis->m_Templates.sFooter;
 }
@@ -802,11 +802,11 @@ wxString CWebServer::_GetFooter(ThreadData Data) {
 wxString CWebServer::_GetServerList(ThreadData Data) {
 	CWebServer *pThis = (CWebServer *)Data.pThis;
 	if (pThis == NULL)
-		return wxT("");
+		return wxEmptyString;
 
 	wxString sSession = _ParseURL(Data, wxT("ses"));
 
-	wxString sAddServerBox = wxT("");
+	wxString sAddServerBox;
 
 	wxString sCmd = _ParseURL(Data, wxT("c"));
 	if (sCmd == wxT("connect") && IsSessionAdmin(Data,sSession) ) {
@@ -844,7 +844,7 @@ wxString CWebServer::_GetServerList(ThreadData Data) {
 		else if(sSort == wxT("files"))
 			pThis->m_Params.ServerSort = SERVER_SORT_FILES;
 
-		if(_ParseURL(Data, wxT("sortreverse")) == wxT(""))
+		if(_ParseURL(Data, wxT("sortreverse")) == wxEmptyString ))
 			pThis->m_Params.bServerSortReverse = false;
 	}
 	
@@ -973,7 +973,7 @@ wxString CWebServer::_GetServerList(ThreadData Data) {
 	}
 	
 	// Displaying
-	wxString sList = wxT("");
+	wxString sList;
 	for (size_t i = 0; i < ServerArray.GetCount(); i++) {
 		wxString HTTPProcessData = OutE; // Copy Entry Line to Temp
 		HTTPProcessData.Replace(wxT("[1]"), ServerArray[i]->sServerName);
@@ -1019,7 +1019,7 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	long cat = 0;
 	sCat.ToLong(&cat);
 	if (cat) {
-		sCat = wxT("&cat=") + sCat;
+		sCat = wxString(wxT("&cat=")) + sCat;
 	}
 	bool clcompl = _ParseURL(Data, wxT("ClCompl")) == wxT("yes");
 	wxString sOp = _ParseURL(Data, wxT("op"));
@@ -1035,11 +1035,11 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	wxString HTTPTemp = _ParseURL(Data, wxT("c"));
 	if (!HTTPTemp.IsEmpty() && IsSessionAdmin(Data, sSession)) {
 		if (HTTPTemp.Right(1) != wxT("/")) {
-			HTTPTemp += wxT("/");
+			HTTPTemp += wxString(wxT("/"));
 		}
 		wxString request = wxT("TRANSFER ADDFILELINK ") + HTTPTemp;
 		if (pThis->webInterface->SendRecvMsg(request) == wxT("Bad Link")) {
-			wxString HTTPTempC = wxT("This ed2k link is invalid (") + HTTPTemp + wxT(")");
+			wxString HTTPTempC = wxString(wxT("This ed2k link is invalid (")) + HTTPTemp + wxString(wxT(")"));
 			Out = pThis->m_Templates.sTransferBadLink;
 			Out.Replace(wxT("[InvalidLink]"), HTTPTempC);
 			Out.Replace(wxT("[Link]"), HTTPTemp);
@@ -1050,7 +1050,7 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 		//sFileHashes formatted as: %s\t%s\t....\t%s
 		wxString sFileHashes = pThis->webInterface->SendRecvMsg(wxT("TRANSFER DL_FILEHASH"));
 		if (sFileHashes.Left(12) == wxT("Disconnected")) {
-			Out += wxT("DISCONNECTED!!!");
+			Out += wxString(wxT("DISCONNECTED!!!"));
 			return Out;
 		}
 		bool bFoundFile = false;
@@ -1076,7 +1076,7 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 			}
 			sMessage += sFoundFileIndex;
 			pThis->webInterface->SendRecvMsg(sMessage);
-			pThis->webInterface->Show(sMessage + wxT("\n"));
+			pThis->webInterface->Show(sMessage + wxString(wxT("\n")));
 		}
 	}
 
@@ -1462,7 +1462,7 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 			HTTPProcessData = OutE;
 
 		if (FilesArray[i]->sFileName.Length() > SHORT_FILENAME_LENGTH)
-			HTTPProcessData.Replace(wxT("[ShortFileName]"), FilesArray[i]->sFileName.Left(SHORT_FILENAME_LENGTH) + wxT("..."));
+			HTTPProcessData.Replace(wxT("[ShortFileName]"), FilesArray[i]->sFileName.Left(SHORT_FILENAME_LENGTH) + wxString(wxT("...")));
 		else
 			HTTPProcessData.Replace(wxT("[ShortFileName]"), FilesArray[i]->sFileName);
 
@@ -1961,7 +1961,7 @@ wxString CWebServer::_GetSharedFilesList(ThreadData Data) {
 
 		HTTPProcessData.Replace(wxT("[FileName]"), _SpecialChars(SharedArray[i]->sFileName));
 		if (SharedArray[i]->sFileName.Length() > SHORT_FILENAME_LENGTH)
-			HTTPProcessData.Replace(wxT("[ShortFileName]"), _SpecialChars(SharedArray[i]->sFileName.Left(SHORT_FILENAME_LENGTH)) + wxT("..."));
+			HTTPProcessData.Replace(wxT("[ShortFileName]"), _SpecialChars(SharedArray[i]->sFileName.Left(SHORT_FILENAME_LENGTH)) + wxString(wxT("...")));
 		else
 			HTTPProcessData.Replace(wxT("[ShortFileName]"), _SpecialChars(SharedArray[i]->sFileName));
 
@@ -2851,7 +2851,7 @@ void CWebServer::InsertCatBox(CWebServer *pThis, wxString &Out, int preselect, w
 
 	int catCount = atoi((char*) pThis->webInterface->SendRecvMsg(wxT("CATEGORIES GETCATCOUNT")).GetData());
 	for (int i=0;i<catCount;i++) {
-		tempBuf3 = (i==preselect) ? wxT(" selected") : wxT("");
+		tempBuf3 = (i==preselect) ? wxString(wxT(" selected")) : wxEmptyString;
 		catTitle = pThis->webInterface->SendRecvMsg(wxString::Format(wxT("CATEGORIES GETCATTITLE %d"), i));
 		tempBuf2.Printf(wxT("<option%s value=\"%i\">%s</option>"), tempBuf3.GetData(), i, (i==0) ? _("all") : catTitle.GetData());
 		tempBuf.Append(tempBuf2);
@@ -2864,7 +2864,7 @@ void CWebServer::InsertCatBox(CWebServer *pThis, wxString &Out, int preselect, w
 		}
 		
 		for (int i = ((catCount>1) ? 1 : 2); i <= 12; i++) {
-			tempBuf3 = ((-i)==preselect) ? wxT(" selected") : wxT("");
+			tempBuf3 = ((-i)==preselect) ? wxString(wxT(" selected")) : wxEmptyString;
 			tempBuf2.Printf(wxT("<option%s value=\"%i\">%s</option>"), tempBuf3.GetData(), -i, GetSubCatLabel(-i).GetData());
 			tempBuf.Append(tempBuf2);
 		}
