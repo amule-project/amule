@@ -25,7 +25,7 @@
 #include "otherfunctions.h"	// Needed for CastSecondsToHM
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "ClientDetailDialog.h"	// Needed for CClientDetailDialog
-#include "FriendList.h"		// Needed for CFriendList
+#include "ChatWnd.h"		// Needed for CChatWnd
 #include "PartFile.h"		// Needed for CPartFile
 #include "ClientCredits.h"	// Needed for CClientCredits
 #include "SharedFileList.h"	// Needed for CSharedFileList
@@ -517,7 +517,7 @@ bool CQueueListCtrl::ProcessEvent(wxEvent& evt)
 				return true;			
 				break;
 			case MP_ADDFRIEND: {
-				theApp.friendlist->AddFriend(client);
+				theApp.amuledlg->chatwnd->AddFriend(client);
 				return true;				
 				break;
 			}

@@ -89,7 +89,6 @@
 #include "sockets.h"			// Needed for CServerConnect
 #include "ServerList.h"			// Needed for CServerList
 #include "KnownFileList.h"		// Needed for CKnownFileList
-#include "FriendList.h"			// Needed for CFriendList
 #include "SearchList.h"			// Needed for CSearchList
 #include "ClientList.h"			// Needed for CClientList
 #include "Preferences.h"		// Needed for CPreferences
@@ -168,7 +167,6 @@ bool CamuleApp::OnInit()
 	IsReady			= false;
 	clientlist		= NULL;
 	searchlist		= NULL;
-	friendlist		= NULL;
 	knownfiles		= NULL;
 	serverlist		= NULL;
 	serverconnect	= NULL;
@@ -518,7 +516,6 @@ bool CamuleApp::OnInit()
 
 	clientlist		= new CClientList();
 	searchlist		= new CSearchList();
-	friendlist		= new CFriendList();
 	knownfiles		= new CKnownFileList(glob_prefs->GetAppDir());
 	serverlist		= new CServerList(glob_prefs);
 	serverconnect	= new CServerConnect(serverlist, glob_prefs);
@@ -549,10 +546,6 @@ bool CamuleApp::OnInit()
 	amuledlg->AddLogLine(true, PACKAGE_STRING);
 
 	sharedfiles->SetOutputCtrl((CSharedFilesCtrl *) amuledlg->sharedfileswnd->FindWindow("sharedFilesCt"));
-
-	// then init firend list
-	friendlist->SetWindow((CFriendListCtrl *)((wxPanel*)amuledlg->chatwnd)->FindWindow(ID_FRIENDLIST));
-	friendlist->ShowFriends();
 
 
 	SetTopWindow(amuledlg);

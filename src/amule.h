@@ -44,7 +44,6 @@ class CKnownFileList;
 class CSearchList;
 class CClientCreditsList;
 class CClientUDPSocket;
-class CFriendList;
 class CIPFilter;
 class wxServer;
 
@@ -131,7 +130,6 @@ public:
 	CSearchList*		searchlist;
 	CClientCreditsList*	clientcredits;
 	CClientUDPSocket*	clientudp;
-	CFriendList*		friendlist;
 	CIPFilter*			ipfilter;
 
 protected:
