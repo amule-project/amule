@@ -573,13 +573,11 @@ bool CamuleApp::OnInit()
 	CAddFileThread::Setup();
 
 	// Create main dialog
-	amuledlg = new CamuleDlg(NULL, wxString::Format(wxT("aMule %s"), wxT(VERSION)));
-
-	
 	// Should default/last-used position be overridden?
-	if ( geometry_enabled ) {
-		amuledlg->Move( geometry_x, geometry_y );
-		amuledlg->SetClientSize( geometry_width, geometry_height - 58 );
+	if (geometry_enabled ) {
+		amuledlg = new CamuleDlg(NULL, wxString::Format(wxT("aMule %s"), wxT(VERSION)), wxPoint(geometry_x,geometry_y), wxSize( geometry_width, geometry_height - 58 ));
+	} else {
+		amuledlg = new CamuleDlg(NULL, wxString::Format(wxT("aMule %s"), wxT(VERSION)));
 	}
 	
 	amuledlg->Show(TRUE);
@@ -1055,7 +1053,7 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
         amulesig_out.Write("\n",1);
 
 	// Uptime 
-	sprintf(buffer,"%s",CastSecondsToHM(theApp.GetUptimeSecs()).GetData());
+	sprintf(buffer,"%s",CastSecondsToHM(GetUptimeSecs()).GetData());
 	amulesig_out.Write(buffer, strlen(buffer));
 	amulesig_out.Write("\n",1);
 					
