@@ -244,6 +244,8 @@ WxCasFrame::SetFromDefaultAmuleFile ()
   OnLineSig aMuleSig;
   aMuleSig.SetFromDefaultAmuleSig ();
 
+	Freeze();
+	
   m_statLine_1->SetLabel ("aMule " +
 			  aMuleSig.GetVersion () +
 			  _(" has been running for ") +
@@ -285,6 +287,7 @@ WxCasFrame::SetFromDefaultAmuleFile ()
       SetStatusText (_("WARNING: aMule is NOT running"));
     }
 
+	Thaw();
   // Fit to new lable size
   Layout ();
   Fit ();
