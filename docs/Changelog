@@ -20,8 +20,39 @@ Version 2.0.0rc7 - The "xxxxxxxxxxxxxxxx" version.
 		* Add translations update (Thanks to all translators)
 		* Removed wxCas documentation to slim source tree 
 		(now downloadable from berlios)
+		  
+	Seagull:
+		* Patch adding "Directory" column to the shared-files dialog.
+		* Patch to add "Swap to this file" option for sources marked as 
+		  "Asked For Another File" on download queue.
+		  
+	Xaignar:
+		* Fixed the progress-bars in the shared-files dialog. It should now
+		  work properly for both part and completed files.
+		* Fixed a bug in the ipfilter, where non-numeric chars on lines would
+		  cause wrong ranges of IPs to be filtered.
+		* Re-added the priority menu for servers, which had gone missing due
+		  to a mistake.
+		* Stopped the client-credits class from attempting to load older 
+		  versions of the lists, which again would lead to mem-corruption.
+		* Fixed hidden columns on download queue, which would still be drawn.
+		* Added sainity checks to loading of clients.met file, since corrupted 
+		  files would lead to potentially huge ammounts of mem-corruption.
+		* Added "Completed Sources" column to the shared-files dialog.
+		* Fixed a bug in sockets where disconnected sockets wouldn't be removed
+		  immediatly, but left to timeout instead.
+		* Fixed an end-less loop on the AICH thread if a file on the queue
+		  was removed from the list of shared files.
+		* Fixed an end-less loop when changing file-status by category.
+		* Fixed the auto-priority menu-item on the download list when multiple items
+		  where selected. It would un-set auto-priotity instead.
+		* A bit of optimization in CPartFile. More work will follow later.
+		* Properly initialized a number of variables.
+		* Fixed the column-width saving/loading which I managed to break shortly before 
+		  rc6 was release. Whoops. :p
+		* Ampersands will no longer be doubled when lines are added to the log-view.
+		
 	
-
 Version 2.0.0rc6 - The "We're so EVIL that we make you lose a sock in every pair" version.
 ----------
 2004-10-03
