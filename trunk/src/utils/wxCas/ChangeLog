@@ -1,0 +1,7 @@
+0.1:
+
+- First stable release to be distributed with aMule 2.0.0rc3
+- For now, just display online statistics with aMule splash
+- Enabled Auto-Refresh of statistics every 5s
+- Added Auto-Refresh on-off button
+- Reduced CPU eating with Kry help
