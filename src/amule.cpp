@@ -1666,31 +1666,25 @@ bool CamuleApp::AddServer(CServer *srv)
 	return false;
 }
 
-//
-// lfroen: logging is not unicode-aware, and it should not be !
-// Phoenix: You must be joking. :)
 void CamuleApp::AddLogLine(const wxString &msg)
 {
 	wxString curr_date = wxDateTime::Now().FormatDate() + wxT(" ") + 
 		wxDateTime::Now().FormatTime() + wxT(": ");
+	applog->Write(curr_date + msg + wxT("\n"));
+	applog->Flush();
+	
 	const wxCharBuffer date_str_buf = unicode2charbuf(curr_date);
 	const char *date_str = (const char *)date_str_buf;
-	applog->Write(date_str, strlen(date_str));
-	if ( enable_stdout_log ) {
+	// conversion may fail, so must check date_str
+	if (enable_stdout_log && date_str) {
 		fputs(date_str, stdout);
 	}
-
  	const wxCharBuffer c_msg_buf = unicode2charbuf(msg);
 	const char *c_msg = (const char *)c_msg_buf;
-	if (c_msg != NULL) {
-		applog->Write(c_msg, strlen(c_msg));
+	// conversion may fail, so must check c_msg
+       	if (enable_stdout_log && c_msg) { 
+		fputs(c_msg, stdout);
 	}
-	applog->Write("\n", 1);
-       	if ( enable_stdout_log ) { 
-		puts(c_msg);
-	}
-
-	applog->Flush();
 }
 
 uint32 CamuleApp::GetPublicIP() const {
