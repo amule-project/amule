@@ -84,8 +84,10 @@ CPreferences::CPreferences()
 
 	// shared directories
 	if(sdirfile.Open(theApp.ConfigDir + wxT("shareddir.dat"))) {
-		for (wxString str = sdirfile.GetFirstLine(); !sdirfile.Eof(); str = sdirfile.GetNextLine() ) {
-    			shareddir_list.Add(str);
+		if (sdirfile.GetLineCount()) {
+			for (wxString str = sdirfile.GetFirstLine(); !sdirfile.Eof(); str = sdirfile.GetNextLine() ) {
+    				shareddir_list.Add(str);
+			}
 		}
 		sdirfile.Close();
 	}
