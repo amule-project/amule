@@ -705,9 +705,18 @@ bool CamuleApp::OnInit()
 		}
 		#else
 		// wxBase has no async wxExecute
-		webserver_thread = new CamuleWebserverThread();
-		webserver_thread->Create();
-		webserver_thread->Run();
+		int pid = fork();
+		if ( pid == -1 ) {
+			printf("ERROR: fork failed with code %d\n", errno);
+		} else {
+			if ( pid == 0 ) {
+				execlp("amuleweb", "amuleweb", "-f", "-q", 0);
+				printf("execlp failed with code %d\n", errno);
+				exit(0);
+			} else {
+				printf("amuleweb is running on pid %d\n", pid);
+			}
+		}
 		#endif
 	}
  		
