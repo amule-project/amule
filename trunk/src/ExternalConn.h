@@ -30,6 +30,7 @@
 #include <wx/event.h>		// For ExitCode
 
 #include <map>
+#include <set>
 #include <list>
 #include <vector>
 
@@ -38,8 +39,11 @@
 
 #include "amuleIPV4Address.h"	// for amuleIPV4Address
 #include "OtherFunctions.h"	// for RLE
+#include "DownloadQueue.h"
+#include "SharedFileList.h"
 
 class CPartFile;
+class CKnownFile;
 class wxSocketServer;
 class wxSocketEvent;
 
@@ -96,7 +100,69 @@ class CPartFile_Encoder {
 		}
 };
 
-typedef std::map<CPartFile *, CPartFile_Encoder> CPartFile_Encoder_Map;
+//
+// T - type of item
+// E - type of encoder
+// C - type of container in theApp
+template <class T, class E, class C>
+class CFileEncoderMap : public std::map<T *, E> {
+	public:
+		void UpdateEncoders(C *container)
+		{
+			// check if encoder contains files that no longer in container
+			// or, we have new files without encoder yet
+			std::set<T *> curr_files, dead_files;
+			for (unsigned int i = 0; i < container->GetFileCount(); i++) {
+				T *cur_file = container->GetFileByIndex(i);
+				curr_files.insert(cur_file);
+				if ( this->count(cur_file) == 0 ) {
+					this->operator [](cur_file) = E(cur_file);
+				}
+			}
+			//
+			// curr_files set is created to minimize lookup time in download queue,
+			// since GetFileByID have loop inside leading to O(n), in this case
+			// it will mean O(n^2)
+			typename std::map<T *, E>::iterator i;
+			for(i = this->begin(); i != this->end(); i++) {
+				if ( curr_files.count(i->first) == 0 ) {
+					dead_files.insert(i->first);
+				}
+			}
+			typename std::set<T *>::iterator j;
+			for(j = dead_files.begin(); j != dead_files.end(); j++) {
+				this->erase(*j);
+			}
+		}
+};
+
+//typedef std::map<CPartFile *, CPartFile_Encoder> CPartFile_Encoder_Map;
+typedef CFileEncoderMap<CPartFile , CPartFile_Encoder, CDownloadQueue> CPartFile_Encoder_Map;
+
+/*
+ * Encode 'obtained parts' info to be sent to remote gui
+ */
+class CKnownFile_Encoder {
+		otherfunctions::RLE_Data m_enc_data;
+		CKnownFile *m_file;
+	public:
+		CKnownFile_Encoder(CKnownFile *file);
+		~CKnownFile_Encoder();
+
+		// stl side :)
+		CKnownFile_Encoder();
+		
+		CKnownFile_Encoder(const CKnownFile_Encoder &obj);
+
+		CKnownFile_Encoder &operator=(const CKnownFile_Encoder &obj);
+		// encode - take data from m_file
+		void Encode(CECTag *parent_tag);
+		// decode - take data from tag
+		void Decode(CECTag *tag);
+};
+
+//typedef std::map<CKnownFile *, CKnownFile_Encoder> CKnownFile_Encoder_Map;
+typedef CFileEncoderMap<CKnownFile , CKnownFile_Encoder, CSharedFileList> CKnownFile_Encoder_Map;
 
 #ifdef AMULE_DAEMON
 #define EXTERNAL_CONN_BASE wxThread
@@ -109,7 +175,8 @@ class ExternalConn : public EXTERNAL_CONN_BASE {
 		ExternalConn(amuleIPV4Address addr, wxString *msg);
 		~ExternalConn();
 	
-		CECPacket *ProcessRequest2(const CECPacket *request, CPartFile_Encoder_Map &enc_map);
+		CECPacket *ProcessRequest2(const CECPacket *request,
+			CPartFile_Encoder_Map &, CKnownFile_Encoder_Map &);
 	
 		CECPacket *Authenticate(const CECPacket *);
 		ECSocket *m_ECServer;
@@ -121,7 +188,8 @@ class ExternalConn : public EXTERNAL_CONN_BASE {
 		int m_numClients;
 		//
 		// encoder container must be created per EC client
-		std::map<wxSocketBase *, CPartFile_Encoder_Map> m_encoders;
+		std::map<wxSocketBase *, CPartFile_Encoder_Map> m_part_encoders;
+		std::map<wxSocketBase *, CKnownFile_Encoder_Map> m_shared_encoders;
 
 		// event handlers (these functions should _not_ be virtual)
 		void OnServerEvent(wxSocketEvent& event);
@@ -140,8 +208,9 @@ class ExternalConnClientThread : public wxThread {
 
 		//
 		// encoder container must be created per EC client
-		CPartFile_Encoder_Map m_encoders;
-
+		CPartFile_Encoder_Map m_part_encoders;
+		CKnownFile_Encoder_Map m_shared_encoders;
+		
 		ExternalConn *m_owner;
 		wxSocketBase *m_sock;
 };

@@ -194,7 +194,7 @@ void ExternalConn::OnSocketEvent(wxSocketEvent& event) {
 				sock->SetEventHandler(*this, SOCKET_ID);
 			}
 		} else {
-			response = ProcessRequest2(request, m_encoders[sock]);
+			response = ProcessRequest2(request, m_part_encoders[sock], m_shared_encoders[sock]);
 			delete request; request = NULL;
 			m_ECServer->WritePacket(sock, response);
 			delete response; response = NULL;
@@ -220,7 +220,8 @@ void ExternalConn::OnSocketEvent(wxSocketEvent& event) {
 		sock->Close();
 		UnregisterSocket(sock);
 		// remove client data
-		m_encoders.erase(sock);
+		m_part_encoders.erase(sock);
+		m_shared_encoders.erase(sock);
 		break;
 	}
 	
@@ -317,7 +318,7 @@ CECPacket *Get_EC_Response_StatRequest(const CECPacket *request)
 	return response;
 }
 
-CECPacket *Get_EC_Response_GetSharedFiles(const CECPacket *request)
+CECPacket *Get_EC_Response_GetSharedFiles(const CECPacket *request, CKnownFile_Encoder_Map &)
 {
 	wxASSERT(request->GetOpCode() == EC_OP_GET_SHARED_FILES);
 
@@ -330,7 +331,12 @@ CECPacket *Get_EC_Response_GetSharedFiles(const CECPacket *request)
 			// lfroen: wtf - can this really happen ?!
 			continue;
 		}
-		response->AddTag(CEC_SharedFile_Tag(cur_file, detail_level));
+		/*
+		int part_enc_size;
+		const unsigned char *part_enc_data = m_enc_data.m_part_status.Encode(m_file->m_SrcpartFrequency, part_enc_size);
+		*/
+		CEC_SharedFile_Tag filetag(cur_file, detail_level);
+		response->AddTag(filetag);
 	}
 	return response;
 }
@@ -375,30 +381,8 @@ CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request,
 		}
 	}
 	
-	
-	// check if encoder contains files that no longer in download queue
-	// or, we have new files without encoder yet
-	std::set<CPartFile *> curr_files, dead_files;
-	for (unsigned int i = 0; i < theApp.downloadqueue->GetFileCount(); i++) {
-		CPartFile *cur_file = theApp.downloadqueue->GetFileByIndex(i);
-		curr_files.insert(cur_file);
-		if ( encoders.count(cur_file) == 0 ) {
-			encoders[cur_file] = CPartFile_Encoder(cur_file);
-		}
-	}
-	//
-	// curr_files set is created to minimize lookup time in download queue,
-	// since GetFileByID have loop inside leading to O(n), in this case
-	// it will mean O(n^2)
-	for(CPartFile_Encoder_Map::iterator i = encoders.begin(); i != encoders.end(); i++) {
-		if ( curr_files.count(i->first) == 0 ) {
-			dead_files.insert(i->first);
-		}
-	}
-	for(std::set<CPartFile *>::iterator i = dead_files.begin(); i != dead_files.end(); i++) {
-		encoders.erase(*i);
-	}
-	
+	encoders.UpdateEncoders(theApp.downloadqueue);
+
 	for (unsigned int i = 0; i < theApp.downloadqueue->GetFileCount(); i++) {
 		CPartFile *cur_file = theApp.downloadqueue->GetFileByIndex(i);
 	
@@ -1306,6 +1290,34 @@ void CPartFile_Encoder::Encode(CECTag *parent)
 		m_file->requestedblocks_list.GetCount() * 2 * sizeof(uint32), (void *)&m_gap_buffer[0]));
 }
 
+CKnownFile_Encoder::CKnownFile_Encoder()
+{
+	m_file = 0;
+}
+
+CKnownFile_Encoder::~CKnownFile_Encoder()
+{
+}
+
+CKnownFile_Encoder::CKnownFile_Encoder(const CKnownFile_Encoder &obj) : m_enc_data(obj.m_enc_data)
+{
+	m_file = obj.m_file;
+}
+
+CKnownFile_Encoder &CKnownFile_Encoder::operator=(const CKnownFile_Encoder &obj)
+{
+	m_file = obj.m_file;
+	m_enc_data = obj.m_enc_data;
+	return *this;
+}
+
+void CKnownFile_Encoder::Encode(CECTag *parent)
+{
+	int part_enc_size;
+	const unsigned char *part_enc_data = m_enc_data.Encode(m_file->m_AvailPartFrequency, part_enc_size);
+
+	parent->AddTag(CECTag(EC_TAG_PARTFILE_PART_STATUS, part_enc_size, part_enc_data));
+}
 
 CECPacket *GetStatsGraphs(const CECPacket *request)
 {
@@ -1348,7 +1360,8 @@ CECPacket *GetStatsGraphs(const CECPacket *request)
 	}
 }
 
-CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request, CPartFile_Encoder_Map &enc_map)
+CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
+	CPartFile_Encoder_Map &enc_part_map, CKnownFile_Encoder_Map &enc_shared_map)
 {
 
 	if ( !request ) {
@@ -1394,10 +1407,10 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request, CPartFile_Enc
 		//
 		//
 		case EC_OP_GET_SHARED_FILES:
-			response = Get_EC_Response_GetSharedFiles(request);
+			response = Get_EC_Response_GetSharedFiles(request, enc_shared_map);
 			break;
 		case EC_OP_GET_DLOAD_QUEUE:
-			response = Get_EC_Response_GetDownloadQueue(request, enc_map);
+			response = Get_EC_Response_GetDownloadQueue(request, enc_part_map);
 			break;
 		case EC_OP_GET_ULOAD_QUEUE:
 			response = Get_EC_Response_GetUpQueue(request);
@@ -1583,7 +1596,7 @@ void *ExternalConnClientThread::Entry()
 		}
 		if (m_sock->WaitForRead(1, 0)) {
 			request = m_owner->m_ECServer->ReadPacket(m_sock);
-			response = m_owner->ProcessRequest2(request, m_encoders);
+			response = m_owner->ProcessRequest2(request, m_part_encoders, m_shared_encoders);
 			delete request;
 			if ( response ) {
 				m_owner->m_ECServer->WritePacket(m_sock, response);
