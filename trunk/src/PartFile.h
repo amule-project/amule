@@ -166,8 +166,8 @@ public:
 	int	GetCommonFilePenalty();
 	void	UpdateDisplayedInfo(bool force = false);
 	
-	const wxDateTime& GetLastChangeDatetime() const;
-	uint8	GetCategory() const;
+	const wxDateTime& GetLastChangeDatetime() const { return m_lastDateChanged; }
+	uint8	GetCategory() const { return m_category; }
 	void	SetCategory(uint8 cat);
 
 	CFile	m_hpartfile;	//permanent opened handle to avoid write conflicts
