@@ -270,7 +270,7 @@ CMuleListCtrl::ItemDataList CMuleListCtrl::GetSelectedItems() const
 	ItemDataList list( GetSelectedItemCount() );
 	
 	// Current item being located
-	int current = 0;
+	unsigned int current = 0;
 	
 	long pos = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	while ( pos != -1 ) {
