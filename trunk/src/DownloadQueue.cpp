@@ -418,7 +418,7 @@ void CDownloadQueue::Process()
 	}
 }
 
-CPartFile* CDownloadQueue::GetFileByID(const CMD4Hash& filehash) const {
+CPartFile *CDownloadQueue::GetFileByID(const CMD4Hash& filehash) const {
 	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
 		if (filehash == filelist[i]->GetFileHash())
 			return filelist[i];
@@ -426,7 +426,7 @@ CPartFile* CDownloadQueue::GetFileByID(const CMD4Hash& filehash) const {
 	return NULL;
 }
 
-CPartFile* CDownloadQueue::GetFileByIndex(unsigned int index) const {
+CPartFile *CDownloadQueue::GetFileByIndex(unsigned int index) const {
 	if ( index >= filelist.size() ) {
 		return NULL;
 	}

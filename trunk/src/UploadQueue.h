@@ -37,7 +37,7 @@ public:
 	CUploadQueue(CPreferences* in_prefs);
 	~CUploadQueue();
 	void	Process();
-	void	AddClientToQueue(CUpDownClient* client,bool bIgnoreTimelimit = false);
+	void	AddClientToQueue(CUpDownClient* client);
 	bool	RemoveFromUploadQueue(CUpDownClient* client,bool updatewindow = true);
 	bool	RemoveFromWaitingQueue(CUpDownClient* client,bool updatewindow = true);
 	bool	IsOnUploadQueue(CUpDownClient* client)	{return GetWaitingClient(client);}
@@ -93,12 +93,12 @@ waitinglist.GetHeadPosition();}
 	void	ResumeUpload( const CMD4Hash& );
 	
 protected:
-	void	RemoveFromWaitingQueue(POSITION pos, bool updatewindow);
+	void	RemoveFromWaitingQueue(POSITION pos);
 	POSITION	GetWaitingClient(CUpDownClient* client);
-//	POSITION	GetWaitingClientByID(CUpDownClient* client);
 	POSITION	GetDownloadingClient(CUpDownClient* client);
-	bool		AcceptNewClient();
-	void		AddUpNextClient(CUpDownClient* directadd = 0);
+	bool	AcceptNewClient();
+	void	AddUpNextClient(CUpDownClient* directadd = 0);
+
 private:
 	CTypedPtrList<CPtrList, CUpDownClient*> waitinglist;
 	CTypedPtrList<CPtrList, CUpDownClient*> uploadinglist;

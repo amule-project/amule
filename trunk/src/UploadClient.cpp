@@ -49,7 +49,7 @@
 //	members of CUpDownClient
 //	which are mainly used for uploading functions 
 #ifndef AMULE_DAEMON
-void CUpDownClient::DrawUpStatusBar(wxMemoryDC* dc, wxRect rect, bool onlygreyrect, bool  bFlat){
+void CUpDownClient::DrawUpStatusBar(wxMemoryDC* dc, wxRect rect, bool onlygreyrect) {
 	RECT gaprect;
 	gaprect.top = rect.y + 2;
 	gaprect.bottom = (rect.y+rect.height) - 2;
@@ -152,10 +152,10 @@ uint32 CUpDownClient::GetScore(bool sysvalue, bool isdownloading, bool onlybasev
 		fBaseValue = (float)(::GetTickCount()-GetWaitStartTime())/1000;
 	} else {
 		// we dont want one client to download forever
-		// the first 15 min downloadtime counts as 15 min waitingtime and you get a 15 min bonus while you are in the first 15 min :)
+		// the first 15 min downloadtime counts as 15 min waitingtime and you get
+		// a 15 min bonus while you are in the first 15 min :)
 		// (to avoid 20 sec downloads) after this the score won't raise anymore 
 		fBaseValue = (float)(m_dwUploadTime-GetWaitStartTime());
-		wxASSERT ( m_dwUploadTime-GetWaitStartTime() >= 0 ); //oct 28, 02: changed this from "> 0" to ">= 0"
 		fBaseValue += (float)(::GetTickCount() - m_dwUploadTime > 900000)? 900000:1800000;
 		fBaseValue /= 1000;
 	}
@@ -245,7 +245,7 @@ bool CUpDownClient::CreateNextBlockPackage(){
 			if ( theApp.uploadqueue->CheckForTimeOver(this) || IsDifferentPartBlock()) {
 				SetWaitStartTime();
 				theApp.uploadqueue->RemoveFromUploadQueue(this);
-				theApp.uploadqueue->AddClientToQueue(this,true);
+				theApp.uploadqueue->AddClientToQueue(this);
 				return false;
 			}
 		} else {
@@ -253,7 +253,7 @@ bool CUpDownClient::CreateNextBlockPackage(){
 				// back on the waitqueue
 				SetWaitStartTime();
 				theApp.uploadqueue->RemoveFromUploadQueue(this);
-				theApp.uploadqueue->AddClientToQueue(this,true);
+				theApp.uploadqueue->AddClientToQueue(this);
 				return false;
 			}
 		}
@@ -409,7 +409,7 @@ void CUpDownClient::CreatePackedPackets(const byte* data,uint32 togo, Requested_
 	delete[] output;
 }
 
-void CUpDownClient::ProcessExtendedInfo(const CSafeMemFile* data, CKnownFile* tempreqfile)
+void CUpDownClient::ProcessExtendedInfo(const CSafeMemFile *data, CKnownFile *tempreqfile)
 {
 	try {
 		if (m_abyUpPartStatus)  {
@@ -715,7 +715,7 @@ void CUpDownClient::SendCommentInfo(CKnownFile* file)
 
 	// Max lenght of comments is 50 chars
 	wxString desc = file->GetFileComment().Left(50);
-	uint8 rating=file->GetFileRate();
+	uint8 rating = file->GetFileRate();
 	
 	if ( file->GetFileRate() == 0 && desc.IsEmpty() ) {
 		return;
