@@ -2120,7 +2120,8 @@ bool CUpDownClient::SendMessage(const wxString& message) {
 	} else {
 		m_pendingMessage = message;
 		SetChatState(MS_CONNECTING);
-		TryToConnect();
+		// True to ignore "Too Many Connections"
+		TryToConnect(true);
 		return false;
 	}	
 }
