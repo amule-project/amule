@@ -89,7 +89,7 @@ void wxSocketProxy::SetProxyData(const wxProxyData *ProxyData)
 		m_ProxyAddress.Hostname(m_ProxyData.ProxyHostName);
 		m_ProxyAddress.Service(m_ProxyData.ProxyPort);
 	} else {
-		//memset(&m_ProxyData, 0, sizeof(wxProxyData));
+		m_ProxyData.Empty();
 	}
 }
 
