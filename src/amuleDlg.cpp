@@ -65,7 +65,7 @@
 #include "Preferences.h"	// Needed for CPreferences
 #include "ChatWnd.h"		// Needed for CChatWnd
 #include "StatisticsDlg.h"	// Needed for CStatisticsDlg
-#include "KadDlg.h"			// Needed for CKadDlg
+#include "KadDlg.h"		// Needed for CKadDlg
 #include "SharedFilesWnd.h"	// Needed for CSharedFilesWnd
 #include "TransferWnd.h"	// Needed for CTransferWnd
 #include "SearchDlg.h"		// Needed for CSearchDlg
@@ -75,7 +75,7 @@
 #include "PartFile.h"		// Needed for CPartFile
 #include "KnownFile.h"		// Needed for CKnownFile
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
-#include "amule.h"			// Needed for theApp
+#include "amule.h"		// Needed for theApp
 #include "opcodes.h"		// Needed for TM_FINISHEDHASHING
 #include "muuli_wdr.h"		// Needed for ID_BUTTONSERVERS
 #include "PrefsUnifiedDlg.h"
@@ -118,7 +118,7 @@ END_EVENT_TABLE()
 #	define wxCLOSE_BOX 0
 #endif
 
-CamuleDlg::CamuleDlg(wxWindow* pParent, wxString title, wxPoint where, wxSize dlg_size) : wxFrame(
+CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wxSize dlg_size) : wxFrame(
 	pParent, -1, title, where, dlg_size,
 	wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxDIALOG_NO_PARENT|
 	wxTHICK_FRAME|wxMINIMIZE_BOX|wxMAXIMIZE_BOX|wxCLOSE_BOX,wxT("aMule") )
@@ -566,15 +566,13 @@ void CamuleDlg::AddServerMessageLine(wxString& message)
 }
 
 
-void CamuleDlg::ShowConnectionState(bool connected, wxString server, bool iconOnly)
+void CamuleDlg::ShowConnectionState(bool connected, const wxString &server)
 {
 	enum state { sUnknown = -1, sDisconnected = 0, sLowID = 1, sConnecting = 2, sHighID = 3 };
 	static state LastState = sUnknown;
-
-
 	serverwnd->UpdateMyInfo();
-
 	state NewState = sUnknown;
+
 	if ( connected ) {
 		if ( theApp.serverconnect->IsLowID() ) {
 			NewState = sLowID;
@@ -587,48 +585,43 @@ void CamuleDlg::ShowConnectionState(bool connected, wxString server, bool iconOn
 		NewState = sDisconnected;
 	}
 
-
 	if ( LastState != NewState ) {
-		((wxStaticBitmap*)FindWindow(wxT("connImage")))->SetBitmap(connImages( NewState ));
-
+		((wxStaticBitmap *)FindWindow(wxT("connImage")))->SetBitmap(connImages(NewState));
 		m_wndToolbar->DeleteTool(ID_BUTTONCONNECT);
-
 		wxStaticText* connLabel = (wxStaticText*)FindWindow(wxT("connLabel"));
 		switch ( NewState ) {
 			case sLowID:
 			case sHighID: {
-				//m_wndToolbar->InsertTool(0, ID_BUTTONCONNECT, wxString(_("Disconnect")), connButImg(1), wxString(_("Disconnect from current server")));
-				m_wndToolbar->InsertTool(0, ID_BUTTONCONNECT, wxString(_("Disconnect")), connButImg(1), wxNullBitmap, wxITEM_NORMAL, wxString(_("Disconnect from current server")));
-				wxStaticText* tx=(wxStaticText*)FindWindow(wxT("infoLabel"));
-				tx->SetLabel(wxString(_("Connection established on:")) + wxString(server));
+				m_wndToolbar->InsertTool(0, ID_BUTTONCONNECT, _("Disconnect"),
+					connButImg(1), wxNullBitmap, wxITEM_NORMAL,
+					_("Disconnect from current server"));
+				wxStaticText* tx = (wxStaticText *)FindWindow(wxT("infoLabel"));
+				tx->SetLabel(_("Connection established on:") + server);
 				connLabel->SetLabel(server);
 				break;
 			}
-
 			case sConnecting:
-				//m_wndToolbar->InsertTool(0, ID_BUTTONCONNECT, wxString(_("Cancel")), connButImg(2), wxString(_("Stops the current connection attempts")));
-				m_wndToolbar->InsertTool(0, ID_BUTTONCONNECT, wxString(_("Cancel")), connButImg(2), wxNullBitmap, wxITEM_NORMAL, wxString(_("Stops the current connection attempts")));
-				connLabel->SetLabel(wxString(_("Connecting")));
+				m_wndToolbar->InsertTool(0, ID_BUTTONCONNECT, _("Cancel"),
+					connButImg(2), wxNullBitmap, wxITEM_NORMAL,
+					_("Stops the current connection attempts"));
+				connLabel->SetLabel(_("Connecting"));
 				break;
 
 			case sDisconnected:
-				//m_wndToolbar->InsertTool(0, ID_BUTTONCONNECT, wxString(_("Connect")), connButImg(0), wxString(_("Connect to any server")));
-				m_wndToolbar->InsertTool(0, ID_BUTTONCONNECT, wxString(_("Connect")), connButImg(0), wxNullBitmap, wxITEM_NORMAL, wxString(_("Connect to any server")));
-				connLabel->SetLabel(wxString(_("Not Connected")));
-				AddLogLine(true, wxString(_("Disconnected")));
+				m_wndToolbar->InsertTool(0, ID_BUTTONCONNECT, _("Connect"),
+					connButImg(0), wxNullBitmap, wxITEM_NORMAL,
+					_("Connect to any server"));
+				connLabel->SetLabel(_("Not Connected"));
+				AddLogLine(true, _("Disconnected"));
 				break;
 
 			default:
 				break;
 		}
-
 		m_wndToolbar->Realize();
-
 		theApp.OnlineSig();
-
 		ShowUserCount(0, 0);
 	}
-
 	LastState = NewState;
 }
 
@@ -787,7 +780,7 @@ void CamuleDlg::UpdateTrayIcon(int procent)
 
 
 //BEGIN - enkeyDEV(kei-kun) -TaskbarNotifier-
-void CamuleDlg::ShowNotifier(wxString Text, int MsgType, bool ForceSoundOFF)
+void CamuleDlg::ShowNotifier(wxString WXUNUSED(Text), int WXUNUSED(MsgType), bool WXUNUSED(ForceSoundOFF))
 {
 }
 //END - enkeyDEV(kei-kun) -TaskbarNotifier-
