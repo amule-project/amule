@@ -125,6 +125,7 @@ void CServerConnect::ConnectToServer(CServer* server, bool multiconnect){
 		Disconnect();
 	}
 	connecting = true;
+	theApp.amuledlg->ShowConnectionState(false,wxT(""),true);
 	singleconnecting = !multiconnect;
 
 	CServerSocket* newsocket = new CServerSocket(this);
@@ -216,10 +217,10 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender){
 		theApp.stat_serverConnectTime=GetTickCount64();
 		connected = true;
 		AddLogLineM(true, wxString(_("Connection established on: ")) + char2unicode(sender->cur_server->GetListName()));
-		theApp.amuledlg->ShowConnectionState(true,char2unicode(sender->cur_server->GetListName()));
-		CServer* update = theApp.serverlist->GetServerByAddress(sender->cur_server->GetAddress(),sender->cur_server->GetPort());
-		theApp.amuledlg->serverwnd->serverlistctrl->HighlightServer(update, true);
 		connectedsocket = sender;
+		theApp.amuledlg->ShowConnectionState(true,char2unicode(connectedsocket->cur_server->GetListName()));
+		CServer* update = theApp.serverlist->GetServerByAddress(connectedsocket->cur_server->GetAddress(),sender->cur_server->GetPort());
+		theApp.amuledlg->serverwnd->serverlistctrl->HighlightServer(update, true);
 		StopConnectionTry();
 		theApp.sharedfiles->ClearED2KPublishInfo();
 		theApp.sharedfiles->SendListToServer();

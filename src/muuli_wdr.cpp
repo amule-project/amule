@@ -1799,6 +1799,11 @@ wxSizer *PreferencesGeneralTab( wxWindow *parent, bool call_fit, bool set_sizer 
 
     item31->Add( item34, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
+    wxCheckBox *item37 = new wxCheckBox( parent, IDC_FCHECKTABS, _("Open in new tab if possible"), wxDefaultPosition, wxDefaultSize, 0 );
+    item37->SetValue( TRUE );
+    item37->SetToolTip( _("Open the web page in a new tab instead of in a new window when possible") );
+    item31->Add( item37, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
+
     item0->Add( item31, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     if (set_sizer)

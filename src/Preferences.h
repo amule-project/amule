@@ -325,6 +325,7 @@ struct Preferences_Struct{
 	
 	uint16	Browser;
 	char		CustomBrowser[256];
+	bool            BrowserTab;     // Jacobo221 - Open in tabs if possible
 	
 	char		OSDirectory[512];
 	
