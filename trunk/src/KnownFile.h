@@ -1,21 +1,23 @@
+//
 // This file is part of the aMule Project
 //
 // Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
 // Copyright (C) 2002 Merkur ( merkur-@users.sourceforge.net / http://www.emule-project.net )
 //
-//This program is free software; you can redistribute it and/or
-//modify it under the terms of the GNU General Public License
-//as published by the Free Software Foundation; either
-//version 2 of the License, or (at your option) any later version.
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either
+// version 2 of the License, or (at your option) any later version.
 //
-//This program is distributed in the hope that it will be useful,
-//but WITHOUT ANY WARRANTY; without even the implied warranty of
-//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//GNU General Public License for more details.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 //
-//You should have received a copy of the GNU General Public License
-//along with this program; if not, write to the Free Software
-//Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+//
 
 #ifndef KNOWNFILE_H
 #define KNOWNFILE_H
@@ -217,6 +219,8 @@ protected:
 	CAICHHashSet*			m_pAICHHashSet;
 private:
 	void	CreateHashFromInput(CFile* file, int Length, unsigned char* Output, unsigned char* = 0);
+	void	CreateHashFromInput(FILE* file, CFile* file2, int Length, uchar* Output, uchar* in_string, CAICHHashTree* pShaHashOut) const;
+	void MD4Transform(uint32 Hash[4], uint32 x[16]) const;
 	bool	m_bCommentLoaded;
 	uint16	m_iPartCount;
 	uint16  m_iED2KPartCount;
@@ -274,5 +278,7 @@ private:
   (a) += MD4_H((b), (c), (d)) + (x) + (uint32)0x6ED9EBA1; \
   (a) = MD4_ROTATE_LEFT((a), (s)); \
 }
+
+//static void MD4Transform(uint32 Hash[4], uint32 x[16]);
 
 #endif // KNOWNFILE_H
