@@ -1086,7 +1086,7 @@ void CDownloadListCtrl::DrawSourceItem(wxDC * dc, int nColumn, const wxRect& rec
 
 				if (lpCtrlItem->type == 2) {
 					if (lpUpDownClient->GetKBpsDown()<0.001) {
-						buffer = wxT("");
+						buffer = wxEmptyString;
 					} else {
 						buffer = wxString::Format(wxT("%.1f "), lpUpDownClient->GetKBpsDown()) + _("kB/s");					}
 					dc->DrawText(buffer, rect.GetX(), rect.GetY());

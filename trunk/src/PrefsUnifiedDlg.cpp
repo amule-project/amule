@@ -135,7 +135,7 @@ PrefsUnifiedDlg::PrefsUnifiedDlg(wxWindow* parent)
 	PrefsIcons->AssignImageList( icon_list, wxIMAGE_LIST_SMALL);
 
 	// Add the single column used
-	PrefsIcons->InsertColumn(0, wxT(""), wxLIST_FORMAT_LEFT, PrefsIcons->GetSize().GetWidth()-5);
+	PrefsIcons->InsertColumn(0, wxEmptyString, wxLIST_FORMAT_LEFT, PrefsIcons->GetSize().GetWidth()-5);
 
 	// Temp variables for finding the smallest height and width needed 
 	int width = 0;
@@ -438,7 +438,7 @@ void PrefsUnifiedDlg::OnButtonDir(wxCommandEvent& event)
 
 void PrefsUnifiedDlg::OnButtonBrowseWav(wxCommandEvent& WXUNUSED(evt))
 {
-	wxString str = wxFileSelector( _("Browse wav"), wxT(""), wxT(""),
+	wxString str = wxFileSelector( _("Browse wav"), wxEmptyString, wxEmptyString,
 		wxT("*.wav"), _("File wav (*.wav)|*.wav||") );
 	
 	if ( !str.IsEmpty() ) {
@@ -451,7 +451,7 @@ void PrefsUnifiedDlg::OnButtonBrowseWav(wxCommandEvent& WXUNUSED(evt))
 
 void PrefsUnifiedDlg::OnButtonBrowseSkin(wxCommandEvent& WXUNUSED(evt))
 {
-	wxString str = wxFileSelector( _("Browse skin file"), wxT(""), wxT(""), wxT("*") );
+	wxString str = wxFileSelector( _("Browse skin file"), wxEmptyString, wxEmptyString, wxT("*") );
 
 	if ( !str.IsEmpty() ) {
 		wxTextCtrl* widget = (wxTextCtrl*)FindWindow( IDC_SKINFILE );
@@ -463,8 +463,8 @@ void PrefsUnifiedDlg::OnButtonBrowseSkin(wxCommandEvent& WXUNUSED(evt))
 
 void PrefsUnifiedDlg::OnButtonBrowseVideoplayer(wxCommandEvent& WXUNUSED(e))
 {
-	wxString str = wxFileSelector( _("Browse for videoplayer"), wxT(""), wxT(""),
-		wxT(""), _("Executable (*)|*||") );
+	wxString str = wxFileSelector( _("Browse for videoplayer"), wxEmptyString, wxEmptyString,
+		wxEmptyString, _("Executable (*)|*||") );
 
 	if ( !str.IsEmpty() ) {
 		wxTextCtrl* widget = (wxTextCtrl*)FindWindow( IDC_VIDEOPLAYER );

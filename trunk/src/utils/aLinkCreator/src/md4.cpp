@@ -277,7 +277,7 @@ void MD4::MD4Transform(uint32_t buf[4], uint32_t const in[16])
 /// Algorithm verification
 bool MD4::selfTest()
 {
-  wxString test1(wxT(""));
+  wxString test1(wxEmptyString);
   wxString test1_md(wxT("31D6CFE0D16AE931B73C59D7E0C089C0"));
   wxString test2(wxT("a"));
   wxString test2_md(wxT("BDE52CB31DE33E46245E05FBDBD6FB24"));

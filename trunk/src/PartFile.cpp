@@ -3528,7 +3528,7 @@ wxString CPartFile::GetProgressString(uint16 size)
 	crWaiting[4]='8';
 	crWaiting[5]='9'; // full sources
 
-	wxString my_ChunkBar=wxT("");
+	wxString my_ChunkBar=wxEmptyString;
 
 	for (uint16 i=0;i<=size+1;i++) {
 		my_ChunkBar.Append(crHave,1); //.AppendChar(crHave);

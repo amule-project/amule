@@ -310,7 +310,7 @@ void CPreferences::BuildItemList( const wxString& appdir )  // gets called at in
 	 **/
 	s_CfgList[IDC_FCHECK]		=    MkCfg_Int( wxT("/FakeCheck/Browser"), s_Browser, 0 );
 	s_CfgList[IDC_FCHECKTABS]	= new Cfg_Bool( wxT("/FakeCheck/BrowserTab"), s_BrowserTab, true );
-	s_CfgList[IDC_FCHECKSELF]	= new Cfg_Str(  wxT("/FakeCheck/CustomBrowser"), s_CustomBrowser, wxT("") );
+	s_CfgList[IDC_FCHECKSELF]	= new Cfg_Str(  wxT("/FakeCheck/CustomBrowser"), s_CustomBrowser, wxEmptyString );
 	s_CfgList[IDC_QUEUESIZE]	= MkCfg_Int( wxT("/eMule/QueueSizePref"), s_iQueueSize, 50 );
 
 
@@ -389,7 +389,7 @@ void CPreferences::BuildItemList( const wxString& appdir )  // gets called at in
 	s_CfgList[IDC_EXT_CONN_ACCEPT]	= new Cfg_Bool( wxT("/ExternalConnect/AcceptExternalConnections"), s_AcceptExternalConnections, true );
 	s_CfgList[IDC_EXT_CONN_USETCP]	= new Cfg_Bool( wxT("/ExternalConnect/ECUseTCPPort"), s_ECUseTCPPort, false );
 	s_CfgList[IDC_EXT_CONN_TCP_PORT]	=    MkCfg_Int( wxT("/ExternalConnect/ECPort"), s_ECPort, 4712 );
-	s_CfgList[IDC_EXT_CONN_PASSWD]	= new Cfg_Str_Encrypted( wxT("/ExternalConnect/ECPassword"), s_ECPassword, wxT("") );
+	s_CfgList[IDC_EXT_CONN_PASSWD]	= new Cfg_Str_Encrypted( wxT("/ExternalConnect/ECPassword"), s_ECPassword, wxEmptyString );
 
 
 	/**
@@ -414,13 +414,13 @@ void CPreferences::BuildItemList( const wxString& appdir )  // gets called at in
 	s_CfgList[IDC_PERCENT]			= new Cfg_Bool( wxT("/ExternalConnect/ShowPercent"), 		s_Percent, false );
 
 	s_CfgList[IDC_USESKIN]			= new Cfg_Bool( wxT("/SkinGUIOptions/UseSkinFile"), s_UseSkinFile, false );
-	s_CfgList[IDC_SKINFILE]			= new Cfg_Str(  wxT("/SkinGUIOptions/SkinFile"), s_SkinFile, wxT("") );
+	s_CfgList[IDC_SKINFILE]			= new Cfg_Str(  wxT("/SkinGUIOptions/SkinFile"), s_SkinFile, wxEmptyString );
 
 
 	/**
 	 * External Apps
 	 */
-	s_CfgList[IDC_VIDEOPLAYER]		= new Cfg_Str(  wxT("/eMule/VideoPlayer"), s_VideoPlayer, wxT("") );
+	s_CfgList[IDC_VIDEOPLAYER]		= new Cfg_Str(  wxT("/eMule/VideoPlayer"), s_VideoPlayer, wxEmptyString );
 	s_CfgList[IDC_VIDEOBACKUP]		= new Cfg_Bool( wxT("/eMule/VideoPreviewBackupped"), s_moviePreviewBackup, true );
 
 
@@ -511,7 +511,7 @@ void CPreferences::BuildItemList( const wxString& appdir )  // gets called at in
 	s_MiscList.push_back(    MkCfg_Int( wxT("/eMule/SplitterbarPosition"),			s_splitterbarPosition, 75 ) );
 	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/FilterServersByIP"),			s_filterserverbyip, false ) );
 	s_MiscList.push_back(    MkCfg_Int( wxT("/eMule/FilterLevel"),					s_filterlevel, 127 ) );
-	s_MiscList.push_back( new Cfg_Str(  wxT("/eMule/YourHostname"),					s_yourHostname, wxT("") ) );
+	s_MiscList.push_back( new Cfg_Str(  wxT("/eMule/YourHostname"),					s_yourHostname, wxEmptyString ) );
 	s_MiscList.push_back( new Cfg_Str(  wxT("/eMule/DateTimeFormat"),				s_datetimeformat, wxT("%A, %x, %X") ) );
 	
 
@@ -550,7 +550,7 @@ void CPreferences::BuildItemList( const wxString& appdir )  // gets called at in
 	s_CfgList[IDC_CB_TBN_ONNEWVERSION]	= new Cfg_Bool( wxT("/eMule/NotifierPopNewVersion"), s_notifierNewVersion, false );
 	s_CfgList[IDC_CB_TBN_IMPORTATNT]	= new Cfg_Bool( wxT("/eMule/NotifyOnImportantError"), s_notifierImportantError, false );
 	s_CfgList[IDC_SENDMAIL]			= new Cfg_Bool( wxT("/eMule/NotifyByMail"), s_sendEmailNotifier, false );
-	s_CfgList[IDC_EDIT_TBN_WAVFILE]	= new Cfg_Str(  wxT("/eMule/NotifierSoundPath"), s_notifierSoundFilePath, wxT("") );
+	s_CfgList[IDC_EDIT_TBN_WAVFILE]	= new Cfg_Str(  wxT("/eMule/NotifierSoundPath"), s_notifierSoundFilePath, wxEmptyString );
 #endif
 }
 
@@ -967,11 +967,11 @@ void CPreferences::LoadCats() {
 		Category_Struct* newcat = new Category_Struct;
 
 
-		newcat->title = cfg->Read( wxT("Title"), wxT("") );
-		newcat->incomingpath = cfg->Read( wxT("Incoming"), wxT("") );
+		newcat->title = cfg->Read( wxT("Title"), wxEmptyString );
+		newcat->incomingpath = cfg->Read( wxT("Incoming"), wxEmptyString );
 
 		newcat->incomingpath = MakeFoldername(newcat->incomingpath);
-		newcat->comment = cfg->Read( wxT("Comment"), wxT("") );
+		newcat->comment = cfg->Read( wxT("Comment"), wxEmptyString );
 
 		newcat->prio = cfg->Read( wxT("Priority"), 0l );
 

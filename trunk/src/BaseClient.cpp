@@ -1708,7 +1708,7 @@ void CUpDownClient::ResetFileStatusInfo()
 
 wxString CUpDownClient::GetUploadFileInfo()
 {
-	if(this == NULL) return wxT("");
+	if(this == NULL) return wxEmptyString;
 	wxString sRet;
  
 	// build info text and display it
@@ -1726,7 +1726,7 @@ wxString CUpDownClient::GetUploadFileInfo()
 		sRet += _("Requested unknown file");
 	}
 	return sRet;
-	return wxT("");
+	return wxEmptyString;
 }
 
 // sends a packet, if needed it will establish a connection before
