@@ -26,10 +26,10 @@
 #include <cryptopp/files.h>
 #include <cryptopp/sha.h>
 #else
-#include <cryptopp/base64.h>
-#include <cryptopp/osrng.h>
-#include <cryptopp/files.h>
-#include <cryptopp/sha.h>
+#include <crypto++/base64.h>
+#include <crypto++/osrng.h>
+#include <crypto++/files.h>
+#include <crypto++/sha.h>
 #endif
 
 #include <cmath>
