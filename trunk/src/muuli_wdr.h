@@ -483,20 +483,26 @@ const int ID_PROXY_PASSWORD = 10352;
 const int ID_PROXY_AUTO_SERVER_CONNECT_WITHOUT_PROXY = 10353;
 wxSizer *PreferencesProxyTab( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
+const int ID_REMOTE_HOST = 10354;
+const int ID_REMOTE_PORT = 10355;
+const int ID_EC_LOGIN = 10356;
+const int ID_EC_PASSWD = 10357;
+wxSizer *CoreConnect( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
+
 // Declare menubar functions
 
 // Declare toolbar functions
 
-const int ID_BUTTONCONNECT = 10354;
-const int ID_BUTTONSERVERS = 10355;
-const int ID_BUTTONKAD = 10356;
-const int ID_BUTTONSEARCH = 10357;
-const int ID_BUTTONTRANSFER = 10358;
-const int ID_BUTTONSHARED = 10359;
-const int ID_BUTTONMESSAGES = 10360;
-const int ID_BUTTONSTATISTICS = 10361;
-const int ID_BUTTONNEWPREFERENCES = 10362;
-const int ID_ABOUT = 10363;
+const int ID_BUTTONCONNECT = 10358;
+const int ID_BUTTONSERVERS = 10359;
+const int ID_BUTTONKAD = 10360;
+const int ID_BUTTONSEARCH = 10361;
+const int ID_BUTTONTRANSFER = 10362;
+const int ID_BUTTONSHARED = 10363;
+const int ID_BUTTONMESSAGES = 10364;
+const int ID_BUTTONSTATISTICS = 10365;
+const int ID_BUTTONNEWPREFERENCES = 10366;
+const int ID_ABOUT = 10367;
 void muleToolbar( wxToolBar *parent );
 
 // Declare bitmap functions
