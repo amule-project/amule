@@ -349,7 +349,7 @@ bool CamuleRemoteGuiApp::AddServer(CServer *)
 	return true;
 }
 
-void CamuleRemoteGuiApp::NotifyEvent(GUIEvent event)
+void CamuleRemoteGuiApp::NotifyEvent(const GUIEvent& event)
 {
 	switch (event.ID) {
 	        case SEARCH_ADD_TO_DLOAD:

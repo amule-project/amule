@@ -283,7 +283,7 @@ bool CamuleGuiBase::CopyTextToClipboard(wxString strText)
 }
 
 
-void CamuleGuiBase::NotifyEvent(GUIEvent WXUNUSED(event))
+void CamuleGuiBase::NotifyEvent(const GUIEvent& WXUNUSED(event))
 {
 
 }
@@ -486,7 +486,7 @@ CFriend *CamuleGuiApp::FindFriend(CMD4Hash *hash, uint32 ip, uint16 port)
 }
 
 
-void CamuleGuiApp::NotifyEvent(GUIEvent event)
+void CamuleGuiApp::NotifyEvent(const GUIEvent& event)
 {
 	if (!amuledlg && (event.ID!=ADDLOGLINE)) {
 		return;
