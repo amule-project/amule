@@ -221,7 +221,7 @@ public:
 
 	void		ClearDownloadBlockRequests();
 	void		RequestSharedFileList();
-	void		ProcessSharedFileList(const char* pachPacket, uint32 nSize, LPCTSTR pszDirectory = NULL);
+	void		ProcessSharedFileList(const char* pachPacket, uint32 nSize, wxString& pszDirectory);
 	
 	wxString	GetUploadFileInfo();
 	
