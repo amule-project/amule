@@ -215,7 +215,7 @@ msgstr "El nombre de archivo de la piel está vacío - cargando predeterminados"
 
 #: src/amuleDlg.cpp:1115
 msgid "Skin file "
-msgstr "Archivo de la piel"
+msgstr "Archivo la piel"
 
 #: src/amuleDlg.cpp:1115
 msgid " does not exist - loading defaults"
@@ -2491,7 +2491,7 @@ msgstr "Nuevas conexiones máx. / 5 segs"
 
 #: src/muuli_wdr.cpp:2516
 msgid "Use Safe Max Connections code"
-msgstr "Usar código seguron en las máximas conexiones"
+msgstr "Usar código seguro en las máximas conexiones"
 
 #: src/muuli_wdr.cpp:2517
 msgid "This code use an average calc. to avoid breaking usb modems, etc"
