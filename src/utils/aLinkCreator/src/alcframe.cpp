@@ -65,7 +65,7 @@ AlcFrame::AlcFrame (const wxString & title):
 {
   // Give it an icon
 #if defined(__WXMSW__)
-  wxIcon icon("alc");
+  wxIcon icon(wxT("alc"));
 #else
 
   wxIcon icon;
