@@ -259,30 +259,29 @@ int CWebServer::GetWSPrefs(void)
 	}
 	// we have selected only the webserver preferences
 	CECTag *wsprefs = reply->GetTagByIndex(0);
-	
-	CECTag *tag;
+	CECTag *webServerPort = wsprefs ? wsprefs->GetTagByName(EC_TAG_WEBSERVER_PORT) : NULL;
 	int wsport = 0;
-	if (wsprefs && (tag = wsprefs->GetTagByName(EC_TAG_WEBSERVER_PORT)) ) {
-		wsport = tag->GetInt16Data();
-	} else {
-		delete reply;
-		return 0;
+	if (wsprefs && webServerPort) {
+		wsport = webServerPort->GetInt16Data();
 	}
-
-	if ( !webInterface->m_bForcedAdminPassword ) {
-		if (tag = wsprefs->GetTagByName(EC_TAG_PASSWD_HASH) ) {
-			webInterface->m_AdminPass = tag->GetStringData();
+	
+	if (!webInterface->m_bForcedAdminPassword) {
+		CECTag *passwdHash = wsprefs->GetTagByName(EC_TAG_PASSWD_HASH);
+		if (wsprefs && passwdHash) {
+			webInterface->m_AdminPass = passwdHash->GetStringData();
 		} else {
 			webInterface->m_AdminPass = wxEmptyString;
 		}
 	}
 
-	if ( !webInterface->m_bForcedAllowGuest ) {
-		if (tag = wsprefs->GetTagByName(EC_TAG_WEBSERVER_GUEST) ) {
+	if (!webInterface->m_bForcedAllowGuest) {
+		CECTag *webserverGuest = wsprefs->GetTagByName(EC_TAG_WEBSERVER_GUEST);
+		if (wsprefs && webserverGuest) {
 			webInterface->m_AllowGuest = true;
-			if ( !webInterface->m_bForcedGuestPassword ) {
-				if (tag = tag->GetTagByName(EC_TAG_PASSWD_HASH)) {
-					webInterface->m_GuestPass = tag->GetStringData();
+			if (!webInterface->m_bForcedGuestPassword) {
+				CECTag *passwdHash = webserverGuest->GetTagByName(EC_TAG_PASSWD_HASH);
+				if (passwdHash) {
+					webInterface->m_GuestPass = passwdHash->GetStringData();
 				} else {
 					webInterface->m_GuestPass = wxEmptyString;
 				}
@@ -292,17 +291,18 @@ int CWebServer::GetWSPrefs(void)
 		}
 	}
 	
-	if ( !webInterface->m_bForcedUseGzip ) {
+	if (!webInterface->m_bForcedUseGzip) {
 		// we only need to check the presence of this tag
-		if ( wsprefs->GetTagByName(EC_TAG_WEBSERVER_USEGZIP) ) {
+		if (wsprefs && wsprefs->GetTagByName(EC_TAG_WEBSERVER_USEGZIP)) {
 			webInterface->m_UseGzip = true;
 		} else {
 			webInterface->m_UseGzip = false;
 		}
 	}
 	
-	if (tag = wsprefs->GetTagByName(EC_TAG_WEBSERVER_REFRESH)) {
-		m_nRefresh = tag->GetInt32Data();
+	CECTag *webserverRefresh = wsprefs->GetTagByName(EC_TAG_WEBSERVER_REFRESH);
+	if (wsprefs && webserverRefresh) {
+		m_nRefresh = webserverRefresh->GetInt32Data();
 	} else {
 		m_nRefresh = 120;
 	}
