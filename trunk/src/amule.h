@@ -81,19 +81,6 @@ enum APPState {
 
 #include <wx/event.h>
 
-// lfroen : custom events for core internal messages
-// 'cause - there's no wxCommand etc in wxBase
-enum Core_Event_ID {
-	FILE_HASHING_FINISHED = 1,
-	FILE_HASHING_SHUTDOWN,
-	FILE_COMPLETION_FINISHED,
-	
-	SOURCE_DNS_DONE,
-	DNS_DONE,
-			
-	EVENT_TIMER,
-};
-
 DECLARE_EVENT_TYPE(wxEVT_CORE_FILE_HASHING_FINISHED, wxEVT_USER_FIRST+FILE_HASHING_FINISHED)
 DECLARE_EVENT_TYPE(wxEVT_CORE_FILE_HASHING_SHUTDOWN, wxEVT_USER_FIRST+FILE_HASHING_SHUTDOWN)
 DECLARE_EVENT_TYPE(wxEVT_CORE_FINISHED_FILE_COMPLETION, wxEVT_USER_FIRST+FILE_COMPLETION_FINISHED)
@@ -143,6 +130,7 @@ class wxMuleInternalEvent : public wxEvent {
 		return m_ptr;
 	}
 };
+
 
 #ifdef AMULE_DAEMON
 #define AMULE_APP_BASE wxAppConsole
@@ -283,7 +271,9 @@ protected:
 	void OnFinishedHashing(wxEvent& evt);
 	void OnFinishedCompletion(wxEvent& evt);
 	void OnHashingShutdown(wxEvent&);
-
+	
+	void OnNotifyEvent(wxEvent& evt);
+	
 	void SetTimeOnTransfer();
 	
 	AMULE_TIMER_CLASS* core_timer;
