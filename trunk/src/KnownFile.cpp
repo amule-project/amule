@@ -717,7 +717,8 @@ bool CKnownFile::WriteToFile(CFileDataIO* file){
 	
 	#if wxUSE_UNICODE
 	CTag nametag_unicode(FT_FILENAME, GetFileName());
-	nametag_unicode.WriteTagToFile(file,utf8strRaw);	
+	// We write it with BOM to kep eMule compatibility
+	nametag_unicode.WriteTagToFile(file,utf8strOptBOM);	
 	#endif
 	
 	CTag nametag(FT_FILENAME, GetFileName());
