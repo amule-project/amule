@@ -140,8 +140,6 @@ void *PtrsXferServer::Entry()
 				if ( (cli_thread->Create() == wxTHREAD_NO_ERROR) &&
 				     (cli_thread->Run() == wxTHREAD_NO_ERROR) ) {
 					clients.push_back(cli_thread);
-					wxCoreNewClent evt(cli_thread);
-					handler->AddPendingEvent(evt);
 				} else {
 					printf("PtrsXferServer: thread creation error\n");
 					delete cli_thread;
@@ -183,7 +181,7 @@ PtrsXferServerCliThread::PtrsXferServerCliThread(wxSocketBase *sk, PtrsXferServe
 		printf("PtrsXferServerCliThread: client send invalid login\n");
 		sock->Destroy();
 		sock = 0;
-		return;		
+		return;
 	}
 
 	// open backward connection
@@ -201,7 +199,7 @@ PtrsXferServerCliThread::PtrsXferServerCliThread(wxSocketBase *sk, PtrsXferServe
 		printf("PtrsXferServerCliThread: cant open reverse connection\n");
 		assert(0);
 	}
-	assert(notif_sock->IsConnected());
+	wxASSERT(notif_sock->IsConnected());
 }
 
 PtrsXferServerCliThread::~PtrsXferServerCliThread()
@@ -310,6 +308,9 @@ int PtrsXferServerCliThread::SendNotify(GUIEvent &evt)
 //
 // Client side thread: send requests to server, wait for each one to be ack'ed
 // When ack comes, update local data
+// Since wx has very fsck'ed up socket implementation, client must be different
+// for console vs. gui application. Server is always console, so no problems there
+//
 PtrsXferClient::PtrsXferClient(wxEvtHandler *handler) :
 	wxThread(wxTHREAD_DETACHED)
 {
@@ -621,27 +622,17 @@ Notify_Event_Msg::Notify_Event_Msg(GUIEvent &event)
 	data_len = event.string_value.Length();
 }
 
+// server -> client notification
+DEFINE_EVENT_TYPE(wxEVT_NOTIFY_EVENT)
 
-
+// client -> server notification
 DEFINE_EVENT_TYPE(wxEVT_CORE_NOTIFY)
-DEFINE_EVENT_TYPE(wxEVT_CORE_NEW_CLIENT)
+
 
 wxEvent *wxCoreNotifyEvent::Clone(void) const
 {
 	return new wxCoreNotifyEvent(*this);
 }
-
-wxCoreNewClent::wxCoreNewClent(PtrsXferServerCliThread *cli) : wxEvent(-1, wxEVT_CORE_NEW_CLIENT)
-{
-	client = cli;
-}
-
-wxEvent *wxCoreNewClent::Clone(void) const
-{
-	return new wxCoreNewClent(*this);
-}
-
-
 
 RPtrDefaultBase::RPtrDefaultBase(void *rem_ptr, int size)
 {
