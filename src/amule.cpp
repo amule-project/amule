@@ -2203,7 +2203,10 @@ void CamuleApp::RunAICHThread()
 {
 	
 	CAICHSyncThread* AICH_Thread = new CAICHSyncThread();
-	AICH_Thread->Create();
+	if ( AICH_Thread->Create() != wxTHREAD_NO_ERROR ) {
+		AddLogLineM(true, _("CamuleApp: can't create AICH thread"));
+		return;
+	}
 	AICH_Thread->SetPriority(WXTHREAD_DEFAULT_PRIORITY-10); // slightly less than main
 	AICH_Thread->Run();
 	
