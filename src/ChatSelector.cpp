@@ -48,6 +48,7 @@
 #warning Needed while not ported
 #include "Friend.h"
 #include "FriendList.h"
+#include "ClientList.h"
 
 
 // Default colors, 
@@ -61,14 +62,15 @@
 CChatSession::CChatSession(wxWindow* parent, wxWindowID id, const wxString& value, const wxPoint& pos, const wxSize& size, long style, const wxValidator& validator, const wxString& name)
 : CMuleTextCtrl( parent, id, value, pos, size, style | wxTE_READONLY | wxTE_RICH | wxTE_MULTILINE, validator, name )
 {
-	m_client = NULL;
+	m_client_id = 0;
 	m_active = false;
 }
 
 
 CChatSession::~CChatSession()
 {
-	m_client->SetChatState(MS_NONE);
+	#warning EC NEEDED
+	theApp.clientlist->SetChatState(m_client_id,MS_NONE);
 }
 
 
@@ -108,24 +110,14 @@ CChatSelector::CChatSelector(wxWindow* parent, wxWindowID id, const wxPoint& pos
 	
 	AssignImageList(imagelist);
 }
-CChatSession* CChatSelector::StartSession(CDlgFriend* friend_client, bool show) {
-	#warning CORE/GUI, PORT THIS!
-	#ifndef CLIENT_GUI
-	//return StartSession(theApp.friendlist->FindFriend(friend_client->m_hash, friend_client->m_ip, friend_client->m_port)->GetLinkedClient(), show);		
-	#warning BUG! does not work
-	return NULL;
-	#else
-	return NULL;
-	#endif
-}
 
-CChatSession* CChatSelector::StartSession(CUpDownClient* client, bool show) 
+CChatSession* CChatSelector::StartSession(uint64 client_id, const wxString& client_name, bool show) 
 {
 
 	// Check to see if we've already opened a session for this user
-	if ( GetPageByClient( client ) ) {
+	if ( GetPageByClientID( client_id ) ) {
 		if ( show ) {
-		  SetSelection( GetTabByClient( client ) );
+		  SetSelection( GetTabByClientID( client_id ) );
 		}
 
 		return NULL;
@@ -133,17 +125,15 @@ CChatSession* CChatSelector::StartSession(CUpDownClient* client, bool show)
 
 	CChatSession* chatsession = new CChatSession(this);
 	
-	chatsession->m_client = client;
+	chatsession->m_client_id = client_id;
 
 	wxString text;
-	text += wxString(_(" *** Chat-Session Started: ")) + client->GetUserName() + wxT(" - ");
+	text += _(" *** Chat-Session Started: ") + client_name + wxT(" - ");
 	text += wxDateTime::Now().FormatISODate() + wxT(" ") + wxDateTime::Now().FormatISOTime() + wxT("\n");
 	
 	chatsession->AddText( text, COLOR_RED );
-	AddPage(chatsession, client->GetUserName(), show, 0);
+	AddPage(chatsession, client_name, show, 0);
 	
-	client->SetChatState(MS_CHATTING);
-
 	GetParent()->FindWindow(IDC_CSEND)->Enable(true);
 	GetParent()->FindWindow(IDC_CCLOSE)->Enable(true);
 	
@@ -151,12 +141,12 @@ CChatSession* CChatSelector::StartSession(CUpDownClient* client, bool show)
 }
 
 
-CChatSession* CChatSelector::GetPageByClient(CUpDownClient* client)
+CChatSession* CChatSelector::GetPageByClientID(uint64 client_id)
 {
 	for ( unsigned int i = 0; i < (unsigned int ) GetPageCount(); i++ ) {
 		CChatSession* page = (CChatSession*)GetPage( i );
 		
-		if( page->m_client == client ) {
+		if( page->m_client_id == client_id ) {
 			return page;
 		}
 	}
@@ -165,12 +155,12 @@ CChatSession* CChatSelector::GetPageByClient(CUpDownClient* client)
 }
 
 
-int CChatSelector::GetTabByClient(CUpDownClient* client)
+int CChatSelector::GetTabByClientID(uint64 client_id)
 {
 	for ( unsigned int i = 0; i < (unsigned int) GetPageCount(); i++ ) {
 		CChatSession* page = (CChatSession*)GetPage( i );
 		
-		if( page->m_client == client ) {
+		if( page->m_client_id == client_id ) {
 			return i;
 		}
 	}
@@ -179,12 +169,33 @@ int CChatSelector::GetTabByClient(CUpDownClient* client)
 }
 
 
-void CChatSelector::ProcessMessage(CUpDownClient* sender, const wxString& message)
+void CChatSelector::ProcessMessage(uint64 sender_id, const wxString& message)
 {
-	CChatSession* session = GetPageByClient(sender);
+	CChatSession* session = GetPageByClientID(sender_id);
 
+	// Try to get the name (core sent it?)
+	int separator = message.Find(wxT("|"));
+	wxString client_name;
+	wxString client_message;
+	if (separator != -1) {
+		client_name = message.Left(separator-1);
+		client_message = message.Mid(separator+1);
+	} else {
+		// No need to define client_name. If needed, will be build on tab creation.
+		client_message = message;
+	}
+	
 	if ( !session ) {
-		session = StartSession( sender, true );
+		// This must be a mesage from a client that is not already chatting 
+		if (client_name.IsEmpty()) {
+			// Core did not send us the name.
+			// This must NOT happen.
+			// Build a client name based on the ID
+			uint32 ip = IP_FROM_GUI_ID(sender_id);
+			client_name =  wxString::Format(wxT("IP: %u.%u.%u.%u Port: %u"),(uint8)ip,(uint8)(ip>>8),(uint8)(ip>>16),(uint8)(ip>>24),PORT_FROM_GUI_ID(sender_id));
+		}
+		
+		session = StartSession( sender_id, client_name, true );
 	}
 
 	// Other client connected after disconnection or a new session
@@ -194,13 +205,14 @@ void CChatSelector::ProcessMessage(CUpDownClient* sender, const wxString& messag
 		session->AddText( _("*** Connected to Client ***\n"), COLOR_RED );
 	}
 	
-	session->AddText( sender->GetUserName(), COLOR_BLUE );
-	session->AddText( wxString(wxT(": ")) + message + wxString(wxT("\n")), COLOR_BLACK );
+	// Page text is client name
+	session->AddText( GetPageText(GetTabByClientID(sender_id)), COLOR_BLUE );
+	session->AddText( wxT(": ") + client_message + wxT("\n"), COLOR_BLACK );
 }
 
 #ifndef CLIENT_GUI
 
-bool CChatSelector::SendMessage( const wxString& message, CUpDownClient* to )
+bool CChatSelector::SendMessage( const wxString& message, const wxString& client_name, uint64 to_id )
 {
 	// Dont let the user send empty messages
 	// This is also a user-fix for people who mash the enter-key ...
@@ -208,9 +220,9 @@ bool CChatSelector::SendMessage( const wxString& message, CUpDownClient* to )
 		return false;
 	}
 	
-	if (to) {
+	if (to_id) {
 		// Checks if there's a page with this client, and selects it or creates it
-		StartSession(to, true);
+		StartSession(to_id, client_name, true);
 	}
 	
 	int usedtab = GetSelection();	
@@ -226,28 +238,16 @@ bool CChatSelector::SendMessage( const wxString& message, CUpDownClient* to )
 		
 	
 	CChatSession* ci = (CChatSession*)GetPage( usedtab );
-	if ( ci->m_client->GetChatState() == MS_CONNECTING )
-		return false;
 
 	ci->m_active = true;
-	
-	if (ci->m_client->IsConnected()) {
-		CSafeMemFile data;
-		data.WriteString(message);
-		CPacket* packet = new CPacket(&data);
-		packet->SetOpCode(OP_MESSAGE);
-		theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());
-		if ( ci->m_client->SendPacket(packet, true, true) ) {
-			ci->AddText( thePrefs::GetUserNick(), COLOR_GREEN );
-			ci->AddText( wxT(": ") + message + wxT("\n"), COLOR_BLACK );
-		}
+	#warning EC needed here.
+	if (theApp.clientlist->SendMessage(ci->m_client_id, message)) {
+		ci->AddText( thePrefs::GetUserNick(), COLOR_GREEN );
+		ci->AddText( wxT(": ") + message + wxT("\n"), COLOR_BLACK );
 	} else {
 		ci->AddText( _("*** Connecting to Client ***\n") , COLOR_RED );
-		ci->m_pending = message;
-		ci->m_client->SetChatState(MS_CONNECTING);
-		ci->m_client->TryToConnect();
 	}
-	
+
 	return true;
 }
 
@@ -267,56 +267,42 @@ bool CChatSelector::SendMessage( const wxString& message, CUpDownClient* to )
 */
 
 
-void CChatSelector::ConnectionResult(CUpDownClient* sender, bool success)
+void CChatSelector::ConnectionResult(bool success, const wxString& message, uint64 id)
 {
-	CChatSession* ci = GetPageByClient(sender);
+	CChatSession* ci = GetPageByClientID(id);
 	if ( !ci ) {
 		return;
 	}
 	
-	ci->m_client->SetChatState( MS_CHATTING );
 	if ( !success ) {
-		if ( !ci->m_pending.IsEmpty() ) {
-			ci->AddText( _("*** Failed to Connect ***\n"), COLOR_RED );
-		} else if ( ci->m_active ) {
-			ci->AddText( _("*** Disconnected from Client ***\n"), COLOR_RED );
-		}
-		
+
+		ci->AddText( _("*** Failed to Connect to client / Connection lost ***\n"), COLOR_RED );
+	
 		ci->m_active = false;
-		ci->m_pending.Clear();
+		
 	} else {
 		// Kry - Woops, fix for the everlasting void message sending.
-		if ( !ci->m_pending.IsEmpty() ) {
+		if ( !message.IsEmpty() ) {
 			ci->AddText( _("*** Connected to Client ***\n"), COLOR_RED );
-			
-			CSafeMemFile data;
-			data.WriteString(ci->m_pending);
-			CPacket* packet = new CPacket(&data);
-			packet->SetOpCode(OP_MESSAGE);
-			theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());
-			if ( ci->m_client->SendPacket(packet, true, true) ) {
-				ci->AddText( thePrefs::GetUserNick(), COLOR_GREEN );
-				ci->AddText( wxT(": ") + ci->m_pending + wxT("\n"), COLOR_BLACK );
-			
-				ci->m_pending.Clear();
-			}
+			ci->AddText( thePrefs::GetUserNick(), COLOR_GREEN );
+			ci->AddText( wxT(": ") + message + wxT("\n"), COLOR_BLACK );
 		}
 	}
-	
 }
 
 
-void CChatSelector::EndSession(CUpDownClient* client)
+void CChatSelector::EndSession(uint64 client_id)
 {
 	int usedtab;
-	if (client) {
-		usedtab = GetTabByClient(client);
+	if (client_id) {
+		usedtab = GetTabByClientID(client_id);
 	} else {
 		usedtab = GetSelection();
 	}
 
-	if (usedtab == -1)
+	if (usedtab == -1) {
 		return;
+	}
 
 	DeletePage(usedtab);
 
@@ -324,23 +310,18 @@ void CChatSelector::EndSession(CUpDownClient* client)
 	GetParent()->FindWindow(IDC_CCLOSE)->Enable(GetPageCount());
 }
 
-// Refresh the tab assosiated with a friend
-void CChatSelector::RefreshFriend(CDlgFriend* friend_client) {
-	RefreshFriend(theApp.friendlist->FindFriend(friend_client->m_hash, friend_client->m_ip, friend_client->m_port));
-}
-
-// Refresh the tab assosiated with a friend
-void CChatSelector::RefreshFriend(CFriend* toupdate)
+// Refresh the tab assosiated with a client
+void CChatSelector::RefreshFriend(uint64 toupdate_id, const wxString& new_name)
 {
-	wxASSERT( toupdate );
+	wxASSERT( toupdate_id );
 
-	for ( unsigned int i = 0; i < (unsigned int)GetPageCount(); i++ ) {
-		CChatSession* page = (CChatSession*)GetPage( i );
-
-		if ( page->m_client == toupdate->GetLinkedClient() ) {
-			SetPageText( i, toupdate->GetName() );
-			break;
-		};
-	}	
+	int tab = GetTabByClientID(toupdate_id); 
+	
+	if (tab != -1) {
+		// this client has a tab.
+		SetPageText(tab,new_name);
+	} else {
+		wxASSERT(0);
+	}
 }
 #endif

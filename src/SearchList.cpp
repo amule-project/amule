@@ -535,7 +535,7 @@ CPacket* CSearchList::CreateSearchPacket(wxString &searchString, wxString& typeT
 	// Packet body:
 	if ( !searchString.IsEmpty() ) {
 		data.WriteUInt8( stringParameter ); // Search-String is a string parameter type
-		data.WriteString( searchString/*, utf8strRaw*/ );   // Write the value of the string
+		data.WriteString( searchString, utf8strRaw );   // Write the value of the string
 	}
 	
 	if ( !typeText.IsEmpty() ) {

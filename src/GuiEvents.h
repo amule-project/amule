@@ -158,7 +158,18 @@ class GUIEvent : public wxEvent {
 		longlong_value 	= 0;
 		string_value 	= value_s;
 		ptr_value	= NULL;
-                ptr_aux_value	= NULL;
+		ptr_aux_value	= NULL;
+	}
+
+	GUIEvent(GUI_Event_ID new_id, byte value8, uint64 value_longlong, wxString value_s) : wxEvent(-1, wxEVT_NOTIFY_EVENT) {
+		ID 		= new_id;
+		byte_value 	= value8;
+		short_value	= 0;
+		long_value 	= 0;
+		longlong_value 	= value_longlong;
+		string_value 	= value_s;
+		ptr_value	= NULL;
+		ptr_aux_value	= NULL;
 	}
 
 	GUIEvent(GUI_Event_ID new_id, void *new_ptr = NULL, void* new_aux_ptr = NULL, byte value8 = 0) : wxEvent(-1, wxEVT_NOTIFY_EVENT) {
@@ -343,8 +354,8 @@ class GUIEvent : public wxEvent {
 
 // chat
 #define Notify_ChatRefreshFriend(val0, val1, s)     Notify_3_ValEvent(CHAT_REFRESH_FRIEND, val0, val1, s)
-#define Notify_ChatConnResult(ptr, val)             Notify_2_ValEvent(CHAT_CONN_RESULT, (void *)ptr, (byte)val)
-#define Notify_ChatProcessMsg(ptr, val)             Notify_2_ValEvent(CHAT_PROCESS_MSG, (CUpDownClient *)ptr, val)
+#define Notify_ChatConnResult(val0, val1, s)             Notify_3_ValEvent(CHAT_CONN_RESULT, (byte)val0, (uint64)val1, s)
+#define Notify_ChatProcessMsg(val0, s)             Notify_3_ValEvent(CHAT_PROCESS_MSG, (byte)0, (uint64)val0, s)
 
 // misc
 #define Notify_ShowNotifier(str, val0, val1)        Notify_3_ValEvent(SHOW_NOTIFIER, val0, str, val1)

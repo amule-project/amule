@@ -306,6 +306,20 @@ public:
 	 * sources and should not be added to partfiles.
 	 */
 	bool		IsDeadSource(const CUpDownClient* client);
+	
+	/**
+	 * Sends a message to a client, identified by a GUI_ID
+	 *
+	 * @return Success
+	 */
+	 bool	SendMessage(uint64 client_id, const wxString& message);
+	 
+	/**
+	 * Stops a chat session with a client.
+	 *
+	 */
+	 void	SetChatState(uint64 client_id, uint8 state);
+	 
 
 private:
 	/**

@@ -42,8 +42,7 @@ public:
 	CChatSession(wxWindow *parent, wxWindowID id = -1, const wxString& value = wxT(""), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = 0, const wxValidator& validator = wxDefaultValidator, const wxString& name = wxTextCtrlNameStr );
 	~CChatSession();
 
-	CUpDownClient*	m_client;
-	wxString		m_pending;
+	uint64	m_client_id;
 	bool			m_active;
 	
 	void AddText( const wxString& text, const wxTextAttr& style );
@@ -55,16 +54,14 @@ class CChatSelector : public CMuleNotebook
 public:
 	CChatSelector(wxWindow* parent, wxWindowID id, const wxPoint& pos, wxSize siz, long style);
 	virtual			~CChatSelector() {};
-	CChatSession*	StartSession(CDlgFriend* friend_client, bool show = true);
-	CChatSession*	StartSession(CUpDownClient* client, bool show = true);
-	void			EndSession(CUpDownClient* client = 0);
-	CChatSession*	GetPageByClient(CUpDownClient* client);
-	int				GetTabByClient(CUpDownClient* client);
-	void			ProcessMessage(CUpDownClient* sender, const wxString& message);
-	bool			SendMessage(const wxString& message, CUpDownClient* to = NULL);
-	void			ConnectionResult(CUpDownClient* sender, bool success);
-	void			RefreshFriend(CDlgFriend* friend_client);
-	void			RefreshFriend(CFriend* toupdate);
+	CChatSession*	StartSession(uint64 client_id, const wxString& client_name, bool show = true);
+	void			EndSession(uint64 client_id = 0);
+	CChatSession*	GetPageByClientID(uint64 client_id);
+	int				GetTabByClientID(uint64 client_id);
+	void			ProcessMessage(uint64 sender_id, const wxString& message);
+	bool			SendMessage(const wxString& message, const wxString& client_name = wxEmptyString, uint64 to_id = 0);
+	void			ConnectionResult(bool success, const wxString& message, uint64 id);
+	void			RefreshFriend(uint64 toupdate_id, const wxString& new_name);
 };
 
 #endif
