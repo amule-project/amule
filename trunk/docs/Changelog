@@ -141,7 +141,10 @@ Version 2.0.0rc6 - The '???' version.
 		* Initial import of new MD4 hash code from emule 0.44a into
 		  KnownFile.{cpp,h}.
 		* Removed amuleweb html template 12 char password limitation.
-		* Small fixes to UTF-8 support patch.
+		* Small fixes to UTF-8 SysTray support patch.
+		* Several unicode fixes.
+		* New macro in otherfunctions.h: unicode2charbuf(x) -- used
+		  when you need to store a (char *) to use several times.
 
 	Rommel:
 		* Patch to implement the commands serverconnect and reloadipf

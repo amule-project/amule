@@ -1,22 +1,23 @@
+//
 // This file is part of the aMule Project
 //
 // Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
 // Copyright (C) 2002 Merkur ( merkur-@users.sourceforge.net / http://www.emule-project.net )
 //
-//This program is free software; you can redistribute it and/or
-//modify it under the terms of the GNU General Public License
-//as published by the Free Software Foundation; either
-//version 2 of the License, or (at your option) any later version.
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either
+// version 2 of the License, or (at your option) any later version.
 //
-//This program is distributed in the hope that it will be useful,
-//but WITHOUT ANY WARRANTY; without even the implied warranty of
-//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//GNU General Public License for more details.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 //
-//You should have received a copy of the GNU General Public License
-//along with this program; if not, write to the Free Software
-//Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+//
 
 #ifndef OTHERFUNCTIONS_H
 #define OTHERFUNCTIONS_H
@@ -30,12 +31,28 @@
 
 class CAICHHash;
 
+/*
+ * Please, DO NOT store pointers returned by unicode2char(), because they 
+ * get free'ed as soon as the return value of cWX2MB gets out of scope.
+ * If you need to store a pointer, use unicode2charbuf() instead, which has
+ * a return type of wxCharBuffer, and then cast it to a char pointer, e.g.:
+ * 
+ * const wxCharBuffer buf = unicode2charbuf(aWxString);
+ * const char *p = (const char *)buf;
+ * 
+ * --- Now you can freely use p                              ---
+ * --- don't worry about memory allocation, memory will be   ---
+ * --- free'ed when buf gets out of scope, i.e., upon return ---
+ * 
+ */
 static wxCSConv aMuleConv(wxT("iso8859-1"));
 #if wxUSE_UNICODE
 	#define unicode2char(x) (const char*) aMuleConv.cWX2MB(x)
+	#define unicode2charbuf(x) aMuleConv.cWX2MB(x)
 	#define char2unicode(x) aMuleConv.cMB2WX(x)
 #else
 	#define unicode2char(x) (const char*)( x )
+	#define unicode2charbuf(x) (const char*)(x)
 	#define char2unicode(x) (x)
 #endif
 #define aMuleConvToUTF8(x) (const char*) wxConvUTF8.cWC2MB((wxString(x)).wc_str(aMuleConv))

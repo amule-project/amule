@@ -1056,12 +1056,12 @@ void CamuleApp::OnFatalException()
 #define wxGTK_WINDOW 1
 #define SHIFT (8 * (sizeof(short int) - sizeof(char)))
 
-static bool GetColourWidget(int &, int &, int &, int )
-{
-	  return FALSE;
-}
-
-
+// static bool GetColourWidget(int &, int &, int &, int )
+// {
+// 	  return FALSE;
+// }
+//
+//
 // // external helper function
 // wxColour GetColour(wxSystemColour what)
 // {
@@ -1548,17 +1548,20 @@ void CamuleApp::ShutDown() {
 	
 //
 // lfroen: logging is not unicode-aware, and it should not be !
+// Phoenix: You must be joking. :)
 void AddLogLine(const wxString &msg)
 {
 	wxString curr_date = wxDateTime::Now().FormatDate() + wxT(" ") + 
 		wxDateTime::Now().FormatTime() + wxT(": ");
-	const char *date_str = curr_date.c_str();
+	const wxCharBuffer date_str_buf = unicode2charbuf(curr_date);
+	const char *date_str = (const char *)date_str_buf;
 	applog->Write(date_str, strlen(date_str));
 	if ( enable_stdout_log ) {
 		fputs(date_str, stdout);
 	}
 
-	const char *c_msg = msg.c_str();
+ 	const wxCharBuffer c_msg_buf = unicode2charbuf(msg);
+	const char *c_msg = (const char *)c_msg_buf;
 	applog->Write(c_msg, strlen(c_msg));
 	applog->Write("\n", 1);
         if ( enable_stdout_log ) { 
@@ -1575,8 +1578,8 @@ void CamuleApp::NotifyEvent(GUIEvent event)
 		// it's daemon, so gui isn't here, but macros can be used as function calls
 		case SHOW_CONN_STATE:
 			if ( event.byte_value ) {
-				const char *id = theApp.serverconnect->IsLowID() ? "LOW" : "HIGH";
-				AddLogLine("Connected to " + event.string_value + wxT(" with ") + id + wxT(" ID"));
+				const wxString id = theApp.serverconnect->IsLowID() ? wxT("LOW") : wxT("HIGH");
+				AddLogLine(wxT("Connected to ") + event.string_value + wxT(" with ") + id + wxT(" ID"));
 			} else {
 				if ( theApp.serverconnect->IsConnecting() ) {
 					AddLogLine(wxT("connecting to ") + event.string_value);
