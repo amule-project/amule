@@ -38,14 +38,9 @@
      	#include <sys/param.h>
        	#include <sys/mount.h>
 	#else 
-		#include <execinfo.h>
 		#include <mntent.h>
 	#endif /* __BSD__ */
 
-#endif
-
-#ifdef __LINUX__
-	#include <execinfo.h>
 #endif
 
 #ifdef HAVE_CONFIG_H
@@ -1111,98 +1106,8 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 } //End Added By Bouc7
 
 // Gracefully handle fatal exceptions and print backtrace if possible
-#include <cxxabi.h>
 void CamuleApp::OnFatalException()
 {
-#ifdef __LINUX__
-
-	// (stkn) create backtrace
-	void *bt_array[100];	// 100 should be enough ?!?
-	char **bt_strings;
-	int num_entries;
-
-	if ((num_entries = backtrace(bt_array, 100)) < 0) {
-		fprintf(stderr, "* Could not generate backtrace\n");
-		return;
-	}
-
-	if ((bt_strings = backtrace_symbols(bt_array, num_entries)) == NULL) {
-		fprintf(stderr, "* Could not get symbol names for backtrace\n");
-		return;
-	}
-	
-	wxString *libname = new wxString[num_entries];
-	wxString *funcname = new wxString[num_entries];
-	wxString *address = new wxString[num_entries];
-	wxString AllAddresses;
-	for (int i = 0; i < num_entries; ++i) {
-		wxString wxBtString = char2unicode(bt_strings[i]);
-		int posLPar = wxBtString.Find(wxT('('));
-		int posRPar = wxBtString.Find(wxT(')'));
-		int posLBra = wxBtString.Find(wxT('['));
-		int posRBra = wxBtString.Find(wxT(']'));
-		bool hasFunction = true;
-		if (posLPar == -1 || posRPar == -1) {
-			if (posLBra == -1 || posRBra == -1) {
-				/* It is important to have exactly num_entries 
-				 * addresses in AllAddresses */
-				AllAddresses += wxT("0x0000000 ");
-				continue;
-			}
-			posLPar = posLBra;
-			hasFunction = false;
-		}
-		/* Library name */
-		int len = posLPar;
-		libname[i] = wxBtString.Mid(0, len);
-		/* Function name */
-		if (hasFunction) {
-			int posPlus = wxBtString.Find(wxT('+'));
-			if (posPlus == -1) posPlus = posRPar;
-			len = posPlus - posLPar - 1;
-			funcname[i] = wxBtString.Mid(posLPar + 1, len);
-			if (funcname[i].Mid(0,2) == wxT("_Z")) {
-				int status;
-				// This unicode2char is unavoidable (and only used for backtraces anyway)
-				char *demangled = abi::__cxa_demangle(unicode2char(funcname[i]), NULL, NULL, &status);
-				if (!status) {
-					funcname[i] = char2unicode(demangled);
-				}
-				if (demangled) {
-					free(demangled);
-				}
-			}
-		}
-		/* Address */
-		if ( posLBra == -1 || posRBra == -1) {
-			AllAddresses += wxT("0x0000000 ");
-		} else {
-			len = posRBra - posLBra - 1;
-			address[i] = wxBtString.Mid(posLBra + 1, len);
-			AllAddresses += address[i] + wxT(" ");
-		}
-	}
-	free(bt_strings);
-	
-	/* Get line numbers from addresses */
-	wxArrayString out;
-	bool hasLineNumberInfo = false;
-	if (wxThread::IsMain()) {
-		wxString command;
-		command << wxT("addr2line -C -f -s -e /proc/") <<
-			getpid() << wxT("/exe ") << AllAddresses;
-		// The output of the command is this wxArrayString, in which
-		// the even elements are the function names, and the odd elements
-		// are the line numbers.
-#ifndef AMULE_DAEMON		
-		::wxEnableTopLevelWindows(false);
-#endif
-		hasLineNumberInfo = wxExecute(command, out) != -1;
-#ifndef AMULE_DAEMON		
-		::wxEnableTopLevelWindows(true);
-#endif
-	}
-
 	/* Print the backtrace */
 	fprintf(stderr, "\n--------------------------------------------------------------------------------\n");	
 	if (wxString(MOD_VERSION_LONG) == wxT("aMule CVS")) {
@@ -1211,6 +1116,7 @@ void CamuleApp::OnFatalException()
 	} else {
 		fprintf(stderr, "OOPS! Houston, we have a situation: seems like aMule crashed!\n");
 	}
+
 	fprintf(stderr, "Please, post the following lines, on the aMule Crashes forum on:\n");
 	fprintf(stderr, "    http://forum.amule.org/board.php?boardid=67&sid=/\n");
 	fprintf(stderr, "You should also try to generate a real backtrace of this error, please read:\n");
@@ -1218,38 +1124,9 @@ void CamuleApp::OnFatalException()
 	fprintf(stderr, "----------------------------=| BACKTRACE FOLLOWS: |=----------------------------\n\n");
 	fprintf(stderr, "aMule version is: %s\n\n", (const char *)unicode2char(GetMuleVersion()));
 	
-	for (int i = 0; i < num_entries; ++i) {
-		/* If we have no function name, use the result from addr2line */
-		if (funcname[i].IsEmpty()) {
-			if (hasLineNumberInfo) {
-				funcname[i] = out[2*i];
-			} else {
-				funcname[i] = wxT("??");
-			}
-		}
-		wxString btLine;
-		btLine << wxT("[") << i << wxT("] ") << funcname[i] << wxT(" in ");
-		/* If addr2line did not find a line number, use bt_string */
-		if (!hasLineNumberInfo || out[2*i+1].Mid(0,2) == wxT("??")) {
-			btLine += libname[i] + wxT("[") + address[i] + wxT("]");
-		} else if (hasLineNumberInfo) {
-			btLine += out[2*i+1];
-		} else {
-			btLine += libname[i];
-		}
-		/* Print */
-		fprintf(stderr, "%s\n", (const char *)unicode2char(btLine) );
-	}
-	fprintf(stderr, "\n--------------------------------------------------------------------------------\n");
-	delete [] libname;
-	delete [] funcname;
-	delete [] address;
-#else
-
-	fprintf(stderr, "\nOOPS! - Seems like aMule crashed.\n");
-	fprintf(stderr, "aMule version is: %s\n", (const char*) unicode2char(GetMuleVersion()));
-	fprintf(stderr, "--== no BACKTRACE for your platform ==--\n\n");
-#endif // not linux
+	otherfunctions::print_backtrace(1); // 1 == skip this function.
+	
+	fprintf(stderr, "\n--------------------------------------------------------------------------------\n");	
 }
 
 
@@ -1716,66 +1593,6 @@ void CamuleApp::ShutDown() {
 	}
 	
 }
-
-#if defined(__DEBUG__) 
-	#if defined(__LINUX__)
-		void CamuleApp::AddSocketDeleteDebug(uint32 socket_pointer, uint32 creation_time) {
-	
-			socket_deletion_log_item current_socket;
-			socket_deletion_log_item temp_socket;
-	
-			current_socket.socket_n = socket_pointer;
-			current_socket.creation_time = creation_time;
-			current_socket.backtrace = wxEmptyString;
-	
-			void *bt_array[6];	// 6 should be enough ?!?
-			char **bt_strings;
-			int num_entries;
-	
-			if ((num_entries = backtrace(bt_array, 6)) < 0) {
-				current_socket.backtrace += wxT("* Could not generate backtrace\n");
-			} else {
-				if ((bt_strings = backtrace_symbols(bt_array, num_entries)) == NULL) {
-					current_socket.backtrace += wxT("* Could not get symbol names for backtrace\n");
-				}  else {
-					int n;
-					if (num_entries < 5) {
-						n = num_entries;
-					} else {
-						n = 5;
-					}
-					for (int i = n - 1; i >= 0; i--) {
-						current_socket.backtrace += wxString::Format(wxT("[%d] %s | "), i, bt_strings[i]);
-					}
-					current_socket.backtrace += wxT("END");
-				}
-			}
-	
-			uint32 size = SocketDeletionList.size();
-			for ( uint32 i = 0; i < size; ++i ) {
-				if (	( SocketDeletionList[i].socket_n == socket_pointer) &&
-					( SocketDeletionList[i].creation_time == creation_time)) {
-					printf("\n-----------------------RSB FOUND!!!!!!!!!!!!!!!!!!!!!!!!!------------\n");
-					printf("First deletion  (ptr: %u time: %u) BT:\n",
-						temp_socket.socket_n, temp_socket.creation_time);
-					printf("-> %s\n\n", (const char *)unicode2char(temp_socket.backtrace));	
-					printf("Second deletion (ptr: %u time: %u) BT:\n",
-						current_socket.socket_n,current_socket.creation_time);
-					printf("-> %s\n\n", (const char *)unicode2char(current_socket.backtrace));	
-					printf("--------------------------- Get Ready for RC4---------------------------\n");
-					//wxASSERT(0);
-				}
-			}
-			SocketDeletionList.push_back(current_socket);
-		}
-	#else
-		void CamuleApp::AddSocketDeleteDebug(uint32 socket_pointer, uint32 creation_time) {
-		// No backtrace on this platform.
-		}
-	#endif // __LINUX__
-		
-#endif // __DEBUG__
-
 
 bool CamuleApp::AddServer(CServer *srv)
 {

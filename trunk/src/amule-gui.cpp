@@ -29,7 +29,6 @@
      	#include <sys/param.h>
        	#include <sys/mount.h>
 	#else
-		#include <execinfo.h>
 		#include <mntent.h>
 	#endif /* __BSD__ */
 

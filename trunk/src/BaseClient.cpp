@@ -58,7 +58,7 @@ static wxString empty_name = wxT("[Empty User Name]");
 
 #ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
 #undef AddDebugLogLineM
-#define AddDebugLogLineM(x,y) printf("%s\n",unicode2char(y));
+#define AddDebugLogLineM(x,y) printf("%s\n",(const char*)unicode2char(y));
 #endif 
 
 CUpDownClient::CUpDownClient(CClientReqSocket* sender)
@@ -84,6 +84,7 @@ CUpDownClient::CUpDownClient(uint16 in_port, uint32 in_userid,uint32 in_serverip
 		} else {
 			m_nConnectIP = ENDIAN_NTOHL(in_userid);
 		}
+	}
 	#else
  	if(!HasLowID()) {
 		m_nConnectIP = in_userid;

@@ -282,6 +282,9 @@ void DumpMem(const void *buff, int n, const wxString *msg = NULL, bool ok = true
 
 void DumpMem_DW(const uint32 *ptr, int count);
 
+// Prints backtrace
+void print_backtrace(uint8 n);
+
 /*!
  * General purpose RLE implementation. Just encode or create
  * differential data with previous
