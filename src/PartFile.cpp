@@ -3147,7 +3147,7 @@ void CPartFile::PreviewFile()
 
 bool CPartFile::PreviewAvailable()
 {
-	return (IsMovie() && IsComplete(0, PARTSIZE));
+	return (IsMovie() && IsComplete(0, 256*1024));
 }
 
 #if 0
