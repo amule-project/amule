@@ -1,22 +1,23 @@
+//
 // This file is part of aMule Project
 //
 // Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
 // Copyright (C) 2002 Merkur ( merkur-@users.sourceforge.net / http://www.emule-project.net )
 //
-//This program is free software; you can redistribute it and/or
-//modify it under the terms of the GNU General Public License
-//as published by the Free Software Foundation; either
-//version 2 of the License, or (at your option) any later version.
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either
+// version 2 of the License, or (at your option) any later version.
 //
-//This program is distributed in the hope that it will be useful,
-//but WITHOUT ANY WARRANTY; without even the implied warranty of
-//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//GNU General Public License for more details.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 //
-//You should have received a copy of the GNU General Public License
-//along with this program; if not, write to the Free Software
-//Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+//
 
 #ifndef PREFERENCES_H
 #define PREFERENCES_H
@@ -411,7 +412,7 @@ public:
 	static bool		GetIPFilterOn()			{ return s_IPFilterOn; }
 	static void		SetIPFilterOn(bool val)		{ s_IPFilterOn = val; }
 	static uint8		GetIPFilterLevel()		{ return s_filterlevel;}
-	static void		SetIPFilterLevel(uint8 level)	{ s_filterlevel = level;}
+	static void		SetIPFilterLevel(uint8 level);
 	static bool		IPFilterAutoLoad()		{ return s_IPFilterAutoLoad; }
 	static void		SetIPFilterAutoLoad(bool val)	{ s_IPFilterAutoLoad = val; }
 	static const wxString&	IPFilterURL()			{ return s_IPFilterURL; }
