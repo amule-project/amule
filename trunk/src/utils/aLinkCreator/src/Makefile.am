@@ -4,7 +4,7 @@ alc_SOURCES = alc.cpp \
 		alcframe.cpp \
 		ed2khash.cpp \
 		alcpix.cpp \
-		md4.cpp \
+		md4.cpp
 
 alcc_SOURCES = alcc.cpp \
 		ed2khash.cpp \
