@@ -155,16 +155,16 @@ public wxThread
 public:
 	ProxyEventHandler();
 
-#ifdef AMULE_DAEMON
+#ifndef AMULE_DAEMON
+private:
+	void ProxySocketHandler(wxSocketEvent &event);
+	DECLARE_EVENT_TABLE();
+#else
 public:
 	~ProxyEventHandler();
 
 private:
 	void *Entry();
-#else
-private:
-	void ProxySocketHandler(wxSocketEvent &event);
-	DECLARE_EVENT_TABLE();
 #endif
 };
 
@@ -199,6 +199,8 @@ public:
 	/* Interface */
 	bool		Start(const wxIPaddress &PeerAddress, wxSocketClient *ProxyClientSocket);
 	t_sm_state	HandleEvent(t_sm_event event);
+	void		AddDummyEvent();
+	void		ReactivateSocket();
 	char 		*GetBuffer() const			{ return (char *)m_buffer; }
 	wxIPaddress	&GetProxyBoundAddress(void) const	{ return *m_ProxyBoundAddress; }
 	unsigned char	GetLastReply(void) const		{ return m_LastReply; }

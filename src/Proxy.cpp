@@ -33,7 +33,6 @@
 
 #include <netinet/in.h>		/* for htons()			*/
 
-
 #include "amule.h"		/* Needed for wxGetApp		*/
 #include "opcodes.h"		/* for PROXY_SOCKET_HANDLER	*/
 #include "NetworkFunctions.h"	/* for CStringIPtoUint32()	*/
@@ -114,6 +113,11 @@ BEGIN_EVENT_TABLE(ProxyEventHandler, wxEvtHandler)
 	EVT_SOCKET(PROXY_SOCKET_HANDLER, ProxyEventHandler::ProxySocketHandler)
 END_EVENT_TABLE()
 
+//
+// THE one and only Event Handler
+//
+static ProxyEventHandler TheProxyEventHandler;
+
 void ProxyEventHandler::ProxySocketHandler(wxSocketEvent& event)
 {
 	amuleProxyClientSocket *sock = dynamic_cast<amuleProxyClientSocket *>(event.GetSocket());
@@ -122,12 +126,8 @@ void ProxyEventHandler::ProxySocketHandler(wxSocketEvent& event)
 	} else {
 		// we're doomed :)
 	}
+//	sock->m_ProxyStateMachine->Clock();
 }
-
-//
-// THE one and only Event Handler
-//
-static ProxyEventHandler TheProxyEventHandler;
 
 #else
 // TODO -- amuled
@@ -197,6 +197,9 @@ bool ProxyStateMachine::Start(const wxIPaddress &PeerAddress, wxSocketClient *Pr
 		wxGetApp().Yield();
 		Clock();
 	}
+//	Clock();
+//	wxGetApp().Yield();
+	return true;
 	
 	// Debug message
 	if (m_ProxyBoundAddress) {
@@ -237,7 +240,7 @@ t_sm_state ProxyStateMachine::HandleEvent(t_sm_event event)
 		break;
 		
 	default:
-		printf("No event\n");
+		printf("Unknown event\n");
 		break;
 	}
 	
@@ -250,6 +253,60 @@ t_sm_state ProxyStateMachine::HandleEvent(t_sm_event event)
 	}
 	
 	return ret;
+}
+
+void ProxyStateMachine::AddDummyEvent()
+{
+	wxSocketEvent e(PROXY_SOCKET_HANDLER);
+	e.m_event = (wxSocketNotify)(wxSOCKET_INPUT + wxSOCKET_OUTPUT + wxSOCKET_CONNECTION + wxSOCKET_LOST);
+	e.SetEventObject(m_ProxyClientSocket);
+	TheProxyEventHandler.AddPendingEvent(e);
+}
+
+/*
+ * Notice! These includes are here as long as it is impossible to retrieve 
+ * the event handler from the socket. They should be removed. For now,
+ * please leave it here.
+ */
+#include "ListenSocket.h"	// For CClientReqSocketHandler
+#include "ServerSocket.h"	// For CServerSocketHandler
+
+void ProxyStateMachine::ReactivateSocket()
+{
+#ifndef AMULE_DAEMON
+	/* If proxy is beeing used, CServerSocketHandler will not receive a 
+	 * wxSOCKET_CONNECTION event, because the connection has already 
+	 * started with the proxy. So we must add a wxSOCKET_CONNECTION
+	 * event to make things go undetected. A wxSOCKET_OUTPUT event is
+	 * also necessary to start sending data to the server. */
+	 
+	/* If the wxSocket had a GetEventHandler method, this could be 
+	 * much more cleaner. All this fuzz is because GetEventHandler()
+	 * is implemented in CClientReqSocket and CServerSocket, both
+	 * are aMule classes. Maybe we can add this method to a common
+	 * ancestor. */
+	wxSocketEvent e(SERVERSOCKET_HANDLER);
+	e.m_event = wxSOCKET_CONNECTION;
+	e.SetEventObject(m_ProxyClientSocket);
+	CClientReqSocket *s1 = dynamic_cast<CClientReqSocket *>(m_ProxyClientSocket);
+	if (s1) {
+		CClientReqSocketHandler *h = s1->GetEventHandler();
+		m_ProxyClientSocket->SetEventHandler(*h, CLIENTREQSOCKET_HANDLER);
+		h->AddPendingEvent(e);
+		e.m_event = wxSOCKET_OUTPUT;
+		h->AddPendingEvent(e);
+		return;
+	}
+	CServerSocket *s2 = dynamic_cast<CServerSocket *>(m_ProxyClientSocket);
+	if (s2) {
+		CServerSocketHandler *h = s2->GetEventHandler();
+		m_ProxyClientSocket->SetEventHandler(*h, SERVERSOCKET_HANDLER);
+		h->AddPendingEvent(e);
+		e.m_event = wxSOCKET_OUTPUT;
+		h->AddPendingEvent(e);
+		return;
+	}
+#endif
 }
 
 wxSocketBase &ProxyStateMachine::ProxyWrite(wxSocketBase &socket, const void *buffer, wxUint32 nbytes)
@@ -334,9 +391,7 @@ t_sm_state Socks5StateMachine::next_state(t_sm_event event)
 		break;
 		
 	case SOCKS5_STATE_RECEIVE_AUTHENTICATION_METHOD:
-		if (CanReceive()) {
-			ret = SOCKS5_STATE_PROCESS_AUTHENTICATION_METHOD;
-		}
+		ret = SOCKS5_STATE_PROCESS_AUTHENTICATION_METHOD;
 		break;
 		
 	case SOCKS5_STATE_PROCESS_AUTHENTICATION_METHOD:
@@ -389,15 +444,11 @@ t_sm_state Socks5StateMachine::next_state(t_sm_event event)
 		break;
 		
 	case SOCKS5_STATE_RECEIVE_AUTHENTICATION_GSSAPI:
-		if (CanReceive()) {
-			ret = SOCKS5_STATE_PROCESS_AUTHENTICATION_GSSAPI;
-		}
+		ret = SOCKS5_STATE_PROCESS_AUTHENTICATION_GSSAPI;
 		break;
 		
 	case SOCKS5_STATE_RECEIVE_AUTHENTICATION_USERNAME_PASSWORD:
-		if (CanReceive()) {
-			ret = SOCKS5_STATE_PROCESS_AUTHENTICATION_USERNAME_PASSWORD;
-		}
+		ret = SOCKS5_STATE_PROCESS_AUTHENTICATION_USERNAME_PASSWORD;
 		break;
 		
 	case SOCKS5_STATE_PROCESS_AUTHENTICATION_GSSAPI:
@@ -422,9 +473,7 @@ t_sm_state Socks5StateMachine::next_state(t_sm_event event)
 		break;
 		
 	case SOCKS5_STATE_RECEIVE_COMMAND_REPLY:
-		if (CanReceive()) {
-			ret = SOCKS5_STATE_PROCESS_COMMAND_REPLY;
-		}
+		ret = SOCKS5_STATE_PROCESS_COMMAND_REPLY;
 		break;
 		
 	case SOCKS5_STATE_PROCESS_COMMAND_REPLY:
@@ -446,10 +495,12 @@ dump("process_start", m_ok, NULL, 0);
 	} else {
 printf("wait state -- process_start\n");
 	}
+//	AddDummyEvent();
 }
 
 void Socks5StateMachine::process_end(bool)
 {
+	ReactivateSocket();
 dump("process_end", m_ok, NULL, 0);
 }
 
@@ -483,8 +534,8 @@ void Socks5StateMachine::process_receive_authentication_method(bool entry)
 dump("process_receive_authentication_method", m_ok, m_buffer, 0);
 	} else {
 printf("wait state -- process_receive_authentication_method\n");
-//		if (GetClocksInCurrentState() > 5) m_CanSend = true;
 	}
+//	AddDummyEvent();
 }
 
 void Socks5StateMachine::process_process_authentication_method(bool entry)
@@ -495,8 +546,8 @@ void Socks5StateMachine::process_process_authentication_method(bool entry)
 dump("process_process_authentication_method", m_ok, m_buffer, m_PacketLenght);
 	} else {
 printf("wait state -- process_receive_authentication_method\n");
-//		if (GetClocksInCurrentState() > 5) m_CanSend = true;
 	}
+//	AddDummyEvent();
 }
 
 void Socks5StateMachine::process_send_authentication_gssapi(bool)
@@ -537,6 +588,7 @@ dump("process_send_authentication_username_password", m_ok, m_buffer, m_PacketLe
 	} else {
 printf("wait state -- process_send_authentication_username_password\n");
 	}
+//	AddDummyEvent();
 }
 
 void Socks5StateMachine::process_receive_authentication_username_password(bool entry)
@@ -549,6 +601,7 @@ dump("process_receive_authentication_username_password", m_ok, m_buffer, 0);
 	} else {
 printf("wait state -- process_receive_authentication_username_password\n");
 	}
+//	AddDummyEvent();
 }
 
 void Socks5StateMachine::process_process_authentication_username_password(bool entry)
@@ -563,6 +616,7 @@ dump("process_process_authentication_username_password", m_ok, m_buffer, m_Packe
 	} else {
 printf("wait state -- process_receive_authentication_username_password\n");
 	}
+//	AddDummyEvent();
 }
 
 void Socks5StateMachine::process_send_command_request(bool entry)
@@ -595,6 +649,7 @@ dump("process_send_command_request", m_ok, m_buffer, m_PacketLenght);
 	} else {
 printf("wait state -- process_send_command_request\n");
 	}
+//	AddDummyEvent();
 }
 
 void Socks5StateMachine::process_receive_command_reply(bool entry)
@@ -609,6 +664,7 @@ dump("process_receive_command_reply", m_ok, m_buffer, 0);
 	} else {
 printf("wait state -- process_receive_command_reply\n");
 	}
+//	AddDummyEvent();
 }
 
 void Socks5StateMachine::process_process_command_reply(bool entry)
@@ -674,10 +730,12 @@ void Socks5StateMachine::process_process_command_reply(bool entry)
 					*((uint16 *)(m_buffer+Port_offset)) ));
 			}
 		}
+		Clock();
 dump("process_process_command_reply", m_ok, m_buffer, m_PacketLenght);
 	} else {
 printf("wait state -- process_receive_command_reply\n");
 	}
+//	AddDummyEvent();
 }
 
 //------------------------------------------------------------------------------
@@ -725,9 +783,7 @@ t_sm_state Socks4StateMachine::next_state(t_sm_event event)
 		break;
 		
 	case SOCKS4_STATE_RECEIVE_COMMAND_REPLY:
-		if (CanReceive()) {
-			ret = SOCKS4_STATE_PROCESS_COMMAND_REPLY;
-		}
+		ret = SOCKS4_STATE_PROCESS_COMMAND_REPLY;
 		break;
 		
 	case SOCKS4_STATE_PROCESS_COMMAND_REPLY:
@@ -753,6 +809,7 @@ printf("wait state -- process_start\n");
 
 void Socks4StateMachine::process_end(bool)
 {
+	ReactivateSocket();
 dump("process_end", m_ok, NULL, 0);
 }
 
@@ -781,6 +838,7 @@ void Socks4StateMachine::process_send_command_request(bool entry)
 		unsigned char LenUser = m_ProxyData.m_UserName.Len();
 		memcpy(m_buffer + OffsetUser, 
 			unicode2char(m_ProxyData.m_UserName), LenUser);
+		m_buffer[OffsetUser + LenUser] = 0;
 		// Send the command packet
 		m_PacketLenght = 1 + 1 + 2 + 4 + LenUser + 1 ;
 		ProxyWrite(*m_ProxyClientSocket, m_buffer, m_PacketLenght);
@@ -874,9 +932,7 @@ t_sm_state HttpStateMachine::next_state(t_sm_event event)
 		break;
 		
 	case HTTP_STATE_RECEIVE_COMMAND_REPLY:
-		if (CanReceive()) {
-			ret = HTTP_STATE_PROCESS_COMMAND_REPLY;
-		}
+		ret = HTTP_STATE_PROCESS_COMMAND_REPLY;
 		break;
 		
 	case HTTP_STATE_PROCESS_COMMAND_REPLY:
@@ -902,6 +958,7 @@ printf("wait state -- process_start\n");
 
 void HttpStateMachine::process_end(bool)
 {
+	ReactivateSocket();
 dump("process_end", m_ok, NULL, 0);
 }
 
@@ -1111,62 +1168,16 @@ amuleProxyClientSocket(flags, ProxyData, wxPROXY_CMD_CONNECT)
 {
 }
 
-/*
- * Notice! These includes are here as long as it is impossible to retrieve 
- * the event handler from the socket. They should be removed. For now,
- * please leave it here.
- */
-#include "ListenSocket.h"	// For CClientReqSocketHandler
-#include "ServerSocket.h"	// For CServerSocketHandler
-
 bool wxSocketClientProxy::Connect(wxIPaddress &address, bool wait)
 {
 	bool ok;
 	
 	if (GetUseProxy() && ProxyIsCapableOf(wxPROXY_CMD_CONNECT)) {
 		ok = Start(address);
-#ifndef AMULE_DAEMON
-		/* If proxy is beeing used, CServerSocketHandler will not receive a 
-		 * wxSOCKET_CONNECTION event, because the connection has already 
-		 * started with the proxy. So we must add a wxSOCKET_CONNECTION
-		 * event to make things go undetected. A wxSOCKET_OUTPUT event is
-		 * also necessary to start sending data to the server. */
-		if (ok) {
-			/* If the wxSocket had a GetEventHandler method, this could be 
-			 * much more cleaner. All this fuzz is because GetEventHandler()
-			 * is implemented in CClientReqSocket and CServerSocket, both
-		 	* are aMule classes. Maybe we can add this method to a common
-		 	* ancestor. */
-			wxSocketEvent e(SERVERSOCKET_HANDLER);
-			e.m_event = wxSOCKET_CONNECTION;
-			e.SetEventObject(this);
-			CClientReqSocket *s1 = dynamic_cast<CClientReqSocket *>(this);
-			if (s1) {
-				CClientReqSocketHandler *h = s1->GetEventHandler();
-				SetEventHandler(*h, CLIENTREQSOCKET_HANDLER);
-				h->AddPendingEvent(e);
-				e.m_event = wxSOCKET_OUTPUT;
-				h->AddPendingEvent(e);
-				goto end;
-			}
-			CServerSocket *s2 = dynamic_cast<CServerSocket *>(this);
-			if (s2) {
-				CServerSocketHandler *h = s2->GetEventHandler();
-				SetEventHandler(*h, SERVERSOCKET_HANDLER);
-				h->AddPendingEvent(e);
-				e.m_event = wxSOCKET_OUTPUT;
-				h->AddPendingEvent(e);
-				goto end;
-			}
-		}
-#endif
 	} else {
 		ok = wxSocketClient::Connect(address, wait);
 	}
-
-#ifndef AMULE_DAEMON
-end:
-#endif
+	
 	return ok;
 }
 
