@@ -9,12 +9,14 @@ cas_SOURCES = cas.c \
 	      configfile.c \
 	      functions.c \
 	      graphics.c \
-	      html.c
+	      html.c \
+	      lines.c
 
 noinst_HEADERS = configfile.h \
 	      functions.h \
 	      graphics.h \
 	      html.h \
+	      lines.h \
 	      version.h
 
 cas_CFLAGS= $(GDLIB_CFLAGS) $(CAS_DEFS)

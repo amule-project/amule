@@ -39,7 +39,7 @@
  * this is the funcion that writes the text to the image.
  * almost everything is taken from libgd examples
  */
-int createimage(CONF *config, char lines[IMG_TEXTLINES][80])
+int createimage(CONF *config, char *lines[IMG_TEXTLINES])
 {
 	FILE *in, *out;
 	char *path;
