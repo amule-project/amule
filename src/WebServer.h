@@ -20,26 +20,7 @@
 #ifndef WEBSERVER_H
 #define WEBSERVER_H
 
-#include <wx/string.h>
-#include <wx/intl.h>
-#ifdef __WXMSW__
-	#include <wx/msw/winundef.h>
-#endif
-#include <wx/wx.h>
-#define wxUSE_DDE_FOR_IPC  0
-#include <wx/ipc.h>
-#include <wx/filename.h>
-
-#ifdef AMULEWEBDLG
-#include <wx/textdlg.h>
-#else
-#include <wx/cmdline.h>
-#endif
-
-#ifndef WIN32
-#include "config.h"
-#endif
-
+//-------------------------------------------------------------------
 #ifdef __WXMSW__
 	#include <winsock.h>
 #else
@@ -49,12 +30,23 @@
 	#include <arpa/inet.h>
 #endif
 #include <zlib.h>		// Needed for Bytef etc.
+
+//-------------------------------------------------------------------
+#ifndef WIN32
+	#include "config.h"
+#endif
+//-------------------------------------------------------------------
+#define wxUSE_DDE_FOR_IPC  0
+//#include <wx/ipc.h>
+#include <wx/wx.h>
+#include <wx/filename.h>
+
+#ifdef __WXMSW__
+	#include <wx/msw/winundef.h>
+#endif
+
 #include "types.h"
-
 #include "WebInterface.h"
-#include <wx/thread.h>
-
-#include <wx/dynarray.h>
 
 class TransferredData;
 class CWSThread;
@@ -63,15 +55,15 @@ class CWebSocket;
 //shakraw, these are defined in PartFile.h, but if I include PartFile.h
 //I get several wx-errors in compilation...
 //Needed for categories
-#define	PS_READY			0
-#define	PS_EMPTY			1
+#define	PS_READY		0
+#define	PS_EMPTY		1
 #define PS_WAITINGFORHASH	2
-#define PS_HASHING			3
-#define PS_ERROR			4
-#define	PS_UNKNOWN			6
-#define PS_PAUSED			7
+#define PS_HASHING		3
+#define PS_ERROR		4
+#define	PS_UNKNOWN		6
+#define PS_PAUSED		7
 #define PS_COMPLETING		8
-#define PS_COMPLETE			9
+#define PS_COMPLETE		9
 //shakraw, end of imported definitions
 
 //shakraw - webserver code below
@@ -107,7 +99,7 @@ typedef struct {
 	wxString	sFileName;
 	long		lFileSize;
 	uint32		nFileTransferred;
-    uint64		nFileAllTimeTransferred;
+	uint64		nFileAllTimeTransferred;
 	uint16		nFileRequests;
 	uint32		nFileAllTimeRequests;
 	uint16		nFileAccepts;
@@ -136,7 +128,7 @@ typedef enum {
 	SHARED_SORT_REQUESTS,
 	SHARED_SORT_ALL_TIME_REQUESTS,
 	SHARED_SORT_ACCEPTS,
-    SHARED_SORT_ALL_TIME_ACCEPTS,
+	SHARED_SORT_ALL_TIME_ACCEPTS,
 	SHARED_SORT_PRIORITY
 } xSharedSort;
 
@@ -252,7 +244,7 @@ class CWebServer {
 		uint16	GetSessionCount()	{ return m_Params.Sessions.GetCount();}
 		bool 	IsRunning()	{ return true /*m_bServerWorking*/;}  //shakraw, useless now
 		int 	GetWSPort(); //shakraw
-		void	Print(char *sFormat, ...);
+		void	Print(const wxString &s);
 		
 	protected:
 		static void	ProcessURL(ThreadData);
@@ -301,7 +293,7 @@ class CWebServer {
 		static wxString	GetSubCatLabel(int cat);
 		// Common data
 		CamulewebApp	*webInterface;
-		CWSThread		*wsThread;
+		CWSThread	*wsThread;
 		GlobalParams	m_Params;
 		WebTemplates	m_Templates;
 		bool		m_bServerWorking;
