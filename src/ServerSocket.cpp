@@ -347,13 +347,12 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				AddLogLineM(true,wxString::Format(wxT("ServerMsg - OP_FoundSources; sources = %u\n"), (UINT)(uchar)packet[16]));
 				#endif
 				theApp.downloadqueue->AddDownDataOverheadServer(size);
-				CSafeMemFile* sources = new CSafeMemFile((BYTE*)packet,size);
+				CSafeMemFile sources((BYTE*)packet,size);
 				uint8 fileid[16];
-				sources->ReadHash16(fileid);
+				sources.ReadHash16(fileid);
 				if (CPartFile* file = theApp.downloadqueue->GetFileByID(fileid)) {
 					file->AddSources(sources,cur_server->GetIP(), cur_server->GetPort());
 				}
-				delete sources;
 				break;
 			}
 			case OP_SERVERSTATUS: {

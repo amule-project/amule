@@ -1803,21 +1803,21 @@ bool CPartFile::CanAddSource(uint32 userid, uint16 port, uint32 serverip, uint16
 	return true;
 }
 
-void CPartFile::AddSources(CSafeMemFile* sources,uint32 serverip, uint16 serverport)
+void CPartFile::AddSources(CSafeMemFile& sources,uint32 serverip, uint16 serverport)
 {
-	uint8 count = sources->ReadUInt8();
+	uint8 count = sources.ReadUInt8();
 	uint8 debug_lowiddropped = 0;
 	uint8 debug_possiblesources = 0;
 
 	if (stopped) {
 		// since we may received multiple search source UDP results we have to "consume" all data of that packet
-		sources->Seek(count*(4+2), wxFromStart);
+		sources.Seek(count*(4+2), wxFromStart);
 		return;
 	}
 
 	for (int i = 0;i != count;++i) {
-		uint32 userid = sources->ReadUInt32();
-		uint16 port   = sources->ReadUInt16();
+		uint32 userid = sources.ReadUInt32();
+		uint16 port   = sources.ReadUInt16();
 		
 		// "Filter LAN IPs" and "IPfilter" the received sources IP addresses
 		if (userid >= 16777216) {
@@ -1840,7 +1840,7 @@ void CPartFile::AddSources(CSafeMemFile* sources,uint32 serverip, uint16 serverp
 			theApp.downloadqueue->CheckAndAddSource(this,newsource);
 		} else {
 			// since we may received multiple search source UDP results we have to "consume" all data of that packet
-			sources->Seek((count-i)*(4+2), wxFromStart);
+			sources.Seek((count-i)*(4+2), wxFromStart);
 			break;
 		}
 	}
@@ -2866,86 +2866,6 @@ bool CPartFile::PreviewAvailable()
 {
 	return (( GetFiletype(GetFileName()) == ftVideo ) && IsComplete(0, 256*1024));
 }
-
-#if 0
-bool CPartFile::PreviewAvailable()
-{
-	wxLongLong free;
-	wxGetDiskSpace(thePrefs::GetTempDir(), NULL, &free);
-	printf("\nFree Space (wxLongLong): %s\n", unicode2char(free.ToString()));
-	typedef unsigned long long uint64;
-	uint64 space = free.GetValue();
-	printf("\nFree Space (uint64): %lli\n", space);
-
-	// Barry - Allow preview of archives of any length > 1k
-	if (IsArchive(true)) {
-		if (GetStatus() != PS_COMPLETE && GetStatus() != PS_COMPLETING && GetFileSize()>1024 && GetCompletedSize()>1024 && (!m_bRecoveringArchive) && ((space + 100000000) > (2*GetFileSize()))) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	if (thePrefs::IsMoviePreviewBackup()) {
-		return !( (GetStatus() != PS_READY && GetStatus() != PS_PAUSED)
-		|| m_bPreviewing || GetPartCount() < 5 || !IsMovie() || (space + 100000000) < GetFileSize() 
-		|| ( !IsComplete(0,PARTSIZE-1) || !IsComplete(PARTSIZE*(GetPartCount()-1),GetFileSize()-1)));
-	} else {
-		TCHAR szVideoPlayerFileName[_MAX_FNAME];
-		_tsplitpath(thePrefs::GetVideoPlayer(), NULL, NULL, szVideoPlayerFileName, NULL);
-
-		// enable the preview command if the according option is specified 'PreviewSmallBlocks' 
-		// or if VideoLAN client is specified
-		if (thePrefs::GetPreviewSmallBlocks() || !_tcsicmp(szVideoPlayerFileName, _T("vlc"))) {
-			if (m_bPreviewing) {
-				return false;
-			}
-			uint8 uState = GetStatus();
-			if (!(uState == PS_READY || uState == PS_EMPTY || uState == PS_PAUSED)) {
-				return false;
-			}
-			// default: check the ED2K file format to be of type audio, video or CD image. 
-			// but because this could disable the preview command for some file types which eMule does not know,
-			// this test can be avoided by specifying 'PreviewSmallBlocks=2'
-			if (thePrefs::GetPreviewSmallBlocks() <= 1) {
-				// check the file extension
-				EED2KFileType eFileType = GetED2KFileTypeID(GetFileName());
-				if (!(eFileType == ED2KFT_VIDEO || eFileType == ED2KFT_AUDIO || eFileType == ED2KFT_CDIMAGE)) {
-					// check the ED2K file type
-					LPCSTR pszED2KFileType = GetStrTagValue(FT_FILETYPE);
-					if (pszED2KFileType == NULL || !(!strcasecmp(pszED2KFileType, "Audio") || !strcasecmp(pszED2KFileType, "Video"))) {
-						return false;
-					}
-				}
-			}
-
-			// If it's an MPEG file, VLC is even capable of showing parts of the file if the beginning of the file is missing!
-			bool bMPEG = false;
-			LPCTSTR pszExt = _tcsrchr(GetFileName(), _T('.'));
-			if (pszExt != NULL) {
-				wxString strExt(pszExt);
-				strExt.MakeLower();
-				bMPEG = (strExt==_T(".mpg") || strExt==_T(".mpeg") || strExt==_T(".mpe") || strExt==_T(".mp3") || strExt==_T(".mp2") || strExt==_T(".mpa"));
-			}
-			if (bMPEG) {
-				// TODO: search a block which is at least 16K (Audio) or 256K (Video)
-				if (GetCompletedSize() < 16*1024) {
-					return false;
-				}
-			} else {
-				// For AVI files it depends on the used codec..
-				if (!IsComplete(0, 256*1024))
-					return false;
-				}
-			}
-			return true;
-		} else {
-			return !((GetStatus() != PS_READY && GetStatus() != PS_PAUSED)
-			|| m_bPreviewing || GetPartCount() < 2 || !IsMovie() || !IsComplete(0,PARTSIZE-1));
-		}
-	}
-}
-#endif
-
 
 void CPartFile::SetLastAnsweredTime()
 {

@@ -101,7 +101,7 @@ public:
 	void	WritePartStatus(CSafeMemFile* file);
 	void	WriteCompleteSourcesCount(CSafeMemFile* file);
 	bool 	CanAddSource(uint32 userid, uint16 port, uint32 serverip, uint16 serverport, uint8* pdebug_lowiddropped);
-	void	AddSources(CSafeMemFile* sources,uint32 serverip, uint16 serverport);
+	void	AddSources(CSafeMemFile& sources,uint32 serverip, uint16 serverport);
 	uint8	GetStatus(bool ignorepause = false) const;
 	virtual void	UpdatePartsInfo();
 	const wxString& GetPartMetFileName() const { return m_partmetfilename; }

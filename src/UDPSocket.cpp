@@ -35,10 +35,6 @@
 #include "GetTickCount.h"
 #include "ServerSocket.h"
 
-#define get_uint32(p)	ENDIAN_SWAP_32(*((uint32*)(p)))
-#define get_uint16(p)	ENDIAN_SWAP_16(*((uint16*)(p)))
-
-
 IMPLEMENT_DYNAMIC_CLASS(CUDPSocket,wxDatagramSocket)
 
 CUDPSocket::CUDPSocket(CServerConnect* in_serverconnect, amuleIPV4Address& address)
@@ -47,12 +43,12 @@ CUDPSocket::CUDPSocket(CServerConnect* in_serverconnect, amuleIPV4Address& addre
 	, wxThread(wxTHREAD_JOINABLE)
 #endif
 {
-  //m_hWndResolveMessage = NULL;
-  sendbuffer = 0;
-  cur_server = 0;
-  serverconnect = in_serverconnect;
 
-  printf("*** UDP socket at %d\n",address.Service());
+	sendbuffer = 0;
+	cur_server = 0;
+	serverconnect = in_serverconnect;
+
+	printf("*** UDP socket at %d\n",address.Service());
 #ifdef AMULE_DAEMON
 	if ( Create() != wxTHREAD_NO_ERROR ) {
 		printf("ERROR: CUDPSocket failed create\n");
@@ -60,185 +56,191 @@ CUDPSocket::CUDPSocket(CServerConnect* in_serverconnect, amuleIPV4Address& addre
 	}
 	Run();
 #else
-  SetEventHandler(theApp,UDPSOCKET_HANDLER);
-  SetNotify(wxSOCKET_INPUT_FLAG);
-  Notify(TRUE);
+	SetEventHandler(theApp,UDPSOCKET_HANDLER);
+	SetNotify(wxSOCKET_INPUT_FLAG);
+	Notify(TRUE);
 #endif
-  //DnsTaskHandle = 0;
+  
 }
 
 CUDPSocket::~CUDPSocket(){
-  SetNotify(0);
-  Notify(FALSE);
-	if (cur_server)
+	SetNotify(0);
+	Notify(FALSE);
+	if (cur_server) {
 		delete cur_server;
-	if (sendbuffer)
+	}
+	if (sendbuffer) {
 		delete[] sendbuffer;
-	//m_udpwnd.DestroyWindow();
+	}
 }
 
 #define SERVER_UDP_BUFFER_SIZE 5000
 
 void CUDPSocket::OnReceive(int WXUNUSED(nErrorCode)) {
-	char buffer[SERVER_UDP_BUFFER_SIZE];
+	uint8 buffer[SERVER_UDP_BUFFER_SIZE];
 
 	amuleIPV4Address addr;
 	RecvFrom(addr,buffer,SERVER_UDP_BUFFER_SIZE);
-	wxUint32 length = LastCount();
-
-	if (buffer[0] == (char)OP_EDONKEYPROT && length != static_cast<wxUint32>(-1)) {
-	  ProcessPacket(buffer+2,length-2,buffer[1],addr.IPAddress(),addr.Service()); 
-	} else if ((buffer[0] == (char)OP_EMULEPROT) && length != static_cast<wxUint32>(-1)) {
-		theApp.downloadqueue->AddDownDataOverheadOther(length-2);
+	int length = LastCount();
+	
+	if (length > 2) { 
+		// 2 bytes (protocol and opcode) must be there. This 'if' also takes care
+		// of len == -1 (read error on udp socket)
+			
+		switch (/*Protocol*/buffer[0]) {
+			case OP_EDONKEYPROT: {
+				length = length - 2; // skip protocol and opcode
+				// Create the safe mem file.	
+				CSafeMemFile  data(buffer+2,length);
+				wxASSERT(length == data.GetLength());
+				ProcessPacket(data,length,/*opcode*/buffer[1],addr.IPAddress(),addr.Service()); 
+			}
+			case OP_EMULEPROT:
+				// Silently drop it.
+				theApp.downloadqueue->AddDownDataOverheadOther(length);
+			default:
+				printf("Received UDP server packet with unknown protocol 0x%x!\n",buffer[0]);
+		}		
 	}
 }
 
 
 void CUDPSocket::ReceiveAndDiscard() {
-	char buffer[SERVER_UDP_BUFFER_SIZE];
+	uint32  buffer[SERVER_UDP_BUFFER_SIZE];
 	
 	amuleIPV4Address addr;
 	RecvFrom(addr,buffer,SERVER_UDP_BUFFER_SIZE);
 	// And just discard it :)	
 };
 
-bool CUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, const wxString& host, uint16 port){
+void CUDPSocket::ProcessPacket(CSafeMemFile& packet, int16 size, int8 opcode, const wxString& host, uint16 port){
+
+	CServer* update = theApp.serverlist->GetServerByAddress( host, port-4 );
+
 	try{
-		CServer* update;
-		update = theApp.serverlist->GetServerByAddress( host, port-4 );
-		if( update ){
-			update->ResetFailedCount();
-			Notify_ServerRefresh( update );
-		}
 		// Imported: OP_GLOBSEARCHRES, OP_GLOBFOUNDSORUCES (yes, soruces)  & OP_GLOBSERVSTATRES
 		// This makes Server UDP Flags to be set correctly so we use less bandwith on asking servers for sources
 		// Also we process Search results and Found sources correctly now on 16.40 behaviour.
 		switch(opcode){
 			case OP_GLOBSEARCHRES: {
 				theApp.downloadqueue->AddDownDataOverheadOther(size);
-				CSafeMemFile* data = new CSafeMemFile((BYTE*)packet,size);
 				// process all search result packets
 				int iLeft;
 				do{
-					/*uint16 uResultCount =*/ theApp.searchlist->ProcessUDPSearchanswer(data, StringIPtoUint32(host), port-4);
+					/*uint16 uResultCount =*/ theApp.searchlist->ProcessUDPSearchanswer(packet, StringIPtoUint32(host), port-4);
 					// There is no need because we don't limit the global results
 					// theApp.amuledlg->searchwnd->AddUDPResult(uResultCount);
 					// check if there is another source packet
-					iLeft = (int)(data->GetLength() - data->GetPosition());
+					iLeft = (int)(size - packet.GetPosition());
 					if (iLeft >= 2){
-						uint8 protocol = data->ReadUInt8();
+						uint8 protocol = packet.ReadUInt8();
 						iLeft--;
 						if (protocol != OP_EDONKEYPROT){
-							data->Seek(-1, wxFromCurrent);
+							packet.Seek(-1, wxFromCurrent);
 							iLeft += 1;
 							break;
 						}
 
-						uint8 opcode = data->ReadUInt8();
+						uint8 opcode = packet.ReadUInt8();
 						iLeft--;
 						if (opcode != OP_GLOBSEARCHRES){
-							data->Seek(-2,wxFromCurrent);
+							packet.Seek(-2,wxFromCurrent);
 							iLeft += 2;
 							break;
 						}
 					}
-				}
-				while (iLeft > 0);
-				delete data;
-
+				} while (iLeft > 0);
+				
 				theApp.downloadqueue->AddDownDataOverheadOther(size);
 
 				break;
 			}
 			case OP_GLOBFOUNDSORUCES:{
 				theApp.downloadqueue->AddDownDataOverheadOther(size);
-				CSafeMemFile* data = new CSafeMemFile((BYTE*)packet,size);
 				// process all source packets
 				int iLeft;
 				do{
 					uint8 fileid[16];
-					data->ReadHash16(fileid);
+					packet.ReadHash16(fileid);
 					if (CPartFile* file = theApp.downloadqueue->GetFileByID(fileid))
-						file->AddSources(data, StringIPtoUint32(host), port-4);
+						file->AddSources(packet, StringIPtoUint32(host), port-4);
 					else{
 						// skip sources for that file
-						uint8 count = data->ReadUInt8();
-						data->Seek(count*(4+2), wxFromStart);
+						uint8 count = packet.ReadUInt8();
+						packet.Seek(count*(4+2), wxFromStart);
 					}
 
 					// check if there is another source packet
-					iLeft = (int)(data->GetLength() - data->GetPosition());
+					iLeft = (int)(size - packet.GetPosition());
 					if (iLeft >= 2){
-						uint8 protocol = data->ReadUInt8();
+						uint8 protocol = packet.ReadUInt8();
 						iLeft--;
 						if (protocol != OP_EDONKEYPROT){
-							data->Seek(-1, wxFromCurrent);
+							packet.Seek(-1, wxFromCurrent);
 							iLeft += 1;
 							break;
 						}
 
-						uint8 opcode = data->ReadUInt8();
+						uint8 opcode = packet.ReadUInt8();
 						iLeft--;
 						if (opcode != OP_GLOBFOUNDSORUCES){
-							data->Seek(-2, wxFromCurrent);
+							packet.Seek(-2, wxFromCurrent);
 							iLeft += 2;
 							break;
 						}
 					}
-				}
-				while (iLeft > 0);
-				delete data;
+				} while (iLeft > 0);
 				break;
 			}
 
  			case OP_GLOBSERVSTATRES:{
 				// Imported from 0.43b
 				theApp.downloadqueue->AddDownDataOverheadOther(size);
-				if( size < 12 || update == NULL )
-					return true;
-				uint32 challenge = get_uint32(packet);
-				if( challenge != update->GetChallenge() )
-					return true;
-				uint32 cur_user = get_uint32(packet+4);
-				uint32 cur_files = get_uint32(packet+8);
+				if( size < 12 || !update) {
+					throw(wxString(wxT("Invalid OP_GLOBSERVSTATRES packet or unknown server")));
+				}
+				uint32 challenge = packet.ReadUInt32();
+				if (challenge != update->GetChallenge()) {
+					throw(wxString(wxT("Invalid challenge on OP_GLOBSERVSTATRES packet")));
+				}
+				uint32 cur_user = packet.ReadUInt32();
+				uint32 cur_files = packet.ReadUInt32();
 				uint32 cur_maxusers = 0;
 				uint32 cur_softfiles = 0;
 				uint32 cur_hardfiles = 0;
 				uint32 uUDPFlags = 0;
 				uint32 uLowIDUsers = 0;				
 				if( size >= 16 ){
-					cur_maxusers = get_uint32(packet+12);
-				}
-				if( size >= 24 ){
-					cur_softfiles = get_uint32(packet+16);
-					cur_hardfiles = get_uint32(packet+20);
-				}
-				if( size >= 28 ){
-					uUDPFlags = get_uint32(packet+24);
-				}
-				if( size >= 32 ){
-					uLowIDUsers = get_uint32(packet+28);
-				}
-				if( update ){
-					update->SetPing( ::GetTickCount() - update->GetLastPinged() );
-					update->SetUserCount( cur_user );
-					update->SetFileCount( cur_files );
-					update->SetMaxUsers( cur_maxusers );
-					update->SetSoftFiles( cur_softfiles );
-					update->SetHardFiles( cur_hardfiles );
-					update->SetUDPFlags( uUDPFlags );
-					update->SetLowIDUsers( uLowIDUsers );
-					Notify_ServerRefresh( update );
-					if (update == theApp.serverconnect->GetCurrentServer()) {
-						Notify_ShowUserCount(update);
+					cur_maxusers = packet.ReadUInt32();
+					if( size >= 24 ){
+						cur_softfiles = packet.ReadUInt32();
+						cur_hardfiles = packet.ReadUInt32();
+						if( size >= 28 ){
+							uUDPFlags = packet.ReadUInt32();
+							if( size >= 32 ){
+								uLowIDUsers = packet.ReadUInt32();
+							}
+						}
 					}
+				}
+
+				update->SetPing( ::GetTickCount() - update->GetLastPinged() );
+				update->SetUserCount( cur_user );
+				update->SetFileCount( cur_files );
+				update->SetMaxUsers( cur_maxusers );
+				update->SetSoftFiles( cur_softfiles );
+				update->SetHardFiles( cur_hardfiles );
+				update->SetUDPFlags( uUDPFlags );
+				update->SetLowIDUsers( uLowIDUsers );
+				if (update == theApp.serverconnect->GetCurrentServer()) {
+					Notify_ShowUserCount(update);
 				}
 				break;
 			}
  			case OP_SERVER_DESC_RES:{
 				// 0.43b
 				if (!update) {
-					return true;
+					throw(wxString(wxT("Received OP_SERVER_DESC_RES from an unknown server")));
 				}
 
 				// old packet: <name_len 2><name name_len><desc_len 2 desc_en>
@@ -246,47 +248,42 @@ bool CUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, const wxSt
 				//
 				// NOTE: To properly distinguish between the two packets which are both useing the same opcode...
 				// the first two bytes of <challenge> (in network byte order) have to be an invalid <name_len> at least.
-
-				CSafeMemFile srvinfo((BYTE*)packet, size);
-				if (size >= 8 && get_uint16(packet) == INV_SERV_DESC_LEN)
-				{
-					if (update->GetDescReqChallenge() != 0 && get_uint32(packet) == update->GetDescReqChallenge())
-					{
-						update->SetDescReqChallenge(0);
-						// skip challenge
-						/* uint32 challenge = */ srvinfo.ReadUInt32();
+				
+				uint16 Len = packet.ReadUInt16();
+				
+				packet.Seek(-2, wxFromCurrent); // Step back
+				
+				if (size >= 8 && Len == INV_SERV_DESC_LEN) {
+					
+					if (update->GetDescReqChallenge() != 0 && packet.ReadUInt32() == update->GetDescReqChallenge()) {
 						
-						uint32 uTags = srvinfo.ReadUInt32();
-						for (uint32 i = 0; i < uTags; ++i)
-						{
-							CTag tag(srvinfo);
-							if (tag.tag.specialtag == ST_SERVERNAME && tag.tag.type == 2)
+						update->SetDescReqChallenge(0);
+						
+						uint32 uTags = packet.ReadUInt32();
+						for (uint32 i = 0; i < uTags; ++i) {
+							CTag tag(packet);
+							if (tag.tag.specialtag == ST_SERVERNAME && tag.tag.type == 2) {
 								update->SetListName(char2unicode(tag.tag.stringvalue));
-							else if (tag.tag.specialtag == ST_DESCRIPTION && tag.tag.type == 2)
+							} else if (tag.tag.specialtag == ST_DESCRIPTION && tag.tag.type == 2) {
 								update->SetDescription(char2unicode(tag.tag.stringvalue));
-							else if (tag.tag.specialtag == ST_DYNIP && tag.tag.type == 2)
+							} else if (tag.tag.specialtag == ST_DYNIP && tag.tag.type == 2) {
 								update->SetDynIP(char2unicode(tag.tag.stringvalue));
-							else if (tag.tag.specialtag == ST_VERSION && tag.tag.type == 2)
+							} else if (tag.tag.specialtag == ST_VERSION && tag.tag.type == 2) {
 								update->SetVersion(char2unicode(tag.tag.stringvalue));
-							else if (tag.tag.specialtag == ST_VERSION && tag.tag.type == 3){
+							} else if (tag.tag.specialtag == ST_VERSION && tag.tag.type == 3) {
 								wxString strVersion;
 								strVersion.Printf(wxT("%u.%u"), tag.tag.intvalue >> 16,
 									tag.tag.intvalue & 0xFFFF);
 								update->SetVersion(strVersion);
-							}
-							else if (tag.tag.specialtag == ST_AUXPORTSLIST && tag.tag.type == 2)
+							} else if (tag.tag.specialtag == ST_AUXPORTSLIST && tag.tag.type == 2) {
 								// currently not implemented.
 								; // <string> = <port> [, <port>...]
-							else{
-								/*
-								if (thePrefs.GetDebugServerUDPLevel() > 0)
-									Debug(_T("***NOTE: Unknown tag in OP_ServerDescRes: %s\n"), tag.GetFullInfo());
-								*/
+							} else {
+								// Unknown tag
+								;
 							}
 						}
-					}
-					else
-					{
+					} else {
 						// A server sent us a new server description packet (including a challenge) although we did not
 						// ask for it. This may happen, if there are multiple servers running on the same machine with
 						// multiple IPs. If such a server is asked for a description, the server will answer 2 times,
@@ -294,35 +291,26 @@ bool CUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, const wxSt
 						// ignore this packet
 						
 					}
+				} else {
+					update->SetDescription(packet.ReadString());
+					update->SetListName(packet.ReadString());
 				}
-				else
-				{
-					wxString strName = srvinfo.ReadString();
-					wxString strDesc = srvinfo.ReadString();
-					update->SetDescription(strDesc);
-					update->SetListName(strName);
-				}
-				/*
-				if (thePrefs.GetDebugServerUDPLevel() > 0){
-					UINT uAddData = srvinfo.GetLength() - srvinfo.GetPosition();
-					if (uAddData)
-						Debug(_T("***NOTE: ServerUDPMessage from %s:%u - OP_ServerDescRes:  ***AddData: %s\n"), host, nUDPPort-4, GetHexDump(packet + srvinfo.GetPosition(), uAddData));
-				}
-				*/
-				Notify_ServerRefresh( update );
 				break;
 			}
-
 			default:
 				theApp.downloadqueue->AddDownDataOverheadOther(size);
-				return false;
 		}
-		return true;
-	}
-	catch(...){
+	} catch(wxString error) {
+		AddDebugLogLineM(false,wxT("Error while processing incoming UDP Packet: ")+error);
+	} catch(...) {
 		AddDebugLogLineM(false,wxT("Error while processing incoming UDP Packet (Most likely a misconfigured server)"));
-		return false;
 	}
+	
+	if (update) {
+		update->ResetFailedCount();
+		Notify_ServerRefresh( update );
+	}
+	
 }
 
 void CUDPSocket::DnsLookupDone(uint32 ip) {
@@ -354,10 +342,11 @@ void CUDPSocket::DnsLookupDone(uint32 ip) {
 void CUDPSocket::SendBuffer(){
 	if(cur_server && sendbuffer){
 		// don't send if socket isn't there
-		if ( Ok() ) 
+		if ( Ok() ) {
 			SendTo(m_SaveAddr,sendbuffer,sendblen);
+		}
 		delete[] sendbuffer;
-		sendbuffer = 0;
+		sendbuffer = NULL;
 		delete cur_server;
 		cur_server = NULL;
 	} else if (cur_server) {	
@@ -365,7 +354,7 @@ void CUDPSocket::SendBuffer(){
 		cur_server = NULL;		
 	} else  if (sendbuffer) {
 		delete[] sendbuffer;
-		sendbuffer = 0;		
+		sendbuffer = NULL;		
 	}
 }
 

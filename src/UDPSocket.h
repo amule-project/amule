@@ -35,7 +35,7 @@
 
 class Packet;
 class CServer;
-
+class CSafeMemFile;
 
 #define WM_DNSLOOKUPDONE WM_USER+280
 
@@ -55,28 +55,22 @@ public:
 	~CUDPSocket();
 
 	void	SendPacket(Packet* packet,CServer* host);
-	void DnsLookupDone(uint32 ip);
+	void	DnsLookupDone(uint32 ip);
 
-protected:
-	void	AsyncResolveDNS(LPCTSTR lpszHostAddress, unsigned int nHostPort);
-	
- public:
 	virtual void OnReceive(int nErrorCode);
- 	void ReceiveAndDiscard();
+ 	void	ReceiveAndDiscard();
+
 private:
-	LPCTSTR m_lpszHostAddress;
-	unsigned int m_nHostPort;
+
+	void	SendBuffer();
+	void	ProcessPacket(CSafeMemFile& packet, int16 size, int8 opcode, const wxString& host, uint16 port);
 
 	amuleIPV4Address m_SaveAddr;
-	
-	void SendBuffer();
-	bool	ProcessPacket(char* packet, int16 size, int8 opcode, const wxString& host, uint16 port);
-	
+
 	CServerConnect*	serverconnect;
 	char*	sendbuffer;
 	uint32	sendblen;
 	CServer* cur_server;
-	char	DnsHostBuffer[1024]; 
 	wxIPV4address useless;
 #ifdef AMULE_DAEMON
 	void *Entry();
