@@ -127,6 +127,21 @@ void *CWCThread::Entry() {
 		}
 		if (stWebSocket.m_hSocket->WaitForRead(0)) {
 			stWebSocket.m_hSocket->Read(stWebSocket.m_pBuf, stWebSocket.m_dwBufSize - stWebSocket.m_dwRecv);
+			stWebSocket.m_dwRecv += stWebSocket.m_hSocket->LastCount();
+			while ((stWebSocket.m_dwRecv == stWebSocket.m_dwBufSize) && (stWebSocket.m_hSocket->LastCount()!=0) && (!stWebSocket.m_hSocket->Error())) {
+					// Buffer is too small. Make it bigger.
+					uint32 newsize = stWebSocket.m_dwBufSize + (stWebSocket.m_dwBufSize  >> 1);
+					char* newbuffer = new char[newsize];
+					char* oldbuffer = stWebSocket.m_pBuf;
+					memcpy(newbuffer, oldbuffer, stWebSocket.m_dwBufSize);
+					delete[] oldbuffer;
+					stWebSocket.m_pBuf = newbuffer;
+					stWebSocket.m_dwBufSize = newsize;
+					// And read again
+					stWebSocket.m_hSocket->Read(stWebSocket.m_pBuf + stWebSocket.m_dwRecv, stWebSocket.m_dwBufSize - stWebSocket.m_dwRecv);
+					stWebSocket.m_dwRecv += stWebSocket.m_hSocket->LastCount();				
+			}
+			
 			if (stWebSocket.m_hSocket->LastCount() == 0) {
 				if (stWebSocket.m_hSocket->Error()) {
 					if (stWebSocket.m_hSocket->LastError() != wxSOCKET_WOULDBLOCK) {
@@ -136,16 +151,10 @@ void *CWCThread::Entry() {
 						return 0;
 					}
 				}
-			} else {
-				stWebSocket.m_dwRecv += stWebSocket.m_hSocket->LastCount();
 			}
-			//
-			// This server built for small requests, so if buffer hit its limit
-			// something must be wrong
-			if ( stWebSocket.m_dwRecv == stWebSocket.m_dwBufSize ) {
-				stWebSocket.m_pParent->Print(wxT("WCThread: request is too big\n"));
-				return 0;
-			}
+			
+			stWebSocket.m_pBuf[stWebSocket.m_dwRecv] = '\0';
+			
 			//
 			// Check what kind of request is that
 			if ( !IsGet && !IsPost ) {
