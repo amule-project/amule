@@ -58,7 +58,7 @@ void CClientList::GetStatistics(uint32 &totalclient, uint32 stats[], CMap<uint8,
 	if(clientVersionEMule)		clientVersionEMule->RemoveAll();
 	POSITION pos1, pos2;
 
-	for (int i=0;i<10;i++) stats[i]=0;
+	for (int i=0;i<11;i++) stats[i]=0;
 
 	for (pos1 = list.GetHeadPosition();( pos2 = pos1 ) != NULL;){
 		list.GetNext(pos1);
@@ -103,6 +103,9 @@ void CClientList::GetStatistics(uint32 &totalclient, uint32 stats[], CMap<uint8,
 				break;
 			case SO_COMPAT_UNK:
 				stats[9]++;
+				break;
+			case SO_LPHANT:
+				stats[10]++;
 				break;
 		}
 

@@ -677,6 +677,7 @@ void  CStatisticsDlg::InitTree()
 	cli5= stattree->AppendItem(h_clients,_("Waiting..."));
 	cli9= stattree->AppendItem(h_clients,_("Waiting..."));
 	cli11= stattree->AppendItem(h_clients,_("Waiting..."));
+	cli12= stattree->AppendItem(h_clients,_("Waiting..."));
 	cli6= stattree->AppendItem(h_clients,_("Waiting..."));
 	cli7= stattree->AppendItem(h_clients,CString(_("Filtered: %i")));
 
@@ -714,7 +715,7 @@ void CStatisticsDlg::ShowStatistics()
 	CString cbuffer2;
 	bool resize;
 	DWORD running;
-	uint32 myStats[11];
+	uint32 myStats[12];
 
 	resize=false;
 	theApp.downloadqueue->GetDownloadStats(myStats);
@@ -849,9 +850,10 @@ void CStatisticsDlg::ShowStatistics()
 	cbuffer.Format(_("cDonkey: %i (%1.1f%%)"),myStats[5],(double)100*myStats[5]/totalclient);stattree->SetItemText(cli4, cbuffer);
 	cbuffer.Format(_("Old MLDonkey: %i (%1.1f%%)"),myStats[3],(double)100*myStats[3]/totalclient);stattree->SetItemText(cli5, cbuffer);
 	cbuffer.Format(_("New MLDonkey: %i (%1.1f%%)"),myStats[7],(double)100*myStats[7]/totalclient);stattree->SetItemText(cli9, cbuffer);
+	cbuffer.Format(_("lphant: %i (%1.1f%%)"),myStats[10],(double)100*myStats[10]/totalclient);stattree->SetItemText(cli12, cbuffer);
 	cbuffer.Format(_("Compatible: %i (%1.1f%%)"),myStats[9],(double)100*myStats[9]/totalclient);stattree->SetItemText(cli11, cbuffer);
-	cbuffer.Format(CString(_("Unknown: %i")).GetData(),myStats[0]);stattree->SetItemText(cli6, cbuffer);	
-	cbuffer.Format(CString(_("Filtered: %i")).GetData(),theApp.stat_filteredclients);stattree->SetItemText(cli7, cbuffer);
+	cbuffer.Format(_("Unknown: %i"),myStats[0]);stattree->SetItemText(cli6, cbuffer);	
+	cbuffer.Format(_("Filtered: %i"),theApp.stat_filteredclients);stattree->SetItemText(cli7, cbuffer);
 	
 	if(stattree->IsExpanded(cli3)) {
 
@@ -883,7 +885,10 @@ void CStatisticsDlg::ShowStatistics()
 			lasttop=currtop;
 			currtop=0;
 			if(topcnt) {
-				cbuffer.Format("v%i: %i (%1.1f%%)", topver, topcnt, topper*100);
+				UINT verMaj = topver/(100*10*100);
+				UINT verMin = (topver - (verMaj*100*10*100))/(100*10);
+				UINT verUp = (topver - (verMaj*100*10*100) - (verMin*100*10))/(100);
+				cbuffer.Format("v%u.%u.%u: %i (%1.1f%%)", verMaj, verMin, verUp, topcnt, topper*100);			
 			} else {
 				cbuffer="";
 			}
@@ -921,7 +926,10 @@ void CStatisticsDlg::ShowStatistics()
 			lasttop=currtop;
 			currtop=0;
 			if(topcnt) {
-				cbuffer.Format("v%i: %i (%1.1f%%)", topver, topcnt, topper*100);
+				UINT verMaj = topver/(100*10*100);
+				UINT verMin = (topver - (verMaj*100*10*100))/(100*10);
+				UINT verUp = (topver - (verMaj*100*10*100) - (verMin*100*10))/(100);
+				cbuffer.Format("v%u.%u.%u: %i (%1.1f%%)", verMaj, verMin, verUp, topcnt, topper*100);
 			} else {
 				cbuffer="";
 			}
@@ -958,7 +966,10 @@ void CStatisticsDlg::ShowStatistics()
 			lasttop=currtop;
 			currtop=0;
 			if(topcnt) {
-				cbuffer.Format("v0.%02X: %i (%1.1f%%)", topver, topcnt, topper*100);
+				UINT verMaj = topver/(100*10*100);
+				UINT verMin = (topver - (verMaj*100*10*100))/(100*10);
+				UINT verUp = (topver - (verMaj*100*10*100) - (verMin*100*10))/(100);
+				cbuffer.Format("v%u.%u.%u: %i (%1.1f%%)", verMaj, verMin, verUp, topcnt, topper*100);
 			} else {
 				cbuffer="";
 			}

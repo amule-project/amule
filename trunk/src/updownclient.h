@@ -90,17 +90,18 @@ class TransferredData;
 #endif
 
 enum EClientSoftware{
-	SO_EMULE			= 0,
+	SO_EMULE				= 0,
 	SO_CDONKEY			= 1,
-	SO_LXMULE			= 2,
-	SO_AMULE			= 3,
+	SO_LXMULE				= 2,
+	SO_AMULE				= 3,
 	SO_SHAREAZA			= 4,
+	SO_LPHANT				= 20,
 	SO_EDONKEYHYBRID	= 50,
 	SO_EDONKEY			= 51,
 	SO_MLDONKEY			= 52,
 	SO_OLDEMULE			= 53,
 	SO_UNKNOWN			= 54,
-	SO_NEW_MLDONKEY		= 152
+	SO_NEW_MLDONKEY	= 152
 };
 
 // For ET_COMPATIBLE unknown
