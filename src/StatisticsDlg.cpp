@@ -730,7 +730,7 @@ void CStatisticsDlg::ShowStatistics()
 	wxString cbuffer2;
 	bool resize;
 	DWORD running;
-	uint32 myStats[17];
+	uint32 myStats[18];
 
 	resize=false;
 	theApp.downloadqueue->GetDownloadStats(myStats);

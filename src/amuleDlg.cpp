@@ -1097,7 +1097,7 @@ void CamuleDlg::Apply_Clients_Skin(wxString file) {
 	
 	#define ClientItemNumber UNUSED+1
 	
-	SkinItem bitmaps_found[Client_Unknown];
+	SkinItem bitmaps_found[ClientItemNumber];
 	
 	for (uint32 i=0; i<ClientItemNumber; i++) {	
 		bitmaps_found[i].found = false;
