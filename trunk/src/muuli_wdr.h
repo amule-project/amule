@@ -487,26 +487,27 @@ const int ID_REMOTE_HOST = 10354;
 const int ID_REMOTE_PORT = 10355;
 const int ID_EC_LOGIN = 10356;
 const int ID_EC_PASSWD = 10357;
+const int ID_EC_SAVE = 10358;
 wxSizer *CoreConnect( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-const int ID_VERBOSEDEBUG = 10358;
-const int ID_DEBUGCATS = 10359;
+const int ID_VERBOSEDEBUG = 10359;
+const int ID_DEBUGCATS = 10360;
 wxSizer *PreferencesDebug( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
 // Declare menubar functions
 
 // Declare toolbar functions
 
-const int ID_BUTTONCONNECT = 10360;
-const int ID_BUTTONSERVERS = 10361;
-const int ID_BUTTONKAD = 10362;
-const int ID_BUTTONSEARCH = 10363;
-const int ID_BUTTONTRANSFER = 10364;
-const int ID_BUTTONSHARED = 10365;
-const int ID_BUTTONMESSAGES = 10366;
-const int ID_BUTTONSTATISTICS = 10367;
-const int ID_BUTTONNEWPREFERENCES = 10368;
-const int ID_ABOUT = 10369;
+const int ID_BUTTONCONNECT = 10361;
+const int ID_BUTTONSERVERS = 10362;
+const int ID_BUTTONKAD = 10363;
+const int ID_BUTTONSEARCH = 10364;
+const int ID_BUTTONTRANSFER = 10365;
+const int ID_BUTTONSHARED = 10366;
+const int ID_BUTTONMESSAGES = 10367;
+const int ID_BUTTONSTATISTICS = 10368;
+const int ID_BUTTONNEWPREFERENCES = 10369;
+const int ID_ABOUT = 10370;
 void muleToolbar( wxToolBar *parent );
 
 // Declare bitmap functions
