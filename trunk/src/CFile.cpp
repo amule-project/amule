@@ -46,6 +46,8 @@
 #	pragma hdrstop
 #endif
 
+#include <wx/log.h>
+
 // standard
 #if defined(__WXMSW__) && !defined(__GNUWIN32__) && !defined(__WXWINE__) && !defined(__WXMICROWIN__)
 #	include <io.h>

@@ -31,6 +31,9 @@
 #include "ChatWnd.h"
 #include "otherfunctions.h"
 #include "CMD4Hash.h"
+#include <wx/textctrl.h>
+#include <wx/msgdlg.h>
+#include <wx/sizer.h>
 
 CAddFriend::CAddFriend(wxWindow* parent)
 : wxDialog(parent, 9995, _("Add a Friend"), wxDefaultPosition, wxDefaultSize,

@@ -46,6 +46,8 @@
 #include "server.h"		// Needed for CServer
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "muuli_wdr.h"		// Needed for ID_CLOSEWND
+#include <wx/stattext.h>
+#include <wx/sizer.h>
 
 // CClientDetailDialog dialog
 
