@@ -338,6 +338,8 @@ class CDownQueueRem : public CRemoteContainer<CPartFile, CMD4Hash, CEC_PartFile_
 		uint32 m_data_overhead;
 		
 		std::list<CUpDownClient *>::iterator it;
+		
+		std::map<CMD4Hash, otherfunctions::PartFileEncoderData> m_enc_map;
 	public:
 		CDownQueueRem(CRemoteConnect *);
 		
