@@ -110,7 +110,7 @@ public:
 	uint16	GetSrcA4AFCount() const		{ return A4AFsrclist.size(); }
 	uint16	GetTransferingSrcCount() const	{ return transferingsrc; }
 	float	GetKBpsDown() const		{ return kBpsDown; }
-	float	GetPercentCompleted() const	{ return percentcompleted; }
+	double	GetPercentCompleted() const	{ return percentcompleted; }
 	uint16  GetNotCurrentSourcesCount() const;
 	int	GetValidSourcesCount();
 	uint32	GetNeededSpace();
@@ -221,7 +221,7 @@ private:
 	CTypedPtrList<CPtrList, Gap_Struct*> gaplist;
 	CTypedPtrList<CPtrList, Requested_Block_Struct*> requestedblocks_list;
 	ArrayOfUInts16	m_SrcpartFrequency;
-	float	percentcompleted;
+	double	percentcompleted;
 	CList<uint16, uint16> corrupted_list;
 	uint8	availablePartsCount;
 	uint32	m_ClientSrcAnswered;

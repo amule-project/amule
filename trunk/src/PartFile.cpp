@@ -1424,7 +1424,7 @@ void CPartFile::UpdateCompletedInfos()
 		}
 	}
 	if (gaplist.GetCount() || requestedblocks_list.GetCount()) {
-		percentcompleted = (1.0f-(float)allgaps/m_nFileSize) * 100;
+		percentcompleted = (1.0f-(double)allgaps/m_nFileSize) * 100;
 		completedsize = m_nFileSize - allgaps;
 	} else {
 		percentcompleted = 100;
@@ -1569,7 +1569,7 @@ void CPartFile::DrawStatusBar(wxMemoryDC* dc, wxRect rect, bool bFlat)
 		//dc->FillRect(&gaprect, &CBrush(RGB(224,224,224)));
 	}
 	if ((gaplist.GetCount() || requestedblocks_list.GetCount())) {
-		percentcompleted = ((1.0f-(float)allgaps/m_nFileSize)) * 100;
+		percentcompleted = ((1.0f-(double)allgaps/m_nFileSize)) * 100;
 		completedsize = m_nFileSize - allgaps;
 	} else {
 		percentcompleted = 100;
