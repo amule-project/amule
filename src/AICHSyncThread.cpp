@@ -117,8 +117,8 @@ void* CAICHSyncThread::Entry()
 
 	printf("\tMasterhash for known files loaded...\n");	
 	
-	// now we check that all files which are in the sharedfilelist have a corresponding hash in out list
-	// those how don'T are added to the hashinglist
+	// now we check that all files which are in the sharedfilelist have a corresponding hash in our list
+	// those how don't are added to the hashinglist
 	for (uint32 i = 0; i < theApp.sharedfiles->GetCount(); i++){
 		const CKnownFile* pCurFile = theApp.sharedfiles->GetFileByIndex(i);
 		if (pCurFile != NULL && !pCurFile->IsPartFile() ){
@@ -130,11 +130,13 @@ void* CAICHSyncThread::Entry()
 				{
 					if (*(it) == pCurFile->GetAICHHashset()->GetMasterHash()){
 						bFound = true;
-#ifdef _DEBUG_
+//#ifdef _DEBUG_
 						// in debugmode we load and verify all hashsets
 						wxASSERT( pCurFile->GetAICHHashset()->LoadHashSet() );
+						printf("Testing hashset for %s\n",unicode2char(pCurFile->GetFileName()));
+			 			pCurFile->GetAICHHashset()->DbgTest();						
 						pCurFile->GetAICHHashset()->FreeHashSet();
-#endif
+//#endif
 						break;
 					}
 				}
@@ -158,13 +160,12 @@ void* CAICHSyncThread::Entry()
 		printf("\tTotal %i files to hash (from %i)...\n", m_liToHash.size(), theApp.sharedfiles->GetCount());
 		theApp.amuledlg->sharedfileswnd->sharedfilesctrl->SetAICHHashing(m_liToHash.size());
 		// let first all normal hashing be done before starting out synchashing
-		#warning This is WRONG
-		//while (theApp.sharedfiles->GetHashingCount() != 0){
-		//	Sleep(100);
-		//}
+
+		#warning I assume there are no files being hashed, because this gets called only on hashing thread termination.
+		#warning If hashing thread gets called after this is triggered... well... undocumented behaviour :)
 		
 		wxMutexLocker sLock1(theApp.hashing_mut); // only one filehash at a time
-		// sLock1.Lock(); // Mutex Locker locks on constructor.
+
 		uint32 cDone = 0;
 		for (KnownFilePtrList::iterator it = m_liToHash.begin();it != m_liToHash.end(); ++it)
 		{
@@ -176,6 +177,9 @@ void* CAICHSyncThread::Entry()
 				theApp.amuledlg->sharedfileswnd->sharedfilesctrl->ShowFilesCount();
 			
 			CKnownFile* pCurFile = *(it);
+			
+			printf("\tAICH hashing %s\n",unicode2char(pCurFile->GetFileName()));
+			
 			// just to be sure that the file hasnt been deleted lately
 			if (!(theApp.knownfiles->IsKnownFile(pCurFile) && theApp.sharedfiles->GetFileByID(pCurFile->GetFileHash())) )
 				continue;
@@ -192,7 +196,7 @@ void* CAICHSyncThread::Entry()
 		theApp.amuledlg->sharedfileswnd->sharedfilesctrl->SetAICHHashing(0);
 		if (theApp.amuledlg->sharedfileswnd->sharedfilesctrl != NULL)
 			theApp.amuledlg->sharedfileswnd->sharedfilesctrl->ShowFilesCount();
-		// sLock1.Unlock(); // And unlocks on destructor
+
 		printf("\tAICH done...\n");
 	}
 // TODO

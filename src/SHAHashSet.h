@@ -110,7 +110,7 @@ public:
 	wxString		GetString() const;
 	uchar*		GetRawHash()						{ return m_abyBuffer; }
 
-	static int	GetHashSize()						{ return HASHSIZE;}
+	static uint32	GetHashSize()						{ return HASHSIZE;}
 private:
 	uchar m_abyBuffer[HASHSIZE];
 };
@@ -219,6 +219,8 @@ public:
 	static bool		IsClientRequestPending(const CPartFile* pForFile, uint16 nPart);
 	static CAICHRequestedData GetAICHReqDetails(const  CUpDownClient* pClient);
 	void			DbgTest();
+	
+	void SetOwner(CKnownFile* owner) { m_pOwner = owner;}
 
 	CAICHHashTree	m_pHashTree;
 	

@@ -30,6 +30,7 @@
 
 #include "otherfunctions.h"	// Interface declarations
 #include "config.h"			// Needed for VERSION
+#include "SHAHashSet.h"
 
 #include <cctype>
 
@@ -430,6 +431,51 @@ void DecodeBase16(const char *base16Buffer, unsigned int base16BufLen, byte *buf
 			buffer[(i-1)/2] |= word;
 		}
 	}
+}
+
+uint32 DecodeBase32(const char* pszInput, uchar* paucOutput, uint32 nBufferLen)
+{
+	if (pszInput == NULL)
+		return false;
+	uint32 nDecodeLen = (strlen(pszInput)*5)/8;
+	if ((strlen(pszInput)*5) % 8 > 0)
+		nDecodeLen++;
+	uint32 nInputLen = strlen( pszInput );
+	if (paucOutput == NULL || nBufferLen == 0)
+		return nDecodeLen;
+	if (nDecodeLen > nBufferLen || paucOutput == NULL) 
+		return 0;
+
+	DWORD nBits	= 0;
+	int nCount	= 0;
+
+	for ( int nChars = nInputLen ; nChars-- ; pszInput++ )
+	{
+		if ( *pszInput >= 'A' && *pszInput <= 'Z' )
+			nBits |= ( *pszInput - 'A' );
+		else if ( *pszInput >= 'a' && *pszInput <= 'z' )
+			nBits |= ( *pszInput - 'a' );
+		else if ( *pszInput >= '2' && *pszInput <= '7' )
+			nBits |= ( *pszInput - '2' + 26 );
+		else
+			return 0;
+		
+		nCount += 5;
+
+		if ( nCount >= 8 )
+		{
+			*paucOutput++ = (BYTE)( nBits >> ( nCount - 8 ) );
+			nCount -= 8;
+		}
+
+		nBits <<= 5;
+	}
+
+	return nDecodeLen;
+}
+
+uint32 DecodeBase32(const char* pszInput, CAICHHash& Hash){
+	return DecodeBase32(pszInput, Hash.GetRawHash(), Hash.GetHashSize());
 }
 
 
