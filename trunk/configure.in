@@ -139,7 +139,7 @@ AC_ARG_ENABLE([verbose],
 # to avoid losing to much time
 
 # Sets gettext version.
-AM_GNU_GETTEXT_VERSION(0.11.5)
+AM_GNU_GETTEXT_VERSION(0.14.1)
 
 # Check for zlib
 CHECK_ZLIB
@@ -161,6 +161,27 @@ if test "$CURLFOUND" != 1; then
 	To download the lastest version check http://curl.haxx.se/download.html for sources.
     ])
 fi
+
+# Check for libpng
+AM_OPTIONS_LIBPNGCONFIG
+
+AM_PATH_LIBPNGCONFIG(1.2.0,LIBPNGFOUND=1)
+
+case "$LIBPNGFOUND" in
+1)	AMULEWEB_DEFS="-DWITH_LIBPNG"
+	LIBPNG_LIBS="$LIBPNG_LIBS -lpng"
+	;;
+*)AC_MSG_NOTICE([
+	WARNING: libpng-devel >= 1.2.0 is needed for amuleweb
+        ])
+	AMULEWEB_DEFS=""
+	LIBPNG_LIBS=""
+	LIBPNG_CFLAGS=""
+	LIBPNG_LDFLAGS=""
+	;;
+esac
+
+AC_SUBST(AMULEWEB_DEFS)
 
 # Check for gd
 AM_OPTIONS_GDLIBCONFIG
