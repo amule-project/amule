@@ -580,7 +580,6 @@ AM_CONDITIONAL(ADD_GSOCKET, test x$USE_GSOCKET = xyes)
 AM_CONDITIONAL(HAVE_TRAY, test x$systray = xyes)
 AM_CONDITIONAL(HAVE_OLD_TRAY, test x$gtk_tray = xyes)
 AM_CONDITIONAL(HAVE_UTF8_TRAY, test x$utf8_systray = xyes)
-AM_CONDITIONAL(HAVE_GTK, test x$systray = xyes)
 AM_CONDITIONAL(MONOLITHIC, test x$MONOLITHIC = xyes)
 
 dnl
