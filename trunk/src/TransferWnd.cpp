@@ -192,7 +192,7 @@ void CTransferWnd::OnSetCatStatus( wxCommandEvent& event )
 		}
 	}
 
-	downloadlistctrl->SetCatStatus( m_dlTab->GetSelection(), event.GetId() );
+	CoreNotify_Download_Set_Cat_Status( m_dlTab->GetSelection(), event.GetId() );
 }
 
 

@@ -63,7 +63,6 @@ public:
 	void HideSources(CPartFile* toCollapse,bool isShift = false,bool isCtrl = false,bool isAlt = false);
 	void ShowFilesCount();
 	void ChangeCategory(int newsel);
-	void SetCatStatus(int cat, int newstatus);
 
 	void ShowSelectedFileDetails();
 	void HideFile(CPartFile* tohide);
