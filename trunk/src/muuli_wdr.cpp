@@ -288,7 +288,7 @@ wxSizer *searchDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     CMuleTextCtrl *item20 = new CMuleTextCtrl( parent, IDC_EDITSEARCHEXTENSION, wxT(""), wxDefaultPosition, wxSize(40,-1), wxTE_PROCESS_ENTER );
     item12->Add( item20, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticText *item21 = new wxStaticText( parent, ID_TEXT, _("Min Size"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxStaticText *item21 = new wxStaticText( parent, ID_TEXT, _("Min Size (MB)"), wxDefaultPosition, wxDefaultSize, 0 );
     item12->Add( item21, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     wxSpinCtrl *item22 = new wxSpinCtrl( parent, IDC_SPINSEARCHMIN, wxT("0"), wxDefaultPosition, wxSize(45,-1), 0, 0, 4096, 0 );
@@ -297,7 +297,7 @@ wxSizer *searchDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticLine *item23 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(-1,20), wxLI_VERTICAL );
     item12->Add( item23, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticText *item24 = new wxStaticText( parent, ID_TEXT, _("Max Size"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxStaticText *item24 = new wxStaticText( parent, ID_TEXT, _("Max Size (MB)"), wxDefaultPosition, wxDefaultSize, 0 );
     item12->Add( item24, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     wxSpinCtrl *item25 = new wxSpinCtrl( parent, IDC_SPINSEARCHMAX, wxT("0"), wxDefaultPosition, wxSize(45,-1), 0, 0, 4096, 0 );
