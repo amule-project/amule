@@ -1,10 +1,29 @@
 /*
+ *  This file is part of aMule.
+ *  Copyright (C) 2003 Pedro de Oliveira <falso@rdk.homeip.net>
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+
+/*
    c amule statistics
 
    written by:
-   Pedro de Olveira <falso@rdk.homeip.net>
+   Pedro de Oliveira <falso@rdk.homeip.net>
 
-   this is very buggy software by i hope you like it.
+   this is very buggy software but i hope you like it.
    i mainly did this cause aStats was very slow, so i
    tried to do a remake of it in c to learn something
    and do something useful.
@@ -17,107 +36,125 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "version.h"
+#include "configfile.h"
+#include "functions.h"
+#include "graphics.h"
 
-char *convbytes(char input[15])
+void usage(char *myname)
 {
-	float bytes;
-	static char output[50];
+	printf	("   ___    _ _   ___    c aMule statistics\n"
+		 " /'___) /'_` )/',__)   by Pedro de Oliveira\n"
+		 "( (___ ( (_| |\\__, \\   <falso@rdk.homeip.net>\n"
+		 "`\\____)`\\__,_)(____/   Version %s\n\n"
 
-	bytes=atof(input);
-
-	if (bytes/1024 < 1) sprintf(output,"%.2f Bytes",bytes);
-	else
-	{
-		bytes=bytes/1024;
-		if (bytes/1024 < 1) sprintf(output,"%.2f KB",bytes);
-		else
-		{
-			bytes=bytes/1024;
-			if (bytes/1024 < 1) sprintf(output,"%.2f MB",bytes);
-			else
-			{
-				bytes=bytes/1024;
-				if (bytes/1024 < 1) sprintf(output,"%.2f GB",bytes);
-				else
-				{
-					bytes=bytes/1024;
-					sprintf(output,"%.2f TB",bytes);
-				}
-			}
-		}
-
-	}
-
-	return output;
+		 "Usage: %s [OPTION]\n"
+		 "If run without any option prints stats to stdout\n\n"
+		 "OPTIONS:\n"
+		 "-o\tWrites the online signature picture\n"
+		 "-p\tHTML Page with stats and picture\n"
+		 "-h\tThis help youre reading\n", CAS_VERSION, myname);
 }
 
-int main()
+int main(int argc, char *argv[])
 {
 	/* Declaration of variables */
 	FILE *amulesig;
-	char *login, *path;
+	char *path;
 	char stats[20][80];
-	int ler,i;
+	char lines[6][80];
+	//char *lines[][];
+	int ler, i;
+	CONF config;
 
-	/* get user name of the shell and assing the amulesign path */
-	login=getenv("USER");
-	path = malloc(strlen(login) + 64);
-	sprintf(path,"/home/%s/.aMule/amulesig.dat",login);
-
-	/* open the file and if not exists exit with an error */
-	if ((amulesig = fopen(path, "r")) == NULL)
-	{
-		printf("Unable to open the file\nCheck if you have amule sig enabled");
-		return 0;
+	if ((argc == 2) && (!strcmp(argv[1], "-h") || !strcmp(argv[1], "--help"))) {
+		usage(argv[0]);
+		exit(0);
 	}
 
+	/* get amulesig path */
+	path = get_path(".aMule/amulesig.dat");
+	if (path == NULL) {
+		printf("Unable to get aMule settings path\n");
+		exit(1);
+	}
+
+	/* open the file and if not exists exit with an error */
+	if ((amulesig = fopen(path, "r")) == NULL) {
+		printf("Unable to open file %s\nCheck if you have amule online signature enabled.\n", path);
+		exit(2);
+	}
+	free(path);
+
 	/* initialize all the strings with nothing */
-	for (i=0;i<= 19;i++)
-		stats[i][0]=0;
+	for (i = 0; i <= 19; i++)
+		stats[i][0] = 0;
 
 	/* start reading the stuff from amulesign to the stats array */
-	i=0;
-	while (!feof(amulesig))
-	{
+	i = 0;
+	while (!feof(amulesig)) {
 		ler = fgetc(amulesig);
 
-		if (!feof(amulesig))
-		{
+		if (!feof(amulesig)) {
 
-			if (ler != 10)
-			{
-				if (strlen(stats[i]) < 80 )
-					sprintf(stats[i],"%s%c",stats[i],ler);
-			}
-			else i++;
+			if (ler != 10) {
+				if (strlen(stats[i]) < 80)
+					sprintf(stats[i], "%s%c", stats[i],
+							ler);
+			} else
+				i++;
 		}
 
 	}
 	fclose(amulesig);
 
 	/* if amule isnt running say that and exit else print out the stuff */
-	if(stats[0][0]=='0') 
-	{
+	if (stats[0][0] == '0') {
 		printf("aMule is not running\n");
-		return(0);
+		exit(3);
 	}
+
+	sprintf(lines[0], "aMule %s has been running for %s\n",
+			stats[12], stats[15]);
+	sprintf(lines[1], "%s is on %s [%s:%s] with ", stats[9],
+			stats[1], stats[2], stats[3]);
+	if (stats[4][0] == 'H')
+		sprintf(lines[1], "%sHighID\n", lines[1]);
 	else
-	{
-		printf("aMule %s has been running for %s\n",stats[12],stats[15]);
-		printf("%s is on %s [%s:%s] with ",stats[9],stats[1],stats[2],stats[3]);
-		if (stats[4][0]=='H') printf("HighID\n"); 
-		else printf("LowID\n");
+		sprintf(lines[1], "%sLowID\n", lines[1]);
 
-		strcpy(stats[10],convbytes(stats[10])); // total download
-		strcpy(stats[11],convbytes(stats[11])); // total upload
-		printf("Total Download: %s, Upload %s\n",stats[10],stats[11]);
 
-		strcpy(stats[13],convbytes(stats[13])); // sess. download
-		strcpy(stats[14],convbytes(stats[14])); // sess. upload
-		printf("Session Download: %s, Upload %s\n",stats[13],stats[14]);
+	strcpy(stats[10], convbytes(stats[10]));// total download
+	strcpy(stats[11], convbytes(stats[11]));// total upload
+	sprintf(lines[2], "Total Download: %s, Upload: %s\n",
+			stats[10], stats[11]);
 
-		printf("Download : %s kB/s, Upload : %s kB/s\n",stats[5],stats[6]);
-		printf("Sharing : %s file(s), Clients on queue: %s\n",stats[8],stats[7]);
+	strcpy(stats[13], convbytes(stats[13]));// sess. download
+	strcpy(stats[14], convbytes(stats[14]));// sess. upload
+	sprintf(lines[3], "Session Download: %s, Upload: %s\n",
+			stats[13], stats[14]);
+
+	sprintf(lines[4], "Download: %s kB/s, Upload: %s kB/s\n",
+			stats[5], stats[6]);
+	sprintf(lines[5],
+			"Sharing: %s file(s), Clients on queue: %s\n",
+			stats[8], stats[7]);
+
+	if (argc == 2 && strcmp(argv[1], "-o") == 0) {
+		if (!readconfig(&config)) {
+			printf("Could not read config file\n");
+			exit(4);
+		}
+
+		if (!createimage(&config, lines)) {
+			printf("Could not create image!\n");
+			exit(5);
+		}
+		exit(0);
 	}
-	return 0;
+
+	for (i = 0; i <= 5; i++)
+		printf("%s", lines[i]);
+
+	exit(0);
 }
