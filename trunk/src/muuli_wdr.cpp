@@ -120,47 +120,51 @@ wxSizer *muleDlg( wxWindow *parent, bool call_fit, bool set_sizer )
 
     wxBoxSizer *item7 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxStaticText *item8 = new wxStaticText( parent, ID_TEXT, _("Loading ..."), wxDefaultPosition, wxDefaultSize, wxST_NO_AUTORESIZE );
-    item8->SetToolTip( _("Events are displayed here. For a complete list of events, refer to the log in the Servers-tab.") );
-    item8->SetName( wxT("infoLabel") );
-    item7->Add( item8, 1, wxADJUST_MINSIZE|wxALIGN_CENTER|wxLEFT, 5 );
+    wxBitmapButton *item8 = new wxBitmapButton( parent, IDC_SHOWSTATUSTEXT, amuleDlgImages( 31 ), wxDefaultPosition, wxSize(10,10) );
+    item8->SetToolTip( _("Pop-up status text") );
+    item7->Add( item8, 0, wxALIGN_CENTER, 5 );
 
-    wxStaticLine *item9 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(-1,20), wxLI_VERTICAL );
-    item7->Add( item9, 0, wxALIGN_CENTER, 5 );
+    wxStaticText *item9 = new wxStaticText( parent, ID_TEXT, _("Loading ..."), wxDefaultPosition, wxDefaultSize, wxST_NO_AUTORESIZE );
+    item9->SetToolTip( _("Events are displayed here. For a complete list of events, refer to the log in the Servers-tab.") );
+    item9->SetName( wxT("infoLabel") );
+    item7->Add( item9, 1, wxADJUST_MINSIZE|wxALIGN_CENTER|wxLEFT, 5 );
 
-    wxStaticBitmap *item10 = new wxStaticBitmap( parent, ID_STATICBITMAP, amuleDlgImages( 4 ), wxDefaultPosition, wxDefaultSize );
-    item10->SetToolTip( _("Number of users on the server you are connected to ...") );
+    wxStaticLine *item10 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(-1,20), wxLI_VERTICAL );
     item7->Add( item10, 0, wxALIGN_CENTER, 5 );
 
-    wxStaticText *item11 = new wxStaticText( parent, ID_TEXT, _("Users: 0"), wxDefaultPosition, wxDefaultSize, 0 );
-    item11->SetToolTip( _("Users connected to the current server and an estimate of the total number of users.") );
-    item11->SetName( wxT("userLabel") );
-    item7->Add( item11, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
+    wxStaticBitmap *item11 = new wxStaticBitmap( parent, ID_STATICBITMAP, amuleDlgImages( 4 ), wxDefaultPosition, wxDefaultSize );
+    item11->SetToolTip( _("Number of users on the server you are connected to ...") );
+    item7->Add( item11, 0, wxALIGN_CENTER, 5 );
 
-    wxStaticLine *item12 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(-1,20), wxLI_VERTICAL );
-    item7->Add( item12, 0, wxALIGN_CENTER|wxLEFT, 5 );
+    wxStaticText *item12 = new wxStaticText( parent, ID_TEXT, _("Users: 0"), wxDefaultPosition, wxDefaultSize, 0 );
+    item12->SetToolTip( _("Users connected to the current server and an estimate of the total number of users.") );
+    item12->SetName( wxT("userLabel") );
+    item7->Add( item12, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
 
-    wxStaticBitmap *item13 = new wxStaticBitmap( parent, ID_STATICBITMAP, amuleDlgImages( 5 ), wxDefaultPosition, wxDefaultSize );
-    item13->SetName( wxT("transferImg") );
-    item7->Add( item13, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
+    wxStaticLine *item13 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(-1,20), wxLI_VERTICAL );
+    item7->Add( item13, 0, wxALIGN_CENTER|wxLEFT, 5 );
 
-    wxStaticText *item14 = new wxStaticText( parent, ID_TEXT, _("Up: 0.0 | Down: 0.0"), wxDefaultPosition, wxDefaultSize, 0 );
-    item14->SetToolTip( _("Current average upload and download rates. If enabled the numbers in the braces signify the overhead from client communication.") );
-    item14->SetName( wxT("speedLabel") );
-    item7->Add( item14, 0, wxADJUST_MINSIZE|wxALIGN_CENTER, 5 );
+    wxStaticBitmap *item14 = new wxStaticBitmap( parent, ID_STATICBITMAP, amuleDlgImages( 5 ), wxDefaultPosition, wxDefaultSize );
+    item14->SetName( wxT("transferImg") );
+    item7->Add( item14, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
 
-    wxStaticLine *item15 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(-1,20), wxLI_VERTICAL );
-    item7->Add( item15, 0, wxALIGN_CENTER|wxLEFT, 5 );
+    wxStaticText *item15 = new wxStaticText( parent, ID_TEXT, _("Up: 0.0 | Down: 0.0"), wxDefaultPosition, wxDefaultSize, 0 );
+    item15->SetToolTip( _("Current average upload and download rates. If enabled the numbers in the braces signify the overhead from client communication.") );
+    item15->SetName( wxT("speedLabel") );
+    item7->Add( item15, 0, wxADJUST_MINSIZE|wxALIGN_CENTER, 5 );
 
-    wxStaticBitmap *item16 = new wxStaticBitmap( parent, ID_STATICBITMAP, amuleDlgImages( 13 ), wxDefaultPosition, wxDefaultSize );
-    item16->SetToolTip( _("Displays the connected status and active transfers. Red arrows signifies that you are currently not connected, yellow arrows signify that you have low ID (firewalled) and green arrows signify that you have high ID (The optimal connection type).") );
-    item16->SetName( wxT("connImage") );
-    item7->Add( item16, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
+    wxStaticLine *item16 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(-1,20), wxLI_VERTICAL );
+    item7->Add( item16, 0, wxALIGN_CENTER|wxLEFT, 5 );
 
-    wxStaticText *item17 = new wxStaticText( parent, ID_TEXT, _("Not Connected ..."), wxDefaultPosition, wxDefaultSize, 0 );
-    item17->SetToolTip( _("Currently connected server.") );
-    item17->SetName( wxT("connLabel") );
-    item7->Add( item17, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxRIGHT, 5 );
+    wxStaticBitmap *item17 = new wxStaticBitmap( parent, ID_STATICBITMAP, amuleDlgImages( 13 ), wxDefaultPosition, wxDefaultSize );
+    item17->SetToolTip( _("Displays the connected status and active transfers. Red arrows signifies that you are currently not connected, yellow arrows signify that you have low ID (firewalled) and green arrows signify that you have high ID (The optimal connection type).") );
+    item17->SetName( wxT("connImage") );
+    item7->Add( item17, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
+
+    wxStaticText *item18 = new wxStaticText( parent, ID_TEXT, _("Not Connected ..."), wxDefaultPosition, wxDefaultSize, 0 );
+    item18->SetToolTip( _("Currently connected server.") );
+    item18->SetName( wxT("connLabel") );
+    item7->Add( item18, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxRIGHT, 5 );
 
     item0->Add( item7, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
 
@@ -416,7 +420,7 @@ wxSizer *transferTopPane( wxWindow *parent, bool call_fit, bool set_sizer )
 
     CMuleNotebook *item5 = new CMuleNotebook( parent, ID_CATEGORIES, wxDefaultPosition, wxSize(15,30), 0 );
     wxASSERT( item5 );
-    item1->Add( item5, 1, wxALIGN_CENTER|wxFIXED_MINSIZE, 5 );
+    item1->Add( item5, 1, wxALIGN_CENTER, 5 );
 
     wxBitmapButton *item6 = new wxBitmapButton( parent, ID_BTNSWWINDOW, amuleDlgImages( 16 ), wxDefaultPosition, wxSize(20,20) );
     item6->SetToolTip( _("switch download list to clients you're downloading from, with files also (some day)") );
@@ -499,7 +503,7 @@ wxSizer *messagePage( wxWindow *parent, bool call_fit, bool set_sizer )
     item1->Add( item3, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
     CFriendListCtrl *item6 = new CFriendListCtrl( parent, ID_FRIENDLIST, wxDefaultPosition, wxSize(160,120), wxLC_REPORT|wxSUNKEN_BORDER );
-    item1->Add( item6, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxRIGHT|wxBOTTOM|wxFIXED_MINSIZE, 5 );
+    item1->Add( item6, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxRIGHT|wxBOTTOM, 5 );
 
     item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
 
@@ -8201,6 +8205,35 @@ wxBitmap amuleDlgImages( size_t index )
         wxImage image( 15, 15, (unsigned char*)data, TRUE );
         image.SetMaskColour( 221, 221, 221);
         wxBitmap bitmap( image );
+        return bitmap;
+    }
+    if (index == 31)
+    {
+        /* XPM */
+        static const char *xpm_data[] = {
+        /* columns rows colors chars-per-pixel */
+        "13 14 4 1",
+        "a c #1C89FF",
+        "b c #AAD1FF",
+        "c c #0000FF",
+        "d c #5B5AFF",
+        /* pixels */
+        "ddddddddddddd",
+        "dbbbbbbbbbbbd",
+        "dbbbbbccbbbbd",
+        "dbbbbacabbbbd",
+        "dbbbbaabbbbbd",
+        "dbbbbbccbbbbd",
+        "dbbbbaccbbbbd",
+        "dbbbbaccbbbbd",
+        "dbbbbaccbbbbd",
+        "dbbbbaccbbbbd",
+        "dbbbbacabbbbd",
+        "dbbbbaabbbbbd",
+        "dbbbbbbbbbbbd",
+        "ddddddddddddd"
+        };
+        wxBitmap bitmap( xpm_data );
         return bitmap;
     }
     return wxNullBitmap;

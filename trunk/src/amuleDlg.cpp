@@ -101,6 +101,7 @@ BEGIN_EVENT_TABLE(CamuleDlg, wxFrame)
 	EVT_ICONIZE(CamuleDlg::OnMinimize)
 
 	EVT_BUTTON(ID_BUTTON_FAST, CamuleDlg::OnBnClickedFast)
+	EVT_BUTTON(IDC_SHOWSTATUSTEXT, CamuleDlg::OnBnStatusText)
 	
 
 	EVT_TIMER(ID_GUITIMER, CamuleDlg::OnGUITimer)
@@ -461,6 +462,11 @@ void CamuleDlg::OnBnConnect(wxCommandEvent& WXUNUSED(evt))
 		theApp.serverconnect->Disconnect();
 		theApp.OnlineSig();
 	}
+}
+
+void CamuleDlg::OnBnStatusText(wxCommandEvent& WXUNUSED(evt))
+{
+	wxMessageBox(CastChild( wxT("infoLabel"), wxStaticText )->GetLabel(), wxString(_("Status text")), wxOK|wxICON_INFORMATION);
 }
 
 void CamuleDlg::ResetLog(uint8 whichone)
