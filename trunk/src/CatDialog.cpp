@@ -44,6 +44,7 @@
 #include "TransferWnd.h"		// Needed for CTransferWnd
 #include "amuleDlg.h"			// Needed for CamuleDlg
 #include "SharedFileList.h"		// Needed for CSharedFileList
+#include "SearchDlg.h"				// Needed for UpdateCatChoice
 #include "StringFunctions.h"		// Needed for MakeFoldername
 #include "otherfunctions.h"		// Needed for CastChild
 #include "Preferences.h"		// Needed for CPreferences
