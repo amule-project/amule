@@ -88,6 +88,77 @@ CPartFile::CPartFile()
 	Init();
 }
 
+void CPartFile::Init()
+{
+	m_showSources = false;
+
+	m_nLastBufferFlushTime = 0;
+
+	newdate = true;
+	lastsearchtime = 0;
+	lastpurgetime = ::GetTickCount();
+	m_paused = false;
+	m_stopped = false;
+	m_insufficient = false;
+
+	status = PS_EMPTY;
+	
+	transfered = 0;
+	m_iLastPausePurge = time(NULL);
+	
+	if(thePrefs::GetNewAutoDown()) {
+		m_iDownPriority = PR_HIGH;
+		m_bAutoDownPriority = true;
+	} else {
+		m_iDownPriority = PR_NORMAL;
+		m_bAutoDownPriority = false;
+	}
+	
+	memset(m_anStates,0,sizeof(m_anStates));
+	
+	transferingsrc = 0; // new
+	
+	kBpsDown = 0.0;
+	
+	hashsetneeded = true;
+	count = 0;
+	percentcompleted = 0;
+	completedsize=0;
+	m_bPreviewing = false;
+	lastseencomplete = 0;
+	m_availablePartsCount=0;
+	m_ClientSrcAnswered = 0;
+	m_LastNoNeededCheck = 0;
+	m_iRate = 0;
+	m_nTotalBufferData = 0;
+	m_nLastBufferFlushTime = 0;
+	m_bPercentUpdated = false;
+	m_bRecoveringArchive = false;
+	m_iGainDueToCompression = 0;
+	m_iLostDueToCorruption = 0;
+	m_iTotalPacketsSavedDueToICH = 0;
+	m_nSavedReduceDownload = 0; // new
+	hasRating = false;
+	hasComment = false; 
+	hasBadRating = false;
+	m_category = 0;
+	m_lastRefreshedDLDisplay = 0;
+	m_is_A4AF_auto = false;
+	m_bLocalSrcReqQueued = false;
+	m_nCompleteSourcesTime = time(NULL);
+	m_nCompleteSourcesCount = 0;
+	m_nCompleteSourcesCountLo = 0;
+	m_nCompleteSourcesCountHi = 0;
+	
+	// Sources dropping
+	m_LastSourceDropTime = 0;
+
+	m_validSources = 0;
+	m_notCurrentSources = 0;
+}
+
+#ifndef CLIENT_GUI
+
 CPartFile::CPartFile(CSearchFile* searchresult)
 {
 	Init();
@@ -199,77 +270,6 @@ CPartFile::CPartFile(const CED2KFileLink* fileLink)
 	}
 }
 
-
-void CPartFile::Init()
-{
-	m_showSources = false;
-
-	m_nLastBufferFlushTime = 0;
-
-	newdate = true;
-	lastsearchtime = 0;
-	lastpurgetime = ::GetTickCount();
-	m_paused = false;
-	m_stopped = false;
-	m_insufficient = false;
-
-	status = PS_EMPTY;
-	
-	transfered = 0;
-	m_iLastPausePurge = time(NULL);
-	
-	if(thePrefs::GetNewAutoDown()) {
-		m_iDownPriority = PR_HIGH;
-		m_bAutoDownPriority = true;
-	} else {
-		m_iDownPriority = PR_NORMAL;
-		m_bAutoDownPriority = false;
-	}
-	
-	memset(m_anStates,0,sizeof(m_anStates));
-	
-	transferingsrc = 0; // new
-	
-	kBpsDown = 0.0;
-	
-	hashsetneeded = true;
-	count = 0;
-	percentcompleted = 0;
-	completedsize=0;
-	m_bPreviewing = false;
-	lastseencomplete = 0;
-	m_availablePartsCount=0;
-	m_ClientSrcAnswered = 0;
-	m_LastNoNeededCheck = 0;
-	m_iRate = 0;
-	m_nTotalBufferData = 0;
-	m_nLastBufferFlushTime = 0;
-	m_bPercentUpdated = false;
-	m_bRecoveringArchive = false;
-	m_iGainDueToCompression = 0;
-	m_iLostDueToCorruption = 0;
-	m_iTotalPacketsSavedDueToICH = 0;
-	m_nSavedReduceDownload = 0; // new
-	hasRating = false;
-	hasComment = false; 
-	hasBadRating = false;
-	m_category = 0;
-	m_lastRefreshedDLDisplay = 0;
-	m_is_A4AF_auto = false;
-	m_bLocalSrcReqQueued = false;
-	m_nCompleteSourcesTime = time(NULL);
-	m_nCompleteSourcesCount = 0;
-	m_nCompleteSourcesCountLo = 0;
-	m_nCompleteSourcesCountHi = 0;
-	
-	// Sources dropping
-	m_LastSourceDropTime = 0;
-
-	m_validSources = 0;
-	m_notCurrentSources = 0;
-}
-
-#ifndef CLIENT_GUI
 CPartFile::~CPartFile()
 {
 	
@@ -302,11 +302,6 @@ CPartFile::~CPartFile()
 		delete item;
 	}	
 }
-#else
-CPartFile::~CPartFile()
-{
-}
-#endif // CLIENT_GUI
 
 void CPartFile::CreatePartFile()
 {
@@ -1248,36 +1243,6 @@ void CPartFile::AddGap(uint32 start, uint32 end)
 	newdate = true;
 }
 
-bool CPartFile::IsComplete(uint32 start, uint32 end)
-{
-	if (end >= m_nFileSize) {
-		end = m_nFileSize-1;
-	}
-	for (POSITION pos = gaplist.GetHeadPosition();pos != 0; ) {
-		Gap_Struct* cur_gap = gaplist.GetNext(pos);
-		if ((cur_gap->start >= start && cur_gap->end <= end)||(cur_gap->start >= start 
-		&& cur_gap->start <= end)||(cur_gap->end <= end && cur_gap->end >= start)
-		||(start >= cur_gap->start && end <= cur_gap->end)) {
-			return false;	
-		}
-	}
-	return true;
-}
-
-bool CPartFile::IsPureGap(uint32 start, uint32 end)
-{
-	if (end >= m_nFileSize) {
-		end = m_nFileSize-1;
-	}
-	for (POSITION pos = gaplist.GetHeadPosition();pos != 0; ) {
-		Gap_Struct* cur_gap = gaplist.GetNext(pos);
-		if (start >= cur_gap->start  && end <= cur_gap->end) {
-			return true;
-		}
-	}
-	return false;
-}
-
 bool CPartFile::IsAlreadyRequested(uint32 start, uint32 end)
 {
 	for (POSITION pos =  requestedblocks_list.GetHeadPosition();pos != 0; ) {
@@ -1444,19 +1409,6 @@ void CPartFile::WriteCompleteSourcesCount(CSafeMemFile* file)
 {
 	file->WriteUInt16(m_nCompleteSourcesCount);
 }
-
-
-uint8 CPartFile::GetStatus(bool ignorepause) const
-{
-	if ((!m_paused && !m_insufficient) || status == PS_ERROR || status == PS_COMPLETING || status == PS_COMPLETE || ignorepause) {
-		return status;
-	} else if ( m_insufficient ) {
-		return PS_INSUFFICIENT;
-	} else {
-		return PS_PAUSED;
-	}
-}
-
 
 uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 {
@@ -2414,12 +2366,6 @@ void  CPartFile::RemoveAllSources(bool bTryToSwap)
 	UpdateFileRatingCommentAvail();
 }
 
-#ifdef CLIENT_GUI
-void CPartFile::Delete()
-{
-#warning lfroen - provide different implementation on gui-side
-}
-#else
 void CPartFile::Delete()
 {
 	printf("Canceling\n");
@@ -2481,7 +2427,6 @@ void CPartFile::Delete()
 	printf("Done\n");
 	delete this;
 }
-#endif // CLIENT_GUI
 
 bool CPartFile::HashSinglePart(uint16 partnumber)
 {
@@ -2657,85 +2602,6 @@ bool CPartFile::CheckFreeDiskSpace( uint32 neededSpace )
 	return true;
 }
 
-
-wxString CPartFile::getPartfileStatus() const
-{
-
-	wxString mybuffer; 
-
-	if ((status == PS_HASHING) || (status == PS_WAITINGFORHASH)) {
-		mybuffer=_("Hashing");		
-	} else {	
-		switch (GetStatus()) {
-			case PS_COMPLETING:
-				mybuffer=_("Completing");
-				break; 
-			case PS_COMPLETE:
-				mybuffer=_("Complete");
-				break; 
-			case PS_PAUSED:
-				mybuffer=_("Paused");
-				break; 
-			case PS_ERROR:
-				mybuffer=_("Erroneous");
-				break;
-			case PS_INSUFFICIENT:
-				mybuffer = _("Insufficient Diskspace");
-				break;
-			default:
-				if (GetTransferingSrcCount()>0) {
-					mybuffer=_("Downloading");
-				}	else {
-					mybuffer=_("Waiting");
-				}
-				break;				
-		} 
-		if (m_stopped && (GetStatus()!=PS_COMPLETE)) {
-			mybuffer=_("Stopped");
-		}		
-	}
-	
-	return mybuffer; 
-} 
-
-int CPartFile::getPartfileStatusRang() const
-{
-	
-	int tempstatus=0;
-	if (GetTransferingSrcCount()==0) tempstatus=1;
-	switch (GetStatus()) {
-		case PS_HASHING: 
-		case PS_WAITINGFORHASH:
-			tempstatus=3;
-			break; 
-		case PS_COMPLETING:
-			tempstatus=4;
-			break; 
-		case PS_COMPLETE:
-			tempstatus=5;
-			break; 
-		case PS_PAUSED:
-			tempstatus=2;
-			break; 
-		case PS_ERROR:
-			tempstatus=6;
-			break;
-	} 
-	return tempstatus;
-} 
-
-sint32 CPartFile::getTimeRemaining() const
-{
-	if (GetKBpsDown() < 0.001)
-		return -1;
-	else 
-		return((GetFileSize()-GetCompletedSize()) / ((int)(GetKBpsDown()*1024.0)));
-} 
-
-bool CPartFile::PreviewAvailable()
-{
-	return (( GetFiletype(GetFileName()) == ftVideo ) && IsComplete(0, 256*1024));
-}
 
 void CPartFile::SetLastAnsweredTime()
 {
@@ -3259,17 +3125,6 @@ void CPartFile::UpdateDisplayedInfo(bool force)
 }
 
 
-const wxDateTime& CPartFile::GetLastChangeDatetime() const
-{
-	return m_lastDateChanged;
-}
-
-
-uint8 CPartFile::GetCategory() const
-{
-	return m_category;
-}
-
 void CPartFile::SetCategory(uint8 cat)
 {
 	wxASSERT( cat < theApp.glob_prefs->GetCatCount() );
@@ -3277,91 +3132,6 @@ void CPartFile::SetCategory(uint8 cat)
 	m_category = cat; 
 	SavePartFile(); 
 }
-
-
-
-wxString CPartFile::GetProgressString(uint16 size)
-{
-	char crProgress = '0';	//green
-	char crHave = '1';	// black
-	char crPending='2';	// yellow
-	//char crWaiting='3';	// blue
-	//char crMissing='4';	// red
-	//added lemonfan's progressbar patch
-	char crMissing='3';	// red
-	
-	char crWaiting[6];
-	crWaiting[0]='4'; // blue few source
-	crWaiting[1]='5';
-	crWaiting[2]='6';
-	crWaiting[3]='7';
-	crWaiting[4]='8';
-	crWaiting[5]='9'; // full sources
-
-	wxString my_ChunkBar=wxEmptyString;
-
-	for (uint16 i=0;i<=size+1;++i) {
-		my_ChunkBar.Append(crHave,1); //.AppendChar(crHave);
-	}
-	// one more for safety
-
-	float unit= (float)size/(float)m_nFileSize;
-	uint32 allgaps = 0;
-
-	if(GetStatus() == PS_COMPLETE || GetStatus() == PS_COMPLETING) {  
-		CharFillRange(&my_ChunkBar,0,(uint32)(m_nFileSize*unit), crProgress);
-	} else {	
-		// red gaps
-		for (POSITION pos = gaplist.GetHeadPosition();pos !=  0; ) {
-			Gap_Struct* cur_gap = gaplist.GetNext(pos);
-			allgaps += cur_gap->end - cur_gap->start + 1;
-			bool gapdone = false;
-			uint32 gapstart = cur_gap->start;
-			uint32 gapend = cur_gap->end;
-			for (uint32 i = 0; i < GetPartCount(); ++i){
-				if (gapstart >= i*PARTSIZE && gapstart <=  (i+1)*PARTSIZE) { // is in this part?
-					if (gapend <= (i+1)*PARTSIZE) {
-						gapdone = true;
-					} else {
-						gapend = (i+1)*PARTSIZE; // and next part
-					}
-					// paint
-					uint8 color;
-					if ( m_SrcpartFrequency.GetCount() > (size_t)i && m_SrcpartFrequency[i] ) {  // frequency?
-						//color = crWaiting;
-						//added lemonfan's progressbar patch
-						color = m_SrcpartFrequency[i] < 10 ? crWaiting[m_SrcpartFrequency[i]/2]:crWaiting[5];
-					} else {
-						color = crMissing;
-					}
-					CharFillRange(&my_ChunkBar,(uint32)(gapstart*unit), (uint32)(gapend*unit + 1),  color);
-					if (gapdone) { // finished?
-						break;
-					} else {
-						gapstart = gapend;
-						gapend = cur_gap->end;
-					}
-				}
-			}
-		}
-	}
-
-	// yellow pending parts
-	for (POSITION pos = requestedblocks_list.GetHeadPosition();pos !=  0; ) {
-		Requested_Block_Struct* block =  requestedblocks_list.GetNext(pos);
-		CharFillRange(&my_ChunkBar, (uint32)((block->StartOffset + block->transferred)*unit),(uint32)(block->EndOffset*unit),crPending);
-	}
-	return my_ChunkBar;
-}
-                                                                                
-
-void CPartFile::CharFillRange(wxString* buffer,uint32 start, uint32 end, char color)
-{
-	for (uint32 i = start;i <= end;++i) {
-		buffer->SetChar(i,color);
-	}
-}
-
 
 bool CPartFile::RemoveSource(CUpDownClient* toremove, bool updatewindow, bool bDoStatsUpdate)
 {
@@ -3378,7 +3148,6 @@ bool CPartFile::RemoveSource(CUpDownClient* toremove, bool updatewindow, bool bD
 
 	return result;
 }
-
 
 void CPartFile::CleanUpSources( bool noNeeded, bool fullQueue, bool highQueue )
 {
@@ -3466,63 +3235,6 @@ void CPartFile::SetStatus(uint8 in)
 		}
 	}
 }
-
-bool CPartFile::CheckShowItemInGivenCat(int inCategory)
-{
-	// easy normal cases
-	bool IsInCat;
-	bool IsNotFiltered = true;
-
-	IsInCat = ((inCategory==0) || (inCategory>0 && inCategory==GetCategory()));
-
-	switch (thePrefs::GetAllcatType()) {
-		case 1:
-			IsNotFiltered = ((GetCategory()==0) || (inCategory>0));
-			break;
-		case 2:
-			IsNotFiltered = (IsPartFile());
-			break;
-		case 3:
-			IsNotFiltered = (!IsPartFile());
-			break;
-		case 4:
-			IsNotFiltered = ((GetStatus()==PS_READY|| GetStatus()==PS_EMPTY) && GetTransferingSrcCount()==0);
-			break;
-		case 5:
-			IsNotFiltered = ((GetStatus()==PS_READY|| GetStatus()==PS_EMPTY) && GetTransferingSrcCount()>0);
-			break;
-		case 6:
-			IsNotFiltered = ( GetStatus() == PS_ERROR );
-			break;
-		case 7:
-			IsNotFiltered = ((GetStatus()==PS_PAUSED) && (!IsStopped()));
-			break;
-		case 8:
-			IsNotFiltered = IsStopped();
-			break;
-		case 9:
-			IsNotFiltered = GetFiletype(GetFileName()) == ftVideo;
-			break;
-		case 10:
-			IsNotFiltered = GetFiletype(GetFileName()) == ftAudio;
-			break;
-		case 11:
-			IsNotFiltered = GetFiletype(GetFileName()) == ftArchive;
-			break;
-		case 12:
-			IsNotFiltered = GetFiletype(GetFileName()) == ftCDImage;
-			break;
-		case 13:
-			IsNotFiltered = GetFiletype(GetFileName()) == ftPicture;
-			break;
-		case 14:
-			IsNotFiltered = GetFiletype(GetFileName()) == ftText;
-			break;
-	}
-	
-	return (IsNotFiltered && IsInCat);
-}
-
 
 uint32 CPartFile::GetTotalGapSizeInRange(uint32 uRangeStart, uint32 uRangeEnd) const
 {
@@ -3835,3 +3547,191 @@ void CPartFile::UpdatePartsFrequency( CUpDownClient* client, bool increment )
 		}
 	}
 }
+
+#else   // CLIENT_GUI
+
+/*
+ * Remote gui specific code
+ */
+CPartFile::~CPartFile()
+{
+}
+
+#endif // !CLIENT_GUI
+
+wxString CPartFile::getPartfileStatus() const
+{
+
+	wxString mybuffer; 
+
+	if ((status == PS_HASHING) || (status == PS_WAITINGFORHASH)) {
+		mybuffer=_("Hashing");		
+	} else {	
+		switch (GetStatus()) {
+			case PS_COMPLETING:
+				mybuffer=_("Completing");
+				break; 
+			case PS_COMPLETE:
+				mybuffer=_("Complete");
+				break; 
+			case PS_PAUSED:
+				mybuffer=_("Paused");
+				break; 
+			case PS_ERROR:
+				mybuffer=_("Erroneous");
+				break;
+			case PS_INSUFFICIENT:
+				mybuffer = _("Insufficient Diskspace");
+				break;
+			default:
+				if (GetTransferingSrcCount()>0) {
+					mybuffer=_("Downloading");
+				}	else {
+					mybuffer=_("Waiting");
+				}
+				break;				
+		} 
+		if (m_stopped && (GetStatus()!=PS_COMPLETE)) {
+			mybuffer=_("Stopped");
+		}		
+	}
+	
+	return mybuffer; 
+} 
+
+int CPartFile::getPartfileStatusRang() const
+{
+	
+	int tempstatus=0;
+	if (GetTransferingSrcCount()==0) tempstatus=1;
+	switch (GetStatus()) {
+		case PS_HASHING: 
+		case PS_WAITINGFORHASH:
+			tempstatus=3;
+			break; 
+		case PS_COMPLETING:
+			tempstatus=4;
+			break; 
+		case PS_COMPLETE:
+			tempstatus=5;
+			break; 
+		case PS_PAUSED:
+			tempstatus=2;
+			break; 
+		case PS_ERROR:
+			tempstatus=6;
+			break;
+	} 
+	return tempstatus;
+} 
+
+sint32 CPartFile::getTimeRemaining() const
+{
+	if (GetKBpsDown() < 0.001)
+		return -1;
+	else 
+		return((GetFileSize()-GetCompletedSize()) / ((int)(GetKBpsDown()*1024.0)));
+} 
+
+bool CPartFile::PreviewAvailable()
+{
+	return (( GetFiletype(GetFileName()) == ftVideo ) && IsComplete(0, 256*1024));
+}
+
+bool CPartFile::CheckShowItemInGivenCat(int inCategory)
+{
+	// easy normal cases
+	bool IsInCat;
+	bool IsNotFiltered = true;
+
+	IsInCat = ((inCategory==0) || (inCategory>0 && inCategory==GetCategory()));
+
+	switch (thePrefs::GetAllcatType()) {
+		case 1:
+			IsNotFiltered = ((GetCategory()==0) || (inCategory>0));
+			break;
+		case 2:
+			IsNotFiltered = (IsPartFile());
+			break;
+		case 3:
+			IsNotFiltered = (!IsPartFile());
+			break;
+		case 4:
+			IsNotFiltered = ((GetStatus()==PS_READY|| GetStatus()==PS_EMPTY) && GetTransferingSrcCount()==0);
+			break;
+		case 5:
+			IsNotFiltered = ((GetStatus()==PS_READY|| GetStatus()==PS_EMPTY) && GetTransferingSrcCount()>0);
+			break;
+		case 6:
+			IsNotFiltered = ( GetStatus() == PS_ERROR );
+			break;
+		case 7:
+			IsNotFiltered = ((GetStatus()==PS_PAUSED) && (!IsStopped()));
+			break;
+		case 8:
+			IsNotFiltered = IsStopped();
+			break;
+		case 9:
+			IsNotFiltered = GetFiletype(GetFileName()) == ftVideo;
+			break;
+		case 10:
+			IsNotFiltered = GetFiletype(GetFileName()) == ftAudio;
+			break;
+		case 11:
+			IsNotFiltered = GetFiletype(GetFileName()) == ftArchive;
+			break;
+		case 12:
+			IsNotFiltered = GetFiletype(GetFileName()) == ftCDImage;
+			break;
+		case 13:
+			IsNotFiltered = GetFiletype(GetFileName()) == ftPicture;
+			break;
+		case 14:
+			IsNotFiltered = GetFiletype(GetFileName()) == ftText;
+			break;
+	}
+	
+	return (IsNotFiltered && IsInCat);
+}
+
+bool CPartFile::IsComplete(uint32 start, uint32 end)
+{
+	if (end >= m_nFileSize) {
+		end = m_nFileSize-1;
+	}
+	for (POSITION pos = gaplist.GetHeadPosition();pos != 0; ) {
+		Gap_Struct* cur_gap = gaplist.GetNext(pos);
+		if ((cur_gap->start >= start && cur_gap->end <= end)||(cur_gap->start >= start 
+		&& cur_gap->start <= end)||(cur_gap->end <= end && cur_gap->end >= start)
+		||(start >= cur_gap->start && end <= cur_gap->end)) {
+			return false;	
+		}
+	}
+	return true;
+}
+
+bool CPartFile::IsPureGap(uint32 start, uint32 end)
+{
+	if (end >= m_nFileSize) {
+		end = m_nFileSize-1;
+	}
+	for (POSITION pos = gaplist.GetHeadPosition();pos != 0; ) {
+		Gap_Struct* cur_gap = gaplist.GetNext(pos);
+		if (start >= cur_gap->start  && end <= cur_gap->end) {
+			return true;
+		}
+	}
+	return false;
+}
+
+uint8 CPartFile::GetStatus(bool ignorepause) const
+{
+	if ((!m_paused && !m_insufficient) || status == PS_ERROR || status == PS_COMPLETING || status == PS_COMPLETE || ignorepause) {
+		return status;
+	} else if ( m_insufficient ) {
+		return PS_INSUFFICIENT;
+	} else {
+		return PS_PAUSED;
+	}
+}
+
