@@ -198,9 +198,8 @@ public:
 protected:
 	bool	LoadTagsFromFile(const CFile* file);
 	bool	LoadDateFromFile(const CFile* file);
-	void	CreateHashFromFile(FILE* file, int Length, unsigned char* Output)	{CreateHashFromInput(file,0,Length,Output,0);}
-	void	CreateHashFromFile(CFile* file, int Length, unsigned char* Output)	{CreateHashFromInput(0,file,Length,Output,0);}
-	void	CreateHashFromString(unsigned char* in_string, int Length, unsigned char* Output)	{CreateHashFromInput(0,0,Length,Output,in_string);}
+	void	CreateHashFromFile(CFile* file, int Length, unsigned char* Output)	{CreateHashFromInput(file,Length,Output,0);}
+	void	CreateHashFromString(unsigned char* in_string, int Length, unsigned char* Output)	{CreateHashFromInput(0,Length,Output,in_string);}
 	void	LoadComment();//comment
 	void GetMetaDataTags();
 	ArrayOfCMD4Hash hashlist;
@@ -208,7 +207,7 @@ protected:
 	wxString m_strFilePath;	
 
 private:
-	void	CreateHashFromInput(FILE* file, CFile* file2, int Length, unsigned char* Output, unsigned char* = 0);
+	void	CreateHashFromInput(CFile* file, int Length, unsigned char* Output, unsigned char* = 0);
 	bool	m_bCommentLoaded;
 	uint16	m_iPartCount;
 	uint16  m_iED2KPartCount;

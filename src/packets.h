@@ -20,7 +20,6 @@
 #ifndef PACKETS_H
 #define PACKETS_H
 
-#include <cstdio>		// Needed for FILE
 #include <exception>
 
 #include <wx/string.h>
@@ -130,14 +129,12 @@ public:
 	CTag(LPCSTR name,  const wxString& strvalue);
 	CTag(int8 special, const wxString& strvalue);
 	CTag(const STag &in_tag);
-	//CTag(FILE *in_data);
 	CTag(const CFile &in_data);
 	~CTag();
 	
 	CTag* CloneTag() { return new CTag(tag); }
 	
 	bool WriteTagToFile(CFile* file); //used for CMemfiles
-	bool WriteTagToFile(FILE* file); //used for CMemfiles
 	
 	STag tag;
 	wxString GetFullInfo() const;
