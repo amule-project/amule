@@ -51,6 +51,7 @@
 #include "SharedFilesWnd.h"	// Needed for CSharedFilesWnd
 #include "ServerListCtrl.h"	// Needed for CServerListCtrl
 #include "ServerWnd.h"		// Needed for CServerWnd
+#include "Statistics.h"
 #include "TransferWnd.h"	// Needed for CTransferWnd
 #include "opcodes.h"		// Needed for UNLIMITED
 #include "Preferences.h"	// Needed for CPreferences
@@ -309,7 +310,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 
 	// Uptime
 	{
-		wxString temp = _("Uptime: ") + CastSecondsToHM(theApp.GetUptimeSecs());
+		wxString temp = _("Uptime: ") + CastSecondsToHM(theApp.statistics->GetUptimeSecs());
 								   
 		info_item=gtk_menu_item_new_with_label( unicode2gtk(temp));
 		gtk_container_add (GTK_CONTAINER (info_menu), info_item);
