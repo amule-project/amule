@@ -101,6 +101,15 @@ CStatistics::CStatistics() {
 	m_nDownDataOverheadOtherPackets = 0;
 	m_nDownDataOverheadServerPackets = 0;
 
+	downloaded_aMule = 0;
+	downloaded_eMule = 0;
+	downloaded_eDonkey = 0;
+	downloaded_eDonkeyHybrid = 0;
+	downloaded_Shareaza = 0;
+	downloaded_MLDonkey = 0;
+	downloaded_lxMule = 0;
+	downloaded_Other = 0;
+
 	// Upload-values
 	m_nUpDatarateTotal = 0;
 	m_nUpDataRateMSOverhead = 0;
@@ -647,6 +656,14 @@ void CStatistics::InitStatsTree() {
 
 	h_download = statstree.append_child(h_transfer,_("Downloads"));
 	down1= statstree.append_child(h_download,_("Waiting..."));
+	down1_1 = statstree.append_child(down1,_("Waiting..."));
+	down1_2 = statstree.append_child(down1,_("Waiting..."));
+	down1_3 = statstree.append_child(down1,_("Waiting..."));
+	down1_4 = statstree.append_child(down1,_("Waiting..."));
+	down1_5 = statstree.append_child(down1,_("Waiting..."));
+	down1_6 = statstree.append_child(down1,_("Waiting..."));
+	down1_7 = statstree.append_child(down1,_("Waiting..."));
+	down1_8 = statstree.append_child(down1,_("Waiting..."));
 	down2= statstree.append_child(h_download,_("Waiting..."));
 	down3= statstree.append_child(h_download,_("Waiting..."));
 	down4= statstree.append_child(h_download,_("Waiting..."));
@@ -759,6 +776,16 @@ void CStatistics::UpdateStatsTree() {
 											CastItoXBytes( stat_sessionReceivedBytes),
 											CastItoXBytes( stat_sessionReceivedBytes+thePrefs::GetTotalDownloaded()));
 
+	(*down1_1) = wxT("eMule: ") + CastItoXBytes(downloaded_eMule);
+	(*down1_2) = wxT("aMule: ") + CastItoXBytes(downloaded_aMule);
+	(*down1_3) = wxT("eDonkey: ") + CastItoXBytes(downloaded_eDonkey);
+	(*down1_4) = wxT("eDonkeyHybrid: ") + CastItoXBytes(downloaded_eDonkeyHybrid);
+	(*down1_5) = wxT("Shareaza: ") + CastItoXBytes(downloaded_Shareaza);
+	(*down1_6) = wxT("MLDonkey: ") + CastItoXBytes(downloaded_MLDonkey);
+	(*down1_7) = wxT("(l/x)Mule: ") + CastItoXBytes(downloaded_lxMule);
+	(*down1_8) = wxT("Other: ") + CastItoXBytes(downloaded_Other);
+	
+	
 	(*down2) = _("Total Overhead (Packets): ") +
 										a_brackets_b(
 											CastItoXBytes(DownOHTotal), 

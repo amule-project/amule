@@ -30,6 +30,7 @@
 #include "CTypedPtrList.h"
 #include "Types.h"
 #include "GetTickCount.h"
+#include "updownclient.h"
 
 #include <wx/string.h>
 
@@ -144,6 +145,41 @@ public:
 		return GetUptimeMsecs() / 1000;
 	}
 
+	void AddDownloadFromSoft(uint8 SoftType, uint32 bytes) {
+		switch (SoftType) {
+			case SO_OLDEMULE:
+			case SO_EMULE:
+			case SO_EMULEPLUS:
+			case SO_COMPAT_UNK:
+				downloaded_eMule += bytes;
+				break;
+			case SO_AMULE:
+				downloaded_aMule += bytes;
+				break;
+			case SO_EDONKEY:
+				downloaded_eDonkey += bytes;
+				break;
+			case SO_EDONKEYHYBRID:
+				downloaded_eDonkeyHybrid += bytes;
+				break;
+			case SO_SHAREAZA:
+			case SO_NEW_SHAREAZA:
+				downloaded_Shareaza += bytes;
+				break;
+			case SO_MLDONKEY:
+			case SO_NEW_MLDONKEY:
+			case SO_NEW2_MLDONKEY:			
+				downloaded_MLDonkey += bytes;
+				break;
+			case SO_LXMULE:
+				downloaded_lxMule += bytes;
+				break;
+			default:
+				downloaded_Other += bytes;
+				break;
+		}
+	}
+	
 	
 	// Download related
 	void	AddDownDataOverheadSourceExchange(uint32 data)	{ m_nDownDataRateMSOverhead += data;
@@ -251,6 +287,7 @@ private:
 
 	StatsTreeNode h_shared,h_transfer,h_connection,h_clients,h_servers,h_upload,h_download,h_uptime;
 	StatsTreeNode down1,down2,down3,down4,down5,down6,down7;
+	StatsTreeNode	down1_1, down1_2, down1_3, down1_4, down1_5, down1_6, down1_7, down1_8;
 	StatsTreeNode up1,up2,up3,up4,up5,up6,up7,up8,up9,up10;
 	StatsTreeNode tran0;
 	StatsTreeNode con1,con2,con3,con4,con5,con6,con7,con8,con9,con10,con11,con12,con13;
@@ -287,6 +324,15 @@ private:
 	uint64		m_nDownDataOverheadOther;
 	uint64		m_nDownDataOverheadOtherPackets;
 	std::deque<int>	m_AverageDDRO_list;
+	
+	uint64 downloaded_aMule;
+	uint64 downloaded_eMule;
+	uint64 downloaded_eDonkey;
+	uint64 downloaded_eDonkeyHybrid;
+	uint64 downloaded_Shareaza;
+	uint64 downloaded_MLDonkey;
+	uint64 downloaded_lxMule;
+	uint64 downloaded_Other;
 
 	// Upload-related vars.
 	long	m_nUpDatarateTotal;

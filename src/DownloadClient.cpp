@@ -621,6 +621,7 @@ void CUpDownClient::ProcessBlockPacket(const char *packet, uint32 size, bool pac
 		throw wxString(wxT("Corrupted or invalid DataBlock received (ProcessBlockPacket)"));
 	}
 	theApp.statistics->UpdateReceivedBytes(size - HEADER_SIZE);
+	theApp.statistics->AddDownloadFromSoft(GetClientSoft(),size - HEADER_SIZE);
 	bytesReceivedCycle += size - HEADER_SIZE;
 
 	credits->AddDownloaded(size - HEADER_SIZE, GetIP());
