@@ -328,12 +328,16 @@ public:
 };
 
 class CamuleDaemonApp : public CamuleApp {
+	bool m_Exit;
 	int OnRun();
 	
 	virtual void ShowAlert(wxString msg, wxString title, int flags);
 	virtual int InitGui(bool geometry_enable, wxString &geometry_string);
 public:
+	void ExitMainLoop() { m_Exit = true; }
+
 	virtual void NotifyEvent(GUIEvent event);
+
 	CFriend *FindFriend(CMD4Hash *hash, uint32 ip, uint16 port);
 	bool CopyTextToClipboard(wxString strText);
 
