@@ -73,7 +73,23 @@ enum GUI_Event_ID {
 	SHOW_UPDATE_CAT_TABS,
 	// logging
 	ADDLOGLINE,
-	ADDDEBUGLOGLINE
+	ADDDEBUGLOGLINE,
+	//
+	// Those events are going to reverse direction: from gui->core
+	//
+	
+	// PartFile
+	PARTFILE_REMOVE_NO_NEEDED,
+	PARTFILE_REMOVE_FULL_QUEUE,
+	PARTFILE_REMOVE_HIGH_QUEUE,
+	PARTFILE_CLEANUP_SOURCES,
+	PARTFILE_SWAP_TO_ANOTHER,
+	PARTFILE_PAUSE,
+	PARTFILE_RESUME,
+	PARTFILE_STOP,
+	PARTFILE_PRIO_AUTO,
+	PARTFILE_PRIO_SET,
+	PARTFILE_DELETE,
 };
 
 class GUIEvent {
@@ -225,6 +241,23 @@ class GUIEvent {
 
 #define AddLogLineM(x,y); 			theApp.NotifyEvent(GUIEvent(ADDLOGLINE,x,y));
 #define AddDebugLogLineM(x,y); 	theApp.NotifyEvent(GUIEvent(ADDDEBUGLOGLINE,x,y));
+
+//
+// GUI -> core notification
+//
+#define CoreNotify_PartFile_RemoveNoNeeded(ptr)     Notify_1_ValEvent(PARTFILE_REMOVE_NO_NEEDED,(CPartFile *)ptr);
+#define CoreNotify_PartFile_RemoveFullQueue(ptr)    Notify_1_ValEvent(PARTFILE_REMOVE_FULL_QUEUE,(CPartFile *)ptr);
+#define CoreNotify_PartFile_RemoveHighQueue(ptr)    Notify_1_ValEvent(PARTFILE_REMOVE_HIGH_QUEUE,(CPartFile *)ptr);
+#define CoreNotify_PartFile_SourceCleanup(ptr)      Notify_1_ValEvent(PARTFILE_CLEANUP_SOURCES,(CPartFile *)ptr);
+#define CoreNotify_PartFile_SwapToAnother(ptr)      Notify_1_ValEvent(PARTFILE_SWAP_TO_ANOTHER,(CPartFile *)ptr);
+#define CoreNotify_PartFile_Pause(ptr)              Notify_1_ValEvent(PARTFILE_PAUSE,(CPartFile *)ptr);
+#define CoreNotify_PartFile_Resume(ptr)             Notify_1_ValEvent(PARTFILE_RESUME,(CPartFile *)ptr);
+#define CoreNotify_PartFile_Stop(ptr)               Notify_1_ValEvent(PARTFILE_STOP,(CPartFile *)ptr);
+#define CoreNotify_PartFile_PrioAuto(ptr)           Notify_1_ValEvent(PARTFILE_PRIO_AUTO,(CPartFile *)ptr);
+#define CoreNotify_PartFile_PrioSet(ptr)            Notify_1_ValEvent(PARTFILE_PRIO_SET,(CPartFile *)ptr);
+#define CoreNotify_PartFile_Delete(ptr)             Notify_1_ValEvent(PARTFILE_DELETE,(CPartFile *)ptr);
+
+
 //
 // "Late bound pointers" lib
 //
