@@ -170,6 +170,29 @@ NOTE: you can also get a low ID when the server you connected to is too busy to 
  CDImage		.bin .cue .iso .nrg .ccd .sub .img
  Picture		.jpg .jpeg .bmp .gif .tif .png
 
+
+--"What are all those fancy colors in the download progress bar about?"
+
+ Each download in the the Transfer tab has a coloured bar to show current
+ file availability and progress.
+
+ -Black shows the parts of the file you already have
+ -Red indicates a part missing in all known sources
+ -Different shades of blue represent the availability of this part in the
+  sources. The darker the blue is the higher the availability
+ -Yellow denotes a part being downloaded
+ -The green bar on top shows the total download progress of this file
+
+ If you expand the download you see its sources with the corresponding
+ bar. Here the colours have a slightly different meaning:
+
+ -Black shows parts you are still missing
+ -Silver stands for parts this source is also missing
+ -Green indicates parts you already have
+ -Yellow denotes a part being uploaded to you
+
+ Learning how the progress bar works will greatly help your understanding
+ of the eDonkey2000 network.
  
 
  Want to help?
