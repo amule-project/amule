@@ -193,6 +193,9 @@ Version 2.0.0rc8 - The "last rc" version.
 		* Added RLE encoder for gap and parts status to EC
 		* Fixes in amule daemon
 		
+	Madcat:
+		* Added support for detecting HydraNode clients.
+		
 	GonoszTopi:
 		* Initial work on EC protocol version 2.0.
 		* Fixed a crash on broken language files (.po)
@@ -213,6 +216,39 @@ Version 2.0.0rc8 - The "last rc" version.
 	wizeman:
 		* Helped finding the code snippet where WebSocket was failing on request.
 		* Fixed 'Safe Max connections' code. It's safer to use it now, and it works.
+		
+	Xaignar:
+		* Added the new casting macros to otherfunctions.
+		* Added a helper-function to CMuleListCtrl for use in the Sorter functions.
+		* Fixed the priority-column on Server List.
+		* Added the handling of friends to ECv2 implementation.
+		* Merged CUploadListCtrl and CQueueListCtrl on CClientListCtrl.
+		* Added the posibility to see a list of all existing clients.
+		* Fixed aMule dialog not always being unfrozen upon restoring it from tray.
+		* Some changes to the overhead calculation functions.
+		* Slight improvement of the GetScore function CPU usage.
+		* Replaced "theApp.glob_prefs->" with the new usage "thePrefs::"
+		* Fixed the MyTimer class behind GetTickCount returning random values on close.
+		* Fixed two crashes on ClientList.
+		* Fixed compilation for solaris on several places.
+		* Make sure that clients cant just crash us by sending a aich-request for an invalid hash.
+		* Fixed a couple of sub-menues.
+		* Removed the leech-mod checks, they were getted outdated anyway
+		* Fixed open sockets count.
+		* Avoid re-layouting the entire dlg when updating some labels.
+		* Small fix to CMuleNoteBook.
+		* Adding a missing event-handler en shared files tab.
+		* Changed the primary hashing thread to do both MD4 and AICH hashing for non-part files.
+		  This cut down hashing of ~2.8gb of data from ~12:40 minutes to ~7 minutes on tests.
+		* Adding checks against the user sharing the following dirs: Home-dir, .aMule, Temp-dir.
+		  Sharing home is allowed but results in a warning.
+		* Fixed the Upload-parts drawing.
+		* Fixed sorting by filename on the Uploading list.
+		* Fixed crash on server list auto-update. Removes the possibility of overrunning a array.
+		* Optimization of UpdatePartsInfo, which now no longer needs to traverse the parts-info 
+		  arrays of each source for that file.
+		* Fixed the redraw problems where some things wouldn't be erased on list controls.
+		* Code cleaning, documenting and rewrite.
 
 	Special Thanks To:
 
