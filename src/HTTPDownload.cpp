@@ -189,7 +189,7 @@ wxThread::ExitCode CHTTPDownloadThread::Entry()
 		#endif
 	}
 	
-	StopAnimation();
+	m_myDlg->StopAnimation();
 	
 	printf("HTTP download thread end\n");
 	
