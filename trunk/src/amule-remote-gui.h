@@ -369,6 +369,7 @@ class CDownQueueRem : public CRemoteContainer<CPartFile, CMD4Hash, CEC_PartFile_
 		void Pause(CPartFile *file);
 		void Resume(CPartFile *file);
 		void Stop(CPartFile *file);
+		void Delete(CPartFile *file);
 		void Prio(CPartFile *file, uint8 prio);
 		void AutoPrio(CPartFile *file, bool flag);
 		void Category(CPartFile *file, uint8 cat);

@@ -379,14 +379,17 @@ void CamuleRemoteGuiApp::NotifyEvent(const GUIEvent& event)
 	        	downloadqueue->Stop((CPartFile *)event.ptr_value);
 				break;
 	        case PARTFILE_PRIO_AUTO:
-			break;
+	        	downloadqueue->AutoPrio((CPartFile *)event.ptr_value, event.long_value);
+				break;
 	        case PARTFILE_PRIO_SET:
-			break;
+	        	downloadqueue->AutoPrio((CPartFile *)event.ptr_value, event.long_value);
+				break;
 	        case PARTFILE_SET_CAT:
 	        	downloadqueue->Category((CPartFile *)event.ptr_value, event.byte_value);
 				break;
 	        case PARTFILE_DELETE:
-			break;
+		        downloadqueue->Delete((CPartFile *)event.ptr_value);
+				break;
 			
 	        case KNOWNFILE_SET_UP_PRIO:
 			break;
@@ -939,6 +942,14 @@ void CDownQueueRem::Resume(CPartFile *file)
 void CDownQueueRem::Stop(CPartFile *file)
 {
 	CECPacket req(EC_OP_PARTFILE_STOP);
+	req.AddTag(CECTag(EC_TAG_PARTFILE, file->GetFileHash()));
+	
+	m_conn->Send(&req);
+}
+
+void CDownQueueRem::Delete(CPartFile *file)
+{
+	CECPacket req(EC_OP_PARTFILE_DELETE);
 	req.AddTag(CECTag(EC_TAG_PARTFILE, file->GetFileHash()));
 	
 	m_conn->Send(&req);
