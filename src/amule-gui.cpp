@@ -117,6 +117,8 @@
 #include "ClientListCtrl.h"
 #include "ChatWnd.h"
 
+#ifndef CLIENT_GUI
+
 BEGIN_EVENT_TABLE(CamuleGuiApp, wxApp)
 
 	// Socket handlers
@@ -160,6 +162,7 @@ END_EVENT_TABLE()
 
 IMPLEMENT_APP(CamuleGuiApp)
 
+#endif // CLIENT_GUI
 
 // Initialization of the static MyTimer member variables.
 uint32 MyTimer::tic32 = 0;
@@ -168,78 +171,23 @@ uint64 MyTimer::tic64 = 0;
 // Global timer. Used to cache GetTickCount() results for better performance.
 class MyTimer* mytimer = NULL;
 
-
-int CamuleGuiApp::OnExit()
+CamuleGuiBase::CamuleGuiBase()
 {
-	if (core_timer) {
-		// Stop the Core Timer
-		delete core_timer;
-	}
-	return CamuleApp::OnExit();
-}
-
-void CamuleGuiApp::ShutDown() {
-	amuledlg->Destroy();
-	CamuleApp::ShutDown();
-	if (mytimer) {
-		delete mytimer;
-		mytimer = NULL;
-	}
-}
-
-bool CamuleGuiApp::OnInit()
-{
-	amuledlg = NULL;
-	
 	// Madcat - Initialize timer as the VERY FIRST thing to avoid any issues later.
 	// Kry - I love to init the vars on init, even before timer.
 	mytimer = new MyTimer();
-	
-	if ( !CamuleApp::OnInit() ) {
-		return false;
-	}
-	
-	// Create the Core timer
-	core_timer=new wxTimer(this,ID_CORETIMER);
-	if (!core_timer) {
-		printf("Fatal Error: Failed to create Core Timer");
-		OnExit();
-	}
-
-	// Start the Core Timer
-
-	// Note: wxTimer can be off by more than 10% !!!
-	// In addition to the systematic error introduced by wxTimer, we are losing
-	// timer cycles due to high CPU load.  I've observed about 0.5% random loss of cycles under
-	// low load, and more than 6% lost cycles with heavy download traffic and/or other tasks
-	// in the system, such as a video player or a VMware virtual machine.
-	// The upload queue process loop has now been rewritten to compensate for timer errors.
-	// When adding functionality, assume that the timer is only approximately correct;
-	// for measurements, always use the system clock [::GetTickCount()].
-	core_timer->Start(100);	
-
-	// Start the Gui Timer
-	
-	// Note: wxTimer can be off by more than 10% !!!
-	// In addition to the systematic error introduced by wxTimer, we are losing
-	// timer cycles due to high CPU load.  I've observed about 0.5% random loss of cycles under
-	// low load, and more than 6% lost cycles with heavy download traffic and/or other tasks
-	// in the system, such as a video player or a VMware virtual machine.
-	// The upload queue process loop has now been rewritten to compensate for timer errors.
-	// When adding functionality, assume that the timer is only approximately correct;
-	// for measurements, always use the system clock [::GetTickCount()].
-	amuledlg->StartGuiTimer();
-
-	return true;
-
 }
 
-void CamuleGuiApp::ShowAlert(wxString msg, wxString title, int flags)
+CamuleGuiBase::~CamuleGuiBase()
+{
+}
+
+void CamuleGuiBase::ShowAlert(wxString msg, wxString title, int flags)
 {
 	wxMessageBox(msg, title, flags);
 }
 
-int CamuleGuiApp::InitGui(bool geometry_enabled, wxString &geom_string)
+int CamuleGuiBase::InitGui(bool geometry_enabled, wxString &geom_string)
 {
 	// Standard size is 800x600 at position (0,0)
 	int geometry_x = 0;
@@ -321,11 +269,99 @@ int CamuleGuiApp::InitGui(bool geometry_enabled, wxString &geom_string)
 	} else {
 		amuledlg = new CamuleDlg(NULL, m_FrameTitle);
 	}
-	SetTopWindow(amuledlg);
 
 	return 0;
 }
 
+// Sets the contents of the clipboard. Prior content  erased.
+bool CamuleGuiBase::CopyTextToClipboard(wxString strText)
+{
+	bool ClipBoardOpen = wxTheClipboard->Open();
+	if (ClipBoardOpen) {
+		wxTheClipboard->UsePrimarySelection(TRUE);
+		wxTheClipboard->SetData(new wxTextDataObject(strText));
+		wxTheClipboard->Close();
+	}
+	return ClipBoardOpen;
+}
+
+
+void CamuleGuiBase::NotifyEvent(GUIEvent event)
+{
+}
+
+int CamuleGuiApp::InitGui(bool geometry_enable, wxString &geometry_string)
+{
+	CamuleGuiBase::InitGui(geometry_enable, geometry_string);
+	SetTopWindow(amuledlg);
+	return 0;
+}
+
+void CamuleGuiApp::ShowAlert(wxString msg, wxString title, int flags)
+{
+	CamuleGuiBase::ShowAlert(msg, title, flags);
+}
+
+int CamuleGuiApp::OnExit()
+{
+	if (core_timer) {
+		// Stop the Core Timer
+		delete core_timer;
+	}
+	return CamuleApp::OnExit();
+}
+
+void CamuleGuiApp::ShutDown() {
+	amuledlg->Destroy();
+	CamuleApp::ShutDown();
+	if (mytimer) {
+		delete mytimer;
+		mytimer = NULL;
+	}
+}
+
+bool CamuleGuiApp::OnInit()
+{
+	amuledlg = NULL;
+	
+	if ( !CamuleApp::OnInit() ) {
+		return false;
+	}
+	
+	// Create the Core timer
+	core_timer=new wxTimer(this,ID_CORETIMER);
+	if (!core_timer) {
+		printf("Fatal Error: Failed to create Core Timer");
+		OnExit();
+	}
+
+	// Start the Core Timer
+
+	// Note: wxTimer can be off by more than 10% !!!
+	// In addition to the systematic error introduced by wxTimer, we are losing
+	// timer cycles due to high CPU load.  I've observed about 0.5% random loss of cycles under
+	// low load, and more than 6% lost cycles with heavy download traffic and/or other tasks
+	// in the system, such as a video player or a VMware virtual machine.
+	// The upload queue process loop has now been rewritten to compensate for timer errors.
+	// When adding functionality, assume that the timer is only approximately correct;
+	// for measurements, always use the system clock [::GetTickCount()].
+	core_timer->Start(100);	
+
+	// Start the Gui Timer
+	
+	// Note: wxTimer can be off by more than 10% !!!
+	// In addition to the systematic error introduced by wxTimer, we are losing
+	// timer cycles due to high CPU load.  I've observed about 0.5% random loss of cycles under
+	// low load, and more than 6% lost cycles with heavy download traffic and/or other tasks
+	// in the system, such as a video player or a VMware virtual machine.
+	// The upload queue process loop has now been rewritten to compensate for timer errors.
+	// When adding functionality, assume that the timer is only approximately correct;
+	// for measurements, always use the system clock [::GetTickCount()].
+	amuledlg->StartGuiTimer();
+
+	return true;
+
+}
 
 void CamuleGuiApp::ListenSocketHandler(wxSocketEvent& event)
 {
@@ -431,18 +467,6 @@ CFriend *CamuleGuiApp::FindFriend(CMD4Hash *hash, uint32 ip, uint16 port)
 		return 	amuledlg->chatwnd->FindFriend(*hash, ip, port);
 	}
 	return NULL;
-}
-
-// Sets the contents of the clipboard. Prior content  erased.
-bool CamuleGuiApp::CopyTextToClipboard(wxString strText)
-{
-	bool ClipBoardOpen = wxTheClipboard->Open();
-	if (ClipBoardOpen) {
-		wxTheClipboard->UsePrimarySelection(TRUE);
-		wxTheClipboard->SetData(new wxTextDataObject(strText));
-		wxTheClipboard->Close();
-	}
-	return ClipBoardOpen;
 }
 
 void CamuleGuiApp::NotifyEvent(GUIEvent event)

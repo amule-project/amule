@@ -55,12 +55,12 @@ BUILT_SOURCES =
 #LIBS = @LIBS@ 
 amulegui_SOURCES = \
 	amule-gui.cpp \
+	amule-remote-gui.cpp \
 	amuleDlg.cpp \
 	BarShader.cpp \
 	CatDialog.cpp \
 	ChatSelector.cpp \
 	ChatWnd.cpp \
-	ClientCredits.cpp \
 	ClientDetailDialog.cpp \
 	ClientListCtrl.cpp \
 	ColorFrameCtrl.cpp \
@@ -69,10 +69,12 @@ amulegui_SOURCES = \
 	CFile.cpp \
 	DirectoryTreeCtrl.cpp \
 	DownloadListCtrl.cpp \
+	ED2KLink.cpp \
 	filemem.cpp \
 	FileDetailDialog.cpp \
 	FileDetailListCtrl.cpp \
 	FriendListCtrl.cpp \
+	KadDlg.cpp \
 	listctrl.cpp \
 	muuli_wdr.cpp \
 	MuleGifCtrl.cpp \
@@ -86,14 +88,15 @@ amulegui_SOURCES = \
 	Preferences.cpp \
 	PrefsUnifiedDlg.cpp \
 	SearchDlg.cpp \
-	SearchList.cpp \
 	SearchListCtrl.cpp \
+	ServerWnd.cpp \
 	SharedFilesCtrl.cpp \
 	SharedFilesWnd.cpp \
 	ServerListCtrl.cpp \
 	StatisticsDlg.cpp \
 	StringFunctions.cpp \
-	TransferWnd.cpp 
+	TransferWnd.cpp \
+	amule.cpp
 
 amule_SOURCES = ListenSocket.cpp \
 	EMSocket.cpp \

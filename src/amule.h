@@ -339,11 +339,28 @@ private:
 
 #ifndef AMULE_DAEMON
 
-class CamuleGuiApp : public CamuleApp {
-	AMULE_TIMER_CLASS* core_timer;
+class CamuleGuiBase {
+public:
+	CamuleGuiBase();
+	virtual	 ~CamuleGuiBase();
 
+	wxString	m_FrameTitle;
+	CamuleDlg*	amuledlg;
+	
+	bool CopyTextToClipboard( wxString strText );
+
+	virtual void NotifyEvent(GUIEvent event);
 	virtual int InitGui(bool geometry_enable, wxString &geometry_string);
 	virtual void ShowAlert(wxString msg, wxString title, int flags);
+};
+
+#ifndef CLIENT_GUI
+
+class CamuleGuiApp : public CamuleApp, public CamuleGuiBase {
+	AMULE_TIMER_CLASS* core_timer;
+
+    virtual int InitGui(bool geometry_enable, wxString &geometry_string);
+    virtual void ShowAlert(wxString msg, wxString title, int flags);
 	
 	// Socket handlers
 	void ListenSocketHandler(wxSocketEvent& event);
@@ -356,10 +373,7 @@ class CamuleGuiApp : public CamuleApp {
 
 	
 public:
-	wxString	m_FrameTitle;
-	CamuleDlg*	amuledlg;
 	CFriend *FindFriend(CMD4Hash *hash, uint32 ip, uint16 port);
-	bool		CopyTextToClipboard( wxString strText );
 
 	void ShutDown();
 	virtual void NotifyEvent(GUIEvent event);
@@ -370,9 +384,42 @@ public:
 	DECLARE_EVENT_TABLE()
 };
 
-#define CALL_APP_DATA_LOCK
-
 DECLARE_APP(CamuleGuiApp)
+
+#else /* !CLIENT_GUI */
+
+class CamuleRemoteGuiApp : public CamuleApp {
+	AMULE_TIMER_CLASS* core_timer;
+
+	virtual int InitGui(bool geometry_enable, wxString &geometry_string);
+	virtual void ShowAlert(wxString msg, wxString title, int flags);
+
+	int OnExit();
+	bool OnInit();
+
+public:
+	wxString	m_FrameTitle;
+	CamuleDlg*	amuledlg;
+
+	bool CopyTextToClipboard(wxString strText);
+
+	void ShutDown();
+
+	virtual void NotifyEvent(GUIEvent event);
+
+	wxString GetLog(bool reset = false);
+	wxString GetServerLog(bool reset = false);
+
+	void AddServerMessageLine(wxString &msg);
+
+	DECLARE_EVENT_TABLE()
+};
+
+DECLARE_APP(CamuleRemoteGuiApp)
+
+#endif // CLIENT_GUI
+
+#define CALL_APP_DATA_LOCK
 
 #else /* ! AMULE_DAEMON */
 
