@@ -81,8 +81,8 @@ public:
 	~CDownloadQueue();
 	void	Process();
 	void	Init();
-	void	AddSearchToDownload(CSearchFile* toadd,uint8 paused=2);
-	void	AddSearchToDownload(const wxString& link,uint8 paused=2);
+	void	AddSearchToDownload(CSearchFile* toadd);
+	void	AddSearchToDownload(const wxString& link);
 	void	AddFileLinkToDownload(class CED2KFileLink* pLink);
 	bool	IsFileExisting(const CMD4Hash& fileid) const;
 	bool	IsPartFile(const CKnownFile* totest) const;
@@ -154,7 +154,7 @@ protected:
 	bool	SendGlobGetSourcesUDPPacket(CSafeMemFile& data);
 
 private:
-	void AddSearchToDownloadCommon(CPartFile *newfile, uint8 paused);
+	void AddSearchToDownloadCommon(CPartFile *newfile);
 
 private:
 	std::deque<CPartFile*> filelist;

@@ -2258,7 +2258,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 					uchar fileid[16];
 					DecodeBase16(unicode2char(item.Mid(20)),item.Mid(20).Length(),fileid);
 					theApp.searchlist->AddFileToDownloadByHash(fileid);
-					//theApp.downloadqueue->AddDownload(cur_file, (uint8)theApp.glob_prefs->AddNewFilesPaused());
+					//theApp.downloadqueue->AddDownload(cur_file);
 					return wxT("Download Added");
 				}
 				return wxT("Bad DOWNLOADFILE request");

@@ -215,7 +215,7 @@ void CDownloadQueue::LoadSourceSeeds()
 	}
 }
 
-void CDownloadQueue::AddSearchToDownload(CSearchFile* toadd, uint8 paused)
+void CDownloadQueue::AddSearchToDownload(CSearchFile* toadd)
 {
 	if (IsFileExisting(toadd->GetFileHash())) {
 		return;
@@ -224,32 +224,29 @@ void CDownloadQueue::AddSearchToDownload(CSearchFile* toadd, uint8 paused)
 	if (!newfile) {
 		return;
 	}
-	AddSearchToDownloadCommon(newfile, paused);
+	AddSearchToDownloadCommon(newfile);
 }
 
-void CDownloadQueue::AddSearchToDownload(const wxString& link, uint8 paused)
+void CDownloadQueue::AddSearchToDownload(const wxString& link)
 {
 	CPartFile* newfile = new CPartFile(link);
 	if (!newfile) {
 		return;
 	}
-	AddSearchToDownloadCommon(newfile, paused);
+	AddSearchToDownloadCommon(newfile);
 }
 
-void CDownloadQueue::AddSearchToDownloadCommon(CPartFile *newfile, uint8 paused)
+void CDownloadQueue::AddSearchToDownloadCommon(CPartFile *newfile)
 {
 	if (newfile->GetStatus() == PS_ERROR) {
 		delete newfile;
 		return;
 	}
-	if (paused == 2) {
-		paused = (uint8)theApp.glob_prefs->AddNewFilesPaused();
-	}
-	AddDownload(newfile, (paused == 1));
+	AddDownload(newfile, theApp.glob_prefs->AddNewFilesPaused());
 	newfile->SetCategory(theApp.amuledlg->searchwnd->GetCatChoice());
 }
 
-{void CDownloadQueue::StartNextFile()
+void CDownloadQueue::StartNextFile()
 {
 	if(!theApp.glob_prefs->StartNextFile()) {
 		return;
@@ -308,7 +305,7 @@ void CDownloadQueue::AddFileLinkToDownload(CED2KFileLink* pLink)
 	}
 }
 
-void CDownloadQueue::AddDownload(CPartFile* newfile,bool paused)
+void CDownloadQueue::AddDownload(CPartFile* newfile, bool paused)
 {
 	// Creteil - Add in paused mode if there is already file(s) downloading
 	if ((paused) && !filelist.empty()) {
