@@ -1815,7 +1815,8 @@ void CamuleApp::AddLogLine(const wxString &msg)
 	wxStringInputStream stream(full_line);
 	
 	(*applog) << stream;
-	
+	applog->Sync();
+
 	if ( enable_stdout_log ) { 
 		puts(unicode2charbuf(full_line));
 	}
@@ -1828,19 +1829,21 @@ void CamuleApp::AddLogLine(const wxString &msg)
 		wxDateTime::Now().FormatISOTime() + wxT(": ");
 	applog->Write(curr_date + msg + wxT("\n"));
 	applog->Flush();
-	
-	const wxCharBuffer date_str_buf = unicode2charbuf(curr_date);
-	const char *date_str = (const char *)date_str_buf;
-	// conversion may fail, so must check date_str
-	if (enable_stdout_log && date_str) {
-		fputs(date_str, stdout);
+
+	if (enable_stdout_log) {
+		const wxCharBuffer date_str_buf = unicode2charbuf(curr_date);
+		const char *date_str = (const char *)date_str_buf;
+		// conversion may fail, so must check date_str
+		if (date_str) {
+			fputs(date_str, stdout);
+		}
+		const wxCharBuffer c_msg_buf = unicode2charbuf(msg);
+		const char *c_msg = (const char *)c_msg_buf;
+		// conversion may fail, so must check c_msg
+		if (c_msg) {
+			fputs(c_msg, stdout);
+		}
 	}
-	const wxCharBuffer c_msg_buf = unicode2charbuf(msg);
-	const char *c_msg = (const char *)c_msg_buf;
-	// conversion may fail, so must check c_msg
-	if (enable_stdout_log && c_msg) {
-		fputs(c_msg, stdout);
-	}	
 }
 #endif
 
@@ -1876,19 +1879,28 @@ wxString CamuleApp::GetLog(bool reset)
 	wxFile *logfile = new wxFile();
 	logfile->Open(ConfigDir + wxFileName::GetPathSeparator() + wxT("logfile"));
 	if ( !logfile->IsOpened() ) {
-		return wxT("ERROR: can't open logfile");
+		return _("ERROR: can't open logfile");
 	}
 	int len = logfile->Length();
 	if ( len == 0 ) {
-		return wxT("WARNING: logfile is empty. Something wrong");
+		return _("WARNING: logfile is empty. Something wrong");
 	}
-	char *tmp_buffer = new char[len];
+	char *tmp_buffer = new char[len + sizeof(wxChar)];
 	logfile->Read(tmp_buffer, len);
+	memset(tmp_buffer + len, 0, sizeof(wxChar));
+#if wxCHECK_VERSION(2,5,3)
 	#if wxUSE_UNICODE
-	wxString str(UTF82unicode(tmp_buffer));
-	#else 
+	wxString str((wxWCharBuffer&)tmp_buffer);
+	#else
 	wxString str(char2unicode(tmp_buffer));
 	#endif
+#else
+	#if wxUSE_UNICODE
+	wxString str(UTF82unicode(tmp_buffer));
+	#else
+	wxString str(char2unicode(tmp_buffer));
+	#endif
+#endif
 	delete [] tmp_buffer;
 	delete logfile;
 	if ( reset ) {
