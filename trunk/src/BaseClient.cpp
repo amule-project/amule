@@ -229,6 +229,8 @@ void CUpDownClient::Init()
 	m_dwDownStartTime = 0;
 
 	m_bTransferredDownMini = false;
+
+	m_requpfile = NULL;
 }
 
 

@@ -498,33 +498,29 @@ void CUpDownClient::ProcessExtendedInfo(const CSafeMemFile *data, CKnownFile *te
 }
 
 
+void CUpDownClient::ResetUploadFile()
+{
+	m_requpfile = NULL;
+}
+
+
 void CUpDownClient::SetUploadFileID(CKnownFile* newreqfile)
 {
-	CKnownFile* oldreqfile;
-	//We use the knownfilelist because we may have unshared the file..
-	//But we always check the download list first because that person may have decided to redownload that file.
-	//Which will replace the object in the knownfilelist if completed.
-	
-	if ((oldreqfile = theApp.downloadqueue->GetFileByID(m_requpfileid)) == NULL ) {
-		oldreqfile = theApp.knownfiles->FindKnownFileByID(m_requpfileid);
-	}
+	if ( m_requpfile != newreqfile ) {
+		if ( m_requpfile ) {
+			m_requpfile->SubQueuedCount();
+			m_requpfile->RemoveUploadingClient(this);
+		}
 
-	if (newreqfile == oldreqfile) {
-		return;
-	}
+		m_requpfile = newreqfile;
 
-	if (newreqfile){
-		newreqfile->AddQueuedCount();
-		newreqfile->AddUploadingClient(this);
-		m_requpfileid = newreqfile->GetFileHash();
-	}
-	else {
-		m_requpfileid.Clear();
-	}
-
-	if (oldreqfile) {
-		oldreqfile->SubQueuedCount();
-		oldreqfile->RemoveUploadingClient(this);
+		if ( m_requpfile ) {
+			m_requpfile->AddQueuedCount();
+			m_requpfile->AddUploadingClient(this);
+			m_requpfileid = m_requpfile->GetFileHash();
+		} else {
+			m_requpfileid.Clear();
+		}
 	}
 }
 

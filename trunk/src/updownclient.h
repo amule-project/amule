@@ -309,6 +309,8 @@ public:
 	void		SendHashsetPacket(const CMD4Hash& forfileid);
 	bool		SupportMultiPacket() const { return m_bMultiPacket;	}
 
+	//! Only call this function if the old requpfile is being deleted
+	void		ResetUploadFile();
 	void		SetUploadFileID(CKnownFile *newreqfile);
 	void		ProcessExtendedInfo(const CSafeMemFile *data, CKnownFile *tempreqfile);
 	void		ProcessFileInfo(const CSafeMemFile* data, const CPartFile* file);
@@ -589,6 +591,7 @@ private:
 	bool		m_bUsedComprUp;	//only used for interface output
 	uint32		m_nCurSessionUp;
 	uint16		m_nUpPartCount;
+	CKnownFile*	m_requpfile;
 	CMD4Hash	m_requpfileid;
 	uint16		m_nUpCompleteSourcesCount;
 
