@@ -10,6 +10,7 @@
 /* try (hard) to get correct path for aMule signature
  * !! it's caller's responsibility to free return value
  */
+// Jacobo221 - [ToDo] port to DOS
 char *get_path(char *file)
 {
 	char *ret, *home;	/* caller should free return value */
@@ -27,7 +28,10 @@ char *get_path(char *file)
 			pwd = getpwuid(uid);
 			endpwent();
 
-			if (pwd == NULL || pwd->pw_dir == NULL)
+			// if (pwd == NULL || pwd->pw_dir == NULL) could brake on left-handed compilers
+			if (pwd == NULL)
+				return NULL;
+			if (pwd->pw_dir == NULL)
 				return NULL;
 
 			home = pwd->pw_dir;
@@ -40,7 +44,7 @@ char *get_path(char *file)
 	}
 
 	/* get full path space */
-	ret = malloc((home_len + strlen(file) + 2) * sizeof(char));
+	ret = malloc((home_len + strlen("/") + strlen(file)) * sizeof(char) + '\0');
 	if (ret == NULL)
 		return NULL;
 

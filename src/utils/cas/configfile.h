@@ -1,6 +1,8 @@
 #ifndef CAS_CONFIGFILE_H
 #define CAS_CONFIGFILE_H
 
+#define IMG_TEXTLINES 6
+
 typedef struct {
         char font[120];
         char source[120];

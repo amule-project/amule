@@ -12,7 +12,7 @@
  * this is the funcion that writes the text to the image.
  * almost everything is taken from libgd examples
  */
-int createimage(CONF *config, char lines[6][80])
+int createimage(CONF *config, char lines[IMG_TEXTLINES][80])
 {
 	FILE *in, *out;
 	char *path;
@@ -34,7 +34,7 @@ int createimage(CONF *config, char lines[6][80])
 	im = gdImageCreateFromPng(in);
 	white = gdImageColorResolve(im, 255, 255, 255);
 
-	for (i = 0; i <= 5; i++) {
+	for (i = 0; i <= (IMG_TEXTLINES - 1); i++) {
 		if (config->enabled[i] == 1)
 			gdImageStringFT(im, &brect[0], white, config->font, config->size,
 					0., config->x[i], config->y[i], lines[i]);

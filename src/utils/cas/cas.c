@@ -51,8 +51,10 @@ void usage(char *myname)
 		 "Usage: %s [OPTION]\n"
 		 "If run without any option prints stats to stdout\n\n"
 		 "OPTIONS:\n"
+#ifdef __GD__
 		 "-o\tWrites the online signature picture\n"
-		 "-p\tHTML Page with stats and picture\n"
+#endif
+		 //"-p\tHTML Page with stats and picture\n"
 		 "-h\tThis help youre reading\n", CAS_VERSION, myname);
 }
 
@@ -97,6 +99,8 @@ int main(int argc, char *argv[])
 
 		if (!feof(amulesig)) {
 
+			// Jacobo221 - Make it DOS compatible.
+			if (ler == 13) ler = fgetc(amulesig);
 			if (ler != 10) {
 				if (strlen(stats[i]) < 80)
 					sprintf(stats[i], "%s%c", stats[i],
@@ -109,7 +113,9 @@ int main(int argc, char *argv[])
 	fclose(amulesig);
 
 	/* if amule isnt running say that and exit else print out the stuff */
-	if (stats[0][0] == '0') {
+	// Jacobo221 - Detect connecting state
+	//             [ToDo] States 0 & 2 mean offline/connecting not "not running"...
+	if (stats[0][0] == '0' || stats[0][0] == '2') {
 		printf("aMule is not running\n");
 		exit(3);
 	}
