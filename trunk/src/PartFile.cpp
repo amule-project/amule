@@ -3064,10 +3064,16 @@ bool CPartFile::IsASaneFileClientCombination(const CUpDownClient* cur_src, const
 		if (forClient) sane = sane && (n == forClient->m_nPartCount);
 #if defined( __DEBUG__ )
 		if (!sane) {
+			printf("Mismatching Part Counts!\n");
 			printf("CPartFile->GetPartStatus() = %d\n", n);
 			printf("cur_src->m_nPartCount      = %d\n", cur_src->m_nPartCount);
 			if (forClient)
 				printf("forClient->m_nPartCount    = %d\n", forClient->m_nPartCount);
+			printf("Filenames are: \n");
+			printf("\tthis   : %s\n", unicode2char(GetFileName().c_str()));
+			printf("\tcur_src: %s\n", unicode2char(cur_src->reqfile->GetFileName().c_str()));
+			if (forClient)
+				printf("\tfor_clt: %s\n", unicode2char(forClient->reqfile->GetFileName().c_str()));
 		}
 #endif // __DEBUG__
 	}
