@@ -100,7 +100,6 @@ Packet::Packet(CMemFile* datafile, uint8 protocol, uint8 ucOpcode)
 
 	BYTE* tmp = datafile->Detach();
 	memcpy(pBuffer, tmp, size);
-	#warning check where is the malloc of this free
 	free(tmp); 
 }
 
