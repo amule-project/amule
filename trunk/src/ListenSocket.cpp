@@ -2042,13 +2042,14 @@ void CClientReqSocketHandler::ClientReqSocketHandler(wxSocketEvent& event)
 // 
 
 // Do we really need that?
-IMPLEMENT_DYNAMIC_CLASS(CListenSocket,wxSocketServer)
+//IMPLEMENT_DYNAMIC_CLASS(CListenSocket,wxSocketServer)
 
 CListenSocket::CListenSocket(CPreferences* in_prefs, wxSockAddress& addr)
 :
 // wxSOCKET_NOWAIT    - means non-blocking i/o
 // wxSOCKET_REUSEADDR - means we can reuse the socket imediately (wx-2.5.3)
-wxSocketServer(addr, wxSOCKET_NOWAIT|wxSOCKET_REUSEADDR)
+wxSocketServer(addr, wxSOCKET_NOWAIT|wxSOCKET_REUSEADDR),
+wxThread(wxTHREAD_JOINABLE) 
 {
 	// 0.42e - vars not used by us
 	bListening = false;
@@ -2063,12 +2064,17 @@ wxSocketServer(addr, wxSOCKET_NOWAIT|wxSOCKET_REUSEADDR)
 	activeconnections = 0;
 	// Set the listen socket event handler -- The handler is written in amule.cpp
 	if (Ok()) {
-		SetEventHandler(theApp, LISTENSOCKET_HANDLER);
-		SetNotify(wxSOCKET_CONNECTION_FLAG);
-		Notify(true);
+// 		SetEventHandler(theApp, LISTENSOCKET_HANDLER);
+// 		SetNotify(wxSOCKET_CONNECTION_FLAG);
+// 		Notify(true);
+		Notify(false);
+		
 		printf("ListenSocket: Ok.\n");
 	} else {
 		AddLogLineM(true,wxT("Error: Could not listen to TCP port.\n"));
+	}
+	if ( Create() != wxTHREAD_NO_ERROR ) {
+		AddLogLineM(true,wxT("CListenSocket: can not create my thread\n"));
 	}
 }
 
@@ -2080,11 +2086,30 @@ CListenSocket::~CListenSocket()
 	KillAllSockets();
 }
 
+void *CListenSocket::Entry()
+{
+	while ( !TestDestroy() ) {
+		if ( WaitForAccept() ) {
+			if ( !theApp.IsReady ) {
+				wxSocketBase *s = Accept(false);
+				if ( s ) {
+					s->Destroy();
+				}
+				continue;
+			}
+			OnAccept(0);
+		}
+	}
+	return 0;
+}
+
 bool CListenSocket::StartListening()
 {
 	// 0.42e
 	bListening = true;
 	//return (this->Create(app_prefs->GetPort(),SOCK_STREAM,FD_ACCEPT) && this->Listen());
+	
+	Run();
 	return true;
 }
 
