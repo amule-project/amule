@@ -2249,7 +2249,7 @@ wxSizer *PreferencesFilesTab( wxWindow *parent, bool call_fit, bool set_sizer )
     item22->Enable( FALSE );
     item21->Add( item22, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
-    wxCheckBox *item23 = new wxCheckBox( parent, IDC_CHUNKALLOC, _("Allocate full chucks for .part files"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxCheckBox *item23 = new wxCheckBox( parent, IDC_CHUNKALLOC, _("Allocate full chunks for .part files"), wxDefaultPosition, wxDefaultSize, 0 );
     item23->SetToolTip( _("Select this to allocate a full chunk each time data is received for it.") );
     item23->Enable( FALSE );
     item21->Add( item23, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
