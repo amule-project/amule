@@ -22,6 +22,7 @@
 #include <algorithm>		// Needed for std::max
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/intl.h>		// Needed for _
+#include <wx/dcmemory.h>
 
 #include "OScopeCtrl.h"		// Interface declarations.
 #include "StatisticsDlg.h"	// Needed for GetHistory()
@@ -545,10 +546,6 @@ void COScopeCtrl::OnTimer(wxTimerEvent& WXUNUSED(evt))
 	until there is a little pause and OnTimer actually gets called and does its work.
 */
 {
-#warning BIG WARNING: FIX STATS ON MAC!
-#warning Can it be related to the fact we have two timers now?
-#warning I guess so - there MUST be a reason Tiku only added one.
-#ifndef __WXMAC__
 	if(!theApp.amuledlg->SafeState()) {
     		return;
 	}
@@ -558,5 +555,4 @@ void COScopeCtrl::OnTimer(wxTimerEvent& WXUNUSED(evt))
 	} else if (bRecreateGraph) {
 		RecreateGraph(true);
 	}
-#endif
 } // OnTimer

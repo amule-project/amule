@@ -25,6 +25,7 @@
 #include <wx/settings.h>
 #include <wx/sizer.h>
 #include <wx/stattext.h>
+#include <wx/gauge.h>
 
 #include "muuli_wdr.h"		// Needed for ID_SHFILELIST
 #include "SharedFilesWnd.h"	// Interface declarations

@@ -31,6 +31,7 @@
 #include <wx/radiobox.h>
 #include <wx/msgdlg.h>
 #include <wx/log.h>
+#include <wx/statbmp.h>
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -1022,9 +1023,9 @@ void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 		// history list keeps an average of one node per second and gets thinned out
 		// correctly as time progresses.
 		msPrevHist += 1000;
-		#ifndef __WXMAC__
+		
 		statisticswnd->RecordHistory();
-		#endif
+		
 	}
 
 	if (msCur-msPrev1 > 950) {  // approximately every second
@@ -1037,9 +1038,9 @@ void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 	if ((msGraphUpdate > 0)  && ((msCur / msGraphUpdate) > (msPrevGraph / msGraphUpdate))) {
 		// trying to get the graph shifts evenly spaced after a change in the update period
 		msPrevGraph = msCur;
-		#ifndef __WXMAC__
+		
 		statisticswnd->UpdateStatGraphs(bStatsVisible);
-		#endif
+	
 	}
 
 	int sStatsUpdate = theApp.glob_prefs->GetStatsInterval();
