@@ -36,30 +36,67 @@
 
 #include "wxcascanvas.h"
 
-WxCasCanvas::WxCasCanvas (wxWindow * parent, wxBitmap * bitmap):wxPanel (parent, -1, wxDefaultPosition,
-	 wxDefaultSize, wxTAB_TRAVERSAL,
-	 "WxCasPanel")
-{
-	m_bitmap = bitmap;
-	
-	this->SetClientSize(m_bitmap->GetWidth(),m_bitmap->GetHeight());
+#if defined(__WXGTK__) || defined(__WXMOTIF__) || wxUSE_XPM_IN_MSW
+#include "../pixmaps/amule.xpm"
+#endif
 
-	wxClientDC
-	dc (this);
-	dc.DrawBitmap (*m_bitmap, 0, 0);
+// Constructor
+WxCasCanvas::WxCasCanvas (wxWindow * parent, wxWindow * model):wxPanel (parent,
+	 -1)
+{
+  // Add Bitmap Splash
+#if USE_XPM_BITMAPS
+  m_bitmap = new wxBitmap (amule_xpm);
+#else
+  m_bitmap = new wxBITMAP (amule);
+#endif
+
+  m_model = model;
+
+  // Draw Image
+  DrawImg ();
 }
 
+// Destructor
 WxCasCanvas::~WxCasCanvas ()
 {
 }
 
+// Event table
 BEGIN_EVENT_TABLE (WxCasCanvas, wxPanel)
-EVT_PAINT (WxCasCanvas::OnPaint) END_EVENT_TABLE ()
-     void
+EVT_PAINT (WxCasCanvas::OnPaint) 
+END_EVENT_TABLE ()
+
+// OnPaint event
+void
      WxCasCanvas::OnPaint (wxPaintEvent & event)
 {
-	wxPaintDC dc (this);
-	PrepareDC (dc);
+  DrawImg ();
+}
 
-	dc.DrawBitmap (*m_bitmap, 0, 0);
+// Draw image
+void
+WxCasCanvas::DrawImg ()
+{
+// rescale image
+  wxInt32 ph, pw, h;
+  m_model->GetClientSize (&pw, &ph);
+  h =
+    (wxInt32) ((double) (m_bitmap->GetHeight ()) / m_bitmap->GetWidth () *
+	       pw);
+
+  wxBitmap *bitmap = new wxBitmap (wxImage (m_bitmap->ConvertToImage ()).
+				   Scale (pw, h));
+
+  this->SetClientSize (pw, h);
+
+  // Draw image
+  wxPaintDC dc (this);
+  PrepareDC (dc);
+  dc.DrawBitmap (*bitmap, 0, 0);
+  delete bitmap;
+
+  // Frame layout
+  GetParent ()->Layout ();
+  GetParent ()->Fit ();
 }

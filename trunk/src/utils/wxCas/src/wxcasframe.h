@@ -44,58 +44,58 @@
 // wxCas Frame
 class WxCasFrame:public wxFrame
 {
-      public:
+public:
 
-	//Constructor
-	WxCasFrame (const wxChar * title);
+  //Constructor
+  WxCasFrame (const wxChar * title);
 
-	//Destructor
-	 ~WxCasFrame ();
+  //Destructor
+   ~WxCasFrame ();
 
-      protected:
+protected:
 
-	void SetFromDefaultAmuleFile ();
+  void SetFromDefaultAmuleFile ();
 
-	void OnBarRefresh (wxCommandEvent & event);
-	void OnBarAbout (wxCommandEvent & event);
-	void OnBarSave (wxCommandEvent & event);
-	void OnBarPrint (wxCommandEvent & event);
-	void OnTimer(wxTimerEvent& event);
+  void OnBarRefresh (wxCommandEvent & event);
+  void OnBarAbout (wxCommandEvent & event);
+  void OnBarSave (wxCommandEvent & event);
+  void OnBarPrint (wxCommandEvent & event);
+  void OnTimer (wxTimerEvent & event);
 
-	  DECLARE_EVENT_TABLE ();
+    DECLARE_EVENT_TABLE ();
 
-      private:
-         wxTimer * m_timer;
-	  
-	 wxToolBar * m_toolbar;
-	 wxBitmap *m_toolBarBitmaps[5];
+private:
+    wxTimer * m_timer;
 
-	wxBoxSizer *m_frameVBox;
-	wxBoxSizer *m_sigPanelVBox;
+  wxToolBar *m_toolbar;
+  wxBitmap *m_toolBarBitmaps[5];
 
-	wxStaticLine *m_staticLine;
-	wxPanel *m_sigPanel;
+  wxBoxSizer *m_frameVBox;
+  wxBoxSizer *m_sigPanelVBox;
 
-	wxStaticBox *m_sigPanelSBox;
-	wxStaticBoxSizer *m_sigPanelSBoxSizer;
+  wxStaticLine *m_staticLine;
+  wxPanel *m_sigPanel;
 
-	wxStaticText *m_statLine_1;
-	wxStaticText *m_statLine_2;
-	wxStaticText *m_statLine_3;
-	wxStaticText *m_statLine_4;
-	wxStaticText *m_statLine_5;
-	wxStaticText *m_statLine_6;
+  wxStaticBox *m_sigPanelSBox;
+  wxStaticBoxSizer *m_sigPanelSBoxSizer;
 
-	WxCasCanvas *m_imgPanel;
+  wxStaticText *m_statLine_1;
+  wxStaticText *m_statLine_2;
+  wxStaticText *m_statLine_3;
+  wxStaticText *m_statLine_4;
+  wxStaticText *m_statLine_5;
+  wxStaticText *m_statLine_6;
 
-	enum
-	{
-		ID_BAR_REFRESH = 1000,
-		ID_BAR_ABOUT,
-		ID_BAR_PRINT,
-		ID_BAR_SAVE,
-		ID_TIMER
-	};
+  WxCasCanvas *m_imgPanel;
+
+  enum
+  {
+    ID_BAR_REFRESH = 1000,
+    ID_BAR_ABOUT,
+    ID_BAR_PRINT,
+    ID_BAR_SAVE,
+    ID_TIMER
+  };
 };
 
 #endif /* _WXCASFRAME_H */

@@ -40,63 +40,63 @@
 // OnLineSig Class
 class OnLineSig
 {
-      private:
-		  
-	wxString m_isRunning;
-	wxString m_serverName;
-	wxString m_serverIP;
-	wxString m_serverPort;
-	wxString m_connexionID;
-	wxString m_ULRate;
-	wxString m_DLRate;
-	wxString m_queue;
-	wxString m_sharedFiles;
-	wxString m_user;
-	wxString m_totalUL;
-	wxString m_totalDL;
-	wxString m_version;
-	wxString m_sessionUL;
-	wxString m_sessionDL;
-	wxString m_runTime;
+private:
 
-	wxString BytesConvertion (wxString bytes);
+  wxString m_isRunning;
+  wxString m_serverName;
+  wxString m_serverIP;
+  wxString m_serverPort;
+  wxString m_connexionID;
+  wxString m_ULRate;
+  wxString m_DLRate;
+  wxString m_queue;
+  wxString m_sharedFiles;
+  wxString m_user;
+  wxString m_totalUL;
+  wxString m_totalDL;
+  wxString m_version;
+  wxString m_sessionUL;
+  wxString m_sessionDL;
+  wxString m_runTime;
 
-      public:
+  wxString BytesConvertion (wxString bytes);
 
-	// Constructors
-	  OnLineSig ();
+public:
 
-	  OnLineSig (wxFileName * file);
+  // Constructors
+    OnLineSig ();
 
-	// Destructor
-	 ~OnLineSig ();
+    OnLineSig (wxFileName * file);
 
-	// Accessor
-	void SetFromAmuleSig (wxFileName * file);
-	void SetFromDefaultAmuleSig ();
+  // Destructor
+   ~OnLineSig ();
 
-	bool IsRunning ();
+  // Accessor
+  void SetFromAmuleSig (wxFileName * file);
+  void SetFromDefaultAmuleSig ();
 
-	wxString GetServerName ();
-	wxString GetServerIP ();
-	wxString GetServerPort ();
-	wxString GetConnexionID ();
-	wxString GetULRate ();
-	wxString GetDLRate ();
-	wxString GetQueue ();
-	wxString GetSharedFiles ();
-	wxString GetUser ();
-	wxString GetTotalUL ();
-	wxString GetTotalDL ();
-	wxString GetVersion ();
-	wxString GetSessionUL ();
-	wxString GetSessionDL ();
-	wxString GetRunTime ();
-	wxString GetConvertedTotalUL ();
-	wxString GetConvertedTotalDL ();
-	wxString GetConvertedSessionUL ();
-	wxString GetConvertedSessionDL ();
-	wxString GetConnexionIDType ();
+  bool IsRunning ();
+
+  wxString GetServerName ();
+  wxString GetServerIP ();
+  wxString GetServerPort ();
+  wxString GetConnexionID ();
+  wxString GetULRate ();
+  wxString GetDLRate ();
+  wxString GetQueue ();
+  wxString GetSharedFiles ();
+  wxString GetUser ();
+  wxString GetTotalUL ();
+  wxString GetTotalDL ();
+  wxString GetVersion ();
+  wxString GetSessionUL ();
+  wxString GetSessionDL ();
+  wxString GetRunTime ();
+  wxString GetConvertedTotalUL ();
+  wxString GetConvertedTotalDL ();
+  wxString GetConvertedSessionUL ();
+  wxString GetConvertedSessionDL ();
+  wxString GetConnexionIDType ();
 };
 
 #endif /* _ONLINESIG_H */

@@ -39,18 +39,19 @@
 
 #if defined(__WXGTK__) || defined(__WXMOTIF__) || wxUSE_XPM_IN_MSW
 #include "../pixmaps/wxcas.xpm"
-#include "../pixmaps/amule.xpm"
 #include "../pixmaps/refresh.xpm"
 #include "../pixmaps/stop.xpm"
 #include "../pixmaps/save.xpm"
 #include "../pixmaps/print.xpm"
 #include "../pixmaps/about.xpm"
+//#include "../pixmaps/green.xpm"
+//#include "../pixmaps/red.xpm"
 #endif
 
 // Constructor
 WxCasFrame::WxCasFrame (const wxChar * title):
 wxFrame ((wxFrame *) NULL, -1, title, wxDefaultPosition, wxDefaultSize,
-	 wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxSYSTEM_MENU | wxCAPTION)
+	 wxDEFAULT_FRAME_STYLE & (wxSYSTEM_MENU | wxMINIMIZE_BOX | wxCAPTION))
 {
   // Give it an icon
   SetIcon (wxICON (wxcas));
@@ -66,6 +67,10 @@ wxFrame ((wxFrame *) NULL, -1, title, wxDefaultPosition, wxDefaultSize,
   // Frame Vertical Sizer
   m_frameVBox = new wxBoxSizer (wxVERTICAL);
 
+  // Add static line to sizer
+  m_staticLine = new wxStaticLine (this, -1);
+  m_frameVBox->Add (m_staticLine, 0, wxALL | wxEXPAND);
+
   // Draw and populate panel
   m_sigPanel = new wxPanel (this, -1, wxDefaultPosition,
 			    wxDefaultSize, wxTAB_TRAVERSAL, "wxCasPanel");
@@ -74,99 +79,34 @@ wxFrame ((wxFrame *) NULL, -1, title, wxDefaultPosition, wxDefaultSize,
   m_sigPanelSBox = new wxStaticBox (m_sigPanel, -1, "");
   m_sigPanelSBoxSizer = new wxStaticBoxSizer (m_sigPanelSBox, wxVERTICAL);
 
-  // Statistics
-  OnLineSig aMuleSig;
-  aMuleSig.SetFromDefaultAmuleSig ();
+  // Statistics labels
+  m_statLine_1 = new wxStaticText (m_sigPanel, -1, "");
+  m_statLine_2 = new wxStaticText (m_sigPanel, -1, "");
+  m_statLine_3 = new wxStaticText (m_sigPanel, -1, "");
+  m_statLine_4 = new wxStaticText (m_sigPanel, -1, "");
+  m_statLine_5 = new wxStaticText (m_sigPanel, -1, "");
+  m_statLine_6 = new wxStaticText (m_sigPanel, -1, "");
 
-  m_statLine_1 = new wxStaticText (m_sigPanel, -1,
-				   "aMule " +
-				   aMuleSig.GetVersion () +
-				   _(" has been running for ") +
-				   aMuleSig.GetRunTime ());
+  SetFromDefaultAmuleFile ();
 
-  m_statLine_2 = new wxStaticText (m_sigPanel, -1,
-				   aMuleSig.GetUser () +
-				   _(" is on ") +
-				   aMuleSig.GetServerName () +
-				   " [" + aMuleSig.GetServerIP () +
-				   _("] with ") +
-				   aMuleSig.GetConnexionIDType ());
-
-  m_statLine_3 = new wxStaticText (m_sigPanel, -1,
-				   _("Total Download: ") +
-				   aMuleSig.GetConvertedTotalDL () +
-				   _(", Upload: ") +
-				   aMuleSig.GetConvertedTotalUL ());
-
-  m_statLine_4 = new wxStaticText (m_sigPanel, -1,
-				   _("Session Download: ") +
-				   aMuleSig.
-				   GetConvertedSessionDL () +
-				   _(", Upload: ") +
-				   aMuleSig.GetConvertedSessionUL ());
-
-  m_statLine_5 = new wxStaticText (m_sigPanel, -1,
-				   _("Download: ") +
-				   aMuleSig.GetDLRate () +
-				   _(" kB/s, Upload: ") +
-				   aMuleSig.GetULRate () + _("kB/s"));
-
-  m_statLine_6 = new wxStaticText (m_sigPanel, -1,
-				   _("Sharing: ") +
-				   aMuleSig.GetSharedFiles () +
-				   _(" file(s), Clients on queue: ")
-				   + aMuleSig.GetQueue ());
-
-
-  if (aMuleSig.IsRunning ())
-    {
-      SetStatusText (_("aMule is running"));
-    }
-  else
-    {
-      SetStatusText (_("WARNING: aMule is NOT running"));
-    }
-
-  m_sigPanelSBoxSizer->Add (m_statLine_1, 0, wxALL | wxEXPAND, 5);
-  m_sigPanelSBoxSizer->Add (m_statLine_2, 0, wxALL | wxEXPAND, 5);
-  m_sigPanelSBoxSizer->Add (m_statLine_3, 0, wxALL | wxEXPAND, 5);
-  m_sigPanelSBoxSizer->Add (m_statLine_4, 0, wxALL | wxEXPAND, 5);
-  m_sigPanelSBoxSizer->Add (m_statLine_5, 0, wxALL | wxEXPAND, 5);
-  m_sigPanelSBoxSizer->Add (m_statLine_6, 0, wxALL | wxEXPAND, 5);
+  m_sigPanelSBoxSizer->Add (m_statLine_1, 0, wxALL | wxADJUST_MINSIZE, 5);
+  m_sigPanelSBoxSizer->Add (m_statLine_2, 0, wxALL | wxADJUST_MINSIZE, 5);
+  m_sigPanelSBoxSizer->Add (m_statLine_3, 0, wxALL | wxADJUST_MINSIZE, 5);
+  m_sigPanelSBoxSizer->Add (m_statLine_4, 0, wxALL | wxADJUST_MINSIZE, 5);
+  m_sigPanelSBoxSizer->Add (m_statLine_5, 0, wxALL | wxADJUST_MINSIZE, 5);
+  m_sigPanelSBoxSizer->Add (m_statLine_6, 0, wxALL | wxADJUST_MINSIZE, 5);
 
   // Panel Layout
   m_sigPanel->SetSizerAndFit (m_sigPanelSBoxSizer);
 
-  // Add static line to sizer
-  m_staticLine = new wxStaticLine (this, -1);
-  m_frameVBox->Add (m_staticLine, 0, wxALL | wxEXPAND);
-
   // Add panel to sizer
-  m_frameVBox->Add (m_sigPanel, 0, wxALL | wxEXPAND, 10);
-
-  // Add Bitmap Splash
-  wxBitmap *splash;
-#if USE_XPM_BITMAPS
-  splash = new wxBitmap (amule_xpm);
-#else
-  splash = new wxBITMAP (amule);
-#endif
-
-  // Resize Bitmap
-  wxInt32 ph, pw, h;
-  m_sigPanel->GetClientSize (&pw, &ph);
-  h = (wxInt32) ((double) (splash->GetHeight ()) / splash->GetWidth () * pw);
-
-  wxBitmap *ResizedSplash = new wxBitmap (wxImage (splash->ConvertToImage ()).
-					  Scale (pw, h));
-
-  delete splash;		// Dont need it anymore
+  m_frameVBox->Add (m_sigPanel, 0, wxALL | wxADJUST_MINSIZE, 10);
 
   // Display Bitmap
-  m_imgPanel = new WxCasCanvas (this, ResizedSplash);
+  m_imgPanel = new WxCasCanvas (this, m_sigPanel);
 
-  m_frameVBox->Add (m_imgPanel, 0, wxALL | wxEXPAND, 10);
-
+  // Add Bimap to sizer
+  m_frameVBox->Add (m_imgPanel, 0, wxALL | wxADJUST_MINSIZE, 10);
 
 // Toolbar Pixmaps
 #if USE_XPM_BITMAPS
@@ -182,7 +122,7 @@ wxFrame ((wxFrame *) NULL, -1, title, wxDefaultPosition, wxDefaultSize,
   m_toolBarBitmaps[3] = new wxBITMAP (about);
   m_toolBarBitmaps[4] = new wxBITMAP (stop);
 #endif
-  
+
   // Constructing toolbar
   m_toolbar =
     new wxToolBar (this, -1, wxDefaultPosition, wxDefaultSize,
@@ -195,10 +135,10 @@ wxFrame ((wxFrame *) NULL, -1, title, wxDefaultPosition, wxDefaultSize,
   m_toolbar->AddSeparator ();
 
   m_toolbar->AddTool (ID_BAR_SAVE, "Save", *(m_toolBarBitmaps[1]),
-		      _("Save Online Statistics image"));
+		      _("Save Online Statistics image (NOT implemented Yet)"));
 
   m_toolbar->AddTool (ID_BAR_PRINT, "Print", *(m_toolBarBitmaps[2]),
-		      _("Print Online Statistics image"));
+		      _("Print Online Statistics image (NOT implemented Yet)"));
 
   m_toolbar->AddSeparator ();
 
@@ -224,11 +164,11 @@ EVT_TOOL (ID_BAR_REFRESH, WxCasFrame::OnBarRefresh)
 EVT_TOOL (ID_BAR_SAVE, WxCasFrame::OnBarSave)
 EVT_TOOL (ID_BAR_PRINT, WxCasFrame::OnBarPrint)
 EVT_TOOL (ID_BAR_ABOUT, WxCasFrame::OnBarAbout)
-EVT_TIMER (ID_TIMER, WxCasFrame::OnTimer)
+EVT_TIMER (ID_TIMER, WxCasFrame::OnTimer) 
 END_EVENT_TABLE ()
 
 // Refresh button
- void
+void
      WxCasFrame::OnBarRefresh (wxCommandEvent & event)
 {
   if (m_timer->IsRunning ())
@@ -238,6 +178,7 @@ END_EVENT_TABLE ()
       m_toolbar->InsertTool (0, ID_BAR_REFRESH, "Refresh",
 			     *(m_toolBarBitmaps[4]), wxNullBitmap,
 			     wxITEM_NORMAL, _("Start Auto Refresh"));
+      SetStatusText (_("Auto Refresh stopped"));
 
     }
   else
@@ -247,6 +188,7 @@ END_EVENT_TABLE ()
       m_toolbar->InsertTool (0, ID_BAR_REFRESH, "Refresh",
 			     *(m_toolBarBitmaps[0]), wxNullBitmap,
 			     wxITEM_NORMAL, _("Stop Auto Refresh"));
+      SetStatusText (_("Auto Refresh started"));
     }
 }
 
@@ -281,6 +223,7 @@ void
 WxCasFrame::OnTimer (wxTimerEvent & event)
 {
   SetFromDefaultAmuleFile ();
+  m_imgPanel->DrawImg ();
 }
 
 // Accessors
@@ -332,7 +275,7 @@ WxCasFrame::SetFromDefaultAmuleFile ()
       SetStatusText (_("WARNING: aMule is NOT running"));
     }
 
-  // Resze Pannel if labels' size change
+  // Fit to new lable size
+  Layout ();
   Fit ();
-  Refresh ();
 }

@@ -42,27 +42,28 @@
 // Constructors
 OnLineSig::OnLineSig ()
 {
-	m_isRunning = "0";
-	m_serverName = "Unknown";
-	m_serverIP = "0.0.0.0";
-	m_serverPort = "00";
-	m_connexionID = "?";
-	m_DLRate = "0.00";
-	m_ULRate = "0.00";
-	m_queue = "0";
-	m_sharedFiles = "0";
-	m_user = "Unknown";
-	m_totalDL = "0";
-	m_totalUL = "0";
-	m_version = "0";
-	m_sessionDL = "0";
-	m_sessionUL = "0";
-	m_runTime = "0";
+  m_isRunning = "0";
+  m_serverName = "Unknown";
+  m_serverIP = "0.0.0.0";
+  m_serverPort = "00";
+  m_connexionID = "?";
+  m_DLRate = "0.00";
+  m_ULRate = "0.00";
+  m_queue = "0";
+  m_sharedFiles = "0";
+  m_user = "Unknown";
+  m_totalDL = "0";
+  m_totalUL = "0";
+  m_version = "0";
+  m_sessionDL = "0";
+  m_sessionUL = "0";
+  m_runTime = "0";
 }
 
+// Constructor 2
 OnLineSig::OnLineSig (wxFileName * file)
 {
-	SetFromAmuleSig (file);
+  SetFromAmuleSig (file);
 }
 
 // Destructor
@@ -70,219 +71,200 @@ OnLineSig::~OnLineSig ()
 {
 }
 
-// Accessor
-
+// Accessors
 void
 OnLineSig::SetFromAmuleSig (wxFileName * file)
 {
-	wxFileInputStream input (file->GetFullPath ());
+  wxFileInputStream input (file->GetFullPath ());
 
-	wxTextInputStream text (input);
-	text.SetStringSeparators ("\n");
+  wxTextInputStream text (input);
+  text.SetStringSeparators ("\n");
 
-	text >> m_isRunning;
-	text >> m_serverName;
-	text >> m_serverIP;
-	text >> m_serverPort;
-	text >> m_connexionID;
-	text >> m_DLRate;
-	text >> m_ULRate;
-	text >> m_queue;
-	text >> m_sharedFiles;
-	text >> m_user;
-	text >> m_totalDL;
-	text >> m_totalUL;
-	text >> m_version;
-	text >> m_sessionDL;
-	text >> m_sessionUL;
-	text >> m_runTime;
+  text >> m_isRunning;
+  text >> m_serverName;
+  text >> m_serverIP;
+  text >> m_serverPort;
+  text >> m_connexionID;
+  text >> m_DLRate;
+  text >> m_ULRate;
+  text >> m_queue;
+  text >> m_sharedFiles;
+  text >> m_user;
+  text >> m_totalDL;
+  text >> m_totalUL;
+  text >> m_version;
+  text >> m_sessionDL;
+  text >> m_sessionUL;
+  text >> m_runTime;
 }
 
 void
 OnLineSig::SetFromDefaultAmuleSig ()
 {
-	wxFileName *aMuleSigFile =
-		new wxFileName (wxFileName::GetHomeDir (), "amulesig.dat");
-	aMuleSigFile->AppendDir (".aMule");
-	SetFromAmuleSig (aMuleSigFile);
-	delete aMuleSigFile;
+  wxFileName *aMuleSigFile =
+    new wxFileName (wxFileName::GetHomeDir (), "amulesig.dat");
+  aMuleSigFile->AppendDir (".aMule");
+  SetFromAmuleSig (aMuleSigFile);
+  delete aMuleSigFile;
 }
 
 
-bool
-OnLineSig::IsRunning ()
+bool OnLineSig::IsRunning ()
 {
-	if (m_isRunning == "1")
-	{
-		return TRUE;
-	}
-	else
-	{
-		return FALSE;
-	}
+  if (m_isRunning == "1")
+    {
+      return TRUE;
+    }
+  else
+    {
+      return FALSE;
+    }
 }
 
-wxString
-OnLineSig::GetServerName ()
+wxString OnLineSig::GetServerName ()
 {
-	return m_serverName;
+  return m_serverName;
 }
 
-wxString
-OnLineSig::GetServerIP ()
+wxString OnLineSig::GetServerIP ()
 {
-	return m_serverIP;
+  return m_serverIP;
 }
 
-wxString
-OnLineSig::GetServerPort ()
+wxString OnLineSig::GetServerPort ()
 {
-	return m_serverPort;
+  return m_serverPort;
 }
 
-wxString
-OnLineSig::GetConnexionID ()
+wxString OnLineSig::GetConnexionID ()
 {
-	return m_connexionID;
+  return m_connexionID;
 }
 
-wxString
-OnLineSig::GetULRate ()
+wxString OnLineSig::GetULRate ()
 {
-	return m_ULRate;
+  return m_ULRate;
 }
 
-wxString
-OnLineSig::GetDLRate ()
+wxString OnLineSig::GetDLRate ()
 {
-	return m_DLRate;
+  return m_DLRate;
 }
 
-wxString
-OnLineSig::GetQueue ()
+wxString OnLineSig::GetQueue ()
 {
-	return m_queue;
+  return m_queue;
 }
 
-wxString
-OnLineSig::GetSharedFiles ()
+wxString OnLineSig::GetSharedFiles ()
 {
-	return m_sharedFiles;
+  return m_sharedFiles;
 }
 
-wxString
-OnLineSig::GetUser ()
+wxString OnLineSig::GetUser ()
 {
-	return m_user;
+  return m_user;
 }
 
-wxString
-OnLineSig::GetTotalUL ()
+wxString OnLineSig::GetTotalUL ()
 {
-	return m_totalUL;
+  return m_totalUL;
 }
 
 
-wxString
-OnLineSig::GetTotalDL ()
+wxString OnLineSig::GetTotalDL ()
 {
-	return m_totalDL;
+  return m_totalDL;
 }
 
-wxString
-OnLineSig::GetVersion ()
+wxString OnLineSig::GetVersion ()
 {
-	return m_version;
+  return m_version;
 }
 
-wxString
-OnLineSig::GetSessionUL ()
+wxString OnLineSig::GetSessionUL ()
 {
-	return m_sessionUL;
+  return m_sessionUL;
 }
 
 
-wxString
-OnLineSig::GetSessionDL ()
+wxString OnLineSig::GetSessionDL ()
 {
-	return m_sessionDL;
+  return m_sessionDL;
 }
 
-wxString
-OnLineSig::GetRunTime ()
+wxString OnLineSig::GetRunTime ()
 {
-	return m_runTime;
+  return m_runTime;
 }
 
-wxString
-OnLineSig::GetConvertedTotalUL ()
+wxString OnLineSig::GetConvertedTotalUL ()
 {
-	return (BytesConvertion (m_totalUL));
+  return (BytesConvertion (m_totalUL));
 }
 
-wxString
-OnLineSig::GetConvertedTotalDL ()
+wxString OnLineSig::GetConvertedTotalDL ()
 {
-	return (BytesConvertion (m_totalDL));
+  return (BytesConvertion (m_totalDL));
 }
 
-wxString
-OnLineSig::GetConvertedSessionUL ()
+wxString OnLineSig::GetConvertedSessionUL ()
 {
-	return (BytesConvertion (m_sessionUL));
+  return (BytesConvertion (m_sessionUL));
 }
 
-wxString
-OnLineSig::GetConvertedSessionDL ()
+wxString OnLineSig::GetConvertedSessionDL ()
 {
-	return (BytesConvertion (m_sessionDL));
+  return (BytesConvertion (m_sessionDL));
 }
 
-wxString
-OnLineSig::GetConnexionIDType ()
+wxString OnLineSig::GetConnexionIDType ()
 {
-	if (m_connexionID == "H")
-	{
-		return (wxString ("HighID"));
-	}
-	else
-	{
-		return (wxString ("LowID"));
-	}
+  if (m_connexionID == "H")
+    {
+      return (wxString ("HighID"));
+    }
+  else
+    {
+      return (wxString ("LowID"));
+    }
 }
 
-wxString
-OnLineSig::BytesConvertion (wxString bytes)
+// Private use
+wxString OnLineSig::BytesConvertion (wxString bytes)
 {
-	double d_bytes;
-	wxString c_bytes;
+  double
+    d_bytes;
+  wxString
+    c_bytes;
 
-	bytes.ToDouble (&d_bytes);
+  bytes.ToDouble (&d_bytes);
 
-	wxInt32 i = 0;
-	while (d_bytes > 1024)
-	{
-		d_bytes /= 1024;
-		i++;
-	}
+  wxInt32
+    i = 0;
+  while (d_bytes > 1024)
+    {
+      d_bytes /= 1024;
+      i++;
+    }
 
-	switch (i)
-	{
-	case 0:
-		c_bytes = wxString::Format ("%.0f B", d_bytes);
-		break;
-	case 1:
-		c_bytes = wxString::Format ("%.2f KB", d_bytes);
-		break;
-	case 2:
-		c_bytes = wxString::Format ("%.2f MB", d_bytes);
-		break;
-	case 3:
-		c_bytes = wxString::Format ("%.2f GB", d_bytes);
-		break;
-	default:
-		c_bytes = wxString::Format ("%.2f TB", d_bytes);
-		break;
-	}
-	return c_bytes;
+  switch (i)
+    {
+    case 0:
+      c_bytes = wxString::Format ("%.0f B", d_bytes);
+      break;
+    case 1:
+      c_bytes = wxString::Format ("%.2f KB", d_bytes);
+      break;
+    case 2:
+      c_bytes = wxString::Format ("%.2f MB", d_bytes);
+      break;
+    case 3:
+      c_bytes = wxString::Format ("%.2f GB", d_bytes);
+      break;
+    default:
+      c_bytes = wxString::Format ("%.2f TB", d_bytes);
+      break;
+    }
+  return c_bytes;
 }
