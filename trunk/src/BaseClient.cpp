@@ -1267,7 +1267,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 
 void CUpDownClient::ConnectionEstablished()
 {
-
+// 0.42e
 	#ifdef __USE_KAD__
 	switch(GetKadState())
 	{
@@ -1281,7 +1281,7 @@ void CUpDownClient::ConnectionEstablished()
 	#endif	
 	
 	// ok we have a connection, lets see if we want anything from this client
-	if (GetChatState() == MS_CONNECTING) {
+	if (GetChatState() == MS_CONNECTING || GetChatState() == MS_CHATTING) {
 		theApp.amuledlg->chatwnd->ConnectionResult(this,true);
 	}
 
