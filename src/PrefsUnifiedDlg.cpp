@@ -392,7 +392,7 @@ public:
 		else if (i == 1)
 			str = (str1.IsEmpty()) ? str1 : strSev;
 		else
-			str = strSev.c_str();
+			str = strSev;
 		
 		((wxStaticText*)pctrl)->SetLabel(wxString::Format(str, i));
 	}
