@@ -114,6 +114,7 @@ public:
 	virtual void SetCtrlRange(int iMin, int iMax) {}
 	virtual int GetDefaultValue()			{ return 0; }
 	virtual int GetPrevValue()				{ return 0; }
+	virtual int GetCtrlCount()				{ wxASSERT(false); return 0;}
 
 	void Propagate()						{ if (prseLink!=NULL) prseLink->SetCtrlValue(GetCtrlValue()); }
 	void SetLink(Rse *prse)					{ prseLink = prse;}
@@ -139,6 +140,10 @@ public:
 		return aszWxc[wxc];
 	}
 	#endif
+	
+	virtual void SetEnabled(bool Enable) {
+		((wxTextCtrl*)pctrl)->Enable(Enable);		
+	}
 	
 protected:
 	enum wxcType { wxcNone, wxcCheck, wxcSlider, wxcSpin, wxcText, wxcChoice, wxcStatic, 
@@ -337,6 +342,15 @@ public:
 		wxASSERT(wxc != wxcNone);
 	}
 
+	int GetCtrlCount() {
+		if (wxc==wxcChoice) {
+			return ((wxChoice *)pctrl)->GetCount();
+		} else {
+			wxASSERT(false);
+			return 0;
+		}
+	}
+	
 private:
 	void WriteMem(int32 i)
 	{
@@ -505,6 +519,8 @@ public:
 		if (pctrl->IsKindOf(CLASSINFO(wxTextCtrl)))
 			wxc = wxcText; 
 	}
+	
+
 	
 protected:
 	RseString() {};
@@ -952,7 +968,7 @@ BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	EVT_BUTTON(IDC_IPFRELOAD, PrefsUnifiedDlg::OnButtonIPFilterReload)
 	EVT_BUTTON(IDC_COLOR_BUTTON, PrefsUnifiedDlg::OnButtonColorChange)
 	EVT_CHOICE(IDC_COLORSELECTOR, PrefsUnifiedDlg::OnColorCategorySelected)
-	EVT_CHOICE(IDC_FCHECK, PrefsUnifiedDlg::OnBrowserSelected)
+	EVT_CHOICE(IDC_FCHECK, PrefsUnifiedDlg::OnFakeBrowserChange)
 END_EVENT_TABLE()
 
 
@@ -1099,9 +1115,9 @@ bool PrefsUnifiedDlg::TransferDataFromWindow()
 	while (pos) 	{	
 		(pos->GetData())->TransferFromDlg();
 #ifdef __DEBUG__
-		Rse * prse = pos->GetData();
-		if (prse->Id() != 0)
-			printf("%s set\n", prse->GetIniName());
+//		Rse * prse = pos->GetData();
+//		if (prse->Id() != 0)
+//			printf("%s set\n", prse->GetIniName());
 #endif	
 		pos = pos->GetNext();
 	}		
@@ -1213,10 +1229,8 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent &event)
 	CheckRateUnlimited(prseMaxUp);
 	CheckRateUnlimited(prseMaxDown);
 	Prse(IDC_UDPDISABLE)->SetCtrlValue(!Prse(IDC_UDPPORT)->GetMemValue());
-
-	
+	Prse(IDC_FCHECKSELF)->SetEnabled(Prse(IDC_FCHECK)->GetMemValue()==(Prse(IDC_FCHECK)->GetCtrlCount() -1));
 	// save the preferences on ok
-	
 	if (theApp.glob_prefs) {
 		theApp.glob_prefs->Save(); }
 	
@@ -1300,6 +1314,13 @@ void PrefsUnifiedDlg::OnColorCategorySelected(wxCommandEvent& evt)
 	pbuttonColor->SetBackgroundColour(WxColourFromCr(aprseColor[GetColorIndex()]->GetMemValue()));
 }
 
+
+void PrefsUnifiedDlg::OnFakeBrowserChange(wxCommandEvent& evt)
+{
+	Prse(IDC_FCHECK)->StoreDlgValue();
+	Prse(IDC_FCHECKSELF)->SetEnabled(Prse(IDC_FCHECK)->GetMemValue()==(Prse(IDC_FCHECK)->GetCtrlCount() -1));
+}
+
 void PrefsUnifiedDlg::OnButtonSystray(wxCommandEvent& evt)
 {
 	theApp.amuledlg->changeDesktopMode();
@@ -1374,6 +1395,7 @@ void PrefsUnifiedDlg::LoadAllItems(CIni& ini)
 	
 	// Now do some post-processing / sanity checking on the values we just loaded
 	ForceUlDlRateCorrelation(0);
+	
 }
 
 
@@ -1390,17 +1412,5 @@ void PrefsUnifiedDlg::SaveAllItems(CIni& ini)
 		#endif
 		(pos->GetData())->SaveToFile(ini);
 		pos = pos->GetNext();
-	}
-}
-
-void PrefsUnifiedDlg::OnBrowserSelected(wxCommandEvent& evt)
-{
-	wxChoice* browser = (wxChoice*)FindWindow(IDC_FCHECK);
-
-	// If the last item (Custom browser) is selected
-	if ( browser->GetSelection() == browser->GetCount() - 1 ) {
-		FindWindow(IDC_FCHECKSELF)->Enable();
-	} else {
-		FindWindow(IDC_FCHECKSELF)->Disable();
 	}
 }
