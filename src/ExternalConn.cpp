@@ -22,15 +22,15 @@
 #include "ExternalConn.h"	// Interface declarations
 #include "otherfunctions.h"	// Needed for EncodeBase16
 #include "ED2KLink.h"		// Needed for CED2KLink
-#include "ServerListCtrl.h"	// Needed for CServerListCtrl
-#include "SearchDlg.h"		// Needed for CSearchDlg
+//#include "ServerListCtrl.h"	// Needed for CServerListCtrl
+//#include "SearchDlg.h"		// Needed for CSearchDlg
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "server.h"		// Needed for CServer
 #include "ServerList.h"		// Needed for CServerList
 #include "SharedFileList.h"	// Needed for CSharedFileList
 #include "PartFile.h"		// Needed for CPartFile
 #include "sockets.h"		// Needed for CServerConnect
-#include "DownloadListCtrl.h"	// Needed for CDownloadListCtrl
+//#include "DownloadListCtrl.h"	// Needed for CDownloadListCtrl
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "amule.h"		// Needed for theApp
@@ -41,8 +41,8 @@
 
 #ifndef AMULE_DAEMON
 #include "StatisticsDlg.h"	// Needed for CStatisticsDlg
-#include "ServerWnd.h"		// Needed for CServerWnd
-#include "TransferWnd.h"	// Needed for CTransferWnd
+//#include "ServerWnd.h"		// Needed for CServerWnd
+//#include "TransferWnd.h"	// Needed for CTransferWnd
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #endif
 

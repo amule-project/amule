@@ -18,6 +18,8 @@
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 
+#pragma implementation
+
 #include <cstdio>
 #include <cstdlib>
 
