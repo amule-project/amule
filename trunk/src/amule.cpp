@@ -22,7 +22,6 @@
 #ifdef __WXMSW__
 	#include <winsock.h>
 	#include <wx/msw/winundef.h>
-	#include <wx/msw/registry.h>	// Needed for wxRegKey
 #else
 #ifdef __OPENBSD__
        #include <sys/types.h>
@@ -1235,22 +1234,31 @@ void CamuleApp::LaunchUrl( const wxString& url )
 
 
 #elif defined (__WXMSW__)
+wxFileType *ft;                            /* Temporary storage for filetype. */
 
-	// This is where the default browser is stored
-	wxRegKey key( "HKEY_LOCAL_MACHINE\\SOFTWARE\\Classes\\http\\shell\\open\\command" );
-
-	wxString value = key.QueryDefaultValue();
-
-	if ( !value.IsEmpty() ) {
-		cmd = value + " " + url;
-
-		if ( !wxExecute( cmd, false ) ) {
-			wxLogError(wxT("Error launching browser for FakeCheck."));
-		}
-	} else {
-		wxMessageBox( _("Could not determine the command for running the browser."), wxT("Browsing problem"), wxOK|wxICON_EXCLAMATION);
+	ft = wxTheMimeTypesManager->GetFileTypeFromExtension(wxT("html"));
+	if (!ft) {
+		wxLogError(
+			wxT("Impossible to determine the file type for extension html."
+			"Please edit your MIME types.")
+		);
+		return;
 	}
 
+	if (!ft->GetOpenCommand(&cmd, wxFileType::MessageParameters(url, _T("")))) {
+		// TODO: some kind of configuration dialog here.
+		wxMessageBox(
+			_("Could not determine the command for running the browser."),
+			wxT("Browsing problem"), wxOK|wxICON_EXCLAMATION);
+		delete ft;
+		return;
+	}
+	delete ft;
+
+	wxPuts(wxString::Format(wxT("Launch Command: %s"), cmd.c_str()));
+	if (!wxExecute(cmd, FALSE)) {
+		wxLogError(wxT("Error launching browser for FakeCheck."));
+	}
 #else
 
 	wxArrayString list;
