@@ -332,8 +332,8 @@ CECPacket *Get_EC_Response_GetUpQueue(const CECPacket *request)
 		if (!cur_client) {
 			continue;
 		}
-		CECTag cli_tag(EC_TAG_UPDOWN_CLIENT, cur_client->GetUserName());
-		cli_tag.AddTag(CECTag(EC_TAG_ITEM_ID, PTR_2_ID(cur_client)));
+		CECTag cli_tag(EC_TAG_UPDOWN_CLIENT, cur_client->GetUserID());
+		cli_tag.AddTag(CECTag(EC_TAG_CLIENT_NAME, cur_client->GetUserName()));
 		CKnownFile* file = theApp.sharedfiles->GetFileByID(cur_client->GetUploadFileID());
 		if (file) {
 			cli_tag.AddTag(CECTag(EC_TAG_PARTFILE, file->GetFileName()));

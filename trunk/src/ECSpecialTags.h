@@ -87,7 +87,8 @@ class CEC_SharedFile_Tag : public CECTag {
 	public:
 		CEC_SharedFile_Tag(const CKnownFile *file, EC_DETAIL_LEVEL detail_level);
 		
- 		uint32		FileID()	{ return GetInt32Data(); }
+ 		CMD4Hash	FileHash()	{ return GetMD4Data(); }
+		wxString	FileHashString() { return GetMD4Data().Encode(); }
  		wxString	FileName()	{ return GetTagByName(EC_TAG_PARTFILE_NAME)->GetStringData(); }
  		uint32		SizeFull()	{ return GetTagByName(EC_TAG_PARTFILE_SIZE_FULL)->GetInt32Data(); }
   		uint32		Prio()		{ return GetTagByName(EC_TAG_PARTFILE_PRIO)->GetInt32Data(); }
