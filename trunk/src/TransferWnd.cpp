@@ -1,4 +1,6 @@
 //this file is part of aMule
+//
+//Copyright (C) 2003-2004 aMule Project
 //Copyright (C)2002 Merkur ( merkur-@users.sourceforge.net / http://www.amule-project.net )
 //
 //This program is free software; you can redistribute it and/or

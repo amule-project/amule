@@ -1,6 +1,6 @@
 // This file is part of the aMule project.
 //
-// Copyright (c) 2003,
+// Copyright (c) 2003 aMule Team
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -18,7 +18,6 @@
 //
 
 #include "CMemFile.h"		// Needed for CMemFile
-#include "packets.h"
 #include "otherfunctions.h" // Needed for ENDIAN_SWAP_xx
 
 CMemFile::CMemFile(unsigned int growBytes)
@@ -98,7 +97,7 @@ void CMemFile::enlargeBuffer(unsigned long size)
 {
   unsigned long newsize=fBufferSize;
 
-  // hmm.. mitähän jos growbytes==0??
+  // hmm.. mitï¿½hï¿½n jos growbytes==0??
   while(newsize<size)
     newsize+=fGrowBytes;
 
@@ -107,7 +106,7 @@ void CMemFile::enlargeBuffer(unsigned long size)
   else fBuffer=(BYTE*)malloc(newsize);
 
   if(fBuffer==NULL) {
-    // jaa-a. mitähän tekis
+    // jaa-a. mitï¿½hï¿½n tekis
     printf("out of memory experience\n");
     exit(1);
   }
@@ -163,10 +162,8 @@ bool CMemFile::Close()
   return TRUE;
 }
 
-inline off_t CMemFile::Read(uint8& v)
-{
-	return ReadRaw(&v, 1);
-}
+#if wxBYTE_ORDER == wxBIG_ENDIAN
+
 
 inline off_t CMemFile::Read(uint16& v)
 {
@@ -182,21 +179,11 @@ inline off_t CMemFile::Read(uint32& v)
 	return off;
 }
 
+#endif
+
 inline off_t CMemFile::Read(uint8 v[16])
 {
 	return ReadRaw(v, 16);
-}
-
-inline off_t CMemFile::Read(wxString& v)
-{
-	uint16 len;
-	off_t off = Read(len);
-	off += ReadRaw(v.GetWriteBuf(len), len);
-	v.UngetWriteBuf(len);
-	if (off != (len + 2)) {
-		throw CInvalidPacket("short packet reading string");
-	}
-	return off;
 }
 
 inline off_t CMemFile::Read(void* buf,off_t length)
@@ -204,11 +191,9 @@ inline off_t CMemFile::Read(void* buf,off_t length)
 	return ReadRaw(buf, length);
 }
 
-inline size_t CMemFile::Write(const uint8& v)
-{
-	return WriteRaw(&v, 1);
-}
-	
+
+#if wxBYTE_ORDER == wxBIG_ENDIAN
+
 inline size_t CMemFile::Write(const uint16& v)
 {
 	int16 tmp = ENDIAN_SWAP_16(v);
@@ -221,15 +206,11 @@ inline size_t CMemFile::Write(const uint32& v)
 	return WriteRaw(&tmp, 4);
 }
 
+#endif
+
 inline size_t CMemFile::Write(const uint8 v[16])
 {
 	return WriteRaw(v, 16);
-}
-
-inline size_t CMemFile::Write(const wxString& v)
-{
-	size_t Len = Write((uint16)v.Length());
-	return Len + WriteRaw(v.c_str(), v.Length());
 }
 
 inline size_t CMemFile::Write(const void* buf,size_t length)
