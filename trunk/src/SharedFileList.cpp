@@ -68,7 +68,6 @@ CSharedFileList::CSharedFileList(CKnownFileList* in_filelist){
 	reloading = false;
 	m_lastPublishED2K = 0;
 	m_lastPublishED2KFlag = true;	
-	FindSharedFiles();
 }
 
 CSharedFileList::~CSharedFileList(){
