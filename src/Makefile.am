@@ -10,7 +10,7 @@ if WEBGUI
 endif
 endif
 
-SUBDIRS = utils pixmaps $(OPT_WEB)
+SUBDIRS = utils pixmaps kademlia $(OPT_WEB)
 
 EXTRA_DIST = Makengfile aMule.xpm aMule.tmpl
 
@@ -166,7 +166,8 @@ amule_SOURCES = ListenSocket.cpp \
 	UploadListCtrl.cpp \
 	UploadQueue.cpp \
 	amule.cpp \
-	amuleDlg.cpp 
+	amuleDlg.cpp \
+	kademlia/utils/UInt128.cpp
 
 amuled_SOURCES = ListenSocket.cpp \
 	AICHSyncThread.cpp \
