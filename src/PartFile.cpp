@@ -565,7 +565,42 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool get
 						break;
 					case FT_KADLASTPUBLISHKEY:
 						delete newtag;
-						break;					
+						break;
+					case FT_CORRUPTEDPARTS:
+						//wxASSERT( newtag->IsStr() );
+//						if (newtag->IsStr())
+						
+						/*{
+							wxASSERT( corrupted_list.GetHeadPosition() == NULL );
+							wxString strCorruptedParts(newtag->tag.stringvalue);
+							int iPos = 0;
+							wxString strPart = Tokenize(_T(","), iPos);
+							while (!strPart.IsEmpty())
+							{
+								UINT uPart;
+								if (_stscanf(strPart, _T("%u"), &uPart) == 1)
+								{
+									if (uPart < GetPartCount() && !IsCorruptedPart(uPart))
+										corrupted_list.AddTail(uPart);
+								}
+								strPart = strCorruptedParts.Tokenize(_T(","), iPos);
+							}
+						}*/
+
+						delete newtag;
+						break;
+					case FT_AICH_HASH:{
+						//wxASSERT( newtag->IsStr() );
+						CAICHHash hash;
+						if (DecodeBase32(newtag->tag.stringvalue,hash) == CAICHHash::GetHashSize())
+							m_pAICHHashSet->SetMasterHash(hash, AICH_VERIFIED);
+						else
+							wxASSERT( false );
+						delete newtag;
+						break;
+					}
+
+					
 					default: {
 						// Start Changes by Slugfiller for better exception handling
 						if ((!newtag->tag.specialtag) &&
@@ -637,18 +672,41 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool get
 		metFile.Close();
 			
 	} catch (CInvalidPacket e) {
-
 		if (metFile.Eof()) {
-			AddLogLineM(true, wxString::Format(_("Error: %s (%s) is corrupt, unable to load file"), m_partmetfilename.c_str(), GetFileName().c_str()));
+			AddLogLineM(true, wxString::Format(_("Error: %s (%s) is corrupt (wrong tagcount), unable to load file"), m_partmetfilename.c_str(), GetFileName().c_str()));
+			AddLogLineM(true, wxString(_("Trying to recover file info...")));
+			// Safe file is that who have 
+			// - FileSize
+			if (GetFileSize()) {
+				// We have filesize, try other needed info
+
+				// Do we need to check gaps? I think not,
+				// because they are checked below. Worst 
+				// scenario will only mark file as 0 bytes downloaded.
+				
+				// -Filename
+				if (GetFileName().IsEmpty()) {
+					// Not critical, let's put a random filename.
+					AddLogLineM(true, wxString(_("Recovering no-named file - will try to recover it as RecoveredFile.dat")));
+					SetFileName(wxT("RecoveredFile.dat"));
+				}
+				AddLogLineM(true, wxString(_("Recovered all available file info :D - Trying to use it...")));
+			} else {
+				AddLogLineM(true, wxString(_("Unable to recover file info :(")));
+				if (metFile.IsOpened()) {
+					metFile.Close();		
+				}
+				return false;			
+			}				
+				
 		} else {
-			// This error message makes no sense...
-// 			AddLogLineM(true, wxString::Format(_("Unexpected file error while reading server.met: %s, unable to load serverlist"), m_partmetfilename.c_str(), GetFileName().c_str(), m_fullname.c_str()));
-		}
-		printf(" - Caught an error - ");
-		if (metFile.IsOpened()) {
+			AddLogLineM(true, wxString::Format(_("Error: %s (%s) is corrupt, unable to load file"), m_partmetfilename.c_str(), GetFileName().c_str()));			
+			if (metFile.IsOpened()) {
 			metFile.Close();		
+			}
+			return false;			
 		}
-		return false;
+		
 	}
 
 	if (getsizeonly) {
@@ -792,10 +850,17 @@ bool CPartFile::SavePartFile(bool Initial)
 		for (int x = 0; x != parts; x++) {
 			file.Write(hashlist[x],16);
 		}
-		// tags
-		uint32 tagcount = ENDIAN_SWAP_32(taglist.GetCount()+10+(gaplist.GetCount()*2));
-		file.Write(&tagcount,4);
-		tagcount = taglist.GetCount()+10+(gaplist.GetCount()*2);
+		// tags		
+		#define FIXED_TAGS 10
+		uint32 tagcount = taglist.GetCount()+FIXED_TAGS+(gaplist.GetCount()*2);
+		if (corrupted_list.GetHeadPosition()) {			
+			tagcount++;
+		}
+		if (m_pAICHHashSet->HasValidMasterHash() && (m_pAICHHashSet->GetStatus() == AICH_VERIFIED)){			
+			tagcount++;
+		}
+		uint32 endian_tagcount = ENDIAN_SWAP_32(tagcount);
+		file.Write(&endian_tagcount,4);
 
 		CTag(FT_FILENAME,m_strFileName).WriteTagToFile(&file);	// 1
 		CTag(FT_FILESIZE,m_nFileSize).WriteTagToFile(&file);	// 2
@@ -845,6 +910,29 @@ bool CPartFile::SavePartFile(bool Initial)
 		categorytab->WriteTagToFile(&file);			// 10
 		delete categorytab;
 
+		// currupt part infos
+		POSITION posCorruptedPart = corrupted_list.GetHeadPosition();
+		if (posCorruptedPart) {
+			wxString strCorruptedParts;
+			while (posCorruptedPart) {
+				uint16 uCorruptedPart = corrupted_list.GetNext(posCorruptedPart);
+				if (!strCorruptedParts.IsEmpty()) {
+					strCorruptedParts += wxT(",");
+				}
+				strCorruptedParts += wxString::Format(wxT("%u"), (UINT)uCorruptedPart);
+			}
+			wxASSERT( !strCorruptedParts.IsEmpty() );
+			CTag tagCorruptedParts(FT_CORRUPTEDPARTS, strCorruptedParts);
+			tagCorruptedParts.WriteTagToFile(&file); // 11?
+		}
+
+		//AICH Filehash
+		if (m_pAICHHashSet->HasValidMasterHash() && (m_pAICHHashSet->GetStatus() == AICH_VERIFIED)){
+			CTag aichtag(FT_AICH_HASH, m_pAICHHashSet->GetMasterHash().GetString() );
+			aichtag.WriteTagToFile(&file); // 12?
+		}
+		
+		
 		for (uint32 j = 0; j != (uint32)taglist.GetCount();j++) {
 			taglist[j]->WriteTagToFile(&file);
 		}
