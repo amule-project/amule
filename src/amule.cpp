@@ -1506,9 +1506,11 @@ void CamuleApp::AddLogLine(const wxString &msg)
 
  	const wxCharBuffer c_msg_buf = unicode2charbuf(msg);
 	const char *c_msg = (const char *)c_msg_buf;
-	applog->Write(c_msg, strlen(c_msg));
+	if (c_msg != NULL) {
+		applog->Write(c_msg, strlen(c_msg));
+	}
 	applog->Write("\n", 1);
-        if ( enable_stdout_log ) { 
+       	if ( enable_stdout_log ) { 
 		puts(c_msg);
 	}
 
