@@ -316,41 +316,6 @@ static byte base16Lookup[BASE16_LOOKUP_MAX][2] = {
 };
 
 
-// Returns a BASE32 encoded byte array
-//
-// [In]
-//   buffer: Pointer to byte array
-//   bufLen: Lenght of buffer array
-//
-// [Return]
-//   wxString object with BASE32 encoded byte array
-wxString EncodeBase32(const unsigned char* buffer, unsigned int bufLen)
-{
-	wxString Base32Buff;    
-	unsigned int i, index;
-	unsigned char word;
-
-	for(i = 0, index = 0; i < bufLen;) {
-		// Is the current word going to span a byte boundary?
-		if (index > 3) {
-			word = (buffer[i] & (0xFF >> index));
-			index = (index + 5) % 8;
-			word <<= index;
-			if (i < bufLen - 1)
-				word |= buffer[i + 1] >> (8 - index);
-			++i;
-		} else {
-			word = (buffer[i] >> (8 - (index + 5))) & 0x1F;
-			index = (index + 5) % 8;
-			if (index == 0)
-				++i;
-		}
-		Base32Buff += (char) base32Chars[word];
-	}
-
-	return Base32Buff;
-}
-
 // Returns a BASE16 encoded byte array
 //
 // [In]
@@ -403,30 +368,75 @@ void DecodeBase16(const char *base16Buffer, unsigned int base16BufLen, byte *buf
 	}
 }
 
-uint32 DecodeBase32(const char* pszInput, uchar* paucOutput, uint32 nBufferLen)
+// Returns a BASE32 encoded byte array
+//
+// [In]
+//   buffer: Pointer to byte array
+//   bufLen: Lenght of buffer array
+//
+// [Return]
+//   wxString object with BASE32 encoded byte array
+wxString EncodeBase32(const unsigned char* buffer, unsigned int bufLen)
 {
-	if (pszInput == NULL)
+	wxString Base32Buff;    
+	unsigned int i, index;
+	unsigned char word;
+
+	for(i = 0, index = 0; i < bufLen;) {
+		// Is the current word going to span a byte boundary?
+		if (index > 3) {
+			word = (buffer[i] & (0xFF >> index));
+			index = (index + 5) % 8;
+			word <<= index;
+			if (i < bufLen - 1)
+				word |= buffer[i + 1] >> (8 - index);
+			++i;
+		} else {
+			word = (buffer[i] >> (8 - (index + 5))) & 0x1F;
+			index = (index + 5) % 8;
+			if (index == 0)
+				++i;
+		}
+		Base32Buff += (char) base32Chars[word];
+	}
+
+	return Base32Buff;
+}
+
+// Decodes a BASE32 string into a byte array
+//
+// [In]
+//   base32Buffer: String containing BASE32
+//   base32BufLen: Lenght BASE32 coded string's length
+//
+// [Out]
+//   buffer: byte array containing decoded string
+// [Return]
+//   nDecodeLen:
+unsigned int DecodeBase32(const char *base32Buffer, unsigned int base32BufLen, unsigned char *buffer)
+{
+	if (base32Buffer == NULL)
 		return false;
-	uint32 nDecodeLen = (strlen(pszInput)*5)/8;
-	if ((strlen(pszInput)*5) % 8 > 0)
+	uint32 nDecodeLen = (strlen(base32Buffer)*5)/8;
+	if ((strlen(base32Buffer)*5) % 8 > 0)
 		++nDecodeLen;
-	uint32 nInputLen = strlen( pszInput );
-	if (paucOutput == NULL || nBufferLen == 0)
+	uint32 nInputLen = strlen(base32Buffer);
+	if (buffer == NULL || base32BufLen == 0)
 		return nDecodeLen;
-	if (nDecodeLen > nBufferLen || paucOutput == NULL) 
+	if (nDecodeLen > base32BufLen || buffer == NULL) 
 		return 0;
 
 	DWORD nBits	= 0;
 	int nCount	= 0;
 
-	for ( int nChars = nInputLen ; nChars-- ; ++pszInput )
+	for ( int nChars = nInputLen ; nChars-- ; ++base32Buffer )
 	{
-		if ( *pszInput >= 'A' && *pszInput <= 'Z' )
-			nBits |= ( *pszInput - 'A' );
-		else if ( *pszInput >= 'a' && *pszInput <= 'z' )
-			nBits |= ( *pszInput - 'a' );
-		else if ( *pszInput >= '2' && *pszInput <= '7' )
-			nBits |= ( *pszInput - '2' + 26 );
+		if ( *base32Buffer >= 'A' && *base32Buffer <= 'Z' )
+			nBits |= ( *base32Buffer - 'A' );
+		else if ( *base32Buffer >= 'a' && *base32Buffer <= 'z' )
+			nBits |= ( *base32Buffer - 'a' );
+		else if ( *base32Buffer >= '2' && *base32Buffer <= '7' )
+			nBits |= ( *base32Buffer - '2' + 26 );
 		else
 			return 0;
 		
@@ -434,7 +444,7 @@ uint32 DecodeBase32(const char* pszInput, uchar* paucOutput, uint32 nBufferLen)
 
 		if ( nCount >= 8 )
 		{
-			*paucOutput++ = (BYTE)( nBits >> ( nCount - 8 ) );
+			*buffer++ = (BYTE)( nBits >> ( nCount - 8 ) );
 			nCount -= 8;
 		}
 
@@ -444,10 +454,19 @@ uint32 DecodeBase32(const char* pszInput, uchar* paucOutput, uint32 nBufferLen)
 	return nDecodeLen;
 }
 
-uint32 DecodeBase32(const char* pszInput, CAICHHash& Hash){
-	return DecodeBase32(pszInput, Hash.GetRawHash(), Hash.GetHashSize());
+unsigned int DecodeBase32(const char* base32Buffer, CAICHHash& Hash){
+	return DecodeBase32(base32Buffer, Hash.GetHashSize(), Hash.GetRawHash());
 }
 
+wxString EncodeBase64(const unsigned char* buffer, unsigned int bufLen)
+{
+	// TODO
+}
+
+unsigned int DecodeBase64(const char *base32Buffer, unsigned int base32BufLen, unsigned char *buffer)
+{
+	// TODO
+}
 
 // Returns the text assosiated with a category type
 wxString GetCatTitle(int catid)

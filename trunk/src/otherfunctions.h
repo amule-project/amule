@@ -111,15 +111,14 @@ wxString GetMuleVersion();
 
 
 // From Gnucleus project [found by Tarod]
-// Converts 'buffer' with length 'bufLen' to a wxString, base 32
-wxString EncodeBase32(const unsigned char* buffer, unsigned int bufLen);
-// Converts 'buffer' with length 'bufLen' to a wxString, base 16
+// Base16/Base32/Base64 Encode/Decode functions
 wxString EncodeBase16(const unsigned char* buffer, unsigned int bufLen);
-// Converts the string 'base16Buffer' with length 'base16BufLen' to a hash in 'buffer'.
 void DecodeBase16(const char *base16Buffer, unsigned int base16BufLen, unsigned char *buffer);
-// Converts the string 'pszInput' with length 'nBufferLen' to a hash in 'paucOutput'.
-uint32 DecodeBase32(const char* pszInput, uchar* paucOutput, uint32 nBufferLen);
-uint32 DecodeBase32(const char* pszInput, CAICHHash& Hash);
+wxString EncodeBase32(const unsigned char* buffer, unsigned int bufLen);
+unsigned int DecodeBase32(const char *base32Buffer, unsigned int base32BufLen, unsigned char *buffer);
+unsigned int DecodeBase32(const char* base32Buffer, CAICHHash& Hash);
+wxString EncodeBase64(const unsigned char* buffer, unsigned int bufLen);
+unsigned int DecodeBase64(const char *base32Buffer, unsigned int base32BufLen, unsigned char *buffer);
 
 // Converts the number of bytes to human readable form.
 wxString CastItoXBytes(uint64 count);
