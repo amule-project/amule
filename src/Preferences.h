@@ -196,10 +196,13 @@ public:
 	void			SaveCats();
 
 	static bool		Score()				{ return s_scorsystem; }
+	static void		SetScoreSystem(bool val)	{ s_scorsystem = val; }
 	static bool		Reconnect()			{ return s_reconnect; }
 	static void		SetReconnect(bool val)		{ s_reconnect = val; }
 	static bool		DeadServer()			{ return s_deadserver; }
+	static void		SetDeadServer(bool val)		{ s_deadserver = val; }
 	static const wxString&	GetUserNick()			{ return s_nick; }
+	static void		SetUserNick(const wxString& nick) { s_nick = nick; }
 
 	static uint16		GetPort()			{ return s_port; }
 	static void		SetPort(uint16 val)		{ s_port = val; }
@@ -217,12 +220,15 @@ public:
 	static bool		IsTrustingEveryHash()		{ return s_AICHTrustEveryHash; }
 	static void		SetTrustingEveryHash(bool val)	{ s_AICHTrustEveryHash = val; }
 	static bool		AutoServerlist()		{ return s_autoserverlist; }
+	static void		SetAutoServerlist(bool val)	{ s_autoserverlist = val; }
 	static bool		DoMinToTray()			{ return s_mintotray; }
 	static bool		DoAutoConnect()			{ return s_autoconnect; }
 	static void		SetAutoConnect(bool inautoconnect)
        					{s_autoconnect = inautoconnect; }
 	static bool		AddServersFromServer()		{ return s_addserversfromserver; }
+	static void		SetAddServersFromServer(bool val) { s_addserversfromserver = val; }
 	static bool		AddServersFromClient()		{ return s_addserversfromclient; }
+	static void		SetAddServersFromClient(bool val) { s_addserversfromclient = val; }
 	static uint16		GetTrafficOMeterInterval()	{ return s_trafficOMeterInterval; }
 	static void		SetTrafficOMeterInterval(uint16 in)
        					{ s_trafficOMeterInterval = in; }
@@ -255,6 +261,7 @@ public:
 					if( temp > 100 ) return 100;
                                         return temp; }
 	static uint16		GetDeadserverRetries()		{ return s_deadserverretries; }
+	static void		SetDeadserverRetries(uint16 val) { s_deadserverretries = val; }
 	static DWORD		GetServerKeepAliveTimeout()	{ return s_dwServerKeepAliveTimeoutMins*60000; }
 	static void		SetServerKeepAliveTimeout(uint32 val)	{ s_dwServerKeepAliveTimeoutMins = val/60000; }
 	
@@ -314,6 +321,7 @@ public:
 	static uint16		GetDefaultMaxConperFive();
 
 	static bool		IsSafeServerConnectEnabled()	{ return s_safeServerConnect; }
+	static void		SetSafeServerConnectEnabled(bool val) { s_safeServerConnect = val; }
 	static bool		IsMoviePreviewBackup()		{ return s_moviePreviewBackup; }
 	
 	static bool		IsCheckDiskspaceEnabled()	{ return s_checkDiskspace; }
@@ -332,7 +340,10 @@ public:
 	wxArrayString adresses_list;
 
 	static void 		SetLanguage();
-	static bool 		AutoConnectStaticOnly() 	{ return s_autoconnectstaticonly; }	
+	static bool 		AutoConnectStaticOnly() 	{ return s_autoconnectstaticonly; }
+	static void		SetAutoConnectStaticOnly(bool val) { s_autoconnectstaticonly = val; }
+	static bool		IsManualHighPrio()		{ return s_bmanualhighprio; }
+	static void		SetManualHighPrio(bool val)	{ s_bmanualhighprio = val; }
 	void			LoadCats();
 	static const wxString&	GetDateTimeFormat() 		{ return s_datetimeformat; }
 	// Download Categories (Ornis)

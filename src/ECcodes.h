@@ -847,10 +847,12 @@ enum {
 		* \brief Preferences - General.
 		*
 		* \par Child TAGs:
+		*	::EC_TAG_USER_NICK\n
+		*	::EC_TAG_USER_ID
 		*/
 	EC_TAG_PREFS_GENERAL,
-/* <---> */
-
+	EC_TAG_USER_NICK,		///< (\c string) Nickname of the user.
+	EC_TAG_USER_USERHASH,		///< (!!TODO!!) Our userhash. Read only! (i.e. in a SET operation it will be ignored)
 
 	//
 	// Preferences - Connections
@@ -920,6 +922,7 @@ enum {
 		* \brief WebServer Preferences (aka Remote Controls).
 		*
 		* \par Child TAGs:
+		*	::EC_TAG_WEBSERVER_AUTORUN\n
 		*	::EC_TAG_WEBSERVER_PORT (required)\n
 		*	::EC_TAG_PASSWD_HASH (0-1) Admin Password. Omitted, when admin password is blank.\n
 		*	::EC_TAG_WEBSERVER_GUEST (0-1)
@@ -958,9 +961,30 @@ enum {
 		* \brief Preferences - Servers.
 		*
 		* \par Child TAGs:
+		*	::EC_TAG_SERVERS_REMOVE_DEAD\n
+		*	::EC_TAG_SERVERS_DEAD_SERVER_RETRIES\n
+		*	::EC_TAG_SERVERS_AUTO_UPDATE\n
+		*	::EC_TAG_SERVERS_URL_LIST\n
+		*	::EC_TAG_SERVERS_ADD_FROM_SERVER\n
+		*	::EC_TAG_SERVERS_ADD_FROM_CLIENT\n
+		*	::EC_TAG_SERVERS_USE_SCORE_SYSTEM\n
+		*	::EC_TAG_SERVERS_SMART_ID_CHECK\n
+		*	::EC_TAG_SERVERS_SAFE_SERVER_CONNECT\n
+		*	::EC_TAG_SERVERS_AUTOCONN_STATIC_ONLY\n
+		*	::EC_TAG_SERVERS_MANUAL_HIGH_PRIO
 		*/
 	EC_TAG_PREFS_SERVERS,
-/* <---> */
+	EC_TAG_SERVERS_REMOVE_DEAD,		///< (boolean) Remove dead servers.
+	EC_TAG_SERVERS_DEAD_SERVER_RETRIES,	///< (\c uint16) Retries before removing dead servers.
+	EC_TAG_SERVERS_AUTO_UPDATE,		///< (boolean) Auto-update server list on startup.
+	EC_TAG_SERVERS_URL_LIST,		///< TODO: Implement this!
+	EC_TAG_SERVERS_ADD_FROM_SERVER,		///< (boolean) Update server list on connecting to server.
+	EC_TAG_SERVERS_ADD_FROM_CLIENT,		///< (boolean) Update server list on connecting to a client.
+	EC_TAG_SERVERS_USE_SCORE_SYSTEM,	///< (boolean) Use priority system.
+	EC_TAG_SERVERS_SMART_ID_CHECK,		///< (boolean) Smart LowID check.
+	EC_TAG_SERVERS_SAFE_SERVER_CONNECT,	///< (boolean) Safe server connection.
+	EC_TAG_SERVERS_AUTOCONN_STATIC_ONLY,	///< (boolean) Auto-connect to static servers only.
+	EC_TAG_SERVERS_MANUAL_HIGH_PRIO,	///< (boolean) Set manually added servers to High Priority.
 
 
 	//
