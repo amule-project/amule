@@ -857,7 +857,7 @@ bool CamuleDlg::LoadGUIPrefs(bool override_pos, bool override_size)
 
 	if (!override_size) {
 		if (x2 > 0 && y2 > 0) {
-			SetClientSize(x2, y2);
+			SetSize(x2, y2);
 		} else {
 #ifndef __WXGTK__
 			// Probably first run. Only works for gtk2
