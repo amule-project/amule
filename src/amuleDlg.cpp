@@ -1131,26 +1131,29 @@ enum ClientSkinEnum {
 void CamuleDlg::Apply_Clients_Skin(wxString file) {
 	
 	#define ClientItemNumber CLIENT_SKIN_UNUSED
-	
+
 	SkinItem bitmaps_found[ClientItemNumber];
-	
+
 	for (uint32 i=0; i<ClientItemNumber; i++) {	
 		bitmaps_found[i].found = false;
 	}
-	
-	wxTextFile skinfile(file);
+
+	wxTextFile skinfile;
 	
 	try {
 		
 		if (file.IsEmpty()) {
-			throw(_("Skin file name is empty - loading defaults"));
+			
+			throw(wxString(_("Skin file name is empty - loading defaults")));
 		}
+
 		
 		if (!::wxFileExists(file)) {
 			throw(_("Skin file ") + file + _(" does not exist - loading defaults"));
 		}
-			
-		if (!skinfile.Open()) {
+	
+		
+		if (!skinfile.Open(file)) {
 			throw(_("Unable to open skin file: ") + file);
 		}
 		
@@ -1303,15 +1306,22 @@ void CamuleDlg::Apply_Clients_Skin(wxString file) {
 		
 		skinfile.Close();
 	} catch (const wxString& error) {
+		
 		wxMessageBox(error);
+		
 		if (skinfile.IsOpened()) {
 			skinfile.Close();
 		}
+		
 		// Load defaults
 		for (uint32 i=0; i<ClientItemNumber; i++) {
 			imagelist.Add(wxBitmap(clientImages(i)));
-		}	
+		}
+		
 		return;
+	} catch (...) {
+		wxASSERT(0);
+		printf("Unhandled exception on Skin file loading - please report to the aMule team.\n");
 	}
 	
 }
