@@ -190,12 +190,12 @@ __inline void PokeUInt8(void* p, uint8 nVal)
 
 __inline void PokeUInt16(void* p, uint16 nVal)
 {
-	*((uint16*)p) = nVal;
+	*((uint16*)p) = ENDIAN_SWAP_16(nVal);
 }
 
 __inline void PokeUInt32(void* p, uint32 nVal)
 {
-	*((uint32*)p) = nVal;
+	*((uint32*)p) = ENDIAN_SWAP_32(nVal);
 }
 
 
