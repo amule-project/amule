@@ -25,6 +25,8 @@
 #include "otherstructs.h"	// Needed for ServerMet_Struct
 #include "packets.h"		// Needed for CTag
 
+#include <wx/intl.h>	// Needed for _
+
 #include <wx/listimpl.cpp>
 WX_DEFINE_LIST(TagList);
 
@@ -133,7 +135,7 @@ void CServer::Init() {
 	challenge = 0;
 	softfiles = 0;
 	hardfiles = 0;	
-	m_strVersion = wxT("Unknown");
+	m_strVersion = _("Unknown");
 	m_uLowIDUsers = 0;
 	m_uDescReqChallenge = 0;
 	lastdescpingedcout = 0;
