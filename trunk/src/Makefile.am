@@ -289,6 +289,7 @@ noinst_HEADERS = AddFileThread.h \
 		 color.h \
 		 CommentDialog.h \
 		 CommentDialogLst.h \
+		 CryptoPP.h \
 		 CTypedPtrList.h \
 		 DirectoryTreeCtrl.h \
 		 DownloadListCtrl.h \
@@ -365,10 +366,6 @@ noinst_HEADERS = AddFileThread.h \
 		 WebServer.h \
 		 WebSocket.h \
 		 xembed.h
-
-if USE_EMBEDDED_CRYPTO
-noinst_HEADERS += CryptoPP.h
-endif
 
 MAINTAINERCLEANFILES = Makefile.in
 
