@@ -58,6 +58,7 @@ Version 2.0.0rc4 - The 'Mules and rabbits like apples too' version.
 	Kry:	
 		* Fixed wxWidgets 2.5.x socket code. aMule now works on wx2.5.1 perfectly, wx2.5.2 introduces some GUI bugs.
 		* Rewrote Preferences engine to be much nicer, and Mac compatible :) Thanks to deltaHF for the new icons.
+		* Added a hack to make new preferences work on wxWidgets 2.4.2. I hope we can get rid of wx 2.4.2 soon ;)
 		* Wrong .part.met files no longer make aMule abort on startup. Now a warning is displayed on log and aMule ignores that file.
 		* Added the new compatible client flags tag agreed with lphant devs and eMule devs. xMule devs refused to use it.
 		* Overloaded the wxSocketClient::Destroy to a safer version, to check cases when deletion is not called from Destroy()
@@ -143,7 +144,6 @@ Version 2.0.0rc4 - The 'Mules and rabbits like apples too' version.
 		* Fixed the Online Signature dir selection.
 		* Fixed some shared files not being shared due to a return; on a wrong place ;)
 		* Fixed some events being posted to wrong event handler.
-		
 		* Added GUIEvents.h to take care of the core/gui separation events.
 		* Cleaned ColorFrameCtrl class
 		* Cleaned otherfunctions.*
