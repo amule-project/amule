@@ -159,13 +159,14 @@ void CDownloadQueue::Init()
 {
 	// find all part files, read & hash them if needed and store into a list
 	int count = 0;
-
-	wxString searchPath(app_prefs->GetTempDir());
-	searchPath += wxT("/*.part.met");
-
+	
+	CDirIterator TempDir(app_prefs->GetTempDir());
+	
 	// check all part.met files
-	printf("Loading temp files from %s.\n",unicode2char(searchPath));
-	wxString fileName=::wxFindFirstFile(searchPath,wxFILE);
+	printf("Loading temp files from %s.\n",unicode2char(app_prefs->GetTempDir()));
+	
+	wxString fileName=TempDir.FindFirstFile(CDirIterator::File,wxT("*.part.met"));
+	
 	while(!fileName.IsEmpty()) {
 		wxFileName myFileName(fileName);
 		printf("Loading %s... ",unicode2char(myFileName.GetFullName()));
@@ -182,7 +183,7 @@ void CDownloadQueue::Init()
 			printf("ERROR!\n");
 			delete toadd;
 		}
-		fileName=::wxFindNextFile();
+		fileName=TempDir.FindNextFile();
 		// Dont leave the gui blank while loading the files, so ugly...
 #ifndef AMULE_DAEMON		
 		if ( !(count % 10) ) ::wxSafeYield();
@@ -1353,4 +1354,3 @@ wxString CDownloadQueue::getTextList() const
 
 	return out;
 }
-

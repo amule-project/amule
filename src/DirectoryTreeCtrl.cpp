@@ -28,6 +28,8 @@
 #include "muuli_wdr.h"		// Needed for amuleSpecial
 #include <wx/event.h>
 
+#include "CFile.h"
+
 #ifdef __WXMSW__
 	#define ROOT_CHAR		wxT('\\')
 	#define ROOT_STRING	wxT("\\")
@@ -214,17 +216,17 @@ wxString CDirectoryTreeCtrl::GetFullPath(wxTreeItemId hItem)
 
 void CDirectoryTreeCtrl::AddSubdirectories(wxTreeItemId hBranch, wxString folder)
 {
-	
-	wxString fname;
+
 	
 	// we must collect values first because we'll call FindFirstFile() again in AddChildItem() ...
 	wxArrayString ary;
 
-	fname=wxFindFirstFile(folder + wxT('*'),wxDIR);
+	CDirIterator SharedDir(folder); 
+	wxString fname = SharedDir.FindFirstFile(CDirIterator::Dir); // We just want dirs
 	
 	while(!fname.IsEmpty()) {
 		if(!wxDirExists(fname)) {
-			fname=wxFindNextFile();
+			fname= SharedDir.FindNextFile();
 			continue;
 		}
 		
@@ -237,7 +239,7 @@ void CDirectoryTreeCtrl::AddSubdirectories(wxTreeItemId hBranch, wxString folder
 		wxASSERT(fname.Last() != ROOT_CHAR);
 
 		ary.Add(fname);
-		fname=wxFindNextFile();
+		fname= SharedDir.FindNextFile();
 	}
 	
 	// then add them

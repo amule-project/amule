@@ -505,20 +505,20 @@ bool CamuleApp::OnInit()
 			printf("Found xMule old settings, copying config & credits files.\n");
 			wxMkdir(ConfigDir);
 
-			// Copy .dat files to the aMule dir
-			wxString file = wxFindFirstFile(xMulePrefDir + wxFileName::GetPathSeparator() + wxT("*.dat"), wxFILE);
+			CDirIterator xMuleDir(xMulePrefDir); 
+			
+			// Copy .dat files to the aMule dir			
+			wxString file = xMuleDir.FindFirstFile(CDirIterator::File,wxT("*.dat"));
   			while ( !file.IsEmpty() ) {
 				wxCopyFile( file, ConfigDir + wxFileName::GetPathSeparator() + file.AfterLast(wxFileName::GetPathSeparator()));
-
-				file = wxFindNextFile();
+				file = xMuleDir.FindNextFile();
   			}
 
 			// Copy .met files to the aMule dir
-			file = wxFindFirstFile(xMulePrefDir + wxFileName::GetPathSeparator() + wxT("*.met"), wxFILE);
-  			while ( !file.IsEmpty() ) {
+			file = xMuleDir.FindFirstFile(CDirIterator::File,wxT("*.met"));
+			while ( !file.IsEmpty() ) {
 				wxCopyFile( file, ConfigDir + wxFileName::GetPathSeparator() + file.AfterLast(wxFileName::GetPathSeparator()));
-
-				file = wxFindNextFile();
+				file = xMuleDir.FindNextFile();
   			}
 
 			wxMessageBox(_("Copied old ~/.xMule config and credit files to ~/.aMule\nHowever, be sure NOT to remove .xMule if your Incoming / Temp folders are still there ;)"), _("Info"), wxOK);

@@ -27,6 +27,8 @@
 
 #include "amule.h"		// Needed for theApp
 
+#include "otherfunctions.h" // unicode2char
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"             // Needed for HAVE_SYS_PARAM_H
 #endif
@@ -157,6 +159,7 @@ enum {
 #include <wx/filename.h>
 #include <wx/filefn.h>
 
+//#define FILE_TRACKER
 
 #ifdef FILE_TRACKER
 	#include <wx/event.h>
@@ -172,17 +175,17 @@ enum {
 		char **bt_strings;
 		int num_entries;
 	
-		if ((num_entries = backtrace(bt_array, 4)) < 0) {
-			AddLogLineM(false, _("* Could not generate backtrace\n"));
+		if ((num_entries = backtrace(bt_array, 6)) < 0) {
+			theApp.QueueLogLine(false, _("* Could not generate backtrace\n"));
 		} else {
 			if ((bt_strings = backtrace_symbols(bt_array, num_entries)) == NULL) {
-				AddLogLineM(false, _("* Could not get symbol names for backtrace\n"));
+				theApp.QueueLogLine(false, _("* Could not get symbol names for backtrace\n"));
 			}  else {
 				wxString wherefrom = bt_strings[value];
 				int starter = wherefrom.Find('(');
 				int ender = wherefrom.Find(')');
 				wherefrom = wherefrom.Mid(starter, ender-starter+1);
-				AddLogLineM(false, _("Called From: ") + wherefrom);
+				theApp.QueueLogLine(false, _("Called From: ") + wherefrom);
 			}
 		}	
 #endif
@@ -331,17 +334,22 @@ bool CFile::Open(const wxChar *szFileName, OpenMode mode, int accessMode)
     m_fd = wxOpen( szFileName, flags ACCESS(accessMode));
       
 	#ifdef FILE_TRACKER
-		AddLogLineM(false,wxString(_("Opened file ")) + fFilePath  + wxString::Format(_(" with file descriptor %i"),m_fd));
+		theApp.QueueLogLine(false,wxString(_("Opened file ")) + fFilePath  + wxString::Format(_(" with file descriptor %i"),m_fd));
     		if (fromConstructor) {
 			get_caller(3);    
 		} else {
-			get_caller(2);    
+			get_caller(3);    
 		}
 	#endif
     
     if ( m_fd == -1 )
     {
    		theApp.QueueLogLine(true, wxString::Format(_("Can't open file '%s'"), szFileName));
+		/*
+			get_caller(4);    	    
+			get_caller(3);    
+			get_caller(2);    
+	    */
         	return FALSE;
     }
        else {
@@ -567,4 +575,79 @@ bool CFile::Eof() const
     }
 
     return TRUE;
+}
+
+
+CDirIterator::CDirIterator(wxString dir) {
+	DirStr = dir;
+	if (DirStr.Last() != wxFileName::GetPathSeparator()) {
+		DirStr += wxFileName::GetPathSeparator();
+	}
+	
+	if (((DirPtr = opendir(unicode2char(dir)))) == NULL) {
+		theApp.QueueLogLine(true, wxT("Error enumerating files for dir ")+dir);
+    }
+}
+
+CDirIterator::~CDirIterator() {	
+	closedir (DirPtr);
+}
+
+wxString CDirIterator::FindFirstFile(FileType search_type, wxString search_mask) {
+	seekdir(DirPtr, 0);// 2 if we want to skip . and ..
+	FileMask = search_mask;
+	type = search_type;
+	return FindNextFile();
+}
+
+wxString  CDirIterator::FindNextFile() {
+	struct dirent *dp;
+	dp = readdir(DirPtr);
+
+	bool found = false;
+	
+	wxString FoundName;
+	
+	while (dp!=NULL && !found) {
+		switch (dp->d_type) {
+			case DT_DIR:
+				if (type == CDirIterator::Dir)  {
+					found = true;
+				} else {
+					dp = readdir(DirPtr);	
+				}
+				break;
+			case DT_REG:
+				if (type == CDirIterator::File)  {
+					found = true;
+				} else {
+					dp = readdir(DirPtr);					
+				}
+				break;
+			default:
+				// unix socket, block device, etc
+				if ((type == CDirIterator::Any)) {
+					// return anything.
+					found = true;
+				} else {
+					dp = readdir(DirPtr);
+				}
+				break;
+		}
+		if (found) {
+			FoundName = char2unicode(dp->d_name);
+			if (
+				(!FileMask.IsEmpty() && !FoundName.Matches(FileMask)) 
+				|| FoundName.IsSameAs(wxT(".")) || FoundName.IsSameAs(wxT(".."))) {
+				found = false;	
+				dp = readdir(DirPtr);
+			}
+		}
+	}
+			
+	if (dp!=NULL) {
+		return DirStr + FoundName;	
+	} else {
+		return wxEmptyString;
+	}
 }
