@@ -83,8 +83,13 @@ ExternalConn::ExternalConn()
 {
 	m_ECServer = NULL;
 	// Are we allowed to accept External Connections?
-	if (thePrefs::AcceptExternalConnections() &&
-	    thePrefs::ECUseTCPPort()) {
+	if ( thePrefs::AcceptExternalConnections() && thePrefs::ECUseTCPPort() ) {
+		// We must have a valid password, otherwise we will not allow EC connections
+		if ( thePrefs::ECPassword().IsEmpty() ) {
+			AddLogLineM(true, _("External connections disabled due to empty password!"));
+			return;
+		}
+		
 		int port = thePrefs::ECPort();
 		// Create the address - listen on localhost:ECPort
 		wxIPV4address addr;
@@ -234,6 +239,14 @@ CECPacket *ExternalConn::Authenticate(const CECPacket *request)
 		return response;
 	}
 
+	// Password must be specified if we are to allow remote connections
+	if ( thePrefs::ECPassword().IsEmpty() ) {
+		AddLogLineM(true, _("External connection refused due to empty password in preferences!"));	
+		
+		return new CECPacket(EC_OP_AUTH_FAIL);
+	}
+	
+
 	if (request->GetOpCode() == EC_OP_AUTH_REQ) {
 		CECTag *clientName = request->GetTagByName(EC_TAG_CLIENT_NAME);
 		CECTag *clientVersion = request->GetTagByName(EC_TAG_CLIENT_VERSION);
@@ -244,14 +257,7 @@ CECPacket *ExternalConn::Authenticate(const CECPacket *request)
 		if (protocol != NULL) {
 			uint16 proto_version = protocol->GetInt16Data();
 			if (proto_version == 0x01f1) {
-				if (passwd == NULL) {
-					if (thePrefs::ECPassword().IsEmpty()) {
-						response = new CECPacket(EC_OP_AUTH_OK);
-					} else {
-						response = new CECPacket(EC_OP_AUTH_FAIL);
-						response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Authentication failed.")));
-					}
-				} else if (passwd->GetStringData() == thePrefs::ECPassword()) {
+				if (passwd && passwd->GetStringData() == thePrefs::ECPassword()) {
 					response = new CECPacket(EC_OP_AUTH_OK);
 				} else {
 					response = new CECPacket(EC_OP_AUTH_FAIL);
