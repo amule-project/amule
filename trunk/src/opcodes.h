@@ -377,6 +377,7 @@ const int	BLOCKSIZE =			184320;
 #define	MP_CLEARCOMPLETED			10205
 #define	MP_OPEN					10206
 #define	MP_PREVIEW				30207
+#define	MP_SENDMESSAGE		30208
 #define MP_FAKECHECK1           10210   // deltaHF -> fakecheck
 #define MP_FAKECHECK2           10211
 #define MP_WS                   10212

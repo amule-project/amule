@@ -372,6 +372,7 @@ void CDownloadListCtrl::OnNMRclick(wxListEvent & evt)
 				menu->Append(MP_DETAIL, _("Show &Details"));
 				menu->Append(MP_ADDFRIEND, _("Add to Friends"));
 				menu->Append(MP_SHOWLIST, _("View Files"));
+				menu->Append(MP_SENDMESSAGE, _("Send message"));
 				m_ClientMenu = menu;
 			}
 			PopupMenu(m_ClientMenu, evt.GetPoint());
@@ -1654,6 +1655,16 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 					theApp.amuledlg->chatwnd->AddFriend(client);
 					return true;				
 					break;
+				case MP_SENDMESSAGE: {
+					wxString message = ::wxGetTextFromUser(_("Send message to user"),_("Message to send:"));
+					if (!message.IsEmpty()) {
+						// false -> no focus set
+						theApp.amuledlg->chatwnd->StartSession(client, false);
+						theApp.amuledlg->chatwnd->SendMessage(message,false);
+					}
+					return true;				
+					break;
+				}
 				case MP_DETAIL:
 					CClientDetailDialog * dialog = new CClientDetailDialog(this, client);
 					dialog->ShowModal();
