@@ -134,9 +134,9 @@ bool CClientReqSocket::CheckTimeOut()
 // that when client is downloading, i will only trust
 // tcp timeout
 #ifdef AMULE_DAEMON
-//	if (my_handler) {
+	if (my_handler) {
 		return false;
-//	}
+	}
 #endif
 	// 0.42x
 	UINT uTimeout = CONNECTION_TIMEOUT;
@@ -1975,14 +1975,13 @@ void CClientReqSocket::OnConnect(int nErrorCode)
 	if (nErrorCode) {
 		OnError(nErrorCode);
 	} else {
-		//printf("Sending hello packet\n");
 		if (!m_client) {
 			printf("Couldn't send hello packet (client deleted!)\n");
 			// and now? Disconnect? not?			
 		} else {
 			if (!m_client->SendHelloPacket()) {	
-			printf("Couldn't send hello packet (client deleted?)\n");				
-			// and now? Disconnect? not?				
+				printf("Couldn't send hello packet (client deleted?)\n");				
+				// and now? Disconnect? not?				
 			}				
 		}
 
@@ -2530,13 +2529,6 @@ void CListenSocket::UpdateConnectionsStatus()
 	if( peakconnections < activeconnections ) {
 		peakconnections = activeconnections;
 	}
-	#if 0
-	// -khaos--+++>
-	if (peakconnections>thePrefs.GetConnPeakConnections()) {
-		thePrefs.Add2ConnPeakConnections(peakconnections);
-	}
-	// <-----khaos-
-	#endif
 	if( theApp.serverconnect->IsConnected() ) {
 		totalconnectionchecks++;
 		float percent;
@@ -2606,47 +2598,50 @@ void *CSocketGlobalThread::Entry()
 		while (it != socket_list.end()) {
 			CClientReqSocket* cur_sock = *it++;
 			if (cur_sock->deletethis) {
-				//printf("Socket deletion was requested (up!)\n");
 				socket_list.erase(cur_sock);
 				continue;
 			}
-			if (cur_sock->Error() && (cur_sock->LastError() != wxSOCKET_WOULDBLOCK)) {
-				//printf("Socket deletion was requested (error!)\n");
-				socket_list.erase(cur_sock);				
-				continue;
-			}
-/*			if (cur_sock->Error() && (cur_sock->LastError() == wxSOCKET_WOULDBLOCK)) {
-				if (cur_sock->last_action != ACTION_CONNECT) {
-					// Connection state will be handled on next if
-					cur_sock->RepeatLastAction();
+			if (cur_sock->Error()) {
+				switch (cur_sock->LastError()) {
+					case wxSOCKET_WOULDBLOCK: 
+						if (cur_sock->last_action != ACTION_CONNECT) {
+							// Connection state will be handled on next if
+							cur_sock->RepeatLastAction();
+						}
+					default:
+						socket_list.erase(cur_sock);				
 				}
-			}*/
+			}
 			if ( !cur_sock->wxSocketBase::IsConnected()) {
 					if ( cur_sock->WaitOnConnect(0, 0) ) {
 						cur_sock->OnConnect(0);
 					}
 			} else {
-				if ( cur_sock->deletethis ) {
-					//printf("Socket deletion was requested\n");
+				if ( cur_sock->deletethis ) { // Must we remove this socket?
 					socket_list.erase(cur_sock);
 					continue;
 				}
-				if ( cur_sock->WaitForLost(0, 0) ) {
-					//printf("Socket connection lost\n");
+				if ( cur_sock->WaitForLost(0, 0) ) { // Did the socket got closed?
 					cur_sock->OnError(cur_sock->LastError());
 					socket_list.erase(cur_sock);
 					continue;
 				}
-				if ( !cur_sock->deletethis && cur_sock->WaitForRead(0, 0) ) {
+				
+				if (cur_sock->WaitForWrite(0, 0) ) { // Are we ready to write to this socket?
+					cur_sock->OnSend(0);
+				}				
+				
+				// We re-check deletethis because it could have been triggered on write
+				if (!cur_sock->deletethis && cur_sock->WaitForRead(0, 0)) { // Are we ready to read from this socket?
 					cur_sock->OnReceive(0);
 					CUpDownClient *client = cur_sock->GetClient();
 					if ( client && (client->GetDownloadState() == DS_DOWNLOADING)) {
+						// If client is downloading, we create a thread for it.
 						CClientReqSocketHandler *t = new CClientReqSocketHandler(cur_sock);
 						printf("Socket %p started dload\n", cur_sock);
 						socket_list.erase(cur_sock);
 						t->Run();
 					}
-						 	
 				}
 			}
 		}
