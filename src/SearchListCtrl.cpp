@@ -70,7 +70,7 @@ void CSearchListCtrl::Init(CSearchList* in_searchlist)
 	InsertColumn(2,CString(_("Sources")),LVCFMT_LEFT,50);
 	InsertColumn(3,CString(_("Type")),LVCFMT_LEFT,65);
 	InsertColumn(4,CString(_("FileID")),LVCFMT_LEFT,280);
-
+	
 	// contrary to other lists, here we can set everything in constructor
 	// as this control is created only in run-time
 	LoadSettings();
@@ -169,7 +169,7 @@ void CSearchListCtrl::AddResult(CSearchFile* toshow)
 	char buffer[50];
 	uint32 filesize=toshow->GetIntTagValue(FT_FILESIZE);
 	SetItem(newid,1,CastItoXBytes(filesize));
-	sprintf(buffer,"%d",toshow->GetIntTagValue(FT_SOURCES));
+	sprintf(buffer,"%d (%d)",toshow->GetIntTagValue(FT_SOURCES), toshow->GetIntTagValue(FT_COMPLETE_SOURCES));
 	SetItem(newid,2,buffer);
 	wxString pim=toshow->GetFileName();
 	SetItem(newid,3,GetFiletypeByName(pim));
@@ -305,10 +305,24 @@ int CSearchListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 				// item1 == item2
 				return 0;
 			}
-		case 2: //sources asc
-			return item1->GetIntTagValue(FT_SOURCES) - item2->GetIntTagValue(FT_SOURCES);
-		case 12: //sources desc
-			return item2->GetIntTagValue(FT_SOURCES) - item1->GetIntTagValue(FT_SOURCES);
+		case 2: {  //sources asc
+			int cmpS = item1->GetIntTagValue(FT_SOURCES) - item2->GetIntTagValue(FT_SOURCES);
+			if (!cmpS) {			
+				return(item1->GetIntTagValue(FT_COMPLETE_SOURCES) - item1->GetIntTagValue(FT_COMPLETE_SOURCES));
+			} else {
+				return (cmpS);
+			}	
+
+		}
+		case 12: {  //sources desc
+			int cmpS = item2->GetIntTagValue(FT_SOURCES) - item1->GetIntTagValue(FT_SOURCES);
+			if (!cmpS) {			
+				return(item2->GetIntTagValue(FT_COMPLETE_SOURCES) - item2->GetIntTagValue(FT_COMPLETE_SOURCES));
+			} else {
+				return (cmpS);
+			}	
+
+		}		
 		case 3: //type asc
 			return GetFiletypeByName(item1->GetFileName()).Cmp(GetFiletypeByName(item2->GetFileName()));
 

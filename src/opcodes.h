@@ -231,6 +231,7 @@
 #define	FT_FILETYPE				0x03	// <string>
 #define	FT_FILEFORMAT				0x04	// <string>
 #define	FT_LASTSEENCOMPLETE			0x05
+#define	FT_COMPLETE_SOURCES			0x30	// <int>
 
 // additional media meta data tags from eDonkeyHybrid (note also the uppercase/lowercase)
 #define	FT_MEDIA_ARTIST			"Artist"
