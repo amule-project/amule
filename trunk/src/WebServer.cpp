@@ -1282,7 +1282,8 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	Out.Replace(wxT("[ShowQueue]"), _("Show Queue"));
 	Out.Replace(wxT("[HideQueue]"), _("Hide Queue"));
 	Out.Replace(wxT("[Session]"), sSession);
-	Out.Replace(wxT("[CLEARCOMPLETED]"), _("C&lear completed"));
+	Out.Replace(wxT("[ClearCompletedButton]"), m_Templates.sClearCompleted);
+	Out.Replace(wxT("[CLEARCOMPLETED]"), _("Clear Completed"));
 
 	Out.Replace(wxT("[DownloadList]"),
 		wxString::Format(wxT("Downloads (%u)"), m_DownloadFilesInfo.ItemCount()));
@@ -1420,6 +1421,7 @@ wxString CWebServer::_GetSharedFilesList(ThreadData Data) {
 	Out.Replace(wxT("[Session]"), sSession);
 	Out.Replace(wxT("[PriorityUp]"), _("Increase Priority"));
 	Out.Replace(wxT("[PriorityDown]"), _("Decrease Priority"));
+	Out.Replace(wxT("[Reload]"), _("Reload List"));
 
 	return Out;
 }

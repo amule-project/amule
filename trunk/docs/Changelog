@@ -86,6 +86,10 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		situations would not be saved.
 		* Fixed an assert when loading skins, the count number was one
 		unit too high.
+		* Fixed amuleweb template processing, Clear Completed button
+		on transfer link was not showing.
+		* Fixed amuleweb template processing, Reload List button was
+		not beeing translated.
 
 	Ken:
 		* Fixed Mac bug: window was a little larger each restart
