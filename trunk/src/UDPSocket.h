@@ -38,7 +38,7 @@
 
 #include "types.h"		// Needed for uint16 and uint32
 #include "CTypedPtrList.h"	// Needed for CTypedPtrList
-#include "Proxy.h"		// Needed for wxDatagramSocketProxy and wxIPV4address
+#include "Proxy.h"		// Needed for wxDatagramSocketProxy and amuleIPV4Address
 
 class Packet;
 class CServer;
@@ -59,9 +59,7 @@ class CUDPSocket : public wxDatagramSocketProxy
 #endif
 {
 	friend class CServerConnect;
-	DECLARE_DYNAMIC_CLASS(CUDPSocket);
 
-	CUDPSocket() : wxDatagramSocketProxy(useless) {};
 public:
 	CUDPSocket(CServerConnect* in_serverconnect, amuleIPV4Address& addr, const wxProxyData *ProxyData = NULL);
 	~CUDPSocket();
@@ -84,7 +82,6 @@ private:
 	uint32	sendblen;
 	CServer* cur_server;
 	CTypedPtrList<CPtrList, ServerUDPPacket*> server_packet_queue;
-	wxIPV4address useless;
 #ifdef AMULE_DAEMON
 	void *Entry();
 #endif
