@@ -23,6 +23,17 @@
 
 #include "MuleListCtrl.h"	// Needed for CMuleListCtrl
 
+#define	COLUMN_SERVER_NAME	0
+#define	COLUMN_SERVER_ADDR	1
+#define	COLUMN_SERVER_PORT	2
+#define	COLUMN_SERVER_DESC	3
+#define	COLUMN_SERVER_PING	4
+#define	COLUMN_SERVER_USERS	5
+#define	COLUMN_SERVER_FILES	6
+#define	COLUMN_SERVER_PRIO	7
+#define	COLUMN_SERVER_FAILS	8
+#define	COLUMN_SERVER_STATIC	9
+#define	COLUMN_SERVER_VERSION 	10
 
 class CServer;
 class CServerList;
