@@ -52,8 +52,6 @@
 #include "amule.h"			// Needed for theApp
 #include "amuleIPV4Address.h"	// Needed for wxIPV4address
 
-#define TM_DNSDONE 17851
-
 class AsyncDNS : public wxThread
 {
 public:
@@ -102,24 +100,9 @@ wxThread::ExitCode AsyncDNS::Entry()
   return result;
 }
 
-#if 0
-CUDPSocketWnd::CUDPSocketWnd(){
-}
-
-BEGIN_MESSAGE_MAP(CUDPSocketWnd, CWnd)
-	ON_MESSAGE(WM_DNSLOOKUPDONE, OnDNSLookupDone)
-END_MESSAGE_MAP()
-
-LRESULT CUDPSocketWnd::OnDNSLookupDone(WPARAM wParam,LPARAM lParam){
-	m_pOwner->DnsLookupDone(wParam,lParam);
-	return true;
-};
-#endif
-
 IMPLEMENT_DYNAMIC_CLASS(CUDPSocket,wxDatagramSocket)
 
 static wxIPV4address tmpaddress;
-#define ID_SOKETTI 7772
 
 CUDPSocket::CUDPSocket(CServerConnect* in_serverconnect,wxIPV4address& address) 
 : wxDatagramSocket(address,wxSOCKET_NOWAIT){
@@ -129,7 +112,7 @@ CUDPSocket::CUDPSocket(CServerConnect* in_serverconnect,wxIPV4address& address)
   serverconnect = in_serverconnect;
 
   printf("*** UDP socket at %d  (chat)\n",address.Service());
-  SetEventHandler(*theApp.amuledlg,ID_SOKETTI);
+  SetEventHandler(theApp,UDPSOCKET_HANDLER);
   SetNotify(wxSOCKET_INPUT_FLAG);
   Notify(TRUE);
 

@@ -46,10 +46,6 @@
 #include <wx/dynarray.h>
 #include <wx/arrimpl.cpp> // this is a magic incantation which must be done!
 
-#ifndef ID_SOKETTI
-#define ID_SOKETTI 7772
-#endif
-
 //WX_DEFINE_LIST(SocketListL);
 
 WX_DEFINE_OBJARRAY(ArrayOfwxStrings);
@@ -68,7 +64,7 @@ CClientReqSocket::CClientReqSocket(CPreferences* in_prefs,CUpDownClient* in_clie
 	ResetTimeOutTimer();
 	deletethis = false;
 
-	SetEventHandler(*theApp.amuledlg,ID_SOKETTI);
+	SetEventHandler(theApp,CLIENTREQSOCKET_HANDLER);
 	SetNotify(wxSOCKET_CONNECTION_FLAG|wxSOCKET_INPUT_FLAG|wxSOCKET_OUTPUT_FLAG|wxSOCKET_LOST_FLAG);
 	Notify(TRUE);
 }
@@ -1751,7 +1747,7 @@ CListenSocket::CListenSocket(CPreferences* in_prefs,wxSockAddress& addr)
 	totalconnectionchecks = 0;
 	averageconnections = 0.0;
 	activeconnections = 0;
-	SetEventHandler(*theApp.amuledlg,ID_SOKETTI);
+	SetEventHandler(theApp,LISTENSOCKET_HANDLER);
 	SetNotify(wxSOCKET_CONNECTION_FLAG|wxSOCKET_INPUT_FLAG|wxSOCKET_OUTPUT_FLAG);
 	Notify(TRUE);
 }

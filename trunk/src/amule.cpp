@@ -65,6 +65,7 @@
 #include <wx/textfile.h>		// Needed for wxTextFile
 #include <wx/cmdline.h>			// Needed for wxCmdLineParser
 #include <wx/tokenzr.h>			// Needed for wxStringTokenizer
+	
 
 #include "amule.h"				// Interface declarations.
 #include "GetTickCount.h"		// Needed for GetTickCount
@@ -95,7 +96,8 @@
 #include "amuleDlg.h"			// Needed for CamuleDlg
 #include "ListenSocket.h"		// Needed for CListenSocket
 #include "ExternalConn.h"		// Needed for ExternalConn & MuleConnection
-
+#include "ServerSocket.h"	// Needed for CServerSocket
+#include "UDPSocket.h"		// Needed for CUDPSocket
 #ifdef HAVE_SYS_RESOURCE_H
 #include <sys/resource.h>
 #endif
@@ -111,6 +113,18 @@
 #endif
 
 
+BEGIN_EVENT_TABLE(CamuleApp, wxApp)
+	EVT_SOCKET(LISTENSOCKET_HANDLER, CamuleApp::ListenSocketHandler)
+	EVT_SOCKET(CLIENTREQSOCKET_HANDLER, CamuleApp::ClientReqSocketHandler)	
+	EVT_SOCKET(UDPSOCKET_HANDLER, CamuleApp::UDPSocketHandler)	
+	EVT_SOCKET(SERVERSOCKET_HANDLER, CamuleApp::ServerSocketHandler)	
+	EVT_SOCKET(CLIENTUDPSOCKET_HANDLER, CamuleApp::ClientUDPSocketHandler)	
+	
+	EVT_MENU(TM_DNSDONE, CamuleApp::OnDnsDone)
+	EVT_MENU(TM_SOURCESDNSDONE, CamuleApp::OnSourcesDnsDone)
+	
+END_EVENT_TABLE()	
+	
 IMPLEMENT_APP(CamuleApp)
 
 
@@ -1376,4 +1390,164 @@ void CamuleApp::FlushQueuedLogLines() {
 	}
 	
 	m_LogQueueLock.Leave();
+}
+
+void CamuleApp::ListenSocketHandler(wxSocketEvent& event) {
+
+	wxASSERT(event.GetSocket()->IsKindOf(CLASSINFO(CListenSocket)));
+	CListenSocket * socket = (CListenSocket*) event.GetSocket();
+	
+	if(!IsReady || !socket) {
+		// we are not mentally ready to receive anything
+		// or there is no socket on the event (got deleted?)
+		return;
+	}
+	
+	switch(event.GetSocketEvent()) {
+		case wxSOCKET_CONNECTION:
+			socket->OnAccept(0);
+			break;
+		default:
+			// shouldn't get other than connection events...
+			wxASSERT(0);
+			break;
+	}
+	
+}
+
+
+void CamuleApp::ClientReqSocketHandler(wxSocketEvent& event) {
+
+	wxASSERT(event.GetSocket()->IsKindOf(CLASSINFO(CClientReqSocket)));
+	CClientReqSocket * socket = (CClientReqSocket *) event.GetSocket();
+	
+	if(!IsReady || !socket) {
+		// we are not mentally ready to receive anything
+		// or there is no socket on the event (got deleted?)
+		return;
+	}
+	
+	if (socket->OnDestroy()) {
+		return;
+	}
+
+	//printf("request at clientreqsocket\n");
+	switch(event.GetSocketEvent()) {
+		case wxSOCKET_LOST:
+			socket->OnError(socket->LastError());
+			break;
+		case wxSOCKET_INPUT:
+			socket->OnReceive(0);
+			break;
+		case wxSOCKET_OUTPUT:
+			socket->OnSend(0);
+			break;
+		case wxSOCKET_CONNECTION:
+			// connection stablished, nothing to do about it?
+			break;
+		default:
+			// connection requests should not arrive here..
+			wxASSERT(0);
+			break;
+	}
+	
+}
+
+
+void CamuleApp::UDPSocketHandler(wxSocketEvent& event) {
+
+	wxASSERT(event.GetSocket()->IsKindOf(CLASSINFO(CUDPSocket)));
+	CUDPSocket * socket = (CUDPSocket*) event.GetSocket();
+	
+	if(!IsReady || !socket) {
+		// we are not mentally ready to receive anything
+		// or there is no socket on the event (got deleted?)
+		return;
+	}
+	
+	switch(event.GetSocketEvent()) {
+		case wxSOCKET_INPUT:
+			socket->OnReceive(0);
+			break;
+		default:
+			wxASSERT(0);
+			break;
+	}
+	
+}
+
+
+void CamuleApp::ServerSocketHandler(wxSocketEvent& event) {
+	
+	wxASSERT(event.GetSocket()->IsKindOf(CLASSINFO(CServerSocket)));
+	CServerSocket * socket = (CServerSocket*) event.GetSocket();
+	
+	if(!IsReady || !socket) {
+		// we are not mentally ready to receive anything
+		// or there is no socket on the event (got deleted?)
+		return;
+	}
+	
+	if (socket->OnDestroy()) {
+		return;
+	}
+	
+	switch(event.GetSocketEvent()) {
+		case wxSOCKET_CONNECTION:
+			socket->OnConnect(wxSOCKET_NOERROR);
+			break;
+		case wxSOCKET_LOST:
+			socket->OnError(socket->LastError());
+			break;
+		case wxSOCKET_INPUT:
+			socket->OnReceive(wxSOCKET_NOERROR);
+			break;
+		case wxSOCKET_OUTPUT:
+			socket->OnSend(wxSOCKET_NOERROR);
+			break;
+		default:
+			wxASSERT(0);
+			break;
+	}
+	
+	
+}
+
+void CamuleApp::ClientUDPSocketHandler(wxSocketEvent& event) {
+
+	wxASSERT(event.GetSocket()->IsKindOf(CLASSINFO(CClientUDPSocket)));
+	CClientUDPSocket * socket = (CClientUDPSocket*) event.GetSocket();
+	
+	if(!IsReady || !socket) {
+		// we are not mentally ready to receive anything
+		// or there is no socket on the event (got deleted?)
+		return;
+	}
+
+	switch(event.GetSocketEvent()) {
+		case wxSOCKET_INPUT:
+			socket->OnReceive(0);
+			break;
+		case wxSOCKET_OUTPUT:
+			socket->OnSend(0);
+			break;
+		default:
+			wxASSERT(0);
+			break;
+	}
+		
+}
+
+void CamuleApp::OnDnsDone(wxCommandEvent& evt)
+{
+	CUDPSocket* socket=(CUDPSocket*)evt.GetClientData();
+	struct sockaddr_in *si=(struct sockaddr_in*)evt.GetExtraLong();
+	socket->DnsLookupDone(si);
+}
+
+
+void CamuleApp::OnSourcesDnsDone(wxCommandEvent& evt)
+{
+	struct sockaddr_in *si=(struct sockaddr_in*)evt.GetExtraLong();
+	downloadqueue->OnHostnameResolved(si);
 }

@@ -53,7 +53,6 @@
 #include "SafeFile.h"
 
 // CClientUDPSocket
-#define ID_SOKETTI 7772
 
 IMPLEMENT_DYNAMIC_CLASS(CClientUDPSocket,wxDatagramSocket)
 
@@ -63,7 +62,7 @@ CClientUDPSocket::CClientUDPSocket(wxIPV4address address)
 	m_bWouldBlock = false;
 
 	printf("*** UDP socket at %d\n",address.Service());
-	SetEventHandler(*theApp.amuledlg,ID_SOKETTI);
+	SetEventHandler(theApp,CLIENTUDPSOCKET_HANDLER);
 	SetNotify(wxSOCKET_INPUT_FLAG|wxSOCKET_OUTPUT_FLAG);
 	Notify(TRUE);
 }

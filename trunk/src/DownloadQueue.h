@@ -33,8 +33,6 @@ class CUpDownClient;
 class CServer;
 class CSafeMemFile;
 
-#define TM_SOURCESDNSDONE 17869
-
 struct Hostname_Entry {
 		unsigned char fileid[16];
 		CString strHostname;
