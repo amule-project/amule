@@ -33,6 +33,7 @@
 #include "NetworkFunctions.h"
 #include "OtherFunctions.h"
 #include "CMD4Hash.h"
+#include "StringFunctions.h" // Needed for unicode2char 
 #include <wx/textctrl.h>
 #include <wx/msgdlg.h>
 #include <wx/sizer.h>

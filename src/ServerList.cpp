@@ -55,7 +55,7 @@
 #include "GetTickCount.h"		// Neeed for GetTickCount
 #include "NetworkFunctions.h"	// Needed for StringIPtoUint32
 #include "Statistics.h"			// Needed for CStatistics
-
+#include "StringFunctions.h" // Needed for unicode2char 
 
 CServerList::CServerList()
 {
