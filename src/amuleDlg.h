@@ -42,6 +42,7 @@ class CSearchDlg;
 class CChatWnd;
 class CStatisticsDlg;
 class CKadDlg;
+class PrefsUnifiedDlg;	
 
 class wxTimerEvent;
 class wxTextCtrl;
@@ -132,11 +133,14 @@ public:
 	wxImageList imagelist;
 	
 	void StartGuiTimer() { gui_timer->Start(100); }
+	
+	PrefsUnifiedDlg* prefs_dialog;
 
 	/**
 	 * This function ensures that _all_ list widgets are properly sorted.
 	 */
 	void InitSort();
+
 protected:
 	
 	void OnToolBarButton(wxCommandEvent& ev);

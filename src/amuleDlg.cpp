@@ -126,6 +126,8 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 	wxTHICK_FRAME|wxMINIMIZE_BOX|wxMAXIMIZE_BOX|wxCLOSE_BOX,wxT("aMule") )
 {
 	last_iconizing = 0;
+	prefs_dialog = NULL;
+	
 	
 	wxInitAllImageHandlers();
 	curl_global_init(CURL_GLOBAL_ALL);
@@ -426,13 +428,15 @@ void CamuleDlg::OnPrefButton(wxCommandEvent& WXUNUSED(ev))
 {
 	if ( theApp.IsReady ) {
 		// Try to create a new dialog-window
-		PrefsUnifiedDlg* dialog = PrefsUnifiedDlg::NewPrefsDialog( this );
+		if (!prefs_dialog) {
+			prefs_dialog = PrefsUnifiedDlg::NewPrefsDialog( this );
 	
-		// Check if a dialog was created and show it
-		if ( dialog ) {
-			dialog->TransferToWindow();
+			// Check if a dialog was created and show it
+			if ( prefs_dialog ) {
+				prefs_dialog->TransferToWindow();
 		
-			dialog->Show();
+				prefs_dialog->Show();
+			}
 		}
 	}
 }
@@ -927,6 +931,10 @@ void CamuleDlg::Show_aMule(bool uniconize)
 	//	is_hidden = false;
 		last_iconizing = GetTickCount();
 		
+		if (prefs_dialog) {
+			prefs_dialog->Show(true);
+		}
+		
 		if (uniconize) {
 			Show(TRUE);
 			Raise();
@@ -1370,6 +1378,9 @@ void CamuleDlg::OnMainGUISizeChange(wxSizeEvent& evt) {
 	
 	wxFrame::OnSize(evt);	
 	
+	#ifndef __WXMAC__
+	// Crashing on mac, why?
+	
 	if (transferwnd && transferwnd->clientlistctrl) {
 	
 		// Transfer window's splitter set again if it's hidden.
@@ -1382,5 +1393,6 @@ void CamuleDlg::OnMainGUISizeChange(wxSizeEvent& evt) {
 			splitter->SetSashPosition( height );
 		}
 	}
+	#endif
 	
 }
