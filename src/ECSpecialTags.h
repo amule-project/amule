@@ -45,6 +45,7 @@
 class CServer;
 class CKnownFile;
 class CPartFile;
+class CSearchFile;
 class CUpDownClient;
 
 class CEC_Server_Tag : public CECTag {
@@ -123,6 +124,59 @@ class CEC_UpDownClient_Tag : public CECTag {
  		uint32 Speed() { return GetTagByName(EC_TAG_PARTFILE_SPEED)->GetInt32Data(); }
  		uint32 XferUp() { return GetTagByName(EC_TAG_PARTFILE_SIZE_XFER_UP)->GetInt32Data(); };
  		uint32 XferDown() { return GetTagByName(EC_TAG_PARTFILE_SIZE_XFER)->GetInt32Data(); }
+};
+
+class CEC_SearchFile_Tag : public CECTag {
+	public:
+		CEC_SearchFile_Tag(CSearchFile *file);
+
+		// template needs it
+ 		CMD4Hash	ID()	{ return GetMD4Data(); }
+
+ 		CMD4Hash	FileHash()	{ return GetMD4Data(); }
+		wxString	FileHashString() { return GetMD4Data().Encode(); }
+
+ 		wxString	FileName()	{ return GetTagByName(EC_TAG_PARTFILE_NAME)->GetStringData(); }
+ 		uint32		SizeFull()	{ return GetTagByName(EC_TAG_PARTFILE_SIZE_FULL)->GetInt32Data(); }
+  		uint32		SourceCount()	{ return GetTagByName(EC_TAG_PARTFILE_SOURCE_COUNT)->GetInt32Data(); }
+};
+
+class CEC_Search_Tag : public CECTag {
+	public:
+		// search request
+		CEC_Search_Tag(wxString &name, EC_SEARCH_TYPE search_type, wxString &file_type,
+			wxString &extension, uint32 avail, uint32 min_size, uint32 max_size);
+			
+		// search reply
+		CEC_Search_Tag(const std::vector<CSearchFile*> list, uint32 progress);
+		
+		wxString SearchText() { return GetTagByName(EC_TAG_SEARCH_NAME)->GetStringData(); }
+		EC_SEARCH_TYPE SearchType() { return (EC_SEARCH_TYPE)GetInt32Data(); }
+		uint32 MinSize()
+		{
+			CECTag *tag =  GetTagByName(EC_TAG_SEARCH_MIN_SIZE);
+			return tag ? tag->GetInt32Data() : 0;
+		}
+		uint32 MaxSize()
+		{
+			CECTag *tag =  GetTagByName(EC_TAG_SEARCH_MAX_SIZE);
+			return tag ? tag->GetInt32Data() : 0;
+		}
+		uint32 Avail()
+		{
+			CECTag *tag =  GetTagByName(EC_TAG_SEARCH_AVAILABILITY);
+			return tag ? tag->GetInt32Data() : 0;
+		}
+		wxString SearchExt()
+		{
+			CECTag *tag =  GetTagByName(EC_TAG_SEARCH_EXTENSION);
+			return tag ? tag->GetStringData() : wxT("");
+		}
+		wxString SearchFileType()
+		{
+			CECTag *tag =  GetTagByName(EC_TAG_SEARCH_FILE_TYPE);
+			return tag ? tag->GetStringData() : wxT("");
+		}
 };
 
 #endif /* ECSPEACIALTAGS_H */

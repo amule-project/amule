@@ -615,6 +615,36 @@ CECPacket *Get_EC_Response_Server(const CECPacket *request)
 	return response;
 }
 
+
+CECPacket *Get_EC_Response_Search(const CECPacket *request)
+{
+	CEC_Search_Tag *search_request = (CEC_Search_Tag *)request;
+	theApp.searchlist->RemoveResults(0xffff);
+	theApp.searchlist->NewSearch(search_request->SearchFileType(), 0xffff);
+	
+	wxString text = search_request->SearchText();
+	wxString file_type = search_request->SearchFileType();
+	wxString ext = search_request->SearchExt();
+	Packet *packet = CreateSearchPacket(text, file_type, ext,
+		search_request->MinSize(), search_request->MaxSize(), search_request->Avail());
+	
+	EC_SEARCH_TYPE search_type = search_request->SearchType();
+	switch(search_type) {
+		case EC_SEARCH_LOCAL:
+			// this is internal core call, but macro is useful anyway
+			CoreNotify_Search_Req(packet, false);
+			break;
+		case EC_SEARCH_GLOBAL:
+			// this is internal core call, but macro is useful anyway
+			CoreNotify_Search_Req(packet, true);
+			break;
+		case EC_SEARCH_WEB:
+			break;
+	}
+	// no reply - search in progress
+	return 0;
+}
+
 CECPacket *ProcessPreferencesRequest(const CECPacket *request)
 {
 	CECPacket *response = new CECPacket(EC_OP_PREFERENCES);
@@ -1250,6 +1280,7 @@ void CPartFile_Encoder::Encode(CECTag *parent)
 		m_file->requestedblocks_list.GetCount() * 2 * sizeof(uint32), (void *)m_gap_buffer));
 }
 
+
 #ifndef AMULE_DAEMON
 // FIXME: remove code from GUI
 CECPacket *GetStatsGraphs(const CECPacket *request)
@@ -1415,6 +1446,13 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request, CPartFile_Enc
 			theApp.ipfilter->Reload();
 			response = new CECPacket(EC_OP_NOOP);
 			break;
+		//
+		// Search
+		//
+		case EC_OP_SEARCH_START:
+			response = Get_EC_Response_Search(request);
+			break;
+
 		//
 		// Preferences
 		//
