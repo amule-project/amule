@@ -41,9 +41,6 @@ class Packet;
 
 #define PACKET_HEADER_SIZE	6
 
-//WX_DECLARE_LIST(Packet,PacketListL);
-
-
 class CEMSocket :
 	public wxSocketClient
 {
@@ -93,12 +90,6 @@ private:
 	// Download partial packet
 	Packet* pendingPacket;
 	uint32  pendingPacketSize;
-
-/*  Removed since 0.30d import of cpu-less download
-	char*	readbuf;
-	uint32  readbuf_size;
-	char	header[6];
-*/
 
 	char*	sendbuffer;
 	uint32	sendblen;
