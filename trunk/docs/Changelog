@@ -217,6 +217,9 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 	volpol:
 		* Patch to fix use of deprecated functions in wxGTK-2.5.3.
 
+	Vollstrecker:
+		* Initial and further work on aMule and utils' man pages.
+
 	Xaignar:
 		* Escape-codes in ED2k links are now properly unescaped.
 		* Cleaned up and improved the readability of the clients-details dialog.
@@ -378,6 +381,7 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		feralertx
 		Frankk
 		Mr Faber
+		peper
 		rommel
 
 --------------------------------------------------------------------------------
