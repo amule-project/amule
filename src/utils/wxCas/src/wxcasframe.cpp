@@ -57,7 +57,8 @@
 #include "../pixmaps/print.xpm"
 #include "../pixmaps/about.xpm"
 #include "../pixmaps/prefs.xpm"
-#include "../pixmaps/stat.xpm"
+#include "../pixmaps/stat.xpm"  // Stat banner
+#include "../pixmaps/amule.xpm" // aMule splash
 #endif
 
 // Needed for 2.4.2 backward compatibility
@@ -87,35 +88,30 @@ WxCasFrame::WxCasFrame (const wxString & title):
 
   // Add Main panel to frame (needed by win32 for padding sub panels)
   m_mainPanel = new wxPanel (this, -1);
-  m_frameVBox->Add (m_mainPanel, 0, wxALL | wxADJUST_MINSIZE);
 
   // Main Panel Vertical Sizer
   m_mainPanelVBox = new wxBoxSizer (wxVERTICAL);
 
-  // Add static line to sizer
+  // Main Panel static line
   m_staticLine = new wxStaticLine (m_mainPanel, -1);
-  m_mainPanelVBox->Add (m_staticLine, 0, wxALL | wxEXPAND);
 
-  // Draw and populate panel
-  m_sigPanel = new wxPanel (m_mainPanel, -1);
-
-  // Panel Vertical Sizer
-  m_sigPanelSBox = new wxStaticBox (m_sigPanel, -1, wxEmptyString);
+  // Statistics Static Vertical Box Sizer
+  m_sigPanelSBox = new wxStaticBox (m_mainPanel, -1, wxEmptyString);
   m_sigPanelSBoxSizer = new wxStaticBoxSizer (m_sigPanelSBox, wxVERTICAL);
 
-  // Statistics labels
-  m_statLine_1 = new wxStaticText (m_sigPanel, -1, wxEmptyString);
-  m_statLine_2 = new wxStaticText (m_sigPanel, -1, wxEmptyString);
-  m_statLine_3 = new wxStaticText (m_sigPanel, -1, wxEmptyString);
-  m_statLine_4 = new wxStaticText (m_sigPanel, -1, wxEmptyString);
-  m_statLine_5 = new wxStaticText (m_sigPanel, -1, wxEmptyString);
-  m_statLine_6 = new wxStaticText (m_sigPanel, -1, wxEmptyString);
-  m_statLine_7 = new wxStaticText (m_sigPanel, -1, wxEmptyString);
+  // Statistic labels
+  m_statLine_1 = new wxStaticText (m_mainPanel, -1, wxEmptyString);
+  m_statLine_2 = new wxStaticText (m_mainPanel, -1, wxEmptyString);
+  m_statLine_3 = new wxStaticText (m_mainPanel, -1, wxEmptyString);
+  m_statLine_4 = new wxStaticText (m_mainPanel, -1, wxEmptyString);
+  m_statLine_5 = new wxStaticText (m_mainPanel, -1, wxEmptyString);
+  m_statLine_6 = new wxStaticText (m_mainPanel, -1, wxEmptyString);
+  m_statLine_7 = new wxStaticText (m_mainPanel, -1, wxEmptyString);
 
 #ifdef __LINUX__		// System monitoring on Linux
 
-  m_sysLine_1 = new wxStaticText (m_sigPanel, -1, wxEmptyString);
-  m_sysLine_2 = new wxStaticText (m_sigPanel, -1, wxEmptyString);
+  m_sysLine_1 = new wxStaticText (m_mainPanel, -1, wxEmptyString);
+  m_sysLine_2 = new wxStaticText (m_mainPanel, -1, wxEmptyString);
 #endif
 
   // Add Online Sig file
@@ -126,34 +122,9 @@ WxCasFrame::WxCasFrame (const wxString & title):
   m_sysMonitor = new LinuxMon ();
 #endif
 
-  m_sigPanelSBoxSizer->Add (m_statLine_1, 0, wxALL | wxADJUST_MINSIZE, 5);
-  m_sigPanelSBoxSizer->Add (m_statLine_2, 0, wxALL | wxADJUST_MINSIZE, 5);
-  m_sigPanelSBoxSizer->Add (m_statLine_3, 0, wxALL | wxADJUST_MINSIZE, 5);
-  m_sigPanelSBoxSizer->Add (m_statLine_4, 0, wxALL | wxADJUST_MINSIZE, 5);
-  m_sigPanelSBoxSizer->Add (m_statLine_5, 0, wxALL | wxADJUST_MINSIZE, 5);
-  m_sigPanelSBoxSizer->Add (m_statLine_6, 0, wxALL | wxADJUST_MINSIZE, 5);
-  m_sigPanelSBoxSizer->Add (m_statLine_7, 0, wxALL | wxADJUST_MINSIZE, 5);
-
-#ifdef __LINUX__		// System monitoring on Linux
-
-  m_sigPanelSBoxSizer->Add (m_sysLine_1, 0, wxALL | wxADJUST_MINSIZE, 5);
-  m_sigPanelSBoxSizer->Add (m_sysLine_2, 0, wxALL | wxADJUST_MINSIZE, 5);
-#endif
-
-  // Signature Panel Layout
-  m_sigPanel->SetSizerAndFit (m_sigPanelSBoxSizer);
-
-  // Add panel to sizer
-  m_mainPanelVBox->Add (m_sigPanel, 0, wxALL | wxADJUST_MINSIZE, 10);
-
-  // Display Bitmap
-  m_imgPanel = new WxCasCanvas (m_mainPanel, m_sigPanel);
-
-  // Add Bimap to sizer
-  m_mainPanelVBox->Add (m_imgPanel, 0, wxALL | wxADJUST_MINSIZE, 10);
-
-  // Main panel Layout
-  m_mainPanel->SetSizerAndFit (m_mainPanelVBox);
+  // Amule Static Bitmap
+  wxBitmap amule_bitmap = wxBITMAP (amule);
+  m_amuleSBitmap = new wxStaticBitmap (m_mainPanel,-1,amule_bitmap);
 
   // Toolbar Pixmaps
   m_toolBarBitmaps[0] = wxBITMAP (refresh);
@@ -192,11 +163,38 @@ WxCasFrame::WxCasFrame (const wxString & title):
   m_toolbar->SetMargins (2, 2);
   m_toolbar->Realize ();
 
+  SetToolBar (m_toolbar);
+
+  // Statistic Panel Layout
+  m_sigPanelSBoxSizer->Add (m_statLine_1, 0, wxALL | wxADJUST_MINSIZE, 5);
+  m_sigPanelSBoxSizer->Add (m_statLine_2, 0, wxALL | wxADJUST_MINSIZE, 5);
+  m_sigPanelSBoxSizer->Add (m_statLine_3, 0, wxALL | wxADJUST_MINSIZE, 5);
+  m_sigPanelSBoxSizer->Add (m_statLine_4, 0, wxALL | wxADJUST_MINSIZE, 5);
+  m_sigPanelSBoxSizer->Add (m_statLine_5, 0, wxALL | wxADJUST_MINSIZE, 5);
+  m_sigPanelSBoxSizer->Add (m_statLine_6, 0, wxALL | wxADJUST_MINSIZE, 5);
+  m_sigPanelSBoxSizer->Add (m_statLine_7, 0, wxALL | wxADJUST_MINSIZE, 5);
+
+#ifdef __LINUX__		// System monitoring on Linux
+
+  m_sigPanelSBoxSizer->Add (m_sysLine_1, 0, wxALL | wxADJUST_MINSIZE, 5);
+  m_sigPanelSBoxSizer->Add (m_sysLine_2, 0, wxALL | wxADJUST_MINSIZE, 5);
+#endif
+
+  // Main panel Layout
+  m_mainPanelVBox->Add (m_staticLine, 0, wxALL | wxGROW);
+  m_mainPanelVBox->Add (m_sigPanelSBoxSizer, 0, wxALL | wxADJUST_MINSIZE, 10);
+  m_mainPanelVBox->Add (m_amuleSBitmap, 0, wxALL | wxADJUST_MINSIZE, 10);
+  m_mainPanel->SetAutoLayout(true);
+  m_mainPanel->SetSizer (m_mainPanelVBox);
+  m_mainPanelVBox->Fit(m_mainPanel);
+  m_mainPanelVBox->SetSizeHints(m_mainPanel);
 
   // Frame Layout
+  m_frameVBox->Add (m_mainPanel, 1, wxALL | wxADJUST_MINSIZE);
   SetAutoLayout (TRUE);
-  SetToolBar (m_toolbar);
-  SetSizerAndFit (m_frameVBox);
+  SetSizer(m_frameVBox);
+  m_frameVBox->Fit(this);
+  m_frameVBox->SetSizeHints(this);
 
   // Add refresh timer
   m_refresh_timer = new wxTimer (this, ID_REFRESH_TIMER);
@@ -494,8 +492,19 @@ WxCasFrame::UpdateAll ()
 
   if (needFit)
     {
-      m_imgPanel->Update ();
-      Fit ();
+      m_mainPanel->SetAutoLayout(true);
+      m_mainPanelVBox->Fit(m_mainPanel);
+
+      wxInt32 ph, pw;
+      m_sigPanelSBox->GetClientSize (&pw, &ph);
+      AdjustSplashWidth(pw);
+
+      m_mainPanelVBox->SetSizeHints(m_mainPanel);
+
+      // Frame Layout
+      SetAutoLayout (TRUE);
+      m_frameVBox->Fit(this);
+      m_frameVBox->SetSizeHints(this);
     }
 }
 
@@ -697,8 +706,6 @@ WxCasFrame::UpdateStatsPanel ()
   // Resize only if needed
   if (m_maxLineCount != newMaxLineCount)
     {
-      // Fit to new label size
-      m_sigPanel->Fit ();
       m_maxLineCount = newMaxLineCount;
       return (TRUE);
     }
@@ -752,4 +759,25 @@ WxCasFrame::ChangeFtpUpdatePeriod(wxInt32 newPeriod)
     }
 
   return (ok);
+}
+
+// Adjust splash bitmap width
+void
+WxCasFrame::AdjustSplashWidth(wxInt32 width)
+{
+  wxInt32 h =
+    (wxInt32) ((double) (m_amuleSBitmap->GetBitmap().GetHeight ()) / m_amuleSBitmap->GetBitmap().GetWidth () *
+               width);
+
+  wxBitmap bitmap (wxImage (m_amuleSBitmap->GetBitmap().ConvertToImage ()).
+                   Scale (width, h));
+
+  m_amuleSBitmap->SetBitmap(bitmap);
+}
+
+// Set amulesig.dat file
+void
+WxCasFrame::SetAmuleSigFile(wxFileName *file)
+{
+  m_aMuleSig->SetAmuleSig (file);
 }
