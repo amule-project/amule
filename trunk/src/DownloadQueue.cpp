@@ -1217,6 +1217,7 @@ bool CDownloadQueue::AddED2KLink( const wxString& link, int category )
 	}
 	
 	try {
+		// It deletes the link object!
 		return AddED2KLink( CED2KLink::CreateLinkFromUrl(URI), category );
 	} catch ( wxString err ) {
 		AddLogLineM( true, _("Invalid ed2k link! Error: ") + err);
@@ -1228,19 +1229,23 @@ bool CDownloadQueue::AddED2KLink( const wxString& link, int category )
 
 bool CDownloadQueue::AddED2KLink( const CED2KLink* link, int category )
 {
+	wxASSERT(link);
+	bool result = false;
 	switch ( link->GetKind() ) {
 		case CED2KLink::kFile:
-			return AddED2KLink( dynamic_cast<const CED2KFileLink*>( link ), category );
+			result = AddED2KLink( dynamic_cast<const CED2KFileLink*>( link ), category );
 			
 		case CED2KLink::kServer:
-			return AddED2KLink( dynamic_cast<const CED2KServerLink*>( link ) );
+			result = AddED2KLink( dynamic_cast<const CED2KServerLink*>( link ) );
 			
 		case CED2KLink::kServerList:
-			return AddED2KLink( dynamic_cast<const CED2KServerListLink*>( link ) );
+			result = AddED2KLink( dynamic_cast<const CED2KServerListLink*>( link ) );
 			
 		default:
-			return false;
+			result = false;
 	}
+	delete link;
+	return result;
 }
 
 
