@@ -186,7 +186,7 @@ private:
 	uint64		m_nDownDataOverheadServerPackets;
 	uint64		m_nDownDataOverheadOther;
 	uint64		m_nDownDataOverheadOtherPackets;
-	std::list<int>	m_AvarageDDRO_list;
+	std::deque<int>	m_AverageDDRO_list;
 
 	// uint32 sumavgDDRO;
 
