@@ -32,7 +32,6 @@
 #endif
 
 #include "StringFunctions.h"
-#include "MuleTrayIcon.h"
 
 #ifndef USE_WX_TRAY
 
