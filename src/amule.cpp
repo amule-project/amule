@@ -164,9 +164,24 @@ static void SetResourceLimits()
 
 CamuleApp::CamuleApp()
 {
-	// Initialization
-	
+	// Initialization	
 	printf("Initialising aMule\n");
+
+#if !wxCHECK_VERSION(2,5,1) && defined(__WXGTK20__)
+	printf("FATAL ERROR! You have attempted to use a version of wxGTK older than\n");
+	printf("the 2.5.1 release, compiled against GTK2! This combination is not\n");
+	printf("supported by aMule due to many known problems. If you wish to use\n");
+	printf("wxGTK compiled against GTK2, please upgrade to a more recent version\n");
+	printf("of wxGTK.\n\n");
+
+	printf("More information can be found at:\n");
+	printf("\t- http://www.amule.org\n");
+	printf("\t- http://wiki.amule.org\n\n");
+
+	printf("Current version is: aMule %s\n", unicode2char(GetMuleVersion()));
+
+	exit(1);
+#endif
 
 	m_app_state = APP_STATE_STARTING;
 	
