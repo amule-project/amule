@@ -80,10 +80,7 @@
 #include "muuli_wdr.h"		// Needed for ID_BUTTONSERVERS
 #include "PrefsUnifiedDlg.h"
 
-#if defined(__WXGTK__) || defined(__WXMOTIF__) || defined(__WXMAC__) || defined(__WXMGL__) || defined(__WXX11__)
 #include "aMule.xpm"
-#endif
-
 
 BEGIN_EVENT_TABLE(CamuleDlg, wxFrame)
 

@@ -1,87 +1,8 @@
-EXTRA_DIST = About.jpg \
-	bn_connect.ico.xpm \
-	bn_disconnect.ico.xpm \
-	bn_messages.ico.xpm \
-	bn_statistics.ico.xpm \
-	bn_stopcon.ico.xpm \
-	chat.ico.xpm \
-	client0.ICO.xpm \
-	client1.ICO.xpm \
-	client2.ICO.xpm \
-	client3.ICO.xpm \
-	client4.ICO.xpm \
-	close_hi.xpm \
-	close.xpm \
-	compatible.ICO.xpm \
-	connectedhigh.ICO.xpm \
-	connected.ICO.xpm \
-	DirectDownload.ico.xpm \
-	disable.xpm \
-	down2x.bmp.xpm \
-	down.bmp.xpm \
-	down_btn.xpm \
-	eDonkeyHybrid.ico.xpm \
-	folder.xpm \
-	Friend.ico.xpm \
-	friends1.ICO.xpm \
-	friends2.ICO.xpm \
-	friends3.ICO.xpm \
-	hdd.xpm \
-	inetdownload.gif \
-	IRC.ico.xpm \
-	Log.ico.xpm \
-	message.ICO.xpm \
-	mldonk.ico.xpm \
-	mldonk.xpm \
-	mpending.ICO.xpm \
+EXTRA_DIST = chat.ico.xpm \
 	mule_TrayIcon.ico.xpm \
 	mule_Tr_grey.ico.xpm \
 	mule_Tr_yellow.ico.xpm \
-	MyInfo.ico.xpm \
-	neutral.ico.xpm \
-	NewServer.ico.xpm \
-	NormalSearch.ico.xpm \
-	notconnected.ICO.xpm \
-	pluscompa.ICO.xpm \
-	pluseDonkeyHybrid.ico.xpm \
-	plus.ICO.xpm \
-	plusmldonk.ico.xpm \
-	preferences.ico.xpm \
-	Prefs_Connection.ico.xpm \
-	Prefs_Files.ico.xpm \
-	Prefs_Folders.ico.xpm \
-	Prefs_General.ico.xpm \
-	Prefs_IRC.ico.xpm \
-	Prefs_Notifications.ico.xpm \
-	Prefs_Server.ico.xpm \
-	Prefs_Statistics.ico.xpm \
-	Prefs_tweak.ico.xpm \
-	PROVIDER.ICO.xpm \
-	Rating_bad.ico.xpm \
-	Rating.ico.xpm \
-	search.ico.xpm \
-	SearchResults.ico.xpm \
-	server.ico.xpm \
-	ServerInfo.ico.xpm \
-	ServerList.ico.xpm \
-	SetupStats.ico.xpm \
-	SharedFiles.ico.xpm \
-	shared.ico.xpm \
-	SmallServer.ico.xpm \
-	SmallStatistics.ico.xpm \
 	sort_dnx2.xpm \
 	sort_dn.xpm \
 	sort_upx2.xpm \
-	sort_up.xpm \
-	thief.ico.xpm \
-	transfer.ico.xpm \
-	Up0down1.ico.xpm \
-	Up1down0.ico.xpm \
-	Up1down1.ico.xpm \
-	up2x.bmp.xpm \
-	up.bmp.xpm \
-	UpdateServers.ico.xpm \
-	updown.ICO.xpm \
-	upload.ico.xpm \
-	User.ico.xpm \
-	WebBased.ico.xpm
+	sort_up.xpm 
