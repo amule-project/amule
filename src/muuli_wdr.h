@@ -404,9 +404,8 @@ wxSizer *PreferencesSourcesDroppingTab( wxWindow *parent, bool call_fit = TRUE, 
 wxSizer *PreferencesRemoteControlsTab( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
 extern wxSizer *prefs_main_sizer;
-extern wxSizer *prefs_select_sizer;
-#define ID_PREFSLISTCTRL 10302
 extern wxSizer *prefs_sizer;
+#define ID_PREFSLISTCTRL 10302
 #define ID_PREFS_OK_TOP 10303
 #define ID_PREFS_CANCEL_TOP 10304
 wxSizer *preferencesDlgTop( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
