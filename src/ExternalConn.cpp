@@ -303,10 +303,8 @@ CECPacket *ExternalConn::Authenticate(const CECPacket *request)
 	return response;
 }
 
-CECPacket *Get_EC_Response_StatRequest(const CECPacket *request)
+CECPacket *Get_EC_Response_StatRequest(const CECPacket *WXUNUSED(request))
 {
-	wxASSERT(request->GetOpCode() == EC_OP_STAT_REQ);
-	
 	CECPacket *response = new CECPacket(EC_OP_STATS);
 
 	//
