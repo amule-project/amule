@@ -373,7 +373,7 @@ CTag::CTag(CFile *file)
 	// Use the constructor below
 	CTag(*file);
 }
-#endif // UNDEDFINED
+#endif // UNDEFINED
 
 CTag::CTag(const CFile &in_data)
 {
@@ -381,22 +381,38 @@ CTag::CTag(const CFile &in_data)
 	if ((off = in_data.Read(&tag.type,1)) == wxInvalidOffset) {
 		throw CInvalidPacket("Bad Met File");
 	}
+	
 	uint16 length;
-	if ((off = in_data.Read(&length,2)) == wxInvalidOffset) {	
-		throw CInvalidPacket("Bad Met File");
-	}
-
-	ENDIAN_SWAP_I_16(length);
-	if (length == 1) {
-		if ((off = in_data.Read(&tag.specialtag,1)) == wxInvalidOffset) {
+	
+	if (tag.type & 0x80)
+	{
+		tag.type &= 0x7F;
+		
+		#warning we need to add the new tag types before 2.0.0
+		uint8 Uint8Name; // This is discarded right now, fix it!
+		if ((off = in_data.Read(&Uint8Name,1)) == wxInvalidOffset) {	
 			throw CInvalidPacket("Bad Met File");
 		}
+		
+		tag.tagname = NULL;
 	} else {
-		tag.tagname = new char[length+1];
-		if ((off = in_data.Read(tag.tagname,length)) == wxInvalidOffset) {
+	
+		if ((off = in_data.Read(&length,2)) == wxInvalidOffset) {	
 			throw CInvalidPacket("Bad Met File");
 		}
-		tag.tagname[length] = 0;
+
+		ENDIAN_SWAP_I_16(length);
+		if (length == 1) {
+			if ((off = in_data.Read(&tag.specialtag,1)) == wxInvalidOffset) {
+				throw CInvalidPacket("Bad Met File");
+			}
+		} else {
+			tag.tagname = new char[length+1];
+			if ((off = in_data.Read(tag.tagname,length)) == wxInvalidOffset) {
+				throw CInvalidPacket("Bad Met File");
+			}
+			tag.tagname[length] = 0;
+		}
 	}
 
 	// NOTE: It's very important that we read the *entire* packet data, even if we do
@@ -462,6 +478,29 @@ CTag::CTag(const CFile &in_data)
 		if (in_data.Seek(len, CFile::current) == wxInvalidOffset) {		
 			throw CInvalidPacket("Bad Met File");
 		}								
+	}
+	else if (tag.type == TAGTYPE_UINT16){ 
+		uint16 value;
+		if (in_data.Read(&value,2) == wxInvalidOffset) {
+			throw CInvalidPacket("Bad Met File");
+		}				
+		tag.intvalue = ENDIAN_SWAP_16(value);
+	}
+	else if (tag.type == TAGTYPE_UINT8){ 
+		uint8 value;
+		if (in_data.Read(&value,1) == wxInvalidOffset) {
+			throw CInvalidPacket("Bad Met File");
+		}				
+		tag.intvalue = value;
+	}	
+	else if (tag.type >= TAGTYPE_STR1 && tag.type <= TAGTYPE_STR16) {
+		length = tag.type - TAGTYPE_STR1 + 1;
+		tag.stringvalue = new char[length+1];
+		if (in_data.Read(tag.stringvalue,length) == wxInvalidOffset) {
+			throw CInvalidPacket("Bad Met File");
+		}		
+		tag.stringvalue[length] = '\0';		
+		tag.type = 2;
 	}
 	else{
 		if (tag.type==0x00) throw(CInvalidPacket("Bad met file"));

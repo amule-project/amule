@@ -106,12 +106,12 @@ CPartFile::CPartFile(CSearchFile* searchresult)
 						uint8	nType;
 					} _aMetaTags[] = 
 					{
-						{ FT_MEDIA_ARTIST,  2 },
-						{ FT_MEDIA_ALBUM,   2 },
-						{ FT_MEDIA_TITLE,   2 },
-						{ FT_MEDIA_LENGTH,  2 },
-						{ FT_MEDIA_BITRATE, 3 },
-						{ FT_MEDIA_CODEC,   2 }
+						{ FT_ED2K_MEDIA_ARTIST,  2 },
+						{ FT_ED2K_MEDIA_ALBUM,   2 },
+						{ FT_ED2K_MEDIA_TITLE,   2 },
+						{ FT_ED2K_MEDIA_LENGTH,  2 },
+						{ FT_ED2K_MEDIA_BITRATE, 3 },
+						{ FT_ED2K_MEDIA_CODEC,   2 }
 					};
 					for (int t = 0; t < ARRSIZE(_aMetaTags); ++t)
 					{
@@ -122,11 +122,11 @@ CPartFile::CPartFile(CSearchFile* searchresult)
 								break;
 
 							// skip "length" tags with "0: 0" values
-							if (!strcasecmp(pTag->tag.tagname, FT_MEDIA_LENGTH) && (!strcmp(pTag->tag.stringvalue, "0: 0") || !strcmp(pTag->tag.stringvalue, "0:0")))
+							if (!strcasecmp(pTag->tag.tagname, FT_ED2K_MEDIA_LENGTH) && (!strcmp(pTag->tag.stringvalue, "0: 0") || !strcmp(pTag->tag.stringvalue, "0:0")))
 								break;
 
 							// skip "bitrate" tags with '0' values
-							if (!strcasecmp(pTag->tag.tagname, FT_MEDIA_BITRATE) && pTag->tag.intvalue == 0)
+							if (!strcasecmp(pTag->tag.tagname, FT_ED2K_MEDIA_BITRATE) && pTag->tag.intvalue == 0)
 								break;
 
 							printf("CPartFile::CPartFile(CSearchFile*): added tag %s\n", unicode2char(pTag->GetFullInfo()));

@@ -293,52 +293,135 @@ const unsigned int UNLIMITED	= 	0;
 #define	ST_LOWIDUSERS			0x94	// <uint32>
 
 //file tags
-#define	FT_FILENAME				0x01
-#define	FT_FILESIZE				0x02	// <int>
-#define	FT_FILETYPE				0x03	// <string>
-#define	FT_FILEFORMAT				0x04	// <string>
-#define	FT_LASTSEENCOMPLETE			0x05
 
-// additional media meta data tags from eDonkeyHybrid (note also the uppercase/lowercase)
-#define	FT_MEDIA_ARTIST			"Artist"
-#define	FT_MEDIA_ALBUM			"Album"
-#define	FT_MEDIA_TITLE			"Title"
-#define	FT_MEDIA_LENGTH			"length"
-#define	FT_MEDIA_BITRATE		"bitrate"
-#define	FT_MEDIA_CODEC			"codec"
-
-
-#define	FT_TRANSFERED				0x08	// <int>
-#define	FT_GAPSTART				0x09
-#define	FT_GAPEND				0x0A
-#define	FT_PARTFILENAME				0x12	// <string>
-#define	FT_OLDDLPRIORITY			0x13
-#define	FT_STATUS				0x14
-#define	FT_SOURCES				0x15
-#define	FT_PERMISSIONS				0x16
-#define	FT_OLDULPRIORITY			0x17
-#define	FT_DLPRIORITY				0x18	// Was 13
-#define	FT_ULPRIORITY				0x19	// Was 17
-
-// Aditional Kademlia tags
-#define	FT_KADLASTPUBLISHSRC   0x21   // <uint32>
-#define	FT_KADLASTPUBLISHKEY   0x20   // <uint32>
-
+//file tags
+#define FT_FILENAME				 0x01	// <string>
+#define TAG_NAME				"\x01"	// <string>
+#define FT_FILESIZE				 0x02	// <uint32>
+#define TAG_SIZE				"\x02"	// <uint32>
+#define FT_FILETYPE				 0x03	// <string>
+#define TAG_TYPE				"\x03"	// <string>
+#define FT_FILEFORMAT			 0x04	// <string>
+#define TAG_FORMAT				"\x04"	// <string>
+#define FT_LASTSEENCOMPLETE		 0x05	// <uint32>
+#define TAG_COLLECTION			"\x05"
+#define	TAG_PART_PATH			"\x06"	// <string>
+#define	TAG_PART_HASH			"\x07"
+#define FT_TRANSFERED			 0x08	// <uint32>
+#define	TAG_COPIED				"\x08"	// <uint32>
+#define FT_GAPSTART				 0x09	// <uint32>
+#define	TAG_GAP_START			"\x09"	// <uint32>
+#define FT_GAPEND				 0x0A	// <uint32>
+#define	TAG_GAP_END				"\x0A"	// <uint32>
+#define	TAG_DESCRIPTION			"\x0B"	// <string>
+#define	TAG_PING				"\x0C"
+#define	TAG_FAIL				"\x0D"
+#define	TAG_PREFERENCE			"\x0E"
+#define TAG_PORT				"\x0F"
+#define TAG_IP_ADDRESS			"\x10"
+#define TAG_VERSION				"\x11"	// <string>
+#define FT_PARTFILENAME			 0x12	// <string>
+#define TAG_TEMPFILE			"\x12"	// <string>
+#define FT_OLDDLPRIORITY			 0x13	// Not used anymore
+#define TAG_PRIORITY			"\x13"	// <uint32>
+#define FT_STATUS				 0x14	// <uint32>
+#define TAG_STATUS				"\x14"	// <uint32>
+#define FT_SOURCES				 0x15	// <uint32>
+#define TAG_AVAILABILITY		"\x15"	// <uint32>
+#define FT_PERMISSIONS			 0x16	// <uint32>
+#define TAG_QTIME				"\x16"
+#define FT_OLDULPRIORITY			 0x17	// Not used anymore
+#define TAG_PARTS				"\x17"
+#define FT_DLPRIORITY			 0x18	// Was 13
+#define FT_ULPRIORITY			 0x19	// Was 17
+#define FT_KADLASTPUBLISHKEY	 0x20	// <uint32>
+#define FT_KADLASTPUBLISHSRC	 0x21	// <uint32>
 #define	FT_FLAGS				 0x22	// <uint32>
 #define	FT_DL_ACTIVE_TIME		 0x23	// <uint32>
 #define	FT_CORRUPTEDPARTS		 0x24	// <string>
-#define	FT_DL_PREVIEW            0x25
-#define	FT_AICH_HASH			 0x27
+#define FT_DL_PREVIEW            0x25
+#define FT_AICH_HASH			 0x27
 #define	FT_COMPLETE_SOURCES		 0x30	// nr. of sources which share a complete version of the associated file (supported by eserver 16.46+)
-
-#define	FT_CATEGORY 				0x53
-
-
 // statistic
-#define	FT_ATTRANSFERED				0x50
-#define	FT_ATREQUESTED				0x51
-#define	FT_ATACCEPTED				0x52
-#define	FT_ATTRANSFEREDHI			0x54
+#define FT_ATTRANSFERED			 0x50	// <uint32>
+#define FT_ATREQUESTED			 0x51	// <uint32>
+#define FT_ATACCEPTED			 0x52	// <uint32>
+#define FT_CATEGORY				 0x53	// <uint32>
+#define	FT_ATTRANSFEREDHI		 0x54	// <uint32>
+#define	TAG_MEDIA_ARTIST		"\xD0"	// <string>
+#define	 FT_MEDIA_ARTIST		 0xD0	// <string>
+#define	TAG_MEDIA_ALBUM			"\xD1"	// <string>
+#define	 FT_MEDIA_ALBUM			 0xD1	// <string>
+#define	TAG_MEDIA_TITLE			"\xD2"	// <string>
+#define	 FT_MEDIA_TITLE			 0xD2	// <string>
+#define	TAG_MEDIA_LENGTH		"\xD3"	// <uint32> !!!
+#define	 FT_MEDIA_LENGTH		 0xD3	// <uint32> !!!
+#define	TAG_MEDIA_BITRATE		"\xD4"	// <uint32>
+#define	 FT_MEDIA_BITRATE		 0xD4	// <uint32>
+#define	TAG_MEDIA_CODEC			"\xD5"	// <string>
+#define	 FT_MEDIA_CODEC			 0xD5	// <string>
+#define TAG_BUDDYHASH			"\xF8"	// <string>
+#define TAG_CLIENTLOWID			"\xF9"	// <uint32>
+#define TAG_SERVERPORT			"\xFA"	// <uint16>
+#define TAG_SERVERIP			"\xFB"	// <uint32>
+#define TAG_SOURCEUPORT			"\xFC"	// <uint16>
+#define TAG_SOURCEPORT			"\xFD"	// <uint16>
+#define TAG_SOURCEIP			"\xFE"	// <uint32>
+#define TAG_SOURCETYPE			"\xFF"	// <uint8>
+
+#define	TAGTYPE_HASH			0x01
+#define	TAGTYPE_STRING			0x02
+#define	TAGTYPE_UINT32			0x03
+#define	TAGTYPE_FLOAT32			0x04
+#define	TAGTYPE_BOOL			0x05
+#define	TAGTYPE_BOOLARRAY		0x06
+#define	TAGTYPE_BLOB			0x07
+#define	TAGTYPE_UINT16			0x08
+#define	TAGTYPE_UINT8			0x09
+#define	TAGTYPE_BSOB			0x0A
+
+#define TAGTYPE_STR1			0x11
+#define TAGTYPE_STR2			0x12
+#define TAGTYPE_STR3			0x13
+#define TAGTYPE_STR4			0x14
+#define TAGTYPE_STR5			0x15
+#define TAGTYPE_STR6			0x16
+#define TAGTYPE_STR7			0x17
+#define TAGTYPE_STR8			0x18
+#define TAGTYPE_STR9			0x19
+#define TAGTYPE_STR10			0x1A
+#define TAGTYPE_STR11			0x1B
+#define TAGTYPE_STR12			0x1C
+#define TAGTYPE_STR13			0x1D
+#define TAGTYPE_STR14			0x1E
+#define TAGTYPE_STR15			0x1F
+#define TAGTYPE_STR16			0x20
+#define TAGTYPE_STR17			0x21	// accepted by eMule 0.42f (02-Mai-2004) in receiving code only because of a flaw, those tags are handled correctly, but should not be handled at all
+#define TAGTYPE_STR18			0x22	// accepted by eMule 0.42f (02-Mai-2004) in receiving code only because of a flaw, those tags are handled correctly, but should not be handled at all
+#define TAGTYPE_STR19			0x23	// accepted by eMule 0.42f (02-Mai-2004) in receiving code only because of a flaw, those tags are handled correctly, but should not be handled at all
+#define TAGTYPE_STR20			0x24	// accepted by eMule 0.42f (02-Mai-2004) in receiving code only because of a flaw, those tags are handled correctly, but should not be handled at all
+#define TAGTYPE_STR21			0x25	// accepted by eMule 0.42f (02-Mai-2004) in receiving code only because of a flaw, those tags are handled correctly, but should not be handled at all
+#define TAGTYPE_STR22			0x26	// accepted by eMule 0.42f (02-Mai-2004) in receiving code only because of a flaw, those tags are handled correctly, but should not be handled at all
+
+
+#define	ED2KFTSTR_AUDIO			"Audio"	// value for eD2K tag FT_FILETYPE
+#define	ED2KFTSTR_VIDEO			"Video"	// value for eD2K tag FT_FILETYPE
+#define	ED2KFTSTR_IMAGE			"Image"	// value for eD2K tag FT_FILETYPE
+#define	ED2KFTSTR_DOCUMENT		"Doc"	// value for eD2K tag FT_FILETYPE
+#define	ED2KFTSTR_PROGRAM		"Pro"	// value for eD2K tag FT_FILETYPE
+#define	ED2KFTSTR_ARCHIVE		"Arc"	// eMule internal use only
+#define	ED2KFTSTR_CDIMAGE		"Iso"	// eMule internal use only
+
+// additional media meta data tags from eDonkeyHybrid (note also the uppercase/lowercase)
+#define	FT_ED2K_MEDIA_ARTIST	"Artist"	// <string>
+#define	FT_ED2K_MEDIA_ALBUM		"Album"		// <string>
+#define	FT_ED2K_MEDIA_TITLE		"Title"		// <string>
+#define	FT_ED2K_MEDIA_LENGTH	"length"	// <string> !!!
+#define	FT_ED2K_MEDIA_BITRATE	"bitrate"	// <uint32>
+#define	FT_ED2K_MEDIA_CODEC		"codec"		// <string>
+#define TAG_NSENT				"# Sent"
+#define TAG_ONIP				"ip"
+#define TAG_ONPORT				"port"
 
 // ed2k search expression comparison operators
 #define ED2K_SEARCH_OP_EQUAL         0 // eserver 16.45+
