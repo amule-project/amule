@@ -380,9 +380,9 @@ AC_DEFUN(AM_PATH_CURLCONFIG,[
  AC_CACHE_VAL(my_cv_curl_vers,[
  my_cv_curl_vers=NONE
  dnl check is the plain-text version of the required version
- check="7.9.7"
+ check="7.9.5"
  dnl check_hex must be UPPERCASE if any hex letters are present
- check_hex="070907"
+ check_hex="070905"
 
 
  AC_MSG_CHECKING([for curl >= $check])
