@@ -244,7 +244,11 @@ public:
 		// The start-key of the last element must be smaller than our start-key
 		// Otherwise there is the possibility that we can merge with the one before that
 		if ( start <= it->first ) {
-			it = m_ranges.lower_bound( start );
+			// If the two starts are equal, then we only need to go back another
+			// step to see if the range prior to this one is mergeable
+			if ( start != it->first ) {
+				it = m_ranges.lower_bound( start );
+			}
 
 			if ( it != m_ranges.begin() ) {
 				// Go back to the last range which starts at or before key
