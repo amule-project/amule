@@ -76,7 +76,7 @@ typedef struct { time_t startTime; long lSession; bool admin;} Session;
 class DownloadFiles {
 	public:
 		wxString	sFileName;
-		wxString	sFileStatus;
+		uint8		nFileStatus;
 		unsigned long	lFileSize;
 		unsigned long	lFileCompleted;
 		unsigned long	lFileTransferred;
@@ -90,10 +90,11 @@ class DownloadFiles {
 		wxString	sED2kLink;
 		wxString	sFileInfo;
 		wxString	sPartStatus;
-		
-	
+
+		wxString	GetFileStatus();
+
 		static class DownloadFilesInfo *GetContainerInstance();
-		
+
 		uint32 file_id;
 };
 

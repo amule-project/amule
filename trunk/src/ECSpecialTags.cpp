@@ -98,14 +98,15 @@ CEC_ConnState_Tag::CEC_ConnState_Tag(EC_DETAIL_LEVEL detail_level) : CECTag(EC_T
 
 CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level) : CECTag(EC_TAG_PARTFILE, PTR_2_ID(file))
 {
-	AddTag(CECTag(EC_TAG_PARTFILE_STATUS, file->getPartfileStatus()));
+	uint8 tmpStatus = file->GetStatus();
+	AddTag(CECTag(EC_TAG_PARTFILE_STATUS, tmpStatus));
 
 	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT, (uint32)file->GetSourceCount()));
 	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT, (uint32)file->GetNotCurrentSourcesCount()));
 	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT_XFER, (uint32)file->GetTransferingSrcCount()));
 	AddTag(CEC_PartStatus_Tag(file, 200));
 
-	if ( (file->getPartfileStatus() == wxT("Downloading")) || (detail_level != EC_DETAIL_UPDATE) ) {
+	if ( (file->GetTransferingSrcCount() > 0) || (detail_level != EC_DETAIL_UPDATE) ) {
 		
 		AddTag(CECTag(EC_TAG_PARTFILE_SIZE_XFER, (uint32)file->GetTransfered()));
 		AddTag(CECTag(EC_TAG_PARTFILE_SIZE_DONE, (uint32)file->GetCompletedSize()));
