@@ -2510,10 +2510,10 @@ bool DownloadFilesInfo::ReQuery()
 	// status = "downloading" for parts query
 	for(std::list<DownloadFiles>::iterator i = m_items.begin(); i != m_items.end();i++) {
 		if ( core_files.count(i->file_id) == 0 ) {
-			delete i->m_Image;
 #ifdef WITH_LIBPNG
 			m_ImageLib->RemoveImage(wxT("/") + i->m_Image->Name());
 #endif
+			delete i->m_Image;
 			m_files.erase(i->file_id);
 			m_items.erase(i);
 		}
