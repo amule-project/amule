@@ -373,6 +373,7 @@ private:
 	void process_end(bool entry);
 	/* Private Vars */
 	Socks5StateProcessor m_process_state[SOCKS5_MAX_STATES];
+	wxString m_state_name[SOCKS5_MAX_STATES];
 };
 
 //------------------------------------------------------------------------------
@@ -410,6 +411,7 @@ private:
 	void process_end(bool entry);
 	/* Private Vars */
 	Socks4StateProcessor m_process_state[SOCKS4_MAX_STATES];
+	wxString m_state_name[SOCKS4_MAX_STATES];
 };
 
 //------------------------------------------------------------------------------
@@ -447,6 +449,7 @@ private:
 	void process_end(bool entry);
 	/* Private Vars */
 	HttpStateProcessor m_process_state[HTTP_MAX_STATES];
+	wxString m_state_name[HTTP_MAX_STATES];
 };
 
 //------------------------------------------------------------------------------
