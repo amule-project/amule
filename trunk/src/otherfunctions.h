@@ -227,54 +227,62 @@ class RLE_Data {
 		bool m_use_diff;
 		int m_len, m_enc_len;
 		
-		template <class T> const unsigned char *EncodeT(T &buff, int &outlen)
+		// data is bounded by srclen. everything above considered == 0
+		template <class T> const unsigned char *EncodeT(T &buff, int srclen, int &outlen)
 		{
 			//
 			// calculate difference from prev
 			//
 			if ( m_use_diff ) {
 				for (int i = 0; i < m_len; i++) {
-					m_buff[i] ^= (unsigned char)buff[i];
+					m_buff[i] ^= (i < srclen ) ? ((unsigned char)buff[i]) : 0;
+				}
+			} else {
+				//
+				// can't use memcpy - in case of generic class T this
+				// will rely on "operator []" implementation
+				for(int i = 0; i < m_len;i++) {
+					m_buff[i] = (i < srclen ) ? ((unsigned char)buff[i]) : 0;
 				}
 			}
-				
+			
 			//
 			// now RLE
-		//
-		int i = 0, j = 0;
-		while ( i != m_len ) {
-			unsigned char curr_val = m_buff[i];
-			int seq_start = i;
-			while ( (i != m_len) && (curr_val == m_buff[i]) ) {
-				i++;
-			}
-			if (i - seq_start > 1) {
-				// if there's 2 or more equal vals - put it twice in stream
-				m_enc_buff[j++] = curr_val;
-				m_enc_buff[j++] = curr_val;
-				m_enc_buff[j++] = i - seq_start;
-			} else {
-				// single value - put it as is
-				m_enc_buff[j++] = curr_val;
-			}
-		}
-	
-		outlen = j - 1;
-		
-		//
-		// If using differential encoder, remember current data for
-		// later use
-		if ( m_use_diff ) {
 			//
-			// can't use memcpy - in case of generic class T this
-			// will rely on "operator []" implementation
-			for(int i = 0; i < m_len;i++) {
-				m_buff[i] = (unsigned char)buff[i];
+			int i = 0, j = 0;
+			while ( i != m_len ) {
+				unsigned char curr_val = m_buff[i];
+				int seq_start = i;
+				while ( (i != m_len) && (curr_val == m_buff[i]) ) {
+					i++;
+				}
+				if (i - seq_start > 1) {
+					// if there's 2 or more equal vals - put it twice in stream
+					m_enc_buff[j++] = curr_val;
+					m_enc_buff[j++] = curr_val;
+					m_enc_buff[j++] = i - seq_start;
+				} else {
+					// single value - put it as is
+					m_enc_buff[j++] = curr_val;
+				}
 			}
+	
+			outlen = j - 1;
+			
+			//
+			// If using differential encoder, remember current data for
+			// later use
+			if ( m_use_diff ) {
+				//
+				// can't use memcpy - in case of generic class T this
+				// will rely on "operator []" implementation
+				for(int i = 0; i < m_len;i++) {
+					m_buff[i] = (i < srclen ) ? ((unsigned char)buff[i]) : 0;
+				}
+			}
+			
+			return m_enc_buff;
 		}
-		
-		return m_enc_buff;
-	}
 
 	public:
 		RLE_Data(int len, bool use_diff);
@@ -282,16 +290,17 @@ class RLE_Data {
 		// those constructors are for stl containers
 		RLE_Data();
 		RLE_Data(const RLE_Data &);
+		RLE_Data &operator=(const RLE_Data &);
 		
 		~RLE_Data();
 		
 		const unsigned char *Encode(unsigned char *data, int &outlen)
 		{
-			return EncodeT<unsigned char *>(data, outlen);
+			return EncodeT<unsigned char *>(data, m_len, outlen);
 		}
 		const unsigned char *Encode(ArrayOfUInts16 &data, int &outlen)
 		{
-			return EncodeT<ArrayOfUInts16>(data, outlen);
+			return EncodeT<ArrayOfUInts16>(data, data.GetCount(), outlen);
 		}
 		
 		const unsigned char *Decode(const unsigned char *data);	
