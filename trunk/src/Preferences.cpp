@@ -1144,10 +1144,10 @@ void CPreferences::SaveCats()
 		for ( size_t i = 1; i < m_CatList.size(); i++ ) {
 			cfg->SetPath( wxString::Format(wxT("/Cat#%i"), i) );
 
-			cfg->Write( wxT("Title"),		m_CatList[i]->title );
+			cfg->Write( wxT("Title"),	m_CatList[i]->title );
 			cfg->Write( wxT("Incoming"),	m_CatList[i]->incomingpath );
-			cfg->Write( wxT("Comment"),		m_CatList[i]->comment );
-			cfg->Write( wxT("Color"),		wxString::Format(wxT("%u"), m_CatList[i]->color) );
+			cfg->Write( wxT("Comment"),	m_CatList[i]->comment );
+			cfg->Write( wxT("Color"),	wxString::Format(wxT("%u"), m_CatList[i]->color) );
 			cfg->Write( wxT("Priority"),	m_CatList[i]->prio );
 		}
 		

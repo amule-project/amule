@@ -82,6 +82,8 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		to 0, both actions on a wxSpinCtrl, aMule would crash.
 		* Fixed the GetTagByIndex and GetTagByName segfaults in
 		amulecmd.
+		* Fixed a problem with saving the preferences, that in some
+		situations would not be saved.
 
 	Ken:
 		* Fixed Mac bug: window was a little larger each restart
