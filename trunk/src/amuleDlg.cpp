@@ -320,12 +320,6 @@ void CamuleDlg::OnUQTimer(wxTimerEvent& WXUNUSED(evt))
 }
 
 
-bool CamuleDlg::IsRunning()
-{
-	return (m_app_state == APP_STATE_RUNNING);
-}
-
-
 void CamuleDlg::OnToolBarButton(wxCommandEvent& ev)
 {
 	static int lastbutton = ID_BUTTONSERVERS;
