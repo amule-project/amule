@@ -22,6 +22,7 @@
 #ifndef WEBSERVER_H
 #define WEBSERVER_H
 
+#pragma interface
 //-------------------------------------------------------------------
 #ifdef __WXMSW__
 	#include <winsock.h>

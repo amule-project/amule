@@ -22,6 +22,7 @@
 
 //-------------------------------------------------------------------
 
+#pragma implementation
 #include "ExternalConnector.h"
 
 //-------------------------------------------------------------------
@@ -85,7 +86,7 @@
 // Static data initialization -- memorize this, you'll need some day!
 // 
 //-------------------------------------------------------------------
-const wxCmdLineEntryDesc CaMuleExternalConnector::cmdLineDesc[7] = 
+const wxCmdLineEntryDesc CaMuleExternalConnector::cmdLineDesc[8] = 
 {
 	{ wxCMD_LINE_SWITCH, wxT("h"), wxT("help"),
 		wxT("show this help"),
@@ -104,6 +105,9 @@ const wxCmdLineEntryDesc CaMuleExternalConnector::cmdLineDesc[7] =
 		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL },
 	{ wxCMD_LINE_SWITCH, wxT("q"), wxT("quiet"), 
 		wxT("Do not print any output to stdout."),
+		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL },
+	{ wxCMD_LINE_SWITCH, wxT("v"), wxT("verbose"), 
+		wxT("Be verbose - show also debug messages."),
 		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL },
 	{ wxCMD_LINE_NONE, wxEmptyString, wxEmptyString,
 		wxEmptyString,
@@ -423,9 +427,9 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, CmdId *UNU
 	}
 }
 
-void CaMuleExternalConnector::OnInitCmdLine(wxCmdLineParser& amuleweb_parser)
+void CaMuleExternalConnector::OnInitCmdLine(wxCmdLineParser& parser)
 {
-	amuleweb_parser.SetDesc(cmdLineDesc); 
+	parser.SetDesc(cmdLineDesc);
 }
 
 bool CaMuleExternalConnector::OnCmdLineParsed(wxCmdLineParser& parser)
@@ -451,6 +455,7 @@ bool CaMuleExternalConnector::OnCmdLineParsed(wxCmdLineParser& parser)
 	m_HasCommandLinePassword = parser.Found(wxT("password"), &m_CommandLinePassword);
 	m_HasConfigFromFile = parser.Found(wxT("file-config"));
 	m_KeepQuiet = parser.Found(wxT("quiet"));
+	m_Verbose = parser.Found(wxT("verbose"));
 
 	return result;
 }

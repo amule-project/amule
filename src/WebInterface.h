@@ -30,6 +30,7 @@
 	#include "config.h"
 #endif
 
+#pragma interface
 //-------------------------------------------------------------------
 //
 // wxUSE_GUI will only be defined after this include

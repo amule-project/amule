@@ -28,6 +28,8 @@
 
 #define __EXTERNALCONNECTOR_H__
 
+#pragma interface
+
 #include <wx/app.h>		// For wxApp and mainly, for wxUSE_GUI
 #include <wx/cmdline.h>		// For wxCmdLineEntryDesc
 #include <wx/string.h>		// For wxString
@@ -76,6 +78,7 @@ public:
 	// Other functions
 	// 
 	void Show(const wxString &s);
+	void DebugShow(const wxString &s) { if (m_Verbose) Show(s); }
 	void Dump(const wxString &s);
 	void MainThreadIdleNow();
 	const wxString& GetCmdArgs() const { return m_cmdargs; }
@@ -93,7 +96,7 @@ public:
 	bool OnCmdLineParsed(wxCmdLineParser& parser);
 
 private:
-	static const wxCmdLineEntryDesc cmdLineDesc[7];
+	static const wxCmdLineEntryDesc cmdLineDesc[8];
 	
 	wxString	m_cmdargs;
 	ECSocket* 	m_ECClient;
@@ -105,6 +108,7 @@ private:
 	wxString 	m_sPort;
 	wxString 	m_sHostName;
 	char *		m_InputLine;
+	bool		m_Verbose;
 
 #if wxUSE_GUI
 private:

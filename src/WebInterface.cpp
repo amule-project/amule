@@ -27,6 +27,7 @@
 	#include <unistd.h>
 #endif
 
+#pragma implementation
 //-------------------------------------------------------------------
 #include "MD5Sum.h"
 

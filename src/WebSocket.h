@@ -22,6 +22,8 @@
 #ifndef WEBSOCKET_H
 #define WEBSOCKET_H
 
+#pragma interface
+
 #include <wx/thread.h>
 #include <wx/dynarray.h>
 

@@ -21,6 +21,8 @@
 #ifndef TEXTCLIENT_H
 #define TEXTCLIENT_H
 
+#pragma interface
+
 #ifndef WIN32
 	#include "config.h"
 #endif
