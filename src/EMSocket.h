@@ -21,6 +21,7 @@
 #define EMSOCKET_H
 
 #include <wx/socket.h>		// Needed for wxSocketClient
+#include <wx/event.h>
 
 #include "types.h"		// Needed for uint8 and uint32
 #include "CTypedPtrList.h"	// Needed for CTypedPtrList
@@ -41,6 +42,7 @@ class Packet;
 #define PACKET_HEADER_SIZE	6
 
 //WX_DECLARE_LIST(Packet,PacketListL);
+
 
 class CEMSocket :
 	public wxSocketClient
@@ -66,6 +68,10 @@ public:
 	virtual void	OnReceive(int nErrorCode);
 	
  protected:
+	#ifdef __DEBUG__
+	uint32 created;
+	#endif
+
 	virtual bool	PacketReceived(Packet* packet) { return false; };
 
 	virtual void	OnClose(int nErrorCode);
@@ -101,11 +107,11 @@ private:
 	
 	#ifdef __DEBUG__
 	bool from_destroy;
-	uint32 created;
 	#endif
 
 	CList<Packet*, Packet*> controlpacket_queue;
 	CList<Packet*, Packet*> standartpacket_queue;
+	
 };
 
 #endif // EMSOCKET_H
