@@ -102,7 +102,7 @@ wxThread::ExitCode AsyncDNS::Entry()
 
 IMPLEMENT_DYNAMIC_CLASS(CUDPSocket,wxDatagramSocket)
 
-static wxIPV4address tmpaddress;
+//static wxIPV4address tmpaddress;
 
 CUDPSocket::CUDPSocket(CServerConnect* in_serverconnect,wxIPV4address& address) 
 : wxDatagramSocket(address,wxSOCKET_NOWAIT){
