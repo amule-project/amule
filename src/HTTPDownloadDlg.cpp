@@ -110,7 +110,7 @@ void* myThread::Entry() {
     curl_easy_setopt(curl_handle, CURLOPT_VERBOSE, TRUE);
     curl_easy_setopt(curl_handle, CURLOPT_MAXREDIRS , 10);
     curl_easy_setopt(curl_handle, CURLOPT_FOLLOWLOCATION , 1);
-    curl_easy_setopt(curl_handle, CURLOPT_TIMEOUT , 60);
+    curl_easy_setopt(curl_handle, CURLOPT_TIMEOUT , 15);
     curl_easy_setopt(curl_handle, CURLOPT_USERAGENT, "Mozilla/4");
     curl_easy_setopt(curl_handle, CURLOPT_FILE, outfile);
     if (TestDestroy()) {fclose(outfile); return NULL; }
