@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2004-11-16 23:38+0100\n"
-"PO-Revision-Date: 2004-11-23 13:29+0100\n"
+"PO-Revision-Date: 2004-12-24 14:08+0100\n"
 "Last-Translator: GhePeU <ghepeu@virgilio.it>\n"
 "Language-Team: Italian\n"
 "MIME-Version: 1.0\n"
@@ -443,11 +443,11 @@ msgstr " (simula versione %x di eMule)"
 
 #: src/BaseClient.cpp:1393
 msgid "Old MlDonkey"
-msgstr "MlDonkey vecchia versione"
+msgstr "Vecchio MLDonkey"
 
 #: src/BaseClient.cpp:1398
 msgid "New MlDonkey"
-msgstr "MlDonkey nuova versione"
+msgstr "Nuovo MLDonkey"
 
 #: src/BaseClient.cpp:1418
 #, c-format
@@ -897,7 +897,7 @@ msgstr "Aggiunto in coda"
 
 #: src/ClientListCtrl.cpp:734 src/TransferWnd.cpp:267 src/WebServer.cpp:1188
 msgid "Banned"
-msgstr "Bannato"
+msgstr "Bannati"
 
 #: src/ClientListCtrl.cpp:762 src/SharedFilesCtrl.cpp:127
 #: src/SharedFilesCtrl.cpp:203
@@ -2844,7 +2844,7 @@ msgid ""
 "Note: These values are\n"
 " only used for statistics."
 msgstr "Nota: questi valori sono\n"
-" usati solo nelle statistiche."
+"usati solo nelle statistiche."
 
 #: src/muuli_wdr.cpp:1854
 msgid "Client TCP Port:"
@@ -2912,7 +2912,7 @@ msgstr "Lista"
 
 #: src/muuli_wdr.cpp:1983
 msgid "Update serverlist when connecting to a server"
-msgstr "Aggiorna lista server quando ti connetti ad un server"
+msgstr "Aggiorna lista server quando ci si connette ad un server"
 
 #: src/muuli_wdr.cpp:1986
 msgid "Update serverlist when a client connect"
@@ -3873,7 +3873,7 @@ msgstr "In attesa"
 #: src/otherfunctions.cpp:476 src/PartFile.cpp:2787 src/TransferWnd.cpp:304
 #: src/WebServer.cpp:2198
 msgid "Downloading"
-msgstr "download in corso"
+msgstr "Download in corso"
 
 #: src/otherfunctions.cpp:477 src/PartFile.cpp:2783 src/TransferWnd.cpp:305
 #: src/WebServer.cpp:2198
@@ -6161,4 +6161,12 @@ msgstr "Metodo"
 #: src/WebServer.cpp:2154
 msgid "Global (Server)"
 msgstr "Globale (server)"
+
+#: 
+msgid "Operative System"
+msgstr "Sistema Operativo"
+
+#:
+msgid "Not Received"
+msgstr "Non ricevuto"
 
