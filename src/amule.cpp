@@ -107,6 +107,7 @@
 #include "UDPSocket.h"			// Needed for CUDPSocket
 #include "PartFile.h"			// Needed for CPartFile
 #include "AddFileThread.h"		// Needed for CAddFileThread
+#include "updownclient.h"		// Needed for CUpDownClient
 #include "packets.h"
 #include "AICHSyncThread.h"
 
