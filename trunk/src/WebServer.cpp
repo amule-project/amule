@@ -145,7 +145,6 @@ wxString Prio2Str(uint32 nFilePriority, bool bFileAutoPriority)
 		case PR_POWERSHARE:
 			sFilePriority = wxT("PowerShare[Release]"); break;
 		default:
-			printf("No value for %d\n", nFilePriority);
 			sFilePriority = wxT("-"); break;
 	}
 	if ( bFileAutoPriority ) {
