@@ -534,11 +534,11 @@ void CUpDownClient::SendBlockRequests()
 		SetDownloadState(DS_NONEEDEDPARTS);
 		return;
 	}
-	#define iPacketSize 16+(3*4)+(3*4) // 40
-	CPacket* packet = new CPacket(OP_REQUESTPARTS,iPacketSize);
-	char *tempbuf = new char[iPacketSize];
-	CSafeMemFile data((BYTE *)tempbuf, iPacketSize);
+	
+	
+	CSafeMemFile data(16 /*Hash*/ + (3*4 /* uint32 start*/) + (3*4/* uint32 start*/));
 	data.WriteHash16(m_reqfile->GetFileHash());
+	
 	POSITION pos = m_PendingBlocks_list.GetHeadPosition();
 
 	for (uint32 i = 0; i != 3; i++) {
@@ -564,9 +564,8 @@ void CUpDownClient::SendBlockRequests()
 			data.WriteUInt32(0);
 		}
 	}
-
-	packet->CopyToDataBuffer(0, tempbuf, iPacketSize);
-	delete [] tempbuf;
+	
+	CPacket* packet = new CPacket(&data,OP_EDONKEYPROT, OP_REQUESTPARTS);
 	theApp.statistics->AddUpDataOverheadFileRequest(packet->GetPacketSize());
 	SendPacket(packet, true, true);
 }

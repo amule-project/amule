@@ -39,11 +39,7 @@ IMPLEMENT_DYNAMIC_CLASS(CEMSocket,wxSocketClient)
 CEMSocket::CEMSocket(const CProxyData *ProxyData)
   : CSocketClientProxy(wxSOCKET_NOWAIT/*wxSOCKET_BLOCK*/, ProxyData)
 {
-	#ifdef __DEBUG__
-	from_destroy =  false;
-	created = GetTickCount();
-	#endif		
-	
+
 	byConnected = ES_NOTCONNECTED;
 	
 	limitenabled = false;
@@ -67,9 +63,6 @@ CEMSocket::CEMSocket(const CProxyData *ProxyData)
 }
 
 CEMSocket::~CEMSocket(){
-	#ifdef __DEBUG__
-	wxASSERT(from_destroy);
-	#endif	    
 	byConnected = ES_DISCONNECTED;
 
 	SetNotify(0);
@@ -80,9 +73,6 @@ CEMSocket::~CEMSocket(){
 }
 
 void CEMSocket::Destroy() {
-	#ifdef __DEBUG__
-	from_destroy =  true;
-	#endif
 	if (!DoingDestroy) {		
 		DoingDestroy = true;
 #ifdef AMULE_DAEMON

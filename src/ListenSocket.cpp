@@ -54,7 +54,7 @@
 
 #ifdef DEBUG_REMOTE_CLIENT_PROTOCOL
 #undef AddDebugLogLineM
-#define AddDebugLogLineM(x,y) printf("%s\n",unicode2char(y));
+#define AddDebugLogLineM(x,y) printf("%s\n",(const char*)unicode2char(y));
 #endif 
 
 //------------------------------------------------------------------------------
@@ -77,13 +77,13 @@ void CClientReqSocketHandler::ClientReqSocketHandler(wxSocketEvent& event)
 		return;
 	}
 	
-	if (socket->OnDestroy()) {
+	if (socket->OnDestroy() || socket->deletethis) {
 		return;
 	}
 	
 	switch(event.GetSocketEvent()) {
 		case wxSOCKET_LOST:
-			socket->OnError(0 /* SOCKET_LOST is not an error */);
+			socket->OnError(0xFEFF /* SOCKET_LOST is not an error */);
 			break;
 		case wxSOCKET_INPUT:
 			socket->OnReceive(0);
@@ -216,7 +216,13 @@ void CClientReqSocket::OnInit()
 
 bool CClientReqSocket::Close()
 {
-	return wxSocketBase::Close();
+	if (IsConnected()) {
+		return CEMSocket::Close();
+	} else {
+		// This can happen even twice, because Safe_Delete and wxSocketBase::Destroy 
+		// call Close()
+		return false;
+	}
 }
 
 // Used in BaseClient.cpp, but not here.
@@ -298,7 +304,7 @@ void CClientReqSocket::OnClose(int nErrorCode)
 	CEMSocket::OnClose(nErrorCode);
 	if (nErrorCode > 0) {
 		wxString strError;
-		strError.Printf(wxT("Closed: %u"),nErrorCode);
+		strError = wxString::Format(wxT("Closed: %u"),nErrorCode);
 		Disconnect(strError);
 	} else {
 		Disconnect(wxT("Close"));
@@ -308,7 +314,6 @@ void CClientReqSocket::OnClose(int nErrorCode)
 void CClientReqSocket::Disconnect(const wxString& strReason)
 {
 	byConnected = ES_DISCONNECTED;
-//	printf("Client socket disconnected (%s)\n",unicode2char(strReason));
 	if (m_client) {
 		if (m_client->Disconnected(strReason, true)) {
 			// Somehow, Safe_Delete() is beeing called by Disconnected(),
@@ -791,11 +796,11 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				auEndOffsets[2] = data.ReadUInt32();
 
 
-				#ifdef __USE_DEBUG__
-				if (thePrefs.GetDebugClientTCPLevel() > 0){
-						Debug("  Start1=%u  End1=%u  Size=%u\n", auStartOffsets[0], auEndOffsets[0], auEndOffsets[0] - auStartOffsets[0]);
-						Debug("  Start2=%u  End2=%u  Size=%u\n", auStartOffsets[1], auEndOffsets[1], auEndOffsets[1] - auStartOffsets[1]);
-						Debug("  Start3=%u  End3=%u  Size=%u\n", auStartOffsets[2], auEndOffsets[2], auEndOffsets[2] - auStartOffsets[2]);
+				#ifdef __DEBUG__
+				if (thePrefs::GetVerbose()) {
+						printf("  Start1=%u  End1=%u  Size=%u\n", auStartOffsets[0], auEndOffsets[0], auEndOffsets[0] - auStartOffsets[0]);
+						printf("  Start2=%u  End2=%u  Size=%u\n", auStartOffsets[1], auEndOffsets[1], auEndOffsets[1] - auStartOffsets[1]);
+						printf("  Start3=%u  End3=%u  Size=%u\n", auStartOffsets[2], auEndOffsets[2], auEndOffsets[2] - auStartOffsets[2]);
 				}
 				#endif
 				
@@ -2241,7 +2246,7 @@ void CClientReqSocket::OnError(int nErrorCode)
 	
 	bool disconnect = true;
 	
-	if ((nErrorCode == 0) || (nErrorCode == 7)) {	
+	if ((nErrorCode == 0) || (nErrorCode == 7) || (nErrorCode == 0xFEFF)) {	
 		
 		if (m_client) {
 			if (!m_client->GetUserName().IsEmpty()) {
@@ -2249,9 +2254,16 @@ void CClientReqSocket::OnError(int nErrorCode)
 			} else {
 				strError = wxT("An unnamed client");
 			}
-			strError += wxT(" (IP:") + m_client->GetFullIP() + wxT(") caused a socket blocking error or closed connection.");
+			strError += wxT(" (IP:") + m_client->GetFullIP() + wxT(") ");
 		} else {
-			strError = wxT("A client caused a socket blocking error or closed connection.");
+			strError = wxT("A client ");
+		}
+		if (nErrorCode == 0) {
+			strError += wxT("closed connection.");
+		} else if (nErrorCode == 0xFEFF) {
+			strError += wxT(" caused a wxSOCKET_LOST event.");
+		}	else {
+			strError += wxT("caused a socket blocking error.");
 		}
 	
 #if 0	

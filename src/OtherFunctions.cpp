@@ -43,6 +43,12 @@
 
 #include "OPCodes.h"
 
+#ifdef __LINUX__
+	#include <execinfo.h>
+	#include <cxxabi.h>
+	#include <wx/thread.h>
+#endif
+
 namespace otherfunctions {
 
 wxString GetMuleVersion()
@@ -1042,6 +1048,130 @@ void DumpMem_DW(const uint32 *ptr, int count)
 		if ( (i % 4) == 3) printf("\n");
 	}
 	printf("\n");
+}
+
+// Print a stack backtrace if available
+void print_backtrace(uint8 n) {
+#ifdef __LINUX__
+	// (stkn) create backtrace
+	void *bt_array[100];	// 100 should be enough ?!?
+	char **bt_strings;
+	int num_entries;
+
+	if ((num_entries = backtrace(bt_array, 100)) < 0) {
+		fprintf(stderr, "* Could not generate backtrace\n");
+		return;
+	}
+
+	if ((bt_strings = backtrace_symbols(bt_array, num_entries)) == NULL) {
+		fprintf(stderr, "* Could not get symbol names for backtrace\n");
+		return;
+	}
+	
+	wxString *libname = new wxString[num_entries];
+	wxString *funcname = new wxString[num_entries];
+	wxString *address = new wxString[num_entries];
+	wxString AllAddresses;
+	for (int i = 0; i < num_entries; ++i) {
+		wxString wxBtString = wxConvCurrent->cMB2WX(bt_strings[i]);
+		int posLPar = wxBtString.Find(wxT('('));
+		int posRPar = wxBtString.Find(wxT(')'));
+		int posLBra = wxBtString.Find(wxT('['));
+		int posRBra = wxBtString.Find(wxT(']'));
+		bool hasFunction = true;
+		if (posLPar == -1 || posRPar == -1) {
+			if (posLBra == -1 || posRBra == -1) {
+				/* It is important to have exactly num_entries 
+				 * addresses in AllAddresses */
+				AllAddresses += wxT("0x0000000 ");
+				continue;
+			}
+			posLPar = posLBra;
+			hasFunction = false;
+		}
+		/* Library name */
+		int len = posLPar;
+		libname[i] = wxBtString.Mid(0, len);
+		/* Function name */
+		if (hasFunction) {
+			int posPlus = wxBtString.Find(wxT('+'));
+			if (posPlus == -1) posPlus = posRPar;
+			len = posPlus - posLPar - 1;
+			funcname[i] = wxBtString.Mid(posLPar + 1, len);
+			if (funcname[i].Mid(0,2) == wxT("_Z")) {
+				int status;
+				// This unicode2char is unavoidable (and only used for backtraces anyway)
+				char *demangled = abi::__cxa_demangle(funcname[i].mb_str(), NULL, NULL, &status);
+				if (!status) {
+					funcname[i] = wxConvCurrent->cMB2WX(demangled);
+				}
+				if (demangled) {
+					free(demangled);
+				}
+			}
+		}
+		/* Address */
+		if ( posLBra == -1 || posRBra == -1) {
+			AllAddresses += wxT("0x0000000 ");
+		} else {
+			len = posRBra - posLBra - 1;
+			address[i] = wxBtString.Mid(posLBra + 1, len);
+			AllAddresses += address[i] + wxT(" ");
+		}
+	}
+	free(bt_strings);
+	
+	/* Get line numbers from addresses */
+	wxArrayString out;
+	bool hasLineNumberInfo = false;
+	if (wxThread::IsMain()) {
+		wxString command;
+		command << wxT("addr2line -C -f -s -e /proc/") <<
+			getpid() << wxT("/exe ") << AllAddresses;
+		// The output of the command is this wxArrayString, in which
+		// the even elements are the function names, and the odd elements
+		// are the line numbers.
+#ifndef AMULE_DAEMON		
+		::wxEnableTopLevelWindows(false);
+#endif
+		hasLineNumberInfo = wxExecute(command, out) != -1;
+#ifndef AMULE_DAEMON		
+		::wxEnableTopLevelWindows(true);
+#endif
+	}
+	
+	// Remove 'n+1' first entries (+1 because of this function)
+	
+	for (int i = 0; i < num_entries; ++i) {
+		if (i+2 > n) {
+			/* If we have no function name, use the result from addr2line */
+			if (funcname[i].IsEmpty()) {
+				if (hasLineNumberInfo) {
+					funcname[i] = out[2*i];
+				} else {
+					funcname[i] = wxT("??");
+				}
+			}
+			wxString btLine;
+			btLine << wxT("[") << i << wxT("] ") << funcname[i] << wxT(" in ");
+			/* If addr2line did not find a line number, use bt_string */
+			if (!hasLineNumberInfo || out[2*i+1].Mid(0,2) == wxT("??")) {
+				btLine += libname[i] + wxT("[") + address[i] + wxT("]");
+			} else if (hasLineNumberInfo) {
+				btLine += out[2*i+1];
+			} else {
+				btLine += libname[i];
+			}
+			/* Print */
+			fprintf(stderr, "%s\n", (const char *)(btLine.mb_str()) );
+		}
+	}
+	delete [] libname;
+	delete [] funcname;
+	delete [] address;
+#else 
+	fprintf(stderr, "--== no BACKTRACE for your platform ==--\n\n");
+#endif
 }
 
 /*

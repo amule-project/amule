@@ -68,9 +68,6 @@ public:
 	virtual void	OnReceive(int nErrorCode);
 	
  protected:
-	#ifdef __DEBUG__
-	uint32 created;
-	#endif
 
 	virtual bool	PacketReceived(CPacket* WXUNUSED(packet)) { return false; };
 
@@ -100,10 +97,6 @@ private:
 	bool	m_bLinkedPackets;
 	bool		DoingDestroy;  	
 	
-	#ifdef __DEBUG__
-	bool from_destroy;
-	#endif
-
 	CList<CPacket*, CPacket*> controlpacket_queue;
 	CList<CPacket*, CPacket*> standartpacket_queue;
 	
