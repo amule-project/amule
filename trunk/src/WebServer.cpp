@@ -2437,27 +2437,27 @@ bool SharedFilesInfo::ReQuery()
 		//%s\t%ld\t%s\t%ld\t%ll\t%d\t%d\t%d\t%d\t%s\t%s\t%d\t%d\n
 		brk=sEntry.First(wxT("\t"));
 		dFile.sFileName = _SpecialChars(sEntry.Left(brk));
-
+		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
 		dFile.lFileSize = StrToLong(sEntry.Left(brk));
-
+		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
 		dFile.sED2kLink = sEntry.Left(brk);
-
+		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
 		dFile.nFileTransferred = StrToLong(sEntry.Left(brk));
-
+		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
 		dFile.nFileAllTimeTransferred = atoll(unicode2char(sEntry.Left(brk)));
-
+		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
 		dFile.nFileRequests = StrToLong(sEntry.Left(brk));
-
+		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
 		dFile.nFileAllTimeRequests = StrToLong(sEntry.Left(brk));
-
+		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
 		dFile.nFileAccepts = StrToLong(sEntry.Left(brk));
-
+		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
 		dFile.nFileAllTimeAccepts = StrToLong(sEntry.Left(brk));
-
+		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
 		dFile.sFileHash = sEntry.Left(brk);
-
+		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
 		dFile.sFilePriority = sEntry.Left(brk);
-
+		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
 		dFile.nFilePriority = StrToLong(sEntry.Left(brk));
 		sEntry=sEntry.Mid(brk+1);
 		if (StrToLong(sEntry.Left(brk))==0) {
