@@ -53,10 +53,9 @@
 #include "SafeFile.h"		// Needed for CSafeFile
 #include "HTTPDownload.h"	// Needed for HTTPThread
 #include "Preferences.h"	// Needed for CPreferences
-#include "otherfunctions.h"	// Needed for GetTickCount
+#include "otherfunctions.h"	// Needed for misc. functions
 #include "amule.h"			// Needed for theApp
-#include "GetTickCount.h"
-
+#include "GetTickCount.h" // Neeed for GetTickCount
 
 //WX_DEFINE_LIST(CServerListList);
 
@@ -864,7 +863,7 @@ void CServerList::UpdateServerMetFromURL(wxString strURL)
 	}
 	URLUpdate = strURL;
 	wxString strTempFilename(theApp.ConfigDir + wxT("server.met.download"));
-	HTTPThread *downloader = new HTTPThread(strURL,strTempFilename, HTTP_ServerMet);
+	CHTTPDownloadThread *downloader = new CHTTPDownloadThread(strURL,strTempFilename, HTTP_ServerMet);
 	downloader->Create();
 	downloader->Run();
 }
@@ -908,7 +907,7 @@ void CServerList::AutoUpdate() {
 		// A valid url was found
 		URLAutoUpdate = strURLToDownload;
 		strTempFilename =  theApp.ConfigDir + wxT("server_auto.met");
-		HTTPThread *downloader = new HTTPThread(strURLToDownload,strTempFilename, HTTP_ServerMetAuto);
+		CHTTPDownloadThread *downloader = new CHTTPDownloadThread(strURLToDownload,strTempFilename, HTTP_ServerMetAuto);
 		downloader->Create();
 		downloader->Run();
 	} else {

@@ -442,7 +442,7 @@ void CIPFilter::Update(wxString strURL) {
 	}
 	if (!strURL.IsEmpty()) {
 		wxString strTempFilename(theApp.ConfigDir + wxT("ipfilter.dat.download"));
-		HTTPThread *downloader = new HTTPThread(strURL,strTempFilename, HTTP_IPFilter);
+		CHTTPDownloadThread *downloader = new CHTTPDownloadThread(strURL,strTempFilename, HTTP_IPFilter);
 		downloader->Create();
 		downloader->Run();
 	}	
