@@ -92,7 +92,7 @@ wxString CFileDataIO::ReadString(bool bOptUTF8) const
 				str = UTF82unicode(val);
 				if (str.IsEmpty()) {
 					// Fallback to system locale
-					printf("Failed UTF8 conversion (READ), going for current locale: %s\n",val);
+					//printf("Failed UTF8 conversion (READ), going for current locale: %s\n",val);
 					str = char2unicode(val);
 				}					
 			} else {
