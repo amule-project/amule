@@ -134,6 +134,7 @@ protected:
 	void OnPrefButton(wxCommandEvent& ev);
 	void OnBnClickedPrefOk(wxCommandEvent &event);
 	void OnFinishedHashing(wxCommandEvent& evt);
+	void OnFinishedCompletion(wxCommandEvent& evt);
 	void OnDnsDone(wxCommandEvent& evt);
 	void OnSourcesDnsDone(wxCommandEvent& evt);
 	void OnMinimize(wxIconizeEvent& evt);
@@ -159,4 +160,3 @@ private:
 };
 
 #endif
-
