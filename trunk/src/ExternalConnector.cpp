@@ -191,7 +191,7 @@ void CaMuleExternalConnector::GetCommand(const wxString &prompt, char* buffer, s
 	if( !m_KeepQuiet ) {
 #if wxUSE_GUI
 		const wxCharBuffer buf = unicode2char(
-			wxGetTextFromUser(prompt, _T("Enter Command")));
+			wxGetTextFromUser(prompt, wxT("Enter Command")));
 		const char *text = (const char *)buf;
 #else
 #ifdef HAVE_LIBREADLINE
@@ -260,18 +260,18 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxSt
 	if ( m_password.IsEmpty() ) {
 #if wxUSE_GUI
 		m_host = wxGetTextFromUser(
-			_T("Enter hostname or ip of the box running aMule"),
-			_T("Enter Hostname"), wxT("localhost"));
+			wxT("Enter hostname or ip of the box running aMule"),
+			wxT("Enter Hostname"), wxT("localhost"));
 		wxString sPort = wxGetTextFromUser(
-			_T("Enter port for aMule's External Connection"),
-			_T("Enter Port"), wxT("4712"));
+			wxT("Enter port for aMule's External Connection"),
+			wxT("Enter Port"), wxT("4712"));
 		if (!sPort.ToLong(&m_port)) {
 			// invalid input, use default
 			m_port = 4712;
 		}
 		pass_plain = ::wxGetPasswordFromUser(
-			_T("Enter password for mule connection (OK if no pass defined)"), 
-			_T("Enter Password"));
+			wxT("Enter password for mule connection (OK if no pass defined)"), 
+			wxT("Enter Password"));
 #else  // wxUse_GUI
 		pass_plain = char2unicode(
 			getpass("Enter password for mule connection (return if no pass defined): "));

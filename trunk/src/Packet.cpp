@@ -633,9 +633,9 @@ wxString CTag::GetFullInfo() const
 	}
 	strTag += wxT("=");
 	if (m_uType == TAGTYPE_STRING) {
-		strTag += _T("\"");
+		strTag += wxT("\"");
 		strTag += *m_pstrVal;
-		strTag += _T("\"");
+		strTag += wxT("\"");
 	} else if (m_uType >= TAGTYPE_STR1 && m_uType <= TAGTYPE_STR16) {
 		strTag += wxString::Format(wxT("(Str%u)\""), m_uType - TAGTYPE_STR1 + 1)
 					+  *m_pstrVal + wxT("\"");

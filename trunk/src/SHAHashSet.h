@@ -82,7 +82,7 @@ Example
 #include "OtherFunctions.h"
 
 #define HASHSIZE		20
-#define KNOWN2_MET_FILENAME		_T("known2.met")
+#define KNOWN2_MET_FILENAME		wxT("known2.met")
 
 enum EAICHStatus {
 	AICH_ERROR = 0,

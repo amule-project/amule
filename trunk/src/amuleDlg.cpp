@@ -1052,7 +1052,7 @@ wxFileType *ft;                            /* Temporary storage for filetype. */
 		return;
 	}
 
-	if (!ft->GetOpenCommand(&cmd, wxFileType::MessageParameters(url, _T("")))) {
+	if (!ft->GetOpenCommand(&cmd, wxFileType::MessageParameters(url, wxT("")))) {
 		// TODO: some kind of configuration dialog here.
 		wxMessageBox(
 			_("Could not determine the command for running the browser."),
