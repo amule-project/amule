@@ -57,7 +57,6 @@
 #endif // __SYSTRAY_DISABLED__
 
 #include "otherfunctions.h"	// Needed for CastItoIShort
-#include "ED2KLink.h"		// Needed for CED2KLink
 #include "ServerListCtrl.h"	// Needed for CServerListCtrl
 #include "SharedFilesCtrl.h"	// Needed for CSharedFilesCtrl
 #include "ClientListCtrl.h"	// Needed for CClientListCtrl
@@ -88,6 +87,7 @@
 #include "muuli_wdr.h"		// Needed for ID_BUTTONSERVERS
 #include "PrefsUnifiedDlg.h"
 #include "GetTickCount.h"	// Needed for GetTickCount()
+#include "StringFunctions.h"	// Needed for unicode2char
 
 #include "aMule.xpm"
 

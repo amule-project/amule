@@ -29,7 +29,6 @@
 
 #include "ExternalConn.h"	// Interface declarations
 #include "otherfunctions.h"	// Needed for EncodeBase16
-#include "ED2KLink.h"		// Needed for CED2KLink
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "server.h"		// Needed for CServer
 #include "ServerList.h"		// Needed for CServerList

@@ -1,130 +1,142 @@
+//
 // This file is part of the aMule Project
 //
 // Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
 // Copyright (C) 2002 Merkur ( merkur-@users.sourceforge.net / http://www.emule-project.net )
 //
-//This program is free software; you can redistribute it and/or
-//modify it under the terms of the GNU General Public License
-//as published by the Free Software Foundation; either
-//version 2 of the License, or (at your option) any later version.
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either
+// version 2 of the License, or (at your option) any later version.
 //
-//This program is distributed in the hope that it will be useful,
-//but WITHOUT ANY WARRANTY; without even the implied warranty of
-//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//GNU General Public License for more details.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 //
-//You should have received a copy of the GNU General Public License
-//along with this program; if not, write to the Free Software
-//Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+//
+
 
 #ifndef ED2KLINK_H
 #define ED2KLINK_H
+
 
 #if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
 #pragma interface "ED2KLink.h"
 #endif
 
+
 #include "types.h"		// Needed for uint16 and uint32
 #include "CTypedPtrList.h"	// Needed for CTypedPtrList
-#include "StringFunctions.h" // Needed for unicode2char & char2unicode
-#include "CMD4Hash.h"
-#include "SHAHashSet.h"
+#include "CMD4Hash.h"		// Needed for CMD4Hash
+#include "SHAHashSet.h"		// 
+
 
 class CSafeMemFile;
 
-// Imported from 0.30d
-struct SUnresolvedHostname{
+
+struct SUnresolvedHostname 
+{
 	wxString strHostname;
 	uint16 nPort;
 };
-// EOI
 
-class CED2KLink {
+
+class CED2KLink
+{
 public:
-	static CED2KLink* CreateLinkFromUrl(  const TCHAR * url);
+	static CED2KLink* CreateLinkFromUrl( const wxString& url );
 	typedef enum { kServerList, kServer , kFile , kInvalid } LinkType;
-	virtual LinkType GetKind() const =0;
-	virtual void GetLink(wxString& lnk) =0;
-	virtual class CED2KServerListLink* GetServerListLink() =0;
-	virtual class CED2KServerLink* GetServerLink() =0;
-	virtual class CED2KFileLink* GetFileLink() =0;
+	
+	LinkType GetKind() const;
+	virtual wxString GetLink() const = 0;
+	
 	virtual	~CED2KLink();
+	
+protected:
+	CED2KLink( LinkType type );
+
+private:
+	LinkType	m_type;
 };
 
-class CED2KServerLink : public CED2KLink {
-public:
-	CED2KServerLink(const TCHAR* ip,const TCHAR* port);
-	virtual ~CED2KServerLink();
-	// inherited from CED2KLink
-	virtual LinkType GetKind() const;
-	virtual CED2KServerListLink* GetServerListLink();
-	virtual CED2KServerLink* GetServerLink();
-	virtual CED2KFileLink* GetFileLink();
-	virtual void GetLink(wxString& lnk);
 
-    // Accessors
-	uint32 GetIP() const { return m_ip;}
-	uint16 GetPort() const { return m_port;}
-	void GetDefaultName(wxString& defName) const { defName = m_defaultName; }
+class CED2KFileLink : public CED2KLink
+{
+public:
+	CED2KFileLink( const wxString& name, const wxString& size, const wxString& hash, const wxString& hashset, const wxString& masterhash, const wxString& sources );
+	
+	virtual ~CED2KFileLink();
+	
+	virtual wxString GetLink() const;
+	
+	wxString GetName() const;
+	uint32 GetSize() const;
+	const CMD4Hash& GetHashKey() const; 
+	bool HasValidSources() const; 
+	
+	bool HasHostnameSources() const;
+
+	// AICH data
+	bool	HasValidAICHHash() const;
+	const CAICHHash&	GetAICHHash() const;
+	
+	CSafeMemFile* m_sources;
+	CSafeMemFile* m_hashset;
+	CTypedPtrList<CPtrList, SUnresolvedHostname*> m_hostSources;
+	
+private:
+	CED2KFileLink(); // Not defined
+	CED2KFileLink(const CED2KFileLink&); // Not defined
+	CED2KFileLink& operator=(const CED2KFileLink&); // Not defined
+	
+	wxString	m_name;
+	wxString	m_size;
+	CMD4Hash	m_hash;
+	bool		m_bAICHHashValid;
+	CAICHHash	m_AICHHash;		
+};
+
+
+class CED2KServerLink : public CED2KLink
+{
+public:
+	CED2KServerLink( const wxString& ip, const wxString& port);
+	virtual wxString GetLink() const;
+
+	uint32 GetIP() const;
+	uint16 GetPort() const;
+
 private:
 	CED2KServerLink(); // Not defined
 	CED2KServerLink(const CED2KServerLink&); // Not defined
 	CED2KServerLink& operator=(const CED2KServerLink&); // Not defined
+
 	uint32 m_ip;
 	uint16 m_port;
-	wxString m_defaultName;
 };
 
-class CED2KFileLink : public CED2KLink {
-public:
-	CED2KFileLink(const TCHAR* name,const TCHAR* size, const TCHAR* hash, const TCHAR* hashset, const TCHAR* masterhash, const TCHAR* sources);
-	virtual ~CED2KFileLink();
-	virtual LinkType GetKind() const;
-	virtual CED2KServerListLink* GetServerListLink();
-	virtual CED2KServerLink* GetServerLink();
-	virtual CED2KFileLink* GetFileLink();
-	virtual void GetLink(wxString& lnk);
-	wxString GetName() const { return m_name;}
-	uint64 GetSize() const { return atoll(unicode2char(m_size)); }
-	const CMD4Hash& GetHashKey() const { return m_hash;}
-	bool HasValidSources() const {return (SourcesList!=NULL); }
-	
-	bool HasHostnameSources() const {return (!m_HostnameSourcesList.IsEmpty()); }
 
-	// AICH data
-	bool	HasValidAICHHash() const			{ return m_bAICHHashValid; }
-	const CAICHHash&	GetAICHHash() const		{ return m_AICHHash;}	
-	
-	CSafeMemFile* SourcesList;
-	CSafeMemFile* m_hashset;
-	CTypedPtrList<CPtrList, SUnresolvedHostname*> m_HostnameSourcesList;
-	
-private:
-	CED2KFileLink(){}; 
-	CED2KFileLink(const CED2KFileLink&); // Not defined
-	CED2KFileLink& operator=(const CED2KFileLink&); // Not defined
-	wxString m_name;
-	wxString m_size;
-	CMD4Hash m_hash;
-	bool	m_bAICHHashValid;
-	CAICHHash	m_AICHHash;		
-};
 
-class CED2KServerListLink : public CED2KLink {
+
+class CED2KServerListLink : public CED2KLink
+{
 public:
-	CED2KServerListLink(const TCHAR* address);
-	virtual ~CED2KServerListLink();
-	virtual LinkType GetKind() const;
-	virtual CED2KServerListLink* GetServerListLink();
-	virtual CED2KServerLink* GetServerLink();
-	virtual CED2KFileLink* GetFileLink();
-	virtual void GetLink(wxString& lnk);
-	const char* GetAddress() const { return unicode2char(m_address); }
+	CED2KServerListLink(const wxString& address);
+	virtual wxString GetLink() const;
+	
+	const wxString& GetAddress() const;
+
 private:
 	CED2KServerListLink(); // Not defined
 	CED2KServerListLink(const CED2KFileLink&); // Not defined
 	CED2KServerListLink& operator=(const CED2KFileLink&); // Not defined
+
 	wxString m_address;
 };
 
-#endif // ED2KLINK_H
+
+#endif

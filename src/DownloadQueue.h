@@ -58,7 +58,6 @@ public:
 	void	Process();
 	void	Init();
 	void	AddSearchToDownload(CSearchFile* toadd, uint8 category);
-	void	AddFileLinkToDownload(class CED2KFileLink* pLink, uint8 category);
 	bool	IsFileExisting(const CMD4Hash& fileid) const;
 	bool	IsPartFile(const CKnownFile* totest) const;
 	CPartFile *GetFileByID(const CMD4Hash& filehash) const;
