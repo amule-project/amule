@@ -70,7 +70,39 @@ Version 2.0.0rc7 - The "xxxxxxxxxxxxxxxx" version.
 		* Fixed the column-width saving/loading which I managed to break shortly before 
 		  rc6 was release. Whoops. :p
 		* Ampersands will no longer be doubled when lines are added to the log-view.
-		
+
+        Special Thanks To:
+
+		* Translators in this release:
+		   biger [HUN]:		(Hungarian / hu_HU)	
+		   GhePeU:		(Italian / it_IT)
+		   mad_soft:		(Spanish / es_ES)
+		   Ogon:		(Polish / pl_PL)
+		   piarres:		(Basque / es_EU)
+		   powtrix/willy:	(Brazilian / pt_BR)
+		   punkyxd:		(Catalan / es_CA)
+		   Supersnail:		(Dutch / nl_NL)
+
+		* Testers and bug reporters:
+		   angel,	BiByFoK,
+		   bill_bool,	boutros,
+		   elui,	Gaenya,
+		   jolupa,	ken_aMule,
+		   mad_soft,	Mig21,
+		   one2one,	powtrix,
+		   RedDwarf,	skolnick,
+		   wi777
+
+                * Everyone at:
+		   #amule	irc.freenode.net
+		   wiki		http://wiki.amule.org
+		   forums	http://forum.amule.org
+		   bugtrackier	http://abugs.amule.org
+
+                * All the people in aMule's forum
+
+		* All aMule users!!!
+
 	
 Version 2.0.0rc6 - The "We're so EVIL that we make you lose a sock in every pair" version.
 ----------
