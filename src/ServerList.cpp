@@ -75,64 +75,69 @@ list(wxKEY_NONE)
 	m_nLastED2KServerLinkCheck = m_nLastSaved = ::GetTickCount();
 }
 
-void CServerList::AutoUpdate()
+uint8 CServerList::AutoUpdate()
 {
-	if (app_prefs->adresses_list.IsEmpty()) {
+	uint8 url_count = app_prefs->adresses_list.GetCount();
+	
+	if (!url_count) {
 		wxMessageBox(CString(_("No serverlist address entry in 'addresses.dat' found. Please paste a valid serverlist address into this file in order to auto-update your serverlist")),CString(_("Unable to retrieve serverlist")),wxICON_ERROR|wxCENTRE|wxOK);
-		return;
+		return 0;
 	}
-	bool bDownloaded=false;
-	CString servermetdownload;
-	// CString servermetbackup;
-	CString servermet;
-	CString strURLToDownload; 
-	servermetdownload.Format("%sserver_met.download",app_prefs->GetAppDir());
-	servermet.Format("%sserver.met",app_prefs->GetAppDir());
-	BackupFile(servermet, ".old");
-	wxRemoveFile(servermetdownload);
+	
+	wxString strURLToDownload; 
+	wxString strTempFilename;
+
+	uint8 temp_count =0;	
 	POSITION Pos = app_prefs->adresses_list.GetHeadPosition(); 
-	while ((!bDownloaded) && (Pos != NULL)) {
-		CHTTPDownloadDlg* dlgDownload;
+	while (Pos != NULL) {
 		strURLToDownload = app_prefs->adresses_list.GetNext(Pos); 
-		// dlgDownload.m_sURLToDownload = strURLToDownload.GetBuffer();
-		// dlgDownload.m_sFileToDownloadInto = servermetdownload;
-		dlgDownload=new CHTTPDownloadDlg(theApp.amuledlg,wxString(strURLToDownload.GetData()),wxString(servermetdownload.GetData()));
-		if (dlgDownload->ShowModal()==0) {
-			bDownloaded=true;
+		if (strURLToDownload.Find("://") == -1) {
+			theApp.amuledlg->AddLogLine(true, CString(_("Invalid URL %s")),strURLToDownload.c_str());
 		} else {
-			theApp.amuledlg->AddLogLine(true,CString(_("Failed to download the serverlist from %s")), strURLToDownload.GetBuffer());
+			strTempFilename=wxString::Format("%sserver_auto%u.met", theApp.glob_prefs->GetAppDir(), temp_count);
+
+			CHTTPDownloadDlg *dlg=new CHTTPDownloadDlg(theApp.amuledlg->serverwnd,strURLToDownload,strTempFilename);
+			int retval=dlg->ShowModal();
+			if(retval==0) {
+				temp_count++;		
+			} else {
+				theApp.amuledlg->AddLogLine(true, CString(_("Failed to download the serverlist from %s")).GetData(), strURLToDownload.GetData());
+			}
+			delete dlg;
 		}
-		delete dlgDownload;
 	}
-	if (bDownloaded) {
-		wxRenameFile(servermet, servermetdownload);
-		wxRenameFile(servermet+".old",servermet);
-	} else {
-		wxRemoveFile(servermet);
-		wxRenameFile(servermet+".old",servermet);
+
+	wxASSERT(temp_count <= url_count);
+	if (temp_count < url_count) {
+		theApp.amuledlg->AddLogLine(true, CString(_("%u auto-update serverlist entries failed loading")).GetData(), (url_count - temp_count));
 	}
+	
+	return temp_count;
 }
 
 bool CServerList::Init()
 {
+	uint8 auto_count;
 	// auto update the list by using an url
 	if (app_prefs->AutoServerlist()) {
-		AutoUpdate();
+		auto_count=AutoUpdate();
 	}
 	// Load Metfile
-	CString strPath;
+	CString strTempFilename;
 	printf("*** reading servers\n");
-	strPath.Format( "%sserver.met", app_prefs->GetAppDir());
-	bool bRes = AddServermetToList(strPath, false);
+	strTempFilename.Format( "%sserver.met", app_prefs->GetAppDir());
+	bool bRes = AddServermetToList(strTempFilename, false);
 	if(theApp.glob_prefs->AutoServerlist()) {
-		strPath.Format( "%sserver.met", app_prefs->GetAppDir());
-		bool bRes2 = AddServermetToList(strPath);
-		if( !bRes && bRes2 )
-			bRes = true;
+		for (uint8 i=1; i<=auto_count;i++) {
+			strTempFilename=wxString::Format("%sserver_auto%u.met", theApp.glob_prefs->GetAppDir(), i);
+			bool bRes2 = AddServermetToList(strTempFilename);
+			if( !bRes && bRes2 )
+				bRes = true;
+		}
 	}
 	// insert static servers from textfile
-	strPath.Format( "%sstaticservers.dat", app_prefs->GetAppDir());
-	AddServersFromTextFile(strPath);
+	strTempFilename.Format( "%sstaticservers.dat", app_prefs->GetAppDir());
+	AddServersFromTextFile(strTempFilename);
 	return bRes;
 }
 
