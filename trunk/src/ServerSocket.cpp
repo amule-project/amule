@@ -615,9 +615,9 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				;
 		}
 		return true;
-	} catch (CInvalidPacket e) {
+	} catch (const CInvalidPacket& e) {
 		AddLogLineM(false,wxString(_("Bogus packet received from server - ")) + char2unicode(e.what()));
-	} catch (wxString error) {
+	} catch (const wxString& error) {
 		AddLogLineM(false,_("Unhandled error while processing packet from server - ") + error);
 	} catch (...) {
 		AddLogLineM(false, _("Unknown exception while processing packet from server!"));

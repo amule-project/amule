@@ -297,7 +297,7 @@ bool CUpDownClient::CreateNextBlockPackage()
 			filedata = 0;
 		}
 	}
-	catch(wxString error){
+	catch (const wxString& error){
 		AddDebugLogLineM(false, logClient, wxT("Client '") + GetUserName() + wxT("' caused error while creating packet (") + error + wxT(") - disconnecting client"));
 		theApp.uploadqueue->RemoveFromUploadQueue(this);
 		if (filedata)
@@ -445,7 +445,7 @@ void CUpDownClient::ProcessExtendedInfo(const CSafeMemFile *data, CKnownFile *te
 				}
 			}
 		}
-	} catch (CInvalidPacket InvalidPacket) {
+	} catch (const CInvalidPacket& InvalidPacket) {
 		wxString error = wxT("CUpDownClient::ProcessExtendedInfo: ");
 		if (strlen(InvalidPacket.what())) {
 			error += char2unicode(InvalidPacket.what());

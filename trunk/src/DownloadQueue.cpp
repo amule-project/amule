@@ -1227,7 +1227,7 @@ bool CDownloadQueue::AddED2KLink( const wxString& link, int category )
 		delete uri;
 		
 		return result;
-	} catch ( wxString err ) {
+	} catch ( const wxString& err ) {
 		AddLogLineM( true, _("Invalid ed2k link! Error: ") + err);
 	}
 	

@@ -287,7 +287,7 @@ void CClientCreditsList::LoadList()
 		
 		theApp.NotifyEvent(event);
 		
-	} catch (wxString error) {
+	} catch (const wxString& error) {
 		AddDebugLogLineM( true, logCredits, wxT("Unable to load clients.met file! ") + error);
 	} catch (...) {
 		AddDebugLogLineM( true, logCredits, wxT("Unable to load clients.met file! - Unknown Error"));

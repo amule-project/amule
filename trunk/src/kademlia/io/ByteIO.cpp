@@ -48,7 +48,7 @@ using namespace Kademlia;
 void CByteIO::readArray(void* lpResult, uint32 byteCount)
 {
 	if (m_available < byteCount)
-		throw new CIOException(ERR_BUFFER_TOO_SMALL);
+		throw CIOException(ERR_BUFFER_TOO_SMALL);
 
 	memcpy(lpResult, m_buffer, byteCount);
 	m_buffer += byteCount;
@@ -59,10 +59,10 @@ void CByteIO::readArray(void* lpResult, uint32 byteCount)
 void CByteIO::writeArray(const void* lpVal, uint32 byteCount)
 {
 	if (m_bReadOnly)
-		throw new CIOException(ERR_READ_ONLY);
+		throw CIOException(ERR_READ_ONLY);
 
 	if (m_available < byteCount)
-		throw new CIOException(ERR_BUFFER_TOO_SMALL);
+		throw CIOException(ERR_BUFFER_TOO_SMALL);
 
 	memcpy(m_buffer, lpVal, byteCount);
 	m_buffer += byteCount;

@@ -27,6 +27,7 @@
 #endif
 
 #include <exception>
+#include <stdexcept>
 #include <list>
 
 #include <wx/string.h>
@@ -98,24 +99,12 @@ private:
 	char		*pBuffer;
 };
 
-class CInvalidPacket : public std::exception
-{
-public:
-	CInvalidPacket(const char* = "not specified");
-	virtual const char* what() const throw();
-	
-private:
-	
-	char 	m_acWhat[256];
+struct CInvalidPacket : public std::runtime_error
+	{ CInvalidPacket(const std::string& arg = "invalid packet") : runtime_error(arg) { } };
 
-};
+struct CStrangePacket : public CInvalidPacket
+	{ CStrangePacket(const std::string& arg = "strange packet") : CInvalidPacket(arg) { } };
 
-
-class CStrangePacket : public CInvalidPacket
-{
-public:
-	CStrangePacket(const char* w = "not specified") : CInvalidPacket(w) { }
-};
 
 #if 0
 // Old CTags.

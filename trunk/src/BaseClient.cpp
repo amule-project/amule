@@ -458,7 +458,7 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 			}
 		}
 
-	} catch ( CStrangePacket )
+	} catch ( const CStrangePacket& )
 	{
 		printf(	"\n"
 			"Wrong Tags on hello type packet!!\n"
@@ -469,7 +469,7 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 			GetUserPort(), GetClientSoft(), GetVersion());
 		throw wxString(wxT("Wrong Tags on hello type packet"));
 	}
-	catch ( CInvalidPacket (e))
+	catch ( const CInvalidPacket& e )
 	{
 		printf(	"Wrong Tags on hello type packet - %s\n\n"
 			"Sent by %s on ip %s port %i using client %x version %x\n"
@@ -830,7 +830,7 @@ bool CUpDownClient::ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize)
 			m_byInfopacketsReceived |= IP_EMULEPROTPACK;		
 		}
 	}
-	catch ( CStrangePacket )
+	catch ( const CStrangePacket& )
 	{
 		printf(	"\n"
 			"Wrong Tags on Mule Info packet!!\n"
@@ -843,7 +843,7 @@ bool CUpDownClient::ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize)
 		DumpMem(pachPacket, nSize);
 		throw wxString(wxT("Wrong Tags on Mule Info packet"));
 	}
-	catch ( CInvalidPacket (e))
+	catch ( const CInvalidPacket& e )
 	{
 		printf(	"Wrong Tags on Mule Info packet - %s\n\n"
 			"Sent by %s on ip %s port %i using client %x version %x\n"
@@ -1016,7 +1016,7 @@ void CUpDownClient::ProcessMuleCommentPacket(const char *pachPacket, uint32 nSiz
 		// Update file rating
 		m_reqfile->UpdateFileRatingCommentAvail();
 	}
-	catch ( CStrangePacket )
+	catch ( const CStrangePacket& )
 	{
 		delete[] desc;
 
@@ -1028,7 +1028,7 @@ void CUpDownClient::ProcessMuleCommentPacket(const char *pachPacket, uint32 nSiz
 			GetUserPort(),GetClientSoft(),GetMuleVersion());
 		throw wxString(wxT("Wrong MuleComment packet"));
 	}
-	catch ( CInvalidPacket e )
+	catch ( const CInvalidPacket& e )
 	{
 		delete[] desc;
 

@@ -647,7 +647,7 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 			
 		metFile.Close();
 			
-	} catch (CInvalidPacket e) {
+	} catch (const CInvalidPacket& e) {
 		if (metFile.Eof()) {
 			AddLogLineM(true, _("Error: ") + m_partmetfilename +
 				wxT("(") + m_strFileName +
@@ -931,7 +931,7 @@ bool CPartFile::SavePartFile(bool Initial)
 			throw wxString(wxT("Unexpected write error"));
 		}
 
-	} catch(wxString error) {
+	} catch (const wxString& error) {
 		if (file.IsOpened()) {
 			file.Close();
 		}

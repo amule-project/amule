@@ -604,7 +604,7 @@ bool CAICHHashSet::SaveHashSet(){
 		}
 		AddDebugLogLineM( false, logSHAHashSet, wxString::Format(wxT("Sucessfully saved eMuleAC Hashset, %u Hashs + 1 Masterhash written"), nHashCount));
 	}
-	catch(wxString error){
+	catch (const wxString& error){
 		if (file.Eof()) {
 		   AddDebugLogLineM( true, logSHAHashSet, _("Error: EOF on ") + error);
 		} else {
@@ -675,7 +675,7 @@ bool CAICHHashSet::LoadHashSet(){
 			file.Seek(nHashCount*HASHSIZE, CFile::current);
 		}
 		AddDebugLogLineM( true, logSHAHashSet, wxT("Failed to load HashSet: HashSet not found!"));
-	} catch(wxString error){
+	} catch (const wxString& error){
 		if (file.Eof()) {
 			 AddDebugLogLineM( true, logSHAHashSet, wxT("Error: EOF on ") + error);
 		} else {
