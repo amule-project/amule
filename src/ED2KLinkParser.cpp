@@ -1,188 +1,386 @@
-/*
-  This file is part of the aMule Project
-  Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
-  Copyright (C) 2003 Madcat ( madcat@_@users.sf.net / sharedaemon.sf.net )
+//
+//
+// This file is part of the aMule Project
+//  Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
+//  Copyright (C) 2003 Madcat ( madcat@_@users.sf.net / sharedaemon.sf.net )
+//
+//  This program is free software; you can redistribute it and/or
+//  modify it under the terms of the GNU General Public License
+//  as published by the Free Software Foundation; either
+//  version 2 of the License, or (at your option) any later version.
+//  
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//  
+//  You should have received a copy of the GNU General Public License
+//  along with this program; if not, write to the Free Software
+//  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA. 
+//
 
-  This program is free software; you can redistribute it and/or
-  modify it under the terms of the GNU General Public License
-  as published by the Free Software Foundation; either
-  version 2 of the License, or (at your option) any later version.
-  
-  This program is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-  
-  You should have received a copy of the GNU General Public License
-  along with this program; if not, write to the Free Software
-  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA. 
-*/
+const int versionMajor		= 1;
+const int versionMinor		= 1;
+const int versionRevision	= 0;
 
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <cctype>
 
-bool HexToDec(char x, char &res)
+#include <string>
+#include <sstream>
+#include <iostream>
+#include <fstream>
+
+
+using std::string;
+
+
+/**
+ * Converts a hexadecimal number to a char.
+ *
+ * @param hex The hex-number, must be at most 2 digits long.
+ * @return The resulting char or \0 if conversion failed.
+ */
+char HexToDec( const string& hex )
 {
-	if ( isdigit(x) ) {
-		res = x - '0';
-		return true;
-	} else if ( toupper(x)>='A' && toupper(x)<='F' ) {
-		res = toupper(x) - 'A' + 10;
-		return true;
-	} else {
-		return false;
-	}
-}
-
-void UnescapeURI(char *buf)
-{
-	char *outbuf = buf;
-	char c;
-	for ( ; (c = *buf++); outbuf++) {
-		char digit1, digit2;
-		if ( (c == '%') && HexToDec(buf[0],digit1) && HexToDec(buf[1],digit2) ) {
-			*outbuf = digit1 * 16 + digit2;
-			buf+=2;
-		} else {
-			*outbuf = c;
-		}
-	}
-	*outbuf++ = '\0';
-}
-
-void AddLink(char *ed2klink)
-{
-FILE *ed2kfile;
-char *filename;
-char *homedir;
+	assert( hex.length() <= 2 );
+	char result = 0;
 	
-	/* First do some checking wether the link is correct. */
-	if ((ed2klink[strlen(ed2klink)-35] != '|') && (ed2klink[strlen(ed2klink)-34] != '|')) {
-		printf("Invalid ED2K link.\nReason: Character before hash (34/35 chars before end) must be |\n");
-		return;
+	for ( size_t i = 0; i < hex.length(); ++i ) {
+		char cur = toupper( hex.at(i) );
+		result *= 16;
+		
+		if ( isdigit( cur ) ) {
+			result += cur - '0';
+		} else if ( cur >= 'A' && cur <= 'F' ) {
+			result += cur - 'A' + 10;
+		} else {
+			return '\0';
+		}
 	}
 
-	/* Link seemed ok, add it to file. */
-	homedir = getenv("HOME");
-	if ((filename = (char *)malloc(strlen(homedir) + 18)) == NULL) {
-		printf("Memory allocation error.\n");
-		return;
-	}
-	strcpy(filename, homedir);
-	strcat(filename, "/.aMule/ED2KLinks");
-	ed2kfile = fopen(filename,"a");
-	if (ed2kfile != NULL) {
-		fprintf(ed2kfile,"%s\n",ed2klink);
-		printf("Successfully wrote ED2K link to file.\n");
-		fclose(ed2kfile);
-	} else {
-		printf("Error opening file %s.\n", filename);
-	}
-	free(filename);
+	return result;
 }
 
-// emanuelw(20030924) added: AddServer()
-//ed2k://|server|111.111.111.111|1111|/
-void AddServer(char *ed2klink)
+
+/**
+ * This function converts all valid HTML escape-codes to their corresponding chars.
+ *
+ * @param str The string to unescape.
+ * @return The unescaped version of the input string.
+ */
+string Unescape( const string& str )
 {
-	FILE *ed2kfile;
-	char *homedir;
-	char *filename;
+	string result;
+	result.reserve( str.length() );
+	
+	for ( size_t i = 0; i < str.length(); ++i ) {
+		if ( str.at(i) == '%' && ( i + 2 < str.length() ) ) {
+			char unesc = HexToDec( str.substr( i + 1, 2 ) );
 
-	char* server = NULL;
-	char* ip = NULL;
-	char* port = NULL;
-	char* portEnd = NULL;
+			if ( unesc ) {
+				i += 2;
 
-	server = strchr(ed2klink,'|');
-
-	if (server != NULL) {
-		server++;
-		ip = strchr(server,'|');
-	}
-
-	if (ip != NULL) {
-		ip++;
-		port = strchr(ip,'|');
-	}
-
-	if (port != NULL) {
-		*port++ = '\0';
-		portEnd = strchr(port,'|');
-	}
-
-	if (portEnd != NULL) {
-		*portEnd = '\0';
-		homedir = getenv("HOME");
-		if ((filename = (char *)malloc(strlen(homedir) + 20)) == NULL) {
-			printf("Memory allocation error.\n");
-			return;
-		}
-		strcpy(filename, homedir);
-		strcat(filename, "/.aMule/ED2KServers");
-		ed2kfile = fopen(filename,"a");
-		if (ed2kfile != NULL)
-		{
-			char *serverLink;
-			if ((serverLink = (char *)malloc(strlen(ip) + strlen(port) + 6)) == NULL) {
-				printf("Memory allocation error.\n");
-				free(filename);
-				return;
+				result += unesc;
+			} else {
+				// If conversion failed, then we just add the escape-code
+				// and continue past it like nothing happened.
+				result += str.at(i);
 			}
-			strcpy(serverLink, ip);
-			strcat(serverLink, ":");
-			strcat(serverLink, port);
-			strcat(serverLink, ",1,\n");
-			fprintf(ed2kfile, serverLink);
-			printf("Successfully wrote ED2K-Server link to file.\n");
-			fclose(ed2kfile);
-			free(serverLink);
-		} 
-		else {
-			printf("Error opening file %s.\n", filename);
+		} else {
+			result += str.at(i);
 		}
-		free(filename);
 	}
-	else
-		printf("Invalid ED2K-Server link.\n");	
+
+	return result;
 }
+
+
+/**
+ * Returns the string with whitespace stripped from both ends.
+ */
+string strip( const string& str )
+{
+	int first = 0;
+	int last  = str.length() - 1;
+
+	// A simple but no very optimized way to narrow down the 
+	// usable text within the string.
+	while ( first <= last ) {
+		if ( isspace( str.at(first) ) ) {
+			first++;
+		} else if ( isspace( str.at(last) ) ) {
+			last--;
+		} else {
+			break;
+		}
+	};
+	
+	return str.substr( first, 1 + last - first );	
+}
+
+
+/**
+ * Returns true if the string is a valid number.
+ */
+bool isNumber( const string& str )
+{
+	for ( size_t i = 0; i < str.length(); i++ ) {
+		if ( !isdigit( str.at(i) ) ) {
+			return false;
+		}
+	}
+
+	return str.length();
+}
+
+
+/**
+ * Returns true if the string is a valid Base16 representation of a MD4 Hash.
+ */
+bool isMD4Hash( const string& str )
+{
+	for ( size_t i = 0; i < str.length(); i++ ) {
+		const char c = toupper( str.at(i) );
+		
+		if ( !isdigit( c ) && ( c < 'A' || c > 'F' ) ) {
+			return false;
+		}
+	}
+
+	return str.length() == 32;
+}
+
+
+/**
+ * Returns a description of the current version of "ed2k".
+ */
+string getVersion()
+{
+  	std::ostringstream v;
+	
+	v << "aMule ED2k link parser v"
+		<< versionMajor << "."
+		<< versionMinor << "."
+		<< versionRevision;
+
+	return v.str();
+}
+
+
+/**
+ * Helper-function for printing link-errors.
+ */
+void badLink( const string& type, const string& err, const string& uri )
+{
+	std::cout << "Invalid " << type << "-link, " + err << ":\n"
+		<< "\t" << uri << std::endl;
+}
+
+
+/**
+ * Writes a string to the ED2KLinks file. 
+ *
+ * If errors are detected, it will terminate the program.
+ */
+void writeLink( const string& uri )
+{
+	// ofstream is static in order to avoid opening/closing the file for each
+	// link found i the parameters.
+	static std::ofstream file;
+	
+	if ( !file.is_open() ) {
+		string path = string( getenv("HOME") ) + "/.aMule/ED2KLinks";
+		
+		file.open( path.c_str(), std::ofstream::out | std::ofstream::app );
+
+		if ( !file.is_open() ) {
+			std::cout << "ERROR! Failed to open " << path << " for writing!" << std::endl;
+			exit(1);
+		}
+	}
+
+	file << uri << std::endl;
+}
+
+
+/**
+ * Writes the the specified URI to the ED2KLinks file if it is a valid file-link.
+ *
+ * @param uri The URI to check.
+ * @return True if the URI was written, false otherwise.
+ */
+bool checkFileLink( const string& uri )
+{
+	if ( uri.substr( 0, 13 ) == "ed2k://|file|" ) {
+		size_t base_off = 12;
+		size_t name_off = uri.find( '|', base_off + 1 );
+		size_t size_off = uri.find( '|', name_off + 1 );
+		size_t hash_off = uri.find( '|', size_off + 1 );
+
+		bool valid = true;
+		valid &= ( base_off < name_off );
+		valid &= ( name_off < size_off );
+		valid &= ( size_off < hash_off );
+		valid &= ( hash_off != string::npos );
+	
+		if ( !valid ) {
+			badLink( "file", "invalid link format", uri );
+			return false;
+		}
+		
+		string name = uri.substr( base_off + 1, name_off - base_off - 1 );
+		string size = uri.substr( name_off + 1, size_off - name_off - 1 );
+		string hash = uri.substr( size_off + 1, hash_off - size_off - 1 );
+
+		if ( name.empty() ) {
+			badLink( "file", "no name specified", uri );
+			return false;
+		}
+
+		if ( !isNumber( size ) ) {
+			badLink( "file", "invalid size", uri );
+			return false;
+		}
+
+		if ( !isMD4Hash( hash ) ) {
+			badLink( "file", "invalid MD4 hash", uri );
+			return false;
+		}
+
+		writeLink( uri );
+
+		return true;
+	}
+
+	return false;
+}
+
+
+/**
+ * Writes the the specified URI to the ED2KLinks file if it is a valid server-link.
+ *
+ * @param uri The URI to check.
+ * @return True if the URI was written, false otherwise.
+ */
+bool checkServerLink( const string& uri )
+{
+	if ( uri.substr( 0, 15 ) == "ed2k://|server|" ) {
+		size_t base_off = 14;
+		size_t host_off = uri.find( '|', base_off + 1 );
+		size_t port_off = uri.find( '|', host_off + 1 );
+
+		bool valid = true;
+		valid &= ( base_off < host_off );
+		valid &= ( host_off < port_off );
+		valid &= ( port_off != string::npos );
+	
+		if ( !valid || uri.at( port_off + 1 ) != '/' ) {
+			badLink( "server", "invalid link format", uri );
+			return false;
+		}
+		
+		string host = uri.substr( base_off + 1, host_off - base_off - 1 );
+		string port = uri.substr( host_off + 1, port_off - host_off - 1 );
+
+		if ( host.empty() ) {
+			badLink( "server", "no hostname specified", uri );
+			return false;
+		}
+
+		if ( !isNumber( port ) ) {
+			badLink( "server", "invalid port", uri );
+			return false;
+		}
+
+		writeLink( uri );
+
+		return true;
+	}
+
+	return false;
+}
+
+
+/**
+ * Writes the the specified URI to the ED2KLinks file if it is a valid serverlist-link.
+ *
+ * @param uri The URI to check.
+ * @return True if the URI was written, false otherwise.
+ */
+bool checkServerListLink( const string& uri )
+{
+	if ( uri.substr( 0, 19 ) == "ed2k://|serverlist|" ) {
+		size_t base_off = 19;
+		size_t path_off = uri.find( '|', base_off + 1 );
+
+		bool valid = true;
+		valid &= ( base_off < path_off );
+		valid &= ( path_off != string::npos );
+	
+		if ( !valid ) {
+			badLink( "serverlist", "invalid link format", uri );
+			return false;
+		}
+		
+		string path = uri.substr( base_off + 1, path_off - base_off - 1 );
+
+		if ( path.empty() ) {
+			badLink( "serverlist", "no hostname specified", uri );
+			return false;
+		}
+
+		writeLink( uri );
+
+		return true;
+	}
+
+	return false;
+}
+
 
 int main(int argc, char *argv[])
 {
-	int result = 0;
-	for (int i=1;i<argc;i++) {
-		if ( !argv[i] ) {
-			continue;
-		}
-		char *param = strdup(argv[i]);
-		UnescapeURI(param);
-		if (!strncmp(param, "ed2k://|file|", 13) && (strlen(param)>55)) {
-			AddLink(param);
-		} else if (!strncmp(param, "ed2k://|server|", 15) && (strlen(param)>25)) {
-			AddServer(param);
-		} else if (!strncmp(param, "--version", 9)) {
-			printf("aMule ED2K links parser v1.02\n");
-		} else if (!strncmp(param, "--help", 6)) {
-			printf("aMule ED2K links parser v1.02\n\n");
-			printf("Enter ed2k links as commandline arguments, and they will be saved into $HOME/.aMule/ED2KLinks\n");
-			printf("file, from where aMule will pick them up and add to download queue once per second.\n");
-			printf("Currently, file and server links are supported.\n\n");
-			printf("Usage:\n");
-			printf("       --help          Prints this help.\n");
-			printf("       --version       Displays version info.\n");
-			printf("       ed2k://|file|   Sends ed2k link to $HOME/.aMule/ED2KLinks file.\n");
-			printf("       ed2k://|server| Sends ed2k link to $HOME/.aMule/ED2KServer file.\n");
-		} else {
-			if (strncmp(param, "ed2k://|file|", 13) && strncmp(param, "ed2k://|server|", 15)) {
-				printf("Invalid ED2K link.\nReason: Unable to determine link type.\n");
-			} else {
-				printf("Invalid ED2K Link.\nReason: Link too short.\n");
+	bool errors = false;
+	
+	for ( int i = 1; i < argc; i++ ) {
+		string arg = strip( Unescape( string( argv[i] ) ) );
+		
+		if ( arg.substr( 0, 8 ) == "ed2k://|" ) {
+			// Ensure the URI is valid
+			if ( arg.at( arg.length() - 1 ) != '/' ) {
+				arg += '/';
 			}
-			result = 1;
+			
+			string type = arg.substr( 8, arg.find( '|', 9 ) - 8 );
+		
+			if ( type == "file" ) {
+				errors |= !checkFileLink( arg );
+			} else if ( type == "server" ) {
+				errors |= !checkServerLink( arg );
+			} else if ( type == "serverlist" ) {
+				errors |= !checkServerListLink( arg );
+			} else {
+				std::cout << "Unknown link-type:\n\t" << arg << std::endl;
+			}
+		} else if ( arg == "--help" ) {
+			std::cout << getVersion()
+				<< "\n\n"
+				<< "Usage:\n"
+				<< "    --help              Prints this help.\n"
+				<< "    --version           Displays version info.\n\n"
+				<< "    ed2k://|file|       Causes the file to be queued for download.\n"
+				<< "    ed2k://|server|     Causes the server to be listed or updated.\n"
+				<< "    ed2k://|serverlist| Causes aMule to update the current serverlist."
+				<< std::endl;
+			
+		} else if ( arg == "--version" ) {
+			std::cout << getVersion() << std::endl;
+		} else {
+			std::cout << "Bad parameter value:\n\t" << arg << "\n" << std::endl;
+			errors = true;
 		}
-		free(param);
+
 	}
-	return result;
+
+	return ( errors ? 1 : 0 );
 }
+
