@@ -48,7 +48,9 @@
 #include "muuli_wdr.h"		// Needed for ID_DLOADLIST
 #include "color.h"		// Needed for G_BLEND and SYSCOLOR
 #include "ClientCredits.h"		// Needed for GetCurrentIdentState
-
+#include <wx/stattext.h>
+#include <wx/menu.h>
+#include <wx/msgdlg.h>
 #define DLC_BARUPDATE 512
 
 class CPartFile;

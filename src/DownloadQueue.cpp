@@ -35,10 +35,11 @@
 #include <wx/textfile.h>	// Needed for wxTextFile
 #include <wx/filename.h>
 #include <wx/listimpl.cpp>
-#include <wx/file.h>
+//#include <wx/file.h>
 #include <wx/utils.h>
 #include <wx/intl.h>		// Needed for _
-
+//#include <wx/filefn.h>
+//#include <wx/ffile.h>
 #include "DownloadQueue.h"	// Interface declarations
 #include "server.h"		// Needed for CServer
 #include "UploadQueue.h"	// Needed for CUploadQueue

@@ -27,7 +27,8 @@
 #include "CommentDialog.h"	// Interface declarations
 #include "KnownFile.h"		// Needed for CKnownFile
 #include "muuli_wdr.h"		// Needed for commentDlg
-
+#include <wx/sizer.h>
+#include <wx/textctrl.h>
 // CommentDialog dialog 
 
 //IMPLEMENT_DYNAMIC(CCommentDialog, CDialog)

@@ -24,7 +24,7 @@
 #include <wx/intl.h>		// Needed for _
 #include <wx/dialog.h>
 #include <wx/settings.h>
-
+#include <wx/sizer.h>
 #include "CommentDialogLst.h"	// Interface declarations
 #include "muuli_wdr.h"		// Needed for commentLstDlg
 #include "otherfunctions.h"	// Needed for GetRateString

@@ -24,6 +24,10 @@
 #ifdef __WXMAC__
 	#include <wx/wx.h>
 #endif
+#include <wx/sizer.h>
+#include <wx/msgdlg.h>
+#include <wx/textctrl.h>
+#include <wx/statbmp.h>
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/intl.h>		// Needed for _
 #include <wx/settings.h>	// Needed for wxSYS_COLOUR_WINDOW
