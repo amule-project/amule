@@ -122,32 +122,32 @@ class wxSocketProxy
 public:
 	/* Constructor */
 	wxSocketProxy(const wxProxyData *ProxyData);
-	bool		Start(wxIPaddress& address, enum wxProxyCommand cmd);
+	bool		Start(wxIPaddress &address, enum wxProxyCommand cmd);
 	wxIPaddress	&GetTargetAddress(void) { return *m_TargetAddress; }
 	unsigned char	GetLastReply(void) { return m_LastReply; }
 
 private:
 	/* SOCKS4 */
-	bool DoSocks4(wxIPaddress& address, wxProxyCommand cmd);
-	bool DoSocks4Request(wxIPaddress& address, unsigned char cmd);
+	bool DoSocks4(wxIPaddress &address, wxProxyCommand cmd);
+	bool DoSocks4Request(wxIPaddress &address, unsigned char cmd);
 	bool DoSocks4Reply(void);
 	bool DoSocks4CmdConnect(void);
 	bool DoSocks4CmdBind(void);
 	
 	/* SOCKS5 */
-	bool DoSocks5(wxIPaddress& address, wxProxyCommand cmd);
+	bool DoSocks5(wxIPaddress &address, wxProxyCommand cmd);
 	bool DoSocks5Authentication(void);
 	bool DoSocks5AuthenticationUsernamePassword(void);
 	bool DoSocks5AuthenticationGSSAPI(void);
-	bool DoSocks5Request(wxIPaddress& address, unsigned char cmd);
+	bool DoSocks5Request(wxIPaddress &address, unsigned char cmd);
 	bool DoSocks5Reply(void);
 	bool DoSocks5CmdConnect(void);
 	bool DoSocks5CmdBind(void);
 	bool DoSocks5CmdUDPAssociate(void);
 
 	/* HTTP */
-	bool DoHttp(wxIPaddress& address, wxProxyCommand cmd);
-	bool DoHttpRequest(wxIPaddress& address, unsigned char cmd);
+	bool DoHttp(wxIPaddress &address, wxProxyCommand cmd);
+	bool DoHttpRequest(wxIPaddress &address, unsigned char cmd);
 	bool DoHttpReply(void);
 	bool DoHttpCmdConnect(void);
 	
@@ -166,6 +166,7 @@ private:
 
 class wxProxyEventHandler : public wxEvtHandler
 {
+public:
 	wxProxyEventHandler(wxSocketProxy *parent);
 
 private:
@@ -179,6 +180,7 @@ private:
 
 class wxSocketClientProxy
 {
+public:
 	/* Constructor */
 	wxSocketClientProxy(
 		wxSocketFlags flags = wxSOCKET_NONE,
@@ -188,7 +190,7 @@ class wxSocketClientProxy
 	~wxSocketClientProxy();
 	
 	/* Interface */
-	bool Connect(wxIPaddress& address, bool wait, bool UseProxy = false);
+	bool Connect(wxIPaddress &address, bool wait, bool UseProxy = false);
 	
 private:
 	wxSocketProxy	m_SocketProxy;
@@ -200,9 +202,10 @@ private:
 
 class wxSocketServerProxy
 {
+public:
 	/* Constructor */
 	wxSocketServerProxy(
-		wxIPaddress& address,
+		wxIPaddress &address,
 		wxSocketFlags flags = wxSOCKET_NONE,
 		const wxProxyData *ProxyData = NULL);
 		
@@ -210,6 +213,14 @@ class wxSocketServerProxy
 	~wxSocketServerProxy();
 		
 	/* Interface */
+	wxSocketBase *Accept(bool wait = true) { return m_SocketServer->Accept(wait); }
+	bool AcceptWith(wxSocketBase& socket, bool wait = true) { return m_SocketServer->AcceptWith(socket, wait); }
+	void Close(void) { m_SocketServer->Close(); }
+	wxSocketBase& Discard(void) { return m_SocketServer->Discard(); }
+	void Notify(bool notify) { m_SocketServer->Notify(notify); }
+	bool Ok() const	{ return m_SocketServer->Ok(); }
+	void SetEventHandler(wxEvtHandler& handler, int id = -1) { m_SocketServer->SetEventHandler(handler, id); }
+	void SetNotify(wxSocketEventFlags flags) { m_SocketServer->SetNotify(flags); }
 	
 private:
 	wxSocketProxy	m_SocketProxy;
