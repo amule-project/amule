@@ -227,7 +227,7 @@ CECTag::CECTag(ec_tagname_t name, uint16 data) : m_tagName(name), m_dynamic(true
  */
 CECTag::CECTag(ec_tagname_t name, uint32 data) : m_tagName(name), m_dynamic(true)
 {
-	m_dataLen = 1;
+	m_dataLen = 4;
 	m_tagData = malloc(m_dataLen);
 	if (m_tagData != NULL) {
 		*((uint32 *)m_tagData) = ENDIAN_SWAP_32(data);
