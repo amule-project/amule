@@ -57,6 +57,8 @@
 		#include "pixmaps/mule_TrayIcon.ico.xpm"
 		#include "pixmaps/mule_Tr_yellow.ico.xpm"
 		#include "pixmaps/mule_Tr_grey.ico.xpm"
+	#else
+		#include "MuleTrayIcon.h"
 	#endif // USE_WX_TRAY
 #endif // __SYSTRAY_DISABLED__
 
@@ -64,7 +66,7 @@
 #include "SharedFilesCtrl.h"	// Needed for CSharedFilesCtrl
 #include "ClientListCtrl.h"	// Needed for CClientListCtrl
 #include "DownloadListCtrl.h"	// Needed for CDownloadListCtrl
-#include "ServerConnect.h"		// Needed for CServerConnect
+#include "ServerConnect.h"	// Needed for CServerConnect
 #include "ClientList.h"		// Needed for CClientList
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "ClientCredits.h"	// Needed for CClientCreditsList
