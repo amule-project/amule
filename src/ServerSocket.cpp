@@ -491,7 +491,7 @@ bool CServerSocket::ProcessPacket(char* packet, uint32 size, int8 opcode)
 		return true;
 	}
 	catch(wxString error) {
-		theApp.amuledlg->AddLogLine(false, CString(_("Unhandled error while processing packet from server (%s)")),error.c_str());
+		theApp.amuledlg->AddLogLine(false,_("Unhandled error while processing packet from server - ") + error);
 		SetConnectionState(CS_DISCONNECTED);
 		return false;
 	}
@@ -503,7 +503,7 @@ void CServerSocket::ConnectToServer(CServer* server)
 	theApp.amuledlg->AddLogLine(true,"Trying to connect\n");
 	#endif
 	cur_server = new CServer(server);
-	theApp.amuledlg->AddLogLine(false,wxString::Format(_("Connecting to %s (%s:%i)..."),cur_server->GetListName(),cur_server->GetFullIP(),cur_server->GetPort()));
+	theApp.amuledlg->AddLogLine(false, _("Connecting to ") + wxString(char2unicode(cur_server->GetListName())) + wxT(" (") + wxString(char2unicode(cur_server->GetFullIP())) + wxString::Format(wxT(":%i)"),cur_server->GetPort()));
 	SetConnectionState(CS_CONNECTING);
 	wxIPV4address addr;
 	addr.Hostname(char2unicode(server->GetAddress()));
@@ -511,20 +511,6 @@ void CServerSocket::ConnectToServer(CServer* server)
 	theApp.amuledlg->AddLogLine(true,CString(_("Server %s Port %i")),server->GetAddress(),server->GetPort());
 	theApp.amuledlg->AddLogLine(true,CString(_("Addr %s Port %i")),addr.Hostname().c_str(),addr.Service());
 	this->Connect(addr,FALSE);
-	// We will handle the result on the event.
-	/*
-	if (!this->Connect(addr,FALSE)) {
-		int error = errno; //this->GetLastError();
-		if ( error != EINPROGRESS) {
-			#ifdef SERVER_NET_TEST
-			theApp.amuledlg->AddLogLine(true,"Error connecting\n");
-			#endif
-			theApp.amuledlg->AddLogLine(false,CString(_("Error while connecting to %s (%s:%i): %d")),cur_server->GetListName(),cur_server->GetFullIP(),cur_server->GetPort(), error);
-			SetConnectionState(CS_FATALERROR);
-			return;
-		}
-	}
-	*/
 
 	info=server->GetListName();
 	SetConnectionState(CS_CONNECTING);
