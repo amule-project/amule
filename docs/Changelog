@@ -34,6 +34,7 @@ Version 2.0.0rc8 - The "???????????" version.
 		* New backtrace output with demangled function names, file
 		  names and line numbers, when possible.
 		* Initial (not functional yet) SOCKS5 proxy support.
+		* Updated some tests in configure.in.
 
 	GonoszTopi:
 		* Initial work on EC protocol version 2.0.
