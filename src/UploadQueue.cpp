@@ -247,7 +247,7 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd){
 		}
 	} else {
 		Packet* packet = new Packet(OP_ACCEPTUPLOADREQ,0);
-		theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->size);
+		theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->GetPacketSize());
 		newclient->socket->SendPacket(packet,true);
 		newclient->SetUploadState(US_UPLOADING);
 	}
@@ -467,7 +467,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
 	if (client->IsDownloading()) {
 		// he's already downloading and wants probably only another file
 		Packet* packet = new Packet(OP_ACCEPTUPLOADREQ,0);
-		theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->size);
+		theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->GetPacketSize());
 		client->socket->SendPacket(packet,true);
 		return;
 	}

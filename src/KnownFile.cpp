@@ -615,7 +615,7 @@ bool CKnownFile::LoadTagsFromFile(CFile* file){
 	file->Read(&tagcount,4);
 	ENDIAN_SWAP_I_32(tagcount);
 	for (uint32 j = 0; j != tagcount;j++){
-		CTag* newtag = new CTag(file);
+		CTag* newtag = new CTag(*file);
 		switch(newtag->tag.specialtag){
 			case FT_FILENAME:{
 				SetFileName(char2unicode(newtag->tag.stringvalue));
@@ -958,7 +958,7 @@ Packet*	CKnownFile::CreateSrcInfoPacket(CUpDownClient* forClient){
 	data.Write(nCount);
 
 	Packet* result = new Packet(&data, OP_EMULEPROT);
-	result->opcode = OP_ANSWERSOURCES;
+	result->SetOpCode(OP_ANSWERSOURCES);
 	if (nCount > 28)
 		result->PackPacket();
 	return result;

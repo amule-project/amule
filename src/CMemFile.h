@@ -29,31 +29,31 @@
 
 class CMemFile : public CFile {
 public:  
-	CMemFile(unsigned int growBytes=1024);
+	CMemFile(unsigned int growBytes = 1024);
 	CMemFile(BYTE* buffer,unsigned int bufferSize,unsigned int growBytes=0);
 	void Attach(BYTE* buffer,unsigned int buffserSize,unsigned int growBytes=0);
 	BYTE* Detach();
 	virtual ~CMemFile();
-	virtual unsigned long GetPosition() {return fPosition;};
-	virtual bool GetStatus(unsigned long none) const {return 1;};
-	off_t Seek(off_t offset,wxSeekMode from=wxFromStart);
+	virtual unsigned long GetPosition() const 		{ return fPosition; };
+	virtual bool GetStatus(unsigned long none) const 	{ return 1; };
+	off_t Seek(off_t offset, wxSeekMode from = wxFromStart);
 	virtual void SetLength(unsigned long newLen);
 	virtual off_t Length() const { return fFileSize; };
 //	virtual void Abort();
 //	virtual void Flush();
-	virtual bool Close();
+	virtual bool Close() const;
 	
 	// Kry - DANGEROUS! JUST FOR USE ON DEBUG BUILD TO DUMP MEMFILES!
-	BYTE* GetCurrentBuffer() { return (fBuffer + fPosition); };
+	BYTE* GetCurrentBuffer() const 		{ return (fBuffer + fPosition); };
 
-	off_t Read(uint8& v) 	{ return ReadRaw(&v, 1);	}
-  	size_t Write(const uint8& v)	{ return WriteRaw(&v, 1);	}
+	off_t Read(uint8& v) const		{ return ReadRaw(&v, 1); }
+  	size_t Write(const uint8& v)		{ return WriteRaw(&v, 1); }
 	
 	#if wxBYTE_ORDER == wxLITTLE_ENDIAN
  		
-  		off_t Read(uint16& v)	{ return ReadRaw(&v, 2);	}
- 		off_t Read(uint32& v)	{ return ReadRaw(&v, 4);	}
-  		//off_t Read(uint8[16] v)	{ return ReadRaw(v, 16);	}
+  		off_t Read(uint16& v) const	{ return ReadRaw(&v, 2); }
+ 		off_t Read(uint32& v) const	{ return ReadRaw(&v, 4);	}
+  		//off_t Read(uint8[16] v) const	{ return ReadRaw(v, 16);	}
 	
   		size_t Write(const uint16& v)	{ return WriteRaw(&v, 2);	}
 		size_t Write(const uint32& v) { return WriteRaw(&v, 4);	}
@@ -61,15 +61,15 @@ public:
 	
 	#else 
 	
-  		virtual off_t Read(uint16& v);
- 		virtual off_t Read(uint32& v);
+  		virtual off_t Read(uint16& v) const;
+ 		virtual off_t Read(uint32& v) const;
 	
   		virtual size_t Write(const uint16& v);
 		virtual size_t Write(const uint32& v);
 		
 	#endif
 
-	virtual off_t Read(uint8[16]);
+	virtual off_t Read(uint8[16]) const;
 		
 	virtual size_t Write(const uint8[16]);	
 		
@@ -79,7 +79,7 @@ public:
 	}
 	
 
-	off_t Read(wxString& v) {
+	off_t Read(wxString& v) const {
 		uint16 len = 0;
 		off_t off = Read(len);
 		if ( off == sizeof(len) ) {
@@ -99,10 +99,10 @@ public:
 		return off;
 	}	
 
-	virtual off_t  ReadRaw(void* buf,off_t length);
-	virtual size_t WriteRaw(const void* buf,size_t length);
+	virtual off_t  ReadRaw(void* buf, off_t length) const;
+	virtual size_t WriteRaw(const void* buf, size_t length);
 	
-	off_t ReadHash16(uchar* hash_to_read) {
+	off_t ReadHash16(uchar* hash_to_read) const {
 		return ReadRaw(hash_to_read,16);
 	}
 
@@ -111,20 +111,18 @@ public:
 	}	
 
 protected:
-	virtual off_t  Read(void* buf,off_t length);
-	virtual size_t Write(const void* buf,size_t length);
+	virtual off_t  Read(void* buf, off_t length) const;
+	virtual size_t Write(const void* buf, size_t length);
 	
 private:
 	void enlargeBuffer(unsigned long size);
 	
-	BYTE* fBuffer;  
-	unsigned long fLength;
 	unsigned int fGrowBytes;
-	unsigned long fPosition;
+	mutable unsigned long fPosition;
 	unsigned long fBufferSize;
 	unsigned long fFileSize;
 	int deleteBuffer;
-
+	BYTE* fBuffer;  
 };
 
 #endif // CMEMFILE_H

@@ -273,7 +273,7 @@ bool CDirectoryTreeCtrl::HasSharedSubdirectory(wxString const& strDir)
 	for (unsigned int i = 0; i < m_lstShared.GetCount(); ++i)
 	{
 		wxString const& str(m_lstShared[i]);
-		if (tStrDirLen < str.Len() - 1)				// Minus 1 strips trailing slash of str.
+		if (tStrDirLen < str.Len())				// Minus 1 strips trailing slash of str.
 		{
 			if (
 #ifdef __UNIX__
@@ -317,7 +317,7 @@ bool CDirectoryTreeCtrl::IsShared(wxString const& strDir)
 	for (unsigned int i = 0; i < m_lstShared.GetCount(); ++i)
 	{
 		wxString const& str(m_lstShared[i]);
-		if (tStrDirLen < str.Len() - 1)				// Minus 1 strips trailing slash of str.
+		if (tStrDirLen < str.Len())				// Minus 1 strips trailing slash of str.
 		{
 			if (
 #ifdef __UNIX__

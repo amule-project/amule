@@ -48,7 +48,7 @@ public:
   virtual size_t Write(const unsigned char v[16]) { return CMemFile::Write(v); };
   virtual size_t Write(const wxString& v)         { return CMemFile::Write(v); };
 */	
-	off_t ReadRaw(void* lpBuf, unsigned int nCount);
+	off_t ReadRaw(void* lpBuf, unsigned int nCount) const;
 	
 protected:
 };

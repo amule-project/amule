@@ -207,7 +207,7 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender){
 		tagMuleVersion.WriteTagToFile(&data);
 
 		Packet* packet = new Packet(&data);
-		packet->opcode = OP_LOGINREQUEST;
+		packet->SetOpCode(OP_LOGINREQUEST);
 		this->SendPacket(packet,true,sender);
 
 	}
@@ -377,7 +377,7 @@ void CServerConnect::CheckForTimeout()
 			connectionattemps.erase( it );
 			return;
 		}
-			
+
 		if ( it->first <= maxage) {
 			DWORD key = it->first;
 			CServerSocket* value = it->second;
@@ -387,6 +387,7 @@ void CServerConnect::CheckForTimeout()
 			it++;
 			connectionattemps.erase( key );
 			
+
 			TryAnotherConnectionrequest();
 			DestroySocket( value );
 		} else {
@@ -490,10 +491,10 @@ void CServerConnect::KeepConnectionAlive()
 		files->Write((uint32)0); //nFiles
 	
 		Packet* packet = new Packet(files);
-		packet->opcode = OP_OFFERFILES;
+		packet->SetOpCode(OP_OFFERFILES);
 		connectedsocket->SendPacket(packet,true);
 		
-		theApp.uploadqueue->AddUpDataOverheadServer(packet->size);
+		theApp.uploadqueue->AddUpDataOverheadServer(packet->GetPacketSize());
 		AddDebugLogLineM(false, wxString::Format(_("Refreshing server connection")));
 		delete files;
  	}

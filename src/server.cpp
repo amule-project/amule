@@ -160,7 +160,7 @@ void CServer::Init() {
 bool CServer::AddTagFromFile(CFile* servermet){
 	if (servermet == 0)
 		return false;
-	CTag* tag = new CTag(servermet);
+	CTag* tag = new CTag(*servermet);
 	switch(tag->tag.specialtag){		
 	case ST_SERVERNAME:
 		if(tag->tag.stringvalue)

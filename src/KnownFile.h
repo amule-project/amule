@@ -101,7 +101,7 @@ public:
 	virtual ~CAbstractFile() {};
 
 	const wxString&	GetFileName()			{return m_strFileName;}
-	CMD4Hash&		GetFileHash()			{return m_abyFileHash;}
+	CMD4Hash&	GetFileHash()			{return m_abyFileHash;}
 	uint32	GetFileSize()			{return m_nFileSize;}
 	void	SetFileSize(uint32 nFileSize) { m_nFileSize = nFileSize; }
 	void	SetFileName(const wxString& strmakeFilename);

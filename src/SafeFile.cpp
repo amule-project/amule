@@ -39,7 +39,7 @@ UINT CSafeFile::Read(void* lpBuf,UINT nCount) {
 }
 
 
-CSafeMemFile::CSafeMemFile(BYTE* lpBuffer,UINT nBufferSize,UINT nGrowBytes)
+CSafeMemFile::CSafeMemFile(BYTE *lpBuffer,UINT nBufferSize,UINT nGrowBytes)
 :CMemFile(lpBuffer,nBufferSize,nGrowBytes)
 {
 	// Nothing to do here
@@ -47,8 +47,8 @@ CSafeMemFile::CSafeMemFile(BYTE* lpBuffer,UINT nBufferSize,UINT nGrowBytes)
 
 CSafeMemFile::CSafeMemFile(UINT nGrowBytes) : CMemFile(nGrowBytes) {}
 
-off_t CSafeMemFile::ReadRaw(void* lpBuf,UINT nCount) {
-	if (GetPosition()+nCount > this->GetLength()) {
+off_t CSafeMemFile::ReadRaw(void* lpBuf,UINT nCount) const {
+	if (GetPosition()+nCount > this->Length()) {
 		printf("Read after safemem file!!!!\n");
 		//wxASSERT(0);
 		throw ("short packet on read (corrupted tagcount?)");

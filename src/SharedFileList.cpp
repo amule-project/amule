@@ -164,9 +164,9 @@ void CSharedFileList::SafeAddKFile(CKnownFile* toadd, bool bOnlyAdd){
 	files->Write((uint32)1); // filecount
 	CreateOfferedFilePacket(toadd,files, true);
 	Packet* packet = new Packet(files);
-	packet->opcode = OP_OFFERFILES;
+	packet->SetOpCode(OP_OFFERFILES);
 	delete files;
-	theApp.uploadqueue->AddUpDataOverheadServer(packet->size);
+	theApp.uploadqueue->AddUpDataOverheadServer(packet->GetPacketSize());
 	server->SendPacket(packet,true);
 }
 
@@ -209,9 +209,9 @@ void CSharedFileList::SendListToServer(){
 		CreateOfferedFilePacket(pos->second,files,true);
 	}
 	Packet* packet = new Packet(files);
-	packet->opcode = OP_OFFERFILES;
+	packet->SetOpCode(OP_OFFERFILES);
 	delete files;
-	theApp.uploadqueue->AddUpDataOverheadServer(packet->size);
+	theApp.uploadqueue->AddUpDataOverheadServer(packet->GetPacketSize());
 	server->SendPacket(packet,true);
 }
 

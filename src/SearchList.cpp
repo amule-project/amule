@@ -100,7 +100,7 @@ CSearchFile::CSearchFile(CSearchFile* copyfrom)
 }
 
 
-CSearchFile::CSearchFile(CMemFile* in_data, uint32 nSearchID, uint32 nServerIP, uint16 nServerPort, LPCTSTR pszDirectory)
+CSearchFile::CSearchFile(const CMemFile* in_data, uint32 nSearchID, uint32 nServerIP, uint16 nServerPort, LPCTSTR pszDirectory)
 {
 	m_nSearchID = nSearchID;
 	in_data->ReadRaw(m_abyFileHash,16);
@@ -114,7 +114,7 @@ CSearchFile::CSearchFile(CMemFile* in_data, uint32 nSearchID, uint32 nServerIP, 
 	in_data->Read(tagcount);
 
 	for (unsigned int i = 0; i != tagcount; ++i){
-		CTag* toadd = new CTag(in_data);
+		CTag* toadd = new CTag(*in_data);
 		taglist.push_back(toadd);
 	}
 
@@ -153,10 +153,12 @@ CSearchFile::CSearchFile(uint32 nSearchID, const uchar* pucFileHash, uint32 uFil
 {
 	m_nSearchID = nSearchID;
 	md4cpy(m_abyFileHash, pucFileHash);
+
 	taglist.push_back(new CTag(FT_FILESIZE, uFileSize));
 	taglist.push_back(new CTag(FT_FILENAME, pszFileName));
 	taglist.push_back(new CTag(FT_SOURCES, iAvailability));
 	printf("Filename2: %s\n",pszFileName);
+
 	SetFileName(char2unicode(pszFileName));
 	SetFileSize(uFileSize);
 
@@ -270,8 +272,8 @@ void CSearchList::NewSearch(const wxString& resTypes, uint16 nSearchID){
 	foundFilesCount[nSearchID] = 0;
 }
 
-uint16 CSearchList::ProcessSearchanswer(char* in_packet, uint32 size, CUpDownClient* Sender){
-	CSafeMemFile* packet = new CSafeMemFile((BYTE*)in_packet,size,0);
+uint16 CSearchList::ProcessSearchanswer(const char *in_packet, uint32 size, CUpDownClient *Sender) {
+	const CSafeMemFile *packet = new CSafeMemFile((BYTE*)in_packet,size,0);
 
 	if(Sender) {
 	  theApp.amuledlg->searchwnd->CreateNewTab(char2unicode(Sender->GetUserName()),(uint32)Sender);
@@ -317,7 +319,8 @@ uint16 CSearchList::ProcessSearchanswer(char* in_packet, uint32 size, CUpDownCli
 	return GetResultCount();
 }
 
-uint16 CSearchList::ProcessSearchanswer(char* in_packet, uint32 size, CUpDownClient* Sender, bool* pbMoreResultsAvailable, LPCTSTR pszDirectory)
+uint16 CSearchList::ProcessSearchanswer(const char *in_packet, uint32 size, 
+	CUpDownClient *Sender, bool *pbMoreResultsAvailable, LPCTSTR pszDirectory)
 {
 	wxASSERT( Sender != NULL );
 	// Elandal: Assumes sizeof(void*) == sizeof(uint32)
@@ -339,7 +342,7 @@ uint16 CSearchList::ProcessSearchanswer(char* in_packet, uint32 size, CUpDownCli
 		theApp.amuledlg->searchwnd->CreateNewTab(char2unicode(Sender->GetUserName()),nSearchID);
 	}
 	
-	CSafeMemFile packet((BYTE*)in_packet,size);
+	const CSafeMemFile packet((BYTE*)in_packet,size);
 	uint32 results;
 	packet.Read(results);
 
@@ -364,7 +367,7 @@ uint16 CSearchList::ProcessSearchanswer(char* in_packet, uint32 size, CUpDownCli
 	if (pbMoreResultsAvailable)
 		*pbMoreResultsAvailable = false;
 	
-	int iAddData = (int)(packet.GetLength() - packet.GetPosition());
+	int iAddData = (int)(packet.Length() - packet.GetPosition());
 	if (iAddData == 1){
 		uint8 ucMore;
 		packet.Read(ucMore);
@@ -378,10 +381,10 @@ uint16 CSearchList::ProcessSearchanswer(char* in_packet, uint32 size, CUpDownCli
 	return GetResultCount(nSearchID);
 }
 
-uint16 CSearchList::ProcessSearchanswer(char* in_packet, uint32 size, uint32 nServerIP, uint16 nServerPort){
+uint16 CSearchList::ProcessSearchanswer(const char *in_packet, uint32 size, uint32 nServerIP, uint16 nServerPort) {
 
 	//CSafeMemFile packet((BYTE*)in_packet,size);
-	CSafeMemFile* packet = new CSafeMemFile((BYTE*)in_packet,size,0);
+	const CSafeMemFile* packet = new CSafeMemFile((BYTE*)in_packet,size,0);
 
 	uint32 results;
 	packet->Read(results);

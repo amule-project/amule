@@ -397,12 +397,15 @@ void CUpDownClient::CreateStandartPackets(byte* data,uint32 togo, Requested_Bloc
 		togo -= nPacketSize;
 
 		Packet* packet = new Packet(OP_SENDINGPART,nPacketSize+24);
-		memcpy(&packet->pBuffer[0],GetUploadFileID(),16);
+		packet->CopyToDataBuffer(0, (const char *)GetUploadFileID(), 16);
 		uint32 statpos = ENDIAN_SWAP_32((currentblock->EndOffset - togo) - nPacketSize);	
-		memcpy(&packet->pBuffer[16],&statpos,4);	
+		packet->CopyToDataBuffer(16, (const char *)&statpos, 4);
 		uint32 endpos = ENDIAN_SWAP_32((currentblock->EndOffset - togo));	
-		memcpy(&packet->pBuffer[20],&endpos,4);
-		memfile.ReadRaw(&packet->pBuffer[24],nPacketSize);
+		packet->CopyToDataBuffer(20, (const char *)&endpos, 4);
+		char *tempbuf = new char[nPacketSize];
+		memfile.ReadRaw(tempbuf, nPacketSize);
+		packet->CopyToDataBuffer(24, tempbuf, nPacketSize);
+		delete [] tempbuf;
 		m_BlockSend_queue.AddTail(packet);
 	}
 }
@@ -433,11 +436,14 @@ void CUpDownClient::CreatePackedPackets(byte* data,uint32 togo, Requested_Block_
 		togo -= nPacketSize;
 
 		Packet* packet = new Packet(OP_COMPRESSEDPART,nPacketSize+24,OP_EMULEPROT);
-		memcpy(&packet->pBuffer[0],GetUploadFileID(),16);
+		packet->CopyToDataBuffer(0, (const char *)GetUploadFileID(), 16);
 		uint32 statpos = ENDIAN_SWAP_32(currentblock->StartOffset);
-		memcpy(&packet->pBuffer[16],&statpos,4);
-		memcpy(&packet->pBuffer[20],&endiannewsize,4);
-		memfile.ReadRaw(&packet->pBuffer[24],nPacketSize);
+		packet->CopyToDataBuffer(16, (const char *)&statpos, 4);
+		packet->CopyToDataBuffer(20, (const char *)&endiannewsize, 4);
+		char *tempbuf = new char[nPacketSize];
+		memfile.ReadRaw(tempbuf, nPacketSize);
+		packet->CopyToDataBuffer(24, tempbuf, nPacketSize);
+		delete [] tempbuf;
 		m_BlockSend_queue.AddTail(packet);
 	}
 	delete[] output;
@@ -660,12 +666,12 @@ void CUpDownClient::FlushSendBlocks(){ // call this when you stop upload, or the
 	while (!m_BlockSend_queue.IsEmpty() && m_BlockSend_queue.GetHead()->IsSplitted() && socket && socket->IsConnected() && !bBreak ){	
 		Packet* tosend = m_BlockSend_queue.RemoveHead();
 		//bool bBreak = tosend->IsLastSplitted();
-		theApp.uploadqueue->AddUpDataOverheadOther(tosend->size);
+		theApp.uploadqueue->AddUpDataOverheadOther(tosend->GetPacketSize());
 		socket->SendPacket(tosend,true,false);
 	}
 }
 
-void CUpDownClient::SendHashsetPacket(char* forfileid){
+void CUpDownClient::SendHashsetPacket(const char *forfileid) {
 	//printf("entered in : CUpDownClient::SendHashsetPacket\n");
 	CKnownFile* file = theApp.sharedfiles->GetFileByID((uchar*)forfileid);
 	if (!file) {
@@ -680,9 +686,9 @@ void CUpDownClient::SendHashsetPacket(char* forfileid){
 	for (int i = 0; i != parts; i++)
 		data->WriteRaw(file->GetPartHash(i),16);
 	Packet* packet = new Packet(data);
-	packet->opcode = OP_HASHSETANSWER;
 	delete data;
-	theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->size);
+	packet->SetOpCode(OP_HASHSETANSWER);
+	theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->GetPacketSize());
 	socket->SendPacket(packet,true,true);
 }
 
@@ -716,11 +722,11 @@ void CUpDownClient::SendRankingInfo(){
 	// Kry - Well, eMule does like that. I guess they're ok.
 	data.Write((uint32)0); data.Write((uint32)0); data.Write((uint16)0);
 	Packet* packet = new Packet(&data,OP_EMULEPROT);
-	packet->opcode = OP_QUEUERANKING;
+	packet->SetOpCode(OP_QUEUERANKING);
 //	Packet* packet = new Packet(OP_QUEUERANKING,12,OP_EMULEPROT);
 //	memset(packet->pBuffer,0,12);
 //	memcpy(packet->pBuffer+0,&nRank,2);
-	theApp.uploadqueue->AddUpDataOverheadOther(packet->size);
+	theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
 	socket->SendPacket(packet,true,true);
 }
 
@@ -751,8 +757,8 @@ void CUpDownClient::SendCommentInfo(CKnownFile *file)
 	data.WriteRaw(unicode2char(desc),length);
 	
 	Packet *packet = new Packet(&data,OP_EMULEPROT);
-	packet->opcode = OP_FILEDESC;
-	theApp.uploadqueue->AddUpDataOverheadOther(packet->size);
+	packet->SetOpCode(OP_FILEDESC);
+	theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
 	socket->SendPacket(packet,true);
 }
 
@@ -814,6 +820,6 @@ void CUpDownClient::UDPFileReasked(){
 	SetLastUpRequest();
 	uint16 nRank = theApp.uploadqueue->GetWaitingPosition(this);
 	Packet* response = new Packet(OP_REASKACK,2,OP_EMULEPROT);
-	memcpy(response->pBuffer,&nRank,2);
+	response->CopyToDataBuffer(0, (const char *)&nRank, 2);
 	theApp.clientudp->SendPacket(response,GetIP(),GetUDPPort());
 }

@@ -867,7 +867,7 @@ void CDownloadQueue::ProcessLocalRequests()
 
 				// create request packet
 				Packet* packet = new Packet(OP_GETSOURCES,16);
-				md4cpy(packet->pBuffer,cur_file->GetFileHash());
+				packet->Copy16ToDataBuffer((const char *)cur_file->GetFileHash().GetHash());
 				dataTcpFrame.WriteRaw(packet->GetPacket(), packet->GetRealPacketSize());
 				delete packet;
 			}
@@ -881,7 +881,7 @@ void CDownloadQueue::ProcessLocalRequests()
 			Packet* packet = new Packet(new char[iSize], dataTcpFrame.GetLength(), true, false);
 			dataTcpFrame.Seek(0, wxFromStart);
 			dataTcpFrame.ReadRaw(packet->GetPacket(), iSize);
-			uint32 size = packet->size;
+			uint32 size = packet->GetPacketSize();
 			theApp.serverconnect->SendPacket(packet, true);	// Deletes `packet'.
 			theApp.uploadqueue->AddUpDataOverheadServer(size);
 		}
@@ -1222,8 +1222,8 @@ bool CDownloadQueue::SendGlobGetSourcesUDPPacket(CSafeMemFile& data)
 		int iFileIDs = data.GetLength() / 16;
 		Packet packet(&data);
 
-		packet.opcode = OP_GLOBGETSOURCES;
-		theApp.uploadqueue->AddUpDataOverheadServer(packet.size);
+		packet.SetOpCode(OP_GLOBGETSOURCES);
+		theApp.uploadqueue->AddUpDataOverheadServer(packet.GetPacketSize());
 		theApp.serverconnect->SendUDPPacket(&packet,cur_udpserver,false);
 
 		m_cRequestsSentToServer += iFileIDs;

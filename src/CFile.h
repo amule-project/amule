@@ -91,7 +91,7 @@ public:
   bool Open(const wxString& szFileName, OpenMode mode = read, int access = wxS_DEFAULT) {
     return Open(szFileName.GetData(),mode,access);
   };
-  virtual bool Close();  // Close is a NOP if not opened
+  virtual bool Close() const;  // Close is a NOP if not opened
 
   // assign an existing file descriptor and get it back from CFile object
   void Attach(int fd) { Close(); m_fd = fd; }
@@ -100,7 +100,7 @@ public:
 
   // read/write (unbuffered)
     // returns number of bytes read or ofsInvalid on error
-  virtual off_t Read(void *pBuf, off_t nCount);
+  virtual off_t Read(void *pBuf, off_t nCount) const;
     // returns the number of bytes written
   virtual size_t Write(const void *pBuf, size_t nCount);
     // returns true on success
@@ -115,7 +115,7 @@ public:
 
   // file pointer operations (return ofsInvalid on failure)
     // move ptr ofs bytes related to start/current off_t/end of file
-  virtual off_t Seek(off_t ofs, wxSeekMode mode = wxFromStart);
+  virtual off_t Seek(off_t ofs, wxSeekMode mode = wxFromStart) const;
     // move ptr to ofs bytes before the end
   virtual off_t SeekEnd(off_t ofs = 0) { return Seek(ofs, wxFromEnd); }
     // get current off_t
@@ -143,7 +143,7 @@ private:
   CFile(const CFile&);
   CFile& operator=(const CFile&);
 
-  int m_fd; // file descriptor or INVALID_FD if not opened
+  mutable int m_fd; // file descriptor or INVALID_FD if not opened
   bool m_error; // error memory
   wxString fFilePath;
 };
