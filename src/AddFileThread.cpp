@@ -166,30 +166,36 @@ void CAddFileThread::Start()
 
 void CAddFileThread::Stop()
 {
-	printf("Hasher: Signaling for remaining threads to terminate.\n");
-	
 	if ( IsRunning() ) {
-		SetRunning( false );
+		// Are there any threads to kill?
+		if ( GetThreadCount() ) {		
+			printf("Hasher: Signaling for remaining threads to terminate.\n");
+		
+			SetRunning( false );
 
-		wxStopWatch timer;
+			wxStopWatch timer;
 	
-		// Wait for all threads to die
-		while ( GetThreadCount() ) {
-			// Sleep for 1/100 of a second to avoid clobbering the mutex
-			// Termination only takes about 3ms on my system, but I'm taking 
-			// slower systems into consideration.
-			wxUsleep(10);
+			// Wait for all threads to die
+			while ( GetThreadCount() ) {
+				// Sleep for 1/100 of a second to avoid clobbering the mutex
+				// Termination only takes about 3ms on my system, but I'm taking 
+				// slower systems into consideration.
+				wxUsleep(10);
 
-			// Check for timeouts after 20 seconds
-			if ( timer.Time() > 20000 ) {
-				printf("Hasher: Threads have timed out!\n");
-				break;
+				// Check for timeouts after 20 seconds
+				if ( timer.Time() > 20000 ) {
+					printf("Hasher: Threads have timed out!\n");
+					break;
+				}
 			}
+			
+			printf("Hasher: Threads died after %lu millie-seconds\n", timer.Time());
+		} else {
+			// No threads to kill, just stay quiet.
+			SetRunning( false );
 		}
-
-		printf("Hasher: Threads died after %lu millie-seconds\n", timer.Time());
 	} else {
-		printf("Hasher: Threads are already dead or dying.\n");
+		printf("Hasher: Warning, attempted to stop already stopped hasher!\n");
 	}
 }
 
