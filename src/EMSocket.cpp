@@ -97,7 +97,6 @@ CEMSocket::CEMSocket(void)
 	sendblen = 0;
 	sent = 0;
 	m_bLinkedPackets = false;
-	OnDestroy = false;
 }
 
 CEMSocket::~CEMSocket(){
@@ -162,8 +161,8 @@ void CEMSocket::OnReceive(int nErrorCode){
 		return;
 	}
 	
-	// Check current connection and existance state
-	if((byConnected == ES_DISCONNECTED) || OnDestroy){
+	// Check current connection state
+	if(byConnected == ES_DISCONNECTED){
 		return;
 	}
 	else {	
