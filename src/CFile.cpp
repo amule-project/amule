@@ -24,7 +24,7 @@
 #include <unistd.h>		// Needed for close(2)
 
 #include "CFile.h"		// Interface declarations.
-#include "amuleDlg.h"		// Needed for CamuleDlg
+
 #include "amule.h"		// Needed for theApp
 
 #ifdef HAVE_CONFIG_H
@@ -268,7 +268,7 @@ bool CFile::Open(const wxChar *szFileName, OpenMode mode, int accessMode)
     int fd = wxOpen( szFileName, flags ACCESS(accessMode));
     if ( fd == -1 )
     {
-    	theApp.amuledlg->AddLogLine(true, _("Can't open file '%s'"), szFileName);
+    	AddLogLineF(true, _("Can't open file '%s'"), szFileName);
         return FALSE;
     }
     else {

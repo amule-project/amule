@@ -937,10 +937,10 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 	// Open both files for writing
 	CFile amulesig_out, emulesig_out;
 	if (!emulesig_out.Open(emulesig_path, CFile::write)) {
-		amuledlg->AddLogLine(true, wxString(_("Failed to save"))+wxString(_(" OnlineSig File")));
+		AddLogLineM(true, wxString(_("Failed to save"))+wxString(_(" OnlineSig File")));
 	}
 	if (!amulesig_out.Open(amulesig_path, CFile::write)) {
-		amuledlg->AddLogLine(true, wxString(_("Failed to save"))+wxString(_(" aMule OnlineSig File")));
+		AddLogLineM(true, wxString(_("Failed to save"))+wxString(_(" aMule OnlineSig File")));
 	}
 
 	char buffer[256];
@@ -1490,7 +1490,7 @@ void CamuleApp::FlushQueuedLogLines() {
 	while (!QueuedAddLogLines.empty()) {
 		line_to_add = QueuedAddLogLines.front();
 		QueuedAddLogLines.pop_front();
-		amuledlg->AddLogLine(line_to_add.addtostatus, line_to_add.line);
+		AddLogLineM(line_to_add.addtostatus, line_to_add.line);
 	}
 
 	m_LogQueueLock.Leave();
@@ -1912,3 +1912,25 @@ void CamuleApp::NotifyEvent(GUIEvent event) {
 	}
 
 };
+
+
+void AddLogLineF(bool addtostatus, const wxChar *line, ...)
+{
+	va_list argptr;
+	va_start(argptr, line);
+	wxString bufferline = wxString::FormatV(line, argptr);
+	bufferline.Truncate(1000); // Max size 1000 chars
+	va_end(argptr);
+	AddLogLineM(addtostatus, bufferline);
+}
+		
+
+void AddDebugLogLineF(bool addtostatus, const wxChar *line, ...)
+{
+	va_list argptr;
+	va_start(argptr, line);
+	wxString bufferline = wxString::FormatV(line, argptr);
+	bufferline.Truncate(1000); // Max size 1000 chars
+	va_end(argptr);
+	AddDebugLogLineM(addtostatus, bufferline);
+}

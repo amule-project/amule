@@ -833,7 +833,7 @@ void CamuleDlg::StartFast(wxTextCtrl *ctl)
 		}
 		catch(wxString error) {
 			wxString msg = _("This ed2k link is invalid: ") + error;
-			theApp.amuledlg->AddLogLine( true, _("Invalid link: ") + msg);
+			AddLogLineM( true, _("Invalid link: ") + msg);
 		}
 	}
 ctl->SetValue(wxT(""));

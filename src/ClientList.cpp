@@ -215,13 +215,13 @@ bool CClientList::AttachToAlreadyKnown(CUpDownClient** client, CClientReqSocket*
 				{
 					// if found_client is connected and has the IS_IDENTIFIED, it's safe to say that the other one is a bad guy
 					if (found_client->Credits() && found_client->Credits()->GetCurrentIdentState(found_client->GetIP()) == IS_IDENTIFIED){
-						theApp.amuledlg->AddDebugLogLine(false, wxT("Clients: %s (%s), Banreason: Userhash invalid"), unicode2char(tocheck->GetUserName()),unicode2char(tocheck->GetFullIP())); 
+						AddDebugLogLineF(false, wxT("Clients: %s (%s), Banreason: Userhash invalid"), unicode2char(tocheck->GetUserName()),unicode2char(tocheck->GetFullIP())); 
 						tocheck->Ban();
 						return false;
 					}
 	
 					//IDS_CLIENTCOL Warning: Found matching client, to a currently connected client: %s (%s) and %s (%s)
-					theApp.amuledlg->AddDebugLogLine(true,_("WARNING! Found matching client, to a currently connected client: %s (%s) and with %s"),unicode2char(tocheck->GetUserName()),unicode2char(tocheck->GetFullIP()),unicode2char(found_client->GetUserName()),unicode2char(found_client->GetFullIP()));
+					AddDebugLogLineF(true,_("WARNING! Found matching client, to a currently connected client: %s (%s) and with %s"),unicode2char(tocheck->GetUserName()),unicode2char(tocheck->GetFullIP()),unicode2char(found_client->GetUserName()),unicode2char(found_client->GetFullIP()));
 					return false;
 				}
 				found_client->socket->client = 0;
@@ -326,7 +326,7 @@ void CClientList::Process(){
 	
 	if (m_dwLastTrackedCleanUp + TRACKED_CLEANUP_TIME < cur_tick ){
 		m_dwLastTrackedCleanUp = cur_tick;
-		theApp.amuledlg->AddDebugLogLine(false, wxT("Cleaning up TrackedClientList, %i clients on List..."), m_trackedClientsList.size());
+		AddDebugLogLineF(false, wxT("Cleaning up TrackedClientList, %i clients on List..."), m_trackedClientsList.size());
 		
 		std::map<uint32, CDeletedClient*>::iterator it = m_trackedClientsList.begin();
 		while ( it != m_trackedClientsList.end() ) {
@@ -340,7 +340,7 @@ void CClientList::Process(){
 				delete pResult;
 			}
 		}
-		theApp.amuledlg->AddDebugLogLine(false, wxT("...done, %i clients left on list"), m_trackedClientsList.size());
+		AddDebugLogLineF(false, wxT("...done, %i clients left on list"), m_trackedClientsList.size());
 	}
 }
 

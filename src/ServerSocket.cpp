@@ -72,7 +72,7 @@ IMPLEMENT_DYNAMIC_CLASS(CServerSocket,CEMSocket)
 
 CServerSocket::CServerSocket(CServerConnect* in_serverconnect)
 {
-	// theApp.amuledlg->AddLogLine(true,"Serversocket: size %d\n",sizeof(CServerSocket));
+	// AddLogLine(true,"Serversocket: size %d\n",sizeof(CServerSocket));
 
 	serverconnect = in_serverconnect;
 	connectionstate = 0;
@@ -162,14 +162,14 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 {
 	try{
 		#ifdef SERVER_NET_TEST
-		theApp.amuledlg->AddLogLine(true,_("Processing Server Packet: "));
+		AddLogLineM(true,_("Processing Server Packet: "));
 		#endif
 		CServer* update;
 		switch(opcode) {
 			case OP_SERVERMESSAGE: {
 				/* Kry import of lugdunum 16.40 new features */
 				#ifdef SERVER_NET_TEST
-				theApp.amuledlg->AddLogLine(true,_("Server message\n"));
+				AddLogLineM(true,_("Server message\n"));
 				#endif
 				theApp.downloadqueue->AddDownDataOverheadServer(size);
 				char* buffer = new char[size-1];
@@ -252,7 +252,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 			}
 			case OP_IDCHANGE:{
 				#ifdef SERVER_NET_TEST
-				theApp.amuledlg->AddLogLine(true,_("ServerMsg - OP_IDChange\n"));
+				AddLogLineM(true,_("ServerMsg - OP_IDChange\n"));
 				#endif
 				theApp.downloadqueue->AddDownDataOverheadServer(size);
 				if (size < sizeof(LoginAnswer_Struct)) {
@@ -309,13 +309,13 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 
 				if (connectionstate != CS_CONNECTED) {
 					#ifdef SERVER_NET_TEST
-					theApp.amuledlg->AddLogLine(true,_("Connected\n"));
+					AddLogLineM(true,_("Connected\n"));
 					#endif
 					SetConnectionState(CS_CONNECTED);
 					theApp.OnlineSig();       // Added By Bouc7
 				}
 				serverconnect->SetClientID(la->clientid);
-				theApp.amuledlg->AddLogLine(false,_("New clientid is %u"),la->clientid);
+				AddLogLineF(false,_("New clientid is %u"),la->clientid);
 				
 				
 				// Kry - No need for this. eMule doesn't do it either.
@@ -334,7 +334,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 			}
 			case OP_SEARCHRESULT: {
 				#ifdef SERVER_NET_TEST
-				theApp.amuledlg->AddLogLine(true,_("ServerMsg - OP_SearchResult\n"));
+				AddLogLine(true,_("ServerMsg - OP_SearchResult\n"));
 				#endif
 				theApp.downloadqueue->AddDownDataOverheadServer(size);
 				CServer* cur_srv = (serverconnect) ? serverconnect->GetCurrentServer() : NULL;
@@ -343,7 +343,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 			}
 			case OP_FOUNDSOURCES: {
 				#ifdef SERVER_NET_TEST
-				theApp.amuledlg->AddLogLine(true,_("ServerMsg - OP_FoundSources; Sources=%u  %s\n"), (UINT)(uchar)packet[16], DbgGetFileInfo((uchar*)packet)); // Creteil
+				AddLogLineF(true,_("ServerMsg - OP_FoundSources; Sources=%u  %s\n"), (UINT)(uchar)packet[16], DbgGetFileInfo((uchar*)packet)); // Creteil
 				#endif
 				theApp.downloadqueue->AddDownDataOverheadServer(size);
 				CMemFile* sources = new CMemFile((BYTE*)packet,size);
@@ -357,7 +357,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 			}
 			case OP_SERVERSTATUS: {
 				#ifdef SERVER_NET_TEST
-				theApp.amuledlg->AddLogLine(true,_("ServerMsg - OP_ServerStatus\n"));
+				AddLogLineM(true,_("ServerMsg - OP_ServerStatus\n"));
 				#endif
 				// FIXME some statuspackets have a different size -> why? structur?
 				if (size < 8) {
@@ -380,12 +380,12 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 			//<<--Working, but needs to be cleaned up..
 			case OP_SERVERIDENT: {
 				#ifdef SERVER_NET_TEST
-				theApp.amuledlg->AddLogLine(true,_("ServerMsg - OP_ServerIdent\n"));
+				AddLogLineM(true,_("ServerMsg - OP_ServerIdent\n"));
 				#endif
 
 				theApp.downloadqueue->AddDownDataOverheadServer(size);
 				if (size<38) {
-					theApp.amuledlg->AddLogLine(false, _("Unknown server info received !"));
+					AddLogLineM(false, _("Unknown server info received !"));
 					// throw wxString(wxT("Unknown server info received!"));
 					break;
 				}
@@ -420,7 +420,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 			// tecxx 1609 2002 - add server's serverlist to own serverlist
 			case OP_SERVERLIST: {
 				#ifdef SERVER_NET_TEST
-				theApp.amuledlg->AddLogLine(true,_("ServerMsg - OP_ServerList\n"));
+				AddLogLineM(true,_("ServerMsg - OP_ServerList\n"));
 				#endif
 				CSafeMemFile* servers = new CSafeMemFile((BYTE*)packet,size);
 				unsigned char count;
@@ -450,15 +450,15 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				}
 				delete servers;
 				if (addcount) {
-					theApp.amuledlg->AddLogLine(false,_("Received %d new servers"), addcount);
+					AddLogLineF(false,_("Received %d new servers"), addcount);
 				}
 				theApp.serverlist->SaveServermetToFile();
-				theApp.amuledlg->AddLogLine(true,_("Saving of server.met file Done !!!\n"));
+				AddLogLineM(true,_("Saving of server.met file Done !!!\n"));
 				break;
 			}
 			case OP_CALLBACKREQUESTED: {
 				#ifdef SERVER_NET_TEST
-				theApp.amuledlg->AddLogLine(true,_("ServerMsg - OP_CallbackRequested\n"));
+				AddLogLineM(true,_("ServerMsg - OP_CallbackRequested\n"));
 				#endif
 				theApp.downloadqueue->AddDownDataOverheadServer(size);
 				if (size == 6) {
@@ -479,15 +479,15 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 			}
 			case OP_CALLBACK_FAIL: {
 				#ifdef SERVER_NET_TEST
-				theApp.amuledlg->AddLogLine(true,_("ServerMsg - OP_Callback_Fail\n"));
+				AddLogLineM(true,_("ServerMsg - OP_Callback_Fail\n"));
 				#endif
 				break;
 			}
 			case OP_REJECT: {
 				#ifdef SERVER_NET_TEST
-				theApp.amuledlg->AddLogLine(true,_("ServerMsg - OP_Reject\n"));
+				AddLogLineM(true,_("ServerMsg - OP_Reject\n"));
 				#endif
-				theApp.amuledlg->AddLogLine(false, _("Server rejected last command"));
+				AddLogLineM(false, _("Server rejected last command"));
 				break;
 			}
 			default:
@@ -496,7 +496,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 		return true;
 	}
 	catch(wxString error) {
-		theApp.amuledlg->AddLogLine(false,_("Unhandled error while processing packet from server - ") + error);
+		AddLogLineM(false,_("Unhandled error while processing packet from server - ") + error);
 		SetConnectionState(CS_DISCONNECTED);
 		return false;
 	}
@@ -505,10 +505,10 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 void CServerSocket::ConnectToServer(CServer* server)
 {
 	#ifdef SERVER_NET_TEST
-	theApp.amuledlg->AddLogLine(true,_("Trying to connect\n"));
+	AddLogLine(true,_("Trying to connect\n"));
 	#endif
 	cur_server = new CServer(server);
-	theApp.amuledlg->AddLogLine(false, _("Connecting to ") + cur_server->GetListName() + wxT(" (") + server->GetAddress() + wxT(" - ") + cur_server->GetFullIP() + wxString::Format(wxT(":%i)"),cur_server->GetPort()));
+	AddLogLineM(false, _("Connecting to ") + cur_server->GetListName() + wxT(" (") + server->GetAddress() + wxT(" - ") + cur_server->GetFullIP() + wxString::Format(wxT(":%i)"),cur_server->GetPort()));
 	SetConnectionState(CS_CONNECTING);
 	wxIPV4address addr;
 	addr.Hostname(server->GetAddress());
@@ -532,37 +532,37 @@ void CServerSocket::OnError(wxSocketError nErrorCode)
 bool CServerSocket::PacketReceived(Packet* packet)
 {
 	#ifdef SERVER_NET_TEST
-	theApp.amuledlg->AddLogLine(true,_("Server Packet Received:  "));
+	AddLogLineM(true,_("Server Packet Received:  "));
 	#endif
 	try {
 		if (packet->GetProtocol() == OP_PACKEDPROT) {
 			#ifdef SERVER_NET_TEST
-			theApp.amuledlg->AddLogLine(true,_("Compressed packet, uncompressing... "));
+			AddLogLineM(true,_("Compressed packet, uncompressing... "));
 			#endif
 			if (!packet->UnPackPacket(250000)){
 				#ifdef SERVER_NET_TEST
-				theApp.amuledlg->AddLogLine(true,_("FAILED\n"));
+				AddLogLineM(true,_("FAILED\n"));
 				#endif
-				theApp.amuledlg->AddDebugLogLine(false,_("Failed to decompress server TCP packet: protocol=0x%02x  opcode=0x%02x  size=%u"), packet ? packet->GetProtocol() : 0, packet ? packet->GetOpCode() : 0, packet ? packet->GetPacketSize() : 0);
+				AddDebugLogLineF(false,_("Failed to decompress server TCP packet: protocol=0x%02x  opcode=0x%02x  size=%u"), packet ? packet->GetProtocol() : 0, packet ? packet->GetOpCode() : 0, packet ? packet->GetPacketSize() : 0);
 				theApp.downloadqueue->AddDownDataOverheadServer(packet->GetPacketSize());
 				return true;
 			}
 			#ifdef SERVER_NET_TEST
-			theApp.amuledlg->AddLogLine(true,_("SUCCESS\n"));
+			AddLogLineM(true,_("SUCCESS\n"));
 			#endif
 			packet->SetProtocol(OP_EDONKEYPROT);
 		}
 		if (packet->GetProtocol() == OP_EDONKEYPROT) {
 			#ifdef SERVER_NET_TEST
-			theApp.amuledlg->AddLogLine(true,_("Uncompressed packet\n"));
+			AddLogLineM(true,_("Uncompressed packet\n"));
 			#endif			
 			ProcessPacket(packet->GetDataBuffer(), packet->GetPacketSize(), packet->GetOpCode());
 		} else {
-			theApp.amuledlg->AddDebugLogLine(false,_("Received server TCP packet with unknown protocol: protocol=0x%02x  opcode=0x%02x  size=%u"), packet ? packet->GetProtocol() : 0, packet ? packet->GetOpCode() : 0, packet ? packet->GetPacketSize() : 0);
+			AddDebugLogLineF(false,_("Received server TCP packet with unknown protocol: protocol=0x%02x  opcode=0x%02x  size=%u"), packet ? packet->GetProtocol() : 0, packet ? packet->GetOpCode() : 0, packet ? packet->GetPacketSize() : 0);
 			theApp.downloadqueue->AddDownDataOverheadServer(packet->GetPacketSize());
 		}
 	} catch(...) {
-		theApp.amuledlg->AddDebugLogLine(false,_("Error: Unhandled exception while processing server TCP packet: protocol=0x%02x  opcode=0x%02x  size=%u"), packet ? packet->GetProtocol() : 0, packet ? packet->GetOpCode() : 0, packet ? packet->GetPacketSize() : 0);
+		AddDebugLogLineF(false,_("Error: Unhandled exception while processing server TCP packet: protocol=0x%02x  opcode=0x%02x  size=%u"), packet ? packet->GetProtocol() : 0, packet ? packet->GetOpCode() : 0, packet ? packet->GetPacketSize() : 0);
 		wxASSERT(0);
 		return false;		
 	}

@@ -237,7 +237,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 
 				// if IP is filtered, dont reply but disconnect...
 				if (theApp.ipfilter->IsFiltered(client->GetIP())) {
-					theApp.amuledlg->AddDebugLogLine(true,_("Filtered IP: ") + client->GetFullIP() + wxT("(") + theApp.ipfilter->GetLastHit() + wxT(")"));					
+					AddDebugLogLineM(true,_("Filtered IP: ") + client->GetFullIP() + wxT("(") + theApp.ipfilter->GetLastHit() + wxT(")"));					
 					theApp.stat_filteredclients++;
 					if (bNewClient) {
 						delete client;
@@ -1553,7 +1553,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 									DebugSend("OP__AnswerSources", client, (char*)file->GetFileHash());
 								}
 								if (thePrefs.GetDebugSourceExchange()) {
-									theApp.amuledlg->AddDebugLogLine( false, "RCV:Source Request User(%s) File(%s)", client->GetUserName(), file->GetFileName().GetData());
+									AddDebugLogLineF( false, "RCV:Source Request User(%s) File(%s)", client->GetUserName(), file->GetFileName().GetData());
 								}
 								#endif
 							}
@@ -1685,7 +1685,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 		Disconnect(wxT("UnCaught invalid packet exception On ProcessPacket\n"));
 		return false;
 	} catch(wxString error) {
-		theApp.amuledlg->AddDebugLogLine(false,_("A client caused an error or did something bad: %s. Disconnecting client!"),error.GetData());
+		AddDebugLogLineF(false,_("A client caused an error or did something bad: %s. Disconnecting client!"),error.GetData());
 		if (client) {
 			if (theApp.glob_prefs->GetVerbosePacketError()) {
 				if (error.IsEmpty()) {			
@@ -1763,7 +1763,7 @@ void CClientReqSocket::OnError(int nErrorCode)
 		} else {
 			strError.Printf(_("A client caused an error or did something bad (error %u). Disconnecting client !"),nErrorCode);
 		}
-		theApp.amuledlg->AddLogLine(false,strError);
+		AddLogLineM(false,strError);
 	} else {
 		strError = wxT("No error or error 107 (Transport endpoint is not connected)");
 	}
@@ -1793,7 +1793,7 @@ bool CClientReqSocket::PacketReceived(Packet* packet)
 		
 		case OP_PACKEDPROT:
 			if (!packet->UnPackPacket()) {
-				theApp.amuledlg->AddDebugLogLine(false,wxT("Failed to decompress client TCP packet; protocol=0x%02x  opcode=0x%02x  size=%u"), packet->GetProtocol(), packet->GetOpCode(), packet->GetPacketSize());				
+				AddDebugLogLineF(false,wxT("Failed to decompress client TCP packet; protocol=0x%02x  opcode=0x%02x  size=%u"), packet->GetProtocol(), packet->GetOpCode(), packet->GetPacketSize());				
 				bResult = false;
 				break;
 			}

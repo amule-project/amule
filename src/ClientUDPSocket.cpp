@@ -47,7 +47,7 @@
 #include "KnownFile.h"		// Needed for CKnownFile
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "opcodes.h"		// Needed for OP_EMULEPROT
-#include "amuleDlg.h"		// Needed for CamuleDlg
+
 #include "amule.h"			// Needed for theApp
 #include "otherfunctions.h"
 #include "SafeFile.h"
@@ -201,7 +201,7 @@ bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, uint
 		return true;
 	}
 	catch(...) {
-		theApp.amuledlg->AddDebugLogLine(false,_("Error while processing incoming UDP Packet (Most likely a misconfigured server)"));
+		AddDebugLogLineM(false,_("Error while processing incoming UDP Packet (Most likely a misconfigured server)"));
 	}
 	return false;
 }

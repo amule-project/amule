@@ -94,7 +94,7 @@ uint8 CServerList::AutoUpdate()
 	for ( uint8 i = 0; i < url_count; i++ ) {
 		strURLToDownload = app_prefs->adresses_list[i]; 
 		if (strURLToDownload.Find(wxT("://")) == -1) {
-			theApp.amuledlg->AddLogLine(true, _("Invalid URL ") + strURLToDownload);
+			AddLogLineM(true, _("Invalid URL ") + strURLToDownload);
 		} else {
 			strTempFilename =  theApp.ConfigDir + wxString::Format(wxT("server_auto%u.met"), temp_count);
 
@@ -103,7 +103,7 @@ uint8 CServerList::AutoUpdate()
 			if(retval==0) {
 				temp_count++;		
 			} else {
-				theApp.amuledlg->AddLogLine(true, _("Failed to download the serverlist from %s"), strURLToDownload.GetData());
+				AddLogLineF(true, _("Failed to download the serverlist from %s"), strURLToDownload.GetData());
 			}
 			delete dlg;
 		}
@@ -111,7 +111,7 @@ uint8 CServerList::AutoUpdate()
 
 	wxASSERT(temp_count <= url_count);
 	if (temp_count < url_count) {
-		theApp.amuledlg->AddLogLine(true, _("%u auto-update serverlist entries failed loading"), (url_count - temp_count));
+		AddLogLineF(true, _("%u auto-update serverlist entries failed loading"), (url_count - temp_count));
 	}
 	
 	return temp_count;
@@ -155,18 +155,18 @@ bool CServerList::AddServermetToList(const wxString& strFile, bool merge)
 	}
 	CSafeFile servermet;
 	if(!wxFileExists(strFile)) {
-		theApp.amuledlg->AddLogLine(false, _("Failed to load server.met!"));
+		AddLogLineM(false, _("Failed to load server.met!"));
 		return false;
 	}
 
 	if (!servermet.Open(strFile,CFile::read)){ //CFile::modeRead|CFile::osSequentialScan)) {
-		theApp.amuledlg->AddLogLine(false, _("Failed to load server.met!"));
+		AddLogLineM(false, _("Failed to load server.met!"));
 		return false;
 	}
 
 	if ( (1 != servermet.Read(&version,1)) || (version != 0xE0 && version != MET_HEADER)) {
 		servermet.Close();
-		theApp.amuledlg->AddLogLine(false,_("Invalid versiontag in server.met (0x%x , size %i)!"),version, sizeof(version));
+		AddLogLineF(false,_("Invalid versiontag in server.met (0x%x , size %i)!"),version, sizeof(version));
 		return false;
 	}
 
@@ -226,13 +226,13 @@ bool CServerList::AddServermetToList(const wxString& strFile, bool merge)
 		theApp.amuledlg->serverwnd->serverlistctrl->Thaw();
     
 		if (!merge) {
-			theApp.amuledlg->AddLogLine(true,_("%i servers in server.met found"),fservercount);
+			AddLogLineF(true,_("%i servers in server.met found"),fservercount);
 		} else {
-			theApp.amuledlg->AddLogLine(true,_("%d servers added"), iAddCount, fservercount-iAddCount);
+			AddLogLineF(true,_("%d servers added"), iAddCount, fservercount-iAddCount);
 		}
 	}
 	catch (CInvalidPacket) {
-		theApp.amuledlg->AddLogLine(true,_("Error: the file server.met is corrupted"));
+		AddLogLineM(true,_("Error: the file server.met is corrupted"));
 		servermet.Close();
 		return false;
 	}
@@ -545,7 +545,7 @@ void CServerList::AddServersFromTextFile(wxString strFilename,bool isstaticserve
 
 		// emanuelw(20030924) added: create log entry
 		if(writetolog == true) {
-			theApp.amuledlg->AddLogLine(true,wxString(_("Server added: "))+nsrv->GetAddress()); 
+			AddLogLineM(true,wxString(_("Server added: "))+nsrv->GetAddress()); 
 		}
 
 		if (!theApp.amuledlg->serverwnd->serverlistctrl->AddServer(nsrv, true))	{
@@ -780,7 +780,7 @@ bool CServerList::SaveServermetToFile()
 	CFile servermet;
 	servermet.Open(newservermet, CFile::write);
 	if (!servermet.IsOpened()) {
-		theApp.amuledlg->AddLogLine(false,_("Failed to save server.met!"));
+		AddLogLineM(false,_("Failed to save server.met!"));
 		return false;
 	}
 

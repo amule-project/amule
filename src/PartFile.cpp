@@ -354,13 +354,13 @@ void CPartFile::CreatePartFile()
 	
 	wxString strPartPath = m_fullname.Left( m_fullname.Length() - 4);
 	if ( !m_hpartfile.Create(strPartPath, true) ) {
-		theApp.amuledlg->AddLogLine(false,_("ERROR: Failed to create partfile)"));
+		AddLogLineM(false,_("ERROR: Failed to create partfile)"));
 		SetPartFileStatus(PS_ERROR);
 	}
 	// jesh.. luotu. nyt se vaan pitää avata uudestaan read-writeen..
 	m_hpartfile.Close();
 	if(!m_hpartfile.Open(strPartPath,CFile::read_write)) {
-		theApp.amuledlg->AddLogLine(false,_("ERROR: Failed to open partfile)"));
+		AddLogLineM(false,_("ERROR: Failed to open partfile)"));
 		SetPartFileStatus(PS_ERROR);
 	}
 	
@@ -428,7 +428,7 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool get
 		metFile.Read(&version,1);
 		if (version != PARTFILE_VERSION  && version!= PARTFILE_SPLITTEDVERSION ){
 			metFile.Close();
-			theApp.amuledlg->AddLogLine(false, _("Error: Invalid part.met fileversion! (%s => %s)"), m_partmetfilename.c_str(), m_strFileName.c_str());
+			AddLogLineF(false, _("Error: Invalid part.met fileversion! (%s => %s)"), m_partmetfilename.c_str(), m_strFileName.c_str());
 			return false;
 		}
 
@@ -478,7 +478,7 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool get
 				switch(newtag->tag.specialtag) {
 					case FT_FILENAME: {
 						if(newtag->tag.stringvalue == NULL) {
-							theApp.amuledlg->AddLogLine(true, _("Error: %s (%s) is corrupt"), m_partmetfilename.c_str(), m_strFileName.c_str());
+							AddLogLineF(true, _("Error: %s (%s) is corrupt"), m_partmetfilename.c_str(), m_strFileName.c_str());
 							delete newtag;
 							return false;
 						}
@@ -637,10 +637,10 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool get
 	} catch (CInvalidPacket e) {
 
 		if (metFile.Eof()) {
-			theApp.amuledlg->AddLogLine(true, _("Error: %s (%s) is corrupt, unable to load file"), m_partmetfilename.c_str(), GetFileName().c_str());
+			AddLogLineF(true, _("Error: %s (%s) is corrupt, unable to load file"), m_partmetfilename.c_str(), GetFileName().c_str());
 		} else {
 			// This error message makes no sense...
-// 			theApp.amuledlg->AddLogLine(true, _("Unexpected file error while reading server.met: %s, unable to load serverlist"), m_partmetfilename.c_str(), GetFileName().c_str(), m_fullname.c_str());
+// 			AddLogLineF(true, _("Unexpected file error while reading server.met: %s, unable to load serverlist"), m_partmetfilename.c_str(), GetFileName().c_str(), m_fullname.c_str());
 		}
 		printf(" - Caught an error - ");
 		if (metFile.IsOpened()) {
@@ -675,7 +675,7 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool get
 	// open permanent handle
 	wxString strSearchPath = m_fullname.Left( m_fullname.Length() - 4 );
 	if ( !m_hpartfile.Open(strSearchPath, CFile::read_write)) {
-		theApp.amuledlg->AddLogLine(false, _("Failed to open %s (%s)"), m_fullname.c_str(), m_strFileName.c_str());
+		AddLogLineF(false, _("Failed to open %s (%s)"), m_fullname.c_str(), m_strFileName.c_str());
 		return false;
 	}
 
@@ -724,7 +724,7 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool get
 
 		time_t file_date = wxFileModificationTime(m_fullname);
 		if ( (((time_t)date) < (time_t)(file_date - 10)) || (((time_t)date) > (time_t)(file_date + 10))) {
-			theApp.amuledlg->AddLogLine(false, _("Warning: %s might be corrupted"), m_fullname.c_str(), m_strFileName.c_str());
+			AddLogLineF(false, _("Warning: %s might be corrupted"), m_fullname.c_str(), m_strFileName.c_str());
 			// rehash
 			SetPartFileStatus(PS_WAITINGFORHASH);
 			//CAddFileThread::AddFile(directory, searchpath, this);
@@ -769,7 +769,7 @@ bool CPartFile::SavePartFile(bool Initial)
 			if (file.IsOpened()) {
 				file.Close();
 			}
-			theApp.amuledlg->AddLogLine(false,_("ERROR while saving partfile: %s (%s => %s)"), _(".part file not found"), m_partmetfilename.c_str(), m_strFileName.c_str());
+			AddLogLineF(false,_("ERROR while saving partfile: %s (%s => %s)"), _(".part file not found"), m_partmetfilename.c_str(), m_strFileName.c_str());
 			return false;
 		}
 
@@ -887,13 +887,13 @@ bool CPartFile::SavePartFile(bool Initial)
 		if (file.IsOpened()) {
 			file.Close();
 		}
-		theApp.amuledlg->AddLogLine(false, _("ERROR while saving partfile: %s (%s => %s)"), error, m_partmetfilename.c_str(), m_strFileName.c_str());
+		AddLogLineF(false, _("ERROR while saving partfile: %s (%s => %s)"), error, m_partmetfilename.c_str(), m_strFileName.c_str());
 		return false;
 	} catch(wxString error) {
 		if (file.IsOpened()) {
 			file.Close();
 		}
-		theApp.amuledlg->AddLogLine(false, _("ERROR while saving partfile: %s (%s => %s)"), error.c_str(), m_partmetfilename.c_str(), m_strFileName.c_str());
+		AddLogLineF(false, _("ERROR while saving partfile: %s (%s => %s)"), error.c_str(), m_partmetfilename.c_str(), m_strFileName.c_str());
 		return false;
 
 
@@ -989,7 +989,7 @@ void CPartFile::SaveSourceSeeds() {
 	file.Create(m_fullname + wxT(".seeds"), true);
 	
 	if (!file.IsOpened()) {
-		theApp.amuledlg->AddLogLine(false,_("Failed to save part.met.seeds file for %s"), m_fullname.c_str());
+		AddLogLineF(false,_("Failed to save part.met.seeds file for %s"), m_fullname.c_str());
 	}	
 
 	uint8 src_count = source_seeds.GetCount();
@@ -1010,7 +1010,7 @@ void CPartFile::SaveSourceSeeds() {
 	file.Flush();
 	file.Close();
 
-	theApp.amuledlg->AddLogLine(false, _("Saved %i sources seeds for partfile: %s (%s)"), n_sources, m_fullname.c_str(), m_strFileName.c_str());
+	AddLogLineF(false, _("Saved %i sources seeds for partfile: %s (%s)"), n_sources, m_fullname.c_str(), m_strFileName.c_str());
 	
 }	
 
@@ -1028,12 +1028,12 @@ void CPartFile::LoadSourceSeeds() {
 	file.Open(m_fullname + wxT(".seeds"),CFile::read);
 
 	if (!file.IsOpened()) {
-		theApp.amuledlg->AddLogLine(false,_("Partfile %s (%s) has no seeds file"), m_partmetfilename.c_str(), m_strFileName.c_str());
+		AddLogLineF(false,_("Partfile %s (%s) has no seeds file"), m_partmetfilename.c_str(), m_strFileName.c_str());
 		return;
 	}	
 	
 	if (!file.Length()>1) {
-		theApp.amuledlg->AddLogLine(false,_("Partfile %s (%s) has void seeds file"), m_partmetfilename.c_str(), m_strFileName.c_str());
+		AddLogLineF(false,_("Partfile %s (%s) has void seeds file"), m_partmetfilename.c_str(), m_strFileName.c_str());
 		return;
 	}	
 	
@@ -1070,7 +1070,7 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
 	if (GetED2KPartHashCount() == 0){
 		if (IsComplete(0, m_nFileSize-1)){
 			if (result->GetFileHash() != GetFileHash()){
-				theApp.amuledlg->AddLogLine(false, _("Found corrupted part (%i) in 0 parts file %s - FileResultHash |%s| FileHash |%s|"), 1, m_strFileName.c_str(),EncodeBase16(result->GetFileHash(), 16).c_str(), EncodeBase16(GetFileHash(), 16).c_str());
+				AddLogLineF(false, _("Found corrupted part (%i) in 0 parts file %s - FileResultHash |%s| FileHash |%s|"), 1, m_strFileName.c_str(),EncodeBase16(result->GetFileHash(), 16).c_str(), EncodeBase16(GetFileHash(), 16).c_str());
 				AddGap(0, m_nFileSize-1);
 				errorfound = true;
 			}
@@ -1085,8 +1085,8 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
 			/*
 			if (IsComplete(i*PARTSIZE,((i+1)*PARTSIZE)-1)){
 				if (!(result->GetPartHash(i) && !md4cmp(result->GetPartHash(i),this->GetPartHash(i)))){
-					theApp.amuledlg->AddLogLine(false, _("Found corrupted part (%i) in %i parts file %s - FileResultHash |%s| FileHash |%s|"), i+1, GetED2KPartHashCount(), m_strFileName.c_str(),result->GetPartHash(i),this->GetPartHash(i));							
-//					theApp.amuledlg->AddLogLine(false, _("Found corrupted part (%i) in %s"), i+1, m_strFileName.c_str());		
+					AddLogLineF(false, _("Found corrupted part (%i) in %i parts file %s - FileResultHash |%s| FileHash |%s|"), i+1, GetED2KPartHashCount(), m_strFileName.c_str(),result->GetPartHash(i),this->GetPartHash(i));							
+//					AddLogLineF(false, _("Found corrupted part (%i) in %s"), i+1, m_strFileName.c_str());		
 					AddGap(i*PARTSIZE,((((i+1)*PARTSIZE)-1) >= m_nFileSize) ? m_nFileSize-1 : ((i+1)*PARTSIZE)-1);
 					errorfound = true;
 				}
@@ -1098,14 +1098,14 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
 					if ( i < result->GetHashCount() )
 						wronghash = result->GetPartHash(i);
 				
-					theApp.amuledlg->AddLogLine(false, _("Found corrupted part (%i) in %i parts file %s - FileResultHash |%s| FileHash |%s|"), i + 1, GetED2KPartHashCount(), m_strFileName.c_str(), wronghash.Encode().c_str(), GetPartHash(i).Encode().c_str());
+					AddLogLineF(false, _("Found corrupted part (%i) in %i parts file %s - FileResultHash |%s| FileHash |%s|"), i + 1, GetED2KPartHashCount(), m_strFileName.c_str(), wronghash.Encode().c_str(), GetPartHash(i).Encode().c_str());
 				
 					AddGap(i*PARTSIZE,((((i+1)*PARTSIZE)-1) >= m_nFileSize) ? m_nFileSize-1 : ((i+1)*PARTSIZE)-1);
 					errorfound = true;
 				}
 			} else {
 				if (!IsComplete(i*PARTSIZE,((i+1)*PARTSIZE)-1)){
-					theApp.amuledlg->AddLogLine(false, _("Found completed part (%i) in %s"), i+1, m_strFileName.c_str());
+					AddLogLineF(false, _("Found completed part (%i) in %s"), i+1, m_strFileName.c_str());
 					FillGap(i*PARTSIZE,((((i+1)*PARTSIZE)-1) >= m_nFileSize) ? m_nFileSize-1 : ((i+1)*PARTSIZE)-1);
 					RemoveBlockFromList(i*PARTSIZE,((((i+1)*PARTSIZE)-1) >= m_nFileSize) ? m_nFileSize-1 : ((i+1)*PARTSIZE)-1);
 				}
@@ -1119,7 +1119,7 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
 			return;
 		}
 		else {
-			theApp.amuledlg->AddLogLine(false, _("Finished rehashing %s"), m_strFileName.c_str());
+			AddLogLineF(false, _("Finished rehashing %s"), m_strFileName.c_str());
 		}
 	}
 	else{
@@ -2379,33 +2379,33 @@ void CPartFile::CompleteFileEnded(int completing_result, wxString* newname) {
 		paused = true;
 		SetPartFileStatus(PS_ERROR);
 		theApp.downloadqueue->StartNextFile();	
-		theApp.amuledlg->AddLogLine(true, _("Unexpected file error while completing %s. File paused"), GetFileName().c_str());
+		AddLogLineF(true, _("Unexpected file error while completing %s. File paused"), GetFileName().c_str());
 		delete newname;
 		return;
 	}	
 	
 	if (completing_result & DELETE_FAIL_MET) {
-		theApp.amuledlg->AddLogLine(true, _("WARNING: Failed to delete %s"), m_fullname.c_str());
+		AddLogLineF(true, _("WARNING: Failed to delete %s"), m_fullname.c_str());
 	}	
 	
 	if (completing_result & DELETE_FAIL_MET_BAK) {
-		theApp.amuledlg->AddLogLine(true, _("WARNING: Failed to delete %s%s"), m_fullname.c_str(), PARTMET_BAK_EXT);
+		AddLogLineF(true, _("WARNING: Failed to delete %s%s"), m_fullname.c_str(), PARTMET_BAK_EXT);
 	}	
 	
 	if (completing_result & SAME_NAME_RENAMED) {
-		theApp.amuledlg->AddLogLine(true, _("WARNING: A file with that name already exists, the file has been renamed"));
+		AddLogLineM(true, _("WARNING: A file with that name already exists, the file has been renamed"));
 	}		
 
 	if (completing_result & DELETE_FAIL_MET) {
-		theApp.amuledlg->AddLogLine(true,wxT("WARNING: could not remove original '%s' after creating backup\n"), m_partmetfilename.Left(m_partmetfilename.Length()-4).c_str());
+		AddLogLineF(true,wxT("WARNING: could not remove original '%s' after creating backup\n"), m_partmetfilename.Left(m_partmetfilename.Length()-4).c_str());
 	}	
 	
 	if (completing_result & DELETE_FAIL_SEEDS) {
-		theApp.amuledlg->AddLogLine(true,wxT("WARNING: Failed to delete %s.seeds\n"), m_partmetfilename.c_str());
+		AddLogLineF(true,wxT("WARNING: Failed to delete %s.seeds\n"), m_partmetfilename.c_str());
 	}	
 
 	
-	theApp.amuledlg->AddLogLine(true, _("Finished downloading %s :-)"), GetFileName().c_str());
+	AddLogLineF(true, _("Finished downloading %s :-)"), GetFileName().c_str());
 	theApp.amuledlg->ShowNotifier(wxString(char2unicode("Downloaded:"))+wxT("\n")+GetFileName(), TBN_DLOAD);
 	
 }
@@ -2678,11 +2678,11 @@ void CPartFile::Delete()
 bool CPartFile::HashSinglePart(uint16 partnumber)
 {
 	if ((GetHashCount() <= partnumber) && (GetPartCount() > 1)) {
-		theApp.amuledlg->AddLogLine(true, _("Warning: Unable to hash downloaded part - hashset incomplete (%s)"), GetFileName().c_str());
+		AddLogLineF(true, _("Warning: Unable to hash downloaded part - hashset incomplete (%s)"), GetFileName().c_str());
 		this->hashsetneeded = true;
 		return true;
 	} else if ((GetHashCount() <= partnumber) && GetPartCount() != 1) {
-		theApp.amuledlg->AddLogLine(true, _("Error: Unable to hash downloaded part - hashset incomplete (%s). This should never happen"),GetFileName().c_str());
+		AddLogLineF(true, _("Error: Unable to hash downloaded part - hashset incomplete (%s). This should never happen"),GetFileName().c_str());
 		this->hashsetneeded = true;
 		return true;		
 	} else {
@@ -3136,7 +3136,7 @@ Packet *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 		result->PackPacket();
 	}
 	//if (thePrefs.GetDebugSourceExchange()) {
-		theApp.amuledlg->AddDebugLogLine( false, wxT("Send:Source User(%s) File(%s) Count(%i)"), unicode2char(forClient->GetUserName()), unicode2char(GetFileName()), nCount );
+		AddDebugLogLineF( false, wxT("Send:Source User(%s) File(%s) Count(%i)"), unicode2char(forClient->GetUserName()), unicode2char(GetFileName()), nCount );
 	//}
 	return result;
 }
@@ -3241,7 +3241,7 @@ uint32 CPartFile::WriteToBuffer(uint32 transize, BYTE *data, uint32 start, uint3
 
 	// Occasionally packets are duplicated, no point writing it twice
 	if (IsComplete(start, end)) {
-		theApp.amuledlg->AddDebugLogLine(false, wxT("File '%s' has already been written from %ld to %ld\n"), GetFileName().c_str(), start, end);
+		AddDebugLogLineF(false, wxT("File '%s' has already been written from %ld to %ld\n"), GetFileName().c_str(), start, end);
 		return 0;
 	}
 
@@ -3310,7 +3310,7 @@ void CPartFile::FlushBuffer(void)
 	*/
 	wxLongLong total = 0, free = 0;
 	if (wxGetDiskSpace(theApp.glob_prefs->GetTempDir(), &total, &free) && free < PARTSIZE) {
-		theApp.amuledlg->AddLogLine(true, _("ERROR: Cannot write to disk"));
+		AddLogLineF(true, _("ERROR: Cannot write to disk"));
 		PauseFile();
 		return;
 	}
@@ -3390,14 +3390,14 @@ void CPartFile::FlushBuffer(void)
 			if (IsComplete(PARTSIZE * partNumber, (PARTSIZE * (partNumber + 1)) - 1)) {
 				// Is part corrupt
 				if (!HashSinglePart(partNumber)) {
-					theApp.amuledlg->AddLogLine(true, _("Downloaded part %i is corrupt :(  (%s)"), partNumber, GetFileName().c_str());
+					AddLogLineF(true, _("Downloaded part %i is corrupt :(  (%s)"), partNumber, GetFileName().c_str());
 					AddGap(PARTSIZE*partNumber, (PARTSIZE*partNumber + partRange));
 					corrupted_list.AddTail(partNumber);
 					// Reduce transfered amount by corrupt amount
 					this->m_iLostDueToCorruption += (partRange + 1);
 				} else {
 					if (!hashsetneeded) {
-						theApp.amuledlg->AddDebugLogLine(false, wxT("Finished part %u of \"%s\""), partNumber, GetFileName().c_str());
+						AddDebugLogLineF(false, wxT("Finished part %u of \"%s\""), partNumber, GetFileName().c_str());
 					}
 					
 					// if this part was successfully completed (although ICH is active), remove from corrupted list
@@ -3480,7 +3480,7 @@ void CPartFile::FlushBuffer(void)
 		}
 	}
 	catch(...) {
-		theApp.amuledlg->AddLogLine(true, _("Unexpected file error while writing %s : %s"), GetFileName().c_str(), _("Unknown"));
+		AddLogLineF(true, _("Unexpected file error while writing %s : %s"), GetFileName().c_str(), _("Unknown"));
 		SetPartFileStatus(PS_ERROR);
 		paused = true;
 		m_iLastPausePurge = time(NULL);

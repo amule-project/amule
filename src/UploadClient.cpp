@@ -224,7 +224,7 @@ bool CUpDownClient::IsDifferentPartBlock() const // [Tarod 12/22/2002]
    	{ 
       		different_part = true; 
    	} 
-//	theApp.amuledlg->AddDebugLogLine(false, "Debug: User %s, last_done_part (%u) %s (%u) next_requested_part, sent %u Kbs.", GetUserName(), last_done_part, different_part? "!=": "==", next_requested_part, this->GetTransferedUp() / 1024); 
+//	AddDebugLogLineF(false, "Debug: User %s, last_done_part (%u) %s (%u) next_requested_part, sent %u Kbs.", GetUserName(), last_done_part, different_part? "!=": "==", next_requested_part, this->GetTransferedUp() / 1024); 
 
 	return different_part; 
 }
@@ -341,7 +341,7 @@ bool CUpDownClient::CreateNextBlockPackage(){
 			delete[] fullname;
 		return false;
 	}
-	//theApp.amuledlg->AddDebugLogLine(false,"Debug: Packet done. Size: %i",blockpack->GetLength());
+	//AddDebugLogLine(false,"Debug: Packet done. Size: %i",blockpack->GetLength());
 	return true;
 
 }
@@ -639,7 +639,7 @@ void CUpDownClient::SendHashsetPacket(const CMD4Hash& forfileid) {
 	//printf("entered in : CUpDownClient::SendHashsetPacket\n");
 	CKnownFile* file = theApp.sharedfiles->GetFileByID(forfileid);
 	if (!file) {
-		theApp.amuledlg->AddLogLine(false, _("requested file not found"));
+		AddLogLineM(false, _("requested file not found"));
 		return;
 	}
 

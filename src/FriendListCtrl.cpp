@@ -185,7 +185,7 @@ bool CFriendListCtrl::LoadList()
 		
 		file.Close();
 	} else if ( wxFileExists(metfile) ) {
-		theApp.amuledlg->AddLogLine(false, _("Failed to open friendlist file 'emfriends.met' for reading!\n"));
+		AddLogLineM(false, _("Failed to open friendlist file 'emfriends.met' for reading!\n"));
 	}
 	
 	return result;
@@ -209,7 +209,7 @@ void CFriendListCtrl::SaveList()
 		
 		file.Close();	
 	} else {
-		theApp.amuledlg->AddLogLine(false, _("Failed to open friendlist file 'emfriends.met' for writing!\n"));
+		AddLogLineM(false, _("Failed to open friendlist file 'emfriends.met' for writing!\n"));
 	}
 }
 

@@ -283,14 +283,14 @@ void CClientCreditsList::LoadList()
 
 void CClientCreditsList::SaveList()
 {
-	theApp.amuledlg->AddDebugLogLine(false, wxT("Saved Credit list"));
+	AddDebugLogLineM(false, wxT("Saved Credit list"));
 	m_nLastSaved = ::GetTickCount();
 
 	wxString name(theApp.ConfigDir + CLIENTS_MET_FILENAME);
 	CFile file;
 
 	if (!file.Create(name,TRUE)) {
-		theApp.amuledlg->AddLogLine(true, _("Failed to save creditfile"));
+		AddLogLineM(true, _("Failed to save creditfile"));
 		return;
 	}
 	
@@ -378,7 +378,7 @@ void CClientCredits::Verified(uint32 dwForIP){
 			m_pCredits->nDownloadedLo = 1;
 			m_pCredits->nUploadedHi = 0;
 			m_pCredits->nUploadedLo = 1; // in order to safe this client, set 1 byte
-			theApp.amuledlg->AddDebugLogLine(false, wxT("Credits deleted due to new SecureIdent"));
+			AddDebugLogLineM(false, wxT("Credits deleted due to new SecureIdent"));
 		}
 	}
 	IdentState = IS_IDENTIFIED;
@@ -452,11 +452,11 @@ bool CClientCreditsList::CreateKeyPair(){
 		privkeysink.MessageEnd();
 
 	#endif
-		theApp.amuledlg->AddDebugLogLine(false,wxT("Created new RSA keypair"));
+		AddDebugLogLineM(false,wxT("Created new RSA keypair"));
 	}
 	catch(...)
 	{
-		theApp.amuledlg->AddDebugLogLine(false, wxT("Failed to create new RSA keypair"));
+		AddDebugLogLineM(false, wxT("Failed to create new RSA keypair"));
 		wxASSERT ( false );
 		return false;
 	}
@@ -587,7 +587,7 @@ bool CClientCreditsList::VerifyIdent(CClientCredits* pTarget, const uchar* pachS
 					break;
 				case CRYPT_CIP_REMOTECLIENT:
 					if (theApp.serverconnect->GetClientID() == 0 || theApp.serverconnect->IsLowID()){
-						theApp.amuledlg->AddDebugLogLine(false, wxT("Warning: Maybe SecureHash Ident fails because LocalIP is unknown"));
+						AddDebugLogLineM(false, wxT("Warning: Maybe SecureHash Ident fails because LocalIP is unknown"));
 						ChallengeIP = theApp.serverconnect->GetLocalIP();
 					}
 					else

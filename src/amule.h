@@ -69,8 +69,11 @@ class GUIEvent {
 
 
 #define AddLogLineM(x,y); theApp.NotifyEvent(GUIEvent(ADDLOGLINE,x,y));
-		
 #define AddDebugLogLineM(x,y); theApp.NotifyEvent(GUIEvent(ADDDEBUGLOGLINE,x,y));
+
+// __VA_ARGS__ is not ansi standard 
+void AddDebugLogLineF(bool addtostatus, const wxChar *line, ...);
+void AddLogLineF(bool addtostatus, const wxChar *line, ...);
 
 class CAbstractFile;
 class ExternalConn;

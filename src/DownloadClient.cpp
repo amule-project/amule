@@ -42,7 +42,6 @@
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "otherfunctions.h" // md4hash
 
-#define AddDebugLogLine	   theApp.amuledlg->AddDebugLogLine
 
 // members of CUpDownClient
 // which are mainly used for downloading functions
@@ -226,7 +225,7 @@ void CUpDownClient::SendFileRequest()
 			SetLastAskedForSources();
 			#ifdef __USE_DEBUG__
 			if (thePrefs.GetDebugSourceExchange()) 
-				AddDebugLogLine( false, "Send:Source Request User(%s) File(%s)", unicode2char(GetUserName()), reqfile->GetFileName() );
+				AddDebugLogLineF( false, "Send:Source Request User(%s) File(%s)", unicode2char(GetUserName()), reqfile->GetFileName() );
 			#endif
 		}
 		#ifdef __USE_DEBUG__
@@ -292,7 +291,7 @@ void CUpDownClient::SendFileRequest()
 			SetLastAskedForSources();
 		    #ifdef __USE_DEBUG__
 			if (thePrefs.GetDebugSourceExchange())
-				AddDebugLogLine( false, "Send:Source Request User(%s) File(%s)", unicode2char(GetUserName()), reqfile->GetFileName() );
+				AddDebugLogLineF( false, "Send:Source Request User(%s) File(%s)", unicode2char(GetUserName()), reqfile->GetFileName() );
 			#endif
 		}
 	}
@@ -763,7 +762,7 @@ void CUpDownClient::ProcessBlockPacket(const char *packet, uint32 size, bool pac
 				// Found reserved block
 				
 				if (cur_block->fZStreamError){
-					AddDebugLogLine(false, _("Ignoring %u bytes of block %u-%u because of errornous zstream state for file \"%s\""), size - HEADER_SIZE, nStartPos, nEndPos, reqfile->GetFileName().GetData());
+					AddDebugLogLineF(false, _("Ignoring %u bytes of block %u-%u because of errornous zstream state for file \"%s\""), size - HEADER_SIZE, nStartPos, nEndPos, reqfile->GetFileName().GetData());
 					reqfile->RemoveBlockFromList(cur_block->block->StartOffset, cur_block->block->EndOffset);
 					return;
 				}
@@ -807,7 +806,7 @@ void CUpDownClient::ProcessBlockPacket(const char *packet, uint32 size, bool pac
 							nEndPos = cur_block->block->StartOffset + cur_block->totalUnzipped - 1;
 
 							if (nStartPos > cur_block->block->EndOffset || nEndPos > cur_block->block->EndOffset) {
-								AddDebugLogLine(false, _("Corrupted compressed packet for %s received (error %i)"),reqfile->GetFileName().GetData(),666);
+								AddDebugLogLineF(false, _("Corrupted compressed packet for %s received (error %i)"),reqfile->GetFileName().GetData(),666);
 								reqfile->RemoveBlockFromList(cur_block->block->StartOffset, cur_block->block->EndOffset);
 							} else {
 								// Write uncompressed data to file
