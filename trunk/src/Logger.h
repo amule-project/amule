@@ -32,7 +32,7 @@ enum DebugType
 	logAICHRecovery,
 	//! Warnings/Errors for the CListenSocket class.
 	logListenSocket,
-	//! Warnings/Errors for Client-Credits
+	//! Warnings/Errors for Client-Credits.
 	logCredits,
 	//! Warnings/Errors for the client UDP socket.
 	logClientUDP,
@@ -42,12 +42,14 @@ enum DebugType
 	logIPFilter,
 	//! Warnings/Errors for known-files.
 	logKnownFiles,
-	//! Warnings/Errors for part-files.	
+	//! Warnings/Errors for part-files.
 	logPartFile,
 	//! Warnings/Errors for SHA-hashset creation.
 	logSHAHashSet,
-	//! Warnings/Errors for servers, server connections
+	//! Warnings/Errors for servers, server connections.
 	logServer,
+	//! Warnings/Errors for proxy.
+	logProxy,
 };
 
 
