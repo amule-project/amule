@@ -140,7 +140,7 @@ void CFileDetailDialog::FillSourcenameList()
 
 	// reset
 	for (int i=0;i<pmyListCtrl->GetItemCount();i++){
-		pmyListCtrl->SetItem(i, 1, (wxT("0")));	
+		pmyListCtrl->SetItem(i, 1, wxT("0"));	
 		SourcenameItem *item = (SourcenameItem *) pmyListCtrl->GetItemData(i);
 		item->count = 0;
 	}
@@ -153,7 +153,7 @@ void CFileDetailDialog::FillSourcenameList()
 
 		if ((itempos=pmyListCtrl->FindItem(-1,wxString(char2unicode(cur_src->GetClientFilename())))) == -1) { 
 			int itemid = pmyListCtrl->InsertItem(0, (char2unicode(cur_src->GetClientFilename()))); 
-			pmyListCtrl->SetItem(0, 1, (wxT("1"))); 
+			pmyListCtrl->SetItem(0, 1, wxT("1")); 
 			SourcenameItem *item = new SourcenameItem;
 			item->name = (char2unicode(cur_src->GetClientFilename()));
 			item->count = 1;
