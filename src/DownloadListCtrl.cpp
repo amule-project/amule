@@ -116,7 +116,7 @@ void CDownloadListCtrl::HideSources(CPartFile * toCollapse, bool isShift, bool i
 		if (item->owner == toCollapse) {
 			pre++;
 			CUpDownClient *cl = (CUpDownClient*)item->value;
-			if ((isShift || isCtrl || isAlt) && (cl->GetDownloadFile() == toCollapse)) {
+			if ((isShift || isCtrl || isAlt) && (cl->GetRequestFile() == toCollapse)) {
 				uint8 ds = cl->GetDownloadState();
 				if ((isShift && ds == DS_DOWNLOADING) || (isCtrl && cl->GetRemoteQueueRank() > 0) || (isAlt && ds != DS_NONEEDEDPARTS)) {
 					continue;
@@ -620,7 +620,7 @@ void CDownloadListCtrl::AddSource(CPartFile * owner, CUpDownClient * source, boo
 		return;
 	}
 	if (owner->m_bShowOnlyDownloading &&
-	((source->GetDownloadState() != DS_DOWNLOADING) || (source->GetDownloadFile()!=owner))) {
+	((source->GetDownloadState() != DS_DOWNLOADING) || (source->GetRequestFile()!=owner))) {
 		return;
 	}
 	// insert newitem to the display too!
@@ -1216,7 +1216,7 @@ void CDownloadListCtrl::OnLvnItemActivate(wxListEvent & evt)
 					partfile->m_bShowOnlyDownloading = isShift;
 					if (isShift) {
 						uint8 ds = client->GetDownloadState();
-						if ((client->GetDownloadFile() != partfile) || (ds != DS_DOWNLOADING)) {
+						if ((client->GetRequestFile() != partfile) || (ds != DS_DOWNLOADING)) {
 							continue;
 						}
 					}
