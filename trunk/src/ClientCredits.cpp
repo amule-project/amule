@@ -415,6 +415,7 @@ bool CClientCreditsList::CreateKeyPair(){
 		CryptoPP::InvertibleRSAFunction privkey;
 		privkey.Initialize(rng,RSAKEYSIZE);
 
+		// Nothing we can do against this unicode2char :/
 		CryptoPP::Base64Encoder privkeysink(new CryptoPP::FileSink(unicode2char(theApp.ConfigDir + CRYPTKEY_FILENAME)));
 		
 		privkey.DEREncode(privkeysink);
