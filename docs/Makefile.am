@@ -8,6 +8,8 @@ dist_doc_DATA = ABOUT-NLS \
 		license.txt \
 		README \
 		TODO \
-		EC_Protocol.txt
+		EC_Protocol.txt \
+		socks4.protocol
 		
 docdir = $(datadir)/doc/$(PACKAGE_NAME)-$(PACKAGE_VERSION)
+
