@@ -59,7 +59,7 @@ void CServerConnect::TryAnotherConnectionrequest(){
 		if (!next_server)
 		{
 			if (connectionattemps.GetCount()==0){
-				theApp.amuledlg->AddLogLine(true,CString(_("Failed to connect to all servers listed. Making another pass.")));
+				AddLogLineM(true,wxString::Format(_("Failed to connect to all servers listed. Making another pass.")));
 				ConnectToAnyServer(lastStartAt);
 			}
 			return;
@@ -101,7 +101,7 @@ void CServerConnect::ConnectToAnyServer(uint32 startAt,bool prioSort,bool isAuto
 		if (!anystatic)
 		{
 			connecting = false;
-			theApp.amuledlg->AddLogLine(true,CString(_("No valid servers to connect in serverlist found")));
+			AddLogLineM(true,wxString::Format(_("No valid servers to connect in serverlist found")));
 			return;
 		}
 	}
@@ -111,7 +111,7 @@ void CServerConnect::ConnectToAnyServer(uint32 startAt,bool prioSort,bool isAuto
 
 	if (used_list->GetServerCount()==0 ){
 		connecting = false;
-		theApp.amuledlg->AddLogLine(true,CString(_("No valid servers to connect in serverlist found")));
+		AddLogLineM(true,wxString::Format(_("No valid servers to connect in serverlist found")));
 		return;
 	}
 	theApp.listensocket->Process();
@@ -173,7 +173,7 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender){
 	InitLocalIP();
 	
 	if (sender->GetConnectionState() == CS_WAITFORLOGIN){
-		theApp.amuledlg->AddLogLine(false,CString(_("Connected to %s (%s:%i)")),sender->cur_server->GetListName(),sender->cur_server->GetFullIP(),sender->cur_server->GetPort());
+		AddLogLineM(false,wxString::Format(_("Connected to %s (%s:%i)"),sender->cur_server->GetListName(),sender->cur_server->GetFullIP(),sender->cur_server->GetPort()));
 		//send loginpacket
 		CServer* update = theApp.serverlist->GetServerByAddress( sender->cur_server->GetAddress(), sender->cur_server->GetPort() );
 		if (update){
@@ -216,7 +216,7 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender){
 		theApp.stat_reconnects++;
 		theApp.stat_serverConnectTime=GetTickCount64();
 		connected = true;
-		theApp.amuledlg->AddLogLine(true,CString(_("Connection established on: %s")),sender->cur_server->GetListName());
+		AddLogLineM(true, wxString::Format(_("Connection established on: %s"),sender->cur_server->GetListName()));
 		theApp.amuledlg->ShowConnectionState(true,char2unicode(sender->cur_server->GetListName()));
 		CServer* update = theApp.serverlist->GetServerByAddress(sender->cur_server->GetAddress(),sender->cur_server->GetPort());
 		theApp.amuledlg->serverwnd->serverlistctrl->HighlightServer(update, true);
@@ -266,14 +266,14 @@ void CServerConnect::ConnectionFailed(CServerSocket* sender){
 	CServer* update;
 	switch (sender->GetConnectionState()){
 		case CS_FATALERROR:
-			theApp.amuledlg->AddLogLine(true,CString(_("Fatal Error while trying to connect. Internet connection might be down")));
+			AddLogLineM(true, wxString::Format(_("Fatal Error while trying to connect. Internet connection might be down")));
 			break;
 		case CS_DISCONNECTED:
 			theApp.sharedfiles->ClearED2KPublishInfo();
-			theApp.amuledlg->AddLogLine(true,CString(_("Lost connection to %s (%s:%i)")),sender->cur_server->GetListName(),sender->cur_server->GetFullIP(),sender->cur_server->GetPort());
+			AddLogLineM(true, wxString::Format(_("Lost connection to %s (%s:%i)"),sender->cur_server->GetListName(),sender->cur_server->GetFullIP(),sender->cur_server->GetPort()));
 			break;
 		case CS_SERVERDEAD:
-			theApp.amuledlg->AddLogLine(false,CString(_("%s (%s:%i) appears to be dead.")),sender->cur_server->GetListName(),sender->cur_server->GetFullIP(),sender->cur_server->GetPort()); //<<--
+			AddLogLineM(false, wxString::Format(_("%s (%s:%i) appears to be dead."),sender->cur_server->GetListName(),sender->cur_server->GetFullIP(),sender->cur_server->GetPort())); //<<--
 			update = theApp.serverlist->GetServerByAddress( sender->cur_server->GetAddress(), sender->cur_server->GetPort() );
 			if(update){
 				update->AddFailedCount();
@@ -283,7 +283,7 @@ void CServerConnect::ConnectionFailed(CServerSocket* sender){
 		case CS_ERROR:
 			break;
 		case CS_SERVERFULL:
-			theApp.amuledlg->AddLogLine(false,CString(_("%s (%s:%i) appears to be full")),sender->cur_server->GetListName(),sender->cur_server->GetFullIP(),sender->cur_server->GetPort());
+			AddLogLineM(false, wxString::Format(_("%s (%s:%i) appears to be full"),sender->cur_server->GetListName(),sender->cur_server->GetFullIP(),sender->cur_server->GetPort()));
 			break;
 		case CS_NOTCONNECTED:; 
 			break; 
@@ -298,7 +298,7 @@ void CServerConnect::ConnectionFailed(CServerSocket* sender){
 			bool autoretry= !singleconnecting;
 			StopConnectionTry();
 			if ((app_prefs->Reconnect()) && (autoretry) && (!m_idRetryTimer.IsRunning())){ 
-				theApp.amuledlg->AddLogLine(false,CString(_("Automatic connection to server will retry in %d seconds")), CS_RETRYCONNECTTIME); 
+				AddLogLineM(false, wxString::Format(_("Automatic connection to server will retry in %d seconds"), CS_RETRYCONNECTTIME)); 
 				//m_idRetryTimer= SetTimer(NULL, 0, 1000*CS_RETRYCONNECTTIME, (TIMERPROC)RetryConnectCallback);
 				m_idRetryTimer.SetOwner(&theApp,TM_TCPSOCKET);
 				m_idRetryTimer.Start(1000*CS_RETRYCONNECTTIME);
@@ -328,7 +328,7 @@ void CServerConnect::ConnectionFailed(CServerSocket* sender){
 		case CS_NOTCONNECTED:{
 			if (!connecting)
 				break;
-			theApp.amuledlg->AddLogLine(false,CString(_("Connecting to %s (%s:%i ) failed.")),sender->info.GetData(), sender->cur_server->GetFullIP(), sender->cur_server->GetPort() );
+			AddLogLineM(false, wxString::Format(_("Connecting to %s (%s:%i ) failed."),sender->info.GetData(), sender->cur_server->GetFullIP(), sender->cur_server->GetPort()));
 		}
 		case CS_SERVERDEAD:
 		case CS_SERVERFULL:{
@@ -377,13 +377,13 @@ void CServerConnect::CheckForTimeout()
 	while (pos){
 		connectionattemps.GetNextAssoc(pos,tmpkey,tmpsock);
 		if (!tmpsock) {
-			theApp.amuledlg->AddLogLine(false, CString(_("Error: Socket invalid at timeoutcheck")));
+			AddLogLineM(false, wxString::Format(_("Error: Socket invalid at timeoutcheck")));
 			connectionattemps.RemoveKey(tmpkey);
 			return;
 		}
 
 		if (tmpkey<=maxage) {
-			theApp.amuledlg->AddLogLine(false,CString(_("Connection attempt to %s (%s:%i ) timed out")),tmpsock->info.GetData(), tmpsock->cur_server->GetFullIP(), tmpsock->cur_server->GetPort() );
+			AddLogLineM(false, wxString::Format(_("Connection attempt to %s (%s:%i ) timed out"),tmpsock->info.GetData(), tmpsock->cur_server->GetFullIP(), tmpsock->cur_server->GetPort()));
 			connectionattemps.RemoveKey(tmpkey);
 			TryAnotherConnectionrequest();
 			DestroySocket(tmpsock);
@@ -498,7 +498,7 @@ void CServerConnect::KeepConnectionAlive()
 		connectedsocket->SendPacket(packet,true);
 		
 		theApp.uploadqueue->AddUpDataOverheadServer(packet->size);
-		theApp.amuledlg->AddDebugLogLine(false, _("Refreshing server connection"));
+		AddDebugLogLineM(false, wxString::Format(_("Refreshing server connection")));
 		delete files;
  	}
 }
@@ -518,6 +518,6 @@ void CServerConnect::InitLocalIP(){
 	}
 	catch(...){
 		// at least two ppl reported crashs when using 'gethostbyname' with third party winsock DLLs
-		theApp.amuledlg->AddDebugLogLine(false, _T("Unknown exception in CServerConnect::InitLocalIP"));
+		AddDebugLogLineM(false, _T("Unknown exception in CServerConnect::InitLocalIP"));
 	}
 }
