@@ -364,13 +364,13 @@ CTag::CTag(const STag& in_tag)
 {
 }
 
-#if defined( UNDEFINED )
+#if 0
 CTag::CTag(CFile *file)
 {
 	// Use the constructor below
 	CTag(*file);
 }
-#endif // UNDEFINED
+#endif
 
 CTag::CTag(const CFileDataIO& data, bool bOptUTF8)
 {
