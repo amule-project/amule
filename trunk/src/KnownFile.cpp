@@ -401,7 +401,7 @@ bool CKnownFile::CreateAICHHashSetOnly()
 		wxASSERT( pBlockAICHHashTree != NULL );
 		CreateHashFromFile(&file, PARTSIZE, NULL, pBlockAICHHashTree);
 		// SLUGFILLER: SafeHash - quick fallback
-		if (theApp.amuledlg==NULL || !theApp.IsRunning()){ // in case of shutdown while still hashing
+		if ( !theApp.IsRunning()){ // in case of shutdown while still hashing
 			file.Close();
 			return false;
 		}
