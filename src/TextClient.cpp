@@ -260,11 +260,24 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			break;
 			
 		case CMD_ID_CONN_TO_SRV:
- 		case CMD_ID_CONN:
-			request = new CECPacket(EC_OP_SERVER_CONNECT);
-			request_list.push_back(request);
-			if (args.ToULong((unsigned long *)&FileId, 16)) {
-				request->AddTag(CECTag(EC_TAG_ITEM_ID, FileId));
+ 		case CMD_ID_CONN: {
+				unsigned int ip[4];
+				unsigned int port;
+				int result = sscanf(unicode2char(args), "%d.%d.%d.%d:%d", &ip[0], &ip[1], &ip[2], &ip[3], &port);
+				if (result == 5) {
+					EC_IPv4_t addr;
+					addr.ip[0] = ip[0];
+					addr.ip[1] = ip[1];
+					addr.ip[2] = ip[2];
+					addr.ip[3] = ip[3];
+					addr.port = port;
+					request = new CECPacket(EC_OP_SERVER_CONNECT);
+					request->AddTag(CECTag(EC_TAG_SERVER, &addr));
+					request_list.push_back(request);
+				} else {
+					Show(_("Invalid IP format. Use xxx.xxx.xxx.xxx:xxxx\n"));
+					return 0;
+				}
 			}
 			break;
 
@@ -288,14 +301,16 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 		case CMD_ID_SET_IPFILTER:
 			if ( ! args.IsEmpty() ) {
 				request = new CECPacket(EC_OP_IPFILTER_CMD);
-				request_list.push_back(request);
 				if (args.IsSameAs(wxT("ON"), false)) {
 					request->AddTag(CECTag(EC_TAG_IPFILTER_STATUS, (uint8)1));
 				} else if (args.IsSameAs(wxT("OFF"), false)) {
 					request->AddTag(CECTag(EC_TAG_IPFILTER_STATUS, (uint8)0));
 				} else {
 					Show(_("This command requieres an argument. Valid arguments: 'on', 'off'\n"));
+					delete request;
+					return 0;
 				}
+				request_list.push_back(request);
 			} else {
 				Show(_("This command requieres an argument. Valid arguments: 'on', 'off'\n"));
 				return 0;
@@ -377,15 +392,17 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			// kept for backwards compatibility only
 		case CMD_ID_IPLEVEL:
 			request = new CECPacket(EC_OP_IPFILTER_CMD);
-			request_list.push_back(request);
 			if ( !args.IsEmpty() ) {
 				unsigned long int level = 0;
 				if (args.ToULong(&level) == true && level < 256) {
 					request->AddTag(CECTag(EC_TAG_IPFILTER_LEVEL, (uint8)level));
 				} else {
 					Show(_("IPLevel parameter must be in the range of 0-255.\n"));
+					delete request;
+					return 0;
 				}
 			}
+			request_list.push_back(request);
 			break;
 
 		default:
@@ -524,9 +541,10 @@ void CamulecmdApp::Process_Answer_v2(CECPacket *response)
 				EC_IPv4_t * addr = tag->GetIPv4Data();
 				wxString ip = wxString::Format(wxT("[%d.%d.%d.%d:%d]"), addr->ip[0], addr->ip[1], addr->ip[2], addr->ip[3], addr->port);
 				delete addr;
-				while (ip.Length() < 24) {
-					ip += wxT(" ");
-				}
+				ip.Append(' ', 24 - ip.Length());
+//				while (ip.Length() < 24) {
+//					ip += wxT(" ");
+//				}
 				s += ip;
 				s += tag->GetTagByName(EC_TAG_SERVER_NAME)->GetStringData();
 				s += wxT("\n");
@@ -540,7 +558,7 @@ void CamulecmdApp::ShowHelp() {
 //                                  1         2         3         4         5         6         7         8
 //                         12345678901234567890123456789012345678901234567890123456789012345678901234567890
 	Show(_("\n----------------> Help: Avalaible commands (case insensitive): <----------------\n\n"));
-	Show(wxString(wxT("Connect [")) + wxString(_("server ID")) + wxString(wxT("]\t")) + wxString(_("Connect to given/random server. No warn if failed!\n")));
+	Show(wxString(wxT("Connect [")) + wxString(_("server IP")) + wxString(wxT("]\t")) + wxString(_("Connect to given/random server. No warn if failed!\n")));
 //	Show(wxString(wxT("ConnectTo [")) + wxString(_("name")) + wxString(wxT("] [")) + wxString(_("port")) + wxString(wxT("]:\t")) + wxString(_("Connect to specified server and port.\n")));
 	Show(wxString(wxT("Disconnect:\t\t")) + wxString(_("Disconnect from server.\n")));
 	Show(wxString(wxT("Servers:\t\t")) + wxString(_("Show server list.\n")));
