@@ -868,9 +868,9 @@ void CDownloadListCtrl::DrawFileItem(wxDC * dc, int nColumn, LPRECT lpRect, Ctrl
 				if (lpPartFile->GetTransferingSrcCount() == 0) {
 					buffer = wxT("");
 				} else {
-					buffer.Format(wxT("%.1f %s"), lpPartFile->GetKBpsDown(), "kB/s");
+					buffer.Printf(wxT("%.1f %s"), lpPartFile->GetKBpsDown(), "kB/s");
 				}
-				//dc->DrawText(buffer,(int)strlen(buffer),lpRect, DLC_DT_TEXT);
+
 				dc->DrawText(buffer, lpRect->left, lpRect->top);
 				break;
 
@@ -915,7 +915,7 @@ void CDownloadListCtrl::DrawFileItem(wxDC * dc, int nColumn, LPRECT lpRect, Ctrl
 					if (theApp.glob_prefs->ShowPercent()) {					
 						// ts: Percentage of completing
 						// Kry - Modified for speed
-						buffer.Format(wxT("%.1f %%"), lpPartFile->GetPercentCompleted());
+						buffer.Printf(wxT("%.1f %%"), lpPartFile->GetPercentCompleted());
 						int middlex = (lpRect->left + lpRect->right) >> 1;
 						int middley = (lpRect->bottom + lpRect->top) >> 1;
 						dc->GetTextExtent(buffer, &textwidth, &textheight);
@@ -1200,7 +1200,7 @@ void CDownloadListCtrl::DrawSourceItem(wxDC * dc, int nColumn, LPRECT lpRect, Ct
 					if (lpUpDownClient->GetKBpsDown()<0.001) {
 						buffer = wxT("");
 					} else {
-						buffer.Format(wxT("%.1f %s"), lpUpDownClient->GetKBpsDown(), "kB/s");
+						buffer.Printf(wxT("%.1f %s"), lpUpDownClient->GetKBpsDown(), "kB/s");
 					}
 					//dc->DrawText(buffer,(int)strlen(buffer),lpRect, DLC_DT_TEXT);
 					dc->DrawText(buffer, lpRect->left, lpRect->top);
@@ -1269,7 +1269,7 @@ void CDownloadListCtrl::DrawSourceItem(wxDC * dc, int nColumn, LPRECT lpRect, Ct
 							if( qrDiff < 0 ) dc->SetTextForeground(*wxBLUE);
 							if( qrDiff > 0 ) dc->SetTextForeground(*wxRED);
 							//if( qrDiff == 0 ) dc->SetTextForeground(*wxLIGHT_GREY);
-							buffer.Format(wxT("QR: %u (%i)"), lpUpDownClient->GetRemoteQueueRank(), qrDiff);
+							buffer.Printf(wxT("QR: %u (%i)"), lpUpDownClient->GetRemoteQueueRank(), qrDiff);
 							dc->DrawText(buffer, lpRect->left, lpRect->top);
 							dc->SetTextForeground(savedColour);
 						} else {
