@@ -163,6 +163,7 @@ int CamuleDaemonApp::OnRun()
 		msRun = GetTickCount() - msRun;
 		msWait = uLoop - msRun;
 	}
+	ShutDown();
 	return 0;
 }
 
