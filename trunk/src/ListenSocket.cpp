@@ -39,6 +39,7 @@
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "otherstructs.h"	// Needed for Requested_Block_Struct
 #include "sockets.h"		// Needed for CServerConnect
+
 #include <wx/listimpl.cpp>
 #include <wx/dynarray.h>
 #include <wx/arrimpl.cpp>	// this is a magic incantation which must be done!
@@ -2288,17 +2289,15 @@ void CClientReqSocketHandler::ClientReqSocketHandler(wxSocketEvent& event)
 // CClientReqSocket to handle (accept) the connection.
 // 
 
-// Do we really need that?
-IMPLEMENT_DYNAMIC_CLASS(CListenSocket,wxSocketServer)
-
-CListenSocket::CListenSocket(wxSockAddress& addr)
+CListenSocket::CListenSocket(wxIPaddress &addr, const wxProxyData *ProxyData)
 :
 // wxSOCKET_NOWAIT    - means non-blocking i/o
 // wxSOCKET_REUSEADDR - means we can reuse the socket imediately (wx-2.5.3)
 #ifdef AMULE_DAEMON
-wxSocketServer(addr, wxSOCKET_WAITALL|wxSOCKET_REUSEADDR), wxThread(wxTHREAD_JOINABLE) 
+wxSocketServerProxy(addr, wxSOCKET_WAITALL|wxSOCKET_REUSEADDR, ProxyData),
+wxThread(wxTHREAD_JOINABLE) 
 #else
-wxSocketServer(addr, wxSOCKET_NOWAIT|wxSOCKET_REUSEADDR)
+wxSocketServerProxy(addr, wxSOCKET_NOWAIT|wxSOCKET_REUSEADDR, ProxyData)
 #endif
 {
 	// 0.42e - vars not used by us

@@ -27,6 +27,7 @@
 #include "EMSocket.h"		// Needed for CEMSocket
 #include "gsocket-fix.h"	// Needed for wxSOCKET_REUSEADDR
 #include "amuleIPV4Address.h"
+#include "Proxy.h"
 
 #include <wx/dynarray.h>
 
@@ -145,22 +146,17 @@ public:
 #endif
 
 // CListenSocket command target
-class CListenSocket : public wxSocketServer
+class CListenSocket : public wxSocketServerProxy
 #ifdef AMULE_DAEMON
 , public wxThread
 #endif
 {
-	DECLARE_DYNAMIC_CLASS(CListenSocket)
-
-	// The default constructor is here only because of IMPLEMENT_DYNAMIC_CLASS
-	// in ListenSocket.cpp. Do we really need that?
-	CListenSocket() : wxSocketServer(happyCompiler, wxSOCKET_REUSEADDR){};
-	void *Entry();
 #ifdef AMULE_DAEMON
+	void *Entry();
 	CSocketGlobalThread global_sock_thread;
 #endif
 public:
-	CListenSocket(wxSockAddress& addr);
+	CListenSocket(wxIPaddress &addr, const wxProxyData *ProxyData = NULL);
 	~CListenSocket();
 	bool	StartListening();
 	void	StopListening();
