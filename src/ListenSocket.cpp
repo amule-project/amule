@@ -352,12 +352,17 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				// start secure identification, if
 				//  - we have received OP_EMULEINFO and OP_HELLOANSWER (old eMule)
 				//	- we have received eMule-OP_HELLOANSWER (new eMule)
-				if (m_client->GetInfoPacketsReceived() == IP_BOTH)
+				if (m_client->GetInfoPacketsReceived() == IP_BOTH) {
 					m_client->InfoPacketsReceived();
+				}
 				
 				// Socket might die because of sending in InfoPacketsReceived, so check
 				if (m_client) {
 					m_client->ConnectionEstablished();
+				}
+				
+				// Socket might die on ConnectionEstablished somehow. Check it.
+				if (m_client) {					
 					Notify_UploadCtrlRefreshClient( m_client );
 				}
 				
