@@ -407,7 +407,7 @@ void CPartFile::CreatePartFile()
 	SavePartFile(true);
 }
 
-uint8	CPartFile::LoadPartFile(LPCTSTR in_directory, LPCTSTR filename, bool getsizeonly)
+uint8 CPartFile::LoadPartFile(LPCTSTR in_directory, LPCTSTR filename, bool getsizeonly)
 {
 	#warning getsizeonly is ignored because we do not import yet
 	
@@ -701,13 +701,8 @@ uint8	CPartFile::LoadPartFile(LPCTSTR in_directory, LPCTSTR filename, bool getsi
 		AddGap(m_hpartfile.GetLength(), m_nFileSize-1);
 	// Goes both ways - Partfile should never be too large
 	if ((unsigned)m_hpartfile.GetLength() > (unsigned)m_nFileSize){
-		//printf("Partfile \"%s\" is too large! Truncating %I64u bytes.\n", GetFileName(), (uint64) (m_hpartfile.GetLength() - m_nFileSize));
-		#ifdef __WXMSW__
-		chsize(m_hpartfile.fd(), m_nFileSize);
-		#else
-		ftruncate(m_hpartfile.fd(),m_nFileSize);
-		#endif
-		// m_hpartfile.SetLength(m_nFileSize);
+		printf("Partfile \"%s\" is too large! Truncating %I64u bytes.\n", GetFileName().c_str(), (uint64) (m_hpartfile.GetLength() - m_nFileSize));
+		m_hpartfile.SetLength(m_nFileSize);
 	}
 	// SLUGFILLER: SafeHash
 
@@ -949,18 +944,23 @@ bool CPartFile::SavePartFile(bool Initial)
 		}
 	}
 	
-	/*
-	// Kry - Set the utime() so that we make sure the file date tag == mtime
-	//printf("Seeting the mtime of %s according to date tag %u... ", fName.GetData(), date);
-	stat(fName.GetData(),&sbf);
-	//printf(" stated...");
-	time_t atime = sbf.st_atime;
-	struct utimbuf timebuf;
-	timebuf.actime = atime;
-	timebuf.modtime = date;
-	utime(fName.GetData(), &timebuf);
-	//printf(" done.\n");
-	*/
+	
+	#ifdef __WXGTK__
+	if (!theApp.use_chmod) {
+		struct stat sbf;
+		// Kry - Set the utime() so that we make sure the file date tag == mtime
+		//printf("Seeting the mtime of %s according to date tag %u... ", fName.GetData(), date);
+		stat(fName.GetData(),&sbf);
+		//printf(" stated...");
+		time_t atime = sbf.st_atime;	
+		struct utimbuf timebuf;
+		timebuf.actime = atime;
+		timebuf.modtime = date;
+		
+		utime(fName.GetData(), &timebuf);
+		//printf(" done.\n");
+	}
+	#endif
 	
 	return true;
 }
