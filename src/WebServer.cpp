@@ -427,29 +427,24 @@ void CWebServer::ProcessImgFileReq(ThreadData Data) {
 
 void CWebServer::ProcessStyleFileReq(ThreadData Data) {
 	CWebServer *pThis = (CWebServer *)Data.pThis;
-	if (pThis == NULL) return;
-
-	wxString filename=Data.sURL;
+	if (pThis == NULL) {
+		return;
+	}
+	wxString filename = Data.sURL;
 	wxString contenttype;
-
 	pThis->webInterface->Show(wxT("inc. fname=") + filename + wxT("\n"));
-	contenttype=wxT("Content-Type: text/css\r\n");
-
-	filename=filename.Right(filename.Length()-1);
-	//filename.Replace("/","\\");
-	//filename=wxString(theApp.glob_prefs->GetAppDir())+"webserver/"+filename;
-	//filename=getenv("HOME") + wxString("/.aMule/webserver/") + wxString(filename);
-	filename.Printf(wxT("%s/.aMule/webserver/%s"), getenv("HOME"), filename.GetData());
+	contenttype = wxT("Content-Type: text/css\r\n");
+	filename = filename.Right(filename.Length()-1);
+	filename = char2unicode(getenv("HOME")) + wxT("/.aMule/webserver/") + filename;
 	pThis->webInterface->Show(wxT("**** cssrequest: ") + filename + wxT("\n"));
-
 	if (wxFileName::FileExists(filename)) {
 		wxFileInputStream* fis = new wxFileInputStream(filename);
 		if(fis->Ok()) {
 			fis->SeekI(0,wxFromEnd);
-			off_t koko=fis->TellI();
+			off_t koko = fis->TellI();
 			fis->SeekI(0,wxFromStart);
-			char* buffer=new char[koko];
-			fis->Read((void*)buffer,koko);
+			char* buffer = new char[koko];
+			fis->Read((void*)buffer, koko);
 			Data.pSocket->SendContent((char*)contenttype.GetData(),(void*)buffer,fis->LastRead());
 			delete fis;
 			delete[] buffer;
@@ -458,7 +453,6 @@ void CWebServer::ProcessStyleFileReq(ThreadData Data) {
 		pThis->webInterface->Show(wxT("**** imgrequest: file") + filename + wxT(" does not exists\n"));
 	}
 }
-
 
 void CWebServer::ProcessURL(ThreadData Data) {
 	CWebServer *pThis = (CWebServer *)Data.pThis;
