@@ -38,7 +38,7 @@
 #include "PartFile.h"		// Needed for CPartFile
 #include "SharedFileList.h"	// Needed for CSharedFileList
 #include "ServerList.h"		// Needed for CServerList
-#include "CamuleAppBase.h"	// Needed for theApp
+#include "amule.h"			// Needed for theApp
 #include "server.h"		// Needed for CServer
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "muuli_wdr.h"		// Needed for ID_CLOSEWND

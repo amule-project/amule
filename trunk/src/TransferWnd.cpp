@@ -35,7 +35,7 @@
 #include "UploadListCtrl.h"	// Needed for CUploadListCtrl
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "otherfunctions.h"	// Needed for GetCatTitle
-#include "CamuleAppBase.h"	// Needed for theApp
+#include "amule.h"			// Needed for theApp
 #include "QueueListCtrl.h"	// Needed for CQueueListCtrl
 #include "muuli_wdr.h"		// Needed for ID_CATEGORIES
 #include "SearchDlg.h"		// Needed for CSearchDlg->UpdateCatChoice()

@@ -53,7 +53,7 @@
 #include "Preferences.h"	// Needed for CPreferences
 #include "otherfunctions.h"	// Needed for GetTickCount
 #include "amuleDlg.h"		// Needed for CamuleDlg
-#include "CamuleAppBase.h"	// Needed for theApp
+#include "amule.h"			// Needed for theApp
 
 //WX_DEFINE_LIST(CServerListList);
 

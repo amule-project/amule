@@ -28,7 +28,7 @@
 #include "CFile.h"		// Needed for CFile
 #include "SearchDlg.h"		// Needed for CSearchDlg
 #include "amuleDlg.h"		// Needed for CamuleDlg
-#include "CamuleAppBase.h"	// Needed for theApp
+#include "amule.h"			// Needed for theApp
 #include "MuleNotebook.h"	// Needed for CMuleNotebook
 #include "SharedFileList.h" // Needed for GetFileByID
 #include "DownloadQueue.h"  // Needed for GetFileByID

@@ -31,7 +31,7 @@
 #include "PreferencesDlg.h"	// Needed for CPreferencesDlg
 #include "StatisticsDlg.h"	// Needed for CStatisticsDlg
 #include "amuleDlg.h"		// Needed for CamuleDlg
-#include "CamuleAppBase.h"	// Needed for theApp
+#include "amule.h"			// Needed for theApp
 #include "Preferences.h"	// Needed for CPreferences
 #include "muuli_wdr.h"		// Needed for connWizDlg
 

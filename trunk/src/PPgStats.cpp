@@ -26,7 +26,7 @@
 #include "PPgStats.h"		// Interface declarations.
 #include "StatisticsDlg.h"	// Needed for CStatisticsDlg
 #include "amuleDlg.h"		// Needed for CamuleDlg
-#include "CamuleAppBase.h"	// Needed for theApp
+#include "amule.h"			// Needed for theApp
 #include "muuli_wdr.h"		// Needed for PreferencesStatisticsTab
 
 // CPPgStats dialog

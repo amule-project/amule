@@ -41,7 +41,7 @@
 #endif
 #include "muuli_wdr.h"		// Needed for IDC_CHATSELECTOR
 #include "amuleDlg.h"		// Needed for CamuleDlg
-#include "CamuleAppBase.h"	// Needed for theApp
+#include "amule.h"			// Needed for theApp
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "color.h"		// Needed for RGB
 #include "SafeFile.h"	// Needed for CSafeMemFile

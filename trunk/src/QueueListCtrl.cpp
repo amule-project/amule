@@ -33,7 +33,7 @@
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "opcodes.h"		// Needed for MP_DETAIL
-#include "CamuleAppBase.h"	// Needed for theApp
+#include "amule.h"			// Needed for theApp
 #include "color.h"		// Needed for SYSCOLOR
 
 // CQueueListCtrl

@@ -27,7 +27,7 @@
 #include <wx/html/htmlwin.h>	// Needed for wxHtmlWindow
 
 #include "ChatWnd.h"		// Interface declarations.
-#include "CamuleAppBase.h"	// Needed for theApp
+#include "amule.h"			// Needed for theApp
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "ChatSelector.h"	// Needed for CChatSelector

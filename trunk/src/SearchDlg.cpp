@@ -38,7 +38,7 @@
 #include "server.h"		// Needed for CServer
 #include "ServerList.h"		// Needed for CServerList
 #include "sockets.h"		// Needed for CServerConnect
-#include "CamuleAppBase.h"	// Needed for theApp
+#include "amule.h"			// Needed for theApp
 #include "SearchListCtrl.h"	// Needed for CSearchListCtrl
 #include "muuli_wdr.h"		// Needed for IDC_STARTS
 #include "amuleDlg.h"		// Needed for CamuleDlg

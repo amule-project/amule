@@ -30,7 +30,7 @@
 #include "FriendList.h"		// Needed for CFriendList
 #include "ClientList.h"		// Needed for CClientList
 #include "ChatWnd.h"		// Needed for CChatWnd
-#include "CamuleAppBase.h"	// Needed for theApp
+#include "amule.h"			// Needed for theApp
 #include "opcodes.h"		// Needed for MP_DETAIL
 #include "ListenSocket.h"	// Needed for CClientReqSocket
 #include "updownclient.h"	// Needed for CUpDownClient

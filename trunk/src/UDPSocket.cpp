@@ -48,7 +48,7 @@
 #include "opcodes.h"		// Needed for OP_EDONKEYPROT
 #include "server.h"		// Needed for CServer
 #include "amuleDlg.h"		// Needed for CamuleDlg
-#include "CamuleAppBase.h"	// Needed for theApp
+#include "amule.h"			// Needed for theApp
 #include "amuleIPV4Address.h"	// Needed for wxIPV4address
 
 #define TM_DNSDONE 17851

@@ -38,7 +38,7 @@
 #include "Preferences.h"	// Needed for CPreferences
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "amuleDlg.h"		// Needed for CamuleDlg
-#include "CamuleAppBase.h"	// Needed for theApp
+#include "amule.h"			// Needed for theApp
 #include "MapKey.h"		// Needed for CCKey
 
 CSharedFileList::CSharedFileList(CPreferences* in_prefs,CServerConnect* in_server,CKnownFileList* in_filelist){

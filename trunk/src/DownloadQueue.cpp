@@ -56,7 +56,7 @@
 #include "DownloadListCtrl.h"	// Needed for CDownloadListCtrl
 #include "TransferWnd.h"	// Needed for CTransferWnd
 #include "amuleDlg.h"		// Needed for CamuleDlg
-#include "CamuleAppBase.h"	// Needed for theApp
+#include "amule.h"			// Needed for theApp
 #include "opcodes.h"		// Needed for MINWAIT_BEFORE_DLDISPLAY_WINDOWUPDATE
 #include "otherfunctions.h"	// Needed for GetTickCount
 #include "SearchDlg.h"		// Needed for CSearchDlg->GetCatChoice()
