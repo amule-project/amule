@@ -97,7 +97,8 @@ private:
 	void OnColorCategorySelected(wxCommandEvent &event);
 	void OnCheckBoxChange(wxCommandEvent &event);
 	void OnScroll(wxScrollEvent &event);
-	
+	void OnBrowserSelected(wxCommandEvent& evt);
+
 private:
     DECLARE_EVENT_TABLE()
 };
