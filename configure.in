@@ -127,6 +127,8 @@ GET_WXGTK_VERSION
 AC_ARG_ENABLE(debug,   [  --enable-debug          Enable additional debugging output],
               USE_DEBUG="$enableval", USE_DEBUG="no")
 
+AC_ARG_ENABLE(debug,   [  --disable-debug         Disable additional debugging output],
+              USE_DEBUG="$enableval", USE_DEBUG="yes")
 AC_ARG_ENABLE(debug,   [  --disable-debug-syms    Disable debugging information],
               USE_DEBUG_SYMS="$disableval", USE_DEBUG_SYMS="yes")
 
