@@ -108,16 +108,19 @@ CKnownFile::CKnownFile(){
 }
 
 CKnownFile::~CKnownFile(){
-	hashlist.Clear();
-	taglist.Clear();
-
-	for (int i = 0; i != hashlist.GetCount(); i++)
+	
+	for (size_t i = 0; i != hashlist.GetCount(); i++)
 		if (hashlist[i])
 			delete[] hashlist[i];
+		
+	hashlist.Clear();		
 	/*		
 	for (int i = 0; i != taglist.GetCount(); i++)
 		delete taglist[i];
 	*/
+		
+	taglist.Clear();
+		
 //	if (filename)	// done by CAbstractFile destructor
 //		delete[] filename;
 	if (directory)
@@ -249,9 +252,11 @@ void CKnownFile::NewAvailPartsInfo(){
 		}
 		m_nCompleteSourcesTime = time(NULL) + (60);
 	}
-//	if (theApp.amuledlg->sharedfileswnd->m_hWnd)
+	if (theApp.amuledlg->sharedfileswnd->GetHandle()) {
 		theApp.amuledlg->sharedfileswnd->sharedfilesctrl->UpdateItem(this);
+	}
 }
+
 
 void CKnownFile::AddUploadingClient(CUpDownClient* client){
 	POSITION pos = m_ClientUploadList.Find(client); // to be sure
