@@ -654,12 +654,10 @@ WxCasFrame::UpdateStatsPanel ()
 #endif
 
 #ifdef __LINUX__		// System monitoring on Linux
-      newline = _("System Load Average (1-5-15 min): ");
-      newline +=
-        newline.Format (wxT("%.2f - %.2f - %.2f"),
-                        m_sysMonitor->GetSysLoad_1 (),
-                        m_sysMonitor->GetSysLoad_5 (),
-                        m_sysMonitor->GetSysLoad_15 ());
+      newline=_("System Load Average (1-5-15 min): ") +
+              m_sysMonitor->GetSysLoad_1 () + wxT(" ") +
+              m_sysMonitor->GetSysLoad_5 () + wxT(" ") +
+              m_sysMonitor->GetSysLoad_15 ();
 
       m_sysLine_1->SetLabel (newline);
 
