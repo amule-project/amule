@@ -535,7 +535,7 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
 	}
 
 	if(!HasLowID() || m_nUserID == 0) {
-		m_nUserID = ntohl(m_dwUserIP);
+		m_nUserID = m_dwUserIP;
 	}
 
 	// get client credits
@@ -1175,7 +1175,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 	#ifdef __USE_KAD__
 	if (HasLowID() && !theApp.DoCallback(this)) {
 	#else
-	if (HasLowID()) {
+	if (HasLowID() && (theApp.serverconnect->GetClientID() < 16777216)) {
 	#endif
 		if (GetDownloadState() == DS_CONNECTING) {
 			SetDownloadState(DS_LOWTOLOWIP);
