@@ -10,7 +10,7 @@
 /// Pixmaps from http://www.everaldo.com and http://www.amule.org
 ///
 /// This program is free software; you can redistribute it and/or modify
-///  it under the terms of the GNU General Public License as published by
+/// it under the terms of the GNU General Public License as published by
 /// the Free Software Foundation; either version 2 of the License, or
 /// (at your option) any later version.
 ///
@@ -54,11 +54,12 @@ ActivityBar::ActivityBar (wxWindow* parent, wxWindowID id, int range, int speed,
 ActivityBar::~ActivityBar ()
 {}
 
-// Events table
+/// Events table
 BEGIN_EVENT_TABLE (ActivityBar, wxGauge)
 EVT_TIMER (ID_TIMER, ActivityBar::OnTimer)
 END_EVENT_TABLE ()
 
+/// Update gauge on Timer event and switch direction at begining or end
 void ActivityBar::OnTimer (wxTimerEvent & event)
 {
   if (m_goUp)
@@ -83,6 +84,7 @@ void ActivityBar::OnTimer (wxTimerEvent & event)
     }
 }
 
+/// Start the activity bar
 void ActivityBar::Start()
 {
   m_goUp = TRUE;
@@ -91,6 +93,7 @@ void ActivityBar::Start()
   m_timer->Start(m_speed);
 }
 
+/// Stop the activity bar
 void ActivityBar::Stop()
 {
   m_timer->Stop();

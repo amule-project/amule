@@ -10,7 +10,7 @@
 /// Pixmaps from http://www.everaldo.com and http://www.amule.org
 ///
 /// This program is free software; you can redistribute it and/or modify
-///  it under the terms of the GNU General Public License as published by
+/// it under the terms of the GNU General Public License as published by
 /// (at your option) any later version.
 ///
 /// This program is distributed in the hope that it will be useful,
@@ -39,15 +39,13 @@
 #include <wx/filedlg.h>
 #include <wx/textfile.h>
 #include <wx/timer.h>
+#include <wx/listbox.h>
+#include <wx/url.h>
+#include <wx/filename.h>
 
 #include "alcframe.h"
 #include "alchash.h"
 #include "alcpix.h"
-
-// Needed for 2.4.2 backward compatibility
-#if (wxMINOR_VERSION < 5)
-#define wxCLOSE_BOX 0
-#endif
 
 /// Constructor
 AlcFrame::AlcFrame (const wxString & title):
@@ -80,6 +78,93 @@ AlcFrame::AlcFrame (const wxString & title):
   m_staticLine = new wxStaticLine (m_mainPanel, -1);
   m_mainPanelVBox->Add (m_staticLine, 0, wxALL | wxGROW);
 
+  // Input Parameters
+  m_inputSBox =
+    new wxStaticBox (m_mainPanel, -1, _("Input parameters"));
+  m_inputSBoxSizer = new wxStaticBoxSizer (m_inputSBox, wxHORIZONTAL);
+
+  // Input Grid
+  m_inputFlexSizer = new wxFlexGridSizer (6, 2, 5, 10);
+
+  // Left col is growable
+  m_inputFlexSizer->AddGrowableCol (0);
+
+  // Static texts
+  m_inputFileStaticText=new wxStaticText(m_mainPanel, -1,
+                                         _("File to Hash"),wxDefaultPosition,wxDefaultSize,wxALIGN_CENTRE);
+
+  m_inputAddStaticText=new wxStaticText(m_mainPanel, -1,
+                                        _("Add Optional URLs for this file"),wxDefaultPosition,wxDefaultSize,wxALIGN_CENTRE);
+
+  // Text ctrls
+  m_inputFileTextCtrl = new wxTextCtrl (m_mainPanel,-1,wxEmptyString,
+                                        wxDefaultPosition, wxSize(300,-1));
+  m_inputFileTextCtrl->
+  SetToolTip (_
+              ("Enter here the file you want to compute the Ed2k link"));
+
+  m_inputAddTextCtrl = new wxTextCtrl (m_mainPanel,-1,wxEmptyString,
+                                       wxDefaultPosition, wxSize(300,-1));
+  m_inputAddTextCtrl->
+  SetToolTip (_
+              ("Enter here the URL you want to add to the Ed2k link: "
+               "Add / at the end to let aLinkCreator append the current file name"));
+
+  // List box
+  m_inputUrlListBox = new wxListBox(m_mainPanel, -1, wxDefaultPosition,
+                                    wxDefaultSize, 0, NULL, wxLB_SINGLE | wxLB_NEEDED_SB | wxLB_HSCROLL);
+
+  // Buttons
+  m_inputFileBrowseButton =
+    new wxButton (m_mainPanel, ID_BROWSE_BUTTON, wxString (_("Browse")));
+
+  m_inputAddButton =
+    new wxButton (m_mainPanel, ID_ADD_BUTTON, wxString (_("Add")));
+
+  // Button bar
+  m_buttonUrlVBox = new wxBoxSizer (wxVERTICAL);
+  m_removeButton =
+    new wxButton (m_mainPanel, ID_REMOVE_BUTTON, wxString (_("Remove")));
+  m_clearButton =
+    new wxButton (m_mainPanel, ID_CLEAR_BUTTON, wxString (_("Clear")));
+
+  m_buttonUrlVBox->Add (m_removeButton, 0, wxALIGN_CENTER | wxTOP | wxBOTTOM, 5);
+  m_buttonUrlVBox->Add (m_clearButton, 0, wxALIGN_CENTER | wxTOP | wxBOTTOM, 5);
+
+  // Check button
+  m_parthashesCheck =
+    new wxCheckBox (m_mainPanel, ID_PARTHASHES_CHECK,
+                    _
+                    ("Create link with part-hashes"));
+
+  m_parthashesCheck->SetValue(FALSE);
+
+  m_parthashesCheck->
+  SetToolTip (_
+              ("Help to spread new and rare files faster, at the cost of an increased link size"));
+
+  // Add to sizers
+  m_inputFlexSizer->Add (m_inputFileStaticText, 1, wxGROW | wxALIGN_BOTTOM | wxTOP, 10);
+  m_inputFlexSizer->Add (1,1);
+
+  m_inputFlexSizer->Add (m_inputFileTextCtrl, 1, wxGROW | wxALIGN_TOP , 0);
+  m_inputFlexSizer->Add (m_inputFileBrowseButton, 0, wxGROW | wxALIGN_TOP , 0);
+
+  m_inputFlexSizer->Add (m_inputAddStaticText, 1, wxGROW | wxALIGN_BOTTOM | wxTOP, 10);
+  m_inputFlexSizer->Add (1,1);
+
+  m_inputFlexSizer->Add (m_inputAddTextCtrl, 1, wxGROW | wxALIGN_TOP , 0);
+  m_inputFlexSizer->Add (m_inputAddButton, 0, wxGROW | wxALIGN_TOP , 0);
+
+  m_inputFlexSizer->Add (m_inputUrlListBox, 0, wxGROW | wxALIGN_CENTER , 0);
+  m_inputFlexSizer->Add (m_buttonUrlVBox, 0, wxGROW | wxALIGN_CENTER , 0);
+
+  m_inputFlexSizer->Add (m_parthashesCheck, 0, wxGROW | wxALIGN_CENTER | wxTOP, 10);
+  m_inputFlexSizer->Add (1,1);
+
+  m_inputSBoxSizer->Add (m_inputFlexSizer, 1, wxALL | wxALIGN_CENTER | wxALL, 10);
+  m_mainPanelVBox->Add (m_inputSBoxSizer, 0, wxGROW | wxALIGN_CENTER | wxALL, 10);
+
 #ifdef WANT_MD4SUM
   // MD4 Hash Vertical Box Sizer
   m_md4HashSBox = new wxStaticBox (m_mainPanel, -1, _("MD4 File Hash"));
@@ -101,10 +186,6 @@ AlcFrame::AlcFrame (const wxString & title):
   m_e2kHashTextCtrl = new wxTextCtrl( m_mainPanel, -1, wxEmptyString, wxDefaultPosition,
                                       wxDefaultSize, wxTE_READONLY );
 
-  wxInt32 x, y;
-  m_e2kHashTextCtrl->GetTextExtent (wxT("8"), &x, &y);
-  m_e2kHashTextCtrl->SetSize (wxSize (33 * x, -1)); // 32 + 1 characters
-
   m_e2kHashSBoxSizer->Add (m_e2kHashTextCtrl, 1, wxALL | wxALIGN_CENTER, 5);
   m_mainPanelVBox->Add( m_e2kHashSBoxSizer, 0, wxALL | wxGROW, 10 );
 
@@ -121,7 +202,22 @@ AlcFrame::AlcFrame (const wxString & title):
 
   // Activitybar
   m_activityBar = new ActivityBar(m_mainPanel, -1, 100, 10, wxDefaultPosition, wxSize(-1,10));
-  m_mainPanelVBox->Add( m_activityBar, 0, wxALL | wxGROW, 10 );
+  m_mainPanelVBox->Add( m_activityBar, 0, wxLEFT | wxRIGHT | wxGROW, 10 );
+
+  // Button bar
+  m_buttonHBox = new wxBoxSizer (wxHORIZONTAL);
+  m_startButton =
+    new wxButton (m_mainPanel, ID_START_BUTTON, wxString (_("Start")));
+  m_saveButton =
+    new wxButton (m_mainPanel, ID_SAVEAS_BUTTON, wxString (_("Save")));
+  m_closeButton =
+    new wxButton (m_mainPanel, ID_EXIT_BUTTON, wxString (_("Exit")));
+
+  m_buttonHBox->Add (m_startButton, 0, wxALIGN_CENTER | wxALL, 5);
+  m_buttonHBox->Add (m_saveButton, 0, wxALIGN_CENTER | wxALL, 5);
+  m_buttonHBox->Add (m_closeButton, 0, wxALIGN_CENTER | wxALL, 5);
+
+  m_mainPanelVBox->Add (m_buttonHBox, 0,  wxALIGN_CENTER | wxALL, 5);
 
   // Toolbar Pixmaps
   m_toolBarBitmaps[0] = AlcPix::getPixmap(wxT("open"));
@@ -159,22 +255,45 @@ AlcFrame::AlcFrame (const wxString & title):
   m_frameVBox->Add (m_mainPanel, 1, wxALL | wxGROW, 0);
   SetAutoLayout (TRUE);
   SetSizerAndFit (m_frameVBox);
+
+  m_startButton->SetFocus();
 }
 
-// Destructor
+/// Destructor
 AlcFrame::~AlcFrame ()
 {}
 
-// Events table
+/// Events table
 BEGIN_EVENT_TABLE (AlcFrame, wxFrame)
 EVT_TOOL (ID_BAR_OPEN, AlcFrame::OnBarOpen)
 EVT_TOOL (ID_BAR_SAVEAS, AlcFrame::OnBarSaveAs)
 EVT_TOOL (ID_BAR_ABOUT, AlcFrame::OnBarAbout)
+EVT_BUTTON (ID_START_BUTTON, AlcFrame::OnStartButton)
+EVT_BUTTON (ID_EXIT_BUTTON, AlcFrame::OnCloseButton)
+EVT_BUTTON (ID_SAVEAS_BUTTON, AlcFrame::OnSaveAsButton)
+EVT_BUTTON (ID_BROWSE_BUTTON, AlcFrame::OnBrowseButton)
+EVT_BUTTON (ID_ADD_BUTTON, AlcFrame::OnAddUrlButton)
+EVT_BUTTON (ID_REMOVE_BUTTON, AlcFrame::OnRemoveUrlButton)
+EVT_BUTTON (ID_CLEAR_BUTTON, AlcFrame::OnClearUrlButton)
 END_EVENT_TABLE ()
 
-// Open button
+/// Toolbar Open button
 void
 AlcFrame::OnBarOpen (wxCommandEvent & event)
+{
+  SetFileToHash();
+}
+
+/// Browse button to select file to hash
+void
+AlcFrame::OnBrowseButton (wxCommandEvent & event)
+{
+  SetFileToHash();
+}
+
+/// Set File to hash in wxTextCtrl
+void
+AlcFrame::SetFileToHash()
 {
   const wxString & filename =
     wxFileSelector (_("Select the file you want to compute the ed2k link"),
@@ -183,40 +302,27 @@ AlcFrame::OnBarOpen (wxCommandEvent & event)
 
   if (!filename.empty ())
     {
-      // Chrono
-      wxStopWatch chrono;
-
-      m_activityBar->Start();
-      ;
-
-      AlcHash hash;
-
-      wxString ed2kHash(hash.GetED2KHashFromFile(filename));
-
-#ifdef WANT_MD4SUM
-      // Md4 hash
-      m_md4HashTextCtrl->SetValue(hash.GetMD4HashFromFile(filename));
-#endif
-      // Ed2k hash
-      m_e2kHashTextCtrl->SetValue(ed2kHash);
-
-      // Ed2k link
-      m_ed2kTextCtrl->SetValue(hash.GetED2KLinkFromFile(filename,ed2kHash));
-
-      m_activityBar->Stop();
-
-      SetStatusText (wxString::Format(_("Done in %.2f s"),
-                                      chrono.Time()*.001));
-    }
-  else
-    {
-      SetStatusText (_("Please, enter a non empty file name"));
+      m_inputFileTextCtrl->SetValue(filename);
     }
 }
 
-// Save as button
+/// Toolbar Save As button
 void
 AlcFrame::OnBarSaveAs (wxCommandEvent & event)
+{
+  SaveEd2kLinkToFile();
+}
+
+/// Save As button
+void
+AlcFrame::OnSaveAsButton(wxCommandEvent & event)
+{
+  SaveEd2kLinkToFile();
+}
+
+/// Save computed Ed2k link to file
+void
+AlcFrame::SaveEd2kLinkToFile()
 {
   wxString link(m_ed2kTextCtrl->GetValue());
 
@@ -276,7 +382,7 @@ AlcFrame::OnBarSaveAs (wxCommandEvent & event)
     }
 }
 
-// About button
+/// Toolbar About button
 void
 AlcFrame::OnBarAbout (wxCommandEvent & event)
 {
@@ -286,4 +392,126 @@ AlcFrame::OnBarAbout (wxCommandEvent & event)
                  "Pixmaps from http://www.everaldo.com and http://www.amule.org\n\n"
                  "Distributed under GPL"),
                 _("About aLinkCreator"), wxOK | wxCENTRE | wxICON_INFORMATION);
+}
+
+/// Close Button
+void AlcFrame::OnCloseButton (wxCommandEvent & event)
+{
+  Close (FALSE);
+}
+
+/// Compute Hashes on Start Button
+void AlcFrame::OnStartButton (wxCommandEvent & event)
+{
+  int i;
+  wxString filename = m_inputFileTextCtrl->GetValue();
+
+  if (!filename.empty ())
+    {
+      // Chrono
+      wxStopWatch chrono;
+
+      // wxFileName needed for base name
+      wxFileName fileToHash(filename);
+
+      m_e2kHashTextCtrl->SetValue(_("Hashing..."));
+      m_ed2kTextCtrl->SetValue(_("Hashing..."));
+
+#ifdef WANT_MD4SUM
+
+      m_md4HashTextCtrl->SetValue(_("Hashing..."));
+#endif
+
+      m_activityBar->Start();
+
+      // Compute ed2k Hash
+      AlcHash hash;
+      hash.SetED2KHashFromFile(filename);
+      wxArrayString ed2kHash (hash.GetED2KHash());
+
+      // Get URLs
+      wxArrayString arrayOfUrls;
+      wxString url;
+      for (i=0;i < m_inputUrlListBox->GetCount();i++)
+        {
+          url=m_inputUrlListBox->GetString(i);
+          if (url.Right(1) == wxT("/"))
+            {
+              url += fileToHash.GetFullName();
+            }
+          arrayOfUrls.Add(wxURL::ConvertToValidURI(url));
+        }
+      arrayOfUrls.Shrink();
+
+#ifdef WANT_MD4SUM
+      // Md4 hash
+      MD4 md4;
+      m_md4HashTextCtrl->SetValue(md4.calcMd4FromFile(filename));
+#endif
+      // Ed2k hash
+      m_e2kHashTextCtrl->SetValue(ed2kHash.Last());
+
+      // Ed2k link
+      m_ed2kTextCtrl->SetValue(hash.GetED2KLink(arrayOfUrls,m_parthashesCheck->IsChecked()));
+
+      m_activityBar->Stop();
+
+      SetStatusText (wxString::Format(_("Done in %.2f s"),
+                                      chrono.Time()*.001));
+    }
+  else
+    {
+      SetStatusText (_("Please, enter a non empty file name"));
+    }
+}
+
+/// Add an URL to the URL list box
+void
+AlcFrame::OnAddUrlButton (wxCommandEvent & event)
+{
+  wxString url(m_inputAddTextCtrl->GetValue());
+
+  if (!url.IsEmpty())
+    {
+      // Check if the URL already exist in list
+      int i;
+      bool UrlNotExists = TRUE;
+      for (i=0;i < m_inputUrlListBox->GetCount();i++)
+        {
+          if (url == m_inputUrlListBox->GetString(i))
+            {
+              UrlNotExists =FALSE;
+              break;
+            }
+        }
+
+      // Add only a not already existant URL
+      if (UrlNotExists)
+        {
+          m_inputUrlListBox->Append(wxURL::ConvertToValidURI(url));
+          m_inputAddTextCtrl->SetValue(wxEmptyString);
+        }
+      else
+        {
+          wxLogError(_("You have already added this URL !"));
+        }
+    }
+  else
+    {
+      SetStatusText (_("Please, enter a non empty URL"));
+    }
+}
+
+/// Remove the selected URL from the URL list box
+void
+AlcFrame::OnRemoveUrlButton (wxCommandEvent & event)
+{
+  m_inputUrlListBox->Delete(m_inputUrlListBox->GetSelection());
+}
+
+/// Clear the URL list box
+void
+AlcFrame::OnClearUrlButton (wxCommandEvent & event)
+{
+  m_inputUrlListBox->Clear();
 }

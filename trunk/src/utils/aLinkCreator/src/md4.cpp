@@ -20,7 +20,7 @@
 /// Pixmaps from http://www.everaldo.com and http://www.amule.org
 ///
 /// This program is free software; you can redistribute it and/or modify
-///  it under the terms of the GNU General Public License as published by
+/// it under the terms of the GNU General Public License as published by
 /// the Free Software Foundation; either version 2 of the License, or
 /// (at your option) any later version.
 ///
@@ -357,29 +357,40 @@ wxString MD4::calcMd4FromFile(const wxString &filename)
 }
 
 /// Get Ed2k hash from a file
-wxString MD4::calcEd2kFromFile(const wxString &filename)
+wxArrayString MD4::calcEd2kFromFile(const wxString &filename)
 {
   size_t read;
   unsigned char ret[MD4_HASHLEN_BYTE];
   MD4Context hdc;
 
-  wxString tmpHash(wxEmptyString);
-
-  size_t partcount = 0;
-  size_t dataread = 0;
+  size_t partcount;
+  size_t dataread;
 
   char *buf = new char[BUFSIZE];
+
+  wxArrayString arrayOfHashes;
+  wxString finalHash;
+
+#if WANT_STRING_IMPLEMENTATION
+
+  wxString tmpHash(wxEmptyString);
+#else
+
+  unsigned char* tmpCharHash = NULL;
+#endif
 
   // Opening file
   wxFFile file(filename, wxT("rbS"));
   if (! file.IsOpened())
     {
-      return wxEmptyString;
+      return arrayOfHashes;
     }
 
   // Processing each block
+  partcount = 0;
   while (!file.Eof())
     {
+      dataread = 0;
       MD4Init(&hdc);
       while (dataread < PARTSIZE && !file.Eof())
         {
@@ -400,6 +411,13 @@ wxString MD4::calcEd2kFromFile(const wxString &filename)
         }
       MD4Final(&hdc, ret);
 
+      // Add part-hash
+      arrayOfHashes.Add(charToHex(reinterpret_cast<const char *>(ret),
+                                  MD4_HASHLEN_BYTE));
+
+      partcount++;
+
+#if WANT_STRING_IMPLEMENTATION
       // MD4_HASHLEN_BYTE is ABSOLUTLY needed as we dont want NULL
       // character to be interpreted as the end of the parthash string
 #if wxUSE_UNICODE
@@ -409,29 +427,44 @@ wxString MD4::calcEd2kFromFile(const wxString &filename)
 
       tmpHash += wxString(reinterpret_cast<const char *>(ret),MD4_HASHLEN_BYTE);
 #endif
+#else
 
-      // If some more blocks left, re-init for next block
-      if (!file.Eof())
-        {
-          dataread=0;
-          partcount++;
-        }
+      tmpCharHash = (unsigned char*)realloc(tmpCharHash,
+                                            sizeof(unsigned char) * (MD4_HASHLEN_BYTE * partcount));
+      memcpy ( tmpCharHash + MD4_HASHLEN_BYTE * (partcount - 1), ret, MD4_HASHLEN_BYTE );
+#endif
+
     }
 
   file.Close();
   delete [] buf;
 
-  if (partcount == 0)
-    {
-      // For only block, hash = parthash
-      return (charToHex(reinterpret_cast<const char *>(tmpHash.c_str()),
-                        MD4_HASHLEN_BYTE));
-    }
-  else
+  if (partcount > 1)
     {
       // hash == hash of concatenned parthashes
-      return (calcMd4FromString(tmpHash));
+#if WANT_STRING_IMPLEMENTATION
+      finalHash=calcMd4FromString(tmpHash);
+#else
+
+      MD4Init(&hdc);
+      MD4Update(&hdc, tmpCharHash, MD4_HASHLEN_BYTE * partcount);
+      MD4Final(&hdc, ret);
+
+      finalHash = charToHex(reinterpret_cast<const char *>(ret),
+                            MD4_HASHLEN_BYTE);
+#endif
+
+      arrayOfHashes.Add(finalHash);
     }
+
+#if !WANT_STRING_IMPLEMENTATION
+  free(tmpCharHash);
+  tmpCharHash=NULL;
+#endif
+
+  arrayOfHashes.Shrink();
+
+  return (arrayOfHashes);
 }
 
 /// Convert hash to hexa string

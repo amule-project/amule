@@ -20,7 +20,7 @@
 /// Pixmaps from http://www.everaldo.com and http://www.amule.org
 ///
 /// This program is free software; you can redistribute it and/or modify
-///  it under the terms of the GNU General Public License as published by
+/// it under the terms of the GNU General Public License as published by
 /// the Free Software Foundation; either version 2 of the License, or
 /// (at your option) any later version.
 ///
@@ -48,6 +48,9 @@
 #endif
 
 #include <stdint.h> // needed for uint32_t
+
+// Use wxString implementation or not
+//#define WANT_STRING_IMPLEMENTATION 1
 
 class MD4
   {
@@ -101,8 +104,8 @@ class MD4
     /// Get Md4 hash from a file
     wxString calcMd4FromFile(const wxString &filename);
 
-    /// Get Ed2k hash from a file
-    wxString calcEd2kFromFile(const wxString &filename);
+    /// Get Ed2k hash and part-hashes from a file
+    wxArrayString calcEd2kFromFile(const wxString &filename);
   };
 
 #endif /* _MD4_H */

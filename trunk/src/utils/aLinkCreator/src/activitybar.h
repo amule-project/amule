@@ -10,7 +10,7 @@
 /// Pixmaps from http://www.everaldo.com and http://www.amule.org
 ///
 /// This program is free software; you can redistribute it and/or modify
-///  it under the terms of the GNU General Public License as published by
+/// it under the terms of the GNU General Public License as published by
 /// the Free Software Foundation; either version 2 of the License, or
 /// (at your option) any later version.
 ///
@@ -57,21 +57,26 @@ class ActivityBar:public wxGauge
 
   protected:
 
+    /// Update gauge on Timer event and switch direction at begining or end
     void OnTimer (wxTimerEvent & event);
 
     DECLARE_EVENT_TABLE ();
 
   public:
 
+    /// Constructor
     ActivityBar(wxWindow* parent, wxWindowID id, int range, int speed,
                 const wxPoint&  pos = wxDefaultPosition, const wxSize& size = wxDefaultSize,
                 long style = wxGA_HORIZONTAL, const wxValidator& validator = wxDefaultValidator,
                 const wxString& name = wxT("activitybar"));
 
+    /// Destructor
     ~ActivityBar();
 
+    /// Start the activity bar
     void Start();
 
+    /// Stop the activity bar
     void Stop();
   };
 
