@@ -86,6 +86,7 @@ ExternalConn::ExternalConn()
 	if ( thePrefs::AcceptExternalConnections() && thePrefs::ECUseTCPPort() ) {
 		// We must have a valid password, otherwise we will not allow EC connections
 		if ( thePrefs::ECPassword().IsEmpty() ) {
+			thePrefs::EnableExternalConnections( false );
 			AddLogLineM(true, _("External connections disabled due to empty password!"));
 			return;
 		}

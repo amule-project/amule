@@ -142,6 +142,13 @@ int CamuleDaemonApp::OnRun()
 {
 	const uint uLoop = 100;
 	AddDebugLogLineM(true, wxT("CamuleDaemonApp::OnRun()"));
+	
+	if ( !thePrefs::AcceptExternalConnections() ) {
+		AddLogLineM(true, _("ERROR: amule daemon is useless when external connections disabled.") +
+			_("Change configuration either from GUI or by editing $HOME/.eMule"));
+		return 0;
+	}
+	
 	// lfroen: this loop is instead core timer.
 	uint msWait = uLoop;
 	m_Exit = false;
