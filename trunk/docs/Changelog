@@ -9,6 +9,7 @@ Version 2.0.0-rc2 - The Unnamed version.
 
 	Hetfield:
 		* Added new inclusion path if distro in not detected
+		* fixed wrong and duplicated inclusion in ClientCredits.*
 
 Version 2.0.0-rc1 - The 'Mules and Rabbits love carrots' version.
 -------------
