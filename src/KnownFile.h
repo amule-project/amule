@@ -178,7 +178,7 @@ public:
 	// file sharing
 	virtual	Packet*	CreateSrcInfoPacket(CUpDownClient* forClient);
 	
-	void	UpdatePartsInfo();	
+	virtual void	UpdatePartsInfo();	
 
 	uint32	date;
 	
