@@ -1,3 +1,4 @@
+//
 // This file is part of the aMule Project
 //
 // Copyright (c) 2004 aMule Project ( http://www.amule-project.net )
@@ -16,6 +17,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+//
+
+
+#include "PrefsUnifiedDlg.h"
 
 
 #include <wx/button.h>
@@ -28,12 +33,11 @@
 #include <wx/spinctrl.h>
 #include <wx/tokenzr.h>
 #include <wx/valgen.h>
-
 #ifdef __WXGTK__
 	#include <wx/gtk/tooltip.h>
 #endif
 
-#include "PrefsUnifiedDlg.h"
+
 #include "Preferences.h"
 #include "amule.h"			// Needed for theApp
 #include "otherfunctions.h"		// Needed for MakeFoldername
@@ -48,8 +52,6 @@
 #include "ClientList.h"
 #include "DirectoryTreeCtrl.h"		// Needed for CDirectoryTreeCtrl
 #include "MD5Sum.h"
-
-
 
 
 BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
@@ -83,7 +85,6 @@ BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 END_EVENT_TABLE()
 
 
-
 /**
  * This struct provides a general way to represent config-tabs.
  */
@@ -100,24 +101,22 @@ struct PrefsPage
 };
 
 
-
-PrefsPage	pages[] =
+PrefsPage pages[] =
 {
-	{ _("General"),				PreferencesGeneralTab,			13,	NULL },
-	{ _("Connection"),			PreferencesConnectionTab,		14, NULL },
+	{ _("General"),			PreferencesGeneralTab,		13, NULL },
+	{ _("Connection"),		PreferencesConnectionTab,	14, NULL },
 	{ _("Remote Controls"),		PreferencesRemoteControlsTab,	11, NULL },
-	{ _("Online Signature"),	PreferencesOnlineSigTab,		0,	NULL },
-	{ _("Server"),				PreferencesServerTab,			15, NULL },
-	{ _("Files"),				PreferencesFilesTab,			16, NULL },
+	{ _("Online Signature"),	PreferencesOnlineSigTab,	 0, NULL },
+	{ _("Server"),			PreferencesServerTab,		15, NULL },
+	{ _("Files"),			PreferencesFilesTab,		16, NULL },
 	{ _("Sources Dropping"),	PreferencesSourcesDroppingTab,	20, NULL },
-	{ _("Directories"),			PreferencesDirectoriesTab,		17, NULL },
-	{ _("Statistics"),			PreferencesStatisticsTab,		10, NULL },
-	{ _("Security"),			PreferencesSecurityTab,			0,	NULL },
-
+	{ _("Directories"),		PreferencesDirectoriesTab,	17, NULL },
+	{ _("Statistics"),		PreferencesStatisticsTab,	10, NULL },
+	{ _("Security"),		PreferencesSecurityTab,		 0, NULL },
 //	Notications are disabled since they havent been implemented
-//	{ _("Notifications"),		PreferencesNotifyTab,			18, NULL },
-	{ _("Core Tweaks"),			PreferencesaMuleTweaksTab,		12, NULL },
-	{ _("Gui Tweaks"),			PreferencesGuiTweaksTab,		19, NULL }
+//	{ _("Notifications"),		PreferencesNotifyTab,		18, NULL },
+	{ _("Core Tweaks"),		PreferencesaMuleTweaksTab,	12, NULL },
+	{ _("Gui Tweaks"),		PreferencesGuiTweaksTab,	19, NULL }
 };
 
 
@@ -136,7 +135,6 @@ PrefsUnifiedDlg::PrefsUnifiedDlg(wxWindow* parent)
 
 	// Add the single column used
 	PrefsIcons->InsertColumn(0, wxT(""), wxLIST_FORMAT_LEFT, PrefsIcons->GetSize().GetWidth()-5);
-
 
 	// Temp variables for finding the smallest height and width needed 
 	int width = 0;
@@ -158,7 +156,6 @@ PrefsUnifiedDlg::PrefsUnifiedDlg(wxWindow* parent)
 		// Align and resize the page
 		Fit();
 		Layout();
-
 		
 		// Find the greatest sizes
 		wxSize size = prefs_sizer->GetSize();
@@ -167,7 +164,6 @@ PrefsUnifiedDlg::PrefsUnifiedDlg(wxWindow* parent)
 	
 		if ( size.GetHeight() > height )
 			height = size.GetHeight();
-
 
 		// Hide it for now
 		prefs_sizer->Remove( pages[i].m_widget );
@@ -182,12 +178,10 @@ PrefsUnifiedDlg::PrefsUnifiedDlg(wxWindow* parent)
 	// We now have the needed minimum height and width
 	prefs_sizer->SetMinSize( width, height );
 
-
 	// Store some often used pointers
 	m_ShareSelector = ((CDirectoryTreeCtrl*)FindWindowById(IDC_SHARESELECTOR, this));
 	m_buttonColor = (wxButton*)FindWindowById(IDC_COLOR_BUTTON, this);
 	m_choiceColor = (wxChoice*)FindWindowById(IDC_COLORSELECTOR, this);
-
 
 	// Connect the Cfgs with their widgets
 	CPreferences::CFGMap::iterator it = CPreferences::s_CfgList.begin();
@@ -246,7 +240,6 @@ bool PrefsUnifiedDlg::TransferToWindow()
 		CPreferences::s_colors_ref[i] = CStatisticsDlg::acrStat[i];
 	}
 
-
 	// Enable/Disable some controls
 	FindWindow( IDC_FCHECKSELF )->Enable( ((wxChoice*)FindWindow( IDC_FCHECK ))->GetSelection() == 8 );
 	
@@ -267,11 +260,10 @@ bool PrefsUnifiedDlg::TransferFromWindow()
 
 	theApp.glob_prefs->shareddir_list.Clear();
 	m_ShareSelector->GetSharedDirectories(&theApp.glob_prefs->shareddir_list);
-
+	
 	for ( int i = 0; i < cntStatColors; i++ ) {
 		if ( CPreferences::s_colors[i] != CPreferences::s_colors_ref[i] ) {
 			CStatisticsDlg::acrStat[i] = CPreferences::s_colors[i];
-
 			theApp.amuledlg->statisticswnd->ApplyStatsColor(i);	
 		}
 			
@@ -445,7 +437,8 @@ void PrefsUnifiedDlg::OnButtonDir(wxCommandEvent& event)
 
 void PrefsUnifiedDlg::OnButtonBrowseWav(wxCommandEvent& WXUNUSED(evt))
 {
-	wxString str = wxFileSelector( _("Browse wav"), wxT(""), wxT(""), wxT("*.wav"), _("File wav (*.wav)|*.wav||") );
+	wxString str = wxFileSelector( _("Browse wav"), wxT(""), wxT(""),
+		wxT("*.wav"), _("File wav (*.wav)|*.wav||") );
 	
 	if ( !str.IsEmpty() ) {
 		wxTextCtrl* widget = (wxTextCtrl*)FindWindow( IDC_EDIT_TBN_WAVFILE );
@@ -469,7 +462,8 @@ void PrefsUnifiedDlg::OnButtonBrowseSkin(wxCommandEvent& WXUNUSED(evt))
 
 void PrefsUnifiedDlg::OnButtonBrowseVideoplayer(wxCommandEvent& WXUNUSED(e))
 {
-	wxString str = wxFileSelector( _("Browse for videoplayer"), wxT(""), wxT(""), wxT(""), _("Executable (*)|*||") );
+	wxString str = wxFileSelector( _("Browse for videoplayer"), wxT(""), wxT(""),
+		wxT(""), _("Executable (*)|*||") );
 
 	if ( !str.IsEmpty() ) {
 		wxTextCtrl* widget = (wxTextCtrl*)FindWindow( IDC_VIDEOPLAYER );
@@ -483,7 +477,9 @@ void PrefsUnifiedDlg::OnButtonEditAddr(wxCommandEvent& WXUNUSED(evt))
 {
 	wxString fullpath( theApp.ConfigDir + wxT("addresses.dat") );
 	
-	EditServerListDlg* test = new EditServerListDlg(this, _("Edit Serverlist"), _("Add here URL's to download server.met files.\nOnly one url on each line."), fullpath );
+	EditServerListDlg* test = new EditServerListDlg(this, _("Edit Serverlist"),
+		_("Add here URL's to download server.met files.\nOnly one url on each line."),
+		fullpath );
 	
 	test->ShowModal();
   
@@ -510,6 +506,7 @@ void PrefsUnifiedDlg::OnPrefsPageChange(wxListEvent& event)
 	Layout();
 }
 
+
 void PrefsUnifiedDlg::OnToolTipDelayChange(wxSpinEvent& event)
 {
 	#ifdef __WXGTK__
@@ -523,3 +520,4 @@ void PrefsUnifiedDlg::OnToolTipDelayChange(wxSpinEvent& event)
 void PrefsUnifiedDlg::OnInitDialog( wxInitDialogEvent& WXUNUSED(evt) )
 {
 }
+

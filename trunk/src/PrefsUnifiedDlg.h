@@ -1,62 +1,60 @@
+//
 // This file is part of the aMule Project
 // 
 // Copyright (c) 2004 aMule Project ( http://www.amule-project.net )
 // Original author: Emilio Sandoz
 //
-//This program is free software; you can redistribute it and/or
-//modify it under the terms of the GNU General Public License
-//as published by the Free Software Foundation; either
-//version 2 of the License, or (at your option) any later version.
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either
+// version 2 of the License, or (at your option) any later version.
 //
-//This program is distributed in the hope that it will be useful,
-//but WITHOUT ANY WARRANTY; without even the implied warranty of
-//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//GNU General Public License for more details.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 //
-//You should have received a copy of the GNU General Public License
-//along with this program; if not, write to the Free Software
-//Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+//
 
 
 #ifndef __PrefsUnifiedDlg_H__
 #define __PrefsUnifiedDlg_H__
 
-#ifndef WX_PRECOMP
-    #include "wx/wx.h"
-#endif
-
-#include <wx/defs.h>		// Needed before any other wx/*.h
-#include <wx/dialog.h>		// Needed for wxDialog
-#include <wx/config.h>
-#include "muuli_wdr.h"
-#include <wx/choice.h>
-#include <wx/button.h>
 
 #include <map>
 #include <list>
 
 
+#include <wx/defs.h>		// Needed before any other wx/*.h
+#include <wx/dialog.h>		// Needed for wxDialog
+#include <wx/config.h>
+#include <wx/choice.h>
+#include <wx/button.h>
+
+
 #include "color.h"
+#include "muuli_wdr.h"
+
+
 //----------------------------------------------------------------------------
 // PrefsUnifiedDlg
 //----------------------------------------------------------------------------
-
 class Cfg_Base;
 class CPreferences;
 class CDirectoryTreeCtrl;
-//class wxChoice;
-
 
 
 class PrefsUnifiedDlg : public wxDialog
 {
 public:
-    // constructors and destructors
+	// constructors and destructors
 	PrefsUnifiedDlg(wxWindow* parent);
 	~PrefsUnifiedDlg();
    
-    bool TransferFromWindow();
+	bool TransferFromWindow();
 	bool TransferToWindow();
 
 protected:
@@ -65,9 +63,9 @@ protected:
 	
 	
 	CDirectoryTreeCtrl* 	m_ShareSelector;
-	wxChoice*				m_choiceColor;
-	wxButton*				m_buttonColor;
-	wxPanel*				m_CurrentPanel;
+	wxChoice*		m_choiceColor;
+	wxButton*		m_buttonColor;
+	wxPanel*		m_CurrentPanel;
 	
 	
 	void OnOk(wxCommandEvent &event);
@@ -89,10 +87,8 @@ protected:
 
 	void OnInitDialog( wxInitDialogEvent& evt );
 	
-    DECLARE_EVENT_TABLE()
+	DECLARE_EVENT_TABLE()
 };
 
-
-
-
 #endif
+
