@@ -1202,10 +1202,9 @@ void CamuleDlg::Hide_aMule(bool iconize) {
 		theApp.amuledlg->transferwnd->uploadlistctrl->Show(FALSE);
 		theApp.amuledlg->sharedfileswnd->sharedfilesctrl->Show(FALSE);
 		theApp.amuledlg->Freeze();
-		if (iconize) {
-			theApp.amuledlg->Iconize(TRUE);
-		}
-		theApp.amuledlg->Show(FALSE);
+
+		Hide();
+
 		theApp.amuledlg->transfers_frozen = true;
 		old_update_queue_list = theApp.glob_prefs->GetUpdateQueueList();
 		theApp.glob_prefs->SetUpdateQueueList(false);
@@ -1233,9 +1232,8 @@ void CamuleDlg::Show_aMule(bool uniconize) {
 		theApp.amuledlg->Thaw();
 		theApp.amuledlg->Update();
 		theApp.amuledlg->Refresh();
-		if (uniconize) {
-			theApp.amuledlg->Show(TRUE);
-		}
+
+		Show();
 
 		theApp.amuledlg->transfers_frozen = false;
 		theApp.glob_prefs->SetUpdateQueueList(old_update_queue_list);
