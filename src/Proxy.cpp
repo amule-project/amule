@@ -66,24 +66,36 @@ wxProxyData::wxProxyData()
 }
 
 wxProxyData::wxProxyData(
+	bool		ProxyEnable,
 	wxProxyType	ProxyType,
 	const wxString	&ProxyHostName,
 	unsigned short	ProxyPort,
+	bool		EnablePassword,
 	const wxString	&UserName,
 	const wxString	&Password)
 {
+	m_ProxyEnable	= ProxyEnable;
 	m_ProxyType	= ProxyType;
 	m_ProxyHostName	= ProxyHostName;
 	m_ProxyPort	= ProxyPort;
+	/* This flag is currently not used. The first authentication method 
+	 * tryed is No-Authentication, the second is Username/Password. If 
+	 * there is no username/password in wxProxyData, a NULL 
+	 * username/password is sent. That will probably lead to a failure,
+	 * but at least we tryed. Maybe this behaviour could be altered later.
+	 */
+	m_EnablePassword= EnablePassword;
 	m_UserName	= UserName;
 	m_Password	= Password;
 }
 
 void wxProxyData::Empty()
 {
+	m_ProxyEnable = false;
 	m_ProxyHostName.Clear();
 	m_ProxyPort = 0;
 	m_ProxyType = wxPROXY_NONE;
+	m_EnablePassword = false;
 	m_UserName.Clear();
 	m_Password.Clear();
 }
@@ -695,7 +707,7 @@ end:
 
 void wxSocketClientProxy::SetProxyData(const wxProxyData *ProxyData)
 {
-	m_UseProxy = ProxyData != NULL;
+	m_UseProxy = ProxyData != NULL && ProxyData->m_ProxyEnable;
 	m_SocketProxy.SetProxyData(ProxyData);
 }
 
@@ -709,7 +721,7 @@ wxSocketServerProxy::wxSocketServerProxy(
 wxSocketServer(address, flags),
 m_SocketProxy(ProxyData)
 {
-	m_UseProxy = ProxyData != NULL;
+	m_UseProxy = ProxyData != NULL && ProxyData->m_ProxyEnable;
 	if (m_UseProxy) {
 		/* Maybe some day when socks6 is out... :) */
 	}
@@ -717,7 +729,7 @@ m_SocketProxy(ProxyData)
 
 void wxSocketServerProxy::SetProxyData(const wxProxyData *ProxyData)
 {
-	m_UseProxy = ProxyData != NULL;
+	m_UseProxy = ProxyData != NULL && ProxyData->m_ProxyEnable;
 	m_SocketProxy.SetProxyData(ProxyData);
 }
 
@@ -726,17 +738,17 @@ void wxSocketServerProxy::SetProxyData(const wxProxyData *ProxyData)
 wxDatagramSocketProxy::wxDatagramSocketProxy(
 	wxIPaddress &address, wxSocketFlags flags, const wxProxyData *ProxyData)
 :
-wxSocketClient(flags),
+wxDatagramSocket(address, flags),
 m_SocketProxy(ProxyData)
 {
-	m_UseProxy = ProxyData != NULL;
+	m_UseProxy = ProxyData != NULL && ProxyData->m_ProxyEnable;
 	bool ok;
 	
 	if (m_UseProxy) {
-		ok = m_SocketProxy.Start(address, wxPROXY_CMD_UDP_ASSOCIATE, this);
-		m_UDPSocket = new wxDatagramSocket(m_SocketProxy.GetProxyBoundAddress(), flags);
+		// Create the TCP socket to talk to the proxy
+		m_ProxySocket = new wxSocketClient(wxSOCKET_NOWAIT);
+		ok = m_SocketProxy.Start(address, wxPROXY_CMD_UDP_ASSOCIATE, m_ProxySocket);
 	} else {
-		m_UDPSocket = new wxDatagramSocket(address, flags);
 	}
 	m_LastUDPOperation = wxUDP_OPERATION_NONE;
 }
@@ -744,30 +756,60 @@ m_SocketProxy(ProxyData)
 wxDatagramSocketProxy::~wxDatagramSocketProxy()
 {
 	if (m_UseProxy) {
+		// From RFC-1928:
+		// "A UDP association terminates when the TCP connection that the
+		// UDP ASSOCIATE request arrived terminates."
+		m_ProxySocket->Destroy();
 	} else {
 	}
-	m_UDPSocket->Destroy();
+	Destroy();
 }
 
 void wxDatagramSocketProxy::SetProxyData(const wxProxyData *ProxyData)
 {
-	m_UseProxy = ProxyData != NULL;
+	m_UseProxy = ProxyData != NULL && ProxyData->m_ProxyEnable;
 	m_SocketProxy.SetProxyData(ProxyData);
 }
 
-void wxDatagramSocketProxy::RecvFrom(
-	wxSockAddress& addr, void* buf, wxUint32 nBytes )
+wxDatagramSocket &wxDatagramSocketProxy::RecvFrom(
+	wxSockAddress &addr, void* buf, wxUint32 nBytes )
 {
-	if (m_UseProxy) {
-	} else {
-		m_UDPSocket->RecvFrom(addr, buf, nBytes);
-	}
 	m_LastUDPOperation = wxUDP_OPERATION_RECV_FROM;
+	if (m_UseProxy) {
+		char *bufUDP = new char[nBytes + wxPROXY_UDP_MAXIMUM_OVERHEAD];
+		wxDatagramSocket &ret = RecvFrom(m_SocketProxy.GetProxyBoundAddress(), bufUDP, nBytes + wxPROXY_UDP_MAXIMUM_OVERHEAD);
+		unsigned int offset;
+		
+		switch (m_SocketProxy.m_buffer[3]) {
+		case SOCKS5_ATYP_IPV4_ADDRESS:
+			offset = wxPROXY_UDP_OVERHEAD_IPV4;
+			break;
+			
+		case SOCKS5_ATYP_DOMAINNAME:
+			offset = wxPROXY_UDP_OVERHEAD_DOMAIN_NAME;
+			break;
+			
+		case SOCKS5_ATYP_IPV6_ADDRESS:
+			offset = wxPROXY_UDP_OVERHEAD_IPV6;
+			break;
+			
+		default:
+			/* Error! */
+			offset = 0;
+			break;
+		}
+		memcpy(buf, bufUDP + offset, nBytes);
+		return ret;
+	} else {
+		return RecvFrom(addr, buf, nBytes);
+	}
 }
 
-void wxDatagramSocketProxy::SendTo(
-	wxIPaddress& addr, const void* buf, wxUint32 nBytes )
+wxDatagramSocket &wxDatagramSocketProxy::SendTo(
+	wxIPaddress &addr, const void* buf, wxUint32 nBytes )
 {
+	m_LastUDPOperation = wxUDP_OPERATION_SEND_TO;
+	m_LastUDPOverhead = wxPROXY_UDP_OVERHEAD_IPV4;
 	if (m_UseProxy) {
 		m_SocketProxy.m_buffer[0] = SOCKS5_RSV;	// Reserved
 		m_SocketProxy.m_buffer[1] = SOCKS5_RSV;	// Reserved
@@ -775,13 +817,12 @@ void wxDatagramSocketProxy::SendTo(
 		m_SocketProxy.m_buffer[3] = SOCKS5_ATYP_IPV4_ADDRESS;
 		*((uint32 *)(m_SocketProxy.m_buffer+4)) = StringIPtoUint32(addr.IPAddress());
 		*((uint16 *)(m_SocketProxy.m_buffer+8)) = htons(addr.Service());
-		memcpy(m_SocketProxy.m_buffer + wxPROXY_UDP_OVERHEAD, buf, nBytes);
-		nBytes += wxPROXY_UDP_OVERHEAD;
-		m_UDPSocket->SendTo(addr, m_SocketProxy.m_buffer, nBytes);
+		memcpy(m_SocketProxy.m_buffer + wxPROXY_UDP_OVERHEAD_IPV4, buf, nBytes);
+		nBytes += wxPROXY_UDP_OVERHEAD_IPV4;
+		return SendTo(m_SocketProxy.GetProxyBoundAddress(), m_SocketProxy.m_buffer, nBytes);
 	} else {
-		m_UDPSocket->SendTo(addr, buf, nBytes);
+		return SendTo(addr, buf, nBytes);
 	}
-	m_LastUDPOperation = wxUDP_OPERATION_SEND_TO;
 }
 
 wxUint32 wxDatagramSocketProxy::LastCount(void) const
@@ -791,12 +832,10 @@ wxUint32 wxDatagramSocketProxy::LastCount(void) const
 	if (m_UseProxy) {	
 		switch (m_LastUDPOperation) {
 		case wxUDP_OPERATION_RECV_FROM:
-			ret = 0;
-			break;
-		
 		case wxUDP_OPERATION_SEND_TO:
-			ret = m_UDPSocket->LastCount() - wxPROXY_UDP_OVERHEAD;
+			ret = wxDatagramSocket::LastCount() - m_LastUDPOverhead;
 			break;
+			
 		case wxUDP_OPERATION_NONE:
 		default:
 			ret = 0;
@@ -804,7 +843,7 @@ wxUint32 wxDatagramSocketProxy::LastCount(void) const
 		
 		}
 	} else {
-		ret = m_UDPSocket->LastCount();
+		ret = wxDatagramSocket::LastCount();
 	}
 	
 	return ret;

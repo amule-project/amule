@@ -110,18 +110,22 @@ class wxProxyData
 public:
 	wxProxyData();
 	wxProxyData(
-		wxProxyType	m_ProxyType,
-		const wxString	&m_ProxyHostName,
-		unsigned short	m_ProxyPort,
-		const wxString	&m_UserName,
-		const wxString	&m_Password
+		bool		ProxyEnable,
+		wxProxyType	ProxyType,
+		const wxString	&ProxyHostName,
+		unsigned short	ProxyPort,
+		bool		EnablePassword,
+		const wxString	&UserName,
+		const wxString	&Password
 	);
 	void Empty();
 
 public:
+	bool		m_ProxyEnable;
 	wxString	m_ProxyHostName;
 	unsigned short	m_ProxyPort;
 	wxProxyType	m_ProxyType;
+	bool		m_EnablePassword;
 	wxString	m_UserName;
 	wxString	m_Password;
 };
@@ -249,9 +253,12 @@ enum wxUDPOperation {
 	wxUDP_OPERATION_SEND_TO
 };
 
-#define wxPROXY_UDP_OVERHEAD	10
+const unsigned int wxPROXY_UDP_OVERHEAD_IPV4 		= 10;
+const unsigned int wxPROXY_UDP_OVERHEAD_DOMAIN_NAME	= 262;
+const unsigned int wxPROXY_UDP_OVERHEAD_IPV6		= 20;
+const unsigned int wxPROXY_UDP_MAXIMUM_OVERHEAD		= wxPROXY_UDP_OVERHEAD_DOMAIN_NAME;
 
-class wxDatagramSocketProxy : public wxSocketClient
+class wxDatagramSocketProxy : public wxDatagramSocket
 {
 public:
 	/* Constructor */
@@ -266,18 +273,19 @@ public:
 	/* Interface */
 	void SetProxyData(const wxProxyData *ProxyData);
 	
-	/* wxDatagramSocket Interface -- Changed return value to void */
-	void RecvFrom(
+	/* wxDatagramSocket Interface */
+	wxDatagramSocket& RecvFrom(
 		wxSockAddress& addr, void* buf, wxUint32 nBytes );
-	void SendTo(
+	wxDatagramSocket& SendTo(
 		wxIPaddress& addr, const void* buf, wxUint32 nBytes );
 	wxUint32 LastCount(void) const;
 	
 private:
 	wxSocketProxy	m_SocketProxy;
 	bool 		m_UseProxy;
-	wxDatagramSocket *m_UDPSocket;
+	wxSocketClient	*m_ProxySocket;
 	enum wxUDPOperation m_LastUDPOperation;
+	unsigned int	m_LastUDPOverhead;
 };
 
 /******************************************************************************/

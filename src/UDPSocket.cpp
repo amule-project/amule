@@ -44,7 +44,8 @@
 IMPLEMENT_DYNAMIC_CLASS(CUDPSocket,wxDatagramSocketProxy)
 
 CUDPSocket::CUDPSocket(CServerConnect* in_serverconnect, amuleIPV4Address& address, const wxProxyData *ProxyData)
-: wxDatagramSocketProxy(address, wxSOCKET_NOWAIT, ProxyData)
+:
+wxDatagramSocketProxy(address, wxSOCKET_NOWAIT, ProxyData)
 #ifdef AMULE_DAEMON
 , wxThread(wxTHREAD_JOINABLE)
 #endif

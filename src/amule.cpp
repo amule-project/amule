@@ -684,7 +684,12 @@ bool CamuleApp::OnInit()
 	if (!thePrefs::IsUDPDisabled()) {
 		// Create UDP socket
 		myaddr.Service(thePrefs::GetUDPPort());
-		clientudp	= new CClientUDPSocket(myaddr);
+#ifdef TESTING_PROXY
+		clientudp = new CClientUDPSocket(myaddr, thePrefs::GetProxyData());
+//		clientudp = new CClientUDPSocket(myaddr);
+#else
+		clientudp = new CClientUDPSocket(myaddr);
+#endif
 	} else {
 		printf("*** UDP socket disabled on preferences\n");
 		clientudp = NULL;
