@@ -629,7 +629,7 @@ void CamuleDlg::AddLogLine(bool addtostatusbar, const wxString& line)
 		bufferline.Replace( wxT("&"), wxT("&&") );
 		wxStaticText* text = CastChild( wxT("infoLabel"), wxStaticText );
 		// Only show the first line if multiple lines
-		text->SetLabel( stamp + bufferline.BeforeFirst( wxT('\n') ) );
+		text->SetLabel( bufferline.BeforeFirst( wxT('\n') ) );
 		text->GetParent()->Layout();
 	}
 	
