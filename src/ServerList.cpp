@@ -97,14 +97,18 @@ uint8 CServerList::AutoUpdate()
 			strTempFilename =  theApp.ConfigDir + wxString::Format(wxT("server_auto%u.met"), temp_count);
 
 			// lfroen - this must go to the gui side. By now, avoid to reference gui members of CamuleApp
+#ifndef AMULE_DAEMON
 			CHTTPDownloadDlg *dlg=new CHTTPDownloadDlg(theApp.GetTopWindow(),strURLToDownload,strTempFilename);
 			int retval=dlg->ShowModal();
+			delete dlg;
+#else
+			int retval=0;
+#endif
 			if(retval==0) {
 				temp_count++;		
 			} else {
 				AddLogLineM(true, wxString::Format(_("Failed to download the serverlist from %s"), strURLToDownload.c_str()));
 			}
-			delete dlg;
 		}
 	}
 

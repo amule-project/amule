@@ -48,7 +48,7 @@
 
 //	members of CUpDownClient
 //	which are mainly used for uploading functions 
-
+#ifndef AMULE_DAEMON
 void CUpDownClient::DrawUpStatusBar(wxMemoryDC* dc, wxRect rect, bool onlygreyrect, bool  bFlat){
 	RECT gaprect;
 	gaprect.top = rect.y + 2;
@@ -83,7 +83,8 @@ void CUpDownClient::DrawUpStatusBar(wxMemoryDC* dc, wxRect rect, bool onlygreyre
 		}
 	}
 }
-
+#endif
+#ifndef CLIENT_GUI
 uint32 CUpDownClient::GetScore(bool sysvalue, bool isdownloading, bool onlybasevalue) const
 {
 	//TODO: complete this (friends, uploadspeed, amuleuser etc etc)
@@ -181,6 +182,7 @@ uint32 CUpDownClient::GetScore(bool sysvalue, bool isdownloading, bool onlybasev
 	}
 	return (uint32)fBaseValue;
 }
+#endif
 
 // Checks if it is next requested block from another chunk of the actual file or from another file 
 // 
@@ -759,7 +761,6 @@ bool CUpDownClient::IsBanned() const
 	return ( (theApp.clientlist->IsBannedClient(GetIP()) ) && m_nDownloadState != DS_DOWNLOADING);
 }
 
-	
 void CUpDownClient::CheckForAggressive()
 {
 	uint32 cur_time = ::GetTickCount();

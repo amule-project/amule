@@ -365,8 +365,8 @@ void CSearchDlg::OnBnClickedSdownload(wxCommandEvent& WXUNUSED(evt))
 
 	int index = searchlistctrl->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
 	while ( (index > -1) ) {
-		theApp.downloadqueue->AddSearchToDownload( (CSearchFile*)searchlistctrl->GetItemData(index), GetCatChoice());
-		FindWindow(IDC_SDOWNLOAD)->Enable(FALSE);
+		FindWindowById(IDC_SDOWNLOAD)->Enable(FALSE);
+		CoreNotify_Search_Add_Download((CSearchFile*)searchlistctrl->GetItemData(index), GetCatChoice());
 
 		index = searchlistctrl->GetNextItem(index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
 	}

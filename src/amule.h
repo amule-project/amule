@@ -78,11 +78,20 @@ enum APPState {
 	APP_STATE_STARTING
 };	
 
-class CamuleApp : public wxApp
+#ifdef AMULE_DAEMON
+#define AMULE_APP_BASE wxAppConsole
+#else
+#define AMULE_APP_BASE wxApp
+#endif
+
+class CamuleApp : public AMULE_APP_BASE
 {
 public:
 					CamuleApp() {};
 	virtual			~CamuleApp() {};
+#ifdef AMULE_DAEMON
+	virtual int   OnRun();
+#endif
 
 	virtual bool	OnInit();
 	int				OnExit();
