@@ -200,6 +200,13 @@ AC_CHECK_FUNCS([floor ftruncate gettimeofday inet_ntoa memchr memmove memset mkd
 
 # Other tests
 
+# Other tests
+case "${host}" in
+powerpc-apple-darwin*)
+	LDFLAGS = "$LDFLAGS -bind_at_load"
+esac
+
+
 case "$USE_DEBUG" in
 yes)	DEBUG_FLAGS="-Wall -g -ggdb -fno-inline -D__DEBUG__"
 	USE_DEBUG_SYMS="yes"
