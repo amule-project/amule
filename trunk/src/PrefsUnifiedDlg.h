@@ -136,6 +136,7 @@ protected:
 	void OnPrefsPageChange(wxListEvent& event);
 	void OnToolTipDelayChange(wxSpinEvent& event);
 	void OnScrollBarChange( wxScrollEvent& event );
+	void OnRateLimitChanged( wxSpinEvent& event );
 
 	void OnInitDialog( wxInitDialogEvent& evt );
 

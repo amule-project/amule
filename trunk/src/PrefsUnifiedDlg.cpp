@@ -102,6 +102,8 @@ BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	EVT_COMMAND_SCROLL(IDC_FILEBUFFERSIZE,	PrefsUnifiedDlg::OnScrollBarChange)
 	EVT_COMMAND_SCROLL(IDC_QUEUESIZE,		PrefsUnifiedDlg::OnScrollBarChange)
 	EVT_COMMAND_SCROLL(IDC_SERVERKEEPALIVE,	PrefsUnifiedDlg::OnScrollBarChange)
+
+	EVT_SPINCTRL(IDC_MAXUP,					PrefsUnifiedDlg::OnRateLimitChanged)
 END_EVENT_TABLE()
 
 
@@ -700,3 +702,24 @@ void PrefsUnifiedDlg::OnScrollBarChange( wxScrollEvent& event )
 	if ( widget )
 		widget->SetLabel( label );
 }
+
+
+void PrefsUnifiedDlg::OnRateLimitChanged( wxSpinEvent& event )
+{
+	// Here we do immediate sainity checking of the up/down ratio,
+	// so that the user can see if his choice is illegal
+
+	// We only do checks if the rate is limited
+	if ( event.GetPosition() != UNLIMITED ) {
+		wxSpinCtrl* dlrate = (wxSpinCtrl*)FindWindow( IDC_MAXDOWN );
+	
+		if ( event.GetPosition() < 4 ) {
+			if ( ( event.GetPosition() * 3 < dlrate->GetValue() ) || ( dlrate->GetValue() == UNLIMITED ) )
+				dlrate->SetValue( event.GetPosition() * 3 );
+		} else if ( event.GetPosition() < 10  ) {
+			if ( ( event.GetPosition() * 4 < dlrate->GetValue() ) || ( dlrate->GetValue() == UNLIMITED ) )
+				dlrate->SetValue( event.GetPosition() * 4 );
+		}
+	}
+}
+
