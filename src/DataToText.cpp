@@ -62,6 +62,7 @@ wxString DownloadStateToStr( int state, bool queueFull )
 		case DS_NONEEDEDPARTS:	return _("No needed parts");
 		case DS_LOWTOLOWIP:		return _("Cannot connect LowID to LowID");
 		case DS_TOOMANYCONNS:	return _("Too many connections");
+		case DS_NONE:					return _("Unknown");
 	}
 	
 	wxASSERT( false );
