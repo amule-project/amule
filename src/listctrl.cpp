@@ -3007,10 +3007,6 @@ void wxODListMainWindow::OnPaint( wxPaintEvent &WXUNUSED(event) )
 				GetLine(line)->DrawInReportMode( &dc, rectLine, GetLineHighlightRect(line), IsHighlighted(line) );
 			}
 		} else {
-
-			// This DC is used to write to the bitmaps used to double-buffer
-			wxMemoryDC dbDC;
-	    	
 			for ( size_t line = visibleFrom; line <= visibleTo; line++ ) {
 				rectLine = GetLineRect(line);
 
@@ -3021,8 +3017,11 @@ void wxODListMainWindow::OnPaint( wxPaintEvent &WXUNUSED(event) )
                 	continue;
             	}
 
+				// This DC is used to write to the bitmaps used to double-buffer
+				wxMemoryDC dbDC( &dc );
+
 				// We use this for double-buffer
-				wxBitmap buffer( rectLine.GetWidth(), rectLine.GetHeight() );
+				wxBitmap buffer( rectLine.width, rectLine.height );
 
 				wxRect rect = rectLine;
 				wxRect highl = GetLineHighlightRect(line);
@@ -3036,7 +3035,6 @@ void wxODListMainWindow::OnPaint( wxPaintEvent &WXUNUSED(event) )
 				rect.y = 0;
 
 				dbDC.SelectObject( buffer );
-		 	   	dbDC.SetFont( GetFont() );
 
 				((wxODListCtrl*)m_parent)->OnDrawItem( line, &dbDC, rect, highl, IsHighlighted(line) );
 
