@@ -126,9 +126,7 @@ class CPartFile_Encoder {
 		
 		// encode - take data from m_file
 		void Encode(CECTag *parent_tag);
-		// decode - take data from tag
-		void Decode(CECTag *tag);
-
+		
 		void ResetEncoder()
 		{
 			m_enc_data.ResetEncoder();
@@ -155,8 +153,6 @@ class CKnownFile_Encoder {
 		CKnownFile_Encoder &operator=(const CKnownFile_Encoder &obj);
 		// encode - take data from m_file
 		void Encode(CECTag *parent_tag);
-		// decode - take data from tag
-		void Decode(CECTag *tag);
 
 		void ResetEncoder()
 		{
