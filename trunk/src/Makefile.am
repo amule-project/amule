@@ -145,7 +145,7 @@ if ADD_THROTTLER
 amule_SOURCES += UploadBandwidthThrottler.cpp LastCommonRouteFinder.cpp 
 endif
 
-if USE_DEBUG
+if VERBOSE_OUTPUT
 amule_SOURCES += debugstuff.cpp
 endif
 

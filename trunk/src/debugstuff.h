@@ -24,9 +24,13 @@
 #define MAGIC_2 1357902468
 
 #if defined( __DEBUG__ )
-	int debugprintf(int verbose, char *fmt, ...);
+	#if defined( __VERBOSE_OUTPUT__ )
+		int debugprintf(int verbose, char *fmt, ...);
+	#else // __VERBOSE_OUTPUT__
+		static inline int debugprintf(int verbose, char *fmt, ...) {return 0;}
+	#endif // __VERBOSE_OUTPUT__
 #else // __DEBUG__
-	static inline int debugprintf(int verbose, char *fmt, ...) {}
+	static inline int debugprintf(int verbose, char *fmt, ...) {return 0;}
 #endif // __DEBUG__
 
 #endif // __DEBUGSTUFF_H__
