@@ -91,7 +91,6 @@ waitinglist.GetHeadPosition();}
 	void	CompUpDatarateOverhead();
 	void	SuspendUpload( const CMD4Hash& );
 	void	ResumeUpload( const CMD4Hash& );
-	void	RemoveFiltered();
 	
 protected:
 	void	RemoveFromWaitingQueue(POSITION pos, bool updatewindow);

@@ -39,6 +39,7 @@ public:
 	~CIPFilter();
 	void	AddBannedIPRange(uint32 IPstart, uint32 IPend, uint8 AccessLevel, const wxString& Description);
 	void	RemoveAllIPs();
+	bool	ProcessLineOk(wxString *sLine, unsigned long linecounter);
 	int	LoadFromFile();
 	void	SaveToFile();
 	bool	IsFiltered(uint32 IP2test);
