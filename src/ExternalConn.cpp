@@ -362,10 +362,29 @@ CECPacket *Get_EC_Response_GetSharedFiles(const CECPacket *request, CKnownFile_E
 
 CECPacket *Get_EC_Response_GetWaitQueue(const CECPacket *request)
 {
-	wxASSERT(request->GetOpCode() == EC_OP_WAIT_QUEUE);
+	wxASSERT(request->GetOpCode() == EC_OP_GET_WAIT_QUEUE);
 	
 	CECPacket *response = new CECPacket(EC_OP_WAIT_QUEUE);
 	
+	EC_DETAIL_LEVEL detail_level = request->GetDetailLevel();
+
+	//
+	// request can contain list of queried items
+	CTagSet<uint32, EC_TAG_UPDOWN_CLIENT> queryitems(request);
+
+	POSITION pos = theApp.uploadqueue->GetFirstFromWaitingList();
+	while (	pos ) {
+
+		CUpDownClient* cur_client = theApp.uploadqueue->GetNextFromWaitingList(pos);
+
+		if ( !cur_client || (!queryitems.empty() && !queryitems.count(cur_client->GetUserID())) ) {
+			continue;
+		}
+		CEC_UpDownClient_Tag cli_tag(cur_client, detail_level);
+		
+		response->AddTag(cli_tag);
+	}
+
 	return response;
 }
 
@@ -1438,6 +1457,9 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 			break;
 		case EC_OP_GET_ULOAD_QUEUE:
 			response = Get_EC_Response_GetUpQueue(request);
+			break;
+		case EC_OP_GET_WAIT_QUEUE:
+			response = Get_EC_Response_GetWaitQueue(request);
 			break;
 		case EC_OP_PARTFILE_REMOVE_NO_NEEDED:
 		case EC_OP_PARTFILE_REMOVE_FULL_QUEUE:
