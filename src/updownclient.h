@@ -518,6 +518,15 @@ private:
 	
 	int				GetHashType() const;
 	bool	m_bHelloAnswerPending;
+	// Kry - Atribute to get the 1.x / 2.x / CVS flags
+	// Why this way? Well, on future is expected that count(2.x) > count(1x)
+	// So I prefer to set the 1.x flag because it will be less CPU. 
+	// I know. I'm paranoid on CPU.
+	// (Extended_aMule_SO & 1)  -> 1.x 
+	// !(Extended_aMule_SO & 1) -> 2.x 	
+	// (Extended_aMule_SO & 2)  -> CVS 
+	uint8	Extended_aMule_SO;
+	
 	uint8*		m_abyPartStatus;	
 public:
 
@@ -547,6 +556,8 @@ public:
 	*/
 	void SwapToThisFile(CPartFile* file);
 
+	uint8 GetExtended_aMule_SO() { return Extended_aMule_SO; };
+	
 private:
 
 	/* valid source attribute */
