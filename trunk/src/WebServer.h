@@ -62,7 +62,7 @@ class CWebSocket;
 
 //shakraw, these are defined in PartFile.h, but if I include PartFile.h
 //I get several wx-errors in compilation...
-//Needed for categories (not working yet)
+//Needed for categories
 #define	PS_READY			0
 #define	PS_EMPTY			1
 #define PS_WAITINGFORHASH	2
@@ -295,7 +295,7 @@ class CWebServer {
 		static bool	IsSessionAdmin(ThreadData Data,wxString SsessionID);
 		static wxString	GetPermissionDenied();
 		static wxString	_GetDownloadGraph(ThreadData Data,wxString filehash);
-		static void	InsertCatBox(wxString &Out,int preselect,wxString boxlabel, bool jump=false,bool extraCats=false);
+		static void	InsertCatBox(CWebServer *pThis, wxString &Out, int preselect, wxString boxlabel, bool jump=false, bool extraCats=false);
 		static wxString	GetSubCatLabel(int cat);
 		// Common data
 		CamulewebApp	*webInterface;

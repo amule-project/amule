@@ -28,9 +28,9 @@
 
 #include "WebServer.h"
 #include "MD5Sum.h"
-#ifdef __FreeBSD__
-	#include "otherfunctions.h"	// Needed for atoll
-#endif
+//#ifdef __FreeBSD__
+	#include "otherfunctions.h"	// Needed for atoll, ED2KFT_*
+//#endif
 
 #include "resource.h"		// Needed by strings.en
 #include "strings.en"		// Strings
@@ -1158,7 +1158,7 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	Out.Replace("[UploadFooter]", pThis->m_Templates.sTransferUpFooter);
 	Out.Replace("[Session]", sSession);
 
-	InsertCatBox(Out,cat,"",true,true);
+	InsertCatBox(pThis, Out, cat, "", true, true);
 	
 	if (pThis->m_Params.DownloadSort == DOWN_SORT_NAME)
 		Out.Replace("[SortName]", "&sortreverse=" + sDownloadSortRev);
@@ -1247,29 +1247,72 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 		sEntry = sEntry.Mid(brk+1);
 		completedAv = (atoi(sEntry.GetData()) == 0) ? false : true;
 
-		FilesArray.Add(dFile);
+		// categories
+		int catVal = atoi(pThis->webInterface->SendRecvMsg(wxString::Format("CATEGORIES GETCATEGORY %s", dFile->sFileHash.GetData())));
+		if ((cat > 0) && (catVal != cat)) continue;
+			
+		if (cat < 0) {
+			wxString fileInfos = pThis->webInterface->SendRecvMsg(wxString::Format("CATEGORIES GETFILEINFO %s", dFile->sFileHash.GetData()));
+			int brk = fileInfos.First("\t");
+			int fileStatus = atoi(fileInfos.Left(brk).GetData());
+			fileInfos = fileInfos.Mid(brk+1);
+			brk = fileInfos.First("\t");
+			int transfSrcCount = atoi(fileInfos.Left(brk).GetData());
+			fileInfos = fileInfos.Mid(brk+1);
+			brk = fileInfos.First("\t");			
+			int fileType = atoi(fileInfos.Left(brk).GetData());
+			fileInfos = fileInfos.Mid(brk+1);
+			brk = fileInfos.First("\t");						
+			wxString isPartFile = fileInfos.Left(brk);
+			fileInfos = fileInfos.Mid(brk+1);
+			brk = fileInfos.First("\t");						
+			wxString isStopped = fileInfos.Left(brk);
+			fileInfos = fileInfos.Mid(brk+1);
+			brk = fileInfos.First("\t");						
+			wxString isMovie = fileInfos.Left(brk);
+			wxString isArchive = fileInfos.Mid(brk+1);
 
-#if 0
-		//categories
-			if (cat>0 && cur_file->GetCategory()!=cat) continue;
-			if (cat<0) {
-				switch (cat) {
-					case -1 : if (cur_file->GetCategory()!=0) continue; break;
-					case -2 : if (!cur_file->IsPartFile()) continue; break;
-					case -3 : if (cur_file->IsPartFile()) continue; break;
-					case -4 : if (!((cur_file->GetStatus()==PS_READY|| cur_file->GetStatus()==PS_EMPTY) && cur_file->GetTransferingSrcCount()==0)) continue; break;
-					case -5 : if (!((cur_file->GetStatus()==PS_READY|| cur_file->GetStatus()==PS_EMPTY) && cur_file->GetTransferingSrcCount()>0)) continue; break;
-					case -6 : if (cur_file->GetStatus()!=PS_ERROR) continue; break;
-					case -7 : if (cur_file->GetStatus()!=PS_PAUSED) continue; break;
-					case -8 : if (!cur_file->IsStopped()) continue; break;
-					case -9 : if (!cur_file->IsMovie()) continue; break;
-					case -10 : if (ED2KFT_AUDIO != GetED2KFileTypeID(cur_file->GetFileName())) continue; break;
-					case -11 : if (!cur_file->IsArchive()) continue; break;
-					case -12 : if (ED2KFT_CDIMAGE != GetED2KFileTypeID(cur_file->GetFileName())) continue; break;
-				}
+			switch (cat) {
+				case -1 : 
+					if (catVal != 0) continue; 
+					break;
+				case -2 : 
+					if (isPartFile == "Is Not PartFile") continue;
+					break;
+				case -3 : 
+					if (isPartFile == "Is PartFile") continue;
+					break;
+				case -4 : 
+					if (!((fileStatus == PS_READY || fileStatus == PS_EMPTY) && (transfSrcCount == 0))) continue;
+					break;
+				case -5 :
+					if (!((fileStatus == PS_READY || fileStatus == PS_EMPTY) && (transfSrcCount > 0))) continue;
+					break;
+				case -6 : 
+					if (fileStatus != PS_ERROR) continue;
+					break;
+				case -7 : 
+					if (fileStatus != PS_PAUSED) continue;
+					break;
+				case -8 :
+					if (isStopped == "Is Not Stopped") continue;
+					break;
+				case -9 :
+					if (isMovie == "Is Not Movie") continue;
+					break;
+				case -10 :
+					if (fileType != ED2KFT_AUDIO) continue;
+					break;
+				case -11 :
+					if (isArchive == "Is Not Archive") continue;
+					break;
+				case -12 :
+					if (fileType != ED2KFT_CDIMAGE) continue;
+					break;
 			}
-#endif			
+		}
 
+		FilesArray.Add(dFile);
 	}
 	
 	// Sorting (simple bubble sort, we don't have tons of data here)
@@ -1596,11 +1639,10 @@ wxString CWebServer::_GetDownloadLink(ThreadData Data) {
 	Out.Replace("[Start]", _("Start"));
 	Out.Replace("[Session]", sSession);
 
-#if 0 //shakraw, categories
-	if (theApp.glob_prefs->GetCatCount()>1)
-		InsertCatBox(Out,0, pThis->m_Templates.sCatArrow );
+	// categories
+	if (atoi(pThis->webInterface->SendRecvMsg("CATEGORIES GETCATCOUNT").GetData()) > 1)
+		InsertCatBox(pThis, Out, 0, pThis->m_Templates.sCatArrow );
 	else 
-#endif
 		Out.Replace("[CATBOX]","");
 
 	return Out;
@@ -2670,8 +2712,9 @@ wxString CWebServer::_GetSearch(ThreadData Data) {
 
 	wxString result = pThis->m_Templates.sSearchHeader + pThis->webInterface->SendRecvMsg(wxString::Format("SEARCH WEBLIST %s\t%d\t%d", pThis->m_Templates.sSearchResultLine.GetData(), pThis->m_iSearchSortby, pThis->m_bSearchAsc));
 	
-	if (atoi(pThis->webInterface->SendRecvMsg("SEARCH GETCATCOUNT").GetData()) > 1)
-		InsertCatBox(Out,0,pThis->m_Templates.sCatArrow);
+	// categories
+	if (atoi(pThis->webInterface->SendRecvMsg("CATEGORIES GETCATCOUNT").GetData()) > 1)
+		InsertCatBox(pThis, Out, 0, pThis->m_Templates.sCatArrow);
 	else
 		Out.Replace("[CATBOX]","");
 
@@ -2747,35 +2790,40 @@ int CWebServer::UpdateSessionCount() {
 }
 
 
-void CWebServer::InsertCatBox(wxString &Out,int preselect,wxString boxlabel,bool jump,bool extraCats) {
-#if 0 //shakraw
-	wxString tempBuf2,tempBuf3;
-	if (jump) tempBuf2="onchange=GotoCat(this.form.cat.options[this.form.cat.selectedIndex].value)>";
-	else tempBuf2=">";
-	wxString tempBuf="<form><select name=\"cat\" size=\"1\""+tempBuf2;
-	for (int i=0;i< theApp.glob_prefs->GetCatCount();i++) {
+void CWebServer::InsertCatBox(CWebServer *pThis, wxString &Out, int preselect, wxString boxlabel, bool jump, bool extraCats) {
+	wxString tempBuf, tempBuf2, tempBuf3;
+	wxString catTitle;
+	
+	if (jump) 
+		tempBuf2="onchange=GotoCat(this.form.cat.options[this.form.cat.selectedIndex].value)>";
+	else 
+		tempBuf2=">";
+	
+	tempBuf="<form><select name=\"cat\" size=\"1\""+tempBuf2;
+
+	int catCount = atoi(pThis->webInterface->SendRecvMsg("CATEGORIES GETCATCOUNT").GetData());
+	for (int i=0;i<catCount;i++) {
 		tempBuf3= (i==preselect)? " selected":"";
-		webInterface->Print("before\n");
-		tempBuf2.Printf("<option%s value=\"%i\">%s</option>",tempBuf3,i, (i==0)?_("all"):theApp.glob_prefs->GetCategory(i)->title );
-		webInterface->Print("after\n");
-		tempBuf.Append(tempBuf2);
+		catTitle = pThis->webInterface->SendRecvMsg(wxString::Format("CATEGORIES GETCATTITLE %d", i));
+		tempBuf2.Printf("<option%s value=\"%i\">%s</option>", tempBuf3.GetData(), i, (i==0) ? _("all") : catTitle.GetData());
+		tempBuf.Append(tempBuf2);		
 	}
-	webInterface->Print("hello 4\n");
+	
 	if (extraCats) {
-		if (theApp.glob_prefs->GetCatCount()>1){
+		if (catCount > 1) {
 			tempBuf2.Printf("<option>------------</option>");
 			tempBuf.Append(tempBuf2);
 		}
-	
-		for (int i=(theApp.glob_prefs->GetCatCount()>1)?1:2;i<=12;i++) {
-			tempBuf3= ( (-i)==preselect)? " selected":"";
-			tempBuf2.Printf("<option%s value=\"%i\">%s</option>",tempBuf3,-i, GetSubCatLabel(-i) );
+		
+		for (int i = ((catCount>1)?1:2); i <= 12; i++) {
+			tempBuf3 = ((-i)==preselect)? " selected" : "";
+			tempBuf2.Printf("<option%s value=\"%i\">%s</option>", tempBuf3.GetData(), -i, GetSubCatLabel(-i).GetData());
 			tempBuf.Append(tempBuf2);
 		}
 	}
+	
 	tempBuf.Append("</select></form>");
-	Out.Replace("[CATBOX]",boxlabel+tempBuf);
-#endif
+	Out.Replace("[CATBOX]", boxlabel+tempBuf);
 }
 
 
