@@ -219,9 +219,9 @@ void CServerListCtrl::RefreshServer( CServer* server )
 	}
 
 	switch ( server->GetPreferences() ) {
-		case SRV_PR_LOW:	SetItem( itemnr, 6, _("Low") );
-		case SRV_PR_NORMAL:	SetItem( itemnr, 6, _("Normal") );
-		case SRV_PR_HIGH:	SetItem( itemnr, 6, _("High") );
+		case SRV_PR_LOW:	SetItem( itemnr, 6, _("Low") );		break;
+		case SRV_PR_NORMAL:	SetItem( itemnr, 6, _("Normal") );	break;
+		case SRV_PR_HIGH:	SetItem( itemnr, 6, _("High") );	break;
 		default:			SetItem( itemnr, 6, _("No Pref") );
 	}
 
