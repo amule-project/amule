@@ -119,9 +119,25 @@ enum GUI_Event_ID {
 	DLOAD_SET_CAT_STATUS,
 };
 
-class GUIEvent {
+// lfroen : custom events for core internal messages
+// 'cause - there's no wxCommand etc in wxBase
+enum Core_Event_ID {
+	NOTIFY_EVENT = 1,
+	FILE_HASHING_FINISHED,
+	FILE_HASHING_SHUTDOWN,
+	FILE_COMPLETION_FINISHED,
+	
+	SOURCE_DNS_DONE,
+	DNS_DONE,
+			
+	EVENT_TIMER,
+};
+
+DECLARE_EVENT_TYPE(wxEVT_NOTIFY_EVENT, wxEVT_USER_FIRST+NOTIFY_EVENT)
+
+class GUIEvent : public wxEvent {
 	public:
-	GUIEvent(GUI_Event_ID new_id, byte value8, wxString value_s, uint32 value_long = 0) {
+	GUIEvent(GUI_Event_ID new_id, byte value8, wxString value_s, uint32 value_long = 0) : wxEvent(-1, wxEVT_NOTIFY_EVENT) {
 		ID 		= new_id;
 		byte_value 	= value8;
 		short_value	= 0;
@@ -132,7 +148,7 @@ class GUIEvent {
                 ptr_aux_value	= NULL;
 	}
 
-	GUIEvent(GUI_Event_ID new_id, void *new_ptr = NULL, void* new_aux_ptr = NULL, byte value8 = 0) {
+	GUIEvent(GUI_Event_ID new_id, void *new_ptr = NULL, void* new_aux_ptr = NULL, byte value8 = 0) : wxEvent(-1, wxEVT_NOTIFY_EVENT) {
 		ID              = new_id;
 		byte_value      = value8;
 		short_value	= 0;
@@ -142,7 +158,7 @@ class GUIEvent {
 		ptr_aux_value   = new_aux_ptr;
 	}
 
-	GUIEvent(GUI_Event_ID new_id, void *new_ptr,  wxString &str) {
+	GUIEvent(GUI_Event_ID new_id, void *new_ptr,  wxString &str) : wxEvent(-1, wxEVT_NOTIFY_EVENT) {
 		ID              = new_id;
 		byte_value      = 0;
 		short_value	= 0;
@@ -153,7 +169,7 @@ class GUIEvent {
 		ptr_aux_value   = NULL;
 	}
 	
-	GUIEvent(GUI_Event_ID new_id, void *new_ptr,  byte value8) {
+	GUIEvent(GUI_Event_ID new_id, void *new_ptr,  byte value8) : wxEvent(-1, wxEVT_NOTIFY_EVENT) {
 		ID              = new_id;
 		byte_value      = value8;
 		short_value	= 0;
@@ -163,7 +179,7 @@ class GUIEvent {
 		ptr_aux_value   = NULL;
 	}
 
-        GUIEvent(GUI_Event_ID new_id, void *new_ptr,  uint32 value32, uint64 value64) {
+        GUIEvent(GUI_Event_ID new_id, void *new_ptr,  uint32 value32, uint64 value64) : wxEvent(-1, wxEVT_NOTIFY_EVENT) {
                 ID              = new_id;
                 byte_value      = 0;
 		short_value	= 0;
@@ -173,7 +189,7 @@ class GUIEvent {
                 ptr_aux_value   = NULL;
         }
 
-        GUIEvent(GUI_Event_ID new_id, uint32 new_val) {
+        GUIEvent(GUI_Event_ID new_id, uint32 new_val)  : wxEvent(-1, wxEVT_NOTIFY_EVENT) {
                 ID              = new_id;
                 byte_value      = 0;
 		short_value	= 0;
@@ -183,7 +199,7 @@ class GUIEvent {
                 ptr_aux_value   = NULL;
         }
 
-        GUIEvent(GUI_Event_ID new_id, uint32 value32, uint16 value16) {
+        GUIEvent(GUI_Event_ID new_id, uint32 value32, uint16 value16) : wxEvent(-1, wxEVT_NOTIFY_EVENT) {
                 ID              = new_id;
                 byte_value      = 0;
 		short_value	= value16;
@@ -194,7 +210,7 @@ class GUIEvent {
         }
 
         GUIEvent(GUI_Event_ID new_id, void *new_ptr, void *new_aux_ptr,
-		 byte value8, uint32 value32, uint64 value64, wxChar *str) {
+		 byte value8, uint32 value32, uint64 value64, wxChar *str) : wxEvent(-1, wxEVT_NOTIFY_EVENT) {
                 ID              = new_id;       
                 byte_value      = value8;
                 long_value      = value32;
@@ -203,6 +219,10 @@ class GUIEvent {
                 ptr_value       = new_ptr;
                 ptr_aux_value   = new_aux_ptr;
         }
+	wxEvent *Clone(void) const
+	{
+		return new GUIEvent(*this);
+	}
 
 	GUI_Event_ID ID;
 	byte			byte_value;
@@ -216,12 +236,34 @@ class GUIEvent {
 	void*			ptr_aux_value; 
 };
 
+
 //
 // macros for creation of notification events
-#define Notify_0_ValEvent(id) theApp.NotifyEvent(GUIEvent(id))
-#define Notify_1_ValEvent(id, val) theApp.NotifyEvent(GUIEvent(id, val))
-#define Notify_2_ValEvent(id, val0, val1) theApp.NotifyEvent(GUIEvent(id, val0, val1))
-#define Notify_3_ValEvent(id, val0, val1, val2) theApp.NotifyEvent(GUIEvent(id, val0, val1, val2))
+#define Notify_0_ValEvent(id) \
+	do { \
+	GUIEvent e(id);\
+	wxPostEvent(&theApp,e);\
+	theApp.ProcessPendingEvents();\
+	} while (0);
+	
+#define Notify_1_ValEvent(id, val) \
+	do { \
+	GUIEvent e(id, val);\
+	wxPostEvent(&theApp,e);\
+	theApp.ProcessPendingEvents();\
+	} while (0);
+	
+#define Notify_2_ValEvent(id, val0, val1) \
+	do { \
+	GUIEvent e(id, val0, val1);\
+	wxPostEvent(&theApp,e);\
+	} while (0);
+	
+#define Notify_3_ValEvent(id, val0, val1, val2) \
+	do { \
+	GUIEvent e(id, val0, val1, val2);\
+	wxPostEvent(&theApp,e);\
+	} while (0);
 
 #define Notify_SharedFilesShowFile(file)            Notify_1_ValEvent(SHAREDFILES_SHOW_ITEM, file)
 #define Notify_SharedFilesRemoveFile(file)          Notify_1_ValEvent(SHAREDFILES_REMOVE_ITEM, file)

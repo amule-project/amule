@@ -151,7 +151,9 @@ BEGIN_EVENT_TABLE(CamuleApp, wxApp)
 
 	// Core timer
 		EVT_TIMER(ID_CORETIMER, CamuleApp::OnCoreTimer)
-
+		
+		EVT_CUSTOM(wxEVT_NOTIFY_EVENT, -1, CamuleApp::OnNotifyEvent)
+		
 	// Async dns handling
 		EVT_CUSTOM(wxEVT_CORE_DNS_DONE, -1, CamuleApp::OnDnsDone)
 		
@@ -1510,6 +1512,12 @@ void CamuleApp::OnDnsDone(wxEvent& e)
 	socket->DnsLookupDone(si);
 }
 
+void CamuleApp::OnNotifyEvent(wxEvent& e)
+{
+	GUIEvent& evt = *((GUIEvent*)&e);
+	NotifyEvent(evt);
+}
+
 
 void CamuleApp::OnSourcesDnsDone(wxEvent& e)
 {
@@ -2120,7 +2128,6 @@ void CamuleApp::NotifyEvent(GUIEvent event)
 			printf("Unknown event notified to wxApp\n");
 			wxASSERT(0);
 	}
-
 };
 
 bool CamuleApp::AddServer(CServer *srv)
@@ -2200,6 +2207,8 @@ void CamuleApp::AddServerMessageLine(wxString &msg)
 {
 	amuledlg->AddServerMessageLine(msg);
 }
+
+DEFINE_EVENT_TYPE(wxEVT_NOTIFY_EVENT)
 
 DEFINE_EVENT_TYPE(wxEVT_CORE_FILE_HASHING_FINISHED)
 DEFINE_EVENT_TYPE(wxEVT_CORE_FILE_HASHING_SHUTDOWN)
