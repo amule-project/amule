@@ -10,10 +10,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: new_pl\n"
+"Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2004-11-16 23:38+0100\n"
-"PO-Revision-Date: 2004-11-19 12:25+0100\n"
+"PO-Revision-Date: 2004-11-23 10:45+0100\n"
 "Last-Translator: Ogon <ogon@interia.pl>\n"
 "Language-Team: Polish\n"
 "MIME-Version: 1.0\n"
@@ -23,7 +23,7 @@ msgstr ""
 
 #: src/AddFriend.cpp:47
 msgid "Add a Friend"
-msgstr "Dodaj przyjaciela"
+msgstr "Dodaj znajomego"
 
 #: src/AddFriend.cpp:68
 msgid "You have to enter a valid IP and port!"
@@ -222,7 +222,7 @@ msgstr "Rozłączony\n"
 
 #: src/amuleDlg.cpp:177
 msgid "This is aMule "
-msgstr "To jest aMule"
+msgstr "To jest aMule "
 
 #: src/amuleDlg.cpp:177
 msgid " (based on eMule)"
@@ -796,7 +796,7 @@ msgstr "Pokaż &szczegóły"
 #: src/ClientListCtrl.cpp:202
 #: src/DownloadListCtrl.cpp:384
 msgid "Add to Friends"
-msgstr "Dodaj do przyjaciół"
+msgstr "Dodaj do znajomych"
 
 #: src/ClientListCtrl.cpp:203
 #: src/DownloadListCtrl.cpp:385
@@ -1704,25 +1704,25 @@ msgstr "info: Nie mogę utworzyć kopi zapasowej '%s'\n"
 
 #: src/FriendListCtrl.cpp:193
 msgid "Failed to open friendlist file 'emfriends.met' for reading!\n"
-msgstr "Nie udało się otworzyć pliku listy przyjaciół 'emfiends.met' do odczytu!\n"
+msgstr "Nie udało się otworzyć pliku listy znajomych 'emfiends.met' do odczytu!\n"
 
 #: src/FriendListCtrl.cpp:217
 msgid "Failed to open friendlist file 'emfriends.met' for writing!\n"
-msgstr "Nie udało się otworzyć pliku listy przyjaciół 'emfiends.met' do zapisu!\n"
+msgstr "Nie udało się otworzyć pliku listy znajomych 'emfiends.met' do zapisu!\n"
 
 #: src/FriendListCtrl.cpp:265
 #: src/muuli_wdr.cpp:500
 #: src/muuli_wdr.cpp:3285
 msgid "Friends"
-msgstr "Przyjaciele"
+msgstr "Znajomi"
 
 #: src/FriendListCtrl.cpp:274
 msgid "Add a friend"
-msgstr "Dodaj przyjaciela"
+msgstr "Dodaj znajomego"
 
 #: src/FriendListCtrl.cpp:277
 msgid "Remove Friend"
-msgstr "Usuń przyjaciela"
+msgstr "Usuń znajomego"
 
 #: src/FriendListCtrl.cpp:278
 msgid "Send &Message"
@@ -1730,7 +1730,7 @@ msgstr "Wyślij &wiadomość"
 
 #: src/FriendListCtrl.cpp:280
 msgid "Establish Friend Slot"
-msgstr "Ustaw slot dla przyjaciela"
+msgstr "Ustaw slot dla znajomego"
 
 #: src/HTTPDownload.cpp:54
 msgid "Downloading..."
@@ -2001,24 +2001,24 @@ msgstr ""
 #: src/MuleTrayIcon.cpp:209
 #: src/SysTray.cpp:170
 msgid "UL: None, "
-msgstr "Wysył: Brak, "
+msgstr "UL: Brak, "
 
 #: src/MuleTrayIcon.cpp:211
 #: src/SysTray.cpp:172
 #, c-format
 msgid "UL: %u, "
-msgstr "Wysył: %u, "
+msgstr "UL: %u, "
 
 #: src/MuleTrayIcon.cpp:217
 #: src/SysTray.cpp:178
 msgid "DL: None"
-msgstr "Pobr: Brak"
+msgstr "DL: Brak"
 
 #: src/MuleTrayIcon.cpp:219
 #: src/SysTray.cpp:180
 #, c-format
 msgid "DL: %u"
-msgstr "Pobr: %u"
+msgstr "DL: %u"
 
 #: src/MuleTrayIcon.cpp:250
 #: src/SysTray.cpp:429
@@ -2772,7 +2772,7 @@ msgstr "Punkty"
 
 #: src/muuli_wdr.cpp:1533
 msgid "DL/UP Modifier :"
-msgstr "Modyfikator Pobr/Wysł :"
+msgstr "Modyfikator DL/UL :"
 
 #: src/muuli_wdr.cpp:1536
 msgid "Rating (total) :"
@@ -3053,7 +3053,7 @@ msgstr "Otwórz strone www w nowej karcie zamiast w nowym oknie jeśli to możli
 
 #: src/muuli_wdr.cpp:1762
 msgid "Connections"
-msgstr "Połączenia"
+msgstr "Połączenie"
 
 #: src/muuli_wdr.cpp:1769
 msgid "Bandwith Limits"
@@ -3080,7 +3080,7 @@ msgid ""
 "Note: These values are\n"
 " only used for statistics."
 msgstr ""
-"Notka: Te wartości to:\n"
+"Notatka: Te wartości są:\n"
 " używane tylko do statystyk."
 
 #: src/muuli_wdr.cpp:1854
@@ -3503,7 +3503,7 @@ msgstr "Odświeżanie połączeń do serwera co: Wyłączone"
 
 #: src/muuli_wdr.cpp:2490
 msgid "GUI Tweaks"
-msgstr "Poprawa GUI"
+msgstr "Dostosowanie GUI"
 
 #: src/muuli_wdr.cpp:2495
 msgid "Download Queue Files Progress"
@@ -3559,7 +3559,7 @@ msgstr "Pokaż prędkości przesyłania na pasku tytułowym"
 
 #: src/muuli_wdr.cpp:2587
 msgid "Source Dropping"
-msgstr "Odrzucanie źródła"
+msgstr "Odrzucanie źródeł"
 
 #: src/muuli_wdr.cpp:2594
 msgid "Keep sources"
@@ -3968,7 +3968,7 @@ msgstr "Filtruj wszystkie wiadomości"
 
 #: src/muuli_wdr.cpp:3509
 msgid "Filter messages from people not on your friend list"
-msgstr "Filtruj wiadomości od ludzi którzy nie są na twojej liście przyjaciół"
+msgstr "Filtruj wiadomości od ludzi którzy nie są na twojej liście znajomych"
 
 #: src/muuli_wdr.cpp:3512
 msgid "Filter messages from unknown clients"
@@ -4490,7 +4490,7 @@ msgstr "Opóźnienie aktualizacji: %d sek"
 #: src/PrefsUnifiedDlg.cpp:756
 #, c-format
 msgid "Time for average graph: %d mins"
-msgstr "Wykres czasu Średniego %d minut"
+msgstr "Wykres czasu średniego %d minut"
 
 #: src/PrefsUnifiedDlg.cpp:761
 #, c-format
@@ -4836,7 +4836,7 @@ msgstr "Publiczne"
 #: src/SharedFilesCtrl.cpp:132
 #: src/SharedFilesCtrl.cpp:211
 msgid "Friends only"
-msgstr "Tylko przyjaciele"
+msgstr "Tylko znajomi"
 
 #: src/SharedFilesCtrl.cpp:133
 msgid "Locked"
@@ -5120,7 +5120,7 @@ msgstr "Czas od pierwszego transferu: "
 
 #: src/StatisticsDlg.cpp:820
 msgid "Waiting for connection..."
-msgstr "Oczekiwanie na połączenie..."
+msgstr "Czekam na połączenie..."
 
 #: src/StatisticsDlg.cpp:822
 msgid "Connected To Server Since: "
@@ -5128,7 +5128,7 @@ msgstr "Połączony do serwera od: "
 
 #: src/StatisticsDlg.cpp:825
 msgid "Session UL:DL Ratio (Total): "
-msgstr "Stosunek Wysył:Pobr sesji (Razem): "
+msgstr "Stosunek UL:DL sesji (Razem): "
 
 #: src/StatisticsDlg.cpp:836
 msgid "Not available"
@@ -5312,11 +5312,11 @@ msgstr "Klientów w kolejce: "
 
 #: src/SysTray.cpp:333
 msgid "Total DL: "
-msgstr "Razem Pobr: "
+msgstr "Razem DL: "
 
 #: src/SysTray.cpp:342
 msgid "Total UL: "
-msgstr "Razem Wysł: "
+msgstr "Razem UL: "
 
 #: src/SysTray.cpp:357
 msgid "Upload Limit"
@@ -5412,7 +5412,7 @@ msgstr "Ta komenda wymaga argumentów. Poprawne argumenty: 'all' lub numer.\n"
 
 #: src/TextClient.cpp:397
 msgid "Hint: Use Show DL or Show UL\n"
-msgstr "Podpowiedź: Użyj Pokaż Pobr lub Pokaż Wysył\n"
+msgstr "Podpowiedź: Użyj Pokaż DL lub Pokaż UL\n"
 
 #: src/TextClient.cpp:416
 msgid "IPLevel parameter must be in the range of 0-255.\n"
@@ -5473,7 +5473,7 @@ msgid ""
 "Upload:\t"
 msgstr ""
 "\n"
-"Wysył:\t"
+"Wysyłanie:\t"
 
 #: src/TextClient.cpp:526
 #, c-format
@@ -5870,11 +5870,11 @@ msgstr "aMule"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:121
 msgid "Maximum DL rate since wxCas is running"
-msgstr "Maksymalna szybkość Pobr od czasu uruchomienia wxCas"
+msgstr "Maksymalna szybkość DL od czasu uruchomienia wxCas"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:125
 msgid "Absolute Maximum DL rate during wxCas previous runs"
-msgstr "Absolutne maksimum szybkości Pobr podczas poprzedniego uruchomienia wxCas"
+msgstr "Absolutne maksimum szybkości DL podczas poprzedniego uruchomienia wxCas"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:147
 msgid "System"
@@ -6463,4 +6463,16 @@ msgstr "Metoda"
 #: src/WebServer.cpp:2154
 msgid "Global (Server)"
 msgstr "Globalne (Serwer)"
+
+msgid "Sources Dropping"
+msgstr "Odrzucanie źródeł"
+
+msgid "Remote Controls"
+msgstr "Zdalna kontrola"
+
+msgid "Gui Tweaks"
+msgstr "Dostosowanie GUI"
+
+msgid "Message Filter"
+msgstr "Filtr wiadomości"
 
