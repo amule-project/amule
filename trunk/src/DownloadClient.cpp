@@ -1,26 +1,27 @@
+//
 // This file is part of the aMule Project
 //
 // Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
 // Copyright (C) 2002 Merkur ( merkur-@users.sourceforge.net / http://www.emule-project.net )
 //
-//This program is free software; you can redistribute it and/or
-//modify it under the terms of the GNU General Public License
-//as published by the Free Software Foundation; either
-//version 2 of the License, or (at your option) any later version.
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either
+// version 2 of the License, or (at your option) any later version.
 //
-//This program is distributed in the hope that it will be useful,
-//but WITHOUT ANY WARRANTY; without even the implied warranty of
-//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//GNU General Public License for more details.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 //
-//You should have received a copy of the GNU General Public License
-//along with this program; if not, write to the Free Software
-//Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+//
 
 
 #include <zlib.h>
-#include <cmath>			// Needed for std:exp
+#include <cmath>		// Needed for std:exp
 
 #include "ClientCredits.h"	// Needed for CClientCredits
 #include "otherfunctions.h"	// Needed for md4cmp
@@ -37,17 +38,18 @@
 #include "PartFile.h"		// Needed for CPartFile
 #include "BarShader.h"		// Needed for CBarShader
 #include "updownclient.h"	// Needed for CUpDownClient
-#include "otherfunctions.h" // md4hash
+#include "otherfunctions.h"	// md4hash
 #include "SHAHashSet.h"
 #include "SharedFileList.h"
 
 // members of CUpDownClient
 // which are mainly used for downloading functions
 #ifndef AMULE_DAEMON
-#include <wx/dcmemory.h>		// Needed for wxMemoryDC
-#include <wx/gdicmn.h>			// Needed for wxRect
+#include <wx/dcmemory.h>	// Needed for wxMemoryDC
+#include <wx/gdicmn.h>		// Needed for wxRect
 
-#include "color.h"             // Needed for RGB
+#include "color.h"		// Needed for RGB
+
 
 void CUpDownClient::DrawStatusBar(wxMemoryDC* dc, const wxRect& rect, bool onlygreyrect, bool  bFlat)
 {
@@ -115,6 +117,7 @@ void CUpDownClient::DrawStatusBar(wxMemoryDC* dc, const wxRect& rect, bool onlyg
 	s_StatusBar.Draw(dc, rect.x, rect.y, bFlat);
 }
 #endif
+
 
 bool CUpDownClient::Compare(const CUpDownClient* tocomp, bool bIgnoreUserhash){
 	if (!tocomp) {
@@ -207,37 +210,35 @@ bool CUpDownClient::IsSourceRequestAllowed()
 void CUpDownClient::SendFileRequest()
 {
 	// 0.42e
-	wxASSERT(m_reqfile != NULL);
-	
+	wxASSERT(m_reqfile != NULL);	
 	if(!m_reqfile) {
 		return;
 	}
 	
 	CSafeMemFile dataFileReq(16+16);
 	dataFileReq.WriteHash16(m_reqfile->GetFileHash().GetHash());
-
-	if( SupportMultiPacket() ) {
+	if (SupportMultiPacket()) {
 		dataFileReq.WriteUInt8(OP_REQUESTFILENAME);
-		//Extended information
-		if( GetExtendedRequestsVersion() > 0 ) {
+		// Extended information
+		if (GetExtendedRequestsVersion() > 0) {
 			m_reqfile->WritePartStatus(&dataFileReq);
 		}
-		if( GetExtendedRequestsVersion() > 1 ) {
+		if (GetExtendedRequestsVersion() > 1) {
 			m_reqfile->WriteCompleteSourcesCount(&dataFileReq);
 		}
 		if (m_reqfile->GetPartCount() > 1) {
 			dataFileReq.WriteUInt8(OP_SETREQFILEID);
 		}
-		if( IsEmuleClient() ) {
+		if (IsEmuleClient()) {
 			SetRemoteQueueFull( true );
 			SetRemoteQueueRank(0);
 		}
-		if(IsSourceRequestAllowed())	{
+		if (IsSourceRequestAllowed()) {
 			dataFileReq.WriteUInt8(OP_REQUESTSOURCES);
 			m_reqfile->SetLastAnsweredTimeTimeout();
 			SetLastAskedForSources();
 		}
-		if (IsSupportingAICH()){
+		if (IsSupportingAICH()) {
 			dataFileReq.WriteUInt8(OP_AICHFILEHASHREQ);
 		}		
 		Packet* packet = new Packet(&dataFileReq, OP_EMULEPROT);
@@ -246,10 +247,10 @@ void CUpDownClient::SendFileRequest()
 		SendPacket(packet, true);
 	} else {
 		//This is extended information
-		if( GetExtendedRequestsVersion() > 0 ){
+		if (GetExtendedRequestsVersion() > 0 ) {
 			m_reqfile->WritePartStatus(&dataFileReq);
 		}
-		if( GetExtendedRequestsVersion() > 1 ){
+		if (GetExtendedRequestsVersion() > 1 ) {
 			m_reqfile->WriteCompleteSourcesCount(&dataFileReq);
 		}
 		Packet* packet = new Packet(&dataFileReq);
@@ -261,8 +262,7 @@ void CUpDownClient::SendFileRequest()
 		// if the remote client answers the OP_REQUESTFILENAME with OP_REQFILENAMEANSWER the file is shared by the remote client. if we
 		// know that the file is shared, we know also that the file is complete and don't need to request the file status.
 		
-		// Sending the packet could have deleted the client, check m_reqfile
-		
+		// Sending the packet could have deleted the client, check m_reqfile		
 		if (m_reqfile && (m_reqfile->GetPartCount() > 1)) {
 			CSafeMemFile dataSetReqFileID(16);
 			dataSetReqFileID.WriteHash16(m_reqfile->GetFileHash());
@@ -272,14 +272,13 @@ void CUpDownClient::SendFileRequest()
 			SendPacket(packet, true);
 		}
 	
-		if( IsEmuleClient() ) {
+		if (IsEmuleClient()) {
 			SetRemoteQueueFull( true );
 			SetRemoteQueueRank(0);
 		}	
 		
-		// Sending the packet could have deleted the client, check m_reqfile
-		
-		if(IsSourceRequestAllowed() && m_reqfile) {
+		// Sending the packet could have deleted the client, check m_reqfile		
+		if (m_reqfile && IsSourceRequestAllowed()) {
 			m_reqfile->SetLastAnsweredTimeTimeout();
 			Packet* packet = new Packet(OP_REQUESTSOURCES,16,OP_EMULEPROT);
 			packet->Copy16ToDataBuffer((const char *)m_reqfile->GetFileHash().GetHash());
@@ -288,16 +287,16 @@ void CUpDownClient::SendFileRequest()
 			SetLastAskedForSources();
 		}
 		
-		// Sending the packet could have deleted the client, check m_reqfile
-		
-		if (IsSupportingAICH() && m_reqfile){
+		// Sending the packet could have deleted the client, check m_reqfile		
+		if (m_reqfile && IsSupportingAICH()) {
 			Packet* packet = new Packet(OP_AICHFILEHASHREQ,16,OP_EMULEPROT);
 			packet->Copy16ToDataBuffer((const char *)m_reqfile->GetFileHash().GetHash());
 			theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
 			SendPacket(packet,true,true);
-		}		
+		}
 	}
 }
+
 
 void CUpDownClient::ProcessFileInfo(const CSafeMemFile* data, const CPartFile* file)
 {
