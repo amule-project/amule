@@ -1130,6 +1130,7 @@ void CamuleApp::Localize_mule()
 	}
 
 	if ((!m_locale.Init(language)) && (language != wxLANGUAGE_DEFAULT)) {
+		
 		wxMessageBox(wxT(_("The selected locale seems not to be installed on your box\n You must generate it to use this language.\nA good start on linux systems is the file /etc/locale.gen and the package 'locales'\nGood luck!\n(Note: I'll try to set it anyway)")));
 	}
 	
