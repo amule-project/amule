@@ -341,8 +341,8 @@ bool CFile::Open(const wxChar *szFileName, OpenMode mode, int accessMode)
     
     if ( m_fd == -1 )
     {
-    	AddLogLineM(true, wxString::Format(_("Can't open file '%s'"), szFileName));
-        return FALSE;
+   		theApp.QueueLogLine(true, wxString::Format(_("Can't open file '%s'"), szFileName));
+        	return FALSE;
     }
        else {
    //     Attach(m_fd);
