@@ -71,7 +71,7 @@ CUpDownClient::CUpDownClient(CClientReqSocket* sender)
 	Init();
 }
 
-CUpDownClient::CUpDownClient(uint16 in_port, uint32 in_userid,uint32 in_serverip, uint16 in_serverport,CPartFile* in_reqfile)
+CUpDownClient::CUpDownClient(uint16 in_port, uint32 in_userid,uint32 in_serverip, uint16 in_serverport,CPartFile* in_reqfile, bool checkfriend)
 {
 	m_socket = NULL;
 	Init();
@@ -99,6 +99,18 @@ CUpDownClient::CUpDownClient(uint16 in_port, uint32 in_userid,uint32 in_serverip
 	m_nServerPort = in_serverport;
 	SetRequestFile( in_reqfile );
 	ReGetClientSoft();
+
+	if (checkfriend) {
+		CFriend* m_Friend;
+		if ((m_Friend = theApp.friendlist->FindFriend(NULL, m_dwUserIP, m_nUserPort)) != NULL){
+			m_Friend->LinkClient(this);
+			Notify_ChatRefreshFriend(m_Friend->GetIP(), m_Friend->GetPort(), m_Friend->GetName());
+		} else{
+			// avoid that an unwanted client instance keeps a friend slot
+			m_bFriendSlot = false;
+		}	
+	}
+	
 }
 
 void CUpDownClient::Init()
