@@ -132,7 +132,7 @@ void CDownloadQueue::Init()
 	} else {
 		AddLogLineM(false, wxString::Format(_("Found %i part files"), count));
 		//SortByPriority();
-		CheckDiskspace();
+		CheckDiskspace( thePrefs::GetTempDir() );
 	}
 }
 
@@ -239,7 +239,6 @@ void CDownloadQueue::AddDownload(CPartFile* newfile, bool paused, uint8 category
 
 	filelist.push_back(newfile);
 	//SortByPriority();
-	CheckDiskspace();
 
 	newfile->SetCategory(category);
 	Notify_DownloadCtrlAddFile(newfile);
@@ -319,7 +318,7 @@ void CDownloadQueue::Process()
 	}
 
 	if ((!lastcheckdiskspacetime) || (::GetTickCount() - lastcheckdiskspacetime) > DISKSPACERECHECKTIME) {
-		CheckDiskspace();
+		CheckDiskspace( thePrefs::GetTempDir() );
 	}
 
 	// Check for new links once per second.
@@ -503,7 +502,6 @@ bool CDownloadQueue::RemoveSource(CUpDownClient* toremove, bool	WXUNUSED(updatew
 		// Remove from source-list
 		if ( cur_file->DelSource( toremove ) ) {
 			cur_file->RemoveDownloadingSource(toremove);
-			cur_file->IsCountDirty = true;
 			removed = true;
 			if ( bDoStatsUpdate ) {
 				cur_file->UpdatePartsInfo();
@@ -552,7 +550,7 @@ void CDownloadQueue::RemoveFile(CPartFile* toremove)
 	}
 	do_not_sort_please = false;
 	//SortByPriority();
-	CheckDiskspace();
+	CheckDiskspace( thePrefs::GetTempDir() );
 }
 
 void CDownloadQueue::DeleteAll(){
@@ -560,7 +558,6 @@ void CDownloadQueue::DeleteAll(){
 	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
 		CPartFile* cur_file = filelist[i];
 		cur_file->m_SrcList.clear();
-		cur_file->IsCountDirty = true;
 		// Barry - Should also remove all requested blocks
 		// Don't worry about deleting the blocks, that gets handled
 		// when CUpDownClient is deleted in CClientList::DeleteAll()
@@ -1036,98 +1033,59 @@ uint16 CDownloadQueue::GetPausedFileCount()
 	return result;
 }
 
-void CDownloadQueue::CheckDiskspace(bool bNotEnoughSpaceLeft)
+
+void CDownloadQueue::CheckDiskspace( const wxString& path )
 {
-	lastcheckdiskspacetime = ::GetTickCount();
-
-	// sorting the list could be done here,
-	// but I prefer to "see" that function call in the calling functions.
-	// SortByPriority();
-
-	// If disabled, resume any previously paused files
-	if (!thePrefs::IsCheckDiskspaceEnabled()) {
-		if (!bNotEnoughSpaceLeft) { // avoid worse case, if we already had 'disk full'
-			do_not_sort_please = true;
-			for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
-				CPartFile* cur_file = filelist[i];
-				switch(cur_file->GetStatus()) {
-					case PS_ERROR:
-					case PS_COMPLETING:
-					case PS_COMPLETE:
-						continue;
-				}
-				cur_file->ResumeFileInsufficient();
-			}
-			do_not_sort_please = false;
-		}
+	if ( ::GetTickCount() - lastcheckdiskspacetime < DISKSPACERECHECKTIME ) {
 		return;
 	}
-	wxLongLong total = 0, free = 0;
-	wxGetDiskSpace(thePrefs::GetTempDir(), &total, &free);
-	// 'bNotEnoughSpaceLeft' - avoid worse case, if we already had 'disk full'
-	uint64 nTotalAvailableSpace = bNotEnoughSpaceLeft ? 0 : free.GetValue();
-	if (thePrefs::GetMinFreeDiskSpace() == 0) {
-		do_not_sort_please = true;
-		for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
-			CPartFile* cur_file = filelist[i];
-			switch(cur_file->GetStatus()) {
-				case PS_ERROR:
-				case PS_COMPLETING:
-				case PS_COMPLETE:
-					continue;
-			}
-			if (cur_file->IsStopped()) {
+	
+	lastcheckdiskspacetime = ::GetTickCount();
+
+	uint32 min = 0;
+	// Check if the user has set an explicit limit
+	if ( thePrefs::IsCheckDiskspaceEnabled() ) {
+		min = thePrefs::GetMinFreeDiskSpace();
+	}
+
+	// The very least acceptable diskspace is a single PART
+	if ( min < PARTSIZE ) {
+		min = PARTSIZE;
+	}
+
+	// Get the current free disc-space
+	wxLongLong free = 0;
+	if ( !wxGetDiskSpace( path, NULL, &free ) ) {
+		return;
+	}
+
+	
+	for ( unsigned int i = 0; i < filelist.size(); i++ ) {
+		CPartFile* file = filelist[i];
+			
+		switch ( file->GetStatus() ) {
+			case PS_ERROR:
+			case PS_COMPLETING:
+			case PS_COMPLETE:
 				continue;
-			}
-			// Pause the file only if it would grow in size and would exceed the currently available free space
-			uint32 nSpaceToGo = cur_file->GetNeededSpace();
-			if (nSpaceToGo <= nTotalAvailableSpace) {
-				nTotalAvailableSpace -= nSpaceToGo;
-				cur_file->ResumeFileInsufficient();
-			} else {
-				if (!cur_file->GetInsufficient()) {
-					AddLogLineM(false, wxString::Format(_("Free Disk Space (Total): %lli\n"), nTotalAvailableSpace));
-					AddLogLineM(true, wxString::Format(_("File : %s, Needed Space : %i - PAUSED !!!\n"), unicode2char(cur_file->GetFileName()), cur_file->GetNeededSpace()));
-					cur_file->PauseFile(true);
-				}
-			}
 		}
-		do_not_sort_please = false;
-	} else {
-		do_not_sort_please = true;
-		for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
-			CPartFile* cur_file = filelist[i];
-			switch(cur_file->GetStatus()) {
-				case PS_ERROR:
-				case PS_COMPLETING:
-				case PS_COMPLETE:
-					continue;
-			}
-			if (nTotalAvailableSpace < thePrefs::GetMinFreeDiskSpace()) {
-				if (cur_file->IsNormalFile()) {
-				// Normal files: pause the file only if it would still grow
-					uint32 nSpaceToGrow = cur_file->GetNeededSpace();
-					if (nSpaceToGrow) {
-						if (!cur_file->GetInsufficient()) {
-							AddLogLineM(false, wxString::Format(_("Free Disk Space (Total): %lli\n"), nTotalAvailableSpace));
-							AddLogLineM(true, wxString::Format(_("File : %s, Needed Space : %i - PAUSED !!!\n"), unicode2char(cur_file->GetFileName()), cur_file->GetNeededSpace()));
-							// cur_file->PauseFileInsufficient();
-							cur_file->PauseFile(true/*bInsufficient*/);
-						}
-					}
-				} else {
-					if (!cur_file->GetInsufficient()) {
-						// Compressed/sparse files: always pause the file
-						cur_file->PauseFile(true/*bInsufficient*/);
-					}
-				}
-			} else {
-				cur_file->ResumeFileInsufficient();
-			}
+	
+		if ( file->IsStopped() ) {
+			continue;
 		}
-		do_not_sort_please = false;
+	
+		if ( free >= min ) {
+			// We'll try to resume files if there is enough free space
+			if ( free - file->GetNeededSpace() > min ) {
+				file->ResumeFile();
+			}
+		} else if ( free < min ) {
+			// No space left, stop the files.
+			file->PauseFile( true );
+		}
 	}
 }
+
 
 int CDownloadQueue::GetMaxFilesPerUDPServerPacket() const
 {
