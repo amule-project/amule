@@ -55,14 +55,14 @@ class CFileDataIO
 	virtual uint32		ReadUInt32() const;
 	virtual void		ReadUInt128(Kademlia::CUInt128 *pVal) const;
 	virtual void		ReadHash16(unsigned char* pVal) const;
- 	virtual wxString	ReadString(bool bOptUTF8) const;
+ 	virtual wxString	ReadString(bool bOptUTF8, uint8 SizeLen = 2 /* bytes */, bool SafeRead = false) const;
 
 	virtual void WriteUInt8(uint8 nVal);
 	virtual void WriteUInt16(uint16 nVal);
 	virtual void WriteUInt32(uint32 nVal);
 	virtual void WriteUInt128(const Kademlia::CUInt128 *pVal);
 	virtual void WriteHash16(const unsigned char* pVal);
-	virtual void WriteString(const wxString& rstr, EUtf8Str eEncode = utf8strNone);
+	virtual void WriteString(const wxString& rstr, EUtf8Str eEncode = utf8strNone, uint8 SizeLen = 2 /* bytes */); 
  };
  
 
