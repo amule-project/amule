@@ -20,18 +20,22 @@ Version 2.0.0rc8 - The "???????????" version.
 		* Added bitmap button wich pops-up the last status log line
 		  (useful when it doesn't fit the window).
 		* Merged Preview and Open File and enabled Open File.
-		* New Port column in Servers tab (splitting IP column)
+		* New Port column in Servers tab (splitting IP column).
 		* Moved "Always filter bad IPs" from Server to Security
-		  in Preferences
+		  in Preferences.
 		* Changed "Preference" in servers tab as suggested by Sir and
-		  "IP" to "Address" since that's more accurate (could be DNS)
-		* Fixed: Servers priority now working (reported by Sir)
-		* Fixed: Now all unset Server Priorities are set to normal
+		  "IP" to "Address" since that's more accurate (could be DNS).
+		* Optimizations in the RLE code.
+		* Based on kry's patch, also darken paused files' progress
+		  bar.
+		* Fixed: Servers priority now working. (reported by Sir)
+		* Fixed: Now all unset Server Priorities are set to normal.
 		  (reported by plaenky)
 		* Fixed: Sorting Servers by priority works now.
 		* Fixed: Setting "A4AF to others" works now.
-		* Fixed: Server names sorting now differences between names and IPs
-		* Fixed: Last byte is now drawn in bar progress
+		* Fixed: Server names sorting now differences between names
+		  and IPs.
+		* Fixed: Last byte is now drawn in bar progress.
 
 	Phoenix:
 		* Lots of unicode fixes.
@@ -71,7 +75,7 @@ Version 2.0.0rc8 - The "???????????" version.
 		* Contributors:
 		  Frankk,	han,
 		  Vollstrecker, boutros,
-		  skolnick,
+		  skolnick,	volpop
 
                 * Everyone at:
                    #amule       irc.freenode.net
