@@ -66,7 +66,8 @@ public:
 	void		OnPopupClose(wxCommandEvent& evt);
 	void		OnPopupCloseAll(wxCommandEvent& evt);
 	void		OnPopupCloseOthers(wxCommandEvent& evt);
-
+	void		ResetControls();
+	
 	CMuleNotebook*	notebook;
 	wxGauge*	progressbar;
 private:

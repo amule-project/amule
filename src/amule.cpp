@@ -133,7 +133,7 @@ BEGIN_EVENT_TABLE(CamuleApp, wxApp)
 
 	// Socket handlers
 		// Listen Socket
-		EVT_SOCKET(LISTENSOCKET_HANDLER, CamuleApp::ListenSocketHandler)
+		//EVT_SOCKET(LISTENSOCKET_HANDLER, CamuleApp::ListenSocketHandler)
 		
 		// UDP Socket (servers)
 		EVT_SOCKET(UDPSOCKET_HANDLER, CamuleApp::UDPSocketHandler)
@@ -2053,8 +2053,7 @@ void CamuleApp::NotifyEvent(GUIEvent event)
 		case SEARCH_UPDATE_PROGRESS:
 			if ( amuledlg->searchwnd ) {
 				if ( event.long_value == 0xffff ) {
-					wxCommandEvent evt;
-					amuledlg->searchwnd->OnBnClickedCancels(evt);
+					amuledlg->searchwnd->ResetControls();
 				} else {
 					amuledlg->searchwnd->progressbar->SetValue(event.long_value);
 				}
