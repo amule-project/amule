@@ -630,7 +630,7 @@ wxString  CDirIterator::FindNextFile() {
 	struct stat* buf=(struct stat*)malloc(sizeof(struct stat));
 	
 	while (dp!=NULL && !found) {
-		if (DirStr.RemoveLast().CmpNoCase(wxT("/Volumes"))) {
+		if (DirStr.RemoveLast().CmpNoCase(wxT("/Volumes")) == 0) {
 			printf("On Volumes: %s\n",dp->d_name);
 		}
 		if ((type == CDirIterator::Any)) {
