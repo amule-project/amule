@@ -1290,7 +1290,7 @@ msgstr "OOPS! Você já está tentando baixar o arquivo %s"
 
 #: src/DownloadQueue.cpp:456
 msgid "Tried to add source with matching hash to your own."
-msgstr ""
+msgstr "Tentando adicionar fonte com mesma hash para o seu próprio."
 
 #: src/DownloadQueue.cpp:955
 msgid "Bad link."
@@ -2342,9 +2342,7 @@ msgstr "Excelente"
 
 #: src/muuli_wdr.cpp:867
 msgid "Choose the file rating or advice users if the file is invalid ..."
-msgstr ""
-"Escolha uma classificação ou avise os demais usuários se o arquivo é "
-"inválido..."
+msgstr "Escolha uma classe ou avise os demais usuários se o arquivo é inválido..."
 
 #: src/muuli_wdr.cpp:872 src/WebServer.cpp:1491 src/WebServer.cpp:1763
 msgid "Apply"
@@ -2976,8 +2974,7 @@ msgstr "Alocar pedaços completos para arquivos .part"
 
 #: src/muuli_wdr.cpp:2084
 msgid "Select this to allocate a full chunk each time data is received for it."
-msgstr ""
-"Selecione para alocar um pedaço inteiro toda vez que dados são recebidos."
+msgstr "Selecione para alocar um pedaço inteiro toda vez que dados são recebidos."
 
 #: src/muuli_wdr.cpp:2088
 msgid "Allocate full disk space for .part files"
@@ -4410,7 +4407,7 @@ msgstr "Reconectar ao servidor"
 
 #: src/ServerSocket.cpp:131
 msgid "theApp.serverlist->GetServerByAddress() returned NULL"
-msgstr ""
+msgstr "theApp.serverlist->GetServerByAddress() retornou NULL"
 
 #: src/ServerSocket.cpp:218
 msgid "Error: "
@@ -4713,7 +4710,7 @@ msgstr "Uptime: "
 
 #: src/StatisticsDlg.cpp:722
 msgid "Downloaded Data (Session (Total)): "
-msgstr ""
+msgstr "Dados baixados (Sessão (Total)): "
 
 #: src/StatisticsDlg.cpp:727 src/StatisticsDlg.cpp:759
 msgid "Total Overhead (Packets): "
@@ -4743,7 +4740,7 @@ msgstr "Downloads ativos: %i"
 
 #: src/StatisticsDlg.cpp:751
 msgid "Uploaded Data (Session (Total)): "
-msgstr ""
+msgstr "Dados enviados (Sessão (Total)): "
 
 #: src/StatisticsDlg.cpp:779
 #, c-format
@@ -4767,7 +4764,7 @@ msgstr "Total de sessões de uploads com falhas: %i"
 
 #: src/StatisticsDlg.cpp:788
 msgid "Average upload time: "
-msgstr ""
+msgstr "Média de tempo de Upload: "
 
 #: src/StatisticsDlg.cpp:791
 #, c-format
@@ -4812,7 +4809,7 @@ msgstr "Conectado ao servidor desde: "
 
 #: src/StatisticsDlg.cpp:825
 msgid "Session UL:DL Ratio (Total): "
-msgstr ""
+msgstr "Razão entre UL:DL da sessão (Total): "
 
 #: src/StatisticsDlg.cpp:836
 msgid "Not available"
@@ -5357,6 +5354,8 @@ msgid ""
 "Enter here the URL you want to add to the Ed2k link: Add / at the end to let "
 "aLinkCreator append the current file name"
 msgstr ""
+"Informe a URL que deseja adicionar ao link ED2k: adicione / no final para deixar "
+"o aLinkCreator adicionar ao nome atual"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:144
 msgid "Remove"
@@ -5364,71 +5363,73 @@ msgstr "Remover"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:155
 msgid "Create link with part-hashes"
-msgstr ""
+msgstr "Criar link com hash de partes"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:161
 msgid ""
 "Help to spread new and rare files faster, at the cost of an increased link "
 "size"
 msgstr ""
+"Ajuda a espalhar arquivos novos e raros mais rápido, incrementando o tamanho "
+"do link"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:187
 msgid "MD4 File Hash"
-msgstr ""
+msgstr "Hash MD4 do arquivo"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:199
 msgid "Ed2k File Hash"
-msgstr ""
+msgstr "Hash ED2k do arquivo"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:210
 msgid "Ed2k link"
-msgstr ""
+msgstr "Link ED2k"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:225
 msgid "Save"
-msgstr ""
+msgstr "Salvar"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:227
 msgid "Copy to clipboard"
-msgstr ""
+msgstr "Copiar para a área de transferência"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:254
 msgid "Open a file to compute its ed2k link"
-msgstr ""
+msgstr "Abrir um arquivo e computá-lo como link ed2k"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:257
 msgid "Copy computed ed2k link to clipboard"
-msgstr ""
+msgstr "Copiar link computado para a área de transferência"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:260
 msgid "Save computed ed2k link to file"
-msgstr ""
+msgstr "Salvar link computado para arquivo"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:265
 #: src/utils/aLinkCreator/src/alcframe.cpp:430
 msgid "About aLinkCreator"
-msgstr ""
+msgstr "Sobre o aLinkCreator"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:323
 msgid "Select the file you want to compute the ed2k link"
-msgstr ""
+msgstr "Selecione um arquivo que deseja computar como link ed2k"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:366
 msgid "Nothing to copy for now !"
-msgstr ""
+msgstr "Nada a ser copiado!"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:393
 msgid "Select the file to your computed ed2k link"
-msgstr ""
+msgstr "Selecione um arquivo para seu link computado"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:411
 #: src/utils/aLinkCreator/src/alcframe.cpp:544
 msgid "Please, enter a non empty file name"
-msgstr ""
+msgstr "Por favor, informe um nome não-vazio"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:416
 msgid "Nothing to save for now !"
-msgstr ""
+msgstr "Nada a ser salvo!"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:425
 msgid ""
@@ -5441,95 +5442,103 @@ msgid ""
 "\n"
 "Distributed under GPL"
 msgstr ""
+"aLinkCreator, o criador de links ed2k do aMule\n"
+"\n"
+"(c) 2004 ThePolish <thepolish@vipmail.ru>\n"
+"\n"
+"Pixmaps de http://www.everaldo.com e http://www.icomania.com\n"
+"e http://jimmac.musichall.cz/ikony.php3\n"
+"\n"
+"Distribído sob licença GPL"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:474
 #: src/utils/aLinkCreator/src/alcframe.cpp:475
 #: src/utils/aLinkCreator/src/alcframe.cpp:481
 msgid "Hashing..."
-msgstr ""
+msgstr "Criando Hash..."
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:529
 #: src/utils/aLinkCreator/src/alcframe.cpp:530
 #: src/utils/aLinkCreator/src/md4.cpp:371
 msgid "Canceled !"
-msgstr ""
+msgstr "Cancelado !"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:538
 #, c-format
 msgid "Done in %.2f s"
-msgstr ""
+msgstr "Pronto em %.2f s"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:577
 msgid "You have already added this URL !"
-msgstr ""
+msgstr "Você já adicionou essa URL!"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:582
 msgid "Please, enter a non empty URL"
-msgstr ""
+msgstr "Informe uma URL não-vazia"
 
 #: src/utils/aLinkCreator/src/ed2khash.cpp:89
 #, c-format
 msgid "Unable to open %s"
-msgstr ""
+msgstr "Impossível abrir %s"
 
 #: src/utils/aLinkCreator/src/ed2khash.cpp:94
 #, c-format
 msgid "The file %s is to big for the Donkey: maximum allowed is 4 GB."
-msgstr ""
+msgstr "O arquivo %s é muito grande para a Mula: máximo suportado é 4 GB."
 
 #: src/utils/wxCas/src/linuxmon.cpp:92
 #, c-format
 msgid "%i day(s) %i hour(s) %i min %i s"
-msgstr ""
+msgstr "%i dia(s) %i hora(s) %i min %i s"
 
 #: src/utils/wxCas/src/onlinesig.cpp:220
 #, c-format
 msgid "%02uD %02uh %02umin %02us"
-msgstr ""
+msgstr "%02uD %02uh %02umin %02us"
 
 #: src/utils/wxCas/src/onlinesig.cpp:222
 #, c-format
 msgid "%02uh %02umin %02us"
-msgstr ""
+msgstr "%02uh %02umin %02us"
 
 #: src/utils/wxCas/src/onlinesig.cpp:224
 #, c-format
 msgid "%02umin %02us"
-msgstr ""
+msgstr "%02umin %02us"
 
 #: src/utils/wxCas/src/onlinesig.cpp:226
 #, c-format
 msgid "%02us"
-msgstr ""
+msgstr "%02us"
 
 #: src/utils/wxCas/src/onlinesig.cpp:322
 #, c-format
 msgid "%.0f B"
-msgstr ""
+msgstr "%.0f B"
 
 #: src/utils/wxCas/src/onlinesig.cpp:325
 #, c-format
 msgid "%.2f KB"
-msgstr ""
+msgstr "%.2f KB"
 
 #: src/utils/wxCas/src/onlinesig.cpp:328
 #, c-format
 msgid "%.2f MB"
-msgstr ""
+msgstr "%.2f MB"
 
 #: src/utils/wxCas/src/onlinesig.cpp:331
 #, c-format
 msgid "%.2f GB"
-msgstr ""
+msgstr "%.2f GB"
 
 #: src/utils/wxCas/src/onlinesig.cpp:334
 #, c-format
 msgid "%.2f TB"
-msgstr ""
+msgstr "%.2f TB"
 
 #: src/utils/wxCas/src/wxcas.cpp:91
 msgid "wxCas, aMule Online Statistics"
-msgstr ""
+msgstr "wxCas, Estatísticas Online do aMule"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:117
 msgid "aMule"
@@ -5537,75 +5546,77 @@ msgstr "aMule"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:121
 msgid "Maximum DL rate since wxCas is running"
-msgstr ""
+msgstr "Taxa máxima de DL enquanto roda o wxCas"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:125
 msgid "Absolute Maximum DL rate during wxCas previous runs"
-msgstr ""
+msgstr "Taxa máxima absoluta de DL enquanto rodava o wxCas (anterior)"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:147
 msgid "System"
-msgstr ""
+msgstr "Sistema"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:210
 #: src/utils/wxCas/src/wxcasframe.cpp:337
 msgid "Stop Auto Refresh"
-msgstr ""
+msgstr "Parar atualização automática"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:215
 msgid "Save Online Statistics image"
-msgstr ""
+msgstr "Salvar imagem de estatística Online"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:218
 msgid "Print Online Statistics image"
-msgstr ""
+msgstr "Imprimir imagem de estatística Online"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:221
 msgid "Preferences setting"
-msgstr ""
+msgstr "Preferências"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:226
 #: src/utils/wxCas/src/wxcasframe.cpp:402
 msgid "About wxCas"
-msgstr ""
+msgstr "Sobre wxCas"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:328
 msgid "Start Auto Refresh"
-msgstr ""
+msgstr "Iniciar atualização automática"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:330
 msgid "Auto Refresh stopped"
-msgstr ""
+msgstr "Atualização automática parada"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:339
 msgid "Auto Refresh started"
-msgstr ""
+msgstr "Atualização automática iniciada"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:349
 msgid "Save Statistics Image"
-msgstr ""
+msgstr "Salvar imagem das estatísticas"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:363
 msgid "No handler for this file type."
-msgstr ""
+msgstr "Não há um programa definido para esse tipo de arquivo."
 
 #: src/utils/wxCas/src/wxcasframe.cpp:364
 msgid "File was not saved"
-msgstr ""
+msgstr "Arquivo não foi salvo"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:375
 msgid "aMule Online Statistics"
-msgstr ""
+msgstr "Eststísticas Online do aMule"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:379
 msgid ""
 "There was a problem printing.\n"
 "Perhaps your current printer is not set correctly?"
 msgstr ""
+"Encontrei um problema na hora de imprimir.\n"
+"A sua impressora está configurada corretamente?"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:380
 msgid "Printing"
-msgstr ""
+msgstr "Imprimindo"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:398
 msgid ""
@@ -5617,22 +5628,29 @@ msgid ""
 "\n"
 "Distributed under GPL"
 msgstr ""
+"wxCas, Gerador de Assinaturas Online com estatísticas do aMule\n"
+"\n"
+"(c) 2004 ThePolish <thepolish@vipmail.ru>\n"
+"\n"
+"Baseado no CAS, por Pedro de Oliveira <falso@rdk.homeip.net>\n"
+"\n"
+"Distribuído sob licença GPL"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:629
 msgid "aMule is running"
-msgstr ""
+msgstr "aMule está rodando"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:633
 msgid "WARNING: aMule is stopped !"
-msgstr ""
+msgstr "ATENÇÂO: o aMule está parado!"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:637
 msgid "aMule is connecting..."
-msgstr ""
+msgstr "aMule está conectando..."
 
 #: src/utils/wxCas/src/wxcasframe.cpp:641
 msgid "Oh Oh, aMule status is unknown..."
-msgstr ""
+msgstr "Oh Oh, o status do aMule é desconhecido..."
 
 #: src/utils/wxCas/src/wxcasframe.cpp:712
 #: src/utils/wxCas/src/wxcasframe.cpp:718
@@ -5643,161 +5661,163 @@ msgstr "aMule "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:714
 msgid " has been running for "
-msgstr ""
+msgstr " está rodando por "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:720
 msgid " is STOPPED !"
-msgstr ""
+msgstr " está PARADO!"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:724
 msgid " is connecting..."
-msgstr ""
+msgstr " está conectando"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:728
 msgid " is doing something strange, check it !"
-msgstr ""
+msgstr " está fazendo algo de estranho, verifique!"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:743
 msgid " is on "
-msgstr ""
+msgstr " está ativo "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:745
 msgid " ["
-msgstr ""
+msgstr " ["
 
 #: src/utils/wxCas/src/wxcasframe.cpp:749
 msgid "] with "
-msgstr ""
+msgstr "] com "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:758
 msgid "Total Download: "
-msgstr ""
+msgstr "Download Total: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:760
 #: src/utils/wxCas/src/wxcasframe.cpp:771
 msgid ", Upload: "
-msgstr ""
+msgstr ", Upload: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:769
 msgid "Session Download: "
-msgstr ""
+msgstr "Download da Sessão: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:780
 msgid "Download: "
-msgstr ""
+msgstr "Download: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:782
 msgid " kB/s, Upload: "
-msgstr ""
+msgstr " kB/s, Upload: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:792
 msgid "Sharing: "
-msgstr ""
+msgstr "Compartilhando: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:794
 msgid " file(s), Clients on queue: "
-msgstr ""
+msgstr " arquivos, Clientes esperando: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:803
 #: src/utils/wxCas/src/wxcasframe.cpp:813
 #, c-format
 msgid "%.2f kB/s"
-msgstr ""
+msgstr "%.2f kB/s"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:804
 #: src/utils/wxCas/src/wxcasframe.cpp:814
 msgid " on "
-msgstr ""
+msgstr " em "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:824
 msgid "System Load Average (1-5-15 min): "
-msgstr ""
+msgstr "Média de carga do Sistema (1-5-15 min): "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:835
 msgid "System uptime: "
-msgstr ""
+msgstr "Uptime do Sistema: "
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:66
 msgid "Directory containing amulesig.dat file"
-msgstr ""
+msgstr "Pasta contendo arquivo amulesig.dat"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:86
 msgid "Enter here the directory where your amulesig.dat file is"
-msgstr ""
+msgstr "Informe a pasta onde está o arquivo amulesig.dat"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:105
 msgid "Refresh rate interval in seconds"
-msgstr ""
+msgstr "Taxa de atualização (em segundos)"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:121
 msgid "Generate a stat image at every refresh event"
-msgstr ""
+msgstr "Gerar imagem de estatística a cada atualização"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:145
 msgid "Enter here the directory where you want to generate the statistic image"
-msgstr ""
+msgstr "Informe a pasta onde gravar a imagem de estatística gerada"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:172
 msgid "Upload periodicaly your stat image to FTP server"
-msgstr ""
+msgstr "Fazer upload periódico da imagem para servidor FTP"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:180
 msgid "FTP Url"
-msgstr ""
+msgstr "URL do FTP"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:184
 msgid "FTP Path"
-msgstr ""
+msgstr "Caminho no FTP"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:194
 msgid "Enter here the URL of your FTP server"
-msgstr ""
+msgstr "Informe a URL do seu servidor FTP"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:206
 msgid "Enter here the directory where putting your stat image on FTP server"
-msgstr ""
+msgstr "Informe a pasta onde colocar a sua imagem estatística no servidor FTP"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:212
 msgid "User"
-msgstr ""
+msgstr "Usuário"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:216
 msgid "Password"
-msgstr ""
+msgstr "Senha"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:227
 msgid "Enter here the User name to log into your FTP server"
-msgstr ""
+msgstr "Informe o nome do usuário de login, para o servidor FTP"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:239
 msgid "Enter here the User password to log into your FTP server"
-msgstr ""
+msgstr "Informe a senha para o usuário do servidor FTP"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:258
 msgid "FTP update rate interval in minutes"
-msgstr ""
+msgstr "Intervalo entre atualizações do servidor FTP"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:302
 msgid "Validate"
-msgstr ""
+msgstr "Validar"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:337
 msgid "Folder containing your signature file"
-msgstr ""
+msgstr "Pasta contendo seu arquivo de assinatura"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:350
 msgid "Folder where generating the statistic image"
-msgstr ""
+msgstr "Pasta para colocar imagem estatística gerada"
 
 #: src/WebInterface.cpp:113
 msgid "Quit amuleweb"
-msgstr ""
+msgstr "Finalizar amuleweb"
 
 #: src/WebInterface.cpp:158
 msgid ""
 "\n"
 "Ok, exiting Web Client...\n"
 msgstr ""
+"\n"
+"Ok, encerrando cliente Web...\n"
 
 #: src/WebInterface.cpp:166
 #, c-format
@@ -5806,56 +5826,61 @@ msgid ""
 "Using %s\n"
 "(c) aMule Dev Team"
 msgstr ""
+"amuleweb [versão DLG]\n"
+"usando %s\n"
+"(c) Desenvolvedores aMule"
 
 #: src/WebInterface.cpp:169
 msgid "About amuleweb"
-msgstr ""
+msgstr "Sobre o amuleweb"
 
 #: src/WebInterface.cpp:211
 msgid "amuleweb DLG"
-msgstr ""
+msgstr "amuleweb DiaLoG"
 
 #: src/WebInterface.cpp:316
 msgid "Exits aMuleWeb.\n"
-msgstr ""
+msgstr "Sair do aMuleWeb.\n"
 
 #: src/WebInterface.cpp:322
 msgid "aMule Web Server"
-msgstr ""
+msgstr "aMule Web Server"
 
 #: src/WebServer.cpp:115 src/WebServer.cpp:136
 msgid "Can't create web socket thread\n"
-msgstr ""
+msgstr "Não foi possível criar thread de socket web\n"
 
 #: src/WebServer.cpp:121
 msgid "Web Server: Started\n"
-msgstr ""
+msgstr "Web Server: iniciado\n"
 
 #: src/WebServer.cpp:124
 msgid "Web Server: running\n"
-msgstr ""
+msgstr "Web Server: rodando\n"
 
 #: src/WebServer.cpp:140
 msgid "Web Server: Restarted\n"
-msgstr ""
+msgstr "Web Server: reiniciado\n"
 
 #: src/WebServer.cpp:150
 msgid "Web Server: Stopped\n"
-msgstr ""
+msgstr "Web Server: parado\n"
 
 #: src/WebServer.cpp:152
 msgid "Web Server: not running\n"
-msgstr ""
+msgstr "WebServer: não está rodando\n"
 
 #: src/WebServer.cpp:259 src/WebServer.cpp:277 src/WebServer.cpp:330
 msgid "Can't load templates: Can't open file "
-msgstr ""
+msgstr "Não foi possível carregar modelos: impossível abrir arquivo "
 
 #: src/WebServer.cpp:348
 msgid ""
 "Can't find template version number!\n"
 "Please replace aMule.tmpl with a newer version!"
-msgstr "Por favor, atualize seu arquivo aMule.tmpl!"
+msgstr ""
+"Não foi possível encontrar a versão do modelo!\n"
+"Por favor, atualize seu arquivo aMule.tmpl!"
 
 #: src/WebServer.cpp:349
 msgid "Failed to load template "

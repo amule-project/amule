@@ -292,7 +292,7 @@ msgstr "Prekini"
 
 #: src/amuleDlg.cpp:600
 msgid "Disconnect from current server"
-msgstr "Prekini povezavo"
+msgstr "Prekini povezavo s stre¾nikom"
 
 #: src/amuleDlg.cpp:602
 msgid "Connection established on:"
@@ -335,7 +335,7 @@ msgstr "Uporabnikov: "
 
 #: src/amuleDlg.cpp:646
 msgid "Files: "
-msgstr "Datotek: "
+msgstr "Datoteke: "
 
 #: src/amuleDlg.cpp:665
 #, c-format
@@ -819,11 +819,11 @@ msgstr "Stanje"
 #: src/ClientListCtrl.cpp:449 src/ClientListCtrl.cpp:735
 #: src/SharedFilesCtrl.cpp:89
 msgid "Obtained Parts"
-msgstr "Dobljeni deli"
+msgstr "Deli"
 
 #: src/ClientListCtrl.cpp:450
 msgid "Upload/Download"
-msgstr "Prenos Gor/Dol"
+msgstr "Prenesel Gor/Dol"
 
 #: src/ClientListCtrl.cpp:451
 msgid "Remote Status"
@@ -932,7 +932,7 @@ msgstr "Stanje prenosa(gor)"
 
 #: src/ClientListCtrl.cpp:906
 msgid "Transferred Up"
-msgstr "Prene¹eno gor"
+msgstr "Prenesel gor"
 
 #: src/ClientListCtrl.cpp:907
 msgid "Download Status"
@@ -940,7 +940,7 @@ msgstr "Stanje prenosa(dol)"
 
 #: src/ClientListCtrl.cpp:908
 msgid "Transferred Down"
-msgstr "Prene¹eno dol"
+msgstr "Prenesel dol"
 
 #: src/ClientListCtrl.cpp:911
 msgid "Userhash"
@@ -1082,7 +1082,7 @@ msgstr "Opusti vire z visokim mestom v vrsti"
 
 #: src/DownloadListCtrl.cpp:291
 msgid "Clean Up Sources now (NNS, FQS && HQRS)"
-msgstr "Poèisti vire brez uporabnih delov, s polno vrsto..."
+msgstr "Opusti vire brez uporabnih delov, s polno vrsto..."
 
 #: src/DownloadListCtrl.cpp:292
 msgid "Extended Options"
@@ -1161,7 +1161,7 @@ msgstr "Potek"
 #: src/DownloadListCtrl.cpp:556 src/FileDetailListCtrl.cpp:42
 #: src/SearchListCtrl.cpp:68 src/WebServer.cpp:972 src/WebServer.cpp:2140
 msgid "Sources"
-msgstr "Virov"
+msgstr "Viri"
 
 #: src/DownloadListCtrl.cpp:559
 msgid "Time Remaining"
@@ -1335,7 +1335,7 @@ msgstr "Zunanje povezave izklopljene v nastavitveni datoteki .eMule"
 
 #: src/ExternalConn.cpp:138
 msgid "New external connection accepted"
-msgstr "Nova zunanja povezaz sprejeta"
+msgstr "Nova zunanja povezava sprejeta"
 
 #: src/ExternalConn.cpp:144
 msgid "Error: couldn't accept a new external connection"
@@ -1347,11 +1347,11 @@ msgstr "Nepoobla¹èen poskus dostopa. Povezava prekinjena."
 
 #: src/ExternalConn.cpp:197
 msgid "External connection closed."
-msgstr "Zunanja povezava se je zaprla."
+msgstr "Zunanja povezava se je zaprla"
 
 #: src/ExternalConn.cpp:222
 msgid "Connecting client: "
-msgstr "Povezujem z uporabnikom: "
+msgstr "Povezujem z odjemalcem: "
 
 #: src/ExternalConn.cpp:233 src/ExternalConn.cpp:239
 msgid "Authentication failed."
@@ -1371,7 +1371,7 @@ msgstr "Neveljavna zahteva, najprej se morate overoviti."
 
 #: src/ExternalConn.cpp:255
 msgid "Access granted."
-msgstr "Dostop sprejet."
+msgstr "Dostop sprejet"
 
 #: src/ExternalConn.cpp:370
 msgid "Remote PartFile command failed: id not found"
@@ -1822,7 +1822,7 @@ msgstr "Prenos dol:  %.1f\n"
 #: src/MuleTrayIcon.cpp:203 src/SysTray.cpp:164
 #, c-format
 msgid "Upload Speed: %.1f\n"
-msgstr "Prenosa gor: %.1f\n"
+msgstr "Prenos gor: %.1f\n"
 
 #: src/MuleTrayIcon.cpp:204 src/SysTray.cpp:165
 msgid ""
@@ -1852,7 +1852,7 @@ msgstr "Dol: %u"
 
 #: src/MuleTrayIcon.cpp:250 src/SysTray.cpp:429
 msgid "Disconnect from server"
-msgstr "Prekini povezavo s stre¾nikom"
+msgstr "Prekini povezavo"
 
 #: src/MuleTrayIcon.cpp:261 src/SysTray.cpp:447
 msgid "Hide aMule"
@@ -2109,7 +2109,7 @@ msgstr "Ustavi"
 #: src/SearchListCtrl.cpp:328 src/WebServer.cpp:1415 src/WebServer.cpp:1754
 #: src/WebServer.cpp:1757 src/WebServer.cpp:2137
 msgid "Download"
-msgstr "Prenesi"
+msgstr "Prenos"
 
 #: src/muuli_wdr.cpp:379
 msgid "Results"
@@ -2187,7 +2187,7 @@ msgstr "N/A"
 
 #: src/muuli_wdr.cpp:578
 msgid "met-File :"
-msgstr "met Datoteka :"
+msgstr "met datoteka :"
 
 #: src/muuli_wdr.cpp:585
 msgid "Hash :"
@@ -2817,8 +2817,8 @@ msgid ""
 "Note: These values are\n"
 " only used for statistics."
 msgstr ""
-"Opmoba: te vrednosti\n"
-" vplivajo samo na statistiko."
+"Opmoba: Te vrednosti\n"
+"vplivajo samo na statistiko."
 
 #: src/muuli_wdr.cpp:1854
 msgid "Client TCP Port:"
@@ -2894,7 +2894,7 @@ msgstr "Posodobi stre¾ni¹ko listo ob povezavi z uporabnikom"
 
 #: src/muuli_wdr.cpp:1989
 msgid "Use priority system"
-msgstr "Uporabni prioriteto"
+msgstr "Uporabi prioriteto"
 
 #: src/muuli_wdr.cpp:1993
 msgid "Use smart LowID check on connect"
@@ -2914,7 +2914,7 @@ msgstr "Vsi roèno dodani stre¾niki naj imajo visoko prioriteto"
 
 #: src/muuli_wdr.cpp:2029 src/muuli_wdr.cpp:3298 src/ServerListCtrl.cpp:83
 msgid "Files"
-msgstr "Datotek"
+msgstr "Datoteke"
 
 #: src/muuli_wdr.cpp:2037
 msgid "I.C.H. active"
@@ -3200,7 +3200,7 @@ msgstr "Max novih povezav / 5 sek"
 
 #: src/muuli_wdr.cpp:2441
 msgid "Use Safe Max Connections code"
-msgstr "Uporabi varno kodo za max povezave"
+msgstr "Uporabi varno kodo za max ¹t. povezav"
 
 #: src/muuli_wdr.cpp:2442
 msgid "This code use an average calc. to avoid breaking usb modems, etc"
@@ -3208,7 +3208,7 @@ msgstr "Ta koda prepreèuje te¾ave z usb modemi, itd."
 
 #: src/muuli_wdr.cpp:2445
 msgid "Verbose (additional program feedback)"
-msgstr "Dodatni programovi izpisi"
+msgstr "Dodatni programovi izpisi (verbose)"
 
 #: src/muuli_wdr.cpp:2448
 msgid "Verbose packet error output (only in debug)"
@@ -3436,7 +3436,7 @@ msgstr "Poka¾i 'motd' stre¾nika ob povezavi ..."
 
 #: src/muuli_wdr.cpp:2949 src/muuli_wdr.cpp:3092
 msgid "Server Info"
-msgstr "Info o stre¾niku"
+msgstr "Stre¾ni¹ka sporoèila"
 
 #: src/muuli_wdr.cpp:2960 src/muuli_wdr.cpp:2995
 msgid "Click this button to reset the log."
@@ -3758,7 +3758,7 @@ msgstr "Okno s sporoèili"
 
 #: src/muuli_wdr.cpp:3553
 msgid "Statistics Graph Window"
-msgstr "Onkno s statistiènimi grafi"
+msgstr "Okno s statistiènimi grafi"
 
 #: src/muuli_wdr.cpp:3555 src/PrefsUnifiedDlg.cpp:169
 #: src/utils/wxCas/src/wxcasprefs.cpp:56 src/WebServer.cpp:724
@@ -4551,7 +4551,7 @@ msgstr "Javno"
 
 #: src/SharedFilesCtrl.cpp:132 src/SharedFilesCtrl.cpp:211
 msgid "Friends only"
-msgstr "Samo prijatetji"
+msgstr "Samo prijatelji"
 
 #: src/SharedFilesCtrl.cpp:133
 msgid "Locked"
