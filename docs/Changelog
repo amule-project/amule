@@ -10,7 +10,7 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 
 	BigBob:
 		* Compilation fix for WebServer.cpp and BaseClient.cpp with wx-2.4.2.
-		* Compilation fir of OtherFunctions.cpp with Slackware 9.1.0
+		* Compilation fix for OtherFunctions.cpp with Slackware 9.1.0
 
 	CosmicDJ:
 		* NetBSD compilation fixes.
