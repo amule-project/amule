@@ -84,7 +84,6 @@ amulegui_SOURCES = \
 	MuleListCtrl.cpp \
 	MuleNotebook.cpp \
 	MuleTextCtrl.cpp \
-	MuleTrayIcon.cpp \
 	muuli_wdr.cpp \
 	NetworkFunctions.cpp \
 	OtherFunctions.cpp \
@@ -166,7 +165,6 @@ amule_SOURCES = \
 	MuleListCtrl.cpp \
 	MuleNotebook.cpp \
 	MuleTextCtrl.cpp \
-	MuleTrayIcon.cpp \
 	muuli_wdr.cpp \
 	NetworkFunctions.cpp \
 	OScopeCtrl.cpp \
@@ -271,8 +269,8 @@ endif
 endif
 
 if HAVE_TRAY
-amule_SOURCES += eggtrayicon.c SysTray.cpp 
-amulegui_SOURCES += eggtrayicon.c SysTray.cpp 
+amule_SOURCES += eggtrayicon.c SysTray.cpp MuleTrayIcon.cpp
+amulegui_SOURCES += eggtrayicon.c SysTray.cpp MuleTrayIcon.cpp
 endif
 
 if HAVE_GTK
