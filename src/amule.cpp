@@ -472,29 +472,32 @@ bool CamuleApp::OnInit()
 	}
 	#endif
 
+	printf("Checking if there is an instance already running...\n");
 	// see if there is another instance running
-	wxString server = ConfigDir + wxFileName::GetPathSeparator() + wxT("muleconn");
+	wxString server = ConfigDir + wxT("muleconn");
 	wxString host = wxT("localhost");
 	wxString IPC = wxT("aMule IPC TESTRUN");
 	wxClient* client = new wxClient();
 	wxConnectionBase* conn = client->MakeConnection(host, server, IPC);
-
+	printf("0\n");
 	// If the connection failed, conn is NULL
 	if ( conn ) {
 		// An instance is already running!
-		
+		printf("There is an instance of aMule already running\n");
 		// This is very tricky. The most secure way to communicate is via ED2K links file
 		FILE *ed2kfile;
 		char filename[1024];
 
-		/* Link seemed ok, add it to file. */
 		sprintf(filename,"%s/.aMule/ED2KLinks",getenv("HOME"));
 		ed2kfile = fopen(filename,"a");
+		printf("1\n");
 		if (ed2kfile != NULL) {
+			printf("2\n");
 			fprintf(ed2kfile,"RAISE_DIALOG");
 			printf("Raised current running aMule\n");
 			fclose(ed2kfile);
 		} else {
+			printf("3\n");
 			printf("Error opening file %s.Cannot raise active aMule\n", filename);
 		}
 		
@@ -505,6 +508,7 @@ bool CamuleApp::OnInit()
 		printf("aMule already running: exiting\n");
 		return false;
 	}
+	printf("4\n");
 	delete client;
 
 	// If there was no server, start one
@@ -1447,7 +1451,7 @@ void CamuleApp::Trigger_New_version(wxString new_version)
 
 
 void CamuleApp::SetOSFiles(const wxString new_path) {
-	if (::wxDirExists(new_path)) {
+	if (thePrefs::IsOnlineSignatureEnabled() && ::wxDirExists(new_path)) {
 		emulesig_path = new_path + wxFileName::GetPathSeparator() + wxT("onlinesig.dat");
 		amulesig_path = new_path + wxFileName::GetPathSeparator() + wxT("amulesig.dat");
 	} else {
