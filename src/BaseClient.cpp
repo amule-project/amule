@@ -1096,7 +1096,7 @@ void CUpDownClient::Disconnected()
 		#endif
 		socket->Safe_Delete();
 	}
-	socket = 0;
+	socket = NULL;
 	//printf("Socket %x set on client %x\n",socket, this);
 	if (m_iFileListRequested) {
 		theApp.amuledlg->AddDebugLogLine(false,_("Unable to retrieve shared files from '%s'"),GetUserName());
@@ -1609,7 +1609,8 @@ void CUpDownClient::Destroy()
 {
 	if (socket) {
 		//delete socket;
-		socket->Destroy();
+		socket->Safe_Delete();
+		socket = NULL;
 	}
 }
 
