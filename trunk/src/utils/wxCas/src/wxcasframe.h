@@ -97,7 +97,8 @@ class WxCasFrame:public wxFrame
     };
 
   protected:
-    void UpdateStatsPanel ();
+    bool UpdateStatsPanel ();
+    void UpdateAll ();
 
     void OnBarRefresh (wxCommandEvent & event);
     void OnBarAbout (wxCommandEvent & event);

@@ -66,7 +66,7 @@ class WxCasPrefs:public wxDialog
 
     wxStaticLine *m_staticLine;
 
-    wxBoxSizer *m_buttonVBox;
+    wxBoxSizer *m_buttonHBox;
     wxButton *m_validateButton;
     wxButton *m_cancelButton;
 
