@@ -430,7 +430,7 @@ void CUpDownClient::CreateStandartPackets(byte* data,uint32 togo, Requested_Bloc
 	//printf("entered in : CUpDownClient::CreateStandartPackets\n");
 	uint32 nPacketSize;
 
-	CMemFile outdata;
+	CMemFile memfile((BYTE*)data,togo);
 	if (togo > 10240) 
 		nPacketSize = togo/(uint32)(togo/10240);
 	else
@@ -440,17 +440,13 @@ void CUpDownClient::CreateStandartPackets(byte* data,uint32 togo, Requested_Bloc
 			nPacketSize = togo;
 		togo -= nPacketSize;
 
-		outdata.WriteRaw(GetUploadFileID(),16);
-		outdata.Write((uint32)(currentblock->EndOffset - togo - nPacketSize)); // startpos
-		outdata.Write((uint32)(currentblock->EndOffset - togo));               // endpos
-		outdata.WriteRaw(data, nPacketSize);
-		Packet* packet = new Packet(&outdata);
-		packet->opcode = OP_SENDINGPART;
-//		Packet* packet = new Packet(OP_SENDINGPART,nPacketSize+24);
-//		memcpy(&packet->pBuffer[0],GetUploadFileID(),16);
-//		memcpy(&packet->pBuffer[16],&statpos,4);
-//		memcpy(&packet->pBuffer[20],&endpos,4);
-//		memfile.Read(&packet->pBuffer[24],nPacketSize);
+		Packet* packet = new Packet(OP_SENDINGPART,nPacketSize+24);
+		memcpy(&packet->pBuffer[0],GetUploadFileID(),16);
+		uint32 statpos = ENDIAN_SWAP_32((currentblock->EndOffset - togo) - nPacketSize);	
+		memcpy(&packet->pBuffer[16],&statpos,4);	
+		uint32 endpos = ENDIAN_SWAP_32((currentblock->EndOffset - togo));	
+		memcpy(&packet->pBuffer[20],&endpos,4);
+		memfile.ReadRaw(&packet->pBuffer[24],nPacketSize);
 		m_BlockSend_queue.AddTail(packet);
 	}
 }
@@ -466,7 +462,9 @@ void CUpDownClient::CreatePackedPackets(byte* data,uint32 togo, Requested_Block_
 		return;
 	}
 	m_bUsedComprUp = true;
-	CMemFile outdata;
+	
+	CMemFile memfile(output,newsize);
+	uint32 endiannewsize = ENDIAN_SWAP_32(newsize);	
 	togo = newsize;
 	uint32 nPacketSize;
 	if (togo > 10240) 
@@ -478,19 +476,12 @@ void CUpDownClient::CreatePackedPackets(byte* data,uint32 togo, Requested_Block_
 			nPacketSize = togo;
 		togo -= nPacketSize;
 
-
-		outdata.WriteRaw(GetUploadFileID(),16);
-		outdata.Write(currentblock->StartOffset);
-		outdata.Write((uint32)newsize);
-		outdata.WriteRaw(output, nPacketSize);
-		Packet* packet = new Packet(&outdata, OP_EMULEPROT);
-		packet->opcode = OP_COMPRESSEDPART;
-//		Packet* packet = new Packet(OP_COMPRESSEDPART,nPacketSize+24,OP_EMULEPROT);
-//		memcpy(&packet->pBuffer[0],GetUploadFileID(),16);
-//		uint32 statpos = currentblock->StartOffset;
-//		memcpy(&packet->pBuffer[16],&statpos,4);
-//		memcpy(&packet->pBuffer[20],&newsize,4);
-//		memfile.Read(&packet->pBuffer[24],nPacketSize);
+		Packet* packet = new Packet(OP_COMPRESSEDPART,nPacketSize+24,OP_EMULEPROT);
+		memcpy(&packet->pBuffer[0],GetUploadFileID(),16);
+		uint32 statpos = ENDIAN_SWAP_32(currentblock->StartOffset);
+		memcpy(&packet->pBuffer[16],&statpos,4);
+		memcpy(&packet->pBuffer[20],&endiannewsize,4);
+		memfile.ReadRaw(&packet->pBuffer[24],nPacketSize);
 		m_BlockSend_queue.AddTail(packet);
 	}
 	delete[] output;
