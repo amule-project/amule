@@ -586,7 +586,6 @@ bool CDownloadQueue::RemoveSource(CUpDownClient* toremove, bool	WXUNUSED(updatew
 			removed = true;
 			if ( bDoStatsUpdate ) {
 				cur_file->UpdatePartsInfo();
-				cur_file->UpdateAvailablePartsCount();
 			}
 		}
 

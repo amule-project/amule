@@ -1771,16 +1771,16 @@ void CamuleApp::NotifyEvent(GUIEvent event)
 
 		// PartFile
 	        case PARTFILE_REMOVE_NO_NEEDED:
-			((CPartFile *)event.ptr_value)->RemoveNoNeededSources();
+			((CPartFile *)event.ptr_value)->CleanUpSources( true,  false, false );
 			break;
 	        case PARTFILE_REMOVE_FULL_QUEUE:
-			((CPartFile *)event.ptr_value)->RemoveFullQueueSources();
+			((CPartFile *)event.ptr_value)->CleanUpSources( false, true,  false );
 			break;
 	        case PARTFILE_REMOVE_HIGH_QUEUE:
-			((CPartFile *)event.ptr_value)->RemoveHighQueueRatingSources();
+			((CPartFile *)event.ptr_value)->CleanUpSources( false, false, true  );
 			break;
 	        case PARTFILE_CLEANUP_SOURCES:
-			((CPartFile *)event.ptr_value)->CleanUpSources();
+			((CPartFile *)event.ptr_value)->CleanUpSources( true,  true,  true  );
 			break;
 	        case PARTFILE_SWAP_A4AF_THIS: {
 			CPartFile *file = (CPartFile *)event.ptr_value;

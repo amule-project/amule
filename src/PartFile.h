@@ -148,9 +148,7 @@ public:
 
 	void	PreviewFile();
 	bool	PreviewAvailable();
-	uint8	GetAvailablePartCount() const	{ return availablePartsCount; }
-	void	UpdateAvailablePartsCount();
-
+	uint8	GetAvailablePartCount() const	{ return m_availablePartsCount; }
 	uint32	GetLastAnsweredTime() const	{ return m_ClientSrcAnswered; }
 	void	SetLastAnsweredTime();
 	void	SetLastAnsweredTimeTimeout();
@@ -223,7 +221,7 @@ private:
 	ArrayOfUInts16	m_SrcpartFrequency;
 	double	percentcompleted;
 	CList<uint16, uint16> corrupted_list;
-	uint8	availablePartsCount;
+	uint8	m_availablePartsCount;
 	uint32	m_ClientSrcAnswered;
 	uint32	m_nSavedReduceDownload;
 	bool	m_bPercentUpdated;
@@ -265,17 +263,8 @@ public:
 	uint32	lastsearchtime;
 	bool	m_bLocalSrcReqQueued;
 
-	/* RemoveNoNeededSources function */
-	void RemoveNoNeededSources();
-
-	/* RemoveFullQueueSources function */
-	void RemoveFullQueueSources();
-
-	/* RemoveHighQueueRatingSources function */
-	void RemoveHighQueueRatingSources();
-
 	/* CleanUpSources function */
-	void CleanUpSources();
+	void CleanUpSources( bool noNeeded, bool fullQueue = false, bool highQueue = false );
 
 	/* AddDownloadingSource function */
 	void AddDownloadingSource(CUpDownClient* client);

@@ -328,7 +328,6 @@ void CUpDownClient::ProcessFileInfo(const CSafeMemFile* data, const CPartFile* f
 		}
 		#endif
 		UpdateDisplayedInfo();
-		m_reqfile->UpdateAvailablePartsCount();
 		// even if the file is <= PARTSIZE, we _may_ need the hashset for that file (if the file size == PARTSIZE)
 		if (m_reqfile->hashsetneeded)
 		{
@@ -439,7 +438,6 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, const CSafeMemFile* data,
 	#endif
 
 	UpdateDisplayedInfo();
-	m_reqfile->UpdateAvailablePartsCount();
 
 	// NOTE: This function is invoked from TCP and UDP socket!
 	if (!bUdpPacket) {
@@ -1227,7 +1225,6 @@ bool CUpDownClient::SwapToAnotherFile(bool bIgnoreNoNeeded, bool ignoreSuspensio
 			m_nOldRemoteQueueRank = 0;
 
 			m_reqfile->UpdatePartsInfo();
-			m_reqfile->UpdateAvailablePartsCount();
 	
 			SetRequestFile( SwapTo );
 
