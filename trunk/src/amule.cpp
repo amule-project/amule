@@ -888,10 +888,10 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 	}
 
 	// Build the filenames for the two files
-	char* emulesig_path = new char[strlen(glob_prefs->GetAppDir())+14];
-	char* amulesig_path = new char[strlen(glob_prefs->GetAppDir())+13];
-	sprintf(emulesig_path,"%sonlinesig.dat",glob_prefs->GetAppDir());
-	sprintf(amulesig_path,"%samulesig.dat",glob_prefs->GetAppDir());
+	char* emulesig_path = new char[strlen(glob_prefs->GetOSDir())+14];
+	char* amulesig_path = new char[strlen(glob_prefs->GetOSDir())+13];
+	sprintf(emulesig_path,"%sonlinesig.dat",glob_prefs->GetOSDir());
+	sprintf(amulesig_path,"%samulesig.dat",glob_prefs->GetOSDir());
 
 	// Open both files for writing
 	CFile amulesig_out, emulesig_out;

@@ -328,6 +328,8 @@ struct Preferences_Struct{
 	uint16	Browser;
 	char		CustomBrowser[256];
 	
+	char		OSDirectory[512];
+	
 	bool	FastED2KLinksHandler;	// Madcat - Toggle Fast ED2K Links Handler
 	bool	bDlgTabsOnTop;			// Creteil: dlg aesthetics
 };
@@ -771,6 +773,8 @@ public:
 	bool	GetAllocFullChunk() { return prefs->AllocFullChunk; };
 
 	wxString GetBrowser();
+	
+	char* GetOSDir(){return prefs->OSDirectory;};
 	
 protected:
 	void	CreateUserHash();
