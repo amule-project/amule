@@ -26,6 +26,7 @@
 #include "CTypedPtrList.h"	// Needed for CTypedPtrList
 #include "CMD4Hash.h"
 
+#include <deque>
 #include <list>
 
 class CPreferences;
@@ -112,7 +113,7 @@ private:
 	uint32	failedupcount;
 	uint32	totaluploadtime;
 	uint32	m_nLastStartUpload;
-	long	m_nUpDaterateTotal;
+	long	m_nUpDatarateTotal;
 	double	m_nUpDatarateOverhead;
 	uint32	m_nUpDataRateMSOverhead;
 	uint64	m_nUpDataOverheadSourceExchange;
@@ -124,7 +125,7 @@ private:
 	uint64	m_nUpDataOverheadServerPackets;
 	uint64	m_nUpDataOverheadOtherPackets;
 	bool	lastupslotHighID; // VQB lowID alternation
-	std::list<int>	m_AvarageUDRO_list;
+	std::deque<int>	m_AverageUDRO_list;
 
 };
 

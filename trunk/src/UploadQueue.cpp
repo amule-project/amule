@@ -64,7 +64,7 @@ CUploadQueue::CUploadQueue(CPreferences* in_prefs){
 	successfullupcount = 0;
 	failedupcount = 0;
 	totaluploadtime = 0;
-	m_nUpDaterateTotal = 0;
+	m_nUpDatarateTotal = 0;
 	m_nUpDataRateMSOverhead = 0;
 	m_nUpDatarateOverhead = 0;
 	m_nUpDataOverheadSourceExchange = 0;
@@ -499,35 +499,37 @@ uint16 CUploadQueue::GetWaitingPosition(CUpDownClient* client)
 void CUploadQueue::CompUpDatarateOverhead()
 {
 	// Adding the new overhead
-	m_nUpDaterateTotal += m_nUpDataRateMSOverhead * 10;
-	m_AvarageUDRO_list.push_back( m_nUpDataRateMSOverhead * 10 );
+	m_nUpDatarateTotal += m_nUpDataRateMSOverhead * 10;
+	m_AverageUDRO_list.push_back( m_nUpDataRateMSOverhead * 10 );
 	
 	// Reset the overhead count
 	m_nUpDataRateMSOverhead = 0;
 	
 	// We want at least 11 elements before we will start doing averages
-	if ( m_AvarageUDRO_list.size() > 10 ) {
+	if ( m_AverageUDRO_list.size() > 10 ) {
 		
-		// Remove the first element untill we have at most 150 items
-		while ( m_AvarageUDRO_list.size() > 150 ) {
-			m_nUpDaterateTotal -= m_AvarageUDRO_list.front();
+		// We want 150 elements at most
+		if ( m_AverageUDRO_list.size() > 150 ) {
+			m_nUpDatarateTotal -= m_AverageUDRO_list.front();
 		
-			m_AvarageUDRO_list.pop_front();
+			m_AverageUDRO_list.pop_front();
+		
+			m_nUpDatarateOverhead = m_nUpDatarateTotal / 150.0f;
+		} else {
+			m_nUpDatarateOverhead = m_nUpDatarateTotal / (double)m_AverageUDRO_list.size();
 		}
-
-		m_nUpDatarateOverhead = m_nUpDaterateTotal / (double)m_AvarageUDRO_list.size();
-
-	} else if ( m_AvarageUDRO_list.size() == 10 ) {
+	} else if ( m_AverageUDRO_list.size() == 10 ) {
 		// Create the starting average once we have 10 items
-		m_nUpDaterateTotal = std::accumulate( m_AvarageUDRO_list.begin(),
-		                                      m_AvarageUDRO_list.end(), 0 );
+		m_nUpDatarateTotal = std::accumulate( m_AverageUDRO_list.begin(),
+		                                      m_AverageUDRO_list.end(), 0 );
 	
-		m_nUpDatarateOverhead = m_nUpDaterateTotal / 10.0;
+		m_nUpDatarateOverhead = m_nUpDatarateTotal / 10.0;
 		
 	} else {
 		m_nUpDatarateOverhead = 0;
 	}
 }
+
 
 /*
  * This function removes a file indicated by filehash from suspended_uploads_list.

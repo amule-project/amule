@@ -117,27 +117,28 @@ void CDownloadQueue::CompDownDatarateOverhead()
 {
 	// Adding the new overhead
 	m_nDownDatarateTotal += m_nDownDataRateMSOverhead * 10;
-	m_AvarageDDRO_list.push_back( m_nDownDataRateMSOverhead * 10 );
+	m_AverageDDRO_list.push_back( m_nDownDataRateMSOverhead * 10 );
 	
 	// Reset the overhead count
 	m_nDownDataRateMSOverhead = 0;
 	
 	// We want at least 11 elements before we will start doing averages
-	if ( m_AvarageDDRO_list.size() > 10 ) {
+	if ( m_AverageDDRO_list.size() > 10 ) {
 		
-		// Remove the first element untill we have at most 150 items
-		while ( m_AvarageDDRO_list.size() > 150 ) {
-			m_nDownDatarateTotal -= m_AvarageDDRO_list.front();
+		// We want 150 elements at most
+		if ( m_AverageDDRO_list.size() > 150 ) {
+			m_nDownDatarateTotal -= m_AverageDDRO_list.front();
 		
-			m_AvarageDDRO_list.pop_front();
+			m_AverageDDRO_list.pop_front();
+		
+			m_nDownDatarateOverhead = m_nDownDatarateTotal / 150.0f;
+		} else {
+			m_nDownDatarateOverhead = m_nDownDatarateTotal / (double)m_AverageDDRO_list.size();
 		}
-
-		m_nDownDatarateOverhead = m_nDownDatarateTotal / (double)m_AvarageDDRO_list.size();
-
-	} else if ( m_AvarageDDRO_list.size() == 10 ) {
+	} else if ( m_AverageDDRO_list.size() == 10 ) {
 		// Create the starting average once we have 10 items
-		m_nDownDatarateTotal = std::accumulate( m_AvarageDDRO_list.begin(),
-		                                      m_AvarageDDRO_list.end(), 0 );
+		m_nDownDatarateTotal = std::accumulate( m_AverageDDRO_list.begin(),
+		                                      m_AverageDDRO_list.end(), 0 );
 	
 		m_nDownDatarateOverhead = m_nDownDatarateTotal / 10.0;
 		
@@ -145,6 +146,7 @@ void CDownloadQueue::CompDownDatarateOverhead()
 		m_nDownDatarateOverhead = 0;
 	}
 }
+
 
 void CDownloadQueue::Init()
 {
