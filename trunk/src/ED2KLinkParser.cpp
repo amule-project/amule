@@ -41,7 +41,6 @@ using std::string;
  */
 char HexToDec( const string& hex )
 {
-	assert( hex.length() <= 2 );
 	char result = 0;
 	
 	for ( size_t i = 0; i < hex.length(); ++i ) {
