@@ -46,6 +46,7 @@
 #ifndef AMULE_DAEMON
 	#include <wx/msgdlg.h>		// Needed for wxMessageBox
 	#include <wx/gdicmn.h>
+	#include "Color.h"              // Needed for RGB, DarkenColour
 #else 
 	#define wxMessageBox(x) AddLogLineM(true,x)
 #endif
@@ -74,7 +75,6 @@
 #include "NetworkFunctions.h" // Needed for Uint32toStringIP
 #include "StringFunctions.h"	// Needed for CleanupFilename
 #include "filefn.h"
-#include "Color.h"              // Needed for RGB, DarkenColour
 #include "Statistics.h"		// Needed for CStatistics
 
 #include <map>
