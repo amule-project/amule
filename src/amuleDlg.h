@@ -24,6 +24,10 @@
 	#include <wx/msw/winundef.h> // Needed to be able to include wx headers
 #endif
 
+#ifndef __SYSTRAY_DISABLED__
+	#include "MuleTrayIcon.h"
+#endif
+
 #include <wx/defs.h>		// Needed before any other wx/*.h.
 #include <wx/frame.h>		// Needed for wxFrame
 #include <wx/timer.h>
@@ -156,8 +160,12 @@ private:
 // Systray functions
 #ifndef __SYSTRAY_DISABLED__
 	void RemoveSystray();
-	void UpdateTrayIcon(int procent);
-	CSysTray *m_wndTaskbarNotifier;
+	void UpdateTrayIcon(int percent);
+	#ifdef USE_WX_TRAY
+		CMuleTrayIcon* m_wndTaskbarNotifier;
+	#else
+		CSysTray *m_wndTaskbarNotifier;
+	#endif
 #endif
 
 	DialogType m_nActiveDialog;

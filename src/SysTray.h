@@ -70,7 +70,7 @@ public:
 	CSysTray(wxWindow* parent, DesktopMode desktopmode, const wxString& title);
 	
 	void SetTrayToolTip(const wxString& tip);
-	void SetTrayIcon(char** data, int* pVals = NULL);
+	void SetTrayIcon(const wxIcon& Icon);
 	
 private:
 	wxIcon c;
@@ -94,7 +94,7 @@ public:
 	~CSysTray();
 
 	void SetTrayToolTip(const wxString& tip);
-	void SetTrayIcon(char** data, int* pVals = NULL);
+	void SetTrayIcon(char** data, int* pVals);
 
 private:
 	void setupProperties();
@@ -120,4 +120,3 @@ private:
 
 #endif // __SYSTRAY_DISABLED__
 #endif // SYSTRAY_H
-
