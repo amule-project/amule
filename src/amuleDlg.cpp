@@ -134,7 +134,9 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 	last_iconizing = 0;
 	prefs_dialog = NULL;
 	
-	m_wndTaskbarNotifier = NULL;
+	#ifndef __SYSTRAY_DISABLED__
+		m_wndTaskbarNotifier = NULL;
+	#endif
 	
 	wxInitAllImageHandlers();
 	curl_global_init(CURL_GLOBAL_ALL);
@@ -910,9 +912,9 @@ void CamuleDlg::Show_aMule(bool uniconize)
 }
 
 
+#ifndef __SYSTRAY_DISABLED__
 void CamuleDlg::OnMinimize(wxIconizeEvent& evt)
 {
-#ifndef __SYSTRAY_DISABLED__
 	if (m_wndTaskbarNotifier && thePrefs::DoMinToTray() 
 		#if !USE_WX_TRAY
 			&& (thePrefs::GetDesktopMode() != 4) && thePrefs::UseTrayIcon()
@@ -927,10 +929,13 @@ void CamuleDlg::OnMinimize(wxIconizeEvent& evt)
 				Show_aMule(false);
 			}
 		}
-	}
-	
-#endif
+	}	
 }
+#else
+void CamuleDlg::OnMinimize(wxIconizeEvent& WXUNUSED(evt))
+{
+}
+#endif
 
 
 void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
