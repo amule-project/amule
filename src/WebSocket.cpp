@@ -62,28 +62,22 @@ void *CWSThread::Entry() {
 	} else {
 		ws->Print(wxT("WSThread: created socket listening on ") + msg);	
 		while (!TestDestroy()) {
-			// check for incoming connection waiting to be accepted
-			// and returns immediately
-			if (m_WSSocket->WaitForAccept(0)) {
-				// Accept the incoming connection and returns immediately
-				// Here we should always have a connection pending.
-				wxSocketBase *sock = m_WSSocket->Accept(FALSE);
-				if (sock) {
-					CWCThread *wct = new CWCThread(ws, sock);
-					wcThreads.Add(wct);
-					
-					if ( wcThreads.Last()->Create() != wxTHREAD_NO_ERROR ) {
-						ws->Print(wxT("WSThread: Can't create web client socket thread\n"));
-						// destroy the socket
-						sock->Destroy();
-					} else {
-						// ...and run it
-						wcThreads.Last()->Run();
-					}
+			// Accept the incoming connection and returns immediately
+			// Here we should always have a connection pending.
+			wxSocketBase *sock = m_WSSocket->Accept();
+			if (sock) {
+				CWCThread *wct = new CWCThread(ws, sock);
+				wcThreads.Add(wct);
+				
+				if ( wcThreads.Last()->Create() != wxTHREAD_NO_ERROR ) {
+					ws->Print(wxT("WSThread: Can't create web client socket thread\n"));
+					// destroy the socket
+					sock->Destroy();
+				} else {
+					// ...and run it
+					wcThreads.Last()->Run();
 				}
 			}
-
-			wxThread::Sleep(200);
 		}
 		ws->Print(wxT("WSThread: Waiting for WCThreads to be terminated..."));
 		for (size_t i=0; i<wcThreads.GetCount(); ++i) {
