@@ -764,6 +764,7 @@ public:
 	bool	GetAllocFullPart() { return prefs->AllocFullPart; };
 	bool	GetAllocFullChunk() { return prefs->AllocFullChunk; };
 
+	wxString GetBrowser();
 	
 protected:
 	void	CreateUserHash();

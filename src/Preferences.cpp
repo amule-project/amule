@@ -704,3 +704,23 @@ void CPreferences::RemoveCat(size_t index)
 		catMap.RemoveAt(index);
 	}
 }
+
+wxString CPreferences::GetBrowser()
+{
+	wxString cmd;
+	switch ( prefs->Browser ) {
+		case 0: cmd = "konqueror '%s'"; break;
+		case 1: cmd = "xterm -e sh -c 'mozilla %s'"; break;
+		case 2: cmd = "firefox '%s'"; break;
+		case 3:	cmd = "firebird '%s'"; break;
+		case 4:	cmd = "opera '%s'"; break;
+		case 5: cmd = "netscape '%s'"; break;
+		case 6: cmd = "galeon '%s'"; break;
+		case 7: cmd = "epiphany '%s'"; break;
+		case 8: cmd = prefs->CustomBrowser; break;
+		default:
+			printf("Unable to determine selected browser!\n");
+	}
+
+	return cmd;
+}

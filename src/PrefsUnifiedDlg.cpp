@@ -952,6 +952,7 @@ BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	EVT_BUTTON(IDC_IPFRELOAD, PrefsUnifiedDlg::OnButtonIPFilterReload)
 	EVT_BUTTON(IDC_COLOR_BUTTON, PrefsUnifiedDlg::OnButtonColorChange)
 	EVT_CHOICE(IDC_COLORSELECTOR, PrefsUnifiedDlg::OnColorCategorySelected)
+	EVT_CHOICE(IDC_FCHECK, PrefsUnifiedDlg::OnBrowserSelected)
 END_EVENT_TABLE()
 
 
@@ -1389,5 +1390,17 @@ void PrefsUnifiedDlg::SaveAllItems(CIni& ini)
 		#endif
 		(pos->GetData())->SaveToFile(ini);
 		pos = pos->GetNext();
+	}
+}
+
+void PrefsUnifiedDlg::OnBrowserSelected(wxCommandEvent& evt)
+{
+	wxChoice* browser = (wxChoice*)FindWindow(IDC_FCHECK);
+
+	// If the last item (Custom browser) is selected
+	if ( browser->GetSelection() == browser->GetCount() - 1 ) {
+		FindWindow(IDC_FCHECKSELF)->Enable();
+	} else {
+		FindWindow(IDC_FCHECKSELF)->Disable();
 	}
 }

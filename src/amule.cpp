@@ -1287,24 +1287,18 @@ wxFileType *ft;                            /* Temporary storage for filetype. */
 	}
 #else
 
-	wxArrayString list;
-
-	// Try with these browers
-	list.Add( "firefox '%s'" );
-	list.Add( "konqueror '%s'" );
-	list.Add( "galeon '%s'" );
-	list.Add( "opera '%s'" );
-	
-	// ( Don't ask about the command format. Really. Seems it has to be like this )
-	list.Add( "xterm -e sh -c 'mozilla %s'" ); 
-
-	for ( unsigned int i = 0; i < list.GetCount(); i++ ) {
-		cmd = list[i];
-		cmd.Replace( "%s", url );
-	
+	cmd = glob_prefs->GetBrowser();
+	if ( !cmd.IsEmpty() ) {
+		wxString tmp = url;
 		// Pipes cause problems, so escape them
-		cmd.Replace( "|", "%7C" );
+		tmp.Replace( "|", "%7C" );
+	
 		
+		if ( !cmd.Replace( "%s", tmp ) ) {
+			// No %s found, just append the url
+			cmd += tmp;
+		}
+			
 		if ( wxExecute( cmd, false ) ) {
 			printf( "Launch Command: %s", cmd.c_str() );
 			return;
