@@ -52,8 +52,7 @@
 #include "SearchDlg.h"		// Needed for CSearchDlg
 #include "SearchList.h"		// Needed for CSearchList
 #include "otherstructs.h"	// Needed for LoginAnswer_Struct
-#include "ServerListCtrl.h"	// Needed for CServerListCtrl
-#include "ServerWnd.h"		// Needed for CServerWnd
+#include "Preferences.h"	// Needed for CPreferences
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "opcodes.h"		// Needed for OP_SERVERMESSAGE
 #include "otherfunctions.h"	// Needed for GetTickCount
@@ -206,7 +205,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 						CServer* eserver = theApp.serverlist->GetServerByAddress(cur_server->GetAddress(),cur_server->GetPort());
 						if (eserver) {
 							eserver->SetVersion(strVer);
-							theApp.amuledlg->serverwnd->serverlistctrl->RefreshServer(eserver);
+							Notify_ServerRefresh(eserver);
 						}
 
 					/* Give it a try ... (Creteil) BEGIN */
@@ -248,7 +247,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 							if (eserver){
 								eserver->SetDynIP(dynip);
 								cur_server->SetDynIP(dynip);
-								theApp.amuledlg->serverwnd->serverlistctrl->RefreshServer(eserver);
+								Notify_ServerRefresh(eserver);	
 							}
 						}
 					}
@@ -347,7 +346,8 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				#endif
 				theApp.downloadqueue->AddDownDataOverheadServer(size);
 				CServer* cur_srv = (serverconnect) ? serverconnect->GetCurrentServer() : NULL;
-				theApp.amuledlg->searchwnd->LocalSearchEnd(theApp.searchlist->ProcessSearchanswer(packet,size,(cur_srv)?cur_srv->GetIP():0,(cur_srv)?cur_srv->GetPort():0));
+				theApp.searchlist->ProcessSearchanswer(packet,size,(cur_srv)?cur_srv->GetIP():0,(cur_srv)?cur_srv->GetPort():0);
+				Notify_SearchLocalEnd(-1);
 				break;
 			}
 			case OP_FOUNDSOURCES: {
@@ -384,7 +384,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 					update->SetUserCount(cur_user);
 					update->SetFileCount(cur_files);
 					theApp.amuledlg->ShowUserCount(cur_user, cur_files);
-					theApp.amuledlg->serverwnd->serverlistctrl->RefreshServer(update);
+					Notify_ServerRefresh(update);
 				}
 				break;
 			}
@@ -428,7 +428,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				temp[num2]=0; //close the string
 				update->SetDescription(char2unicode(temp));
 				theApp.amuledlg->ShowConnectionState(true,update->GetListName());
-				theApp.amuledlg->serverwnd->serverlistctrl->RefreshServer(update);
+				Notify_ServerRefresh(update);
 				delete[] temp;
 				delete[] buffer;
 				break;
