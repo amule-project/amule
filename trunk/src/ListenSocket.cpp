@@ -160,9 +160,10 @@ void CClientReqSocket::Delete_Timed()
 */
 void CClientReqSocket::Safe_Delete()
 {
-		//deltimer = ::GetTickCount();
-		// if (m_hSocket != INVALID_SOCKET)
-		//  ShutDown(2);
+		// Paranoia is back.
+		SetNotify(0);
+		Notify(FALSE);		
+	
 		if (client) {
 			client->socket = NULL;
 		}
@@ -1830,9 +1831,11 @@ void CListenSocket::Process()
 		opensockets++;
 		
 		if (!cur_sock->OnDestroy()) {
-			cur_sock->CheckTimeOut();
-		} else if (cur_sock->deletethis) {
-			cur_sock->Destroy();
+			if (cur_sock->deletethis) {
+				cur_sock->Destroy();
+			} else {
+				cur_sock->CheckTimeOut();
+			}
 		}
 	}
 	if ((GetOpenSockets()+5 < app_prefs->GetMaxConnections() || theApp.serverconnect->IsConnecting()) && !bListening) {
