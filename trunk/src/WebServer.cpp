@@ -114,20 +114,35 @@ wxString _SpecialChars(wxString str) {
 
 uint32 GetHigherPrio(uint32 prio, bool autoprio)
 {
-	uint32 upperpriority = PR_LOW;
 	if (autoprio) {
-		upperpriority = PR_AUTO;
+		return PR_LOW;
 	} else {
 		switch (prio) {
-			case PR_LOW: upperpriority = PR_NORMAL; break;
-			case PR_NORMAL: upperpriority = PR_HIGH; break;
-			case PR_HIGH: upperpriority = PR_VERYHIGH; break;
-			case PR_VERYHIGH: upperpriority = PR_AUTO; break;
-			case PR_VERYLOW: upperpriority = PR_LOW; break;
-			case PR_AUTO: upperpriority = PR_AUTO; break;
+			case PR_LOW: return PR_NORMAL;
+			case PR_NORMAL: return PR_HIGH;
+			case PR_HIGH: return PR_AUTO;
+			case PR_AUTO: return PR_LOW;
+			default: return PR_AUTO;
 		}
 	}
-	return upperpriority;
+}
+
+uint32 GetHigherPrioShared(uint32 prio, bool autoprio)
+{
+	if (autoprio) {
+		return PR_VERYLOW;
+	} else {
+		switch (prio) {
+			case PR_VERYLOW: return PR_LOW;
+			case PR_LOW: return PR_NORMAL;
+			case PR_NORMAL: return PR_HIGH;
+			case PR_HIGH: return PR_VERYHIGH;
+			case PR_VERYHIGH: return PR_POWERSHARE;
+			case PR_POWERSHARE: return PR_AUTO;
+			case PR_AUTO: return PR_VERYLOW;
+			default: return PR_AUTO;
+		}
+	}
 }
 
 wxString Prio2Str(uint32 nFilePriority, bool bFileAutoPriority)
@@ -135,42 +150,57 @@ wxString Prio2Str(uint32 nFilePriority, bool bFileAutoPriority)
 	wxString sFilePriority;
 	switch (nFilePriority) {
 		case PR_VERYLOW:
-			sFilePriority = wxT("Very Low"); break;
+			sFilePriority = _("Very Low"); break;
 		case PR_LOW:
-			sFilePriority = wxT("Low"); break;
+			sFilePriority = _("Low"); break;
 		case PR_NORMAL:
-			sFilePriority = wxT("Normal"); break;
+			sFilePriority = _("Normal"); break;
 		case PR_HIGH:
-			sFilePriority = wxT("High"); break;
+			sFilePriority = _("High"); break;
 		case PR_VERYHIGH:
-			sFilePriority = wxT("Very High"); break;
+			sFilePriority = _("Very High"); break;
 		case PR_POWERSHARE:
-			sFilePriority = wxT("PowerShare[Release]"); break;
+			sFilePriority = _("Release"); break;
 		default:
 			sFilePriority = wxT("-"); break;
 	}
 	if ( bFileAutoPriority ) {
-		sFilePriority += wxT(" Auto");
+		sFilePriority += _(" Auto");
 	}
 	return sFilePriority;
 }
 
 uint32 GetLowerPrio(uint32 prio, bool autoprio)
 {
-	uint32 lesserpriority = PR_LOW;
 	if (autoprio) {
-		lesserpriority = PR_VERYHIGH;
+		return PR_HIGH;
 	} else {
 		switch (prio) {
-			case PR_LOW: lesserpriority = PR_VERYLOW; break;
-			case PR_NORMAL: lesserpriority = PR_LOW; break;
-			case PR_HIGH: lesserpriority = PR_NORMAL; break;
-			case PR_VERYHIGH: lesserpriority = PR_HIGH; break;
-			case PR_VERYLOW: lesserpriority = PR_VERYLOW; break;
-			case PR_AUTO: lesserpriority = PR_VERYHIGH; break;
+			case PR_LOW: return PR_AUTO;
+			case PR_NORMAL: return PR_LOW;
+			case PR_HIGH: return PR_NORMAL;
+			case PR_AUTO: return PR_HIGH;
+			default: return PR_AUTO;
 		}
 	}
-	return lesserpriority;
+}
+
+uint32 GetLowerPrioShared(uint32 prio, bool autoprio)
+{
+	if (autoprio) {
+		return PR_POWERSHARE;
+	} else {
+		switch (prio) {
+			case PR_VERYLOW: return PR_AUTO;
+			case PR_LOW: return PR_VERYLOW;
+			case PR_NORMAL: return PR_LOW;
+			case PR_HIGH: return PR_NORMAL;
+			case PR_VERYHIGH: return PR_HIGH;
+			case PR_POWERSHARE: return PR_VERYHIGH;
+			case PR_AUTO: return PR_POWERSHARE;
+			default: return PR_AUTO;
+		}
+	}
 }
 
 CWebServer::CWebServer(CamulewebApp *webApp, const wxString& templateDir):
@@ -1375,11 +1405,11 @@ wxString CWebServer::_GetSharedFilesList(ThreadData Data) {
 
 		HTTPProcessData.Replace(wxT("[PriorityUpLink]"),
 			wxT("hash=") +  i->sFileHash + wxString::Format(wxT("&setpriority=%i"),
-				GetHigherPrio(i->nFilePriority, i->bFileAutoPriority)));
+				GetHigherPrioShared(i->nFilePriority, i->bFileAutoPriority)));
 
 		HTTPProcessData.Replace(wxT("[PriorityDownLink]"),
 			wxT("hash=") +  i->sFileHash + wxString::Format(wxT("&setpriority=%i"),
-				GetLowerPrio(i->nFilePriority, i->bFileAutoPriority)));
+				GetLowerPrioShared(i->nFilePriority, i->bFileAutoPriority)));
 
 		sSharedList += HTTPProcessData;
 		i++;
