@@ -127,9 +127,6 @@ bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, uint
 		switch(opcode) {
 			case OP_REASKFILEPING: {
 				theApp.statistics->AddDownDataOverheadFileRequest(size);
-				if (size != 16) {
-					break;
-				}
 				
 				CSafeMemFile data_in((byte*)packet, size);
 				byte reqfilehash[16];
