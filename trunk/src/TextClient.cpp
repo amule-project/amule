@@ -273,6 +273,10 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			request = new CECPacket(EC_OP_STAT_REQ);
 			break;
 			
+		case CMD_ID_SHUTDOWN:
+			request = new CECPacket(CMD_ID_SHUTDOWN);
+			break;
+
  		case CMD_ID_SRVSTAT:
 		// kept for backwards compatibility only (now in Stats)
 			msg = wxT("CONNSTAT");
@@ -458,6 +462,7 @@ void CamulecmdApp::ShowHelp() {
 	Show(wxString(wxT("IPLevel [")) + wxString(_("level")) + wxString(_("]:\t")) + wxString(_("Shows/Sets current IP Filter level.\n")));
 	Show(wxString(wxT("Help:\t\t\t")) + wxString(_("Shows this help.\n")));	
 	Show(wxString(wxT("Quit:\t\t\t")) + wxString(_("Exits Textclient.\n")));
+	Show(wxString(wxT("Shutdown:\t\t\t")) + wxString(_("Shutdown amule\n")));
 	Show(_("\n----------------------------> End of listing <----------------------------------\n"));
 }
 
