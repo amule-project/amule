@@ -17,11 +17,15 @@
 //along with this program; if not, write to the Free Software
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+#include <wx/defs.h>		// Needed before any other wx/*.h
 #ifdef __WXMAC__
 	#include <wx/wx.h>
 #endif
-#include <wx/defs.h>		// Needed before any other wx/*.h
+#ifdef __WXMSW__
+	#include <wx/wx.h>
+#endif
 #include <wx/settings.h>	// Needed for wxSYS_COLOUR_WINDOW
+#include <wx/accel.h>
 
 #include "ChatWnd.h"		// Interface declarations.
 #include "amule.h"			// Needed for theApp
@@ -38,7 +42,7 @@ BEGIN_EVENT_TABLE(CChatWnd, wxPanel)
 	EVT_BUTTON(IDC_CSEND, CChatWnd::OnBnClickedCsend)
 	EVT_BUTTON(IDC_CCLOSE, CChatWnd::OnBnClickedCclose)
 	EVT_TEXT_ENTER(IDC_CMESSAGE, CChatWnd::OnBnClickedCsend)
-	
+
 	EVT_RIGHT_DOWN(CChatWnd::OnRMButton)
 
 	EVT_MENU(MP_CLOSE_TAB, CChatWnd::OnPopupClose)
@@ -88,7 +92,7 @@ void CChatWnd::OnRMButton(wxMouseEvent& evt)
 	if( !chatselector->GetPageCount() ) {
 		return;
 	}
-	
+
 	// Translate the global position to a position relative to the notebook
 	wxPoint newpt=((wxWindow*)evt.GetEventObject())->ClientToScreen( evt.GetPosition() );
 	newpt = ScreenToClient(newpt);
@@ -99,9 +103,9 @@ void CChatWnd::OnRMButton(wxMouseEvent& evt)
 		menu->Append(MP_CLOSE_TAB, wxString(_("Close tab")));
 		menu->Append(MP_CLOSE_ALL_TABS, wxString(_("Close all tabs")));
 		menu->Append(MP_CLOSE_OTHER_TABS, wxString(_("Close other tabs")));
-	
+
 		PopupMenu(menu, newpt);
-	
+
 		delete menu;
 	} else {
 		evt.Skip();
@@ -124,14 +128,14 @@ void CChatWnd::OnPopupCloseAll(wxCommandEvent& WXUNUSED(evt))
 void CChatWnd::OnPopupCloseOthers(wxCommandEvent& WXUNUSED(evt))
 {
 	wxNotebookPage* current = chatselector->GetPage( chatselector->GetSelection() );
-	
+
 	int i = 0;
 	while ( i < chatselector->GetPageCount() ) {
 		if ( current == chatselector->GetPage( i ) ) {
 			i++;
 			continue;
 		}
-		
+
 		chatselector->DeletePage( i );
 	}
 }
