@@ -41,7 +41,7 @@
 #include "ListenSocket.h"	// Needed for CClientReqSocket
 #include "opcodes.h"		// Needed for OP_*
 #include "updownclient.h"	// Needed for CUpDownClient
-
+#include <wx/tokenzr.h>
 
 //#define DEBUG_LOCAL_CLIENT_PROTOCOL
 //#define __PACKET_DEBUG__
@@ -623,8 +623,15 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer, bool OSInfo) {
 		
 		data->WriteUInt32(1); // One Tag (OS_INFO)
 		
-		CTag tag1(ET_OS_INFO,wxGetOsDescription());
-		tag1.WriteTagToFile(data);
+		wxStringTokenizer tkz(wxGetOsDescription(), wxT(" "));
+		
+		if (tkz.HasMoreTokens()) {
+			CTag tag1(ET_OS_INFO,tkz.GetNextToken());
+			tag1.WriteTagToFile(data);
+		} else {
+			CTag tag1(ET_OS_INFO,wxT("Unknown"));
+			tag1.WriteTagToFile(data);
+		}
 		
 	} else {
 		
