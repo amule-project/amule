@@ -43,6 +43,7 @@
 #include "PartFile.h"		// Needed for PartFile
 #include "server.h"		// Needed for CServer
 
+
 CSharedFileList::CSharedFileList(CPreferences* in_prefs,CServerConnect* in_server,CKnownFileList* in_filelist){
 	app_prefs = in_prefs;
 	server = in_server;
@@ -90,7 +91,10 @@ void CSharedFileList::FindSharedFiles() {
 	uint32 newFiles = CAddFileThread::GetFileCount();
 	if (!newFiles) {
 		AddLogLineM(false, wxString::Format(_("Found %i known shared files"),m_Files_map.size()));
-	} else {
+		// No new files, run AICH thread
+		theApp.RunAICHThread();
+	} else {	
+		// New files, AICH thread will be run at the end of the hashing thread.
 		AddLogLineM(false, wxString::Format(_("Found %i known shared files, %i unknown"),m_Files_map.size(),newFiles));
 	}
 }

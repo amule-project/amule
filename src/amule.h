@@ -171,6 +171,8 @@ public:
 	wxString	GenFakeCheckUrl(const CAbstractFile *f);
 	wxString        GenFakeCheckUrl2(const CAbstractFile *f);
 	
+	void RunAICHThread();
+	
 	void		QueueLogLine(bool addtostatusbar, const wxString& line);
 	void		FlushQueuedLogLines();
 		

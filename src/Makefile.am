@@ -169,6 +169,7 @@ amule_SOURCES = ListenSocket.cpp \
 	amuleDlg.cpp 
 
 amuled_SOURCES = ListenSocket.cpp \
+	AICHSyncThread.cpp \
         ECSocket.cpp \
         EMSocket.cpp \
         AddFileThread.cpp \
