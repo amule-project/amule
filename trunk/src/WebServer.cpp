@@ -55,6 +55,12 @@
 #include "types.h"
 #include "WebSocket.h"		// Needed for StopSockets()
 #include "ECcodes.h"
+
+#ifndef __WXMSW__
+	#include "netinet/in.h"	// Needed for ntohl()
+#else
+	#include "winsock.h"
+#endif
 //-------------------------------------------------------------------
 
 // Initialization of the static MyTimer member variables.
@@ -1382,9 +1388,9 @@ wxString CWebServer::_GetGraphs(ThreadData Data) {
 		}
 		for (unsigned int i = 0; i < numItems;) {
 			UpDown *dataLine = new UpDown;
-			dataLine->download = data[i++];
-			dataLine->upload = data[i++];
-			dataLine->connections = data[i++];
+			dataLine->download = ntohl(data[i++]);
+			dataLine->upload = ntohl(data[i++]);
+			dataLine->connections = ntohl(data[i++]);
 			m_Params.PointsForWeb.Add(dataLine);
 			while (m_Params.PointsForWeb.GetCount() > m_nGraphWidth) {
 				delete m_Params.PointsForWeb[0];
