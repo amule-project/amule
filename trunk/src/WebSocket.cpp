@@ -382,7 +382,7 @@ void CWebSocket::SendData(const void* pData, wxUint32 dwDataSize) {
         if (!m_pHead) {
             // try to send it directly
 			m_hSocket->Write((const char*) pData, dwDataSize);
-			int nRes = m_hSocket->LastCount();
+			uint32 nRes = m_hSocket->LastCount();
             if (((nRes < 0) || (nRes > dwDataSize)) && m_hSocket->Error() && (m_hSocket->LastError() != wxSOCKET_WOULDBLOCK))
                 m_bValid = false;
             else {
