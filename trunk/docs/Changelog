@@ -207,6 +207,8 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		disconnect suddenly.
 		* Spec file does not need autogen.sh, as noticed by
 		GonoszTopi.
+		* Removed krb5-libs require and krb5-devel buildprereq.
+		curl-lib and curl-devel is enough.
 
 	volpol:
 		* Patch to fix use of deprecated functions in wxGTK-2.5.3.

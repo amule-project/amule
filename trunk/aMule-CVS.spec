@@ -12,8 +12,8 @@ URL:         http://www.amule.org
 Source:      aMule-%{version}-%{release}.tar.bz2
 Prefix:      %{_prefix}
 BuildRoot:   %{_builddir}/%{name}-%{version}-root
-Requires:    wxGTK >= 2.4.2, wxBase >= 2.4.2, krb5-libs >= 1.3.1, curl >= 7.10.6
-BuildPreReq: wxGTK-devel >= 2.4.2, krb5-devel >= 1.3.1, grep, curl-devel >= 7.10.6, automake >= 1.7
+Requires:    wxGTK >= 2.4.2, wxBase >= 2.4.2, curl >= 7.10.6
+BuildPreReq: wxGTK-devel >= 2.4.2, grep, curl-devel >= 7.10.6, automake >= 1.7
 Provides:    %{name}
 Obsoletes:   %{name}
 
@@ -87,6 +87,10 @@ CFLAGS="$RPM_OPT_FLAGS" ./configure \
 %{_datadir}/amule/webserver/*
 
 %changelog
+* Mon Mar 21 2005 Marcelo Jimenez <phoenix@amule.org>
+- Removed krb5-libs require and krb5-devel buildprereq. curl-lib and 
+curl-devel is enough.
+
 * Tue Mar 08 2005 Marcelo Jimenez <phoenix@amule.org>
 - Made it work with cvs snapshots at their very same day.
 
