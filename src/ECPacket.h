@@ -31,38 +31,34 @@
 #undef KEEP_PARTIAL_PACKETS
 
 
-/**
- * taglist_t
- *
- * Type of ECTag::m_tagList
- *
- */
 class CECTag;
+class ECSocket;
+class wxSocketBase;
 
+
+/**
+ * Type of ECTag::m_tagList
+ */
 typedef CECTag* (*_taglist_t)[];
 
 
 /**
  * High level EC packet TAGs handler class
- *
  */
-class ECSocket;
-class wxSocketBase;
-class CECPacket;
 
 class CECTag {
 	public:
-				CECTag(const ec_tagname_t name, const ec_taglen_t length, const void *data, bool copy = true);
-				CECTag(const ec_tagname_t name, const wxString& data);
+				CECTag(ec_tagname_t name, unsigned int length, const void *data, bool copy = true);
+				CECTag(ec_tagname_t name, const wxString& data);
 				CECTag(const CECTag& tag);
-				~CECTag();
+				~CECTag(void);
 		bool		AddTag(const CECTag& tag);
-		CECTag *	GetTagByIndex(const unsigned int index) const { return ((index >= m_tagCount) ? NULL : (*m_tagList)[index]); }
-		CECTag *	GetTagByName(const ec_tagname_t name) const;
+		CECTag *	GetTagByIndex(unsigned int index) const { return ((index >= m_tagCount) ? NULL : (*m_tagList)[index]); }
+		CECTag *	GetTagByName(ec_tagname_t name) const;
 		uint16		GetTagCount(void) const { return m_tagCount; }
 		const void *	GetTagData(void) const { return m_tagData; }
 		uint16		GetTagDataLen(void) const { return m_dataLen; }
-		uint32		GetTagLen(void);
+		uint32		GetTagLen(void) const;
 		ec_tagname_t	GetTagName(void) const { return m_tagName; }
 		wxString	GetTagString(void) const { return wxString(wxConvUTF8.cMB2WC((const char *)m_tagData), aMuleConv); }
 	protected:
@@ -73,7 +69,6 @@ class CECTag {
 		int		m_error;
 	private:
 		ec_tagname_t	m_tagName;
-		uint32		m_tagLen;
 		uint16		m_tagCount;
 		unsigned int	m_dataLen;
 		const void *	m_tagData;
@@ -85,20 +80,19 @@ class CECTag {
 
 /**
  * High level EC packet handler class
- *
  */
 
 class CECPacket : private CECTag {
 	friend class ECSocket;
 	public:
-				CECPacket(const ec_opcode_t opCode) : CECTag(0, 0, NULL, false), m_opCode(opCode) {};
-				~CECPacket() {};
+				CECPacket(ec_opcode_t opCode) : CECTag(0, 0, NULL, false), m_opCode(opCode) {};
+				~CECPacket(void) {};
 				CECTag::AddTag;
 				CECTag::GetTagByIndex;
 				CECTag::GetTagByName;
 				CECTag::GetTagCount;
 		ec_opcode_t	GetOpCode(void) const { return m_opCode; }
-		uint32		GetPacketLength(void) { return CECTag::GetTagLen(); }
+		uint32		GetPacketLength(void) const { return CECTag::GetTagLen(); }
 	private:
 				CECPacket(wxSocketBase *sock, ECSocket& socket);
 		bool		WritePacket(wxSocketBase *sock, ECSocket& socket) const;

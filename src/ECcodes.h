@@ -28,7 +28,7 @@ typedef uint8 ec_opcode_t;
 typedef uint8 ec_tagname_t;
 typedef uint16 ec_taglen_t;
 
-/*
+/**
  * Type to hold EC Protocol Version information
  */
 typedef struct {
@@ -37,11 +37,14 @@ typedef struct {
 } EC_Version_t;
 
 /**
- * bool HasTagCount(const ec_tagname_t tagName)
+ * Checks for a TAGCOUNT field presence.
  *
  * Given a tag name, it returns whether the tag contains a
  * TAGCOUNT field, and thus can contain child tags.
  *
+ * @param tagName TAG name to check
+ *
+ * @return Whether the a TAG with the specified name has a TAGCOUNT field.
  */
 
 inline bool HasTagCount(const ec_tagname_t tagName) { return (tagName & 0x80) ? true : false; }
@@ -71,7 +74,9 @@ enum {
 	EC_TAG_STRING		= 0x0001,
 	EC_TAG_PASSWD_HASH	= 0x0002,
 	EC_TAG_CLIENT_NAME	= 0x0003,
-	EC_TAG_PROTOCOL_VERSION	= 0x0004
+	EC_TAG_CLIENT_VERSION	= 0x0004,
+	EC_TAG_CLIENT_MOD	= 0x0005,
+	EC_TAG_PROTOCOL_VERSION	= 0x0006
 };
 
 #endif	/* ECCODES_H */
