@@ -419,6 +419,7 @@ wxThread::ExitCode CAddFileThread::Entry()
 				byte hash[16];
 	
 				knownfile->CreateHashFromString( data, len, hash, NULL );
+				delete [] data;
 
 				knownfile->m_abyFileHash.SetHash( (uchar*)hash );
 			}
