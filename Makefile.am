@@ -4,7 +4,7 @@ EXTRA_DIST = config.rpath mkinstalldirs  AUTHORS COPYING INSTALL ChangeLog-UNSTA
 	TODO amule.desktop amule.xpm ED2K-Links.HOWTO Makengfile README.makeng \
 	config.h.in Compilation.flags.in
 
-icon_DATA = amule.xpm
+icon_DATA = amule.xpm src/utils/cas/stats.png
 icondir = $(datadir)/pixmaps
 
 util_DATA = amule.desktop
