@@ -26,12 +26,12 @@
 #include <wx/settings.h>
 
 #include "CommentDialogLst.h"	// Interface declarations
+#include "muuli_wdr.h"		// Needed for commentLstDlg
 #include "otherfunctions.h"	// Needed for GetRateString
 #include "PartFile.h"		// Needed for CPartFile
 #include "opcodes.h"		// Needed for SOURCESSLOTS
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "CString.h"	// Needed for CString
-#include "muuli_wdr.h"		// Needed for commentLstDlg
 
 //IMPLEMENT_DYNAMIC(CCommentDialogLst, CDialog)
 CCommentDialogLst::CCommentDialogLst(wxWindow*parent,CPartFile* file)
