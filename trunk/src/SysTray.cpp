@@ -19,9 +19,6 @@
 
 // this file will implement GNOME/KDE compatible system tray icon
 
-#ifndef __SYSTRAY_DISABLED__
-
-
 #include <libintl.h>
 #include <clocale>		// Needed for setlocale(3)
 #ifndef __WXMSW__
@@ -837,5 +834,3 @@ CSysTray::~CSysTray() {
 }
 
 #endif // __WXGTK__
-
-#endif // __SYSTRAY_DISABLED__
