@@ -796,7 +796,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 		}
 		if (item.Left(14) == "LOG ADDLOGLINE") {
 			if (item.Length() > 15) {
-				theApp.amuledlg->AddLogLine(false,item.Mid(15));
+				theApp.amuledlg->AddLogLine(false,"%s", item.Mid(15).c_str());
 			}
 			return("");
 		}
@@ -1192,7 +1192,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 					int separator = item.Mid(19).Find(" ");
 					if (item.Mid(19, separator).IsNumber()) {
 						flag = (atoi(item.Mid(19, separator).GetData()) == 0) ? false : true;
-						theApp.amuledlg->AddLogLine(flag,item.Mid(19+separator+1));
+						theApp.amuledlg->AddLogLine(flag,"%s", item.Mid(19+separator+1).c_str());
 						return("Line Logged");
 					}
 				}
