@@ -59,6 +59,13 @@ using namespace otherfunctions;
 
 std::list<CSearchListCtrl*> CSearchListCtrl::s_lists;
 
+enum SearchListColumns {
+	ID_SEARCH_COL_NAME = 0,
+	ID_SEARCH_COL_SIZE,
+	ID_SEARCH_COL_SOURCES,
+	ID_SEARCH_COL_TYPE,
+	ID_SEARCH_COL_FILEID
+};
 
 CSearchListCtrl::CSearchListCtrl( wxWindow* parent, wxWindowID winid, const wxPoint& pos, const wxSize& size, long style, const wxValidator& validator, const wxString& name )
 	: CMuleListCtrl( parent, winid, pos, size, style, validator, name )
@@ -66,11 +73,11 @@ CSearchListCtrl::CSearchListCtrl( wxWindow* parent, wxWindowID winid, const wxPo
 	// Setting the sorter function.
 	SetSortFunc( SortProc );
 
-	InsertColumn( 0, _("File Name"), wxLIST_FORMAT_LEFT, 500);
-	InsertColumn( 1, _("Size"),      wxLIST_FORMAT_LEFT, 100);
-	InsertColumn( 2, _("Sources"),   wxLIST_FORMAT_LEFT, 50);
-	InsertColumn( 3, _("Type"),      wxLIST_FORMAT_LEFT, 65);
-	InsertColumn( 4, _("FileID"),    wxLIST_FORMAT_LEFT, 280);
+	InsertColumn( ID_SEARCH_COL_NAME,    _("File Name"), wxLIST_FORMAT_LEFT, 500);
+	InsertColumn( ID_SEARCH_COL_SIZE,    _("Size"),      wxLIST_FORMAT_LEFT, 100);
+	InsertColumn( ID_SEARCH_COL_SOURCES, _("Sources"),   wxLIST_FORMAT_LEFT, 50);
+	InsertColumn( ID_SEARCH_COL_TYPE,    _("Type"),      wxLIST_FORMAT_LEFT, 65);
+	InsertColumn( ID_SEARCH_COL_FILEID,  _("FileID"),    wxLIST_FORMAT_LEFT, 280);
 
 	m_nResultsID = 0;
 
@@ -120,17 +127,17 @@ void CSearchListCtrl::AddResult(CSearchFile* toshow)
 	SetItemData( newid, (long)toshow );
 
 	// Filesize
-	SetItem(newid, 1, CastItoXBytes( toshow->GetFileSize() ) );
+	SetItem(newid, ID_SEARCH_COL_SIZE, CastItoXBytes( toshow->GetFileSize() ) );
 
 	// Source count
 	wxString temp = wxString::Format( wxT("%d (%d)"), toshow->GetSourceCount(), toshow->GetCompleteSourceCount() );
-	SetItem( newid, 2, temp );
+	SetItem( newid, ID_SEARCH_COL_SOURCES, temp );
 
 	// File-type
-	SetItem( newid, 3, GetFiletypeByName( toshow->GetFileName() ) );
+	SetItem( newid, ID_SEARCH_COL_TYPE, GetFiletypeByName( toshow->GetFileName() ) );
 
 	// File-hash
-	SetItem(newid, 4, toshow->GetFileHash().Encode() );
+	SetItem(newid, ID_SEARCH_COL_FILEID, toshow->GetFileHash().Encode() );
 
 	// Set the color of the item
 	UpdateColor( newid );
@@ -155,7 +162,7 @@ void CSearchListCtrl::UpdateColor( long index )
 {
 	wxListItem item;
 	item.SetId( index );
-	item.SetColumn( 1 );
+	item.SetColumn( ID_SEARCH_COL_SIZE );
 	item.SetMask( wxLIST_MASK_STATE|wxLIST_MASK_TEXT|wxLIST_MASK_IMAGE|wxLIST_MASK_DATA|wxLIST_MASK_WIDTH|wxLIST_MASK_FORMAT );
 
 	if ( GetItem(item) ) {
@@ -209,8 +216,9 @@ void CSearchListCtrl::ShowResults( long ResultsID )
 		if ( it != theApp.searchlist->m_Results.end() ) {
 			CSearchList::SearchList& list = it->second;
 
-			for ( unsigned int i = 0; i < list.size(); i++ )
+			for ( unsigned int i = 0; i < list.size(); i++ ) {
 				AddResult( list[i] );
+			}
 		}
 	}
 }
@@ -229,37 +237,64 @@ int CSearchListCtrl::SortProc( long item1, long item2, long sortData )
 
 	// Modifies the result, 1 for ascending, -1 for decending
 	int modifier = 1;
-	if ( sortData >= 1000 ) {
+	bool alternate = false;
+
+	wxASSERT( SORT_OFFSET_ASC < SORT_OFFSET_DEC );
+	wxASSERT( SORT_OFFSET_DEC < SORT_OFFSET_ALT_ASC );
+	wxASSERT( SORT_OFFSET_ALT_ASC < SORT_OFFSET_ALT_DEC );
+
+	if ( sortData >= SORT_OFFSET_ALT_DEC ) {
 		modifier = -1;
-		sortData -= 1000;
+		alternate = true;
+		sortData -= SORT_OFFSET_ALT_DEC;
+	}
+
+	if ( sortData >= SORT_OFFSET_ALT_ASC ) {
+		alternate = true;
+		sortData -= SORT_OFFSET_ALT_ASC;
+	}
+
+	if ( sortData >= SORT_OFFSET_DEC ) {
+		modifier = -1;
+		sortData -= SORT_OFFSET_DEC;
 	}
 
 	switch ( sortData ) {
 		// Sort by filename
-		case 0:
+		case ID_SEARCH_COL_NAME:
 			return modifier * file1->GetFileName().CmpNoCase( file2->GetFileName() );
 
 		// Sort file-size
-		case 1:
+		case ID_SEARCH_COL_SIZE:
 			return modifier * CmpAny( file1->GetFileSize(), file2->GetFileSize() );
 
 		// Sort by sources
-		case 2:
-			{
-				int cmp = CmpAny( file1->GetSourceCount(), file2->GetSourceCount() );
+		case ID_SEARCH_COL_SOURCES: {
+			
+			int cmp = CmpAny( file1->GetSourceCount(), file2->GetSourceCount() );
 
-				if ( cmp == 0 )
-					cmp = CmpAny( file1->GetCompleteSourceCount(), file2->GetCompleteSourceCount() );
+			int cmp2 = CmpAny( file1->GetCompleteSourceCount(), file2->GetCompleteSourceCount() );
 
-				return modifier * cmp;
+			if ( alternate ) {
+				// Swap criterias
+				int temp = cmp2;
+				cmp2 = cmp;
+				cmp = temp;
 			}
+
+			if ( cmp == 0 ) {
+				cmp = cmp2;
+			}
+
+			return modifier * cmp;
+		}
 		
 		// Sort by file-types
-		case 3:
+		case ID_SEARCH_COL_TYPE:
 			return modifier *  GetFiletypeByName( file1->GetFileName() ).Cmp(GetFiletypeByName(file2->GetFileName()));
 
 		// Sort by file-hash
-		case 4:
+		case ID_SEARCH_COL_FILEID:
 			return modifier * file2->GetFileHash().Encode().Cmp( file1->GetFileHash().Encode() );
 
 		default:
@@ -433,4 +468,15 @@ void CSearchListCtrl::OnItemActivated( wxListEvent& WXUNUSED(event) )
 {
 	wxCommandEvent nullEvt;
 	theApp.amuledlg->searchwnd->OnBnClickedDownload(nullEvt);
+}
+
+bool CSearchListCtrl::AltSortAllowed( int column )
+{
+	switch ( column ) {
+		case ID_SEARCH_COL_SOURCES:
+			return true;
+		
+		default:
+			return false;
+	}
 }
