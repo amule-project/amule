@@ -1131,7 +1131,7 @@ void CStatisticsDlg::ShowStatistics()
 			stattree->AppendItem(cli10_2,cbuffer);
 		}
 		
-		wxASSERT((myStats[8] - total)>=0);
+		wxASSERT(((int)myStats[8] - (int)total)>=0);
 		
 		uint32 not_rec = (myStats[8] - total);
 		
