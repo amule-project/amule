@@ -264,13 +264,8 @@ public:
 	static const wxString&	ECPassword() { return s_ECPassword; }
 	// Madcat - Fast ED2K Links Handler Toggling
 	static bool	GetFED2KLH() { return s_FastED2KLinksHandler; }
-	static bool	BDlgTabsOnTop() { 
-#if (wxMINOR_VERSION > 4)
-		return true;
-#else
-		return false;
-#endif
-	}
+
+	static bool BDlgTabsOnTop() { return true; }
 	
 	// Kry - Ip filter On/Off
 	static bool GetIPFilterOn() { return s_IPFilterOn; }
