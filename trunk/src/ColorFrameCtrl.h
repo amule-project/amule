@@ -30,47 +30,26 @@
 // CColorFrameCtrl window
 
 class CColorFrameCtrl : public wxControl {
-// Construction
+
 public:
 	CColorFrameCtrl( wxWindow* parent, int id,int wid,int hei );
 
-// Attributes
-public:
 	void SetFrameColor(COLORREF color);
 	void SetBackgroundColor(COLORREF color);
 
-	// Operations
-public:
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CColorFrameCtrl)
-	public:
-	//virtual bool Create(DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, unsigned int nID=0);
-	//}}AFX_VIRTUAL
-
-// Implementation
-public:
 	COLORREF m_crBackColor;        // background color
 	COLORREF m_crFrameColor;       // frame color
 
 	virtual ~CColorFrameCtrl();
 
-	// Generated message map functions
 protected:
-	//{{AFX_MSG(CColorFrameCtrl)
-	//afx_msg void OnPaint();
+
 	void OnPaint(wxPaintEvent& evt);
 	void OnSize(wxSizeEvent& evt);
-	//ax_msg void OnSize(unsigned int nType, int cx, int cy); 
-	//}}AFX_MSG
-	//DECLARE_MESSAGE_MAP()
+
 	DECLARE_EVENT_TABLE()
 
-	  //CRect  m_rectClient;
-	  //CBrush m_brushBack;
-	  //CBrush m_brushFrame;
-	  RECT m_rectClient;
+	RECT m_rectClient;
 	wxBrush m_brushBack,m_brushFrame;
 };
 
