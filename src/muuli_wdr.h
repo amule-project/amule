@@ -465,20 +465,26 @@ wxSizer *PreferencesSecurityTab( wxWindow *parent, bool call_fit = TRUE, bool se
 #define IDC_SELOSDIR 10339
 wxSizer *PreferencesOnlineSigTab( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
+#define IDC_MSGFILTER 10340
+#define IDC_MSGFILTER_ALL 10341
+#define IDC_MSGFILTER_WORD 10342
+#define IDC_MSGWORD 10343
+wxSizer *PreferencesMessagesTab( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
+
 // Declare menubar functions
 
 // Declare toolbar functions
 
-#define ID_BUTTONCONNECT 10340
-#define ID_BUTTONSERVERS 10341
-#define ID_BUTTONKAD 10342
-#define ID_BUTTONSEARCH 10343
-#define ID_BUTTONTRANSFER 10344
-#define ID_BUTTONSHARED 10345
-#define ID_BUTTONMESSAGES 10346
-#define ID_BUTTONSTATISTICS 10347
-#define ID_BUTTONNEWPREFERENCES 10348
-#define ID_ABOUT 10349
+#define ID_BUTTONCONNECT 10344
+#define ID_BUTTONSERVERS 10345
+#define ID_BUTTONKAD 10346
+#define ID_BUTTONSEARCH 10347
+#define ID_BUTTONTRANSFER 10348
+#define ID_BUTTONSHARED 10349
+#define ID_BUTTONMESSAGES 10350
+#define ID_BUTTONSTATISTICS 10351
+#define ID_BUTTONNEWPREFERENCES 10352
+#define ID_ABOUT 10353
 void muleToolbar( wxToolBar *parent );
 
 // Declare bitmap functions
