@@ -2226,16 +2226,21 @@ bool CWebServer::_GetFileHash(wxString sHash, byte *FileHash) {
 wxString CWebServer::_GetSearch(ThreadData Data) {
 
 	wxString sSession = _ParseURL(Data, wxT("ses"));
+	wxString sCat = _ParseURL(Data, wxT("cat"));
 	wxString Out = m_Templates.sSearch;
 
 	wxString downloads=_ParseURLArray(Data,wxT("downloads"));
 	if (!downloads.IsEmpty() && IsSessionAdmin(Data,sSession) ) {
 		int brk;
+		long category = sCat.IsEmpty() ? 0 : StrToLong(sCat);
 		CECPacket dload_req(EC_OP_DOWNLOAD_SEARCH_RESULT);
 		while (downloads.Length()>0) {
 			brk=downloads.First(wxT("|"));
 			CMD4Hash file_hash(downloads.Left(brk));
-			dload_req.AddTag(CECTag(EC_TAG_KNOWNFILE, file_hash));
+			CECTag link_tag(EC_TAG_KNOWNFILE, file_hash);
+			link_tag.AddTag(CECTag(EC_TAG_PARTFILE_CAT, (uint8)category));
+			dload_req.AddTag(link_tag);
+			
 			downloads=downloads.Mid(brk+1);
 		}
 		CECPacket *dload_reply = webInterface->SendRecvMsg_v2(&dload_req);

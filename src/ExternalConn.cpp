@@ -731,7 +731,8 @@ CECPacket *Get_EC_Response_Search_Results_Download(const CECPacket *request)
 	for (int i = 0;i < request->GetTagCount();i++) {
 		const CECTag *tag = request->GetTagByIndex(i);
 		CMD4Hash hash = tag->GetMD4Data();
-		theApp.searchlist->AddFileToDownloadByHash(hash);
+		uint8 category = tag->GetTagByIndexSafe(0)->GetInt8Data();
+		theApp.searchlist->AddFileToDownloadByHash(hash, category);
 	}
 	return response;
 }
