@@ -481,7 +481,9 @@ void CUpDownClient::SetDownloadState(uint8 byNewState)
 			m_nDownloadState = byNewState;
 			for (POSITION pos = m_DownloadBlocks_list.GetHeadPosition();pos != 0; ) {
 				Requested_Block_Struct* cur_block = m_DownloadBlocks_list.GetNext(pos);
-				m_reqfile->RemoveBlockFromList(cur_block->StartOffset,cur_block->EndOffset);
+				if (m_reqfile) {
+					m_reqfile->RemoveBlockFromList(cur_block->StartOffset,cur_block->EndOffset);
+				}
 				delete cur_block;
 			}
 			m_DownloadBlocks_list.RemoveAll();
@@ -504,7 +506,9 @@ void CUpDownClient::SetDownloadState(uint8 byNewState)
 			bytesReceivedCycle = 0;
 			msReceivedPrev = 0;
 			if (byNewState == DS_NONE) {
-				m_reqfile->UpdatePartsFrequency( this, false );	// Decrement				
+				if (m_reqfile) {
+					m_reqfile->UpdatePartsFrequency( this, false );	// Decrement
+				}
 				m_downPartStatus.clear();
 				m_nPartCount = 0;
 			}
