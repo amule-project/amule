@@ -1,6 +1,6 @@
 #include <wx/version.h>
 
-#ifdef __WXMAC__
+#if defined(__WXMAC__) and !wxCHECK_VERSION(2,5,5)
 	#include "extern/listctrl.old.cpp"
 #elif wxCHECK_VERSION(2, 5, 4)
 	#include "extern/listctrl.254.cpp"
