@@ -439,8 +439,26 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 	return 0;
 }
 
+// Formats a filesize in bytes to make it suitable for displaying
+wxString CastItoXBytes( uint64 count )
+{
+
+        if (count < 1024)
+                return wxString::Format( wxT("%.0f %s"), (float)count, _("Bytes") );
+        else if (count < 1048576)
+                return wxString::Format( wxT("%.0f %s"), (float)count/1024, _("KB") );
+        else if (count < 1073741824)
+                return wxString::Format( wxT("%.2f %s"), (float)count/1048576, _("MB") );
+        else if (count < 1099511627776LL)
+                return wxString::Format( wxT("%.2f %s"), (float)count/1073741824, _("GB") );
+        else
+                return wxString::Format( wxT("%.3f %s"), (float)count/1099511627776LL, _("TB") );
+
+        return _("Error");
+}
+
 /*
- * Format EC packet into text form for output to consol
+ * Format EC packet into text form for output to console
  * 
  */
 wxString ECv2_Response2String(CECPacket *response)
@@ -467,7 +485,9 @@ wxString ECv2_Response2String(CECPacket *response)
 						(int)tag->GetTagByName(EC_TAG_PARTFILE_SOURCE_COUNT_XFER)->GetInt32Data(),
 						(int)tag->GetTagByName(EC_TAG_PARTFILE_SOURCE_COUNT)->GetInt32Data()) +
 					tag->GetTagByName(EC_TAG_PARTFILE_STATUS)->GetStringData();
-					
+					if ( tag->GetTagByName(EC_TAG_PARTFILE_STATUS)->GetStringData() == wxT("Downloading") ) {
+						s += wxT(" ") + CastItoXBytes(tag->GetTagByName(EC_TAG_PARTFILE_SPEED)->GetInt32Data()) + wxT("/sec");
+					}
 				s += _("\n");
 			}
 			break;
@@ -477,7 +497,9 @@ wxString ECv2_Response2String(CECPacket *response)
 				s += _("\n");
 				s += wxString::Format(wxT("%08x "), tag->GetTagByName(EC_TAG_ITEM_ID)->GetInt32Data()) +
 					tag->GetStringData() + wxT(" ") +
-					tag->GetTagByName(EC_TAG_PARTFILE)->GetStringData();
+					tag->GetTagByName(EC_TAG_PARTFILE)->GetStringData() + wxT(" ") +
+					CastItoXBytes(tag->GetTagByName(EC_TAG_PARTFILE_SIZE_XFER)->GetInt32Data()) + wxT(" ") +
+					CastItoXBytes(tag->GetTagByName(EC_TAG_PARTFILE_SPEED)->GetInt32Data()) + wxT("/sec");
 			}
 			break;
 		case EC_OP_SERVER_LIST:
