@@ -65,6 +65,8 @@ class CPreferencesRem : public CPreferences {
 		CRemoteConnect *m_conn;
 	public:
 		CPreferencesRem(CRemoteConnect *);
+		
+		bool LoadRemote();
 };
 
 //
@@ -262,6 +264,8 @@ class CRemoteContainer {
 class CServerConnectRem {
 		CRemoteConnect *m_Conn;
 		uint32 m_ID;
+		
+		CServer *m_CurrServer;
 	public:
 		CServerConnectRem(CRemoteConnect *);
 		bool ReQuery();
@@ -270,7 +274,7 @@ class CServerConnectRem {
 		bool IsConnecting() { return m_ID == 0xffffffff; }
 		bool IsLowID() { return m_ID < 16777216; }
 		uint32 GetClientID() { return m_ID; }
-		CServer *GetCurrentServer();
+		CServer *GetCurrentServer() { return m_CurrServer; }
 		
 		//
 		// Actions

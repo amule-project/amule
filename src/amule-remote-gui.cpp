@@ -237,6 +237,8 @@ bool CamuleRemoteGuiApp::OnInit()
 	serverlist->FullReload(EC_OP_GET_SERVER_LIST);
 	serverlist->ReloadControl();
 	
+	glob_prefs->LoadRemote();
+	
 	IsReady = true;
 	
 	// Start the Core Timer
