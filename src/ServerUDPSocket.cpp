@@ -174,10 +174,10 @@ void CServerUDPSocket::ProcessPacket(CSafeMemFile& packet, int16 size, int8 opco
 					uint8 fileid[16];
 					packet.ReadHash16(fileid);
 					if (CPartFile* file = theApp.downloadqueue->GetFileByID(fileid)) {
-						printf("Adding sources for file %s",unicode2char(file->GetFileName()));
+						printf("\tAdding sources for file %s\n",unicode2char(file->GetFileName()));
 						file->AddSources(packet, StringIPtoUint32(host), port-4);
 					} else {
-						printf("Sources received for unknown file\n");
+						printf("\tSources received for unknown file\n");
 						// skip sources for that file
 						uint8 count = packet.ReadUInt8();
 						packet.Seek(count*(4+2), wxFromCurrent);
@@ -189,14 +189,15 @@ void CServerUDPSocket::ProcessPacket(CSafeMemFile& packet, int16 size, int8 opco
 						uint8 new_opcode = packet.ReadUInt8();
 					
 						if (protocol != OP_EDONKEYPROT || new_opcode != OP_GLOBFOUNDSOURCES) {
-							printf("Server sources reply got additional bogus bytes\n");
+							printf("\tServer sources reply got additional bogus bytes\n");
 							break;
 						} else {
-							printf("Got server sources reply with additional packet\n");
+							printf("\tAdditional packet\n");
 						}
 					}
 				} while ((packet.GetPosition() + 2) < size);
 								
+				printf("Finished sources\n");
 				break;
 			}
 
@@ -307,8 +308,10 @@ void CServerUDPSocket::ProcessPacket(CSafeMemFile& packet, int16 size, int8 opco
 				printf("Unknown Server UDP opcode %x\n",opcode);
 		}
 	} catch(wxString error) {
+		printf("Brrrrrr wrong UDP packet from server! (%s)\n",unicode2char(error));
 		AddDebugLogLineM(false,wxT("Error while processing incoming UDP Packet: ")+error);
 	} catch(...) {
+		printf("Brrrrrr wrong UDP packet from server!\n");
 		AddDebugLogLineM(false,wxT("Error while processing incoming UDP Packet (Most likely a misconfigured server)"));
 	}
 	
