@@ -1725,7 +1725,8 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 				case MP_WS :
 					{
 					wxString feed = wxEmptyString;
-                    feed += wxString::Format("Feedback from: %s \r\n", theApp.glob_prefs->GetUserNick().c_str()); // edited by madcat	
+                    feed += wxString::Format("Feedback from: %s \r\n", theApp.glob_prefs->GetUserNick().c_str()); // edited by madcat
+					feed += wxString::Format("Client: aMule 2.0.0rc4 \r\n");	
 					feed += wxString::Format("File Name: %s \r\n", file->GetFileName().c_str());  
 					feed += wxString::Format("File size: %i MB\r\n", file->GetFileSize()/1048576).c_str(); 
 					feed += wxString::Format("Download: %i MB\r\n", file->GetCompletedSize()/1048576).c_str(); 
