@@ -61,7 +61,8 @@ public:
 	CKnownFileList*	filelist;
 	void	CreateOfferedFilePacket(CKnownFile* cur_file,CSafeMemFile* files, CServer* pServer, CUpDownClient* pClient);
 	uint64	GetDatasize();
-	uint16	GetCount()	{return m_Files_map.size(); }
+	uint32	GetCount()	{return m_Files_map.size(); }
+	uint32  GetFileCount()	{return m_Files_map.size(); }
 	void	UpdateItem(CKnownFile* toupdate);
 	void	AddFilesFromDirectory(wxString directory);
 	void    GetSharedFilesByDirectory(const wxString directory,CTypedPtrList<CPtrList, CKnownFile*>& list);
