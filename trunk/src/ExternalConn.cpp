@@ -2191,7 +2191,7 @@ ExternalConnServerThread::ExternalConnServerThread(ExternalConn *owner) : wxThre
 
 ExternalConnServerThread::~ExternalConnServerThread()
 {
-	m_ECServer->Destroy();
+	delete m_ECServer;
 }
 
 void *ExternalConnServerThread::Entry()
@@ -2224,7 +2224,6 @@ ExternalConnClientThread::ExternalConnClientThread(ExternalConn *owner, wxSocket
 
 ExternalConnClientThread::~ExternalConnClientThread()
 {
-	sock->Destroy();
 }
 
 void *ExternalConnClientThread::Entry()
@@ -2253,7 +2252,8 @@ void *ExternalConnClientThread::Entry()
 		if ( sock->WaitForLost(0, 0) ) {
 			printf("ExternalConnClientThread: connection closed\n");
 			delete sock;
-			break;
+			delete[] buf;
+			return 0;
 		}
 
 		uint16 len;
@@ -2275,6 +2275,7 @@ void *ExternalConnClientThread::Entry()
 		
 	}
   	delete[] buf;
-
+	delete sock;
+	
 	return 0;
 }
