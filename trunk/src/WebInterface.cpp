@@ -270,20 +270,11 @@ bool CamulewebApp::GetTemplateDir(const wxString& templateName, wxString& templa
 		templateDir = dir;
 		return true;
 	}
-#ifdef __linux__
-	dir = wxT("/usr/share/amule/webserver");
+	dir = wxT(WEBSERVERDIR);
 	if (CheckDirForTemplate(dir, templateName)) {
 		templateDir = dir;
 		return true;
 	}
-	dir = wxT("/usr/local/share/amule/webserver");
-	if (CheckDirForTemplate(dir, templateName)) {
-		templateDir = dir;
-		return true;
-	}
-#else
-	#warning Put OS dependant default template search paths here
-#endif
 	return false;
 }
 
