@@ -503,12 +503,19 @@ void CamuleDlg::AddLogLine(bool addtostatusbar, const wxChar* line, ...)
 
 	// Write into log file
 	wxString filename = theApp.ConfigDir + wxT("logfile");
-	wxFile file(filename, wxFile::write_append);
-
-	if ( file.IsOpened() ) {
-		file.Write(bufferline.c_str());
-		file.Close();
+	wxTextFile file(filename);
+	
+	if (!file.Open()) {
+		if (!file.Create()) {
+			printf("Error creating log file!\n");
+			return;
+		}
 	}
+
+	file.AddLine(bufferline);
+	file.Write();
+	file.Close();
+
 }
 
 
