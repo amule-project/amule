@@ -1,4 +1,12 @@
-bin_PROGRAMS = alc
+bin_PROGRAMS =
+
+if ALC
+bin_PROGRAMS += alc
+endif
+
+if ALCC
+bin_PROGRAMS += alcc
+endif
 
 alc_SOURCES = alc.cpp \
 		alcframe.cpp \
@@ -18,9 +26,6 @@ alc_CFLAGS = $(WX_CFLAGS)
 alc_CXXFLAGS = $(WX_CXXFLAGS)
 alc_LDADD = $(WX_LIBS)
 
-if ALCC
-
-bin_PROGRAMS += alcc
 
 alcc_SOURCES = alcc.cpp \
 		ed2khash.cpp \
@@ -29,5 +34,3 @@ alcc_SOURCES = alcc.cpp \
 alcc_CFLAGS = $(WXBASE_CFLAGS)
 alcc_CXXFLAGS = $(WXBASE_CXXFLAGS)
 alcc_LDADD = $(WXBASE_LIBS)
-
-endif
