@@ -107,6 +107,7 @@ public:
 		
 	int Id() 								{ return id; }
 	virtual int GetMemValue()				{ return 0; }
+	virtual char* GetMemStringValue()	{ return NULL; }
 	virtual void SetMemValue(int val)		{}
 	virtual int GetCtrlValue()				{ return 0; }
 	virtual void SetCtrlValue(int val)		{}
@@ -521,7 +522,7 @@ public:
 			wxc = wxcText; 
 	}
 	
-
+	char* GetMemStringValue() { wxASSERT(pchSet); return pchSet; }
 	
 protected:
 	RseString() {};
@@ -1251,6 +1252,11 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent &event)
 	if (Prse(IDC_PERCENT)->WasChanged() || Prse(IDC_PROGBAR)->WasChanged()) {		
 		// Force upload of the donwload queue 
 		theApp.downloadqueue->UpdateDisplayedInfo(true);
+	}
+
+	if (Prse(IDC_OSDIR)->WasChanged()) {		
+		// Build the filenames for the two OS files
+		theApp.SetOSFiles(wxString(char2unicode(Prse(IDC_OSDIR)->GetMemStringValue())));
 	}
 	
     EndModal(ID_PREFS_OK_LEFT);

@@ -53,7 +53,6 @@
 	#include <wx/wx.h>
 #endif
 
-#include <wx/msgdlg.h>			// Needed for wxMessageBox
 #include <wx/config.h>
 #include <wx/clipbrd.h>			// Needed for wxClipBoard
 #include <wx/socket.h>			// Needed for wxSocket
@@ -65,7 +64,7 @@
 #include <wx/textfile.h>		// Needed for wxTextFile
 #include <wx/cmdline.h>			// Needed for wxCmdLineParser
 #include <wx/tokenzr.h>			// Needed for wxStringTokenizer
-	
+#include <wx/msgdlg.h>			// Needed for wxMessageBox
 
 #include "amule.h"				// Interface declarations.
 #include "GetTickCount.h"		// Needed for GetTickCount
@@ -464,6 +463,9 @@ bool CamuleApp::OnInit()
 	
 	// Load Preferences
 	glob_prefs = new CPreferences();
+
+	// Build the filenames for the two OS files
+	SetOSFiles(wxString(glob_prefs->GetOSDir()));
 
 	// Create the Core timer
 	core_timer=new wxTimer(this,ID_CORETIMER);
@@ -885,15 +887,11 @@ bool CamuleApp::CopyTextToClipboard(wxString strText)
 void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */) 
 {
 	// Do not do anything if online signature is disabled in Preferences
-	if (!glob_prefs->IsOnlineSignatureEnabled()) {
+	if (!glob_prefs->IsOnlineSignatureEnabled() || emulesig_path.IsEmpty()) {
+		// We do not need to check amulesig_path because if emulesig_path is empty,
+		// that means amulesig_path is empty too.
 		return;
 	}
-
-	// Build the filenames for the two files
-	char* emulesig_path = new char[strlen(glob_prefs->GetOSDir())+14];
-	char* amulesig_path = new char[strlen(glob_prefs->GetOSDir())+13];
-	sprintf(emulesig_path,"%s/onlinesig.dat",glob_prefs->GetOSDir());
-	sprintf(amulesig_path,"%s/amulesig.dat",glob_prefs->GetOSDir());
 
 	// Open both files for writing
 	CFile amulesig_out, emulesig_out;
@@ -1009,8 +1007,7 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 	// Close the files
 	emulesig_out.Close();
 	amulesig_out.Close();
-	delete[] emulesig_path;
-	delete[] amulesig_path;
+
 } //End Added By Bouc7
 
 // Gracefully handle fatal exceptions and print backtrace if possible
@@ -1429,6 +1426,18 @@ void CamuleApp::FlushQueuedLogLines() {
 	m_LogQueueLock.Leave();
 }
 
+void CamuleApp::SetOSFiles(const wxString new_path) {
+	if (::wxDirExists(new_path)) {
+		emulesig_path = new_path + wxT("/onlinesig.dat");
+		amulesig_path = new_path + wxT("/amulesig.dat");
+	} else {
+		::wxMessageBox(wxT("The folder for Online Signature files you specified is INVALID!\n OnlineSignature will be DISABLED until you fix it on preferences."), _("Error"), wxOK | wxICON_ERROR);
+		emulesig_path = wxEmptyString;
+		amulesig_path = wxEmptyString;
+	}
+}
+
+
 void CamuleApp::ListenSocketHandler(wxSocketEvent& event) {
 
 	wxASSERT(event.GetSocket()->IsKindOf(CLASSINFO(CListenSocket)));
@@ -1732,6 +1741,7 @@ void CamuleApp::OnFinishedCompletion(wxCommandEvent& evt)
 void CamuleApp::ShutDown() {
 	// Signal the hashing thread to terminate
 	m_app_state = APP_STATE_SHUTINGDOWN;
+	IsReady =  false;
 	amuledlg->Destroy();
 	if (CAddFileThread::IsRunning()) {
 		CAddFileThread::Shutdown(); 

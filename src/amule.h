@@ -201,7 +201,8 @@ public:
 #ifdef __DEBUG__
 	void AddSocketDeleteDebug(uint32 socket_pointer, uint32 creation_time);
 #endif
-
+	void SetOSFiles(const wxString new_path); 
+	
 protected:
 	// Socket handlers
 	void ListenSocketHandler(wxSocketEvent& event);
@@ -235,7 +236,10 @@ protected:
 	wxLocale		m_locale;
 
 	APPState			m_app_state;	
-	
+
+	wxString emulesig_path;
+	wxString amulesig_path;
+
 	DECLARE_EVENT_TABLE()
 };
 
