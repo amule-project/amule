@@ -599,10 +599,20 @@ bool CamuleApp::OnInit()
 	amuleIPV4Address myaddr;
 	myaddr.AnyAddress();
 
-	// Create listen socket 
+	// Create the ListenSocket (aMule TCP socket)
 	printf("*** TCP socket at %d\n", thePrefs::GetPort());
 	myaddr.Service(thePrefs::GetPort());
+#ifdef TESTING_PROXY
+	class wxProxyData pd;
+	pd.ProxyHostName = "localhost";
+	pd.ProxyPort = 1080;
+	pd.ProxyType = wxPROXY_SOCKS5;
+	pd.Username = wxT("");
+	pd.Password = wxT("");
+	listensocket = new CListenSocket(myaddr, &pd);
+#else
 	listensocket = new CListenSocket(myaddr);
+#endif
 	
 	// Create UDP socket
 	myaddr.Service(thePrefs::GetUDPPort());
