@@ -114,6 +114,7 @@ Version 2.0.0rc3 - The 'Target: Stability' version.
   		* WebServer cleanly stopped before exit	
 		* Fixed max 2Gb display bug in amuleweb
 		* Updated aMule.tmpl: added file %complete support in transfer list
+		* Fixed the "remote connect" bug
 
 	thepolish:
 
