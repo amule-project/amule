@@ -177,14 +177,7 @@ void CUpDownClient::Init()
 	m_bRemoteQueueFull = false;
 	m_HasValidHash = false;
 	SetWaitStartTime();
-	if (m_socket) {
-		wxIPV4address address;
-		m_socket->GetPeer(address);
-		m_FullUserIP = address.IPAddress();
-		SetIP(inet_addr(unicode2char(m_FullUserIP)));
-	} else {
-		SetIP(0);
-	}
+
 	sourcesslot=0;
 	m_fHashsetRequesting = 0;
 	m_fSharedDirectories = 0;
@@ -230,6 +223,16 @@ void CUpDownClient::Init()
 	m_bTransferredDownMini = false;
 
 	m_requpfile = NULL;
+
+
+	if (m_socket) {
+		wxIPV4address address;
+		m_socket->GetPeer(address);
+		m_FullUserIP = address.IPAddress();
+		SetIP(inet_addr(unicode2char(m_FullUserIP)));
+	} else {
+		SetIP(0);
+	}
 }
 
 
