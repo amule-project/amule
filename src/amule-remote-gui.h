@@ -52,7 +52,9 @@ class CEConnectDlg : public wxDialog {
 		wxString host;
 		int port;
 		
+		wxString pwd_hash;
 		wxString login, passwd;
+		bool m_save_user_pass;
 		
 		void OnOK(wxCommandEvent& event);
 		
@@ -65,6 +67,7 @@ class CEConnectDlg : public wxDialog {
 
 		wxString Login() { return login; }
 		wxString PassHash();
+		bool SaveUserPass() { return m_save_user_pass; }
 };
 
 class CRemoteConnect {

@@ -3690,7 +3690,7 @@ wxSizer *CoreConnect( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticText *item11 = new wxStaticText( parent, ID_TEXT, _("User name"), wxDefaultPosition, wxSize(80,-1), 0 );
     item10->Add( item11, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    CMuleTextCtrl *item12 = new CMuleTextCtrl( parent, ID_EC_LOGIN, _("amule"), wxDefaultPosition, wxSize(100,-1), 0 );
+    CMuleTextCtrl *item12 = new CMuleTextCtrl( parent, ID_EC_LOGIN, _("amule"), wxDefaultPosition, wxSize(200,-1), 0 );
     item12->Enable( false );
     item10->Add( item12, 0, wxALIGN_CENTER|wxALL, 5 );
 
@@ -3701,7 +3701,7 @@ wxSizer *CoreConnect( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticText *item14 = new wxStaticText( parent, ID_TEXT, _("Password"), wxDefaultPosition, wxSize(80,-1), 0 );
     item13->Add( item14, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    CMuleTextCtrl *item15 = new CMuleTextCtrl( parent, ID_EC_PASSWD, wxT(""), wxDefaultPosition, wxSize(100,-1), wxTE_PASSWORD );
+    CMuleTextCtrl *item15 = new CMuleTextCtrl( parent, ID_EC_PASSWD, wxT(""), wxDefaultPosition, wxSize(200,-1), wxTE_PASSWORD );
     item13->Add( item15, 0, wxALIGN_CENTER|wxALL, 5 );
 
     item8->Add( item13, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
@@ -3714,14 +3714,22 @@ wxSizer *CoreConnect( wxWindow *parent, bool call_fit, bool set_sizer )
 
     wxBoxSizer *item16 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxButton *item17 = new wxButton( parent, wxID_OK, _("Connect"), wxDefaultPosition, wxDefaultSize, 0 );
-    item17->SetDefault();
+    wxCheckBox *item17 = new wxCheckBox( parent, ID_EC_SAVE, _("Remember those settings"), wxDefaultPosition, wxDefaultSize, 0 );
+    item17->SetValue( TRUE );
     item16->Add( item17, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    wxButton *item18 = new wxButton( parent, wxID_CANCEL, _("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
-    item16->Add( item18, 0, wxALIGN_CENTER|wxALL, 5 );
+    item0->Add( item16, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    item0->Add( item16, 0, wxALIGN_CENTER|wxALL, 5 );
+    wxBoxSizer *item18 = new wxBoxSizer( wxHORIZONTAL );
+
+    wxButton *item19 = new wxButton( parent, wxID_OK, _("Connect"), wxDefaultPosition, wxDefaultSize, 0 );
+    item19->SetDefault();
+    item18->Add( item19, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    wxButton *item20 = new wxButton( parent, wxID_CANCEL, _("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
+    item18->Add( item20, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    item0->Add( item18, 0, wxALIGN_CENTER|wxALL, 5 );
 
     if (set_sizer)
     {
