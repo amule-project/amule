@@ -83,7 +83,11 @@ wxThread::ExitCode AsyncDNS::Entry()
 #endif
 
   if(result) {
+    #if defined(__WXMSW__)
+    unsigned long addr=*(unsigned long*)result->h_addr;
+    #else
     unsigned long addr=*(unsigned long*)ret.h_addr;
+    #endif    
     struct sockaddr_in* newsi=(struct sockaddr_in*)malloc(sizeof(struct sockaddr_in));//new struct sockaddr_in;
     newsi->sin_addr.s_addr=addr;
 
@@ -92,6 +96,8 @@ wxThread::ExitCode AsyncDNS::Entry()
     evt.SetExtraLong((long)newsi);
     wxPostEvent(theApp.amuledlg,evt);    
   }
+  
+
 
   return result;
 }
