@@ -112,11 +112,21 @@ void CSharedFileList::AddFilesFromDirectory(wxString directory)
 
 		uint32 fdate=wxFileModificationTime(fname);
 
+		if (::wxDirExists(fname)) {
+			// Woops, is a dir!
+			printf("%s is a directory, skipping\n",unicode2char(fname));
+			fname=::wxFindNextFile();
+			continue;
+		}
+		
 		CFile new_file(fname, CFile::read);
 
 		if (!new_file.IsOpened()) {
 			printf("No permisions to open %s, skipping\n",unicode2char(fname));
-			return;
+			// Kry - Return? WTF? What about the other files?
+			//return;
+			fname=::wxFindNextFile();
+			continue;
 		}
 
 		if(fname.Find(wxFileName::GetPathSeparator(),TRUE) != -1) {  // starts at end
