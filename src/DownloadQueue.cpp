@@ -70,9 +70,8 @@
 #define MAX_REQUESTS_PER_SERVER		35
 
 
-CDownloadQueue::CDownloadQueue(CPreferences* in_prefs,CSharedFileList* in_sharedfilelist)
+CDownloadQueue::CDownloadQueue(CSharedFileList* in_sharedfilelist)
 {
-	app_prefs = in_prefs;
 	sharedfilelist = in_sharedfilelist;
 	filesrdy = 0;
 	datarate = 0;
@@ -153,10 +152,10 @@ void CDownloadQueue::Init()
 	// find all part files, read & hash them if needed and store into a list
 	int count = 0;
 	
-	CDirIterator TempDir(app_prefs->GetTempDir());
+	CDirIterator TempDir(thePrefs::GetTempDir());
 	
 	// check all part.met files
-	printf("Loading temp files from %s.\n",unicode2char(app_prefs->GetTempDir()));
+	printf("Loading temp files from %s.\n",unicode2char(thePrefs::GetTempDir()));
 	
 	wxString fileName=TempDir.FindFirstFile(CDirIterator::File,wxT("*.part.met"));
 	
@@ -164,7 +163,7 @@ void CDownloadQueue::Init()
 		wxFileName myFileName(fileName);
 		printf("Loading %s... ",unicode2char(myFileName.GetFullName()));
 		CPartFile* toadd = new CPartFile();
-		if (toadd->LoadPartFile(app_prefs->GetTempDir(),myFileName.GetFullName())) {
+		if (toadd->LoadPartFile(thePrefs::GetTempDir(),myFileName.GetFullName())) {
 			count++;
 			printf("Done.\n");
 			filelist.push_back(toadd); // to downloadqueue
@@ -251,13 +250,13 @@ void CDownloadQueue::AddSearchToDownloadCommon(CPartFile *newfile, uint8 categor
 		delete newfile;
 		return;
 	}
-	AddDownload(newfile, theApp.glob_prefs->AddNewFilesPaused(), category);
+	AddDownload(newfile, thePrefs::AddNewFilesPaused(), category);
 	newfile->SetCategory(category);
 }
 
 void CDownloadQueue::StartNextFile()
 {
-	if(!theApp.glob_prefs->StartNextFile()) {
+	if(!thePrefs::StartNextFile()) {
 		return;
 	}
 
@@ -299,7 +298,7 @@ void CDownloadQueue::AddFileLinkToDownload(CED2KFileLink* pLink, uint8 category)
 		delete newfile;
 		newfile=NULL;
 	} else {
-		AddDownload(newfile,theApp.glob_prefs->AddNewFilesPaused(), category);
+		AddDownload(newfile,thePrefs::AddNewFilesPaused(), category);
 	}
 	
 	if (pLink->HasValidSources()) {
@@ -365,8 +364,8 @@ void CDownloadQueue::Process()
 	ProcessLocalRequests(); // send src requests to local server
 
 	uint32 downspeed = 0;
-	if (app_prefs->GetMaxDownload() != UNLIMITED && datarate > 1500) {
-		downspeed = (app_prefs->GetMaxDownload()*1024*100)/(datarate+1); //(uint16)((float)((float)(app_prefs->GetMaxDownload()*1024)/(datarate+1)) * 100);
+	if (thePrefs::GetMaxDownload() != UNLIMITED && datarate > 1500) {
+		downspeed = (thePrefs::GetMaxDownload()*1024*100)/(datarate+1); //(uint16)((float)((float)(thePrefs::GetMaxDownload()*1024)/(datarate+1)) * 100);
 		if (downspeed < 50) {
 			downspeed = 50;
 		} else if (downspeed > 200) {
@@ -729,7 +728,7 @@ bool CDownloadQueue::SendNextUDPPacket()
 			}
 		}
 
-		if (!bSentPacket && nextfile && nextfile->GetSourceCount() < theApp.glob_prefs->GetMaxSourcePerFileUDP()) {
+		if (!bSentPacket && nextfile && nextfile->GetSourceCount() < thePrefs::GetMaxSourcePerFileUDP()) {
 			dataGlobGetSources.WriteHash16(nextfile->GetFileHash());
 			iFiles++;
 		}
@@ -1053,7 +1052,7 @@ void CDownloadQueue::CheckDiskspace(bool bNotEnoughSpaceLeft)
 	// SortByPriority();
 
 	// If disabled, resume any previously paused files
-	if (!theApp.glob_prefs->IsCheckDiskspaceEnabled()) {
+	if (!thePrefs::IsCheckDiskspaceEnabled()) {
 		if (!bNotEnoughSpaceLeft) { // avoid worse case, if we already had 'disk full'
 			for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
 				CPartFile* cur_file = filelist[i];
@@ -1069,10 +1068,10 @@ void CDownloadQueue::CheckDiskspace(bool bNotEnoughSpaceLeft)
 		return;
 	}
 	wxLongLong total = 0, free = 0;
-	wxGetDiskSpace(theApp.glob_prefs->GetTempDir(), &total, &free);
+	wxGetDiskSpace(thePrefs::GetTempDir(), &total, &free);
 	// 'bNotEnoughSpaceLeft' - avoid worse case, if we already had 'disk full'
 	uint64 nTotalAvailableSpace = bNotEnoughSpaceLeft ? 0 : free.GetValue();
-	if (theApp.glob_prefs->GetMinFreeDiskSpace() == 0) {
+	if (thePrefs::GetMinFreeDiskSpace() == 0) {
 		for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
 			CPartFile* cur_file = filelist[i];
 			switch(cur_file->GetStatus()) {
@@ -1106,7 +1105,7 @@ void CDownloadQueue::CheckDiskspace(bool bNotEnoughSpaceLeft)
 				case PS_COMPLETE:
 					continue;
 			}
-			if (nTotalAvailableSpace < theApp.glob_prefs->GetMinFreeDiskSpace()) {
+			if (nTotalAvailableSpace < thePrefs::GetMinFreeDiskSpace()) {
 				if (cur_file->IsNormalFile()) {
 				// Normal files: pause the file only if it would still grow
 					uint32 nSpaceToGrow = cur_file->GetNeededSpace();

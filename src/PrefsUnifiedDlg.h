@@ -28,7 +28,6 @@
 
 
 class Cfg_Base;
-class CPreferences;
 class CDirectoryTreeCtrl;
 
 class wxWindow;

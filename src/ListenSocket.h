@@ -38,7 +38,6 @@ WX_DECLARE_OBJARRAY(wxString, ArrayOfwxStrings);
 class CUpDownClient;
 class CPacket;
 class CTimerWnd;
-class CPreferences;
 
 class CClientReqSocketHandler;
 
@@ -48,10 +47,8 @@ friend class CClientReqSocketHandler;
 
 	DECLARE_DYNAMIC_CLASS(CClientReqSocket)
 
-	CClientReqSocket();
-
 public:
-	CClientReqSocket(CPreferences* in_prefs, CUpDownClient* in_client = 0);	
+	CClientReqSocket(CUpDownClient* in_client = 0);	
 	virtual ~CClientReqSocket();
 	virtual	void 	OnInit();
 	virtual	bool 	Close(); /*	{return wxSocketBase::Close();}*/
@@ -72,7 +69,6 @@ public:
 	
 	uint32		timeout_timer;
 	bool		hotrank;
-	CPreferences* 	app_prefs;
 
 	void		SetClient(CUpDownClient* client) { m_client = client; }
 	CUpDownClient* GetClient() { return m_client; }
@@ -149,7 +145,7 @@ class CListenSocket : public wxSocketServer
 	CSocketGlobalThread global_sock_thread;
 #endif
 public:
-	CListenSocket(CPreferences* in_prefs,wxSockAddress& addr);
+	CListenSocket(wxSockAddress& addr);
 	~CListenSocket();
 	bool	StartListening();
 	void	StopListening();
@@ -178,7 +174,6 @@ private:
 	SocketSet socket_list;
 	
 	bool bListening;
-	CPreferences* app_prefs;
 	
 	uint16 opensockets;
 	uint16 m_OpenSocketsInterval;

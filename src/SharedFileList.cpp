@@ -44,8 +44,7 @@
 #include "server.h"		// Needed for CServer
 
 
-CSharedFileList::CSharedFileList(CPreferences* in_prefs,CServerConnect* in_server,CKnownFileList* in_filelist){
-	app_prefs = in_prefs;
+CSharedFileList::CSharedFileList(CServerConnect* in_server,CKnownFileList* in_filelist){
 	server = in_server;
 	filelist = in_filelist;
 	reloading = false;
@@ -70,22 +69,22 @@ void CSharedFileList::FindSharedFiles() {
 
 	/* Global incoming dir and all category incoming directories are automatically shared. */
 
-	AddFilesFromDirectory(theApp.glob_prefs->GetIncomingDir());
+	AddFilesFromDirectory(thePrefs::GetIncomingDir());
 	for (uint32 i = 1;i < theApp.glob_prefs->GetCatCount();i++) {
 		AddFilesFromDirectory(theApp.glob_prefs->GetCatPath(i));
 	}
 
 	// remove bogus entries first
-	for (unsigned int i = 0; i < app_prefs->shareddir_list.GetCount(); ) {
-		if(!wxFileName::DirExists(app_prefs->shareddir_list.Item(i))) {
-			app_prefs->shareddir_list.RemoveAt(i);
+	for (unsigned int i = 0; i < theApp.glob_prefs->shareddir_list.GetCount(); ) {
+		if(!wxFileName::DirExists(theApp.glob_prefs->shareddir_list.Item(i))) {
+			theApp.glob_prefs->shareddir_list.RemoveAt(i);
 		} else {
 			i++;
 		}
 	}
 
-	for (unsigned int ii = 0; ii < app_prefs->shareddir_list.GetCount(); ++ii) {
-		AddFilesFromDirectory(app_prefs->shareddir_list.Item(ii));
+	for (unsigned int ii = 0; ii < theApp.glob_prefs->shareddir_list.GetCount(); ++ii) {
+		AddFilesFromDirectory(theApp.glob_prefs->shareddir_list.Item(ii));
 	}
 
 	uint32 newFiles = CAddFileThread::GetFileCount();
@@ -314,7 +313,7 @@ void CSharedFileList::CreateOfferedFilePacket(CKnownFile* cur_file,CSafeMemFile*
 			nClientPort = 0;
 		} else {
 			nClientID = theApp.serverconnect->GetClientID();
-			nClientPort = theApp.glob_prefs->GetPort();
+			nClientPort = thePrefs::GetPort();
 		}
 	}
 

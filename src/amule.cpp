@@ -438,7 +438,7 @@ bool CamuleApp::OnInit()
 	glob_prefs = new CPreferences();
 	
 	// Build the filenames for the two OS files
-	SetOSFiles(glob_prefs->GetOSDir());
+	SetOSFiles(thePrefs::GetOSDir());
 
 	// Display notification on new version or first run
 	wxTextFile vfile( ConfigDir + wxFileName::GetPathSeparator() + wxT("lastversion") );
@@ -483,8 +483,8 @@ bool CamuleApp::OnInit()
 #ifndef __BSD__
 	FILE* mnt_tab = setmntent("/etc/mtab","r");
 	if ( mnt_tab ) {
-		wxString incomingdir = glob_prefs->GetIncomingDir();
-		wxString tempdir = glob_prefs->GetTempDir();
+		wxString incomingdir = thePrefs::GetIncomingDir();
+		wxString tempdir = thePrefs::GetTempDir();
 		struct mntent* entries;
 
 		entries = getmntent(mnt_tab);
@@ -508,8 +508,8 @@ bool CamuleApp::OnInit()
 		fclose(mnt_tab);
 	}
 #else
-	wxString incomingdir = glob_prefs->GetIncomingDir();
-	wxString tempdir = glob_prefs->GetTempDir();
+	wxString incomingdir = thePrefs::GetIncomingDir();
+	wxString tempdir = thePrefs::GetTempDir();
 	long size, i;
 	struct statfs *mntbuf;
 
@@ -543,19 +543,19 @@ bool CamuleApp::OnInit()
 	clientlist	= new CClientList();
 	searchlist	= new CSearchList();
 	knownfiles	= new CKnownFileList();
-	serverlist	= new CServerList(glob_prefs);
-	serverconnect	= new CServerConnect(serverlist, glob_prefs);
-	sharedfiles	= new CSharedFileList(glob_prefs, serverconnect, knownfiles);
+	serverlist	= new CServerList();
+	serverconnect	= new CServerConnect(serverlist);
+	sharedfiles	= new CSharedFileList(serverconnect, knownfiles);
 
 	wxIPV4address myaddr;
 	myaddr.AnyAddress();
-	myaddr.Service(glob_prefs->GetUDPPort());
+	myaddr.Service(thePrefs::GetUDPPort());
 	clientudp	= new CClientUDPSocket(myaddr);
-	clientcredits	= new CClientCreditsList(glob_prefs);
+	clientcredits	= new CClientCreditsList();
 	
 	// bugfix - do this before creating the uploadqueue
-	downloadqueue	= new CDownloadQueue(glob_prefs, sharedfiles);
-	uploadqueue	= new CUploadQueue(glob_prefs);
+	downloadqueue	= new CDownloadQueue(sharedfiles);
+	uploadqueue	= new CUploadQueue();
 	ipfilter	= new CIPFilter();
 
 	// Create main dialog
@@ -575,9 +575,9 @@ bool CamuleApp::OnInit()
 	sharedfiles->Reload(true, true);
 
 	// Create listen socket 
-	printf("*** TCP socket at %d\n", glob_prefs->GetPort());
-	myaddr.Service(glob_prefs->GetPort());
-	listensocket = new CListenSocket(glob_prefs, myaddr);
+	printf("*** TCP socket at %d\n", thePrefs::GetPort());
+	myaddr.Service(thePrefs::GetPort());
+	listensocket = new CListenSocket(myaddr);
 
 	// This command just sets a flag to control maximun number of connections.
 	// Notify(true) has already been called to the ListenSocket, so events may
@@ -586,17 +586,17 @@ bool CamuleApp::OnInit()
 	// If we wern't able to start listening, we need to warn the user
 	if ( !listensocket->Ok() ) {
 		AddLogLineM(true, wxString::Format(_("Port %d is not available. You will be LOWID"),
-			glob_prefs->GetPort()));
+			thePrefs::GetPort()));
 		#warning we need to move this lowid warning to the GUI itself.
 		ShowAlert(wxString::Format(
 			_("Port %d is not available !!\n\n"
 			  "This means that you will be LOWID.\n\n"
 			  "Check your network to make sure the port is open for output and input."),
-			glob_prefs->GetPort()), _("Error"), wxOK | wxICON_ERROR);
+			thePrefs::GetPort()), _("Error"), wxOK | wxICON_ERROR);
 	}
 
 	// Autoconnect if that option is enabled
-	if (glob_prefs->DoAutoConnect()) {
+	if (thePrefs::DoAutoConnect()) {
 		AddLogLineM(true, _("Connecting"));
 		theApp.serverconnect->ConnectToAnyServer();
 	}
@@ -609,7 +609,7 @@ bool CamuleApp::OnInit()
 	IsReady = true;
 
 	// Kry - Load the sources seeds on app init
-	if (glob_prefs->GetSrcSeedsOn()) {
+	if (thePrefs::GetSrcSeedsOn()) {
 		downloadqueue->LoadSourceSeeds();
 	}
 
@@ -733,7 +733,7 @@ wxString CamuleApp::CreateED2kSourceLink(const CAbstractFile *f)
 		(uint8)(clientID >> 8) << wxT(".") <<
 		(uint8)(clientID >> 16) << wxT(".") <<
 		(uint8)(clientID >> 24) << wxT(":") <<
-		glob_prefs->GetPort() << wxT("|/");
+		thePrefs::GetPort() << wxT("|/");
 	// Result is "ed2k://|file|<filename>|<size>|<hash>|/|sources,<ip>:<port>|/"
 	return strURL;
 }
@@ -746,8 +746,8 @@ wxString CamuleApp::CreateED2kHostnameSourceLink(const CAbstractFile* f)
 	// Append the source information: "|sources,<host>:port|/"
 	wxString strURL = CreateED2kLink(f) <<
 		wxT("|sources,") <<
-		glob_prefs->GetYourHostname() << wxT(":") <<
-		glob_prefs->GetPort() << wxT("|/");
+		thePrefs::GetYourHostname() << wxT(":") <<
+		thePrefs::GetPort() << wxT("|/");
 	// Result is "ed2k://|file|<filename>|<size>|<hash>|/|sources,<host>:<port>|/"
 	return strURL;
 }
@@ -792,7 +792,7 @@ wxString CamuleApp::GenFakeCheckUrl2(const CAbstractFile *f)
 void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 {
 	// Do not do anything if online signature is disabled in Preferences
-	if (!glob_prefs->IsOnlineSignatureEnabled() || emulesig_path.IsEmpty()) {
+	if (!thePrefs::IsOnlineSignatureEnabled() || emulesig_path.IsEmpty()) {
 		// We do not need to check amulesig_path because if emulesig_path is empty,
 		// that means amulesig_path is empty too.
 		return;
@@ -888,17 +888,17 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 	}	/* if (!zero) */
 
 	// Nick on the network
-	sprintf(buffer, "%s", unicode2char(glob_prefs->GetUserNick()));
+	sprintf(buffer, "%s", unicode2char( thePrefs::GetUserNick()));
 	amulesig_out.Write(buffer, strlen(buffer));
 	amulesig_out.Write("\n",1);
 
 	// Total received in bytes
-	sprintf(buffer, "%llu", (stat_sessionReceivedBytes+glob_prefs->GetTotalDownloaded()));
+	sprintf(buffer, "%llu", (stat_sessionReceivedBytes+ thePrefs::GetTotalDownloaded()));
 	amulesig_out.Write(buffer, strlen(buffer));
 	amulesig_out.Write("\n",1);
 
 	// Total sent in bytes
-	sprintf(buffer, "%llu", (stat_sessionSentBytes+glob_prefs->GetTotalUploaded()));
+	sprintf(buffer, "%llu", (stat_sessionSentBytes+ thePrefs::GetTotalUploaded()));
 	amulesig_out.Write(buffer, strlen(buffer));
 	amulesig_out.Write("\n",1);
 
@@ -1012,7 +1012,7 @@ void CamuleApp::Localize_mule()
 	CustomLanguage.CanonicalName = wxT("aMule_custom");
 	CustomLanguage.Description = wxT("aMule's custom language");
 
-	switch (glob_prefs->GetLanguageID()) {
+	switch ( thePrefs::GetLanguageID()) {
 		case 0:
 			language = wxLANGUAGE_DEFAULT;
 			break;
@@ -1183,7 +1183,7 @@ void CamuleApp::Trigger_New_version(wxString new_version)
 	ShowAlert(info, _("Info"), wxCENTRE | wxOK | wxICON_ERROR);
 
 	// Set to system default... no other way AFAIK unless we change the save type.
-	glob_prefs->SetLanguageID(0);
+	thePrefs::SetLanguageID(0);
 }
 
 void CamuleApp::QueueLogLine(bool addtostatusbar, const wxString& line)
@@ -1313,10 +1313,10 @@ void CamuleApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 		wxString buffer;
 		
 		wxConfigBase* cfg = wxConfig::Get();
-		buffer.Printf(wxT("%llu"),stat_sessionReceivedBytes+glob_prefs->GetTotalDownloaded());
+		buffer.Printf(wxT("%llu"),stat_sessionReceivedBytes+thePrefs::GetTotalDownloaded());
 		cfg->Write(wxT("/Statistics/TotalDownloadedBytes"), buffer);
 
-		buffer.Printf(wxT("%llu"),stat_sessionSentBytes+glob_prefs->GetTotalUploaded());
+		buffer.Printf(wxT("%llu"),stat_sessionSentBytes+thePrefs::GetTotalUploaded());
 		cfg->Write(wxT("/Statistics/TotalUploadedBytes"), buffer);
 	}
 

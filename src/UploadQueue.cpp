@@ -55,9 +55,8 @@
 
 //TODO rewrite the whole networkcode, use overlapped sockets
 
-CUploadQueue::CUploadQueue(CPreferences* in_prefs){
-	app_prefs = in_prefs;
-
+CUploadQueue::CUploadQueue()
+{
 	msPrevProcess = ::GetTickCount();
 	kBpsEst = 2.0;
 	kBpsUp = 0.0;
@@ -203,9 +202,9 @@ void CUploadQueue::Process()
 	} else {
 		kBpsEst += 1.0;
 		
-		if ( theApp.glob_prefs->GetMaxUpload() != UNLIMITED ) {
-			if ( kBpsEst > (float)(app_prefs->GetMaxUpload()))
-				kBpsEst = (float)(app_prefs->GetMaxUpload());
+		if ( thePrefs::GetMaxUpload() != UNLIMITED ) {
+			if ( kBpsEst > (float)(thePrefs::GetMaxUpload()))
+				kBpsEst = (float)(thePrefs::GetMaxUpload());
 		}
 	}
 	float	kBpsSendPerClient = kBpsEst/clientsrdy;
@@ -236,15 +235,15 @@ bool CUploadQueue::AcceptNewClient()
 		return false;
 	}
 
-	float kBpsUpPerClient = (float)theApp.glob_prefs->GetSlotAllocation();
-	if (theApp.glob_prefs->GetMaxUpload() == UNLIMITED) {
+	float kBpsUpPerClient = (float)thePrefs::GetSlotAllocation();
+	if (thePrefs::GetMaxUpload() == UNLIMITED) {
 		if ((uint32)uploadinglist.GetCount() < ((uint32)(kBpsUp/kBpsUpPerClient)+2)) {
 			return true;
 		}
 	} else {
 		uint16 nMaxSlots = 0;
-		if (theApp.glob_prefs->GetMaxUpload() >= 10) {
-			nMaxSlots = (uint16)floor((float)theApp.glob_prefs->GetMaxUpload() / kBpsUpPerClient + 0.5);
+		if (thePrefs::GetMaxUpload() >= 10) {
+			nMaxSlots = (uint16)floor((float)thePrefs::GetMaxUpload() / kBpsUpPerClient + 0.5);
 				// floor(x + 0.5) is a way of doing round(x) that works with gcc < 3 ...
 			if (nMaxSlots < MIN_UP_CLIENTS_ALLOWED) {
 				nMaxSlots=MIN_UP_CLIENTS_ALLOWED;
@@ -312,7 +311,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client)
 			CUpDownClient* cur_client = *it;
 			
 			if ( cur_client == client ) {
-				if ( client->m_bAddNextConnect && ( ( uploadinglist.GetCount() < theApp.glob_prefs->GetMaxUpload() ) || ( theApp.glob_prefs->GetMaxUpload() == UNLIMITED ) ) ) {
+				if ( client->m_bAddNextConnect && ( ( uploadinglist.GetCount() < thePrefs::GetMaxUpload() ) || ( thePrefs::GetMaxUpload() == UNLIMITED ) ) ) {
 					if (lastupslotHighID) {
 						client->m_bAddNextConnect = false;
 						RemoveFromWaitingQueue(client, true);
@@ -385,7 +384,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client)
 	}
 	
 	// TODO find better ways to cap the list
-	if ( (uint32)waitinglist.GetCount() > (theApp.glob_prefs->GetQueueSize())) {
+	if ( (uint32)waitinglist.GetCount() > (thePrefs::GetQueueSize())) {
 		return;
 	}
 	
@@ -455,7 +454,7 @@ bool CUploadQueue::CheckForTimeOver(CUpDownClient* client)
 		}
 	}
 	
-	if (theApp.glob_prefs->TransferFullChunks()) {
+	if (thePrefs::TransferFullChunks()) {
 		if( client->GetUpStartTimeDelay() > 3600000 ) { // Try to keep the clients from downloading for ever.
 			return true;
 		}

@@ -34,7 +34,6 @@ struct UnknownFile_Struct;
 class CKnownFileList;
 class CKnownFile;
 class CServerConnect;
-class CPreferences;
 class CSafeMemFile;
 class CMD4Hash;
 
@@ -44,7 +43,7 @@ class CSharedFileList{
 	friend class CSharedFilesCtrl;
 	friend class CClientReqSocket;
 public:
-	CSharedFileList(CPreferences* in_prefs,CServerConnect* in_server, CKnownFileList* in_filelist);
+	CSharedFileList(CServerConnect* in_server, CKnownFileList* in_filelist);
 	~CSharedFileList();
 	void	SendListToServer();
 	void 	Reload(bool sendtoserver = true, bool firstload = false);
@@ -68,7 +67,6 @@ private:
 	bool	reloading;
 	
 	CKnownFileMap		m_Files_map;
-	CPreferences*		app_prefs;
 	CServerConnect*		server;
 };
 

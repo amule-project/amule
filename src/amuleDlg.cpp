@@ -122,8 +122,8 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 	curl_global_init(CURL_GLOBAL_ALL);
 	imagelist.Create(16,16);
 	
-	if (theApp.glob_prefs->UseSkin()) {		
-		Apply_Clients_Skin(theApp.glob_prefs->GetSkinFile());
+	if (thePrefs::UseSkin()) {		
+		Apply_Clients_Skin(thePrefs::GetSkinFile());
 	} else {
 		for (uint32 i=0; i<22; i++) {
 			imagelist.Add(wxBitmap(clientImages(i)));
@@ -210,7 +210,7 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 	m_wndToolbar->RemoveTool(ID_BUTTONKAD);
 	#endif
 
-	ShowED2KLinksHandler( theApp.glob_prefs->GetFED2KLH() );
+	ShowED2KLinksHandler( thePrefs::GetFED2KLH() );
 
 	is_safe_state = true;
 
@@ -227,10 +227,10 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 	searchwnd->UpdateCatChoice();
 
 	// Must we start minimized?
-	if (theApp.glob_prefs->GetStartMinimized() && (theApp.glob_prefs->GetDesktopMode() != 4)) {
+	if (thePrefs::GetStartMinimized() && (thePrefs::GetDesktopMode() != 4)) {
 		#ifndef __SYSTRAY_DISABLED__
 		// Send it to tray?
-		if (theApp.glob_prefs->DoMinToTray()) {
+		if (thePrefs::DoMinToTray()) {
 			Hide_aMule();
 		} else {
 			Iconize(TRUE);
@@ -261,7 +261,7 @@ void CamuleDlg::SetActiveDialog(DialogType type, wxWindow* dlg)
 	m_nActiveDialog = type;
 	
 	if ( type == TransferWnd ) {
-		if (theApp.glob_prefs->ShowCatTabInfos()) {
+		if (thePrefs::ShowCatTabInfos()) {
 			transferwnd->UpdateCatTabTitles();
 		}
 	}
@@ -306,16 +306,16 @@ void CamuleDlg::changeDesktopMode()
 {
 	QueryDlg query(this);
 
-	wxRadioBox* radiobox = (wxRadioBox*)query.FindWindow(ID_SYSTRAYSELECT);
+	wxRadioBox* radiobox = CastByID( ID_SYSTRAYSELECT, &query, wxRadioBox );
 
-	if ( theApp.glob_prefs->GetDesktopMode() )
-		radiobox->SetSelection( theApp.glob_prefs->GetDesktopMode() - 1 );
+	if ( thePrefs::GetDesktopMode() )
+		radiobox->SetSelection( thePrefs::GetDesktopMode() - 1 );
 	else
 		radiobox->SetSelection( 0 );
 
 	query.ShowModal();
 
-	theApp.glob_prefs->SetDesktopMode( radiobox->GetSelection() + 1 );
+	thePrefs::SetDesktopMode( radiobox->GetSelection() + 1 );
 }
 
 
@@ -323,12 +323,12 @@ void CamuleDlg::changeDesktopMode()
 void CamuleDlg::CreateSystray(const wxString& title)
 {
 	// create the docklet (at this point we already have preferences!)
-	if( !theApp.glob_prefs->GetDesktopMode() ) {
+	if( !thePrefs::GetDesktopMode() ) {
 		// ok, it's not set yet.
 		changeDesktopMode();
 	}
 
-	m_wndTaskbarNotifier = new CSysTray(this, (DesktopMode)theApp.glob_prefs->GetDesktopMode(), title);
+	m_wndTaskbarNotifier = new CSysTray(this, (DesktopMode)thePrefs::GetDesktopMode(), title);
 }
 
 
@@ -349,7 +349,7 @@ void CamuleDlg::OnToolBarButton(wxCommandEvent& ev)
 	if ( theApp.IsReady ) {
 
 		// Rehide the handler if needed
-		if ( lastbutton == ID_BUTTONSEARCH && !theApp.glob_prefs->GetFED2KLH() )
+		if ( lastbutton == ID_BUTTONSEARCH && !thePrefs::GetFED2KLH() )
 			ShowED2KLinksHandler( false );
 
 		if ( lastbutton != ev.GetId() ) {
@@ -357,12 +357,12 @@ void CamuleDlg::OnToolBarButton(wxCommandEvent& ev)
 				case ID_BUTTONSERVERS:
 					SetActiveDialog(ServerWnd, serverwnd);
 					// Set serverlist splitter position
-					((wxSplitterWindow*)FindWindow(wxT("SrvSplitterWnd")))->SetSashPosition(srv_split_pos, true);
+					CastChild( wxT("SrvSplitterWnd"), wxSplitterWindow )->SetSashPosition(srv_split_pos, true);
 					break;
 
 				case ID_BUTTONSEARCH:
 					// The search dialog should always display the handler
-					if ( !theApp.glob_prefs->GetFED2KLH() )
+					if ( !thePrefs::GetFED2KLH() )
 						ShowED2KLinksHandler( true );
 
 					SetActiveDialog(SearchWnd, searchwnd);
@@ -465,7 +465,7 @@ void CamuleDlg::ResetLog(uint8 whichone)
 
 	switch (whichone){
 		case 1: {
-			ct=(wxTextCtrl*)serverwnd->FindWindow(ID_LOGVIEW);
+			ct = CastByID( ID_LOGVIEW, serverwnd, wxTextCtrl );
 			// Delete log file aswell.
 			wxString logname(theApp.ConfigDir + wxT("logfile"));
 			wxRemoveFile(logname);
@@ -478,7 +478,7 @@ void CamuleDlg::ResetLog(uint8 whichone)
 			break;
 		}
 		case 2:
-			ct=(wxTextCtrl*)serverwnd->FindWindow(ID_SERVERINFO);
+			ct = CastByID( ID_SERVERINFO, serverwnd, wxTextCtrl );
 			break;
 		default:
 			return;
@@ -505,7 +505,7 @@ void CamuleDlg::AddLogLine(bool addtostatusbar, const wxString& line)
 	wxString stamp = wxDateTime::Now().FormatDate() + wxT(" ") + wxDateTime::Now().FormatTime() + wxT(": ");
 
 	// Add the message to the log-view
-	wxTextCtrl* ct = (wxTextCtrl*)serverwnd->FindWindow(ID_LOGVIEW);
+	wxTextCtrl* ct = CastByID( ID_LOGVIEW, serverwnd, wxTextCtrl );
 	if ( ct ) {
 		ct->AppendText( stamp + bufferline + wxT("\n") );
 		ct->ShowPosition( ct->GetValue().Length() - 1 );
@@ -516,7 +516,7 @@ void CamuleDlg::AddLogLine(bool addtostatusbar, const wxString& line)
 	if ( addtostatusbar ) {
 		// Escape "&"s, which would otherwise not show up
 		bufferline.Replace( wxT("&"), wxT("&&") );
-		wxStaticText* text = (wxStaticText *)FindWindow(wxT("infoLabel"));
+		wxStaticText* text = CastChild( wxT("infoLabel"), wxStaticText );
 		text->SetLabel(bufferline);
 		Layout();
 	}
@@ -526,7 +526,7 @@ void CamuleDlg::AddLogLine(bool addtostatusbar, const wxString& line)
 
 void CamuleDlg::AddDebugLogLine(bool addtostatusbar, const wxString& line)
 {
-	if (theApp.glob_prefs->GetVerbose()) {
+	if (thePrefs::GetVerbose()) {
 		AddLogLine(addtostatusbar, line);
 	}
 }
@@ -534,7 +534,7 @@ void CamuleDlg::AddDebugLogLine(bool addtostatusbar, const wxString& line)
 
 void CamuleDlg::AddServerMessageLine(wxString& message)
 {
-	wxTextCtrl* cv=(wxTextCtrl*)serverwnd->FindWindow(ID_SERVERINFO);
+	wxTextCtrl* cv= CastByID( ID_SERVERINFO, serverwnd, wxTextCtrl );
 	if(cv) {
 		if (message.Length() > 500) {
 			cv->AppendText(message.Left(500) + wxT("\n"));
@@ -566,9 +566,9 @@ void CamuleDlg::ShowConnectionState(bool connected, const wxString &server)
 	}
 
 	if ( LastState != NewState ) {
-		((wxStaticBitmap *)FindWindow(wxT("connImage")))->SetBitmap(connImages(NewState));
+		CastChild( wxT("connImage"), wxStaticBitmap )->SetBitmap(connImages(NewState));
 		m_wndToolbar->DeleteTool(ID_BUTTONCONNECT);
-		wxStaticText* connLabel = (wxStaticText*)FindWindow(wxT("connLabel"));
+		wxStaticText* connLabel = CastChild( wxT("connLabel"), wxStaticText );
 		switch ( NewState ) {
 			case sLowID:
 				// Display a warning about LowID connections
@@ -580,7 +580,7 @@ void CamuleDlg::ShowConnectionState(bool connected, const wxString &server)
 				m_wndToolbar->InsertTool(0, ID_BUTTONCONNECT, _("Disconnect"),
 					connButImg(1), wxNullBitmap, wxITEM_NORMAL,
 					_("Disconnect from current server"));
-				wxStaticText* tx = (wxStaticText *)FindWindow(wxT("infoLabel"));
+				wxStaticText* tx = CastChild( wxT("infoLabel"), wxStaticText );
 				tx->SetLabel(_("Connection established on:") + server);
 				connLabel->SetLabel(server);
 				break;
@@ -626,7 +626,7 @@ void CamuleDlg::ShowUserCount(uint32 user_toshow, uint32 file_toshow)
 		CastItoIShort(file_toshow) + wxT(" (") + CastItoIShort(totalfile) +
 		wxT(")");
 
-	wxStaticCast(FindWindow(wxT("userLabel")), wxStaticText)->SetLabel(buffer);
+	CastChild( wxT("userLabel"), wxStaticText )->SetLabel(buffer);
 
 	Layout();
 }
@@ -636,7 +636,7 @@ void CamuleDlg::ShowTransferRate()
 	float kBpsUp = theApp.uploadqueue->GetKBps();
 	float kBpsDown = theApp.downloadqueue->GetKBps();
 	wxString buffer;
-	if( theApp.glob_prefs->ShowOverhead() )
+	if( thePrefs::ShowOverhead() )
 	{
 		float overhead_up = theApp.uploadqueue->GetUpDatarateOverhead();
 		float overhead_down = theApp.downloadqueue->GetDownDatarateOverhead();
@@ -646,18 +646,18 @@ void CamuleDlg::ShowTransferRate()
 	}
 	buffer.Truncate(50); // Max size 50
 
-	((wxStaticText*)FindWindow(wxT("speedLabel")))->SetLabel(buffer);
+	CastChild( wxT("speedLabel"), wxStaticText )->SetLabel(buffer);
 	Layout();
 
 	// Show upload/download speed in title
-	if (theApp.glob_prefs->GetShowRatesOnTitle()) {
+	if (thePrefs::GetShowRatesOnTitle()) {
 		wxString UpDownSpeed = wxString::Format(wxT(" -- Up: %.1f | Down: %.1f"), kBpsUp, kBpsDown);
 		SetTitle(theApp.m_FrameTitle + UpDownSpeed);
 	}
 
 #ifndef __SYSTRAY_DISABLED__
 	// set trayicon-icon
-	int percentDown = (int)ceil((kBpsDown*100) / theApp.glob_prefs->GetMaxGraphDownloadRate());
+	int percentDown = (int)ceil((kBpsDown*100) / thePrefs::GetMaxGraphDownloadRate());
 	UpdateTrayIcon( ( percentDown > 100 ) ? 100 : percentDown);
 
 	wxString buffer2;
@@ -669,7 +669,7 @@ void CamuleDlg::ShowTransferRate()
 	m_wndTaskbarNotifier->SetTrayToolTip(buffer2);
 #endif
 
-	wxStaticBitmap* bmp=(wxStaticBitmap*)FindWindow(wxT("transferImg"));
+	wxStaticBitmap* bmp = CastChild( wxT("transferImg"), wxStaticBitmap );
 	bmp->SetBitmap(dlStatusImages((kBpsUp>0.01 ? 2 : 0) + (kBpsDown>0.01 ? 1 : 0)));
 }
 
@@ -680,7 +680,7 @@ void CamuleDlg::OnClose(wxCloseEvent& evt)
 		return;
 	}
 
-	if (evt.CanVeto() && theApp.glob_prefs->IsConfirmExitEnabled() ) {
+	if (evt.CanVeto() && thePrefs::IsConfirmExitEnabled() ) {
 		if (wxNO == wxMessageBox(wxString(_("Do you really want to exit aMule?")), wxString(_("Exit confirmation")), wxYES_NO)) {
 			evt.Veto();
 			return;
@@ -694,7 +694,7 @@ void CamuleDlg::OnClose(wxCloseEvent& evt)
 	delete gui_timer;
 
 	// Kry - Save the sources seeds on app exit
-	if (theApp.glob_prefs->GetSrcSeedsOn()) {
+	if (thePrefs::GetSrcSeedsOn()) {
 		theApp.downloadqueue->SaveSourceSeeds();
 	}
 
@@ -716,10 +716,8 @@ void CamuleDlg::OnClose(wxCloseEvent& evt)
 		theApp.knownfiles->Save();
 	}
 
-	if (theApp.glob_prefs) {
-		theApp.glob_prefs->Add2TotalDownloaded(theApp.stat_sessionReceivedBytes);
-		theApp.glob_prefs->Add2TotalUploaded(theApp.stat_sessionSentBytes);
-	}
+	thePrefs::Add2TotalDownloaded(theApp.stat_sessionReceivedBytes);
+	thePrefs::Add2TotalUploaded(theApp.stat_sessionSentBytes);
 
 	if (theApp.glob_prefs) {
 		theApp.glob_prefs->Save();
@@ -783,7 +781,7 @@ void CamuleDlg::OnBnClickedFast(wxCommandEvent& WXUNUSED(evt))
 		delete msg;
 	}
 
-	wxTextCtrl* ctl = (wxTextCtrl*)FindWindow(wxT("FastEd2kLinks"));
+	wxTextCtrl* ctl = CastChild( wxT("FastEd2kLinks"), wxTextCtrl );
 
 	for ( int i = 0; i < ctl->GetNumberOfLines(); i++ ) {
 		wxString strlink = ctl->GetLineText(i);
@@ -937,7 +935,7 @@ void CamuleDlg::Show_aMule(bool uniconize)
 void CamuleDlg::OnMinimize(wxIconizeEvent& evt)
 {
 #ifndef __SYSTRAY_DISABLED__
-	if (theApp.glob_prefs->DoMinToTray() && (theApp.glob_prefs->GetDesktopMode() != 4)) {
+	if (thePrefs::DoMinToTray() && (thePrefs::GetDesktopMode() != 4)) {
 		if (evt.Iconized()) {
 			Hide_aMule(false);
 		} else {
@@ -985,7 +983,7 @@ void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 	}
 
 	bool bStatsVisible = (!IsIconized() && StatisticsWindowActive());
-	int msGraphUpdate= theApp.glob_prefs->GetTrafficOMeterInterval()*1000;
+	int msGraphUpdate= thePrefs::GetTrafficOMeterInterval()*1000;
 	if ((msGraphUpdate > 0)  && ((msCur / msGraphUpdate) > (msPrevGraph / msGraphUpdate))) {
 		// trying to get the graph shifts evenly spaced after a change in the update period
 		msPrevGraph = msCur;
@@ -994,7 +992,7 @@ void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 	
 	}
 
-	int sStatsUpdate = theApp.glob_prefs->GetStatsInterval();
+	int sStatsUpdate = thePrefs::GetStatsInterval();
 	if ((sStatsUpdate > 0) && ((int)(msCur - msPrevStats) > sStatsUpdate*1000)) {
 		if (bStatsVisible) {
 			msPrevStats = msCur;
@@ -1005,7 +1003,7 @@ void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 	if (msCur-msPrev5 > 5000) {  // every 5 seconds
 		msPrev5 = msCur;
 		ShowTransferRate();
-		if (theApp.glob_prefs->ShowCatTabInfos() && theApp.amuledlg->activewnd == theApp.amuledlg->transferwnd) {
+		if (thePrefs::ShowCatTabInfos() && theApp.amuledlg->activewnd == theApp.amuledlg->transferwnd) {
 			theApp.amuledlg->transferwnd->UpdateCatTabTitles();
 		}
 	}
@@ -1079,7 +1077,7 @@ wxFileType *ft;                            /* Temporary storage for filetype. */
 	}
 #else
 
-	cmd = theApp.glob_prefs->GetBrowser();
+	cmd = thePrefs::GetBrowser();
 	if ( !cmd.IsEmpty() ) {
 		wxString tmp = url;
 		// Pipes cause problems, so escape them

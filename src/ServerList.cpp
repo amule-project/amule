@@ -59,7 +59,7 @@
 
 //WX_DEFINE_LIST(CServerListList);
 
-CServerList::CServerList(CPreferences* in_prefs):
+CServerList::CServerList():
 list(wxKEY_NONE)
 {
 	servercount = 0;
@@ -67,7 +67,6 @@ list(wxKEY_NONE)
 	serverpos = 0;
 	searchserverpos = 0;
 	statserverpos = 0;
-	app_prefs = in_prefs;
 	//udp_timer = 0;
 	udp_timer.SetOwner(&theApp,TM_UDPSOCKET);
 	delservercount = 0;
@@ -89,7 +88,7 @@ bool CServerList::Init()
 	
 	// Send the auto-update of server.met via HTTPThread requests
 	current_url_index = 0;
-	if (app_prefs->AutoServerlist()) {
+	if ( thePrefs::AutoServerlist()) {
 		AutoUpdate();
 	}	
 	
@@ -200,7 +199,7 @@ bool CServerList::AddServermetToList(const wxString& strFile, bool merge)
 
 bool CServerList::AddServer(CServer* in_server)
 {
-	if (theApp.glob_prefs && theApp.glob_prefs->FilterBadIPs()) {
+	if (thePrefs::FilterBadIPs()) {
 		if ( !IsGoodServerIP( in_server )) {
 			return false;
 		}
@@ -234,7 +233,7 @@ void CServerList::ServerStats()
 				return;
 			}
 		}
-		if(ping_server->GetFailedCount() >= theApp.glob_prefs->GetDeadserverRetries() && theApp.glob_prefs->DeadServer()) {
+		if(ping_server->GetFailedCount() >= thePrefs::GetDeadserverRetries() && thePrefs::DeadServer()) {
 			Notify_ServerRemove(ping_server);
 			return;
 		}
@@ -845,10 +844,10 @@ void CServerList::Process()
 
 void CServerList::RemoveDeadServers()
 {
-	if ( theApp.glob_prefs->DeadServer() ) {
+	if ( thePrefs::DeadServer() ) {
 		for ( POSITION pos = list.GetHeadPosition(); pos != NULL; ) {
 			CServer* cur_server = theApp.serverlist->list.GetNext( pos );
-			if ( cur_server->GetFailedCount() > theApp.glob_prefs->GetDeadserverRetries() ) {
+			if ( cur_server->GetFailedCount() > thePrefs::GetDeadserverRetries() ) {
 				RemoveServer(cur_server);
 			}
 		}
@@ -883,7 +882,7 @@ void CServerList::DownloadFinished(uint32 result) {
 
 void CServerList::AutoUpdate() {
 	
-	uint8 url_count = app_prefs->adresses_list.GetCount();
+	uint8 url_count = theApp.glob_prefs->adresses_list.GetCount();
 	
 	if (!url_count) {
 		AddLogLineM(true, _("No serverlist address entry in 'addresses.dat' found. Please paste a valid serverlist address into this file in order to auto-update your serverlist"));
@@ -895,12 +894,12 @@ void CServerList::AutoUpdate() {
 
 	// Do current URL. Callback function will take care of the others.
 
-	strURLToDownload = app_prefs->adresses_list[current_url_index]; 
+	strURLToDownload = theApp.glob_prefs->adresses_list[current_url_index]; 
 	
 	while ((strURLToDownload.Find(wxT("://")) == -1) && (current_url_index<url_count)) {
 		AddLogLineM(true, _("Invalid URL ") + strURLToDownload);
 		current_url_index++;
-		strURLToDownload = app_prefs->adresses_list[current_url_index]; 
+		strURLToDownload = theApp.glob_prefs->adresses_list[current_url_index]; 
 	}
 	
 	if (current_url_index < url_count) {
@@ -931,7 +930,7 @@ void CServerList::AutoDownloadFinished(uint32 result) {
 	current_url_index++;
 	
 
-	if (current_url_index < app_prefs->adresses_list.GetCount()) {		
+	if (current_url_index < theApp.glob_prefs->adresses_list.GetCount()) {		
 		// Next!	
 		AutoUpdate();
 	}

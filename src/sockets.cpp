@@ -53,7 +53,7 @@
 
 void CServerConnect::TryAnotherConnectionrequest()
 {
-	if ( connectionattemps.size() < ((app_prefs->IsSafeServerConnectEnabled()) ? 1 : 2) ) {
+	if ( connectionattemps.size() < (( thePrefs::IsSafeServerConnectEnabled()) ? 1 : 2) ) {
 	
 		CServer*  next_server = used_list->GetNextServer();
 
@@ -68,7 +68,7 @@ void CServerConnect::TryAnotherConnectionrequest()
 		}
 
 		// Barry - Only auto-connect to static server option
-		if ( theApp.glob_prefs->AutoConnectStaticOnly() ) {
+		if ( thePrefs::AutoConnectStaticOnly() ) {
 			if ( next_server->IsStaticMember() )
                 ConnectToServer(next_server, true);
 		} else {
@@ -89,7 +89,7 @@ void CServerConnect::ConnectToAnyServer(uint32 startAt,bool prioSort,bool isAuto
 
 
 	// Barry - Only auto-connect to static server option
-	if (theApp.glob_prefs->AutoConnectStaticOnly() && isAuto)
+	if (thePrefs::AutoConnectStaticOnly() && isAuto)
 	{
 		bool anystatic = false;
 		CServer *next_server; 
@@ -111,7 +111,7 @@ void CServerConnect::ConnectToAnyServer(uint32 startAt,bool prioSort,bool isAuto
 	}
 
 	used_list->SetServerPosition( startAt );
-	if ( theApp.glob_prefs->Score() && prioSort ) used_list->Sort();
+	if ( thePrefs::Score() && prioSort ) used_list->Sort();
 
 	if (used_list->GetServerCount()==0 ){
 		connecting = false;
@@ -192,16 +192,16 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 		data.WriteHash16(theApp.glob_prefs->GetUserHash());
 		// Why pass an ID, if we are loggin in?
 		data.WriteUInt32(GetClientID());
-		data.WriteUInt16(app_prefs->GetPort());
+		data.WriteUInt16(thePrefs::GetPort());
 		data.WriteUInt32(5); // tagcount
 
-		CTag tagname(CT_NAME,unicode2char(app_prefs->GetUserNick()));
+		CTag tagname(CT_NAME,unicode2char(thePrefs::GetUserNick()));
 		tagname.WriteTagToFile(&data);
 
 		CTag tagversion(CT_VERSION,EDONKEYVERSION);
 		tagversion.WriteTagToFile(&data);
 		
-		CTag tagport(CT_PORT,app_prefs->GetPort());
+		CTag tagport(CT_PORT,thePrefs::GetPort());
 		tagport.WriteTagToFile(&data);
 		
 		CTag tagflags(CT_SERVER_FLAGS,CAPABLE_ZLIB); // FLAGS for server connection
@@ -220,10 +220,10 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 		packet->SetOpCode(OP_LOGINREQUEST);
 		#ifdef DEBUG_CLIENT_PROTOCOL
 		AddLogLineM(true,wxT("Client: OP_LOGINREQUEST\n"));
-		AddLogLineM(true,wxString(wxT("        Hash     : ")) << theApp.glob_prefs->GetUserHash().Encode() << wxT("\n"));
+		AddLogLineM(true,wxString(wxT("        Hash     : ")) << thePrefs::GetUserHash().Encode() << wxT("\n"));
 		AddLogLineM(true,wxString(wxT("        ClientID : ")) << GetClientID() << wxT("\n"));
-		AddLogLineM(true,wxString(wxT("        Port     : ")) << app_prefs->GetPort() << wxT("\n"));
-		AddLogLineM(true,wxString(wxT("        User Nick: ")) << app_prefs->GetUserNick() << wxT("\n"));
+		AddLogLineM(true,wxString(wxT("        Port     : ")) << thePrefs::GetPort() << wxT("\n"));
+		AddLogLineM(true,wxString(wxT("        User Nick: ")) << thePrefs::GetUserNick() << wxT("\n"));
 		AddLogLineM(true,wxString(wxT("        Edonkey  : ")) << EDONKEYVERSION << wxT("\n"));
 		#endif
 		SendPacket(packet, true, sender);
@@ -246,7 +246,7 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 		Notify_ServerRemoveDead();
 		
 		// tecxx 1609 2002 - serverlist update
-		if (theApp.glob_prefs->AddServersFromServer())
+		if (thePrefs::AddServersFromServer())
 		{
 			Packet* packet = new Packet(OP_GETSERVERLIST,0);
 			SendPacket(packet, true);
@@ -331,7 +331,7 @@ void CServerConnect::ConnectionFailed(CServerSocket* sender){
 		case CS_FATALERROR:{
 			bool autoretry= !singleconnecting;
 			StopConnectionTry();
-			if ((app_prefs->Reconnect()) && (autoretry) && (!m_idRetryTimer.IsRunning())){ 
+			if ((thePrefs::Reconnect()) && (autoretry) && (!m_idRetryTimer.IsRunning())){ 
 				AddLogLineM(false, wxString::Format(_("Automatic connection to server will retry in %d seconds"), CS_RETRYCONNECTTIME)); 
 				//m_idRetryTimer= SetTimer(NULL, 0, 1000*CS_RETRYCONNECTTIME, (TIMERPROC)RetryConnectCallback);
 				m_idRetryTimer.SetOwner(&theApp,TM_TCPSOCKET);
@@ -348,12 +348,12 @@ void CServerConnect::ConnectionFailed(CServerSocket* sender){
 				connectedsocket->Close();
 			connectedsocket = NULL;
 			Notify_SearchCancel();
-//			printf("Reconn %d conn %d\n",app_prefs->Reconnect(),connecting);
+//			printf("Reconn %d conn %d\n",thePrefs::Reconnect(),connecting);
 			theApp.stat_serverConnectTime = 0;
-			if (app_prefs->Reconnect() && !connecting){
+			if (thePrefs::Reconnect() && !connecting){
 				ConnectToAnyServer();		
 			}
-			if (theApp.glob_prefs->GetNotifierPopOnImportantError()) {
+			if (thePrefs::GetNotifierPopOnImportantError()) {
 				Notify_ShowNotifier(wxString(_("Connection lost")), TBN_IMPORTANTEVENT, false);
 			}
 			Notify_ShowConnState(false,wxEmptyString);
@@ -452,19 +452,18 @@ bool CServerConnect::Disconnect()
 }
 
 
-CServerConnect::CServerConnect(CServerList* in_serverlist, CPreferences* in_prefs)
+CServerConnect::CServerConnect(CServerList* in_serverlist)
 {
 	connectedsocket = NULL;
-	app_prefs = in_prefs;
 	used_list = in_serverlist;
-	max_simcons = (app_prefs->IsSafeServerConnectEnabled()) ? 1 : 2;
+	max_simcons = (thePrefs::IsSafeServerConnectEnabled()) ? 1 : 2;
 	connecting = false;
 	connected = false;
 	clientid = 0;
 	singleconnecting = false;
 	wxIPV4address tmp;
 	tmp.AnyAddress();
-	tmp.Service(theApp.glob_prefs->GetPort()+3);
+	tmp.Service(thePrefs::GetPort()+3);
 	udpsocket = new CUDPSocket(this,tmp); // initalize socket for udp packets
 	m_idRetryTimer.SetOwner(&theApp,TM_TCPSOCKET);
 	lastStartAt=0;	
@@ -530,7 +529,7 @@ bool CServerConnect::IsLocalServer(uint32 dwIP, uint16 nPort)
 
 void CServerConnect::KeepConnectionAlive()
 {
-	DWORD dwServerKeepAliveTimeout = theApp.glob_prefs->GetServerKeepAliveTimeout();
+	DWORD dwServerKeepAliveTimeout = thePrefs::GetServerKeepAliveTimeout();
 	if (dwServerKeepAliveTimeout && connected && connectedsocket &&
 	connectedsocket->connectionstate == CS_CONNECTED &&
 	GetTickCount() - connectedsocket->GetLastTransmission() >= dwServerKeepAliveTimeout) {

@@ -30,7 +30,6 @@
 
 #include <map>
 
-class CPreferences;
 class CServerList;
 class CServerSocket;
 class CServer;
@@ -50,7 +49,7 @@ class CUDPSocket;
 
 class CServerConnect {
 public:
-	CServerConnect(CServerList* in_serverlist, CPreferences* in_prefs);
+	CServerConnect(CServerList* in_serverlist);
 	~CServerConnect();
 	
 	void	ConnectionFailed(CServerSocket* sender);
@@ -94,7 +93,6 @@ private:
 	bool	connected;
 	int8	max_simcons;
 	uint32	lastStartAt;
-	CPreferences*	app_prefs;
 	CServerSocket*	connectedsocket;
 	CServerList*	used_list;
 	CUDPSocket*	udpsocket;

@@ -27,7 +27,6 @@
 #include "types.h"		// Needed for int8, uint16 and uint32
 #include "CTypedPtrList.h"	// Needed for CTypedPtrList
 
-class CPreferences;
 class CServer;
 class Packet;
 
@@ -35,8 +34,8 @@ class CServerList
 {
 	friend class CServerListCtrl;
 public:
-	CServerList(CPreferences* in_prefs);
-	~CServerList(void);
+	CServerList();
+	~CServerList();
 	bool		Init();
 	bool		AddServer(CServer* in_server );
 	void		RemoveServer(CServer* out_server);
@@ -84,7 +83,6 @@ private:
 	uchar		version;
 	uint32		servercount;
 	CTypedPtrList<CPtrList, CServer*>	list;
-	CPreferences*	app_prefs;
 	//uint32		udp_timer;
 	 AMULE_TIMER_CLASS        udp_timer;
 	POSITION	broadcastpos;
