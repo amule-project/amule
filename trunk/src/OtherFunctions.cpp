@@ -1000,10 +1000,10 @@ wxString DumpMemToStr(const void *buff, int n, const wxString& msg, bool ok)
 				}
 			}
 
-			result += " ";
+			result += wxT(" ");
 		}
 
-		result += "|";
+		result += wxT("|");
 	
 		// Show a column of ascii-values
 		for ( int k = 0; k < 16; ++k) {
@@ -1022,7 +1022,7 @@ wxString DumpMemToStr(const void *buff, int n, const wxString& msg, bool ok)
 			}
 		}
 		
-		result += "|\n";
+		result += wxT("|\n");
 	}
 
 	result.Shrink();
