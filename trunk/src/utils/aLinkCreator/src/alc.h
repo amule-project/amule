@@ -7,7 +7,7 @@
 ///
 /// Copyright (C) 2004 by ThePolish
 ///
-/// Pixmaps from http://www.everaldo.com and http://www.amule.org
+/// Pixmaps from http://jimmac.musichall.cz/ikony.php3 | http://www.everaldo.com | http://www.amule.org
 ///
 /// This program is free software; you can redistribute it and/or modify
 /// it under the terms of the GNU General Public License as published by
@@ -40,15 +40,16 @@
 #include "alcframe.h"
 
 /// Application
-class aLinkCreator:public wxApp
+class alc:public wxApp
   {
+  private:
+    AlcFrame *m_alcFrame;
   public:
     virtual bool OnInit ();
-
-    AlcFrame *alcFrame;
+    AlcFrame *alc::GetMainFrame();
   };
 
-DECLARE_APP (aLinkCreator);
+DECLARE_APP (alc);
 
 
 #endif /* _ALC_H */

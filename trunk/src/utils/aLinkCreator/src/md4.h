@@ -7,6 +7,8 @@
 ///
 /// Copyright (C) 2004 by ThePolish
 ///
+/// Copyright (C) 2004 by Phoenix
+///
 /// Copyright (C) 2004 by Madcat
 ///
 /// Copyright (C) 2002, 2003, 2004 by Michael Buesch
@@ -16,8 +18,6 @@
 /// written by Colin Plumb in 1993.
 ///
 /// This code implements the MD4 message-digest algorithm.
-///
-/// Pixmaps from http://jimmac.musichall.cz/ikony.php3 | http://www.everaldo.com | http://www.amule.org 
 ///
 /// This program is free software; you can redistribute it and/or modify
 /// it under the terms of the GNU General Public License as published by
@@ -52,6 +52,7 @@
 // Use wxString implementation or not
 //#define WANT_STRING_IMPLEMENTATION 1
 
+// Hook for external progress bar
 typedef bool (*MD4Hook)(int percent);
 
 class MD4
@@ -105,7 +106,7 @@ class MD4
     wxString calcMd4FromString(const wxString &buf);
 
     /// Get Md4 hash from a file
-    wxString calcMd4FromFile(const wxString &filename, MD4Hook hook, bool *aborted);
+    wxString calcMd4FromFile(const wxString &filename, MD4Hook hook);
   };
 
 #endif /* _MD4_H */

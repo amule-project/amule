@@ -1,6 +1,6 @@
 SUBDIRS = src
 
-EXTRA_DIST =  aLinkCreator.msp alc.rc alc.ico
+EXTRA_DIST =  alcc. msp alc.msp alc.rc alc.ico
 
 dist_util_DATA = alc.desktop
 utildir = $(datadir)/applications

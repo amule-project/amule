@@ -7,7 +7,7 @@
 ///
 /// Copyright (C) 2004 by ThePolish
 ///
-/// Pixmaps from http://www.everaldo.com and http://www.amule.org
+/// Copyright (C) 2004 by Phoenix
 ///
 /// This program is free software; you can redistribute it and/or modify
 /// it under the terms of the GNU General Public License as published by
@@ -86,9 +86,9 @@ bool Ed2kHash::SetED2KHashFromFile(const wxFileName& filename, MD4Hook hook)
 
       char *buf = new char[BUFSIZE];
 
-      bool keep_going;
+      bool goAhead = true;
 
-#if WANT_STRING_IMPLEMENTATION
+#ifdef WANT_STRING_IMPLEMENTATION
 
       wxString tmpHash(wxEmptyString);
 #else
@@ -100,19 +100,18 @@ bool Ed2kHash::SetED2KHashFromFile(const wxFileName& filename, MD4Hook hook)
 
       // Processing each block
       totalread=0;
-      keep_going = true;
       partcount = 0;
-      while (!file.Eof() && keep_going)
+      while (!file.Eof())
         {
           dataread = 0;
           MD4Init(&hdc);
-          while (dataread < PARTSIZE && !file.Eof() && keep_going)
+          while (dataread < PARTSIZE && !file.Eof())
             {
               if (hook)
                 {
-                  keep_going = hook( (int)((double)(100.0 * totalread) / file.Length()));
+                  goAhead = hook( (int)((double)(100.0 * totalread) / file.Length()));
                 }
-              if (keep_going)
+              if (goAhead)
                 {
                   if ((dataread + BUFSIZE) > PARTSIZE)
                     {
@@ -127,6 +126,11 @@ bool Ed2kHash::SetED2KHashFromFile(const wxFileName& filename, MD4Hook hook)
                   MD4Update(&hdc, reinterpret_cast<unsigned char const *>(buf),
                             read);
                 }
+              else
+                {
+                  return (false);
+                }
+
             }
           MD4Final(&hdc, ret);
 
@@ -136,7 +140,7 @@ bool Ed2kHash::SetED2KHashFromFile(const wxFileName& filename, MD4Hook hook)
 
           partcount++;
 
-#if WANT_STRING_IMPLEMENTATION
+#ifdef WANT_STRING_IMPLEMENTATION
           // MD4_HASHLEN_BYTE is ABSOLUTLY needed as we dont want NULL
           // character to be interpreted as the end of the parthash string
 #if wxUSE_UNICODE
@@ -162,7 +166,7 @@ bool Ed2kHash::SetED2KHashFromFile(const wxFileName& filename, MD4Hook hook)
         {
           wxString finalHash;
 
-#if WANT_STRING_IMPLEMENTATION
+#ifdef WANT_STRING_IMPLEMENTATION
 
           finalHash=calcMd4FromString(tmpHash);
 #else
@@ -178,7 +182,7 @@ bool Ed2kHash::SetED2KHashFromFile(const wxFileName& filename, MD4Hook hook)
           m_ed2kArrayOfHashes.Add(finalHash);
         }
 
-#if !WANT_STRING_IMPLEMENTATION
+#ifndef WANT_STRING_IMPLEMENTATION
       free(tmpCharHash);
       tmpCharHash=NULL;
 #endif
@@ -189,7 +193,7 @@ bool Ed2kHash::SetED2KHashFromFile(const wxFileName& filename, MD4Hook hook)
       m_fileSize = file.Length();
       m_filename = filename.GetFullName();
 
-      return keep_going;
+      return true;
     }
 }
 

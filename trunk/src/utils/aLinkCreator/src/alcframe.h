@@ -7,7 +7,9 @@
 ///
 /// Copyright (C) 2004 by ThePolish
 ///
-/// Pixmaps from http://www.everaldo.com and http://www.amule.org
+/// Copyright (C) 2004 by Phoenix
+///
+/// Pixmaps from http://jimmac.musichall.cz/ikony.php3 | http://www.everaldo.com | http://www.amule.org
 ///
 /// This program is free software; you can redistribute it and/or modify
 /// it under the terms of the GNU General Public License as published by
@@ -39,17 +41,17 @@
 #include <wx/progdlg.h>
 #endif
 
-//#include "activitybar.h"
 
 // Compute and display md4sum or not
 //#define WANT_MD4SUM 1
+
 
 /// Main Alc Frame
 class AlcFrame:public wxFrame
   {
   private:
     wxToolBar *m_toolbar;
-    wxBitmap m_toolBarBitmaps[3];
+    wxBitmap m_toolBarBitmaps[4];
 
     wxBoxSizer *m_frameVBox;
 
@@ -73,6 +75,9 @@ class AlcFrame:public wxFrame
     wxButton *m_clearButton;
     wxCheckBox *m_parthashesCheck;
 
+    wxProgressDialog *m_progressBar;
+    bool m_goAhead;
+
 
 #ifdef WANT_MD4SUM
 
@@ -89,10 +94,8 @@ class AlcFrame:public wxFrame
     wxStaticBoxSizer* m_ed2kSBoxSizer;
     wxTextCtrl *m_ed2kTextCtrl;
 
-    //ActivityBar *m_activityBar;
-
-
     wxBoxSizer* m_buttonHBox;
+    wxButton *m_copyButton;
     wxButton *m_startButton;
     wxButton *m_saveButton;
     wxButton *m_closeButton;
@@ -101,9 +104,11 @@ class AlcFrame:public wxFrame
     {
       ID_BAR_OPEN = 1000,
       ID_BAR_SAVEAS,
+      ID_BAR_COPY,
       ID_BAR_ABOUT,
       ID_START_BUTTON,
       ID_SAVEAS_BUTTON,
+      ID_COPY_BUTTON,
       ID_EXIT_BUTTON,
       ID_BROWSE_BUTTON,
       ID_ADD_BUTTON,
@@ -118,13 +123,19 @@ class AlcFrame:public wxFrame
     /// Save computed Ed2k link to file
     void SaveEd2kLinkToFile();
 
+    /// Copy Ed2k link to clip board
+    void CopyEd2kLinkToClipBoard();
+
   protected:
 
     /// Toolbar Open button
     void OnBarOpen (wxCommandEvent & event);
 
-    // Toolbar Save As button
+    /// Toolbar Save As button
     void OnBarSaveAs (wxCommandEvent & event);
+
+    /// Toolbar Copy button
+    void OnBarCopy(wxCommandEvent & event);
 
     /// Toolbar About button
     void OnBarAbout (wxCommandEvent & event);
@@ -134,6 +145,9 @@ class AlcFrame:public wxFrame
 
     /// Save As button
     void OnSaveAsButton(wxCommandEvent & event);
+
+    /// Copy button
+    void OnCopyButton(wxCommandEvent & event);
 
     /// Compute Hashes on Start Button
     void OnStartButton (wxCommandEvent & event);
@@ -156,9 +170,11 @@ class AlcFrame:public wxFrame
     /// Constructor
     AlcFrame (const wxString& title);
 
-    wxProgressDialog *m_progressBar;
     /// Destructor
     ~AlcFrame ();
+
+    // Hook function for external update of the progress bar
+    static bool Hook(int percent);
   };
 
 #endif /* _ALCFRAME_H */

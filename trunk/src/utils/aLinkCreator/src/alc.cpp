@@ -7,7 +7,7 @@
 ///
 /// Copyright (C) 2004 by ThePolish
 ///
-/// Pixmaps from http://www.everaldo.com and http://www.amule.org
+/// Pixmaps from http://jimmac.musichall.cz/ikony.php3 | http://www.everaldo.com | http://www.amule.org
 ///
 /// This program is free software; you can redistribute it and/or modify
 /// it under the terms of the GNU General Public License as published by
@@ -39,12 +39,17 @@
 #include "alc.h"
 
 // Application implementation
-IMPLEMENT_APP (aLinkCreator)
+IMPLEMENT_APP (alc)
 
-bool aLinkCreator::OnInit ()
+bool alc::OnInit ()
 {
-  alcFrame = new AlcFrame (_("aLinkCreator, the aMule ed2k link creator"));
-  alcFrame->Show (TRUE);
-  SetTopWindow (alcFrame);
+  m_alcFrame = new AlcFrame (_("aLinkCreator, the aMule ed2k link creator"));
+  m_alcFrame->Show (true);
+  SetTopWindow (m_alcFrame);
   return true;
+}
+
+AlcFrame *alc::GetMainFrame()
+{
+  return (m_alcFrame);
 }

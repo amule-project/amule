@@ -7,7 +7,7 @@
 ///
 /// Copyright (C) 2004 by ThePolish
 ///
-/// Pixmaps from http://www.everaldo.com and http://www.amule.org
+/// Pixmaps from http://jimmac.musichall.cz/ikony.php3 | http://www.everaldo.com | http://www.amule.org
 ///
 /// This program is free software; you can redistribute it and/or modify
 /// it under the terms of the GNU General Public License as published by
@@ -42,6 +42,7 @@ class AlcPix
   private:
     static const char *m_about_xpm[];
     static const char *m_alc_xpm[];
+    static const char *m_copy_xpm[];
     static const char *m_open_xpm[];
     static const char *m_saveas_xpm[];
 

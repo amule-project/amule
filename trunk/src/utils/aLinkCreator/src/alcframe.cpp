@@ -7,6 +7,8 @@
 ///
 /// Copyright (C) 2004 by ThePolish
 ///
+/// Copyright (C) 2004 by Phoenix
+///
 /// Pixmaps from http://jimmac.musichall.cz/ikony.php3 | http://www.everaldo.com | http://www.amule.org
 ///
 /// This program is free software; you can redistribute it and/or modify
@@ -44,6 +46,8 @@
 #include <wx/listbox.h>
 #include <wx/url.h>
 #include <wx/filename.h>
+#include <wx/clipbrd.h>
+#include <wx/dataobj.h>
 #endif
 
 #include "md4.h"
@@ -69,7 +73,7 @@ AlcFrame::AlcFrame (const wxString & title):
   // Status Bar
   CreateStatusBar ();
   SetStatusText (_("Welcome!"));
-  
+
   // Unused dialog for now
   m_progressBar = NULL;
 
@@ -99,10 +103,12 @@ AlcFrame::AlcFrame (const wxString & title):
 
   // Static texts
   m_inputFileStaticText=new wxStaticText(m_mainPanel, -1,
-                                         _("File to Hash"),wxDefaultPosition,wxDefaultSize,wxALIGN_CENTRE);
+                                         _("File to Hash"),
+                                         wxDefaultPosition,wxDefaultSize,wxALIGN_CENTRE);
 
   m_inputAddStaticText=new wxStaticText(m_mainPanel, -1,
-                                        _("Add Optional URLs for this file"),wxDefaultPosition,wxDefaultSize,wxALIGN_CENTRE);
+                                        _("Add Optional URLs for this file"),
+                                        wxDefaultPosition,wxDefaultSize,wxALIGN_CENTRE);
 
   // Text ctrls
   m_inputFileTextCtrl = new wxTextCtrl (m_mainPanel,-1,wxEmptyString,
@@ -145,7 +151,7 @@ AlcFrame::AlcFrame (const wxString & title):
                     _
                     ("Create link with part-hashes"));
 
-  m_parthashesCheck->SetValue(FALSE);
+  m_parthashesCheck->SetValue(false);
 
   m_parthashesCheck->
   SetToolTip (_
@@ -170,7 +176,7 @@ AlcFrame::AlcFrame (const wxString & title):
   m_inputFlexSizer->Add (m_parthashesCheck, 0, wxGROW | wxALIGN_CENTER | wxTOP, 10);
   m_inputFlexSizer->Add (1,1);
 
-  m_inputSBoxSizer->Add (m_inputFlexSizer, 1, wxALL | wxALIGN_CENTER | wxALL, 10);
+  m_inputSBoxSizer->Add (m_inputFlexSizer, 1, wxGROW | wxALIGN_CENTER | wxALL, 10);
   m_mainPanelVBox->Add (m_inputSBoxSizer, 0, wxGROW | wxALIGN_CENTER | wxALL, 10);
 
 #ifdef WANT_MD4SUM
@@ -208,29 +214,31 @@ AlcFrame::AlcFrame (const wxString & title):
   m_ed2kSBoxSizer->Add (m_ed2kTextCtrl, 1, wxALL | wxGROW, 5);
   m_mainPanelVBox->Add( m_ed2kSBoxSizer, 1, wxALL | wxGROW, 10 );
 
-  // Activitybar
-  //m_activityBar = new ActivityBar(m_mainPanel, -1, 100, 10, wxDefaultPosition, wxSize(-1,10));
-  //m_mainPanelVBox->Add( m_activityBar, 0, wxLEFT | wxRIGHT | wxGROW, 10 );
-
   // Button bar
   m_buttonHBox = new wxBoxSizer (wxHORIZONTAL);
   m_startButton =
     new wxButton (m_mainPanel, ID_START_BUTTON, wxString (_("Start")));
   m_saveButton =
     new wxButton (m_mainPanel, ID_SAVEAS_BUTTON, wxString (_("Save")));
+  m_copyButton =
+    new wxButton (m_mainPanel, ID_COPY_BUTTON, wxString (_("Copy to clipboard")));
   m_closeButton =
     new wxButton (m_mainPanel, ID_EXIT_BUTTON, wxString (_("Exit")));
 
-  m_buttonHBox->Add (m_startButton, 0, wxALIGN_CENTER | wxALL, 5);
-  m_buttonHBox->Add (m_saveButton, 0, wxALIGN_CENTER | wxALL, 5);
-  m_buttonHBox->Add (m_closeButton, 0, wxALIGN_CENTER | wxALL, 5);
+  m_buttonHBox->Add (m_copyButton, 0, wxALIGN_LEFT | wxALL, 5);
+  m_buttonHBox->Add(1,1,1);
+  m_buttonHBox->Add (m_startButton, 0, wxALIGN_RIGHT | wxALL, 5);
+  m_buttonHBox->Add (m_saveButton, 0, wxALIGN_RIGHT | wxALL, 5);
+  m_buttonHBox->Add (m_closeButton, 0, wxALIGN_RIGHT | wxALL, 5);
 
-  m_mainPanelVBox->Add (m_buttonHBox, 0,  wxALIGN_CENTER | wxALL, 5);
+
+  m_mainPanelVBox->Add (m_buttonHBox, 0,  wxALL | wxGROW, 5);
 
   // Toolbar Pixmaps
   m_toolBarBitmaps[0] = AlcPix::getPixmap(wxT("open"));
-  m_toolBarBitmaps[1] = AlcPix::getPixmap(wxT("saveas"));
-  m_toolBarBitmaps[2] = AlcPix::getPixmap(wxT("about"));
+  m_toolBarBitmaps[1] = AlcPix::getPixmap(wxT("copy"));
+  m_toolBarBitmaps[2] = AlcPix::getPixmap(wxT("saveas"));
+  m_toolBarBitmaps[3] = AlcPix::getPixmap(wxT("about"));
 
   // Constructing toolbar
   m_toolbar =
@@ -242,12 +250,15 @@ AlcFrame::AlcFrame (const wxString & title):
   m_toolbar->AddTool (ID_BAR_OPEN, wxT("Open"), m_toolBarBitmaps[0],
                       _("Open a file to compute its ed2k link"));
 
-  m_toolbar->AddTool (ID_BAR_SAVEAS, wxT("Save as"), m_toolBarBitmaps[1],
+  m_toolbar->AddTool (ID_BAR_COPY, wxT("Copy"), m_toolBarBitmaps[1],
+                      _("Copy computed ed2k link to clipboard"));
+
+  m_toolbar->AddTool (ID_BAR_SAVEAS, wxT("Save as"), m_toolBarBitmaps[2],
                       _("Save computed ed2k link to file"));
 
   m_toolbar->AddSeparator ();
 
-  m_toolbar->AddTool (ID_BAR_ABOUT, wxT("About"), m_toolBarBitmaps[2],
+  m_toolbar->AddTool (ID_BAR_ABOUT, wxT("About"), m_toolBarBitmaps[3],
                       _("About aLinkCreator"));
 
   m_toolbar->SetMargins (2, 2);
@@ -261,7 +272,7 @@ AlcFrame::AlcFrame (const wxString & title):
 
   // Frame Layout
   m_frameVBox->Add (m_mainPanel, 1, wxALL | wxGROW, 0);
-  SetAutoLayout (TRUE);
+  SetAutoLayout (true);
   SetSizerAndFit (m_frameVBox);
 
   m_startButton->SetFocus();
@@ -275,10 +286,12 @@ AlcFrame::~AlcFrame ()
 BEGIN_EVENT_TABLE (AlcFrame, wxFrame)
 EVT_TOOL (ID_BAR_OPEN, AlcFrame::OnBarOpen)
 EVT_TOOL (ID_BAR_SAVEAS, AlcFrame::OnBarSaveAs)
+EVT_TOOL (ID_BAR_COPY, AlcFrame::OnBarCopy)
 EVT_TOOL (ID_BAR_ABOUT, AlcFrame::OnBarAbout)
 EVT_BUTTON (ID_START_BUTTON, AlcFrame::OnStartButton)
 EVT_BUTTON (ID_EXIT_BUTTON, AlcFrame::OnCloseButton)
 EVT_BUTTON (ID_SAVEAS_BUTTON, AlcFrame::OnSaveAsButton)
+EVT_BUTTON (ID_COPY_BUTTON, AlcFrame::OnCopyButton)
 EVT_BUTTON (ID_BROWSE_BUTTON, AlcFrame::OnBrowseButton)
 EVT_BUTTON (ID_ADD_BUTTON, AlcFrame::OnAddUrlButton)
 EVT_BUTTON (ID_REMOVE_BUTTON, AlcFrame::OnRemoveUrlButton)
@@ -328,6 +341,43 @@ AlcFrame::OnSaveAsButton(wxCommandEvent & event)
   SaveEd2kLinkToFile();
 }
 
+/// Copy Ed2k link to clip board
+void
+AlcFrame::CopyEd2kLinkToClipBoard()
+{
+  wxString link = m_ed2kTextCtrl->GetValue();
+  if (!link.IsEmpty())
+    {
+      wxClipboardLocker clipLocker;
+      if ( !clipLocker )
+        {
+          wxLogError(wxT("Can't open the clipboard"));
+
+          return;
+        }
+
+      wxTheClipboard->AddData(new wxTextDataObject(link));
+    }
+  else
+    {
+      SetStatusText (_("Nothing to copy for now !"));
+    }
+}
+
+/// Copy button
+void
+AlcFrame::OnCopyButton(wxCommandEvent & event)
+{
+  CopyEd2kLinkToClipBoard();
+}
+
+/// Toolbar Copy button
+void
+AlcFrame::OnBarCopy(wxCommandEvent & event)
+{
+  CopyEd2kLinkToClipBoard();
+}
+
 /// Save computed Ed2k link to file
 void
 AlcFrame::SaveEd2kLinkToFile()
@@ -371,7 +421,7 @@ AlcFrame::OnBarAbout (wxCommandEvent & event)
   wxMessageBox (_
                 ("aLinkCreator, the aMule ed2k link creator\n\n"
                  "(c) 2004 ThePolish <thepolish@vipmail.ru>\n\n"
-                 "Pixmaps from http://jimmac.musichall.cz/ikony.php3 | http://www.everaldo.com | http://www.amule.org\n\n"
+                 "Pixmaps from http://www.everaldo.com and http://www.amule.org\n\n"
                  "Distributed under GPL"),
                 _("About aLinkCreator"), wxOK | wxCENTRE | wxICON_INFORMATION);
 }
@@ -379,15 +429,24 @@ AlcFrame::OnBarAbout (wxCommandEvent & event)
 /// Close Button
 void AlcFrame::OnCloseButton (wxCommandEvent & event)
 {
-  Close (FALSE);
+  Close (false);
 }
 
 /// Hook into MD4/ED2K routine
-static bool alc_frame_hook(int percent);
-bool alc_frame_hook(int percent)
+bool AlcFrame::Hook(int percent)
 {
-  wxGetApp().alcFrame->m_progressBar->Update(percent);
-  return true;
+  // Update progress bar
+  bool goAhead = ::wxGetApp().GetMainFrame()->m_progressBar->Update(percent);
+  if (!goAhead)
+    {
+      // Destroying progressbar: no merci for croissants !
+      ::wxGetApp().GetMainFrame()->m_progressBar->Destroy();
+      // Now, be paranoid
+      delete ::wxGetApp().GetMainFrame()->m_progressBar;
+      ::wxGetApp().GetMainFrame()->m_progressBar = NULL;
+    }
+
+  return (goAhead);
 }
 
 /// Compute Hashes on Start Button
@@ -398,71 +457,90 @@ void AlcFrame::OnStartButton (wxCommandEvent & event)
 
   if (!filename.empty ())
     {
+      // Initialize computation
+      m_goAhead=true;
+
       // Chrono
       wxStopWatch chrono;
 
       // wxFileName needed for base name
       wxFileName fileToHash(filename);
 
+      // Set waiting msg
       m_e2kHashTextCtrl->SetValue(_("Hashing..."));
       m_ed2kTextCtrl->SetValue(_("Hashing..."));
 
 #ifdef WANT_MD4SUM
-
+      // Create MD4 progress bar dialog
+      m_progressBar=new wxProgressDialog  (wxT("aLinkCreator is working for you"), wxT("Computing MD4 Hash..."),
+                                           100, this, wxPD_AUTO_HIDE | wxPD_CAN_ABORT | wxPD_REMAINING_TIME);
       m_md4HashTextCtrl->SetValue(_("Hashing..."));
+
+      // Md4 hash
+      MD4 md4;
+      m_md4HashTextCtrl->SetValue(md4.calcMd4FromFile(filename,Hook));
+
+      // Deleting MD4 progress bar dialog
+      delete m_progressBar;
+      m_progressBar=NULL;
+
 #endif
 
-      // m_activityBar->Start();
-      m_progressBar=new wxProgressDialog  (wxT("aLinkCreator is working for you"), wxT("Computing Hashes..."),
-                                         100, this, wxPD_AUTO_HIDE | wxPD_CAN_ABORT | wxPD_REMAINING_TIME);
+      // Create ED2K progress bar dialog
+      m_progressBar=new wxProgressDialog  (wxT("aLinkCreator is working for you"), wxT("Computing ED2K Hashes..."),
+                                           100, this, wxPD_AUTO_HIDE | wxPD_CAN_ABORT | wxPD_REMAINING_TIME);
 
       // Compute ed2k Hash
       Ed2kHash hash;
 
       // Test the return value to see if was aborted.
-      bool finished = hash.SetED2KHashFromFile(filename, alc_frame_hook);
-      if (!finished)
-        return;
-
-      wxArrayString ed2kHash (hash.GetED2KHash());
-
-      // Get URLs
-      wxArrayString arrayOfUrls;
-      wxString url;
-      for (i=0;i < m_inputUrlListBox->GetCount();i++)
+      if (hash.SetED2KHashFromFile(filename, Hook))
         {
-          url=m_inputUrlListBox->GetString(i);
-          if (url.Right(1) == wxT("/"))
+
+          wxArrayString ed2kHash (hash.GetED2KHash());
+
+          // Get URLs
+          wxArrayString arrayOfUrls;
+          wxString url;
+          for (i=0;i < m_inputUrlListBox->GetCount();i++)
             {
-              url += fileToHash.GetFullName();
+              url=m_inputUrlListBox->GetString(i);
+              if (url.Right(1) == wxT("/"))
+                {
+                  url += fileToHash.GetFullName();
+                }
+              arrayOfUrls.Add(wxURL::ConvertToValidURI(url));
             }
-          arrayOfUrls.Add(wxURL::ConvertToValidURI(url));
+          arrayOfUrls.Shrink(); // Reduce memory usage
+
+          // Ed2k hash
+          m_e2kHashTextCtrl->SetValue(ed2kHash.Last());
+
+          // Ed2k link
+          m_ed2kTextCtrl->SetValue(hash.GetED2KLink(arrayOfUrls,m_parthashesCheck->IsChecked()));
         }
-      arrayOfUrls.Shrink();
+      else
+        {
+          // Set cancelled msg
+          m_e2kHashTextCtrl->SetValue(_("Canceled !"));
+          m_ed2kTextCtrl->SetValue(_("Canceled !"));
+        }
 
-#ifdef WANT_MD4SUM
-      // Md4 hash
-      MD4 md4;
-      m_md4HashTextCtrl->SetValue(md4.calcMd4FromFile(filename));
-#endif
-      // Ed2k hash
-      m_e2kHashTextCtrl->SetValue(ed2kHash.Last());
+      // Deleting progress bar dialog
+      delete m_progressBar;
+      m_progressBar=NULL;
 
-      // Ed2k link
-      m_ed2kTextCtrl->SetValue(hash.GetED2KLink(arrayOfUrls,m_parthashesCheck->IsChecked()));
-
-      // m_activityBar->Stop();
-
-      m_progressBar->Destroy();
-
+      // Set status text
       SetStatusText (wxString::Format(_("Done in %.2f s"),
                                       chrono.Time()*.001));
     }
   else
     {
+      // Set status text
       SetStatusText (_("Please, enter a non empty file name"));
     }
 }
+
 
 /// Add an URL to the URL list box
 void
@@ -474,12 +552,12 @@ AlcFrame::OnAddUrlButton (wxCommandEvent & event)
     {
       // Check if the URL already exist in list
       int i;
-      bool UrlNotExists = TRUE;
+      bool UrlNotExists = true;
       for (i=0;i < m_inputUrlListBox->GetCount();i++)
         {
           if (url == m_inputUrlListBox->GetString(i))
             {
-              UrlNotExists =FALSE;
+              UrlNotExists =false;
               break;
             }
         }
