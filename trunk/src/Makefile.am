@@ -75,6 +75,7 @@ amulegui_SOURCES = \
 	MuleTextCtrl.cpp \
 	MuleNotebook.cpp \
 	MuleGifCtrl.cpp \
+	MuleTrayIcon.cpp \
 	otherfunctions.cpp \
 	OScopeCtrl.cpp \
 	packets.cpp \
@@ -135,6 +136,7 @@ amule_SOURCES = ListenSocket.cpp \
 	MuleListCtrl.cpp \
 	MuleNotebook.cpp \
 	MuleTextCtrl.cpp \
+	MuleTrayIcon.cpp \
 	muuli_wdr.cpp \
 	OScopeCtrl.cpp \
 	otherfunctions.cpp \
@@ -344,6 +346,7 @@ noinst_HEADERS = AddFileThread.h \
 		 MuleListCtrl.h \
 		 MuleNotebook.h \
 		 MuleTextCtrl.h \
+		 MuleTrayIcon.h \
 		 muuli_wdr.h \
 		 opcodes.h \
 		 OScopeCtrl.h \
@@ -385,4 +388,3 @@ noinst_HEADERS = AddFileThread.h \
 
 
 MAINTAINERCLEANFILES = Makefile.in
-

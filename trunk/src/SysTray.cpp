@@ -70,10 +70,10 @@ void CSysTray::SetTrayToolTip(const wxString& tip)
 }
 
 
-void CSysTray::SetTrayIcon(char** data, int* WXUNUSED(pVals))
+void CSysTray::SetTrayIcon(const wxIcon& Icon)
 {
-	SetIcon(wxIcon(data));
-	c=wxIcon(data);
+	SetIcon(data);
+	c = data;
 }
 
 

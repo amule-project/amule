@@ -327,8 +327,12 @@ void CamuleDlg::CreateSystray(const wxString& title)
 		// ok, it's not set yet.
 		changeDesktopMode();
 	}
-
+#ifdef USE_WX_TRAY
+	m_wndTaskbarNotifier = new CMuleTrayIcon();
+	wxASSERT(m_wndTaskbarNotifier->IsOk());
+#else
 	m_wndTaskbarNotifier = new CSysTray(this, (DesktopMode)thePrefs::GetDesktopMode(), title);
+#endif
 }
 
 
@@ -743,27 +747,45 @@ void CamuleDlg::OnClose(wxCloseEvent& evt)
 
 
 #ifndef __SYSTRAY_DISABLED__
-void CamuleDlg::UpdateTrayIcon(int procent)
+void CamuleDlg::UpdateTrayIcon(int percent)
 {
-	// generate the icon (destroy these icon using DestroyIcon())
-	int pVals16[1] = {procent};
-
 	// ei hienostelua. tarvii kuitenki pelleill?gtk:n kanssa
-	char** data;
-	if(!theApp.serverconnect) {
-		data=mule_Tr_grey_ico;
-	} else {
-		if (theApp.serverconnect->IsConnected()) {
-			if(!theApp.serverconnect->IsLowID()) {
-				data=mule_TrayIcon_ico;
-			} else {
-				data=mule_Tr_yellow_ico;
-			}
+	// Whatever that means, it's working now.
+	
+	#ifdef USE_WX_TRAY
+		wxIcon NewTrayIcon;
+		if(!theApp.serverconnect) {
+			NewTrayIcon = wxIcon(mule_Tr_grey_ico);
 		} else {
-			data=mule_Tr_grey_ico;
+			if (theApp.serverconnect->IsConnected()) {
+				if(!theApp.serverconnect->IsLowID()) {
+					NewTrayIcon = wxIcon(mule_TrayIcon_ico);
+				} else {
+					NewTrayIcon = wxIcon(mule_Tr_yellow_ico);
+				}
+			} else {
+				NewTrayIcon = wxIcon(mule_Tr_grey_ico);
+			}
 		}
-	}
-	m_wndTaskbarNotifier->SetTrayIcon(data, pVals16);
+		m_wndTaskbarNotifier->SetTrayIcon(NewTrayIcon, percent);
+	#else
+		int pVals16[1] = {percent};
+		char** data;
+		if(!theApp.serverconnect) {
+			data = mule_Tr_grey_ico;
+		} else {
+			if (theApp.serverconnect->IsConnected()) {
+				if(!theApp.serverconnect->IsLowID()) {
+					data = mule_Tr_grey_ico;
+				} else {
+					data = mule_Tr_yellow_ico;
+				}
+			} else {
+				data = mule_Tr_grey_ico;
+			}
+		}		
+		m_wndTaskbarNotifier->SetTrayIcon(data, pVals16 );
+	#endif
 }
 #endif // __SYSTRAY_DISABLED__
 
