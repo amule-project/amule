@@ -28,7 +28,8 @@
 	#include <netinet/in.h>
 	#include <arpa/inet.h>
 #endif
-#include <pthread.h>
+
+//#include <pthread.h> aquatroll - think somebody forgot to delete the line, if it breaks: uncomment it
 #include <wx/intl.h>		// Needed for _
 
 #ifndef __linux__
