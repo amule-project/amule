@@ -766,6 +766,8 @@ bool CServerList::SaveServermetToFile()
 				++tagcount;
 			if (!nextserver->GetDescription().IsEmpty())
 				++tagcount;
+			if (nextserver->GetConnPort() != nextserver->GetPort())
+				++tagcount;		
 			
 			servermet.WriteUInt32(nextserver->GetIP());
 			servermet.WriteUInt16(nextserver->GetPort());
