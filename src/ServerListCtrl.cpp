@@ -251,20 +251,6 @@ void CServerListCtrl::Localize()
 {
 }
 
-/*void CServerListCtrl::ShowServers()
-{
-	DeleteAllItems();
-	int i=0;
-	CString temp;
-	for(POSITION pos = server_list->list.GetHeadPosition(); pos != NULL;server_list->list.GetNext(pos)) {
-		CServer* cur_server = server_list->list.GetAt(pos);
-		InsertItem(LVIF_TEXT|LVIF_PARAM,i,cur_server->GetListName(),0,0,0,(LPARAM)cur_server);
-		RefreshServer( cur_server );
-		i++;
-	}
-}
-*/
-
 void CServerListCtrl::RemoveServer(CServer* todel,bool bDelToList)
 {
 	//LVFINDINFO find;
@@ -364,7 +350,7 @@ void CServerListCtrl::RefreshServer(CServer* server)
 	if(!server) {
 		return;
 	}
-	temp=wxString::Format( wxT("%s : %i"),server->GetAddress(),server->GetPort());
+	temp = char2unicode(server->GetAddress()) + wxString::Format(wxT(" : %i"),server->GetPort());
 	SetItem(itemnr,1,temp);
 	if(server->GetListName()) {
 		temp=char2unicode(server->GetListName());

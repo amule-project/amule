@@ -153,7 +153,7 @@ void CServer::Init() {
 	challenge = 0;
 	softfiles = 0;
 	hardfiles = 0;	
-	m_strVersion = "Unknown";
+	m_strVersion = wxT("Unknown");
 	
 }	
 
@@ -213,7 +213,7 @@ bool CServer::AddTagFromFile(CFile* servermet){
 		break;
 	case ST_VERSION:
 		if (tag->tag.type == 2)
-			m_strVersion = tag->tag.stringvalue;
+			m_strVersion = char2unicode(tag->tag.stringvalue);
 		delete tag;
 		break;
 	case ST_UDPFLAGS:
@@ -290,7 +290,7 @@ bool CServer::AddTagFromFile(CSafeFile* servermet)
 			break;
 		case ST_VERSION:
 			if (tag->tag->type == 2) {
-				m_strVersion = tag->tag->stringvalue;
+				m_strVersion = char2unicode(tag->tag->stringvalue);
 			}
 			delete tag;
 			break;
