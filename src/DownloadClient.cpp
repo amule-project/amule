@@ -1172,12 +1172,12 @@ bool CUpDownClient::SwapToAnotherFile(bool bIgnoreNoNeeded, bool ignoreSuspensio
 	} else { 
 		// We want highest priority possible, but need to start with 
 		// a value less than any other priority
-		uint8 priority = -1;
+		char priority = -1;
 		
 		A4AFList::iterator it = m_A4AF_list.begin();
 		for ( ; it != m_A4AF_list.end(); ++it ) {
 			if ( IsValidSwapTarget( it, bIgnoreNoNeeded, ignoreSuspensions ) ) {
-				uint8 cur_priority = it->first->GetDownPriority();
+				char cur_priority = it->first->GetDownPriority();
 
 				// We would prefer to get files with needed parts, thus rate them higher.
 				// However, this really only matters if bIgnoreNoNeeded is true.
