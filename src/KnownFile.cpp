@@ -24,6 +24,7 @@
 #include <sys/stat.h>
 #include <wx/ffile.h>
 #include <wx/filename.h>
+#include <wx/config.h>
 
 #include "KnownFile.h"		// Interface declarations.
 #include "amuleDlg.h"		// Needed for CamuleDlg
