@@ -59,13 +59,14 @@
 CChatSession::CChatSession(wxWindow* parent, wxWindowID id, const wxString& value, const wxPoint& pos, const wxSize& size, long style, const wxValidator& validator, const wxString& name)
 : wxTextCtrl( parent, id, value, pos, size, style | wxTE_READONLY | wxTE_RICH | wxTE_MULTILINE, validator, name )
 {
-	client = NULL;
+	m_client = NULL;
+	m_active = false;
 }
 
 
 CChatSession::~CChatSession()
 {
-	client->SetChatState(MS_NONE);
+	m_client->SetChatState(MS_NONE);
 }
 
 
@@ -105,9 +106,9 @@ CChatSession* CChatSelector::StartSession(CUpDownClient* client, bool show)
 	}
 
 	CChatSession* chatsession = new CChatSession(this);
-	chatsession->client = client;
+	chatsession->m_client = client;
 
-	wxString text = wxString(wxT("*** Chatsession Start : ")) + client->GetUserName() + wxT("\n");
+	wxString text = wxString(wxT("*** Chat-Session Startet: ")) + client->GetUserName() + wxT("\n");
 	chatsession->AddText( text, COLOR_BLACK );
 	AddPage(chatsession, client->GetUserName(), show, 0);
 	
@@ -125,7 +126,7 @@ CChatSession* CChatSelector::GetPageByClient(CUpDownClient* client)
 	for ( unsigned int i = 0; i < (unsigned int ) GetPageCount(); i++ ) {
 		CChatSession* page = (CChatSession*)GetPage( i );
 		
-		if( page->client == client ) {
+		if( page->m_client == client ) {
 			return page;
 		}
 	}
@@ -139,7 +140,7 @@ int CChatSelector::GetTabByClient(CUpDownClient* client)
 	for ( unsigned int i = 0; i < (unsigned int) GetPageCount(); i++ ) {
 		CChatSession* page = (CChatSession*)GetPage( i );
 		
-		if( page->client == client ) {
+		if( page->m_client == client ) {
 			return i;
 		}
 	}
@@ -181,27 +182,26 @@ bool CChatSelector::SendMessage( const wxString& message )
 		
 	
 	CChatSession* ci = (CChatSession*)GetPage( usedtab );
-	if ( ci->client->GetChatState() == MS_CONNECTING ) {
+	if ( ci->m_client->GetChatState() == MS_CONNECTING )
 		return false;
-	}
+
+	ci->m_active = true;
 	
-	if (ci->client->IsConnected()) {
+	if (ci->m_client->IsConnected()) {
 		CSafeMemFile data;
 		data.WriteString(message);
 		Packet* packet = new Packet(&data);
 		packet->SetOpCode(OP_MESSAGE);
 		theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
-		if ( ci->client->SendPacket(packet, true, true) ) {
+		if ( ci->m_client->SendPacket(packet, true, true) ) {
 			ci->AddText( theApp.glob_prefs->GetUserNick(), COLOR_GREEN );
 			ci->AddText( wxT(": ") + message + wxT("\n"), COLOR_BLACK );
 		}
 	} else {
-		printf("Not connected to Chat. Trying to connect...\n");
-		ci->AddText( wxString(wxT("*** ")) + wxString(wxT("Connecting")) , COLOR_RED );
-		ci->messagepending = message;
-		ci->client->SetChatState(MS_CONNECTING);
-		ci->client->TryToConnect();
-		printf("Chat Connected\n");
+		ci->AddText( _("*** Connecting to Client ***\n") , COLOR_RED );
+		ci->m_pending = message;
+		ci->m_client->SetChatState(MS_CONNECTING);
+		ci->m_client->TryToConnect();
 	}
 	
 	return true;
@@ -231,29 +231,31 @@ void CChatSelector::ConnectionResult(CUpDownClient* sender, bool success)
 		return;
 	}
 	
-	ci->client->SetChatState( MS_CHATTING );
+	ci->m_client->SetChatState( MS_CHATTING );
 	if ( !success ) {
-		if ( !ci->messagepending.IsEmpty() ) {
-			ci->AddText( wxString(wxT(" failed\n")) , COLOR_RED );
-		} else {
-			ci->AddText( wxString(wxT("*** Disconnected\n")), COLOR_RED );
+		if ( !ci->m_pending.IsEmpty() ) {
+			ci->AddText( _("*** Failed to Connect ***\n"), COLOR_RED );
+		} else if ( ci->m_active ) {
+			ci->AddText( _("*** Disconnected from Client ***\n"), COLOR_RED );
 		}
 		
-		ci->messagepending.Clear();
+		ci->m_active = false;
+		ci->m_pending.Clear();
 	} else {
-		ci->AddText( wxString(wxT(" ok\n")), COLOR_RED );
 		// Kry - Woops, fix for the everlasting void message sending.
-		if (!ci->messagepending.IsEmpty()) {
+		if ( !ci->m_pending.IsEmpty() ) {
+			ci->AddText( _("*** Connected to Client ***\n"), COLOR_RED );
+			
 			CSafeMemFile data;
-			data.WriteString(ci->messagepending);
+			data.WriteString(ci->m_pending);
 			Packet* packet = new Packet(&data);
 			packet->SetOpCode(OP_MESSAGE);
 			theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
-			if ( ci->client->SendPacket(packet, true, true) ) {
+			if ( ci->m_client->SendPacket(packet, true, true) ) {
 				ci->AddText( theApp.glob_prefs->GetUserNick(), COLOR_GREEN );
-				ci->AddText( wxT(": ") + ci->messagepending + wxT("\n"), COLOR_BLACK );
+				ci->AddText( wxT(": ") + ci->m_pending + wxT("\n"), COLOR_BLACK );
 			
-				ci->messagepending.Clear();
+				ci->m_pending.Clear();
 			}
 		}
 	}
@@ -290,7 +292,7 @@ void CChatSelector::RefreshFriend(CFriend* toupdate)
 	for ( unsigned int i = 0; i < (unsigned int)GetPageCount(); i++ ) {
 		CChatSession* page = (CChatSession*)GetPage( i );
 
-		if ( page->client == toupdate->m_LinkedClient ) {
+		if ( page->m_client == toupdate->m_LinkedClient ) {
 			SetPageText( i, toupdate->m_strName );
 			break;
 		};
