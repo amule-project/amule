@@ -53,9 +53,11 @@ enum DesktopMode
 
 
 #if defined(__UTF8_SYSTRAY_ENABLED__)
-	#define StringToSystray(x) aMuleConvToUTF8(x)
+	#define char2gtk(x) 		char2UTF8(x)
+	#define unicode2gtk(x) 	unicode2UTF8(x)
 #else
-	#define StringToSystray(x) unicode2char(x)
+	#define char2gtk(x) 		x
+	#define unicode2gtk(x) 	unicode2char(x)
 #endif
 
 class wxWindow;

@@ -64,7 +64,8 @@ static wxCSConv aMuleConv(wxT("iso8859-1"));
 #endif
 
 // Reverted to #define, the returned pointer pointed to local (already unavailable) data
-#define aMuleConvToUTF8(x)	(const char *)wxConvUTF8.cWC2MB(wxString(x).wc_str(aMuleConv))
+#define unicode2UTF8(x)	(const char *)wxConvUTF8.cWC2MB(x.wc_str(aMuleConv))
+#define char2UTF8(x)	(const char *)wxConvUTF8.cWC2MB(wxString(x).wc_str(aMuleConv))
 //inline const char *aMuleConvToUTF8(const wxString &x) { 
 //	return wxConvUTF8.cWC2MB(wxString(x).wc_str(aMuleConv));
 //};
