@@ -466,14 +466,10 @@ dnl --------------------------------------------------------------------------
 AC_DEFUN([CHECK_CCACHE],
 	[
 	if test x$ccache_prefix == x ; then
-	ccache_prefix="/usr/bin"
+		ccache_full=$(which ccache)
+		ccache_prefix=$(dirname ${ccache_full})
 	fi
-	$ccache_prefix/ccache-config --version > /dev/null 2>&1
-	CCACHE=$?
-	if test "$CCACHE" != 0; then
-        ccache_prefix="/usr/local/bin"
-	fi
-	$ccache_prefix/ccache-config --version > /dev/null 2>&1
+	$ccache_prefix/ccache -V > /dev/null 2>&1
 	CCACHE=$?
 	if test "$CCACHE" != 0; then
 		result="no"
