@@ -1448,5 +1448,5 @@ void PrefsUnifiedDlg::OnPrefsPageChange(wxListEvent& event) {
 	prefs_sizer->Show(CurrentPrefsPanel, false);
 	CurrentPrefsPanel = PrefsPanels[event.GetIndex()];
 	prefs_sizer->Show(CurrentPrefsPanel, true);
-	Layout();
+	prefs_sizer->Layout();
 }

@@ -2897,40 +2897,43 @@ wxSizer *PreferencesRemoteControlsTab( wxWindow *parent, bool call_fit, bool set
 }
 
 wxSizer *prefs_main_sizer;
-wxSizer *prefs_select_sizer;
 wxSizer *prefs_sizer;
 wxSizer *preferencesDlgTop( wxWindow *parent, bool call_fit, bool set_sizer )
 {
-    wxFlexGridSizer *item0 = new wxFlexGridSizer( 2, 0, 0, 0 );
-    item0->AddGrowableRow( 0 );
+    wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
     prefs_main_sizer = item0;
 
     wxFlexGridSizer *item1 = new wxFlexGridSizer( 1, 0, 0, 0 );
     item1->AddGrowableCol( 1 );
+    item1->AddGrowableCol( 2 );
+    item1->AddGrowableCol( 3 );
+    item1->AddGrowableCol( 4 );
+    item1->AddGrowableCol( 5 );
+    item1->AddGrowableCol( 6 );
+    item1->AddGrowableCol( 7 );
+    item1->AddGrowableCol( 8 );
+    item1->AddGrowableCol( 9 );
+    item1->AddGrowableCol( 10 );
+    item1->AddGrowableCol( 11 );
     item1->AddGrowableRow( 0 );
-    prefs_select_sizer = item1;
+    prefs_sizer = item1;
 
-    wxListCtrl *item2 = new wxListCtrl( parent, ID_PREFSLISTCTRL, wxDefaultPosition, wxSize(150,350), wxLC_REPORT|wxLC_NO_HEADER|wxLC_SINGLE_SEL|wxSUNKEN_BORDER );
-    item1->Add( item2, 0, wxALIGN_CENTER_VERTICAL|wxALL|wxGROW, 5 );
+    wxListCtrl *item2 = new wxListCtrl( parent, ID_PREFSLISTCTRL, wxDefaultPosition, wxSize(150,250), wxLC_REPORT|wxLC_NO_HEADER|wxLC_SINGLE_SEL|wxSUNKEN_BORDER );
+    item1->Add( item2, 0, wxALL, 5 );
 
-    wxBoxSizer *item3 = new wxBoxSizer( wxHORIZONTAL );
-    prefs_sizer = item3;
+    item0->Add( item1, 0, wxADJUST_MINSIZE|wxGROW, 0 );
 
-    item1->Add( item3, 0, wxGROW, 5 );
+    wxStaticBox *item4 = new wxStaticBox( parent, -1, wxT("") );
+    wxStaticBoxSizer *item3 = new wxStaticBoxSizer( item4, wxHORIZONTAL );
 
-    item0->Add( item1, 0, wxADJUST_MINSIZE|wxGROW, 5 );
+    wxButton *item5 = new wxButton( parent, ID_PREFS_OK_TOP, _("OK"), wxDefaultPosition, wxDefaultSize, 0 );
+    item5->SetDefault();
+    item3->Add( item5, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    wxStaticBox *item5 = new wxStaticBox( parent, -1, wxT("") );
-    wxStaticBoxSizer *item4 = new wxStaticBoxSizer( item5, wxHORIZONTAL );
+    wxButton *item6 = new wxButton( parent, ID_PREFS_CANCEL_TOP, _("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
+    item3->Add( item6, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    wxButton *item6 = new wxButton( parent, ID_PREFS_OK_TOP, _("OK"), wxDefaultPosition, wxDefaultSize, 0 );
-    item6->SetDefault();
-    item4->Add( item6, 0, wxALIGN_CENTER|wxALL, 5 );
-
-    wxButton *item7 = new wxButton( parent, ID_PREFS_CANCEL_TOP, _("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
-    item4->Add( item7, 0, wxALIGN_CENTER|wxALL, 5 );
-
-    item0->Add( item4, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+    item0->Add( item3, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 
     if (set_sizer)
     {
