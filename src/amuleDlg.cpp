@@ -134,8 +134,10 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, wxString title, wxPoint where, wxSize dl
 	m_wndToolbar->SetToolBitmapSize(wxSize(32, 32));
 	muleToolbar( m_wndToolbar );
 
-
 	serverwnd = new CServerWnd(p_cnt);
+	
+	AddLogLine(true, PACKAGE_STRING);
+	
 	searchwnd = new CSearchDlg(p_cnt);
 	transferwnd = new CTransferWnd(p_cnt);
 	prefsunifiedwnd = new PrefsUnifiedDlg(p_cnt);
@@ -236,8 +238,6 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, wxString title, wxPoint where, wxSize dl
 			Iconize(TRUE);
 		#endif
 	}
-	
-		
 	
 }
 
