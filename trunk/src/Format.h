@@ -124,7 +124,7 @@ public:
 #if GCC_VERSION > 30202
 	operator const wxString&() const;
 #else
-	operator const wxString() const;
+	operator wxString() const;
 #endif
 	 
 private:

@@ -105,7 +105,7 @@ const wxString& CFormat::GetString() const
 #if GCC_VERSION > 30202
 CFormat::operator const wxString&() const
 #else
-CFormat::operator const wxString() const
+CFormat::operator wxString() const
 #endif
 {
 	wxASSERT( m_index == m_format.Len() );
