@@ -1109,7 +1109,8 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 		else
 			HTTPProcessData.Replace(wxT("[ShortFileName]"), i->sFileName);
 
-		HTTPProcessData.Replace(wxT("[FileInfo]"), i->sFileInfo);
+		// this time only the full filename
+		HTTPProcessData.Replace(wxT("[FileInfo]"), i->sFileName);
 
 		fTotalSize += i->lFileSize;
 
