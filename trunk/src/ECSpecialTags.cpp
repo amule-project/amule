@@ -232,6 +232,9 @@ CEC_SearchFile_Tag::CEC_SearchFile_Tag(CSearchFile *file, EC_DETAIL_LEVEL detail
 	if ( detail_level != EC_DETAIL_WEB ) {
 		AddTag(CECTag(EC_TAG_PARTFILE_NAME, file->GetFileName()));
 		AddTag(CECTag(EC_TAG_PARTFILE_SIZE_FULL, file->GetFileSize()));
+		if ( theApp.sharedfiles->GetFileByID(file->GetFileHash()) ) {
+			AddTag(CECTag(EC_TAG_KNOWNFILE, (uint8)0));
+		}
 	}
 	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT, file->GetSourceCount()));
 }

@@ -217,6 +217,7 @@ class SearchFile {
 		long lFileSize;
 		CMD4Hash  nHash;
 		long lSourceCount;
+		bool bPresent;
 		
 		SearchFile(CEC_SearchFile_Tag *);
 		
