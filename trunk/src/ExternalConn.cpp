@@ -43,22 +43,6 @@
 #include "amule.h"			// Needed for theApp
 #include "SearchList.h"		// Needed for GetWebList
 
-//Needed to avoid multiple instances of amule
-wxConnectionBase *MuleClient::OnMakeConnection() {
-    return new MuleConnection;
-}
-
-MuleConnection::MuleConnection() : wxConnection() {
-    theApp.conn = this;
-}
-
-MuleConnection::~MuleConnection() {
-    if (theApp.conn) {
-        theApp.conn = NULL;
-    }
-}
-
-
 //ExternalConn: listening server using wxSockets
 enum
 {	// id for sockets

@@ -21,20 +21,6 @@
 //Needed to avoid multiple instances of amule
 #include <wx/ipc.h>	// Needed for wxConnection
 
-class MuleConnection : public wxConnection {
-  public:
-      MuleConnection();
-      ~MuleConnection();
-};
-
-class MuleClient:public wxClient {
-  public:
-      wxConnectionBase *OnMakeConnection();
- };
-
-class MuleServer:public wxServer {
-};
-
 
 //ExternalConn: listening server using wxSockets
 #include <wx/socket.h>
