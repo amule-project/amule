@@ -1721,10 +1721,10 @@ void CClientReqSocket::OnConnect(int nErrorCode)
 		OnError(nErrorCode);
 	} else if (!m_client) {
 		// and now? Disconnect? not?			
-		AddDebugLogLineM( true, logClient, wxT("Couldn't send hello packet (Client deleted!)") );
+		AddDebugLogLineM( false, logClient, wxT("Couldn't send hello packet (Client deleted!)") );
 	} else if (!m_client->SendHelloPacket()) {	
 		// and now? Disconnect? not?				
-		AddDebugLogLineM( true, logClient, wxT("Couldn't send hello packet (Client deleted by SendHelloPacket!)") );
+		AddDebugLogLineM( false, logClient, wxT("Couldn't send hello packet (Client deleted by SendHelloPacket!)") );
 	}
 }
 
