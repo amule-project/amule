@@ -154,6 +154,9 @@ protected:
 	bool	SendGlobGetSourcesUDPPacket(CSafeMemFile& data);
 
 private:
+	void AddSearchToDownloadCommon(CPartFile *newfile, uint8 paused);
+
+private:
 	std::deque<CPartFile*> filelist;
 	std::list<CPartFile*> m_localServerReqQueue;
 	CSharedFileList* sharedfilelist;

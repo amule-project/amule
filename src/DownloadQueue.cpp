@@ -215,7 +215,7 @@ void CDownloadQueue::LoadSourceSeeds()
 	}
 }
 
-void CDownloadQueue::AddSearchToDownload(CSearchFile* toadd,uint8 paused)
+void CDownloadQueue::AddSearchToDownload(CSearchFile* toadd, uint8 paused)
 {
 	if (IsFileExisting(toadd->GetFileHash())) {
 		return;
@@ -224,35 +224,32 @@ void CDownloadQueue::AddSearchToDownload(CSearchFile* toadd,uint8 paused)
 	if (!newfile) {
 		return;
 	}
-	if (newfile->GetStatus() == PS_ERROR) {
-		delete newfile;
-		return;
-	}
-	if (paused==2) {
-		paused=(uint8)theApp.glob_prefs->AddNewFilesPaused();
-	}
-	AddDownload(newfile, (paused==1));
-	newfile->SetCategory(theApp.amuledlg->searchwnd->GetCatChoice());
+	AddSearchToDownloadCommon(newfile, paused);
 }
 
-void CDownloadQueue::AddSearchToDownload(const wxString& link,uint8 paused)
+void CDownloadQueue::AddSearchToDownload(const wxString& link, uint8 paused)
 {
 	CPartFile* newfile = new CPartFile(link);
 	if (!newfile) {
 		return;
 	}
-	if (newfile->GetStatus() == PS_ERROR){
+	AddSearchToDownloadCommon(newfile, paused);
+}
+
+void CDownloadQueue::AddSearchToDownloadCommon(CPartFile *newfile, uint8 paused)
+{
+	if (newfile->GetStatus() == PS_ERROR) {
 		delete newfile;
 		return;
 	}
-	if (paused==2) {
-		paused=(uint8)theApp.glob_prefs->AddNewFilesPaused();
+	if (paused == 2) {
+		paused = (uint8)theApp.glob_prefs->AddNewFilesPaused();
 	}
-	AddDownload(newfile, (paused==1));
+	AddDownload(newfile, (paused == 1));
 	newfile->SetCategory(theApp.amuledlg->searchwnd->GetCatChoice());
 }
 
-void CDownloadQueue::StartNextFile()
+{void CDownloadQueue::StartNextFile()
 {
 	if(!theApp.glob_prefs->StartNextFile()) {
 		return;
