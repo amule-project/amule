@@ -148,6 +148,7 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, wxString title) : wxFrame(
 	wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxDIALOG_NO_PARENT|
 	wxTHICK_FRAME|wxMINIMIZE_BOX|wxMAXIMIZE_BOX|wxCLOSE_BOX )
 {
+	
 	SetIcon(wxICON(aMule));
 
 	m_app_state = APP_STATE_STARTING;
@@ -898,6 +899,7 @@ void CamuleDlg::Hide_aMule(bool iconize)
 //shows amule
 void CamuleDlg::Show_aMule(bool uniconize)
 {
+
 	if (!theApp.amuledlg->IsShown()) {
 
 		theApp.amuledlg->transferwnd->downloadlistctrl->Show(TRUE);
@@ -921,9 +923,14 @@ void CamuleDlg::Show_aMule(bool uniconize)
 }
 
 
-void CamuleDlg::OnMinimize(wxIconizeEvent& WXUNUSED(evt))
+void CamuleDlg::OnMinimize(wxIconizeEvent& evt)
 {
 #ifndef __SYSTRAY_DISABLED__
+	wxPoint unused;
+	if (!wxFindWindowAtPointer(unused)) {
+		return;
+	}
+	
 	if (theApp.amuledlg->IsIconized()) {
 		if (theApp.glob_prefs->DoMinToTray()) {
 			theApp.amuledlg->Hide_aMule(false);
