@@ -48,6 +48,7 @@
 #                                                                 #
 ###################################################################
 
+EXEC_NUMBER=0
 # The follwing four lines were needed for aMule versions previous to 2.0.0
 # EXEC_NUMBER=1
 # EXEC=("autogen.sh")
