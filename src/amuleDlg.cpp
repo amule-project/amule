@@ -50,7 +50,6 @@
 #include "ServerList.h"		// Needed for CServerList
 #include "SysTray.h"		// Needed for CSysTray
 #include "Preferences.h"	// Needed for CPreferences
-#include "AddFileThread.h"	// Needed for CAddFileThread
 #include "ChatWnd.h"		// Needed for CChatWnd
 #include "StatisticsDlg.h"	// Needed for CStatisticsDlg
 #include "SharedFilesWnd.h"	// Needed for CSharedFilesWnd
@@ -82,62 +81,16 @@ BEGIN_EVENT_TABLE(CamuleDlg, wxFrame)
 	EVT_TOOL(ID_BUTTONNEWPREFERENCES, CamuleDlg::OnPrefButton)
 	
 	EVT_TOOL(ID_BUTTONCONNECT, CamuleDlg::OnBnConnect)
-	EVT_TIMER(ID_UQTIMER, CamuleDlg::OnUQTimer)
 
-	EVT_MENU(TM_FINISHEDHASHING, CamuleDlg::OnFinishedHashing)
-	EVT_MENU(TM_FILECOMPLETIONFINISHED, CamuleDlg::OnFinishedCompletion)
 	EVT_CLOSE(CamuleDlg::OnClose)
 	EVT_ICONIZE(CamuleDlg::OnMinimize)
-	EVT_MENU(TM_HASHTHREADFINISHED, CamuleDlg::OnHashingShutdown)
+	
 	EVT_BUTTON(ID_BUTTON_FAST, CamuleDlg::OnBnClickedFast)
 	EVT_BUTTON(ID_PREFS_OK_TOP, CamuleDlg::OnBnClickedPrefOk)
+	
+	EVT_TIMER(ID_GUITIMER, CamuleDlg::OnGUITimer)
+	
 END_EVENT_TABLE()
-
-void CamuleDlg::OnFinishedHashing(wxCommandEvent& evt)
-{
-	static int filecount = 0;
-	static int bytecount = 0;
-
-	CKnownFile* result = (CKnownFile*)evt.GetClientData();
-	printf("Finished Hashing %s\n",result->GetFileName().c_str());
-	if (evt.GetExtraLong()) {
-		CPartFile* requester = (CPartFile*)evt.GetExtraLong();
-		if (theApp.downloadqueue->IsPartFile(requester)) {
-			requester->PartFileHashFinished(result);
-		}
-	} else {
-		if (theApp.knownfiles->SafeAddKFile(result)) {
-			theApp.sharedfiles->SafeAddKFile(result);
-			
-			filecount++;
-			bytecount += result->GetFileSize();
-			// If we have added 30 files or files with a total size of ~300mb
-			if ( ( filecount == 30 ) || ( bytecount >= 314572800 ) ) {
-				if ( m_app_state != APP_STATE_SHUTINGDOWN ) {
-					theApp.knownfiles->Save();
-					filecount = 0;
-					bytecount = 0;
-				}
-			}
-		} else {
-			delete result;
-		}
-	}
-
-	return;
-}
-
-void CamuleDlg::OnFinishedCompletion(wxCommandEvent& evt)
-{
-	CPartFile* completed = (CPartFile*)evt.GetClientData();
-	
-	wxASSERT(completed);
-	
-	completed->CompleteFileEnded(evt.GetInt(), (wxString*)evt.GetExtraLong());
-
-	return;
-}
-
 
 #ifndef wxCLOSE_BOX
 #	define wxCLOSE_BOX 0
@@ -148,10 +101,10 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, wxString title) : wxFrame(
 	wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxDIALOG_NO_PARENT|
 	wxTHICK_FRAME|wxMINIMIZE_BOX|wxMAXIMIZE_BOX|wxCLOSE_BOX )
 {
+	is_safe_state = false;
 	
 	SetIcon(wxICON(aMule));
 
-	m_app_state = APP_STATE_STARTING;
 	srand(time(NULL));
 
 	// get rid of sigpipe
@@ -191,23 +144,39 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, wxString title) : wxFrame(
 	sharedfileswnd->Show(FALSE);
 	statisticswnd->Show(FALSE);
 	chatwnd->Show(FALSE);
-
+	
+	// Create the GUI timer
+	gui_timer=new wxTimer(this,ID_GUITIMER);
+	if (!gui_timer) {
+		AddLogLine(false, CString(_("Fatal Error: Failed to create Timer")));
+	}
 	
 	if (!LoadGUIPrefs()) {
 		// Prefs not loaded for some reason, exit
 		printf("ERROR!!! Unable to load Preferences\n");
 		return;
 	}
-
 	
 	// Set Serverlist as active window
 	activewnd=NULL;
 	SetActiveDialog(serverwnd);
 	m_wndToolbar->ToggleTool(ID_BUTTONSERVERS, true );	
 
-	CAddFileThread::Setup();
-
 	ToggleFastED2KLinksHandler();
+	
+	is_safe_state = true;
+	
+	// Start the Gui Timer
+	
+	// Note: wxTimer can be off by more than 10% !!!
+	// In addition to the systematic error introduced by wxTimer, we are losing
+	// timer cycles due to high CPU load.  I've observed about 0.5% random loss of cycles under
+	// low load, and more than 6% lost cycles with heavy download traffic and/or other tasks
+	// in the system, such as a video player or a VMware virtual machine.
+	// The upload queue process loop has now been rewritten to compensate for timer errors.
+	// When adding functionality, assume that the timer is only approximately correct;
+	// for measurements, always use the system clock [::GetTickCount()].
+	gui_timer->Start(100);	
 }
 
 
@@ -310,15 +279,6 @@ void CamuleDlg::RemoveSystray()
 	}
 }
 #endif // __SYSTRAY_DISABLED__
-
-
-extern void TimerProc();
-void CamuleDlg::OnUQTimer(wxTimerEvent& WXUNUSED(evt))
-{
-	if( IsRunning() ) {
-		TimerProc();
-	}
-}
 
 
 void CamuleDlg::OnToolBarButton(wxCommandEvent& ev)
@@ -585,7 +545,6 @@ void CamuleDlg::ShowUserCount(uint32 user_toshow, uint32 file_toshow)
 	Layout();
 }
 
-
 void CamuleDlg::ShowTransferRate()
 {
 	float	kBpsUp = theApp.uploadqueue->GetKBps();
@@ -626,26 +585,12 @@ void CamuleDlg::ShowTransferRate()
 	bmp->SetBitmap(dlStatusImages((kBpsUp>0.01 ? 2 : 0) + (kBpsDown>0.01 ? 1 : 0)));
 }
 
-
-void CamuleDlg::OnHashingShutdown(wxCommandEvent& WXUNUSED(evt))
-{
-	if ( m_app_state != APP_STATE_SHUTINGDOWN ) {
-		printf("Hashing thread ended\n");
-		// CAddFileThread::Setup();
-		// Save the known.met file
-		theApp.knownfiles->Save();
-	} else {
-		printf("Hashing thread terminated, ready to shutdown\n");
-		Destroy();
-	}
-}
-
-
 void CamuleDlg::OnClose(wxCloseEvent& evt)
 {
-	// Are we already shutting down?
-	if ( m_app_state == APP_STATE_SHUTINGDOWN )
+	// Are we already shutting down or still on init?
+	if ( is_safe_state == false ) {
 		return;
+	}
 
 	if (evt.CanVeto() && theApp.glob_prefs->IsConfirmExitEnabled() ) {
 		if (wxNO == wxMessageBox(wxString(_("Do you really want to exit aMule?")), wxString(_("Exit confirmation")), wxYES_NO)) {
@@ -655,8 +600,11 @@ void CamuleDlg::OnClose(wxCloseEvent& evt)
 	}
 
 	// we are going DOWN
-	m_app_state = APP_STATE_SHUTINGDOWN;
+	is_safe_state = false;
 
+	// Stop the GUI Timer
+	delete gui_timer;	
+	
 	// Kry - Save the sources seeds on app exit
 	if (theApp.glob_prefs->GetSrcSeedsOn()) {
 		theApp.downloadqueue->SaveSourceSeeds();
@@ -674,9 +622,6 @@ void CamuleDlg::OnClose(wxCloseEvent& evt)
 	if (theApp.serverconnect) {
 		theApp.serverconnect->Disconnect();
 	}
-
-	// Signal the hashing thread to terminate
-	CAddFileThread::Shutdown();
 
 	// saving data & stuff
 	if (theApp.knownfiles) {
@@ -703,6 +648,9 @@ void CamuleDlg::OnClose(wxCloseEvent& evt)
 	RemoveSystray();
 #endif
 
+	#warning This will be here till the core close is != app close
+	theApp.ShutDown();
+	
 }
 
 
@@ -951,4 +899,63 @@ void CamuleDlg::OnMinimize(wxIconizeEvent& evt)
 void CamuleDlg::OnBnClickedPrefOk(wxCommandEvent& WXUNUSED(event))
 {
 	prefsunifiedwnd->EndModal(TRUE);
+}
+
+void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
+{
+	// Former TimerProc section
+	
+	static uint32	msPrev1, msPrev5, msPrevGraph, msPrevStats;
+	static uint32	msPrevHist;
+	
+	uint32 			msCur = theApp.GetUptimeMsecs();
+
+	// can this actually happen under wxwin ?
+	if (!SafeState()) {
+		return;
+	}
+	
+#warning BIG WARNING: FIX STATS ON MAC!
+#warning Can it be related to the fact we have two timers now?
+#warning I guess so - there MUST be a reason Tiku only added one.
+	if (msCur-msPrevHist > 1000) {
+		// unlike the other loop counters in this function this one will sometimes 
+		// produce two calls in quick succession (if there was a gap of more than one 
+		// second between calls to TimerProc) - this is intentional!  This way the 
+		// history list keeps an average of one node per second and gets thinned out 
+		// correctly as time progresses.
+		msPrevHist += 1000;
+		#ifndef __WXMAC__
+		statisticswnd->RecordHistory();
+		#endif
+	}
+
+	if (msCur-msPrev1 > 950) {  // approximately every second
+		msPrev1 = msCur;		
+		statisticswnd->UpdateConnectionsStatus();
+	}
+
+	bool bStatsVisible = (!IsIconized() && StatisticsWindowActive());
+	int msGraphUpdate= theApp.glob_prefs->GetTrafficOMeterInterval()*1000;
+	if ((msGraphUpdate > 0)  && ((msCur / msGraphUpdate) > (msPrevGraph / msGraphUpdate))) {
+		// trying to get the graph shifts evenly spaced after a change in the update period
+		msPrevGraph = msCur;
+		#ifndef __WXMAC__
+		statisticswnd->UpdateStatGraphs(bStatsVisible);
+		#endif
+	}
+
+	int sStatsUpdate = theApp.glob_prefs->GetStatsInterval();
+	if ((sStatsUpdate > 0) && ((int)(msCur - msPrevStats) > sStatsUpdate*1000)) {
+		if (bStatsVisible) {
+			msPrevStats = msCur;
+			statisticswnd->ShowStatistics();
+		}
+	}
+
+	if (msCur-msPrev5 > 5000) {  // every 5 seconds
+		msPrev5 = msCur;
+		ShowTransferRate();
+	}
+	
 }

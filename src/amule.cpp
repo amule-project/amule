@@ -71,14 +71,9 @@
 #include "GetTickCount.h"		// Needed for GetTickCount
 #include "server.h"				// Needed for GetListName
 #include "CFile.h"				// Needed for CFile
-#include "SharedFilesCtrl.h"	// Needed for CSharedFilesCtrl
-#include "QueueListCtrl.h"		// Needed for CQueueListCtrl
-#include "UploadListCtrl.h"		// Needed for CUploadListCtrl
-#include "DownloadListCtrl.h"	// Needed for CDownloadListCtrl
 #include "otherfunctions.h"		// Needed for GetTickCount
 #include "TransferWnd.h"		// Needed for CTransferWnd
 #include "SharedFilesWnd.h"		// Needed for CSharedFilesWnd
-#include "ServerListCtrl.h"		// Needed for CServerListCtrl
 #include "ServerWnd.h"			// Needed for CServerWnd
 #include "StatisticsDlg.h"		// Needed for CStatisticsDlg
 #include "IPFilter.h"			// Needed for CIPFilter
@@ -93,11 +88,21 @@
 #include "SearchList.h"			// Needed for CSearchList
 #include "ClientList.h"			// Needed for CClientList
 #include "Preferences.h"		// Needed for CPreferences
-#include "amuleDlg.h"			// Needed for CamuleDlg
 #include "ListenSocket.h"		// Needed for CListenSocket
 #include "ExternalConn.h"		// Needed for ExternalConn & MuleConnection
 #include "ServerSocket.h"	// Needed for CServerSocket
 #include "UDPSocket.h"		// Needed for CUDPSocket
+#include "PartFile.h"		// Needed for CPartFile
+#include "AddFileThread.h"	// Needed for CAddFileThread
+
+#warning This ones must be removed ASAP - exception: amuledlg, will be the LAST one.
+#include "amuleDlg.h"			// Needed for CamuleDlg
+#include "ServerListCtrl.h"		// Needed for CServerListCtrl
+#include "SharedFilesCtrl.h"	// Needed for CSharedFilesCtrl
+#include "QueueListCtrl.h"		// Needed for CQueueListCtrl
+#include "UploadListCtrl.h"		// Needed for CUploadListCtrl
+#include "DownloadListCtrl.h"	// Needed for CDownloadListCtrl
+
 #ifdef HAVE_SYS_RESOURCE_H
 #include <sys/resource.h>
 #endif
@@ -112,20 +117,40 @@
 #include "splash.xpm"
 #endif
 
-
 BEGIN_EVENT_TABLE(CamuleApp, wxApp)
-	EVT_SOCKET(LISTENSOCKET_HANDLER, CamuleApp::ListenSocketHandler)
-	EVT_SOCKET(CLIENTREQSOCKET_HANDLER, CamuleApp::ClientReqSocketHandler)	
-	EVT_SOCKET(UDPSOCKET_HANDLER, CamuleApp::UDPSocketHandler)	
-	EVT_SOCKET(SERVERSOCKET_HANDLER, CamuleApp::ServerSocketHandler)	
-	EVT_SOCKET(CLIENTUDPSOCKET_HANDLER, CamuleApp::ClientUDPSocketHandler)	
-	
-	EVT_MENU(TM_DNSDONE, CamuleApp::OnDnsDone)
-	EVT_MENU(TM_SOURCESDNSDONE, CamuleApp::OnSourcesDnsDone)
 
-	EVT_TIMER(TM_UDPSOCKET, CamuleApp::OnUDPTimer)
-	EVT_TIMER(TM_TCPSOCKET, CamuleApp::OnTCPTimer)
+	// Socket handlers
+		// Listen Socket
+		EVT_SOCKET(LISTENSOCKET_HANDLER, CamuleApp::ListenSocketHandler)  
+		// Clients sockets
+		EVT_SOCKET(CLIENTREQSOCKET_HANDLER, CamuleApp::ClientReqSocketHandler)	
+		// UDP Socket (servers)
+		EVT_SOCKET(UDPSOCKET_HANDLER, CamuleApp::UDPSocketHandler)	
+		// UDP Socket (clients)
+		EVT_SOCKET(CLIENTUDPSOCKET_HANDLER, CamuleApp::ClientUDPSocketHandler)	
+		// Server Socket
+		EVT_SOCKET(SERVERSOCKET_HANDLER, CamuleApp::ServerSocketHandler)	
+
+	// Socket timers (TCP + UDO)
+		EVT_TIMER(TM_UDPSOCKET, CamuleApp::OnUDPTimer)
+		EVT_TIMER(TM_TCPSOCKET, CamuleApp::OnTCPTimer)
 	
+	// Core timer
+		EVT_TIMER(ID_CORETIMER, CamuleApp::OnCoreTimer)
+
+	// Async dns handling
+		EVT_MENU(TM_DNSDONE, CamuleApp::OnDnsDone)
+		EVT_MENU(TM_SOURCESDNSDONE, CamuleApp::OnSourcesDnsDone)
+
+	// Hash ended notifier
+		EVT_MENU(TM_FINISHEDHASHING, CamuleApp::OnFinishedHashing)
+		
+	// Hashing thread finished and dead
+		EVT_MENU(TM_HASHTHREADFINISHED, CamuleApp::OnHashingShutdown)
+
+	// File completion ended notifier
+		EVT_MENU(TM_FILECOMPLETIONFINISHED, CamuleApp::OnFinishedCompletion)
+
 END_EVENT_TABLE()	
 	
 IMPLEMENT_APP(CamuleApp)
@@ -159,6 +184,10 @@ static void SetResourceLimits()
 
 int CamuleApp::OnExit()
 {
+	
+	// Stop the Core Timer
+	delete core_timer;		
+	
 	printf("Now, exiting main app...\n");
 	
 	delete serverlist; 
@@ -212,6 +241,8 @@ int CamuleApp::OnExit()
 
 bool CamuleApp::OnInit()
 {
+	m_app_state = APP_STATE_STARTING;
+	
 	// Madcat - Initialize timer as the VERY FIRST thing to avoid any issues later.
 	mytimer = new MyTimer();
 
@@ -435,6 +466,12 @@ bool CamuleApp::OnInit()
 	// Load Preferences
 	glob_prefs = new CPreferences();
 
+	// Create the Core timer
+	core_timer=new wxTimer(this,ID_CORETIMER);
+	if (!core_timer) {
+		printf("Fatal Error: Failed to create Core Timer");
+		OnExit();
+	}
 
 	// Display notification on new version or first run
 	wxTextFile vfile( aMulePrefDir + wxString("/lastversion") );
@@ -531,7 +568,9 @@ bool CamuleApp::OnInit()
 
 	// Load localization settings
 	Localize_mule();
-	
+
+	// Create Hashing thread
+	CAddFileThread::Setup();
 
 	// Create main dialog
 	amuledlg = new CamuleDlg(NULL, wxString::Format(wxT("aMule %s"), wxT(VERSION)));
@@ -616,8 +655,20 @@ bool CamuleApp::OnInit()
 	// call the initializers
 	amuledlg->transferwnd->OnInitDialog();
 
-	amuledlg->m_app_state = APP_STATE_RUNNING;
+	// Start the Core Timer
 	
+	// Note: wxTimer can be off by more than 10% !!!
+	// In addition to the systematic error introduced by wxTimer, we are losing
+	// timer cycles due to high CPU load.  I've observed about 0.5% random loss of cycles under
+	// low load, and more than 6% lost cycles with heavy download traffic and/or other tasks
+	// in the system, such as a video player or a VMware virtual machine.
+	// The upload queue process loop has now been rewritten to compensate for timer errors.
+	// When adding functionality, assume that the timer is only approximately correct;
+	// for measurements, always use the system clock [::GetTickCount()].
+	core_timer->Start(100);	
+	
+	m_app_state = APP_STATE_RUNNING;
+
 	// reload shared files
 	sharedfiles->Reload(true, true);
 
@@ -678,7 +729,7 @@ bool CamuleApp::OnInit()
 	
 	// The user may now click on buttons 
 	IsReady = true;
-
+	
 	// Kry - Load the sources seeds on app init
 	if (theApp.glob_prefs->GetSrcSeedsOn()) {
 		theApp.downloadqueue->LoadSourceSeeds();
@@ -1614,6 +1665,134 @@ void CamuleApp::OnTCPTimer(wxTimerEvent& WXUNUSED(evt))
 	
 	serverconnect->ConnectToAnyServer();
 }
+
+
+void CamuleApp::OnCoreTimer(wxTimerEvent& WXUNUSED(evt))
+{
+	// Former TimerProc section
+	
+	static uint32	msPrev1, msPrev5, msPrevSave;
+	
+	uint32 			msCur = GetUptimeMsecs();
+
+	// can this actually happen under wxwin ?
+	if (!IsRunning() || !IsReady) {
+		return;
+	}
+	
+	uploadqueue->Process();
+	downloadqueue->Process();
+	//theApp.clientcredits->Process();
+	uploadqueue->CompUpDatarateOverhead();
+	downloadqueue->CompDownDatarateOverhead();
+
+	if (msCur-msPrev1 > 950) {  // approximately every second
+		msPrev1 = msCur;
+		clientcredits->Process();
+		serverlist->Process();
+		if( serverconnect->IsConnecting() && !serverconnect->IsSingleConnect() ) {
+			serverconnect->TryAnotherConnectionrequest();
+		}
+		if (serverconnect->IsConnecting()) {
+			serverconnect->CheckForTimeout();
+		}
+	}
+
+	if (msCur-msPrev5 > 5000) {  // every 5 seconds
+		msPrev5 = msCur;
+		listensocket->Process();
+		OnlineSig(); // Added By Bouc7
+		// Kry - Log lines flush
+		FlushQueuedLogLines();
+	}
+	
+	if (msCur-msPrevSave >= 60000) {
+		msPrevSave = msCur;
+		CString buffer;
+		char* fullpath = new char[strlen(glob_prefs->GetAppDir())+16];
+		sprintf(fullpath,"%spreferences.ini",glob_prefs->GetAppDir());
+		wxString fp(fullpath), bf("aMule");
+		CIni ini(fp, bf);
+		delete[] fullpath;
+		buffer.Format("%llu",stat_sessionReceivedBytes+glob_prefs->GetTotalDownloaded());
+		ini.WriteString("TotalDownloadedBytes",buffer ,"Statistics");
+
+		buffer.Format("%llu",stat_sessionSentBytes+glob_prefs->GetTotalUploaded());
+		ini.WriteString("TotalUploadedBytes",buffer ,"Statistics");
+	}
+	
+	// Recomended by lugdunummaster himself - from emule 0.30c
+	serverconnect->KeepConnectionAlive();
+	
+}
+
+void CamuleApp::OnHashingShutdown(wxCommandEvent& WXUNUSED(evt))
+{
+	if ( m_app_state != APP_STATE_SHUTINGDOWN ) {
+		printf("Hashing thread ended\n");
+		// Save the known.met file
+		knownfiles->Save();
+	} else {
+		printf("Hashing thread terminated, ready to shutdown\n");
+	}
+}
+
+
+void CamuleApp::OnFinishedHashing(wxCommandEvent& evt)
+{
+	static int filecount = 0;
+	static int bytecount = 0;
+
+	CKnownFile* result = (CKnownFile*)evt.GetClientData();
+	printf("Finished Hashing %s\n",result->GetFileName().c_str());
+	if (evt.GetExtraLong()) {
+		CPartFile* requester = (CPartFile*)evt.GetExtraLong();
+		if (downloadqueue->IsPartFile(requester)) {
+			requester->PartFileHashFinished(result);
+		}
+	} else {
+		if (knownfiles->SafeAddKFile(result)) {
+			sharedfiles->SafeAddKFile(result);
+			
+			filecount++;
+			bytecount += result->GetFileSize();
+			// If we have added 30 files or files with a total size of ~300mb
+			if ( ( filecount == 30 ) || ( bytecount >= 314572800 ) ) {
+				if ( m_app_state != APP_STATE_SHUTINGDOWN ) {
+					knownfiles->Save();
+					filecount = 0;
+					bytecount = 0;
+				}
+			}
+		} else {
+			delete result;
+		}
+	}
+
+	return;
+}
+
+void CamuleApp::OnFinishedCompletion(wxCommandEvent& evt)
+{
+	CPartFile* completed = (CPartFile*)evt.GetClientData();
+	
+	wxASSERT(completed);
+	
+	completed->CompleteFileEnded(evt.GetInt(), (wxString*)evt.GetExtraLong());
+
+	return;
+}
+
+
+void CamuleApp::ShutDown() {
+	// Signal the hashing thread to terminate
+	m_app_state = APP_STATE_SHUTINGDOWN;
+	amuledlg->Destroy();
+	if (CAddFileThread::IsRunning()) {
+		CAddFileThread::Shutdown(); 
+	}
+}
+
 
 #if defined(__DEBUG__) && !(defined(__OPENBSD__)) && !(defined(__WXMAC__))
 

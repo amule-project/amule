@@ -46,6 +46,7 @@ CAddFileThread::CAddFileThread() : wxThread(wxTHREAD_DETACHED)
 {
 	dwLastAddTime = GetTickCount();
 	m_endWaitingForHashList = 0;
+	DeadThread = true;
 }
 
 void CAddFileThread::Setup()
@@ -61,7 +62,7 @@ void CAddFileThread::Setup()
 void CAddFileThread::Shutdown()
 {
 
-	printf("Signaling hashing thread to terminate... ");
+	printf("Signaling hashing thread to terminate... \n");
 
 	if (DeadThread || m_endWaitingForHashList) {
 		printf("Already dead\n");
@@ -76,16 +77,16 @@ void CAddFileThread::Shutdown()
 		while (!DeadThread) {
 			gettimeofday(&aika,NULL);
 			if (aika.tv_sec > (secs + 20)) {
-				printf("Timed out hashing thread signal\n");
+				printf("\tTimed out hashing thread signal\n");
 				break;
 			}
 		}
-		printf("OK\n");
+		printf("\nDone\n");
 	}
 
-	printf("Sending death event to main dialog\n");
+	printf("Sending death event to the app\n");
 	wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED,TM_HASHTHREADFINISHED);
-	wxPostEvent(theApp.amuledlg,evt);		
+	wxPostEvent(&theApp,evt);		
 
 }
 

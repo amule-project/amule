@@ -3431,7 +3431,7 @@ void CPartFile::FlushBuffer(void)
 		// Update met file
 		SavePartFile();
 
-		if (theApp.amuledlg->IsRunning()) { // may be called during shutdown!
+		if (theApp.IsRunning()) { // may be called during shutdown!
 			// Is this file finished ?
 			if (gaplist.IsEmpty()) {
 				CompleteFile(false);
@@ -3478,7 +3478,7 @@ void CPartFile::FlushBuffer(void)
 		theApp.downloadqueue->RemoveLocalServerRequest(this);
 		kBpsDown = 0.0;
 		transferingsrc = 0;
-		if (theApp.amuledlg->IsRunning()) { // may be called during shutdown!
+		if (theApp.IsRunning()) { // may be called during shutdown!
 			UpdateDisplayedInfo();
 		}
 	}
@@ -3879,7 +3879,7 @@ void CPartFile::SetStatus(uint8 in)
 	wxASSERT( in != PS_PAUSED && in != PS_INSUFFICIENT );
 	
 	status=in;
-	if (theApp.amuledlg->IsRunning()) {
+	if (theApp.IsRunning()) {
 		if (theApp.amuledlg->transferwnd->downloadlistctrl->curTab==0) {
 			theApp.amuledlg->transferwnd->downloadlistctrl->ChangeCategory(0);
 		} else {

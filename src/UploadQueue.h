@@ -22,7 +22,6 @@
 
 #include <cstring>		// Needed for std::memset
 #include <wx/defs.h>		// Needed before any other wx/*.h
-#include <wx/timer.h>		// Needed for wxTimer
 
 #include "types.h"		// Needed for uint16, uint32 and uint64
 #include "CTypedPtrList.h"	// Needed for CTypedPtrList
@@ -112,7 +111,6 @@ private:
 	float	kBpsUp;
 	float	kBpsEst;
 	CPreferences* app_prefs;
-	wxTimer* h_timer;
 	uint32	bannedcount;
 	uint32	successfullupcount;
 	uint32	failedupcount;

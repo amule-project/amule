@@ -546,12 +546,14 @@ void COScopeCtrl::OnTimer(wxTimerEvent& evt)
 #warning Can it be related to the fact we have two timers now?
 #warning I guess so - there MUST be a reason Tiku only added one.
 #ifndef __WXMAC__
-	if(!theApp.amuledlg->IsRunning())
-    	return;
+	if(!theApp.amuledlg->SafeState()) {
+    		return;
+	}
 	timerRedraw.Stop();
-	if (bRecreateGrid)
+	if (bRecreateGrid) {
 		RecreateGrid();	// this will also recreate the graph if that flag is set
-	else if (bRecreateGraph)
+	} else if (bRecreateGraph) {
 		RecreateGraph(true);
+	}
 #endif
 } // OnTimer

@@ -57,7 +57,7 @@ CSharedFileList::~CSharedFileList(){
 
 void CSharedFileList::FindSharedFiles() {
 	/* Abort loading if we are shutting down. */
-	if(!theApp.amuledlg->IsRunning()) {
+	if(!theApp.IsRunning()) {
 		return;
 	}
 	/* All part files are automatically shared. */

@@ -23,6 +23,7 @@
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/app.h>			// Needed for wxApp
 #include <wx/intl.h>		// Needed for wxLocale
+#include <wx/timer.h>		// Needed for wxTimerEvent
 
 #include "CTypedPtrList.h"
 #include "types.h"			// Needed for int32, uint16 and uint64
@@ -58,9 +59,15 @@ class wxCommandEvent;
 	} socket_deletion_log_item;
 #endif
 
-	
 #define theApp wxGetApp()
 
+enum APPState {
+	APP_STATE_RUNNING = 0,
+	APP_STATE_SHUTINGDOWN,
+	APP_STATE_DONE,
+	APP_STATE_STARTING
+};	
+	
 typedef struct {
 	wxString line;
 	bool		addtostatus;
@@ -77,6 +84,8 @@ public:
 	int				OnExit();
 	void			OnFatalException();
 
+	// Barry - To find out if app is running or shutting/shut down
+	const bool IsRunning() { return (m_app_state == APP_STATE_RUNNING); }
 
 	// ed2k URL functions
 	wxString		StripInvalidFilenameChars(const wxString& strText, bool bKeepSpaces = true);
@@ -143,6 +152,8 @@ public:
 	CClientUDPSocket*	clientudp;
 	CIPFilter*			ipfilter;
 
+	void ShutDown();
+
 #ifdef __DEBUG__
 	void AddSocketDeleteDebug(uint32 socket_pointer, uint32 creation_time);
 #endif
@@ -162,13 +173,25 @@ protected:
 	void OnUDPTimer(wxTimerEvent& evt);
 	void OnTCPTimer(wxTimerEvent& evt);
 
+	void OnCoreTimer(wxTimerEvent& evt);
+
+	void OnFinishedHashing(wxCommandEvent& evt);
+	void OnFinishedCompletion(wxCommandEvent& evt);
+	void OnHashingShutdown(wxCommandEvent&);
+
 	void 			SetTimeOnTransfer();
+	
+	wxTimer* core_timer;
+		
 	wxCriticalSection m_LogQueueLock;
 	CList<QueuedLogLine>	QueuedAddLogLines;
 #ifdef __DEBUG__
 	CList<socket_deletion_log_item>	SocketDeletionList;
 #endif
 	wxLocale		m_locale;
+
+	APPState			m_app_state;	
+	
 	DECLARE_EVENT_TABLE()
 };
 

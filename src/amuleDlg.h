@@ -51,13 +51,6 @@ class CSysTray;
 #define MP_DISCONNECT	4003
 #define MP_EXIT			4004
 
-enum APPState {
-	APP_STATE_RUNNING = 0,
-	APP_STATE_SHUTINGDOWN,
-	APP_STATE_DONE,
-	APP_STATE_STARTING
-};
-
 // CamuleDlg Dialogfeld
 class CamuleDlg : public wxFrame 
 {
@@ -79,9 +72,6 @@ public:
 	
 	bool StatisticsWindowActive()	{return (activewnd == (wxWindow*)statisticswnd);}
 	
-	// Barry - To find out if app is running or shutting/shut down
-	const bool IsRunning() { if (this!=0x0) { return (m_app_state == APP_STATE_RUNNING); } else return false;}
-
 	/* Returns the ID of the active dialog. Needed to check what to redraw. */
 	int GetActiveDialog()	{return m_nActiveDialog;}
 	void SetActiveDialog(wxWindow* dlg);
@@ -98,6 +88,8 @@ public:
 	void Show_aMule(bool uniconize = true);
 	// has to be done in own method
 	void changeDesktopMode();
+	
+	bool SafeState() { return is_safe_state; }
 
 #ifndef __SYSTRAY_DISABLED__
 	void CreateSystray(const wxString& title);
@@ -111,30 +103,29 @@ public:
 	CChatWnd*			chatwnd;
 	wxWindow*			activewnd;
 	CStatisticsDlg*		statisticswnd;
-	APPState			m_app_state;
 
 	int					split_pos;
 	int					srv_split_pos;
 
 protected:
-
-	void OnUQTimer(wxTimerEvent& evt);
-
 	
 	void OnToolBarButton(wxCommandEvent& ev);
 	void OnPrefButton(wxCommandEvent& ev);
 	void OnBnClickedPrefOk(wxCommandEvent &event);
-	void OnFinishedHashing(wxCommandEvent& evt);
-	void OnFinishedCompletion(wxCommandEvent& evt);
+
 	void OnMinimize(wxIconizeEvent& evt);
-	void OnHashingShutdown(wxCommandEvent&);
+
 	void OnBnClickedFast(wxCommandEvent& evt);
+
+	void OnGUITimer(wxTimerEvent& evt);
 
 private:
 
 	wxToolBar*	m_wndToolbar;
 	bool		LoadGUIPrefs(); 
 	bool		SaveGUIPrefs();
+
+	wxTimer* gui_timer;
 
 // Systray functions
 #ifndef __SYSTRAY_DISABLED__
@@ -144,6 +135,8 @@ private:
 #endif
 
 	int			m_nActiveDialog;
+
+	bool is_safe_state;
 
 	DECLARE_EVENT_TABLE()
 };

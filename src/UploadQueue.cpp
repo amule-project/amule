@@ -61,11 +61,7 @@
 
 CUploadQueue::CUploadQueue(CPreferences* in_prefs){
 	app_prefs = in_prefs;
-	//h_timer = SetTimer(0,141,100,TimerProc);
-	h_timer=new wxTimer(theApp.amuledlg,ID_UQTIMER);
-	if (!h_timer) {
-		theApp.amuledlg->AddLogLine(false, CString(_("Fatal Error: Failed to create Timer")));
-	}
+
 	msPrevProcess = ::GetTickCount();
 	kBpsEst = 2.0;
 	kBpsUp = 0.0;
@@ -84,15 +80,7 @@ CUploadQueue::CUploadQueue(CPreferences* in_prefs){
 	m_nUpDataOverheadOtherPackets = 0;
 	m_nUpDataOverheadServerPackets = 0;
 	m_nLastStartUpload = 0;
-	// Note: wxTimer can be off by more than 10% !!!
-	// In addition to the systematic error introduced by wxTimer, we are losing
-	// timer cycles due to high CPU load.  I've observed about 0.5% random loss of cycles under
-	// low load, and more than 6% lost cycles with heavy download traffic and/or other tasks
-	// in the system, such as a video player or a VMware virtual machine.
-	// The upload queue process loop has now been rewritten to compensate for timer errors.
-	// When adding functionality, assume that the timer is only approximately correct;
-	// for measurements, always use the system clock [::GetTickCount()].
-	h_timer->Start(100);
+
 	lastupslotHighID = true; // Uninitialized on eMule
 }
 
@@ -349,7 +337,7 @@ bool CUploadQueue::AcceptNewClient()
 
 CUploadQueue::~CUploadQueue()
 {
-	delete h_timer;
+
 }
 
 POSITION CUploadQueue::GetWaitingClient(CUpDownClient* client)
@@ -395,7 +383,6 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
 	if (theApp.serverconnect->IsConnected() && theApp.serverconnect->IsLowID() && !theApp.serverconnect->IsLocalServer(client->GetServerIP(),client->GetServerPort()) && client->GetDownloadState() == DS_NONE && !client->IsFriend() && GetWaitingUserCount() > 50) {
 		// Well, all that issues finish in the same: don't allow to add to the queue
 		return;
-
 	}
 	
 	if (client->IsBanned()) {
@@ -691,91 +678,4 @@ void CUploadQueue::FindSourcesForFileById(CTypedPtrList<CPtrList, CUpDownClient*
 	}
 }
 
-void TimerProc()
-{	
-	static uint32	msPrev1, msPrev5, msPrevGraph, msPrevStats, msPrevSave;
-	static uint32	msPrevHist;
-	uint32 			msCur = theApp.GetUptimeMsecs();
-
-	// can this actually happen under wxwin ?
-	if (!theApp.amuledlg->IsRunning() || !theApp.IsReady) {
-		return;
-	}
-	theApp.uploadqueue->Process();
-	theApp.downloadqueue->Process();
-	//theApp.clientcredits->Process();
-	theApp.uploadqueue->CompUpDatarateOverhead();
-	theApp.downloadqueue->CompDownDatarateOverhead();
-#warning BIG WARNING: FIX STATS ON MAC!
-#warning Can it be related to the fact we have two timers now?
-#warning I guess so - there MUST be a reason Tiku only added one.
-	if (msCur-msPrevHist > 1000) {
-		// unlike the other loop counters in this function this one will sometimes 
-		// produce two calls in quick succession (if there was a gap of more than one 
-		// second between calls to TimerProc) - this is intentional!  This way the 
-		// history list keeps an average of one node per second and gets thinned out 
-		// correctly as time progresses.
-		msPrevHist += 1000;
-		#ifndef __WXMAC__
-		theApp.amuledlg->statisticswnd->RecordHistory();
-		#endif
-	}
-
-	if (msCur-msPrev1 > 950) {  // approximately every second
-		msPrev1 = msCur;
-		theApp.clientcredits->Process();
-		theApp.serverlist->Process();
-		if( theApp.serverconnect->IsConnecting() && !theApp.serverconnect->IsSingleConnect() ) {
-			theApp.serverconnect->TryAnotherConnectionrequest();
-		}
-		theApp.amuledlg->statisticswnd->UpdateConnectionsStatus();
-		if (theApp.serverconnect->IsConnecting()) {
-			theApp.serverconnect->CheckForTimeout();
-		}
-	}
-
-	bool bStatsVisible = (!theApp.amuledlg->IsIconized() && theApp.amuledlg->StatisticsWindowActive());
-	int msGraphUpdate=theApp.glob_prefs->GetTrafficOMeterInterval()*1000;
-	if ((msGraphUpdate > 0)  && ((msCur / msGraphUpdate) > (msPrevGraph / msGraphUpdate))) {
-		// trying to get the graph shifts evenly spaced after a change in the update period
-		msPrevGraph = msCur;
-		#ifndef __WXMAC__
-		theApp.amuledlg->statisticswnd->UpdateStatGraphs(bStatsVisible);
-		#endif
-	}
-
-	int sStatsUpdate = theApp.glob_prefs->GetStatsInterval();
-	if ((sStatsUpdate > 0) && ((int)(msCur - msPrevStats) > sStatsUpdate*1000)) {
-		if (bStatsVisible) {
-			msPrevStats = msCur;
-			theApp.amuledlg->statisticswnd->ShowStatistics();
-		}
-	}
-
-	if (msCur-msPrev5 > 5000) {  // every 5 seconds
-		msPrev5 = msCur;
-		theApp.listensocket->Process();
-		theApp.OnlineSig(); // Added By Bouc7
-		theApp.amuledlg->ShowTransferRate();
-		// Kry - Log lines flush
-		theApp.FlushQueuedLogLines();
-	}
-	if (msCur-msPrevSave >= 60000) {
-		msPrevSave = msCur;
-		CString buffer;
-		char* fullpath = new char[strlen(theApp.glob_prefs->GetAppDir())+16];
-		sprintf(fullpath,"%spreferences.ini",theApp.glob_prefs->GetAppDir());
-		wxString fp(fullpath), bf("aMule");
-		CIni ini(fp, bf);
-		delete[] fullpath;
-		buffer.Format("%llu",theApp.stat_sessionReceivedBytes+theApp.glob_prefs->GetTotalDownloaded());
-		ini.WriteString("TotalDownloadedBytes",buffer ,"Statistics");
-
-		buffer.Format("%llu",theApp.stat_sessionSentBytes+theApp.glob_prefs->GetTotalUploaded());
-		ini.WriteString("TotalUploadedBytes",buffer ,"Statistics");
-	}
-	// Recomended by lugdunummaster himself - from emule 0.30c
-	theApp.serverconnect->KeepConnectionAlive();
-	
-
-}
+// TimerProc is on amule.cpp now
