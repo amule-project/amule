@@ -1577,9 +1577,8 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 
 
 wxString CWebServer::_GetDownloadLink(ThreadData Data) {
-#if 0 //shakraw
 	CWebServer *pThis = (CWebServer *)Data.pThis;
-	if(pThis == NULL)
+	if (pThis == NULL)
 		return "";
 
 	wxString sSession = _ParseURL(Data, "ses");
@@ -1597,13 +1596,14 @@ wxString CWebServer::_GetDownloadLink(ThreadData Data) {
 	Out.Replace("[Start]", _("Start"));
 	Out.Replace("[Session]", sSession);
 
+#if 0 //shakraw, categories
 	if (theApp.glob_prefs->GetCatCount()>1)
 		InsertCatBox(Out,0, pThis->m_Templates.sCatArrow );
-	else Out.Replace("[CATBOX]","");
+	else 
+#endif
+		Out.Replace("[CATBOX]","");
 
 	return Out;
-#endif
-	return "";
 }
 
 
