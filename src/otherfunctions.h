@@ -163,7 +163,7 @@ inline bool IsLowIDED2K(uint32 id){
 
 
 /* Other */
-void HexDump(const void *buffer, unsigned long buflen);
+
 // Compares first and second. For uint16 arrays sorting.
 int wxCMPFUNC_CONV Uint16CompareValues(uint16* first, uint16* second);
 
