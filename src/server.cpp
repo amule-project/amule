@@ -163,7 +163,16 @@ void CServer::Init() {
 bool CServer::AddTagFromFile(CFile* servermet){
 	if (servermet == 0)
 		return false;
-	CTag* tag = new CTag(*servermet);
+	
+	CTag* tag = NULL;
+	
+	try {
+		tag = new CTag(*servermet);
+	} catch (...) {
+		printf("Caught exception in CServer::AddTagFromFile!\n");
+		return false;
+	}	
+	
 	switch(tag->tag.specialtag){		
 	case ST_SERVERNAME:
 		if(tag->tag.stringvalue)

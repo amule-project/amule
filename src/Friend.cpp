@@ -88,17 +88,21 @@ void CFriend::LoadFromFile(CFile* file)
 	file->Read(&m_dwLastSeen, 4);
 	file->Read(&m_dwLastChatted, 4);
 	
-	uint32 tagcount;
-	file->Read(&tagcount, 4);
-	for ( uint32 j = 0; j != tagcount; j++) {
-		CTag *newtag = new CTag(*file);
-		switch ( newtag->tag.specialtag ) {
-			case FF_NAME:
-				m_strName = char2unicode(newtag->tag.stringvalue);
-				break;
-		}
+	try {
+		uint32 tagcount;
+		file->Read(&tagcount, 4);
+		for ( uint32 j = 0; j != tagcount; j++) {
+			CTag *newtag = new CTag(*file);
+			switch ( newtag->tag.specialtag ) {
+				case FF_NAME:
+					m_strName = char2unicode(newtag->tag.stringvalue);
+					break;
+			}
 		
-		delete newtag;
+			delete newtag;
+		}
+	} catch (...) {
+		printf("Caught exception in CFriend::LoadFromFile!\n");
 	}
 }
 
