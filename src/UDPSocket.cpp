@@ -535,7 +535,6 @@ void *CUDPSocket::Entry()
 {
 	while ( !TestDestroy() ) {
 		if ( WaitForRead(0, 1000) ) {
-			CALL_APP_DATA_LOCK;
 			OnReceive(0);
 		}
 	}

@@ -114,10 +114,7 @@ CClientReqSocket::~CClientReqSocket()
 		theApp.listensocket->RemoveSocket(this);
 	}
 #ifdef AMULE_DAEMON
-	wxASSERT(deletethis);
-	if ( my_handler ) {
-		Safe_Delete();
-	}
+	wxASSERT(deletethis && !my_handler);
 #else
 	delete my_handler;
 #endif
@@ -220,13 +217,17 @@ void CClientReqSocket::Safe_Delete()
                         printf("CClientReqSocket: sock %p in Safe_Delete\n", this);
                         // lfroen: this code is executed with app mutex locked. In order
                         // to prevent deadlock in deleted thread, temporary unlock it here
-                        theApp.data_mutex.Unlock();
+			if ( wxThread::This() != my_handler ) {
+				theApp.data_mutex.Unlock();
+				//wxASSERT( wxThread::IsMain() );
 
-			// wait handler thread to exit
-			handler_exit.Lock();
-			handler_exit.Unlock();
+				// wait handler thread to exit
+				handler_exit.Lock();
+				handler_exit.Unlock();
 
-                        theApp.data_mutex.Lock();
+				theApp.data_mutex.Lock();
+			}
+			my_handler = 0;
                 }
 #endif
 
@@ -2470,10 +2471,9 @@ void CSocketGlobalThread::RemoveSocket(CClientReqSocket* sock)
 
 void *CSocketGlobalThread::Entry()
 {
-	AddDebugLogLineM(true, _("Socket global thread running\n"));
 	while ( !TestDestroy() ) {
 		Sleep(10);
-		std::set<CClientReqSocket *> erase_list;
+		std::set<CClientReqSocket *> erase_list, run_list;
 		CALL_APP_DATA_LOCK;
 		for (std::set<CClientReqSocket *>::iterator it = socket_list.begin();
 			it != socket_list.end(); it++) {
@@ -2496,13 +2496,8 @@ void *CSocketGlobalThread::Entry()
 				}
 				CUpDownClient *client = cur_sock->GetClient();
 				if ( (client != 0) && (client->GetDownloadState() == DS_DOWNLOADING) ) {
-					
-					printf("Client %p started dload\n", client);
-						
+					run_list.insert(cur_sock);
 					erase_list.insert(cur_sock);
-					CClientReqSocketHandler *t = new CClientReqSocketHandler(cur_sock);
-					// fire & forget
-					t->Run();
 				}
 			}
 		}
@@ -2511,6 +2506,15 @@ void *CSocketGlobalThread::Entry()
 			CClientReqSocket* cur_sock = *it;
 			socket_list.erase(cur_sock);
 		}
+		for (std::set<CClientReqSocket *>::iterator it = run_list.begin(); 
+		     it != run_list.end(); it++) { 
+                        CClientReqSocket* cur_sock = *it; 
+                        CClientReqSocketHandler *t = new CClientReqSocketHandler(cur_sock);
+			// fire & forget
+			//printf("Client %p started dload\n", client);
+			t->Run();
+                }
+ 
 	}
 	return 0;
 }
