@@ -1016,7 +1016,16 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 		}
 		
 		HTTPProcessData.Replace(wxT("[DownloadBar]"), _GetDownloadGraph(Data, (int)i->fCompleted, i->sPartStatus));
-		//HTTPProcessData.Replace(wxT("[DownloadBar]"), i->m_Image->GetHTML());
+		/*
+		int complx = (int)(m_Templates.iProgressbarWidth*i->fCompleted/100);
+		if ( complx ) {
+			HTTPProcessData.Replace(wxT("[DownloadBar]"), 
+				wxString::Format((m_Templates.sProgressbarImgsPercent+wxT("<br>")),
+					wxT("greenpercent.gif"),complx) + i->m_Image->GetHTML());			
+		} else {
+			HTTPProcessData.Replace(wxT("[DownloadBar]"), i->m_Image->GetHTML());
+		}
+		*/
 
 		if (i->lFileSpeed > 0.0f) {
 			fTotalSpeed += i->lFileSpeed;
@@ -2702,11 +2711,14 @@ CProgressImage::CProgressImage(int width, int height, uint32 filesize, wxString 
 	m_gap_buf_size = m_gap_alloc_size = encoder->m_gap_status.Size() / (2 * sizeof(uint32));
 	m_gap_buf = new Gap_Struct[m_gap_alloc_size];
 	m_Encoder = encoder;
+	
+	m_ColorLine = new uint32[m_width];
 }
 
 CProgressImage::~CProgressImage()
 {
 	delete [] m_gap_buf;
+	delete [] m_ColorLine;
 }
 
 void CProgressImage::ReallocGapBuffer()
@@ -2731,11 +2743,17 @@ void CProgressImage::InitSortedGaps()
 	const uint32 *gap_info = (const uint32 *)m_Encoder->m_gap_status.Buffer();
 	m_gap_buf_size = m_Encoder->m_gap_status.Size() / (2 * sizeof(uint32));
 	
-	memcpy(m_gap_buf, gap_info, m_gap_buf_size*2*sizeof(uint32));
+	//memcpy(m_gap_buf, gap_info, m_gap_buf_size*2*sizeof(uint32));
+	for (int j = 0; j < m_gap_buf_size;j++) {
+		uint32 gap_start = ENDIAN_SWAP_32(gap_info[2*j]);
+		uint32 gap_end = ENDIAN_SWAP_32(gap_info[2*j+1]);
+		m_gap_buf[j].start = gap_start;
+		m_gap_buf[j].end = gap_end;
+	}
 	qsort(m_gap_buf, m_gap_buf_size, 2*sizeof(uint32), compare_gaps);
 }
 
-#define RGB_ALPHA(r, g, b) ( (((unsigned char)b) << 16) | (((unsigned char)g) << 8) | ((unsigned char)r))
+#define RGB(r, g, b) ( (((unsigned char)b) << 16) | (((unsigned char)g) << 8) | ((unsigned char)r))
 
 void CProgressImage::CreateSpan()
 {
@@ -2744,45 +2762,44 @@ void CProgressImage::CreateSpan()
 	
 	// allocate for worst case !
 	int color_gaps_alloc = 2 * (2*m_gap_buf_size + m_file_size / PARTSIZE + 1);
-	m_colored_gaps = new Color_Gap_Struct[color_gaps_alloc];
+	Color_Gap_Struct *colored_gaps = new Color_Gap_Struct[color_gaps_alloc];
 	
 	// Step 2: combine gap and part status information
-	const uint32 *gap_info = (const uint32 *)m_Encoder->m_gap_status.Buffer();
 	const unsigned char *part_info = m_Encoder->m_part_status.Buffer();
 	
 	// Init first item to dummy info, so we will always have "previous" item
-	m_colored_gaps_size = 0;
-	m_colored_gaps[0].start = 0;
-	m_colored_gaps[0].end = 0;
-	m_colored_gaps[0].color = 0xffffffff;
+	int colored_gaps_size = 0;
+	colored_gaps[0].start = 0;
+	colored_gaps[0].end = 0;
+	colored_gaps[0].color = 0xffffffff;
 	for (int j = 0; j < m_gap_buf_size;j++) {
-		uint32 gap_start = ENDIAN_SWAP_32(gap_info[2*j]);
-		uint32 gap_end = ENDIAN_SWAP_32(gap_info[2*j+1]);
-		printf("DEBUG: current gap [%08x %08x]\n", gap_start, gap_end);
+		uint32 gap_start = m_gap_buf[j].start;
+		uint32 gap_end = m_gap_buf[j].end;
+		//printf("DEBUG: current gap [%08x %08x]\n", gap_start, gap_end);
 
 		uint32 start = gap_start / PARTSIZE;
 		uint32 end = (gap_end / PARTSIZE) + 1;
 
 		for (uint32 i = start; i < end; i++) {
-			COLORREF color = RGB_ALPHA(255, 0, 0);
+			COLORREF color = RGB(255, 0, 0);
 			if ( part_info[i] ) {
 				int blue = 210 - ( 22 * ( part_info[i] - 1 ) );
-				color = RGB_ALPHA( 0, ( blue < 0 ? 0 : blue ), 255 );
+				color = RGB( 0, ( blue < 0 ? 0 : blue ), 255 );
 			}
 
 			uint32 fill_gap_begin = ( (i == start)   ? gap_start: PARTSIZE * i );
 			uint32 fill_gap_end   = ( (i == (end - 1)) ? gap_end   : PARTSIZE * ( i + 1 ) );
 			
-			wxASSERT(m_colored_gaps_size < color_gaps_alloc);
+			wxASSERT(colored_gaps_size < color_gaps_alloc);
 			
-			if ( (m_colored_gaps[m_colored_gaps_size].end == fill_gap_begin) &&
-				(m_colored_gaps[m_colored_gaps_size].color == color) ) {
-				m_colored_gaps[m_colored_gaps_size].end = fill_gap_end;
+			if ( (colored_gaps[colored_gaps_size].end == fill_gap_begin) &&
+				(colored_gaps[colored_gaps_size].color == color) ) {
+				colored_gaps[colored_gaps_size].end = fill_gap_end;
 			} else {
-				m_colored_gaps_size++;
-				m_colored_gaps[m_colored_gaps_size].start = fill_gap_begin;
-				m_colored_gaps[m_colored_gaps_size].end = fill_gap_end;
-				m_colored_gaps[m_colored_gaps_size].color = color;
+				colored_gaps_size++;
+				colored_gaps[colored_gaps_size].start = fill_gap_begin;
+				colored_gaps[colored_gaps_size].end = fill_gap_end;
+				colored_gaps[colored_gaps_size].color = color;
 			}
 		}
 		
@@ -2790,6 +2807,21 @@ void CProgressImage::CreateSpan()
 		// FIXME: Requested parts !
 		//
 	}
+	//
+	// Now line rendering
+	for(int i = 0; i < m_width; i++) {
+		m_ColorLine[i] = 0x0;
+	}
+	
+	uint32 factor = m_file_size / m_width;
+	for(int i = 1; i <= colored_gaps_size;i++) {
+		uint32 start = colored_gaps[i].start / factor;
+		uint32 end = colored_gaps[i].end / factor;
+		for(uint32 j = start; j < end; j++) {
+			m_ColorLine[j] = colored_gaps[i].color;
+		}
+	}
+	delete [] colored_gaps;
 }
 
 int CProgressImage::compare_gaps(const void *g1, const void *g2)
@@ -2841,16 +2873,6 @@ wxString CDynImage::GetHTML()
 	return wxString::Format(m_template, m_name.GetData(), m_width);
 }
 	
-void CDynImage::DrawImage()
-{
-	CreateSpan();
-	printf("CDynImage::DrawImage [%s] = \n", m_name.GetData());
-	for(int i = 1; i <= m_colored_gaps_size;i++) {
-		FillRange(m_colored_gaps[i].start, m_colored_gaps[i].end, m_colored_gaps[i].color);
-	}
-	delete [] m_colored_gaps;
-}
-
 inline void set_rgb_color_val(unsigned char *start, uint32 val, unsigned char mod)
 {
 	unsigned char r = val, g = val >> 8, b = val >> 16;
@@ -2859,19 +2881,16 @@ inline void set_rgb_color_val(unsigned char *start, uint32 val, unsigned char mo
 	start[2] = ( b > mod ) ? (b - mod) : 1;
 }
 
-
-void CDynImage::FillRange(uint32 gap_begin, uint32 gap_end,  COLORREF color)
+void CDynImage::DrawImage()
 {
-	uint32 factor = m_file_size / m_width;
-	uint32 start = gap_begin / factor;
-	uint32 end = gap_end / factor;
-	printf("\tRANGE: [%08x - %08x] => %d => [%d %d] = %08x \n", gap_begin, gap_end, m_file_size, start, end, color);
+	CreateSpan();
+
 	for(int i = 0; i < m_height/2; i++) {
 		png_bytep u_row = m_row_ptrs[i];
 		png_bytep d_row = m_row_ptrs[m_height-i-1];
-		for(uint32 j = start; j < end; j++) {
-			set_rgb_color_val(u_row+3*j, color, m_modifiers[i]);
-			set_rgb_color_val(d_row+3*j, color, m_modifiers[i]);
+		for(int j = 0; j < m_width; j++) {
+			set_rgb_color_val(u_row+3*j, m_ColorLine[j], m_modifiers[i]);
+			set_rgb_color_val(d_row+3*j, m_ColorLine[j], m_modifiers[i]);
 		}
 	}
 }
@@ -2909,10 +2928,48 @@ CDynImage::CDynImage(uint32 id, int width, int height, uint32 file_size, wxStrin
 	
 }
 
+
 wxString CDynImage::GetHTML()
 {
-	// this is actually drawing function for compilation without libpng
-	return wxString::Format(m_template, unicode2char(m_name), m_width);
+	static wxString progresscolor[12] = {
+		wxT("transparent.gif"), wxT("black.gif"), wxT("yellow.gif"), wxT("red.gif"),
+		wxT("blue1.gif"),       wxT("blue2.gif"), wxT("blue3.gif"),  wxT("blue4.gif"),
+		wxT("blue5.gif"),       wxT("blue6.gif"), wxT("green.gif"),  wxT("greenpercent.gif") };
+		
+	CreateSpan();
+	
+	wxString str;
+	uint32 lastcolor = m_ColorLine[0];
+	int lastindex = 0;
+	for(int i = 0; i < m_width; i++) {
+		if ( (lastcolor != m_ColorLine[i]) || (i == (m_width - 1)) ) {
+			int color_idx = -1;
+			if ( lastcolor & RGB(0, 0, 0xff) ) { // blue
+				int green = (lastcolor >> 8) & 0xff;
+				// reverse calculation:  green = 210 - ( 22 * ( part_info[i] - 1 ) )
+				wxASSERT( !green || (green < 211) );
+				color_idx = (green) ? (210 - green) / 22 + 1 : 11;
+				// now calculate it same way as PartFile did
+				color_idx = (color_idx > 10) ? 9 : (4 + color_idx / 2);
+			} else {
+				if ( lastcolor & RGB(0, 0xff, 0) ) { // yellow
+					color_idx = 2;
+				} else {
+					if ( lastcolor & RGB(0xff, 0, 0) ) { // red
+						color_idx = 3;
+					} else {
+						color_idx = 1;
+					}
+				}
+			}
+			str += wxString::Format(m_template,
+				unicode2char(progresscolor[color_idx]), i - lastindex);
+			lastindex = i;
+			lastcolor = m_ColorLine[i];
+		}
+	}
+
+	return str;
 }
 
 #endif

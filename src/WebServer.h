@@ -406,9 +406,9 @@ class CProgressImage : public CAnyImage {
 		typedef struct Color_Gap_Struct : public Gap_Struct {
 			uint32 color;
 		} Color_Gap_Struct;
-		int m_colored_gaps_size;
-		Color_Gap_Struct *m_colored_gaps;
 
+		// result of rendering - single line
+		uint32 *m_ColorLine;
 		void CreateSpan();
 	public:
 		CProgressImage(int w, int h, uint32 filesize, wxString &tmpl, otherfunctions::PartFileEncoderData *encoder);
@@ -430,8 +430,6 @@ class CDynImage : public CProgressImage {
 		png_bytep *m_row_ptrs;
 		
 		static void png_write_fn(png_structp png_ptr, png_bytep data, png_size_t length);
-		
-		void FillRange(uint32 gap_begin, uint32 gap_end,  COLORREF color);
 		
 		void DrawImage();
 	public:
