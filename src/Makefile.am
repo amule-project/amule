@@ -1,4 +1,4 @@
-EXTRA_DIST = strings.en Makengfile *.h pixmaps/*.xpm pixmaps/*.gif
+EXTRA_DIST = strings.en Makengfile aMule.xpm *.h pixmaps/*.xpm pixmaps/*.gif
 
 bin_PROGRAMS =
 
@@ -26,6 +26,8 @@ htmlimgdir = $(htmldir)/webserver
 dist_htmlimg_DATA = webserver/*.gif
 endif
 
+EXTRA_DIST += aMule.tmpl webserver/*.gif
+
 if WEBGUI
 bin_PROGRAMS += amulewebDLG
 htmldir = $(datadir)/amuleweb
@@ -34,25 +36,27 @@ htmlimgdir = $(htmldir)/webserver
 dist_htmlimg_DATA = webserver/*.gif
 endif
 
+EXTRA_DIST += utils/cas/*.h utils/cas/README
+
 if CAS
 bin_PROGRAMS += cas
 dist_icon_DATA += utils/cas/stat.png
-EXTRA_DIST += utils/cas/*.h utils/cas/README
 endif
+
+EXTRA_DIST += utils/wxCas/src/*.h \
+	      utils/wxCas/pixmaps/*.xpm utils/wxCas/pixmaps/*.bmp \
+	      utils/wxCas/wxcas.msp utils/wxCas/wxcas.rc \
+	      utils/wxCas/ABOUT-NLS  utils/wxCas/ChangeLog \
+	      utils/wxCas/NEWS utils/wxCas/README \
+	      utils/wxCas/TODO utils/wxCas/AUTHORS \
+	      utils/wxCas/COPYING
 
 if WXCAS
 bin_PROGRAMS += wxcas
 dist_icon_DATA += utils/wxCas/pixmaps/wxcas.xpm
 dist_util_DATA += utils/wxCas/wxcas.desktop
 dist_doc_DATA += utils/wxCas/doc/wxcas_reference_manual.pdf \
-	utils/wxCas/doc/wxcas_user_manual.pdf
-EXTRA_DIST += utils/wxCas/src/*.h \
-	      utils/wxCas/pixmaps/*.xpm utils/wxCas/pixmaps/*.bmp\
-	      utils/wxCas/wxcas.msp utils/wxCas/wxcas.rc \
-	      utils/wxCas/ABOUT-NLS  utils/wxCas/ChangeLog \
-	      utils/wxCas/NEWS utils/wxCas/README \
-	      utils/wxCas/TODO utils/wxCas/AUTHORS \
-	      utils/wxCas/COPYING	      
+	utils/wxCas/doc/wxcas_user_manual.pdf	      
 endif
 
 # Xas plugin
