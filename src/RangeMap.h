@@ -261,12 +261,15 @@ public:
 			// Begins before the current span
 			if ( start <= it->first ) {
 				// Never touches the current span, it follows that start < it->first
-				if ( end < it->first - 1 ) {
+				// (it->first) is used to avoid checking against (uint32)-1 by accident
+				if ( end < it->first - 1 && it->first ) {
+					printf("a\n");
 					break;
 				}
 
 				// Stops just before the current span, it follows that start < it->first
-				else if ( end == it->first - 1 ) {
+				// (it->first) is used to avoid checking against (uint32)-1 by accident
+				else if ( end == it->first - 1 && it->first ) {
 					// If same type: Merge
 					if ( object == it->second.second ) {
 						end = it->second.first;
