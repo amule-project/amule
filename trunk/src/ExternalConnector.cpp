@@ -28,6 +28,32 @@
 
 #if !wxUSE_GUI
 	#include <unistd.h>	// For getpass() and pause()
+	// For readline
+	#ifdef HAVE_LIBREADLINE
+		#if defined(HAVE_READLINE_READLINE_H)
+			#include <readline/readline.h>
+		#elif defined(HAVE_READLINE_H)
+			#include <readline.h>
+		#else /* !defined(HAVE_READLINE_H) */
+			extern char *readline ();
+		#endif /* !defined(HAVE_READLINE_H) */
+	#else /* !defined(HAVE_READLINE_READLINE_H) */
+		/* no readline */
+	#endif /* HAVE_LIBREADLINE */
+ 	// For history
+	#ifdef HAVE_READLINE_HISTORY
+		#if defined(HAVE_READLINE_HISTORY_H)
+			#include <readline/history.h>
+		#elif defined(HAVE_HISTORY_H)
+			#include <history.h>
+		#else /* !defined(HAVE_HISTORY_H) */
+			extern void add_history ();
+			extern int write_history ();
+			extern int read_history ();
+		#endif /* defined(HAVE_READLINE_HISTORY_H) */
+	#else
+		/* no history */
+	#endif /* HAVE_READLINE_HISTORY */
 #endif
 
 //-------------------------------------------------------------------
@@ -91,6 +117,7 @@ CaMuleExternalConnector::CaMuleExternalConnector()
 	m_HasCommandLinePassword = false;
 	m_HasConfigFromFile = false;
 	m_KeepQuiet = false;
+	m_InputLine = NULL;
 }
 
 void CaMuleExternalConnector::Show(const wxString &s)
@@ -186,8 +213,29 @@ void CaMuleExternalConnector::GetCommand(const wxString &prompt, char* buffer, s
 {
 	if( !m_KeepQuiet ) {
 #if wxUSE_GUI
-		char const *text = 
-			unicode2char(wxGetTextFromUser(prompt, _T("Enter Command")));
+		const wxCharBuffer buf = unicode2charbuf(
+			wxGetTextFromUser(prompt, _T("Enter Command")));
+		const char *text = (const char *)buf;
+#else
+#if defined(HAVE_LIBREADLINE)
+		if (m_InputLine) {
+			free(m_InputLine);
+			m_InputLine = (char *)NULL;
+		}
+		const wxCharBuffer buf = unicode2charbuf(prompt + wxT("$ "));
+		const char *p = (const char *)buf;
+		m_InputLine = readline(p);
+		if (m_InputLine && *m_InputLine) {
+			add_history (m_InputLine);
+		}
+		const char *text = m_InputLine;
+#else
+		Show(prompt + wxT("$ "));
+		fflush(stdin);
+		fgets(buffer, buffer_size, stdin);
+		const char *text = buffer;
+#endif /* HAVE_LIBREADLINE */
+#endif /* wxUSE_GUI */
 		size_t len = strlen(text);
 		if (len > buffer_size - 2) {
 			len = buffer_size - 2;
@@ -195,11 +243,6 @@ void CaMuleExternalConnector::GetCommand(const wxString &prompt, char* buffer, s
 		strncpy(buffer, text, len);
 		buffer[len] = '\n';
 		buffer[len + 1] = 0;
-#else
-		Show(prompt + wxT("$ "));
-		fflush(stdin);
-		fgets(buffer, buffer_size, stdin);
-#endif
 	}
 }
 
