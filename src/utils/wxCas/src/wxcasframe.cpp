@@ -744,7 +744,7 @@ WxCasFrame::UpdateStatsPanel ()
         }
 #endif
 
-      status=_("aMule is connecting...!");
+      status=_("aMule is connecting...");
     }
   // aMule status is unknown
   else

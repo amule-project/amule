@@ -331,7 +331,7 @@ bool CUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, const wxSt
 								update->SetVersion(char2unicode(tag.tag.stringvalue));
 							else if (tag.tag.specialtag == ST_VERSION && tag.tag.type == 3){
 								wxString strVersion;
-								strVersion.Printf(_("%u.%u"), tag.tag.intvalue >> 16,
+								strVersion.Printf(wxT("%u.%u"), tag.tag.intvalue >> 16,
 									tag.tag.intvalue & 0xFFFF);
 								update->SetVersion(strVersion);
 							}
