@@ -192,7 +192,9 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 	try{
 		if (!client && opcode != OP_HELLO) {
 			throw wxString(wxT("Asks for something without saying hello"));
-		}
+		} else if (client && opcode != OP_HELLO && opcode != OP_HELLOANSWER)
+			client->CheckHandshakeFinished(OP_EDONKEYPROT, opcode);
+		
 		switch(opcode) {
 			case OP_HELLOANSWER: {
 				// 0.42e
@@ -534,6 +536,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 						client->socket->SendPacket(packet,true,true);
 						client->SetSentCancelTransfer(1);
 					}
+					client->SetDownloadState((client->reqfile==NULL || client->reqfile->IsStopped()) ? DS_NONE : DS_ONQUEUE);
 				}
 				break;
 			}
