@@ -454,31 +454,30 @@ bool CServerConnectRem::ReQuery()
 	if ( !stats ) {
 		return false;
 	}
-	CECTag *tag = stats->GetTagByName(EC_TAG_CONNSTATE);
+	CEC_ConnState_Tag *tag = (CEC_ConnState_Tag *)stats->GetTagByName(EC_TAG_CONNSTATE);
     if (!tag) {
             return false;
     }
     CServer *server;
-	switch (tag->GetInt8Data()) {
-		case 0: m_ID = 0; // not connected
+	m_ID = tag->ClientID();
+	switch (m_ID) {
+		case 0:  // not connected
+			theApp.amuledlg->ShowConnectionState(false);
 			break;
-	    case 1: m_ID = 0xffffffff; // connecting
+	    case 0xffffffff: // connecting
 	    	break;
-	    case 2: // connected with low id
-	    case 3: // connected with high id
-	    	m_ID = 3336024912;
-	    	tag = tag->GetTagByIndex(0);
-	    	if ( !tag ) {
-	    		return false;
-	    	}
-	    	server = theApp.serverlist->GetByID(tag->GetIPv4Data().IP());
-	    	theApp.amuledlg->serverwnd->serverlistctrl->HighlightServer(server, true);
-	    	
-			theApp.amuledlg->ShowConnectionState(true,
-				server->GetListName() + wxT(" ") + server->GetAddress());
-	    	break;
-		default:
-			return false;
+	    default: {// connected
+		    	CECTag *srvtag = tag->GetTagByIndex(0);
+		    	if ( !srvtag ) {
+		    		return false;
+		    	}
+		    	server = theApp.serverlist->GetByID(srvtag->GetIPv4Data().IP());
+		    	theApp.amuledlg->serverwnd->serverlistctrl->HighlightServer(server, true);
+		    	
+				theApp.amuledlg->ShowConnectionState(true,
+					server->GetListName() + wxT(" ") + server->GetAddress());
+		    	break;
+	    }
 	}
 	return true;
 }
