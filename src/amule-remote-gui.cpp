@@ -407,6 +407,23 @@ CPreferencesRem::CPreferencesRem(CRemoteConnect *conn)
 	CPreferences::BuildItemList( theApp.ConfigDir);
 	CPreferences::LoadAllItems( wxConfigBase::Get() );
 }
+
+bool CPreferencesRem::LoadRemote()
+{
+	//
+	// override local settings with remote
+	CECPacket req(EC_OP_GET_PREFERENCES);
+	// bring them all !
+	req.AddTag(CECTag(EC_TAG_SELECT_PREFS, (uint32)(0xffffffff)));
+	CECPacket *prefs = m_conn->SendRecv(&req);
+	
+	if ( !prefs ) {
+		return false;
+	}
+	
+	return true;
+}
+
 //
 // Container implementation
 //
@@ -441,12 +458,6 @@ void CServerConnectRem::ConnectToServer(CServer *server)
 	m_Conn->Send(&req);
 }
 
-CServer *CServerConnectRem::GetCurrentServer()
-{
-	// lfroen: must find out how to do such
-	return 0;
-}
-
 bool CServerConnectRem::ReQuery()
 {
 	CECPacket stat_req(EC_OP_STAT_REQ);
@@ -458,13 +469,17 @@ bool CServerConnectRem::ReQuery()
     if (!tag) {
             return false;
     }
+
     CServer *server;
 	m_ID = tag->ClientID();
 	switch (m_ID) {
 		case 0:  // not connected
-			theApp.amuledlg->ShowConnectionState(false);
-			break;
 	    case 0xffffffff: // connecting
+			theApp.amuledlg->ShowConnectionState(false);
+	    	if ( m_CurrServer ) {
+	    		theApp.amuledlg->serverwnd->serverlistctrl->HighlightServer(m_CurrServer, false);
+	    		m_CurrServer = 0;
+	    	}
 	    	break;
 	    default: {// connected
 		    	CECTag *srvtag = tag->GetTagByIndex(0);
@@ -472,6 +487,9 @@ bool CServerConnectRem::ReQuery()
 		    		return false;
 		    	}
 		    	server = theApp.serverlist->GetByID(srvtag->GetIPv4Data().IP());
+		    	if ( m_CurrServer && (server != m_CurrServer) ) {
+		    		theApp.amuledlg->serverwnd->serverlistctrl->HighlightServer(m_CurrServer, false);
+		    	}
 		    	theApp.amuledlg->serverwnd->serverlistctrl->HighlightServer(server, true);
 		    	
 				theApp.amuledlg->ShowConnectionState(true,

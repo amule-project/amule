@@ -191,6 +191,7 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 	sharedfileswnd = new CSharedFilesWnd(p_cnt);
 	statisticswnd = new CStatisticsDlg(p_cnt);
 #ifdef CLIENT_GUI
+	m_wndToolbar->RemoveTool(ID_BUTTONMESSAGES);
 	chatwnd = 0;
 #else
 	chatwnd = new CChatWnd(p_cnt);
