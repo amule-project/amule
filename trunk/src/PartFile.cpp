@@ -3047,7 +3047,7 @@ bool CPartFile::IsASaneFileClientCombination(
 	bool sane = (GetFileHash() == cur_src->reqfile->GetFileHash());
 	if (forClient) sane = sane && (GetFileHash() == forClient->reqfile->GetFileHash());
 #if defined( __DEBUG__ )
-	if (!sane) {
+	if (!sane && verbose) {
 		printf("Mismatching hashes!\n");
 		printf("\tthis   : %s\n", 	unicode2char(GetFileHash().Encode().c_str()));
 		printf("\tcur_src: %s\n", unicode2char(cur_src->reqfile->GetFileHash().Encode().c_str()));
@@ -3063,7 +3063,7 @@ bool CPartFile::IsASaneFileClientCombination(
 		sane = (n == cur_src->m_nPartCount);
 		if (forClient) sane = sane && (n == forClient->m_nPartCount);
 #if defined( __DEBUG__ )
-		if (!sane) {
+		if (!sane && verbose) {
 			printf("Mismatching Part Counts!\n");
 			printf("CPartFile->GetPartStatus() = %d\n", n);
 			printf("cur_src->m_nPartCount      = %d\n", cur_src->m_nPartCount);
