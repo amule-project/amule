@@ -31,6 +31,7 @@
 
 #include <map> 
 #include <set> 
+#include <list>
 
 WX_DECLARE_OBJARRAY(wxString, ArrayOfwxStrings);
 
@@ -106,7 +107,7 @@ private:
 
 class CSocketGlobalThread : public wxThread {
 	void *Entry();
-	std::list<CClientReqSocket *> socket_list;
+	std::list <CClientReqSocket*> socket_list;
 public:
 	CSocketGlobalThread(/*CListenSocket *socket*/);
 	void AddSocket(CClientReqSocket* sock);
