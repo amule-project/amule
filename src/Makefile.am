@@ -165,6 +165,7 @@ amule_SOURCES = ListenSocket.cpp \
 	ClientListCtrl.cpp \
 	UploadQueue.cpp \
 	amule.cpp \
+	amule-gui.cpp \
 	amuleDlg.cpp \
 	kademlia/utils/UInt128.cpp
 
@@ -208,6 +209,7 @@ amuled_SOURCES = ListenSocket.cpp \
         UDPSocket.cpp \
         UploadClient.cpp \
         UploadQueue.cpp \
+        amule.cpp \
         amuled.cpp
 
 if ADD_GSOCKET
@@ -245,7 +247,7 @@ amulegui_CFLAGS = $(UTF8_SYSTRAY_FLAGS) $(TRAY_FLAGS) $(WX_CXXFLAGS) $(GTK_CFLAG
 amulegui_CXXFLAGS = $(UTF8_SYSTRAY_FLAGS) $(TRAY_FLAGS) $(WX_CXXFLAGS) $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFLAGS) $(CURL_FLAGS) -DCLIENT_GUI
 amulegui_LDADD = $(WX_LIBS) $(GTK_LIBS) $(ZLIB_LIBS) $(CURL_LIBS) $(CRYPTOLIBS)
 
-amuled_CFLAGS = $(WX_CFLAGS) $(WX_CXXFLAGS) -DAMULE_DAEMON
+amuled_CFLAGS = $(WX_CFLAGS) $(WX_CXXFLAGS) -DAMULE_DAEMON 
 amuled_CXXFLAGS = $(WX_CFLAGS) $(WX_CXXFLAGS) -DAMULE_DAEMON 
 amuled_LDADD = $(WXBASE_LIBS) $(ZLIB_LIBS) $(CURL_LIBS) $(CRYPTOLIBS)
 

@@ -150,16 +150,19 @@ class wxMuleInternalEvent : public wxEvent {
 class CamuleApp : public AMULE_APP_BASE
 {
 public:
-#ifdef AMULE_DAEMON
-	virtual int	OnRun();
-#endif
-	CamuleApp() {}
-	virtual		~CamuleApp() {}
+	CamuleApp();
+	virtual	 ~CamuleApp();
 	
 	virtual bool	OnInit();
 	int		OnExit();
 	void		OnFatalException();
 
+	// derived classes may override those
+	virtual int InitGui(bool geometry_enable, wxString &geometry_string);
+
+	virtual void NotifyEvent(GUIEvent event) = 0;
+	virtual void ShowAlert(wxString msg, wxString title, int flags) = 0;
+	
 	// Barry - To find out if app is running or shutting/shut down
 	bool IsRunning() const { return (m_app_state == APP_STATE_RUNNING); }
 
@@ -178,11 +181,10 @@ public:
 	void		FlushQueuedLogLines();
 		
 	// Misc functions
-	bool		CopyTextToClipboard( wxString strText );
 	void		OnlineSig(bool zero = false); 
 	void		Localize_mule();
-	void		Trigger_New_version(wxString new_version);
-	
+	void Trigger_New_version(wxString newMule);
+
 	// Used to detect a previous running instance of aMule
 	wxServer*	localserver;
 	
@@ -216,7 +218,6 @@ public:
 
 
 	// Other parts of the interface and such
-	CamuleDlg*		amuledlg;
 	CPreferences*		glob_prefs;
 	CDownloadQueue*		downloadqueue;
 	CUploadQueue*		uploadqueue;
@@ -231,13 +232,8 @@ public:
 	CClientUDPSocket*	clientudp;
 	CIPFilter*		ipfilter;
 
-	// Frame title
-	wxString	m_FrameTitle;
-	
 	void ShutDown();
 	
-	void NotifyEvent(GUIEvent event);
-
 	wxString GetLog(bool reset = false);
 	wxString GetServerLog(bool reset = false);
 	wxString GetDebugLog(bool reset = false);
@@ -251,8 +247,6 @@ public:
 	void SetOSFiles(const wxString new_path); 
 	
 	wxString ConfigDir;
-	
-	wxMutex data_mutex;
 
 protected:
 	/**
@@ -267,13 +261,6 @@ protected:
 		//! True if the line should be shown on the status bar, false otherwise.
 		bool		addtostatus;
 	};
-
-
-	// Socket handlers
-	void ListenSocketHandler(wxSocketEvent& event);
-	void UDPSocketHandler(wxSocketEvent& event);
-	void ServerSocketHandler(wxSocketEvent& event);
-	void ClientUDPSocketHandler(wxSocketEvent& event);
 
 
 	void OnDnsDone(wxEvent& evt);
@@ -292,9 +279,7 @@ protected:
 	void OnNotifyEvent(wxEvent& evt);
 	
 	void SetTimeOnTransfer();
-	
-	AMULE_TIMER_CLASS* core_timer;
-		
+			
 	wxCriticalSection m_LogQueueLock;
 	std::list<QueuedLogLine> QueuedAddLogLines;
 #ifdef __DEBUG__
@@ -309,16 +294,72 @@ protected:
 	
 	uint32 m_dwPublicIP;
 
+};
+
+class CamuleGuiApp : public CamuleApp {
+	AMULE_TIMER_CLASS* core_timer;
+
+	virtual int InitGui(bool geometry_enable, wxString &geometry_string);
+	virtual void ShowAlert(wxString msg, wxString title, int flags);
+	
+	// Socket handlers
+	void ListenSocketHandler(wxSocketEvent& event);
+	void UDPSocketHandler(wxSocketEvent& event);
+	void ServerSocketHandler(wxSocketEvent& event);
+	void ClientUDPSocketHandler(wxSocketEvent& event);
+
+	int OnExit();
+	bool OnInit();
+
+	
+public:
+	wxString	m_FrameTitle;
+	CamuleDlg*	amuledlg;
+	CFriend *FindFriend(CMD4Hash *hash, uint32 ip, uint16 port);
+	bool		CopyTextToClipboard( wxString strText );
+
+	void ShutDown();
+	virtual void NotifyEvent(GUIEvent event);
+	wxString GetLog(bool reset = false);
+	wxString GetServerLog(bool reset = false);
+	void AddServerMessageLine(wxString &msg);
+
 	DECLARE_EVENT_TABLE()
 };
 
-DECLARE_APP(CamuleApp)
+class CamuleDaemonApp : public CamuleApp {
+	int OnRun();
+	
+	virtual void ShowAlert(wxString msg, wxString title, int flags);
+	virtual int InitGui(bool geometry_enable, wxString &geometry_string);
+public:
+	virtual void NotifyEvent(GUIEvent event);
+	CFriend *FindFriend(CMD4Hash *hash, uint32 ip, uint16 port);
+	bool CopyTextToClipboard(wxString strText);
+
+	wxMutex data_mutex;
+	
+	DECLARE_EVENT_TABLE()
+};
+
 
 #ifdef AMULE_DAEMON
+class CamuleLocker : public wxMutexLocker {
+	uint msStart;
+public:
+	CamuleLocker();
+	~CamuleLocker();
+};
 #define CALL_APP_DATA_LOCK wxMutexLocker locker(theApp.data_mutex)
-
+//#define CALL_APP_DATA_LOCK CamuleLocker locker()
 #else
 #define CALL_APP_DATA_LOCK
+#endif
+
+#ifdef AMULE_DAEMON
+DECLARE_APP(CamuleDaemonApp)
+#else
+DECLARE_APP(CamuleGuiApp)
 #endif
 
 #endif // AMULE_H

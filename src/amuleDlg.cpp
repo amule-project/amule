@@ -511,13 +511,6 @@ void CamuleDlg::AddLogLine(bool addtostatusbar, const wxString& line)
 		ct->ShowPosition( ct->GetValue().Length() - 1 );
 	}
 	
-	// Write into log file
-	wxTextFile file( theApp.ConfigDir + wxT("logfile") );
-	if ( file.Open() ) {
-		file.AddLine( stamp + bufferline );
-		file.Write();
-		file.Close();
-	}
 
 	// Set the status-bar if the event warrents it
 	if ( addtostatusbar ) {
