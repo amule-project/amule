@@ -141,7 +141,7 @@ public:
 	void			ConnectionEstablished();
 	uint32			GetUserID()					{return m_nUserID;}
 	void			SetUserID(uint32 nUserID)	{m_nUserID = nUserID;}	
-	char*			GetUserName()				{return m_pszUsername;}
+	wxString			GetUserName()		const	{return Username;}
 	uint32			GetIP()						{return m_dwUserIP;}
 	bool			HasLowID()					{return (m_nUserID < 16777216);}
 	char*			GetFullIP()					{return m_szFullUserIP;}
@@ -181,7 +181,8 @@ public:
 	
 	void			CheckForGPLEvilDoer();
 
-	void			SetUserName(const char* pszNewName);
+	void			SetUserName(wxString NewName) { Username = NewName; }
+	
 	uint8			GetClientSoft()				{return m_clientSoft;}
 	void			ReGetClientSoft();
 	bool			ProcessHelloAnswer(const char *pachPacket, uint32 nSize);
@@ -402,7 +403,7 @@ private:
 	uint8	m_byDataCompVer;
 	uint8 m_SoftLen;
 	bool	m_bEmuleProtocol;
-	char*	m_pszUsername;
+	wxString	Username;
 	char	m_szFullUserIP[21];
 	uchar	m_achUserHash[16];
 	bool	m_HasValidHash;

@@ -156,55 +156,58 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd){
 	// Thief clients handling [BlackRat]
 	if (newclient->thief) {
 		// what kind of thief is it ?
+		wxString type;
 		switch (newclient->leechertype){
 		/* Add log line according to leecher type */
 			case 1 : {
-				AddLogLineM(false, wxString::Format(_("%s [%s:%i] using %s removed : invalide eMule client"),newclient->m_pszUsername,newclient->m_szFullUserIP,newclient->m_nUserPort,newclient->m_clientVerString.c_str()));
+				type = _("invalid eMule client");
 				break;
 			}
 			case 2 : {
-				AddLogLineM(false, wxString::Format(_("%s [%s:%i] using %s removed : suspicious mod string change"),newclient->m_pszUsername,newclient->m_szFullUserIP,newclient->m_nUserPort,newclient->m_clientVerString.c_str()));
+				type = _("suspicious mod string change");
 				break;
 			}
 			case 3 : {
-				AddLogLineM(false, wxString::Format(_("%s [%s:%i] using %s removed : known leecher"),newclient->m_pszUsername,newclient->m_szFullUserIP,newclient->m_nUserPort,newclient->m_clientVerString.c_str()));
+				type = _("known leecher");
 				break;
 			}
 			case 4 : {
-				AddLogLineM(false, wxString::Format(_("%s [%s:%i] using %s removed : suspicious hash change"),newclient->m_pszUsername,newclient->m_szFullUserIP,newclient->m_nUserPort,newclient->m_clientVerString.c_str()));
+				type = _("suspicious hash change");
 				break;
 			}
 			case 5 : {
-				AddLogLineM(false, wxString::Format(_("%s [%s:%i] using %s removed : use your own hash"),newclient->m_pszUsername,newclient->m_szFullUserIP,newclient->m_nUserPort,newclient->m_clientVerString.c_str()));
+				type = _("use your own hash");
 				break;
 			}
 			default : {
-				AddLogLineM(false, wxString::Format(_("%s [%s:%i] using %s removed : suspicious name change"),newclient->m_pszUsername,newclient->m_szFullUserIP,newclient->m_nUserPort,newclient->m_clientVerString.c_str()));
+				type = _("suspicious name change");
 			}
 		}
+		AddLogLineM(false, newclient->GetUserName() + wxString::Format(_(" [%s:%i] using "),newclient->m_szFullUserIP,newclient->m_nUserPort) + newclient->m_clientVerString + _(" removed : ") + type);		
 		// remove client !
 		theApp.uploadqueue->RemoveFromUploadQueue(newclient,true);
 		return;
 	}
 
 	// Anti-leecher mods and irregular clients [BlackRat - LSD]
-	if (((strcmp(newclient->m_pszUsername,"celinesexy") == 0) ||
-	(strcmp(newclient->m_pszUsername,"Chief") == 0) ||
-	(strcmp(newclient->m_pszUsername,"darkmule") == 0) ||
-	(strcmp(newclient->m_pszUsername,"dodgethis") == 0) ||
-	(strcmp(newclient->m_pszUsername,"edevil") == 0) ||
-	(strcmp(newclient->m_pszUsername,"energyfaker") == 0) ||
-	(strcmp(newclient->m_pszUsername,"eVortex") == 0) ||
-	(strcmp(newclient->m_pszUsername,"|eVorte|X|") == 0) ||
-	(strcmp(newclient->m_pszUsername,"$GAM3R$") == 0) ||
-	(strcmp(newclient->m_pszUsername,"G@m3r") == 0) ||		 
-	(strcmp(newclient->m_pszUsername,"Leecha") == 0) ||
-	(strcmp(newclient->m_pszUsername,"Mison") == 0) ||
-	(strcmp(newclient->m_pszUsername,"phArAo") == 0) ||
-	(strcmp(newclient->m_pszUsername,"RAMMSTEIN") == 0) ||
-	(strcmp(newclient->m_pszUsername,"Reverse") == 0) ||
-	(strcmp(newclient->m_pszUsername,"[toXic]") == 0) ||
-	(strcmp(newclient->m_pszUsername,"$WAREZ$") == 0) ||
+	if (
+	(newclient->GetUserName().Cmp(wxT("celinesexy")) == 0) ||
+	(newclient->GetUserName().Cmp(wxT("Chief")) == 0) ||
+	(newclient->GetUserName().Cmp(wxT("darkmule")) == 0) ||
+	(newclient->GetUserName().Cmp(wxT("dodgethis")) == 0) ||
+	(newclient->GetUserName().Cmp(wxT("edevil")) == 0) ||
+	(newclient->GetUserName().Cmp(wxT("energyfaker")) == 0) ||
+	(newclient->GetUserName().Cmp(wxT("eVortex")) == 0) ||
+	(newclient->GetUserName().Cmp(wxT("|eVorte|X|")) == 0) ||
+	(newclient->GetUserName().Cmp(wxT("$GAM3R$")) == 0) ||
+	(newclient->GetUserName().Cmp(wxT("G@m3r")) == 0) ||		 
+	(newclient->GetUserName().Cmp(wxT("Leecha")) == 0) ||
+	(newclient->GetUserName().Cmp(wxT("Mison")) == 0) ||
+	(newclient->GetUserName().Cmp(wxT("phArAo")) == 0) ||
+	(newclient->GetUserName().Cmp(wxT("RAMMSTEIN")) == 0) ||
+	(newclient->GetUserName().Cmp(wxT("Reverse")) == 0) ||
+	(newclient->GetUserName().Cmp(wxT("[toXic]")) == 0) ||
+	(newclient->GetUserName().Cmp(wxT("$WAREZ$")) == 0) ||
 	(newclient->m_strModVersion.Cmp(wxT("aldo")) == 0 ) ||
 	(newclient->m_strModVersion.Cmp(wxT("booster")) == 0 ) ||
 	(newclient->m_strModVersion.Cmp(wxT("darkmule")) == 0 ) ||
@@ -226,12 +229,12 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd){
 	((newclient->m_strModVersion.IsEmpty() == false) && (newclient->GetClientSoft() != SO_EMULE) && (newclient->GetClientSoft() != SO_LXMULE) && (newclient->GetClientSoft() != SO_AMULE) ) ||
  	((!newclient->GetMuleVersion() && (newclient->GetClientSoft()==SO_EMULE || newclient->GetClientSoft()==SO_OLDEMULE)) && (newclient->GetVersion()==60 || !newclient->GetVersion())) ||
  	(!newclient->ExtProtocolAvailable() && newclient->GetClientSoft()==SO_EMULE && (newclient->GetVersion()==60 || !newclient->GetVersion())) ||
- 	((newclient->GetVersion()>589) && (newclient->GetSourceExchangeVersion()>0) && (newclient->GetClientSoft()== SO_EDONKEY))))
+ 	((newclient->GetVersion()>589) && (newclient->GetSourceExchangeVersion()>0) && (newclient->GetClientSoft()== SO_EDONKEY)))
 	{		
 		// thief !
 		newclient->thief=true;
 		theApp.uploadqueue->RemoveFromUploadQueue(newclient,true);
-		AddLogLineM(false, wxString::Format(_("%s [%s:%i] using %s removed : leecher, invalid eMule or irregular Donkey"),newclient->GetUserName(),newclient->GetFullIP(),newclient->GetUserPort(),newclient->GetClientVerString().c_str()));
+		AddLogLineM(false, newclient->GetUserName() + wxString::Format(_(" [%s:%i] using "), newclient->GetFullIP(),newclient->GetUserPort()) + newclient->GetClientVerString() +  _("removed : leecher, invalid eMule or irregular Donkey"));
 		return;
 	}	
 
@@ -426,7 +429,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
 			return;			
 		} else if ( client->Compare(cur_client) ) {
 			// another client with same ip or hash
-			AddDebugLogLineM(false,wxString::Format(_("Client '%s' and '%s' have the same userhash or IP - removed '%s'"),client->GetUserName(),cur_client->GetUserName(),cur_client->GetUserName()));
+			AddDebugLogLineM(false,wxString::Format(_("Client '%s' and '%s' have the same userhash or IP - removed '%s'"),unicode2char(client->GetUserName()),unicode2char(cur_client->GetUserName()),unicode2char(cur_client->GetUserName())));
 			RemoveFromWaitingQueue(pos,true);	
 			if (!cur_client->socket) {
 				if(cur_client->Disconnected("AddClientToQueue - same userhash 1")) {
@@ -610,7 +613,7 @@ void CUploadQueue::SuspendUpload( const CMD4Hash& filehash )
 		if(md4cmp(potential->GetUploadFileID(), filehash) == 0) {
 			//remove the unlucky client from the upload queue and add to the waiting queue
 			RemoveFromUploadQueue(potential, 1);
-			printf("%s: Removed user '%s'\n", unicode2char(base16hash) ,potential->GetUserName() );
+			printf("%s: Removed user '%s'\n", unicode2char(base16hash) , unicode2char(potential->GetUserName()));
 			//this code to add to the waitinglist was copied from the end of AddClientToQueue()
 			//the function itself is not used as it could prevent the requeuing of the client
 			waitinglist.AddTail(potential);
@@ -618,7 +621,7 @@ void CUploadQueue::SuspendUpload( const CMD4Hash& filehash )
 			potential->SendRankingInfo();
 			theApp.amuledlg->transferwnd->queuelistctrl->AddClient(potential);
 			theApp.amuledlg->transferwnd->ShowQueueCount(waitinglist.GetCount());
-			printf("%s: ReQueued user '%s'\n", unicode2char(base16hash), potential->GetUserName() );
+			printf("%s: ReQueued user '%s'\n", unicode2char(base16hash), unicode2char(potential->GetUserName()));
 		}
 	}
 }

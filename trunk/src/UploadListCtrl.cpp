@@ -143,7 +143,7 @@ void CUploadListCtrl::AddClient(CUpDownClient* client)
 	uint32 itemnr = GetItemCount();
 
 	//itemnr = InsertItem(LVIF_TEXT|LVIF_PARAM,itemnr,client->GetUserName(),0,0,1,(LPARAM)client);
-	itemnr=InsertItem(itemnr,char2unicode(client->GetUserName()));
+	itemnr=InsertItem(itemnr,client->GetUserName());
 	SetItemData(itemnr,(long)client);
 
 	wxListItem myitem;
@@ -276,9 +276,9 @@ int CUploadListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 	CKnownFile* file2 = theApp.sharedfiles->GetFileByID(item2->GetUploadFileID());
 	switch(lParamSort) {
 		case 0:
-			return wxString(char2unicode(item1->GetUserName())).CmpNoCase(char2unicode(item2->GetUserName()));
+			return item1->GetUserName().CmpNoCase(item2->GetUserName());
 		case 100:
-			return wxString(char2unicode(item2->GetUserName())).CmpNoCase(char2unicode(item1->GetUserName()));
+			return item2->GetUserName().CmpNoCase(item1->GetUserName());
 		case 1:
 			if( (file1 != NULL) && (file2 != NULL)) {
 				return file1->GetFileName().CmpNoCase(file2->GetFileName());
@@ -443,10 +443,8 @@ void CUploadListCtrl::OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxRe
 						imagelist.Draw(7,*dc,cur_rec.left,cur_rec.top+1,wxIMAGELIST_DRAW_TRANSPARENT);
 					}		
 					
-					Sbuffer.Printf(wxT("%s"), client->GetUserName());
 					cur_rec.left +=20;
-					//dc->DrawText(Sbuffer,Sbuffer.GetLength(),&cur_rec,DT_LEFT|DT_SINGLELINE|DT_VCENTER|DT_NOPREFIX|DT_END_ELLIPSIS);
-					dc->DrawText(Sbuffer,cur_rec.left,cur_rec.top+3);
+					dc->DrawText(client->GetUserName(),cur_rec.left,cur_rec.top+3);
 					cur_rec.left -=20;
 					break;
 				}

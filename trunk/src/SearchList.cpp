@@ -276,7 +276,7 @@ uint16 CSearchList::ProcessSearchanswer(const char *in_packet, uint32 size, CUpD
 	const CSafeMemFile *packet = new CSafeMemFile((BYTE*)in_packet,size,0);
 
 	if(Sender) {
-	  theApp.amuledlg->searchwnd->CreateNewTab(char2unicode(Sender->GetUserName()),(uint32)Sender);
+	  theApp.amuledlg->searchwnd->CreateNewTab(Sender->GetUserName(),(uint32)Sender);
 	}
 
 	try
@@ -325,21 +325,9 @@ uint16 CSearchList::ProcessSearchanswer(const char *in_packet, uint32 size,
 	wxASSERT( Sender != NULL );
 	// Elandal: Assumes sizeof(void*) == sizeof(uint32)
 	uint32 nSearchID = (uint32)Sender;
-	/*
-	SSearchParams* pParams = new SSearchParams;
-	pParams->strExpression = Sender->GetUserName();
-	pParams->dwSearchID = nSearchID;
-	if (theApp.amuledlg->searchwnd->CreateNewTab(pParams)){
-		m_foundFilesCount.SetAt(nSearchID,0);
-		m_foundSourcesCount.SetAt(nSearchID,0);
-	}
-	else{
-		delete pParams;
-		pParams = NULL;
-	}
-	*/
-	if (!theApp.amuledlg->searchwnd->CheckTabNameExists(char2unicode(Sender->GetUserName()))) {
-		theApp.amuledlg->searchwnd->CreateNewTab(char2unicode(Sender->GetUserName()),nSearchID);
+
+	if (!theApp.amuledlg->searchwnd->CheckTabNameExists(Sender->GetUserName())) {
+		theApp.amuledlg->searchwnd->CreateNewTab(Sender->GetUserName(),nSearchID);
 	}
 	
 	const CSafeMemFile packet((BYTE*)in_packet,size);

@@ -646,7 +646,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				 pos != 0;theApp.uploadqueue->GetNextFromUploadList(pos)) {
 				CUpDownClient* cur_client = theApp.uploadqueue->GetQueueClientAt(pos);
 				if (cur_client) {
-					buffer+=wxString::Format(wxT("%s\t"), cur_client->GetUserName());
+					buffer+= cur_client->GetUserName() + wxT("\t");
 					tempFileInfo=cur_client->GetUploadFileInfo();
 					tempFileInfo.Replace(wxT("\n"), wxT("|"));
 					buffer+=wxString::Format(wxT("%s\t"), tempFileInfo.GetData());
@@ -673,7 +673,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				 pos != 0;theApp.uploadqueue->GetNextFromWaitingList(pos)) {
 				CUpDownClient* cur_client = theApp.uploadqueue->GetWaitClientAt(pos);
 				if (cur_client) {
-					buffer.Append(wxString::Format(wxT("%s"),cur_client->GetUserName()));
+					buffer += cur_client->GetUserName();
 					if (cur_client->reqfile) {
 						buffer.Append(wxT("\t"));
 					} else {
@@ -1801,7 +1801,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 					 pos != 0;theApp.uploadqueue->GetNextFromUploadList(pos)) {
 					CUpDownClient* cur_client = theApp.uploadqueue->GetQueueClientAt(pos);
 					if (cur_client) {
-						buffer+=wxString::Format(wxT("%s\t"), cur_client->GetUserName());
+						buffer+= cur_client->GetUserName() + wxT("\t");
 						tempFileInfo=cur_client->GetUploadFileInfo();
 						tempFileInfo.Replace(wxT("\n"), wxT("|"));
 						buffer+=wxString::Format(wxT("%s\t"), tempFileInfo.GetData());
@@ -2199,7 +2199,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 					 pos != 0;theApp.uploadqueue->GetNextFromWaitingList(pos)) {
 					CUpDownClient* cur_client = theApp.uploadqueue->GetWaitClientAt(pos);
 					if (cur_client) {
-						buffer.Append(wxString::Format(wxT("%s"), cur_client->GetUserName()));
+						buffer += cur_client->GetUserName();
 						if (!cur_client->reqfile) {
 							buffer.Append(wxT("\n"));
 							continue;
@@ -2228,9 +2228,10 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 					 pos != 0;theApp.uploadqueue->GetNextFromUploadList(pos)) {
 					CUpDownClient* cur_client = theApp.uploadqueue->GetQueueClientAt(pos);
 					if (cur_client) {
-						buffer.Append(wxString::Format(wxT("%s\t"), cur_client->GetUserName()));
-						temp = cur_client->GetUploadFileInfo(); temp.Replace(wxT("\n"), wxT(" | "));
-						buffer.Append(wxString::Format(wxT("%s\t"), temp.GetData()));
+						buffer += cur_client->GetUserName() + wxT("\t");
+						temp = cur_client->GetUploadFileInfo(); 
+						temp.Replace(wxT("\n"), wxT(" | "));
+						buffer +=  temp + wxT("\t");
 						CKnownFile* file = theApp.sharedfiles->GetFileByID(cur_client->GetUploadFileID());
 						if (file)
 							buffer.Append(wxString::Format(wxT("%s\t"), file->GetFileName().GetData()));

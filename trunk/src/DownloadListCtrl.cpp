@@ -1165,14 +1165,14 @@ void CDownloadListCtrl::DrawSourceItem(wxDC * dc, int nColumn, LPRECT lpRect, Ct
 					
 					cur_rec.left += 20;					
 					
-					if (!lpUpDownClient->GetUserName()) {
-						buffer = wxT("?");
-					} else {
-						buffer = char2unicode(lpUpDownClient->GetUserName());
-					}
-					//dc->DrawText(buffer, cur_rec.left, cur_rec.top);
 					lpRect->left += 40;
-					dc->DrawText(buffer, lpRect->left, lpRect->top);
+					
+					if (lpUpDownClient->GetUserName().IsEmpty()) {
+						dc->DrawText(wxT("?"), lpRect->left, lpRect->top);
+					} else {
+						dc->DrawText( lpUpDownClient->GetUserName(), lpRect->left, lpRect->top);						
+					}								
+					
 					lpRect->left -= 40;
 				}
 				break;
@@ -1922,14 +1922,7 @@ int CDownloadListCtrl::Compare(CUpDownClient * client1, CUpDownClient * client2,
 {
 	switch (lParamSort) {
 		case 0:	//name asc
-			if (client1->GetUserName() == client2->GetUserName()) {
-				return 0;
-			} else if (!client1->GetUserName()) {
-				return 1;
-			} else if (!client2->GetUserName()) {
-				return -1;
-			}
-			return strcmpi(client1->GetUserName(), client2->GetUserName());
+			return(client1->GetUserName().CmpNoCase(client2->GetUserName()));
 		case 1:	//size but we use status asc
 			return client1->GetDownloadState() - client2->GetDownloadState();
 		case 2:	//transfered asc
@@ -1947,7 +1940,7 @@ int CDownloadListCtrl::Compare(CUpDownClient * client1, CUpDownClient * client2,
 					return client2->GetVersion() - client1->GetVersion();
 				}
 			}
-			return client1->GetClientSoft() - client2->GetClientSoft();
+			return(client1->GetClientSoft() - client2->GetClientSoft());
 		case 7:	//qr asc
 			if (client1->GetRemoteQueueRank() == 0 && client1->GetDownloadState() == DS_ONQUEUE && client1->IsRemoteQueueFull() == true) {
 				return 1;

@@ -80,22 +80,23 @@ void CClientDetailDialog::OnBnClose(wxCommandEvent& evt)
 bool CClientDetailDialog::OnInitDialog() {
 	char buffer[100];
 	
-	if (m_client->GetUserName()) {
-		GetDlgItem(ID_DNAME,wxStaticText)->SetLabel(char2unicode(m_client->GetUserName()));
-	} else {
-		GetDlgItem(ID_DNAME,wxStaticText)->SetLabel(_("Unknown"));
-	}	
+	if (!m_client->GetUserName().IsEmpty()) {
+		GetDlgItem(ID_DNAME,wxStaticText)->SetLabel(m_client->GetUserName());
 
-	if (m_client->GetUserName()) {
 		buffer[0] = 0;
+		wxASSERT(m_client->GetUserHash()); // if we have client name we have userhash
 		for (uint16 i = 0;i != 16;i++) {
 			sprintf(buffer,"%s%02X",buffer,m_client->GetUserHash()[i]);
 		}
 		GetDlgItem(ID_DHASH,wxStaticText)->SetLabel(char2unicode(buffer));
+
+		GetDlgItem(ID_DRATING,wxStaticText)->SetLabel(wxString::Format(wxT("%.1f"),(float)m_client->GetScore(false,m_client->IsDownloading(),true)));
 	} else {
+		GetDlgItem(ID_DNAME,wxStaticText)->SetLabel(_("Unknown"));
 		GetDlgItem(ID_DHASH,wxStaticText)->SetLabel(_("Unknown"));
-	}
-	
+		GetDlgItem(ID_DRATING,wxStaticText)->SetLabel(wxT("Unknown"));;
+	}	
+
 	printf("ClientSoftware ->%.2x<- ClientVersion ->v%.2x<- ClientModString ->%s\n",m_client->GetClientSoft(), m_client->GetMuleVersion(), unicode2char(m_client->GetClientModString()));
 
 	GetDlgItem(ID_DSOFT,wxStaticText)->SetLabel(m_client->GetSoftStr());
@@ -175,11 +176,6 @@ bool CClientDetailDialog::OnInitDialog() {
 		GetDlgItem(ID_DRATIO,wxStaticText)->SetLabel(wxT("Unknown"));
 	}
 	
-	if (m_client->GetUserName()) {
-		GetDlgItem(ID_DRATING,wxStaticText)->SetLabel(wxString::Format(wxT("%.1f"),(float)m_client->GetScore(false,m_client->IsDownloading(),true)));
-	} else {
-		GetDlgItem(ID_DRATING,wxStaticText)->SetLabel(wxT("Unknown"));;
-	}
 	if (m_client->GetUploadState() != US_NONE) {
 		GetDlgItem(ID_DSCORE,wxStaticText)->SetLabel(wxString::Format(wxT("%u"),m_client->GetScore(m_client->IsDownloading(),false)));
 	} else {
