@@ -80,6 +80,10 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		* Included CVSDATE with version in amulesig.dat
 		* Fixed an endianness bug with webserver
 		* Fixed last (I hope!) endianness bug with IPFilter
+		* Fixed a major endianness bug with widespread effects.  On Mac,
+		  servers don't fail continuously until eventually removed from the
+		  list; server pings work.  Global search seems to work better.
+		  DNS lookup of servers and ED2K link sources should now work.
 
 	volpol
 		* Patch to fix use of deprecated functions in wxGTK-2.5.3.

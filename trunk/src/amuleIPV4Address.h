@@ -64,9 +64,9 @@ public:
 		}
 		// We have to take care that wxIPV4address's internals changed on 2.5.2
 		#if wxCHECK_VERSION(2,5,2)
-			return GAddress_INET_SetHostAddress(m_address,ntohl(ip))==GSOCK_NOERROR;
+			return GAddress_INET_SetHostAddress(m_address,wxUINT32_SWAP_ALWAYS(ip))==GSOCK_NOERROR;
 		#else
-			return GAddress_INET_SetHostAddress(m_address,ip)==GSOCK_NOERROR;
+			return GAddress_INET_SetHostAddress(m_address,ENDIAN_SWAP_32(ip))==GSOCK_NOERROR;
 		#endif
 	}
 	
