@@ -74,7 +74,7 @@ public:
 	bool	WriteToFile(FILE* file)							{return false;}
 	bool	IsPartFile()									{return !(status == PS_COMPLETE);}
 	uint32	Process(uint32 reducedownload, uint8 m_icounter);
-	uint8	LoadPartFile(LPCTSTR in_directory, LPCTSTR filename, bool getsizeonly=false);
+	uint8	LoadPartFile(wxString in_directory, wxString filename, bool getsizeonly=false);
 	bool	SavePartFile(bool Initial=false);
 	void	PartFileHashFinished(CKnownFile* result);
 	bool	HashSinglePart(uint16 partnumber); // true = ok , false = corrupted

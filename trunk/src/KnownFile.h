@@ -201,7 +201,7 @@ protected:
 	void GetMetaDataTags();
 	ArrayOfCMD4Hash hashlist;
 	ArrayOfCTag taglist;
-	CString m_strFilePath;	
+	wxString m_strFilePath;	
 
 private:
 	void	CreateHashFromInput(FILE* file,CFile* file2, int Length, unsigned char* Output, unsigned char* = 0);

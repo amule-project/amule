@@ -375,7 +375,7 @@ void CPartFile::CreatePartFile()
 	SavePartFile(true);
 }
 
-uint8 CPartFile::LoadPartFile(LPCTSTR in_directory, LPCTSTR filename, bool getsizeonly)
+uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool getsizeonly)
 {
 	#warning getsizeonly is ignored because we do not import yet
 	
@@ -385,9 +385,9 @@ uint8 CPartFile::LoadPartFile(LPCTSTR in_directory, LPCTSTR filename, bool getsi
 	CMap<uint16, uint16, Gap_Struct*, Gap_Struct*> gap_map; // Slugfiller
 	transfered = 0;
 	
-	m_partmetfilename = (char2unicode(filename));
+	m_partmetfilename = filename;
 	m_strFilePath = in_directory;
-	m_fullname.Printf(wxT("%s/%s"), m_strFilePath.c_str(), m_partmetfilename.c_str());
+	m_fullname = m_strFilePath + wxT("/") + m_partmetfilename;
 	
 	CSafeFile metFile;
 	bool load_from_backup = false;
@@ -2311,14 +2311,6 @@ void CPartFile::CompleteFile(bool bIsHashingDone)
 		// It is if the temp and incoming dirs are on different
 		// partitions/drives and the file is large...[oz]
 		//
-		// use pthreads
-
-		/*
-		pthread_t tid;
-		pthread_attr_init(&pattr);
-		pthread_attr_setdetachstate(&pattr,PTHREAD_CREATE_DETACHED);
-		pthread_create(&tid,&pattr,(void*(*)(void*))CompleteThreadProc,this);
-		*/
 
 		PerformFileComplete();
 
@@ -2351,9 +2343,9 @@ void CPartFile::CompleteFileEnded(int completing_result, wxString* newname) {
 		delete newname;
 		
 		if(wxFileName::DirExists(char2unicode(theApp.glob_prefs->GetCategory(GetCategory())->incomingpath))) {
-			m_strFilePath = theApp.glob_prefs->GetCategory(m_category)->incomingpath;
+			m_strFilePath = char2unicode(theApp.glob_prefs->GetCategory(m_category)->incomingpath);
 		} else {
-			m_strFilePath = theApp.glob_prefs->GetIncomingDir();
+			m_strFilePath = char2unicode(theApp.glob_prefs->GetIncomingDir());
 		}	
 	
 		SetPartFileStatus(PS_COMPLETE);

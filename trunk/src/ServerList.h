@@ -43,7 +43,7 @@ public:
 	void		RemoveServer(CServer* out_server);
 	void		RemoveAllServers(void);
 	bool		AddServermetToList(CString strFile, bool merge = true);
-	void		AddServersFromTextFile(CString strFilename,bool isstaticserver=true, bool writetolog = false);// emanuelw(20030924) added writetolog
+	void		AddServersFromTextFile(wxString strFilename,bool isstaticserver=true, bool writetolog = false);// emanuelw(20030924) added writetolog
 	bool		SaveServermetToFile(); //<<--9/22/02
 	void		ServerStats();
 	void		ResetServerPos()	{serverpos = 0;}

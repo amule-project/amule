@@ -463,7 +463,7 @@ CServerList::~CServerList()
 	udp_timer.Stop();
 }
 
-void CServerList::AddServersFromTextFile(CString strFilename,bool isstaticserver, bool writetolog)
+void CServerList::AddServersFromTextFile(wxString strFilename,bool isstaticserver, bool writetolog)
 {
 	// emanuelw(20030731) added writetolog
 	wxString strLine;
@@ -873,12 +873,10 @@ void CServerList::Process()
 	
 	// emanuelw(20030924) added:Check for new server links once per second.	
 	if ((::GetTickCount() - m_nLastED2KServerLinkCheck) >= 1000) {
-		wxString filename = filename.Format(wxT("%s/.aMule/ED2KServers"), getenv("HOME"));
-		
-		CString strPath(theApp.ConfigDir + wxT("ED2KServers"));
+		wxString filename(theApp.ConfigDir + wxT("ED2KServers"));
 	
 		if (wxFile::Exists(filename)) {
-			AddServersFromTextFile(strPath, false, true);
+			AddServersFromTextFile(filename, false, true);
 			this->SaveServermetToFile();
 			wxRemoveFile(filename);
 		}
