@@ -1773,7 +1773,7 @@ wxSizer *PreferencesGeneralTab( wxWindow *parent, bool call_fit, bool set_sizer 
         _("Epiphany"), 
         _("User Defined")
     };
-    wxChoice *item33 = new wxChoice( parent, ID_FCHECK, wxDefaultPosition, wxSize(100,-1), 9, strs33, 0 );
+    wxChoice *item33 = new wxChoice( parent, IDC_FCHECK, wxDefaultPosition, wxSize(100,-1), 9, strs33, 0 );
     item33->SetToolTip( _("Select your browser here") );
     item31->Add( item33, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
@@ -1783,7 +1783,7 @@ wxSizer *PreferencesGeneralTab( wxWindow *parent, bool call_fit, bool set_sizer 
     item35->Enable( FALSE );
     item34->Add( item35, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxTextCtrl *item36 = new wxTextCtrl( parent, IDD_FCHECKSELF, _("my browser"), wxDefaultPosition, wxSize(80,-1), 0 );
+    wxTextCtrl *item36 = new wxTextCtrl( parent, IDC_FCHECKSELF, _("my browser"), wxDefaultPosition, wxSize(80,-1), 0 );
     item36->SetToolTip( _("Enter your browser name here") );
     item36->Enable( FALSE );
     item34->Add( item36, 0, wxGROW|wxALL, 5 );
@@ -2183,6 +2183,8 @@ wxSizer *PreferencesFilesTab( wxWindow *parent, bool call_fit, bool set_sizer )
     item21->Add( item22, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
     wxCheckBox *item23 = new wxCheckBox( parent, IDC_CHUNKALLOC, _("Allocate full chucks for .part files"), wxDefaultPosition, wxDefaultSize, 0 );
+    item23->SetToolTip( _("Select this to allocate a full chunk each time data is received for it.") );
+    item23->Enable( FALSE );
     item21->Add( item23, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
     item19->Add( item21, 0, wxALIGN_CENTER|wxALL, 5 );

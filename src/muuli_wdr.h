@@ -240,9 +240,9 @@ wxSizer *clientDetails( wxWindow *parent, bool call_fit = TRUE, bool set_sizer =
 #define IDC_CHECKDAYS 10161
 #define IDC_SPLASHON 10162
 #define IDC_STARTMIN 10163
-#define ID_FCHECK 10164
+#define IDC_FCHECK 10164
 #define ID_CUSTOMBROWSETEXT 10165
-#define IDD_FCHECKSELF 10166
+#define IDC_FCHECKSELF 10166
 wxSizer *PreferencesGeneralTab( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
 #define IDC_DCAP_LBL 10167
