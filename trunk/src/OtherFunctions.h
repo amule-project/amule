@@ -502,7 +502,12 @@ void InitLocale(wxLocale& locale, int language);
 inline int StrLang2wx(const wxString& lang)
 {
 	if (!lang.IsEmpty()) {
-		const wxLanguageInfo *lng = wxLocale::FindLanguageInfo(lang);
+		const wxLanguageInfo *lng =
+#if wxCHECK_VERSION(2,5,4)
+			wxLocale::FindLanguageInfo(lang);
+#else
+			NULL;
+#endif
 		if (lng) {
 			return lng->Language;
 		} else {
