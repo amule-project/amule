@@ -3019,6 +3019,8 @@ void wxODListMainWindow::OnPaint( wxPaintEvent &WXUNUSED(event) )
 
 				// This DC is used to write to the bitmaps used to double-buffer
 				wxMemoryDC dbDC( &dc );
+				// The font doesn't get set for some reason ...
+				dbDC.SetFont( GetFont() );
 
 				// We use this for double-buffer
 				wxBitmap buffer( rectLine.width, rectLine.height );
