@@ -1336,6 +1336,15 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 							data_out.WriteString(reqfile->GetFileName());
 							break;
 						}
+						case OP_AICHFILEHASHREQ: {
+							if (m_client->IsSupportingAICH() && reqfile->GetAICHHashset()->GetStatus() == AICH_HASHSETCOMPLETE
+								&& reqfile->GetAICHHashset()->HasValidMasterHash())
+							{
+								data_out.WriteUInt8(OP_AICHFILEHASHANS);
+								reqfile->GetAICHHashset()->GetMasterHash().Write(&data_out);
+							}
+							break;
+						}						
 						case OP_SETREQFILEID: {
 							data_out.WriteUInt8(OP_FILESTATUS);
 							if (reqfile->IsPartFile()) {
@@ -1451,6 +1460,11 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 							m_client->ProcessFileStatus(false, &data_in, reqfile);
 							break;
 						}
+						case OP_AICHFILEHASHANS:
+						{
+							m_client->ProcessAICHFileHash(&data_in, reqfile);
+							break;
+						}					
 					}
 				}
 				break;
@@ -1722,12 +1736,6 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				#ifdef DEBUG_REMOTE_CLIENT_PROTOCOL
 				AddLogLineM(true,wxT("Remote Client: OP_ANSWERSOURCES\n"));
 				#endif
-				// 0.43b
-				#ifdef __USE_DEBUG__
-				if (thePrefs.GetDebugClientTCPLevel() > 0) {
-					DebugRecv("OP_AnswerSources", m_client, packet);
-				}
-				#endif
 				theApp.downloadqueue->AddDownDataOverheadSourceExchange(size);
 
 				if (!m_client->CheckHandshakeFinished(OP_EMULEPROT, opcode)) {
@@ -1828,35 +1836,57 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 			#endif
 			}
 			case OP_PUBLICIP_ANSWER: {
-				#ifdef DEBUG_REMOTE_CLIENT_PROTOCOL
-				AddLogLineM(true,wxT("Remote Client: OP_PUBLICIP_ANSWER\n"));
-				#endif
 				theApp.downloadqueue->AddDownDataOverheadOther(size);
-				/*
-				if (thePrefs.GetDebugClientTCPLevel() > 0)
-					DebugRecv("OP_PublicIPAns", client);
-				*/
 				m_client->ProcessPublicIPAnswer((BYTE*)packet,size);
 				break;
 			}
 			case OP_PUBLICIP_REQ: {
-				#ifdef DEBUG_REMOTE_CLIENT_PROTOCOL
-				AddLogLineM(true,wxT("Remote Client: OP_PUBLICIP_REQ\n"));
-				#endif
 				theApp.downloadqueue->AddDownDataOverheadOther(size);
-				/*
-				if (thePrefs.GetDebugClientTCPLevel() > 0)
-					DebugRecv("OP_PublicIPReq", client);
-				if (thePrefs.GetDebugClientTCPLevel() > 0)
-					DebugSend("OP__PublicIPAns", client);
-				*/
 				Packet* pPacket = new Packet(OP_PUBLICIP_ANSWER, 4, OP_EMULEPROT);
 				pPacket->CopyUInt32ToDataBuffer(m_client->GetIP());
 				theApp.uploadqueue->AddUpDataOverheadOther(pPacket->GetPacketSize());
 				SendPacket(pPacket);
 				break;
 			}			
-			
+			case OP_AICHANSWER: {
+				theApp.downloadqueue->AddDownDataOverheadOther(size);
+				m_client->ProcessAICHAnswer(packet,size);
+				break;
+			}
+			case OP_AICHREQUEST: {
+				theApp.downloadqueue->AddDownDataOverheadOther(size);
+				m_client->ProcessAICHRequest(packet,size);
+				break;
+			}
+			case OP_AICHFILEHASHANS: {
+				// those should not be received normally, since we should only get those in MULTIPACKET
+				theApp.downloadqueue->AddDownDataOverheadOther(size);
+				CSafeMemFile data((BYTE*)packet, size);
+				m_client->ProcessAICHFileHash(&data, NULL);
+				break;
+			}
+			case OP_AICHFILEHASHREQ: {
+				// those should not be received normally, since we should only get those in MULTIPACKET
+				CSafeMemFile data((BYTE*)packet, size);
+				uchar abyHash[16];
+				data.ReadHash16(abyHash);
+				CKnownFile* pPartFile = theApp.sharedfiles->GetFileByID(abyHash);
+				#warning Xaignar - check this for agressive
+				/*
+				if (pPartFile == NULL){
+					m_client->CheckFailedFileIdReqs(abyHash);
+					break;
+				}
+				*/
+				if (m_client->IsSupportingAICH() && pPartFile->GetAICHHashset()->GetStatus() == AICH_HASHSETCOMPLETE
+					&& pPartFile->GetAICHHashset()->HasValidMasterHash()) {
+					CSafeMemFile data_out;
+					data_out.WriteHash16(abyHash);
+					pPartFile->GetAICHHashset()->GetMasterHash().Write(&data_out);
+					SendPacket(new Packet(&data_out, OP_EMULEPROT, OP_AICHFILEHASHANS));
+				}
+				break;
+			}
 			default:
 				theApp.downloadqueue->AddDownDataOverheadOther(size);
 				AddDebugLogLineM(false,wxString::Format(_("eMule packet : unknown opcode: %i %x"),opcode,opcode));

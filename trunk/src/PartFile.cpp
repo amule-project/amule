@@ -3804,35 +3804,37 @@ bool CPartFile::CheckShowItemInGivenCat(int inCategory)
 }
 
 
-
+#warning AICH - CHECK USAGE!	
 void CPartFile::RequestAICHRecovery(uint16 nPart){
-#warning AICH IMPORT NEEEDED!	
-#if 0
+
 	if (!m_pAICHHashSet->HasValidMasterHash() || (m_pAICHHashSet->GetStatus() != AICH_TRUSTED && m_pAICHHashSet->GetStatus() != AICH_VERIFIED)){
-		AddDebugLogLine(DLP_DEFAULT, false, _T("Unable to request AICH Recoverydata because we have no trusted Masterhash"));
+// TODO		
+//		AddDebugLogLine(DLP_DEFAULT, false, _T("Unable to request AICH Recoverydata because we have no trusted Masterhash"));
 		return;
 	}
 	if (GetFileSize() <= EMBLOCKSIZE || GetFileSize() - PARTSIZE*nPart <= EMBLOCKSIZE)
 		return;
 	if (CAICHHashSet::IsClientRequestPending(this, nPart)){
-		AddDebugLogLine(DLP_DEFAULT, false, _T("RequestAICHRecovery: Already a request for this part pending"));
+// TODO		
+//		AddDebugLogLine(DLP_DEFAULT, false, _T("RequestAICHRecovery: Already a request for this part pending"));
 		return;
 	}
 
 	// first check if we have already the recoverydata, no need to rerequest it then
 	if (m_pAICHHashSet->IsPartDataAvailable(nPart*PARTSIZE)){
-		AddDebugLogLine(DLP_DEFAULT, false, _T("Found PartRecoveryData in memory"));
+// TODO		
+//		AddDebugLogLine(DLP_DEFAULT, false, _T("Found PartRecoveryData in memory"));
 		AICHRecoveryDataAvailable(nPart);
 		return;
 	}
 
-	ASSERT( nPart < GetPartCount() );
+	wxASSERT( nPart < GetPartCount() );
 	// find some random client which support AICH to ask for the blocks
 	// first lets see how many we have at all, we prefer high id very much
 	uint32 cAICHClients = 0;
 	uint32 cAICHLowIDClients = 0;
-	for (POSITION pos = srclist.GetHeadPosition(); pos != NULL;){
-		CUpDownClient* pCurClient = srclist.GetNext(pos);
+	for ( SourceSet::iterator it = m_SrcList.begin(); it != m_SrcList.end(); ++it) {	
+		CUpDownClient* pCurClient = *(it);
 		if (pCurClient->IsSupportingAICH() && pCurClient->GetReqFileAICHHash() != NULL && !pCurClient->IsAICHReqPending()
 			&& (*pCurClient->GetReqFileAICHHash()) == m_pAICHHashSet->GetMasterHash())
 		{
@@ -3843,7 +3845,8 @@ void CPartFile::RequestAICHRecovery(uint16 nPart){
 		}
 	}
 	if ((cAICHClients | cAICHLowIDClients) == 0){
-		AddDebugLogLine(DLP_DEFAULT, false, _T("Unable to request AICH Recoverydata because found no client who supports it and has the same hash as the trusted one"));
+// TODO		
+//		AddDebugLogLine(DLP_DEFAULT, false, _T("Unable to request AICH Recoverydata because found no client who supports it and has the same hash as the trusted one"));
 		return;
 	}
 	uint32 nSeclectedClient;
@@ -3853,8 +3856,8 @@ void CPartFile::RequestAICHRecovery(uint16 nPart){
 		nSeclectedClient = (rand() % cAICHLowIDClients) + 1;
 	
 	CUpDownClient* pClient = NULL;
-	for (POSITION pos = srclist.GetHeadPosition(); pos != NULL;){
-		CUpDownClient* pCurClient = srclist.GetNext(pos);
+	for ( SourceSet::iterator it = m_SrcList.begin(); it != m_SrcList.end(); ++it) {	
+		CUpDownClient* pCurClient = *(it);
 		if (pCurClient->IsSupportingAICH() && pCurClient->GetReqFileAICHHash() != NULL && !pCurClient->IsAICHReqPending()
 			&& (*pCurClient->GetReqFileAICHHash()) == m_pAICHHashSet->GetMasterHash())
 		{
@@ -3863,7 +3866,7 @@ void CPartFile::RequestAICHRecovery(uint16 nPart){
 					nSeclectedClient--;
 			}
 			else{
-				ASSERT( pCurClient->HasLowID());
+				wxASSERT( pCurClient->HasLowID());
 				nSeclectedClient--;
 			}
 			if (nSeclectedClient == 0){
@@ -3873,32 +3876,31 @@ void CPartFile::RequestAICHRecovery(uint16 nPart){
 		}
 	}
 	if (pClient == NULL){
-		ASSERT( false );
+		wxASSERT( false );
 		return;
 	}
-	AddDebugLogLine(DLP_DEFAULT, false, _T("Requesting AICH Hash (%s) form client %s"),cAICHClients? _T("HighId"):_T("LowID"), pClient->DbgGetClientInfo());
+// TODO		
+//	AddDebugLogLine(DLP_DEFAULT, false, _T("Requesting AICH Hash (%s) form client %s"),cAICHClients? _T("HighId"):_T("LowID"), pClient->DbgGetClientInfo());
 	pClient->SendAICHRequest(this, nPart);
 	
-#endif
 }
 
 void CPartFile::AICHRecoveryDataAvailable(uint16 nPart){
-#warning AICH IMPORT NEEEDED!	
-#if 0
-
 	if (GetPartCount() < nPart){
-		ASSERT( false );
+		wxASSERT( false );
 		return;
 	}
-	FlushBuffer(true, true, true);
+	#warning FIX FLUSHBUFFER CALLS!
+	FlushBuffer(/*true,true,true*/);
 	uint32 length = PARTSIZE;
 	if ((ULONGLONG)PARTSIZE*(nPart+1) > m_hpartfile.GetLength()){
 		length = (m_hpartfile.GetLength() - ((ULONGLONG)PARTSIZE*nPart));
-		ASSERT( length <= PARTSIZE );
+		wxASSERT( length <= PARTSIZE );
 	}	
 	// if the part was already ok, it would now be complete
 	if (IsComplete(nPart*PARTSIZE, ((nPart*PARTSIZE)+length)-1)){
-		AddDebugLogLine(DLP_DEFAULT, false, _T("Processing AICH Recovery data: The part (%u) is already complete, canceling"));
+// TODO		
+//		AddDebugLogLine(DLP_DEFAULT, false, _T("Processing AICH Recovery data: The part (%u) is already complete, canceling"));
 		return;
 	}
 	
@@ -3906,22 +3908,24 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart){
 
 	CAICHHashTree* pVerifiedHash = m_pAICHHashSet->m_pHashTree.FindHash(nPart*PARTSIZE, length);
 	if (pVerifiedHash == NULL || !pVerifiedHash->m_bHashValid){
-		AddDebugLogLine(DLP_DEFAULT, false, _T("Processing AICH Recovery data: Unable to get verified hash from hashset (should never happen)"));
-		ASSERT( false );
+// TODO		
+//		AddDebugLogLine(DLP_DEFAULT, false, _T("Processing AICH Recovery data: Unable to get verified hash from hashset (should never happen)"));
+		wxASSERT( false );
 		return;
 	}
 	CAICHHashTree htOurHash(pVerifiedHash->m_nDataSize, pVerifiedHash->m_bIsLeftBranch, pVerifiedHash->m_nBaseSize);
 	try{
-		m_hpartfile.Seek((LONGLONG)PARTSIZE*nPart,0);
+		m_hpartfile.Seek((off_t)PARTSIZE*nPart,CFile::start);
 		CreateHashFromFile(&m_hpartfile,length, NULL, &htOurHash);
 	}
 	catch(...){
-		ASSERT( false );
+		wxASSERT( false );
 		return;
 	}
 	if (!htOurHash.m_bHashValid){
-		AddDebugLogLine(DLP_DEFAULT, false, _T("Processing AICH Recovery data: Failed to retrieve AICH Hashset of corrupt part"));
-		ASSERT( false );
+// TODO		
+//		AddDebugLogLine(DLP_DEFAULT, false, _T("Processing AICH Recovery data: Failed to retrieve AICH Hashset of corrupt part"));
+		wxASSERT( false );
 		return;
 	}
 
@@ -3932,7 +3936,7 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart){
 		CAICHHashTree* pVerifiedBlock = pVerifiedHash->FindHash(pos, nBlockSize);
 		CAICHHashTree* pOurBlock = htOurHash.FindHash(pos, nBlockSize);
 		if ( pVerifiedBlock == NULL || pOurBlock == NULL || !pVerifiedBlock->m_bHashValid || !pOurBlock->m_bHashValid){
-			ASSERT( false );
+			wxASSERT( false );
 			continue;
 		}
 		if (pOurBlock->m_Hash == pVerifiedBlock->m_Hash){
@@ -3947,20 +3951,22 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart){
 		// this is a bad, but it could probably happen under some rare circumstances
 		// make sure that MD4 agrres to this fact too
 		if (!HashSinglePart(nPart)){
-			AddDebugLogLine(DLP_DEFAULT, false, _T("Processing AICH Recovery data: The part (%u) got completed while recovering - but MD4 says it corrupt! Setting hashset to error state, deleting part"));
+// TODO		
+//			AddDebugLogLine(DLP_DEFAULT, false, _T("Processing AICH Recovery data: The part (%u) got completed while recovering - but MD4 says it corrupt! Setting hashset to error state, deleting part"));
 			// now we are fu... unhappy
 			m_pAICHHashSet->SetStatus(AICH_ERROR);
 			AddGap(PARTSIZE*nPart, ((nPart*PARTSIZE)+length)-1);
-			ASSERT( false );
+			wxASSERT( false );
 			return;
 		}
 		else{
-			AddDebugLogLine(DLP_DEFAULT, false, _T("Processing AICH Recovery data: The part (%u) got completed while recovering and MD4 agrees"));
+// TODO		
+//			AddDebugLogLine(DLP_DEFAULT, false, _T("Processing AICH Recovery data: The part (%u) got completed while recovering and MD4 agrees"));
 			// alrighty not so bad
 			POSITION posCorrupted = corrupted_list.Find(nPart);
 			if (posCorrupted)
 				corrupted_list.RemoveAt(posCorrupted);
-			if (status == PS_EMPTY && theApp.emuledlg->IsRunning()){
+			if (status == PS_EMPTY && theApp.IsRunning()){
 				if (GetHashCount() == GetED2KPartHashCount() && !hashsetneeded){
 					// Successfully recovered part, make it available for sharing
 					SetStatus(PS_READY);
@@ -3968,7 +3974,7 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart){
 				}
 			}
 
-			if (theApp.emuledlg->IsRunning()){
+			if (theApp.IsRunning()){
 				// Is this file finished?
 				if (gaplist.IsEmpty())
 					CompleteFile(false);
@@ -3978,7 +3984,7 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart){
 	// Update met file
 	SavePartFile();
 	// make sure the user appreciates our great recovering work :P
-	AddLogLine(true, IDS_AICH_WORKED, CastItoXBytes(nRecovered), CastItoXBytes(length), nPart, GetFileName());
+// TODO		
+//	AddLogLine(true, IDS_AICH_WORKED, CastItoXBytes(nRecovered), CastItoXBytes(length), nPart, GetFileName());
 	//AICH successfully recovered %s of %s from part %u for %s
-#endif
 }

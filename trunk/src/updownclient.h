@@ -411,23 +411,14 @@ public:
 	void		SetKadPort(uint16 nPort)	{ m_nKadPort = nPort; }
 
 	// Kry - AICH import
-	// DONE
 	void			SetReqFileAICHHash(CAICHHash* val);
-	// DONE
 	CAICHHash*		GetReqFileAICHHash() const					{return m_pReqFileAICHHash;}
-	#warning AICH  TODO -  CHECK USAGE.		
-	// Needs changes on DownloadClient and ListenSocket
 	bool			IsSupportingAICH() const					{return m_fSupportsAICH & 0x01;}
-	// DONE
 	void			SendAICHRequest(CPartFile* pForFile, uint16 nPart);
-	// DONE
 	bool			IsAICHReqPending() const					{return m_fAICHRequested; }
-	// Needs changes on ListenSocket
-	void			ProcessAICHAnswer(char* packet, UINT size);
-	// Needs changes on ListenSocket
-	void			ProcessAICHRequest(char* packet, UINT size);
-	// Needs changes on ListenSocket
-	void			ProcessAICHFileHash(CSafeMemFile* data, CPartFile* file);	
+	void			ProcessAICHAnswer(const char* packet, UINT size);
+	void			ProcessAICHRequest(const char* packet, UINT size);
+	void			ProcessAICHFileHash(CSafeMemFile* data, const CPartFile* file);	
 	
 	// Barry - Process zip file as it arrives, don't need to wait until end of block
 	int unzip(Pending_Block_Struct *block, BYTE *zipped, uint32 lenZipped, BYTE **unzipped, uint32 *lenUnzipped, int iRecursion = 0);
