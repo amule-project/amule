@@ -48,8 +48,8 @@ private:
 public:
   virtual bool OnInit ();
   virtual int OnExit();
-  WxCasFrame *GetMainFrame ();
-  wxConfig *GetConfig ();
+  WxCasFrame *GetMainFrame () const;
+  wxConfig *GetConfig () const;
 };
 
 DECLARE_APP (WxCas);

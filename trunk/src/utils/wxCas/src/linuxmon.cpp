@@ -90,25 +90,25 @@ LinuxMon::Refresh ()
 
 // Accessors
 wxString
-LinuxMon::GetUptime ()
+LinuxMon::GetUptime () const
 {
   return m_uptime;
 }
 
 float
-LinuxMon::GetSysLoad_1 ()
+LinuxMon::GetSysLoad_1 () const
 {
   return m_sysLoad_1;
 }
 
 float
-LinuxMon::GetSysLoad_5 ()
+LinuxMon::GetSysLoad_5 () const
 {
   return m_sysLoad_5;
 }
 
 float
-LinuxMon::GetSysLoad_15 ()
+LinuxMon::GetSysLoad_15 () const
 {
   return m_sysLoad_15;
 }

@@ -41,7 +41,7 @@
 #include "wxcasprint.h"
 
 // Constructor
-WxCasPrint::WxCasPrint (wxString title):wxPrintout (title)
+WxCasPrint::WxCasPrint (const wxString& title):wxPrintout (title)
 {
 }
 

@@ -43,7 +43,6 @@
 class WxCasPrefs:public wxDialog
 {
 private:
-
   wxBoxSizer * m_mainVBox;
   wxStaticBox *m_osPathSBox;
   wxStaticBoxSizer *m_osPathSBoxSizer;
@@ -55,6 +54,13 @@ private:
   wxSpinCtrl *m_refreshSpinButton;
   wxStaticText *m_refreshStaticText;
 
+  wxStaticBox *m_autoStatImgSBox;
+  wxStaticBoxSizer *m_autoStatImgSBoxSizer;
+  wxRadioButton *m_autoStatImgRadio;
+  wxBoxSizer *m_autoStatImgHBoxSizer;
+  wxTextCtrl *m_autoStatImgTextCtrl;
+  wxButton *m_autoStatImgButton;
+  
   wxStaticText *m_noteStaticText;
 
   wxStaticLine *m_staticLine;
@@ -66,15 +72,20 @@ private:
   enum
   {
     ID_OSPATH_BROWSE_BUTTON = 100,
+	ID_AUTOSTATIMG_RADIO,
+	ID_AUTOSTATIMG_BROWSE_BUTTON,
     ID_VALIDATE_BUTTON,
     ID_CANCEL_BUTTON
   };
 
 protected:
-  void OnOSPathBrowseButton ();
-  void OnValidateButton ();
+  void OnOSPathBrowseButton (wxCommandEvent & event);
+  void OnValidateButton (wxCommandEvent & event);
+  void OnAutoStatImgBrowseButton (wxCommandEvent & event);
+  void OnAutoStatImgRadio (wxCommandEvent & event);
 
     DECLARE_EVENT_TABLE ();
+	
 public:
     WxCasPrefs (wxWindow * parent);
    ~WxCasPrefs ();

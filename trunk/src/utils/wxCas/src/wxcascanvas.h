@@ -39,26 +39,25 @@
 // wxCas Frame
 class WxCasCanvas:public wxPanel
 {
-public:
-
-  //Constructor
-  WxCasCanvas (wxWindow * parent, wxWindow * model);
-  void DrawImg (wxDC *dc);
-  void Update ();
-
-  //Destructor
-   ~WxCasCanvas ();
-
-protected:
-
+private:
+  wxBitmap m_bitmap;
+  wxWindow *m_model;
+  
+  protected:
   void OnPaint (wxPaintEvent & event);
 
     DECLARE_EVENT_TABLE ();
-
-private:
-
-    wxBitmap m_bitmap;
-  wxWindow *m_model;
+	
+public:
+  //Constructor
+  WxCasCanvas (wxWindow * parent, wxWindow * model);
+  
+  //Destructor
+  ~WxCasCanvas ();
+   
+  // Methods
+  void DrawImg (wxDC *dc);
+  void Update ();
 };
 
 #endif /* _WXCASCANVAS_H */

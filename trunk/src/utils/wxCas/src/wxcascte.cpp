@@ -40,24 +40,33 @@
 
 const wxString
 WxCasCte::AMULESIG_NAME ("amulesig.dat");
+const wxString 
+WxCasCte::AMULESIG_IMG_NAME ("aMule-online-sign");
 
 // Refresh rate limits
 const wxUint32
   WxCasCte::MIN_REFRESH_RATE = 1;
-const
-  wxUint32
+const wxUint32
   WxCasCte::MAX_REFRESH_RATE = 3600;
 
 // Key config names
-const
-  wxString
-WxCasCte::AMULESIG_KEY ("OSDirectory");
 const wxString
-WxCasCte::REFRESH_RATE_KEY ("RefreshRate");
+  WxCasCte::AMULESIG_KEY ("OSDirectory");
+const wxString
+  WxCasCte::REFRESH_RATE_KEY ("RefreshRate");
+const wxString
+  WxCasCte::ENABLE_AUTOSTATIMG_KEY ("EnableAutoStatImg");
+const wxString
+  WxCasCte::AUTOSTATIMG_DIR_KEY ("StatImgDirectory");
+
 
 // Default config parameters
 const wxString
-WxCasCte::AMULESIG_DEFAULT_PATH (wxFileName::GetHomeDir () +
+  WxCasCte::AMULESIG_DEFAULT_PATH (wxFileName::GetHomeDir () +
 				 wxFileName::GetPathSeparator () + ".aMule");
 const wxUint32
   WxCasCte::DEFAULT_REFRESH_RATE = 5;
+const bool 
+  WxCasCte::ENABLE_AUTOSTATIMG_DEFAULT=FALSE;
+const wxString
+  WxCasCte::AUTOSTATIMG_DEFAULT_PATH (wxFileName::GetHomeDir ());

@@ -40,7 +40,7 @@
 class WxCasPrint:public wxPrintout
 {
 public:
-  WxCasPrint (wxString title);
+  WxCasPrint (const wxString& title);
 
   //Destructor
   ~WxCasPrint ();

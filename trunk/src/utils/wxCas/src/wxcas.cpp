@@ -82,13 +82,13 @@ WxCas::OnExit()
 }
 
 WxCasFrame *
-WxCas::GetMainFrame ()
+WxCas::GetMainFrame () const
 {
   return m_frame;
 }
 
 wxConfig *
-WxCas::GetConfig ()
+WxCas::GetConfig () const
 {
 	return m_config;
 }
