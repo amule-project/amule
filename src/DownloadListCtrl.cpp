@@ -457,7 +457,7 @@ void CDownloadListCtrl::OnDrawItem(int item, wxDC* dc, const wxRect& rect, const
 		// If we have category, override textforeground with what category tells us.
 		CPartFile *file = (CPartFile *) content->value;
 		if ( file->GetCategory() ) {
-			dc->SetTextForeground(theApp.glob_prefs->GetCatColor(file->GetCategory()));
+			dc->SetTextForeground( WxColourFromCr(theApp.glob_prefs->GetCatColor(file->GetCategory())) );
 		}		
 	}
 

@@ -225,9 +225,6 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 	statisticswnd->Init();
 	statisticswnd->SetUpdatePeriod();
 
-	// call the initializers
-	transferwnd->OnInitDialog();
-
 	searchwnd->UpdateCatChoice();
 
 	// Must we start minimized?
