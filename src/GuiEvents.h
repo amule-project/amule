@@ -25,6 +25,24 @@
 #include  <map>
 #include  <list>
 
+// custom events for core internal messages
+// 'cause - there's no wxCommand etc in wxBase
+enum Core_Event_ID {
+	FILE_HASHING_FINISHED = 1,
+	FILE_COMPLETION_FINISHED,
+};
+
+DECLARE_EVENT_TYPE(wxEVT_CORE_FINISHED_FILE_HASHING, wxEVT_USER_FIRST+FILE_HASHING_FINISHED)
+DECLARE_EVENT_TYPE(wxEVT_CORE_FINISHED_FILE_COMPLETION, wxEVT_USER_FIRST+FILE_COMPLETION_FINISHED)
+
+class wxCoreInternalEvent : public wxEvent {
+	void *m_ptr;
+	long m_value;
+	public:
+	wxCoreInternalEvent(void *ptr, long value);
+	wxEvent *Clone(void) const;
+};
+
 class wxSocketBase;
 class wxSocketServer;
 class wxSocketClient;
@@ -298,8 +316,8 @@ class GUIEvent {
 #define CoreNotify_Search_Local_Req(ptr)            Notify_1_ValEvent(SEARCH_LOCAL_REQ,(Packet *)ptr);
 #define CoreNotify_Search_Global_Req(ptr, ser)      Notify_2_ValEvent(SEARCH_GLOBAL_REQ,(Packet *)ptr, (CServer *)ser);
 #define CoreNotify_Search_Add_Download(ptr, val)    Notify_2_ValEvent(SEARCH_ADD_TO_DLOAD,(CSearchFile *)ptr, (uint8)val);
-#define CoreNotify_Search_Add_Result(ptr, val)      Notify_2_ValEvent(SEARCH_ADD_RESULT,(CSearchFile *)ptr, (uint8)val);
-#define CoreNotify_Search_Update_Sources(ptr)       Notify_1_ValEvent(SEARCH_UPDATE_SOURCES,(CSearchFile *)ptr);
+#define CoreNotify_Search_Add_Result(s)      Notify_1_ValEvent(SEARCH_ADD_RESULT,(CSearchFile *)s);
+#define CoreNotify_Search_Update_Sources(s, f)       Notify_2_ValEvent(SEARCH_UPDATE_SOURCES,(CSearchFile *)s, (CSearchFile *)f);
 
 // download queue
 #define CoreNotify_Download_Set_Cat_Prio(cat, pri)  Notify_2_ValEvent(DLOAD_SET_CAT_PRIO, cat, pri);
@@ -348,7 +366,7 @@ class Notify_Event_Msg {
 	void print() { printf("Notify_Event_Msg: %p %d bytes type %d\n", ptr_value, data_len, long_value); }
 };
 
-DECLARE_EVENT_TYPE(wxEVT_CORE_NOTIFY, wxEVT_USER_FIRST+1)
+//DECLARE_EVENT_TYPE(wxEVT_CORE_NOTIFY, wxEVT_USER_FIRST+1000)
 
 class wxCoreNotifyEvent : public wxEvent {
  public:
@@ -463,7 +481,7 @@ class PtrsXferServerCliThread : public wxThread {
 	int SendNotify(GUIEvent &evt);
 };
 
-DECLARE_EVENT_TYPE(wxEVT_CORE_NEW_CLIENT, wxEVT_USER_FIRST+2)
+//DECLARE_EVENT_TYPE(wxEVT_CORE_NEW_CLIENT, wxEVT_USER_FIRST+2)
 
 class wxCoreNewClent : public wxEvent {
  public:

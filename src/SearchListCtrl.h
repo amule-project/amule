@@ -69,4 +69,7 @@ private:
 	bool		 asc_sort[7];	 
 };
 
+CSearchListCtrl* GetSearchListControl(long nSearchID);
+void UngetSearchListControl(CSearchListCtrl* ctrl);
+
 #endif // SEARCHLISTCTRL_H

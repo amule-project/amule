@@ -24,7 +24,7 @@
 #include "types.h"		// Needed for int8, int16, int32, int64, uint8, uint16, uint32 and uint64
 
 #include "CMD4Hash.h"
-#include "PrefsUnifiedDlg.h"			// Needed for UNIFIED_PREF_HANDLING
+
 #include <wx/dynarray.h>
 
 #include <wx/defs.h>		// Needed before any other wx/*.h
