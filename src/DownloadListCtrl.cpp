@@ -265,6 +265,7 @@ void CDownloadListCtrl::OnNMRclick(wxListEvent & evt)
 				wxMenu *extendedmenu = new wxMenu();
 				extendedmenu->Append(MP_SWAP_A4AF_TO_THIS, CString(_("Swap every A4AF to this file now")));
 				extendedmenu->AppendCheckItem(MP_SWAP_A4AF_TO_THIS_AUTO, CString(_("Swap every A4AF to this file (Auto)")));
+				extendedmenu->AppendSeparator();
 				extendedmenu->Append(MP_SWAP_A4AF_TO_ANY_OTHER, CString(_("Swap every A4AF to any other file now")));
 				extendedmenu->AppendSeparator();
 				extendedmenu->Append(MP_DROP_NO_NEEDED_SOURCES, CString(_("Drop No Needed Sources now")));
