@@ -23,35 +23,41 @@
 // 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef _WXCAS_H
-#define _WXCAS_H
-
 #ifdef __GNUG__
-#pragma interface "wxcas.h"
+#pragma implementation "wxcascte.h"
 #endif
 
-// Include wxWindows' headers
-#ifndef WX_PRECOMP
-#include <wx/wx.h>
+// For compilers that support precompilation
+#include "wx/wxprec.h"
+
+#ifdef __BORLANDC__
+#pragma hdrstop
 #endif
 
-#include <wx/config.h>
-#include "wxcasframe.h"
+#include <wx/filename.h>
 
-// Application
-class WxCas:public wxApp
-{
-private:
-  WxCasFrame * m_frame;
-  wxConfig *m_config;
-	
-public:
-  virtual bool OnInit ();
-  virtual int OnExit();
-  WxCasFrame *GetMainFrame ();
-  wxConfig *GetConfig ();
-};
+#include "wxcascte.h"
 
-DECLARE_APP (WxCas);
+const wxString
+WxCasCte::AMULESIG_NAME ("amulesig.dat");
 
-#endif /* _WXCAS_H */
+// Refresh rate limits
+const wxUint32
+  WxCasCte::MIN_REFRESH_RATE = 1;
+const
+  wxUint32
+  WxCasCte::MAX_REFRESH_RATE = 3600;
+
+// Key config names
+const
+  wxString
+WxCasCte::AMULESIG_KEY ("OSDirectory");
+const wxString
+WxCasCte::REFRESH_RATE_KEY ("RefreshRate");
+
+// Default config parameters
+const wxString
+WxCasCte::AMULESIG_DEFAULT_PATH (wxFileName::GetHomeDir () +
+				 wxFileName::GetPathSeparator () + ".aMule");
+const wxUint32
+  WxCasCte::DEFAULT_REFRESH_RATE = 5;

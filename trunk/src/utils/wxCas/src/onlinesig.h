@@ -41,7 +41,6 @@
 class OnLineSig
 {
 private:
-	
   double m_maxDL;
 
   wxString m_isRunning;

@@ -23,11 +23,11 @@
 // 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef _WXCAS_H
-#define _WXCAS_H
+#ifndef _WXCASPREFS_H
+#define _WXCASPREFS_H
 
 #ifdef __GNUG__
-#pragma interface "wxcas.h"
+#pragma interface "wxcasprefs.h"
 #endif
 
 // Include wxWindows' headers
@@ -35,23 +35,50 @@
 #include <wx/wx.h>
 #endif
 
-#include <wx/config.h>
-#include "wxcasframe.h"
+#include <wx/dialog.h>
+#include <wx/spinctrl.h>
+#include <wx/statline.h>
 
-// Application
-class WxCas:public wxApp
+// Preference Dialog
+class WxCasPrefs:public wxDialog
 {
 private:
-  WxCasFrame * m_frame;
-  wxConfig *m_config;
-	
+
+  wxBoxSizer * m_mainVBox;
+  wxStaticBox *m_osPathSBox;
+  wxStaticBoxSizer *m_osPathSBoxSizer;
+  wxTextCtrl *m_osPathTextCtrl;
+  wxButton *m_osPathBrowseButton;
+
+  wxStaticBox *m_refreshSBox;
+  wxStaticBoxSizer *m_refreshSBoxSizer;
+  wxSpinCtrl *m_refreshSpinButton;
+  wxStaticText *m_refreshStaticText;
+
+  wxStaticText *m_noteStaticText;
+
+  wxStaticLine *m_staticLine;
+
+  wxBoxSizer *m_buttonVBox;
+  wxButton *m_validateButton;
+  wxButton *m_cancelButton;
+
+  enum
+  {
+    ID_OSPATH_BROWSE_BUTTON = 100,
+    ID_VALIDATE_BUTTON,
+    ID_CANCEL_BUTTON
+  };
+
+protected:
+  void OnOSPathBrowseButton ();
+  void OnValidateButton ();
+
+    DECLARE_EVENT_TABLE ();
 public:
-  virtual bool OnInit ();
-  virtual int OnExit();
-  WxCasFrame *GetMainFrame ();
-  wxConfig *GetConfig ();
+    WxCasPrefs (wxWindow * parent);
+   ~WxCasPrefs ();
+
 };
 
-DECLARE_APP (WxCas);
-
-#endif /* _WXCAS_H */
+#endif /* _WXCASPREFS_H */
