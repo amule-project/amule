@@ -2545,48 +2545,62 @@ void CSocketGlobalThread::RemoveSocket(CClientReqSocket* sock)
 
 void *CSocketGlobalThread::Entry()
 {
+
 	while ( !TestDestroy() ) {
+
 		Sleep(10);
 		std::set<CClientReqSocket *>::iterator it;
 		CALL_APP_DATA_LOCK;
 		it = socket_list.begin();
 		while (it != socket_list.end()) {
 			CClientReqSocket* cur_sock = *it++;
-			if (cur_sock->deletethis || (cur_sock->Error() && (cur_sock->LastError() != wxSOCKET_WOULDBLOCK))) {
+			if (cur_sock->deletethis) {
 				socket_list.erase(cur_sock);
 				continue;
 			}
-			if (cur_sock->Error() && (cur_sock->LastError() == wxSOCKET_WOULDBLOCK)) {
-				cur_sock->OnSend(0);
-			}
-			if ( !cur_sock->wxSocketBase::IsConnected() ) {
-				if ( cur_sock->WaitOnConnect(0, 0) ) {
-					cur_sock->OnConnect(0);
+			if (cur_sock->Error()) {
+				switch (cur_sock->LastError()) {
+					case wxSOCKET_WOULDBLOCK: 
+						// On CVS >= 2.0.0, here is the RepeatLastAction
+						break;
+					default:
+						socket_list.erase(cur_sock);				
 				}
+			}
+			if ( !cur_sock->wxSocketBase::IsConnected()) {
+					if ( cur_sock->WaitOnConnect(0, 0) ) {
+						cur_sock->OnConnect(0);
+					}
 			} else {
-				if ( cur_sock->deletethis ) {
+				if ( cur_sock->deletethis ) { // Must we remove this socket?
 					socket_list.erase(cur_sock);
 					continue;
 				}
-				if ( cur_sock->WaitForLost(0, 0) ) {
+				if ( cur_sock->WaitForLost(0, 0) ) { // Did the socket got closed?
 					cur_sock->OnError(cur_sock->LastError());
 					socket_list.erase(cur_sock);
 					continue;
 				}
-				if ( !cur_sock->deletethis && cur_sock->WaitForRead(0, 0) ) {
+				
+				if (cur_sock->WaitForWrite(0, 0) ) { // Are we ready to write to this socket?
+					cur_sock->OnSend(0);
+				}				
+				
+				// We re-check deletethis because it could have been triggered on write
+				if (!cur_sock->deletethis && cur_sock->WaitForRead(0, 0)) { // Are we ready to read from this socket?
 					cur_sock->OnReceive(0);
 					CUpDownClient *client = cur_sock->GetClient();
-					if ( (client != 0) && (client->GetDownloadState() == DS_DOWNLOADING) ) {
+					if ( client && (client->GetDownloadState() == DS_DOWNLOADING)) {
+						// If client is downloading, we create a thread for it.
 						CClientReqSocketHandler *t = new CClientReqSocketHandler(cur_sock);
 						printf("Socket %p started dload\n", cur_sock);
 						socket_list.erase(cur_sock);
 						t->Run();
 					}
-						 	
 				}
 			}
 		}
- 
+  
 	}
 	AddLogLineM(false, _("CSocketGlobalThread: exited"));
 	return 0;
