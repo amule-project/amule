@@ -56,6 +56,8 @@
 #define CMD_ID_CONN_TO_SRV	9
 #define CMD_ID_RELOAD_IPFILTER	10
 #define CMD_ID_SET_IPFILTER	11
+#define CMD_ID_GET_IPLEVEL	12
+#define CMD_ID_SET_IPLEVEL	13
 
 #define APP_INIT_SIZE_X 640
 #define APP_INIT_SIZE_Y 480
@@ -76,6 +78,8 @@ static CmdId commands[] = {
 	{ wxT("serverconnect"),	CMD_ID_CONN_TO_SRV },
 	{ wxT("reloadipf"),	CMD_ID_RELOAD_IPFILTER },
 	{ wxT("setipfilter"),	CMD_ID_SET_IPFILTER },
+	{ wxT("getiplevel"),	CMD_ID_GET_IPLEVEL },
+	{ wxT("setiplevel"),	CMD_ID_SET_IPLEVEL },
 	{ wxEmptyString,	0 },
 };
 
@@ -271,6 +275,14 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 				return 0;
 			}
 			break;
+
+		case CMD_ID_GET_IPLEVEL:
+			msg = wxT("GETIPLEVEL");
+			break;
+
+		case CMD_ID_SET_IPLEVEL:
+			msg = wxT("SETIPLEVEL ") + args;
+			break;
 			
 		default:
 			return -1;
@@ -294,6 +306,8 @@ void CamulecmdApp::ShowHelp() {
 	Show(wxString(wxT("server connect 'name' 'port':\n\t")) + wxString(_("Connect to specified server and port.\n")));
 	Show(wxString(wxT("ReloadIPF:\n\t")) + wxString(_("Reload IPFilter table from file.\n")));
 	Show(wxString(wxT("Setipfilter on/off:\n\t")) + wxString(_("Turn on/of amule IPFilter.\n")));
+	Show(wxString(wxT("GetIPLevel:\n\t")) + wxString(_("Shows current IP Filter level.\n")));
+	Show(wxString(wxT("SetIPLevel <new level>:\n\t")) + wxString(_("Changes current IP Filter level.\n")));
 	Show(_("\n->End of listing\n"));
 }
 
