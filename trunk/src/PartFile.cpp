@@ -37,12 +37,12 @@
 #include <utime.h>		// Needed for utime()
 #include <wx/intl.h>		// Needed for _
 #include <wx/setup.h>
-#include <wx/gdicmn.h>
 #include <wx/filename.h>	// Needed for wxFileName
 #include <wx/utils.h>
 
 #ifndef AMULE_DAEMON
 	#include <wx/msgdlg.h>		// Needed for wxMessageBox
+	#include <wx/gdicmn.h>
 #else 
 	#define wxMessageBox(x) AddLogLineM(true,x)
 #endif

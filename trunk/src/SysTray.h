@@ -42,6 +42,7 @@ enum DesktopMode
 
 
 #ifndef __SYSTRAY_DISABLED__
+#ifndef AMULE_DAEMON
 
 #include <cstddef>		// Needed for NULL, must be included BEFORE gtk/gdk headers!
 #include <wx/defs.h>		// Needed before any other wx/*.h
@@ -118,5 +119,6 @@ private:
 
 #endif
 
+#endif // !AMULE_DAEMON
 #endif // __SYSTRAY_DISABLED__
 #endif // SYSTRAY_H
