@@ -19,7 +19,7 @@ Version 2.0.0rc8 - The "???????????" version.
 		  (useful when it doesn't fit the window).
 		* Merged Preview and Open File and enabled Open File.
 		* Fixed: Setting "A4AF to others" was broken.
-		* Moved "Always filter bad IPs" from Server to Connections
+		* Moved "Always filter bad IPs" from Server to Security
 		  in Preferences
 
 	Phoenix:
