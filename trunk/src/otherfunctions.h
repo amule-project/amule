@@ -307,6 +307,9 @@ class RLE_Data {
 		}
 		
 		const unsigned char *Decode(const unsigned char *data);	
+		
+		// change size of internal buffers
+		void Realloc(int size);
 };
 
 /*!
@@ -323,6 +326,9 @@ public:
 	void ApplyGapDiffs(std::list<Gap_Struct> &diff_list);
 	
 	// for stl
+	PartFileEncoderData(const PartFileEncoderData &obj) : m_part_status(obj.m_part_status), m_gap_list(obj.m_gap_list)
+	{
+	}
 	PartFileEncoderData &operator=(const PartFileEncoderData &obj)
 	{
 		m_part_status = obj.m_part_status;
