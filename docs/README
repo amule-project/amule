@@ -1,0 +1,208 @@
+
+
+
+                                 -----------
+                                    aMule
+                                 -----------
+                 The Multiplatform ed2k network client for linux
+              
+
+
+ About
+-------
+
+This program is a multiplatform ed2k client fork of eMule client using wxWindows class library.
+It was originally forked from xMule project but not related to it anymore, except little bits of code.
+
+
+CONFIGURATION:
+--------------
+
+- Go to the "Preferences" tab
+
+- Enter a nice nickname ;)
+
+- Enter the "Download Capacity" and "Upload Capacity" according to your internet connection.
+  All values in aMule are kiloBytes (KB), your Internet Service Provider's (ISP) numbers
+  are most likely kiloBits (kB). 8 kiloBits make up 1 kiloByte, so when your Internet Connection
+  is 768kB Downstrean and 128kB Upstrean (like German Telekom DSL), your correct values are:
+
+ Downstrean: 768kB / 8 = 96KB, you enter 96 as "Download Capacity"
+ Upstream: 128kB / 8 = 16 KB, you enter 16 as "Upload Capacity"
+
+ These values are used to calculate the current bandwidth usage for display purposes only!
+ Nevertheless, you need to know them to determine the following down/upload limits:
+
+
+- Enter "Download Limit" and "Upload Limit"  (IMPORTANT!)
+ 
+ Download Limit: leave this at 0 (should aMule become too fast and you are unable to surf
+   the Internet or whatever, reduce it to 80-90% of "Download Capacity")
+ 
+ Upload Limit: set this to ~80% of your "Upload Capacity" (so when your Upload Capacity is 16,
+   set Upload Limit to 13)
+
+   Setting Upload Limit to a value < 10 will automatically reduce your Download Limit, so
+   upload as fast as you can.
+
+
+NOTE: 56k Modem users: aMule only accepts integral values for these settings at the moment, you
+      can't enter 1.6 or whatever your sweet-spot setting is, yet. Sorry :) Maybe later..
+
+
+
+- "Maximum Connections": As a general rule, set it to 500 - 2000 (hey! I
+   want to see that anyone out there has 2000 concurrent connections!)
+
+- "Maximum Sources per File": decide for yourself, how many you want :) (but
+   300 is a good value, don't do too much, 500 should be pretty enough)
+
+- Choose the directories you want to share with other users.
+  DO NOT SHARE YOUR COMPLETE HARDDISK!
+  Put the stuff you want to share in a seperate Folder.
+  If you share more than ~200 files, you should reconsider that some servers
+  have a hard limit, what means that you may be kicked from that servers if
+  you share too many files or that some of your files won't be populated to
+  the network on that server. Consider not to share that many files.
+  
+-The other options are pretty self-explaining. If you dunno what it does, don't touch it.
+
+-Don't forget to connect to a server, or you won't probably download too much ;)
+
+
+ Installation
+--------------
+
+See INSTALL file
+
+
+ Basic aMule Tips
+------------------
+
+* ALWAYS run aMule as a REGULAR USER
+* NEVER run aMule as root (unless you have a repressive ISP and need to use
+  ports lower than 1024).
+* If you are behind a firewall or router, be sure that ports 4662 (TCP)
+  and 4672 (UDP) are unblocked, or you will *always* receive a low ID.
+* Obtain an appropriate server.met:  e.g., if you are a dialup, using
+  the max server list is not recommend.
+* Set your temp and shared directories in Preferences->Directories
+   *  To recursively select a certain directory, click on its box while holding
+      down the CTRL button.
+*  You should *NOT* share
+   *  Your temp download directory!
+   *  You /etc directory
+   *  Probably not your /var, /lib, /boot, or /usr directory
+   *  Certainly make sure that any really confidential files (password files, 
+      private SSH keys, credit card numbers :) are *not* shared.  So generally
+      do not share ~, although ~/files or the equivalent should be OK.
+*  Remember that you get certain download priveledges with those aMule and 
+   eMule users to whom you upload files, in the form of reduced queue waits.
+* Please note that compilation with optimizations is not supported. If you do
+  use optimization flags, don't come back crying that it is unstable. With
+  optimization, unpredictable and strange bugs will probably accour.
+
+ Obtaining your first server list
+----------------------------------
+
+1) Use one of the following links in the "Update server.met from URL" box in 
+   the Server tab.  They are apparently updated every 20 minutes.
+
+   *  The current top 50 servers (these fill up fast)
+	http://ocbmaurice.dyndns.org/pl/slist.pl/server.met?download
+   *  The current top 150 servers
+	http://ocbmaurice.dyndns.org/pl/slist.pl/server.met?download/server-good.met 
+   *  The biggest list (~300 servers) maintained by the site.  Only if you have
+      a very decent connection, AFAIK.
+	http://ocbmaurice.dyndns.org/pl/slist.pl/server.met?download/server-max.met 
+
+ Icons
+-------
+To find descriptions of the various icons found inside aMule, take a
+look at http://www.emule-project.net/faq/icons.htm
+
+ License
+---------
+
+aMule -- like eMule -- is released under the GNU General Public License 
+See COPYING file for details.
+
+
+ Developers
+------------
+
+See AUTHORS
+
+
+FAQ:
+----
+
+--"How do I know whether my ID is high or low?"
+
+ Look at the arrow in the bottom right corner, next to the server name you are connected to.
+ When it's green, your ID is high. When it's orange, your ID is low.
+ 
+
+
+-- "What does high and low ID mean anyway?"
+
+ When your ID is high (green arrow), everything is fine :)
+ When it's low (orange arrow), you are behind a firewall or router, and other clients can't
+ connect to you directly (which is a bad thing). Plz read the FAQ or search the forums on 
+ how to configure your firewall/router for aMule.
+
+NOTE: you can also get a low ID when the server you connected to is too busy to answer
+ properly, or simply badly configured. When you are sure your settings are ok and you SHOULD
+ have a high ID, connect to antoher server.
+
+
+
+-- "I'd like to search for specific file types, what filter stands for which files?"
+
+ File Type	Extensions found
+ --------------------------------------------------------------------
+ Audio		.mp3 .mp2 .mpc .wav .ogg .aac .mp4 .ape .au .wma
+ Video		.avi .mpg .mpeg .ram .rm .vob .divx .mov .ogg .vivo
+ Program		.exe .com
+ Archive		.zip .rar .ace .tar.gz .tar.bz2 .Z .arj
+ CDImage		.bin .cue .iso .nrg .ccd .sub .img
+ Picture		.jpg .jpeg .bmp .gif .tif .png
+
+ 
+
+ Want to help?
+---------------
+aMule is a free software project and requires the cooperation of it's users to help improve 
+the quality of the software.  We welcome all contributions to the project in the form of new 
+features, bug fixes and feature requests.
+
+If you are not a programmer you can still contribute by providing good bug reports when you 
+come accross a problem with the aMule software.  A good bug report gives the project team 
+enough information to reproduce the bug (so we can see it in action) and fix it.  If possible, 
+try to isolate the conditions under which the bug occurs (eg. does it happen on some specific 
+window, with some specific files, some specific conditions etc.) and provide as much detail as 
+you can in your report.
+
+If you are a programmer and can fix the bug you observe, please send us a patch or a note 
+about how you fixed the problem.
+
+IRC & Links
+-----------
+
+IRC: Channel #aMule on EFNET IRC Network
+
+http://sourceforge.net/projects/amule/
+        - aMule homepage
+http://www.wxwindows.org
+        - wxWindows toolkit homepage
+http://www.emule-project.net
+	- eMule homepage
+
+ Legal Notice
+--------------
+  aMule is an interface to the e2dk network. As such, the aMule developers have absolutely 
+no control or say over what is transferred on this medium and cannot be held liable for any 
+non-personal copyright infringements or other illegal activities.
+
+ -- Last modified by Kry Wed Dec 03 15:37:00 CEST 2003 --
+ -- Last modified by Citroklar Fri Jan 02 03:03:00 MEZ 2004 --
