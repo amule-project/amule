@@ -2046,7 +2046,7 @@ void wxODListHeaderWindow::OnPaint( wxPaintEvent &WXUNUSED(event) )
     // do *not* use the listctrl colour for headers - one day we will have a
     // function to set it separately
     //dc.SetTextForeground( *wxBLACK );
-#if wxCHECK_VERSION_FULL(2,5,3,2)
+#if wxCHECK_VERSION_FULL(2,5,3,3)
 dc.SetTextForeground(wxSystemSettingsNative::
                             GetColour( wxSYS_COLOUR_WINDOWTEXT ));
 #else 
