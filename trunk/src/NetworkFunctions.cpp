@@ -33,21 +33,17 @@ wxThread::ExitCode CAsyncDNS::Entry()
 
 	uint32 result = StringHosttoUint32(ipName);
 	
-	if(result) {
-		if (socket) {
-			wxMuleInternalEvent evt(wxEVT_CORE_DNS_DONE);
-			evt.SetExtraLong(result);
-			evt.SetClientData(socket);
-			wxPostEvent(&theApp,evt);	
-		} else {
-			wxMuleInternalEvent evt(SOURCE_DNS_DONE);
-			evt.SetExtraLong(result);
-			evt.SetClientData(socket);
-			wxPostEvent(&theApp,evt);
-		}
-
+	if (socket) {
+		wxMuleInternalEvent evt(wxEVT_CORE_DNS_DONE);
+		evt.SetExtraLong(result);
+		evt.SetClientData(socket);
+		wxPostEvent(&theApp,evt);	
+	} else {
+		wxMuleInternalEvent evt(SOURCE_DNS_DONE);
+		evt.SetExtraLong(result);
+		evt.SetClientData(socket);
+		wxPostEvent(&theApp,evt);
 	}
 
 	return NULL;
 }
-

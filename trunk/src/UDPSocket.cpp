@@ -44,8 +44,8 @@ CUDPSocket::CUDPSocket(CServerConnect* in_serverconnect, amuleIPV4Address& addre
 #endif
 {
 
-	sendbuffer = 0;
-	cur_server = 0;
+	sendbuffer = NULL;
+	cur_server = NULL;
 	serverconnect = in_serverconnect;
 
 	printf("*** UDP socket at %d\n",address.Service());
@@ -72,6 +72,7 @@ CUDPSocket::~CUDPSocket(){
 	if (sendbuffer) {
 		delete[] sendbuffer;
 	}
+	server_packet_queue.RemoveAll();
 }
 
 #define SERVER_UDP_BUFFER_SIZE 5000
@@ -317,27 +318,38 @@ void CUDPSocket::ProcessPacket(CSafeMemFile& packet, int16 size, int8 opcode, co
 
 void CUDPSocket::DnsLookupDone(uint32 ip) {
   /* An asynchronous database routine completed. */
-  if (!ip) { 
-    if (sendbuffer) {
-      delete[] sendbuffer;
-    }
-    sendbuffer = 0;
-    if (cur_server) {
-      delete cur_server;
-    }
-    cur_server = NULL;
-    return;
-  }
+	//printf("Server UDP packet dns lookup done\n");
+	if (!ip) { 
+		if (sendbuffer) {
+			delete[] sendbuffer;
+			sendbuffer = NULL;
+		}
+    
+		if (cur_server) {
+			delete cur_server;
+			cur_server = NULL;
+		}
+		
+		if (!server_packet_queue.IsEmpty()) {
+			//printf("Sending a queued Server UDP packet after dns lookup\n");
+			ServerUDPPacket* queued_packet = server_packet_queue.RemoveHead();
+			SendPacket(queued_packet->packet, queued_packet->server);
+			delete queued_packet->packet;
+			delete queued_packet;
+		}
+    
+		return;
+	}
  
-    m_SaveAddr.Hostname(ip);
+	m_SaveAddr.Hostname(ip);
 
-  if (cur_server){
-    CServer* update = theApp.serverlist->GetServerByAddress(cur_server->GetAddress(),cur_server->GetPort());
-    if (update) {
-      update->SetID(ip);
-    }
-    SendBuffer();
-  }
+	if (cur_server){
+		CServer* update = theApp.serverlist->GetServerByAddress(cur_server->GetAddress(),cur_server->GetPort());
+		if (update) {
+			update->SetID(ip);
+		}
+		SendBuffer();
+	}
   
 }
 
@@ -358,11 +370,33 @@ void CUDPSocket::SendBuffer(){
 		delete[] sendbuffer;
 		sendbuffer = NULL;		
 	}
+	
+	//printf("Server UDP packet sent.\n");
+	
+	if (!server_packet_queue.IsEmpty()) {
+		//printf("Sending a queued Server UDP packet\n");
+		ServerUDPPacket* queued_packet = server_packet_queue.RemoveHead();
+		SendPacket(queued_packet->packet, queued_packet->server);
+		delete queued_packet->packet;
+		delete queued_packet;
+	}
 }
 
 void CUDPSocket::SendPacket(Packet* packet,CServer* host){
-	#warning KRY TODO - V.I. STUFF
-	//wxASSERT(!cur_server);
+
+	if (cur_server) {
+		// There's a packet being processed, queue this one.
+		//printf("Trying to send a Server UDP packet while there's one active, queueing\n");
+		ServerUDPPacket* queued_packet = new ServerUDPPacket;
+		queued_packet->packet = new Packet(*packet); // Because packet might be deleted
+		queued_packet->server = host;
+		server_packet_queue.AddTail(queued_packet);
+		return;
+	}
+
+	//printf("Sending a Server UDP packet ... ");
+	wxASSERT(!cur_server);
+	
 	cur_server = new CServer(host);
 	sendbuffer = new char[packet->GetPacketSize()+2];
 	memcpy(sendbuffer,packet->GetUDPHeader(),2);
@@ -374,6 +408,7 @@ void CUDPSocket::SendPacket(Packet* packet,CServer* host){
 	// see if we need to dns()
 	if (cur_server->HasDynIP()) {
 		// This not an ip but a hostname. Resolve it.
+		//printf("Have to solve hostname\n");
 		CAsyncDNS* dns=new CAsyncDNS();
 		if(dns->Create()!=wxTHREAD_NO_ERROR) {
 			// uh?
@@ -384,6 +419,7 @@ void CUDPSocket::SendPacket(Packet* packet,CServer* host){
 		dns->Run();
 	} else {
 		m_SaveAddr.Hostname(cur_server->GetIP());
+		//printf("Sending\n");
 		SendBuffer();
 	}
 }
