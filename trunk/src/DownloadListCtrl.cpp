@@ -322,15 +322,9 @@ void CDownloadListCtrl::OnNMRclick(wxListEvent & evt)
 			
 			wxString preview(_("Preview"));
 			if (file->IsPartFile() && !(file->GetStatus() == PS_COMPLETE)) {
-		  		char* buffer = nstrdup(unicode2char(file->GetPartMetFileName()));
-		  		int n = strlen(buffer);
-		  		if (n >= 4) {
-			  		buffer[n-4] = 0;
-		  		}
 				preview += wxT(" [");					
-				preview += char2unicode(buffer);
+		  		preview += file->GetPartMetFileName().BeforeLast(wxT('.'));
 				preview += wxT("]");
-				delete[] buffer;
 			}
 			menu->SetLabel(MP_PREVIEW, preview);			
 			
@@ -668,9 +662,9 @@ void CDownloadListCtrl::AddSource(CPartFile * owner, CUpDownClient * source, boo
 	//listcontent.Append(newitem);
 	// Update cross link to the owner
 	ListItems::const_iterator ownerIt = m_ListItems.find(owner);
-	//ASSERT(ownerIt != m_ListItems.end());
+	wxASSERT(ownerIt != m_ListItems.end());
 	CtrlItem_Struct *ownerItem = ownerIt->second;
-	//ASSERT(ownerItem->value == owner);
+	wxASSERT(ownerItem->value == owner);
 	newitem->parent = ownerItem;
 
 	// The same source could be added a few time but only one time per file 
