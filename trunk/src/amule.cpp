@@ -1232,8 +1232,12 @@ void CamuleApp::OnFatalException()
 	
 	for (int i = 0; i < num_entries; ++i) {
 		/* If we have no function name, use the result from addr2line */
-		if (hasLineNumberInfo && funcname[i].IsEmpty()) {
-			funcname[i] = out[2*i];
+		if (funcname[i].IsEmpty()) {
+			if (hasLineNumberInfo) {
+				funcname[i] = out[2*i];
+			} else {
+				funcname[i] = wxT("??");
+			}
 		}
 		wxString btLine;
 		btLine << wxT("[") << i << wxT("] ") << funcname[i] << wxT(" in ");
