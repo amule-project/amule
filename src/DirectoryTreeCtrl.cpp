@@ -7,12 +7,12 @@
 // modify it under the terms of the GNU General Public License
 // as published by the Free Software Foundation; either
 // version 2 of the License, or (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -23,6 +23,7 @@
 #endif
 #include <wx/log.h>
 
+#include <wx/imaglist.h>
 #include "DirectoryTreeCtrl.h"	// Interface declarations
 #include "muuli_wdr.h"		// Needed for amuleSpecial
 #include <wx/event.h>
@@ -38,17 +39,17 @@ BEGIN_EVENT_TABLE(CDirectoryTreeCtrl, wxTreeCtrl)
 END_EVENT_TABLE()
 
 
-class CDirectoryTreeItemData : public wxTreeItemData 
+class CDirectoryTreeItemData : public wxTreeItemData
 {
 	public:
 		CDirectoryTreeItemData() { Data = 0;};
 		~CDirectoryTreeItemData() {};
-		
+
 		void AddCount() { Data++; }
 		void SubCount() { Data--; }
 		int GetCount() { return Data; }
 	private:
-		int Data;	
+		int Data;
 };
 
 
@@ -70,7 +71,7 @@ void CDirectoryTreeCtrl::Init(void)
 	m_image.Add(wxBitmap(amuleSpecial(1)));
 	m_image.Add(wxBitmap(amuleSpecial(2)));
 	SetImageList(&m_image);
-	
+
 	CDirectoryTreeItemData* ItemData = new CDirectoryTreeItemData();
 	hRoot=AddRoot(wxT("/"),-1,-1,ItemData);
 	SetItemImage(hRoot, 0);  // yes, this is a folder too
@@ -100,7 +101,7 @@ void CDirectoryTreeCtrl::OnItemActivated(wxTreeEvent& evt)
 	if (hItem.IsOk()) {
 		CheckChanged(hItem, !IsBold(hItem));
 		Refresh();
-	} 
+	}
 	HasChanged = true;
 }
 
@@ -128,7 +129,7 @@ void CDirectoryTreeCtrl::OnRButtonDown(wxTreeEvent& evt)
 		}
 		Toggle(hItem);
 		Refresh();
-	} 
+	}
 	HasChanged = true;
 }
 
@@ -150,7 +151,7 @@ void CDirectoryTreeCtrl::MarkChildren(wxTreeItemId hChild,bool mark)
 		i++;
 		hChild2 = GetNextSibling(hChild2);
 	}
-	
+
 	Toggle(hChild);
 }
 
@@ -298,7 +299,7 @@ void CDirectoryTreeCtrl::CheckChanged(wxTreeItemId hItem, bool bChecked)
 			UpdateParentItems(hItem,true);
 		}
 	} else {
-		if (IsBold(hItem)) {		
+		if (IsBold(hItem)) {
 			SetItemBold(hItem,FALSE);
 			DelShare(strDir);
 			UpdateParentItems(hItem,false);
