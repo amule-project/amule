@@ -236,6 +236,7 @@ bool CKnownFile::CreateFromFile(char* in_directory,char* in_filename, volatile i
 		// What's this? signaling to terminate?
 		if ( notify && *notify ) {
 			fclose(file);
+			delete[] newhash;
 			printf("Hashing thread dying?\n");
 			return false;
 		}
