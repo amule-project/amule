@@ -61,6 +61,11 @@ public:
 	void SelectionUpdated();
 	
 
+	/**
+	 * Deletes all files and updates widget
+	 */
+	void RemoveAllSharedFiles();
+
 	//! Pointer to the widget containing the list of shared files.
 	CSharedFilesCtrl* sharedfilesctrl;
 
@@ -88,4 +93,3 @@ private:
 };
 
 #endif
-
