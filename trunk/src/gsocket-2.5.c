@@ -1640,7 +1640,7 @@ GSocketError GAddress_INET_SetHostAddress(GAddress *address,
 
   addr = &(((struct sockaddr_in *)address->m_addr)->sin_addr);
 
-#if wxCHECK_VERSION(2,5,2) && !defined(__WXMAC__)
+#if wxCHECK_VERSION(2,5,2) && (wxBYTE_ORDER == wxLITTLE_ENDIAN)
   addr->s_addr = htonl(hostaddr);
 #else
   addr->s_addr = hostaddr;
@@ -1735,7 +1735,7 @@ unsigned long GAddress_INET_GetHostAddress(GAddress *address)
 
   addr = (struct sockaddr_in *)address->m_addr;
 
-#if wxCHECK_VERSION(2,5,2) && !defined(__WXMAC__)
+#if wxCHECK_VERSION(2,5,2) && (wxBYTE_ORDER == wxLITTLE_ENDIAN)
   return ntohl(addr->sin_addr.s_addr);
 #else
   return addr->sin_addr.s_addr;
