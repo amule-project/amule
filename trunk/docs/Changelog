@@ -3,24 +3,34 @@ Version 2.0.0rc8 - The "???????????" version.
 2004-10-??
 
 	Jacobo221:
-		* Added option to select the max and min size-type in advanced searches
-		* When "Extended Parameters" in Search tab is not selected, defaults are used
-		* Now "Auto-update serverlist at startup" checks if there's a serverlist to avoid annoying messages at startup
-		* "Clear completed downloads" is now disabled while no completed downloads are listed
-		* Context menu for download items only enables relevant information now
-		* Context menu little optimization (removed an unuseful loop) and Open File fix
-		* Added bitmap button wich pops-up the last status log line (useful when it doesn't fit the window
-		* Merged Preview and Open File and enabled Open File
-		* Fixed: Setting "A4AF to others" was broken
+		* Added option to select the max and min size-type in advanced
+		  searches.
+		* When "Extended Parameters" in Search tab is not selected, 
+		  defaults are used.
+		* Now "Auto-update serverlist at startup" checks if there's a 
+		  serverlist to avoid annoying messages at startup.
+		* "Clear completed downloads" is now disabled while no
+		  completed downloads are listed.
+		* Context menu for download items only enables relevant
+		  information now.
+		* Context menu little optimization (removed an unuseful loop)
+		  and Open File fix.
+		* Added bitmap button wich pops-up the last status log line
+		  (useful when it doesn't fit the window).
+		* Merged Preview and Open File and enabled Open File.
+		* Fixed: Setting "A4AF to others" was broken.
 
 	Phoenix:
 		* Added readline and history support to amuleweb/amulecmd text
 		  clients.
 		* Added template loading capability to amuleweb with the new
 		  command line parameter -t.
+		* Changed m4/readline.m4 so that readline libs are only used
+		  when needed, i.e., no longer append readline libs to LIBS,
+		  use READLINE_LIBS instead.
 
 	GonoszTopi:
-		* Initial work on EC protocol version 2.0
+		* Initial work on EC protocol version 2.0.
 
 
 --------------------------------------------------------------------------------
@@ -37,19 +47,28 @@ Version 2.0.0rc7 - The "99,6% Final" version.
 
 	Jacobo221:
 		aMule GUI:
-		* Fixed two almost-the-same bugs when clicked download button and no items where selected (as reported by powtrix/willy, thanks)
+		* Fixed two almost-the-same bugs when clicked download button 
+		  and no items where selected (as reported by powtrix/willy,
+		  thanks).
 
 		aMuleWeb:
-		* Fixed a bug where up/down limits woudln't be displayed correctly if their string length were different
+		* Fixed a bug where up/down limits woudln't be displayed 
+		  correctly if their string length were different.
 
 		aMuleCMD:
-		* Added 'list' (or 'find') command to search for a file in the downloads queue by name or by number (or just show all)
-		* Added the ability to resume/pause all downloads at the same time through amulecmd (very handy when all downloads have been paused due   to lack of space)
-		* Fixed two bugs on amulecmd by which using 'pause' or 'resume' without arguments would pause/resume the oldest download.
-		* Fixed a bug so that help command no longer is send to core
-		* Fixed other commands sending blank data to core
-		* Cleaned unneeded output log messages + added sent command messages to log (for easier security monitoring)
-		* Several command simplifications on amulecmd to make it easier to use (while maintaining backwards compatibility).
+		* Added 'list' (or 'find') command to search for a file in
+		  the downloads queue by name or by number (or just show all).
+		* Added the ability to resume/pause all downloads at the same 
+		  time through amulecmd (very handy when all downloads have
+		  been paused due to lack of space).
+		* Fixed two bugs on amulecmd by which using 'pause' or 'resume'
+		  without arguments would pause/resume the oldest download.
+		* Fixed a bug so that help command no longer is send to core.
+		* Fixed other commands sending blank data to core.
+		* Cleaned unneeded output log messages + added sent command
+		  messages to log (for easier security monitoring).
+		* Several command simplifications on amulecmd to make it easier
+		  to use (while maintaining backwards compatibility).
 		* Lots of translations lacks
 
 	KingFish:
@@ -72,14 +91,17 @@ Version 2.0.0rc7 - The "99,6% Final" version.
 					wait for curl lib to fix this issue.
 		
 	lfroen:
-	        * Removed debug printf's in timer.cpp
-		* Fix for deadlock on connection timeout in ServerSocket.cpp
-		* Fixed assert when build with wx-cvs
-		* Added option for disabling SIGSEG handling: useful for debuging in amuled.cpp
-		* EMSocket.h cleanup
-		* Fixed unclosed sockets (CLOSE_WAIT) and few stability problems
-		* Make CEMSocket::OnReceive thread safe. MAX_SIZE reduced, cause even theoretically tcp can buffer up to 64K
-		* amuled fixes
+	        * Removed debug printf's in timer.cpp.
+		* Fix for deadlock on connection timeout in ServerSocket.cpp.
+		* Fixed assert when build with wx-cvs.
+		* Added option for disabling SIGSEG handling: useful for
+		  debuging in amuled.cpp.
+		* EMSocket.h cleanup.
+		* Fixed unclosed sockets (CLOSE_WAIT) and few stability
+		  problems.
+		* Make CEMSocket::OnReceive thread safe. MAX_SIZE reduced,
+		  cause even theoretically tcp can buffer up to 64K.
+		* amuled fixes.
 
 	mfs:
 		* Fixed crashes on friendlist when keeping keys pressed
