@@ -266,7 +266,7 @@ public:
 	static bool	GetFED2KLH() { return s_FastED2KLinksHandler; }
 	static bool	BDlgTabsOnTop() { 
 		#if defined(__WXMAC__) || defined(__WXMSW__) 
-			return false;
+			return true;
 		#else
 			return s_bDlgTabsOnTop; 
 		#endif
