@@ -325,7 +325,7 @@ void CSearchDlg::OnBnClickedCancel(wxCommandEvent& WXUNUSED(evt))
 void CSearchDlg::ResetControls()
 {
 	m_progressbar->SetValue(0);
-
+	
 	FindWindow(IDC_CANCELS)->Disable();
 	FindWindow(IDC_STARTS)->Enable();
 }
@@ -453,7 +453,8 @@ void CSearchDlg::StartNewSearch()
 	theApp.searchlist->NewSearch(typeText, m_nSearchID);
 	Packet *packet = CreateSearchPacket(searchString, typeText, extension, min, max, availability);
 	
-	m_globalsearch = CastChild( ID_SEARCHTYPE, wxChoice )->GetSelection() == 1;
+	m_searchtype = CastChild( ID_SEARCHTYPE, wxChoice )->GetSelection();
+	m_globalsearch = m_searchtype == 1;
 
 	CoreNotify_Search_Req(packet, m_globalsearch);
 	
