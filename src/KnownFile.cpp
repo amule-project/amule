@@ -154,9 +154,9 @@ bool CKnownFile::CreateFromFile(const wxString& in_directory, const wxString& in
 	
 	// open file
 	CString namebuffer;
-	namebuffer.Format(wxT("%s/%s"), in_directory.c_str(), in_filename.c_str());
+	namebuffer = in_directory + wxT("/") + in_filename;
 	//SetFilePath(namebuffer); ??
-	FILE* file = fopen(unicode2char(namebuffer.c_str()), "rbS");
+	FILE* file = fopen(unicode2char(namebuffer), "rbS");
 	if (!file){
 		printf("Error opening %s !\n",unicode2char(namebuffer));
 		return false;
@@ -261,7 +261,7 @@ void CKnownFile::GetMetaDataTags()
 
 		try{
 			ID3_Tag myTag;
-			myTag.Link(namebuffer.c_str(), ID3TT_ALL);
+			myTag.Link(unicode2char(namebuffer), ID3TT_ALL);
 
 			const Mp3_Headerinfo* mp3info;
 			mp3info = myTag.GetMp3HeaderInfo();
