@@ -93,7 +93,7 @@ wxThread::ExitCode AsyncDNS::Entry()
     wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED,TM_DNSDONE);
     evt.SetClientData(socket);
     evt.SetExtraLong((long)newsi);
-    wxPostEvent(theApp.amuledlg,evt);    
+    wxPostEvent(&theApp,evt);    
   }
   
 

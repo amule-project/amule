@@ -1312,7 +1312,7 @@ wxThread::ExitCode SourcesAsyncDNS::Entry()
 		newsi->sin_addr.s_addr=addr;
 		wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED,TM_SOURCESDNSDONE);
 		evt.SetExtraLong((long)newsi);
-		wxPostEvent(theApp.amuledlg,evt);
+		wxPostEvent(&theApp,evt);
 	}
 
 	return NULL;

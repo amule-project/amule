@@ -115,7 +115,7 @@ wxThread::ExitCode CAddFileThread::Entry()
 				m_endWaitingForHashList = 1;
 				m_lockWaitingForHashList.Unlock();
 				wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED,TM_HASHTHREADFINISHED);
-				wxPostEvent(theApp.amuledlg,evt);
+				wxPostEvent(&theApp,evt);
 			  } else {
 				this->Yield();
 				this->Sleep(1);
@@ -146,7 +146,7 @@ wxThread::ExitCode CAddFileThread::Entry()
 			wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED,TM_FINISHEDHASHING);
 			evt.SetClientData(newrecord);
 			evt.SetExtraLong((long)hashfile->owner);
-			wxPostEvent(theApp.amuledlg,evt);
+			wxPostEvent(&theApp,evt);
 			dwLastAddTime = GetTickCount();
 		}
 	
