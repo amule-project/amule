@@ -231,4 +231,33 @@ private:
 
 /******************************************************************************/
 
+class wxDatagramSocketProxy : public wxSocketClient
+{
+public:
+	/* Constructor */
+	wxDatagramSocketProxy(
+		wxIPaddress &address,
+		wxSocketFlags flags = wxSOCKET_NONE,
+		const wxProxyData *ProxyData = NULL);
+	
+	/* Destructor */
+	~wxDatagramSocketProxy();
+	
+	/* Interface */
+	void SetProxyData(const wxProxyData *ProxyData);
+	
+	/* wxDatagramSocket Interface -- Changed return value to void */
+	void RecvFrom(
+		wxSockAddress& addr, void* buf, wxUint32 nBytes );
+	void SendTo(
+		wxSockAddress& addr, const void* buf, wxUint32 nBytes );
+	
+private:
+	wxSocketProxy	m_SocketProxy;
+	bool 		m_UseProxy;
+	wxDatagramSocket *m_UDPSocket;
+};
+
+/******************************************************************************/
+
 #endif /* __PROXY_H__ */

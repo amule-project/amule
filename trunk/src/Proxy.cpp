@@ -708,3 +708,53 @@ void wxSocketServerProxy::SetProxyData(const wxProxyData *ProxyData)
 }
 
 /******************************************************************************/
+
+wxDatagramSocketProxy::wxDatagramSocketProxy(
+	wxIPaddress &address, wxSocketFlags flags, const wxProxyData *ProxyData)
+:
+wxSocketClient(flags),
+m_SocketProxy(ProxyData)
+{
+	m_UseProxy = ProxyData != NULL;
+	bool ok;
+	
+	if (m_UseProxy) {
+		ok = m_SocketProxy.Start(address, wxPROXY_CMD_UDP_ASSOCIATE, this);
+	} else {
+		m_UDPSocket = new wxDatagramSocket(address, flags);
+	}
+}
+
+wxDatagramSocketProxy::~wxDatagramSocketProxy()
+{
+	if (m_UseProxy) {
+	} else {
+		m_UDPSocket->Destroy();
+	}
+}
+
+void wxDatagramSocketProxy::SetProxyData(const wxProxyData *ProxyData)
+{
+	m_UseProxy = ProxyData != NULL;
+	m_SocketProxy.SetProxyData(ProxyData);
+}
+
+void wxDatagramSocketProxy::RecvFrom(
+	wxSockAddress& addr, void* buf, wxUint32 nBytes )
+{
+	if (m_UseProxy) {
+	} else {
+		m_UDPSocket->RecvFrom(addr, buf, nBytes);
+	}
+}
+
+void wxDatagramSocketProxy::SendTo(
+	wxSockAddress& addr, const void* buf, wxUint32 nBytes )
+{
+	if (m_UseProxy) {
+	} else {
+		m_UDPSocket->SendTo(addr, buf, nBytes);
+	}
+}
+
+/******************************************************************************/
