@@ -111,7 +111,7 @@ CSearchDlg::CSearchDlg(wxWindow* pParent)
 
 
 // Enable the download button when there are items selected
-void CSearchDlg::OnListItemSelected(wxListEvent& event)
+void CSearchDlg::OnListItemSelected(wxListEvent& WXUNUSED(event))
 {
 	FindWindowById(IDC_SDOWNLOAD)->Enable(true);
 }
@@ -125,7 +125,7 @@ void CSearchDlg::OnSearchClosed(wxNotebookEvent& evt)
 	}
 }
 
-void CSearchDlg::OnBnClickedStarts(wxCommandEvent& evt)
+void CSearchDlg::OnBnClickedStarts(wxCommandEvent& WXUNUSED(evt))
 {
 	OnBnClickedCancels(nullEvent);
 		
@@ -134,7 +134,7 @@ void CSearchDlg::OnBnClickedStarts(wxCommandEvent& evt)
 
 
 // Enables or disables the Reset and Start button depending on the conents of the text fields
-void CSearchDlg::OnFieldsChange(wxCommandEvent& evt)
+void CSearchDlg::OnFieldsChange(wxCommandEvent& WXUNUSED(evt))
 {
 	// These are the IDs of the search-fields 
 	int textfields[] = { IDC_SEARCHNAME, IDC_EDITSEARCHMIN, IDC_EDITSEARCHMAX, IDC_EDITSEARCHEXTENSION, IDC_EDITSEARCHAVAIBILITY };
@@ -153,7 +153,7 @@ void CSearchDlg::OnFieldsChange(wxCommandEvent& evt)
 
 
 // This function handles global searches
-void CSearchDlg::OnTimer(wxTimerEvent& evt)
+void CSearchDlg::OnTimer(wxTimerEvent& WXUNUSED(evt))
 {
 	if ( theApp.serverconnect->IsConnected() ) {
 		CServer* toask = NULL;
@@ -226,7 +226,7 @@ void CSearchDlg::CreateNewTab(wxString searchString, uint32 nSearchID)
 }
 
 
-void CSearchDlg::OnBnClickedCancels(wxCommandEvent &evt)
+void CSearchDlg::OnBnClickedCancels(wxCommandEvent& WXUNUSED(evt))
 {
 	canceld = true;
 
@@ -256,7 +256,7 @@ void CSearchDlg::LocalSearchEnd(uint16 count)
 }
 
 
-void CSearchDlg::OnBnClickedSdownload(wxCommandEvent &evt)
+void CSearchDlg::OnBnClickedSdownload(wxCommandEvent& WXUNUSED(evt))
 {
 	if( notebook->GetSelection() == -1 ) {
 		return;
@@ -275,7 +275,7 @@ void CSearchDlg::OnBnClickedSdownload(wxCommandEvent &evt)
 }
 
 
-void CSearchDlg::OnBnClickedClearall(wxCommandEvent& ev)
+void CSearchDlg::OnBnClickedClearall(wxCommandEvent& WXUNUSED(ev))
 {
 	OnBnClickedCancels(nullEvent);
 	DeleteAllSearchs();
@@ -334,8 +334,7 @@ void CSearchDlg::StartNewSearch()
 	wxString sizeMax=((wxTextCtrl*)FindWindowById(IDC_EDITSEARCHMAX))->GetValue();
 	uint32 max = atol(sizeMax.c_str()) * 1048576;
 	
-	if ( max < min || max < 0 ) max = 0;
-	if ( min < 0 ) min = 0;
+	if ( max < min ) max = 0;
 	
 	// Parameter Availability
 	wxString avaibilitystr = ((wxTextCtrl*)FindWindowById(IDC_EDITSEARCHAVAIBILITY))->GetValue();
@@ -467,7 +466,7 @@ void CSearchDlg::DeleteAllSearchs()
 }
 
 
-void CSearchDlg::OnBnClickedSearchReset(wxCommandEvent& evt)
+void CSearchDlg::OnBnClickedSearchReset(wxCommandEvent& WXUNUSED(evt))
 {
 	((wxTextCtrl*)FindWindowById(IDC_SEARCHNAME))->Clear();
 	((wxTextCtrl*)FindWindowById(IDC_EDITSEARCHMIN))->Clear();
@@ -486,7 +485,7 @@ void CSearchDlg::OnBnClickedSearchReset(wxCommandEvent& evt)
 /**
  * Sends the contents of the directdownload textctrl box to fast links handler
  **/
-void CSearchDlg::DirectDownload(wxCommandEvent &event)
+void CSearchDlg::DirectDownload(wxCommandEvent& WXUNUSED(event))
 {
 	theApp.amuledlg->StartFast( (wxTextCtrl*)FindWindowById(ID_ED2KLINKHANDLER) );
 }
@@ -559,7 +558,7 @@ void CSearchDlg::OnRMButton(wxMouseEvent& evt)
 }
 
 
-void CSearchDlg::OnPopupClose(wxCommandEvent& evt)
+void CSearchDlg::OnPopupClose(wxCommandEvent& WXUNUSED(evt))
 {
 	if ( notebook->GetPageCount() == 1 ) {
 		// Ensure that the dialog is tidied up
@@ -570,13 +569,13 @@ void CSearchDlg::OnPopupClose(wxCommandEvent& evt)
 }
 
 
-void CSearchDlg::OnPopupCloseAll(wxCommandEvent& evt)
+void CSearchDlg::OnPopupCloseAll(wxCommandEvent& WXUNUSED(evt))
 {
 	DeleteAllSearchs();
 }
 
 
-void CSearchDlg::OnPopupCloseOthers(wxCommandEvent& evt)
+void CSearchDlg::OnPopupCloseOthers(wxCommandEvent& WXUNUSED(evt))
 {
 	wxNotebookPage* current = notebook->GetPage( notebook->GetSelection() );
 	
@@ -590,3 +589,4 @@ void CSearchDlg::OnPopupCloseOthers(wxCommandEvent& evt)
 		notebook->DeletePage( i );
 	}
 }
+
