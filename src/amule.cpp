@@ -593,12 +593,16 @@ bool CamuleApp::OnInit()
 
 	// Must we start minimized?
 	if (glob_prefs->GetStartMinimized()) {
+		#ifndef __SYSTRAY_DISABLED__	
 		// Send it to tray?
 		if (glob_prefs->DoMinToTray()) {
 			amuledlg->Hide_aMule();
 		} else {
 			amuledlg->Iconize(TRUE);
 		}
+		#else
+			amuledlg->Iconize(TRUE);
+		#endif
 	}
 	
 	
