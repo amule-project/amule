@@ -37,8 +37,9 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <wx/string.h>
-#include <wx/file.h>
+#include <wx/filefn.h>
 #include <wx/ffile.h>
+#include <wx/file.h>
 #include <wx/filename.h>
 #include <wx/config.h>
 

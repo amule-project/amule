@@ -56,7 +56,11 @@
 	#warning Kry? Get rid of this!
 	#include <wx/wx.h>
 #endif
-
+#include <wx/filefn.h>
+#include <wx/ffile.h>
+#include <wx/file.h>
+#include <wx/log.h>
+#include <wx/timer.h>
 #include <wx/config.h>
 #include <wx/clipbrd.h>			// Needed for wxClipBoard
 #include <wx/socket.h>			// Needed for wxSocket

@@ -26,6 +26,10 @@
 #endif
 #include <wx/sizer.h>
 #include <wx/gauge.h>
+#include <wx/textctrl.h>
+#include <wx/msgdlg.h>
+#include <wx/menu.h>
+#include <wx/checkbox.h>
 
 #include "SearchDlg.h"		// Interface declarations.
 #include "UploadQueue.h"	// Needed for CUploadQueue
