@@ -110,7 +110,7 @@ BEGIN_EVENT_TABLE(CamuleGuiApp, wxApp)
 	EVT_SOCKET(LISTENSOCKET_HANDLER, CamuleGuiApp::ListenSocketHandler)
 
 	// UDP Socket (servers)
-	EVT_SOCKET(UDPSOCKET_HANDLER, CamuleGuiApp::UDPSocketHandler)
+	EVT_SOCKET(SERVERUDPSOCKET_HANDLER, CamuleGuiApp::ServerUDPSocketHandler)
 	// UDP Socket (clients)
 	EVT_SOCKET(CLIENTUDPSOCKET_HANDLER, CamuleGuiApp::ClientUDPSocketHandler)
 
@@ -410,7 +410,7 @@ void CamuleGuiApp::ListenSocketHandler(wxSocketEvent& event)
 	}
 }
 
-void CamuleGuiApp::UDPSocketHandler(wxSocketEvent& event)
+void CamuleGuiApp::ServerUDPSocketHandler(wxSocketEvent& event)
 {
 	CServerUDPSocket *socket = dynamic_cast<CServerUDPSocket *>(event.GetSocket());
 	wxASSERT(socket);
@@ -421,9 +421,14 @@ void CamuleGuiApp::UDPSocketHandler(wxSocketEvent& event)
 	}
 
 	if (!IsReady) {
-		// Even if we are not ready to start listening, we must
-		// flush the buffer
-		socket->ReceiveAndDiscard();
+		// Back to the queue!
+		#ifndef AMULE_DAEMON
+		// Daemon doesn't need this because it's a thread, checking every X time.
+		wxSocketEvent input_event(SERVERUDPSOCKET_HANDLER);
+		input_event.m_event = (wxSocketNotify)(wxSOCKET_INPUT);
+		input_event.SetEventObject(socket);
+		theApp.AddPendingEvent(input_event);
+		#endif				
 		return;
 	}
 
@@ -447,9 +452,14 @@ void CamuleGuiApp::ClientUDPSocketHandler(wxSocketEvent& event)
 	}
 
 	if (!IsReady) {
-		// Even if we are not ready to start listening, we must
-		// flush the buffer
-		socket->ReceiveAndDiscard();
+		// Back to the queue!
+		#ifndef AMULE_DAEMON
+		// Daemon doesn't need this because it's a thread, checking every X time.
+		wxSocketEvent input_event(CLIENTUDPSOCKET_HANDLER);
+		input_event.m_event = (wxSocketNotify)(wxSOCKET_INPUT);
+		input_event.SetEventObject(socket);
+		theApp.AddPendingEvent(input_event);
+		#endif		
 		return;
 	}
 

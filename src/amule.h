@@ -333,7 +333,7 @@ class CamuleGuiApp : public CamuleApp, public CamuleGuiBase {
 	
 	// Socket handlers
 	void ListenSocketHandler(wxSocketEvent& event);
-	void UDPSocketHandler(wxSocketEvent& event);
+	void ServerUDPSocketHandler(wxSocketEvent& event);
 	void ServerSocketHandler(wxSocketEvent& event);
 	void ClientUDPSocketHandler(wxSocketEvent& event);
 

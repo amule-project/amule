@@ -289,7 +289,7 @@ bool CServerConnect::SendPacket(CPacket* packet,bool delpacket, CServerSocket* t
 bool CServerConnect::SendUDPPacket(CPacket* packet, CServer* host, bool delpacket)
 {
 	if (connected) {
-		udpsocket->SendPacket(packet, host);
+		serverudpsocket->SendPacket(packet, host);
 	}
 
 	if (delpacket)
@@ -467,7 +467,7 @@ CServerConnect::CServerConnect(CServerList* in_serverlist, amuleIPV4Address &add
 
 	// initalize socket for udp packets
 //#ifdef TESTING_PROXY
-	udpsocket = new CServerUDPSocket(this, address, thePrefs::GetProxyData());
+	serverudpsocket = new CServerUDPSocket(this, address, thePrefs::GetProxyData());
 	m_idRetryTimer.SetOwner(&theApp,TM_TCPSOCKET);
 	lastStartAt=0;	
 	InitLocalIP();	
@@ -485,10 +485,10 @@ CServerConnect::~CServerConnect()
 	// close udp socket
 #ifdef AMULE_DAEMON
 	// daemon have thread there
-	udpsocket->Delete();
+	serverudpsocket->Delete();
 #else
-	udpsocket->Close();
-	delete udpsocket;
+	serverudpsocket->Close();
+	delete serverudpsocket;
 #endif
 }
 
