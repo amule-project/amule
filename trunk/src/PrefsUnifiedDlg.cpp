@@ -284,12 +284,13 @@ public:
 			case wxcRadioButton: {
 				int val = 0;
 				for (Rse* prse=this; prse!=NULL; prse=prse->prseLink) {
-					if (((wxRadioButton*)(prse->pctrl))->GetValue())
+					if (((wxRadioButton*)(prse->pctrl))->GetValue()) {
 						return val;
-					else
+					} else {
 						val++;
-				return -1;  // should never get here if the buttons are set up correctly
+					}
 				}
+				return -1;  // should never get here if the buttons are set up correctly
 			}
 			default:	wxASSERT(false);		
 		}
