@@ -719,9 +719,13 @@ bool CamuleApp::OnInit()
 	// Run webserver?
 	if (thePrefs::GetWSIsEnabled()) {
 		#ifndef AMULE_DAEMON
-		webserver_pid = wxExecute(wxString::Format(wxT("amuleweb -f -p %d"),thePrefs::GetWSPort()));
+		webserver_pid = wxExecute(wxString(wxT("amuleweb -f -p ")) << thePrefs::GetWSPort());
 		if (!webserver_pid) {
-			AddLogLineM(false, _("You requested to run webserver from startup, but the amuleweb binary cannot be run. Please install the package containing aMule webserver, or compile aMule using --enable-webserver and run make install"));
+			AddLogLineM(false, _(
+				"You requested to run webserver from startup, "
+				"but the amuleweb binary cannot be run. "
+				"Please install the package containing aMule webserver, "
+				"or compile aMule using --enable-webserver and run make install"));
 		}
 		#else
 		// wxBase has no async wxExecute
@@ -1073,10 +1077,14 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 	amulesig_out.AddLine(thePrefs::GetUserNick());
 
 	// Total received in bytes
-	amulesig_out.AddLine(wxString::Format(wxT("%llu"), (long long unsigned int)(theApp.statistics->GetSessionReceivedBytes()+ thePrefs::GetTotalDownloaded())));
+	amulesig_out.AddLine(wxString::Format(wxT("%llu"),
+		(long long unsigned int)(theApp.statistics->GetSessionReceivedBytes() +
+		thePrefs::GetTotalDownloaded())));
 
 	// Total sent in bytes
-	amulesig_out.AddLine(wxString::Format(wxT("%llu"), (long long unsigned int)(theApp.statistics->GetSessionSentBytes()+ thePrefs::GetTotalUploaded())));
+	amulesig_out.AddLine(wxString::Format(wxT("%llu"),
+		(long long unsigned int)(theApp.statistics->GetSessionSentBytes() +
+		thePrefs::GetTotalUploaded())));
 
 	// amule version
 #ifdef CVSDATE
@@ -1089,14 +1097,16 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 	if (zero) {
 		amulesig_out.AddLine(wxT("0"));
 	} else {
-		amulesig_out.AddLine(wxString::Format(wxT("%llu"), (long long unsigned int)theApp.statistics->GetSessionReceivedBytes()));
+		amulesig_out.AddLine(wxString::Format(wxT("%llu"),
+			(long long unsigned int)theApp.statistics->GetSessionReceivedBytes()));
 	}
 
         // Total sent bytes in session
 	if (zero) {
 		amulesig_out.AddLine(wxT("0"));
 	} else {
-		amulesig_out.AddLine(wxString::Format(wxT("%llu"), (long long unsigned int)theApp.statistics->GetSessionSentBytes()));
+		amulesig_out.AddLine(wxString::Format(wxT("%llu"),
+			(long long unsigned int)theApp.statistics->GetSessionSentBytes()));
 	}
 
 	// Uptime
@@ -1187,9 +1197,23 @@ void CamuleApp::OnFatalException()
 	free(bt_strings);
 	
 	/* Get line numbers from addresses */
-	wxString command = wxString::Format(wxT("addr2line -C -f -s -e /proc/%d/exe "), getpid()) + AllAddresses;
 	wxArrayString out;
-	wxExecute(command, out);
+	bool hasLineNumberInfo = false;
+	if (wxThread::IsMain()) {
+		wxString command;
+		command << wxT("addr2line -C -f -s -e /proc/") <<
+			getpid() << wxT("/exe ") << AllAddresses;
+		// The output of the command is this wxArrayString, in which
+		// the even elements are the function names, and the odd elements
+		// are the line numbers.
+#ifndef AMULE_DAEMON		
+		::wxEnableTopLevelWindows(false);
+#endif
+		hasLineNumberInfo = wxExecute(command, out) != -1;
+#ifndef AMULE_DAEMON		
+		::wxEnableTopLevelWindows(true);
+#endif
+	}
 
 	/* Print the backtrace */
 	fprintf(stderr, "\n--------------------------------------------------------------------------------\n");	
@@ -1208,21 +1232,21 @@ void CamuleApp::OnFatalException()
 	
 	for (int i = 0; i < num_entries; ++i) {
 		/* If we have no function name, use the result from addr2line */
-		if (funcname[i].IsEmpty()) {
+		if (hasLineNumberInfo && funcname[i].IsEmpty()) {
 			funcname[i] = out[2*i];
 		}
-		wxString btline =
-			wxString::Format(wxT("[%d] "), i) +
-			funcname[i] +
-			wxT(" in ");
+		wxString btLine;
+		btLine << wxT("[") << i << wxT("] ") << funcname[i] << wxT(" in ");
 		/* If addr2line did not find a line number, use bt_string */
-		if (out[2*i+1].Mid(0,2) == wxT("??")) {
-			btline += libname[i] + wxT("[") + address[i] + wxT("]");
+		if (!hasLineNumberInfo || out[2*i+1].Mid(0,2) == wxT("??")) {
+			btLine += libname[i] + wxT("[") + address[i] + wxT("]");
+		} else if (hasLineNumberInfo) {
+			btLine += out[2*i+1];
 		} else {
-			btline += out[2*i+1];
+			btLine += libname[i];
 		}
 		/* Print */
-		fprintf(stderr, "%s\n", unicode2char(btline) );
+		fprintf(stderr, "%s\n", unicode2char(btLine) );
 	}
 	fprintf(stderr, "\n--------------------------------------------------------------------------------\n");
 	delete [] libname;
