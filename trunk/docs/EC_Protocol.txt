@@ -1,3 +1,25 @@
+
+			aMule
+	     - follow the white rabbit -
+
+
+		External Connections
+		     Protocol
+
+		   version 2.0
+
+Preface
+-------
+
+    EC is under heavy construction, however the protocol itself is considered
+    stable and you can rely on. The opceodes and tagnames, tag content formats
+    and values are still changing, so if you decide to implement an application
+    using aMule EC, you'd better include our ECcodes.h for the values, and
+    check the documentations often, or even the code itself (ExternalConn.cpp
+    is a good start).
+
+
+
 Section 1: Protocol definition
 ------------------------------
 
@@ -6,33 +28,106 @@ Short description:
     EC protocol consist of two layers: a low-level transmission layer, and
     a high level application layer.
 
-Transmission layer:
 
-    The transmission layer consists of (currently) one byte data, that is
-    prepended to the actual application data.
+Section 1.1: Transmission layer
+-------------------------------
 
-    Bit description: x01rrrrc
+    The transmission layer is completely independent of the application layer,
+	and holds only transport-related information.
 
-	x: eXtension flag, should be 0.
-	r: Reserved for later use
-	c: Compression flag 1 = application data is compressed.
+    The transmission layer actually consists of an uint32 number, referenced
+    below as flags, which describes flags for the current transmission session
+    (send/receive operation).
+
+    This four-byte value is the only one in the whole protocol, that is
+    transmitted LSB first, and zero bytes omitted (therefore an empty
+    transmission flags value is sent as 0x20).
+
+    Bit description:
+
+	bit 0:	Compression flag. When set, zlib compression is applied to
+		the application layer's data. (Yet unused)
+
+	bit 1:	Compressed TAGLEN fields. When set (presumably on small
+		packets that doesn't worth compressing by zlib), the uint32
+		TAGLEN value is encoded as a wide char converted to utf-8 to
+		let some zero bytes not to be sent over the network.
+		(Yet unused)
+
+	bits 2-3: Reserved for later use.
+
+	bit 4:	Accepts value present. A client sets this flag and sends
+		another uint32 value (encoded as above, LSB first, zero
+		bytes omitted), which is a fully constructed flags value,
+		bits set meaning that the client can accept those extensions.
+		No extensions can be used, until the other side sends an
+		accept value for them. It is not defined when this value
+		should be send, best is on first transfer, but can be sent
+		any time later, even changing the previously announced
+		flags.
+
+	bit 5:	Always set to 1, to distinguish from older (pre-rc8) clients.
+
+	bit 6:	Always set to 0, to distinguish from older (pre-rc8) clients.
+
+	bits 7,15,23: Extension flag, means that the next byte of the flags is
+		present.
+
+	bits 8-14,16-22,24-32: Reserved for later use.
 
 
-Application layer:
+    Transmission layer example:
+    	0x30 0x23 <appdata>	- Client uses no extensions on this packet,
+		and indicates that it can accept zlib compression and
+		compressed tagnames.
 
-    A packet contains the following:
+    Notes:
+	Note 1:	On the "accepts" value, the predefined flags must be set to
+		their predefined values, because this can be used as a sort
+		of a sanity check.
+
+	Note 2:	Bits marked as "reserved" should always be set to 0.
+
+
+
+Section 1.2: Application layer
+------------------------------
+
+    Data transmission is done in packets. A packet can be considered as a
+    special tag - with no data, no tagLen field, and with the tagCount
+    field always present. All numbers part of the application layer are
+    transmitted in network byte order, i.e. MSB first.
+	A packet contains the following:
 	[ec_opcode_t] OPCODE
 	[uint16] TAGCOUNT
 	    <tags>
 
-    Tags consist of:
+    In detail: The opcode means what to to or what the data fields contain.
+    Its type is set as ec_opcode_t, which currently is an uint8.
+    TagCount is the number of first level tags this packet has. Then are the
+    tags themselves.
+
+    A tags consist of:
 	[ec_tagname_t] TAGNAME
 	[ec_taglen_t] TAGLEN
 	<[uint16] TAGCOUNT>?
 	    <sub-tags>
 	    <tag data>
 
-    Tags may contain sub-tags to store the information, and a TAGCOUNT field
-    is present only for these types of tags. You can test if a packet is to
-    hold subpackets with HasTagCount(tagName). (Actually, a packet contains a
-    TAGCOUNT field when the highest bit of its name is set.)
+    The ec_tagname_t is defined as an uint16, ec_taglen_t as an uint32 value
+    at the moment. TagName tells what it contains (see ECcodes.h for details).
+    TagLen contains the whole length of the tag, including the lengths of the
+    possible sub-tags, but without the size of the tagName. So, an unknown tag
+    can simply be skipped by skipping tagLen bytes of the input stream.
+    Actually the highest bit of the tagname doesn't belong to the tagName
+    itself, so it has to be cleared before checking the name.
+
+    Tags may contain sub-tags to store the information, and a tagCount field
+    is present only for these tags. The presence of the tagCount field can
+    be tested by checking the highest bit of the tagName field, when it is
+    set, tagCount field present.
+
+    When a tag contains sub-tags, the sub-tags are sent before the tag's own
+    data. So, tag data length can be calculated by substracting all sub-tags'
+    length from the tagLen value, and the remainder is the data length, if
+    non-zero.

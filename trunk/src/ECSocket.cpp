@@ -27,6 +27,7 @@
 
 #include "gsocket-fix.h"	// Needed for wxSOCKET_REUSEADDR
 
+#include "ECcodes.h"		// Needed fo the EC_FLAG_* values
 #include "ECPacket.h"		// Needed for CECPacket
 
 
@@ -199,6 +200,23 @@ bool ECSocket::WritePacket(wxSocketBase *sock, const CECPacket *packet)
 }
 
 /**
+ * Reads FLAGS value from given socket.
+ */
+uint32 ECSocket::ReadFlags(wxSocketBase *sock)
+{
+	int i = 0;
+	uint32 flags = 0;
+	uint8 b;
+
+	do {
+		if (!ReadNumber(sock, &b, 1)) return 0;
+		flags += (uint32)b << i;
+		i += 8;
+	} while ((b & 0x80) && (i < 32));
+	return flags;
+}
+
+/**
  * Reads a CECPacket packet from \e sock.
  *
  * Reads a packet from the given socket, taking care of
@@ -213,22 +231,21 @@ bool ECSocket::WritePacket(wxSocketBase *sock, const CECPacket *packet)
  */
 CECPacket * ECSocket::ReadPacket(wxSocketBase *sock)
 {
-	uint8 flags;
+	uint32 flags = ReadFlags(sock);
 
-	if (!ReadNumber(sock, &flags, 1)) return NULL;
+	// check if the other end sends an "accepts" value
+	if (flags & EC_FLAG_ACCEPTS) {
+		// simply get rid of it, we dont use it for anything yet
+		ReadFlags(sock);
+	}
+
 	if ((flags & 0x60) != 0x20) {
 		// Protocol error - other end might use an older protocol
 		return NULL;
 	}
-	if ((flags & 0x80) != 0) {	// Get rid of extension bytes
-		uint8 tmp_flags = flags;
-		// <ugly_code>
-		while ((tmp_flags & 0x80) && ReadNumber(sock, &tmp_flags, 1)) ;
-		if (tmp_flags & 0x80) return NULL;	// socket error
-		// </ugly_code>
-	}
-	if ((flags & 0x01) != 0) {
-		// TODO: compression not implemented yet !
+	
+	if ((flags & EC_FLAG_UNKNOWN_MASK)) {
+		// Received a packet with an unknown extension
 		return NULL;
 	}
 	CECPacket *p = new CECPacket(sock, *this);
