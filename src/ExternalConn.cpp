@@ -638,13 +638,13 @@ CECPacket *Get_EC_Response_Search(const CECPacket *request)
 		case EC_SEARCH_LOCAL:
 			if (!theApp.searchlist->StartNewSearch(0xffff, global_search, text, file_type, ext, search_request->MinSize(), search_request->MaxSize(), search_request->Avail())) {
 				// Not connected?
-				response = _("aMule is not connected! Cannot do search.");
+				response = wxTRANSLATE("aMule is not connected! Cannot do search.");
 			} else {
-				response = _("Search in progress. Refetch results in a moment!");			
+				response = wxTRANSLATE("Search in progress. Refetch results in a moment!");			
 			}
 			break;
 		case EC_SEARCH_WEB:
-				response = _("WebSearch from remote interface makes no sense.");
+				response = wxTRANSLATE("WebSearch from remote interface makes no sense.");
 			break;
 	}
 	
