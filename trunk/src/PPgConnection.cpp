@@ -52,7 +52,7 @@ CPPgConnection::~CPPgConnection()
 }
 
 BEGIN_EVENT_TABLE(CPPgConnection,wxPanel)
-	EVT_BUTTON(IDC_WIZARD,CPPgConnection::OnBnClickedWizard)
+	//EVT_BUTTON(IDC_WIZARD,CPPgConnection::OnBnClickedWizard)
 	EVT_CHECKBOX(IDC_UDPDISABLE,CPPgConnection::OnUDPDISABLEChecked)
 END_EVENT_TABLE()
 

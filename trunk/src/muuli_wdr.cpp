@@ -2181,25 +2181,22 @@ wxSizer *PreferencesConnectionTab( wxWindow *parent, bool call_fit, bool set_siz
     item61->SetValue( TRUE );
     item57->Add( item61, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxButton *item62 = new wxButton( parent, IDC_WIZARD, _("Connection Wizard"), wxDefaultPosition, wxDefaultSize, 0 );
-    item57->Add( item62, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-
     item56->Add( item57, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM, 5 );
 
-    wxStaticBox *item64 = new wxStaticBox( parent, -1, _("IP-Filter") );
-    wxStaticBoxSizer *item63 = new wxStaticBoxSizer( item64, wxHORIZONTAL );
-    IDC_IPF_0 = item63;
+    wxStaticBox *item63 = new wxStaticBox( parent, -1, _("IP-Filter") );
+    wxStaticBoxSizer *item62 = new wxStaticBoxSizer( item63, wxHORIZONTAL );
+    IDC_IPF_0 = item62;
 
-    wxCheckBox *item65 = new wxCheckBox( parent, IDC_IPFONOFF, _("IP-Filter ON / OFF"), wxDefaultPosition, wxDefaultSize, 0 );
-    item65->SetValue( TRUE );
-    item63->Add( item65, 0, wxADJUST_MINSIZE|wxGROW, 0 );
+    wxCheckBox *item64 = new wxCheckBox( parent, IDC_IPFONOFF, _("IP-Filter ON / OFF"), wxDefaultPosition, wxDefaultSize, 0 );
+    item64->SetValue( TRUE );
+    item62->Add( item64, 0, wxADJUST_MINSIZE|wxGROW, 0 );
 
-    item63->Add( 30, 20, 0, wxALIGN_CENTER, 5 );
+    item62->Add( 30, 20, 0, wxALIGN_CENTER, 5 );
 
-    wxButton *item66 = new wxButton( parent, IDC_IPFRELOAD, _("Reload"), wxDefaultPosition, wxDefaultSize, 0 );
-    item63->Add( item66, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM, 5 );
+    wxButton *item65 = new wxButton( parent, IDC_IPFRELOAD, _("Reload"), wxDefaultPosition, wxDefaultSize, 0 );
+    item62->Add( item65, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM, 5 );
 
-    item56->Add( item63, 0, wxGROW|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
+    item56->Add( item62, 0, wxGROW|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
     item0->Add( item56, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
 
