@@ -49,6 +49,7 @@ CMuleNotebook::CMuleNotebook( wxWindow *parent, wxWindowID id, const wxPoint& po
 	: wxNotebook(parent, id, pos, size, style, name)
 {
 	m_popup_enable = true;
+	m_popup_widget = NULL;
 };
 
 
@@ -322,4 +323,3 @@ void CMuleNotebook::MouseMotion(wxMouseEvent &event)
 	}
 	event.Skip();
 }
-
