@@ -2828,9 +2828,6 @@ void CProgressImage::CreateSpan()
 			}
 		}
 		
-		//
-		// FIXME: Requested parts !
-		//
 	}
 	//
 	// Now line rendering
