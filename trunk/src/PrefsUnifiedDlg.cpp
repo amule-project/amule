@@ -875,8 +875,13 @@ void PrefsUnifiedDlg::BuildItemList(Preferences_Struct *prefs, char * appdir)  /
 	listRse.AddTail(new RseBool(IDC_EXT_CONN_USETCP, prefs->ECUseTCPPort, "ECUseTCPPort", false,"ExternalConnect"));
 	listRse.AddTail(new RseInt(IDC_EXT_CONN_TCP_PORT, prefs->ECPort, "ECPort", 4712, "ExternalConnect"));
 	listRse.AddTail(new RseStringEncrypted(IDC_EXT_CONN_PASSWD, prefs->ECPassword, sizeof(prefs->ECPassword), "ECPassword", "ExternalConnect"));
-	listRse.AddTail(new RseBool(0, prefs->bDlgTabsOnTop, "DlgTabsOnTop", false));  // no GUI yet	
+	listRse.AddTail(new RseBool(IDC_NEWSTYLETABS, prefs->bDlgTabsOnTop, "DlgTabsOnTop", false));  
+
+	// Kry
 	listRse.AddTail(new RseBool(IDC_IPFONOFF, prefs->IPFilterOn, "IpFilterOn", true)); 	 
+	listRse.AddTail(new RseBool(IDC_SRCSEEDS, prefs->UseSrcSeeds, "UseSrcSeeds", false)); 	 
+	listRse.AddTail(new RseBool(IDC_PROGBAR, prefs->ProgBar, "ShowProgressBar", true)); 	 
+	listRse.AddTail(new RseBool(IDC_PERCENT, prefs->Percent, "ShowPercent", false)); 	 
 
 }
 
@@ -931,7 +936,7 @@ PrefsUnifiedDlg::PrefsUnifiedDlg(wxWindow *parent)
 	if (theApp.glob_prefs->BDlgTabsOnTop())
 		preferencesDlgTop( this, TRUE ); 
 	else
-    	preferencesDlgLeft( this, TRUE ); 
+    		preferencesDlgLeft( this, TRUE ); 
 	CentreOnParent();
 	pdtcShareSelector = ((CDirectoryTreeCtrl*)FindWindowById(IDC_SHARESELECTOR, this));
 	pbuttonColor = (wxButton*)FindWindowById(IDC_COLOR_BUTTON, this);
