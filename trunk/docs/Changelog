@@ -11,6 +11,9 @@ Version 2.0.0rc7 - The "xxxxxxxxxxxxxxxx" version.
 		* ExternalConn: protected GETCATTITLE command from buffer
 		  overflow.
 		* Start removing unused code from ExternalConn.cpp.
+		* Fixed high CPU usage problem in amuleweb, thanks to jaguarwan for
+		  the report. Daemonizing amuleweb should be done using the -q
+		  switch.
 
 Version 2.0.0rc6 - The "We're so EVIL that we make you lose a sock in every pair" version.
 ----------

@@ -296,7 +296,13 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, CmdId *UNU
 #if wxUSE_GUI
 			// Do nothing, the shell is in another place.
 #else
-			TextShell(ProgName, commands);
+			if (m_KeepQuiet) {
+				while(true) {
+					sleep(2);
+				}
+			} else {
+				TextShell(ProgName, commands);
+			}
 			Show(_("\nOk, exiting ") + ProgName + wxT("...\n"));
 #endif
 			Post_Shell();
