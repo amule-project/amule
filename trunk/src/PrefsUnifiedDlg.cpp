@@ -899,8 +899,8 @@ void PrefsUnifiedDlg::BuildItemList(Preferences_Struct *prefs, const wxString ap
 	listRse.Append(new RseBool(IDC_SAFEMAXCONN, prefs->UseSafeMaxConn, wxT("SafeMaxConn"), false, wxT("FakeCheck"))); 		
 	listRse.Append(new RseBool(IDC_VERBOSEPACKETERROR, prefs->VerbosePacketError, wxT("VerbosePacketError"), false, wxT("FakeCheck"))); 
 	listRse.Append(new RseDirAssured(IDC_OSDIR, prefs->OSDirectory, appdir, wxT("OSDirectory"), wxT(""), wxT("FakeCheck")));	
-	listRse.Append(new RseBool(/*IDC_USESKIN*/0, prefs->UseSkinFile, wxT("UseSkinFile"), false, wxT("MiscGUIOptions"))); 
-	listRse.Append(new RseDirAssured(/*IDC_SKINFILE*/0, prefs->SkinFile, appdir, wxT("SkinFile"), wxT(""), wxT("MiscGUIOptions")));	
+	listRse.Append(new RseBool(IDC_USESKIN, prefs->UseSkinFile, wxT("UseSkinFile"), false, wxT("SkinGUIOptions"))); 
+	listRse.Append(new RseDirAssured(IDC_SKINFILE, prefs->SkinFile, appdir, wxT("SkinFile"), wxT(""), wxT("SkinGUIOptions")));	
 }
 
 //==============================================================================
@@ -922,6 +922,7 @@ BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	EVT_SPINCTRL(IDC_MAXUP, PrefsUnifiedDlg::OnSpinMaxDLR)
 	EVT_SPINCTRL(IDC_MAXDOWN, PrefsUnifiedDlg::OnSpinMaxDLR)
 	EVT_CHECKBOX(IDC_UDPDISABLE, PrefsUnifiedDlg::OnCheckBoxChange)
+	EVT_CHECKBOX(IDC_USESKIN, PrefsUnifiedDlg::OnCheckBoxChange)
 	
 	EVT_BUTTON(ID_PREFS_OK_TOP, PrefsUnifiedDlg::OnOk)
 	EVT_BUTTON(ID_PREFS_OK_LEFT, PrefsUnifiedDlg::OnOk)
@@ -934,6 +935,7 @@ BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	EVT_BUTTON(IDC_SELTEMPDIR, PrefsUnifiedDlg::OnButtonDir)
 	EVT_BUTTON(IDC_SELINCDIR,  PrefsUnifiedDlg::OnButtonDir)
 	EVT_BUTTON(IDC_SELOSDIR,  PrefsUnifiedDlg::OnButtonDir)
+	EVT_BUTTON(IDC_SELSKINFILE,  PrefsUnifiedDlg::OnButtonDir)
 	EVT_BUTTON(IDC_BTN_BROWSE_WAV, PrefsUnifiedDlg::OnButtonBrowseWav)
 	EVT_BUTTON(IDC_BROWSEV, PrefsUnifiedDlg::OnButtonBrowseVideoplayer)
 	EVT_BUTTON(IDC_EDITADR, PrefsUnifiedDlg::OnButtonEditAddr)
@@ -1261,8 +1263,12 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 			}
 			break;
 		}
-				
-		default:	break;
+		case IDC_USESKIN: {
+			Prse(IDC_SKINFILE)->SetEnabled(bIsChecked);
+		}
+		
+		default:	
+			break;
 	}
 }
 
@@ -1310,6 +1316,8 @@ void PrefsUnifiedDlg::OnButtonDir(wxCommandEvent& event)
 		prse = Prse(IDC_INCFILES);
 	else if (idButton == IDC_SELOSDIR)
 		prse = Prse(IDC_OSDIR);
+	else if (idButton == IDC_SELSKINFILE)
+		prse = Prse(IDC_SKINFILE);
 	else
 		wxASSERT(false);
 	((RseDirAssured*)prse)->SelectDir();
