@@ -24,6 +24,7 @@
 #include "otherfunctions.h"	// Needed for nstrdup
 #include "CMemFile.h"		// Needed for CMemFile
 #include "otherstructs.h"	// Needed for Header_Struct
+#include "types.h"		// Needed for wxFileSize_t
 
 // Copy constructor
 Packet::Packet(Packet &p)
