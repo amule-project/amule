@@ -337,14 +337,11 @@ void CPartFile::CreatePartFile()
 {
 	// use lowest free partfilenumber for free file (InterCeptor)
 	int i = 0; 
-	wxString filename; 	
 	do { 
 		i++; 
-		filename.Printf(wxT("%s/%03i.part"), unicode2char(theApp.glob_prefs->GetTempDir()), i); 
-	} while (wxFileName::FileExists(filename));
-	
-	m_partmetfilename.Printf(wxT("%03i.part.met"), i);
-	m_fullname = theApp.glob_prefs->GetTempDir() + wxT("/") + m_partmetfilename;
+		m_partmetfilename = wxString::Format(wxT("%03i.part"), i);
+		m_fullname = theApp.glob_prefs->GetTempDir() + wxT("/") + m_partmetfilename;
+	} while (wxFileName::FileExists(m_fullname));
 	
 	wxString strPartName = m_partmetfilename.Left( m_partmetfilename.Length() - 4);
 	taglist.Add( new CTag(FT_PARTFILENAME, strPartName ) );
