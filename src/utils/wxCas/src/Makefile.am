@@ -9,7 +9,7 @@ wxcas_SOURCES = onlinesig.cpp \
 		wxcascte.cpp
 		
 if USE_MINGW
-  wxcas_SOURCES += wxcas.rc
+  wxcas_SOURCES += ../wxcas.rc
 endif
 
 noinst_HEADERS = onlinesig.h \
