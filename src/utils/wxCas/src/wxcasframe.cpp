@@ -53,6 +53,7 @@
 #include "../pixmaps/save.xpm"
 #include "../pixmaps/print.xpm"
 #include "../pixmaps/about.xpm"
+#include "../pixmaps/stat.xpm"
 //#include "../pixmaps/green.xpm"
 //#include "../pixmaps/red.xpm"
 #endif
@@ -228,7 +229,57 @@ WxCasFrame::OnBarRefresh (wxCommandEvent & event)
 void
 WxCasFrame::OnBarSave (wxCommandEvent & event)
 {
-  printf ("To be implemented\n");
+#if USE_XPM_BITMAPS
+  wxBitmap *statBitmap = new wxBitmap (stat_xpm);
+#else
+  wxBitmap *statBitmap = new wxBITMAP (stat);
+#endif
+
+  wxMemoryDC memdc;
+  memdc.SelectObject (*statBitmap);
+  memdc.SetFont (wxFont::wxFont (12, wxSWISS, wxNORMAL, wxBOLD));
+  memdc.SetTextForeground (*wxWHITE);
+  memdc.DrawText (m_statLine_1->GetLabel (), 25, 8);
+  memdc.DrawText (m_statLine_2->GetLabel (), 25, 26);
+  memdc.DrawText (m_statLine_3->GetLabel (), 25, 43);
+  memdc.DrawText (m_statLine_4->GetLabel (), 25, 60);
+  memdc.DrawText (m_statLine_5->GetLabel (), 25, 77);
+  memdc.DrawText (m_statLine_6->GetLabel (), 25, 94);
+  memdc.SelectObject (wxNullBitmap);
+
+  wxImage statImage = statBitmap->ConvertToImage ();
+
+  delete statBitmap;
+
+  wxString saveFileName = wxFileSelector (_("Save Statistics Image"),
+					  wxFileName::GetHomeDir (),
+					  _("aMule-online-sign"),
+					  (const wxChar *) NULL,
+					  wxT ("PNG files (*.png)|*.png|")
+					  wxT ("JPEG files (*.jpg)|*.jpg|")
+					  wxT ("BMP files (*.bmp)|*.bmp|"),
+					  wxSAVE);
+
+  if (saveFileName.empty ())
+    {
+      return;
+    }
+
+
+  bool loaded;
+  wxString extension = saveFileName.AfterLast ('.').Lower ();
+
+
+  // This one guesses image format from filename extension
+  // (it may fail if the extension is not recognized):
+  loaded = statImage.SaveFile (saveFileName);
+
+  if (!loaded)
+    {
+      wxMessageBox (_T ("No handler for this file type."),
+		    _T ("File was not saved"), wxOK | wxCENTRE, this);
+    }
+  statImage.Destroy ();
 }
 
 // Print button
