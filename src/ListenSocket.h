@@ -87,6 +87,9 @@ private:
 	bool	ProcessExtPacket(const char *packet, uint32 size, uint8 opcode);
 
 	CClientReqSocketHandler* my_handler;
+#ifdef AMULE_DAEMON
+	wxMutex handler_exit;
+#endif
 };
 
 #ifdef AMULE_DAEMON
@@ -107,11 +110,9 @@ private:
 #ifdef AMULE_DAEMON
 public:
 	// lfroen: for some reason wx can't Wait for detached threads
-	wxThreadError Delete();
+	~CClientReqSocketHandler();
+
 private:
-
-	wxMutex exit_mutex; 
-
 	void *Entry();
 #else
 	DECLARE_EVENT_TABLE();

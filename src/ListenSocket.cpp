@@ -114,6 +114,7 @@ CClientReqSocket::~CClientReqSocket()
 		theApp.listensocket->RemoveSocket(this);
 	}
 #ifdef AMULE_DAEMON
+	wxASSERT(deletethis);
 	if ( my_handler ) {
 		Safe_Delete();
 	}
@@ -182,10 +183,12 @@ void CClientReqSocket::Disconnect(const wxString& strReason){
 			m_client->Safe_Delete();
 		} 
 		m_client = NULL;
-	}
-
-	if (!OnDestroy()) {
-		Safe_Delete();
+	} else {
+		// lfroen: m_client->Safe_Delete internally Destroy() socket
+		// which effectively crashes daemon
+		if (!OnDestroy()) {
+			Safe_Delete();
+		}
 	}
 };
 
@@ -218,7 +221,11 @@ void CClientReqSocket::Safe_Delete()
                         // lfroen: this code is executed with app mutex locked. In order
                         // to prevent deadlock in deleted thread, temporary unlock it here
                         theApp.data_mutex.Unlock();
-                        my_handler->Delete();
+
+			// wait handler thread to exit
+			handler_exit.Lock();
+			handler_exit.Unlock();
+
                         theApp.data_mutex.Lock();
                 }
 #endif
@@ -2068,11 +2075,14 @@ CClientReqSocketHandler::CClientReqSocketHandler(CClientReqSocket* parent)
 }
 
 #ifdef AMULE_DAEMON
+CClientReqSocketHandler::~CClientReqSocketHandler()
+{
+	wxASSERT(socket == 0);
+}
 
 void *CClientReqSocketHandler::Entry()
 {
-	exit_mutex.Lock();
-	printf("CClientReqSocketHandler: start thread for %p\n", socket);
+	socket->handler_exit.Lock();
 	while ( !TestDestroy() ) {
 		if ( socket->deletethis ) {
 			printf("CClientReqSocketHandler: socket %p being deleted\n", socket);
@@ -2083,14 +2093,11 @@ void *CClientReqSocketHandler::Entry()
 				if ( socket->WaitForWrite(0, 0) ) {
 					socket->OnSend(0);
 				}
-				//continue;
 			} else  {
-				printf("CClientReqSocketHandler: error %d on socket %p\n", socket->LastError(), socket);
 				break;
 			}
 		}
 		if ( socket->WaitForLost(0, 0) ) {
-			printf("CClientReqSocketHandler: connection lost on %p\n", socket);
 			break;
 		}
 		// lfroen: tradeof here - short wait time for high performance on delete
@@ -2101,15 +2108,11 @@ void *CClientReqSocketHandler::Entry()
 		}
 	}
 	printf("CClientReqSocketHandler: thread for %p exited\n", socket);
+	socket->handler_exit.Unlock();
 	socket->my_handler = 0;
-	exit_mutex.Unlock();
-	return 0;
-}
+	socket = 0;
 
-wxThreadError CClientReqSocketHandler::Delete()
-{
-	exit_mutex.Lock();
-	return wxThread::Delete();
+	return 0;
 }
 
 #else
