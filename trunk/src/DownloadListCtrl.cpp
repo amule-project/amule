@@ -398,29 +398,20 @@ void CDownloadListCtrl::OnDrawItem(int item, wxDC* dc, const wxRect& rect, const
 		return;
 	}
 
-	// Create a temporary bitmap upon which we draw. Later the contents are blit'd
-	// onto the provided DC. Doing it this way avoids flicker, since there is only
-	// done one visible drawing.
-	wxBitmap buffer( rect.GetWidth(), rect.GetHeight() );
-	wxMemoryDC tmp_dc;
-	tmp_dc.SelectObject( buffer );
-	tmp_dc.SetFont(GetFont());
-	
 	CtrlItem_Struct *content = (CtrlItem_Struct *) GetItemData(item);
-
 	
 	// Define text-color and background
 	if ((content->type == FILE_TYPE) && (highlighted)) {
 		if (GetFocus()) {
-			tmp_dc.SetBackground(*m_hilightBrush);
-			tmp_dc.SetTextForeground(wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHTTEXT));
+			dc->SetBackground(*m_hilightBrush);
+			dc->SetTextForeground(wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHTTEXT));
 		} else {
-			tmp_dc.SetBackground(*m_hilightUnfocusBrush);
-			tmp_dc.SetTextForeground(wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHTTEXT));
+			dc->SetBackground(*m_hilightUnfocusBrush);
+			dc->SetTextForeground(wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHTTEXT));
 		}
 	} else {
-		tmp_dc.SetBackground(*(wxTheBrushList->FindOrCreateBrush(wxSystemSettings::GetColour(wxSYS_COLOUR_LISTBOX), wxSOLID)));
-		tmp_dc.SetTextForeground(wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT));
+		dc->SetBackground(*(wxTheBrushList->FindOrCreateBrush(wxSystemSettings::GetColour(wxSYS_COLOUR_LISTBOX), wxSOLID)));
+		dc->SetTextForeground(wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT));
 	}
 	
 
@@ -435,28 +426,28 @@ void CDownloadListCtrl::OnDrawItem(int item, wxDC* dc, const wxRect& rect, const
 	
 		wxColor newcol( ((int)old.Red() * 65) / 100, ((int)old.Green() * 65) / 100, ((int)old.Blue() * 65) / 100);
 		
-		tmp_dc.SetPen( wxPen(newcol, 1, wxSOLID) );
+		dc->SetPen( wxPen(newcol, 1, wxSOLID) );
 	} else {
-		tmp_dc.SetPen(*wxTRANSPARENT_PEN);
+		dc->SetPen(*wxTRANSPARENT_PEN);
 	}
 
 
-	tmp_dc.SetBrush(tmp_dc.GetBackground());
+	dc->SetBrush(  dc->GetBackground() );
 	// Mapping the rectHL onto the bitmap
-	tmp_dc.DrawRectangle( rectHL.x - rect.x, rectHL.y - rect.y, rectHL.width, rectHL.height );	
+	dc->DrawRectangle( rectHL.x, rectHL.y, rectHL.width, rectHL.height );	
 	
-	tmp_dc.SetPen(*wxTRANSPARENT_PEN);
+	dc->SetPen(*wxTRANSPARENT_PEN);
 
 	if ( content->type == FILE_TYPE ) {
 		// If we have category, override textforeground with what category tells us.
 		CPartFile *file = (CPartFile *) content->value;
 		if ( file->GetCategory() ) {
-			tmp_dc.SetTextForeground(theApp.glob_prefs->GetCatColor(file->GetCategory()));
+			dc->SetTextForeground(theApp.glob_prefs->GetCatColor(file->GetCategory()));
 		}		
 	}
 
 	// Various constant values we use
-	const int iTextOffset = ( rect.GetHeight() - tmp_dc.GetCharHeight() + 1) / 2;
+	const int iTextOffset = ( rect.GetHeight() - dc->GetCharHeight() + 1) / 2;
 	const int iOffset = 4;
 
 	// The starting end ending position of the tree
@@ -489,9 +480,9 @@ void CDownloadListCtrl::OnDrawItem(int item, wxDC* dc, const wxRect& rect, const
 		
 		// Draw the item
 		if ( content->type == FILE_TYPE ) {
-			DrawFileItem(&tmp_dc, iCurrent, target_rec, content);
+			DrawFileItem(dc, iCurrent, target_rec, content);
 		} else {
-			DrawSourceItem(&tmp_dc, iCurrent, target_rec, content);
+			DrawSourceItem(dc, iCurrent, target_rec, content);
 		}
 		
 		// Increment to the next column
@@ -512,39 +503,34 @@ void CDownloadListCtrl::OnDrawItem(int item, wxDC* dc, const wxRect& rect, const
 		const int middle = ( cur_rec.height + 1 ) / 2;
 
 		// Set up a new pen for drawing the tree
-		tmp_dc.SetPen( *(wxThePenList->FindOrCreatePen(tmp_dc.GetTextForeground(), 1, wxSOLID)) );
+		dc->SetPen( *(wxThePenList->FindOrCreatePen(dc->GetTextForeground(), 1, wxSOLID)) );
 
 		if (isChild) {
 			// Draw the line to the status bar
-			tmp_dc.DrawLine(tree_end, middle, tree_start + 3, middle);
+			dc->DrawLine(tree_end, middle, tree_start + 3, middle);
 
 			// Draw the line to the child node
 			if (hasNext) {
-				tmp_dc.DrawLine(treeCenter, middle, treeCenter, cur_rec.height + 1);
+				dc->DrawLine(treeCenter, middle, treeCenter, cur_rec.height + 1);
 			}
 			
 			// Draw the line back up to parent node
 			if (notFirst) {
-				tmp_dc.DrawLine(treeCenter, middle, treeCenter, -1);
+				dc->DrawLine(treeCenter, middle, treeCenter, -1);
 			}
 		} else if ( isOpenRoot ) {
 			// Draw empty circle
-			tmp_dc.SetBrush(*wxTRANSPARENT_BRUSH);
+			dc->SetBrush(*wxTRANSPARENT_BRUSH);
 			
-			tmp_dc.DrawCircle( treeCenter, middle, 3 );			
+			dc->DrawCircle( treeCenter, middle, 3 );			
 			
 			// Draw the line to the child node
 			if (hasNext) {
-				tmp_dc.DrawLine(treeCenter, middle + 3, treeCenter, cur_rec.height + 1);
+				dc->DrawLine(treeCenter, middle + 3, treeCenter, cur_rec.height + 1);
 			}
 		}
 
 	}
-
-	// Copy the result of all this drawing to the target DC
-	dc->Blit( rect.x, rect.y, rect.width, rect.height, &tmp_dc, 0, 0 );
-
-	tmp_dc.SelectObject( wxNullBitmap );
 }
 
 void CDownloadListCtrl::Init()
