@@ -117,13 +117,13 @@ void CDownloadQueue::CompDownDatarateOverhead()
 	// We want at least 11 elements before we will start doing averages
 	if ( m_AverageDDRO_list.size() > 10 ) {
 		
-		// We want 150 elements at most
-		if ( m_AverageDDRO_list.size() > 150 ) {
+		// We want 50 elements at most (~5s)
+		if ( m_AverageDDRO_list.size() > 50 ) {
 			m_nDownDatarateTotal -= m_AverageDDRO_list.front();
 		
 			m_AverageDDRO_list.pop_front();
 		
-			m_nDownDatarateOverhead = m_nDownDatarateTotal / 150.0f;
+			m_nDownDatarateOverhead = m_nDownDatarateTotal / 50.0f;
 		} else {
 			m_nDownDatarateOverhead = m_nDownDatarateTotal / (double)m_AverageDDRO_list.size();
 		}
