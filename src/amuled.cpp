@@ -144,8 +144,8 @@ int CamuleDaemonApp::OnRun()
 	AddDebugLogLineM(true, wxT("CamuleDaemonApp::OnRun()"));
 	
 	if ( !thePrefs::AcceptExternalConnections() ) {
-		AddLogLineM(true, _("ERROR: amule daemon is useless when external connections disabled.") +
-			_("Change configuration either from GUI or by editing $HOME/.eMule"));
+		AddLogLineM(true, _("ERROR: amule daemon is useless when external connections disabled. "
+			"Change configuration either from GUI or by editing $HOME/.eMule"));
 		return 0;
 	}
 	
