@@ -454,14 +454,16 @@ unsigned int DecodeBase32(const char *base32Buffer, unsigned int base32BufLen, u
 	return nDecodeLen;
 }
 
-wxString EncodeBase64(const char* buffer, unsigned int bufLen)
+wxString EncodeBase64(const char* /*buffer*/, unsigned int /*bufLen*/)
 {
 	// TODO
+	return wxEmptyString;
 }
 
-unsigned int DecodeBase64(const char *base32Buffer, unsigned int base32BufLen, unsigned char *buffer)
+unsigned int DecodeBase64(const char */*base32Buffer*/, unsigned int /*base32BufLen*/, unsigned char */*buffer*/)
 {
 	// TODO
+	return 0;
 }
 
 // Returns the text assosiated with a category type
