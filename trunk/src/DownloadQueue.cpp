@@ -657,7 +657,6 @@ void CDownloadQueue::RemoveFile(CPartFile* toremove)
 
 	for ( std::deque<CPartFile*>::iterator it = filelist.begin(); it != filelist.end(); it++ ) {
 		if (toremove == (*it)) {
-			delete (*it);
 			filelist.erase(it);
 			return;
 		}
