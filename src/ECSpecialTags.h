@@ -99,6 +99,7 @@ class CEC_PartFile_Tag : public CECTag {
   		uint32		Speed()		{ return GetTagByNameSafe(EC_TAG_PARTFILE_SPEED)->GetInt32Data(); }
   		uint32		Prio()		{ return GetTagByNameSafe(EC_TAG_PARTFILE_PRIO)->GetInt32Data(); }
   		wxString	PartStatus()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_PART_STATUS)->GetStringData(); }
+ 		uint8		FileCat()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_CAT)->GetInt8Data(); }
 
 		#ifdef EC_REMOTE
 		wxString	GetFileStatusString();

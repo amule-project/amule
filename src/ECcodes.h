@@ -738,6 +738,9 @@ enum {
 	EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT,
 	EC_TAG_PARTFILE_SOURCE_COUNT_XFER,
 	EC_TAG_PARTFILE_ED2K_LINK,
+	EC_TAG_PARTFILE_CAT,
+	EC_TAG_PARTFILE_LAST_RECV,
+	EC_TAG_PARTFILE_LAST_SEEN_COMP,
 
 	/*!
 	 * This tag contain info about status of gaps in PartFile and availability of each part.
