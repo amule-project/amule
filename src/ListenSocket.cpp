@@ -2089,7 +2089,9 @@ CListenSocket::~CListenSocket()
 void *CListenSocket::Entry()
 {
 	while ( !TestDestroy() ) {
-		if ( WaitForAccept() ) {
+		// lfroen - WaitForAccept using busy waiting on wxGTK !
+		// see src/unix/gsocket.cpp in wx source
+		if ( WaitForAccept(0, 1) ) {
 			if ( !theApp.IsReady ) {
 				wxSocketBase *s = Accept(false);
 				if ( s ) {
@@ -2098,6 +2100,9 @@ void *CListenSocket::Entry()
 				continue;
 			}
 			OnAccept(0);
+		} else {
+			// lfroen - can't Yield from non-main thead
+			wxSleep(10);
 		}
 	}
 	return 0;
