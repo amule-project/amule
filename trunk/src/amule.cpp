@@ -654,12 +654,6 @@ bool CamuleApp::OnInit()
 	}
 
 
-	if (glob_prefs->GetMaxGraphDownloadRate() < glob_prefs->GetMaxDownload())
-		glob_prefs->SetDownloadlimit(UNLIMITED);
-
-	if (glob_prefs->GetMaxGraphUploadRate() < glob_prefs->GetMaxUpload())
-		glob_prefs->SetUploadlimit(UNLIMITED);
-
 	// Calculate maximum download-rate
 	if ( glob_prefs->GetMaxDownload() == 0 && glob_prefs->GetMaxUpload() < 10)
 		glob_prefs->SetDownloadlimit((glob_prefs->GetMaxUpload()*4)) ;
