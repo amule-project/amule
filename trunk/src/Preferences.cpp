@@ -583,22 +583,43 @@ void CPreferences::RemoveCat(size_t index)
 	}
 }
 
+// Jacobo221 - Several issues on the browsers:
+// netscape is named Netscape on some systems
+// MozillaFirebird is named mozilla-firebird and also firebird on some systems
+// Niether Galeon tabs nor epiphany tabs have been tested
+// Konqueror alternatives is (Open on current window, fails if no konq already open):
+//	dcop `dcop konqueror-* | head -n1` konqueror-mainwindow#1 openURL '%s'
 wxString CPreferences::GetBrowser()
 {
 	wxString cmd;
-	switch ( prefs->Browser ) {
-		case 0: cmd = wxT("konqueror '%s'"); break;
-		case 1: cmd = wxT("xterm -e sh -c 'mozilla %s'"); break;
-		case 2: cmd = wxT("firefox '%s'"); break;
-		case 3:	cmd = wxT("firebird '%s'"); break;
-		case 4:	cmd = wxT("opera '%s'"); break;
-		case 5: cmd = wxT("netscape '%s'"); break;
-		case 6: cmd = wxT("galeon '%s'"); break;
-		case 7: cmd = wxT("epiphany '%s'"); break;
-		case 8: cmd = char2unicode(prefs->CustomBrowser); break;
-		default:
-			printf("Unable to determine selected browser!\n");
-	}
-
+	if( prefs->BrowserTab )
+                switch ( prefs->Browser ) {
+                        case 0: cmd = wxT("kfmclient exec '%s'"); break;
+                        case 1: cmd = wxT("sh -c \"if ! mozilla -remote 'openURL(%s, new-tab)'; then mozilla '%s'; fi\""); break;
+                        case 2: cmd = wxT("sh -c \"if ! firefox -remote 'openURL(%s, new-tab)'; then firefox '%s'; fi\""); break;
+                        case 3: cmd = wxT("sh -c \"if ! MozillaFirebird -remote 'openURL(%s, new-tab)'; then MozillaFirebird '%s'; fi\""); break;
+                        case 4: cmd = wxT("opera --newpage '%s'"); break;
+                        case 5: cmd = wxT("sh -c \"if ! netscape -remote 'openURLs(%s,new-tab)'; then netscape '%s'; fi\""); break;
+                        case 6: cmd = wxT("sh -c \"if galeon -n '%s'; then galeon '%s'; fi\""); break;
+                        case 7: cmd = wxT("sh -c \"if epiphany -n '%s'; then epiphany '%s'; fi\""); break;
+                        case 8: cmd = char2unicode(prefs->CustomBrowser); break;
+                        default:
+                                printf("Unable to determine selected browser!\n");
+                }
+        else
+		switch ( prefs->Browser ) {
+			case 0: cmd = wxT("konqueror '%s'"); break;
+			case 1: cmd = wxT("sh -c 'mozilla %s'"); break;
+			case 2: cmd = wxT("firefox '%s'"); break;
+			case 3:	cmd = wxT("MozillaFirebird '%s'"); break;
+			case 4:	cmd = wxT("opera '%s'"); break;
+			case 5: cmd = wxT("netscape '%s'"); break;
+			case 6: cmd = wxT("galeon '%s'"); break;
+			case 7: cmd = wxT("epiphany '%s'"); break;
+			case 8: cmd = char2unicode(prefs->CustomBrowser); break;
+			default:
+				printf("Unable to determine selected browser!\n");
+		}
+	
 	return cmd;
 }

@@ -946,7 +946,7 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 	char buffer[256];
 
 	if (zero) {
-		emulesig_out.Write("0\n0.0|0.0|0\n", 12);
+		emulesig_out.Write("0\n0.0|0.0|0", 12);
 		amulesig_out.Write("0\n0\n0\n0\n0\n0.0\n0.0\n0\n0\n", 22);
 	} else {
 		if (serverconnect->IsConnected()) {
@@ -978,6 +978,18 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 			} else {
 				amulesig_out.Write("H\n",2);
 			}
+		} else if (serverconnect->IsConnecting()) {
+			emulesig_out.Write("0",1);    // shouldn't be modified, to mantain eMule compatibility
+
+                	amulesig_out.Write("2",1);
+                	amulesig_out.Write("\n",1);
+                	amulesig_out.Write("0",1);
+                	amulesig_out.Write("\n",1);
+                	amulesig_out.Write("0",1);
+                	amulesig_out.Write("\n",1);
+                	amulesig_out.Write("0",1);
+                	amulesig_out.Write("\n",1);
+                	amulesig_out.Write("0\n",2);
 		} else {	// Not connected to a server
 			emulesig_out.Write("0",1);
 			amulesig_out.Write("0\n0\n0\n0\n0\n",10);

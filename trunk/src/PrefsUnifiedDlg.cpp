@@ -893,6 +893,7 @@ void PrefsUnifiedDlg::BuildItemList(Preferences_Struct *prefs, const wxString ap
 	listRse.Append(new RseBool(IDC_METADATA, prefs->ExtractMetaData, wxT("ExtractMetaDataTags"), false,wxT("ExternalConnect"))); 	
 	listRse.Append(new RseBool(IDC_CHUNKALLOC, prefs->AllocFullChunk, wxT("FullChunkAlloc"), false,wxT("ExternalConnect"))); 		
 	listRse.Append(new RseBool(IDC_FULLALLOCATE, prefs->AllocFullPart, wxT("FullPartAlloc"), false,wxT("ExternalConnect"))); 		
+	listRse.Append(new RseBool(IDC_FCHECKTABS, prefs->BrowserTab, wxT("BrowserTab"), true, wxT("FakeCheck")));
 	listRse.Append(new RseString(IDC_FCHECKSELF, prefs->CustomBrowser, sizeof(prefs->CustomBrowser), wxT("CustomBrowser"), wxT(""), wxT("FakeCheck")));
 	listRse.Append(new RseInt(IDC_FCHECK, prefs->Browser, wxT("Browser"), 0,wxT("FakeCheck")));	
 	listRse.Append(new RseBool(IDC_SAFEMAXCONN, prefs->UseSafeMaxConn, wxT("SafeMaxConn"), false, wxT("FakeCheck"))); 		

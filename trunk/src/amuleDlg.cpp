@@ -609,6 +609,8 @@ void CamuleDlg::ShowConnectionState(bool connected, wxString server, bool iconOn
 
 		m_wndToolbar->Realize();
 
+		theApp.OnlineSig();
+
 		ShowUserCount(0, 0);
 	}
 
