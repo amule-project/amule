@@ -41,10 +41,10 @@
 IMPLEMENT_APP (WxCas)
      bool WxCas::OnInit ()
 {
-	wxFrame *frame = new WxCasFrame (_("wxCas, aMule online statistics"));
+  wxFrame *frame = new WxCasFrame (_("wxCas, aMule online statistics"));
 
-	// Show all
-	frame->Show (TRUE);
-	SetTopWindow (frame);
-	return true;
+  // Show all
+  frame->Show (TRUE);
+  SetTopWindow (frame);
+  return true;
 }
