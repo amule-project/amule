@@ -129,7 +129,7 @@ void CClientReqSocket::OnClose(int nErrorCode)
 
 void CClientReqSocket::Disconnect(CString strReason){
 	//AsyncSelect(0);
-	if (byConnected != ES_DISCONNECTED) {
+
 		byConnected = ES_DISCONNECTED;
 		if (!client) {
 			Safe_Delete();
@@ -145,7 +145,7 @@ void CClientReqSocket::Disconnect(CString strReason){
 				Safe_Delete();
 			}
 		}
-	}
+
 };
 
 /* Kry - this eMule function has no use for us, because we have Destroy()
@@ -162,6 +162,7 @@ void CClientReqSocket::Delete_Timed()
 */
 void CClientReqSocket::Safe_Delete()
 {
+		theApp.AddSocketDeleteDebug((uint32) this,created);
 		// Paranoia is back.
 		SetNotify(0);
 		Notify(FALSE);		
@@ -1889,12 +1890,14 @@ void CListenSocket::KillAllSockets()
 {
 	// 0.42e reviewed - they use delete, but our safer is Destroy...
 	// But I bet it would be better to call Safe_Delete on the socket.
+	// Update: no... Safe_Delete MARKS for deletion. We need to delete it.
 	for (POSITION pos = socket_list.GetHeadPosition();pos != 0;) {
 		CClientReqSocket* cur_socket = socket_list.GetNext(pos);
 		if (cur_socket->client) {
 			delete cur_socket->client;
 		} else {
 			cur_socket->Safe_Delete();
+			cur_socket->Destroy(); 
 		}
 	}
 }

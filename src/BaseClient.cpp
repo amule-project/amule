@@ -245,7 +245,9 @@ CUpDownClient::~CUpDownClient()
 	//printf("2...");
 	if (socket) {
 		socket->client = 0; 
-		socket->Safe_Delete();
+		socket->Safe_Delete(); 
+		// We're going down anyway....
+		socket->Destroy();
 	}
 	//printf("3...");
 	if (m_pszUsername) {
