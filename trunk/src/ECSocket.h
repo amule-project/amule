@@ -34,13 +34,17 @@ public:
 	virtual ECSocket& Read(uint8&);
 	virtual ECSocket& Read(uint16&);
 	virtual ECSocket& Read(uint32&);
+	#ifndef __WXMAC__
 	virtual ECSocket& Read(uint64&);
+	#endif
 	virtual ECSocket& Read(wxString&);
 
 	virtual ECSocket& Write(const uint8&);
 	virtual ECSocket& Write(const uint16&);
 	virtual ECSocket& Write(const uint32&);
+	#ifndef __WXMAC__
 	virtual ECSocket& Write(const uint64&);
+	#endif
 	virtual ECSocket& Write(const wxString&);
 	
 	virtual ECSocket& ReadRaw(void* buffer,off_t length) { wxSocketClient::Read(buffer,length); return *this; };
