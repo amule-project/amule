@@ -1,4 +1,7 @@
-0.1:
+2004/04/27:
+- Added system load and uptime
+
+2004/04/16
 
 - First stable release to be distributed with aMule 2.0.0rc3
 - For now, just display online statistics with aMule splash
