@@ -209,6 +209,7 @@ amuled_SOURCES = ListenSocket.cpp \
         packets.cpp \
         PartFile.cpp \
         Preferences.cpp \
+	Proxy.cpp \
         SafeFile.cpp \
         SearchList.cpp \
         server.cpp \
