@@ -279,7 +279,7 @@ void CServerListCtrl::RemoveAllServers(int state)
 	int found = -1;
 	while (pos != -1) {
 		if (GetItemData(pos) == connected) {
-			wxMessageBox(wxT("You are connected to a server you are trying to delete. Please disconnect first. The server was NOT deleted."), wxT("Info"), wxOK);
+			wxMessageBox(_("You are connected to a server you are trying to delete. Please disconnect first. The server was NOT deleted."), _("Info"), wxOK);
 			found = pos;
 			} else {
 				server_list->RemoveServer((CServer*)this->GetItemData(pos));

@@ -211,12 +211,12 @@ bool CUpDownClient::IsDifferentPartBlock() const // [Tarod 12/22/2002]
 			if ( last_done_part != next_requested_part)
 			{ 
 				different_part = true;
-				AddDebugLogLineM(false, wxT("Session ended due to new chunk."));
+				AddDebugLogLineM(false, _("Session ended due to new chunk."));
 			}
 			if (md4cmp(last_done_block->FileID, next_requested_block->FileID) != 0)
 			{ 
 				different_part = true;
-				AddDebugLogLineM(false, wxT("Session ended due to different file."));
+				AddDebugLogLineM(false, _("Session ended due to different file."));
 			}
 		} 
    	}
