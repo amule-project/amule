@@ -322,6 +322,13 @@ void CMuleListCtrl::OnColumnLClick(wxListEvent& evt)
 	if ( !GetSortFunc() )
 		return;
 
+	// Get the currently focused item
+	long pos = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_FOCUSED );
+	long item = -1;
+	if (pos != -1) {
+		item = GetItemData(pos);
+	}
+	
 	// If the user clicked on the same column, then revert the order, otherwise sort ascending.
 	if ( evt.GetColumn() == GetSortColumn() ) {
 
@@ -339,7 +346,25 @@ void CMuleListCtrl::OnColumnLClick(wxListEvent& evt)
 	}
 
 	// The sortlist function does the acutal work
-	SortList();		
+	SortList();
+	
+	// Set focus on item if any was focused
+	if (item != -1) {
+		long it_pos = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_DONTCARE );
+		while ( it_pos != -1) {
+	
+			if (GetItemData( it_pos ) == item) {
+				break;
+			}
+
+			it_pos = GetNextItem( it_pos, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+		}
+		if (it_pos != -1) {
+			SetItemState(it_pos,wxLIST_STATE_FOCUSED, wxLIST_STATE_FOCUSED & wxLIST_STATE_SELECTED);
+			EnsureVisible(it_pos);
+		}
+	}
+	
 }
 
 
