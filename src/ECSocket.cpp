@@ -23,6 +23,7 @@
 #include "ECSocket.h"
 
 #include "endianfix.h"		// For EndianSwap
+#include "gsocket-fix.h"	// Needed for wxSOCKET_REUSEADDR
 
 
 ECSocket::ECSocket()
