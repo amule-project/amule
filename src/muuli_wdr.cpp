@@ -2850,7 +2850,7 @@ wxSizer *PreferencesRemoteControlsTab( wxWindow *parent, bool call_fit, bool set
     wxCheckBox *item25 = new wxCheckBox( parent, IDC_EXT_CONN_PASSWD_ENABLE, _("Enable password"), wxDefaultPosition, wxDefaultSize, 0 );
     item24->Add( item25, 1, wxALIGN_CENTER, 5 );
 
-    wxTextCtrl *item26 = new wxTextCtrl( parent, IDC_EXT_CONN_PASSWD, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
+    wxTextCtrl *item26 = new wxTextCtrl( parent, IDC_EXT_CONN_PASSWD, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD );
     item24->Add( item26, 1, wxALIGN_CENTER, 5 );
 
     item17->Add( item24, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
