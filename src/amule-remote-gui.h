@@ -263,10 +263,6 @@ class CRemoteContainer {
 			for(typename std::list<T *>::iterator j = this->m_items.begin(); j != this->m_items.end(); j++) {
 				I item_id = GetItemID(*j);
 				if ( core_files.count(item_id) == 0 ) {
-					// item may contain data that need to be freed externally, before
-					// dtor is called and memory freed
-					this->DeleteItem(*j);
-					
 					del_ids.push_back(item_id);
 				}
 			}
@@ -282,6 +278,10 @@ class CRemoteContainer {
 				for(typename std::list<T *>::iterator k = this->m_items.begin(); k != this->m_items.end(); k++) {
 					if ( *j == GetItemID(*k) ) {
 						this->m_items.erase(k);
+
+						// item may contain data that need to be freed externally, before
+						// dtor is called and memory freed
+						this->DeleteItem(*k);
 						break;
 					}
 				}
