@@ -507,7 +507,7 @@ bool ECSocket::ReadBuffer(wxSocketBase *sock, void *buffer, unsigned int len, vo
 				while (parms->z.avail_out < len) {
 					if (parms->z.avail_out) {
 						memcpy(buffer, parms->z.next_out, parms->z.avail_out);
-						(Bytef *)buffer += parms->z.avail_out;
+						buffer = (Bytef*)buffer + parms->z.avail_out;
 						len -= parms->z.avail_out;
 					}
 					// consumed all output
@@ -542,7 +542,7 @@ bool ECSocket::ReadBuffer(wxSocketBase *sock, void *buffer, unsigned int len, vo
 					if (parms->z.avail_in) {
 						memcpy(buffer, parms->z.next_in, parms->z.avail_in);
 						len -= parms->z.avail_in;
-						(Bytef *)buffer += parms->z.avail_in;
+						buffer = (Bytef*)buffer + parms->z.avail_in;
 					}
 					if (len >= EC_SOCKET_BUFFER_SIZE) {
 						// read directly to app mem, to avoid unnecessary memcpy()s
@@ -585,7 +585,7 @@ bool ECSocket::WriteBuffer(wxSocketBase *sock, const void *buffer, unsigned int 
 				// using zlib compressed i/o
 				while ((remain_in = (EC_SOCKET_BUFFER_SIZE - (parms->z.next_in - (Bytef *)parms->in_ptr) - parms->z.avail_in)) < len) {
 					memcpy(parms->z.next_in + parms->z.avail_in, buffer, remain_in);
-					(Bytef *)buffer += remain_in;
+					buffer = (Bytef*)buffer + remain_in;
 					len -= remain_in;
 					parms->z.avail_in += remain_in;
 					CALL_Z_FUNCTION(deflate, (&parms->z, Z_NO_FLUSH));
@@ -614,7 +614,7 @@ bool ECSocket::WriteBuffer(wxSocketBase *sock, const void *buffer, unsigned int 
 					if (parms->z.avail_out) {
 						memcpy(parms->z.next_out, buffer, parms->z.avail_out);
 						len -= parms->z.avail_out;
-						(Bytef *)buffer += parms->z.avail_out;
+						buffer = (Bytef*)buffer + parms->z.avail_out;
 					}
 					parms->z.next_out = (Bytef *)parms->out_ptr;
 					parms->z.avail_out = EC_SOCKET_BUFFER_SIZE;
