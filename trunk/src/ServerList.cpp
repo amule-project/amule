@@ -352,8 +352,8 @@ void CServerList::RemoveServer(CServer* out_server)
 	
 		POSITION pos = list.Find( out_server );
 		if ( pos != NULL ) {
-			if (theApp.downloadqueue->cur_udpserver == out_server) {
-				theApp.downloadqueue->cur_udpserver = 0;
+			if (theApp.downloadqueue->GetUDPServer() == out_server) {
+				theApp.downloadqueue->SetUDPServer( 0 );
 			}	
 			list.RemoveAt(pos);
 			++delservercount;

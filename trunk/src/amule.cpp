@@ -635,7 +635,7 @@ bool CamuleApp::OnInit()
 	clientcredits	= new CClientCreditsList();
 	
 	// bugfix - do this before creating the uploadqueue
-	downloadqueue	= new CDownloadQueue(sharedfiles);
+	downloadqueue	= new CDownloadQueue();
 	uploadqueue	= new CUploadQueue();
 	ipfilter	= new CIPFilter();
 
@@ -648,7 +648,7 @@ bool CamuleApp::OnInit()
 	serverlist->Init();
 
 	// init downloadqueue
-	downloadqueue->Init();
+	downloadqueue->LoadMetFiles( thePrefs::GetTempDir() );
 
 	m_app_state = APP_STATE_RUNNING;
 
@@ -1395,7 +1395,7 @@ void CamuleApp::OnTCPTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 void CamuleApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 {
 	// Former TimerProc section
-	static uint32	msPrev1, msPrev5, msPrevSave, msPrev10;
+	static uint32	msPrev1, msPrev5, msPrevSave;
 	uint32 msCur = statistics->GetUptimeMsecs();
 	static uint32	msPrevHist;
 
@@ -1449,11 +1449,6 @@ void CamuleApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 		statistics->UpdateStatsTree();
 	}
 
-	if (msCur-msPrev10 > 10000) {  // every 10 seconds
-		msPrev10 = msCur;
-		//downloadqueue->SortByPriority();
-	}	
-	
 	if (msCur-msPrevSave >= 60000) {
 		msPrevSave = msCur;
 		wxString buffer;
