@@ -1,11 +1,13 @@
-Version 2.0.0-rc2 - The Unnamed version.
+Version 2.0.0-rc2 - The 'white rabbit' version.
 -------------
 2004-04-11
 
 	aquatroll:
+	
 		* Fixed Win32 compilation (again).
 
 	Ariel:
+	
 		* Implemented completed parts count on file rehash.
 		   Prevents your downloads to completely lost on a wrong .part.met write.
 		   
@@ -14,26 +16,33 @@ Version 2.0.0-rc2 - The Unnamed version.
 		* *BSD compatibility
 		
 	deltaHF:
+	
 	        * New icon for aMule in DL/UP window ;)
 		* curl-config now >= 7.9.5 (for debian)
 		* i18n stuff
+		* Removed double catalan entry from prefs
+		* Fixed some typos
 
 	falso:
+	
 		* Added cas (C aMule Statistics), a remake of aStats but 10 times faster (still lack online sign).
 		* amulesign.dat now shows the Total transfered values in bytes.
 		* Added Session upload and download to amulesign and uptime too.
 	
 	Hetfield:
+	
 		* Added new inclusion path if distro in not detected
 		* fixed wrong and duplicated inclusion in ClientCredits.*
 		* Modified configure scripts, only amule is compiled by default
 		* Added cas, ed2k, amulecmd, amulegui, amule webserver, amule webserver gui
 		* fixed wrong zlib check in configure    
 		
-	hoschy, one-2-one:
+	hoschy, one-2-one, godard, PowerMike, hellimod:
+	
 	        * MacOSX stuff
 		  	
 	Kry:
+	
 		* Implemented the Complete count on search results and on file publishing.
 		   This feature added since aMule 2.0.0-rc1 and eMule 0.42e was not released
 		   with the rc1 for network technical reasons (still on testing with lugdunummaster).
@@ -98,18 +107,22 @@ Version 2.0.0-rc2 - The Unnamed version.
 		* Make aMule compile on wxWidgets 2.5 (and CVS) version.
 		
 	Madcat:
+	
 	        * win32 LaunchUrl() function
 		* Added amule-win32.HOWTO.txt
 		* Better win32 version of Hostname() function
 
 	shakraw:
+	
 		* rewrote WebSocket.* and modified WebServer.*: they use wxThreads and
 		  wxSockets to be used on other platform too.
 		  
 	the-polish:
+	
 	        * win32 stuff
 		  
 	Xaignar:
+	
 		* Amule no longer writes met files when priority is changed through the
 		   auto-priority subsystem. Thus hd-writes are substancially reduced 
 		   depending on the number of files set to auto-priority.
@@ -128,7 +141,20 @@ Version 2.0.0-rc2 - The Unnamed version.
 		* Fixed the problem where "completed percent" of files that hadn't 
 		   transfered any bits yet would display a negative percentage (Disp. 8)
 
-
+		   
+        ** Special thanks to niet for his DNS service, bootstrap for CVS service, stefanero & Citroklar for their great      help with a lot of stuff.
+	   Thx also to all the users for reporting bugs and testing aMule (feel free to report more) :)
+	   As usual thx to eMule & wxWidgets devs and everyone i forgot ;)
+	
+	** New translators:
+	
+	   Supergirl: Croatian
+	   rommel:    Portuguese
+	   sNeo:      Italian (Napoletan)
+	   
+	** Follow the white rabbit and u'll find rc3 soon ;)
+	   
+	
 Version 2.0.0-rc1 - The 'Mules and Rabbits love carrots' version.
 -------------
 2004-03-26
