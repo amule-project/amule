@@ -49,6 +49,9 @@ Version 2.0.0rc6 - The '???' version.
 		  amuleweb(Dlg) and amulecmd(Dlg). This is to run amuleweb
 		  without any output to stdout, so that it does not need a
 		  terminal.
+		* Changed amulewebDLG and amulecmdDLG to use sizers.
+		* Removed a bug in WebSocket.cpp: was not testing the return
+		  value of Accept, this could create a thread with a NULL socket.
 
 	rommel:
 		* Patch to implement the commands serverconnect and reloadipf
