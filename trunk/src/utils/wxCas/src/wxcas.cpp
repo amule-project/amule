@@ -38,6 +38,8 @@
 #error You must set wxUSE_PRINTING_ARCHITECTURE to 1 in setup.h to compile wxCas.
 #endif
 
+#include <wx/image.h>
+
 #include "wxcas.h"
 
 // Application implementation

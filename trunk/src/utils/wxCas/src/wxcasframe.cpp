@@ -34,20 +34,12 @@
 #pragma hdrstop
 #endif
 
+#include <wx/image.h>
+
 #include "wxcasframe.h"
 #include "wxcasprint.h"
 
-#ifdef __WXMSW__
-#define USE_XPM_BITMAPS 0
-#else
-#define USE_XPM_BITMAPS 1
-#endif
-
-#if USE_XPM_BITMAPS && defined(__WXMSW__) && !wxUSE_XPM_IN_MSW
-#error You need to enable XPM support to use XPM bitmaps with toolbar!
-#endif // USE_XPM_BITMAPS
-
-#if USE_XPM_BITMAPS
+#ifndef __WXMSW__
 #include "../pixmaps/wxcas.xpm"
 #include "../pixmaps/refresh.xpm"
 #include "../pixmaps/stop.xpm"
@@ -55,8 +47,6 @@
 #include "../pixmaps/print.xpm"
 #include "../pixmaps/about.xpm"
 #include "../pixmaps/stat.xpm"
-//#include "../pixmaps/green.xpm"
-//#include "../pixmaps/red.xpm"
 #endif
 
 // Constructor
@@ -132,19 +122,12 @@ wxFrame ((wxFrame *) NULL, -1, title, wxDefaultPosition, wxDefaultSize,
   m_frameVBox->Add (m_imgPanel, 0, wxALL | wxADJUST_MINSIZE, 10);
 
 // Toolbar Pixmaps
-#if USE_XPM_BITMAPS
-  m_toolBarBitmaps[0] = new wxBitmap (refresh_xpm);
-  m_toolBarBitmaps[1] = new wxBitmap (save_xpm);
-  m_toolBarBitmaps[2] = new wxBitmap (print_xpm);
-  m_toolBarBitmaps[3] = new wxBitmap (about_xpm);
-  m_toolBarBitmaps[4] = new wxBitmap (stop_xpm);
-#else
-  m_toolBarBitmaps[0] = new wxBITMAP (refresh);
-  m_toolBarBitmaps[1] = new wxBITMAP (save);
-  m_toolBarBitmaps[2] = new wxBITMAP (print);
-  m_toolBarBitmaps[3] = new wxBITMAP (about);
-  m_toolBarBitmaps[4] = new wxBITMAP (stop);
-#endif
+  m_toolBarBitmaps[0] = wxBITMAP (refresh);
+  m_toolBarBitmaps[1] = wxBITMAP (save);
+  m_toolBarBitmaps[2] = wxBITMAP (print);
+  m_toolBarBitmaps[3] = wxBITMAP (about);
+  m_toolBarBitmaps[4] = wxBITMAP (stop);
+
 
   // Constructing toolbar
   m_toolbar =
@@ -152,20 +135,20 @@ wxFrame ((wxFrame *) NULL, -1, title, wxDefaultPosition, wxDefaultSize,
 		   wxTB_HORIZONTAL | wxTB_FLAT);
   SetToolBar (m_toolbar);
 
-  m_toolbar->AddTool (ID_BAR_REFRESH, "Refresh", *(m_toolBarBitmaps[0]),
+  m_toolbar->AddTool (ID_BAR_REFRESH, "Refresh", m_toolBarBitmaps[0],
 		      _("Stop Auto Refresh"));
 
   m_toolbar->AddSeparator ();
 
-  m_toolbar->AddTool (ID_BAR_SAVE, "Save", *(m_toolBarBitmaps[1]),
+  m_toolbar->AddTool (ID_BAR_SAVE, "Save", m_toolBarBitmaps[1],
 		      _("Save Online Statistics image"));
 
-  m_toolbar->AddTool (ID_BAR_PRINT, "Print", *(m_toolBarBitmaps[2]),
+  m_toolbar->AddTool (ID_BAR_PRINT, "Print", m_toolBarBitmaps[2],
 		      _("Print Online Statistics image"));
 
   m_toolbar->AddSeparator ();
 
-  m_toolbar->AddTool (ID_BAR_ABOUT, "About", *(m_toolBarBitmaps[3]),
+  m_toolbar->AddTool (ID_BAR_ABOUT, "About", m_toolBarBitmaps[3],
 		      _("About wxCas"));
 
   m_toolbar->SetMargins (2, 2);
@@ -203,15 +186,15 @@ END_EVENT_TABLE ()
 wxImage *
 WxCasFrame::GetStatImage ()
 {
-#if USE_XPM_BITMAPS
-  wxBitmap *statBitmap = new wxBitmap (stat_xpm);
-#else
-  wxBitmap *statBitmap = new wxBITMAP (stat);
-#endif
+  wxBitmap statBitmap = wxBITMAP (stat);
 
   wxMemoryDC memdc;
-  memdc.SelectObject (*statBitmap);
+  memdc.SelectObject (statBitmap);
+  #ifdef __WXMSW__
+  memdc.SetFont (wxFont::wxFont (10, wxSWISS, wxNORMAL, wxBOLD));
+  #else
   memdc.SetFont (wxFont::wxFont (12, wxSWISS, wxNORMAL, wxBOLD));
+  #endif
   memdc.SetTextForeground (*wxWHITE);
   memdc.DrawText (m_statLine_1->GetLabel (), 25, 8);
   memdc.DrawText (m_statLine_2->GetLabel (), 25, 26);
@@ -221,9 +204,7 @@ WxCasFrame::GetStatImage ()
   memdc.DrawText (m_statLine_6->GetLabel (), 25, 94);
   memdc.SelectObject (wxNullBitmap);
 
-  wxImage *statImage = new wxImage (*statBitmap);
-
-  delete statBitmap;
+  wxImage *statImage = new wxImage (statBitmap);
 
   return statImage;
 }
@@ -237,7 +218,7 @@ WxCasFrame::OnBarRefresh (wxCommandEvent & event)
       m_timer->Stop ();
       m_toolbar->DeleteTool (ID_BAR_REFRESH);
       m_toolbar->InsertTool (0, ID_BAR_REFRESH, "Refresh",
-			     *(m_toolBarBitmaps[4]), wxNullBitmap,
+			     m_toolBarBitmaps[4], wxNullBitmap,
 			     wxITEM_NORMAL, _("Start Auto Refresh"));
       SetStatusText (_("Auto Refresh stopped"));
 
@@ -247,7 +228,7 @@ WxCasFrame::OnBarRefresh (wxCommandEvent & event)
       m_timer->Start ();
       m_toolbar->DeleteTool (ID_BAR_REFRESH);
       m_toolbar->InsertTool (0, ID_BAR_REFRESH, "Refresh",
-			     *(m_toolBarBitmaps[0]), wxNullBitmap,
+			     m_toolBarBitmaps[0], wxNullBitmap,
 			     wxITEM_NORMAL, _("Stop Auto Refresh"));
       SetStatusText (_("Auto Refresh started"));
     }

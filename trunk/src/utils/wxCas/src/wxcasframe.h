@@ -38,8 +38,6 @@
 #include <wx/statline.h>
 #include <wx/toolbar.h>
 #include <wx/timer.h>
-//#include <wx/print.h>
-//#include <wx/printdlg.h>
 
 #include "wxcascanvas.h"
 #include "onlinesig.h"
@@ -82,7 +80,8 @@ private:
   wxUint32 m_maxLineCount;
 
   wxToolBar *m_toolbar;
-  wxBitmap *m_toolBarBitmaps[5];
+  
+  wxBitmap m_toolBarBitmaps[5];
 
   wxBoxSizer *m_frameVBox;
   wxBoxSizer *m_sigPanelVBox;

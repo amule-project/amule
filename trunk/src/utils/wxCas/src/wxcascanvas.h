@@ -43,7 +43,7 @@ public:
 
   //Constructor
   WxCasCanvas (wxWindow * parent, wxWindow * model);
-  void DrawImg ();
+  void DrawImg (wxDC *dc);
   void Update ();
 
   //Destructor
@@ -57,7 +57,7 @@ protected:
 
 private:
 
-    wxBitmap * m_bitmap;
+    wxBitmap m_bitmap;
   wxWindow *m_model;
 };
 

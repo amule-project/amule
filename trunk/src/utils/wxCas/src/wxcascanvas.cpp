@@ -34,21 +34,11 @@
 #pragma hdrstop
 #endif
 
-#include "wxcascanvas.h"
-
 #include <wx/image.h>
 
-#ifdef __WXMSW__
-#define USE_XPM_BITMAPS 0
-#else
-#define USE_XPM_BITMAPS 1
-#endif
+#include "wxcascanvas.h"
 
-#if USE_XPM_BITMAPS && defined(__WXMSW__) && !wxUSE_XPM_IN_MSW
-#error You need to enable XPM support to use XPM bitmaps with toolbar!
-#endif // USE_XPM_BITMAPS
-
-#if USE_XPM_BITMAPS
+#ifndef __WXMSW__
 #include "../pixmaps/amule.xpm"
 #endif
 
@@ -57,16 +47,13 @@ WxCasCanvas::WxCasCanvas (wxWindow * parent, wxWindow * model):wxPanel (parent,
 	 -1)
 {
   // Add Bitmap Splash
-#if USE_XPM_BITMAPS
-  m_bitmap = new wxBitmap (amule_xpm);
-#else
-  m_bitmap = new wxBITMAP (amule);
-#endif
+  m_bitmap = wxBITMAP (amule);
 
   m_model = model;
 
   // Draw Image
-  DrawImg ();
+  wxClientDC dc (this);
+  DrawImg (&dc);
 }
 
 // Destructor
@@ -83,7 +70,8 @@ END_EVENT_TABLE ()
 void
 WxCasCanvas::OnPaint (wxPaintEvent & event)
 {
-  DrawImg ();
+  wxPaintDC dc (this);
+  DrawImg (&dc);
 }
 
 // Update if model size has changed
@@ -95,33 +83,34 @@ WxCasCanvas::Update ()
   GetClientSize (&wI, &h);
   if (wI != wS)
     {
-      DrawImg ();
+	  wxClientDC dc (this);
+      DrawImg (&dc);
     }
 }
 
 // Draw image
 void
-WxCasCanvas::DrawImg ()
+WxCasCanvas::DrawImg (wxDC *dc)
 {
   // rescale image
   wxInt32 ph, pw, h;
   m_model->GetClientSize (&pw, &ph);
 
   h =
-    (wxInt32) ((double) (m_bitmap->GetHeight ()) / m_bitmap->GetWidth () *
+    (wxInt32) ((double) (m_bitmap.GetHeight ()) / m_bitmap.GetWidth () *
 	       pw);
 
-  wxBitmap *bitmap = new wxBitmap (wxImage (m_bitmap->ConvertToImage ()).
+  wxBitmap bitmap (wxImage (m_bitmap.ConvertToImage ()).
 				   Scale (pw, h));
 
   SetClientSize (pw, h);
 
   // Draw image
-  wxPaintDC dc (this);
-  PrepareDC (dc);
-  dc.DrawBitmap (*bitmap, 0, 0);
-  delete bitmap;
-
+  PrepareDC (*dc);
+  dc->BeginDrawing();
+  dc->DrawBitmap (bitmap, 0, 0);
+  dc->EndDrawing();
+  
   // Frame layout
   GetParent ()->Layout ();
   GetParent ()->Fit ();
