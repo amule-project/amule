@@ -119,7 +119,8 @@ struct Pending_Block_Struct{
 	Requested_Block_Struct*	block;
 	struct z_stream_s*       zStream;       // Barry - Used to unzip packets
 	uint32		totalUnzipped; // Barry - This holds the total unzipped bytes for all packets so far
-	bool			bZStreamError;
+	UINT					fZStreamError : 1,
+							fRecovered    : 1;	
 };
 
 struct Gap_Struct{
