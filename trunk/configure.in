@@ -298,8 +298,8 @@ CHECK_WX_PARTIAL_VERSION
 
 if test x"$WX_PARTIAL_VERSION" = x"5"; then
   WX_VERSION="2_5"
-  systray=no
-  utf8_systray=no
+#dnl  systray=no
+#dnl  utf8_systray=no
 else
   WX_VERSION="any"
 fi
@@ -426,7 +426,7 @@ yes)
 		USE_UTF8_SYSTRAY="yes"
 	else
 		
-		if test "$WX_VERSION" = "2_5"; then
+		if test x"$WX_VERSION" = x"2_5"; then
 			echo "UTF-8 GTK SysTray disabled, wx native settings will be used"
 		else
 			echo "***** Warning if you want to enable UTF-8 GTK SysTray, --enable-systray must be active"
