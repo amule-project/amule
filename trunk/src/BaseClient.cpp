@@ -64,6 +64,8 @@
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "amuleIPV4Address.h"	// Needed for amuleIPV4Address
 
+//#define NET_TEST 
+
 // some client testing variables
 static wxString crash_name   = "[Invalid User Name]"; 
 static wxString empty_name = "[Empty User Name]";
@@ -92,6 +94,7 @@ public:
 CUpDownClient::CUpDownClient(CClientReqSocket* sender)
 {
 	socket = sender;
+	//printf("Socket %x set on client %x\n",socket, this);
 	reqfile = 0;
 	Init();
 }
@@ -99,6 +102,7 @@ CUpDownClient::CUpDownClient(CClientReqSocket* sender)
 CUpDownClient::CUpDownClient(uint16 in_port, uint32 in_userid,uint32 in_serverip, uint16 in_serverport,CPartFile* in_reqfile)
 {
 	socket = NULL;
+	//printf("Socket %x set on client %x\n",socket, this);
 	Init();
 	m_nUserID = in_userid;
 	m_nUserPort = in_port;
@@ -238,7 +242,7 @@ CUpDownClient::~CUpDownClient()
 	}
 	//printf("2...");
 	if (socket) {
-		socket->client = 0;
+		socket->client = 0; // Kry - Doesn't Safe_Delete do this already?
 		socket->Safe_Delete();
 	}
 	//printf("3...");
@@ -503,320 +507,7 @@ void CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
 	m_byInfopacketsReceived |= IP_EDONKEYPROTPACK;
 	if (m_byInfopacketsReceived == IP_BOTH)
 		InfoPacketsReceived();
-	
-#if 0
-	try {
 
-		#if 0
-
-		bool bDumpClientInfo = false;	// Setted if unusual happens
-
-		#endif
-
-		if ( 16 != data->Read(&m_achUserHash,16) ) {
-			throw CInvalidPacket("short packet reading user hash");
-		}
-		uint32 nUserID;
-		if ( 4 != data->Read(&nUserID,4) ) {
-			throw CInvalidPacket("short packet reading user id");
-		}
-		if (!m_nUserID || nUserID < 16777216) {
-			m_nUserID = nUserID;
-		}
-		if ( 2 != data->Read(&m_nUserPort,2) ) {
-			throw CInvalidPacket("short packet reading user port");
-		}
-		uint32	tagcount;
-		if ( 4 != data->Read(&tagcount,4) ) {
-			throw CInvalidPacket("short packet reading tag count");
-		}
-
-		#if 0
-
-		if ( tagcount > 7 ) {
-			printf("Huh, unusual tagcount %lu in Hello packet\n", (unsigned long)tagcount);
-		}
-
-		#endif
-
-		// TODO: Check if we get everything needed!
-
-		/* It seems that various Mules and Donkeys send tagcount 2, Old MLDonkey sends
-		tagcount 3, new mldonkeys 4. There are also some clients sending tagcount 5
-		and 7, what are those ? */
-
-		for (uint32 i = 0;i < tagcount; i++) {
-			CTag* temptag = new CTag(data);
-
-			if ( temptag->tag->tagname && !strcmp(temptag->tag->tagname, "pr") ) {
-				// EDonkey hybrid does send integer 1
-			} else switch(temptag->tag->specialtag) {
-				case CT_NAME: {
-					if ( temptag->GetType() != TAG_STRING ) {
-						throw CInvalidPacket("invalid data type for username");
-					}
-
-					// Verifying username for determining a thief
-					wxString oldusername;
-					bool bOldUser = false;
-
-					if (m_pszUsername) {
-						bOldUser = true;
-						oldusername.Format("%s",m_pszUsername);					
-						delete[] m_pszUsername;
-						m_pszUsername = NULL; 
-					}
-
-					m_pszUsername = NULL;
-					m_pszUsername = temptag->tag->stringvalue ? nstrdup(temptag->tag->stringvalue) : nstrdup(crash_name);
-				
-					if(strcmp(m_pszUsername, "")==0) {
-						delete[] m_pszUsername;
-						m_pszUsername = NULL;
-						m_pszUsername=nstrdup(empty_name);
-					}
-
-					// If username has changed
-					if ((bOldUser && (oldusername.CmpNoCase(m_pszUsername)!=0)) && !thief) {
-						uint64 id = getUID();
-						leechertype=0;
-						if(theApp.listensocket->offensecounter.find(id) != theApp.listensocket->offensecounter.end()) {
-							theApp.listensocket->offensecounter[id]++;
-						} else {
-							theApp.listensocket->offensecounter[id] = (uint32) 1;
-						}
-						theApp.listensocket->offensecounter[0]++;
-					}
-				}
-				break;
-				case CT_VERSION:
-					if ( temptag->GetType() != TAG_INTEGER ) {
-						throw CInvalidPacket("invalid data type for version");
-					}
-					m_nClientVersion = temptag->tag->intvalue;
-					break;
-				case CT_PORT:
-					if ( temptag->GetType() != TAG_INTEGER ) {
-						throw CInvalidPacket("invalid data type for port number");
-					}
-					m_nUserPort = temptag->tag->intvalue;
-					break;
-				case CT_FRIENDSHARING:
-					// ignore this one
-					break;
-
-				#if 0
-
-				default:
-					printf("Unknown tag %u in HelloAnswer\n", (unsigned int)temptag->tag->specialtag);
-					temptag->DumpToStdout();
-					bDumpClientInfo = true;
-					break;
-
-				#endif
-
-			}
-			delete temptag;
-		}
-
-		// Make up a username if we get none
-		if ( !m_pszUsername ) {
-			m_pszUsername = nstrdup(empty_name);
-		}
-
-		if ( 4 != data->Read(&m_dwServerIP,4) ) {
-			throw CInvalidPacket("short packet reading server IP");
-		}
-
-		if ( 2 != data->Read(&m_nServerPort,2) ) {
-			throw CInvalidPacket("short packet reading server port");
-		}
-		// Hybrid now has an extra uint32.. What is it for?
-		// Also, many clients seem to send an extra 6? These are not eDonkeys or Hybrids..
-		if ( data->GetLength() - data->GetPosition() == 4 ) {
-			uint32 test;
-			data->Read(&test,4);
-			if (test == *((uint32*)"MLDK")) {
-				m_bIsNewMLD = true;
-			} else {
-				m_bIsHybrid = true;
-				m_fSharedDirectories = 1;
-			}
-		}
-
-		#if 0
-
-		if ( data->GetLength() != data->GetPosition() ) {
-			long extra = data->GetLength() - data->GetPosition();
-			printf("Additional data in hello packet: %ld bytes\n", extra);
-			if ( extra > 0 ) {
-				char *tmpbuffer = new char[extra];
-				extra = data->Read(tmpbuffer, extra);
-				HexDump(tmpbuffer, extra);
-				delete[] tmpbuffer;
-				bDumpClientInfo = true;
-			}
-		}
-
-		#endif
-
-		// tecxx 1609 2002 - add client's server to serverlist (Moved to uploadqueue.cpp)
-
-		if (socket) {
-			struct sockaddr_in sockAddr;
-			memset(&sockAddr, 0, sizeof(sockAddr));
-			wxIPV4address address;
-			socket->GetPeer(address);
-			
-			sockAddr.sin_addr.s_addr=inet_addr(address.GetAddress().GetData());
-			
-			//uint32 nSockAddrLen = sizeof(sockAddr);
-			//socket->GetPeerName((SOCKADDR*)&sockAddr,(int*)&nSockAddrLen);
-			m_dwUserIP = sockAddr.sin_addr.s_addr;
-			strcpy(m_szFullUserIP,inet_ntoa(sockAddr.sin_addr));
-		} else {
-			printf("Huh, socket failure. Avoided crash this time.\n");
-		}
-
-		if (theApp.glob_prefs->AddServersFromClient()) {
-			in_addr addhost;
-			addhost.s_addr = m_dwServerIP;
-			CServer* addsrv = new CServer(m_nServerPort, inet_ntoa(addhost));
-			addsrv->SetListName(addsrv->GetAddress());
-
-			if (!theApp.amuledlg->serverwnd->serverlistctrl->AddServer(addsrv, true)) {
-				delete addsrv;
-			}
-		}
-
-		// get client credits
-		// key, 255.255.0.0 subnetmask
-		if(!HasLowID() && m_nUserID != m_dwUserIP) {
-			m_nUserID = m_dwUserIP;
-		}
-		uchar key[16];
-		memcpy(key,m_achUserHash,16);
-		credits = theApp.clientcredits->GetCredit(key);
-		
-		if ((m_Friend = theApp.friendlist->SearchFriend(key, m_dwUserIP, m_nUserPort)) != NULL) {
-			// Link the friend to that client
-			if (m_Friend->m_LinkedClient){
-				if (m_Friend->m_LinkedClient != this){
-					bool bFriendSlot = m_Friend->m_LinkedClient->GetFriendSlot();
-					// avoid that an unwanted client instance keeps a friend slot
-					m_Friend->m_LinkedClient->SetFriendSlot(false);
-					m_Friend->m_LinkedClient->m_Friend = NULL;
-					m_Friend->m_LinkedClient = this;
-					// move an assigned friend slot between different client instances which are/were also friends
-					m_Friend->m_LinkedClient->SetFriendSlot(bFriendSlot);
-				}
-			} else {
-				m_Friend->m_LinkedClient = this;
-			}
-			md4cpy(m_Friend->m_abyUserhash,GetUserHash());
-			m_Friend->m_dwHasHash = md4cmp(m_Friend->m_abyUserhash, CFriend::sm_abyNullHash) ? 1 : 0;
-			m_Friend->m_strName = m_pszUsername;
-			m_Friend->m_dwLastUsedIP = m_dwUserIP;
-			m_Friend->m_nLastUsedPort = m_nUserPort;
-			m_Friend->m_dwLastSeen = time(NULL);
-			theApp.friendlist->RefreshFriend(m_Friend);
-		} else {
-			// avoid that an unwanted client instance keeps a friend slot
-			SetFriendSlot(false);
-		}		
-		ReGetClientSoft();
-	
-		#if 0
-
-		if ( bDumpClientInfo ) {
-			printf("from client with:");
-			if ( m_pszUsername ) {
-				printf(" Username '%s'", m_pszUsername);
-			}
-			printf(" Software: '%s'", m_clientVerString.c_str());
-			printf("\n");
-		}
-
-		#endif
-
-	}
-
-	catch (CInvalidPacket e) {
-
-		#if 0
-
-		data->Seek(0);
-		char *tmpbuffer = new char[data->GetLength()];
-		if ( data->GetLength() == data->Read(tmpbuffer, data->GetLength()) ) {
-			HexDump(tmpbuffer, data->GetLength());
-		}
-		delete tmpbuffer;
-
-		#endif
-
-		// Leave thing function, since there nothing more we
-		// can do about this packet
-		throw wxString(wxT("Received invalid hello packet! - ")) + e.what();
-	}
-	
-	// Thief detection
-	if(!thief) {
-		// Stolen Hash detection [BlackRat]
-		uint64 id = getUID();
-		if(theApp.serverconnect->GetClientID()!= m_nUserID && memcmp(m_achUserHash, theApp.glob_prefs->GetUserHash(), 16)==0) {
-			// This is a hasl stealer !
-			thief=true;
-			leechertype=5;
-			if(theApp.listensocket->offensecounter.find(id) != theApp.listensocket->offensecounter.end()) {
-				theApp.listensocket->offensecounter[id]++;
-			} else {
-				theApp.listensocket->offensecounter[id] = (uint32) 1;
-			}
-		}
-
-		// Detection id change [BlackRat]
-		/*
-		There is still something to do here
-		Actually, due to problems with HashMap, everybody here is consider as id stealers...
-		*/
-
-		uint64 lasthash;
-		uint64 thishash = 0;
-		for(int i = 0; i < 8; i++ ) {
-			thishash += GetUserHash()[i] << (i*8) ^ GetUserHash()[i+8] << (i*8);
-		}
-		if((theApp.listensocket->hashbase.find(id) != theApp.listensocket->hashbase.end()) && ((lasthash = theApp.listensocket->hashbase[id]) != thishash)) {
-			// id changed, this is a id stealer !
-			leechertype=4;
-			if(theApp.listensocket->offensecounter.find(id) != theApp.listensocket->offensecounter.end()) {
-				theApp.listensocket->offensecounter[id]++;
-			} else {
-				theApp.listensocket->offensecounter[id] = (uint32) 1;
-			}
-			theApp.listensocket->offensecounter[0]++;
-		}
-		theApp.listensocket->hashbase[id] = thishash;
-
-		// Famous stolen hashs/names [BlackRat]
-		if(m_pszUsername && ( strcmp(m_pszUsername, "pbwll") == 0 || strcmp(m_pszUsername, "unix user") == 0 || strstr(m_pszUsername, "Odin") == m_pszUsername) && !thief) {
-			// This is a thief !!!
-			thief=true;
-			leechertype=3;
-			if(theApp.listensocket->offensecounter.find(id) != theApp.listensocket->offensecounter.end()) {
-				theApp.listensocket->offensecounter[id]++;
-			} else {
-				theApp.listensocket->offensecounter[id] = 1;
-			}
-			theApp.listensocket->offensecounter[0]++;
-		}
-
-		if((theApp.listensocket->offensecounter.find(id) != theApp.listensocket->offensecounter.end()) && (theApp.listensocket->offensecounter[id] >= 3)) {
-			// Made suspicious actions....
-			thief=true;
-		}
-	}
-
-#endif	
 }
 
 
@@ -856,7 +547,7 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer) {
 	// Support for ET_MOD_VERSION [BlackRat]
 	// lemonfan - I count 9 tags...
 	// Kry - Yes, my fault
-	data->Write((uint32)8); /* 7 -> 8 */ 
+	data->Write((uint32)9); /* 7 -> 8 */ 
 
 	CTag tag1(ET_COMPRESSION,1);
 	tag1.WriteTagToFile(data);
@@ -1191,7 +882,7 @@ void CUpDownClient::Disconnected()
 		case US_CONNECTING:
 		case US_WAITCALLBACK:
 		case US_ERROR:
-			#ifdef NET_TEST
+			#ifdef NET_TEST		
 			printf("ULState - Connecting or WaitCallback or Error - Delete\n");
 			#endif
 			bDelete = true;
@@ -1229,10 +920,10 @@ void CUpDownClient::Disconnected()
 		#ifdef NET_TEST
 		printf("Socket Exists - deleting\n");
 		#endif
-		socket->client=0;
 		socket->Safe_Delete();
 	}
 	socket = 0;
+	//printf("Socket %x set on client %x\n",socket, this);
 	if (m_iFileListRequested) {
 		theApp.amuledlg->AddDebugLogLine(false,_("Unable to retrieve shared files from '%s'"),GetUserName());
 		m_iFileListRequested = 0;
@@ -1253,12 +944,20 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 	#ifdef NET_TEST
 	printf("Trying to connect\n");
 	#endif
-	if (theApp.listensocket->TooManySockets() && !bIgnoreMaxCon && !(socket && socket->IsConnected())) {
-		#ifdef NET_TEST
-		printf("Too many sockets\n");
-		#endif
-		Disconnected();
-		return false;
+	if (theApp.listensocket->TooManySockets() && !bIgnoreMaxCon )  {
+		if (!socket) { 
+			#ifdef NET_TEST
+			printf("Too many sockets\n");
+			#endif
+			Disconnected();
+			return false;
+		} else if (!socket->IsConnected()) {
+			#ifdef NET_TEST
+			printf("Too many sockets\n");
+			#endif
+			Disconnected();
+			return false;			
+		}
 	}
 	if ((theApp.serverconnect->GetClientID() < 16777216) && HasLowID()) {
 		#ifdef NET_TEST
@@ -1283,6 +982,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 		printf("No socket\n");
 		#endif
 		socket = new CClientReqSocket(theApp.glob_prefs,this);
+	//	printf("Socket %x set on client %x\n",socket, this);
 		#ifdef NET_TEST
 		printf("Creating Socket... ");
 		#endif
@@ -1303,6 +1003,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 		#endif
 		socket->Safe_Delete();
 		socket = new CClientReqSocket(theApp.glob_prefs,this);
+	//	printf("Socket %x set on client %x\n",socket, this);
 		#ifdef NET_TEST
 		printf("Creating Socket... ");
 		#endif
