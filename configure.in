@@ -252,13 +252,20 @@ openbsd*)
 	;;
 esac
 
-
-case "$WX_VERSION" in
-2_5)	USE_24GSOCKET="no"
-    ;;
-*)	USE_24GSOCKET="yes"
-    ;;
+# gsocket stuff
+case "$WXGTK_VERSION" in
+2.4.2)
+	USE_24GSOCKET="yes"
+	;;
+2.5.1 | 2.5.2)
+	USE_24GSOCKET="no"
+	;;
+*)
+	USE_GSOCKET="no"
+	USE_24GSOCKET="no"
+	;;
 esac
+
 
 case "$BUILDAMULECMD" in
 yes)	BUILD_AMULECMD="yes"

@@ -78,6 +78,8 @@ Version 2.0.0rc6 - The '???' version.
 		    #define DEBUG_REMOTE_CLIENT_PROTOCOL in ListenSocket.cpp
 		    #define DEBUG_SERVER_PROTOCOL in ServerSocket.cpp
 		    #define DEBUG_CLIENT_PROTOCOL in sockets.cpp
+		* Changed configure.in to no longer use gsocket-2.5.c for 
+		  wx-2.5.3 and up.
 
 	rommel:
 		* Patch to implement the commands serverconnect and reloadipf
