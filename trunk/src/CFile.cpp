@@ -25,10 +25,6 @@
 
 #include "CFile.h"		// Interface declarations.
 
-#ifdef __WXMAC__
-	#define FILE_TRACKER	1
-#endif
-
 #include "amule.h"		// Needed for theApp
 
 #ifdef HAVE_CONFIG_H
