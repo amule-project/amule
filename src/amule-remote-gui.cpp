@@ -492,7 +492,7 @@ void CamuleRemoteGuiApp::NotifyEvent(const GUIEvent& event)
 
 			case ADDLOGLINE:
 			case ADDDEBUGLOGLINE:
-				printf("LOG: %s\n", event.string_value.GetData());
+				printf("LOG: %s\n", (const char*)unicode2char(event.string_value));
 				break;
 			default:
 				printf("ERROR: bad event %d\n", event.ID);
