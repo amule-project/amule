@@ -238,6 +238,9 @@ Version 2.0.0rc4 - The 'Rabbits and Mules love carrots' version.
 		* Commited a patch from wolti that fixes compilation on 
 		  sparc/Solaris systems.
 		* More sparc compilation fixes, thanks to wimms.
+		* Removed the declaration of void ParseCommandLine(); from
+		  TextClient.h and WebInterface.h. It seems to have been
+		  forgotten here.
 
 	shakraw:
 		* Fixed the "remote connect" bug
