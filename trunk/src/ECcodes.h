@@ -31,7 +31,7 @@
 
 typedef uint8 ec_opcode_t;
 typedef uint16 ec_tagname_t;
-typedef uint16 ec_taglen_t;
+typedef uint32 ec_taglen_t;
 
 /**
  * Type to hold EC Protocol Version information

@@ -209,4 +209,4 @@ CECPacket * ECSocket::ReadPacket(wxSocketBase *sock)
  *
  * \note You must later free the packet by calling
  * \c delete on the returned pointer.
-1;5A */
+ */
