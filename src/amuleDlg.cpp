@@ -915,7 +915,7 @@ void CamuleDlg::OnMinimize(wxIconizeEvent& evt)
 #ifndef __SYSTRAY_DISABLED__
 	if (m_wndTaskbarNotifier && thePrefs::DoMinToTray() 
 		#if !USE_WX_TRAY
-			&& (thePrefs::GetDesktopMode() != 4)
+			&& (thePrefs::GetDesktopMode() != 4) && !thePrefs::UseTrayIcon()
 		#endif
 		) {
 		if (evt.Iconized()) {
