@@ -130,6 +130,7 @@ public:
 protected:
 	
 	void OnToolBarButton(wxCommandEvent& ev);
+	void OnAboutButton(wxCommandEvent& ev);
 	void OnPrefButton(wxCommandEvent& ev);
 	void OnBnClickedPrefOk(wxCommandEvent &event);
 
