@@ -220,7 +220,7 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 	SetActiveDialog(ServerWnd, serverwnd);
 	m_wndToolbar->ToggleTool(ID_BUTTONSERVERS, true );
 	#ifndef __USE_KAD__
-	m_wndToolbar->RemoveTool(ID_BUTTONKAD);
+	m_wndToolbar->DeleteTool(ID_BUTTONKAD);
 	#endif
 
 	ShowED2KLinksHandler( thePrefs::GetFED2KLH() );
