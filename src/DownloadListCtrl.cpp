@@ -1470,7 +1470,7 @@ void CDownloadListCtrl::DrawSourceItem( wxDC* dc, int nColumn, const wxRect& rec
 					case DS_LOWTOLOWIP:
 						image = 3;
 						break;
-					default:
+					default: // DS_NONE i.e.
 						image = 4;
 					}
 
@@ -2110,4 +2110,3 @@ void CDownloadListCtrl::PreviewFile(CPartFile* file)
 		AddLogLineM( false, wxString( _("Command: ") ) + command );
 	}
 }
-
