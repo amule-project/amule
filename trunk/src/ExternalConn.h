@@ -27,6 +27,8 @@
 //ExternalConn: listening server using wxSockets
 #include <wx/socket.h>
 
+class CPartFile;
+
 class ExternalConn : public wxEvtHandler {
 	public:
 		ExternalConn();
@@ -41,6 +43,8 @@ class ExternalConn : public wxEvtHandler {
 		wxString ProcessRequest(const wxString& item);
 	
 	private:
+		wxString GetDownloadFileInfo(CPartFile* file);
+	
 		wxSocketServer *m_ECServer;
 		int             m_numClients;
   	

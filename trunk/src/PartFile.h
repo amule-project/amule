@@ -122,7 +122,6 @@ public:
 	sint32	CPartFile::getTimeRemaining(); //<<--9/21/02
 	time_t	lastseencomplete;
 	int		getPartfileStatusRang();
-        CString GetDownloadFileInfo();
 
 	// Barry - Added as replacement for BlockReceived to buffer data before writing to disk
 	uint32	WriteToBuffer(uint32 transize, BYTE *data, uint32 start, uint32 end, Requested_Block_Struct *block);

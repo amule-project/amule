@@ -625,7 +625,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 					} else {
 						buffer+=theApp.CreateED2kLink(cur_file)+wxString("\t");
 					}
-					tempFileInfo = cur_file->GetDownloadFileInfo();
+					tempFileInfo = GetDownloadFileInfo(cur_file);
 					tempFileInfo.Replace("\n","|");
 					buffer+=tempFileInfo+wxString("\t");
 					if (!cur_file->IsPartFile()) {
@@ -1782,7 +1782,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 						else
 							buffer+=theApp.CreateED2kLink(cur_file)+wxString("\t");
 
-						tempFileInfo = cur_file->GetDownloadFileInfo();
+						tempFileInfo = GetDownloadFileInfo(cur_file);
 						tempFileInfo.Replace("\n","|");
 						buffer+=tempFileInfo+wxString("\t");
 						if (!cur_file->IsPartFile())
@@ -2012,9 +2012,8 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			
 			if (item.Mid(9,11).Cmp("DL_FILEINFO") == 0) {
 				if ((item.Length() > 20) && (item.Mid(21).IsNumber())) {
-					theApp.downloadqueue->GetFileByIndex(atoi(item.Mid(21).GetData()))->GetDownloadFileInfo();
 					static char buffer[1024];					
-					sprintf(buffer, "%s", theApp.downloadqueue->GetFileByIndex(atoi(item.Mid(21).GetData()))->GetDownloadFileInfo().GetData());
+					sprintf(buffer, "%s", GetDownloadFileInfo(theApp.downloadqueue->GetFileByIndex(atoi(item.Mid(21).GetData()))).c_str());
 					return(buffer);
 				}
 				return("Bad DL_FILEINFO request");
@@ -2350,4 +2349,42 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 		
 		
 		return "";
+}
+
+
+wxString ExternalConn::GetDownloadFileInfo(CPartFile* file)
+{
+	wxString sRet;
+	wxString strHash = EncodeBase16(file->GetFileHash(), 16);
+	wxString strComplx = CastItoXBytes(file->GetCompletedSize()) + "/" + CastItoXBytes(file->GetFileSize());
+	wxString strLsc = _("Unknown");
+	wxString strLastprogr = _("Unknown");
+	
+	if ( file->lastseencomplete ) {
+		wxDateTime time = (time_t)file->lastseencomplete;
+		strLsc = time.Format( theApp.glob_prefs->GetDateTimeFormat() );
 	}
+	
+	if ( file->GetFileDate() ) {
+		wxDateTime time = (time_t)file->GetFileDate();
+		strLastprogr = time.Format( theApp.glob_prefs->GetDateTimeFormat() );
+	}
+
+	float availability = 0;
+	if( file->GetPartCount() ) {
+		availability = file->GetAvailablePartCount() * 100 / file->GetPartCount();
+	}
+
+	sRet << _("File Name") << ": " << file->GetFileName() << " (" << CastItoXBytes(file->GetFileSize()) << " " << _("Bytes") << ")\n\n";
+	sRet << _("Status") << ": " << file->getPartfileStatus() << "\n\n";
+	sRet << _("Hash :") << " " << strHash << "\n";
+	sRet << wxString(_("Partfilename: ")) << file->GetPartMetFileName() << "\n";
+	sRet << wxString(_("Parts: ")) << file->GetPartCount() << ", "
+		<< wxString(_("Available")) << ": " << file->GetAvailablePartCount() << " "
+		<< wxString::Format( "(%.1f%%)", availability);
+	sRet << wxString::Format(_("%d%% done (%s) - Transferring from %d sources"), (int)file->GetPercentCompleted(), strComplx.c_str(), file->GetTransferingSrcCount()) + "\n";
+	sRet << wxString(_("Last Seen Complete :")) << " " << strLsc << "\n";
+	sRet << wxString(_("Last Reception:")) << " " << strLastprogr << "\n";
+	
+	return sRet;
+}
