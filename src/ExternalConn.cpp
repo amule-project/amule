@@ -59,6 +59,7 @@ END_EVENT_TABLE()
 
 
 ExternalConn::ExternalConn() {
+	m_ECServer = NULL;
 	//Citroklar, looking if we are allowed to accept External Connections
 	if (theApp.glob_prefs->AcceptExternalConnections()) {
 		//can we use TCP port?
@@ -96,7 +97,8 @@ ExternalConn::ExternalConn() {
 
 
 ExternalConn::~ExternalConn() {
-	m_ECServer->Destroy();
+	if ( m_ECServer )
+		m_ECServer->Destroy();
 }
 
 
