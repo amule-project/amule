@@ -45,20 +45,28 @@ typedef struct {
  */
 
 enum {
+	// authentication
 	EC_OP_AUTH_REQ	= 0x0001,
-	EC_OP_AUTH_FAIL	= 0x0002,
-	EC_OP_AUTH_OK	= 0x0003,
-	EC_OP_STRINGS	= 0x0004,
-	EC_OP_MISC_DATA	= 0x0005,
+	EC_OP_AUTH_FAIL,
+	EC_OP_AUTH_OK,
+	
+	// generic commands - both way
+	EC_OP_STRINGS,
+	EC_OP_MISC_DATA,
 
 	// client -> server commands
 	
-	EC_OP_SHUTDOWN  = 0x0006, // stop server
-	EC_OP_STAT_REQ  = 0x0007, // request statistics
-	EC_OP_ED2K_LINK = 0x0008, // handle ed2k link
+	EC_OP_SHUTDOWN, // stop server
+	EC_OP_STAT_REQ, // request statistics
+	EC_OP_ED2K_LINK, // handle ed2k link
 	
-	EC_OP_Q_FILE_CMD  = 0x0009, // perform action on file in queue
+	EC_OP_GET_DLOAD_QUEUE, // request download queue contents
+	
+	EC_OP_Q_FILE_CMD, // perform action on file in queue
 
+	// server -> client response
+	EC_OP_DLOAD_QUEUE, // download queue contents
+	
 	EC_OP_COMPAT	= 0x00ff	// compatibility opcode, for testing purposes only
 					// tags: EC_TAG_STRING: v1.0 message
 };
@@ -78,6 +86,19 @@ enum {
 	EC_TAG_CLIENT_VERSION	= 0x0004,
 	EC_TAG_CLIENT_MOD	= 0x0005,
 	EC_TAG_PROTOCOL_VERSION	= 0x0006,
+	
+	// tags for partfile info
+	EC_TAG_PARTFILE = 0x0007,
+	EC_TAG_PARTFILE_SIZE_FULL,
+	EC_TAG_PARTFILE_SIZE_XFER,
+	EC_TAG_PARTFILE_SIZE_DONE,
+	EC_TAG_PARTFILE_DOWN_SPEED,
+	EC_TAG_PARTFILE_STATUS,
+	EC_TAG_PARTFILE_PRIO,
+	EC_TAG_PARTFILE_SOURCE_COUNT,
+	EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT,
+	EC_TAG_PARTFILE_SOURCE_COUNT_XFER,
+	EC_TAG_PARTFILE_ED2K_LINK,
 };
 
 #endif	/* ECCODES_H */
