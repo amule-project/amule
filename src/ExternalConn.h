@@ -80,6 +80,8 @@ class CPartFile_Encoder {
 		int PartStatusDataSize();
 };
 
+typedef std::map<CPartFile *, CPartFile_Encoder> CPartFile_Encoder_Map;
+
 #ifdef AMULE_DAEMON
 #define EXTERNAL_CONN_BASE wxThread
 #else
@@ -92,17 +94,19 @@ class ExternalConn : public EXTERNAL_CONN_BASE {
 		~ExternalConn();
 	
 		wxString ProcessRequest(const wxString& item);
-		CECPacket *ProcessRequest2(const CECPacket *request);
+		CECPacket *ProcessRequest2(const CECPacket *request, CPartFile_Encoder_Map &enc_map);
 	
 		CECPacket *Authenticate(const CECPacket *);
 		ECSocket *m_ECServer;
 
-#ifdef AMULE_DAEMON
 	private:
+#ifdef AMULE_DAEMON
 		void *Entry();
 #else
-	private:
 		int m_numClients;
+		//
+		// encoder container must be created per EC client
+		std::map<wxSocketBase *, CPartFile_Encoder_Map> m_encoders;
 
 		// event handlers (these functions should _not_ be virtual)
 		void OnServerEvent(wxSocketEvent& event);
@@ -119,10 +123,9 @@ class ExternalConnClientThread : public wxThread {
 	private:
 		ExitCode Entry();
 
-	private:
 		//
 		// encoder container must be created per EC client
-		std::map<CPartFile *, CPartFile_Encoder> m_encoders;
+		CPartFile_Encoder_Map m_encoders;
 
 		ExternalConn *m_owner;
 		wxSocketBase *m_sock;

@@ -173,7 +173,7 @@ void ExternalConn::OnSocketEvent(wxSocketEvent& event) {
 				sock->SetEventHandler(*this, SOCKET_ID);
 			}
 		} else {
-			response = ProcessRequest2(request);
+			response = ProcessRequest2(request, m_encoders[sock]);
 			delete request; request = NULL;
 			m_ECServer->WritePacket(sock, response);
 			delete response; response = NULL;
@@ -197,6 +197,9 @@ void ExternalConn::OnSocketEvent(wxSocketEvent& event) {
 		AddLogLineM(false,_("External connection closed."));
 		//sock->Destroy();
 		sock->Close();
+		
+		// remove client data
+		m_encoders.erase(sock);
 		break;
 	}
 	
@@ -318,7 +321,8 @@ CECPacket *Get_EC_Response_GetUpQueue(const CECPacket *request)
 	return response;
 }	
 
-CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request)
+CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request,
+	CPartFile_Encoder_Map &encoders)
 {	
 	CECPacket *response = new CECPacket(EC_OP_DLOAD_QUEUE);
 	
@@ -340,6 +344,10 @@ CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request)
 		}
 
 		CEC_PartFile_Tag filetag(cur_file, detail_level);
+		
+		// FIXME: RLE_Data doesn't have copy constructor which std::map need
+		//CECTag *etag = encoders[cur_file].Encode();
+		//filetag.AddTag(etag);
 
 		response->AddTag(filetag);
 	}
@@ -930,6 +938,10 @@ CPartFile_Encoder::CPartFile_Encoder(CPartFile *file) : m_part_status(file->GetP
 	m_file = file;
 }
 
+CPartFile_Encoder::CPartFile_Encoder(int size) : m_part_status(size, true)
+{
+	m_file = 0;
+}
 
 CECTag *CPartFile_Encoder::Encode()
 {
@@ -1009,7 +1021,7 @@ CECTag *CPartFile_Encoder::Encode()
 }
 
 
-CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request)
+CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request, CPartFile_Encoder_Map &enc_map)
 {
 
 	if ( !request ) {
@@ -1068,7 +1080,7 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request)
 		//
 		//
 		case EC_OP_GET_DLOAD_QUEUE:
-			response = Get_EC_Response_GetDownloadQueue(request);
+			response = Get_EC_Response_GetDownloadQueue(request, enc_map);
 			break;
 		case EC_OP_GET_ULOAD_QUEUE:
 			response = Get_EC_Response_GetUpQueue(request);
@@ -1497,7 +1509,7 @@ void *ExternalConnClientThread::Entry()
 		}
 		if (m_sock->WaitForRead(1, 0)) {
 			request = m_owner->m_ECServer->ReadPacket(m_sock);
-			response = m_owner->ProcessRequest2(request);
+			response = m_owner->ProcessRequest2(request, m_encoders);
 			delete request;
 			if ( response ) {
 				m_owner->m_ECServer->WritePacket(m_sock, response);
