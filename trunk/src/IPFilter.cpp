@@ -20,6 +20,7 @@
 
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/intl.h>		// Needed for _
+#include <wx/textfile.h>
 
 #include "IPFilter.h"		// Interface declarations.
 #include "amuleDlg.h"		// Needed for CamuleDlg
@@ -62,7 +63,7 @@ void CIPFilter::AddBannedIPRange(uint32 IPfrom,uint32 IPto,uint8 filter, CString
 			if (search->IPstart>IPfrom) {
 				iplist.Insert(newFilter,i);
 				inserted=true;
-				break; 
+				break;
 			}
 		}
 		if (!inserted) iplist.Add(newFilter);
@@ -75,7 +76,7 @@ wxString Tokenize(wxString input,wxString token,int startat)
   wxString tmp=input.Right(input.Length()-startat);
   int pos=tmp.Find(token);
   if(pos>=0) {
-    
+
   }
 }
 #endif
@@ -92,11 +93,11 @@ int CIPFilter::LoadFromFile(){
 	wxTextFile readFile(theApp.ConfigDir + wxT("ipfilter.dat"));
 	if (readFile.Open()) {
 		for (wxString sbuffer = readFile.GetFirstLine(); !readFile.Eof(); sbuffer = readFile.GetNextLine() ) {
-		
+
 			// ignore comments & too short lines
 			if (sbuffer.GetChar(0) == '#' || sbuffer.GetChar(0) == '/' || sbuffer.Length()<5)
 				continue;
-			
+
 			// get & test & process IP range
 			pos=sbuffer.Find(wxT(","));
 			if (pos==-1) continue;
@@ -161,8 +162,8 @@ int CIPFilter::LoadFromFile(){
 		readFile.Close();
 	}
 
-	AddLogLineM(true,wxString::Format(_("Loaded ipfilter with %d IP addresses."),filtercounter));	
-	
+	AddLogLineM(true,wxString::Format(_("Loaded ipfilter with %d IP addresses."),filtercounter));
+
 	return filtercounter;
 }
 
@@ -201,7 +202,7 @@ bool CIPFilter::IsFiltered(uint32 IP2test){
 			return false;
 		}
 		if (lo==hi) return false;
-		if (IP2test_<search->IPstart) hi=mi; 
+		if (IP2test_<search->IPstart) hi=mi;
 			else lo=mi+1;
 	}
 	return false;
