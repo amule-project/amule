@@ -362,6 +362,17 @@ class CDownQueueRem : public CRemoteContainer<CPartFile, CMD4Hash, CEC_PartFile_
 		CPartFile *GetFileByIndex(unsigned int idx) { return GetByIndex(idx); }
 		
 		bool IsPartFile(const CKnownFile* totest) const;
+		
+		//
+		// User actions
+		//
+		void Pause(CPartFile *file);
+		void Resume(CPartFile *file);
+		void Stop(CPartFile *file);
+		void Prio(CPartFile *file, uint8 prio);
+		void AutoPrio(CPartFile *file, bool flag);
+		void Category(CPartFile *file, uint8 cat);
+		
 		//
 		// Actions
 		//
@@ -435,10 +446,14 @@ class CClientCreditsRem {
 class CClientListRem {
 		CRemoteConnect *m_conn;
 		uint32 m_banned_count;
+
+		//
+		// map of user_ID -> client
+		std::multimap<uint32, CUpDownClient*> m_client_list;
 	public:
 		CClientListRem(CRemoteConnect *);
 		
-		const std::multimap<uint32, CUpDownClient*>& GetClientList();
+		const std::multimap<uint32, CUpDownClient*>& GetClientList() { return m_client_list; }
 		uint32 GetBannedCount() { return m_banned_count; }
 		
 		//

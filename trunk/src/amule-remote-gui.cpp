@@ -910,6 +910,62 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 	//theApp.amuledlg->transferwnd->downloadlistctrl->UpdateItem(file);
 }
 
+void CDownQueueRem::Pause(CPartFile *file)
+{
+	CECPacket req(EC_OP_PARTFILE_PAUSE);
+	req.AddTag(CECTag(EC_TAG_PARTFILE, file->GetFileHash()));
+	
+	m_conn->Send(&req);
+}
+
+void CDownQueueRem::Resume(CPartFile *file)
+{
+	CECPacket req(EC_OP_PARTFILE_RESUME);
+	req.AddTag(CECTag(EC_TAG_PARTFILE, file->GetFileHash()));
+	
+	m_conn->Send(&req);
+}
+
+void CDownQueueRem::Stop(CPartFile *file)
+{
+	CECPacket req(EC_OP_PARTFILE_STOP);
+	req.AddTag(CECTag(EC_TAG_PARTFILE, file->GetFileHash()));
+	
+	m_conn->Send(&req);
+}
+
+void CDownQueueRem::Prio(CPartFile *file, uint8 prio)
+{
+	CECPacket req(EC_OP_PARTFILE_PRIO_SET);
+	
+	CECTag hashtag(EC_TAG_PARTFILE, file->GetFileHash());
+	hashtag.AddTag(CECTag(EC_TAG_PARTFILE_PRIO, prio));
+	
+	m_conn->Send(&req);
+}
+
+void CDownQueueRem::AutoPrio(CPartFile *file, bool flag)
+{
+	CECPacket req(EC_OP_PARTFILE_PRIO_SET);
+	
+	CECTag hashtag(EC_TAG_PARTFILE, file->GetFileHash());
+	
+	hashtag.AddTag(CECTag(EC_TAG_PARTFILE_PRIO, (uint8)(flag ? PR_AUTO : file->GetDownPriority())));
+	
+	m_conn->Send(&req);
+}
+
+void CDownQueueRem::Category(CPartFile *file, uint8 cat)
+{
+	CECPacket req(EC_OP_PARTFILE_SET_CAT);
+	
+	CECTag hashtag(EC_TAG_PARTFILE, file->GetFileHash());
+	hashtag.AddTag(CECTag(EC_TAG_PARTFILE_CAT, cat));
+	
+	m_conn->Send(&req);
+}
+
+
 CClientListRem::CClientListRem(CRemoteConnect *conn)
 {
 	m_conn = conn;
@@ -941,13 +997,6 @@ void CSearchListRem::StopGlobalSearch()
 {
 	// FIXME: add code
 	wxASSERT(0);
-}
-
-const std::multimap<uint32, CUpDownClient*>& CClientListRem::GetClientList()
-{
-	std::multimap<uint32, CUpDownClient*> dummy;
-	
-	return dummy;
 }
 
 bool CUpDownClient::IsBanned() const
