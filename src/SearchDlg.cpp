@@ -59,7 +59,7 @@ BEGIN_EVENT_TABLE(CSearchDlg, wxPanel)
 	EVT_BUTTON(		IDC_STARTS,		CSearchDlg::OnBnClickedStart)
 	EVT_TEXT_ENTER(	IDC_SEARCHNAME,	CSearchDlg::OnBnClickedStart)
 	
-	EVT_BUTTON(IDC_CANCELS, CSearchDlg::OnBnClickedCancel)
+	EVT_BUTTON(IDC_CANCELS, CSearchDlg::OnBnClickedStop)
 	
 	EVT_LIST_ITEM_SELECTED(ID_SEARCHLISTCTRL, CSearchDlg::OnListItemSelected)
 	
@@ -174,7 +174,7 @@ void CSearchDlg::OnSearchClosed(wxNotebookEvent& evt)
 {
 	// Abort global search if it was last tab that was closed.
 	if ( evt.GetSelection() == ((int)m_notebook->GetPageCount() - 1 ) ) {
-		OnBnClickedCancel(nullEvent);
+		OnBnClickedStop(nullEvent);
 	}
 
 	// Do cleanups if this was the last tab
@@ -222,7 +222,7 @@ void CSearchDlg::OnBnClickedStart(wxCommandEvent& WXUNUSED(evt))
 			if ((GetTickCount() - m_last_search_time) > 2000) {
 				m_last_search_time = GetTickCount();
 		
-				OnBnClickedCancel(nullEvent);
+				OnBnClickedStop(nullEvent);
 		
 				StartNewSearch();
 			}
@@ -304,16 +304,13 @@ void CSearchDlg::CreateNewTab(const wxString& searchString, long nSearchID)
 }
 
 
-void CSearchDlg::OnBnClickedCancel(wxCommandEvent& WXUNUSED(evt))
+void CSearchDlg::OnBnClickedStop(wxCommandEvent& WXUNUSED(evt))
 {
-	m_canceld = true;
-
 	#ifndef CLIENT_GUI
 	theApp.searchlist->StopGlobalSearch();
 	#else
-	#warning EC packet for cancelling search
+	#warning EC packet to cancel search
 	#endif
- 
 	ResetControls();
 }
 
@@ -329,9 +326,7 @@ void CSearchDlg::ResetControls()
 
 void CSearchDlg::LocalSearchEnd()
 {
-	if ( !m_canceld) {
-		ResetControls();
-	}
+	ResetControls();
 }
 
 
@@ -368,7 +363,7 @@ void CSearchDlg::OnBnClickedDownload(wxCommandEvent& WXUNUSED(evt))
 
 void CSearchDlg::OnBnClickedClear(wxCommandEvent& WXUNUSED(ev))
 {
-	OnBnClickedCancel(nullEvent);
+	OnBnClickedStop(nullEvent);
 	
 	m_notebook->DeleteAllPages();
 
@@ -388,8 +383,6 @@ void CSearchDlg::StartNewSearch()
 	FindWindow(IDC_STARTS)->Disable();
 	FindWindow(IDC_SDOWNLOAD)->Disable();
 	FindWindow(IDC_CANCELS)->Enable();
-
-	m_canceld = false;
 	
 	wxString searchString = CastChild( IDC_SEARCHNAME, wxTextCtrl )->GetValue();
 	searchString.Trim(true);

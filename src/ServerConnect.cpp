@@ -35,6 +35,7 @@
 
 
 #include "ServerConnect.h"		// Interface declarations.
+#include "SearchList.h"		// Needed for CSearchList
 #include "GetTickCount.h"	// Needed for GetTickCount
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "SysTray.h"		// Needed for TBN_IMPORTANTEVENT
@@ -368,8 +369,8 @@ void CServerConnect::ConnectionFailed(CServerSocket* sender){
 			if (connectedsocket) 
 				connectedsocket->Close();
 			connectedsocket = NULL;
+			theApp.searchlist->StopGlobalSearch();			
 			Notify_SearchCancel();
-//			printf("Reconn %d conn %d\n",thePrefs::Reconnect(),connecting);
 			theApp.statistics->SetServerConnectTime(0);
 			if (thePrefs::Reconnect() && !connecting){
 				ConnectToAnyServer();		

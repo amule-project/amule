@@ -62,6 +62,7 @@ CGlobalSearchThread::CGlobalSearchThread( CPacket* packet )
 
 CGlobalSearchThread::~CGlobalSearchThread()
 {
+	// Delete the packet whose ownerwhip we got on constructor.
 	delete m_packet;
 }
 
@@ -105,8 +106,8 @@ void *CGlobalSearchThread::Entry()
 	// Global search ended, reset progress and controls
 	CoreNotify_Search_Update_Progress(0xffff);
 	
-	theApp.searchlist->ClearThreadData();
-	
+	theApp.searchlist->ClearThreadData(this);
+		
 	return NULL;
 }
 
@@ -217,16 +218,13 @@ CSearchList::CSearchList()
 	m_CurrentSearch = 0;
 	m_searchpacket = NULL;
 	m_searchthread = NULL;
-	m_globalsearch = false;
 }
 
 
 CSearchList::~CSearchList()
 {
 	StopGlobalSearch();
-	if (m_searchpacket) {
-		delete m_searchpacket;
-	}
+	delete m_searchpacket;
 	Clear();
 }
 
@@ -274,17 +272,23 @@ bool CSearchList::StartNewSearch(long nSearchID, bool global_search, wxString &s
 	
 	m_resultType = typeText;
 	m_CurrentSearch = nSearchID;
-	m_globalsearch = global_search;
 
 	CPacket* searchpacket = CreateSearchPacket(searchString, typeText, extension, min, max, availability);
 
 	theApp.statistics->AddUpDataOverheadServer(searchpacket->GetPacketSize());
 	// Send packet. If it's not a global search, delete it after sending.
 	theApp.serverconnect->SendPacket(searchpacket, !global_search ); 
+	
+	wxASSERT(m_searchpacket == NULL);
+	
+	if (m_searchthread) {
+		m_searchthread->Delete();
+	}
+	
+	ClearThreadData();
+	
 	if ( global_search ) {
 		m_searchpacket = searchpacket;
-	} else {
-		m_searchpacket = NULL;
 	}
 	
 	return true;
@@ -311,7 +315,10 @@ void CSearchList::LocalSearchEnd()
 				default:
 					break;
 			}
+			// Free resources.
+			delete m_searchpacket;			
 		}
+		// Thread takes ownership
 		m_searchpacket = NULL;
 	}
 	if (!IsGlobalSearch()) {
@@ -484,9 +491,9 @@ void CSearchList::AddFileToDownloadByHash(const CMD4Hash& hash, uint8 cat)
 
 void CSearchList::StopGlobalSearch()
 {
- 	if (m_globalsearch && m_searchthread) {
+ 	if (IsGlobalSearch() && m_searchthread) {
 		m_searchthread->Delete();
-		m_searchthread = NULL;
+		ClearThreadData();
  	}
 }
 
