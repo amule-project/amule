@@ -233,9 +233,7 @@ CUpDownClient::~CUpDownClient()
 		socket->client = NULL; 
 		socket->Safe_Delete(); 
 		// We're going down anyway....
-		//socket->Destroy();
-		// Ah, fuck it. As we said, we're going down.
-		delete socket;
+		socket->Destroy();
 		// Paranoia
 		socket = NULL;
 	}
