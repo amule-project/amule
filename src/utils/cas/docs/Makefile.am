@@ -1,8 +1,8 @@
 dist_man_MANS = cas.1
 
-man_langs = es
+man_langs = de es
 
-EXTRA_DIST = cas.es.1
+EXTRA_DIST = cas.de.1 cas.es.1
 
 install-data-hook:
 	@for lang in $(man_langs); do \
