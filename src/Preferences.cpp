@@ -595,8 +595,8 @@ wxString CPreferences::GetBrowser() const
                         case 3: cmd = wxT("sh -c \"if ! MozillaFirebird -remote 'openURL(%s, new-tab)'; then MozillaFirebird '%s'; fi\""); break;
                         case 4: cmd = wxT("opera --newpage '%s'"); break;
                         case 5: cmd = wxT("sh -c \"if ! netscape -remote 'openURLs(%s,new-tab)'; then netscape '%s'; fi\""); break;
-                        case 6: cmd = wxT("sh -c \"if galeon -n '%s'; then galeon '%s'; fi\""); break;
-                        case 7: cmd = wxT("sh -c \"if epiphany -n '%s'; then epiphany '%s'; fi\""); break;
+                        case 6: cmd = wxT("galeon -n '%s'"); break;
+                        case 7: cmd = wxT("epiphany -n '%s'"); break;
                         case 8: cmd = char2unicode(prefs->CustomBrowser); break;
                         default:
                                 printf("Unable to determine selected browser!\n");
