@@ -574,7 +574,6 @@ void CDownloadQueue::CheckAndAddKnownSource(CPartFile* sender,CUpDownClient* sou
 bool CDownloadQueue::RemoveSource(CUpDownClient* toremove, bool	WXUNUSED(updatewindow), bool bDoStatsUpdate)
 {
 	toremove->DeleteAllFileRequests();
-	toremove->SetDownloadState(DS_NONE);
 	
 	bool removed = false;
 	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
@@ -598,11 +597,12 @@ bool CDownloadQueue::RemoveSource(CUpDownClient* toremove, bool	WXUNUSED(updatew
 		toremove->GetRequestFile()->UpdateFileRatingCommentAvail();
 	}
 	
+	toremove->SetRequestFile( NULL );
+	toremove->SetDownloadState(DS_NONE);
+
 	// Remove from downloadlist widget
 	Notify_DownloadCtrlRemoveSource(toremove,0);
 	toremove->ResetFileStatusInfo();
-	toremove->SetRequestFile( NULL );
-	
 	return removed;
 }
 
