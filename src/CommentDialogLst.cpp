@@ -85,26 +85,24 @@ void CCommentDialogLst::CompleteList()
 	int count=0;
 	pmyListCtrl->DeleteAllItems();
    
-	for (int sl=0;sl<SOURCESSLOTS;sl++) if (!m_file->srclists[sl].IsEmpty()) {
-		for (pos1 = m_file->srclists[sl].GetHeadPosition(); (pos2 = pos1) != NULL;) {
-			m_file->srclists[sl].GetNext(pos1);
-			cur_src = m_file->srclists[sl].GetAt(pos2);
+	for (pos1 = m_file->m_SrcList.GetHeadPosition(); (pos2 = pos1) != NULL;) {
+		m_file->m_SrcList.GetNext(pos1);
+		cur_src = m_file->m_SrcList.GetAt(pos2);
 
-			if (cur_src->GetFileComment().Length()>0 || cur_src->GetFileRate()>0) {
-				pmyListCtrl->InsertItem(count, char2unicode(cur_src->GetUserName()));
-				pmyListCtrl->SetItem(count, 1, char2unicode(cur_src->GetClientFilename()));
-				pmyListCtrl->SetItem(count, 2, GetRateString(cur_src->GetFileRate()));
-				pmyListCtrl->SetItem(count, 3, cur_src->GetFileComment());
-				count++;
-			}
+		if (cur_src->GetFileComment().Length()>0 || cur_src->GetFileRate()>0) {
+			pmyListCtrl->InsertItem(count, char2unicode(cur_src->GetUserName()));
+			pmyListCtrl->SetItem(count, 1, char2unicode(cur_src->GetClientFilename()));
+			pmyListCtrl->SetItem(count, 2, GetRateString(cur_src->GetFileRate()));
+			pmyListCtrl->SetItem(count, 3, cur_src->GetFileComment());
+			count++;
 		}
-		CString info="";
-		if (count==0) {
-			info = wxT("No comments");
-		} else {
-			info = CastItoIShort(count) + wxT(" comment(s)");
-		}
-		FindWindowById(IDC_CMSTATUS)->SetLabel(info);
-		m_file->UpdateFileRatingCommentAvail();
 	}
+	CString info;
+	if (count==0) {
+		info = wxT("No comments");
+	} else {
+		info = CastItoIShort(count) + wxT(" comment(s)");
+	}
+	FindWindowById(IDC_CMSTATUS)->SetLabel(info);
+	m_file->UpdateFileRatingCommentAvail();
 }

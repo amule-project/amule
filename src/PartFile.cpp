@@ -977,34 +977,17 @@ void CPartFile::SaveSourceSeeds() {
 	if (n_sources<5) {
 		// Not enought downloading sources to fill the list, going to sources list	
 		if (GetSourceCount()>0) {
-			// Random first slot to avoid flooding same sources always
-			uint32 fst_slot = (uint32)(rand()/(RAND_MAX/(SOURCESSLOTS-1)));
-			for (uint32 sl=fst_slot;sl<SOURCESSLOTS;sl++) if (!srclists[sl].IsEmpty()) {
-				POSITION pos1, pos2;
-				for (pos1 = srclists[sl].GetTailPosition();(((pos2 = pos1)  != NULL) && (n_sources<5));) {
-					CUpDownClient* cur_src = srclists[sl].GetPrev(pos1);		
-					if (cur_src->HasLowID()) {
-						continue;
-					} else {
-						source_seeds.AddTail(cur_src);
-					}
-					n_sources++;
-				}		
+			POSITION pos1, pos2;
+			for (pos1 = m_SrcList.GetTailPosition();(((pos2 = pos1)  != NULL) && (n_sources<5));) {
+				CUpDownClient* cur_src = m_SrcList.GetPrev(pos1);		
+				if (cur_src->HasLowID()) {
+					continue;
+				} else {
+					source_seeds.AddTail(cur_src);
+				}
+				n_sources++;
 			}
-			// Not yet? wrap around
-			for (uint32 sl=0;sl<fst_slot-1;sl++) if (!srclists[sl].IsEmpty()) {
-				POSITION pos1, pos2;
-				for (pos1 = srclists[sl].GetTailPosition();(((pos2 = pos1)  != NULL) && (n_sources<5));) {
-					CUpDownClient* cur_src = srclists[sl].GetPrev(pos1);		
-					if (cur_src->HasLowID()) {
-						continue;
-					} else {
-						source_seeds.AddTail(cur_src);
-					}
-					n_sources++;
-				}		
-			}
-		}			
+		}
 	}	
 	
 	// Write the file
@@ -1542,13 +1525,14 @@ int CPartFile::GetValidSourcesCount()
 {
 	int counter=0;
 	POSITION pos1,pos2;
-	for (int sl=0;sl<SOURCESSLOTS;sl++) if (!srclists[sl].IsEmpty()) {
-		for (pos1 = srclists[sl].GetHeadPosition();( pos2 = pos1 ) != NULL;){
-			srclists[sl].GetNext(pos1);
-			CUpDownClient* cur_src = srclists[sl].GetAt(pos2);
-			if (cur_src->GetDownloadState()!=DS_ONQUEUE && cur_src->GetDownloadState()!=DS_DOWNLOADING && cur_src->GetDownloadState()!=DS_NONEEDEDPARTS) {
-				counter++;
-			}
+	
+	for (pos1 = m_SrcList.GetHeadPosition();( pos2 = pos1 ) != NULL;){
+		m_SrcList.GetNext(pos1);
+		CUpDownClient* cur_src = m_SrcList.GetAt(pos2);
+		uint8 state = cur_src->GetDownloadState();
+		
+		if ( state != DS_ONQUEUE && state != DS_DOWNLOADING && state != DS_NONEEDEDPARTS ) {
+			counter++;
 		}
 	}
 	return counter;
@@ -1559,13 +1543,13 @@ uint16 CPartFile::GetNotCurrentSourcesCount()
 		uint16 counter=0;
 
 		POSITION pos1,pos2;
-		for (int sl=0;sl<SOURCESSLOTS;sl++) if (!srclists[sl].IsEmpty()) {
-			for (pos1 = srclists[sl].GetHeadPosition();( pos2 = pos1 ) != NULL;){
-				srclists[sl].GetNext(pos1);
-				CUpDownClient* cur_src = srclists[sl].GetAt(pos2);
-				if (cur_src->GetDownloadState()!=DS_ONQUEUE && cur_src->GetDownloadState()!=DS_DOWNLOADING) {
-					counter++;
-				}
+		for (pos1 = m_SrcList.GetHeadPosition();( pos2 = pos1 ) != NULL;){
+			m_SrcList.GetNext(pos1);
+			CUpDownClient* cur_src = m_SrcList.GetAt(pos2);
+			uint8 state = cur_src->GetDownloadState();
+			
+			if ( state != DS_ONQUEUE && state != DS_DOWNLOADING ) {
+				counter++;
 			}
 		}
 		return counter;
@@ -1633,11 +1617,9 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 	} else {
 		
 		POSITION pos1, pos2;
-		for (uint32 sl = 0; sl < SOURCESSLOTS; sl++) {
-			if (!srclists[sl].IsEmpty()) {
-				for (pos1 = srclists[sl].GetHeadPosition();( pos2 = pos1 ) != NULL;) {
-					srclists[sl].GetNext(pos1);
-					cur_src = srclists[sl].GetAt(pos2);
+				for (pos1 = m_SrcList.GetHeadPosition();( pos2 = pos1 ) != NULL;) {
+					m_SrcList.GetNext(pos1);
+					cur_src = m_SrcList.GetAt(pos2);
 					uint8 download_state=cur_src->GetDownloadState();
 					switch (download_state) {
 						case DS_DOWNLOADING: {
@@ -1755,8 +1737,7 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 						*/					
 					}
 				}
-			}
-		}
+
 
 		/* eMule 0.30c implementation, i give it a try (Creteil) BEGIN ... */
 		if (IsA4AFAuto() && ((!m_LastNoNeededCheck) || (dwCurTick - m_LastNoNeededCheck > 900000))) {
@@ -1933,20 +1914,16 @@ void CPartFile::UpdatePartsInfo() {
 	
 	CUpDownClient* cur_src;
 	
-	for(int sl=0; sl<SOURCESSLOTS; ++sl) {
-		if (!srclists[sl].IsEmpty()) {
-			for (POSITION pos = srclists[sl].GetHeadPosition(); pos != 0; )	{
-				cur_src = srclists[sl].GetNext(pos);
-				for (uint16 i = 0; i < partcount; i++)	{
-					if (cur_src->IsPartAvailable(i)) {
-						m_SrcpartFrequency[i] +=1;
-					}
-				}
-				if ( flag) {
-					count.Add(cur_src->GetUpCompleteSourcesCount());
+		for (POSITION pos = m_SrcList.GetHeadPosition(); pos != 0; )	{
+			cur_src = m_SrcList.GetNext(pos);
+			for (uint16 i = 0; i < partcount; i++)	{
+				if (cur_src->IsPartAvailable(i)) {
+					m_SrcpartFrequency[i] +=1;
 				}
 			}
-		}
+			if ( flag) {
+				count.Add(cur_src->GetUpCompleteSourcesCount());
+			}
 	}
 
 	if( flag ) {
@@ -2594,18 +2571,14 @@ void  CPartFile::RemoveAllSources(bool bTryToSwap)
 {
 
 	POSITION pos1,pos2;
-	for (int sl=0;sl<SOURCESSLOTS;sl++) {
-		if (!srclists[sl].IsEmpty()) {
-			for(pos1 = srclists[sl].GetHeadPosition(); (pos2 = pos1) != NULL;) {
-				srclists[sl].GetNext(pos1);
-				if (bTryToSwap) {
-					if (!srclists[sl].GetAt(pos2)->SwapToAnotherFile(true, true, true, NULL)) {
-						theApp.downloadqueue->RemoveSource(srclists[sl].GetAt(pos2),true, false);
-					}
-				} else {
-					theApp.downloadqueue->RemoveSource(srclists[sl].GetAt(pos2),true, false);
-				}
+	for(pos1 = m_SrcList.GetHeadPosition(); (pos2 = pos1) != NULL;) {
+		m_SrcList.GetNext(pos1);
+		if (bTryToSwap) {
+			if (!m_SrcList.GetAt(pos2)->SwapToAnotherFile(true, true, true, NULL)) {
+				theApp.downloadqueue->RemoveSource(m_SrcList.GetAt(pos2),true, false);
 			}
+		} else {
+			theApp.downloadqueue->RemoveSource(m_SrcList.GetAt(pos2),true, false);
 		}
 	}
 
@@ -2805,20 +2778,16 @@ void CPartFile::PauseFile(bool bInsufficient)
 	}
 
 	Packet* packet = new Packet(OP_CANCELTRANSFER,0);
-	for (int sl=0;sl<SOURCESSLOTS;sl++) {
-		if (!srclists[sl].IsEmpty()) {
-			for( POSITION pos = srclists[sl].GetHeadPosition(); pos != NULL;) {
-				CUpDownClient* cur_src = srclists[sl].GetNext(pos);
-				if (cur_src->GetDownloadState() == DS_DOWNLOADING) {
-					if (!cur_src->GetSentCancelTransfer()) {				
-						theApp.uploadqueue->AddUpDataOverheadOther(packet->size);
-						cur_src->socket->SendPacket(packet,false,true);
-						cur_src->SetDownloadState(DS_ONQUEUE);
-						cur_src->SetSentCancelTransfer(1);
-					}
-					cur_src->SetDownloadState(DS_ONQUEUE);
-				}
+	for( POSITION pos = m_SrcList.GetHeadPosition(); pos != NULL;) {
+		CUpDownClient* cur_src = m_SrcList.GetNext(pos);
+		if (cur_src->GetDownloadState() == DS_DOWNLOADING) {
+			if (!cur_src->GetSentCancelTransfer()) {				
+				theApp.uploadqueue->AddUpDataOverheadOther(packet->size);
+				cur_src->socket->SendPacket(packet,false,true);
+				cur_src->SetDownloadState(DS_ONQUEUE);
+				cur_src->SetSentCancelTransfer(1);
 			}
+			cur_src->SetDownloadState(DS_ONQUEUE);
 		}
 	}
 	delete packet;
@@ -3040,18 +3009,12 @@ bool CPartFile::PreviewAvailable()
 void CPartFile::UpdateAvailablePartsCount()
 {
 	uint8 availablecounter = 0;
-	bool breakflag = false;
 	uint16 iPartCount = GetPartCount();
-	for (uint32 ixPart = 0; ixPart < iPartCount; ixPart++) {
-		breakflag = false;
-		for (uint32 sl = 0; sl < SOURCESSLOTS && !breakflag; sl++) {
-			if (!srclists[sl].IsEmpty()) {
-				for(POSITION pos = srclists[sl].GetHeadPosition(); pos && !breakflag;) {
-					if (srclists[sl].GetNext(pos)->IsPartAvailable(ixPart)) {
-						availablecounter++;
-						breakflag = true;
-					}
-				}
+	for (uint32 ixPart = 0; ixPart < iPartCount; ixPart++) {		
+		for(POSITION pos = m_SrcList.GetHeadPosition(); pos;) {
+			if (m_SrcList.GetNext(pos)->IsPartAvailable(ixPart)) {
+				availablecounter++;
+				break;
 			}
 		}
 	}
@@ -3074,8 +3037,8 @@ void CPartFile::SetLastAnsweredTimeTimeout()
 
 Packet*	CPartFile::CreateSrcInfoPacket(CUpDownClient* forClient)
 {
-	int sl;
-	for (sl=0;sl<SOURCESSLOTS;sl++) if (srclists[sl].IsEmpty()) return 0;
+	if ( m_SrcList.IsEmpty() )
+		return NULL;
 
 	CSafeMemFile data(1024);
 	uint16 nCount = 0;
@@ -3083,10 +3046,9 @@ Packet*	CPartFile::CreateSrcInfoPacket(CUpDownClient* forClient)
 	data.WriteHash16(m_abyFileHash);
 	data.Write(nCount);
 	bool bNeeded;
-	for (sl=0;sl<SOURCESSLOTS;sl++) if (!srclists[sl].IsEmpty())
-	for (POSITION pos = srclists[sl].GetHeadPosition();pos != 0;srclists[sl].GetNext(pos)) {
+	for (POSITION pos = m_SrcList.GetHeadPosition();pos != 0;m_SrcList.GetNext(pos)) {
 		bNeeded = false;
-		CUpDownClient* cur_src = srclists[sl].GetAt(pos);
+		CUpDownClient* cur_src = m_SrcList.GetAt(pos);
 		if (cur_src->HasLowID() || !cur_src->IsValidSource()) {
 			continue;
 		}
@@ -3545,21 +3507,19 @@ void CPartFile::UpdateFileRatingCommentAvail()
 	int ratings=0;
 
 	POSITION pos1,pos2;
-	for (int sl=0;sl<SOURCESSLOTS;sl++) if (!srclists[sl].IsEmpty()) {
-		for (pos1 = srclists[sl].GetHeadPosition();( pos2 = pos1 ) != NULL;) {
-			srclists[sl].GetNext(pos1);
-			CUpDownClient* cur_src = srclists[sl].GetAt(pos2);
+	for (pos1 = m_SrcList.GetHeadPosition();( pos2 = pos1 ) != NULL;) {
+		m_SrcList.GetNext(pos1);
+		CUpDownClient* cur_src = m_SrcList.GetAt(pos2);
+		
+		if (cur_src->GetFileComment().GetLength()>0) {
+			hasComment=true;
+		}
 
-			if (cur_src->GetFileComment().GetLength()>0) {
-				hasComment=true;
-			}
-
-			if (cur_src->GetFileRate()>0) {
-				ratings++;
-			}
-			if (cur_src->GetFileRate()==1) {
-				badratings++;
-			}
+		if (cur_src->GetFileRate()>0) {
+			ratings++;
+		}
+		if (cur_src->GetFileRate()==1) {
+			badratings++;
 		}
 	}
 	hasBadRating=(badratings> (ratings/3));
@@ -3571,17 +3531,7 @@ void CPartFile::UpdateFileRatingCommentAvail()
 
 uint16 CPartFile::GetSourceCount()
 {
-	if (!IsCountDirty) {
-		return CleanCount;
-	} else {
-		int count=0;
-		for (int i=0;i<SOURCESSLOTS;i++) {
-			count+=srclists[i].GetCount();
-		}
-		CleanCount = count;
-		IsCountDirty = false;
-		return (uint16) count;
-	}
+	return m_SrcList.GetCount();
 }
 
 void CPartFile::UpdateDisplayedInfo(bool force)
@@ -3711,24 +3661,20 @@ void CPartFile::RemoveNoNeededSources()
 {
 	POSITION position, temp_position;
 
-	for (int slot = 0;slot < SOURCESSLOTS;slot++) {
-		if (! srclists[slot].IsEmpty()) {
-			position = srclists[slot].GetHeadPosition();
-			while (position != NULL) {
-				temp_position = position;
-				srclists[slot].GetNext(position);
-				CUpDownClient* client = srclists[slot].GetAt(temp_position);
-				if (client->GetDownloadState() == DS_NONEEDEDPARTS) {
-					/* If allowed, try to swap to other file. If swapping fails, remove from this one. */
-					if (theApp.glob_prefs->SwapNoNeededSources()) {
-						if (!client->SwapToAnotherFile(true, true, true, NULL)) {
-							theApp.downloadqueue->RemoveSourceFromPartFile(this, client, temp_position);
-						}
-					/* If not allowed to swap, simply remove from this one. */
-					} else {
-						theApp.downloadqueue->RemoveSourceFromPartFile(this, client, temp_position);
-					}
+	position = m_SrcList.GetHeadPosition();
+	while (position != NULL) {
+		temp_position = position;
+		m_SrcList.GetNext(position);
+		CUpDownClient* client = m_SrcList.GetAt(temp_position);
+		if (client->GetDownloadState() == DS_NONEEDEDPARTS) {
+			/* If allowed, try to swap to other file. If swapping fails, remove from this one. */
+			if (theApp.glob_prefs->SwapNoNeededSources()) {
+				if (!client->SwapToAnotherFile(true, true, true, NULL)) {
+					theApp.downloadqueue->RemoveSourceFromPartFile(this, client, temp_position);
 				}
+			/* If not allowed to swap, simply remove from this one. */
+			} else {
+				theApp.downloadqueue->RemoveSourceFromPartFile(this, client, temp_position);
 			}
 		}
 	}
@@ -3742,17 +3688,13 @@ void CPartFile::RemoveFullQueueSources()
 {
 	POSITION position, temp_position;
 
-	for (int slot = 0;slot < SOURCESSLOTS;slot++) {
-		if (! srclists[slot].IsEmpty()) {
-			position = srclists[slot].GetHeadPosition();
-			while (position != NULL) {
-				temp_position = position;
-				srclists[slot].GetNext(position);
-				CUpDownClient* client = srclists[slot].GetAt(temp_position);
-				if ((client->GetDownloadState() == DS_ONQUEUE) && (client->IsRemoteQueueFull())) {
-					theApp.downloadqueue->RemoveSourceFromPartFile(this, client, temp_position);
-				}
-			}
+	position = m_SrcList.GetHeadPosition();
+	while (position != NULL) {
+		temp_position = position;
+		m_SrcList.GetNext(position);
+		CUpDownClient* client = m_SrcList.GetAt(temp_position);
+		if ((client->GetDownloadState() == DS_ONQUEUE) && (client->IsRemoteQueueFull())) {
+			theApp.downloadqueue->RemoveSourceFromPartFile(this, client, temp_position);
 		}
 	}
 }
@@ -3765,17 +3707,13 @@ void CPartFile::RemoveHighQueueRatingSources()
 {
 	POSITION position, temp_position;
 
-	for (int slot = 0;slot < SOURCESSLOTS;slot++) {
-		if (! srclists[slot].IsEmpty()) {
-			position = srclists[slot].GetHeadPosition();
-			while (position != NULL) {
-				temp_position = position;
-				srclists[slot].GetNext(position);
-				CUpDownClient* client = srclists[slot].GetAt(temp_position);
-				if ((client->GetDownloadState() == DS_ONQUEUE) && (client->GetRemoteQueueRank() > theApp.glob_prefs->HighQueueRanking())) {
-					theApp.downloadqueue->RemoveSourceFromPartFile(this, client, temp_position);
-				}
-			}
+	position = m_SrcList.GetHeadPosition();
+	while (position != NULL) {
+		temp_position = position;
+		m_SrcList.GetNext(position);
+		CUpDownClient* client = m_SrcList.GetAt(temp_position);
+		if ((client->GetDownloadState() == DS_ONQUEUE) && (client->GetRemoteQueueRank() > theApp.glob_prefs->HighQueueRanking())) {
+			theApp.downloadqueue->RemoveSourceFromPartFile(this, client, temp_position);
 		}
 	}
 }
@@ -3788,24 +3726,20 @@ void CPartFile::CleanUpSources()
 {
 	POSITION position, temp_position;
 
-	for (int slot = 0;slot < SOURCESSLOTS;slot++) {
-		if (! srclists[slot].IsEmpty()) {
-			position = srclists[slot].GetHeadPosition();
-			while (position != NULL) {
-				temp_position = position;
-				srclists[slot].GetNext(position);
-				CUpDownClient* client = srclists[slot].GetAt(temp_position);
-				if (client->GetDownloadState() == DS_NONEEDEDPARTS) {
-					if ((theApp.glob_prefs->DropNoNeededSources()) && (!client->SwapToAnotherFile(true, true, true, NULL))) {
-						theApp.downloadqueue->RemoveSourceFromPartFile(this, client, temp_position);
-					}
-				}
-				if ((client->GetDownloadState() == DS_ONQUEUE) && (client->IsRemoteQueueFull())) {
-					theApp.downloadqueue->RemoveSourceFromPartFile(this, client, temp_position);
-				} else if ((client->GetDownloadState() == DS_ONQUEUE) && (client->GetRemoteQueueRank() > theApp.glob_prefs->HighQueueRanking())) {
-					theApp.downloadqueue->RemoveSourceFromPartFile(this, client, temp_position);
-				}
+	position = m_SrcList.GetHeadPosition();
+	while (position != NULL) {
+		temp_position = position;
+		m_SrcList.GetNext(position);
+		CUpDownClient* client = m_SrcList.GetAt(temp_position);
+		if (client->GetDownloadState() == DS_NONEEDEDPARTS) {
+			if ((theApp.glob_prefs->DropNoNeededSources()) && (!client->SwapToAnotherFile(true, true, true, NULL))) {
+				theApp.downloadqueue->RemoveSourceFromPartFile(this, client, temp_position);
 			}
+		}
+		if ((client->GetDownloadState() == DS_ONQUEUE) && (client->IsRemoteQueueFull())) {
+			theApp.downloadqueue->RemoveSourceFromPartFile(this, client, temp_position);
+		} else if ((client->GetDownloadState() == DS_ONQUEUE) && (client->GetRemoteQueueRank() > theApp.glob_prefs->HighQueueRanking())) {
+			theApp.downloadqueue->RemoveSourceFromPartFile(this, client, temp_position);
 		}
 	}
 }

@@ -1151,7 +1151,7 @@ bool CUpDownClient::DoSwap(CPartFile* SwapTo, bool bRemoveCompletely)
 {
 	if (reqfile) {
 		// Dirty fix. Why is reqfile NULL?	
-		POSITION pos = reqfile->srclists[sourcesslot].Find(this);
+		POSITION pos = reqfile->m_SrcList.Find(this);
 		if(pos)	{
 			// remove this client from the A4AF list of our new reqfile
 			POSITION pos2 = SwapTo->A4AFsrclist.Find(this);
@@ -1160,7 +1160,7 @@ bool CUpDownClient::DoSwap(CPartFile* SwapTo, bool bRemoveCompletely)
 				theApp.amuledlg->transferwnd->downloadlistctrl->RemoveSource(this,SwapTo);
 			}
 	
-			reqfile->srclists[sourcesslot].RemoveAt(pos);
+			reqfile->m_SrcList.RemoveAt(pos);
 			reqfile->IsCountDirty = true;
 			reqfile->RemoveDownloadingSource(this);
 	
@@ -1183,7 +1183,7 @@ bool CUpDownClient::DoSwap(CPartFile* SwapTo, bool bRemoveCompletely)
 			reqfile->UpdateAvailablePartsCount();
 			reqfile = SwapTo;
 	
-			SwapTo->srclists[sourcesslot].AddTail(this);
+			SwapTo->m_SrcList.AddTail(this);
 			SwapTo->IsCountDirty = true;
 			theApp.amuledlg->transferwnd->downloadlistctrl->AddSource(SwapTo,this,false);
 	
