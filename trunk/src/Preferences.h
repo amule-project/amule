@@ -21,8 +21,6 @@
 #ifndef PREFERENCES_H
 #define PREFERENCES_H
 
-#pragma interface
-
 #include "types.h"				// Needed for ints
 #include "CMD4Hash.h"
 
