@@ -76,6 +76,9 @@ public:
 	bool	OnCmdLineParsed(wxCmdLineParser& parser);
 	wxString m_TemplateFileName;
 	bool	m_HasTemplate;
+	bool	m_UseGzip;
+	wxString m_AdminPass, m_GuestPass;
+	bool	m_AllowGuest;
 	
 #if wxUSE_GUI
 public:
