@@ -78,16 +78,16 @@ void CSharedFilesCtrl::InitSort()
 #define LVCFMT_LEFT wxLIST_FORMAT_LEFT
 
 void CSharedFilesCtrl::Init(){
-	InsertColumn(0,CString(_("File Name")) ,LVCFMT_LEFT,250);
-	InsertColumn(1,CString(_("Size")),LVCFMT_LEFT,100);
-	InsertColumn(2,CString(_("Type")),LVCFMT_LEFT,50);
-	InsertColumn(3,CString(_("Priority")),LVCFMT_LEFT,70);
-	InsertColumn(4,CString(_("Permission")),LVCFMT_LEFT,100);
-	InsertColumn(5,CString(_("FileID")),LVCFMT_LEFT,220);
-	InsertColumn(6,CString(_("Requests")),LVCFMT_LEFT,100);
-	InsertColumn(7,CString(_("Accepted Requests")),LVCFMT_LEFT,100);
-	InsertColumn(8,CString(_("Transferred Data")),LVCFMT_LEFT,120);
-	InsertColumn(9,CString(_("Obtained Parts")),LVCFMT_LEFT,120);
+	InsertColumn(0,_("File Name") ,LVCFMT_LEFT,250);
+	InsertColumn(1,_("Size"),LVCFMT_LEFT,100);
+	InsertColumn(2,_("Type"),LVCFMT_LEFT,50);
+	InsertColumn(3,_("Priority"),LVCFMT_LEFT,70);
+	InsertColumn(4,_("Permission"),LVCFMT_LEFT,100);
+	InsertColumn(5,_("FileID"),LVCFMT_LEFT,220);
+	InsertColumn(6,_("Requests"),LVCFMT_LEFT,100);
+	InsertColumn(7,_("Accepted Requests"),LVCFMT_LEFT,100);
+	InsertColumn(8,_("Transferred Data"),LVCFMT_LEFT,120);
+	InsertColumn(9,_("Obtained Parts"),LVCFMT_LEFT,120);
 }
 
 void CSharedFilesCtrl::OnNMRclick(wxListEvent& evt)
@@ -105,25 +105,25 @@ void CSharedFilesCtrl::OnNMRclick(wxListEvent& evt)
 		SetItemState(evt.GetIndex(), wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
 	}
 	if(m_SharedFilesMenu==NULL) {
-		wxMenu* menu=new wxMenu(CString(_("Shared Files")));
+		wxMenu* menu=new wxMenu(_("Shared Files"));
 		wxMenu* prioMenu=new wxMenu();
-		prioMenu->Append(MP_PRIOVERYLOW,CString(_("Very low")));
-		prioMenu->Append(MP_PRIOLOW,CString(_("Low")));
-		prioMenu->Append(MP_PRIONORMAL,CString(_("Normal")));
-		prioMenu->Append(MP_PRIOHIGH,CString(_("High")));
-		prioMenu->Append(MP_PRIOVERYHIGH,CString(_("Very High")));
-		prioMenu->Append(MP_POWERSHARE,CString(_("PowerShare[Release]"))); //added for powershare (deltaHF)
-		prioMenu->Append(MP_PRIOAUTO,CString(_("Auto")));
+		prioMenu->Append(MP_PRIOVERYLOW,_("Very low"));
+		prioMenu->Append(MP_PRIOLOW,_("Low"));
+		prioMenu->Append(MP_PRIONORMAL,_("Normal"));
+		prioMenu->Append(MP_PRIOHIGH,_("High"));
+		prioMenu->Append(MP_PRIOVERYHIGH,_("Very High"));
+		prioMenu->Append(MP_POWERSHARE,_("PowerShare[Release]")); //added for powershare (deltaHF)
+		prioMenu->Append(MP_PRIOAUTO,_("Auto"));
 
 		wxMenu* permMenu=new wxMenu();
-		permMenu->Append(MP_PERMALL,CString(_("Public")));
-		permMenu->Append(MP_PERMFRIENDS,CString(_("Friends only")));
-		permMenu->Append(MP_PERMNONE,CString(_("Locked")));
+		permMenu->Append(MP_PERMALL,_("Public"));
+		permMenu->Append(MP_PERMFRIENDS,_("Friends only"));
+		permMenu->Append(MP_PERMNONE,_("Locked"));
 
-		menu->Append(438312,CString(_("Priority")),prioMenu);
+		menu->Append(438312,_("Priority"),prioMenu);
 		menu->Append(438313,_("Permissions"),permMenu);
 		menu->AppendSeparator();
-		menu->Append(MP_CMT, CString(_("Change this file's comment...")));
+		menu->Append(MP_CMT, _("Change this file's comment..."));
 		menu->AppendSeparator();
 
 		menu->Append(MP_GETED2KLINK,_("Copy ED2k &link to clipboard"));
@@ -160,77 +160,77 @@ void CSharedFilesCtrl::RemoveFile(CKnownFile *toRemove)
 
 void CSharedFilesCtrl::UpdateFile(CKnownFile* file,uint32 itemnr)
 {
-	CString buffer;
+	wxString buffer;
 	SetItemData(itemnr,(long)file);
 	SetItem(itemnr,1,CastItoXBytes(file->GetFileSize()));
 	SetItem(itemnr,2,GetFiletypeByName(file->GetFileName()));  // added by InterCeptor (show filetype) 11.11.02
 	if ((file->IsAutoUpPriority())&&(theApp.glob_prefs->GetNewAutoUp())) {
 		switch (file->GetUpPriority()) {
 			case PR_LOW: {
-				SetItem(itemnr,3,CString(_("Auto [Lo]")));
+				SetItem(itemnr,3,_("Auto [Lo]"));
 				break;					
 			}
 			case PR_NORMAL : {
-				SetItem(itemnr,3,CString(_("Auto [No]")));
+				SetItem(itemnr,3,_("Auto [No]"));
 				break;
 			}
 			case PR_HIGH : {
-				SetItem(itemnr,3,CString(_("Auto [Hi]")));
+				SetItem(itemnr,3,_("Auto [Hi]"));
 				break;
 			}
 			case PR_VERYHIGH : {
-				SetItem(itemnr,3,CString(_("Auto [Re]")));
+				SetItem(itemnr,3,_("Auto [Re]"));
 				break;
 			}
 			default:
-				SetItem(itemnr,3,CString(_("Auto [UNK]")));
+				SetItem(itemnr,3,_("Auto [UNK]"));
 				break;
 		}
 	} else {
 		switch (file->GetUpPriority()) {
 			case PR_VERYLOW : {
-				SetItem(itemnr,3,CString(_("Very low")));
+				SetItem(itemnr,3,_("Very low"));
 				break;
 			}
 			case PR_LOW : {
-				SetItem(itemnr,3,CString(_("Low")));
+				SetItem(itemnr,3,_("Low"));
 				break;
 			}
 			case PR_NORMAL : {
-				SetItem(itemnr,3,CString(_("Normal")));
+				SetItem(itemnr,3,_("Normal"));
 				break;
 			}
 			case PR_HIGH : {
-				SetItem(itemnr,3,CString(_("High")));
+				SetItem(itemnr,3,_("High"));
 				break;
 			}
 			case PR_VERYHIGH : {
-				SetItem(itemnr,3,CString(_("Very High")));
+				SetItem(itemnr,3,_("Very High"));
 				break;
 			}
 			case PR_POWERSHARE : { //added for powershare (deltaHF)
-				SetItem(itemnr,3,CString(_("PowerShare[Release]")));
+				SetItem(itemnr,3,_("PowerShare[Release]"));
 				break; //end
 			}	
 			default:
-				SetItem(itemnr,3,CString(_("Unknown")));
+				SetItem(itemnr,3,_("Unknown"));
 				break;
 		}
 	}
 
 	if (file->GetPermissions() == PERM_NOONE) {
-		SetItem(itemnr,4,CString(_("Hidden")));
+		SetItem(itemnr,4,_("Hidden"));
 	} else if (file->GetPermissions() == PERM_FRIENDS) {
-		SetItem(itemnr,4,CString(_("Friends only")));
+		SetItem(itemnr,4,_("Friends only"));
 	} else {
-		SetItem(itemnr,4,CString(_("Public")));
+		SetItem(itemnr,4,_("Public"));
 	}
 
 	SetItem(itemnr,5,EncodeBase16(file->GetFileHash(), 16));
 
-	buffer.Format(wxT("%u (%u)"),file->statistic.GetRequests(),file->statistic.GetAllTimeRequests());SetItem(itemnr,6,buffer);
-	buffer.Format(wxT("%u (%u)"),file->statistic.GetAccepts(),file->statistic.GetAllTimeAccepts());SetItem(itemnr,7,buffer);
-	buffer.Format(wxT("%s (%s)"),CastItoXBytes(file->statistic.GetTransfered()).GetData(), CastItoXBytes(file->statistic.GetAllTimeTransfered()).GetData());SetItem(itemnr,8,buffer);
+	buffer.Printf(wxT("%u (%u)"),file->statistic.GetRequests(),file->statistic.GetAllTimeRequests());SetItem(itemnr,6,buffer);
+	buffer.Printf(wxT("%u (%u)"),file->statistic.GetAccepts(),file->statistic.GetAllTimeAccepts());SetItem(itemnr,7,buffer);
+	buffer.Printf(wxT("%s (%s)"),CastItoXBytes(file->statistic.GetTransfered()).GetData(), CastItoXBytes(file->statistic.GetAllTimeTransfered()).GetData());SetItem(itemnr,8,buffer);
 }
 
 void CSharedFilesCtrl::ShowFile(CKnownFile* file)
@@ -331,10 +331,10 @@ bool CSharedFilesCtrl::ProcessEvent(wxEvent& evt)
 					int iSel=pos;
 					file = (CKnownFile*)this->GetItemData(iSel);
 					if (((CPartFile*)file)->IsPartFile()) {
-						wxMessageBox(CString(_("You cannot change permissions while a file is still downloading!")));
+						wxMessageBox(_("You cannot change permissions while a file is still downloading!"));
 					} else {
 						file->SetPermissions(PERM_NOONE);
-						SetItem(iSel,4,CString(_("Hidden")));
+						SetItem(iSel,4,_("Hidden"));
 					}
 					pos=GetNextItem(pos,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
 				}
@@ -347,10 +347,10 @@ bool CSharedFilesCtrl::ProcessEvent(wxEvent& evt)
 					int iSel=pos;
 					file = (CKnownFile*)this->GetItemData(iSel);
 					if (((CPartFile*)file)->IsPartFile()) {
-						wxMessageBox(CString(_("You cannot change permissions while a file is still downloading!")));
+						wxMessageBox(_("You cannot change permissions while a file is still downloading!"));
 					} else {
 						file->SetPermissions(PERM_FRIENDS);
-						SetItem(iSel,4,CString(_("Friends only")));
+						SetItem(iSel,4,_("Friends only"));
 					}
 					pos=GetNextItem(pos,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
 				}
@@ -363,7 +363,7 @@ bool CSharedFilesCtrl::ProcessEvent(wxEvent& evt)
 					int iSel=pos;
 					file = (CKnownFile*)this->GetItemData(iSel);
 					file->SetPermissions(PERM_ALL);
-					SetItem(iSel,4,CString(_("Public")));
+					SetItem(iSel,4,_("Public"));
 					pos=GetNextItem(pos,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
 				}
 				return true;
@@ -382,7 +382,7 @@ bool CSharedFilesCtrl::ProcessEvent(wxEvent& evt)
 					file = (CKnownFile*)this->GetItemData(iSel);
 					file->SetAutoUpPriority(false);
 					file->SetUpPriority(PR_VERYLOW);
-					SetItem(iSel,3,CString(_("Very low")));
+					SetItem(iSel,3,_("Very low"));
 					pos=GetNextItem(pos,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
 				}
 				return true;
@@ -395,7 +395,7 @@ bool CSharedFilesCtrl::ProcessEvent(wxEvent& evt)
 					file = (CKnownFile*)this->GetItemData(iSel);
 					file->SetAutoUpPriority(false);
 					file->SetUpPriority(PR_LOW);
-					SetItem(iSel,3,CString(_("Low")));
+					SetItem(iSel,3,_("Low"));
 					pos=GetNextItem(pos,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
 				}
 				return true;
@@ -408,7 +408,7 @@ bool CSharedFilesCtrl::ProcessEvent(wxEvent& evt)
 					file = (CKnownFile*)this->GetItemData(iSel);
 					file->SetAutoUpPriority(false);
 					file->SetUpPriority(PR_NORMAL);
-					SetItem(iSel,3,CString(_("Normal")));
+					SetItem(iSel,3,_("Normal"));
 					pos=GetNextItem(pos,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
 				}
 				return true;
@@ -421,7 +421,7 @@ bool CSharedFilesCtrl::ProcessEvent(wxEvent& evt)
 					file = (CKnownFile*)this->GetItemData(iSel);
 					file->SetAutoUpPriority(false);
 					file->SetUpPriority(PR_HIGH);
-					SetItem(iSel,3,CString(_("High")));
+					SetItem(iSel,3,_("High"));
 					pos=GetNextItem(pos,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
 				}
 				return true;
@@ -434,7 +434,7 @@ bool CSharedFilesCtrl::ProcessEvent(wxEvent& evt)
 					file = (CKnownFile*)this->GetItemData(iSel);
 					file->SetAutoUpPriority(false);
 					file->SetUpPriority(PR_VERYHIGH);
-					SetItem(iSel,3,CString(_("Very High")));
+					SetItem(iSel,3,_("Very High"));
 					pos=GetNextItem(pos,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
 				}
 				return true;
@@ -447,7 +447,7 @@ bool CSharedFilesCtrl::ProcessEvent(wxEvent& evt)
 					file = (CKnownFile*)this->GetItemData(iSel);
 					file->SetAutoUpPriority(false);
 					file->SetUpPriority(PR_POWERSHARE);
-					SetItem(iSel,3,CString(_("PowerShare[Release]")));
+					SetItem(iSel,3,_("PowerShare[Release]"));
 					pos=GetNextItem(pos,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
 				}
 				return true;
@@ -460,7 +460,7 @@ bool CSharedFilesCtrl::ProcessEvent(wxEvent& evt)
 					file = (CKnownFile*)this->GetItemData(iSel);
 					file->SetAutoUpPriority(true);
 					file->UpdateAutoUpPriority();
-					SetItem(iSel,3,CString(_("Auto [No]")));
+					SetItem(iSel,3,_("Auto [No]"));
 					pos=GetNextItem(pos,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
 				}
 				return true;
