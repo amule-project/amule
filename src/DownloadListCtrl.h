@@ -23,8 +23,6 @@
 #include <utility>		// Needed for std::pair
 #include <map>			// Needed for std::multimap
 #include <wx/defs.h>		// Needed before any other wx/*.h
-#include <wx/bitmap.h>		// Needed for wxBitmap
-#include <wx/imaglist.h>        // Needed for wxImageList
 
 #include "types.h"		// Needed for uint8
 #include "MuleListCtrl.h"	// Needed for CMuleListCtrl
@@ -32,6 +30,7 @@
  
 class CPartFile;
 class CUpDownClient;
+class wxBitmap;
 
 enum ItemType {FILE_TYPE=1,AVAILABLE_SOURCE=2,UNAVAILABLE_SOURCE=3};
 struct CtrlItem_Struct{

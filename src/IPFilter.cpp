@@ -23,7 +23,7 @@
 #include <wx/textfile.h>
 
 #include "IPFilter.h"		// Interface declarations.
-
+#include "otherfunctions.h"
 #include "Preferences.h"	// Needed for CPreferences
 #include "amule.h"			// Needed for theApp
 

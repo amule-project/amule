@@ -23,15 +23,14 @@
 
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/panel.h>		// Needed for wxPanel
-#include <wx/gauge.h>		// Needed for wxGauge
-#include <wx/statbmp.h>		// Needed for wxStaticBitmap
-#include <wx/listbase.h>	// Needed for wxListEvent
 
 #include "resource.h"		// Needed for IDD_FILES
 #include "CMD4Hash.h"
 
 class CKnownFile;
 class CSharedFilesCtrl;
+class wxListEvent;
+class wxGauge;
 
 class CSharedFilesWnd : public wxPanel //CResizableDialog
 {
@@ -69,7 +68,6 @@ private:
 
 	wxFont bold;
 	CMD4Hash m_shownFileHash;
-	wxStaticBitmap m_ctrlStatisticsFrm;
 	void OnBtnReloadsharedfiles(wxCommandEvent &evt);
 };
 

@@ -24,6 +24,7 @@
 #include <wx/msgdlg.h>
 
 #include "MuleListCtrl.h"	// Interface declarations
+#include "otherfunctions.h"
 #include "opcodes.h"		// Needed for MP_LISTCOL_1
 #include "amule.h"			// Needed for theApp
 

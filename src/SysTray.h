@@ -35,10 +35,11 @@
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/wxchar.h>		// Needed for wxChar
 #include <wx/string.h>		// Needed for wxString
-#include <wx/window.h>		// Needed for wxWindow
 
 #include "types.h"		// Needed for DWORD
 #include "color.h"		// Needed for COLORREF, GetRValue, GetGValue and GetBValue
+
+class wxWindow;
 
 #ifndef __WXMSW__ // defined in windef.h 
 typedef struct _tagSIZE {

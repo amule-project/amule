@@ -32,7 +32,7 @@
 #include "muuli_wdr.h"		// Needed for messagePage
 #include "color.h"			// Needed for GetColour
 #include "opcodes.h"
-
+#include "otherfunctions.h"
 
 BEGIN_EVENT_TABLE(CChatWnd, wxPanel)
 	EVT_BUTTON(IDC_CSEND, CChatWnd::OnBnClickedCsend)

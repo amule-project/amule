@@ -27,10 +27,11 @@
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/control.h>		// Needed for wxControl
 #include <wx/timer.h>		// Needed for wxTimer
-#include <wx/dcmemory.h>	// Needed for wxMemoryDC
 
 #include "types.h"		// Needed for RECT
 #include "color.h"			// Needed for COLORREF and RGB
+
+class wxMemoryDC;
 
 /////////////////////////////////////////////////////////////////////////////
 // COScopeCtrl window

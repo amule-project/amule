@@ -23,13 +23,13 @@
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/dialog.h>		// Needed for wxDialog
 #include <wx/bitmap.h>		// Needed for wxBitmap
-#include <wx/choice.h>		// Needed for wxChoice
-#include <wx/statbmp.h>		// Needed for wxStaticBitmap
 #include "resource.h"		// Needed for IDD_CAT
 
 #include "types.h"		// Needed for DWORD
 
 class Category_Struct;
+class wxStaticBitmap;
+class wxChoice;
 
 // CCatDialog dialog
 

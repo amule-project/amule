@@ -480,7 +480,8 @@ void CamuleDlg::ResetLog(uint8 whichone)
 
 void CamuleDlg::ResetDebugLog()
 {
-	serverwnd->logbox.Clear();
+#warning This isnt the right textctrl!
+//	serverwnd->logbox.Clear();
 }
 
 

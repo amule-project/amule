@@ -28,7 +28,6 @@
 
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/dialog.h>		// Needed for wxDialog
-#include <wx/choice.h>
 #include <wx/config.h>
 #include "muuli_wdr.h"
 
@@ -40,7 +39,7 @@
 class Rse;
 class CPreferences;
 class CDirectoryTreeCtrl;
-
+class wxChoice;
 
 class PrefsUnifiedDlg: public wxDialog
 {

@@ -38,6 +38,7 @@
 #include "server.h"		// Needed for CServer
 #include "opcodes.h"		// Needed for MP_PRIOLOW
 #include "muuli_wdr.h"		// Needed for ID_SERVERLIST
+#include "otherfunctions.h"
 
 // CServerListCtrl
 

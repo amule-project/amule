@@ -21,38 +21,14 @@
 #ifndef PREFERENCES_H
 #define PREFERENCES_H
 
-#include <ctime>		// Needed for time(2)
-
 #include "types.h"		// Needed for int8, int16, int32, int64, uint8, uint16, uint32 and uint64
 
-#include "MD5Sum.h"		// Needed for MD5Sum
 #include "CMD4Hash.h"
-#include "otherfunctions.h"
 #include "PrefsUnifiedDlg.h"			// Needed for UNIFIED_PREF_HANDLING
 #include <wx/dynarray.h>
 
-class Rse;
-
-#ifndef MAX_PATH
-#include <climits>		// This is not really garanteed to define _POSIX_PATH_MAX or anything.
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/string.h>		// Needed for wxArrayString
-#ifdef MAXPATHLEN
-#define MAX_PATH MAXPATHLEN
-#elif defined(MAX_PATH_LEN)
-#define MAX_PATH MAX_PATH_LEN
-#elif defined(MAXPATH)
-#define MAX_PATH MAXPATH
-#elif defined(_MAXPATH)
-#define MAX_PATH _MAXPATH
-#elif defined(PATH_MAX)
-#define MAX_PATH PATH_MAX
-#elif defined(_POSIX_PATH_MAX)
-#define MAX_PATH _POSIX_PATH_MAX
-#else
-#define MAX_PATH 512
-#endif
-#endif
 
 enum EViewSharedFilesAccess{
 	vsfaEverybody = 0,

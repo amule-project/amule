@@ -21,9 +21,6 @@
 // SharedFilesCtrl.cpp : implementation file
 //
 
-#include <wx/msgdlg.h>
-#include <wx/stattext.h>
-
 
 #include "muuli_wdr.h"		// Needed for ID_SHFILELIST
 #include "SharedFilesCtrl.h"	// Interface declarations
@@ -37,6 +34,9 @@
 #include "amule.h"		// Needed for theApp
 #include "color.h"		// Needed for SYSCOLOR
 #include "BarShader.h"
+
+#include <wx/msgdlg.h>
+#include <wx/stattext.h>
 
 // CSharedFilesCtrl
 

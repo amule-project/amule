@@ -23,6 +23,7 @@
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/textctrl.h>	// Needed for wxTextCtrl
 #include <wx/datetime.h>
+#include <wx/socket.h>
 
 #include "ExternalConn.h"	// Interface declarations
 #include "ServerListCtrl.h"	// Needed for CServerListCtrl

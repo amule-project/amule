@@ -20,8 +20,6 @@
 // UploadListCtrl.cpp : implementation file
 //
 
-#include <wx/menu.h>
-
 #include "UploadListCtrl.h"	// Interface declarations
 #include "otherfunctions.h"	// Needed for CastItoXBytes
 #include "amule.h"			// Needed for theApp
@@ -36,6 +34,8 @@
 #include "opcodes.h"		// Needed for MP_DETAIL
 #include "muuli_wdr.h"		// Needed for ID_UPLOADLIST
 #include "color.h"		// Needed for G_BLEND and SYSCOLOR
+
+#include <wx/menu.h>
 
 // CUploadListCtrl
 

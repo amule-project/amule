@@ -25,6 +25,7 @@
 	#include <wx/wx.h>
 #endif
 #include <wx/sizer.h>
+#include <wx/gauge.h>
 
 #include "SearchDlg.h"		// Interface declarations.
 #include "UploadQueue.h"	// Needed for CUploadQueue

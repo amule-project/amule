@@ -21,14 +21,13 @@
 #define COMMENTDIALOGLST_H
 
 #include <wx/defs.h>		// Needed before any other wx/*.h
-#include <wx/colour.h>		// Needed before wx/listctrl.h
-#include <wx/event.h>		// Needed before wx/listctrl.h
-#include <wx/listctrl.h>	// Needed for wxListCtrl
 #include <wx/dialog.h>		// Needed for wxDialog
 
 #include "resource.h"		// Needed for IDD_COMMENTLST
 
 class CPartFile;
+class wxListCtrl;
+class wxCommandEvent;
 
 // CCommentDialogLst dialog 
 

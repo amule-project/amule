@@ -20,14 +20,9 @@
 #ifndef EXTERNALCONN_H
 #define EXTERNALCONN_H
 
-//Needed to avoid multiple instances of amule
-#include <wx/ipc.h>	// Needed for wxConnection
-
-
-//ExternalConn: listening server using wxSockets
-#include <wx/socket.h>
-
 class CPartFile;
+class wxSocketServer;
+class wxSocketEvent;
 
 class ExternalConn : public wxEvtHandler {
 	public:
