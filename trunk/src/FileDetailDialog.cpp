@@ -49,7 +49,7 @@ BEGIN_EVENT_TABLE(CFileDetailDialog,wxDialog)
 END_EVENT_TABLE()
 
 CFileDetailDialog::CFileDetailDialog(wxWindow* parent,CPartFile* file)
-: wxDialog(parent,9998,"File Details",wxDefaultPosition,wxDefaultSize,wxDEFAULT_DIALOG_STYLE)
+: wxDialog(parent,9998,(wxT("File Details")),wxDefaultPosition,wxDefaultSize,wxDEFAULT_DIALOG_STYLE)
 {
 	m_file = file;
 	m_timer.SetOwner(this,ID_MY_TIMER);
@@ -90,22 +90,22 @@ void CFileDetailDialog::UpdateData()
 	GetDlgItem(IDC_FHASH,wxStaticText)->SetLabel(EncodeBase16(m_file->GetFileHash(), 16));
 	GetDlgItem(IDC_FSIZE,wxControl)->SetLabel(CastItoXBytes(m_file->GetFileSize()));
 	GetDlgItem(IDC_PFSTATUS,wxControl)->SetLabel(m_file->getPartfileStatus());
-	bufferS.Format("%i(%i)",m_file->GetPartCount(),m_file->GetHashCount());
+	bufferS.Format(wxT("%i(%i)"),m_file->GetPartCount(),m_file->GetHashCount());
 	GetDlgItem(IDC_PARTCOUNT,wxControl)->SetLabel(bufferS);
 	GetDlgItem(IDC_TRANSFERED,wxControl)->SetLabel(CastItoXBytes(m_file->GetTransfered()));
 	GetDlgItem(IDC_FD_STATS1,wxControl)->SetLabel(CastItoXBytes(m_file->GetLostDueToCorruption()).GetData());
 	GetDlgItem(IDC_FD_STATS2,wxControl)->SetLabel(CastItoXBytes(m_file->GetGainDueToCompression()).GetData());
 	GetDlgItem(IDC_FD_STATS3,wxControl)->SetLabel(CastItoIShort(m_file->TotalPacketsSavedDueToICH()));
 	GetDlgItem(IDC_COMPLSIZE,wxControl)->SetLabel(CastItoXBytes(m_file->GetCompletedSize()));
-	bufferS.Format("%.2f ",m_file->GetPercentCompleted());
+	bufferS.Format(wxT("%.2f "),m_file->GetPercentCompleted());
 	GetDlgItem(IDC_PROCCOMPL,wxControl)->SetLabel(bufferS+CString("% ")+CString(_("done")));
-	bufferS.Format("%.2f %s",(float)m_file->GetKBpsDown(),CString(_("kB/s")).GetData());
+	bufferS.Format(wxT("%.2f %s"),(float)m_file->GetKBpsDown(),CString(_("kB/s")).GetData());
 	GetDlgItem(IDC_DATARATE,wxControl)->SetLabel(bufferS);
-	bufferS.Format("%i",m_file->GetSourceCount());
+	bufferS.Format(wxT("%i"),m_file->GetSourceCount());
 	GetDlgItem(IDC_SOURCECOUNT,wxControl)->SetLabel(bufferS);
-	bufferS.Format("%i",m_file->GetTransferingSrcCount());
+	bufferS.Format(wxT("%i"),m_file->GetTransferingSrcCount());
 	GetDlgItem(IDC_SOURCECOUNT2,wxControl)->SetLabel(bufferS);
-	bufferS.Format("%i (%.1f%%)",m_file->GetAvailablePartCount(),(float) ((m_file->GetAvailablePartCount()*100)/ m_file->GetPartCount()));
+	bufferS.Format(wxT("%i (%.1f%%)"),m_file->GetAvailablePartCount(),(float) ((m_file->GetAvailablePartCount()*100)/ m_file->GetPartCount()));
 	GetDlgItem(IDC_PARTAVAILABLE,wxControl)->SetLabel(bufferS);
 
 	if (m_file->lastseencomplete==0) {
@@ -140,7 +140,7 @@ void CFileDetailDialog::FillSourcenameList()
 
 	// reset
 	for (int i=0;i<pmyListCtrl->GetItemCount();i++){
-		pmyListCtrl->SetItem(i, 1, "0");	
+		pmyListCtrl->SetItem(i, 1, (wxT("0")));	
 		SourcenameItem *item = (SourcenameItem *) pmyListCtrl->GetItemData(i);
 		item->count = 0;
 	}
@@ -151,11 +151,11 @@ void CFileDetailDialog::FillSourcenameList()
 		if (cur_src->reqfile!=m_file || CString(cur_src->GetClientFilename()).GetLength()==0)
 			continue;
 
-		if ((itempos=pmyListCtrl->FindItem(-1,wxString(cur_src->GetClientFilename()))) == -1) { 
-			int itemid = pmyListCtrl->InsertItem(0, cur_src->GetClientFilename()); 
-			pmyListCtrl->SetItem(0, 1, "1"); 
+		if ((itempos=pmyListCtrl->FindItem(-1,wxString(char2unicode(cur_src->GetClientFilename())))) == -1) { 
+			int itemid = pmyListCtrl->InsertItem(0, (char2unicode(cur_src->GetClientFilename()))); 
+			pmyListCtrl->SetItem(0, 1, (wxT("1"))); 
 			SourcenameItem *item = new SourcenameItem;
-			item->name = cur_src->GetClientFilename();
+			item->name = (char2unicode(cur_src->GetClientFilename()));
 			item->count = 1;
 			pmyListCtrl->SetItemData(0, (long)item); 
 			// background.. argh -- PA: was in old version - do we still need this?
@@ -166,7 +166,7 @@ void CFileDetailDialog::FillSourcenameList()
 		} else { 
 			SourcenameItem *item = (SourcenameItem *) pmyListCtrl->GetItemData(itempos); 
 			item->count++;
-			nameCountStr.Format("%i", item->count); 
+			nameCountStr.Format(wxT("%i"), item->count); 
 			pmyListCtrl->SetItem(itempos, 1, nameCountStr); 
 		} 
 		pmyListCtrl->UpdateSort();
@@ -201,7 +201,7 @@ void CFileDetailDialog::OnBnClickedShowComment(wxCommandEvent& evt)
 void CFileDetailDialog::OnBnClickedRename(wxCommandEvent& evt)
 {
 	wxString NewFileName=GetDlgItem(IDC_FILENAME,wxTextCtrl)->GetValue();
-	m_file->SetFileName((char*)NewFileName.GetData()); 
+	m_file->SetFileName(NewFileName);
 	m_file->SavePartFile(); 
 	FindWindowById(IDC_FNAME)->SetLabel(MakeStringEscaped(CString(m_file->GetFileName().GetData())));
 	FindWindowById(IDC_METFILE)->SetLabel(m_file->GetFullName());
@@ -217,23 +217,23 @@ void CFileDetailDialog::OnBnClickedButtonStrip(wxCommandEvent& evt) {
 	// Replace . with - except the last one (extention-dot)
 	int extpos=filename.Find('.',TRUE);
 	if (extpos>=0) {
-		filename.Replace(".","-");
+		filename.Replace(wxT("."),wxT("-"));
 		filename.SetChar(extpos,'.');
 	}
 
 	// Replace Space-holders with Spaces
-	filename.Replace("_","-");
-	filename.Replace("%20","-");
+	filename.Replace(wxT("_"),wxT("-"));
+	filename.Replace(wxT("%20"),wxT("-"));
 
 	// Barry - Some additional formatting
 	filename.MakeLower();
-	filename.Replace("sharereactor", "");
-	filename.Replace("deviance", "");
-	filename.Replace("-ftv", "");
-	filename.Replace("flt", "");
-	filename.Replace("[]", "");
-	filename.Replace("()", "");
-	filename.Replace("  ", "-");
+	filename.Replace(wxT("sharereactor"), wxT(""));
+	filename.Replace(wxT("deviance"), wxT(""));
+	filename.Replace(wxT("-ftv"), wxT(""));
+	filename.Replace(wxT("flt"), wxT(""));
+	filename.Replace(wxT("[]"), wxT(""));
+	filename.Replace(wxT("()"), wxT(""));
+	filename.Replace(wxT("  "), wxT("-"));
 
 	// Make leading Caps 
 	if (filename.Length()>1)

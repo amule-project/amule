@@ -36,7 +36,7 @@ CFriend::CFriend()
 	m_dwLastUsedIP = 0;
 	m_nLastUsedPort = 0;
 	m_dwLastChatted = 0;
-	m_strName = "";
+	m_strName = (wxT(""));
 	m_LinkedClient = NULL;
 	m_dwHasHash = 0;
 	memset( m_abyUserhash, 0, 16);
@@ -70,7 +70,7 @@ CFriend::CFriend(CUpDownClient* client)
 	m_dwLastChatted = 0;
 	
 	if ( client->GetUserName() ) {
-		m_strName = client->GetUserName();
+		m_strName = char2unicode(client->GetUserName());
 	}
 	
 	memcpy(m_abyUserhash, client->GetUserHash(), 16);
@@ -96,7 +96,7 @@ void CFriend::LoadFromFile(CFile* file)
 		CTag* newtag = new CTag(file);
 		switch ( newtag->tag.specialtag ) {
 			case FF_NAME:
-				m_strName = newtag->tag.stringvalue;
+				m_strName = char2unicode(newtag->tag.stringvalue);
 				break;
 		}
 		
