@@ -36,10 +36,8 @@
 #pragma hdrstop
 #endif
 
-#ifndef WX_PRECOMP || defined(__WXMAC__)
 #include <wx/ffile.h>
 #include <wx/regex.h>
-#endif
 
 #include "ed2khash.h"
 #include "md4.h"
