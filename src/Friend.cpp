@@ -39,7 +39,7 @@ CFriend::CFriend()
 	m_strName = wxT("");
 	m_LinkedClient = NULL;
 	m_dwHasHash = 0;
-	memset( m_abyUserhash, 0, 16);
+	md4clr( m_abyUserhash );
 }
 
 
@@ -50,7 +50,7 @@ CFriend::CFriend(uchar tm_abyUserhash[16], uint32 tm_dwLastSeen, uint32 tm_dwLas
 	m_nLastUsedPort = tm_nLastUsedPort;
 	m_dwLastChatted = tm_dwLastChatted;
 	if( tm_dwHasHash ) {
-		memcpy(m_abyUserhash, tm_abyUserhash, 16);
+		md4cpy(m_abyUserhash, tm_abyUserhash);
 		m_dwHasHash = 1;
 	} else {
 		m_dwHasHash = 0;
@@ -73,7 +73,7 @@ CFriend::CFriend(CUpDownClient* client)
 		m_strName = char2unicode(client->GetUserName());
 	}
 	
-	memcpy(m_abyUserhash, client->GetUserHash(), 16);
+	md4cpy(m_abyUserhash, client->GetUserHash());
 	m_LinkedClient = client;
 	m_dwHasHash = 1;
 }

@@ -605,7 +605,7 @@ void CUpDownClient::SetDownloadState(uint8 byNewState)
 
 void CUpDownClient::ProcessHashSet(char* packet,uint32 size)
 {
-	if ((!reqfile) || memcmp(packet,reqfile->GetFileHash(),16)) {
+	if ((!reqfile) || md4cmp(packet,reqfile->GetFileHash())) {
 		throw wxString(wxT("Wrong fileid sent (ProcessHashSet)"));
 	}
 	if (!m_fHashsetRequesting) {
@@ -734,7 +734,7 @@ void CUpDownClient::ProcessBlockPacket(char *packet, uint32 size, bool packed)
 		data->ReadRaw(fileID,16);
 
 		// Check that this data is for the correct file
-		if ((!reqfile) || memcmp(packet, reqfile->GetFileHash(), 16)) {
+		if ((!reqfile) || md4cmp(packet, reqfile->GetFileHash())) {
 			delete data;
 			throw wxString(wxT("Wrong fileid sent (ProcessBlockPacket)"));
 		}

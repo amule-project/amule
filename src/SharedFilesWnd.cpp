@@ -66,7 +66,7 @@ CSharedFilesWnd::~CSharedFilesWnd()
 
 void CSharedFilesWnd::Check4StatUpdate(CKnownFile* file)
 {
-	if (!memcmp(file->GetFileHash(),shownFileHash ,16)) ShowDetails(file);
+	if (!md4cmp(file->GetFileHash(),shownFileHash)) ShowDetails(file);
 }
 
 void CSharedFilesWnd::OnLvnItemActivateSflist(wxListEvent& evt)
@@ -117,7 +117,7 @@ void CSharedFilesWnd::ShowDetails(CKnownFile* cur_file)
 	sprintf(buffer,"%u",cur_file->statistic.GetAllTimeAccepts());
 	GetDlgItem(IDC_SACCEPTED2)->SetLabel(char2unicode(buffer));
 
-	memcpy(shownFileHash,cur_file->GetFileHash(),16);
+	md4cpy(shownFileHash,cur_file->GetFileHash());
 
 	//wxString title=wxString(_("Statistics"))+" ("+ cur_file->GetFileName() +")";
 	//GetDlgItem(IDC_FSTATIC1)->SetWindowText( title );

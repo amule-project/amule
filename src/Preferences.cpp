@@ -69,10 +69,10 @@ CPreferences::CPreferences()
 		if (ferror(preffile)) {
 			SetStandartValues();
 		}
-		memcpy(&prefs->userhash,&prefsExt->userhash,16);
+		md4cpy(&prefs->userhash,&prefsExt->userhash);
 		prefs->EmuleWindowPlacement=prefsExt->EmuleWindowPlacement;
 		fclose(preffile);
-		memcpy(&userhash,&prefs->userhash,16);
+		md4cpy(&userhash,&prefs->userhash);
 		prefs->smartidstate=0;
 	}
 
@@ -151,7 +151,7 @@ bool CPreferences::Save()
 	if (preffile) {
 		prefsExt->version=PREFFILE_VERSION;
 		prefsExt->EmuleWindowPlacement=prefs->EmuleWindowPlacement;
-		memcpy(&prefsExt->userhash,&prefs->userhash,16);
+		md4cpy(&prefsExt->userhash,&prefs->userhash);
 		error = fwrite(prefsExt,sizeof(Preferences_Ext_Struct),1,preffile);
 		fclose(preffile);
 	} else {
