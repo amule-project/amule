@@ -260,7 +260,8 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			break;
 			
 		case CMD_ID_CONN_TO_SRV:
- 		case CMD_ID_CONN: {
+ 		case CMD_ID_CONN:
+			if ( ! args.IsEmpty() ) {
 				unsigned int ip[4];
 				unsigned int port;
 				int result = sscanf(unicode2char(args), "%d.%d.%d.%d:%d", &ip[0], &ip[1], &ip[2], &ip[3], &port);
@@ -278,6 +279,9 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 					Show(_("Invalid IP format. Use xxx.xxx.xxx.xxx:xxxx\n"));
 					return 0;
 				}
+			} else {
+				request = new CECPacket(EC_OP_SERVER_CONNECT);
+				request_list.push_back(request);
 			}
 			break;
 
