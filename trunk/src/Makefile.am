@@ -117,7 +117,10 @@ amule_SOURCES = ListenSocket.cpp \
 	amuleDlg.cpp 
 
 if USE_MINGW
-  amule_SOURCES += ../amule.rc
+amule_SOURCES += ../amule.rc
+
+../amule.rc.$(OBJEXT): ../amule.rc
+	$(WINDRES) -i $< -o $@
 endif
 
 if ADD_GSOCKET
