@@ -35,6 +35,9 @@ Version 2.0.0rc4 - The 'Mules and rabbits like apples too' version.
 
 	falso:
 		* Typo fix: bandwith to bandwidth
+		
+	hellimod, one_2_one:
+	    * MacOSX support
 
 	Hetfield:
 		* Fixed unicode issues on SysTray.cpp, now apps is really unicoded!
