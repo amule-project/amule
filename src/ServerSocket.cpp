@@ -60,7 +60,7 @@
 #include "server.h"		// Needed for CServer
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "amule.h"		// Needed for theApp
-
+#include "amuleIPV4Address.h" // Needed for amuleIPV4Address
 
 //#define DEBUG_SERVER_PROTOCOL
 
@@ -539,11 +539,19 @@ void CServerSocket::ConnectToServer(CServer* server)
 	cur_server = new CServer(server);
 	AddLogLineM(false, _("Connecting to ") + cur_server->GetListName() + wxT(" (") + server->GetAddress() + wxT(" - ") + cur_server->GetFullIP() + wxString::Format(wxT(":%i)"),cur_server->GetPort()));
 	SetConnectionState(CS_CONNECTING);
+	// This must be used if we want to reverse-check the addr of the server
+	//#define GET_ADDR true
+	#ifdef GET_ADDR
 	wxIPV4address addr;
+	#else
+	amuleIPV4Address addr;
+	#endif
 	addr.Hostname(server->GetAddress());
 	addr.Service(server->GetPort());
 	AddDebugLogLineM(true, _("Server ") + server->GetAddress() + wxString::Format(_(" Port %i"),server->GetPort()));
+	#ifdef GET_ADDR	
 	AddDebugLogLineM(true, _("Addr ") + addr.Hostname() + wxString::Format(_(" Port %i"),server->GetPort()));
+	#endif
 	this->Connect(addr,FALSE);
 
 	info = server->GetListName();
