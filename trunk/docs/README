@@ -4,14 +4,14 @@
                                  -----------
                                     aMule
                                  -----------
-                 The Multiplatform ed2k network client for linux
+                 The Multiplatform ed2k network client for Linux
               
 
 
  About
 -------
 
-This program is a multiplatform ed2k client fork of eMule client using wxWindows class library.
+This program is a multiplatform ed2k client fork of eMule client using wxWidgets class library.
 It was originally forked from xMule project but not related to it anymore, except little bits of code.
 
 
@@ -115,8 +115,10 @@ See INSTALL file
    *  The biggest list (~300 servers) maintained by the site.  Only if you have
       a very decent connection, AFAIK.
 	http://ocbmaurice.dyndns.org/pl/slist.pl/server.met?download/server-max.met 
+   *  Should maurice be down for some reasons, use this server.met instead 
+    http://www.srv1000.com/azz/server.met 
 
- Icons
+ Tranfers icons
 -------
 To find descriptions of the various icons found inside aMule, take a
 look at http://www.emule-project.net/faq/icons.htm
@@ -189,12 +191,12 @@ about how you fixed the problem.
 IRC & Links
 -----------
 
-IRC: Channel #aMule on EFNET IRC Network
+IRC: Channel #aMule on FREENODE IRC Network (irc.freenode.net)
 
-http://sourceforge.net/projects/amule/
+http://www.amule.rog
         - aMule homepage
-http://www.wxwindows.org
-        - wxWindows toolkit homepage
+http://www.wxwidgets.org
+        - wxWidgets toolkit homepage
 http://www.emule-project.net
 	- eMule homepage
 
@@ -206,3 +208,4 @@ non-personal copyright infringements or other illegal activities.
 
  -- Last modified by Kry Wed Dec 03 15:37:00 CEST 2003 --
  -- Last modified by Citroklar Fri Jan 02 03:03:00 MEZ 2004 --
+ -- Last modified by deltaHF Mon Mar 22 20:10:00 MEZ 2004 --
