@@ -69,7 +69,6 @@ public:
 	void ShowFilesCount();
 	void ChangeCategory(int newsel);
 	void SetCatStatus(int cat, int newstatus);
-	bool CheckShowItemInGivenCat(CPartFile* file, int inCategory);
 
 	wxString getTextList();
 	void ShowSelectedFileDetails();
