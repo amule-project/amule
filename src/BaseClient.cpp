@@ -721,18 +721,14 @@ void CUpDownClient::ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize)
 		//Why the version is a uint8 and why it was not done as a tag like the eDonkey hello packet is not known..
 		//Therefore, sooner or later, we are going to have to switch over to using the eDonkey hello packet to set the version.
 		//No sense making a third value sent for versions..
-		m_byEmuleVersion = data.ReadUInt8();
-
-		if( m_byEmuleVersion == 0x2B ) {
-			m_byEmuleVersion = 0x22;
-		}
+		uint8 mule_version = data.ReadUInt8();
 
 		uint8 protocol_version = data.ReadUInt8();
 
 		uint32 tagcount = data.ReadUInt32();
 		
 		if (protocol_version == 0xFF) {
-			m_bEmuleProtocol = true;
+
 			// aMule >= 2.0.0-rc8 seding OS info
 			for (uint32 i = 0;i < tagcount; i++){
 				CTag temptag(data);
@@ -743,9 +739,9 @@ void CUpDownClient::ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize)
 						// It was recycled from a mod's tag, so if the other side
 						// is not an aMule 2.0.0 at least, we're seriously fucked up :)
 							
-						wxASSERT((temptag.tag.type == 2) // tag must be a string
-									&& (m_clientSoft == SO_AMULE) 
-									&& (m_nClientVersion >= MAKE_CLIENT_VERSION(2,0,0)));
+						wxASSERT(temptag.tag.type == 2); // tag must be a string
+						wxASSERT(m_clientSoft == SO_AMULE);
+						wxASSERT(m_nClientVersion >= MAKE_CLIENT_VERSION(2,0,0));
 
 						m_sClientOSInfo = char2unicode(temptag.tag.stringvalue);
 
@@ -761,11 +757,17 @@ void CUpDownClient::ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize)
 			
 		} else {
 			
+			// Old eMule sending tags
+			
+			m_byEmuleVersion = mule_version;
+
+			if( m_byEmuleVersion == 0x2B ) {
+				m_byEmuleVersion = 0x22;
+			}
+			
 			if (!(m_bEmuleProtocol = (protocol_version == EMULE_PROTOCOL))) {
 				return;	
 			}
-			
-			// Old eMule sending tags
 			
 			for (uint32 i = 0;i < tagcount; i++){
 				CTag temptag(data);
