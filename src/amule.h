@@ -69,6 +69,7 @@ class wxSocketEvent;
 class wxTimer;
 class wxTimerEvent;
 class wxCommandEvent;
+class wxFFileOutputStream;
 
 #ifdef __DEBUG__
 	typedef struct {
@@ -343,7 +344,7 @@ protected:
 		CamuleWebserverThread* webserver_thread;
 	#endif
 	
-	wxFile *applog;
+	wxFFileOutputStream* applog;
 	bool enable_stdout_log;
 	wxString server_msg;
 

@@ -512,7 +512,7 @@ void CamuleDlg::AddLogLine(bool addtostatusbar, const wxString& line)
 	}
 
 	// Create the timestamp
-	wxString stamp = wxDateTime::Now().FormatDate() + wxT(" ") + wxDateTime::Now().FormatTime() + wxT(": ");
+	wxString stamp = wxDateTime::Now().FormatISODate() + wxT(" ") + wxDateTime::Now().FormatISOTime() + wxT(": ");
 
 	// Add the message to the log-view
 	wxTextCtrl* ct = CastByID( ID_LOGVIEW, serverwnd, wxTextCtrl );
