@@ -156,6 +156,10 @@ Version 2.0.0rc6 - The '???' version.
 		* Modify Xas to handle runtime in seconds
 		* Modify wxCas to handle runtime in seconds
 
+	Unleashed:
+		* cas: some sprintf -> snprintf conversions, ifdef unix specific
+		  code, and revert get_path() breakage
+
 	Xaignar:
 		* Rewrote the file-hashing thread for greater flexibility and 
 		  better error-handling.
