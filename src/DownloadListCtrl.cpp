@@ -931,19 +931,16 @@ void CDownloadListCtrl::DrawFileItem(wxDC * dc, int nColumn, LPRECT lpRect, Ctrl
 					cdcStatus.SelectObject(wxNullBitmap);
 
 					// ts: Percentage of completing
-					float percentage = 100.0*(float)lpPartFile->GetCompletedSize()/(float)lpPartFile->GetFileSize();
-					buffer.Format("%.1f %s", percentage, "%");
+					// Kry - Modified for speed
+					buffer.Format("%.1f %%", lpPartFile->GetPercentCompleted());
 					int middlex = (lpRect->left + lpRect->right) / 2;
 					int middley = (lpRect->bottom + lpRect->top) / 2;
-					wxCoord *textwidth, *textheight;
-					textwidth = new wxCoord();
-					textheight = new wxCoord();
-					dc->GetTextExtent(buffer, textwidth, textheight);
+					dc->GetTextExtent(buffer, &textwidth, &textheight);
 					wxColour AktColor = dc->GetTextForeground();
 					dc->SetTextForeground(*wxWHITE);
-					dc->DrawText(buffer, middlex - (*textwidth / 2), middley - (*textheight / 2));
-					dc->SetTextForeground(AktColor);
-
+					dc->DrawText(buffer, middlex - (textwidth / 2), middley - (textheight / 2));
+					dc->SetTextForeground(AktColor);					
+					
 					lpRect->bottom++;
 					lpRect->top--;
 				}
