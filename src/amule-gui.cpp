@@ -249,7 +249,11 @@ int CamuleGuiBase::InitGui(bool geometry_enabled, wxString &geom_string)
 	}
 	
 	// Should default/last-used position be overridden?
+#ifdef CLIENT_GUI
+	m_FrameTitle = wxString::Format(wxT("aMule remote control %s"), wxT(VERSION));
+#else
 	m_FrameTitle = wxString::Format(wxT("aMule %s"), wxT(VERSION));
+#endif
 	if ( geometry_enabled ) {
 		amuledlg = new CamuleDlg(NULL, m_FrameTitle,
 		                         wxPoint(geometry_x,geometry_y),
