@@ -46,7 +46,6 @@
 #include "SearchList.h"		// Needed for GetWebList
 #include "IPFilter.h"		// Needed for CIPFilter
 #include "ClientList.h"
-#include "gsocket-fix.h"	// Needed for wxSOCKET_REUSEADDR
 
 #ifndef AMULE_DAEMON
 #include "StatisticsDlg.h"	// Needed for CStatisticsDlg
