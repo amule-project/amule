@@ -120,7 +120,6 @@ void CMuleNotebook::OnRMButton(wxMouseEvent& event) {
  * notebook tab is 3 pixels wider than the rest (at least on GTK)!
  */
 void CMuleNotebook::CalculatePositions() {
-unsigned int i;                       // Loop counter
 int imagesizex, imagesizey;  // Notebookpage image size
 int textsizex, textsizey;    // Notebookpage text size
 
@@ -137,7 +136,7 @@ int textsizex, textsizey;    // Notebookpage text size
 	ends.Alloc(GetPageCount());
 
 	// Fill the arrays with zeros
-	for (i=0;i<GetPageCount();i++) {
+	for (int i=0;i<GetPageCount();i++) {
 		widths.Add(0);
 		begins.Add(0);
 		ends.Add(0);
@@ -145,7 +144,7 @@ int textsizex, textsizey;    // Notebookpage text size
 
 	// Loop through all pages and calculate their widths.
 	// Store all page begins, ends and widths in the arrays.
-	for (i=0;i<GetPageCount();i++) {
+	for (int i=0;i<GetPageCount();i++) {
 		GetImageList()->GetSize(
 			GetPageImage(i), imagesizex, imagesizey
 		);
@@ -174,7 +173,6 @@ int textsizex, textsizey;    // Notebookpage text size
  */
 void CMuleNotebook::MouseClick(wxMouseEvent &event) {
 long posx, posy;             // Mouse position at the time of the event
-unsigned int i;                       // Loop counter
 
 	if (GetImageList() == NULL) {
 		event.Skip();
@@ -186,7 +184,7 @@ unsigned int i;                       // Loop counter
 	event.GetPosition(&posx, &posy);
 
 	// Determine which page was under the mouse
-	for (i=0;i<GetPageCount();i++) {
+	for (int i=0;i<GetPageCount();i++) {
 		if (posx >= begins[i] && posx <= ends[i]) {
 			// Found it, check if image was hit
 			// Notice: (GTK) First tab is 3 pixels wider, thus the
@@ -222,7 +220,6 @@ unsigned int i;                       // Loop counter
  */
 void CMuleNotebook::MouseMotion(wxMouseEvent &event) {
 long posx, posy;                        // Event X and Y positions
-unsigned int i;                                  // Loop counter
 	if (GetImageList() == NULL) {
 		event.Skip();
 		return; // No images
@@ -234,7 +231,7 @@ unsigned int i;                                  // Loop counter
 	posy = event.m_y;
 
 	// Determine which page was under the mouse
-	for (i=0;i<GetPageCount();i++) {
+	for (int i=0;i<GetPageCount();i++) {
 		SetPageImage(i, 0);
 		if (posx >= begins[i] && posx <= ends[i]) {
 			// Found it, check if image was hit
