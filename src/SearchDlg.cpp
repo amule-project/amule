@@ -360,7 +360,9 @@ void CSearchDlg::OnBnClickedSdownload(wxCommandEvent& WXUNUSED(evt))
 	if( notebook->GetSelection() == -1 ) {
 		return;
 	}
-	
+
+	wxMutexLocker slock(notebook->m_LockTabs);
+
 	CSearchListCtrl* searchlistctrl = (CSearchListCtrl*)notebook->GetPage(notebook->GetSelection());
 	if ( searchlistctrl == NULL ) {
 		printf("searchlistctrl == NULL in CSearchDlg::OnBnClickedSdownload -- please, report this on amule forums: www.amule.org");
@@ -549,6 +551,7 @@ void CSearchDlg::DeleteSearch(uint16 nSearchID)
 {
 	theApp.searchlist->RemoveResults(nSearchID);
 
+	wxMutexLocker sLock(notebook->m_LockTabs);
 	for ( unsigned i = 0; i < notebook->GetPageCount(); i++ ) {
 		wxWindow * slctrl = (wxWindow *)notebook->GetPage( i );
 		
@@ -708,6 +711,7 @@ void CSearchDlg::OnPopupCloseAll(wxCommandEvent& WXUNUSED(evt))
 
 void CSearchDlg::OnPopupCloseOthers(wxCommandEvent& WXUNUSED(evt))
 {
+	wxMutexLocker slock(notebook->m_LockTabs);
 	wxNotebookPage* current = notebook->GetPage( notebook->GetSelection() );
 	
 	unsigned i = 0;
