@@ -532,36 +532,6 @@ bool IsGoodIP(uint32 nIP)
 }
 
 
-wxString IPToStr( long IP )
-{
-	wxString strIP;
-	strIP << (( IP >> 24  ) & 0xFF ) << wxT(".")
-	      << (( IP >> 16  ) & 0xFF ) << wxT(".")
-	      << (( IP >> 8   ) & 0xFF ) << wxT(".")
-	      << (( IP        ) & 0xFF );
-
-	return strIP;
-}
-
-long IPToLong( const wxString& IP )
-{
-	wxStringTokenizer tokenizer( IP, wxT(".") );
-
-	if ( tokenizer.CountTokens() == 4 ) {
-		long lIP = 0;
-		
-		for ( int i = 0; i < 4; i++ ) {
-			lIP += StrToLong(tokenizer.GetNextToken()) << (3-i)*8;
-		}
-		
-		return lIP;
-	} else {
-		return -1;
-	}
-}
-
-
-
 int wxCMPFUNC_CONV Uint16CompareValues(uint16* first, uint16* second) {
        return (((int)*first) - ((int)*second)) ;
 }      
