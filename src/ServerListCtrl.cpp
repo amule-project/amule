@@ -30,12 +30,11 @@
 #include "amule.h"			// Needed for theApp
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
-#include "server.h"		// Needed for SRV_PR_*
 #include "otherfunctions.h"		// Needed for CastByName
 #include "ServerList.h"		// Needed for CServerList
 #include "ServerWnd.h"		// Needed for CServerWnd
 #include "sockets.h"		// Needed for CServerConnect
-#include "server.h"			// Needed for CServer
+#include "server.h"			// Needed for CServer and SRV_PR_*
 #include "opcodes.h"		// Needed for MP_PRIO*
 
 
@@ -75,16 +74,17 @@ CServerListCtrl::CServerListCtrl( wxWindow *parent, wxWindowID winid, const wxPo
 
 	m_connected = 0;
 
-	InsertColumn( 0, _("Server Name"),	wxLIST_FORMAT_LEFT, 150);
-	InsertColumn( 1, _("IP"),			wxLIST_FORMAT_LEFT, 140);
-	InsertColumn( 2, _("Description"),	wxLIST_FORMAT_LEFT, 150);
-	InsertColumn( 3, _("Ping"),			wxLIST_FORMAT_LEFT, 25);
-	InsertColumn( 4, _("Users"),		wxLIST_FORMAT_LEFT, 40);
-	InsertColumn( 5, _("Files"),		wxLIST_FORMAT_LEFT, 45);
-	InsertColumn( 6, _("Priority"),		wxLIST_FORMAT_LEFT, 60);
-	InsertColumn( 7, _("Failed"),		wxLIST_FORMAT_LEFT, 40);
-	InsertColumn( 8, _("Static"),		wxLIST_FORMAT_LEFT, 40);
-	InsertColumn( 9, _("Version"),		wxLIST_FORMAT_LEFT, 80);
+	InsertColumn( COLUMN_SERVER_NAME, _("Server Name"),	wxLIST_FORMAT_LEFT, 150);
+	InsertColumn( COLUMN_SERVER_ADDR, _("Address"),			wxLIST_FORMAT_LEFT, 140);
+	InsertColumn( COLUMN_SERVER_PORT, _("Port"),			wxLIST_FORMAT_LEFT, 25);
+	InsertColumn( COLUMN_SERVER_DESC, _("Description"),	wxLIST_FORMAT_LEFT, 150);
+	InsertColumn( COLUMN_SERVER_PING, _("Ping"),			wxLIST_FORMAT_LEFT, 25);
+	InsertColumn( COLUMN_SERVER_USERS, _("Users"),		wxLIST_FORMAT_LEFT, 40);
+	InsertColumn( COLUMN_SERVER_FILES, _("Files"),		wxLIST_FORMAT_LEFT, 45);
+	InsertColumn( COLUMN_SERVER_PRIO, _("Priority"),		wxLIST_FORMAT_LEFT, 60);
+	InsertColumn( COLUMN_SERVER_FAILS, _("Failed"),		wxLIST_FORMAT_LEFT, 40);
+	InsertColumn( COLUMN_SERVER_STATIC, _("Static"),		wxLIST_FORMAT_LEFT, 40);
+	InsertColumn( COLUMN_SERVER_VERSION, _("Version"),		wxLIST_FORMAT_LEFT, 80);
 
 	LoadSettings();
 }
@@ -197,38 +197,39 @@ void CServerListCtrl::RefreshServer( CServer* server )
 	}
 	
 
-	SetItem( itemnr, 0, server->GetListName() );
-	SetItem( itemnr, 1, server->GetAddress() + wxString::Format( wxT(" : %i"), server->GetPort() ) );
-	SetItem( itemnr, 2, server->GetDescription() );
+	SetItem( itemnr, COLUMN_SERVER_NAME, server->GetListName() );
+	SetItem( itemnr, COLUMN_SERVER_ADDR, server->GetAddress() );
+	SetItem( itemnr, COLUMN_SERVER_PORT, wxString::Format("%i", server->GetPort()) );
+	SetItem( itemnr, COLUMN_SERVER_DESC, server->GetDescription() );
 	
 	if ( server->GetPing() ) {
-		SetItem( itemnr, 3, wxString::Format( wxT("%i"), server->GetPing() ) );
+		SetItem( itemnr, COLUMN_SERVER_PING, wxString::Format( wxT("%i"), server->GetPing() ) );
 	} else {
-		SetItem( itemnr, 3, wxEmptyString );
+		SetItem( itemnr, COLUMN_SERVER_PING, wxEmptyString );
 	}
 
 	if ( server->GetUsers() ) {
-		SetItem( itemnr, 4, wxString::Format( wxT("%i"), server->GetUsers() ) );
+		SetItem( itemnr, COLUMN_SERVER_USERS, wxString::Format( wxT("%i"), server->GetUsers() ) );
 	} else {
-		SetItem( itemnr, 4, wxEmptyString );
+		SetItem( itemnr, COLUMN_SERVER_USERS, wxEmptyString );
 	}
 
 	if ( server->GetFiles() ) {
-		SetItem( itemnr, 5, wxString::Format( wxT("%i"), server->GetFiles() ) );
+		SetItem( itemnr, COLUMN_SERVER_FILES, wxString::Format( wxT("%i"), server->GetFiles() ) );
 	} else {
-		SetItem( itemnr, 5, wxEmptyString );
+		SetItem( itemnr, COLUMN_SERVER_FILES, wxEmptyString );
 	}
 
 	switch ( server->GetPreferences() ) {
-		case SRV_PR_LOW:	SetItem( itemnr, 6, _("Low") );		break;
-		case SRV_PR_NORMAL:	SetItem( itemnr, 6, _("Normal") );	break;
-		case SRV_PR_HIGH:	SetItem( itemnr, 6, _("High") );	break;
-		default:			SetItem( itemnr, 6, wxT("---") );
+		case SRV_PR_LOW:	SetItem( itemnr, COLUMN_SERVER_PRIO, _("Low") );		break;
+		case SRV_PR_NORMAL:	SetItem( itemnr, COLUMN_SERVER_PRIO, _("Normal") );	break;
+		case SRV_PR_HIGH:	SetItem( itemnr, COLUMN_SERVER_PRIO, _("High") );	break;
+		default:			SetItem( itemnr, COLUMN_SERVER_PRIO, wxT("---") ); // this should never happen
 	}
 
-	SetItem( itemnr, 7, wxString::Format( wxT("%i"),server->GetFailedCount() ) );
-	SetItem( itemnr, 8, ( server->IsStaticMember() ? _("Yes") : _("No") ) );
-	SetItem( itemnr, 9, server->GetVersion() );
+	SetItem( itemnr, COLUMN_SERVER_FAILS, wxString::Format( wxT("%i"),server->GetFailedCount() ) );
+	SetItem( itemnr, COLUMN_SERVER_STATIC, ( server->IsStaticMember() ? _("Yes") : _("No") ) );
+	SetItem( itemnr, COLUMN_SERVER_VERSION, server->GetVersion() );
 }
 
 
@@ -525,7 +526,7 @@ int CServerListCtrl::SortProc( long item1, long item2, long sortData )
 	
 	switch ( sortData ) {
 		// Sort by server-name
-		case 0: 
+		case COLUMN_SERVER_NAME:
 			{
 				// it shouldn't happen that two servers had the same IP, so no need to check for that
 				if (( server1->GetListName().Cmp(server1->GetFullIP()) == 0 ) && ( server2->GetListName().Cmp(server2->GetFullIP()) == 0 )) {
@@ -538,8 +539,8 @@ int CServerListCtrl::SortProc( long item1, long item2, long sortData )
 					return mode * server1->GetListName().CmpNoCase( server2->GetListName() );
 				}
 			}
-		// Sort by IP
-		case 1: 
+		// Sort by address
+		case COLUMN_SERVER_ADDR:
 			{
 				if ( server1->HasDynIP() && server2->HasDynIP()) {
 					return mode * server1->GetDynIP().CmpNoCase( server2->GetDynIP() );
@@ -557,7 +558,7 @@ int CServerListCtrl::SortProc( long item1, long item2, long sortData )
 							if (!(tester = ((a & 0x00FF0000) - (b & 0x00FF0000)))) {
 								if (!(tester = ((a & 0xFF000000) - (b & 0xFF000000)))) {
 									// Same ip, different port (Shouldn't happen!)
-									return mode * otherfunctions::CmpAny( server1->GetPort(), server2->GetPort() );
+									return 0;
 								}
 							}
 						}
@@ -565,36 +566,39 @@ int CServerListCtrl::SortProc( long item1, long item2, long sortData )
 					return (mode * tester);					
 				}
 			}
+		// Sort by port
+		case COLUMN_SERVER_PORT: return mode * otherfunctions::CmpAny( server1->GetPort(), server2->GetPort() );
 		// Sort by description
-		case 2: return mode * server1->GetDescription().CmpNoCase( server2->GetDescription() );
+		case COLUMN_SERVER_DESC: return mode * server1->GetDescription().CmpNoCase( server2->GetDescription() );
 		// Sort by Ping
-		case 3: return mode * otherfunctions::CmpAny( server1->GetPing(), server2->GetPing() );
+		case COLUMN_SERVER_PING: return mode * otherfunctions::CmpAny( server1->GetPing(), server2->GetPing() );
 		// Sort by user-count
-		case 4: return mode * otherfunctions::CmpAny( server1->GetUsers(), server2->GetUsers() );
+		case COLUMN_SERVER_USERS: return mode * otherfunctions::CmpAny( server1->GetUsers(), server2->GetUsers() );
 		// Sort by file-count
-		case 5: return mode * otherfunctions::CmpAny( server1->GetFiles(), server2->GetFiles() );
-		// Sort by preferences
-		case 6: 
+		case COLUMN_SERVER_FILES: return mode * otherfunctions::CmpAny( server1->GetFiles(), server2->GetFiles() );
+		// Sort by priority
+		case COLUMN_SERVER_PRIO:
 			{
 				uint32 srv_pr1 = server1->GetPreferences();
 				uint32 srv_pr2 = server2->GetPreferences();
 				switch ( srv_pr1 ) {
-					case SRV_PR_HIGH: srv_pr1 = SRV_PR_MAX; break;
-					case SRV_PR_NORMAL: srv_pr1 = SRV_PR_MID; break;
-					case SRV_PR_LOW: srv_pr1 = SRV_PR_MIN; break;
+					case SRV_PR_HIGH:	srv_pr1 = SRV_PR_MAX; break;
+					case SRV_PR_NORMAL:	srv_pr1 = SRV_PR_MID; break;
+					case SRV_PR_LOW:	srv_pr1 = SRV_PR_MIN; break;
+					default:		return 0;
 				}
 				switch ( srv_pr2 ) {
-					case SRV_PR_HIGH: srv_pr2 = SRV_PR_MAX; break;
-					case SRV_PR_NORMAL: srv_pr2 = SRV_PR_MID; break;
-					case SRV_PR_LOW: srv_pr2 = SRV_PR_MIN; break;
+					case SRV_PR_HIGH:	srv_pr2 = SRV_PR_MAX; break;
+					case SRV_PR_NORMAL:	srv_pr2 = SRV_PR_MID; break;
+					case SRV_PR_LOW:	srv_pr2 = SRV_PR_MIN; break;
+					default:		return 0;
 				}
-				return mode * CmpAny( srv_pr1, srv_pr2 );
+				return mode * otherfunctions::CmpAny( srv_pr1, srv_pr2 );
 			}
-		case 6: return mode * otherfunctions::CmpAny( server1->GetPreferences(), server2->GetPreferences() );
 		// Sort by failure-count
-		case 7: return mode * otherfunctions::CmpAny( server1->GetFailedCount(), server2->GetFailedCount() );
+		case COLUMN_SERVER_FAILS: return mode * otherfunctions::CmpAny( server1->GetFailedCount(), server2->GetFailedCount() );
 		// Sort by static servers
-		case 8: 
+		case COLUMN_SERVER_STATIC:
 			{
 				if ( server2->IsStaticMember() || server1->IsStaticMember() ) {
 					if ( server1->IsStaticMember() ) {
@@ -607,7 +611,7 @@ int CServerListCtrl::SortProc( long item1, long item2, long sortData )
 				}
 			}
 		// Sort by version
-		case 9: return mode * server1->GetVersion().CmpNoCase( server2->GetVersion() );
+		case COLUMN_SERVER_VERSION: return mode * server1->GetVersion().CmpNoCase( server2->GetVersion() );
 
 		default:
 			return 0;
