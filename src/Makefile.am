@@ -92,7 +92,6 @@ amulegui_SOURCES = amule-gui.cpp \
 	amuleDlg.cpp 
 
 amule_SOURCES = ListenSocket.cpp \
-	CryptoPP.cpp \
 	EMSocket.cpp \
 	AddFriend.cpp \
 	AddFileThread.cpp \
@@ -166,7 +165,6 @@ amule_SOURCES = ListenSocket.cpp \
 	amuleDlg.cpp 
 
 amuled_SOURCES = ListenSocket.cpp \
-	CryptoPP.cpp \
         ECSocket.cpp \
         EMSocket.cpp \
         AddFileThread.cpp \
@@ -219,6 +217,11 @@ endif
 if HAVE_GTK
 amule_SOURCES += gtk2-funcs.c gtkplugxembed.c 
 amulegui_SOURCES += gtk2-funcs.c gtkplugxembed.c 
+endif
+
+if USE_EMBEDDED_CRYPTO
+amule_SOURCES += CryptoPP.cpp
+amuled_SOURCES += CryptoPP.cpp
 endif
 
 if ADD_THROTTLER
@@ -362,6 +365,10 @@ noinst_HEADERS = AddFileThread.h \
 		 WebServer.h \
 		 WebSocket.h \
 		 xembed.h
+
+if USE_EMBEDDED_CRYPTO
+noinst_HEADERS += CryptoPP.h
+endif
 
 MAINTAINERCLEANFILES = Makefile.in
 

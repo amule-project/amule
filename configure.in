@@ -95,6 +95,7 @@ else
   WX_VERSION="any"
 fi
 
+ 
 CHECK_ZLIB
 
 GET_WXGTK_VERSION
@@ -118,7 +119,10 @@ AC_ARG_ENABLE(profile, [  --enable-profile        Enable code profiling],
 
 AC_ARG_ENABLE(static,  [  --enable-static         Produce a statically linked executable],
               USE_DEBUG_STATIC="$enableval", USE_DEBUG_STATIC="no")
-
+	      
+AC_ARG_ENABLE(embedded_crypto,[  --enable-embedded_crypto    Use embedded Crypto code (BROKEN)],
+		USE_EMBEDDED_CRYPTO="$enableval", USE_EMBEDDED_CRYPTO="no")
+	      
 AC_ARG_ENABLE(amulecmd,  [  --enable-amulecmd       Compile aMule command line client],
               BUILDAMULECMD="$enableval", BUILDAMULECMD="no")
 
@@ -162,6 +166,29 @@ AC_ARG_ENABLE([verbose],
 	AC_HELP_STRING([--enable-verbose],[Enable verbose debug output]),
 	[VERBOSE_OUTPUT="$enableval"], [VERBOSE_OUTPUT="no"])
 
+
+AM_OPTIONS_CRYPTO
+
+CHECK_CRYPTO(5.1,CRYPTO=0)
+if test x$USE_EMBEDDED_CRYPTO = xno; then
+if test "$CRYPTO" != 0; then
+  AC_MSG_ERROR([
+         WARNING: crypto++ >= 5.1 is not found.
+        Please check that cryptopp-headers are in your default path, check out
+         LD_LIBRARY_PATH or equivalent variable.
+         Or this might also be that your cryptopp is instaled on other path.
+         Please try again with --with-crypto-prefix=/usr/include/
+         (replace  /usr/include/ with a valid path to your crypto directory).
+         The crypto folder must me named cryptopp. Sorry about the mess but it's the
+         only way because libcrypto has no make install.
+         If you use compiled packages use --with-crypto-lib to specify the lib path.
+         To download the lastest version check http://www.cryptopp.com for sources.
+])
+fi
+fi
+	
+	
+	
 # systray disable
 AC_MSG_CHECKING([whether SysTray should be compiled])
 AC_ARG_ENABLE(systray, [  --disable-systray       Disable SysTray compilation],
@@ -325,6 +352,21 @@ no) GTK_DEFS="$GTK_DEFS -D__NOGTK__"
 	;;
 esac
 
+case "$CRYPTO_PP_STYLE" in
+ 
+ gentoo_debian) CXXFLAGS="$CXXFLAGS -I$crypto_prefix -D__CRYPTO_DEBIAN_GENTOO__"
+                # Debian uses libcrypto++5.1 - it's not my fault, please soda patch the package
+                CRYPTOLIBS="-lcrypto++"
+ ;;
+ mdk_suse_fc) CXXFLAGS="$CXXFLAGS -I$crypto_prefix -D__CRYPTO_MDK_SUSE_FC__"
+              CRYPTOLIBS="-lcryptopp"
+ ;;
+ sources) CXXFLAGS="$CXXFLAGS -I$crypto_prefix -D__CRYPTO_SOURCE__"
+          CRYPTOLIBS="-lcryptopp"
+          ;;
+esac
+
+
 case "$VERBOSE_OUTPUT" in
 yes)	if test x"$USE_DEBUG" = xno ; then
 		VERBOSE_OUTPUT=no
@@ -347,7 +389,7 @@ CFLAGS="$CFLAGS $DEBUG_FLAGS $OPTIMISE_FLAGS $PROFILE_FLAGS"
 
 dnl -lpthread is needed by Debian
 LDFLAGS="$LDFLAGS $PROFILE_FLAGS -lpthread"
-
+AM_CONDITIONAL(USE_EMBEDDED_CRYPTO, test x$USE_EMBEDDED_CRYPTO = xyes)
 AM_CONDITIONAL(WEB, test x$WEB = xyes)
 AM_CONDITIONAL(ED2K, test x$ED2K = xyes)
 AM_CONDITIONAL(CAS, test x$CAS = xyes)
@@ -370,6 +412,7 @@ AM_CONDITIONAL(VERBOSE_OUTPUT, test x$USE_DEBUG = xyes -a x$VERBOSE_OUTPUT = xye
 AC_SUBST(GTK_DEFS)
 AC_SUBST(TRAY_FLAGS)
 AC_SUBST(CAS_DEFS)
+AC_SUBST(CRYPTOLIBS)
 
 # DO NOT MOVE UP...THAT'S A REASON TO BE HERE!!
 
@@ -425,6 +468,11 @@ echo "  Should aMule be compiled with pure GTK code?             ${gtk}"
 echo "  Should aMule be linked against patched gsocket?          ${USE_GSOCKET:-no}"
 echo "  Should aMule daemon version be built? (EXPERIMENTAL)     ${AMULE_DAEMON:-no}"
 echo "  Should aMule remote gui be built? (EXPERIMENTAL)         ${AMULE_GUI:-no}"
+if test x$USE_EMBEDDED_CRYPTO == xno; then
+echo "  Crypto++ library/headers style?                          ${CRYPTO_PP_STYLE}"
+else 
+echo "  Crypto++ library embedded in core?                       yes"
+fi
 echo
 echo "  **** aMule TextClient ****"
 case "$BUILDAMULECMD" in
