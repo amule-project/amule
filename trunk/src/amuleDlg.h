@@ -168,7 +168,7 @@ private:
 #ifndef __SYSTRAY_DISABLED__
 	void RemoveSystray();
 	void UpdateTrayIcon(int percent);
-	#ifdef USE_WX_TRAY
+	#if USE_WX_TRAY
 		CMuleTrayIcon* m_wndTaskbarNotifier;
 	#else
 		CSysTray *m_wndTaskbarNotifier;

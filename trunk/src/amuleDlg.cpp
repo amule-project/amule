@@ -1,21 +1,23 @@
+//
 // This file is part of the aMule Project
 //
 // Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
 // Copyright (C) 2002 Merkur ( merkur-@users.sourceforge.net / http://www.emule-project.net )
 //
-//This program is free software; you can redistribute it and/or
-//modify it under the terms of the GNU General Public License
-//as published by the Free Software Foundation; either
-//version 2 of the License, or (at your option) any later version.
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either
+// version 2 of the License, or (at your option) any later version.
 //
-//This program is distributed in the hope that it will be useful,
-//but WITHOUT ANY WARRANTY; without even the implied warranty of
-//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//GNU General Public License for more details.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 //
-//You should have received a copy of the GNU General Public License
-//along with this program; if not, write to the Free Software
-//Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+//
 
 #include <wx/sizer.h> // Must be first or compilation fail on win32 !!!
 #include <cerrno>
@@ -43,7 +45,7 @@
 #include "amuleDlg.h"		// Interface declarations.
 
 #ifndef __SYSTRAY_DISABLED__
-	#ifndef USE_WX_TRAY // WX_TRAY icons are on MuleTrayIcon class
+	#if !USE_WX_TRAY // WX_TRAY icons are on MuleTrayIcon class
 		#include "pixmaps/mule_TrayIcon.ico.xpm"
 		#include "pixmaps/mule_Tr_yellow.ico.xpm"
 		#include "pixmaps/mule_Tr_grey.ico.xpm"
@@ -337,7 +339,7 @@ void CamuleDlg::CreateSystray(const wxString& title)
 		// ok, it's not set yet.
 		changeDesktopMode();
 	}
-#ifdef USE_WX_TRAY
+#if USE_WX_TRAY
 	m_wndTaskbarNotifier = new CMuleTrayIcon();
 	wxASSERT(m_wndTaskbarNotifier->IsOk());
 #else
@@ -737,7 +739,7 @@ void CamuleDlg::UpdateTrayIcon(int percent)
 	// ei hienostelua. tarvii kuitenki pelleill?gtk:n kanssa
 	// Whatever that means, it's working now.
 	
-	#ifdef USE_WX_TRAY
+	#if USE_WX_TRAY
 		if(!theApp.serverconnect) {
 			m_wndTaskbarNotifier->SetTrayIcon(TRAY_ICON_DISCONNECTED, percent);
 		} else {

@@ -32,6 +32,7 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		* Fixed crash in CClientReqSocket::ProcessExtPacket()
 		processing of OP_COMPRESSEDPART.
 		* More UNICODE fixes.
+		* Fixed WX_SYSTRAY compilation on wx-2.4.2.
 
 --------------------------------------------------------------------------------
 
