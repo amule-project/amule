@@ -41,6 +41,8 @@
 class OnLineSig
 {
 private:
+	
+  double m_maxDL;
 
   wxString m_isRunning;
   wxString m_serverName;
@@ -98,6 +100,7 @@ public:
   wxString GetConvertedSessionUL ();
   wxString GetConvertedSessionDL ();
   wxString GetConnexionIDType ();
+  wxString GetMaxDL ();
 };
 
 #endif /* _ONLINESIG_H */
