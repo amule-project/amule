@@ -135,6 +135,32 @@ public:
 
 /******************************************************************************/
 
+class ProxyEventHandler :
+#ifndef AMULE_DAEMON
+public wxEvtHandler
+#else
+public wxThread
+#endif
+{
+public:
+	ProxyEventHandler();
+
+private:
+	void ProxySocketHandler(wxSocketEvent &event);
+	
+#ifdef AMULE_DAEMON
+public:
+	~ProxyEventHandler();
+
+private:
+	void *Entry();
+#else
+	DECLARE_EVENT_TABLE();
+#endif
+};
+
+/******************************************************************************/
+
 /* This size is just to be a little bit greater than the UDP buffer used in aMule.
  * Proxy protocol needs much less than this. 1024 would be ok. */
 const unsigned int wxPROXY_BUFFER_SIZE = 5*1024;
@@ -147,11 +173,6 @@ enum wxProxyCommand {
 };
 
 class ProxyStateMachine : public StateMachine
-#ifndef AMULE_DAEMON
-	, public wxEvtHandler
-#else
-	, public wxThread
-#endif
 {
 public:
 	ProxyStateMachine(
@@ -160,22 +181,20 @@ public:
 		const t_sm_state initial_state,
 		const wxProxyData &ProxyData,
 		wxProxyCommand cmd);
+	virtual ~ProxyStateMachine();
 	/* Interface */
 	bool		Start(const wxIPaddress &PeerAddress, wxSocketClient *ProxyClientSocket);
+	char 		*GetBuffer() const			{ return (char *)m_buffer; }
 	wxIPaddress	&GetProxyBoundAddress(void) const	{ return *m_ProxyBoundAddress; }
 	unsigned char	GetLastReply(void) const		{ return m_LastReply; }
 	virtual bool	IsEndState() const = 0;
 
-public:
-	char			m_buffer[wxPROXY_BUFFER_SIZE];
-	
 protected:
+	char			m_buffer[wxPROXY_BUFFER_SIZE];
 #ifndef AMULE_DAEMON
-	DECLARE_EVENT_TABLE()
 	bool			CanReceive() const	{ return m_CanReceive; };
 	bool			CanSend() const		{ return m_CanSend; };
 #else
-	void 			*Entry();
 	bool			CanReceive() const	{ return true; };
 	bool			CanSend() const		{ return true; };
 #endif
@@ -185,7 +204,6 @@ protected:
 	bool			m_CanSend;
 	bool			m_ok;
 	const wxProxyData	&m_ProxyData;
-	amuleIPV4Address	m_ProxyAddress;
 	wxProxyCommand		m_ProxyCommand;
 	wxIPaddress		*m_PeerAddress;
 	wxSocketClient		*m_ProxyClientSocket;
@@ -193,22 +211,29 @@ protected:
 	wxIPaddress		*m_ProxyBoundAddress;
 	amuleIPV4Address	m_ProxyBoundAddressIPV4;
 	//wxIPV6address		m_ProxyBoundAddressIPV6;
+	
 	unsigned char		m_LastReply;
-	void			ProxySocketHandler(wxSocketEvent &event);
+	unsigned int		m_PacketLenght;
+	wxSocketBase		&ProxyWrite(wxSocketBase &socket, const void *buffer, wxUint32 nbytes);
+	wxSocketBase		&ProxyRead(wxSocketBase &socket, void *buffer, wxUint32 nbytes);
 };
 
-const unsigned int SOCKS5_MAX_STATES = 10;
+const unsigned int SOCKS5_MAX_STATES = 14;
 
 enum Socks5State {
 	SOCKS5_STATE_START = 0,
 	SOCKS5_STATE_SEND_QUERY_AUTHENTICATION_METHOD,
 	SOCKS5_STATE_RECEIVE_AUTHENTICATION_METHOD,
+	SOCKS5_STATE_PROCESS_AUTHENTICATION_METHOD,
 	SOCKS5_STATE_SEND_AUTHENTICATION_GSSAPI,
 	SOCKS5_STATE_RECEIVE_AUTHENTICATION_GSSAPI,
+	SOCKS5_STATE_PROCESS_AUTHENTICATION_GSSAPI,
 	SOCKS5_STATE_SEND_AUTHENTICATION_USERNAME_PASSWORD,
 	SOCKS5_STATE_RECEIVE_AUTHENTICATION_USERNAME_PASSWORD,
+	SOCKS5_STATE_PROCESS_AUTHENTICATION_USERNAME_PASSWORD,
 	SOCKS5_STATE_SEND_COMMAND_REQUEST,
 	SOCKS5_STATE_RECEIVE_COMMAND_REPLY,
+	SOCKS5_STATE_PROCESS_COMMAND_REPLY,
 	SOCKS5_STATE_END
 };
 
@@ -230,12 +255,16 @@ private:
 	void process_start(bool entry);
 	void process_send_query_authentication_method(bool entry);
 	void process_receive_authentication_method(bool entry);
+	void process_process_authentication_method(bool entry);
 	void process_send_authentication_gssapi(bool entry);
 	void process_receive_authentication_gssapi(bool entry);
+	void process_process_authentication_gssapi(bool entry);
 	void process_send_authentication_username_password(bool entry);
 	void process_receive_authentication_username_password(bool entry);
+	void process_process_authentication_username_password(bool entry);
 	void process_send_command_request(bool entry);
 	void process_receive_command_reply(bool entry);
+	void process_process_command_reply(bool entry);
 	void process_end(bool entry);
 	/* Private Vars */
 	Socks5StateProcessor m_process_state[SOCKS5_MAX_STATES];
@@ -243,16 +272,16 @@ private:
 
 /******************************************************************************/
 
-class wxSocketProxy
+class amuleProxy
 {
 public:
 	/* Constructor */
-	wxSocketProxy(
+	amuleProxy(
 		const wxProxyData *ProxyData,
 		wxProxyCommand ProxyCommand);
 	
 	/* Destructor */
-	~wxSocketProxy();
+	~amuleProxy();
 	
 	/* Interface */
 	void		SetProxyData(const wxProxyData *ProxyData);
@@ -289,8 +318,6 @@ private:
 public:
 	char			m_buffer[wxPROXY_BUFFER_SIZE];
 	
-public:
-	ProxyStateMachine	*m_ProxyStateMachine;
 private:
 	bool			m_UseProxy;
 	wxProxyData		m_ProxyData;
@@ -304,7 +331,37 @@ private:
 
 /******************************************************************************/
 
-class wxSocketClientProxy : public wxSocketClient
+class amuleProxyClientSocket : public wxSocketClient
+{
+friend class ProxyEventHandler;
+public:
+	/* Constructor */
+	amuleProxyClientSocket(
+		wxSocketFlags flags = wxSOCKET_NONE,
+		const wxProxyData *ProxyData = NULL,
+		wxProxyCommand ProxyCommand = wxPROXY_CMD_CONNECT);
+	
+	/* Destructor */
+	~amuleProxyClientSocket();
+	
+	/* Interface */
+	void		SetProxyData(const wxProxyData *ProxyData);
+	bool		GetUseProxy() const	{ return m_UseProxy; }
+	char 		*GetBuffer() const	{ return m_ProxyStateMachine->GetBuffer(); }
+	wxIPaddress	&GetProxyBoundAddress(void) const
+						{ return m_ProxyStateMachine->GetProxyBoundAddress(); }
+	bool Start(const wxIPaddress &PeerAddress);
+	
+private:
+	bool			m_UseProxy;
+	wxProxyData		m_ProxyData;
+	amuleIPV4Address	m_ProxyAddress;
+	ProxyStateMachine	*m_ProxyStateMachine;
+};
+
+/******************************************************************************/
+
+class wxSocketClientProxy : public amuleProxyClientSocket
 {
 public:
 	/* Constructor */
@@ -314,10 +371,6 @@ public:
 		
 	/* Interface */
 	bool Connect(wxIPaddress &address, bool wait);
-	void SetProxyData(const wxProxyData *ProxyData);
-	
-private:
-	wxSocketProxy	m_SocketProxy;
 };
 
 /******************************************************************************/
@@ -332,10 +385,9 @@ public:
 		const wxProxyData *ProxyData = NULL);
 		
 	/* Interface */
-	void SetProxyData(const wxProxyData *ProxyData);
 	
 private:
-	wxSocketProxy	m_SocketProxy;
+	amuleProxy	m_SocketProxy;
 };
 
 /******************************************************************************/
@@ -367,7 +419,6 @@ public:
 	~wxDatagramSocketProxy();
 	
 	/* Interface */
-	void SetProxyData(const wxProxyData *ProxyData);
 	
 	/* wxDatagramSocket Interface */
 	wxDatagramSocket& RecvFrom(
@@ -377,11 +428,10 @@ public:
 	wxUint32 LastCount(void) const;
 	
 private:
-	wxSocketProxy	m_SocketProxy;
-	bool		m_UDPSocketOk;
-	wxSocketClient	*m_ProxyTCPSocket;
-	enum wxUDPOperation m_LastUDPOperation;
-	unsigned int	m_LastUDPOverhead;
+	bool			m_UDPSocketOk;
+	amuleProxyClientSocket	m_ProxyTCPSocket;
+	enum wxUDPOperation	m_LastUDPOperation;
+	unsigned int		m_LastUDPOverhead;
 };
 
 /******************************************************************************/
