@@ -35,7 +35,7 @@
 	extern class MyTimer *mytimer;
 	class MyTimer : public wxTimer {
 	public:
-		MyTimer() { Start(2); }
+		MyTimer() { tic32 = tic64 = wxGetLocalTimeMillis().GetValue(); Start(2); }
 		int GetTickCountNow() { return tic32; }
 		long long GetTickCountNow64() { return tic64; }
 	private:
