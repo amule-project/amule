@@ -1807,7 +1807,7 @@ wxSizer *PreferencesGeneralTab( wxWindow *parent, bool call_fit, bool set_sizer 
     wxStaticBox *item3 = new wxStaticBox( parent, -1, _("Nick") );
     wxStaticBoxSizer *item2 = new wxStaticBoxSizer( item3, wxVERTICAL );
 
-    wxTextCtrl *item4 = new wxTextCtrl( parent, IDC_NICK, _("http://www.aMule.org"), wxDefaultPosition, wxSize(90,-1), 0 );
+    wxTextCtrl *item4 = new wxTextCtrl( parent, IDC_NICK, _("http://www.aMule.org - the Linux Mule"), wxDefaultPosition, wxSize(90,-1), 0 );
     item2->Add( item4, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
     item1->Add( item2, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxRIGHT|wxTOP, 5 );
@@ -1842,9 +1842,10 @@ wxSizer *PreferencesGeneralTab( wxWindow *parent, bool call_fit, bool set_sizer 
         _("Spanish"), 
         _("Spanish (Chile)"), 
         _("Spanish (Mexico)"), 
-        _("Turkey")
+        _("Turkey"), 
+        _("Hungarian")
     };
-    wxChoice *item7 = new wxChoice( parent, IDC_LANGUAGE, wxDefaultPosition, wxSize(100,30), 26, strs7, 0 );
+    wxChoice *item7 = new wxChoice( parent, IDC_LANGUAGE, wxDefaultPosition, wxSize(100,30), 27, strs7, 0 );
     item5->Add( item7, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
     item1->Add( item5, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxLEFT|wxTOP, 5 );

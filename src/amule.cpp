@@ -1153,10 +1153,13 @@ void CamuleApp::Localize_mule() {
 			//language = wxLANGUAGE_TURKISH;
 			language = wxLANGUAGE_DEFAULT;
 			break;
+		case 26:
+			//strcpy(newlang,"hu");
+	        language = wxLANGUAGE_HUNGARIAN;
+		    break;
 		default:
 			language = wxLANGUAGE_DEFAULT;
 			break;
-
 	}
 
 	if ((!m_locale.Init(language)) && (language != wxLANGUAGE_DEFAULT)) {
