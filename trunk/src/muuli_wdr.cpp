@@ -2777,7 +2777,7 @@ wxSizer *CategoriesEditWindow( wxWindow *parent, bool call_fit, bool set_sizer )
         _("High"), 
         _("Auto")
     };
-    wxChoice *item15 = new wxChoice( parent, IDC_PRIOCOMBO, wxDefaultPosition, wxSize(100,20), 5, strs15, 0 );
+    wxChoice *item15 = new wxChoice( parent, IDC_PRIOCOMBO, wxDefaultPosition, wxDefaultSize, 5, strs15, 0 );
     item13->Add( item15, 0, wxGROW|wxRIGHT, 5 );
 
     item1->Add( item13, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 5 );
