@@ -148,7 +148,6 @@ CClientCreditsList::CClientCreditsList()
 
 CClientCreditsList::~CClientCreditsList()
 {
-	SaveList();
 	
 	ClientMap::iterator it = m_mapClients.begin();
 	for ( ; it != m_mapClients.end(); ++it ){
