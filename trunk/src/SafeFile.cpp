@@ -189,7 +189,7 @@ uint16 CSafeMemFile::ReadUInt16() const
 {
 	if (m_position + sizeof(uint16) > m_FileSize)
 		throw CInvalidPacket("EOF");
-	uint16 nResult = *((uint16*)(m_buffer + m_position));
+	uint16 nResult = ENDIAN_SWAP_16(*((uint16*)(m_buffer + m_position)));
 	m_position += sizeof(uint16);
 	return nResult;
 }
@@ -198,7 +198,7 @@ uint32 CSafeMemFile::ReadUInt32() const
 {
 	if (m_position + sizeof(uint32) > m_FileSize)
 		throw CInvalidPacket("EOF");
-	uint32 nResult = *((uint32*)(m_buffer + m_position));
+	uint32 nResult = ENDIAN_SWAP_32(*((uint32*)(m_buffer + m_position)));
 	m_position += sizeof(uint32);
 	return nResult;
 }
@@ -241,7 +241,7 @@ void CSafeMemFile::WriteUInt16(uint16 nVal)
 {
 	if (m_position + sizeof(uint16) > m_BufferSize)
 		enlargeBuffer(m_position + sizeof(uint16));
-	*((uint16*)(m_buffer + m_position)) = nVal;
+	*((uint16*)(m_buffer + m_position)) = ENDIAN_SWAP_16(nVal);
 	m_position += sizeof(uint16);
 	if (m_position > m_FileSize)
 		m_FileSize = m_position;
@@ -251,7 +251,7 @@ void CSafeMemFile::WriteUInt32(uint32 nVal)
 {
 	if (m_position + sizeof(uint32) > m_BufferSize)
 		enlargeBuffer(m_position + sizeof(uint32));
-	*((uint32*)(m_buffer + m_position)) = nVal;
+	*((uint32*)(m_buffer + m_position)) = ENDIAN_SWAP_32(nVal);
 	m_position += sizeof(uint32);
 	if (m_position > m_FileSize)
 		m_FileSize = m_position;
