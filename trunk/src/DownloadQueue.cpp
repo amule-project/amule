@@ -174,9 +174,9 @@ void CDownloadQueue::Init()
 		fileName=::wxFindNextFile();
 	}
 	if(count == 0) {
-		theApp.amuledlg->AddLogLine(false, CString(_("No part files found")));
+		theApp.amuledlg->AddLogLine(false, _("No part files found"));
 	} else {
-		theApp.amuledlg->AddLogLine(false, CString(_("Found %i part files")),count);
+		theApp.amuledlg->AddLogLine(false, _("Found %i part files"),count);
 		SortByPriority();
 		CheckDiskspace();
 	}
@@ -235,7 +235,7 @@ void CDownloadQueue::AddSearchToDownload(CSearchFile* toadd,uint8 paused)
 	newfile->SetCategory(theApp.amuledlg->searchwnd->GetCatChoice());
 }
 
-void CDownloadQueue::AddSearchToDownload(CString link,uint8 paused)
+void CDownloadQueue::AddSearchToDownload(const wxString& link,uint8 paused)
 {
 	CPartFile* newfile = new CPartFile(link);
 	if (!newfile) {
@@ -324,9 +324,9 @@ void CDownloadQueue::AddDownload(CPartFile* newfile,bool paused)
 
 	newfile->SetCategory(theApp.amuledlg->searchwnd->GetCatChoice());
 	theApp.amuledlg->transferwnd->downloadlistctrl->AddFile(newfile);
-	theApp.amuledlg->AddLogLine(true, CString(_("Downloading %s")),newfile->GetFileName().GetData());
-	CString msgTemp;
-	msgTemp.Format(CString(wxT("Downloading %s"))+wxT("\n"),newfile->GetFileName().GetData());
+	theApp.amuledlg->AddLogLine(true, _("Downloading %s"),newfile->GetFileName().GetData());
+	wxString msgTemp;
+	msgTemp.Printf(wxString(wxT("Downloading %s"))+wxT("\n"),newfile->GetFileName().GetData());
 	theApp.amuledlg->ShowNotifier(msgTemp, TBN_DLOAD);
 	// Kry - Get sources if not stopped
 	if (!newfile->IsStopped()) {
@@ -338,13 +338,13 @@ bool CDownloadQueue::IsFileExisting(uchar* fileid)
 {
 	if (CKnownFile* file = sharedfilelist->GetFileByID((uchar*)fileid)) {
 		if (file->IsPartFile()) {
-			theApp.amuledlg->AddLogLine(true, CString(_("You are already trying to download the file %s")), file->GetFileName().GetData());
+			theApp.amuledlg->AddLogLine(true, _("You are already trying to download the file %s"), file->GetFileName().GetData());
 		} else {
-			theApp.amuledlg->AddLogLine(true, CString(_("You already have the file %s")), file->GetFileName().GetData());
+			theApp.amuledlg->AddLogLine(true, _("You already have the file %s"), file->GetFileName().GetData());
 		}
 		return true;
 	} else if ((file = this->GetFileByID((uchar*)fileid))) {
-		theApp.amuledlg->AddLogLine(true, CString(_("You are already trying to download the file %s")), file->GetFileName().GetData());
+		theApp.amuledlg->AddLogLine(true, _("You are already trying to download the file %s"), file->GetFileName().GetData());
 		return true;
 	}
 	return false;
@@ -694,7 +694,7 @@ bool CDownloadQueue::SendNextUDPPacket()
 					if (it == filelist.end()) {
 						// finished asking the current server for all files
 						// if there are pending requests for the current server, send them
-						if (dataGlobGetSources.Length() > 0) {
+						if (dataGlobGetSources.GetLength() > 0) {
 							if (SendGlobGetSourcesUDPPacket(dataGlobGetSources)) {
 								bSentPacket = true;
 							}
@@ -741,7 +741,7 @@ bool CDownloadQueue::SendNextUDPPacket()
 
 	//ASSERT( dataGlobGetSources.Length() == 0 || !bSentPacket );
 
-	if (!bSentPacket && dataGlobGetSources.Length() > 0) {
+	if (!bSentPacket && dataGlobGetSources.GetLength() > 0) {
 		SendGlobGetSourcesUDPPacket(dataGlobGetSources);
 	}
 
@@ -873,12 +873,12 @@ void CDownloadQueue::ProcessLocalRequests()
 			}
 		}
 
-		int iSize = dataTcpFrame.Length();
+		int iSize = dataTcpFrame.GetLength();
 		if (iSize > 0)
 		{
 			// create one 'packet' which contains all buffered OP_GETSOURCES eD2K packets to be sent with one TCP frame
 			// server credits: 16*iMaxFilesPerTcpFrame+1 = 241
-			Packet* packet = new Packet(new char[iSize], dataTcpFrame.Length(), true, false);
+			Packet* packet = new Packet(new char[iSize], dataTcpFrame.GetLength(), true, false);
 			dataTcpFrame.Seek(0, wxFromStart);
 			dataTcpFrame.ReadRaw(packet->GetPacket(), iSize);
 			uint32 size = packet->size;
@@ -953,7 +953,7 @@ void CDownloadQueue::AddLinksFromFile()
 			} catch(wxString error) {
 				char buffer[200];
 				sprintf(buffer,unicode2char(_("This ed2k link is invalid (%s)")),error.GetData());
-				theApp.amuledlg->AddLogLine(true,CString(_("Invalid link: %s")),buffer);
+				theApp.amuledlg->AddLogLine(true,_("Invalid link: %s"),buffer);
 			}
 			// We must double-check here where are we, because GetNextLine moves reading head
 			// one line below, and we must make sure that line exists. Thus check if we are
@@ -1285,7 +1285,7 @@ wxThread::ExitCode SourcesAsyncDNS::Entry()
 }
 
 
-void CDownloadQueue::AddToResolve(uchar* fileid, CStringA pszHostname, uint16 port)
+void CDownloadQueue::AddToResolve(uchar* fileid, const wxString& pszHostname, uint16 port)
 {
 	bool bResolving = !m_toresolve.empty();
 
