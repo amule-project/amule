@@ -230,6 +230,8 @@ void CChatSelector::ProcessMessage(CUpDownClient* sender, char* message)
 
 bool CChatSelector::SendMessage(char* message)
 {
+	chatout->EnableScrolling(false,false);
+	
 	sint16 to = GetSelection();
 	if (to == (-1)) {
 		return false;
@@ -284,6 +286,13 @@ bool CChatSelector::SendMessage(char* message)
 	//if (chatout.GetHyperText() == ci->log) {
 	//  //chatout.UpdateSize(true);
 	//}
+
+	/*	
+	int x,y;
+	chatout.GetVirtualSize(&x,&y);
+	chatout.Scroll(0,y);
+	*/
+	chatout->EnableScrolling(true,true);
 	return true;
 }
 

@@ -410,11 +410,11 @@ void CClientCreditsList::InitalizeCrypting(){
 	m_nMyPublicKeyLen = 0;
 	memset(m_abyMyPublicKey,0,80); // not really needed; better for debugging tho
 	m_pSignkey = NULL;
-	#warning WE NEED THE PREFERENCES BUTTON!!!!!!!!!!!!!!!!!!!!
-	/*
-	if (!m_pAppPrefs->IsSecureIdentEnabled())
+
+	if (!m_pAppPrefs->IsSecureIdentEnabled()) {
 		return;
-	*/
+	}
+	
 	// check if keyfile is there
 	bool bCreateNewKey = false;
 
@@ -589,8 +589,7 @@ bool CClientCreditsList::VerifyIdent(CClientCredits* pTarget, uchar* pachSignatu
 }
 
 bool CClientCreditsList::CryptoAvailable(){
-	#warning NEED NEW PREFS!!!!!!!!!!!!
-	return (m_nMyPublicKeyLen > 0 && m_pSignkey != 0 /*&& m_pAppPrefs->IsSecureIdentEnabled()*/ );
+	return (m_nMyPublicKeyLen > 0 && m_pSignkey != 0 && m_pAppPrefs->IsSecureIdentEnabled());
 }
 
 

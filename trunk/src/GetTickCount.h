@@ -20,6 +20,7 @@
 
 #ifndef GETTICKCOUNT_H
 #define GETTICKCOUNT_H
+#include "types.h"		// Needed for uint32
 
 #if wxUSE_GUI && wxUSE_TIMER
 /**
@@ -36,12 +37,12 @@
 	class MyTimer : public wxTimer {
 	public:
 		MyTimer() { tic32 = tic64 = wxGetLocalTimeMillis().GetValue(); Start(2); }
-		int GetTickCountNow() { return tic32; }
-		long long GetTickCountNow64() { return tic64; }
+		uint32 GetTickCountNow() { return tic32; }
+		uint64 GetTickCountNow64() { return tic64; }
 	private:
 		void Notify() { tic32 = tic64 = wxGetLocalTimeMillis().GetValue(); }
-		int tic32;
-		long long tic64;
+		uint32 tic32;
+		uint64 tic64;
 	};
 
 #else
@@ -55,7 +56,6 @@
  */
 	#include <cstddef>		// Needed for NULL
 	#include <sys/time.h>		// Needed for gettimeofday
-	#include "types.h"		// Needed for uint32
 
 	inline uint32 GetTickCount(void) {
 		struct timeval aika;

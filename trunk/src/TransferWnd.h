@@ -56,8 +56,10 @@ public:
 	CUploadListCtrl*		uploadlistctrl;
 	CDownloadListCtrl*	downloadlistctrl;
 	CQueueListCtrl*		queuelistctrl;
-	#warning needs more code
+	
+	// TODO: client list on transfer window
 	//CClientListCtrl			clientlistctrl;
+	
 	//wxToolTip		m_ttip;
 	bool			windowtransferstate;
 protected:

@@ -91,7 +91,7 @@ protected:
 //	char*	m_strFileName;
 	wxString	m_strFileName;
 	unsigned char	m_abyFileHash[16];
-	uint32	m_nFileSize;
+	uint64	m_nFileSize;
 	uint32	m_iFileType;
 	CString m_strComment;
 	int8	m_iRate; //for rate 
@@ -181,6 +181,7 @@ protected:
 	void	CreateHashFromFile(CFile* file, int Length, unsigned char* Output)	{CreateHashFromInput(0,file,Length,Output,0);}
 	void	CreateHashFromString(unsigned char* in_string, int Length, unsigned char* Output)	{CreateHashFromInput(0,0,Length,Output,in_string);}
 	void	LoadComment();//comment
+	void GetMetaDataTags();
 	CArray<unsigned char*,unsigned char*> hashlist;
 	CArray<CTag*,CTag*> taglist;
 	char*	directory;

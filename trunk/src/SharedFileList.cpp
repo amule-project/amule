@@ -66,7 +66,7 @@ void CSharedFileList::FindSharedFiles() {
 
 	/* Global incoming dir and all category incoming directories are automatically shared. */
 	AddFilesFromDirectory(theApp.glob_prefs->GetIncomingDir());
-	for (int i = 1;i < theApp.glob_prefs->GetCatCount();i++) {
+	for (uint32 i = 1;i < theApp.glob_prefs->GetCatCount();i++) {
 		AddFilesFromDirectory(theApp.glob_prefs->GetCatPath(i));
 	}
 	//for (POSITION pos = app_prefs->shareddir_list.GetHeadPosition();pos != 0;app_prefs->shareddir_list.GetNext(pos))

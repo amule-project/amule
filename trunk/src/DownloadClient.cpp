@@ -20,13 +20,13 @@
 #include <zlib.h>
 #include <cmath>			// Needed for std:exp
 
+#include "ClientCredits.h"	// Needed for CClientCredits
 #include "DownloadListCtrl.h"	// Needed for CDownloadListCtrl
 #include "otherfunctions.h"	// Needed for md4cmp
 #include "TransferWnd.h"	// Needed for CTransferWnd
 #include "ClientUDPSocket.h"	// Needed for CClientUDPSocket
 #include "sockets.h"		// Needed for CServerConnect
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
-#include "ClientCredits.h"	// Needed for CClientCredits
 #include "otherstructs.h"	// Needed for Requested_Block_Struct
 #include "Preferences.h"	// Needed for CPreferences
 #include "UploadQueue.h"	// Needed for CUploadQueue

@@ -83,7 +83,7 @@ bool CTransferWnd::OnInitDialog()
 	sprintf(theApp.glob_prefs->GetCategory(0)->title, "%s",GetCatTitle(theApp.glob_prefs->GetAllcatType()).GetBuffer());
 
 	sprintf(theApp.glob_prefs->GetCategory(0)->incomingpath,"%s",theApp.glob_prefs->GetIncomingDir());
-	for (int ix=0;ix<theApp.glob_prefs->GetCatCount();ix++) {
+	for (uint32 ix=0;ix<theApp.glob_prefs->GetCatCount();ix++) {
 		wxPanel* nullPanel=new wxPanel(m_dlTab);
 		wxString tmpstrstr(theApp.glob_prefs->GetCategory(ix)->title);
 		m_dlTab->AddPage(nullPanel,"-"); // just temporary string.
