@@ -36,8 +36,8 @@
 	#include <wx/msw/winundef.h>
 #endif
 
-#include <wx/listimpl.cpp>
 #include <wx/txtstrm.h>
+#include <wx/listimpl.cpp>
 #include <wx/wfstream.h>
 #include <wx/intl.h>		// Needed for _
 #include <wx/filename.h>	// Needed for wxFileName
