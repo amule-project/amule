@@ -297,8 +297,8 @@ void CDownloadListCtrl::OnNMRclick(wxListEvent & evt)
 				menu->Append(MP_MENU_FAKE, _("FakeCheck"), fakecheckmenu);
 				menu->AppendSeparator();
 				
-				menu->Append(MP_OPEN, _("&Open the file"));
-				menu->Append(MP_PREVIEW, _("Preview"));
+				//menu->Append(MP_OPEN, _("&Open the file"));
+				menu->Append(MP_VIEW, _("Preview"));
 				menu->Append(MP_METINFO, _("Show file &details"));
 				menu->Append(MP_VIEWFILECOMMENTS, _("Show all comments"));
 				menu->AppendSeparator();
@@ -330,16 +330,19 @@ void CDownloadListCtrl::OnNMRclick(wxListEvent & evt)
 			menu->Enable(MP_STOP, ((file->GetStatus() != PS_PAUSED && file->GetStatus() != PS_ERROR && file->GetStatus() != PS_COMPLETE) ? MF_ENABLED : MF_GRAYED));
 			menu->Enable(MP_RESUME, ((file->GetStatus() == PS_PAUSED && file->GetStatus() != PS_COMPLETE) ? MF_ENABLED : MF_GRAYED));
 			menu->Enable(MP_CLEARCOMPLETED, ((theApp.downloadqueue->CompletedFilesExist()) ? MF_ENABLED : MF_GRAYED));
-			menu->Enable(MP_OPEN, ((file->GetStatus() == PS_COMPLETE) ? MF_ENABLED : MF_GRAYED));	//<<--9/21/02
+			//menu->Enable(MP_OPEN, ((file->GetStatus() == PS_COMPLETE) ? MF_ENABLED : MF_GRAYED));	//<<--9/21/02
 			
-			wxString preview(_("Preview"));
+			wxString view;
 			if (file->IsPartFile() && !(file->GetStatus() == PS_COMPLETE)) {
-				preview += wxT(" [");					
-		  		preview += file->GetPartMetFileName().BeforeLast(wxT('.'));
-				preview += wxT("]");
+				view  = wxString(_("Preview"));
+				view += wxT(" [");					
+		  		view += file->GetPartMetFileName().BeforeLast(wxT('.'));
+				view += wxT("]");
+			} else if ( file->GetStatus() == PS_COMPLETE ) {
+				view = wxString(_("&Open the file"));
 			}
-			menu->SetLabel(MP_PREVIEW, preview);			
-			menu->Enable(MP_PREVIEW, ((file->PreviewAvailable())? MF_ENABLED : MF_GRAYED));
+			menu->SetLabel(MP_VIEW, view);			
+			menu->Enable(MP_VIEW, ((file->PreviewAvailable()) ? MF_ENABLED : MF_GRAYED));
 
 			/* Razor 1a - Modif by MikaelB
 			   Set menu items' state for :
@@ -1586,8 +1589,9 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
                                         theApp.CopyTextToClipboard(feed);
 					break;
 				}
-				case MP_OPEN:{
+				/*case MP_OPEN:{
 						if (selectedCount > 1) {
+							return true;
 							break;
 						}
 						char *buffer = new char[250];
@@ -1597,13 +1601,17 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 						delete[] buffer;
 						return true;						
 						break;
-					}
-				case MP_PREVIEW:{
+					}*/
+				case MP_VIEW:{
 						if (selectedCount > 1) {
-							return true;							
+							return true;
 							break;
 						}
-						file->PreviewFile();
+						if ( file->GetStatus() == PS_COMPLETE ) {
+							file->PreviewFile();
+						} else {
+							file->PreviewFile();
+						}
 						return true;						
 						break;
 					}

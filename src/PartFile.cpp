@@ -2843,9 +2843,12 @@ void CPartFile::PreviewFile()
 	}
 	// Need to use quotes in case filename contains spaces.
 	command.Append(wxT(" \""));
-	command.Append(GetFullName());
 	
-	if (!(GetStatus() == PS_COMPLETE)) {
+	if ( GetStatus() == PS_COMPLETE ) {
+		command.Append(unicode2char(thePrefs::GetIncomingDir() + wxFileName::GetPathSeparator() + GetFileName()));
+	} else {
+		command.Append(GetFullName());
+
 		// Remove the .met from filename.
 		for (int i=0;i<4;++i) {
 			command.RemoveLast();

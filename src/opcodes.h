@@ -389,8 +389,7 @@ const unsigned int UNLIMITED	= 	0;
 #define	MP_RESUME				10204
 #define	MP_PAUSE				10203
 #define	MP_CLEARCOMPLETED			10205
-#define	MP_OPEN					10206
-#define	MP_PREVIEW				30207
+#define	MP_VIEW					30207
 #define	MP_SENDMESSAGE		30208
 #define MP_FAKECHECK1           10210   // deltaHF -> fakecheck
 #define MP_FAKECHECK2           10211
