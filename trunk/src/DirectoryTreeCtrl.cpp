@@ -25,19 +25,37 @@
 
 #include "DirectoryTreeCtrl.h"	// Interface declarations
 #include "muuli_wdr.h"		// Needed for amuleSpecial
-#include "treebasc.h"		// Needed for wxCTreeEvent
+#include <wx/event.h>
 
 // CDirectoryTreeCtrl
 
-#undef HTREEITEM
-#define HTREEITEM wxTreeItemId
+IMPLEMENT_DYNAMIC_CLASS(CDirectoryTreeCtrl, wxTreeCtrl)
 
-IMPLEMENT_DYNAMIC_CLASS(CDirectoryTreeCtrl, wxCTreeCtrl)
+BEGIN_EVENT_TABLE(CDirectoryTreeCtrl, wxTreeCtrl)
+	EVT_TREE_ITEM_ACTIVATED(IDC_SHARESELECTOR,CDirectoryTreeCtrl::OnItemActivated)
+	EVT_TREE_ITEM_RIGHT_CLICK(IDC_SHARESELECTOR,CDirectoryTreeCtrl::OnRButtonDown)
+	EVT_TREE_ITEM_EXPANDED(IDC_SHARESELECTOR,CDirectoryTreeCtrl::OnTvnItemexpanding)
+END_EVENT_TABLE()
+
+
+class CDirectoryTreeItemData : public wxTreeItemData 
+{
+	public:
+		CDirectoryTreeItemData() { Data = 0;};
+		~CDirectoryTreeItemData() {};
+		
+		void AddCount() { Data++; }
+		void SubCount() { Data--; }
+		int GetCount() { return Data; }
+	private:
+		int Data;	
+};
+
+
 CDirectoryTreeCtrl::CDirectoryTreeCtrl(wxWindow*& parent,int id,const wxPoint& pos,wxSize siz,int flags)
-: wxCTreeCtrl(parent,id,pos,siz,flags,wxDefaultValidator,wxT("ShareTree")),
+: wxTreeCtrl(parent,id,pos,siz,flags,wxDefaultValidator,wxT("ShareTree")),
 m_image(16,16)
 {
-	//m_SharedMenu.m_hMenu = NULL;
 	m_bSelectSubDirs = false;
 	Init();
 }
@@ -46,87 +64,97 @@ CDirectoryTreeCtrl::~CDirectoryTreeCtrl()
 {
 }
 
-
-BEGIN_EVENT_TABLE(CDirectoryTreeCtrl, wxCTreeCtrl)
-END_EVENT_TABLE()
-
-// CDirectoryTreeCtrl message handlers
-
-void CDirectoryTreeCtrl::OnTvnItemexpanding(wxCTreeEvent& evt)
-{
-	HTREEITEM hItem = evt.GetItem();
-	DeleteChildren(hItem);
-	wxString strDir = GetFullPath(hItem);
-	AddSubdirectories(hItem, strDir);
-	SortChildren(hItem);
-}
-
-void CDirectoryTreeCtrl::OnLButtonDown(wxCTreeEvent& evt)
-{
-	// VQB adjustments to provide for sharing or unsharing of subdirectories when control key is Down
-	static int __counter=0;
-	HTREEITEM hItem = evt.GetItem(); //HitTest(point, &uFlags);
-	GetFirstVisibleItem(); // VQB mark initial window position
-	int flags=0;
-	HitTest(evt.GetPoint(),flags);
-	// this event is launced _after_ checkbox value is set.. if it is set at all
-	if ((hItem.IsOk()) && (flags & wxTREE_HITTEST_CHECKBOX /* amule extension */)) {
-		CheckChanged(hItem, IsChecked(hItem));
-		if (evt.IsControlDown()) { // Is control key down ?
-			bool exp;
-			exp=false;
-			Toggle(hItem);
-			HTREEITEM hChild;
-			long cookie=993+(++__counter);
-			hChild = GetFirstChild(hItem,cookie);//GetChildItem(hItem);
-			while (hChild.IsOk()) {
-				MarkChildren(hChild,IsChecked(hItem));
-				hChild=GetNextSibling(hChild);
-			}
-			Toggle(hItem);
-			// font won't get set otherwise ...
-			Toggle(GetItemParent(hItem));
-			Toggle(GetItemParent(hItem));
-		} 
-	} 
-	HasChanged = true;
-}
-
-void CDirectoryTreeCtrl::MarkChildren(HTREEITEM hChild,bool mark)
-{
-	static long int __counter=1;
-
-	CheckChanged(hChild, mark);
-	SetChecked(hChild,mark);
-	bool exp;
-	exp=false;
-	Toggle(hChild);
-
-	HTREEITEM hChild2;
-	long int cookie=++__counter;
-	hChild2 = GetFirstChild(hChild,cookie);//GetChildItem(hChild);
-	while(hChild2.IsOk()) {
-		MarkChildren(hChild2,mark);
-		hChild2 = GetNextSibling(hChild2);
-	}
-	Toggle(hChild);
-}
-
 void CDirectoryTreeCtrl::Init(void)
 {
 	// init image(s)
 	m_image.Add(wxBitmap(amuleSpecial(1)));
 	m_image.Add(wxBitmap(amuleSpecial(2)));
 	SetImageList(&m_image);
-
-	hRoot=AddRoot(wxT("/"));
+	
+	CDirectoryTreeItemData* ItemData = new CDirectoryTreeItemData();
+	hRoot=AddRoot(wxT("/"),-1,-1,ItemData);
 	SetItemImage(hRoot, 0);  // yes, this is a folder too
 	AppendItem(hRoot,wxT("Cool. Works"));
 
 	HasChanged = false;
 }
 
-void CDirectoryTreeCtrl::AddChildItem(HTREEITEM hBranch, wxString const& strText)
+// CDirectoryTreeCtrl message handlers
+
+void CDirectoryTreeCtrl::OnTvnItemexpanding(wxTreeEvent& evt)
+{
+	wxTreeItemId hItem = evt.GetItem();
+	DeleteChildren(hItem);
+	wxString strDir = GetFullPath(hItem);
+	AddSubdirectories(hItem, strDir);
+	SortChildren(hItem);
+}
+
+void CDirectoryTreeCtrl::OnItemActivated(wxTreeEvent& evt)
+{
+	// VQB adjustments to provide for sharing or unsharing of subdirectories when control key is Down
+	GetFirstVisibleItem(); // VQB mark initial window position
+	int flags=0;
+	wxTreeItemId hItem = HitTest(evt.GetPoint(),flags);
+	// this event is launced _after_ checkbox value is set.. if it is set at all
+	if (hItem.IsOk()) {
+		CheckChanged(hItem, !IsBold(hItem));
+		Refresh();
+	} 
+	HasChanged = true;
+}
+
+void CDirectoryTreeCtrl::OnRButtonDown(wxTreeEvent& evt)
+{
+	// VQB adjustments to provide for sharing or unsharing of subdirectories when control key is Down
+	static int __counter=0;
+	wxTreeItemId hItem = evt.GetItem(); //HitTest(point, &uFlags);
+	GetFirstVisibleItem(); // VQB mark initial window position
+	int flags=0;
+	HitTest(evt.GetPoint(),flags);
+	// this event is launced _after_ checkbox value is set.. if it is set at all
+	if ((hItem.IsOk()) && (flags &  wxTREE_HITTEST_ONITEMICON)) {
+		bool share_it = !IsBold(hItem);
+		CheckChanged(hItem, share_it);
+		Toggle(hItem);
+		wxTreeItemId hChild;
+		long cookie=993+(++__counter);
+		hChild = GetFirstChild(hItem,cookie);
+		int i = 1;
+		while (hChild.IsOk()) {
+			MarkChildren(hChild,share_it);
+			i++;
+			hChild=GetNextSibling(hChild);
+		}
+		Toggle(hItem);
+		Refresh();
+	} 
+	HasChanged = true;
+}
+
+
+void CDirectoryTreeCtrl::MarkChildren(wxTreeItemId hChild,bool mark)
+{
+	static long int __counter=1;
+
+	CheckChanged(hChild, mark);
+
+	Toggle(hChild);
+
+	wxTreeItemId hChild2;
+	long int cookie=++__counter;
+	hChild2 = GetFirstChild(hChild,cookie);
+	int i=0;
+	while(hChild2.IsOk()) {
+		MarkChildren(hChild2,mark);
+		i++;
+		hChild2 = GetNextSibling(hChild2);
+	}
+	
+	Toggle(hChild);
+}
+
+void CDirectoryTreeCtrl::AddChildItem(wxTreeItemId hBranch, wxString const& strText)
 {
 	wxString strDir = GetFullPath(hBranch);
 	size_t len = strDir.Len();
@@ -134,24 +162,24 @@ void CDirectoryTreeCtrl::AddChildItem(HTREEITEM hBranch, wxString const& strText
 		strDir += wxT("/");
 	}
 	strDir += strText;
-
-	HTREEITEM item=AppendItem(hBranch,strText);
-	SetItemImage(item,0); // it is folder!
-	if(HasSharedSubdirectory(strDir)) {
-		SetItemBold(item,TRUE);
-	}
+	CDirectoryTreeItemData* ItemData = new CDirectoryTreeItemData();
+	wxTreeItemId item=AppendItem(hBranch,strText,0,-1,ItemData);
 	if(IsShared(strDir)) {
-		SetChecked(item,TRUE);
+		SetItemBold(item,TRUE);
+		UpdateParentItems(item,true);
+	}
+	if (HasSharedSubdirectory(strDir)) {
+		SetItemImage(item,1);
 	}
 	if(HasSubdirectories(strDir)) {
 		AppendItem(item,wxT(".")); // trick. will show +
 	}
 }
 
-wxString CDirectoryTreeCtrl::GetFullPath(HTREEITEM hItem)
+wxString CDirectoryTreeCtrl::GetFullPath(wxTreeItemId hItem)
 {
 	wxString strDir;
-	HTREEITEM hSearchItem = hItem;
+	wxTreeItemId hSearchItem = hItem;
 	// don't traverse to the root item ... it will cause extra / to the path
 	while(hSearchItem.IsOk()) {
 		strDir = GetItemText(hSearchItem) + wxT("/") + strDir;
@@ -160,7 +188,7 @@ wxString CDirectoryTreeCtrl::GetFullPath(HTREEITEM hItem)
 	return strDir;
 }
 
-void CDirectoryTreeCtrl::AddSubdirectories(HTREEITEM hBranch, wxString strDir)
+void CDirectoryTreeCtrl::AddSubdirectories(wxTreeItemId hBranch, wxString strDir)
 {
 	if (strDir.Right(1) != wxT("/")) {
 		strDir += wxT("/");
@@ -227,10 +255,10 @@ void CDirectoryTreeCtrl::SetSharedDirectories(wxArrayString* list)
 		m_lstShared.Add(*str);
 	}
 	if(HasSharedSubdirectory(wxT("/"))) {
-		SetItemBold(hRoot,TRUE);
+		SetItemImage(hRoot,1);
 	}
 	if(IsShared(wxT("/"))) {
-		SetChecked(hRoot,TRUE);
+		SetItemBold(hRoot,TRUE);
 	}
 }
 
@@ -260,13 +288,21 @@ bool CDirectoryTreeCtrl::HasSharedSubdirectory(wxString const& strDir)
 	return false;
 }
 
-void CDirectoryTreeCtrl::CheckChanged(HTREEITEM hItem, bool bChecked)
+void CDirectoryTreeCtrl::CheckChanged(wxTreeItemId hItem, bool bChecked)
 {
 	wxString strDir = GetFullPath(hItem);
 	if (bChecked) {
-		AddShare(strDir);
+		if (!IsBold(hItem)) {
+			SetItemBold(hItem,TRUE);
+			AddShare(strDir);
+			UpdateParentItems(hItem,true);
+		}
 	} else {
-		DelShare(strDir);
+		if (IsBold(hItem)) {		
+			SetItemBold(hItem,FALSE);
+			DelShare(strDir);
+			UpdateParentItems(hItem,false);
+		}
 	}
 }
 
@@ -311,19 +347,27 @@ void CDirectoryTreeCtrl::DelShare(wxString strDir)
 	m_lstShared.Remove(strDir.GetData());
 }
 
-void CDirectoryTreeCtrl::UpdateParentItems(HTREEITEM hChild)
+void CDirectoryTreeCtrl::UpdateParentItems(wxTreeItemId hChild, bool add)
 {
-}
-
-bool CDirectoryTreeCtrl::ProcessEvent(wxEvent& evt)
-{
-	if(evt.GetEventType()==wxEVT_COMMAND_TREE_ITEM_EXPANDING) {
-		OnTvnItemexpanding((wxCTreeEvent&)evt);
-		return true;
-	}
-	if(evt.GetEventType()==wxEVT_COMMAND_TREE_ITEM_LEFT_CLICK /* amule extension */) {
-		OnLButtonDown((wxCTreeEvent&)evt);
-		return true;
-	}
-	return wxCTreeCtrl::ProcessEvent(evt);
+	wxTreeItemId parent = hChild;
+	do {
+		parent = GetItemParent(parent);
+		CDirectoryTreeItemData* parent_data = ((CDirectoryTreeItemData*) GetItemData(parent));
+		if (add) {
+			parent_data->AddCount();
+			if (parent_data->GetCount()==1) {
+				SetItemImage(parent,1);
+			}
+		} else {
+			switch (parent_data->GetCount()) {
+				case 0:
+					break;
+				case 1:
+					SetItemImage(parent,0);
+				default:
+					parent_data->SubCount();
+					break;
+			}
+		}
+	} while (parent != GetRootItem());
 }

@@ -21,29 +21,20 @@
 #ifndef DIRECTORYTREECTRL_H
 #define DIRECTORYTREECTRL_H
 
-#include "treectlc.h"		// Needed for wxCTreeCtrl
-
-class wxCTreeEvent;
-
-#if (wxMINOR_VERSION > 4)
-	#include <wx/treectrl.h>
-	#define wxCTreeCtrl wxTreeCtrl
-#endif
+#include <wx/treectrl.h>
 
 #define USRMSG_ITEMSTATECHANGED		(47101) + 16
 #define MP_SHAREDFOLDERS_FIRST	46901
 
-#undef HTREEITEM
-#define HTREEITEM wxTreeItemId
-
-class CDirectoryTreeCtrl : public wxCTreeCtrl
+class CDirectoryTreeCtrl : public wxTreeCtrl
 {
-//DECLARE_DYNAMIC(CDirectoryTreeCtrl)
+
   DECLARE_DYNAMIC_CLASS(CDirectoryTreeCtrl) 
 
     CDirectoryTreeCtrl() {};
 public:
 	CDirectoryTreeCtrl(wxWindow*& parent,int id,const wxPoint& pos,wxSize siz,int flags);
+	virtual ~CDirectoryTreeCtrl();
 
 	// initialize control
 	void Init(void);
@@ -53,61 +44,44 @@ public:
 	void SetSharedDirectories(wxArrayString* list);
 	// User made any changes to list?
 	bool HasChanged;
+
 private:
 	wxImageList m_image; 
-	HTREEITEM hRoot;
+	wxTreeItemId hRoot;
 	// add a new item
-	void AddChildItem(HTREEITEM hBranch, wxString const& strText);
+	void AddChildItem(wxTreeItemId hBranch, wxString const& strText);
 	// add subdirectory items
-	void AddSubdirectories(HTREEITEM hBranch, wxString strDir);
+	void AddSubdirectories(wxTreeItemId hBranch, wxString strDir);
 	// return the full path of an item (like C:\abc\somewhere\inheaven\)
-	wxString GetFullPath(HTREEITEM hItem);
+	wxString GetFullPath(wxTreeItemId hItem);
 	// returns true if strDir has at least one subdirectory
 	bool HasSubdirectories(wxString strDir);
 	// check status of an item has changed
-	void CheckChanged(HTREEITEM hItem, bool bChecked);
+	void CheckChanged(wxTreeItemId hItem, bool bChecked);
 	// returns true if a subdirectory of strDir is shared
 	bool HasSharedSubdirectory(wxString const& strDir);
-	// when sharing a directory, make all parent directories bold
-	void UpdateParentItems(HTREEITEM hChild);
+	// when sharing a directory, make all parent directories red
+	void UpdateParentItems(wxTreeItemId hChild, bool add);
 
 	// share list access
 	bool IsShared(wxString const& strDir);
 	void AddShare(wxString strDir);
 	void DelShare(wxString strDir);
-	void MarkChildren(HTREEITEM hChild,bool mark);
-
+	void MarkChildren(wxTreeItemId hChild,bool mark);
+	
 	wxArrayString m_lstShared;
 	  //CTitleMenu  m_SharedMenu;
 	wxString m_strLastRightClicked;
 	bool m_bSelectSubDirs;
 
-#if (wxMINOR_VERSION > 4)
-	#warning FIXME!!!!!!!!!!!!!
-	bool IsChecked(wxTreeItemId& item) { return false; }
-	void SetChecked(HTREEITEM item, bool check) { }
-#endif
-
-public:
-	// construction / destruction
-	//CDirectoryTreeCtrl();
-	virtual ~CDirectoryTreeCtrl();
-	  //virtual bool OnCommand(WPARAM wParam,LPARAM lParam );
-	virtual bool ProcessEvent(wxEvent& evt);
-
 protected:
-	void OnTvnItemexpanding(wxCTreeEvent& evt);
-	void OnLButtonDown(wxCTreeEvent& evt);
-#if 0
-	afx_msg void OnNMRclickSharedList(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnTvnItemexpanding(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnTvnGetdispinfo(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnLButtonDown(unsigned int nFlags, CPoint point);
-	DECLARE_MESSAGE_MAP()
-#endif
-	  DECLARE_EVENT_TABLE()
+	void OnTvnItemexpanding(wxTreeEvent& evt);
+	void OnRButtonDown(wxTreeEvent& evt);
+	void OnItemActivated(wxTreeEvent& evt);
+
+	DECLARE_EVENT_TABLE()
 };
 
-#undef HTREEITEM
+#undef wxTreeItemId
 
 #endif // DIRECTORYTREECTRL_H
