@@ -97,7 +97,7 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd){
 				cur_client->ClearWaitStartTime();
 				RemoveFromWaitingQueue(pos2);	
 				if (!cur_client->GetSocket()) {
-					if(cur_client->Disconnected(_("AddUpNextClient - purged"))) {
+					if(cur_client->Disconnected(wxT("AddUpNextClient - purged"))) {
 						cur_client->Safe_Delete();
 						cur_client = NULL;
 					}

@@ -503,10 +503,14 @@ enum {
 	EC_TAG_SERVER_USERS,		///< (\c uint32) User count. Default: N/A.
 	EC_TAG_SERVER_USERS_MAX,	///< (\c uint32) Max. user count. Default: N/A.
 	EC_TAG_SERVER_FILES,		///< (\c uint32) File count. Default: N/A.
-	EC_TAG_SERVER_PREF,		///< (\c uint8) Server preference (priority). Default: 1 (normal)
-					/*!< <ul><li>0 - Low Priority</li>
-						<li>1 - Normal</li>
-						<li>2 - High Priority</li></ul>
+	EC_TAG_SERVER_PREF,		///< (\c uint8) Server preference (priority). Default: SRV_PR_NORMAL (normal)
+					/*!< <ul>
+						<li>SRV_PR_LOW - Low Priority</li>
+						<li>SRV_PR_NORMAL - Normal</li>
+						<li>SRV_PR_HIGH - High Priority</li>
+						<li>anything else - No Preferences</li>
+						</ul>
+						Look into KnownFile.h for the SRV_PR_* values.
 					*/
 	EC_TAG_SERVER_FAILED,		///< (\c uint8) Fail count. Default: 0
 	EC_TAG_SERVER_STATIC,		///< (\c uint8) Nonzero, when server is static. Default: 0 (not static)

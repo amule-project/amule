@@ -275,16 +275,16 @@ void CClientCreditsList::LoadList()
 		theApp.NotifyEvent(event);
 		
 	} catch (wxString error) {
-		AddLogLineM(true,wxT("Unable to load clients.met file! ") + error);
+		AddLogLineM(true, _("Unable to load clients.met file! ") + error);
 	} catch (...) {
-		AddLogLineM(true,wxT("Unable to load clients.met file! - Unknown Error"));
+		AddLogLineM(true, _("Unable to load clients.met file! - Unknown Error"));
 	}
 
 }
 
 void CClientCreditsList::SaveList()
 {
-	AddDebugLogLineM(false, _("Saved Credit list"));
+	AddDebugLogLineM(false, wxT("Saved Credit list"));
 	m_nLastSaved = ::GetTickCount();
 
 	wxString name(theApp.ConfigDir + CLIENTS_MET_FILENAME);
@@ -377,7 +377,7 @@ void CClientCredits::Verified(uint32 dwForIP){
 			m_pCredits->nDownloadedLo = 1;
 			m_pCredits->nUploadedHi = 0;
 			m_pCredits->nUploadedLo = 1; // in order to safe this client, set 1 byte
-			AddDebugLogLineM(false, _("Credits deleted due to new SecureIdent"));
+			AddDebugLogLineM(false, wxT("Credits deleted due to new SecureIdent"));
 		}
 	}
 	IdentState = IS_IDENTIFIED;
@@ -418,11 +418,11 @@ bool CClientCreditsList::CreateKeyPair(){
 		
 		privkeysink.MessageEnd();
 
-		AddDebugLogLineM(false,_("Created new RSA keypair"));
+		AddDebugLogLineM(false, wxT("Created new RSA keypair"));
 	}
 	catch(...)
 	{
-		AddDebugLogLineM(false, _("Failed to create new RSA keypair"));
+		AddDebugLogLineM(false, wxT("Failed to create new RSA keypair"));
 		wxASSERT ( false );
 		return false;
 	}
@@ -478,7 +478,7 @@ void CClientCreditsList::InitalizeCrypting(){
 			delete (CryptoPP::RSASSA_PKCS1v15_SHA_Signer*)m_pSignkey;
 			m_pSignkey = NULL;
 		}
-		AddLogLineM(false, _("IDS_CRYPT_INITFAILED\n"));
+		AddLogLineM(false, wxT("IDS_CRYPT_INITFAILED\n"));
 	}
 	//Debug_CheckCrypting();
 }
@@ -556,7 +556,7 @@ bool CClientCreditsList::VerifyIdent(CClientCredits* pTarget, const uchar* pachS
 					break;
 				case CRYPT_CIP_REMOTECLIENT:
 					if (theApp.serverconnect->GetClientID() == 0 || theApp.serverconnect->IsLowID()){
-						AddDebugLogLineM(false, _("Warning: Maybe SecureHash Ident fails because LocalIP is unknown"));
+						AddDebugLogLineM(false, wxT("Warning: Maybe SecureHash Ident fails because LocalIP is unknown"));
 						ChallengeIP = theApp.serverconnect->GetLocalIP();
 					}
 					else

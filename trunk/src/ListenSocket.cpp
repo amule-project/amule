@@ -267,7 +267,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 
 				// if IP is filtered, dont reply but disconnect...
 				if (theApp.ipfilter->IsFiltered(m_client->GetIP())) {
-					AddDebugLogLineM(true,_("Filtered IP: ") + m_client->GetFullIP() + wxT("(") + theApp.ipfilter->GetLastHit() + wxT(")"));					
+					AddDebugLogLineM(true,wxT("Filtered IP: ") + m_client->GetFullIP() + wxT("(") + theApp.ipfilter->GetLastHit() + wxT(")"));					
 					theApp.stat_filteredclients++;
 					if (bNewClient) {
 						m_client->Safe_Delete();
@@ -696,7 +696,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				if (size>=16 && !md4cmp(m_client->GetUploadFileID(),packet)) {
 					theApp.uploadqueue->RemoveFromUploadQueue(m_client);
 					if (thePrefs::GetVerbose()) {
-						AddDebugLogLineM(false, m_client->GetUserName() + _(": Upload session ended due ended transfer."));
+						AddDebugLogLineM(false, m_client->GetUserName() + wxT(": Upload session ended due ended transfer."));
 					}
 				} else {
 					// m_client->CheckFailedFileIdReqs((uchar*)packet);
@@ -1193,7 +1193,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				break;
 			default:
 				theApp.downloadqueue->AddDownDataOverheadOther(size);
-				AddDebugLogLineM(false,wxString::Format(_("Edonkey packet: unknown opcode: %i %x"),opcode,opcode));
+				AddDebugLogLineM(false,wxString::Format(wxT("Edonkey packet: unknown opcode: %i %x"),opcode,opcode));
 				break;
 		}
 	}
@@ -1724,7 +1724,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 									DebugSend("OP__AnswerSources", m_client, (char*)file->GetFileHash());
 								}
 								if (thePrefs.GetDebugSourceExchange()) {
-									AddDebugLogLineM(false, wxString::Format(_("RCV:Source Request User(%s) File(%s)"), m_client->GetUserName().c_str(), file->GetFileName().c_str()));
+									AddDebugLogLineM(false, wxString::Format(wxT("RCV:Source Request User(%s) File(%s)"), m_client->GetUserName().c_str(), file->GetFileName().c_str()));
 								}
 								#endif
 							}
@@ -1887,7 +1887,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 			}
 			default:
 				theApp.downloadqueue->AddDownDataOverheadOther(size);
-				AddDebugLogLineM(false,wxString::Format(_("eMule packet : unknown opcode: %i %x"),opcode,opcode));
+				AddDebugLogLineM(false,wxString::Format(wxT("eMule packet : unknown opcode: %i %x"),opcode,opcode));
 				break;
 		}
 	} catch(CInvalidPacket ErrorPacket) {
@@ -1912,7 +1912,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 		Disconnect(wxT("UnCaught invalid packet exception On ProcessPacket\n"));
 		return false;
 	} catch(wxString error) {
-		AddDebugLogLineM(false, wxString::Format(_("A client caused an error or did something bad: %s. Disconnecting client!"), error.c_str()));
+		AddDebugLogLineM(false, wxString::Format(wxT("A client caused an error or did something bad: %s. Disconnecting client!"), error.c_str()));
 		if (m_client) {
 			if (thePrefs::GetVerbosePacketError()) {
 				if (error.IsEmpty()) {			
@@ -1969,24 +1969,24 @@ void CClientReqSocket::OnError(int nErrorCode)
 	if ((nErrorCode != 107) && (nErrorCode != 0)) {
 		if (m_client) {
 			if (!m_client->GetUserName().IsEmpty()) {
-				strError = _("Client '") + m_client->GetUserName() + wxT("'");
+				strError = wxT("Client '") + m_client->GetUserName() + wxT("'");
 			} else {
-				strError = _("An unnamed client");
+				strError = wxT("An unnamed client");
 			}
-			strError += wxString::Format(_(" (IP:%s) caused an socket blocking error."),unicode2char(m_client->GetFullIP()));
+			strError += wxString::Format(wxT(" (IP:%s) caused a socket blocking error."),unicode2char(m_client->GetFullIP()));
 		} else {
-			strError = _("A client caused an socket blocking error.");
+			strError = wxT("A client caused a socket blocking error.");
 		}
 		
-		strError += wxString::Format(_("Retries: %u."), connection_retries);
+		strError += wxString::Format(wxT(" Retries: %u. "), connection_retries);
 		
 		#define MAX_RETRIES 2
 		
 		if ((connection_retries > MAX_RETRIES) || (!m_client)) {
-			strError += _("Client disconnected (max retries allowed reached)");
+			strError += wxT("Client disconnected (max retries allowed reached)");
 			Disconnect(strError);
 		} else {
-			strError += wxString::Format(_("Trying to reconnect... (retries left: %u)"), MAX_RETRIES-connection_retries);
+			strError += wxString::Format(wxT("Trying to reconnect... (retries left: %u)"), MAX_RETRIES-connection_retries);
 			byConnected = ES_DISCONNECTED;
 
 			amuleIPV4Address tmp;
@@ -2043,7 +2043,7 @@ bool CClientReqSocket::PacketReceived(Packet* packet)
 		case OP_PACKEDPROT:
 			if (!packet->UnPackPacket()) {
 				AddDebugLogLineM(false, 
-					wxString::Format(_("Failed to decompress client TCP packet; protocol=0x%02x  opcode=0x%02x  size=%u"),
+					wxString::Format(wxT("Failed to decompress client TCP packet; protocol=0x%02x  opcode=0x%02x  size=%u"),
 					packet->GetProtocol(),
 					packet->GetOpCode(),
 					packet->GetPacketSize()));
@@ -2214,7 +2214,7 @@ wxSocketServer(addr, wxSOCKET_NOWAIT|wxSOCKET_REUSEADDR)
 	if (Ok()) {
 #ifdef AMULE_DAEMON
 		if ( Create() != wxTHREAD_NO_ERROR ) {
-			AddLogLineM(true,wxT("CListenSocket: can not create my thread\n"));
+			AddLogLineM(true,_("CListenSocket: can not create my thread\n"));
 		}
 		Notify(false);
 #else
@@ -2224,7 +2224,7 @@ wxSocketServer(addr, wxSOCKET_NOWAIT|wxSOCKET_REUSEADDR)
 #endif	
 		printf("ListenSocket: Ok.\n");
 	} else {
-		AddLogLineM(true,wxT("Error: Could not listen to TCP port.\n"));
+		AddLogLineM(true,_("Error: Could not listen to TCP port.\n"));
 	}
 }
 

@@ -457,7 +457,7 @@ bool CClientList::AttachToAlreadyKnown(CUpDownClient** client, CClientReqSocket*
 					}
 	
 					//IDS_CLIENTCOL Warning: Found matching client, to a currently connected client: %s (%s) and %s (%s)
-					AddDebugLogLineM(true, wxString::Format(_("WARNING! Found matching client, to a currently connected client: %s (%s) and with %s"), tocheck->GetUserName().c_str(), tocheck->GetFullIP().c_str(), found_client->GetUserName().c_str(), found_client->GetFullIP().c_str()));
+					AddDebugLogLineM(true, wxString::Format(wxT("WARNING! Found matching client, to a currently connected client: %s (%s) and with %s"), tocheck->GetUserName().c_str(), tocheck->GetFullIP().c_str(), found_client->GetUserName().c_str(), found_client->GetFullIP().c_str()));
 					return false;
 				}
 				found_client->GetSocket()->SetClient( NULL );

@@ -844,7 +844,7 @@ void CDownloadQueue::ProcessLocalRequests()
 				else{
 					it = m_localServerReqQueue.erase(it);
 					cur_file->m_bLocalSrcReqQueued = false;
-					AddDebugLogLineM(false, wxString(_("Local server source request for file \"")) + cur_file->GetFileName() + wxString(_("\" not sent because of status '")) +  cur_file->getPartfileStatus() + wxT("'"));
+					AddDebugLogLineM(false, wxString(wxT("Local server source request for file \"")) + cur_file->GetFileName() + wxString(wxT("\" not sent because of status '")) +  cur_file->getPartfileStatus() + wxT("'"));
 				}
 			}
 

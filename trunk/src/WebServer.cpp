@@ -788,7 +788,7 @@ wxString CWebServer::_GetHeader(ThreadData Data, long lSession) {
 		case 3: {
 				CECTag *server = stats->GetTagByName(EC_TAG_STATS_CONNSTATE)->GetTagByIndex(0);
 				sConnected = _("Connected to ");
-				sConnected += server->GetTagByName(EC_TAG_SERVER_NAME)->GetStringData() + _(" ");
+				sConnected += server->GetTagByName(EC_TAG_SERVER_NAME)->GetStringData() + wxT(" ");
 				sConnected += server->GetIPv4Data().StringIP();
 				sConnected += stats->GetTagByName(EC_TAG_STATS_CONNSTATE)->GetInt8Data() == 2 ? _("with LowID") : _("with HighID");
 			}
@@ -1499,8 +1499,8 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 		}
 		
 		if (IsSessionAdmin(Data,sSession)) {
-			sActions.Replace(wxT("[Resume]"), _("&Resume"));
-			sActions.Replace(wxT("[Pause]"), _("&Pause"));
+			sActions.Replace(wxT("[Resume]"), _("Resume"));
+			sActions.Replace(wxT("[Pause]"), _("Pause"));
 			sActions.Replace(wxT("[Cancel]"), _("Cancel"));
 			sActions.Replace(wxT("[ConfirmCancel]"), _("Are you sure that you want to cancel and delete this file?\\n"));
 
@@ -1584,7 +1584,7 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	}
 
 	Out.Replace(wxT("[DownloadFilesList]"), sDownList);
-	Out.Replace(wxT("[PriorityUp])"), _("Increase Priority"));
+	Out.Replace(wxT("[PriorityUp]"), _("Increase Priority"));
 	Out.Replace(wxT("[PriorityDown]"), _("Decrease Priority"));
 	// Elandal: cast from float to integral type always drops fractions.
 	// avoids implicit cast warning

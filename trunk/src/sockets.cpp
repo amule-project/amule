@@ -251,7 +251,7 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 			Packet* packet = new Packet(OP_GETSERVERLIST,0);
 			SendPacket(packet, true);
 			#ifdef DEBUG_CLIENT_PROTOCOL
-			AddLogLineM(true,_("Client: OP_GETSERVERLIST\n"));
+			AddLogLineM(true,wxT("Client: OP_GETSERVERLIST\n"));
 			#endif
 		}
 	}
@@ -547,7 +547,7 @@ void CServerConnect::KeepConnectionAlive()
 		Packet* packet = new Packet(files);
 		packet->SetOpCode(OP_OFFERFILES);
 		#ifdef DEBUG_CLIENT_PROTOCOL
-		AddLogLineM(true,_("Client: OP_OFFERFILES\n"));
+		AddLogLineM(true,wxT("Client: OP_OFFERFILES\n"));
 		#endif
 		// compress packet
 		//   - this kind of data is highly compressable (N * (1 MD4 and at least 3 string meta data tags and 1 integer meta data tag))
@@ -558,7 +558,7 @@ void CServerConnect::KeepConnectionAlive()
 		theApp.uploadqueue->AddUpDataOverheadServer(packet->GetPacketSize());
 		connectedsocket->SendPacket(packet,true);
 		
-		AddDebugLogLineM(false, _("Refreshing server connection"));
+		AddDebugLogLineM(false, wxT("Refreshing server connection"));
 		delete files;
  	}
 }
@@ -580,6 +580,6 @@ void CServerConnect::InitLocalIP()
 	}
 	catch(...){
 		// at least two ppl reported crashs when using 'gethostbyname' with third party winsock DLLs
-		AddDebugLogLineM(false, _("Unknown exception in CServerConnect::InitLocalIP"));
+		AddDebugLogLineM(false, wxT("Unknown exception in CServerConnect::InitLocalIP"));
 	}
 }

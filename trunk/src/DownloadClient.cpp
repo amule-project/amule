@@ -691,7 +691,7 @@ void CUpDownClient::ProcessBlockPacket(const char *packet, uint32 size, bool pac
 			// Found reserved block
 				
 			if (cur_block->fZStreamError){
-				AddDebugLogLineM(false, wxString::Format(_("Ignoring %u bytes of block %u-%u because of errornous zstream state for file \"%s\""), size - HEADER_SIZE, nStartPos, nEndPos, m_reqfile->GetFileName().c_str()));
+				AddDebugLogLineM(false, wxString::Format(wxT("Ignoring %u bytes of block %u-%u because of errornous zstream state for file \"%s\""), size - HEADER_SIZE, nStartPos, nEndPos, m_reqfile->GetFileName().c_str()));
 				m_reqfile->RemoveBlockFromList(cur_block->block->StartOffset, cur_block->block->EndOffset);
 				return;
 			}
@@ -739,7 +739,7 @@ void CUpDownClient::ProcessBlockPacket(const char *packet, uint32 size, bool pac
 						nEndPos = cur_block->block->StartOffset + cur_block->totalUnzipped - 1;
 
 						if (nStartPos > cur_block->block->EndOffset || nEndPos > cur_block->block->EndOffset) {
-							AddDebugLogLineM(false, wxString::Format(_("Corrupted compressed packet for %s received (error %i)"), m_reqfile->GetFileName().c_str(), 666));
+							AddDebugLogLineM(false, wxString::Format(wxT("Corrupted compressed packet for %s received (error %i)"), m_reqfile->GetFileName().c_str(), 666));
 							m_reqfile->RemoveBlockFromList(cur_block->block->StartOffset, cur_block->block->EndOffset);
 						} else {
 							// Write uncompressed data to file
@@ -756,7 +756,7 @@ void CUpDownClient::ProcessBlockPacket(const char *packet, uint32 size, bool pac
 						strZipError.Printf(_T(" - %s"), cur_block->zStream->msg);
 					} 
 					
-					AddDebugLogLineM(false, wxString(_("Corrupted compressed packet for")) + m_reqfile->GetFileName() + wxString::Format(_("received (error %i) ") , result) + strZipError );
+					AddDebugLogLineM(false, wxString(wxT("Corrupted compressed packet for")) + m_reqfile->GetFileName() + wxString::Format(wxT("received (error %i) ") , result) + strZipError );
 					
 					m_reqfile->RemoveBlockFromList(cur_block->block->StartOffset, cur_block->block->EndOffset);
 

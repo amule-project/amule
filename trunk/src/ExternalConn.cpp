@@ -2741,6 +2741,10 @@ CEC_Server_Tag::CEC_Server_Tag(CServer *server) :
 		AddTag(CECTag(EC_TAG_SERVER_FILES, tmpInt));
 	}
 
+	if ((tmpShort = (uint8)server->GetPreferences()) != SRV_PR_NORMAL) {
+		AddTag(CECTag(EC_TAG_SERVER_PREF, tmpShort));
+	}
+
 	if ((tmpShort = (uint8)server->GetFailedCount()) != 0) {
 		AddTag(CECTag(EC_TAG_SERVER_FAILED, tmpShort));
 	}

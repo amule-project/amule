@@ -593,16 +593,16 @@ void CUploadingView::DrawCell( CUpDownClient* client, int column, wxDC* dc, cons
 		case 10:
 			if ( client->GetDownloadState() == DS_ONQUEUE ) {
 				if ( client->IsRemoteQueueFull() ) {
-					buffer = wxT("Queue Full");
+					buffer = _("Queue Full");
 				} else {
 					if (client->GetRemoteQueueRank()) {
-						buffer.Printf(wxT("QR: %u"), client->GetRemoteQueueRank());
+						buffer.Printf(_("QR: %u"), client->GetRemoteQueueRank());
 					} else {
-						buffer = wxT("Unknown");
+						buffer = _("Unknown");
 					}
 				}
 			} else {
-				buffer = wxT("Unknown");
+				buffer = _("Unknown");
 			}
 			break;
 	}
@@ -765,7 +765,7 @@ void CQueuedView::DrawCell( CUpDownClient* client, int column, wxDC* dc, const w
 					default:				buffer = _("Normal");		break;
 				}
 			} else {
-				buffer = wxT("Unknown");
+				buffer = _("Unknown");
 			}
 
 			break;
