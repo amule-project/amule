@@ -551,16 +551,17 @@ bool CamuleApp::OnInit()
 	serverconnect	= new CServerConnect(serverlist, glob_prefs);
 	sharedfiles		= new CSharedFileList(glob_prefs, serverconnect, knownfiles);
 
+	clientcredits	= new CClientCreditsList(glob_prefs);
+	downloadqueue	= new CDownloadQueue(glob_prefs, sharedfiles);	// bugfix - do this before creating the uploadqueue
+	uploadqueue		= new CUploadQueue(glob_prefs);
+	ipfilter		= new CIPFilter();
+	
 	wxIPV4address myaddr;
 	myaddr.AnyAddress();
 	myaddr.Service(glob_prefs->GetUDPPort());
 	printf("*** TCP socket at %d\n", glob_prefs->GetPort());
 	clientudp		= new CClientUDPSocket(myaddr);
 
-	clientcredits	= new CClientCreditsList(glob_prefs);
-	downloadqueue	= new CDownloadQueue(glob_prefs, sharedfiles);	// bugfix - do this before creating the uploadqueue
-	uploadqueue		= new CUploadQueue(glob_prefs);
-	ipfilter		= new CIPFilter();
 
 	// Create listen socket 
 	myaddr.Service(glob_prefs->GetPort());
