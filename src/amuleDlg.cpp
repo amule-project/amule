@@ -592,7 +592,8 @@ void CamuleDlg::ShowConnectionState(bool connected, wxString server, bool iconOn
 		switch ( NewState ) {
 			case sLowID:
 			case sHighID: {
-				m_wndToolbar->InsertTool(0, ID_BUTTONCONNECT, wxString(_("Disconnect")), connButImg(1), wxString(_("Disconnect from current server")));
+				//m_wndToolbar->InsertTool(0, ID_BUTTONCONNECT, wxString(_("Disconnect")), connButImg(1), wxString(_("Disconnect from current server")));
+				m_wndToolbar->InsertTool(0, ID_BUTTONCONNECT, wxString(_("Disconnect")), connButImg(1), wxNullBitmap, wxITEM_NORMAL, wxString(_("Disconnect from current server")));
 				wxStaticText* tx=(wxStaticText*)FindWindow(wxT("infoLabel"));
 				tx->SetLabel(wxString(_("Connection established on:")) + wxString(server));
 				connLabel->SetLabel(server);
@@ -600,12 +601,14 @@ void CamuleDlg::ShowConnectionState(bool connected, wxString server, bool iconOn
 			}
 
 			case sConnecting:
-				m_wndToolbar->InsertTool(0, ID_BUTTONCONNECT, wxString(_("Cancel")), connButImg(2), wxString(_("Stops the current connection attempts")));
+				//m_wndToolbar->InsertTool(0, ID_BUTTONCONNECT, wxString(_("Cancel")), connButImg(2), wxString(_("Stops the current connection attempts")));
+				m_wndToolbar->InsertTool(0, ID_BUTTONCONNECT, wxString(_("Cancel")), connButImg(2), wxNullBitmap, wxITEM_NORMAL, wxString(_("Stops the current connection attempts")));
 				connLabel->SetLabel(wxString(_("Connecting")));
 				break;
 
 			case sDisconnected:
-				m_wndToolbar->InsertTool(0, ID_BUTTONCONNECT, wxString(_("Connect")), connButImg(0), wxString(_("Connect to any server")));
+				//m_wndToolbar->InsertTool(0, ID_BUTTONCONNECT, wxString(_("Connect")), connButImg(0), wxString(_("Connect to any server")));
+				m_wndToolbar->InsertTool(0, ID_BUTTONCONNECT, wxString(_("Connect")), connButImg(0), wxNullBitmap, wxITEM_NORMAL, wxString(_("Connect to any server")));
 				connLabel->SetLabel(wxString(_("Not Connected")));
 				AddLogLine(true, wxString(_("Disconnected")));
 				break;
