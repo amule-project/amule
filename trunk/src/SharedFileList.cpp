@@ -472,16 +472,13 @@ void CSharedFileList::CreateOfferedFilePacket(
 	CKnownFile *cur_file,
 	CSafeMemFile *files,
 	CServer *pServer,
-#if wxUSE_UNICODE
 	CUpDownClient *pClient) {
-#else
-	CUpDownClient *WXUNUSED(pClient)) {
-#endif
+		
 	// This function is used for offering files to the local server and for sending
 	// shared files to some other client. In each case we send our IP+Port only, if
 	// we have a HighID.
 
-	#warning Max. Priority to add the new tags.
+	wxASSERT(!(pClient && pServer));
 		
 	cur_file->SetPublishedED2K(true);
 	files->WriteHash16(cur_file->GetFileHash());
@@ -515,56 +512,77 @@ void CSharedFileList::CreateOfferedFilePacket(
 
 	files->WriteUInt32(nClientID);
 	files->WriteUInt16(nClientPort);
+	
+	TagPtrList tags;
 
-	// files->Write(cur_file->GetFileTypePtr(),4);
-
-	//uint32 uTagCount = tags.GetSize();
-	uint32 uTagCount = 0; // File name and size right now
-
-	if (cur_file->GetFileName()) {
-		++uTagCount;
+	tags.push_back(new CTag(FT_FILENAME, cur_file->GetFileName()));
+	tags.push_back(new CTag(FT_FILESIZE, cur_file->GetFileSize()));
+	
+	printf("Publishing %s\n", (const char*)unicode2char(cur_file->GetFileName()));
+	// NOTE: Archives and CD-Images are published with file type "Pro"
+	wxString strED2KFileType(otherfunctions::GetED2KFileTypeSearchTerm(otherfunctions::GetED2KFileTypeID(cur_file->GetFileName())));
+	if (!strED2KFileType.IsEmpty()) {
+		printf("\tPublishing type %s\n", (const char*)unicode2char(strED2KFileType));
+		tags.push_back(new CTag(FT_FILETYPE, strED2KFileType));
 	}
 
-	if (cur_file->GetFileSize()>0) {
-		++uTagCount;
+	wxString strExt;
+	int iExt = cur_file->GetFileName().Find(wxT('.'), true);
+	if (iExt != -1){
+		strExt = cur_file->GetFileName().Mid(iExt);
+		if (!strExt.IsEmpty()){
+			strExt = strExt.Mid(1);
+			if (!strExt.IsEmpty()){
+				strExt.MakeLower();
+				printf("\tPublishing ext %s\n", (const char*)unicode2char(strExt));
+				tags.push_back(new CTag(FT_FILEFORMAT, strExt)); // file extension without a "."
+			}
+		}
 	}
 
-	files->WriteUInt32(uTagCount);
-
+		
+	// There, we could add MetaData info, if we ever get to have that.
+	
 	EUtf8Str eStrEncode;
 
 #if wxUSE_UNICODE
-	if (pServer != NULL && (pServer->GetTCPFlags() & SRV_TCPFLG_UNICODE)){
-		// eserver doesn't properly support searching with ASCII-7 strings in BOM-UTF8 published strings
-		//eStrEncode = utf8strOptBOM;
-		eStrEncode = utf8strRaw;
-	} else {
-		if (pClient && !pClient->GetUnicodeSupport()) {
-			eStrEncode = utf8strNone;
-		} else {
-			eStrEncode = utf8strRaw;
-		}
-	}
+	bool unicode_support = 
+		// eservers that support UNICODE.
+		(pServer && (pServer->GetTCPFlags() & SRV_TCPFLG_UNICODE))
+		||
+		// clients that support unicode
+		(pClient && !pClient->GetUnicodeSupport());
+	eStrEncode = unicode_support ? utf8strRaw : utf8strNone;
 #else
 	eStrEncode = utf8strNone;
 #endif
 	
-	if (cur_file->GetFileName()) {
-		CTag* nametag = new CTag(FT_FILENAME,cur_file->GetFileName());
-		nametag->WriteTagToFile(files, eStrEncode);
-		delete nametag;
-	}
+	files->WriteUInt32(tags.size());
 
-	if (cur_file->GetFileSize()>0) {
-		CTag* sizetag = new CTag(FT_FILESIZE,cur_file->GetFileSize());
-		sizetag->WriteTagToFile(files);
-		delete sizetag;
+	// Sadly, eMule doesn't use a MISCOPTIONS flag on hello packet for this, so we
+	// have to identify the support for new tags by version.
+	bool new_ed2k = 	
+		// eMule client > 0.42f
+		(pClient && pClient->IsEmuleClient() && pClient->GetVersion()  >= MAKE_CLIENT_VERSION(0,42,7))
+		||
+		// aMule >= 2.0.0rc8. Sadly, there's no way to check the rcN number, so I checked
+		// the rc8 changelog. On rc8 OSInfo was introduced, so...
+		(pClient && pClient->GetClientSoft() == SO_AMULE && !pClient->GetClientOSInfo().IsEmpty())
+		||
+		// eservers use a flag for this, at least.
+		(pServer && (pServer->GetTCPFlags() & SRV_TCPFLG_NEWTAGS));
+	
+	for (TagPtrList::iterator it = tags.begin(); it != tags.end(); ++it ) {
+		CTag* pTag = *it;
+		if (new_ed2k) {
+			pTag->WriteNewEd2kTag(files, eStrEncode);
+		} else {
+			pTag->WriteTagToFile(files, eStrEncode);
+		}
+		delete pTag;		
 	}
-
-	// TODO Import new CTag struct from eMule 0,30e and use their implementation
-	// Mainly 'cos we lack most Tags!!!
-	// This SHOULD be a correct packet anyway.
-	// Either is ok or we are crashing clients that request ;)
+	
+	
 }
 
 void CSharedFileList::Process()
