@@ -318,15 +318,7 @@ bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 			exit(1);
 		}
 		CECFileConfig cfg(wxEmptyString, wxEmptyString, aMuleConfigFile, wxEmptyString, wxCONFIG_USE_LOCAL_FILE);
-		m_host = wxT("localhost");
-		m_port = cfg.Read(wxT("/ExternalConnect/ECPort"), 4712l);
-		cfg.ReadHash(wxT("/ExternalConnect/ECPassword"), &m_password);
-		m_UseGzip = (cfg.Read(wxT("/Webserver/UseGzip"), 0l) == 1l);
-		m_AllowGuest = (cfg.Read(wxT("/Webserver/UseLowRightsUser"), 0l) == 1l);
-		cfg.ReadHash(wxT("/Webserver/Password"), &m_AdminPass);
-		cfg.ReadHash(wxT("/Webserver/PasswordLow"), &m_GuestPass);
-		m_WebserverPort = cfg.Read(wxT("/Webserver/Port"), -1l);
-		m_PageRefresh = cfg.Read(wxT("/Webserver/PageRefreshTime"), 120l);
+		LoadAmuleConfig(cfg);
 		// do not process any other command-line parameters, use defaults instead
 		m_TemplateName = wxT("default");
 		if (!GetTemplateDir(m_TemplateName, m_TemplateDir)) {
@@ -347,6 +339,9 @@ bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 	if (CaMuleExternalConnector::OnCmdLineParsed(parser)) {
 
 		parser.Found(wxT("template"), &m_TemplateName);
+		if (m_TemplateName.IsEmpty()) {
+			m_TemplateName = wxT("default");
+		}
 		if (!GetTemplateDir(m_TemplateName, m_TemplateDir)) {
 			// no reason to run webserver without a template
 			fprintf(stderr, (const char *)unicode2char(_("FATAL ERROR: Cannot find template: ") + m_TemplateName + wxT("\n")));
@@ -443,6 +438,17 @@ void CamulewebApp::Pre_Shell() {
 	//Creating the web server
 	webserver = new CWebServer(this, m_TemplateDir);
 	webserver->StartServer();
+}
+
+void CamulewebApp::LoadAmuleConfig(CECFileConfig& cfg)
+{
+	CaMuleExternalConnector::LoadAmuleConfig(cfg);
+	m_UseGzip = (cfg.Read(wxT("/Webserver/UseGzip"), 0l) == 1l);
+	m_AllowGuest = (cfg.Read(wxT("/Webserver/UseLowRightsUser"), 0l) == 1l);
+	cfg.ReadHash(wxT("/Webserver/Password"), &m_AdminPass);
+	cfg.ReadHash(wxT("/Webserver/PasswordLow"), &m_GuestPass);
+	m_WebserverPort = cfg.Read(wxT("/Webserver/Port"), -1l);
+	m_PageRefresh = cfg.Read(wxT("/Webserver/PageRefreshTime"), 120l);
 }
 
 void CamulewebApp::LoadConfigFile()

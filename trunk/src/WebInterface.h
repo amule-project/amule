@@ -74,6 +74,7 @@ public:
 	int ProcessCommand(int ID);
 	void LoadConfigFile();
 	void SaveConfigFile();
+	void LoadAmuleConfig(CECFileConfig& cfg);
 	bool GetTemplateDir(const wxString& templateName, wxString& templateDir);
 	bool CheckDirForTemplate(wxString& dir, const wxString& tmpl);
 

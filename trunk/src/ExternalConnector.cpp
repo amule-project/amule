@@ -25,6 +25,7 @@
 #pragma implementation "ECFileConfig.h"
 #endif
 
+#include <stdio.h>		// Needed for fprintf(stderr, ...)
 #include <wx/filefn.h>
 #include <wx/intl.h>		// For _()
 #include <wx/tokenzr.h>		// For wxStringTokenizer
@@ -69,13 +70,14 @@
 #include "ExternalConnector.h"
 #include "MD5Sum.h"
 #include "OtherFunctions.h"
+#include "StringFunctions.h"
 
 //-------------------------------------------------------------------
 //
 // Static data initialization -- memorize this, you'll need some day!
 // 
 //-------------------------------------------------------------------
-const wxCmdLineEntryDesc CaMuleExternalConnector::cmdLineDesc[10] =
+const wxCmdLineEntryDesc CaMuleExternalConnector::cmdLineDesc[11] =
 {
 	{ wxCMD_LINE_SWITCH, wxEmptyString, wxT("help"),
 		wxT("show this help"),
@@ -100,6 +102,9 @@ const wxCmdLineEntryDesc CaMuleExternalConnector::cmdLineDesc[10] =
 		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL },
 	{ wxCMD_LINE_SWITCH, wxT("w"), wxT("write-config"),
 		wxT("Write command line options to config file."),
+		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL },
+	{ wxCMD_LINE_OPTION, wxEmptyString, wxT("create-config-from"),
+		wxT("Creates config file based on aMule's config file."),
 		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL },
 	{ wxCMD_LINE_SWITCH, wxEmptyString, wxT("version"),
 		wxT("Print program version."),
@@ -436,6 +441,19 @@ bool CaMuleExternalConnector::OnCmdLineParsed(wxCmdLineParser& parser)
 		m_configFileName = otherfunctions::GetConfigDir() + wxT("remote.conf");
 	}
 
+	wxString aMuleConfigFile;
+	if (parser.Found(wxT("create-config-from"), &aMuleConfigFile)) {
+		if (!::wxFileExists(aMuleConfigFile)) {
+			fprintf(stderr, "%s\n", (const char *)unicode2char(_("FATAL ERROR: File does not exist: ") + aMuleConfigFile));
+			exit(1);
+		}
+		CECFileConfig aMuleConfig(wxEmptyString, wxEmptyString, aMuleConfigFile, wxEmptyString, wxCONFIG_USE_LOCAL_FILE);
+		LoadAmuleConfig(aMuleConfig);
+		SaveConfigFile();
+		m_configFile->Flush();
+		exit(0);
+	}
+
 	LoadConfigFile();
 
 	if ( !parser.Found(wxT("host"), &m_host) ) {
@@ -467,6 +485,14 @@ bool CaMuleExternalConnector::OnCmdLineParsed(wxCmdLineParser& parser)
 
 	return true;
 }
+
+void CaMuleExternalConnector::LoadAmuleConfig(CECFileConfig& cfg)
+{
+	m_host = wxT("localhost");
+	m_port = cfg.Read(wxT("/ExternalConnect/ECPort"), -1l);
+	cfg.ReadHash(wxT("/ExternalConnect/ECPassword"), &m_password);
+}
+
 
 void CaMuleExternalConnector::LoadConfigFile()
 {
