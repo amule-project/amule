@@ -20,14 +20,14 @@
 // ClientDetailDialog.cpp : implementation file
 //
 
-#include <curl/curl.h>
 #ifdef __WXMSW__
 	#include <wx/defs.h>
 	#include <wx/msw/winundef.h>
 #endif
-
 #include <wx/intl.h>
 #include <wx/sizer.h> 
+
+#include <curl/curl.h>
 
 #include "HTTPDownloadDlg.h"	// Interface declarations
 #include "MuleGifCtrl.h"
@@ -98,7 +98,7 @@ wxThread::ExitCode myThread::Entry() {
  CURL *curl_handle;
  FILE *outfile;
  char* tempurl;
- curl_global_init(CURL_GLOBAL_ALL);
+ 
  if (TestDestroy()) return NULL;
  curl_handle = curl_easy_init();
  outfile = fopen(unicode2char(tempfile), "w");
@@ -120,6 +120,7 @@ wxThread::ExitCode myThread::Entry() {
     fclose(outfile);
     free(tempurl);
  }
+ curl_easy_cleanup(curl_handle);
  return 0;
 }
 

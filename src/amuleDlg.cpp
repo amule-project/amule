@@ -21,6 +21,7 @@
 #include <cerrno>
 #include <csignal>
 #include <cmath>
+#include <curl/curl.h>
 #include <wx/textctrl.h>
 #include <wx/toolbar.h>
 #include <wx/utils.h>
@@ -121,7 +122,7 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, wxString title, wxPoint where, wxSize dl
 {
 
 	wxInitAllImageHandlers();
-	
+	curl_global_init(CURL_GLOBAL_ALL);
 	imagelist.Create(16,16);
 	
 	if (theApp.glob_prefs->UseSkin()) {		
@@ -164,11 +165,7 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, wxString title, wxPoint where, wxSize dl
 
 	SetSizer( s_main, true );
 
-	// Create ToolBar from the one designed by wxDesigner (BigBob)
-	m_wndToolbar = CreateToolBar( wxTB_HORIZONTAL|wxNO_BORDER|wxTB_TEXT|
-	                                wxTB_3DBUTTONS|wxTB_FLAT|wxCLIP_CHILDREN );
-	m_wndToolbar->SetToolBitmapSize(wxSize(32, 32));
-	muleToolbar( m_wndToolbar );
+	Create_Toolbar(wxT(""));
 
 	serverwnd = new CServerWnd(p_cnt);
 
@@ -421,7 +418,9 @@ void CamuleDlg::OnPrefButton(wxCommandEvent& WXUNUSED(ev))
 CamuleDlg::~CamuleDlg()
 {
 	printf("Shutting down aMule...\n");
-
+	
+	curl_global_cleanup();
+	
 	SaveGUIPrefs();
 
 	theApp.OnlineSig(true);
@@ -1276,4 +1275,17 @@ void CamuleDlg::Apply_Clients_Skin(wxString file) {
 		return;
 	}
 	
+}
+
+void CamuleDlg::Create_Toolbar(wxString skinfile) {
+	// Create ToolBar from the one designed by wxDesigner (BigBob)
+	m_wndToolbar = CreateToolBar( wxTB_HORIZONTAL|wxNO_BORDER|wxTB_TEXT|
+	                               wxTB_3DBUTTONS|wxTB_FLAT|wxCLIP_CHILDREN );
+	m_wndToolbar->SetToolBitmapSize(wxSize(32, 32));
+	
+	if (skinfile.IsEmpty()) {
+		muleToolbar( m_wndToolbar );
+	} else {
+		muleToolbar( m_wndToolbar );		
+	}
 }
