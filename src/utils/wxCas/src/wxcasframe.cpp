@@ -56,7 +56,7 @@
 // Constructor
 WxCasFrame::WxCasFrame (const wxString & title):
     wxFrame ((wxFrame *) NULL, -1, title, wxDefaultPosition, wxDefaultSize,
-             wxDEFAULT_FRAME_STYLE & (wxSYSTEM_MENU | wxMINIMIZE_BOX | wxCAPTION))
+             wxDEFAULT_FRAME_STYLE & (wxSYSTEM_MENU | wxMINIMIZE_BOX | wxCAPTION | wxCLOSE_BOX ))
 {
   // Give it an icon
   SetIcon (wxICON (wxcas));
@@ -219,10 +219,8 @@ WxCasFrame::GetStatImage () const
     wxBitmap
     statBitmap = wxBITMAP (stat);
 
-    wxMemoryDC
-    memdc;
-    memdc.
-    SelectObject (statBitmap);
+    wxMemoryDC memdc;
+    memdc.SelectObject (statBitmap);
 
 #ifdef __WXMSW__
 
@@ -252,7 +250,7 @@ WxCasFrame::GetStatImage () const
     SelectObject (wxNullBitmap);
 
     wxImage *
-    statImage = new wxImage (statBitmap);
+    statImage = new wxImage (statBitmap.ConvertToImage());
 
     return
       (statImage);

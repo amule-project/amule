@@ -129,5 +129,5 @@ WxCasPrint::DrawPageOne (wxDC * dc)
   dc->SetDeviceOrigin ((wxCoord) posX, (wxCoord) posY);
 
   // Draw image
-  dc->DrawBitmap (statImage->ConvertToBitmap (), 0, 0, FALSE);
+  dc->DrawBitmap (wxBitmap(statImage), 0, 0, FALSE);
 }
