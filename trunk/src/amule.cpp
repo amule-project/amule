@@ -57,12 +57,10 @@
 #include <wx/filefn.h>
 #include <wx/ffile.h>
 #include <wx/file.h>
-#include <wx/filename.h>		// Needed for wxFileName::GetPathSeparator()
 #include <wx/log.h>
 #include <wx/timer.h>
 #include <wx/config.h>
 #include <wx/socket.h>			// Needed for wxSocket
-#include <wx/utils.h>
 #include <wx/ipc.h>
 #include <wx/intl.h>			// Needed for i18n
 #include <wx/mimetype.h>		// For launching default browser
@@ -181,8 +179,7 @@ CamuleApp::CamuleApp()
 
 	m_app_state = APP_STATE_STARTING;
 	
-	ConfigDir = wxGetHomeDir() + wxFileName::GetPathSeparator() + 
-	wxT(".aMule") + wxFileName::GetPathSeparator();
+	ConfigDir = GetConfigDir();
 	
 	IsReady		= false;
 	clientlist	= NULL;
@@ -1858,8 +1855,7 @@ void CamuleApp::SetPublicIP(const uint32 dwIP){
 
 wxString CamuleApp::GetLog(bool reset)
 {
-	ConfigDir = wxGetHomeDir() + wxFileName::GetPathSeparator() + 
-		wxT(".aMule") + wxFileName::GetPathSeparator();
+	ConfigDir = GetConfigDir();
 	wxFile *logfile = new wxFile();
 	logfile->Open(ConfigDir + wxFileName::GetPathSeparator() + wxT("logfile"));
 	if ( !logfile->IsOpened() ) {

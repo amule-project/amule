@@ -754,7 +754,7 @@ class CWebServer {
 	CImageLib m_ImageLib;
 	
 	public:
-		CWebServer(CamulewebApp *webApp);
+		CWebServer(CamulewebApp *webApp, const wxString& templateDir);
 		~CWebServer(void);
 
 		void 	StartServer(void);

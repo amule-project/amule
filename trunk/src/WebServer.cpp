@@ -171,10 +171,10 @@ uint32 GetLowerPrio(int prio, bool autoprio)
 	return lesserpriority;
 }
 
-CWebServer::CWebServer(CamulewebApp *webApp):
+CWebServer::CWebServer(CamulewebApp *webApp, const wxString& templateDir):
 	m_ServersInfo(webApp), m_SharedFilesInfo(webApp), m_DownloadFilesInfo(webApp, &m_ImageLib),
 	m_UploadsInfo(webApp), m_SearchInfo(webApp),
-	m_ImageLib(wxString(char2unicode(getenv("HOME"))) + wxT("/.aMule/webserver/"))
+	m_ImageLib(templateDir)
 {
 	webInterface = webApp;
 	m_mutexChildren = new wxMutex();
@@ -331,12 +331,8 @@ void CWebServer::Send_Discard_V2_Request(CECPacket *request)
 
 //reload template file
 void CWebServer::ReloadTemplates(void) {	
-	wxString sFile;
-	if( webInterface->m_HasTemplate) {
-		sFile = webInterface->m_TemplateFileName;
-	} else {
-		sFile = wxString(char2unicode(getenv("HOME"))) + wxT("/.aMule/aMule.tmpl");
-	}
+	wxString sFile(webInterface->m_TemplateFileName);
+	// Left here just for sanity, if template is removed while running amuleweb
 	if (!wxFileName::FileExists(sFile)) {
 		// no file. do nothing.
 		webInterface->Show(wxString(_("Can't load templates: Can't open file ")) + sFile);

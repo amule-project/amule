@@ -1,18 +1,14 @@
 if WEB
   OPT_WEB = webserver
-  dist_html_DATA = aMule.tmpl
-  htmldir = $(datadir)/amuleweb
 else
 if WEBGUI
   OPT_WEB = webserver
-  dist_html_DATA = aMule.tmpl
-  htmldir = $(datadir)/amuleweb
 endif
 endif
 
 SUBDIRS = utils pixmaps kademlia $(OPT_WEB)
 
-EXTRA_DIST = Makengfile aMule.tmpl aMule.xpm
+EXTRA_DIST = Makengfile aMule.xpm
 
 bin_PROGRAMS = 
 
