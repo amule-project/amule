@@ -458,7 +458,7 @@ public:
 			// In order to let us update labels on slider-changes, we trigger a event
 			if ( m_widget->IsKindOf(CLASSINFO(wxSlider)) ) {
 				wxSlider *slider = (wxSlider *)m_widget;
-#warning Why doesn't this work?
+#warning Why doesnt this work?
 //			wxSlider *slider = wxDynamicCast(m_widget, wxSlider);
 //			if (slider) {
 				int id = m_widget->GetId();
