@@ -18,7 +18,7 @@ alc_CFLAGS = $(WX_CFLAGS)
 alc_CXXFLAGS = $(WX_CXXFLAGS)
 alc_LDADD = $(WX_LIBS)
 
-if HAVE_WXBASE
+if ALCC
 
 bin_PROGRAMS += alcc
 
