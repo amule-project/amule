@@ -3049,7 +3049,7 @@ bool CPartFile::IsASaneFileClientCombination(
 	bool sane_cur_src = 
 		cur_src->IsASaneUpDownClient("IsASaneFileClientCombination", __FILE__, __LINE__);
 	
-	bool sane_forClient;
+	bool sane_forClient = false;
 	if (forClient) {
 		sane_forClient =
 			forClient->IsASaneUpDownClient("IsASaneFileClientCombination", __FILE__, __LINE__);
