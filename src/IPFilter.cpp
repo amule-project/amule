@@ -425,7 +425,7 @@ void CIPFilter::RemoveAllIPs()
 }
 
 /*
- * IP2Test should to be in network order
+ * IP2Test should to be in anti-host order (BE on LE platform, LE on BE platform).
  */
 bool CIPFilter::IsFiltered(uint32 IPTest)
 {
@@ -433,7 +433,7 @@ bool CIPFilter::IsFiltered(uint32 IPTest)
 	if ( iplist.empty() || ( !thePrefs::GetIPFilterOn() ) )
 		return false;
 	
-	IPTest = ntohl(IPTest);
+	IPTest = wxUINT32_SWAP_ALWAYS(IPTest);
 	
 	// Find the first element larger than IPTest
 	IPListMap::iterator it = iplist.upper_bound( IPTest );
