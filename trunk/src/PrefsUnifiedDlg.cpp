@@ -729,14 +729,14 @@ void PrefsUnifiedDlg::OnRateLimitChanged( wxSpinEvent& event )
 	// so that the user can see if his choice is illegal
 
 	// We only do checks if the rate is limited
-	if ( event.GetPosition() != UNLIMITED ) {
+	if ( event.GetPosition() != (int)UNLIMITED ) {
 		wxSpinCtrl* dlrate = CastChild( IDC_MAXDOWN, wxSpinCtrl );
 	
 		if ( event.GetPosition() < 4 ) {
-			if ( ( event.GetPosition() * 3 < dlrate->GetValue() ) || ( dlrate->GetValue() == UNLIMITED ) )
+			if ( ( event.GetPosition() * 3 < dlrate->GetValue() ) || ( dlrate->GetValue() == (int)UNLIMITED ) )
 				dlrate->SetValue( event.GetPosition() * 3 );
 		} else if ( event.GetPosition() < 10  ) {
-			if ( ( event.GetPosition() * 4 < dlrate->GetValue() ) || ( dlrate->GetValue() == UNLIMITED ) )
+			if ( ( event.GetPosition() * 4 < dlrate->GetValue() ) || ( dlrate->GetValue() == (int)UNLIMITED ) )
 				dlrate->SetValue( event.GetPosition() * 4 );
 		}
 	}
