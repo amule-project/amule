@@ -1647,9 +1647,10 @@ wxSizer *PreferencesGeneralTab( wxWindow *parent, bool call_fit, bool set_sizer 
         _("Croatian"), 
         _("Italian (Napoletan)"), 
         _("Custom"), 
-        _("Chinese (Traditional)")
+        _("Chinese (Traditional)"),
+	_("Slovenian")
     };
-    wxChoice *item10 = new wxChoice( parent, IDC_LANGUAGE, wxDefaultPosition, wxSize(100,30), 30, strs10, 0 );
+    wxChoice *item10 = new wxChoice( parent, IDC_LANGUAGE, wxDefaultPosition, wxSize(100,30), 31, strs10, 0 );
     item10->SetToolTip( _("This specifies the language used on controls.") );
     item8->Add( item10, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 

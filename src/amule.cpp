@@ -1225,6 +1225,9 @@ void CamuleApp::Localize_mule()
 			//strcpy(newlang,"zh_TW");
 			language = wxLANGUAGE_CHINESE_TRADITIONAL;
 			break;
+		case 30:
+			language = wxLANGUAGE_SLOVENIAN;
+			break;
 		default:
 			language = wxLANGUAGE_DEFAULT;
 			break;
