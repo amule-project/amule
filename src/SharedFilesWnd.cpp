@@ -32,6 +32,7 @@
 #include "PartFile.h"		// Needed for CPartFile
 #include "SharedFileList.h"	// Needed for CSharedFileList
 #include "amule.h"			// Needed for theApp
+#include "CMD4Hash.h"
 
 // CSharedFilesWnd dialog
 #define GetDlgItem(X) (wxStaticCast(wxWindow::FindWindowById((X)),wxStaticText))
@@ -45,7 +46,6 @@ END_EVENT_TABLE()
 CSharedFilesWnd::CSharedFilesWnd(wxWindow* pParent /*=NULL*/)
 : wxPanel(pParent,CSharedFilesWnd::IDD)
 {
-	memset(shownFileHash,0,sizeof shownFileHash);
 	wxSizer* content=sharedfilesDlg(this,TRUE);
 	content->Show(this,TRUE);
 
@@ -66,7 +66,7 @@ CSharedFilesWnd::~CSharedFilesWnd()
 
 void CSharedFilesWnd::Check4StatUpdate(CKnownFile* file)
 {
-	if (!md4cmp(file->GetFileHash(),shownFileHash)) ShowDetails(file);
+	if (file->GetFileHash() == m_shownFileHash) ShowDetails(file);
 }
 
 void CSharedFilesWnd::OnLvnItemActivateSflist(wxListEvent& evt)
@@ -117,7 +117,7 @@ void CSharedFilesWnd::ShowDetails(CKnownFile* cur_file)
 	sprintf(buffer,"%u",cur_file->statistic.GetAllTimeAccepts());
 	GetDlgItem(IDC_SACCEPTED2)->SetLabel(char2unicode(buffer));
 
-	md4cpy(shownFileHash,cur_file->GetFileHash());
+	m_shownFileHash = cur_file->GetFileHash();
 
 	//wxString title=wxString(_("Statistics"))+" ("+ cur_file->GetFileName() +")";
 	//GetDlgItem(IDC_FSTATIC1)->SetWindowText( title );

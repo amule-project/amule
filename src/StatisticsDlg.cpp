@@ -20,6 +20,9 @@
 // StatisticsDlg.cpp : implementation file
 //
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
 
 #include <cmath>		// Needed for std::exp
 #include <wx/settings.h>

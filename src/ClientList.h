@@ -30,6 +30,7 @@
 
 class CUpDownClient;
 class CClientReqSocket;
+class CMD4Hash;
 
 #define BAN_CLEANUP_TIME	1200000 // 20 min
 
@@ -73,7 +74,6 @@ public:
 	void	DeleteAll();
 	bool	AttachToAlreadyKnown(CUpDownClient** client, CClientReqSocket* sender);
 	CUpDownClient* FindClientByIP(uint32 clientip,uint16 port);
-	CUpDownClient* FindClientByUserHash(unsigned char* clienthash);
 	CUpDownClient* VUGetRandomClient();
 	bool	VerifyUpload(uint32 clientip,uint16 port);
 	bool	ComparePriorUserhash(uint32 dwIP, uint16 nPort, void* pNewHash);

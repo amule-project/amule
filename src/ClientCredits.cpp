@@ -92,7 +92,7 @@ CClientCredits::CClientCredits(CreditStruct* in_credits)
 	m_dwWaitTimeIP = 0;
 }
 
-CClientCredits::CClientCredits(const uchar* key)
+CClientCredits::CClientCredits(const CMD4Hash& key)
 {
 	m_pCredits = new CreditStruct;
 	memset(m_pCredits, 0, sizeof(CreditStruct));
@@ -185,10 +185,8 @@ CClientCreditsList::CClientCreditsList(CPreferences* in_prefs)
 CClientCreditsList::~CClientCreditsList()
 {
 	SaveList();
-	CClientCredits* cur_credit;
-	CCKey tmpkey((uchar*)0);
 	
-	std::map<CCKey, CClientCredits*>::iterator it = m_mapClients.begin();
+	std::map<CMD4Hash, CClientCredits*>::iterator it = m_mapClients.begin();
 	for ( ; it != m_mapClients.end(); ++it ){
 		delete it->second;
 	}
@@ -267,7 +265,7 @@ void CClientCreditsList::LoadList()
 		}
 
 		CClientCredits* newcredits = new CClientCredits(newcstruct);
-		m_mapClients[ CCKey(newcredits->GetKey()) ] = newcredits;
+		m_mapClients[ CMD4Hash(newcredits->GetKey()) ] = newcredits;
 	}
 	file.Close();
 
@@ -302,7 +300,7 @@ void CClientCreditsList::SaveList()
 	BYTE* pBuffer = new BYTE[count*sizeof(CreditStruct)];
 	count = 0;
 	
-	std::map<CCKey, CClientCredits*>::iterator it = m_mapClients.begin();
+	std::map<CMD4Hash, CClientCredits*>::iterator it = m_mapClients.begin();
 	for ( ; it != m_mapClients.end(); ++it )
 	{
 		CClientCredits* cur_credit = it->second;
@@ -327,16 +325,16 @@ void CClientCreditsList::SaveList()
 	delete[] pBuffer;
 }
 
-CClientCredits* CClientCreditsList::GetCredit(const uchar* key)
+CClientCredits* CClientCreditsList::GetCredit(const CMD4Hash& key)
 {
 	CClientCredits* result;
 
-	std::map<CCKey, CClientCredits*>::iterator it = m_mapClients.find( CCKey(key) );
+	std::map<CMD4Hash, CClientCredits*>::iterator it = m_mapClients.find( key );
 
 	
 	if ( it == m_mapClients.end() ){
 		result = new CClientCredits(key);
-		m_mapClients[ CCKey(result->GetKey()) ] = result;
+		m_mapClients[ CMD4Hash(result->GetKey()) ] = result;
 	} else {
 		result = it->second;
 	}

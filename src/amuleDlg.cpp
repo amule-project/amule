@@ -28,6 +28,10 @@
 #include <wx/config.h>
 #include <wx/textfile.h>
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
 #ifndef __SYSTRAY_DISABLED__
 #include "pixmaps/mule_TrayIcon.ico.xpm"
 #include "pixmaps/mule_Tr_yellow.ico.xpm"

@@ -23,6 +23,7 @@
 #include "types.h"		// Needed for uint16 and uint32
 #include "CTypedPtrList.h"	// Needed for CTypedPtrList
 #include "otherfunctions.h" // Needed for unicode2char & char2unicode
+#include "CMD4Hash.h"
 
 class CMemFile;
 
@@ -80,7 +81,7 @@ public:
 	virtual void GetLink(wxString& lnk);
 	const char* GetName() const { return unicode2char(m_name); }
 	uint64 GetSize() const { return atoll(unicode2char(m_size)); }
-	const unsigned char* GetHashKey() const { return m_hash;}
+	const CMD4Hash& GetHashKey() const { return m_hash;}
 	bool HasValidSources() const {return (SourcesList!=NULL); }
 	CMemFile* SourcesList;
 	// Imported from 0.30d
@@ -94,7 +95,7 @@ private:
 	CED2KFileLink& operator=(const CED2KFileLink&); // Not defined
 	wxString m_name;
 	wxString m_size;
-	unsigned char m_hash[16];
+	CMD4Hash m_hash;
 };
 
 class CED2KServerListLink : public CED2KLink {

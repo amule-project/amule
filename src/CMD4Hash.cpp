@@ -62,10 +62,14 @@ CMD4Hash::CMD4Hash()
 }
 
 
-CMD4Hash::CMD4Hash(unsigned char hash[])
+CMD4Hash::CMD4Hash(const unsigned char hash[])
 {
-	wxASSERT(hash);
-	memcpy(m_hash, hash, MD4HASH_LENGTH);
+//	wxASSERT(hash);
+	if ( hash ) {
+		memcpy(m_hash, hash, MD4HASH_LENGTH);
+	} else {
+		Clear();
+	}
 }
 
 

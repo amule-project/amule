@@ -42,9 +42,9 @@
 #endif
 
 #include "types.h"		// Needed for uint16 and uint32
-#include "MapKey.h"		// Needed for CMap and CCKey
 #include <map>
 
+#include "CMD4Hash.h"
 #include "Preferences.h"
 //#include "loggable.h"
 
@@ -82,7 +82,7 @@ class CClientCredits
 	friend class CClientCreditsList;
 public:
 	CClientCredits(CreditStruct* in_credits);
-	CClientCredits(const uchar* key);
+	CClientCredits(const CMD4Hash& key);
 	~CClientCredits();
 
 	const uchar* GetKey()					{return m_pCredits->abyKey;}
@@ -127,7 +127,7 @@ public:
 	uint8	CreateSignature(CClientCredits* pTarget, uchar* pachOutput, uint8 nMaxSize, uint32 ChallengeIP, uint8 byChaIPKind, CryptoPP::RSASSA_PKCS1v15_SHA_Signer* sigkey = NULL);
 	bool	VerifyIdent(CClientCredits* pTarget, uchar* pachSignature, uint8 nInputSize, uint32 dwForIP, uint8 byChaIPKind);	
 
-	CClientCredits* GetCredit(const uchar* key);
+	CClientCredits* GetCredit(const CMD4Hash& key);
 	void	Process();
 	uint8	GetPubKeyLen()					{return m_nMyPublicKeyLen;}
 	byte*	GetPublicKey()					{return m_abyMyPublicKey;}
@@ -141,7 +141,7 @@ protected:
 	bool	Debug_CheckCrypting();
 #endif
 private:
-	std::map<CCKey, CClientCredits*> m_mapClients;
+	std::map<CMD4Hash, CClientCredits*> m_mapClients;
 	CPreferences*	m_pAppPrefs;
 	uint32			m_nLastSaved;
 	CryptoPP::RSASSA_PKCS1v15_SHA_Signer*		m_pSignkey;

@@ -32,13 +32,13 @@ struct UnknownFile_Struct;
 
 class CKnownFileList;
 class CAddFileThread;
-class CCKey;
 class CKnownFile;
 class CServerConnect;
 class CPreferences;
 class CMemFile;
+class CMD4Hash;
 
-typedef std::map<CCKey,CKnownFile*> CKnownFileMap;
+typedef std::map<CMD4Hash,CKnownFile*> CKnownFileMap;
 
 class CSharedFileList{
 	friend class CSharedFilesCtrl;
@@ -52,8 +52,8 @@ public:
 	void	SetOutputCtrl(CSharedFilesCtrl* in_ctrl);
 	void	RemoveFile(CKnownFile* toremove);
 	wxMutex	list_mut;
-	CKnownFile*	GetFileByID(unsigned char* filehash);
-	short	GetFilePriorityByID(unsigned char* filehash);
+	CKnownFile*	GetFileByID(const CMD4Hash& filehash);
+	short	GetFilePriorityByID(const CMD4Hash& filehash);
 	CKnownFile*     GetFileByIndex(int index);
 	CKnownFileList*		filelist;
 	void	CreateOfferedFilePacket(CKnownFile* cur_file,CMemFile* files, bool toserver);

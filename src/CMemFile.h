@@ -106,7 +106,7 @@ public:
 		return ReadRaw(hash_to_read,16);
 	}
 
-	size_t WriteHash16(uchar* hash_to_write) {
+	size_t WriteHash16(const uchar* hash_to_write) {
 		return WriteRaw(hash_to_write,16);
 	}	
 

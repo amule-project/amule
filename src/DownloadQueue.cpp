@@ -298,7 +298,7 @@ void CDownloadQueue::AddFileLinkToDownload(CED2KFileLink* pLink)
 		if (newfile) {
 			newfile->AddClientSources(pLink->SourcesList,1);
 		} else {
-			CPartFile* partfile = GetFileByID((uchar*)pLink->GetHashKey());
+			CPartFile* partfile = GetFileByID(pLink->GetHashKey());
 			if (partfile) {
 				partfile->AddClientSources(pLink->SourcesList,1);
 			}
@@ -306,7 +306,7 @@ void CDownloadQueue::AddFileLinkToDownload(CED2KFileLink* pLink)
 	}
 	if(pLink->HasHostnameSources()) {
 		for (POSITION pos = pLink->m_HostnameSourcesList.GetHeadPosition(); pos != NULL; pLink->m_HostnameSourcesList.GetNext(pos)) {
-			AddToResolve((uchar*)pLink->GetHashKey(), pLink->m_HostnameSourcesList.GetAt(pos)->strHostname, pLink->m_HostnameSourcesList.GetAt(pos)->nPort);
+			AddToResolve(pLink->GetHashKey(), pLink->m_HostnameSourcesList.GetAt(pos)->strHostname, pLink->m_HostnameSourcesList.GetAt(pos)->nPort);
 		}
 	}
 }
@@ -334,16 +334,16 @@ void CDownloadQueue::AddDownload(CPartFile* newfile,bool paused)
 	}
 }
 
-bool CDownloadQueue::IsFileExisting(uchar* fileid)
+bool CDownloadQueue::IsFileExisting(const CMD4Hash& fileid)
 {
-	if (CKnownFile* file = sharedfilelist->GetFileByID((uchar*)fileid)) {
+	if (CKnownFile* file = sharedfilelist->GetFileByID(fileid)) {
 		if (file->IsPartFile()) {
 			theApp.amuledlg->AddLogLine(true, _("You are already trying to download the file %s"), file->GetFileName().GetData());
 		} else {
 			theApp.amuledlg->AddLogLine(true, _("You already have the file %s"), file->GetFileName().GetData());
 		}
 		return true;
-	} else if ((file = this->GetFileByID((uchar*)fileid))) {
+	} else if ((file = this->GetFileByID(fileid))) {
 		theApp.amuledlg->AddLogLine(true, _("You are already trying to download the file %s"), file->GetFileName().GetData());
 		return true;
 	}
@@ -413,9 +413,9 @@ void CDownloadQueue::Process()
 	}
 }
 
-CPartFile* CDownloadQueue::GetFileByID(uchar* filehash){
+CPartFile* CDownloadQueue::GetFileByID(const CMD4Hash& filehash){
 	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
-		if (!md4cmp(filehash,filelist[i]->GetFileHash()))
+		if (filehash == filelist[i]->GetFileHash())
 			return filelist[i];
 	}
 	return NULL;
@@ -1244,7 +1244,7 @@ public:
 
 	wxString ipName;
 	uint16 port;
-	const uchar* fileid;
+	CMD4Hash fileid;
 };
 
 SourcesAsyncDNS::SourcesAsyncDNS() : wxThread(wxTHREAD_DETACHED)
@@ -1285,7 +1285,7 @@ wxThread::ExitCode SourcesAsyncDNS::Entry()
 }
 
 
-void CDownloadQueue::AddToResolve(uchar* fileid, const wxString& pszHostname, uint16 port)
+void CDownloadQueue::AddToResolve(const CMD4Hash& fileid, const wxString& pszHostname, uint16 port)
 {
 	bool bResolving = !m_toresolve.empty();
 
@@ -1294,7 +1294,7 @@ void CDownloadQueue::AddToResolve(uchar* fileid, const wxString& pszHostname, ui
 		return;
 	}
 	Hostname_Entry* entry = new Hostname_Entry;
-	md4cpy(entry->fileid, fileid);
+	entry->fileid = fileid;
 	entry->strHostname = pszHostname;
 	entry->port = port;
 	m_toresolve.push_back(entry);

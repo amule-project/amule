@@ -78,17 +78,12 @@ void CClientDetailDialog::OnBnClose(wxCommandEvent& evt)
 #define GetDlgItem(a,b) wxStaticCast(FindWindowById((a)),b)
 
 bool CClientDetailDialog::OnInitDialog() {
-	char buffer[100];
 	
 	if (!m_client->GetUserName().IsEmpty()) {
 		GetDlgItem(ID_DNAME,wxStaticText)->SetLabel(m_client->GetUserName());
 
-		buffer[0] = 0;
-		wxASSERT(m_client->GetUserHash()); // if we have client name we have userhash
-		for (uint16 i = 0;i != 16;i++) {
-			sprintf(buffer,"%s%02X",buffer,m_client->GetUserHash()[i]);
-		}
-		GetDlgItem(ID_DHASH,wxStaticText)->SetLabel(char2unicode(buffer));
+		wxASSERT(!m_client->GetUserHash().IsEmpty()); // if we have client name we have userhash
+		GetDlgItem(ID_DHASH,wxStaticText)->SetLabel(m_client->GetUserHash().Encode());
 
 		GetDlgItem(ID_DRATING,wxStaticText)->SetLabel(wxString::Format(wxT("%.1f"),(float)m_client->GetScore(false,m_client->IsDownloading(),true)));
 	} else {

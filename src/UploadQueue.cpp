@@ -110,7 +110,7 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd){
 			
 			suspendlist::iterator it = std::find( suspended_uploads_list.begin(), 
 			                                      suspended_uploads_list.end(),
-			                                      CMD4Hash(cur_client->GetUploadFileID()) );
+			                                      cur_client->GetUploadFileID() );
 			if (cur_client->IsBanned() || it != suspended_uploads_list.end() ) { // Banned client or suspended upload ?
 			        continue;
 			} 
@@ -145,7 +145,7 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd){
 	
 		suspendlist::iterator it = std::find( suspended_uploads_list.begin(), 
 		                                      suspended_uploads_list.end(),
-		                                      CMD4Hash(directadd->GetUploadFileID()) );		
+		                                      directadd->GetUploadFileID() );		
 		if ( it != suspended_uploads_list.end() ) {
 			return;
 		} else {
@@ -183,7 +183,7 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd){
 				type = _("suspicious name change");
 			}
 		}
-		AddLogLineM(false, newclient->GetUserName() + wxT(" [") + newclient->FullUserIP + wxString::Format(_(":%i] using "),newclient->m_nUserPort) + newclient->m_clientVerString + _(" removed : ") + type);		
+		AddLogLineM(false, newclient->GetUserName() + wxT(" [") + newclient->m_FullUserIP + wxString::Format(_(":%i] using "),newclient->m_nUserPort) + newclient->m_clientVerString + _(" removed : ") + type);		
 		// remove client !
 		theApp.uploadqueue->RemoveFromUploadQueue(newclient,true);
 		return;
@@ -259,7 +259,7 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd){
 	uploadinglist.AddTail(newclient);
 	
 	// statistic
-	CKnownFile* reqfile = theApp.sharedfiles->GetFileByID((uchar*)newclient->GetUploadFileID());
+	CKnownFile* reqfile = theApp.sharedfiles->GetFileByID(newclient->GetUploadFileID());
 	if (reqfile) {
 		reqfile->statistic.AddAccepted();
 	}
@@ -611,7 +611,7 @@ void CUploadQueue::SuspendUpload( const CMD4Hash& filehash )
 	while(pos) { //while we have a valid position
 		CUpDownClient *potential = uploadinglist.GetNext(pos);
 		//check if the client is uploading the file we need to suspend
-		if(md4cmp(potential->GetUploadFileID(), filehash) == 0) {
+		if(potential->GetUploadFileID() == filehash) {
 			//remove the unlucky client from the upload queue and add to the waiting queue
 			RemoveFromUploadQueue(potential, 1);
 			printf("%s: Removed user '%s'\n", unicode2char(base16hash) , unicode2char(potential->GetUserName()));
@@ -673,14 +673,14 @@ CUpDownClient* CUploadQueue::GetNextClient(CUpDownClient* lastclient)
 	}
 }
 
-void CUploadQueue::FindSourcesForFileById(CTypedPtrList<CPtrList, CUpDownClient*>* srclist, uchar* filehash)
+void CUploadQueue::FindSourcesForFileById(CTypedPtrList<CPtrList, CUpDownClient*>* srclist, const CMD4Hash& filehash)
 {
 	POSITION pos;
 	
 	pos = uploadinglist.GetHeadPosition();
 	while(pos) {
 		CUpDownClient *potential = uploadinglist.GetNext(pos);
-		if(md4cmp(potential->GetUploadFileID(), filehash) == 0) {
+		if( potential->GetUploadFileID() == filehash) {
 			srclist->AddTail(potential);
 		}
 	}
@@ -688,7 +688,7 @@ void CUploadQueue::FindSourcesForFileById(CTypedPtrList<CPtrList, CUpDownClient*
 	pos = waitinglist.GetHeadPosition();
 	while(pos) {
 		CUpDownClient *potential = waitinglist.GetNext(pos);
-		if(md4cmp(potential->GetUploadFileID(), filehash) == 0) {
+		if( potential->GetUploadFileID() == filehash ) {
 			srclist->AddTail(potential);
 		}
 	}

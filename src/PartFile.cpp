@@ -81,8 +81,8 @@ CPartFile::CPartFile()
 CPartFile::CPartFile(CSearchFile* searchresult)
 {
 	Init();
-	md4cpy(m_abyFileHash, searchresult->GetFileHash());
-	for (unsigned int i = 0; i < searchresult->taglist.size(); i++){
+	m_abyFileHash = searchresult->GetFileHash();
+	for (unsigned int i = 0; i < searchresult->taglist.size();i++){
 		const CTag* pTag = searchresult->taglist[i];
 		switch (pTag->tag.specialtag){
 			case FT_FILENAME:{
@@ -199,7 +199,7 @@ CPartFile::InitializeFromLink(CED2KFileLink* fileLink)
 	try {
 		m_strFileName = (char2unicode(fileLink->GetName()));
 		SetFileSize(fileLink->GetSize());
-		md4cpy(m_abyFileHash, fileLink->GetHashKey());
+		m_abyFileHash = fileLink->GetHashKey();
 		if (!theApp.downloadqueue->IsFileExisting(m_abyFileHash)) {
 			CreatePartFile();
 		} else {
@@ -455,7 +455,7 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool get
 				metFile.Seek(2, wxFromStart);
 				LoadDateFromFile(&metFile);
 					metFile.Read(&gethash, 16);
-				md4cpy(m_abyFileHash, gethash);
+				m_abyFileHash = gethash;
 			}
 
 		} else {
@@ -604,7 +604,7 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool get
 				hashlist.Add(cur_hash);
 			}
 
-			uchar* checkhash= new uchar[16];
+			CMD4Hash checkhash;
 			if (!hashlist.IsEmpty()){
 				uchar* buffer = new uchar[hashlist.GetCount()*16];
 				for (size_t i = 0; i < hashlist.GetCount(); i++)
@@ -613,7 +613,7 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool get
 				delete[] buffer;
 			}
 			bool flag=false;
-			if (!md4cmp(m_abyFileHash, checkhash))
+			if (m_abyFileHash == checkhash)
 				flag=true;
 			else{
 				/*
@@ -623,7 +623,6 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool get
 				hashlist.Clear();
 				flag=false;
 			}
-			delete[] checkhash;
 		}			
 			
 		metFile.Close();
@@ -1064,7 +1063,7 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
 	bool errorfound = false;
 	if (GetED2KPartHashCount() == 0){
 		if (IsComplete(0, m_nFileSize-1)){
-			if (md4cmp(result->GetFileHash(), GetFileHash())){
+			if (result->GetFileHash() != GetFileHash()){
 				theApp.amuledlg->AddLogLine(false, _("Found corrupted part (%i) in 0 parts file %s - FileResultHash |%s| FileHash |%s|"), 1, m_strFileName.c_str(),EncodeBase16(result->GetFileHash(), 16).c_str(), EncodeBase16(GetFileHash(), 16).c_str());
 				AddGap(0, m_nFileSize-1);
 				errorfound = true;
@@ -1087,7 +1086,7 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
 				}
 			}
 			*/
-			if (!( i < result->GetHashCount() && !md4cmp(result->GetPartHash(i),this->GetPartHash(i)))){
+			if (!( i < result->GetHashCount() && (result->GetPartHash(i) == this->GetPartHash(i)))){
 				if (IsComplete(i*PARTSIZE,((i+1)*PARTSIZE)-1)) {
 					CMD4Hash wronghash;
 					if ( i < result->GetHashCount() )
@@ -2663,7 +2662,7 @@ bool CPartFile::HashSinglePart(uint16 partnumber)
 		this->hashsetneeded = true;
 		return true;		
 	} else {
-		uchar hashresult[16];
+		CMD4Hash hashresult;
 		m_hpartfile.Seek((off_t)PARTSIZE*partnumber,wxFromStart);
 		uint32 length = PARTSIZE;
 		if (((ULONGLONG)PARTSIZE*(partnumber+1)) > (ULONGLONG)m_hpartfile.GetLength()){
@@ -2673,11 +2672,9 @@ bool CPartFile::HashSinglePart(uint16 partnumber)
 		CreateHashFromFile(&m_hpartfile,length,hashresult);
 
 		if (GetPartCount() > 1) {
-			if (md4cmp(hashresult,GetPartHash(partnumber))) {
-				printf("HashResult:\n");
-				DumpMem(hashresult,16);
-				printf("GetPartHash(%i) :\n",partnumber);
-				DumpMem(GetPartHash(partnumber),16);		
+			if (hashresult != GetPartHash(partnumber)) {
+				printf("HashResult: %s\n", unicode2char(hashresult.Encode()));
+				printf("GetPartHash(%i): %s\n",partnumber, unicode2char(GetPartHash(partnumber).Encode()));
 				/* To output to stdout - we should output to file
 				m_hpartfile.Seek((off_t)PARTSIZE*partnumber,wxFromStart);
 				uint32 length = PARTSIZE;
@@ -2695,7 +2692,7 @@ bool CPartFile::HashSinglePart(uint16 partnumber)
 				return true;
 			}
 		} else {
-			if (md4cmp(hashresult,m_abyFileHash)) {
+			if (hashresult != m_abyFileHash) {
 				return false;
 			} else {
 				return true;
@@ -3060,6 +3057,16 @@ Packet*	CPartFile::CreateSrcInfoPacket(CUpDownClient* forClient)
 					cur_src->m_nPartCount != forClient->m_nPartCount ) {
 #ifdef __DEBUG__
 					printf("\nCPartFile->GetPartStatus() = %d, cur_src->m_nPartCount = %d,  forClient->m_nPartCount = %d\n", n, cur_src->m_nPartCount, forClient->m_nPartCount);
+					if ( ( cur_src->reqfile->GetFileHash() != forClient->reqfile->GetFileHash() ) || ( cur_src->reqfile->GetFileHash() != GetFileHash() ) ) {
+						printf("Mismatching hashes!\n");
+						printf("\tthis: %s\n", unicode2char(GetFileHash().Encode().c_str()));
+						printf("\tcur_src: %s\n", unicode2char(cur_src->reqfile->GetFileHash().Encode().c_str()));
+						printf("\tfor_clt: %s\n", unicode2char(forClient->reqfile->GetFileHash().Encode().c_str()));
+						printf("Filenames are: \n");
+						printf("\tthis: %s\n", unicode2char(GetFileName().c_str()));
+						printf("\tcur_src: %s\n", unicode2char(cur_src->reqfile->GetFileName().c_str()));
+						printf("\tfor_clt: %s\n", unicode2char(forClient->reqfile->GetFileName().c_str()));
+					}
 #endif // __DEBUG__
 					continue;
 				}
@@ -3087,6 +3094,15 @@ Packet*	CPartFile::CreateSrcInfoPacket(CUpDownClient* forClient)
 				if( n != cur_src->m_nPartCount ) {
 #ifdef __DEBUG__
 					printf("\nCPartFile->GetPartStatus() = %d, cur_src->m_nPartCount = %d\n", n, cur_src->m_nPartCount);
+
+					if ( ( cur_src->reqfile->GetFileHash() != cur_src->reqfile->GetFileHash() ) ) {
+						printf("Mismatching hashes!\n");
+						printf("\tthis: %s\n", unicode2char(GetFileHash().Encode().c_str()));
+						printf("\tcur_src: %s\n", unicode2char(cur_src->reqfile->GetFileHash().Encode().c_str()));
+						printf("Filenames are: \n");
+						printf("\tthis: %s\n", unicode2char(GetFileName().c_str()));
+						printf("\tcur_src: %s\n", unicode2char(cur_src->reqfile->GetFileName().c_str()));
+					}
 #endif // __DEBUG__
 					continue;
 				}

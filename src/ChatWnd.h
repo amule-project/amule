@@ -28,6 +28,7 @@ class CFriend;
 class CUpDownClient;
 class CChatSelector;
 class CFriendListCtrl;
+class CMD4Hash;
 
 class CChatWnd : public wxPanel 
 {
@@ -39,9 +40,9 @@ public:
 
 	void StartSession(CUpDownClient* client);
 
-	CFriend*	FindFriend(const uchar* achUserHash, uint32 dwIP, uint16 nPort);	
+	CFriend*	FindFriend(const CMD4Hash& userhash, uint32 dwIP, uint16 nPort);	
 	void		AddFriend(CUpDownClient* toadd);
-	void		AddFriend(unsigned char userhash[16], uint32 lastSeen, uint32 lastUsedIP, uint32 lastUsedPort, uint32 lastChatted, wxString name, uint32 hasHash);
+	void		AddFriend(const CMD4Hash& userhash, uint32 lastSeen, uint32 lastUsedIP, uint32 lastUsedPort, uint32 lastChatted, wxString name, uint32 hasHash);
 	void		RefreshFriend(CFriend* toupdate);
 	
 	void		ProcessMessage(CUpDownClient* sender, char* message);

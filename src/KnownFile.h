@@ -68,12 +68,12 @@ public:
 	void	AddRequest();
 	void	AddAccepted();
 	void    AddTransferred(uint64 bytes);
-	uint16	GetRequests()				{return requested;}
-	uint16	GetAccepts()				{return accepted;}
-	uint64  GetTransfered()				{return transfered;}
-	uint16	GetAllTimeRequests()		{return alltimerequested;}
-	uint16	GetAllTimeAccepts()			{return alltimeaccepted;}
-	uint64	GetAllTimeTransfered()		{return alltimetransferred;}
+	uint16	GetRequests() const			{return requested;}
+	uint16	GetAccepts() const			{return accepted;}
+	uint64  GetTransfered() const			{return transfered;}
+	uint16	GetAllTimeRequests() const	{return alltimerequested;}
+	uint16	GetAllTimeAccepts() const		{return alltimeaccepted;}
+	uint64	GetAllTimeTransfered() const	{return alltimetransferred;}
 	CKnownFile* fileParent;
 	
 private:
@@ -100,9 +100,9 @@ public:
 	CAbstractFile();
 	virtual ~CAbstractFile() {};
 
-	const wxString&	GetFileName()			{return m_strFileName;}
-	CMD4Hash&	GetFileHash()			{return m_abyFileHash;}
-	uint32	GetFileSize()			{return m_nFileSize;}
+	const wxString&	GetFileName() const		{return m_strFileName;}
+	const CMD4Hash&	GetFileHash() const	{return m_abyFileHash;}
+	uint32	GetFileSize() const			{return m_nFileSize;}
 	void	SetFileSize(uint32 nFileSize) { m_nFileSize = nFileSize; }
 	void	SetFileName(const wxString& strmakeFilename);
 	

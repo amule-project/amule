@@ -78,7 +78,7 @@ static void UngetSearchListControl(CSearchListCtrl* ctrl)
 	
 CSearchFile::CSearchFile(CSearchFile* copyfrom)
 {
-	md4cpy(m_abyFileHash, copyfrom->GetFileHash());
+	m_abyFileHash = copyfrom->GetFileHash();
 	SetFileSize(copyfrom->GetIntTagValue(FT_FILESIZE));
 	SetFileName(char2unicode(copyfrom->GetStrTagValue(FT_FILENAME)));
 	m_nClientServerIP = copyfrom->GetClientServerIP();
@@ -149,10 +149,10 @@ CSearchFile::CSearchFile(const CMemFile* in_data, uint32 nSearchID, uint32 nServ
 	m_bPreviewPossible = false;
 }
 
-CSearchFile::CSearchFile(uint32 nSearchID, const uchar* pucFileHash, uint32 uFileSize, LPCTSTR pszFileName, int iFileType, int iAvailability)
+CSearchFile::CSearchFile(uint32 nSearchID, const CMD4Hash& pucFileHash, uint32 uFileSize, LPCTSTR pszFileName, int iFileType, int iAvailability)
 {
 	m_nSearchID = nSearchID;
-	md4cpy(m_abyFileHash, pucFileHash);
+	m_abyFileHash = pucFileHash;
 
 	taglist.push_back(new CTag(FT_FILESIZE, uFileSize));
 	taglist.push_back(new CTag(FT_FILENAME, pszFileName));
@@ -444,7 +444,7 @@ bool CSearchList::AddToList(CSearchFile* toadd, bool bClientResponse){
 	CSearchListCtrl* outputwnd = GetSearchListControl(toadd->GetSearchID());
 	for (POSITION pos = list.GetHeadPosition(); pos != NULL; list.GetNext(pos)){
 		CSearchFile* cur_file = list.GetAt(pos);
-		if ( (!md4cmp(toadd->GetFileHash(),cur_file->GetFileHash())) && cur_file->GetSearchID() ==  toadd->GetSearchID()){
+		if ( (toadd->GetFileHash() == cur_file->GetFileHash()) && cur_file->GetSearchID() ==  toadd->GetSearchID()){
 			cur_file->AddSources(toadd->GetIntTagValue(FT_SOURCES),toadd->GetIntTagValue(FT_COMPLETE_SOURCES));
 			if (outputwnd) {
 				outputwnd->UpdateSources(cur_file);
@@ -559,10 +559,10 @@ wxString CSearchList::GetWebList(const wxString& linePattern,int sortby,bool asc
 	return buffer;
 }
 
-void CSearchList::AddFileToDownloadByHash(const uchar* hash,uint8 cat) {
+void CSearchList::AddFileToDownloadByHash(const CMD4Hash& hash,uint8 cat) {
 	for (POSITION pos = list.GetHeadPosition(); pos !=0; ){
 		CSearchFile* sf=list.GetNext(pos);//->GetSearchID() == nSearchID ){
-		if (!md4cmp(hash,sf->GetFileHash())) {
+		if (hash == sf->GetFileHash()) {
 			//theApp.downloadqueue->AddSearchToDownload(sf,2,cat);
 			theApp.downloadqueue->AddSearchToDownload(sf);
 			break;

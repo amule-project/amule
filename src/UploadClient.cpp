@@ -85,7 +85,7 @@ void CUpDownClient::DrawUpStatusBar(wxMemoryDC* dc, wxRect rect, bool onlygreyre
 uint32 CUpDownClient::GetScore(bool sysvalue, bool isdownloading, bool onlybasevalue)
 {
 	//TODO: complete this (friends, uploadspeed, amuleuser etc etc)
-	if (Username.IsEmpty()) {
+	if (m_Username.IsEmpty()) {
 		return 0;
 	}
 
@@ -93,7 +93,7 @@ uint32 CUpDownClient::GetScore(bool sysvalue, bool isdownloading, bool onlybasev
 		return 0;
 	}
 
-	CKnownFile* currequpfile = theApp.sharedfiles->GetFileByID(requpfileid);
+	CKnownFile* currequpfile = theApp.sharedfiles->GetFileByID(m_requpfileid);
 	if(!currequpfile) {
 		return 0;
 	}
@@ -361,7 +361,7 @@ void CUpDownClient::CreateStandartPackets(byte* data,uint32 togo, Requested_Bloc
 		togo -= nPacketSize;
 
 		Packet* packet = new Packet(OP_SENDINGPART,nPacketSize+24);
-		packet->CopyToDataBuffer(0, (const char *)GetUploadFileID(), 16);
+		packet->CopyToDataBuffer(0, (const char *)GetUploadFileID().GetHash(), 16);
 		uint32 statpos = ENDIAN_SWAP_32((currentblock->EndOffset - togo) - nPacketSize);	
 		packet->CopyToDataBuffer(16, (const char *)&statpos, 4);
 		uint32 endpos = ENDIAN_SWAP_32((currentblock->EndOffset - togo));	
@@ -400,7 +400,7 @@ void CUpDownClient::CreatePackedPackets(byte* data,uint32 togo, Requested_Block_
 		togo -= nPacketSize;
 
 		Packet* packet = new Packet(OP_COMPRESSEDPART,nPacketSize+24,OP_EMULEPROT);
-		packet->CopyToDataBuffer(0, (const char *)GetUploadFileID(), 16);
+		packet->CopyToDataBuffer(0, (const char *)GetUploadFileID().GetHash(), 16);
 		uint32 statpos = ENDIAN_SWAP_32(currentblock->StartOffset);
 		packet->CopyToDataBuffer(16, (const char *)&statpos, 4);
 		packet->CopyToDataBuffer(20, (const char *)&endiannewsize, 4);
@@ -498,8 +498,8 @@ void CUpDownClient::SetUploadFileID(CKnownFile* newreqfile)
 	//But we always check the download list first because that person may have decided to redownload that file.
 	//Which will replace the object in the knownfilelist if completed.
 	
-	if ((oldreqfile = theApp.downloadqueue->GetFileByID(requpfileid)) == NULL ) {
-		oldreqfile = theApp.knownfiles->FindKnownFileByID(requpfileid);
+	if ((oldreqfile = theApp.downloadqueue->GetFileByID(m_requpfileid)) == NULL ) {
+		oldreqfile = theApp.knownfiles->FindKnownFileByID(m_requpfileid);
 	}
 
 	if (newreqfile == oldreqfile) {
@@ -509,10 +509,10 @@ void CUpDownClient::SetUploadFileID(CKnownFile* newreqfile)
 	if (newreqfile){
 		newreqfile->AddQueuedCount();
 		newreqfile->AddUploadingClient(this);
-		md4cpy(requpfileid, newreqfile->GetFileHash());
+		m_requpfileid = newreqfile->GetFileHash();
 	}
 	else {
-		md4clr(requpfileid);
+		m_requpfileid.Clear();
 	}
 
 	if (oldreqfile) {
@@ -635,9 +635,9 @@ void CUpDownClient::FlushSendBlocks(){ // call this when you stop upload, or the
 	}
 }
 
-void CUpDownClient::SendHashsetPacket(const char *forfileid) {
+void CUpDownClient::SendHashsetPacket(const CMD4Hash& forfileid) {
 	//printf("entered in : CUpDownClient::SendHashsetPacket\n");
-	CKnownFile* file = theApp.sharedfiles->GetFileByID((uchar*)forfileid);
+	CKnownFile* file = theApp.sharedfiles->GetFileByID(forfileid);
 	if (!file) {
 		theApp.amuledlg->AddLogLine(false, _("requested file not found"));
 		return;
@@ -726,7 +726,7 @@ void CUpDownClient::SendCommentInfo(CKnownFile *file)
 	socket->SendPacket(packet,true);
 }
 
-void  CUpDownClient::AddRequestCount(uchar* fileid){
+void  CUpDownClient::AddRequestCount(const CMD4Hash& fileid){
 	//printf("entered in : CUpDownClient::AddRequestCount\n");
 	for (POSITION pos = m_RequestedFiles_list.GetHeadPosition();pos != 0;m_RequestedFiles_list.GetNext(pos)){
 		Requested_File_Struct* cur_struct = m_RequestedFiles_list.GetAt(pos);

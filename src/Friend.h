@@ -23,6 +23,7 @@
 #include <wx/string.h>		// Needed for wxString
 
 #include "types.h"		// Needed for uint32
+#include "CMD4Hash.h"
 
 class CUpDownClient;
 class CFile;
@@ -35,8 +36,9 @@ public:
 	~CFriend() {};
 	
 	CFriend(CUpDownClient* client);
-	CFriend( unsigned char t_m_abyUserhash[16], uint32 tm_dwLastSeen, uint32 tm_dwLastUsedIP, uint32 tm_nLastUsedPort, uint32 tm_dwLastChatted, wxString tm_strName, uint32 tm_dwHasHash);
-	unsigned char	m_abyUserhash[16];
+	CFriend( const CMD4Hash& userhash, uint32 tm_dwLastSeen, uint32 tm_dwLastUsedIP, uint32 tm_nLastUsedPort, uint32 tm_dwLastChatted, wxString tm_strName, uint32 tm_dwHasHash);
+	
+	CMD4Hash	m_Userhash;
 	uint32	m_dwLastSeen;
 	uint32	m_dwLastUsedIP;
 	uint16	m_nLastUsedPort;
@@ -46,7 +48,6 @@ public:
 
 	CUpDownClient* m_LinkedClient;
 
-	static const char sm_abyNullHash[16];
 	void	LoadFromFile(CFile* file);
 	void	WriteToFile(CFile* file);
 };

@@ -29,13 +29,14 @@
 #include <vector>
 
 class CSafeMemFile;
+class CMD4Hash;
 
 class CSearchFile : public CAbstractFile {
 	friend class CPartFile;
 public:
 	//CSearchFile() {};
 	CSearchFile(const CMemFile* in_data, uint32 nSearchID, uint32 nServerIP=0, uint16 nServerPort=0, LPCTSTR pszDirectory = NULL);
-	CSearchFile(uint32 nSearchID, const uchar* pucFileHash, uint32 uFileSize, LPCTSTR pszFileName, int iFileType, int iAvailability);
+	CSearchFile(uint32 nSearchID, const CMD4Hash& pucFileHash, uint32 uFileSize, LPCTSTR pszFileName, int iFileType, int iAvailability);
 	CSearchFile(CSearchFile* copyfrom);
 	//CSearchFile(CFile* in_data, uint32 nSearchID);
 	~CSearchFile();
@@ -132,8 +133,7 @@ public:
 	void	RemoveResults( CSearchFile* todel );
 	void	ShowResults(uint32 nSearchID);
 	wxString GetWebList(const wxString& linePattern,int sortby,bool asc) const;
-	void	AddFileToDownloadByHash(const uchar* hash)		{AddFileToDownloadByHash(hash,0);}
-	void	AddFileToDownloadByHash(const uchar* hash, uint8 cat);
+	void	AddFileToDownloadByHash(const CMD4Hash& hash, uint8 cat = 0);
 	uint16	GetFoundFiles(uint32 searchID);
 
 private:

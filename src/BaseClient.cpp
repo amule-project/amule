@@ -106,7 +106,7 @@ CUpDownClient::CUpDownClient(uint16 in_port, uint32 in_userid,uint32 in_serverip
 	m_nUserPort = in_port;
 	sourcesslot=m_nUserID%SOURCESSLOTS;
 	if (!HasLowID()) {
-		FullUserIP.Printf(wxT("%i.%i.%i.%i"),(uint8)m_nUserID,(uint8)(m_nUserID>>8),(uint8)(m_nUserID>>16),(uint8)(m_nUserID>>24));
+		m_FullUserIP.Printf(wxT("%i.%i.%i.%i"),(uint8)m_nUserID,(uint8)(m_nUserID>>8),(uint8)(m_nUserID>>16),(uint8)(m_nUserID>>24));
 	}
 	m_dwServerIP = in_serverip;
 	m_nServerPort = in_serverport;
@@ -119,7 +119,6 @@ void CUpDownClient::Init()
 
 	credits = 0;
 	//memset(reqfileid, 0, sizeof reqfileid);
-	memset(requpfileid, 0, sizeof requpfileid);
 	// m_nAvDownDatarate = 0;  // unused
 	m_byChatstate = 0;
 	m_cShowDR = 0;
@@ -135,7 +134,6 @@ void CUpDownClient::Init()
 	kBpsUp = kBpsDown = 0.0;
 	fDownAvgFilter = 1.0;
 	bytesReceivedCycle = 0;
-	Username = wxEmptyString;
 	m_dwUserIP = 0;
 	m_nUserID = 0;
 	m_nServerPort = 0;
@@ -188,14 +186,13 @@ void CUpDownClient::Init()
 	m_clientSoft=SO_UNKNOWN;
 	
 	m_bRemoteQueueFull = false;
-	md4clr( m_achUserHash );
 	m_HasValidHash = false;
 	SetWaitStartTime();
 	if (socket) {
 		wxIPV4address address;
 		socket->GetPeer(address);
-		FullUserIP = address.IPAddress();
-		m_dwUserIP = inet_addr(unicode2char(FullUserIP));
+		m_FullUserIP = address.IPAddress();
+		m_dwUserIP = inet_addr(unicode2char(m_FullUserIP));
 	}
 	sourcesslot=0;
 	m_fHashsetRequesting = 0;
@@ -362,7 +359,7 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 	
 	try {	
 	
-		data.ReadHash16(m_achUserHash);
+		data.ReadHash16(m_UserHash);
 		ValidateHash();
 		data.Read(m_nUserID);
 		uint16 nUserPort = 0;
@@ -374,7 +371,7 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 			switch(temptag.tag.specialtag){
 				case CT_NAME:
 					if( temptag.tag.stringvalue ) {
-						Username = char2unicode(temptag.tag.stringvalue);
+						m_Username = char2unicode(temptag.tag.stringvalue);
 					}
 					break;
 				case CT_VERSION:
@@ -502,8 +499,8 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 	if (socket) {
 		wxIPV4address address;
 		socket->GetPeer(address);
-		FullUserIP = address.IPAddress();
-		m_dwUserIP = inet_addr(unicode2char(FullUserIP));
+		m_FullUserIP = address.IPAddress();
+		m_dwUserIP = inet_addr(unicode2char(m_FullUserIP));
 	} else {
 		printf("Huh, socket failure. Avoided crash this time.\n");
 	}
@@ -523,7 +520,7 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 	}
 
 	// get client credits
-	CClientCredits* pFoundCredits = theApp.clientcredits->GetCredit(m_achUserHash);
+	CClientCredits* pFoundCredits = theApp.clientcredits->GetCredit(m_UserHash);
 	if (credits == NULL){
 		credits = pFoundCredits;
 		if (!theApp.clientlist->ComparePriorUserhash(m_dwUserIP, m_nUserPort, pFoundCredits)){
@@ -537,7 +534,7 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 		Ban();
 	}
 
-	if ((m_Friend = theApp.amuledlg->chatwnd->FindFriend(m_achUserHash, m_dwUserIP, m_nUserPort)) != NULL){
+	if ((m_Friend = theApp.amuledlg->chatwnd->FindFriend(m_UserHash, m_dwUserIP, m_nUserPort)) != NULL){
 		// Link the friend to that client
 		if (m_Friend->m_LinkedClient){
 			if (m_Friend->m_LinkedClient != this){
@@ -552,9 +549,9 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 		} else {
 			m_Friend->m_LinkedClient = this;
 		}
-		md4cpy(m_Friend->m_abyUserhash,GetUserHash());
-		m_Friend->m_dwHasHash = md4cmp(m_Friend->m_abyUserhash, CFriend::sm_abyNullHash) ? 1 : 0;
-		m_Friend->m_strName = Username;
+		m_Friend->m_Userhash = GetUserHash();
+		m_Friend->m_dwHasHash = !m_Friend->m_Userhash.IsEmpty();
+		m_Friend->m_strName = m_Username;
 		m_Friend->m_dwLastUsedIP = m_dwUserIP;
 		m_Friend->m_nLastUsedPort = m_nUserPort;
 		m_Friend->m_dwLastSeen = time(NULL);
@@ -569,7 +566,7 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 	// We want to educate Users of major comercial GPL breaking mods by telling them about the effects
 	// check for known advertising in usernames
 	// the primary aim is not to technical block those but to make users use a GPL-conform version
-	wxString strBuffer = Username;
+	wxString strBuffer = m_Username;
 	strBuffer.MakeUpper();
 	strBuffer.Remove(' ');
 	if (strBuffer.Find(wxT("EMULE-CLIENT")) != -1 || strBuffer.Find(wxT("POWERMULE")) != -1){
@@ -1302,11 +1299,11 @@ void CUpDownClient::ConnectionEstablished()
 
 int CUpDownClient::GetHashType() const
 {
-	if (m_achUserHash[5] == 13 && m_achUserHash[14] == 110)
+	if (m_UserHash[5] == 13 && m_UserHash[14] == 110)
 		return SO_OLDEMULE;
-	else if (m_achUserHash[5] == 14 && m_achUserHash[14] == 111)
+	else if (m_UserHash[5] == 14 && m_UserHash[14] == 111)
 		return SO_EMULE;
- 	else if (m_achUserHash[5] == 'M' && m_achUserHash[14] == 'L')
+ 	else if (m_UserHash[5] == 'M' && m_UserHash[14] == 'L')
 		return SO_MLDONKEY;
 	else
 		return SO_UNKNOWN;
@@ -1315,7 +1312,7 @@ int CUpDownClient::GetHashType() const
 void CUpDownClient::ReGetClientSoft()
 {
 
-	if (Username.IsEmpty()) {
+	if (m_Username.IsEmpty()) {
 		m_clientSoft=SO_UNKNOWN;
 		m_clientVerString = _("Unknown");
 		m_SoftLen = m_clientVerString.Length();
@@ -1906,10 +1903,10 @@ wxString CUpDownClient::GetClientFullInfo() {
 	
 	wxString FullVerName;
 	FullVerName = wxT("Client ");
-	if (Username.IsEmpty()) {
+	if (m_Username.IsEmpty()) {
 		FullVerName += wxT("(Unknown)");
 	} else {
-		FullVerName += Username;
+		FullVerName += m_Username;
 	}
 	FullVerName += wxT(" on IP ") + GetFullIP() + wxString::Format(wxT(" port %u using "),GetUserPort()) + m_clientVerString;
 	if (!GetClientModString().IsEmpty()) {		

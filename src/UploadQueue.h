@@ -72,7 +72,7 @@ waitinglist.GetHeadPosition();}
 	uint32	GetSuccessfullUpCount()					{return successfullupcount;}
 	uint32	GetFailedUpCount()						{return failedupcount;}
 	uint32	GetAverageUpTime();
-	void	FindSourcesForFileById(CTypedPtrList<CPtrList, CUpDownClient*>* srclist, unsigned char* filehash);
+	void	FindSourcesForFileById(CTypedPtrList<CPtrList, CUpDownClient*>* srclist, const CMD4Hash& filehash);
 	void	AddUpDataOverheadSourceExchange(uint32 data)	{ m_nUpDataRateMSOverhead += data;
 															  m_nUpDataOverheadSourceExchange += data;
 															  m_nUpDataOverheadSourceExchangePackets++;}

@@ -289,9 +289,9 @@ tray_menu (GtkWidget *widget, GdkEventButton *event, gpointer data)
 	gtk_container_add (GTK_CONTAINER (info_menu), info_item);
 
 
-	if (theApp.glob_prefs->GetUserHash()){
+	if (!theApp.glob_prefs->GetUserHash().IsEmpty()){
 		wxString hash;
-		hash=EncodeBase16((const unsigned char*)theApp.glob_prefs->GetUserHash(),16);
+		hash=EncodeBase16(theApp.glob_prefs->GetUserHash(),16);
 		info_item=gtk_menu_item_new_with_label(wxString(_("Hash: "))+hash);
 	}
 	else info_item=gtk_menu_item_new_with_label(_("Hash: Not Ready"));

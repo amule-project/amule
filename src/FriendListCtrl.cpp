@@ -77,7 +77,7 @@ void CFriendListCtrl::AddFriend(CFriend* toadd)
 }
 
 
-void CFriendListCtrl::AddFriend( uchar userhash[16], uint32 lastSeen, uint32 lastUsedIP, uint32 lastUsedPort, uint32 lastChatted, wxString name, uint32 hasHash)
+void CFriendListCtrl::AddFriend(const CMD4Hash& userhash, uint32 lastSeen, uint32 lastUsedIP, uint32 lastUsedPort, uint32 lastChatted, wxString name, uint32 hasHash)
 {
 	CFriend* NewFriend = new CFriend( userhash, lastSeen, lastUsedIP, lastUsedPort, lastChatted, name, hasHash );
 
@@ -214,16 +214,16 @@ void CFriendListCtrl::SaveList()
 }
 
 
-CFriend* CFriendListCtrl::FindFriend(const uchar* abyUserHash, uint32 dwIP, uint16 nPort) const
+CFriend* CFriendListCtrl::FindFriend(const CMD4Hash& userhash, uint32 dwIP, uint16 nPort) const
 {
 	for ( int i = 0; i < GetItemCount(); i++ ) {
 		CFriend* cur_friend = (CFriend*)GetItemData(i);
 		
 		// to avoid that unwanted clients become a friend, we have to distinguish between friends with
 		// a userhash and of friends which are identified by IP+port only.
-		if ( abyUserHash && cur_friend->m_dwHasHash ) {
+		if ( !userhash.IsEmpty() && cur_friend->m_dwHasHash ) {
 			// check for a friend which has the same userhash as the specified one
-			if (!md4cmp(cur_friend->m_abyUserhash, abyUserHash))
+			if (cur_friend->m_Userhash == userhash)
 				return cur_friend;
 		}
 		else if (cur_friend->m_dwLastUsedIP == dwIP && cur_friend->m_nLastUsedPort == nPort) {
