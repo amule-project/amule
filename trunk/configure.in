@@ -325,7 +325,7 @@ case "$CRYPTO_PP_STYLE" in
 	  LDFLAGS="$LDFLAGS -L$crypto_prefix"
           CRYPTOLIBS="-lcryptopp"
  ;;
- embeded) CXXFLAGS="$CXXFLAGS -DUSE_EMBEDDED_CRYPTO"
+ embedded) CXXFLAGS="$CXXFLAGS -DUSE_EMBEDDED_CRYPTO"
  ;;
  *) AC_MSG_ERROR([
           WARNING: crypto++ >= $min_crypto_version is not found.
