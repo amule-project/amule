@@ -53,7 +53,7 @@ CWSThread::CWSThread(CWebServer *webserver) {
 	}
 	if (wsport == -1) {
 		wsport = 4711;
-		ws->Print(wxT("WSThread: Could not get web server port -- using default value."));
+		ws->Print(wxT("WSThread: Could not get web server port -- using default value.\n"));
 	}
 }
 
@@ -190,7 +190,7 @@ void *CWCThread::Entry() {
 				} else if ( !strncasecmp(stWebSocket.m_pBuf, "POST", 4) ) {
 					IsPost = true;
 				} else {
-					stWebSocket.m_pParent->Print(wxT("WCThread: request is unknown: [\n"));
+					stWebSocket.m_pParent->Print(wxT("WCThread: request is unknown: ["));
 					stWebSocket.m_pParent->Print(char2unicode(stWebSocket.m_pBuf));
 					stWebSocket.m_pParent->Print(wxT("]\n"));
 					return 0;
@@ -221,7 +221,7 @@ void *CWCThread::Entry() {
 					while ( isspace(*cont_len) ) cont_len++;
 					int len = atoi(cont_len);
 					if ( !len ) {
-						stWebSocket.m_pParent->Print(wxT("WCThread: POST method have no data"));
+						stWebSocket.m_pParent->Print(wxT("WCThread: POST method have no data\n"));
 						return 0;
 					}
 					// do we have all of data ?
