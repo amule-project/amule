@@ -69,12 +69,11 @@ inline wxString MakeStringEscaped(wxString in) {
 
 // Make a string be a folder
 inline wxString MakeFoldername(wxString path) {
-	#warning Who commented out this?
-	/*
+
 	if ( !path.IsEmpty() && ( path.Right(1) == wxT('/' )) ) {
 		path.RemoveLast();
 	}
-	*/
+
 	return path;
 }
 
