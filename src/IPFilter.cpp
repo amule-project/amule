@@ -1,27 +1,30 @@
+//
 // This file is part of the aMule Project
 //
 // Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
 // Copyright (C) 2002 Merkur ( merkur-@users.sourceforge.net / http://www.emule-project.net )
 //
-//This program is free software; you can redistribute it and/or
-//modify it under the terms of the GNU General Public License
-//as published by the Free Software Foundation; either
-//version 2 of the License, or (at your option) any later version.
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either
+// version 2 of the License, or (at your option) any later version.
 //
-//This program is distributed in the hope that it will be useful,
-//but WITHOUT ANY WARRANTY; without even the implied warranty of
-//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//GNU General Public License for more details.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 //
-//You should have received a copy of the GNU General Public License
-//along with this program; if not, write to the Free Software
-//Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+//
+
 #include <wx/filefn.h>
 #include <wx/ffile.h>
 #include <wx/file.h>
 
 #include <wx/defs.h>		// Needed before any other wx/*.h
-#include <wx/intl.h>		// Needed for _
+#include <wx/intl.h>		// Needed for _()
 #include <wx/textfile.h>
 #include <wx/arrimpl.cpp>	// this is a magic incantation which must be done!
 #include <wx/string.h>		// for wxString
@@ -31,7 +34,7 @@
 #if defined(__WXMSW__)
   #include <winsock2.h>
 #else
-  #include <sys/socket.h>		// for inet_aton() and struct in_addr
+  #include <sys/socket.h>	// for inet_aton() and struct in_addr
   #include <netinet/in.h>
   #include <arpa/inet.h>
 #endif
@@ -217,7 +220,7 @@ void CIPFilter::SaveToFile() {
 		// Token separator
 		line += wxT(" , ");		
 		// Access level
-		line += wxString::Format("%i",it->second->AccessLevel);
+		line += wxString::Format(wxT("%i"),it->second->AccessLevel);
 		// Token separator
 		line += wxT(" , ");		
 		// Description
