@@ -651,7 +651,7 @@ bool wxSocketClientProxy::Connect(wxIPaddress &address, bool wait)
 			wxSocketEvent e(SERVERSOCKET_HANDLER);
 			e.m_event = wxSOCKET_CONNECTION;
 			e.SetEventObject(this);
-			CClientReqSocket *s1 = wxDynamicCast(this, CClientReqSocket);
+			CClientReqSocket *s1 = wxDynamicCastThis(CClientReqSocket);
 			if (s1) {
 				CClientReqSocketHandler *h = s1->GetEventHandler();
 				h->AddPendingEvent(e);
@@ -659,7 +659,7 @@ bool wxSocketClientProxy::Connect(wxIPaddress &address, bool wait)
 				h->AddPendingEvent(e);
 				goto end;
 			}
-			CServerSocket *s2 = wxDynamicCast(this, CServerSocket);
+			CServerSocket *s2 = wxDynamicCastThis(CServerSocket);
 			if (s2) {
 				CServerSocketHandler *h = s2->GetEventHandler();
 				h->AddPendingEvent(e);
