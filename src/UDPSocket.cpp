@@ -209,7 +209,7 @@ bool CUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, const wxSt
 					uint8 fileid[16];
 					data->Read(fileid);
 					if (CPartFile* file = theApp.downloadqueue->GetFileByID(fileid))
-						file->AddSources(data, inet_addr(host), port-4);
+						file->AddSources(data, inet_addr(unicode2char(host)), port-4);
 					else{
 						// skip sources for that file
 						uint8 count;

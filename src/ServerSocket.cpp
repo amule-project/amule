@@ -176,7 +176,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				memcpy(buffer,&packet[2],size-2);
 				buffer[size-2] = 0;
 
-				wxString strMessages(buffer);
+				wxString strMessages(char2unicode(buffer));
 
 				delete[] buffer;
 				
@@ -191,7 +191,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 					wxString message = wxMessage.GetData();
 
 					bool bOutputMessage = true;
-					if (strncmp(unicode2char(message.GetData()), "server version", 14) == 0) {
+					if (message.StartsWith(wxT("server version")) == 0) {
 						wxString strVer = message.Mid(15,64); // truncate string to avoid misuse by servers in showing ads
 						strVer.Trim();
 						CServer* eserver = theApp.serverlist->GetServerByAddress(cur_server->GetAddress(),cur_server->GetPort());
@@ -231,7 +231,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 					}
 					/* Give it a try ... (Creteil) END */
 
-					if (message.Find(wxT("[emDynIP: ")) != (-1) && message.Find(wxT("]")) != (-1) && message.Find("[emDynIP: ") < message.Find("]")){
+					if (message.Find(wxT("[emDynIP: ")) != (-1) && message.Find(wxT("]")) != (-1) && message.Find(wxT("[emDynIP: ")) < message.Find(wxT("]"))){
 						wxString dynip = message.Mid(message.Find(wxT("[emDynIP: "))+10,message.Find(wxT("]")) - (message.Find(wxT("[emDynIP: "))+10));
 						dynip.Trim(wxT(" "));
 						if ( dynip.Length() && dynip.Length() < 51){
@@ -245,7 +245,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 					}
 
 					if (bOutputMessage) {
-						theApp.amuledlg->AddServerMessageLine(wxT("%s"),message.GetData());
+						theApp.amuledlg->AddServerMessageLine(message);
 					}
 				}
 				break;
@@ -401,7 +401,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				char* temp=new char[size-38+1];
 				memcpy(temp,&buffer[2],num);
 				temp[num]=0;//close the string
-				update->SetListName(temp);
+				update->SetListName(char2unicode(temp));
 				memcpy(&num2,&buffer[num+6],2);
 				if ((uint32)(num2 + num + 8) > (size - 30)) {
 					delete[] temp;
@@ -410,7 +410,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				}
 				memcpy (temp,&buffer[num+8],num2);
 				temp[num2]=0; //close the string
-				update->SetDescription(temp);
+				update->SetDescription(char2unicode(temp));
 				theApp.amuledlg->ShowConnectionState(true,update->GetListName());
 				theApp.amuledlg->serverwnd->serverlistctrl->RefreshServer(update);
 				delete[] temp;

@@ -100,7 +100,7 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd){
 			if ((::GetTickCount() - cur_client->GetLastUpRequest() > MAX_PURGEQUEUETIME) || !theApp.sharedfiles->GetFileByID(cur_client->GetUploadFileID()) ) {
 				RemoveFromWaitingQueue(pos2,true);	
 				if (!cur_client->socket) {
-					if(cur_client->Disconnected("AddUpNextClient - purged")) {
+					if(cur_client->Disconnected(_("AddUpNextClient - purged"))) {
 						delete cur_client;
 						cur_client = NULL;
 					}
@@ -392,9 +392,9 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
 
 	if (theApp.serverconnect->IsConnected() && theApp.serverconnect->IsLowID() && !theApp.serverconnect->IsLocalServer(client->GetServerIP(),client->GetServerPort()) && client->GetDownloadState() == DS_NONE && !client->IsFriend() && GetWaitingUserCount() > 50) {
 		// Well, all that issues finish in the same: don't allow to add to the queue
-		return;	
+		return;		
 	}
-
+	
 	if (client->IsBanned()) {
 		if (::GetTickCount() - client->GetBanTime() > 18000000) {
 			client->UnBan();
@@ -432,7 +432,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
 			AddDebugLogLineM(false,wxString::Format(_("Client '%s' and '%s' have the same userhash or IP - removed '%s'"),unicode2char(client->GetUserName()),unicode2char(cur_client->GetUserName()),unicode2char(cur_client->GetUserName())));
 			RemoveFromWaitingQueue(pos,true);	
 			if (!cur_client->socket) {
-				if(cur_client->Disconnected("AddClientToQueue - same userhash 1")) {
+				if(cur_client->Disconnected(_("AddClientToQueue - same userhash 1"))) {
 					delete cur_client;
 				}				
 			}
@@ -445,7 +445,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
 	if (theApp.glob_prefs->AddServersFromClient()) {
 		in_addr host;
 		host.s_addr = client->GetServerIP();
-		CServer* srv = new CServer(client->GetServerPort(), inet_ntoa(host));
+		CServer* srv = new CServer(client->GetServerPort(), char2unicode(inet_ntoa(host)));
 		srv->SetListName(srv->GetAddress());
 		
 		if (!theApp.amuledlg->serverwnd->serverlistctrl->AddServer(srv, true)) {

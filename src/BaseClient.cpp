@@ -117,10 +117,13 @@ CUpDownClient::CUpDownClient(uint16 in_port, uint32 in_userid,uint32 in_serverip
 
 void CUpDownClient::Init()
 {
-#ifdef __DEBUG__
+
+	#ifdef __DEBUG__
+
 	MagicNumber1 = MAGIC_1;
 	MagicNumber2 = MAGIC_2;
-#endif // __DEBUG__
+
+	#endif
 
 	credits = 0;
 	//memset(reqfileid, 0, sizeof reqfileid);

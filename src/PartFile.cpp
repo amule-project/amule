@@ -220,10 +220,13 @@ CPartFile::CPartFile(CED2KFileLink* fileLink)
 
 void CPartFile::Init()
 {
-#ifdef __DEBUG__
+	#ifdef __DEBUG__
+
 	MagicNumber1 = MAGIC_1;
 	MagicNumber2 = MAGIC_2;
-#endif __DEBUG__
+
+	#endif
+
 	m_nLastBufferFlushTime = 0;
 
 	newdate = true;
@@ -2837,7 +2840,9 @@ void CPartFile::ResumeFile()
 
 wxString CPartFile::getPartfileStatus() const
 {
-	wxString mybuffer=wxEmptyString; 
+
+	wxString mybuffer; 
+
 	if (GetTransferingSrcCount()>0) {
 		mybuffer=_("Downloading");
 	}	else {

@@ -552,7 +552,7 @@ void CServerList::AddServersFromTextFile(wxString strFilename,bool isstaticserve
 			delete nsrv;
 			CServer* srvexisting = GetServerByAddress(strHost, atoi(unicode2char(strPort)));
 			if (srvexisting) {
-				srvexisting->SetListName((char*)strName.GetData());
+				srvexisting->SetListName(strName);
 				srvexisting->SetIsStaticMember(true);
 				// Barry - Was always high
 				srvexisting->SetPreference(priority); 

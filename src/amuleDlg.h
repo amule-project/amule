@@ -67,7 +67,7 @@ public:
 
 	void AddLogLine(bool addtostatusbar, const wxChar* line, ...);
 	void AddDebugLogLine(bool addtostatusbar, const wxChar* line, ...);
-	void AddServerMessageLine(char* line, ...);
+	void AddServerMessageLine(wxString& message);
 	void ResetLog(uint8 whichone = 1);
 	void ResetDebugLog();
 	

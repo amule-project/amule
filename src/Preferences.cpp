@@ -288,7 +288,7 @@ CPreferences::CPreferences()
 		CreateUserHash();
 	}
 	
-	printf("Userhash loaded: %s\n", m_userhash.Encode().c_str());
+	printf("Userhash loaded: %s\n", unicode2char(m_userhash.Encode()));
 }
 
 void CPreferences::SetStandartValues()
@@ -316,7 +316,7 @@ bool CPreferences::Save()
 
 	if (preffile) {
 		prefsExt->version=PREFFILE_VERSION;
-		printf("Saving userhash: %s\n", m_userhash.Encode().c_str());
+		printf("Saving userhash: %s\n", unicode2char(m_userhash.Encode()));
 		md4cpy(prefsExt->userhash,m_userhash.GetHash());
 		error = fwrite(prefsExt,sizeof(Preferences_Ext_Struct),1,preffile);
 		fclose(preffile);

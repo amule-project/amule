@@ -130,7 +130,7 @@ void CStatisticsDlg::InitGraphs()
 	pscopeUL->SetRanges(0.0, (float)(theApp.glob_prefs->GetMaxGraphUploadRate()+4));
 	pscopeUL->SetYUnits(_("kB/s"));
 	pscopeConn->SetRanges(0.0, (float)(theApp.glob_prefs->GetStatsMax()));
-	pscopeConn->SetYUnits("");
+	pscopeConn->SetYUnits(wxT(""));
 }
 
 
@@ -838,7 +838,7 @@ void CStatisticsDlg::ShowStatistics()
 	if(theApp.sharedfiles->GetCount() != 0) {
 		cbuffer2.Printf( wxT("%s"), CastItoXBytes((uint64)allsize/theApp.sharedfiles->GetCount()).GetData());
 	} else {
-		cbuffer2 = "-";
+		cbuffer2 = wxT("-");
 	}
 
 	cbuffer.Printf(_("Average filesize: %s"),cbuffer2.GetData());
@@ -983,7 +983,7 @@ void CStatisticsDlg::ShowStatistics()
 				UINT verUp = (topver - (verMaj*100*10*100) - (verMin*100*10))/(100);
 				cbuffer.Printf(wxT("v%u.%u.%u: %i (%1.1f%%)"), verMaj, verMin, verUp, topcnt, topper*100);
 			} else {
-				cbuffer=wxEmptyString;
+				cbuffer= wxEmptyString;
 			}
 			if (cbuffer.IsEmpty()) {
 				if (cli_versions[i+4].active) {

@@ -541,18 +541,15 @@ void CamuleDlg::AddDebugLogLine(bool addtostatusbar, const wxChar* line, ...)
 }
 
 
-void CamuleDlg::AddServerMessageLine(char* line, ...)
+void CamuleDlg::AddServerMessageLine(wxString& message)
 {
-	wxString content;
-	va_list argptr;
-	va_start(argptr, line);
-	wxString bufferline = wxString::FormatV( char2unicode(line), argptr );
-	bufferline.Truncate(500); // Max size 500 chars
-	va_end(argptr);
-
 	wxTextCtrl* cv=(wxTextCtrl*)serverwnd->FindWindow(ID_SERVERINFO);
 	if(cv) {
-		cv->AppendText(bufferline + wxT("\n"));
+		if (message.Length() > 500) {
+			cv->AppendText(message.Left(500) + wxT("\n"));
+		} else {
+			cv->AppendText(message + wxT("\n"));
+		}
 		cv->ShowPosition(cv->GetValue().Length()-1);
 	}
 }
