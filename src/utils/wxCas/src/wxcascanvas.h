@@ -44,6 +44,7 @@ public:
   //Constructor
   WxCasCanvas (wxWindow * parent, wxWindow * model);
   void DrawImg ();
+  void Update ();
 
   //Destructor
    ~WxCasCanvas ();

@@ -65,7 +65,7 @@ wxFrame ((wxFrame *) NULL, -1, title, wxDefaultPosition, wxDefaultSize,
   // Give it an icon
   SetIcon (wxICON (wxcas));
 
-  MaxLineCount = 0;
+  m_maxLineCount = 0;
 
   // Status Bar
   CreateStatusBar ();
@@ -95,8 +95,8 @@ wxFrame ((wxFrame *) NULL, -1, title, wxDefaultPosition, wxDefaultSize,
   m_statLine_6 = new wxStaticText (m_sigPanel, -1, "");
 
   // Add Online Sig file
-  aMuleSig = new OnLineSig();
-  SetFromDefaultAmuleFile ();
+  aMuleSig = new OnLineSig ();
+  SetFromAmuleFile ();
 
   m_sigPanelSBoxSizer->Add (m_statLine_1, 0, wxALL | wxADJUST_MINSIZE, 5);
   m_sigPanelSBoxSizer->Add (m_statLine_2, 0, wxALL | wxADJUST_MINSIZE, 5);
@@ -162,7 +162,7 @@ wxFrame ((wxFrame *) NULL, -1, title, wxDefaultPosition, wxDefaultSize,
   // Frame Layout
   SetAutoLayout (TRUE);
   SetSizerAndFit (m_frameVBox);
- 
+
   // Add timer
   m_timer = new wxTimer (this, ID_TIMER);
   m_timer->Start (5000);
@@ -171,7 +171,7 @@ wxFrame ((wxFrame *) NULL, -1, title, wxDefaultPosition, wxDefaultSize,
 // Destructor
 WxCasFrame::~WxCasFrame ()
 {
-	delete aMuleSig;
+  delete aMuleSig;
 }
 
 // Events table
@@ -185,7 +185,7 @@ END_EVENT_TABLE ()
 
 // Refresh button
 void
-     WxCasFrame::OnBarRefresh (wxCommandEvent & event)
+WxCasFrame::OnBarRefresh (wxCommandEvent & event)
 {
   if (m_timer->IsRunning ())
     {
@@ -238,13 +238,13 @@ WxCasFrame::OnBarAbout (wxCommandEvent & event)
 void
 WxCasFrame::OnTimer (wxTimerEvent & event)
 {
-  SetFromDefaultAmuleFile ();
-  m_imgPanel->DrawImg ();
+  SetFromAmuleFile ();
+  m_imgPanel->Update ();
 }
 
 // Accessors
 void
-WxCasFrame::SetFromDefaultAmuleFile ()
+WxCasFrame::SetFromAmuleFile ()
 {
   // Set labels
   aMuleSig->Refresh ();
@@ -258,10 +258,9 @@ WxCasFrame::SetFromDefaultAmuleFile ()
   newline += _(" has been running for ");
   newline += aMuleSig->GetRunTime ();
 
-  wxUint32 NewMaxLineCount = newline.Length ();
-	
-  m_statLine_1->SetLabel (newline);
+  wxUint32 newMaxLineCount = newline.Length ();
 
+  m_statLine_1->SetLabel (newline);
 
   newline = aMuleSig->GetUser ();
   newline += _(" is on ");
@@ -274,10 +273,15 @@ WxCasFrame::SetFromDefaultAmuleFile ()
   newline += aMuleSig->GetConnexionIDType ();;
 
   m_statLine_2->SetLabel (newline);
-  if (newline.Length () > NewMaxLineCount)
+
+#ifdef __GNUG__
+  newMaxLineCount = newMaxLineCount >? newline.Length ();
+#else
+  if (newline.Length () > newMaxLineCount)
     {
-      NewMaxLineCount = newline.Length ();
+      newMaxLineCount = newline.Length ();
     }
+#endif
 
   newline = _("Total Download: ");
   newline += aMuleSig->GetConvertedTotalDL ();
@@ -285,10 +289,15 @@ WxCasFrame::SetFromDefaultAmuleFile ()
   newline += aMuleSig->GetConvertedTotalUL ();
 
   m_statLine_3->SetLabel (newline);
-  if (newline.Length () > NewMaxLineCount)
+
+#ifdef __GNUG__
+  newMaxLineCount = newMaxLineCount >? newline.Length ();
+#else
+  if (newline.Length () > newMaxLineCount)
     {
-      NewMaxLineCount = newline.Length ();
+      newMaxLineCount = newline.Length ();
     }
+#endif
 
   newline = _("Session Download: ");
   newline += aMuleSig->GetConvertedSessionDL ();
@@ -296,10 +305,15 @@ WxCasFrame::SetFromDefaultAmuleFile ()
   newline += aMuleSig->GetConvertedSessionUL ();
 
   m_statLine_4->SetLabel (newline);
-  if (newline.Length () > NewMaxLineCount)
+
+#ifdef __GNUG__
+  newMaxLineCount = newMaxLineCount >? newline.Length ();
+#else
+  if (newline.Length () > newMaxLineCount)
     {
-      NewMaxLineCount = newline.Length ();
+      newMaxLineCount = newline.Length ();
     }
+#endif
 
   newline = _("Download: ");
   newline += aMuleSig->GetDLRate ();
@@ -308,10 +322,15 @@ WxCasFrame::SetFromDefaultAmuleFile ()
   newline += _("kB/s");
 
   m_statLine_5->SetLabel (newline);
-  if (newline.Length () > NewMaxLineCount)
+
+#ifdef __GNUG__
+  newMaxLineCount = newMaxLineCount >? newline.Length ();
+#else
+  if (newline.Length () > newMaxLineCount)
     {
-      NewMaxLineCount = newline.Length ();
+      newMaxLineCount = newline.Length ();
     }
+#endif
 
   newline = _("Sharing: ");
   newline += aMuleSig->GetSharedFiles ();
@@ -319,33 +338,34 @@ WxCasFrame::SetFromDefaultAmuleFile ()
   newline += aMuleSig->GetQueue ();
 
   m_statLine_6->SetLabel (newline);
-  if (newline.Length () > NewMaxLineCount)
+
+#ifdef __GNUG__
+  newMaxLineCount = newMaxLineCount >? newline.Length ();
+#else
+  if (newline.Length () > newMaxLineCount)
     {
-      NewMaxLineCount = newline.Length ();
+      newMaxLineCount = newline.Length ();
     }
+#endif
 
   // Set status bar
   if (aMuleSig->IsRunning ())
     {
-      newline = _("aMule is running");
+      SetStatusText (_("aMule is running"));
     }
   else
     {
-      newline = _("WARNING: aMule is NOT running");
-    }
-  SetStatusText (newline);
-  if (newline.Length () > NewMaxLineCount)
-    {
-      NewMaxLineCount = newline.Length ();
+      SetStatusText (_("WARNING: aMule is NOT running"));
     }
 
   Thaw ();
 
-  if (MaxLineCount != NewMaxLineCount)
+  // Resize only if needed
+  if (m_maxLineCount != newMaxLineCount)
     {
       // Fit to new lable size
       Layout ();
       Fit ();
-      MaxLineCount = NewMaxLineCount;
+      m_maxLineCount = newMaxLineCount;
     }
 }
