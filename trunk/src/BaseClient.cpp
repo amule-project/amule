@@ -955,7 +955,7 @@ void CUpDownClient::ProcessMuleCommentPacket(char* pachPacket, uint32 nSize)
 			m_strComment.Format("%s",desc);				
 			theApp.amuledlg->AddDebugLogLine(false,_("Description for file '%s' received: %s"), m_pszClientFilename, m_strComment.GetData());
 			reqfile->SetHasComment(true);
-			delete desc;
+			delete[] desc;
 		}
 
 	}
