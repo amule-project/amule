@@ -80,7 +80,7 @@ ZLIB_DIR=""
 ZVERMAX="1"
 ZVERMED="1"
 ZVERMIN="4"
-AC_ARG_WITH(zlib,[  --with-zlib=DIR                  use zlib in DIR],[
+AC_ARG_WITH(zlib,[  --with-zlib=PREFIX               use zlib in PREFIX],[
 	if [ test "$withval" = "no" ]; then
 		AC_MSG_ERROR([zlib is required by aMule])
         elif [ test "$withval" = "yes" ]; then
@@ -508,7 +508,7 @@ AC_DEFUN([AM_OPTIONS_CURLCONFIG],
    AC_ARG_WITH(curl-config,[  --with-curl-config=CONFIG        curl-config script to use (optional)],
                curl_config_name="$withval", curl_config_name="")
 
-   AC_ARG_WITH(curl-prefix,[  --with-curl-prefix=PFX           prefix where curl is installed (optional) (unused)],
+   AC_ARG_WITH(curl-prefix,[  --with-curl-prefix=PREFIX        prefix where curl is installed (optional) (unused)],
             curl_config_prefix="$withval", curl_config_prefix="")
 ])
 
@@ -656,7 +656,7 @@ AC_SUBST(CRYPTO_PP_STYLE)
 ])
 
 AC_DEFUN([AM_OPTIONS_CRYPTO], [
-     AC_ARG_WITH( crypto-prefix,[  --with-crypto-prefix=PFX         prefix where crypto++ is installed (optional)],
+     AC_ARG_WITH( crypto-prefix,[  --with-crypto-prefix=PREFIX      prefix where crypto++ is installed (optional)],
        crypto_prefix="$withval", crypto_prefix="")
 ])
 
@@ -686,6 +686,6 @@ AC_DEFUN([CHECK_CCACHE],
 
 AC_DEFUN([AM_OPTIONS_CCACHE_PFX],
 [
-   AC_ARG_WITH( ccache-prefix,[  --with-ccache-prefix=PFX         prefix where ccache is installed (optional)],
+   AC_ARG_WITH( ccache-prefix,[  --with-ccache-prefix=PREFIX      prefix where ccache is installed (optional)],
             ccache_prefix="$withval", ccache_prefix="")
 ])

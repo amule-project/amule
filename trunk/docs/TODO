@@ -1,7 +1,6 @@
-
 - Not specific 
 
-	. Source code tree Reorganization (Probably Kry/Xaignar/Both)
+	- Source code tree Reorganization (Probably Kry/Xaignar/Both)
 
 	- Keep porting eMule features (low priority) (non-network!)
 
@@ -9,15 +8,14 @@
 	    + Add gtk-prefix and prefix for every lib used <- ?
             + Clean options no more used (gtk above all) <- GTK is used for old tray...
 
-	- We neet to import mldonkey and edonkey partfiles!
+	- Import mldonkey and edonkey partfiles!
 
 	- Remote
             + Finish cmd line clients [working]
 
-	- Add Scheduler Tab (Being done on forum by a portuuese guy)
+	- Add Scheduler Tab (Being done by geeko at http://forum.amule.org/thread.php?threadid=5284 )
  	    + add actions menu
 	    + add time and details menu
 
 - Kry 
 	- Implement Kademlia support (preferences too) (medium-high priority)	
-	
