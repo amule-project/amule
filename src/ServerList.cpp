@@ -45,7 +45,7 @@
 
 #include "ServerList.h"		// Interface declarations.
 #include "ListenSocket.h"	// Needed for CListenSocket
-#include "KnownFile.h"		// Needed for SRV_PR_*
+#include "server.h"		// Needed for SRV_PR_*
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "sockets.h"		// Needed for CServerConnect
@@ -149,6 +149,8 @@ bool CServerList::AddServermetToList(const wxString& strFile, bool merge)
 			//add tags
 			for (uint32 i=0;i < sbuffer.tagcount; ++i) {
 				newserver->AddTagFromFile(&servermet);
+				if (newserver->GetPreferences() < SRV_PR_MIN || newserver->GetPreferences() > SRV_PR_MAX)
+					newserver->SetPreference(SRV_PR_NORMAL);
 			}
 
 			if (newserver->GetPreferences() > SRV_PR_HIGH) {

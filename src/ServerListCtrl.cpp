@@ -30,7 +30,8 @@
 #include "amule.h"			// Needed for theApp
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
-#include "KnownFile.h"		// Needed for SRV_PR_*
+#include "server.h"		// Needed for SRV_PR_*
+#include "otherfunctions.h"		// Needed for CastByName
 #include "ServerList.h"		// Needed for CServerList
 #include "ServerWnd.h"		// Needed for CServerWnd
 #include "sockets.h"		// Needed for CServerConnect
@@ -524,7 +525,19 @@ int CServerListCtrl::SortProc( long item1, long item2, long sortData )
 	
 	switch ( sortData ) {
 		// Sort by server-name
-		case 0: return mode * server1->GetListName().CmpNoCase( server2->GetListName() );
+		case 0: 
+			{
+				// it shouldn't happen that two servers had the same IP, so no need to check for that
+				if (( server1->GetListName().Cmp(server1->GetFullIP()) == 0 ) && ( server2->GetListName().Cmp(server2->GetFullIP()) == 0 )) {
+					return mode * server1->GetFullIP().CmpNoCase( server2->GetFullIP() );
+				} else if ( server1->GetListName().Cmp(server1->GetFullIP()) == 0 ) {
+					return mode * -1;
+				} else if ( server2->GetListName().Cmp(server2->GetFullIP()) == 0 ) {
+					return mode * 1;
+				} else {
+					return mode * server1->GetListName().CmpNoCase( server2->GetListName() );
+				}
+			}
 		// Sort by IP
 		case 1: 
 			{
@@ -561,6 +574,22 @@ int CServerListCtrl::SortProc( long item1, long item2, long sortData )
 		// Sort by file-count
 		case 5: return mode * otherfunctions::CmpAny( server1->GetFiles(), server2->GetFiles() );
 		// Sort by preferences
+		case 6: 
+			{
+				uint32 srv_pr1 = server1->GetPreferences();
+				uint32 srv_pr2 = server2->GetPreferences();
+				switch ( srv_pr1 ) {
+					case SRV_PR_HIGH: srv_pr1 = SRV_PR_MAX; break;
+					case SRV_PR_NORMAL: srv_pr1 = SRV_PR_MID; break;
+					case SRV_PR_LOW: srv_pr1 = SRV_PR_MIN; break;
+				}
+				switch ( srv_pr2 ) {
+					case SRV_PR_HIGH: srv_pr2 = SRV_PR_MAX; break;
+					case SRV_PR_NORMAL: srv_pr2 = SRV_PR_MID; break;
+					case SRV_PR_LOW: srv_pr2 = SRV_PR_MIN; break;
+				}
+				return mode * CmpAny( srv_pr1, srv_pr2 );
+			}
 		case 6: return mode * otherfunctions::CmpAny( server1->GetPreferences(), server2->GetPreferences() );
 		// Sort by failure-count
 		case 7: return mode * otherfunctions::CmpAny( server1->GetFailedCount(), server2->GetFailedCount() );
