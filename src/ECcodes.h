@@ -241,6 +241,7 @@ enum {
 		 *	::EC_TAG_PARTFILE (*) status can be requested for selected list only
 		 */
 	EC_OP_GET_ULOAD_QUEUE,
+	EC_OP_GET_WAIT_QUEUE,
 
 		/*!
 		 * \brief Request for list of shared files
