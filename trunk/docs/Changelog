@@ -18,10 +18,13 @@ Version 2.0.0rc8 - The "???????????" version.
 		* Added bitmap button wich pops-up the last status log line
 		  (useful when it doesn't fit the window).
 		* Merged Preview and Open File and enabled Open File.
-		* Fixed: Servers priority not working
+		* Fixed: Servers priority not working (reported by Sir)
+		* Fixed: Now all unset Server Priorities are set to normal
+		  (reported by plaenky)
 		* Fixed: Setting "A4AF to others" was broken.
 		* Moved "Always filter bad IPs" from Server to Security
 		  in Preferences
+		* Changed "Preference" in servers tab as suggested by Sir
 
 	Phoenix:
 		* Lots of unicode fixes.
@@ -43,6 +46,29 @@ Version 2.0.0rc8 - The "???????????" version.
 
 	GonoszTopi:
 		* Initial work on EC protocol version 2.0.
+
+        Special Thanks To:
+
+                * Bug and feature reporters:
+		  Sir,		jolupa,
+		  Pableron,	Banerjee,
+		  m2kio,	juanii,
+		  jaguarwan,	kdka
+
+		* Contributors:
+		  Frankk,	han,
+		  Vollstrecker, boutros,
+		  skolnick,
+
+                * Everyone at:
+                   #amule       irc.freenode.net
+                   wiki         http://wiki.amule.org
+                   forums       http://forum.amule.org
+                   bugtracker   http://abugs.amule.org
+
+                * All aMule users!!!
+
+	Welcome our new aMule team member: nachbarnebenan (Tester)
 
 
 --------------------------------------------------------------------------------
