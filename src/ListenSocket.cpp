@@ -2467,7 +2467,7 @@ void CSocketGlobalThread::RemoveSocket(CClientReqSocket* sock)
 
 void *CSocketGlobalThread::Entry()
 {
-	AddDebugLogLineM(true, "Socket global thread running\n");
+	AddDebugLogLineM(true, _("Socket global thread running\n"));
 	while ( !TestDestroy() ) {
 		Sleep(10);
 		std::set<CClientReqSocket *> erase_list;
