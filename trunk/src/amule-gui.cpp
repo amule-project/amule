@@ -404,12 +404,10 @@ void CamuleGuiApp::ListenSocketHandler(wxSocketEvent& event)
 
 void CamuleGuiApp::UDPSocketHandler(wxSocketEvent& event)
 {
-	wxASSERT(event.GetSocket()->IsKindOf(CLASSINFO(CUDPSocket)));
-	CUDPSocket * socket = (CUDPSocket*) event.GetSocket();
-	
+	CUDPSocket *socket = wxDynamicCast(event.GetSocket(), CUDPSocket);
+	wxASSERT(socket);
 	if(!socket) {
 		// This should never happen, anyway, there is nothing to do.
-		wxASSERT(0);
 		return;
 	}
 
@@ -430,14 +428,12 @@ void CamuleGuiApp::UDPSocketHandler(wxSocketEvent& event)
 	}
 }
 
-void CamuleGuiApp::ClientUDPSocketHandler(wxSocketEvent& event) {
-
-	wxASSERT(event.GetSocket()->IsKindOf(CLASSINFO(CClientUDPSocket)));
-	CClientUDPSocket * socket = (CClientUDPSocket*) event.GetSocket();
-
+void CamuleGuiApp::ClientUDPSocketHandler(wxSocketEvent& event)
+{
+	CClientUDPSocket *socket = wxDynamicCast(event.GetSocket(), CClientUDPSocket);
+	wxASSERT(socket);
 	if(!socket) {
 		// This should never happen, anyway, there is nothing to do.
-		wxASSERT(0);
 		return;
 	}
 

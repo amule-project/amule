@@ -36,6 +36,7 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		* More proxy updates, we are getting there.
 		* Small UI bug: double click on a server did not change the
 		  "Connect" button to "Cancel".
+		* Changed some deprecated IsKindOf(CLASSINFO()) to wxDynamicCast().
 
 --------------------------------------------------------------------------------
 
