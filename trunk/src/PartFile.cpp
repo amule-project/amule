@@ -396,7 +396,6 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool fro
 	// readfile data form part.met file
 	wxString file_to_open;
 	if (from_backup) {
-		AddLogLineM(false, _("Trying backup of met file on ") + m_partmetfilename + PARTMET_BAK_EXT);
 		file_to_open = m_fullname + PARTMET_BAK_EXT;
 	} else {
 		file_to_open = m_fullname;
