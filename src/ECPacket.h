@@ -143,7 +143,7 @@ class CECEmptyTag : public CECTag {
 /**
  * High level EC packet handler class
  */
-class CECPacket : private CECEmptyTag {
+class CECPacket : protected CECEmptyTag {
 	friend class ECSocket;
 	public:
 		CECPacket(ec_opcode_t opCode, EC_DETAIL_LEVEL detail_level = EC_DETAIL_GUI)
