@@ -262,10 +262,6 @@ void CamuleDlg::ShowED2KLinksHandler( bool show )
 		return;
 	}
 	
-	#if wxCHECK_VERSION(2,5,5)
-	s_fed2klh->Show(show);
-	#endif
-	
 	s_dlgcnt->Show( s_fed2klh, show );
 	s_dlgcnt->Layout();
 }
