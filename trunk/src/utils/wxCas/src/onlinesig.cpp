@@ -58,6 +58,8 @@ OnLineSig::OnLineSig ()
   m_sessionDL = "0";
   m_sessionUL = "0";
   m_runTime = "0";
+  
+  m_maxDL = 0.0;
 
   m_amulesig = new wxFileName (wxFileName::GetHomeDir (), "amulesig.dat");
   m_amulesig->AppendDir (".aMule");
@@ -108,6 +110,18 @@ OnLineSig::Refresh ()
   text >> m_sessionDL;
   text >> m_sessionUL;
   text >> m_runTime;
+  
+  double dl;
+  m_DLRate.ToDouble(&dl);
+  
+#ifdef __GNUG__
+  m_maxDL = m_maxDL >? dl;
+#else
+  if (dl > m_maxDL)
+    {
+      m_maxDL = dl;
+    }
+#endif
 }
 
 bool OnLineSig::IsRunning ()
@@ -231,6 +245,10 @@ wxString OnLineSig::GetConnexionIDType ()
     }
 }
 
+wxString OnLineSig::GetMaxDL ()
+{
+  return (wxString::Format(_("%.2f kB/s"),m_maxDL));
+}
 
 // Private use
 wxString OnLineSig::BytesConvertion (wxString bytes)

@@ -97,6 +97,7 @@ private:
   wxStaticText *m_statLine_4;
   wxStaticText *m_statLine_5;
   wxStaticText *m_statLine_6;
+  wxStaticText *m_statLine_7;
 
   wxTimer * m_timer;
   WxCasCanvas *m_imgPanel;

@@ -91,6 +91,7 @@ wxFrame ((wxFrame *) NULL, -1, title, wxDefaultPosition, wxDefaultSize,
   m_statLine_4 = new wxStaticText (m_sigPanel, -1, "");
   m_statLine_5 = new wxStaticText (m_sigPanel, -1, "");
   m_statLine_6 = new wxStaticText (m_sigPanel, -1, "");
+  m_statLine_7 = new wxStaticText (m_sigPanel, -1, "");
 #ifdef __LINUX__		// System monitoring on Linux
   m_sysLine_1 = new wxStaticText (m_sigPanel, -1, "");
   m_sysLine_2 = new wxStaticText (m_sigPanel, -1, "");
@@ -110,6 +111,7 @@ wxFrame ((wxFrame *) NULL, -1, title, wxDefaultPosition, wxDefaultSize,
   m_sigPanelSBoxSizer->Add (m_statLine_4, 0, wxALL | wxADJUST_MINSIZE, 5);
   m_sigPanelSBoxSizer->Add (m_statLine_5, 0, wxALL | wxADJUST_MINSIZE, 5);
   m_sigPanelSBoxSizer->Add (m_statLine_6, 0, wxALL | wxADJUST_MINSIZE, 5);
+  m_sigPanelSBoxSizer->Add (m_statLine_7, 0, wxALL | wxADJUST_MINSIZE, 5);
 #ifdef __LINUX__		// System monitoring on Linux
   m_sigPanelSBoxSizer->Add (m_sysLine_1, 0, wxALL | wxADJUST_MINSIZE, 5);
   m_sigPanelSBoxSizer->Add (m_sysLine_2, 0, wxALL | wxADJUST_MINSIZE, 5);
@@ -335,6 +337,7 @@ WxCasFrame::UpdateStatsPanel ()
 
   wxString newline;
 
+  // Stat line 1
   newline = "aMule ";
   newline += m_aMuleSig->GetVersion ();
   newline += _(" has been running for ");
@@ -344,6 +347,7 @@ WxCasFrame::UpdateStatsPanel ()
 
   m_statLine_1->SetLabel (newline);
 
+  // Stat line 2
   newline = m_aMuleSig->GetUser ();
   newline += _(" is on ");
   newline += m_aMuleSig->GetServerName ();
@@ -365,6 +369,7 @@ WxCasFrame::UpdateStatsPanel ()
     }
 #endif
 
+  // Stat line 3
   newline = _("Total Download: ");
   newline += m_aMuleSig->GetConvertedTotalDL ();
   newline += _(", Upload: ");
@@ -381,6 +386,7 @@ WxCasFrame::UpdateStatsPanel ()
     }
 #endif
 
+  // Stat line 4
   newline = _("Session Download: ");
   newline += m_aMuleSig->GetConvertedSessionDL ();
   newline += _(", Upload: ");
@@ -397,6 +403,7 @@ WxCasFrame::UpdateStatsPanel ()
     }
 #endif
 
+  // Stat line 5
   newline = _("Download: ");
   newline += m_aMuleSig->GetDLRate ();
   newline += _(" kB/s, Upload: ");
@@ -414,12 +421,28 @@ WxCasFrame::UpdateStatsPanel ()
     }
 #endif
 
+  // Stat line 6
   newline = _("Sharing: ");
   newline += m_aMuleSig->GetSharedFiles ();
   newline += _(" file(s), Clients on queue: ");
   newline += m_aMuleSig->GetQueue ();
 
   m_statLine_6->SetLabel (newline);
+ 
+#ifdef __GNUG__
+  newMaxLineCount = newMaxLineCount >? newline.Length ();
+#else
+  if (newline.Length () > newMaxLineCount)
+    {
+      newMaxLineCount = newline.Length ();
+    }
+#endif
+
+  // Stat line 7 
+  newline = _("Maximum DL rate since wxCas is running: ");
+  newline += m_aMuleSig->GetMaxDL ();
+
+  m_statLine_7->SetLabel (newline);
 
 #ifdef __GNUG__
   newMaxLineCount = newMaxLineCount >? newline.Length ();
