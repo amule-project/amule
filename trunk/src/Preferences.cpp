@@ -1129,6 +1129,14 @@ void CPreferences::LoadCats() {
 		newcat->title = cfg->Read( wxT("Title"), wxEmptyString );
 		newcat->incomingpath = cfg->Read( wxT("Incoming"), wxEmptyString );
 
+		// Some sainity checking
+		if ( newcat->title.IsEmpty() || newcat->incomingpath.IsEmpty() ) {
+			printf("Invalid category found, skipping\n");
+			
+			delete newcat;
+			continue;
+		}
+
 		newcat->incomingpath = MakeFoldername(newcat->incomingpath);
 		newcat->comment = cfg->Read( wxT("Comment"), wxEmptyString );
 
@@ -1138,6 +1146,7 @@ void CPreferences::LoadCats() {
 		newcat->color = StrToULong(color);
 
 		AddCat(newcat);
+		
 		if (!wxFileName::DirExists(newcat->incomingpath)) {
 			wxFileName::Mkdir( newcat->incomingpath, GetDirPermissions() );
 		}
