@@ -1,5 +1,3 @@
-EXTRA_DIST = *.h 
-
 bin_PROGRAMS = wxcas
      
 wxcas_SOURCES = onlinesig.cpp \
@@ -10,6 +8,14 @@ wxcas_SOURCES = onlinesig.cpp \
 		wxcasprefs.cpp \
 		wxcascte.cpp
 
-wxcas_CFLAGS = $(WX_CFLAGS)		
+noinst_HEADERS = onlinesig.h \
+		linuxmon.h \
+		wxcas.h \
+		wxcasprint.h \
+		wxcasframe.h \
+		wxcasprefs.h \
+		wxcascte.h
+		
+wxcas_CFLAGS = $(WX_CFLAGS)
 wxcas_CXXFLAGS = $(WX_CXXFLAGS)
 wxcas_LDADD = $(WX_LIBS)
