@@ -43,7 +43,7 @@
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "SafeFile.h"		// Needed for CSafeMemFile
 #include "updownclient.h"	// Needed for CUpDownClient
-#include "packets.h"		// Needed for CTag
+#include "Packet.h"		// Needed for CTag
 #include "Preferences.h"	// Needed for CPreferences
 #include "SharedFileList.h"	// Needed for CSharedFileList
 #include "KnownFileList.h"	// Needed for CKnownFileList
@@ -875,7 +875,7 @@ const CMD4Hash& CKnownFile::GetPartHash(uint16 part) const {
 	return hashlist[part];
 }
 
-Packet*	CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
+CPacket*	CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 {
 	if (m_ClientUploadList.empty() )
 		return NULL;
@@ -958,7 +958,7 @@ Packet*	CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 	data.Seek(16, wxFromStart);
 	data.WriteUInt16(nCount);
 
-	Packet* result = new Packet(&data, OP_EMULEPROT);
+	CPacket* result = new CPacket(&data, OP_EMULEPROT);
 	result->SetOpCode( OP_ANSWERSOURCES );
 	
 	if ( result->GetPacketSize() > 354 )

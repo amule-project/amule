@@ -61,7 +61,7 @@
 #include "SharedFilesCtrl.h"	// Needed for CSharedFilesCtrl
 #include "ClientListCtrl.h"	// Needed for CClientListCtrl
 #include "DownloadListCtrl.h"	// Needed for CDownloadListCtrl
-#include "sockets.h"		// Needed for CServerConnect
+#include "ServerConnect.h"		// Needed for CServerConnect
 #include "ClientList.h"		// Needed for CClientList
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "ClientCredits.h"	// Needed for CClientCreditsList

@@ -26,7 +26,7 @@
 #include <sys/stat.h>
 
 #include "EMSocket.h"		// Interface declarations.
-#include "packets.h"		// Needed for Packet
+#include "Packet.h"		// Needed for CPacket
 #include "GetTickCount.h"
 
 #define MAX_SIZE 2000000
@@ -218,7 +218,7 @@ void CEMSocket::OnReceive(int nErrorCode){
 		// The purpose of this algorithm is to limit the amount of data exchanged between buffers
 
 		if(pendingPacket == NULL){
-			pendingPacket = new Packet(rptr); // Create new packet container. 
+			pendingPacket = new CPacket(rptr); // Create new packet container. 
 			rptr += 6;                        // Only the header is initialized so far
 
 			// Bugfix We still need to check for a valid protocol
@@ -298,9 +298,9 @@ void CEMSocket::DisableDownloadLimit(){
 	}
 }
 
-bool CEMSocket::SendPacket(Packet* packet, bool delpacket, bool controlpacket) {
+bool CEMSocket::SendPacket(CPacket* packet, bool delpacket, bool controlpacket) {
 	if (!delpacket){
-		Packet* copy = new Packet(*packet);
+		CPacket* copy = new CPacket(*packet);
 		packet = copy;
 	}			
 	if ( ( (!IsConnected()) || IsBusy() ) || ( m_bLinkedPackets && controlpacket ) ){
@@ -350,14 +350,14 @@ void CEMSocket::OnSend(int nErrorCode){
   }
 
 	while (controlpacket_queue.GetHeadPosition() != 0 && (!IsBusy()) && IsConnected() && !m_bLinkedPackets) {
-		Packet* cur_packet = controlpacket_queue.GetHead();
+		CPacket* cur_packet = controlpacket_queue.GetHead();
 		Send(cur_packet->DetachPacket(),cur_packet->GetRealPacketSize());
 		controlpacket_queue.RemoveHead();
 		delete cur_packet;
 	}
 
 	while (standartpacket_queue.GetHeadPosition() != 0 && (!IsBusy()) && IsConnected()) {
-		Packet* cur_packet = standartpacket_queue.GetHead();
+		CPacket* cur_packet = standartpacket_queue.GetHead();
 		if (cur_packet->IsLastSplitted() ) {
 			m_bLinkedPackets = false;
 		} else if (cur_packet->IsSplitted()) {
@@ -369,7 +369,7 @@ void CEMSocket::OnSend(int nErrorCode){
 	}
 
 	while (controlpacket_queue.GetHeadPosition() != 0 && (!IsBusy()) && IsConnected() && !m_bLinkedPackets) {
-		Packet* cur_packet = controlpacket_queue.GetHead();
+		CPacket* cur_packet = controlpacket_queue.GetHead();
 		Send(cur_packet->DetachPacket(),cur_packet->GetRealPacketSize());
 		controlpacket_queue.RemoveHead();
 		delete cur_packet;

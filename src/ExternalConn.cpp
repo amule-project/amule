@@ -34,7 +34,7 @@
 #include "ServerList.h"		// Needed for CServerList
 #include "SharedFileList.h"	// Needed for CSharedFileList
 #include "PartFile.h"		// Needed for CPartFile
-#include "sockets.h"		// Needed for CServerConnect
+#include "ServerConnect.h"		// Needed for CServerConnect
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "amule.h"		// Needed for theApp
@@ -628,7 +628,7 @@ CECPacket *Get_EC_Response_Search(const CECPacket *request)
 	wxString text = search_request->SearchText();
 	wxString file_type = search_request->SearchFileType();
 	wxString ext = search_request->SearchExt();
-	Packet *packet = CreateSearchPacket(text, file_type, ext,
+	CPacket *packet = CreateSearchPacket(text, file_type, ext,
 		search_request->MinSize(), search_request->MaxSize(), search_request->Avail());
 	
 	CECPacket *response = new CECPacket(EC_OP_FAILED);

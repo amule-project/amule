@@ -30,11 +30,11 @@
 #include "CTypedPtrList.h"	// Needed for CTypedPtrList
 #include "Proxy.h"		// Needed for CDatagramSocketProxy and amuleIPV4Address
 
-class Packet;
+class CPacket;
 
 #pragma pack(1)
 struct UDPPack {
-	Packet* packet;
+	CPacket* packet;
 	uint32 dwIP;
 	uint16 nPort;
 	int    trial;
@@ -54,7 +54,7 @@ class CClientUDPSocket : public CDatagramSocketProxy
 public:
 	CClientUDPSocket(amuleIPV4Address &address, const CProxyData *ProxyData = NULL);
 	virtual ~CClientUDPSocket();
-	bool	SendPacket(Packet* packet, uint32 dwIP, uint16 nPort);
+	bool	SendPacket(CPacket* packet, uint32 dwIP, uint16 nPort);
 	bool	IsBusy()	{return m_bWouldBlock;}
 
 protected:

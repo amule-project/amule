@@ -41,10 +41,10 @@
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "StringFunctions.h"		// Needed for unicode2char
 #include "otherfunctions.h"	// Needed for URLEncode, GetTypeSize
-#include "packets.h"		// Needed for Packet
+#include "Packet.h"		// Needed for CPacket
 #include "server.h"			// Needed for CServer
 #include "ServerList.h"		// Needed for CServerList
-#include "sockets.h"		// Needed for CServerConnect
+#include "ServerConnect.h"		// Needed for CServerConnect
 #include "amule.h"			// Needed for theApp
 #include "SearchListCtrl.h"	// Needed for CSearchListCtrl
 #include "muuli_wdr.h"		// Needed for IDC_STARTS
@@ -471,7 +471,7 @@ void CSearchDlg::StartNewSearch()
 	}
 
 	theApp.searchlist->NewSearch(typeText, m_nSearchID);
-	Packet *packet = CreateSearchPacket(searchString, typeText, extension, min, max, availability);
+	CPacket* packet = CreateSearchPacket(searchString, typeText, extension, min, max, availability);
 	
 	m_searchtype = CastChild( ID_SEARCHTYPE, wxChoice )->GetSelection();
 	m_globalsearch = m_searchtype == 1;

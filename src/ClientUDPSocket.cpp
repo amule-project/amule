@@ -49,7 +49,7 @@
 #include "PartFile.h"		// Needed for CPartFile
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "UploadQueue.h"	// Needed for CUploadQueue
-#include "packets.h"		// Needed for Packet
+#include "Packet.h"		// Needed for CPacket
 #include "SharedFileList.h"	// Needed for CSharedFileList
 #include "KnownFile.h"		// Needed for CKnownFile
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
@@ -137,7 +137,7 @@ bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, uint
 				data_in.ReadHash16(reqfilehash);
 				CKnownFile* reqfile = theApp.sharedfiles->GetFileByID(reqfilehash);
 				if (!reqfile) {
-					Packet* response = new Packet(OP_FILENOTFOUND,0,OP_EMULEPROT);
+					CPacket* response = new CPacket(OP_FILENOTFOUND,0,OP_EMULEPROT);
 					theApp.statistics->AddUpDataOverheadFileRequest(response->GetPacketSize());
 					SendPacket(response,host,port);
 					break;
@@ -179,7 +179,7 @@ bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, uint
 							DebugSend("OP__ReaskAck", sender);
 						}
 						#endif
-						Packet* response = new Packet(&data_out, OP_EMULEPROT);
+						CPacket* response = new CPacket(&data_out, OP_EMULEPROT);
 						response->SetOpCode(OP_REASKACK);
 						theApp.statistics->AddUpDataOverheadFileRequest(response->GetPacketSize());
 						theApp.clientudp->SendPacket(response, host, port);
@@ -188,7 +188,7 @@ bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, uint
 					}						
 				} else {
 					if (((uint32)theApp.uploadqueue->GetWaitingUserCount() + 50) > thePrefs::GetQueueSize()) {
-						Packet* response = new Packet(OP_QUEUEFULL,0,OP_EMULEPROT);
+						CPacket* response = new CPacket(OP_QUEUEFULL,0,OP_EMULEPROT);
 						theApp.statistics->AddUpDataOverheadFileRequest(response->GetPacketSize());
 						SendPacket(response,host,port);
 					}
@@ -290,7 +290,7 @@ bool CClientUDPSocket::SendTo(char* lpBuf,int nBufLen,uint32 dwIP, uint16 nPort)
 }
 
 
-bool CClientUDPSocket::SendPacket(Packet* packet, uint32 dwIP, uint16 nPort)
+bool CClientUDPSocket::SendPacket(CPacket* packet, uint32 dwIP, uint16 nPort)
 {
 	// Send any previously queued packet before this one.
 	OnSend(0);

@@ -19,11 +19,11 @@
 
 // Client to Server communication
 
-#ifndef SOCKETS_H
-#define SOCKETS_H
+#ifndef SERVERCONNECT_H
+#define SERVERCONNECT_H
 
 #if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "sockets.h"
+#pragma interface "ServerConnect.h"
 #endif
 
 #include <wx/defs.h>		// Needed before any other wx/*.h
@@ -38,8 +38,8 @@
 class CServerList;
 class CServerSocket;
 class CServer;
-class Packet;
-class CUDPSocket;
+class CPacket;
+class CServerUDPSocket;
 
 #define CS_FATALERROR	-5
 #define CS_DISCONNECTED	-4
@@ -68,13 +68,13 @@ public:
 	
 	// safe socket closure and destruction
 	void	DestroySocket(CServerSocket* pSck);
-	bool	SendPacket(Packet* packet,bool delpacket = true, CServerSocket* to = 0);
+	bool	SendPacket(CPacket* packet,bool delpacket = true, CServerSocket* to = 0);
 
 	// Creteil Begin
 	bool	IsUDPSocketAvailable() const { return udpsocket != NULL; }
 	// Creteil End
 
-	bool	SendUDPPacket(Packet* packet,CServer* host, bool delpacket = false );
+	bool	SendUDPPacket(CPacket* packet,CServer* host, bool delpacket = false );
 	bool	Disconnect();
 	bool	IsConnecting()	{ return connecting; }
 	bool	IsConnected()	{ return connected; }
@@ -100,7 +100,7 @@ private:
 	uint32	lastStartAt;
 	CServerSocket*	connectedsocket;
 	CServerList*	used_list;
-	CUDPSocket*	udpsocket;
+	CServerUDPSocket*	udpsocket;
 	
 	// list of currently opened sockets
 	CTypedPtrList<CPtrList, CServerSocket*>	m_lstOpenSockets;
@@ -110,4 +110,4 @@ private:
 	std::map<DWORD, CServerSocket*> connectionattemps;
 };
 
-#endif // SOCKETS_H
+#endif // SERVERCONNECT_H

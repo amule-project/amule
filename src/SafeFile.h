@@ -26,7 +26,7 @@
 
 #include "CFile.h"		// Needed for CFile
 #include "types.h"		// Needed for LPCSTR
-#include "CMemFile.h"		// Needed for CMemFile
+#include "MemFile.h"		// Needed for CMemFile
 #include "endianfix.h"		// Needed for ENDIAN_SWAP_*
 
 namespace Kademlia{

@@ -47,7 +47,7 @@ typedef std::vector<bool> BitVector;
 class CPartFile;
 class CClientReqSocket;
 class CClientCredits;
-class Packet;
+class CPacket;
 class CFriend;
 class Requested_Block_Struct;
 class CKnownFile;
@@ -247,7 +247,7 @@ public:
 	void		SetFriendSlot(bool bNV)		{ m_bFriendSlot = bNV; }
 	void		SetCommentDirty(bool bDirty = true){ m_bCommentDirty = bDirty; }
 	uint8		GetSourceExchangeVersion() const{ return m_bySourceExchangeVer; }
-	bool		SafeSendPacket(Packet* packet);
+	bool		SafeSendPacket(CPacket* packet);
 	
 	void		SendPublicKeyPacket();
 	void		SendSignaturePacket();
@@ -459,7 +459,7 @@ public:
 	 *
 	 * @return True if the socket exists and the packet was sent, false otherwise.
 	 */
-	bool		SendPacket(Packet* packet, bool delpacket = true, bool controlpacket = true);
+	bool		SendPacket(CPacket* packet, bool delpacket = true, bool controlpacket = true);
 	/**
 	 * Safe function for setting the download limit of the socket.
 	 *
@@ -555,7 +555,7 @@ private:
 	uint8		m_bySupportSecIdent;
 	
 	uint32		m_byCompatibleClient;
-	CList<Packet*>	m_WaitingPackets_list;
+	CList<CPacket*>	m_WaitingPackets_list;
 	DWORD		m_lastRefreshedDLDisplay;
 
 	//upload
@@ -584,7 +584,7 @@ public:
 	uint16		m_lastPartAsked;
 	wxString	m_strModVersion;
 	
-	CList<Packet*>		 			m_BlockSend_queue;
+	CList<CPacket*>		 			m_BlockSend_queue;
 	CList<Requested_Block_Struct*>	m_BlockRequests_queue;
 	CList<Requested_Block_Struct*>	m_DoneBlocks_list;
 	

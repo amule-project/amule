@@ -32,9 +32,9 @@
 
 #include "SharedFileList.h"	// Interface declarations
 #include "UploadQueue.h"	// Needed for CUploadQueue
-#include "packets.h"		// Needed for Packet
+#include "Packet.h"		// Needed for CPacket
 #include "SafeFile.h"		// Needed for CSafeMemFile
-#include "sockets.h"		// Needed for CServerConnect
+#include "ServerConnect.h"		// Needed for CServerConnect
 #include "KnownFile.h"		// Needed for CKnownFile
 #include "KnownFileList.h"	// Needed for CKnownFileList
 #include "AddFileThread.h"	// Needed for CAddFileThread
@@ -257,7 +257,7 @@ void CSharedFileList::SafeAddKFile(CKnownFile* toadd, bool bOnlyAdd){
 
 	files->WriteUInt32(1); // filecount
 	CreateOfferedFilePacket(toadd,files, server->GetCurrentServer(), NULL);
-	Packet* packet = new Packet(files);
+	CPacket* packet = new CPacket(files);
 	packet->SetOpCode(OP_OFFERFILES);
 	// compress packet
 	//   - this kind of data is highly compressable (N * (1 MD4 and at least 3 string meta data tags and 1 integer meta data tag))
@@ -310,7 +310,7 @@ void CSharedFileList::SendListToServer(){
 	     pos != m_Files_map.end(); ++pos ) {
 		CreateOfferedFilePacket(pos->second,files,server->GetCurrentServer(), NULL);
 	}
-	Packet* packet = new Packet(files);
+	CPacket* packet = new CPacket(files);
 	packet->SetOpCode(OP_OFFERFILES);
 	// compress packet
 	//   - this kind of data is highly compressable (N * (1 MD4 and at least 3 string meta data tags and 1 integer meta data tag))

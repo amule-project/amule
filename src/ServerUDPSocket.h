@@ -19,8 +19,8 @@
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef UDPSOCKET_H
-#define UDPSOCKET_H
+#ifndef SERVERUDPSOCKET_H
+#define SERVERUDPSOCKET_H
 
 #if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
 #pragma interface "UDPSocket.h"
@@ -40,20 +40,20 @@
 #include "CTypedPtrList.h"	// Needed for CTypedPtrList
 #include "Proxy.h"		// Needed for CDatagramSocketProxy and amuleIPV4Address
 
-class Packet;
+class CPacket;
 class CServer;
 class CSafeMemFile;
 
 #define WM_DNSLOOKUPDONE WM_USER+280
 
 struct ServerUDPPacket {
-	Packet*	packet;
+	CPacket*	packet;
 	CServer*	server;
 };
 
 // Client to Server communication
 
-class CUDPSocket : public CDatagramSocketProxy
+class CServerUDPSocket : public CDatagramSocketProxy
 #ifdef AMULE_DAEMON
 , wxThread
 #endif
@@ -61,13 +61,13 @@ class CUDPSocket : public CDatagramSocketProxy
 	friend class CServerConnect;
 
 public:
-	CUDPSocket(
+	CServerUDPSocket(
 		CServerConnect* in_serverconnect,
 		amuleIPV4Address &addr,
 		const CProxyData *ProxyData = NULL);
-	~CUDPSocket();
+	~CServerUDPSocket();
 
-	void	SendPacket(Packet* packet,CServer* host);
+	void	SendPacket(CPacket* packet,CServer* host);
 	void	OnHostnameResolved(uint32 ip);
 
 	virtual void OnReceive(int nErrorCode);
@@ -90,4 +90,4 @@ private:
 #endif
 };
 
-#endif // UDPSOCKET_H
+#endif // SERVERUDPSOCKET_H

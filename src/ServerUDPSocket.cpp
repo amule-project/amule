@@ -27,8 +27,8 @@
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/intl.h>		// Needed for _
 
-#include "UDPSocket.h"		// Interface declarations.
-#include "packets.h"		// Needed for Packet
+#include "ServerUDPSocket.h"	// Interface declarations.
+#include "Packet.h"		// Needed for CPacket
 #include "PartFile.h"		// Needed for CPartFile
 #include "SearchList.h"		// Needed for CSearchList
 #include "SafeFile.h"		// Needed for CSafeMemFile
@@ -47,7 +47,7 @@
 // (TCP+3) UDP socket
 //
 
-CUDPSocket::CUDPSocket(
+CServerUDPSocket::CServerUDPSocket(
 	CServerConnect* in_serverconnect,
 	amuleIPV4Address &address,
 	const CProxyData *ProxyData)
@@ -63,7 +63,7 @@ CDatagramSocketProxy(address, wxSOCKET_NOWAIT, ProxyData)
 
 #ifdef AMULE_DAEMON
 	if ( Create() != wxTHREAD_NO_ERROR ) {
-		printf("ERROR: CUDPSocket failed create\n");
+		printf("ERROR: CServerUDPSocket failed create\n");
 		wxASSERT(0);
 	}
 	Run();
@@ -75,7 +75,7 @@ CDatagramSocketProxy(address, wxSOCKET_NOWAIT, ProxyData)
   
 }
 
-CUDPSocket::~CUDPSocket(){
+CServerUDPSocket::~CServerUDPSocket(){
 	SetNotify(0);
 	Notify(FALSE);
 	if (cur_server) {
@@ -89,7 +89,7 @@ CUDPSocket::~CUDPSocket(){
 
 #define SERVER_UDP_BUFFER_SIZE 5000
 
-void CUDPSocket::OnReceive(int WXUNUSED(nErrorCode)) {
+void CServerUDPSocket::OnReceive(int WXUNUSED(nErrorCode)) {
 	uint8 buffer[SERVER_UDP_BUFFER_SIZE];
 
 	amuleIPV4Address addr;
@@ -120,7 +120,7 @@ void CUDPSocket::OnReceive(int WXUNUSED(nErrorCode)) {
 }
 
 
-void CUDPSocket::ReceiveAndDiscard() {
+void CServerUDPSocket::ReceiveAndDiscard() {
 	uint32  buffer[SERVER_UDP_BUFFER_SIZE];
 	
 	amuleIPV4Address addr;
@@ -128,7 +128,7 @@ void CUDPSocket::ReceiveAndDiscard() {
 	// And just discard it :)	
 };
 
-void CUDPSocket::ProcessPacket(CSafeMemFile& packet, int16 size, int8 opcode, const wxString& host, uint16 port){
+void CServerUDPSocket::ProcessPacket(CSafeMemFile& packet, int16 size, int8 opcode, const wxString& host, uint16 port){
 
 	CServer* update = theApp.serverlist->GetServerByAddress( host, port-4 );
 
@@ -327,7 +327,7 @@ void CUDPSocket::ProcessPacket(CSafeMemFile& packet, int16 size, int8 opcode, co
 	
 }
 
-void CUDPSocket::OnHostnameResolved(uint32 ip) {
+void CServerUDPSocket::OnHostnameResolved(uint32 ip) {
   /* An asynchronous database routine completed. */
 	//printf("Server UDP packet dns lookup done\n");
 	if (!ip) { 
@@ -364,7 +364,7 @@ void CUDPSocket::OnHostnameResolved(uint32 ip) {
   
 }
 
-void CUDPSocket::SendBuffer(){
+void CServerUDPSocket::SendBuffer(){
 	if(cur_server && sendbuffer){
 		// don't send if socket isn't there
 		if ( Ok() ) {
@@ -393,13 +393,13 @@ void CUDPSocket::SendBuffer(){
 	}
 }
 
-void CUDPSocket::SendPacket(Packet* packet,CServer* host){
+void CServerUDPSocket::SendPacket(CPacket* packet,CServer* host){
 
 	if (cur_server) {
 		// There's a packet being processed, queue this one.
 		//printf("Trying to send a Server UDP packet while there's one active, queueing\n");
 		ServerUDPPacket* queued_packet = new ServerUDPPacket;
-		queued_packet->packet = new Packet(*packet); // Because packet might be deleted
+		queued_packet->packet = new CPacket(*packet); // Because packet might be deleted
 		queued_packet->server = host;
 		server_packet_queue.AddTail(queued_packet);
 		return;
@@ -435,7 +435,7 @@ void CUDPSocket::SendPacket(Packet* packet,CServer* host){
 
 #ifdef AMULE_DAEMON
 
-void *CUDPSocket::Entry()
+void *CServerUDPSocket::Entry()
 {
 	while ( !TestDestroy() ) {
 		if ( WaitForRead(0, 1000) ) {

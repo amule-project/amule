@@ -17,12 +17,12 @@
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef CMEMFILE_H
-#define CMEMFILE_H
+#ifndef MEMFILE_H
+#define MEMFILE_H
 
 #if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-// implementation in filemem.cpp
-#pragma interface "CMemFile.h"
+// implementation in MemFile.cpp
+#pragma interface "MemFile.h"
 #endif
 
 #include "CFile.h"		// Needed for CFile
@@ -70,4 +70,4 @@ protected:
 	BYTE*	m_buffer;
 };
 
-#endif // CMEMFILE_H
+#endif // MEMFILE_H

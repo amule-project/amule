@@ -29,12 +29,12 @@
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "IPFilter.h"		// Needed for CIPFilter
-#include "sockets.h"		// Needed for CServerConnect
+#include "ServerConnect.h"		// Needed for CServerConnect
 #include "ClientCredits.h"	// Needed for CClientCreditsList
 #include "server.h"		// Needed for CServer
 #include "Preferences.h"	// Needed for CPreferences
 #include "SafeFile.h"		// Needed for CSafeMemFile
-#include "packets.h"		// Needed for Packet
+#include "Packet.h"		// Needed for CPacket
 #include "otherstructs.h"	// Needed for Requested_Block_Struct
 #include "Friend.h"		// Needed for CFriend
 #include "ClientList.h"		// Needed for CClientList
@@ -591,7 +591,7 @@ bool CUpDownClient::SendHelloPacket() {
 	data.WriteUInt8(16); // size of userhash
 	SendHelloTypePacket(&data);
 	
-	Packet* packet = new Packet(&data);
+	CPacket* packet = new CPacket(&data);
 	packet->SetOpCode(OP_HELLO);
 	theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());
 	SendPacket(packet,true);
@@ -680,7 +680,7 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer, bool OSInfo) {
 
 	}
 
-	Packet* packet = new Packet(data,OP_EMULEPROT);
+	CPacket* packet = new CPacket(data,OP_EMULEPROT);
 	delete data;
 	
 	if (!bAnswer) {
@@ -896,7 +896,7 @@ void CUpDownClient::SendHelloAnswer()
 
 	CSafeMemFile data(128);
 	SendHelloTypePacket(&data);
-	Packet* packet = new Packet(&data);
+	CPacket* packet = new CPacket(&data);
 	packet->SetOpCode(OP_HELLOANSWER);
 
 	theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());
@@ -1322,7 +1322,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 		if (theApp.serverconnect->IsLocalServer(m_dwServerIP,m_nServerPort)) {
 			CSafeMemFile data;
 			data.WriteUInt32(m_nUserID);
-			Packet* packet = new Packet(&data);
+			CPacket* packet = new CPacket(&data);
 			packet->SetOpCode(OP_CALLBACKREQUEST);
 
 			theApp.statistics->AddUpDataOverheadServer(packet->GetPacketSize());
@@ -1401,7 +1401,7 @@ void CUpDownClient::ConnectionEstablished()
 		case US_WAITCALLBACK:
 			if (theApp.uploadqueue->IsDownloading(this)) {
 				SetUploadState(US_UPLOADING);
-				Packet* packet = new Packet(OP_ACCEPTUPLOADREQ,0);
+				CPacket* packet = new CPacket(OP_ACCEPTUPLOADREQ,0);
 				theApp.statistics->AddUpDataOverheadFileRequest(packet->GetPacketSize());
 				SendPacket(packet,true);
 				#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
@@ -1410,7 +1410,7 @@ void CUpDownClient::ConnectionEstablished()
 			}
 	}
 	if (m_iFileListRequested == 1) {
-		Packet* packet = new Packet(m_fSharedDirectories ? OP_ASKSHAREDDIRS : OP_ASKSHAREDFILES,0);
+		CPacket* packet = new CPacket(m_fSharedDirectories ? OP_ASKSHAREDDIRS : OP_ASKSHAREDFILES,0);
 		theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());
 		SendPacket(packet,true,true);
 		#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
@@ -1745,7 +1745,7 @@ wxString CUpDownClient::GetUploadFileInfo()
 // sends a packet, if needed it will establish a connection before
 // options used: ignore max connections, control packet, delete packet
 // !if the functions returns false it is _possible_ that this clientobject was deleted, because the connectiontry fails
-bool CUpDownClient::SafeSendPacket(Packet* packet)
+bool CUpDownClient::SafeSendPacket(CPacket* packet)
 {
 	if (IsConnected()) {
 		SendPacket(packet);
@@ -1768,7 +1768,7 @@ void CUpDownClient::SendPublicKeyPacket(){
 	CSafeMemFile data;
 	data.WriteUInt8(theApp.clientcredits->GetPubKeyLen());
 	data.Write(theApp.clientcredits->GetPublicKey(), theApp.clientcredits->GetPubKeyLen());
-	Packet* packet = new Packet(&data, OP_EMULEPROT);
+	CPacket* packet = new CPacket(&data, OP_EMULEPROT);
 	packet->SetOpCode(OP_PUBLICKEY);
 
 	theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());
@@ -1833,7 +1833,7 @@ void CUpDownClient::SendSignaturePacket(){
 	if (bUseV2) {
 		data.WriteUInt8(byChaIPKind);
 	}
-	Packet* packet = new Packet(&data, OP_EMULEPROT);
+	CPacket* packet = new CPacket(&data, OP_EMULEPROT);
 	packet->SetOpCode(OP_SIGNATURE);
 
 	theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());
@@ -1943,7 +1943,7 @@ void CUpDownClient::SendSecIdentStatePacket(){
 		CSafeMemFile data;
 		data.WriteUInt8(nValue);
 		data.WriteUInt32(dwRandom);
-		Packet* packet = new Packet(&data, OP_EMULEPROT);
+		CPacket* packet = new CPacket(&data, OP_EMULEPROT);
 		packet->SetOpCode(OP_SECIDENTSTATE);
 
 		theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());
@@ -2036,7 +2036,7 @@ wxString CUpDownClient::GetClientFullInfo() {
 
 void CUpDownClient::SendPublicIPRequest(){
 	if (IsConnected()){
-		Packet* packet = new Packet(OP_PUBLICIP_REQ,0,OP_EMULEPROT);
+		CPacket* packet = new CPacket(OP_PUBLICIP_REQ,0,OP_EMULEPROT);
 		theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());
 		SendPacket(packet,true);
 		m_fNeedOurPublicIP = true;
@@ -2063,7 +2063,7 @@ bool CUpDownClient::IsConnected() const
 	return m_socket && m_socket->IsConnected();
 }
 
-bool CUpDownClient::SendPacket(Packet* packet, bool delpacket, bool controlpacket)
+bool CUpDownClient::SendPacket(CPacket* packet, bool delpacket, bool controlpacket)
 {
 	if ( m_socket ) {
 		return m_socket->SendPacket(packet, delpacket, controlpacket );

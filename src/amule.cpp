@@ -96,7 +96,7 @@
 #include "ClientUDPSocket.h"		// Needed for CClientUDPSocket
 #include "ServerSocket.h"		// Needed for CServerSocket
 #include "SharedFileList.h"		// Needed for CSharedFileList
-#include "sockets.h"			// Needed for CServerConnect
+#include "ServerConnect.h"			// Needed for CServerConnect
 #include "ServerList.h"			// Needed for CServerList
 #include "KnownFileList.h"		// Needed for CKnownFileList
 #include "SearchList.h"			// Needed for CSearchList
@@ -104,11 +104,11 @@
 #include "Preferences.h"		// Needed for CPreferences
 #include "ListenSocket.h"		// Needed for CListenSocket
 #include "ExternalConn.h"		// Needed for ExternalConn & MuleConnection
-#include "UDPSocket.h"			// Needed for CUDPSocket
+#include "ServerUDPSocket.h"			// Needed for CServerUDPSocket
 #include "PartFile.h"			// Needed for CPartFile
 #include "AddFileThread.h"		// Needed for CAddFileThread
 #include "updownclient.h"		// Needed for CUpDownClient
-#include "packets.h"
+#include "Packet.h"
 #include "Statistics.h"
 #include "AICHSyncThread.h"
 
@@ -1396,7 +1396,7 @@ void CamuleApp::SetOSFiles(const wxString new_path) {
 void CamuleApp::OnUDPDnsDone(wxEvent& e)
 {
 	wxMuleInternalEvent& evt = *((wxMuleInternalEvent*)&e);
-	CUDPSocket* socket=(CUDPSocket*)evt.GetClientData();	
+	CServerUDPSocket* socket=(CServerUDPSocket*)evt.GetClientData();	
 	socket->OnHostnameResolved(evt.GetExtraLong());
 }
 

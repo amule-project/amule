@@ -21,7 +21,7 @@
 
 
 #if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma implementation "sockets.h"
+#pragma implementation "ServerConnect.h"
 #endif
 
 #ifdef __WXMSW__
@@ -34,13 +34,13 @@
 #include <unistd.h>
 
 
-#include "sockets.h"		// Interface declarations.
+#include "ServerConnect.h"		// Interface declarations.
 #include "GetTickCount.h"	// Needed for GetTickCount
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "SysTray.h"		// Needed for TBN_IMPORTANTEVENT
-#include "UDPSocket.h"		// Needed for CUDPSocket
+#include "ServerUDPSocket.h"		// Needed for CServerUDPSocket
 #include "SharedFileList.h"	// Needed for CSharedFileList
-#include "packets.h"		// Needed for CTag
+#include "Packet.h"		// Needed for CTag
 #include "opcodes.h"		// Needed for CT_NAME
 #include "SafeFile.h"		// Needed for CSafeMemFile
 #include "otherfunctions.h"	// Needed for GetTickCount
@@ -235,7 +235,7 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 			(VERSION_UPDATE	<<  7) );
 		tagMuleVersion.WriteTagToFile(&data);
 
-		Packet* packet = new Packet(&data);
+		CPacket* packet = new CPacket(&data);
 		packet->SetOpCode(OP_LOGINREQUEST);
 		#ifdef DEBUG_CLIENT_PROTOCOL
 		AddLogLineM(true,wxT("Client: OP_LOGINREQUEST\n"));
@@ -268,7 +268,7 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 		// tecxx 1609 2002 - serverlist update
 		if (thePrefs::AddServersFromServer())
 		{
-			Packet* packet = new Packet(OP_GETSERVERLIST,0);
+			CPacket* packet = new CPacket(OP_GETSERVERLIST,0);
 			theApp.statistics->AddUpDataOverheadServer(packet->GetPacketSize());
 			SendPacket(packet, true);
 			#ifdef DEBUG_CLIENT_PROTOCOL
@@ -279,7 +279,7 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 }
 
 
-bool CServerConnect::SendPacket(Packet* packet,bool delpacket, CServerSocket* to)
+bool CServerConnect::SendPacket(CPacket* packet,bool delpacket, CServerSocket* to)
 {
 	if (!to) {
 		if (connected) {
@@ -294,7 +294,7 @@ bool CServerConnect::SendPacket(Packet* packet,bool delpacket, CServerSocket* to
 }
 
 
-bool CServerConnect::SendUDPPacket(Packet* packet, CServer* host, bool delpacket)
+bool CServerConnect::SendUDPPacket(CPacket* packet, CServer* host, bool delpacket)
 {
 	if (connected) {
 		udpsocket->SendPacket(packet, host);
@@ -488,7 +488,7 @@ CServerConnect::CServerConnect(CServerList* in_serverlist, amuleIPV4Address &add
 
 	// initalize socket for udp packets
 //#ifdef TESTING_PROXY
-	udpsocket = new CUDPSocket(this, address, thePrefs::GetProxyData());
+	udpsocket = new CServerUDPSocket(this, address, thePrefs::GetProxyData());
 	m_idRetryTimer.SetOwner(&theApp,TM_TCPSOCKET);
 	lastStartAt=0;	
 	InitLocalIP();	
@@ -570,7 +570,7 @@ void CServerConnect::KeepConnectionAlive()
 		CSafeMemFile* files = new CSafeMemFile(4);
 		files->WriteUInt32(0); //nFiles
 	
-		Packet* packet = new Packet(files);
+		CPacket* packet = new CPacket(files);
 		packet->SetOpCode(OP_OFFERFILES);
 		#ifdef DEBUG_CLIENT_PROTOCOL
 		AddLogLineM(true,wxT("Client: OP_OFFERFILES\n"));

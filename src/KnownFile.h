@@ -57,7 +57,7 @@
 
 class CUpDownClient;
 class CFile;
-class Packet;
+class CPacket;
 class CTag;
 
 WX_DECLARE_OBJARRAY(CMD4Hash, ArrayOfCMD4Hash);
@@ -179,7 +179,7 @@ public:
 	bool	GetPublishedED2K() const	{return m_PublishedED2K;}
 	
 	// file sharing
-	virtual	Packet*	CreateSrcInfoPacket(const CUpDownClient* forClient);
+	virtual	CPacket*	CreateSrcInfoPacket(const CUpDownClient* forClient);
 	
 	virtual void	UpdatePartsInfo();	
 

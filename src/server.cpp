@@ -27,7 +27,7 @@
 #include "otherfunctions.h"	// Needed for nstrdup
 #include "NetworkFunctions.h" // Needed for StringIPtoUint32
 #include "otherstructs.h"	// Needed for ServerMet_Struct
-#include "packets.h"		// Needed for CTag
+#include "Packet.h"		// Needed for CTag
 
 #include <wx/intl.h>	// Needed for _
 

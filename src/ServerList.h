@@ -32,7 +32,7 @@
 #include "CTypedPtrList.h"	// Needed for CTypedPtrList
 
 class CServer;
-class Packet;
+class CPacket;
 
 class CServerList
 {
@@ -63,7 +63,7 @@ public:
 	bool		IsGoodServerIP( CServer* in_server ); //<<--
 	void		GetStatus( uint32 &total, uint32 &failed, uint32 &user, uint32 &file, uint32 &tuser, uint32 &tfile, float &occ);
 	void		GetUserFileStatus( uint32 &user, uint32 &file);
-	bool		BroadCastPacket(Packet* packet); //send Packet to all server in the list
+	bool		BroadCastPacket(CPacket* packet); //send Packet to all server in the list
 	void		CancelUDPBroadcast();
 	void		Sort();
 	void		MoveServerDown(CServer* aServer);
@@ -90,7 +90,7 @@ private:
 	//uint32		udp_timer;
 	 AMULE_TIMER_CLASS        udp_timer;
 	POSITION	broadcastpos;
-	Packet*		broadcastpacket;
+	CPacket*		broadcastpacket;
 	uint32		delservercount;
 	uint32		m_nLastSaved;
 	uint32		m_nLastED2KServerLinkCheck;// emanuelw(20030924) added

@@ -36,7 +36,7 @@
 class CMuleNotebook;
 class CSearchListCtrl;
 class CMuleNotebookEvent;
-class Packet;
+class CPacket;
 class CServer;
 class wxListEvent;
 class wxNotebookEvent;
@@ -167,4 +167,3 @@ private:
 };
 
 #endif
-

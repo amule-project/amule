@@ -26,7 +26,7 @@
 #include "NetworkFunctions.h" // Needed for IsGoodIP
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "SafeFile.h"		// Needed for CSafeMemFile
-#include "packets.h"		// Needed for CTag
+#include "Packet.h"		// Needed for CTag
 #include "amule.h"			// Needed for theApp
 #include "ServerSocket.h"
 #include "server.h"
@@ -46,7 +46,7 @@
 #include "muuli_wdr.h"		// Needed for ID_NOTEBOOK
 #endif
 
-CGlobalSearchThread::CGlobalSearchThread( Packet *packet )
+CGlobalSearchThread::CGlobalSearchThread( CPacket* packet )
 	: wxThread(wxTHREAD_DETACHED)
 {
 	m_packet = packet;
@@ -99,7 +99,7 @@ void *CGlobalSearchThread::Entry()
 }
 
 
-Packet *CreateSearchPacket(wxString &searchString, wxString& typeText,
+CPacket* CreateSearchPacket(wxString &searchString, wxString& typeText,
 				wxString &extension, uint32 min, uint32 max, uint32 avaibility)
 {
 	// Count the number of used parameters
@@ -165,7 +165,7 @@ Packet *CreateSearchPacket(wxString &searchString, wxString& typeText,
 		data->Write(extensionNemonic, 3); // Nemonic for this kind of parameter (only 3 bytes!!)
 	}
 
-	Packet* packet = new Packet(data);
+	CPacket* packet = new CPacket(data);
 	packet->SetOpCode(OP_SEARCHREQUEST);
 	delete data;
 	

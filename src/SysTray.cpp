@@ -46,7 +46,7 @@
 #include "SharedFileList.h"	// Needed for CSharedFileList
 #include "server.h"		// Needed for GetListName
 #include "otherfunctions.h"	// Needed for EncodeBase16
-#include "sockets.h"		// Needed for CServerConnect
+#include "ServerConnect.h"		// Needed for CServerConnect
 #include "SharedFilesCtrl.h"	// Needed for CSharedFilesCtrl
 #include "SharedFilesWnd.h"	// Needed for CSharedFilesWnd
 #include "ServerListCtrl.h"	// Needed for CServerListCtrl

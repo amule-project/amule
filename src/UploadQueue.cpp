@@ -40,9 +40,9 @@
 #include "ClientCredits.h"	// Needed for CClientCreditsList
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "server.h"			// Needed for CServer
-#include "sockets.h"		// Needed for CServerConnect
+#include "ServerConnect.h"		// Needed for CServerConnect
 #include "KnownFile.h"		// Needed for CKnownFile
-#include "packets.h"		// Needed for Packet
+#include "Packet.h"		// Needed for CPacket
 #include "ListenSocket.h"	// Needed for CClientReqSocket
 #include "SharedFileList.h"	// Needed for CSharedFileList
 #include "opcodes.h"		// Needed for MAX_PURGEQUEUETIME
@@ -157,7 +157,7 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd){
 			return;
 		}
 	} else {
-		Packet* packet = new Packet(OP_ACCEPTUPLOADREQ,0);
+		CPacket* packet = new CPacket(OP_ACCEPTUPLOADREQ,0);
 		theApp.statistics->AddUpDataOverheadFileRequest(packet->GetPacketSize());
 		newclient->SendPacket(packet,true);
 		newclient->SetUploadState(US_UPLOADING);
@@ -386,7 +386,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client)
 	
 	if (client->IsDownloading()) {
 		// he's already downloading and wants probably only another file
-		Packet* packet = new Packet(OP_ACCEPTUPLOADREQ,0);
+		CPacket* packet = new CPacket(OP_ACCEPTUPLOADREQ,0);
 		theApp.statistics->AddUpDataOverheadFileRequest(packet->GetPacketSize());
 		client->SendPacket(packet,true);
 		return;
