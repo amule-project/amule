@@ -63,9 +63,11 @@ int CmpAny(const TYPE& ArgA, const TYPE& ArgB)
 	}
 }
 
-inline void ZeroMemory(void* Ptr, size_t Size) {
-	memset(Ptr,0,Size);
-}
+// This stupid function break minGW 3.3.1, 3.3.3, and 3.4 and it is used
+// Only 1 time ! Removing it !!!
+/*inline void ZeroMemory (void* Ptr, size_t Size) {
+	memset (Ptr,0,Size);
+}*/
 
 
 /**
