@@ -519,6 +519,9 @@ const unsigned int UNLIMITED	= 	0;
 #define	ET_PLUS					0x99	// int - eMule Plus version
 #define	ET_FEATURESET				0x54	// int - [Bloodymad Featureset]
 
+// Reuse a random tag for aMule OS_INFO
+
+#define	ET_OS_INFO				ET_MOD_OXY // We use MOD_OXY because the type is unknown
 
 // amuleapp <-> amuleapp
 #define	OP_ED2KLINK				12000
