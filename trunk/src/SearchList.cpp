@@ -48,7 +48,7 @@ bool IsValidClientIPPort(uint32 nIP, uint16 nPort)
 //       Call the function UngetSearchListControl() to unlock the notebook. But
 //       only after you are done with the Control returned by this function.
 //
-static CSearchListCtrl* GetSearchListControl(uint32 nSearchID)
+static CSearchListCtrl* GetSearchListControl(long nSearchID)
 {
 	CMuleNotebook* nb=(CMuleNotebook*)wxWindow::FindWindowById(ID_NOTEBOOK);
 	if ( !nb ) return NULL;
@@ -100,7 +100,7 @@ CSearchFile::CSearchFile(CSearchFile* copyfrom)
 }
 
 
-CSearchFile::CSearchFile(const CSafeMemFile* in_data, uint32 nSearchID, uint32 nServerIP, uint16 nServerPort, LPCTSTR pszDirectory)
+CSearchFile::CSearchFile(const CSafeMemFile* in_data, long nSearchID, uint32 nServerIP, uint16 nServerPort, LPCTSTR pszDirectory)
 {
 	m_nSearchID = nSearchID;
 	in_data->ReadHash16(m_abyFileHash);
@@ -148,7 +148,7 @@ CSearchFile::CSearchFile(const CSafeMemFile* in_data, uint32 nSearchID, uint32 n
 	m_bPreviewPossible = false;
 }
 
-CSearchFile::CSearchFile(uint32 nSearchID, const CMD4Hash& pucFileHash, uint32 uFileSize, LPCTSTR pszFileName, int WXUNUSED(iFileType), int iAvailability)
+CSearchFile::CSearchFile(long nSearchID, const CMD4Hash& pucFileHash, uint32 uFileSize, LPCTSTR pszFileName, int WXUNUSED(iFileType), int iAvailability)
 {
 	m_nSearchID = nSearchID;
 	m_abyFileHash = pucFileHash;
@@ -236,7 +236,7 @@ void CSearchList::Clear(){
 	list.RemoveAll();
 }
 
-void CSearchList::RemoveResults( uint32 nSearchID){
+void CSearchList::RemoveResults(long nSearchID){
 	// this will not delete the item from the window, make sure your code does it if you call this
 	POSITION pos1, pos2;
 	for (pos1 = list.GetHeadPosition();( pos2 = pos1 ) != NULL;){
@@ -249,7 +249,7 @@ void CSearchList::RemoveResults( uint32 nSearchID){
 	}
 }
 
-void CSearchList::ShowResults( uint32 nSearchID){
+void CSearchList::ShowResults(long nSearchID){
 	CSearchListCtrl* outputwnd = GetSearchListControl(nSearchID);
 	if ( outputwnd ) {
 		//outputwnd->SetRedraw(false);
@@ -267,7 +267,7 @@ void CSearchList::ShowResults( uint32 nSearchID){
 	UngetSearchListControl(outputwnd);
 }
 
-void CSearchList::NewSearch(const wxString& resTypes, uint16 nSearchID){
+void CSearchList::NewSearch(const wxString& resTypes, long nSearchID){
 	resultType=resTypes;
 	m_nCurrentSearch = nSearchID;
 	myHashList=wxEmptyString;
@@ -279,7 +279,7 @@ uint16 CSearchList::ProcessSearchanswer(const char *in_packet, uint32 size, CUpD
 	const CSafeMemFile *packet = new CSafeMemFile((BYTE*)in_packet,size,0);
 
 	if(Sender) {
-	  theApp.amuledlg->searchwnd->CreateNewTab(Sender->GetUserName() + wxT(" (0)"),(uint32)Sender);
+	  theApp.amuledlg->searchwnd->CreateNewTab(Sender->GetUserName() + wxT(" (0)"),(long)Sender);
 	}
 
 	try
@@ -466,7 +466,7 @@ bool CSearchList::AddToList(CSearchFile* toadd, bool bClientResponse){
 	return true;
 }
 
-uint16 CSearchList::GetResultCount(uint32 nSearchID) {
+uint16 CSearchList::GetResultCount(long nSearchID) {
 	uint16 hits = 0;
 	for (POSITION pos = list.GetHeadPosition(); pos != NULL; list.GetNext(pos)){
 		if( list.GetAt(pos)->GetSearchID() == nSearchID ) {
@@ -481,7 +481,7 @@ uint16 CSearchList::GetResultCount(){
 	return GetResultCount(m_nCurrentSearch);
 }
 
-uint16 CSearchList::GetFoundFiles(uint32 searchID) {
+uint16 CSearchList::GetFoundFiles(long searchID) {
 	return foundFilesCount[ searchID ];
 }
 

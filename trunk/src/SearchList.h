@@ -35,8 +35,8 @@ class CSearchFile : public CAbstractFile {
 	friend class CPartFile;
 public:
 	//CSearchFile() {};
-	CSearchFile(const CSafeMemFile* in_data, uint32 nSearchID, uint32 nServerIP=0, uint16 nServerPort=0, LPCTSTR pszDirectory = NULL);
-	CSearchFile(uint32 nSearchID, const CMD4Hash& pucFileHash, uint32 uFileSize, LPCTSTR pszFileName, int iFileType, int iAvailability);
+	CSearchFile(const CSafeMemFile* in_data, long nSearchID, uint32 nServerIP=0, uint16 nServerPort=0, LPCTSTR pszDirectory = NULL);
+	CSearchFile(long nSearchID, const CMD4Hash& pucFileHash, uint32 uFileSize, LPCTSTR pszFileName, int iFileType, int iAvailability);
 	CSearchFile(CSearchFile* copyfrom);
 	//CSearchFile(CFile* in_data, uint32 nSearchID);
 	~CSearchFile();
@@ -46,7 +46,7 @@ public:
 	uint32	AddSources(uint32 count, uint32 count_complete);
 	uint32	GetSourceCount();
 	uint32	GetCompleteSourceCount();
-	uint32	GetSearchID() 				{ return m_nSearchID; }
+	long	GetSearchID() 				{ return m_nSearchID; }
 	uint32	GetClientID() const			{ return m_nClientID; }
 	void	SetClientID(uint32 nClientID)		{ m_nClientID = nClientID; }
 	uint16	GetClientPort() const			{ return m_nClientPort; }
@@ -97,7 +97,7 @@ public:
 private:
 	uint8	clientip[4];
 	uint16	clientport;
-	uint32	m_nSearchID;
+	long	m_nSearchID;
 	std::vector<CTag*> taglist;
 
 	uint32	m_nClientID;
@@ -120,7 +120,7 @@ public:
 	~CSearchList();
 	void	Clear();
 
-	void	NewSearch(const wxString& resTypes, uint16 nSearchID);
+	void	NewSearch(const wxString& resTypes, long nSearchID);
 	uint16	ProcessSearchanswer(const char* packet, uint32 size, CUpDownClient* Sender = NULL);
 	uint16	ProcessSearchanswer(const char* packet, uint32 size, uint32 nServerIP, uint16 nServerPort);
 	uint16	ProcessSearchanswer(const char* in_packet, uint32 size, CUpDownClient* Sender, bool* pbMoreResultsAvailable, LPCTSTR pszDirectory);
@@ -128,13 +128,13 @@ public:
    // uint16	ProcessUDPSearchanswer(char* packet, uint32 size);
 
 	uint16	GetResultCount();
-	uint16	GetResultCount(uint32 nSearchID);
-	void	RemoveResults(  uint32 nSearchID );
+	uint16	GetResultCount(long nSearchID);
+	void	RemoveResults(long nSearchID);
 	void	RemoveResults( CSearchFile* todel );
-	void	ShowResults(uint32 nSearchID);
+	void	ShowResults(long nSearchID);
 	wxString GetWebList(const wxString& linePattern,int sortby,bool asc) const;
 	void	AddFileToDownloadByHash(const CMD4Hash& hash, uint8 cat = 0);
-	uint16	GetFoundFiles(uint32 searchID);
+	uint16	GetFoundFiles(long searchID);
 
 private:
 	bool AddToList(CSearchFile* toadd, bool bClientResponse = false);
@@ -144,7 +144,7 @@ private:
 	wxString myHashList;
 	wxString resultType;
 	
-	uint32	m_nCurrentSearch;
+	long	m_nCurrentSearch;
 };
 
 #endif // SEARCHLIST_H

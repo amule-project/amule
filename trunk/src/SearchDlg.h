@@ -49,7 +49,7 @@ public:
 	void		DeleteAllSearchs();
 	void		ToggleLinksHandler();
 	bool		CheckTabNameExists(wxString searchString);
-	void		CreateNewTab(wxString searchString, uint32 nSearchID);
+	void		CreateNewTab(wxString searchString, long nSearchID);
 	void		DeleteSearch(uint16 nSearchID);
 	void		LocalSearchEnd(uint16 count);
 	void		UpdateCatChoice();

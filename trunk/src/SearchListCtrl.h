@@ -43,7 +43,7 @@ public:
 	void	AddResult(CSearchFile* toshow);
 	void	RemoveResult( CSearchFile* toremove);
 	void	Localize();
-	void	ShowResults(uint32 nResultsID);
+	void	ShowResults(long nResultsID);
 	//void OnRclick(wxListEvent& evt);
 	void OnNMRclick(wxMouseEvent& evt);
 	void OnLDclick(wxMouseEvent& evt);
@@ -65,7 +65,7 @@ private:
 	//CTitleMenu	 m_SearchFileMenu;
 	wxMenu* m_SearchFileMenu;
 	CSearchList* searchlist;
-	uint32		 m_nResultsID;
+	long		 m_nResultsID;
 	bool		 asc_sort[7];	 
 };
 
