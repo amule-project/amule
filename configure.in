@@ -8,8 +8,8 @@ AM_CONFIG_HEADER([config.h])
 AM_MAINTAINER_MODE
 
 # No -O2 by default, removing -fomit since it causes problems
-CFLAGS=" ${CFLAGS/-fomit-frame-pointer/}"
-CXXFLAGS=" ${CXXFLAGS/-fomit-frame-pointer/}"
+CFLAGS="`echo $CFLAGS | sed "s/-fomit-frame-pointer//g"`"
+CXXFLAGS="`echo $CXXFLAGS | sed "s/-fomit-frame-pointer//g"`"
 
 # System detection, need AC_CANONICAL_TARGET
 case "${target_os}" in
