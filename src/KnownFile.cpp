@@ -136,7 +136,14 @@ CKnownFile::CKnownFile(CEC_SharedFile_Tag *tag)
 	m_abyFileHash = tag->ID();
 	m_nFileSize = tag->SizeFull();
 	m_iPartCount = (m_nFileSize + (PARTSIZE - 1)) / PARTSIZE;
+	#if wxCHECK_VERSION(2, 5, 0)
 	m_AvailPartFrequency.SetCount(m_iPartCount);
+	#else
+	// wx2.4 has no SetCount.
+	if (m_AvailPartCount.Count() < m_iPartCount) {
+		m_AvailPartCount.Add(0, m_iPartCount - m_AvailPartCount.Count());
+	}
+	#endif
 	m_iUpPriority = tag->Prio();
 	if ( m_iUpPriority >= 10 ) {
 		m_iUpPriority-= 10;
