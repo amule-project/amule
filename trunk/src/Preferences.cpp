@@ -463,15 +463,8 @@ public:
 		if ( Cfg_Tmpl<int>::TransferToWindow() ) {
 			
 			// In order to let us update labels on slider-changes, we trigger a event
-			if ( m_widget->IsKindOf(CLASSINFO(wxSlider)) ) {
-				wxSlider *slider = (wxSlider *)m_widget;
-#warning Why doesnt this work? Maybe something to do with templates?
-//			wxSlider *slider = wxDynamicCast(m_widget, wxSlider);
-//			if (slider) {
-// The next version compiles, but worries me that wxDynamicCast is still not defined as dynamic_cast,
-// so, lets leave this out for now.
-//			wxSlider *slider = dynamic_cast<wxSlider *>(m_widget);
-//			if (slider) {
+			wxSlider *slider = dynamic_cast<wxSlider *>(m_widget);
+			if (slider) {
 				int id = m_widget->GetId();
 				int pos = slider->GetValue();
 				wxScrollEvent evt( wxEVT_SCROLL_THUMBRELEASE, id, pos );
