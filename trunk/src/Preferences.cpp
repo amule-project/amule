@@ -676,10 +676,13 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	NewCfgItem(IDC_FCHECKSELF,	(new Cfg_Str(  wxT("/FakeCheck/CustomBrowser"), s_CustomBrowser, wxEmptyString )));
 	NewCfgItem(IDC_QUEUESIZE,	(MkCfg_Int( wxT("/eMule/QueueSizePref"), s_iQueueSize, 50 )));
 
+
+#ifdef __DEBUG__
 	/**
 	 * Debugging
 	 **/
 	NewCfgItem(ID_VERBOSEDEBUG, (new Cfg_Bool( wxT("/eMule/VerboseDebug"), s_bVerbose, false )));
+#endif
 
 	/**
 	 * Connection settings
@@ -916,7 +919,7 @@ void CPreferences::LoadAllItems(wxConfigBase* cfg)
 	}
 
 // Load debug-categories
-#ifdef __VERBOSE_OUTPUT__
+#ifdef __DEBUG__
 	int count = CLogger::GetDebugCategoryCount();
 
 	for ( int i = 0; i < count; i++ ) {
@@ -948,7 +951,7 @@ void CPreferences::SaveAllItems(wxConfigBase* cfg)
 
 
 // Save debug-categories
-#ifdef __VERBOSE_OUTPUT__
+#ifdef __DEBUG__
 	int count = CLogger::GetDebugCategoryCount();
 
 	for ( int i = 0; i < count; i++ ) {

@@ -165,7 +165,7 @@ PrefsPage pages[] =
 	//{ wxTRANSLATE("Notifications"),	PreferencesNotifyTab,		18, NULL },
 	{ wxTRANSLATE("Gui Tweaks"),		PreferencesGuiTweaksTab,	19, NULL },
 	{ wxTRANSLATE("Core Tweaks"),		PreferencesaMuleTweaksTab,	12, NULL }
-#ifdef __VERBOSE_OUTPUT__
+#ifdef __DEBUG__
 	,{ wxTRANSLATE("Debugging"),		PreferencesDebug,			25, NULL }
 #endif
 };
@@ -379,7 +379,7 @@ bool PrefsUnifiedDlg::TransferToWindow()
 	CastChild( IDC_SPIN_PERM_DO, wxSpinCtrl )->SetValue( perms % 0100 % 010 / 01 );
 
 	// Set debugging toggles
-#ifdef __VERBOSE_OUTPUT__
+#ifdef __DEBUG__
 	int count = CLogger::GetDebugCategoryCount();
 	wxCheckListBox* list = CastChild( ID_DEBUGCATS, wxCheckListBox );
 
@@ -432,7 +432,7 @@ bool PrefsUnifiedDlg::TransferFromWindow()
 	thePrefs::SetDirPermissions( dir_perms );
 
 	// Get debugging toggles
-#ifdef __VERBOSE_OUTPUT__
+#ifdef __DEBUG__
 	int count = CLogger::GetDebugCategoryCount();
 	wxCheckListBox* list = CastChild( ID_DEBUGCATS, wxCheckListBox );
 

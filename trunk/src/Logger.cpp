@@ -75,7 +75,7 @@ const int categoryCount = sizeof( g_debugcats ) / sizeof( g_debugcats[0] );
 
 bool CLogger::IsEnabled( DebugType type )
 {
-#ifdef __VERBOSE_OUTPUT__
+#ifdef __DEBUG__
 	int index = (int)type;
 	
 	if ( index >= 0 && index < categoryCount ) {
@@ -128,7 +128,7 @@ void CLogger::AddDebugLogLine( bool critical, DebugType type, const wxString& st
 
 		wxString line = cat.GetName() + wxT(": ") + str;
 		
-#ifdef __VERBOSE_OUTPUT__
+#ifdef __DEBUG__
 		GUIEvent event( ADDDEBUGLOGLINE, critical, line );
 		
 		if ( wxThread::IsMain() ) {
