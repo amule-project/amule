@@ -77,6 +77,7 @@ amulegui_SOURCES = \
 	FileDetailListCtrl.cpp \
 	FriendListCtrl.cpp \
 	KadDlg.cpp \
+	KnownFile.cpp \
 	listctrl.cpp \
 	MD5Sum.cpp \
 	MemFile.cpp \
@@ -89,6 +90,7 @@ amulegui_SOURCES = \
 	OtherFunctions.cpp \
 	DataToText.cpp \
 	OScopeCtrl.cpp \
+	PartFile.cpp \
 	Packet.cpp \
 	Preferences.cpp \
 	PrefsUnifiedDlg.cpp \

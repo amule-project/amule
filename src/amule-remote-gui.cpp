@@ -59,8 +59,8 @@
 
 #include "amule.h"			// Interface declarations.
 #include "GetTickCount.h"		// Needed for GetTickCount
-#include "server.h"			// Needed for GetListName
-#include "otherfunctions.h"		// Needed for GetTickCount
+#include "Server.h"			// Needed for GetListName
+#include "OtherFunctions.h"		// Needed for GetTickCount
 #include "TransferWnd.h"		// Needed for CTransferWnd
 #include "SharedFilesWnd.h"		// Needed for CSharedFilesWnd
 #include "ServerWnd.h"			// Needed for CServerWnd
@@ -68,6 +68,7 @@
 #include "Preferences.h"		// Needed for CPreferences
 #include "StringFunctions.h"
 #include "PartFile.h"			// Needed for CPartFile
+#include "updownclient.h"
 
 #include "muuli_wdr.h"			// Needed for IDs
 #include "amuleDlg.h"			// Needed for CamuleDlg
@@ -212,6 +213,12 @@ wxString CamuleRemoteGuiApp::GenFakeCheckUrl2(const CAbstractFile *f)
 	return strURL;
 }
 
+bool CamuleRemoteGuiApp::AddServer(CServer *)
+{
+	// FIXME: add remote command
+	return true;
+}
+
 void CamuleRemoteGuiApp::NotifyEvent(GUIEvent event)
 {
 	switch (event.ID) {
@@ -329,6 +336,11 @@ void CServerListRem::RemoveServer(CServer* server)
 	m_conn->Send(&req);
 }
 
+CServer *CServerListRem::GetServerByAddress(const wxString& address, uint16 port)
+{
+	// FIXME: add code, nothing special
+	return 0;
+}
 
 void CIPFilterRem::Reload()
 {
@@ -414,6 +426,18 @@ void CDownQueueRem::StopUDPRequests()
 	// have no idea what is it about
 }
 
+void CDownQueueRem::ResetCatParts(int)
+{
+	// TODO: add command
+	wxASSERT(0);
+}
+
+bool CDownQueueRem::IsPartFile(const CKnownFile *) const
+{
+	// hope i understand it right
+	return false;
+}
+
 CClientListRem::CClientListRem(CRemoteConnect *conn)
 {
 	m_conn = conn;
@@ -441,6 +465,12 @@ void CSearchListRem::StopGlobalSearch()
 {
 	// add code
 	wxASSERT(0);
+}
+
+bool CUpDownClient::IsBanned() const
+{
+	// add code
+	return false;
 }
 
 //
