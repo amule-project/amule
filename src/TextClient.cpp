@@ -629,20 +629,18 @@ void CamulecmdApp::Process_Answer_v2(CECPacket *response)
 					break;
 				}
 			}
-			CECTag *statsDLSpeed = response->GetTagByName(EC_TAG_STATS_DL_SPEED);
-			if (statsDLSpeed) {
-				s <<	_("\nDownload:\t") <<
-					CastItoXBytes(statsDLSpeed->GetInt32Data()) << _("/sec");
+			CECTag *tmpTag;
+			if ((tmpTag = response->GetTagByName(EC_TAG_STATS_DL_SPEED)) != 0) {
+				s <<	_("\nDownload:\t") << CastItoXBytes(tmpTag->GetInt32Data()) << _("/sec");
 			}
-			CECTag *statsULSpeed = response->GetTagByName(EC_TAG_STATS_UL_SPEED);
-			if (statsULSpeed) {
-				s <<	_("\nUpload:\t") <<
-					CastItoXBytes(statsULSpeed->GetInt32Data()) << _("/sec");
+			if ((tmpTag = response->GetTagByName(EC_TAG_STATS_UL_SPEED)) != 0) {
+				s <<	_("\nUpload:\t") << CastItoXBytes(tmpTag->GetInt32Data()) << _("/sec");
 			}
-			CECTag *statsULQueueLen = response->GetTagByName(EC_TAG_STATS_UL_QUEUE_LEN);
-			if (statsULQueueLen) {
-				s << 	_("\nClients in queue: \t") <<
-					statsULQueueLen->GetInt32Data() << wxT("\n");
+			if ((tmpTag = response->GetTagByName(EC_TAG_STATS_UL_QUEUE_LEN)) != 0) {
+				s << 	_("\nClients in queue: \t") << tmpTag->GetInt32Data() << wxT("\n");
+			}
+			if ((tmpTag = response->GetTagByName(EC_TAG_STATS_TOTAL_SRC_COUNT)) != 0) {
+				s << 	_("\nTotal sources: \t") << tmpTag->GetInt32Data() << wxT("\n");
 			}
 			break;
 		}
