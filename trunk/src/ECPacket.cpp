@@ -16,8 +16,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// Commented out because with current code it'll most likely screw up gcc optimizations
-//#pragma implementation
+#pragma implementation
 
 #include "ECPacket.h"	// Needed for ECTag, ECPacket
 #include "ECSocket.h"	// Needed for ECSocket
@@ -598,7 +597,7 @@ EC_IPv4_t CECTag::GetIPv4Data(void) const
  *							  *
  **********************************************************/
 
-CECPacket::CECPacket(wxSocketBase *sock, ECSocket& socket) : CECTag(0, 0, NULL, true)
+CECPacket::CECPacket(wxSocketBase *sock, ECSocket& socket) : CECEmptyTag(0)
 {
 	m_error = 0;
 	if (!socket.ReadNumber(sock, &m_opCode, sizeof(ec_opcode_t))) {

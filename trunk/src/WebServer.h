@@ -55,6 +55,7 @@
 #include "types.h"
 #include "WebInterface.h"
 #include "KnownFile.h"
+#include "ECPacket.h"
 
 class TransferredData;
 class CWSThread;
@@ -453,7 +454,7 @@ class CWebServer {
 		static wxString	GetPermissionDenied();
 		static wxString	_GetDownloadGraph(ThreadData Data,int percent, wxString &s_ChunkBar);
 
-		static void	InsertCatBox(CWebServer *pThis, wxString &Out, int preselect, wxString boxlabel, bool jump=false, bool extraCats=false);
+		static void	InsertCatBox(wxString &Out, int preselect, wxString boxlabel, CECTag *cats, bool jump=false);
 		static wxString GetStatusBox(wxString &preselect);
 
 		// Common data

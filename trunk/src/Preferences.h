@@ -195,22 +195,29 @@ public:
 
 	static bool		Score()				{ return s_scorsystem; }
 	static bool		Reconnect()			{ return s_reconnect; }
+	static void		SetReconnect(bool val)		{ s_reconnect = val; }
 	static bool		DeadServer()			{ return s_deadserver; }
 	static const wxString&	GetUserNick()			{ return s_nick; }
 
 	static uint16		GetPort()			{ return s_port; }
+	static void		SetPort(uint16 val)		{ s_port = val; }
 	static uint16		GetUDPPort()			{ return s_udpport; }
+	static void		SetUDPPort(uint16 val)		{ s_udpport = val; }
+	static bool		IsUDPDisabled()			{ return s_UDPDisable; }
+	static void		SetUDPDisable(bool val)		{ s_UDPDisable = val; }
 	static const wxString&	GetIncomingDir()		{ return s_incomingdir; }
 	static const wxString&	GetTempDir()			{ return s_tempdir; }
 	static const CMD4Hash&	GetUserHash()			{ return s_userhash; }
 	static uint16		GetMaxUpload()			{ return s_maxupload; }
 	static uint16		GetSlotAllocation()		{ return s_slotallocation; }
 	static bool		IsICHEnabled()			{ return s_ICH; }
-	static bool IsTrustingEveryHash() { return s_AICHTrustEveryHash; }
+	static void		SetICHEnabled(bool val)		{ s_ICH = val; }
+	static bool		IsTrustingEveryHash()		{ return s_AICHTrustEveryHash; }
+	static void		SetTrustingEveryHash(bool val)	{ s_AICHTrustEveryHash = val; }
 	static bool		AutoServerlist()		{ return s_autoserverlist; }
 	static bool		DoMinToTray()			{ return s_mintotray; }
 	static bool		DoAutoConnect()			{ return s_autoconnect; }
-	static void		SetAutoConnect( bool inautoconnect)
+	static void		SetAutoConnect(bool inautoconnect)
        					{s_autoconnect = inautoconnect; }
 	static bool		AddServersFromServer()		{ return s_addserversfromserver; }
 	static bool		AddServersFromClient()		{ return s_addserversfromclient; }
@@ -245,6 +252,7 @@ public:
                                         return temp; }
 	static uint16		GetDeadserverRetries()		{ return s_deadserverretries; }
 	static DWORD		GetServerKeepAliveTimeout()	{ return s_dwServerKeepAliveTimeoutMins*60000; }
+	static void		SetServerKeepAliveTimeout(uint32 val)	{ s_dwServerKeepAliveTimeoutMins = val/60000; }
 	
 	static WORD		GetLanguageID()			{ return s_languageID; }
 	static void		SetLanguageID(WORD new_id)	{ s_languageID = new_id; }
@@ -267,6 +275,7 @@ public:
 	static void		SetSmartIdState( uint8 in_smartidstate )
        					{ s_smartidstate = in_smartidstate; }
 	static bool		GetVerbose()			{ return s_bVerbose; }
+	static void		SetVerbose(bool val)		{ s_bVerbose = val; }
 	static bool		GetPreviewPrio()		{ return s_bpreviewprio; }
 	static void		SetPreviewPrio(bool in)		{ s_bpreviewprio = in; }
 	static bool		GetUpdateQueueList()		{ return s_bupdatequeuelist; }
@@ -275,6 +284,7 @@ public:
 	static void		SetTransferFullChunks( bool m_bintransferfullchunks ) 
 					{s_btransferfullchunks = m_bintransferfullchunks; }
 	static bool		StartNextFile()			{ return s_bstartnextfile; }
+	static void		SetStartNextFile(bool val)	{ s_bstartnextfile = val; }
 	static bool		ShowOverhead()			{ return s_bshowoverhead; }
 	static void		SetNewAutoUp(bool m_bInUAP) 	{ s_bUAP = m_bInUAP; }
 	static bool		GetNewAutoUp() 			{ return s_bUAP; }
@@ -284,11 +294,14 @@ public:
 	static const wxString&	GetVideoPlayer()		{ return s_VideoPlayer; }
 
 	static uint32		GetFileBufferSize() 		{ return s_iFileBufferSize*15000; }
+	static void		SetFileBufferSize(uint32 val)	{ s_iFileBufferSize = val/15000; }
 	static uint32		GetQueueSize() 			{ return s_iQueueSize*100; }
+	static void		SetQueueSize(uint32 val)	{ s_iQueueSize = val/100; }
 
 	// Barry
 	static uint8		Get3DDepth() 			{ return s_depth3D;}
 	static bool		AddNewFilesPaused()		{ return s_addnewfilespaused; }
+	static void		SetAddNewFilesPaused(bool val)	{ s_addnewfilespaused = val; }
 
 	static void		SetMaxConsPerFive(int in)	{ s_MaxConperFive=in; }
 
@@ -298,8 +311,10 @@ public:
 	static bool		IsSafeServerConnectEnabled()	{ return s_safeServerConnect; }
 	static bool		IsMoviePreviewBackup()		{ return s_moviePreviewBackup; }
 	
-	static bool		IsCheckDiskspaceEnabled()	{ return s_checkDiskspace != 0; }
+	static bool		IsCheckDiskspaceEnabled()	{ return s_checkDiskspace; }
+	static void		SetCheckDiskspaceEnabled(bool val)	{ s_checkDiskspace = val; }
 	static uint32		GetMinFreeDiskSpace()		{ return s_uMinFreeDiskSpace; }
+	static void		SetMinFreeDiskSpace(uint32 val)	{ s_uMinFreeDiskSpace = val; }
 
 	static const wxString&	GetYourHostname() 		{ return s_yourHostname; }
 
@@ -331,6 +346,7 @@ public:
 	static uint16 		GetWSPort() 			{ return s_nWebPort; }
 	static void		SetWSPort(uint16 uPort) 	{ s_nWebPort=uPort; }
 	static const wxString&	GetWSPass() 			{ return s_sWebPassword; }
+	static void		SetWSPass(wxString pass)	{ s_sWebPassword = pass; }
 	static bool		GetWSIsEnabled() 		{ return s_bWebEnabled; }
 	static void		SetWSIsEnabled(bool bEnable) 	{ s_bWebEnabled=bEnable; }
 	static bool		GetWebUseGzip() 		{ return s_bWebUseGzip; }
@@ -340,6 +356,7 @@ public:
 	static bool		GetWSIsLowUserEnabled() 	{ return s_bWebLowEnabled; }
 	static void		SetWSIsLowUserEnabled(bool in) 	{ s_bWebLowEnabled=in; }
 	static const wxString&	GetWSLowPass() 			{ return s_sWebLowPassword; }
+	static void		SetWSLowPass(wxString pass)	{ s_sWebLowPassword = pass; }
 
 	static void		SetMaxSourcesPerFile(uint16 in) { s_maxsourceperfile=in;}
 	static void		SetMaxConnections(uint16 in) 	{ s_maxconnections =in;}
@@ -376,33 +393,39 @@ public:
 	static uint8		GetIPFilterLevel()		{ return s_filterlevel;}
 	static void		SetIPFilterLevel(uint8 level)	{ s_filterlevel = level;}
 	static bool		IPFilterAutoLoad() { return s_IPFilterAutoLoad; }
-	static const wxString& IPFilterURL() { return s_IPFilterURL; } 
+	static const wxString&	IPFilterURL() { return s_IPFilterURL; } 
 
 	// Kry - Source seeds On/Off
 	static bool		GetSrcSeedsOn() 		{ return s_UseSrcSeeds; }
+	static void		SetSrcSeedsOn(bool val)		{ s_UseSrcSeeds = val; }
 	
 	// Kry - Safe Max Connections
 	static bool		GetSafeMaxConn()		{ return s_UseSafeMaxConn; }
+	static void		SetSafeMaxConn(bool val)	{ s_UseSafeMaxConn = val; }
 	
 	static bool		GetVerbosePacketError()		{ return s_VerbosePacketError; }
+	static void		SetVerbosePacketError(bool val)	{ s_VerbosePacketError = val; }
 	
 	static bool		IsSecureIdentEnabled()		{ return s_SecIdent; }
 	
 	static bool		GetExtractMetaData()		{ return s_ExtractMetaData; }
+	static void		SetExtractMetaData(bool val)	{ s_ExtractMetaData = val; }
 	
 	static bool		ShowProgBar()			{ return s_ProgBar; }
 	static bool		ShowPercent()			{ return s_Percent; }	
 	
 	static bool		GetAllocFullPart()		{ return s_AllocFullPart; };
+	static void		SetAllocFullPart(bool val)	{ s_AllocFullPart = val; }
 	static bool		GetAllocFullChunk()		{ return s_AllocFullChunk; };
+	static void		SetAllocFullChunk(bool val)	{ s_AllocFullChunk = val; }
 
 	static wxString 	GetBrowser();
 	
-	static const wxString& 	GetSkinFile()			{ return s_SkinFile; }
+	static const wxString&	GetSkinFile()			{ return s_SkinFile; }
 	
 	static bool		UseSkin()			{ return s_UseSkinFile; }
 	
-	static const wxString& GetOSDir()			{ return s_OSDirectory; }
+	static const wxString&	GetOSDir()			{ return s_OSDirectory; }
 
 	static uint8		GetToolTipDelay()		{ return s_iToolDelayTime; }
 

@@ -118,6 +118,7 @@ amule_SOURCES = ListenSocket.cpp \
 	ED2KLink.cpp \
 	ECSocket.cpp \
 	ECPacket.cpp \
+	ECSpecialTags.cpp \
 	EditServerListDlg.cpp \
 	ExternalConn.cpp \
 	FileDetailDialog.cpp \
@@ -179,6 +180,7 @@ amuled_SOURCES = ListenSocket.cpp \
 	AICHSyncThread.cpp \
         ECSocket.cpp \
 	ECPacket.cpp \
+	ECSpecialTags.cpp \
         EMSocket.cpp \
         AddFileThread.cpp \
         BaseClient.cpp \
@@ -251,8 +253,8 @@ amule_CFLAGS = $(UTF8_SYSTRAY_FLAGS) $(TRAY_FLAGS) $(WX_CXXFLAGS) $(GTK_CFLAGS) 
 amule_CXXFLAGS = $(UTF8_SYSTRAY_FLAGS) $(TRAY_FLAGS) $(WX_CXXFLAGS) $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFLAGS) $(CURL_FLAGS)
 amule_LDADD = $(WX_LIBS) $(GTK_LIBS) $(ZLIB_LIBS) $(CURL_LIBS) $(CRYPTOLIBS)
 
-amulegui_CFLAGS = $(UTF8_SYSTRAY_FLAGS) $(TRAY_FLAGS) $(WX_CXXFLAGS) $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFLAGS) -DCLIENT_GUI
-amulegui_CXXFLAGS = $(UTF8_SYSTRAY_FLAGS) $(TRAY_FLAGS) $(WX_CXXFLAGS) $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFLAGS) $(CURL_FLAGS) -DCLIENT_GUI
+amulegui_CFLAGS = $(UTF8_SYSTRAY_FLAGS) $(TRAY_FLAGS) $(WX_CXXFLAGS) $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFLAGS) -DCLIENT_GUI -D__EC_REMOTE__
+amulegui_CXXFLAGS = $(UTF8_SYSTRAY_FLAGS) $(TRAY_FLAGS) $(WX_CXXFLAGS) $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFLAGS) $(CURL_FLAGS) -DCLIENT_GUI -D__EC_REMOTE__
 amulegui_LDADD = $(WX_LIBS) $(GTK_LIBS) $(ZLIB_LIBS) $(CURL_LIBS) $(CRYPTOLIBS)
 
 amuled_CFLAGS = $(WX_CFLAGS) $(WX_CXXFLAGS) -DAMULE_DAEMON 
@@ -263,25 +265,25 @@ ed2k_SOURCES = ED2KLinkParser.cpp
 ed2k_CFLAGS =
 
 amulecmd_SOURCES = TextClient.cpp MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp
-amulecmd_CFLAGS = $(WXBASE_CFLAGS)
-amulecmd_CXXFLAGS = $(WXBASE_CXXFLAGS)
+amulecmd_CFLAGS = $(WXBASE_CFLAGS) -D__EC_REMOTE__
+amulecmd_CXXFLAGS = $(WXBASE_CXXFLAGS) -D__EC_REMOTE__
 amulecmd_LDADD = $(WXBASE_LIBS) $(READLINE_LIBS)
 
 amulecmdDLG_SOURCES = TextClient.cpp MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp
-amulecmdDLG_CFLAGS = $(WX_CFLAGS) -DAMULECMDDLG
-amulecmdDLG_CXXFLAGS = $(WX_CXXFLAGS) -DAMULECMDDLG 
+amulecmdDLG_CFLAGS = $(WX_CFLAGS) -DAMULECMDDLG -D__EC_REMOTE__
+amulecmdDLG_CXXFLAGS = $(WX_CXXFLAGS) -DAMULECMDDLG  -D__EC_REMOTE__
 amulecmdDLG_LDADD = $(WX_LIBS)
 
 amuleweb_SOURCES =  WebServer.cpp WebInterface.cpp WebSocket.cpp \
-	MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp otherfunctions.cpp 
-amuleweb_CFLAGS = $(WXBASE_CFLAGS)
-amuleweb_CXXFLAGS = $(WXBASE_CXXFLAGS)
+	MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp otherfunctions.cpp ECSpecialTags.cpp
+amuleweb_CFLAGS = $(WXBASE_CFLAGS) -D__EC_REMOTE__
+amuleweb_CXXFLAGS = $(WXBASE_CXXFLAGS) -D__EC_REMOTE__
 amuleweb_LDADD = $(WXBASE_LIBS) $(ZLIB_LIBS) $(READLINE_LIBS)
 
 amulewebDLG_SOURCES = WebServer.cpp WebInterface.cpp WebSocket.cpp \
-	 MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp otherfunctions.cpp
-amulewebDLG_CFLAGS = $(WX_CFLAGS) -DAMULEWEBDLG
-amulewebDLG_CXXFLAGS = $(WX_CXXFLAGS) -DAMULEWEBDLG 
+	 MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp otherfunctions.cpp ECSpecialTags.cpp
+amulewebDLG_CFLAGS = $(WX_CFLAGS) -DAMULEWEBDLG -D__EC_REMOTE__
+amulewebDLG_CXXFLAGS = $(WX_CXXFLAGS) -DAMULEWEBDLG  -D__EC_REMOTE__
 amulewebDLG_LDADD = $(WX_LIBS) $(ZLIB_LIBS)
 
 noinst_HEADERS = AddFileThread.h \
@@ -315,6 +317,7 @@ noinst_HEADERS = AddFileThread.h \
 		 DownloadQueue.h \
 		 ECSocket.h \
 		 ECPacket.h \
+		 ECSpecialTags.h \
 		 ECcodes.h \
 		 ED2KLink.h \
 		 EditServerListDlg.h \
