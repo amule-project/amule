@@ -503,6 +503,7 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender,CUpDownClient* source)
 	if (source->GetFileRate()>0 || source->GetFileComment().GetLength()>0) {
 		sender->UpdateFileRatingCommentAvail();
 	}
+
 	sender->srclists[source->sourcesslot].AddTail(source);
 	sender->IsCountDirty = true;
 	theApp.amuledlg->transferwnd->downloadlistctrl->AddSource(sender,source,false);
@@ -776,7 +777,7 @@ bool CDownloadQueue::SendNextUDPPacket()
 	// send max 40 udp request to one server per interval, if we have more than 40 files, we rotate the list and use it as Queue
 	if (m_cRequestsSentToServer >= MAX_REQUESTS_PER_SERVER) {
 		// move the last 40 files to the head
-		if (filelist.size() > MAX_REQUESTS_PER_SERVER) {
+		if (filelist.size() >= MAX_REQUESTS_PER_SERVER) {
 			for (int i = 0; i != MAX_REQUESTS_PER_SERVER; i++) {
 				filelist.push_front( filelist.back() );
 				filelist.pop_back();
