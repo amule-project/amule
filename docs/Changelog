@@ -66,6 +66,7 @@ Version 2.0.0rc8 - The "last rc" version.
 		===============::MULTIPLATFORM::===============
 		* When a socket connection error like WOULD_BLOCK happens, aMule retries 
 		   the connection to avoid just-once errors
+		* Stopped files are now darker than non-sources ones.
 		* AICH e-links working now, with masterhash and with hashset
 		* Proper handling of removing -fomit-frame-pointer flag that worls on all platforms.
 		* Initial support for wx-compliant systray. Will be ready for 2.0.0 final release.
