@@ -404,6 +404,8 @@ public:
 	static bool IsTrustingEveryHash() { return false; }
 	
 	static void BuildItemList( const wxString& appdir );
+	static void EraseItemList();
+	
 	static void LoadAllItems(wxConfigBase* cfg);
 	static void SaveAllItems(wxConfigBase* cfg);
 
