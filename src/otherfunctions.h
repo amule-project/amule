@@ -304,7 +304,7 @@ class RLE_Data {
 			return EncodeT<ArrayOfUInts16>(data, data.GetCount(), outlen);
 		}
 		
-		const unsigned char *Decode(const unsigned char *data);	
+		const unsigned char *Decode(const unsigned char *data, int len);	
 		
 		// change size of internal buffers
 		void Realloc(int size);
