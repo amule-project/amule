@@ -467,7 +467,7 @@ void CamuleRemoteGuiApp::NotifyEvent(const GUIEvent& event)
 	        	downloadqueue->AutoPrio((CPartFile *)event.ptr_value, event.long_value);
 				break;
 	        case PARTFILE_PRIO_SET:
-	        	downloadqueue->AutoPrio((CPartFile *)event.ptr_value, event.long_value);
+	        	downloadqueue->Prio((CPartFile *)event.ptr_value, event.long_value);
 				break;
 	        case PARTFILE_SET_CAT:
 	        	downloadqueue->Category((CPartFile *)event.ptr_value, event.byte_value);
@@ -477,9 +477,11 @@ void CamuleRemoteGuiApp::NotifyEvent(const GUIEvent& event)
 				break;
 			
 	        case KNOWNFILE_SET_UP_PRIO:
-			break;
+	        	sharedfiles->SetFilePrio((CKnownFile *)event.ptr_value, event.byte_value);
+				break;
 	        case KNOWNFILE_SET_UP_PRIO_AUTO:
-			break;
+	        	sharedfiles->SetFilePrio((CKnownFile *)event.ptr_value, PR_AUTO);
+				break;
 	        case KNOWNFILE_SET_COMMENT:
 			break;
 
@@ -751,7 +753,30 @@ void CSharedFilesRem::ProcessItemUpdate(CEC_SharedFile_Tag *tag, CKnownFile *fil
 	file->statistic.transfered = tag->GetXferred();
 	file->statistic.alltimetransferred = tag->GetAllXferred();
 
+	theApp.knownfiles->requested += file->statistic.requested;
+	theApp.knownfiles->transfered += file->statistic.transfered;
+	theApp.knownfiles->accepted += file->statistic.transfered;
+
 	theApp.amuledlg->sharedfileswnd->sharedfilesctrl->UpdateItem(file);
+}
+
+bool CSharedFilesRem::Phase1Done(CECPacket *)
+{
+	theApp.knownfiles->requested = 0;
+	theApp.knownfiles->transfered = 0;
+	theApp.knownfiles->accepted = 0;
+	
+	return true;
+}
+
+void CSharedFilesRem::SetFilePrio(CKnownFile *file, uint8 prio)
+{
+	CECPacket req(EC_OP_SHARED_SET_PRIO);
+	
+	CECTag hashtag(EC_TAG_PARTFILE, file->GetFileHash());
+	hashtag.AddTag(CECTag(EC_TAG_PARTFILE_PRIO, prio));
+	
+	m_conn->Send(&req);
 }
 
 /*!

@@ -459,6 +459,8 @@ class CSharedFilesRem : public CRemoteContainer<CKnownFile, CMD4Hash, CEC_Shared
 		
 		CKnownFile *GetFileByID(CMD4Hash id) { return GetByID(id); }
 
+		void SetFilePrio(CKnownFile *file, uint8 prio);
+
 		//
 		// Actions
 		//
@@ -472,6 +474,7 @@ class CSharedFilesRem : public CRemoteContainer<CKnownFile, CMD4Hash, CEC_Shared
 		void DeleteItem(CKnownFile *);
 		CMD4Hash GetItemID(CKnownFile *);
 		void ProcessItemUpdate(CEC_SharedFile_Tag *, CKnownFile *);
+		bool Phase1Done(CECPacket *);
 };
 
 class CKnownFilesRem {
