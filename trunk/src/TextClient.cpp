@@ -739,7 +739,8 @@ void CamulecmdApp::ShowGreet() {
 	Show(wxT("\n---------------------------------\n"));
 	Show(wxString(wxT("|       ")) + wxString(_("aMule text client")) + wxString(wxT("       |\n")));
 	Show(wxT("---------------------------------\n\n"));
-	Show(wxString::Format(_("\nUse '%s' for command list\n\n"), wxT("'Help'")));
+	// Do not merge the line below, or translators could translate "Help"
+	Show(wxString::Format(_("\nUse '%s' for command list\n\n"), wxT("Help")));
 }
 
 #if wxUSE_GUI
