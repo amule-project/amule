@@ -16,7 +16,8 @@ char *get_path(char *file)
 	char *ret, *home;	/* caller should free return value */
 	static char *saved_home = NULL;
 	static size_t home_len = 0;
-
+	static size_t total_len = 0
+	
 	if (saved_home == NULL) {
 		/* get home directory */
 		if ( (home = getenv("HOME")) == NULL) {
@@ -44,13 +45,16 @@ char *get_path(char *file)
 	}
 
 	/* get full path space */
-	ret = malloc((home_len + strlen("/") + strlen(file)) * sizeof(char) + '\0');
+	// Kry - Guys... do 'man malloc'
+	total_len = (home_len + strlen("/") + strlen(file)) * sizeof(char) + 1 /* for '\0' */ ;
+	ret = malloc(total_len);
 	if (ret == NULL)
 		return NULL;
 
 	strcpy(ret, saved_home);
 	strcat(ret, "/");
 	strcat(ret, file);
+	ret[total_len] = '\0';
 
 	return ret;
 }
