@@ -96,7 +96,7 @@ ExternalConn::ExternalConn()
 		m_ECServer = new ECSocket(addr, this, SERVER_ID);
 #endif
 		if (m_ECServer->Ok()) {
-			printf("ECServer listening on port %d.\n\n", port);
+			AddLogLineM(false, wxString::Format(wxT("ECServer listening on port %d"), port));
 #ifdef AMULE_DAEMON
 			if ( Create() != wxTHREAD_NO_ERROR ) {
 				AddLogLineM(false, _("ExternalConn: failed to Create thread"));
@@ -108,10 +108,10 @@ ExternalConn::ExternalConn()
 			}
 #endif
 		} else {
-			printf("Could not listen for external connections at port %d!\n\n", port);
+			AddLogLineM(false, wxString::Format(wxT("Could not listen for external connections at port %d!"), port));
 		}
 	} else {
-		printf("External connections disabled in config file .eMule\n");
+		AddLogLineM(false,_("External connections disabled in config file .eMule"));
 	}
 }
 
@@ -142,13 +142,13 @@ void ExternalConn::OnServerEvent(wxSocketEvent& WXUNUSED(event)) {
 	// should ALWAYS be a pending connection).
 	sock = m_ECServer->Accept(false);
 	if (sock) {
-		printf(unicode2char(_("New external connection accepted\n")));
+		AddLogLineM(false, _("New external connection accepted"));
 		sock->SetEventHandler(*this, AUTH_ID);
 		sock->SetNotify(wxSOCKET_INPUT_FLAG | wxSOCKET_LOST_FLAG);
 		sock->Notify(true);
 		m_numClients++;
 	} else {
-		printf(unicode2char(_("Error: couldn't accept a new external connection\n\n")));
+		AddLogLineM(false, _("Error: couldn't accept a new external connection"));
 	}
 }
 
@@ -201,7 +201,7 @@ void ExternalConn::OnSocketEvent(wxSocketEvent& event) {
 		// the socket at the same time; for example, we might be in the
 		// middle of a test or something. Destroy() takes care of all
 		// this for us.
-		printf("Connection closed.\n\n");
+		AddLogLineM(false,_("External connection closed."));
 		//sock->Destroy();
 		sock->Close();
 		break;
@@ -227,7 +227,7 @@ CECPacket *ExternalConn::Authenticate(const CECPacket *request)
 	if (request->GetOpCode() == EC_OP_AUTH_REQ) {
 		CECTag *cname = request->GetTagByName(EC_TAG_CLIENT_NAME);
 		const char *client = (cname == NULL) ? NULL : (const char *)cname->GetTagData();	// Extracting the UTF-8 string data
-		printf("Connecting client: %s - ", client);
+		AddLogLineM(false, wxT("Connecting client: ") + wxString(client));
 		CECTag *passwd = request->GetTagByName(EC_TAG_PASSWD_HASH);
 		CECTag *protocol = request->GetTagByName(EC_TAG_PROTOCOL_VERSION);
 		if (protocol != NULL) {
@@ -259,8 +259,12 @@ CECPacket *ExternalConn::Authenticate(const CECPacket *request)
 		response->AddTag(CECTag(EC_TAG_STRING, _("Invalid request, you should first authenticate.")));
 	}
 
-	if (response->GetOpCode() == EC_OP_AUTH_OK) printf("Access granted.\n");
-	else printf("%s\n", (const char *)response->GetTagByIndex(0)->GetTagData());
+	if (response->GetOpCode() == EC_OP_AUTH_OK) {
+		AddLogLineM(false, _("Access granted."));
+	} else {
+		const char *resp = (const char *)response->GetTagByIndex(0)->GetTagData();
+		AddLogLineM(false, wxString(resp) );
+	}
 
 	return response;
 }
@@ -270,12 +274,16 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request)
 {
 	CECPacket *response = NULL;
 
-	if (request->GetOpCode() == EC_OP_COMPAT) {
-		response = new CECPacket(EC_OP_COMPAT);
-		response->AddTag(CECTag(EC_TAG_STRING, ProcessRequest(request->GetTagByIndex(0)->GetTagString())));
-	} else {
-		// implement new code here
-	}
+	switch (request->GetOpCode()) {
+		case EC_OP_COMPAT: 
+			response = new CECPacket(EC_OP_COMPAT);
+			response->AddTag(CECTag(EC_TAG_STRING,
+				ProcessRequest(request->GetTagByIndex(0)->GetTagString())));
+			break;
+		default:
+			AddLogLineM(false, _("ExternalConn: invalid opcode received"));
+			break;
+	}		
 	return response;
 }
 
@@ -2270,7 +2278,7 @@ ExternalConnClientThread::ExternalConnClientThread(ExternalConn *owner, wxSocket
 	m_owner = owner;
 	m_sock = sock;
 	if ( Create() != wxTHREAD_NO_ERROR ) {
-		printf("ExternalConnClientThread: failed to Create thread\n");
+		AddLogLineM(false, _("ExternalConnClientThread: failed to Create thread\n"));
 	}
 	sock->SetFlags(wxSOCKET_WAITALL);
 }
@@ -2289,7 +2297,7 @@ void *ExternalConnClientThread::Entry()
 		//
 		// Access denied!
 		//
-		printf("Unauthorized access attempt. Connection closed.\n");
+		AddLogLineM(false, _("Unauthorized access attempt. Connection closed.\n"));
 		return 0;
 	}
 	//
@@ -2297,7 +2305,7 @@ void *ExternalConnClientThread::Entry()
 	//
 	while ( !TestDestroy() ) {
 		if ( m_sock->WaitForLost(0, 0) ) {
-			printf("ExternalConnClientThread: connection closed\n");
+			AddLogLineM(false, _("ExternalConnClientThread: connection closed\n"));
 			return 0;
 		}
 		if (m_sock->WaitForRead()) {
