@@ -17,14 +17,14 @@ ifeq ($(CFG),Debug)
   OBJ_DIR = Debug
   OUTPUT_DIR = Debug
   TARGET = amule.exe
-  C_INCLUDE_DIRS = -I"C:/msys/1.0/home/fox/amule-dev-cvs/." -I"C:/MinGWStudio/Include" -I"C:/MinGWStudio/Lib/wx/include/msw-2.5" 
+  C_INCLUDE_DIRS = -I"C:/msys/1.0/home/fox/amule-dev-cvs/." -I"C:/MinGWStudio/Include" -I"C:/MinGWStudio/Include/wx-2.5" -I"C:/MinGWStudio/Lib/wx/include/msw-ansi-release-static-2.5" 
   C_PREPROC = -D_X86_=1 -DWIN32 -D_WIN32 -DWINVER=0x0400 -D__WIN95__ -D__GNUWIN32__ -D__WIN32__ -DSTRICT -D__WXMSW__ -D__WINDOWS__ -D__WXDEBUG__ 
-  CFLAGS = -pipe -DHAVE_CONFIG_H -D__SYSTRAY_DISABLED__ -g2 -O0 -frtti -fexceptions 
-  RC_INCLUDE_DIRS = --include-dir "C:/MinGWStudio/Include" 
+  CFLAGS = -pipe -DHAVE_CONFIG_H -D__SYSTRAY_DISABLED__ -DUSE_EMBEDDED_CRYPTO -g2 -O0 -frtti -fexceptions 
+  RC_INCLUDE_DIRS = --include-dir "C:/MinGWStudio/Include" --include-dir "C:/MinGWStudio/Include/wx-2.5" 
   RC_PREPROC = --define __WIN32__ --define __WIN95__ --define __GNUWIN32__ 
   RCFLAGS = 
   LIB_DIRS = -L"C:/MinGWStudio/Lib" 
-  LIBS = -lcryptopp -lcurld -lzd -lws2_32 -lwx_msw_adv-2.5 -lwx_msw_core-2.5 -lwx_msw_html-2.5 -lwx_base-2.5 -lwx_base_net-2.5 -lwx_base_xml-2.5 -lwxexpat -lwxregex -lwxpng -lwxjpeg -lwxzlib -lwxtiff -lstdc++ -lgcc -lodbc32 -lwsock32 -lwinspool -lwinmm -lshell32 -lcomctl32 -lctl3d32 -lodbc32 -ladvapi32 -lodbc32 -lwsock32 -lopengl32 -lglu32 -lole32 -loleaut32 -luuid 
+  LIBS = -lcurld -lzd -lws2_32 -lwx_msw_adv-2.5 -lwx_msw_core-2.5 -lwx_msw_html-2.5 -lwx_base-2.5 -lwx_base_net-2.5 -lwx_base_xml-2.5 -lwxexpat -lwxregex -lwxpng -lwxjpeg -lwxzlib -lwxtiff -lstdc++ -lgcc -lodbc32 -lwsock32 -lwinspool -lwinmm -lshell32 -lcomctl32 -lctl3d32 -lodbc32 -ladvapi32 -lodbc32 -lwsock32 -lopengl32 -lglu32 -lole32 -loleaut32 -luuid 
   LDFLAGS = -pipe  -Wl,--subsystem,windows -mwindows
 endif
 
@@ -32,14 +32,14 @@ ifeq ($(CFG),Release)
   OBJ_DIR = Release
   OUTPUT_DIR = Release
   TARGET = amule.exe
-  C_INCLUDE_DIRS = -I"C:/msys/1.0/home/fox/amule-dev-cvs/." -I"C:/MinGWStudio/Include" -I"C:/MinGWStudio/Lib/wx/include/msw-2.5" 
+  C_INCLUDE_DIRS = -I"C:/msys/1.0/home/fox/amule-dev-cvs/." -I"C:/MinGWStudio/Include" -I"C:/MinGWStudio/Include/wx-2.5" -I"C:/MinGWStudio/Lib/wx/include/msw-ansi-release-static-2.5" 
   C_PREPROC = -D_X86_=1 -DWIN32 -D_WIN32 -DWINVER=0x0400 -D__WIN95__ -D__GNUWIN32__ -D__WIN32__ -DSTRICT -D__WXMSW__ -D__WINDOWS__ 
-  CFLAGS = -pipe -DHAVE_CONFIG_H -D__SYSTRAY_DISABLED__ -g0 -O2 -frtti -fexceptions 
-  RC_INCLUDE_DIRS = --include-dir "C:/MinGWStudio/Include" 
+  CFLAGS = -pipe -DHAVE_CONFIG_H -D__SYSTRAY_DISABLED__ -DUSE_EMBEDDED_CRYPTO -g0 -O2 -frtti -fexceptions 
+  RC_INCLUDE_DIRS = --include-dir "C:/MinGWStudio/Include" --include-dir "C:/MinGWStudio/Include/wx-2.5" 
   RC_PREPROC = --define __WIN32__ --define __WIN95__ --define __GNUWIN32__ 
   RCFLAGS = 
   LIB_DIRS = -L"C:/MinGWStudio/Lib" 
-  LIBS = -lcryptopp -lcurl -lz -lws2_32 -lwx_msw_adv-2.5 -lwx_msw_core-2.5 -lwx_msw_html-2.5 -lwx_base-2.5 -lwx_base_net-2.5 -lwx_base_xml-2.5 -lwxexpat -lwxregex -lwxpng -lwxjpeg -lwxzlib -lwxtiff -lstdc++ -lgcc -lodbc32 -lwsock32 -lwinspool -lwinmm -lshell32 -lcomctl32 -lctl3d32 -lodbc32 -ladvapi32 -lodbc32 -lwsock32 -lopengl32 -lglu32 -lole32 -loleaut32 -luuid 
+  LIBS = -lcurl -lz -lws2_32 -lwx_msw_adv-2.5 -lwx_msw_core-2.5 -lwx_msw_html-2.5 -lwx_base-2.5 -lwx_base_net-2.5 -lwx_base_xml-2.5 -lwxexpat -lwxregex -lwxpng -lwxjpeg -lwxzlib -lwxtiff -lstdc++ -lgcc -lodbc32 -lwsock32 -lwinspool -lwinmm -lshell32 -lcomctl32 -lctl3d32 -lodbc32 -ladvapi32 -lodbc32 -lwsock32 -lopengl32 -lglu32 -lole32 -loleaut32 -luuid 
   LDFLAGS = -pipe -s  -Wl,--subsystem,windows -mwindows
 endif
 
@@ -118,13 +118,14 @@ SRC_OBJS = \
   $(OBJ_DIR)/IPFilter.o	\
   $(OBJ_DIR)/MuleTextCtrl.o	\
   $(OBJ_DIR)/EMSocket.o	\
-  $(OBJ_DIR)/HTTPDownloadDlg.o	\
   $(OBJ_DIR)/KnownFile.o	\
   $(OBJ_DIR)/amuleDlg.o	\
   $(OBJ_DIR)/ECSocket.o	\
   $(OBJ_DIR)/SHA.o	\
   $(OBJ_DIR)/SHAHashSet.o	\
-  $(OBJ_DIR)/AICHSyncThread.o
+  $(OBJ_DIR)/AICHSyncThread.o	\
+  $(OBJ_DIR)/UInt128.o	\
+  $(OBJ_DIR)/HTTPDownload.o
 
 RSRC_OBJS = \
   $(OBJ_DIR)/amule.res
@@ -181,6 +182,7 @@ src/amule.h	\
 src/opcodes.h	\
 src/PartFile.h	\
 src/CFile.h	\
+src/AICHSyncThread.h	\
 src/CryptoPP_Inc.h
 	$(compile_source)
 
@@ -226,6 +228,8 @@ src/amuleIPV4Address.h
 $(OBJ_DIR)/CFile.o: src/CFile.cpp	\
 src/CFile.h	\
 src/amule.h	\
+src/Preferences.h	\
+src/otherfunctions.h	\
 src/GuiEvents.h
 	$(compile_source)
 
@@ -308,7 +312,9 @@ src/DownloadQueue.h	\
 src/UploadQueue.h	\
 src/IPFilter.h	\
 src/ClientCredits.h	\
-src/opcodes.h
+src/updownclient.h	\
+src/opcodes.h	\
+src/GetTickCount.h
 	$(compile_source)
 
 $(OBJ_DIR)/ClientUDPSocket.o: src/ClientUDPSocket.cpp	\
@@ -351,7 +357,8 @@ src/updownclient.h
 
 $(OBJ_DIR)/DirectoryTreeCtrl.o: src/DirectoryTreeCtrl.cpp	\
 src/DirectoryTreeCtrl.h	\
-src/muuli_wdr.h
+src/muuli_wdr.h	\
+src/CFile.h
 	$(compile_source)
 
 $(OBJ_DIR)/DownloadClient.o: src/DownloadClient.cpp	\
@@ -557,7 +564,8 @@ src/opcodes.h
 	$(compile_source)
 
 $(OBJ_DIR)/MuleNotebook.o: src/MuleNotebook.cpp	\
-src/MuleNotebook.h
+src/MuleNotebook.h	\
+src/opcodes.h
 	$(compile_source)
 
 $(OBJ_DIR)/OScopeCtrl.o: src/OScopeCtrl.cpp	\
@@ -653,7 +661,8 @@ src/listbase.h
 $(OBJ_DIR)/SafeFile.o: src/SafeFile.cpp	\
 src/SafeFile.h	\
 src/otherfunctions.h	\
-src/packets.h
+src/packets.h	\
+src/kademlia/utils/UInt128.h
 	$(compile_source)
 
 $(OBJ_DIR)/SearchDlg.o: src/SearchDlg.cpp	\
@@ -697,20 +706,17 @@ src/DownloadQueue.h
 	$(compile_source)
 
 $(OBJ_DIR)/SearchListCtrl.o: src/SearchListCtrl.cpp	\
-src/muuli_wdr.h	\
 src/SearchListCtrl.h	\
-src/PartFile.h	\
+src/MuleNotebook.h	\
 src/DownloadQueue.h	\
-src/SharedFileList.h	\
+src/KnownFileList.h	\
 src/otherfunctions.h	\
+src/PartFile.h	\
 src/SearchList.h	\
 src/SearchDlg.h	\
 src/amuleDlg.h	\
 src/opcodes.h	\
-src/amule.h	\
-src/color.h	\
-src/MuleNotebook.h	\
-src/Preferences.h
+src/amule.h
 	$(compile_source)
 
 $(OBJ_DIR)/ServerList.o: src/ServerList.cpp	\
@@ -726,7 +732,7 @@ src/otherstructs.h	\
 src/packets.h	\
 src/opcodes.h	\
 src/SafeFile.h	\
-src/HTTPDownloadDlg.h	\
+src/HTTPDownload.h	\
 src/Preferences.h	\
 src/otherfunctions.h	\
 src/amule.h	\
@@ -734,19 +740,16 @@ src/GetTickCount.h
 	$(compile_source)
 
 $(OBJ_DIR)/ServerListCtrl.o: src/ServerListCtrl.cpp	\
-src/amuleDlg.h	\
 src/ServerListCtrl.h	\
+src/amule.h	\
+src/amuleDlg.h	\
 src/DownloadQueue.h	\
 src/PartFile.h	\
 src/ServerList.h	\
 src/ServerWnd.h	\
 src/sockets.h	\
-src/amule.h	\
 src/server.h	\
-src/opcodes.h	\
-src/muuli_wdr.h	\
-src/otherfunctions.h	\
-src/Preferences.h
+src/opcodes.h
 	$(compile_source)
 
 $(OBJ_DIR)/ServerSocket.o: src/ServerSocket.cpp	\
@@ -769,7 +772,8 @@ src/sockets.h	\
 src/ServerList.h	\
 src/server.h	\
 src/amuleDlg.h	\
-src/amule.h
+src/amule.h	\
+src/amuleIPV4Address.h
 	$(compile_source)
 
 $(OBJ_DIR)/ServerWnd.o: src/ServerWnd.cpp	\
@@ -779,7 +783,6 @@ src/GetTickCount.h	\
 src/server.h	\
 src/ServerList.h	\
 src/ServerListCtrl.h	\
-src/HTTPDownloadDlg.h	\
 src/otherfunctions.h	\
 src/Preferences.h	\
 src/sockets.h	\
@@ -984,12 +987,12 @@ src/ServerSocket.h	\
 src/UDPSocket.h	\
 src/PartFile.h	\
 src/AddFileThread.h	\
+src/updownclient.h	\
 src/packets.h	\
 src/AICHSyncThread.h	\
 src/muuli_wdr.h	\
 src/amuleDlg.h	\
 src/SearchDlg.h	\
-src/SearchListCtrl.h	\
 src/ServerListCtrl.h	\
 src/SharedFilesCtrl.h	\
 src/QueueListCtrl.h	\
@@ -1008,10 +1011,8 @@ src/pixmaps/sort_upx2.xpm
 
 $(OBJ_DIR)/muuli_wdr.o: src/muuli_wdr.cpp	\
 src/muuli_wdr.h	\
-src/types.h	\
 src/amule.h	\
 src/ServerListCtrl.h	\
-src/SearchListCtrl.h	\
 src/DownloadListCtrl.h	\
 src/UploadListCtrl.h	\
 src/QueueListCtrl.h	\
@@ -1073,7 +1074,9 @@ $(OBJ_DIR)/IPFilter.o: src/IPFilter.cpp	\
 src/IPFilter.h	\
 src/otherfunctions.h	\
 src/Preferences.h	\
-src/amule.h
+src/amule.h	\
+src/HTTPDownload.h	\
+src/GetTickCount.h
 	$(compile_source)
 
 $(OBJ_DIR)/MuleTextCtrl.o: src/MuleTextCtrl.cpp	\
@@ -1084,14 +1087,6 @@ $(OBJ_DIR)/EMSocket.o: src/EMSocket.cpp	\
 src/EMSocket.h	\
 src/packets.h	\
 src/GetTickCount.h
-	$(compile_source)
-
-$(OBJ_DIR)/HTTPDownloadDlg.o: src/HTTPDownloadDlg.cpp	\
-src/muuli_wdr.h	\
-src/HTTPDownloadDlg.h	\
-src/MuleGifCtrl.h	\
-src/inetdownload.h	\
-src/otherfunctions.h
 	$(compile_source)
 
 $(OBJ_DIR)/KnownFile.o: src/KnownFile.cpp	\
@@ -1106,7 +1101,8 @@ src/SharedFileList.h	\
 src/KnownFileList.h	\
 src/amule.h	\
 src/PartFile.h	\
-src/endianfix.h
+src/endianfix.h	\
+src/CryptoPP_Inc.h
 	$(compile_source)
 
 $(OBJ_DIR)/amuleDlg.o: src/amuleDlg.cpp	\
@@ -1147,7 +1143,8 @@ src/amule.h	\
 src/opcodes.h	\
 src/muuli_wdr.h	\
 src/PrefsUnifiedDlg.h	\
-src/splash.xpm
+src/GetTickCount.h	\
+src/aMule.xpm
 	$(compile_source)
 
 $(OBJ_DIR)/ECSocket.o: src/ECSocket.cpp	\
@@ -1180,11 +1177,23 @@ src/SafeFile.h	\
 src/KnownFile.h	\
 src/SHA.h	\
 src/amule.h	\
-src/amuleDlg.h	\
 src/SharedFileList.h	\
 src/KnownFileList.h	\
-src/Preferences.h	\
-src/SharedFilesWnd.h	\
-src/SharedFilesCtrl.h
+src/Preferences.h
+	$(compile_source)
+
+$(OBJ_DIR)/UInt128.o: src/kademlia/utils/UInt128.cpp	\
+src/kademlia/utils/UInt128.h	\
+src/CryptoPP_Inc.h	\
+src/endianfix.h
+	$(compile_source)
+
+$(OBJ_DIR)/HTTPDownload.o: src/HTTPDownload.cpp	\
+src/amule.h	\
+src/HTTPDownload.h	\
+src/inetdownload.h	\
+src/otherfunctions.h	\
+src/muuli_wdr.h	\
+src/MuleGifCtrl.h
 	$(compile_source)
 
