@@ -1,3 +1,11 @@
+Version 2.0.0rc4 - The 'Target: REAL Stability' version.
+2004-0X-XX
+	Hetfield:
+		* fixed unicode issues on SysTray.cpp, now apps is really unicoded!
+		* deleted separated i18n stuff from SysTray, now uses global one
+		* fixed 2 memory leaks in SysTray
+		* updated italian and napoletanean translations
+
 Version 2.0.0rc3 - The 'Target: Stability' version.
 -------------
 2004-04-22
