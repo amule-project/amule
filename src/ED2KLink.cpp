@@ -144,9 +144,11 @@ CED2KServerLink::~CED2KServerLink()
 void 
 CED2KServerLink::GetLink(wxString& lnk)
 {
+	in_addr adr;
 	char buffer[32];
 	lnk = (wxT("ed2k://|server|"));
-	lnk += char2unicode( IPToStr(m_ip) );
+	adr.s_addr = m_ip;
+	lnk += char2unicode(inet_ntoa(adr));
 	lnk += (wxT("|"));
 	sprintf(buffer,"%d",static_cast<int>(m_port));
 	lnk += char2unicode(buffer);

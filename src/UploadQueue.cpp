@@ -443,7 +443,9 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
 
 	// Add clients server to list.
 	if (theApp.glob_prefs->AddServersFromClient()) {
-		CServer* srv = new CServer(client->GetServerPort(), IPToStr( client->GetServerIP() ));
+		in_addr host;
+		host.s_addr = client->GetServerIP();
+		CServer* srv = new CServer(client->GetServerPort(), char2unicode(inet_ntoa(host)));
 		srv->SetListName(srv->GetAddress());
 		
 		if (!theApp.amuledlg->serverwnd->serverlistctrl->AddServer(srv, true)) {
