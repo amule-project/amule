@@ -65,11 +65,14 @@ void CMuleTextCtrl::OnRightDown( wxMouseEvent& evt )
 	// there's actually something to paste
 	bool canpaste = false;
 	if ( CanPaste() ) {
-		if ( wxTheClipboard->IsSupported( wxDF_TEXT ) ) {
-			wxTextDataObject data;
-	 		wxTheClipboard->GetData( data );
+		if ( wxTheClipboard->Open() ) {
+			if ( wxTheClipboard->IsSupported( wxDF_TEXT ) ) {
+				wxTextDataObject data;
+	 			wxTheClipboard->GetData( data );
 
-			canpaste = data.GetTextLength();
+				canpaste = data.GetTextLength();
+			}
+			wxTheClipboard->Close();
 		}
 	}
 
