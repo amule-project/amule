@@ -237,7 +237,7 @@ void Packet::PackPacket() {
 	uLongf newsize = size + 300;
 	BYTE* output = new BYTE[newsize];
 
-	wxUint16 result = compress2(output, &newsize, (BYTE*) pBuffer, size, Z_BEST_COMPRESSION);
+	uint16 result = compress2(output, &newsize, (BYTE*) pBuffer, size, Z_BEST_COMPRESSION);
 
 	if (result != Z_OK || size <= newsize) {
 		delete[] output;
