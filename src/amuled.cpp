@@ -149,7 +149,8 @@ int CamuleDaemonApp::OnRun()
 	AddDebugLogLineM(true, _("CamuleDaemonApp::OnRun()"));
 	// lfroen: this loop is instead core timer.
 	uint msWait = uLoop;
-	while ( 1 ) {
+	m_Exit = false;
+	while ( !m_Exit ) {
 		if ( msWait <= uLoop) {
 			wxThread::Sleep(msWait);
 		}
