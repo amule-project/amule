@@ -136,7 +136,7 @@ void CCatDialog::OnBnClickedOk(wxCommandEvent& evt)
 	}
 
 	if (CString(m_myCat->incomingpath).CmpNoCase(oldpath)!=0) {
-		theApp.sharedfiles->AddFilesFromDirectory(m_myCat->incomingpath);
+		theApp.sharedfiles->AddFilesFromDirectory(char2unicode(m_myCat->incomingpath));
 		theApp.sharedfiles->Reload();
 	}
 
