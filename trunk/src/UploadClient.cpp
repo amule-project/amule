@@ -537,6 +537,7 @@ void CUpDownClient::SetUploadFileID(CKnownFile* newreqfile)
 	}
 
 	if (newreqfile){
+		newreqfile->AddQueuedCount();
 		newreqfile->AddUploadingClient(this);
 		md4cpy(requpfileid, newreqfile->GetFileHash());
 	}
@@ -544,8 +545,10 @@ void CUpDownClient::SetUploadFileID(CKnownFile* newreqfile)
 		md4clr(requpfileid);
 	}
 
-	if (oldreqfile)
+	if (oldreqfile) {
+		oldreqfile->SubQueuedCount();
 		oldreqfile->RemoveUploadingClient(this);
+	}
 }
 
 
