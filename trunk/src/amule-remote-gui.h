@@ -462,8 +462,6 @@ class CSharedFilesRem : public CRemoteContainer<CKnownFile, CMD4Hash, CEC_Shared
 		
 		CKnownFile *GetFileByID(CMD4Hash id) { return GetByID(id); }
 
-		void ReloadControl();
-
 		//
 		// Actions
 		//
