@@ -87,9 +87,9 @@ typedef struct {
 	long		lSourceCount;
 	long		lNotCurrentSourceCount;
 	long		lTransferringSourceCount;
-	float		fCompleted;
-	int		nFileStatus;
-	int		nFilePrio;
+	double		fCompleted;
+	long		lFileStatus;
+	long		lFilePrio;
 	wxString	sFileHash;
 	wxString	sED2kLink;
 	wxString	sFileInfo;

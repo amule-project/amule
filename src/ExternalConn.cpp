@@ -1,21 +1,23 @@
+//
 // This file is part of the aMule Project
 //
 // aMule Copyright (C) 2003 aMule Team ( http://www.amule-project.net )
 // This file Copyright (C) 2003 Kry (elkry@sourceforge.net  http://www.amule-project.net )
 //
-//This program is free software; you can redistribute it and/or
-//modify it under the terms of the GNU General Public License
-//as published by the Free Software Foundation; either
-//version 2 of the License, or (at your option) any later version.
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either
+// version 2 of the License, or (at your option) any later version.
 //
-//This program is distributed in the hope that it will be useful,
-//but WITHOUT ANY WARRANTY; without even the implied warranty of
-//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//GNU General Public License for more details.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 //
-//You should have received a copy of the GNU General Public License
-//along with this program; if not, write to the Free Software
-//Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+//
 
 #ifdef __WXMAC__
 	#include <wx/wx.h>
@@ -634,6 +636,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 	if (item == wxT("TRANSFER DL_LIST")) {
 		// returns one string where each line is formatted as:
 		// %s\t%ul\t%ul\t%ul\t%f\t%li\t%u\t%s\t%u\t%s\t%u\t%u\t%u\t%s\t%s\t%d\n
+		// 16 fields
 		wxString buffer;
 		wxString tempFileInfo;
 		for (unsigned int i = 0; i < theApp.downloadqueue->GetFileCount(); ++i) {
