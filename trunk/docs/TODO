@@ -1,45 +1,23 @@
-Code Reorganization. BEFORE 2.0 FINAL!!!
 
-I think that we should clean the amule cvs and sources management.
-Considering that core and gui is pretty splitted i propose to:
-a) move "project" directory into "src/gui" and use it to contain it!
-b) move all GUI staff in gui directory
-c) add "core" directory to "src"
-d) add "EC" directory and move webserver and amulecmd apps there
-e) add a "libs_patch" directory to manage all possibile/probably/future patch
-to wx and similar libs
+- Not specific 
 
-of course all the file modification/moving should be managed in Makefile stuff.
+	. Source code tree Reorganization (Probably Kry/Xaignar/Both)
 
-- Team
+	- Keep porting eMule features (low priority) (non-network!)
+
 	- Configure Stuff:
-	    + Add gtk-prefix and prefix for every lib used
-	    + GUI, CMD; WEB and so on meta-packages
-            + Remove optimize switch, clean for lots options no more used (gtk above all)
-            + Some nice configure report [working]
-            + Sources Reorganization as written above
+	    + Add gtk-prefix and prefix for every lib used <- ?
+            + Clean options no more used (gtk above all) <- GTK is used for old tray...
 
-        - Systray
-            + Finish new wx tray and delete all systray options from configure [working]
-	
+	- We neet to import mldonkey and edonkey partfiles!
+
 	- Remote
-            + Add remote gui [working]
             + Finish cmd line clients [working]
 
-	- Add an option "Send a mail when transfert complete", 
-		or better, execute a program (specify the parameters amule passes)
+	- Add Scheduler Tab (Being done on forum by a portuuese guy)
+ 	    + add actions menu
+	    + add time and details menu
 
-	- File Tab
-	   + Add search ed2k link in clipboard (auto adding???)
-	   + Add an additional option "same category" to "start next paused file..."
-	   + Fix checkbox problem in notify: "a new message arrive" enabled only if "chat session" is enabled too
-
-	- Add Scheduler Tab
-	  + Add actions menu
-	  + Add time and details menu
+- Kry 
+	- Implement Kademlia support (preferences too) (medium-high priority)	
 	
-NEW FEATURES 
-	- Keep porting eMule features (medium-high priority) [working]
-	- Implement Kademlia support (preferences too) (medium priority) [working]
-
-- Many other ideas but it seems we have a big work already ... :-)
