@@ -116,14 +116,14 @@ void CKnownFileList::Save() {
 	fullpath=NULL;
 
 	wxMutexLocker sLock(list_mut);
-	theApp.amuledlg->AddLogLine(false,CString(_("KnownFileList Save Starts")).GetData());
+	//theApp.amuledlg->AddLogLine(false,CString(_("KnownFileList Save Starts")).GetData());
 	uint8 ucHeader = MET_HEADER;
-	theApp.amuledlg->AddLogLine(false,CString(_("Saved MET_HEADER")).GetData());
+	//theApp.amuledlg->AddLogLine(false,CString(_("Saved MET_HEADER")).GetData());
 	file->Write(&ucHeader, 1);
 	uint32 RecordsNumber = m_map.size();
-	theApp.amuledlg->AddLogLine(false,CString(_("RecordsNumber = %i")).GetData(), RecordsNumber);
+	//theApp.amuledlg->AddLogLine(false,CString(_("RecordsNumber = %i")).GetData(), RecordsNumber);
 	ENDIAN_SWAP_I_32(RecordsNumber);
-	theApp.amuledlg->AddLogLine(false,CString(_("Endian RecordsNumber = %i")).GetData(), RecordsNumber);		
+	//theApp.amuledlg->AddLogLine(false,CString(_("Endian RecordsNumber = %i")).GetData(), RecordsNumber);		
 	file->Write(&RecordsNumber,4);
 	RecordsNumber = m_map.size();
 	CKnownFileMap::iterator it = m_map.begin();
@@ -134,7 +134,7 @@ void CKnownFileList::Save() {
 	}
 	file->Flush();
 	file->Close();
-	theApp.amuledlg->AddLogLine(false,CString(_("KnownFileList Save Ends")).GetData());	
+	//theApp.amuledlg->AddLogLine(false,CString(_("KnownFileList Save Ends")).GetData());	
 	delete file;
 }
 
@@ -151,7 +151,6 @@ CKnownFile* CKnownFileList::FindKnownFile(char* filename,uint32 in_date,uint32 i
 	wxMutexLocker sLock(list_mut);
 	
 	CKnownFile* cur_file;
-	CCKey bufKey;
 
 	for (CKnownFileMap::iterator pos = m_map.begin(); pos != m_map.end(); pos++ ) {
 		cur_file = pos->second;
@@ -192,12 +191,21 @@ bool CKnownFileList::Append(CKnownFile* Record)
 		CCKey tkey(Record->GetFileHash());
 		CKnownFileMap::iterator it = m_map.find(tkey);
 		if ( it == m_map.end() ) {
-			m_map[tkey] = Record;
+			m_map[tkey] = Record;			
 			return true;
 		} else {
+			#ifdef __DEBUG__
+			printf("%s is already on list, not added\n",Record->GetFileName().c_str());
+			printf("The Found file: %s\n",m_map[tkey]->GetFileName().c_str());
+			printf("1: %u %u\n",Record->GetFileDate(),Record->GetFileSize());
+			printf("2: %u %u\n",m_map[tkey]->GetFileDate(),m_map[tkey]->GetFileSize());
+			#endif
 			return false;
 		}
 	} else {
+		#ifdef __DEBUG__
+		printf("%s is 0-size, not added\n",Record->GetFileName().c_str());
+		#endif
 		return false;
 	}
 }
