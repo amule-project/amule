@@ -77,7 +77,7 @@ wxString GetMuleVersion()
 	#elif defined(__WXMAC__)
 		ver += wxT("wxMac");
 	#elif defined(__WXMSW__)
-		ver += wxT("wxWin");
+		ver += wxT("wxMSW");
 	#elif defined(__WXCOCOA__)
 		ver += wxT("wxCocoa");
 	#endif
