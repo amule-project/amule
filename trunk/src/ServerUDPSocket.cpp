@@ -174,7 +174,9 @@ void CServerUDPSocket::ProcessPacket(CSafeMemFile& packet, int16 size, int8 opco
 					uint8 fileid[16];
 					packet.ReadHash16(fileid);
 					if (CPartFile* file = theApp.downloadqueue->GetFileByID(fileid)) {
-						printf("\tAdding sources for file %s\n",unicode2char(file->GetFileName()));
+						wxString msg(wxT("\tAdding sources for file "));
+						msg << file->GetFileName() << wxT("\n");
+						printf("%s", unicode2char(msg));
 						file->AddSources(packet, StringIPtoUint32(host), port-4);
 					} else {
 						printf("\tSources received for unknown file\n");
