@@ -57,7 +57,7 @@
 #include "amuleIPV4Address.h"	// Needed for amuleIPV4Address
 
 
-#define DEBUG_LOCAL_CLIENT_PROTOCOL
+//#define DEBUG_LOCAL_CLIENT_PROTOCOL
 
 
 // some client testing variables

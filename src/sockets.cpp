@@ -48,7 +48,7 @@
 #include "updownclient.h"	// for SO_AMULE
 
 
-#define DEBUG_CLIENT_PROTOCOL
+//#define DEBUG_CLIENT_PROTOCOL
 
 
 void CServerConnect::TryAnotherConnectionrequest()

@@ -44,7 +44,7 @@
 #include <wx/arrimpl.cpp>	// this is a magic incantation which must be done!
 
 
-#define DEBUG_REMOTE_CLIENT_PROTOCOL
+//#define DEBUG_REMOTE_CLIENT_PROTOCOL
 
 
 BEGIN_EVENT_TABLE(CClientReqSocketHandler, wxEvtHandler)
