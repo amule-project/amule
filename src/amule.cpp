@@ -331,7 +331,9 @@ bool CamuleApp::OnInit()
 	wxHandleFatalExceptions(true);
 #endif
 	}
+#ifndef AMULE_DAEMON
 
+#endif
 	if ( cmdline.Found(wxT("log-stdout")) ) {
 		printf("Logging to stdout enabled\n");
 		enable_stdout_log = true;
@@ -351,7 +353,11 @@ bool CamuleApp::OnInit()
 
 	// Default geometry of the GUI. Can be changed with a cmdline argument...
 	bool geometry_enabled = false;
+#ifndef AMULE_DAEMON		
 
+#else
+		printf("aMule Daemon %s\n", unicode2char(GetMuleVersion()));
+#endif
 	wxString geom_string;
 	if ( cmdline.Found(wxT("geometry"), &geom_string) ) {
 		geometry_enabled = true;
