@@ -594,6 +594,9 @@ RLE_Data::~RLE_Data()
 
 void RLE_Data::Realloc(int size)
 {
+	if ( size == m_len ) {
+		return;
+	}
 	unsigned char *buff = new unsigned char[size];
 	if ( size > m_len ) {
 		memset(buff + m_len, 0, size - m_len);
@@ -646,37 +649,6 @@ const unsigned char *RLE_Data::Decode(const unsigned char *buff)
 	}
 		
 	return m_buff;
-}
-
-void PartFileEncoderData::ApplyGapDiffs(std::list<Gap_Struct> &diff_list)
-{
-	std::list<Gap_Struct>::iterator diff = diff_list.begin();
-	std::list<Gap_Struct>::iterator prev = m_gap_list.begin();
-	while (diff != diff_list.end()) {
-		if ( diff->start >= prev->start ) {
-			// insert new gaps before next element - and erase current
-			while ( diff->end <= prev->end ) {
-				Gap_Struct new_diff;
-				new_diff.start = prev->start;
-				new_diff.end = diff->start;
-				if ( new_diff.start != new_diff.end ) {
-					m_gap_list.insert(prev, new_diff);
-				}
-				diff++;
-			}
-			if ( diff->end < prev->end )  {
-				Gap_Struct new_diff;
-				new_diff.start = diff->end;
-				new_diff.end = prev->end;
-				m_gap_list.insert(prev, new_diff);				
-			}
-			std::list<Gap_Struct>::iterator to_erase = prev;
-			prev++;
-			m_gap_list.erase(to_erase);
-		} else {
-			prev++;
-		}
-	}
 }
 
 } // End namespace

@@ -370,8 +370,8 @@ CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request,
 		
 		CPartFile_Encoder &enc = encoders[cur_file];
 //		CECTag *etag = encoders[cur_file].Encode();
-//		CECTag *etag = enc.Encode();
-//		filetag.AddTag(etag);
+		CECTag *etag = enc.Encode();
+		filetag.AddTag(etag);
 
 		response->AddTag(filetag);
 	}
@@ -956,16 +956,64 @@ CECPacket *SetPreferencesFromRequest(const CECPacket *request)
 	return response;
 }
 
-
-CPartFile_Encoder::CPartFile_Encoder(CPartFile *file) : m_enc_data(file->GetPartCount())
+// encoder side
+CPartFile_Encoder::CPartFile_Encoder(CPartFile *file) :
+	m_enc_data(file->GetPartCount(), file->gaplist.GetCount()*2)
 {
 	m_file = file;
+	m_gap_buffer_size = file->gaplist.GetCount()*2;
+	m_gap_buffer = new uint32[m_gap_buffer_size];
 }
 
-CPartFile_Encoder::CPartFile_Encoder(int size) : m_enc_data(size)
+// decoder side
+CPartFile_Encoder::CPartFile_Encoder(int size): m_enc_data(size, 0)
 {
 	m_file = 0;
+	m_gap_buffer = 0;
+	m_gap_buffer_size = 0;
 }
+
+CPartFile_Encoder::~CPartFile_Encoder()
+{
+	if ( m_gap_buffer ) {
+		delete [] m_gap_buffer;
+	}
+}
+		
+// stl side :)
+CPartFile_Encoder::CPartFile_Encoder()
+{
+	m_file = 0;
+	m_gap_buffer = 0;
+	m_gap_buffer_size = 0;
+}
+
+CPartFile_Encoder::CPartFile_Encoder(const CPartFile_Encoder &obj) : m_enc_data(obj.m_enc_data)
+{
+	m_file = obj.m_file;
+	m_gap_buffer_size = obj.m_gap_buffer_size;
+	if ( m_gap_buffer_size ) {
+		m_gap_buffer = new uint32[m_gap_buffer_size];
+		memcpy(m_gap_buffer, obj.m_gap_buffer, m_gap_buffer_size*sizeof(uint32));
+	} else {
+		m_gap_buffer = 0;
+	}
+}
+
+CPartFile_Encoder &CPartFile_Encoder::operator=(const CPartFile_Encoder &obj)
+{
+	m_file = obj.m_file;
+	m_enc_data = obj.m_enc_data;
+	m_gap_buffer_size = obj.m_gap_buffer_size;
+	if ( m_gap_buffer_size ) {
+		m_gap_buffer = new uint32[m_gap_buffer_size];
+		memcpy(m_gap_buffer, obj.m_gap_buffer, m_gap_buffer_size*sizeof(uint32));
+	} else {
+		m_gap_buffer = 0;
+	}
+	return *this;
+}
+
 
 CECTag *CPartFile_Encoder::Encode()
 {
@@ -973,67 +1021,48 @@ CECTag *CPartFile_Encoder::Encode()
 	// compare gaps lists, calculate difference
 	std::list<Gap_Struct> diff_list;
 
-	if ( m_enc_data.m_gap_list.empty() ) {
-		POSITION curr_pos = m_file->gaplist.GetHeadPosition();
-		while ( curr_pos ) {
-			Gap_Struct *curr = m_file->gaplist.GetNext(curr_pos);
-			m_enc_data.m_gap_list.push_back(*curr);
-			diff_list.push_back(*curr);
-		}
-	} else {	
-		std::list<Gap_Struct>::iterator prev = m_enc_data.m_gap_list.begin();
-		POSITION curr_pos = m_file->gaplist.GetHeadPosition();
-		unsigned int gap_ptr;
-		while ( curr_pos ) {
-			Gap_Struct diff;
-			Gap_Struct *curr = m_file->gaplist.GetAt(curr_pos);
-			gap_ptr = prev->start;
-			while ( curr_pos && (curr->end <= prev->end) ) {
-				if ( gap_ptr != curr->start ) {
-					diff.start = gap_ptr;
-					diff.end = curr->start;
-					diff_list.push_back(diff);
-				}
-				gap_ptr = curr->end;
-				curr = m_file->gaplist.GetNext(curr_pos);
-			}
-			if ( gap_ptr != prev->end ) {
-					diff.start = gap_ptr;
-					diff.end = prev->end;
-					diff_list.push_back(diff);
-			}
-			prev++;
-		}
+	if ( m_gap_buffer_size < m_file->gaplist.GetCount()*2 ) {
+		m_gap_buffer_size = m_file->gaplist.GetCount()*2;
+		uint32 *buf = new uint32[m_gap_buffer_size];
+		memcpy(buf, m_gap_buffer, m_gap_buffer_size*sizeof(uint32));
+	} 
 	
-		m_enc_data.ApplyGapDiffs(diff_list);
+	POSITION curr_pos = m_file->gaplist.GetHeadPosition();
+	uint32 *gap_buff_ptr = m_gap_buffer;
+	while ( curr_pos ) {
+		Gap_Struct *curr = m_file->gaplist.GetNext(curr_pos);
+		*gap_buff_ptr++ = curr->start;
+		*gap_buff_ptr++ = curr->end;
 	}
+
+	int gap_enc_size = 0;
+	const unsigned char *gap_enc_data = m_enc_data.m_gap_status.Encode((unsigned char *)m_gap_buffer, gap_enc_size);
 	
-	int enc_size;
-	const unsigned char *enc_data = m_enc_data.m_part_status.Encode(m_file->m_SrcpartFrequency, enc_size);
+	int part_enc_size;
+	const unsigned char *part_enc_data = m_enc_data.m_part_status.Encode(m_file->m_SrcpartFrequency, part_enc_size);
 
 	//
 	// Put data inside of tag in following order:
-	// [size of enc_data] [enc_data] [gap_diff_list]
+	// [size of part_enc_data] [part_enc_data] [num_of_gaps] [gap_enc_data]
 	//
 	unsigned char *tagdata;
-	CECTag *etag = new CECTag(EC_TAG_PARTFILE_GAP_STATUS, sizeof(uint32) + enc_size +
-		diff_list.size() * sizeof(uint32) * 2, (void **)&tagdata);
+	CECTag *etag = new CECTag(EC_TAG_PARTFILE_GAP_STATUS,
+		2 * sizeof(uint32) + part_enc_size + gap_enc_size, (void **)&tagdata);
 
-	// size of RLE data
-	*((uint32 *)tagdata) = enc_size;
+	// size of gap RLE data
+	*((uint32 *)tagdata) = part_enc_size;
 	tagdata += sizeof(uint32);
-	// RLE data itself
-	memcpy(tagdata, enc_data, enc_size);
-	// gap list is list of pairs of uint32 number - keep endiness
-	uint32 *gap_data = (uint32 *)(tagdata + enc_size);
-	for (std::list<Gap_Struct>::iterator diff = diff_list.begin(); diff != diff_list.end(); diff++) {
-		*gap_data++ = ENDIAN_SWAP_32(diff->start);
-		*gap_data++ = ENDIAN_SWAP_32(diff->end);
-	}
+	// part data itself
+	memcpy(tagdata, part_enc_data, part_enc_size);
+	tagdata += part_enc_size;
+
+	// real number of gaps - so remote size can realloc
+	*((uint32 *)tagdata) = m_gap_buffer_size;
+	tagdata += sizeof(uint32);
+	memcpy(tagdata, gap_enc_data, gap_enc_size);
 
 	return etag;
 }
-
 
 CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request, CPartFile_Encoder_Map &enc_map)
 {

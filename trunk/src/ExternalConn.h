@@ -53,22 +53,30 @@ class CPartFile_Encoder {
 		// can request lists in different time, they can get
 		// different results
 		otherfunctions::PartFileEncoderData m_enc_data;
+		
+		// gaps are also RLE encoded, but list have variable size by it's nature.
+		// so realloc buffer when needed.
+		// This buffer only needed on core-side, where list is turned into array
+		// before passing to RLE. Decoder will just use RLE internal buffer
+		uint32 *m_gap_buffer;
+		int m_gap_buffer_size;
+		
 		CPartFile *m_file;
 	public:
 		// encoder side
 		CPartFile_Encoder(CPartFile *file);
+		
 		// decoder side
 		CPartFile_Encoder(int size);
+
+		~CPartFile_Encoder();
 		
 		// stl side :)
-		CPartFile_Encoder()
-		{
-			m_file = 0;
-		}
-		CPartFile_Encoder(const CPartFile_Encoder &obj) : m_enc_data(obj.m_enc_data)
-		{
-			m_file = obj.m_file;
-		}
+		CPartFile_Encoder();
+		
+		CPartFile_Encoder(const CPartFile_Encoder &obj);
+
+		CPartFile_Encoder &operator=(const CPartFile_Encoder &obj);
 		
 		// encode - take data from m_file
 		CECTag *Encode();
