@@ -74,18 +74,17 @@ protected:
     DECLARE_EVENT_TABLE ();
 
 private:
-
-    wxTimer * m_timer;
-
-  wxUint32 m_maxLineCount;
-
+	
   wxToolBar *m_toolbar;
   
   wxBitmap m_toolBarBitmaps[5];
 
   wxBoxSizer *m_frameVBox;
+  wxBoxSizer *m_mainPanelVBox;
   wxBoxSizer *m_sigPanelVBox;
 
+  wxPanel *m_mainPanel;
+  
   wxStaticLine *m_staticLine;
   wxPanel *m_sigPanel;
 
@@ -99,17 +98,16 @@ private:
   wxStaticText *m_statLine_5;
   wxStaticText *m_statLine_6;
 
-
+  wxTimer * m_timer;
+  WxCasCanvas *m_imgPanel;
+  OnLineSig *m_aMuleSig;
+  wxUint32 m_maxLineCount;
+  
 #ifdef __LINUX__		// System monitoring on Linux
   wxStaticText *m_sysLine_1;
   wxStaticText *m_sysLine_2;
   LinuxMon *m_sysMonitor;
 #endif
-
-  WxCasCanvas *m_imgPanel;
-
-  OnLineSig *m_aMuleSig;
-
   enum
   {
     ID_BAR_REFRESH = 1000,
