@@ -101,8 +101,8 @@ CWCThread::CWCThread(CWebServer *ws, wxSocketBase *sock) {
     stWebSocket.m_hSocket = sock;
     stWebSocket.m_pHead = NULL;
     stWebSocket.m_pTail = NULL;
-    stWebSocket.m_pBuf = NULL;
-    stWebSocket.m_dwBufSize = 0;
+    stWebSocket.m_pBuf = new char [4096];
+    stWebSocket.m_dwBufSize = 4096;
     stWebSocket.m_dwRecv = 0;
     stWebSocket.m_bValid = true;
     stWebSocket.m_bCanRecv = true;
@@ -117,33 +117,94 @@ void *CWCThread::Entry() {
 #ifdef DEBUG
 	stWebSocket.m_pParent->Print(wxT("WCThread: Started a new WCThread\n"));
 #endif
-	//check for connection status and return immediately
-	if (stWebSocket.m_hSocket->WaitForLost(0)) {
-		//stWebSocket.m_pParent->Print(wxT("*** WCThread - WaitForLost\n"));
-		//connection closed/lost. terminate thread
-	} else {
-		//check for read and return immediately
+	bool IsGet = false, IsPost = false;
+	while ( stWebSocket.m_bCanRecv ) {
+		//check for connection status and return immediately
+		if (stWebSocket.m_hSocket->WaitForLost(0)) {
+			return 0;
+		}
 		if (stWebSocket.m_hSocket->WaitForRead(0)) {
-			//stWebSocket.m_pParent->Print(wxT("*** WCThread - WaitForRead\n"));
-			char pBuf[0x1000];
-			//READ
-			stWebSocket.m_hSocket->Read(&pBuf, sizeof(pBuf));
-			//stWebSocket.m_pParent->Print(wxString::Format(wxT("*** WCThread read:\n%s\n"), pBuf));
+			stWebSocket.m_hSocket->Read(stWebSocket.m_pBuf, stWebSocket.m_dwBufSize - stWebSocket.m_dwRecv);
 			if (stWebSocket.m_hSocket->LastCount() == 0) {
 				if (stWebSocket.m_hSocket->Error()) {
 					if (stWebSocket.m_hSocket->LastError() != wxSOCKET_WOULDBLOCK) {
 						//close socket&thread
 						stWebSocket.m_pParent->Print(wxT("WCThread: got read error. closing socket and terminating thread\n"));
 						stWebSocket.m_bValid = false;
+						return 0;
 					}
+				}
+			} else {
+				stWebSocket.m_dwRecv += stWebSocket.m_hSocket->LastCount();
+			}
+			//
+			// This server built for small requests, so if buffer hit its limit
+			// something must be wrong
+			if ( stWebSocket.m_dwRecv == stWebSocket.m_dwBufSize ) {
+				stWebSocket.m_pParent->Print(wxT("WCThread: request is too big\n"));
+				return 0;
+			}
+			//
+			// Check what kind of request is that
+			if ( !IsGet && !IsPost ) {
+				if ( !strncasecmp(stWebSocket.m_pBuf, "GET", 3) ) {
+					IsGet = true;
+				} else if ( !strncasecmp(stWebSocket.m_pBuf, "POST", 4) ) {
+					IsPost = true;
 				} else {
-					//read nothing
-					stWebSocket.m_bCanRecv = false;
-					stWebSocket.OnReceived(NULL, 0);
+					stWebSocket.m_pParent->Print(wxT("WCThread: request is unknown: [\n"));
+					stWebSocket.m_pParent->Print(char2unicode(stWebSocket.m_pBuf));
+					stWebSocket.m_pParent->Print(wxT("]\n"));
+					return 0;
 				}
 			}
-			stWebSocket.OnReceived(pBuf, stWebSocket.m_hSocket->LastCount());
+			// 
+			// RFC1945:
+			//
+			
+			//
+			// "GET" must have last line empty
+			if ( IsGet ) {
+				if ( !strncasecmp(stWebSocket.m_pBuf + stWebSocket.m_dwRecv - 4, "\r\n\r\n", 4) ) {
+					stWebSocket.m_bCanRecv = false;
+					//
+					// Process request
+					stWebSocket.OnRequestReceived(stWebSocket.m_pBuf, stWebSocket.m_dwRecv, 0, 0);
+				}
+			}
+			//
+			// "POST" have "Content-Length"
+			if ( IsPost ) {
+				stWebSocket.m_pBuf[stWebSocket.m_dwRecv] = 0;
+				char *cont_len = strstr(stWebSocket.m_pBuf, "Content-Length");
+				// do we have received all the line ?
+				if ( cont_len && strstr(cont_len, "\r\n\r\n") ) {
+					cont_len += strlen("Content-Length:");
+					// can be white space following
+					while ( isspace(*cont_len) ) cont_len++;
+					int len = atoi(cont_len);
+					if ( !len ) {
+						stWebSocket.m_pParent->Print(wxT("WCThread: POST method have no data"));
+						return 0;
+					}
+					// do we have all of data ?
+					char *cont = strstr(stWebSocket.m_pBuf, "\r\n\r\n");
+					cont += 4;
+					if ( cont - stWebSocket.m_pBuf + len <= (int)stWebSocket.m_dwRecv ) {
+						stWebSocket.OnRequestReceived(stWebSocket.m_pBuf, 
+							cont - stWebSocket.m_pBuf, cont, len);
+					}
+				}
+			}
+		} else {
+			Sleep(10);
 		}
+	}
+	//check for connection status and return immediately
+	if (stWebSocket.m_hSocket->WaitForLost(0)) {
+		//stWebSocket.m_pParent->Print(wxT("*** WCThread - WaitForLost\n"));
+		//connection closed/lost. terminate thread
+	} else {
 		//check for write and return immediately
 		if (stWebSocket.m_hSocket->WaitForWrite(0)) {
 			// send what is left in our tails
@@ -193,94 +254,6 @@ void *CWCThread::Entry() {
 	// shakraw - it must return NULL. it is correct now.
 	return NULL;	
 }
-
-
-void CWebSocket::OnReceived(char* pData, wxUint32 dwSize) {
-	//m_pParent->Print(wxT("*** WCThread: OnReceived\n"));
-
-	const UINT SIZE_PRESERVE = 0x1000;
-
-	if (m_dwBufSize < dwSize + m_dwRecv) {
-		// reallocate
-		char* pNewBuf = new char[m_dwBufSize = dwSize + m_dwRecv + SIZE_PRESERVE];
-		if (!pNewBuf) {
-			m_pParent->Print(wxT("WCThread: unable to reallocate buffer. internal problem.\n"));
-			m_bValid = false; // internal problem
-			return;
-		}
-		if (m_pBuf) {
-			memcpy(pNewBuf, m_pBuf, m_dwRecv);
-			delete[] m_pBuf;
-		}
-		m_pBuf = pNewBuf;
-	}
-	memcpy(m_pBuf + m_dwRecv, pData, dwSize);
-	m_dwRecv += dwSize;
-
-	// check if we have all that we want
-	if (!m_dwHttpHeaderLen) {
-		// try to find it
-		bool bPrevEndl = false;
-		
-		for (wxUint32 dwPos = 0; dwPos < m_dwRecv; ++dwPos) {
-			if ('\n' == m_pBuf[dwPos]) {
-				if (bPrevEndl) {
-					// We just found the end of the http header
-					// Now write the message's position into two first 
-					// DWORDs of the buffer
-					m_dwHttpHeaderLen = dwPos + 1;
-
-					// try to find now the 'Content-Length' header
-					for (dwPos = 0; dwPos < m_dwHttpHeaderLen; ) {
-						PVOID pPtr = memchr(m_pBuf + dwPos, '\n', m_dwHttpHeaderLen - dwPos);
-						if (!pPtr) break;
-
-						wxUint32 dwNextPos = ((wxUint32) pPtr) - ((wxUint32) m_pBuf);
-
-						// check this header
-						char szMatch[] = "content-length";
-						if (!strncasecmp(m_pBuf + dwPos, szMatch, sizeof(szMatch) - 1)) {
-							dwPos += sizeof(szMatch) - 1;
-							pPtr = memchr(m_pBuf + dwPos, ':', m_dwHttpHeaderLen - dwPos);
-							if (pPtr) {
-								m_dwHttpContentLen = atol(((char*) pPtr) + 1);
-							}
-							break;
-						}
-						dwPos = dwNextPos + 1;
-					}
-					break;
-				} else {
-					bPrevEndl = true;
-				}
-			} else {
-				if ('\r' != m_pBuf[dwPos]) {
-					bPrevEndl = false;
-				}
-			}
-		}
-	}
-
-	if (m_dwHttpHeaderLen && !m_bCanRecv && !m_dwHttpContentLen) {
-		m_dwHttpContentLen = m_dwRecv - m_dwHttpHeaderLen; // of course
-	}
-
-	if (m_dwHttpHeaderLen && (!m_dwHttpContentLen || (m_dwHttpHeaderLen + m_dwHttpContentLen <= m_dwRecv))) {
-		OnRequestReceived(m_pBuf, m_dwHttpHeaderLen, m_pBuf + m_dwHttpHeaderLen, m_dwHttpContentLen);
-
-		if (m_bCanRecv && (m_dwRecv > m_dwHttpHeaderLen + m_dwHttpContentLen)) {
-			// move our data
-			memmove(m_pBuf, m_pBuf + m_dwHttpHeaderLen + m_dwHttpContentLen, m_dwRecv - m_dwHttpHeaderLen + m_dwHttpContentLen);
-			m_dwRecv -= m_dwHttpHeaderLen + m_dwHttpContentLen;
-		} else {
-			m_dwRecv = 0;
-		}
-
-		m_dwHttpHeaderLen = 0;
-		m_dwHttpContentLen = 0;
-	}
-}
-
 
 void CWebSocket::OnRequestReceived(char* pHeader, wxUint32 dwHeaderLen, char* pData, wxUint32 dwDataLen)
 {
