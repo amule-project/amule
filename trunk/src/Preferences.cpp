@@ -23,7 +23,6 @@
 #include <cstdlib>
 
 #include <wx/timer.h>
-#include <wx/valgen.h>
 #include <wx/tokenzr.h>
 #include <wx/filename.h>
 #include <wx/textfile.h>
@@ -47,6 +46,7 @@
 #include "MD5Sum.h"
 
 #ifndef AMULE_DAEMON
+#include <wx/valgen.h>
 #include <wx/control.h>
 #include <wx/slider.h>
 #include "muuli_wdr.h"

@@ -46,6 +46,10 @@
 
 #endif
 
+#ifdef __LINUX__
+	#include <execinfo.h>
+#endif
+
 #ifdef HAVE_CONFIG_H
 	#include "config.h"		// Needed for HAVE_GETRLIMIT, HAVE_SETRLIMIT,
 					//   HAVE_SYS_RESOURCE_H, LOCALEDIR, PACKAGE, 
@@ -965,11 +969,9 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 #include <cxxabi.h>
 void CamuleApp::OnFatalException()
 {
-#ifndef __WXMSW__
+#ifdef __LINUX__
 
 	// (stkn) create backtrace
-#ifdef __WXGTK__
-#ifndef __BSD__
 	void *bt_array[100];	// 100 should be enough ?!?
 	char **bt_strings;
 	int num_entries;
@@ -1075,16 +1077,12 @@ void CamuleApp::OnFatalException()
 	delete [] libname;
 	delete [] funcname;
 	delete [] address;
-#endif
+#else
 
-#ifdef __BSD__
 	fprintf(stderr, "\nOOPS! - Seems like aMule crashed.\n");
 	fprintf(stderr, "aMule version is: %s\n", unicode2char(GetMuleVersion()));
-	fprintf(stderr, "--== no BACKTRACE yet ==--\n\n");
-#endif // __BSD__
-	
-#endif
-#endif
+	fprintf(stderr, "--== no BACKTRACE for your platform ==--\n\n");
+#endif // not linux
 }
 
 
