@@ -48,8 +48,8 @@ public:
 
 	void SetRange(float dLower, float dUpper, unsigned iTrend = 0);
 	void SetRanges(float dLower, float dUpper);
-	void SetXUnits(CString string, CString XMin = "", CString XMax = "");
-	void SetYUnits(CString string, CString YMin = "", CString YMax = "");
+	void SetXUnits(const wxString& string, const wxString& XMin = wxT(""), const wxString& XMax = wxT(""));
+	void SetYUnits(const wxString& string, const wxString& YMin = wxT(""), const wxString& YMax = wxT(""));
 	void SetBackgroundColor(COLORREF color);
 	void SetGridColor(COLORREF color);
 	void SetPlotColor(COLORREF color, unsigned iTrend = 0);
@@ -71,8 +71,8 @@ public:
 	unsigned nShiftPixels;         // amount to shift with each new point 
 	unsigned nYDecimals;
 
-	CString strXUnits, strXMin, strXMax;
-	CString strYUnits, strYMin, strYMax;
+	wxString strXUnits, strXMin, strXMax;
+	wxString strYUnits, strYMin, strYMax;
 	COLORREF crBackground;
 	COLORREF crGrid;      
 

@@ -123,9 +123,9 @@ void CStatisticsDlg::InitGraphs()
 	for (int index=0; index<=10; index++)
 		ApplyStatsColor(index);
 	pscopeDL->SetRanges(0.0, (float)(theApp.glob_prefs->GetMaxGraphDownloadRate()+4));
-	pscopeDL->SetYUnits(CString(_("kB/s")));
+	pscopeDL->SetYUnits(_("kB/s"));
 	pscopeUL->SetRanges(0.0, (float)(theApp.glob_prefs->GetMaxGraphUploadRate()+4));
-	pscopeUL->SetYUnits(CString(_("kB/s")));
+	pscopeUL->SetYUnits(_("kB/s"));
 	pscopeConn->SetRanges(0.0, (float)(theApp.glob_prefs->GetStatsMax()));
 	pscopeConn->SetYUnits("");
 }
@@ -530,7 +530,7 @@ void CStatisticsDlg::UpdateStatGraphs(bool bStatsVisible)
 			nMult = 1;
 			fUpperLimit = (float)(nMax * nDiv);
 		}
-		wxString txt = wxString::Format(CString(_("Active connections (%u:%u)")), nMult, nDiv);
+		wxString txt = wxString::Format(_("Active connections (%u:%u)"), nMult, nDiv);
 		wxStaticCast(wxWindow::FindWindowById(ID_ACTIVEC),wxStaticText)->SetLabel(txt);
 		pscopeConn->SetRange(0.0, fUpperLimit, 1);
 	}
@@ -539,7 +539,7 @@ void CStatisticsDlg::UpdateStatGraphs(bool bStatsVisible)
 	unsigned nScale = (unsigned)std::ceil((float)peakconnections / pscopeConn->GetUpperLimit());
 	if (nScale != nScalePrev) {
 		nScalePrev = nScale;
-		wxString txt = wxString::Format(CString(_("Active connections (1:%u)")), nScale);
+		wxString txt = wxString::Format(_("Active connections (1:%u)"), nScale);
 		wxStaticCast(wxWindow::FindWindowById(ID_ACTIVEC),wxStaticText)->SetLabel(txt);
 		pscopeConn->SetRange(0.0, (float)nScale*pscopeConn->GetUpperLimit(), 1);
 	}
@@ -618,10 +618,10 @@ void  CStatisticsDlg::InitTree()
 {
 	wxTreeItemId root=stattree->AddRoot(_("Statistics"));
 	h_uptime = stattree->InsertItem(root,0L,_("Waiting..."));
-	h_transfer= stattree->AppendItem(root,CString(_("Transfer")));
+	h_transfer= stattree->AppendItem(root,_("Transfer"));
 	tran0= stattree->AppendItem(h_transfer,_("Waiting..."));
 
-	h_upload = stattree->AppendItem(h_transfer,CString(_("Uploads")));
+	h_upload = stattree->AppendItem(h_transfer,_("Uploads"));
 	up1= stattree->AppendItem(h_upload,_("Waiting..."));
 	up2= stattree->AppendItem(h_upload,_("Waiting..."));
 	up3= stattree->AppendItem(h_upload,_("Waiting..."));
@@ -633,7 +633,7 @@ void  CStatisticsDlg::InitTree()
 	up9= stattree->AppendItem(h_upload,_("Waiting..."));
 	up10= stattree->AppendItem(h_upload,_("Waiting..."));
 
-	h_download = stattree->AppendItem(h_transfer,CString(_("Downloads")));
+	h_download = stattree->AppendItem(h_transfer,_("Downloads"));
 	down1= stattree->AppendItem(h_download,_("Waiting..."));
 	down2= stattree->AppendItem(h_download,_("Waiting..."));
 	down3= stattree->AppendItem(h_download,_("Waiting..."));
@@ -642,7 +642,7 @@ void  CStatisticsDlg::InitTree()
 	down6= stattree->AppendItem(h_download,_("Waiting..."));
 	down7= stattree->AppendItem(h_download,_("Waiting..."));
 
-	h_connection = stattree->AppendItem(root,CString(_("Connection")));
+	h_connection = stattree->AppendItem(root,_("Connection"));
 	con1= stattree->AppendItem(h_connection,_("Waiting..."));
 	con2= stattree->AppendItem(h_connection,_("Waiting..."));
 	con12=stattree->AppendItem(h_connection,_("Waiting..."));
@@ -655,7 +655,7 @@ void  CStatisticsDlg::InitTree()
 	con8= stattree->AppendItem(h_connection,_("Waiting..."));
 	con9= stattree->AppendItem(h_connection,_("Waiting..."));
 
-	h_clients = stattree->AppendItem(root,CString(_("Clients")));
+	h_clients = stattree->AppendItem(root,_("Clients"));
 	cli15= stattree->AppendItem(h_clients,_("Waiting..."));
 	cli1= stattree->AppendItem(h_clients,_("Waiting...")); // eMule
 	cli_versions[0].active = false;
@@ -693,7 +693,7 @@ void  CStatisticsDlg::InitTree()
 	cli7= stattree->AppendItem(h_clients,_("Filtered: %i"));
 
 
-	h_servers = stattree->AppendItem(root,CString(_("Servers")));
+	h_servers = stattree->AppendItem(root,_("Servers"));
 	srv1= stattree->AppendItem(h_servers,_("Waiting..."));
 	srv2= stattree->AppendItem(h_servers,_("Waiting..."));
 	srv3= stattree->AppendItem(h_servers,_("Waiting..."));
@@ -704,7 +704,7 @@ void  CStatisticsDlg::InitTree()
 	srv8= stattree->AppendItem(h_servers,_("Waiting..."));
 	srv9= stattree->AppendItem(h_servers,_("Waiting..."));
 
-	h_shared = stattree->AppendItem(root, CString(_("Shared Files")) );
+	h_shared = stattree->AppendItem(root, _("Shared Files"));
 	shar1= stattree->AppendItem(h_shared,_("Waiting..."));
 	shar2= stattree->AppendItem(h_shared,_("Waiting..."));
 	shar3= stattree->AppendItem(h_shared,_("Waiting..."));
@@ -723,8 +723,8 @@ void  CStatisticsDlg::InitTree()
 
 void CStatisticsDlg::ShowStatistics()
 {
-	CString cbuffer;
-	CString cbuffer2;
+	wxString cbuffer;
+	wxString cbuffer2;
 	bool resize;
 	DWORD running;
 	uint32 myStats[17];
@@ -734,111 +734,111 @@ void CStatisticsDlg::ShowStatistics()
 
 	uint64 DownOHTotal = theApp.downloadqueue->GetDownDataOverheadFileRequest() + theApp.downloadqueue->GetDownDataOverheadSourceExchange() + theApp.downloadqueue->GetDownDataOverheadServer() + theApp.downloadqueue->GetDownDataOverheadOther();
 	uint64 DownOHTotalPackets = theApp.downloadqueue->GetDownDataOverheadFileRequestPackets() + theApp.downloadqueue->GetDownDataOverheadSourceExchangePackets() + theApp.downloadqueue->GetDownDataOverheadServerPackets() + theApp.downloadqueue->GetDownDataOverheadOtherPackets();
-	cbuffer.Format(CString(_("Uptime: ")));
+	cbuffer.Printf(_("Uptime: "));
 	stattree->SetItemText(h_uptime, cbuffer);
-	cbuffer.Format(CString(_("Downloaded Data (Session (Total)): %s (%s)")),CastItoXBytes( theApp.stat_sessionReceivedBytes).GetData(),	CastItoXBytes( theApp.stat_sessionReceivedBytes+theApp.glob_prefs->GetTotalDownloaded()).GetData());
+	cbuffer.Printf(_("Downloaded Data (Session (Total)): %s (%s)"),CastItoXBytes( theApp.stat_sessionReceivedBytes).GetData(),	CastItoXBytes( theApp.stat_sessionReceivedBytes+theApp.glob_prefs->GetTotalDownloaded()).GetData());
 	stattree->SetItemText(down1, cbuffer);
-	cbuffer.Format(CString(_("Total Overhead (Packets): %s (%s)")),	CastItoXBytes(DownOHTotal).GetData(), CastItoIShort(DownOHTotalPackets).GetData());
+	cbuffer.Printf(_("Total Overhead (Packets): %s (%s)"),	CastItoXBytes(DownOHTotal).GetData(), CastItoIShort(DownOHTotalPackets).GetData());
 	stattree->SetItemText(down2, cbuffer);
-	cbuffer.Format(CString(_("File Request Overhead (Packets): %s (%s)")), CastItoXBytes( theApp.downloadqueue->GetDownDataOverheadFileRequest()).GetData(), CastItoIShort(theApp.downloadqueue->GetDownDataOverheadFileRequestPackets()).GetData());
+	cbuffer.Printf(_("File Request Overhead (Packets): %s (%s)"), CastItoXBytes( theApp.downloadqueue->GetDownDataOverheadFileRequest()).GetData(), CastItoIShort(theApp.downloadqueue->GetDownDataOverheadFileRequestPackets()).GetData());
 	stattree->SetItemText(down3, cbuffer);
-	cbuffer.Format(CString(_("Source Exchange Overhead (Packets): %s (%s)")), CastItoXBytes( theApp.downloadqueue->GetDownDataOverheadSourceExchange()).GetData(), CastItoIShort(theApp.downloadqueue->GetDownDataOverheadSourceExchangePackets()).GetData() );
+	cbuffer.Printf(_("Source Exchange Overhead (Packets): %s (%s)"), CastItoXBytes( theApp.downloadqueue->GetDownDataOverheadSourceExchange()).GetData(), CastItoIShort(theApp.downloadqueue->GetDownDataOverheadSourceExchangePackets()).GetData() );
 	stattree->SetItemText(down4, cbuffer);
-	cbuffer.Format(CString(_("Server Overhead (Packets): %s (%s)")), CastItoXBytes( theApp.downloadqueue->GetDownDataOverheadServer()).GetData(), CastItoIShort(theApp.downloadqueue->GetDownDataOverheadServerPackets()).GetData());
+	cbuffer.Printf(_("Server Overhead (Packets): %s (%s)"), CastItoXBytes( theApp.downloadqueue->GetDownDataOverheadServer()).GetData(), CastItoIShort(theApp.downloadqueue->GetDownDataOverheadServerPackets()).GetData());
 	stattree->SetItemText(down5, cbuffer);
-	cbuffer.Format(CString(_("Found Sources: %i")),myStats[0]);
+	cbuffer.Printf(_("Found Sources: %i"),myStats[0]);
 	stattree->SetItemText(down6, cbuffer);
-	cbuffer.Format(CString(_("Active Downloads (chunks): %i")),myStats[1]);
+	cbuffer.Printf(_("Active Downloads (chunks): %i"),myStats[1]);
 	stattree->SetItemText(down7, cbuffer);
 	uint64 UpOHTotal = theApp.uploadqueue->GetUpDataOverheadFileRequest() + theApp.uploadqueue->GetUpDataOverheadSourceExchange() + theApp.uploadqueue->GetUpDataOverheadServer() + theApp.uploadqueue->GetUpDataOverheadOther();
 	uint64 UpOHTotalPackets = theApp.uploadqueue->GetUpDataOverheadFileRequestPackets() + theApp.uploadqueue->GetUpDataOverheadSourceExchangePackets() + theApp.uploadqueue->GetUpDataOverheadServerPackets() + theApp.uploadqueue->GetUpDataOverheadOtherPackets();
-	cbuffer.Format(CString(_("Uploaded Data (Session (Total)): %s (%s)")),CastItoXBytes( theApp.stat_sessionSentBytes).GetData(),CastItoXBytes( theApp.stat_sessionSentBytes+theApp.glob_prefs->GetTotalUploaded()).GetData());
+	cbuffer.Printf(_("Uploaded Data (Session (Total)): %s (%s)"),CastItoXBytes( theApp.stat_sessionSentBytes).GetData(),CastItoXBytes( theApp.stat_sessionSentBytes+theApp.glob_prefs->GetTotalUploaded()).GetData());
 	stattree->SetItemText(up1, cbuffer);
-	cbuffer.Format(CString(_("Total Overhead (Packets): %s (%s)")), CastItoXBytes( UpOHTotal).GetData(), CastItoIShort(UpOHTotalPackets).GetData());
+	cbuffer.Printf(_("Total Overhead (Packets): %s (%s)"), CastItoXBytes( UpOHTotal).GetData(), CastItoIShort(UpOHTotalPackets).GetData());
 	stattree->SetItemText(up2, cbuffer);
-	cbuffer.Format(CString(_("File Request Overhead (Packets): %s (%s)")), CastItoXBytes( theApp.uploadqueue->GetUpDataOverheadFileRequest()).GetData(), CastItoIShort(theApp.uploadqueue->GetUpDataOverheadFileRequestPackets()).GetData());
+	cbuffer.Printf(_("File Request Overhead (Packets): %s (%s)"), CastItoXBytes( theApp.uploadqueue->GetUpDataOverheadFileRequest()).GetData(), CastItoIShort(theApp.uploadqueue->GetUpDataOverheadFileRequestPackets()).GetData());
 	stattree->SetItemText(up3, cbuffer);
-	cbuffer.Format(CString(_("Source Exchange Overhead (Packets): %s (%s)")), CastItoXBytes( theApp.uploadqueue->GetUpDataOverheadSourceExchange()).GetData(), CastItoIShort(theApp.uploadqueue->GetUpDataOverheadSourceExchangePackets()).GetData());
+	cbuffer.Printf(_("Source Exchange Overhead (Packets): %s (%s)"), CastItoXBytes( theApp.uploadqueue->GetUpDataOverheadSourceExchange()).GetData(), CastItoIShort(theApp.uploadqueue->GetUpDataOverheadSourceExchangePackets()).GetData());
 	stattree->SetItemText(up4, cbuffer);
-	cbuffer.Format(CString(_("Server Overhead (Packets): %s (%s)")), CastItoXBytes( theApp.uploadqueue->GetUpDataOverheadServer()).GetData(), CastItoIShort(theApp.uploadqueue->GetUpDataOverheadServerPackets()).GetData());
+	cbuffer.Printf(_("Server Overhead (Packets): %s (%s)"), CastItoXBytes( theApp.uploadqueue->GetUpDataOverheadServer()).GetData(), CastItoIShort(theApp.uploadqueue->GetUpDataOverheadServerPackets()).GetData());
 	stattree->SetItemText(up5, cbuffer);
-	cbuffer.Format(CString(_("Active Uploads: %i")),theApp.uploadqueue->GetUploadQueueLength());
+	cbuffer.Printf(_("Active Uploads: %i"),theApp.uploadqueue->GetUploadQueueLength());
 	stattree->SetItemText(up6, cbuffer);
-	cbuffer.Format(CString(_("Waiting Uploads: %i")),theApp.uploadqueue->GetWaitingUserCount());
+	cbuffer.Printf(_("Waiting Uploads: %i"),theApp.uploadqueue->GetWaitingUserCount());
 	stattree->SetItemText(up7, cbuffer);
-	cbuffer.Format(CString(_("Total successful upload sessions: %i")),theApp.uploadqueue->GetSuccessfullUpCount());
+	cbuffer.Printf(_("Total successful upload sessions: %i"),theApp.uploadqueue->GetSuccessfullUpCount());
 	stattree->SetItemText(up8, cbuffer);
-	cbuffer.Format(CString(_("Total failed upload sessions: %i")),theApp.uploadqueue->GetFailedUpCount());
+	cbuffer.Printf(_("Total failed upload sessions: %i"),theApp.uploadqueue->GetFailedUpCount());
 	stattree->SetItemText(up9, cbuffer);
 	running=theApp.uploadqueue->GetAverageUpTime();
-	cbuffer.Format(CString(_("Average upload time: %s")),CastSecondsToHM(running).GetData());
+	cbuffer.Printf(_("Average upload time: %s"),CastSecondsToHM(running).GetData());
 	stattree->SetItemText(up10, cbuffer);
 
 	if (theApp.stat_transferStarttime>0) {
-		cbuffer.Format(CString(_("Average Downloadrate (Session): %.2f kB/s")),kBpsDownSession);
+		cbuffer.Printf(_("Average Downloadrate (Session): %.2f kB/s"),kBpsDownSession);
 		stattree->SetItemText(con1, cbuffer);
 
-		cbuffer.Format(CString(_("Average Uploadrate (Session): %.2f kB/s")),GetKBpsUpSession());
+		cbuffer.Printf(_("Average Uploadrate (Session): %.2f kB/s"),GetKBpsUpSession());
 		stattree->SetItemText(con2, cbuffer);
 
-		cbuffer.Format(CString(_("Max Downloadrate Average (Session): %.2f kB/s")),maxDownavg);
+		cbuffer.Printf(_("Max Downloadrate Average (Session): %.2f kB/s"),maxDownavg);
 		stattree->SetItemText(con12, cbuffer);
-		cbuffer.Format(CString(_("Max Downloadrate (Session): %.2f kB/s")),maxDown);
+		cbuffer.Printf(_("Max Downloadrate (Session): %.2f kB/s"),maxDown);
 		stattree->SetItemText(con13, cbuffer);
 	}
 	if (theApp.stat_reconnects>0) {
-		cbuffer.Format(CString(_("Reconnects: %i")),theApp.stat_reconnects-1);
+		cbuffer.Printf(_("Reconnects: %i"),theApp.stat_reconnects-1);
 	} else {
-		cbuffer.Format(CString(_("Reconnects: %i")),0);
+		cbuffer.Printf(_("Reconnects: %i"),0);
 	}
 	stattree->SetItemText(con3, cbuffer);
 
 	if (theApp.stat_transferStarttime==0) {
-		cbuffer.Format(CString(_("waiting for transfer...")));
+		cbuffer.Printf(_("waiting for transfer..."));
 	} else {
-		cbuffer.Format(CString(_("Time Since First Transfer: %s")),CastSecondsToHM(theApp.GetTransferSecs()).GetData());
+		cbuffer.Printf(_("Time Since First Transfer: %s"),CastSecondsToHM(theApp.GetTransferSecs()).GetData());
 	}
 	stattree->SetItemText(con4, cbuffer);
 
 	if (theApp.Start_time>0) {
-		cbuffer.Format(CString(_("Uptime: %s")), CastSecondsToHM(theApp.GetUptimeSecs()).GetData());
+		cbuffer.Printf(_("Uptime: %s"), CastSecondsToHM(theApp.GetUptimeSecs()).GetData());
 		stattree->SetItemText(h_uptime, cbuffer);
 	}
 
 	if (theApp.stat_serverConnectTime==0) {
-		cbuffer.Format(CString(_("waiting for connection...")));
+		cbuffer.Printf(_("waiting for connection..."));
 	}	else {
-		cbuffer.Format(CString(_("Connected To Server Since: %s")),CastSecondsToHM(theApp.GetServerSecs()).GetData());
+		cbuffer.Printf(_("Connected To Server Since: %s"),CastSecondsToHM(theApp.GetServerSecs()).GetData());
 	}
 	stattree->SetItemText(con5, cbuffer);
 
 	if (theApp.stat_sessionReceivedBytes>0 && theApp.stat_sessionSentBytes>0 ) {
 		if (theApp.stat_sessionReceivedBytes<theApp.stat_sessionSentBytes) {
-			cbuffer.Format(wxT("%s %.2f : 1"),CString(_("Session UL:DL Ratio (Total):")).GetData(),(float)theApp.stat_sessionSentBytes/theApp.stat_sessionReceivedBytes);
+			cbuffer.Printf(wxT("%s %.2f : 1"),_("Session UL:DL Ratio (Total):"),(float)theApp.stat_sessionSentBytes/theApp.stat_sessionReceivedBytes);
 			stattree->SetItemText(tran0, cbuffer);
 		} else {
-			cbuffer.Format(wxT("%s 1 : %.2f"),CString(_("Session UL:DL Ratio (Total):")).GetData(),(float)theApp.stat_sessionReceivedBytes/theApp.stat_sessionSentBytes);
+			cbuffer.Printf(wxT("%s 1 : %.2f"),_("Session UL:DL Ratio (Total):"),(float)theApp.stat_sessionReceivedBytes/theApp.stat_sessionSentBytes);
 			stattree->SetItemText(tran0, cbuffer);
 		}
 	} else {
-			cbuffer.Format(_("%s Not available"),CString(_("Session UL:DL Ratio (Total):")).GetData());
+			cbuffer.Printf(_("%s Not available"),_("Session UL:DL Ratio (Total):"));
 			stattree->SetItemText(tran0, cbuffer);
 	}
 
 
 	// shared files stats
-	cbuffer.Format(CString(_("Number of Shared Files: %i")),theApp.sharedfiles->GetCount());stattree->SetItemText(shar1, cbuffer);
+	cbuffer.Printf(_("Number of Shared Files: %i"),theApp.sharedfiles->GetCount());stattree->SetItemText(shar1, cbuffer);
 
 	uint64 allsize=theApp.sharedfiles->GetDatasize();
-	cbuffer.Format(CString(_("Total size of Shared Files: %s")),CastItoXBytes(allsize).GetData());stattree->SetItemText(shar2, cbuffer);
+	cbuffer.Printf(_("Total size of Shared Files: %s"),CastItoXBytes(allsize).GetData());stattree->SetItemText(shar2, cbuffer);
 	
 	if(theApp.sharedfiles->GetCount() != 0) {
-		cbuffer2.Format( wxT("%s"), CastItoXBytes((uint64)allsize/theApp.sharedfiles->GetCount()).GetData());
+		cbuffer2.Printf( wxT("%s"), CastItoXBytes((uint64)allsize/theApp.sharedfiles->GetCount()).GetData());
 	} else {
 		cbuffer2 = "-";
 	}
 
-	cbuffer.Format(CString(_("Average filesize: %s")),cbuffer2.GetData());
+	cbuffer.Printf(_("Average filesize: %s"),cbuffer2.GetData());
 	stattree->SetItemText(shar3, cbuffer);
 	// get clientversion-counts
 
@@ -856,40 +856,40 @@ void CStatisticsDlg::ShowStatistics()
 		totalclient = 1;
 	}
 	
-	cbuffer.Format(_("Total: %i"),totalclient);
+	cbuffer.Printf(_("Total: %i"),totalclient);
 	stattree->SetItemText(cli15, cbuffer);
-	cbuffer.Format(_("eMule: %i (%1.1f%%)"),myStats[2],(double)100*myStats[2]/totalclient);
+	cbuffer.Printf(_("eMule: %i (%1.1f%%)"),myStats[2],(double)100*myStats[2]/totalclient);
 	stattree->SetItemText(cli1, cbuffer);
-	cbuffer.Format(_("aMule: %i (%1.1f%%)"),myStats[8],(double)100*myStats[8]/totalclient);
+	cbuffer.Printf(_("aMule: %i (%1.1f%%)"),myStats[8],(double)100*myStats[8]/totalclient);
 	stattree->SetItemText(cli10, cbuffer);
-	cbuffer.Format(_("lMule/xMule: %i (%1.1f%%)"),myStats[6],(double)100*myStats[6]/totalclient);
+	cbuffer.Printf(_("lMule/xMule: %i (%1.1f%%)"),myStats[6],(double)100*myStats[6]/totalclient);
 	stattree->SetItemText(cli8, cbuffer);
-	cbuffer.Format(_("eDonkeyHybrid: %i (%1.1f%%)"),myStats[4],(double)100*myStats[4]/totalclient);
+	cbuffer.Printf(_("eDonkeyHybrid: %i (%1.1f%%)"),myStats[4],(double)100*myStats[4]/totalclient);
 	stattree->SetItemText(cli2, cbuffer);
-	cbuffer.Format(_("eDonkey: %i (%1.1f%%)"),myStats[1],(double)100*myStats[1]/totalclient);
+	cbuffer.Printf(_("eDonkey: %i (%1.1f%%)"),myStats[1],(double)100*myStats[1]/totalclient);
 	stattree->SetItemText(cli3, cbuffer);
-	cbuffer.Format(_("cDonkey: %i (%1.1f%%)"),myStats[5],(double)100*myStats[5]/totalclient);
+	cbuffer.Printf(_("cDonkey: %i (%1.1f%%)"),myStats[5],(double)100*myStats[5]/totalclient);
 	stattree->SetItemText(cli4, cbuffer);
-	cbuffer.Format(_("Old MLDonkey: %i (%1.1f%%)"),myStats[3],(double)100*myStats[3]/totalclient);
+	cbuffer.Printf(_("Old MLDonkey: %i (%1.1f%%)"),myStats[3],(double)100*myStats[3]/totalclient);
 	stattree->SetItemText(cli5, cbuffer);
-	cbuffer.Format(_("New MLDonkey: %i (%1.1f%%)"),myStats[7],(double)100*myStats[7]/totalclient);
+	cbuffer.Printf(_("New MLDonkey: %i (%1.1f%%)"),myStats[7],(double)100*myStats[7]/totalclient);
 	stattree->SetItemText(cli9, cbuffer);
-	cbuffer.Format(_("lphant: %i (%1.1f%%)"),myStats[10],(double)100*myStats[10]/totalclient);
+	cbuffer.Printf(_("lphant: %i (%1.1f%%)"),myStats[10],(double)100*myStats[10]/totalclient);
 	stattree->SetItemText(cli12, cbuffer);
-	cbuffer.Format(_("Shareaza: %i (%1.1f%%)"),myStats[16],(double)100*myStats[16]/totalclient);
+	cbuffer.Printf(_("Shareaza: %i (%1.1f%%)"),myStats[16],(double)100*myStats[16]/totalclient);
 	stattree->SetItemText(cli16, cbuffer);	
-	cbuffer.Format(_("Compatible: %i (%1.1f%%)"),myStats[9],(double)100*myStats[9]/totalclient);
+	cbuffer.Printf(_("Compatible: %i (%1.1f%%)"),myStats[9],(double)100*myStats[9]/totalclient);
 	stattree->SetItemText(cli11, cbuffer);
-	cbuffer.Format(_("Unknown: %i"),myStats[0]);
+	cbuffer.Printf(_("Unknown: %i"),myStats[0]);
 	stattree->SetItemText(cli6, cbuffer);	
-	cbuffer.Format(_("Filtered: %i"),theApp.stat_filteredclients);
+	cbuffer.Printf(_("Filtered: %i"),theApp.stat_filteredclients);
 	stattree->SetItemText(cli7, cbuffer);
-	cbuffer.Format(_("LowID: %u (%.2f%%)"),myStats[11] , (totalclient>0)?((double)100*myStats[11] / totalclient):0);
+	cbuffer.Printf(_("LowID: %u (%.2f%%)"),myStats[11] , (totalclient>0)?((double)100*myStats[11] / totalclient):0);
 	stattree->SetItemText(cli13, cbuffer);
-	cbuffer.Format(_("SecIdent On/Off: %u (%.2f%%) : %u (%.2f%%)"), myStats[12] , ((myStats[2]+myStats[8])>0)?((double)100*myStats[12] / (myStats[2]+myStats[8])):0, myStats[13] , ((myStats[2]+myStats[8])>0)?((double)100*myStats[13] /(myStats[2]+myStats[8]) ):0);
+	cbuffer.Printf(_("SecIdent On/Off: %u (%.2f%%) : %u (%.2f%%)"), myStats[12] , ((myStats[2]+myStats[8])>0)?((double)100*myStats[12] / (myStats[2]+myStats[8])):0, myStats[13] , ((myStats[2]+myStats[8])>0)?((double)100*myStats[13] /(myStats[2]+myStats[8]) ):0);
 	stattree->SetItemText(cli14, cbuffer);
 #ifdef __DEBUG__
-	cbuffer.Format(_("HasSocket: %i (%1.1f%%)"),myStats[17],(double)100*myStats[17]/totalclient);
+	cbuffer.Printf(_("HasSocket: %i (%1.1f%%)"),myStats[17],(double)100*myStats[17]/totalclient);
 	stattree->SetItemText(cli17, cbuffer);
 #endif
 	
@@ -926,7 +926,7 @@ void CStatisticsDlg::ShowStatistics()
 				UINT verMaj = topver/(100*10*100);
 				UINT verMin = (topver - (verMaj*100*10*100))/(100*10);
 				UINT verUp = (topver - (verMaj*100*10*100) - (verMin*100*10))/(100);
-				cbuffer.Format(wxT("v%u.%u.%u: %i (%1.1f%%)"), verMaj, verMin, verUp, topcnt, topper*100);							
+				cbuffer.Printf(wxT("v%u.%u.%u: %i (%1.1f%%)"), verMaj, verMin, verUp, topcnt, topper*100);							
 			} else {
 				cbuffer="";
 			}
@@ -979,7 +979,7 @@ void CStatisticsDlg::ShowStatistics()
 				UINT verMaj = topver/(100*10*100);
 				UINT verMin = (topver - (verMaj*100*10*100))/(100*10);
 				UINT verUp = (topver - (verMaj*100*10*100) - (verMin*100*10))/(100);
-				cbuffer.Format(wxT("v%u.%u.%u: %i (%1.1f%%)"), verMaj, verMin, verUp, topcnt, topper*100);
+				cbuffer.Printf(wxT("v%u.%u.%u: %i (%1.1f%%)"), verMaj, verMin, verUp, topcnt, topper*100);
 			} else {
 				cbuffer="";
 			}
@@ -1031,7 +1031,7 @@ void CStatisticsDlg::ShowStatistics()
 				UINT verMaj = topver/(100*10*100);
 				UINT verMin = (topver - (verMaj*100*10*100))/(100*10);
 				UINT verUp = (topver - (verMaj*100*10*100) - (verMin*100*10))/(100);
-				cbuffer.Format(wxT(" v%u.%u%c: %i (%1.1f%%)"),verMaj, verMin, 'a' + verUp, topcnt, topper*100);
+				cbuffer.Printf(wxT(" v%u.%u%c: %i (%1.1f%%)"),verMaj, verMin, 'a' + verUp, topcnt, topper*100);
 			} else {
 				cbuffer="";
 			}
@@ -1084,9 +1084,9 @@ void CStatisticsDlg::ShowStatistics()
 				uint8 verMin = (topver - (verMaj*100*10*100))/(100*10);
 				uint8 verUp = (topver - (verMaj*100*10*100) - (verMin*100*10))/(100);
 				if ((verMaj == 0) && (verUp == 0)) {
-					cbuffer.Format(wxT(" v1.x: %i (%1.1f%%)"), topcnt, topper*100);
+					cbuffer.Printf(wxT(" v1.x: %i (%1.1f%%)"), topcnt, topper*100);
 				} else {
-					cbuffer.Format(wxT(" v%u.%u.%u: %i (%1.1f%%)"),verMaj, verMin, verUp, topcnt, topper*100);
+					cbuffer.Printf(wxT(" v%u.%u.%u: %i (%1.1f%%)"),verMaj, verMin, verUp, topcnt, topper*100);
 				}
 			} else {
 				cbuffer="";
@@ -1116,16 +1116,16 @@ void CStatisticsDlg::ShowStatistics()
 	uint32 servtfile;
 	float servocc;
 	theApp.serverlist->GetStatus( servtotal, servfail, servuser, servfile, servtuser, servtfile,servocc);
-	cbuffer.Format(wxT("%s: %i"),CString(_("Working Servers")).GetData(),servtotal-servfail);stattree->SetItemText(srv1, cbuffer);
-	cbuffer.Format(wxT("%s: %i"),CString(_("Failed Servers")).GetData(),servfail);stattree->SetItemText(srv2, cbuffer);
-	cbuffer.Format(wxT("%s: %i"),CString(_("Total")).GetData(),servtotal);stattree->SetItemText(srv3, cbuffer);
-	cbuffer.Format(wxT("%s: %i"),CString(_("Deleted Servers")).GetData(),theApp.serverlist->GetDeletedServerCount());stattree->SetItemText(srv4, cbuffer);
-	cbuffer.Format(wxT("%s: %i"),CString(_("Users on Working Servers")).GetData(),servuser);stattree->SetItemText(srv5, cbuffer);
-	cbuffer.Format(wxT("%s: %i"),CString(_("Files on Working Servers")).GetData(),servfile);stattree->SetItemText(srv6, cbuffer);
-	cbuffer.Format(wxT("%s: %i"),CString(_("Total Users")).GetData(),servtuser);stattree->SetItemText(srv7, cbuffer);
-	cbuffer.Format(wxT("%s: %i"),CString(_("Total Files")).GetData(),servtfile);stattree->SetItemText(srv8, cbuffer);
-	cbuffer.Format(wxT("%s: %i"),CString(_("Active Connections (estimate)")).GetData(),activeconnections);stattree->SetItemText(con6, cbuffer);
-	cbuffer.Format(CString(_("Server Occupation: %.2f%%")),servocc);stattree->SetItemText(srv9, cbuffer);
+	cbuffer.Printf(wxT("%s: %i"),_("Working Servers"),servtotal-servfail);stattree->SetItemText(srv1, cbuffer);
+	cbuffer.Printf(wxT("%s: %i"),_("Failed Servers"),servfail);stattree->SetItemText(srv2, cbuffer);
+	cbuffer.Printf(wxT("%s: %i"),_("Total"),servtotal);stattree->SetItemText(srv3, cbuffer);
+	cbuffer.Printf(wxT("%s: %i"),_("Deleted Servers"),theApp.serverlist->GetDeletedServerCount());stattree->SetItemText(srv4, cbuffer);
+	cbuffer.Printf(wxT("%s: %i"),_("Users on Working Servers"),servuser);stattree->SetItemText(srv5, cbuffer);
+	cbuffer.Printf(wxT("%s: %i"),_("Files on Working Servers"),servfile);stattree->SetItemText(srv6, cbuffer);
+	cbuffer.Printf(wxT("%s: %i"),_("Total Users"),servtuser);stattree->SetItemText(srv7, cbuffer);
+	cbuffer.Printf(wxT("%s: %i"),_("Total Files"),servtfile);stattree->SetItemText(srv8, cbuffer);
+	cbuffer.Printf(wxT("%s: %i"),_("Active Connections (estimate)"),activeconnections);stattree->SetItemText(con6, cbuffer);
+	cbuffer.Printf(_("Server Occupation: %.2f%%"),servocc);stattree->SetItemText(srv9, cbuffer);
 	uint32 m_itemp = theApp.listensocket->GetMaxConnectionReached();
 	if( m_itemp != m_ilastMaxConnReached ) {
 		char osDate[60];
@@ -1136,20 +1136,20 @@ void CStatisticsDlg::ShowStatistics()
 		struct tm* now=localtime(&mytime);
 		strftime(osDate,sizeof(osDate)-1,"%d.%m.%Y %H:%M:%S",now);
 
-		cbuffer.Format(wxT("%s: %i : %s"),CString(_("Max Connection Limit Reached")).GetData(),m_itemp,osDate);stattree->SetItemText(con7, cbuffer);
+		cbuffer.Printf(wxT("%s: %i : %s"),_("Max Connection Limit Reached"),m_itemp,osDate);stattree->SetItemText(con7, cbuffer);
 		m_ilastMaxConnReached = m_itemp;
 	} else if( m_itemp == 0 ) {
-		cbuffer.Format(wxT("%s: %i"),CString(_("Max Connection Limit Reached")).GetData(),m_itemp);
+		cbuffer.Printf(wxT("%s: %i"),_("Max Connection Limit Reached"),m_itemp);
 		stattree->SetItemText(con7, cbuffer);
 	}
 
 	if(theApp.serverconnect->IsConnected()) {
-		cbuffer.Format(wxT("%s: %i"),CString(_("Average Connections (estimate)")).GetData(),(int)averageconnections);
+		cbuffer.Printf(wxT("%s: %i"),_("Average Connections (estimate)"),(int)averageconnections);
 		stattree->SetItemText(con8, cbuffer);
 	} else {
-		stattree->SetItemText(con8, CString(_("waiting for connection...")));
+		stattree->SetItemText(con8, _("waiting for connection..."));
 	}
-	cbuffer.Format(wxT("%s: %i"),CString(_("Peak Connections (estimate)")).GetData(),peakconnections);
+	cbuffer.Printf(wxT("%s: %i"),_("Peak Connections (estimate)"),peakconnections);
 	stattree->SetItemText(con9, cbuffer);
 }
 
