@@ -322,6 +322,10 @@ enum {
 		 * \brief Search results returned to client
 		 */
 	EC_OP_SEARCH_RESULTS,
+		/*!
+		 * \brief Search results, search is terminated
+		 */
+	EC_OP_SEARCH_RESULTS_DONE,
 	
 	//
 	// IPFilter

@@ -585,7 +585,9 @@ CECPacket *Get_EC_Response_Server(const CECPacket *request)
 
 CECPacket *Get_EC_Response_Search_Results(const CECPacket *request)
 {
-	CECPacket *response = new CECPacket(EC_OP_SEARCH_RESULTS);
+	CECPacket *response = new CECPacket(
+		theApp.searchlist->SearchInProgress() ? EC_OP_SEARCH_RESULTS : EC_OP_SEARCH_RESULTS_DONE);
+		
 	EC_DETAIL_LEVEL detail_level = request->GetDetailLevel();
 	//
 	// request can contain list of queried items
@@ -596,9 +598,6 @@ CECPacket *Get_EC_Response_Search_Results(const CECPacket *request)
 			queryitems.insert(tag->GetMD4Data());
 		}
 	}
-	//
-	// If there's no search in progress - notify client, he may stop asking
-	response->AddTag(CECTag(EC_TAG_SEARCH_STATUS, (uint8)theApp.searchlist->SearchInProgress()));
 
 	std::vector<CSearchFile*> list(theApp.searchlist->GetSearchResults(0xffff));
 	std::vector<CSearchFile*>::const_iterator it = list.begin();

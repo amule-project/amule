@@ -1068,8 +1068,10 @@ bool CSearchListRem::StartNewSearch(long nSearchID, bool global_search, wxString
 
 void CSearchListRem::StopGlobalSearch()
 {
-	//CECPacket search_req(EC_OP_SEARCH_STOP);
-	//m_conn->Send(&search_req);
+	if (m_curr_search != -1) {
+		CECPacket search_req(EC_OP_SEARCH_STOP);
+		m_conn->Send(&search_req);
+	}
 }
 
 CSearchFile::CSearchFile(CEC_SearchFile_Tag *tag)
@@ -1111,14 +1113,17 @@ void CSearchListRem::ProcessItemUpdate(CEC_SearchFile_Tag *, CSearchFile *)
 
 bool CSearchListRem::Phase1Done(CECPacket *reply)
 {
-	CECTag *status = reply->GetTagByName(EC_TAG_SEARCH_STATUS);
-	
-	if ( status && (status->GetInt8Data() == 0) ) {
-		
-		if ( (reply->GetTagCount() - 1) <= GetCount() ) {
-			m_curr_search = -1;
-			return false;
-		}
+	switch (reply->GetOpCode()) {
+		case EC_OP_SEARCH_RESULTS:
+			break;
+		case EC_OP_SEARCH_RESULTS_DONE:
+			if ( reply->GetTagCount() <= GetCount() ) {
+				m_curr_search = -1;
+				return false;
+			}
+			break;
+		default:
+			wxASSERT(0);
 	}
 	return true;
 }
