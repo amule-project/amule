@@ -124,6 +124,7 @@ Version 2.0.0-rc2 - The 'white rabbit' version.
 		* Better threads' array remove in WebSocket
 		* WebServer cleanly stopped before exit
 		* Fixed multiple file download bug in webserver search section
+		* Fixed ed2k download link
 		  
 	thepolish:
 	
