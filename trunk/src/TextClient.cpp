@@ -56,6 +56,9 @@
 #define APP_INIT_SIZE_X 640
 #define APP_INIT_SIZE_Y 480
 
+#define char2unicode(x) wxConvCurrent->cMB2WX(x)
+#define unicode2char(x) (const char*)wxConvCurrent->cWX2MB(x)
+
 IMPLEMENT_APP(CamulecmdApp)
 
 #ifdef AMULECMDDLG
@@ -111,7 +114,7 @@ void Show(char *Stringformat,...) {
 	#ifndef AMULECMDDLG
 	printf("%s",bufferline);
 	#else
-	theApp.frame->log_text->AppendText(wxString::Format("%s",bufferline));
+	theApp.frame->log_text->AppendText(wxString::Format(wxT("%s"),bufferline));
 	//wxLogMessage(_T(bufferline));
 	#endif
 }
@@ -207,41 +210,41 @@ int ProcessCommand(int ID) {
 				    break;
  				case CMD_ID_STATS:
 					//Process_Answer(CMD_ID_STATS, conn->Request("STATS", NULL));
-					Process_Answer(CMD_ID_STATS, (char*) m_ECClient->SendRecvMsg("STATS").GetData());
+					Process_Answer(CMD_ID_STATS, (char*) m_ECClient->SendRecvMsg(wxT("STATS")).GetData());
 				break;
  				case CMD_ID_SRVSTAT:
 					//Process_Answer(CMD_ID_SRVSTAT, conn->Request("CONNSTAT", NULL));
-					Process_Answer(CMD_ID_SRVSTAT, (char*) m_ECClient->SendRecvMsg("CONNSTAT").GetData());
+					Process_Answer(CMD_ID_SRVSTAT, (char*) m_ECClient->SendRecvMsg(wxT("CONNSTAT")).GetData());
 				break;
  				case CMD_ID_CONN:
 					//Process_Answer(CMD_ID_CONN, conn->Request("RECONN", NULL));
-					Process_Answer(CMD_ID_CONN, (char*) m_ECClient->SendRecvMsg("RECONN").GetData());
+					Process_Answer(CMD_ID_CONN, (char*) m_ECClient->SendRecvMsg(wxT("RECONN")).GetData());
 				break;
  				case CMD_ID_DISCONN:
 					//Process_Answer(CMD_ID_DISCONN, conn->Request("DISCONN", NULL));
-					Process_Answer(CMD_ID_DISCONN, (char*) m_ECClient->SendRecvMsg("DISCONN").GetData());
+					Process_Answer(CMD_ID_DISCONN, (char*) m_ECClient->SendRecvMsg(wxT("DISCONN")).GetData());
 				break;
  				case CMD_ID_PAUSE:
 					if (sscanf(cmdargs,"%i",&fileID)) {
 						sprintf(reqbuffer,"PAUSE%i",fileID);
 				    	//Process_Answer(CMD_ID_PAUSE, conn->Request(reqbuffer, NULL));
-						Process_Answer(CMD_ID_PAUSE, (char*) m_ECClient->SendRecvMsg(reqbuffer).GetData());
+						Process_Answer(CMD_ID_PAUSE, (char*) unicode2char(m_ECClient->SendRecvMsg(char2unicode(reqbuffer)))); 
 					} else Show("Not a valid number\n");
 				break;
  				case CMD_ID_RESUME:
 					if (sscanf(cmdargs,"%i",&fileID)) {
 						sprintf(reqbuffer,"RESUME%i",fileID);
 				    	//Process_Answer(CMD_ID_RESUME, conn->Request(reqbuffer, NULL));
-						Process_Answer(CMD_ID_RESUME, (char*) m_ECClient->SendRecvMsg(reqbuffer).GetData());
+						Process_Answer(CMD_ID_RESUME, (char*) unicode2char(m_ECClient->SendRecvMsg(char2unicode(reqbuffer))));
 					} else Show("Not a valid number\n");
 				break;
  				case CMD_ID_SHOW:
 					if (strncmp(cmdargs,"DL",2)==0) {
 							//Process_Answer(CMD_ID_SHOW, conn->Request("DL_QUEUE", NULL));
-						Process_Answer(CMD_ID_SHOW, (char*) m_ECClient->SendRecvMsg("DL_QUEUE").GetData());
+						Process_Answer(CMD_ID_SHOW, (char*) m_ECClient->SendRecvMsg(wxT("DL_QUEUE")).GetData());
 					} else if (strncmp(cmdargs,"UL",2)==0) {
 							//Process_Answer(CMD_ID_SHOW, conn->Request("UL_QUEUE", NULL));
-						Process_Answer(CMD_ID_SHOW, (char*) m_ECClient->SendRecvMsg("UL_QUEUE").GetData());
+						Process_Answer(CMD_ID_SHOW, (char*) m_ECClient->SendRecvMsg(wxT("UL_QUEUE")).GetData());
 					} else Show("Hint: Use Show DL or Show UL\n");
 				break;
 				default:
@@ -285,19 +288,19 @@ bool CamulecmdApp::OnCmdLineParsed(wxCmdLineParser& amulecmd_parser) {
 	result = wxApp::OnCmdLineParsed(amulecmd_parser);
 	
 	wxString TempStr;
-	TempStr = "rh";
+	TempStr = wxT("rh");
 	if (!amulecmd_parser.Found(TempStr,&hostName)) {
-		hostName = "localhost";
+		hostName = wxT("localhost");
 	}
 	
 	long port;
-	TempStr = "p";
+	TempStr = wxT("p");
 	if (!amulecmd_parser.Found(TempStr,&port)) {
 		//server = getenv("HOME") + wxString("/.aMule/muleconn");	;
-		sPort = "4712"; // default port
+		sPort = wxT("4712"); // default port
 	} else {
 		//server = wxString::Format("%li",port);
-		sPort = wxString::Format("%li",port);
+		sPort = wxString::Format(wxT("%li"),port);
 	}
 	
 	return result;
@@ -338,20 +341,20 @@ int CamulecmdApp::OnRun() {
 	char* t_passwd;
 	t_passwd = getpass("Enter password for mule connection (return if no pass defined): ");
 	if (strlen(t_passwd)>0) {
-		temp_wxpasswd = new wxString(MD5Sum(wxT(t_passwd)).GetHash());
-	} else temp_wxpasswd = new wxString("");
+		temp_wxpasswd = new wxString(MD5Sum(char2unicode(t_passwd)).GetHash());
+	} else temp_wxpasswd = new wxString(wxT(""));
 	#else
 	hostName = wxGetTextFromUser(_T("Enter hostname or ip of the box running aMule"),_T("Enter Hostname"),_T("localhost"));
 	//server = wxGetTextFromUser(_T("Enter port for aMule's External Connection"),_T("Enter Port"),_T("4713"));
 	sPort = wxGetTextFromUser(_T("Enter port for aMule's External Connection"),_T("Enter Port"),_T("4713"));
 	temp_wxpasswd = new wxString(::wxGetPasswordFromUser(_T("Enter password for mule connection (OK if no pass defined)"),_T("Enter Password")));
-	if (strlen(temp_wxpasswd->GetData())>0) {
+	if (strlen(unicode2char(temp_wxpasswd->GetData()))>0) {
 		temp_wxpasswd = new wxString(MD5Sum(*temp_wxpasswd).GetHash());
-	} else temp_wxpasswd = new wxString("");
+	} else temp_wxpasswd = new wxString(wxT(""));
 	#endif
 
 
-	wxString passwd = wxString::Format("aMulecmd %s",temp_wxpasswd->GetData());
+	wxString passwd = wxString::Format(wxT("aMulecmd %s"),temp_wxpasswd->GetData());
 	//printf("pass |%s| MD5HASH = |%s|\n",t_passwd,temp_wxpasswd->GetData());;
 	delete temp_wxpasswd;
 
@@ -401,7 +404,7 @@ int CamulecmdApp::OnRun() {
 		Show("Connection Failed. Unable to connect to the specified host\n");
 	else {
 		//Authenticate ourself
-		if (m_ECClient->SendRecvMsg(wxString::Format("AUTH %s", passwd.GetData())) == "Access Denied") {
+		if (m_ECClient->SendRecvMsg(wxString::Format(wxT("AUTH %s"), passwd.GetData())) == wxT("Access Denied")) {
 			Show("ExternalConn: Access Denied.\n");
 		} else {
 			isConnected=true;
