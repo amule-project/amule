@@ -188,6 +188,7 @@ CED2KFileLink::CED2KFileLink(const TCHAR* name,const TCHAR* size, const TCHAR* h
 , m_size(char2unicode(size))
 {
   SourcesList=NULL;
+  returnName=NULL;
 
 	if ( strlen(hash) != 32 )
 		throw wxString(wxT("Ill-formed hash"));
