@@ -19,6 +19,7 @@
 // ListenSocket.cpp : implementation file
 //
 
+
 #include "ListenSocket.h"	// Interface declarations
 #include "otherfunctions.h"	// Needed for md4cpy
 #include "server.h"		// Needed for CServer
@@ -41,6 +42,8 @@
 #include "ChatSelector.h"	// Needed for CChatSelector
 #include "sockets.h"		// Needed for CServerConnect
 
+#include <wx/listimpl.cpp>
+
 #ifndef ID_SOKETTI
 #define ID_SOKETTI 7772
 #endif
@@ -56,11 +59,11 @@ CClientReqSocket::CClientReqSocket(CPreferences* in_prefs,CUpDownClient* in_clie
 	client = in_client;
 	if (in_client) {
 		client->socket = this;
-		//printf("Socket %x set on client %x\n",this, client);
 	}
 	theApp.listensocket->AddSocket(this);
 	ResetTimeOutTimer();
 	deletethis = false;
+	OnDestroy = false;
 
 	SetEventHandler(*theApp.amuledlg,ID_SOKETTI);
 	SetNotify(wxSOCKET_CONNECTION_FLAG|wxSOCKET_INPUT_FLAG|wxSOCKET_OUTPUT_FLAG|wxSOCKET_LOST_FLAG);
@@ -75,12 +78,10 @@ CClientReqSocket::~CClientReqSocket()
 	Notify(FALSE);
 
 	if (client) {
-		//printf("socket %x for client %x got deleted\n",this, client);
 		client->socket = 0;
 	}
 	client = 0;
 	theApp.listensocket->RemoveSocket(this);
-	
 
 	//DEBUG_ONLY (theApp.clientlist->Debug_SocketDeleted(this));
 }
@@ -117,46 +118,27 @@ void CClientReqSocket::Disconnect()
 	}
 }
 
+/* Kry - this eMule function has no use for us, because we have Destroy()
+
 void CClientReqSocket::Delete_Timed()
 {
 	// it seems that MFC Sockets call socketfunctions after they are deleted,
 	// even if the socket is closed and select(0) is set.
 	// So we need to wait some time to make sure this doesn't happens
-	if (::GetTickCount() - deltimer > 10000) {
-		if (!OnDestroy) {
-			OnDestroy = true;		
-			delete this;
-		}		
+	if (::GetTickCount() - deltimer > 30000) {
+		delete this;
 	}
 }
-
+*/
 void CClientReqSocket::Safe_Delete()
 {
-	deltimer = ::GetTickCount();
-	
+	//deltimer = ::GetTickCount();
 	// if (m_hSocket != INVALID_SOCKET)
 	//  ShutDown(2);
-	
-
-	if (client) {
-//		printf("Safe Delete of %x that has client %x\n",this,client);
-		client->socket=NULL;
-	}
-	client = NULL;	
-	
-
+	client = NULL;
 	byConnected = ES_DISCONNECTED;
-		
 	deletethis = true;
-
-//	Close();
-/*	
-	if (!OnDestroy) {
-		Close();		
-		OnDestroy = true;		
-		Destroy();	
-	}
-*/	
+	//Destroy();
 }
 
 bool CClientReqSocket::ProcessPacket(char* packet, uint32 size, uint8 opcode)
@@ -222,9 +204,10 @@ bool CClientReqSocket::ProcessPacket(char* packet, uint32 size, uint8 opcode)
 				}
 
 				// send a response packet with standart informations
-				if (client->GetClientSoft() == SO_EMULE) {
-					client->SendMuleInfoPacket(false);
+				if (client->GetHashType() == SO_EMULE) {
+					client->SendMuleInfoPacket(false);				
 				}
+				
 				client->SendHelloAnswer();
 				if (client) {
 					client->ConnectionEstablished();
@@ -787,6 +770,9 @@ bool CClientReqSocket::ProcessPacket(char* packet, uint32 size, uint8 opcode)
 		return false;
 	}
 	catch(wxString error) {
+		#ifdef __DEBUG__
+		printf("Catched wxString error %s on ListenSocket\n", error.c_str());
+		#endif
 		if (client) {
 			client->SetDownloadState(DS_ERROR);
 			// TODO write this into a debugfile
@@ -936,6 +922,9 @@ bool CClientReqSocket::ProcessExtPacket(char* packet, uint32 size, uint8 opcode)
 		}
 	}
 	catch(wxString error) {
+		#ifdef __DEBUG__
+		printf("Catched wxString error %s on ListenSocket\n", error.c_str());
+		#endif
 		theApp.amuledlg->AddDebugLogLine(false,CString(_("A client caused an error or did something bad: %s. Disconnecting client!")),error.GetData());
 		if (client) {
 			client->SetDownloadState(DS_ERROR);
@@ -943,6 +932,7 @@ bool CClientReqSocket::ProcessExtPacket(char* packet, uint32 size, uint8 opcode)
 		Disconnect();
 		return false;
 	}
+
 	return true;
 }
 
@@ -978,7 +968,6 @@ void CClientReqSocket::OnError(int nErrorCode)
 
 CClientReqSocket::CClientReqSocket()
 {
-	OnDestroy = false;
 }
 
 bool CClientReqSocket::Close()
@@ -1118,17 +1107,13 @@ void CListenSocket::Process()
 		CClientReqSocket* cur_sock = socket_list.GetAt(pos2);
 		opensockets++;
 
-		if (cur_sock->deletethis) {/*
+		if (cur_sock->deletethis) {
 			if (!cur_sock->OnDestroy) {
-					cur_sock->Destroy();
-					cur_sock->OnDestroy= true;
+				cur_sock->Destroy();
+				cur_sock->OnDestroy= true;
 			}
-			cur_sock->Destroy();
-			*/
-			cur_sock->Delete_Timed();
 		} else {
-			socket_list.GetAt( pos2 )->CheckTimeOut();
-//			cur_sock->CheckTimeOut();
+			cur_sock->CheckTimeOut();
 		}
 	}
 	if ((GetOpenSockets()+5 < app_prefs->GetMaxConnections() || theApp.serverconnect->IsConnecting()) && !bListening) {
@@ -1178,11 +1163,9 @@ void CListenSocket::KillAllSockets()
 	for (POSITION pos = socket_list.GetHeadPosition();pos != 0;) {
 		CClientReqSocket* cur_socket = socket_list.GetNext(pos);
 		if (cur_socket->client) {
-			//cur_socket->client->Destroy();
-			delete cur_socket->client;
+			cur_socket->client->Destroy();
 		} else {
-			//cur_socket->Destroy();
-			delete cur_socket;			
+			cur_socket->Destroy();
 		}
 	}
 }
