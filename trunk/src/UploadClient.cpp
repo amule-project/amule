@@ -60,8 +60,8 @@ uint32 CUpDownClient::GetScore(bool sysvalue, bool isdownloading, bool onlybasev
 		return 0;
 	}
 
-	CKnownFile* currequpfile = theApp.sharedfiles->GetFileByID(m_requpfileid);
-	if(!currequpfile) {
+	CKnownFile* pFile = theApp.sharedfiles->GetFileByID(GetUploadFileID());
+	if ( !pFile ) {
 		return 0;
 	}
 
@@ -84,7 +84,6 @@ uint32 CUpDownClient::GetScore(bool sysvalue, bool isdownloading, bool onlybasev
 	// client finally gets. so it could happen that he is queued first because of a 
 	// high prio file, but then asks for something completely different.
 	int filepriority = 10; // standard
-	CKnownFile* pFile = theApp.sharedfiles->GetFileByID(GetUploadFileID());
 	if(pFile != NULL){ 
 		switch(pFile->GetUpPriority()) {
 		        case PR_POWERSHARE: //added for powershare (deltaHF)
