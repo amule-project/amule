@@ -254,7 +254,7 @@ CFile::CFile(const wxString& szFileName, OpenMode mode)
 	#endif
 }
 
-// create the file, fail if it already exists and bOverwrite
+// create the file, fail if it already exists and !bOverwrite
 bool CFile::Create(const wxString& szFileName, bool bOverwrite, int accessMode)
 {
 	if ( accessMode == -1 )
