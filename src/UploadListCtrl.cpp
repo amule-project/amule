@@ -41,6 +41,8 @@ BEGIN_EVENT_TABLE(CUploadListCtrl, CMuleListCtrl)
 	EVT_RIGHT_DOWN(CUploadListCtrl::OnNMRclick)
 	EVT_LIST_COL_CLICK(ID_UPLOADLIST,CUploadListCtrl::OnColumnClick)
 END_EVENT_TABLE()
+	
+#define imagelist theApp.amuledlg->imagelist
 
 //IMPLEMENT_DYNAMIC(CUploadListCtrl, CMuleListCtrl)
 CUploadListCtrl::CUploadListCtrl()
@@ -62,11 +64,6 @@ CUploadListCtrl::CUploadListCtrl(wxWindow*& parent,int id,const wxPoint& pos,wxS
 
 	Init();
 	
-	imagelist.Create(16,16);	
-	
-	for (uint32 i=0; i<22; i++) {
-		imagelist.Add(wxBitmap(clientImages(i)));
-	}
 }
 
 void CUploadListCtrl::Init()

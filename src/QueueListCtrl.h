@@ -68,7 +68,7 @@ protected:
 	DECLARE_EVENT_TABLE()
 private:
 	bool		 asc_sort[8];	 
-	wxImageList imagelist;
+
 	wxMenu*	   m_ClientMenu;
 	// Barry - Refresh the queue every 10 seconds
 	wxTimer  m_hTimer;
