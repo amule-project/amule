@@ -328,6 +328,9 @@ public:
 	uint8			GetFileRate()				{return m_iRate;}
 	void			SetFileRate(int8 iNewRate)		{m_iRate=iNewRate;}
 
+	uint16			GetKadPort() const	{ return m_nKadPort; }
+	void			SetKadPort(uint16 nPort) { m_nKadPort = nPort;	}
+	
 	// Barry - Process zip file as it arrives, don't need to wait until end of block
 	int unzip(Pending_Block_Struct *block, BYTE *zipped, uint32 lenZipped, BYTE **unzipped, uint32 *lenUnzipped, int iRecursion = 0);
 	// Barry - Sets string to show parts downloading, eg NNNYNNNNYYNYN
@@ -337,7 +340,7 @@ public:
 	void 			SetFileListRequested(int iFileListRequested) { m_iFileListRequested = iFileListRequested; }
 	
 	void			ResetFileStatusInfo();
-	
+		
 	CPartFile*		reqfile;
 	
 private:
@@ -346,6 +349,7 @@ private:
 	void	Init();
 	void	ProcessHelloTypePacket(CSafeMemFile* data);
 	void	SendHelloTypePacket(CMemFile* data);
+	void	ClearHelloProperties(); // eMule 0.42
 	bool	m_bIsBotuser;
 //	bool	isfriend;
 	uint32	m_dwUserIP;
@@ -380,7 +384,10 @@ private:
 	bool	m_bGPLEvildoer;
  	bool	m_bSupportsPreview;
  	bool	m_bPreviewReqPending;
- 	bool	m_bPreviewAnsPending;	
+ 	bool	m_bPreviewAnsPending;
+	uint16	m_nKadPort;
+	bool	m_bMultiPacket;
+		
  	
 	// Kry - Secure Hash import
 	ESecureIdentState	m_SecureIdentState; 
@@ -417,8 +424,8 @@ private:
 	uint8*		m_abyUpPartStatus;
 	uint16		m_lastPartAsked;
 	DWORD		m_dwEnteredConnectedState;
-
-	private:
+	CString m_strModVersion;
+	
 	CTypedPtrList<CPtrList, Packet*>				 m_BlockSend_queue;
 	CTypedPtrList<CPtrList, Requested_Block_Struct*> m_BlockRequests_queue;
 	CTypedPtrList<CPtrList, Requested_Block_Struct*> m_DoneBlocks_list;
@@ -469,8 +476,10 @@ private:
 	CString m_strComment;
 	int8 m_iRate;
 	unsigned int m_fHashsetRequesting : 1, // we have sent a hashset request to this client
-	m_fSharedDirectories : 1; // client supports OP_ASKSHAREDIRS opcodes
-
+		m_fNoViewSharedFiles : 1, // client has disabled the 'View Shared Files' feature, if this flag is not set, we just know that we don't know for sure if it is enabled
+		m_fSupportsPreview   : 1,		
+		m_fSharedDirectories : 1; // client supports OP_ASKSHAREDIRS opcodes
+		
 	/* Razor 1a - Modif by MikaelB */
 
 public:
