@@ -21,6 +21,8 @@
 // ServerListCtrl.cpp : implementation file
 //
 
+#include <wx/msgdlg.h>
+#include <wx/menu.h>
 #include <wx/textfile.h>
 #include <wx/event.h>
 
@@ -798,6 +800,8 @@ bool CServerListCtrl::StaticServerFileRemove(CServer *server)
 	}
 	return true;
 }
+
+#include <wx/stattext.h>
 
 void CServerListCtrl::ShowFilesCount()
 {

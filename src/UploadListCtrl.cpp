@@ -19,6 +19,7 @@
 
 // UploadListCtrl.cpp : implementation file
 //
+#include <wx/menu.h>
 
 #include "UploadListCtrl.h"	// Interface declarations
 #include "otherfunctions.h"	// Needed for CastItoXBytes

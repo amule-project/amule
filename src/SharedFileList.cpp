@@ -24,6 +24,7 @@
 #include <unistd.h>
 #include <wx/msgdlg.h>
 #include <wx/filename.h>
+#include <wx/button.h>
 
 #include "muuli_wdr.h"		// Needed for IDC_RELOADSHAREDFILES
 #include "SharedFileList.h"	// Interface declarations

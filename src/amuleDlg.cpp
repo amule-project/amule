@@ -26,6 +26,10 @@
 #include <wx/file.h>
 #include <wx/datetime.h>
 #include <wx/config.h>
+#include <wx/sizer.h>
+#include <wx/msgdlg.h>
+#include <wx/radiobox.h>
+#include <wx/log.h>
 
 #ifndef __SYSTRAY_DISABLED__
 #include "pixmaps/mule_TrayIcon.ico.xpm"

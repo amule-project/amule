@@ -22,6 +22,11 @@
 
 #include <sys/types.h>
 #include <sys/stat.h>
+
+#ifdef __WXMAC__
+    #include <wx/wx.h>
+#endif
+
 #include <wx/ffile.h>
 #include <wx/filename.h>
 #include <wx/config.h>
