@@ -800,12 +800,63 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			return("");
 		}
 		
-		//SEARCH
-		if (item == "SEARCH GETCATCOUNT") {
+		//CATEGORIES
+		if (item == "CATEGORIES GETCATCOUNT") {
 			wxString buffer("");
 			buffer=wxString::Format("%d", theApp.glob_prefs->GetCatCount());
 			return((wxChar*) buffer.GetData());
 		}
+		
+		if (item.Left(22) == "CATEGORIES GETCATTITLE") {
+			if (item.Length() > 22) {
+				int catIndex = atoi(item.Mid(23).GetData());
+				return((wxChar*) theApp.glob_prefs->GetCategory(catIndex)->title);
+			}
+		}
+		
+		if (item.Left(22) == "CATEGORIES GETCATEGORY") {
+			if (item.Length() > 22) {
+				wxString fileHash = item.Mid(23);
+				uchar fileid[16];
+				DecodeBase16(fileHash.GetData(), fileHash.Length(), fileid);
+				
+				CPartFile *cur_file = theApp.downloadqueue->GetFileByID(fileid);
+				if (cur_file) {
+					// we've found the file
+					wxString buffer("");
+					buffer=wxString::Format("%d", cur_file->GetCategory());
+					return((wxChar *) buffer.GetData());
+				}
+				return("0");
+			}
+		}
+		
+		if (item.Left(22) == "CATEGORIES GETFILEINFO") {
+			if (item.Length() > 22) {
+				wxString fileHash = item.Mid(23);
+				uchar fileid[16];
+				DecodeBase16(fileHash.GetData(), fileHash.Length(), fileid);
+
+				CPartFile *cur_file = theApp.downloadqueue->GetFileByID(fileid);
+				if (cur_file) {
+					// we've found the file
+					wxString buffer("");
+					//buffer:
+					//int\tint\tint\twxstring\twxstring\twxstring\twxstring
+					buffer=wxString::Format("%d\t", cur_file->GetStatus());
+					buffer.Append(wxString::Format("%d\t", cur_file->GetTransferingSrcCount()));
+					buffer.Append(wxString::Format("%d\t", cur_file->GetFileType()));
+					buffer.Append((cur_file->IsPartFile()) ? "Is PartFile\t" : "Is Not PartFile\t");
+					buffer.Append((cur_file->IsStopped()) ? "Is Stopped\t" : "Is Not Stopped\t");
+					buffer.Append((cur_file->IsMovie()) ? "Is Movie\t" : "Is Not Movie\t");
+					buffer.Append((cur_file->IsArchive()) ? "Is Archive" : "Is Not Archive");
+					return((wxChar*) buffer.GetData());
+				}
+			}
+			return("");
+		}
+				
+		//SEARCH
 		if (item.Left(19) == "SEARCH DOWNLOADFILE") {
 			if (item.Length() > 19) {
 				uchar fileid[16];
