@@ -72,7 +72,7 @@ bool CMuleNotebook::DeletePage(int nPage)
 	// and finally remove the actual page
 	if ( wxNotebook::DeletePage( nPage ) ) {
 		// Ensure a valid selection
-		if ( nPage >= GetPageCount() )
+		if ( nPage >= (int)GetPageCount() )
 			nPage = GetPageCount() - 1;
 
 		if ( nPage != -1 )
@@ -208,7 +208,7 @@ void CMuleNotebook::CalculatePositions()
 	ends.Alloc(GetPageCount());
 
 	// Fill the arrays with zeros
-	for (int i=0;i<GetPageCount();++i) {
+	for (int i=0;i<(int)GetPageCount();++i) {
 		widths.Add(0);
 		begins.Add(0);
 		ends.Add(0);
@@ -216,7 +216,7 @@ void CMuleNotebook::CalculatePositions()
 
 	// Loop through all pages and calculate their widths.
 	// Store all page begins, ends and widths in the arrays.
-	for (int i=0;i<GetPageCount();++i) {
+	for (int i=0;i<(int)GetPageCount();++i) {
 		GetImageList()->GetSize(
 			GetPageImage(i), imagesizex, imagesizey
 		);
@@ -257,7 +257,7 @@ void CMuleNotebook::MouseClick(wxMouseEvent &event)
 	event.GetPosition(&posx, &posy);
 
 	// Determine which page was under the mouse
-	for (int i=0;i<GetPageCount();++i) {
+	for (int i=0;i<(int)GetPageCount();++i) {
 		if (posx >= begins[i] && posx <= ends[i]) {
 			// Found it, check if image was hit
 			// Notice: (GTK) First tab is 3 pixels wider, thus the
@@ -305,7 +305,7 @@ void CMuleNotebook::MouseMotion(wxMouseEvent &event)
 	posy = event.m_y;
 
 	// Determine which page was under the mouse
-	for (int i=0;i<GetPageCount();++i) {
+	for (int i=0;i<(int)GetPageCount();++i) {
 		SetPageImage(i, 0);
 		if (posx >= begins[i] && posx <= ends[i]) {
 			// Found it, check if image was hit

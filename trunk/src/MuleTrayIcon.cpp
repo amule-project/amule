@@ -227,18 +227,12 @@ void CMuleTrayIcon::SetTrayIcon(int Icon, uint32 percent)
 			wxASSERT(0);
 	}
 
-	//to debug fast
-	//printf("%d\n",percent);
-	if (percent==0) percent=0.7;
-
-	
 #warning speed bar commented out cause it corrupts icons too, need reworking
 
 	// Lookup this values for speed improvement: don't draw if not needed
 	int Bar_ySize = CurrentIcon.GetHeight()-2; 
-	int NewSize = ((Bar_ySize -2) * percent) *0.2; //to debug fast
-	// 100;
-	//printf("%d\n",NewSize); //to debug fast
+	int NewSize = ((Bar_ySize -2) * percent) *0.2; 
+	
 	if ((Old_Icon != Icon) || (Old_SpeedSize != NewSize)) {
 
 		

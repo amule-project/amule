@@ -188,7 +188,8 @@ public:
 	
 	void RunAICHThread();
 	
-	void		QueueLogLine(bool addtostatusbar, const wxString& line);
+	void		QueueLogLine(bool addtostatusbar, const wxString& line, bool debug = false);
+	void		QueueDebugLogLine(bool addtostatusbar, const wxString& line) { QueueLogLine(addtostatusbar, line, true); }
 	void		FlushQueuedLogLines();
 		
 	// Misc functions
@@ -257,6 +258,8 @@ protected:
 		wxString 	line;
 		//! True if the line should be shown on the status bar, false otherwise.
 		bool		addtostatus;
+		//! True if this is a debug message
+		bool		debug;
 	};
 
 	void OnUDPDnsDone(wxEvent& evt);

@@ -239,8 +239,7 @@ CClientReqSocket::~CClientReqSocket()
 	}
 	m_client = NULL;
 
-	if (theApp.listensocket) {
-		#warning check closing method to change order and get rid of this
+	if (theApp.listensocket && !theApp.listensocket->OnShutdown()) {
 		theApp.listensocket->RemoveSocket(this);
 	}
 #ifdef AMULE_DAEMON
@@ -2399,6 +2398,7 @@ CSocketServerProxy(addr, wxSOCKET_NOWAIT|wxSOCKET_REUSEADDR, ProxyData)
 {
 	// 0.42e - vars not used by us
 	bListening = false;
+	shutdown = false;
 	maxconnectionreached = 0;
 	m_OpenSocketsInterval = 0;
 	m_nPeningConnections = 0;
@@ -2427,7 +2427,7 @@ CSocketServerProxy(addr, wxSOCKET_NOWAIT|wxSOCKET_REUSEADDR, ProxyData)
 
 CListenSocket::~CListenSocket()
 {
-	// 0.42e + Discard() for discarding the bytes on queue
+	shutdown = true;
 	Discard();
 	Close();
 #ifdef AMULE_DAEMON
