@@ -69,6 +69,8 @@ class amuleIPV4Address : public wxIPV4address {
 		#endif
 		return GAddress_INET_SetHostAddress(m_address,inaddr.s_addr)==GSOCK_NOERROR;
 	}
+	
+	// addr should be in network byte order from wx-2.5.2 and up.
   	virtual bool Hostname(unsigned long addr) {
 		bool rv = (GAddress_INET_SetHostAddress(m_address, addr) == GSOCK_NOERROR);
 

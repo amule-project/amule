@@ -6,6 +6,9 @@ Version 2.0.0rc6 - The '???' version.
 		* Fixed a compilation warning + appartently useless code in 
 		  DirectoryTree.cpp.
 		* Fixed amuleIPV4Address for wx-2.5.2 and up.
+		* Fixed the low number of sources problem with wx-2.5.2 and
+		  up. Problem was in CUDPSocket::SendBuffer, now there is a
+		  macro to test. aMule should be 2.5.2 network ready now.
 
 Version 2.0.0rc5 - The 'Let's recover our release speed' version.
 ----------
