@@ -30,7 +30,11 @@
 #ifndef GTK2_FUNCS_H
 #define GTK2_FUNCS_H
 
-#include "MuleTrayIcon.h"
+#include <wx/version.h>
+
+#if wxCHECK_VERSION(2, 5, 3)
+ #define USE_WX_TRAY 1
+#endif
 
 #if !USE_WX_TRAY
 
