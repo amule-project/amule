@@ -115,13 +115,12 @@ CUpDownClient::CUpDownClient(uint16 in_port, uint32 in_userid,uint32 in_serverip
 	ReGetClientSoft();
 }
 
-#warning Dont forget to remove this and the magic numbers when the bug is gone.
-#define MAGIC_1 1234567890
-#define MAGIC_2 1357902468
 void CUpDownClient::Init()
 {
+#ifdef __DEBUG__
 	MagicNumber1 = MAGIC_1;
 	MagicNumber2 = MAGIC_2;
+#endif // __DEBUG__
 
 	credits = 0;
 	//memset(reqfileid, 0, sizeof reqfileid);
@@ -217,35 +216,6 @@ void CUpDownClient::Init()
 	Extended_aMule_SO = 0;
 
 	ClearHelloProperties();	
-}
-
-#warning Dont forget to remove this and the magic numbers when the bug is gone.
-bool CUpDownClient::IsASaneUpDownClient(bool verbose, char *function, char *file, int line) const
-{
-	bool sane = this != NULL;
-
-	if( !sane ) {
-		debugprintf(verbose, "Bogus pointer to UpDownClient detected!\n");
-		debugprintf(verbose, "\t'this' is a NULL pointer.\n");
-		debugprintf(verbose, "\tfunction: %s(%s:%d)\n", function, file, line);
-	} else {
-		sane = 	MagicNumber1 == MAGIC_1 && 
-			MagicNumber2 == MAGIC_2;
-		if(!sane) {
-			debugprintf(verbose, "Bogus UpDownClient detected!\n", function, file, line);
-			debugprintf(verbose, "\tMN1 = %u, MN2 = %u\n", MagicNumber1, MagicNumber2);
-			debugprintf(verbose, "\tfunction: %s(%s:%d)\n", function, file, line);
-		} else {
-			sane = reqfile != NULL;
-			if (!sane) {
-				debugprintf(verbose, "Bogus UpDownClient source detected!\n");
-				debugprintf(verbose, "\tsource has NULL reqfile!\n");
-				debugprintf(verbose, "\tfunction: %s(%s:%d)\n", function, file, line);
-			}
-		}
-	}
-
-	return sane;
 }
 
 CUpDownClient::~CUpDownClient()
@@ -1946,3 +1916,45 @@ wxString CUpDownClient::GetClientFullInfo() {
 	}
 	return (FullVerName);
 }
+
+#ifdef __DEBUG__
+#warning Dont forget to remove this and the magic numbers when the bug is gone.
+bool CUpDownClient::IsASaneUpDownClient(bool verbose, char *function, char *file, int line) const
+{
+	bool sane = this != NULL;
+
+	if (sane) {
+		sane = 	MagicNumber1 == MAGIC_1 && 
+			MagicNumber2 == MAGIC_2;
+		if (sane) {
+			sane = reqfile != NULL;
+			if (sane) {
+				// we're ok, add more sanity checks here.
+			}
+#ifdef __DEBUG__
+			else if (verbose) {
+				debugprintf(verbose, "Bogus UpDownClient source detected!\n");
+				debugprintf(verbose, "\tsource has NULL reqfile!\n");
+				debugprintf(verbose, "\tfunction: %s(%s:%d)\n", function, file, line);
+			}
+#endif // __DEBUG__
+		}
+#ifdef __DEBUG__
+		else if(verbose) {
+			debugprintf(verbose, "Bogus UpDownClient object detected!\n", function, file, line);
+			debugprintf(verbose, "\tMN1 = %u, MN2 = %u\n", MagicNumber1, MagicNumber2);
+			debugprintf(verbose, "\tfunction: %s(%s:%d)\n", function, file, line);
+		}
+#endif // __DEBUG__
+	}
+#ifdef __DEBUG__
+	else if( verbose ) {
+		debugprintf(verbose, "Bogus pointer to UpDownClient detected!\n");
+		debugprintf(verbose, "\t'this' is a NULL pointer.\n");
+		debugprintf(verbose, "\tfunction: %s(%s:%d)\n", function, file, line);
+	}
+#endif // __DEBUG__
+
+	return sane;
+}
+#endif // __DEBUG__

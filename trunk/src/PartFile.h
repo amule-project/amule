@@ -60,8 +60,10 @@ struct PartFileBufferedData
 };
 
 class CPartFile : public CKnownFile {
+#ifdef __DEBUG__
 private:
 	unsigned int	MagicNumber1;
+#endif // __DEBUG__
 public:
 	CPartFile();
 	CPartFile(CSearchFile* searchresult);  //used when downloading a new file
@@ -70,10 +72,6 @@ public:
 	void InitializeFromLink(CED2KFileLink* fileLink);
 	virtual ~CPartFile();
 	
-	bool	IsASanePartFile(bool verbose, char *function, char *file, int line) const;
-	bool	IsASaneFileClientCombination( 
-			bool verbose, char *function, char *file, int line,
-			const CUpDownClient* cur_src, const CUpDownClient* forClient = 0) const;
 	void 	SetPartFileStatus(uint8 newstatus);
 	virtual bool CreateFromFile(
 			const wxString& WXUNUSED(directory), const wxString& WXUNUSED(filename), 
@@ -123,7 +121,7 @@ public:
 	wxString getPartfileStatus() const; //<<--9/21/02
 	sint32	getTimeRemaining() const; //<<--9/21/02
 	time_t	lastseencomplete;
-	int		getPartfileStatusRang() const;
+	int	getPartfileStatusRang() const;
 
 	// Barry - Added as replacement for BlockReceived to buffer data before writing to disk
 	uint32	WriteToBuffer(uint32 transize, BYTE *data, uint32 start, uint32 end, Requested_Block_Struct *block);
@@ -157,8 +155,8 @@ public:
 	void	UpdateAvailablePartsCount();
 
 	uint32	GetLastAnsweredTime() const	{ return m_ClientSrcAnswered; }
-	void		SetLastAnsweredTime();
-	void		SetLastAnsweredTimeTimeout();
+	void	SetLastAnsweredTime();
+	void	SetLastAnsweredTimeTimeout();
 	uint64	GetLostDueToCorruption() const	{ return m_iLostDueToCorruption; }
 	uint64	GetGainDueToCompression() const	{ return m_iGainDueToCompression; }
 	uint32	TotalPacketsSavedDueToICH()const{ return m_iTotalPacketsSavedDueToICH; }
@@ -300,7 +298,17 @@ private:
 	/* downloading sources list */
 	std::list<CUpDownClient *> m_downloadingSourcesList;
 	static	wxMutex m_FileCompleteMutex;
+
+#ifdef __DEBUG__
+private:
 	unsigned int	MagicNumber2;
+
+public:
+	bool	IsASanePartFile(bool verbose, char *function, char *file, int line) const;
+	bool	IsASaneFileClientCombination( 
+			bool verbose, char *function, char *file, int line,
+			const CUpDownClient* cur_src, const CUpDownClient* forClient = 0) const;
+#endif // __DEBUG__
 
 friend class completingThread;
 };

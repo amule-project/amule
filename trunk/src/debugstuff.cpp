@@ -26,13 +26,14 @@
 int debugprintf(int verbose, char *fmt, ...)
 {
 	int ret = 0;
-#if defined( __DEBUG__ )
-	va_list marker;
 	
-	va_start(marker, fmt);
-	ret = vprintf(fmt, marker);
-	va_end(marker);
-#endif // __DEBUG__
+	if (verbose) {
+		va_list marker;
+
+		va_start(marker, fmt);
+		ret = vprintf(fmt, marker);
+		va_end(marker);
+	}
 
 	return ret;
 }

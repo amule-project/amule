@@ -20,6 +20,13 @@
 #if !defined( __DEBUGSTUFF_H__ )
 #define __DEBUGSTUFF_H__
 
-int debugprintf(int verbose, char *fmt, ...);
+#define MAGIC_1 1234567890
+#define MAGIC_2 1357902468
+
+#if defined( __DEBUG__ )
+	int debugprintf(int verbose, char *fmt, ...);
+#else // __DEBUG__
+	static inline int debugprintf(int verbose, char *fmt, ...) {}
+#endif // __DEBUG__
 
 #endif // __DEBUGSTUFF_H__
