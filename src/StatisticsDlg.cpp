@@ -80,6 +80,7 @@ CStatisticsDlg::CStatisticsDlg(wxWindow* pParent)
 	pscopeConn=(COScopeCtrl*)FindWindowByName(wxT("otherScope"));
 	stattree=wxStaticCast(FindWindowByName(wxT("statTree")),wxTreeCtrl);
 
+	aposRecycle = NULL;
 	m_ilastMaxConnReached = 0;
 	peakconnections = 0;
 	totalconnectionchecks = 0;
