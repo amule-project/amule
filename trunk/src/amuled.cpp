@@ -144,6 +144,7 @@ IMPLEMENT_APP(CamuleApp)
 
 int CamuleApp::OnRun()
 {
+	AddDebugLogLineM(true, _("CamuleApp::OnRun()"));
 	// lfroen: this loop is instead core timer.
 	// Actually, using such loop is worst design decision i ever
 	// saw. Right way is to have thread per socket.
@@ -1644,9 +1645,6 @@ void CamuleApp::ShutDown() {
 
 void CamuleApp::NotifyEvent(GUIEvent event)
 {
-	if (event.ID != ADDLOGLINE) {
-		return;
-	}
 	switch (event.ID) {
 		// GUI->CORE events
 		// it's daemon, so gui isn't here, but macros can be used as function calls
@@ -1679,11 +1677,12 @@ void CamuleApp::NotifyEvent(GUIEvent event)
 			printf("LOG: %s\n", event.string_value.c_str());
 			break;
 		case ADDDEBUGLOGLINE:
-			printf("DEBUGLOG: %s\n", event.string_value.c_str());
+			//printf("DEBUGLOG: %s\n", event.string_value.c_str());
 			break;
 		default:
-			printf("WARNING: event %d in daemon should not happen\n", event.ID);
-		}
+			//printf("WARNING: event %d in daemon should not happen\n", event.ID);
+			break;
+	}
 }
 
 
