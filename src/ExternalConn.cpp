@@ -875,7 +875,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			if (theApp.glob_prefs->GetIPFilterOn()) {
 				theApp.clientlist->FilterQueues();
 			}
-			wxString msg = wxString::Format(_("IPFilter state set to '%s'."), param.c_str());
+			wxString msg = wxString::Format(_("IPFilter state set to '%s'."), unicode2char(param));
 			AddLogLineM(true, msg);
 			return msg;
 		}
@@ -2101,7 +2101,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			wxString buffer;
 			#ifdef RELEASE_GROUP_MODE
 			if (item.Mid(11).Length() == 16) {
-				CKnownFile* shared_file = theApp.sharedfiles->GetFileByID((uchar*)item.Mid(11).c_str());
+				CKnownFile* shared_file = theApp.sharedfiles->GetFileByID(item.Mid(11));
 				if (shared_file!=NULL) {
 					buffer.Printf( wxT("%i"), shared_file->totalupload );
 				} else {
@@ -2150,7 +2150,7 @@ wxString ExternalConn::GetDownloadFileInfo(const CPartFile* file)
 	sRet << wxString(_("Parts: ")) << file->GetPartCount() << wxT(", ")
 		<< wxString(_("Available")) << wxT(": ") << file->GetAvailablePartCount() << wxT(" ")
 		<< wxString::Format(wxT( "(%.1f%%)"), availability);
-	sRet << wxString::Format(wxT("%d%% done (%s) - Transferring from %d sources"), (int)file->GetPercentCompleted(), strComplx.c_str(), file->GetTransferingSrcCount()) + wxT("\n");
+	sRet << wxString::Format(wxT("%d%% done (%s) - Transferring from %d sources"), (int)file->GetPercentCompleted(), unicode2char(strComplx), file->GetTransferingSrcCount()) + wxT("\n");
 	sRet << wxString(_("Last Seen Complete :")) << wxT(" ") << strLsc << wxT("\n");
 	sRet << wxString(_("Last Reception:")) << wxT(" ") << strLastprogr << wxT("\n");
 	
@@ -2239,7 +2239,7 @@ void *ExternalConnClientThread::Entry()
 
 	len=(wxString(response).Length() + 1) * sizeof(wxChar);
 	sock->Write(&len, sizeof(uint16));
-	sock->WriteMsg(response.c_str(), len);
+	sock->WriteMsg(unicode2char(response), len);
 	
 	if (response != wxT("Authenticated")) {
 		//Access denied! => Destroy the socket.
@@ -2271,7 +2271,7 @@ void *ExternalConnClientThread::Entry()
 		
 		len = (response.Length() + 1) * sizeof(wxChar);
 		sock->Write(&len, sizeof(uint16));
-		sock->WriteMsg(response.c_str(), len);
+		sock->WriteMsg(unicode2char(response), len);
 		
 	}
   	delete[] buf;
