@@ -1891,7 +1891,7 @@ void CUpDownClient::SendSignaturePacket(){
 	//end v2
 	uchar achBuffer[250];
 
-	uint8 siglen = theApp.clientcredits->CreateSignature(credits, achBuffer,  250, ENDIAN_SWAP_32(ChallengeIP), byChaIPKind );
+	uint8 siglen = theApp.clientcredits->CreateSignature(credits, achBuffer,  250, ChallengeIP, byChaIPKind );
 	if (siglen == 0){
 		wxASSERT ( false );
 		return;
@@ -1984,7 +1984,7 @@ void CUpDownClient::ProcessSignaturePacket(const uchar* pachPacket, uint32 nSize
 		return;
 	}
 
-	if (theApp.clientcredits->VerifyIdent(credits, pachPacket+1, pachPacket[0], ENDIAN_SWAP_32(GetIP()), byChaIPKind ) ){
+	if (theApp.clientcredits->VerifyIdent(credits, pachPacket+1, pachPacket[0], GetIP(), byChaIPKind ) ){
 		// result is saved in function abouve
 		//AddDebugLogLine(false, "'%s' has passed the secure identification, V2 State: %i", GetUserName(), byChaIPKind);
 	}

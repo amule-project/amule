@@ -479,13 +479,14 @@ uint8 CClientCreditsList::CreateSignature(CClientCredits* pTarget, uchar* pachOu
 		memcpy(abyBuffer,pTarget->GetSecureIdent(),keylen);
 		// 4 additional bytes random data send from this client
 		uint32 challenge = pTarget->m_dwCryptRndChallengeFrom;
-		wxASSERT ( challenge != 0 );
-		memcpy(abyBuffer+keylen,&challenge,4);
+		wxASSERT ( challenge != 0 );		
+		PokeUInt32(abyBuffer+keylen,challenge);
+		
 		uint16 ChIpLen = 0;
 		if ( byChaIPKind != 0){
 			ChIpLen = 5;
-			memcpy(abyBuffer+keylen+4,&ChallengeIP,4);
-			memcpy(abyBuffer+keylen+4+4,&byChaIPKind,1);
+			PokeUInt32(abyBuffer+keylen+4, ChallengeIP);
+			PokeUInt8(abyBuffer+keylen+4+4,byChaIPKind);
 		}
 		signer->SignMessage(rng, abyBuffer ,keylen+4+ChIpLen , sbbSignature.begin());
 		CryptoPP::ArraySink asink(pachOutput, nMaxSize);
