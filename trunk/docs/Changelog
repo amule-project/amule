@@ -53,6 +53,7 @@ Version 2.0.0rc8 - The "???????????" version.
 		* Lots of translation fixes.
 		* As a side effect, fixed the "Any" search in webserver.
 		* Fixed webserver connection with empty passwords :)
+		* Fixed webserver connection with guest account
 
         Special Thanks To:
 
