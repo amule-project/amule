@@ -401,6 +401,11 @@ void CPartFile::CreatePartFile()
 		theApp.amuledlg->AddLogLine(false,CString(_("ERROR: Failed to create partfile)")));
 		SetPartFileStatus(PS_ERROR);
 	}
+	
+	if (theApp.glob_prefs->GetAllocFullPart()) {
+		#warning Code for full file alloc - should be done on thread.
+	}
+	
 	delete[] partfull;
 	
 	if (GetED2KPartHashCount() == 0)

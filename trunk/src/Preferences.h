@@ -745,6 +745,10 @@ public:
 	bool ShowProgBar() { return prefs->ProgBar; }
 	bool ShowPercent() { return prefs->Percent; }	
 	
+	bool	GetAllocFullPart() { return prefs->AllocFullPart; };
+	bool	GetAllocFullChunk() { return prefs->AllocFullChunk; };
+
+	
 protected:
 	void	CreateUserHash();
 	void	SetStandartValues();
