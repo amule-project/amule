@@ -501,7 +501,7 @@ void CUpDownClient::ProcessExtendedInfo(CSafeMemFile* data, CKnownFile* tempreqf
 				data->Read(nCompleteCountNew);
 				SetUpCompleteSourcesCount(nCompleteCountNew);
 				if (nCompleteCountLast != nCompleteCountNew) {
-					//tempreqfile->UpdatePartsInfo();
+					tempreqfile->UpdatePartsInfo();
 				}
 			}
 		}
@@ -527,6 +527,7 @@ void CUpDownClient::SetUploadFileID(CKnownFile* newreqfile)
 	//We use the knownfilelist because we may have unshared the file..
 	//But we always check the download list first because that person may have decided to redownload that file.
 	//Which will replace the object in the knownfilelist if completed.
+	
 	if ((oldreqfile = theApp.downloadqueue->GetFileByID(requpfileid)) == NULL ) {
 		oldreqfile = theApp.knownfiles->FindKnownFileByID(requpfileid);
 	}
