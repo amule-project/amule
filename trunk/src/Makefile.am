@@ -63,6 +63,7 @@ amule_SOURCES = ListenSocket.cpp \
 	HTTPDownloadDlg.cpp \
 	ini2.cpp \
 	IPFilter.cpp \
+	CMD4Hash.cpp \
 	KnownFile.cpp \
 	KnownFileList.cpp \
 	listctrl.cpp \
