@@ -563,27 +563,29 @@ uint16 CUploadQueue::GetWaitingPosition(CUpDownClient* client)
 
 void CUploadQueue::CompUpDatarateOverhead()
 {
-	this->m_AvarageUDRO_list.AddTail(m_nUpDataRateMSOverhead);
-	if (m_AvarageUDRO_list.GetCount() > 150) {
-		m_AvarageUDRO_list.RemoveAt(m_AvarageUDRO_list.GetHeadPosition());
-	}
+	m_AvarageUDRO_list.push_back(m_nUpDataRateMSOverhead);
 	m_nUpDatarateOverhead = 0;
-	m_nUpDataRateMSOverhead = 0;
-	for (POSITION pos = m_AvarageUDRO_list.GetHeadPosition();pos != 0;m_AvarageUDRO_list.GetNext(pos)) {
-		m_nUpDatarateOverhead += m_AvarageUDRO_list.GetAt(pos);
-	}
-	if(m_AvarageUDRO_list.GetCount() > 10) {
-		m_nUpDatarateOverhead = 10*m_nUpDatarateOverhead/m_AvarageUDRO_list.GetCount();
+	m_nUpDataRateMSOverhead = 0;	
+	
+	if(m_AvarageUDRO_list.size() > 10) {
+		if (m_AvarageUDRO_list.size() > 150) {
+			m_AvarageUDRO_list.pop_front();
+		}
+
+		for ( int i = 0,  size = m_AvarageUDRO_list.size(); i < size; i++ ) {
+			m_nUpDatarateOverhead += m_AvarageUDRO_list.at(i);
+		}
+		
+		m_nUpDatarateOverhead = 10*m_nUpDatarateOverhead/m_AvarageUDRO_list.size();
 	} else {
 		m_nUpDatarateOverhead = 0;
 	}
-	return;
 }
 
 /*
  * This function removes a file indicated by filehash from suspended_uploads_list.
  */
-void CUploadQueue::ResumeUpload( const CFileHash& filehash )
+void CUploadQueue::ResumeUpload( const CMD4Hash& filehash )
 {
 	//Find the position of the filehash in the list and remove it.
 	suspended_uploads_list.RemoveAt( suspended_uploads_list.Find(filehash) );
@@ -594,7 +596,7 @@ void CUploadQueue::ResumeUpload( const CFileHash& filehash )
 /*
  * This function adds a file indicated by filehash to suspended_uploads_list
  */
-void CUploadQueue::SuspendUpload( const CFileHash& filehash )
+void CUploadQueue::SuspendUpload( const CMD4Hash& filehash )
 {
 	//Append the filehash to the list.
 	suspended_uploads_list.AddTail(filehash);

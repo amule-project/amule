@@ -27,26 +27,13 @@
 #include "types.h"		// Needed for uint16, uint32 and uint64
 #include "CTypedPtrList.h"	// Needed for CTypedPtrList
 #include "position.h"		// Needed for POSITION
+#include "CMD4Hash.h"
+
+#include <deque>
 
 class CPreferences;
 class CUpDownClient;
 
-// Helper class holding a copy of a filehash
-// The CCKey class is similiar but not useable here.
-class CFileHash {
-public:
-	CFileHash()			{ std::memset(m_hash, 0, 16); }
-	CFileHash(const unsigned char* k)	{ std::memcpy(m_hash, k, 16); }
-	CFileHash(const CFileHash& s)	{ std::memcpy(m_hash, s.m_hash,16); }
-
-	friend bool operator==(const CFileHash& h1, const CFileHash& h2)
-			{ return !std::memcmp(h1.m_hash, h2.m_hash,16); }
-
-	operator const unsigned char*() const	{ return m_hash; }
-
-private:
-	unsigned char	m_hash[16];
-};
 
 class CUploadQueue{
 public:
@@ -108,8 +95,8 @@ waitinglist.GetHeadPosition();}
 	uint64	GetUpDataOverheadServerPackets()			{return m_nUpDataOverheadServerPackets;}
 	uint64	GetUpDataOverheadOtherPackets()				{return m_nUpDataOverheadOtherPackets;}
 	void	CompUpDatarateOverhead();
-	void	SuspendUpload( const CFileHash& );
-	void	ResumeUpload( const CFileHash& );
+	void	SuspendUpload( const CMD4Hash& );
+	void	ResumeUpload( const CMD4Hash& );
 protected:
 	void	RemoveFromWaitingQueue(POSITION pos, bool updatewindow);
 	POSITION	GetWaitingClient(CUpDownClient* client);
@@ -120,7 +107,7 @@ protected:
 private:
 	CTypedPtrList<CPtrList, CUpDownClient*> waitinglist;
 	CTypedPtrList<CPtrList, CUpDownClient*> uploadinglist;
-	CList<CFileHash> suspended_uploads_list;  //list for suspended uploads
+	CList<CMD4Hash> suspended_uploads_list;  //list for suspended uploads
 	uint32	msPrevProcess;
 	float	kBpsUp;
 	float	kBpsEst;
@@ -142,7 +129,7 @@ private:
 	uint64	m_nUpDataOverheadServerPackets;
 	uint64	m_nUpDataOverheadOtherPackets;
 	bool	lastupslotHighID; // VQB lowID alternation
-	CList<int, int>	m_AvarageUDRO_list;
+	std::deque<int>	m_AvarageUDRO_list;
 
 };
 
