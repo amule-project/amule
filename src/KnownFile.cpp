@@ -581,10 +581,13 @@ bool CKnownFile::LoadTagsFromFile(const CFileDataIO* file)
 		uint32 tagcount;
 		tagcount = file->ReadUInt32();
 		for (uint32 j = 0; j != tagcount;j++){
-			CTag* newtag = new CTag(*file, false);
+			CTag* newtag = new CTag(*file, true);
 			switch(newtag->tag.specialtag){
 				case FT_FILENAME:{
-					SetFileName(newtag->tag.stringvalue);
+					#if wxUSE_UNICODE
+					if (GetFileName().IsEmpty())
+					#endif
+						SetFileName(newtag->tag.stringvalue);
 					delete newtag;
 					break;
 				}
@@ -703,9 +706,19 @@ bool CKnownFile::WriteToFile(CFileDataIO* file){
 		if (taglist[j]->tag.type == 2 || taglist[j]->tag.type == 3)
 			tagcount++;
 	}
+	
+	#if wxUSE_UNICODE
+	++tagcount;
+	#endif
+	
 	// standard tags
 
 	file->WriteUInt32(tagcount);
+	
+	#if wxUSE_UNICODE
+	CTag nametag_unicode(FT_FILENAME, GetFileName());
+	nametag_unicode.WriteTagToFile(file,utf8strRaw);	
+	#endif
 	
 	CTag nametag(FT_FILENAME, GetFileName());
 	nametag.WriteTagToFile(file);

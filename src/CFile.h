@@ -147,6 +147,10 @@ private:
 	wxString fFilePath;
 };
 
+bool UTF8_MoveFile(wxString& from, wxString& to); // Move file with safe UTF8 name.
+bool UTF8_CopyFile(wxString& from, wxString& to); // Copy file with safe UTF8 name.
+time_t GetLastModificationTime(wxString& file);
+
 // Dir iterator: needed because wxWidget's wxFindNextFile and 
 // wxFindFirstFile are bugged like hell.
 

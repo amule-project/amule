@@ -73,8 +73,8 @@ static wxCSConv aMuleConv(wxT("iso8859-1"));
 #define UTF82char(x) unicode2char(UTF82unicode(x))	
 	
 // Reverted to #define, the returned pointer pointed to local (already unavailable) data
-#define unicode2UTF8(x)	(const char *)wxConvUTF8.cWC2MB(x.wc_str(aMuleConv))
-#define char2UTF8(x)	(const char *)wxConvUTF8.cWC2MB(wxString(x).wc_str(aMuleConv))
+#define unicode2UTF8(x)	(const char *)wxConvUTF8.cWC2MB(x.wc_str(wxConvLocal))
+#define char2UTF8(x)	(const char *)wxConvUTF8.cWC2MB(wxString(x).wc_str(wxConvLocal))
 
 	
 // Replaces "&" with "&&" in 'in' for use with text-labels

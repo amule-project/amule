@@ -360,7 +360,7 @@ wxThread::ExitCode CAddFileThread::Entry()
 		knownfile->m_strFileName = current->m_name;
 		
 		knownfile->SetFileSize( file.GetLength() );
-		knownfile->date = wxFileModificationTime( filename );
+		knownfile->date = GetLastModificationTime( filename );
 		knownfile->m_AvailPartFrequency.Insert(0, 0, knownfile->GetPartCount() );
 	
 		

@@ -465,17 +465,26 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool fro
 		uint32 tagcount = metFile.ReadUInt32();
 
 		for (uint32 j = 0; j < tagcount;++j) {
-			CTag* newtag = new CTag(metFile,false);
+			CTag* newtag = new CTag(metFile,true);
 			if (!getsizeonly || (getsizeonly && (newtag->tag.specialtag==FT_FILESIZE || newtag->tag.specialtag==FT_FILENAME))) {
 				switch(newtag->tag.specialtag) {
 					case FT_FILENAME: {
-						if(newtag->tag.stringvalue.IsEmpty()) {
+						if(newtag->tag.type != 2) {
 							AddLogLineM(true, wxString::Format(_("Error: %s (%s) is corrupt"), unicode2char(m_partmetfilename), unicode2char(m_strFileName)));
 							delete newtag;
 							return false;
 						}
-						printf(" - filename %s - ",unicode2char(newtag->tag.stringvalue));
-						SetFileName(newtag->tag.stringvalue);
+						#ifdef wxUSE_UNICODE
+						if (GetFileName().IsEmpty()) {
+							// If it's not empty, we already loaded the unicoded one
+							printf(" - filename (u) %s - ",unicode2char(newtag->tag.stringvalue));
+							SetFileName(newtag->tag.stringvalue);
+						}
+						#else
+							printf(" - filename %s - ",unicode2char(newtag->tag.stringvalue));
+							SetFileName(newtag->tag.stringvalue);
+						#endif
+						
 						delete newtag;
 						break;
 					}
@@ -770,7 +779,7 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool fro
 		//fstat(m_hpartfile.fd(),&statbuf);
 		//if ((time_t)date != (time_t)statbuf.st_mtime) {
 
-		time_t file_date = wxFileModificationTime(m_fullname);
+		time_t file_date = GetLastModificationTime(m_fullname);
 		if ( (((time_t)date) < (time_t)(file_date - 10)) || (((time_t)date) > (time_t)(file_date + 10))) {
 			AddLogLineM(false, wxString::Format(_("Warning: %s might be corrupted (%i)"), unicode2char(m_fullname), (date - file_date)));
 			// rehash
@@ -827,7 +836,7 @@ bool CPartFile::SavePartFile(bool Initial)
 		// version
 		file.WriteUInt8(PARTFILE_VERSION);
 		
-		file.WriteUInt32(wxFileModificationTime(m_fullname));
+		file.WriteUInt32(GetLastModificationTime(m_fullname));
 		// hash
 		file.WriteHash16(m_abyFileHash);
 		uint16 parts = hashlist.GetCount();
@@ -844,8 +853,17 @@ bool CPartFile::SavePartFile(bool Initial)
 		if (m_pAICHHashSet->HasValidMasterHash() && (m_pAICHHashSet->GetStatus() == AICH_VERIFIED)){			
 			++tagcount;
 		}
+
+		#if wxUSE_UNICODE
+		++tagcount; // for '0'
+		#endif
+		
 		file.WriteUInt32(tagcount);
 
+		#if wxUSE_UNICODE					
+		CTag(FT_FILENAME,m_strFileName).WriteTagToFile(&file,utf8strRaw);	// 0 (unicoded part file name)
+		#endif
+		
 		CTag(FT_FILENAME,m_strFileName).WriteTagToFile(&file);	// 1
 		CTag(FT_FILESIZE,m_nFileSize).WriteTagToFile(&file);	// 2
 		CTag(FT_TRANSFERED,transfered).WriteTagToFile(&file);	// 3
@@ -2231,7 +2249,8 @@ void CPartFile::CompleteFileEnded(int completing_result, wxString* newname) {
 		AddLogLineM(true, wxString::Format(_("WARNING: Failed to delete %s.seeds\n"), unicode2char(m_partmetfilename)));
 	}	
 
-	AddLogLineM(true, wxString::Format(_("Finished downloading %s :-)"), unicode2char(GetFileName())));
+	AddLogLineM(true, wxT("Finished downloading ") + GetFileName() +wxT(" :-)"));
+
 	Notify_ShowNotifier(wxString(_("Downloaded:"))+wxT("\n")+GetFileName(), TBN_DLOAD, 0);
 }
 
@@ -2299,9 +2318,8 @@ wxThread::ExitCode completingThread::Entry()
 		*newname = strTestName;
 	}
 
-	if (!FS_wxRenameFile(partfilename, *newname)) {
-
-		if (!FS_wxCopyFile(partfilename, *newname)) {
+	if (!UTF8_MoveFile(partfilename, *newname)) {
+		if (!UTF8_CopyFile(partfilename, *newname)) {
 			completing_result |= UNEXP_FILE_ERROR;
 			return NULL;
 		}
@@ -2528,7 +2546,7 @@ void CPartFile::SetDownPriority(uint8 np, bool bSave, bool bRefresh )
 {
 	if ( m_iDownPriority != np ) {
 		m_iDownPriority = np;
-		theApp.downloadqueue->SortByPriority();
+		//theApp.downloadqueue->SortByPriority();
 		if ( bRefresh )
 			UpdateDisplayedInfo(true);
 		if ( bSave )
@@ -2552,7 +2570,7 @@ void CPartFile::StopFile(bool bCancel)
 	if (!bCancel) {
 		FlushBuffer(true);
 	}
-	theApp.downloadqueue->SortByPriority();
+	//theApp.downloadqueue->SortByPriority();
 	theApp.downloadqueue->CheckDiskspace();
 	UpdateDisplayedInfo(true);
 }
@@ -2605,7 +2623,7 @@ void CPartFile::PauseFile(bool bInsufficient)
 	SetStatus(status);
 	
 	if (!bInsufficient) {
-		theApp.downloadqueue->SortByPriority();
+		//theApp.downloadqueue->SortByPriority();
 		theApp.downloadqueue->CheckDiskspace();
 		SavePartFile();
 	}
@@ -2622,7 +2640,7 @@ void CPartFile::ResumeFile()
 	paused = false;
 	stopped = false;
 	lastsearchtime = 0;
-	theApp.downloadqueue->SortByPriority();
+	//theApp.downloadqueue->SortByPriority();
 	theApp.downloadqueue->CheckDiskspace();
 	SavePartFile();
 	//SetPartFileStatus(status);

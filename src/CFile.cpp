@@ -270,7 +270,7 @@ bool CFile::Create(const wxString& szFileName, bool bOverwrite, int accessMode)
 		return FALSE;
     }
     
-    m_fd = creat( unicode2char(szFileName) , accessMode);
+    m_fd = creat( unicode2UTF8(szFileName) , accessMode);
 	
 	#ifdef FILE_TRACKER
 		AddLogLineM(false,wxString(_("Created file ")) + fFilePath + wxString::Format(_(" with file descriptor %i"),m_fd));
@@ -339,7 +339,7 @@ bool CFile::Open(const wxString& szFileName, OpenMode mode, int accessMode)
 	    Close();	
     }
 
-    m_fd = open( unicode2char(szFileName), flags ACCESS(accessMode));
+    m_fd = open( unicode2UTF8(szFileName), flags ACCESS(accessMode));
       
 	#ifdef FILE_TRACKER
 		theApp.QueueLogLine(false,wxString(_("Opened file ")) + fFilePath  + wxString::Format(_(" with file descriptor %i"),m_fd));
@@ -586,6 +586,55 @@ bool CFile::Eof() const
     return TRUE;
 }
 
+bool UTF8_MoveFile(wxString& from, wxString& to) {	
+	#if wxUSE_UNICODE
+	return (rename(unicode2UTF8(from),unicode2UTF8(to))==0);
+	#else
+	return (rename(unicode2char(from),unicode2char(to))==0);
+	#endif
+}
+
+#define FILE_COPY_BUFFER 5*1024
+
+bool UTF8_CopyFile(wxString& from, wxString& to) {
+	char buffer[FILE_COPY_BUFFER];
+	#if wxUSE_UNICODE
+	int file_1 = open(unicode2UTF8(from), O_RDONLY);
+	#else
+	int file_1 = open(unicode2char(from), O_RDONLY);
+	#endif
+	if (file_1 == -1) {
+		printf("Error on file copy (can't open original file)\n");
+		return false;
+	}
+	int file_2 = open(unicode2UTF8(to), O_WRONLY | O_CREAT | O_TRUNC);
+	if (file_2 == -1) {
+		printf("Error on file copy (can't create destination file)\n");
+		close(file_1);
+		return false;
+	}
+	
+	int total_read;
+	
+	while ((total_read = read(file_1,buffer,FILE_COPY_BUFFER))) {
+		if (total_read == -1) {
+			printf("Unexpected error copying file! (read error)\n");
+			close(file_1);
+			close(file_2);
+			return false;
+		}
+		if (write(file_2,buffer,FILE_COPY_BUFFER) == -1) {
+			printf("Unexpected error copying file! (write error)\n");
+			close(file_1);
+			close(file_2);
+			return false;			
+		}	
+	}
+	close(file_1);
+	close(file_2);
+	return true;
+}
+
 
 CDirIterator::CDirIterator(wxString dir) {
 	DirStr = dir;
@@ -652,7 +701,8 @@ wxString  CDirIterator::FindNextFile() {
 				default:
 */
 					// Fallback to stat
-					stat(unicode2char(DirStr + char2unicode(dp->d_name)),buf);
+					wxString FullName = DirStr + UTF82unicode(dp->d_name);
+					stat(unicode2UTF8(FullName),buf);
 					if (S_ISREG(buf->st_mode)) {
 						if (type == CDirIterator::File) { 
 							found = true; 
@@ -676,7 +726,7 @@ wxString  CDirIterator::FindNextFile() {
 			}*/
 		}
 		if (found) {
-			FoundName = char2unicode(dp->d_name);
+			FoundName = UTF82unicode(dp->d_name);
 			if (
 				(!FileMask.IsEmpty() && !FoundName.Matches(FileMask)) 
 				|| FoundName.IsSameAs(wxT(".")) || FoundName.IsSameAs(wxT(".."))) {
@@ -693,4 +743,15 @@ wxString  CDirIterator::FindNextFile() {
 	} else {
 		return wxEmptyString;
 	}
+}
+
+
+time_t GetLastModificationTime(wxString& file) {
+	struct stat buf;
+	#if wxUSE_UNICODE
+	stat(unicode2UTF8(file),&buf);
+	#else
+	stat(unicode2char(file),&buf);
+	#endif
+	return buf.st_mtime;
 }

@@ -133,7 +133,6 @@ bool CheckDirectory( const wxString& a, const wxString& b, bool fatal )
 
 	return false;
 }
-		
 
 void CSharedFileList::AddFilesFromDirectory(wxString directory)
 {
@@ -170,7 +169,7 @@ void CSharedFileList::AddFilesFromDirectory(wxString directory)
 	}
 	while(!fname.IsEmpty()) {
 
-		uint32 fdate=wxFileModificationTime(fname);
+		uint32 fdate=GetLastModificationTime(fname);
 
 		if (::wxDirExists(fname)) {
 			// Woops, is a dir!
