@@ -2468,7 +2468,7 @@ wxThread::ExitCode completingThread::Entry()
 		*newname = strTestName;
 	}
 
-	if (rename(unicode2char(partfilename),unicode2char( *newname))) {
+        if (!FS_wxRenameFile(partfilename, *newname)) {
 		completing_result |= UNEXP_FILE_ERROR;
 		return NULL;
 		/*
