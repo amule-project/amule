@@ -1,6 +1,6 @@
-SUBDIRS = . m4 intl po src
+SUBDIRS = . m4 intl po docs src
 
-EXTRA_DIST = docs config.rpath mkinstalldirs \
+EXTRA_DIST = ABOUT-NLS config.rpath mkinstalldirs \
 	config.h.in Compilation.flags.in
 
 dist_icon_DATA = amule.xpm
@@ -8,8 +8,5 @@ icondir = $(datadir)/pixmaps
 
 dist_util_DATA = amule.desktop
 utildir = $(datadir)/applications
-
-dist_doc_DATA = docs/*
-docdir = $(datadir)/doc/$(PACKAGE_NAME)-$(PACKAGE_VERSION)
 
 ACLOCAL_AMFLAGS = -I m4
