@@ -231,7 +231,7 @@ void *CWCThread::Entry() {
 					//WRITE
 					stWebSocket.m_hSocket->Write(stWebSocket.m_pHead->m_pToSend, stWebSocket.m_pHead->m_dwSize);
 					uint32 nRes = stWebSocket.m_hSocket->LastCount();
-					if (nRes == stWebSocket.m_pHead->m_dwSize) {
+					if (nRes >= stWebSocket.m_pHead->m_dwSize) {
 						// erase this chunk
 						CWebSocket::CChunk* pNext = stWebSocket.m_pHead->m_pNext;
 						delete stWebSocket.m_pHead;
