@@ -27,6 +27,8 @@
 
 #define MAX_SIZE 2000000
 
+//#define __PACKET_SEND_DUMP__
+
 IMPLEMENT_DYNAMIC_CLASS(CEMSocket,wxSocketClient)
 
 CEMSocket::CEMSocket(void)
@@ -396,6 +398,10 @@ void CEMSocket::OnSend(int nErrorCode){
 
 int CEMSocket::Send(char* lpBuf,int nBufLen,int WXUNUSED(nFlags))
 {
+	#ifdef __PACKET_SEND_DUMP__
+	printf("Send\n");
+	DumpMem(lpBuf,nBufLen);
+	#endif
 	assert (sendbuffer == NULL || lpBuf == NULL );
 	if (lpBuf) {
 		sendbuffer = lpBuf;
@@ -419,7 +425,7 @@ int CEMSocket::Send(char* lpBuf,int nBufLen,int WXUNUSED(nFlags))
 			if (error == wxSOCKET_WOULDBLOCK) {
 				break;
 			} else {
-				//OnError(error);
+				OnError(error);
 				return -1;
 			}
 		}
