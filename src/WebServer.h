@@ -33,6 +33,9 @@
 #endif
 #include <zlib.h>		// Needed for Bytef etc.
 
+#include <list>
+#include <map>
+
 //-------------------------------------------------------------------
 #ifndef WIN32
 	#include "config.h"
@@ -84,21 +87,24 @@ typedef struct {
 	wxString	sFileInfo;
 } DownloadFiles;
 
-typedef struct {
-	wxString	sFileName;
-	long		lFileSize;
-	uint32		nFileTransferred;
-	uint64		nFileAllTimeTransferred;
-	uint16		nFileRequests;
-	uint32		nFileAllTimeRequests;
-	uint16		nFileAccepts;
-	uint32		nFileAllTimeAccepts;
-	uint8		nFilePriority;
-	wxString	sFilePriority;
-	bool		bFileAutoPriority;
-	wxString 	sFileHash;
-	wxString	sED2kLink;
-} SharedFiles;
+class SharedFiles {
+	public:
+		wxString	sFileName;
+		long		lFileSize;
+		uint32		nFileTransferred;
+		uint64		nFileAllTimeTransferred;
+		uint16		nFileRequests;
+		uint32		nFileAllTimeRequests;
+		uint16		nFileAccepts;
+		uint32		nFileAllTimeAccepts;
+		uint8		nFilePriority;
+		wxString	sFilePriority;
+		bool		bFileAutoPriority;
+		wxString 	sFileHash;
+		wxString	sED2kLink;
+
+		static class SharedFilesInfo *GetContainerInstance();
+};
 
 typedef enum {
 	DOWN_SORT_NAME,
@@ -121,16 +127,6 @@ typedef enum {
 	SHARED_SORT_PRIORITY
 } xSharedSort;
 
-typedef struct {
-	wxString	sServerName;
-	wxString	sServerDescription;
-	uint32		nServerIP;
-	uint16		nServerPort;
-	wxString	sServerIP;
-	int		nServerUsers;
-	int		nServerMaxUsers;
-	int		nServerFiles;
-} ServerEntry;
 
 typedef enum {
 	SERVER_SORT_NAME,
@@ -140,22 +136,170 @@ typedef enum {
 	SERVER_SORT_FILES
 } xServerSort;
 
+class ServerEntry {
+	public:
+		wxString	sServerName;
+		wxString	sServerDescription;
+		uint32		nServerIP;
+		uint16		nServerPort;
+		wxString	sServerIP;
+		int		nServerUsers;
+		int		nServerMaxUsers;
+		int		nServerFiles;
+	
+		static class ServersInfo *GetContainerInstance();
+};
+
+/*!
+ * Each item of type T must implement GetContainerInstance(T) to return ptr
+ * to container holding such items.
+ * Parameter "T" is used for compiler to distinguish between functions of
+ * different types
+ */
+
+template <class T>
+bool operator < (const T &i1, const T &i2)
+{
+	return T::GetContainerInstance()->CompareItems(i1, i2);
+}
+
 
 WX_DECLARE_OBJARRAY(UpDown*, ArrayOfUpDown);
 WX_DECLARE_OBJARRAY(Session*, ArrayOfSession);
 WX_DECLARE_OBJARRAY(TransferredData*, ArrayOfTransferredData);
-WX_DECLARE_OBJARRAY(SharedFiles*, ArrayOfSharedFiles);
-WX_DECLARE_OBJARRAY(ServerEntry*, ArrayOfServerEntry);
 WX_DECLARE_OBJARRAY(DownloadFiles*, ArrayOfDownloadFiles);
+
+/*!
+ * T - type of items in container
+ * E - type of enum for sort order
+ */
+template <class T, class E>
+class ItemsContainer {
+	protected:
+		CamulewebApp *m_webApp;
+		std::list<T> m_items;
+		
+		// map string value to enum: derived class
+		// must init this map in ctor
+		std::map<wxString, E> m_SortStrVals;
+		// map sort order enums to names of sections
+		// in html template: derived class
+		// must init this map in ctor
+		std::map<E, wxString> m_SortHeaders;
+		
+		
+		bool m_SortReverse;
+		// type is int, so derived class must cast it
+		// to right enum type
+		E m_SortOrder;
+	
+		void EraseAll()
+		{
+			m_items.erase(m_items.begin(), m_items.end());
+		}
+	public:
+		ItemsContainer(CamulewebApp *webApp)
+		{
+			m_webApp = webApp;
+			m_SortReverse = false;
+		}
+		virtual ~ItemsContainer() { }
+		
+		void SortItems()
+		{
+			m_items.sort();
+		}
+
+		E GetSortOrder()
+		{
+			return m_SortOrder;
+		}
+
+		bool IsSortingReverse()
+		{
+			return m_SortReverse;
+		}
+		
+		void AddItem(T &item)
+		{
+			m_items.push_back(item);
+		}
+
+		/*!
+		 * Substitute sort-order templates
+		 */
+		void ProcessHeadersLine(wxString &line)
+		{
+			wxString sField = m_SortHeaders[m_SortOrder];
+			// invert sort order in link
+			wxString sSortRev(!m_SortReverse ? wxT("&sortreverse=true") : wxT("&sortreverse=false"));
+			for(typename std::map<E, wxString>::iterator i = m_SortHeaders.begin();
+				i != m_SortHeaders.end(); i++) {
+					if (sField == i->second) {
+						line.Replace(i->second, sSortRev);
+					} else {
+						line.Replace(i->second, wxEmptyString);
+					}
+				}
+		}
+		
+		/*!
+		 * Convert string to right enum value
+		 */
+		void SetSortOrder(wxString &order, bool reverse)
+		{
+			m_SortOrder = m_SortStrVals[order];
+			m_SortReverse = reverse;
+		}
+		/*!
+		 * Re-query server: refresh all dataset
+		 */
+		virtual bool ReQuery() = 0;
+		virtual bool ProcessUpdate(CECPacket *update) = 0;
+
+
+		typedef typename std::list<T>::iterator ItemIterator;
+		ItemIterator GetBeginIterator()
+		{
+			return m_items.begin();
+		}
+		ItemIterator GetEndIterator()
+		{
+			return m_items.end();
+		}
+};
+
+class ServersInfo : public ItemsContainer<ServerEntry, xServerSort> {
+	public:
+		// can be only one instance.
+		static ServersInfo *m_This;
+		
+		ServersInfo(CamulewebApp *webApp);
+
+		virtual bool ReQuery();
+		virtual bool ProcessUpdate(CECPacket *update);
+
+		bool CompareItems(const ServerEntry &i1, const ServerEntry &i2);
+};
+
+
+class SharedFilesInfo : public ItemsContainer<SharedFiles, xSharedSort> {
+	public:
+		// can be only one instance.
+		static SharedFilesInfo *m_This;
+
+		SharedFilesInfo(CamulewebApp *webApp);
+
+		virtual bool ReQuery();
+		virtual bool ProcessUpdate(CECPacket *update);
+
+		bool CompareItems(const SharedFiles &i1, const SharedFiles &i2);
+};
 
 typedef struct {
 	uint32		nUsers;
 	xDownloadSort	DownloadSort;
 	bool		bDownloadSortReverse;
-	xServerSort	ServerSort;
-	bool		bServerSortReverse;
-	xSharedSort	SharedSort;
-	bool		bSharedSortReverse;	
 	bool		bShowUploadQueue;
 
 	ArrayOfUpDown		PointsForWeb;
@@ -220,6 +364,8 @@ typedef struct {
 class CWebServer {
 	friend class CWebSocket;
 
+	ServersInfo m_ServersInfo;
+	SharedFilesInfo m_SharedFilesInfo;
 	public:
 		CWebServer(CamulewebApp *webApp);
 		~CWebServer(void);
@@ -270,7 +416,6 @@ class CWebServer {
 		static void	_RemoveTimeOuts(ThreadData Data, long lSession);
 		static bool	_RemoveSession(ThreadData Data, long lSession);
 		static bool	_GetFileHash(wxString sHash, unsigned char *FileHash);
-		static wxString	_SpecialChars(wxString str);
 		static wxString	_GetPlainResString(UINT nID, bool noquote = false);
 		static int	_GzipCompress(Bytef *dest, uLongf *destLen, const Bytef *source, uLong sourceLen, int level);
 		static void	_SetSharedFilePriority(CWebServer *pThis, wxString hash, uint8 priority);
