@@ -147,7 +147,9 @@ wxcas_SOURCES = utils/wxCas/src/onlinesig.cpp \
 		utils/wxCas/src/wxcas.cpp \
 		utils/wxCas/src/wxcasprint.cpp \
 		utils/wxCas/src/wxcascanvas.cpp \
-		utils/wxCas/src/wxcasframe.cpp
+		utils/wxCas/src/wxcasframe.cpp \
+		utils/wxCas/src/wxcasprefs.cpp \
+		utils/wxCas/src/wxcascte.cpp		
 wxcas_CFLAGS = $(WX_CFLAGS)		
 wxcas_CXXFLAGS = $(WX_CXXFLAGS)
 wxcas_LDADD = $(WX_LIBS)
