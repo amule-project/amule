@@ -1234,7 +1234,8 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 		}
 	} else {
 		amuleIPV4Address tmp;
-		tmp.Hostname(GetIP());
+		//tmp.Hostname(GetIP());
+		tmp.Hostname(unicode2char(GetFullIP()));
 		tmp.Service(GetUserPort());
 		socket->Connect(tmp,FALSE);
 		// socket->Connect(GetFullIP(),GetUserPort());
