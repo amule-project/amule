@@ -29,7 +29,7 @@
  #define USE_WX_TRAY 0
 #endif
 
-#ifdef USE_WX_TRAY 
+#if USE_WX_TRAY 
 
 #include <wx/taskbar.h>
 #include <wx/icon.h>
