@@ -238,35 +238,23 @@ int CamuleApp::OnExit()
 bool CamuleApp::OnInit()
 {
 	m_app_state = APP_STATE_STARTING;
-	
-	// Madcat - Initialize timer as the VERY FIRST thing to avoid any issues later.
-	mytimer = new MyTimer();
 
 	// Initialization
 	IsReady			= false;
-	clientlist		= NULL;
+	amuledlg 		= NULL;
+	clientlist			= NULL;
 	searchlist		= NULL;
 	knownfiles		= NULL;
 	serverlist		= NULL;
 	serverconnect	= NULL;
 	sharedfiles		= NULL;
-	listensocket	= NULL;
-	clientudp		= NULL;
-	clientcredits	= NULL;
+	listensocket		= NULL;
+	clientudp			= NULL;
+	clientcredits		= NULL;
 	downloadqueue	= NULL;
 	uploadqueue 	= NULL;
-	ipfilter		= NULL;
+	ipfilter			= NULL;
 	
-	// reset statistic values
-	stat_sessionReceivedBytes = 0;
-	stat_sessionSentBytes = 0;
-	stat_reconnects = 0;
-	stat_transferStarttime = 0;
-	stat_serverConnectTime = 0;
-	Start_time = GetTickCount64();
-	sTransferDelay = 0.0;
-
-
 	// Default geometry of the GUI. Can be changed with a cmdline argument...
 	bool geometry_enabled = false;
 	// Standard size is 800x600 at position (0,0)
@@ -275,6 +263,21 @@ bool CamuleApp::OnInit()
 	unsigned int geometry_width = 800;
 	unsigned int geometry_height = 600;
 
+// reset statistic values
+	stat_sessionReceivedBytes = 0;
+	stat_sessionSentBytes = 0;
+	stat_reconnects = 0;
+	stat_transferStarttime = 0;
+	stat_serverConnectTime = 0;
+	sTransferDelay = 0.0;
+	
+	
+	// Madcat - Initialize timer as the VERY FIRST thing to avoid any issues later.
+	// Kry - I love to init the vars on init, even before timer.
+	mytimer = new MyTimer();	
+		
+	Start_time = GetTickCount64();
+	
 #ifndef __WXMSW__
 	// catch fatal exceptions
 	wxHandleFatalExceptions(true);
