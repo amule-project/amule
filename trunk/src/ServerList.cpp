@@ -71,7 +71,6 @@ bool CServerList::Init()
 {
 	// Load Metfile
 	wxString strTempFilename;
-	printf("*** reading servers\n");
 	strTempFilename = theApp.ConfigDir + wxT("server.met");
 	bool bRes = LoadServerMet(strTempFilename);
 
@@ -91,6 +90,8 @@ bool CServerList::Init()
 
 bool CServerList::LoadServerMet(const wxString& strFile)
 {
+	AddLogLineM( false, _("Loading server.met file: ") + strFile );
+	
 	bool merge = !list.IsEmpty();
 	
 	if ( !wxFileExists(strFile) ) {
