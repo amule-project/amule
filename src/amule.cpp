@@ -195,6 +195,7 @@ CamuleApp::CamuleApp()
 	stat_reconnects = 0;
 	stat_transferStarttime = 0;
 	stat_serverConnectTime = 0;
+	stat_filteredclients = 0;
 	sTransferDelay = 0.0;
 	m_ilastMaxConnReached = 0;
 	
