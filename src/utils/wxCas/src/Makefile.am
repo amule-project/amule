@@ -7,6 +7,10 @@ wxcas_SOURCES = onlinesig.cpp \
 		wxcasframe.cpp \
 		wxcasprefs.cpp \
 		wxcascte.cpp
+		
+if USE_MINGW
+  wxcas_SOURCES += wxcas.rc
+endif
 
 noinst_HEADERS = onlinesig.h \
 		linuxmon.h \
