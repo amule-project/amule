@@ -122,6 +122,8 @@ DEFINE_EVENT_TYPE(wxEVT_COMMAND_LIST_CACHE_HINT)
 #endif
 DEFINE_EVENT_TYPE(wxEVT_COMMAND_LIST_COL_MIDDLE_CLICK)
 
+#include <wx/dcmemory.h>
+
 // ----------------------------------------------------------------------------
 // constants
 // ----------------------------------------------------------------------------
