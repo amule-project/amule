@@ -162,27 +162,6 @@ if test "$CURLFOUND" != 1; then
     ])
 fi
 
-# Check for libpng
-AM_OPTIONS_LIBPNGCONFIG
-
-AM_PATH_LIBPNGCONFIG(1.2.0,LIBPNGFOUND=1)
-
-case "$LIBPNGFOUND" in
-1)	AMULEWEB_DEFS="-DWITH_LIBPNG"
-	LIBPNG_LIBS="$LIBPNG_LIBS -lpng"
-	;;
-*)AC_MSG_NOTICE([
-	WARNING: libpng-devel >= 1.2.0 is needed for amuleweb
-        ])
-	AMULEWEB_DEFS=""
-	LIBPNG_LIBS=""
-	LIBPNG_CFLAGS=""
-	LIBPNG_LDFLAGS=""
-	;;
-esac
-
-AC_SUBST(AMULEWEB_DEFS)
-
 # Check for gd
 AM_OPTIONS_GDLIBCONFIG
 
@@ -217,6 +196,28 @@ case "$GDLIBFOUND" in
 esac
 
 AC_SUBST(CAS_DEFS)
+
+# Check for libpng
+# This check _must_ occur *after* the check for gd
+AM_OPTIONS_LIBPNGCONFIG
+
+AM_PATH_LIBPNGCONFIG(1.2.0,LIBPNGFOUND=1)
+
+case "$LIBPNGFOUND" in
+1)	AMULEWEB_DEFS="-DWITH_LIBPNG"
+	LIBPNG_LIBS="$LIBPNG_LIBS -lpng"
+	;;
+*)AC_MSG_NOTICE([
+	WARNING: libpng-devel >= 1.2.0 is needed for amuleweb
+        ])
+	AMULEWEB_DEFS=""
+	LIBPNG_LIBS=""
+	LIBPNG_CFLAGS=""
+	LIBPNG_LDFLAGS=""
+	;;
+esac
+
+AC_SUBST(AMULEWEB_DEFS)
 
 
 # Check if we need the GUI
