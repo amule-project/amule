@@ -899,8 +899,9 @@ void CDownloadQueue::AddLinksFromFile()
 				Notify_ShowGUI();
 				continue;
 			}
-			
-			AddED2KLink( link );
+			if (!link.IsEmpty()) {
+				AddED2KLink( link );
+			}
 			// We must double-check here where are we, because GetNextLine moves reading head
 			// one line below, and we must make sure that line exists. Thus check if we are
 			// at least one line away from end before trying to read next line.
@@ -1274,6 +1275,7 @@ wxString CDownloadQueue::getTextList( const wxString& file_to_search ) const
 
 bool CDownloadQueue::AddED2KLink( const wxString& link, int category )
 {
+	wxASSERT( !link.IsEmpty() );
 	wxString URI = link;
 	
 	// Need the links to end with /, otherwise CreateLinkFromUrl crashes us.
@@ -1282,7 +1284,7 @@ bool CDownloadQueue::AddED2KLink( const wxString& link, int category )
 	}
 	
 	try {
-		return AddED2KLink( CED2KLink::CreateLinkFromUrl( unicode2char( URI ) ), category );
+		return AddED2KLink( CED2KLink::CreateLinkFromUrl(URI), category );
 	} catch ( wxString err ) {
 		AddLogLineM( true, wxString(_("Invalid link: ")) + wxString::Format(_("This ed2k link is invalid (%s)"), err.c_str() ) );
 	}
