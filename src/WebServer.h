@@ -34,6 +34,10 @@
 #endif
 #include <zlib.h>		// Needed for Bytef etc.
 
+#ifdef WITH_LIBPNG
+	#include <png.h>
+#endif
+
 #include <list>
 #include <map>
 #include <vector>
@@ -54,6 +58,7 @@
 #endif
 
 #include "types.h"
+#include "otherfunctions.h"
 #include "WebInterface.h"
 #include "KnownFile.h"
 #include "ECPacket.h"
@@ -91,6 +96,8 @@ class DownloadFiles {
 		wxString	sED2kLink;
 		wxString	sFileInfo;
 		wxString	sPartStatus;
+		
+		otherfunctions::PartFileEncoderData m_Encoder;
 
 		static class DownloadFilesInfo *GetContainerInstance();
 
@@ -177,7 +184,6 @@ bool operator < (const T &i1, const T &i2)
 WX_DECLARE_OBJARRAY(UpDown*, ArrayOfUpDown);
 WX_DECLARE_OBJARRAY(Session*, ArrayOfSession);
 WX_DECLARE_OBJARRAY(TransferredData*, ArrayOfTransferredData);
-WX_DECLARE_OBJARRAY(DownloadFiles*, ArrayOfDownloadFiles);
 
 /*!
  * T - type of items in container
@@ -327,6 +333,53 @@ class DownloadFilesInfo : public ItemsContainer<DownloadFiles, xDownloadSort> {
 
 		bool CompareItems(const DownloadFiles &i1, const DownloadFiles &i2);
 };
+
+class CAnyImage {
+	protected:
+		unsigned char *m_data;
+		int m_size, m_alloc_size;
+		
+		void Realloc(int size);
+	public:
+		CAnyImage(int size);
+		virtual ~CAnyImage();
+		
+		virtual unsigned char *RequestData(int &size);
+};
+
+class CFileImage : public CAnyImage {
+		wxString m_name;
+	public:
+		CFileImage(const char *name);
+};
+
+#ifdef WITH_LIBPNG
+
+//
+// Dynamic png image generation from gap info
+class CDynImage : public CAnyImage {
+		uint32 m_id;
+		otherfunctions::PartFileEncoderData &m_Encoder;
+		int m_width, m_height;
+		unsigned char **m_row_ptrs;
+		
+		int m_write_idx;
+		png_structp m_png_ptr;
+		png_infop m_info_ptr;
+		
+		static void png_write_fn(png_structp png_ptr, png_bytep data, png_size_t length);
+		
+	public:
+		CDynImage(uint32 id, int w, int h, otherfunctions::PartFileEncoderData &encoder);
+
+		virtual unsigned char *RequestData(int &size);
+};
+#else
+
+//
+// Fallback to original implementation
+
+#endif
 
 typedef struct {
 	uint32		nUsers;

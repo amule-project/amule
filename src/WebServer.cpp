@@ -65,7 +65,6 @@ uint64 MyTimer::tic64 = 0;
 WX_DEFINE_OBJARRAY(ArrayOfUpDown);
 WX_DEFINE_OBJARRAY(ArrayOfSession);
 WX_DEFINE_OBJARRAY(ArrayOfTransferredData);
-WX_DEFINE_OBJARRAY(ArrayOfDownloadFiles);
 
 #define HTTPInit "Server: aMule\r\nPragma: no-cache\r\nExpires: 0\r\nCache-Control: no-cache, no-store, must-revalidate\r\nConnection: close\r\nContent-Type: text/html\r\n"
 #define HTTPInitGZ "Server: aMule\r\nPragma: no-cache\r\nExpires: 0\r\nCache-Control: no-cache, no-store, must-revalidate\r\nConnection: close\r\nContent-Type: text/html\r\nContent-Encoding: gzip\r\n"
@@ -415,7 +414,7 @@ void CWebServer::ProcessImgFileReq(ThreadData Data) {
 		}
 		// Try to send as much as possible if it failed
 		Data.pSocket->SendContent(unicode2char(contenttype),(void*)img_data,bytes_read);	
-		delete img_data;
+		delete [] img_data;
 	}
 	
 	
@@ -2598,6 +2597,10 @@ bool DownloadFilesInfo::ReQuery()
 				file->lFileSpeed = tag->Speed();
 				file->fCompleted = (100.0*file->lFileCompleted) / file->lFileSize;
 			}
+			CECTag *gaptag = tag->GetTagByName(EC_TAG_PARTFILE_GAP_STATUS);
+			if ( gaptag ) {
+				file->m_Encoder.Decode((unsigned char *)gaptag->GetTagData(), gaptag->GetTagDataLen());
+			}
 		} else {
 			// don't have it - prepare to request full info
 			req_full.AddTag(CECTag(EC_TAG_PARTFILE, tag->FileID()));
@@ -2641,6 +2644,9 @@ bool DownloadFilesInfo::ReQuery()
 			file.sFileHash = wxString::Format(wxT("%08x"), tag->FileID());
 			file.sED2kLink = tag->FileEd2kLink();
 			file.sPartStatus = tag->PartStatus();
+			
+			
+			file.m_Encoder = PartFileEncoderData( (file.lFileSize + (PARTSIZE - 1)) / PARTSIZE, 10);
 
 			m_items.push_back(file);
 			m_files[file.file_id] = &(m_items.back());
@@ -2683,3 +2689,121 @@ bool DownloadFilesInfo::CompareItems(const DownloadFiles &i1, const DownloadFile
 	}
 	return Result ^ m_SortReverse;
 }
+
+/*!
+ * Image classes:
+ * 
+ * CFileImage: simply represent local file
+ * CDynImage: dynamically generated from gap info
+ */
+ 
+CAnyImage::CAnyImage(int size)
+{
+	m_size = 0;
+	m_alloc_size = size;
+	if ( m_alloc_size ) {
+		m_data = new unsigned char[m_alloc_size];
+	} else {
+		m_data = 0;
+	}
+}
+
+CAnyImage::~CAnyImage()
+{
+	if ( m_data ) {
+		delete [] m_data;
+	}
+}
+
+void CAnyImage::Realloc(int size)
+{
+	if ( size == m_alloc_size ) {
+		return;
+	}
+	// always grow, but shrink only x2
+	if ( (size > m_alloc_size) || (size < (m_alloc_size / 2)) ) {
+		m_alloc_size = size;
+		if ( m_data ) {
+			delete [] m_data;
+		}
+		m_data = new unsigned char[m_alloc_size];
+	}
+}
+
+unsigned char *CAnyImage::RequestData(int &size)
+{
+	size = m_size;
+	return m_data;
+}
+
+CFileImage::CFileImage(const char *name) : CAnyImage(0), m_name(name)
+{
+	m_size = 0;
+	wxFFile fis(m_name);
+	// FIXME: proper logging is needed
+	if ( !fis.IsOpened() ) {
+		size_t file_size = fis.Length();
+		if ( file_size ) {
+			Realloc(fis.Length());
+			m_size = fis.Read(m_data,file_size);
+		} else {
+			printf("CFileImage: file %s have zero length\n", m_name.GetData());
+		}
+	} else {
+		printf("CFileImage: failed to open %s\n", m_name.GetData());
+	}
+}
+
+#ifdef WITH_LIBPNG
+
+CDynImage::CDynImage(uint32 id, int width, int height, otherfunctions::PartFileEncoderData &encoder) :
+	CAnyImage(width * height * sizeof(uint32)), m_Encoder(encoder)
+{
+	m_id = id;
+	m_width = width;
+	m_height = height;
+	
+	//
+	// Allocate array of "row pointers" - libpng need it in this form
+	//
+	
+	// When allocating an array with a new expression, GCC used to allow 
+	// parentheses around the type name. This is actually ill-formed and it is 
+	// now rejected. From gcc3.4
+	m_row_ptrs = new unsigned char *[m_height];
+	for (int i = 0; i < m_height;i++) {
+		m_row_ptrs[i] = m_data + i * m_width;
+	}
+	
+	m_png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, 0, 0, 0);
+	m_info_ptr = png_create_info_struct(m_png_ptr);
+	png_set_IHDR(m_png_ptr, m_info_ptr, m_width, m_height, 8, PNG_COLOR_TYPE_RGB,
+		PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
+		
+	png_set_write_fn(m_png_ptr, this, png_write_fn, 0);
+}
+
+void CDynImage::png_write_fn(png_structp png_ptr, png_bytep data, png_size_t length)
+{
+	CDynImage *This = (CDynImage *)png_get_io_ptr(png_ptr);
+	memcpy(This->m_data + This->m_write_idx, data, length);
+}
+
+unsigned char *CDynImage::RequestData(int &size)
+{
+	// create image
+	// ....
+	
+	//
+	// write png into buffer
+	m_write_idx = 0;
+	png_write_info(m_png_ptr, m_info_ptr);
+	png_write_image(m_png_ptr, m_row_ptrs);
+	png_write_end(m_png_ptr, 0);
+	
+	return CAnyImage::RequestData(size);
+}
+
+#else
+
+#endif
