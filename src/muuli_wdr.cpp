@@ -3334,7 +3334,7 @@ wxSizer *serverListDlgUp( wxWindow *parent, bool call_fit, bool set_sizer )
     item5->SetName( "serverListLabel" );
     item3->Add( item5, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxALL, 5 );
 
-    wxTextCtrl *item6 = new wxTextCtrl( parent, IDC_SERVERLISTURL, _("http://ocbmaurice.dyndns.org/pl/slist.pl/server.met?download/server-good.met"), wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER );
+    wxTextCtrl *item6 = new wxTextCtrl( parent, IDC_SERVERLISTURL, _("http://www.srv1000.com/azz/server.met"), wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER );
     item3->Add( item6, 1, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_HORIZONTAL|wxLEFT|wxTOP|wxBOTTOM, 5 );
 
     item1->Add( item3, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
