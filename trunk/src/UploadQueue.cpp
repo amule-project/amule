@@ -499,13 +499,13 @@ void CUploadQueue::CompUpDatarateOverhead()
 	// We want at least 11 elements before we will start doing averages
 	if ( m_AverageUDRO_list.size() > 10 ) {
 		
-		// We want 150 elements at most
-		if ( m_AverageUDRO_list.size() > 150 ) {
+		// We want 50 elements at most (5s)
+		if ( m_AverageUDRO_list.size() > 50 ) {
 			m_nUpDatarateTotal -= m_AverageUDRO_list.front();
 		
 			m_AverageUDRO_list.pop_front();
 		
-			m_nUpDatarateOverhead = m_nUpDatarateTotal / 150.0f;
+			m_nUpDatarateOverhead = m_nUpDatarateTotal / 50.0f;
 		} else {
 			m_nUpDatarateOverhead = m_nUpDatarateTotal / (double)m_AverageUDRO_list.size();
 		}
