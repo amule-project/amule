@@ -273,7 +273,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 					addr.ip[3] = ip[3];
 					addr.port = port;
 					request = new CECPacket(EC_OP_SERVER_CONNECT);
-					request->AddTag(CECTag(EC_TAG_SERVER, &addr));
+					request->AddTag(CECTag(EC_TAG_SERVER, addr));
 					request_list.push_back(request);
 				} else {
 					Show(_("Invalid IP format. Use xxx.xxx.xxx.xxx:xxxx\n"));

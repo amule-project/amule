@@ -843,7 +843,7 @@ wxString CWebServer::_GetServerList(ThreadData Data) {
 			addr.ip[2] = (uint8)(ip >> 16);
 			addr.ip[3] = (uint8)(ip >> 24);
 			addr.port = port;
-			req.AddTag(CECTag(EC_TAG_SERVER, &addr));
+			req.AddTag(CECTag(EC_TAG_SERVER, addr));
 		}
 		pThis->Send_Discard_V2_Request(&req);
 	} else if (sCmd == wxT("disconnect") && IsSessionAdmin(Data,sSession)) {
@@ -862,7 +862,7 @@ wxString CWebServer::_GetServerList(ThreadData Data) {
 			addr.ip[2] = (uint8)(ip >> 16);
 			addr.ip[3] = (uint8)(ip >> 24);
 			addr.port = port;
-			req.AddTag(CECTag(EC_TAG_SERVER, &addr));
+			req.AddTag(CECTag(EC_TAG_SERVER, addr));
 			pThis->Send_Discard_V2_Request(&req);
 		}
 	} else if (sCmd == wxT("options")) {

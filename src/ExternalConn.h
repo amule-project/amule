@@ -78,5 +78,20 @@ class ExternalConnClientThread : public wxThread {
 		wxSocketBase *m_sock;
 };
 
+class CServer;
+/*!
+ * Specific tags for specific requests
+ */
+class CEC_Server_Tag : public CECTag {
+ 	public:
+ 		CEC_Server_Tag(CServer *);
+};
+
+class CEC_ConnState_Tag : public CECTag {
+ 	public:
+ 		CEC_ConnState_Tag();
+};
+ 
+
 #endif // EXTERNALCONN_H
 
