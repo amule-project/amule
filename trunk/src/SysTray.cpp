@@ -19,8 +19,6 @@
 
 // this file will implement GNOME/KDE compatible system tray icon
 
-#include <libintl.h>
-#include <clocale>		// Needed for setlocale(3)
 #ifndef __WXMSW__
 #ifdef __BSD__
        #include <sys/types.h>
@@ -32,7 +30,7 @@
 	#include <sys/ioctl.h>		// Needed for SIOCGIFADDR
 	#include <gtk/gtk.h>		// Needed for gtk_object_get_data
 	#include <X11/Xatom.h>		// Needed for XA_WINDOW
-#endif
+#endif //end of msw
 
 #include "pixmaps/mule_Tr_grey.ico.xpm"
 #include "amuleDlg.h"		// Needed for CamuleDlg
@@ -87,19 +85,12 @@ bool CSysTray::SetColorLevels(int* pLimits, COLORREF* pColors, int nEntries) {
 
 #ifdef __WXGTK__ // Only use this code in wxGTK since it uses GTK code.
 
-// PA: use pure gettext instead of wx functions 
-/*#ifdef _
-#undef _
-#endif
-#define _(String) gettext(String)
-*/
-
 #ifdef __SAFE_TRAY__
 
 gchar* getIP()
 {
 
- gchar* ip=_("Detection Disabled");
+ gchar* ip=(gchar*)unicode2char(_("Detection Disabled"));
 
  return ip;
 
@@ -255,7 +246,7 @@ tray_menu (GtkWidget *widget, GdkEventButton *event, gpointer data)
 	GtkWidget *status_menu,*item,*down_speed,*dl_item,*up_speed,*up_item,*info_menu,*info_item;
 	wxString label;
 	wxString upl_speed,dl_speed;
-	gchar* temp,*tempstring;
+	gchar *temp,*tempstring;
 	int tempspeed;
 	uint16 max_dl_speed,max_up_speed;
 	uint16 actual_dl_speed, actual_up_speed;
@@ -276,8 +267,11 @@ tray_menu (GtkWidget *widget, GdkEventButton *event, gpointer data)
 	if (max_dl_speed==UNLIMITED || max_dl_speed==0) max_dl_speed=100;
 	if (max_up_speed==UNLIMITED || max_up_speed==0) max_up_speed=100;
 
-	label=wxString(_("aMule "))+wxString(wxT(VERSION))+wxString(wxT("\n"))+wxString(_("Actual Speed Limits:"))+wxString(wxT("\n"))+wxString(_("DL: "))+wxString(wxString::Format(wxT("%d"),dl_speed))+wxString(_(" kb/s "))+wxString(_("UP: "))+wxString(wxString::Format(wxT("%d"),upl_speed))+wxString(_(" kb/s"));
-
+	label=wxString(wxT("aMule "))+wxString(wxT(VERSION))+
+	wxString::Format(wxT("%s"),wxT("\n"))+wxString(_("Actual Speed Limits:"))+
+	wxString::Format(wxT("%s"),wxT("\n"))+wxString(wxT("DL: "))+dl_speed+
+	wxString(wxT(" kb/s "))+wxString(wxT("UP: "))+upl_speed+wxString(wxT(" kb/s"));
+	
 	//info menu
 	info_menu=gtk_menu_new();
 	gtk_menu_set_title(GTK_MENU(info_menu),unicode2char(_("aMule Tray Menu Info")));
@@ -325,8 +319,9 @@ tray_menu (GtkWidget *widget, GdkEventButton *event, gpointer data)
 	gtk_container_add (GTK_CONTAINER (info_menu), info_item);
 
 	if (theApp.Start_time>0) {
-		tempstring=g_strdup_printf("%s", CastSecondsToHM(theApp.GetUptimeSecs()).GetData() );
-		info_item=gtk_menu_item_new_with_label(unicode2char(wxString(_("Uptime: "))+char2unicode(tempstring)));
+		tempstring=g_strdup_printf("%s %s", unicode2char(_("Uptime: ")),
+			unicode2char(CastSecondsToHM(theApp.GetUptimeSecs()).GetData()) );
+		info_item=gtk_menu_item_new_with_label(tempstring);
 	}
 	else info_item=gtk_menu_item_new_with_label(unicode2char(_("Uptime: None")));
  	gtk_container_add (GTK_CONTAINER (info_menu), info_item);
@@ -342,11 +337,10 @@ tray_menu (GtkWidget *widget, GdkEventButton *event, gpointer data)
 
 	}
 	else {
-	info_item=gtk_menu_item_new_with_label(unicode2char(_("ServerName: Not Connected")));
-	gtk_container_add (GTK_CONTAINER (info_menu), info_item);
-	info_item=gtk_menu_item_new_with_label(unicode2char(_("ServerIP: Not Connected")));
-	gtk_container_add (GTK_CONTAINER (info_menu), info_item);
-
+		info_item=gtk_menu_item_new_with_label(unicode2char(_("ServerName: Not Connected")));
+		gtk_container_add (GTK_CONTAINER (info_menu), info_item);
+		info_item=gtk_menu_item_new_with_label(unicode2char(_("ServerIP: Not Connected")));
+		gtk_container_add (GTK_CONTAINER (info_menu), info_item);
 	}
 
 	tempstring = g_strdup_printf("%d", theApp.sharedfiles->GetCount() );
@@ -389,8 +383,7 @@ tray_menu (GtkWidget *widget, GdkEventButton *event, gpointer data)
 	//download speed submenu
 	down_speed=gtk_menu_new();
 
-	temp=(gchar*)unicode2char(_("Unlimited"));
-	dl_item=gtk_menu_item_new_with_label(temp);
+	dl_item=gtk_menu_item_new_with_label(unicode2char(_("Unlimited")));
 	gtk_object_set_data_full(GTK_OBJECT(dl_item), "label", 0 , NULL);
 	gtk_container_add (GTK_CONTAINER (down_speed), dl_item);
 	gtk_signal_connect (GTK_OBJECT(dl_item), "activate",GTK_SIGNAL_FUNC (set_dl_speed),dl_item);
@@ -430,12 +423,10 @@ tray_menu (GtkWidget *widget, GdkEventButton *event, gpointer data)
 	gtk_object_set_data_full(GTK_OBJECT(dl_item), "label", temp, NULL);
 	gtk_signal_connect (GTK_OBJECT(dl_item), "activate",GTK_SIGNAL_FUNC (set_dl_speed),dl_item);
 
-
 	//upload speed submenu
 	up_speed=gtk_menu_new();
 
-	temp=(gchar*)unicode2char(_("Unlimited"));
-	up_item=gtk_menu_item_new_with_label(temp);
+	up_item=gtk_menu_item_new_with_label(unicode2char(_("Unlimited")));
 	gtk_object_set_data_full(GTK_OBJECT(up_item), "label", 0 , NULL);
 	gtk_container_add (GTK_CONTAINER (up_speed), up_item);
 	gtk_signal_connect (GTK_OBJECT(up_item), "activate",GTK_SIGNAL_FUNC (set_up_speed),up_item);
@@ -553,13 +544,12 @@ tray_menu (GtkWidget *widget, GdkEventButton *event, gpointer data)
 	gtk_signal_connect (GTK_OBJECT (status_menu), "selection-done",
 			  GTK_SIGNAL_FUNC (gtk_widget_destroy), &status_menu);
 
-	//gtk_signal_connect (GTK_OBJECT (info_menu), "leave_notify_event",
-	//		  GTK_SIGNAL_FUNC (gtk_widget_destroy), &info_menu);
-
 	//finalization
 	gtk_widget_show_all (status_menu);
 	gtk_menu_popup (GTK_MENU(status_menu), NULL, NULL,NULL, NULL,event->button, event->time);
 
+	free(temp);
+	free(tempstring);
 	return TRUE;
 }
 
@@ -587,6 +577,11 @@ static gboolean tray_clicked (GtkWidget *event_box, GdkEventButton *event, gpoin
 
 CSysTray::CSysTray(wxWindow* _parent,int _desktopMode, const wxString& title)
 {
+  
+  desktopMode=_desktopMode;
+   // not wanted, so don't show it.
+  if(desktopMode==4) return;
+    
   static GtkWidget *eventbox;
   gdk_rgb_init();
 
@@ -600,40 +595,31 @@ CSysTray::CSysTray(wxWindow* _parent,int _desktopMode, const wxString& title)
   m_pColors=NULL;
 
   parent=_parent;
-  desktopMode=_desktopMode;
-  if(desktopMode==4) {
-    // not wanted, so don't show it.
-   return;
-  }
-
-  setlocale(LC_ALL, "");
-  bindtextdomain(PACKAGE, LOCALEDIR);
-  textdomain(PACKAGE);
 
   bool use_legacy=false;
 
   // case 2 and 3 are KDE/other legacy system
-  if(desktopMode==2 || desktopMode==3) {
-    use_legacy=true;
-  }
+  if(desktopMode==2 || desktopMode==3)  use_legacy=true;
 
-  if(use_legacy) {
+  if(use_legacy) 
+  {
     status_docklet=gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_title(GTK_WINDOW(status_docklet), unicode2char(title));
     gtk_window_set_wmclass(GTK_WINDOW(status_docklet),"amule_StatusDocklet","aMule");
     gtk_widget_set_usize(status_docklet,22,22);
-  } else {
-    status_docklet=GTK_WIDGET(egg_tray_icon_new(unicode2char(_("aMule for Linux"))));
-      if(status_docklet==NULL) {
-      printf("**** WARNING: Can't create status docklet. Systray will not be created.\n");
-      desktopMode=4;
-      return;
-    }
+  } 
+  else 
+  {
+      status_docklet=GTK_WIDGET(egg_tray_icon_new(unicode2char(_("aMule for Linux"))));
+      if(status_docklet==NULL) 
+      {
+        printf("**** WARNING: Can't create status docklet. Systray will not be created.\n");
+        desktopMode=4;
+        return;
+      }
   }
   gtk_widget_realize(status_docklet);
-
   gtk_signal_connect(GTK_OBJECT(status_docklet),"destroy", GTK_SIGNAL_FUNC(gtk_widget_destroyed),&status_docklet);
-
 
   // set image
   GtkStyle *style;
