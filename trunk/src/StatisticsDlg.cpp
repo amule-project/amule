@@ -269,7 +269,7 @@ void CStatisticsDlg::RecordHistory()
 	}
 	
 	// now save the latest data point in this node
-	HR* phr = listHR.GetDataPtr(listHR.GetTailPosition());
+ 	HR* phr = &listHR.GetTail();
 	phr->kBytesSent = kBytesSent;
 	phr->kBytesReceived = kBytesRec;
 	phr->kBpsUpCur = kBpsUpCur;
@@ -301,7 +301,7 @@ unsigned CStatisticsDlg::GetHistory(  // Assemble arrays of sample points for a 
 	float		*pf3 = *(ppf+2);
 	unsigned	cntFilled = 0;
 	POSITION	pos = listHR.GetTailPosition(), posPrev;
-	HR			*phr = listHR.GetDataPtr(pos);  	// pointer to history record
+	HR			*phr = &listHR.GetAt(pos);  	// pointer to history record
 
 	// start of list should be an integer multiple of the sampling period for samples 
 	// to be consistent when the graphs are resized horizontally
@@ -320,7 +320,7 @@ unsigned CStatisticsDlg::GetHistory(  // Assemble arrays of sample points for a 
 	
 	do {
 		while ((posPrev=listHR.PrevAt(pos)) != NULL  // find next history record
-			&& ((phr=listHR.GetDataPtr(posPrev))->sTimestamp > sTarget))
+			&& ((phr=&listHR.GetAt(posPrev))->sTimestamp > sTarget))
 			pos = posPrev;
 		if (bRateGraph) {	// assemble an array of pointers for ComputeAverages
 			*pphr++ = phr;
@@ -364,7 +364,7 @@ void CStatisticsDlg::ComputeAverages(
 	float		kBpsAvg;
 	float 		sAvg = (float)theApp.glob_prefs->GetStatsAverageMinutes()*60.0;
 	POSITION	posPrev = listHR.PrevAt(pos);
-	HR			*phr = listHR.GetDataPtr(pos);
+	HR			*phr = &listHR.GetAt(pos);
 		
 	kBpsAvg = 0.0;
 	sCur = phr->sTimestamp;
@@ -377,23 +377,23 @@ void CStatisticsDlg::ComputeAverages(
 		sTarget = max(0.0, sCur - sAvg*std::log((float)(pscope->GetPlotHeightPixels()*2)));
 		for (POSITION *ppos=aposRecycle; ppos<aposRecycle+nHistRanges; ppos++) {
 			// accelerate search by using our intermediate pointers into the history list
-			if (listHR.GetDataPtr(*ppos)->sTimestamp >= sTarget)
+			if (listHR.GetAt(*ppos).sTimestamp >= sTarget)
 				pos = *ppos;
 			else
 				break;
 		}
 		while ((posPrev=listHR.PrevAt(pos)) != NULL) {
-			if (listHR.GetDataPtr(pos=posPrev)->sTimestamp <= sTarget)
+			if (listHR.GetAt(pos=posPrev).sTimestamp <= sTarget)
 				break;
 		}
 		// backtracked enough, now compute running average up to first sample point
-		phr = listHR.GetDataPtr(pos);
+		phr = &listHR.GetAt(pos);
 		sPrev = phr->sTimestamp;
 		kBytesPrev = (pscope==pscopeDL ? phr->kBytesReceived : phr->kBytesSent);
 		do  {
 			float kBpsSession;
 			pos = listHR.NextAt(pos);
-			phr = listHR.GetDataPtr(pos);
+			phr = &listHR.GetAt(pos);
 			kBytesRun = (pscope==pscopeDL ? phr->kBytesReceived : phr->kBytesSent);
 			ComputeSessionAvg(kBpsSession, (pscope==pscopeDL ? phr->kBpsDownCur : phr->kBpsUpCur), 
 								kBytesRun, phr->sTimestamp, sTrans);
@@ -450,7 +450,7 @@ void CStatisticsDlg::VerifyHistory(bool bMsgIfOk)
 			printf("History list too short: %i elements (%i expected), ends at t=%.2f\n", cnt-1,cntExpected, sPrev);
 			return;
 		}
-		sCur = (listHR.GetDataPtr(posCur))->sTimestamp;
+		sCur = listHR.GetAt(posCur).sTimestamp;
 		if (!(sCur >= 0.0)) {
 			printf("History list has INVALID timestamp at position %i (t1=%.2f)\n", cnt, sCur);
 			return;
@@ -469,7 +469,7 @@ void CStatisticsDlg::VerifyHistory(bool bMsgIfOk)
 			if (sCur != 0.0  &&  sDelta > sStep*0.5)
 				printf("T=%i History list: gap of %.2f (vs. %i) #%i is %i in range  [%i]t=%.2f [%i]t=%.2f [%i]t=%.2f\n", 
 							(int)round(sStart), sPrev-sCur, (int)round(sStep), cnt, cntInRange,
-									 cnt+1, (listHR.GetDataPtr(listHR.PrevAt(posCur)))->sTimestamp, cnt, sCur, cnt-1, sPrev);
+									 cnt+1, listHR.GetAt(listHR.PrevAt(posCur)).sTimestamp, cnt, sCur, cnt-1, sPrev);
 		}
 		if (listHR.NextAt(posCur) != posPrev) {
 			printf("History list has bad backlink at position %i (t=%.2f seconds)\n", cnt, sCur);
@@ -546,7 +546,7 @@ void CStatisticsDlg::UpdateStatGraphs(bool bStatsVisible)
 	if (!bStatsVisible)
 		return;
 	
-	HR* phr = listHR.GetDataPtr(listHR.GetTailPosition());
+	HR* phr = &listHR.GetTail();
 	float cUp, cDown, cConn;
 	cUp   = (float)phr->cntUploads;
 	cDown = (float)phr->cntConnections;

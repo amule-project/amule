@@ -597,7 +597,7 @@ void CUploadQueue::ResumeUpload( const CFileHash& filehash )
 void CUploadQueue::SuspendUpload( const CFileHash& filehash )
 {
 	//Append the filehash to the list.
-	suspended_uploads_list.Append(filehash);
+	suspended_uploads_list.AddTail(filehash);
 	CString base16hash = EncodeBase16(filehash, 16);
 	
 	printf("%s: Suspending uploads of file.\n", base16hash.GetBuffer());
