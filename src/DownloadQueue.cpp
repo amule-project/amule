@@ -52,6 +52,7 @@
 #include "NetworkFunctions.h" // Needed for CAsyncDNS
 #include <algorithm>
 #include <numeric>
+#include <sys/types.h>
 
 // Max. file IDs per UDP packet
 // ----------------------------

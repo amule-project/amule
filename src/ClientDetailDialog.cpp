@@ -38,6 +38,7 @@
 #include <wx/stattext.h>
 #include <wx/sizer.h>
 #include <wx/msgdlg.h>
+#include <sys/types.h>
 
 // CClientDetailDialog dialog
 

@@ -37,6 +37,7 @@
 #include "NetworkFunctions.h" // Needed for CAsyncDNS
 #include "GetTickCount.h"
 #include "ServerSocket.h"
+#include <sys/types.h>
 
 IMPLEMENT_DYNAMIC_CLASS(CUDPSocket,wxDatagramSocket)
 
