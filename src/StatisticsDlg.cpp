@@ -687,6 +687,9 @@ void  CStatisticsDlg::InitTree()
 	cli6= stattree->AppendItem(h_clients,_("Waiting..."));  // Unknown
 	cli13= stattree->AppendItem(h_clients,_("Waiting...")); // lowid
 	cli14= stattree->AppendItem(h_clients,_("Waiting...")); // Sec Ident
+#ifdef  __DEBUG__
+	cli17= stattree->AppendItem(h_clients,_("Waiting...")); // HasSocket
+#endif
 	cli7= stattree->AppendItem(h_clients,_("Filtered: %i"));
 
 
@@ -885,6 +888,10 @@ void CStatisticsDlg::ShowStatistics()
 	stattree->SetItemText(cli13, cbuffer);
 	cbuffer.Format(_("SecIdent On/Off: %u (%.2f%%) : %u (%.2f%%)"), myStats[12] , ((myStats[2]+myStats[8])>0)?((double)100*myStats[12] / (myStats[2]+myStats[8])):0, myStats[13] , ((myStats[2]+myStats[8])>0)?((double)100*myStats[13] /(myStats[2]+myStats[8]) ):0);
 	stattree->SetItemText(cli14, cbuffer);
+#ifdef __DEBUG__
+	cbuffer.Format(_("HasSocket: %i (%1.1f%%)"),myStats[17],(double)100*myStats[17]/totalclient);
+	stattree->SetItemText(cli17, cbuffer);
+#endif
 	
 	if(stattree->IsExpanded(cli3) || (myStats[1] > 0)) {
 

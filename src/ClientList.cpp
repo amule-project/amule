@@ -60,7 +60,7 @@ void CClientList::GetStatistics(uint32 &totalclient, uint32 stats[], CMap<uint16
 	if(clientVersionAMule)		clientVersionAMule->RemoveAll();
 	POSITION pos1, pos2;
 
-	for (int i=0;i<17;i++) stats[i]=0;
+	for (int i=0;i<18;i++) stats[i]=0;
 
 	for (pos1 = list.GetHeadPosition();( pos2 = pos1 ) != NULL;){
 		list.GetNext(pos1);
@@ -141,6 +141,10 @@ void CClientList::GetStatistics(uint32 &totalclient, uint32 stats[], CMap<uint16
 				default:
 					break;
 			}
+		}
+		
+		if (cur_client->socket) {
+			stats[17]++;
 		}
 		
 		//if(clientStatus) (*clientStatus)[cur_client->GetDownloadState()]++;
