@@ -2810,7 +2810,7 @@ UploadFiles::UploadFiles(CEC_UpDownClient_Tag *tag)
 {
 	nHash = tag->FileID();
 	sUserName = tag->ClientName();
-	nSpeed = tag->Speed();
+	nSpeed = tag->SpeedUp();
 	nTransferredUp = tag->XferUp();
 	nTransferredDown = tag->XferDown();
 }
