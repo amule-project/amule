@@ -1434,13 +1434,8 @@ void CUpDownClient::ReGetClientSoft()
 			m_nClientVersion = MAKE_CLIENT_VERSION(nClientMajVersion, nClientMinVersion, nClientUpVersion);
 
 			if (m_clientSoft == SO_AMULE) {
-				if (nClientMajVersion >= 0x0f) {
-					m_nClientVersion = MAKE_CLIENT_VERSION(nClientMajVersion & 0x0f, nClientMinVersion, nClientUpVersion);
-					m_clientVerString +=  wxString::Format(" v%u.%u.%u CVS", nClientMajVersion & 0x0f, nClientMinVersion, nClientUpVersion);						;
-				} else {
 					m_nClientVersion = MAKE_CLIENT_VERSION(nClientMajVersion, nClientMinVersion, nClientUpVersion);
 					m_clientVerString +=  wxString::Format(" v%u.%u.%u", nClientMajVersion, nClientMinVersion, nClientUpVersion);						
-				}
 			} else {
 				m_nClientVersion = MAKE_CLIENT_VERSION(nClientMajVersion, nClientMinVersion, nClientUpVersion);
 				m_clientVerString +=  wxString::Format(" v%u.%u%c", nClientMajVersion, nClientMinVersion, 'a' + nClientUpVersion);
