@@ -2318,11 +2318,10 @@ void CListenSocket::Process()
 {
 	// 042e + Kry changes for Destroy
 	m_OpenSocketsInterval = 0;
-	opensockets = 0;
+	opensockets = socket_list.size();
 	SocketSet::iterator it = socket_list.begin();
 	while ( it != socket_list.end() ) {
 		CClientReqSocket* cur_socket = *it++;
-		opensockets++;
 		if (!cur_socket->OnDestroy()) {
 			if (cur_socket->deletethis) {
 				cur_socket->Destroy();
