@@ -1357,7 +1357,7 @@ void CamuleDlg::OnMainGUISizeChange(wxSizeEvent& evt) {
 	
 	wxFrame::OnSize(evt);	
 	
-	#ifndef __WXMAC__
+	#if !defined(__WXMAC__) && !defined(__WXCOCOA__)
 	// Crashing on mac, why?
 	
 	if (transferwnd && transferwnd->clientlistctrl) {
