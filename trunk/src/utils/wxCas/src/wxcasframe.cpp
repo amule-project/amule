@@ -273,7 +273,7 @@ WxCasFrame::GetStatImage () const
 
 // Refresh button
 void
-WxCasFrame::OnBarRefresh (wxCommandEvent & event)
+WxCasFrame::OnBarRefresh (wxCommandEvent& WXUNUSED(event))
 {
   if (m_refresh_timer->IsRunning ())
     {
@@ -301,7 +301,7 @@ WxCasFrame::OnBarRefresh (wxCommandEvent & event)
 
 // Save button
 void
-WxCasFrame::OnBarSave (wxCommandEvent & event)
+WxCasFrame::OnBarSave (wxCommandEvent& WXUNUSED(event))
 {
   wxImage *statImage = GetStatImage ();
 
@@ -330,7 +330,7 @@ WxCasFrame::OnBarSave (wxCommandEvent & event)
 
 // Print button
 void
-WxCasFrame::OnBarPrint (wxCommandEvent & event)
+WxCasFrame::OnBarPrint (wxCommandEvent& WXUNUSED(event))
 {
   wxPrinter printer;
   WxCasPrint printout (_("aMule Online Statistics"));
@@ -347,7 +347,7 @@ WxCasFrame::OnBarPrint (wxCommandEvent & event)
 
 // Prefs button
 void
-WxCasFrame::OnBarPrefs (wxCommandEvent & event)
+WxCasFrame::OnBarPrefs (wxCommandEvent& WXUNUSED(event))
 {
   WxCasPrefs dlg (this);
   dlg.ShowModal ();
@@ -355,7 +355,7 @@ WxCasFrame::OnBarPrefs (wxCommandEvent & event)
 
 // About button
 void
-WxCasFrame::OnBarAbout (wxCommandEvent & event)
+WxCasFrame::OnBarAbout (wxCommandEvent& WXUNUSED(event))
 {
   wxMessageBox (_
                 ("wxCas, aMule OnLine Signature Statistics\n\n"
@@ -367,7 +367,7 @@ WxCasFrame::OnBarAbout (wxCommandEvent & event)
 
 // Refresh timer
 void
-WxCasFrame::OnRefreshTimer (wxTimerEvent & event)
+WxCasFrame::OnRefreshTimer (wxTimerEvent& WXUNUSED(event))
 {
   // Prefs
   wxConfigBase * prefs = wxConfigBase::Get();
@@ -401,7 +401,7 @@ WxCasFrame::OnRefreshTimer (wxTimerEvent & event)
 
 // Ftp update timer
 void
-WxCasFrame::OnFtpUpdateTimer (wxTimerEvent & event)
+WxCasFrame::OnFtpUpdateTimer (wxTimerEvent& WXUNUSED(event))
 {
   // Prefs
   wxConfigBase * prefs = wxConfigBase::Get();
