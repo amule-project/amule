@@ -399,15 +399,25 @@ class UpdatableItemsContainer : public ItemsContainer<T, E> {
 					full_req->AddTag(CECTag(req_type, tag->ID()));
 				}
 			}
-			for(typename std::list<T>::iterator j = ItemsContainer<T, E>::m_items.begin();
-				j != ItemsContainer<T, E>::m_items.end();j++) {
+			std::list<I> del_ids;
+			for(typename std::list<T>::iterator j = this->m_items.begin(); j != this->m_items.end(); j++) {
 				if ( core_files.count(j->ID()) == 0 ) {
 					// item may contain data that need to be freed externally, before
 					// dtor is called and memory freed
-					this->ItemDeleted(*j);
 					
-					m_items_hash.erase(j->ID());
-					ItemsContainer<T, E>::m_items.erase(j);
+					T *real_ptr = &*j;
+					this->ItemDeleted(real_ptr);
+					
+					del_ids.push_back(j->ID());
+				}
+			}
+			for(typename std::list<I>::iterator j = del_ids.begin(); j != del_ids.end(); j++) {
+				m_items_hash.erase(*j);
+				for(typename std::list<T>::iterator k = this->m_items.begin(); k != this->m_items.end(); k++) {
+					if ( *j == k->ID() ) {
+						this->m_items.erase(k);
+						break;
+					}
 				}
 			}
 		}
@@ -420,7 +430,7 @@ class UpdatableItemsContainer : public ItemsContainer<T, E> {
 				T item(tag);
 				T *real_ptr = AddItem(item);
 				// initialize any external data that may depend on this item
-				this->ItemInserted(*real_ptr);
+				this->ItemInserted(real_ptr);
 			}
 		}
 		
@@ -454,8 +464,8 @@ class UpdatableItemsContainer : public ItemsContainer<T, E> {
 			return true;
 		}
 		
-		virtual void ItemDeleted(T &) { }
-		virtual void ItemInserted(T &) { }
+		virtual void ItemDeleted(T *) { }
+		virtual void ItemInserted(T *) { }
 };
 
 class UploadsInfo : public ItemsContainer<UploadFiles, int> {
@@ -520,8 +530,8 @@ class DownloadFilesInfo : public UpdatableItemsContainer<DownloadFiles, xDownloa
 
 		// container requirements
 		bool CompareItems(const DownloadFiles &i1, const DownloadFiles &i2);
-		void ItemInserted(DownloadFiles &item);
-		void ItemDeleted(DownloadFiles &item);
+		void ItemInserted(DownloadFiles *item);
+		void ItemDeleted(DownloadFiles *item);
 };
 
 class CAnyImage {
