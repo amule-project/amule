@@ -7,7 +7,12 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		
     deltaHF:
 	    * GUI for auto-sort download queue.
-		
+
+	GonoszTopi:
+		* Unicode fixes:
+			- UTF-8 conversion (found by littletux)
+			- webserver search results (found by poulpe)
+
 --------------------------------------------------------------------------------
 
 Version 2.0.0rc8 - The "last rc" version.
