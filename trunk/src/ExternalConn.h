@@ -26,6 +26,7 @@
 #include <wx/event.h>		// For ExitCode
 
 #include "ECSocket.h"
+#include "ECPacket.h"
 
 class CPartFile;
 class wxSocketServer;
@@ -43,9 +44,10 @@ class ExternalConn : public EXTERNAL_CONN_BASE {
 		~ExternalConn();
 	
 		wxString ProcessRequest(const wxString& item);
+		CECPacket *ProcessRequest2(const CECPacket *request);
 	
 	public:
-		wxString Authenticate(const wxString& item);
+		CECPacket *Authenticate(const CECPacket *);
 		ECSocket *m_ECServer;
 
 	private:

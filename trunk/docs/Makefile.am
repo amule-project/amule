@@ -7,6 +7,7 @@ dist_doc_DATA = ABOUT-NLS \
 		INSTALL \
 		license.txt \
 		README \
-		TODO
+		TODO \
+		EC_Protocol.txt
 		
 docdir = $(datadir)/doc/$(PACKAGE_NAME)-$(PACKAGE_VERSION)

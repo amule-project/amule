@@ -56,6 +56,9 @@
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #endif
 
+#include "ECPacket.h"		// Needed for CECPacket, CECTag
+#include "ECcodes.h"		// Needed for OPcodes, TAGnames
+
 enum
 {	// id for sockets
 	SERVER_ID = 1000,
@@ -151,29 +154,35 @@ void ExternalConn::OnServerEvent(wxSocketEvent& WXUNUSED(event)) {
 
 void ExternalConn::OnSocketEvent(wxSocketEvent& event) {
 	wxSocketBase *sock = event.GetSocket();
-	wxString request, response;
+	CECPacket * request;
+	CECPacket * response;
 	// Now we process the event
 	switch(event.GetSocketEvent()) {
 	case wxSOCKET_INPUT: {
 		// We disable input events, so that the test doesn't trigger
 		// wxSocketEvent again.
 		sock->SetNotify(wxSOCKET_LOST_FLAG);		
-		m_ECServer->Read(sock, request);		
+		request = m_ECServer->ReadPacket(sock);		
 		if (event.GetId() == AUTH_ID) {
 			response = Authenticate(request);
-			m_ECServer->Write(sock, response);
-			if (response != wxT("Authenticated")) {
+			delete request;
+			m_ECServer->WritePacket(sock, response);
+			if (response->GetOpCode() != EC_OP_AUTH_OK) {
 				// Access denied!
 				AddLogLineM(false, _("Unauthorized access attempt. Connection closed."));
+				delete response;
 				sock->Destroy();
 				return;
 			} else {
 				// Authenticated => change socket handler
+				delete response;
 				sock->SetEventHandler(*this, SOCKET_ID);
 			}
 		} else {
-			wxString response = ProcessRequest(request);
-			m_ECServer->Write(sock, response);
+			response = ProcessRequest2(request);
+			delete request;
+			m_ECServer->WritePacket(sock, response);
+			delete response;
 		}		
 		// Re-Enable input events again.
 		sock->SetNotify(wxSOCKET_LOST_FLAG | wxSOCKET_INPUT_FLAG);
@@ -205,21 +214,68 @@ void ExternalConn::OnSocketEvent(wxSocketEvent& event) {
 //
 // Authentication
 //
-wxString ExternalConn::Authenticate(const wxString& item)
+CECPacket *ExternalConn::Authenticate(const CECPacket *request)
 {
-	if (item.Left(4) == wxT("AUTH")) {
-		if (item.Mid(5) == wxT("aMuleweb ") + theApp.glob_prefs->ECPassword()) {
-			printf("Accepted Connection from amuleweb\n"); 
-			return wxT("Authenticated"); 
+    CECPacket *response;
+
+    if (request == NULL) {
+	response = new CECPacket(EC_OP_AUTH_FAIL);
+	return response;
+    }
+
+    if (request->GetOpCode() == EC_OP_AUTH_REQ) {
+	CECTag *cname = request->GetTagByName(EC_TAG_CLIENT_NAME);
+	const char *client = (cname == NULL) ? NULL : (const char *)cname->GetTagData();	// Extracting the UTF-8 string data
+	printf("Connecting client: %s - ", client);
+	CECTag *passwd = request->GetTagByName(EC_TAG_PASSWD_HASH);
+	CECTag *protocol = request->GetTagByName(EC_TAG_PROTOCOL_VERSION);
+	if (protocol != NULL) {
+	    if (*((uint16 *)protocol->GetTagData()) == 0x0200) {
+		if (passwd == NULL) {
+		    if (theApp.glob_prefs->ECPassword().IsEmpty()) {
+			response = new CECPacket(EC_OP_AUTH_OK);
+		    } else {
+			response = new CECPacket(EC_OP_AUTH_FAIL);
+			response->AddTag(CECTag(EC_TAG_STRING, _("Authentication failed.")));
+		    }
+		} else if (passwd->GetTagString() == theApp.glob_prefs->ECPassword()) {
+		    response = new CECPacket(EC_OP_AUTH_OK);
+		} else {
+		    response = new CECPacket(EC_OP_AUTH_FAIL);
+		    response->AddTag(CECTag(EC_TAG_STRING, _("Authentication failed.")));
 		}
-		if (item.Mid(5) == wxT("aMulecmd ") + theApp.glob_prefs->ECPassword()) {
-			printf("Accepted Connection from amulecmd\n"); 
-			return wxT("Authenticated");
-		}
+
+	    } else {
+		response = new CECPacket(EC_OP_AUTH_FAIL);
+		response->AddTag(CECTag(EC_TAG_STRING, _("Invalid protocol version.")));
+	    }
+	} else {
+	    response = new CECPacket(EC_OP_AUTH_FAIL);
+	    response->AddTag(CECTag(EC_TAG_STRING, _("Missing protocol version tag.")));
 	}
-	return wxT("Access Denied");
+    } else {
+	response = new CECPacket(EC_OP_AUTH_FAIL);
+	response->AddTag(CECTag(EC_TAG_STRING, _("Invalid request, you should first authenticate.")));
+    }
+
+    if (response->GetOpCode() == EC_OP_AUTH_OK) printf("Access granted.\n");
+    else printf("%s\n", (const char *)response->GetTagByIndex(0)->GetTagData());
+
+    return response;
 }
 
+CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request)
+{
+    CECPacket *response;
+
+    if (request->GetOpCode() == EC_OP_COMPAT) {
+	response = new CECPacket(EC_OP_COMPAT);
+	response->AddTag(CECTag(EC_TAG_STRING, ProcessRequest(request->GetTagByIndex(0)->GetTagString())));
+    } else {
+	// implement new code here
+    }
+    return response;
+}
 
 //TODO: do a function for each command
 wxString ExternalConn::ProcessRequest(const wxString& item) {
@@ -2223,11 +2279,10 @@ ExternalConnClientThread::~ExternalConnClientThread()
 
 void *ExternalConnClientThread::Entry()
 {
-	wxString request;
-	m_owner->m_ECServer->Read(m_sock, request);
-	wxString response = m_owner->Authenticate(request);
-	m_owner->m_ECServer->Write(m_sock, response);
-	if (response != wxT("Authenticated")) {
+	CECPacket *request = m_owner->m_ECServer->ReadPacket(m_sock);
+	CECPacket *response = m_owner->Authenticate(request);
+	m_owner->m_ECServer->WritePacket(m_sock, response);
+	if (response->GetOpCode() != EC_OP_AUTH_OK) {
 		//
 		// Access denied!
 		//
@@ -2243,9 +2298,9 @@ void *ExternalConnClientThread::Entry()
 			return 0;
 		}
 		if (m_sock->WaitForRead()) {
-			m_owner->m_ECServer->Read(m_sock, request);
-			wxString response = m_owner->ProcessRequest(request);
-			m_owner->m_ECServer->Write(m_sock, response);
+			request = m_owner->m_ECServer->ReadPacket(m_sock);
+			response = m_owner->ProcessRequest2(request);
+			m_owner->m_ECServer->WritePacket(m_sock, response);
 		}
 	}
 	return 0;

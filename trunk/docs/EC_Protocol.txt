@@ -1,0 +1,114 @@
+Section 1: Protocol definition
+------------------------------
+
+Short description:
+
+    EC protocol consist of two layers: a low-level transmission layer, and
+    a high level application layer.
+
+Transmission layer:
+
+    The transmission layer consists of (currently) one byte data, that is
+    prepended to the actual application data.
+
+    Bit description: x01rrrrc
+
+	x: eXtension flag, should be 0.
+	r: Reserved for later use
+	c: Compression flag 1 = application data is compressed.
+
+
+Application layer:
+
+    A packet contains the following:
+	[ec_opcode_t] OPCODE
+	[uint16] TAGCOUNT
+	    <tags>
+
+    Tags consist of:
+	[ec_tagname_t] TAGNAME
+	[ec_taglen_t] TAGLEN
+	<[uint16] TAGCOUNT>?
+	    <sub-tags>
+	    <tag data>
+
+    Tags may contain sub-tags to store the information, and a TAGCOUNT field
+    is present only for these types of tags. You can test if a packet is to
+    hold subpackets with HasTagCount(tagName). (Actually, a packet contains a
+    TAGCOUNT field when the highest bit of its name is set.)
+
+
+Notice
+------
+
+Below is a short description on prefixes used in the following sections.
+    <no prefix>: tag is required to be present only once
+    +: tag is requred to be present at least once, may occure more than once
+	(eg. EC_TAG_STRING+ = one or more EC_TAG_STRING tags)
+    ?: optional tag, may occur zero or one times.
+    *: tag may occur zero or more (undefined number) times
+
+
+Section 2: EC opcodes
+---------------------
+
+    EC_OP_AUTH_REQ:
+	Authentication request. (client -> server)
+
+	Tags:
+	    EC_TAG_CLIENT_NAME: client name (eg. "amulecmd")
+	    EC_TAG_PROTOCOL_VERSION: protocol version to use.
+	    ? EC_TAG_PASSWD_HASH: password hash for authentication.
+		Non-existant with empty passwords.
+
+	Possible replies:
+	    EC_OP_AUTH_FAIL
+	    EC_OP_AUTH_OK
+
+
+    EC_OP_AUTH_FAIL:
+	Authentication failed. (server -> client)
+
+	Tags:
+	    ? EC_TAG_STRING: failure reason description
+
+
+    EC_OP_AUTH_OK:
+	Successful authentication. (server -> client)
+
+	Tags: none
+
+
+    EC_OP_STRINGS:
+	General opcode for any text-type replies. (server -> client)
+
+	Tags:
+	    + EC_TAG_STRING: text body (lines, maybe)
+
+
+    EC_OP_MISC_DATA:
+	Opcode for most server replies, which consist of only a single
+	piece of data.
+	E.g.:
+	    client: EC_OP_GET_IPLEVEL []
+	    server: EC_OP_MISC_DATA [EC_TAG_IPLEVEL]
+
+	Tags: (hard to list all)
+
+
+Section 3: EC tags
+------------------
+
+    EC_TAG_STRING:
+	The tag contains a UTF-8 encoded string (with trailing \0, so
+	taglen = strlen(string) + 1).
+
+    EC_TAG_PASSWD_HASH:
+	ASCIIZ password hash, [32 * char], taglen := 33.
+
+    EC_TAG_CLIENT_NAME:
+	An EC_TAG_STRING dedicated to hold the client name.
+
+    EC_TAG_PROTOCOL_VERSION:
+	[uint16] protocol version, MSB = major, LSB = minor version number.
+	Should be 0x0200 = v2.0.

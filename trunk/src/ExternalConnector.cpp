@@ -42,6 +42,10 @@
 #include <wx/intl.h>		// For _()
 #include <wx/tokenzr.h>		// For wxStringTokenizer
 
+//-------------------------------------------------------------------
+
+#include "ECPacket.h"		// Needed for CECPacket, CECTag
+#include "ECcodes.h"		// Needed for OPcodes and TAGnames
 
 //-------------------------------------------------------------------
 
@@ -214,7 +218,21 @@ void CaMuleExternalConnector::TextShell(const wxString &prompt, CmdId commands[]
 
 wxString CaMuleExternalConnector::SendRecvMsg(const wxChar *msg)
 {
-	return m_ECClient->SendRecvMsg(msg);
+    CECPacket request(EC_OP_COMPAT);
+    request.AddTag(CECTag(EC_TAG_STRING, wxString(msg)));
+    if (m_ECClient->WritePacket(&request)) {
+	CECPacket *reply = m_ECClient->ReadPacket();
+	if (reply != NULL) {
+	    wxString s = reply->GetTagByIndex(0)->GetTagString();	// An EC_OP_COMPAT request implies the EC_OP_COMPAT reply.
+	    delete reply;
+	    return s;
+	} else {
+	    delete reply;
+	    return wxEmptyString;
+	}
+    } else {
+	return wxEmptyString;
+    }
 }
 
 void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, CmdId *UNUSED_IN_GUI(commands))
@@ -245,6 +263,13 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, CmdId *UNU
 #endif // wxUse_GUI
 	}
 	
+	// Create the packet
+	CECPacket packet(EC_OP_AUTH_REQ);
+	CECTag *tag = new CECTag(EC_TAG_CLIENT_NAME, ProgName);
+	packet.AddTag(*tag);
+	uint16 proto_version = 0x0200;
+	packet.AddTag(CECTag(EC_TAG_PROTOCOL_VERSION, 2, &proto_version));
+
 	if ( m_HasConfigFromFile ) {
 		wxFileConfig eMuleIni(
 			wxT("eMule"),
@@ -255,10 +280,8 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, CmdId *UNU
 		pass_hash = eMuleIni.Read(wxT("/ExternalConnect/ECPassword"));
 	} else if ( !pass_plain.IsEmpty() ) {
 		pass_hash = MD5Sum(pass_plain).GetHash();
-	} else {
-		pass_hash = wxEmptyString;
+		packet.AddTag(CECTag(EC_TAG_PASSWD_HASH, pass_hash));
 	}
-	wxString passwd = ProgName + wxT(" ") + pass_hash;
 	
 	// Clear passwords
 	m_CommandLinePassword	= wxT("01234567890123456789");
@@ -286,9 +309,27 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, CmdId *UNU
 		Show(_("Connection Failed. Unable to connect to the specified host\n"));
 	} else {
 		// Authenticate ourselves
-		if (m_ECClient->SendRecvMsg(wxString::Format(wxT("AUTH %s"), passwd.GetData())) == wxT("Access Denied")) {
-			Show(_("ExternalConn: Access Denied.\n"));
-		} else {
+		bool success = m_ECClient->WritePacket(&packet);
+		CECPacket *reply = NULL;
+		if (success) {
+		    reply = m_ECClient->ReadPacket();
+		    success = (reply != NULL);
+		}
+		if (success) {
+		    if (reply->GetOpCode() == EC_OP_AUTH_FAIL) {
+			if (reply->GetTagCount() > 0) {
+			    CECTag *reason = reply->GetTagByName(EC_TAG_STRING);
+			    if (reason != NULL) {
+				Show(wxString::Format(_("ExternalConn: Access denied because: %s\n"), reason->GetTagString().GetData()));
+			    } else {
+				Show(_("ExternalConn: Access denied.\n"));
+			    }
+			} else {
+			    Show(_("ExternalConn: Access denied.\n"));
+			}
+		    } else if (reply->GetOpCode() != EC_OP_AUTH_OK) {
+			Show(_("ExternalConn: Bad reply from server. Connection closed.\n"));
+		    } else {
 			m_isConnected = true;
 			Show(_("Succeeded! Connection established.\n"));
 			ShowGreet();
@@ -306,7 +347,12 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, CmdId *UNU
 			Show(_("\nOk, exiting ") + ProgName + wxT("...\n"));
 #endif
 			Post_Shell();
+		    }
+		} else {
+		    Show(_("A socket error occured during authentication. Exiting.\n"));
 		}
+
+		delete reply;
 #if wxUSE_GUI
 		// Destroy will be called elsewhere in gui.
 #else

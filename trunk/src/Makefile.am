@@ -116,6 +116,7 @@ amule_SOURCES = ListenSocket.cpp \
 	DownloadQueue.cpp \
 	ED2KLink.cpp \
 	ECSocket.cpp \
+	ECPacket.cpp \
 	EditServerListDlg.cpp \
 	ExternalConn.cpp \
 	FileDetailDialog.cpp \
@@ -172,6 +173,7 @@ amule_SOURCES = ListenSocket.cpp \
 amuled_SOURCES = ListenSocket.cpp \
 	AICHSyncThread.cpp \
         ECSocket.cpp \
+	ECPacket.cpp \
         EMSocket.cpp \
         AddFileThread.cpp \
         BaseClient.cpp \
@@ -252,26 +254,26 @@ amuled_LDADD = $(WXBASE_LIBS) $(ZLIB_LIBS) $(CURL_LIBS) $(CRYPTOLIBS)
 ed2k_SOURCES = ED2KLinkParser.cpp
 ed2k_CFLAGS =
 
-amulecmd_SOURCES = TextClient.cpp MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp
+amulecmd_SOURCES = TextClient.cpp MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp
 amulecmd_CFLAGS = $(WXBASE_CFLAGS)
 amulecmd_CXXFLAGS = $(WXBASE_CXXFLAGS)
 amulecmd_LDADD = $(WXBASE_LIBS)
 
 
-amulecmdDLG_SOURCES = TextClient.cpp MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp
+amulecmdDLG_SOURCES = TextClient.cpp MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp
 amulecmdDLG_CFLAGS = $(WX_CFLAGS) -DAMULECMDDLG
 amulecmdDLG_CXXFLAGS = $(WX_CXXFLAGS) -DAMULECMDDLG 
 amulecmdDLG_LDADD = $(WX_LIBS)
 
 amuleweb_SOURCES =  WebServer.cpp WebInterface.cpp WebSocket.cpp \
-	MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp
+	MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp
 amuleweb_CFLAGS = $(WXBASE_CFLAGS)
 amuleweb_CXXFLAGS = $(WXBASE_CXXFLAGS)
 amuleweb_LDADD = $(WXBASE_LIBS) $(ZLIB_LIBS)
 
 
 amulewebDLG_SOURCES = WebServer.cpp WebInterface.cpp WebSocket.cpp \
-	 MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp
+	 MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp
 amulewebDLG_CFLAGS = $(WX_CFLAGS) -DAMULEWEBDLG
 amulewebDLG_CXXFLAGS = $(WX_CXXFLAGS) -DAMULEWEBDLG 
 amulewebDLG_LDADD = $(WX_LIBS) $(ZLIB_LIBS)
@@ -305,6 +307,8 @@ noinst_HEADERS = AddFileThread.h \
 		 DownloadListCtrl.h \
 		 DownloadQueue.h \
 		 ECSocket.h \
+		 ECPacket.h \
+		 ECcodes.h \
 		 ED2KLink.h \
 		 EditServerListDlg.h \
 		 eggtrayicon.h \
