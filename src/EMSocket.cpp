@@ -82,7 +82,11 @@ void CEMSocket::Destroy() {
 	#endif
 	if (!DoingDestroy) {		
 		DoingDestroy = true;
+#ifdef AMULE_DAEMON
+		delete this;
+#else
 		wxSocketClient::Destroy();
+#endif
 	}	
 }
 
