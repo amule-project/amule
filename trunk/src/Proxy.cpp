@@ -735,6 +735,10 @@ void wxSocketServerProxy::SetProxyData(const wxProxyData *ProxyData)
 
 /******************************************************************************/
 
+#if !wxCHECK_VERSION(2,5,3)
+IMPLEMENT_ABSTRACT_CLASS(wxDatagramSocketProxy,wxDatagramSocket)
+#endif
+
 wxDatagramSocketProxy::wxDatagramSocketProxy(
 	wxIPaddress &address, wxSocketFlags flags, const wxProxyData *ProxyData)
 :

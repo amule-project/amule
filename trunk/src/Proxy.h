@@ -260,6 +260,9 @@ const unsigned int wxPROXY_UDP_MAXIMUM_OVERHEAD		= wxPROXY_UDP_OVERHEAD_DOMAIN_N
 
 class wxDatagramSocketProxy : public wxDatagramSocket
 {
+#if !wxCHECK_VERSION(2,5,3)
+	DECLARE_CLASS(wxDatagramSocketProxy)
+#endif
 public:
 	/* Constructor */
 	wxDatagramSocketProxy(
