@@ -202,8 +202,8 @@ AC_CHECK_FUNCS([floor ftruncate gettimeofday inet_ntoa memchr memmove memset mkd
 
 # Other tests
 case "${host}" in
-powerpc-apple-darwin*)
-	LDFLAGS = "$LDFLAGS -bind_at_load"
+powerpc-apple-darwin*) LDFLAGS = "$LDFLAGS -bind_at_load"
+	;;
 esac
 
 
