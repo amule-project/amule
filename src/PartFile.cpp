@@ -39,7 +39,12 @@
 #include <wx/setup.h>
 #include <wx/gdicmn.h>
 #include <wx/filename.h>	// Needed for wxFileName
-#include <wx/msgdlg.h>		// Needed for wxMessageBox
+
+#ifndef AMULE_DAEMON
+	#include <wx/msgdlg.h>		// Needed for wxMessageBox
+#else 
+	#define wxMessageBox(x) AddLogLineM(true,x)
+#endif
 
 #include "PartFile.h"		// Interface declarations.
 #include "otherfunctions.h"	// Needed for nstrdup
@@ -986,11 +991,7 @@ bool CPartFile::SavePartFile(bool Initial)
 	// Kry -don't backup if it's 0 size but raise a warning!!!
 	CFile newpartmet;
 	if (newpartmet.Open(m_fullname)!=TRUE) {
-#ifdef AMULE_DAEMON
-		AddLogLineM(true, _("Unable to open ") + m_fullname + _(" file - using ") + PARTMET_BAK_EXT + _(" file."));
-#else
 		wxMessageBox(_("Unable to open ") + m_fullname + _(" file - using ") + PARTMET_BAK_EXT + _(" file.\n"));
-#endif
 		FS_wxCopyFile(m_fullname + PARTMET_BAK_EXT, m_fullname);
 	} else {
 		if (newpartmet.Length()>0) {			
@@ -999,11 +1000,7 @@ bool CPartFile::SavePartFile(bool Initial)
 			BackupFile(m_fullname, PARTMET_BAK_EXT);
 		} else {
 			newpartmet.Close();
-#ifdef AMULE_DAEMON
-			AddLogLineM(true, _("file is 0 size somehow - using ") + wxString(PARTMET_BAK_EXT) + _(" file."));
-#else
 			wxMessageBox(m_fullname + _("file is 0 size somehow - using ") + PARTMET_BAK_EXT + _(" file.\n"));
-#endif
 			FS_wxCopyFile(m_fullname + PARTMET_BAK_EXT,m_fullname);
 		}
 	}

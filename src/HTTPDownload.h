@@ -22,7 +22,9 @@
 #ifndef HTTPDOWNLOAD_H
 #define HTTPDOWNLOAD_H
 
-#include <wx/dialog.h>		// Needed for wxDialog
+#ifndef AMULE_DAEMON
+	#include <wx/dialog.h>		// Needed for wxDialog
+#endif
 
 #include "GuiEvents.h"
 
@@ -31,6 +33,7 @@ class wxGauge;
 
 class MuleGifCtrl;
 
+#ifndef AMULE_DAEMON
 class CHTTPDownloadThreadDlg : public wxDialog
 {
 public:
@@ -49,6 +52,8 @@ private:
 	MuleGifCtrl* 					m_ani;
 	wxGauge* 						m_progressbar;
 };
+#endif
+
 
 class CHTTPDownloadThread : public wxThread
 {
