@@ -480,8 +480,13 @@ CServerConnect::~CServerConnect()
 	DestroySocket(connectedsocket);
 	connectedsocket = NULL;
 	// close udp socket
+#ifdef AMULE_DAEMON
+	// daemon have thread there
+	udpsocket->Delete();
+#else
 	udpsocket->Close();
 	delete udpsocket;
+#endif
 }
 
 
