@@ -27,7 +27,7 @@
 #include <wx/panel.h>		// Needed for wxPanel
 #include "Types.h"
 
-class CFriend;
+class CDlgFriend;
 class CUpDownClient;
 class CChatSelector;
 class CFriendListCtrl;
@@ -39,18 +39,17 @@ public:
 	CChatWnd(wxWindow* pParent = NULL); 
 	~CChatWnd() {};
 
-	void StartSession(CUpDownClient* client, bool setfocus = true);
+	void StartSession(CDlgFriend* friend_client, bool setfocus = true);
 
-	CFriend*FindFriend(const CMD4Hash& userhash, uint32 dwIP, uint16 nPort);	
+	CDlgFriend* FindFriend(const CMD4Hash& userhash, uint32 dwIP, uint16 nPort);	
 	void	AddFriend(CUpDownClient* toadd);
-	void	AddFriend(const CMD4Hash& userhash, uint32 lastSeen, uint32 lastUsedIP,
-			uint32 lastUsedPort, uint32 lastChatted, wxString name, uint32 hasHash);
-	void	RefreshFriend(CFriend* toupdate);
+	void	AddFriend(const CMD4Hash& userhash, const wxString& name, uint32 lastUsedIP, uint32 lastUsedPort);
+	void	RefreshFriend(const CMD4Hash& userhash, const wxString& name, uint32 lastUsedIP, uint32 lastUsedPort);
 
 	void	ProcessMessage(CUpDownClient* sender, const wxString& message);
 	void 	ConnectionResult(CUpDownClient* sender, bool success);
 
-	void	SendMessage(const wxString& message);
+	void	SendMessage(const wxString& message, CUpDownClient* to = NULL);
 		
 protected:
 	void	OnBnClickedCsend(wxCommandEvent& evt);
@@ -58,7 +57,7 @@ protected:
 
 	DECLARE_EVENT_TABLE()
 
-	CFriendListCtrl* friendlist;
+	CFriendListCtrl* friendlistctrl;
 	CChatSelector*	chatselector;
 };
 

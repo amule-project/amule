@@ -84,7 +84,7 @@ void CAddFriend::OnAddBtn(wxCommandEvent& WXUNUSED(evt))
 	if ( !hash.IsEmpty() )
 		userhash.Decode( hash );
 		
-	theApp.amuledlg->chatwnd->AddFriend( userhash, 0, ip, port, 0, name, ( hash.IsEmpty() ? 0 : 1 ) );
+	theApp.amuledlg->chatwnd->AddFriend( userhash,name,  ip, port);
 	
 	EndModal(true); // Friend added
 }

@@ -77,6 +77,7 @@
 #include "ServerUDPSocket.h"		// Needed for CServerUDPSocket
 #include "PartFile.h"		// Needed for CPartFile
 #include "AddFileThread.h"	// Needed for CAddFileThread
+#include "FriendList.h"	// Needed for CFriendList
 #include "Packet.h"
 #include "AICHSyncThread.h"
 #include "Statistics.h"
@@ -247,14 +248,4 @@ void CamuleDaemonApp::NotifyEvent(const GUIEvent& event)
 			//printf("WARNING: event %d in daemon should not happen\n", event.ID);
 			break;
 	}
-}
-
-
-
-CFriend *CamuleDaemonApp::FindFriend(CMD4Hash *WXUNUSED(hash), uint32 WXUNUSED(ip), uint16 WXUNUSED(port))
-{
-// 	if ( amuledlg && amuledlg->chatwnd ) {
-// 		return 	amuledlg->chatwnd->FindFriend(*hash, ip, port);
-// 	}
-	return NULL;
 }

@@ -41,15 +41,19 @@ public:
 	~CFriend() {};
 	
 	CFriend(CUpDownClient* client);
-	CFriend( const CMD4Hash& userhash, uint32 tm_dwLastSeen, uint32 tm_dwLastUsedIP, uint32 tm_nLastUsedPort, uint32 tm_dwLastChatted, wxString tm_strName, uint32 tm_dwHasHash);
+	CFriend( const CMD4Hash& userhash, uint32 tm_dwLastSeen, uint32 tm_dwLastUsedIP, uint32 tm_nLastUsedPort, uint32 tm_dwLastChatted, const wxString& tm_strName);
 	
 	void	SetUserHash(const CMD4Hash& userhash) { m_UserHash = userhash;}
 	bool	HasHash() { return !m_UserHash.IsEmpty(); }
 	const	CMD4Hash& GetUserHash() const { return m_UserHash; }
 	
+	void SetName(const wxString& name) { m_strName = name; }
+	
 	void	LinkClient(CUpDownClient* client, bool unlink = true);
 	CUpDownClient* GetLinkedClient() const { return m_LinkedClient; }
 	void	UnLinkClient() {  m_LinkedClient = NULL; }
+	
+	bool	HasFriendSlot();
 
 	const wxString& GetName() { return m_strName; }
 	uint16 GetPort() const { return m_nLastUsedPort; }

@@ -469,16 +469,6 @@ void CamuleGuiApp::ClientUDPSocketHandler(wxSocketEvent& event)
 	}
 }
 
-
-CFriend *CamuleGuiApp::FindFriend(CMD4Hash *hash, uint32 ip, uint16 port)
-{
-	if ( amuledlg && amuledlg->chatwnd ) {
-		return 	amuledlg->chatwnd->FindFriend(*hash, ip, port);
-	}
-	return NULL;
-}
-
-
 void CamuleGuiApp::NotifyEvent(const GUIEvent& event)
 {
 	if (!amuledlg && (event.ID!=ADDLOGLINE)) {
@@ -834,7 +824,7 @@ void CamuleGuiApp::NotifyEvent(const GUIEvent& event)
 			// chat window
 		case CHAT_REFRESH_FRIEND:
 			if ( amuledlg->chatwnd ) {
-				amuledlg->chatwnd->RefreshFriend((CFriend *)event.ptr_value);
+				amuledlg->chatwnd->RefreshFriend(NULL, event.string_value, event.long_value, event.short_value);
 			}
 			break;
 		case CHAT_FIND_FRIEND:

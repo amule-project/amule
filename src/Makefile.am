@@ -150,6 +150,7 @@ amule_SOURCES = \
 	FileDetailListCtrl.cpp \
 	filefn.cpp \
 	Friend.cpp \
+	FriendList.cpp \
 	FriendListCtrl.cpp \
 	MemFile.cpp \
 	MuleGifCtrl.cpp \
@@ -227,6 +228,7 @@ amuled_SOURCES = \
         ExternalConn.cpp \
         filefn.cpp \
         Friend.cpp \
+	FriendList.cpp \
 	HTTPDownload.cpp \
         IPFilter.cpp \
         KnownFile.cpp \

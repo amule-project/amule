@@ -42,15 +42,13 @@ CFriend::CFriend()
 }
 
 
-CFriend::CFriend( const CMD4Hash& userhash, uint32 tm_dwLastSeen, uint32 tm_dwLastUsedIP, uint32 tm_nLastUsedPort, uint32 tm_dwLastChatted, wxString tm_strName, uint32 tm_dwHasHash)
+CFriend::CFriend( const CMD4Hash& userhash, uint32 tm_dwLastSeen, uint32 tm_dwLastUsedIP, uint32 tm_nLastUsedPort, uint32 tm_dwLastChatted, const wxString& tm_strName)
 {
 	m_dwLastSeen = tm_dwLastSeen;
 	m_dwLastUsedIP = tm_dwLastUsedIP;
 	m_nLastUsedPort = tm_nLastUsedPort;
 	m_dwLastChatted = tm_dwLastChatted;
-	if( tm_dwHasHash ) {
-		m_UserHash = userhash;
-	}
+	m_UserHash = userhash;
 	m_strName = tm_strName;
 	m_LinkedClient = NULL;
 }
@@ -148,5 +146,13 @@ void CFriend::WriteToFile(CFileDataIO* file)
 			nametag.WriteTagToFile(file, utf8strOptBOM);
 		#endif		
 		nametag.WriteTagToFile(file);
+	}
+}
+
+bool CFriend::HasFriendSlot() {
+	if (GetLinkedClient()) {
+		return GetLinkedClient()->GetFriendSlot();
+	} else {
+		return false;
 	}
 }

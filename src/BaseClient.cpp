@@ -43,6 +43,7 @@
 #include "ListenSocket.h"	// Needed for CClientReqSocket
 #include "OPCodes.h"		// Needed for OP_*
 #include "updownclient.h"	// Needed for CUpDownClient
+#include "FriendList.h"		// Needed for CFriendList
 #include "Statistics.h"
 #include "Format.h"
 #include "Logger.h"
@@ -207,7 +208,7 @@ CUpDownClient::~CUpDownClient()
 
 	if (m_Friend) {
 		m_Friend->UnLinkClient();
-		Notify_ChatRefreshFriend(m_Friend);
+		Notify_ChatRefreshFriend(m_Friend->GetIP(), m_Friend->GetPort(), m_Friend->GetName());
 		m_Friend = NULL;
 	}
 
@@ -517,9 +518,9 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 		Ban();
 	}
 
-	if ((m_Friend = theApp.FindFriend(&m_UserHash, m_dwUserIP, m_nUserPort)) != NULL){
+	if ((m_Friend = theApp.friendlist->FindFriend(m_UserHash, m_dwUserIP, m_nUserPort)) != NULL){
 		m_Friend->LinkClient(this);
-		Notify_ChatRefreshFriend(m_Friend);
+		Notify_ChatRefreshFriend(m_Friend->GetIP(), m_Friend->GetPort(), m_Friend->GetName());
 	} else{
 		// avoid that an unwanted client instance keeps a friend slot
 		SetFriendSlot(false);
@@ -1188,7 +1189,7 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket){
 		m_iFileListRequested = 0;
 	}
 	if (m_Friend) {
-		Notify_ChatRefreshFriend(m_Friend);
+		Notify_ChatRefreshFriend(m_Friend->GetIP(), m_Friend->GetPort(), m_Friend->GetName());
 	}
 
 	Notify_ClientCtrlRefreshClient( this );
