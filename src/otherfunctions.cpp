@@ -557,6 +557,7 @@ RLE_Data::RLE_Data()
 RLE_Data::RLE_Data(const RLE_Data &obj)
 {
 	m_len = obj.m_len;
+	m_use_diff = obj.m_use_diff;
 
 	m_buff = new unsigned char[m_len];
 	memcpy(m_buff, obj.m_buff, m_len);
@@ -567,6 +568,7 @@ RLE_Data::RLE_Data(const RLE_Data &obj)
 RLE_Data &RLE_Data::operator=(const RLE_Data &obj)
 {
 	m_len = obj.m_len;
+	m_use_diff = obj.m_use_diff;
 
 	m_buff = new unsigned char[m_len];
 	memcpy(m_buff, obj.m_buff, m_len);

@@ -267,7 +267,7 @@ class RLE_Data {
 				}
 			}
 	
-			outlen = j - 1;
+			outlen = j;
 			
 			//
 			// If using differential encoder, remember current data for
