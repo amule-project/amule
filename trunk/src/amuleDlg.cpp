@@ -421,7 +421,7 @@ void CamuleDlg::OnToolBarButton(wxCommandEvent& ev)
 void CamuleDlg::OnAboutButton(wxCommandEvent& WXUNUSED(ev))
 {
 	if ( theApp.IsReady )
-		wxMessageBox(wxString::wxString( _("aMule - 'all-platform' p2p client based on eMule.\n\n Website: http://www.amule.org\n Forum: http://forum.amule.org \n FAQ: http://wiki.amule.org \n\n Copyright (C) 2003-2004 aMule Project \n")));
+        wxMessageBox(wxString(_(" aMule ")) +  wxString(wxT(VERSION)) + wxString(_("\n\n 'All-Platform' p2p client based on eMule \n\n Website: http://www.amule.org \n Forum: http://forum.amule.org \n FAQ: http://wiki.amule.org \n\n Copyright (C) 2003-2004 aMule Project \n")));
 }
 
 void CamuleDlg::OnPrefButton(wxCommandEvent& WXUNUSED(ev))
