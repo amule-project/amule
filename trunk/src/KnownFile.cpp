@@ -19,6 +19,21 @@
 //along with this program; if not, write to the Free Software
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+
+#ifdef __CRYPTO_DEBIAN_GENTOO__
+	#include <crypto++/md4.h>
+#else
+	#ifdef __CRYPTO_MDK_SUSE_FC__
+		#include <cryptopp/md4.h>
+	#else
+		#ifdef __CRYPTO_SOURCE__
+			#include <crypto-5.1/md4.h>			
+		#else 
+			#include <cryptopp/md4.h>
+		#endif
+	#endif
+#endif
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <wx/string.h>
@@ -759,16 +774,18 @@ bool CKnownFile::WriteToFile(CFile* file){
 	return true;
 }
 
-#include <openssl/md4.h>
-
 #define USE_CRYPTO_HASH
+using namespace CryptoPP;
 
 void CKnownFile::CreateHashFromInput(FILE* file, CFile* file2, int Length, uchar* Output, uchar* in_string) {
 
 #ifdef USE_CRYPTO_HASH
 	
+		MD4 a;
+	
 		if (in_string) {
-			MD4(in_string,Length,Output);
+			//MD4(in_string,Length,Output);
+			a.CalculateDigest(Output,in_string,Length);
 		} else { 
 			unsigned char* input = new unsigned char[Length];
 			if (file) {
@@ -776,7 +793,8 @@ void CKnownFile::CreateHashFromInput(FILE* file, CFile* file2, int Length, uchar
 			} else if (file2) {
 				file2->Read(input,Length);
 			}
-			MD4(input,Length,Output);
+			a.CalculateDigest(Output,input,Length);
+			//MD4(input,Length,Output);
 			delete[] input;
 		}
 
