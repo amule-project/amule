@@ -154,7 +154,12 @@ void CDownloadQueue::Init()
 		wxFileName myFileName(fileName);
 		printf("Loading %s... ",unicode2char(myFileName.GetFullName()));
 		CPartFile* toadd = new CPartFile();
-		if (toadd->LoadPartFile(thePrefs::GetTempDir(),myFileName.GetFullName())) {
+		bool result = toadd->LoadPartFile(thePrefs::GetTempDir(),myFileName.GetFullName());
+		if (!result) {
+			// Try from backup
+			result = toadd->LoadPartFile(thePrefs::GetTempDir(),myFileName.GetFullName(), true);
+		}
+		if (result) {
 			count++;
 			printf("Done.\n");
 			filelist.push_back(toadd); // to downloadqueue
