@@ -362,39 +362,56 @@ unsigned CStatisticsDlg::GetHistoryForWeb(  // Assemble arrays of sample points 
 	unsigned cntPoints,		// maximum number of sample points to assemble
 	double sStep,			// time difference between sample points
 	double *sStart,			// earliest allowed timestamp
-	float** ppf)			// an array of pointers to arrays of floats for the result
+	uint32 **graphData)		// a pointer to a pointer that will point to the graph data array
 {	
 	if (*sStart < 0.0) {
 		*sStart = 0.0;
 	}
 	if (sStep==0.0 || cntPoints==0)
 		return(0);
-	float		*pf1 = *ppf;
-	float		*pf2 = *(ppf+1);
-	float		*pf3 = *(ppf+2);
 	unsigned	cntFilled = 0;
 	POSITION	pos = listHR.GetTailPosition(), posPrev;
 	HR		*phr = &listHR.GetAt(pos);  	// pointer to history record
 	double		LastTimeStamp = phr->sTimestamp;
 	double		sTarget = LastTimeStamp;
+	
+	HR	**pphr = new (HR *) [cntPoints];
 
 	do {
 		while ((posPrev=listHR.PrevAt(pos)) != NULL	// find next history record
 			&& ((phr=&listHR.GetAt(posPrev))->sTimestamp > sTarget))
 			pos = posPrev;
-		*pf1++ = (float)phr->kBpsUpCur;
-		*pf2++ = (float)phr->cntConnections;
-		*pf3++ = (float)phr->kBpsDownCur;
+		pphr[cntFilled] = phr;
 		if (++cntFilled  == cntPoints)		// enough points 
 			break;
 		if (phr->sTimestamp <= *sStart)			// reached beginning of requested time
 			break;
 		if ((sTarget -= sStep) <= 0.0) {	// don't overshoot the beginning
-			*pf1++ = *pf2++ = *pf3++ = 0.0;
-			++cntFilled;
+			pphr[cntFilled++] = NULL;
 			break;
 		}
 	} while (posPrev != NULL);
+
+	if (cntFilled) {
+		*graphData = new uint32 [3 * cntFilled];
+		if (*graphData) {
+			for (unsigned int i = 0; i < cntFilled; i++) {
+				phr = pphr[cntFilled - i - 1];
+				if (phr) {
+					(*graphData)[3 * i    ] = (uint32)(phr->kBpsDownCur * 1024.0);
+					(*graphData)[3 * i + 1] = (uint32)(phr->kBpsUpCur * 1024.0);
+					(*graphData)[3 * i + 2] = (uint32)phr->cntConnections;
+				} else {
+					(*graphData)[3 * i] = (*graphData)[3 * i + 1] = (*graphData)[3 * i + 2] = 0;
+				}
+			}
+		}
+	} else {
+		*graphData = NULL;
+	}
+
+	delete [] pphr;
+
 	*sStart = LastTimeStamp;
 
 	return cntFilled;
