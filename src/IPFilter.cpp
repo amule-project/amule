@@ -370,7 +370,7 @@ void CIPFilter::SaveToFile() {
 	while(it != iplist.end()) {
 		wxString line;
 		// Range Start
-		line += Uint32toStringIP(it->second->IPStart);
+		line += Uint32toStringIP(htonl(it->second->IPStart));
 		// Make it nice
 		for (uint32 i = line.Len(); i < 15; i++) { // 15 -> "xxx.xxx.xxx.xxx"
 			line += wxT(" ");
@@ -378,7 +378,7 @@ void CIPFilter::SaveToFile() {
 		// Range Separator
 		line += wxT(" - ");
 		// Range End
-		line += Uint32toStringIP(it->second->IPEnd);
+		line += Uint32toStringIP(htonl(it->second->IPEnd));
 		// Make it nice
 		for (uint32 i = line.Len(); i < 33; i++) { // 33 -> "xxx.xxx.xxx.xxx - yyy.yyy.yyy.yyy"
 			line += wxT(" ");
