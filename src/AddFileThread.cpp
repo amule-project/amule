@@ -36,7 +36,7 @@
 #include "PartFile.h"		// Needed for CKnownFile and CPartFile
 #include "CFile.h"			// Needed for CFile
 
-#include "CryptoPP.h"		// Needed for MD4
+#include "CryptoPP_Inc.h"	// Needed for MD4
 
 //! Size to hash in one go: PARTSIZE/95, which is 100kb.
 const unsigned int CRUMBSIZE = PARTSIZE/95;
