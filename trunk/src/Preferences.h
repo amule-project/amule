@@ -335,107 +335,6 @@ struct Preferences_Struct{
 };
 #pragma pack()
 
-#pragma pack(1)
-struct Preferences_Import19c_Struct{
-	int8	version;
-	char	nick[50];
-	uint16	maxupload;
-	uint16	maxdownload;
-	uint16	port;
-	uint16	maxconnections;
-	int8	reconnect;
-	int8	deadserver;
-	int8	scorsystem;
-	char	incomingdir[510];
-	char	tempdir[510];
-	int8	ICH;
-	int8	autoserverlist;
-	int8	updatenotify;
-	int8	mintotray;
-	unsigned char	userhash[16];
-	int8	autoconnect;
-	int8	addserversfromserver;
-	int8	addserversfromclient;
-};
-#pragma pack()
-
-#pragma pack(1)
-struct Preferences_Import20a_Struct{
-	int8	version;
-	char	nick[50];
-	uint16	maxupload;
-	uint16	maxdownload;
-	uint16	port;
-	uint16	maxconnections;
-	int8	reconnect;
-	int8	deadserver;
-	uint16	deadserverretries;
-	int8	scorsystem;
-	char	incomingdir[510];
-	char	tempdir[510];
-	int8	ICH;
-	int8	autoserverlist;
-	int8	updatenotify;
-	int8	mintotray;
-	unsigned char	userhash[16];
-	int8	autoconnect;
-	int8	addserversfromserver;
-	int8	addserversfromclient;
-	int16	maxsourceperfile;
-	int16	trafficOMeterInterval;
-	int32   totalDownloaded;
-	int32	totalUploaded;
-	int32		maxGraphDownloadRate;
-	int32		maxGraphUploadRate;
-	uint8	beepOnError;
-	uint8	confirmExit;
-	WINDOWPLACEMENT EmuleWindowPlacement;
-	int32 transferColumnWidths[9];
-	int32 serverColumnWidths[8];
-	uint8	splashscreen;
-	uint8	filerBadIP;
-};
-#pragma pack()
-
-#pragma pack(1)
-struct Preferences_Import20b_Struct{
-	int8	version;
-	char	nick[50];
-	uint16	maxupload;
-	uint16	maxdownload;
-	uint16	port;
-	uint16	maxconnections;
-	int8	reconnect;
-	int8	deadserver;
-	int8	scorsystem;
-	char	incomingdir[510];
-	char	tempdir[510];
-	int8	ICH;
-	int8	autoserverlist;
-	int8	updatenotify;
-	int8	mintotray;
-	unsigned char	userhash[16];
-	int8	autoconnect;
-	int8	addserversfromserver;
-	int8	addserversfromclient;
-	int16	maxsourceperfile;
-	int16	trafficOMeterInterval;
-	int32   totalDownloaded;	// outdated
-	int32	totalUploaded;		// outdated
-	int32	maxGraphDownloadRate;
-	int32	maxGraphUploadRate;
-	uint8	beepOnError;
-	uint8	confirmExit;
-	WINDOWPLACEMENT EmuleWindowPlacement;
-	int32 	transferColumnWidths[9];
-	int32 	serverColumnWidths[8];
-	uint8	splashscreen;
-	uint8	filerBadIP;
-	int64   totalDownloadedBytes;
-	int64	totalUploadedBytes;
-};
-#pragma pack()
-
 WX_DECLARE_OBJARRAY(Category_Struct*, ArrayOfCategory_Struct);
 
 class CPreferences{
@@ -443,21 +342,6 @@ public:
 	enum Table { tableDownload, tableUpload, tableQueue, tableSearch,
 		tableShared, tableServer, tableClientList, tableNone };
 
-	friend class CPreferencesWnd;
-	friend class CPPgGeneral;
-	friend class CPPgConnection;
-	friend class CPPgServer;
-	friend class CPPgDirectories;
-	friend class CPPgFiles;
-	friend class CPPgNotify;
-	friend class CPPgIRC;
-	friend class Wizard;
-	friend class CPPgTweaks;
-	friend class CPPgDisplay;
-	friend class CPPgSecurity;
-	friend class CPPgScheduler;
-	friend class CPPgSourcesDropping;
-	friend class CPPgGuiTweaks;
 	friend class PrefsUnifiedDlg;
 
 	CPreferences();
@@ -489,9 +373,9 @@ public:
 	void	SetAutoConnect( bool inautoconnect)	{prefs->autoconnect = inautoconnect;}
 	bool	AddServersFromServer()		{return prefs->addserversfromserver;}
 	bool	AddServersFromClient()		{return prefs->addserversfromclient;}
-	char*	GetLRUServermetURL()		{return prefs->m_szLRUServermetURL;}
-	void	SetLRUServermetURL(const char* pszURL) {snprintf(prefs->m_szLRUServermetURL,sizeof prefs->m_szLRUServermetURL,"%s",pszURL);}
-	int8*	GetMinTrayPTR() 		{return &prefs->mintotray;}
+//	char*	GetLRUServermetURL()		{return prefs->m_szLRUServermetURL;}
+//	void	SetLRUServermetURL(const char* pszURL) {snprintf(prefs->m_szLRUServermetURL,sizeof prefs->m_szLRUServermetURL,"%s",pszURL);}
+//	int8*	GetMinTrayPTR() 		{return &prefs->mintotray;}
 	uint16	GetTrafficOMeterInterval() 	{ return prefs->trafficOMeterInterval;}
 	void	SetTrafficOMeterInterval(int16 in) { prefs->trafficOMeterInterval=in;}
 	uint16	GetStatsInterval() 		{ return prefs->statsInterval;}
@@ -500,7 +384,7 @@ public:
 	void	Add2TotalUploaded(uint64 in) 	{prefs->totalUploadedBytes+=in;}
 	uint64  GetTotalDownloaded()		{return prefs->totalDownloadedBytes;}
 	uint64	GetTotalUploaded()		{return prefs->totalUploadedBytes;}
-	bool	IsErrorBeepEnabled()		{return prefs->beepOnError;}
+//	bool	IsErrorBeepEnabled()		{return prefs->beepOnError;}
 	bool	IsConfirmExitEnabled()		{return prefs->confirmExit;}
 	bool	UseSplashScreen()		{return prefs->splashscreen;}
 	bool	FilterBadIPs()			{return prefs->filterBadIP;}
@@ -537,29 +421,29 @@ public:
 
 	WORD	GetLanguageID()			{return prefs->languageID;}
 	void	SetLanguageID(WORD new_id)			{prefs->languageID = new_id;}	
-	int8	IsDoubleClickEnabled()		{return prefs->transferDoubleclick;}
+//	int8	IsDoubleClickEnabled()		{return prefs->transferDoubleclick;}
 	int8	CanSeeShares(void)		{return prefs->m_iSeeShares;}
-	int8	GetToolTipDelay(void)		{return prefs->m_iToolDelayTime;}
-	int8	IsBringToFront()		{return prefs->bringtoforeground;}
+//	int8	GetToolTipDelay(void)		{return prefs->m_iToolDelayTime;}
+//	int8	IsBringToFront()		{return prefs->bringtoforeground;}
 
-	int8    GetSplitterbarPosition()	{return prefs->splitterbarPosition;}
-	void	SetSplitterbarPosition(int8 pos) {prefs->splitterbarPosition=pos;}
+//	int8    GetSplitterbarPosition()	{return prefs->splitterbarPosition;}
+//	void	SetSplitterbarPosition(int8 pos) {prefs->splitterbarPosition=pos;}
 	int8	GetStatsMax()			{return prefs->statsMax;}
 	int8	UseFlatBar()			{return (prefs->depth3D==0);}
 	int8	GetStatsAverageMinutes()	{return prefs->statsAverageMinutes;}
 	void	SetStatsAverageMinutes(int8 in)	{prefs->statsAverageMinutes=in;}
 
-	bool    GetUseDownloadNotifier()	{return prefs->useDownloadNotifier;}
-	bool    GetUseChatNotifier()	 	{return prefs->useChatNotifier;}
-	bool    GetUseLogNotifier()		{return prefs->useLogNotifier;}
-	bool    GetUseSoundInNotifier()  	{return prefs->useSoundInNotifier;}
-	bool	GetSendEmailNotifier()		{return prefs->sendEmailNotifier;}
-	bool    GetNotifierPopsEveryChatMsg() 	{return prefs->notifierPopsEveryChatMsg;}
+//	bool    GetUseDownloadNotifier()	{return prefs->useDownloadNotifier;}
+//	bool    GetUseChatNotifier()	 	{return prefs->useChatNotifier;}
+//	bool    GetUseLogNotifier()		{return prefs->useLogNotifier;}
+//	bool    GetUseSoundInNotifier()  	{return prefs->useSoundInNotifier;}
+//	bool	GetSendEmailNotifier()		{return prefs->sendEmailNotifier;}
+//	bool    GetNotifierPopsEveryChatMsg() 	{return prefs->notifierPopsEveryChatMsg;}
 	bool	GetNotifierPopOnImportantError(){return prefs->notifierImportantError;}
-	bool	GetNotifierPopOnNewVersion()	{return prefs->notifierNewVersion;}
-	char*   GetNotifierWavSoundPath() 	{return prefs->notifierSoundFilePath;}
+//	bool	GetNotifierPopOnNewVersion()	{return prefs->notifierNewVersion;}
+//	char*   GetNotifierWavSoundPath() 	{return prefs->notifierSoundFilePath;}
 
-	WORD	GetWindowsVersion();
+//	WORD	GetWindowsVersion();
 	bool	GetStartMinimized()			{return prefs->startMinimized;}
 	void	SetStartMinimized( bool instartMinimized){prefs->startMinimized = instartMinimized;}
 	bool	GetSmartIdCheck()			{return prefs->smartidcheck;}
@@ -571,7 +455,7 @@ public:
 	void	SetPreviewPrio(bool in)			{prefs->m_bpreviewprio=in;}
 	bool	GetUpdateQueueList()			{return prefs->m_bupdatequeuelist;}
 	void	SetUpdateQueueList(bool new_state)	{prefs->m_bupdatequeuelist = new_state;}
-	bool	GetManualHighPrio()			{return prefs->m_bmanualhighprio;}
+//	bool	GetManualHighPrio()			{return prefs->m_bmanualhighprio;}
 	bool	TransferFullChunks()			{return prefs->m_btransferfullchunks;}
 	void	SetTransferFullChunks( bool m_bintransferfullchunks )	{prefs->m_btransferfullchunks = m_bintransferfullchunks;}
 	bool	StartNextFile()				{return prefs->m_bstartnextfile;}
@@ -580,13 +464,13 @@ public:
 	bool	GetNewAutoUp()				{return prefs->m_bUAP;}
 	void	SetNewAutoDown(bool m_bInDAP)		{prefs->m_bDAP = m_bInDAP;}
 	bool	GetNewAutoDown()			{return prefs->m_bDAP;}
-	bool	IsKnownClientListDisabled()		{return prefs->m_bDisableKnownClientList;}
-	bool	IsQueueListDisabled()			{return prefs->m_bDisableQueueList;}
-	bool	IsFirstStart()				{return prefs->m_bFirstStart;}
+//	bool	IsKnownClientListDisabled()		{return prefs->m_bDisableKnownClientList;}
+//	bool	IsQueueListDisabled()			{return prefs->m_bDisableQueueList;}
+//	bool	IsFirstStart()				{return prefs->m_bFirstStart;}
 	bool	UseCreditSystem()			{return prefs->m_bCreditSystem;}
 	void	SetCreditSystem(bool m_bInCreditSystem)	{prefs->m_bCreditSystem = m_bInCreditSystem;}
 
-	char*	GetTxtEditor()				{return prefs->TxtEditor;}
+//	char*	GetTxtEditor()				{return prefs->TxtEditor;}
 	CString	GetVideoPlayer()			{if (strlen(prefs->VideoPlayer)==0) return wxT(""); else return CString(prefs->VideoPlayer);}
 
 	uint32	GetFileBufferSize()			{return prefs->m_iFileBufferSize*15000;}
@@ -594,7 +478,7 @@ public:
 
 	// Barry
 	uint16	Get3DDepth()				 { return prefs->depth3D;}
-	bool	AutoTakeED2KLinks()			 {return prefs->autotakeed2klinks;}
+//	bool	AutoTakeED2KLinks()			 {return prefs->autotakeed2klinks;}
 	bool	AddNewFilesPaused() 			{return prefs->addnewfilespaused;}
 
 	void	SetMaxConsPerFive(int in) 		{prefs->MaxConperFive=in;}
@@ -603,7 +487,7 @@ public:
 	uint16	GetDefaultMaxConperFive();
 
 	bool	IsSafeServerConnectEnabled()		{return prefs->safeServerConnect;}
-	void	SetSafeServerConnectEnabled(bool in)	{prefs->safeServerConnect=in;}
+//	void	SetSafeServerConnectEnabled(bool in)	{prefs->safeServerConnect=in;}
 	bool	IsMoviePreviewBackup()			{return prefs->moviePreviewBackup;}
 	
 	bool	IsCheckDiskspaceEnabled()		{return prefs->checkDiskspace != 0;}
@@ -617,22 +501,22 @@ public:
 	void	SetMaxDownload(uint16 in) 		{prefs->maxdownload=in; };
 	void	SetSlotAllocation(uint16 in)		{prefs->slotallocation=in; };
 
-	WINDOWPLACEMENT GetEmuleWindowPlacement() 	{return prefs->EmuleWindowPlacement; }
-	void SetWindowLayout(WINDOWPLACEMENT in)	{prefs->EmuleWindowPlacement=in; }
+//	WINDOWPLACEMENT GetEmuleWindowPlacement() 	{return prefs->EmuleWindowPlacement; }
+//	void SetWindowLayout(WINDOWPLACEMENT in)	{prefs->EmuleWindowPlacement=in; }
 
 	wxArrayString shareddir_list;
 	CStringList adresses_list;
 
 	void 	SetLanguage();
 	int8 	AutoConnectStaticOnly()		{return prefs->autoconnectstaticonly;}	
-	int8 	GetUpdateDays()			{return prefs->versioncheckdays;}
-	uint32 	GetLastVC()			{return prefs->versioncheckLastAutomatic;}
-	void   	UpdateLastVC()			{prefs->versioncheckLastAutomatic=time(NULL);}
+//	int8 	GetUpdateDays()			{return prefs->versioncheckdays;}
+//	uint32 	GetLastVC()			{return prefs->versioncheckLastAutomatic;}
+//	void   	UpdateLastVC()			{prefs->versioncheckLastAutomatic=time(NULL);}
 	int32	GetIPFilterLevel()		{ return prefs->filterlevel;}
-	CString GetMessageFilter()		{ return CString(prefs->messageFilter);}
-	CString GetCommentFilter()		{ return CString(prefs->commentFilter);}
-	bool	ShowRatesOnTitle()		{ return prefs->showRatesInTitle;}
-	char*   GetNotifierConfiguration()   	{return prefs->notifierConfiguration;}; //<<-- enkeyDEV(kei-kun) -skinnable notifier-
+//	CString GetMessageFilter()		{ return CString(prefs->messageFilter);}
+//	CString GetCommentFilter()		{ return CString(prefs->commentFilter);}
+//	bool	ShowRatesOnTitle()		{ return prefs->showRatesInTitle;}
+//	char*   GetNotifierConfiguration()   	{return prefs->notifierConfiguration;}; //<<-- enkeyDEV(kei-kun) -skinnable notifier-
 	//void    SetNotifierConfiguration(CString configFullPath) {sprintf(prefs->notifierConfiguration,"%s",configFullPath.GetData()); } //<<-- enkeyDEV(kei-kun) -skinnable notifier-
 	void	LoadCats();
 	CString	GetDateTimeFormat()		{ return CString(prefs->datetimeformat);}
@@ -644,17 +528,17 @@ public:
 	char*	GetCatPath(uint8 index)		{ return catMap[index]->incomingpath;}
 	DWORD	GetCatColor(size_t index)		{ if (index>=0 && index<catMap.GetCount()) return catMap[index]->color; else return 0;}
 
-	bool	ShowRatingIndicator()		{ return prefs->indicateratings;}
+//	bool	ShowRatingIndicator()		{ return prefs->indicateratings;}
 	int32	GetAllcatType()			{ return prefs->allcatType;}
 	void	SetAllcatType(int32 in)		{ prefs->allcatType=in; }
 	bool	ShowAllNotCats()		{ return prefs->showAllNotCats;}
-	bool	WatchClipboard4ED2KLinks()	{ return prefs->watchclipboard;}
-	void	InvertShowAllNotCats()		{ prefs->showAllNotCats=!prefs->showAllNotCats; }
-	bool	FilterServerByIP()		{ return prefs->filterserverbyip;}
+//	bool	WatchClipboard4ED2KLinks()	{ return prefs->watchclipboard;}
+//	void	InvertShowAllNotCats()		{ prefs->showAllNotCats=!prefs->showAllNotCats; }
+//	bool	FilterServerByIP()		{ return prefs->filterserverbyip;}
 
-	bool	Log2Disk()			{ return prefs->log2disk;}
-	bool	Debug2Disk()			{ return prefs->debug2disk;}
-	int32		GetMaxLogMessages() 	{ return prefs->iMaxLogMessages;}
+//	bool	Log2Disk()			{ return prefs->log2disk;}
+//	bool	Debug2Disk()			{ return prefs->debug2disk;}
+//	int32		GetMaxLogMessages() 	{ return prefs->iMaxLogMessages;}
 
 	// WebServer
 	uint16	GetWSPort()			{ return prefs->m_nWebPort; }
@@ -674,34 +558,34 @@ public:
 
 	void	SetMaxSourcesPerFile(uint16 in)	{ prefs->maxsourceperfile=in;}
 	void	SetMaxConnections(uint16 in)	{ prefs->maxconnections =in;}
-	bool	IsSchedulerEnabled()		{ return prefs->scheduler;}
-	bool	GetDontCompressAvi()		{ return prefs->dontcompressavi;}
+//	bool	IsSchedulerEnabled()		{ return prefs->scheduler;}
+//	bool	GetDontCompressAvi()		{ return prefs->dontcompressavi;}
 	
 	bool	MsgOnlyFriends()		{ return prefs->msgonlyfriends;}
 	bool	MsgOnlySecure()			{ return prefs->msgsecure;}
-	uint16	GetMsgSessionsMax()		{ return prefs->maxmsgsessions;}
+//	uint16	GetMsgSessionsMax()		{ return prefs->maxmsgsessions;}
 
-	CString	GetTemplate()			{ return CString(prefs->m_sTemplateFile);}
-	//void	SetTemplate(CString in)		{ sprintf(prefs->m_sTemplateFile,"%s",in.GetData());}
+//	CString	GetTemplate()			{ return CString(prefs->m_sTemplateFile);}
+//	void	SetTemplate(CString in)		{ sprintf(prefs->m_sTemplateFile,"%s",in.GetData());}
 
 	int32 	GetDesktopMode() 		{return prefs->desktopMode;}
 	void 	SetDesktopMode(int mode)	{prefs->desktopMode=mode;}
 
 	// deadlake PROXYSUPPORT
-	ProxySettings GetProxy()		{return prefs->proxy;}
-	void 	SetProxySettings(ProxySettings proxysettings) {prefs->proxy	= proxysettings;}
-	uint16	GetListenPort()			{if (m_UseProxyListenPort) return ListenPort; else return prefs->port;}
-	void	SetListenPort(uint16 uPort)	{ListenPort = uPort; m_UseProxyListenPort = true;}
-	void	ResetListenPort()		{ListenPort = 0; m_UseProxyListenPort = false;}
-	void	SetUseProxy(bool in)		{ prefs->proxy.UseProxy=in;}
+//	ProxySettings GetProxy()		{return prefs->proxy;}
+//	void 	SetProxySettings(ProxySettings proxysettings) {prefs->proxy	= proxysettings;}
+//	uint16	GetListenPort()			{if (m_UseProxyListenPort) return ListenPort; else return prefs->port;}
+//	void	SetListenPort(uint16 uPort)	{ListenPort = uPort; m_UseProxyListenPort = true;}
+//	void	ResetListenPort()		{ListenPort = 0; m_UseProxyListenPort = false;}
+//	void	SetUseProxy(bool in)		{ prefs->proxy.UseProxy=in;}
 
-	bool	IsProxyASCWOP()			{ return prefs->m_bIsASCWOP;}
-	void	SetProxyASCWOP(bool in)		{ prefs->m_bIsASCWOP=in;}
+//	bool	IsProxyASCWOP()			{ return prefs->m_bIsASCWOP;}
+//	void	SetProxyASCWOP(bool in)		{ prefs->m_bIsASCWOP=in;}
 
 	bool	ShowCatTabInfos()		{ return prefs->showCatTabInfos;}
 	void	ShowCatTabInfos(bool in)	{ prefs->showCatTabInfos=in;}
-	bool	GetResumeSameCat()		{ return prefs->resumeSameCat;}
-	bool	IsGraphRecreateDisabled()	{ return prefs->dontRecreateGraphs;}
+//	bool	GetResumeSameCat()		{ return prefs->resumeSameCat;}
+//	bool	IsGraphRecreateDisabled()	{ return prefs->dontRecreateGraphs;}
 	
 	// Madcat - Sources Dropping Tweaks
 	bool	DropNoNeededSources()		{ return prefs->DropNoNeededSources; }
@@ -760,10 +644,6 @@ private:
 	Preferences_Struct* prefs;
 	Preferences_Ext_Struct* prefsExt;
 
-	Preferences_Import19c_Struct* prefsImport19c;
-	Preferences_Import20a_Struct* prefsImport20a;
-	Preferences_Import20b_Struct* prefsImport20b;
-	
 	char userhash[16];
 	WORD m_wWinVer;
 
