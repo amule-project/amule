@@ -41,6 +41,9 @@ static char THIS_FILE[]=__FILE__;
 
 using namespace std;
 
+#warning FILE TODO: LOGLINES AND FIRST TIME WARNING 
+// And well, IMHO first time warning should be on the checkversion.
+// Grep TODO on file for changes needed.
 
 wxMutex CamuleApp::hashing_mut;
 
@@ -61,7 +64,7 @@ bool CAICHSyncThread::InitInstance()
 
 void* CAICHSyncThread::Entry()
 {
-	//DbgSetThreadName("AICHSyncThread");
+
 	if ( !theApp.IsRunning() )
 		return 0;
 
@@ -84,7 +87,7 @@ void* CAICHSyncThread::Entry()
 	}
 	
 	try {
-		//setvbuf(file.m_pStream, NULL, _IOFBF, 16384);
+
 		uint32 nExistingSize = file.GetLength();
 		uint16 nHashCount;
 		while (file.GetPosition() < nExistingSize){
@@ -137,14 +140,15 @@ void* CAICHSyncThread::Entry()
 		}
 	}
 	// warn the user if he just upgraded
-	#warning AICH TODO
+// TODO
 //	if (theApp.glob_prefs->Prefs.IsFirstStart() && !m_liToHash.empty()){
 //		theApp.QueueLogLine(false, GetResString(IDS_AICH_WARNUSER));
 //	}
 
 	if (!m_liToHash.empty()){
+// TODO		
 //		theApp.QueueLogLine(true, GetResString(IDS_AICH_SYNCTOTAL), m_liToHash.GetCount() );
-//		theApp.amuledlg->sharedfileswnd->sharedfilesctrl.SetAICHHashing(m_liToHash.GetCount());
+		theApp.amuledlg->sharedfileswnd->sharedfilesctrl->SetAICHHashing(m_liToHash.size());
 		// let first all normal hashing be done before starting out synchashing
 		while (theApp.sharedfiles->GetCount() != 0){
 			Sleep(100);
@@ -165,9 +169,12 @@ void* CAICHSyncThread::Entry()
 			// just to be sure that the file hasnt been deleted lately
 			if (!(theApp.knownfiles->IsKnownFile(pCurFile) && theApp.sharedfiles->GetFileByID(pCurFile->GetFileHash())) )
 				continue;
+// TODO			
 //			theApp.QueueLogLine(false, GetResString(IDS_AICH_CALCFILE), pCurFile->GetFileName());
-//			if(!pCurFile->CreateAICHHashSetOnly())
-//				theApp.QueueDebugLogLine(false, _T("Failed to create AICH Hashset while sync. for file %s"), pCurFile->GetFileName());
+			if(!pCurFile->CreateAICHHashSetOnly()) 
+				{}
+// TODO					
+				//theApp.QueueDebugLogLine(false, _T("Failed to create AICH Hashset while sync. for file %s"), pCurFile->GetFileName());
 			cDone++;
 		}
 
@@ -176,7 +183,7 @@ void* CAICHSyncThread::Entry()
 			theApp.amuledlg->sharedfileswnd->sharedfilesctrl->ShowFilesCount();
 		// sLock1.Unlock(); // And unlocks on destructor
 	}
-
+// TODO
 	//theApp.QueueDebugLogLine(false, _("AICHSyncThread finished"));
 	return 0;
 }
