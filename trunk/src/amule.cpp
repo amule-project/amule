@@ -411,8 +411,8 @@ bool CamuleApp::OnInit()
 	// This can't be on constructor or wx2.4.2 doesn't set it.	
 	SetVendorName(wxT("TikuWarez"));
 	
-	// Do NOT change this string to aMule nor anything else, it WILL fuck you up.
-	SetAppName(wxT("eMule"));
+	// Do NOT change this string to anything else, it WILL fuck you up.
+	SetAppName(wxT("aMule"));
 	
 	wxStringTokenizer tkz(wxGetOsDescription(), wxT(" "));
 
@@ -555,29 +555,26 @@ bool CamuleApp::OnInit()
 		}
 	}
 
-	
-	// We try to import from any system except windoze
-	#ifndef __WINDOWS__
-	
+#ifndef __WINDOWS__
 	// Backwards compatibility, check for old config file if our amule.conf file doesn't exist
 	wxString homeDir = wxGetHomeDir() + wxFileName::GetPathSeparator();
 	if ( !wxFileExists( ConfigDir + wxT("amule.conf") ) ) {
 		// Check if an old config file exists
-		#if defined( __APPLE__ )
+		#ifdef __APPLE__
 		// Mac is a special case
-		wxString OldConfig(wxT("Library/Preferences/eMule Preferences"));
+		wxString OldConfig = wxT("Library/Preferences/eMule Preferences");
 		#else
 		// *BSD, linux, unix, solaris, whatever
-		wxString OldConfig(wxT(".eMule"));		
+		wxString OldConfig = wxT(".eMule");
 		#endif
 		if ( wxFileExists( homeDir + OldConfig ) ) {
 			wxCopyFile( homeDir + OldConfig, ConfigDir + wxT("amule.conf") );
  		}
  	}
-	#endif
-	
+#endif
+
 	// This creates the CFG file we shall use
-	wxConfigBase* cfg = new wxConfig( wxEmptyString, wxEmptyString, wxT(".aMule/amule.conf") );
+	wxConfigBase* cfg = new wxConfig( wxEmptyString, wxEmptyString, ConfigDir + wxT("amule.conf") );
 	
 	// Set the config object as the global cfg file
 	wxConfig::Set( cfg );
