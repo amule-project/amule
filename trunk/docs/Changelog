@@ -4,24 +4,87 @@ Version 2.0.0-rc1
 
 	Kry:
 		* Implemented SecureIdent (SUI) (imported from eMule 0.30x)
-		  This mean your credits will be lost on first run 
-		  There is no way to avoid that. Sorry :) Same happened with eMule.
-		* Fixed CTag new structure (imported from eMule 0.30x)
-		* Send sources request for files added from search page
+		   This mean your credits will be lost on first run 
+		   There is no way to avoid that. Sorry :) Same happened with eMule.
+		* Send sources request for files added from search page first.
+		* Rewrote MuleNoteBook from gtk to a cross-platform implementation.	
+		   The code is already used by xMule too, so I guess they liked it.
+		* Fixed most of > 2Gb bug, except the dom's contibution you can scrolling down ;)
+		* Made the .part.met load/save 100% compatible with eMule.
+		* Fixed the Safe_Delete bug. Seems it arised when we made the app too fast ;)
+		* Random usable position of the server split.
+		* Added bluecow's fix for zlib compressed packets.
 		* Even safer .met saving
-		* Now client detail dialog show Securehash State 
+		* Added preferences checkbox for new style / old style tabs on preferences 
+		   (vertical/horizontal)
+		* Checked for protocol limits on file size.
+		* Now client detail dialog show Secure Ident State 
 		  (Not Supported/BadGuy/Not Complete/Verified)
 		* Added itoa to the MFC layer
+		* Added SetLength to CFile (MFC compat layer)
+		* Fixed hangup on message sending.
+		* Moved Fast ED2K show to GUI tweaks
+		* Slugfiller's Secure Hash (imported from eMule 0.30x)
+		* Fixed GetTickCount code returning signed value
+		* Fixed GetTickCount code not initializing the vars.
+		* Moved the FILE* to CFile for furter compatibility of code.
 		* Added the first version run detection
+		* Removed some Yield() code that only slowed init.
+		* Simplified systray menu by only showing what needed. 
+		   Thanks to jadrian for the feature request.
+		* Grayed non-working Preferences options to avoid confusion and to
+		   make the developer life easier selecting what to do ;)
+		* Fixed CTag new structure (imported from eMule 0.30x)
+		* Removed the mostly useless wizzard.
+		* Fixed the DoSwap crash on swapping A4AF sources. (hopefully)
+		* Fixed the log auto-scrolling up on messages window.
+		* Fixed the Upload bug that arised during endian changes.
 		* Added the Arabic, Chinese & Finnish compatibility on loading
 		* OpenBSD compatibility fixed
-		* Mac port 99% operative, next version will be Mac compatible
+		* Mac port 99% done, next version will be Mac compatible
+		   Some final bugs to be fixed ;) 
+		   Fixed:
+		      *) .met files loading/saving (except knownfiles.met)
+		      *) .dat files loading/saving
+		      *) 99% of the preferences bugs.
+		      *) Compilation and linking.
+		      *) Error popups relates to c_opaque colour.
 		* Starting sync with eMule 0.42
+		* Speedups on Partfile Process nd DownloadQueue process.
+		* New 'server version' colum on server list window.
+		* MUCH safer packet handlig - avoids crashes on 99% of wrong tags.
+		* Fixed Dirs number on 'view shared'. Made aMule/eMule assert ;)
+		* Made download queue list refresh on a nicer way (much less glitches).
+		* Fixes an assert for  invalid menu entry on right click queue popup. 
+		* Mayor speedup on Highlight server (and thus on server connect/disconnect)
+		* Prevent removing the server we're connected at, either directly, on in a 
+		   list of servers to delete, or in removing all servers. Warn the user with a
+		   message Box and then leave it non-deleted. Fixes crash.
 		* Fixed hangup on message sending
 		* New IPFilter code (reload & on/off)
-		* Save sources (rare files only <20 sources)
+		* Added checkboxes on GUI Tweaks tab for download progress % 
+		   and Bar drawing.
+		* Fixed a severe memleak on the % showing and speeded it up.
+		* Save 5 sources on rare files (<20 sources)
+		* New SetFileSize code to avoid cpu usage.
+		* Removed the List Show/Hide and slider that made too much 
+		   problems on 1.2.6. Safer version (and better) will be on 2.0.0 final.
+		* Speedups on Hash thread.
+		* Safer corrupt detection on FAT partitions
+		   I'm sorry if it rehashes every file on your system on restart, will be fixed.
 		* The file pause because of diskpace shows now on aMule logs
-		* Fixed several bugs, memleaks and one mem corruption
+		* Fixed BackUp file to REALLY backup instead of moving.
+		* Added code to check 0-size .part.met and load backup if needed.
+		* Fixed types.h and wintypes.h for proper Win32/Mac/linux compatibility.
+		* Added ECSocket code as common implementation for interaction between
+		   different UIs (webserver, amulecmd, etc). 
+		* Fixed intercomunication for little endian <-> big endian machines on ECSocket.
+		* Speedups on Endian Swap code & proper wxWindows way to detect it.
+		* Changed CArray to wxArray on most places for safety.
+		* Added configure code for detection of the crypto++ includes/libs
+		* Fixed buggy curl-config on Mac including -mi386.
+		* Removed useless files: TabCtrl.*
+		* Fixed several bugs, memleaks, warnings and one mem corruption
 		* Code cleanup
 
 	Creteil:
@@ -72,11 +135,10 @@ Version 2.0.0-rc1
 		* Check if we're able to use TCP ports (lacks what todo if not but we
 		  can accept EC. do nothing atm = EC disabled)
 		  Added "AMULEDLG SHOW" to EC available commands
-                * WebServer now use the more correct _("") for localized strings
-                * Created WebInterface.{h,cpp} for the web interface, and
-                  cleaned WebServer.{h,cpp} code
+		* WebServer now use the more correct _("") for localized strings
+		* Created WebInterface.{h,cpp} for the web interface, and
+                   cleaned WebServer.{h,cpp} code
                           
-		
 	neiro:
 		* Helped with OpenBSD port by providing a workbench
 		
@@ -103,33 +165,41 @@ Version 2.0.0-rc1
 		* Changed wxWindows to wxWidgets
 		* "Donated" amule-project.de
 	niet:
-	        * Donated amule-project.net :-)
+		* Donated amule-project.net :-)
+		
+	bootstrap:
+		* CVS support
+		
+	Torsten SCHULZ:
+		* Added the % showing on progressbars.
 
 	lemonfan:
 		* Modified network code for big-endian systems
+		   The code is already used by xMule too, so I guess they liked it.
+		   They gave no credit to us anyway :( I hope they will on next release.
 		* Fixed preferences bug
 		* Fixed copy ed2k link to clipboard
 		* Fixed CArray for MFC compatibility
 		* More rigid compatibility to MFC types
 		* Fixed misformatted strings and several warnings in WebServer.cpp
-		
+	
 	Xaignar:
 		* Code cleanup in amule.* and otherfunctions.* and other files
 		* The Cleanup button in the File Details dialog no longer replaces "&" with "&&"
 		* Max connections should be correctly set on windows platforms, instead of defaulting to 500
-		* Fixed amulecmd compilation with gcc-3.2
+		* Finished the CArray -> wxArray conversion
+		* Fixed ECSocket compilation with gcc < 3.3
 		* Fixed segfault on close.
 		* Some other fixes
 		
 	aquatroll:
-	        * Win32 compilation support
+	        * Win32 compilation Support & Development.
 		
-	hellimod & PowerMike:
-	        * MacOSX compilation support
+	hellimod, PowerMike, godard, hoschy007:
+		* MacOSX compilation support
 		
 	dom:    
-	        * Fixed the > 2GB bug ;)
-	
+		* Found the last  > 2GB bug ;)
 		
 	Special Thanks To:
 		
@@ -138,6 +208,11 @@ Version 2.0.0-rc1
 		* eMule developers for their support. Long life to *Mule
 		
 		* FreshIRC & Freenode irc admins
+		
+		* People at #gentoo on freenode for their support, specially ferringb
+		
+		* The Testing Team: 
+		   thepolish, efe, Citroklar, bizzY, KamiKazeNH, and anyone testing aMule.
 		
 		* New translators:
 		
