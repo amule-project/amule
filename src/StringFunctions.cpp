@@ -1,4 +1,5 @@
- // This file is part of the aMule project.
+//
+// This file is part of the aMule project.
 //
 // Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
 // Copyright (c) 2004 Angel Vidal Veiga - Kry (kry@amule.org)
@@ -18,8 +19,13 @@
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+
+#include <ctype.h>
+
+
 #include "StringFunctions.h"
 #include <wx/filename.h>
+
 
 // Implementation of the non-inlines
 static byte base16Chars[17] = "0123456789ABCDEF";
