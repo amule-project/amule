@@ -180,8 +180,6 @@ void CUpDownClient::Init()
 
 	m_bMsgFiltered = false;
 
-	sent_OSInfo = false;
-
 	if (m_socket) {
 		amuleIPV4Address address;
 		m_socket->GetPeer(address);
@@ -279,6 +277,7 @@ void CUpDownClient::ClearHelloProperties()
 	m_fSharedDirectories = 0;
 	m_bMultiPacket = 0;
 	m_SoftLen = 0;
+	m_fOsInfoSupport = 0;
 	SecIdentSupRec = 0;
 }
 
@@ -430,6 +429,11 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 					#endif
 					SecIdentSupRec +=  1;
 					break;
+				// Special tag fo Compat. Clients Misc options.
+				case CT_EMULECOMPAT_OPTIONS:
+					//  1 Operative System Info
+					m_fOsInfoSupport		= (temptag.tag.intvalue >> 1*0) & 0x01;
+					break;
 				case CT_EMULE_VERSION:
 					//  8 Compatible Client ID
 					//  7 Mjr Version (Doesn't really matter..)
@@ -441,7 +445,7 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 					m_byEmuleVersion = 0x99;
 					m_fSharedDirectories = 1;
 					dwEmuleTags |= 4;
-					break;
+					break;				
 			}
 		}
 
@@ -565,10 +569,10 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 	}
 	#endif
 
-	// Kry - If the other side is aMule 2.0.0, send it the O.S info.
+	// Kry - If the other side supports it, send OS_INFO
 
-	if ((m_clientSoft == SO_AMULE) && (m_nClientVersion >= MAKE_CLIENT_VERSION(2,0,0))) {
-		SendMuleInfoPacket(false,true); // Send the aMule OS Info tag
+	if (m_fOsInfoSupport) {
+		SendMuleInfoPacket(false,true); // Send the OS Info tag on the recycled Mule Info
 	}
 
 	return bIsMule;
@@ -622,11 +626,12 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer, bool OSInfo) {
 	
 	if (OSInfo) {
 		
-		// Special MuleInfo packet for aMule >= 2.0.0 (Multiplatform support)
+		// Special MuleInfo packet for clients supporting it.
+		// This means aMule >= 2.0.0 and Hydranode
 		
-		// Violently mark it as aMule 2.0.0 packet
-		// Sending this makes older clients or non-aMule clients to refuse to read 
-		// this packet. Anyway, this packet should NEVER get to non-aMule clients.
+		// Violently mark it as special Mule Info packet
+		// Sending this makes non-supporting-osinfo clients to refuse to read this
+		// packet. Anyway, this packet should NEVER get to non-supporting clients.
 		
 		data->WriteUInt8(/*EMULE_PROTOCOL*/ 0xFF);		
 
@@ -641,8 +646,6 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer, bool OSInfo) {
 			CTag tag1(ET_OS_INFO,wxT("Unknown"));
 			tag1.WriteTagToFile(data);
 		}
-
-		sent_OSInfo = true; // So we can ignore old aMule's reply.
 
 	} else {
 
@@ -729,22 +732,20 @@ void CUpDownClient::ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize)
 		
 		if (protocol_version == 0xFF) {
 
-			// aMule >= 2.0.0-rc8 seding OS info
+			// OS Info supporting clients sending a recycled Mule info packet
 			for (uint32 i = 0;i < tagcount; i++){
 				CTag temptag(data);
 				switch(temptag.tag.specialtag){
 					case ET_OS_INFO:
-						// Special tag, >= aMule 2.0.0rc8 sends it to other aMules.
+						// Special tag, only supporting clients (aMule/Hydranode)
 	
 						// It was recycled from a mod's tag, so if the other side
-						// is not an aMule 2.0.0 at least, we're seriously fucked up :)
+						// is not supporting OS Info, we're seriously fucked up :)
 							
 						wxASSERT(temptag.tag.type == 2); // tag must be a string
-						wxASSERT(m_clientSoft == SO_AMULE);
-						wxASSERT(m_nClientVersion >= MAKE_CLIENT_VERSION(2,0,0));
-
+					
+				
 						m_sClientOSInfo = char2unicode(temptag.tag.stringvalue);
-
 	
 						break;	
 					
@@ -918,9 +919,10 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
 
 	#ifdef __CVS__
 	// Kry - This is the tagcount!!! Be sure to update it!!
-	data->WriteUInt32(6);
+	// Last update: CT_EMULECOMPAT_OPTIONS included
+	data->WriteUInt32(7);
 	#else
-	data->WriteUInt32(5);  // NO MOD_VERSION
+	data->WriteUInt32(6);  // NO MOD_VERSION
 	#endif
 
 
@@ -982,6 +984,14 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
 				(uMultiPacket			<< 1*1) |
 				(uSupportPreview		<< 1*0) );
 	tagMisOptions.WriteTagToFile(data);
+
+
+	const UINT nOSInfoSupport			= 1; // We support OS_INFO
+	
+	CTag tagMisCompatOptions(CT_EMULECOMPAT_OPTIONS,
+				(nOSInfoSupport		<< 1*0) );
+	
+	tagMisCompatOptions.WriteTagToFile(data);
 
 #ifdef __CVS__
 	wxString mod_name(MOD_VERSION_LONG);
@@ -1198,6 +1208,7 @@ bool CUpDownClient::Disconnected(const wxString& WXUNUSED(strReason), bool bFrom
     if (m_iFileListRequested){
 		AddLogLineM(true, wxString(_("Failed to retrieve shared files from ")) +GetUserName());
 		m_iFileListRequested = 0;
+	    wxASSERT(0);
 	}
 	if (m_Friend) {
 		Notify_ChatRefreshFriend(m_Friend);
@@ -1774,7 +1785,6 @@ void CUpDownClient::SendSignaturePacket(){
 		return;
 	}
 	if (credits->GetSecIDKeyLen() == 0) {
-		AddDebugLogLineM(false, wxT("YO happened for client: ")+GetUserName());
 		return; // We don't have his public key yet, will be back here later
 	}
 	// do we have a challenge value recieved (actually we should if we are in this function)

@@ -44,7 +44,7 @@
 #include <wx/arrimpl.cpp>	// this is a magic incantation which must be done!
 #include <wx/tokenzr.h> 		// Needed for wxStringTokenizer
 
-//#define DEBUG_REMOTE_CLIENT_PROTOCOL
+#define DEBUG_REMOTE_CLIENT_PROTOCOL
 //#define __PACKET_RECV_DUMP__
 
 WX_DEFINE_OBJARRAY(ArrayOfwxStrings);
@@ -1471,10 +1471,8 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				#endif
 				// 0.43b
 				theApp.downloadqueue->AddDownDataOverheadOther(size);
-				if (!m_client->sent_OSInfo) {
-					// Just to be sure...
-					m_client->ProcessMuleInfoPacket(packet,size);
-				}
+
+				m_client->ProcessMuleInfoPacket(packet,size);
 					
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0){
@@ -1501,22 +1499,18 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				// 0.43b
 				theApp.downloadqueue->AddDownDataOverheadOther(size);
 				
-				if (!m_client->sent_OSInfo) {
-					// This is a eMule info reply from an old aMule (<= rc8)
-					// or any other client. We have to process it.
+				m_client->ProcessMuleInfoPacket(packet,size);
+				// start secure identification, if
+				//  - we have received eD2K and eMule info (old eMule)
+				#ifdef __USE_DEBUG__
+				if (thePrefs.GetDebugClientTCPLevel() > 0){
+					DebugRecv("OP_EmuleInfoAnswer", m_client);
+					Debug("  %s\n", m_client->DbgGetMuleInfo());
+				}	
+				#endif
 				
-					m_client->ProcessMuleInfoPacket(packet,size);
-					// start secure identification, if
-					//  - we have received eD2K and eMule info (old eMule)
-					#ifdef __USE_DEBUG__
-					if (thePrefs.GetDebugClientTCPLevel() > 0){
-						DebugRecv("OP_EmuleInfoAnswer", m_client);
-						Debug("  %s\n", m_client->DbgGetMuleInfo());
-					}	
-					#endif
-					if (m_client->GetInfoPacketsReceived() == IP_BOTH) {
-						m_client->InfoPacketsReceived();				
-					}
+				if (m_client->GetInfoPacketsReceived() == IP_BOTH) {
+					m_client->InfoPacketsReceived();				
 				}
 				
 				break;
