@@ -1376,7 +1376,7 @@ wxFileType *ft;                            /* Temporary storage for filetype. */
 		}
 
 		if ( wxExecute( cmd, false ) ) {
-			printf( "Launch Command: %s", unicode2char(cmd));
+			printf( "Launch Command: %s\n", unicode2char(cmd));
 			return;
 		}
 	}
