@@ -58,7 +58,7 @@ wxFrame ((wxFrame *) NULL, -1, title, wxDefaultPosition, wxDefaultSize,
 
   // Add time
   m_timer = new wxTimer (this, ID_TIMER);
-  m_timer->Start (1000);
+  m_timer->Start (5000);
 
   // Status Bar
   CreateStatusBar ();
