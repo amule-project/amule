@@ -34,7 +34,6 @@ IMPLEMENT_DYNAMIC_CLASS(CPPgTweaks,wxPanel)
 
 BEGIN_EVENT_TABLE(CPPgTweaks,wxPanel)
 	EVT_SCROLL(CPPgTweaks::OnHScroll)
-	EVT_CHECKBOX(IDC_UPDATEQUEUE,CPPgTweaks::OnUpDownListRefreshChecked)
 END_EVENT_TABLE()
 
 CPPgTweaks::CPPgTweaks(wxWindow* parent)
@@ -100,8 +99,6 @@ void CPPgTweaks::LoadSettings(void)
 	((wxSlider*)FindWindowById(IDC_SERVERKEEPALIVE))->SetValue(app_prefs->prefs->m_dwServerKeepAliveTimeoutMins);
 	m_uServerKeepAliveTimeout = app_prefs->prefs->m_dwServerKeepAliveTimeoutMins;
 
-	((wxSlider*)FindWindowById(IDC_LISTREFRESH))->SetValue((int) (app_prefs->prefs->m_dwListRefreshSecs));
-	
 	// must fake 4 scroll events.. setvalue won't cause any events
 	wxScrollEvent evt1(0,IDC_QUEUESIZE,app_prefs->prefs->m_iQueueSize);
 	evt1.SetEventObject((wxSlider*)FindWindowById(IDC_QUEUESIZE));
@@ -115,11 +112,6 @@ void CPPgTweaks::LoadSettings(void)
 	evt3.SetEventObject((wxSlider*)FindWindowById(IDC_SERVERKEEPALIVE));
 	OnHScroll(evt3);
 
-	m_uListRefresh = (uint32) (app_prefs->prefs->m_dwListRefreshSecs);
-	wxScrollEvent evt4(0,IDC_LISTREFRESH,(uint32) (app_prefs->prefs->m_dwListRefreshSecs));
-	evt4.SetEventObject((wxSlider*)FindWindowById(IDC_LISTREFRESH));
-	OnHScroll(evt4);
-	
 }
 
 bool CPPgTweaks::OnApply()
@@ -134,14 +126,6 @@ bool CPPgTweaks::OnApply()
 
 	app_prefs->prefs->autotakeed2klinks = (int8)(((wxCheckBox*)FindWindowById(IDC_AUTOTAKEED2KLINKS))->IsChecked());
 
-	if (((wxCheckBox*)FindWindowById(IDC_UPDATEQUEUE))->IsChecked()) {
-		app_prefs->prefs->m_bupdatequeuelist = true;
-		theApp.amuledlg->transfers_frozen = false;
-  		theApp.amuledlg->Thaw_AllTransfering();
-	} else {
-		app_prefs->prefs->m_bupdatequeuelist = false;
-	}
-
 	if (((wxCheckBox*)FindWindowById(IDC_SHOWRATEONTITLE))->IsChecked()) {
 		app_prefs->prefs->showRatesInTitle= true;
 	} else {
@@ -151,7 +135,6 @@ bool CPPgTweaks::OnApply()
 	app_prefs->prefs->m_iFileBufferSize = m_iFileBufferSize;
 	app_prefs->prefs->m_iQueueSize = m_iQueueSize;
 	app_prefs->prefs->m_dwServerKeepAliveTimeoutMins = m_uServerKeepAliveTimeout;
-	app_prefs->prefs->m_dwListRefreshSecs = m_uListRefresh;
 
 	if (!theApp.glob_prefs->ShowRatesOnTitle()) {
 		// sprintf(buffer,"aMule %s",CURRENT_VERSION_LONG);
@@ -184,32 +167,9 @@ void CPPgTweaks::OnHScroll(wxScrollEvent& evt)
 			temp.Format(_("Server connection refresh interval %i mins"), m_uServerKeepAliveTimeout);
 			((wxStaticText*)FindWindowById(IDC_SERVERKEEPALIVE_LABEL))->SetLabel(temp);
 		}
-	} else if (slider==((wxSlider*)FindWindowById(IDC_LISTREFRESH))) {
-		m_uListRefresh = evt.GetPosition();
-		if (((wxCheckBox*)FindWindowById(IDC_UPDATEQUEUE))->IsChecked()) {
-			((wxStaticText*)FindWindowById(IDC_LISTREFRESH_LABEL))->SetLabel(_("Upload/Download list refresh time: Disable"));
-		} else {
-			if (m_uListRefresh == 0) {
-				((wxStaticText*)FindWindowById(IDC_LISTREFRESH_LABEL))->SetLabel(_("Upload/Download list refresh time: Realtime"));
-			} else if (m_uListRefresh == 1) {
-				temp.Format(_("Upload/Download list refresh time: %i sec"), m_uListRefresh);
-				((wxStaticText*)FindWindowById(IDC_LISTREFRESH_LABEL))->SetLabel(temp);
-			} else {
-				temp.Format(_("Upload/Download list refresh time: %i secs"), m_uListRefresh);
-				((wxStaticText*)FindWindowById(IDC_LISTREFRESH_LABEL))->SetLabel(temp);
-			}
-		}
 	}	
 }
 
 void CPPgTweaks::Localize(void)
 {	
-}
-
-void CPPgTweaks::OnUpDownListRefreshChecked(wxEvent& evt) 
-{
-	((wxSlider*)FindWindowById(IDC_LISTREFRESH))->SetValue((uint32) (app_prefs->prefs->m_dwListRefreshSecs));
-	wxScrollEvent evt4(0,IDC_LISTREFRESH,(uint32) (app_prefs->prefs->m_dwListRefreshSecs));
-	evt4.SetEventObject((wxSlider*)FindWindowById(IDC_LISTREFRESH));
-	OnHScroll(evt4);
 }

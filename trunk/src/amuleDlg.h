@@ -95,10 +95,6 @@ public:
 	// Madcat - Toggles Fast ED2K Links Handler on/off.
 	void ToggleFastED2KLinksHandler();
 
-	// Refresh timing
-	void Thaw_AllTransfering();
-	void Freeze_AllTransfering();
-	void UpdateLists(DWORD msCur);
 
 	/* Public function to check which tab is active. Needed to check what to redraw. */
 	int GetActiveDialog()	{return m_nActiveDialog;}
@@ -125,10 +121,6 @@ public:
 	uint8			status;
 	uint16                  lastbutton;
 
-	DWORD			m_lastRefreshedQDisplay;
-	bool			transfers_frozen;
-
-	bool list_no_refresh;
 	int split_pos;
 	int srv_split_pos;
 
@@ -183,9 +175,7 @@ private:
 	bool		LoadRazorPrefs();
 
 	int		m_nActiveDialog;
-	DWORD 		old_list_refresh;
-	bool		old_update_queue_list;
-	bool		switch_thaw_hide_mutex;
+
 	DECLARE_EVENT_TABLE()
 };
 

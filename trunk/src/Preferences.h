@@ -166,7 +166,7 @@ struct Preferences_Struct{
 	int8	splitterbarPosition;
 	uint16	deadserverretries;
 	uint32	m_dwServerKeepAliveTimeoutMins;
-	uint32	m_dwListRefreshSecs;
+
 	uint8   statsMax;
 	int8	statsAverageMinutes;
 
@@ -503,8 +503,6 @@ public:
                                             	return temp;}
 	uint16	GetDeadserverRetries()		{return prefs->deadserverretries;}
 	DWORD	GetServerKeepAliveTimeout()	{return prefs->m_dwServerKeepAliveTimeoutMins*60000;}
-	DWORD	GetListRefresh()		{return prefs->m_dwListRefreshSecs*1000;}
-	void	SetListRefresh(DWORD new_value)		{prefs->m_dwListRefreshSecs = new_value/1000;}
 	
 	int32     GetColumnWidth (Table t, int index) const;
 	bool    GetColumnHidden(Table t, int index) const;

@@ -163,7 +163,6 @@ void CDownloadListCtrl::HideSources(CPartFile * toCollapse, bool isShift, bool i
 		toCollapse->srcarevisible = false;
 	}
 	Thaw();
-	theApp.amuledlg->transfers_frozen = false;
 }
 
 void CDownloadListCtrl::collectSelections(CTypedPtrList < CPtrList, CPartFile * >*selectedList)
@@ -328,13 +327,7 @@ void CDownloadListCtrl::OnNMRclick(wxListEvent & evt)
 			} else {
 				m_FileMenu->Enable(432843, MF_ENABLED);
 			}
-
-			if (theApp.amuledlg->list_no_refresh) {
-				m_FileMenu->Append(MP_TOOGLELIST,CString(_("Show Lists")));
-			} else {
-				m_FileMenu->Append(MP_TOOGLELIST,CString(_("Hide Lists")));
-			}				
-					
+			
 			// then set state
 			wxMenu *menu = m_FileMenu;
 			menu->Enable(MP_PAUSE, ((file->GetStatus() != PS_PAUSED && file->GetStatus() != PS_ERROR) ? MF_ENABLED : MF_GRAYED));
@@ -373,7 +366,6 @@ void CDownloadListCtrl::OnNMRclick(wxListEvent & evt)
 			/* End modif */
 
 			menu->Enable(MP_CANCEL, MF_ENABLED);
-			menu->Enable(MP_TOOGLELIST, MF_ENABLED);
 
 			wxMenu *priomenu = m_PrioMenu;
 			//priomenu->Check(MP_PRIOHIGH, (file->GetPriority() == PR_HIGH) ? MF_CHECKED : MF_UNCHECKED);
@@ -1006,9 +998,9 @@ void CDownloadListCtrl::DrawFileItem(wxDC * dc, int nColumn, LPRECT lpRect, Ctrl
 				break;
 
 			case 8:	// <<--9/21/02
-				buffer.Format("%s", lpPartFile->getPartfileStatus().GetData());
+				//buffer.Format("%s", lpPartFile->getPartfileStatus().GetData());
 				//dc->DrawText(buffer,(int)strlen(buffer),lpRect, DLC_DT_TEXT);
-				dc->DrawText(buffer, lpRect->left, lpRect->top);
+				dc->DrawText(lpPartFile->getPartfileStatus(), lpRect->left, lpRect->top);
 				break;
 
 			case 9:	// remaining time & size
@@ -1383,7 +1375,6 @@ void CDownloadListCtrl::OnLvnItemActivate(wxListEvent & evt)
 				}
 				partfile->srcarevisible = added;
 			}
-			theApp.amuledlg->transfers_frozen = false;
 			Thaw();
 		} else {
 			HideSources(partfile, false, false, false);
@@ -1509,7 +1500,6 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 						}
 
 					}
-					theApp.amuledlg->transfers_frozen = false;					
 					Thaw();
 					this->UpdateItem(file);						
 					return true;					
@@ -1534,7 +1524,6 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 							}
 						}
 					}
-					theApp.amuledlg->transfers_frozen = false;
 					Thaw();
 					return true;					
 					break;
@@ -1583,7 +1572,6 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 								}
 							}
 						}
-						theApp.amuledlg->transfers_frozen = false;
 						Thaw();
 					}
 					return true;					
@@ -1597,7 +1585,6 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 							selectedList.GetHead()->SetDownPriority(PR_HIGH);
 							selectedList.RemoveHead();
 						}
-						theApp.amuledlg->transfers_frozen = false;
 						Thaw();
 						return true;						
 						break;
@@ -1614,7 +1601,6 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 							selectedList.GetHead()->SetDownPriority(PR_LOW);
 							selectedList.RemoveHead();
 						}
-						theApp.amuledlg->transfers_frozen = false;
 						Thaw();
 						return true;						
 						break;
@@ -1631,7 +1617,6 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 							selectedList.GetHead()->SetDownPriority(PR_NORMAL);
 							selectedList.RemoveHead();
 						}
-						theApp.amuledlg->transfers_frozen = false;
 						Thaw();
 						return true;						
 						break;
@@ -1648,7 +1633,6 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 							selectedList.GetHead()->SetDownPriority(PR_HIGH);
 							selectedList.RemoveHead();
 						}
-						theApp.amuledlg->transfers_frozen = false;
 						Thaw();
 						return true;						
 						break;
@@ -1664,7 +1648,6 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 							selectedList.GetHead()->PauseFile();
 							selectedList.RemoveHead();
 						}
-						theApp.amuledlg->transfers_frozen = false;
 						Thaw();
 						return true;						
 						break;
@@ -1680,7 +1663,6 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 							selectedList.GetHead()->SavePartFile();
 							selectedList.RemoveHead();
 						}
-						theApp.amuledlg->transfers_frozen = false;
 						Thaw();
 						return true;						
 						break;
@@ -1698,7 +1680,6 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 							selected->StopFile();
 							selectedList.RemoveHead();
 						}
-						theApp.amuledlg->transfers_frozen = false;
 						Thaw();
 						return true;						
 						break;
@@ -1713,7 +1694,6 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 				case MP_CLEARCOMPLETED:
 					Freeze();
 					ClearCompleted();
-					theApp.amuledlg->transfers_frozen = false;
 					Thaw();
 					return true;				
 					break;
@@ -1779,16 +1759,6 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 						return true;					
 						break;
 					}
-				case MP_TOOGLELIST: {
-					if (theApp.amuledlg->list_no_refresh) {
-						theApp.amuledlg->list_no_refresh = false;
-  						theApp.amuledlg->Thaw_AllTransfering();												
-					} else {
-						theApp.amuledlg->list_no_refresh = true;
-						theApp.amuledlg->Freeze_AllTransfering();													
-					}
-					return true;
-				}
 			}
 		} else {
 			CUpDownClient *client = (CUpDownClient *) content->value;
@@ -2141,7 +2111,6 @@ void CDownloadListCtrl::ChangeCategory(int newsel)
 			}
 		}
 	}
-	theApp.amuledlg->transfers_frozen = false;
 	Thaw();
 	curTab = newsel;
 	ShowFilesCount();

@@ -692,9 +692,6 @@ void PrefsUnifiedDlg::BuildItemList(Preferences_Struct *prefs, char * appdir)  /
 	listRse.Append(new RseDynLabel(IDC_SERVERKEEPALIVE_LABEL, IDC_SERVERKEEPALIVE, 1,
 		_("Server connection refresh interval %i mins"), _("Server connection refresh interval %i min"), _("Server connection refresh interval: Disabled")));
 
-	listRse.Append(new RseInt(IDC_LISTREFRESH, prefs->m_dwListRefreshSecs, "ListRefresh", 0));
-	listRse.Append(new RseDynLabel(IDC_LISTREFRESH_LABEL, IDC_LISTREFRESH, 1, _("Upload/Download list refresh time: %i secs"),
-		_("Upload/Download list refresh time: %i sec"),	_("Upload/Download list refresh time: Realtime")));
 	listRse.Append(new RseInt(0, prefs->splitterbarPosition, "SplitterbarPosition", 75));	// no GUI needed (window layout)
 
 	listRse.Append(new RseInt(0, prefs->statsMax, "VariousStatisticsMaxValue", 100));	// no GUI yet (should be wxSpinCtrl to set scale of Connections graph)
@@ -1124,6 +1121,8 @@ void PrefsUnifiedDlg::ForceUlDlRateCorrelation(int id)
 // We're Open Source, and whoever wants it can do his own mod to get around this, but the 
 // packaged product will try to enforce good behavior. 
 //
+// Kry note: of course, any leecher mod will be banned asap.
+//
 // Also please note: Upload & Download Line "Capacities" are misnamed in the dlg right now: 
 // as the eMule FAQ explains (and our code follows eMule in this respect), these values 
 // are used only for scaling the statistics graphs and have no influence on network 
@@ -1203,10 +1202,7 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent &event)
 	ForceUlDlRateCorrelation(0);
 	CheckRateUnlimited(prseMaxUp);
 	CheckRateUnlimited(prseMaxDown);
-	if (Prse(IDC_UPDATEQUEUE)->GetCtrlValue()) {
-		theApp.amuledlg->transfers_frozen = false;
-  		theApp.amuledlg->Thaw_AllTransfering();
-	}
+
 	if (Prse(IDC_FED2KLH)->WasChanged()) 
 		theApp.amuledlg->ToggleFastED2KLinksHandler();
 	if (Prse(IDC_LANGUAGE)->WasChanged())
