@@ -18,8 +18,10 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 
 	GonoszTopi:
 		* Unicode fixes:
-			- UTF-8 conversion (found by littletux)
-			- webserver search results (found by poulpe)
+			- UTF-8 conversion (reported by littletux)
+			- webserver search results (reported by poulpe)
+			- aMule version on webserver's Statistics page
+		* Endianness fixes in EC.
 	
 	Kry:
 
