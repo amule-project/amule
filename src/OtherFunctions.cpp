@@ -35,7 +35,7 @@
 #include "OtherFunctions.h"	// Interface declarations
 
 #ifdef HAVE_CONFIG_H
-#include "config.h"		// Needed for VERSION
+#include "config.h"		// Needed for VERSION and LOCALEDIR
 #endif
 
 #include <cctype>
@@ -1285,6 +1285,39 @@ void PartFileEncoderData::Decode(unsigned char *gapdata, int gaplen, unsigned ch
 	m_gap_status.Realloc(gapsize*2*sizeof(uint32));
 
 	m_gap_status.Decode(gapdata, gaplen - sizeof(uint32));
+}
+
+
+void InitCustomLanguages()
+{
+	wxLanguageInfo CustomLanguage;
+	CustomLanguage.Language = wxLANGUAGE_ITALIAN_NAPOLITAN;
+	CustomLanguage.CanonicalName = wxT("it_NA");
+	CustomLanguage.Description = wxT("sNeo's Custom Napolitan Language");
+	wxLocale::AddLanguage(CustomLanguage);
+
+//	CustomLanguage.Language = wxLANGUAGE_CUSTOM;
+//	CustomLanguage.CanonicalName = wxT("aMule_custom");
+//	CustomLanguage.Description = wxT("aMule's custom language");
+//	wxLocale::AddLanguage(CustomLanguage)
+}
+
+void InitLocale(wxLocale& locale, int language)
+{
+	int language_flags = 0;
+	if ((language != wxLANGUAGE_CUSTOM) && (language != wxLANGUAGE_ITALIAN_NAPOLITAN)) {
+		language_flags = wxLOCALE_LOAD_DEFAULT | wxLOCALE_CONV_ENCODING;
+	}
+	
+	locale.Init(language,language_flags); 
+	
+	if (language != wxLANGUAGE_CUSTOM) {
+		locale.AddCatalogLookupPathPrefix(wxT(LOCALEDIR));
+		locale.AddCatalog(wxT(PACKAGE));
+	} else {
+		locale.AddCatalogLookupPathPrefix(GetConfigDir());
+		locale.AddCatalog(wxT("custom"));
+	}
 }
 
 } // End namespace

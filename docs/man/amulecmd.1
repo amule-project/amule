@@ -7,6 +7,7 @@ amulecmd \- Text-based program to control aMule
 .RB [ \-p " " \fI<port> ]
 .RB [ \-P " " \fI<passwd> ]
 .RB [ \-f " " \fI<path> ]
+.RB [ \-l " " \fI<lang> ]
 .RB [ \-q ]
 .RB [ \-v ]
 .RB [ \-w ]
@@ -37,6 +38,10 @@ External Connections password
 \fB\-f\fR, \fB\-\-config\-file\fR=\fI<path>\fR
 use the given configuration file. Default configuration file is \fI~/.aMule/remote.conf\fR
 .TP
+\fB\-l\fR, \fB\-\-locale\fR=\fI<lang>\fR
+sets program locale (language).
+See section \fBNOTES\fR for the description of the \fI<lang>\fR parameter.
+.TP
 \fB\-q\fR, \fB\-\-quiet\fR
 do not print any output to stdout. This seems to be a very much useless option with \fBamulecmd\fR.
 .TP
@@ -57,8 +62,31 @@ display usage help information and exit
 .TP
 \fB\-\-version\fR
 output program version information and exit
-.SH NOTE
+.SH NOTES
+.SS Paths
 For all options which take a \fI<path>\fR value, if the \fIpath\fR contains no directory part (i.e. just a plain filename), then it is considered to be under the aMule configuration directory, \fI~/.aMule\fR.
+.SS Languages
+The \fI<lang>\fR parameter for the \fB\-l\fR option has the following form: \fIlang\fR[\fB_\fILANG\fR][\fB.\fIencoding\fR][\fB@\fImodifier\fR]
+where \fIlang\fR is the primary language, \fILANG\fR is a sublanguage/territory, \fIencoding\fR is the character set to use and \fImodifier\fR
+"allows the user to select a specific instance of localization data within a single category".
+.PP
+For example, the following strings are valid:
+.br
+fr
+.br
+fr_FR
+.br
+de_DE.iso88591
+.br
+de_DE@euro
+.br
+de_DE.iso88591@euro
+.PP
+Though all the above strings are accepted as valid language definitions, \fIencoding\fR and \fImodifier\fR are yet unused.
+.PP
+In addition to the format above, you can also specify full language names in English - so \fB\-l german\fR is also valid and is equal to \fB-l de_DE\fR.
+.PP
+When no locale is defined, either on command-line or in config file, system default language will be used.
 .SH FILES
 ~/.aMule/remote.conf
 .SH EXAMPLE

@@ -77,7 +77,7 @@
 // Static data initialization -- memorize this, you'll need some day!
 // 
 //-------------------------------------------------------------------
-const wxCmdLineEntryDesc CaMuleExternalConnector::cmdLineDesc[11] =
+const wxCmdLineEntryDesc CaMuleExternalConnector::cmdLineDesc[12] =
 {
 	{ wxCMD_LINE_SWITCH, wxEmptyString, wxT("help"),
 		wxT("show this help"),
@@ -99,6 +99,9 @@ const wxCmdLineEntryDesc CaMuleExternalConnector::cmdLineDesc[11] =
 		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL },
 	{ wxCMD_LINE_SWITCH, wxT("v"), wxT("verbose"), 
 		wxT("Be verbose - show also debug messages."),
+		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL },
+	{ wxCMD_LINE_OPTION, wxT("l"), wxT("locale"), 
+		wxT("Sets program locale (language)."),
 		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL },
 	{ wxCMD_LINE_SWITCH, wxT("w"), wxT("write-config"),
 		wxT("Write command line options to config file."),
@@ -444,7 +447,7 @@ bool CaMuleExternalConnector::OnCmdLineParsed(wxCmdLineParser& parser)
 	wxString aMuleConfigFile;
 	if (parser.Found(wxT("create-config-from"), &aMuleConfigFile)) {
 		if (!::wxFileExists(aMuleConfigFile)) {
-			fprintf(stderr, "%s\n", (const char *)unicode2char(_("FATAL ERROR: File does not exist: ") + aMuleConfigFile));
+			fprintf(stderr, "%s\n", (const char *)unicode2char(wxT("FATAL ERROR: File does not exist: ") + aMuleConfigFile));
 			exit(1);
 		}
 		CECFileConfig aMuleConfig(aMuleConfigFile);
@@ -480,6 +483,10 @@ bool CaMuleExternalConnector::OnCmdLineParsed(wxCmdLineParser& parser)
 		m_NeedsConfigSave = true;
 	}
 
+	parser.Found(wxT("locale"), &m_language);
+	otherfunctions::InitCustomLanguages();
+	otherfunctions::InitLocale(m_locale, otherfunctions::StrLang2wx(m_language));
+
 	m_KeepQuiet = parser.Found(wxT("quiet"));
 	m_Verbose = parser.Found(wxT("verbose"));
 
@@ -500,6 +507,7 @@ void CaMuleExternalConnector::LoadConfigFile()
 		m_configFile = new CECFileConfig(m_configFileName);
 	}
 	if (m_configFile) {
+		m_language = m_configFile->Read(wxT("/Locale"), wxEmptyString);
 		m_host = m_configFile->Read(wxT("/EC/Host"), wxEmptyString);
 		m_port = m_configFile->Read(wxT("/EC/Port"), -1l);
 		m_configFile->ReadHash(wxT("/EC/Password"), &m_password);
@@ -515,6 +523,7 @@ void CaMuleExternalConnector::SaveConfigFile()
 		m_configFile = new CECFileConfig(m_configFileName);
 	}
 	if (m_configFile) {
+		m_configFile->Write(wxT("/Locale"), m_language);
 		m_configFile->Write(wxT("/EC/Host"), m_host);
 		m_configFile->Write(wxT("/EC/Port"), m_port);
 		m_configFile->WriteHash(wxT("/EC/Password"), m_password);
