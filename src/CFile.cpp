@@ -705,6 +705,7 @@ wxString  CDirIterator::FindNextFile() {
 			if (
 				(!FileMask.IsEmpty() && !FoundName.Matches(FileMask)) 
 				|| FoundName.IsSameAs(wxT(".")) || FoundName.IsSameAs(wxT(".."))) {
+				printf("%s Discarded! %x %x %x %x\n",dp->d_name, !FileMask.IsEmpty(), !FoundName.Matches(FileMask), FoundName.IsSameAs(wxT(".")),FoundName.IsSameAs(wxT("..")));
 				found = false;	
 				dp = readdir(DirPtr);
 			}
