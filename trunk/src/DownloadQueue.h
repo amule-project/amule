@@ -22,8 +22,8 @@
 
 #include "types.h"		// Needed for uint8, uint16, uint32 and uint64
 #include "CString.h"		// Needed for CString
-#include "CTypedPtrList.h"	// Needed for CTypedPtrList
 #include <deque>
+#include <list>
 
 class CSharedFileList;
 class CPreferences;
@@ -142,7 +142,7 @@ public:
 	// Kry - HostNameSources
 	void AddToResolve(unsigned char* fileid, CString pszHostname, uint16 port);
 	bool OnHostnameResolved(struct sockaddr_in* inaddr);
-	CTypedPtrList<CPtrList, Hostname_Entry*> m_toresolve;
+	std::deque<Hostname_Entry*> m_toresolve;
 	
 	void SaveSourceSeeds();
 	void LoadSourceSeeds();
@@ -157,7 +157,7 @@ private:
 	bool	CompareParts(int pos1, int pos2);
 	void	HeapSort(uint16 first, uint16 last);
 	std::deque<CPartFile*> filelist;
-	CTypedPtrList<CPtrList, CPartFile*> m_localServerReqQueue;
+	std::list<CPartFile*> m_localServerReqQueue;
 	CSharedFileList* sharedfilelist;
 	CPreferences*	 app_prefs;
 	uint16	filesrdy;
@@ -184,10 +184,8 @@ private:
 	uint64		m_nDownDataOverheadServerPackets;
 	uint64		m_nDownDataOverheadOther;
 	uint64		m_nDownDataOverheadOtherPackets;
-	CList<int,int>	m_AvarageDDRO_list;
+	std::deque<int>	m_AvarageDDRO_list;
 
-	// CList<TransferredData> avarage_dr_list;
-	// CList<TransferredData>  m_AvarageDDRO_list;
 	// uint32 sumavgDDRO;
 
 	DWORD m_lastRefreshedDLDisplay;

@@ -124,19 +124,22 @@ void CDownloadQueue::AddPartFilesToShare()
 
 void CDownloadQueue::CompDownDatarateOverhead()
 {
-	m_AvarageDDRO_list.AddTail(m_nDownDataRateMSOverhead);
-	if (m_AvarageDDRO_list.GetCount() > 150) {
-		m_AvarageDDRO_list.RemoveAt(m_AvarageDDRO_list.GetHeadPosition());
-	}
-	m_nDownDatarateOverhead = 0;
+	m_AvarageDDRO_list.push_back(m_nDownDataRateMSOverhead);
 	m_nDownDataRateMSOverhead = 0;
-	for (POSITION pos = m_AvarageDDRO_list.GetHeadPosition();pos != 0;m_AvarageDDRO_list.GetNext(pos)) {
-		m_nDownDatarateOverhead += m_AvarageDDRO_list.GetAt(pos);
-	}
-	if(m_AvarageDDRO_list.GetCount() > 10) {
-		m_nDownDatarateOverhead = 10*m_nDownDatarateOverhead/m_AvarageDDRO_list.GetCount();
-	} else {
+			
+	if(m_AvarageDDRO_list.size() <= 10) {
 		m_nDownDatarateOverhead = 0;
+	} else {
+		if (m_AvarageDDRO_list.size() > 150) {
+			m_AvarageDDRO_list.pop_front();
+		}
+		
+		m_nDownDatarateOverhead = 0;
+		for (int i = 0, size = m_AvarageDDRO_list.size(); i < size; i++) {
+			m_nDownDatarateOverhead += m_AvarageDDRO_list[i];
+		}
+
+		m_nDownDatarateOverhead = 10*m_nDownDatarateOverhead/m_AvarageDDRO_list.size();;
 	}
 	return;
 }
@@ -888,7 +891,7 @@ void CDownloadQueue::HeapSort(uint16 first, uint16 last)
 void CDownloadQueue::ResetLocalServerRequests()
 {
 	m_dwNextTCPSrcReq = 0;
-	m_localServerReqQueue.RemoveAll();
+	m_localServerReqQueue.clear();
 
 	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) 
 	{ 
@@ -902,34 +905,34 @@ void CDownloadQueue::ResetLocalServerRequests()
 
 void CDownloadQueue::RemoveLocalServerRequest(CPartFile* pFile)
 {
-	POSITION pos1, pos2;
-	for (pos1 = m_localServerReqQueue.GetHeadPosition(); (pos2 = pos1) != NULL;) {
-		m_localServerReqQueue.GetNext(pos1);
-		if (m_localServerReqQueue.GetAt(pos2) == pFile)	{
-			m_localServerReqQueue.RemoveAt(pos2);
+	std::list<CPartFile*>::iterator it = m_localServerReqQueue.begin();
+	while ( it != m_localServerReqQueue.end() ) {
+		if ( (*it) == pFile ) {
+			it = m_localServerReqQueue.erase( it );
 			pFile->m_bLocalSrcReqQueued = false;
 			// could 'break' here.. fail safe: go through entire list..
+		} else {
+			it++;
 		}
 	}
 }
 
 void CDownloadQueue::ProcessLocalRequests()
 {
-	if ( (!m_localServerReqQueue.IsEmpty()) && (m_dwNextTCPSrcReq < ::GetTickCount()) )
+	if ( (!m_localServerReqQueue.empty()) && (m_dwNextTCPSrcReq < ::GetTickCount()) )
 	{
 		CSafeMemFile dataTcpFrame(22);
 		const int iMaxFilesPerTcpFrame = 15;
 		int iFiles = 0;
-		while (!m_localServerReqQueue.IsEmpty() && iFiles < iMaxFilesPerTcpFrame)
+		while (!m_localServerReqQueue.empty() && iFiles < iMaxFilesPerTcpFrame)
 		{
 			// find the file with the longest waitingtime
-			POSITION pos1, pos2;
 			uint32 dwBestWaitTime = 0xFFFFFFFF;
-			POSITION posNextRequest = NULL;
-			CPartFile* cur_file;
-			for( pos1 = m_localServerReqQueue.GetHeadPosition(); ( pos2 = pos1 ) != NULL; ){
-				m_localServerReqQueue.GetNext(pos1);
-				cur_file = m_localServerReqQueue.GetAt(pos2);
+
+			std::list<CPartFile*>::iterator posNextRequest = m_localServerReqQueue.end();
+			std::list<CPartFile*>::iterator it = m_localServerReqQueue.begin();
+			while( it != m_localServerReqQueue.end() ) {
+				CPartFile* cur_file = (*it);
 				if (cur_file->GetStatus() == PS_READY || cur_file->GetStatus() == PS_EMPTY)
 				{
 					uint8 nPriority = cur_file->GetDownPriority();
@@ -939,23 +942,25 @@ void CDownloadQueue::ProcessLocalRequests()
 					}
 
 					if (cur_file->lastsearchtime + (PR_HIGH-nPriority) < dwBestWaitTime ){
-						dwBestWaitTime = cur_file->lastsearchtime + (PR_HIGH-nPriority);
-						posNextRequest = pos2;
+						dwBestWaitTime = cur_file->lastsearchtime + (PR_HIGH - nPriority);
+						posNextRequest = it;
 					}
+					
+					it++;
 				}
 				else{
-					m_localServerReqQueue.RemoveAt(pos2);
+					it = m_localServerReqQueue.erase(it);
 					cur_file->m_bLocalSrcReqQueued = false;
 					theApp.amuledlg->AddDebugLogLine(false, "Local server source request for file \"%s\" not sent because of status '%s'", cur_file->GetFileName().GetData(), cur_file->getPartfileStatus().c_str());
 				}
 			}
 			
-			if (posNextRequest != NULL)
+			if (posNextRequest != m_localServerReqQueue.end())
 			{
-				cur_file = m_localServerReqQueue.GetAt(posNextRequest);
+				CPartFile* cur_file = (*posNextRequest);
 				cur_file->m_bLocalSrcReqQueued = false;
 				cur_file->lastsearchtime = ::GetTickCount();
-				m_localServerReqQueue.RemoveAt(posNextRequest);
+				m_localServerReqQueue.erase(posNextRequest);
 				iFiles++;
 				
 				// create request packet
@@ -963,11 +968,6 @@ void CDownloadQueue::ProcessLocalRequests()
 				md4cpy(packet->pBuffer,cur_file->GetFileHash());
 				dataTcpFrame.WriteRaw(packet->GetPacket(), packet->GetRealPacketSize());
 				delete packet;
-				#if 0 
-				// Needs new preferences
-				if ( theApp.glob_prefs->GetDebugSourceExchange() )
-					theApp.amuledlg->AddDebugLogLine( false, "Send:Source Request Server File(%s)", cur_file->GetFileName());
-				#endif
 			}
 		}
 
@@ -994,7 +994,7 @@ void CDownloadQueue::SendLocalSrcRequest(CPartFile* sender)
 {
 	//ASSERT ( !m_localServerReqQueue.Find(sender) );
 	//printf("Add Local Request\n");
-	m_localServerReqQueue.AddTail(sender);
+	m_localServerReqQueue.push_back(sender);
 }
 
 void CDownloadQueue::GetDownloadStats(uint32 results[])
@@ -1384,7 +1384,7 @@ wxThread::ExitCode SourcesAsyncDNS::Entry()
 
 void CDownloadQueue::AddToResolve(uchar* fileid, CStringA pszHostname, uint16 port)
 {
-	bool bResolving = !m_toresolve.IsEmpty();
+	bool bResolving = !m_toresolve.empty();
 
 	// double checking
 	if (!theApp.downloadqueue->GetFileByID(fileid)) {
@@ -1394,7 +1394,7 @@ void CDownloadQueue::AddToResolve(uchar* fileid, CStringA pszHostname, uint16 po
 	md4cpy(entry->fileid, fileid);
 	entry->strHostname = pszHostname;
 	entry->port = port;
-	m_toresolve.AddTail(entry);
+	m_toresolve.push_back(entry);
 
 	if (bResolving) {
 		return;
@@ -1412,7 +1412,7 @@ void CDownloadQueue::AddToResolve(uchar* fileid, CStringA pszHostname, uint16 po
 	if (dns->Run() != wxTHREAD_NO_ERROR) {
 		// Cannot run (Already there?)
 		dns->Delete();
-		m_toresolve.RemoveHead();
+		m_toresolve.pop_front();
 		delete entry;
 		return;
 	}
@@ -1422,7 +1422,9 @@ void CDownloadQueue::AddToResolve(uchar* fileid, CStringA pszHostname, uint16 po
 
 bool CDownloadQueue::OnHostnameResolved(struct sockaddr_in* inaddr)
 {
-	Hostname_Entry* resolved = m_toresolve.RemoveHead();
+	Hostname_Entry* resolved = m_toresolve.front();
+	m_toresolve.pop_front();
+	
 	if (resolved) {
 		printf("Thread finished, Hostname %s resolved to %s\n", resolved->strHostname.c_str(),inet_ntoa(inaddr->sin_addr));
 		if (inaddr!=NULL) {
@@ -1443,8 +1445,8 @@ bool CDownloadQueue::OnHostnameResolved(struct sockaddr_in* inaddr)
 		//delete inaddr;
 		free(inaddr);
 	}
-	while (!m_toresolve.IsEmpty()) {
-		Hostname_Entry* entry = m_toresolve.GetHead();
+	while (!m_toresolve.empty()) {
+		Hostname_Entry* entry = m_toresolve.front();
 		SourcesAsyncDNS* dns=new SourcesAsyncDNS();
 		if(dns->Create()!=wxTHREAD_NO_ERROR) {
 			// Cannot create (Already there?)
@@ -1459,7 +1461,7 @@ bool CDownloadQueue::OnHostnameResolved(struct sockaddr_in* inaddr)
 			dns->Delete();
 			return false;
 		}
-		m_toresolve.RemoveHead();
+		m_toresolve.pop_front();
 		delete entry;
 	}
 	return TRUE;
