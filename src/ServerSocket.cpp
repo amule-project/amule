@@ -541,7 +541,7 @@ void CServerSocket::ConnectToServer(CServer* server)
 	AddLogLineM(false, _("Connecting to ") + cur_server->GetListName() + wxT(" (") + server->GetAddress() + wxT(" - ") + cur_server->GetFullIP() + wxString::Format(wxT(":%i)"),cur_server->GetPort()));
 	SetConnectionState(CS_CONNECTING);
 	// This must be used if we want to reverse-check the addr of the server
-	//#define GET_ADDR true
+	#define GET_ADDR true
 	#ifdef GET_ADDR
 	wxIPV4address addr;
 	#else
