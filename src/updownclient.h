@@ -556,12 +556,11 @@ private:
 	// Support for tag ET_MOD_VERSION [BlackRat]
 public:
 
-	const CString	GetClientModString() const { return m_clientModString; }
+	const CString	GetClientModString() const { return m_strModVersion; }
 	const CString	GetClientVerString() const { return m_clientVerString; }
 
 private:
 
-	CString		m_clientModString; 
 	CString		m_clientVerString;
 
 	int SecIdentSupRec;

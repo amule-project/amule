@@ -72,10 +72,8 @@
 
 #ifdef __CVS__
 	#define	MOD_VERSION_LONG				wxT("aMule 2.0.0 CVS")
-	#define	MOD_VERSION_SHORT				wxT("CVS")
 #else
 	#define	MOD_VERSION_LONG				wxT("aMule 2.0.0-rc3")
-	#define	MOD_VERSION_SHORT				wxT("Would Never Happen") // Really!
 #endif
 
 #define	VERSION_MJR		0x02
