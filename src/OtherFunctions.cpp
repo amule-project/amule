@@ -39,6 +39,7 @@
 #endif
 
 #include <cctype>
+#include <algorithm>
 
 #include "OPCodes.h"
 
@@ -745,7 +746,7 @@ public:
 	EED2KFileType GetFileType() const	{ return m_iFileType; }
 	
 private:
-	const wxString	&m_ext;
+	wxString	m_ext;
 	EED2KFileType	m_iFileType;
 };
 
@@ -902,12 +903,30 @@ static SED2KFileType _aED2KFileTypes[] =
 	SED2KFileType(wxT(".xlt"),   ED2KFT_DOCUMENT),
 };
 
+// Just for debug
+#include "StringFunctions.h"
 int CompareE2DKFileType(const void* p1, const void* p2)
 {
+#if 0
+	printf("%s-%s\n",
+		(const char *)unicode2char(((const SED2KFileType *)p1)->GetExt()),
+		(const char *)unicode2char(((const SED2KFileType *)p2)->GetExt()));
+#endif
 	return
 		((const SED2KFileType *)p1)->GetExt().CmpNoCase(
 		((const SED2KFileType *)p2)->GetExt());
 }
+
+bool CompareE2DKFileType2(const SED2KFileType &p1, const SED2KFileType &p2)
+{
+#if 0
+	printf("%s-%s\n",
+		(const char *)unicode2char(p1.GetExt()),
+		(const char *)unicode2char(p2.GetExt()));
+#endif
+	return p1.GetExt().CmpNoCase(p2.GetExt()) < 0;
+}
+
 
 EED2KFileType GetED2KFileTypeID(const wxString &strFileName)
 {
@@ -984,9 +1003,9 @@ wxString GetFileTypeDisplayStrFromED2KFileType(const wxString &strED2KFileType)
 class CED2KFileTypes{
 public:
 	CED2KFileTypes() {
-		qsort(_aED2KFileTypes, ARRSIZE(_aED2KFileTypes), sizeof _aED2KFileTypes[0], CompareE2DKFileType);
-#warning Kry, this code is not working, must check why. Now I have to go.
-#ifdef DEBUG
+//		qsort(_aED2KFileTypes, ARRSIZE(_aED2KFileTypes), sizeof _aED2KFileTypes[0], CompareE2DKFileType);
+		std::sort(_aED2KFileTypes, _aED2KFileTypes + ARRSIZE(_aED2KFileTypes), CompareE2DKFileType2);
+//#ifdef DEBUG
 		// check for duplicate entries
 		wxString strLast = _aED2KFileTypes[0].GetExt();
 		for (int i = 1; i < ARRSIZE(_aED2KFileTypes); ++i) {
@@ -999,7 +1018,7 @@ public:
 			wxASSERT(!duplicates);
 			strLast = _aED2KFileTypes[i].GetExt();
 		}
-#endif
+//#endif
 	}
 };
 // get the list sorted *before* any code is accessing it
