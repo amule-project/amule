@@ -380,7 +380,7 @@ bool CamuleApp::OnInit()
 	// Display notification on new version or first run
 	wxTextFile vfile( aMulePrefDir + wxString("/lastversion") );
 	wxString newMule(VERSION);
-	if ( vfile.Open() && !vfile.Eof() ) {
+	if ( wxFileExists( vfile.GetName() ) && vfile.Open() && !vfile.Eof() ) {
 		if ( vfile.GetFirstLine() != newMule ) {
 			Trigger_New_version( vfile.GetFirstLine(), newMule );
 			
