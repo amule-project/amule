@@ -12,6 +12,7 @@ Version 2.0.0rc4 - The 'Rabbits and Mules love carrots' version.
 		* Fixed compilation on Win32
 
 	Citroklar:
+		* lots of unicode slave work ;)
 	
 	croakerc:
 		* Fixed OpenBSD compilation
