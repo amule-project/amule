@@ -263,7 +263,7 @@ void CServerConnect::ConnectionFailed(CServerSocket* sender){
 		return;
 	}
 	//messages
-	CServer* update;
+	CServer* update = NULL;
 	switch (sender->GetConnectionState()){
 		case CS_FATALERROR:
 			AddLogLineM(true, wxString::Format(_("Fatal Error while trying to connect. Internet connection might be down")));
@@ -271,7 +271,10 @@ void CServerConnect::ConnectionFailed(CServerSocket* sender){
 		case CS_DISCONNECTED:
 			theApp.sharedfiles->ClearED2KPublishInfo();
 			AddLogLineM(false,_("Lost connection to ") + sender->cur_server->GetListName() + wxT("(") + sender->cur_server->GetFullIP() + wxString::Format(wxT(":%i)"),sender->cur_server->GetPort()));
-			theApp.amuledlg->serverwnd->serverlistctrl->HighlightServer(update, false);		
+			update = theApp.serverlist->GetServerByAddress( sender->cur_server->GetAddress(), sender->cur_server->GetPort() );
+			if(update){
+				theApp.amuledlg->serverwnd->serverlistctrl->HighlightServer(update, false);
+			}
 			break;
 		case CS_SERVERDEAD:
 			AddLogLineM(false,sender->cur_server->GetListName() + wxT("(") + sender->cur_server->GetFullIP() + wxString::Format(wxT(":%i) appears to be dead."),sender->cur_server->GetPort()));			
