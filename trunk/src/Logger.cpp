@@ -128,8 +128,8 @@ void CLogger::AddDebugLogLine( bool critical, DebugType type, const wxString& st
 
 		wxString line = cat.GetName() + wxT(": ") + str;
 		
-#if __VERBOSE_OUTPUT__
-		GUIEvent event( ADDDEBUGLOGLINE, critical, str );
+#ifdef __VERBOSE_OUTPUT__
+		GUIEvent event( ADDDEBUGLOGLINE, critical, line );
 		
 		if ( wxThread::IsMain() ) {
 			theApp.NotifyEvent( event );
