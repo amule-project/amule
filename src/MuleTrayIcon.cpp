@@ -19,9 +19,10 @@
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifdef USE_WX_TRAY 
 
 #include "MuleTrayIcon.h"
+
+#ifdef USE_WX_TRAY 
 
 #include "pixmaps/mule_TrayIcon_big.ico.xpm"
 #include "pixmaps/mule_Tr_yellow_big.ico.xpm"
@@ -111,35 +112,43 @@ long GetSpeedFromString(wxString label){
 void CMuleTrayIcon::SetUploadSpeed(wxCommandEvent& event){
 
 	wxObject* obj=event.GetEventObject();
-	if (obj!=NULL) 
+	if (obj!=NULL) {
 		if (obj->IsKindOf(CLASSINFO(wxMenu))) {
 			wxMenu* menu=dynamic_cast<wxMenu*> (obj);
 			wxMenuItem* item=menu->FindItem(event.GetId());
 			if (item!=NULL) {
 				long temp;
-				if (item->GetLabel()==(_("Unlimited"))) temp=UNLIMITED;
-				else temp=GetSpeedFromString(item->GetLabel());
+				if (item->GetLabel()==(_("Unlimited"))) {
+					temp=UNLIMITED;
+				}
+				else {
+					temp=GetSpeedFromString(item->GetLabel());
+				}
 				thePrefs::SetMaxUpload(temp);
 			}
 		}
-
+	}
 }
 
 void CMuleTrayIcon::SetDownloadSpeed(wxCommandEvent& event){
 	
 	wxObject* obj=event.GetEventObject();
-	if (obj!=NULL) 
+	if (obj!=NULL) {
 		if (obj->IsKindOf(CLASSINFO(wxMenu))) {
 			wxMenu* menu=dynamic_cast<wxMenu*> (obj);
 			wxMenuItem* item=menu->FindItem(event.GetId());
 			if (item!=NULL) {
 				long temp;
-				if (item->GetLabel()==(_("Unlimited"))) temp=UNLIMITED;
-				else temp=GetSpeedFromString(item->GetLabel());
+				if (item->GetLabel()==(_("Unlimited"))) {
+					temp=UNLIMITED;
+				}
+				else {
+					temp=GetSpeedFromString(item->GetLabel());
+				}
 				thePrefs::SetMaxDownload(temp);
 			}
 		}
-
+	}
 }
 
 void CMuleTrayIcon::ServerConnection(wxCommandEvent& event){
@@ -154,14 +163,20 @@ void CMuleTrayIcon::ServerConnection(wxCommandEvent& event){
 		}
 	}
 	if (event.GetId()==TRAY_MENU_DISCONNECT) {
-		if ( theApp.serverconnect->IsConnected() ) theApp.serverconnect->Disconnect();
+		if ( theApp.serverconnect->IsConnected() ) {
+			theApp.serverconnect->Disconnect();
+		}
 	}
 
 }
 void CMuleTrayIcon::ShowHide(wxCommandEvent& WXUNUSED(event)){
 
-	if ( theApp.amuledlg->IsShown() ) theApp.amuledlg->Hide_aMule();
-	else theApp.amuledlg->Show_aMule();
+	if ( theApp.amuledlg->IsShown() ) {
+		theApp.amuledlg->Hide_aMule();
+	}
+	else {
+		theApp.amuledlg->Show_aMule();
+	}
 }
 
 void  CMuleTrayIcon::Close(wxCommandEvent& WXUNUSED(event)){
@@ -182,7 +197,9 @@ CMuleTrayIcon::CMuleTrayIcon()
 CMuleTrayIcon::~CMuleTrayIcon() 
 {
 	// If there's an icon set, remove it
-	if (IsIconInstalled()) RemoveIcon();
+	if (IsIconInstalled()) {
+		RemoveIcon();
+	}
 }
 
 /****************************************************/
@@ -205,7 +222,8 @@ void CMuleTrayIcon::SetTrayIcon(int Icon, uint32 percent)
 		default:
 			wxASSERT(0);
 	}
-#warning speed bar commented out cause it corrupts icons too, need reworking
+	
+	#warning speed bar commented out cause it corrupts icons too, need reworking
 	// Lookup this values for speed improvement: don't draw if not needed
 	/*
 	int Bar_ySize = CurrentIcon.GetHeight()-2; 
@@ -265,7 +283,7 @@ void CMuleTrayIcon::SetTrayIcon(int Icon, uint32 percent)
 		new_mask = new wxMask(CurrentIcon, temp);
 	
 		CurrentIcon.SetMask(new_mask);
-*/
+	*/
 		UpdateTray();
 	//}
 }
@@ -299,18 +317,22 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 
 	// Check for upload limits
 	unsigned int max_upload = thePrefs::GetMaxUpload();
-	if ( max_upload == UNLIMITED ) 
+	if ( max_upload == UNLIMITED ) {
 		label += wxString::Format( _("UL: None, "));
-	else 
+	}
+	else { 
 		label += wxString::Format( _("UL: %u, "), max_upload);
+	}
 
 	// Check for download limits
 	unsigned int max_download = thePrefs::GetMaxDownload();
-	if ( max_download == UNLIMITED ) 
+	if ( max_download == UNLIMITED ) {
 		label += wxString::Format( _("DL: None"));
-	else 
+	}
+	else {
 		label += wxString::Format( _("DL: %u"), max_download);
-	
+	}
+
 	traymenu->Append(TRAY_MENU_INFO, label);
 	traymenu->AppendSeparator();
 
@@ -321,10 +343,12 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 	// User nick-name
 	{
 		wxString temp = _("Nickname: ");
-		if ( thePrefs::GetUserNick().IsEmpty() )
+		if ( thePrefs::GetUserNick().IsEmpty() ) {
 			temp += _("No Nickname Selected!");
-		else
+		}
+		else {
 			temp += thePrefs::GetUserNick();
+		}
 		ClientInfoMenu->Append(TRAY_MENU_CLIENTINFO_ITEM,temp);
 	}
 	
@@ -334,7 +358,6 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 		
 		if (theApp.serverconnect->IsConnected()) {
 			unsigned long id = theApp.serverconnect->GetClientID();
-					
 			temp += wxString::Format(wxT("%lu"), id);
 		} else {
 			temp += _("Not Connected");
@@ -374,8 +397,9 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 		wxString temp;
 		if (thePrefs::GetPort()) {
 			temp = wxString::Format(wxT("%s%d"), _("TCP Port: "), thePrefs::GetPort());
-		} else
+		} else {
 			temp=_("TCP Port: Not Ready");
+		}
 		ClientInfoMenu->Append(TRAY_MENU_CLIENTINFO_ITEM,temp);
 	}
 	
@@ -384,18 +408,21 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 		wxString temp;
 		if (thePrefs::GetUDPPort()) {
 			temp = wxString::Format(wxT("%s%d"), _("UDP Port: "), thePrefs::GetUDPPort());	
-		} else
+		} else {
 			temp=_("UDP Port: Not Ready");
+		}
 		ClientInfoMenu->Append(TRAY_MENU_CLIENTINFO_ITEM,temp);
 	}
 
 	// Online Signature
 	{
 		wxString temp;
-		if (thePrefs::IsOnlineSignatureEnabled())
+		if (thePrefs::IsOnlineSignatureEnabled()) {
 			temp=_("Online Signature: Enabled");
-		else
+		}
+		else {
 			temp=_("Online Signature: Disabled");
+		}
 		ClientInfoMenu->Append(TRAY_MENU_CLIENTINFO_ITEM,temp);
 	}
 
@@ -451,8 +478,12 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 
 		uint32 max_ul_speed = thePrefs::GetMaxGraphUploadRate();
 		
-		if ( max_ul_speed == UNLIMITED ) max_ul_speed = 100;
-		else if ( max_ul_speed < 10 ) max_ul_speed = 10;
+		if ( max_ul_speed == UNLIMITED ) {
+			max_ul_speed = 100;
+		}
+		else if ( max_ul_speed < 10 ) {
+			max_ul_speed = 10;
+		}
 			
 		for ( int i = 0; i < 5; i++ ) {
 			unsigned int tempspeed = (unsigned int)((double)max_ul_speed / 5) * (5 - i);
@@ -470,8 +501,12 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 
 		uint32 max_dl_speed = thePrefs::GetMaxGraphDownloadRate();
 		
-		if ( max_dl_speed == UNLIMITED ) max_dl_speed = 100;
-		else if ( max_dl_speed < 10 ) max_dl_speed = 10;
+		if ( max_dl_speed == UNLIMITED ) {
+			max_dl_speed = 100;
+		}
+		else if ( max_dl_speed < 10 ) {
+			max_dl_speed = 10;
+		}
 	
 		for ( int i = 0; i < 5; i++ ) {
 			unsigned int tempspeed = (unsigned int)((double)max_dl_speed / 5) * (5 - i);
