@@ -378,6 +378,15 @@ void AlcFrame::OnCloseButton (wxCommandEvent & event)
   Close (FALSE);
 }
 
+/// Hook into MD4/ED2K routine
+static bool alc_frame_hook(int percent);
+bool alc_frame_hook(int percent)
+{
+	::wxSafeYield();
+
+	return true;
+}
+
 /// Compute Hashes on Start Button
 void AlcFrame::OnStartButton (wxCommandEvent & event)
 {
@@ -404,7 +413,11 @@ void AlcFrame::OnStartButton (wxCommandEvent & event)
 
       // Compute ed2k Hash
       Ed2kHash hash;
-      hash.SetED2KHashFromFile(filename);
+      
+      // Test the return value to see if was aborted.
+      bool finished = hash.SetED2KHashFromFile(filename, alc_frame_hook);
+      if (!finished) return;
+      
       wxArrayString ed2kHash (hash.GetED2KHash());
 
       // Get URLs

@@ -52,6 +52,8 @@
 // Use wxString implementation or not
 //#define WANT_STRING_IMPLEMENTATION 1
 
+typedef bool (*MD4Hook)(int percent);
+
 class MD4
   {
   private:
@@ -103,7 +105,8 @@ class MD4
     wxString calcMd4FromString(const wxString &buf);
 
     /// Get Md4 hash from a file
-    wxString calcMd4FromFile(const wxString &filename);
+    wxString calcMd4FromFile(const wxString &filename, MD4Hook hook, bool *aborted);
   };
 
 #endif /* _MD4_H */
+

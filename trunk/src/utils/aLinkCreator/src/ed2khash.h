@@ -61,10 +61,10 @@ class Ed2kHash:public MD4
     ~Ed2kHash ();
 
     /// Set Ed2k hash from a file
-    void SetED2KHashFromFile(const wxFileName& filename);
+    bool SetED2KHashFromFile(const wxFileName& filename, MD4Hook hook);
 
     /// Set Ed2k hash from a file
-    void SetED2KHashFromFile(const wxString& filename);
+    bool SetED2KHashFromFile(const wxString& filename, MD4Hook hook);
 
     /// Get Ed2k Array of hashes
     wxArrayString GetED2KHash();
@@ -74,3 +74,4 @@ class Ed2kHash:public MD4
   };
 
 #endif /* _ED2KHASH_H */
+
