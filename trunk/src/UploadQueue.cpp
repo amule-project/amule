@@ -21,6 +21,7 @@
 #pragma implementation "UploadQueue.h"
 #endif
 
+#include <algorithm>
 #include <cstring>
 #include <cmath>			// Needed for std::exp
 #include "types.h"
@@ -29,9 +30,7 @@
 	#include <wx/defs.h>
 	#include <wx/msw/winundef.h>
 #else
-#ifdef __BSD__
-       #include <sys/types.h>
-#endif /* __BSD__ */
+        #include <sys/types.h>
 	#include <netinet/in.h>
 	#include <arpa/inet.h>
 #endif
