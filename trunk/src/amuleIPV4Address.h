@@ -36,6 +36,7 @@
 #include <wx/log.h>		// Needed for wxLogWarning
 
 #include "NetworkFunctions.h"	// Needed for unicode2char
+#include "EndianFix.h"
 
 
 // This is fscking hard to maintain. wxWidgets 2.5.2 has changed internal
