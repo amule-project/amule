@@ -505,13 +505,6 @@ void CamuleDlg::ResetLog(uint8 whichone)
 }
 
 
-void CamuleDlg::ResetDebugLog()
-{
-#warning This isnt the right textctrl!
-//	serverwnd->logbox.Clear();
-}
-
-
 void CamuleDlg::AddLogLine(bool addtostatusbar, const wxString& line)
 {
 	// Max 1000 chars
