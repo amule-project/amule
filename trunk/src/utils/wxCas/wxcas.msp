@@ -1,7 +1,7 @@
 [Project]
 name=wxcas
 type=5
-defaultConfig=0
+defaultConfig=1
 
 [Debug]
 // compiler 
