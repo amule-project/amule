@@ -266,6 +266,20 @@ public:
 	 */
 	SourceList	GetClientsByIP( unsigned long ip );
 
+
+	//! The type of the lists used to store IPs and IDs.
+	typedef std::multimap<uint32, CUpDownClient*> IDMap;
+	//! The pairs of the IP/ID list.
+	typedef std::pair<uint32, CUpDownClient*> IDMapPair;
+
+
+	/**
+	 * Returns a list of all clients.
+	 *
+	 * @return The complete list of clients.
+	 */
+	const IDMap& GetClientList();
+
 	
 private:
 	/**
@@ -293,11 +307,6 @@ private:
 	 */
 	void	RemoveHashFromList( CUpDownClient* client );
 
-
-	//! The type of the lists used to store IPs and IDs.
-	typedef std::multimap<uint32, CUpDownClient*> IDMap;
-	//! The pairs of the IP/ID list.
-	typedef std::pair<uint32, CUpDownClient*> IDMapPair;
 
 	//! The type of the list used to store user-hashes.
 	typedef std::multimap<CMD4Hash, CUpDownClient*> HashMap;

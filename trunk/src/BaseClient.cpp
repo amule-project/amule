@@ -1300,7 +1300,8 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket){
 	if (m_Friend) {
 		Notify_ChatRefreshFriend(m_Friend);
 	}
-	//theApp.amuledlg->transferwnd->clientlistctrl.RefreshClient(this);
+	
+	Notify_ClientCtrlRefreshClient( this );
 
 	if (bDelete){
 		#ifdef __USE_DEBUG__
