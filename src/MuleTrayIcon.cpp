@@ -117,8 +117,8 @@ void CMuleTrayIcon::SetUploadSpeed(wxCommandEvent& event){
 
 	wxObject* obj=event.GetEventObject();
 	if (obj!=NULL) {
-		if (obj->IsKindOf(CLASSINFO(wxMenu))) {
-			wxMenu* menu=dynamic_cast<wxMenu*> (obj);
+		wxMenu *menu = dynamic_cast<wxMenu *>(obj);
+		if (menu) {
 			wxMenuItem* item=menu->FindItem(event.GetId());
 			if (item!=NULL) {
 				long temp;
