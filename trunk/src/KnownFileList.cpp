@@ -36,6 +36,7 @@
 #include "amule.h"
 #include "CMD4Hash.h"		// Needed for CMD4Hash
 #include "Logger.h"
+#include "Format.h"
 
 #include <wx/listimpl.cpp> // ye old magic incantation
 WX_DEFINE_LIST(KnownFileList)
@@ -202,10 +203,11 @@ bool CKnownFileList::Append(CKnownFile* Record)
 			}
 		}
 	} else {
-		#ifdef __DEBUG__
-		printf("%s is 0-size, not added\n",
-			(const char *)unicode2char(Record->GetFileName()));
-		#endif
+		AddDebugLogLineM( false, logGeneral,
+			CFormat( wxT("%s is 0-size, not added") )
+				% Record->GetFileName()
+		);
+		
 		return false;
 	}
 }

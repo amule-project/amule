@@ -163,7 +163,7 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 
 	if (!LoadGUIPrefs(override_where, override_size)) {
 		// Prefs not loaded for some reason, exit
-		printf("ERROR!!! Unable to load Preferences\n");
+		AddLogLineM( true, wxT("ERROR! Unable to load Preferences") );
 		return;
 	}
 
@@ -485,7 +485,7 @@ void CamuleDlg::OnToolBarButton(wxCommandEvent& ev)
 				
 				// This shouldn't happen, but just in case
 				default:
-					printf("Unknown button triggered CamuleApp::OnToolBarButton().\n");
+					AddLogLineM( true, wxT("Unknown button triggered CamuleApp::OnToolBarButton().") );
 					break;
 			}
 		}

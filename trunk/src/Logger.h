@@ -75,7 +75,9 @@ enum DebugType
 	//! Warnings/Errors for proxy.
 	logProxy,
 	//! Warnings/Errors related to searching.
-	logSearch
+	logSearch,
+	//! Warnings/Errors related to the server UDP socket.
+	logServerUDP
 };
 
 

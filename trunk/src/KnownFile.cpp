@@ -464,7 +464,8 @@ bool CKnownFile::LoadTagsFromFile(const CFileDataIO* file)
 		}
 		return true;
 	} catch (...) {
-		printf("Caught exception in CKnownFile::LoadTagsFromFile!\n");
+		AddDebugLogLineM( false, logGeneral,
+			wxT("Caught exception in CKnownFile::LoadTagsFromFile!") );
 		return false;
 	}
 }

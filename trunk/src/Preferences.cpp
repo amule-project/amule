@@ -750,10 +750,7 @@ CPreferences::CPreferences()
 		CreateUserHash();
 	}
 	
-	printf(	"Userhash loaded: %s\n",
-		(const char *)unicode2char(s_userhash.Encode()));
 #endif
-
 }
 
 //
@@ -1418,7 +1415,7 @@ wxString CPreferences::GetBrowser()
                         case 7: cmd = wxT("epiphany -n '%s'"); break;
                         case 8: cmd = s_CustomBrowser; break;
                         default:
-                                printf("Unable to determine selected browser!\n");
+                                AddLogLineM( true, wxT("Unable to determine selected browser!") );
                 }
         else
 		switch ( s_Browser ) {
@@ -1432,7 +1429,7 @@ wxString CPreferences::GetBrowser()
 			case 7: cmd = wxT("epiphany '%s'"); break;
 			case 8: cmd = s_CustomBrowser; break;
 			default:
-				printf("Unable to determine selected browser!\n");
+				AddLogLineM( true, wxT("Unable to determine selected browser!") );
 		}
 	
 	return cmd;
@@ -1482,5 +1479,4 @@ void CPreferences::ReloadSharedFolders() {
 		}
 		sdirfile.Close();
 	}
-	
 }

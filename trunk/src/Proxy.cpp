@@ -424,7 +424,7 @@ void CSocks5StateMachine::process_state(t_sm_state state, bool entry)
 	}
 	
 	if (entry) {
-		otherfunctions::DumpMem(m_buffer, n, &m_state_name[state], m_ok);
+		otherfunctions::DumpMem(m_buffer, n, m_state_name[state], m_ok);
 	} else {
 		AddDebugLogLineM(false, logProxy,
 			wxString(wxT("wait state -- ")) << m_state_name[state] << wxT("\n"));
@@ -830,7 +830,7 @@ void CSocks4StateMachine::process_state(t_sm_state state, bool entry)
 	}
 	
 	if (entry) {
-		otherfunctions::DumpMem(m_buffer, n, &m_state_name[state], m_ok);
+		otherfunctions::DumpMem(m_buffer, n, m_state_name[state], m_ok);
 	} else {
 		AddDebugLogLineM(false, logProxy,
 			wxString(wxT("wait state -- ")) << m_state_name[state] << wxT("\n"));
@@ -1000,7 +1000,7 @@ void CHttpStateMachine::process_state(t_sm_state state, bool entry)
 	}
 	
 	if (entry) {
-		otherfunctions::DumpMem(m_buffer, n, &m_state_name[state], m_ok);
+		otherfunctions::DumpMem(m_buffer, n, m_state_name[state], m_ok);
 	} else {
 		AddDebugLogLineM(false, logProxy,
 			wxString(wxT("wait state -- ")) << m_state_name[state] << wxT("\n"));

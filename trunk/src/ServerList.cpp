@@ -114,7 +114,7 @@ bool CServerList::LoadServerMet(const wxString& strFile)
 		
 		if (version != 0xE0 && version != MET_HEADER) {
 			AddLogLineM(false, wxString::Format(_("Invalid versiontag in server.met (0x%x , size %i)!"),version, sizeof(version)));
-			throw CInvalidPacket("Corrupted server.met");
+			throw CInvalidPacket(wxT("Corrupted server.met"));
 		}
 
 		uint32 fservercount = servermet.ReadUInt32();

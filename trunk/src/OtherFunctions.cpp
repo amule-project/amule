@@ -59,6 +59,8 @@
 	#include <unistd.h> // Seems to be needed at least on Creteil's box
 #endif
 
+#include "StringFunctions.h"
+
 namespace otherfunctions {
 
 wxString GetMuleVersion()
@@ -961,51 +963,80 @@ wxString GetFileTypeByName(const wxString &strFileName)
 	}
 }
 
+
+/**
+ * Dumps a buffer to a wxString
+ */
+wxString DumpMemToStr(const void *buff, int n, const wxString& msg, bool ok)
+{
+	const unsigned char *p = (const unsigned char *)buff;
+	int lines = (n + 15)/ 16;
+
+	
+	wxString result;
+	// Allocate aproximetly what is needed
+	result.Alloc( ( lines + 1 ) * 80 ); 
+	
+	
+	if ( !msg.IsEmpty() ) {
+		result += msg + wxT(" - ok=") + ( ok ? wxT("true, ") : wxT("false, ") );
+	}
+
+	result += wxString::Format( wxT("%d bytes\n"), n );
+	
+	for ( int i = 0; i < lines; ++i) {
+		// Show address
+		result += wxString::Format( wxT("%08x  "), i * 16 );
+		
+		// Show two columns of hex-values
+		for ( int j = 0; j < 2; ++j) {
+			for ( int k = 0; k < 8; ++k) {
+				int pos = 16 * i + 8 * j + k;
+				
+				if ( pos < n ) {
+					result += wxString::Format( wxT("%02x "), p[pos] );
+				} else {
+					result += wxT("   ");
+				}
+			}
+
+			result += " ";
+		}
+
+		result += "|";
+	
+		// Show a column of ascii-values
+		for ( int k = 0; k < 16; ++k) {
+			int pos = 16 * i + k;
+
+			if ( pos < n ) {
+				if ( isspace( p[pos] ) ) {
+					result += wxT(" ");
+				} else if ( !isgraph( p[pos] ) ) {
+					result += wxT(".");
+				} else {
+					result += (wxChar)p[pos];
+				}
+			} else {
+				result += wxT(" ");
+			}
+		}
+		
+		result += "|\n";
+	}
+
+	result.Shrink();
+	
+	return result;
+}
+
+
 /**
  * Dumps a buffer to stdout
  */
-void DumpMem(const void *buff, int n, const wxString *msg, bool ok)
+void DumpMem(const void *buff, int n, const wxString& msg, bool ok)
 {
-	register const unsigned char *p = (const unsigned char *)buff;
-	register int lines = (n + 15)/ 16;
-	register int chars = 0;
-	
-	if (msg) {
-		printf(	"%s - ok=%d, ",	(const char *)msg->mb_str(), ok);
-	}
-	printf("%d bytes\n", n);
-	for( int i = 0; i < lines; ++i) {
-		int chars_save = chars;
-		int j;
-		// Prints the hexadecimal codes
-		for( j = 0; j < 16 && chars < n; ++j) {
-			printf("%02X ", p[chars++]);
-		}
-		// Completes the missing spaces
-		for( int k = j; k < 16; ++k)
-		{
-			printf("   ");
-		}
-		// Rewind and print the ASCII codes
-		chars = chars_save;
-		printf("|");
-		for( j = 0; j < 16 && chars < n; ++j) {
-			char l = p[chars++];
-			if (isspace(l)) {
-				l = ' ';
-			} else if (!isgraph(l)) {
-				l = '.';
-			}
-			printf("%c", l);
-		}
-		// Completes the missing spaces
-		for( int k = j; k < 16; ++k)
-		{
-			printf(" ");
-		}
-		printf("|\n");
-	}
-	printf("\n");
+	printf("%s\n", (const char*)unicode2char(DumpMemToStr( buff, n, msg, ok )) );
 }
 
 //

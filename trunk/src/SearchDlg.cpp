@@ -46,8 +46,9 @@
 #include "Preferences.h"
 #include "OtherFunctions.h"	// Needed for URLEncode, GetTypeSize
 #include "amule.h"			// Needed for theApp
-
 #include "SearchList.h"		// Needed for CSearchList
+#include "Format.h"
+#include "Logger.h"
 
 #define ID_SEARCHLISTCTRL wxID_HIGHEST+667
 
@@ -453,8 +454,11 @@ void CSearchDlg::StartNewSearch()
 				typeText = wxT("Videos"); 
 				break;
 			default:
-				printf("Warning! Unknown search-category ( %s ) selected!\n",
-					(const char *)unicode2char(typeText));
+				AddDebugLogLineM( true, logGeneral,
+					CFormat( wxT("Warning! Unknown search-category (%s) selected!") )
+						% typeText
+				);
+				
 				break;
 		}
 		// This will break if we change the order (good to know!)
