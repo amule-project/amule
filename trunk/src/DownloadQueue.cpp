@@ -655,7 +655,7 @@ void CDownloadQueue::DeleteAll(){
 		CPartFile* cur_file = filelist.GetAt(pos);
 		for (int sl=0;sl<SOURCESSLOTS;sl++) if (!cur_file->srclists[sl].IsEmpty())
 			cur_file->srclists[sl].RemoveAll();
-			cur_file->IsCountDirty = true;
+		cur_file->IsCountDirty = true;
 		// Barry - Should also remove all requested blocks
 		// Don't worry about deleting the blocks, that gets handled 
 		// when CUpDownClient is deleted in CClientList::DeleteAll()
@@ -746,7 +746,7 @@ bool CDownloadQueue::SendNextUDPPacket()
 		}
 
 		if (!bSentPacket && nextfile && nextfile->GetSourceCount() < theApp.glob_prefs->GetMaxSourcePerFileUDP()) {
-			dataGlobGetSources.Write((const uint8*)nextfile->GetFileHash());
+			dataGlobGetSources.WriteRaw(nextfile->GetFileHash(),16);
 			iFiles++;
 		}
 	}
