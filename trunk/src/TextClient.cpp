@@ -38,6 +38,8 @@
 
 #include "TextClient.h"
 #include "MD5Sum.h"
+#include "endianfix.h"
+#include "ECSocket.h"
 
 #define CMD_ID_QUIT -1
 #define CMD_ID_HELP 1
@@ -82,7 +84,7 @@ END_EVENT_TABLE()
 //MuleConnection *	conn = NULL;
 //MuleClient *				client;
 char *cmdargs = NULL;
-wxSocketClient *m_ECClient = NULL;
+ECSocket *m_ECClient = NULL;
 bool isConnected = false;
 
 /*
@@ -128,33 +130,6 @@ bool MuleConnection::OnDisconnect()
     return wxConnection::OnDisconnect();
 }
 */
-
-//shakraw - sends and receive string data to/from ECServer
-wxString SendRecvMsg(const wxChar *msg) {
-	wxString response("");
-
-  	size_t len  = (wxStrlen(msg) + 1) * sizeof(wxChar);
-
-	m_ECClient->SetFlags(wxSOCKET_WAITALL);
-	m_ECClient->Write(&len, sizeof(size_t));
-	m_ECClient->WriteMsg(msg, len);
-	if (!m_ECClient->Error()) {
-		// Wait until data available (will also return if the connection is lost)
-		m_ECClient->WaitForRead(10);
-	
-		if (m_ECClient->IsData()) {
-			//lenbuf 
-			m_ECClient->Read(&len, sizeof(size_t));
-			wxChar *result = new wxChar[len]; // read 10Kb at time
-			m_ECClient->ReadMsg(result, len);
-			if (!m_ECClient->Error()) {
-				response.Append(result);
-			}
-			delete[] result;
-		}
-	}
-	return(response);
-}
 
 void ShowGreet() {
 	Show("\n---------------------------------\n");
@@ -230,41 +205,41 @@ int ProcessCommand(int ID) {
 				    break;
  				case CMD_ID_STATS:
 					//Process_Answer(CMD_ID_STATS, conn->Request("STATS", NULL));
-					Process_Answer(CMD_ID_STATS, (char*) SendRecvMsg("STATS").GetData());
+					Process_Answer(CMD_ID_STATS, (char*) m_ECClient->SendRecvMsg("STATS").GetData());
 				break;
  				case CMD_ID_SRVSTAT:
 					//Process_Answer(CMD_ID_SRVSTAT, conn->Request("CONNSTAT", NULL));
-					Process_Answer(CMD_ID_SRVSTAT, (char*) SendRecvMsg("CONNSTAT").GetData());
+					Process_Answer(CMD_ID_SRVSTAT, (char*) m_ECClient->SendRecvMsg("CONNSTAT").GetData());
 				break;
  				case CMD_ID_CONN:
 					//Process_Answer(CMD_ID_CONN, conn->Request("RECONN", NULL));
-					Process_Answer(CMD_ID_CONN, (char*) SendRecvMsg("RECONN").GetData());
+					Process_Answer(CMD_ID_CONN, (char*) m_ECClient->SendRecvMsg("RECONN").GetData());
 				break;
  				case CMD_ID_DISCONN:
 					//Process_Answer(CMD_ID_DISCONN, conn->Request("DISCONN", NULL));
-					Process_Answer(CMD_ID_DISCONN, (char*) SendRecvMsg("DISCONN").GetData());
+					Process_Answer(CMD_ID_DISCONN, (char*) m_ECClient->SendRecvMsg("DISCONN").GetData());
 				break;
  				case CMD_ID_PAUSE:
 					if (sscanf(cmdargs,"%i",&fileID)) {
 						sprintf(reqbuffer,"PAUSE%i",fileID);
 				    	//Process_Answer(CMD_ID_PAUSE, conn->Request(reqbuffer, NULL));
-						Process_Answer(CMD_ID_PAUSE, (char*) SendRecvMsg(reqbuffer).GetData());
+						Process_Answer(CMD_ID_PAUSE, (char*) m_ECClient->SendRecvMsg(reqbuffer).GetData());
 					} else Show("Not a valid number\n");
 				break;
  				case CMD_ID_RESUME:
 					if (sscanf(cmdargs,"%i",&fileID)) {
 						sprintf(reqbuffer,"RESUME%i",fileID);
 				    	//Process_Answer(CMD_ID_RESUME, conn->Request(reqbuffer, NULL));
-						Process_Answer(CMD_ID_RESUME, (char*) SendRecvMsg(reqbuffer).GetData());
+						Process_Answer(CMD_ID_RESUME, (char*) m_ECClient->SendRecvMsg(reqbuffer).GetData());
 					} else Show("Not a valid number\n");
 				break;
  				case CMD_ID_SHOW:
 					if (strncmp(cmdargs,"DL",2)==0) {
 							//Process_Answer(CMD_ID_SHOW, conn->Request("DL_QUEUE", NULL));
-						Process_Answer(CMD_ID_SHOW, (char*) SendRecvMsg("DL_QUEUE").GetData());
+						Process_Answer(CMD_ID_SHOW, (char*) m_ECClient->SendRecvMsg("DL_QUEUE").GetData());
 					} else if (strncmp(cmdargs,"UL",2)==0) {
 							//Process_Answer(CMD_ID_SHOW, conn->Request("UL_QUEUE", NULL));
-						Process_Answer(CMD_ID_SHOW, (char*) SendRecvMsg("UL_QUEUE").GetData());
+						Process_Answer(CMD_ID_SHOW, (char*) m_ECClient->SendRecvMsg("UL_QUEUE").GetData());
 					} else Show("Hint: Use Show DL or Show UL\n");
 				break;
 				default:
@@ -381,7 +356,7 @@ int CamulecmdApp::OnRun() {
 	Show("\nCreating client...\n");
 	//client = new MuleClient;
 	// Create the socket
-	m_ECClient = new wxSocketClient();
+	m_ECClient = new ECSocket();
 	
 	Show("Now, doing connection....\n");
 
@@ -424,7 +399,7 @@ int CamulecmdApp::OnRun() {
 		Show("Connection Failed. Unable to connect to the specified host\n");
 	else {
 		//Authenticate ourself
-		if (SendRecvMsg(wxString::Format("AUTH %s", passwd.GetData())) == "Access Denied") {
+		if (m_ECClient->SendRecvMsg(wxString::Format("AUTH %s", passwd.GetData())) == "Access Denied") {
 			Show("ExternalConn: Access Denied.\n");
 		} else {
 			isConnected=true;
