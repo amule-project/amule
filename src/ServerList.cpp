@@ -174,7 +174,10 @@ bool CServerList::AddServer(CServer* in_server)
 {
 	if (thePrefs::FilterBadIPs()) {
 		if ( !in_server->HasDynIP() && !IsGoodIP( in_server->GetIP() )) {
-			AddLogLineM(false, wxT("AddServer: Server IP is filtered or invalid"));
+			if (thePrefs::GetVerbose()) {
+				AddLogLineM(false, wxT("AddServer: Server IP [ ") +
+					in_server->GetAddress() + wxT(" ] is filtered or invalid"));
+			}
 			return false;
 		}
 	}
@@ -182,7 +185,10 @@ bool CServerList::AddServer(CServer* in_server)
 	// lfroen - it's ok, gui status checked in Notify
 	// if (test_server && theApp.amuledlg) {
 	if (test_server) {
-		AddLogLineM(false, wxT("AddServer: Server is already on list"));
+		if (thePrefs::GetVerbose()) {
+			AddLogLineM(false, wxT("AddServer: Server [ ") +
+				in_server->GetAddress() + wxT(" ] is already on list"));
+		}
 		test_server->ResetFailedCount();
 		Notify_ServerRefresh( test_server );
 		return false;
