@@ -374,12 +374,10 @@ void CDownloadQueue::Process()
 		CPartFile* cur_file = filelist[i];
 		if (cur_file->GetStatus() == PS_READY || cur_file->GetStatus() == PS_EMPTY){
 			datarate += cur_file->Process(downspeed, udcounter);
+		} else {
+			//This will make sure we don't keep old sources to paused and stoped files..
+			cur_file->StopPausedFile();
 		}
-		// Kry - I think I did it on the sources adding ;)
-//		else{
-//			//This will make sure we don't keep old sources to paused and stoped files..
-//			cur_file->StopPausedFile();
-//		}
 	}
 	
 	
