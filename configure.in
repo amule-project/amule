@@ -204,6 +204,7 @@ AC_CHECK_FUNCS([floor ftruncate gettimeofday inet_ntoa memchr memmove memset mkd
 # Other tests
 case "${host}" in
 powerpc-apple-darwin*) LDFLAGS="$LDFLAGS -bind_at_load"
+	USE_GSOCKET="no"
 	;;
 i386-unknown-openbsd*) LIBS="$LIBS -lX11 -L/usr/X11R6/lib"  CXXFLAGS=" $CXXFLAGS -D__OPENBSD__" 
 	;;
@@ -378,7 +379,7 @@ echo "  Should aMule be compiled with systray?                   ${systray}"
 echo "  Should aMule be compiled with safe systray?              ${USE_SAFE_TRAY:-no}"
 echo "  Should aMule be compiled with pure GTK code?             ${gtk}"
 echo "  Should aMule be compiled without bar drawing?            ${DISABLE_PROGRESS:-no}"
-echo "  Should aMule be linked against patched gsocket?          ${USE_24GSOCKET:-no}"
+echo "  Should aMule be linked against patched gsocket?          ${USE_GSOCKET:-no}"
 case "$BUILDAMULECMD" in
 yes)	echo "  Should amulecmd (TextClient) be linked against wxbase?   ${HAVE_AMULECMD:-no}"
 	;;
