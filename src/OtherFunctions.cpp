@@ -32,12 +32,6 @@
 	#include <wx/msw/registry.h>
 #endif
 
-#ifndef __WXMSW__
-	#include "netinet/in.h"	// Needed for ntohl()
-#else
-	#include "winsock.h"
-#endif
-
 #include "OtherFunctions.h"	// Interface declarations
 
 #ifdef HAVE_CONFIG_H
@@ -926,7 +920,7 @@ void PartFileEncoderData::Decode(unsigned char *gapdata, int gaplen, unsigned ch
 	m_part_status.Decode(partdata, partlen);
 
 	// in a first dword - real size
-	uint32 gapsize = ntohl(*((uint32 *)gapdata));
+	uint32 gapsize = ENDIAN_NTOHL(*((uint32 *)gapdata));
 	gapdata += sizeof(uint32);
 	m_gap_status.Realloc(gapsize*2*sizeof(uint32));
 

@@ -39,12 +39,6 @@
 
 #include <wx/debug.h>
 
-#ifndef __WXMSW__
-	#include <netinet/in.h>	// Needed for htonl()
-#else
-	#include <winsock.h>
-#endif
-
 #ifdef __BSD__
 	// glibc -> bsd libc
 	#define round rint
@@ -435,9 +429,9 @@ unsigned CStatistics::GetHistoryForWeb(  // Assemble arrays of sample points for
 			for (unsigned int i = 0; i < cntFilled; i++) {
 				phr = pphr[cntFilled - i - 1];
 				if (phr) {
-					(*graphData)[3 * i    ] = htonl((uint32)(phr->kBpsDownCur * 1024.0));
-					(*graphData)[3 * i + 1] = htonl((uint32)(phr->kBpsUpCur * 1024.0));
-					(*graphData)[3 * i + 2] = htonl((uint32)phr->cntConnections);
+					(*graphData)[3 * i    ] = ENDIAN_HTONL((uint32)(phr->kBpsDownCur * 1024.0));
+					(*graphData)[3 * i + 1] = ENDIAN_HTONL((uint32)(phr->kBpsUpCur * 1024.0));
+					(*graphData)[3 * i + 2] = ENDIAN_HTONL((uint32)phr->cntConnections);
 				} else {
 					(*graphData)[3 * i] = (*graphData)[3 * i + 1] = (*graphData)[3 * i + 2] = 0;
 				}

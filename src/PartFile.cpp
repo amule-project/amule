@@ -28,16 +28,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <wx/defs.h>		// Needed before any other wx/*.h
-#ifdef __WXMSW__
-	#include <winsock.h>
-	#include <wx/msw/winundef.h>
-#else
-	#include <sys/socket.h>
-	#include <netinet/in.h>
-	#include <arpa/inet.h>
-#endif
 
-#include <utime.h>		// Needed for utime()
 #include <wx/intl.h>		// Needed for _
 #include <wx/setup.h>
 #include <wx/filename.h>	// Needed for wxFileName
@@ -2661,7 +2652,7 @@ CPacket *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 			uint32 dwID;
 			#warning We should use the IDHybrid here... but is not implemented yet
 			if(forClient->GetSourceExchangeVersion() > 2) {
-				dwID = ntohl(cur_src->GetUserID());
+				dwID = ENDIAN_NTOHL(cur_src->GetUserID());
 			} else {
 				dwID = cur_src->GetUserID();
 			}

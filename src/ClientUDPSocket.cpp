@@ -28,17 +28,6 @@
 
 #include "Types.h"
 
-#include <cerrno>
-#ifdef __WXMSW__
-	#include <winsock.h>
-#else
-#ifdef __BSD__
-       #include <sys/types.h>
-#endif /* __BSD__ */
-	#include <sys/socket.h>
-	#include <netinet/in.h>
-	#include <arpa/inet.h>
-#endif
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/intl.h>		// Needed for _
 #include <wx/socket.h>

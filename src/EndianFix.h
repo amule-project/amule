@@ -23,23 +23,39 @@
 
 
 #if wxBYTE_ORDER == wxLITTLE_ENDIAN
-        #define ENDIAN_SWAP_16(x) (x)
-        #define ENDIAN_SWAP_I_16(x) {}
-        #define ENDIAN_SWAP_32(x) (x)
-        #define ENDIAN_SWAP_I_32(x) {}
-        #if defined __GNUC__ && __GNUC__ >= 2
-                #define ENDIAN_SWAP_64(x) (x)
-                #define ENDIAN_SWAP_I_64(x) {}
-        #endif
+	#define ENDIAN_SWAP_16(x) (x)
+	#define ENDIAN_SWAP_I_16(x) {}
+	#define ENDIAN_SWAP_32(x) (x)
+	#define ENDIAN_SWAP_I_32(x) {}
+	#if defined __GNUC__ && __GNUC__ >= 2
+		#define ENDIAN_SWAP_64(x) (x)
+		#define ENDIAN_SWAP_I_64(x) {}
+	#endif
+	// ntohs
+	#define ENDIAN_NTOHS(x) ( wxUINT16_SWAP_ALWAYS(x) )
+	// ntohl
+	#define ENDIAN_NTOHL(x) ( wxUINT32_SWAP_ALWAYS(x) )
+	// htons
+	#define ENDIAN_HTONS(x) ( wxUINT16_SWAP_ALWAYS(x) )
+	// htonl
+	#define ENDIAN_HTONL(x) ( wxUINT32_SWAP_ALWAYS(x) )	
 #else
-        #define ENDIAN_SWAP_16(x) (wxUINT16_SWAP_ALWAYS(x))
-        #define ENDIAN_SWAP_I_16(x) x = wxUINT16_SWAP_ALWAYS(x)
-        #define ENDIAN_SWAP_32(x) (wxUINT32_SWAP_ALWAYS(x))
-        #define ENDIAN_SWAP_I_32(x) x = wxUINT32_SWAP_ALWAYS(x)
-        #if defined __GNUC__ && __GNUC__ >= 2
-                #define ENDIAN_SWAP_64(x) (wxUINT64_SWAP_ALWAYS(x))
-                #define ENDIAN_SWAP_I_64(x) x = wxUINT64_FROM_LE(x)
-        #endif
+	#define ENDIAN_SWAP_16(x) (wxUINT16_SWAP_ALWAYS(x))
+	#define ENDIAN_SWAP_I_16(x) x = wxUINT16_SWAP_ALWAYS(x)
+	#define ENDIAN_SWAP_32(x) (wxUINT32_SWAP_ALWAYS(x))
+	#define ENDIAN_SWAP_I_32(x) x = wxUINT32_SWAP_ALWAYS(x)
+	#if defined __GNUC__ && __GNUC__ >= 2
+		#define ENDIAN_SWAP_64(x) (wxUINT64_SWAP_ALWAYS(x))
+		#define ENDIAN_SWAP_I_64(x) x = wxUINT64_FROM_LE(x)
+	#endif
+	// ntohs
+	#define ENDIAN_NTOHS(x) (x) 
+	// ntohl
+	#define ENDIAN_NTOHL(x) (x) 
+	// htons
+	#define ENDIAN_HTONS(x) (x) 
+	// htonl
+	#define ENDIAN_HTONL(x) (x) 	
 #endif
 
 

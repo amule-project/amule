@@ -22,14 +22,6 @@
 #ifndef AMULEIPV4ADDRESS_H
 #define AMULEIPV4ADDRESS_H
 
-#ifdef __WXMSW__
-	#include <winsock.h>
-#else
-	#include <sys/socket.h>		// 
-	#include <netinet/in.h>		// Those three are for htonl
-	#include <arpa/inet.h>		//
-#endif
-
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/object.h>		// Needed by wx/sckaddr.h
 #include <wx/sckaddr.h>		// Needed for wxIPV4address
