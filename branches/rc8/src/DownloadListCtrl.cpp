@@ -1926,13 +1926,13 @@ void CDownloadListCtrl::ShowFilesCount()
 		const CtrlItem_Struct *cur_item = it->second;
 		if (cur_item->type == FILE_TYPE) {
 			CPartFile *file = (CPartFile *) cur_item->value;
-			if (file->GetCategory() == curTab || (!thePrefs::ShowAllNotCats() && file->GetCategory() > 0 && curTab == 0)) {
+			if ( ShowItemInCurrentCat( file, curTab ) {
 				count++;
 			}
 		}
 	}
 
-	wxString fmtstr = wxString::Format(_("Downloads (%i)"), GetItemCount());
+	wxString fmtstr = wxString::Format(_("Downloads (%i)"), count);
 	CastByName( wxT("downloadsLabel"), GetParent(), wxStaticText )->SetLabel(fmtstr);
 }
 
