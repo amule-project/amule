@@ -19,9 +19,6 @@
 // ListenSocket.cpp : implementation file
 //
 
-
-#include <wx/listimpl.cpp>
-
 #include "ListenSocket.h"	// Interface declarations
 #include "otherfunctions.h"	// Needed for md4cpy
 #include "server.h"		// Needed for CServer
@@ -59,6 +56,7 @@ CClientReqSocket::CClientReqSocket(CPreferences* in_prefs,CUpDownClient* in_clie
 	client = in_client;
 	if (in_client) {
 		client->socket = this;
+		//printf("Socket %x set on client %x\n",this, client);
 	}
 	theApp.listensocket->AddSocket(this);
 	ResetTimeOutTimer();
@@ -78,10 +76,12 @@ CClientReqSocket::~CClientReqSocket()
 	Notify(FALSE);
 
 	if (client) {
+		//printf("socket %x for client %x got deleted\n",this, client);
 		client->socket = 0;
 	}
 	client = 0;
 	theApp.listensocket->RemoveSocket(this);
+	
 
 	//DEBUG_ONLY (theApp.clientlist->Debug_SocketDeleted(this));
 }
@@ -118,27 +118,42 @@ void CClientReqSocket::Disconnect()
 	}
 }
 
-/* Kry - this eMule function has no use for us, because we have Destroy()
-
 void CClientReqSocket::Delete_Timed()
 {
 	// it seems that MFC Sockets call socketfunctions after they are deleted,
 	// even if the socket is closed and select(0) is set.
 	// So we need to wait some time to make sure this doesn't happens
-	if (::GetTickCount() - deltimer > 30000) {
+	if (::GetTickCount() - deltimer > 10000) {
 		delete this;
 	}
 }
-*/
+
 void CClientReqSocket::Safe_Delete()
 {
-	//deltimer = ::GetTickCount();
+//	deltimer = ::GetTickCount();
+	
 	// if (m_hSocket != INVALID_SOCKET)
 	//  ShutDown(2);
-	client = NULL;
+	
+
+	if (client) {
+//		printf("Safe Delete of %x that has client %x\n",this,client);
+		client->socket=NULL;
+	}
+	client = NULL;	
+	
+
 	byConnected = ES_DISCONNECTED;
 	deletethis = true;
-	//Destroy();
+
+//	Close();
+/*	
+	if (!OnDestroy) {
+		Close();		
+		OnDestroy = true;		
+		Destroy();	
+	}
+*/	
 }
 
 bool CClientReqSocket::ProcessPacket(char* packet, uint32 size, uint8 opcode)
@@ -960,6 +975,7 @@ void CClientReqSocket::OnError(int nErrorCode)
 
 CClientReqSocket::CClientReqSocket()
 {
+	OnDestroy = false;
 }
 
 bool CClientReqSocket::Close()
@@ -1099,13 +1115,17 @@ void CListenSocket::Process()
 		CClientReqSocket* cur_sock = socket_list.GetAt(pos2);
 		opensockets++;
 
-		if (cur_sock->deletethis) {
+		if (cur_sock->deletethis) {/*
 			if (!cur_sock->OnDestroy) {
-				cur_sock->Destroy();
-				cur_sock->OnDestroy= true;
+					cur_sock->Destroy();
+					cur_sock->OnDestroy= true;
 			}
+			cur_sock->Destroy();
+			*/
+			cur_sock->Delete_Timed();
 		} else {
-			cur_sock->CheckTimeOut();
+			socket_list.GetAt( pos2 )->CheckTimeOut();
+//			cur_sock->CheckTimeOut();
 		}
 	}
 	if ((GetOpenSockets()+5 < app_prefs->GetMaxConnections() || theApp.serverconnect->IsConnecting()) && !bListening) {
@@ -1155,9 +1175,11 @@ void CListenSocket::KillAllSockets()
 	for (POSITION pos = socket_list.GetHeadPosition();pos != 0;) {
 		CClientReqSocket* cur_socket = socket_list.GetNext(pos);
 		if (cur_socket->client) {
-			cur_socket->client->Destroy();
+			//cur_socket->client->Destroy();
+			delete cur_socket->client;
 		} else {
-			cur_socket->Destroy();
+			//cur_socket->Destroy();
+			delete cur_socket;			
 		}
 	}
 }

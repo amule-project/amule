@@ -86,12 +86,12 @@ public:
 	bool		hotrank;
 	CUpDownClient*	client;
 	CPreferences* 	app_prefs;
-
+	void		Delete_Timed();
 
 protected:
 	void		 PacketReceived(Packet* packet);
 private:
-//	void		Delete_Timed();
+	uint32	deltimer;
 	bool		ProcessPacket(char* packet, uint32 size,uint8 opcode);
 	bool		ProcessExtPacket(char* packet, uint32 size,uint8 opcode);
 };
