@@ -1310,33 +1310,49 @@ bool CDownloadQueue::OnHostnameResolved(struct sockaddr_in* inaddr)
 	return TRUE;
 }
 
-wxString CDownloadQueue::getTextList() const
+wxString CDownloadQueue::getTextList( const wxString& file_to_search ) const
 {
-	wxString out;
 	// Search for file(s)
+	// This file can be searched through:
+	// wxString -> Will search through the download queue's filenames
+	// FileId number -> Will return the info about the number of file provided
+	// If no file is specified, then all the downloads-queue list is dumped
+
+	wxString out;
 	int i = 0;
-	for ( 	std::deque<CPartFile *>::const_iterator it = filelist.begin();
+	long filenumber = -1;
+	// values from 0 to infinity are valid FileId values
+	if ( file_to_search.IsNumber() && ! file_to_search.IsEmpty() ) {
+		file_to_search.ToLong(&filenumber);
+	}
+	for ( std::deque<CPartFile *>::const_iterator it = filelist.begin();
 		it != filelist.end();
 		++it, ++i) {
-		CPartFile *file = *it;			
-		out +=
-			wxString::Format(wxT("%i: "), i) +
-			file->GetFileName() +
-			wxString::Format(wxT("\t [%.1f%%] %i/%i - "),
-				file->GetPercentCompleted(),
-				file->GetTransferingSrcCount(), 
-				file->GetSourceCount() ) +
-			file->getPartfileStatus();
-		if (file->GetKBpsDown() > 0.001) {
-			out += wxString::Format(wxT(" %.1f "),(float)file->GetKBpsDown()) + _("kB/s");
+		CPartFile *file = *it;
+		if ( i == filenumber || ( filenumber == -1 && ( file_to_search.IsEmpty() || file->GetFileName().Lower().Find(file_to_search) != -1 ) ) ) {
+			out +=
+				wxString::Format(wxT("%i: "), i) +
+				file->GetFileName() +
+				wxString::Format(wxT("\t [%.1f%%] %i/%i - "),
+					file->GetPercentCompleted(),
+					file->GetTransferingSrcCount(), 
+					file->GetSourceCount() ) +
+				file->getPartfileStatus();
+			if (file->GetKBpsDown() > 0.001) {
+				out += wxString::Format(wxT(" %.1f "),(float)file->GetKBpsDown()) + _("kB/s");
+			}
+			out += wxT("\n");
 		}
-		out += wxT("\n");
 	}
-
-	if (out.IsEmpty()) {
-		out = _("Download queue is empty.");
+	if ( filelist.begin() == filelist.end() )
+		out = wxString(_("Download queue is empty."));
+	else if ( out.IsEmpty() ) {
+		if ( filenumber != -1 )
+			out = wxString::Format(_("There is no slot %li in your download queue."), filenumber);
+		else
+			out = wxString(_("No results were found matching '")) + file_to_search + wxT("'"); 
 	}
-	AddLogLineM(false, out);
-
+	
 	return out;
 }
+
