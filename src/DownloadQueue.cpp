@@ -85,6 +85,7 @@ CDownloadQueue::CDownloadQueue(CPreferences* in_prefs,CSharedFileList* in_shared
 	m_iSearchedServers = 0;
 	m_datarateMS=0;
 	m_nDownDataRateMSOverhead = 0;
+	m_nDownDatarateTotal = 0;
 	m_nDownDatarateOverhead = 0;
 	m_nDownDataOverheadSourceExchange = 0;
 	m_nDownDataOverheadFileRequest = 0;
@@ -123,30 +124,31 @@ void CDownloadQueue::AddPartFilesToShare()
 
 void CDownloadQueue::CompDownDatarateOverhead()
 {
+	// Adding the new overhead
+	m_nDownDatarateTotal += m_nDownDataRateMSOverhead * 10;
 	m_AvarageDDRO_list.push_back( m_nDownDataRateMSOverhead * 10 );
+	
+	// Reset the overhead count
 	m_nDownDataRateMSOverhead = 0;
 	
 	// We want at least 11 elements before we will start doing averages
 	if ( m_AvarageDDRO_list.size() > 10 ) {
-		// Add the difference between (sum)/(number) and (sum + to_add)/(number + 1)
-		// Note that I do not add 1 to size(), because we've already added the item, 
-		// and thus the size is already the correct value.
-		m_nDownDatarateOverhead += ( m_AvarageDDRO_list.back() - m_nDownDatarateOverhead ) / (double)m_AvarageDDRO_list.size();
-
-		// Remove the first element untill we have exactly 150 
+		
+		// Remove the first element untill we have at most 150 items
 		while ( m_AvarageDDRO_list.size() > 150 ) {
-			// Add the difference between (sum)/(number) and (sum - to_remove)/(number - 1)
-			m_nDownDatarateOverhead += ( m_nDownDatarateOverhead - m_AvarageDDRO_list.front() ) / ( (double)m_AvarageDDRO_list.size() - 1 );
-			
+			m_nDownDatarateTotal -= m_AvarageDDRO_list.front();
+		
 			m_AvarageDDRO_list.pop_front();
 		}
 
+		m_nDownDatarateOverhead = m_nDownDatarateTotal / (double)m_AvarageDDRO_list.size();
+
 	} else if ( m_AvarageDDRO_list.size() == 10 ) {
 		// Create the starting average once we have 10 items
-		m_nDownDatarateOverhead = std::accumulate( m_AvarageDDRO_list.begin(),
-		                                           m_AvarageDDRO_list.end(), 0 );
+		m_nDownDatarateTotal = std::accumulate( m_AvarageDDRO_list.begin(),
+		                                      m_AvarageDDRO_list.end(), 0 );
 	
-		m_nDownDatarateOverhead = m_nDownDatarateOverhead / 10.0;
+		m_nDownDatarateOverhead = m_nDownDatarateTotal / 10.0;
 		
 	} else {
 		m_nDownDatarateOverhead = 0;

@@ -175,6 +175,7 @@ private:
 	uint8		udcounter;
 
 	uint64		m_datarateMS;
+	long		m_nDownDatarateTotal;
 	double		m_nDownDatarateOverhead;
 	uint32		m_nDownDataRateMSOverhead;
 	uint64		m_nDownDataOverheadSourceExchange;
