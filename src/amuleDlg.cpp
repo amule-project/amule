@@ -892,8 +892,10 @@ bool CamuleDlg::LoadGUIPrefs(bool override_pos, bool override_size)
 		if (x2 > 0 && y2 > 0) {
 			SetClientSize(x2, y2);
 		} else {
-			// Probably first run.
+#ifndef __WXGTK__
+			// Probably first run. Only works for gtk2
 			Maximize();
+#endif
 		}
 	}
 
