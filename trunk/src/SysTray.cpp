@@ -132,7 +132,7 @@ gchar* getIP()
 	 }
   else {
 
-	printf("Not connected at network with ppp0 direct connection\n");
+//	printf("Not connected at network with ppp0 direct connection\n");
  	 do
   	{
     	interface="eth"+wxString::Format("%d", index);
@@ -142,7 +142,7 @@ gchar* getIP()
       		ip=inet_ntoa(sin->sin_addr);
 		index++;
     	}
-    	else printf(wxString("Not connected at network with ")+interface);
+//    	else printf(wxString("Not connected at network with ")+interface);
 
   	} while (0 == ioctl(sfd, SIOCGIFADDR, &ifr)) ;
 }
@@ -221,8 +221,10 @@ theApp.amuledlg->ShowConnectionState(false);
 
 //disconnect
 void disconnect(){
-if (theApp.serverconnect->IsConnected()) {theApp.serverconnect->Disconnect();}
-else printf("Already disconnected!\n");
+	if (theApp.serverconnect->IsConnected()) {
+		theApp.serverconnect->Disconnect();
+	}
+	//else printf("Already disconnected!\n");
 }
 
 //set download speed
