@@ -737,6 +737,13 @@ void CSharedFilesRem::ProcessItemUpdate(CEC_SharedFile_Tag *tag, CKnownFile *fil
 	for(int i = 0;i < file->GetPartCount();i++) {
 		file->m_AvailPartFrequency[i] = data[i];
 	}
+	file->statistic.requested = tag->GetRequests();
+	file->statistic.alltimerequested = tag->GetAllRequests();
+	file->statistic.accepted = tag->GetAccepts();
+	file->statistic.alltimeaccepted = tag->GetAllAccepts();
+	file->statistic.transfered = tag->GetXferred();
+	file->statistic.alltimetransferred = tag->GetAllXferred();
+
 	theApp.amuledlg->sharedfileswnd->sharedfilesctrl->UpdateItem(file);
 }
 
