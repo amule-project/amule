@@ -30,26 +30,61 @@
 	#include <arpa/inet.h>		//
 #endif
 
+
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/object.h>		// Needed by wx/sckaddr.h
 #include <wx/sckaddr.h>		// Needed for wxIPV4address
+#include <wx/log.h>		// Needed for wxLogWarning
 
+#include "otherfunctions.h"	// Needed for unicode2char
+
+
+// This is fscking hard to maintain. wxWidgets 2.5.2 has changed internal
+// ipaddress structs.
 // prevent fscking dns queries
 class amuleIPV4Address : public wxIPV4address {
   public:
   amuleIPV4Address(void) { }
 #ifndef __WXMSW__  
-  	virtual bool Hostname(unsigned long addr) {
-		return GAddress_INET_SetHostAddress(m_address,addr)==GSOCK_NOERROR;
-	};
-	virtual bool Hostname(char* addr) {
+	virtual bool Hostname(const wxString& name) {
+		// Some people are sometimes fool.
+		if (name == wxT(""))
+		{
+			wxLogWarning( _("Trying to solve a NULL hostname: giving up") );
+			return FALSE;
+		}
+		// m_origHostname is private in wxIPV4address, so, we must put this out.
+		//m_origHostname = name;
+
+		// wxWidgets original implementation
+		//return (GAddress_INET_SetHostName(m_address, name.mb_str()) == GSOCK_NOERROR);
+
+		// aMule no-dns implementation
 		struct in_addr inaddr;
-		inet_aton(addr,&inaddr);
+		inet_aton(unicode2char(name),&inaddr);
+
+		// Starting with wx-2.5.2, this has changed
+		#if wxCHECK_VERSION(2,5,2)
+		inaddr.s_addr = ntohl(inaddr.s_addr);
+		#endif
 		return GAddress_INET_SetHostAddress(m_address,inaddr.s_addr)==GSOCK_NOERROR;
 	}
+  	virtual bool Hostname(unsigned long addr) {
+		bool rv = (GAddress_INET_SetHostAddress(m_address, addr) == GSOCK_NOERROR);
 
+		// m_origHostname is private in wxIPV4address, so, we must put this out.
+#if 0
+		if (rv)
+			// No-DNS, please
+			//m_origHostname = Hostname();
+		else
+			m_origHostname = wxEmptyString;
+#endif
+		return rv;
+	};
 #endif
 
 };
 
 #endif // AMULEIPV4ADDRESS_H
+
