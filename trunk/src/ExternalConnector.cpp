@@ -52,7 +52,7 @@
 //-------------------------------------------------------------------
 const wxCmdLineEntryDesc CaMuleExternalConnector::cmdLineDesc[7] = 
 {
-	{ wxCMD_LINE_OPTION, wxT("h"), wxT("help"),
+	{ wxCMD_LINE_SWITCH, wxT("h"), wxT("help"),
 		wxT("show this help"),
 		wxCMD_LINE_VAL_STRING, wxCMD_LINE_OPTION_HELP },
 	{ wxCMD_LINE_OPTION, wxT("rh"), wxT("remote-host"),
