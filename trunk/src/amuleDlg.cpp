@@ -1,7 +1,7 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2005 aMule Team ( http://www.amule.org )
+// Copyright (c) 2003-2005 aMule Team ( admin@amule.org / http://www.amule.org )
 // Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
@@ -514,6 +514,7 @@ void CamuleDlg::OnAboutButton(wxCommandEvent& WXUNUSED(ev))
 		" Website: http://www.amule.org \n"
 		" Forum: http://forum.amule.org \n"
 		" FAQ: http://wiki.amule.org \n\n"
+		" Contact: admin@amule.org (administrative issues)"
 		" Copyright (C) 2003-2005 aMule Team \n");
 	if (is_safe_state) {
 		wxMessageBox(msg);
