@@ -27,8 +27,10 @@
 #include "types.h"			// Needed for uints
 
 
+class CKnownFile;
 class CPartFile;
 struct QueuedFile;
+class CFile;
 
 
 /**
@@ -36,7 +38,7 @@ struct QueuedFile;
  * throws events once a file has been completed. By default it only uses a 
  * single thread, however, this can be changed by incrementing the MAXTHREADCOUNT
  * constant in AddFileThread.cpp. Each thread works by reading a chunk of the 
- * file (CRUMBSIZE bytes, see AddFileThread.cpp) and hashing that. Once there 
+ * file (PARTSIZE bytes, see AddFileThread.cpp) and hashing that. Once there 
  * are no more files to hash, the threads die.
  *
  * You need to call Start() before the class will start spawning new threads, 
@@ -52,7 +54,18 @@ struct QueuedFile;
 class CAddFileThread : private wxThread
 {
 public:
+	/**
+	 * Constructor.
+	 */
 	CAddFileThread();
+
+	/**
+	 * Destructor.
+	 *
+	 * Upon destruction of the last thread, a wxEVT_CORE_FILE_HASHING_SHUTDOWN
+	 * event will be sent the application object.
+	 */
+	~CAddFileThread();
 
 	/**
 	 * Starts the hasher.
@@ -136,7 +149,23 @@ private:
 	 * do not attempt to delete it afterwards.
 	 */
 	static void RemoveFromQueue(QueuedFile* file);
-	 
+	
+
+	/**
+	 * Helper function for hashing the next PARTSIZE chunk of a file.
+	 *
+	 * @param file The file to read from.
+	 * @param owner The known- (or part) file representing that file.
+	 * @bool createAICH Specifies if AICH hash-sets should be created as well.
+	 * @return Returns false on read-errors, true otherwise.
+	 *
+	 * This function will create a MD4 hash and, if specified, a AICH hashset for 
+	 * the next part of the file. This function makes the assumption that it wont
+	 * be called for closed or EOF files.
+	 */
+	static bool CreateNextPartHash( CFile* file, CKnownFile* owner, bool createAICH );
+
+	
 
 	//! Sets the IsRunning status
 	static void		SetRunning(bool running);

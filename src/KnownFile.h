@@ -206,11 +206,11 @@ public:
 	CAICHHashSet*	GetAICHHashset() const							{return m_pAICHHashSet;}
 	void			SetAICHHashset(CAICHHashSet* val)				{m_pAICHHashSet = val;}		
 	
+	void	CreateHashFromString(uchar* in_string, uint32 Length, uchar* Output, CAICHHashTree* pShaHashOut = NULL)	{CreateHashFromInput(NULL, Length,Output,in_string,pShaHashOut);}
 protected:
 	bool	LoadTagsFromFile(const CFile* file);
 	bool	LoadDateFromFile(const CFile* file);
 	void	CreateHashFromFile(CFile* file, uint32 Length, uchar* Output, CAICHHashTree* pShaHashOut = NULL) const { CreateHashFromInput(file, Length, Output, NULL, pShaHashOut); }	
-	void	CreateHashFromString(uchar* in_string, uint32 Length, uchar* Output, CAICHHashTree* pShaHashOut = NULL)	{CreateHashFromInput(NULL, Length,Output,in_string,pShaHashOut);}
 	void	LoadComment();//comment
 	void GetMetaDataTags();
 	ArrayOfCMD4Hash hashlist;
