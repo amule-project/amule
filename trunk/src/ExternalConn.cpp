@@ -786,7 +786,7 @@ CECPacket *Get_EC_Response_Set_SharedFile_Prio(const CECPacket *request)
 	for (int i = 0;i < request->GetTagCount();i++) {
 		const CECTag *tag = request->GetTagByIndex(i);
 		CMD4Hash hash = tag->GetMD4Data();
-		uint8 prio = tag->GetTagByIndexSafe(0)->GetInt32Data();
+		uint8 prio = tag->GetTagByIndexSafe(0)->GetInt8Data();
 		CKnownFile* cur_file = theApp.sharedfiles->GetFileByID(hash);
 		if ( !cur_file ) {
 			continue;

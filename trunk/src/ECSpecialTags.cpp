@@ -684,7 +684,7 @@ CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, CValueMap &valuem
 	valuemap.CreateTag(EC_TAG_KNOWNFILE_XFERRED_ALL, file->statistic.GetAllTimeTransfered(), this);
 	
 	valuemap.CreateTag(EC_TAG_PARTFILE_PRIO,
-		(uint32)(file->IsAutoUpPriority() ? file->GetUpPriority() + 10 : file->GetUpPriority()), this);
+		(uint8)(file->IsAutoUpPriority() ? file->GetUpPriority() + 10 : file->GetUpPriority()), this);
 	
 	valuemap.CreateTag(EC_TAG_PARTFILE_NAME, file->GetFileName(), this);
 	valuemap.CreateTag(EC_TAG_PARTFILE_SIZE_FULL, file->GetFileSize(), this);
@@ -705,7 +705,7 @@ CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, EC_DETAIL_LEVEL d
 	AddTag(CECTag(EC_TAG_KNOWNFILE_XFERRED_ALL, file->statistic.GetAllTimeTransfered()));
 	
 	AddTag(CECTag(EC_TAG_PARTFILE_PRIO,
-		(uint32)(file->IsAutoUpPriority() ? file->GetUpPriority() + 10 : file->GetUpPriority())));
+		(uint8)(file->IsAutoUpPriority() ? file->GetUpPriority() + 10 : file->GetUpPriority())));
 
 	if (detail_level == EC_DETAIL_UPDATE) {
 			return;
