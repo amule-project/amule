@@ -267,10 +267,6 @@ amule_SOURCES += CryptoPP.cpp
 amuled_SOURCES += CryptoPP.cpp
 endif
 
-if ADD_THROTTLER
-amule_SOURCES += UploadBandwidthThrottler.cpp
-endif
-
 amule_CFLAGS = $(UTF8_SYSTRAY_FLAGS) $(TRAY_FLAGS) $(WX_CXXFLAGS) $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFLAGS)
 amule_CXXFLAGS = $(UTF8_SYSTRAY_FLAGS) $(TRAY_FLAGS) $(WX_CXXFLAGS) $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFLAGS) $(CURL_FLAGS)
 amule_LDADD = $(WX_LIBS) $(ZLIB_LIBS) $(CURL_LIBS) $(CRYPTOLIBS)

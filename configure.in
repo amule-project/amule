@@ -127,18 +127,12 @@ AC_ARG_ENABLE(utf8_systray, [  --enable-utf8-systray   Use UTF-8 encoded strings
 AC_ARG_ENABLE(systray, [  --disable-systray       Disable SysTray compilation],
 			systray="$enableval", systray="yes")
 
-AC_ARG_ENABLE(uss, [  --enable-uss            Enable USS (not working atm)],
-		USE_USS="$enableval", USE_USS="no")
-		
 AC_ARG_ENABLE([verbose],
 	AC_HELP_STRING([--enable-verbose],[Enable verbose debug output]),
 	[VERBOSE_OUTPUT="$enableval"], [VERBOSE_OUTPUT="no"])
 
 AC_ARG_ENABLE(monolithic, AC_HELP_STRING([--disable-monolithic],[Disable building of the monolithic aMule app.]),
 	MONOLITHIC="$enableval", MONOLITHIC="yes")
-
-AC_ARG_ENABLE(unicode_network, AC_HELP_STRING([--enable-unicode-network],[Enable the use of unicoded network (EXPERIMENTAL)]),
-	[UNINET="$enableval"], [UNINET="no"])
 
 # Checking for libs before all other stuff to break
 # configure as soon as possible in case of a missing one
@@ -574,13 +568,11 @@ AM_CONDITIONAL(COMPILE_CMD, test x$BUILD_AMULECMD = xyes)
 AM_CONDITIONAL(HAVE_WXBASE, test x$HAVE_AMULECMD = xyes)
 AM_CONDITIONAL(ADD_24GSOCKET, test x$USE_24GSOCKET = xyes)
 AM_CONDITIONAL(ADD_GSOCKET, test x$USE_GSOCKET = xyes)
-AM_CONDITIONAL(ADD_THROTTLER, test x$USE_USS = xyes)
 AM_CONDITIONAL(HAVE_TRAY, test x$systray = xyes)
 AM_CONDITIONAL(HAVE_UTF8_TRAY, test x$utf8_systray = xyes)
 AM_CONDITIONAL(HAVE_GTK, test x$gtk = xyes)
 AM_CONDITIONAL(VERBOSE_OUTPUT, test x$USE_DEBUG = xyes -a x$VERBOSE_OUTPUT = xyes)
 AM_CONDITIONAL(MONOLITHIC, test x$MONOLITHIC = xyes)
-AM_CONDITIONAL(UNICODE_NET, test x$UNINET = xyes)
 
 dnl
 dnl Check for readline library
@@ -660,14 +652,12 @@ echo
 echo "  **** aMule Core ****" 
 echo "  Should aMule be compiled in debug mode?                  ${USE_DEBUG:-no}"
 echo "  Should aMule be compiled with verbose console output?    ${VERBOSE_OUTPUT:-no}"
-echo "  Should aMule be compiled with upload speed sense?        ${USE_USS:-no}"
 echo "  Should aMule be compiled with profiling?                 ${USE_PROFILE:-no}"
 echo "  Should aMule be compiled with optimizations?             ${USE_OPTIMIZE:-no}"
 echo "  Should aMule be compiled with systray?                   ${systray}"
 echo "  Should aMule be compiled with UTF-8 systray?             ${utf8_systray}"
 echo "  Should aMule be compiled with pure GTK code?             ${gtk}"
 echo "  Should aMule be linked against patched gsocket?          ${USE_GSOCKET:-no}"
-echo "  Should aMule be compiled with unicode network?           ${UNINET:-no}"
 echo "  Should aMule monolithic application be built?            ${MONOLITHIC:-no}"
 echo "  Should aMule daemon version be built? (EXPERIMENTAL)     ${AMULE_DAEMON:-no}"
 echo "  Should aMule remote gui be built? (EXPERIMENTAL)         ${AMULE_GUI:-no}"
