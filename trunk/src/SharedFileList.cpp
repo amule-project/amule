@@ -250,15 +250,22 @@ void CSharedFileList::SendListToServer(){
 	server->SendPacket(packet,true);
 }
 
-CKnownFile* CSharedFileList::GetFileByIndex(int index){
-        int count=0;
-
-	for (CKnownFileMap::iterator pos = m_Files_map.begin();
-	     pos != m_Files_map.end(); pos++ ) {
-                if (index==count) return pos->second;
-                count++;
+const CKnownFile *CSharedFileList::GetFileByIndex(unsigned int index) const {
+	if ( index >= m_Files_map.size() ) {
+		return NULL;
+	}
+	unsigned int count = 0;
+	for ( 	CKnownFileMap::const_iterator pos = m_Files_map.begin();
+		pos != m_Files_map.end();
+		++pos ) {
+		if ( index == count ) {
+			return pos->second;
+		}
+		++count;
         }
-        return 0;
+	// Should never return here
+	wxASSERT(0);
+        return NULL;
 }
 
 void CSharedFileList::CreateOfferedFilePacket(CKnownFile* cur_file,CSafeMemFile* files, bool fromserver){

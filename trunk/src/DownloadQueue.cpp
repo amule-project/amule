@@ -426,16 +426,17 @@ CPartFile* CDownloadQueue::GetFileByID(const CMD4Hash& filehash) const {
 	return NULL;
 }
 
-CPartFile* CDownloadQueue::GetFileByIndex(int index) const {
-//      if (index>=filelist.GetCount()) return 0;
-	int count=0;
-
-	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
-		if (count==index) {
+CPartFile* CDownloadQueue::GetFileByIndex(unsigned int index) const {
+	if ( index >= filelist.size() ) {
+		return NULL;
+	}
+	for ( unsigned int i = 0; i < filelist.size(); ++i ) {
+		if ( i == index ) {
 			return filelist[i];
 		}
-		count++;
 	}
+	// Should never return here
+	wxASSERT(0);
 	return NULL;
 }
 
