@@ -87,7 +87,11 @@ ExternalConn::ExternalConn()
 		wxIPV4address addr;
 		addr.Service(port);
 		// Create the socket
-		m_ECServer = new ECSocket(addr, *this, SERVER_ID);
+#ifdef AMULE_DAEMON
+		m_ECServer = new ECSocket(addr, 0);
+#else
+		m_ECServer = new ECSocket(addr, this, SERVER_ID);
+#endif
 		if (m_ECServer->Ok()) {
 			printf("ECServer listening on port %d.\n\n", port);
 #ifdef AMULE_DAEMON

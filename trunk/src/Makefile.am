@@ -36,8 +36,11 @@ if ED2K
 bin_PROGRAMS += ed2k
 endif
 
-if CORE_GUI
+if AMULE_GUI
 bin_PROGRAMS += amulegui
+endif
+
+if AMULE_DAEMON
 bin_PROGRAMS += amuled
 endif
 
@@ -174,7 +177,6 @@ amuled_SOURCES = ListenSocket.cpp \
         ClientUDPSocket.cpp \
         DownloadClient.cpp \
         DownloadQueue.cpp \
-	ECSocket.cpp \
         ED2KLink.cpp \
         ExternalConn.cpp \
         filemem.cpp \

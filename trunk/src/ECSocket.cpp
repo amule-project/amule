@@ -31,19 +31,18 @@ ECSocket::ECSocket()
 	m_sock = new wxSocketClient();
 }
 
-ECSocket::ECSocket(wxSockAddress& address, wxEvtHandler& handler, int id)
+ECSocket::ECSocket(wxSockAddress& address, wxEvtHandler *handler, int id)
 {
 	m_type = AMULE_EC_SERVER;
 	m_sock = new wxSocketServer(address, wxSOCKET_WAITALL|wxSOCKET_REUSEADDR);
-#ifndef AMULE_DAEMON
-	if(m_sock->Ok()) {
+	if(m_sock->Ok() && handler) {
 		// Setup the event handler and subscribe to connection events
-		m_sock->SetEventHandler(handler, id);
+		m_sock->SetEventHandler(*handler, id);
 		m_sock->SetNotify(wxSOCKET_CONNECTION_FLAG);
 		m_sock->Notify(true);
 	}
-#endif
 }
+
 
 ECSocket::~ECSocket()
 {
