@@ -21,12 +21,12 @@
 
 
 #include "ListenSocket.h"	// Interface declarations
+#include "amule.h"		// Needed for theApp
 #include "otherfunctions.h"	// Needed for md4cpy
 #include "server.h"		// Needed for CServer
 #include "ServerList.h"		// Needed for CServerList
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "updownclient.h"	// Needed for CUpDownClient
-#include "amule.h"		// Needed for theApp
 #include "opcodes.h"		// Needed for CONNECTION_TIMEOUT
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "ClientList.h"		// Needed for CClientList
