@@ -44,7 +44,7 @@ class GUIEvent {
 		byte_value 		= 0;
 		long_value 		= 0;
 		longlong_value 	= 0;
-		string_value 	= wxT("");
+		string_value 	= wxEmptyString;
 		ptr_value			= NULL;
 	};
 	
