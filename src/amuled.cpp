@@ -111,36 +111,24 @@
 
 BEGIN_EVENT_TABLE(CamuleApp, wxAppConsole)
 
-	// Socket handlers
-		// Listen Socket
-		EVT_SOCKET(LISTENSOCKET_HANDLER, CamuleApp::ListenSocketHandler)
-		// Clients sockets
-		//EVT_SOCKET(CLIENTREQSOCKET_HANDLER, CamuleApp::ClientReqSocketHandler)
-		// UDP Socket (servers)
-		EVT_SOCKET(UDPSOCKET_HANDLER, CamuleApp::UDPSocketHandler)
-		// UDP Socket (clients)
-		EVT_SOCKET(CLIENTUDPSOCKET_HANDLER, CamuleApp::ClientUDPSocketHandler)
-		// Server Socket
-		//EVT_SOCKET(SERVERSOCKET_HANDLER, CamuleApp::ServerSocketHandler)
-
 	// Socket timers (TCP + UDO)
-		EVT_CUSTOM(wxEVT_AMULE_TIMER, TM_UDPSOCKET, CamuleApp::OnUDPTimer)
-		EVT_CUSTOM(wxEVT_AMULE_TIMER, TM_TCPSOCKET, CamuleApp::OnTCPTimer)
+	EVT_CUSTOM(wxEVT_AMULE_TIMER, TM_UDPSOCKET, CamuleApp::OnUDPTimer)
+	EVT_CUSTOM(wxEVT_AMULE_TIMER, TM_TCPSOCKET, CamuleApp::OnTCPTimer)
 
 	// Core timer is OnRun
-		EVT_CUSTOM(wxEVT_NOTIFY_EVENT, -1, CamuleApp::OnNotifyEvent)
+	EVT_CUSTOM(wxEVT_NOTIFY_EVENT, -1, CamuleApp::OnNotifyEvent)
 
 	// Async dns handling
-	        EVT_CUSTOM(wxEVT_CORE_DNS_DONE, -1, CamuleApp::OnDnsDone)
-		
-	        EVT_CUSTOM(wxEVT_CORE_SOURCE_DNS_DONE, -1, CamuleApp::OnSourcesDnsDone)
+        EVT_CUSTOM(wxEVT_CORE_DNS_DONE, -1, CamuleApp::OnDnsDone)
+	
+        EVT_CUSTOM(wxEVT_CORE_SOURCE_DNS_DONE, -1, CamuleApp::OnSourcesDnsDone)
 
 	// Hash ended notifier
-		EVT_CUSTOM(wxEVT_CORE_FILE_HASHING_FINISHED, -1, CamuleApp::OnFinishedHashing)
+	EVT_CUSTOM(wxEVT_CORE_FILE_HASHING_FINISHED, -1, CamuleApp::OnFinishedHashing)
 	// Hashing thread finished and dead
-		EVT_CUSTOM(wxEVT_CORE_FILE_HASHING_SHUTDOWN, -1, CamuleApp::OnHashingShutdown)
+	EVT_CUSTOM(wxEVT_CORE_FILE_HASHING_SHUTDOWN, -1, CamuleApp::OnHashingShutdown)
 	// File completion ended notifier
-		EVT_CUSTOM(wxEVT_CORE_FINISHED_FILE_COMPLETION, -1, CamuleApp::OnFinishedCompletion)
+	EVT_CUSTOM(wxEVT_CORE_FINISHED_FILE_COMPLETION, -1, CamuleApp::OnFinishedCompletion)
 END_EVENT_TABLE()
 
 IMPLEMENT_APP(CamuleApp)
@@ -1298,116 +1286,6 @@ void CamuleApp::SetOSFiles(const wxString new_path) {
 }
 
 
-void CamuleApp::ListenSocketHandler(wxSocketEvent& event) {
-
-	wxASSERT(event.GetSocket()->IsKindOf(CLASSINFO(CListenSocket)));
-	CListenSocket * socket = (CListenSocket*) event.GetSocket();
-
-	if(!IsReady || !socket) {
-		// we are not mentally ready to receive anything
-		// or there is no socket on the event (got deleted?)
-		return;
-	}
-
-	switch(event.GetSocketEvent()) {
-		case wxSOCKET_CONNECTION:
-			socket->OnAccept(0);
-			break;
-		default:
-			// shouldn't get other than connection events...
-			wxASSERT(0);
-			break;
-	}
-
-}
-
-
-void CamuleApp::UDPSocketHandler(wxSocketEvent& event) {
-
-	wxASSERT(event.GetSocket()->IsKindOf(CLASSINFO(CUDPSocket)));
-	CUDPSocket * socket = (CUDPSocket*) event.GetSocket();
-
-	if(!IsReady || !socket) {
-		// we are not mentally ready to receive anything
-		// or there is no socket on the event (got deleted?)
-		return;
-	}
-
-	switch(event.GetSocketEvent()) {
-		case wxSOCKET_INPUT:
-			socket->OnReceive(0);
-			break;
-		default:
-			wxASSERT(0);
-			break;
-	}
-
-}
-
-
-void CamuleApp::ServerSocketHandler(wxSocketEvent& event) {
-	//printf("Got a server event\n");
-	//wxMessageBox(wxString::Format("Got Server Event %u",event.GetSocketEvent()));
-
-	wxASSERT(event.GetSocket()->IsKindOf(CLASSINFO(CServerSocket)));
-	CServerSocket * socket = (CServerSocket*) event.GetSocket();
-
-	if(!IsReady || !socket) {
-		// we are not mentally ready to receive anything
-		// or there is no socket on the event (got deleted?)
-		return;
-	}
-
-	if (socket->OnDestroy()) {
-		return;
-	}
-
-	switch(event.GetSocketEvent()) {
-		case wxSOCKET_CONNECTION:
-			socket->OnConnect(wxSOCKET_NOERROR);
-			break;
-		case wxSOCKET_LOST:
-			socket->OnError(socket->LastError());
-			break;
-		case wxSOCKET_INPUT:
-			socket->OnReceive(wxSOCKET_NOERROR);
-			break;
-		case wxSOCKET_OUTPUT:
-			socket->OnSend(wxSOCKET_NOERROR);
-			break;
-		default:
-			wxASSERT(0);
-			break;
-	}
-
-
-}
-
-void CamuleApp::ClientUDPSocketHandler(wxSocketEvent& event) {
-
-	wxASSERT(event.GetSocket()->IsKindOf(CLASSINFO(CClientUDPSocket)));
-	CClientUDPSocket * socket = (CClientUDPSocket*) event.GetSocket();
-
-	if(!IsReady || !socket) {
-		// we are not mentally ready to receive anything
-		// or there is no socket on the event (got deleted?)
-		return;
-	}
-
-	switch(event.GetSocketEvent()) {
-		case wxSOCKET_INPUT:
-			socket->OnReceive(0);
-			break;
-		case wxSOCKET_OUTPUT:
-			socket->OnSend(0);
-			break;
-		default:
-			wxASSERT(0);
-			break;
-	}
-
-}
-
 void CamuleApp::OnDnsDone(wxEvent& e)
 {
 	wxMuleInternalEvent& evt = *((wxMuleInternalEvent*)&e);
@@ -1678,6 +1556,16 @@ void CamuleApp::NotifyEvent(GUIEvent event)
 				searchlist->m_searchpacket = 0;
 			}
 			break;
+	        case SEARCH_ADD_TO_DLOAD:
+			downloadqueue->AddSearchToDownload((CSearchFile *)event.ptr_value, event.byte_value);
+			break;
+		case DOWNLOAD_CTRL_ADD_SOURCE:
+		/*
+		printf("ADD_SOURCE: adding source %p to partfile %s\n",
+		       event.ptr_aux_value, ((CPartFile*)event.ptr_value)->GetFullName().c_str());
+		*/
+		break;
+
 		// log is not unicode-compatible. And it shouldn't be.
 		// FIXME: write to file, enable sending log to webserver
 		case ADDLOGLINE:
@@ -1698,7 +1586,7 @@ bool CamuleApp::AddServer(CServer *srv)
 	return serverlist->AddServer(srv) ? true : false;
 }
 
-CFriend *CamuleApp::FindFriend(CMD4Hash *hash, uint32 ip, uint16 port)
+CFriend *CamuleApp::FindFriend(CMD4Hash *WXUNUSED(hash), uint32 WXUNUSED(ip), uint16 WXUNUSED(port))
 {
 // 	if ( amuledlg && amuledlg->chatwnd ) {
 // 		return 	amuledlg->chatwnd->FindFriend(*hash, ip, port);
@@ -1757,7 +1645,10 @@ void CamuleApp::RunAICHThread()
 {
 	
 	CAICHSyncThread* AICH_Thread = new CAICHSyncThread();
-	AICH_Thread->Create();
+	if ( AICH_Thread->Create() != wxTHREAD_NO_ERROR ) {
+		AddLogLineM(true, _("CamuleApp: can't create AICH thread"));
+		return;
+	}
 	AICH_Thread->SetPriority(WXTHREAD_DEFAULT_PRIORITY-10); // slightly less than main
 	AICH_Thread->Run();
 	
