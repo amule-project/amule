@@ -2,9 +2,11 @@ bin_PROGRAMS =
 
 dist_icon_DATA =
 dist_util_DATA =
+dist_doc_DATA = 
 
 icondir = $(datadir)/pixmaps
 utildir = $(datadir)/applications
+docdir = $(datadir)/doc/$(PACKAGE)-$(VERSION)
 
 if GUI
 bin_PROGRAMS += amulecmdDLG
@@ -39,6 +41,8 @@ if WXCAS
 bin_PROGRAMS += wxcas
 dist_icon_DATA += utils/wxCas/pixmaps/wxcas.xpm
 dist_util_DATA += utils/wxCas/wxcas.desktop
+dist_doc_DATA += utils/wxCas/doc/wxcas_reference_manual.pdf \
+	utils/wxCas/doc/wxcas_user_manual.pdf
 endif
 
 if ED2K
