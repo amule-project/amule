@@ -35,6 +35,8 @@
 	#include <wx/msw/winundef.h>
 #endif
 
+#pragma implementation
+
 #include "amule.h"
 #include "config.h"		// Needed for PACKAGE_NAME and PACKAGE_STRING
 #include "otherfunctions.h"
