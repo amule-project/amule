@@ -129,19 +129,21 @@ void CClientReqSocket::OnClose(int nErrorCode)
 
 void CClientReqSocket::Disconnect(CString strReason){
 	//AsyncSelect(0);
-	byConnected = ES_DISCONNECTED;
-	if (!client) {
-		Safe_Delete();
-	} else {
-		if(client->Disconnected(strReason, true)){
-			CUpDownClient* temp = client;
-			client->socket = NULL;
-			client = NULL;
-			delete temp;
+	if (byConnected != ES_DISCONNECTED) {
+		byConnected = ES_DISCONNECTED;
+		if (!client) {
 			Safe_Delete();
 		} else {
-			client = NULL;
-			Safe_Delete();
+			if(client->Disconnected(strReason, true)){
+				CUpDownClient* temp = client;
+				client->socket = NULL;
+				client = NULL;
+				delete temp;
+				Safe_Delete();
+			} else {
+				client = NULL;
+				Safe_Delete();
+			}
 		}
 	}
 };
