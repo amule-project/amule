@@ -8,13 +8,12 @@ msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: Alex Thomsen Leth <alexl@stofanet.dk>\n"
 "POT-Creation-Date: 2004-03-11 02:20+0100\n"
-"PO-Revision-Date: 2004-03-11 00:13+0100\n"
+"PO-Revision-Date: 2004-03-11 12:58+0100\n"
 "Last-Translator: Alex Thomsen Leth <alexl@stofanet.dk>\n"
 "Language-Team: aMule Team <http://www.amule.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=ISO-8859-15\n"
-"Content-Transfer-Encoding: 8bit\n"
-
+"Content-Transfer-Encoding: 8bit"
 
 #: src/AddFriend.cpp:39
 msgid "Add a Friend"
@@ -27,7 +26,7 @@ msgstr "Du skal indtaste en brugbar IP og port"
 #: src/amule.cpp:563
 #, c-format
 msgid "Port %d is not available. You will be LOWID"
-msgstr "Port %d er ikke tilgængelig. Du får LOWID"
+msgstr "Port %d er ikke tilgængelig. Du får LAVID"
 
 #: src/amule.cpp:565
 #, c-format
@@ -60,7 +59,7 @@ msgstr "Kunne ikke gemme"
 
 #: src/amule.cpp:830
 msgid " OnlineSig File"
-msgstr ""
+msgstr " OnlineSig Fil"
 
 #: src/amule.cpp:1163
 msgid ""
@@ -80,26 +79,27 @@ msgstr ""
 msgid ""
 "Unable to launch browser. Please set correct browserexecutable path in "
 "Preferences."
-msgstr ""
+msgstr "Kunne ikke starte din browser. Vælg venligt en korekt sti til den under indstillinger."
 
 #: src/amule.cpp:1291
 #, c-format
 msgid ""
 " --- This is the first time you run aMule %s ---\n"
 "\n"
-msgstr ""
+msgstr " --- Dette er første fanf du kører aMule %s ---\n"
+"\n"
 
 #: src/amule.cpp:1294
 msgid "This version is a testing version, updated daily, and \n"
-msgstr ""
+msgstr "Denne version er en test version, opdateret daglig, og \n"
 
 #: src/amule.cpp:1295
 msgid "we give no warranty it won't break anything, burn your house,\n"
-msgstr ""
+msgstr "Vi giver ikke garanti for at det ikke vil ødelægge noget, brænde dit hus,\n"
 
 #: src/amule.cpp:1296
 msgid "or kill your dog. But it *should* be safe to use anyway. \n"
-msgstr ""
+msgstr "eller dræbe din hund, Men det skulle være sikkert at bruge. \n"
 
 #: src/amule.cpp:1298
 msgid "This version has new SecureHash support, so your \n"
@@ -107,7 +107,7 @@ msgstr ""
 
 #: src/amule.cpp:1299
 msgid "client credits will be lost on this first run. \n"
-msgstr ""
+msgstr "klient kredits vil gå tabt ved denne første kørsel \n"
 
 #: src/amule.cpp:1300
 msgid "There is no way to fix that, and eMule did the same.\n"
@@ -131,11 +131,11 @@ msgstr ""
 
 #: src/amule.cpp:1318
 msgid "Feel free to report any bugs to forum.amule.org"
-msgstr ""
+msgstr "Reporter gerne alle fejl på forum.amule.org"
 
 #: src/amule.cpp:1320
 msgid "Info"
-msgstr ""
+msgstr "Info"
 
 #: src/amuleDlg.cpp:280
 msgid "Desktop integration"
@@ -276,7 +276,7 @@ msgstr "Anmoder om delte filer fra '%s'"
 #: src/BaseClient.cpp:1537
 #, c-format
 msgid "Requesting shared files from user %s (%u) is already in progress"
-msgstr ""
+msgstr "Anmoder bruger %s (%u) om delte filer, allerede igang."
 
 #: src/BaseClient.cpp:1570
 #, c-format
@@ -382,15 +382,15 @@ msgstr "*** Ikke Forbundet"
 
 #: src/ClientCredits.cpp:180 src/ClientCredits.cpp:230
 msgid "Failed to load creditfile"
-msgstr ""
+msgstr "Fejl ved indlæsning af kreditfil"
 
 #: src/ClientCredits.cpp:265
 msgid "Credits expired!"
-msgstr ""
+msgstr "Kredit udløbet!"
 
 #: src/ClientCredits.cpp:282
 msgid "Failed to save creditfile"
-msgstr "Kunne ikke gemme creditfil"
+msgstr "Kunne ikke gemme kreditfil"
 
 #: src/ClientCredits.cpp:457
 msgid "IDS_CRYPT_INITFAILED|n"
@@ -583,7 +583,7 @@ msgstr ""
 
 #: src/DownloadListCtrl.cpp:295
 msgid "Extended Options"
-msgstr ""
+msgstr "Udvidet Muligheder"
 
 #: src/DownloadListCtrl.cpp:298
 msgid "&Open the file"
@@ -603,7 +603,7 @@ msgstr "Vis alle kommentarer"
 
 #: src/DownloadListCtrl.cpp:303 src/SearchListCtrl.cpp:132
 msgid "Check Fake"
-msgstr ""
+msgstr "Tjek om filen er falsk"
 
 #: src/DownloadListCtrl.cpp:305
 msgid "C&lear completed"
@@ -620,11 +620,11 @@ msgstr "Kopier ED2k-Link til udklipsholder (&HTML)"
 
 #: src/DownloadListCtrl.cpp:321
 msgid "unassign"
-msgstr ""
+msgstr "fjern fra ketegori"
 
 #: src/DownloadListCtrl.cpp:325
 msgid "Assign to category"
-msgstr ""
+msgstr "Flyt til kategori"
 
 #: src/DownloadListCtrl.cpp:333
 msgid "Show Lists"
@@ -636,7 +636,7 @@ msgstr "Skjul Liste"
 
 #: src/DownloadListCtrl.cpp:345
 msgid "Preview ["
-msgstr ""
+msgstr "Smug Kig ["
 
 #: src/DownloadListCtrl.cpp:392 src/FriendListCtrl.cpp:109
 #: src/QueueListCtrl.cpp:141 src/QueueListCtrl.cpp:175
@@ -710,7 +710,7 @@ msgstr "Auto [No]"
 #: src/DownloadListCtrl.cpp:1000 src/SharedFilesCtrl.cpp:171
 #: src/SharedFilesCtrl.cpp:455
 msgid "Auto [Hi]"
-msgstr ""
+msgstr "Auto [Hø]"
 
 #: src/DownloadListCtrl.cpp:1238
 #, c-format
@@ -782,7 +782,7 @@ msgstr "Ingen brugbare dele"
 
 #: src/DownloadListCtrl.cpp:1327
 msgid "Cannot connect LowID to LowID"
-msgstr "Kan ikke forbinde LowID til LowID"
+msgstr "Kan ikke forbinde LavID til LavID"
 
 #: src/DownloadListCtrl.cpp:1330
 msgid "Too many connections"
@@ -862,7 +862,7 @@ msgstr "færdig"
 #: src/filefn.cpp:134
 #, c-format
 msgid "Failed to copy the file '%s' to '%s'"
-msgstr ""
+msgstr "Fejlede ved kopiering af fil '%s' til '%s'"
 
 #: src/filefn.cpp:150
 #, c-format
@@ -912,7 +912,7 @@ msgstr "Downloader..."
 #: src/IPFilter.cpp:185
 #, c-format
 msgid "Loaded ipfilter with %d IP addresses."
-msgstr ""
+msgstr "Indlæste ipfilter med IP adresse %d."
 
 #: src/KnownFileList.cpp:93
 msgid "Error: the file known.met is corrupted, unable to load known files"
@@ -1052,7 +1052,7 @@ msgid ""
 "you must specify which desktop you are using.\n"
 "You can change this later from preferences."
 msgstr ""
-"For at få amule til at integrere med værktøjslinjen,\n"
+"For at få amule til at integrere med statusområdet,\n"
 "skal du vælge hvilken desktop du bruger.\n"
 "du kan ændre dette senere."
 
@@ -1074,7 +1074,7 @@ msgstr "KDE 2.x / Gnome 1.2 "
 
 #: src/muuli_wdr.cpp:175
 msgid "No systray integration, please"
-msgstr "Ingen integration til værktøjslinjen"
+msgstr "Ingen integration til statusområde"
 
 #: src/muuli_wdr.cpp:183 src/muuli_wdr.cpp:3045 src/muuli_wdr.cpp:3150
 #: src/muuli_wdr.cpp:3469 src/PreferencesDlg.cpp:75
@@ -1083,7 +1083,7 @@ msgstr "OK"
 
 #: src/muuli_wdr.cpp:222
 msgid "Fast ED2K Links Handler (Direct Download)"
-msgstr ""
+msgstr "Hurtig ED2K Link Håndtering (Direkte Download)"
 
 #: src/muuli_wdr.cpp:232 src/muuli_wdr.cpp:399
 msgid "Commit"
@@ -1239,11 +1239,11 @@ msgstr "N/A"
 
 #: src/muuli_wdr.cpp:687
 msgid "met-File :"
-msgstr ""
+msgstr "met-Fil :"
 
 #: src/muuli_wdr.cpp:694 src/PartFile.cpp:3633
 msgid "Hash :"
-msgstr ""
+msgstr "Hash :"
 
 #: src/muuli_wdr.cpp:705
 msgid "Filesize :"
@@ -1263,7 +1263,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:736
 msgid "Codec:"
-msgstr ""
+msgstr "Codec:"
 
 #: src/muuli_wdr.cpp:743
 msgid "Bitrate:"
@@ -1271,7 +1271,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:750
 msgid "Length:"
-msgstr ""
+msgstr "Længde:"
 
 #: src/muuli_wdr.cpp:761 src/muuli_wdr.cpp:1651 src/StatisticsDlg.cpp:616
 msgid "Transfer"
@@ -1307,11 +1307,11 @@ msgstr "Færdig Størrelse :"
 
 #: src/muuli_wdr.cpp:828
 msgid " / ("
-msgstr ""
+msgstr " / ("
 
 #: src/muuli_wdr.cpp:835 src/muuli_wdr.cpp:1035
 msgid ")"
-msgstr ""
+msgstr ")"
 
 #: src/muuli_wdr.cpp:844 src/muuli_wdr.cpp:2316
 msgid "Intelligent Corruption Handling"
@@ -1574,7 +1574,7 @@ msgstr "Brugernavn"
 
 #: src/muuli_wdr.cpp:1810
 msgid "http://www.aMule.org"
-msgstr ""
+msgstr "http://www.aMule.org"
 
 #: src/muuli_wdr.cpp:1815
 msgid "Language"
@@ -1586,7 +1586,7 @@ msgstr "System standard"
 
 #: src/muuli_wdr.cpp:1821
 msgid "Arabic"
-msgstr ""
+msgstr "Arabic"
 
 #: src/muuli_wdr.cpp:1822
 msgid "Basque"
@@ -1602,11 +1602,11 @@ msgstr "Catalan"
 
 #: src/muuli_wdr.cpp:1825
 msgid "Chinese"
-msgstr ""
+msgstr "Chinese"
 
 #: src/muuli_wdr.cpp:1826
 msgid "Danish"
-msgstr ""
+msgstr "Danish"
 
 #: src/muuli_wdr.cpp:1827
 msgid "Dutch"
@@ -1622,7 +1622,7 @@ msgstr "Estonian"
 
 #: src/muuli_wdr.cpp:1830
 msgid "Finnish"
-msgstr ""
+msgstr "Finnish"
 
 #: src/muuli_wdr.cpp:1831
 msgid "French"
@@ -1690,7 +1690,7 @@ msgstr "Andre Indstillinger"
 
 #: src/muuli_wdr.cpp:1861
 msgid "Progressbar Style"
-msgstr "Værktøjslinje Stil"
+msgstr "Forløbs Stil"
 
 #: src/muuli_wdr.cpp:1878
 msgid "Flat"
@@ -1718,7 +1718,7 @@ msgstr "Minimer til statusområde"
 
 #: src/muuli_wdr.cpp:1906
 msgid "Enable Online-Signature"
-msgstr "Aktiver Online-Signatur"
+msgstr "Aktiver online-signatur"
 
 #: src/muuli_wdr.cpp:1910
 msgid "Prompt on exit"
@@ -1726,11 +1726,11 @@ msgstr "Spørg ved afslut"
 
 #: src/muuli_wdr.cpp:1916
 msgid "Tooltip Delay Time in secs (1s to 5s)"
-msgstr "Værktøjstips Interval Tid I Sekunder (1s til 5s)"
+msgstr "Statusområde ikons opdaterings tid i sekunder (1s til 5s)"
 
 #: src/muuli_wdr.cpp:1924
 msgid "Systray Integration"
-msgstr "Værktøjslinje Integration"
+msgstr "Statusområde Integration"
 
 #: src/muuli_wdr.cpp:1929
 msgid "Startup"
@@ -1746,7 +1746,7 @@ msgstr "Se efter ny version"
 
 #: src/muuli_wdr.cpp:1957
 msgid "Show Splashscreen"
-msgstr "Vis Velkomstskærm"
+msgstr "Vis velkomstskærm"
 
 #: src/muuli_wdr.cpp:1961
 msgid "Start minimized"
@@ -1754,7 +1754,7 @@ msgstr "Start minimeret"
 
 #: src/muuli_wdr.cpp:1964
 msgid "Show Fast ED2K Links Handler"
-msgstr ""
+msgstr "Vis hurtig ED2K link håndtering"
 
 #: src/muuli_wdr.cpp:1991
 msgid "Line Capacities"
@@ -1770,7 +1770,7 @@ msgstr "Upload"
 
 #: src/muuli_wdr.cpp:2030
 msgid "Bandwith Limits"
-msgstr ""
+msgstr "Tilladte Hastigheder"
 
 #: src/muuli_wdr.cpp:2063
 msgid "Slot Allocation"
@@ -1810,7 +1810,7 @@ msgstr "Max Forbindelser"
 
 #: src/muuli_wdr.cpp:2171
 msgid "Autoconnect on startup"
-msgstr ""
+msgstr "Auto forbind ved start"
 
 #: src/muuli_wdr.cpp:2174
 msgid "Reconnect on loss"
@@ -1826,11 +1826,11 @@ msgstr "Forbindelses Assistent"
 
 #: src/muuli_wdr.cpp:2187
 msgid "IP-Filter"
-msgstr ""
+msgstr "IP-Filter"
 
 #: src/muuli_wdr.cpp:2194
 msgid "IP-Filter ON / OFF"
-msgstr ""
+msgstr "IP-Filter Aktiv / Inaktiv"
 
 #: src/muuli_wdr.cpp:2225
 msgid "Remove dead server after"
@@ -1866,7 +1866,7 @@ msgstr "Brug prioterings system"
 
 #: src/muuli_wdr.cpp:2267
 msgid "Use smart LowID check on connect"
-msgstr "Brug smart LowID tjeck ved forbindelse"
+msgstr "Brug smart LavID tjek ved forbindelse"
 
 #: src/muuli_wdr.cpp:2271
 msgid "Safe connect"
@@ -1882,7 +1882,7 @@ msgstr "Sæt manuelt tilføjede servere til Høj Priotet"
 
 #: src/muuli_wdr.cpp:2301
 msgid "See my shares"
-msgstr ""
+msgstr "Kan se mine delte filer"
 
 #: src/muuli_wdr.cpp:2304
 msgid "Everybody"
@@ -1898,11 +1898,11 @@ msgstr "I.C.H. aktiv"
 
 #: src/muuli_wdr.cpp:2328
 msgid "Add files to download in pause mode"
-msgstr ""
+msgstr "Tilføj filer til download i pause tilstand"
 
 #: src/muuli_wdr.cpp:2332
 msgid "Add files to download with auto priority"
-msgstr ""
+msgstr "Tilføj filer til download med auto priotet"
 
 #: src/muuli_wdr.cpp:2335
 msgid "Try to download first and last chunks first"
@@ -1910,11 +1910,11 @@ msgstr "Prøv at download første og sidste del først"
 
 #: src/muuli_wdr.cpp:2339
 msgid "Add new shared files with auto priority"
-msgstr ""
+msgstr "Tilføj nye delte filer med auto priotet"
 
 #: src/muuli_wdr.cpp:2342
 msgid "Try to transfer full chunks to all uploads"
-msgstr ""
+msgstr "Prøv at overføre hele dele til uploads"
 
 #: src/muuli_wdr.cpp:2346
 msgid "Start next paused file when a file completed"
@@ -1931,7 +1931,7 @@ msgstr "Indkommende Mappe :"
 #: src/muuli_wdr.cpp:2381 src/muuli_wdr.cpp:2394 src/muuli_wdr.cpp:2422
 #: src/muuli_wdr.cpp:2537
 msgid "Browse"
-msgstr "søg"
+msgstr "Gennemse"
 
 #: src/muuli_wdr.cpp:2388
 msgid "Temporary Directory :"
@@ -1951,7 +1951,7 @@ msgstr "mplayer -idx"
 
 #: src/muuli_wdr.cpp:2429
 msgid "Create Backup to preview"
-msgstr ""
+msgstr "Opret backup for smug kig"
 
 #: src/muuli_wdr.cpp:2452
 msgid "Graphs"
@@ -1963,7 +1963,7 @@ msgstr "Opdaterings interval : 5 sek"
 
 #: src/muuli_wdr.cpp:2461
 msgid "Time for average graph: 100 mins"
-msgstr ""
+msgstr "Tid for gennemsnitlig graf: 100 min"
 
 #: src/muuli_wdr.cpp:2467 src/PPgStats.cpp:142
 msgid "Select Statistics Colors"
@@ -2051,7 +2051,7 @@ msgstr "Ny aMule version fundet"
 
 #: src/muuli_wdr.cpp:2562
 msgid "Urgent OOD, serverconnection lost"
-msgstr ""
+msgstr "Vigtig OOD serverforbindelse mistet"
 
 #: src/muuli_wdr.cpp:2570
 msgid "Notify by Mail"
@@ -2089,7 +2089,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2640
 msgid "Max new connections / 5 secs"
-msgstr ""
+msgstr "Max nye forbindelser / 5 sekunder"
 
 #: src/muuli_wdr.cpp:2646
 msgid "Verbose (additional program feedback)"
@@ -2105,7 +2105,7 @@ msgstr "Vis overførsels hastighed i titel"
 
 #: src/muuli_wdr.cpp:2657
 msgid "File Buffer Size: 240000 bytes"
-msgstr ""
+msgstr "Fil Buffer Størrelse"
 
 #: src/muuli_wdr.cpp:2663
 msgid "Upload Queue Size: 5000 clients"
@@ -2129,7 +2129,7 @@ msgstr "Arranger Downloads"
 
 #: src/muuli_wdr.cpp:2708
 msgid "Enable auto-arranging download list "
-msgstr ""
+msgstr "Aktiver auto arrangering af download liste"
 
 #: src/muuli_wdr.cpp:2711
 msgid "Download speed"
@@ -2141,7 +2141,7 @@ msgstr "Antal kilder"
 
 #: src/muuli_wdr.cpp:2722
 msgid "GTK Theme Selector"
-msgstr ""
+msgstr "GTK Tema Vælger"
 
 #: src/muuli_wdr.cpp:2729
 msgid "Theme :"
@@ -2161,11 +2161,11 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2768
 msgid "Show percentage"
-msgstr ""
+msgstr "Vis procent"
 
 #: src/muuli_wdr.cpp:2772
 msgid "Show progressbar "
-msgstr ""
+msgstr "Viss statusbar"
 
 #: src/muuli_wdr.cpp:2778
 msgid "Misc Gui Tweaks"
@@ -2177,43 +2177,43 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2804
 msgid "No Needed Sources Handling"
-msgstr ""
+msgstr "Ikke Brugbar Kilde Håndtering"
 
 #: src/muuli_wdr.cpp:2807
 msgid "Enable auto drop No Needed Sources"
-msgstr ""
+msgstr "Aktiver auto dropning af ikke brugbare kilder"
 
 #: src/muuli_wdr.cpp:2813
 msgid "Extended Dropping"
-msgstr ""
+msgstr "Udvidet Droppelse"
 
 #: src/muuli_wdr.cpp:2816
 msgid "Drop sources anyway"
-msgstr ""
+msgstr "Drop kilde alligevel"
 
 #: src/muuli_wdr.cpp:2820
 msgid "Send sources to any other file before dropping (High CPU)"
-msgstr ""
+msgstr "Send kilder til en anden fil før droppelse (Høj CPU)"
 
 #: src/muuli_wdr.cpp:2825
 msgid "Full Queue Sources Handling"
-msgstr ""
+msgstr "Kilder i fyldt kø håndtering"
 
 #: src/muuli_wdr.cpp:2828
 msgid "Enable auto drop Full Queue Sources"
-msgstr ""
+msgstr "Drop kilder som er i en fuld kø"
 
 #: src/muuli_wdr.cpp:2834
 msgid "High Queue Rating Sources Handling"
-msgstr ""
+msgstr "Kilder i lang kø håndtering"
 
 #: src/muuli_wdr.cpp:2837
 msgid "Enable auto drop High Queue Rating Sources"
-msgstr ""
+msgstr "Drop automatisk kilder i lang kø"
 
 #: src/muuli_wdr.cpp:2843
 msgid "High Queue Rating value"
-msgstr ""
+msgstr "For køer som er over"
 
 #: src/muuli_wdr.cpp:2849
 msgid "(Min 300 / Max 3000)"
@@ -2221,7 +2221,7 @@ msgstr "(Min 300 / Max 3000)"
 
 #: src/muuli_wdr.cpp:2856
 msgid "Auto Drop Sources Timer"
-msgstr ""
+msgstr "Interval for auto dropning af kilder"
 
 #: src/muuli_wdr.cpp:2861
 msgid "Timer (in secs)"
@@ -2249,7 +2249,7 @@ msgstr "Side Opdaterings Tid (i sek)"
 
 #: src/muuli_wdr.cpp:2918
 msgid "Enable Gzip compression"
-msgstr ""
+msgstr "Aktiver Gzip komprimering"
 
 #: src/muuli_wdr.cpp:2922
 msgid "Enable Low rights User"
@@ -2265,19 +2265,19 @@ msgstr "Lav rettigheds kodeord"
 
 #: src/muuli_wdr.cpp:2944
 msgid "External Connection Parameters"
-msgstr ""
+msgstr "Ydre Forbindelses Parametre"
 
 #: src/muuli_wdr.cpp:2947
 msgid "Accept external connections"
-msgstr ""
+msgstr "Accepter ydre forbindelser"
 
 #: src/muuli_wdr.cpp:2950
 msgid "Use TCP ports instead of unix local sockets"
-msgstr ""
+msgstr "Brug TCP istedet for unix lokal socket"
 
 #: src/muuli_wdr.cpp:2955
 msgid "External TCP port"
-msgstr ""
+msgstr "Ydre TCP port"
 
 #: src/muuli_wdr.cpp:2965
 msgid "Enable password"
@@ -2323,7 +2323,7 @@ msgstr "Titel :"
 
 #: src/muuli_wdr.cpp:3097
 msgid "Incoming Dir :"
-msgstr ""
+msgstr "Indkommende Mappe :"
 
 #: src/muuli_wdr.cpp:3103
 msgid "..."
@@ -2363,7 +2363,7 @@ msgstr "aMule Log"
 
 #: src/muuli_wdr.cpp:3319
 msgid "Click on this button to update the servers list from URL ..."
-msgstr ""
+msgstr "Tryk på denne knap for at opdatere serverlisten fra URL ..."
 
 #: src/muuli_wdr.cpp:3323
 msgid "Serverlist"
@@ -2373,10 +2373,11 @@ msgstr "Serverliste"
 msgid ""
 "http://ocbmaurice.dyndns.org/pl/slist.pl/server.met?download/server-good.met"
 msgstr ""
+"http://ocbmaurice.dyndns.org/pl/slist.pl/server.met?download/server-good.met"
 
 #: src/muuli_wdr.cpp:3334
 msgid "Manual Server Add : Name"
-msgstr ""
+msgstr "Tilføj Manuelt en server : Navn"
 
 #: src/muuli_wdr.cpp:3340
 msgid "IP:Port"
@@ -2513,7 +2514,7 @@ msgstr "alt andet"
 
 #: src/otherfunctions.cpp:547 src/TransferWnd.cpp:159
 msgid "Incomplete"
-msgstr ""
+msgstr "Mangelfuld"
 
 #: src/otherfunctions.cpp:549 src/PartFile.cpp:2871 src/TransferWnd.cpp:161
 msgid "Waiting"
@@ -2568,7 +2569,7 @@ msgstr "Fejl: Invalid part.met filversion! (%s => %s)"
 #: src/PartFile.cpp:492
 #, c-format
 msgid "Error: %s (%s) is corrupt"
-msgstr ""
+msgstr "Fejl: %s (%s) er beskadiget"
 
 #: src/PartFile.cpp:691
 #, c-format
@@ -2592,7 +2593,7 @@ msgstr ".part fil ikke fundet"
 #: src/PartFile.cpp:934
 #, c-format
 msgid "Unable to open %s file - using .bak file.\n"
-msgstr ""
+msgstr "Kunne ikke indlæse %s - bruger .bak fil.\n"
 
 #: src/PartFile.cpp:943
 #, c-format
@@ -2743,7 +2744,7 @@ msgstr "Sidst Aktiv"
 
 #: src/PPgDirectories.cpp:106 src/PrefsUnifiedDlg.cpp:1279
 msgid "Browse for videoplayer"
-msgstr "Søg efter Video Afspiller"
+msgstr "Gennemse efter Video Afspiller"
 
 #: src/PPgDirectories.cpp:106 src/PrefsUnifiedDlg.cpp:1279
 msgid "Executable (*)|*||"
@@ -2843,17 +2844,17 @@ msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:560
 msgid "Choose a folder for "
-msgstr ""
+msgstr "Vælg en mappe til "
 
 #: src/PrefsUnifiedDlg.cpp:761
 #, c-format
 msgid "%i days"
-msgstr ""
+msgstr "%i dage"
 
 #: src/PrefsUnifiedDlg.cpp:761
 #, c-format
 msgid "%i day"
-msgstr ""
+msgstr "%i dag"
 
 #: src/QueueListCtrl.cpp:101 src/QueueListCtrl.cpp:123
 #: src/QueueListCtrl.cpp:200 src/SearchListCtrl.cpp:128
@@ -2889,7 +2890,7 @@ msgstr "Kom I Kø"
 #: src/QueueListCtrl.cpp:108 src/QueueListCtrl.cpp:130
 #: src/QueueListCtrl.cpp:235 src/TransferWnd.cpp:101
 msgid "Banned"
-msgstr "Bannet"
+msgstr "Banlyst"
 
 #: src/QueueListCtrl.cpp:109 src/SharedFilesCtrl.cpp:87
 #: src/UploadListCtrl.cpp:92
@@ -2938,15 +2939,15 @@ msgstr "Nej"
 
 #: src/SearchDlg.cpp:594
 msgid "Close tab"
-msgstr ""
+msgstr "Luk tab"
 
 #: src/SearchDlg.cpp:595
 msgid "Close all tabs"
-msgstr ""
+msgstr "Luk alle tabs"
 
 #: src/SearchDlg.cpp:596
 msgid "Close other tabs"
-msgstr ""
+msgstr "Luk andre tabs"
 
 #: src/SearchListCtrl.cpp:72 src/SharedFilesCtrl.cpp:83
 msgid "FileID"
@@ -3003,12 +3004,12 @@ msgstr "Kunne ikke hente serverlist fra %s"
 
 #: src/ServerList.cpp:146 src/ServerList.cpp:151
 msgid "Failed to load server.met!"
-msgstr "Fejl ved åbning af server.met!"
+msgstr "Fejl ved indlæsning af server.met!"
 
 #: src/ServerList.cpp:157
 #, c-format
 msgid "Invalid versiontag in server.met (0x%i , size %i)!"
-msgstr ""
+msgstr "Invalid versionsnummer i server.met (0x%i , størrelse %i)!"
 
 #: src/ServerList.cpp:217
 #, c-format
@@ -3022,7 +3023,7 @@ msgstr ""
 
 #: src/ServerList.cpp:223
 msgid "Error: the file server.met is corrupted"
-msgstr ""
+msgstr "Fejl: filen server.met er beskadiget"
 
 #: src/ServerList.cpp:527 src/ServerWnd.cpp:135
 msgid "Server added: "
@@ -3078,12 +3079,12 @@ msgstr "Kunne ikke åbne staticservers.dat"
 
 #: src/ServerListCtrl.cpp:687
 msgid "Added to static server list"
-msgstr ""
+msgstr "Tilføj til statik server liste"
 
 #: src/ServerListCtrl.cpp:758
 #, c-format
 msgid "Servers (%i)"
-msgstr ""
+msgstr "Servere (%i)"
 
 #: src/ServerSocket.cpp:323
 #, c-format
@@ -3128,7 +3129,7 @@ msgstr " (baseret på "
 
 #: src/ServerWnd.cpp:67
 msgid "Visit http://www.amule.org to check if a new version is available.\n"
-msgstr ""
+msgstr "Besøg http://www.amule.org for at tjekke om der er en ny version tilgængelig.\n"
 
 #: src/ServerWnd.cpp:77
 msgid "Invalid URL"
@@ -3161,7 +3162,7 @@ msgstr "høj ID"
 #: src/SharedFileList.cpp:86
 #, c-format
 msgid "Found %i known shared files"
-msgstr "Fandt %i kendt delt fil"
+msgstr "Fandt %i kendte delte filer"
 
 #: src/SharedFileList.cpp:88
 #, c-format
@@ -3634,11 +3635,11 @@ msgstr "Brugernavn: Ikke Klar"
 
 #: src/SysTray.cpp:291
 msgid "Hash: "
-msgstr ""
+msgstr "Hash: "
 
 #: src/SysTray.cpp:293
 msgid "Hash: Not Ready"
-msgstr ""
+msgstr "Hash: Ikke Klar"
 
 #: src/SysTray.cpp:297
 msgid "ClientID: "
@@ -3783,7 +3784,7 @@ msgstr ""
 
 #: src/TransferWnd.cpp:303
 msgid "Confirmation Required"
-msgstr ""
+msgstr "Bekræftelse Krævet"
 
 #: src/UDPSocket.cpp:351
 msgid "Error while processing incoming extended protocol UDP Packet"
@@ -3806,7 +3807,7 @@ msgid ""
 "Client '%s' seems to be an aggressive client and is banned from the "
 "uploadqueue"
 msgstr ""
-"Klient '%s' ser ud til at være en aggresiv klient og er bannet fra upload "
+"Klient '%s' ser ud til at være en aggresiv klient og er banlyst fra upload "
 "køen"
 
 #: src/UploadListCtrl.cpp:89
@@ -3924,41 +3925,3 @@ msgstr "100 Mbits"
 msgid "155 Mbits (ATM)"
 msgstr "155 Mbits (ATM)"
 
-#~ msgid "&Transfers"
-#~ msgstr "&Overførsler"
-
-#~ msgid "&Servers"
-#~ msgstr "&Serverer"
-
-#~ msgid "S&earch"
-#~ msgstr "S&øg"
-
-#~ msgid "Shared &Files"
-#~ msgstr "Delte Filer"
-
-#~ msgid "&Messages"
-#~ msgstr "&Beskeder"
-
-#~ msgid "St&atistics"
-#~ msgstr "St&atistik"
-
-#~ msgid "&Preferences"
-#~ msgstr "&Indstillinger"
-
-#~ msgid ""
-#~ "Instant Messaging\n"
-#~ "  \n"
-#~ "Right-click on any client and select 'Send Message' to start a chatsession"
-#~ msgstr ""
-#~ "Instant Messaging\n"
-#~ "  \n"
-#~ "Højre klik på en klient og vælg 'Send Besked' for at starte en chat"
-
-#~ msgid "Search Results"
-#~ msgstr "Søge Resultater"
-
-#~ msgid "Securehash :"
-#~ msgstr "Sikkerhash :"
-
-#~ msgid "Invalid versiontag in server.met (0x%X)!"
-#~ msgstr "Invalid Versiontag i server.met (0x%X)!"
