@@ -1333,7 +1333,7 @@ void PrefsUnifiedDlg::OnButtonBrowseVideoplayer(wxCommandEvent& e)
 
 void PrefsUnifiedDlg::OnButtonEditAddr(wxCommandEvent& evt)
 {
-	CString fullpath(theApp.ConfigDir + wxT("addresses.dat"));
+	wxString fullpath(theApp.ConfigDir + wxT("addresses.dat"));
 	
 	EditServerListDlg* test=new EditServerListDlg(this, _("Edit Serverlist"),
 	_("Add here URL's to download server.met files.\nOnly one url on each line."), fullpath);

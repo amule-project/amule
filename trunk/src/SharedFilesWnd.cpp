@@ -119,7 +119,7 @@ void CSharedFilesWnd::ShowDetails(CKnownFile* cur_file)
 
 	memcpy(shownFileHash,cur_file->GetFileHash(),16);
 
-	//CString title=CString(_("Statistics"))+" ("+ cur_file->GetFileName() +")";
+	//wxString title=wxString(_("Statistics"))+" ("+ cur_file->GetFileName() +")";
 	//GetDlgItem(IDC_FSTATIC1)->SetWindowText( title );
 	Layout();
 }

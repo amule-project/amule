@@ -328,7 +328,7 @@ void CSearchDlg::StartNewSearch()
 	}		
 		
 	wxString typeText = ((wxChoice*)FindWindowById(IDC_TypeSearch))->GetStringSelection();
-	theApp.searchlist->NewSearch(CString(typeText), m_nSearchID);
+	theApp.searchlist->NewSearch(typeText, m_nSearchID);
 
 	// Parameter Minimum Size
 	wxString sizeMin=((wxTextCtrl*)FindWindowById(IDC_EDITSEARCHMIN))->GetValue();

@@ -44,8 +44,8 @@ wxThread::ExitCode CPreviewThread::Entry(){
 	/*try*/{
 		srcFile = m_pPartfile->m_hpartfile.Duplicate();
 		uint32 nSize = m_pPartfile->GetFileSize();
-		wxString strExtension = CString(strrchr(m_pPartfile->GetFileName(), '.'));
-		wxString strPreviewName = CString(theApp.glob_prefs->GetTempDir())+ CString("\\") + CString(m_pPartfile->GetFileName()).Mid(0,5) + CString("_preview") + strExtension;
+		wxString strExtension = wxString(strrchr(m_pPartfile->GetFileName(), '.'));
+		wxString strPreviewName = wxString(theApp.glob_prefs->GetTempDir())+ wxT("\\") + wxString(m_pPartfile->GetFileName()).Mid(0,5) + wxString("_preview") + strExtension;
 		bool bFullSized = true;
 		if (!strExtension.CompareNoCase(wxT(".mpg")) || !strExtension.CompareNoCase(wxT(".mpeg")))
 			bFullSized = false;

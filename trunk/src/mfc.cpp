@@ -19,7 +19,10 @@
 
 
 #include <wx/defs.h>		// Needed before any other wx/*.h
-#include "CString.h"		// Interface declarations.
+#include <wx/string.h>
+
+#include "otherfunctions.h"
+#include "CString.h"
 
 #include <wx/listimpl.cpp>	// Needed for WX_DEFINE_LIST
 _DEFINE_LIST(char*, VoidList);	// WX_DEFINE_LIST(VoidList), but avoiding warning.

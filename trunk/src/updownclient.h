@@ -25,9 +25,9 @@
 #include <wx/dcmemory.h>	// Needed for wxMemoryDC
 #include <wx/gdicmn.h>		// Needed for wxRect
 #include "types.h"		// Needed for int8, int16, uint8, uint16, uint32 and uint64
-#include "CString.h"		// Needed for CString
 #include "CTypedPtrList.h"	// Needed for CTypedPtrList
 #include "GetTickCount.h"	// Needed for GetTickCount
+#include "otherfunctions.h"
 
 class CPartFile;
 class CClientReqSocket;

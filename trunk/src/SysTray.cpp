@@ -210,7 +210,7 @@ speed_check();
 void connect_any_server() {
 
 if (theApp.serverconnect->IsConnected()) theApp.serverconnect->Disconnect();
-theApp.amuledlg->AddLogLine(true, CString(_("Connecting")));
+theApp.amuledlg->AddLogLine(true, _("Connecting"));
 theApp.serverconnect->ConnectToAnyServer();
 theApp.amuledlg->ShowConnectionState(false);
 
@@ -290,9 +290,9 @@ tray_menu (GtkWidget *widget, GdkEventButton *event, gpointer data)
 
 
 	if (theApp.glob_prefs->GetUserHash()){
-		CString hash;
+		wxString hash;
 		hash=EncodeBase16((const unsigned char*)theApp.glob_prefs->GetUserHash(),16);
-		info_item=gtk_menu_item_new_with_label(wxString(_("Hash: "))+hash.GetBuffer());
+		info_item=gtk_menu_item_new_with_label(wxString(_("Hash: "))+hash);
 	}
 	else info_item=gtk_menu_item_new_with_label(_("Hash: Not Ready"));
 	gtk_container_add (GTK_CONTAINER (info_menu), info_item);

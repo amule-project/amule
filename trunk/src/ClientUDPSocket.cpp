@@ -201,7 +201,7 @@ bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, uint
 		return true;
 	}
 	catch(...) {
-		theApp.amuledlg->AddDebugLogLine(false,CString(_("Error while processing incoming UDP Packet (Most likely a misconfigured server)")));
+		theApp.amuledlg->AddDebugLogLine(false,_("Error while processing incoming UDP Packet (Most likely a misconfigured server)"));
 	}
 	return false;
 }

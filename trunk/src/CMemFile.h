@@ -25,6 +25,7 @@
 #include "CFile.h"		// Needed for CFile
 #include "types.h"		// Needed for uint8, uint16, uint32
 #include "packets.h"
+#include "otherfunctions.h"
 
 class CMemFile : public CFile {
 public:  

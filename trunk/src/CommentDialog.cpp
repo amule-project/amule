@@ -26,7 +26,6 @@
 
 #include "CommentDialog.h"	// Interface declarations
 #include "KnownFile.h"		// Needed for CKnownFile
-#include "CString.h"	// Needed for CString
 #include "muuli_wdr.h"		// Needed for commentDlg
 
 // CommentDialog dialog 
@@ -60,7 +59,7 @@ void CCommentDialog::OnBnClickedApply(wxCommandEvent& evt)
 {
 	wxString SValue;
 	SValue=((wxTextCtrl*)FindWindowById(IDC_CMT_TEXT))->GetValue();
-	m_file->SetFileComment(CString(SValue));
+	m_file->SetFileComment(SValue);
 	m_file->SetFileRate((int8)ratebox->GetSelection());
 	EndModal(0);
 }

@@ -35,7 +35,6 @@
 class CUploadListCtrl;
 class CDownloadListCtrl;
 class CQueueListCtrl;
-class CString;
 class CMuleNotebook;
 class wxListCtrl;
 

@@ -173,7 +173,7 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, wxString title, wxPoint where, wxSize dl
 	// Create the GUI timer
 	gui_timer=new wxTimer(this,ID_GUITIMER);
 	if (!gui_timer) {
-		AddLogLine(false, CString(_("Fatal Error: Failed to create Timer")));
+		AddLogLine(false, _("Fatal Error: Failed to create Timer"));
 	}
 		
 	// Set Serverlist as active window
