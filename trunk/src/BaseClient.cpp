@@ -2014,32 +2014,48 @@ bool CUpDownClient::SendPacket(CPacket* packet, bool delpacket, bool controlpack
 	}
 }
 
-bool CUpDownClient::SetDownloadLimit(uint32 limit)
+float CUpDownClient::SetDownloadLimit(uint32 reducedownload)
 {
+
+	// lfroen: in daemon it actually can happen
+	#ifndef AMULE_DAEMON
+		wxASSERT( m_socket );
+	#endif
+
+	float kBpsClient = CalculateKBpsDown();
+	
 	if ( m_socket ) {
-		m_socket->SetDownloadLimit( limit );
-		return true;
+
+		if (reducedownload) {
+			uint32 limit = (uint32)(((float)reducedownload*(kBpsClient*1024.0))/100);
+
+			if(limit<1024 && reducedownload >= 200) {
+				// If we're going up and this download is < 1kB, 
+				// we want it to go up fast. Can be reduced later,
+				// and it'll probably be in a more fair way with 
+				// other downloads that are faster.
+				limit +=1024;
+			} else if(limit == 0) {
+				// This download is not transferring yet... make it 
+				// 1024 so we don't fill the TCP stack and lose the 
+				// connection.
+				limit = 1024;
+			}
+			
+			m_socket->SetDownloadLimit(limit);
+		} else {
+			m_socket->DisableDownloadLimit();
+		}		
+		
 	} else {
 #ifndef AMULE_DAEMON
-		printf("CAUGHT DEAD SOCKET IN SETDOWNLOADLIMIT()\n");
-#endif
-		return false;
+		printf("CAUGHT DEAD SOCKET IN SETDOWNLOADLIMIT() WITH SPEED %f\n", kBpsClient);
+#endif	
 	}
+	
+	return kBpsClient;
+	
 }
-
-bool CUpDownClient::DisableDownloadLimit()
-{
-	if ( m_socket ) {
-		m_socket->DisableDownloadLimit();
-		return true;
-	} else {
-#ifndef AMULE_DAEMON
-		printf("CAUGHT DEAD SOCKET IN DISABLEDOWNLOADLIMIT()\n");
-#endif
-		return false;
-	}
-}
-
 
 void CUpDownClient::SetUserID(uint32 nUserID)
 {

@@ -1437,56 +1437,23 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 	kBpsDown = 0.0;
 
 	if (m_icounter < 10) {
+		// Update only downloading sources.
 		std::list<CUpDownClient *>::iterator it = m_downloadingSourcesList.begin();
 		for( ; it != m_downloadingSourcesList.end(); ) {
 			CUpDownClient *cur_src = *it++;
 			if(cur_src->GetDownloadState() == DS_DOWNLOADING) {
-// lfroen: in daemon it actually can happen
-#ifndef AMULE_DAEMON
-				wxASSERT( cur_src->GetSocket() );
-#endif
-				if (cur_src->GetSocket()) {
-					++transferingsrc;
-					float kBpsClient = cur_src->CalculateKBpsDown();
-					kBpsDown += kBpsClient;
-					if (reducedownload) {
-						uint32 limit = (uint32)((float)reducedownload*kBpsClient);
-						if(limit<1000 && reducedownload == 200) {
-							limit +=1000;
-						} else if(limit<1) {
-							limit = 1;
-						}
-						cur_src->SetDownloadLimit(limit);
-					} else {
-						cur_src->DisableDownloadLimit();
-					}
-				}
+				++transferingsrc;
+				kBpsDown += cur_src->SetDownloadLimit(reducedownload);
 			}
 		}
 	} else {
-		CUpDownClient* cur_src;
+		// Update all sources (including downloading sources)
 		for ( SourceSet::iterator it = m_SrcList.begin(); it != m_SrcList.end(); ) {
-			cur_src = *it++;
-			uint8 download_state=cur_src->GetDownloadState();
-			switch (download_state) {
+			CUpDownClient* cur_src = *it++;
+			switch (cur_src->GetDownloadState()) {
 				case DS_DOWNLOADING: {
 					++transferingsrc;
-						
-					float kBpsClient = cur_src->CalculateKBpsDown();
-					kBpsDown += kBpsClient;
-					if (reducedownload && download_state == DS_DOWNLOADING) {
-						uint32 limit = (uint32)((float)reducedownload*kBpsClient);
-						
-						if (limit < 1000 && reducedownload == 200) {
-							limit += 1000;
-						} else if (limit < 1) {
-							limit = 1;
-						}
-						
-						cur_src->SetDownloadLimit(limit);
-					} else {
-						cur_src->DisableDownloadLimit();
-					}
+					kBpsDown += cur_src->SetDownloadLimit(reducedownload);			
 					break;
 				}
 				case DS_BANNED: {

@@ -521,15 +521,9 @@ public:
 	/**
 	 * Safe function for setting the download limit of the socket.
 	 *
-	 * @return True if the socket exists, false otherwise.
+	 * @return Current download speed of the client.
 	 */
-	bool		SetDownloadLimit(uint32 limit);
-	/**
-	 * Safe function for disabling the download limit of the socket.
-	 *
-	 * @return True if the socket exists, false otherwise.
-	 */
-	bool		DisableDownloadLimit();
+	float		SetDownloadLimit(uint32 reducedownload);
 	
 	/**
 	 * Sends a message to a client
