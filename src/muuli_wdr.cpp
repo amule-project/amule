@@ -219,7 +219,7 @@ wxSizer *searchDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticText *item4 = new wxStaticText( parent, ID_TEXT, _("Name:"), wxDefaultPosition, wxDefaultSize, 0 );
     item3->Add( item4, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    wxTextCtrl *item5 = new wxTextCtrl( parent, IDC_SEARCHNAME, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
+    wxTextCtrl *item5 = new wxTextCtrl( parent, IDC_SEARCHNAME, wxT(""), wxDefaultPosition, wxSize(80,-1), wxTE_PROCESS_ENTER );
     item3->Add( item5, 1, wxALIGN_CENTER|wxALL, 5 );
 
     wxButton *item6 = new wxButton( parent, IDC_SEARCH_RESET, _("Clear"), wxDefaultPosition, wxDefaultSize, 0 );
