@@ -23,6 +23,7 @@
 
 #include "types.h"		// Needed for uint16, uint32 and uint64
 #include "filefn.h"		// Needed for wxCopyFile_fat32
+#include "endianfix.h"
 
 class CString;
 class CPartFile;
@@ -54,27 +55,6 @@ const uint8 PMT_NEWOLD=3;
 #define _WINVER_ME_	0x5A04
 #define _WINVER_2K_	0x0005
 #define _WINVER_XP_	0x0105
-
-#if wxBYTE_ORDER == wxLITTLE_ENDIAN
-	#define ENDIAN_SWAP_16(x) (x)
-	#define ENDIAN_SWAP_I_16(x) {}
-	#define ENDIAN_SWAP_32(x) (x)
-	#define ENDIAN_SWAP_I_32(x) {}
-	#if defined __GNUC__ && __GNUC__ >= 2
-		#define ENDIAN_SWAP_64(x) (x)
-		#define ENDIAN_SWAP_I_64(x) {}
-	#endif
-#else
-	#warning BIG ENDIAN BOX
-	#define ENDIAN_SWAP_16(x) (wxUINT16_SWAP_ALWAYS(x))
-	#define ENDIAN_SWAP_I_16(x) x = wxUINT16_SWAP_ALWAYS(x)
-	#define ENDIAN_SWAP_32(x) (wxUINT32_SWAP_ALWAYS(x))
-	#define ENDIAN_SWAP_I_32(x) x = wxUINT32_SWAP_ALWAYS(x)
-	#if defined __GNUC__ && __GNUC__ >= 2
-		#define ENDIAN_SWAP_64(x) (wxUINT64_SWAP_ALWAYS(x))
-		#define ENDIAN_SWAP_I_64(x) x = wxUINT64_FROM_LE(x)
-	#endif
-#endif
 
 CString CastItoXBytes(uint64 count);
 CString CastItoIShort(uint64 number);

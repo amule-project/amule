@@ -10,6 +10,7 @@ EXTRA_DIST =  strings.en *.h pixmaps bitmaps Makengfile
 
 LIBS = @LIBS@
 amule_SOURCES = ListenSocket.cpp \
+	ECSocket.cpp \
 	EMSocket.cpp \
 	AddFriend.cpp \
 	AddFileThread.cpp \
@@ -117,7 +118,7 @@ amule_LDADD = $(WX_LIBS) $(GTK_LIBS) $(ZLIB_LIBS)
 ed2k_SOURCES = ED2KLinkParser.cpp
 ed2k_CFLAGS =
 
-amulecmd_SOURCES = TextClient.cpp MD5Sum.cpp
+amulecmd_SOURCES = TextClient.cpp MD5Sum.cpp ECSocket.cpp
 if HAVE_WXBASE
 amulecmd_CFLAGS = $(WXBASE_CFLAGS)
 amulecmd_CXXFLAGS = $(WXBASE_CXXFLAGS)
@@ -128,12 +129,12 @@ amulecmd_CXXFLAGS = $(WX_CXXFLAGS)
 amulecmd_LDADD = $(WX_LIBS)
 endif
 
-amulecmdDLG_SOURCES = TextClient.cpp MD5Sum.cpp
+amulecmdDLG_SOURCES = TextClient.cpp MD5Sum.cpp ECSocket.cpp
 amulecmdDLG_CFLAGS = $(WX_CFLAGS) -DAMULECMDDLG
 amulecmdDLG_CXXFLAGS = $(WX_CXXFLAGS) -DAMULECMDDLG 
 amulecmdDLG_LDADD = $(WX_LIBS)
 
-amuleweb_SOURCES = WebServer.cpp WebSocket.cpp MD5Sum.cpp
+amuleweb_SOURCES = WebServer.cpp WebSocket.cpp MD5Sum.cpp ECSocket.cpp
 if HAVE_WXBASE
 amuleweb_CFLAGS = $(WXBASE_CFLAGS)
 amuleweb_CXXFLAGS = $(WXBASE_CXXFLAGS)
@@ -144,7 +145,7 @@ amuleweb_CXXFLAGS = $(WX_CXXFLAGS)
 amuleweb_LDADD = $(WX_LIBS) $(ZLIB_LIBS)
 endif
 
-amulewebDLG_SOURCES = WebServer.cpp WebSocket.cpp MD5Sum.cpp
+amulewebDLG_SOURCES = WebServer.cpp WebSocket.cpp MD5Sum.cpp ECSocket.cpp
 amulewebDLG_CFLAGS = $(WX_CFLAGS) -DAMULEWEBDLG
 amulewebDLG_CXXFLAGS = $(WX_CXXFLAGS) -DAMULEWEBDLG 
 amulewebDLG_LDADD = $(WX_LIBS) $(ZLIB_LIBS)

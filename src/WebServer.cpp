@@ -51,6 +51,7 @@
 #include "WebSocket.h"		// Needed for StopSockets()
 #include "otherstructs.h"	// Needed for TransferredData
 #include "GetTickCount.h"	// Needed for GetTickCount
+#include "ECSocket.h"	
 
 #define itemsof(x) (sizeof(x)/sizeof(x[0])) //shakraw
 
@@ -70,35 +71,8 @@ class MyTimer *mytimer;
 
 IMPLEMENT_APP(CamulewebApp)
 
-wxSocketClient *m_ECClient = NULL;
+ECSocket *m_ECClient = NULL;
 CWebServer *webserver = NULL;
-
-//shakraw - sends and receive string data to/from ECServer
-wxString SendRecvMsg(const wxChar *msg) {
-	wxString response("");
-
-  	size_t len  = (wxStrlen(msg) + 1) * sizeof(wxChar);
-
-	m_ECClient->SetFlags(wxSOCKET_WAITALL);
-	m_ECClient->Write(&len, sizeof(size_t));
-	m_ECClient->WriteMsg(msg, len);
-	if (!m_ECClient->Error()) {
-		// Wait until data available (will also return if the connection is lost)
-		m_ECClient->WaitForRead(10);
-	
-		if (m_ECClient->IsData()) {
-			m_ECClient->Read(&len, sizeof(size_t)); //read buffer size
-			wxChar *result = new wxChar[len];
-			m_ECClient->ReadMsg(result, len); // read buffer
- 			if (!m_ECClient->Error()) {
-				response.Append(result);
-			}
-			delete[] result;
-		}
-	}
-	return(response);
-}
-
 
 #ifdef AMULEWEBDLG
 // IDs for the controls and the menu commands
@@ -320,7 +294,7 @@ int CamulewebApp::OnRun() {
 
 	Show("\nCreating client...\n");
 	// Create the socket
-	m_ECClient = new wxSocketClient();
+	m_ECClient = new ECSocket();
 
 	Show("Now doing connection...\n");
 
@@ -339,7 +313,7 @@ int CamulewebApp::OnRun() {
     	Show("Failed ! Unable to connect to the specified host\n");
 	else {
 		//Authenticate ourself
-		if (SendRecvMsg(wxString::Format("AUTH %s", passwd.GetData())) == "Access Denied") {
+		if (m_ECClient->SendRecvMsg(wxString::Format("AUTH %s", passwd.GetData())) == "Access Denied") {
 			Show("ExternalConn: Access Denied.\n");
 		} else {
     		Show("Succeeded ! Connection established\n");
@@ -550,7 +524,7 @@ wxString castSecondsToHM(sint32 count) {
 
 //returns web server listening port
 int CWebServer::GetWSPort() {
-	return(atoi(SendRecvMsg("PREFERENCES GETWSPORT").GetData()));
+	return(atoi(m_ECClient->SendRecvMsg("PREFERENCES GETWSPORT").GetData()));
 }
 
 
@@ -587,7 +561,7 @@ void CWebServer::ReloadTemplates() {
 		
 	if (!wxFileName::FileExists(sFile)) {
 		// no file. do nothing.
-		SendRecvMsg(wxString::Format("LOGGING ADDLOGLINE %d %s", true, getResString(IDS_WEB_ERR_CANTLOAD).GetData()));
+		m_ECClient->SendRecvMsg(wxString::Format("LOGGING ADDLOGLINE %d %s", true, getResString(IDS_WEB_ERR_CANTLOAD).GetData()));
 		return;
 	}
 
@@ -607,7 +581,7 @@ void CWebServer::ReloadTemplates() {
 		wxString sVersion = _LoadTemplate(sAll,"TMPL_VERSION");
 		long lVersion = atol(sVersion);
 		if (lVersion < WEB_SERVER_TEMPLATES_VERSION) {
-			SendRecvMsg(wxString::Format("LOGGING ADDLOGLINE %d %s", true, getResString(IDS_WEB_ERR_CANTLOAD).GetData()));
+			m_ECClient->SendRecvMsg(wxString::Format("LOGGING ADDLOGLINE %d %s", true, getResString(IDS_WEB_ERR_CANTLOAD).GetData()));
 		} else {
 			m_Templates.sHeader = _LoadTemplate(sAll,"TMPL_HEADER");
 			m_Templates.sHeaderMetaRefresh = _LoadTemplate(sAll,"TMPL_HEADER_META_REFRESH");
@@ -657,7 +631,7 @@ void CWebServer::ReloadTemplates() {
 			m_Templates.sProgressbarImgs.Replace("[PROGRESSGIFINTERNAL]","%i");
 		}
 	} else {
-		SendRecvMsg(wxString::Format("LOGGING ADDLOGLINE %d %s", true, getResString(IDS_WEB_ERR_CANTLOAD).GetData()));
+		m_ECClient->SendRecvMsg(wxString::Format("LOGGING ADDLOGLINE %d %s", true, getResString(IDS_WEB_ERR_CANTLOAD).GetData()));
 	}
 }
 
@@ -718,18 +692,18 @@ void CWebServer::StartServer(void) { //shakraw - start web socket listening (rel
 
 void CWebServer::_RemoveServer(wxString sIP, wxString sPort) {
 	wxString request = wxString("SERVER REMOVE ")+sIP+wxString(" ")+sPort;
-	SendRecvMsg(request.GetData());
+	m_ECClient->SendRecvMsg(request.GetData());
 }
 
 
 void CWebServer::_SetSharedFilePriority(wxString hash, uint8 priority) {	
 	int prio = (int) priority;
 	if (prio >= 0 && prio < 5) {
-		SendRecvMsg(wxString::Format("SHAREDFILES SETAUTOUPPRIORITY %s %d", hash.GetData(), 0));
-		SendRecvMsg(wxString::Format("SHAREDFILES SETUPPRIORITY %s %d", hash.GetData(), prio));
+		m_ECClient->SendRecvMsg(wxString::Format("SHAREDFILES SETAUTOUPPRIORITY %s %d", hash.GetData(), 0));
+		m_ECClient->SendRecvMsg(wxString::Format("SHAREDFILES SETUPPRIORITY %s %d", hash.GetData(), prio));
 	} else if (prio == 5) {
-		SendRecvMsg(wxString::Format("SHAREDFILES SETAUTOUPPRIORITY %s %d", hash.GetData(), 1));
-		SendRecvMsg(wxString::Format("SHAREDFILES UPDATEAUTOUPPRIORITY %s", hash.GetData()));
+		m_ECClient->SendRecvMsg(wxString::Format("SHAREDFILES SETAUTOUPPRIORITY %s %d", hash.GetData(), 1));
+		m_ECClient->SendRecvMsg(wxString::Format("SHAREDFILES UPDATEAUTOUPPRIORITY %s", hash.GetData()));
 	}
 }
 
@@ -751,7 +725,7 @@ wxString CWebServer::_SpecialChars(wxString str) {
 
 void CWebServer::_ConnectToServer(wxString sIP, wxString sPort) {
 	wxString request = wxString("SERVER CONNECT ")+sIP+wxString(" ")+sPort;
-	SendRecvMsg(request.GetData());
+	m_ECClient->SendRecvMsg(request.GetData());
 }
 
 void CWebServer::ProcessImgFileReq(ThreadData Data) {
@@ -831,7 +805,7 @@ void CWebServer::ProcessURL(ThreadData Data) {
 	if(pThis == NULL)
 		return;
 
-	bool isUseGzip = (atoi(SendRecvMsg("PREFS GETWEBUSEGZIP").GetData()) == 0) ? false : true;
+	bool isUseGzip = (atoi(m_ECClient->SendRecvMsg("PREFS GETWEBUSEGZIP").GetData()) == 0) ? false : true;
 	wxString Out = "";
 	wxString OutE = "";	// List Entry Templates
 	wxString OutE2 = "";
@@ -856,7 +830,7 @@ void CWebServer::ProcessURL(ThreadData Data) {
 		bool login=false;
 		wxString ip=inet_ntoa( Data.inadr );
 
-		wxString strAuth = SendRecvMsg(wxString::Format("PREFS GETWSPASS %s", MD5Sum(_ParseURL(Data.sURL, "p")).GetHash().GetData()).GetData());
+		wxString strAuth = m_ECClient->SendRecvMsg(wxString::Format("PREFS GETWSPASS %s", MD5Sum(_ParseURL(Data.sURL, "p")).GetHash().GetData()).GetData());
 		if (strAuth == "AdminLogin") {
 			Session* ses=new Session();
 			ses->admin=true;
@@ -1053,7 +1027,7 @@ wxString CWebServer::_GetHeader(ThreadData Data, long lSession) {
 	Out.Replace("[CharSet]", _GetWebCharSet());
 
 	//shakraw - page header
-	wxString sHeaderList = SendRecvMsg("WEBPAGE HEADER");
+	wxString sHeaderList = m_ECClient->SendRecvMsg("WEBPAGE HEADER");
 	int brk=sHeaderList.First("\t");
 	
 	int nRefresh = atoi(sHeaderList.Left(brk).GetData());
@@ -1165,14 +1139,14 @@ wxString CWebServer::_GetServerList(ThreadData Data) {
 	if (sCmd == "connect" && IsSessionAdmin(Data,sSession) ) {
 		wxString sIP = _ParseURL(Data.sURL, "ip");
 		if (sIP.IsEmpty()) {
-			SendRecvMsg("SERVER RE-CONNECT");
+			m_ECClient->SendRecvMsg("SERVER RE-CONNECT");
 		} else {
 			wxString sPort = _ParseURL(Data.sURL, "port");
 			if (sPort.IsEmpty()) sPort = "4661"; //try default port
 			_ConnectToServer(sIP, sPort);
 		}
 	} else if (sCmd == "disconnect" && IsSessionAdmin(Data,sSession)) {
-		SendRecvMsg("SERVER DISCONNECT");
+		m_ECClient->SendRecvMsg("SERVER DISCONNECT");
 	} else if (sCmd == "remove" && IsSessionAdmin(Data,sSession)) {
 		wxString sIP = _ParseURL(Data.sURL, "ip");
 		if (!sIP.IsEmpty()) {
@@ -1259,7 +1233,7 @@ wxString CWebServer::_GetServerList(ThreadData Data) {
 	CArray<ServerEntry*, ServerEntry*> ServerArray;
 
 	// Populating array
-	wxString sServerList = SendRecvMsg("SERVER LIST");
+	wxString sServerList = m_ECClient->SendRecvMsg("SERVER LIST");
 	wxString sEntry;
 	int brk=0, newLinePos;
 	while (sServerList.Length() > 0) {
@@ -1375,7 +1349,7 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	wxString Out = "";
 
 	if (clcompl && IsSessionAdmin(Data,sSession)) {
-		SendRecvMsg("TRANSFER CLEARCOMPLETE");
+		m_ECClient->SendRecvMsg("TRANSFER CLEARCOMPLETE");
 	}
 	
 	if (_ParseURL(Data.sURL, "c") != "" && IsSessionAdmin(Data,sSession)) {
@@ -1384,7 +1358,7 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 			HTTPTemp += "/";
 
 		wxString request = wxString("TRANSFER ADDFILELINK ") + HTTPTemp;
-		if (SendRecvMsg(request) == "Bad Link") {
+		if (m_ECClient->SendRecvMsg(request) == "Bad Link") {
 			char HTTPTempC[100] = "";
 			sprintf(HTTPTempC,_GetPlainResString(IDS_ERR_INVALIDLINK), "Bad Link");//error.GetData());
 			Out += pThis->m_Templates.sTransferBadLink;
@@ -1401,7 +1375,7 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 
 		int dlFilePosition=0;
 		//shakraw - sFileHashes formatted as: %s\t%s\t....\t%s
-		wxString sFileHashes = SendRecvMsg("TRANSFER DL_FILEHASH");
+		wxString sFileHashes = m_ECClient->SendRecvMsg("TRANSFER DL_FILEHASH");
 		wxString sEntry;
 		int tabPos;
 		while (sFileHashes.Length()>0) {
@@ -1431,20 +1405,20 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 		
 		if(_ParseURL(Data.sURL, "op") == "pause" && IsSessionAdmin(Data,sSession)) {
 			if (found_file_index >= 0) 
-				SendRecvMsg(wxString::Format("TRANSFER DL_FILEPAUSE %i", found_file_index));
+				m_ECClient->SendRecvMsg(wxString::Format("TRANSFER DL_FILEPAUSE %i", found_file_index));
 		} else if(_ParseURL(Data.sURL, "op") == "resume" && IsSessionAdmin(Data,sSession)) {
 			if (found_file_index >= 0)
-				SendRecvMsg(wxString::Format("TRANSFER DL_FILERESUME %i", found_file_index));
+				m_ECClient->SendRecvMsg(wxString::Format("TRANSFER DL_FILERESUME %i", found_file_index));
 		} else if(_ParseURL(Data.sURL, "op") == "cancel" && IsSessionAdmin(Data,sSession)) {
 			if (found_file_index >= 0)
-				SendRecvMsg(wxString::Format("TRANSFER DL_FILEDELETE %i", found_file_index));
+				m_ECClient->SendRecvMsg(wxString::Format("TRANSFER DL_FILEDELETE %i", found_file_index));
 		} else if(_ParseURL(Data.sURL, "op") == "prioup" && IsSessionAdmin(Data,sSession)) {
 			if (found_file_index >= 0) {
-				SendRecvMsg(wxString::Format("TRANSFER DL_FILEPRIOUP %d", found_file_index));
+				m_ECClient->SendRecvMsg(wxString::Format("TRANSFER DL_FILEPRIOUP %d", found_file_index));
 			}
 		} else if(_ParseURL(Data.sURL, "op") == "priodown" && IsSessionAdmin(Data,sSession)) {
 			if (found_file_index >= 0) {
-				SendRecvMsg(wxString::Format("TRANSFER DL_FILEPRIODOWN %d", found_file_index));
+				m_ECClient->SendRecvMsg(wxString::Format("TRANSFER DL_FILEPRIODOWN %d", found_file_index));
 			}
 		}
 	}
@@ -1534,7 +1508,7 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	CArray<DownloadFiles*, DownloadFiles*> FilesArray;
 
 	// Populating array
-	wxString sTransferDLList = SendRecvMsg("TRANSFER DL_LIST");
+	wxString sTransferDLList = m_ECClient->SendRecvMsg("TRANSFER DL_LIST");
 	bool completedAv=false;
 	wxString sEntry;
 	int newLinePos, brk=0;
@@ -1788,7 +1762,7 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	wxString sUpList = "";
 
 	//shakraw - upload list
-	wxString sTransferULList = SendRecvMsg("TRANSFER UL_LIST");
+	wxString sTransferULList = m_ECClient->SendRecvMsg("TRANSFER UL_LIST");
 	wxString HTTPProcessData;
 	float transfDown, transfUp, transfDatarate; 
 	while (sTransferULList.Length()>0) {
@@ -1849,7 +1823,7 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 		wxString sQueue = "";
 
 		//shakraw - waiting list
-		wxString sTransferWList = SendRecvMsg("TRANSFER W_LIST");
+		wxString sTransferWList = m_ECClient->SendRecvMsg("TRANSFER W_LIST");
 		while (sTransferWList.Length()>0) {
 			newLinePos=sTransferWList.First("\n");
 
@@ -1893,7 +1867,7 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	wxString buffer;
 	buffer.Printf("%s (%i)", _GetPlainResString(IDS_TW_DOWNLOADS).GetData(),FilesArray.GetCount());
 	Out.Replace("[DownloadList]",buffer);
-	buffer.Printf("%s (%i)",_GetPlainResString(IDS_PW_CON_UPLBL).GetData(),atoi(SendRecvMsg("QUEUE UL_GETLENGTH")));
+	buffer.Printf("%s (%i)",_GetPlainResString(IDS_PW_CON_UPLBL).GetData(),atoi(m_ECClient->SendRecvMsg("QUEUE UL_GETLENGTH")));
 	Out.Replace("[UploadList]", buffer );
 	Out.Replace("[CatSel]",sCat);
 
@@ -1967,7 +1941,7 @@ wxString CWebServer::_GetSharedFilesList(ThreadData Data) {
 		_SetSharedFilePriority(_ParseURL(Data.sURL, "hash"),atoi(_ParseURL(Data.sURL, "setpriority")));
 
 	if (_ParseURL(Data.sURL, "reload") == "true") {
-		SendRecvMsg("SHAREDFILES RELOAD");
+		m_ECClient->SendRecvMsg("SHAREDFILES RELOAD");
 	}
 
 	wxString sSharedSortRev;
@@ -2071,7 +2045,7 @@ wxString CWebServer::_GetSharedFilesList(ThreadData Data) {
 	// Populating array
 	// sSharedFilesList as:
 	// %s\t%ld\t%s\t%ld\t%ll\t%d\t%d\t%d\t%d\t%s\t%s\t%d\t%d\n
-	wxString sSharedFilesList = SendRecvMsg("SHAREDFILES LIST");
+	wxString sSharedFilesList = m_ECClient->SendRecvMsg("SHAREDFILES LIST");
 	wxString sEntry;
 	int brk=0, newLinePos;
 	while (sSharedFilesList.Length()>0) {
@@ -2292,7 +2266,7 @@ wxString CWebServer::_GetGraphs(ThreadData Data) {
 	Out.Replace("[TxtTime]", _GetPlainResString(IDS_TIME));
 
 	//sGraphs formatted as: %d\t%d\t%d\t%d
-	wxString sGraphs = SendRecvMsg("WEBPAGE GETGRAPH");
+	wxString sGraphs = m_ECClient->SendRecvMsg("WEBPAGE GETGRAPH");
 	int brk = sGraphs.First("\t");
 	
 	wxString sScale;
@@ -2330,7 +2304,7 @@ wxString CWebServer::_GetAddServerBox(ThreadData Data) {
 		wxString sName = _ParseURL(Data.sURL, "servername");
 		
 		wxString request = wxString("SERVER ADD ")+sIP+wxString(" ")+sPort+wxString(" ")+sName;
-		SendRecvMsg(request.GetData());
+		m_ECClient->SendRecvMsg(request.GetData());
 
 #warning fix GetLastLogEntry
 		wxString resultlog = ""; //_SpecialChars(theApp.amuledlg->GetLastLogEntry());
@@ -2339,7 +2313,7 @@ wxString CWebServer::_GetAddServerBox(ThreadData Data) {
 		Out.Replace("[Message]",resultlog);
 	} else if (_ParseURL(Data.sURL, "updateservermetfromurl") == "true") {
 		wxString request = wxString("SERVER UPDATEMET ") + wxString(_ParseURL(Data.sURL, "servermeturl"));
-		SendRecvMsg(request);
+		m_ECClient->SendRecvMsg(request);
 		
 #warning fix GetLastLogEntry
 		wxString resultlog = ""; //_SpecialChars(theApp.amuledlg->GetLastLogEntry());
@@ -2410,10 +2384,10 @@ wxString CWebServer::_GetLog(ThreadData Data) {
 	wxString Out = pThis->m_Templates.sLog;
 
 	if (_ParseURL(Data.sURL, "clear") == "yes" && IsSessionAdmin(Data,sSession)) {
-		SendRecvMsg("LOG RESETLOG");
+		m_ECClient->SendRecvMsg("LOG RESETLOG");
 	}
 	Out.Replace("[Clear]", _GetPlainResString(IDS_PW_RESET));
-	Out.Replace("[Log]", _SpecialChars(SendRecvMsg("LOG GETALLLOGENTRIES"))+"<br><a name=\"end\"></a>" );
+	Out.Replace("[Log]", _SpecialChars(m_ECClient->SendRecvMsg("LOG GETALLLOGENTRIES"))+"<br><a name=\"end\"></a>" );
 	Out.Replace("[Session]", sSession);
 
 	return Out;
@@ -2429,10 +2403,10 @@ wxString CWebServer::_GetServerInfo(ThreadData Data) {
 	wxString Out = pThis->m_Templates.sServerInfo;
 
 	if (_ParseURL(Data.sURL, "clear") == "yes") {
-		SendRecvMsg("LOG CLEARSERVERINFO");
+		m_ECClient->SendRecvMsg("LOG CLEARSERVERINFO");
 	}
 	Out.Replace("[Clear]", _GetPlainResString(IDS_PW_RESET));
-	Out.Replace("[ServerInfo]", _SpecialChars(wxString(SendRecvMsg("LOG GETSERVERINFO"))));
+	Out.Replace("[ServerInfo]", _SpecialChars(wxString(m_ECClient->SendRecvMsg("LOG GETSERVERINFO"))));
 	Out.Replace("[Session]", sSession);
 
 	return Out;
@@ -2451,11 +2425,11 @@ wxString CWebServer::_GetDebugLog(ThreadData Data) {
 	wxString Out = pThis->m_Templates.sDebugLog;
 
 	if (_ParseURL(Data.sURL, "clear") == "yes" && IsSessionAdmin(Data,sSession)) {
-		SendRecvMsg("LOG RESETDEBUGLOG");
+		m_ECClient->SendRecvMsg("LOG RESETDEBUGLOG");
 	}
 	Out.Replace("[Clear]", _GetPlainResString(IDS_PW_RESET));
 
-	Out.Replace("[DebugLog]", _SpecialChars(SendRecvMsg("LOG GETALLDEBUGLOGENTRIES"))+"<br><a name=\"end\"></a>" );
+	Out.Replace("[DebugLog]", _SpecialChars(m_ECClient->SendRecvMsg("LOG GETALLDEBUGLOGENTRIES"))+"<br><a name=\"end\"></a>" );
 	Out.Replace("[Session]", sSession);
 
 	return Out;
@@ -2475,7 +2449,7 @@ wxString CWebServer::_GetStats(ThreadData Data) {
 	
 	wxString Out = pThis->m_Templates.sStats;
 	
-	wxString sStats = SendRecvMsg("WEBPAGE STATISTICS");
+	wxString sStats = m_ECClient->SendRecvMsg("WEBPAGE STATISTICS");
 	int brk = sStats.First("\t");
 	
 	Out.Replace("[STATSDATA]", sStats.Left(brk));
@@ -2540,12 +2514,12 @@ wxString CWebServer::_GetPreferences(ThreadData Data) {
 		prefList+=wxString::Format("%d\t", ((_ParseURL(Data.sURL, "fullchunks").MakeLower() == "on") ? 1 : 0));
 		prefList+=wxString::Format("%d\t", ((_ParseURL(Data.sURL, "firstandlast").MakeLower() == "on") ? 1 : 0));
 		
-		SendRecvMsg(wxString::Format("WEBPAGE SETPREFERENCES %s", prefList.GetData()).GetData());
+		m_ECClient->SendRecvMsg(wxString::Format("WEBPAGE SETPREFERENCES %s", prefList.GetData()).GetData());
 	}
 
 	// Fill form
 	//sPreferencesList formatted as: %d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d
-	wxString sPreferences = SendRecvMsg("WEBPAGE GETPREFERENCES");
+	wxString sPreferences = m_ECClient->SendRecvMsg("WEBPAGE GETPREFERENCES");
 	brk = sPreferences.First("\t");
 	if (atoi(sPreferences.Left(brk).GetData())) {
 		Out.Replace("[UseGzipVal]", "checked");
@@ -2676,7 +2650,7 @@ wxString CWebServer::_GetConnectedServer(ThreadData Data) {
 	OutS.Replace("[ServerOptions]", wxString(_GetPlainResString(IDS_SERVER)+_GetPlainResString(IDS_EM_PREFS)));
 	OutS.Replace("[WebSearch]", _GetPlainResString(IDS_SW_WEBBASED));
 
-	wxString sServerStat = SendRecvMsg("SERVER STAT");
+	wxString sServerStat = m_ECClient->SendRecvMsg("SERVER STAT");
 	int brk=sServerStat.First("\t");
 	if (sServerStat.Left(brk) == "Connected") {
 		sServerStat=sServerStat.Mid(brk+1);brk=sServerStat.First("\t");
@@ -2790,7 +2764,7 @@ bool CWebServer::_RemoveSession(ThreadData Data, long lSession) {
 	for(int i = 0; i < pThis->m_Params.Sessions.GetSize(); i++) {
 		if (pThis->m_Params.Sessions[i]->lSession == lSession && lSession != 0) {
 			pThis->m_Params.Sessions.RemoveAt(i);
-			SendRecvMsg(wxString::Format("LOG ADDLOGLINE %s", getResString(IDS_WEB_SESSIONEND).GetData()));
+			m_ECClient->SendRecvMsg(wxString::Format("LOG ADDLOGLINE %s", getResString(IDS_WEB_SESSIONEND).GetData()));
 			return true;
 		}
 	}
@@ -2902,7 +2876,7 @@ wxString CWebServer::_GetDownloadGraph(ThreadData Data,wxString filehash) {
 	wxString Out = "";
 	wxString temp;
 
-	wxString response = SendRecvMsg(wxString::Format("WEBPAGE PROGRESSBAR %d %s", pThis->m_Templates.iProgressbarWidth, filehash.GetData()).GetData());
+	wxString response = m_ECClient->SendRecvMsg(wxString::Format("WEBPAGE PROGRESSBAR %d %s", pThis->m_Templates.iProgressbarWidth, filehash.GetData()).GetData());
 	int brk=response.First("\t");
 	
 	if (atoi(response.Left(brk).GetData())) {
@@ -2954,7 +2928,7 @@ wxString CWebServer::_GetSearch(ThreadData Data) {
 		int brk;
 		while (downloads.Length()>0) {
 			brk=downloads.First("|");
-			SendRecvMsg(wxString::Format("SEARCH DOWNLOADFILE %s", downloads.Left(brk).GetData()));
+			m_ECClient->SendRecvMsg(wxString::Format("SEARCH DOWNLOADFILE %s", downloads.Left(brk).GetData()));
 			downloads=downloads.Mid(brk+1);
 		}
 	}
@@ -2970,7 +2944,7 @@ wxString CWebServer::_GetSearch(ThreadData Data) {
 		sParams.Append(_ParseURL(Data.sURL, "ext")+"\n");
 		sParams.Append(_ParseURL(Data.sURL, "method")+"\n");
 
-		SendRecvMsg(wxString::Format("SEARCH DONEWSEARCH %s", sParams.GetData()));
+		m_ECClient->SendRecvMsg(wxString::Format("SEARCH DONEWSEARCH %s", sParams.GetData()));
 		Out.Replace("[Message]",_GetPlainResString(IDS_SW_SEARCHINGINFO));
 	} else if (sToSearch != "" && !IsSessionAdmin(Data,sSession) ) {
 		Out.Replace("[Message]",_GetPlainResString(IDS_ACCESSDENIED));
@@ -2982,9 +2956,9 @@ wxString CWebServer::_GetSearch(ThreadData Data) {
 	sSort = _ParseURL(Data.sURL, "sortAsc");
 	if (sSort.Length()>0) pThis->m_bSearchAsc=atoi(sSort);
 
-	wxString result = pThis->m_Templates.sSearchHeader + wxString(SendRecvMsg(wxString::Format("SEARCH WEBLIST %s\t%d\t%d", pThis->m_Templates.sSearchResultLine.GetData(), pThis->m_iSearchSortby, pThis->m_bSearchAsc)));
+	wxString result = pThis->m_Templates.sSearchHeader + wxString(m_ECClient->SendRecvMsg(wxString::Format("SEARCH WEBLIST %s\t%d\t%d", pThis->m_Templates.sSearchResultLine.GetData(), pThis->m_iSearchSortby, pThis->m_bSearchAsc)));
 	
-	if (atoi(SendRecvMsg("SEARCH GETCATCOUNT").GetData()) > 1)
+	if (atoi(m_ECClient->SendRecvMsg("SEARCH GETCATCOUNT").GetData()) > 1)
 		InsertCatBox(Out,0,pThis->m_Templates.sCatArrow);
 	else
 		Out.Replace("[CATBOX]","");
