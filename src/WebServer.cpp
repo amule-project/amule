@@ -17,33 +17,17 @@
 
 
 #ifdef HAVE_CONFIG_H
-#include "config.h"		// Needed for VERSION
+	#include "config.h"		// Needed for VERSION
 #endif
 
 #include <cstdlib>
 #include <cstdio>
 #include <cstring>
-#if !defined( __WXMSW__ )
-#include <unistd.h>
-#else
-#define AMULEWEBDLG 1
-#endif
-
-// This is kludgy test to warn people about the well-known wxBase rpm bug.
-#if !defined(WXBASE) && !defined(__WXUNIVERSAL__) && !defined(__WXMSW__) && !defined(__WXMOTIF__) && \
-    !defined(__WXGTK__) && !defined(__WXMAC__) && !defined(__WXPM__) && !defined(__WXSTUBS__)
-#error ============================================================================
-#error There is a problem with the WX_CXXFLAGS.
-#error This is probably caused by having a link from wx-config to wxbase-*-config.
-#error PLEASE MAKE SURE THAT YOUR wx-config POINTS TO THE CORRECT CONFIGURE SCRIPT!
-#error Then run: config.status --recheck; config.status
-#error ============================================================================
-#endif
 
 #include "WebServer.h"
 #include "MD5Sum.h"
 #ifdef __FreeBSD__
-#include "otherfunctions.h"	// Needed for atoll
+	#include "otherfunctions.h"	// Needed for atoll
 #endif
 
 #include "resource.h"		// Needed by strings.en
@@ -53,356 +37,6 @@
 #include "GetTickCount.h"	// Needed for GetTickCount
 #include "ECSocket.h"	
 
-#define itemsof(x) (sizeof(x)/sizeof(x[0])) //shakraw
-
-#define CMD_ID_QUIT		-1
-#define CMD_ID_HELP		1
-#define CMD_ID_NOP		2
-#define CMD_ID_STOP		3
-#define CMD_ID_START	4
-#define CMD_ID_RESTART	5
-
-#define APP_INIT_SIZE_X 640
-#define APP_INIT_SIZE_Y 480
-
-#if wxUSE_GUI && wxUSE_TIMER
-class MyTimer *mytimer;
-#endif
-
-IMPLEMENT_APP(CamulewebApp)
-
-ECSocket *m_ECClient = NULL;
-CWebServer *webserver = NULL;
-
-#ifdef AMULEWEBDLG
-// IDs for the controls and the menu commands
-enum
-{
-    // menu items
-    amuleweb_Quit = 1,
-
-    // it is important for the id corresponding to the "About" command to have
-    // this standard value as otherwise it won't be handled properly under Mac
-    // (where it is special and put into the "Apple" menu)
-    amuleweb_About = wxID_ABOUT,
-    Event_Comand_ID = 32001,
-    amuleFrame_ID = 32000 
-};
-
-BEGIN_EVENT_TABLE(CamulewebFrame, wxFrame)
-    EVT_MENU(amuleweb_Quit,  CamulewebFrame::OnQuit)
-    EVT_MENU(amuleweb_About, CamulewebFrame::OnAbout)
-//    EVT_TEXT(Event_Comand_ID, CamulewebFrame::OnComandChange)
-    EVT_TEXT_ENTER(Event_Comand_ID, CamulewebFrame::OnComandEnter)
-    EVT_SIZE      (CamulewebFrame::OnSize)
-END_EVENT_TABLE()
-#endif
-
-
-void Show(char *Stringformat,...) {
-	char bufferline[5000];
-
-	va_list argptr;
-	va_start(argptr, Stringformat);
-	vsnprintf(bufferline, 5000, Stringformat, argptr);
-	va_end(argptr);
-#ifndef AMULEWEBDLG
-	printf("%s",bufferline);
-#else
-	theApp.frame->log_text->AppendText(wxString::Format("%s",bufferline));
-#endif
-}
-
-
-void ShowGreet() {
-	Show("\n---------------------------------\n");
-	Show("|       aMule Web Server        |\n");
-	Show("---------------------------------\n\n");
-	Show("\nUse 'Help' for command list\n\n");}
-
-	
-void ShowHelp() {
-	Show("\n->Help: Avalaible commands :\n\n");	
-	Show("Help: Shows this help.\t\t\t\t\tSyns: help\n");
-	//Show("Start: Start web server.\t\t\t\tSyns: start\n");
-	//Show("Stop: Stop web server.\t\t\t\t\tSyns: stop\n");
-	//Show("Restart: Restart web server.\t\t\t\tSyns: restart\n");	
-	Show("Quit: Exits Textclient.\t\t\t\t\tSyns: quit, Exit, exit\n");	
-	Show("->End of listing\n");
-}
-
-
-#ifndef AMULEWEBDLG
-void GetCommand(char* buffer, size_t buffer_size) {
-	Show("aMule[web]$ "); 
-	fflush(stdin);
-	fgets(buffer, buffer_size, stdin);
-}
-#else
-void GetCommand(char* buffer, size_t buffer_size) {
-        char const* text = wxGetTextFromUser(_T("Command?"),_T("Enter Command")).c_str();
-	size_t len = strlen(text);
-	if (len > buffer_size - 2)
-	  len = buffer_size - 2;
-	strncpy(buffer, text, len);
-	buffer[len] = '\n';
-	buffer[len + 1] = 0;
-}
-#endif
-
-
-int GetIDFromString(char* buffer) {
-	if ((strncmp(buffer,"Quit",4)==0) || (strncmp(buffer,"quit",4)==0) || (strncmp(buffer,"Exit",4)==0) || (strncmp(buffer,"exit",4) ==0)) {
-		return(CMD_ID_QUIT);
-	} else if ((strncmp(buffer,"Help",4)==0) || (strncmp(buffer,"help",4)==0)) {
-		return(CMD_ID_HELP);
-	} else if ((strncmp(buffer,"Stop",4)==0) || (strncmp(buffer,"stop",4)==0)) {
-		return(CMD_ID_STOP);
-	} else if ((strncmp(buffer,"Start",5)==0) || (strncmp(buffer,"start",5)==0)) {
-		return(CMD_ID_START);
-	} else if ((strncmp(buffer,"Restart",4)==0) || (strncmp(buffer,"restart",4)==0)) {
-		return(CMD_ID_RESTART);		
-	} else if (strncmp(buffer, "",0)==0) {
-		return(CMD_ID_NOP);
-	}
-
-	return(0);
-}
-
-
-void Process_Answer(int ID,char* answer) {
-	char* t;
-	t=strtok(answer,"\n");
-	while (t!=NULL) {
-		Show("%s",t);
-		t=strtok(NULL,"\n");
-	}
-}
-
-
-int ProcessCommand(int ID) {
-	switch (ID) {
-		case CMD_ID_HELP:
-			ShowHelp();
-			break;
-		case CMD_ID_STOP:
-			webserver->StopServer();
-			break;
-		case CMD_ID_START:
-			webserver->StartServer();
-			break;
-		case CMD_ID_RESTART:
-			webserver->RestartServer();
-			break;
-		default:
-			return(-1);
-			break;
-	}
-	return(0);
-}
-
-
-bool Parse_Command(char* buffer) {
-	int cmd_ID;
-	cmd_ID=GetIDFromString(buffer);
-		if (cmd_ID) {
-			if (cmd_ID==CMD_ID_QUIT) {
-				return true;
-			} else if (cmd_ID==CMD_ID_NOP) {
-				return false; //do nothing when hit enter
-			} else {
-					if (ProcessCommand(cmd_ID)<0) {
-						Show("Error processing command - should never happen! Report bug, please");
-					} 
-			}
-		} else Show("Syntax error!");
-	return false;
-}
-
-
-void WebClientShell() {
-	char buffer[256];
-
-	bool The_End=false;
-	do {
-		GetCommand(buffer, sizeof(buffer));
-		The_End = Parse_Command(buffer);
-	} while (!The_End);
-}
-
-
-#ifndef AMULEWEBDLG
-bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& amuleweb_parser) {
-	
-	bool result = true;
-	
-	result = wxApp::OnCmdLineParsed(amuleweb_parser);
-	
-	wxString TempStr;
-	TempStr = "rh";
-	if (!amuleweb_parser.Found(TempStr,&hostName)) {
-		hostName = "localhost";
-	}
-	
-	long port;
-	TempStr = "p";
-	if (!amuleweb_parser.Found(TempStr,&port)) {
-		sPort="4712"; //get the default port
-	} else {
-		sPort=wxString::Format("%li", port);
-	}
-
-	return result;
-}
-#endif
-
-
-#ifdef AMULEWEBDLG
-int CamulewebApp::OnExit() {
-	m_ECClient->Destroy();
-	return 0;
-}
-
-bool CamulewebApp::OnInit() {
-      frame = new CamulewebFrame(_T("amuleweb DLG"), wxPoint(50, 50), wxSize(APP_INIT_SIZE_X, APP_INIT_SIZE_Y));
-      frame->Show(TRUE);
-#else
-int CamulewebApp::OnRun() {
-#endif
-	Show("\nThis is amuleweb (WebServer)\n\n");
-
-	wxString *temp_wxpasswd;
-
-#ifndef AMULEWEBDLG
-	char* t_passwd;
-	t_passwd = getpass("Enter password for mule connection (return if no pass defined): ");
-	if (strlen(t_passwd)>0) {
-		temp_wxpasswd = new wxString(MD5Sum(wxT(t_passwd)).GetHash());
-	} else temp_wxpasswd = new wxString("");
-	//printf("pass |%s| MD5HASH = |%s|\n",t_passwd,temp_wxpasswd->GetData());
-#else
-	hostName = wxGetTextFromUser(_T("Enter hostname or ip of the box running aMule"),_T("Enter Hostname"),_T("localhost"));
-	sPort = wxGetTextFromUser(_T("Enter port for aMule's External Connection"),_T("Enter Port"),_T("4712"));
-	temp_wxpasswd = new wxString(::wxGetPasswordFromUser(_T("Enter password for mule connection (OK if no pass defined)"),_T("Enter Password")));
-	if (strlen(temp_wxpasswd->GetData())>0) {
-		temp_wxpasswd = new wxString(MD5Sum(*temp_wxpasswd).GetHash());
-	} else temp_wxpasswd = new wxString("");
-#endif
-
-	wxString passwd = wxString::Format("aMuleweb %s",temp_wxpasswd->GetData());
-	delete temp_wxpasswd;
-
-	Show("\nCreating client...\n");
-	// Create the socket
-	m_ECClient = new ECSocket();
-
-	Show("Now doing connection...\n");
-
-	wxIPV4address addr;
-	addr.Hostname(hostName);
-	addr.Service(sPort);
-
-	Show("Using host %s port %d\n", addr.Hostname().GetData(), addr.Service());
-
-	Show("\nTrying to connect (timeout = 10 sec) ...\n");
-  	m_ECClient->Connect(addr, FALSE);
-	m_ECClient->WaitOnConnect(10);
-
-	if (!m_ECClient->IsConnected())
-		// no connection => close gracefully
-    	Show("Failed ! Unable to connect to the specified host\n");
-	else {
-		//Authenticate ourself
-		if (m_ECClient->SendRecvMsg(wxString::Format("AUTH %s", passwd.GetData())) == "Access Denied") {
-			Show("ExternalConn: Access Denied.\n");
-		} else {
-    		Show("Succeeded ! Connection established\n");
-			ShowGreet();
-
-			//Creating the web server
-			webserver = new CWebServer();
-			webserver->StartServer();
-
-#ifndef AMULEWEBDLG
-			WebClientShell();
-			Show("\nOk, exiting WebServer...\n");
-#endif
-		}
-	}
-
-	m_ECClient->Close();
-	return TRUE;
-}
-
-
-#ifdef AMULEWEBDLG
-CamulewebFrame::CamulewebFrame(const wxString& title, const wxPoint& pos, const wxSize& size, long style)
-       : wxFrame(NULL, amuleFrame_ID, title, pos, size, style) {
-
-    wxMenu *menuFile = new wxMenu;
-    menuFile->Append(amuleweb_Quit, _T("E&xit\tAlt-X"), _T("Quit amuleweb"));
-
-    wxMenu *helpMenu = new wxMenu;
-    helpMenu->Append(amuleweb_About, _T("&About...\tF1"), _T("Show about dialog"));
-
-    // now append the freshly created menu to the menu bar...
-    wxMenuBar *menuBar = new wxMenuBar();
-    menuBar->Append(menuFile, _T("&File"));
-    menuBar->Append(helpMenu, _T("&Help"));
-
-    // ... and attach this menu bar to the frame
-    SetMenuBar(menuBar);
-
-    log_text = new wxTextCtrl(this, -1, _T(""), wxPoint(2, 2), wxSize(APP_INIT_SIZE_X-4,APP_INIT_SIZE_Y-30-4), wxTE_MULTILINE | wxTE_READONLY);
-    log_text->SetBackgroundColour(wxT("wheat"));   
-
-    cmd_control = new wxTextCtrl(this,Event_Comand_ID, _T(""), wxPoint(2,APP_INIT_SIZE_Y-30-4), wxSize(APP_INIT_SIZE_X-4,30), wxTE_PROCESS_ENTER);
-    cmd_control->SetBackgroundColour(wxT("wheat"));
-}
-
-
-void CamulewebFrame::OnQuit(wxCommandEvent& WXUNUSED(event)) {
-    // TRUE is to force the frame to close
-    Show("\nOk, exiting Web Client...\n");
-    Close(TRUE);
-}
-
-
-void CamulewebFrame::OnAbout(wxCommandEvent& WXUNUSED(event)) {
-    wxString msg;
-    msg.Printf( _T("amuleweb DLG version\n")
-                _T("Using %s\n(c) aMule Dev Team"), wxVERSION_STRING);
-
-    wxMessageBox(msg, _T("About amuleweb"), wxOK | wxICON_INFORMATION, this);
-}
-
-
-void CamulewebFrame::OnComandEnter(wxCommandEvent& WXUNUSED(event)) {
-	if (cmd_control->GetLineLength(0) == 0) {
-		return;
-	}
-	
-	char* buffer = (char *) cmd_control->GetLineText(0).c_str();
-	
-	if (Parse_Command(buffer)) {
-		Close(TRUE);
-	}
-	cmd_control->Clear();
-}
-
-
-void CamulewebFrame::OnSize( wxSizeEvent& WXUNUSED(event) ) {
-    int x = 0;
-    int y = 0;
-    GetClientSize( &x, &y );
-
-    if (log_text) log_text->SetSize( 2, 2, x-4, y-30 - 4 );
-    if (cmd_control) cmd_control->SetSize( 2, y-30-2, x-4,30);
-}
-#endif
-
-
-//---shakraw, webserver code below
 #include "types.h"
 #include "WebServer.h"
 #include "ED2KLink.h"
@@ -424,33 +58,22 @@ WX_DEFINE_OBJARRAY(ArrayOfDownloadFiles);
 
 #define WEB_SERVER_TEMPLATES_VERSION	4
 
-static int dwThread = 0;
 
-
-//shakraw, same as GetResString() from otherfunctions.h
-wxString getResString(UINT nID) {
-	for(unsigned int i=0; i < itemsof(_resStrings); ++i) {
-		if(_resStrings[i].id==nID) {
-			return(wxString(wxGetTranslation(_resStrings[i].resstr)));
-		}
-	}
-	return("This String is Neat");
-}
-
+//common functions -- start
 //shakraw, same as CastItoXBytes() from otherfunctions.h
 wxString castItoXBytes(uint64 count) {
     wxString buffer;
 	
     if (count < 1024)
-        buffer.Printf("%.0f %s",(float)count,getResString(IDS_BYTES).GetData());
+        buffer.Printf("%.0f %s",(float)count, _("Bytes"));
     else if (count < 1048576)
-        buffer.Printf("%.0f %s",(float)count/1024,getResString(IDS_KBYTES).GetData());
+        buffer.Printf("%.0f %s",(float)count/1024, _("KB"));
     else if (count < 1073741824)
-        buffer.Printf("%.2f %s",(float)count/1048576,getResString(IDS_MBYTES).GetData());
+        buffer.Printf("%.2f %s",(float)count/1048576, _("MB"));
     else if (count < 1099511627776LL)
-        buffer.Printf("%.2f %s",(float)count/1073741824,getResString(IDS_GBYTES).GetData());
+        buffer.Printf("%.2f %s",(float)count/1073741824, _("GB"));
     else
-        buffer.Printf("%.3f %s",(float)count/1099511627776LL,getResString(IDS_TBYTES).GetData());
+        buffer.Printf("%.3f %s",(float)count/1099511627776LL, _("TB"));
 	
     return buffer;
 }
@@ -519,24 +142,22 @@ wxString castSecondsToHM(sint32 count) {
 	if (count < 0)
 		buffer = "?"; 
 	else if (count < 60)
-		buffer.Printf("%i %s",count,getResString(IDS_SECS).GetData()); 
+		buffer.Printf("%i %s",count, _("secs")); 
 	else if (count < 3600) 
-		buffer.Printf("%i:%s %s",count/60,leadingZero(count-(count/60)*60).GetData(),getResString(IDS_MINS).GetData());
+		buffer.Printf("%i:%s %s",count/60,leadingZero(count-(count/60)*60).GetData(), _("mins"));
 	else if (count < 86400) 
-		buffer.Printf("%i:%s %s",count/3600,leadingZero((count-(count/3600)*3600)/60).GetData(),getResString(IDS_HOURS).GetData());
+		buffer.Printf("%i:%s %s",count/3600,leadingZero((count-(count/3600)*3600)/60).GetData(), _("h"));
 	else 
-		buffer.Printf("%i %s %i %s",count/86400,getResString(IDS_DAYS).GetData(),(count-(count/86400)*86400)/3600,getResString(IDS_HOURS).GetData()); 
+		buffer.Printf("%i %s %i %s",count/86400, _("D"), (count-(count/86400)*86400)/3600, _("h")); 
 	return buffer;
 } 
+//common functions -- end
 
 
-//returns web server listening port
-int CWebServer::GetWSPort() {
-	return(atoi(m_ECClient->SendRecvMsg("PREFERENCES GETWSPORT").GetData()));
-}
 
-
-CWebServer::CWebServer(void) {
+CWebServer::CWebServer(CamulewebApp *webApp) {
+	webInterface = webApp;
+	
 	m_Params.bShowUploadQueue = false;
 
 	m_Params.DownloadSort = DOWN_SORT_NAME;
@@ -551,13 +172,56 @@ CWebServer::CWebServer(void) {
 	m_iSearchSortby=3;
 	m_bSearchAsc=0;
 
-	dwThread = 0; //GetCurrentThreadId();
 	m_bServerWorking = false; // not running (listening) yet
 }
 
 
-void CWebServer::ReloadTemplates() {
-	time_t t=time(NULL);
+CWebServer::~CWebServer(void) {
+	if (m_bServerWorking) StopSockets();
+}
+
+
+//start web socket and reload templates
+void CWebServer::StartServer(void) {
+	if (!m_bServerWorking) {
+		ReloadTemplates();
+		StartSockets(this);
+		m_bServerWorking = true;
+		webInterface->Print("Web Server: Started\n");
+	} else
+		webInterface->Print("Web Server: running\n");
+}
+
+//restart web socket and reload templates
+void CWebServer::RestartServer(void) {
+	if (m_bServerWorking) {
+		StopSockets();
+	}
+	StartSockets(this);
+	webInterface->Print("Web Server: Restarted\n");
+}
+
+
+//stop web socket
+void CWebServer::StopServer(void) {
+	if (m_bServerWorking) {
+		m_bServerWorking = false;
+		StopSockets();
+		webInterface->Print("Web Server: Stopped\n");
+	} else
+		webInterface->Print("Web Server: not running\n");
+}
+
+
+//returns web server listening port
+int CWebServer::GetWSPort(void) {
+	return(atoi(webInterface->SendRecvMsg("PREFERENCES GETWSPORT").GetData()));
+}
+
+
+//reload template file
+void CWebServer::ReloadTemplates(void) {
+	time_t t = time(NULL);
 	char *s = new char[255];
 	strftime(s, 255, "%a, %d %b %Y %H:%M:%S GMT", localtime(&t));
 	m_Params.sLastModified = wxString(s);
@@ -569,7 +233,7 @@ void CWebServer::ReloadTemplates() {
 		
 	if (!wxFileName::FileExists(sFile)) {
 		// no file. do nothing.
-		m_ECClient->SendRecvMsg(wxString::Format("LOGGING ADDLOGLINE %d %s", true, getResString(IDS_WEB_ERR_CANTLOAD).GetData()));
+		webInterface->SendRecvMsg(wxString::Format("LOGGING ADDLOGLINE %d %s", true, _("Can't load templates: Can't open file %s"), sFile.GetData()));
 		return;
 	}
 
@@ -583,13 +247,11 @@ void CWebServer::ReloadTemplates() {
 
 			sAll += sLine + "\n";
 		}
-		//file.Close();
-		// it'll get closed sometime..
-	
+
 		wxString sVersion = _LoadTemplate(sAll,"TMPL_VERSION");
 		long lVersion = atol(sVersion);
 		if (lVersion < WEB_SERVER_TEMPLATES_VERSION) {
-			m_ECClient->SendRecvMsg(wxString::Format("LOGGING ADDLOGLINE %d %s", true, getResString(IDS_WEB_ERR_CANTLOAD).GetData()));
+			webInterface->SendRecvMsg(wxString::Format("LOGGING ADDLOGLINE %d %s", true, _("Can't load templates: Can't open file %s"), sFile.GetData()));
 		} else {
 			m_Templates.sHeader = _LoadTemplate(sAll,"TMPL_HEADER");
 			m_Templates.sHeaderMetaRefresh = _LoadTemplate(sAll,"TMPL_HEADER_META_REFRESH");
@@ -639,14 +301,8 @@ void CWebServer::ReloadTemplates() {
 			m_Templates.sProgressbarImgs.Replace("[PROGRESSGIFINTERNAL]","%i");
 		}
 	} else {
-		m_ECClient->SendRecvMsg(wxString::Format("LOGGING ADDLOGLINE %d %s", true, getResString(IDS_WEB_ERR_CANTLOAD).GetData()));
+		webInterface->SendRecvMsg(wxString::Format("LOGGING ADDLOGLINE %d %s", true, _("Can't load templates: Can't open file %s"), sFile.GetData()));
 	}
-}
-
-
-CWebServer::~CWebServer(void) {
-	if (m_bServerWorking)
-		StopSockets();
 }
 
 
@@ -654,66 +310,38 @@ wxString CWebServer::_LoadTemplate(wxString sAll, wxString sTemplateName) {
 	wxString sRet = "";
 	int nStart = sAll.Find("<--" + sTemplateName + "-->");
 	int nEnd = sAll.Find("<--" + sTemplateName + "_END-->");
+	
 	if (nStart != -1 && nEnd != -1)	{
 		nStart += sTemplateName.Length() + 7;
 		sRet = sAll.Mid(nStart, nEnd - nStart - 1);
 	}
 	
-	if (sRet.IsEmpty())	{
+	if (sRet.IsEmpty()) {
 		if (sTemplateName=="TMPL_VERSION")
-			printf("Can't find template version number!\nPlease replace aMule.tmpl with a newer version!");
-			//theApp.amuledlg->AddLogLine(true,"Can't find template version number!\nPlease replace aMule.tmpl with a newer version!");
-		printf("Failed to load template %s\n", sTemplateName.GetData());
-		//theApp.amuledlg->AddDebugLogLine(false,"Failed to load template " + sTemplateName);
+			webInterface->Print((char *) _("Can't find template version number!\nPlease replace aMule.tmpl with a newer version!"));
+		webInterface->Print((char *) _("Failed to load template %s\n"), sTemplateName.GetData());
 	}
 	return sRet;
 }
 
 
-void CWebServer::RestartServer(void) { //shakraw - restart web socket listening (reload templates too)
-	if (m_bServerWorking) {
-		StopSockets();
-	}
-	StartSockets(this);
-	Show("Web Server: Restarted\n");
-}
-
-void CWebServer::StopServer(void) { //shakraw - stop web socket listening
-	if (m_bServerWorking) {
-		m_bServerWorking = false;
-		StopSockets();
-		Show("Web Server: Stopped\n");
-	} else
-		Show("Web Server: not running\n");
-}
-
-void CWebServer::StartServer(void) { //shakraw - start web socket listening (reload templates)
-	if (!m_bServerWorking) {
-		ReloadTemplates();
-		StartSockets(this);
-		m_bServerWorking = true;
-		Show("Web Server: Started\n");
-	} else
-		Show("Web Server: running\n");
+void CWebServer::_RemoveServer(CWebServer *pThis, wxString sIP, wxString sPort) {
+	wxString request = wxString::Format("SERVER REMOVE %s %s", sIP.GetData(), sPort.GetData());
+	pThis->webInterface->SendRecvMsg(request.GetData());
 }
 
 
-void CWebServer::_RemoveServer(wxString sIP, wxString sPort) {
-	wxString request = wxString("SERVER REMOVE ")+sIP+wxString(" ")+sPort;
-	m_ECClient->SendRecvMsg(request.GetData());
-}
-
-
-void CWebServer::_SetSharedFilePriority(wxString hash, uint8 priority) {	
+void CWebServer::_SetSharedFilePriority(CWebServer *pThis, wxString hash, uint8 priority) {	
 	int prio = (int) priority;
 	if (prio >= 0 && prio < 5) {
-		m_ECClient->SendRecvMsg(wxString::Format("SHAREDFILES SETAUTOUPPRIORITY %s %d", hash.GetData(), 0));
-		m_ECClient->SendRecvMsg(wxString::Format("SHAREDFILES SETUPPRIORITY %s %d", hash.GetData(), prio));
+		pThis->webInterface->SendRecvMsg(wxString::Format("SHAREDFILES SETAUTOUPPRIORITY %s %d", hash.GetData(), 0));
+		pThis->webInterface->SendRecvMsg(wxString::Format("SHAREDFILES SETUPPRIORITY %s %d", hash.GetData(), prio));
 	} else if (prio == 5) {
-		m_ECClient->SendRecvMsg(wxString::Format("SHAREDFILES SETAUTOUPPRIORITY %s %d", hash.GetData(), 1));
-		m_ECClient->SendRecvMsg(wxString::Format("SHAREDFILES UPDATEAUTOUPPRIORITY %s", hash.GetData()));
+		pThis->webInterface->SendRecvMsg(wxString::Format("SHAREDFILES SETAUTOUPPRIORITY %s %d", hash.GetData(), 1));
+		pThis->webInterface->SendRecvMsg(wxString::Format("SHAREDFILES UPDATEAUTOUPPRIORITY %s", hash.GetData()));
 	}
 }
+
 
 void CWebServer::AddStatsLine(UpDown* line) {
 	m_Params.PointsForWeb.Add(line);
@@ -723,6 +351,7 @@ void CWebServer::AddStatsLine(UpDown* line) {
 	}
 }
 
+
 wxString CWebServer::_SpecialChars(wxString str) {
 	str.Replace("&","&amp;");
 	str.Replace("<","&lt;");
@@ -731,10 +360,12 @@ wxString CWebServer::_SpecialChars(wxString str) {
 	return str;
 }
 
-void CWebServer::_ConnectToServer(wxString sIP, wxString sPort) {
+
+void CWebServer::_ConnectToServer(CWebServer *pThis, wxString sIP, wxString sPort) {
 	wxString request = wxString("SERVER CONNECT ")+sIP+wxString(" ")+sPort;
-	m_ECClient->SendRecvMsg(request.GetData());
+	pThis->webInterface->SendRecvMsg(request.GetData());
 }
+
 
 void CWebServer::ProcessImgFileReq(ThreadData Data) {
 	CWebServer *pThis = (CWebServer *)Data.pThis;
@@ -743,7 +374,7 @@ void CWebServer::ProcessImgFileReq(ThreadData Data) {
 	wxString filename=Data.sURL;
 	wxString contenttype;
 
-	printf("inc. fname=%s\n",filename.GetData());
+	pThis->webInterface->Print("inc. fname=%s\n",filename.GetData());
 	if (filename.Right(4).MakeLower()==".gif") contenttype="Content-Type: image/gif\r\n";
 	else if (filename.Right(4).MakeLower()==".jpg"  || filename.Right(5).MakeLower()==".jpeg") contenttype="Content-Type: image/jpg\r\n";
 	else if (filename.Right(4).MakeLower()==".bmp") contenttype="Content-Type: image/bmp\r\n";
@@ -759,10 +390,10 @@ void CWebServer::ProcessImgFileReq(ThreadData Data) {
 	//filename.Replace("/","\\");
 	//filename=wxString(theApp.glob_prefs->GetAppDir())+"webserver/"+filename;
 	filename=getenv("HOME") + wxString("/.aMule/webserver/") + wxString(filename);
-	printf("**** imgrequest: %s\n",filename.GetData());
+	pThis->webInterface->Print("**** imgrequest: %s\n",filename.GetData());
 
 	if (!wxFileName::FileExists(filename)) {
-		printf("**** imgrequest: file %s does not exists\n", filename.GetData());
+		pThis->webInterface->Print("**** imgrequest: file %s does not exists\n", filename.GetData());
 	}
 
 	wxFileInputStream* fis = new wxFileInputStream(filename);
@@ -778,18 +409,22 @@ void CWebServer::ProcessImgFileReq(ThreadData Data) {
 	}
 }
 
+
 void CWebServer::ProcessStyleFileReq(ThreadData Data) {
+	CWebServer *pThis = (CWebServer *)Data.pThis;
+	if (pThis == NULL) return;
+
 	wxString filename=Data.sURL;
 	wxString contenttype;
 
-	printf("inc. fname=%s\n",filename.GetData());
+	pThis->webInterface->Print("inc. fname=%s\n",filename.GetData());
 	contenttype="Content-Type: text/css\r\n";
 
 	filename=filename.Right(filename.Length()-1);
 	//filename.Replace("/","\\");
 	//filename=wxString(theApp.glob_prefs->GetAppDir())+"webserver/"+filename;
 	filename=getenv("HOME") + wxString("/.aMule/webserver/") + wxString(filename);
-	printf("**** cssrequest: %s\n",filename.GetData());
+	pThis->webInterface->Print("**** cssrequest: %s\n",filename.GetData());
 
 	if (wxFileName::FileExists(filename)) {
 		wxFileInputStream* fis = new wxFileInputStream(filename);
@@ -804,16 +439,17 @@ void CWebServer::ProcessStyleFileReq(ThreadData Data) {
 			delete[] buffer;
 		}
 	} else {
-		printf("**** imgrequest: file %s does not exists\n", filename.GetData());
+		pThis->webInterface->Print("**** imgrequest: file %s does not exists\n", filename.GetData());
 	}
 }
+
 
 void CWebServer::ProcessURL(ThreadData Data) {
 	CWebServer *pThis = (CWebServer *)Data.pThis;
 	if(pThis == NULL)
 		return;
 
-	bool isUseGzip = (atoi(m_ECClient->SendRecvMsg("PREFS GETWEBUSEGZIP").GetData()) == 0) ? false : true;
+	bool isUseGzip = (atoi(pThis->webInterface->SendRecvMsg("PREFS GETWEBUSEGZIP").GetData()) == 0) ? false : true;
 	wxString Out = "";
 	wxString OutE = "";	// List Entry Templates
 	wxString OutE2 = "";
@@ -823,33 +459,32 @@ void CWebServer::ProcessURL(ThreadData Data) {
 
 	wxString HTTPProcessData = "";
 	wxString HTTPTemp = "";
-	//char	HTTPTempC[100] = "";
 	srand ( time(NULL) );
 
 	long lSession = 0;
-	wxString sSes = _ParseURL(Data.sURL, "ses");
+	wxString sSes = _ParseURL(Data, "ses");
 	if (sSes.Cmp("") != 0) lSession = atol(sSes.GetData());
 	wxString sSession; sSession.Printf("%ld", lSession);
 
-	wxString sW = _ParseURL(Data.sURL, "w");
+	wxString sW = _ParseURL(Data, "w");
 
 	// WE CANT TOUCH THE MAIN THREAD'S GUI!!!
 	if (sW == "password") {
 		bool login=false;
 		wxString ip=inet_ntoa( Data.inadr );
 
-		wxString strAuth = m_ECClient->SendRecvMsg(wxString::Format("PREFS GETWSPASS %s", MD5Sum(_ParseURL(Data.sURL, "p")).GetHash().GetData()).GetData());
+		wxString strAuth = pThis->webInterface->SendRecvMsg(wxString::Format("PREFS GETWSPASS %s", MD5Sum(_ParseURL(Data, "p")).GetHash().GetData()).GetData());
 		if (strAuth == "AdminLogin") {
 			Session* ses=new Session();
 			ses->admin=true;
-			ses->startTime = time(NULL);//CTime::GetCurrentTime();
+			ses->startTime = time(NULL);
 			ses->lSession = lSession = rand() * 10000L + rand();
 			pThis->m_Params.Sessions.Add(ses);
 			login=true;
 		} else if (strAuth == "GuestLogin") {
 			Session* ses=new Session();
 			ses->admin=false;
-			ses->startTime = time(NULL);//CTime::GetCurrentTime();
+			ses->startTime = time(NULL);
 			ses->lSession = lSession = rand() * 10000L + rand();
 			pThis->m_Params.Sessions.Add(ses);
 			login=true;
@@ -876,9 +511,9 @@ void CWebServer::ProcessURL(ThreadData Data) {
 	if (_IsLoggedIn(Data, lSession)) {
 		Out += _GetHeader(Data, lSession);
 		
-		wxString sPage = sW; //_ParseURL(Data.sURL, "w");
-		printf("***** logged in, getting page %s\n", sPage.GetData());
-		printf("***** session is %s\n", sSession.GetData());
+		wxString sPage = sW;
+		pThis->webInterface->Print("***** logged in, getting page %s\n", sPage.GetData());
+		pThis->webInterface->Print("***** session is %s\n", sSession.GetData());
 		
 		if (sPage == "server") {
 			Out += _GetServerList(Data);
@@ -916,7 +551,7 @@ void CWebServer::ProcessURL(ThreadData Data) {
 			try {
 				uLongf destLen = Out.Length() + 1024;
 				gzipOut = new TCHAR[destLen];
-				if(_GzipCompress((Bytef*)gzipOut, &destLen, (const Bytef*)(TCHAR*)Out.GetData(), Out.Length(), Z_DEFAULT_COMPRESSION) == Z_OK) {
+				if (_GzipCompress((Bytef*)gzipOut, &destLen, (const Bytef*)(TCHAR*)Out.GetData(), Out.Length(), Z_DEFAULT_COMPRESSION) == Z_OK) {
 					bOk = true;
 					gzipLen = destLen;
 				}
@@ -942,7 +577,7 @@ void CWebServer::ProcessURL(ThreadData Data) {
 			if (pThis->m_Params.badlogins[i]->datalen==ip) faults++;
 
 		if (faults>4) {
-			Out += _GetPlainResString(IDS_ACCESSDENIED);
+			Out += _("Access denied!");
 				
 			// set 15 mins ban by using the badlist
 			TransferredData preventive={ip, ::GetTickCount() + (15*60*1000) };
@@ -962,13 +597,18 @@ void CWebServer::ProcessURL(ThreadData Data) {
 		delete[] gzipOut;
 }
 
-wxString CWebServer::_ParseURLArray(wxString URL, wxString fieldname) {
+
+wxString CWebServer::_ParseURLArray(ThreadData Data, wxString fieldname) {
+	CWebServer *pThis = (CWebServer *)Data.pThis;
+	if (pThis == NULL) return("");
+	
+	wxString URL = Data.sURL;
 	wxString res,temp;
 
 	while (URL.Length()>0) {
 		int pos=URL.MakeLower().Find(fieldname.MakeLower() +"=");
 		if (pos>-1) {
-			temp=_ParseURL(URL,fieldname);
+			temp=_ParseURL(Data,fieldname);
 			if (temp=="") break;
 			res.Append(temp+"|");
 			URL.Remove(pos,10);
@@ -977,7 +617,13 @@ wxString CWebServer::_ParseURLArray(wxString URL, wxString fieldname) {
 	return res;
 }
 
-wxString CWebServer::_ParseURL(wxString URL, wxString fieldname) {
+
+wxString CWebServer::_ParseURL(ThreadData Data, wxString fieldname) {
+	CWebServer *pThis = (CWebServer *)Data.pThis;
+	if (pThis == NULL) return("");
+	
+	wxString URL = Data.sURL;
+	
 	wxString value = "";
 	wxString Parameter = "";
 	char fromReplace[4] = "";	// decode URL
@@ -986,7 +632,7 @@ wxString CWebServer::_ParseURL(wxString URL, wxString fieldname) {
 	int findPos = -1;
 	int findLength = 0;
 
-	printf("*** parsing url %s :: field %s\n",URL.GetData(),fieldname.GetData());
+	pThis->webInterface->Print("*** parsing url %s :: field %s\n", URL.GetData(), fieldname.GetData());
 	if (URL.Find("?") > -1) {
 		Parameter = URL.Mid(URL.Find("?")+1, URL.Length()-URL.Find("?")-1);
 
@@ -1019,13 +665,14 @@ wxString CWebServer::_ParseURL(wxString URL, wxString fieldname) {
 			}
 		}
 	}
-	printf("*** URL parsed. returning %s\n",value.GetData());
+	pThis->webInterface->Print("*** URL parsed. returning %s\n",value.GetData());
 	return value;
 }
 
+
 wxString CWebServer::_GetHeader(ThreadData Data, long lSession) {
 	CWebServer *pThis = (CWebServer *)Data.pThis;
-	if(pThis == NULL)
+	if (pThis == NULL)
 		return "";
 
 	wxString sSession; sSession.Printf("%ld", lSession);
@@ -1034,15 +681,15 @@ wxString CWebServer::_GetHeader(ThreadData Data, long lSession) {
 
 	Out.Replace("[CharSet]", _GetWebCharSet());
 
-	//shakraw - page header
-	wxString sHeaderList = m_ECClient->SendRecvMsg("WEBPAGE HEADER");
+	//get page header data
+	wxString sHeaderList = pThis->webInterface->SendRecvMsg("WEBPAGE HEADER");
 	int brk=sHeaderList.First("\t");
 	
 	int nRefresh = atoi(sHeaderList.Left(brk).GetData());
 	sHeaderList = sHeaderList.Mid(brk+1); brk=sHeaderList.First("\t");
 	
 	if (nRefresh) {
-		wxString sPage = _ParseURL(Data.sURL, "w");
+		wxString sPage = _ParseURL(Data, "w");
 		if ((sPage == "transfer") || (sPage == "server") ||
 			(sPage == "graphs") || (sPage == "log") ||
 			(sPage == "sinfo") || (sPage == "debuglog") ||
@@ -1053,31 +700,32 @@ wxString CWebServer::_GetHeader(ThreadData Data, long lSession) {
 			
 			wxString catadd="";
 			if (sPage == "transfer")
-				catadd="&cat="+_ParseURL(Data.sURL, "cat");
+				catadd="&cat="+_ParseURL(Data, "cat");
 			sT.Replace("[wCommand]", sPage+catadd);
 			
 			Out.Replace("[HeaderMeta]", sT);
 		}
 	}
+	
 	Out.Replace("[Session]", sSession);
-	printf("*** replaced session with %s\n",sSession.GetData());
+	pThis->webInterface->Print("*** replaced session with %s\n", sSession.GetData());
 	Out.Replace("[HeaderMeta]", ""); // In case there are no meta
 	Out.Replace("[aMuleAppName]", "aMule");
 	Out.Replace("[version]", VERSION); //shakraw - was CURRENT_VERSION_LONG);
 	Out.Replace("[StyleSheet]", pThis->m_Templates.sHeaderStylesheet);
-	Out.Replace("[WebControl]", _GetPlainResString(IDS_WEB_CONTROL));
-	Out.Replace("[Transfer]", _GetPlainResString(IDS_CD_TRANS));
-	Out.Replace("[Server]", _GetPlainResString(IDS_SV_SERVERLIST));
-	Out.Replace("[Shared]", _GetPlainResString(IDS_SHAREDFILES));
-	Out.Replace("[Download]", _GetPlainResString(IDS_SW_LINK));
-	Out.Replace("[Graphs]", _GetPlainResString(IDS_GRAPHS));
-	Out.Replace("[Log]", _GetPlainResString(IDS_SV_LOG));
-	Out.Replace("[ServerInfo]", _GetPlainResString(IDS_SV_SERVERINFO));
-	Out.Replace("[DebugLog]", _GetPlainResString(IDS_SV_DEBUGLOG));
-	Out.Replace("[Stats]", _GetPlainResString(IDS_SF_STATISTICS));
-	Out.Replace("[Options]", _GetPlainResString(IDS_EM_PREFS));
-	Out.Replace("[Logout]", _GetPlainResString(IDS_WEB_LOGOUT));
-	Out.Replace("[Search]", _GetPlainResString(IDS_SW_SEARCHBOX));
+	Out.Replace("[WebControl]", _("Web Control Panel"));
+	Out.Replace("[Transfer]", _("Transfer"));
+	Out.Replace("[Server]", _("Server list"));
+	Out.Replace("[Shared]", _("Shared Files"));
+	Out.Replace("[Download]", _("ED2K Link(s)"));
+	Out.Replace("[Graphs]", _("Graphs"));
+	Out.Replace("[Log]", _("Log"));
+	Out.Replace("[ServerInfo]", _("Serverinfo"));
+	Out.Replace("[DebugLog]", _("Debug Log"));
+	Out.Replace("[Stats]", _("Statistics"));
+	Out.Replace("[Options]", _("&Preferences"));
+	Out.Replace("[Logout]", _("Logout"));
+	Out.Replace("[Search]", _("Search"));
 
 	char HTTPTempC[100] = "";
 	wxString sConnected = "";
@@ -1085,30 +733,30 @@ wxString CWebServer::_GetHeader(ThreadData Data, long lSession) {
 	if (sHeaderList.Left(brk) == "Connected") {
 		sHeaderList = sHeaderList.Mid(brk+1); brk=sHeaderList.First("\t");
 		if (sHeaderList.Left(brk) == "High ID") 
-			sConnected = _GetPlainResString(IDS_CONNECTED);
+			sConnected = _("Connected");
 		else
-			sConnected = _GetPlainResString(IDS_CONNECTED) + " (" + _GetPlainResString(IDS_IDLOW) + ")";
+			sConnected = wxString(_("Connected"))+" ("+wxString(_("Low ID"))+")";
 		
 		sHeaderList = sHeaderList.Mid(brk+1); brk=sHeaderList.First("\t");
 		sConnected += ": " + sHeaderList.Left(brk);
 		sHeaderList = sHeaderList.Mid(brk+1); brk=sHeaderList.First("\t");
 		sprintf(HTTPTempC, "%s ", sHeaderList.Left(brk).GetData());
-		sConnected += " [" + wxString(HTTPTempC) + _GetPlainResString(IDS_LUSERS) + "]";
+		sConnected += " [" + wxString(HTTPTempC) + _("users") + "]";
 	} else if (sHeaderList.Left(brk) == "Connecting") {
-		sConnected = _GetPlainResString(IDS_CONNECTING);
+		sConnected = _("Connecting");
 	} else {
-		sConnected = _GetPlainResString(IDS_DISCONNECTED);
+		sConnected = _("Disconnected");
 		if (IsSessionAdmin(Data,sSession))
-			sConnected+=" (<small><a href=\"?ses=" + sSession + "&w=server&c=connect\">"+_GetPlainResString(IDS_CONNECTTOANYSERVER)+"</a></small>)";
+			sConnected += " (<small><a href=\"?ses=" + sSession + "&w=server&c=connect\">"+wxString(_("Connect to any server"))+"</a></small>)";
 	}
-	Out.Replace("[Connected]", "<b>"+_GetPlainResString(IDS_PW_CONNECTION)+":</b> "+sConnected);
+	Out.Replace("[Connected]", "<b>"+wxString(_("Connection"))+":</b> "+sConnected);
 
 	sHeaderList = sHeaderList.Mid(brk+1); brk=sHeaderList.First("\t");
 	double ul_speed = atof(sHeaderList.Left(brk).GetData());
 	sHeaderList = sHeaderList.Mid(brk+1); brk=sHeaderList.First("\t");
 	double dl_speed = atof(sHeaderList.Left(brk).GetData());
 
-	sprintf(HTTPTempC, _GetPlainResString(IDS_UPDOWNSMALL),ul_speed, dl_speed);
+	sprintf(HTTPTempC, _("Up: %.1f | Down: %.1f"), ul_speed, dl_speed);
 
 	wxString sLimits;
 	// EC 25-12-2003
@@ -1117,56 +765,58 @@ wxString CWebServer::_GetHeader(ThreadData Data, long lSession) {
 	sHeaderList = sHeaderList.Mid(brk+1);
 	wxString MaxDownload = sHeaderList.Left(brk);
 	
-	if (MaxUpload == "65535")  MaxUpload = getResString(IDS_PW_UNLIMITED);
-	if (MaxDownload == "65535") MaxDownload = getResString(IDS_PW_UNLIMITED);
+	if (MaxUpload == "65535")  MaxUpload = _("Unlimited");
+	if (MaxDownload == "65535") MaxDownload = _("Unlimited");
 	sLimits.Printf("%s/%s", MaxUpload.GetData(), MaxDownload.GetData());
 	// EC Ends
-	Out.Replace("[Speed]", "<b>"+_GetPlainResString(IDS_DL_SPEED)+":</b> "+wxString(HTTPTempC) + "<small> (" + _GetPlainResString(IDS_PW_CON_LIMITFRM) + ": " + sLimits + ")</small>");
+	Out.Replace("[Speed]", "<b>" +wxString(_("Speed")) + ":</b> " + wxString(HTTPTempC) + "<small> (" + wxString(_("Limits")) + ": " + sLimits + ")</small>");
 
 	return Out;
 }
 
+
 wxString CWebServer::_GetFooter(ThreadData Data) {
 	CWebServer *pThis = (CWebServer *)Data.pThis;
-	if(pThis == NULL)
+	if (pThis == NULL)
 		return "";
 
 	return pThis->m_Templates.sFooter;
 }
+
 
 wxString CWebServer::_GetServerList(ThreadData Data) {
 	CWebServer *pThis = (CWebServer *)Data.pThis;
 	if (pThis == NULL)
 		return "";
 
-	wxString sSession = _ParseURL(Data.sURL, "ses");
+	wxString sSession = _ParseURL(Data, "ses");
 
 	wxString sAddServerBox = "";
 
-	wxString sCmd = _ParseURL(Data.sURL, "c");
+	wxString sCmd = _ParseURL(Data, "c");
 	if (sCmd == "connect" && IsSessionAdmin(Data,sSession) ) {
-		wxString sIP = _ParseURL(Data.sURL, "ip");
+		wxString sIP = _ParseURL(Data, "ip");
 		if (sIP.IsEmpty()) {
-			m_ECClient->SendRecvMsg("SERVER RE-CONNECT");
+			pThis->webInterface->SendRecvMsg("SERVER RE-CONNECT");
 		} else {
-			wxString sPort = _ParseURL(Data.sURL, "port");
+			wxString sPort = _ParseURL(Data, "port");
 			if (sPort.IsEmpty()) sPort = "4661"; //try default port
-			_ConnectToServer(sIP, sPort);
+			_ConnectToServer(pThis, sIP, sPort);
 		}
 	} else if (sCmd == "disconnect" && IsSessionAdmin(Data,sSession)) {
-		m_ECClient->SendRecvMsg("SERVER DISCONNECT");
+		pThis->webInterface->SendRecvMsg("SERVER DISCONNECT");
 	} else if (sCmd == "remove" && IsSessionAdmin(Data,sSession)) {
-		wxString sIP = _ParseURL(Data.sURL, "ip");
+		wxString sIP = _ParseURL(Data, "ip");
 		if (!sIP.IsEmpty()) {
-			wxString sPort = _ParseURL(Data.sURL, "port");
+			wxString sPort = _ParseURL(Data, "port");
 			if (sPort.IsEmpty()) sPort = "4661"; //try default port
-			_RemoveServer(sIP, sPort);
+			_RemoveServer(pThis, sIP, sPort);
 		}
 	} else if (sCmd == "options") {
 		sAddServerBox = _GetAddServerBox(Data);
 	}
 	
-	wxString sSort = _ParseURL(Data.sURL, "sort");
+	wxString sSort = _ParseURL(Data, "sort");
 	if (sSort != "") {
 		if (sSort == "name")
 			pThis->m_Params.ServerSort = SERVER_SORT_NAME;
@@ -1179,11 +829,11 @@ wxString CWebServer::_GetServerList(ThreadData Data) {
 		else if(sSort == "files")
 			pThis->m_Params.ServerSort = SERVER_SORT_FILES;
 
-		if(_ParseURL(Data.sURL, "sortreverse") == "")
+		if(_ParseURL(Data, "sortreverse") == "")
 			pThis->m_Params.bServerSortReverse = false;
 	}
 	
-	wxString sSortRev = _ParseURL(Data.sURL, "sortreverse");
+	wxString sSortRev = _ParseURL(Data, "sortreverse");
 	if (sSortRev != "") {
 		pThis->m_Params.bServerSortReverse = (sSortRev == "true");
 	}
@@ -1224,24 +874,24 @@ wxString CWebServer::_GetServerList(ThreadData Data) {
 	else
 		Out.Replace("[SortFiles]", "");
 	
-	Out.Replace("[ServerList]", _GetPlainResString(IDS_SV_SERVERLIST));
-	Out.Replace("[Servername]", _GetPlainResString(IDS_SL_SERVERNAME));
-	Out.Replace("[Description]", _GetPlainResString(IDS_DESCRIPTION));
-	Out.Replace("[Address]", _GetPlainResString(IDS_IP));
-	Out.Replace("[Connect]", _GetPlainResString(IDS_IRC_CONNECT));
-	Out.Replace("[Users]", _GetPlainResString(IDS_LUSERS));
-	Out.Replace("[Files]", _GetPlainResString(IDS_LFILES));
-	Out.Replace("[Actions]", _GetPlainResString(IDS_WEB_ACTIONS));
+	Out.Replace("[ServerList]", _("Server list"));
+	Out.Replace("[Servername]", _("Server name"));
+	Out.Replace("[Description]", _("Description"));
+	Out.Replace("[Address]", _("IP"));
+	Out.Replace("[Connect]", _("Connect"));
+	Out.Replace("[Users]", _("users"));
+	Out.Replace("[Files]", _("files"));
+	Out.Replace("[Actions]", _("Actions"));
 		
 	wxString OutE = pThis->m_Templates.sServerLine;
-	OutE.Replace("[Connect]", _GetPlainResString(IDS_IRC_CONNECT));
-	OutE.Replace("[RemoveServer]", _GetPlainResString(IDS_REMOVETHIS));
-	OutE.Replace("[ConfirmRemove]", _GetPlainResString(IDS_WEB_CONFIRM_REMOVE_SERVER));
+	OutE.Replace("[Connect]", _("Connect"));
+	OutE.Replace("[RemoveServer]", _("Remove selected server"));
+	OutE.Replace("[ConfirmRemove]", _("Are you sure to remove this server from list?"));
 
 	ArrayOfServerEntry ServerArray;
 
 	// Populating array
-	wxString sServerList = m_ECClient->SendRecvMsg("SERVER LIST");
+	wxString sServerList = pThis->webInterface->SendRecvMsg("SERVER LIST");
 	wxString sEntry;
 	int brk=0, newLinePos;
 	while (sServerList.Length() > 0) {
@@ -1310,7 +960,7 @@ wxString CWebServer::_GetServerList(ThreadData Data) {
 	// Displaying
 	wxString sList = "";
 	for (int i = 0; i < ServerArray.GetCount(); i++) {
-		wxString HTTPProcessData = OutE;	// Copy Entry Line to Temp
+		wxString HTTPProcessData = OutE; // Copy Entry Line to Temp
 		HTTPProcessData.Replace("[1]", ServerArray[i]->sServerName);
 		HTTPProcessData.Replace("[2]", ServerArray[i]->sServerDescription);
 		wxString sPort; sPort.Printf(":%d", ServerArray[i]->nServerPort);
@@ -1343,47 +993,48 @@ wxString CWebServer::_GetServerList(ThreadData Data) {
 	return Out;
 }
 
+
 wxString CWebServer::_GetTransferList(ThreadData Data) {
 	CWebServer *pThis = (CWebServer *)Data.pThis;
 	if (pThis == NULL)
 		return "";
 
-	wxString sSession = _ParseURL(Data.sURL, "ses");
-	int cat=atoi(_ParseURL(Data.sURL,"cat"));
+	wxString sSession = _ParseURL(Data, "ses");
+	int cat=atoi(_ParseURL(Data,"cat"));
 
-	bool clcompl=(_ParseURL(Data.sURL,"ClCompl")=="yes" );
+	bool clcompl=(_ParseURL(Data,"ClCompl")=="yes" );
 	wxString sCat = "";	if (cat!=0) sCat.Printf("&cat=%i",cat);
 
 	wxString Out = "";
 
 	if (clcompl && IsSessionAdmin(Data,sSession)) {
-		m_ECClient->SendRecvMsg("TRANSFER CLEARCOMPLETE");
+		pThis->webInterface->SendRecvMsg("TRANSFER CLEARCOMPLETE");
 	}
 	
-	if (_ParseURL(Data.sURL, "c") != "" && IsSessionAdmin(Data,sSession)) {
-		wxString HTTPTemp = _ParseURL(Data.sURL, "c");
+	if (_ParseURL(Data, "c") != "" && IsSessionAdmin(Data,sSession)) {
+		wxString HTTPTemp = _ParseURL(Data, "c");
 		if (HTTPTemp.Right(1) != "/")
 			HTTPTemp += "/";
 
 		wxString request = wxString("TRANSFER ADDFILELINK ") + HTTPTemp;
-		if (m_ECClient->SendRecvMsg(request) == "Bad Link") {
+		if (pThis->webInterface->SendRecvMsg(request) == "Bad Link") {
 			char HTTPTempC[100] = "";
-			sprintf(HTTPTempC,_GetPlainResString(IDS_ERR_INVALIDLINK), "Bad Link");//error.GetData());
+			sprintf(HTTPTempC,_("This ed2k link is invalid (%s)"), HTTPTemp.GetData());//error.GetData());
 			Out += pThis->m_Templates.sTransferBadLink;
 			Out.Replace("[InvalidLink]", HTTPTempC);
 			Out.Replace("[Link]", HTTPTemp);
 		}
 	}
 
-	if (_ParseURL(Data.sURL, "op") != "" && _ParseURL(Data.sURL, "file") != "") {
+	if (_ParseURL(Data, "op") != "" && _ParseURL(Data, "file") != "") {
 		uchar FileHash[16];
-		_GetFileHash(_ParseURL(Data.sURL, "file"), FileHash);
+		_GetFileHash(_ParseURL(Data, "file"), FileHash);
 
 		int found_file_index = -1;
 
 		int dlFilePosition=0;
-		//shakraw - sFileHashes formatted as: %s\t%s\t....\t%s
-		wxString sFileHashes = m_ECClient->SendRecvMsg("TRANSFER DL_FILEHASH");
+		//sFileHashes formatted as: %s\t%s\t....\t%s
+		wxString sFileHashes = pThis->webInterface->SendRecvMsg("TRANSFER DL_FILEHASH");
 		wxString sEntry;
 		int tabPos;
 		while (sFileHashes.Length()>0) {
@@ -1411,48 +1062,51 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 			dlFilePosition++;
 		}
 		
-		if(_ParseURL(Data.sURL, "op") == "pause" && IsSessionAdmin(Data,sSession)) {
+		if (_ParseURL(Data, "op") == "pause" && IsSessionAdmin(Data,sSession)) {
 			if (found_file_index >= 0) 
-				m_ECClient->SendRecvMsg(wxString::Format("TRANSFER DL_FILEPAUSE %i", found_file_index));
-		} else if(_ParseURL(Data.sURL, "op") == "resume" && IsSessionAdmin(Data,sSession)) {
+				pThis->webInterface->SendRecvMsg(wxString::Format("TRANSFER DL_FILEPAUSE %i", found_file_index));
+		} else if (_ParseURL(Data, "op") == "resume" && IsSessionAdmin(Data,sSession)) {
 			if (found_file_index >= 0)
-				m_ECClient->SendRecvMsg(wxString::Format("TRANSFER DL_FILERESUME %i", found_file_index));
-		} else if(_ParseURL(Data.sURL, "op") == "cancel" && IsSessionAdmin(Data,sSession)) {
+				pThis->webInterface->SendRecvMsg(wxString::Format("TRANSFER DL_FILERESUME %i", found_file_index));
+		} else if (_ParseURL(Data, "op") == "cancel" && IsSessionAdmin(Data,sSession)) {
 			if (found_file_index >= 0)
-				m_ECClient->SendRecvMsg(wxString::Format("TRANSFER DL_FILEDELETE %i", found_file_index));
-		} else if(_ParseURL(Data.sURL, "op") == "prioup" && IsSessionAdmin(Data,sSession)) {
+				pThis->webInterface->SendRecvMsg(wxString::Format("TRANSFER DL_FILEDELETE %i", found_file_index));
+		} else if (_ParseURL(Data, "op") == "prioup" && IsSessionAdmin(Data,sSession)) {
 			if (found_file_index >= 0) {
-				m_ECClient->SendRecvMsg(wxString::Format("TRANSFER DL_FILEPRIOUP %d", found_file_index));
+				pThis->webInterface->SendRecvMsg(wxString::Format("TRANSFER DL_FILEPRIOUP %d", found_file_index));
 			}
-		} else if(_ParseURL(Data.sURL, "op") == "priodown" && IsSessionAdmin(Data,sSession)) {
+		} else if (_ParseURL(Data, "op") == "priodown" && IsSessionAdmin(Data,sSession)) {
 			if (found_file_index >= 0) {
-				m_ECClient->SendRecvMsg(wxString::Format("TRANSFER DL_FILEPRIODOWN %d", found_file_index));
+				pThis->webInterface->SendRecvMsg(wxString::Format("TRANSFER DL_FILEPRIODOWN %d", found_file_index));
 			}
 		}
 	}
 
-	if (_ParseURL(Data.sURL, "sort") != "") {
-		if(_ParseURL(Data.sURL, "sort") == "name")
+	if (_ParseURL(Data, "sort") != "") {
+		if (_ParseURL(Data, "sort") == "name")
 			pThis->m_Params.DownloadSort = DOWN_SORT_NAME;
-		else if(_ParseURL(Data.sURL, "sort") == "size")
+		else if (_ParseURL(Data, "sort") == "size")
 			pThis->m_Params.DownloadSort = DOWN_SORT_SIZE;
-		else if(_ParseURL(Data.sURL, "sort") == "transferred")
+		else if (_ParseURL(Data, "sort") == "transferred")
 			pThis->m_Params.DownloadSort = DOWN_SORT_TRANSFERRED;
-		else if(_ParseURL(Data.sURL, "sort") == "speed")
+		else if (_ParseURL(Data, "sort") == "speed")
 			pThis->m_Params.DownloadSort = DOWN_SORT_SPEED;
-		else if(_ParseURL(Data.sURL, "sort") == "progress")
+		else if (_ParseURL(Data, "sort") == "progress")
 			pThis->m_Params.DownloadSort = DOWN_SORT_PROGRESS;
 
-		if(_ParseURL(Data.sURL, "sortreverse") == "")
+		if (_ParseURL(Data, "sortreverse") == "")
 			pThis->m_Params.bDownloadSortReverse = false;
 	}
-	if (_ParseURL(Data.sURL, "sortreverse") != "") {
-		pThis->m_Params.bDownloadSortReverse = (_ParseURL(Data.sURL, "sortreverse") == "true");
+	
+	if (_ParseURL(Data, "sortreverse") != "") {
+		pThis->m_Params.bDownloadSortReverse = (_ParseURL(Data, "sortreverse") == "true");
 	} 
-	if(_ParseURL(Data.sURL, "showuploadqueue") == "true") {
+	
+	if (_ParseURL(Data, "showuploadqueue") == "true") {
 		pThis->m_Params.bShowUploadQueue = true;
 	}
-	if(_ParseURL(Data.sURL, "showuploadqueue") == "false") {
+	
+	if (_ParseURL(Data, "showuploadqueue") == "false") {
 		pThis->m_Params.bShowUploadQueue = false;
 	}
 	
@@ -1497,17 +1151,17 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	else
 		Out.Replace("[SortProgress]", "");
 	
-	Out.Replace("[Filename]", _GetPlainResString(IDS_DL_FILENAME));
-	Out.Replace("[Size]", _GetPlainResString(IDS_DL_SIZE));
-	Out.Replace("[Transferred]", _GetPlainResString(IDS_COMPLETE));
-	Out.Replace("[Progress]", _GetPlainResString(IDS_DL_PROGRESS));
-	Out.Replace("[Speed]", _GetPlainResString(IDS_DL_SPEED));
-	Out.Replace("[Sources]", _GetPlainResString(IDS_DL_SOURCES));
-	Out.Replace("[Actions]", _GetPlainResString(IDS_WEB_ACTIONS));
-	Out.Replace("[User]", _GetPlainResString(IDS_QL_USERNAME));
-	Out.Replace("[TotalDown]", _GetPlainResString(IDS_INFLST_USER_TOTALDOWNLOAD));
-	Out.Replace("[TotalUp]", _GetPlainResString(IDS_INFLST_USER_TOTALUPLOAD));
-	Out.Replace("[Prio]", _GetPlainResString(IDS_PRIORITY));
+	Out.Replace("[Filename]", _("File Name"));
+	Out.Replace("[Size]", _("Size"));
+	Out.Replace("[Transferred]", _("Complete"));
+	Out.Replace("[Progress]", _("Progress"));
+	Out.Replace("[Speed]", _("Speed"));
+	Out.Replace("[Sources]", _("Sources"));
+	Out.Replace("[Actions]", _("Actions"));
+	Out.Replace("[User]", _("Username"));
+	Out.Replace("[TotalDown]", _("Downloaded total"));
+	Out.Replace("[TotalUp]", _("Uploaded total"));
+	Out.Replace("[Prio]", _("Priority"));
 	Out.Replace("[CatSel]",sCat);
 	wxString OutE = pThis->m_Templates.sTransferDownLine;
 	wxString OutE2 = pThis->m_Templates.sTransferDownLineGood;
@@ -1516,7 +1170,7 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	ArrayOfDownloadFiles FilesArray;
 
 	// Populating array
-	wxString sTransferDLList = m_ECClient->SendRecvMsg("TRANSFER DL_LIST");
+	wxString sTransferDLList = pThis->webInterface->SendRecvMsg("TRANSFER DL_LIST");
 	bool completedAv=false;
 	wxString sEntry;
 	int newLinePos, brk=0;
@@ -1562,6 +1216,7 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 		FilesArray.Add(dFile);
 
 #if 0
+		//categories
 			if (cat>0 && cur_file->GetCategory()!=cat) continue;
 			if (cat<0) {
 				switch (cat) {
@@ -1606,9 +1261,11 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 					bSwap = FilesArray[i]->fCompleted  < FilesArray[i+1]->fCompleted ;
 					break;
 			}
+			
 			if (pThis->m_Params.bDownloadSortReverse) {
 				bSwap = !bSwap;
 			}
+			
 			if (bSwap) {
 				bSorted = true;
 				DownloadFiles* TmpFile = FilesArray[i];
@@ -1617,6 +1274,7 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 			}
 		}
 	}
+	
 	// Displaying
 	wxString sDownList = "";
 	wxString HTTPTemp;
@@ -1629,7 +1287,7 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 
 		wxString sED2kLink;
 		sED2kLink.Printf("<acronym title=\"[Ed2klink]\"><a href=\""+ FilesArray[i]->sED2kLink +"\"><img src=\"l_ed2klink.gif\" alt=\"[Ed2klink]\"></a></acronym> ");
-		sED2kLink.Replace("[Ed2klink]", _GetPlainResString(IDS_SW_LINK));
+		sED2kLink.Replace("[Ed2klink]", _("ED2K Link(s)"));
 		sActions += sED2kLink;
 
 		bool bCanBeDeleted = true;
@@ -1659,6 +1317,7 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 				}
 				break;
 		}
+		
 		if (bCanBeDeleted) {
 			if (IsSessionAdmin(Data,sSession)) {
 				wxString sCancel;
@@ -1669,10 +1328,10 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 		}
 		
 		if (IsSessionAdmin(Data,sSession)) {
-			sActions.Replace("[Resume]", _GetPlainResString(IDS_DL_RESUME));
-			sActions.Replace("[Pause]", _GetPlainResString(IDS_DL_PAUSE));
-			sActions.Replace("[Cancel]", _GetPlainResString(IDS_MAIN_BTN_CANCEL));
-			sActions.Replace("[ConfirmCancel]", _GetPlainResString(IDS_Q_CANCELDL2, true));
+			sActions.Replace("[Resume]", _("&Resume"));
+			sActions.Replace("[Pause]", _("&Pause"));
+			sActions.Replace("[Cancel]", _("Cancel"));
+			sActions.Replace("[ConfirmCancel]", _("Are you sure that you want to cancel and delete this file?\\n"));
 
 			if (FilesArray[i]->nFileStatus!=PS_COMPLETE && FilesArray[i]->nFileStatus!=PS_COMPLETING) {
 				sActions.Append("<acronym title=\"[PriorityUp]\"><a href=\"?ses=[Session]&amp;w=transfer&op=prioup&file=" + FilesArray[i]->sFileHash+sCat+"\"><img src=\"l_up.gif\" alt=\"[PriorityUp]\"></a></acronym>");
@@ -1710,7 +1369,7 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 		if (FilesArray[i]->lFileSpeed > 0.0f) {
 			fTotalSpeed += FilesArray[i]->lFileSpeed;
 
-			HTTPTemp.Printf("%8.2f %s", FilesArray[i]->lFileSpeed/1024.0 ,_GetPlainResString(IDS_KBYTESEC).GetData() );
+			HTTPTemp.Printf("%8.2f %s", FilesArray[i]->lFileSpeed/1024.0 ,_("kB/s"));
 			HTTPProcessData.Replace("[4]", HTTPTemp);
 		} else
 			HTTPProcessData.Replace("[4]", "-");
@@ -1726,14 +1385,14 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 			HTTPProcessData.Replace("[5]", "-");
 		
 		switch (FilesArray[i]->nFilePrio) {
-			case 0: HTTPTemp=getResString(IDS_PRIOLOW);break;
-			case 10: HTTPTemp=getResString(IDS_PRIOAUTOLOW);break;
+			case 0: HTTPTemp=_("Low");break;
+			case 10: HTTPTemp=_("Auto [Lo]");break;
 
-			case 1: HTTPTemp=getResString(IDS_PRIONORMAL);break;
-			case 11: HTTPTemp=getResString(IDS_PRIOAUTONORMAL);break;
+			case 1: HTTPTemp=_("Normal");break;
+			case 11: HTTPTemp=_("Auto [No]");break;
 
-			case 2: HTTPTemp=getResString(IDS_PRIOHIGH);break;
-			case 12: HTTPTemp=getResString(IDS_PRIOAUTOHIGH);break;
+			case 2: HTTPTemp=_("High");break;
+			case 12: HTTPTemp=_("Auto [Hi]");break;
 			//shakraw - it seems there is a problem with dl file priorities
 			//i.e. I've got fileprio=3, VERYHIGH, but we can't set this priority 
 			//in dl window. so, why fileprio=3?
@@ -1747,8 +1406,8 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	}
 
 	Out.Replace("[DownloadFilesList]", sDownList);
-	Out.Replace("[PriorityUp]", _GetPlainResString(IDS_PRIORITY_UP));
-    Out.Replace("[PriorityDown]", _GetPlainResString(IDS_PRIORITY_DOWN));
+	Out.Replace("[PriorityUp]", _("Increase Priority"));
+	Out.Replace("[PriorityDown]", _("Decrease Priority"));
 	// Elandal: cast from float to integral type always drops fractions.
 	// avoids implicit cast warning
 	Out.Replace("[TotalDownSize]", castItoXBytes((uint64)fTotalSize));
@@ -1756,7 +1415,7 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	
 	Out.Replace("[ClearCompletedButton]",(completedAv && IsSessionAdmin(Data,sSession))?pThis->m_Templates.sClearCompleted :wxString(wxT("")));
 
-	HTTPTemp.Printf("%8.2f %s", fTotalSpeed/1024.0,_GetPlainResString(IDS_KBYTESEC).GetData());
+	HTTPTemp.Printf("%8.2f %s", fTotalSpeed/1024.0,_("kB/s"));
 	Out.Replace("[TotalDownSpeed]", HTTPTemp);
 	OutE = pThis->m_Templates.sTransferUpLine;
 	
@@ -1769,8 +1428,8 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 
 	wxString sUpList = "";
 
-	//shakraw - upload list
-	wxString sTransferULList = m_ECClient->SendRecvMsg("TRANSFER UL_LIST");
+	//upload list
+	wxString sTransferULList = pThis->webInterface->SendRecvMsg("TRANSFER UL_LIST");
 	wxString HTTPProcessData;
 	float transfDown, transfUp, transfDatarate; 
 	while (sTransferULList.Length()>0) {
@@ -1804,7 +1463,7 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 		transfDatarate = (float) atoi(sEntry.GetData());
 		fTotalSpeed += transfDatarate;
 		
-		HTTPTemp.Printf("%8.2f " + _GetPlainResString(IDS_KBYTESEC), transfDatarate/1024.0);
+		HTTPTemp.Printf("%8.2f " +wxString(_("kB/s")), transfDatarate/1024.0);
 		HTTPProcessData.Replace("[4]", HTTPTemp);
 		
 		sUpList += HTTPProcessData;
@@ -1815,30 +1474,30 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	// avoids implicit cast warning
 	HTTPTemp.Printf("%s / %s", castItoXBytes((uint64)fTotalSize).GetData(), castItoXBytes((uint64)fTotalTransferred).GetData());
 	Out.Replace("[TotalUpTransferred]", HTTPTemp);
-	HTTPTemp.Printf("%8.2f " + _GetPlainResString(IDS_KBYTESEC), fTotalSpeed/1024.0);
+	HTTPTemp.Printf("%8.2f " +wxString(_("kB/s")), fTotalSpeed/1024.0);
 	Out.Replace("[TotalUpSpeed]", HTTPTemp);
 
 	if (pThis->m_Params.bShowUploadQueue) {
 		Out.Replace("[UploadQueue]", pThis->m_Templates.sTransferUpQueueShow);
-		Out.Replace("[UploadQueueList]", _GetPlainResString(IDS_ONQUEUE));
-		Out.Replace("[UserNameTitle]", _GetPlainResString(IDS_QL_USERNAME));
-		Out.Replace("[FileNameTitle]", _GetPlainResString(IDS_DL_FILENAME));
-		Out.Replace("[ScoreTitle]", _GetPlainResString(IDS_SCORE));
-		Out.Replace("[BannedTitle]", _GetPlainResString(IDS_BANNED));
+		Out.Replace("[UploadQueueList]", _("On Queue"));
+		Out.Replace("[UserNameTitle]", _("Username"));
+		Out.Replace("[FileNameTitle]", _("File Name"));
+		Out.Replace("[ScoreTitle]", _("Score"));
+		Out.Replace("[BannedTitle]", _("Banned"));
 
 		OutE = pThis->m_Templates.sTransferUpQueueLine;
 		// Replace [xx]
 		wxString sQueue = "";
 
-		//shakraw - waiting list
-		wxString sTransferWList = m_ECClient->SendRecvMsg("TRANSFER W_LIST");
+		//waiting list
+		wxString sTransferWList = pThis->webInterface->SendRecvMsg("TRANSFER W_LIST");
 		while (sTransferWList.Length()>0) {
 			newLinePos=sTransferWList.First("\n");
 
 			sEntry = sTransferWList.Left(newLinePos);
 			sTransferWList = sTransferWList.Mid(newLinePos+1);
 
-            char HTTPTempC[100] = "";
+			char HTTPTempC[100] = "";
 			HTTPProcessData = OutE;
 
 			brk=sTransferWList.First("\t");
@@ -1857,9 +1516,9 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 			HTTPProcessData.Replace("[Score]", HTTPTemp);
 
 			if (atoi(sEntry.GetData()))
-				HTTPProcessData.Replace("[Banned]", _GetPlainResString(IDS_YES));
+				HTTPProcessData.Replace("[Banned]", _("Yes"));
 			else
-				HTTPProcessData.Replace("[Banned]", _GetPlainResString(IDS_NO));
+				HTTPProcessData.Replace("[Banned]", _("No"));
 		}
 		
 		Out.Replace("[QueueList]", sQueue);
@@ -1867,20 +1526,21 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 		Out.Replace("[UploadQueue]", pThis->m_Templates.sTransferUpQueueHide);
 	}
 
-	Out.Replace("[ShowQueue]", _GetPlainResString(IDS_WEB_SHOW_UPLOAD_QUEUE));
-	Out.Replace("[HideQueue]", _GetPlainResString(IDS_WEB_HIDE_UPLOAD_QUEUE));
+	Out.Replace("[ShowQueue]", _("Show Queue"));
+	Out.Replace("[HideQueue]", _("Hide Queue"));
 	Out.Replace("[Session]", sSession);
-	Out.Replace("[CLEARCOMPLETED]",_GetPlainResString(IDS_DL_CLEAR));
+	Out.Replace("[CLEARCOMPLETED]",_("C&lear completed"));
 
 	wxString buffer;
-	buffer.Printf("%s (%i)", _GetPlainResString(IDS_TW_DOWNLOADS).GetData(),FilesArray.GetCount());
+	buffer.Printf("%s (%i)", _("Downloads"),FilesArray.GetCount());
 	Out.Replace("[DownloadList]",buffer);
-	buffer.Printf("%s (%i)",_GetPlainResString(IDS_PW_CON_UPLBL).GetData(),atoi(m_ECClient->SendRecvMsg("QUEUE UL_GETLENGTH")));
+	buffer.Printf("%s (%i)",_("Upload"),atoi(pThis->webInterface->SendRecvMsg("QUEUE UL_GETLENGTH")));
 	Out.Replace("[UploadList]", buffer );
 	Out.Replace("[CatSel]",sCat);
 
 	return Out;
 }
+
 
 wxString CWebServer::_GetDownloadLink(ThreadData Data) {
 #if 0 //shakraw
@@ -1888,19 +1548,19 @@ wxString CWebServer::_GetDownloadLink(ThreadData Data) {
 	if(pThis == NULL)
 		return "";
 
-	wxString sSession = _ParseURL(Data.sURL, "ses");
+	wxString sSession = _ParseURL(Data, "ses");
 
 	if (!IsSessionAdmin(Data,sSession)) {
 		wxString ad="<br><br><div align=\"center\" class=\"message\">[Message]</div>";
-		ad.Replace("[Message]",_GetPlainResString(IDS_ACCESSDENIED));
+		ad.Replace("[Message]",_("Access denied!"));
 		return ad;
 	}
 	
 	wxString Out = pThis->m_Templates.sDownloadLink;
 
-	Out.Replace("[Download]", _GetPlainResString(IDS_SW_DOWNLOAD));
-	Out.Replace("[Ed2klink]", _GetPlainResString(IDS_SW_LINK));
-	Out.Replace("[Start]", _GetPlainResString(IDS_SW_START));
+	Out.Replace("[Download]", _("Download Selected"));
+	Out.Replace("[Ed2klink]", _("ED2K Link(s)"));
+	Out.Replace("[Start]", _("Start"));
 	Out.Replace("[Session]", sSession);
 
 	if (theApp.glob_prefs->GetCatCount()>1)
@@ -1912,44 +1572,46 @@ wxString CWebServer::_GetDownloadLink(ThreadData Data) {
 	return "";
 }
 
+
 wxString CWebServer::_GetSharedFilesList(ThreadData Data) {
 	CWebServer *pThis = (CWebServer *)Data.pThis;
-    wxString sSession = _ParseURL(Data.sURL, "ses");
-	
 	if (pThis == NULL)
 		return "";
+
+	wxString sSession = _ParseURL(Data, "ses");
 	
-	if (_ParseURL(Data.sURL, "sort") != "")  {
-		if(_ParseURL(Data.sURL, "sort") == "name")
+	if (_ParseURL(Data, "sort") != "")  {
+		if(_ParseURL(Data, "sort") == "name")
 			pThis->m_Params.SharedSort = SHARED_SORT_NAME;
-		else if(_ParseURL(Data.sURL, "sort") == "size")
+		else if(_ParseURL(Data, "sort") == "size")
 			pThis->m_Params.SharedSort = SHARED_SORT_SIZE;
-		else if(_ParseURL(Data.sURL, "sort") == "transferred")
+		else if(_ParseURL(Data, "sort") == "transferred")
 			pThis->m_Params.SharedSort = SHARED_SORT_TRANSFERRED;
-		else if(_ParseURL(Data.sURL, "sort") == "alltimetransferred")
+		else if(_ParseURL(Data, "sort") == "alltimetransferred")
 			pThis->m_Params.SharedSort = SHARED_SORT_ALL_TIME_TRANSFERRED;
-		else if(_ParseURL(Data.sURL, "sort") == "requests")
+		else if(_ParseURL(Data, "sort") == "requests")
 			pThis->m_Params.SharedSort = SHARED_SORT_REQUESTS;
-		else if(_ParseURL(Data.sURL, "sort") == "alltimerequests")
+		else if(_ParseURL(Data, "sort") == "alltimerequests")
 			pThis->m_Params.SharedSort = SHARED_SORT_ALL_TIME_REQUESTS;
-		else if(_ParseURL(Data.sURL, "sort") == "accepts")
+		else if(_ParseURL(Data, "sort") == "accepts")
 			pThis->m_Params.SharedSort = SHARED_SORT_ACCEPTS;
-		else if(_ParseURL(Data.sURL, "sort") == "alltimeaccepts")
+		else if(_ParseURL(Data, "sort") == "alltimeaccepts")
 			pThis->m_Params.SharedSort = SHARED_SORT_ALL_TIME_ACCEPTS;
-		else if(_ParseURL(Data.sURL, "sort") == "priority")
+		else if(_ParseURL(Data, "sort") == "priority")
 			pThis->m_Params.SharedSort = SHARED_SORT_PRIORITY;
 
-		if(_ParseURL(Data.sURL, "sortreverse") == "")
+		if(_ParseURL(Data, "sortreverse") == "")
 			pThis->m_Params.bSharedSortReverse = false;
 	}
-	if (_ParseURL(Data.sURL, "sortreverse") != "") 
-		pThis->m_Params.bSharedSortReverse = (_ParseURL(Data.sURL, "sortreverse") == "true");
+	
+	if (_ParseURL(Data, "sortreverse") != "") 
+		pThis->m_Params.bSharedSortReverse = (_ParseURL(Data, "sortreverse") == "true");
 
-	if (_ParseURL(Data.sURL, "hash") != "" && _ParseURL(Data.sURL, "setpriority") != "" && IsSessionAdmin(Data,sSession)) 
-		_SetSharedFilePriority(_ParseURL(Data.sURL, "hash"),atoi(_ParseURL(Data.sURL, "setpriority")));
+	if (_ParseURL(Data, "hash") != "" && _ParseURL(Data, "setpriority") != "" && IsSessionAdmin(Data,sSession)) 
+		_SetSharedFilePriority(pThis, _ParseURL(Data, "hash"),atoi(_ParseURL(Data, "setpriority")));
 
-	if (_ParseURL(Data.sURL, "reload") == "true") {
-		m_ECClient->SendRecvMsg("SHAREDFILES RELOAD");
+	if (_ParseURL(Data, "reload") == "true") {
+		pThis->webInterface->SendRecvMsg("SHAREDFILES RELOAD");
 	}
 
 	wxString sSharedSortRev;
@@ -1994,66 +1656,66 @@ wxString CWebServer::_GetSharedFilesList(ThreadData Data) {
 	//Request sorting link
 	if (pThis->m_Params.SharedSort == SHARED_SORT_REQUESTS) {
 		if (pThis->m_Params.bSharedSortReverse)
-            Out.Replace("[SortRequests]", "sort=alltimerequests&sortreverse=" + sSharedSortRev);
+			Out.Replace("[SortRequests]", "sort=alltimerequests&sortreverse=" + sSharedSortRev);
 		else
 			Out.Replace("[SortRequests]", "sort=requests&sortreverse=" + sSharedSortRev);
 	} else if(pThis->m_Params.SharedSort == SHARED_SORT_ALL_TIME_REQUESTS) {
 		if (pThis->m_Params.bSharedSortReverse)
-            Out.Replace("[SortRequests]", "sort=requests&sortreverse=" + sSharedSortRev);
+			Out.Replace("[SortRequests]", "sort=requests&sortreverse=" + sSharedSortRev);
 		else
 			Out.Replace("[SortRequests]", "sort=alltimerequests&sortreverse=" + sSharedSortRev);
 	} else
-        Out.Replace("[SortRequests]", "&sort=requests&sortreverse=false");
+        	Out.Replace("[SortRequests]", "&sort=requests&sortreverse=false");
 	
 	//Accepts sorting link
 	if (pThis->m_Params.SharedSort == SHARED_SORT_ACCEPTS) {
 		if (pThis->m_Params.bSharedSortReverse)
-            Out.Replace("[SortAccepts]", "sort=alltimeaccepts&sortreverse=" + sSharedSortRev);
+			Out.Replace("[SortAccepts]", "sort=alltimeaccepts&sortreverse=" + sSharedSortRev);
 		else
 			Out.Replace("[SortAccepts]", "sort=accepts&sortreverse=" + sSharedSortRev);
 	} else if (pThis->m_Params.SharedSort == SHARED_SORT_ALL_TIME_ACCEPTS) {
 		if (pThis->m_Params.bSharedSortReverse)
-            Out.Replace("[SortAccepts]", "sort=accepts&sortreverse=" + sSharedSortRev);
+			Out.Replace("[SortAccepts]", "sort=accepts&sortreverse=" + sSharedSortRev);
 		else
 			Out.Replace("[SortAccepts]", "sort=alltimeaccepts&sortreverse=" + sSharedSortRev);
 	} else
-        Out.Replace("[SortAccepts]", "&sort=accepts&sortreverse=false");
+		Out.Replace("[SortAccepts]", "&sort=accepts&sortreverse=false");
 
-	if (_ParseURL(Data.sURL, "reload") == "true") {
+	if (_ParseURL(Data, "reload") == "true") {
 #warning fix GetLastLogEntry()
 		wxString resultlog = ""; //_SpecialChars(theApp.amuledlg->GetLastLogEntry());
 		//resultlog = resultlog.TrimRight('\n');
 		//resultlog = resultlog.Mid(resultlog.ReverseFind('\n'));
 		Out.Replace("[Message]",resultlog);
 	} else
-        Out.Replace("[Message]","");
+		Out.Replace("[Message]","");
 
-	Out.Replace("[Filename]", _GetPlainResString(IDS_DL_FILENAME));
-	Out.Replace("[Priority]",  _GetPlainResString(IDS_PRIORITY));
-	Out.Replace("[FileTransferred]",  _GetPlainResString(IDS_SF_TRANSFERRED));
-	Out.Replace("[FileRequests]",  _GetPlainResString(IDS_SF_REQUESTS));
-	Out.Replace("[FileAccepts]",  _GetPlainResString(IDS_SF_ACCEPTS));
-	Out.Replace("[Size]", _GetPlainResString(IDS_DL_SIZE));
-	Out.Replace("[Ed2klink]", _GetPlainResString(IDS_SW_LINK));
-	Out.Replace("[Reload]", _GetPlainResString(IDS_SF_RELOAD));
+	Out.Replace("[Filename]", _("File Name"));
+	Out.Replace("[Priority]",  _("Priority"));
+	Out.Replace("[FileTransferred]",  _("Transferred Data"));
+	Out.Replace("[FileRequests]",  _("Requests"));
+	Out.Replace("[FileAccepts]",  _("Accepted Requests"));
+	Out.Replace("[Size]", _("Size"));
+	Out.Replace("[Ed2klink]", _("ED2K Link(s)"));
+	Out.Replace("[Reload]", _("Reload"));
 	Out.Replace("[Session]", sSession);
 
 	wxString OutE = pThis->m_Templates.sSharedLine; 
-	OutE.Replace("[Ed2klink]", _GetPlainResString(IDS_SW_LINK));
-	OutE.Replace("[PriorityUp]", _GetPlainResString(IDS_PRIORITY_UP));
-	OutE.Replace("[PriorityDown]", _GetPlainResString(IDS_PRIORITY_DOWN));
+	OutE.Replace("[Ed2klink]", _("ED2K Link(s)"));
+	OutE.Replace("[PriorityUp]", _("Increase Priority"));
+	OutE.Replace("[PriorityDown]", _("Decrease Priority"));
 
 	wxString OutE2 = pThis->m_Templates.sSharedLineChanged; 
-	OutE2.Replace("[Ed2klink]", _GetPlainResString(IDS_SW_LINK));
-	OutE2.Replace("[PriorityUp]", _GetPlainResString(IDS_PRIORITY_UP));
-	OutE2.Replace("[PriorityUp]", _GetPlainResString(IDS_PRIORITY_DOWN));
+	OutE2.Replace("[Ed2klink]", _("ED2K Link(s)"));
+	OutE2.Replace("[PriorityUp]", _("Increase Priority"));
+	OutE2.Replace("[PriorityUp]", _("Decrease Priority"));
 
 	ArrayOfSharedFiles SharedArray;
 	
 	// Populating array
 	// sSharedFilesList as:
 	// %s\t%ld\t%s\t%ld\t%ll\t%d\t%d\t%d\t%d\t%s\t%s\t%d\t%d\n
-	wxString sSharedFilesList = m_ECClient->SendRecvMsg("SHAREDFILES LIST");
+	wxString sSharedFilesList = pThis->webInterface->SendRecvMsg("SHAREDFILES LIST");
 	wxString sEntry;
 	int brk=0, newLinePos;
 	while (sSharedFilesList.Length()>0) {
@@ -2149,9 +1811,11 @@ wxString CWebServer::_GetSharedFilesList(ThreadData Data) {
 					}
 					break;
 			}
+			
 			if (pThis->m_Params.bSharedSortReverse) {
 				bSwap = !bSwap;
 			}
+			
 			if (bSwap) {
 				bSorted = true;
 				SharedFiles* TmpFile = SharedArray[i];
@@ -2166,14 +1830,14 @@ wxString CWebServer::_GetSharedFilesList(ThreadData Data) {
 	for (int i = 0; i < SharedArray.GetCount(); i++) {
 		char HTTPTempC[100] = "";
 		wxString HTTPProcessData;
-		if (SharedArray[i]->sFileHash == _ParseURL(Data.sURL,"hash") )
-            HTTPProcessData = OutE2;
+		if (SharedArray[i]->sFileHash == _ParseURL(Data,"hash") )
+			HTTPProcessData = OutE2;
 		else
-            HTTPProcessData = OutE;
+			HTTPProcessData = OutE;
 
 		HTTPProcessData.Replace("[FileName]", _SpecialChars(SharedArray[i]->sFileName));
 		if (SharedArray[i]->sFileName.Length() > SHORT_FILENAME_LENGTH)
-            HTTPProcessData.Replace("[ShortFileName]", _SpecialChars(SharedArray[i]->sFileName.Left(SHORT_FILENAME_LENGTH)) + "...");
+			HTTPProcessData.Replace("[ShortFileName]", _SpecialChars(SharedArray[i]->sFileName.Left(SHORT_FILENAME_LENGTH)) + "...");
 		else
 			HTTPProcessData.Replace("[ShortFileName]", _SpecialChars(SharedArray[i]->sFileName));
 
@@ -2204,7 +1868,7 @@ wxString CWebServer::_GetSharedFilesList(ThreadData Data) {
 		HTTPProcessData.Replace("[FileHash]", SharedArray[i]->sFileHash);
 
 		uint8 upperpriority=0, lesserpriority=0;
-		if(SharedArray[i]->nFilePriority == 4) {
+		if (SharedArray[i]->nFilePriority == 4) {
 			upperpriority = 0;	lesserpriority = 4;
 		} else if (SharedArray[i]->nFilePriority == 0) {
 			upperpriority = 1;	lesserpriority = 4;
@@ -2232,6 +1896,7 @@ wxString CWebServer::_GetSharedFilesList(ThreadData Data) {
 
 	return Out;
 }
+
 
 wxString CWebServer::_GetGraphs(ThreadData Data) {
 	CWebServer *pThis = (CWebServer *)Data.pThis;
@@ -2266,15 +1931,15 @@ wxString CWebServer::_GetGraphs(ThreadData Data) {
 	Out.Replace("[GraphUpload]", sGraphUpload);
 	Out.Replace("[GraphConnections]", sGraphCons);
 	
-	Out.Replace("[TxtDownload]", _GetPlainResString(IDS_DOWNLOAD));
-	Out.Replace("[TxtUpload]", _GetPlainResString(IDS_PW_CON_UPLBL));
-	Out.Replace("[TxtTime]", _GetPlainResString(IDS_TIME));
-	Out.Replace("[TxtConnections]", _GetPlainResString(IDS_SP_ACTCON));
-	Out.Replace("[KByteSec]", _GetPlainResString(IDS_KBYTESEC));
-	Out.Replace("[TxtTime]", _GetPlainResString(IDS_TIME));
+	Out.Replace("[TxtDownload]", _("Download"));
+	Out.Replace("[TxtUpload]", _("Upload"));
+	Out.Replace("[TxtTime]", _("Time"));
+	Out.Replace("[TxtConnections]", _("Active connections"));
+	Out.Replace("[KByteSec]", _("kB/s"));
+	Out.Replace("[TxtTime]", _("Time"));
 
 	//sGraphs formatted as: %d\t%d\t%d\t%d
-	wxString sGraphs = m_ECClient->SendRecvMsg("WEBPAGE GETGRAPH");
+	wxString sGraphs = pThis->webInterface->SendRecvMsg("WEBPAGE GETGRAPH");
 	int brk = sGraphs.First("\t");
 	
 	wxString sScale;
@@ -2296,32 +1961,33 @@ wxString CWebServer::_GetGraphs(ThreadData Data) {
 	return Out;
 }
 
+
 wxString CWebServer::_GetAddServerBox(ThreadData Data) {	
 	CWebServer *pThis = (CWebServer *)Data.pThis;
-	if(pThis == NULL)
+	if (pThis == NULL)
 		return "";
 
-	wxString sSession = _ParseURL(Data.sURL, "ses");
+	wxString sSession = _ParseURL(Data, "ses");
 
 	if (!IsSessionAdmin(Data,sSession)) return "";
 
 	wxString Out = pThis->m_Templates.sAddServerBox;
-	if (_ParseURL(Data.sURL, "addserver") == "true") {
-		wxString sIP = _ParseURL(Data.sURL, "serveraddr");
-		wxString sPort = _ParseURL(Data.sURL, "serverport");
-		wxString sName = _ParseURL(Data.sURL, "servername");
+	if (_ParseURL(Data, "addserver") == "true") {
+		wxString sIP = _ParseURL(Data, "serveraddr");
+		wxString sPort = _ParseURL(Data, "serverport");
+		wxString sName = _ParseURL(Data, "servername");
 		
 		wxString request = wxString("SERVER ADD ")+sIP+wxString(" ")+sPort+wxString(" ")+sName;
-		m_ECClient->SendRecvMsg(request.GetData());
+		pThis->webInterface->SendRecvMsg(request.GetData());
 
 #warning fix GetLastLogEntry
 		wxString resultlog = ""; //_SpecialChars(theApp.amuledlg->GetLastLogEntry());
 		//resultlog = resultlog.TrimRight('\n');
 		//resultlog = resultlog.Mid(resultlog.ReverseFind('\n'));
 		Out.Replace("[Message]",resultlog);
-	} else if (_ParseURL(Data.sURL, "updateservermetfromurl") == "true") {
-		wxString request = wxString("SERVER UPDATEMET ") + wxString(_ParseURL(Data.sURL, "servermeturl"));
-		m_ECClient->SendRecvMsg(request);
+	} else if (_ParseURL(Data, "updateservermetfromurl") == "true") {
+		wxString request = wxString("SERVER UPDATEMET ") + wxString(_ParseURL(Data, "servermeturl"));
+		pThis->webInterface->SendRecvMsg(request);
 		
 #warning fix GetLastLogEntry
 		wxString resultlog = ""; //_SpecialChars(theApp.amuledlg->GetLastLogEntry());
@@ -2331,35 +1997,36 @@ wxString CWebServer::_GetAddServerBox(ThreadData Data) {
 	} else
 		Out.Replace("[Message]", "");
 	
-	Out.Replace("[AddServer]", _GetPlainResString(IDS_SV_NEWSERVER));
-	Out.Replace("[IP]", _GetPlainResString(IDS_SV_ADDRESS));
-	Out.Replace("[Port]", _GetPlainResString(IDS_SV_PORT));
-	Out.Replace("[Name]", _GetPlainResString(IDS_SW_NAME));
-	Out.Replace("[Add]", _GetPlainResString(IDS_SV_ADD));
-	Out.Replace("[UpdateServerMetFromURL]", _GetPlainResString(IDS_SV_MET));
-	Out.Replace("[URL]", _GetPlainResString(IDS_SV_URL));
-	Out.Replace("[Apply]", _GetPlainResString(IDS_PW_APPLY));
+	Out.Replace("[AddServer]", _("Received %d new servers"));
+	Out.Replace("[IP]", _("IP or Address"));
+	Out.Replace("[Port]", _("Port"));
+	Out.Replace("[Name]", _("Name"));
+	Out.Replace("[Add]", _("Add to list"));
+	Out.Replace("[UpdateServerMetFromURL]", _("Update server.met from URL"));
+	Out.Replace("[URL]", _("URL"));
+	Out.Replace("[Apply]", _("Apply"));
 
 	return Out;
 }
+
 
 wxString CWebServer::_GetWebSearch(ThreadData Data) {
 	CWebServer *pThis = (CWebServer *)Data.pThis;
 	if (pThis == NULL)
 		return "";
 
-	wxString sSession = _ParseURL(Data.sURL, "ses");
+	wxString sSession = _ParseURL(Data, "ses");
     
 	wxString Out = pThis->m_Templates.sWebSearch;
-	if (_ParseURL(Data.sURL, "tosearch") != "") {
+	if (_ParseURL(Data, "tosearch") != "") {
 		wxString query;
-		wxString tosearch = _ParseURL(Data.sURL, "tosearch");
+		wxString tosearch = _ParseURL(Data, "tosearch");
 		query = "http://www.filedonkey.com/fdsearch/index.php?media=";
-		query += _ParseURL(Data.sURL, "media");
+		query += _ParseURL(Data, "media");
 		tosearch = URLEncode(tosearch);
 		tosearch.Replace("%20","+");
 		query += "&pattern=";
-		query += _ParseURL(Data.sURL, "tosearch");
+		query += _ParseURL(Data, "tosearch");
 		query += "&action=search&name=FD-Search&op=modload&file=index&requestby=amule";
 		Out += "\n<script language=\"javascript\">";
 		Out += "\n searchwindow=window.open('"+ query + "','searchwindow');";
@@ -2367,89 +2034,96 @@ wxString CWebServer::_GetWebSearch(ThreadData Data) {
 	}
 	
 	Out.Replace("[Session]", sSession);
-	Out.Replace("[Name]", _GetPlainResString(IDS_SW_NAME));
-	Out.Replace("[Type]", _GetPlainResString(IDS_TYPE));
-	Out.Replace("[Any]", _GetPlainResString(IDS_SEARCH_ANY));
-	Out.Replace("[Archives]", _GetPlainResString(IDS_SEARCH_ARC));
-	Out.Replace("[Audio]", _GetPlainResString(IDS_SEARCH_AUDIO));
-	Out.Replace("[CD-Images]", _GetPlainResString(IDS_SEARCH_CDIMG));
-	Out.Replace("[Pictures]", _GetPlainResString(IDS_SEARCH_PICS));
-	Out.Replace("[Programs]", _GetPlainResString(IDS_SEARCH_PRG));
-	Out.Replace("[Videos]", _GetPlainResString(IDS_SEARCH_VIDEO));
-	Out.Replace("[Search]", _GetPlainResString(IDS_SW_START));
-	Out.Replace("[WebSearch]", _GetPlainResString(IDS_SW_WEBBASED));
+	Out.Replace("[Name]", _("Name"));
+	Out.Replace("[Type]", _("Type"));
+	Out.Replace("[Any]", _("Any"));
+	Out.Replace("[Archives]", _("Archive"));
+	Out.Replace("[Audio]", _("Audio"));
+	Out.Replace("[CD-Images]", _("CD-Images"));
+	Out.Replace("[Pictures]", _("Pictures"));
+	Out.Replace("[Programs]", _("Programs"));
+	Out.Replace("[Videos]", _("Video"));
+	Out.Replace("[Search]", _("Start"));
+	Out.Replace("[WebSearch]", _("Web-based Search"));
 	
 	return Out;
 }
+
 
 wxString CWebServer::_GetLog(ThreadData Data) {
 	CWebServer *pThis = (CWebServer *)Data.pThis;
 	if (pThis == NULL)
 		return "";
 
-	wxString sSession = _ParseURL(Data.sURL, "ses");
+	wxString sSession = _ParseURL(Data, "ses");
 
 	wxString Out = pThis->m_Templates.sLog;
 
-	if (_ParseURL(Data.sURL, "clear") == "yes" && IsSessionAdmin(Data,sSession)) {
-		m_ECClient->SendRecvMsg("LOG RESETLOG");
+	if (_ParseURL(Data, "clear") == "yes" && IsSessionAdmin(Data,sSession)) {
+		pThis->webInterface->SendRecvMsg("LOG RESETLOG");
 	}
-	Out.Replace("[Clear]", _GetPlainResString(IDS_PW_RESET));
-	Out.Replace("[Log]", _SpecialChars(m_ECClient->SendRecvMsg("LOG GETALLLOGENTRIES"))+"<br><a name=\"end\"></a>" );
+	
+	Out.Replace("[Clear]", _("Reset"));
+	Out.Replace("[Log]", _SpecialChars(pThis->webInterface->SendRecvMsg("LOG GETALLLOGENTRIES"))+"<br><a name=\"end\"></a>" );
 	Out.Replace("[Session]", sSession);
 
 	return Out;
 }
+
 
 wxString CWebServer::_GetServerInfo(ThreadData Data) {
 	CWebServer *pThis = (CWebServer *)Data.pThis;
 	if (pThis == NULL)
 		return "";
 
-	wxString sSession = _ParseURL(Data.sURL, "ses");
+	wxString sSession = _ParseURL(Data, "ses");
 
 	wxString Out = pThis->m_Templates.sServerInfo;
 
-	if (_ParseURL(Data.sURL, "clear") == "yes") {
-		m_ECClient->SendRecvMsg("LOG CLEARSERVERINFO");
+	if (_ParseURL(Data, "clear") == "yes") {
+		pThis->webInterface->SendRecvMsg("LOG CLEARSERVERINFO");
 	}
-	Out.Replace("[Clear]", _GetPlainResString(IDS_PW_RESET));
-	Out.Replace("[ServerInfo]", _SpecialChars(wxString(m_ECClient->SendRecvMsg("LOG GETSERVERINFO"))));
+	
+	Out.Replace("[Clear]", _("Reset"));
+	Out.Replace("[ServerInfo]", _SpecialChars(pThis->webInterface->SendRecvMsg("LOG GETSERVERINFO")));
 	Out.Replace("[Session]", sSession);
 
 	return Out;
 }
+
 
 //shakraw, this is useless in amule 'cause debuglog and log windows are the same.
 //so, at the moment, GETALLDEBUGLOGENTRIES has the same behaviour of GETALLLOGENTRIES.
 //Note that, when clearing, the log file ~/.aMule/logfile will not be removed here.
 wxString CWebServer::_GetDebugLog(ThreadData Data) {
 	CWebServer *pThis = (CWebServer *)Data.pThis;
-	if(pThis == NULL)
+	if (pThis == NULL)
 		return "";
 
-	wxString sSession = _ParseURL(Data.sURL, "ses");
+	wxString sSession = _ParseURL(Data, "ses");
 
 	wxString Out = pThis->m_Templates.sDebugLog;
 
-	if (_ParseURL(Data.sURL, "clear") == "yes" && IsSessionAdmin(Data,sSession)) {
-		m_ECClient->SendRecvMsg("LOG RESETDEBUGLOG");
+	if (_ParseURL(Data, "clear") == "yes" && IsSessionAdmin(Data,sSession)) {
+		pThis->webInterface->SendRecvMsg("LOG RESETDEBUGLOG");
 	}
-	Out.Replace("[Clear]", _GetPlainResString(IDS_PW_RESET));
+	Out.Replace("[Clear]", _("Reset"));
 
-	Out.Replace("[DebugLog]", _SpecialChars(m_ECClient->SendRecvMsg("LOG GETALLDEBUGLOGENTRIES"))+"<br><a name=\"end\"></a>" );
+	Out.Replace("[DebugLog]", _SpecialChars(pThis->webInterface->SendRecvMsg("LOG GETALLDEBUGLOGENTRIES"))+"<br><a name=\"end\"></a>" );
 	Out.Replace("[Session]", sSession);
 
 	return Out;
 }
 
+
 wxString CWebServer::_GetStats(ThreadData Data) {
-	printf("***_GetStats arrived\n");
 	CWebServer *pThis = (CWebServer *)Data.pThis;
 	if (pThis == NULL)
 		return "";
 
-	wxString sSession = _ParseURL(Data.sURL, "ses");
+	pThis->webInterface->Print("***_GetStats arrived\n");
+
+	wxString sSession = _ParseURL(Data, "ses");
 
 	// refresh statistics.. ARGH. NO NO NO NO
 	// (it will be done in statisticsdlg and in main thread)
@@ -2457,7 +2131,7 @@ wxString CWebServer::_GetStats(ThreadData Data) {
 	
 	wxString Out = pThis->m_Templates.sStats;
 	
-	wxString sStats = m_ECClient->SendRecvMsg("WEBPAGE STATISTICS");
+	wxString sStats = pThis->webInterface->SendRecvMsg("WEBPAGE STATISTICS");
 	int brk = sStats.First("\t");
 	
 	Out.Replace("[STATSDATA]", sStats.Left(brk));
@@ -2466,6 +2140,7 @@ wxString CWebServer::_GetStats(ThreadData Data) {
 	return Out;
 }
 
+
 wxString CWebServer::_GetPreferences(ThreadData Data) {
 	CWebServer *pThis = (CWebServer *)Data.pThis;
 	if (pThis == NULL)
@@ -2473,68 +2148,66 @@ wxString CWebServer::_GetPreferences(ThreadData Data) {
 
 	int brk;
 	
-	wxString sSession = _ParseURL(Data.sURL, "ses");
+	wxString sSession = _ParseURL(Data, "ses");
 
 	wxString Out = pThis->m_Templates.sPreferences;
 	Out.Replace("[Session]", sSession);
 
-	if ((_ParseURL(Data.sURL, "saveprefs") == "true") && IsSessionAdmin(Data,sSession) ) {
+	if ((_ParseURL(Data, "saveprefs") == "true") && IsSessionAdmin(Data,sSession) ) {
 		wxString prefList("");
-		if (_ParseURL(Data.sURL, "gzip") == "true" || _ParseURL(Data.sURL, "gzip") == "on") {
+		if (_ParseURL(Data, "gzip") == "true" || _ParseURL(Data, "gzip") == "on") {
 			prefList.Append("1\t");
 		}
-		if (_ParseURL(Data.sURL, "gzip") == "false" || _ParseURL(Data.sURL, "gzip") == "") {
+		if (_ParseURL(Data, "gzip") == "false" || _ParseURL(Data, "gzip") == "") {
 			prefList.Append("0\t");
 		}
-		if (_ParseURL(Data.sURL, "showuploadqueue") == "true" || _ParseURL(Data.sURL, "showuploadqueue") == "on" ) {
+		if (_ParseURL(Data, "showuploadqueue") == "true" || _ParseURL(Data, "showuploadqueue") == "on" ) {
 			pThis->m_Params.bShowUploadQueue = true;
 		}
-		if(_ParseURL(Data.sURL, "showuploadqueue") == "false" || _ParseURL(Data.sURL, "showuploadqueue") == "") {
+		if(_ParseURL(Data, "showuploadqueue") == "false" || _ParseURL(Data, "showuploadqueue") == "") {
 			pThis->m_Params.bShowUploadQueue = false;
 		}
-		if (_ParseURL(Data.sURL, "refresh") != "") {
-			prefList+=wxString::Format("%d\t", atoi(_ParseURL(Data.sURL, "refresh")));
+		if (_ParseURL(Data, "refresh") != "") {
+			prefList+=wxString::Format("%d\t", atoi(_ParseURL(Data, "refresh")));
 		}
-		if (_ParseURL(Data.sURL, "maxdown") != "") {
-			prefList+=wxString::Format("%d\t", atoi(_ParseURL(Data.sURL, "maxdown")));
+		if (_ParseURL(Data, "maxdown") != "") {
+			prefList+=wxString::Format("%d\t", atoi(_ParseURL(Data, "maxdown")));
 		}
-		if (_ParseURL(Data.sURL, "maxup") != "") {
-			prefList+=wxString::Format("%d\t", atoi(_ParseURL(Data.sURL, "maxup")));
+		if (_ParseURL(Data, "maxup") != "") {
+			prefList+=wxString::Format("%d\t", atoi(_ParseURL(Data, "maxup")));
 		}
-		
-		if (_ParseURL(Data.sURL, "maxcapdown") != "") {
-			prefList+=wxString::Format("%d\t", atoi(_ParseURL(Data.sURL, "maxcapdown")));
+		if (_ParseURL(Data, "maxcapdown") != "") {
+			prefList+=wxString::Format("%d\t", atoi(_ParseURL(Data, "maxcapdown")));
 		}
-		if (_ParseURL(Data.sURL, "maxcapup") != "") {
-			prefList+=wxString::Format("%d\t", atoi(_ParseURL(Data.sURL, "maxcapup")));
+		if (_ParseURL(Data, "maxcapup") != "") {
+			prefList+=wxString::Format("%d\t", atoi(_ParseURL(Data, "maxcapup")));
 		}
-
-		if (_ParseURL(Data.sURL, "maxsources") != "") {
-			prefList+=wxString::Format("%d\t", atoi(_ParseURL(Data.sURL, "maxsources")));
+		if (_ParseURL(Data, "maxsources") != "") {
+			prefList+=wxString::Format("%d\t", atoi(_ParseURL(Data, "maxsources")));
 		}
-		if (_ParseURL(Data.sURL, "maxconnections") != "") {
-			prefList+=wxString::Format("%d\t", atoi(_ParseURL(Data.sURL, "maxconnections")));
+		if (_ParseURL(Data, "maxconnections") != "") {
+			prefList+=wxString::Format("%d\t", atoi(_ParseURL(Data, "maxconnections")));
 		}
-		if (_ParseURL(Data.sURL, "maxconnectionsperfive") != "") {
-			prefList+=wxString::Format("%d\t", atoi(_ParseURL(Data.sURL, "maxconnectionsperfive")));
+		if (_ParseURL(Data, "maxconnectionsperfive") != "") {
+			prefList+=wxString::Format("%d\t", atoi(_ParseURL(Data, "maxconnectionsperfive")));
 		}
 
-		prefList+=wxString::Format("%d\t", ((_ParseURL(Data.sURL, "fullchunks").MakeLower() == "on") ? 1 : 0));
-		prefList+=wxString::Format("%d\t", ((_ParseURL(Data.sURL, "firstandlast").MakeLower() == "on") ? 1 : 0));
+		prefList+=wxString::Format("%d\t", ((_ParseURL(Data, "fullchunks").MakeLower() == "on") ? 1 : 0));
+		prefList+=wxString::Format("%d\t", ((_ParseURL(Data, "firstandlast").MakeLower() == "on") ? 1 : 0));
 		
-		m_ECClient->SendRecvMsg(wxString::Format("WEBPAGE SETPREFERENCES %s", prefList.GetData()).GetData());
+		pThis->webInterface->SendRecvMsg(wxString::Format("WEBPAGE SETPREFERENCES %s", prefList.GetData()).GetData());
 	}
 
 	// Fill form
 	//sPreferencesList formatted as: %d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d
-	wxString sPreferences = m_ECClient->SendRecvMsg("WEBPAGE GETPREFERENCES");
+	wxString sPreferences = pThis->webInterface->SendRecvMsg("WEBPAGE GETPREFERENCES");
 	brk = sPreferences.First("\t");
 	if (atoi(sPreferences.Left(brk).GetData())) {
 		Out.Replace("[UseGzipVal]", "checked");
 	} else {
 		Out.Replace("[UseGzipVal]", "");
 	}
-    if(pThis->m_Params.bShowUploadQueue) {
+	if(pThis->m_Params.bShowUploadQueue) {
 		Out.Replace("[ShowUploadQueueVal]", "checked");
 	} else {
 		Out.Replace("[ShowUploadQueueVal]", "");
@@ -2565,31 +2238,31 @@ wxString CWebServer::_GetPreferences(ThreadData Data) {
 	sRefresh.Printf("%d", atoi(sPreferences.Left(brk).GetData()));
 	Out.Replace("[MaxConnectionsPer5Val]", sRefresh);
 
-	Out.Replace("[KBS]", _GetPlainResString(IDS_KBYTESEC)+":");
-	Out.Replace("[FileSettings]", wxString(_GetPlainResString(IDS_WEB_FILESETTINGS)+":"));
-	Out.Replace("[LimitForm]", _GetPlainResString(IDS_WEB_CONLIMITS)+":");
-	Out.Replace("[MaxSources]", _GetPlainResString(IDS_PW_MAXSOURCES)+":");
-	Out.Replace("[MaxConnections]", _GetPlainResString(IDS_PW_MAXC)+":");
-	Out.Replace("[MaxConnectionsPer5]", _GetPlainResString(IDS_MAXCON5SECLABEL)+":");
-	Out.Replace("[UseGzipForm]", _GetPlainResString(IDS_WEB_GZIP_COMPRESSION));
-	Out.Replace("[UseGzipComment]", _GetPlainResString(IDS_WEB_GZIP_COMMENT));
-	Out.Replace("[ShowUploadQueueForm]", _GetPlainResString(IDS_WEB_SHOW_UPLOAD_QUEUE));
-	Out.Replace("[ShowUploadQueueComment]", _GetPlainResString(IDS_WEB_UPLOAD_QUEUE_COMMENT));
-	Out.Replace("[ShowQueue]", _GetPlainResString(IDS_WEB_SHOW_UPLOAD_QUEUE));
-	Out.Replace("[HideQueue]", _GetPlainResString(IDS_WEB_HIDE_UPLOAD_QUEUE));
-	Out.Replace("[RefreshTimeForm]", _GetPlainResString(IDS_WEB_REFRESH_TIME));
-	Out.Replace("[RefreshTimeComment]", _GetPlainResString(IDS_WEB_REFRESH_COMMENT));
-	Out.Replace("[SpeedForm]", _GetPlainResString(IDS_SPEED_LIMITS));
-	Out.Replace("[MaxDown]", _GetPlainResString(IDS_DOWNLOAD));
-	Out.Replace("[MaxUp]", _GetPlainResString(IDS_PW_CON_UPLBL));
-	Out.Replace("[SpeedCapForm]", _GetPlainResString(IDS_CAPACITY_LIMITS));
-	Out.Replace("[MaxCapDown]", _GetPlainResString(IDS_DOWNLOAD));
-	Out.Replace("[MaxCapUp]", _GetPlainResString(IDS_PW_CON_UPLBL));
-	Out.Replace("[TryFullChunks]", _GetPlainResString(IDS_FULLCHUNKTRANS));
-	Out.Replace("[FirstAndLast]", _GetPlainResString(IDS_DOWNLOADMOVIECHUNKS));
-	Out.Replace("[WebControl]", _GetPlainResString(IDS_WEB_CONTROL));
+	Out.Replace("[KBS]", wxString(_("kB/s"))+":");
+	Out.Replace("[FileSettings]", wxString(_("File Settings"))+":");
+	Out.Replace("[LimitForm]", wxString(_("Connection Limits"))+":");
+	Out.Replace("[MaxSources]", wxString(_("Max Sources Per File"))+":");
+	Out.Replace("[MaxConnections]", wxString(_("Max. Connections"))+":");
+	Out.Replace("[MaxConnectionsPer5]", wxString(_("max. new connections / 5secs"))+":");
+	Out.Replace("[UseGzipForm]", _("Gzip Compression"));
+	Out.Replace("[UseGzipComment]", _("Save traffic, especially in graphs."));
+	Out.Replace("[ShowUploadQueueForm]", _("Show Queue"));
+	Out.Replace("[ShowUploadQueueComment]", _("Enable or disable the display of waiting queue in transfer page."));
+	Out.Replace("[ShowQueue]", _("Show Queue"));
+	Out.Replace("[HideQueue]", _("Hide Queue"));
+	Out.Replace("[RefreshTimeForm]", _("Refresh-Time of Pages"));
+	Out.Replace("[RefreshTimeComment]", _("Time in seconds (zero=disabled):"));
+	Out.Replace("[SpeedForm]", _("Speed Limits"));
+	Out.Replace("[MaxDown]", _("Download"));
+	Out.Replace("[MaxUp]", _("Upload"));
+	Out.Replace("[SpeedCapForm]", _("Bandwidth Limits"));
+	Out.Replace("[MaxCapDown]", _("Download"));
+	Out.Replace("[MaxCapUp]", _("Upload"));
+	Out.Replace("[TryFullChunks]", _("Try to transfer full chunks to all uploads"));
+	Out.Replace("[FirstAndLast]", _("Try to download first and last chunks first"));
+	Out.Replace("[WebControl]", _("Web Control Panel"));
 	Out.Replace("[aMuleAppName]", "aMule");
-	Out.Replace("[Apply]", _GetPlainResString(IDS_PW_APPLY));
+	Out.Replace("[Apply]", _("Apply"));
 
 	wxString sT;
 	sPreferences=sPreferences.Mid(brk+1); brk=sPreferences.First("\t");
@@ -2612,12 +2285,13 @@ wxString CWebServer::_GetPreferences(ThreadData Data) {
 	return Out;
 }
 
+
 wxString CWebServer::_GetLoginScreen(ThreadData Data) {
 	CWebServer *pThis = (CWebServer *)Data.pThis;
-	if(pThis == NULL)
+	if (pThis == NULL)
 		return "";
 
-	wxString sSession = _ParseURL(Data.sURL, "ses");
+	wxString sSession = _ParseURL(Data, "ses");
 
 	wxString Out = "";
 
@@ -2627,45 +2301,46 @@ wxString CWebServer::_GetLoginScreen(ThreadData Data) {
 	Out.Replace("[aMulePlus]", "aMule");
 	Out.Replace("[aMuleAppName]", "aMule");
 	Out.Replace("[version]", VERSION); //shakraw - was CURRENT_VERSION_LONG);
-	Out.Replace("[Login]", _GetPlainResString(IDS_WEB_LOGIN));
-	Out.Replace("[EnterPassword]", _GetPlainResString(IDS_WEB_ENTER_PASSWORD));
-	Out.Replace("[LoginNow]", _GetPlainResString(IDS_WEB_LOGIN_NOW));
-	Out.Replace("[WebControl]", _GetPlainResString(IDS_WEB_CONTROL));
+	Out.Replace("[Login]", _("Login"));
+	Out.Replace("[EnterPassword]", _("Enter your password here"));
+	Out.Replace("[LoginNow]", _("Login Now"));
+	Out.Replace("[WebControl]", _("Web Control Panel"));
 
 	return Out;
 }
+
 
 wxString CWebServer::_GetConnectedServer(ThreadData Data) {
 	CWebServer *pThis = (CWebServer *)Data.pThis;
 	if (pThis == NULL)
 		return "";
 
-	wxString sSession = _ParseURL(Data.sURL, "ses");
+	wxString sSession = _ParseURL(Data, "ses");
 
 	wxString HTTPTemp = "";
 	char	HTTPTempC[100] = "";
 	wxString OutS = pThis->m_Templates.sConnectedServer;
-	OutS.Replace("[ConnectedServer]", _GetPlainResString(IDS_PW_SERVER));
-	OutS.Replace("[Servername]", _GetPlainResString(IDS_SL_SERVERNAME));
-	OutS.Replace("[Status]", _GetPlainResString(IDS_STATUS));
-	OutS.Replace("[Usercount]", _GetPlainResString(IDS_LUSERS));
-	OutS.Replace("[Action]", _GetPlainResString(IDS_CONNECTING));
+	OutS.Replace("[ConnectedServer]", _("Server"));
+	OutS.Replace("[Servername]", _("Server name"));
+	OutS.Replace("[Status]", _("Status"));
+	OutS.Replace("[Usercount]", _("users"));
+	OutS.Replace("[Action]", _("Connecting"));
 	OutS.Replace("[URL_Disconnect]", IsSessionAdmin(Data,sSession)?wxString("?ses=" + sSession + "&w=server&c=disconnect"):GetPermissionDenied());
 	OutS.Replace("[URL_Connect]", IsSessionAdmin(Data,sSession)?wxString("?ses=" + sSession + "&w=server&c=connect"):GetPermissionDenied());
-	OutS.Replace("[Disconnect]", _GetPlainResString(IDS_IRC_DISCONNECT));
-	OutS.Replace("[Connect]", _GetPlainResString(IDS_CONNECTTOANYSERVER));
+	OutS.Replace("[Disconnect]", _("Disconnect"));
+	OutS.Replace("[Connect]", _("Connect to any server"));
 	OutS.Replace("[URL_ServerOptions]", IsSessionAdmin(Data,sSession)?wxString("?ses=" + sSession + "&w=server&c=options"):GetPermissionDenied());
-	OutS.Replace("[ServerOptions]", wxString(_GetPlainResString(IDS_SERVER)+_GetPlainResString(IDS_EM_PREFS)));
-	OutS.Replace("[WebSearch]", _GetPlainResString(IDS_SW_WEBBASED));
+	OutS.Replace("[ServerOptions]", wxString(_("Server"))+wxString(_("&Preferences")));
+	OutS.Replace("[WebSearch]", _("Web-based Search"));
 
-	wxString sServerStat = m_ECClient->SendRecvMsg("SERVER STAT");
+	wxString sServerStat = pThis->webInterface->SendRecvMsg("SERVER STAT");
 	int brk=sServerStat.First("\t");
 	if (sServerStat.Left(brk) == "Connected") {
 		sServerStat=sServerStat.Mid(brk+1);brk=sServerStat.First("\t");
 		if (sServerStat.Left(brk) == "High ID")
-			OutS.Replace("[1]", _GetPlainResString(IDS_CONNECTED));
+			OutS.Replace("[1]", _("Connected"));
 		else
-			OutS.Replace("[1]", _GetPlainResString(IDS_CONNECTED) + " (" + _GetPlainResString(IDS_IDLOW) + ")");
+			OutS.Replace("[1]", wxString(_("Connected")) + " (" + wxString(_("Low ID")) + ")");
 
 		sServerStat=sServerStat.Mid(brk+1);brk=sServerStat.First("\t");
 		OutS.Replace("[2]", sServerStat.Left(brk));
@@ -2674,13 +2349,12 @@ wxString CWebServer::_GetConnectedServer(ThreadData Data) {
 		sprintf(HTTPTempC, "%10i", atoi(sServerStat.Left(brk).GetData()));
 		HTTPTemp = HTTPTempC;												
 		OutS.Replace("[3]", HTTPTemp);
-
 	} else if (sServerStat.Left(brk) == "Connecting") {
-		OutS.Replace("[1]", _GetPlainResString(IDS_CONNECTING));
+		OutS.Replace("[1]", _("Connecting"));
 		OutS.Replace("[2]", "");
 		OutS.Replace("[3]", "");
 	} else {
-		OutS.Replace("[1]", _GetPlainResString(IDS_DISCONNECTED));
+		OutS.Replace("[1]", _("Disconnected"));
 		OutS.Replace("[2]", "");
 		OutS.Replace("[3]", "");
 	}
@@ -2690,8 +2364,7 @@ wxString CWebServer::_GetConnectedServer(ThreadData Data) {
 
 
 // We have to add gz-header and some other stuff
-// to standard zlib functions
-// in order to use gzip in web pages
+// to standard zlib functions in order to use gzip in web pages
 int CWebServer::_GzipCompress(Bytef *dest, uLongf *destLen, const Bytef *source, uLong sourceLen, int level) { 
 	const static int gz_magic[2] = {0x1f, 0x8b}; // gzip magic header
 	int err;
@@ -2737,6 +2410,7 @@ int CWebServer::_GzipCompress(Bytef *dest, uLongf *destLen, const Bytef *source,
 	return err;
 }
 
+
 bool CWebServer::_IsLoggedIn(ThreadData Data, long lSession) {
 	CWebServer *pThis = (CWebServer *)Data.pThis;
 	if (pThis == NULL)
@@ -2756,11 +2430,13 @@ bool CWebServer::_IsLoggedIn(ThreadData Data, long lSession) {
 	return false;
 }
 
+
 void CWebServer::_RemoveTimeOuts(ThreadData Data, long lSession) {
 	// remove expired sessions
 	CWebServer *pThis = (CWebServer *)Data.pThis;
 	pThis->UpdateSessionCount();
 }
+
 
 bool CWebServer::_RemoveSession(ThreadData Data, long lSession) {
 	CWebServer *pThis = (CWebServer *)Data.pThis;
@@ -2768,15 +2444,16 @@ bool CWebServer::_RemoveSession(ThreadData Data, long lSession) {
 		return "";
 
 	// find our session
-	for(int i = 0; i < pThis->m_Params.Sessions.GetCount(); i++) {
+	for (int i = 0; i < pThis->m_Params.Sessions.GetCount(); i++) {
 		if (pThis->m_Params.Sessions[i]->lSession == lSession && lSession != 0) {
 			pThis->m_Params.Sessions.RemoveAt(i);
-			m_ECClient->SendRecvMsg(wxString::Format("LOG ADDLOGLINE %s", getResString(IDS_WEB_SESSIONEND).GetData()));
+			pThis->webInterface->SendRecvMsg(wxString::Format("LOG ADDLOGLINE %s", _("Webserver: Logout")));
 			return true;
 		}
 	}
 	return false;
 }
+
 
 Session CWebServer::GetSessionByID(ThreadData Data,long sessionID) {
 	CWebServer *pThis = (CWebServer *)Data.pThis;
@@ -2795,6 +2472,7 @@ Session CWebServer::GetSessionByID(ThreadData Data,long sessionID) {
 	return ses;
 }
 
+
 bool CWebServer::IsSessionAdmin(ThreadData Data,wxString SsessionID) {
 	long sessionID=atoll(SsessionID);
 	CWebServer *pThis = (CWebServer *)Data.pThis;
@@ -2808,9 +2486,11 @@ bool CWebServer::IsSessionAdmin(ThreadData Data,wxString SsessionID) {
 	return false;
 }
 
+
 wxString CWebServer::GetPermissionDenied() {
-	return "javascript:alert(\'"+_GetPlainResString(IDS_ACCESSDENIED)+"\')";
+	return "javascript:alert(\'"+wxString(_("Access denied!"))+"\')";
 }
+
 
 bool CWebServer::_GetFileHash(wxString sHash, uchar *FileHash) {
 	char hex_byte[3];
@@ -2825,31 +2505,20 @@ bool CWebServer::_GetFileHash(wxString sHash, uchar *FileHash) {
 	return true;
 }
 
-wxString CWebServer::_GetPlainResString(UINT nID, bool noquot) {
-	wxString sRet = getResString(nID);
-	sRet.Replace("&", "");
-	if (noquot) {
-        sRet.Replace("'", "\\'");
-		sRet.Replace("\n", "\\n");
-	}
-
-	return sRet;
-}
 
 // EC + kuchin
 wxString CWebServer::_GetWebCharSet() {
 #if 0
-	switch (theApp.glob_prefs->GetLanguageID())
-	{
-		case MAKELANGID(LANG_POLISH,SUBLANG_DEFAULT):				return "windows-1250";
-		case MAKELANGID(LANG_RUSSIAN,SUBLANG_DEFAULT):				return "windows-1251";
-		case MAKELANGID(LANG_GREEK,SUBLANG_DEFAULT):				return "ISO-8859-7";
-		case MAKELANGID(LANG_HEBREW,SUBLANG_DEFAULT):				return "ISO-8859-8";
-		case MAKELANGID(LANG_KOREAN,SUBLANG_DEFAULT):				return "EUC-KR";
+	switch (theApp.glob_prefs->GetLanguageID()) {
+		case MAKELANGID(LANG_POLISH,SUBLANG_DEFAULT):			return "windows-1250";
+		case MAKELANGID(LANG_RUSSIAN,SUBLANG_DEFAULT):			return "windows-1251";
+		case MAKELANGID(LANG_GREEK,SUBLANG_DEFAULT):			return "ISO-8859-7";
+		case MAKELANGID(LANG_HEBREW,SUBLANG_DEFAULT):			return "ISO-8859-8";
+		case MAKELANGID(LANG_KOREAN,SUBLANG_DEFAULT):			return "EUC-KR";
 		case MAKELANGID(LANG_CHINESE,SUBLANG_CHINESE_SIMPLIFIED):	return "GB2312";
 		case MAKELANGID(LANG_CHINESE,SUBLANG_CHINESE_TRADITIONAL):	return "Big5";
-		case MAKELANGID(LANG_LITHUANIAN,SUBLANG_DEFAULT):			return "windows-1257";
-		case MAKELANGID(LANG_TURKISH,SUBLANG_DEFAULT):				return "windows-1254";
+		case MAKELANGID(LANG_LITHUANIAN,SUBLANG_DEFAULT):		return "windows-1257";
+		case MAKELANGID(LANG_TURKISH,SUBLANG_DEFAULT):			return "windows-1254";
 	}
 #endif
 	// Western (Latin) includes Catalan, Danish, Dutch, English, Faeroese, Finnish, French,
@@ -2857,10 +2526,11 @@ wxString CWebServer::_GetWebCharSet() {
 	return "ISO-8859-1";
 }
 
+
 // Ornis: creating the progressbar. colored if ressources are given/available
 wxString CWebServer::_GetDownloadGraph(ThreadData Data,wxString filehash) {
 	CWebServer *pThis = (CWebServer *)Data.pThis;
-	if(pThis == NULL)
+	if (pThis == NULL)
 		return "";
 	
 	// cool style
@@ -2883,7 +2553,7 @@ wxString CWebServer::_GetDownloadGraph(ThreadData Data,wxString filehash) {
 	wxString Out = "";
 	wxString temp;
 
-	wxString response = m_ECClient->SendRecvMsg(wxString::Format("WEBPAGE PROGRESSBAR %d %s", pThis->m_Templates.iProgressbarWidth, filehash.GetData()).GetData());
+	wxString response = pThis->webInterface->SendRecvMsg(wxString::Format("WEBPAGE PROGRESSBAR %d %s", pThis->m_Templates.iProgressbarWidth, filehash.GetData()).GetData());
 	int brk=response.First("\t");
 	
 	if (atoi(response.Left(brk).GetData())) {
@@ -2922,88 +2592,89 @@ wxString CWebServer::_GetDownloadGraph(ThreadData Data,wxString filehash) {
 	return Out;
 }
 
+
 wxString CWebServer::_GetSearch(ThreadData Data) {
 	CWebServer *pThis = (CWebServer *)Data.pThis;
 	if (pThis == NULL)
 		return "";
 
-	wxString sSession = _ParseURL(Data.sURL, "ses");
+	wxString sSession = _ParseURL(Data, "ses");
 	wxString Out = pThis->m_Templates.sSearch;
 
-	wxString downloads=_ParseURLArray(Data.sURL,"downloads");
+	wxString downloads=_ParseURLArray(Data,"downloads");
 	if (downloads != "" && IsSessionAdmin(Data,sSession) ) {
 		int brk;
 		while (downloads.Length()>0) {
 			brk=downloads.First("|");
-			m_ECClient->SendRecvMsg(wxString::Format("SEARCH DOWNLOADFILE %s", downloads.Left(brk).GetData()));
+			pThis->webInterface->SendRecvMsg(wxString::Format("SEARCH DOWNLOADFILE %s", downloads.Left(brk).GetData()));
 			downloads=downloads.Mid(brk+1);
 		}
 	}
 
-	wxString sToSearch = _ParseURL(Data.sURL, "tosearch");
+	wxString sToSearch = _ParseURL(Data, "tosearch");
 	if (sToSearch != "" && IsSessionAdmin(Data,sSession)) {
 		wxString sParams;
 		sParams.Printf(sToSearch+"\n");
-		sParams.Append(_ParseURL(Data.sURL, "type")+"\n");
-		sParams.Append(wxString::Format("%ld\n", atol(_ParseURL(Data.sURL, "min").GetData())*1048576));
-		sParams.Append(wxString::Format("%ld\n", atol(_ParseURL(Data.sURL, "max").GetData())*1048576));
-		sParams.Append(_ParseURL(Data.sURL, "avail")+"\n");
-		sParams.Append(_ParseURL(Data.sURL, "ext")+"\n");
-		sParams.Append(_ParseURL(Data.sURL, "method")+"\n");
+		sParams.Append(_ParseURL(Data, "type")+"\n");
+		sParams.Append(wxString::Format("%ld\n", atol(_ParseURL(Data, "min").GetData())*1048576));
+		sParams.Append(wxString::Format("%ld\n", atol(_ParseURL(Data, "max").GetData())*1048576));
+		sParams.Append(_ParseURL(Data, "avail")+"\n");
+		sParams.Append(_ParseURL(Data, "ext")+"\n");
+		sParams.Append(_ParseURL(Data, "method")+"\n");
 
-		m_ECClient->SendRecvMsg(wxString::Format("SEARCH DONEWSEARCH %s", sParams.GetData()));
-		Out.Replace("[Message]",_GetPlainResString(IDS_SW_SEARCHINGINFO));
+		pThis->webInterface->SendRecvMsg(wxString::Format("SEARCH DONEWSEARCH %s", sParams.GetData()));
+		Out.Replace("[Message]",_("Search in progress. Refetch results in a moment!"));
 	} else if (sToSearch != "" && !IsSessionAdmin(Data,sSession) ) {
-		Out.Replace("[Message]",_GetPlainResString(IDS_ACCESSDENIED));
+		Out.Replace("[Message]",_("Access denied!"));
 	} else 
 		Out.Replace("[Message]","");
 
-	wxString sSort = _ParseURL(Data.sURL, "sort");
+	wxString sSort = _ParseURL(Data, "sort");
 	if (sSort.Length()>0) pThis->m_iSearchSortby=atoi(sSort);
-	sSort = _ParseURL(Data.sURL, "sortAsc");
+	sSort = _ParseURL(Data, "sortAsc");
 	if (sSort.Length()>0) pThis->m_bSearchAsc=atoi(sSort);
 
-	wxString result = pThis->m_Templates.sSearchHeader + wxString(m_ECClient->SendRecvMsg(wxString::Format("SEARCH WEBLIST %s\t%d\t%d", pThis->m_Templates.sSearchResultLine.GetData(), pThis->m_iSearchSortby, pThis->m_bSearchAsc)));
+	wxString result = pThis->m_Templates.sSearchHeader + pThis->webInterface->SendRecvMsg(wxString::Format("SEARCH WEBLIST %s\t%d\t%d", pThis->m_Templates.sSearchResultLine.GetData(), pThis->m_iSearchSortby, pThis->m_bSearchAsc));
 	
-	if (atoi(m_ECClient->SendRecvMsg("SEARCH GETCATCOUNT").GetData()) > 1)
+	if (atoi(pThis->webInterface->SendRecvMsg("SEARCH GETCATCOUNT").GetData()) > 1)
 		InsertCatBox(Out,0,pThis->m_Templates.sCatArrow);
 	else
 		Out.Replace("[CATBOX]","");
 
 	Out.Replace("[SEARCHINFOMSG]","");
 	Out.Replace("[RESULTLIST]", result);
-	Out.Replace("[Result]", getResString(IDS_SW_RESULT) );
+	Out.Replace("[Result]", _("Search Results"));
 	Out.Replace("[Session]", sSession);
-	Out.Replace("[WebSearch]", _GetPlainResString(IDS_SW_WEBBASED));
-	Out.Replace("[Name]", _GetPlainResString(IDS_SW_NAME));
-	Out.Replace("[Type]", _GetPlainResString(IDS_TYPE));
-	Out.Replace("[Any]", _GetPlainResString(IDS_SEARCH_ANY));
-	Out.Replace("[Archives]", _GetPlainResString(IDS_SEARCH_ARC));
-	Out.Replace("[Audio]", _GetPlainResString(IDS_SEARCH_AUDIO));
-	Out.Replace("[CD-Images]", _GetPlainResString(IDS_SEARCH_CDIMG));
-	Out.Replace("[Pictures]", _GetPlainResString(IDS_SEARCH_PICS));
-	Out.Replace("[Programs]", _GetPlainResString(IDS_SEARCH_PRG));
-	Out.Replace("[Videos]", _GetPlainResString(IDS_SEARCH_VIDEO));
-	Out.Replace("[Search]", _GetPlainResString(IDS_SW_SEARCHBOX));
-	Out.Replace("[RefetchResults]", _GetPlainResString(IDS_SW_REFETCHRES));
-	Out.Replace("[Download]", _GetPlainResString(IDS_DOWNLOAD));
+	Out.Replace("[WebSearch]", _("Web-based Search"));
+	Out.Replace("[Name]", _("Name"));
+	Out.Replace("[Type]", _("Type"));
+	Out.Replace("[Any]", _("Any"));
+	Out.Replace("[Archives]", _("Archive"));
+	Out.Replace("[Audio]", _("Audio"));
+	Out.Replace("[CD-Images]", _("CD-Images"));
+	Out.Replace("[Pictures]", _("Pictures"));
+	Out.Replace("[Programs]", _("Programs"));
+	Out.Replace("[Videos]", _("Video"));
+	Out.Replace("[Search]", _("Search"));
+	Out.Replace("[RefetchResults]", _("Refetch Results"));
+	Out.Replace("[Download]", _("Download"));
 	
-	Out.Replace("[Filesize]", _GetPlainResString(IDS_DL_SIZE));
-	Out.Replace("[Sources]", _GetPlainResString(IDS_DL_SOURCES));
-	Out.Replace("[Filehash]", _GetPlainResString(IDS_FILEHASH));
-	Out.Replace("[Filename]", _GetPlainResString(IDS_DL_FILENAME));
-	Out.Replace("[WebSearch]", _GetPlainResString(IDS_SW_WEBBASED));
+	Out.Replace("[Filesize]", _("Size"));
+	Out.Replace("[Sources]", _("Sources"));
+	Out.Replace("[Filehash]", _("File Hash"));
+	Out.Replace("[Filename]", _("File Name"));
+	Out.Replace("[WebSearch]", _("Web-based Search"));
 
-	Out.Replace("[SizeMin]", _GetPlainResString(IDS_SEARCHMINSIZE));
-	Out.Replace("[SizeMax]", _GetPlainResString(IDS_SEARCHMAXSIZE));
-	Out.Replace("[Availabl]", _GetPlainResString(IDS_SEARCHAVAIL));
-	Out.Replace("[Extention]", _GetPlainResString(IDS_SEARCHEXTENTION));
-	Out.Replace("[Global]", _GetPlainResString(IDS_GLOBALSEARCH2));
-	Out.Replace("[MB]", _GetPlainResString(IDS_MBYTES));
+	Out.Replace("[SizeMin]", _("Min Size"));
+	Out.Replace("[SizeMax]", _("Max Size"));
+	Out.Replace("[Availabl]", _("Min Availability"));
+	Out.Replace("[Extention]", _("Extension"));
+	Out.Replace("[Global]", _("Global Search"));
+	Out.Replace("[MB]", _("MB"));
 		
-	Out.Replace("[METHOD]", _GetPlainResString(IDS_METHOD));
-	Out.Replace("[USESSERVER]", _GetPlainResString(IDS_SERVER));
-	Out.Replace("[Global]", _GetPlainResString(IDS_GLOBALSEARCH));
+	Out.Replace("[METHOD]", _("Method"));
+	Out.Replace("[USESSERVER]", _("Server"));
+	Out.Replace("[Global]", _("Global (Server)"));
 
 	wxString val;
 	val.Printf("%i",(pThis->m_iSearchSortby!=0 || (pThis->m_iSearchSortby==0 && pThis->m_bSearchAsc==0 ))?1:0 );
@@ -3017,6 +2688,7 @@ wxString CWebServer::_GetSearch(ThreadData Data) {
 	
 	return Out;
 }
+
 
 int CWebServer::UpdateSessionCount() {
 	// remove old bans
@@ -3040,6 +2712,7 @@ int CWebServer::UpdateSessionCount() {
 	return m_Params.Sessions.GetCount();
 }
 
+
 void CWebServer::InsertCatBox(wxString &Out,int preselect,wxString boxlabel,bool jump,bool extraCats) {
 #if 0 //shakraw
 	wxString tempBuf2,tempBuf3;
@@ -3048,12 +2721,12 @@ void CWebServer::InsertCatBox(wxString &Out,int preselect,wxString boxlabel,bool
 	wxString tempBuf="<form><select name=\"cat\" size=\"1\""+tempBuf2;
 	for (int i=0;i< theApp.glob_prefs->GetCatCount();i++) {
 		tempBuf3= (i==preselect)? " selected":"";
-		printf("before\n");
-		tempBuf2.Printf("<option%s value=\"%i\">%s</option>",tempBuf3,i, (i==0)?_GetPlainResString(IDS_ALL).GetData():theApp.glob_prefs->GetCategory(i)->title );
-		printf("after\n");
+		webInterface->Print("before\n");
+		tempBuf2.Printf("<option%s value=\"%i\">%s</option>",tempBuf3,i, (i==0)?_("all"):theApp.glob_prefs->GetCategory(i)->title );
+		webInterface->Print("after\n");
 		tempBuf.Append(tempBuf2);
 	}
-	printf("hello 4\n");
+	webInterface->Print("hello 4\n");
 	if (extraCats) {
 		if (theApp.glob_prefs->GetCatCount()>1){
 			tempBuf2.Printf("<option>------------</option>");
@@ -3071,54 +2744,21 @@ void CWebServer::InsertCatBox(wxString &Out,int preselect,wxString boxlabel,bool
 #endif
 }
 
+
 wxString CWebServer::GetSubCatLabel(int cat) {
 	switch (cat) {
-		case -1: return _GetPlainResString(IDS_ALLOTHERS);
-		case -2: return _GetPlainResString(IDS_STATUS_NOTCOMPLETED);
-		case -3: return _GetPlainResString(IDS_DL_TRANSFCOMPL);
-		case -4: return _GetPlainResString(IDS_WAITING);
-		case -5: return _GetPlainResString(IDS_DOWNLOADING);
-		case -6: return _GetPlainResString(IDS_ERRORLIKE);
-		case -7: return _GetPlainResString(IDS_PAUSED);
-		case -8: return _GetPlainResString(IDS_STOPPED);
-		case -9: return _GetPlainResString(IDS_VIDEO);
-		case -10: return _GetPlainResString(IDS_AUDIO);
-		case -11: return _GetPlainResString(IDS_SEARCH_ARC);
-		case -12: return _GetPlainResString(IDS_SEARCH_CDIMG);
+		case -1: return _("all others");
+		case -2: return _("Incomplete");
+		case -3: return _("Completed");
+		case -4: return _("Waiting");
+		case -5: return _("Downloading");
+		case -6: return _("Erroneous");
+		case -7: return _("Paused");
+		case -8: return _("Stopped");
+		case -9: return _("Video");
+		case -10: return _("Audio");
+		case -11: return _("Archive");
+		case -12: return _("CD-Images");
 	}
 	return "?";
 }
-
-// Elandal: moved from CUpDownClient
-// Webserber [kuchin]
-//shakraw, I think this should be re-moved to CUpDownClient...
-/*wxString CWebServer::GetUploadFileInfo(CUpDownClient* client)
-{
-#if 0 //shakraw
-	if(client == NULL) return "";
-	wxString sRet;
-
-	// build info text and display it
-	sRet.Printf(CString(_("NickName: %s\n")), client->GetUserName(), client->GetUserID());
-	if (client->reqfile)
-	{
-		sRet += CString(_("Requested:")) + wxString(client->reqfile->GetFileName()) + "\n";
-		wxString stat;
-		stat.Printf(CString(_("Filestats for this session: Accepted %d of %d requests"))+CString(_("Filestats for all sessions: Accepted %d of %d requests")),
-			client->reqfile->statistic.GetAccepts(),
-			client->reqfile->statistic.GetRequests(),
-			CastItoXBytes(client->reqfile->statistic.GetTransfered()).GetData(),
-			client->reqfile->statistic.GetAllTimeAccepts(),
-			client->reqfile->statistic.GetAllTimeRequests(),
-			CastItoXBytes(client->reqfile->statistic.GetAllTimeTransfered()).GetData());
-		sRet += stat;
-	}
-	else
-	{
-		sRet += CString(_("Requested unknown file"));
-	}
-	return sRet;
-#endif
-	return "TODO: _GetUploadFileInfo";
-}
-*/
