@@ -115,6 +115,7 @@ CKnownFile::CKnownFile() :
 	
 	m_bAutoUpPriority = theApp.glob_prefs->GetNewAutoUp();
 	m_iUpPriority = ( m_bAutoUpPriority ) ? PR_HIGH : PR_NORMAL;
+	m_pAICHHashSet = new CAICHHashSet(this);
 }
 
 CKnownFile::~CKnownFile(){
@@ -123,10 +124,11 @@ CKnownFile::~CKnownFile(){
 			
 	for (size_t i = 0; i != taglist.GetCount(); i++) {
 		delete taglist[i];
-	}
-				
+	}		
 	
 	m_AvailPartFrequency.Clear();
+	
+	delete m_pAICHHashSet;
 }
 
 void CKnownFile::AddUploadingClient(CUpDownClient* client){
@@ -379,7 +381,6 @@ void CKnownFile::GetMetaDataTags()
 
 bool CKnownFile::CreateAICHHashSetOnly()
 {
-	#warning AICH IMPORT
 	wxASSERT( !IsPartFile() );
 	m_pAICHHashSet->FreeHashSet();
 	

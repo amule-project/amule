@@ -307,7 +307,7 @@ CPartFile::~CPartFile()
 	// But, where does this wrong handle comes from?
 	
 	if (m_hpartfile.IsOpened() && (m_hpartfile.fd() > 2)) { 
-			FlushBuffer();
+			FlushBuffer(true);
 	}
 	
 	if (m_hpartfile.IsOpened() && (m_hpartfile.fd() > 2)) {
@@ -2668,7 +2668,7 @@ void CPartFile::StopFile(bool bCancel)
 	insufficient = false;
 	memset(m_anStates,0,sizeof(m_anStates));
 	if (!bCancel) {
-		FlushBuffer();
+		FlushBuffer(true);
 	}
 	theApp.downloadqueue->SortByPriority();
 	theApp.downloadqueue->CheckDiskspace();
@@ -2835,6 +2835,13 @@ void CPartFile::PreviewFile()
 			command.RemoveLast();
 		}
 	}
+
+	#warning Need PreviewSmallBlocks preferences.
+	/*
+	if (thePrefs.GetPreviewSmallBlocks()) {
+		FlushBuffer(true);
+	}
+	*/
 	
 	command.Append(wxT("\""));
      wxExecute(command);
@@ -3186,15 +3193,16 @@ uint32 CPartFile::WriteToBuffer(uint32 transize, BYTE *data, uint32 start, uint3
 	}
 
 	if (gaplist.IsEmpty()) {
-		FlushBuffer();
+		FlushBuffer(true);
 	}
 
 	// Return the length of data written to the buffer
 	return lenData;
 }
-
-void CPartFile::FlushBuffer(void)
+void CPartFile::FlushBuffer(bool forcewait, bool bForceICH, bool bNoAICH)
 {
+	bool bIncreasedFile=false;	
+	
 	m_nLastBufferFlushTime = GetTickCount();
 	
 	if (m_BufferedData_list.IsEmpty()) {
@@ -3226,19 +3234,47 @@ void CPartFile::FlushBuffer(void)
 
 		wxLongLong total = 0, free = 0;
 		wxGetDiskSpace(theApp.glob_prefs->GetTempDir(), &total, &free);
-		typedef unsigned long long uint64;
-		// WHY IS THIS NOT USED? ... //uint64 GetFreeDiskSpaceX = free.GetValue();
-		// WHY IS THIS NOT USED? ... //ULONGLONG uFreeDiskSpace = bCheckDiskspace ? GetFreeDiskSpaceX : 0;
-
+		
 		// Ensure file is big enough to write data to (the last item will be the furthest from the start)
 		PartFileBufferedData *item = m_BufferedData_list.GetTail();
 		if ((unsigned)m_hpartfile.Length() <= item->end) {
 			//m_hpartfile.SetLength(item->end + 1);
-			#ifdef __WXMSW__
-			chsize(m_hpartfile.fd(),item->end+1);
-			#else
-			ftruncate(m_hpartfile.fd(),item->end+1);
-			#endif
+			
+			if (item->end-m_hpartfile.GetLength() < 2097152) {
+				forcewait=true;	// <2MB -> alloc it at once
+			}
+			
+			// Allocate filesize
+			if (!forcewait) {
+				// We have no allocation thread.
+				forcewait=true;
+				// Use this if we ever want one.
+				/*
+				m_AllocateThread= AfxBeginThread(AllocateSpaceThread, this, THREAD_PRIORITY_LOWEST, 0, CREATE_SUSPENDED);
+				if (m_AllocateThread == NULL)
+				{
+					TRACE(_T("Failed to create alloc thread! -> allocate blocking\n"));
+					forcewait=true;
+				} else {
+					m_iAllocinfo=item->end+1;
+					m_AllocateThread->ResumeThread();
+					delete[] changedPart;
+					return;
+				}
+				*/
+			}
+			
+			if (forcewait) {
+				bIncreasedFile=true;
+				// If this is a NTFS compressed file and the current block is the 1st one to be written and there is not 
+				// enough free disk space to hold the entire *uncompressed* file, windows throws a 'diskFull'!?
+				#ifdef __WXMSW__
+				chsize(m_hpartfile.fd(),item->end+1);
+				#else
+				ftruncate(m_hpartfile.fd(),item->end+1);
+				#endif
+			}
+			
 		}
 		
 		// Loop through queue
@@ -3272,6 +3308,16 @@ void CPartFile::FlushBuffer(void)
 			delete item;
 		}
 
+		// Partfile should never be too large
+ 		if (m_hpartfile.GetLength() > m_nFileSize){
+			// it's "last chance" correction. the real bugfix has to be applied 'somewhere' else
+			#ifdef __WXMSW__
+			chsize(m_hpartfile.fd(),m_nFileSize);
+			#else
+			ftruncate(m_hpartfile.fd(),m_nFileSize);
+			#endif
+		}		
+		
 		// Flush to disk
 		m_hpartfile.Flush();
 
@@ -3290,7 +3336,14 @@ void CPartFile::FlushBuffer(void)
 				if (!HashSinglePart(partNumber)) {
 					AddLogLineM(true, wxString::Format(_("Downloaded part %i is corrupt :(  (%s)"), partNumber, GetFileName().c_str()));
 					AddGap(PARTSIZE*partNumber, (PARTSIZE*partNumber + partRange));
-					corrupted_list.AddTail(partNumber);
+					// add part to corrupted list, if not already there
+					if (!IsCorruptedPart(partNumber)) {
+						corrupted_list.AddTail(partNumber);
+					}
+					// request AICH recovery data
+					if (!bNoAICH) {
+						RequestAICHRecovery((uint16)partNumber);					
+					}
 					// Reduce transfered amount by corrupt amount
 					m_iLostDueToCorruption += (partRange + 1);
 				} else {
@@ -3302,17 +3355,22 @@ void CPartFile::FlushBuffer(void)
 					POSITION posCorrupted = corrupted_list.Find(partNumber);
 					if (posCorrupted)
 						corrupted_list.RemoveAt(posCorrupted);
-					
-					// Successfully completed part, make it available for sharing				
 					if (status == PS_EMPTY) {
-						SetStatus(PS_READY);
-						theApp.sharedfiles->SafeAddKFile(this);
+						if (theApp.IsRunning()) { // may be called during shutdown!
+							if (GetHashCount() == GetED2KPartHashCount() && !hashsetneeded) {
+								// Successfully completed part, make it available for sharing
+								SetStatus(PS_READY);
+								theApp.sharedfiles->SafeAddKFile(this);
+							}
+						}
 					}
 				}
-			} else if ( IsCorruptedPart(partNumber) && theApp.glob_prefs->IsICHEnabled()) {
+			} else if ( IsCorruptedPart(partNumber) && (theApp.glob_prefs->IsICHEnabled() || bForceICH)) {
 				// Try to recover with minimal loss
 				if (HashSinglePart(partNumber)) {
 					m_iTotalPacketsSavedDueToICH++;
+					
+					uint32 uMissingInPart = GetTotalGapSizeInPart(partNumber);					
 					FillGap(PARTSIZE*partNumber,(PARTSIZE*partNumber+partRange));
 					RemoveBlockFromList(PARTSIZE*partNumber,(PARTSIZE*partNumber + partRange));
 
@@ -3321,13 +3379,15 @@ void CPartFile::FlushBuffer(void)
 					if (posCorrupted)
 						corrupted_list.RemoveAt(posCorrupted);
 					
-					AddLogLineM(true, wxString::Format(_("ICH: Recovered corrupted part %i  (%s)"), partNumber,GetFileName().c_str()));
+					AddLogLineM(true, wxString::Format(_("ICH: Recovered corrupted part %i  (%s)-> Saved bytes: "), partNumber,GetFileName().c_str()) + CastItoXBytes(uMissingInPart));
 					
-					// Successfully recovered part, make it available for sharing
-					if (status == PS_EMPTY) {
-						SetStatus(PS_READY);
-						if (theApp.IsRunning()) // may be called during shutdown!
-							theApp.sharedfiles->SafeAddKFile(this);
+					if (GetHashCount() == GetED2KPartHashCount() && !hashsetneeded) {
+						if (status == PS_EMPTY) {
+							// Successfully recovered part, make it available for sharing							
+							SetStatus(PS_READY);
+							if (theApp.IsRunning()) // may be called during shutdown!
+								theApp.sharedfiles->SafeAddKFile(this);
+						}
 					}
 				}
 			}
@@ -3351,9 +3411,7 @@ void CPartFile::FlushBuffer(void)
 			// and accurate to check the free disk space again, after file was written and buffers were flushed to disk.
 			//
 			// If useing a normal file, we could avoid the check disk space if the file was not increased.
-			// If useing a compressed or sparse file, we always have to check the space 
-			// regardless whether the file was increased in size or not.
-			if (bCheckDiskspace) {
+			if (bCheckDiskspace && bIncreasedFile) {
 				switch(GetStatus()) {
 					case PS_PAUSED:
 					case PS_ERROR:
@@ -3804,7 +3862,48 @@ bool CPartFile::CheckShowItemInGivenCat(int inCategory)
 }
 
 
-#warning AICH - CHECK USAGE!	
+uint32 CPartFile::GetTotalGapSizeInRange(uint32 uRangeStart, uint32 uRangeEnd) const
+{
+	uint32 uTotalGapSize = 0;
+
+	if (uRangeEnd >= m_nFileSize) {
+		uRangeEnd = m_nFileSize - 1;
+	}
+
+	POSITION pos = gaplist.GetHeadPosition();
+	while (pos) {
+		const Gap_Struct* pGap = gaplist.GetNext(pos);
+
+		if (pGap->start < uRangeStart && pGap->end > uRangeEnd) {
+			uTotalGapSize += uRangeEnd - uRangeStart + 1;
+			break;
+		}
+
+		if (pGap->start >= uRangeStart && pGap->start <= uRangeEnd) {
+			uint32 uEnd = (pGap->end > uRangeEnd) ? uRangeEnd : pGap->end;
+			uTotalGapSize += uEnd - pGap->start + 1;
+		} else if (pGap->end >= uRangeStart && pGap->end <= uRangeEnd) {
+			uTotalGapSize += pGap->end - uRangeStart + 1;
+		}
+	}
+
+	wxASSERT( uTotalGapSize <= uRangeEnd - uRangeStart + 1 );
+
+	return uTotalGapSize;
+}
+
+uint32 CPartFile::GetTotalGapSizeInPart(UINT uPart) const
+{
+	uint32 uRangeStart = uPart * PARTSIZE;
+	uint32 uRangeEnd = uRangeStart + PARTSIZE - 1;
+	if (uRangeEnd >= m_nFileSize) {
+		uRangeEnd = m_nFileSize;
+	}
+	return GetTotalGapSizeInRange(uRangeStart, uRangeEnd);
+}
+
+
+
 void CPartFile::RequestAICHRecovery(uint16 nPart){
 
 	if (!m_pAICHHashSet->HasValidMasterHash() || (m_pAICHHashSet->GetStatus() != AICH_TRUSTED && m_pAICHHashSet->GetStatus() != AICH_VERIFIED)){
@@ -3890,10 +3989,9 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart){
 		wxASSERT( false );
 		return;
 	}
-	#warning FIX FLUSHBUFFER CALLS!
-	FlushBuffer(/*true,true,true*/);
+	FlushBuffer(true,true,true);
 	uint32 length = PARTSIZE;
-	if ((ULONGLONG)PARTSIZE*(nPart+1) > m_hpartfile.GetLength()){
+	if ((off_t)PARTSIZE*(nPart+1) > m_hpartfile.GetLength()){
 		length = (m_hpartfile.GetLength() - ((ULONGLONG)PARTSIZE*nPart));
 		wxASSERT( length <= PARTSIZE );
 	}	

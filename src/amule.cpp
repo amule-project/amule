@@ -108,6 +108,7 @@
 #include "PartFile.h"			// Needed for CPartFile
 #include "AddFileThread.h"		// Needed for CAddFileThread
 #include "packets.h"
+#include "AICHSyncThread.h"
 
 #warning This ones must be removed ASAP - exception: amuledlg, will be the LAST one.
 #include "muuli_wdr.h"			// Needed for IDs
@@ -120,6 +121,7 @@
 #include "UploadListCtrl.h"		// Needed for CUploadListCtrl
 #include "DownloadListCtrl.h"		// Needed for CDownloadListCtrl
 #include "ChatWnd.h"
+
 
 #ifdef HAVE_SYS_RESOURCE_H
 #include <sys/resource.h>
@@ -735,6 +737,16 @@ bool CamuleApp::OnInit()
 
 	// Everything should be loaded now, so sort the list widgets
 	amuledlg->InitSort();
+	
+	// AICH sync thread start
+
+	#warning activate here AICH thread	
+	/*
+	CAICHSyncThread* AICH_Thread = new CAICHSyncThread();
+	AICH_Thread->Create();
+	AICH_Thread->SetPriority(WXTHREAD_DEFAULT_PRIORITY-10); // slightly less than main
+	AICH_Thread->Run();
+	*/
 	
 	// Start the Core Timer
 

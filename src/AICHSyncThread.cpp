@@ -67,6 +67,8 @@ void* CAICHSyncThread::Entry()
 	if ( !theApp.IsRunning() )
 		return 0;
 
+	printf("AICH sync thread running...\n");
+	
 	// we collect all masterhashs which we find in the known2.met and store them in a list
 	std::list<CAICHHash> liKnown2Hashs;
 	wxString fullpath=theApp.ConfigDir;
@@ -78,12 +80,15 @@ void* CAICHSyncThread::Entry()
 			#warning: logline
 			return false;
 		}
+		printf("\tOpened known2.met...\n");		
 	} else {
 		if (!file.Create(fullpath, CFile::read_write)) {
 			#warning: logline
 			return false;			
 		}		
+		printf("\tCreated known2.met...\n");		
 	}
+
 	
 	try {
 
@@ -110,6 +115,8 @@ void* CAICHSyncThread::Entry()
 	}
 	file.Close();
 
+	printf("\tMasterhash for known files loaded...\n");	
+	
 	// now we check that all files which are in the sharedfilelist have a corresponding hash in out list
 	// those how don'T are added to the hashinglist
 	for (uint32 i = 0; i < theApp.sharedfiles->GetCount(); i++){
@@ -147,11 +154,15 @@ void* CAICHSyncThread::Entry()
 	if (!m_liToHash.empty()){
 // TODO		
 //		theApp.QueueLogLine(true, GetResString(IDS_AICH_SYNCTOTAL), m_liToHash.GetCount() );
+		
+		printf("\tTotal %i files to hash (from %i)...\n", m_liToHash.size(), theApp.sharedfiles->GetCount());
 		theApp.amuledlg->sharedfileswnd->sharedfilesctrl->SetAICHHashing(m_liToHash.size());
 		// let first all normal hashing be done before starting out synchashing
-		while (theApp.sharedfiles->GetCount() != 0){
-			Sleep(100);
-		}
+		#warning This is WRONG
+		//while (theApp.sharedfiles->GetHashingCount() != 0){
+		//	Sleep(100);
+		//}
+		
 		wxMutexLocker sLock1(theApp.hashing_mut); // only one filehash at a time
 		// sLock1.Lock(); // Mutex Locker locks on constructor.
 		uint32 cDone = 0;
@@ -175,14 +186,17 @@ void* CAICHSyncThread::Entry()
 // TODO					
 				//theApp.QueueDebugLogLine(false, _T("Failed to create AICH Hashset while sync. for file %s"), pCurFile->GetFileName());
 			cDone++;
+			printf("\t-> %i files to hash...\n", m_liToHash.size()- cDone);
 		}
 
 		theApp.amuledlg->sharedfileswnd->sharedfilesctrl->SetAICHHashing(0);
 		if (theApp.amuledlg->sharedfileswnd->sharedfilesctrl != NULL)
 			theApp.amuledlg->sharedfileswnd->sharedfilesctrl->ShowFilesCount();
 		// sLock1.Unlock(); // And unlocks on destructor
+		printf("\tAICH done...\n");
 	}
 // TODO
 	//theApp.QueueDebugLogLine(false, _("AICHSyncThread finished"));
+	printf("AICH thread dying...\n");
 	return 0;
 }

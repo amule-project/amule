@@ -36,9 +36,9 @@ typedef std::list<CKnownFile*> KnownFilePtrList;
 class CAICHSyncThread : public wxThread
 {
 	
-protected:
-	CAICHSyncThread();
 public:
+	CAICHSyncThread();
+
 	virtual bool InitInstance();
 	virtual void*	Entry();
 

@@ -128,6 +128,10 @@ public:
 	void SetFilePath(const wxString& strFilePath);
 	const wxString& GetFilePath() const { return m_strFilePath; }
 	
+	virtual bool CreateFromFile(wxString directory, wxString filename, void* pvProgressParam) { 
+		#warning AICH TODO
+		return false;
+	}// create date, hashset and tags from a file
 	virtual	bool	IsPartFile() const	{return false;}
 	virtual bool	LoadFromFile(const CFile* file);	//load date, hashset and tags from a .met file
 	virtual uint8	GetStatus(bool WXUNUSED(ignorepause) = false) const { return PS_COMPLETE; }
