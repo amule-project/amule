@@ -57,7 +57,7 @@ static wxCSConv aMuleConv(wxT("iso8859-1"));
 	inline const wxCharBuffer char2unicode(const char* x) { return x; };
 #endif
 
-inline const char* aMuleConvToUTF8(const wxCharBuffer x) { 
+inline const char *aMuleConvToUTF8(const wxString &x) { 
 	return wxConvUTF8.cWC2MB(wxString(x).wc_str(aMuleConv));
 };
 
