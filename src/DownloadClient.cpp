@@ -157,8 +157,8 @@ bool CUpDownClient::IsSourceRequestAllowed()
 {
 	// 0.42e
 	DWORD dwTickCount = ::GetTickCount() + CONNECTION_LATENCY;
-	int nTimePassedClient = dwTickCount - GetLastSrcAnswerTime();
-	int nTimePassedFile   = dwTickCount - reqfile->GetLastAnsweredTime();
+	uint32 nTimePassedClient = dwTickCount - GetLastSrcAnswerTime();
+	uint32 nTimePassedFile   = dwTickCount - reqfile->GetLastAnsweredTime();
 	bool bNeverAskedBefore = (GetLastAskedForSources() == 0);
 
 	UINT uSources = reqfile->GetSourceCount();
