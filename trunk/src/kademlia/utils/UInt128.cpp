@@ -82,15 +82,15 @@ CUInt128::CUInt128(const CUInt128 &value, UINT numBits)
 {
 	// Copy the whole ULONGs
 	UINT numULONGs = numBits / 32;
-	for (UINT i=0; i<numULONGs; i++)
+	for (UINT i=0; i<numULONGs; ++i)
 		m_data[i] = value.m_data[i];
 
 	// Copy the remaining bits
-	for (UINT i=(32*numULONGs); i<numBits; i++)
+	for (UINT i=(32*numULONGs); i<numBits; ++i)
 		setBitNumber(i, value.getBitNumber(i));
 
 	// Pad with random bytes (Not seeding based on time to allow multiple different ones to be created in quick succession)
-	for (UINT i=numBits; i<128; i++)
+	for (UINT i=numBits; i<128; ++i)
 		setBitNumber(i, (rand()%2));
 }
 
@@ -115,7 +115,7 @@ CUInt128& CUInt128::setValue(ULONG value)
 CUInt128& CUInt128::setValueBE(const byte *valueBE)
 {
 	setValue((ULONG)0);
-	for (int i=0; i<16; i++)
+	for (int i=0; i<16; ++i)
 		m_data[i/4] |= ((ULONG)valueBE[i]) << (8*(3-(i%4)));
 	return *this;
 }
@@ -167,7 +167,7 @@ CUInt128& CUInt128::setBitNumber(UINT bit, UINT value)
 
 CUInt128& CUInt128::xorv(const CUInt128 &value)
 {
-	for (int i=0; i<4; i++)
+	for (int i=0; i<4; ++i)
 		m_data[i] ^= value.m_data[i];
 	return *this;
 }
@@ -181,7 +181,7 @@ CUInt128& CUInt128::xorBE(const byte *valueBE)
 void CUInt128::toHexString(wxString *str) const
 {
 	str->Clear();
-	for (int i=0; i<4; i++)
+	for (int i=0; i<4; ++i)
 	{
 		str->Append(wxString::Format(wxT("%08X"), m_data[i]));
 	}
@@ -191,7 +191,7 @@ void CUInt128::toBinaryString(wxString *str, bool trim) const
 {
 	str->Clear();
 	int b;
-	for (int i=0; i<128; i++)
+	for (int i=0; i<128; ++i)
 	{
 		b = getBitNumber(i);
 		if ((!trim) || (b != 0))
@@ -219,14 +219,14 @@ void CUInt128::toByteArray(byte *b) const
 	((uint32*)b)[2] = SWAP_ULONG(m_data[2]);
 	((uint32*)b)[3] = SWAP_ULONG(m_data[3]);
 #else
-	for (int i=0; i<16; i++)
+	for (int i=0; i<16; ++i)
 		b[i] = (byte)(m_data[i/4] >> (8*(3-(i%4))));
 #endif
 }
 
 int CUInt128::compareTo(const CUInt128 &other) const
 {
-	for (int i=0; i<4; i++) 
+	for (int i=0; i<4; ++i) 
 	{
 	    if (m_data[i] < other.m_data[i])
 			return -1;
@@ -312,7 +312,7 @@ CUInt128& CUInt128::shiftLeft(UINT bits)
 		result[i-indexShift] = (ULONG)shifted;
 		shifted = shifted >> 32;
 	}
-	for (int i=0; i<4; i++)
+	for (int i=0; i<4; ++i)
 		m_data[i] = result[i];
 	return *this;
 }

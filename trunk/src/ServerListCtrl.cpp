@@ -124,7 +124,7 @@ void CServerListCtrl::RemoveAllServers( int state )
 	while ( pos != -1 ) {
 		if ( GetItemData(pos) == m_connected && connected == true) {
 			wxMessageBox(_("You are connected to a server you are trying to delete. Please disconnect first. The server was NOT deleted."), _("Info"), wxOK);
-			pos++;
+			++pos;
 		} else {
 			theApp.serverlist->RemoveServer( (CServer*)GetItemData( pos ) );
 			DeleteItem( pos );
@@ -298,7 +298,7 @@ bool CServerListCtrl::SetStaticServer( CServer* server, bool isStatic )
 				continue;
 			}
 			
-			i++;
+			++i;
 		}
 	}
 
@@ -539,7 +539,7 @@ int CServerListCtrl::SortProc( long item1, long item2, long sortData )
 					sscanf(unicode2char(server1->GetFullIP()),"%d.%d.%d.%d",&a[0],&a[1],&a[2],&a[3]);
 					sscanf(unicode2char(server2->GetFullIP()),"%d.%d.%d.%d",&b[0],&b[1],&b[2],&b[3]);
 				
-					for (int i = 0; i < 3; i++) {
+					for (int i = 0; i < 3; ++i) {
 						if ( b[i] - a[i] ) 
 							return mode * ( b[i] - a[i] );
 					}

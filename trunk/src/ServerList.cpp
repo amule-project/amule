@@ -1,21 +1,21 @@
-// This file is part of the aMule Project
 //
 // Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
 // Copyright (C) 2002 Merkur ( merkur-@users.sourceforge.net / http://www.emule-project.net )
 //
-//This program is free software; you can redistribute it and/or
-//modify it under the terms of the GNU General Public License
-//as published by the Free Software Foundation; either
-//version 2 of the License, or (at your option) any later version.
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either
+// version 2 of the License, or (at your option) any later version.
 //
-//This program is distributed in the hope that it will be useful,
-//but WITHOUT ANY WARRANTY; without even the implied warranty of
-//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//GNU General Public License for more details.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 //
-//You should have received a copy of the GNU General Public License
-//along with this program; if not, write to the Free Software
-//Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+//
 
 
 #include "types.h"
@@ -138,7 +138,7 @@ bool CServerList::AddServermetToList(const wxString& strFile, bool merge)
 		ServerMet_Struct sbuffer;
 		uint32 iAddCount = 0;
 
-		for (uint32 j = 0;j < fservercount;j++) {
+		for (uint32 j = 0;j < fservercount; ++j) {
 			// get server
 			if (sizeof(ServerMet_Struct) != servermet.Read(&sbuffer,sizeof(ServerMet_Struct))) {
 				throw CInvalidPacket();
@@ -150,7 +150,7 @@ bool CServerList::AddServermetToList(const wxString& strFile, bool merge)
 			CServer* newserver = new CServer(&sbuffer);
 
 			//add tags
-			for (uint32 i=0;i < sbuffer.tagcount;i++) {
+			for (uint32 i=0;i < sbuffer.tagcount; ++i) {
 				newserver->AddTagFromFile(&servermet);
 			}
 			// set listname for server
@@ -168,7 +168,7 @@ bool CServerList::AddServermetToList(const wxString& strFile, bool merge)
 				}
 				delete newserver;
 			} else {
-				iAddCount++;
+				++iAddCount;
 			}
 
 			// don't yield all the time
@@ -350,7 +350,7 @@ void CServerList::RemoveServer(CServer* out_server)
 				theApp.downloadqueue->cur_udpserver = 0;
 			}	
 			list.RemoveAt(pos);
-			delservercount++;
+			++delservercount;
 			delete out_server;
 			return;
 		}
@@ -383,7 +383,7 @@ void CServerList::GetStatus(uint32 &total, uint32 &failed, uint32 &user, uint32 
 	for (POSITION pos = list.GetHeadPosition(); pos !=0; ) {
 		curr = (CServer*)list.GetNext(pos);
 		if( curr->GetFailedCount() ) {
-			failed++;
+			++failed;
 		} else {
 			user += curr->GetUsers();
 			file += curr->GetFiles();
@@ -551,7 +551,7 @@ void CServerList::Sort()
 			list.AddTail(cur_server);
 			list.RemoveAt(pos2);
 		}
-		i++;
+		++i;
 		if (i == list.GetCount()) {
 			break;
 		}
@@ -573,8 +573,8 @@ CServer* CServerList::GetNextServer()
 		}
 
 		nextserver = list.GetAt(posIndex);
-		serverpos++;
-		i++;
+		++serverpos;
+		++i;
 		// TODO: Add more option to filter bad server like min ping, min users etc
 		//if (nextserver->preferences = ?)
 		//	nextserver = 0;
@@ -594,8 +594,8 @@ CServer* CServerList::GetNextSearchServer()
 			searchserverpos=0;
 		}
 		nextserver = list.GetAt(posIndex);
-		searchserverpos++;
-		i++;
+		++searchserverpos;
+		++i;
 		if (searchserverpos == (uint32)list.GetCount()) {
 			searchserverpos = 0;
 		}
@@ -615,8 +615,8 @@ CServer* CServerList::GetNextStatServer()
 		}
 
 		nextserver = list.GetAt(posIndex);
-		statserverpos++;
-		i++;
+		++statserverpos;
+		++i;
 		if (statserverpos == (uint32)list.GetCount()) {
 			statserverpos = 0;
 		}
@@ -750,7 +750,7 @@ bool CServerList::SaveServermetToFile()
 
 	fservercount = list.GetCount(); // fservercount was modified above by ENDIAN_SWAP_I_32 !
 	
-		for (uint32 j = 0;j != fservercount;j++){
+		for (uint32 j = 0; j != fservercount; ++j){
 			nextserver = this->GetServerAt(j);
 			// Somehow, internally we store it the wrong way.
 			//sbuffer.ip = ENDIAN_SWAP_32(nextserver->GetIP());
@@ -758,11 +758,11 @@ bool CServerList::SaveServermetToFile()
 			sbuffer.port = ENDIAN_SWAP_16(nextserver->GetPort());
 			uint16 tagcount = 12;
 			if (!nextserver->GetListName().IsEmpty()) 
-				tagcount++;
+				++tagcount;
 			if (!nextserver->GetDynIP().IsEmpty())
-				tagcount++;
+				++tagcount;
 			if (!nextserver->GetDescription().IsEmpty())
-				tagcount++;
+				++tagcount;
 			sbuffer.tagcount = ENDIAN_SWAP_32(tagcount);
 			servermet.Write(&sbuffer, sizeof(ServerMet_Struct));	
 						
@@ -898,7 +898,7 @@ void CServerList::AutoUpdate() {
 	
 	while ((strURLToDownload.Find(wxT("://")) == -1) && (current_url_index<url_count)) {
 		AddLogLineM(true, _("Invalid URL ") + strURLToDownload);
-		current_url_index++;
+		++current_url_index;
 		strURLToDownload = theApp.glob_prefs->adresses_list[current_url_index]; 
 	}
 	
@@ -927,7 +927,7 @@ void CServerList::AutoDownloadFinished(uint32 result) {
 		AddLogLineM(true, _("Failed to download the server list from ") + URLUpdate);
 	}
 	
-	current_url_index++;
+	++current_url_index;
 	
 
 	if (current_url_index < theApp.glob_prefs->adresses_list.GetCount()) {		

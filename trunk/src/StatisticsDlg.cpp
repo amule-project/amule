@@ -1,21 +1,21 @@
-// This file is part of the aMule Project
 //
 // Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
 // Copyright (C) 2002 Merkur ( merkur-@users.sourceforge.net / http://www.emule-project.net )
 //
-//This program is free software; you can redistribute it and/or
-//modify it under the terms of the GNU General Public License
-//as published by the Free Software Foundation; either
-//version 2 of the License, or (at your option) any later version.
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either
+// version 2 of the License, or (at your option) any later version.
 //
-//This program is distributed in the hope that it will be useful,
-//but WITHOUT ANY WARRANTY; without even the implied warranty of
-//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//GNU General Public License for more details.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 //
-//You should have received a copy of the GNU General Public License
-//along with this program; if not, write to the Free Software
-//Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+//
 
 // StatisticsDlg.cpp : implementation file
 //
@@ -119,14 +119,14 @@ void CStatisticsDlg::InitGraphs()
 	bitsHistClockMask = (1 << (nHistRanges-1)) - 1;
 	aposRecycle = new POSITION[nHistRanges];
 	POSITION *ppos = aposRecycle+nHistRanges-1;
-	for (int i=nHistRanges; i>0; i--) {  // permanently allocated history list
+	for (int i=nHistRanges; i>0; --i) {  // permanently allocated history list
 		*ppos-- = listHR.AddTail(hr);
-		for (int j=nPointsPerRange; j>1; j--)
+		for (int j=nPointsPerRange; j>1; --j)
 			listHR.AddTail(hr);
 	}
 
 	// called after preferences get initialised
-	for (int index=0; index<=10; index++)
+	for (int index=0; index<=10; ++index)
 		ApplyStatsColor(index);
 	pscopeDL->SetRanges(0.0, (float)(thePrefs::GetMaxGraphDownloadRate()+4));
 	pscopeDL->SetYUnits(_("kB/s"));
@@ -140,11 +140,11 @@ void CStatisticsDlg::InitGraphs()
 // this array is now used to store the current color settings and to define the defaults
 COLORREF CStatisticsDlg::acrStat[cntStatColors] =
 	{ 
-		RGB(0,0,64),		RGB(192,192,255), 	RGB(128, 255, 128), RGB(0, 210, 0),
-		RGB(0, 128, 0),		RGB(255, 128, 128), RGB(200, 0, 0),		RGB(140, 0, 0),
-	  	RGB(150, 150, 255),	RGB(192, 0, 192),	RGB(255, 255, 128), RGB(0, 0, 0), 
-	  	RGB(255, 255, 255) 
-		};
+		RGB(0,0,64),		RGB(192,192,255),	RGB(128, 255, 128),	RGB(0, 210, 0),
+		RGB(0, 128, 0),		RGB(255, 128, 128),	RGB(200, 0, 0),		RGB(140, 0, 0),
+	  	RGB(150, 150, 255),	RGB(192, 0, 192),	RGB(255, 255, 128),	RGB(0, 0, 0), 
+	  	RGB(255, 255, 255)
+	};
 
 
 
@@ -260,12 +260,12 @@ void CStatisticsDlg::RecordHistory()
 */
 	POSITION	*ppos;
 	static int	iClock;
-	int			iClockPrev = iClock++;
-	int			bits = (iClockPrev^iClock) & iClock;  // identify the highest changed bit
+	int		iClockPrev = iClock++;
+	int		bits = (iClockPrev^iClock) & iClock;  // identify the highest changed bit
 	if (bits <= bitsHistClockMask) {
 		ppos = aposRecycle;
 		while ((bits /= 2) != 0)  // count to the highest bit that was just toggled to 1
-			ppos++;	
+			++ppos;	
 		// recycle one node and jump over the next to move it to the next higher range
 		*ppos = listHR.NextAt(listHR.RecycleNodeAsTail(*ppos));
 	} else {
@@ -344,7 +344,7 @@ unsigned CStatisticsDlg::GetHistory(  // Assemble arrays of sample points for a 
 				*pphr++ = &hrInit;
 			else
 				*pf1++ = *pf2++ = *pf3++ = 0.0;
-			cntFilled++;
+			++cntFilled;
 			break;
 		}
 	} while (posPrev != NULL);
@@ -381,7 +381,7 @@ void CStatisticsDlg::ComputeAverages(
 	if (posPrev != NULL  &&  sCur > 0.0) {
 		// how long would the low-pass averaging filter need to decay the max to half a pixel
 		sTarget = max(0.0, sCur - sAvg*std::log((float)(pscope->GetPlotHeightPixels()*2)));
-		for (POSITION *ppos=aposRecycle; ppos<aposRecycle+nHistRanges; ppos++) {
+		for (POSITION *ppos=aposRecycle; ppos<aposRecycle+nHistRanges; ++ppos) {
 			// accelerate search by using our intermediate pointers into the history list
 			if (listHR.GetAt(*ppos).sTimestamp >= sTarget)
 				pos = *ppos;
@@ -450,8 +450,8 @@ void CStatisticsDlg::VerifyHistory(bool bMsgIfOk)
 	POSITION posPrev = NULL;
 	POSITION posCur = listHR.GetTailPosition();
 	
-	for (cnt=1; cnt<=cntExpected; cnt++) {
-		cntInRange++;
+	for (cnt=1; cnt<=cntExpected; ++cnt) {
+		++cntInRange;
 		if (posCur==NULL) {
 			printf("History list too short: %i elements (%i expected), ends at t=%.2f\n", cnt-1,cntExpected, sPrev);
 			return;
@@ -485,8 +485,8 @@ void CStatisticsDlg::VerifyHistory(bool bMsgIfOk)
 			printf("History list: range %i is too long (>=%i points, expected %i +/-1)\n", cntRanges, cntInRange, nPointsPerRange);
 		}
 		if (posCur == *ppos) {
-			ppos++;
-			cntRanges++;
+			++ppos;
+			++cntRanges;
 			if (cntInRange < nPointsPerRange-1) {
 				printf("History list: range %i is too short (<>=%i points, expected %i +/-1)\n", cntRanges, cntInRange, nPointsPerRange);
 			}
@@ -568,7 +568,7 @@ void CStatisticsDlg::ResetAveragingTime()
 void CStatisticsDlg::UpdateConnectionsStatus()
 {
 	if( theApp.serverconnect->IsConnected() ) {
-		totalconnectionchecks++;
+		++totalconnectionchecks;
 		float percent;
 		percent = (float)((float)(totalconnectionchecks-1)/(float)totalconnectionchecks);
 		if( percent > .99 ) {
@@ -880,7 +880,7 @@ void CStatisticsDlg::ShowStatistics()
 		//--- find top 4 eDonkey client versions ---
 		uint32	currtop = 0;
 		uint32	lasttop = 0xFFFFFFFF;
-		for(uint32 i=0; i<4; i++) {
+		for(uint32 i=0; i<4; ++i) {
 			CClientList::ClientMap::iterator it = clientVersionEDonkey.begin();
 			uint32 topver=0;
 			uint32 topcnt=0;
@@ -933,7 +933,7 @@ void CStatisticsDlg::ShowStatistics()
 		//--- find top 4 eDonkey Hybrid client versions ---
 		uint32	currtop = 0;
 		uint32	lasttop = 0xFFFFFFFF;
-		for(uint32 i=0; i<4; i++) {
+		for(uint32 i=0; i<4; ++i) {
 			CClientList::ClientMap::iterator it = clientVersionEDonkeyHybrid.begin();
 			uint32 topver=0;
 			uint32 topcnt=0;
@@ -984,7 +984,7 @@ void CStatisticsDlg::ShowStatistics()
 		//--- find top 4 eMule client versions ---
 		uint32	currtop = 0;
 		uint32	lasttop = 0xFFFFFFFF;
-		for(uint32 i=0; i<4; i++) {
+		for(uint32 i=0; i<4; ++i) {
 			CClientList::ClientMap::iterator it = clientVersionEMule.begin();
 			uint32 topver=0;
 			uint32 topcnt=0;
@@ -1035,7 +1035,7 @@ void CStatisticsDlg::ShowStatistics()
 		//--- find top 4 aMule client versions ---
 		uint32	currtop = 0;
 		uint32	lasttop = 0xFFFFFFFF;
-		for(uint32 i=0; i<4; i++) {
+		for(uint32 i=0; i<4; ++i) {
 			CClientList::ClientMap::iterator it = clientVersionAMule.begin();
 			uint32 topver=0;
 			uint32 topcnt=0;
@@ -1179,7 +1179,7 @@ void CStatisticsDlg::ExportHTMLEvent(wxCommandEvent& WXUNUSED(evt))
 		stattree->Expand(item);//,TVE_EXPAND);
 
 		temp=wxEmptyString;
-		for (ix=0;ix<3*(int)stattree->GetItemData(item);ix++) {
+		for (ix=0;ix<3*(int)stattree->GetItemData(item); ++ix) {
 			temp+=wxT("&nbsp;");
 			}
 		text+=wxT("<br>")+temp+stattree->GetItemText(item);
@@ -1219,7 +1219,7 @@ wxString CStatisticsDlg::GetHTML() {
 		wxTreeItemId tempItem = item;
 		int level = 0;
 		while (tempItem = stattree->GetItemParent(tempItem)) level+=1;
-		for (ix=0;ix<level;ix++)
+		for (ix=0; ix < level; ++ix)
 			temp+=wxT("&nbsp;&nbsp;&nbsp;");
 		
 		strBuffer+=wxT("<br>")+temp+stattree->GetItemText(item);

@@ -383,7 +383,7 @@ bool CAICHHashTree::SetHash(CFileDataIO* fileInput, uint16 wHashIdent, sint8 nLe
 	if (nLevel == (-1)){
 		// first call, check how many level we need to go
 		uint8 i;
-		for (i = 0; i != 16 && (wHashIdent & 0x8000) == 0; i++){
+		for (i = 0; i != 16 && (wHashIdent & 0x8000) == 0; ++i){
 			wHashIdent <<= 1;
 		}
 		if (i > 15){
@@ -442,7 +442,7 @@ bool CAICHHashTree::SetHash(CFileDataIO* fileInput, uint16 wHashIdent, sint8 nLe
 ///CAICHUntrustedHash
 bool CAICHUntrustedHash::AddSigningIP(uint32 dwIP){
 	dwIP &= 0x00F0FFFF; // we use only the 20 most significant bytes for unique IPs
-	for (uint32 i=0; i < m_adwIpsSigning.size(); i++){
+	for (uint32 i=0; i < m_adwIpsSigning.size(); ++i){
 		if (m_adwIpsSigning[i] == dwIP)
 			return false;
 	}
@@ -533,7 +533,7 @@ bool CAICHHashSet::ReadRecoveryData(uint32 nPartStartPos, CSafeMemFile* fileData
 		//   theApp.QueueDebugLogLine(/*DLP_VERYHIGH,*/ false, _T("Failed to read RecoveryData for %s - Received datasize/amounts of hashs was invalid"), m_pOwner->GetFileName() );
 		return false;
 	}
-	for (uint32 i = 0; i != nHashsToRead; i++){
+	for (uint32 i = 0; i != nHashsToRead; ++i){
 		uint16 wHashIdent = fileDataIn->ReadUInt16();
 		if (wHashIdent == 1 /*never allow masterhash to be overwritten*/
 			|| !m_pHashTree.SetHash(fileDataIn, wHashIdent,(-1), false))
@@ -778,7 +778,7 @@ void CAICHHashSet::UntrustedHashReceived(const CAICHHash& Hash, uint32 dwFromIP)
 	}
 	bool bFound = false;
 	bool bAdded = false;
-	for (uint32 i = 0; i < m_aUntrustedHashs.size(); i++){
+	for (uint32 i = 0; i < m_aUntrustedHashs.size(); ++i){
 		if (m_aUntrustedHashs[i].m_Hash == Hash){
 			bAdded = m_aUntrustedHashs[i].AddSigningIP(dwFromIP);
 			bFound = true;
@@ -796,7 +796,7 @@ void CAICHHashSet::UntrustedHashReceived(const CAICHHash& Hash, uint32 dwFromIP)
 	uint32 nSigningIPsTotal = 0;	// unique clients who send us a hash
 	sint32 nMostTrustedPos = (-1);  // the hash which most clients send us
 	uint32 nMostTrustedIPs = 0;
-	for (uint32 i = 0; i < (uint32)m_aUntrustedHashs.size(); i++){
+	for (uint32 i = 0; i < (uint32)m_aUntrustedHashs.size(); ++i){
 		nSigningIPsTotal += m_aUntrustedHashs[i].m_adwIpsSigning.size();
 		if ((uint32)m_aUntrustedHashs[i].m_adwIpsSigning.size() > nMostTrustedIPs){
 			nMostTrustedIPs = m_aUntrustedHashs[i].m_adwIpsSigning.size();

@@ -189,7 +189,7 @@ void* CAICHSyncThread::Entry()
 
 	// Now we check that all files which are in the sharedfilelist have a corresponding hash in our list
 	// those how don't are added to the hashinglist
-	for ( uint32 i = 0; i < theApp.sharedfiles->GetCount(); i++) {
+	for ( uint32 i = 0; i < theApp.sharedfiles->GetCount(); ++i) {
 		// Check for termination
 		if ( TestDestroy() ) {
 			return 0;

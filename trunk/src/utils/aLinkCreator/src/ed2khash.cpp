@@ -69,7 +69,7 @@ static wxCSConv aMuleConv(wxT("iso8859-1"));
 Ed2kHash::Ed2kHash():MD4()
 {
   m_ed2kArrayOfHashes.Clear();
-  m_filename=wxEmptyString;
+  m_filename.Clear();
   m_fileSize=0;
 }
 
@@ -248,7 +248,7 @@ wxString Ed2kHash::GetED2KLink(const bool addPartHashes, const wxArrayString* ar
     {
       ed2kLink += wxT("p=");
       size_t i;
-      for (i=0;i<(m_ed2kArrayOfHashes.GetCount()-1);i++)
+      for (i=0;i<(m_ed2kArrayOfHashes.GetCount()-1);++i)
         {
           ed2kLink += m_ed2kArrayOfHashes[i] + wxT(":");
         }

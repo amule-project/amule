@@ -1,21 +1,21 @@
-// This file is part of the aMule Project
 //
 // Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
 // Copyright (C) 2002 Merkur ( merkur-@users.sourceforge.net / http://www.emule-project.net )
 //
-//This program is free software; you can redistribute it and/or
-//modify it under the terms of the GNU General Public License
-//as published by the Free Software Foundation; either
-//version 2 of the License, or (at your option) any later version.
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either
+// version 2 of the License, or (at your option) any later version.
 //
-//This program is distributed in the hope that it will be useful,
-//but WITHOUT ANY WARRANTY; without even the implied warranty of
-//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//GNU General Public License for more details.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 //
-//You should have received a copy of the GNU General Public License
-//along with this program; if not, write to the Free Software
-//Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+//
 
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/intl.h>		// Needed for wxGetTranslation
@@ -25,12 +25,12 @@
 #include <wx/file.h>		// Needed for wxFile
 
 #ifdef __WXMSW__
-    #include <wx/msw/winundef.h>
+	#include <wx/msw/winundef.h>
 	#include <wx/msw/registry.h>
 #endif
 
 #include "otherfunctions.h"	// Interface declarations
-#include "config.h"			// Needed for VERSION
+#include "config.h"		// Needed for VERSION
 #include "SHAHashSet.h"
 
 #include <cctype>
@@ -323,7 +323,7 @@ wxString URLEncode(wxString sIn)
 	wxString sOut;
 	unsigned char curChar;
 	
-	for ( unsigned int i = 0; i < sIn.Length(); i ++ ) {
+	for ( unsigned int i = 0; i < sIn.Length(); ++i ) {
 		curChar = sIn.GetChar( i );
 
 		if ( isalnum( curChar ) ) {
@@ -397,33 +397,29 @@ wxString TruncateFilename(const wxString& filename, size_t length, bool isFilePa
 //   wxString object with BASE32 encoded byte array
 wxString EncodeBase32(const unsigned char* buffer, unsigned int bufLen)
 {
-	wxString Base32Buff;
-    
+	wxString Base32Buff;    
 	unsigned int i, index;
-    unsigned char word;
+	unsigned char word;
 
-    for(i = 0, index = 0; i < bufLen;) {
-
+	for(i = 0, index = 0; i < bufLen;) {
 		// Is the current word going to span a byte boundary?
-        if (index > 3) {
-            word = (buffer[i] & (0xFF >> index));
-            index = (index + 5) % 8;
-            word <<= index;
-            if (i < bufLen - 1)
-                word |= buffer[i + 1] >> (8 - index);
-
-            i++;
-        } else {
-            word = (buffer[i] >> (8 - (index + 5))) & 0x1F;
-            index = (index + 5) % 8;
-            if (index == 0)
-               i++;
-        }
-
+		if (index > 3) {
+			word = (buffer[i] & (0xFF >> index));
+			index = (index + 5) % 8;
+			word <<= index;
+			if (i < bufLen - 1)
+				word |= buffer[i + 1] >> (8 - index);
+			++i;
+		} else {
+			word = (buffer[i] >> (8 - (index + 5))) & 0x1F;
+			index = (index + 5) % 8;
+			if (index == 0)
+				++i;
+		}
 		Base32Buff += (char) base32Chars[word];
-    }
+	}
 
-    return Base32Buff;
+	return Base32Buff;
 }
 
 // Returns a BASE16 encoded byte array
@@ -438,12 +434,12 @@ wxString EncodeBase16(const unsigned char* buffer, unsigned int bufLen)
 {
 	wxString Base16Buff;
 
-	for(unsigned int i = 0; i < bufLen; i++) {
+	for(unsigned int i = 0; i < bufLen; ++i) {
 		Base16Buff += base16Chars[buffer[i] >> 4];
 		Base16Buff += base16Chars[buffer[i] & 0xf];
 	}
 
-    return Base16Buff;
+	return Base16Buff;
 }
 
 
@@ -457,18 +453,18 @@ wxString EncodeBase16(const unsigned char* buffer, unsigned int bufLen)
 //   buffer: byte array containing decoded string
 void DecodeBase16(const char *base16Buffer, unsigned int base16BufLen, byte *buffer)
 {
-    memset( buffer, 0, base16BufLen / 2 );
+	memset( buffer, 0, base16BufLen / 2 );
 	
-	for(unsigned int i = 0; i < base16BufLen; i++) {
+	for(unsigned int i = 0; i < base16BufLen; ++i) {
 		int lookup = toupper(base16Buffer[i]) - '0';
 
-        // Check to make sure that the given word falls inside a valid range
+		// Check to make sure that the given word falls inside a valid range
 		byte word = 0;
 
 		if ( lookup < 0 || lookup >= BASE16_LOOKUP_MAX)
-           word = 0xFF;
-        else
-           word = base16Lookup[lookup][1];
+			word = 0xFF;
+		else
+			word = base16Lookup[lookup][1];
 
 		if(i % 2 == 0) {
 			buffer[i/2] = word << 4;
@@ -484,7 +480,7 @@ uint32 DecodeBase32(const char* pszInput, uchar* paucOutput, uint32 nBufferLen)
 		return false;
 	uint32 nDecodeLen = (strlen(pszInput)*5)/8;
 	if ((strlen(pszInput)*5) % 8 > 0)
-		nDecodeLen++;
+		++nDecodeLen;
 	uint32 nInputLen = strlen( pszInput );
 	if (paucOutput == NULL || nBufferLen == 0)
 		return nDecodeLen;
@@ -494,7 +490,7 @@ uint32 DecodeBase32(const char* pszInput, uchar* paucOutput, uint32 nBufferLen)
 	DWORD nBits	= 0;
 	int nCount	= 0;
 
-	for ( int nChars = nInputLen ; nChars-- ; pszInput++ )
+	for ( int nChars = nInputLen ; --nChars ; ++pszInput )
 	{
 		if ( *pszInput >= 'A' && *pszInput <= 'Z' )
 			nBits |= ( *pszInput - 'A' );
@@ -557,7 +553,7 @@ void HexDump(const void *buffer, unsigned long buflen)
 	{
 		printf("%08lx", ofs);
 
-		for ( unsigned long i = 0; (i<8) && (ofs<buflen); i++,ofs++ )
+		for ( unsigned long i = 0; (i<8) && (ofs<buflen); ++i, ++ofs )
 		{
 			printf(" %02x", (int)cbuf[ofs]);
 		}
@@ -573,7 +569,7 @@ int wxCMPFUNC_CONV Uint16CompareValues(uint16* first, uint16* second) {
 
 // DumpMem ... Dumps mem ;)
 void DumpMem(const void* where, uint32 size) {
-	for (uint32 i = 0; i< size; i++) {
+	for (uint32 i = 0; i< size; ++i) {
 		printf("|%2x",(uint8)((char*)where)[i]);
 		if ((i % 16) == 15) {
 			printf("\n");
@@ -608,7 +604,7 @@ convert (struct hostent *host, struct hostent *result,
 
   /* How many aliases and how big the buffer should be? There
      is always a NULL pointer. */
-  for (len = sizeof (char *), i = 0; host->h_aliases [i]; i++)
+  for (len = sizeof (char *), i = 0; host->h_aliases [i]; ++i)
   {
     /* It should be size of (char *) and the length of string
        plus 1. */
@@ -633,7 +629,7 @@ convert (struct hostent *host, struct hostent *result,
   buf += (i + 1) * sizeof (char *);
 
   /* We copy the aliases now. */
-  for (i = 0; host->h_aliases [i]; i++)
+  for (i = 0; host->h_aliases [i]; ++i)
   {
     result->h_aliases [i] = (char *) buf;
     strcpy (result->h_aliases [i], host->h_aliases [i]);
@@ -643,7 +639,7 @@ convert (struct hostent *host, struct hostent *result,
   result->h_aliases [i] = NULL;
 
 #if BSD >= 43 || defined(h_addr)
-  for (len = sizeof (char *), i = 0; host->h_addr_list [i]; i++)
+  for (len = sizeof (char *), i = 0; host->h_addr_list [i]; ++i)
   {
     /* It should be size of (char *) and the length of string
        plus 1. */
@@ -667,7 +663,7 @@ convert (struct hostent *host, struct hostent *result,
   buf += (i + 1) * sizeof (char *);
 
   /* We copy the h_addr_list now. */
-  for (i = 0; host->h_addr_list [i]; i++)
+  for (i = 0; host->h_addr_list [i]; ++i)
   {
     result->h_addr_list [i] = (char *) buf;
     memcpy (result->h_addr_list [i], host->h_addr_list [i], host->h_length);

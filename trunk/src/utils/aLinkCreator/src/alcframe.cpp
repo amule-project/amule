@@ -506,7 +506,7 @@ void AlcFrame::OnStartButton (wxCommandEvent & WXUNUSED(event))
           // Get URLs
           wxArrayString arrayOfUrls;
           wxString url;
-          for (i=0;i < m_inputUrlListBox->GetCount();i++)
+          for (i=0;i < m_inputUrlListBox->GetCount();++i)
             {
               url=m_inputUrlListBox->GetString(i);
               if (url.Right(1) == wxT("/"))
@@ -557,7 +557,7 @@ AlcFrame::OnAddUrlButton (wxCommandEvent & WXUNUSED(event))
       // Check if the URL already exist in list
       int i;
       bool UrlNotExists = true;
-      for (i=0;i < m_inputUrlListBox->GetCount();i++)
+      for (i=0;i < m_inputUrlListBox->GetCount();++i)
         {
           if (url == m_inputUrlListBox->GetString(i))
             {
