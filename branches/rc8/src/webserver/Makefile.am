@@ -30,6 +30,7 @@ dist_htmlimg_DATA = add_server.gif \
 		    l_ed2klink.gif \
 		    l_info.gif \
 		    log.gif \
+		    logo.jpg \
 		    l_pause.gif \
 		    l_resume.gif \
 		    l_up.gif \
