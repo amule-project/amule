@@ -1255,7 +1255,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			}
 			m_client->SetDownloadState(DS_ERROR);
 			// TODO write this into a debugfile
-			AddDebugLogLineM(false,wxString(_("Client '")) + m_client->GetUserName() + wxString::Format(_(" (IP:%s) caused an error: "), m_client->GetFullIP().c_str()) + error + _(". Disconnecting client!"));
+			AddDebugLogLineM(false,wxString(_("Client '")) + m_client->GetUserName() + wxString::Format(_(" (IP:%s) caused an error: "), unicode2char(m_client->GetFullIP())) + error + _(". Disconnecting client!"));
 		} else {
 			if (thePrefs::GetVerbosePacketError()) {
 				if (error.IsEmpty()) {
@@ -1764,7 +1764,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 									DebugSend("OP__AnswerSources", m_client, (char*)file->GetFileHash());
 								}
 								if (thePrefs.GetDebugSourceExchange()) {
-									AddDebugLogLineM(false, wxString::Format(wxT("RCV:Source Request User(%s) File(%s)"), m_client->GetUserName().c_str(), file->GetFileName().c_str()));
+									AddDebugLogLineM(false, wxString::Format(wxT("RCV:Source Request User(%s) File(%s)"), unicode2char(m_client->GetUserName()), unicode2char(file->GetFileName())));
 								}
 								#endif
 							}
@@ -1954,7 +1954,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 		Disconnect(wxT("UnCaught invalid packet exception On ProcessPacket\n"));
 		return false;
 	} catch(wxString error) {
-		AddDebugLogLineM(false, wxString::Format(wxT("A client caused an error or did something bad: %s. Disconnecting client!"), error.c_str()));
+		AddDebugLogLineM(false, wxString::Format(wxT("A client caused an error or did something bad: %s. Disconnecting client!"), unicode2char(error)));
 		if (m_client) {
 			if (thePrefs::GetVerbosePacketError()) {
 				if (error.IsEmpty()) {			
@@ -2092,10 +2092,10 @@ void CClientReqSocket::OnError(int nErrorCode)
 				if (m_client->GetUserName()) {
 					strError = wxString(_("OnError: Client '")) + m_client->GetUserName();
 					strError += wxString::Format(_("' (IP:%s) caused an error: %u. Disconnecting client!"),
-						m_client->GetFullIP().c_str(), nErrorCode);
+						unicode2char(m_client->GetFullIP()), nErrorCode);
 				} else {
 					strError.Printf(_("OnError: Unknown client (IP:%s) caused an error: %u. Disconnecting client!"),
-						m_client->GetFullIP().c_str(), nErrorCode);
+						unicode2char(m_client->GetFullIP()), nErrorCode);
 				}
 			} else {
 				strError.Printf(_("OnError: A client caused an error or did something bad (error %u). Disconnecting client !"),

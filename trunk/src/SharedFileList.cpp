@@ -120,9 +120,9 @@ bool CheckDirectory( const wxString& a, const wxString& b, bool fatal )
 		wxString msg;
 
 		if ( fatal ) {
-			msg = wxString::Format( _("ERROR! Attempted to share %s"), a.c_str() );
+			msg = _("ERROR! Attempted to share ") + a;
 		} else {
-			msg = wxString::Format( _("WARNING! Sharing the following directory is not recommended: %s"), a.c_str() );
+			msg = _("WARNING! Sharing the following directory is not recommended: ") + a;
 		}
 		
 		AddLogLineM(true, msg);

@@ -521,13 +521,13 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 	if (credits == NULL){
 		credits = pFoundCredits;
 		if (!theApp.clientlist->ComparePriorUserhash(m_dwUserIP, m_nUserPort, pFoundCredits)){
-			AddDebugLogLineM(false, wxString::Format(_("Clients: %s (%s), Banreason: Userhash changed (Found in TrackedClientsList)"), GetUserName().c_str(), GetFullIP().c_str()));
+			AddDebugLogLineM(false, wxString::Format(_("Clients: %s (%s), Banreason: Userhash changed (Found in TrackedClientsList)"), unicode2char(GetUserName()), unicode2char(GetFullIP())));
 			Ban();
 		}
 	} else if (credits != pFoundCredits){
 		// userhash change ok, however two hours "waittime" before it can be used
 		credits = pFoundCredits;
-		AddDebugLogLineM(false, wxString::Format(_("Clients: %s (%s), Banreason: Userhash changed"), GetUserName().c_str(), GetFullIP().c_str()));
+		AddDebugLogLineM(false, wxString::Format(_("Clients: %s (%s), Banreason: Userhash changed"), unicode2char(GetUserName()), unicode2char(GetFullIP())));
 		Ban();
 	}
 

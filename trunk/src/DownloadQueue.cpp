@@ -290,9 +290,8 @@ void CDownloadQueue::AddDownload(CPartFile* newfile, bool paused, uint8 category
 
 	newfile->SetCategory(category);
 	Notify_DownloadCtrlAddFile(newfile);
-	AddLogLineM(true, wxString::Format(_("Downloading %s"), newfile->GetFileName().c_str()));
-	wxString msgTemp;
-	msgTemp.Printf(_("Downloading %s\n"), newfile->GetFileName().c_str());
+	wxString msgTemp = _("Downloading ") + newfile->GetFileName();	
+	AddLogLineM(true, msgTemp);
 	Notify_ShowNotifier(msgTemp, TBN_DLOAD, 0);
 	// Kry - Get sources if not stopped
 	if (!newfile->IsStopped()) {
@@ -1324,7 +1323,7 @@ bool CDownloadQueue::AddED2KLink( const wxString& link, int category )
 	try {
 		return AddED2KLink( CED2KLink::CreateLinkFromUrl(URI), category );
 	} catch ( wxString err ) {
-		AddLogLineM( true, wxString(_("Invalid link: ")) + wxString::Format(_("This ed2k link is invalid (%s)"), err.c_str() ) );
+		AddLogLineM( true, _("Invalid ed2k link! Error: ") + err);
 	}
 	
 	return false;

@@ -289,7 +289,7 @@ bool CUpDownClient::CreateNextBlockPackage()
 		}
 	}
 	catch(wxString error){
-		AddDebugLogLineM(false,wxString::Format(wxT("Client '%s' caused error while creating package (%s) - disconnecting client"),GetUserName().c_str(), error.c_str()));
+		AddDebugLogLineM(false,wxString::Format(wxT("Client '%s' caused error while creating package (%s) - disconnecting client"),unicode2char(GetUserName()), unicode2char(error)));
 		theApp.uploadqueue->RemoveFromUploadQueue(this);
 		if (filedata)
 			delete[] filedata;
@@ -708,7 +708,7 @@ void CUpDownClient::Ban(){
 	theApp.clientlist->AddTrackClient(this);
 	theApp.clientlist->AddBannedClient( GetIP() );
 	
-	AddDebugLogLineM(false,wxString::Format(wxT("Client '%s' seems to be an aggressive client and is banned from the uploadqueue"), GetUserName().c_str()));
+	AddDebugLogLineM(false,wxString::Format(wxT("Client '%s' seems to be an aggressive client and is banned from the uploadqueue"), unicode2char(GetUserName())));
 	
 	SetUploadState(US_BANNED);
 	

@@ -114,7 +114,7 @@ CED2KServerListLink::CED2KServerListLink(const wxString& address)
 
 wxString CED2KServerListLink::GetLink() const
 {
-	return wxString::Format( wxT("ed2k://|serverlist|%s|/"), m_address.c_str() );
+	return wxString::Format( wxT("ed2k://|serverlist|%s|/"), unicode2char(m_address) );
 }
 
 
@@ -144,7 +144,7 @@ CED2KServerLink::CED2KServerLink( const wxString& ip, const wxString& port )
 wxString CED2KServerLink::GetLink() const
 {
 	return wxString::Format( wxT("ed2k://|server|%s|%d|/"),
-	                         Uint32toStringIP(m_ip).c_str(),
+	                         unicode2char(Uint32toStringIP(m_ip)),
 	                         (int)m_port );
 }
 
@@ -303,9 +303,9 @@ CED2KFileLink::~CED2KFileLink()
 wxString CED2KFileLink::GetLink() const
 {
 	return wxString::Format( wxT("ed2k://|file|%s|%s|%s|/"),
-	                         m_name.c_str(),
-	                         m_size.c_str(),
-	                         m_hash.Encode().c_str() );
+	                         unicode2char(m_name),
+	                         unicode2char(m_size),
+	                         unicode2char(m_hash.Encode()) );
 }
 
 
