@@ -35,6 +35,7 @@
 #endif
 #include <wx/fileconf.h>
 #include <wx/filename.h>
+#include <wx/utils.h>
 #include <wx/string.h>
 
 #include "CMD4Hash.h"
@@ -48,6 +49,9 @@ inline wxString FinalizeFilename(const wxString filename)
 {
 	if (wxStrchr(filename, wxFileName::GetPathSeparator()) == NULL) {
 		return otherfunctions::GetConfigDir() + filename;
+	}
+	if ((filename.GetChar(0) == '~') && (filename.GetChar(1) == wxFileName::GetPathSeparator())) {
+		return wxGetHomeDir() + filename.Mid(1);
 	}
 	return filename;
 }
