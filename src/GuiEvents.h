@@ -83,7 +83,9 @@ enum GUI_Event_ID {
 	PARTFILE_REMOVE_FULL_QUEUE,
 	PARTFILE_REMOVE_HIGH_QUEUE,
 	PARTFILE_CLEANUP_SOURCES,
-	PARTFILE_SWAP_TO_ANOTHER,
+	PARTFILE_SWAP_A4AF_THIS,
+	PARTFILE_SWAP_A4AF_THIS_AUTO,
+	PARTFILE_SWAP_A4AF_OTHERS,
 	PARTFILE_PAUSE,
 	PARTFILE_RESUME,
 	PARTFILE_STOP,
@@ -254,12 +256,14 @@ class GUIEvent {
 #define CoreNotify_PartFile_RemoveFullQueue(ptr)    Notify_1_ValEvent(PARTFILE_REMOVE_FULL_QUEUE,(CPartFile *)ptr);
 #define CoreNotify_PartFile_RemoveHighQueue(ptr)    Notify_1_ValEvent(PARTFILE_REMOVE_HIGH_QUEUE,(CPartFile *)ptr);
 #define CoreNotify_PartFile_SourceCleanup(ptr)      Notify_1_ValEvent(PARTFILE_CLEANUP_SOURCES,(CPartFile *)ptr);
-#define CoreNotify_PartFile_SwapToAnother(ptr)      Notify_1_ValEvent(PARTFILE_SWAP_TO_ANOTHER,(CPartFile *)ptr);
+#define CoreNotify_PartFile_Swap_A4AF(ptr)          Notify_1_ValEvent(PARTFILE_SWAP_A4AF_THIS,(CPartFile *)ptr);
+#define CoreNotify_PartFile_Swap_A4AF_Auto(ptr)     Notify_1_ValEvent(PARTFILE_SWAP_A4AF_THIS_AUTO,(CPartFile *)ptr);
+#define CoreNotify_PartFile_Swap_A4AF_Others(ptr)   Notify_1_ValEvent(PARTFILE_SWAP_A4AF_OTHERS,(CPartFile *)ptr);
 #define CoreNotify_PartFile_Pause(ptr)              Notify_1_ValEvent(PARTFILE_PAUSE,(CPartFile *)ptr);
 #define CoreNotify_PartFile_Resume(ptr)             Notify_1_ValEvent(PARTFILE_RESUME,(CPartFile *)ptr);
 #define CoreNotify_PartFile_Stop(ptr)               Notify_1_ValEvent(PARTFILE_STOP,(CPartFile *)ptr);
-#define CoreNotify_PartFile_PrioAuto(ptr)           Notify_1_ValEvent(PARTFILE_PRIO_AUTO,(CPartFile *)ptr);
-#define CoreNotify_PartFile_PrioSet(ptr)            Notify_1_ValEvent(PARTFILE_PRIO_SET,(CPartFile *)ptr);
+#define CoreNotify_PartFile_PrioAuto(ptr, val)      Notify_3_ValEvent(PARTFILE_PRIO_AUTO,(CPartFile *)ptr, (uint32)val, (uint64)0);
+#define CoreNotify_PartFile_PrioSet(p, v0, v1)      Notify_3_ValEvent(PARTFILE_PRIO_SET,(CPartFile *)p, (uint32)v0, (uint64)v1);
 #define CoreNotify_PartFile_Delete(ptr)             Notify_1_ValEvent(PARTFILE_DELETE,(CPartFile *)ptr);
 
 // Search
