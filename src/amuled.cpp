@@ -73,7 +73,6 @@
 #include "server.h"				// Needed for GetListName
 #include "CFile.h"				// Needed for CFile
 #include "otherfunctions.h"		// Needed for GetTickCount
-#include "IPFilter.h"			// Needed for CIPFilter
 #include "UploadQueue.h"		// Needed for CUploadQueue
 #include "DownloadQueue.h"		// Needed for CDownloadQueue
 #include "ClientCredits.h"		// Needed for CClientCreditsList
