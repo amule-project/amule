@@ -1141,49 +1141,6 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 		return buffer;
 #endif
 	}
-	sOp = wxT("WEBPAGE SETPREFERENCES");
-	nChars = sOp.Length();
-	if (item.Left(nChars) == sOp) {
-		if (item.Length() > nChars) {
-			wxString prefList = item.Mid(nChars+1);
-			int brk = prefList.First(wxT("\t"));
-				
-			thePrefs::SetWebUseGzip( StrToLong(prefList.Left(brk)) == 1 );
-			prefList = prefList.Mid(brk+1); brk = prefList.First(wxT("\t"));
-			thePrefs::SetWebPageRefresh( StrToLong(prefList.Left(brk)) );
-			prefList = prefList.Mid(brk+1); brk = prefList.First(wxT("\t"));
-			thePrefs::SetMaxDownload( StrToLong(prefList.Left(brk)) );
-			prefList = prefList.Mid(brk+1); brk = prefList.First(wxT("\t"));
-			thePrefs::SetMaxUpload( StrToLong(prefList.Left(brk)) );
-			prefList = prefList.Mid(brk+1); brk = prefList.First(wxT("\t"));
-			
-			// FIXME: this code must be moved away !
-#ifndef AMULE_DAEMON
-			if ((int32)StrToLong(prefList.Left(brk)) != thePrefs::GetMaxGraphDownloadRate()) {
-				theApp.amuledlg->statisticswnd->SetARange(true, thePrefs::GetMaxGraphDownloadRate());
-			}
-			thePrefs::SetMaxGraphDownloadRate( StrToLong(prefList.Left(brk)) );
-			prefList = prefList.Mid(brk+1); brk = prefList.First(wxT("\t"));
-			
-			if ((int32)StrToLong(prefList.Left(brk)) != thePrefs::GetMaxGraphUploadRate()) {
-				theApp.amuledlg->statisticswnd->SetARange(false, thePrefs::GetMaxGraphUploadRate());
-			}
-#endif
-			thePrefs::SetMaxGraphUploadRate( StrToLong(prefList.Left(brk)) );
-			prefList=prefList.Mid(brk+1); brk=prefList.First(wxT("\t"));
-				
-			thePrefs::SetMaxSourcesPerFile( StrToLong(prefList.Left(brk)) );
-			prefList=prefList.Mid(brk+1); brk=prefList.First(wxT("\t"));
-			thePrefs::SetMaxConnections( StrToLong(prefList.Left(brk)) );
-			prefList=prefList.Mid(brk+1); brk=prefList.First(wxT("\t"));
-			thePrefs::SetMaxConsPerFive( StrToLong(prefList.Left(brk)) );
-			prefList=prefList.Mid(brk+1); brk=prefList.First(wxT("\t"));
-			thePrefs::SetTransferFullChunks( StrToLong(prefList.Left(brk)) );
-			prefList=prefList.Mid(brk+1);
-			thePrefs::SetPreviewPrio( StrToLong(prefList) == 1 );
-		}
-		return wxEmptyString;
-	}
 	//---------------------------------------------------------------------
 	// TRANSFER
 	//---------------------------------------------------------------------
