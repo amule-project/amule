@@ -181,7 +181,6 @@ bool		CPreferences::s_bWebUseGzip;
 uint32		CPreferences::s_nWebPageRefresh;
 bool		CPreferences::s_bWebLowEnabled;
 bool		CPreferences::s_showCatTabInfos;
-//bool		CPreferences::s_resumeSameCat;
 uint32		CPreferences::s_allcatType;
 uint32		CPreferences::s_desktopMode;
 uint8		CPreferences::s_NoNeededSources;
@@ -867,7 +866,6 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/IndicateRatings"),		s_indicateratings, true ) );
 	s_MiscList.push_back(    MkCfg_Int( wxT("/eMule/AllcatType"),			s_allcatType, 0 ) );
 	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/ShowAllNotCats"),		s_showAllNotCats, false ) );
-//	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/ResumeNextFromSameCat"),	s_resumeSameCat, false ) );
 	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/DisableKnownClientList"),	s_bDisableKnownClientList, false ) );
 	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/DisableQueueList"),		s_bDisableQueueList, false ) );
 	s_MiscList.push_back(    MkCfg_Int( wxT("/eMule/MaxMessageSessions"),		s_maxmsgsessions, 50 ) );
