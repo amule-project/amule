@@ -70,10 +70,16 @@ public:
 	inline unsigned char* GetHash() {
 		return m_hash;
 	}
+	inline const unsigned char* GetHash() const {
+		return m_hash;
+	}
 	
 	// Implicit access the array, to maintain backwards compatibility
 	// with code that expects the hash to be a unsigned char array
 	inline operator unsigned char*() { 
+		return m_hash;
+	}
+	inline operator const unsigned char*() const {
 		return m_hash;
 	}
 	
