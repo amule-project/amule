@@ -1671,8 +1671,8 @@ void CamuleApp::AddLogLine(const wxString &msg)
 #else
 void CamuleApp::AddLogLine(const wxString &msg)
 {
-	wxString curr_date = wxDateTime::Now().FormatDate() + wxT(" ") +
-		wxDateTime::Now().FormatTime() + wxT(": ");
+	wxString curr_date = wxDateTime::Now().FormatISODate() + wxT(" ") +
+		wxDateTime::Now().FormatISOTime() + wxT(": ");
 	applog->Write(curr_date + msg + wxT("\n"));
 	applog->Flush();
 	
