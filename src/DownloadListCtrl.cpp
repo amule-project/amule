@@ -401,6 +401,7 @@ void CDownloadListCtrl::OnDrawItem(int item, wxDC* dc, const wxRect& rect, const
 	wxBitmap buffer( rect.GetWidth(), rect.GetHeight() );
 	wxMemoryDC tmp_dc;
 	tmp_dc.SelectObject( buffer );
+	tmp_dc.SetFont(GetFont());
 	
 	CtrlItem_Struct *content = (CtrlItem_Struct *) GetItemData(item);
 
