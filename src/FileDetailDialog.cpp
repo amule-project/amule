@@ -116,10 +116,8 @@ void CFileDetailDialog::UpdateData()
 	if (m_file->lastseencomplete==0) {
 		bufferS = wxString(_("Unknown")).MakeLower();
 	} else {
-		char tmps[80];
-		static char const* lastseencomplete_fmt = "%A, %x, %X";	// Suppress compiler warning.
-		strftime(tmps,sizeof(tmps),lastseencomplete_fmt,localtime(&m_file->lastseencomplete));
-		bufferS=char2unicode(tmps);//.Format( "%s",m_file->lastseencomplete.Format( "%A, %x, %X"));
+		wxDateTime last_seen(m_file->lastseencomplete);
+		bufferS = last_seen.FormatISODate() + wxT(" ") + last_seen.FormatISOTime();
 	}
 
 	CastChild(IDC_LASTSEENCOMPL,wxControl)->SetLabel(bufferS);
