@@ -89,7 +89,6 @@ SRC_OBJS = \
   $(OBJ_DIR)/PartFile.o	\
   $(OBJ_DIR)/Preferences.o	\
   $(OBJ_DIR)/PrefsUnifiedDlg.o	\
-  $(OBJ_DIR)/Preview.o	\
   $(OBJ_DIR)/QueueListCtrl.o	\
   $(OBJ_DIR)/SafeFile.o	\
   $(OBJ_DIR)/SearchDlg.o	\
@@ -632,10 +631,6 @@ src/ClientList.h	\
 src/DirectoryTreeCtrl.h	\
 src/Preferences.h	\
 src/muuli_wdr.h
-	$(compile_source)
-
-$(OBJ_DIR)/Preview.o: src/Preview.cpp	\
-src/Preview.h
 	$(compile_source)
 
 $(OBJ_DIR)/QueueListCtrl.o: src/QueueListCtrl.cpp	\

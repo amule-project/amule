@@ -174,7 +174,6 @@ amule_SOURCES = \
 	PartFile.cpp \
 	Preferences.cpp \
 	PrefsUnifiedDlg.cpp \
-	Preview.cpp \
 	Proxy.cpp \
 	SafeFile.cpp \
 	SearchDlg.cpp \
@@ -403,7 +402,6 @@ noinst_HEADERS = AddFileThread.h \
 		 PartFile.h \
 		 Preferences.h \
 		 PrefsUnifiedDlg.h \
-		 Preview.h \
 		 Proxy.h \
 		 SafeFile.h \
 		 SearchDlg.h \
