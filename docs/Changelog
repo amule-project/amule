@@ -58,6 +58,11 @@ Version 2.0.0rc8 - The "???????????" version.
 		* Initial (not functional yet) SOCKS4 proxy support.
 		* Initial (not functional yet) HTTP proxy support.
 		* Updated some tests in configure.in.
+		* Fixed a problem with _() usage. Static string initialization
+		  must be done with wxTRANSLATE, and wxGetTranslation() must
+		  be explicitly called in code instead of _().
+		* Fixed a bug in WebServer.cpp:CWebServer::GetStatusBox():
+		  return value was missing end tags.
 
 	GonoszTopi:
 		* Initial work on EC protocol version 2.0.
@@ -70,9 +75,9 @@ Version 2.0.0rc8 - The "???????????" version.
 		* Added "add <ed2k link>" command to amulecmd.
 		* Tracked down and killed a number of hidden bugs.
 
-        Special Thanks To:
+	Special Thanks To:
 
-                * Bug and feature reporters:
+		* Bug and feature reporters:
 		  Banerjee,	ecforum,
 		  jaguarwan,	jolupa,
 		  juanii,	kdka,
@@ -85,13 +90,13 @@ Version 2.0.0rc8 - The "???????????" version.
 		  skolnick,	Vollstrecker,
 		  volpop
 
-                * Everyone at:
-                   #amule       irc.freenode.net
-                   wiki         http://wiki.amule.org
-                   forums       http://forum.amule.org
-                   bugtracker   http://bugs.amule.org
+		* Everyone at:
+		  #amule	irc.freenode.net
+		  wiki		http://wiki.amule.org
+		  forums	http://forum.amule.org
+		  bugtracker	http://bugs.amule.org
 
-                * All aMule users!!!
+		* All aMule users!!!
 
 	Welcome our new aMule team member: nachbarnebenan (Tester)
 

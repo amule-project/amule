@@ -2194,23 +2194,37 @@ wxString CWebServer::GetStatusBox(wxString &preselect)
 	wxString result(wxT("<form><select name=\"cat\" size=\"1\""
 	"onchange=GotoCat(this.form.cat.options[this.form.cat.selectedIndex].value)>"));
 		
-	const wxChar * catnames[] = {
-		_("all others"), _("Waiting"), _("Downloading"), _("Erroneous"), _("Paused"), _("Stopped") };
+	const wxString catnames[] = {
+		wxTRANSLATE("all others"),
+		wxTRANSLATE("Waiting"),
+		wxTRANSLATE("Downloading"),
+		wxTRANSLATE("Erroneous"),
+		wxTRANSLATE("Paused"),
+		wxTRANSLATE("Stopped") };
 		
-	// those are values that CPartFile->GetPartfileStatus return. They don't ment be translated
-	const wxChar * catvalues[] = {
-		wxT(""), wxT("Waiting"), wxT("Downloading"), wxT("Erroneous"), wxT("Paused"), wxT("Stopped") };
+	// those are values that CPartFile->GetPartfileStatus return. They are not meant be translated
+	const wxChar *catvalues[] = {
+		wxT(""),
+		wxT("Waiting"),
+		wxT("Downloading"),
+		wxT("Erroneous"),
+		wxT("Paused"),
+		wxT("Stopped") };
 		
-	for (int i = 0; i < (int)(sizeof(catnames)/sizeof(catnames[0])); i++) {
+	for (int i = 0; i < (int)(sizeof(catnames)/sizeof(wxString)); i++) {
 		if ( catvalues[i] == preselect ) {
 			result += wxT("<option selected value=\"");
 		} else {
 			result += wxT("<option value=\"");
 		}
-		result += wxString(catvalues[i]) + wxT("\">") + catnames[i] + wxT("</option>");
+		result +=
+			wxString(catvalues[i]) +
+			wxT("\">") +
+			wxGetTranslation(catnames[i]) +
+			wxT("</option>");
 	}
-
-	result == wxT("</select></form>");
+	result += wxT("</select></form>");
+	
 	return result;
 }
 
