@@ -58,6 +58,12 @@ class Rse;
 #endif
 #endif
 
+enum EViewSharedFilesAccess{
+	vsfaEverybody = 0,
+	vsfaFriends = 1,
+	vsfaNobody = 2
+};
+
 #define DEFAULT_COL_SIZE 65535
 
 // DO NOT EDIT VALUES like making a uint16 to uint32, or insert any value. ONLY append new vars
