@@ -112,3 +112,20 @@ Section 3: EC tags
     EC_TAG_PROTOCOL_VERSION:
 	A "struct { uint8 major, minor; }" that is by default = { 0x02, 0x00 };
 	for the 2.0 version.
+
+	EC_TAG_DLOAD_LINK:
+	One or more EC_TAG_STRING holding ed2k link
+	
+	EC_TAG_STAT_REQ:
+	Request from client, server must reply with statistics string
+	
+	EC_TAG_SHUTDOWN:
+	Request to shutdown amule
+	
+	EC_TAG_PARTFILE_CMD:
+	Command from client to perform some action on "PartFile" (file in download queue)
+	String in the tag have following format: "ID COMMAND".
+	Where ID is [0-9a-f]{8} - hexadecimal number indicating target file,
+	COMMAND is [0-9]{2} - decimal number, one of GUI_Event_ID indication which action
+	to perform
+	
