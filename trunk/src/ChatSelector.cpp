@@ -3,21 +3,19 @@
 // Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
 // Copyright (C) 2002 Merkur ( merkur-@users.sourceforge.net / http://www.emule-project.net )
 //
-//This program is free software; you can redistribute it and/or
-//modify it under the terms of the GNU General Public License
-//as published by the Free Software Foundation; either
-//version 2 of the License, or (at your option) any later version.
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either
+// version 2 of the License, or (at your option) any later version.
 //
-//This program is distributed in the hope that it will be useful,
-//but WITHOUT ANY WARRANTY; without even the implied warranty of
-//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//GNU General Public License for more details.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 //
-//You should have received a copy of the GNU General Public License
-//along with this program; if not, write to the Free Software
-//Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
-// ChatSelector.cpp : implementation file
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
 #ifdef __WXMAC__
@@ -25,6 +23,7 @@
 #endif
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/intl.h>		// Needed for _
+#include <wx/datetime.h>	// Needed for wxDateTime
 
 #include "pixmaps/chat.ico.xpm"
 #include "ChatSelector.h"	// Interface declarations
@@ -49,15 +48,15 @@
 
 
 // Default colors, 
-#define COLOR_BLACK wxTextAttr( wxColor( 255,   0,   0 ) )
+#define COLOR_BLACK wxTextAttr( wxColor(   0,   0,   0 ) )
 #define COLOR_BLUE  wxTextAttr( wxColor(   0,   0, 255 ) )
 #define COLOR_GREEN wxTextAttr( wxColor(   0, 102,   0 ) )
-#define COLOR_RED   wxTextAttr( wxColor(   0,   0, 255 ) )
+#define COLOR_RED   wxTextAttr( wxColor( 255,   0,   0 ) )
 
 
 
 CChatSession::CChatSession(wxWindow* parent, wxWindowID id, const wxString& value, const wxPoint& pos, const wxSize& size, long style, const wxValidator& validator, const wxString& name)
-: wxTextCtrl( parent, id, value, pos, size, style | wxTE_READONLY | wxTE_RICH | wxTE_MULTILINE, validator, name )
+: CMuleTextCtrl( parent, id, value, pos, size, style | wxTE_READONLY | wxTE_RICH | wxTE_MULTILINE, validator, name )
 {
 	m_client = NULL;
 	m_active = false;
@@ -72,6 +71,20 @@ CChatSession::~CChatSession()
 
 void CChatSession::AddText(const wxString& text, const wxTextAttr& style)
 {
+	wxString line;
+
+	// Check if we should add a time-stamp
+	if ( GetNumberOfLines() > 1 ) {
+		// Check if the last line ended with a newline
+		wxString line = GetLineText( GetNumberOfLines() - 1 );
+		if ( line.IsEmpty() ) {
+			SetDefaultStyle( COLOR_BLACK );
+
+			AppendText( wxT(" [") + wxDateTime::Now().FormatTime() + wxT("] ") );
+		}
+	}
+		
+
 	SetDefaultStyle(style);
 	
 	AppendText(text);
@@ -108,8 +121,11 @@ CChatSession* CChatSelector::StartSession(CUpDownClient* client, bool show)
 	CChatSession* chatsession = new CChatSession(this);
 	chatsession->m_client = client;
 
-	wxString text = wxString(wxT("*** Chat-Session Startet: ")) + client->GetUserName() + wxT("\n");
-	chatsession->AddText( text, COLOR_BLACK );
+	wxString text;
+	text += wxString(wxT(" *** Chat-Session Startet: ")) + client->GetUserName() + wxT(" - ");
+	text += wxDateTime::Now().FormatDate() + wxT(" ") + wxDateTime::Now().FormatTime() + wxT("\n");
+	
+	chatsession->AddText( text, COLOR_RED );
 	AddPage(chatsession, client->GetUserName(), show, 0);
 	
 	client->SetChatState(MS_CHATTING);
@@ -155,6 +171,13 @@ void CChatSelector::ProcessMessage(CUpDownClient* sender, const wxString& messag
 
 	if ( !session ) {
 		session = StartSession( sender, true );
+	}
+
+	// Other client connected after disconnection or a new session
+	if ( !session->m_active ) {
+		session->m_active = true;
+		
+		session->AddText( _("*** Connected to Client ***\n"), COLOR_RED );
 	}
 	
 	session->AddText( sender->GetUserName(), COLOR_BLUE );
