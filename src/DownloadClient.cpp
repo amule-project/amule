@@ -1287,7 +1287,7 @@ void CUpDownClient::ProcessAICHAnswer(const char* packet, uint32 size)
 
 void CUpDownClient::ProcessAICHRequest(const char* packet, uint32 size){
 	if (size != 16 + 2 + CAICHHash::GetHashSize())
-		throw wxString(_T("Received AICH Request Packet with wrong size"));
+		throw wxString(wxT("Received AICH Request Packet with wrong size"));
 	
 	CSafeMemFile data((byte*)packet, size);
 	byte abyHash[16];

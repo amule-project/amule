@@ -61,7 +61,7 @@ class CED2KFileLink;
 // Ok, eMule and aMule are building incompatible backup files because 
 // of the different name. aMule was using ".BAK" and eMule ".bak". 
 // This should fix it.
-#define   PARTMET_BAK_EXT _T(".bak")
+#define   PARTMET_BAK_EXT wxT(".bak")
 
 
 struct PartFileBufferedData

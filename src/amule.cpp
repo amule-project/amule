@@ -1613,11 +1613,11 @@ void CamuleApp::SetPublicIP(const uint32 dwIP){
 //		if ( GetPublicIP() == 0)
 			//AddDebugLogLineM(false, wxString::Format(wxT("My public IP Address is: %s"),ipstr(dwIP)));
 //		else if (Kademlia::CKademlia::isConnected() && !Kademlia::CKademlia::isFirewalled() && ntohl(Kademlia::CKademlia::getIPAddress()) != dwIP)
-//			AddDebugLogLine(DLP_DEFAULT, false,  _T("Public IP Address reported from Kademlia (%s) differs from new found (%s)"),ipstr(ntohl(Kademlia::CKademlia::getIPAddress())),ipstr(dwIP));
+//			AddDebugLogLine(DLP_DEFAULT, false,  wxT("Public IP Address reported from Kademlia (%s) differs from new found (%s)"),ipstr(ntohl(Kademlia::CKademlia::getIPAddress())),ipstr(dwIP));
 //		m_pPeerCache->FoundMyPublicIPAddress(dwIP);	
 	}
 //	else
-//		AddDebugLogLine(DLP_VERYLOW, false, _T("Deleted public IP"));
+//		AddDebugLogLine(DLP_VERYLOW, false, wxT("Deleted public IP"));
 	
 	m_dwPublicIP = dwIP;
 

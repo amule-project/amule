@@ -389,13 +389,13 @@ void CDataIO::writeTag(const CTag* tag)
 	} 
 	catch (const CIOException& ioe)
 	{
-		//AddDebugLogLine( false, _T("Exception in CDataIO:writeTag (IO Error(%i))"), ioe->m_cause);
+		//AddDebugLogLine( false, wxT("Exception in CDataIO:writeTag (IO Error(%i))"), ioe->m_cause);
 		printf("Exception in CDataIO:writeTag (IO Error(%i))", ioe.m_cause);
 		throw;
 	}
 	catch (...) 
 	{
-		//AddDebugLogLine(false, _T("Exception in CDataIO:writeTag"));
+		//AddDebugLogLine(false, wxT("Exception in CDataIO:writeTag"));
 		printf("Exception in CDataIO:writeTag");
 		throw;
 	}

@@ -309,7 +309,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 						AddLogLineM(false, CFormat( _("Error: %s (%s) - %s") )
 							% servername
 							% Uint32_16toStringIP_Port(cur_server->GetIP(), cur_server->GetPort())
-							% message.Mid(5,message.Len()).Trim(_T(" :")));
+							% message.Mid(5,message.Len()).Trim(wxT(" :")));
 						bOutputMessage = false;
 
 					} else if (message.StartsWith(wxT("WARNING"))) {
@@ -324,7 +324,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 						AddLogLineM(false, CFormat( _("Warning: %s (%s) - %s") )
 							% servername
 							% Uint32_16toStringIP_Port(cur_server->GetIP(), cur_server->GetPort())
-							% message.Mid(5,message.Len()).Trim(_T(" :")));
+							% message.Mid(5,message.Len()).Trim(wxT(" :")));
 
 						bOutputMessage = false;
 					}
