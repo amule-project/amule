@@ -303,7 +303,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client)
 		POSITION pos2 = pos;
 		CUpDownClient* cur_client= waitinglist.GetNext(pos);
 		if (cur_client == client) { // already on queue
-			if (client->m_bAddNextConnect && (uploadinglist.GetCount() < theApp.glob_prefs->GetMaxUpload())){
+			if ( client->m_bAddNextConnect && ( ( uploadinglist.GetCount() < theApp.glob_prefs->GetMaxUpload() ) || ( theApp.glob_prefs->GetMaxUpload() == UNLIMITED ) ) ) {
 				if (lastupslotHighID) {
 					client->m_bAddNextConnect = false;
 					RemoveFromWaitingQueue(client, true);
