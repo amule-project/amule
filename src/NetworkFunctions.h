@@ -33,9 +33,6 @@
 #include "StringFunctions.h"
 
 
-/****************************************************/ 
-/******************* Inlines ************************/
-/****************************************************/
 
 // Network ip/host handling functions
 // These functions takes IPs in anti-host order and IPs in anti-host order
@@ -50,63 +47,45 @@ inline wxString Uint32_16toStringIP_Port(uint32 ip, uint16 port)
 	return wxString::Format(wxT("%u.%u.%u.%u:%u"),(uint8)ip,(uint8)(ip>>8),(uint8)(ip>>16),(uint8)(ip>>24),port);	
 }
 
+
+/**
+ * Parses a String-IP and saves the IP in the referenced variable.
+ *
+ * @param strIP A string-ip in the format "a.b.c.d".
+ * @param Ip The value to save the result in.
+ * @return True if the string was parsed, false otherwise.
+ *
+ * The IP will be saved in anti-host order.
+ * 
+ * Note: The reference value will not be changed unless the string
+ *       contains a valid IP adress.
+ */
+bool	StringIPtoUint32(const wxString &strIP, uint32& Ip);
+
+
+/**
+ * Parses a String-IP and returns the IP or 0 if it was invalid.
+ * 
+ * @param strIP A string-ip in the format "a.b.c.d".
+ * @return The resulting IP-address or zero if invalid (or 0.0.0.0).
+ * 
+ * The IP will be saved in anti-host order.
+ */
 inline uint32 StringIPtoUint32(const wxString &strIP)
 {
-	uint32 ip[4];
-	uint32 ret = 0;
-	bool error = false;
-	unsigned long u = 0;
-	wxString strTmp(strIP);
-	for( int i = 0; i < 3; ++i) {
-		int j = strTmp.Find(wxT("."));
-		if (error = (j == -1)) {
-			break;
-		}
-		if (error = !strTmp.Left(j).ToULong(&u)) {
-			break;
-		}
-		if (error = (u > 255)) {
-			break;
-		}
-		ip[i] = u;
-		strTmp = strTmp.Mid(j+1);
-	}
-	if (!error) {
-		error = !strTmp.ToULong(&u);
-		if (!error) {
-			error = u > 255;
-			if (!error) {
-				ip[3] = u;
-				ret = ip[0] | (ip[1] << 8) | (ip[2] << 16) | (ip[3] << 24);
-			}
-		}
-	}
-	if (error) {
-		printf("Error on ip format!\n");
-	}
+	uint32 ip = 0;
+	StringIPtoUint32( strIP );
 	
-	return ret;
+	return ip;
 }
 
-inline uint32 StringHosttoUint32(const wxString &Host)
-{
-	// Why using native things when we have a wrapper for it :)
-	wxIPV4address solver;
-	solver.Hostname(Host);
-	uint32 result = StringIPtoUint32(solver.IPAddress());
-	if (result != (uint32)-1) {
-		return result;
-	} else {
-		// This actually happens on wrong hostname
-		return 0;
-	}
-}
 
-/****************************************************/ 
-/***************** Non-inlines **********************/
-/****************************************************/
-
-/*
+/**
+ * Checks for invalid IP-values.
+ *
+ * @param IP the IP-address to check.
+ * @return True if it was valid, false otherwise.
+ * 
  * Note: IP must be in anti-host order (BE on LE platform, LE on BE platform).
  */
 bool IsGoodIP( uint32 IP );
