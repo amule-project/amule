@@ -93,6 +93,7 @@ enum EClientSoftware{
 	SO_LXMULE		= 2,
 	SO_AMULE		= 3,
 	SO_SHAREAZA		= 4,
+	SO_EMULEPLUS		= 5,
 	SO_HYDRANODE            = 6,
 	SO_NEW2_MLDONKEY	= 10,
 	SO_LPHANT		= 20,
