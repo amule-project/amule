@@ -225,7 +225,7 @@ bool Ed2kHash::SetED2KHashFromFile(const wxString& filename, MD4Hook hook)
 }
 
 /// Get Ed2k link
-wxString Ed2kHash::GetED2KLink(const bool addPartHashes, const wxArrayString& arrayOfUrls)
+wxString Ed2kHash::GetED2KLink(const bool addPartHashes, const wxArrayString* arrayOfUrls)
 {
   // Constructing ed2k basic link
   wxString ed2kLink = wxT("ed2k://|file|")+CleanFilename(m_filename)
@@ -234,12 +234,12 @@ wxString Ed2kHash::GetED2KLink(const bool addPartHashes, const wxArrayString& ar
 
 
   // Add optional URLs
-  if (!arrayOfUrls.IsEmpty())
+  if ( arrayOfUrls && !arrayOfUrls->IsEmpty())
     {
       size_t i;
-      for (i=0;i<arrayOfUrls.GetCount();i++)
+      for ( i = 0; i < arrayOfUrls->GetCount(); i++ ) 
         {
-          ed2kLink += wxT("s=") + arrayOfUrls[i] + wxT("|");
+          ed2kLink += wxT("s=") + (*arrayOfUrls)[i] + wxT("|");
         }
     }
 
