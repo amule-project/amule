@@ -87,58 +87,46 @@ bool CSysTray::SetColorLevels(int* pLimits, COLORREF* pColors, int nEntries) {
 
 #ifdef __SAFE_TRAY__
 
-gchar* getIP()
+wxString getIP()
 {
-
- gchar* ip=(gchar*)unicode2char(_("Detection Disabled"));
-
- return ip;
-
+	return _("Detection Disabled");
 }
 
 #else
 
-gchar* getIP()
+wxString getIP()
 {
+	int sfd;
+	struct ifreq ifr;
+	struct sockaddr_in *sin = (struct sockaddr_in *) &ifr.ifr_addr;
 
-  gchar* ip=(gchar*)unicode2char(_("Not Found"));
-  wxString interface;
-  int index=0;
-  int sfd;
-  struct ifreq ifr;
-  struct sockaddr_in *sin = (struct sockaddr_in *) &ifr.ifr_addr;
+	memset(&ifr, 0, sizeof ifr);
+	sfd = socket(AF_INET, SOCK_STREAM, 0);
 
-  memset(&ifr, 0, sizeof ifr);
-  sfd = socket(AF_INET, SOCK_STREAM, 0);
+	strcpy(ifr.ifr_name, "ppp0");
+	sin->sin_family = AF_INET;
+	if (0 == ioctl(sfd, SIOCGIFADDR, &ifr)) {
+		return char2unicode( inet_ntoa(sin->sin_addr) );
+	} else {
+		wxString ip = _("Not Found");
 
-  strcpy(ifr.ifr_name, "ppp0");
-  sin->sin_family = AF_INET;
-  if (0 == ioctl(sfd, SIOCGIFADDR, &ifr)) 
-  {
-	ip=inet_ntoa(sin->sin_addr);
-	return ip;
-  }
-  else 
-  {
+	//	printf("Not connected at network with ppp0 direct connection\n");
+		int index = 0;
+		do {
+	    	strcpy(ifr.ifr_name, unicode2char( wxString::Format(wxT("eth%d"), index) ));
+    		sin->sin_family = AF_INET;
+    		if (0 == ioctl(sfd, SIOCGIFADDR, &ifr)) {
+				ip = char2unicode( inet_ntoa(sin->sin_addr) );
+				index++;
+    		}
+	//    	else printf(wxString("Not connected at network with ")+interface);
 
-//	printf("Not connected at network with ppp0 direct connection\n");
-	do
-  	{
-    	interface=wxT("eth")+wxString::Format(wxT("%d"), index);
-    	strcpy(ifr.ifr_name, unicode2char(interface));
-    	sin->sin_family = AF_INET;
-    	if (0 == ioctl(sfd, SIOCGIFADDR, &ifr)) 
-	{
-      		ip=inet_ntoa(sin->sin_addr);
-		index++;
-    	}
-//    	else printf(wxString("Not connected at network with ")+interface);
-
-  	} while (0 == ioctl(sfd, SIOCGIFADDR, &ifr)) ;
- }
- return ip;
-
+  		} while (0 == ioctl(sfd, SIOCGIFADDR, &ifr)) ;
+	
+		return ip;
+ 	}
 }
+
 #endif // __SAFE_TRAY__
 
 //same check of the connection tab.
@@ -296,8 +284,7 @@ tray_menu (GtkWidget *widget, GdkEventButton *event, gpointer data)
 	else info_item=gtk_menu_item_new_with_label(unicode2char(_("ID: Not Connected")));
 	gtk_container_add (GTK_CONTAINER (info_menu), info_item);
 
-	tempstring=getIP();
-	info_item=gtk_menu_item_new_with_label(unicode2char(wxString(_("IP: "))+char2unicode(tempstring)));
+	info_item=gtk_menu_item_new_with_label(unicode2char(wxString(_("IP: "))+getIP()));
 	gtk_container_add (GTK_CONTAINER (info_menu), info_item);
 
 	if (theApp.glob_prefs->GetPort()) {
