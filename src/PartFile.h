@@ -39,6 +39,7 @@
 
 #include <set>
 #include <list>
+#include <memory>
 
 class CSearchFile;
 class CUpDownClient;
@@ -84,7 +85,7 @@ public:
 	uint32	Process(uint32 reducedownload, uint8 m_icounter);
 	uint8	LoadPartFile(const wxString& in_directory, const wxString& filename, bool from_backup = false, bool getsizeonly = false);
 	bool	SavePartFile(bool Initial = false);
-	void	PartFileHashFinished(CKnownFile* result);
+	void	PartFileHashFinished(std::auto_ptr<CKnownFile> result);
 	bool	HashSinglePart(uint16 partnumber); // true = ok , false = corrupted
 	uint64	GetRealFileSize();
 	
