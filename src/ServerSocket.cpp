@@ -270,7 +270,14 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				if (size < sizeof(LoginAnswer_Struct)) {
 					throw wxString(_("Corrupt or invalid loginanswer from server received"));
 				}
-				LoginAnswer_Struct* la = (LoginAnswer_Struct*) packet;
+				
+				LoginAnswer_Struct* la;
+				
+				// Kry - This is because we have to check if there is only a uint32 
+				// on the struct.If this fails, we had extended the login struct.
+				wxASSERT(sizeof(LoginAnswer_Struct) == 4);
+				
+				la->clientid = ENDIAN_SWAP_32(((LoginAnswer_Struct*) packet)->clientid);
 
 				/* Add more from 0.30c (Creteil) BEGIN */
 				// save TCP flags in 'cur_server'
