@@ -37,6 +37,8 @@
 #endif
 
 #include "ECSocket.h"
+#include "ECPacket.h"
+#include "ECcodes.h"
 
 #define CMD_ID_QUIT		-1
 #define CMD_ID_SYNTAX_ERROR	-2
