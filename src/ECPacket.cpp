@@ -77,14 +77,16 @@ CECTag::CECTag(ec_tagname_t name, const EC_IPv4_t *data) : m_tagName(name), m_dy
 	m_dataLen = sizeof(EC_IPv4_t);
 	m_tagData = malloc(m_dataLen);
 	if (m_tagData != NULL) {
-		memcpy((void *)m_tagData, data, m_dataLen);
+//		memcpy((void *)m_tagData, data, m_dataLen);
+		*((uint32 *)(((EC_IPv4_t *)m_tagData)->ip)) = *((uint32 *)(data->ip));
+		((EC_IPv4_t *)m_tagData)->port = ENDIAN_SWAP_16(data->port);
 		m_error = 0;
 	} else {
 		m_error = 1;
 	}
-#if wxBYTE_ORDER != wxLITTLE_ENDIAN
-	ENDIAN_SWAP_I_16(((EC_IPv4_t *)m_tagData)->port);
-#endif
+//#if wxBYTE_ORDER != wxLITTLE_ENDIAN
+//	ENDIAN_SWAP_I_16(((EC_IPv4_t *)m_tagData)->port);
+//#endif
 	m_tagCount = m_listSize = 0;
 	m_tagList = NULL;
 }
@@ -495,10 +497,12 @@ EC_IPv4_t *CECTag::GetIPv4Data(void) const
 	EC_IPv4_t *p = new EC_IPv4_t;
 
 	if (p != NULL) {
-		memcpy(p, m_tagData, sizeof(EC_IPv4_t));
-#if wxBYTE_ORDER != wxLITTLE_ENDIAN
-		ENDIAN_SWAP_I_16(p->port);
-#endif
+		*((uint32 *)(p->ip)) = *((uint32 *)(((EC_IPv4_t *)m_tagData)->ip));
+		p->port = ENDIAN_SWAP_16(((EC_IPv4_t *)m_tagData)->port);
+//		memcpy(p, m_tagData, sizeof(EC_IPv4_t));
+//#if wxBYTE_ORDER != wxLITTLE_ENDIAN
+//		ENDIAN_SWAP_I_16(p->port);
+//#endif
 	}
 	return p;
 }
