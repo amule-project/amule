@@ -8,7 +8,7 @@ export WANT_AUTOMAKE="1.7"
 
 # Do sanity checks.
 # Directory check.
-if [ ! -f src/SharedFileList.h ]; then
+if [ ! -e src/SharedFileList.h ]; then
     echo "Run ./autogen.sh from the base directory of aMule."
     exit 1
 fi
