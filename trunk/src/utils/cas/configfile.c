@@ -10,7 +10,8 @@ int writeconfig(void)
 	FILE *config;
 	char *path;
 	int i;
-	char *def[] = { "# cas config file\n",
+	char *def[] = {
+		"# cas config file\n",
 		"#\n",
 		"# font - full path to a ttf font\n",
 		"# font_size - size the font\n",
@@ -45,12 +46,14 @@ int writeconfig(void)
 	return 1;
 }
 
+// Jacobo221 - [ToDo] There should be a check for corrupt config files!
 int readconfig(CONF *config)
 {
 	char buffer[120], option[15], *path;
 	FILE *conf;
 	int i = 0, ler;
-	char lines[6][12] = { "first_line",
+	char lines[IMG_TEXTLINES][12] = {
+		"first_line",
 		"second_line",
 		"third_line",
 		"fourth_line",
@@ -63,7 +66,7 @@ int readconfig(CONF *config)
 		return 0;
 
 	if ((conf = fopen(path, "r")) == NULL) {
-		printf("Unable to open %s\nCreating it. ", path);
+		printf("Unable to open %s. Creating it.\n", path);
 		free(path);
 		if (!writeconfig()) {
 			printf("readconfig: unable to create initial config file");
@@ -75,19 +78,23 @@ int readconfig(CONF *config)
 	buffer[0] = 0;
 	while (!feof(conf)) {
 		ler = fgetc(conf);
-		if (ler != 10) {
+		if (ler == 13); // Jacobo221 - Make it DOS compatible
+		else if (ler != 10) {
 			sprintf(buffer, "%s%c", buffer, ler);
 		} else {
+			// Jacobo221 - [ToDo] Only first char per line is comment...
 			if (buffer[0] != '#') {
+				// Only two fileds per line
 				sscanf(buffer, "%s %*s", option);
 
+				// Jacobo221 - [ToDo] So lines can't be swapped...
 				if (strcmp(option, "font") == 0)
 					sscanf(buffer, "%*s %s", config->font);
 				if (strcmp(option, "font_size") == 0)
 					sscanf(buffer, "%*s %f", &config->size);
 				if (strcmp(option, "source_image") == 0)
 					sscanf(buffer, "%*s %s", config->source);
-				for (i = 0; i <= 6; i++)
+				for (i = 0; i <= IMG_TEXTLINES; i++)
 					if (strcmp(option, lines[i]) == 0)
 						sscanf(buffer,
 								"%*s %d,%d,%d",
