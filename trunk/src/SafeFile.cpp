@@ -131,7 +131,8 @@ void CFileDataIO::WriteString(const wxString& rstr)
 	// We dont include the NULL terminator. Dont know why.
 	// It is because we write the size, so the NULL is not necessary.
 	// 
-	const char *s = unicode2char(rstr);
+	const wxCharBuffer tmp = unicode2char(rstr);
+	const char *s = (const char *)tmp;
 	//
 	// This avoids a crash in case unicode2char cannot perform the conversion,
 	// e.g., original string is an unicode string that cannot be converted to
