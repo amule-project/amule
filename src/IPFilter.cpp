@@ -25,9 +25,14 @@
 #include <wx/string.h>		// for wxString
 #include <wx/tokenzr.h>		// for wxTokenizer
 
-#include <sys/socket.h>		// for inet_aton() and struct in_addr
-#include <netinet/in.h>
-#include <arpa/inet.h>
+
+#if defined(__WXMSW__)
+  #include <winsock.h>
+#else
+  #include <sys/socket.h>		// for inet_aton() and struct in_addr
+  #include <netinet/in.h>
+  #include <arpa/inet.h>
+#endif
 
 #include "IPFilter.h"		// Interface declarations.
 #include "otherfunctions.h"
