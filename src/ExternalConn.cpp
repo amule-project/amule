@@ -438,6 +438,23 @@ CECPacket *Get_EC_Response_GetUpQueue(const CECPacket *request)
 	return response;
 }	
 
+CECPacket *Get_EC_Response_GetUpQueue(CObjTagMap &tagmap)
+{
+	CECPacket *response = new CECPacket(EC_OP_ULOAD_QUEUE);
+	POSITION pos = theApp.uploadqueue->GetFirstFromUploadList();
+	while (	pos ) {
+
+		CUpDownClient* cur_client = theApp.uploadqueue->GetQueueClientAt(pos);
+		theApp.uploadqueue->GetNextFromUploadList(pos);
+
+		CValueMap &valuemap = tagmap.GetValueMap(cur_client);
+		CEC_UpDownClient_Tag cli_tag(cur_client, valuemap);
+		
+		response->AddTag(cli_tag);
+	}
+	return response;
+}
+
 CECPacket *Get_EC_Response_GetDownloadQueue(CPartFile_Encoder_Map &encoders, CObjTagMap &tagmap)
 {	
 	CECPacket *response = new CECPacket(EC_OP_DLOAD_QUEUE);
@@ -663,6 +680,21 @@ CECPacket *Get_EC_Response_Search_Results(const CECPacket *request)
 			continue;
 		}
 		response->AddTag(CEC_SearchFile_Tag(sf, detail_level));
+	}
+	return response;
+}
+
+CECPacket *Get_EC_Response_Search_Results(CObjTagMap &tagmap)
+{
+	CECPacket *response = new CECPacket(
+		theApp.searchlist->SearchInProgress() ? EC_OP_SEARCH_RESULTS : EC_OP_SEARCH_RESULTS_DONE);
+
+	std::vector<CSearchFile*> list(theApp.searchlist->GetSearchResults(0xffff));
+	std::vector<CSearchFile*>::const_iterator it = list.begin();
+	while (it != list.end()) {
+		CSearchFile* sf = *it++;
+		CValueMap &valuemap = tagmap.GetValueMap(sf);
+		response->AddTag(CEC_SearchFile_Tag(sf, valuemap));
 	}
 	return response;
 }
