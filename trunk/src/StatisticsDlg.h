@@ -34,12 +34,6 @@ class COScopeCtrl;
 // CStatisticsDlg dialog
 
 using namespace std;
-#define HTREEITEM wxTreeItemId
-
-typedef struct {
-	HTREEITEM TreeItem;
-	bool active;
-} VersionItem;
 
 class CStatisticsDlg : public wxPanel// CResizableDialog
 {
