@@ -90,6 +90,9 @@ enum GUI_Event_ID {
 	PARTFILE_PRIO_AUTO,
 	PARTFILE_PRIO_SET,
 	PARTFILE_DELETE,
+	// search
+	SEARCH_LOCAL_REQ,
+	SEARCH_GLOBAL_REQ,
 };
 
 class GUIEvent {
@@ -245,6 +248,8 @@ class GUIEvent {
 //
 // GUI -> core notification
 //
+
+// PartFile
 #define CoreNotify_PartFile_RemoveNoNeeded(ptr)     Notify_1_ValEvent(PARTFILE_REMOVE_NO_NEEDED,(CPartFile *)ptr);
 #define CoreNotify_PartFile_RemoveFullQueue(ptr)    Notify_1_ValEvent(PARTFILE_REMOVE_FULL_QUEUE,(CPartFile *)ptr);
 #define CoreNotify_PartFile_RemoveHighQueue(ptr)    Notify_1_ValEvent(PARTFILE_REMOVE_HIGH_QUEUE,(CPartFile *)ptr);
@@ -257,6 +262,9 @@ class GUIEvent {
 #define CoreNotify_PartFile_PrioSet(ptr)            Notify_1_ValEvent(PARTFILE_PRIO_SET,(CPartFile *)ptr);
 #define CoreNotify_PartFile_Delete(ptr)             Notify_1_ValEvent(PARTFILE_DELETE,(CPartFile *)ptr);
 
+// Search
+#define CoreNotify_Search_Local_Req(ptr)            Notify_1_ValEvent(SEARCH_LOCAL_REQ,(Packet *)ptr);
+#define CoreNotify_Search_Global_Req(ptr, ser)      Notify_2_ValEvent(SEARCH_GLOBAL_REQ,(Packet *)ptr, (CServer *)ser);
 
 //
 // "Late bound pointers" lib

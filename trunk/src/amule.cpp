@@ -1898,6 +1898,41 @@ void CamuleApp::NotifyEvent(GUIEvent event) {
 
    
 	switch (event.ID) {
+		// GUI->CORE events
+		// no need to check pointers: if event is here, gui must be running
+		
+		// search
+	        case SEARCH_LOCAL_REQ:
+			uploadqueue->AddUpDataOverheadServer(((Packet *)event.ptr_value)->GetPacketSize());
+			serverconnect->SendPacket( (Packet *)event.ptr_value, 0 );
+			break;
+	        case SEARCH_GLOBAL_REQ:
+			serverconnect->SendUDPPacket((Packet *)event.ptr_value, (CServer *)event.ptr_aux_value, false);
+			break;
+
+		// PartFile
+	        case PARTFILE_REMOVE_NO_NEEDED:
+			break;
+	        case PARTFILE_REMOVE_FULL_QUEUE:
+			break;
+	        case PARTFILE_REMOVE_HIGH_QUEUE:
+			break;
+	        case PARTFILE_CLEANUP_SOURCES:
+			break;
+	        case PARTFILE_SWAP_TO_ANOTHER:
+			break;
+	        case PARTFILE_PAUSE:
+			break;
+	        case PARTFILE_RESUME:
+			break;
+	        case PARTFILE_STOP:
+			break;
+	        case PARTFILE_PRIO_AUTO:
+			break;
+	        case PARTFILE_PRIO_SET:
+			break;
+	        case PARTFILE_DELETE:
+		// CORE->GUI
 		// queue list
 		case QLIST_CTRL_ADD_CLIENT:
 			if ( amuledlg->transferwnd && amuledlg->transferwnd->queuelistctrl ) {
