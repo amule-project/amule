@@ -76,7 +76,37 @@ int GetMaxConnections();
 // Returns the name assosiated with a category value.
 wxString GetCatTitle(int catid);
 // Checks an ip to see if it is valid, depending on current preferences.
-bool IsGoodIP(uint32 nIP);
+inline bool IsGoodIP(uint32 nIP)
+{
+	// always filter following IP's
+	// -------------------------------------------
+	//	 0.0.0.0
+	// 127.*.*.*						localhost
+
+	if (nIP==0 || (uint8)nIP==127)
+		return false;
+
+	// filter LAN IP's
+	// -------------------------------------------
+	//	0.*
+	//	10.0.0.0 - 10.255.255.255		class A
+	//	172.16.0.0 - 172.31.255.255		class B
+	//	192.168.0.0 - 192.168.255.255	class C
+
+	uint8 nFirst = (uint8)nIP;
+	uint8 nSecond = (uint8)(nIP >> 8);
+
+	if (nFirst==192 && nSecond==168) // check this 1st, because those LANs IPs are mostly spreaded
+		return false;
+
+	if (nFirst==172 && nSecond>=16 && nSecond<=31)
+		return false;
+
+	if (nFirst==0 || nFirst==10)
+		return false;
+
+	return true;
+}
 
 // Tests if a ID is low (behind firewall/router/...)
 #define HIGHEST_LOWID_HYBRID	16777216
@@ -92,10 +122,18 @@ inline bool IsLowIDED2K(uint32 id){
 // Makes sIn suitable for inclusion in an URL, by escaping all chars that could cause trouble.
 wxString URLEncode(wxString sIn);
 // Replaces "&" with "&&" in 'in' for use with text-labels
-wxString MakeStringEscaped(wxString in);
-// Removes the last '\' from a path
-wxString MakeFoldername(wxString path);
-
+inline wxString MakeStringEscaped(wxString in) {
+	in.Replace(wxT("&"),wxT("&&"));
+	return in;
+}
+inline wxString MakeFoldername(wxString path) {
+	/*
+	if ( !path.IsEmpty() && ( path.Right(1) == wxT('/' )) ) {
+		path.RemoveLast();
+	}
+	*/
+	return path;
+}
 
 // Makes a backup of a file, by copying the original file to filename + appendix
 bool BackupFile(const wxString& filename, const wxString& appendix);

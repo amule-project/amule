@@ -28,10 +28,11 @@
 #endif
 
 #include "otherfunctions.h"	// Interface declarations
-#include "Preferences.h"	// Needed for CPreferences
-#include "amule.h"			// Needed for theApp
 #include "PartFile.h"		// Needed for CPartFile
 #include "KnownFile.h"		// Needed for CAbstractFile
+#include "amule.h"
+#include "Preferences.h"
+
 #include <ctype.h>
 
 wxString ConvertChar2Unicode(const char* c_string) {
@@ -45,59 +46,56 @@ const char* ConvertUnicode2Char(wxString unic_string) {
 // Formats a filesize in bytes to make it suitable for displaying
 wxString CastItoXBytes( uint64 count )
 {
-	wxString buffer;
 
 	if (count < 1024)
-		buffer.Printf( wxT("%.0f %s"), (float)count, _("Bytes") );
+		return wxString::Format( wxT("%.0f %s"), (float)count, _("Bytes") );
 	else if (count < 1048576)
-		buffer.Printf( wxT("%.0f %s"), (float)count/1024, _("KB") );
+		return wxString::Format( wxT("%.0f %s"), (float)count/1024, _("KB") );
 	else if (count < 1073741824)
-		buffer.Printf( wxT("%.2f %s"), (float)count/1048576, _("MB") );
+		return wxString::Format( wxT("%.2f %s"), (float)count/1048576, _("MB") );
 	else if (count < 1099511627776LL)
-		buffer.Printf( wxT("%.2f %s"), (float)count/1073741824, _("GB") );
+		return wxString::Format( wxT("%.2f %s"), (float)count/1073741824, _("GB") );
 	else
-		buffer.Printf( wxT("%.3f %s"), (float)count/1099511627776LL, _("TB") );
+		return wxString::Format( wxT("%.3f %s"), (float)count/1099511627776LL, _("TB") );
 
-	return buffer;
+	return _("Error");
 }
 
 
 wxString CastItoIShort(uint64 count)
 {
-	wxString output;
 
 	if (count < 1000)
-		output.Printf(wxT("%llu"), count);
+		return wxString::Format(wxT("%llu"), count);
 	else if (count < 1000000)
-		output.Printf(wxT("%.0f%s"),(float)count/1000, _("K") );
+		return wxString::Format(wxT("%.0f%s"),(float)count/1000, _("K") );
 	else if (count < 1000000000)
-		output.Printf(wxT("%.2f%s"),(float)count/1000000, _("M") );
+		return wxString::Format(wxT("%.2f%s"),(float)count/1000000, _("M") );
 	else if (count < 1000000000000LL)
-		output.Printf(wxT("%.2f%s"),(float)count/1000000000LL, _("G") );
+		return wxString::Format(wxT("%.2f%s"),(float)count/1000000000LL, _("G") );
 	else if (count < 1000000000000000LL)
-		output.Printf(wxT("%.2f%s"),(float)count/1000000000000LL, _("T") );
+		return wxString::Format(wxT("%.2f%s"),(float)count/1000000000000LL, _("T") );
 
-	return output;
+	return _("Error");
 }
 
 
 // Make a time value in millieseconds suitable for displaying
 wxString CastSecondsToHM(sint32 count)
 {
-	wxString buffer;
 	
 	if (count < 0)
-		buffer = wxT("?");
+		return wxT("?");
 	else if (count < 60)
-		buffer.Printf( wxT("%02i %s"), count, _("secs") );
+		return wxString::Format( wxT("%02i %s"), count, _("secs") );
 	else if (count < 3600)
-		buffer.Printf( wxT("%i:%02i %s"), count/60, (count % 60), _("mins") );
+		return wxString::Format( wxT("%i:%02i %s"), count/60, (count % 60), _("mins") );
 	else if (count < 86400)
-		buffer.Printf( wxT("%i:%02i %s"), count/3600, (count % 3600)/60, _("h") );
+		return wxString::Format( wxT("%i:%02i %s"), count/3600, (count % 3600)/60, _("h") );
 	else
-		buffer.Printf( wxT("%i %s %02i %s"), count/86400, _("D") , (count % 86400) / 3600, _("h") );
+		return wxString::Format( wxT("%i %s %02i %s"), count/86400, _("D") , (count % 86400) / 3600, _("h") );
 		
-	return buffer;
+	return _("Error");
 }
 
 
@@ -168,15 +166,6 @@ wxString GetFiletypeByName(const wxString& filename)
 {
 	return GetFiletypeDesc( GetFiletype( filename ) );
 }
-
-
-wxString MakeStringEscaped(wxString in)
-{
-	in.Replace(wxT("&"),wxT("&&"));
-	
-	return in;
-}
-
 
 // Get the max number of connections that the OS supports, or -1 for default
 int GetMaxConnections() {
@@ -417,15 +406,6 @@ bool CheckShowItemInGivenCat(CPartFile* file, int inCategory)
 }
 
 
-wxString MakeFoldername(wxString path) {
-	/*
-	if ( !path.IsEmpty() && ( path.Right(1) == wxT('/' )) ) {
-		path.RemoveLast();
-	}
-	*/
-	return path;
-}
-
 
 void HexDump(const void *buffer, unsigned long buflen)
 {
@@ -492,43 +472,6 @@ bool FS_wxRenameFile(const wxString& file1, const wxString& file2)
 	}
 	
 	return result;
-}
-
-
-// Check if a IP address is usable
-bool IsGoodIP(uint32 nIP)
-{
-	// always filter following IP's
-	// -------------------------------------------
-	//	 0.0.0.0
-	// 127.*.*.*						localhost
-
-	if (nIP==0 || (uint8)nIP==127)
-		return false;
-
-	if (!theApp.glob_prefs->FilterBadIPs())
-		return true;
-
-	// filter LAN IP's
-	// -------------------------------------------
-	//	0.*
-	//	10.0.0.0 - 10.255.255.255		class A
-	//	172.16.0.0 - 172.31.255.255		class B
-	//	192.168.0.0 - 192.168.255.255	class C
-
-	uint8 nFirst = (uint8)nIP;
-	uint8 nSecond = (uint8)(nIP >> 8);
-
-	if (nFirst==192 && nSecond==168) // check this 1st, because those LANs IPs are mostly spreaded
-		return false;
-
-	if (nFirst==172 && nSecond>=16 && nSecond<=31)
-		return false;
-
-	if (nFirst==0 || nFirst==10)
-		return false;
-
-	return true;
 }
 
 
