@@ -63,15 +63,15 @@
 
 
 CDownloadQueue::CDownloadQueue()
+// Needs to be recursive that that is can own an observer assigned to itself
+	: m_mutex( wxMUTEX_RECURSIVE )
 {
 	m_datarate = 0;
-	m_cur_udpserver = 0;
-	m_lastfile = 0;
+	m_udpserver = 0;
 	m_lastsorttime = 0;
 	m_lastudpsearchtime = 0;
 	m_lastudpstattime = 0;
 	m_udcounter = 0;
-	m_iSearchedServers = 0;
 	m_nLastED2KLinkCheck = 0;
 	m_dwNextTCPSrcReq = 0;
 	m_cRequestsSentToServer = 0;
@@ -81,7 +81,7 @@ CDownloadQueue::CDownloadQueue()
 
 CDownloadQueue::~CDownloadQueue()
 {
-	printf("Flushing partfiles");
+	printf("Flushing partfiles ");
 	fflush(stdout);
 	for ( uint16 i = 0; i < m_filelist.size(); i++ ) {
 		delete m_filelist[i];
@@ -165,7 +165,7 @@ CServer* CDownloadQueue::GetUDPServer() const
 {
 	wxMutexLocker lock( m_mutex );
 
-	return m_cur_udpserver;
+	return m_udpserver;
 }
 
 
@@ -173,7 +173,7 @@ void CDownloadQueue::SetUDPServer( CServer* server )
 {
 	wxMutexLocker lock( m_mutex );
 
-	m_cur_udpserver = server;
+	m_udpserver = server;
 }
 
 	
@@ -609,123 +609,79 @@ bool CDownloadQueue::SendNextUDPPacket()
 	if ( m_filelist.empty() || !theApp.serverconnect->IsUDPSocketAvailable() || !theApp.serverconnect->IsConnected()) {
 		return false;
 	}
-	
-	if ( !m_cur_udpserver ) {
-		m_cur_udpserver = theApp.serverlist->GetNextServer( NULL );
+
+	// Start monitoring the server and the files list
+	if ( !m_queueServers.IsActive() ) {
+		AddObserver( &m_queueFiles );
 		
-		if ( !m_cur_udpserver ) {
-			DoStopUDPRequests();
-		}
-		
-		m_cRequestsSentToServer = 0;
+		theApp.serverlist->AddObserver( &m_queueServers );
 	}
-
 	
-	// get max. file ids per packet for current server
-	int iMaxFilesPerPacket = GetMaxFilesPerUDPServerPacket();
 
-	// loop until the packet is filled or a packet was sent
-	bool bSentPacket = false;
-	CSafeMemFile dataGlobGetSources(20); // 20 is because 16 + 4 (worst scenario).
-	int iFiles = 0;
-	
-	while (iFiles < iMaxFilesPerPacket && !bSentPacket) {
-		// get next file to search sources for
-		CPartFile* nextfile = NULL;
-		while (!bSentPacket && !(nextfile && (nextfile->GetStatus() == PS_READY || nextfile->GetStatus() == PS_EMPTY))) {
-			if (m_lastfile == NULL) {
-				// we just started the global source searching
-				// or have switched the server
-				// get first file to search sources for
-				nextfile = m_filelist.front();
-				m_lastfile = nextfile;
-			} else {
-				std::deque<CPartFile*>::iterator it;
-				it = std::find(m_filelist.begin(), m_filelist.end(), m_lastfile);
-				if (it == m_filelist.end()) {
-					// the last file is no longer in the DL-list
-					// (may have been finished or canceld)
-					// get first file to search sources for
-					nextfile = m_filelist.front();
-					m_lastfile = nextfile;
-				} else {
-					it++;
-					if (it == m_filelist.end()) {
-						// finished asking the current server for all files
-						// if there are pending requests for the current server, send them
-						if (dataGlobGetSources.GetLength() > 0) {
-							if (SendGlobGetSourcesUDPPacket(dataGlobGetSources)) {
-								bSentPacket = true;
-							}
-							dataGlobGetSources.SetLength(0);
-						}
-
-						// get next server to ask
-						m_cur_udpserver = theApp.serverlist->GetNextServer(m_cur_udpserver);
-						m_cRequestsSentToServer = 0;
-						if (m_cur_udpserver == NULL) {
-							// finished asking all servers for all files
-							m_lastudpsearchtime = ::GetTickCount();
-							m_lastfile = NULL;
-							m_iSearchedServers = 0;
-							return false; // finished (processed all file & all servers)
-						}
-						m_iSearchedServers++;
-
-						// if we already sent a packet, switch to the next file at next function call
-						if (bSentPacket) {
-							m_lastfile = NULL;
-							break;
-						}
-
-						// get max. file ids per packet for current server
-						iMaxFilesPerPacket = GetMaxFilesPerUDPServerPacket();
-
-						// have selected a new server; get first file to search sources for
-						nextfile = m_filelist.front();
-						m_lastfile = nextfile;
-					} else {
-						nextfile = (*it);
-						m_lastfile = nextfile;
-					}
+ 	bool packetSent = false;
+ 	while ( !packetSent ) {
+ 		// Get max files ids per packet for current server
+ 		int filesAllowed = GetMaxFilesPerUDPServerPacket();
+ 
+ 		if ( filesAllowed < 1 || !m_udpserver ) {
+ 			// Select the next server to ask
+ 			m_udpserver = m_queueServers.GetNext();
+ 			m_cRequestsSentToServer = 0;
+ 		
+ 			filesAllowed = GetMaxFilesPerUDPServerPacket();
+  		}
+ 
+ 		
+ 		// Check if we have asked all servers, in which case we are done
+ 		if (m_udpserver == NULL) {
+ 			DoStopUDPRequests();
+ 			
+ 			return false;
+  		}
+  
+ 		// Memoryfile containing the hash of every file to request
+		// 20bytes allocation because 16b + 4b is the worse case scenario.
+ 		CSafeMemFile hashlist( 20 );
+ 		
+		CPartFile* file = m_queueFiles.GetNext();
+		while ( file && filesAllowed ) {
+ 			uint8 status = file->GetStatus();
+ 			
+			if ( ( status == PS_READY || status == PS_EMPTY ) && file->GetSourceCount() < thePrefs::GetMaxSourcePerFileUDP() ) {
+ 				hashlist.WriteHash16( file->GetFileHash() );
+					
+				if ( m_udpserver->GetUDPFlags() & SRV_UDPFLG_EXT_GETSOURCES2 ) {
+					hashlist.WriteUInt32( file->GetFileSize() );
 				}
-			}
-		}
 
-		if (!bSentPacket && nextfile && nextfile->GetSourceCount() < thePrefs::GetMaxSourcePerFileUDP()) {
-			dataGlobGetSources.WriteHash16(nextfile->GetFileHash());
-			if (m_cur_udpserver->GetUDPFlags() & SRV_UDPFLG_EXT_GETSOURCES2) {
-				dataGlobGetSources.WriteUInt32(nextfile->GetFileSize());
-			}			
-			iFiles++;
-		}
-	}
-
-	if (!bSentPacket && dataGlobGetSources.GetLength() > 0) {
-		SendGlobGetSourcesUDPPacket(dataGlobGetSources);
-	}
-
-	// send max 40 udp request to one server per interval, if we have more than 40 files, we rotate the list and use it as Queue
-	if (m_cRequestsSentToServer >= MAX_REQUESTS_PER_SERVER) {
-		// move the last 40 files to the head
-		if (m_filelist.size() > MAX_REQUESTS_PER_SERVER) {
-			for (int i = 0; i != MAX_REQUESTS_PER_SERVER; i++) {
-				m_filelist.push_front( m_filelist.back() );
-				m_filelist.pop_back();
+				--filesAllowed;
+  			}
+		
+			// Avoid skipping a file if we can't send any more currently
+			if ( filesAllowed ) {
+				file = m_queueFiles.GetNext();
 			}
 		}
 		
-		// and next server
-		m_cur_udpserver = theApp.serverlist->GetNextServer(m_cur_udpserver);
-		m_cRequestsSentToServer = 0;
-		if (m_cur_udpserver == NULL) {
-			m_lastudpsearchtime = ::GetTickCount();
-			m_lastfile = NULL;
-			return false; // finished (processed all file & all servers)
+		// See if we have anything to send
+ 		if ( hashlist.GetLength() ) {
+ 			packetSent = true;
+ 			
+ 			SendGlobGetSourcesUDPPacket( hashlist );
 		}
-		m_iSearchedServers++;
-		m_lastfile = NULL;
-	}
+ 		
+ 		
+ 		// Check if we've covered every file
+		if ( file == NULL ) {
+ 			// Reset the list of asked files so that the loop will start over
+			m_queueFiles.Reset();
+			
+ 		
+ 			// Unset the server so that the next server will be used
+ 			m_udpserver = NULL;
+  		}
+  	}
+	
 	return true;
 }
 
@@ -740,9 +696,12 @@ void CDownloadQueue::StopUDPRequests()
 
 void CDownloadQueue::DoStopUDPRequests()
 {
-	m_cur_udpserver = 0;
+	// No need to observe when we wont be using the results
+	theApp.serverlist->RemoveObserver( &m_queueServers );
+	RemoveObserver( &m_queueFiles );
+	
+	m_udpserver = 0;
 	m_lastudpsearchtime = ::GetTickCount();
-	m_lastfile = 0;
 }
 
 
@@ -1072,39 +1031,41 @@ void CDownloadQueue::CheckDiskspace( const wxString& path )
 
 int CDownloadQueue::GetMaxFilesPerUDPServerPacket() const
 {
-	int iMaxFilesPerPacket;
-	if (m_cur_udpserver && m_cur_udpserver->GetUDPFlags() & SRV_UDPFLG_EXT_GETSOURCES) {
-		// get max. file ids per packet
-		if (m_cRequestsSentToServer < MAX_REQUESTS_PER_SERVER) {
-			iMaxFilesPerPacket = std::min(MAX_FILES_PER_UDP_PACKET, MAX_REQUESTS_PER_SERVER - m_cRequestsSentToServer);
-		} else {
-			// ASSERT(0);
-			iMaxFilesPerPacket = 0;
+	if ( m_udpserver ) {
+		if ( m_udpserver->GetUDPFlags() & SRV_UDPFLG_EXT_GETSOURCES ) {
+			// get max. file ids per packet
+			if ( m_cRequestsSentToServer < MAX_REQUESTS_PER_SERVER ) {
+				return std::min(
+					MAX_FILES_PER_UDP_PACKET,
+					MAX_REQUESTS_PER_SERVER - m_cRequestsSentToServer
+				);
+			}
+		} else if ( m_cRequestsSentToServer < MAX_REQUESTS_PER_SERVER ) {
+			return 1;
 		}
-	} else {
-		iMaxFilesPerPacket = 1;
 	}
-	return iMaxFilesPerPacket;
+
+	return 0;
 }
 
 
 bool CDownloadQueue::SendGlobGetSourcesUDPPacket(CSafeMemFile& data)
 {
 
-	if (!m_cur_udpserver) {
+	if (!m_udpserver) {
 		return false;
 	}
 	
 
 	if ( theApp.serverconnect->GetCurrentServer() ) {
 		wxString srvaddr = theApp.serverconnect->GetCurrentServer()->GetAddress();
-		if (m_cur_udpserver == theApp.serverlist->GetServerByAddress(srvaddr,theApp.serverconnect->GetCurrentServer()->GetPort())) {
+		if (m_udpserver == theApp.serverlist->GetServerByAddress(srvaddr,theApp.serverconnect->GetCurrentServer()->GetPort())) {
 			return false;	
 		}
 	}	
 		
 	int item_size;
-	if (m_cur_udpserver->GetUDPFlags() & SRV_UDPFLG_EXT_GETSOURCES2) {
+	if (m_udpserver->GetUDPFlags() & SRV_UDPFLG_EXT_GETSOURCES2) {
 		item_size = (16 + 4); // (hash + size)
 	} else {
 		item_size = 16;
@@ -1121,7 +1082,7 @@ bool CDownloadQueue::SendGlobGetSourcesUDPPacket(CSafeMemFile& data)
 	}
 	
 	theApp.statistics->AddUpDataOverheadServer(packet.GetPacketSize());
-	theApp.serverconnect->SendUDPPacket(&packet,m_cur_udpserver,false);
+	theApp.serverconnect->SendUDPPacket(&packet,m_udpserver,false);
 
 	m_cRequestsSentToServer += iFileIDs;
 	return true;

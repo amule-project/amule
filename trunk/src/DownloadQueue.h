@@ -344,7 +344,6 @@ private:
 
 
 	uint32		m_datarate;
-	CPartFile*	m_lastfile;
 	uint32		m_lastDiskCheck;
 	uint32		m_lastudpsearchtime;
 	uint32		m_lastsorttime;
@@ -352,9 +351,8 @@ private:
 	uint32		m_nLastED2KLinkCheck;
 	uint8		m_cRequestsSentToServer;
 	uint32		m_dwNextTCPSrcReq;
-	int			m_iSearchedServers;
 	uint8		m_udcounter;
-	CServer*	m_cur_udpserver;
+	CServer*	m_udpserver;
 
 	
 	/**
@@ -371,9 +369,17 @@ private:
 	};
 
 	std::deque<Hostname_Entry>	m_toresolve;
-	std::deque<CPartFile*>		m_filelist;
+	
+	typedef std::deque<CPartFile*> FileQueue;
+	FileQueue m_filelist;
 	
 	std::list<CPartFile*>		m_localServerReqQueue;
+
+	//! Observer used to keep track of which servers have yet to be asked for sources
+	CQueueObserver<CServer*>	m_queueServers;
+	
+	//! Observer used to keep track of which file to send UDP requests for
+	CQueueObserver<CPartFile*>	m_queueFiles;
 };
 
 #endif // DOWNLOADQUEUE_H
