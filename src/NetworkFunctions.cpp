@@ -132,9 +132,7 @@ CAsyncDNS::CAsyncDNS(const wxString& ipName, DnsSolveType type, void* socket) : 
 
 wxThread::ExitCode CAsyncDNS::Entry()
 {
-	printf("Async thread solving a hostname\n");
 	uint32 result = StringHosttoUint32(m_ipName);
-	printf("Done\n");
 	uint32 event_id = 0;
 	void* event_data = NULL;
 	
