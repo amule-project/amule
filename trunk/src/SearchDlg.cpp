@@ -340,7 +340,8 @@ void CSearchDlg::StartNewSearch()
 {
 	static uint16 m_nSearchID = 0;
 	m_nSearchID++;
-
+	m_nSearchID %= 0xfffe; // lfroen: 0xffff is reserved for websearch
+	
 	// No searching if not connected
 	if (!theApp.serverconnect->IsConnected()) {
 		wxMessageDialog* dlg = new wxMessageDialog(this, wxString(_("You are not connected to a server!")), wxString(_("Not Connected")), wxOK|wxCENTRE|wxICON_INFORMATION);

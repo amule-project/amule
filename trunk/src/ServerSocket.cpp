@@ -344,7 +344,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				theApp.downloadqueue->AddDownDataOverheadServer(size);
 				CServer* cur_srv = (serverconnect) ? serverconnect->GetCurrentServer() : NULL;
 				theApp.searchlist->ProcessSearchanswer(packet,size,(cur_srv)?cur_srv->GetIP():0,(cur_srv)?cur_srv->GetPort():0);
-				Notify_SearchLocalEnd();
+				theApp.searchlist->LocalSearchEnd();
 				break;
 			}
 			case OP_FOUNDSOURCES: {

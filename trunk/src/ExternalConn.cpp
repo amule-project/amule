@@ -457,7 +457,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 						server->GetAddress() + wxT("\t") +
 						wxString::Format(wxT("%i"),server->GetUsers()) + wxT("\t") +
 						wxString::Format(wxT("%i"),server->GetMaxUsers()) + wxT("\t") +
-						wxString::Format(wxT("%i"),server->GetFiles()) + wxT("\n")					
+						wxString::Format(wxT("%i"),server->GetFiles()) + wxT("\n")
 					);
 				}
 			}
@@ -902,28 +902,35 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				//int curIndex, nextIndex;
 				wxString sParams = item.Mid(19);
 				int brk = sParams.First(wxT("\n"));
-				((wxTextCtrl*)wxWindow::FindWindowById(IDC_SEARCHNAME))->SetValue(sParams.Left(brk));
+				
+				wxString searchString = sParams.Left(brk);
+				searchString.Trim(true);
+				searchString.Trim(false);
 				sParams=sParams.Mid(brk+1); brk=sParams.First(wxT("\n"));
-				((wxChoice*)wxWindow::FindWindowById(IDC_TypeSearch))->SetStringSelection(sParams.Left(brk));
-				sParams=sParams.Mid(brk+1); brk=sParams.First(wxT("\n"));				
-				((wxSpinCtrl*)wxWindow::FindWindowById(IDC_SPINSEARCHMIN))->SetValue(StrToLong(sParams.Left(brk)));
-				sParams=sParams.Mid(brk+1); brk=sParams.First(wxT("\n"));				
-				((wxSpinCtrl*)wxWindow::FindWindowById(IDC_SPINSEARCHMAX))->SetValue(StrToLong(sParams.Left(brk)));
-				sParams=sParams.Mid(brk+1); brk=sParams.First(wxT("\n"));				
-				((wxSpinCtrl*)wxWindow::FindWindowById(IDC_SPINSEARCHAVAIBILITY))->SetValue(StrToLong(sParams.Left(brk)));
-				sParams=sParams.Mid(brk+1); brk=sParams.First(wxT("\n"));				
-				((wxTextCtrl*)wxWindow::FindWindowById(IDC_EDITSEARCHEXTENSION))->SetValue(sParams.Left(brk));
+				
+				wxString typeText = sParams.Left(brk);
+				sParams=sParams.Mid(brk+1); brk=sParams.First(wxT("\n"));
+					
+				uint32 min = StrToLong(sParams.Left(brk));
+				sParams=sParams.Mid(brk+1); brk=sParams.First(wxT("\n"));
+				
+				uint32 max = StrToLong(sParams.Left(brk));
+				sParams=sParams.Mid(brk+1); brk=sParams.First(wxT("\n"));
+					
+				uint32 avaibility = StrToLong(sParams.Left(brk));
+				sParams=sParams.Mid(brk+1); brk=sParams.First(wxT("\n"));
+				
+				wxString extension = sParams.Left(brk);
 				sParams=sParams.Mid(brk+1);
-				if (sParams == wxT("global")) //Method
-					((wxCheckBox*)wxWindow::FindWindowByName(wxT("globalSearch")))->SetValue(true);
-				else
-					((wxCheckBox*)wxWindow::FindWindowByName(wxT("globalSearch")))->SetValue(false);
 				
-				theApp.amuledlg->searchwnd->DeleteAllSearchs();
+				bool globalsearch = (sParams == wxT("global")) ? true : false;
+					
+				theApp.searchlist->RemoveResults(0xffff);
+				theApp.searchlist->NewSearch(typeText, 0xffff);				
+				Packet *packet = CreateSearchPacket(searchString, typeText, extension, min, max, avaibility);
 				
-				wxCommandEvent evt;
-				theApp.amuledlg->searchwnd->OnBnClickedStarts(evt); //do a new search
-				return wxEmptyString;
+				// this is internal core call, but macro is useful anyway
+				CoreNotify_Search_Req(packet, globalsearch);
 			}
 		}
 		if (item.Left(14) == wxT("SEARCH WEBLIST")) {
@@ -937,13 +944,14 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				return(theApp.searchlist->GetWebList(sResultLine, sortBy, searchAsc));
 			}
 		}
-		
+#ifndef AMULE_DAEMON
+		// lfroen - can't do it with daemon
 		//Special command :)
 		if (item == wxT("AMULEDLG SHOW")) {
 			theApp.amuledlg->Show_aMule(true);
 			return wxEmptyString;
 		}
-		
+#endif
 				
 		//shakraw - TODO - amulecmd requests
 		
@@ -2187,29 +2195,42 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				if (item.Length() > 18) {
 					int curIndex, nextIndex;
 					wxString sParams = item.Mid(19);
-					
+
 					curIndex=0; nextIndex=sParams.Mid(curIndex).Find(wxT("\n"));
-					((wxTextCtrl*)wxWindow::FindWindowById(IDC_SEARCHNAME))->SetValue(sParams.Left(nextIndex)); //_ParseURL(Data.sURL, "tosearch");
-					curIndex=curIndex+nextIndex+1; nextIndex=sParams.Mid(curIndex).Find(wxT("\n"));
-					((wxChoice*)wxWindow::FindWindowById(IDC_TypeSearch))->SetStringSelection(sParams.Mid(curIndex, nextIndex)); //_ParseURL(Data.sURL, "type");
-					curIndex=curIndex+nextIndex+1; nextIndex=sParams.Mid(curIndex).Find(wxT("\n"));
-					((wxSpinCtrl*)wxWindow::FindWindowById(IDC_SPINSEARCHMIN))->SetValue(StrToLong(sParams.Mid(curIndex, nextIndex))); //atol(_ParseURL(Data.sURL, "min"))*1048576;
-					curIndex=curIndex+nextIndex+1; nextIndex=sParams.Mid(curIndex).Find(wxT("\n"));
-					((wxSpinCtrl*)wxWindow::FindWindowById(IDC_SPINSEARCHMAX))->SetValue(StrToLong(sParams.Mid(curIndex, nextIndex)));
-					curIndex=curIndex+nextIndex+1; nextIndex=sParams.Mid(curIndex).Find(wxT("\n"));
-					((wxSpinCtrl*)wxWindow::FindWindowById(IDC_SPINSEARCHAVAIBILITY))->SetValue(StrToLong(sParams.Mid(curIndex, nextIndex))); //_ParseURL(Data.sURL, "avail")=="")?-1:atoi(_ParseURL(Data.sURL, "avail"));
-					curIndex=curIndex+nextIndex+1; nextIndex=sParams.Mid(curIndex).Find(wxT("\n"));
-					((wxTextCtrl*)wxWindow::FindWindowById(IDC_EDITSEARCHEXTENSION))->SetValue(sParams.Mid(curIndex, nextIndex)); //_ParseURL(Data.sURL, "ext");
-					curIndex=curIndex+nextIndex+1; nextIndex=sParams.Mid(curIndex).Find(wxT("\n"));
+					wxString searchString = sParams.Left(nextIndex);
+					searchString.Trim(true);
+					searchString.Trim(false);
 					
-					if (sParams.Mid(curIndex, nextIndex).Cmp(wxT("global")) == 0) //Method
-						((wxCheckBox*)wxWindow::FindWindowByName(wxT("globalSearch")))->SetValue(true); //SearchTypeGlobal;
-					else
-						((wxCheckBox*)wxWindow::FindWindowByName(wxT("globalSearch")))->SetValue(false); //SearchTypeServer;
+					curIndex=curIndex+nextIndex+1;
+					nextIndex=sParams.Mid(curIndex).Find(wxT("\n"));
+					wxString typeText = sParams.Mid(curIndex, nextIndex);
 					
-					wxCommandEvent evt;
-					theApp.amuledlg->searchwnd->OnBnClickedStarts(evt); //do a new search
-					return wxT("Search Done");
+					curIndex=curIndex+nextIndex+1;
+					nextIndex=sParams.Mid(curIndex).Find(wxT("\n"));
+					uint32 min = StrToLong(sParams.Mid(curIndex, nextIndex));
+					
+					curIndex=curIndex+nextIndex+1;
+					nextIndex=sParams.Mid(curIndex).Find(wxT("\n"));
+					uint32 max = StrToLong(sParams.Mid(curIndex, nextIndex));
+					
+					curIndex=curIndex+nextIndex+1;
+					nextIndex=sParams.Mid(curIndex).Find(wxT("\n"));
+					uint32 avaibility = StrToLong(sParams.Mid(curIndex, nextIndex));
+					
+					curIndex=curIndex+nextIndex+1;
+					nextIndex=sParams.Mid(curIndex).Find(wxT("\n"));
+					wxString extension = sParams.Mid(curIndex, nextIndex);
+					
+					curIndex=curIndex+nextIndex+1;
+					nextIndex=sParams.Mid(curIndex).Find(wxT("\n"));
+					bool globalsearch = !sParams.Mid(curIndex, nextIndex).Cmp(wxT("global"));
+				
+					theApp.searchlist->RemoveResults(0xffff);
+					theApp.searchlist->NewSearch(typeText, 0xffff);
+					Packet *packet = CreateSearchPacket(searchString, typeText, extension, min, max, avaibility);
+				
+					// this is internal core call, but macro is useful anyway
+					CoreNotify_Search_Req(packet, globalsearch);
 				}
 				return wxT("Bad DONEWSEARCH request");
 			}
