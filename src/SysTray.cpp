@@ -566,12 +566,7 @@ CSysTray::CSysTray(wxWindow* _parent,int _desktopMode, const wxString& title)
 {
   
   desktopMode=_desktopMode;
-   // not wanted, so don't show it.
-  if(desktopMode==4) return;
     
-  static GtkWidget *eventbox;
-  gdk_rgb_init();
-
   /* argH!!! */
   m_sDimensions.cx=16;
   m_sDimensions.cy=16;
@@ -583,10 +578,23 @@ CSysTray::CSysTray(wxWindow* _parent,int _desktopMode, const wxString& title)
 
   parent=_parent;
 
+  status_docklet = NULL;
+  status_image = NULL;
+  status_tooltips = NULL;
+ 
+  m_nEntries = 0;
+  
+   // not wanted, so don't show it.
+  if ( desktopMode == 4 ) 
+	  return;
+
   bool use_legacy=false;
 
   // case 2 and 3 are KDE/other legacy system
   if(desktopMode==2 || desktopMode==3)  use_legacy=true;
+  
+  static GtkWidget *eventbox = NULL;
+  gdk_rgb_init();
 
   if(use_legacy) 
   {
