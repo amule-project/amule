@@ -56,6 +56,10 @@ wxString GetMuleVersion()
 
 	ver += wxString::Format(wxT(" v%d.%d.%d"), wxMAJOR_VERSION, wxMINOR_VERSION, wxRELEASE_NUMBER );
 
+#ifdef wxUSE_UNICODE
+	ver += wxT(" (Unicoded)");
+#endif
+	
 	return ver;
 }
 
