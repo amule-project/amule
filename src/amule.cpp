@@ -1780,8 +1780,8 @@ void CamuleApp::NotifyEvent(GUIEvent event)
 			if ((file->GetStatus(false) == PS_READY || file->GetStatus(false) == PS_EMPTY)) {
 				downloadqueue->DisableAllA4AFAuto();
 
-				CPartFile::SourceSet::iterator it;
-				for ( it = file->A4AFsrclist.begin(); it != file->A4AFsrclist.end(); ) {
+				CPartFile::SourceSet::iterator it = file->A4AFsrclist.begin();
+				for ( ; it != file->A4AFsrclist.end(); ) {
 					CUpDownClient *cur_source = *it++;
 					if ((cur_source->GetDownloadState() != DS_DOWNLOADING) && cur_source->GetRequestFile() &&
 					    ( (!cur_source->GetRequestFile()->IsA4AFAuto()) ||
@@ -1798,8 +1798,10 @@ void CamuleApp::NotifyEvent(GUIEvent event)
 				downloadqueue->DisableAllA4AFAuto();
 
 				CPartFile::SourceSet::iterator it = file->m_SrcList.begin();
-				for( ; it != file->m_SrcList.end(); ++it ) {
-					(*it)->SwapToAnotherFile(false, false, false, NULL);
+				for( ; it != file->m_SrcList.end(); ) {
+					CUpDownClient* cur_source = *it++;
+					
+					cur_source->SwapToAnotherFile(false, false, false, NULL);
 				}
 			}
 			break;
