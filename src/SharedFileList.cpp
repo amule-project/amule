@@ -101,6 +101,9 @@ void CSharedFileList::FindSharedFiles() {
 
 void CSharedFileList::AddFilesFromDirectory(wxString directory)
 {
+	if ( !wxDirExists( directory ) )
+		return;
+
 
 	if (directory.Last() != wxFileName::GetPathSeparator()) {
 		directory += wxFileName::GetPathSeparator();
