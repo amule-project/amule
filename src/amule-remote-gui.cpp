@@ -833,8 +833,9 @@ CPartFile *CDownQueueRem::CreateItem(CEC_PartFile_Tag *tag)
 	return file;
 }
 
-void CDownQueueRem::DeleteItem(CPartFile *)
+void CDownQueueRem::DeleteItem(CPartFile *file)
 {
+	m_enc_map.erase(file->GetFileHash());
 }
 
 CMD4Hash CDownQueueRem::GetItemID(CPartFile *file)
