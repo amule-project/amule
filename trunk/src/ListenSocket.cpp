@@ -1680,7 +1680,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 					throw wxString(wxT("Invalid size (OP_QUEUERANKING)"));
 				}
 
-				uint16 newrank = ENDIAN_SWAP_16(PeekUInt16(packet));
+				uint16 newrank = PeekUInt16(packet);
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0)
 					Debug("  %u (prev. %d)\n", newrank, m_client->IsRemoteQueueFull() ? (UINT)-1 : (UINT)m_client->GetRemoteQueueRank());
