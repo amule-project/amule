@@ -18,7 +18,9 @@
 //along with this program; if not, write to the Free Software
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-#pragma once
+#ifndef __AICHSYNCTHREAD_H__
+#define __AICHSYNCTHREAD_H__
+
 #include <wx/thread.h>
 #include <wx/object.h>
 #include <list>
@@ -43,3 +45,5 @@ public:
 private:
 	KnownFilePtrList m_liToHash;
 };
+
+#endif // __AICHSYNCTHREAD_H__

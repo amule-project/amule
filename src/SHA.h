@@ -56,7 +56,9 @@
  stored in memory. It runs at 22 cycles per byte on a Pentium P4 processor
 */
 
-#pragma once
+#ifndef __SHA_H__
+#define __SHA_H__
+
 #include "types.h"
 #include "SHAHashSet.h"
 
@@ -82,3 +84,5 @@ private:
 
 #define SHA1_BLOCK_SIZE		64
 #define SHA1_DIGEST_SIZE	20
+
+#endif // __SHA_H__
