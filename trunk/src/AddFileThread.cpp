@@ -290,8 +290,11 @@ void CAddFileThread::AddFile(const wxString& path, const wxString& name, const C
 		// Avoid duplicate files
 		FileQueue::iterator it = s_queue.begin();
 		for ( ; it != s_queue.end(); ++it )
-			if ( ( name == (*it)->m_name ) && ( path == (*it)->m_path ) )
+			if ( ( name == (*it)->m_name ) && ( path == (*it)->m_path ) ) {
+				// Duplicated
+				delete hashfile;
 				return;
+			}
 
 		
 		// If it's a partfile (part != NULL), then add it to the front so that
