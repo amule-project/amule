@@ -24,8 +24,8 @@
        #include <sys/types.h>
 #endif /* __BSD__ */
 	#include <sys/socket.h>		//
-	#include <net/if.h>		// Needed for struct ifreq
 	#include <netinet/in.h>		// Needed for inet_ntoa
+	#include <net/if.h>		// Needed for struct ifreq
 	#include <arpa/inet.h>		//
 	#include <sys/ioctl.h>		// Needed for SIOCGIFADDR
 	#include <gtk/gtk.h>		// Needed for gtk_object_get_data

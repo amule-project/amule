@@ -179,7 +179,9 @@ static void SetResourceLimits()
 	UnlimitResource(RLIMIT_DATA);
 	UnlimitResource(RLIMIT_FSIZE);
 	UnlimitResource(RLIMIT_NOFILE);
+#ifdef RLIMIT_RSS
 	UnlimitResource(RLIMIT_RSS);
+#endif
 #endif
 }
 
