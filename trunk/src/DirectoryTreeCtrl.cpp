@@ -351,16 +351,12 @@ void CDirectoryTreeCtrl::AddShare(wxString strDir)
 		return;
 	}
 	
-	wxMessageBox(wxT("Added ") + strDir);
-	
 	m_lstShared.Add(strDir);
 }
 
 void CDirectoryTreeCtrl::DelShare(wxString strDir)
 {
 	wxASSERT(strDir.Len() > 0);
-	
-	wxMessageBox(wxT("Removed ") + strDir);
 	
 	m_lstShared.Remove(strDir);
 }
