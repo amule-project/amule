@@ -1365,21 +1365,26 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 						
 				cdcStatus.SelectObject( *item->status );
 				
-				DrawFileStatusBar( file, &cdcStatus,
-					wxRect(1, 1, iWidth - 2, iHeight - 2), thePrefs::UseFlatBar());
+				if ( thePrefs::UseFlatBar() ) {
+					DrawFileStatusBar( file, &cdcStatus,
+						wxRect(0, 0, iWidth, iHeight), true);
+				} else {
+					DrawFileStatusBar( file, &cdcStatus,
+						wxRect(1, 1, iWidth - 2, iHeight - 2), false);
 		
-				// Draw black border
-				cdcStatus.SetPen( *wxBLACK_PEN );
-				cdcStatus.SetBrush( *wxTRANSPARENT_BRUSH );
-				cdcStatus.DrawRectangle( 0, 0, iWidth, iHeight );
+					// Draw black border
+					cdcStatus.SetPen( *wxBLACK_PEN );
+					cdcStatus.SetBrush( *wxTRANSPARENT_BRUSH );
+					cdcStatus.DrawRectangle( 0, 0, iWidth, iHeight );
+				}
 			
 				item->dwUpdated = dwTicks + 5000; // Plus five seconds
 			} else {
 				cdcStatus.SelectObject( *item->status );
 			}
 			
-			dc->Blit( rect.GetX(), rect.GetY() + 1,
-				iWidth, iHeight, &cdcStatus, 0, 0);
+			dc->Blit( rect.GetX(), rect.GetY() + 1, iWidth, iHeight, &cdcStatus, 0, 0);
+
 			cdcStatus.SelectObject(wxNullBitmap);
 		}
 		
@@ -1642,22 +1647,25 @@ void CDownloadListCtrl::DrawSourceItem(
 						
 						if (item->status == NULL) {
 							item->status = new wxBitmap(iWidth, iHeight);
-						} else {
+						} else if ( item->status->GetWidth() != iWidth ) {
 							// Only recreate if size has changed
-							if ( item->status->GetWidth() != iWidth )
-								item->status->Create(iWidth, iHeight);
+							item->status->Create(iWidth, iHeight);
 						}
 
 						cdcStatus.SelectObject(*(item->status));
 
-						DrawSourceStatusBar( client, &cdcStatus,
-							wxRect(1, 1, iWidth - 1, iHeight - 1),
-							thePrefs::UseFlatBar());
+						if ( thePrefs::UseFlatBar() ) {
+							DrawSourceStatusBar( client, &cdcStatus,
+								wxRect(0, 0, iWidth, iHeight), true);
+						} else {
+							DrawSourceStatusBar( client, &cdcStatus,
+								wxRect(1, 1, iWidth - 2, iHeight - 2), false);
 				
-						// Draw black border
-						cdcStatus.SetPen( *wxBLACK_PEN );
-						cdcStatus.SetBrush( *wxTRANSPARENT_BRUSH );
-						cdcStatus.DrawRectangle( 0, 0, iWidth, iHeight );		
+							// Draw black border
+							cdcStatus.SetPen( *wxBLACK_PEN );
+							cdcStatus.SetBrush( *wxTRANSPARENT_BRUSH );
+							cdcStatus.DrawRectangle( 0, 0, iWidth, iHeight );
+						}
 						
 						// Plus ten seconds
 						item->dwUpdated = dwTicks + 10000;
@@ -1665,8 +1673,8 @@ void CDownloadListCtrl::DrawSourceItem(
 						cdcStatus.SelectObject(*(item->status));
 					}
 
-					dc->Blit(rect.GetX(), rect.GetY() + 1,
-						iWidth, iHeight, &cdcStatus, 0, 0);
+					dc->Blit(rect.GetX(), rect.GetY() + 1, iWidth, iHeight, &cdcStatus, 0, 0);
+					
 					cdcStatus.SelectObject(wxNullBitmap);
 				} else {
 					wxString buffer = _("A4AF");
@@ -2179,8 +2187,8 @@ void CDownloadListCtrl::DrawSourceStatusBar(
 	CPartFile* reqfile = source->GetRequestFile();
 
 	s_StatusBar.SetFileSize( reqfile->GetFileSize() );
-	s_StatusBar.SetHeight(rect.height - rect.y);
-	s_StatusBar.SetWidth(rect.width - rect.x);
+	s_StatusBar.SetHeight(rect.height);
+	s_StatusBar.SetWidth(rect.width);
 	s_StatusBar.Fill(crNeither);
 	s_StatusBar.Set3dDepth( thePrefs::Get3DDepth() );
 
