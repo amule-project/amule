@@ -268,6 +268,79 @@ CECPacket *ExternalConn::Authenticate(const CECPacket *request)
 }
 
 
+CECPacket *Get_EC_Response_StatRequest(const CECPacket *request)
+{
+	wxASSERT(request->GetOpCode() == EC_OP_STAT_REQ);
+	
+	unsigned int filecount = theApp.downloadqueue->GetFileCount();
+	wxString ServerStatus;
+	if (theApp.serverconnect->IsConnected()) {
+		ServerStatus = wxString(_("Connected"));
+	} else {
+		if (theApp.serverconnect->IsConnecting()) {
+			ServerStatus = wxString(_("Connecting"));
+		} else {
+			ServerStatus = wxString(_("Not connected"));
+		}
+	}
+	// get the source count
+	uint32 stats[2];
+	theApp.downloadqueue->GetDownloadStats(stats);
+	CECPacket *response = new CECPacket(EC_OP_STRINGS);
+	response->AddTag(CECTag(EC_TAG_STRING, 
+		wxString::Format(_("Server: ") + ServerStatus +
+		_("\n"
+		"Statistics: \n"
+		" Downloading files: %u\n"
+		" Found sources: %d\n"
+		" Active downloads: %d\n"
+		" Active Uploads: %d\n"
+		" Users on upload queue: %d"), 
+			filecount, stats[0], stats[1],
+			theApp.uploadqueue->GetUploadQueueLength(),
+			theApp.uploadqueue->GetWaitingUserCount())));
+	return response;
+}
+
+CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request)
+{
+	wxASSERT(request->GetOpCode() == EC_OP_GET_DLOAD_QUEUE);
+	
+	CECPacket *response = new CECPacket(EC_OP_DLOAD_QUEUE);
+	
+	for (unsigned int i = 0; i < theApp.downloadqueue->GetFileCount(); i++) {
+		CPartFile *cur_file = theApp.downloadqueue->GetFileByIndex(i);
+		CECTag filetag(EC_TAG_PARTFILE, cur_file->GetFullName());
+
+		filetag.AddTag(CECTag(EC_TAG_PARTFILE_SIZE_FULL,
+			wxString::Format("%ul",cur_file->GetFileSize())));
+		filetag.AddTag(CECTag(EC_TAG_PARTFILE_SIZE_XFER,
+			wxString::Format("%ul",cur_file->GetTransfered())));
+		filetag.AddTag(CECTag(EC_TAG_PARTFILE_SIZE_DONE,
+			wxString::Format("%ul",cur_file->GetCompletedSize())));
+		filetag.AddTag(CECTag(EC_TAG_PARTFILE_DOWN_SPEED,
+			wxString::Format("%li",(long)(cur_file->GetKBpsDown()*1024))));
+		filetag.AddTag(CECTag(EC_TAG_PARTFILE_STATUS,
+			wxString::Format("%d",cur_file->GetStatus())));
+		filetag.AddTag(CECTag(EC_TAG_PARTFILE_PRIO,
+			wxString::Format("%d",cur_file->IsAutoDownPriority() ? 
+							cur_file->GetDownPriority() + 10 :
+							cur_file->GetDownPriority())));
+		filetag.AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT,
+			wxString::Format("%d",cur_file->GetSourceCount())));
+		filetag.AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT,
+			wxString::Format("%d",cur_file->GetNotCurrentSourcesCount())));
+		filetag.AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT_XFER,
+			wxString::Format("%d",cur_file->GetTransferingSrcCount())));
+		filetag.AddTag(CECTag(EC_TAG_PARTFILE_ED2K_LINK,
+					(theApp.serverconnect->IsConnected() && !theApp.serverconnect->IsLowID()) ?
+						theApp.CreateED2kSourceLink(cur_file) :
+						theApp.CreateED2kLink(cur_file)));
+	}
+
+	return 	response;
+}
+
 CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request)
 {
 	CECPacket *response = NULL;
@@ -278,10 +351,40 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request)
 			response->AddTag(CECTag(EC_TAG_STRING,
 				ProcessRequest(request->GetTagByIndex(0)->GetTagString())));
 			break;
+		case EC_OP_SHUTDOWN:
+			AddLogLineM(true, _("ExternalConn: shutdown requested"));
+			theApp.ExitMainLoop();
+			break;
+		case EC_OP_STAT_REQ:
+			response = Get_EC_Response_StatRequest(request);
+			break;
+		case EC_OP_ED2K_LINK: 
+			for(int i = 0; i < request->GetTagCount();i++) {
+				CECTag *tag = request->GetTagByIndex(i);
+				wxString link = tag->GetTagString();
+				CED2KLink* pLink=CED2KLink::CreateLinkFromUrl(link);
+				if ( pLink->GetKind() == CED2KLink::kFile ) {
+					theApp.downloadqueue->AddFileLinkToDownload(pLink->GetFileLink(), 0);
+				} else {
+					AddLogLineM(true, _("ExternalConn: ed2k link is not a file"));
+				}
+			}
+			break;
+		case EC_OP_Q_FILE_CMD:
+			for(int i = 0; i < request->GetTagCount();i++) {
+				CECTag *tag = request->GetTagByIndex(i);
+				wxString cmd = tag->GetTagString();
+				/*
+				 * command format:
+				 *  PartFile id: [0-9a-f]{8}
+				 *  command id : [0-9]{2}
+				 */
+			}
+			break;
 		default:
 			AddLogLineM(false, _("ExternalConn: invalid opcode received"));
 			break;
-	}		
+	}	
 	return response;
 }
 
@@ -2304,14 +2407,18 @@ void *ExternalConnClientThread::Entry()
 	while ( !TestDestroy() ) {
 		if ( m_sock->WaitForLost(0, 0) ) {
 			AddLogLineM(false, _("ExternalConnClientThread: connection closed\n"));
-			return 0;
+			break;
 		}
 		if (m_sock->WaitForRead()) {
 			request = m_owner->m_ECServer->ReadPacket(m_sock);
 			response = m_owner->ProcessRequest2(request);
 			delete request;
-			m_owner->m_ECServer->WritePacket(m_sock, response);
-			delete response;
+			if ( response ) {
+				m_owner->m_ECServer->WritePacket(m_sock, response);
+				delete response;
+			} else {
+				break;
+			}
 		}
 	}
 	return 0;
