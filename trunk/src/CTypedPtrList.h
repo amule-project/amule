@@ -20,7 +20,23 @@
 #ifndef CTYPEDPTRLIST_H
 #define CTYPEDPTRLIST_H
 
-#include "position.h"	// Needed for POSITION
+/**
+ * The iterators used by CList.
+ *
+ * This is really nothing but a transparent wrapper around a void pointer, 
+ * but with the advantage that it is initialized for us.
+ */
+struct POSITION 
+{
+	POSITION(void* ptr = NULL)
+		: m_ptr( ptr ) {}
+
+	operator void*() {
+		return m_ptr;
+	}
+
+	void* m_ptr;
+};
 
 
 template <class TYPE, class ARG_TYPE = TYPE const&>
@@ -123,11 +139,7 @@ public:
 		wxASSERT( head );
 		TYPE oldvalue = head->data;
 
-#ifndef USE_INSANE_POSITION
-		RemoveAt((POSITION)head);
-#else
-		RemoveAt(POSITION(head));
-#endif
+		RemoveAt( head );
 		
 		return oldvalue;
 	}
@@ -139,11 +151,7 @@ public:
 		wxASSERT( tail );
 		TYPE olddata = tail->data;
 		
-#ifndef USE_INSANE_POSITION
-		RemoveAt((POSITION)tail);
-#else
-		RemoveAt(POSITION(tail));
-#endif
+		RemoveAt( tail );
 
 		return olddata;
 	}
@@ -163,11 +171,7 @@ public:
 		head = newnode;
 		count++;
 		// return position to head
-#ifndef USE_INSANE_POSITION
-		return (POSITION)head;
-#else
-		return POSITION(head);
-#endif
+		return head;
 	}
 
 	
@@ -185,11 +189,7 @@ public:
 		tail = newnode;
 		count++;
 
-#ifndef USE_INSANE_POSITION
-		return (POSITION)tail;
-#else
-		return POSITION(tail);
-#endif
+		return tail;
 	}
 
 	
@@ -210,57 +210,34 @@ public:
 	
 	// Returns an iterator to the first element
 	POSITION GetHeadPosition() const { 
-#ifndef USE_INSANE_POSITION
-		return (POSITION)head;
-#else
-		return POSITION(head);
-#endif
+		return head;
 	}
 	
 	
 	// Returns an iterator to the last element
 	POSITION GetTailPosition() const {
-#ifndef USE_INSANE_POSITION
-		return (POSITION)tail;
-#else
-		return POSITION(tail);
-#endif
+		return tail;
 	}
 
 	
 	// Increments an iterator and returns a reference to the value at its original position
 	TYPE& GetNext( POSITION& pos )
 	{
-#ifndef USE_INSANE_POSITION
-		MYNODE* n = (MYNODE*)pos;
-#else
 		MYNODE* n = (MYNODE*)pos.m_ptr;
-#endif
 		wxASSERT( n );
 		TYPE& data = n->data;
-		n = n->next;
-#ifndef USE_INSANE_POSITION
-		pos = (POSITION)n;
-#else
-		pos = POSITION(n);
-#endif
+		pos.m_ptr = n->next;
+		
 		return data;
 	}
 	
 	const TYPE& GetNext( POSITION& pos ) const
 	{
-#ifndef USE_INSANE_POSITION
-		MYNODE* n = (MYNODE*)pos;
-#else
 		MYNODE* n = (MYNODE*)pos.m_ptr;
-#endif
 		wxASSERT( n );
 		TYPE& data = n->data;
-#ifndef USE_INSANE_POSITION
-		pos = (POSITION)(n->next);
-#else
-		pos = POSITION(n->next);
-#endif
+		pos.m_ptr = n->next;
+		
 		return data;
 	}
 
@@ -268,35 +245,22 @@ public:
 	// Increments an iterator and returns a reference to the value at its original position
 	TYPE& GetPrev( POSITION& pos )
 	{
-#ifndef USE_INSANE_POSITION
-		MYNODE* n = (MYNODE*)pos;
-#else
 		MYNODE* n = (MYNODE*)pos.m_ptr;
-#endif
 		wxASSERT( n );
 		TYPE& data = n->data;
-#ifndef USE_INSANE_POSITION
-		pos = (POSITION)(n->prev);
-#else
-		pos = POSITION(n->prev);
-#endif
+		pos.m_ptr = n->prev;
+		
 		return data;
 	}
 	
 	const TYPE& GetPrev( POSITION& pos ) const
 	{
-#ifndef USE_INSANE_POSITION
-		MYNODE* n = (MYNODE*)pos;
-#else
 		MYNODE* n = (MYNODE*)pos.m_ptr;
-#endif
+		
 		wxASSERT( n );
 		TYPE& data = n->data;
-#ifndef USE_INSANE_POSITION
-		pos = (POSITION)(n->prev);
-#else
-		pos = POSITION(n->prev);
-#endif
+		pos.m_ptr = n->prev;
+		
 		return data;
 	}
 
@@ -304,22 +268,14 @@ public:
 	// Returns a reference to the value at iterator pos
 	TYPE& GetAt( POSITION pos )
 	{
-#ifndef USE_INSANE_POSITION
-		MYNODE* n = (MYNODE*)pos;
-#else
 		MYNODE* n = (MYNODE*)pos.m_ptr;
-#endif
 		wxASSERT( n );
 		return n->data;
 	}
 	
 	const TYPE& GetAt( POSITION pos ) const
 	{
-#ifndef USE_INSANE_POSITION
-		MYNODE* n = (MYNODE*)pos;
-#else
 		MYNODE* n = (MYNODE*)pos.m_ptr;
-#endif
 		wxASSERT( n );
 		return n->data;
 	}
@@ -328,26 +284,16 @@ public:
 	// Increments an iterator
 	POSITION NextAt( POSITION pos )
 	{
-#ifndef USE_INSANE_POSITION
-		MYNODE* n = (MYNODE*)pos;
-		return ( n == NULL ) ? NULL : (POSITION)(n->next);
-#else
 		MYNODE* n = (MYNODE*)pos.m_ptr;
-		return ( n == NULL ) ? POSITION(NULL) : POSITION(n->next);
-#endif
+		return ( n == NULL ) ? NULL : n->next;
 	}
 
 	
 	// Decrements an iterator
 	POSITION PrevAt( POSITION pos )
 	{
-#ifndef USE_INSANE_POSITION
-		MYNODE* n = (MYNODE*)pos;
-		return ( n == NULL ) ? NULL : (POSITION)(n->prev);
-#else
 		MYNODE* n = (MYNODE*)pos.m_ptr;
-		return ( n == NULL ) ? POSITION(NULL) : POSITION(n->prev);
-#endif
+		return ( n == NULL ) ? NULL : n->prev;
 	}
 	
 
@@ -355,18 +301,10 @@ public:
 	// Returns position of node that followed the one that was removed
 	POSITION RecycleNodeAsTail( POSITION pos )
 	{
-#ifndef USE_INSANE_POSITION
-		MYNODE* n = (MYNODE*)pos;
-#else
 		MYNODE* n = (MYNODE*)pos.m_ptr;
-#endif
 		
 		if ( n == NULL || n == tail )
-#ifndef USE_INSANE_POSITION
-			return POSITION(n);
-#else
-			return (POSITION)n;
-#endif
+			return n;
 			
 		if ( n == head )  	  			// are we removing the head?
 			head = n->next;				//  yes: then we have a new head
@@ -380,21 +318,13 @@ public:
 
 		MYNODE* r = n->next;
 		tail->next = NULL;
-#ifndef USE_INSANE_POSITION
-			return POSITION(r);
-#else
-			return (POSITION)r;
-#endif
+			return r;
 	};
 
 
-	void RemoveAt( POSITION pos )
+	void RemoveAt( POSITION& pos )
 	{
-#ifndef USE_INSANE_POSITION
-		MYNODE* n = (MYNODE*)pos;
-#else
 		MYNODE* n = (MYNODE*)pos.m_ptr;
-#endif
 		wxASSERT( n );
 		
 		// are we removing the head?
@@ -411,6 +341,8 @@ public:
 		}
 		freeNode( n );
 		count--;
+
+		pos.m_ptr = NULL;
 	}
 
 
@@ -418,11 +350,7 @@ public:
 	// and update the iterator to contain the position of the new node
 	void InsertAfter( POSITION pos, ARG_TYPE data )
 	{
-#ifndef USE_INSANE_POSITION
-		MYNODE* n = (MYNODE*)pos;
-#else
 		MYNODE* n = (MYNODE*)pos.m_ptr;
-#endif
 		if ( n ) {
 			MYNODE* newnode = newNode( data );
 			newnode->prev = n;
@@ -447,28 +375,16 @@ public:
 		if ( head ) {
 			MYNODE* n = head;
 			if ( startAfter ) {
-#ifndef USE_INSANE_POSITION
-				n = ((MYNODE*)startAfter)->next;
-#else
 				n = ((MYNODE*)startAfter.m_ptr)->next;
-#endif
 			}
 			while ( n ) {
 				if ( n->data == searchValue ) {
-#ifndef USE_INSANE_POSITION
-					return POSITION(n);
-#else
-					return (POSITION)n;
-#endif
+					return n;
 				}
 				n = n->next;
 			}
 		}
-#ifndef USE_INSANE_POSITION
-			return POSITION(NULL);
-#else
-			return (POSITION)NULL;
-#endif
+		return NULL;
 	}
 
 	
@@ -480,27 +396,16 @@ public:
 			if ( n ) {
 				n = n->next;
 			} else {
-#ifndef USE_INSANE_POSITION
-				return POSITION(NULL);
-#else
-				return (POSITION)NULL;
-#endif
+				return NULL;
 			}
 		}
-#ifndef USE_INSANE_POSITION
-			return POSITION(n);
-#else
-			return (POSITION)n;
-#endif
+	
+		return n;
 	}
 
 	// Sets the value at "pos"
 	void SetAt( POSITION& pos, ARG_TYPE data ) {
-#ifndef USE_INSANE_POSITION
-		MYNODE* n = (MYNODE*)pos;
-#else
 		MYNODE* n = (MYNODE*)pos.m_ptr;
-#endif
 		wxASSERT( n );
 		n->data = data; 
 	}

@@ -21,7 +21,7 @@
 #define DOWNLOADQUEUE_H
 
 #include "types.h"		// Needed for uint8, uint16, uint32 and uint64
-#include "position.h"
+#include "CTypedPtrList.h"
 #include "CMD4Hash.h"
 #include <deque>
 #include <list>
