@@ -355,3 +355,9 @@ bool CClientList::IsBannedClient(uint32 dwIP){
 void CClientList::RemoveBannedClient(uint32 dwIP){
 	m_bannedList.erase(dwIP);
 }
+
+void CClientList::FilterQueues() {
+	theApp.uploadqueue->RemoveFiltered();
+	theApp.downloadqueue->RemoveFiltered();
+}
+

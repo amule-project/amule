@@ -146,7 +146,9 @@ public:
 	
 	void SaveSourceSeeds();
 	void LoadSourceSeeds();
-	
+
+	void	RemoveFiltered();
+
 protected:
 	bool	SendNextUDPPacket();
 	void	ProcessLocalRequests();
