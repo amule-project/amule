@@ -56,6 +56,9 @@ public:
 	
 	void SetSize(int newsiz,int growby=-1) {
 		intArr.Alloc(newsiz);
+		if (newsiz > intArr.GetCount()) {
+			intArr.Add(NULL, newsiz - intArr.GetCount());
+		}
 	};
 	
 	bool IsEmpty() const {
