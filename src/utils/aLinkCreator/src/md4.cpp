@@ -393,10 +393,7 @@ wxString MD4::calcEd2kFromFile(const wxString &filename)
                     read);
         }
       MD4Final(&hdc, ret);
-
-      // MD4_HASHLEN_BYTE is ABSOLUTLY needed as we dont want NULL
-      // character to be interpreted as the end of the parthash string
-      tmpHash += wxString(reinterpret_cast<const char *>(ret),MD4_HASHLEN_BYTE);
+      tmpHash += wxString::Format(wxT("%s"), ret);
 
       // If some more blocks left, re-init for next block
       if (!file.Eof())
