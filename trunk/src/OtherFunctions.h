@@ -39,7 +39,7 @@
 #endif	
 
 #include "Types.h"		// Needed for uint16, uint32 and uint64
-#include "EndianFix.h"
+#include "ArchSpecific.h"
 #include "OtherStructs.h" // for Gap_Struct
 
 namespace otherfunctions {
@@ -270,31 +270,41 @@ const uint8 PMT_DEFAULTOLD=1;
 const uint8 PMT_SPLITTED=2;
 const uint8 PMT_NEWOLD=3;
 
-
 // md4cmp -- replacement for memcmp(hash1,hash2,16)
 // Like 'memcmp' this function returns 0, if hash1==hash2, and !0, if hash1!=hash2.
 // NOTE: Do *NOT* use that function for determining if hash1<hash2 or hash1>hash2.
-inline int md4cmp(const void* hash1, const void* hash2) {
-	return !(((uint32*)hash1)[0] == ((uint32*)hash2)[0] &&
-		     ((uint32*)hash1)[1] == ((uint32*)hash2)[1] &&
-		     ((uint32*)hash1)[2] == ((uint32*)hash2)[2] &&
-		     ((uint32*)hash1)[3] == ((uint32*)hash2)[3]);
+inline int md4cmp(const void* hash1, const void* hash2)
+{
+	const char* hashA = (const char*)hash1;
+	const char* hashB = (const char*)hash2;
+	
+	return !(
+		RawPeekUInt64( hashA		) == RawPeekUInt64( hashB		) &&
+		RawPeekUInt64( hashA + 8	) == RawPeekUInt64( hashB + 8	)
+	);
 }
 
 
 // md4clr -- replacement for memset(hash,0,16)
-inline void md4clr(const void* hash) {
-	((uint32*)hash)[0] = ((uint32*)hash)[1] = ((uint32*)hash)[2] = ((uint32*)hash)[3] = 0;
+inline void md4clr(void* hash)
+{
+	char* pDst = (char*)hash;
+
+	RawPokeUInt64( pDst,		0 );
+	RawPokeUInt64( pDst + 8,	0 );
 }
 
 
 // md4cpy -- replacement for memcpy(dst,src,16)
-inline void md4cpy(const void* dst, const void* src) {
-	((uint32*)dst)[0] = ((uint32*)src)[0];
-	((uint32*)dst)[1] = ((uint32*)src)[1];
-	((uint32*)dst)[2] = ((uint32*)src)[2];
-	((uint32*)dst)[3] = ((uint32*)src)[3];
+inline void md4cpy(const void* dst, const void* src)
+{
+	char* pDst = (char*)dst;
+	const char* pSrc = (const char*)src;
+	
+	RawPokeUInt64( pDst, 		RawPeekUInt64( pSrc		) );
+	RawPokeUInt64( pDst + 8,	RawPeekUInt64( pSrc + 8	) );
 }
+
 
 // DumpMem ... Dumps mem ;)
 void DumpMem(const void *buff, int n, const wxString *msg = NULL, bool ok = true);

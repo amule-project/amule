@@ -26,8 +26,8 @@
 #endif
 
 #include <wx/string.h>
-#include <ctype.h>
 #include "Types.h"
+#include "ArchSpecific.h"
 
 #define MD4HASH_LENGTH 16
 
@@ -64,8 +64,8 @@ public:
 	 */
 	CMD4Hash(const unsigned char hash[]) {
 		if ( hash ) {
-			((uint64*)m_hash)[0] = ((uint64*)hash)[0];
-			((uint64*)m_hash)[1] = ((uint64*)hash)[1];
+			RawPokeUInt64( m_hash,		RawPeekUInt64( hash ) );
+			RawPokeUInt64( m_hash + 8,	RawPeekUInt64( hash + 8 ) );
 		} else {
 			Clear();
 		}
@@ -98,8 +98,10 @@ public:
 	 * Returns true if all fields of both hashes are the same.
 	 */
 	bool operator == (const CMD4Hash& other_hash) const {
-		return (((uint64*)m_hash)[0] == ((uint64*)other_hash.m_hash)[0] &&
-				((uint64*)m_hash)[1] == ((uint64*)other_hash.m_hash)[1] );
+		return (
+			( RawPeekUInt64( m_hash      ) == RawPeekUInt64( other_hash.m_hash      ) ) &&
+			( RawPeekUInt64( m_hash + 8  ) == RawPeekUInt64( other_hash.m_hash + 8  ) )
+		);
 	}
 	
 	/**
@@ -142,8 +144,10 @@ public:
 	 * To achive an empty hash, the function Clear() can be used.
 	 */
 	bool IsEmpty() const {
-		return (((uint64*)m_hash)[0] == 0 &&
-				((uint64*)m_hash)[1] == 0);
+		return (
+			!RawPeekUInt64( m_hash      ) &&
+			!RawPeekUInt64( m_hash + 8  )
+		);	
 	}
 	
 	/** 
@@ -153,8 +157,8 @@ public:
 	 * IsEmpty() will return true after a call to this function.
 	 */
 	void Clear() {
-		((uint64*)m_hash)[0] = 0;
-		((uint64*)m_hash)[1] = 0;
+		RawPokeUInt64( m_hash,			0 );
+		RawPokeUInt64( m_hash + 8,		0 );
 	}
 
 	

@@ -1,21 +1,23 @@
+//
 // This file is part of the aMule Project
 //
 // Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
 // Copyright (C) 2002 Merkur ( merkur-@users.sourceforge.net / http://www.emule-project.net )
 //
-//This program is free software; you can redistribute it and/or
-//modify it under the terms of the GNU General Public License
-//as published by the Free Software Foundation; either
-//version 2 of the License, or (at your option) any later version.
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either
+// version 2 of the License, or (at your option) any later version.
 //
-//This program is distributed in the hope that it will be useful,
-//but WITHOUT ANY WARRANTY; without even the implied warranty of
-//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//GNU General Public License for more details.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 //
-//You should have received a copy of the GNU General Public License
-//along with this program; if not, write to the Free Software
-//Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+//
 
 #ifndef SAFEFILE_H
 #define SAFEFILE_H
@@ -27,7 +29,6 @@
 #include "CFile.h"		// Needed for CFile
 #include "Types.h"		// Needed for LPCSTR
 #include "MemFile.h"		// Needed for CMemFile
-#include "EndianFix.h"		// Needed for ENDIAN_SWAP_*
 #include "StringFunctions.h"		// Needed for the utf8 types.
 
 namespace Kademlia{
@@ -149,44 +150,5 @@ class CSafeBufferedFile : public CFile, public CFileDataIO
 	}
 };
  
-
-
-///////////////////////////////////////////////////////////////////////////////
-// Peek - helper functions for read-accessing memory without modifying the memory pointer
-
-__inline uint8 PeekUInt8(const void* p)
-{
-	return *((uint8*)p);
-}
-
-__inline uint16 PeekUInt16(const void* p)
-{
-	return ENDIAN_SWAP_16(*((uint16*)p));
-}
-
-__inline uint32 PeekUInt32(const void* p)
-{
-	return ENDIAN_SWAP_32(*((uint32*)p));
-}
-
-
-///////////////////////////////////////////////////////////////////////////////
-// Poke - helper functions for write-accessing memory without modifying the memory pointer
-
-__inline void PokeUInt8(void* p, uint8 nVal)
-{
-	*((uint8*)p) = nVal;
-}
-
-__inline void PokeUInt16(void* p, uint16 nVal)
-{
-	*((uint16*)p) = ENDIAN_SWAP_16(nVal);
-}
-
-__inline void PokeUInt32(void* p, uint32 nVal)
-{
-	*((uint32*)p) = ENDIAN_SWAP_32(nVal);
-}
-
 
 #endif // SAFEFILE_H

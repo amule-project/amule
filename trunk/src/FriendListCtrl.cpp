@@ -36,7 +36,7 @@
 #include "OPCodes.h"		// Needed for MP_DETAIL
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "Friend.h"		// Needed for CFriend
-#include "EndianFix.h"
+#include "ArchSpecific.h"
 #include "OtherFunctions.h"
 #include "muuli_wdr.h"
 #include "SafeFile.h"

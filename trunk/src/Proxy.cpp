@@ -704,9 +704,8 @@ void CSocks5StateMachine::process_send_command_request(bool entry)
 		}
 		m_buffer[2] = SOCKS5_RSV;
 		m_buffer[3] = SOCKS5_ATYP_IPV4_ADDRESS;
-		*((uint32 *)(m_buffer+4)) =
-			ENDIAN_SWAP_32(StringIPtoUint32(m_peerAddress->IPAddress()));
-		*((uint16 *)(m_buffer+8)) = ENDIAN_HTONS(m_peerAddress->Service());
+		PokeUInt32( m_buffer+4, StringIPtoUint32(m_peerAddress->IPAddress()) );
+		RawPokeUInt16( m_buffer+8, ENDIAN_HTONS( m_peerAddress->Service() ) );
 		
 		// Send the command packet
 		m_packetLenght = 10;
@@ -742,8 +741,7 @@ void CSocks5StateMachine::process_process_command_reply(bool entry)
 			{
 				const unsigned int addrOffset = 4;
 				portOffset = 8;
-				m_proxyBoundAddressIPV4.Hostname(ENDIAN_SWAP_32(
-					*((uint32 *)(m_buffer+addrOffset)) ));
+				m_proxyBoundAddressIPV4.Hostname( PeekUInt32( m_buffer+addrOffset) );
 				m_proxyBoundAddress = &m_proxyBoundAddressIPV4;
 				break;
 			}
@@ -775,8 +773,7 @@ void CSocks5StateMachine::process_process_command_reply(bool entry)
 			// Set the packet length at last
 			m_packetLenght = portOffset + 2;
 			// Read BND.PORT
-			m_proxyBoundAddress->Service(ENDIAN_NTOHS(
-				*((uint16 *)(m_buffer+portOffset)) ));
+			m_proxyBoundAddress->Service( ENDIAN_NTOHS( RawPeekUInt16( m_buffer+portOffset) ) );
 		}
 	}
 	AddDummyEvent();
@@ -905,9 +902,8 @@ void CSocks4StateMachine::process_send_command_request(bool entry)
 			return;
 			break;
 		}
-		*((uint16 *)(m_buffer+2)) = ENDIAN_HTONS(m_peerAddress->Service());
-		*((uint32 *)(m_buffer+4)) =
-			ENDIAN_SWAP_32(StringIPtoUint32(m_peerAddress->IPAddress()));
+		RawPokeUInt16( m_buffer+2, ENDIAN_HTONS( m_peerAddress->Service() ) );
+		PokeUInt32( m_buffer+4, StringIPtoUint32(m_peerAddress->IPAddress()) );
 		unsigned int offsetUser = 8;
 		unsigned char lenUser = m_proxyData.m_userName.Len();
 		memcpy(m_buffer + offsetUser, 
@@ -942,12 +938,11 @@ void CSocks4StateMachine::process_process_command_reply(bool entry)
 			// Read BND.PORT
 			const unsigned int portOffset = 2;
 			m_ok = m_proxyBoundAddressIPV4.Service(ENDIAN_NTOHS(
-				*((uint16 *)(m_buffer+portOffset)) ));
+				RawPeekUInt16( m_buffer+portOffset) ) );
 			// Read BND.ADDR
 			const unsigned int addrOffset = 4;
 			m_ok = m_ok &&
-				m_proxyBoundAddressIPV4.Hostname(ENDIAN_SWAP_32(
-					*((uint32 *)(m_buffer+addrOffset)) ));
+				m_proxyBoundAddressIPV4.Hostname( PeekUInt32( m_buffer+addrOffset ) );
 			m_proxyBoundAddress = &m_proxyBoundAddressIPV4;
 		}
 	}
@@ -1342,10 +1337,8 @@ wxDatagramSocket &CDatagramSocketProxy::RecvFrom(
 				offset = PROXY_UDP_OVERHEAD_IPV4;
 				try {
 					amuleIPV4Address &a = dynamic_cast<amuleIPV4Address &>(addr);
-					a.Hostname(ENDIAN_SWAP_32(
-						*((uint32 *)(m_proxyTCPSocket.GetBuffer()+4)) ));
-					a.Service(ENDIAN_NTOHS(
-						*((uint16 *)(m_proxyTCPSocket.GetBuffer()+8)) ));
+					a.Hostname( PeekUInt32( m_proxyTCPSocket.GetBuffer()+4 ) );
+					a.Service( ENDIAN_NTOHS( RawPeekUInt16( m_proxyTCPSocket.GetBuffer()+8) ) );
 				} catch (std::bad_cast e) {
 					printf("(2)bad_cast exception!\n");
 					wxASSERT(false);
@@ -1400,9 +1393,8 @@ wxDatagramSocket &CDatagramSocketProxy::SendTo(
 			m_proxyTCPSocket.GetBuffer()[1] = SOCKS5_RSV;	// Reserved
 			m_proxyTCPSocket.GetBuffer()[2] = 0;		// FRAG
 			m_proxyTCPSocket.GetBuffer()[3] = SOCKS5_ATYP_IPV4_ADDRESS;
-			*((uint32 *)(m_proxyTCPSocket.GetBuffer()+4)) =
-				ENDIAN_SWAP_32(StringIPtoUint32(addr.IPAddress()));
-			*((uint16 *)(m_proxyTCPSocket.GetBuffer()+8)) = ENDIAN_HTONS(addr.Service());
+			PokeUInt32( m_proxyTCPSocket.GetBuffer()+4, StringIPtoUint32(addr.IPAddress()));
+			RawPokeUInt16( m_proxyTCPSocket.GetBuffer()+8, ENDIAN_HTONS( addr.Service() ) );
 			memcpy(m_proxyTCPSocket.GetBuffer() + PROXY_UDP_OVERHEAD_IPV4, buf, nBytes);
 			nBytes += PROXY_UDP_OVERHEAD_IPV4;
 			wxDatagramSocket::SendTo(
