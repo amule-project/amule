@@ -41,6 +41,9 @@ Version 2.0.0rc8 - The "???????????" version.
 		* Fixed: Stop button now working after second global search
 		  and another hidden bug in global searches' progress bar.
 		  (reported by ecforum)
+		  
+	Kry:
+		* Lot of stuff
 
 	permats:
 		* FIXED: Preferences -> Security -> Permissions wasn't being
