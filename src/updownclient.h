@@ -29,13 +29,12 @@
 
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/string.h>		// Needed for wxString
+#include <wx/intl.h>
 #include "Types.h"		// Needed for int8, int16, uint8, uint16, uint32 and uint64
 #include "CTypedPtrList.h"	// Needed for CTypedPtrList
 #include "GetTickCount.h"	// Needed for GetTickCount
 #include "CMD4Hash.h"
 #include "StringFunctions.h"
-#include "SafeFile.h"
-#include "amule.h"		// Needed for AddDebugLogLineM & theApp
 
 #include <map>
 #include <vector>
@@ -290,26 +289,7 @@ public:
 	void		SendSignaturePacket();
 	void		ProcessPublicKeyPacket(const uchar* pachPacket, uint32 nSize);
 	void		ProcessSignaturePacket(const uchar* pachPacket, uint32 nSize);
-	uint8		GetSecureIdentState() {
-#ifndef CLIENT_GUI
-		if (m_SecureIdentState != IS_UNAVAILABLE) {
-			if (!SecIdentSupRec) {
-				// This can be caused by a 0.30x based client which sends the old
-				// style Hello packet, and the mule info packet, but between them they
-				// send a secure ident state packet (after a hello but before we have 
-				// the SUI capabilities). This is a misbehaving client, and somehow I
-				// Feel like ti should be dropped. But then again, it won't harm to use
-				// this SUI state if they are reporting no SUI (won't be used) and if 
-				// they report using SUI on the mule info packet, it's ok to use it.
-				
-				AddDebugLogLineM(false, wxT("A client sent secure ident state before telling us the SUI capabilities"));
-				AddDebugLogLineM(false, wxT("Client info: ") + GetClientFullInfo());
-				AddDebugLogLineM(false, wxT("This client won't be disconnected, but it should be. :P"));
-			}
-		}
-#endif
-		return m_SecureIdentState;
-	}
+	uint8		GetSecureIdentState(); 
 
 	void		SendSecIdentStatePacket();
 	void		ProcessSecIdentStatePacket(const uchar* pachPacket, uint32 nSize);
