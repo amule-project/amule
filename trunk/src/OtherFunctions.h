@@ -163,11 +163,11 @@ wxString GetMuleVersion();
 // From Gnucleus project [found by Tarod]
 // Base16/Base32/Base64 Encode/Decode functions
 wxString EncodeBase16(const unsigned char* buffer, unsigned int bufLen);
-void DecodeBase16(wxString base16, unsigned int base16BufLen, unsigned char *buffer);
+unsigned int DecodeBase16(const char *base16Buffer, unsigned int base16BufLen, unsigned char *buffer);
 wxString EncodeBase32(const unsigned char* buffer, unsigned int bufLen);
-unsigned int DecodeBase32(wxString base32, unsigned int base32BufLen, unsigned char *buffer);
+unsigned int DecodeBase32(const char *base32Buffer, unsigned int base32BufLen, unsigned char *buffer);
 wxString EncodeBase64(const char* buffer, unsigned int bufLen);
-unsigned int DecodeBase64(wxString base64, unsigned int base64BufLen, unsigned char *buffer);
+unsigned int DecodeBase64(const char *base64Buffer, unsigned int base64BufLen, unsigned char *buffer);
 
 // Converts the number of bytes to human readable form.
 wxString CastItoXBytes(uint64 count);

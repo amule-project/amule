@@ -574,7 +574,7 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 					case FT_AICH_HASH:{
 						//wxASSERT( newtag->IsStr() );
 						CAICHHash hash;
-						if (hash.DecodeBase32(newtag->tag.stringvalue) == CAICHHash::GetHashSize())
+						if (hash.DecodeBase32(unicode2char(newtag->tag.stringvalue)) == CAICHHash::GetHashSize())
 							m_pAICHHashSet->SetMasterHash(hash, AICH_VERIFIED);
 						else
 							wxASSERT( false );
