@@ -61,8 +61,13 @@
 
 
 BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
-	EVT_CHECKBOX(IDC_UDPDISABLE, PrefsUnifiedDlg::OnCheckBoxChange)
-
+	EVT_CHECKBOX( IDC_UDPDISABLE,		PrefsUnifiedDlg::OnCheckBoxChange )
+	EVT_CHECKBOX( IDC_CHECKDISKSPACE,	PrefsUnifiedDlg::OnCheckBoxChange )
+	EVT_CHECKBOX( IDC_USESKIN,			PrefsUnifiedDlg::OnCheckBoxChange )
+	EVT_CHECKBOX( IDC_ONLINESIG,		PrefsUnifiedDlg::OnCheckBoxChange )
+	EVT_CHECKBOX( IDC_REMOVEDEAD,		PrefsUnifiedDlg::OnCheckBoxChange )
+	EVT_CHECKBOX( IDC_ENABLE_AUTO_HQRS,	PrefsUnifiedDlg::OnCheckBoxChange )
+	
 	EVT_BUTTON(ID_PREFS_OK_TOP, PrefsUnifiedDlg::OnOk)
 	EVT_BUTTON(ID_OK, PrefsUnifiedDlg::OnOk)
 
@@ -230,18 +235,6 @@ PrefsUnifiedDlg::PrefsUnifiedDlg(wxWindow* parent)
 		}
 	}
 
-	// Set the permissions scrollers for files
-	int perms = CPreferences::GetFilePermissions();
-	((wxSpinCtrl*)FindWindow(IDC_SPIN_PERM_FU))->SetValue( perms / 0100 );
-	((wxSpinCtrl*)FindWindow(IDC_SPIN_PERM_FG))->SetValue( perms % 0100 / 010 );
-	((wxSpinCtrl*)FindWindow(IDC_SPIN_PERM_FO))->SetValue( perms % 0100 % 010 / 01 );
-	
-	// Set the permissions scrollers for directories
-	perms = CPreferences::GetDirPermissions();
-	((wxSpinCtrl*)FindWindow(IDC_SPIN_PERM_DU))->SetValue( perms / 0100 );
-	((wxSpinCtrl*)FindWindow(IDC_SPIN_PERM_DG))->SetValue( perms % 0100 / 010 );
-	((wxSpinCtrl*)FindWindow(IDC_SPIN_PERM_DO))->SetValue( perms % 0100 % 010 / 01 );
-
 
 	Fit();
 
@@ -296,8 +289,29 @@ bool PrefsUnifiedDlg::TransferToWindow()
 		CPreferences::s_colors_ref[i] = CStatisticsDlg::acrStat[i];
 	}
 
+
 	// Enable/Disable some controls
 	FindWindow( IDC_FCHECKSELF )->Enable( ((wxChoice*)FindWindow( IDC_FCHECK ))->GetSelection() == 8 );
+	FindWindow( IDC_MINDISKSPACE )->Enable( CPreferences::IsCheckDiskspaceEnabled() );
+	FindWindow( IDC_SKINFILE )->Enable( CPreferences::UseSkin() );
+	FindWindow( IDC_OSDIR )->Enable( CPreferences::IsOnlineSignatureEnabled() );
+#warning UDPDisable isn't implemented!
+	FindWindow( IDC_UDPPORT )->Enable( !CPreferences::s_UDPDisable );
+	FindWindow( IDC_SERVERRETRIES )->Enable( CPreferences::DeadServer );
+	FindWindow( IDC_HQR_VALUE )->Enable( CPreferences::DropHighQueueRankingSources() );
+
+
+	// Set the permissions scrollers for files
+	int perms = CPreferences::GetFilePermissions();
+	((wxSpinCtrl*)FindWindow(IDC_SPIN_PERM_FU))->SetValue( perms / 0100 );
+	((wxSpinCtrl*)FindWindow(IDC_SPIN_PERM_FG))->SetValue( perms % 0100 / 010 );
+	((wxSpinCtrl*)FindWindow(IDC_SPIN_PERM_FO))->SetValue( perms % 0100 % 010 / 01 );
+	
+	// Set the permissions scrollers for directories
+	perms = CPreferences::GetDirPermissions();
+	((wxSpinCtrl*)FindWindow(IDC_SPIN_PERM_DU))->SetValue( perms / 0100 );
+	((wxSpinCtrl*)FindWindow(IDC_SPIN_PERM_DG))->SetValue( perms % 0100 / 010 );
+	((wxSpinCtrl*)FindWindow(IDC_SPIN_PERM_DO))->SetValue( perms % 0100 % 010 / 01 );
 
 	return true;
 }
@@ -325,6 +339,21 @@ bool PrefsUnifiedDlg::TransferFromWindow()
 
 	}
 
+
+	// Set the file-permissions value
+	int file_perms = 0;
+	file_perms |= 0100 * ((wxSpinCtrl*)FindWindow(IDC_SPIN_PERM_FU))->GetValue();
+	file_perms |= 0010 * ((wxSpinCtrl*)FindWindow(IDC_SPIN_PERM_FG))->GetValue();
+	file_perms |= 0001 * ((wxSpinCtrl*)FindWindow(IDC_SPIN_PERM_FO))->GetValue();
+	CPreferences::SetFilePermissions( file_perms );
+
+	int dir_perms = 0;
+	dir_perms |= 0100 * ((wxSpinCtrl*)FindWindow(IDC_SPIN_PERM_FU))->GetValue();
+	dir_perms |= 0010 * ((wxSpinCtrl*)FindWindow(IDC_SPIN_PERM_FG))->GetValue();
+	dir_perms |= 0001 * ((wxSpinCtrl*)FindWindow(IDC_SPIN_PERM_FO))->GetValue();
+	CPreferences::SetDirPermissions( dir_perms );
+
+
 	return true;
 }
 
@@ -347,21 +376,6 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 	// do sanity checking, special processing, and user notifications here
 	theApp.glob_prefs->CheckUlDlRatio();
 
-	// Set the file-permissions value
-	int file_perms = 0;
-	file_perms |= 0100 * ((wxSpinCtrl*)FindWindow(IDC_SPIN_PERM_FU))->GetValue();
-	file_perms |= 0010 * ((wxSpinCtrl*)FindWindow(IDC_SPIN_PERM_FG))->GetValue();
-	file_perms |= 0001 * ((wxSpinCtrl*)FindWindow(IDC_SPIN_PERM_FO))->GetValue();
-	CPreferences::SetFilePermissions( file_perms );
-
-	int dir_perms = 0;
-	dir_perms |= 0100 * ((wxSpinCtrl*)FindWindow(IDC_SPIN_PERM_FU))->GetValue();
-	dir_perms |= 0010 * ((wxSpinCtrl*)FindWindow(IDC_SPIN_PERM_FG))->GetValue();
-	dir_perms |= 0001 * ((wxSpinCtrl*)FindWindow(IDC_SPIN_PERM_FO))->GetValue();
-	CPreferences::SetDirPermissions( dir_perms );
-	
-
-	
 	// save the preferences on ok
 	theApp.glob_prefs->Save();
 
@@ -432,9 +446,36 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 	bool		value = event.IsChecked();
 	wxWindow*	widget = NULL;
 
-	widget = FindWindow( IDC_UDPPORT );
+	switch ( event.GetId() ) {
+		case IDC_UDPDISABLE:
+			// UDP is disable rather than enable, so we flip the value
+			value = !value;
+			widget = FindWindow( IDC_UDPPORT ); 
+			break;
+			
+		case IDC_CHECKDISKSPACE:
+			widget = FindWindow( IDC_MINDISKSPACE );
+			break;	
+		
+		case IDC_USESKIN:
+			widget = FindWindow( IDC_SKINFILE );
+			break;
+
+		case IDC_ONLINESIG:
+			widget = FindWindow( IDC_OSDIR );
+			break;
+
+		case IDC_REMOVEDEAD:
+			widget = FindWindow( IDC_SERVERRETRIES );
+			break;
+
+		case IDC_ENABLE_AUTO_HQRS:
+			widget = FindWindow( IDC_HQR_VALUE );
+			break;
+	}
+
 	if ( widget )
-		widget->Enable( !value );
+		widget->Enable( value );
 }
 
 
