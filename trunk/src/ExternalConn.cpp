@@ -367,11 +367,18 @@ CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request)
 	
 	CECPacket *response = new CECPacket(EC_OP_DLOAD_QUEUE);
 	
+	uint32 flags = request->GetTagByName(EC_TAG_FLAGS) ? request->GetTagByName(EC_TAG_FLAGS)->GetInt32Data() : 0;
+	
 	for (unsigned int i = 0; i < theApp.downloadqueue->GetFileCount(); i++) {
 		CPartFile *cur_file = theApp.downloadqueue->GetFileByIndex(i);
-		CECTag filetag(EC_TAG_PARTFILE, cur_file->GetFileName());
+		CECTag filetag(EC_TAG_PARTFILE, PTR_2_ID(cur_file));
+		filetag.AddTag(CECTag(EC_TAG_PARTFILE_STATUS,
+			cur_file->getPartfileStatus()));
+		if ( flags & EC_LIST_ONLY_STATUS ) {
+			continue;
+		}
+		filetag.AddTag(CECTag(EC_TAG_PARTFILE_NAME,cur_file->GetFileName()));
 
-		filetag.AddTag(CECTag(EC_TAG_ITEM_ID,PTR_2_ID(cur_file)));
 		filetag.AddTag(CECTag(EC_TAG_PARTFILE_SIZE_FULL,
 			(uint32)cur_file->GetFileSize()));
 		filetag.AddTag(CECTag(EC_TAG_PARTFILE_SIZE_XFER,
@@ -380,8 +387,6 @@ CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request)
 			(uint32)cur_file->GetCompletedSize()));
 		filetag.AddTag(CECTag(EC_TAG_PARTFILE_SPEED,
 			(uint32)(long)(cur_file->GetKBpsDown()*1024)));
-		filetag.AddTag(CECTag(EC_TAG_PARTFILE_STATUS,
-			cur_file->getPartfileStatus()));
 		filetag.AddTag(CECTag(EC_TAG_PARTFILE_PRIO,
 			(uint32)(cur_file->IsAutoDownPriority() ? 
 							cur_file->GetDownPriority() + 10 :
