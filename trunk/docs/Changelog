@@ -51,6 +51,7 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		  is now thread safe.
 		* Added base64 encoding/decoding support to aMule.
 		* SOCKS5 and SOCKS4 proxy support is working now.
+		* HTTP proxy support is working now.
 		
 	Ken:
 		* Fixed Mac bug: window was a little larger each restart

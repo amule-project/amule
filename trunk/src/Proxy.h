@@ -51,6 +51,7 @@ const unsigned char SOCKS4_VERSION = 0x04;
 const unsigned char SOCKS4_CMD_CONNECT	= 0x01;
 const unsigned char SOCKS4_CMD_BIND	= 0x02;
 
+const unsigned char SOCKS4_REPLY_CODE				= 0;
 const unsigned char SOCKS4_REPLY_GRANTED			= 90;
 const unsigned char SOCKS4_REPLY_FAILED				= 91;
 const unsigned char SOCKS4_REPLY_FAILED_NO_IDENTD		= 92;
@@ -208,7 +209,7 @@ public:
 
 protected:
 	wxSocketBase		&ProxyWrite(wxSocketBase &socket, const void *buffer, wxUint32 nbytes);
-	wxSocketBase		&ProxyRead(wxSocketBase &socket, void *buffer, wxUint32 nbytes);
+	wxSocketBase		&ProxyRead(wxSocketBase &socket, void *buffer);
 #ifndef AMULE_DAEMON
 	bool			CanReceive() const	{ return m_CanReceive; };
 	bool			CanSend() const		{ return m_CanSend; };
@@ -216,6 +217,11 @@ protected:
 	bool			CanReceive() const	{ return true; };
 	bool			CanSend() const		{ return true; };
 #endif
+	//
+	// Initialized at constructor
+	//
+	const wxProxyData	&m_ProxyData;
+	wxProxyCommand		m_ProxyCommand;
 	//
 	// Member variables
 	//
@@ -225,8 +231,9 @@ protected:
 	bool			m_CanReceive;
 	bool			m_CanSend;
 	bool			m_ok;
-	const wxProxyData	&m_ProxyData;
-	wxProxyCommand		m_ProxyCommand;
+	unsigned int		m_LastRead;
+	unsigned int		m_LastWritten;
+	wxSocketError		m_LastError;
 	//
 	// Will be initialized at Start()
 	//
