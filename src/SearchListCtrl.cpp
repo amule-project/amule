@@ -46,7 +46,6 @@ BEGIN_EVENT_TABLE(CSearchListCtrl, CMuleListCtrl)
 	EVT_MENU( MP_GETHTMLED2KLINK, CSearchListCtrl::OnPopupGetUrl)
 	EVT_MENU( MP_FAKECHECK1,      CSearchListCtrl::OnPopupFakeCheck)
 	EVT_MENU( MP_FAKECHECK2,      CSearchListCtrl::OnPopupFakeCheck)
-	EVT_MENU( MP_FAKECHECK2,      CSearchListCtrl::OnPopupFakeCheck)
 	EVT_MENU( MP_RAZORSTATS,      CSearchListCtrl::OnRazorStatsCheck)
 	EVT_MENU( MP_RESUME,          CSearchListCtrl::OnPopupDownload)
 
