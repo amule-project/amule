@@ -4,7 +4,6 @@ dist_doc_DATA = ABOUT-NLS \
 		Changelog \
 		Doxyfile \
 		ED2K-Links.HOWTO \
-		eMule-Imports-Status \
 		INSTALL \
 		license.txt \
 		README \
