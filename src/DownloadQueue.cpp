@@ -116,8 +116,8 @@ void CDownloadQueue::AddPartFilesToShare()
 	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
 		CPartFile* cur_file = filelist[i];
 		if (cur_file->GetStatus(true) == PS_READY) {
+			printf("Adding file %s to shares\n",unicode2char(cur_file->GetFullName()));
 			sharedfilelist->SafeAddKFile(cur_file,true);
-			printf("Sharing %s\n",unicode2char(cur_file->GetFullName()));
 		}
 	}
 }
