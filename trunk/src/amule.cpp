@@ -784,7 +784,7 @@ bool CamuleApp::OnInit()
 	bool ok;
 	ok = ReinitializeNetwork(&msg);
 	if (!msg.IsEmpty()) {
-		printf("%s", (const char *)unicode2char(msg));
+		printf("\n%s\n", (const char *)unicode2char(msg));
 	}
 
 	// reload shared files
@@ -849,7 +849,7 @@ bool CamuleApp::OnInit()
 	return true;
 }
 
-bool CamuleApp::ReinitializeNetwork(wxString *msg)
+bool CamuleApp::ReinitializeNetwork(wxString* msg)
 {
 	bool ok = true;
 	static bool firstTime = true;
@@ -861,12 +861,50 @@ bool CamuleApp::ReinitializeNetwork(wxString *msg)
 	
 	// Some sanity checks first
 	if (thePrefs::ECPort() == thePrefs::GetPort()) {
-		*msg << wxT("Network configuration failed! You can't configure aMule TCP port and External Connections port at the same port number. Please, change one of them.");
-		return false;
+		// Select a random usable port in the range 1025 ... 2^16 - 1
+		uint16 port = thePrefs::ECPort();
+		while ( port < 1024 || port  == thePrefs::GetPort() ) {
+			port = (uint16)rand();
+		}
+		
+		thePrefs::SetECPort( port );
+		
+		wxString err = wxT("Network configuration failed! You cannot use the same port\n"
+					"for the main TCP port and the External Connections port.\n"
+					"The EC port has been changed to avoid conflict, see the\n"
+					"preferences for the new value.\n");
+
+		*msg << err;
+
+		AddLogLineM( false, wxEmptyString );
+		AddLogLineM( true, err );
+		AddLogLineM( false, wxEmptyString );
+
+		ok = false;
 	}
-	if (thePrefs::GetUDPPort() == (thePrefs::GetPort()+3)) {
-		*msg << wxT("Network configuration failed! You can't configure UDP(TCP+3) port and UDP (extended eMule) port at the same port number. Please, change one of them.");
-		return false;
+	
+	if (thePrefs::GetUDPPort() == thePrefs::GetPort() + 3) {
+		// Select a random usable value in the range 1025 ... 2^16 - 1
+		uint16 port = thePrefs::GetUDPPort();
+		while ( port < 1024 || port == thePrefs::GetPort() + 3 ) {
+			port = (uint16)rand();
+		}
+
+		thePrefs::SetUDPPort( port );
+
+		wxString err = wxT("Network configuration failed! You can't use the port which\n"
+					"has the value of the main TCP port plus 3 for the UDP port.\n"
+					"This port has been reserved for the Server-UDP port. The\n"
+					"port value has been changed to avoid conflict, see the\n"
+					"preferences for the new value\n");
+
+		*msg << err;
+
+		AddLogLineM( false, wxEmptyString );
+		AddLogLineM( true, err );
+		AddLogLineM( false, wxEmptyString );
+		
+		ok = false;
 	}
 	
 	// Create the address where we are going to listen
@@ -883,16 +921,17 @@ bool CamuleApp::ReinitializeNetwork(wxString *msg)
 	// Used for source asking on servers.
 	myaddr.Service(thePrefs::GetPort()+3);
 	serverconnect = new CServerConnect(serverlist, myaddr);
-	
-	*msg << wxT("*** Server UDP socket (TCP+3) at ") << 
-		ip << wxT(":") << thePrefs::GetPort() + 3 << wxT("\n");
+
+	*msg << CFormat( wxT("*** Server UDP socket (TCP+3) at %s:%i\n") )
+		% ip % ( thePrefs::GetPort() + 3 );
 	
 	// Create the ListenSocket (aMule TCP socket).
 	// Used for Client Port / Connections from other clients,
 	// Client to Client Source Exchange.
 	// Default is 4662.
-	*msg << wxT("*** TCP socket (TCP) listening on ") <<
-		ip << wxT(":") << thePrefs::GetPort() << wxT("\n");
+	*msg << CFormat( wxT("*** TCP socket (TCP) listening on %s:%i\n") )
+		% ip % thePrefs::GetPort();
+	
 	myaddr.Service(thePrefs::GetPort());
 	listensocket = new CListenSocket(myaddr);
 	
@@ -922,15 +961,17 @@ bool CamuleApp::ReinitializeNetwork(wxString *msg)
 		myaddr.Service(thePrefs::GetUDPPort());
 //#ifdef TESTING_PROXY
 		clientudp = new CClientUDPSocket(myaddr, thePrefs::GetProxyData());
-		*msg << wxT("*** Client UDP socket (extended eMule) at ") <<
-			ip << wxT(":") << thePrefs::GetUDPPort() << wxT("\n");
+		*msg << CFormat( wxT("*** Client UDP socket (extended eMule) at %s:%i") )
+			% ip % thePrefs::GetUDPPort();
 	} else {
-		*msg << wxT("*** Client UDP socket (extended eMule) disabled on preferences\n");
+		*msg << wxT("*** Client UDP socket (extended eMule) disabled on preferences");
+		
 		clientudp = NULL;
 	}	
 	
 	return ok;
 }
+
 
 // Returns a ed2k file URL
 wxString CamuleApp::CreateED2kLink(const CAbstractFile *f)

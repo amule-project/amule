@@ -407,6 +407,7 @@ public:
 	static void			EnableExternalConnections( bool val ) { s_AcceptExternalConnections = val; }
 	static bool 		ECUseTCPPort()			{ return s_ECUseTCPPort; }
 	static uint32 		ECPort()			{ return s_ECPort; }
+	static void			SetECPort(uint32 val) { s_ECPort = val; }
 	static const wxString&	ECPassword()			{ return s_ECPassword; }
 	// Madcat - Fast ED2K Links Handler Toggling
 	static bool 		GetFED2KLH()			{ return s_FastED2KLinksHandler; }
