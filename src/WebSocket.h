@@ -84,7 +84,7 @@ class CWCThread : public wxThread { //WC stands for web client socket. not for W
 
 class CWSThread : public wxThread {
 	public:
-		CWSThread(CWebServer *ws); //web socket thread ctor
+		CWSThread(CWebServer *webserver); //web socket thread ctor
 
 		//thread execution starts here
 		virtual void *Entry();
