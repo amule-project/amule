@@ -552,56 +552,6 @@ RLE_Data::~RLE_Data()
 	delete [] m_enc_buff;
 }
 
-template <class T>
-const unsigned char *RLE_Data::EncodeT(T &buff, int &outlen)
-{
-	//
-	// calculate difference from prev
-	//
-	if ( m_use_diff ) {
-		for (int i = 0; i < m_len; i++) {
-			m_buff[i] ^= (unsigned char)buff[i];
-		}
-	}
-		
-	//
-	// now RLE
-	//
-	int i = 0, j = 0;
-	while ( i != m_len ) {
-		unsigned char curr_val = m_buff[i];
-		int seq_start = i;
-		while ( (i != m_len) && (curr_val == m_buff[i]) ) {
-			i++;
-		}
-		if (i - seq_start > 1) {
-			// if there's 2 or more equal vals - put it twice in stream
-			m_enc_buff[j++] = curr_val;
-			m_enc_buff[j++] = curr_val;
-			m_enc_buff[j++] = i - seq_start;
-		} else {
-			// single value - put it as is
-			m_enc_buff[j++] = curr_val;
-		}
-	}
-
-	outlen = j - 1;
-	
-	//
-	// If using differential encoder, remember current data for
-	// later use
-	if ( m_use_diff ) {
-		//
-		// can't use memcpy - in case of generic class T this
-		// will rely on "operator []" implementation
-		for(int i = 0; i < m_len;i++) {
-			m_buff[i] = (unsigned char)buff[i];
-		}
-	}
-	
-	return m_enc_buff;
-}
-
 const unsigned char *RLE_Data::Decode(const unsigned char *buff)
 {
 	//
