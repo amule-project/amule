@@ -190,7 +190,8 @@ public:
 	virtual bool	IsEndState() const = 0;
 
 protected:
-	char			m_buffer[wxPROXY_BUFFER_SIZE];
+	wxSocketBase		&ProxyWrite(wxSocketBase &socket, const void *buffer, wxUint32 nbytes);
+	wxSocketBase		&ProxyRead(wxSocketBase &socket, void *buffer, wxUint32 nbytes);
 #ifndef AMULE_DAEMON
 	bool			CanReceive() const	{ return m_CanReceive; };
 	bool			CanSend() const		{ return m_CanSend; };
@@ -198,6 +199,10 @@ protected:
 	bool			CanReceive() const	{ return true; };
 	bool			CanSend() const		{ return true; };
 #endif
+	//
+	// Member variables
+	//
+	char			m_buffer[wxPROXY_BUFFER_SIZE];
 	bool			m_IsLost;
 	bool			m_IsConnected;
 	bool			m_CanReceive;
@@ -205,17 +210,19 @@ protected:
 	bool			m_ok;
 	const wxProxyData	&m_ProxyData;
 	wxProxyCommand		m_ProxyCommand;
+	//
+	// Will be initialized at Start()
+	//
 	wxIPaddress		*m_PeerAddress;
-	wxSocketClient		*m_ProxyClientSocket;
-	
+	wxSocketClient		*m_ProxyClientSocket;	
 	wxIPaddress		*m_ProxyBoundAddress;
 	amuleIPV4Address	m_ProxyBoundAddressIPV4;
 	//wxIPV6address		m_ProxyBoundAddressIPV6;
-	
+	//
+	// Temporary variables
+	//
 	unsigned char		m_LastReply;
 	unsigned int		m_PacketLenght;
-	wxSocketBase		&ProxyWrite(wxSocketBase &socket, const void *buffer, wxUint32 nbytes);
-	wxSocketBase		&ProxyRead(wxSocketBase &socket, void *buffer, wxUint32 nbytes);
 };
 
 const unsigned int SOCKS5_MAX_STATES = 14;
