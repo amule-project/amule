@@ -1111,7 +1111,6 @@ bool CDownloadQueue::SendGlobGetSourcesUDPPacket(CSafeMemFile& data)
 	if (item_size == 16) {
 		packet.SetOpCode(OP_GLOBGETSOURCES);
 	} else {
-		printf("----Sending special UDP packet with extended file request info----\n");
 		packet.SetOpCode(OP_GLOBGETSOURCES2);
 	}
 	

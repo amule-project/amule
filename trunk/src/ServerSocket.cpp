@@ -747,7 +747,7 @@ bool CServerSocket::SendPacket(CPacket* packet, bool delpacket, bool controlpack
 
 
 void CServerSocket::OnHostnameResolved(uint32 ip) {
-	printf("Server hostname resolved\n");
+	
 	m_IsSolving = false;
 	if (ip) {
 		amuleIPV4Address addr;
