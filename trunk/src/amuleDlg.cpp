@@ -106,6 +106,14 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, wxString title, wxPoint where, wxSize dl
 	wxTHICK_FRAME|wxMINIMIZE_BOX|wxMAXIMIZE_BOX|wxCLOSE_BOX )
 {
 
+	wxInitAllImageHandlers();
+
+	imagelist.Create(16,16);	
+	
+	for (uint32 i=0; i<22; i++) {
+		imagelist.Add(wxBitmap(clientImages(i)));
+	}
+	
 	bool override_where = (where != wxDefaultPosition);
 	bool override_size = ((dlg_size.x != DEFAULT_SIZE_X) || (dlg_size.y != DEFAULT_SIZE_Y));
 	
