@@ -2549,9 +2549,17 @@ bool DownloadFilesInfo::ReQuery()
 
 			CECTag *gaptag = tag->GetTagByName(EC_TAG_PARTFILE_GAP_STATUS);
 			CECTag *parttag = tag->GetTagByName(EC_TAG_PARTFILE_PART_STATUS);
-			if ( gaptag && parttag ) {
+			CECTag *reqtag = tag->GetTagByName(EC_TAG_PARTFILE_REQ_STATUS);
+			if ( gaptag && parttag && reqtag ) {
 				file.m_Encoder.Decode((unsigned char *)gaptag->GetTagData(), gaptag->GetTagDataLen(),
 					(unsigned char *)parttag->GetTagData(), parttag->GetTagDataLen());
+
+				const Gap_Struct *reqparts = (const Gap_Struct *)reqtag->GetTagData();
+				int reqcount = reqtag->GetTagDataLen() / sizeof(Gap_Struct);
+				file.m_ReqParts.resize(reqcount);
+				for (int i = 0; i < reqcount;i++) {
+					file.m_ReqParts[i] = reqparts[i];
+				}
 			}
 			
 			//
@@ -2833,7 +2841,7 @@ void CProgressImage::CreateSpan()
 		}
 	}
 	// overwrite requested parts
-	for(int i = 0; i < m_file->m_ReqParts.size(); i++) {
+	for(uint32 i = 0; i < m_file->m_ReqParts.size(); i++) {
 		uint32 start = m_file->m_ReqParts[i].start / factor;
 		uint32 end = m_file->m_ReqParts[i].end / factor;
 		for(uint32 j = start; j < end; j++) {
@@ -2903,6 +2911,9 @@ void CDynImage::DrawImage()
 {
 	CreateSpan();
 
+	for(int i = 0; i < m_height; i++) {
+			memset(m_row_ptrs[i], 0, 3*m_width);
+	}
 	for(int i = 0; i < m_height/2; i++) {
 		png_bytep u_row = m_row_ptrs[i];
 		png_bytep d_row = m_row_ptrs[m_height-i-1];
