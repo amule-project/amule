@@ -98,7 +98,13 @@ class CECTag {
 class CECPacket : private CECTag {
 	friend class ECSocket;
 	public:
-				CECPacket(ec_opcode_t opCode) : CECTag(0, 0, NULL, false), m_opCode(opCode) {};
+				CECPacket(ec_opcode_t opCode, EC_DETAIL_LEVEL detail_level = EC_DETAIL_GUI) : CECTag(0, 0, NULL, false), m_opCode(opCode)
+				{
+					// since EC_DETAIL_GUI is default - no point transmit it
+					if ( detail_level != EC_DETAIL_GUI ) {
+						AddTag(CECTag(EC_TAG_DETAIL_LEVEL, (uint8)detail_level));
+					}
+				}
 				~CECPacket(void) {};
 				CECTag::AddTag;
 				CECTag::GetTagByIndex;
@@ -106,6 +112,11 @@ class CECPacket : private CECTag {
 				CECTag::GetTagCount;
 		ec_opcode_t	GetOpCode(void) const { return m_opCode; }
 		uint32		GetPacketLength(void) const { return CECTag::GetTagLen(); }
+		EC_DETAIL_LEVEL GetDetailLevel() const
+		{
+			CECTag *tag = GetTagByName(EC_TAG_DETAIL_LEVEL);
+			return (tag) ? (EC_DETAIL_LEVEL)tag->GetInt8Data() : EC_DETAIL_GUI;
+		}
 	private:
 				CECPacket(wxSocketBase *sock, ECSocket& socket);
 		bool		WritePacket(wxSocketBase *sock, ECSocket& socket) const;
@@ -122,17 +133,17 @@ class CPartFile;
 
 class CEC_Server_Tag : public CECTag {
  	public:
- 		CEC_Server_Tag(CServer *, unsigned int);
+ 		CEC_Server_Tag(CServer *, EC_DETAIL_LEVEL);
 };
 
 class CEC_ConnState_Tag : public CECTag {
  	public:
- 		CEC_ConnState_Tag(unsigned int);
+ 		CEC_ConnState_Tag(EC_DETAIL_LEVEL);
 };
 
 class CEC_PartFile_Tag : public CECTag {
  	public:
- 		CEC_PartFile_Tag(CPartFile *file, bool onlystatus, bool includeparts);
+ 		CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level);
  		
  		uint32 FileID() { return GetInt32Data(); }
  		wxString FileName() { return GetTagByName(EC_TAG_PARTFILE_NAME)->GetStringData(); }
@@ -146,6 +157,7 @@ class CEC_PartFile_Tag : public CECTag {
   		uint32 SourceXferCount() { return GetTagByName(EC_TAG_PARTFILE_SOURCE_COUNT_XFER)->GetInt32Data(); }
   		uint32 Speed() { return GetTagByName(EC_TAG_PARTFILE_SPEED)->GetInt32Data(); }
   		uint32 Prio() { return GetTagByName(EC_TAG_PARTFILE_PRIO)->GetInt32Data(); }
+  		wxString PartStatus() { return GetTagByName(EC_TAG_PARTFILE_PART_STATUS)->GetStringData(); }
 };
 
 class CEC_PartStatus_Tag : public CECTag {

@@ -588,10 +588,11 @@ enum {
  *
  * All higher levels contain all the lower level information aswell.
  */
-enum {
+enum EC_DETAIL_LEVEL {
 	EC_DETAIL_CMD,		///< aMuleCmd uses this level to obtain only basic information
 	EC_DETAIL_WEB,		///< aMuleWeb uses this level to obtain represenative (but not full) information
-	EC_DETAIL_GUI		///< the (upcoming) remote gui will use this (default) value, to obtain full information
+	EC_DETAIL_GUI,		///< the (upcoming) remote gui will use this (default) value, to obtain full information
+	EC_DETAIL_UPDATE,   ///< return only fields that constatly change (rate, ping, part status)
 };
 
 #endif	/* ECCODES_H */

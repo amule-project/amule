@@ -156,7 +156,7 @@ wxString _SpecialChars(wxString str) {
 }
 
 CWebServer::CWebServer(CamulewebApp *webApp):
-	m_ServersInfo(webApp), m_SharedFilesInfo(webApp) {
+	m_ServersInfo(webApp), m_SharedFilesInfo(webApp), m_DownloadFilesInfo(webApp) {
 	webInterface = webApp;
 	
 	m_Params.bShowUploadQueue = false;
@@ -759,8 +759,8 @@ wxString CWebServer::_GetHeader(ThreadData Data, long lSession) {
 
 	wxString sConnected;
 
-	CECPacket stat_req(EC_OP_STAT_REQ);
-	stat_req.AddTag(CECTag(EC_TAG_DETAIL_LEVEL, (uint8)EC_DETAIL_CMD));
+	CECPacket stat_req(EC_OP_STAT_REQ, EC_DETAIL_CMD);
+
 	CECPacket *stats = pThis->webInterface->SendRecvMsg_v2(&stat_req);
 	if ( !stats ) {
 		return wxEmptyString;
@@ -770,8 +770,8 @@ wxString CWebServer::_GetHeader(ThreadData Data, long lSession) {
 		case 0:
 			sConnected = _("Not connected");
 			if (IsSessionAdmin(Data,sSession)) {
-				sConnected += wxString::Format(wxT(" (<small><a href=\"?ses="));
-				sConnected += sSession + wxT("&w=server&c=connect\">Connect to any server</a></small>)");
+				sConnected += wxT(" (<small><a href=\"?ses=") + sSession +
+					wxT("&w=server&c=connect\">Connect to any server</a></small>)");
 			}
 			break;
 		case 1:
@@ -827,13 +827,7 @@ wxString CWebServer::_GetServerList(ThreadData Data) {
 		uint32 port;
 		CECPacket req(EC_OP_SERVER_CONNECT);
 		if ( sIP.ToULong((unsigned long *)&ip, 16) && sPort.ToULong((unsigned long *)&port, 10) ) {
-			EC_IPv4_t addr;
-			addr.ip[0] = (uint8)ip;
-			addr.ip[1] = (uint8)(ip >> 8);
-			addr.ip[2] = (uint8)(ip >> 16);
-			addr.ip[3] = (uint8)(ip >> 24);
-			addr.port = port;
-			req.AddTag(CECTag(EC_TAG_SERVER, addr));
+			req.AddTag(CECTag(EC_TAG_SERVER, EC_IPv4_t(ip, port)));
 		}
 		pThis->Send_Discard_V2_Request(&req);
 	} else if (sCmd == wxT("disconnect") && IsSessionAdmin(Data,sSession)) {
@@ -845,14 +839,8 @@ wxString CWebServer::_GetServerList(ThreadData Data) {
 		uint32 ip;
 		uint32 port;
 		if ( sIP.ToULong((unsigned long *)&ip, 16) && sPort.ToULong((unsigned long *)&port, 10) ) {
-			EC_IPv4_t addr;
 			CECPacket req(EC_OP_SERVER_REMOVE);
-			addr.ip[0] = (uint8)ip;
-			addr.ip[1] = (uint8)(ip >> 8);
-			addr.ip[2] = (uint8)(ip >> 16);
-			addr.ip[3] = (uint8)(ip >> 24);
-			addr.port = port;
-			req.AddTag(CECTag(EC_TAG_SERVER, addr));
+			req.AddTag(CECTag(EC_TAG_SERVER, EC_IPv4_t(ip, port)));
 			pThis->Send_Discard_V2_Request(&req);
 		}
 	} else if (sCmd == wxT("options")) {
@@ -942,11 +930,6 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	//
 	wxString sSession = _ParseURL(Data, wxT("ses"));
 	wxString sCat = _ParseURL(Data, wxT("cat"));
-	long cat = 0;
-	sCat.ToLong(&cat);
-	if (cat) {
-		sCat = wxT("&cat=") + sCat;
-	}
 
 	wxString sOp = _ParseURL(Data, wxT("op"));
 	wxString sFileHash = _ParseURL(Data, wxT("file"));
@@ -968,62 +951,30 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 		}
 	}
 	//
+	// Commands
+	//
 	if (!sOp.IsEmpty() && !sFileHash.IsEmpty()) {
-		//sFileHashes formatted as: %s\t%s\t....\t%s
-		wxString sFileHashes = pThis->webInterface->SendRecvMsg(wxT("TRANSFER DL_FILEHASH"));
-		if (sFileHashes.Left(12) == wxT("Disconnected")) {
-			Out += wxT("DISCONNECTED!!!");
-			return Out;
+		CECPacket *file_cmd = 0;
+		if (sOp == wxT("pause")) {
+			file_cmd = new CECPacket(EC_OP_PARTFILE_PAUSE);
+		} else if (sOp == wxT("resume")) {
+			file_cmd = new CECPacket(EC_OP_PARTFILE_RESUME);
+		} else if (sOp == wxT("cancel")) {
+			file_cmd = new CECPacket(EC_OP_PARTFILE_DELETE);
+		} else if (sOp == wxT("prioup")) {
+			//file_cmd = new CECPacket(EC_OP_KNOWNFILE_SET_UP_PRIO);
+		} else if (sOp == wxT("priodown")) {
+			//file_cmd = new CECPacket(EC_OP_KNOWNFILE_SET_UP_PRIO);
 		}
-		bool bFoundFile = false;
-		int FileIndex = -1;
-		wxStringTokenizer tokens( sFileHashes, wxT("\t") );
-		while (!bFoundFile && tokens.HasMoreTokens()) {
-			++FileIndex;
-			bFoundFile = sFileHash == tokens.GetNextToken();
-		}
-		if ( bFoundFile && IsSessionAdmin(Data,sSession)) {
-			wxString sFoundFileIndex = wxString() << FileIndex;
-			wxString sMessage;
-			if (sOp == wxT("pause")) {
-				sMessage = wxT("TRANSFER DL_FILEPAUSE ");
-			} else if (sOp == wxT("resume")) {
-				sMessage = wxT("TRANSFER DL_FILERESUME ");
-			} else if (sOp == wxT("cancel")) {
-				sMessage = wxT("TRANSFER DL_FILEDELETE ");
-			} else if (sOp == wxT("prioup")) {
-				sMessage = wxT("TRANSFER DL_FILEPRIOUP ");
-			} else if (sOp == wxT("priodown")) {
-				sMessage = wxT("TRANSFER DL_FILEPRIODOWN ");
-			}
-			sMessage += sFoundFileIndex;
-			pThis->webInterface->SendRecvMsg(sMessage);
-			pThis->webInterface->Show(sMessage + wxT("\n"));
+		if ( file_cmd ) {
+			file_cmd->AddTag(CECTag(EC_TAG_PARTFILE, sFileHash));
+			pThis->Send_Discard_V2_Request(file_cmd);
+			delete file_cmd;
 		}
 	}
 
-	if (!sSort.IsEmpty()) {
-		if (sSort == wxT("name")) {
-			pThis->m_Params.DownloadSort = DOWN_SORT_NAME;
-		}
-		else if (sSort == wxT("size")) {
-			pThis->m_Params.DownloadSort = DOWN_SORT_SIZE;
-		}
-		else if (sSort == wxT("completed")) {
-			pThis->m_Params.DownloadSort = DOWN_SORT_COMPLETED;
-		}
-		else if (sSort == wxT("transferred")) {
-			pThis->m_Params.DownloadSort = DOWN_SORT_TRANSFERRED;
-		}
-		else if (sSort == wxT("speed")) {
-			pThis->m_Params.DownloadSort = DOWN_SORT_SPEED;
-		}
-		else if (sSort == wxT("progress")) {
-			pThis->m_Params.DownloadSort = DOWN_SORT_PROGRESS;
-		}
-	}
+	pThis->m_DownloadFilesInfo.SetSortOrder(sSort, sDownloadSortRev);
 	pThis->m_Params.bShowUploadQueue = _ParseURL(Data, wxT("showuploadqueue")) == wxT("true");
-	pThis->m_Params.bDownloadSortReverse = sDownloadSortRev == wxT("true");
 
 	Out += pThis->m_Templates.sTransferImages;
 	Out += pThis->m_Templates.sTransferList;
@@ -1033,42 +984,11 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	Out.Replace(wxT("[UploadFooter]"), pThis->m_Templates.sTransferUpFooter);
 	Out.Replace(wxT("[Session]"), sSession);
 
-	InsertCatBox(pThis, Out, cat, wxEmptyString, true, true);
+
+	Out.Replace(wxT("[CATBOX]"), GetStatusBox(sCat));
+	//InsertCatBox(pThis, Out, cat, wxEmptyString, true, true);
 	
-	if (pThis->m_Params.DownloadSort == DOWN_SORT_NAME) {
-		Out.Replace(wxT("[SortName]"), wxT("&sortreverse=") + sDownloadSortRev);
-	} else {
-		Out.Replace(wxT("[SortName]"), wxEmptyString);
-	}
-	
-	if (pThis->m_Params.DownloadSort == DOWN_SORT_SIZE) {
-		Out.Replace(wxT("[SortSize]"), wxT("&sortreverse=") + sDownloadSortRev);
-	} else {
-		Out.Replace(wxT("[SortSize]"), wxEmptyString);
-	}
-	
-	if (pThis->m_Params.DownloadSort == DOWN_SORT_COMPLETED) {
-		Out.Replace(wxT("[SortCompleted]"), wxT("&sortreverse=") + sDownloadSortRev);
-	} else {
-		Out.Replace(wxT("[SortCompleted]"), wxEmptyString);
-	}
-	if (pThis->m_Params.DownloadSort == DOWN_SORT_TRANSFERRED) {
-		Out.Replace(wxT("[SortTransferred]"), wxT("&sortreverse=") + sDownloadSortRev);
-	} else {
-		Out.Replace(wxT("[SortTransferred]"), wxEmptyString);
-	}
-	
-	if (pThis->m_Params.DownloadSort == DOWN_SORT_SPEED) {
-		Out.Replace(wxT("[SortSpeed]"), wxT("&sortreverse=") + sDownloadSortRev);
-	} else {
-		Out.Replace(wxT("[SortSpeed]"), wxEmptyString);
-	}
-	
-	if (pThis->m_Params.DownloadSort == DOWN_SORT_PROGRESS) {
-		Out.Replace(wxT("[SortProgress]"), wxT("&sortreverse=") + sDownloadSortRev);
-	} else {
-		Out.Replace(wxT("[SortProgress]"), wxEmptyString);
-	}
+	pThis->m_DownloadFilesInfo.ProcessHeadersLine(Out);
 	
 	Out.Replace(wxT("[Filename]"), _("File Name"));
 	Out.Replace(wxT("[Size]"), _("Size"));
@@ -1082,353 +1002,124 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	Out.Replace(wxT("[TotalDown]"), _("Downloaded total"));
 	Out.Replace(wxT("[TotalUp]"), _("Uploaded total"));
 	Out.Replace(wxT("[Prio]"), _("Priority"));
-	Out.Replace(wxT("[CatSel]"), sCat);
+
+	Out.Replace(wxT("[CatSel]"), sCat.Length() ? (wxT("&cat=") + sCat) : wxString(wxEmptyString));
+
 	wxString OutE = pThis->m_Templates.sTransferDownLine;
 	wxString OutE2 = pThis->m_Templates.sTransferDownLineGood;
 
 	double fTotalSize = 0, fTotalTransferred = 0, fTotalCompleted = 0, fTotalSpeed = 0;
-	//
-	// Sorting maps
-	//
-	typedef std::multimap<wxString, DownloadFiles *> strMap;
-	typedef std::multimap<unsigned long, DownloadFiles *> ulongMap;
-	typedef std::multimap<double, DownloadFiles *> doubleMap;
-	typedef std::pair<wxString, DownloadFiles *> strPair;
-	typedef std::pair<unsigned long, DownloadFiles *> ulongPair;
-	typedef std::pair<double, DownloadFiles *> doublePair;
-	strMap strFilesMap;
-	ulongMap ulongFilesMap;
-	doubleMap doubleFilesMap;
+	
+	pThis->m_DownloadFilesInfo.ReQuery();
 
 	// Populating array
-	bool completedAv = false;
-	wxString sTransferDLList = pThis->webInterface->SendRecvMsg(wxT("TRANSFER DL_LIST"));
-// This is debug code, to be removed later
-//pThis->webInterface->Dump(sTransferDLList);
-	wxStringTokenizer sTransferDLTokens( sTransferDLList, wxT("\n") );
-//	int cnt = 0;
-	while (sTransferDLTokens.HasMoreTokens()) {
-		//
-		// Get download entry and tokenize
-		//
-		wxString sEntry = sTransferDLTokens.GetNextToken();
-// This is debug code, to be removed later
-//pThis->webInterface->Show(sEntry << wxT("\n\n") << ++cnt << wxT("\n\n"));
-		wxStringTokenizer sEntryTokens( sEntry, wxT("\t"), wxTOKEN_RET_EMPTY_ALL );
-		//
-		// Fill DownloadFiles structure
-		//
-		DownloadFiles *dFile = new DownloadFiles;
-		wxString sAux;
-		sAux = sEntryTokens.GetNextToken(); dFile->sFileName = sAux;
-		sAux = sEntryTokens.GetNextToken(); sAux.ToULong(&dFile->lFileSize);
-		sAux = sEntryTokens.GetNextToken(); sAux.ToULong(&dFile->lFileCompleted);
-		sAux = sEntryTokens.GetNextToken(); sAux.ToULong(&dFile->lFileTransferred);
-		sAux = sEntryTokens.GetNextToken(); sAux.ToDouble(&dFile->fCompleted);
-		sAux = sEntryTokens.GetNextToken(); sAux.ToULong(&dFile->lFileSpeed);
-		sAux = sEntryTokens.GetNextToken(); sAux.ToLong(&dFile->lFileStatus);
-		sAux = sEntryTokens.GetNextToken(); dFile->sFileStatus = sAux;
-		sAux = sEntryTokens.GetNextToken(); sAux.ToLong(&dFile->lFilePrio);
-		sAux = sEntryTokens.GetNextToken(); dFile->sFileHash = sAux;
-		sAux = sEntryTokens.GetNextToken(); sAux.ToLong(&dFile->lSourceCount);
-		sAux = sEntryTokens.GetNextToken(); sAux.ToLong(&dFile->lNotCurrentSourceCount);
-		sAux = sEntryTokens.GetNextToken(); sAux.ToLong(&dFile->lTransferringSourceCount);
-		sAux = sEntryTokens.GetNextToken(); dFile->sED2kLink = sAux;
-		sAux = sEntryTokens.GetNextToken(); dFile->sFileInfo = _SpecialChars(sAux);
-		sAux = sEntryTokens.GetNextToken(); completedAv = completedAv || (sAux == wxT("1"));
-		//
-		// categories
-		//
-		long catVal;
-		wxString sCatVal = pThis->webInterface->SendRecvMsg(
-			wxT("CATEGORIES GETCATEGORY ") + dFile->sFileHash);
-		sCatVal.ToLong(&catVal);
-		if ((cat > 0) && (catVal != cat)) {
-			continue;
-		}			
-		if (cat < 0) {
-			wxString fileInfos = pThis->webInterface->SendRecvMsg(
-				wxT("CATEGORIES GETFILEINFO ") + dFile->sFileHash);
-			int brk = fileInfos.First(wxT("\t"));
-			int fileStatus = atoi((char*) fileInfos.Left(brk).GetData());
-			fileInfos = fileInfos.Mid(brk+1);
-			brk = fileInfos.First(wxT("\t"));
-			int transfSrcCount = atoi((char*) fileInfos.Left(brk).GetData());
-			fileInfos = fileInfos.Mid(brk+1);
-			brk = fileInfos.First(wxT("\t"));
-			int fileType = atoi((char*) fileInfos.Left(brk).GetData());
-			fileInfos = fileInfos.Mid(brk+1);
-			brk = fileInfos.First(wxT("\t"));
-			wxString isPartFile = fileInfos.Left(brk);
-			fileInfos = fileInfos.Mid(brk+1);
-			brk = fileInfos.First(wxT("\t"));
-			wxString isStopped = fileInfos.Left(brk);
-			fileInfos = fileInfos.Mid(brk+1);
-			brk = fileInfos.First(wxT("\t"));
-			wxString isMovie = fileInfos.Left(brk);
-			wxString isArchive = fileInfos.Mid(brk+1);
-
-			switch (cat) {
-				case -1 : 
-					if (catVal != 0) continue; 
-					break;
-				case -2 : 
-					if (isPartFile == wxT("Is Not PartFile")) continue;
-					break;
-				case -3 : 
-					if (isPartFile == wxT("Is PartFile")) continue;
-					break;
-				case -4 : 
-					if (!((fileStatus == PS_READY || fileStatus == PS_EMPTY) && (transfSrcCount == 0))) continue;
-					break;
-				case -5 :
-					if (!((fileStatus == PS_READY || fileStatus == PS_EMPTY) && (transfSrcCount > 0))) continue;
-					break;
-				case -6 : 
-					if (fileStatus != PS_ERROR) continue;
-					break;
-				case -7 : 
-					if (fileStatus != PS_PAUSED) continue;
-					break;
-				case -8 :
-					if (isStopped == wxT("Is Not Stopped")) continue;
-					break;
-				case -9 :
-					if (isMovie == wxT("Is Not Movie")) continue;
-					break;
-				case -10 :
-					if (fileType != ED2KFT_AUDIO) continue;
-					break;
-				case -11 :
-					if (isArchive == wxT("Is Not Archive")) continue;
-					break;
-				case -12 :
-					if (fileType != ED2KFT_CDIMAGE) continue;
-					break;
-			}
-		}
-		switch (pThis->m_Params.DownloadSort) {
-		case DOWN_SORT_NAME:
-			strFilesMap.insert(strPair(dFile->sFileName, dFile));
-			break;
-		case DOWN_SORT_SIZE:
-			ulongFilesMap.insert(ulongPair(dFile->lFileSize, dFile));
-			break;
-		case DOWN_SORT_COMPLETED:
-			ulongFilesMap.insert(ulongPair(dFile->lFileCompleted, dFile));
-			break;
-		case DOWN_SORT_TRANSFERRED:
-			ulongFilesMap.insert(ulongPair(dFile->lFileTransferred, dFile));
-			break;
-		case DOWN_SORT_SPEED:
-			ulongFilesMap.insert(ulongPair(dFile->lFileSpeed, dFile));
-			break;
-		case DOWN_SORT_PROGRESS:
-			doubleFilesMap.insert(doublePair(dFile->fCompleted, dFile));
-			break;
-		}
-	}
-// This is debug code, to be removed later
-//pThis->webInterface->Show(wxString(wxT("Size: ")) << strFilesMap.size() << wxT("\n"));
-//pThis->webInterface->Show(wxString(wxT("Transfer len: ")) << sTransferDLList.size() << wxT("\n"));
-	//
-	// Sorting
-	//
-	std::vector<DownloadFiles *> FilesArray;
-	switch (pThis->m_Params.DownloadSort) {
-	case DOWN_SORT_NAME:
-		if (pThis->m_Params.bDownloadSortReverse) {
-			for(strMap::reverse_iterator it = strFilesMap.rbegin(); it != strFilesMap.rend(); ++it) {
-				FilesArray.push_back(it->second);
-			}
-		} else {
-			for(strMap::iterator it = strFilesMap.begin(); it != strFilesMap.end(); ++it) {
-				FilesArray.push_back(it->second);
-			}
-		}
-		break;
-	case DOWN_SORT_SIZE:
-		if (pThis->m_Params.bDownloadSortReverse) {
-			for(ulongMap::reverse_iterator it = ulongFilesMap.rbegin(); it != ulongFilesMap.rend(); ++it) {
-				FilesArray.push_back(it->second);
-			}
-		} else {
-			for(ulongMap::iterator it = ulongFilesMap.begin(); it != ulongFilesMap.end(); ++it) {
-				FilesArray.push_back(it->second);
-			}
-		}
-		break;
-	case DOWN_SORT_COMPLETED:
-		if (pThis->m_Params.bDownloadSortReverse) {
-			for(ulongMap::reverse_iterator it = ulongFilesMap.rbegin(); it != ulongFilesMap.rend(); ++it) {
-				FilesArray.push_back(it->second);
-			}
-		} else {
-			for(ulongMap::iterator it = ulongFilesMap.begin(); it != ulongFilesMap.end(); ++it) {
-				FilesArray.push_back(it->second);
-			}
-		}
-		break;
-	case DOWN_SORT_TRANSFERRED:
-		if (pThis->m_Params.bDownloadSortReverse) {
-			for(ulongMap::reverse_iterator it = ulongFilesMap.rbegin(); it != ulongFilesMap.rend(); ++it) {
-				FilesArray.push_back(it->second);
-			}
-		} else {
-			for(ulongMap::iterator it = ulongFilesMap.begin(); it != ulongFilesMap.end(); ++it) {
-				FilesArray.push_back(it->second);
-			}
-		}
-		break;
-	case DOWN_SORT_SPEED:
-		if (pThis->m_Params.bDownloadSortReverse) {
-			for(ulongMap::reverse_iterator it = ulongFilesMap.rbegin(); it != ulongFilesMap.rend(); ++it) {
-				FilesArray.push_back(it->second);
-			}
-		} else {
-			for(ulongMap::iterator it = ulongFilesMap.begin(); it != ulongFilesMap.end(); ++it) {
-				FilesArray.push_back(it->second);
-			}
-		}
-		break;
-	case DOWN_SORT_PROGRESS:
-		if (pThis->m_Params.bDownloadSortReverse) {
-			for(doubleMap::reverse_iterator it = doubleFilesMap.rbegin(); it != doubleFilesMap.rend(); ++it) {
-				FilesArray.push_back(it->second);
-			}
-		} else {
-			for(doubleMap::iterator it = doubleFilesMap.begin(); it != doubleFilesMap.end(); ++it) {
-				FilesArray.push_back(it->second);
-			}
-		}
-		break;
-	}
 	
 	//
 	// Displaying
 	//
 	wxString sDownList;
-	for (unsigned int i = 0; i < FilesArray.size(); ++i) {
-		wxString JSfileinfo = FilesArray[i]->sFileInfo;
-		//JSfileinfo.Replace("\n","\\n");
+	DownloadFilesInfo::ItemIterator i = pThis->m_DownloadFilesInfo.GetBeginIterator();
+	while (i != pThis->m_DownloadFilesInfo.GetEndIterator()) {
+
+		if ( sCat.Length() && (sCat != i->sFileStatus) ) {
+			i++;
+			continue;
+		}
+		
+		wxString JSfileinfo = i->sFileName + wxT("-") + i->sFileStatus;
+
 		JSfileinfo.Replace(wxT("|"),wxT("\\n"));
 		wxString sActions = 
 			wxT("<acronym title=\"") +
-			FilesArray[i]->sFileStatus +
+			i->sFileStatus +
 			wxT("\"><a ref=\"javascript:alert('") +
 			JSfileinfo +
 			wxT("')\"><img src=\"l_info.gif\" alt=\"") +
-			FilesArray[i]->sFileStatus +
+			i->sFileStatus +
 			wxT("\"></a></acronym>");
 		wxString sED2kLink =
 			wxT("<acronym title=\"[Ed2klink]\"><a href=\"") +
-			FilesArray[i]->sED2kLink +
+			i->sED2kLink +
 			wxT("\"><img src=\"l_ed2klink.gif\" alt=\"[Ed2klink]\"></a></acronym>");
 		sED2kLink.Replace(wxT("[Ed2klink]"), _("ED2K Link(s)"));
 		sActions += sED2kLink;
 
-		bool bCanBeDeleted = true;
-		switch (FilesArray[i]->lFileStatus) {
-			case PS_COMPLETING:
-			case PS_COMPLETE:
-				bCanBeDeleted = false;
-				break;
-			case PS_HASHING: 
-			case PS_WAITINGFORHASH:
-			case PS_ERROR:
-				break;
-			case PS_PAUSED:
-				if (IsSessionAdmin(Data,sSession)) {
-					wxString sResume;
-					sResume.Printf(wxT("<acronym title=\"[Resume]\"><a href=\"[Link]\"><img src=\"l_resume.gif\" alt=\"[Resume]\"></a></acronym> "));
-					sResume.Replace(wxT("[Link]"), IsSessionAdmin(Data,sSession) ? wxString::Format(wxT("?ses=%s&w=transfer&op=resume&file=%s"), sSession.GetData(), FilesArray[i]->sFileHash.GetData()) : GetPermissionDenied());
-					sActions += sResume;
-				}
-				break; 
-			default: // waiting or downloading
-				if (IsSessionAdmin(Data,sSession)) {
-					wxString sPause;
-					sPause.Printf(wxT("<acronym title=\"[Pause]\"><a href=\"[Link]\"><img src=\"l_pause.gif\" alt=\"[Pause]\"></a></acronym> "));
-					sPause.Replace(wxT("[Link]"), IsSessionAdmin(Data,sSession) ? wxString::Format(wxT("?ses=%s&w=transfer&op=pause&file=%s"), sSession.GetData(), FilesArray[i]->sFileHash.GetData()) : GetPermissionDenied());
-					sActions += sPause;
-				}
-				break;
-		}
-		
-		if (bCanBeDeleted) {
-			if (IsSessionAdmin(Data,sSession)) {
-				wxString sCancel;
-				sCancel.Printf(wxT("<acronym title=\"[Cancel]\"><a href=\"[Link]\" onclick=\"return confirm(\'[ConfirmCancel]\')\"><img src=\"l_cancel.gif\" alt=\"[Cancel]\"></a></acronym> "));
-				sCancel.Replace(wxT("[Link]"), IsSessionAdmin(Data,sSession) ? wxString::Format(wxT("?ses=%s&w=transfer&op=cancel&file=%s"), sSession.GetData(), FilesArray[i]->sFileHash.GetData()) : GetPermissionDenied());
-				sActions += sCancel;
-			}
-		}
-		
+		wxString sNextAction;
 		if (IsSessionAdmin(Data,sSession)) {
-			sActions.Replace(wxT("[Resume]"), _("Resume"));
-			sActions.Replace(wxT("[Pause]"), _("Pause"));
-			sActions.Replace(wxT("[Cancel]"), _("Cancel"));
-			sActions.Replace(wxT("[ConfirmCancel]"), _("Are you sure that you want to cancel and delete this file?\\n"));
-
-			if (FilesArray[i]->lFileStatus != PS_COMPLETE && FilesArray[i]->lFileStatus != PS_COMPLETING) {
-				sActions.Append(wxString::Format(wxT("<acronym title=\"[PriorityUp]\"><a href=\"?ses=[Session]&amp;w=transfer&op=prioup&file=%s%s\"><img src=\"l_up.gif\" alt=\"[PriorityUp]\"></a></acronym>"), FilesArray[i]->sFileHash.GetData(), sCat.GetData()));
-				sActions.Append(wxString::Format(wxT("&nbsp;<acronym title=\"[PriorityDown]\"><a href=\"?ses=[Session]&amp;w=transfer&op=priodown&file=%s%s\"><img src=\"l_down.gif\" alt=\"[PriorityDown]\"></a></acronym>"), FilesArray[i]->sFileHash.GetData(), sCat.GetData()));
+			if ( i->sFileStatus == wxT("Paused") ) {
+				sActions += wxT("<acronym title=\"Resume\"><a href=\"?ses=") +
+					sSession + wxT("&w=transfer&op=resume&file=") + i->sFileHash +
+					wxT("\"><img src=\"l_resume.gif\" alt=\"Resume\"></a></acronym> ");
+			} else {
+				sActions += wxT("<acronym title=\"Pause\"><a href=\"?ses=") +
+					sSession + wxT("&w=transfer&op=pause&file=") + i->sFileHash +
+					wxT("\"><img src=\"l_pause.gif\" alt=\"Pause\"></a></acronym> ");
 			}
+			sActions += wxT("<acronym title=\"Cancel\"><a href=\"?ses=") +
+			sSession + wxT("&w=transfer&op=cancel&file=") + i->sFileHash +
+			wxT("\" onclick=\"return confirm(\'Are you sure that you want to cancel and delete this file?\\n\')\">"
+				"<img src=\"l_cancel.gif\" alt=\"Cancel\"></a></acronym> ");
+				
+			sActions += wxT("<acronym title=\"[PriorityUp]\"><a href=\"?ses=") +
+				sSession + wxT("&amp;w=transfer&op=prioup&file=") +	i->sFileHash +
+				wxT("\"><img src=\"l_up.gif\" alt=\"[PriorityUp]\"></a></acronym>");
+			sActions += wxT("&nbsp;<acronym title=\"[PriorityDown]\"><a href=\"?ses=") +
+				sSession + wxT("&amp;w=transfer&op=priodown&file=") + i->sFileHash +
+				wxT("\"><img src=\"l_down.gif\" alt=\"[PriorityDown]\"></a></acronym>");
+		} else {
+			// lfroen: put something instead of action links ?
 		}
 		
 		wxString HTTPProcessData;
 		// if downloading, draw in other color
-		if (FilesArray[i]->lFileSpeed > 0)
+		if (i->lFileSpeed > 0)
 			HTTPProcessData = OutE2;
 		else
 			HTTPProcessData = OutE;
 
-		if (FilesArray[i]->sFileName.Length() > SHORT_FILENAME_LENGTH)
-			HTTPProcessData.Replace(wxT("[ShortFileName]"), FilesArray[i]->sFileName.Left(SHORT_FILENAME_LENGTH) + wxT("..."));
+		if (i->sFileName.Length() > SHORT_FILENAME_LENGTH)
+			HTTPProcessData.Replace(wxT("[ShortFileName]"), i->sFileName.Left(SHORT_FILENAME_LENGTH) + wxT("..."));
 		else
-			HTTPProcessData.Replace(wxT("[ShortFileName]"), FilesArray[i]->sFileName);
+			HTTPProcessData.Replace(wxT("[ShortFileName]"), i->sFileName);
 
-		HTTPProcessData.Replace(wxT("[FileInfo]"), FilesArray[i]->sFileInfo);
+		HTTPProcessData.Replace(wxT("[FileInfo]"), i->sFileInfo);
 
-		fTotalSize += FilesArray[i]->lFileSize;
+		fTotalSize += i->lFileSize;
 
-		HTTPProcessData.Replace(wxT("[2]"), castItoXBytes(FilesArray[i]->lFileSize));
+		HTTPProcessData.Replace(wxT("[2]"), castItoXBytes(i->lFileSize));
 
-		if (FilesArray[i]->lFileTransferred > 0) {
-			fTotalTransferred += FilesArray[i]->lFileTransferred;
+		if (i->lFileTransferred > 0) {
+			fTotalTransferred += i->lFileTransferred;
 
-			HTTPProcessData.Replace(wxT("[3]"), castItoXBytes(FilesArray[i]->lFileTransferred));
+			HTTPProcessData.Replace(wxT("[3]"), castItoXBytes(i->lFileTransferred));
 		} else
 			HTTPProcessData.Replace(wxT("[3]"), wxT("-"));
 
-		if (FilesArray[i]->lFileCompleted > 0) {
-			fTotalCompleted += FilesArray[i]->lFileCompleted;
+		if (i->lFileCompleted > 0) {
+			fTotalCompleted += i->lFileCompleted;
 
-			HTTPProcessData.Replace(wxT("[4]"), castItoXBytes(FilesArray[i]->lFileCompleted));
+			HTTPProcessData.Replace(wxT("[4]"), castItoXBytes(i->lFileCompleted));
 		} else
 			HTTPProcessData.Replace(wxT("[4]"), wxT("-"));
 		
-		HTTPProcessData.Replace(wxT("[DownloadBar]"), _GetDownloadGraph(Data,FilesArray[i]->sFileHash));
+		HTTPProcessData.Replace(wxT("[DownloadBar]"), _GetDownloadGraph(Data, (int)i->fCompleted, i->sPartStatus));
 
-		if (FilesArray[i]->lFileSpeed > 0.0f) {
-			fTotalSpeed += FilesArray[i]->lFileSpeed;
+		if (i->lFileSpeed > 0.0f) {
+			fTotalSpeed += i->lFileSpeed;
 
-			HTTPTemp.Printf(wxT("%8.2f %s"), FilesArray[i]->lFileSpeed/1024.0 ,_("kB/s"));
-			HTTPProcessData.Replace(wxT("[5]"), HTTPTemp);
+			HTTPProcessData.Replace(wxT("[5]"), wxString::Format(wxT("%8.2f %s"),
+				i->lFileSpeed/1024.0 ,_("kB/s")));
 		} else
 			HTTPProcessData.Replace(wxT("[5]"), wxT("-"));
 		
-		if (FilesArray[i]->lSourceCount > 0) {
-			HTTPTemp.Printf(wxT("%li&nbsp;/&nbsp;%8li&nbsp;(%li)"),
-				FilesArray[i]->lSourceCount-FilesArray[i]->lNotCurrentSourceCount,
-				FilesArray[i]->lSourceCount,
-				FilesArray[i]->lTransferringSourceCount
-			);
-			HTTPProcessData.Replace(wxT("[6]"), HTTPTemp);
+		if (i->lSourceCount > 0) {
+			HTTPProcessData.Replace(wxT("[6]"), wxString::Format(wxT("%li&nbsp;/&nbsp;%8li&nbsp;(%li)"),
+				i->lSourceCount - i->lNotCurrentSourceCount,
+				i->lSourceCount, i->lTransferringSourceCount));
 		} else
 			HTTPProcessData.Replace(wxT("[6]"), wxT("-"));
 		
-		switch (FilesArray[i]->lFilePrio) {
+		switch (i->lFilePrio) {
 			case 0: HTTPTemp=_("Low");break;
 			case 10: HTTPTemp=_("Auto [Lo]");break;
 
@@ -1447,6 +1138,7 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 		HTTPProcessData.Replace(wxT("[7]"), sActions);
 
 		sDownList += HTTPProcessData;
+		i++;
 	}
 
 	Out.Replace(wxT("[DownloadFilesList]"), sDownList);
@@ -1458,9 +1150,6 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	Out.Replace(wxT("[TotalDownCompleted]"), castItoXBytes((uint64)fTotalCompleted));
 	Out.Replace(wxT("[TotalDownTransferred]"), castItoXBytes((uint64)fTotalTransferred));
 	
-	Out.Replace(wxT("[ClearCompletedButton]"),(completedAv && IsSessionAdmin(Data,sSession)) ?
-		pThis->m_Templates.sClearCompleted : wxString(wxEmptyString));
-
 	HTTPTemp.Printf(wxT("%8.2f %s"), fTotalSpeed/1024.0,_("kB/s"));
 	Out.Replace(wxT("[TotalDownSpeed]"), HTTPTemp);
 	OutE = pThis->m_Templates.sTransferUpLine;
@@ -1578,11 +1267,11 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	Out.Replace(wxT("[Session]"), sSession);
 	Out.Replace(wxT("[CLEARCOMPLETED]"), _("C&lear completed"));
 
-	wxString buffer;
-	buffer.Printf(wxT("%s (%u)"), _("Downloads"), FilesArray.size());
-	Out.Replace(wxT("[DownloadList]"),buffer);
-	buffer.Printf(wxT("%s (%i)"), _("Upload"), atoi((char*) pThis->webInterface->SendRecvMsg(wxT("QUEUE UL_GETLENGTH")).GetData()));
-	Out.Replace(wxT("[UploadList]"), buffer);
+	Out.Replace(wxT("[DownloadList]"),
+		wxString::Format(wxT("%s (%u)"), _("Downloads"), pThis->m_DownloadFilesInfo.ItemCount()));
+	Out.Replace(wxT("[UploadList]"),
+		wxString::Format(wxT("%s (%i)"),
+			_("Upload"), atoi((char*) pThis->webInterface->SendRecvMsg(wxT("QUEUE UL_GETLENGTH")).GetData())));
 	Out.Replace(wxT("[CatSel]"), sCat);
 
 	return Out;
@@ -2348,67 +2037,41 @@ wxString CWebServer::_GetWebCharSet() {
 
 
 // Ornis: creating the progressbar. colored if ressources are given/available
-wxString CWebServer::_GetDownloadGraph(ThreadData Data,wxString filehash) {
+wxString CWebServer::_GetDownloadGraph(ThreadData Data, int percent, wxString &s_ChunkBar) {
 	CWebServer *pThis = (CWebServer *)Data.pThis;
 	if (!pThis)
 		return wxEmptyString;
 	
 	// cool style
-	wxString progresscolor[12];
-	progresscolor[0]=wxT("transparent.gif");
-	progresscolor[1]=wxT("black.gif");
-	progresscolor[2]=wxT("yellow.gif");
-	progresscolor[3]=wxT("red.gif");
-
-	progresscolor[4]=wxT("blue1.gif");
-	progresscolor[5]=wxT("blue2.gif");
-	progresscolor[6]=wxT("blue3.gif");
-	progresscolor[7]=wxT("blue4.gif");
-	progresscolor[8]=wxT("blue5.gif");
-	progresscolor[9]=wxT("blue6.gif");
-
-	progresscolor[10]=wxT("green.gif");
-	progresscolor[11]=wxT("greenpercent.gif");
+	wxString progresscolor[12] = {
+		wxT("transparent.gif"), wxT("black.gif"), wxT("yellow.gif"), wxT("red.gif"),
+		wxT("blue1.gif"),       wxT("blue2.gif"), wxT("blue3.gif"),  wxT("blue4.gif"),
+		wxT("blue5.gif"),       wxT("blue6.gif"), wxT("green.gif"),  wxT("greenpercent.gif") };
 
 	wxString Out = wxEmptyString;
-	wxString temp;
 
-	wxString response = pThis->webInterface->SendRecvMsg(wxString::Format(wxT("WEBPAGE PROGRESSBAR %d %s"), pThis->m_Templates.iProgressbarWidth, filehash.GetData()).GetData());
-	int brk=response.First(wxT("\t"));
+	// and now make a graph out of the array - need to be in a progressive way
+	uint8 lastcolor = atoi(s_ChunkBar.Left(1));
+	uint16 lastindex=0;
 	
-	if (atoi((char*) response.Left(brk).GetData())) {
-		temp.Printf(wxString(pThis->m_Templates.sProgressbarImgsPercent+wxT("<br>")).GetData(), progresscolor[11].GetData(), pThis->m_Templates.iProgressbarWidth);
-		Out+=temp;
-		temp.Printf(pThis->m_Templates.sProgressbarImgs.GetData(), progresscolor[10].GetData(), pThis->m_Templates.iProgressbarWidth);
-		Out+=temp;
-	} else {
-		response=response.Mid(brk+1); brk=response.First(wxT("\t"));
-		wxString s_ChunkBar = response.Left(brk);
-		// and now make a graph out of the array - need to be in a progressive way
-		uint8 lastcolor=1;
-		uint16 lastindex=0;
-		for (uint16 i=0;i<pThis->m_Templates.iProgressbarWidth; ++i) {
-			if (lastcolor!= atoi((char*) s_ChunkBar.Mid(i,1).GetData())) {
-				if (i>lastindex) {
-					temp.Printf(pThis->m_Templates.sProgressbarImgs.GetData() ,progresscolor[lastcolor].GetData(),i-lastindex);
+	for (uint16 i = 0; i < s_ChunkBar.Length(); i++) {
+		if ( (lastcolor!= atoi(s_ChunkBar.Mid(i,1))) || (i == s_ChunkBar.Length()-1) ) {
+				Out += wxString::Format(pThis->m_Templates.sProgressbarImgs.GetData(),
+					progresscolor[lastcolor].GetData(), i - lastindex);
 
-					Out+=temp;
-				}
-				lastcolor=atoi((char*) s_ChunkBar.Mid(i,1).GetData());
-				lastindex=i;
-			}
+			lastcolor = atoi(s_ChunkBar.Mid(i,1));
+			lastindex = i;
 		}
-
-		temp.Printf(pThis->m_Templates.sProgressbarImgs.GetData(), progresscolor[lastcolor].GetData(), pThis->m_Templates.iProgressbarWidth-lastindex);
-		Out+=temp;
-
-		response=response.Mid(brk+1);
-		double percentComplete = atof((char*) response.GetData());
-		int complx=(int)((pThis->m_Templates.iProgressbarWidth/100.0)*percentComplete);
-		(complx>0) ? temp.Printf(wxString(pThis->m_Templates.sProgressbarImgsPercent+wxT("<br>")).GetData(), progresscolor[11].GetData(),complx) : temp.Printf(wxString(pThis->m_Templates.sProgressbarImgsPercent+wxT("<br>")).GetData(),progresscolor[0].GetData(),5);
-		Out=temp+Out;
 	}
 
+	int complx = pThis->m_Templates.iProgressbarWidth*percent/100;
+	if ( complx ) {
+		Out = wxString::Format((pThis->m_Templates.sProgressbarImgsPercent+wxT("<br>")).GetData(),
+			progresscolor[11].GetData(),complx) + Out;
+	} else {
+		Out = wxString::Format((pThis->m_Templates.sProgressbarImgsPercent+wxT("<br>")).GetData(),
+			progresscolor[0].GetData(),5) + Out;
+	}
 	return Out;
 }
 
@@ -2534,6 +2197,30 @@ int CWebServer::UpdateSessionCount() {
 	return m_Params.Sessions.GetCount();
 }
 
+wxString CWebServer::GetStatusBox(wxString &preselect)
+{
+	wxString result(wxT("<form><select name=\"cat\" size=\"1\""
+	"onchange=GotoCat(this.form.cat.options[this.form.cat.selectedIndex].value)>"));
+		
+	const wxChar * catnames[] = {
+		_("all others"), _("Waiting"), _("Downloading"), _("Erroneous"), _("Paused"), _("Stopped") };
+		
+	// those are values that CPartFile->GetPartfileStatus return. They don't ment be translated
+	const wxChar * catvalues[] = {
+		_(""), wxT("Waiting"), wxT("Downloading"), wxT("Erroneous"), wxT("Paused"), wxT("Stopped") };
+		
+	for (int i = 0; i < (int)(sizeof(catnames)/sizeof(catnames[0])); i++) {
+		if ( catvalues[i] == preselect ) {
+			result += wxT("<option selected value=\"");
+		} else {
+			result += wxT("<option value=\"");
+		}
+		result += wxString(catvalues[i]) + wxT("\">\"") + catnames[i] + wxT("</option>");
+	}
+
+	result == wxT("</select></form>");
+	return result;
+}
 
 void CWebServer::InsertCatBox(CWebServer *pThis, wxString &Out, int preselect, wxString boxlabel, bool jump, bool extraCats) {
 	wxString tempBuf, tempBuf2, tempBuf3;
@@ -2555,39 +2242,11 @@ void CWebServer::InsertCatBox(CWebServer *pThis, wxString &Out, int preselect, w
 	}
 	
 	if (extraCats) {
-		if (catCount > 1) {
-			tempBuf2.Printf(wxT("<option>------------</option>"));
-			tempBuf.Append(tempBuf2);
-		}
-		
-		for (int i = ((catCount>1) ? 1 : 2); i <= 12; ++i) {
-			tempBuf3 = ((-i)==preselect) ? wxT(" selected") : wxT("");
-			tempBuf2.Printf(wxT("<option%s value=\"%i\">%s</option>"), tempBuf3.GetData(), -i, GetSubCatLabel(-i).GetData());
-			tempBuf.Append(tempBuf2);
-		}
+		// code moved to CWebServer::GetStatusBox
 	}
 	
 	tempBuf.Append(wxT("</select></form>"));
 	Out.Replace(wxT("[CATBOX]"), boxlabel+tempBuf);
-}
-
-
-wxString CWebServer::GetSubCatLabel(int cat) {
-	switch (cat) {
-		case -1: return _("all others");
-		case -2: return _("Incomplete");
-		case -3: return _("Completed");
-		case -4: return _("Waiting");
-		case -5: return _("Downloading");
-		case -6: return _("Erroneous");
-		case -7: return _("Paused");
-		case -8: return _("Stopped");
-		case -9: return _("Video");
-		case -10: return _("Audio");
-		case -11: return _("Archive");
-		case -12: return _("CD-Images");
-	}
-	return wxT("?");
 }
 
 
@@ -2848,16 +2507,38 @@ bool SharedFilesInfo::CompareItems(const SharedFiles &i1, const SharedFiles &i2)
 	return Result ^ m_SortReverse;
 }
 
+DownloadFilesInfo *DownloadFiles::GetContainerInstance()
+{
+	return DownloadFilesInfo::m_This;
+}
+
 DownloadFilesInfo *DownloadFilesInfo::m_This = 0;
 
 DownloadFilesInfo::DownloadFilesInfo(CamulewebApp *webApp) : ItemsContainer<DownloadFiles, xDownloadSort>(webApp)
 {
 	m_This = this;
+
+	m_SortHeaders[DOWN_SORT_NAME] = wxT("[SortName]");
+	m_SortHeaders[DOWN_SORT_SIZE] = wxT("[SortSize]");
+	m_SortHeaders[DOWN_SORT_COMPLETED] = wxT("[SortCompleted]");
+	m_SortHeaders[DOWN_SORT_TRANSFERRED] = wxT("[SortTransferred]");
+	m_SortHeaders[DOWN_SORT_SPEED] = wxT("[SortSpeed]");
+	m_SortHeaders[DOWN_SORT_PROGRESS] = wxT("[SortProgress]");
+	
+	m_SortStrVals[wxT("")] = DOWN_SORT_NAME;
+	m_SortStrVals[wxT("name")] = DOWN_SORT_NAME;
+	m_SortStrVals[wxT("size")] = DOWN_SORT_SIZE;
+	m_SortStrVals[wxT("completed")] = DOWN_SORT_COMPLETED;
+	m_SortStrVals[wxT("transferred")] = DOWN_SORT_TRANSFERRED;
+	m_SortStrVals[wxT("progress")] = DOWN_SORT_PROGRESS;
+	m_SortStrVals[wxT("speed")] = DOWN_SORT_SPEED;
+	
+	m_This = this;
 }
 
 bool DownloadFilesInfo::ReQuery()
 {
-	CECPacket req_sts(EC_OP_GET_DLOAD_QUEUE_STATUS);
+	CECPacket req_sts(EC_OP_GET_DLOAD_QUEUE, EC_DETAIL_UPDATE);
 	//
 	// Phase 1: request status
 	CECPacket *reply = m_webApp->SendRecvMsg_v2(&req_sts);
@@ -2868,7 +2549,7 @@ bool DownloadFilesInfo::ReQuery()
 	//
 	// Phase 2: update status, mark new files for subsequent query
 	std::set<uint32> core_files;
-	CECPacket req_full(EC_OP_GET_DLOAD_QUEUE_PARTS_STATUS);
+	CECPacket req_full(EC_OP_GET_DLOAD_QUEUE);
 
 	for (int i = 0;i < reply->GetTagCount();i++) {
 		CEC_PartFile_Tag *tag = (CEC_PartFile_Tag *)reply->GetTagByIndex(i);
@@ -2876,8 +2557,17 @@ bool DownloadFilesInfo::ReQuery()
 		core_files.insert(tag->FileID());
 		if ( m_files.count(tag->FileID()) ) {
 			// already have it - update status
-			m_files[tag->FileID()]->sFileStatus = tag->FileStatus();
-			if ( tag->FileStatus() == wxT("Downloading") ) {
+			DownloadFiles *file = m_files[tag->FileID()];
+			file->lSourceCount = tag->SourceCount();
+			file->lNotCurrentSourceCount = tag->SourceNotCurrCount();
+			file->sFileStatus = tag->FileStatus();
+			if ( file->sPartStatus == wxT("Downloading") ) {
+				file->sPartStatus = tag->PartStatus();
+				file->lFileCompleted = tag->SizeDone();
+				file->lFileTransferred = tag->SizeXfer();
+				file->lFileSpeed = tag->Speed();
+				file->lTransferringSourceCount = tag->SourceXferCount();
+				file->fCompleted = (100.0*file->lFileCompleted) / file->lFileSize;
 			}
 		} else {
 			// don't have it - prepare to request full info
@@ -2906,6 +2596,7 @@ bool DownloadFilesInfo::ReQuery()
 			CEC_PartFile_Tag *tag = (CEC_PartFile_Tag *)reply->GetTagByIndex(i);
 
 			DownloadFiles file;
+			file.file_id = tag->FileID();
 			file.sFileName = tag->FileName();
 			file.lFileSize = tag->SizeFull();
 			file.lFileCompleted = tag->SizeDone();
@@ -2915,14 +2606,20 @@ bool DownloadFilesInfo::ReQuery()
 			file.lNotCurrentSourceCount = tag->SourceNotCurrCount();
 			file.lTransferringSourceCount = tag->SourceXferCount();
 			file.fCompleted = (100.0*file.lFileCompleted) / file.lFileSize;
-			file.lFileStatus = 17; // FIXME ??
+			file.sFileStatus = tag->FileStatus();
 			file.lFilePrio = tag->Prio();
 			file.sFileHash = wxString::Format(wxT("%08x"), tag->FileID());
 			file.sED2kLink = tag->FileEd2kLink();
-			file.sFileInfo = wxT("FIXME");
+			file.sPartStatus = tag->PartStatus();
+
+			m_items.push_back(file);
+			m_files[file.file_id] = &(m_items.back());
+
 		}
 	}
 	
+	SortItems();
+
 	return true;
 }
 
