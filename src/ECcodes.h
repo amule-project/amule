@@ -208,11 +208,6 @@ enum {
 		 */
 	EC_OP_STATS,
 
-
-	//
-	//
-	//
-
 		/*!
 		 * \brief Request for download queue.
 		 *
@@ -220,18 +215,7 @@ enum {
 		 *  ::EC_TAG_PARTFILE (*) info can be requested for selected list only
 		 */
 	EC_OP_GET_DLOAD_QUEUE,
-	
-		/*!
-		 * Same as EC_OP_GET_DLOAD_QUEUE but only status and parts status are returned
-		 */
-	EC_OP_GET_DLOAD_QUEUE_STATUS,
-
-		/*!
-		 * \brief Same as EC_OP_GET_DLOAD_QUEUE, but parts status returned for every file
-		 * 
-		 */
-	EC_OP_GET_DLOAD_QUEUE_PARTS_STATUS,
-	
+		
 		/*!
 		 * \brief Request for upload queue - currect uploads
 		 *
@@ -240,6 +224,12 @@ enum {
 		 */
 	EC_OP_GET_ULOAD_QUEUE,
 
+		/*!
+		 * \brief Request for list of shared files
+		 * 
+		 */
+	EC_OP_GET_SHARED_FILES,
+	
 		/*
 		 * \brief Perform action on file in queue.
 		 *
