@@ -6,4 +6,4 @@ if WXCAS
   OPT_WXCAS = wxCas
 endif
 
-SUBDIRS = xas $(OPT_CAS) $(OPT_WXCAS) 
+SUBDIRS = xas aLinkCreator $(OPT_CAS) $(OPT_WXCAS) 
