@@ -43,7 +43,7 @@
 
 #include <wx/arrimpl.cpp> // this is a magic incantation which must be done!
 
-WX_DEFINE_OBJARRAY(ArrayOfUCharPtr);
+WX_DEFINE_OBJARRAY(ArrayOfCMD4Hash);
 WX_DEFINE_OBJARRAY(ArrayOfCTag);
 
 static void MD4Transform(uint32 Hash[4], uint32 x[16]);
@@ -85,7 +85,6 @@ CAbstractFile::CAbstractFile() :
 	m_nFileSize(0),
 	m_iRate(0)
 {
-	md4clr(m_abyFileHash);
 }
 
 
@@ -116,10 +115,6 @@ CKnownFile::CKnownFile() :
 
 CKnownFile::~CKnownFile(){
 	
-	for (size_t i = 0; i != hashlist.GetCount(); i++)
-		if (hashlist[i])
-			delete[] hashlist[i];
-		
 	hashlist.Clear();
 			
 	for (size_t i = 0; i != taglist.GetCount(); i++) {
@@ -192,7 +187,7 @@ bool CKnownFile::CreateFromFile(const wxString& in_directory, const wxString& in
 	uint32 togo = m_nFileSize;
 	uint16 hashcount;
 	for (hashcount = 0; togo >= PARTSIZE; ) {
-		uchar* newhash = new uchar[16];
+		CMD4Hash newhash;
 		CreateHashFromFile(file, PARTSIZE, newhash);
 		// SLUGFILLER: SafeHash - quick fallback
 		// Kry - This can NOT be done on right now - because the hashing starts
@@ -211,19 +206,16 @@ bool CKnownFile::CreateFromFile(const wxString& in_directory, const wxString& in
 		// What's this? signaling to terminate?
 		if ( notify && *notify ) {
 			fclose(file);
-			delete[] newhash;
 			printf("Hashing thread dying?\n");
 			return false;
 		}
 		hashcount++;	
 	}
 	
-	uchar* lasthash = new uchar[16];
-	md4clr(lasthash);
+	CMD4Hash lasthash;
 	CreateHashFromFile(file, togo, lasthash);
 	if (!hashcount){
-		md4cpy(m_abyFileHash, lasthash);
-		delete[] lasthash; // i_a: memleak 
+		m_abyFileHash = lasthash;
 	} 
 	else {
 		hashlist.Add(lasthash);		
@@ -564,7 +556,7 @@ void CKnownFile::SetFileSize(uint32 nFileSize)
 
 // needed for memfiles. its probably better to switch everything to CFile...
 bool CKnownFile::LoadHashsetFromFile(CFile* file, bool checkhash){
-	uchar checkid[16];
+	CMD4Hash checkid;
 	file->Read(&checkid,16);
 	
 	uint16	parts;
@@ -572,19 +564,19 @@ bool CKnownFile::LoadHashsetFromFile(CFile* file, bool checkhash){
 	ENDIAN_SWAP_I_16(parts);
 	
 	for (uint16 i = 0; i < parts; i++){
-		uchar* cur_hash = new uchar[16];
+		CMD4Hash cur_hash;
 		file->Read(cur_hash,16);
 		hashlist.Add(cur_hash);
 	}
 	
 	// SLUGFILLER: SafeHash - always check for valid hashlist
 	if (!checkhash){
-		md4cpy(m_abyFileHash, checkid);
+		m_abyFileHash = checkid;
 		if (parts <= 1) {	// nothing to check
 			return true;
 		}
 	} else {
-		if (md4cmp(m_abyFileHash, checkid)) {
+		if ( m_abyFileHash != checkid ) {
 			return false;	// wrong file?
 		} else {
 			if (parts != GetED2KPartHashCount()) {
@@ -605,7 +597,7 @@ bool CKnownFile::LoadHashsetFromFile(CFile* file, bool checkhash){
 		CreateHashFromString(buffer,hashlist.GetCount()*16,checkid);
 		delete[] buffer;
 	}
-	if (!md4cmp(m_abyFileHash, checkid)) {
+	if ( m_abyFileHash == checkid ) {
 		return true;
 	} else {
 		hashlist.Clear();
@@ -859,9 +851,8 @@ void CKnownFile::CreateHashFromInput(FILE* file,CFile* file2, int Length, uchar*
 	}
 }
 
-uchar* CKnownFile::GetPartHash(uint16 part) const {
-	if (part >= hashlist.GetCount())
-		return 0;
+const CMD4Hash& CKnownFile::GetPartHash(uint16 part) const {
+	wxASSERT( part >= hashlist.GetCount() );
 	return hashlist[part];
 }
 
@@ -1014,7 +1005,7 @@ void CKnownFile::UpdateAutoUpPriority(void)
 void CKnownFile::LoadComment()
 {
 	wxString strFullPath = wxString::Format("%sfileinfo.ini",theApp.glob_prefs->GetAppDir());
-	wxString strHash = EncodeBase16( m_abyFileHash, 16 );
+	wxString strHash = m_abyFileHash.Encode();
 
 	CIni ini( strFullPath, strHash );
 	
@@ -1026,7 +1017,7 @@ void CKnownFile::LoadComment()
 void CKnownFile::SetFileComment(CString strNewComment)
 { 
 	wxString strFullPath = wxString::Format("%sfileinfo.ini",theApp.glob_prefs->GetAppDir());
-	wxString strHash = EncodeBase16( m_abyFileHash, 16 );
+	wxString strHash = m_abyFileHash.Encode();
 
 	CIni ini( strFullPath, strHash );
     
@@ -1047,7 +1038,7 @@ void CKnownFile::SetFileComment(CString strNewComment)
 void CKnownFile::SetFileRate(int8 iNewRate)
 { 
 	wxString strFullPath = wxString::Format("%sfileinfo.ini",theApp.glob_prefs->GetAppDir());
-	wxString strHash = EncodeBase16( m_abyFileHash, 16 );
+	wxString strHash = m_abyFileHash.Encode();
 
 	CIni ini( strFullPath, strHash );
 	    
