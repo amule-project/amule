@@ -130,8 +130,8 @@ void CSharedFilesCtrl::OnRightClick(wxListEvent& evt)
 		permMenu->Append(MP_PERMFRIENDS, _("Friends only"));
 		permMenu->Append(MP_PERMNONE, _("Locked"));
 
-		m_menu->Append(-1,_("Priority"),prioMenu);
-		m_menu->Append(-1,_("Permissions"),permMenu);
+		m_menu->Append(0,_("Priority"),prioMenu);
+		m_menu->Append(0,_("Permissions"),permMenu);
 		m_menu->AppendSeparator();
 		m_menu->Append(MP_CMT, _("Change this file's comment..."));
 		m_menu->AppendSeparator();
