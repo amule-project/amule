@@ -98,13 +98,6 @@
 #include <sys/resource.h>
 #endif
 
-wxThread::ExitCode CamuleWebserverThread::Entry() {
-	#warning lfroen, wxExecute cannot be called either from main thread. So what to do?
-	printf("Sorry, running amuleweb along with amuled is not supported yet. run amuleweb -f yourself\n");
-	//wxExecute(wxString::Format(wxT("amuleweb -f -p %d"),thePrefs::GetWSPort()));	
-	return 0;
-}
-
 
 BEGIN_EVENT_TABLE(CamuleDaemonApp, wxAppConsole)
 	// Socket timers (TCP + UDO)
