@@ -2547,11 +2547,8 @@ void DownloadFiles::ProcessUpdate(CEC_PartFile_Tag *tag)
 		int reqcount = reqtag->GetTagDataLen() / sizeof(Gap_Struct);
 		m_ReqParts.resize(reqcount);
 		for (int i = 0; i < reqcount;i++) {
-            // In CPartFile_Encoder::Encode, where EC_TAG_PARTFILE_REQ_STATUS is
-            // built, the start and end values are ENDIAN_SWAPped from host-order
-            // to little-endian order.  We have to reverse that here.
-			m_ReqParts[i].start = ENDIAN_SWAP_32(reqparts[i].start);
-			m_ReqParts[i].end   = ENDIAN_SWAP_32(reqparts[i].end);
+			m_ReqParts[i].start = ntohl(reqparts[i].start);
+			m_ReqParts[i].end   = ntohl(reqparts[i].end);
 		}
 	}
 }
@@ -2886,8 +2883,8 @@ void CProgressImage::InitSortedGaps()
 	
 	//memcpy(m_gap_buf, gap_info, m_gap_buf_size*2*sizeof(uint32));
 	for (int j = 0; j < m_gap_buf_size;j++) {
-		uint32 gap_start = ENDIAN_SWAP_32(gap_info[2*j]);
-		uint32 gap_end = ENDIAN_SWAP_32(gap_info[2*j+1]);
+		uint32 gap_start = ntohl(gap_info[2*j]);
+		uint32 gap_end = ntohl(gap_info[2*j+1]);
 		m_gap_buf[j].start = gap_start;
 		m_gap_buf[j].end = gap_end;
 	}
