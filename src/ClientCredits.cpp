@@ -71,7 +71,9 @@
 //#include "StdAfx.h"
 
 
-#define CLIENTS_MET_FILENAME	_T("clients.met")
+#define CLIENTS_MET_FILENAME		wxT("clients.met")
+#define CLIENTS_MET_BAK_FILENAME	wxT("clients.met.BAK")
+#define CRYPTKEY_FILENAME			wxT("cryptkey.dat")
 
 CClientCredits::CClientCredits(CreditStruct* in_credits)
 {
@@ -193,7 +195,7 @@ void CClientCreditsList::LoadList()
 {
 	
 	CSafeFile file;
-	wxString strFileName = m_pAppPrefs->GetAppDir() + wxString("clients.met");
+	CString strFileName = CString(m_pAppPrefs->GetAppDir()) + CString(CLIENTS_MET_FILENAME);
 	if (!::wxFileExists(strFileName)) {
 		theApp.amuledlg->AddLogLine(true, CString(_("Failed to load creditfile")));
 		return;
@@ -204,18 +206,18 @@ void CClientCreditsList::LoadList()
 	uint8 version;
 	file.Read(&version, 1);
 	if (version != CREDITFILE_VERSION && version != CREDITFILE_VERSION_29){
-		theApp.amuledlg->AddLogLine(false, _("Creditfile is out of date and will be replaced"));
+		theApp.amuledlg->AddLogLine(false, CString(_("Creditfile is out of date and will be replaced")));
 		file.Close();
 		return;
 	}
 
 	// everything is ok, lets see if the backup exist...
 	CString strBakFileName;
-	strBakFileName.Format("%sclients.met.BAK", m_pAppPrefs->GetAppDir());
+	strBakFileName = m_pAppPrefs->GetAppDir() + CLIENTS_MET_BAK_FILENAME;
 	
 	bool bCreateBackup = TRUE;
 	//HANDLE hBakFile = ::CreateFile(strBakFileName, GENERIC_READ, FILE_SHARE_READ, NULL,
-	int hBakFile=open(strBakFileName.GetData(),O_RDONLY);
+	int hBakFile=open(unicode2char(strBakFileName),O_RDONLY);
 	//OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 	if (hBakFile != (-1)) {
 		// Ok, the backup exist, get the size
@@ -235,7 +237,7 @@ void CClientCreditsList::LoadList()
 		//bool bResult = ::CopyFile(strFileName, strBakFileName, FALSE);
 		// safe? you bet it is
 		if (!wxCopyFile(strFileName,strBakFileName)) {
-			printf("info: Could not create backup file '%s'\n", strFileName.c_str());
+			printf("info: Could not create backup file '%s'\n", unicode2char(strFileName));
 		}
 		//DWORD dwError;
 		//if (!bResult)
@@ -280,11 +282,11 @@ void CClientCreditsList::LoadList()
 	file.Close();
 
 	GUIEvent event(ADDLOGLINE);
-	event.string_value = wxString::Format(_("Creditfile loaded, %u clients are known"),count-cDeleted);	
+	event.string_value = wxString::Format(CString(_("Creditfile loaded, %u clients are known")),count-cDeleted);	
 	event.byte_value = false;
 	
 	if (cDeleted>0) {
-		event.string_value += wxString::Format(_(" - Credits expired for %u clients!"),cDeleted);
+		event.string_value += wxString::Format(CString(_(" - Credits expired for %u clients!")),cDeleted);
 	}
 	
 	theApp.NotifyEvent(event);
@@ -293,10 +295,10 @@ void CClientCreditsList::LoadList()
 
 void CClientCreditsList::SaveList()
 {
-	theApp.amuledlg->AddDebugLogLine(false, "Saved Credit list");
+	theApp.amuledlg->AddDebugLogLine(false, wxT("Saved Credit list"));
 	m_nLastSaved = ::GetTickCount();
 
-	wxString name = m_pAppPrefs->GetAppDir() + wxString("clients.met");
+	CString name = m_pAppPrefs->GetAppDir() + CString(CLIENTS_MET_FILENAME);
 	CFile file;
 
 	if (!file.Create(name,TRUE)) //Open(name, CFile::modeWrite|CFile::modeCreate))
@@ -398,7 +400,7 @@ void CClientCredits::Verified(uint32 dwForIP){
 			m_pCredits->nDownloadedLo = 1;
 			m_pCredits->nUploadedHi = 0;
 			m_pCredits->nUploadedLo = 1; // in order to safe this client, set 1 byte
-			theApp.amuledlg->AddDebugLogLine(false, "Credits deleted due to new SecureIdent");
+			theApp.amuledlg->AddDebugLogLine(false, wxT("Credits deleted due to new SecureIdent"));
 		}
 	}
 	IdentState = IS_IDENTIFIED;
@@ -442,8 +444,8 @@ void CClientCreditsList::InitalizeCrypting(){
 
 	CFile KeyFile;
 
-	if (wxFileExists(m_pAppPrefs->GetAppDir() + CString("cryptkey.dat"))) {
-		KeyFile.Open(m_pAppPrefs->GetAppDir() + CString("cryptkey.dat"),CFile::read);
+	if (wxFileExists(m_pAppPrefs->GetAppDir() + CRYPTKEY_FILENAME)) {
+		KeyFile.Open(m_pAppPrefs->GetAppDir() + CRYPTKEY_FILENAME,CFile::read);
 		if (KeyFile.Length() == 0) {
 			printf("cryptkey.dat is 0 size, creating\n");
 			bCreateNewKey = true;
@@ -461,7 +463,7 @@ void CClientCreditsList::InitalizeCrypting(){
 	// load key
 	try{
 		// load private key
-		FileSource filesource(CString(m_pAppPrefs->GetAppDir() + CString("cryptkey.dat")), true,new Base64Decoder);
+		FileSource filesource(unicode2char(m_pAppPrefs->GetAppDir() + CRYPTKEY_FILENAME), true,new Base64Decoder);
 		m_pSignkey = new RSASSA_PKCS1v15_SHA_Signer(filesource);
 		// calculate and store public key
 		RSASSA_PKCS1v15_SHA_Verifier pubkey(*m_pSignkey);
@@ -487,15 +489,15 @@ bool CClientCreditsList::CreateKeyPair(){
 		InvertibleRSAFunction privkey;
 		privkey.Initialize(rng,RSAKEYSIZE);
 
-		Base64Encoder privkeysink(new FileSink(CString(m_pAppPrefs->GetAppDir())+"cryptkey.dat"));
+		Base64Encoder privkeysink(new FileSink(unicode2char(m_pAppPrefs->GetAppDir() + CRYPTKEY_FILENAME)));
 		privkey.DEREncode(privkeysink);
 		privkeysink.MessageEnd();
 
-		theApp.amuledlg->AddDebugLogLine(false, "Created new RSA keypair");
+		theApp.amuledlg->AddDebugLogLine(false,wxT("Created new RSA keypair"));
 	}
 	catch(...)
 	{
-		theApp.amuledlg->AddDebugLogLine(false, "Failed to create new RSA keypair");
+		theApp.amuledlg->AddDebugLogLine(false, wxT("Failed to create new RSA keypair"));
 		wxASSERT ( false );
 		return false;
 	}
@@ -572,7 +574,7 @@ bool CClientCreditsList::VerifyIdent(CClientCredits* pTarget, uchar* pachSignatu
 					break;
 				case CRYPT_CIP_REMOTECLIENT:
 					if (theApp.serverconnect->GetClientID() == 0 || theApp.serverconnect->IsLowID()){
-						theApp.amuledlg->AddDebugLogLine(false, "Warning: Maybe SecureHash Ident fails because LocalIP is unknown");
+						theApp.amuledlg->AddDebugLogLine(false, wxT("Warning: Maybe SecureHash Ident fails because LocalIP is unknown"));
 						ChallengeIP = theApp.serverconnect->GetLocalIP();
 					}
 					else

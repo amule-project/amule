@@ -581,7 +581,7 @@ class RseDirAssured: public RseString {
 // A special string: the name of a directory which will be created if it does not already exist
 // (used for Temp and Incoming directories) the name gets prepended with the app dir
 public:
-	RseDirAssured(int ID, char * pchSetting, char * szAppDir, char * szIniName, char *szDefault, char *szIniSection=NULL)
+	RseDirAssured(int ID, char * pchSetting, const char * szAppDir, char * szIniName, char *szDefault, char *szIniSection=NULL)
 		: RseString(ID, pchSetting, MAX_PATH, szIniName, szDefault, szIniSection), strAppDir(szAppDir)  {}
 		
 	virtual void LoadFromFile(CIni &ini)  {
@@ -674,7 +674,7 @@ Rse*	aprseColor[cntStatColors];  // this array helps in accessing stat colors th
     
 
 
-void PrefsUnifiedDlg::BuildItemList(Preferences_Struct *prefs, char * appdir)  // gets called at init time
+void PrefsUnifiedDlg::BuildItemList(Preferences_Struct *prefs, const char * appdir)  // gets called at init time
 {
 	listRse.Append(new Rse("Missing ID of dlg item in listRse"));  // LEAVE AT HEAD OF LIST - handles missing dlg IDs gracefully
 	
@@ -1371,14 +1371,12 @@ void PrefsUnifiedDlg::OnButtonBrowseVideoplayer(wxCommandEvent& e)
 
 void PrefsUnifiedDlg::OnButtonEditAddr(wxCommandEvent& evt)
 {
-	char* fullpath = new char[strlen(theApp.glob_prefs->GetAppDir())+13];
-	sprintf(fullpath,"%saddresses.dat",theApp.glob_prefs->GetAppDir());
-
+	CString fullpath = theApp.glob_prefs->GetAppDir() + wxT("addresses.dat");
+	
 	EditServerListDlg* test=new EditServerListDlg(this, _("Edit Serverlist"),
 	_("Add here URL's to download server.met files.\nOnly one url on each line."), fullpath);
 	test->ShowModal();
   
-	delete[] fullpath;
 	delete test;
 }
 

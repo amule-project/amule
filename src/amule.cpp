@@ -1653,11 +1653,9 @@ void CamuleApp::OnCoreTimer(wxTimerEvent& WXUNUSED(evt))
 	if (msCur-msPrevSave >= 60000) {
 		msPrevSave = msCur;
 		CString buffer;
-		char* fullpath = new char[strlen(glob_prefs->GetAppDir())+16];
-		sprintf(fullpath,"%spreferences.ini",glob_prefs->GetAppDir());
-		wxString fp(fullpath), bf("aMule");
-		CIni ini(fp, bf);
-		delete[] fullpath;
+		CString fullpath = glob_prefs->GetAppDir() + wxT("preferences.ini");
+		wxString bf(wxT("aMule"));
+		CIni ini(fullpath, bf);
 		buffer.Format("%llu",stat_sessionReceivedBytes+glob_prefs->GetTotalDownloaded());
 		ini.WriteString("TotalDownloadedBytes",buffer ,"Statistics");
 

@@ -33,7 +33,7 @@
 #include <wx/listimpl.cpp> // ye old magic incantation
 WX_DEFINE_LIST(KnownFileList);
 
-CKnownFileList::CKnownFileList(char* in_appdir) {
+CKnownFileList::CKnownFileList(CString in_appdir) {
 	appdir = in_appdir;
 	accepted = 0;
 	requested = 0;
@@ -50,18 +50,14 @@ CKnownFileList::~CKnownFileList() {
 bool CKnownFileList::Init() {
 	CSafeFile file;
 	try {
-		char* fullpath = new char[strlen(appdir)+10];
-		strcpy(fullpath,appdir);
-		strcat(fullpath,"known.met");
+		
+		CString fullpath = appdir + wxT("known.met");
 		if (!wxFileExists(fullpath)) {//CFile::modeRead|CFile::osSequentialScan)) {
-			delete[] fullpath;
 			return false;
 		}
 		
 		uint8 header;
 		file.Open(fullpath);
-		delete[] fullpath;
-		fullpath = NULL;
 		file.Read(&header,1);
 		if (header != MET_HEADER) {
 			file.Close();
@@ -105,19 +101,15 @@ bool CKnownFileList::Init() {
 }
 
 void CKnownFileList::Save() {
+
 	CFile* file = new CFile();
-	char* fullpath = new char[strlen(appdir)+MAX_PATH];
-	strcpy(fullpath,appdir);
-	strcat(fullpath,"known.met");
+	CString fullpath = appdir + wxT("known.met");
 	file->Open(fullpath, CFile::write);
 	if (!(file->IsOpened())) {
-		delete[] fullpath;
-		fullpath=NULL;
 		delete file;
 		return;
 	}
-	delete[] fullpath;
-	fullpath=NULL;
+
 
 	wxMutexLocker sLock(list_mut);
 	//theApp.amuledlg->AddLogLine(false,CString(_("KnownFileList Save Starts")).GetData());

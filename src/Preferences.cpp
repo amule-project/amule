@@ -68,12 +68,10 @@ CPreferences::CPreferences()
 	md4cpy(&prefs->userhash,&userhash);
 	
 	// load preferences.dat or set standart values
-	char* fullpath = new char[strlen(appdir)+16];
-	sprintf(fullpath,"%spreferences.dat",appdir);
-	FILE* preffile = fopen(fullpath,"rb");
-	delete[] fullpath;
+	CString fullpath = appdir + wxT("preferences.dat");
+	FILE* preffile = fopen(unicode2char(fullpath),"rb");
 
-	PrefsUnifiedDlg::BuildItemList(prefs, appdir);
+	PrefsUnifiedDlg::BuildItemList(prefs, unicode2char(appdir));
 
 	LoadPreferences();
 	
@@ -133,13 +131,9 @@ CPreferences::CPreferences()
 	}
 
 	// shared directories
-	fullpath = new char[strlen(appdir)+MAX_PATH]; // i_a
-	sprintf(fullpath,"%sshareddir.dat",appdir);
-	//CStdioFile* sdirfile = new CStdioFile();
-	FILE* sdirfile=fopen(fullpath,"r");
-	//if (sdirfile->Open(fullpath,CFile::modeRead)){
+	fullpath = appdir + wxT("shareddir.dat");
+	FILE* sdirfile=fopen(unicode2char(fullpath),"r");
 	if(sdirfile) {
-		// CString toadd;
 		char buffer[4096];
 		while(!feof(sdirfile)) {
 			memset(buffer,0,sizeof(buffer));
@@ -154,17 +148,11 @@ CPreferences::CPreferences()
 		}
 		fclose(sdirfile);
 	}
-	// delete[] sdirfile;
-	delete[] fullpath;
 
 	// serverlist adresses
-	fullpath = new char[strlen(appdir)+20];
-	sprintf(fullpath,"%saddresses.dat",appdir);
-	// sdirfile = new CStdioFile();
-	sdirfile=fopen(fullpath,"r");
-	// if (sdirfile->Open(fullpath,CFile::modeRead)){
+	fullpath = appdir + wxT("addresses.dat");
+	sdirfile=fopen(unicode2char(fullpath),"r");
 	if(sdirfile) {
-		// CString toadd;
 		char buffer[4096];
 		while(!feof(sdirfile)) {
 			memset(buffer,0,sizeof(buffer));
@@ -179,9 +167,7 @@ CPreferences::CPreferences()
 		}
 		fclose(sdirfile);
 	}
-	// delete[] sdirfile;
-	delete[] fullpath;	
-	fullpath=NULL;
+
 	userhash[5] = 14;
 	userhash[14] = 111;
 	if (!wxFileName::DirExists(GetIncomingDir())) {
@@ -217,11 +203,11 @@ uint16 CPreferences::GetMaxDownload()
 
 bool CPreferences::Save()
 {
-	bool error = false;
-	char* fullpath = new char[strlen(appdir)+MAX_PATH]; // i_a
-	sprintf(fullpath,"%spreferences.dat",appdir);
+	CString fullpath = appdir + wxT("preferences.dat");
 
-	FILE* preffile = fopen(fullpath,"wb");
+	bool error = false;
+
+	FILE* preffile = fopen(unicode2char(fullpath),"wb");
 	prefsExt->version = PREFFILE_VERSION;
 
 	if (preffile) {
@@ -235,11 +221,9 @@ bool CPreferences::Save()
 	}
 
 	SavePreferences();
-	delete[] fullpath;
 
-	fullpath = new char[strlen(appdir)+14];
-	sprintf(fullpath,"%sshareddir.dat",appdir);
-	FILE* sdirfile=fopen(fullpath,"w");
+	fullpath = appdir + wxT("shareddir.dat");
+	FILE* sdirfile=fopen(unicode2char(fullpath),"w");
 	if(sdirfile) {
 		for(unsigned int ii = 0; ii < shareddir_list.GetCount(); ++ii) {
 			fprintf(sdirfile,"%s\n",shareddir_list[ii].GetData());
@@ -248,7 +232,7 @@ bool CPreferences::Save()
 	} else {
 		error = true;
 	}
-	delete[] fullpath;
+
 	if (!wxFileName::DirExists(GetIncomingDir())) {
 		wxFileName::Mkdir(GetIncomingDir(),0777);
 	}
@@ -468,14 +452,10 @@ int32 CPreferences::GetRecommendedMaxConnections()
 void CPreferences::SavePreferences()
 {
 	CString buffer;
-	char* fullpath = new char[strlen(appdir)+MAX_PATH]; // i_a
-	sprintf(fullpath,"%spreferences.ini",appdir);
+	CString fullpath = appdir + wxT("preferences.ini");
+	wxString bf("eMule");
 	
-	wxString fp(fullpath), bf("eMule");
-	
-	CIni ini(fp, bf);
-	delete[] fullpath;
-	fullpath=NULL;
+	CIni ini(fullpath, bf);
 	//---
 	ini.WriteString("AppVersion", PACKAGE_STRING);
 	//---
@@ -486,11 +466,11 @@ void CPreferences::SavePreferences()
 
 void CPreferences::SaveCats()
 {
-	CIni ini( wxString(appdir)+"preferences.ini" , "Category" );
+	CIni ini( appdir + wxT("preferences.ini") , "Category" );
 
 	// Cats
 	CString catinif,ixStr,buffer;
-	catinif.Format("%sCategory.ini",appdir);
+	catinif = appdir + wxT("Category.ini");
 	if(wxFileName::FileExists(catinif)) {
 		BackupFile(catinif, ".old");
 	}
@@ -514,8 +494,7 @@ void CPreferences::SaveCats()
 void CPreferences::LoadPreferences()
 {
 	//--- Quick hack to add version tag to preferences.ini-file and solve the issue with the FlatStatusBar tag...
-	CString strFileName;
-	strFileName.Format("%spreferences.ini", appdir);
+	CString strFileName = appdir + wxT("preferences.ini");
 	CIni* pIni = new CIni(strFileName, "eMule");
 
 	CString strCurrVersion, strPrefsVersion;
@@ -544,7 +523,7 @@ void CPreferences::LoadCats() {
 	CString ixStr,catinif,cat_a,cat_b,cat_c;
 	char buffer[100];
 
-	catinif.Format("%sCategory.ini",appdir);
+	catinif = appdir + wxT("Category.ini");
 
 	// default cat
 	Category_Struct* newcat=new Category_Struct;

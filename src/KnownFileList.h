@@ -23,7 +23,8 @@
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/hashmap.h>		// Needed for WX_DECLARE_HASH_MAP, wxStringHash and wxStringEqual
 #include <wx/thread.h>		// Needed for wxMutex
-#include <wx/string.h>		// Needed for wxString
+
+#include "CString.h"		// Needed for CString
 
 #include "types.h"		// Needed for uint16 and uint32
 #include "SharedFileList.h" // CKnownFileMap
@@ -38,7 +39,7 @@ class CKnownFileList {
 //	friend class CSharedFilesWnd;
 //	friend class CFileStatistic;
 public:
-	CKnownFileList(char* in_appdir);
+	CKnownFileList(CString in_appdir);
 	~CKnownFileList();
 	bool	SafeAddKFile(CKnownFile* toadd);
 	bool	Init();
@@ -55,7 +56,7 @@ private:
 	wxMutex	list_mut;
 
 	bool	Append(CKnownFile*);
-	char*	appdir;
+	CString	appdir;
 
 	CKnownFile* IsOnDuplicates(const char* filename,uint32 in_date,uint32 in_size);
 

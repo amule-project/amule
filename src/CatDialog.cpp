@@ -82,11 +82,11 @@ bool CCatDialog::OnInitDialog()
 void CCatDialog::UpdateData()
 {
 	CString buffer;
-	buffer.Format("%s",m_myCat->title);
+	buffer.Format(wxT("%s"),m_myCat->title);
 	((wxTextCtrl*)FindWindowById(IDC_TITLE))->SetValue(buffer);
-	buffer.Format("%s",m_myCat->incomingpath);
+	buffer.Format(wxT("%s"),m_myCat->incomingpath);
 	((wxTextCtrl*)FindWindowById(IDC_INCOMING))->SetValue(buffer);
-	buffer.Format("%s",m_myCat->comment);
+	buffer.Format(wxT("%s"),m_myCat->comment);
 	((wxTextCtrl*)FindWindowById(IDC_COMMENT))->SetValue(buffer);
 	newcolor=m_myCat->color;
 	m_prio->SetSelection(m_myCat->prio);
@@ -118,16 +118,16 @@ void CCatDialog::OnBnClickedOk(wxCommandEvent& evt)
 {
 	CString oldpath=CString(m_myCat->incomingpath);
 	if (((wxTextCtrl*)FindWindowById(IDC_TITLE))->GetValue().Length()>0) {
-		strncpy(m_myCat->title,((wxTextCtrl*)FindWindowById(IDC_TITLE))->GetValue(),64);
+		strncpy(m_myCat->title,unicode2char(((wxTextCtrl*)FindWindowById(IDC_TITLE))->GetValue()),64);
 	}
 
 	if (((wxTextCtrl*)FindWindowById(IDC_INCOMING))->GetValue().Length()>1) {
-		strncpy(m_myCat->incomingpath,((wxTextCtrl*)FindWindowById(IDC_INCOMING))->GetValue(),MAX_PATH);
+		strncpy(m_myCat->incomingpath,unicode2char(((wxTextCtrl*)FindWindowById(IDC_INCOMING))->GetValue()),MAX_PATH);
 	}
 
-	strncpy(m_myCat->comment,((wxTextCtrl*)FindWindowById(IDC_COMMENT))->GetValue(),255);
+	strncpy(m_myCat->comment,unicode2char(((wxTextCtrl*)FindWindowById(IDC_COMMENT))->GetValue()),255);
 	MakeFoldername(m_myCat->incomingpath);
-	if (!::wxDirExists(m_myCat->incomingpath)) {
+	if (!::wxDirExists(char2unicode(m_myCat->incomingpath))) {
 		#ifdef __WXMSW__ // no file permissions on msw
 		wxMkDir(m_myCat->incomingpath);
 		#else

@@ -557,8 +557,8 @@ private:
 	// Support for tag ET_MOD_VERSION [BlackRat]
 public:
 
-	const wxString	GetClientModString() const { return m_clientModString; }
-	const wxString	GetClientVerString() const { return m_clientVerString; }
+	const CString	GetClientModString() const { return m_clientModString; }
+	const CString	GetClientVerString() const { return m_clientVerString; }
 
 private:
 
