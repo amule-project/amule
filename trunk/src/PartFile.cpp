@@ -1562,30 +1562,21 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 			}
 #endif // __DEBUG__
 			if(cur_src->GetDownloadState() == DS_DOWNLOADING) {
-				wxASSERT( cur_src->socket );
-				if (cur_src->socket) {
+				wxASSERT( cur_src->GetSocket() );
+				if (cur_src->GetSocket()) {
 					transferingsrc++;
 					float kBpsClient = cur_src->CalculateKBpsDown();
-					if (!cur_src->socket) {
-#ifdef __DEBUG__
-						debugprintf(true, "NULL socket detected in CPartFile::Process()\n");
-#endif
-						AddLogLineM(false,wxT("NULL socket detected in CPartFile::Process()\n"));
-						continue;
-					}
 					kBpsDown += kBpsClient;
-//					printf("ReduceDownload %i",reducedownload);
 					if (reducedownload) {
 						uint32 limit = (uint32)((float)reducedownload*kBpsClient);
-//						printf(" Limit %i\n",limit);
 						if(limit<1000 && reducedownload == 200) {
 							limit +=1000;
 						} else if(limit<1) {
 							limit = 1;
 						}
-						cur_src->socket->SetDownloadLimit(limit);
+						cur_src->SetDownloadLimit(limit);
 					} else { // Kry - Is this needed?
-						cur_src->socket->DisableDownloadLimit();
+						cur_src->DisableDownloadLimit();
 					}
 				}
 			}
@@ -1618,17 +1609,10 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 						} else if (limit < 1) {
 							limit = 1;
 						}
-						if (cur_src->socket) {
-							cur_src->socket->SetDownloadLimit(limit);
-						} else {
-							break;
-						}
+						
+						cur_src->SetDownloadLimit(limit);
 					} else {
-						if (cur_src->socket) {
-							cur_src->socket->DisableDownloadLimit();
-						} else {
-							break;
-						}
+						cur_src->DisableDownloadLimit();
 					}
 					cur_src->SetValidSource(true);
 					break;
@@ -1706,7 +1690,7 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 				/*
 				case DS_CONNECTED: {
 					if (download_state == DS_CONNECTED) {
-						if( !(cur_src->socket && cur_src->socket->IsConnected()) ){
+						if( !cur_src->IsConnected()) ){
 							cur_src->SetDownloadState(DS_NONE);
 							break;
 						}
@@ -2728,7 +2712,7 @@ void CPartFile::PauseFile(bool bInsufficient)
 		if (cur_src->GetDownloadState() == DS_DOWNLOADING) {
 			if (!cur_src->GetSentCancelTransfer()) {				
 				theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
-				cur_src->socket->SendPacket(packet,false,true);
+				cur_src->SendPacket(packet,false,true);
 				cur_src->SetDownloadState(DS_ONQUEUE);
 				cur_src->SetSentCancelTransfer(1);
 			}

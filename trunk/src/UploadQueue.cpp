@@ -96,9 +96,9 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd){
 			if ( cur_client->IsGPLEvildoer() || (::GetTickCount() - cur_client->GetLastUpRequest() > MAX_PURGEQUEUETIME) || !theApp.sharedfiles->GetFileByID(cur_client->GetUploadFileID()) ) {
 				cur_client->ClearWaitStartTime();
 				RemoveFromWaitingQueue(pos2,true);	
-				if (!cur_client->socket) {
+				if (!cur_client->GetSocket()) {
 					if(cur_client->Disconnected(_("AddUpNextClient - purged"))) {
-						delete cur_client;
+						cur_client->Safe_Delete();
 						cur_client = NULL;
 					}
 				}
@@ -154,7 +154,7 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd){
 		return;
 	}
 	// tell the client that we are now ready to upload
-	if (!newclient->socket || !newclient->socket->IsConnected()) {
+	if (!newclient->IsConnected()) {
 		newclient->SetUploadState(US_CONNECTING);
 		// newclient->TryToConnect(true);
 		if (!newclient->TryToConnect(true)) {
@@ -163,7 +163,7 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd){
 	} else {
 		Packet* packet = new Packet(OP_ACCEPTUPLOADREQ,0);
 		theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->GetPacketSize());
-		newclient->socket->SendPacket(packet,true);
+		newclient->SendPacket(packet,true);
 		newclient->SetUploadState(US_UPLOADING);
 	}
 	newclient->SetUpStartTime();
@@ -191,7 +191,7 @@ void CUploadQueue::Process()
 	int16 clientsrdy = 0;
 	for (POSITION pos = uploadinglist.GetHeadPosition();pos != 0; ) {
 		CUpDownClient* cur_client = uploadinglist.GetNext(pos);
-		if ( (cur_client->socket) && (!cur_client->socket->IsBusy()) && cur_client->HasBlocks()) {
+		if ( (cur_client->GetSocket()) && (!cur_client->GetSocket()->IsBusy()) && cur_client->HasBlocks()) {
 			clientsrdy++;
 		}
 	}
@@ -338,9 +338,9 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
 					AddDebugLogLine(false,wxT("Client '%s' and '%s' have the same userhash or IP - removed '%s'"),client->GetUserName(),cur_client->GetUserName(),cur_client->GetUserName() );
 #endif
 				RemoveFromWaitingQueue(pos2,true);
-				if (!cur_client->socket) {
+				if (!cur_client->GetSocket()) {
 					if (cur_client->Disconnected(wxT("AddClientToQueue - same userhash 1"))) {
-						delete cur_client;
+						cur_client->Safe_Delete();
 					}
 				}
 			} else {
@@ -350,9 +350,9 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
 					AddDebugLogLine(false,wxT("Client '%s' and '%s' have the same userhash or IP - removed '%s'"),client->GetUserName(),cur_client->GetUserName(),"Both" );
 #endif
 				RemoveFromWaitingQueue(pos2,true);
-				if (!cur_client->socket) {
+				if (!cur_client->GetSocket()) {
 					if (cur_client->Disconnected(wxT("AddClientToQueue - same userhash 2"))) {
-						delete cur_client;
+						cur_client->Safe_Delete();
 					}
 				}
 				return;
@@ -408,7 +408,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
 		// he's already downloading and wants probably only another file
 		Packet* packet = new Packet(OP_ACCEPTUPLOADREQ,0);
 		theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->GetPacketSize());
-		client->socket->SendPacket(packet,true);
+		client->SendPacket(packet,true);
 		return;
 	}
 
@@ -656,4 +656,3 @@ void CUploadQueue::FindSourcesForFileById(CTypedPtrList<CPtrList, CUpDownClient*
 }
 
 // TimerProc is on amule.cpp now
-

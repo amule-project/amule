@@ -124,18 +124,42 @@ enum EInfoPacketState{
 
 
 
-class CUpDownClient {
-	friend class CUploadQueue;
-#ifdef __DEBUG__
+class CUpDownClient
+{
+	friend class CClientList;
 private:
+	/**
+	 * Please note that only the ClientList is allowed to delete the clients.
+	 * To schedule a client for deletion, call the CClientList::AddToDeleteQueue
+	 * funtion, which will safely remove dead clients once every second.
+	 */
+	~CUpDownClient();
+	
+#ifdef __DEBUG__
 	unsigned int	MagicNumber1;
 #endif // __DEBUG__
 public:
 	//base
 	CUpDownClient(CClientReqSocket* sender = 0);
 	CUpDownClient(uint16 in_port, uint32 in_userid, uint32 in_serverup, uint16 in_serverport,CPartFile* in_reqfile);
-	~CUpDownClient();
-//	void		Destroy();
+
+	/**
+	 * This function should be called when the client object is to be deleted.
+	 * It'll close the socket of the client and add it to the deletion queue
+	 * owned by the CClientList class. However, if the CUpDownClient isn't on 
+	 * the normal clientlist, it will be deleted immediatly.
+	 * 
+	 * The purpose of this is to avoid clients suddenly being removed due to 
+	 * asyncronous events, such as socket errors, which can result in the 
+	 * problems, as each CUpDownClient object is often kept in multiple lists,
+	 * and instantly removing the client poses the risk of invalidating 
+	 * currently used iterators and/or creating dangling pointers.
+	 * 
+	 * @see CClientList::AddToDeleteQueue
+	 * @see CClientList::Process
+	 */	
+	void		Safe_Delete();
+	
 	bool		Disconnected(const wxString& strReason, bool bFromSocket = false);
 	bool		TryToConnect(bool bIgnoreMaxCon = false);
 	void		ConnectionEstablished();
@@ -226,7 +250,6 @@ public:
 	uint8		GetInfoPacketsReceived() const { return m_byInfopacketsReceived; }
 	void		InfoPacketsReceived();
 
-	CClientReqSocket	*socket;
 	CClientCredits 		*credits;
 	CFriend 		*m_Friend;
 
@@ -369,7 +392,51 @@ public:
 
 	void			ProcessPublicIPAnswer(const BYTE* pbyData, UINT uSize);
 	void			SendPublicIPRequest();
-	
+
+	/**
+	 * Sets the current socket of the client.
+	 * 
+	 * @param socket The pointer to the new socket, can be NULL.
+	 *
+	 * Please note that this function DOES NOT delete the old socket.
+	 */
+	void 		SetSocket(CClientReqSocket* socket) { m_socket = socket; }
+	/**
+	 * Function for accessing the socket owned by a client.
+	 * 
+	 * @return The pointer (can be NULL) to the socket used by this client.
+	 *
+	 * Please note that the socket object is quite volatile and can be removed
+	 * from one function call to the next, therefore, you should normally use 
+	 * the safer functions below, which all check if the socket is valid before
+	 * deferring it.
+	 */
+	CClientReqSocket* GetSocket() const { return m_socket; }
+	/**
+	 * Safe function for checking if the socket is connected.
+	 *
+	 * @return True if the socket exists and is connected, false otherwise.
+	 */
+	bool		IsConnected() const;
+	/**
+	 * Safe function for sending packets.
+	 *
+	 * @return True if the socket exists and the packet was sent, false otherwise.
+	 */
+	bool		SendPacket(Packet* packet, bool delpacket = true, bool controlpacket = true);
+	/**
+	 * Safe function for setting the download limit of the socket.
+	 *
+	 * @return True if the socket exists, false otherwise.
+	 */
+	bool		SetDownloadLimit(uint32 limit);
+	/**
+	 * Safe function for disabling the download limit of the socket.
+	 *
+	 * @return True if the socket exists, false otherwise.
+	 */
+	bool		DisableDownloadLimit();
+ 	
 private:
 	/**
 	 * This struct is used to keep track of CPartFiles which this source shares.
@@ -444,7 +511,8 @@ private:
  	bool		m_bPreviewAnsPending;
 	uint16		m_nKadPort;
 	bool		m_bMultiPacket;
-		
+	bool		m_SafelyDeleted;
+	CClientReqSocket*	m_socket;		
 	bool		m_fNeedOurPublicIP; // we requested our IP from this client
 
 	// Kry - Secure User Ident import

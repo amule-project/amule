@@ -117,12 +117,12 @@ bool CUpDownClient::AskForDownload()
 {
 	// 0.42e
 	if (theApp.listensocket->TooManySockets()) {
-		if (!socket) {
+		if (!m_socket) {
 			if (GetDownloadState() != DS_TOOMANYCONNS) {
 				SetDownloadState(DS_TOOMANYCONNS);
 			}
 			return true;
-		} else if (!socket->IsConnected()) {
+		} else if (!m_socket->IsConnected()) {
 			if (GetDownloadState() != DS_TOOMANYCONNS) {
 				SetDownloadState(DS_TOOMANYCONNS);
 			}
@@ -139,7 +139,7 @@ bool CUpDownClient::AskForDownload()
 void CUpDownClient::SendStartupLoadReq()
 {
 	// 0.42e
-	if (socket==NULL || m_reqfile==NULL) {
+	if (m_socket==NULL || m_reqfile==NULL) {
 		return;
 	}
 	SetDownloadState(DS_ONQUEUE);
@@ -148,7 +148,7 @@ void CUpDownClient::SendStartupLoadReq()
 	Packet* packet = new Packet(&dataStartupLoadReq);
 	packet->SetOpCode(OP_STARTUPLOADREQ);
 	theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->GetPacketSize());
-	socket->SendPacket(packet, true, true);
+	SendPacket(packet, true, true);
 }
 
 
@@ -234,7 +234,7 @@ void CUpDownClient::SendFileRequest()
 		Packet* packet = new Packet(&dataFileReq, OP_EMULEPROT);
 		packet->SetOpCode(OP_MULTIPACKET);
 		theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->GetPacketSize());
-		socket->SendPacket(packet, true);
+		SendPacket(packet, true);
 	} else {
 		//This is extended information
 		if( GetExtendedRequestsVersion() > 0 ){
@@ -250,7 +250,7 @@ void CUpDownClient::SendFileRequest()
 		Packet* packet = new Packet(&dataFileReq);
 		packet->SetOpCode(OP_REQUESTFILENAME);
 		theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->GetPacketSize());
-		socket->SendPacket(packet, true);
+		SendPacket(packet, true);
 	
 		// 26-Jul-2003: removed requesting the file status for files <= PARTSIZE for better compatibility with ed2k protocol (eDonkeyHybrid).
 		// if the remote client answers the OP_REQUESTFILENAME with OP_REQFILENAMEANSWER the file is shared by the remote client. if we
@@ -265,7 +265,7 @@ void CUpDownClient::SendFileRequest()
 			packet = new Packet(&dataSetReqFileID);
 			packet->SetOpCode(OP_SETREQFILEID);
 			theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->GetPacketSize());
-			socket->SendPacket(packet, true);
+			SendPacket(packet, true);
 		}
 	
 		if( IsEmuleClient() ) {
@@ -286,7 +286,7 @@ void CUpDownClient::SendFileRequest()
 			Packet* packet = new Packet(OP_REQUESTSOURCES,16,OP_EMULEPROT);
 			packet->Copy16ToDataBuffer((const char *)m_reqfile->GetFileHash().GetHash());
 			theApp.uploadqueue->AddUpDataOverheadSourceExchange(packet->GetPacketSize());
-			socket->SendPacket(packet,true,true);
+			SendPacket(packet,true,true);
 			SetLastAskedForSources();
 		    #ifdef __USE_DEBUG__
 			if (thePrefs.GetDebugSourceExchange())
@@ -346,12 +346,12 @@ void CUpDownClient::ProcessFileInfo(const CSafeMemFile* data, const CPartFile* f
 		// even if the file is <= PARTSIZE, we _may_ need the hashset for that file (if the file size == PARTSIZE)
 		if (m_reqfile->hashsetneeded)
 		{
-			if (socket)
+			if (m_socket)
 			{
 				Packet* packet = new Packet(OP_HASHSETREQUEST,16);
 				packet->Copy16ToDataBuffer((const char *)m_reqfile->GetFileHash().GetHash());
 				theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->GetPacketSize());
-				socket->SendPacket(packet,true,true);
+				SendPacket(packet,true,true);
 				SetDownloadState(DS_REQHASHSET);
 				m_fHashsetRequesting = 1;
 				m_reqfile->hashsetneeded = false;
@@ -463,7 +463,7 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, const CSafeMemFile* data,
 			SetDownloadState(DS_NONEEDEDPARTS);
 		} else if (m_reqfile->hashsetneeded) {
 			//If we are using the eMule filerequest packets, this is taken care of in the Multipacket!
-			if (socket) {
+			if (m_socket) {
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
 					DebugSend("OP__HashSetRequest", this, (char*)m_reqfile->GetFileHash());
@@ -472,7 +472,7 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, const CSafeMemFile* data,
 				Packet* packet = new Packet(OP_HASHSETREQUEST,16);
 				packet->Copy16ToDataBuffer((const char *)m_reqfile->GetFileHash().GetHash());
 				theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->GetPacketSize());
-				socket->SendPacket(packet, true, true);
+				SendPacket(packet, true, true);
 				SetDownloadState(DS_REQHASHSET);
 				m_fHashsetRequesting = 1;
 				m_reqfile->hashsetneeded = false;
@@ -578,8 +578,8 @@ void CUpDownClient::SetDownloadState(uint8 byNewState)
 				}
 				m_nPartCount = 0;
 			}
-			if (socket && byNewState != DS_ERROR) {
-				socket->DisableDownloadLimit();
+			if (m_socket && byNewState != DS_ERROR) {
+				m_socket->DisableDownloadLimit();
 			}
 		}
 		m_nDownloadState = byNewState;
@@ -648,7 +648,7 @@ void CUpDownClient::SendBlockRequests()
 		if (!GetSentCancelTransfer()){
 			Packet* packet = new Packet(OP_CANCELTRANSFER,0);
 			theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->GetPacketSize());
-			socket->SendPacket(packet,true,true);
+			SendPacket(packet,true,true);
 			SetSentCancelTransfer(1);
 		}
 		SetDownloadState(DS_NONEEDEDPARTS);
@@ -688,7 +688,7 @@ void CUpDownClient::SendBlockRequests()
 	packet->CopyToDataBuffer(0, tempbuf, iPacketSize);
 	delete [] tempbuf;
 	theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->GetPacketSize());
-	socket->SendPacket(packet, true, true);
+	SendPacket(packet, true, true);
 }
 
 /*
@@ -1027,7 +1027,7 @@ float CUpDownClient::CalculateKBpsDown() {
 		if (!GetSentCancelTransfer()){
 			Packet* packet = new Packet(OP_CANCELTRANSFER,0);
 			theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->GetPacketSize());
-			socket->SendPacket(packet,true,true);
+			SendPacket(packet,true,true);
 			SetSentCancelTransfer(1);
 		}
 		SetDownloadState(DS_ONQUEUE);		
@@ -1067,9 +1067,9 @@ void CUpDownClient::UDPReaskFNF()
 		// 0.42e
 		m_bUDPPending = false;
 		theApp.downloadqueue->RemoveSource(this);
-		if (!socket) {
-			if (Disconnected(wxT("UDPReaskFNF socket=NULL"))) {
-				delete this;
+		if (!m_socket) {
+			if (Disconnected(wxT("UDPReaskFNF m_socket=NULL"))) {
+				Safe_Delete();
 			}
 		}
 	} else {
@@ -1087,7 +1087,7 @@ void CUpDownClient::UDPReaskForDownload()
 
 	
 	if(m_nUDPPort != 0 && theApp.glob_prefs->GetUDPPort() != 0 &&
-	   !HasLowID() && !(socket && socket->IsConnected()))
+	   !HasLowID() && !IsConnected())
 	{ 
 		// deadlake PROXYSUPPORT
 		//don't use udp to ask for sources

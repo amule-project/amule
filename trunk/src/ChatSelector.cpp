@@ -179,15 +179,16 @@ bool CChatSelector::SendMessage( const wxString& message )
 		return false;
 	}
 	
-	if (ci->client->socket && ci->client->socket->IsConnected()) {
+	if (ci->client->IsConnected()) {
 		CMemFile data;
 		data.Write(message);
 		Packet* packet = new Packet(&data);
 		packet->SetOpCode(OP_MESSAGE);
 		theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
-		ci->client->socket->SendPacket(packet, true, true);
-		ci->AddText( theApp.glob_prefs->GetUserNick(), COLOR_GREEN );
-		ci->AddText( wxT(": ") + message + wxT("\n"), COLOR_BLACK );
+		if ( ci->client->SendPacket(packet, true, true) ) {
+			ci->AddText( theApp.glob_prefs->GetUserNick(), COLOR_GREEN );
+			ci->AddText( wxT(": ") + message + wxT("\n"), COLOR_BLACK );
+		}
 	} else {
 		printf("Not connected to Chat. Trying to connect...\n");
 		ci->AddText( wxString(wxT("*** ")) + wxString(wxT("Connecting")) , COLOR_RED );
@@ -241,12 +242,12 @@ void CChatSelector::ConnectionResult(CUpDownClient* sender, bool success)
 		Packet* packet = new Packet(&data);
 		packet->SetOpCode(OP_MESSAGE);
 		theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
-		ci->client->socket->SendPacket(packet, true, true);
+		if ( ci->client->SendPacket(packet, true, true) ) {
+			ci->AddText( theApp.glob_prefs->GetUserNick(), COLOR_GREEN );
+			ci->AddText( wxT(": ") + ci->messagepending + wxT("\n"), COLOR_BLACK );
 		
-		ci->AddText( theApp.glob_prefs->GetUserNick(), COLOR_GREEN );
-		ci->AddText( wxT(": ") + ci->messagepending + wxT("\n"), COLOR_BLACK );
-		
-		ci->messagepending.Clear();
+			ci->messagepending.Clear();
+		}
 	}
 	
 }
