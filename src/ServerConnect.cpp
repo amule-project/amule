@@ -31,7 +31,6 @@
 #include "SearchList.h"		// Needed for CSearchList
 #include "GetTickCount.h"	// Needed for GetTickCount
 #include "UploadQueue.h"	// Needed for CUploadQueue
-#include "SysTray.h"		// Needed for TBN_IMPORTANTEVENT
 #include "ServerUDPSocket.h"		// Needed for CServerUDPSocket
 #include "SharedFileList.h"	// Needed for CSharedFileList
 #include "Packet.h"		// Needed for CTag
@@ -373,9 +372,8 @@ void CServerConnect::ConnectionFailed(CServerSocket* sender){
 			if (thePrefs::Reconnect() && !connecting){
 				ConnectToAnyServer();		
 			}
-			if (thePrefs::GetNotifierPopOnImportantError()) {
-				Notify_ShowNotifier(wxString(_("Connection lost")), TBN_IMPORTANTEVENT, false);
-			}
+			
+			AddLogLineM( true, _("Connection lost") );
 			Notify_ShowConnState(false,wxEmptyString);
 			break;
 		}

@@ -284,8 +284,6 @@ public:
 	static uint8		GetStatsAverageMinutes()	{ return s_statsAverageMinutes; }
 	static void		SetStatsAverageMinutes(uint8 in){ s_statsAverageMinutes = in; }
 
-	static bool		GetNotifierPopOnImportantError(){ return s_notifierImportantError; }
-
 	static bool		GetStartMinimized()		{ return s_startMinimized; }
 	static void		SetStartMinimized(bool instartMinimized)
 					{ s_startMinimized = instartMinimized;}
@@ -299,8 +297,6 @@ public:
 	static void		SetVerbose(bool val)		{ s_bVerbose = val; }
 	static bool		GetPreviewPrio()		{ return s_bpreviewprio; }
 	static void		SetPreviewPrio(bool in)		{ s_bpreviewprio = in; }
-	static bool		GetUpdateQueueList()		{ return s_bupdatequeuelist; }
-	static void		SetUpdateQueueList(bool new_state) { s_bupdatequeuelist = new_state; }
 	static bool		TransferFullChunks()		{ return s_btransferfullchunks; }
 	static void		SetTransferFullChunks( bool m_bintransferfullchunks ) 
 					{s_btransferfullchunks = m_bintransferfullchunks; }
@@ -341,7 +337,6 @@ public:
 
 	static const wxString&	GetYourHostname() 		{ return s_yourHostname; }
 
-	// quick-speed changer [xrmb]
 	static void		SetMaxUpload(uint16 in);
 	static void		SetMaxDownload(uint16 in);
 	static void		SetSlotAllocation(uint16 in) 	{ s_slotallocation = in; };
@@ -349,7 +344,7 @@ public:
 	wxArrayString shareddir_list;
 	wxArrayString adresses_list;
 
-	static bool 		AutoConnectStaticOnly() 	{ return s_autoconnectstaticonly; }
+	static bool 	AutoConnectStaticOnly() 	{ return s_autoconnectstaticonly; }
 	static void		SetAutoConnectStaticOnly(bool val) { s_autoconnectstaticonly = val; }
 	static bool		IsManualHighPrio()		{ return s_bmanualhighprio; }
 	static void		SetManualHighPrio(bool val)	{ s_bmanualhighprio = val; }
@@ -563,22 +558,6 @@ protected:
 ////////////// GUI
 	static uint8	s_depth3D;
 	
-	// Barry - Provide a mechanism for all tables to store/retrieve sort order
-	static uint32	s_tableSortItemDownload;
-	static uint32	s_tableSortItemUpload;
-	static uint32	s_tableSortItemQueue;
-	static uint32	s_tableSortItemSearch;
-	static uint32	s_tableSortItemShared;
-	static uint32	s_tableSortItemServer;
-	static uint32	s_tableSortItemClientList;
-	static bool	s_tableSortAscendingDownload;
-	static bool	s_tableSortAscendingUpload;
-	static bool	s_tableSortAscendingQueue;
-	static bool	s_tableSortAscendingSearch;
-	static bool	s_tableSortAscendingShared;
-	static bool	s_tableSortAscendingServer;
-	static bool	s_tableSortAscendingClientList;
-
 	static bool	s_scorsystem;
 	static bool	s_mintotray;
 	static bool	s_trayiconenabled;
@@ -609,16 +588,6 @@ protected:
 	static uint8	s_statsMax;
 	static uint8	s_statsAverageMinutes;
 
-	static bool	s_useDownloadNotifier;
-	static bool	s_useChatNotifier;
-	static bool	s_useLogNotifier;	
-	static bool	s_useSoundInNotifier;
-	static bool	s_sendEmailNotifier;
-	static bool	s_notifierPopsEveryChatMsg;
-	static bool	s_notifierImportantError;
-	static bool	s_notifierNewVersion;
-	static wxString	s_notifierSoundFilePath;
-
 	static bool	s_bpreviewprio;
 	static bool	s_smartidcheck;
 	static uint8	s_smartidstate;
@@ -629,7 +598,6 @@ protected:
 	static uint32 	s_uMinFreeDiskSpace;
 	static wxString	s_yourHostname;
 	static bool	s_bVerbose;
-	static bool	s_bupdatequeuelist;
 	static bool	s_bmanualhighprio;
 	static bool	s_btransferfullchunks;
 	static bool	s_bstartnextfile;
@@ -646,8 +614,6 @@ protected:
 	static bool	s_moviePreviewBackup;
 	static bool	s_indicateratings;
 	static bool	s_showAllNotCats;
-	static bool	s_filterserverbyip;
-	static bool	s_bFirstStart;
 	
 	static bool	s_msgonlyfriends;
 	static bool	s_msgsecure;
@@ -712,7 +678,6 @@ protected:
 	static uint16	s_OSUpdate;
 	
 	static wxString	s_SkinFile;
-	
 	static bool	s_UseSkinFile;
 	
 	static bool	s_FastED2KLinksHandler;	// Madcat - Toggle Fast ED2K Links Handler
