@@ -17,7 +17,7 @@
 //along with this program; if not, write to the Free Software
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-
+#include <wx/sizer.h> // Must be first or compilation fail on win32 !!!
 #include <cerrno>
 #include <csignal>
 #include <cmath>
@@ -29,12 +29,12 @@
 #include <wx/datetime.h>
 #include <wx/config.h>
 #include <wx/textfile.h>
-#include <wx/sizer.h>
 #include <wx/radiobox.h>
 #include <wx/msgdlg.h>
 #include <wx/log.h>
 #include <wx/statbmp.h>
 #include <wx/stattext.h>
+#include <wx/mimetype.h>
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
