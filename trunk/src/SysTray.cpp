@@ -178,6 +178,7 @@ void do_hide() {
 
 void do_show() {
 	theApp.amuledlg->Show_aMule();
+	theApp.amuledlg->Raise();
 }
 
 // shows or hides amule...double click automatic selection
@@ -574,6 +575,10 @@ static gboolean tray_clicked (GtkWidget *event_box, GdkEventButton *event, gpoin
 	if ( (event->button == 1 && event->type == GDK_2BUTTON_PRESS) ||event->button == 2) {
 		showgui();
 		return true;
+	} else if ( event->button == 1 && event->type == GDK_BUTTON_PRESS ) {
+		if ( !theApp.amuledlg->IsIconized() ) {
+			theApp.amuledlg->Raise();
+		}
 	}
 
 	//mouse right click
