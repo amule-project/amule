@@ -509,8 +509,8 @@ void CamulecmdApp::Process_Answer_v2(CECPacket *response)
 				filesize = tag->GetTagByName(EC_TAG_PARTFILE_SIZE_FULL)->GetInt32Data();
 				donesize = tag->GetTagByName(EC_TAG_PARTFILE_SIZE_DONE)->GetInt32Data();
 					
-				s += wxString::Format(wxT("%08x "), tag->GetTagByName(EC_TAG_ITEM_ID)->GetInt32Data()) +
-					tag->GetStringData() +
+				s += wxString::Format(wxT("%08x "), tag->GetInt32Data()) +
+					tag->GetTagByName(EC_TAG_PARTFILE_NAME)->GetStringData() +
 					wxString::Format(wxT("\t [%.1f%%] %i/%i - "),
 						((float)donesize) / ((float)filesize)*100.0,
 						(int)tag->GetTagByName(EC_TAG_PARTFILE_SOURCE_COUNT_XFER)->GetInt32Data(),

@@ -381,6 +381,11 @@ enum {
 	EC_TAG_ITEM_ID,
 
 	/*!
+	 * \brief Tag for passing flags
+	 */
+	 EC_TAG_FLAGS,
+	 
+	/*!
 	 * \brief Tags for status (or stats) info
 	 */
 	/*!
@@ -449,6 +454,7 @@ enum {
 	 */
 	EC_TAG_PARTFILE,
 
+	EC_TAG_PARTFILE_NAME,
 	EC_TAG_PARTFILE_SIZE_FULL,
 	EC_TAG_PARTFILE_SIZE_XFER,
 	EC_TAG_PARTFILE_SIZE_DONE,
@@ -556,4 +562,12 @@ enum {
 
 };
 
+/*!
+ * Flags for commands
+ */
+ 
+ enum {
+ 	EC_LIST_ONLY_STATUS, // for EC_OP_GET_*_QUEUE
+ };
+ 
 #endif	/* ECCODES_H */
