@@ -97,25 +97,28 @@ wxThread::ExitCode myThread::Entry() {
 
  CURL *curl_handle;
  FILE *outfile;
+ char* tempurl;
  curl_global_init(CURL_GLOBAL_ALL);
  if (TestDestroy()) return NULL;
  curl_handle = curl_easy_init();
  outfile = fopen(unicode2char(tempfile), "w");
  if (TestDestroy()) {fclose(outfile); return NULL; }
  if (outfile!=NULL) {
-// by Hetfield - ugly workaround due to unicode converting bug
-    url.StartsWith(wxT("http://"),&url);
-    if (!url) return NULL;
-    curl_easy_setopt(curl_handle, CURLOPT_URL, unicode2char(url));
+ if (!url) {fclose(outfile); return NULL; }
+    tempurl=strdup((char*)unicode2char(url));
+  
+    curl_easy_setopt(curl_handle, CURLOPT_URL, tempurl);
     curl_easy_setopt(curl_handle, CURLOPT_VERBOSE, TRUE);
     curl_easy_setopt(curl_handle, CURLOPT_MAXREDIRS , 10);
     curl_easy_setopt(curl_handle, CURLOPT_FOLLOWLOCATION , 1);
     curl_easy_setopt(curl_handle, CURLOPT_TIMEOUT , 15);
     curl_easy_setopt(curl_handle, CURLOPT_USERAGENT, "Mozilla/4");
     curl_easy_setopt(curl_handle, CURLOPT_FILE, outfile);
-    if (TestDestroy()) {fclose(outfile); return 0; }
+    
+    if (TestDestroy()) {fclose(outfile); free(tempurl); return 0; }
     if (curl_easy_perform(curl_handle)==CURLE_OK) result=0;
     fclose(outfile);
+    free(tempurl);
  }
  return 0;
 }
