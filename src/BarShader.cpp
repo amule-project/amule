@@ -1,4 +1,4 @@
- // This file is part of the aMule project.
+// This file is part of the aMule project.
 //
 // Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
 //
@@ -29,7 +29,6 @@
 
 #include "BarShader.h"		// Interface declarations.
 
-
 const double Pi = 3.14159265358979323846264338328;
 
 #define HALF(X) (((X) + 1) / 2)
@@ -43,7 +42,7 @@ CBarShader::CBarShader(uint32 height, uint32 width)
   m_Modifiers( NULL ),
   m_used3dlevel( DEFAULT_DEPTH )
 {
-	m_spanlist.push_front(BarSpan(0, 1));
+	Fill( 0 );
 }
 
 
@@ -57,7 +56,49 @@ CBarShader::~CBarShader()
 
 void CBarShader::Reset()
 {
+	m_spanlist.clear();
 	Fill(0);
+}
+
+
+void CBarShader::SetFileSize(uint32 fileSize)
+{
+	m_FileSize = fileSize;
+	Reset();
+}
+
+
+void CBarShader::SetHeight( int height )
+{
+	if( m_Height != height ) {
+		m_Height = height;
+
+		// Reset the modifers
+		if ( m_Modifiers ) {
+			delete[] m_Modifiers;
+			m_Modifiers = NULL;
+		}
+	}
+}
+
+
+void CBarShader::Set3dDepth( int depth )
+{
+	if ( depth < 1 ) {
+		depth = 1;
+	} else if ( depth > 5 ) {
+		depth = 5;
+	}
+
+	if ( m_used3dlevel != depth ) {
+		m_used3dlevel = depth;
+
+		// Reset the modifers
+		if ( m_Modifiers ) {
+			delete[] m_Modifiers;
+			m_Modifiers = NULL;
+		}
+	}
 }
 
 
@@ -84,137 +125,22 @@ void CBarShader::FillRange(uint32 start, uint32 end, const DWORD color)
 	// Sanity check
 	wxASSERT( start <= end );
 
-	if( end >= m_FileSize-1 ) {
-		end = m_FileSize;
+	if ( start >= m_FileSize ) {
+		return;
+	}
+	
+	if ( end >= m_FileSize ) {
+		end = m_FileSize - 1;
 	}
 
-	// Find the last unaffected span before the new span
-	// Items are most often inserted at the back, so we start backwards
-	SpanList::iterator it = --m_spanlist.end();
-	while ( ( it != m_spanlist.begin() ) && it->end > start )
-		--it;
-
-	while ( it != m_spanlist.end() ) {
-		// Begins before the current span
-		if ( start < it->start ) {
-			// Never touches the current span
-			if ( end < it->start - 1 ) {
-				break;
-			}
-
-			// Stops just before the current span
-			else if ( end == it->start - 1 ) {
-				// If same color: Merge
-				if ( color == it->color ) {
-					end = it->end;
-					it = m_spanlist.erase( it );
-				}
-
-				break;
-			}
-
-			// Covers part of the current span (maybe entire span)
-			else {
-				// If it only covers part of the span
-				if ( end < it->end ) {
-					// Same color?
-					if ( color == it->color ) {
-						end = it->end;
-						it = m_spanlist.erase( it );
-					} else {
-						it->start = end + 1;
-					}
-
-					break;
-				} else {
-					// It covers the entire span
-					it = m_spanlist.erase( it );
-					continue;
-				}
-			}
-		}
-		// It starts at the current span
-		else if ( start == it->start ) {
-			// Covers only part of the current span
-			if ( end < it->end ) {
-				// Same color, nothing to do
-				if ( color == it->color ) {
-					return;
-				} 
-				
-				it->start = end + 1;
-				
-				break;
-			} else {
-				// Covers the entire span
-				it = m_spanlist.erase( it );					
-				continue;
-			}
-		}
-
-		// Starts inside the current span or after the current span
-		else if ( start > it->start ) {
-			// Starts inside the current span
-			if ( start < it->end ) {
-				// Ends inside the current span
-				if ( end < it->end ) {
-					// Adding a span with same color inside a existing span is fruitless
-					if ( color == it->color ) {
-						return;
-					}
-				
-					// Split the currens span and stop
-					uint32 oldend = it->end;
-					// Resize the current span to fit before the new span
-					it->end = start - 1;
-
-					// Create a new span to cover the second block
-					it = m_spanlist.insert( ++it, BarSpan( end + 1, oldend, it->color ) );
-				
-					break;
-				} else {
-					// If access-level is the same, then we remove the current and
-					// resize the new span
-					if ( color == it->color ) {
-						start = it->start;
-						
-						it = m_spanlist.erase( it );
-						continue;
-					} else {
-						// Continues past the end of the current span, resize current span
-						it->end = start - 1;
-					}
-				}
-			} else if ( start == it->end ) {
-			// If access-level is the same, then we remove the current and
-			// resize the new span
-				if ( color == it->color ) {
-					start = it->start;
-					
-					it = m_spanlist.erase( it );
-					continue;
-				} else {
-					// Continues past the end of the current span, resize current span
-					it->end = start - 1;
-				}
-			} else {
-				// Starts after the current span, nothing to do
-			}
-		}
-
-		it++;
-	}
-
-
-
-	m_spanlist.insert( it, BarSpan( start, end, color ) );
+	m_spanlist.insert( start, end, color );
 }
 
 
 void CBarShader::Fill(DWORD color)
 {
 	m_spanlist.clear();
-	m_spanlist.push_front( BarSpan( 0, m_FileSize, color ) );
+	m_spanlist.insert( 0, m_FileSize - 1, color );
 }
 
 
@@ -222,92 +148,105 @@ void CBarShader::Draw( wxDC* dc, int iLeft, int iTop, bool bFlat )
 {
 	wxASSERT( dc );
 
+	// Check if there's anything to do ...
+	if ( m_spanlist.empty() ) {
+		return;
+	}
+
+	
 	// Do we need to rebuild the modifiers?
 	if ( !bFlat && !m_Modifiers ) {
 		BuildModifiers();
 	}
 
 	wxRect rectSpan;
-	rectSpan.y = iTop;
 	rectSpan.x = iLeft;
+	rectSpan.y = iTop;
 	rectSpan.height = m_Height;
-	rectSpan.width  = 0;
-
-#ifndef AMULE_DAEMON
-	dc->SetPen(*wxTRANSPARENT_PEN);
-#endif
+	rectSpan.width = 0;
 	
-	double m_PixelsPerByte = (double)m_Width / m_FileSize;
-	double m_BytesPerPixel = (double)m_FileSize / m_Width;
-	int iBytesInOnePixel = (int)(m_BytesPerPixel + 0.5f);
-	uint32 start = 0;
+	dc->SetPen(*wxTRANSPARENT_PEN);
 
-	SpanList::iterator bsCurrent = m_spanlist.begin();
-	while ( bsCurrent != m_spanlist.end() && rectSpan.GetRight() < (iLeft + m_Width)) {
-		if ( bsCurrent->end < start ) {
-			++bsCurrent;
-			continue;
-		}
-			
-		uint32 uSpan = bsCurrent->end - start;
-		uint32 iPixels = (int)(uSpan * m_PixelsPerByte + 0.5f);
-		
-		if (iPixels > 0) {
-			rectSpan.x += rectSpan.width;
-			rectSpan.width = iPixels;
-			
-			FillRect(dc, rectSpan, bsCurrent->color, bFlat);
+	// This modifier is multipled with sizes to allow for better handling of small ranges
+	const uint64 MOD = 1000;
+	// This is the number of bits each pixel should contain.
+	const uint64 bitsPerPixel = ((uint64)m_FileSize * MOD) / (uint64)m_Width;
+	
+	// The initial values for partial pixel drawing
+	uint64 curPixel = 0;
+	uint64 curRed = 0;
+	uint64 curGreen = 0;
+	uint64 curBlue = 0;
 
-			start += (int)(iPixels * m_BytesPerPixel + 0.5f);
+	// Initialize to the first range
+	SpanList::iterator it = m_spanlist.begin();
+	uint64 size = (uint64)( it.keyEnd() - it.keyStart() + 1 ) * MOD;
+	uint32 color = *it++;
+
+	// Loop until everything has been drawn	
+	while ( size || curPixel ) {
+		if ( !size && it != m_spanlist.end() ) {
+			// Fetch the next range and increment the iterator
+			size = (uint64)( it.keyEnd() - it.keyStart() + 1 ) * MOD;
+			color = *it++;
+		} else if ( curPixel || size < bitsPerPixel ) {
+			// This block is responsible for drawing ranges that are too small
+			// to fill a single pixel. To overcome this problem, we gather the
+			// sum of ranges until we have enough to draw a single pixel. The
+			// color of this pixel will be the sum of the colors of the ranges
+			// within the single pixel, each weighted after its relative size.
+			
+			// See how much we can take from the current range
+			uint64 curDiff = std::min( size, bitsPerPixel - curPixel );
 		
-			++bsCurrent;
+			// Increment the current size of the partial pixel
+			curPixel += curDiff;
+			
+			// Add the color of the current range times the ammount of the current
+			// range that was added to the partial pixel. The result will be divided
+			// by the length of the partial pixel to get the average.
+			curRed   += curDiff * GetRValue( color );
+			curGreen += curDiff * GetGValue( color );
+			curBlue  += curDiff * GetBValue( color );
+
+			// If we have a complete pixel, or if we have run out of usable ranges,
+			// then draw the partial pixel. Note that size is modified below this
+			// check, so that it only triggers when size was 0 to begin with.
+			if ( curPixel == bitsPerPixel || !size ) {
+				// Draw a single line containing the average of the smaller parts
+				uint32 col = RGB( (uint32)(curRed / curPixel),
+				                  (uint32)(curGreen / curPixel),
+				                  (uint32)(curBlue / curPixel) );
+
+				// Reset the partial-pixel
+				curPixel = curRed = curGreen = curBlue = 0;
+
+				// Increment the position on the device-context
+				rectSpan.x    += rectSpan.width;
+				rectSpan.width = 1;
+
+				// Draw the line
+				FillRect(dc, rectSpan, col, bFlat);
+			}
+			
+			// Decrement size
+			size     -= curDiff;
 		} else {
-			/* If the width of the current span is less than a pixel, we take 
-			   as many spans as will fit in one pixel and calculate the 
-			   "weight" of their colors PLUS the color weight of the adjacent
-			   span. This means that we wont get sharp "streaks" from small
-			   gaps, but rather blured lines, which fade in with the next span. */
-		
-			double fRed = 0;
-			double fGreen = 0;
-			double fBlue = 0;
+			// We are dealing with a range that is large enough to draw by itself.
+			// We will draw as many complete pixels as we can, and allow the rest
+			// to be absorbed by the partial pixel.
+			rectSpan.x    += rectSpan.width;
+			rectSpan.width = size / bitsPerPixel;
 			
-			uint32 iEnd = start + iBytesInOnePixel;
-			uint32 iLast = start;
-			do {
-				double fWeight = (std::min(bsCurrent->end, iEnd) - iLast) * m_PixelsPerByte;
-				fRed   += GetRValue(bsCurrent->color) * fWeight;
-				fGreen += GetGValue(bsCurrent->color) * fWeight;
-				fBlue  += GetBValue(bsCurrent->color) * fWeight;
-				iLast = bsCurrent->end;
-				
-				if ( bsCurrent->end > iEnd )
-					break;
-				
-				bsCurrent++;
-			} while ( bsCurrent != m_spanlist.end() );
-			
-			start += iBytesInOnePixel;
-			
-			rectSpan.x += rectSpan.width;
-			rectSpan.width = 1;
-			
-			FillRect( dc, rectSpan, RGB( (int)fRed, (int)fGreen, (int)fBlue ), bFlat);	
+			// Unused size will be used by the partial-pixel drawing code.
+			size = size % bitsPerPixel; 
+
+			// Draw the range
+			FillRect(dc, rectSpan, color, bFlat);
 		}
 	}
 }
 
-/*!
- * Daemon will create only 1 line of the bar, and remote side will
- * replicate it as needed, even with 3D effect
- */
-#ifdef AMULE_DAEMON
-
-void CBarShader::FillRect(wxDC *dc, const wxRect& rectSpan, DWORD color, bool bFlat)
-{
-}
-
-#else
 
 void CBarShader::FillRect(wxDC *dc, const wxRect& rectSpan, DWORD color, bool bFlat)
 {
@@ -317,33 +256,29 @@ void CBarShader::FillRect(wxDC *dc, const wxRect& rectSpan, DWORD color, bool bF
 		wxBrush brush( WxColourFromCr(color), wxSOLID );
 		dc->SetBrush( brush );
 		dc->DrawRectangle( rectSpan );
-
 	} else {
-	
-		wxRect rect = rectSpan;
-		rect.height = 1;
-
-		wxBrush brush( wxColour(0, 0, 0), wxSOLID );
+		int x1 = rectSpan.x;
+		int x2 = rectSpan.x + rectSpan.width;
+		int y1 = rectSpan.y;
+		int y2 = rectSpan.GetBottom();
 		
 		int Max = HALF(m_Height);
 		for (int i = 0; i < Max; i++) {
 			int cRed   = std::min( 255, (int)(GetRValue(color) * m_Modifiers[i] + .5f) );
 			int cGreen = std::min( 255, (int)(GetGValue(color) * m_Modifiers[i] + .5f) );
 			int cBlue  = std::min( 255, (int)(GetBValue(color) * m_Modifiers[i] + .5f) );
-
-			brush.SetColour( cRed, cGreen, cBlue );
-			dc->SetBrush(brush);
+				
+			wxPen pen( wxColour( cRed, cGreen, cBlue ), 1, wxSOLID );
+			dc->SetPen( pen );
 
 			// Draw top row
-			rect.y = rectSpan.y + i;
-			dc->DrawRectangle( rect );
+			dc->DrawLine( x1, y1 + i, x2, y1 + i );
 
 			// Draw bottom row
-			rect.y = rectSpan.y + rectSpan.height - i - 1;
-			dc->DrawRectangle( rect );
+			dc->DrawLine( x1, y2 - i, x2, y2 - i );
 		}
 	}
 
 	dc->SetBrush(wxNullBrush);
 }
-#endif // AMULE_DAEMON
+
