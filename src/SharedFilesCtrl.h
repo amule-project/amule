@@ -158,6 +158,11 @@ private:
 	void	OnCreateURI( wxCommandEvent& event );
 	
 	/**
+	 * Event handler for get-comments menu item.
+	 */
+	void OnGetComment( wxCommandEvent& evt );
+	 
+	/**
 	 * Event-handler for the Edit Comment menu item.
 	 */
 	void	OnEditComment( wxCommandEvent& event );
@@ -171,4 +176,3 @@ private:
 };
 
 #endif
-

@@ -57,6 +57,7 @@ BEGIN_EVENT_TABLE(CSharedFilesCtrl,CMuleListCtrl)
 	EVT_MENU( MP_PERMALL,		CSharedFilesCtrl::OnSetPermissions )
 	
 	EVT_MENU( MP_CMT,			CSharedFilesCtrl::OnEditComment )
+	EVT_MENU( MP_GETCOMMENTS,   CSharedFilesCtrl::OnGetComment )  
 	
 	EVT_MENU( MP_GETED2KLINK,				CSharedFilesCtrl::OnCreateURI )
 	EVT_MENU( MP_GETHTMLED2KLINK,			CSharedFilesCtrl::OnCreateURI )
@@ -136,12 +137,14 @@ void CSharedFilesCtrl::OnRightClick(wxListEvent& evt)
 		m_menu->Append(0,_("Permissions"),permMenu);
 		m_menu->AppendSeparator();
 		m_menu->Append(MP_CMT, _("Change this file's comment..."));
+		m_menu->Append(MP_GETCOMMENTS,_("Show all comments"));
 		m_menu->AppendSeparator();
 
 		m_menu->Append(MP_GETED2KLINK,_("Copy ED2k &link to clipboard"));
 		m_menu->Append(MP_GETSOURCEED2KLINK,_("Copy ED2k link to clipboard (&Source)"));
 		m_menu->Append(MP_GETHOSTNAMESOURCEED2KLINK,_("Copy ED2k link to clipboard (Hostname)"));
 		m_menu->Append(MP_GETHTMLED2KLINK,_("Copy ED2k link to clipboard (&HTML)"));
+		
 
 		PopupMenu( m_menu, evt.GetPoint() );
 
@@ -386,7 +389,18 @@ void CSharedFilesCtrl::OnEditComment( wxCommandEvent& WXUNUSED(event) )
 	}
 }
 
-
+void CSharedFilesCtrl::OnGetComment ( wxCommandEvent& WXUNUSED(event) )
+	{
+			int item = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+	        if ( item == -1 )
+		    return;
+	
+	CKnownFile* file = (CKnownFile*)GetItemData( item );
+	
+	theApp.amuledlg->LaunchUrl(wxT("http://jugle.net/?comments=") + file->GetFileHash().Encode());
+}
+	
+	
 int CSharedFilesCtrl::SortProc( long item1, long item2, long sortData )
 {
 	CKnownFile* file1 = (CKnownFile*)item1;
