@@ -443,8 +443,8 @@ void CUpDownClient::CreateStandartPackets(byte* data,uint32 togo, Requested_Bloc
 		togo -= nPacketSize;
 
 		outdata.WriteRaw(GetUploadFileID(),16);
-		outdata.Write((uint32)currentblock->EndOffset - togo - nPacketSize); // startpos
-		outdata.Write((uint32)currentblock->EndOffset - togo);               // endpos
+		outdata.Write((uint32)(currentblock->EndOffset - togo - nPacketSize)); // startpos
+		outdata.Write((uint32)(currentblock->EndOffset - togo));               // endpos
 		outdata.WriteRaw(data, nPacketSize);
 		Packet* packet = new Packet(&outdata);
 		packet->opcode = OP_SENDINGPART;
