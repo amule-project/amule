@@ -147,8 +147,8 @@ void CClientReqSocket::Disconnect(const wxString& strReason){
 		if (m_client->Disconnected(strReason, true)) {
 			m_client->SetSocket( NULL );
 			m_client->Safe_Delete();
-			m_client = NULL;
 		} 
+		m_client = NULL;
 	}
 
 	if (!OnDestroy()) {
