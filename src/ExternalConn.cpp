@@ -65,6 +65,7 @@ ExternalConn::ExternalConn() {
 			printf("ExternalConn: server thread not ready\n");
 		}
 	} else {
+		server = 0;
 		printf("External connections disabled in .eMule\n");
 		return;
 	}
