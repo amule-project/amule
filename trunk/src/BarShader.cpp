@@ -6,12 +6,12 @@
 // modify it under the terms of the GNU General Public License
 // as published by the Free Software Foundation; either
 // version 2 of the License, or (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -21,281 +21,292 @@
 #include <algorithm>		// Needed for std::min
 #include <wx/gdicmn.h>
 #include <wx/dc.h>
-#include <wx/dcmemory.h>
+#include "color.h"		// Needed for RGB
 
 #include "BarShader.h"		// Interface declarations.
-#include "Preferences.h"	// Needed for CPreferences
-#include "amule.h"			// Needed for theApp
 
-#ifndef M_PI_2
-#define M_PI_2     1.57079632679489661923
-#endif
-
-#ifndef PI
-#define PI 3.14159265358979323846264338328
-#endif
 
 #define HALF(X) (((X) + 1) / 2)
 
-#define GetRValue(rgb) (((rgb)>>16)&0xff)
-#define GetGValue(rgb) (((rgb)>>8)&0xff)
-#define GetBValue(rgb) ((rgb)&0xff)
+const float Pi = 3.14159265358979323846264338328;
 
-CBarShader::CBarShader(uint32 height, uint32 width) {
-	m_iWidth = width;
-	m_iHeight = height;
-	m_uFileSize = 1;
-	m_FirstSpan = new BarSpan(0, 1);
-	m_Modifiers = NULL;
+
+CBarShader::CBarShader(uint32 height, uint32 width)
+: m_Width( width ),
+  m_Height( height ),
+  m_FileSize( 1 ),
+  m_Modifiers( NULL ),
+  m_used3dlevel( 10 )
+{
+	m_spanlist.push_front(BarSpan(0, 1));
 }
 
-CBarShader::~CBarShader(void) {
-	delete[] m_Modifiers;
-	m_FirstSpan->DeleteUpTo(NULL);
-	delete m_FirstSpan;
+
+CBarShader::~CBarShader(void)
+{
+	if ( m_Modifiers ) {
+		delete[] m_Modifiers;
+	}
 }
 
-void CBarShader::Reset() {
+
+void CBarShader::Reset()
+{
 	Fill(0);
 }
 
-void CBarShader::BuildModifiers() {
-	if(m_Modifiers != NULL)
+
+void CBarShader::BuildModifiers()
+{
+	if ( m_Modifiers ) {
 		delete[] m_Modifiers;
+	}
 
-	m_used3dlevel=theApp.glob_prefs->Get3DDepth();
-	// Barry - New property page slider to control depth of gradient
-
-	// Depth must be at least 2
-	// 2 gives greatest depth, the higher the value, the flatter the appearance
-	// m_Modifiers[count-1] will always be 1, m_Modifiers[0] depends on the value of depth
-	
-	int depth = (7-theApp.glob_prefs->Get3DDepth());
-	int count = HALF(m_iHeight);
-	double piOverDepth = PI/depth;
-	double base = piOverDepth * ((depth / 2.0) - 1);
-	double increment = piOverDepth / (count - 1);
+	int count = HALF(m_Height);
+	float increment = ( Pi / m_Height );
+	float depth = m_used3dlevel / 10.0;
 
 	m_Modifiers = new float[count];
 	for (int i = 0; i < count; i++)
-		m_Modifiers[i] = (float)(sin(base + i * increment));
+		m_Modifiers[i] = sin(i * increment) * depth;
 }
 
-void CBarShader::SetFileSize(uint32 fileSize) {
-	if(m_uFileSize != fileSize) {
-		m_uFileSize = fileSize;
-		m_dPixelsPerByte = (double)m_iWidth / m_uFileSize;
-		m_dBytesPerPixel = (double)m_uFileSize / m_iWidth;
+
+void CBarShader::SetFileSize(uint32 fileSize)
+{
+	if ( m_FileSize != fileSize ) {
+		m_FileSize = fileSize;
+		m_PixelsPerByte = (double)m_Width / m_FileSize;
+		m_BytesPerPixel = (double)m_FileSize / m_Width;
 	}
 }
 
-void CBarShader::FillRange(uint32 start, uint32 end, DWORD color) {
-	if(end>m_uFileSize) {
-	  end=m_uFileSize;
-	}
-	if(start >= end)
-		return;
 
-	BarSpan *bsPrev, *bsStart, *bsEnd;
-	bsPrev = bsStart = m_FirstSpan;
-	while(bsStart->next != NULL && bsStart->end < start)
-		bsStart = bsStart->next;
+void CBarShader::FillRange(uint32 start, uint32 end, const DWORD color)
+{
+	// Sanity check
+	wxASSERT( start <= end );
 
-	//place new span, unless it's the same color
-	BarSpan *bsNew;
-
-	//case 0, same color
-	if(bsStart->color == color) {
-
-		//same color, ends before end.
-		if(bsStart->end > end)
-			return;
-
-		//case 1, same color, ends after end.
-		bsNew = bsStart;
-		bsNew->end = end;
-
-	}
-	
-	else if(bsStart->start == start) {
-
-		//case 2, begins at start, ends before end.
-		if(bsStart->end > end) {
-			//the 'ol switcheroo
-			bsNew = new BarSpan(bsStart, end, bsStart->end, bsStart->color);
-			bsStart->end = end;
-			bsStart->color = color;
-			return;
-		}
-
-		//case 3, begins at start, ends after end.
-		else {
-			//hostile takeover
-			bsNew = bsStart;
-			bsNew->end = end;
-			bsNew->color = color;
-		}
-
+	if( end > m_FileSize ) {
+		end = m_FileSize;
 	}
 
-	else if(bsStart->start < start) {
+	// Find the last unaffected span before the new span
+	// Items are most often inserted at the back, so we start backwards
+	SpanList::iterator it = --m_spanlist.end();
+	while ( ( it != m_spanlist.begin() ) && it->end > start )
+		--it;
 
-		//case 4, begins after start, ends before end
-		if(bsStart->end > end) {
-			bsNew = new BarSpan(bsStart, start, end, color);
-			bsNew = new BarSpan(bsNew, end, bsStart->end, bsStart->color);
-			bsStart->end = start;
-			return;
+	while ( it != m_spanlist.end() ) {
+		// Begins before the current span
+		if ( start < it->start ) {
+			// Never touches the current span
+			if ( end < it->start - 1 ) {
+				it++;
+				continue;
+			}
+
+			// Stops just before the current span
+			else if ( end == it->start - 1 ) {
+				// If same color: Merge
+				if ( color == it->color ) {
+					end = it->end;
+					it = m_spanlist.erase( it );
+				}
+
+				break;
+			}
+
+			// Covers part of the current span (maybe entire span)
+			else if ( end > it->start - 1 ) {
+				// If it only covers part of the span
+				if ( end < it->end ) {
+					// Same color?
+					if ( color == it->color ) {
+						end = it->end;
+						it = m_spanlist.erase( it );
+					} else {
+						it->start = end + 1;
+					}
+
+					break;
+				} else {
+					// It covers the entire span
+					it = m_spanlist.erase( it );
+					continue;
+				}
+			}
+
+		}
+		// It starts at the current span
+		else if ( start == it->start ) {
+			// Covers only part of the current span
+			if ( end < it->end ) {
+				// Same color, nothing to do
+				if ( color == it->color ) {
+					return;
+				} else {
+					it->start = end + 1;
+				}
+
+				break;
+
+			} else {
+				// Covers the entire span
+				it = m_spanlist.erase( it );
+				continue;
+			}
 		}
 
-		//case 5, begins after start, ends after end
-		else {
-			bsNew = new BarSpan(bsStart, start, end, color);
-			bsStart->end = start;
+		// Starts inside the current span or after the current span
+		else if ( start > it->start  && start <= it->end + 1 ) {
+			// Covers only a slice of the current span
+			if ( end < it->end ) {
+				// Same color, nothing to do
+				if ( color == it->color ) {
+					return;
+				} else {
+					// Remember the old end-position
+					uint32 oldend = it->end;
+					// Resize the current span to fit before the new span
+					it->end = start - 1;
+					// Insert the second part of the old span behind where the new span is supposed to be placed
+					it = m_spanlist.insert( ++it, BarSpan( end + 1, oldend, it->color ) );
+					break;
+				}
+			} else {
+				// Completly covers a side of the span
+				if ( color == it->color ) {
+					// Same color, delete old and update start position
+					start = it->start;
+					it = m_spanlist.erase( it );
+					continue;
+
+				} else {
+					it->end = start - 1;
+				}
+			}
 		}
-	} else {
-		assert(FALSE);//should never get here
+
+		it++;
 	}
 
-	bsEnd = bsNew->next;
-	while(bsEnd != NULL && bsEnd->end <= end)
-		bsEnd = bsEnd->next;
 
-	if(bsEnd != NULL)
-		bsEnd->start = end;
-
-	bsNew->DeleteUpTo(bsEnd);
+	m_spanlist.insert( it, BarSpan( start, end, color ) );
 }
 
-void CBarShader::Fill(DWORD color) {
-	m_FirstSpan->DeleteUpTo(NULL);
-	m_FirstSpan->start = 0;
-	m_FirstSpan->end = m_uFileSize;
-	m_FirstSpan->color = color;
+
+void CBarShader::Fill(DWORD color)
+{
+	m_spanlist.clear();
+	m_spanlist.push_front( BarSpan( 0, m_FileSize, color ) );
 }
 
-//void CBarShader::Draw(wxMemoryDC* dc, int iLeft, int iTop, bool bFlat) {
-void CBarShader::Draw(wxDC* dc, int iLeft, int iTop, bool bFlat) {
-	BarSpan *bsCurrent = m_FirstSpan;
-	RECT rectSpan;
-	rectSpan.top = iTop;
-	rectSpan.bottom = iTop + m_iHeight;
-	rectSpan.right = iLeft;
+
+void CBarShader::Draw( wxDC* dc, int iLeft, int iTop, bool bFlat )
+{
+	wxASSERT( dc );
+
+	// Do we need to rebuild the modifiers?
+	if ( !bFlat && !m_Modifiers ) {
+		BuildModifiers();
+	}
+
+	wxRect rectSpan;
+	rectSpan.y = iTop;
+	rectSpan.x = iLeft;
+	rectSpan.height = m_Height;
+	rectSpan.width  = 0;
 
 	dc->SetPen(*wxTRANSPARENT_PEN);
 
-	int iBytesInOnePixel = (int)(m_dBytesPerPixel + 0.5f);
-	uint32 start = 0;//bsCurrent->start;
-	uint32 drawnItems=0;
-	while(bsCurrent != NULL && (int)rectSpan.right < (iLeft + m_iWidth)) {
-		uint32 uSpan = bsCurrent->end - start;
-		int iPixels = (int)(uSpan * m_dPixelsPerByte + 0.5f);
-		if(iPixels > 0) {
-			rectSpan.left = rectSpan.right;
-			rectSpan.right += iPixels;
-			FillRect(dc, &rectSpan, bsCurrent->color, bFlat);
-			drawnItems++;
+	int iBytesInOnePixel = (int)(m_BytesPerPixel + 0.5f);
+	uint32 start = 0;
 
-			start += (int)(iPixels * m_dBytesPerPixel + 0.5f);
+	SpanList::iterator bsCurrent = m_spanlist.begin();
+	while ( bsCurrent != m_spanlist.end() && rectSpan.GetRight() < (iLeft + m_Width)) {
+		if ( bsCurrent->end < start ) {
+			++bsCurrent;
+			continue;
+		}
+			
+		uint32 uSpan = bsCurrent->end - start;
+		uint32 iPixels = (int)(uSpan * m_PixelsPerByte + 0.5f);
+		
+		if (iPixels > 0) {
+			rectSpan.x += rectSpan.width;
+			rectSpan.width = iPixels;
+			
+			FillRect(dc, rectSpan, bsCurrent->color, bFlat);
+
+			start += (int)(iPixels * m_BytesPerPixel + 0.5f);
+		
+			++bsCurrent;
 		} else {
 			float fRed = 0;
 			float fGreen = 0;
 			float fBlue = 0;
+			
 			uint32 iEnd = start + iBytesInOnePixel;
-			int iLast = start;
+			uint32 iLast = start;
 			do {
-				float fWeight = (std::min(bsCurrent->end, iEnd) - iLast) * m_dPixelsPerByte;
+				float fWeight = (std::min(bsCurrent->end, iEnd) - iLast) * m_PixelsPerByte;
 				fRed   += GetRValue(bsCurrent->color) * fWeight;
 				fGreen += GetGValue(bsCurrent->color) * fWeight;
 				fBlue  += GetBValue(bsCurrent->color) * fWeight;
-				if(bsCurrent->end > iEnd)
-					break;
 				iLast = bsCurrent->end;
-				bsCurrent = bsCurrent->next;
-			} while(bsCurrent != NULL);
-			rectSpan.left = rectSpan.right;
-			rectSpan.right++;
-			FillRect(dc, &rectSpan, fRed, fGreen, fBlue, bFlat);
-			drawnItems++;
+				
+				if ( bsCurrent->end > iEnd )
+					break;			
+								
+				bsCurrent++;
+			} while ( bsCurrent != m_spanlist.end() );
+			
 			start += iBytesInOnePixel;
+			
+			rectSpan.x += rectSpan.width;
+			rectSpan.width = 1;
+			
+			FillRect( dc, rectSpan, RGB( (int)fRed, (int)fGreen, (int)fBlue ), bFlat);	
 		}
-		while(bsCurrent != NULL && bsCurrent->end < start)
-			bsCurrent = bsCurrent->next;
 	}
-	// for debugging:
-	///printf(" piirettiin %d palaa. Kesti %d ms. Leveys %d\n",drawnItems,GetTickCount()-now,m_iWidth);
 }
 
-//void CBarShader::FillRect(wxMemoryDC *dc, RECT* rectSpan, DWORD color, bool bFlat) {
-void CBarShader::FillRect(wxDC *dc, RECT* rectSpan, DWORD color, bool bFlat) {
-  if(rectSpan->right-rectSpan->left<1)
-    return;
 
-  if(!color || bFlat) {
-    //dc->FillRect(rectSpan, &CBrush(color));
-    //dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(wxColour(GetRValue(color),GetGValue(color),GetBValue(color)),wxSOLID)));
-    wxBrush suti(wxColour(GetRValue(color),GetGValue(color),GetBValue(color)),wxSOLID);
-    dc->SetBrush(suti);
-    dc->DrawRectangle(rectSpan->left,rectSpan->top,rectSpan->right,rectSpan->bottom);
-    dc->SetBrush(wxNullBrush);
-  } else {
-    FillRect(dc, rectSpan, GetRValue(color), GetGValue(color), GetBValue(color), false);
-  }
-}
+void CBarShader::FillRect(wxDC *dc, const wxRect& rectSpan, DWORD color, bool bFlat)
+{
+	wxASSERT( dc );
 
-//void CBarShader::FillRect(wxMemoryDC *dc, RECT* rectSpan, float fRed, float fGreen,
-void CBarShader::FillRect(wxDC *dc, RECT* rectSpan, float fRed, float fGreen,
-						  float fBlue, bool bFlat) {
-  if(rectSpan->right-rectSpan->left<1)
-    return;
+	if( !color || bFlat ) {
+		wxBrush brush( WxColourFromCr(color), wxSOLID );
+		dc->SetBrush( brush );
+		dc->DrawRectangle( rectSpan );
 
-  if(bFlat) {
-    //dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(wxColour((int)(fRed+.5f),(int)(fGreen+.5f),(int)(fBlue+.5f)),wxSOLID)));
-    wxBrush suti(wxColour((int)(fRed+.5f),(int)(fGreen+.5f),(int)(fBlue+.5f)),wxSOLID);
-    dc->SetBrush(suti);
-    dc->DrawRectangle(rectSpan->left,rectSpan->top,rectSpan->right,rectSpan->bottom);
-    dc->SetBrush(wxNullBrush);
-    //dc->FillRect(rectSpan, &CBrush(color));
-    
-  } else {
-    if(m_Modifiers==NULL || m_used3dlevel!=theApp.glob_prefs->Get3DDepth())
-      BuildModifiers();
-    
-    RECT rect;
-    memcpy(&rect, rectSpan, sizeof(RECT));
-    
-    int iTop = rect.top;
-    int iBot = rect.bottom;
-    int iMax = HALF(m_iHeight);
-    for(int i = 0; i < iMax; i++) {
-      //CBrush cbNew(RGB((int)(fRed * m_Modifiers[i] + .5f), (int)(fGreen * m_Modifiers[i] + .5f), (int)(fBlue * m_Modifiers[i] + .5f)));
-      //wxBrush* cbNew=wxTheBrushList->FindOrCreateBrush(wxColour((int)(fRed * m_Modifiers[i] + .5f), (int)(fGreen * m_Modifiers[i] + .5f), (int)(fBlue * m_Modifiers[i] + .5f)),wxSOLID);
-      wxBrush suti(wxColour((int)(fRed * m_Modifiers[i] + .5f), (int)(fGreen * m_Modifiers[i] + .5f), (int)(fBlue * m_Modifiers[i] + .5f)),wxSOLID);
+	} else {
+	
+		wxRect rect = rectSpan;
+		rect.height = 1;
 
-      //printf("(väri=%d;%d,%d\n",(int)(fRed * m_Modifiers[i] + .5f), (int)(fGreen * m_Modifiers[i] + .5f), (int)(fBlue * m_Modifiers[i] + .5f));
-      
-      rect.top = iTop + i;
-      rect.bottom = iTop + i + 1;
-      //dc->SetBrush(*cbNew);
-      dc->SetBrush(suti);
+		wxBrush brush( wxColour(0, 0, 0), wxSOLID );
+		
+		int Max = HALF(m_Height);
+		for (int i = 0; i < Max; i++) {
+			int cRed   = std::min( 255, (int)(GetRValue(color) * m_Modifiers[i] + .5f) );
+			int cGreen = std::min( 255, (int)(GetGValue(color) * m_Modifiers[i] + .5f) );
+			int cBlue  = std::min( 255, (int)(GetBValue(color) * m_Modifiers[i] + .5f) );
 
-      //dc->FillRect(&rect, &cbNew);
-      //printf("RC: %d,%d-%d,%d\n",rect.left,rect.top,rect.right,rect.bottom);
-      int x,y,w,h;
-      x=rect.left; y=rect.top;
-      w=rect.right-rect.left; h=rect.bottom-rect.top;
-      dc->DrawRectangle(x,y,w,h);
-      
-      rect.top = iBot - i - 1;
-      rect.bottom = iBot - i;
-      //printf("RC2:%d,%d-%d,%d\n",rect.left,rect.top,rect.right,rect.bottom);
-      //dc->FillRect(&rect, &cbNew);
-      x=rect.left; y=rect.top;
-      w=rect.right-rect.left; h=rect.bottom-rect.top;
-      dc->DrawRectangle(x,y,w,h);
+			brush.SetColour( cRed, cGreen, cBlue );
+			dc->SetBrush(brush);
 
-      dc->SetBrush(wxNullBrush);
-    }
-  }
-  //printf(" FillRect took %d ms\n",end-start);
+			// Draw top row
+			rect.y = rectSpan.y + i;
+			dc->DrawRectangle( rect );
+
+			// Draw bottom row
+			rect.y = rectSpan.y + rectSpan.height - i - 1;
+			dc->DrawRectangle( rect );
+		}
+	}
+
+	dc->SetBrush(wxNullBrush);
 }
