@@ -47,6 +47,9 @@ enum {
 	CMD_ID_SHUTDOWN,
 	CMD_ID_SERVERLIST,
 	CMD_ID_ADDLINK,
+	CMD_ID_SETUPBWLIMIT,
+	CMD_ID_SETDOWNBWLIMIT,
+	CMD_ID_GETBWLIMITS,
 };
 //-------------------------------------------------------------------
 //
