@@ -578,7 +578,7 @@ void CSearchDlg::UpdateHitCount(CSearchListCtrl* page)
 			wxString searchtxt = notebook->GetPageText(i).BeforeLast(wxT(' '));
 		
 			if ( !searchtxt.IsEmpty() ) {
-				notebook->SetPageText( i, searchtxt + wxString::Format(" (%i)", page->GetItemCount()));
+				notebook->SetPageText( i, searchtxt + wxString::Format(wxT(" (%i)"), page->GetItemCount()));
 			}
 		
 			break;
