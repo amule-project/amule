@@ -53,6 +53,10 @@ class WxCas:public wxApp
   {
   private:
     WxCasFrame * m_frame;
+    
+        
+  protected:
+    wxLocale m_locale; // Used to tell wxCas to use aMule catalog
 
   public:
 
