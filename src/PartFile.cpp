@@ -3728,44 +3728,6 @@ uint8 CPartFile::GetCategory()
 	return m_category;
 }
 
-CString CPartFile::GetDownloadFileInfo()
-{
-	if(this == NULL) {
-		return "";
-	}
-
-	CString sRet;
-	CString strHash=EncodeBase16(GetFileHash(), 16);;
-	char lsc[50]; char complx[50]; char lastprogr[50];
-	sprintf(complx,"%s/%s",CastItoXBytes(GetCompletedSize()).GetData(),CastItoXBytes(GetFileSize()).GetData());
-	if (lastseencomplete==0) {
-		sprintf(lsc, CString(_("Unknown")).MakeLower()); 
-	} else {
-		strftime(lsc,sizeof(lsc),theApp.glob_prefs->GetDateTimeFormat(),localtime((time_t*)&lastseencomplete));
-	}
-	
-	if (GetFileDate()==0) {
-		sprintf(lastprogr, CString(_("Unknown")));
-	} else {
-		strftime(lastprogr,sizeof(lsc),theApp.glob_prefs->GetDateTimeFormat(),localtime(GetCFileDate()));
-	}
-
-	float availability = 0;
-	if(GetPartCount() != 0) {
-		availability = GetAvailablePartCount() * 100 / GetPartCount();
-	}
-
-	sRet.Format(CString(_("File Name"))+": %s (%s %s)\n\n%s\n\n"
-	+CString(_("Hash :")) +" %s\n"+CString(_("Partfilename: %s\nParts: %d , %s: %d (%.1f%%)\n"))+
-	CString(_("%d%% done (%s) - Transferring from %d sources"))+"\n%s\n%s", GetFileName().GetData(), CastItoXBytes(GetFileSize()).GetData(),
-	CString(_("Bytes")).GetData(),(CString(_("Status"))+": "+getPartfileStatus()).GetData(),
-	strHash.GetData(),GetPartMetFileName(), GetPartCount(),CString(_("Available")).GetData(),
-	GetAvailablePartCount(),availability,(int)GetPercentCompleted(), complx, GetTransferingSrcCount(),
-	(CString(_("Last Seen Complete :"))+" "+wxString(lsc)).GetData(),(CString(_("Last Reception:"))
-	+" "+wxString(lastprogr)).GetData());
-
-        return sRet;
-}
 
 wxString CPartFile::GetProgressString(uint16 size)
 {
