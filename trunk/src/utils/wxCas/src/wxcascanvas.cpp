@@ -81,18 +81,32 @@ END_EVENT_TABLE ()
 
 // OnPaint event
 void
-     WxCasCanvas::OnPaint (wxPaintEvent & event)
+WxCasCanvas::OnPaint (wxPaintEvent & event)
 {
   DrawImg ();
 }
 
+// Update if model size has changed
+void
+WxCasCanvas::Update ()
+{
+  wxInt32 h, wS, wI;
+  m_model->GetClientSize (&wS, &h);
+  GetClientSize (&wI, &h);
+  if (wI != wS)
+    {
+      DrawImg ();
+    }
+}    
+    
 // Draw image
 void
 WxCasCanvas::DrawImg ()
 {
-// rescale image
+  // rescale image
   wxInt32 ph, pw, h;
   m_model->GetClientSize (&pw, &ph);
+
   h =
     (wxInt32) ((double) (m_bitmap->GetHeight ()) / m_bitmap->GetWidth () *
 	       pw);
@@ -100,7 +114,7 @@ WxCasCanvas::DrawImg ()
   wxBitmap *bitmap = new wxBitmap (wxImage (m_bitmap->ConvertToImage ()).
 				   Scale (pw, h));
 
-  this->SetClientSize (pw, h);
+  SetClientSize (pw, h);
 
   // Draw image
   wxPaintDC dc (this);

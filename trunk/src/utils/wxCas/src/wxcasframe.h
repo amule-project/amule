@@ -55,7 +55,7 @@ public:
 
 protected:
 
-  void SetFromDefaultAmuleFile ();
+  void SetFromAmuleFile ();
 
   void OnBarRefresh (wxCommandEvent & event);
   void OnBarAbout (wxCommandEvent & event);
@@ -69,7 +69,7 @@ private:
 	
   wxTimer * m_timer;
 
-  wxUint32 MaxLineCount;
+  wxUint32 m_maxLineCount;
 
   wxToolBar *m_toolbar;
   wxBitmap *m_toolBarBitmaps[5];
