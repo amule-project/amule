@@ -523,25 +523,31 @@ bool CamuleApp::OnInit()
 	}
 
 	
-// For wxGTK we manually specify the placement of the config-file
-#if __WXGTK__
-	// Backwards compatibility, check for the .eMule file if our amule.conf file doesn't exist
+	// We try to import from any system except windoze
+	#ifndef __WINDOWS__
+	
+	// Backwards compatibility, check for old config file if our amule.conf file doesn't exist
 	wxString homeDir = wxGetHomeDir() + wxFileName::GetPathSeparator();
 	if ( !wxFileExists( ConfigDir + wxT("amule.conf") ) ) {
-		// Check if an old (.eMule) config file exists
-		if ( wxFileExists( homeDir + wxT(".eMule") ) ) {
-			wxCopyFile( homeDir + wxT(".eMule"), ConfigDir + wxT("amule.conf") );
+		// Check if an old config file exists
+		#if defined( __APPLE__ )
+		// Mac is a special case
+		wxString OldConfig(wxT("Library/Preferences/eMule Preferences"));
+		#else
+		// *BSD, linux, unix, solaris, whatever
+		wxString OldConfig(wxT(".eMule"));		
+		#endif
+		if ( wxFileExists( homeDir + OldConfig ) ) {
+			wxCopyFile( homeDir + OldConfig, ConfigDir + wxT("amule.conf") );
  		}
  	}
+	#endif
 	
 	// This creates the CFG file we shall use
 	wxConfigBase* cfg = new wxConfig( wxEmptyString, wxEmptyString, wxT(".aMule/amule.conf") );
 	
 	// Set the config object as the global cfg file
 	wxConfig::Set( cfg );
-#elif defined( __WXMAC__ )
-	#warning CFG-File needs to be teletransmogrified for Mac! Once done, change appname to aMule!
-#endif	
 
 
 #if wxCHECK_VERSION(2,5,3)
@@ -772,11 +778,7 @@ bool CamuleApp::OnInit()
 #ifndef __WXMSW__
 	// Run webserver?
 	if (thePrefs::GetWSIsEnabled()) {
-#ifdef __WXGTK__
 		wxString aMuleConfigFile(ConfigDir + wxT("amule.conf"));
-#elif defined( __WXMAC__ )
-		wxString aMuleConfigFile(wxGetHomeDir() + wxFileName::GetPathSeparator() + wxT(".eMule"));
-#endif
 		#ifndef AMULE_DAEMON
 		webserver_pid = wxExecute(wxString(wxT("amuleweb --amule-config-file=")) + aMuleConfigFile);
 		if (!webserver_pid) {
