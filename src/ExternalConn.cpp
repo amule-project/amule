@@ -504,31 +504,31 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 		if (item.Left(20) == wxT("TRANSFER ADDFILELINK")) {
 			wxString buffer= wxT("Bad Link");
 			if (item.Length() > 20) {
-				CED2KLink* pLink = CED2KLink::CreateLinkFromUrl(unicode2char(item.Mid(21)));
+				CED2KLink *pLink = CED2KLink::CreateLinkFromUrl(unicode2char(item.Mid(21)));
 				if (pLink->GetKind() == CED2KLink::kFile) {
 					// lfroen - using default category 0
 					theApp.downloadqueue->AddFileLinkToDownload(pLink->GetFileLink(), 0); 
-					buffer= wxT("Link Added");
+					buffer = wxT("Link Added");
 				}
 			}
-			return((wxChar*) buffer.GetData());
+			return buffer;
 		}
 		if (item == wxT("TRANSFER DL_FILEHASH")) {
 			// returns one string where each line is formatted as:
 			// %s\t%s\t...\t%s
-			wxString buffer(wxT(""));
-			for (int i=0; i < theApp.downloadqueue->GetFileCount(); i++) {
+			wxString buffer;
+			for (unsigned int i = 0; i < theApp.downloadqueue->GetFileCount(); ++i) {
 				CPartFile *cur_file = theApp.downloadqueue->GetFileByIndex(i);
 				if (cur_file) {
-					const unsigned char* hash = cur_file->GetFileHash();
-					for ( int u = 0; i < 16; i++ ) {
-						buffer.Append(hash[u]);
+					const unsigned char *hash = cur_file->GetFileHash();
+					for (int u = 0; i < 16; ++i) {
+						buffer += hash[u];
 					}
-					if (i != theApp.downloadqueue->GetFileCount()-1)
-						buffer.Append(wxT("\t"));
+					if ( (i + 1) != theApp.downloadqueue->GetFileCount() )
+						buffer += wxT("\t");
 				}
 			}
-			return((wxChar *)buffer.GetData());
+			return buffer;
 		}
 		if (item.Left(21) == wxT("TRANSFER DL_FILEPAUSE")) {
 			if ((item.Length() > 21) && (item.Mid(22).IsNumber())) {
@@ -616,8 +616,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			// %s\t%ul\t%ul\t%ul\t%f\t%li\t%u\t%s\t%u\t%s\t%u\t%u\t%u\t%s\t%s\t%d\n
 			wxString buffer;
 			wxString tempFileInfo;
-			//int tempPrio;
-			for (int i=0; i < theApp.downloadqueue->GetFileCount(); i++) {
+			for (unsigned int i = 0; i < theApp.downloadqueue->GetFileCount(); ++i) {
 				CPartFile *cur_file = theApp.downloadqueue->GetFileByIndex(i);
 				if (cur_file) {
 					tempFileInfo = GetDownloadFileInfo(cur_file);
@@ -1027,7 +1026,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 		if ( item.Left(5).Cmp(wxT("PAUSE")) == 0 ) {
 			if ( item.Mid(5).IsNumber() ) {
 				unsigned int fileID = theApp.downloadqueue->GetFileCount() - StrToLong(item.Mid(5));
-				if ((fileID >= 0) &&  (fileID < theApp.downloadqueue->GetFileCount())) {
+				if ( fileID < theApp.downloadqueue->GetFileCount() ) {
 					if (theApp.downloadqueue->GetFileByIndex(fileID)->IsPartFile()) {
 						theApp.downloadqueue->GetFileByIndex(fileID)->PauseFile();
 						printf("Paused\n");
@@ -1040,7 +1039,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 		if ( item.Left(6).Cmp(wxT("RESUME")) == 0 ) {
 			if (item.Mid(6).IsNumber()) {
 				unsigned int fileID = theApp.downloadqueue->GetFileCount() - StrToLong(item.Mid(6));
-				if ((fileID >= 0) && (fileID < theApp.downloadqueue->GetFileCount())) {
+				if ( fileID < theApp.downloadqueue->GetFileCount() ) {
 					if (theApp.downloadqueue->GetFileByIndex(fileID)->IsPartFile()) {
 						theApp.downloadqueue->GetFileByIndex(fileID)->ResumeFile();
 						theApp.downloadqueue->GetFileByIndex(fileID)->SavePartFile();
@@ -1731,8 +1730,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				// wxString\tlong\tlong\tdouble\tlong\tint\twxString\tint\twxString\tlong\tlong\tlong\twxString\twxString\tint\n
 				wxString buffer;
 				wxString tempFileInfo;
-				//int tempPrio;
-				for (int i = 0; i < theApp.downloadqueue->GetFileCount(); i++) {
+				for (unsigned int i = 0; i < theApp.downloadqueue->GetFileCount(); ++i) {
 					const CPartFile *cur_file = theApp.downloadqueue->GetFileByIndex(i);
 					if (cur_file) {
 						tempFileInfo = GetDownloadFileInfo(cur_file);
@@ -1792,14 +1790,14 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				// shakraw - return a big string where each line is formatted as:
 				// fhash\tfhash\t...\tfhash
 				wxString buffer;
-				for (int i = 0; i < theApp.downloadqueue->GetFileCount(); i++) {
+				for (unsigned int i = 0; i < theApp.downloadqueue->GetFileCount(); ++i) {
 					const CPartFile *cur_file = theApp.downloadqueue->GetFileByIndex(i);
 					if (cur_file) {
 						const unsigned char* hash = cur_file->GetFileHash();
 						for ( int u = 0; i < 16; i++ ) {
 							buffer += hash[u];
 						}
-						if (i != theApp.downloadqueue->GetFileCount()-1)
+						if ( (i + 1) != theApp.downloadqueue->GetFileCount() )
 							buffer += wxT("\t");
 					}
 				}
