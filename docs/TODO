@@ -53,7 +53,6 @@
 	
 - shak:
 	- web interface features (high):
-		+ DownloadLink (ed2k download)
 		+ Graphs
 		+ Categories
 	- ssl support for communication protocol
