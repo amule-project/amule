@@ -35,30 +35,29 @@ typedef unsigned int t_sm_state;
 
 typedef unsigned int t_sm_event;
 
-typedef void (*state_processor_vector)(bool entry);
-
 class StateMachine
 {
 public:
 	StateMachine(
 		const wxString &name,
 		const unsigned int max_states,
-		const t_sm_state initial_state,
-		const state_processor_vector *process_state );
+		const t_sm_state initial_state );
 	virtual ~StateMachine() = 0;
-	void clock();
-	void schedule(t_sm_event event);
+	void Clock();
+	void Schedule(t_sm_event event);
+	t_sm_state GetState() const { return m_state; }
 	virtual t_sm_state next_state(t_sm_event event) = 0;
+	virtual void process_state(t_sm_state state, bool entry) = 0;
+	
+protected:
+	t_sm_state			m_state;
 	
 private:
-	void reset();
 	void flush_queue();
 
 	const wxString			m_name;
 	const unsigned int		m_max_states;
 	const unsigned int		m_initial_state;
-	const state_processor_vector	*m_process_state;
-	t_sm_state			m_state;
 	unsigned int			m_clock_counter;
 	std::queue <t_sm_event>		m_queue;
 };

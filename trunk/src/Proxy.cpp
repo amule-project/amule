@@ -27,43 +27,33 @@
 #include "Proxy.h"		/* for Interface		*/
 
 
+#include <typeinfo>		/* For bad_cast			*/
+
+
 #include <netinet/in.h>		/* for htons()			*/
 
 
+#include "amule.h"		/* Needed for wxGetApp		*/
 #include "opcodes.h"		/* for PROXY_SOCKET_HANDLER	*/
 #include "NetworkFunctions.h"	/* for CStringIPtoUint32()	*/
 #include "otherfunctions.h"	/* for EncodeBase64()		*/
 
 
-/******************************************************************************/
-
-BEGIN_EVENT_TABLE(wxProxyEventHandler, wxEvtHandler)
-	EVT_SOCKET(PROXY_SOCKET_HANDLER, wxProxyEventHandler::m_ProxySocketHandler)
-END_EVENT_TABLE()
-
-wxProxyEventHandler::wxProxyEventHandler(wxSocketProxy *WXUNUSED(parent))
+static void dump(char *s, bool ok, const void *v, int n)
 {
-}
-
-void wxProxyEventHandler::m_ProxySocketHandler(wxSocketEvent& event)
-{
-	switch(event.GetSocketEvent())
-	{
-	case wxSOCKET_INPUT:
-		break;
-		
-	case wxSOCKET_OUTPUT:
-		break;
-		
-	case wxSOCKET_LOST:
-		break;
-		
-	case wxSOCKET_CONNECTION:
-		break;
-		
-	default:
-		break;
+	register int lines = n / 16 + 1;
+	register int c = 0;
+	register const unsigned char *p = (const unsigned char *)v;
+	if (s) {
+		printf("%s - ok=%d\n", s, ok);
 	}
+	for( int i = 0; i < lines; ++i) {
+		for( int j = 0; j < 16 && c < n; ++j) {
+			printf("0x%02X ", p[c++]);
+		}
+		printf("\n");
+	}
+	printf("\n");
 }
 
 /******************************************************************************/
@@ -110,36 +100,529 @@ void wxProxyData::Empty()
 
 /******************************************************************************/
 
-const unsigned int SOCKS5_MAX_STATES = 5;
+#ifndef AMULE_DAEMON
+BEGIN_EVENT_TABLE(ProxyStateMachine, wxEvtHandler)
+	EVT_SOCKET(PROXY_SOCKET_HANDLER, ProxyStateMachine::ProxySocketHandler)
+END_EVENT_TABLE()
+#else
+// TODO -- amuled
+void *ProxyStateMachine::Entry()
+{
+	return NULL;
+}
+#endif
 
-const state_processor_vector Socks5StateMachine::process_state[SOCKS5_MAX_STATES] =
-{
-	process_state_1,
-	process_state_1,
-	process_state_1,
-	process_state_1,
-	process_state_1,
-};
-	
-Socks5StateMachine::Socks5StateMachine()
+ProxyStateMachine::ProxyStateMachine(
+		const wxString &name,
+		const unsigned int max_states,
+		const t_sm_state initial_state,
+		const wxProxyData &ProxyData,
+		wxProxyCommand ProxyCommand)
 :
-StateMachine(wxString(wxT("Socks5")), SOCKS5_MAX_STATES, SOCKS5_STATE_1, process_state)
+StateMachine(name, max_states, initial_state),
+m_ProxyData(ProxyData)
 {
+	m_IsConnected = false;
+	m_CanReceive = false;
+	m_CanSend = false;
+	m_ok = true;
+	m_ProxyAddress.Hostname(m_ProxyData.m_ProxyHostName);
+	m_ProxyAddress.Service(m_ProxyData.m_ProxyPort);
+	m_ProxyCommand = ProxyCommand;
 }
 
-void Socks5StateMachine::process_state_1(bool entry)
+void ProxyStateMachine::ProxySocketHandler(wxSocketEvent& event)
 {
+	Schedule(event.GetSocketEvent());
+}
+
+
+bool ProxyStateMachine::Start(
+	const wxIPaddress &PeerAddress,
+	wxSocketClient *ProxyClientSocket) {
+	try {
+		//m_PeerAddress = PeerAddress;
+		const amuleIPV4Address &peer = dynamic_cast<const amuleIPV4Address &>(PeerAddress);
+		m_PeerAddress = new amuleIPV4Address(peer);
+	} catch (std::bad_cast e) {
+		// Should process other types of wxIPAddres before quitting
+		return false;
+	}
+printf("wxSocketProxy::Start\nHostname Orig:%s, IPAddr:%s, Port:%d\n",
+unicode2char(m_PeerAddress->Hostname()),
+unicode2char(m_PeerAddress->IPAddress()),
+m_PeerAddress->Service());
+	
+	m_ProxyBoundAddress = NULL;
+	m_ProxyClientSocket = ProxyClientSocket;
+	m_ProxyClientSocket->SaveState();
+#ifndef AMULE_DAEMON
+	m_ProxyClientSocket->SetEventHandler(*this, PROXY_SOCKET_HANDLER);
+#endif
+	m_ProxyClientSocket->SetNotify(
+		wxSOCKET_CONNECTION_FLAG |
+		wxSOCKET_INPUT_FLAG |
+		wxSOCKET_OUTPUT_FLAG |
+		wxSOCKET_LOST_FLAG);
+	m_ProxyClientSocket->Notify(true);
+//	m_ProxyClientSocket->Connect(m_ProxyAddress, false);
+//	m_ProxyClientSocket->SetFlags(wxSOCKET_WAITALL);
+	while (!IsEndState() ) {
+		wxGetApp().Yield();
+		Clock();
+	}
+	m_ProxyClientSocket->RestoreState();
+	
+if (m_ProxyBoundAddress) {
+printf("Proxy Bound Address: IP:%s, Port:%u, ok:%d\n",
+unicode2char(GetProxyBoundAddress().IPAddress()),
+GetProxyBoundAddress().Service(), m_ok);
+} else {
+printf("Failed to bind proxy address, ok=%d\n", m_ok);
+}
+	return m_ok;
 }
 
 /******************************************************************************/
 
-wxSocketProxy::wxSocketProxy(const wxProxyData *ProxyData)
+Socks5StateMachine::Socks5StateMachine(
+	const wxProxyData &ProxyData,
+	wxProxyCommand ProxyCommand)
+:
+ProxyStateMachine(
+	wxString(wxT("Socks5")), SOCKS5_MAX_STATES, SOCKS5_STATE_START,
+	ProxyData, ProxyCommand)
+{
+	m_process_state[0] = &Socks5StateMachine::process_start;
+	m_process_state[1] = &Socks5StateMachine::process_send_query_authentication_method;
+	m_process_state[2] = &Socks5StateMachine::process_receive_authentication_method;
+	m_process_state[3] = &Socks5StateMachine::process_send_authentication_gssapi;
+	m_process_state[4] = &Socks5StateMachine::process_receive_authentication_gssapi;
+	m_process_state[5] = &Socks5StateMachine::process_send_authentication_username_password;
+	m_process_state[6] = &Socks5StateMachine::process_receive_authentication_username_password;
+	m_process_state[7] = &Socks5StateMachine::process_send_command_request;
+	m_process_state[8] = &Socks5StateMachine::process_receive_command_reply;
+	m_process_state[9] = &Socks5StateMachine::process_end;
+}
+
+void Socks5StateMachine::process_state(t_sm_state state, bool entry)
+{
+	(this->*m_process_state[state])(entry);
+}
+
+t_sm_state Socks5StateMachine::next_state(t_sm_event event)
+{
+	// Default is stay in current state	
+	t_sm_state ret = m_state;
+	
+	switch(event)
+	{
+	case wxSOCKET_CONNECTION:
+		m_IsConnected = true;
+		break;
+		
+	case wxSOCKET_INPUT:
+		m_CanReceive = true;
+		break;
+		
+	case wxSOCKET_OUTPUT:
+		m_CanSend = true;
+		break;
+		
+	case wxSOCKET_LOST:
+		m_IsConnected = false;
+		break;
+		
+	default:
+		break;
+	}
+	
+	switch (m_state) {
+	case SOCKS5_STATE_START:
+		if (m_IsConnected && CanSend()) {
+			m_CanSend = false;
+			ret = SOCKS5_STATE_SEND_QUERY_AUTHENTICATION_METHOD;
+		}
+		break;
+		
+	case SOCKS5_STATE_SEND_QUERY_AUTHENTICATION_METHOD:
+		if (CanReceive()) {
+			m_CanReceive = false;
+			ret = SOCKS5_STATE_RECEIVE_AUTHENTICATION_METHOD;
+		}
+		break;
+		
+	case SOCKS5_STATE_RECEIVE_AUTHENTICATION_METHOD:
+		if (m_ok) {
+			if (CanSend()) {
+				m_CanSend = false;
+				switch (m_LastReply) {
+				case SOCKS5_AUTH_METHOD_NO_AUTH_REQUIRED:
+					ret = SOCKS5_STATE_SEND_COMMAND_REQUEST;
+					break;
+					
+				case SOCKS5_AUTH_METHOD_GSSAPI:
+					ret = SOCKS5_STATE_SEND_AUTHENTICATION_GSSAPI;
+					break;
+					
+				case SOCKS5_AUTH_METHOD_USERNAME_PASSWORD:
+					ret = SOCKS5_STATE_SEND_AUTHENTICATION_USERNAME_PASSWORD;
+					break;
+				
+				case SOCKS5_AUTH_METHOD_NO_ACCEPTABLE_METHODS:
+				default:
+					ret = SOCKS5_STATE_END;
+					break;
+				}
+			}
+		} else {
+			ret = SOCKS5_STATE_END;
+		}
+		break;
+		
+	case SOCKS5_STATE_SEND_AUTHENTICATION_GSSAPI:
+		if (m_ok) {
+			if (CanReceive()) {
+				m_CanReceive = false;
+				ret = SOCKS5_STATE_RECEIVE_AUTHENTICATION_GSSAPI;
+			}
+		} else {
+			ret = SOCKS5_STATE_END;
+		}
+		break;
+		
+	case SOCKS5_STATE_SEND_AUTHENTICATION_USERNAME_PASSWORD:
+		if (m_ok) {
+			if (CanReceive()) {
+				m_CanReceive = false;
+				ret = SOCKS5_STATE_RECEIVE_AUTHENTICATION_USERNAME_PASSWORD;
+			}
+		} else {
+			ret = SOCKS5_STATE_END;
+		}
+		break;
+		
+	case SOCKS5_STATE_RECEIVE_AUTHENTICATION_GSSAPI:
+	case SOCKS5_STATE_RECEIVE_AUTHENTICATION_USERNAME_PASSWORD:
+		if (m_ok) {
+			if (CanSend()) {
+				m_CanSend = false;
+				ret = SOCKS5_STATE_SEND_COMMAND_REQUEST;
+			}
+		} else {
+			ret = SOCKS5_STATE_END;
+		}
+		break;
+		
+	case SOCKS5_STATE_SEND_COMMAND_REQUEST:
+		if (m_ok) {
+			if (CanReceive()) {
+				m_CanReceive = false;
+				ret = SOCKS5_STATE_RECEIVE_COMMAND_REPLY;
+			}
+		} else {
+			ret = SOCKS5_STATE_END;
+		}
+		break;
+		
+	case SOCKS5_STATE_RECEIVE_COMMAND_REPLY:
+		ret = SOCKS5_STATE_END;
+		break;
+		
+	case SOCKS5_STATE_END:
+	default:
+		break;
+	}
+	
+	return ret;
+}
+
+void Socks5StateMachine::process_start(bool entry)
+{
+	if (entry) {
+		m_ProxyClientSocket->Connect(m_ProxyAddress, false);
+dump("process_start", m_ok, NULL, 0);
+	} else {
+printf("wait state\n");
+	}
+}
+
+void Socks5StateMachine::process_send_query_authentication_method(bool entry)
+{
+	if (entry) {
+		// Prepare the authentication method negotiation packet
+		m_buffer[0] = SOCKS5_VERSION;
+		m_buffer[1] = 2; // Number of supported methods
+		//m_buffer[1] = 3; // Number of supported methods
+		m_buffer[2] = SOCKS5_AUTH_METHOD_NO_AUTH_REQUIRED;
+		m_buffer[3] = SOCKS5_AUTH_METHOD_USERNAME_PASSWORD;
+		m_buffer[4] = SOCKS5_AUTH_METHOD_GSSAPI;
+		unsigned int LenPacket = 4;
+		//unsigned int LenPacket = 5;
+		
+		// Send the authentication method negotiation packet
+		m_ProxyClientSocket->Write(m_buffer, LenPacket);	
+		m_ok =
+			!m_ProxyClientSocket->Error() &&
+			m_ProxyClientSocket->LastCount() == LenPacket;
+dump("process_send_query_authentication_method", m_ok, m_buffer, LenPacket);
+	} else {
+printf("wait state\n");
+	}
+}
+
+void Socks5StateMachine::process_receive_authentication_method(bool entry)
+{
+	if (entry) {
+		// Receive the method selection message
+		unsigned int LenPacket = 2;
+		m_ProxyClientSocket->Read(m_buffer, LenPacket);
+		m_LastReply = m_buffer[1];
+		m_ok =	!m_ProxyClientSocket->Error() &&
+			m_ProxyClientSocket->LastCount() == LenPacket &&
+			m_buffer[0] == SOCKS5_VERSION;
+dump("process_receive_authentication_method", m_ok, m_buffer, LenPacket);
+	} else {
+printf("wait state\n");
+	}
+}
+
+void Socks5StateMachine::process_send_authentication_gssapi(bool)
+{
+	// TODO or not TODO? That is the question...
+	m_ok = false;
+}
+
+void Socks5StateMachine::process_receive_authentication_gssapi(bool)
+{
+}
+
+void Socks5StateMachine::process_send_authentication_username_password(bool entry)
+{
+	if (entry) {
+		unsigned char LenUser = m_ProxyData.m_UserName.Len();
+		unsigned char LenPassword = m_ProxyData.m_Password.Len();
+		unsigned int LenPacket = 1 + 1 + LenUser + 1 + LenPassword;
+		unsigned int OffsetUser = 2;
+		unsigned int OffsetPassword = OffsetUser + LenUser + 1;
+		
+		// Prepare username/password buffer
+		m_buffer[0] = SOCKS5_AUTH_VERSION_USERNAME_PASSWORD;
+		m_buffer[OffsetUser-1] = LenUser;
+		memcpy(m_buffer+OffsetUser, unicode2char(m_ProxyData.m_UserName),
+			LenUser);
+		m_buffer[OffsetPassword-1] = LenPassword;
+		memcpy(m_buffer+OffsetPassword, unicode2char(m_ProxyData.m_Password),
+			LenPassword);
+		
+		// Send the username/password packet
+		m_ProxyClientSocket->Write(m_buffer, LenPacket);
+		m_ok =
+			!m_ProxyClientSocket->Error() &&
+			m_ProxyClientSocket->LastCount() == LenPacket;
+dump("process_send_authentication_username_password", m_ok, m_buffer, LenPacket);
+	} else {
+printf("wait state\n");
+	}
+}
+
+void Socks5StateMachine::process_receive_authentication_username_password(bool entry)
+{
+	if (entry) {
+		// Receive the server's authentication response
+		unsigned int LenPacket = 2;
+		m_ProxyClientSocket->Read(m_buffer, LenPacket);
+		m_LastReply = m_buffer[1];
+		
+		// Process the server's reply
+		m_ok = 	!m_ProxyClientSocket->Error() &&
+			m_ProxyClientSocket->LastCount() == LenPacket &&
+			m_buffer[0] == SOCKS5_AUTH_VERSION_USERNAME_PASSWORD &&
+			m_buffer[1] == SOCKS5_REPLY_SUCCEED;
+dump("process_receive_authentication_username_password", m_ok, m_buffer, LenPacket);
+	} else {
+printf("wait state\n");
+	}
+}
+
+void Socks5StateMachine::process_send_command_request(bool entry)
+{
+	if (entry) {
+		// Prepare the request command buffer
+		m_buffer[0] = SOCKS5_VERSION;
+		switch (m_ProxyCommand) {
+		case wxPROXY_CMD_CONNECT:
+			m_buffer[1] = SOCKS5_CMD_CONNECT;
+			break;
+			
+		case wxPROXY_CMD_BIND:
+			m_buffer[1] = SOCKS5_CMD_BIND;
+			break;
+			
+		case wxPROXY_CMD_UDP_ASSOCIATE:
+			m_buffer[1] = SOCKS5_CMD_UDP_ASSOCIATE;
+			break;
+		}
+		m_buffer[2] = SOCKS5_RSV;
+		m_buffer[3] = SOCKS5_ATYP_IPV4_ADDRESS;
+		*((uint32 *)(m_buffer+4)) = StringIPtoUint32(m_PeerAddress->IPAddress());
+		*((uint16 *)(m_buffer+8)) = htons(m_PeerAddress->Service());
+		unsigned int LenPacket = 10;
+		
+		// Send the command packet
+		m_ProxyClientSocket->Write(m_buffer, LenPacket);
+		
+		// Check the if the write operation succeded
+		m_ok =	!m_ProxyClientSocket->Error() &&
+			m_ProxyClientSocket->LastCount() == LenPacket;
+dump("process_send_command_request", m_ok, m_buffer, LenPacket);
+	} else {
+printf("wait state\n");
+	}
+}
+
+void Socks5StateMachine::process_receive_command_reply(bool entry)
+{
+	if (entry) {
+		// Receive the server's reply -- read 4 bytes
+		unsigned int LenPacket = 4;
+		unsigned int TotalLen = LenPacket;
+		m_ProxyClientSocket->Read(m_buffer, LenPacket);
+		m_LastReply = m_buffer[1];
+		unsigned char AddressType = m_buffer[3];
+		
+		// Process the server's reply
+		m_ok =
+			!m_ProxyClientSocket->Error() &&
+			m_ProxyClientSocket->LastCount() == LenPacket &&
+			m_buffer[0] == SOCKS5_VERSION &&
+			m_buffer[1] == SOCKS5_REPLY_SUCCEED;
+		if (m_ok) {
+			// Read BND.ADDR
+			unsigned int Port_offset = 0;
+			switch(AddressType) {
+			case SOCKS5_ATYP_IPV4_ADDRESS:
+			{
+				const unsigned int Addr_offset = 4;
+				Port_offset = 8;
+				LenPacket = 4;
+				TotalLen += LenPacket;
+				m_ProxyClientSocket->Read(m_buffer+Addr_offset, LenPacket);
+				m_ok = 	!m_ProxyClientSocket->Error() &&
+					m_ProxyClientSocket->LastCount() == LenPacket;
+				if (m_ok) {
+					wxString strAddr = Uint32toStringIP(
+						*((uint32 *)(m_buffer+Addr_offset)) );
+					m_ok = m_ProxyBoundAddressIPV4.Hostname(strAddr);
+					m_ProxyBoundAddress = &m_ProxyBoundAddressIPV4;
+				}
+				break;
+			}
+			case SOCKS5_ATYP_DOMAINNAME:
+			{
+				// Read the size
+				LenPacket = 1;
+				TotalLen += LenPacket;
+				m_ProxyClientSocket->Read(m_buffer+4, LenPacket);
+				m_ok = 	!m_ProxyClientSocket->Error() &&
+					m_ProxyClientSocket->LastCount() == LenPacket;
+				if (m_ok) {
+					LenPacket = m_buffer[4];
+					const unsigned int Addr_offset = 5;
+					Port_offset = Addr_offset + LenPacket;
+					// Read the address
+					TotalLen += LenPacket;
+					m_ProxyClientSocket->Read(m_buffer+Addr_offset,
+						LenPacket);
+					m_ok =	!m_ProxyClientSocket->Error() &&
+						m_ProxyClientSocket->LastCount() == LenPacket;
+					if (m_ok) {
+						m_buffer[Port_offset] = 0;
+						m_ProxyBoundAddressIPV4.Hostname(
+							char2unicode(m_buffer+Addr_offset));
+						m_ProxyBoundAddress = &m_ProxyBoundAddressIPV4;
+					}
+				}
+				break;
+			}
+			case SOCKS5_ATYP_IPV6_ADDRESS:
+			{
+				const unsigned int Addr_offset = 4;
+				Port_offset = 20;
+				LenPacket = 16;
+				TotalLen += LenPacket;
+				m_ProxyClientSocket->Read(m_buffer+Addr_offset, LenPacket);
+				m_ok =	!m_ProxyClientSocket->Error() &&
+					m_ProxyClientSocket->LastCount() == LenPacket;
+				// TODO
+				// IPV6 not yet implemented in wx
+				//m_ProxyBoundAddress.Hostname(Uint128toStringIP(
+				//	*((uint128 *)(m_buffer+Addr_offset)) ));
+				//m_ProxyBoundAddress = &m_ProxyBoundAddressIPV6;
+				m_ok = false;
+				break;
+			}
+			}
+			if (m_ok) {
+				// Read BND.PORT
+				LenPacket = 2;
+				TotalLen += LenPacket;
+				m_ProxyClientSocket->Read(m_buffer+Port_offset, LenPacket);
+				m_ok =	!m_ProxyClientSocket->Error() &&
+					m_ProxyClientSocket->LastCount() == LenPacket &&
+					m_ProxyBoundAddress->Service(ntohs(
+						*((uint16 *)(m_buffer+Port_offset)) ));
+			}
+		}
+dump("process_receive_command_reply", m_ok, m_buffer, TotalLen);
+	} else {
+printf("wait state\n");
+	}
+}
+
+void Socks5StateMachine::process_end(bool)
+{
+dump("process_end", m_ok, NULL, 0);
+}
+
+/******************************************************************************/
+
+wxSocketProxy::wxSocketProxy(
+	const wxProxyData *ProxyData,
+	wxProxyCommand ProxyCommand)
 {
 	SetProxyData(ProxyData);
+	m_ProxyStateMachine = NULL;
+	if (m_UseProxy) {
+		switch (m_ProxyData.m_ProxyType) {
+		case wxPROXY_NONE:
+			break;
+	
+		case wxPROXY_SOCKS5:
+			m_ProxyStateMachine =
+				new Socks5StateMachine(*ProxyData, ProxyCommand);
+			break;
+		
+		case wxPROXY_SOCKS4:
+			break;
+		
+		case wxPROXY_HTTP:
+			break;
+		
+		default:
+			break;
+		}
+	}
+}
+
+wxSocketProxy::~wxSocketProxy()
+{
+	delete m_ProxyStateMachine;
 }
 
 void wxSocketProxy::SetProxyData(const wxProxyData *ProxyData)
 {
+	m_UseProxy = ProxyData != NULL && ProxyData->m_ProxyEnable;
 	if (ProxyData) {
 		m_ProxyData = *ProxyData;
 		m_ProxyAddress.Hostname(m_ProxyData.m_ProxyHostName);
@@ -149,7 +632,7 @@ void wxSocketProxy::SetProxyData(const wxProxyData *ProxyData)
 	}
 }
 
-bool wxSocketProxy::Start(wxIPaddress &address, enum wxProxyCommand cmd, wxSocketClient *socket)
+bool wxSocketProxy::Start(wxIPaddress &address, wxProxyCommand cmd, wxSocketClient *socket)
 {
 	bool ok = false;
 
@@ -160,16 +643,6 @@ unicode2char(address.IPAddress()),
 address.Service());
 	m_ProxyClientSocket = socket;
 	m_ProxyClientSocket->SaveState();
-#if 0
-	m_ProxyClientSocket->SetEventHandler(
-		wxProxyEventHandler, PROXY_SOCKET_HANDLER);
-	m_ProxyClientSocket->SetNotify(
-		wxSOCKET_CONNECTION_FLAG |
-		wxSOCKET_INPUT_FLAG |
-		wxSOCKET_OUTPUT_FLAG |
-		wxSOCKET_LOST_FLAG);
-	m_ProxyClientSocket->Notify(true);
-#endif
 	m_ProxyClientSocket->Notify(false);
 	m_ProxyClientSocket->Connect(m_ProxyAddress, false);
 	if (m_ProxyClientSocket->WaitOnConnect(10,0) )
@@ -177,7 +650,6 @@ address.Service());
 		if (m_ProxyClientSocket->IsConnected()) {
 			// Prepare for transmition
 			m_ProxyClientSocket->SetFlags(wxSOCKET_WAITALL);
-
 			/* Call the proxy stuff routine */
 			switch(m_ProxyData.m_ProxyType)
 			{
@@ -477,7 +949,7 @@ bool wxSocketProxy::DoSocks5Reply(void)
 	unsigned int LenPacket = 4;
 	m_ProxyClientSocket->Read(m_buffer, LenPacket);
 	m_LastReply = m_buffer[1];
-	m_AddressType = m_buffer[3];
+	unsigned char AddressType = m_buffer[3];
 
 	// Process the server's reply
 	bool ok =
@@ -488,7 +960,7 @@ bool wxSocketProxy::DoSocks5Reply(void)
 	if (ok) {
 		// Read BND.ADDR
 		unsigned int Port_offset = 0;
-		switch(m_AddressType) {
+		switch(AddressType) {
 		case SOCKS5_ATYP_IPV4_ADDRESS:
 		{
 			const unsigned int Addr_offset = 4;
@@ -672,9 +1144,8 @@ wxSocketClientProxy::wxSocketClientProxy(
 	const wxProxyData *ProxyData)
 :
 wxSocketClient(flags),
-m_SocketProxy(ProxyData)
+m_SocketProxy(ProxyData, wxPROXY_CMD_CONNECT)
 {
-	m_UseProxy = ProxyData != NULL && ProxyData->m_ProxyEnable;
 }
 
 /*
@@ -689,7 +1160,7 @@ bool wxSocketClientProxy::Connect(wxIPaddress &address, bool wait)
 {
 	bool ok;
 	
-	if (m_UseProxy) {
+	if (m_SocketProxy.GetUseProxy()) {
 		ok = m_SocketProxy.Start(address, wxPROXY_CMD_CONNECT, this);
 #ifndef AMULE_DAEMON
 		/* If proxy is beeing used, CServerSocketHandler will not receive a 
@@ -697,12 +1168,12 @@ bool wxSocketClientProxy::Connect(wxIPaddress &address, bool wait)
 		 * started with the proxy. So we must add a wxSOCKET_CONNECTION
 		 * event to make things go undetected. A wxSOCKET_OUTPUT event is
 		 * also necessary to start sending data to the server. */
-		if(m_UseProxy) {
+		if (ok) {
 			/* If the wxSocket had a GetEventHandler method, this could be 
 			 * much more cleaner. All this fuzz is because GetEventHandler()
 			 * is implemented in CClientReqSocket and CServerSocket, both
-			 * are aMule classes. Maybe we can add this method to a common
-			 * ancestor. */
+		 	* are aMule classes. Maybe we can add this method to a common
+		 	* ancestor. */
 			wxSocketEvent e(SERVERSOCKET_HANDLER);
 			e.m_event = wxSOCKET_CONNECTION;
 			e.SetEventObject(this);
@@ -736,7 +1207,6 @@ end:
 
 void wxSocketClientProxy::SetProxyData(const wxProxyData *ProxyData)
 {
-	m_UseProxy = ProxyData != NULL && ProxyData->m_ProxyEnable;
 	m_SocketProxy.SetProxyData(ProxyData);
 }
 
@@ -748,17 +1218,15 @@ wxSocketServerProxy::wxSocketServerProxy(
 	const wxProxyData *ProxyData)
 :
 wxSocketServer(address, flags),
-m_SocketProxy(ProxyData)
+m_SocketProxy(ProxyData, wxPROXY_CMD_BIND)
 {
-	m_UseProxy = ProxyData != NULL && ProxyData->m_ProxyEnable;
-	if (m_UseProxy) {
+	if (m_SocketProxy.GetUseProxy()) {
 		/* Maybe some day when socks6 is out... :) */
 	}
 }
 
 void wxSocketServerProxy::SetProxyData(const wxProxyData *ProxyData)
 {
-	m_UseProxy = ProxyData != NULL && ProxyData->m_ProxyEnable;
 	m_SocketProxy.SetProxyData(ProxyData);
 }
 
@@ -772,15 +1240,15 @@ wxDatagramSocketProxy::wxDatagramSocketProxy(
 	wxIPaddress &address, wxSocketFlags flags, const wxProxyData *ProxyData)
 :
 wxDatagramSocket(address, flags),
-m_SocketProxy(ProxyData)
+m_SocketProxy(ProxyData, wxPROXY_CMD_UDP_ASSOCIATE)
 {
-	m_UseProxy = ProxyData != NULL && ProxyData->m_ProxyEnable;
 	bool ok = false;
 	
-	if (m_UseProxy) {
+	if (m_SocketProxy.GetUseProxy()) {
 		// Create the TCP socket to talk to the proxy
-		m_ProxySocket = new wxSocketClient(wxSOCKET_NOWAIT);
-		ok = m_SocketProxy.Start(address, wxPROXY_CMD_UDP_ASSOCIATE, m_ProxySocket);
+		m_ProxyTCPSocket = new wxSocketClient(wxSOCKET_NOWAIT);
+		//ok = m_SocketProxy.Start(address, wxPROXY_CMD_UDP_ASSOCIATE, m_ProxyTCPSocket);
+		m_SocketProxy.m_ProxyStateMachine->Start(address, m_ProxyTCPSocket);
 	} else {
 	}
 	m_UDPSocketOk = ok;
@@ -789,15 +1257,15 @@ m_SocketProxy(ProxyData)
 
 wxDatagramSocketProxy::~wxDatagramSocketProxy()
 {
-	if (m_UseProxy) {
+	if (m_SocketProxy.GetUseProxy()) {
 		// From RFC-1928:
 		// "A UDP association terminates when the TCP connection that the
 		// UDP ASSOCIATE request arrived terminates."
 #ifndef AMULE_DAEMON
-		m_ProxySocket->Destroy();
+		m_ProxyTCPSocket->Destroy();
 #else
-		m_ProxySocket->Close();
-		delete m_ProxySocket;
+		m_ProxyTCPSocket->Close();
+		delete m_ProxyTCPSocket;
 #endif
 	} else {
 	}
@@ -805,27 +1273,14 @@ wxDatagramSocketProxy::~wxDatagramSocketProxy()
 
 void wxDatagramSocketProxy::SetProxyData(const wxProxyData *ProxyData)
 {
-	m_UseProxy = ProxyData != NULL && ProxyData->m_ProxyEnable;
 	m_SocketProxy.SetProxyData(ProxyData);
-}
-
-static void dump(unsigned char *p, int n)
-{
-	register int lines = n / 16 + 1;
-	register int c = 0;
-	for( int i = 0; i < lines; ++i) {
-		for( int j = 0; j < 16 && c < n; ++j) {
-			printf("0x%02X ", p[c++]);
-		}
-		printf("\n");
-	}
 }
 
 wxDatagramSocket &wxDatagramSocketProxy::RecvFrom(
 	wxSockAddress &addr, void* buf, wxUint32 nBytes )
 {
 	m_LastUDPOperation = wxUDP_OPERATION_RECV_FROM;
-	if (m_UseProxy) {
+	if (m_SocketProxy.GetUseProxy()) {
 		if (m_UDPSocketOk) {
 			char *bufUDP = new char[nBytes + wxPROXY_UDP_MAXIMUM_OVERHEAD];
 			wxDatagramSocket::RecvFrom(
@@ -857,9 +1312,7 @@ wxDatagramSocket &wxDatagramSocketProxy::RecvFrom(
 			memcpy(buf, bufUDP + offset, nBytes);
 printf("RecvFrom\n");
 printf("LastCount:%d\n", wxDatagramSocket::LastCount());
-printf("nbufUDP:\n");
-dump((unsigned char *)bufUDP, wxDatagramSocket::LastCount());
-printf("\n");
+dump("nbufUDP:", 3, bufUDP, wxDatagramSocket::LastCount());
 			/* We should use a fixed buffer to avoid new/delete it all the time. I need an upper bound */
 			delete bufUDP;
 			/* There is still one problem pending, fragmentation.
@@ -879,13 +1332,11 @@ wxDatagramSocket &wxDatagramSocketProxy::SendTo(
 {
 	m_LastUDPOperation = wxUDP_OPERATION_SEND_TO;
 	m_LastUDPOverhead = wxPROXY_UDP_OVERHEAD_IPV4;
-	if (m_UseProxy) {
+	if (m_SocketProxy.GetUseProxy()) {
 		if (m_UDPSocketOk) {
 printf("SendTo\n");
 printf("nBytes:%d\n", nBytes);
-printf("buf:\n");
-dump((unsigned char *)buf, nBytes);
-printf("\n");
+dump("buf:", 3, buf, nBytes);
 			m_SocketProxy.m_buffer[0] = SOCKS5_RSV;	// Reserved
 			m_SocketProxy.m_buffer[1] = SOCKS5_RSV;	// Reserved
 			m_SocketProxy.m_buffer[2] = 0;		// FRAG
@@ -909,7 +1360,7 @@ wxUint32 wxDatagramSocketProxy::LastCount(void) const
 {
 	wxUint32 ret;
 
-	if (m_UseProxy) {	
+	if (m_SocketProxy.GetUseProxy()) {
 		switch (m_LastUDPOperation) {
 		case wxUDP_OPERATION_RECV_FROM:
 		case wxUDP_OPERATION_SEND_TO:
