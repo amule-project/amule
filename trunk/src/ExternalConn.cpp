@@ -502,7 +502,10 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			for (int i=0; i < theApp.downloadqueue->GetFileCount(); i++) {
 				CPartFile *cur_file = theApp.downloadqueue->GetFileByIndex(i);
 				if (cur_file) {
-					buffer.Append(cur_file->GetFileHash());
+					unsigned char* hash = cur_file->GetFileHash();
+					for ( int u = 0; i < 16; i++ ) {
+						buffer.Append(hash[u]);
+					}
 					if (i != theApp.downloadqueue->GetFileCount()-1)
 						buffer.Append("\t");
 				}
@@ -1827,7 +1830,10 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				for (int i=0; i < theApp.downloadqueue->GetFileCount(); i++) {
 					CPartFile *cur_file = theApp.downloadqueue->GetFileByIndex(i);
 					if (cur_file) {
-						buffer.Append(cur_file->GetFileHash());
+						unsigned char* hash = cur_file->GetFileHash();
+						for ( int u = 0; i < 16; i++ ) {
+							buffer.Append(hash[u]);
+						}
 						if (i != theApp.downloadqueue->GetFileCount()-1)
 							buffer.Append("\t");
 					}
@@ -1950,7 +1956,11 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			if (item.Mid(9,11).Cmp("DL_FILEHASH") == 0) {
 				if ((item.Length() > 20) && (item.Mid(21).IsNumber())) {
 					static char buffer[1024];
-					sprintf(buffer, "%s", theApp.downloadqueue->GetFileByIndex(atoi(item.Mid(21).GetData()))->GetFileHash());
+					unsigned char* hash = theApp.downloadqueue->GetFileByIndex(atoi(item.Mid(21).GetData()))->GetFileHash();
+					for ( int i = 0; i < 16; i++ ) {
+						buffer[i] = hash[i];
+					}
+					buffer[16] = 0;
 					return(buffer);
 				}
 				return("Bad DL_FILEHASH request");
