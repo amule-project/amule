@@ -203,12 +203,14 @@ void CSharedFileList::AddFilesFromDirectory(wxString directory)
     		return;
 	}
 	while(!fname.IsEmpty()) {
+		
+		AddDebugLogLineM(false, logKnownFiles, wxT("Found file ")+fname + wxT(" on shared folder"));
 
 		uint32 fdate=GetLastModificationTime(fname);
 
 		if (::wxDirExists(fname)) {
 			// Woops, is a dir!
-			printf("%s is a directory, skipping\n", (const char *)unicode2char(fname));
+			AddDebugLogLineM(false, logKnownFiles, wxT("Shares: ") + fname + wxT(" is a directory, skipping"));
 			fname = SharedDir.FindNextFile();
 			continue;
 		}
@@ -216,7 +218,7 @@ void CSharedFileList::AddFilesFromDirectory(wxString directory)
 		CFile new_file(fname, CFile::read);
 
 		if (!new_file.IsOpened()) {
-			printf("No permisions to open %s, skipping\n", (const char *)unicode2char(fname));
+			AddDebugLogLineM(false, logKnownFiles, wxT("No permisions to open") + fname + wxT(", skipping"));
 			fname = SharedDir.FindNextFile();
 			continue;
 		}
@@ -227,6 +229,7 @@ void CSharedFileList::AddFilesFromDirectory(wxString directory)
 		}
 
 		if (!thePrefs::ShareHiddenFiles() && fname.StartsWith(wxT("."))) {
+			AddDebugLogLineM(false, logKnownFiles, wxT("Ignored file ") + fname + wxT(" (Hidden)"));
 			fname = SharedDir.FindNextFile();
 			continue;			
 		}
@@ -235,6 +238,7 @@ void CSharedFileList::AddFilesFromDirectory(wxString directory)
 		//theApp.Yield();
 		if (toadd) {
 			if ( m_Files_map.find(toadd->GetFileHash()) == m_Files_map.end() ) {
+				AddDebugLogLineM(false, logKnownFiles, wxT("Added known file ") + fname + wxT(" to shares"));
 				toadd->SetFilePath(directory);
 				Notify_SharedFilesShowFile(toadd);
 				list_mut.Lock();
@@ -242,13 +246,14 @@ void CSharedFileList::AddFilesFromDirectory(wxString directory)
 				list_mut.Unlock();
 			} else {
 				if (fname.Cmp(toadd->GetFileName())) {
-					printf("Warning: File '%s' already shared as '%s'\n",
-						(const char *)unicode2char(directory + fname),
-						(const char *)unicode2char(toadd->GetFileName()));
+					AddDebugLogLineM(false, logKnownFiles, wxT("Warning: File '") + directory + fname + wxT("' already shared as '") + toadd->GetFileName() + wxT("'"));
+				} else {
+					AddDebugLogLineM(false, logKnownFiles, wxT("File '") + fname + wxT("' is already shared"));
 				}
 			}
 		} else {
 			//not in knownfilelist - start adding thread to hash file
+			AddDebugLogLineM(false, logKnownFiles, wxT("Hashing new unknown shared file ") + fname);
 			CAddFileThread::AddFile(directory, fname);
 		}
 		fname = SharedDir.FindNextFile();
@@ -269,22 +274,20 @@ void CSharedFileList::SafeAddKFile(CKnownFile* toadd, bool bOnlyAdd){
 	//sLock.Unlock();
 	list_mut.Unlock();
 
-	if (bOnlyAdd) {
-		Notify_SharedFilesShowFile(toadd);
-		return;
-	}
 	Notify_SharedFilesShowFile(toadd);
+	
+	if (!bOnlyAdd) {
+		
+		// offer new file to server
+		if (!theApp.serverconnect->IsConnected()) {
+			return;
+		}
+	
+		m_lastPublishED2KFlag = true;
+		
+		// Publishing of files is not anymore handled here. Instead, the timer does it by itself.
 
-	
-	
-	// offer new file to server
-	if (!theApp.serverconnect->IsConnected()) {
-		return;
 	}
-
-	m_lastPublishED2KFlag = true;
-	
-	// Publishing of files is not anymore handled here. Instead, the timer does it by itself.
 	
 }
 
