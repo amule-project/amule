@@ -110,6 +110,10 @@ BEGIN_EVENT_TABLE(ProxyEventHandler, wxEvtHandler)
 END_EVENT_TABLE()
 #else
 // TODO -- amuled
+ProxyEventHandler::~ProxyEventHandler()
+{
+}
+
 void *ProxyEventHandler::Entry()
 {
 	return NULL;
