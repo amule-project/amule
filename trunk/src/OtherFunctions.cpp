@@ -46,6 +46,8 @@
 
 #include <cctype>
 
+#include "StringFunctions.h" // Needed for the wxString<->char* conversion.
+
 namespace otherfunctions {
 
 wxString GetMuleVersion()
@@ -412,9 +414,11 @@ wxString EncodeBase16(const unsigned char* buffer, unsigned int bufLen)
 //
 // [Out]
 //   buffer: byte array containing decoded string
-void DecodeBase16(const char *base16Buffer, unsigned int base16BufLen, byte *buffer)
+void DecodeBase16(wxString base16, unsigned int base16BufLen, byte *buffer)
 {
 	memset( buffer, 0, base16BufLen / 2 );
+	// This is safe - hash should always be an ANSI string
+	const char* base16Buffer =base16.mb_str();
 	
 	for(unsigned int i = 0; i < base16BufLen; ++i) {
 		int lookup = toupper(base16Buffer[i]) - '0';
@@ -480,10 +484,16 @@ wxString EncodeBase32(const unsigned char* buffer, unsigned int bufLen)
 //   buffer: byte array containing decoded string
 // [Return]
 //   nDecodeLen:
-unsigned int DecodeBase32(const char *base32Buffer, unsigned int base32BufLen, unsigned char *buffer)
+unsigned int DecodeBase32(wxString base32, unsigned int base32BufLen, unsigned char *buffer)
 {
-	if (base32Buffer == NULL)
+
+	if (base32.IsEmpty()) {
 		return false;
+	}
+
+	// This is safe - hash should always be an ANSI string
+	const char* base32Buffer = base32.mb_str();
+
 	uint32 nDecodeLen = (strlen(base32Buffer)*5)/8;
 	if ((strlen(base32Buffer)*5) % 8 > 0)
 		++nDecodeLen;
@@ -634,15 +644,19 @@ wxString EncodeBase64(const char *pbBufferIn, unsigned int bufLen)
 	return pbBufferOut;
 }
 
-unsigned int DecodeBase64(
-	const char *base64Buffer,
-	unsigned int base64BufLen,
-	unsigned char *buffer)
+unsigned int DecodeBase64( wxString base64, unsigned int base64BufLen, unsigned char *buffer)
 {
 	int z = 0;  // 0 Normal, 1 skip MIME separator (---) to end of line
 	unsigned int nData = 0;
 	unsigned int i = 0;
 
+	if (base64.IsEmpty()) {
+		return false;	
+	}
+	
+	// This is safe, hash is always an ANSI string.
+	const char* base64Buffer = base64.mb_str();
+	
 	if( base64BufLen == 0 ) {
 		*buffer = 0;
 		nData = 1;
