@@ -68,7 +68,7 @@ OnLineSig::OnLineSig ()
   m_version = wxT("0");
   m_sessionDL = wxT("0");
   m_sessionUL = wxT("0");
-  m_runTime = wxT("0");
+  m_runTimeS = 0;
 
   m_maxDL = 0.0;
 
@@ -118,7 +118,7 @@ OnLineSig::Refresh ()
   text >> m_version;
   text >> m_sessionDL;
   text >> m_sessionUL;
-  text >> m_runTime;
+  text >> m_runTimeS;
 
   double dl;
   m_DLRate.ToDouble (&dl);
@@ -135,7 +135,7 @@ OnLineSig::Refresh ()
 #endif
 }
 
-wxInt32 OnLineSig::GetAmuleState() const
+int OnLineSig::GetAmuleState() const
   {
     if (m_amuleState >= 0 &&  m_amuleState <= 2)
       {
@@ -218,10 +218,30 @@ wxString OnLineSig::GetSessionDL () const
     return m_sessionDL;
   }
 
-wxString OnLineSig::GetRunTime () const
-  {
-    return m_runTime;
-  }
+wxString OnLineSig::GetRunTime ()
+{
+  unsigned int seconds = m_runTimeS;
+  unsigned int days    = PullCount(&seconds, 86400);
+  unsigned int hours   = PullCount(&seconds, 3600);
+  unsigned int minutes = PullCount(&seconds, 60);
+
+  if (days > 0)
+    {
+      return(wxString::Format (_("%02uD %02uh %02umin %02us"), days, hours, minutes, seconds));
+    }
+  else if (hours > 0)
+    {
+      return(wxString::Format (_("%02uh %02umin %02us"), hours, minutes, seconds));
+    }
+  else if (minutes > 0)
+    {
+      return(wxString::Format (_("%02umin %02us"), minutes, seconds));
+    }
+  else
+    {
+      return(wxString::Format (_("%02us"), seconds));
+    }
+}
 
 wxString OnLineSig::GetConvertedTotalUL ()
 {
@@ -270,7 +290,7 @@ wxString OnLineSig::BytesConvertion (const wxString & bytes)
 
   bytes.ToDouble (&d_bytes);
 
-  wxInt32
+  int
   i = 0;
   while (d_bytes > 1024)
     {
@@ -297,4 +317,11 @@ wxString OnLineSig::BytesConvertion (const wxString & bytes)
       break;
     }
   return c_bytes;
+}
+
+unsigned int OnLineSig::PullCount (unsigned int *runtime, const unsigned int count)
+{
+  unsigned int answer = *runtime / count;
+  *runtime -= answer * count;
+  return answer;
 }
