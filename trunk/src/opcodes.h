@@ -294,9 +294,26 @@
 #define	FT_ATACCEPTED				0x52
 #define	FT_ATTRANSFEREDHI			0x54
 
+// ed2k search expression comparison operators
+#define ED2K_SEARCH_OP_EQUAL         0 // eserver 16.45+
+#define ED2K_SEARCH_OP_GREATER       1 // dserver
+#define ED2K_SEARCH_OP_LESS          2 // dserver
+#define ED2K_SEARCH_OP_GREATER_EQUAL 3 // eserver 16.45+
+#define ED2K_SEARCH_OP_LESS_EQUAL    4 // eserver 16.45+
+#define ED2K_SEARCH_OP_NOTEQUAL      5 // eserver 16.45+
+
+// Kad search expression comparison operators
+#define KAD_SEARCH_OP_EQUAL         0 // eMule 0.43+
+#define KAD_SEARCH_OP_GREATER_EQUAL 1 // eMule 0.40+; NOTE: this different than ED2K!
+#define KAD_SEARCH_OP_LESS_EQUAL    2 // eMule 0.40+; NOTE: this different than ED2K!
+#define KAD_SEARCH_OP_GREATER       3 // eMule 0.43+; NOTE: this different than ED2K!
+#define KAD_SEARCH_OP_LESS          4 // eMule 0.43+; NOTE: this different than ED2K!
+#define KAD_SEARCH_OP_NOTEQUAL      5 // eMule 0.43+
+
 #define	CT_NAME					0x01
-#define	CT_VERSION				0x11
 #define	CT_PORT					0x0f
+#define	CT_VERSION				0x11
+#define	CT_SERVER_FLAGS			0x20	// currently only used to inform a server about supported features
 #define	CT_EMULE_RESERVED1		0xf0
 #define	CT_EMULE_RESERVED2		0xf1
 #define	CT_EMULE_RESERVED3		0xf2
@@ -313,7 +330,6 @@
 #define CT_EMULE_RESERVED11		0xfd
 #define CT_EMULE_RESERVED12		0xfe
 #define CT_EMULE_RESERVED13		0xff
-
 
 #define	MP_MESSAGE				10102
 #define	MP_DETAIL				10103
