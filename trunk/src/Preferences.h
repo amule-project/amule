@@ -200,7 +200,7 @@ public:
 
 	bool			Save();
 	void			SaveCats();
-	bool			ReloadSharedFolders();
+	void			ReloadSharedFolders();
 
 	static bool		Score()				{ return s_scorsystem; }
 	static void		SetScoreSystem(bool val)	{ s_scorsystem = val; }

@@ -1467,7 +1467,7 @@ void CPreferences::SetPort(uint16 val) {
 	}
 }
 
-bool CPreferences::ReloadSharedFolders() {
+void CPreferences::ReloadSharedFolders() {
 
 	wxTextFile sdirfile(theApp.ConfigDir + wxT("shareddir.dat"));
 	
