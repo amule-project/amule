@@ -48,6 +48,10 @@ IMPLEMENT_APP (alc)
 
 bool alc::OnInit ()
 {
+  // Used to tell wxCas to use aMule catalog
+  m_locale.Init();
+  m_locale.AddCatalog(wxT("amule"));
+  
   m_alcFrame = new AlcFrame (_("aLinkCreator, the aMule ed2k link creator"));
   m_alcFrame->Show (true);
   SetTopWindow (m_alcFrame);
