@@ -87,7 +87,8 @@ enum {
     // (where it is special and put into the "Apple" menu)
     amuleweb_About = wxID_ABOUT,
     Event_Comand_ID = 32001,
-    amuleFrame_ID = 32000 
+    amuleFrame_ID = 32000,
+    Timer_ID
 };
 
 BEGIN_EVENT_TABLE(CamulewebFrame, wxFrame)
@@ -95,6 +96,7 @@ BEGIN_EVENT_TABLE(CamulewebFrame, wxFrame)
 	EVT_MENU(amuleweb_About, CamulewebFrame::OnAbout)
 	EVT_TEXT_ENTER(Event_Comand_ID, CamulewebFrame::OnCommandEnter)
 	EVT_IDLE(CamulewebFrame::OnIdle)
+	EVT_TIMER(Timer_ID, CamulewebFrame::OnTimerEvent)
 END_EVENT_TABLE()
 
 
@@ -139,6 +141,9 @@ CamulewebFrame::CamulewebFrame(const wxString& title, const wxPoint& pos, const 
 
 	SetSizer(vsizer);
 	vsizer->SetSizeHints(this);
+
+	m_timer = new wxTimer(this, Timer_ID);
+	m_timer->Start(5000);
 }
 
 void CamulewebFrame::OnQuit(wxCommandEvent& WXUNUSED(event))
@@ -172,6 +177,11 @@ void CamulewebFrame::OnCommandEnter(wxCommandEvent& WXUNUSED(event)){
 void CamulewebFrame::OnIdle(wxIdleEvent &WXUNUSED(event))
 {
 	theApp.MainThreadIdleNow();
+}
+
+void CamulewebFrame::OnTimerEvent(wxTimerEvent &WXUNUSED(event))
+{
+	wxWakeUpIdle();
 }
 //-------------------------------------------------------------------
 #endif
