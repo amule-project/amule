@@ -67,21 +67,21 @@ egg_tray_icon_init (EggTrayIcon *icon)
 }
 
 static void
-egg_tray_icon_class_init (EggTrayIconClass *klass)
-{
+egg_tray_icon_class_init (EggTrayIconClass * klass)
+{	(void)klass;
 	//parent_class = g_type_class_peek_parent (klass);
 	parent_class = gtk_type_class(gtk_plug_xembed_get_type());
 }
 
 static GdkFilterReturn
 egg_tray_icon_manager_filter (GdkXEvent *xevent, GdkEvent *event, gpointer user_data)
-{
+{ (void)event;
   EggTrayIcon *icon = user_data;
   XEvent *xev = (XEvent *)xevent;
 
   if (xev->xany.type == ClientMessage &&
       xev->xclient.message_type == icon->manager_atom &&
-      xev->xclient.data.l[1] == icon->selection_atom)
+      (unsigned)xev->xclient.data.l[1] == icon->selection_atom)
     {
       egg_tray_icon_update_manager_window (icon);
     }
