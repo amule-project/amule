@@ -133,6 +133,13 @@ END_EVENT_TABLE()
 
 IMPLEMENT_APP(CamuleApp)
 
+//
+// LOGGING
+//
+// lfroen: do it simple.
+wxFile *applog = 0;
+bool enable_stdout_log = false;
+
 int CamuleApp::OnRun()
 {
 	AddDebugLogLineM(true, _("CamuleApp::OnRun()"));
@@ -275,6 +282,14 @@ bool CamuleApp::OnInit()
 	m_app_state = APP_STATE_STARTING;
 	ConfigDir = wxGetHomeDir() + wxFileName::GetPathSeparator() + wxT(".aMule") + wxFileName::GetPathSeparator();
 
+	// open debug log
+	applog = new wxFile(ConfigDir + wxFileName::GetPathSeparator() + wxT("logfile"), wxFile::read_write);
+	//applog = new wxFFile(ConfigDir + wxT("logfile"), "rw");
+	if ( !applog->IsOpened() ) {
+		printf("ERROR: unable to open log file\n");
+		delete applog;
+		applog = 0;
+	}
 	// Initialization
 	IsReady			= false;
 	amuledlg 		= NULL;
@@ -319,6 +334,7 @@ bool CamuleApp::OnInit()
 	cmdline.AddSwitch(wxT("v"), wxT("version"), wxT("Displays the current version number."));
 	cmdline.AddSwitch(wxT("h"), wxT("help"), wxT("Displays this information."));
 	cmdline.AddSwitch(wxT("i"), wxT("enable-stdin"), wxT("Does not disable stdin."));
+	cmdline.AddSwitch(wxT("o"), wxT("log-stdout"), wxT("Print log messages to stdout."));
 	cmdline.Parse();
 
 	if ( cmdline.Found(wxT("version")) ) {
@@ -334,6 +350,10 @@ bool CamuleApp::OnInit()
 	}
 
 	
+	if ( cmdline.Found(wxT("log-stdout")) ) { 
+                printf("Logging to stdout enabled\n"); 
+		enable_stdout_log = true;
+        } 
 
 
 	printf("Initialising aMule\n");
@@ -428,14 +448,6 @@ bool CamuleApp::OnInit()
 	}
 
 
-	// Delete old log file.
-	wxString logname(ConfigDir + wxT("logfile"));
-	wxRemoveFile(logname);
-	wxTextFile file(logname);
-	if (!file.Create()) {
-		printf("Error creating log file!\n");
-	}
-	file.Close();
 	// Load Preferences
 	CPreferences::BuildItemList( theApp.ConfigDir);
 	CPreferences::LoadAllItems( wxConfig::Get() );
@@ -1528,6 +1540,27 @@ void CamuleApp::ShutDown() {
 		
 #endif // __DEBUG__
 	
+//
+// lfroen: logging is not unicode-aware, and it should not be !
+void AddLogLine(const wxString &msg)
+{
+	wxString curr_date = wxDateTime::Now().FormatDate() + wxT(" ") + 
+		wxDateTime::Now().FormatTime() + wxT(": ");
+	const char *date_str = curr_date.c_str();
+	applog->Write(date_str, strlen(date_str));
+	if ( enable_stdout_log ) {
+		fputs(date_str, stdout);
+	}
+
+	const char *c_msg = msg.c_str();
+	applog->Write(c_msg, strlen(c_msg));
+	applog->Write("\n", 1);
+        if ( enable_stdout_log ) { 
+		puts(c_msg);
+	}
+
+	applog->Flush();
+}
 
 void CamuleApp::NotifyEvent(GUIEvent event)
 {
@@ -1537,13 +1570,12 @@ void CamuleApp::NotifyEvent(GUIEvent event)
 		case SHOW_CONN_STATE:
 			if ( event.byte_value ) {
 				const char *id = theApp.serverconnect->IsLowID() ? "LOW" : "HIGH";
-
-				printf("LOG: connected to %s , id is %s\n", event.string_value.c_str(), id);
+				AddLogLine("Connected to " + event.string_value + wxT(" with ") + id + wxT(" ID"));
 			} else {
 				if ( theApp.serverconnect->IsConnecting() ) {
-					printf("LOG: connecting to %s ...\n", event.string_value.c_str());
+					AddLogLine(wxT("connecting to ") + event.string_value);
 				} else {
-					printf("LOG: disconnected\n");
+					AddLogLine(wxT("disconnected\n"));
 				}
 			}
 			break;
@@ -1570,7 +1602,7 @@ void CamuleApp::NotifyEvent(GUIEvent event)
 		// log is not unicode-compatible. And it shouldn't be.
 		// FIXME: write to file, enable sending log to webserver
 		case ADDLOGLINE:
-			printf("LOG: %s\n", event.string_value.c_str());
+			AddLogLine(event.string_value);
 			break;
 		case ADDDEBUGLOGLINE:
 			//printf("DEBUGLOG: %s\n", event.string_value.c_str());
