@@ -3122,7 +3122,7 @@ Packet*	CPartFile::CreateSrcInfoPacket(CUpDownClient* forClient)
 			} else {
 				dwID = ntohl(cur_src->GetUserID());
 			}
-			data.Write(dwID);
+			data.Write((uint32)dwID);
 			data.Write((uint16)cur_src->GetUserPort());
 			data.Write((uint32)cur_src->GetServerIP());
 			data.Write((uint16)cur_src->GetServerPort());
