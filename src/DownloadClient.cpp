@@ -1030,44 +1030,47 @@ void CUpDownClient::UpdateDisplayedInfo(bool force)
 /* eMule 0.30c implementation, i give it a try (Creteil) BEGIN */
 bool CUpDownClient::DoSwap(CPartFile* SwapTo, bool bRemoveCompletely)
 {
-	POSITION pos = reqfile->srclists[sourcesslot].Find(this);
-	if(pos)	{
-		// remove this client from the A4AF list of our new reqfile
-		POSITION pos2 = SwapTo->A4AFsrclist.Find(this);
-		if (pos2) {
-			SwapTo->A4AFsrclist.RemoveAt(pos2);
-			theApp.amuledlg->transferwnd->downloadlistctrl->RemoveSource(this,SwapTo);
-		}
-
-		reqfile->srclists[sourcesslot].RemoveAt(pos);
-		reqfile->IsCountDirty = true;
-		reqfile->RemoveDownloadingSource(this);
-
-		if(!bRemoveCompletely) {
-			reqfile->A4AFsrclist.AddTail(this);
-			if (GetDownloadState() == DS_NONEEDEDPARTS) {
-				m_OtherNoNeeded_list.AddTail(reqfile);
-			} else {
-				m_OtherRequests_list.AddTail(reqfile);
+	if (reqfile) {
+		// Dirty fix. Why is reqfile NULL?	
+		POSITION pos = reqfile->srclists[sourcesslot].Find(this);
+		if(pos)	{
+			// remove this client from the A4AF list of our new reqfile
+			POSITION pos2 = SwapTo->A4AFsrclist.Find(this);
+			if (pos2) {
+				SwapTo->A4AFsrclist.RemoveAt(pos2);
+				theApp.amuledlg->transferwnd->downloadlistctrl->RemoveSource(this,SwapTo);
 			}
-			if (!bRemoveCompletely) {
-				theApp.amuledlg->transferwnd->downloadlistctrl->AddSource(reqfile,this,true);
+	
+			reqfile->srclists[sourcesslot].RemoveAt(pos);
+			reqfile->IsCountDirty = true;
+			reqfile->RemoveDownloadingSource(this);
+	
+			if(!bRemoveCompletely) {
+				reqfile->A4AFsrclist.AddTail(this);
+				if (GetDownloadState() == DS_NONEEDEDPARTS) {
+					m_OtherNoNeeded_list.AddTail(reqfile);
+				} else {
+					m_OtherRequests_list.AddTail(reqfile);
+				}
+				if (!bRemoveCompletely) {
+					theApp.amuledlg->transferwnd->downloadlistctrl->AddSource(reqfile,this,true);
+				}
 			}
+			SetDownloadState(DS_NONE);
+			ResetFileStatusInfo();
+			m_nRemoteQueueRank = 0;
+			
+			reqfile->NewSrcPartsInfo();
+			reqfile->UpdateAvailablePartsCount();
+			reqfile = SwapTo;
+	
+			SwapTo->srclists[sourcesslot].AddTail(this);
+			SwapTo->IsCountDirty = true;
+			theApp.amuledlg->transferwnd->downloadlistctrl->AddSource(SwapTo,this,false);
+	
+	
+			return true;
 		}
-		SetDownloadState(DS_NONE);
-		ResetFileStatusInfo();
-		m_nRemoteQueueRank = 0;
-		
-		reqfile->NewSrcPartsInfo();
-		reqfile->UpdateAvailablePartsCount();
-		reqfile = SwapTo;
-
-		SwapTo->srclists[sourcesslot].AddTail(this);
-		SwapTo->IsCountDirty = true;
-		theApp.amuledlg->transferwnd->downloadlistctrl->AddSource(SwapTo,this,false);
-
-
-		return true;
 	}
 	return false;
 }
