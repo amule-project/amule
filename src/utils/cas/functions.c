@@ -160,55 +160,51 @@ char *convbytes(char *input)
 	return output;
 }
 
-char *replace(char *search, char *replace, char *template, int size)
+void replace(char *tmpl, const char *search, const char *replace)
 {
-	int read;
-	unsigned int i=0,a;
-	char buffer[255];
-	char *output;
+	char *dest   = NULL;
+	char *retStr = NULL;
+	int	befLen,srchLen,repLen,totLen;
 
-	output = malloc(size);
-
-	if (output==NULL)
-	{
-		printf("couldn't malloc\n");
-		exit(44);
+	//returning the 'tmpl' if 'search' is NULL
+  if (NULL == tmpl || NULL == search)// || NULL == replace)
+  {
+		return;
 	}
 
-	//memset(output, '\0', (size));
-	output[0] = 0;
-
-	buffer[0] = 0;
-
-	//while ((read=fgetc(template)) != EOF)
-	for (a=0;a<=strlen(template);a++)
+	while (1)
 	{
-		read=template[a];
-
-		snprintf(buffer,255,"%s%c",buffer,read);
-
-		if(read==search[i]) 
+		//if 'search' is found in 'tmpl'
+		retStr = strstr(tmpl, search);
+		if (NULL == retStr)
 		{
-			i++;
+			return;
 		}
-		else 
-		{ 
-			i=0;
-			snprintf(output,size,"%s%s",output,buffer);
-			buffer[0]=0;
-		}               
 
-		if(i == strlen(search))
-		{
-			snprintf(output,size,"%s%s",output,replace);
-			i=0;
-			buffer[0]=0;
-		}
+		totLen	= strlen(tmpl);
+		befLen	= (int)(retStr - tmpl);
+		srchLen = strlen(search);
+		repLen	= strlen(replace);
+
+		// dynamic buffer creation...
+		dest = (char*)malloc(totLen + 1 + repLen - srchLen);
+		if (NULL == dest)
+			return;
+
+		// copy the before buffer
+		strncpy(dest, tmpl, befLen);
+		// copy the replace string
+		memcpy((dest+befLen), replace, repLen);//strcat(dest, replace);
+		// copy the after buffer
+		memcpy((dest+befLen+repLen), &tmpl[befLen + srchLen], strlen(&tmpl[befLen + srchLen]));//strcat(dest, &tmpl[befLen + repLen]);
+
+		// now replace the template string with the resulting and search it again
+		strcpy(tmpl, dest);
+		// we need this, because we're modifying the 'tmpl' instead of creating a new one (so we need to update the position of the null char)
+		tmpl[totLen - srchLen + repLen] = '\0';
+		// clean up...
+		free(dest);
 	}
-
-//	printf("%s",output);
-//	printf("hy\n");
-	return output;
 }
 
 char *timeconv(char *input)

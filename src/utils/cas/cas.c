@@ -189,8 +189,9 @@ int main(int argc, char *argv[])
 			exit(4);
 		}
 
-		create_html(stats,lines,config.template);
-		printf("HTML Page created.\n");
+		if (!create_html(stats,lines,config.template)) {
+			printf("Could not create the HTML Page.\n");
+		}
 
 #ifdef __GD__
 		if (!createimage(&config, lines)) {
