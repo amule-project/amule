@@ -369,7 +369,14 @@ CECPacket *Get_EC_Response_GetSharedFiles(CKnownFile_Encoder_Map &encoders, CObj
 	encoders.UpdateEncoders(theApp.sharedfiles);
 	for (uint32 i = 0; i < theApp.sharedfiles->GetFileCount(); ++i) {
 		CKnownFile *cur_file = (CKnownFile *)theApp.sharedfiles->GetFileByIndex(i);
-		if ( !cur_file ) continue;
+		
+		//
+		// Hashes of tags are maintained on "per-object" basis. So, in this mode only
+		// same kind of objects can go into particular query type.
+		// Particulary here it means that files from download queue (aka partfiles)
+		// will not ne shown as shared files. Remote gui can do combine them if wishes
+		//
+		if ( !cur_file || cur_file->IsPartFile() ) continue;
 
 		CValueMap &valuemap = tagmap.GetValueMap(cur_file);
 		CEC_SharedFile_Tag filetag(cur_file, valuemap);
