@@ -88,7 +88,6 @@ public:
 
 #ifndef AMULE_DAEMON
 	void	DrawStatusBar(wxMemoryDC* dc, wxRect rect, bool bFlat);
-	virtual void DrawShareStatusBar(wxDC* dc, wxRect rect, bool onlygreyrect, bool bFlat) const;
 #endif
 	
 	bool	IsComplete(uint32 start, uint32 end);
@@ -207,6 +206,9 @@ public:
 
 	bool	AddSource( CUpDownClient* client );
 	bool	DelSource( CUpDownClient* client );
+	
+	
+	ArrayOfUInts16	m_SrcpartFrequency;
 protected:
 	uint32	m_validSources;
 	uint32	m_notCurrentSources;
@@ -240,7 +242,6 @@ private:
 	uint32	m_LastNoNeededCheck;
 	CTypedPtrList<CPtrList, Gap_Struct*> gaplist;
 	CTypedPtrList<CPtrList, Requested_Block_Struct*> requestedblocks_list;
-	ArrayOfUInts16	m_SrcpartFrequency;
 	double	percentcompleted;
 	CList<uint16, uint16> corrupted_list;
 	uint8	m_availablePartsCount;

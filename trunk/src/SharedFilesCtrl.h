@@ -1,63 +1,174 @@
+//
 // This file is part of the aMule Project
 //
 // Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
 // Copyright (C) 2002 Merkur ( merkur-@users.sourceforge.net / http://www.emule-project.net )
 //
-//This program is free software; you can redistribute it and/or
-//modify it under the terms of the GNU General Public License
-//as published by the Free Software Foundation; either
-//version 2 of the License, or (at your option) any later version.
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either
+// version 2 of the License, or (at your option) any later version.
 //
-//This program is distributed in the hope that it will be useful,
-//but WITHOUT ANY WARRANTY; without even the implied warranty of
-//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//GNU General Public License for more details.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 //
-//You should have received a copy of the GNU General Public License
-//along with this program; if not, write to the Free Software
-//Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+//
 
 #ifndef SHAREDFILESCTRL_H
 #define SHAREDFILESCTRL_H
 
-#include <wx/defs.h>		// Needed before any other wx/*.h.
-#include <wx/menu.h>		// Needed for wxMenu
 
-#include "types.h"		// Needed for uint32
 #include "MuleListCtrl.h"	// Needed for CMuleListCtrl
+
 
 class CSharedFileList;
 class CKnownFile;
+class wxMenu;
 
-// CSharedFilesCtrl
-class CSharedFilesCtrl : public CMuleListCtrl {
+
+/**
+ * This class represents the widget used to list shared files.
+ */
+class CSharedFilesCtrl : public CMuleListCtrl
+{
 public:
-	CSharedFilesCtrl(wxWindow*& parent,int id,const wxPoint& pos,wxSize siz,int flags);
-	virtual ~CSharedFilesCtrl();
-	void	Init();
-	void	ShowFileList(CSharedFileList* in_sflist);
+	/**
+	 * Constructor.
+	 *
+	 * @see CMuleListCtrl::CMuleListCtrl
+	 */
+	CSharedFilesCtrl(wxWindow* parent, int id, const wxPoint& pos, wxSize size, int flags);
+
+	/**
+	 * Destructor.
+	 */
+	~CSharedFilesCtrl();
+
+	
+	/**
+	 * Replaces the current contents of the list with that on the given list.
+	 *
+	 * @param The list with which to update the displayed contents.
+	 *
+	 * This function removes the current list of files and replaces it with the 
+	 * files contained on the list given as an argument.
+	 */
+	void	ShowFileList(CSharedFileList* list);
+
+	/**
+	 * Adds the specified file to the list.
+	 *
+	 * @parm file The new file to be shown.
+	 */
 	void	ShowFile(CKnownFile* file);
+
+	/**
+	 * Removes a file from the list.
+	 *
+	 * @param toremove The file to be removed.
+	 */
 	void	RemoveFile(CKnownFile* toremove);
-	void	UpdateFile(CKnownFile* file,uint32 pos);
+
+	/**
+	 * Updates a file on the list.
+	 *
+	 * @param toupdate The file to be updated.
+	 */
 	void	UpdateItem(CKnownFile* toupdate);
-	void	Localize();
+
+	/**
+	 * Updates the number of shared files displayed above the list.
+	 */
 	void	ShowFilesCount();
 
-protected:
+private:
+	/**
+	 * Updates the item at the specified position using the specified file.
+	 *
+	 * @param file The file to use as reference.
+	 * @param pos The item which to update.
+	 *
+	 * This function updates the fields of the specified item, using the data
+	 * taken from the pointed to file.
+	 */
+	void	UpdateFile(CKnownFile* file, long pos);
+	
+	/**
+	 * Draws the graph of file-part availability.
+	 *
+	 * @param file The file to make a graph over.
+	 * @param dc The wcDC to draw on.
+	 * @param rect The drawing area.
+	 *
+	 * This function draws a barspan showing the availability of the parts of 
+	 * a file, for both Part-files and Known-files. Availability for Part-files
+	 * is determined using the currently known sources, while availability for 
+	 * Known-files is determined using the sources requesting that file.
+	 */
+	void	DrawAvailabilityBar( CKnownFile* file, wxDC* dc, wxRect rect ) const;
+	
+	/**
+	 * Overloaded function needed to do custom drawing of the items.
+	 */
+	virtual void OnDrawItem(int item, wxDC* dc, const wxRect& rect, const wxRect& rectHL, bool highlighted);
+	
+	/**
+	 * Sorter-function.
+	 *
+	 * @see wxListCtrl::SortItems
+	 */
+	static int wxCALLBACK SortProc(long item1, long item2, long sortData);
+
+	/**
+	 * Function that specifies which columns have alternate sorting.
+	 *
+	 * @see CMuleListCtrl::AltSortAllowed
+	 */
 	virtual bool AltSortAllowed( int column );
 
-	virtual void	OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxRect& rectHL,bool highlighted);
-	static int wxCALLBACK SortProc(long lParam1, long lParam2, long lParamSort);
-	void		OnNMRclick(wxListEvent& evt);
-	virtual bool ProcessEvent(wxEvent& evt);
+
+	/**
+	 * Event-handler for right-clicks on the list-items.
+	 */
+	void	OnRightClick(wxListEvent& evt);
 	
-	wxMenu* m_SharedFilesMenu;
-	wxMenu		   m_PrioMenu;
-	wxMenu		   m_PermMenu;
-	CSharedFileList* sflist;
+	/**
+	 * Event-handler for the Set Permissions menu items.
+	 */
+	void	OnSetPermissions( wxCommandEvent& event );
+	
+	/**
+	 * Event-handler for the Set Priority menu items.
+	 */
+	void	OnSetPriority( wxCommandEvent& event );
+	
+	/**
+	 * Event-handler for the Auto-Priority menu item.
+	 */
+	void	OnSetPriorityAuto( wxCommandEvent& event );
+	
+	/**
+	 * Event-handler for the Create ED2K URI items.
+	 */
+	void	OnCreateURI( wxCommandEvent& event );
+	
+	/**
+	 * Event-handler for the Edit Comment menu item.
+	 */
+	void	OnEditComment( wxCommandEvent& event );
+
+
+	//! Pointer used to ensure that the menu isn't displayed twice.
+	wxMenu* m_menu;
+
 
 	DECLARE_EVENT_TABLE()
 };
 
-#endif // SHAREDFILESCTRL_H
+#endif
+

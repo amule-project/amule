@@ -1434,34 +1434,6 @@ void CPartFile::UpdateCompletedInfos()
 
 
 #ifndef AMULE_DAEMON
-void CPartFile::DrawShareStatusBar(wxDC* dc, wxRect rect, bool onlygreyrect, bool bFlat) const
-{
-	if ( !IsPartFile() ) {
-		CKnownFile::DrawShareStatusBar( dc, rect, onlygreyrect, bFlat );
-		return;
-	}
-	
-	static CBarShader s_ChunkBar;
-
-	s_ChunkBar.SetFileSize(GetFileSize());
-	s_ChunkBar.SetHeight( rect.GetHeight() );
-	s_ChunkBar.SetWidth( rect.GetWidth() );
-	s_ChunkBar.Set3dDepth( CPreferences::Get3DDepth() );
-	s_ChunkBar.Fill( RGB(255, 0, 0) );
-
-	if (!onlygreyrect && !m_SrcpartFrequency.IsEmpty()){
-		for (int i = 0; i < GetPartCount(); i++){
-			if(m_SrcpartFrequency[i] > 0 ){
-				COLORREF color = RGB(0, (210-(22*(m_SrcpartFrequency[i]-1)) < 0) ? 0 : 210-(22*(m_SrcpartFrequency[i]-1)), 255);
-				s_ChunkBar.FillRange(PARTSIZE*(i),PARTSIZE*(i+1),color);
-			}
-		}
-	}
-
-   	s_ChunkBar.Draw(dc, rect.GetLeft(), rect.GetTop(), bFlat); 
-} 
-
-
 void CPartFile::DrawStatusBar( wxMemoryDC* dc, wxRect rect, bool bFlat )
 {
 	static CBarShader s_ChunkBar(16);
