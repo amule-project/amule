@@ -512,23 +512,27 @@ void CWebServer::ProcessURL(ThreadData Data) {
 	// WE CANT TOUCH THE MAIN THREAD'S GUI!!!
 	//
 	if (sW == wxT("password")) {
-		wxString PwHash = MD5Sum(_ParseURL(Data, wxT("p"))).GetHash();
+		wxString PwStr = _ParseURL(Data, wxT("p"));
+		wxString PwHash = MD5Sum(PwStr).GetHash();
 		bool login = false;
 		wxString ip = ip.Format(wxT("%s"), inet_ntoa( Data.inadr ));
-		if ( PwHash == pThis->webInterface->m_AdminPass ) {
+		if ( (PwHash == pThis->webInterface->m_AdminPass) || (PwStr.IsEmpty() && pThis->webInterface->m_AdminPass.IsEmpty()) ) {
 			Session* ses = new Session();
 			ses->admin = true;
 			ses->startTime = time(NULL);
 			ses->lSession = lSession = rand() * 10000L + rand();
 			pThis->m_Params.Sessions.Add(ses);
 			login = true;
-		} else if ( PwHash == pThis->webInterface->m_GuestPass ) {
-			Session* ses = new Session();
-			ses->admin = false;
-			ses->startTime = time(NULL);
-			ses->lSession = lSession = rand() * 10000L + rand();
-			pThis->m_Params.Sessions.Add(ses);
-			login = true;
+			pThis->webInterface->Show(wxT("*** logged in as admin\n"));
+		} else if (pThis->webInterface->m_AllowGuest &&
+			 ((PwHash == pThis->webInterface->m_GuestPass) || (PwStr.IsEmpty() && pThis->webInterface->m_GuestPass.IsEmpty())) ) {
+				Session* ses = new Session();
+				ses->admin = false;
+				ses->startTime = time(NULL);
+				ses->lSession = lSession = rand() * 10000L + rand();
+				pThis->m_Params.Sessions.Add(ses);
+				login = true;
+				pThis->webInterface->Show(wxT("*** logged in as guest\n"));
 		} else {
 			// This call to ::GetTickCount has segfaulted once with this == 0x0, because
 			// wxUSE_GUI was set to 1 in a console only application. This may happen due
@@ -538,6 +542,7 @@ void CWebServer::ProcessURL(ThreadData Data) {
 			TransferredData newban = {inet_addr((char*) ip.GetData()), ::GetTickCount()}; 
 			pThis->m_Params.badlogins.Add(&newban);
 			login = false;
+			pThis->webInterface->Show(wxT("*** login failed\n"));
 		}
 		isUseGzip = false;
 		if (login) {
