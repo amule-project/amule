@@ -176,12 +176,6 @@ bool CPreferences::Save()
 		error = true;
 	}
 
-	if (!wxFileName::DirExists(char2unicode(GetIncomingDir()))) {
-		wxFileName::Mkdir(char2unicode(GetIncomingDir()),0777);
-	}
-	if (!wxFileName::DirExists(char2unicode(GetTempDir()))) {
-		wxFileName::Mkdir(char2unicode(GetTempDir()),0777);
-	}
 	return error;
 }
 
