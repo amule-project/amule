@@ -1872,11 +1872,11 @@ int CDownloadListCtrl::Compare(CPartFile * file1, CPartFile * file2, long lParam
 		case 0:	//filename asc
 			return strcmpi(file1->GetFileName().c_str(), file2->GetFileName().c_str());
 		case 1:	//size asc
-			return file1->GetFileSize() - file2->GetFileSize();
+			return file1->GetFileSize()==file2->GetFileSize()?0:(file2->GetFileSize()>file1->GetFileSize()?1:-1);
 		case 2:	//transfered asc
-			return file1->GetTransfered() - file2->GetTransfered();
+			return file1->GetTransfered()==file2->GetTransfered()?0:(file2->GetTransfered()>file1->GetTransfered()?1:-1);			
 		case 3:	//completed asc
-			return file1->GetCompletedSize() - file2->GetCompletedSize();
+			return file1->GetCompletedSize()==file2->GetCompletedSize()?0:(file2->GetCompletedSize()>file1->GetCompletedSize()?1:-1);			
 		case 4:	//speed asc
 #ifdef DOWNLOADRATE_FILTERED
 			return (int)(file1->GetKBpsDown()*1024-file2->GetKBpsDown()*1024);
