@@ -351,7 +351,7 @@ int CTransferWnd::AddCategorie(wxString newtitle,wxString newincoming,wxString n
         return index;
 }
 
-void CTransferWnd::EditCatTabLabel(int index,wxString newlabel)
+void CTransferWnd::EditCatTabLabel(int index,wxString newlabel, bool updateSearchWnd )
 {
 	if (theApp.glob_prefs->ShowCatTabInfos()) {
 		unsigned int count = 0;
@@ -371,7 +371,9 @@ void CTransferWnd::EditCatTabLabel(int index,wxString newlabel)
 		newlabel += wxString::Format(wxT(" (%u/%u)"), dwl, count);
 	}
 	m_dlTab->SetPageText(index,newlabel);
-	theApp.amuledlg->searchwnd->UpdateCatChoice();
+	
+	if ( updateSearchWnd )
+		theApp.amuledlg->searchwnd->UpdateCatChoice();
 }
 
 void CTransferWnd::OnSashPositionChanged(wxSplitterEvent& WXUNUSED(evt))
@@ -411,6 +413,6 @@ void CTransferWnd::OnBtnSwitchUpload(wxCommandEvent& WXUNUSED(evt)) {
 
 void CTransferWnd::UpdateCatTabTitles() {
 	for (uint8 i=0;i<m_dlTab->GetPageCount();i++) {
-		EditCatTabLabel(i,(i==0)? GetCatTitle( theApp.glob_prefs->GetAllcatType() ):theApp.glob_prefs->GetCategory(i)->title);
+		EditCatTabLabel(i,(i==0)? GetCatTitle( theApp.glob_prefs->GetAllcatType() ):theApp.glob_prefs->GetCategory(i)->title, false);
 	}
 }

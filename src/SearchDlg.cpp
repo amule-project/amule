@@ -482,17 +482,13 @@ void CSearchDlg::OnBnClickedReset(wxCommandEvent& WXUNUSED(evt))
 
 void CSearchDlg::UpdateCatChoice()
 {
-	CMuleNotebook* catbook = (CMuleNotebook*)FindWindowById(ID_CATEGORIES);
-	wxASSERT(catbook);
-
-	wxChoice *c_cat = (wxChoice*)FindWindow(ID_AUTOCATASSIGN);
+	wxChoice* c_cat = (wxChoice*)FindWindow(ID_AUTOCATASSIGN);
 	c_cat->Clear();
 
-	for ( unsigned i = 0; i < catbook->GetPageCount(); i++ ) {
-		c_cat->Append( catbook->GetPageText(i) );
+	for ( unsigned i = 0; i < theApp.glob_prefs->GetCatCount(); i++ ) {
+		c_cat->Append( theApp.glob_prefs->GetCategory( i )->title );
 	}
 	
-	c_cat->SetSelection(0); 
+	c_cat->SetSelection( 0 );
 }
-
 
