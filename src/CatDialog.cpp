@@ -190,7 +190,7 @@ void CCatDialog::OnBnClickedOk(wxCommandEvent& WXUNUSED(evt))
 	
 	wxString oldpath = m_category->incomingpath;
 	
-	m_category->incomingpath	= MakeFoldername( newpath );
+	m_category->incomingpath	= newpath;
 	m_category->title			= newname;
 	m_category->comment			= CastChild(IDC_COMMENT, wxTextCtrl)->GetValue();
 	m_category->color			= m_color;
