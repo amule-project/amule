@@ -1,6 +1,6 @@
-Version 2.0.0rc6 - The '???' version.
+Version 2.0.0rc6 - The 'We're so EVIL that we make you lose a sock in every pair' version.
 ----------
-2004-0?-??
+2004-10-02
 
 	GonoszTopi:
 		* Patch to fix buffer overflow in cas when line had more than
@@ -23,6 +23,102 @@ Version 2.0.0rc6 - The '???' version.
 
 	Kry:
 		* Got back from hell.
+		* Imported eMule's 0.44x new corruption handling: AICH
+		   AICH stands for Advanced Inteligent Corruption Handling, and avoid having to 
+		   re-download a full part everytime we get corruption on a file. With AICH, you will
+		   just re-download the 184Kb block that has corruption. It uses HashTrees to achieve 
+		   the corruption diagnosis. 
+		   More info: http://www.emule-project.net/home/perl/help.cgi?l=1&rm=show_topic&topic_id=589
+		   *********************************************************************************
+		   WARNING: AICH thread will re-hash all your files on your first rc6 startup. This can 
+		   take very long when the user has lots of shared files. We're sorry but that's the only 
+		   way to build the HashTree and thus making AICH able to work.
+		   *********************************************************************************
+		* Fixed the AICH implementation to support big endian archs (like ppc).
+		* Implemented IPfilter auto-load on startup
+		* Implemented IPFilter 'Update Now' button on preferences.
+		* Revamped the HTTP download dialog, used to download IPfilter and server.met 
+		   (and probably other files in a near future) Now it's the thread who runs the dialog,
+		   and dialog no longer block aMule while loading. It also has a progress bar. Yay!
+		* Fixed amule daemon not allowing auto-dowload of server.met.
+		* First rework of the Search dialog, later re-worked by Xaignar using the 
+		  hide/show engine I did.
+		* Implemented "Send messages" via right-click on source.
+		* When aMule is running and you try to run a second aMule, it now send a 
+		   'raise' message to the current runing one. This is designed to fix the problems
+		   with aMule being in a inexistant systray and thus people being unable to recover it.
+		* Fixed documentation:
+			* Bugs on  kb/kB mistakes
+			* Added "What are all those fancy colors in the download progress bar about?"
+		* --version switch now returns 0 (sucessfull app termination)
+		* MOD_VERSION_LONG does no longer show 2.0.0 version on CVS
+		* Cleaned the GUI for LOTS of unnecessary wxSizers that were looking ugly on Mac
+		   and making wxDesigner project file much cleaner.
+		* Fixed memleaks on curl usage (thanks Seagull)
+		* Systray is now skinnable
+		* Safety checks: A File can't have more than 441 partcount
+		* Added a file-access tracker that allowed us to fix lot of file access bugs:
+			* We were closing invalid file descriptors!
+			* Random Error responese from CFile class, again
+			* Misc multiple bugs that made me kinnda rewrite the class
+		* Fixed user not being notified of duplicated files on shareds
+		* Safe load for clients.met (no more removing to load amule)
+		* Fixed PrefsUnifiedDlg using wrong events for Spin controls.
+		* Search textbox now accepts enter key (did it work before? or never worked?)
+		* aMule now compiles and works with wxWidgets 2.5.2, with no gui bugs
+		* Fixed a nasty cvs bug that was just taking '0' on upload settings as 0, not unlimited.
+		* Fixed CArray implementation to avoid ints and make usage of size_t and off_t
+		* Added GetConnectIP() implementation to BaseClient so we can hold the supposed IP 
+		   or (after we had a connection) the real IP
+		* Implemented extra-file_corruption_safety on files. No more 'please rm -rf .aMule/'
+		* Implemented safe recover of .part.met files.
+		   This means that if a .part.met file gets corrupted, aMule will take care of it and try 
+		   to recover it with minimal info. As a matter of fact, only filesize and hash is need,
+		   so any other info will be recovered or set to default instead of discarding the part file.
+		* Fixed mem corruption on BaseClient
+		* Fixed a crash on UploadListCtrl due to access to a either uninitialised or removed client.
+		* Fixed the annoying empty message being sent every time a client connects to us while 
+		  we have a chatwindow with him. this was really pissing people off ;)
+		* Reworked SafeFile.cpp and made it compatible with eMule 0.44x. 
+		* aMule defaults to maximize if not size not overriden and no gui size stored (robably first run)
+		* Implemented CDirIterator. 
+		   Used to get rid of wxFindFirstFile and such buggy functions (breaking filenames on Mac and others). 
+		* Added GUI preferences fo AICH's hash trusting and IPfilter new options.
+		* Corrected xMule version show. xMule started sending correct version tags on 1.9.1b, only 4
+		   months after I told them, and only 1 after eMule+ developers did. Is based on our implementation
+		   (x.y.z instead of eMule's x.ya), so it was not hard to show them correctly ;)
+		* Misc developing, memleak fixing, code rewrite, and co-workers abuse by insulting 
+		   them and degrading them to worm state.
+		
+		* Kademlia Import:
+			kademlia/utils
+			* UInt128.cpp (class for handling 128-bits integers, added hability to read/write on SafeFile).
+			* UInt128.h
+			* All other files on the kademlia/utils are not needed by aMule.
+			kademlia/kademlia/
+			* Defines.h
+			* Entries.h
+			* Error.h
+			* Tag.h
+			kademlia/routing/
+			* Map.h
+
+		* Mac:
+			* Fixed compilation near every day :)
+			* Fixed the file descriptor problems, using the new file access tracker.
+			* Fixed the clients.met file being saved badly and thus breaking load.
+			* Fixed Search page not setting the SearchType to default.
+			* Fixed the start, clear and clear all buttons on Search page
+			* Fixed wrong usage (at least on Mac) of multi line control functions on single line text control
+			* Fixed sharing dirs giving access errors (and probably on other archs than Mac).
+			* Fixed amule daemon for taking 100% (or 198% on a dual system) CPU.
+			* Fixed wrong filenames being shown when more than 24 chars. See CDirIterator above.
+			
+		* Deleted files:
+			eMule-Import-Status	-> Very old unused file.
+			RC1-KnownBugs	-> Very old unused file.
+			HTTPDownloadDlg.*	-> HTTPDownload.* (no longer a GUI file)
+			
 
 	Littletux:
 		* Patch to include UTF-8 support in systray.
