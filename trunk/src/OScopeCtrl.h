@@ -27,6 +27,8 @@
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/control.h>		// Needed for wxControl
 #include <wx/timer.h>		// Needed for wxTimer
+#include <wx/pen.h>
+#include <wx/brush.h>
 
 #include "types.h"		// Needed for RECT
 #include "color.h"			// Needed for COLORREF and RGB
