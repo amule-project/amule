@@ -432,10 +432,10 @@ bool CamuleApp::OnInit()
 		while ( entries ) {
 			if ( strncmp(entries->mnt_type, "vfat",4) == 0 ) {
 				if ( tempdir.StartsWith( entries->mnt_dir ) ) {
-					amuledlg->AddLogLine(false, "Temp dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings.");
+					printf("Temp dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings.");
 					use_chmod = false;
 				} else if ( incomingdir.StartsWith( entries->mnt_dir ) ) {
-					amuledlg->AddLogLine(false, "Incoming dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings.");
+					printf("Incoming dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings.");
 					use_chmod = false;
 				}
 			}
@@ -445,9 +445,7 @@ bool CamuleApp::OnInit()
 	
 		fclose(mnt_tab);
 	}
-#endif /*not __OPENBSD__ */
-
-#ifdef __OPENBSD__
+#else
 	wxString incomingdir = glob_prefs->GetIncomingDir();
 	wxString tempdir = glob_prefs->GetTempDir();
 	long size, i;
