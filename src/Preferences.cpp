@@ -534,17 +534,24 @@ public:
 	Cfg_Counter( const wxString& keyname, uint64& value )
 	 : Cfg_Base( keyname ),
 	   m_value( value )
-	{
-
-	}
+	{}
 
 	virtual void LoadFromFile(wxConfigBase* cfg)
 	{
 		wxString buffer;
 	
 		cfg->Read( GetKey(), &buffer, wxT("0") );
-	
-		m_value = StrToLong(buffer);
+
+		uint64 tmp = 0;
+		for (unsigned int i = 0; i < buffer.Length(); ++i) {
+			if ((buffer[i] >= wxChar('0')) &&(buffer[i] <= wxChar('9'))) {
+				tmp = tmp * 10 + (buffer[i] - wxChar('0'));
+			} else {
+				tmp = 0;
+				break;
+			}
+		}
+		m_value = tmp;
 	}
 
 	virtual void SaveToFile(wxConfigBase* cfg)
