@@ -196,22 +196,27 @@ void CamuleRemoteGuiApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS&)
 	uploadqueue->UpdateStats(stats);
 	//statistics->UpdateStats(stats);
 	
-	if ( theApp.amuledlg->sharedfileswnd->IsShown() ) {
+	delete stats;
+	
+	if ( amuledlg->sharedfileswnd->IsShown() ) {
 		sharedfiles->DoRequery(EC_OP_GET_SHARED_FILES, EC_TAG_KNOWNFILE);
 		sharedfiles->ReloadControl();
-	} else if ( theApp.amuledlg->serverwnd->IsShown() ) {
+	} else if ( amuledlg->serverwnd->IsShown() ) {
 		//serverlist->FullReload(EC_OP_GET_SERVER_LIST);
 		//serverlist->ReloadControl();
-	} else if ( theApp.amuledlg->transferwnd->IsShown() ) {
+	} else if ( amuledlg->transferwnd->IsShown() ) {
 		downloadqueue->DoRequery(EC_OP_GET_DLOAD_QUEUE, EC_TAG_PARTFILE);
 		uploadqueue->ReQueryUp();
 		uploadqueue->ReQueryWait();
-	} else if ( theApp.amuledlg->searchwnd->IsShown() ) {
+		amuledlg->transferwnd->ShowQueueCount(uploadqueue->GetWaitingUserCount());
+	} else if ( amuledlg->searchwnd->IsShown() ) {
 		if ( searchlist->m_curr_search != -1 ) {
 			searchlist->DoRequery(EC_OP_SEARCH_RESULTS, EC_TAG_SEARCHFILE);
 		}
 	}
 	theApp.amuledlg->ShowTransferRate();
+	amuledlg->ShowUserCount(serverconnect->GetCurrentServer()->GetUsers(),
+		serverconnect->GetCurrentServer()->GetFiles());
 }
 
 void CamuleRemoteGuiApp::ShutDown() {
@@ -948,6 +953,7 @@ CUpQueueRem::CUpQueueRem(CRemoteConnect *conn) : m_up_list(conn, vtUploading), m
 void CUpQueueRem::UpdateStats(CEC_Stats_Tag *tag)
 {
 	m_kbps = tag->UpSpeed() / 1024;
+	m_waiting_user_count = tag->ClientsInQueue();
 }
 
 /*
