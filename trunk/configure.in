@@ -104,7 +104,7 @@ AM_OPTIONS_CRYPTO
 
 CHECK_CRYPTO(5.1,CRYPTO=0)
 
-if test "$CRYPTO" != 0; then
+if test "$CRYPTO" == 0; then
     AC_MSG_ERROR([
 	WARNING: crypto++ >= 5.1 is not found.
 	Please check that cryptopp-headers are in your default path, check out

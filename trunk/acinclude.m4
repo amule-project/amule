@@ -491,7 +491,7 @@ AC_DEFUN(CHECK_CCACHE,
 	else
 		result="yes"
 	fi
-        AC_MSG_CHECKING([for ccache presence])
+     AC_MSG_CHECKING([for ccache presence])
 	AC_MSG_RESULT($result)
 	AC_SUBST(CCACHE)
 	AC_SUBST(ccache_prefix)
