@@ -188,23 +188,7 @@ void CClientListCtrl::ToggleView()
 /////////////////////////////////////////////////////////////////////////////////////////////
 void CClientListCtrl::OnRightClick(wxMouseEvent& event)
 {
-	// Check if clicked item is selected. If not, unselect all and select it.
-	int tmp = 0;
-	long index = HitTest( event.GetPosition(), tmp );
-
-	if (index != -1) {
-		if ( !GetItemState(index, wxLIST_STATE_SELECTED) ) {
-			long item = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-			
-			while ( item > -1 ) {
-				SetItemState( item, 0, wxLIST_STATE_SELECTED );
-
-				item = GetNextItem( item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-			}
-			
-			SetItemState( index, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
-		}
-	}
+	long index = CheckSelection(event);
 	
 	if ( m_menu == NULL ) {
 		m_menu = new wxMenu(_("Clients"));

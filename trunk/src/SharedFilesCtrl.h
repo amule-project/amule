@@ -142,7 +142,7 @@ private:
 	/**
 	 * Event-handler for right-clicks on the list-items.
 	 */
-	void	OnRightClick(wxListEvent& evt);
+	void	OnRightClick(wxMouseEvent& event);
 	
 	/**
 	 * Event-handler for the Set Priority menu items.

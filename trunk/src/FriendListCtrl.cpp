@@ -51,7 +51,7 @@
 #include "FriendList.h"		// Needed for the friends list
 
 BEGIN_EVENT_TABLE(CFriendListCtrl, CMuleListCtrl)
-	EVT_RIGHT_DOWN(CFriendListCtrl::OnNMRclick)
+	EVT_RIGHT_DOWN(CFriendListCtrl::OnRightClick)
 	EVT_LIST_ITEM_SELECTED(ID_FRIENDLIST, CFriendListCtrl::OnItemSelected)
 	EVT_LIST_ITEM_ACTIVATED(ID_FRIENDLIST, CFriendListCtrl::OnItemActivated) 
 	
@@ -223,12 +223,13 @@ bool CFriendListCtrl::IsAlreadyFriend( uint32 dwLastUsedIP, uint32 nLastUsedPort
 	return FindFriend( NULL, dwLastUsedIP, nLastUsedPort );
 }
 
-void CFriendListCtrl::OnNMRclick(wxMouseEvent& evt)
+void CFriendListCtrl::OnRightClick(wxMouseEvent& event)
 {
+	int cursel = CheckSelection(event);
+	
 	CDlgFriend* cur_friend = NULL;
 	
 	wxMenu* menu = new wxMenu(_("Friends"));
-	int cursel = GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
 	
 	if ( cursel != -1 ) {
 		cur_friend = (CDlgFriend*)GetItemData(cursel);
@@ -252,7 +253,7 @@ void CFriendListCtrl::OnNMRclick(wxMouseEvent& evt)
 		}
 	}
 	
-	PopupMenu(menu, evt.GetPosition());
+	PopupMenu(menu, event.GetPosition());
 }
 
 

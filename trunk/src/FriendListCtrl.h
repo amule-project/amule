@@ -67,7 +67,7 @@ public:
 protected:
 	DECLARE_EVENT_TABLE()
 
-	void	OnNMRclick(wxMouseEvent& evt);
+	void	OnRightClick(wxMouseEvent& event);
 	void	OnPopupMenu(wxCommandEvent& evt);
 		
 private:

@@ -163,7 +163,6 @@ public:
 	 * Use this function in the Sorter functions to cut the cases in half.
 	 */
 	static bool IsOffsetDec( long offset );
-
 	
 protected:
 
@@ -291,6 +290,11 @@ protected:
 	 */
 	void OnMouseWheel(wxMouseEvent &event);
 
+	/*
+	 * Check and fix selection state
+	 * @return Item selected (-1 if none)
+	 */ 
+	long CheckSelection(wxMouseEvent& event);
 
 private:
 
