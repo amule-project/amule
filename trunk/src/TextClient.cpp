@@ -569,18 +569,18 @@ void CamulecmdApp::Process_Answer_v2(CECPacket *response)
 			break;
 		case EC_OP_PREFERENCES:
 			{
-				CECTag *tab = response->GetTagByName(EC_TAG_PREFS_SECURITY);
-				CECTag *ipfilterLevel = tab->GetTagByName(EC_TAG_IPFILTER_LEVEL);
-				if (tab && ipfilterLevel) {
+				const CECTag *tab = response->GetTagByNameSafe(EC_TAG_PREFS_SECURITY);
+				const CECTag *ipfilterLevel = tab->GetTagByName(EC_TAG_IPFILTER_LEVEL);
+				if (ipfilterLevel) {
 					s << wxString::Format(_("IPFilter is %s.\n"),
 						(tab->GetTagByName(EC_TAG_IPFILTER_ENABLED) == NULL) ? _("OFF") : _("ON"));
 					s << wxString::Format(_("Current IPFilter Level is %d.\n"),
 						ipfilterLevel->GetInt8Data());
 				}
-				tab = response->GetTagByName(EC_TAG_PREFS_CONNECTIONS);
-				CECTag *connMaxUL = response->GetTagByName(EC_TAG_CONN_MAX_UL);
-				CECTag *connMaxDL = response->GetTagByName(EC_TAG_CONN_MAX_DL);
-				if (tab) {
+				tab = response->GetTagByNameSafe(EC_TAG_PREFS_CONNECTIONS);
+				const CECTag *connMaxUL = tab->GetTagByName(EC_TAG_CONN_MAX_UL);
+				const CECTag *connMaxDL = tab->GetTagByName(EC_TAG_CONN_MAX_DL);
+				if (connMaxUL && connMaxDL) {
 					s << wxString::Format(_("Bandwidth Limits: Up: %u kB/s, Down: %u kB/s.\n"),
 						connMaxUL->GetInt16Data(),
 						connMaxDL->GetInt16Data());
@@ -589,7 +589,7 @@ void CamulecmdApp::Process_Answer_v2(CECPacket *response)
 			break;
 		case EC_OP_STRINGS:
 			for (int i = 0; i < response->GetTagCount(); ++i) {
-				CECTag *tag = response->GetTagByIndex(0);
+				CECTag *tag = response->GetTagByIndex(i);
 				if (tag) {
 					s << tag->GetStringData();
 				} else {

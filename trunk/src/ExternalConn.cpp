@@ -488,7 +488,7 @@ CECPacket *Get_EC_Response_PartFile_Cmd(const CECPacket *request)
 				pfile->StopFile();
 				break;
 			case EC_OP_PARTFILE_PRIO_SET: {
-					int prio = hashtag->GetTagByIndex(0)->GetInt32Data();
+					int prio = hashtag->GetTagByIndexSafe(0)->GetInt32Data();
 					if ( prio == PR_AUTO ) {
 						pfile->SetAutoDownPriority(1);
 					} else {
@@ -659,7 +659,7 @@ CECPacket *Get_EC_Response_Set_SharedFile_Prio(const CECPacket *request)
 	for (int i = 0;i < request->GetTagCount();i++) {
 		const CECTag *tag = request->GetTagByIndex(i);
 		CMD4Hash hash = tag->GetMD4Data();
-		uint8 prio = tag->GetTagByIndex(0)->GetInt32Data();
+		uint8 prio = tag->GetTagByIndexSafe(0)->GetInt32Data();
 		CKnownFile* cur_file = theApp.sharedfiles->GetFileByID(hash);
 		if ( !cur_file ) {
 			continue;
@@ -678,8 +678,7 @@ CECPacket *Get_EC_Response_Set_SharedFile_Prio(const CECPacket *request)
 CECPacket *ProcessPreferencesRequest(const CECPacket *request)
 {
 	CECPacket *response = new CECPacket(EC_OP_PREFERENCES);
-	const CECTag *selTag = request->GetTagByName(EC_TAG_SELECT_PREFS);
-	uint32 selection = selTag ? selTag->GetInt32Data() : 0;	
+	uint32 selection = request->GetTagByNameSafe(EC_TAG_SELECT_PREFS)->GetInt32Data();	
 	if (selection & EC_PREFS_CATEGORIES) {
 		if (theApp.glob_prefs->GetCatCount() > 1) {
 			CECEmptyTag cats(EC_TAG_PREFS_CATEGORIES);
@@ -1356,8 +1355,8 @@ CECPacket *GetStatsGraphs(const CECPacket *request)
 					dTimestamp = 0.0;
 				}
 			}
-			uint16 nScale = request->GetTagByName(EC_TAG_STATSGRAPH_SCALE)->GetInt16Data();
-			uint16 nMaxPoints = request->GetTagByName(EC_TAG_STATSGRAPH_WIDTH)->GetInt16Data();
+			uint16 nScale = request->GetTagByNameSafe(EC_TAG_STATSGRAPH_SCALE)->GetInt16Data();
+			uint16 nMaxPoints = request->GetTagByNameSafe(EC_TAG_STATSGRAPH_WIDTH)->GetInt16Data();
 			uint32 *graphData;
 			unsigned int numPoints = theApp.statistics->GetHistoryForWeb(nMaxPoints, (double)nScale, &dTimestamp, &graphData);
 			if (numPoints) {
@@ -1477,7 +1476,7 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 			}
 			break;
 		case EC_OP_SERVER_UPDATE_FROM_URL:
-			theApp.serverlist->UpdateServerMetFromURL(request->GetTagByIndex(0)->GetStringData());
+			theApp.serverlist->UpdateServerMetFromURL(request->GetTagByIndexSafe(0)->GetStringData());
 			response = new CECPacket(EC_OP_NOOP);
 			break;
 		//
@@ -1514,11 +1513,11 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 		// Logging
 		//
 		case EC_OP_ADDLOGLINE:
-			AddLogLineM( (request->GetTagByName(EC_TAG_LOG_TO_STATUS) != NULL), request->GetTagByName(EC_TAG_STRING)->GetStringData() );
+			AddLogLineM( (request->GetTagByName(EC_TAG_LOG_TO_STATUS) != NULL), request->GetTagByNameSafe(EC_TAG_STRING)->GetStringData() );
 			response = new CECPacket(EC_OP_NOOP);
 			break;
 		case EC_OP_ADDDEBUGLOGLINE:
-			AddDebugLogLineM( (request->GetTagByName(EC_TAG_LOG_TO_STATUS) != NULL), request->GetTagByName(EC_TAG_STRING)->GetStringData() );
+			AddDebugLogLineM( (request->GetTagByName(EC_TAG_LOG_TO_STATUS) != NULL), request->GetTagByNameSafe(EC_TAG_STRING)->GetStringData() );
 			response = new CECPacket(EC_OP_NOOP);
 			break;
 		case EC_OP_GET_LOG:

@@ -34,6 +34,29 @@
  *							  *
  **********************************************************/
 
+//! Defines the Null tag which may be returned by GetTagByNameSafe.
+const CECTag CECTag::s_theNullTag(static_cast<NullTagConstructorSelector*>(0));
+
+//! Defines the data for the Null tag.  Large enough (16 bytes) for GetMD4Data.
+const uint32 CECTag::s_theNullTagData[4] = { 0, 0, 0, 0 };
+
+/**
+ * Creates a new null-valued CECTag instance
+ *
+ * @see s_theNullTag
+ * @see s_theNullTagData
+ * @see GetTagByNameSafe
+ */
+CECTag::CECTag(const NullTagConstructorSelector*) :
+	m_error(0),
+	m_tagData(s_theNullTagData),
+	m_tagName(0),
+	m_dataLen(0),
+	m_dynamic(false),
+	m_tagList()
+{
+}
+
 /**
  * Creates a new CECTag instance from the given data
  *
@@ -60,7 +83,7 @@ CECTag::CECTag(ec_tagname_t name, unsigned int length, const void *data, bool co
 	} else {
 		m_tagData = data;
 	}
-};
+}
 
 /**
  * Creates a new CECTag instance for custom data
@@ -479,6 +502,22 @@ CECTag* CECTag::GetTagByName(ec_tagname_t name)
 }
 
 /**
+ * Finds the (first) child tag with given name.
+ *
+ * @param name TAG name to look for.
+ * @return the tag found, or a special null-valued tag otherwise.
+ *
+ * @see s_theNullTag
+ */
+const CECTag* CECTag::GetTagByNameSafe(ec_tagname_t name) const
+{
+	const CECTag* result = GetTagByName(name);
+	if (result == NULL)
+		result = &s_theNullTag;
+	return result;
+}
+
+/**
  * Query TAG length that is suitable for the TAGLEN field (i.e.\ 
  * without it's own header size).
  *
@@ -533,6 +572,16 @@ EC_IPv4_t CECTag::GetIPv4Data(void) const
  * \param index 0-based index, 0 <= \e index < GetTagCount()
  *
  * \return The child tag, or NULL if index out of range.
+ */
+
+/*!
+ * \fn CECTag *CECTag::GetTagByIndexSafe(unsigned int index) const
+ *
+ * \brief Finds the indexth child tag.
+ *
+ * \param index 0-based index, 0 <= \e index < GetTagCount()
+ *
+ * \return The child tag, or a special null-valued tag if index out of range.
  */
 
 /*!

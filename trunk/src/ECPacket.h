@@ -69,9 +69,12 @@ class CECTag {
 			{ return ((index >= m_tagList.size()) ? NULL : &m_tagList[index]); }
 		CECTag*		GetTagByIndex(unsigned int index)
 			{ return ((index >= m_tagList.size()) ? NULL : &m_tagList[index]); }
+		const CECTag*	GetTagByIndexSafe(unsigned int index) const
+			{ const CECTag* result = GetTagByIndex(index); return result ? result : &s_theNullTag; }
 		
 		const CECTag*	GetTagByName(ec_tagname_t name) const;
-		CECTag*		GetTagByName(ec_tagname_t name);
+		CECTag*			GetTagByName(ec_tagname_t name);
+		const CECTag*	GetTagByNameSafe(ec_tagname_t name) const;
 		
 		uint16		GetTagCount(void) const { return m_tagList.size(); }
 		const void *	GetTagData(void) const { return m_tagData; }
@@ -97,12 +100,21 @@ class CECTag {
 		const void *	m_tagData;
 		
 	private:
+		// Special type used to invoke the Null tag constructor
+		struct NullTagConstructorSelector { };
+
+		// Special constructor to construct the Null tag.
+		explicit CECTag(const NullTagConstructorSelector*);
+
 		ec_tagname_t	m_tagName;
 		unsigned int	m_dataLen;
 		bool		m_dynamic;
 
 		typedef std::vector<CECTag> TagList;
 		TagList m_tagList;
+
+		static const CECTag s_theNullTag;
+		static const uint32 s_theNullTagData[4];
 };
 
 
@@ -135,7 +147,9 @@ class CECPacket : private CECEmptyTag {
 		
 		CECTag::AddTag;
 		CECTag::GetTagByIndex;
+		CECTag::GetTagByIndexSafe;
 		CECTag::GetTagByName;
+		CECTag::GetTagByNameSafe;
 		CECTag::GetTagCount;
 
 		ec_opcode_t	GetOpCode(void) const { return m_opCode; }

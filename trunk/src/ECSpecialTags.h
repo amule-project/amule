@@ -77,71 +77,19 @@ class CEC_PartFile_Tag : public CECTag {
  		CMD4Hash	FileHash()	{ return GetMD4Data(); }
 		wxString	FileHashString() { return GetMD4Data().Encode(); }
 
- 		wxString	FileName()
-		{
-			CECTag *tag =  GetTagByName(EC_TAG_PARTFILE_NAME);
-			return tag ? tag->GetStringData() : wxT("");
-		}
- 		uint32		SizeFull()
-		{
-			CECTag *tag =  GetTagByName(EC_TAG_PARTFILE_SIZE_FULL);
-			return tag ? tag->GetInt32Data() : 0;
-		}
- 		uint32		SizeXfer()
-		{
-			CECTag *tag =  GetTagByName(EC_TAG_PARTFILE_SIZE_XFER);
-			return tag ? tag->GetInt32Data() : 0;
-		}
-  		uint32		SizeDone()
-		{
-			CECTag *tag =  GetTagByName(EC_TAG_PARTFILE_SIZE_DONE);
-			return tag ? tag->GetInt32Data() : 0;
-		}
- 		wxString	FileEd2kLink()
-		{
-			CECTag *tag =  GetTagByName(EC_TAG_PARTFILE_ED2K_LINK);
-			return tag ? tag->GetStringData() : wxT("");
-		}
- 		uint8		FileStatus()
-		{
-			CECTag *tag =  GetTagByName(EC_TAG_PARTFILE_STATUS);
-			return tag ? tag->GetInt8Data() : 0;
-		}
-  		uint32		SourceCount()
-		{
-			CECTag *tag =  GetTagByName(EC_TAG_PARTFILE_SOURCE_COUNT);
-			return tag ? tag->GetInt32Data() : 0;
-		}
-  		uint32		SourceNotCurrCount()
-		{
-			CECTag *tag =  GetTagByName(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT);
-			return tag ? tag->GetInt32Data() : 0;
-		}
-  		uint32		SourceXferCount()
-		{
-			CECTag *tag =  GetTagByName(EC_TAG_PARTFILE_SOURCE_COUNT_XFER);
-			return tag ? tag->GetInt32Data() : 0;
-		}
-  		uint32		SourceCountA4AF()
-		{
-			CECTag *tag =  GetTagByName(EC_TAG_PARTFILE_SOURCE_COUNT_A4AF);
-			return tag ? tag->GetInt32Data() : 0;
-		}
-  		uint32		Speed()	
-		{
-			CECTag *tag =  GetTagByName(EC_TAG_PARTFILE_SPEED);
-			return tag ? tag->GetInt32Data() : 0;
-		}
-  		uint32		Prio()
-		{
-			CECTag *tag =  GetTagByName(EC_TAG_PARTFILE_PRIO);
-			return tag ? tag->GetInt32Data() : 0;
-		}
-  		wxString	PartStatus()
-		{
-			CECTag *tag =  GetTagByName(EC_TAG_PARTFILE_PART_STATUS);
-			return tag ? tag->GetStringData() : wxT("");
-		}
+ 		wxString	FileName()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_NAME)->GetStringData(); }
+ 		uint32		SizeFull()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_SIZE_FULL)->GetInt32Data(); }
+ 		uint32		SizeXfer()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_SIZE_XFER)->GetInt32Data(); }
+  		uint32		SizeDone()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_SIZE_DONE)->GetInt32Data(); }
+ 		wxString	FileEd2kLink()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_ED2K_LINK)->GetStringData(); }
+ 		uint8		FileStatus()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_STATUS)->GetInt8Data(); }
+  		uint32		SourceCount()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_SOURCE_COUNT)->GetInt32Data(); }
+  		uint32		SourceNotCurrCount()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT)->GetInt32Data(); }
+  		uint32		SourceXferCount()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_SOURCE_COUNT_XFER)->GetInt32Data(); }
+  		uint32		SourceCountA4AF()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_SOURCE_COUNT_A4AF)->GetInt32Data(); }
+  		uint32		Speed()		{ return GetTagByNameSafe(EC_TAG_PARTFILE_SPEED)->GetInt32Data(); }
+  		uint32		Prio()		{ return GetTagByNameSafe(EC_TAG_PARTFILE_PRIO)->GetInt32Data(); }
+  		wxString	PartStatus()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_PART_STATUS)->GetStringData(); }
 
 		#ifdef EC_REMOTE
 		wxString	GetFileStatusString();
@@ -158,92 +106,32 @@ class CEC_SharedFile_Tag : public CECTag {
  		CMD4Hash	FileHash()	{ return GetMD4Data(); }
 		wxString	FileHashString(){ return GetMD4Data().Encode(); }
 
- 		wxString	FileName()
-		{
-			CECTag *tag =  GetTagByName(EC_TAG_PARTFILE_NAME);
-			return tag ? tag->GetStringData() : wxT("");
-		}
- 		uint32		SizeFull()
-		{
-			CECTag *tag =  GetTagByName(EC_TAG_PARTFILE_SIZE_FULL);
-			return tag ? tag->GetInt32Data() : 0;
-		}
-  		uint32		Prio()
-		{
-			CECTag *tag =  GetTagByName(EC_TAG_PARTFILE_PRIO);
-			return tag ? tag->GetInt32Data() : 0;
-		}
- 		wxString	FileEd2kLink()
-		{
-			CECTag *tag =  GetTagByName(EC_TAG_PARTFILE_ED2K_LINK);
-			return tag ? tag->GetStringData() : wxT("");
-		}
+ 		wxString	FileName()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_NAME)->GetStringData(); }
+ 		uint32		SizeFull()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_SIZE_FULL)->GetInt32Data(); }
+  		uint32		Prio()		{ return GetTagByNameSafe(EC_TAG_PARTFILE_PRIO)->GetInt32Data(); }
+ 		wxString	FileEd2kLink()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_ED2K_LINK)->GetStringData(); }
 
- 		uint32		GetRequests()
-		{
-			CECTag *tag =  GetTagByName(EC_TAG_KNOWNFILE_REQ_COUNT);
-			return tag ? tag->GetInt32Data() : 0;
-		}
- 		uint32		GetAllRequests()
-		{
-			CECTag *tag =  GetTagByName(EC_TAG_KNOWNFILE_REQ_COUNT_ALL);
-			return tag ? tag->GetInt32Data() : 0;
-		}
+ 		uint32		GetRequests()	{ return GetTagByNameSafe(EC_TAG_KNOWNFILE_REQ_COUNT)->GetInt32Data(); }
+ 		uint32		GetAllRequests()	{ return GetTagByNameSafe(EC_TAG_KNOWNFILE_REQ_COUNT_ALL)->GetInt32Data(); }
 
- 		uint32		GetAccepts()
-		{
-			CECTag *tag =  GetTagByName(EC_TAG_KNOWNFILE_ACCEPT_COUNT);
-			return tag ? tag->GetInt32Data() : 0;
-		}
- 		uint32		GetAllAccepts()
-		{
-			CECTag *tag =  GetTagByName(EC_TAG_KNOWNFILE_ACCEPT_COUNT_ALL);
-			return tag ? tag->GetInt32Data() : 0;
-		}
+ 		uint32		GetAccepts()	{ return GetTagByNameSafe(EC_TAG_KNOWNFILE_ACCEPT_COUNT)->GetInt32Data(); }
+ 		uint32		GetAllAccepts()	{ return GetTagByNameSafe(EC_TAG_KNOWNFILE_ACCEPT_COUNT_ALL)->GetInt32Data(); }
 
- 		uint32		GetXferred()
-		{
-			CECTag *tag =  GetTagByName(EC_TAG_KNOWNFILE_XFERRED);
-			return tag ? tag->GetInt32Data() : 0;
-		}
- 		uint32		GetAllXferred()
-		{
-			CECTag *tag =  GetTagByName(EC_TAG_KNOWNFILE_XFERRED_ALL);
-			return tag ? tag->GetInt32Data() : 0;
-		}
+ 		uint32		GetXferred()	{ return GetTagByNameSafe(EC_TAG_KNOWNFILE_XFERRED)->GetInt32Data(); }
+ 		uint32		GetAllXferred()	{ return GetTagByNameSafe(EC_TAG_KNOWNFILE_XFERRED_ALL)->GetInt32Data(); }
 };
 
 class CEC_UpDownClient_Tag : public CECTag {
 	public:
 		CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAIL_LEVEL detail_level);
 
- 		CMD4Hash FileID()
-		{
-			CECTag *tag =  GetTagByName(EC_TAG_KNOWNFILE);
-			return tag ? tag->GetMD4Data() : CMD4Hash();
-		}
+ 		CMD4Hash FileID() { return GetTagByNameSafe(EC_TAG_KNOWNFILE)->GetMD4Data(); }
  		bool HaveFile() { return GetTagByName(EC_TAG_KNOWNFILE) != NULL; }
 
- 		wxString ClientName()
-		{
-			CECTag *tag =  GetTagByName(EC_TAG_CLIENT_NAME);
-			return tag ? tag->GetStringData() : wxT("");
-		}
- 		uint32 Speed()
-		{
-			CECTag *tag =  GetTagByName(EC_TAG_PARTFILE_SPEED);
-			return tag ? tag->GetInt32Data() : 0;
-		}
- 		uint32 XferUp()
-		{
-			CECTag *tag =  GetTagByName(EC_TAG_PARTFILE_SIZE_XFER_UP);
-			return tag ? tag->GetInt32Data() : 0;
-		}
- 		uint32 XferDown()
-		{
-			CECTag *tag =  GetTagByName(EC_TAG_PARTFILE_SIZE_XFER);
-			return tag ? tag->GetInt32Data() : 0;
-		}
+ 		wxString ClientName() { return GetTagByNameSafe(EC_TAG_CLIENT_NAME)->GetStringData(); }
+ 		uint32 Speed() { return GetTagByNameSafe(EC_TAG_PARTFILE_SPEED)->GetInt32Data(); }
+ 		uint32 XferUp() { return GetTagByNameSafe(EC_TAG_PARTFILE_SIZE_XFER_UP)->GetInt32Data(); };
+ 		uint32 XferDown() { return GetTagByNameSafe(EC_TAG_PARTFILE_SIZE_XFER)->GetInt32Data(); }
 };
 
 class CEC_SearchFile_Tag : public CECTag {
@@ -256,21 +144,9 @@ class CEC_SearchFile_Tag : public CECTag {
  		CMD4Hash	FileHash()	{ return GetMD4Data(); }
 		wxString	FileHashString() { return GetMD4Data().Encode(); }
 
- 		wxString	FileName()
- 		{
-			CECTag *tag =  GetTagByName(EC_TAG_PARTFILE_NAME);
-			return tag ? tag->GetStringData() : wxT("");
-		}
-		uint32		SizeFull()
-		{
-			CECTag *tag =  GetTagByName(EC_TAG_PARTFILE_SIZE_FULL);
-			return tag ? tag->GetInt32Data() : 0;
-		}
-  		uint32		SourceCount()
-		{
-			CECTag *tag =  GetTagByName(EC_TAG_PARTFILE_SOURCE_COUNT);
-			return tag ? tag->GetInt32Data() : 0;
-		}
+ 		wxString	FileName()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_NAME)->GetStringData(); }
+ 		uint32		SizeFull()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_SIZE_FULL)->GetInt32Data(); }
+  		uint32		SourceCount()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_SOURCE_COUNT)->GetInt32Data(); }
   		bool		AlreadyHave()	{ return GetTagByName(EC_TAG_KNOWNFILE) != 0; }
 };
 
@@ -280,33 +156,13 @@ class CEC_Search_Tag : public CECTag {
 		CEC_Search_Tag(wxString &name, EC_SEARCH_TYPE search_type, wxString &file_type,
 			wxString &extension, uint32 avail, uint32 min_size, uint32 max_size);
 			
-		wxString SearchText() { return GetTagByName(EC_TAG_SEARCH_NAME)->GetStringData(); }
+		wxString SearchText() { return GetTagByNameSafe(EC_TAG_SEARCH_NAME)->GetStringData(); }
 		EC_SEARCH_TYPE SearchType() { return (EC_SEARCH_TYPE)GetInt32Data(); }
-		uint32 MinSize()
-		{
-			CECTag *tag =  GetTagByName(EC_TAG_SEARCH_MIN_SIZE);
-			return tag ? tag->GetInt32Data() : 0;
-		}
-		uint32 MaxSize()
-		{
-			CECTag *tag =  GetTagByName(EC_TAG_SEARCH_MAX_SIZE);
-			return tag ? tag->GetInt32Data() : 0;
-		}
-		uint32 Avail()
-		{
-			CECTag *tag =  GetTagByName(EC_TAG_SEARCH_AVAILABILITY);
-			return tag ? tag->GetInt32Data() : 0;
-		}
-		wxString SearchExt()
-		{
-			CECTag *tag =  GetTagByName(EC_TAG_SEARCH_EXTENSION);
-			return tag ? tag->GetStringData() : wxT("");
-		}
-		wxString SearchFileType()
-		{
-			CECTag *tag =  GetTagByName(EC_TAG_SEARCH_FILE_TYPE);
-			return tag ? tag->GetStringData() : wxT("");
-		}
+		uint32 MinSize() { return GetTagByNameSafe(EC_TAG_SEARCH_MIN_SIZE)->GetInt32Data(); }
+		uint32 MaxSize() { return GetTagByNameSafe(EC_TAG_SEARCH_MAX_SIZE)->GetInt32Data(); }
+		uint32 Avail() { return GetTagByNameSafe(EC_TAG_SEARCH_AVAILABILITY)->GetInt32Data(); }
+		wxString SearchExt() { return GetTagByNameSafe(EC_TAG_SEARCH_EXTENSION)->GetStringData(); }
+		wxString SearchFileType() { return GetTagByNameSafe(EC_TAG_SEARCH_FILE_TYPE)->GetStringData(); }
 };
 
 #ifndef EC_REMOTE
