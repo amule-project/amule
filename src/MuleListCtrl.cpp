@@ -122,7 +122,7 @@ void CMuleListCtrl::SaveSettings()
 		buffer << GetColumnWidth(i);
 	}
 
-	cfg->Write( wxT("/eMule/SearchColumnWidths") + name, buffer );
+	cfg->Write( wxT("/eMule/TableWidths") + name, buffer );
 }	
 
 
