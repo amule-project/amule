@@ -1086,11 +1086,26 @@ void CDownloadListCtrl::OnNMRclick(wxListEvent & evt)
 void CDownloadListCtrl::OnKeyPressed( wxKeyEvent& event )
 {
 	// Check if delete was pressed
-	if ( event.GetKeyCode() == WXK_DELETE ) {
-		wxCommandEvent evt;
-		OnCancelFile( evt );
-	} else {
-		event.Skip();
+	switch (event.GetKeyCode()) {
+		case WXK_DELETE: {
+			wxCommandEvent evt;
+			OnCancelFile( evt );
+			break;
+		}
+		case WXK_F2: {
+			ItemList files = ::GetSelectedItems( this, itFILES );
+			if (files.size() == 1) {	
+				CPartFile* file = (CPartFile*)(*(files.begin()))->value;
+				wxString NewName = ::wxGetTextFromUser(_("Enter new name for this file:"), _("File rename"), file->GetFileName());
+				if (!NewName.IsEmpty()) {
+					file->SetFileName(NewName);
+					file->SavePartFile();
+				}
+			}
+			break;
+		}
+		default:
+			event.Skip();
 	}
 }
 
@@ -2099,4 +2114,3 @@ void CDownloadListCtrl::PreviewFile(CPartFile* file)
 		AddLogLineM( false, wxString( _("Command: ") ) + command );
 	}
 }
-
