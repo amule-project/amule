@@ -24,7 +24,9 @@
 #define GETTICKCOUNT_H
 #include "types.h"		// Needed for uint32
 
+#ifdef __WXMSW__
 #include <winbase.h>
+#endif
 
 #if wxUSE_GUI && wxUSE_TIMER && !defined(AMULE_DAEMON)
 /**
