@@ -154,7 +154,7 @@ CKnownFile* CKnownFileList::FindKnownFile(char* filename,uint32 in_date,uint32 i
 
 	for (CKnownFileMap::iterator pos = m_map.begin(); pos != m_map.end(); pos++ ) {
 		cur_file = pos->second;
-		if (cur_file->GetFileDate() == in_date && cur_file->GetFileSize() == in_size && !cur_file->GetFileName().Cmp(filename)) {
+		if ((abs(cur_file->GetFileDate() - in_date) < 20) && cur_file->GetFileSize() == in_size && !cur_file->GetFileName().Cmp(filename)) {
 			return cur_file;
 		}
 	}
