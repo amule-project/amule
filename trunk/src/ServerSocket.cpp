@@ -62,7 +62,7 @@
 #include "amule.h"		// Needed for theApp
 
 
-#define DEBUG_SERVER_PROTOCOL
+//#define DEBUG_SERVER_PROTOCOL
 
 
 BEGIN_EVENT_TABLE(CServerSocketHandler, wxEvtHandler)
