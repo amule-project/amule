@@ -807,7 +807,7 @@ void CDownloadListCtrl::DrawFileItem(wxDC* dc, int nColumn, const wxRect& rect, 
 			case 4:	// speed
 				{
 					if ( lpPartFile->GetTransferingSrcCount() ) {
-						wxString buffer = wxString::Format(wxT("%.1f %s"), lpPartFile->GetKBpsDown(), wxT("kB/s"));
+						wxString buffer = wxString::Format(wxT("%.1f "), lpPartFile->GetKBpsDown()) + _("kB/s");
 						dc->DrawText(buffer, rect.GetX(), rect.GetY());
 					}
 				}
@@ -1088,8 +1088,7 @@ void CDownloadListCtrl::DrawSourceItem(wxDC * dc, int nColumn, const wxRect& rec
 					if (lpUpDownClient->GetKBpsDown()<0.001) {
 						buffer = wxT("");
 					} else {
-						buffer.Printf(wxT("%.1f %s"), lpUpDownClient->GetKBpsDown(), "kB/s");
-					}
+						buffer = wxString::Format(wxT("%.1f "), lpUpDownClient->GetKBpsDown()) + _("kB/s");					}
 					dc->DrawText(buffer, rect.GetX(), rect.GetY());
 				}
 				break;
@@ -1396,7 +1395,7 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 							// for multiple selections
 							quest=_("Are you sure that you want to cancel and delete these files ?\n");
 						}
-						if (validdelete && wxMessageBox((quest + fileList), wxT("Cancel"), wxICON_QUESTION | wxYES_NO) == wxYES) {
+						if (validdelete && wxMessageBox((quest + fileList), _("Cancel"), wxICON_QUESTION | wxYES_NO) == wxYES) {
 							while (!selectedList.IsEmpty()) {
 								HideSources(selectedList.GetHead());
 								switch (selectedList.GetHead()->GetStatus()) {
@@ -1866,14 +1865,14 @@ wxString CDownloadListCtrl::getTextList()
 			i++;
 			out += wxString::Format(wxT("%i: %s\t [%.1f%%] %i/%i - %s"),i, file->GetFileName().c_str(), file->GetPercentCompleted(), file->GetTransferingSrcCount(), file->GetSourceCount(), file->getPartfileStatus().GetData());
 			if (file->GetKBpsDown()>0.001) {
-				out += wxString::Format(wxT(" %.1f kB/s"),(float)file->GetKBpsDown());
+				out += wxString::Format(wxT(" %.1f "),(float)file->GetKBpsDown()) + _("kB/s");
 			}
 			out += wxT("\n");
 		}
 	}
 
 	if (out.IsEmpty()) {
-		out = wxT("Download queue is empty.");
+		out = _("Download queue is empty.");
 	}
 	AddLogLineM(false, out);
 	return out;
