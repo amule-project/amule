@@ -64,6 +64,7 @@
 #include "GetTickCount.h"	// Needed for GetTickCount
 #include "ClientList.h"		// Needed for clientlist
 #include "debugstuff.h"		// Needed for debugprintf
+#include "color.h"
 
 #include <map>
 #include <algorithm>
