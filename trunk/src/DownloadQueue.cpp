@@ -1327,10 +1327,14 @@ wxString CDownloadQueue::getTextList() const
 		it != filelist.end();
 		++it, ++i) {
 		CPartFile *file = *it;			
-		out += wxString::Format(wxT("%i: %s\t [%.1f%%] %i/%i - %s"),
-			i, unicode2char(file->GetFileName()), file->GetPercentCompleted(),
-			file->GetTransferingSrcCount(), file->GetSourceCount(), 
-			unicode2char(file->getPartfileStatus()));
+		out +=
+			wxString::Format(wxT("%i: "), i) +
+			file->GetFileName() +
+			wxString::Format(wxT("\t [%.1f%%] %i/%i - "),
+				file->GetPercentCompleted(),
+				file->GetTransferingSrcCount(), 
+				file->GetSourceCount() ) +
+			file->getPartfileStatus();
 		if (file->GetKBpsDown() > 0.001) {
 			out += wxString::Format(wxT(" %.1f "),(float)file->GetKBpsDown()) + _("kB/s");
 		}
@@ -1341,6 +1345,7 @@ wxString CDownloadQueue::getTextList() const
 		out = _("Download queue is empty.");
 	}
 	AddLogLineM(false, out);
+
 	return out;
 }
 

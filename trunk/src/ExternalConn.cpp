@@ -452,7 +452,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 					);
 				}
 			}
-			return((wxChar *)buffer.GetData());
+			return buffer;
 		}
 		if (item.Left(10) == wxT("SERVER ADD")) {
 			if (item.Length() > 10) {
@@ -489,7 +489,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			else
 				buffer.Append(wxT("Disconnected\t"));
 			
-			return((wxChar*) buffer.GetData());
+			return buffer;
 		}
 		
 		//TRANSFER
