@@ -174,12 +174,12 @@ void *ProxyEventHandler::Entry()
 //------------------------------------------------------------------------------
 
 ProxyStateMachine::ProxyStateMachine(
-		const wxString &name,
+		wxString name,
 		const unsigned int max_states,
 		const wxProxyData &ProxyData,
 		wxProxyCommand ProxyCommand)
 :
-StateMachine(name, max_states, PROXY_STATE_START),
+StateMachine(NewName(name, ProxyCommand), max_states, PROXY_STATE_START),
 m_ProxyData(ProxyData),
 m_ProxyCommand(ProxyCommand)
 {
@@ -204,6 +204,25 @@ ProxyStateMachine::~ProxyStateMachine()
 	delete m_PeerAddress;
 }
 
+wxString &ProxyStateMachine::NewName(wxString &s, wxProxyCommand ProxyCommand)
+{
+	switch (ProxyCommand) {
+		case wxPROXY_CMD_CONNECT:
+			s += wxT("-CONNECT");
+			break;
+			
+		case wxPROXY_CMD_BIND:
+			s += wxT("-BIND");
+			break;
+			
+		case wxPROXY_CMD_UDP_ASSOCIATE:
+			s += wxT("-UDP");
+			break;
+	}
+	
+	return s;
+}
+
 bool ProxyStateMachine::Start(const wxIPaddress &PeerAddress, wxSocketClient *ProxyClientSocket)
 {
 	m_ProxyClientSocket = ProxyClientSocket;
@@ -212,8 +231,8 @@ bool ProxyStateMachine::Start(const wxIPaddress &PeerAddress, wxSocketClient *Pr
 		m_PeerAddress = new amuleIPV4Address(peer);
 	} catch (std::bad_cast e) {
 		// Should process other types of wxIPAddres before quitting
-		printf("bad_cast exception!\n");
-		
+		printf("(1)bad_cast exception!\n");
+		wxASSERT(false);
 		return false;
 	}
 	
@@ -307,22 +326,27 @@ void ProxyStateMachine::ReactivateSocket()
 	}
 	
 #ifndef AMULE_DAEMON
-	/* If proxy is beeing used, CServerSocketHandler will not receive a 
-	 * wxSOCKET_CONNECTION event, because the connection has already 
-	 * started with the proxy. So we must add a wxSOCKET_CONNECTION
-	 * event to make things go undetected. A wxSOCKET_OUTPUT event is
-	 * also necessary to start sending data to the server. */
+	/*    If proxy is beeing used, then the TCP socket handlers 
+	 * (CServerSocketHandler and CClientReqSocketHandler) will not
+	 * receive a wxSOCKET_CONNECTION event, because the connection has
+	 * already started with the proxy. So we must add a wxSOCKET_CONNECTION
+	 * event to make things go undetected. A wxSOCKET_OUTPUT event is also
+	 * necessary to start sending data to the server. */
 	 
-	/* If the wxSocket had a GetEventHandler method, this could be 
-	 * much more cleaner. All this fuzz is because GetEventHandler()
-	 * is implemented in CClientReqSocket and CServerSocket, both
-	 * are aMule classes. Maybe we can add this method to a common
-	 * ancestor. */
+	/*    If the wxSocket had a GetEventHandler() method, this could be 
+	 * much more cleaner. All this fuzz with dynamic_cast<>() is because
+	 * the GetEventHandler() method had to be implemented in CClientReqSocket
+	 * and CServerSocket, and both are aMule classes. Maybe we can add this
+	 * method to a common ancestor?
+	 *    Another possibility (for wxWidgets) would be if 
+	 * SaveState()/RestoreState() also saved/restored the event handler, 
+	 * which is currently not the case, and will probably never be, because
+	 * most certainly will break wxWidgets code compatibility. */
 	wxSocketEvent e(SERVERSOCKET_HANDLER);
 	e.m_event = wxSOCKET_CONNECTION;
 	e.SetEventObject(m_ProxyClientSocket);
-	CClientReqSocket *s1 = dynamic_cast<CClientReqSocket *>(m_ProxyClientSocket);
-	if (s1) {
+	if (CClientReqSocket *s1 =
+		dynamic_cast<CClientReqSocket *>(m_ProxyClientSocket)) {
 		CClientReqSocketHandler *h = s1->GetEventHandler();
 		m_ProxyClientSocket->SetEventHandler(*h, CLIENTREQSOCKET_HANDLER);
 		h->AddPendingEvent(e);
@@ -332,10 +356,9 @@ void ProxyStateMachine::ReactivateSocket()
 			e.m_event = wxSOCKET_LOST;
 			h->AddPendingEvent(e);
 		}
-		return;
-	}
-	CServerSocket *s2 = dynamic_cast<CServerSocket *>(m_ProxyClientSocket);
-	if (s2) {
+		s1->RestoreState();
+	} else if (CServerSocket *s2 =
+		dynamic_cast<CServerSocket *>(m_ProxyClientSocket)) {
 		CServerSocketHandler *h = s2->GetEventHandler();
 		m_ProxyClientSocket->SetEventHandler(*h, SERVERSOCKET_HANDLER);
 		h->AddPendingEvent(e);
@@ -345,7 +368,24 @@ void ProxyStateMachine::ReactivateSocket()
 			e.m_event = wxSOCKET_LOST;
 			h->AddPendingEvent(e);
 		}
-		return;
+		s2->RestoreState();
+	} else if (amuleProxyClientSocket *s3 = 
+		dynamic_cast<amuleProxyClientSocket *>(m_ProxyClientSocket)) {
+		// If the socket was not of the types above, then we assume
+		// we are in the UDP socket case.
+		wxASSERT(m_ProxyCommand == wxPROXY_CMD_UDP_ASSOCIATE);
+		wxDatagramSocketProxy *udp = s3->GetUDPSocket();
+		if (udp) {
+			if(m_ok) {
+				// From now on, the UDP socket can be used,
+				// remove the protection.
+				udp->SetUDPSocketOk();
+			}
+		}
+		// No need to call RestoreState(), that socket will no longer
+		// be used after proxy negotiation.
+	} else {
+		wxASSERT(false);
 	}
 #endif
 }
@@ -392,6 +432,12 @@ wxSocketBase &ProxyStateMachine::ProxyRead(wxSocketBase &socket, void *buffer)
 // Socks5StateMachine
 //------------------------------------------------------------------------------
 
+/**
+ * The state machine constructor must initialize the array of pointer to member
+ * functions. Don't waste you time trying to statically initialize this, pointer
+ * to member functions require an object to operate on, so this array must be
+ * initialized at run time.
+ */
 Socks5StateMachine::Socks5StateMachine(
 	const wxProxyData &ProxyData,
 	wxProxyCommand ProxyCommand)
@@ -417,13 +463,17 @@ ProxyStateMachine(
 
 void Socks5StateMachine::process_state(t_sm_state state, bool entry)
 {
+	/* Ok, the syntax is terrible, but this is correct. This is a
+	 * pointer to a member function. No C equivalent for that. */
 	(this->*m_process_state[state])(entry);
 }
 
 /**
  * Code this such that the next state is only entered when it is able to
  * perform the operation (read or write). State processing will assume
- * that it can read or write upon entry of the state.
+ * that it can read or write upon entry of the state. This is done using
+ * CanSend() and CanReceive(). On daemon, these functions always return
+ * true, because sockets are blocking.
  */
 t_sm_state Socks5StateMachine::next_state(t_sm_event event)
 {
@@ -555,7 +605,6 @@ t_sm_state Socks5StateMachine::next_state(t_sm_event event)
  * event will be generated. If you feel you will need more clocks than these, use
  * AddDummyEvent(), but I suggest you review your state machine design first.
  */
-
 void Socks5StateMachine::process_start(bool entry)
 {
 	if (entry) {
@@ -1131,12 +1180,14 @@ printf("wait state -- process_receive_command_reply\n");
 amuleProxyClientSocket::amuleProxyClientSocket(
 	wxSocketFlags flags,
 	const wxProxyData *ProxyData,
-	wxProxyCommand ProxyCommand)
+	wxProxyCommand ProxyCommand,
+	wxDatagramSocketProxy *UDPSocket)
 :
 wxSocketClient(flags)
 {
 	SetProxyData(ProxyData);
 	m_ProxyStateMachine = NULL;
+	m_UDPSocket = UDPSocket;
 	if (m_UseProxy) {
 		switch (m_ProxyData.m_ProxyType) {
 		case wxPROXY_NONE:
@@ -1182,6 +1233,10 @@ void amuleProxyClientSocket::SetProxyData(const wxProxyData *ProxyData)
 
 bool amuleProxyClientSocket::Start(const wxIPaddress &PeerAddress)
 {
+	//
+	// Important note! SaveState()/RestoreState() DO NOT save/restore
+	// the event handler.
+	//
 	SaveState();
 #ifndef AMULE_DAEMON
 	SetEventHandler(TheProxyEventHandler, PROXY_SOCKET_HANDLER);
@@ -1199,7 +1254,6 @@ bool amuleProxyClientSocket::Start(const wxIPaddress &PeerAddress)
 	SetFlags(wxSOCKET_NONE);
 //	SetFlags(wxSOCKET_NOWAIT);
 	bool ok = m_ProxyStateMachine->Start(PeerAddress, this);
-	RestoreState();
 	
 	return ok;
 }
@@ -1283,16 +1337,14 @@ wxDatagramSocketProxy::wxDatagramSocketProxy(
 	wxIPaddress &address, wxSocketFlags flags, const wxProxyData *ProxyData)
 :
 wxDatagramSocket(address, flags),
-m_ProxyTCPSocket(wxSOCKET_NOWAIT, ProxyData, wxPROXY_CMD_UDP_ASSOCIATE)
+m_ProxyTCPSocket(wxSOCKET_NOWAIT, ProxyData, wxPROXY_CMD_UDP_ASSOCIATE, this)
 {
-	bool ok = false;
-	
+	m_UDPSocketOk = false;
 	if (	m_ProxyTCPSocket.GetUseProxy() &&
 		m_ProxyTCPSocket.ProxyIsCapableOf(wxPROXY_CMD_UDP_ASSOCIATE)) {
-		m_ProxyTCPSocket.Start(address);
+			m_ProxyTCPSocket.Start(address);
 	} else {
 	}
-	m_UDPSocketOk = ok;
 	m_LastUDPOperation = wxUDP_OPERATION_NONE;
 }
 
@@ -1309,7 +1361,12 @@ wxDatagramSocket &wxDatagramSocketProxy::RecvFrom(
 	m_LastUDPOperation = wxUDP_OPERATION_RECV_FROM;
 	if (m_ProxyTCPSocket.GetUseProxy()) {
 		if (m_UDPSocketOk) {
-			char *bufUDP = new char[nBytes + wxPROXY_UDP_MAXIMUM_OVERHEAD];
+			char *bufUDP = NULL;
+			if (nBytes + wxPROXY_UDP_MAXIMUM_OVERHEAD > wxPROXY_BUFFER_SIZE) {
+				bufUDP = new char[nBytes + wxPROXY_UDP_MAXIMUM_OVERHEAD];
+			} else {
+				bufUDP = m_ProxyTCPSocket.GetBuffer();
+			}
 			wxDatagramSocket::RecvFrom(
 				m_ProxyTCPSocket.GetProxyBoundAddress(),
 				bufUDP, nBytes + wxPROXY_UDP_MAXIMUM_OVERHEAD);
@@ -1317,9 +1374,16 @@ wxDatagramSocket &wxDatagramSocketProxy::RecvFrom(
 			switch (m_ProxyTCPSocket.GetBuffer()[3]) {
 			case SOCKS5_ATYP_IPV4_ADDRESS: {
 				offset = wxPROXY_UDP_OVERHEAD_IPV4;
-				wxIPV4address &a = dynamic_cast<wxIPV4address &>(addr);
-				a.Hostname(Uint32toStringIP( *((uint32 *)(m_ProxyTCPSocket.GetBuffer()+4)) ));
-				a.Service(ntohs(             *((uint16 *)(m_ProxyTCPSocket.GetBuffer()+8)) ));
+				try {
+					amuleIPV4Address &a = dynamic_cast<amuleIPV4Address &>(addr);
+					a.Hostname(Uint32toStringIP(
+						*((uint32 *)(m_ProxyTCPSocket.GetBuffer()+4)) ));
+					a.Service(ntohs(
+						*((uint16 *)(m_ProxyTCPSocket.GetBuffer()+8)) ));
+				} catch (std::bad_cast e) {
+					printf("(2)bad_cast exception!\n");
+					wxASSERT(false);
+				}
 			}
 				break;
 				
@@ -1340,11 +1404,16 @@ wxDatagramSocket &wxDatagramSocketProxy::RecvFrom(
 printf("RecvFrom\n");
 printf("LastCount:%d\n", wxDatagramSocket::LastCount());
 dump("nbufUDP:", 3, bufUDP, wxDatagramSocket::LastCount());
-			/* We should use a fixed buffer to avoid new/delete it all the time. I need an upper bound */
-			delete bufUDP;
+			/* Only delete buffer if it was dynamically created */
+			if (bufUDP != m_ProxyTCPSocket.GetBuffer()) {
+				/* We should use a fixed buffer to avoid
+				 * new/delete it all the time. 
+				 * I need an upper bound */
+				delete bufUDP;
+			}
 			/* There is still one problem pending, fragmentation.
 			 * Either we support it or we have to drop fragmented
-			 * messages.
+			 * messages. I vote for drop :)
 			 */
 		}
 	} else {

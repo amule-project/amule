@@ -173,9 +173,14 @@ private:
 // ProxyStateMachine
 //------------------------------------------------------------------------------
 /* This size is just to be a little bit greater than the UDP buffer used in aMule.
- * Proxy protocol needs much less than this. 1024 would be ok. */
-const unsigned int wxPROXY_BUFFER_SIZE = 5*1024;
+ * Proxy protocol needs much less than this. 1024 would be ok. Other options are
+ * - Default ethernet MTU - Eth-II - IP - UDP: 1,514 - 14 - 20 - 8 = 1472 bytes;
+ * - Default token ring MTU 4,202 - overheads = ??.
+ * It would be really more efficient if the final object was less than 
+ * a page (4096 bytes) in size.
+ */
 //const unsigned int wxPROXY_BUFFER_SIZE = 1024;
+const unsigned int wxPROXY_BUFFER_SIZE = 5*1024;
 
 enum wxProxyCommand {
 	wxPROXY_CMD_CONNECT,
@@ -192,11 +197,13 @@ class ProxyStateMachine : public StateMachine
 {
 public:
 	ProxyStateMachine(
-		const wxString &name,
+		wxString name,
 		const unsigned int max_states,
 		const wxProxyData &ProxyData,
 		wxProxyCommand cmd);
 	virtual ~ProxyStateMachine();
+	static wxString	&NewName(wxString &s, wxProxyCommand cmd);
+	
 	/* Interface */
 	bool		Start(const wxIPaddress &PeerAddress, wxSocketClient *ProxyClientSocket);
 	t_sm_state	HandleEvent(t_sm_event event);
@@ -205,7 +212,7 @@ public:
 	char 		*GetBuffer() const			{ return (char *)m_buffer; }
 	wxIPaddress	&GetProxyBoundAddress(void) const	{ return *m_ProxyBoundAddress; }
 	unsigned char	GetLastReply(void) const		{ return m_LastReply; }
-	bool IsEndState() const					{ return GetState() == PROXY_STATE_END; }
+	bool		IsEndState() const			{ return GetState() == PROXY_STATE_END; }
 
 protected:
 	wxSocketBase		&ProxyWrite(wxSocketBase &socket, const void *buffer, wxUint32 nbytes);
@@ -382,6 +389,8 @@ private:
 // amuleProxyClientSocket
 //------------------------------------------------------------------------------
 
+class wxDatagramSocketProxy;
+
 class amuleProxyClientSocket : public wxSocketClient
 {
 friend class ProxyEventHandler;
@@ -390,7 +399,8 @@ public:
 	amuleProxyClientSocket(
 		wxSocketFlags flags = wxSOCKET_NONE,
 		const wxProxyData *ProxyData = NULL,
-		wxProxyCommand ProxyCommand = wxPROXY_CMD_CONNECT);
+		wxProxyCommand ProxyCommand = wxPROXY_CMD_CONNECT,
+		wxDatagramSocketProxy *UDPSocket = NULL);
 	
 	/* Destructor */
 	~amuleProxyClientSocket();
@@ -403,12 +413,15 @@ public:
 						{ return m_ProxyStateMachine->GetProxyBoundAddress(); }
 	bool Start(const wxIPaddress &PeerAddress);
 	bool ProxyIsCapableOf(wxProxyCommand ProxyCommand) const;
+	bool ProxyNegotiationIsOver() const	{ return m_ProxyStateMachine->IsEndState(); }
+	wxDatagramSocketProxy *GetUDPSocket() const { return m_UDPSocket; }
 	
 private:
 	bool			m_UseProxy;
 	wxProxyData		m_ProxyData;
 	amuleIPV4Address	m_ProxyAddress;
 	ProxyStateMachine	*m_ProxyStateMachine;
+	wxDatagramSocketProxy	*m_UDPSocket;
 };
 
 //------------------------------------------------------------------------------
@@ -463,7 +476,7 @@ const unsigned int wxPROXY_UDP_MAXIMUM_OVERHEAD		= wxPROXY_UDP_OVERHEAD_DOMAIN_N
 class wxDatagramSocketProxy : public wxDatagramSocket
 {
 #if !wxCHECK_VERSION(2,5,3)
-	DECLARE_CLASS(wxDatagramSocketProxy)
+	DECLARE_ABSTRACT_CLASS(wxDatagramSocketProxy)
 #endif
 public:
 	/* Constructor */
@@ -476,13 +489,14 @@ public:
 	~wxDatagramSocketProxy();
 	
 	/* Interface */
+	void SetUDPSocketOk() { m_UDPSocketOk = true; }
 	
 	/* wxDatagramSocket Interface */
-	wxDatagramSocket& RecvFrom(
+	virtual wxDatagramSocket& RecvFrom(
 		wxSockAddress& addr, void* buf, wxUint32 nBytes );
-	wxDatagramSocket& SendTo(
+	virtual wxDatagramSocket& SendTo(
 		wxIPaddress& addr, const void* buf, wxUint32 nBytes );
-	wxUint32 LastCount(void) const;
+	virtual wxUint32 LastCount(void) const;
 	
 private:
 	bool			m_UDPSocketOk;
