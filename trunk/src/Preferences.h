@@ -497,6 +497,8 @@ public:
 	// Hidden files
 	
 	static bool ShareHiddenFiles() { return s_ShareHiddenFiles; }
+	
+	static bool AutoSortDownload() { return s_AutoSortDownload; } 
 
 protected:
 	void	CreateUserHash();
@@ -720,6 +722,8 @@ protected:
 	
 	// Hidden files sharing
 	static bool	s_ShareHiddenFiles;
+	
+	static bool s_AutoSortDownload;
 };
 
 
