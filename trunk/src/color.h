@@ -78,13 +78,12 @@ inline int GetBValue(COLORREF rgb)
 	return rgb & 0xff;
 }
 
+#endif
+
 inline COLORREF DarkenColour(COLORREF rgb, int level) 
 {	
 	return RGB(GetRValue(rgb) / level, GetGValue(rgb) / level, GetBValue(rgb) / level);
 }
-
-#endif
-
 
 inline wxColour WxColourFromCr(COLORREF cr)
 {
