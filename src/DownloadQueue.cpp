@@ -126,14 +126,14 @@ void CDownloadQueue::CompDownDatarateOverhead()
 {
 	m_AvarageDDRO_list.push_back(m_nDownDataRateMSOverhead);
 	m_nDownDataRateMSOverhead = 0;
-			
+
 	if(m_AvarageDDRO_list.size() <= 10) {
 		m_nDownDatarateOverhead = 0;
 	} else {
 		if (m_AvarageDDRO_list.size() > 150) {
 			m_AvarageDDRO_list.pop_front();
 		}
-		
+
 		m_nDownDatarateOverhead = 0;
 		for (int i = 0, size = m_AvarageDDRO_list.size(); i < size; i++) {
 			m_nDownDatarateOverhead += m_AvarageDDRO_list[i];
@@ -354,7 +354,7 @@ bool CDownloadQueue::IsFileExisting(uchar* fileid)
 void CDownloadQueue::Process()
 {
 	ProcessLocalRequests(); // send src requests to local server
-		
+
 	uint32 downspeed = 0;
 	if (app_prefs->GetMaxDownload() != UNLIMITED && datarate > 1500) {
 		downspeed = (app_prefs->GetMaxDownload()*1024*100)/(datarate+1); //(uint16)((float)((float)(app_prefs->GetMaxDownload()*1024)/(datarate+1)) * 100);
@@ -367,7 +367,7 @@ void CDownloadQueue::Process()
 
 	datarate = 0;
 	udcounter++;
-	
+
 	// Since we imported the SortByPriority, there's no point on having separate loops
 	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
 
@@ -379,8 +379,8 @@ void CDownloadQueue::Process()
 			cur_file->StopPausedFile();
 		}
 	}
-	
-	
+
+
 	if (udcounter == 5) {
 		if (theApp.serverconnect->IsUDPSocketAvailable()) {
 			if((!lastudpstattime) || (::GetTickCount() - lastudpstattime) > UDPSERVERSTATTIME) {
@@ -389,7 +389,7 @@ void CDownloadQueue::Process()
 			}
 		}
 	}
-	
+
 	if (udcounter == 10) {
 		udcounter = 0;
 		if (theApp.serverconnect->IsUDPSocketAvailable()) {
@@ -576,14 +576,14 @@ bool CDownloadQueue::RemoveSource(CUpDownClient* toremove, bool	updatewindow, bo
 	}
 
 	/* Creteil Changes BEGIN */
-	
+
 	// remove this source on all files in the downloadqueue who link this source
 	// pretty slow but no way arround, maybe using a Map is better, but that's slower on other parts
 	POSITION pos3, pos4;
 	for(pos3 = toremove->m_OtherRequests_list.GetHeadPosition();(pos4=pos3)!=NULL;) {
 		toremove->m_OtherRequests_list.GetNext(pos3);
 		POSITION pos5 = toremove->m_OtherRequests_list.GetAt(pos4)->A4AFsrclist.Find(toremove);
-		if(pos5) { 
+		if(pos5) {
 			toremove->m_OtherRequests_list.GetAt(pos4)->A4AFsrclist.RemoveAt(pos5);
 			theApp.amuledlg->transferwnd->downloadlistctrl->RemoveSource(toremove,toremove->m_OtherRequests_list.GetAt(pos4));
 			toremove->m_OtherRequests_list.RemoveAt(pos4);
@@ -592,7 +592,7 @@ bool CDownloadQueue::RemoveSource(CUpDownClient* toremove, bool	updatewindow, bo
 	for(pos3 = toremove->m_OtherNoNeeded_list.GetHeadPosition();(pos4=pos3)!=NULL;) {
 		toremove->m_OtherNoNeeded_list.GetNext(pos3);
 		POSITION pos5 = toremove->m_OtherNoNeeded_list.GetAt(pos4)->A4AFsrclist.Find(toremove);
-		if(pos5) { 
+		if(pos5) {
 			toremove->m_OtherNoNeeded_list.GetAt(pos4)->A4AFsrclist.RemoveAt(pos5);
 			theApp.amuledlg->transferwnd->downloadlistctrl->RemoveSource(toremove,toremove->m_OtherNoNeeded_list.GetAt(pos4));
 			toremove->m_OtherNoNeeded_list.RemoveAt(pos4);
@@ -646,7 +646,7 @@ void CDownloadQueue::DeleteAll(){
 		cur_file->m_SrcList.RemoveAll();
 		cur_file->IsCountDirty = true;
 		// Barry - Should also remove all requested blocks
-		// Don't worry about deleting the blocks, that gets handled 
+		// Don't worry about deleting the blocks, that gets handled
 		// when CUpDownClient is deleted in CClientList::DeleteAll()
 		cur_file->RemoveAllRequestedBlocks();
 	}
@@ -783,7 +783,7 @@ bool ComparePartFiles(CPartFile* file1, CPartFile* file2) {
 	if (file1->GetDownPriority() == file2->GetDownPriority()) {
 		return (wxString::wxString(file1->GetPartMetFileName()).CmpNoCase(file2->GetPartMetFileName()))>=0;
 	}
-	
+
 	return (file1->GetDownPriority() < file2->GetDownPriority());
 }
 
@@ -797,8 +797,8 @@ void CDownloadQueue::ResetLocalServerRequests()
 	m_dwNextTCPSrcReq = 0;
 	m_localServerReqQueue.clear();
 
-	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) 
-	{ 
+	for ( uint16 i = 0, size = filelist.size(); i < size; i++ )
+	{
 		CPartFile* pFile = filelist[i];
 		UINT uState = pFile->GetStatus();
 		if (uState == PS_READY || uState == PS_EMPTY)
@@ -849,7 +849,7 @@ void CDownloadQueue::ProcessLocalRequests()
 						dwBestWaitTime = cur_file->lastsearchtime + (PR_HIGH - nPriority);
 						posNextRequest = it;
 					}
-					
+
 					it++;
 				}
 				else{
@@ -858,7 +858,7 @@ void CDownloadQueue::ProcessLocalRequests()
 					AddDebugLogLineM(false, wxString::Format(wxT("Local server source request for file \"%s\" not sent because of status'%s'"), cur_file->GetFileName().c_str(), cur_file->getPartfileStatus().c_str()));
 				}
 			}
-			
+
 			if (posNextRequest != m_localServerReqQueue.end())
 			{
 				CPartFile* cur_file = (*posNextRequest);
@@ -866,7 +866,7 @@ void CDownloadQueue::ProcessLocalRequests()
 				cur_file->lastsearchtime = ::GetTickCount();
 				m_localServerReqQueue.erase(posNextRequest);
 				iFiles++;
-				
+
 				// create request packet
 				Packet* packet = new Packet(OP_GETSOURCES,16);
 				md4cpy(packet->pBuffer,cur_file->GetFileHash());
@@ -903,7 +903,7 @@ void CDownloadQueue::SendLocalSrcRequest(CPartFile* sender)
 
 void CDownloadQueue::GetDownloadStats(uint32 results[])
 {
-	
+
 	results[0]=0;
 	results[1]=0;
 
@@ -927,13 +927,13 @@ CUpDownClient* CDownloadQueue::GetDownloadClientByIP(uint32 dwIP)
 	return NULL;
 }
 
-    
+
 void CDownloadQueue::AddLinksFromFile()
 {
         wxString filename;
 	wxString link;
 	wxTextFile linksfile(wxString::Format(wxT("%s/.aMule/ED2KLinks"), getenv("HOME")));
-	
+
 	if (linksfile.Open()) {
 		link = linksfile.GetFirstLine();
 		// GetLineCount returns the actual number of lines in file, but line numbering
@@ -958,7 +958,7 @@ void CDownloadQueue::AddLinksFromFile()
 				theApp.amuledlg->AddLogLine(true,CString(_("Invalid link: %s")),buffer);
 			}
 			// We must double-check here where are we, because GetNextLine moves reading head
-			// one line below, and we must make sure that line exists. Thus check if we are 
+			// one line below, and we must make sure that line exists. Thus check if we are
 			// at least one line away from end before trying to read next line.
 			if (i + 1 < linksfile.GetLineCount()) {
 				link = linksfile.GetNextLine();
@@ -974,7 +974,7 @@ void CDownloadQueue::AddLinksFromFile()
 
 /* Razor 1a - Modif by MikaelB
    RemoveSourceFromPartFile function */
-   
+
 void CDownloadQueue::RemoveSourceFromPartFile(CPartFile* file, CUpDownClient* client, POSITION position)
 {
 	file->m_SrcList.RemoveAt(position);
@@ -993,7 +993,7 @@ void CDownloadQueue::RemoveSourceFromPartFile(CPartFile* file, CUpDownClient* cl
 			POSITION position2 = client->m_OtherRequests_list.GetAt(temp_position)->A4AFSourcesList.Find(client);
 			if(position2) {
 				client->m_OtherRequests_list.GetAt(temp_position)->A4AFSourcesList.RemoveAt(position2);
-				theApp.amuledlg->transferwnd->downloadlistctrl->RemoveSource(client, client->m_OtherRequests_list.GetAt(temp_position));  
+				theApp.amuledlg->transferwnd->downloadlistctrl->RemoveSource(client, client->m_OtherRequests_list.GetAt(temp_position));
 				client->m_OtherRequests_list.RemoveAt(temp_position);
 			}
 		}
@@ -1059,7 +1059,7 @@ void CDownloadQueue::SetCatStatus(int cat, int newstatus)
 		if (!cur_file) {
 			continue;
 		}
-		
+
 		if (CheckShowItemInGivenCat(cur_file,cat)) {
 			switch (newstatus) {
 				case MP_CANCEL:
@@ -1072,7 +1072,7 @@ void CDownloadQueue::SetCatStatus(int cat, int newstatus)
 				case MP_STOP:
 					cur_file->StopFile();
 					break;
-				case MP_RESUME: 
+				case MP_RESUME:
 					if (cur_file->GetStatus()==PS_PAUSED) {
 						cur_file->ResumeFile();
 					}
@@ -1174,11 +1174,11 @@ void CDownloadQueue::CheckDiskspace(bool bNotEnoughSpaceLeft)
 					continue;
 			}
 			if (nTotalAvailableSpace < theApp.glob_prefs->GetMinFreeDiskSpace()) {
-				if (cur_file->IsNormalFile()) {				
+				if (cur_file->IsNormalFile()) {
 				// Normal files: pause the file only if it would still grow
 					uint32 nSpaceToGrow = cur_file->GetNeededSpace();
 					if (nSpaceToGrow) {
-						if (!cur_file->GetInsufficient()) {						
+						if (!cur_file->GetInsufficient()) {
 							AddLogLineM(false, wxString::Format(wxT("Free Disk Space (Total): %lli\n"), nTotalAvailableSpace));
 							AddLogLineM(true, wxString::Format(wxT("File : %s, Needed Space : %i - PAUSED !!!\n"), cur_file->GetFileName().GetData(), cur_file->GetNeededSpace()));
 							// cur_file->PauseFileInsufficient();
@@ -1186,7 +1186,7 @@ void CDownloadQueue::CheckDiskspace(bool bNotEnoughSpaceLeft)
 						}
 					}
 				} else {
-					if (!cur_file->GetInsufficient()) {											
+					if (!cur_file->GetInsufficient()) {
 						// Compressed/sparse files: always pause the file
 						cur_file->PauseFile(true/*bInsufficient*/);
 					}
@@ -1227,7 +1227,7 @@ bool CDownloadQueue::SendGlobGetSourcesUDPPacket(CSafeMemFile& data)
 		packet.opcode = OP_GLOBGETSOURCES;
 		theApp.uploadqueue->AddUpDataOverheadServer(packet.size);
 		theApp.serverconnect->SendUDPPacket(&packet,cur_udpserver,false);
-		
+
 		m_cRequestsSentToServer += iFileIDs;
 		bSentPacket = true;
 	}
@@ -1255,8 +1255,9 @@ SourcesAsyncDNS::SourcesAsyncDNS() : wxThread(wxTHREAD_DETACHED)
 
 wxThread::ExitCode SourcesAsyncDNS::Entry()
 {
-	struct hostent ret,*result=NULL;
+    struct hostent *result=NULL;
 #ifndef __WXMSW__
+    struct hostent ret; //only used if no _WXMSW_
 	int errorno=0;
 	char dataBuf[512]={0};
 #endif
@@ -1266,7 +1267,7 @@ wxThread::ExitCode SourcesAsyncDNS::Entry()
 #elif defined(__WXMSW__)
 	result = gethostbyname(ipName.GetData());
 #else
-	result = gethostbyname_r(ipName.GetData(),&ret,dataBuf,sizeof(dataBuf),&errorno); 
+	result = gethostbyname_r(ipName.GetData(),&ret,dataBuf,sizeof(dataBuf),&errorno);
 #endif
 
 	if(result) {
@@ -1274,7 +1275,7 @@ wxThread::ExitCode SourcesAsyncDNS::Entry()
         unsigned long addr=*(unsigned long*)result->h_addr;
         #else
         unsigned long addr=*(unsigned long*)ret.h_addr;
-        #endif    
+        #endif
 		struct sockaddr_in* newsi=(struct sockaddr_in*)malloc(sizeof(struct sockaddr_in)); // new struct sockaddr_in;
 		newsi->sin_addr.s_addr=addr;
 		wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED,TM_SOURCESDNSDONE);
@@ -1329,7 +1330,7 @@ bool CDownloadQueue::OnHostnameResolved(struct sockaddr_in* inaddr)
 {
 	Hostname_Entry* resolved = m_toresolve.front();
 	m_toresolve.pop_front();
-	
+
 	if (resolved) {
 		//printf("Thread finished, Hostname %s resolved to %s\n", resolved->strHostname.c_str(),inet_ntoa(inaddr->sin_addr));
 		printf(unicode2char(wxString::Format(wxT("Thread finished, Hostname %s resolved to %s\n"), resolved->strHostname.c_str(), inet_ntoa(inaddr->sin_addr))));
