@@ -296,6 +296,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client)
 		// Well, all that issues finish in the same: don't allow to add to the queue
 		return;	
 	}
+		
 	
 	if ( client->IsBanned() ) {
 		return;

@@ -25,6 +25,8 @@
 #pragma interface "CTypedPtrList.h"
 #endif
 
+#include <wx/debug.h>
+
 #include <cstddef> 
 
 /**

@@ -26,8 +26,8 @@
 #include <wx/treebase.h>	// Needed for wxTreeItemId (HTREEITEM) and wxTreeCtrl
 
 #include "types.h"			// Needed for uint32 and uint64
-#include "amule.h"			// Needed for StatsTreeNode
 #include "CTypedPtrList.h"	// Needed for CList
+#include "Statistics.h"
 
 class COScopeCtrl;
 
@@ -43,8 +43,7 @@ public:
 	CStatisticsDlg(wxWindow* pParent = NULL);   // standard constructor
 	~CStatisticsDlg();
 
-	void Localize();
-	void UpdateStatGraphs(bool bStatsVisible, const uint32 peakconnections, const double Timestamp, const float** new_points[3]);
+	void UpdateStatGraphs(bool bStatsVisible, const uint32 peakconnections, const GraphUpdateInfo& update);
 	void SetUpdatePeriod();
 	void ResetAveragingTime();
 	void ShowStatistics();
@@ -54,9 +53,6 @@ public:
 	void InitTree();
 	void InitGraphs();
 	void ApplyStatsColor(int index);
-	COLORREF GetTrayBarColor()		{return acrStat[11];}
-
-	wxString IterateChilds(wxTreeItemId hChild, int level);
 	
 	COScopeCtrl* GetDLScope()	{ return pscopeDL; };
 	
@@ -67,9 +63,6 @@ protected:
 
     COScopeCtrl* pscopeDL,*pscopeUL,*pscopeConn;
     wxTreeCtrl* stattree;
-
-	int dl_users,dl_active;
-	int stat_max;
 
 	void SetStatsRanges(int min, int max);
 				

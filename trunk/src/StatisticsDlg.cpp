@@ -28,40 +28,19 @@
 #include "config.h"
 #endif // HAVE_CONFIG_H
 
-#include <cmath>		// Needed for std::exp
 #include <wx/settings.h>
 #include <wx/stattext.h>
 #include <wx/sizer.h>
 
 #include "muuli_wdr.h"		// Needed for statsDlg
 #include "StatisticsDlg.h"	// Interface declarations
-#include "GetTickCount.h"	// Needed for GetTickCount
-#include "ServerList.h"		// Needed for CServerList
-#include "ClientList.h"		// Needed for CClientList
-#include "SharedFileList.h"	// Needed for CSharedFileList
 #include "otherfunctions.h"	// Needed for GetTickCount
-#include "sockets.h"		// Needed for CServerConnect
-#include "UploadQueue.h"	// Needed for CUploadQueue
-#include "DownloadQueue.h"	// Needed for CDownloadQueue
-#include "ListenSocket.h"	// Needed for CListenSocket
 #include "ColorFrameCtrl.h"	// Needed for CColorFrameCtrl
 #include "Preferences.h"	// Needed for CPreferences
 #include "OScopeCtrl.h"		// Needed for COScopeCtrl
 #include "amuleDlg.h"		// Needed for ShowStatistics
+#include "amule.h"		// Needed for theApp
 
-#ifndef __WXMSW__
-	#include "netinet/in.h"	// Needed for htonl()
-#else
-	#include "winsock.h"
-#endif
-
-#define ID_EXPORT_HTML 20001
-#ifdef __BSD__
-	// glibc -> bsd libc
-	#define round rint
-#else
-	#define round(x) floor(x+0.5)
-#endif /* __BSD__ */
 // CStatisticsDlg dialog
 
 BEGIN_EVENT_TABLE(CStatisticsDlg,wxPanel)
@@ -162,8 +141,13 @@ void CStatisticsDlg::ApplyStatsColor(int index)
 	}
 }
 
-void CStatisticsDlg::UpdateStatGraphs(bool bStatsVisible, const uint32 peakconnections, const double Timestamp, const float** new_points[3])
+void CStatisticsDlg::UpdateStatGraphs(bool bStatsVisible, const uint32 peakconnections, const GraphUpdateInfo& update)
 {
+	
+	const float *apfDown[] = { &update.downloads[0], &update.downloads[1], &update.downloads[2] };
+	const float *apfUp[] = { &update.uploads[0], &update.uploads[1], &update.uploads[2] };
+	const float *apfConn[] = { &update.connections[0], &update.connections[1], &update.connections[2] };
+	
 	if (!bStatsVisible) {
 		pscopeDL->DelayPoints();
 		pscopeUL->DelayPoints();
@@ -174,16 +158,15 @@ void CStatisticsDlg::UpdateStatGraphs(bool bStatsVisible, const uint32 peakconne
 	unsigned nScale = (unsigned)std::ceil((float)peakconnections / pscopeConn->GetUpperLimit());
 	if (nScale != nScalePrev) {
 		nScalePrev = nScale;
-		wxString txt = wxString::Format(_("Active connections (1:%u)"), nScale);
-		CastChild( ID_ACTIVEC, wxStaticText )->SetLabel(txt);
+		CastChild( ID_ACTIVEC, wxStaticText )->SetLabel(wxString::Format(_("Active connections (1:%u)"), nScale));
 		pscopeConn->SetRange(0.0, (float)nScale*pscopeConn->GetUpperLimit(), 1);
 	}
 	if (!bStatsVisible)
 		return;
 	
-	pscopeDL->AppendPoints(Timestamp, new_points[0]);
-	pscopeUL->AppendPoints(Timestamp, new_points[1]);
-	pscopeConn->AppendPoints(Timestamp, new_points[2]);
+	pscopeDL->AppendPoints(update.timestamp, apfDown);
+	pscopeUL->AppendPoints(update.timestamp, apfUp);
+	pscopeConn->AppendPoints(update.timestamp, apfConn);
 }
 
 
@@ -214,8 +197,8 @@ void  CStatisticsDlg::InitTree()
 {
 	
 	wxTreeItemId root=stattree->AddRoot(_("Statistics"));
-
-	wxASSERT((++theApp.statstree.begin()).begin() != (++theApp.statstree.begin()).end());
+	
+	wxASSERT((++theApp.statistics->statstree.begin()).begin() != (++theApp.statistics->statstree.begin()).end());
 	
 	ShowStatistics();
 	
@@ -239,40 +222,12 @@ void  CStatisticsDlg::InitTree()
 void CStatisticsDlg::ShowStatistics()
 {
 
-	StatsTreeSiblingIterator sib = theApp.statstree.begin().begin();
+	StatsTreeSiblingIterator sib = theApp.statistics->statstree.begin().begin();
+	
 	wxTreeItemId root = stattree->GetRootItem();
 	
 	FillTree(sib,root);
 	
-}
-
-
-wxString CStatisticsDlg::IterateChilds(wxTreeItemId hChild, int level) {
-	
-	wxString strBuffer;
-	
-	wxTreeItemId hChild2;
-	wxTreeItemIdValue cookie;
-	hChild2 = stattree->GetFirstChild(hChild,cookie);
-	
-	while(hChild2.IsOk()) {
-		
-		// Add this item
-		strBuffer+= wxT("<br>");
-		for (int ix=0; ix < level; ++ix) {
-			strBuffer += wxT("&nbsp;&nbsp;&nbsp;");
-		}		
-		strBuffer += stattree->GetItemText(hChild2);
-		
-		// Add subchilds
-		
-		strBuffer+= IterateChilds(hChild2,level+1);
-		
-		// Next on this level
-		hChild2 = stattree->GetNextSibling(hChild2);
-	}	
-	
-	return strBuffer;
 }
 
 void CStatisticsDlg::SetARange(bool SetDownload,int maxValue)

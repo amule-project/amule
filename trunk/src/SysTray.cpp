@@ -309,7 +309,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 
 	// Uptime
 	{
-		wxString temp = wxString::Format(wxT("%s%s"), _("Uptime: "), CastSecondsToHM(theApp.GetUptimeSecs()).c_str());
+		wxString temp = _("Uptime: ") + CastSecondsToHM(theApp.GetUptimeSecs());
 								   
 		info_item=gtk_menu_item_new_with_label( unicode2gtk(temp));
 		gtk_container_add (GTK_CONTAINER (info_menu), info_item);
@@ -334,7 +334,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 
 	// Total Downloaded
 	{
-		wxString temp = CastItoXBytes( theApp.stat_sessionReceivedBytes + thePrefs::GetTotalDownloaded() );
+		wxString temp = CastItoXBytes( theApp.statistics->GetSessionReceivedBytes() + thePrefs::GetTotalDownloaded() );
 		temp = wxString(_("Total DL: ")) + temp;
 		info_item=gtk_menu_item_new_with_label( unicode2gtk( temp ) );
 		gtk_container_add (GTK_CONTAINER (info_menu), info_item);
@@ -343,7 +343,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 
 	// Total Uploaded
 	{
-		wxString temp = CastItoXBytes( theApp.stat_sessionSentBytes + thePrefs::GetTotalUploaded() );
+		wxString temp = CastItoXBytes( theApp.statistics->GetSessionSentBytes() + thePrefs::GetTotalUploaded() );
 		temp = wxString(_("Total UL: ")) + temp;
 		info_item=gtk_menu_item_new_with_label( unicode2gtk( temp ) );
 		gtk_container_add (GTK_CONTAINER (info_menu), info_item);

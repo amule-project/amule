@@ -43,6 +43,7 @@
 #include "BarShader.h"		// Needed for CBarShader
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "ClientList.h"
+#include "Statistics.h"
 
 #ifndef AMULE_DAEMON
 	#include "TransferWnd.h"	// Needed for CTransferWnd
@@ -592,7 +593,7 @@ uint32 CUpDownClient::SendBlockData(float kBpsToSend){
 		m_nMaxSendAllowed -= nBlockSize;
 		SendPacket(tosend,true,false);
 		m_nTransferedUp += nBlockSize;
-		theApp.UpdateSentBytes(nBlockSize);
+		theApp.statistics->UpdateSentBytes(nBlockSize);
 		credits->AddUploaded(nBlockSize, GetIP());
 		if (m_BlockSend_queue.IsEmpty())
 			CreateNextBlockPackage();

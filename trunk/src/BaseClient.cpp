@@ -43,7 +43,7 @@
 #include "ListenSocket.h"	// Needed for CClientReqSocket
 #include "opcodes.h"		// Needed for OP_*
 #include "updownclient.h"	// Needed for CUpDownClient
-
+#include "Statistics.h"
 
 //#define DEBUG_LOCAL_CLIENT_PROTOCOL
 //#define __PACKET_DEBUG__
@@ -596,7 +596,7 @@ bool CUpDownClient::SendHelloPacket() {
 	#warning Kry - why is IPAddress returning wrong endianess?
 	if ( theApp.ipfilter->IsFiltered(ENDIAN_SWAP_32(StringIPtoUint32(address.IPAddress())))) {
 		AddDebugLogLineM(true, wxT("Filtered IP: ") +GetFullIP() + wxT("(") + theApp.ipfilter->GetLastHit() + wxT(")"));
-		theApp.stat_filteredclients++;
+		theApp.statistics->AddFilteredClient();
 		if (Disconnected(wxT("IPFilter"))) {
 			Safe_Delete();
 			return false;

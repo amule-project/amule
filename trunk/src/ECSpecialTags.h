@@ -31,8 +31,7 @@
 #include <vector>
 
 #ifndef EC_REMOTE
-#include "tree.hh"	// Needed for tree<>::
-#include "amule.h"		// Needed for StatsTreeSiblingIterator
+#include "Statistics.h"	// Needed for StatsTree
 #endif
 
 #if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)

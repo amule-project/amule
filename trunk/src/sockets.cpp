@@ -49,6 +49,7 @@
 #include "ServerList.h"		// Needed for CServerList
 #include "Preferences.h"	// Needed for CPreferences
 #include "updownclient.h"	// for SO_AMULE
+#include "Statistics.h"
 
 #ifndef AMULE_DAEMON
 	#include "SearchDlg.h"		// Needed for CSearchDlg
@@ -241,8 +242,8 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 		theApp.uploadqueue->AddUpDataOverheadServer(packet->GetPacketSize());
 		SendPacket(packet, true, sender);
 	} else if (sender->GetConnectionState() == CS_CONNECTED){
-		theApp.stat_reconnects++;
-		theApp.stat_serverConnectTime=GetTickCount64();
+		theApp.statistics->AddReconnect();
+		theApp.statistics->SetServerConnectTime(GetTickCount64());
 		connected = true;
 		AddLogLineM(true, _("Connection established on: ") + sender->cur_server->GetListName());
 		connectedsocket = sender;
@@ -363,7 +364,7 @@ void CServerConnect::ConnectionFailed(CServerSocket* sender){
 			connectedsocket = NULL;
 			Notify_SearchCancel();
 //			printf("Reconn %d conn %d\n",thePrefs::Reconnect(),connecting);
-			theApp.stat_serverConnectTime = 0;
+			theApp.statistics->SetServerConnectTime(0);
 			if (thePrefs::Reconnect() && !connecting){
 				ConnectToAnyServer();		
 			}
@@ -458,7 +459,7 @@ bool CServerConnect::Disconnect()
 		DestroySocket(connectedsocket);
 		connectedsocket = NULL;
 		Notify_ShowConnState(false,wxEmptyString);
-		theApp.stat_serverConnectTime=0;
+		theApp.statistics->SetServerConnectTime(0);
 		return true;
 	}
 	else

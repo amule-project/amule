@@ -935,7 +935,7 @@ void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 
 	static uint32	/*msPrev1, */msPrev5, msPrevGraph, msPrevStats;
 
-	uint32 			msCur = theApp.GetUptimeMsecs();
+	uint32 			msCur = theApp.statistics->GetUptimeMsecs();
 
 	// can this actually happen under wxwin ?
 	if (!SafeState()) {
@@ -948,17 +948,9 @@ void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 		// trying to get the graph shifts evenly spaced after a change in the update period
 		msPrevGraph = msCur;
 		
-		HR* phr = &theApp.listHR.GetTail();
-		float cUp, cDown, cConn;
-		cUp   = (float)phr->cntUploads;
-		cDown = (float)phr->cntConnections;
-		cConn = (float)phr->cntDownloads;
-		const float *apfDown[] = { &theApp.kBpsDownSession, &theApp.kBpsDownAvg, &theApp.kBpsDownCur };
-		const float *apfUp[] = { &theApp.kBpsUpSession, &theApp.kBpsUpAvg, &theApp.kBpsUpCur };
-		const float *apfConn[] = { &cUp, &cDown, &cConn };
-		const float **graph_points[3] = { apfDown, apfUp, apfConn };
-		statisticswnd->UpdateStatGraphs(bStatsVisible, theApp.listensocket->GetPeakConnections(), phr->sTimestamp, graph_points);
-	
+		GraphUpdateInfo update = theApp.statistics->GetPointsForUpdate();
+		
+		statisticswnd->UpdateStatGraphs(bStatsVisible, theApp.listensocket->GetPeakConnections(), update);
 	}
 
 	int sStatsUpdate = thePrefs::GetStatsInterval();

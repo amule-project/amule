@@ -55,7 +55,7 @@
 #include "ECPacket.h"		// Needed for CECPacket, CECTag
 #include "ECcodes.h"		// Needed for OPcodes, TAGnames
 #include "ECSpecialTags.h"	// Needed for special EC tag creator classes
-
+#include "Statistics.h"
 
 using namespace otherfunctions;
 
@@ -1332,7 +1332,7 @@ CECPacket *GetStatsGraphs(const CECPacket *request)
 			uint16 nScale = request->GetTagByName(EC_TAG_STATSGRAPH_SCALE)->GetInt16Data();
 			uint16 nMaxPoints = request->GetTagByName(EC_TAG_STATSGRAPH_WIDTH)->GetInt16Data();
 			uint32 *graphData;
-			unsigned int numPoints = theApp.GetHistoryForWeb(nMaxPoints, (double)nScale, &dTimestamp, &graphData);
+			unsigned int numPoints = theApp.statistics->GetHistoryForWeb(nMaxPoints, (double)nScale, &dTimestamp, &graphData);
 			if (numPoints) {
 				response = new CECPacket(EC_OP_STATSGRAPHS);
 				response->AddTag(CECTag(EC_TAG_STATSGRAPH_DATA, 3 * numPoints * sizeof(uint32), graphData));
@@ -1541,7 +1541,7 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request, CPartFile_Enc
 			break;
 		case EC_OP_GET_STATSTREE:
 			response = new CECPacket(EC_OP_STATSTREE);
-			response->AddTag(CEC_Tree_Tag(theApp.statstree.begin().begin()));
+			response->AddTag(CEC_Tree_Tag(theApp.statistics->statstree.begin().begin()));
 			if (request->GetDetailLevel() == EC_DETAIL_WEB) {
 				response->AddTag(CECTag(EC_TAG_SERVER_VERSION, wxT(PACKAGE_VERSION)));
 				response->AddTag(CECTag(EC_TAG_USER_NICK, thePrefs::GetUserNick()));

@@ -47,7 +47,7 @@
 #include "server.h"			// Needed for CServer
 #include "NetworkFunctions.h"		// Needed for Uint32toStringIP
 #include "SharedFileList.h"		// Needed for CSharedFileList
-
+#include "Statistics.h"
 
 using namespace otherfunctions;
 
@@ -432,7 +432,7 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 
 	// Uptime
 	{
-		wxString temp = wxString::Format(wxT("%s%s"), _("Uptime: "), CastSecondsToHM(theApp.GetUptimeSecs()).c_str());
+		wxString temp = _("Uptime: ") + CastSecondsToHM(theApp.statistics->GetUptimeSecs());
 		ClientInfoMenu->Append(TRAY_MENU_CLIENTINFO_ITEM,temp);
 	}
 
@@ -450,14 +450,14 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 	
 	// Total Downloaded
 	{
-		wxString temp = CastItoXBytes( theApp.stat_sessionReceivedBytes + thePrefs::GetTotalDownloaded() );
+		wxString temp = CastItoXBytes( theApp.statistics->GetSessionReceivedBytes() + thePrefs::GetTotalDownloaded() );
 		temp = wxString(_("Total DL: ")) + temp;
 		ClientInfoMenu->Append(TRAY_MENU_CLIENTINFO_ITEM,temp);
 	}
 	
 	// Total Uploaded
 	{
-		wxString temp = CastItoXBytes( theApp.stat_sessionSentBytes + thePrefs::GetTotalUploaded() );
+		wxString temp = CastItoXBytes( theApp.statistics->GetSessionSentBytes() + thePrefs::GetTotalUploaded() );
 		temp = wxString(_("Total UL: ")) + temp;
 		ClientInfoMenu->Append(TRAY_MENU_CLIENTINFO_ITEM,temp);
 	}

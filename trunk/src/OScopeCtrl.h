@@ -36,7 +36,7 @@
 
 #include "types.h"		// Needed for RECT
 #include "color.h"			// Needed for COLORREF and RGB
-#include "amule.h"		// Needed for StatsGraphType
+#include "Statistics.h"		// Needed for StatsGraphType
 
 class wxMemoryDC;
 

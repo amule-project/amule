@@ -173,6 +173,7 @@ amule_SOURCES = \
 	SHA.cpp \
 	SHAHashSet.cpp \
 	sockets.cpp \
+	Statistics.cpp \
 	StatisticsDlg.cpp \
 	StringFunctions.cpp \
 	TransferWnd.cpp \
@@ -223,6 +224,7 @@ amuled_SOURCES = \
         ServerList.cpp \
         ServerSocket.cpp \
         SharedFileList.cpp \
+	   Statistics.cpp \
 	StringFunctions.cpp \
         sockets.cpp \
 	timer.cpp \
@@ -396,6 +398,7 @@ noinst_HEADERS = AddFileThread.h \
 		 SharedFilesCtrl.h \
 		 SharedFilesWnd.h \
 		 sockets.h \
+		 Statistics.h \
 		 StatisticsDlg.h \
 	  	 StringFunctions.h \
 		 SysTray.h \

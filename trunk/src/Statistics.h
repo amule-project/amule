@@ -1,0 +1,223 @@
+//
+// This file is part of the aMule Project
+//
+// Copyright (c) 2003-2004 aMule Project (http://www.amule.org)
+// Copyright (C) 2002 Merkur (merkur-@users.sourceforge.net / http://www.emule-project.net)
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either
+// version 2 of the License, or (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+// 
+
+#ifndef STATISTICS_H
+#define STATISTICS_H
+
+#include "tree.hh"
+#include "CTypedPtrList.h"
+#include "types.h"
+#include "GetTickCount.h"
+
+#include <wx/string.h>
+
+typedef tree<wxString> StatsTree;
+typedef StatsTree::iterator StatsTreeNode;
+typedef StatsTree::sibling_iterator StatsTreeSiblingIterator;	
+
+typedef struct {
+	StatsTreeNode TreeItem;
+	bool active;
+} StatsTreeVersionItem;
+	
+enum StatsGraphType {
+	GRAPH_INVALID = 0,
+	GRAPH_DOWN,
+	GRAPH_UP,
+	GRAPH_CONN
+};
+
+typedef struct UpdateInfo {
+	double timestamp;
+	float downloads[3];
+	float uploads[3];
+	float connections[3];
+} GraphUpdateInfo;
+
+typedef struct HistoryRecord {
+	double		kBytesSent;
+	double		kBytesReceived;
+	float		kBpsUpCur;
+	float		kBpsDownCur;
+	double		sTimestamp;
+	uint16		cntDownloads;
+	uint16		cntUploads;
+	uint16		cntConnections;
+} HR;
+
+class CStatistics {
+
+public: 
+
+	CStatistics();
+	
+	~CStatistics();
+
+	/* Statistics graph functions */
+
+	void		RecordHistory();
+	unsigned GetHistoryForWeb(unsigned cntPoints, double sStep, double *sStart, uint32 **graphData);
+	unsigned GetHistory(unsigned cntPoints, double sStep, double sFinal, float **ppf, StatsGraphType which_graph);
+	GraphUpdateInfo GetPointsForUpdate();
+
+	/* Statistics tree functions */
+	
+	void UpdateStatsTree();
+
+	/* Statistics tree vars */
+	
+	StatsTree statstree; // Tree is public 'cos we want to retrieve to send stats tree.
+
+	/* Common functions inlined for speed */
+	/* Called VERY often */
+
+	uint64 GetSessionReceivedBytes() {
+		return stat_sessionReceivedBytes;
+	}
+
+	uint64 GetSessionSentBytes() {
+		return stat_sessionSentBytes;
+	}
+
+	void SetServerConnectTime(uint64 conn_time) {
+		stat_serverConnectTime = conn_time;
+	}	
+	
+	void AddReconnect() { stat_reconnects++; };
+	
+	void AddFilteredClient() { stat_filteredclients++; };
+	
+	// Updates the number of received bytes and marks when transfers first began
+	void UpdateReceivedBytes(int32 bytesToAdd) {
+		if (!stat_transferStarttime) {
+			// Saves the time where transfers were started and calucated the time before
+			stat_transferStarttime = GetTickCount64();
+			sTransferDelay = (stat_transferStarttime - Start_time)/1000.0;			
+		}
+		stat_sessionReceivedBytes += bytesToAdd;
+	}
+
+
+	// Updates the number of received bytes and marks when transfers first began
+	void UpdateSentBytes(int32 bytesToAdd) {
+		if (!stat_transferStarttime) {
+			// Saves the time where transfers were started and calucated the time before
+			stat_transferStarttime = GetTickCount64();
+			sTransferDelay = (stat_transferStarttime - Start_time)/1000.0;			
+		}
+		stat_sessionSentBytes += bytesToAdd;
+	}
+
+	// Returns the uptime in millie-seconds
+	uint64 GetUptimeMsecs() {
+		return GetTickCount64() - Start_time;
+	}
+
+
+	// Returns the uptime in seconds
+	uint32 GetUptimeSecs() {
+		return GetUptimeMsecs() / 1000;
+	}
+
+private:
+
+	/* Graph-related functions */
+
+	void ComputeAverages(HR **pphr, POSITION pos, unsigned cntFilled, double sStep, float **ppf, StatsGraphType which_graph);
+
+	// ComputeSessionAvg and ComputeRunningAvg are used to assure consistent computations across
+	// RecordHistory and ComputeAverages; see note in RecordHistory on the use of double and float 
+	void ComputeSessionAvg(float& kBpsSession, float& kBpsCur, double& kBytesTrans, double& sCur, double& sTrans);
+
+	void ComputeRunningAvg(float& kBpsRunning, float& kBpsSession, double& kBytesTrans, 
+							double& kBytesTransPrev, double& sTrans, double& sPrev, float& sAvg);
+	
+	int GetPointsPerRange(){
+		return (1280/2) - 80; // This used to be a calc. based on GUI width
+	};
+	
+	void VerifyHistory(bool bMsgIfOk = false);
+
+	/* Graphs-related vars */
+	float kBpsUpCur;
+	float kBpsUpAvg;
+	float kBpsUpSession;
+	float kBpsDownCur;
+	float kBpsDownAvg;
+	float kBpsDownSession;
+	float maxDownavg;
+	float maxDown;
+		
+	
+ 	CList<HR,HR>	listHR;	
+	int	nHistRanges;
+	int	bitsHistClockMask;
+	int nPointsPerRange;
+	POSITION*		aposRecycle;	
+
+	HR hrInit;
+
+
+	/* Tree-related functions */
+	
+	void InitStatsTree();
+
+	/* Tree-related vars */
+
+	uint64		Start_time;
+	double		sTransferDelay;
+	uint64		stat_sessionReceivedBytes;
+	uint64		stat_sessionSentBytes;
+	uint32		stat_reconnects;
+	uint64		stat_transferStarttime;
+	uint64		stat_serverConnectTime;
+	uint32		stat_filteredclients;
+	uint32		m_ilastMaxConnReached;
+
+
+	StatsTreeNode h_shared,h_transfer,h_connection,h_clients,h_servers,h_upload,h_download,h_uptime;
+	StatsTreeNode down1,down2,down3,down4,down5,down6,down7;
+	StatsTreeNode up1,up2,up3,up4,up5,up6,up7,up8,up9,up10;
+	StatsTreeNode tran0;
+	StatsTreeNode con1,con2,con3,con4,con5,con6,con7,con8,con9,con10,con11,con12,con13;
+	StatsTreeNode shar1,shar2,shar3;
+	StatsTreeNode cli1,cli2,cli3,cli4,cli5,cli6,cli7,cli8,cli9,cli10, cli10_1, cli10_2, cli11, cli12,cli13,cli14,cli15,cli16,cli17;	
+	StatsTreeNode srv1,srv2,srv3,srv4,srv5,srv6,srv7,srv8,srv9;
+	
+	StatsTreeVersionItem cli_versions[18];
+	
+	/* Common functions inlined for speed */
+	/* Called VERY often */
+
+	// Returns the amount of time where transfers have been going on
+	uint32 GetTransferSecs() {
+		return ( GetTickCount64() - stat_transferStarttime ) / 1000;
+	}
+
+	// Returns the amount of time where we've been connected to a server
+	uint32 GetServerSecs() {
+		return ( GetTickCount64() - stat_serverConnectTime) / 1000;
+	}
+	
+	
+};
+
+#endif // STATISTICS_H

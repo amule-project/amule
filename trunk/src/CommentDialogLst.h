@@ -40,7 +40,6 @@ class CCommentDialogLst : public wxDialog
 public: 
    CCommentDialogLst(wxWindow* pParent, CPartFile* file); 
    virtual ~CCommentDialogLst(); 
-   void Localize(); 
    virtual bool OnInitDialog(); 
    //CHyperTextCtrl lstbox; 
    wxListCtrl* pmyListCtrl;
