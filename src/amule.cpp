@@ -1277,14 +1277,22 @@ void CamuleApp::SetOSFiles(const wxString new_path)
 void CamuleApp::OnAssert(const wxChar *file, int line, 
 						 const wxChar *cond, const wxChar *msg)
 {
+	printf("\nAssertion failed. Backtrace follows:\n");
+
+	// Skip the function-calls directly related to the assert call.
+	print_backtrace( 5 );
+
+	printf("\n");
+		
 	if ( wxThread::IsMain() ) {
 		AMULE_APP_BASE::OnAssert( file, line, cond, msg );
 	} else {
-		wxString errmsg = CFormat( wxT("%s:%d: Assertion '%s' failed. %s\n") )
+		wxString errmsg = CFormat( wxT("%s:%d: Assertion '%s' failed. %s") )
 			% file % line % cond % ( msg ? msg : wxT("") );
 
-		printf("%s\n", unicode2char( errmsg ));
+		printf("%s", unicode2char( errmsg ));
 		
+		// Abort, allows gdb to catch the assertion
 		raise( SIGABRT );
 	}
 }
