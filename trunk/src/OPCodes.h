@@ -22,17 +22,6 @@
 #ifndef OPCODES_H
 #define OPCODES_H
 
-#ifndef _DUMP
-#define	CURRENT_VERSION_LONG			"0.30c"
-#else
-#define	CURRENT_VERSION_LONG			"0.30c DEBUG"
-#endif
-
-#ifdef WM_APP
-#undef WM_APP
-#endif
-#define 	WM_APP 5500
-
 #define    SEC2MS(sec)             ((sec)*1000)
 #define    MIN2MS(min)             SEC2MS((min)*60)
 
@@ -63,7 +52,7 @@ enum {
 };
 
 // MOD Note: Do not change this part - Merkur
-#define	CURRENT_VERSION_SHORT			0x43
+#define	CURRENT_VERSION_SHORT			0x44
 #define	EMULE_PROTOCOL				0x01
 // MOD Note: end
 
@@ -91,7 +80,6 @@ enum {
 #define	PARTFILE_VERSION			0xe0
 #define	PARTFILE_SPLITTEDVERSION		0xe1 // For edonkey part files importing.
 #define	CREDITFILE_VERSION			0x12
-#define	CREDITFILE_VERSION_29			0x11
 
 #define RSAKEYSIZE				384             //384 bits
 
@@ -99,7 +87,6 @@ enum {
 
 #define COMPILE_DATE				__DATE__
 #define COMPILE_TIME				__TIME__
-#define EMULE_GUID				"EMULE-{4EADC6FC-516F-4b7c-9066-97D893649569}"
 
 // MOD Note: Do not change this part - Merkur
 #define	UDPSEARCHSPEED				1000	// if this value is too low you will miss sources
@@ -153,13 +140,6 @@ const int BLOCKSIZE =				184320;
 #define	MET_HEADER				0x0E
 	
 const unsigned int UNLIMITED =	 		0;
-
-//Proxytypes deadlake
-#define	PROXYTYPE_NOPROXY			0
-#define	PROXYTYPE_SOCKS4			1
-#define	PROXYTYPE_SOCKS4A			2
-#define	PROXYTYPE_SOCKS5			3
-#define	PROXYTYPE_HTTP11			4
 
 // client <-> server
 #define	OP_LOGINREQUEST				0x01	//<HASH 16><ID 4><PORT 2><1 Tag_set>
@@ -516,20 +496,13 @@ const unsigned int UNLIMITED =	 		0;
 #define	MP_GETSOURCEED2KLINK			10299
 #define	MP_GETHOSTNAMESOURCEED2KLINK		10361
 #define	MP_METINFO				10307
-#define	MP_PERMALL				10308
-#define	MP_PERMFRIENDS				10309
-#define	MP_PERMNONE				10310
 #define	MP_CONNECTTO				10311
 #define	MP_REMOVE				10312
 #define	MP_REMOVEALL				10313
-#define	MP_REMOVESELECTED			10314
 #define	MP_UNBAN				10315
 #define	MP_ADDTOSTATIC				10316
-#define	MP_CLCOMMAND				10317
 #define	MP_REMOVEFROMSTATIC			10400
 #define	MP_VIEWFILECOMMENTS			10401
-#define	MP_VERSIONCHECK				10402
-#define	MP_WEBURL				10500
 #define	MP_CAT_ADD				10321
 #define	MP_CAT_EDIT				10322
 #define	MP_CAT_REMOVE				10323
@@ -561,29 +534,8 @@ const unsigned int UNLIMITED =	 		0;
 #define MP_MENU_FAKE				999987
 #define MP_MENU_CATS				432843
 
-
-// reserve some for weburls!
-
-#define	Irc_Version				"(SMIRCv00.61)"
-#define	Irc_Op					10317
-#define	Irc_DeOp				10318
-#define	Irc_Voice				10319
-#define	Irc_DeVoice				10320
-#define	Irc_HalfOp				10321
-#define	Irc_DeHalfOp				10322
-#define	Irc_Kick				10323
-#define	Irc_Slap				10324
-#define	Irc_Join				10325
-#define	Irc_Close				10326
-#define	Irc_Priv				10327
-#define	Irc_AddFriend				10328
-#define	Irc_SendLink				10329
-#define	Irc_SetSendLink				10330
-
 #define	MP_ASSIGNCAT				10700
 // reserve some for categories!
-#define	MP_SCHACTIONS				10800
-// reserve some for schedules
 #define	MP_CAT_SET0				10900
 // reserve some for change all-cats (about 20)
 	
@@ -624,43 +576,41 @@ const unsigned int UNLIMITED =	 		0;
 
 #define	ET_OS_INFO				ET_MOD_OXY // We use MOD_OXY because the type is unknown
 
-// amuleapp <-> amuleapp
-#define	OP_ED2KLINK				12000
-#define	OP_CLCOMMAND				12001
-	
-//thread messages
-#define	TM_FINISHEDHASHING			(WM_APP+10)
-#define	TM_HASHTHREADFINISHED			(WM_APP+20)
-#define	TM_FILECOMPLETIONFINISHED		(WM_APP+30)
+// KADEMLIA (opcodes) (udp)
+#define KADEMLIA_BOOTSTRAP_REQ	0x00	// <PEER (sender) [25]>
+#define KADEMLIA_BOOTSTRAP_RES	0x08	// <CNT [2]> <PEER [25]>*(CNT)
 
-// quick-speed changer
-#define	MP_QS_U10				10501
-#define	MP_QS_U20				10502
-#define	MP_QS_U30				10503
-#define	MP_QS_U40				10504
-#define	MP_QS_U50				10505
-#define	MP_QS_U60				10506
-#define	MP_QS_U70				10507
-#define	MP_QS_U80				10508
-#define	MP_QS_U90				10509
-#define	MP_QS_U100				10510
-#define	MP_QS_UPC				10511
-#define	MP_QS_UP10				10512
-#define	MP_QS_UPL				10513
-#define	MP_QS_D10				10521
-#define	MP_QS_D20				10522
-#define	MP_QS_D30				10523
-#define	MP_QS_D40				10524
-#define	MP_QS_D50				10525
-#define	MP_QS_D60				10526
-#define	MP_QS_D70				10527
-#define	MP_QS_D80				10528
-#define	MP_QS_D90				10529
-#define	MP_QS_D100				10530
-#define	MP_QS_DC				10531
-#define	MP_QS_DL				10532
-#define	MP_QS_PA				10533
-#define	MP_QS_UA				10534
+#define KADEMLIA_HELLO_REQ	 	0x10	// <PEER (sender) [25]>
+#define KADEMLIA_HELLO_RES     	0x18	// <PEER (receiver) [25]>
+
+#define KADEMLIA_REQ		   	0x20	// <TYPE [1]> <HASH (target) [16]> <HASH (receiver) 16>
+#define KADEMLIA_RES			0x28	// <HASH (target) [16]> <CNT> <PEER [25]>*(CNT)
+
+#define KADEMLIA_SEARCH_REQ		0x30	// <HASH (key) [16]> <ext 0/1 [1]> <SEARCH_TREE>[ext]
+//#define UNUSED				0x31	// Old Opcode, don't use.
+#define KADEMLIA_SRC_NOTES_REQ	0x32	// <HASH (key) [16]>
+#define KADEMLIA_SEARCH_RES		0x38	// <HASH (key) [16]> <CNT1 [2]> (<HASH (answer) [16]> <CNT2 [2]> <META>*(CNT2))*(CNT1)
+//#define UNUSED				0x39	// Old Opcode, don't use.
+#define KADEMLIA_SRC_NOTES_RES	0x3A	// <HASH (key) [16]> <CNT1 [2]> (<HASH (answer) [16]> <CNT2 [2]> <META>*(CNT2))*(CNT1)
+
+#define KADEMLIA_PUBLISH_REQ	0x40	// <HASH (key) [16]> <CNT1 [2]> (<HASH (target) [16]> <CNT2 [2]> <META>*(CNT2))*(CNT1)
+//#define UNUSED				0x41	// Old Opcode, don't use.
+#define KADEMLIA_PUB_NOTES_REQ	0x42	// <HASH (key) [16]> <HASH (target) [16]> <CNT2 [2]> <META>*(CNT2))*(CNT1)
+#define KADEMLIA_PUBLISH_RES	0x48	// <HASH (key) [16]>
+//#define UNUSED				0x49	// Old Opcode, don't use.
+#define KADEMLIA_PUB_NOTES_RES	0x4A	// <HASH (key) [16]>
+
+#define KADEMLIA_FIREWALLED_REQ	0x50	// <TCPPORT (sender) [2]>
+#define KADEMLIA_FINDBUDDY_REQ	0x51	// <TCPPORT (sender) [2]>
+#define KADEMLIA_FINDSOURCE_REQ	0x52	// <TCPPORT (sender) [2]>
+#define KADEMLIA_FIREWALLED_RES	0x58	// <IP (sender) [4]>
+#define KADEMLIA_FIREWALLED_ACK	0x59	// (null)
+#define KADEMLIA_FINDBUDDY_RES	0x5A	// <TCPPORT (sender) [2]>
+
+// KADEMLIA (parameter)
+#define KADEMLIA_FIND_VALUE		0x02
+#define KADEMLIA_STORE			0x04
+#define KADEMLIA_FIND_NODE		0x0B
 
 // CMuleListCtrl tabs.
 #define	MP_LISTCOL_1				10601
@@ -679,7 +629,6 @@ const unsigned int UNLIMITED =	 		0;
 #define	MP_LISTCOL_14				10614
 #define	MP_LISTCOL_15				10615
 
-#define	LOCALSERVERREQUESTS			20000	// only one local src request during this timespan
 #define	DISKSPACERECHECKTIME			900000	// checkDiskspace
 
 #endif // OPCODES_H
