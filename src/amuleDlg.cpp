@@ -891,6 +891,9 @@ bool CamuleDlg::LoadGUIPrefs(bool override_pos, bool override_size)
 	if (!override_size) {
 		if (x2 > 0 && y2 > 0) {
 			SetClientSize(x2, y2);
+		} else {
+			// Probably first run.
+			Maximize();
 		}
 	}
 
