@@ -64,6 +64,17 @@ class CPartFile_Encoder {
 		// decoder side
 		CPartFile_Encoder(int size);
 		
+		// stl side :)
+		CPartFile_Encoder()
+		{
+			m_file = 0;
+		}
+		CPartFile_Encoder(const CPartFile_Encoder &obj) : m_part_status(obj.m_part_status)
+		{
+			m_file = obj.m_file;
+			m_gap_list = obj.m_gap_list;
+		}
+		
 		// encode - take data from m_file
 		CECTag *Encode();
 		// decode - take data from tag

@@ -278,6 +278,11 @@ class RLE_Data {
 
 	public:
 		RLE_Data(int len, bool use_diff);
+		
+		// those constructors are for stl containers
+		RLE_Data();
+		RLE_Data(const RLE_Data &);
+		
 		~RLE_Data();
 		
 		const unsigned char *Encode(unsigned char *data, int &outlen)
