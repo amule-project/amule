@@ -25,7 +25,6 @@
 
 #include "types.h"		// Needed for uint16, uint32 and uint64
 #include "CTypedPtrList.h"	// Needed for CTypedPtrList
-#include "position.h"		// Needed for POSITION
 #include "CMD4Hash.h"
 
 #include <deque>
