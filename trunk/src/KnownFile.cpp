@@ -175,6 +175,7 @@ bool CKnownFile::CreateFromFile(const wxString& in_directory, const wxString& in
 	}
 	
 	SetFileSize(file_stats.st_size);
+	date = file_stats.st_mtime;
 	
 	// we are reading the file data later in 8K blocks, adjust the internal file stream buffer accordingly
 	//	setvbuf(file, NULL, _IOFBF, 1024*8*2);
@@ -189,17 +190,7 @@ bool CKnownFile::CreateFromFile(const wxString& in_directory, const wxString& in
 	for (hashcount = 0; togo >= PARTSIZE; ) {
 		CMD4Hash newhash;
 		CreateHashFromFile(file, PARTSIZE, newhash);
-		// SLUGFILLER: SafeHash - quick fallback
-		// Kry - This can NOT be done on right now - because the hashing starts
-		// before the app is ready. The safe version it's the one using notify.
-		/*
-		if (!theApp.amuledlg->IsRunning()){	// in case of shutdown while still hashing
-			fclose(file);
-			delete[] newhash;
-			return false;
-		}
-		*/
-		// SLUGFILLER: SafeHash
+
 		hashlist.Add(newhash);
 		togo -= PARTSIZE;
 		
@@ -216,8 +207,7 @@ bool CKnownFile::CreateFromFile(const wxString& in_directory, const wxString& in
 	CreateHashFromFile(file, togo, lasthash);
 	if (!hashcount){
 		m_abyFileHash = lasthash;
-	} 
-	else {
+	} else {
 		hashlist.Add(lasthash);		
 		uchar* buffer = new uchar[hashlist.GetCount()*16];
 		for (size_t i = 0; i < hashlist.GetCount(); i++) {
@@ -226,11 +216,6 @@ bool CKnownFile::CreateFromFile(const wxString& in_directory, const wxString& in
 		CreateHashFromString(buffer, hashlist.GetCount()*16, m_abyFileHash);
 		delete[] buffer;
 	}
-	
-	wxFileName fName(namebuffer);
-	wxDateTime accTime,modTime,crtTime;
-	fName.GetTimes(&accTime,&modTime,&crtTime);
-	date = modTime.GetTicks();
 
 	if (theApp.glob_prefs->GetExtractMetaData() > 0) {
 		GetMetaDataTags();
