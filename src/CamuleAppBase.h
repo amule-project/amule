@@ -1,5 +1,6 @@
 // This file is part of the aMule Project.
-//
+// 
+// Copyright (c) 2004 aMule Project ( http://www.amule-project.net )
 // Copyright (C) 2004 Carlo Wood
 //
 // This program is free software; you can redistribute it and/or

@@ -1,5 +1,7 @@
 // This file is part of the aMule Project
-//Copyright (C)2002 Tiku ( ) & Hetfield <hetfield@email.it>
+//
+// Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
+// Copyright (C) 2002 Tiku ( ) & Hetfield <hetfield@email.it>
 //
 //This program is free software; you can redistribute it and/or
 //modify it under the terms of the GNU General Public License

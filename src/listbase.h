@@ -1,3 +1,7 @@
+// This file is part of the aMule Project
+//
+// Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
+//
 // Definition of classes wxCTreeCtrl base classes and types
 // This file is part of the aMule project.
 //

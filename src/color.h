@@ -1,6 +1,8 @@
 // This file is part of the aMule project.
-// color.h - color related stuff.
 //
+// color.h - color related stuff.
+// 
+// Copyright (c) 2004 aMule Project ( http://www.amule-project.net )
 // Copyright (c) 2004, Carlo Wood <carlo@alinoe.com>
 //
 // This program is free software; you can redistribute it and/or
