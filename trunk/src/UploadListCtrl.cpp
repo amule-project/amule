@@ -130,6 +130,7 @@ void CUploadListCtrl::OnNMRclick(wxMouseEvent& evt)
 		menu->Append(MP_DETAIL,_("Show &Details"));
 		menu->Append(MP_ADDFRIEND,_("Add to Friends"));
 		menu->Append(MP_SHOWLIST,_("View Files"));
+		menu->Append(MP_SENDMESSAGE,_("Send message"));
 		menu->AppendSeparator();
 		menu->Append(MP_SWITCHCTRL,_("Show Queue"));
 		m_ClientMenu=menu;
@@ -241,7 +242,17 @@ bool CUploadListCtrl::ProcessEvent(wxEvent& evt)
 				return true;				
 				break;
 			}
-		}
+			case MP_SENDMESSAGE: {
+					wxString message = ::wxGetTextFromUser(_("Send message to user"),_("Message to send:"));
+					if (!message.IsEmpty()) {
+						// false -> no focus set
+						theApp.amuledlg->chatwnd->StartSession(client, false);
+						theApp.amuledlg->chatwnd->SendMessage(message,false);
+					}
+					return true;				
+					break;
+				}
+		  }
 	}
 	switch(event.GetId()) {
 		case MP_SWITCHCTRL: {
