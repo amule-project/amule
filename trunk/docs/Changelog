@@ -55,14 +55,16 @@ Version 2.0.0rc3 - The 'tiku' version.
 	
 	        * MacOSX stuff
 
-	Shakraw:
+	shakraw:
 		
 		* Fixed multiple file download bug in webserver search section
 		* Fixed ed2k download link
 		* Fixed categories for web interface
 		* WebSocket.* & WebServer.*: now uses wxThreads and wxSockets to be cross platform.
-                * Better threads' array remove in WebSocket
-                * WebServer cleanly stopped before exit	
+		* Better threads' array remove in WebSocket
+  		* WebServer cleanly stopped before exit	
+		* Fixed max 2Gb display bug in amuleweb
+		* Updated aMule.tmpl: added file %complete support in transfer list
 		
 	thepolish:
 		
