@@ -49,6 +49,7 @@
 #include "SearchList.h"		// Needed for GetWebList
 #include "IPFilter.h"		// Needed for CIPFilter
 #include "ClientList.h"
+#include "gsocket-fix.h"	// Needed for wxSOCKET_REUSEADDR
 
 //ExternalConn: listening server using wxSockets
 enum
@@ -77,7 +78,7 @@ ExternalConn::ExternalConn() {
 			addr.Service(theApp.glob_prefs->ECPort());
 
 			// Create the socket
-			m_ECServer = new wxSocketServer(addr);
+			m_ECServer = new wxSocketServer(addr, wxSOCKET_REUSEADDR);
 	
 			// We use Ok() here to see if the server is really listening
 			if (! m_ECServer->Ok()) {

@@ -3,24 +3,24 @@
 // Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
 // Copyright (C) 2002 Merkur ( merkur-@users.sourceforge.net / http://www.emule-project.net )
 //
-//This program is free software; you can redistribute it and/or
-//modify it under the terms of the GNU General Public License
-//as published by the Free Software Foundation; either
-//version 2 of the License, or (at your option) any later version.
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either
+// version 2 of the License, or (at your option) any later version.
 //
-//This program is distributed in the hope that it will be useful,
-//but WITHOUT ANY WARRANTY; without even the implied warranty of
-//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//GNU General Public License for more details.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 //
-//You should have received a copy of the GNU General Public License
-//along with this program; if not, write to the Free Software
-//Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-// ListenSocket.cpp : implementation file
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 //
 
 
 #include "ListenSocket.h"	// Interface declarations
+
 #include "amule.h"		// Needed for theApp
 #include "otherfunctions.h"	// Needed for md4cpy
 #include "server.h"		// Needed for CServer
@@ -44,9 +44,8 @@
 
 #include <wx/listimpl.cpp>
 #include <wx/dynarray.h>
-#include <wx/arrimpl.cpp> // this is a magic incantation which must be done!
+#include <wx/arrimpl.cpp>	// this is a magic incantation which must be done!
 
-//WX_DEFINE_LIST(SocketListL);
 
 BEGIN_EVENT_TABLE(CClientReqSocketHandler, wxEvtHandler)
 	EVT_SOCKET(CLIENTREQSOCKET_HANDLER, CClientReqSocketHandler::ClientReqSocketHandler)
@@ -56,7 +55,7 @@ WX_DEFINE_OBJARRAY(ArrayOfwxStrings);
 
 IMPLEMENT_DYNAMIC_CLASS(CClientReqSocket,CEMSocket)
 
-// CClientReqSocket
+
 CClientReqSocket::CClientReqSocket(CPreferences* in_prefs,CUpDownClient* in_client)
 {
 	app_prefs = in_prefs;
@@ -73,7 +72,6 @@ CClientReqSocket::CClientReqSocket(CPreferences* in_prefs,CUpDownClient* in_clie
 	SetNotify(wxSOCKET_CONNECTION_FLAG|wxSOCKET_INPUT_FLAG|wxSOCKET_OUTPUT_FLAG|wxSOCKET_LOST_FLAG);
 	Notify(TRUE);
 }
-
 
 CClientReqSocket::~CClientReqSocket()
 {
@@ -1897,13 +1895,13 @@ void CClientReqSocketHandler::ClientReqSocketHandler(wxSocketEvent& event) {
 	
 }
 
-
+// Do we really need that?
 IMPLEMENT_DYNAMIC_CLASS(CListenSocket,wxSocketServer)
 
 // CListenSocket
 // CListenSocket member functions
 CListenSocket::CListenSocket(CPreferences* in_prefs,wxSockAddress& addr)
-: wxSocketServer(addr,wxSOCKET_NOWAIT)
+: wxSocketServer(addr,wxSOCKET_NOWAIT|wxSOCKET_REUSEADDR)
 {
 	// 0.42e - vars not used by us
 	bListening = false;

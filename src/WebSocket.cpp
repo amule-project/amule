@@ -19,11 +19,15 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
+
 #include <wx/thread.h>
 
 #include "WebSocket.h"
 
-#include <wx/arrimpl.cpp> // this is a magic incantation which must be done!
+#include <wx/arrimpl.cpp>	// this is a magic incantation which must be done!
+
+#include "gsocket-fix.h"	// Needed for wxSOCKET_REUSEADDR
+
 
 WX_DEFINE_ARRAY(CWCThread*, ArrayOfCWCThread);
 
@@ -37,7 +41,6 @@ CWSThread::CWSThread(CWebServer *ws) {
 	wsport = ws->GetWSPort();
 }
 
-
 // thread execution starts here
 void *CWSThread::Entry() {
 	wxSocketBase *sock;
@@ -50,7 +53,7 @@ void *CWSThread::Entry() {
 	ws->Print(wxT("WSThread: created service\n"));
 
 	// Create the socket
-	m_WSSocket = new wxSocketServer(addr);
+	m_WSSocket = new wxSocketServer(addr, wxSOCKET_REUSEADDR);
 	
 	wxString msg = addr.Hostname() + wxString::Format(wxT(":%d\n"), addr.Service());
 	// We use Ok() here to see if the server is really listening

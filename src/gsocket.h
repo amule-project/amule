@@ -1,22 +1,21 @@
-// This file is part of the aMule project.
-//
-// Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
-// Copyright (c) 2003 Guilhem Lavaux, Guillermo Rodriguez Garcia.
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either
-// version 2 of the License, or (at your option) any later version.
-// 
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with this program; if not, write to the Free Software
-// Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-//
+/*
+ * Copyright (C) 2004 aMule Team (http://www.amule.org)
+ * Copyright (c) 2003 Guilhem Lavaux, Guillermo Rodriguez Garcia.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ */
 
 /* -------------------------------------------------------------------------
  * Project: GSocket (Generic Socket)
@@ -28,41 +27,53 @@
  * -------------------------------------------------------------------------
  */
 
-#ifndef GSOCKET_H
-#define GSOCKET_H
+#ifndef __GSOCKET_H
+#define __GSOCKET_H
 
-#ifndef __WXMSW__
+/* DFE: Define this and compile gsocket.cpp instead of gsocket.c and
+   compile existing GUI gsock*.c as C++ to try out the new GSocket. */
+/* #define wxUSE_GSOCKET_CPLUSPLUS 1 */
+#undef wxUSE_GSOCKET_CPLUSPLUS
+#if !defined(__cplusplus) && defined(wxUSE_GSOCKET_CPLUSPLUS)
+#error "You need to compile this file (probably a GUI gsock peice) as C++"
+#endif
 
 #ifndef __GSOCKET_STANDALONE__
-#include <wx/setup.h>
+#include "wx/setup.h"
+#include "wx/platform.h"
 
-/* kludge for GTK..  gsockgtk.c craps out miserably if we include
-   defs.h ...  no idea how other files get away with it.. */
-
-#if !defined( __WXMSW__ ) && !defined(  WXDLLEXPORT )
-#define WXDLLEXPORT
-#endif
+#include "wx/dlimpexp.h" /* for WXDLLIMPEXP_NET */
 
 #endif
 
 #if wxUSE_SOCKETS || defined(__GSOCKET_STANDALONE__)
 
-#include <cstddef>
+#include <stddef.h>
 
 /*
    Including sys/types.h under cygwin results in the warnings about "fd_set
    having been defined in sys/types.h" when winsock.h is included later and
    doesn't seem to be necessary anyhow. It's not needed under Mac neither.
  */
-#if !defined(__WXMAC__) && !defined(__CYGWIN__)
+#if !defined(__WXMAC__) && !defined(__CYGWIN__) && !defined(__WXWINCE__)
 #include <sys/types.h>
+#endif
+
+#ifdef __WXWINCE__
+#include <stdlib.h>
+#endif
+
+#ifdef wxUSE_GSOCKET_CPLUSPLUS
+typedef class GSocketBSD GSocket;
 #endif
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+#ifndef wxUSE_GSOCKET_CPLUSPLUS
 typedef struct _GSocket GSocket;
+#endif
 typedef struct _GAddress GAddress;
 
 typedef enum {
@@ -87,7 +98,8 @@ typedef enum {
   GSOCK_INVPORT,
   GSOCK_WOULDBLOCK,
   GSOCK_TIMEDOUT,
-  GSOCK_MEMERR
+  GSOCK_MEMERR,
+  GSOCK_OPTERR,
 } GSocketError;
 
 /* See below for an explanation on how events work.
@@ -113,7 +125,36 @@ typedef void (*GSocketCallback)(GSocket *socket, GSocketEvent event,
                                 char *cdata);
 
 
+/* Functions tables for internal use by GSocket code: */
+
+#ifndef __WINDOWS__
+struct GSocketBaseFunctionsTable
+{
+    void (*Detected_Read)(GSocket *socket);
+    void (*Detected_Write)(GSocket *socket);
+};
+#endif
+
+struct GSocketGUIFunctionsTable
+{
+    int  (*GUI_Init)(void);
+    void (*GUI_Cleanup)(void);
+    int  (*GUI_Init_Socket)(GSocket *socket);
+    void (*GUI_Destroy_Socket)(GSocket *socket);
+#ifndef __WINDOWS__
+    void (*Install_Callback)(GSocket *socket, GSocketEvent event);
+    void (*Uninstall_Callback)(GSocket *socket, GSocketEvent event);
+#endif
+    void (*Enable_Events)(GSocket *socket);
+    void (*Disable_Events)(GSocket *socket);
+};
+
+
 /* Global initializers */
+
+/* Sets GUI functions callbacks. Must be called *before* GSocket_Init
+   if the app uses async sockets. */
+void GSocket_SetGUIFunctions(struct GSocketGUIFunctionsTable *guifunc);
 
 /* GSocket_Init() must be called at the beginning */
 int GSocket_Init(void);
@@ -128,6 +169,7 @@ GSocket *GSocket_new(void);
 void GSocket_destroy(GSocket *socket);
 
 
+#ifndef wxUSE_GSOCKET_CPLUSPLUS
 
 /* GSocket_Shutdown:
  *  Disallow further read/write operations on this socket, close
@@ -212,6 +254,15 @@ GSocket *GSocket_WaitConnection(GSocket *socket);
  */
 GSocketError GSocket_Connect(GSocket *socket, GSocketStream stream);
 
+/* GSocket_SetReusable:
+*  Simply sets the m_resuable flag on the socket. GSocket_SetServer will
+*  make the appropriate setsockopt() call.
+*  Implemented as a GSocket function because clients (ie, wxSocketServer)
+*  don't have access to the GSocket struct information.
+*  Returns TRUE if the flag was set correctly, FALSE if an error occured
+*  (ie, if the parameter was NULL)
+*/
+int GSocket_SetReusable(GSocket *socket);
 
 /* Datagram sockets */
 
@@ -249,6 +300,14 @@ int GSocket_Write(GSocket *socket, const char *buffer,
  */
 GSocketEventFlags GSocket_Select(GSocket *socket, GSocketEventFlags flags);
 
+GSocketError GSocket_GetSockOpt(GSocket *socket, int level, int optname,
+                                void *optval, int *optlen);
+
+GSocketError GSocket_SetSockOpt(GSocket *socket, int level, int optname, 
+                                const void *optval, int optlen);
+
+void GSocket_Streamed(GSocket *socket);
+void GSocket_Unstreamed(GSocket *socket);
 
 /* Attributes */
 
@@ -264,13 +323,16 @@ void GSocket_SetNonBlocking(GSocket *socket, int non_block);
  */
 void GSocket_SetTimeout(GSocket *socket, unsigned long millisec);
 
+#endif /* ndef wxUSE_GSOCKET_CPLUSPLUS */
+
 /* GSocket_GetError:
  *  Returns the last error occured for this socket. Note that successful
  *  operations do not clear this back to GSOCK_NOERROR, so use it only
  *  after an error.
  */
-GSocketError GSocket_GetError(GSocket *socket);
+GSocketError WXDLLIMPEXP_NET GSocket_GetError(GSocket *socket);
 
+#ifndef wxUSE_GSOCKET_CPLUSPLUS
 
 /* Callbacks */
 
@@ -311,6 +373,8 @@ void GSocket_SetCallback(GSocket *socket, GSocketEventFlags flags,
  */
 void GSocket_UnsetCallback(GSocket *socket, GSocketEventFlags flags);
 
+#endif /* ndef wxUSE_GSOCKET_CPLUSPLUS */
+
 
 /* GAddress */
 
@@ -348,9 +412,10 @@ GSocketError GAddress_UNIX_GetPath(GAddress *address, char *path, size_t sbuf);
 }
 #endif /* __cplusplus */
 
+#ifdef wxUSE_GSOCKET_CPLUSPLUS
+#include "wx/unix/gsockunx.h"
+#endif
 
 #endif    /* wxUSE_SOCKETS || defined(__GSOCKET_STANDALONE__) */
 
-#endif
-
-#endif // GSOCKET_H
+#endif    /* __GSOCKET_H */
