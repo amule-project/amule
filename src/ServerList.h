@@ -69,6 +69,8 @@ public:
 	uint32		GetDeletedServerCount()		{return delservercount;}
 	void		Process();
 	void		SendNextPacket();
+	void 		UpdateServerMetFromURL(wxString strURL);	
+	void		DownloadFinished(uint32 result);	
 
 	//void static CALLBACK UDPTimerProc(HWND hwnd, unsigned int uMsg,unsigned int* idEvent,DWORD dwTime);
 protected:
@@ -88,6 +90,7 @@ private:
 	uint32		delservercount;
 	uint32		m_nLastSaved;
 	uint32		m_nLastED2KServerLinkCheck;// emanuelw(20030924) added
+	wxString		URLUpdate;
 };
 
 #endif // SERVERLIST_H

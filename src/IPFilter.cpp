@@ -425,7 +425,7 @@ void CIPFilter::Update() {
 }
 
 void CIPFilter::DownloadFinished(uint32 result) {
-	if(result==0) {
+	if(result==1) {
 		wxString strTempFilename(theApp.ConfigDir + wxT("ipfilter.dat.download"));
 		// curl succeeded. proceed with ipfilter loading
 		LoadFromFile(strTempFilename, true); // merge it

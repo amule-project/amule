@@ -2223,7 +2223,7 @@ void CamuleApp::OnFinishedHTTPDownload(wxEvent& evt)
 			ipfilter->DownloadFinished(event.GetExtraLong());
 			break;
 		case HTTP_ServerMet:
-			// not implemented
+			serverlist->DownloadFinished(event.GetExtraLong());
 			break;
 	}
 }
