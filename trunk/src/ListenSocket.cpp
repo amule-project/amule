@@ -49,13 +49,6 @@
 
 WX_DEFINE_OBJARRAY(ArrayOfwxStrings);
 
-//-----------------------------------------------------------------------------
-// CClientReqSocketHandler
-//-----------------------------------------------------------------------------
-
-BEGIN_EVENT_TABLE(CClientReqSocketHandler, wxEvtHandler)
-	EVT_SOCKET(CLIENTREQSOCKET_HANDLER, CClientReqSocketHandler::ClientReqSocketHandler)
-END_EVENT_TABLE()
 
 IMPLEMENT_DYNAMIC_CLASS(CClientReqSocket,CEMSocket)
 
@@ -73,7 +66,10 @@ CClientReqSocket::CClientReqSocket(CPreferences* in_prefs, CUpDownClient* in_cli
 	theApp.listensocket->AddSocket(this);
 	ResetTimeOutTimer();
 	deletethis = false;
-	
+#ifdef AMULE_DAEMON
+	my_handler = 0;
+	Notify(false);
+#else
 	my_handler = new CClientReqSocketHandler(this);
 	SetEventHandler(*my_handler, CLIENTREQSOCKET_HANDLER);
 	SetNotify(
@@ -82,6 +78,7 @@ CClientReqSocket::CClientReqSocket(CPreferences* in_prefs, CUpDownClient* in_cli
 		wxSOCKET_OUTPUT_FLAG|
 		wxSOCKET_LOST_FLAG);
 	Notify(true);
+#endif
 }
 
 void CClientReqSocket::OnInit()
@@ -116,8 +113,13 @@ CClientReqSocket::~CClientReqSocket()
 		#warning check closing method to change order and get rid of this
 		theApp.listensocket->RemoveSocket(this);
 	}
-	
+#ifdef AMULE_DAEMON
+	if ( my_handler ) {
+		my_handler->Delete();
+	}
+#else
 	delete my_handler;
+#endif
 }
 
 void CClientReqSocket::ResetTimeOutTimer()
@@ -2030,6 +2032,45 @@ void CClientReqSocket::OnReceive(int nErrorCode)
 //-----------------------------------------------------------------------------
 // CClientReqSocketHandler
 //-----------------------------------------------------------------------------
+CClientReqSocketHandler::CClientReqSocketHandler(CClientReqSocket* parent)
+{
+	socket = parent;
+	socket->my_handler = this;
+#ifdef AMULE_DAEMON
+	if ( Create() != wxTHREAD_NO_ERROR ) {
+		printf("ERROR: CClientReqSocketHandler failed create\n");
+		wxASSERT(0);
+	}
+#endif
+}
+
+#ifdef AMULE_DAEMON
+
+void *CClientReqSocketHandler::Entry()
+{
+	while ( !TestDestroy() ) {
+		if ( socket->deletethis ) {
+			printf("CClientReqSocketHandler: socket %p being deleted\n", socket);
+			break;
+		}
+		if ( socket->WaitForLost(0, 0) ) {
+			printf("CClientReqSocketHandler: connection lost on %p\n", socket);
+			break;
+		}
+		if ( socket->WaitForRead(0, 10) ) {
+			socket->OnReceive(0);
+		}
+	}
+	printf("CClientReqSocketHandler: thread for %p exited\n", socket);
+	socket->my_handler = 0;
+	return 0;
+}
+
+#else
+
+BEGIN_EVENT_TABLE(CClientReqSocketHandler, wxEvtHandler)
+	EVT_SOCKET(CLIENTREQSOCKET_HANDLER, CClientReqSocketHandler::ClientReqSocketHandler)
+END_EVENT_TABLE()
 
 void CClientReqSocketHandler::ClientReqSocketHandler(wxSocketEvent& event)
 {
@@ -2062,6 +2103,7 @@ void CClientReqSocketHandler::ClientReqSocketHandler(wxSocketEvent& event)
 			break;
 	}
 }
+#endif
 
 //-----------------------------------------------------------------------------
 // CListenSocket
@@ -2136,9 +2178,7 @@ void *CListenSocket::Entry()
 				}
 				continue;
 			}
-			wxMutexGuiEnter();
 			OnAccept(0);
-			wxMutexGuiLeave();
 		}
 	}
 	return 0;
@@ -2152,6 +2192,7 @@ bool CListenSocket::StartListening()
 	//return (this->Create(app_prefs->GetPort(),SOCK_STREAM,FD_ACCEPT) && this->Listen());
 #ifdef AMULE_DAEMON
 	Run();
+	global_sock_thread.Run();
 #endif
 	return true;
 }
@@ -2259,11 +2300,17 @@ void CListenSocket::RecalculateStats()
 void CListenSocket::AddSocket(CClientReqSocket* toadd)
 {
 	socket_list.insert(toadd);
+#ifdef AMULE_DAEMON
+	global_sock_thread.AddSocket(toadd);
+#endif
 }
 
 void CListenSocket::RemoveSocket(CClientReqSocket* todel)
 {
 	socket_list.erase(todel);
+#ifdef AMULE_DAEMON
+	global_sock_thread.RemoveSocket(todel);
+#endif
 }
 
 void CListenSocket::KillAllSockets()
@@ -2348,6 +2395,7 @@ float CListenSocket::GetMaxConperFiveModifier(){
 		return 1;
 	}
 }
+#ifdef AMULE_DAEMON
 
 CSocketGlobalThread::CSocketGlobalThread() : wxThread(wxTHREAD_JOINABLE)
 {
@@ -2358,11 +2406,13 @@ CSocketGlobalThread::CSocketGlobalThread() : wxThread(wxTHREAD_JOINABLE)
 
 void CSocketGlobalThread::AddSocket(CClientReqSocket* sock)
 {
+	wxMutexLocker locker(list_mutex);
 	socket_list.push_back(sock);
 }
 
 void CSocketGlobalThread::RemoveSocket(CClientReqSocket* sock)
 {
+	wxMutexLocker locker(list_mutex);
 	for (std::list<CClientReqSocket *>::iterator it = socket_list.begin();
 			it != socket_list.end(); it++) {
 			CClientReqSocket* cur_socket = *it;
@@ -2373,31 +2423,45 @@ void CSocketGlobalThread::RemoveSocket(CClientReqSocket* sock)
 		}
 }
 
+
 void *CSocketGlobalThread::Entry()
 {
 	while ( !TestDestroy() ) {
-		Sleep(100);
+		Sleep(10);
+		wxMutexLocker locker(list_mutex);
 		for (std::list<CClientReqSocket *>::iterator it = socket_list.begin();
 			it != socket_list.end(); it++) {
-			CClientReqSocket* cur_socket = *it;
-			if ( cur_socket->WaitForLost(0, 0) ) {
-				//socket_list.erase(it);
+			CClientReqSocket* cur_sock = *it;
+			if (cur_sock->deletethis) {
+				it = socket_list.erase(it);
 				continue;
 			}
-			if ( !cur_socket->wxSocketBase::IsConnected() ) {
-				if ( cur_socket->WaitOnConnect(0, 0) ) {
-					wxMutexGuiEnter();
-					cur_socket->OnConnect(0);
-					wxMutexGuiLeave();
+			if ( cur_sock->WaitForLost(0, 0) ) {
+				it = socket_list.erase(it);
+				continue;
+			}
+			if ( !cur_sock->wxSocketBase::IsConnected() ) {
+				if ( cur_sock->WaitOnConnect(0, 0) ) {
+					cur_sock->OnConnect(0);
 				}
 			} else {
-				if ( cur_socket->WaitForRead(0, 0) ) {
-					wxMutexGuiEnter();
-					cur_socket->OnReceive(0);
-					wxMutexGuiLeave();
+				if ( cur_sock->WaitForRead(0, 0) ) {
+					cur_sock->OnReceive(0);
+				}
+				CUpDownClient *client = cur_sock->GetClient();
+				if ( (client != 0) && (client->GetDownloadState() == DS_DOWNLOADING) ) {
+					
+					printf("Client %p started dload\n", client);
+						
+					it = socket_list.erase(it);
+					CClientReqSocketHandler *t = new CClientReqSocketHandler(cur_sock);
+					// fire & forget
+					t->Run();
 				}
 			}
 		}
 	}
 	return 0;
 }
+
+#endif

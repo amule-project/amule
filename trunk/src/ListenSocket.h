@@ -44,7 +44,7 @@ class CClientReqSocketHandler;
 
 class CClientReqSocket : public CEMSocket
 {
-friend class CClientSocket;
+friend class CClientReqSocketHandler;
 
 	DECLARE_DYNAMIC_CLASS(CClientReqSocket)
 
@@ -89,25 +89,33 @@ private:
 	CClientReqSocketHandler* my_handler;
 };
 
+#ifdef AMULE_DAEMON
+#define CLIENT_REQ_SOCK_HANDLER_BASE wxThread
+#else
+#define CLIENT_REQ_SOCK_HANDLER_BASE wxEvtHandler
+#endif
 
-class CClientReqSocketHandler: public wxEvtHandler
+class CClientReqSocketHandler: public CLIENT_REQ_SOCK_HANDLER_BASE
 {
 public:
-	CClientReqSocketHandler(CClientReqSocket* parent) {
-		socket = parent;
-	}
+	CClientReqSocketHandler(CClientReqSocket* parent);
 
 private:
 	void ClientReqSocketHandler(wxSocketEvent& event);
 	CClientReqSocket* socket;
 	
-	DECLARE_EVENT_TABLE()
+#ifdef AMULE_DAEMON
+	void *Entry();
+#else
+	DECLARE_EVENT_TABLE();
+#endif
 };
-
 
 class CSocketGlobalThread : public wxThread {
 	void *Entry();
-	std::list <CClientReqSocket*> socket_list;
+	
+	std::list<CClientReqSocket *> socket_list;
+	wxMutex list_mutex;
 public:
 	CSocketGlobalThread(/*CListenSocket *socket*/);
 	void AddSocket(CClientReqSocket* sock);
