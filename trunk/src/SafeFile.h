@@ -86,7 +86,7 @@ class CSafeFile : public CFile, public CFileDataIO
 
 	virtual off_t Read(void *pBuf, off_t nCount) const;
 	virtual size_t Write(const void *pBuf, size_t nCount);
-	virtual off_t GetPosition() const {
+ 	virtual off_t GetPosition() const {
 		return CFile::GetPosition();
 	}
 	virtual off_t GetLength() const {
@@ -95,8 +95,7 @@ class CSafeFile : public CFile, public CFileDataIO
 	virtual off_t Seek(off_t lOff, CFile::SeekMode nFrom = CFile::start) const {
 		return CFile::Seek(lOff, nFrom);
 	}
-	
- };
+};
  
 
 
@@ -118,10 +117,6 @@ public:
 		return CMemFile::Write( pBuf, nCount );
 	}
 
-	virtual off_t Seek(off_t lOff, wxSeekMode from = wxFromStart) {
-		return CMemFile::Seek(lOff, from);
-	}
-	
 	virtual off_t GetPosition() const {
 		return CMemFile::GetPosition();
 	}
@@ -129,12 +124,9 @@ public:
 		return CMemFile::GetLength();
 	}
 
-	virtual uint8		ReadUInt8() const;
-	virtual uint16		ReadUInt16() const;
-	virtual uint32		ReadUInt32() const;
-//	virtual void		ReadUInt128(Kademlia::CUInt128 *pVal) const;
-	virtual void		ReadHash16(unsigned char* pVal) const;
+//	virtual void ReadUInt128(Kademlia::CUInt128* pVal) const;
 	
+	// We override the default buffer-growth behavior in these functions
 	virtual void WriteUInt8(uint8 nVal);
 	virtual void WriteUInt16(uint16 nVal);
 	virtual void WriteUInt32(uint32 nVal);
