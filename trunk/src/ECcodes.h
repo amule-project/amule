@@ -33,14 +33,6 @@ typedef uint8 ec_opcode_t;
 typedef uint16 ec_tagname_t;
 typedef uint32 ec_taglen_t;
 
-/**
- * Type to hold EC Protocol Version information
- */
-typedef struct {
-	uint8	major;
-	uint8	minor;
-} EC_Version_t;
-
 
 /**
  * Type to hold IPv4 address.
@@ -348,8 +340,8 @@ enum {
 		/*!
 		 * \brief EC protocol version.
 		 *
-		 * Type of this tag is EC_Version_t, which defaults to
-		 * <tt>{ 2, 0 }</tt> for the 2.0 version.
+		 * An uint16 value, MSB = major, LSB = minor.
+		 * Defaults to 0x0200 for v2.0.
 		 *
 		 * \par Child TAGs:
 		 *	(none)

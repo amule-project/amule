@@ -325,8 +325,7 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, CmdId *UNU
 	CECTag *tag = new CECTag(EC_TAG_CLIENT_NAME, ProgName);
 	packet.AddTag(*tag);
 	delete tag;
-	EC_Version_t proto_version = { 0x02, 0x00 };
-	packet.AddTag(CECTag(EC_TAG_PROTOCOL_VERSION, 2, &proto_version));
+	packet.AddTag(CECTag(EC_TAG_PROTOCOL_VERSION, (uint16)0x0200));
 
 	if ( m_HasConfigFromFile ) {
 		wxFileConfig eMuleIni(

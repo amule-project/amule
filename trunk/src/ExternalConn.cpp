@@ -232,8 +232,8 @@ CECPacket *ExternalConn::Authenticate(const CECPacket *request)
 		CECTag *passwd = request->GetTagByName(EC_TAG_PASSWD_HASH);
 		CECTag *protocol = request->GetTagByName(EC_TAG_PROTOCOL_VERSION);
 		if (protocol != NULL) {
-			EC_Version_t *proto_version = (EC_Version_t *)protocol->GetTagData();
-			if (proto_version->major == 0x02 && proto_version->minor == 0x00) {
+			uint16 proto_version = protocol->GetInt16Data();
+			if (proto_version == 0x0200) {
 				if (passwd == NULL) {
 					if (thePrefs::ECPassword().IsEmpty()) {
 						response = new CECPacket(EC_OP_AUTH_OK);
