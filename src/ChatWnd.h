@@ -31,6 +31,7 @@
 #endif
 
 #include <wx/panel.h>		// Needed for wxPanel
+#include <wx/notebook.h>		// Needed for wxNotebookEvent
 #include "Types.h"
 
 class CDlgFriend;
@@ -60,6 +61,7 @@ public:
 protected:
 	void	OnBnClickedCsend(wxCommandEvent& evt);
 	void	OnBnClickedCclose(wxCommandEvent& evt);
+	void	OnAllPagesClosed(wxNotebookEvent& evt);
 
 	DECLARE_EVENT_TABLE()
 
