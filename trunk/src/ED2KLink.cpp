@@ -40,12 +40,6 @@ CED2KLink::CED2KLink( LinkType type )
 
 CED2KLink::~CED2KLink()
 {
-	if (m_sources) {
-		delete m_sources;
-	}
-	if (m_hashset) {
-		delete m_hashset;
-	}	
 }
 
 
@@ -295,11 +289,15 @@ CED2KFileLink::CED2KFileLink( const wxString& name, const wxString& size, const 
 
 CED2KFileLink::~CED2KFileLink()
 {
-	delete m_sources;
-	m_sources = NULL;
+	if (m_sources) {
+		delete m_sources;
+		m_sources = NULL;
+	}
 	
-	delete m_hashset;
-	m_hashset =  NULL;
+	if (m_hashset) {
+		delete m_hashset;
+		m_hashset =  NULL;
+	}
 	
 	while (!m_hostSources.IsEmpty()) {
 		delete m_hostSources.RemoveHead();
