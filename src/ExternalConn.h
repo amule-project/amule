@@ -48,8 +48,6 @@ class wxSocketEvent;
  * theorem). Instead, calculate diff between list of gaps.
  */
 class CPartFile_Encoder {
-		otherfunctions::RLE_Data m_part_status;
-
 		//
 		// List of gaps sent to particular client. Since clients
 		// can request lists in different time, they can get
@@ -67,10 +65,9 @@ class CPartFile_Encoder {
 		{
 			m_file = 0;
 		}
-		CPartFile_Encoder(const CPartFile_Encoder &obj) : m_part_status(obj.m_part_status)
+		CPartFile_Encoder(const CPartFile_Encoder &obj) : m_enc_data(obj.m_enc_data)
 		{
 			m_file = obj.m_file;
-			m_enc_data = obj.m_enc_data;
 		}
 		
 		// encode - take data from m_file

@@ -317,7 +317,18 @@ public:
 	RLE_Data m_part_status;
 	std::list<Gap_Struct> m_gap_list;
 	
+	PartFileEncoderData() { }
+	PartFileEncoderData(int part_count) : m_part_status(part_count, true) { }
+	
 	void ApplyGapDiffs(std::list<Gap_Struct> &diff_list);
+	
+	// for stl
+	PartFileEncoderData &operator=(const PartFileEncoderData &obj)
+	{
+		m_part_status = obj.m_part_status;
+		m_gap_list = obj.m_gap_list;
+		return *this;
+	}
 };
 
 } // End namespace

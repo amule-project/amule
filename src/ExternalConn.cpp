@@ -368,7 +368,9 @@ CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request,
 
 		CEC_PartFile_Tag filetag(cur_file, detail_level);
 		
-		CECTag *etag = encoders[cur_file].Encode();
+		CPartFile_Encoder &enc = encoders[cur_file];
+//		CECTag *etag = encoders[cur_file].Encode();
+		CECTag *etag = enc.Encode();
 		filetag.AddTag(etag);
 
 		response->AddTag(filetag);
@@ -955,12 +957,12 @@ CECPacket *SetPreferencesFromRequest(const CECPacket *request)
 }
 
 
-CPartFile_Encoder::CPartFile_Encoder(CPartFile *file) : m_part_status(file->GetPartCount(), true)
+CPartFile_Encoder::CPartFile_Encoder(CPartFile *file) : m_enc_data(file->GetPartCount())
 {
 	m_file = file;
 }
 
-CPartFile_Encoder::CPartFile_Encoder(int size) : m_part_status(size, true)
+CPartFile_Encoder::CPartFile_Encoder(int size) : m_enc_data(size)
 {
 	m_file = 0;
 }
