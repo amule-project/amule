@@ -112,6 +112,7 @@ void CServerSocket::OnConnect(wxSocketError nErrorCode)
 				memset(&sockAddr, 0, sizeof(sockAddr));
 				wxIPV4address tmpaddr;
 				GetPeer(tmpaddr);
+				printf("Connection Event from %s : %u\n",unicode2char(tmpaddr.IPAddress()),cur_server->GetPort());
 				sockAddr.sin_addr.s_addr = inet_addr(unicode2char(tmpaddr.IPAddress()));
 				cur_server->SetID(sockAddr.sin_addr.s_addr);
 				theApp.serverlist->GetServerByAddress(cur_server->GetAddress(),cur_server->GetPort())->SetID(sockAddr.sin_addr.s_addr);
