@@ -302,13 +302,13 @@ void CUpDownClient::ProcessFileInfo(CSafeMemFile* data, CPartFile* file)
 {
 	// 0.42e
 	if (file==NULL) {
-		throw CString(_("ERROR: Wrong file ID (ProcessFileInfo; file==NULL)"));
+		throw wxString(_("ERROR: Wrong file ID (ProcessFileInfo; file==NULL)"));
 	}
 	if (reqfile==NULL) {
-		throw CString(_("ERROR: Wrong file ID (ProcessFileInfo; reqfile==NULL)"));
+		throw wxString(_("ERROR: Wrong file ID (ProcessFileInfo; reqfile==NULL)"));
 	}
 	if (file != reqfile) {
-		throw CString(_("ERROR: Wrong file ID (ProcessFileInfo; reqfile!=file)"));
+		throw wxString(_("ERROR: Wrong file ID (ProcessFileInfo; reqfile!=file)"));
 	}
 	
 	wxString Filename;
@@ -387,9 +387,9 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, CSafeMemFile* data, CPart
 	
 	if ( !reqfile || file != reqfile ){
 		if (reqfile==NULL) {
-			throw CString(_("ERROR: Wrong file ID (ProcessFileStatus; reqfile==NULL)"));
+			throw wxString(_("ERROR: Wrong file ID (ProcessFileStatus; reqfile==NULL)"));
 		}
-		throw CString(_("ERROR: Wrong file ID (ProcessFileStatus; reqfile!=file)"));
+		throw wxString(_("ERROR: Wrong file ID (ProcessFileStatus; reqfile!=file)"));
 	}
 	
 	uint16 nED2KPartCount;
@@ -423,8 +423,8 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, CSafeMemFile* data, CPart
 	{
 		if (reqfile->GetED2KPartCount() != nED2KPartCount)
 		{
-			CString strError;
-			strError.Format(_("ProcessFileStatus - wrong part number recv=%u  expected=%u  "), nED2KPartCount, reqfile->GetED2KPartCount());
+			wxString strError;
+			strError.Printf(_("ProcessFileStatus - wrong part number recv=%u  expected=%u  "), nED2KPartCount, reqfile->GetED2KPartCount());
 			strError +=  EncodeBase16(reqfile->GetFileHash(), 16);
 			m_nPartCount = 0;
 			throw strError;
@@ -772,7 +772,7 @@ void CUpDownClient::ProcessBlockPacket(char *packet, uint32 size, bool packed)
 				// Found reserved block
 				
 				if (cur_block->fZStreamError){
-					AddDebugLogLine(false, CString(_("Ignoring %u bytes of block %u-%u because of errornous zstream state for file \"%s\"")), size - HEADER_SIZE, nStartPos, nEndPos, reqfile->GetFileName().GetData());
+					AddDebugLogLine(false, _("Ignoring %u bytes of block %u-%u because of errornous zstream state for file \"%s\""), size - HEADER_SIZE, nStartPos, nEndPos, reqfile->GetFileName().GetData());
 					reqfile->RemoveBlockFromList(cur_block->block->StartOffset, cur_block->block->EndOffset);
 					return;
 				}
@@ -816,7 +816,7 @@ void CUpDownClient::ProcessBlockPacket(char *packet, uint32 size, bool packed)
 							nEndPos = cur_block->block->StartOffset + cur_block->totalUnzipped - 1;
 
 							if (nStartPos > cur_block->block->EndOffset || nEndPos > cur_block->block->EndOffset) {
-								AddDebugLogLine(false, CString(_("Corrupted compressed packet for %s received (error %i)")),reqfile->GetFileName().GetData(),666);
+								AddDebugLogLine(false, _("Corrupted compressed packet for %s received (error %i)"),reqfile->GetFileName().GetData(),666);
 								reqfile->RemoveBlockFromList(cur_block->block->StartOffset, cur_block->block->EndOffset);
 							} else {
 								// Write uncompressed data to file
@@ -826,9 +826,9 @@ void CUpDownClient::ProcessBlockPacket(char *packet, uint32 size, bool packed)
 							}
 						}
 					} else {
-						CString strZipError;
+						wxString strZipError;
 						if (cur_block->zStream && cur_block->zStream->msg) {
-							strZipError.Format(_T(" - %s"), cur_block->zStream->msg);
+							strZipError.Printf(_T(" - %s"), cur_block->zStream->msg);
 						} 
 						AddDebugLogLineM(false, wxString(_("Corrupted compressed packet for")) + reqfile->GetFileName() + wxString::Format(_("received (error %i) ") , result) + strZipError );
 						reqfile->RemoveBlockFromList(cur_block->block->StartOffset, cur_block->block->EndOffset);
@@ -964,11 +964,11 @@ int CUpDownClient::unzip(Pending_Block_Struct *block, BYTE *zipped, uint32 lenZi
 			block->totalUnzipped = zS->total_out;
 		} else {
 			// Should not get here unless input data is corrupt
-			CString strZipError;
+			wxString strZipError;
 			if (zS->msg)
-				strZipError.Format(_T(" %d '%s'"), err, zS->msg);
+				strZipError.Printf(_T(" %d '%s'"), err, zS->msg);
 			else if (err != Z_OK)
-				strZipError.Format(_T(" %d"), err);
+				strZipError.Printf(_T(" %d"), err);
 			AddDebugLogLineM(false, wxString::Format(wxT("Unexpected zip error ")) +  strZipError + wxT("in file \"") + (reqfile ? reqfile->GetFileName() : wxT("?")) + wxT("\""));
 		}
 

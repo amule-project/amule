@@ -503,7 +503,7 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender,CUpDownClient* source)
 		theApp.clientlist->AddClient(source,true);
 	}
 
-	if (source->GetFileRate()>0 || source->GetFileComment().GetLength()>0) {
+	if (source->GetFileRate()>0 || source->GetFileComment().Length()>0) {
 		sender->UpdateFileRatingCommentAvail();
 	}
 
@@ -542,7 +542,7 @@ void CDownloadQueue::CheckAndAddKnownSource(CPartFile* sender,CUpDownClient* sou
 	// No more need for this
 	// source->SetDownloadFile(sender);
 
-	if (source->GetFileRate()>0 || source->GetFileComment().GetLength()>0) {
+	if (source->GetFileRate()>0 || source->GetFileComment().Length()>0) {
 		sender->UpdateFileRatingCommentAvail();
 	}
 
@@ -599,7 +599,7 @@ bool CDownloadQueue::RemoveSource(CUpDownClient* toremove, bool	updatewindow, bo
 		}
 	}
 
-	if (toremove->GetFileComment().GetLength()>0 || toremove->GetFileRate()>0) {
+	if (toremove->GetFileComment().Length()>0 || toremove->GetFileRate()>0) {
 		toremove->reqfile->UpdateFileRatingCommentAvail();
 	}
 
@@ -694,7 +694,7 @@ bool CDownloadQueue::SendNextUDPPacket()
 					if (it == filelist.end()) {
 						// finished asking the current server for all files
 						// if there are pending requests for the current server, send them
-						if (dataGlobGetSources.GetLength() > 0) {
+						if (dataGlobGetSources.Length() > 0) {
 							if (SendGlobGetSourcesUDPPacket(dataGlobGetSources)) {
 								bSentPacket = true;
 							}
@@ -739,9 +739,9 @@ bool CDownloadQueue::SendNextUDPPacket()
 		}
 	}
 
-	//ASSERT( dataGlobGetSources.GetLength() == 0 || !bSentPacket );
+	//ASSERT( dataGlobGetSources.Length() == 0 || !bSentPacket );
 
-	if (!bSentPacket && dataGlobGetSources.GetLength() > 0) {
+	if (!bSentPacket && dataGlobGetSources.Length() > 0) {
 		SendGlobGetSourcesUDPPacket(dataGlobGetSources);
 	}
 
@@ -873,12 +873,12 @@ void CDownloadQueue::ProcessLocalRequests()
 			}
 		}
 
-		int iSize = dataTcpFrame.GetLength();
+		int iSize = dataTcpFrame.Length();
 		if (iSize > 0)
 		{
 			// create one 'packet' which contains all buffered OP_GETSOURCES eD2K packets to be sent with one TCP frame
 			// server credits: 16*iMaxFilesPerTcpFrame+1 = 241
-			Packet* packet = new Packet(new char[iSize], dataTcpFrame.GetLength(), true, false);
+			Packet* packet = new Packet(new char[iSize], dataTcpFrame.Length(), true, false);
 			dataTcpFrame.Seek(0, wxFromStart);
 			dataTcpFrame.ReadRaw(packet->GetPacket(), iSize);
 			uint32 size = packet->size;

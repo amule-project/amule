@@ -3490,7 +3490,7 @@ void CPartFile::UpdateFileRatingCommentAvail()
 		m_SrcList.GetNext(pos1);
 		CUpDownClient* cur_src = m_SrcList.GetAt(pos2);
 		
-		if (cur_src->GetFileComment().GetLength()>0) {
+		if (cur_src->GetFileComment().Length()>0) {
 			hasComment=true;
 		}
 

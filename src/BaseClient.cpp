@@ -297,7 +297,7 @@ CUpDownClient::~CUpDownClient()
 	}
 
 	//printf("11...");
-	if (m_iRate>0 || m_strComment.GetLength()>0) {
+	if (m_iRate>0 || m_strComment.Length()>0) {
 		m_iRate=0; 
 		m_strComment.Empty();
 		if (reqfile) {
