@@ -72,7 +72,7 @@ public:
 	void 			CopyToDataBuffer(unsigned int offset, const char *data, unsigned int n);
 	void			CopyUInt32ToDataBuffer(uint32 data, unsigned int offset = 0) { 
 		wxASSERT(offset <= size - sizeof(uint32) );
-		*((uint32*)(pBuffer + offset)) = data;
+		*((uint32*)(pBuffer + offset)) = ENDIAN_SWAP_32(data);
 	}
 	
 private:
