@@ -90,8 +90,6 @@ END_EVENT_TABLE()
 
 IMPLEMENT_APP(CamuleRemoteGuiApp)
 
-// Global timer. Used to cache GetTickCount() results for better performance.
-MyTimer* mytimer = NULL;
 
 int CamuleRemoteGuiApp::OnExit()
 {
@@ -104,19 +102,11 @@ int CamuleRemoteGuiApp::OnExit()
 
 void CamuleRemoteGuiApp::ShutDown() {
 	amuledlg->Destroy();
-	if (mytimer) {
-		delete mytimer;
-		mytimer = NULL;
-	}
 }
 
 bool CamuleRemoteGuiApp::OnInit()
 {
 	amuledlg = NULL;
-	
-	// Madcat - Initialize timer as the VERY FIRST thing to avoid any issues later.
-	// Kry - I love to init the vars on init, even before timer.
-	mytimer = new MyTimer();
 	
 	if ( !wxApp::OnInit() ) {
 		return false;
@@ -176,7 +166,109 @@ wxString CamuleRemoteGuiApp::GetServerLog(bool)
 }
 
 //
-// Container implenentation
+// Remote gui can't create links by itself. Pass request or retrieve from container ?
+//
+wxString CamuleRemoteGuiApp::CreateED2kLink(CAbstractFile const*)
+{
+	return wxEmptyString;
+}
+
+wxString CamuleRemoteGuiApp::CreateHTMLED2kLink(CAbstractFile const*f)
+{
+	wxString strCode = wxT("<a href=\"") + 
+		CreateED2kLink(f) + wxT("\">") + 
+		CleanupFilename(f->GetFileName(), true) + wxT("</a>");
+	return strCode;
+}
+
+
+wxString validateURI(const wxString url)
+{
+	wxString strURI;
+#if wxCHECK_VERSION_FULL(2,5,3,2)
+	wxURI* uri = new wxURI(url);
+	strURI=uri->BuildURI();
+#else
+	strURI=wxURL::ConvertToValidURI(url);
+	// The following cause problems, so we escape them
+	strURI.Replace(wxT("\""), wxT("%22")); 
+	strURI.Replace(wxT("'"),  wxT("%27")); 
+	strURI.Replace(wxT("`"),  wxT("%60")); 
+#endif
+	return strURI;
+}
+
+wxString CamuleRemoteGuiApp::GenFakeCheckUrl(const CAbstractFile *f)
+{
+	wxString strURL = wxT("http://donkeyfakes.gambri.net/index.php?action=search&ed2k=");
+	strURL = validateURI( strURL +  CreateED2kLink( f ) );
+	return strURL;
+}
+
+// jugle.net fake check
+wxString CamuleRemoteGuiApp::GenFakeCheckUrl2(const CAbstractFile *f)
+{
+	wxString strURL = wxT("http://www.jugle.net/?fakecheck=%s");
+	strURL = validateURI( strURL +  CreateED2kLink( f ) );
+	return strURL;
+}
+
+void CamuleRemoteGuiApp::NotifyEvent(GUIEvent event)
+{
+	switch (event.ID) {
+	        case SEARCH_REQ:
+			break;
+	        case SEARCH_ADD_TO_DLOAD:
+			break;
+
+	        case PARTFILE_REMOVE_NO_NEEDED:
+			break;
+	        case PARTFILE_REMOVE_FULL_QUEUE:
+			break;
+	        case PARTFILE_REMOVE_HIGH_QUEUE:
+			break;
+	        case PARTFILE_CLEANUP_SOURCES:
+			break;
+	        case PARTFILE_SWAP_A4AF_THIS:
+			break;
+        	case PARTFILE_SWAP_A4AF_OTHERS:
+			break;
+	        case PARTFILE_SWAP_A4AF_THIS_AUTO:
+			break;
+	        case PARTFILE_PAUSE:
+			break;
+	        case PARTFILE_RESUME:
+			break;
+	        case PARTFILE_STOP:
+			break;
+	        case PARTFILE_PRIO_AUTO:
+			break;
+	        case PARTFILE_PRIO_SET:
+			break;
+	        case PARTFILE_SET_CAT:
+			break;
+	        case PARTFILE_DELETE:
+			break;
+	        case KNOWNFILE_SET_UP_PRIO:
+			break;
+	        case KNOWNFILE_SET_UP_PRIO_AUTO:
+			break;
+	        case KNOWNFILE_SET_COMMENT:
+			break;
+
+			// download queue
+	        case DLOAD_SET_CAT_PRIO:
+			break;
+	        case DLOAD_SET_CAT_STATUS:
+			break;
+			default:
+				printf("ERROR: bad event %d\n", event.ID);
+				wxASSERT(0);
+	}
+}
+
+//
+// Container implementation
 //
 CServerConnectRem::CServerConnectRem(CRemoteConnect *conn)
 {
@@ -245,6 +337,11 @@ void CIPFilterRem::Reload()
 	m_conn->Send(&req);
 }
 
+void CIPFilterRem::Update(wxString /*url*/)
+{
+	// FIXME: add command
+	wxASSERT(0);
+}
 
 void CSharedFilesRem::Reload(bool, bool)
 {
@@ -252,6 +349,10 @@ void CSharedFilesRem::Reload(bool, bool)
 	m_conn->Send(&req);
 }
 
+void CSharedFilesRem::AddFilesFromDirectory(wxString)
+{
+	// should not get here. You can't do it remotely.
+}
 
 /*!
  * Connection to remote core
@@ -271,6 +372,77 @@ void CRemoteConnect::Send(CECPacket *)
 {
 }
 
+POSITION CUpQueueRem::GetFirstFromUploadList()
+{
+	std::list<CUpDownClient *>::iterator i = m_items.begin();
+	POSITION pos;
+	pos.m_ptr = (void *)&i;
+	return pos;
+}
+
+CUpDownClient *CUpQueueRem::GetNextFromUploadList(POSITION &pos)
+{
+	std::list<CUpDownClient *>::iterator *i = (std::list<CUpDownClient *>::iterator *)pos.m_ptr;
+	(*i)++;
+	CUpDownClient *client = (*i == m_items.end()) ? NULL : *(*i);
+	return client;
+}
+
+// waiting list can be quite long. i see no point transferring it
+POSITION CUpQueueRem::GetFirstFromWaitingList()
+{
+	POSITION pos;
+	pos.m_ptr = NULL;
+	return pos;
+}
+
+CUpDownClient *CUpQueueRem::GetNextFromWaitingList(POSITION &)
+{
+	return NULL;
+}
+
+bool CDownQueueRem::AddED2KLink(const wxString &link, int)
+{
+	CECPacket req(EC_OP_ED2K_LINK);
+	req.AddTag(CECTag(EC_TAG_STRING, link));
+	
+	m_conn->Send(&req);
+	return true;
+}
+
+void CDownQueueRem::StopUDPRequests()
+{
+	// have no idea what is it about
+}
+
+CClientListRem::CClientListRem(CRemoteConnect *conn)
+{
+	m_conn = conn;
+}
+
+void CClientListRem::FilterQueues()
+{
+	// add code
+	wxASSERT(0);
+}
+
+void CSearchListRem::Clear()
+{
+	// add code
+	wxASSERT(0);
+}
+
+void CSearchListRem::NewSearch(wxString type, uint32 search_id)
+{
+	// add code
+	wxASSERT(0);
+}
+
+void CSearchListRem::StopGlobalSearch()
+{
+	// add code
+	wxASSERT(0);
+}
 
 //
 // since gui is not linked with amule.cpp - define events here

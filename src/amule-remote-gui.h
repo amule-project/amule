@@ -40,7 +40,10 @@ class CRemoteContainer {
 		CRemoteConnect *m_conn;
 
 		std::list<T *> m_items;
-		std::map<T *, I> m_items_hash;
+		std::map<I, T *> m_items_hash;
+		
+		// for GetByIndex
+		std::vector<T *> m_idx_items;
 		
 		// .size() is O(N) operation in stl
 		int m_item_count;
@@ -60,12 +63,19 @@ class CRemoteContainer {
 		{
 			m_items.push_back(item);
 			m_items_hash[this->GetItemID(item)] = item;
+			m_idx_items[m_item_count] = item;
+			m_item_count++;
 		}
 	
 		T *GetByID(I id)
 		{
 			// avoid creating nodes
 			return m_items_hash.count(id) ? m_items_hash[id] : NULL;
+		}
+		
+		T *GetByIndex(int index)
+		{
+			return ( (index > 0) && (index < m_item_count) ) ? m_idx_items[index] : NULL;
 		}
 		
 		//
@@ -138,6 +148,13 @@ class CRemoteContainer {
 				}
 			}
 			for(typename std::list<I>::iterator j = del_ids.begin(); j != del_ids.end(); j++) {
+				for(int idx = 0;idx < m_item_count;idx++) {
+					if ( m_idx_items[idx] == *j ) {
+						m_idx_items[idx] = m_idx_items[m_item_count-1];
+						break;
+					}
+				}
+				m_item_count--;
 				m_items_hash.erase(*j);
 				for(typename std::list<T>::iterator k = this->m_items.begin(); k != this->m_items.end(); k++) {
 					if ( *j == k->ID() ) {
@@ -191,21 +208,21 @@ class CServerListRem : public CRemoteContainer<CServer, uint32, CEC_Server_Tag> 
 };
 
 class CUpQueueRem : public CRemoteContainer<CUpDownClient, uint32, CEC_UpDownClient_Tag> {
+		uint32 m_waiting_user_count;
+		uint32 m_kbps;
+		uint32 m_data_overhead;
 	public:
 		CUpQueueRem(CRemoteConnect *);
 		
-		uint32 GetWaitingUserCount();
-		uint32 GetKBps();
-		uint32 GetUpDatarateOverhead();
+		uint32 GetWaitingUserCount() { return m_waiting_user_count; }
+		uint32 GetKBps() { return m_kbps; }
+		uint32 GetUpDatarateOverhead() { return m_data_overhead; }
+		
 		POSITION GetFirstFromUploadList();
 		CUpDownClient *GetNextFromUploadList(POSITION &curpos);
 		
 		POSITION GetFirstFromWaitingList();
 		CUpDownClient *GetNextFromWaitingList(POSITION &curpos);
-		//
-		// Actions
-		//
-		void AddUpDataOverheadOther(uint32);
 		
 		//
 		// template
@@ -215,17 +232,19 @@ class CUpQueueRem : public CRemoteContainer<CUpDownClient, uint32, CEC_UpDownCli
 		uint32 GetItemID(CUpDownClient *);
 };
 
-class CDownQueueRem : public CRemoteContainer<CUpDownClient, uint32, CEC_UpDownClient_Tag> {
+class CDownQueueRem : public CRemoteContainer<CPartFile, CMD4Hash, CEC_PartFile_Tag> {
+		uint32 m_kbps;
+		uint32 m_data_overhead;
 	public:
 		CDownQueueRem(CRemoteConnect *);
 		
-		uint32 GetKBps();
-		uint32 GetDownDatarateOverhead();
-		bool CompletedFilesExist();
+		uint32 GetKBps() { return m_kbps; }
+		uint32 GetDownDatarateOverhead() { return m_data_overhead; }
 
-		uint32 GetFileCount();
-		CKnownFile *GetFileByID(CMD4Hash);
-		CPartFile *GetFileByIndex(unsigned int idx);
+		uint32 GetFileCount() { return GetCount(); }
+		CKnownFile *GetFileByID(CMD4Hash id) { return (CKnownFile *)GetByID(id); }
+		CPartFile *GetFileByIndex(unsigned int idx) { return GetByIndex(idx); }
+		
 		bool IsPartFile(const CKnownFile* totest) const;
 		//
 		// Actions
@@ -238,17 +257,17 @@ class CDownQueueRem : public CRemoteContainer<CUpDownClient, uint32, CEC_UpDownC
 		//
 		// template
 		//
-		CUpDownClient *CreateItem(CEC_UpDownClient_Tag *);
-		void DeleteItem(CUpDownClient *);
-		uint32 GetItemID(CUpDownClient *);
+		CPartFile *CreateItem(CEC_PartFile_Tag *);
+		void DeleteItem(CPartFile *);
+		uint32 GetItemID(CPartFile *);
 };
 
 class CSharedFilesRem : public CRemoteContainer<CKnownFile, CMD4Hash, CEC_SharedFile_Tag> {
 	public:
-		CSharedFilesRem(CRemoteConnect *);;
+		CSharedFilesRem(CRemoteConnect *);
 		
-		CKnownFile *GetFileByID(const CMD4Hash& filehash);
-		uint32 GetCount();
+		CKnownFile *GetFileByID(CMD4Hash id) { return GetByID(id); }
+
 		//
 		// Actions
 		//
@@ -268,16 +287,19 @@ class CKnownFilesRem : public CRemoteContainer<CKnownFile, CMD4Hash> {
 };
 
 class CClientCreditsRem {
+		bool m_crypt_avail;
 	public:
-		bool CryptoAvailable();
+		bool CryptoAvailable() { return m_crypt_avail; }
 };
 
 class CClientListRem {
+		CRemoteConnect *m_conn;
+		uint32 m_banned_count;
 	public:
 		CClientListRem(CRemoteConnect *);
 		
 		const std::multimap<uint32, CUpDownClient*>& GetClientList();
-		uint32 GetBannedCount();
+		uint32 GetBannedCount() { return m_banned_count; }
 		
 		//
 		// Actions
@@ -310,8 +332,9 @@ class CSearchListRem : public CRemoteContainer<CSearchFile, CMD4Hash, CEC_Search
 };
 
 class CListenSocketRem {
+		uint32 m_peak_connections;
 	public:
-		uint32 GetPeakConnections();
+		uint32 GetPeakConnections() { return m_peak_connections; }
 };
 
 class CStatisticsRem {
