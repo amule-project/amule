@@ -18,13 +18,14 @@
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 
+#include <wx/button.h>
 #include <wx/checkbox.h>
+#include <wx/colordlg.h>
+#include <wx/config.h>
+#include <wx/filedlg.h>
+#include <wx/sizer.h>			// Needed in Mac compilation
 #include <wx/slider.h>
 #include <wx/spinctrl.h>
-#include <wx/colordlg.h>
-#include <wx/button.h>
-#include <wx/filedlg.h>
-#include <wx/config.h>
 #include <wx/tokenzr.h>
 #include <wx/valgen.h>
 
@@ -34,7 +35,7 @@
 
 #include "PrefsUnifiedDlg.h"
 #include "Preferences.h"
-#include "amule.h"				// Needed for theApp
+#include "amule.h"			// Needed for theApp
 #include "otherfunctions.h"		// Needed for MakeFoldername
 #include "CTypedPtrList.h"		// Needed for CList
 #include "EditServerListDlg.h"
@@ -45,7 +46,7 @@
 #include "SearchList.h"
 #include "DownloadQueue.h"
 #include "ClientList.h"
-#include "DirectoryTreeCtrl.h"	// Needed for CDirectoryTreeCtrl
+#include "DirectoryTreeCtrl.h"		// Needed for CDirectoryTreeCtrl
 #include "MD5Sum.h"
 
 
