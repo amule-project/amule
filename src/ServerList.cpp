@@ -117,7 +117,7 @@ uint8 CServerList::AutoUpdate()
 
 bool CServerList::Init()
 {
-	uint8 auto_count;
+	uint8 auto_count = false;
 	// auto update the list by using an url
 	if (app_prefs->AutoServerlist()) {
 		auto_count=AutoUpdate();

@@ -366,7 +366,7 @@ void CStatisticsDlg::ComputeAverages(
 	float		**ppf,			// an array of pointers to arrays of floats with sample data
 	COScopeCtrl	*pscope)		// the graph which will receive the points
 {	
-	double		sCur, sPrev, sTarget, sTrans, kBytesPrev, kBytesRun;
+	double		sCur = 0.0, sPrev, sTarget, sTrans, kBytesPrev, kBytesRun;
 	float		kBpsAvg;
 	float 		sAvg = (float)theApp.glob_prefs->GetStatsAverageMinutes()*60.0;
 	POSITION	posPrev = listHR.PrevAt(pos);
@@ -445,7 +445,7 @@ void CStatisticsDlg::VerifyHistory(bool bMsgIfOk)
 #ifdef __DEBUG__
 	int	cnt, cntRanges=1, cntInRange=0, cntExpected=nHistRanges*nPointsPerRange;
 	double sStart = (double)(theApp.GetUptimeSecs()) + 0.01;
-	double sStep=1.0, sPrev=sStart, sCur;
+	double sStep=1.0, sPrev=sStart, sCur = 0.0;
 	POSITION *ppos = aposRecycle;
 	POSITION posPrev = NULL;
 	POSITION posCur = listHR.GetTailPosition();
