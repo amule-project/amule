@@ -326,6 +326,7 @@ void CSearchListCtrl::SyncLists( CSearchListCtrl* src, CSearchListCtrl* dst )
 	{
 		dst->SetSortColumn( src->GetSortColumn() );
 		dst->SetSortAsc( src->GetSortAsc() );
+		dst->SetSortAlt( src->GetSortAlt() );
 
 		dst->SortList();
 	}
