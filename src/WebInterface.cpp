@@ -105,7 +105,7 @@ void GetCommand(char* buffer, size_t buffer_size) {
 }
 #else
 void GetCommand(char* buffer, size_t buffer_size) {
-        char const *text = wxGetTextFromUser(_T("Command?"), _T("Enter Command")).c_str();
+        char const *text = unicode2char(wxGetTextFromUser(_T("Command?"), _T("Enter Command")));
 	size_t len = strlen(text);
 	if (len > buffer_size - 2) len = buffer_size - 2;
 	strncpy(buffer, text, len);
@@ -281,7 +281,7 @@ void CamulewebApp::Print(char *sFormat, ...) {
 #ifndef AMULEWEBDLG
 	printf("%s",buffer);
 #else
-	theApp.frame->log_text->AppendText(wxString::Format("%s",buffer));
+	theApp.frame->log_text->AppendText(wxString::Format(wxT("%s"),buffer));
 #endif
 }
 
@@ -305,7 +305,7 @@ int CamulewebApp::OnRun() {
 	hostName = wxGetTextFromUser(_T("Enter hostname or ip of the box running aMule"), _T("Enter Hostname"), _T("localhost"));
 	sPort = wxGetTextFromUser(_T("Enter port for aMule's External Connection"), _T("Enter Port"), _T("4712"));
 	temp_wxpasswd = new wxString(::wxGetPasswordFromUser(_T("Enter password for mule connection (OK if no pass defined)"), _T("Enter Password")));
-	if (strlen(temp_wxpasswd->GetData())>0) {
+	if (strlen(unicode2char(*temp_wxpasswd))>0) {
 		temp_wxpasswd = new wxString(MD5Sum(*temp_wxpasswd).GetHash());
 #endif
 	} else 

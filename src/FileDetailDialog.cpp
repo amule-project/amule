@@ -113,7 +113,7 @@ void CFileDetailDialog::UpdateData()
 		char tmps[80];
 		static char const* lastseencomplete_fmt = "%A, %x, %X";	// Suppress compiler warning.
 		strftime(tmps,sizeof(tmps),lastseencomplete_fmt,localtime(&m_file->lastseencomplete));
-		bufferS=tmps;//.Format( "%s",m_file->lastseencomplete.Format( "%A, %x, %X"));
+		bufferS=char2unicode(tmps);//.Format( "%s",m_file->lastseencomplete.Format( "%A, %x, %X"));
 	}
 
 	GetDlgItem(IDC_LASTSEENCOMPL,wxControl)->SetLabel(bufferS);
@@ -147,7 +147,7 @@ void CFileDetailDialog::FillSourcenameList()
 	// update
 	for (POSITION pos = m_file->m_SrcList.GetHeadPosition(); pos != NULL; ) { 
 		cur_src = m_file->m_SrcList.GetNext(pos); 
-		if (cur_src->reqfile!=m_file || wxString(cur_src->GetClientFilename()).Length()==0)
+		if (cur_src->reqfile!=m_file || wxString(char2unicode(cur_src->GetClientFilename())).Length()==0)
 			continue;
 
 		if ((itempos=pmyListCtrl->FindItem(-1,wxString(char2unicode(cur_src->GetClientFilename())))) == -1) { 

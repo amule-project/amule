@@ -1072,7 +1072,7 @@ void CUpDownClient::UDPReaskFNF()
 	m_bUDPPending = false;
 	theApp.downloadqueue->RemoveSource(this);
 	if (!socket) {
-		if (Disconnected("UDPReaskFNF socket=NULL")) {
+		if (Disconnected(wxT("UDPReaskFNF socket=NULL"))) {
 			delete this;
 		}
 	}

@@ -281,7 +281,7 @@ CED2KFileLink::CED2KFileLink(const TCHAR* name,const TCHAR* size, const TCHAR* h
 						{	nInvalid++;	continue;	}
 						SUnresolvedHostname* hostname = new SUnresolvedHostname;
 						hostname->nPort = nPort;
-						hostname->strHostname = pIP;
+						hostname->strHostname = char2unicode(pIP);
 						m_HostnameSourcesList.AddTail(hostname);
 						continue;
 					}

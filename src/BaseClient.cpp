@@ -183,7 +183,7 @@ void CUpDownClient::Init()
 	m_bIsML = false;
 	m_Friend = NULL;
 	m_iRate=0;
-	m_strComment="";
+	m_strComment=wxT("");
 	m_nCurSessionUp = 0;
 	m_clientSoft=SO_UNKNOWN;
 	
@@ -393,7 +393,7 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
 					break;
 				case ET_MOD_VERSION:
 					if (temptag.tag.type == 2) {
-						m_strModVersion = temptag.tag.stringvalue;
+						m_strModVersion = char2unicode(temptag.tag.stringvalue);
 					} else if (temptag.tag.type == 3) {
 						m_strModVersion.Printf(_T("ModID=%u"), temptag.tag.intvalue);						
 					} else {
@@ -580,10 +580,10 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
 	// We want to educate Users of major comercial GPL breaking mods by telling them about the effects
 	// check for known advertising in usernames
 	// the primary aim is not to technical block those but to make users use a GPL-conform version
-	wxString strBuffer = m_pszUsername;
+	wxString strBuffer = char2unicode(m_pszUsername);
 	strBuffer.MakeUpper();
 	strBuffer.Remove(' ');
-	if (strBuffer.Find("EMULE-CLIENT") != -1 || strBuffer.Find("POWERMULE") != -1){
+	if (strBuffer.Find(wxT("EMULE-CLIENT")) != -1 || strBuffer.Find(wxT("POWERMULE")) != -1){
 		m_bGPLEvildoer = true;  
 	}
 
@@ -623,7 +623,7 @@ bool CUpDownClient::SendHelloPacket() {
 	if ( theApp.ipfilter->IsFiltered(inet_addr(unicode2char(address.IPAddress())))) {
 		theApp.amuledlg->AddDebugLogLine(true,_("Filtered IP: %s (%s)"),GetFullIP(),theApp.ipfilter->GetLastHit().GetData());
 		theApp.stat_filteredclients++;
-		if (Disconnected("IPFilter")) {
+		if (Disconnected(wxT("IPFilter"))) {
 			delete this;
 			return false;
 		}
@@ -795,7 +795,7 @@ void CUpDownClient::ProcessMuleInfoPacket(char* pachPacket, uint32 nSize)
 					break;
 				case ET_MOD_VERSION:
 					if (temptag.tag.type == 2) {
-						m_strModVersion = temptag.tag.stringvalue;
+						m_strModVersion = char2unicode(temptag.tag.stringvalue);
 					}
 					else if (temptag.tag.type == 3) {
 						m_strModVersion.Printf(_T("ModID=%u"), temptag.tag.intvalue);
@@ -972,7 +972,7 @@ void CUpDownClient::ProcessMuleCommentPacket(char* pachPacket, uint32 nSize)
 				throw CInvalidPacket("short packet reading comment string");
 			}		
 			AddDebugLogLineM(false,wxString::Format(wxT("Description for file '%s' received: %s"), m_pszClientFilename, desc));
-			m_strComment = desc;
+			m_strComment = char2unicode(desc);
 			reqfile->SetHasComment(true);
 			delete[] desc;
 		}
@@ -1144,13 +1144,13 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 {
 	if (theApp.listensocket->TooManySockets() && !bIgnoreMaxCon )  {
 		if (!socket) { 
-			if(Disconnected("Too many connections")) {
+			if(Disconnected(wxT("Too many connections"))) {
 				delete this;
 				return false;
 			}
 			return true;			
 		} else if (!socket->IsConnected()) {
-			if(Disconnected("Too many connections")) {
+			if(Disconnected(wxT("Too many connections"))) {
 				delete this;
 				return false;
 			}
@@ -1176,7 +1176,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 			reqfile->hashsetneeded = true;
 		}
 		if (GetUploadState() == US_CONNECTING) {
-			if(Disconnected("LowID->LowID and US_CONNECTING")) {
+			if(Disconnected(wxT("LowID->LowID and US_CONNECTING"))) {
 				delete this;
 				return false;
 			}
@@ -1208,7 +1208,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 			SetDownloadState(DS_WAITCALLBACK);
 		}
 		if (GetUploadState() == US_CONNECTING) {
-			if(Disconnected("LowID and US_CONNECTING"))
+			if(Disconnected(wxT("LowID and US_CONNECTING")))
 			{
 				delete this;
 				return false;
@@ -1230,7 +1230,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 		} else {
 			if (GetUploadState() == US_NONE && (!GetRemoteQueueRank() || m_bReaskPending)) {
 				theApp.downloadqueue->RemoveSource(this);
-				if(Disconnected("LowID and US_NONE and QR=0"))
+				if(Disconnected(wxT("LowID and US_NONE and QR=0")))
 				{
 					delete this;
 					return false;
@@ -1392,7 +1392,7 @@ void CUpDownClient::ReGetClientSoft()
 					#endif
 					m_clientVerString = wxString::Format(wxT("eMule Compat(0x%x)"),m_byCompatibleClient);
 				}
-				else if (GetClientModString().Find("xMule")!=-1 || wxString(char2unicode(GetUserName())).Find(wxT("xmule.org"))!=-1) {
+				else if (GetClientModString().Find(wxT("xMule"))!=-1 || wxString(char2unicode(GetUserName())).Find(wxT("xmule.org"))!=-1) {
 					// FAKE eMule -a newwer xMule faking is ident.
 					m_clientSoft = SO_LXMULE;
 					if (GetClientModString().IsEmpty() == false) {
@@ -1500,7 +1500,7 @@ void CUpDownClient::ReGetClientSoft()
 		}
 		m_nClientVersion = MAKE_CLIENT_VERSION(nClientMajVersion, nClientMinVersion, nClientUpVersion);
 
-		m_clientVerString = "eDonkeyHybrid";
+		m_clientVerString = wxT("eDonkeyHybrid");
 
 		m_SoftLen = m_clientVerString.Length();		
 		
@@ -1517,7 +1517,7 @@ void CUpDownClient::ReGetClientSoft()
 		m_clientSoft = SO_MLDONKEY;
 		UINT nClientMinVersion = m_nClientVersion;
 		m_nClientVersion = MAKE_CLIENT_VERSION(0, nClientMinVersion, 0);
-		m_clientVerString = "MLdonkey";
+		m_clientVerString = wxT("MLdonkey");
 		m_SoftLen = m_clientVerString.Length();
 		m_clientVerString += wxString::Format(wxT(" v0.%u"), nClientMinVersion);
 		return;
@@ -1528,7 +1528,7 @@ void CUpDownClient::ReGetClientSoft()
 		m_clientSoft = SO_OLDEMULE;
 		UINT nClientMinVersion = m_nClientVersion;
 		m_nClientVersion = MAKE_CLIENT_VERSION(0, nClientMinVersion, 0);
-		m_clientVerString = "Old eMule";
+		m_clientVerString = wxT("Old eMule");
 		m_SoftLen = m_clientVerString.Length();
 		m_clientVerString += wxString::Format(wxT(" v0.%u"), nClientMinVersion);		
 		return;
@@ -1537,7 +1537,7 @@ void CUpDownClient::ReGetClientSoft()
 	m_clientSoft = SO_EDONKEY;
 	UINT nClientMinVersion = m_nClientVersion;
 	m_nClientVersion = MAKE_CLIENT_VERSION(0, nClientMinVersion, 0);
-	m_clientVerString = "eDonkey";
+	m_clientVerString = wxT("eDonkey");
 	m_SoftLen = m_clientVerString.Length();
 	m_clientVerString += wxString::Format(wxT(" v0.%u"), nClientMinVersion);
 	
@@ -1926,7 +1926,7 @@ wxString CUpDownClient::GetClientFullInfo() {
 	}
 	
 	wxString FullVerName;
-	FullVerName = "Client ";
+	FullVerName = wxT("Client ");
 	if (!m_pszUsername) {
 		FullVerName += wxT("(Unknown)");
 	} else {
@@ -1934,7 +1934,7 @@ wxString CUpDownClient::GetClientFullInfo() {
 	}
 	FullVerName += wxString::Format(wxT(" on ip %s port %u using "),GetFullIP(),GetUserPort()) + m_clientVerString;
 	if (!GetClientModString().IsEmpty()) {		
-		FullVerName += wxString(" Mod ") + GetClientModString();
+		FullVerName += wxString(wxT(" Mod ")) + GetClientModString();
 	}
 	return (FullVerName);
 }
