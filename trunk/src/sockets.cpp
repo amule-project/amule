@@ -475,7 +475,7 @@ bool CServerConnect::Disconnect()
 }
 
 
-CServerConnect::CServerConnect(CServerList* in_serverlist)
+CServerConnect::CServerConnect(CServerList* in_serverlist, amuleIPV4Address &address)
 {
 	connectedsocket = NULL;
 	used_list = in_serverlist;
@@ -484,12 +484,10 @@ CServerConnect::CServerConnect(CServerList* in_serverlist)
 	connected = false;
 	clientid = 0;
 	singleconnecting = false;
-	amuleIPV4Address tmp;
-	tmp.AnyAddress();
-	tmp.Service(thePrefs::GetPort()+3);
+
 	// initalize socket for udp packets
 //#ifdef TESTING_PROXY
-	udpsocket = new CUDPSocket(this, tmp, thePrefs::GetProxyData());
+	udpsocket = new CUDPSocket(this, address, thePrefs::GetProxyData());
 	m_idRetryTimer.SetOwner(&theApp,TM_TCPSOCKET);
 	lastStartAt=0;	
 	InitLocalIP();	

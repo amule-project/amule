@@ -70,33 +70,37 @@ END_EVENT_TABLE()
 #endif
 
 
-ExternalConn::ExternalConn()
+ExternalConn::ExternalConn(amuleIPV4Address addr, wxString *msg)
 #ifdef AMULE_DAEMON
  : wxThread(wxTHREAD_JOINABLE) 
 #endif
 {
+	wxString msgLocal;
 	m_ECServer = NULL;
 	// Are we allowed to accept External Connections?
 	if ( thePrefs::AcceptExternalConnections() && thePrefs::ECUseTCPPort() ) {
 		// We must have a valid password, otherwise we will not allow EC connections
 		if ( thePrefs::ECPassword().IsEmpty() ) {
 			thePrefs::EnableExternalConnections( false );
+			*msg += wxT("External connections disabled due to empty password!\n");
 			AddLogLineM(true, _("External connections disabled due to empty password!"));
 			return;
 		}
 		
-		int port = thePrefs::ECPort();
-		// Create the address - listen on localhost:ECPort
-		wxIPV4address addr;
-		addr.Service(port);
 		// Create the socket
 #ifdef AMULE_DAEMON
 		m_ECServer = new ECSocket(addr, 0);
 #else
 		m_ECServer = new ECSocket(addr, this, SERVER_ID);
 #endif
+		int port = addr.Service();
+		wxString ip = addr.IPAddress();
 		if (m_ECServer->Ok()) {
-			AddLogLineM(false, wxString::Format(wxT("ECServer listening on port %d"), port));
+			msgLocal = wxString::Format(
+				wxT("*** TCP socket (ECServer) listening on %s:%d"), 
+					unicode2char(ip), port);
+			*msg += msgLocal + wxT("\n");
+			AddLogLineM(false, msgLocal);
 #ifdef AMULE_DAEMON
 			if ( Create() != wxTHREAD_NO_ERROR ) {
 				AddLogLineM(false, _("ExternalConn: failed to Create thread"));
@@ -108,9 +112,14 @@ ExternalConn::ExternalConn()
 			}
 #endif
 		} else {
-			AddLogLineM(false, wxString::Format(wxT("Could not listen for external connections at port %d!"), port));
+			msgLocal = wxString::Format(
+				wxT("Could not listen for external connections at %s:%d!"),
+					unicode2char(ip), port);
+			*msg += msgLocal  + wxT("\n");
+			AddLogLineM(false, msgLocal);
 		}
 	} else {
+		*msg += wxT("External connections disabled in config file .eMule\n");
 		AddLogLineM(false,_("External connections disabled in config file .eMule"));
 	}
 }

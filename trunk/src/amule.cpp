@@ -627,10 +627,6 @@ bool CamuleApp::OnInit()
 	knownfiles	= new CKnownFileList();
 	serverlist	= new CServerList();
 	
-	// Creates the UDP socket TCP+3.
-	// Used for source asking on servers.
-	serverconnect	= new CServerConnect(serverlist);
-	
 	sharedfiles	= new CSharedFileList(serverconnect, knownfiles);
 	clientcredits	= new CClientCreditsList();
 	
@@ -642,9 +638,6 @@ bool CamuleApp::OnInit()
 	// Create main dialog
 	InitGui(geometry_enabled, geom_string);
 	
-	// Get ready to handle connections from apps like amulecmd
-	ECServerHandler = new ExternalConn();
-
 	serverlist->Init();
 
 	// init downloadqueue
@@ -655,46 +648,14 @@ bool CamuleApp::OnInit()
 	// reload shared files
 	sharedfiles->Reload(true, true);
 
-	// Temp addr
-	amuleIPV4Address myaddr;
-	myaddr.AnyAddress();
-
-	// Create the ListenSocket (aMule TCP socket).
-	// Used for Client Port / Connections from other clients,
-	// Client to Client Source Exchange.
-	// Default is 4662.
-	printf("*** TCP socket at %d\n", thePrefs::GetPort());
-	myaddr.Service(thePrefs::GetPort());
-	listensocket = new CListenSocket(myaddr);
-	
-	// Create the UDP socket.
-	// Used for extended eMule protocol, Queue Rating, File Reask Ping.
-	// Default is port 4672.
-	if (!thePrefs::IsUDPDisabled()) {
-		myaddr.Service(thePrefs::GetUDPPort());
-//#ifdef TESTING_PROXY
-		clientudp = new CClientUDPSocket(myaddr, thePrefs::GetProxyData());
-	} else {
-		printf("*** UDP socket disabled on preferences\n");
-		clientudp = NULL;
+	// Creates all needed listening sockets
+	wxString msg;
+	bool ok;
+	ok = ReinitializeNetwork(&msg);
+	if (!msg.IsEmpty()) {
+		printf("%s", unicode2char(msg));
 	}
 	
-
-	// This command just sets a flag to control maximun number of connections.
-	// Notify(true) has already been called to the ListenSocket, so events may
-	// be already comming in.
-	listensocket->StartListening();
-	// If we wern't able to start listening, we need to warn the user
-	if ( !listensocket->Ok() ) {
-		AddLogLineM(true, wxString::Format(_("Port %d is not available. You will be LOWID"),
-			thePrefs::GetPort()));
-		ShowAlert(wxString::Format(
-			_("Port %d is not available !!\n\n"
-			  "This means that you will be LOWID.\n\n"
-			  "Check your network to make sure the port is open for output and input."),
-			thePrefs::GetPort()), _("Error"), wxOK | wxICON_ERROR);
-	}
-
 	// Ensure that the up/down ratio is used
 	CPreferences::CheckUlDlRatio();
 
@@ -740,6 +701,87 @@ bool CamuleApp::OnInit()
 	return true;
 }
 
+bool CamuleApp::ReinitializeNetwork(wxString *msg)
+{
+	bool ok = true;
+	static bool firstTime = true;
+	
+	if (!firstTime) {
+		// TODO: Destroy previously created sockets
+	}
+	firstTime = false;
+	
+	// Some sanity checks first
+	if (thePrefs::ECPort() == thePrefs::GetPort()) {
+		*msg += wxT("Network configuration failed! You can't configure aMule TCP port and External Connections port at the same port number. Please, change one of them.");
+		return false;
+	}
+	if (thePrefs::GetUDPPort() == (thePrefs::GetPort()+3)) {
+		*msg += wxT("Network configuration failed! You can't configure UDP(TCP+3) port and UDP (extended eMule) port at the same port number. Please, change one of them.");
+		return false;
+	}
+	
+	// Create the address where we are going to listen
+	// TODO: read this from configuration file
+	amuleIPV4Address myaddr;
+	myaddr.AnyAddress();
+	wxString ip = myaddr.IPAddress();
+	
+	// Get ready to handle connections from apps like amulecmd
+	myaddr.Service(thePrefs::ECPort());
+	ECServerHandler = new ExternalConn(myaddr, msg);
+
+	// Create the UDP socket.
+	// Used for extended eMule protocol, Queue Rating, File Reask Ping.
+	// Default is port 4672.
+	if (!thePrefs::IsUDPDisabled()) {
+		myaddr.Service(thePrefs::GetUDPPort());
+//#ifdef TESTING_PROXY
+		clientudp = new CClientUDPSocket(myaddr, thePrefs::GetProxyData());
+		*msg += wxString::Format(wxT("*** UDP socket (extended eMule) at %s:%d\n"),
+			unicode2char(ip), thePrefs::GetUDPPort());
+	} else {
+		*msg += wxT("*** UDP socket (extended eMule) disabled on preferences\n");
+		clientudp = NULL;
+	}
+	
+	// Creates the UDP socket TCP+3.
+	// Used for source asking on servers.
+	myaddr.Service(thePrefs::GetPort()+3);
+	serverconnect = new CServerConnect(serverlist, myaddr);
+	*msg += wxString::Format(wxT("*** UDP socket (TCP+3) at %s:%d\n"),
+		unicode2char(ip), thePrefs::GetPort()+3);
+	
+	// Create the ListenSocket (aMule TCP socket).
+	// Used for Client Port / Connections from other clients,
+	// Client to Client Source Exchange.
+	// Default is 4662.
+	*msg += wxString::Format(wxT("*** TCP socket (TCP) listening on %s:%d\n"),
+		unicode2char(ip), thePrefs::GetPort());
+	myaddr.Service(thePrefs::GetPort());
+	listensocket = new CListenSocket(myaddr);
+	
+	// This command just sets a flag to control maximun number of connections.
+	// Notify(true) has already been called to the ListenSocket, so events may
+	// be already comming in.
+	listensocket->StartListening();
+	
+	// If we wern't able to start listening, we need to warn the user
+	if ( !listensocket->Ok() ) {
+		wxString err = wxString::Format(
+			_("Port %d is not available. You will be LOWID"),
+			thePrefs::GetPort());
+		*msg += err;
+		AddLogLineM(true, err);
+		ShowAlert(wxString::Format(
+			_("Port %d is not available!\n\n"
+			  "This means that you will be LOWID.\n\n"
+			  "Check your network to make sure the port is open for output and input."),
+			thePrefs::GetPort()), _("Error"), wxOK | wxICON_ERROR);
+	}
+	
+	return ok;
+}
 
 // Returns a ed2k file URL
 wxString CamuleApp::CreateED2kLink(const CAbstractFile *f)
@@ -1077,12 +1119,12 @@ void CamuleApp::OnFatalException()
 	} else {
 		fprintf(stderr, "OOPS! Houston, we have a situation: seems like aMule crashed!\n");
 	}
-	fprintf(stderr, "Please, post the following lines, on the aMule Crashes forum on:");
+	fprintf(stderr, "Please, post the following lines, on the aMule Crashes forum on:\n");
 	fprintf(stderr, "    http://forum.amule.org/board.php?boardid=67&sid=/\n");
 	fprintf(stderr, "You should also try to generate a real backtrace of this error, please read:\n");
 	fprintf(stderr, "    http://www.amule.org/wiki/index.php/Backtraces\n");
 	fprintf(stderr, "----------------------------=| BACKTRACE FOLLOWS: |=----------------------------\n\n");
-	fprintf(stderr, "aMule version is: %s\n", unicode2char(GetMuleVersion()));
+	fprintf(stderr, "aMule version is: %s\n\n", unicode2char(GetMuleVersion()));
 	
 	for (int i = 0; i < num_entries; ++i) {
 		/* If we have no function name, use the result from addr2line */

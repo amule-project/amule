@@ -165,6 +165,7 @@ public:
 	virtual bool	OnInit();
 	int		OnExit();
 	void		OnFatalException();
+	bool		ReinitializeNetwork(wxString *msg);
 
 	// derived classes may override those
 	virtual int InitGui(bool geometry_enable, wxString &geometry_string);

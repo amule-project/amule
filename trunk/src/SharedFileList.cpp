@@ -250,8 +250,7 @@ void CSharedFileList::SafeAddKFile(CKnownFile* toadd, bool bOnlyAdd){
 	Notify_SharedFilesShowFile(toadd);
 
 	// offer new file to server
-	
-	if (!server->IsConnected()) {
+	if (!server || !server->IsConnected()) {
 		return;
 	}
 	CSafeMemFile* files = new CSafeMemFile(100);
@@ -301,7 +300,7 @@ void CSharedFileList::Reload(bool sendtoserver, bool firstload){
 }
 
 void CSharedFileList::SendListToServer(){
-	if (m_Files_map.empty() || !server->IsConnected())
+	if (m_Files_map.empty() || !server || !server->IsConnected() )
 		return;
 	CSafeMemFile* files = new CSafeMemFile();
 

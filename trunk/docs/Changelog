@@ -67,6 +67,9 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		conversation after connecting to sources.
 		* Fixed a crash due to an unicode issue while logging.
 		* Show some activity upon destruction of the DownloadQueue.
+		* Preparing the field to bind to a fixed interface.
+		* Sanity checks on socket creation.
+		* Fixed the backtrace message.
 
 	Ken:
 		* Fixed Mac bug: window was a little larger each restart

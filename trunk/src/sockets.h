@@ -31,6 +31,7 @@
 
 #include "types.h"		// Needed for int8, uint8, uint16 and uint32
 #include "CTypedPtrList.h"	// Needed for CTypedPtrList
+#include "amuleIPV4Address.h"	// Needed for amuleIPV4Address
 
 #include <map>
 
@@ -53,7 +54,7 @@ class CUDPSocket;
 
 class CServerConnect {
 public:
-	CServerConnect(CServerList* in_serverlist);
+	CServerConnect(CServerList* in_serverlist, amuleIPV4Address &address);
 	~CServerConnect();
 	
 	void	ConnectionFailed(CServerSocket* sender);
