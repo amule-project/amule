@@ -338,60 +338,6 @@ short CSharedFileList::GetFilePriorityByID(uchar* filehash)
 		return -10;	// file doesn't exist
 }
 
-#if 0
-CAddFileThread::CAddFileThread() : wxThread(wxTHREAD_DETACHED)
-{
-}
-
-wxThread::ExitCode CAddFileThread::Entry(){
-
-  while ( 1 )
-  {
-  	g_lockWaitingForHashList.Lock();
-
-	if ( g_endWaitingForHashList )
-	{
-		g_endedWaitingForHashList.Signal();
-  		g_lockWaitingForHashList.Unlock();
-		return 0;
-	}
-  	
-  	if ( g_sWaitingForHashList.IsEmpty() )
-  	{
-		g_runWaitingForHashList.Wait();	// Unlocks g_lockWaitingForHashList
-  		g_lockWaitingForHashList.Unlock();
-  		continue;
-  	}
-
-	UnknownFile_Struct* hashfile = g_sWaitingForHashList.RemoveHead();
-  	g_lockWaitingForHashList.Unlock();
-
-	CKnownFile* newrecord = new CKnownFile();
-  	printf("Sharing %s/%s\n",hashfile->directory,hashfile->name);
-
-	newrecord->CreateFromFile(hashfile->directory,hashfile->name);
-
-  	g_lockWaitingForHashList.Lock();
-	if ( g_endWaitingForHashList )
-	{
-		g_endedWaitingForHashList.Signal();
-  		g_lockWaitingForHashList.Unlock();
-		return 0;
-	}
-  	// TODO: Possible race condition between unlocking and wxPostEvent.
-  	g_lockWaitingForHashList.Unlock();
-
-	wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED,TM_FINISHEDHASHING);
-    	evt.SetClientData(newrecord);
-    	evt.SetExtraLong((long)hashfile->partfile_Owner);
-    	wxPostEvent(theApp.amuledlg,evt);
-
-	free(hashfile->name);
-	free(hashfile->directory);
-    	delete hashfile;
-  }
-}
-#endif
 
 void CSharedFileList::UpdateItem(CKnownFile* toupdate)
 {
