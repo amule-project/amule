@@ -1033,9 +1033,12 @@ void CamuleApp::OnFatalException()
 	} else {
 		fprintf(stderr, "OOPS! Houston, we have a situation: seems like aMule crashed!\n");
 	}
-	fprintf(stderr, "Please, post these lines on the backtrace forum on http://www.amule.org/\n");
-	fprintf(stderr, "aMule version is: %s\n", unicode2char(GetMuleVersion()));
+	fprintf(stderr, "Please, post the following lines, on the aMule Crashes forum on:");
+	fprintf(stderr, "    http://forum.amule.org/board.php?boardid=67&sid=/\n");
+	fprintf(stderr, "You should also try to generate a real backtrace of this error, please read:\n");
+	fprintf(stderr, "    http://www.amule.org/wiki/index.php/Backtraces\n");
 	fprintf(stderr, "----------------------------=| BACKTRACE FOLLOWS: |=----------------------------\n\n");
+	fprintf(stderr, "aMule version is: %s\n", unicode2char(GetMuleVersion()));
 	
 	for (int i = 0; i < num_entries; ++i) {
 		/* If we have no function name, use the result from addr2line */
