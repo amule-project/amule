@@ -473,8 +473,6 @@ void CPreferences::SavePreferences()
 	
 	wxString fp(fullpath), bf("eMule");
 	
-	printf("Preferences saving in %s\n",fullpath);
-	
 	CIni ini(fp, bf);
 	delete[] fullpath;
 	fullpath=NULL;
@@ -532,8 +530,6 @@ void CPreferences::LoadPreferences()
 	  	BackupFile(strFileName, ".old");
 		strFileName += ".old";
 	}
-	
-	printf("Loading preferences from %s\n",strFileName.c_str());
 	
 	CIni ini(strFileName, "eMule");
 	//--- end Ozon :)
