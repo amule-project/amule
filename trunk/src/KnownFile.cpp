@@ -49,6 +49,8 @@
 
 #include <wx/arrimpl.cpp> // this is a magic incantation which must be done!
 
+#include "CryptoPP_Inc.h"       // Needed for MD4
+
 WX_DEFINE_OBJARRAY(ArrayOfCMD4Hash);
 WX_DEFINE_OBJARRAY(ArrayOfCTag);
 
@@ -762,58 +764,38 @@ bool CKnownFile::WriteToFile(CFile* file){
 #endif //VERIFY
 #endif //_AFX
 
-// This code is taken from aLinkCreator
-// Copyright holders are those on md4.cpp file
-// on aLinkCreator sources.
-
-/// BIG ENDIAN byte reversing
-#if wxBYTE_ORDER == wxBIG_ENDIAN
-// Note: this code is harmless on little-endian machines.
-void byteReverse(unsigned char *buf, unsigned longs) {
-  uint32 t;
-  do
-    {
-      t = (uint32) ((unsigned) buf[3] << 8 | buf[2]) << 16 |
-          ((unsigned) buf[1] << 8 | buf[0]);
-      *(uint32 *) buf = t;
-      buf += 4;
-    }
-  while (--longs);
-}
-#else
-#define byteReverse(buf, len)	do { } while (0)
-#endif
-
-void CKnownFile::CreateHashFromInput(FILE* file,CFile* file2, uint32 Length, uchar* Output, uchar* in_string, CAICHHashTree* pShaHashOut) const
+void CKnownFile::CreateHashFromInput(CFile* file, uint32 Length, uchar* Output, uchar* in_string, CAICHHashTree* pShaHashOut) const
 {
 	wxASSERT( Output != NULL || pShaHashOut != NULL);
-	// time critial
-	bool PaddingStarted = false;
-	uint32 Hash[4];
-	Hash[0] = 0x67452301;
-	Hash[1] = 0xEFCDAB89;
-	Hash[2] = 0x98BADCFE;
-	Hash[3] = 0x10325476;
+
 	CFile* data = NULL;
-	if (in_string)
-		data = new CMemFile(in_string,Length);
+	
+	bool delete_in_string = false;
+	
+	if (file) {
+		wxASSERT(!in_string);
+		in_string = new unsigned char[Length]; 	 
+		file->Read(in_string,Length); 	 
+		delete_in_string = true;
+	}
+	
+	data = new CMemFile(in_string,Length);
+		
 	uint32 Required = Length;
 	uchar   X[64*128];
-
+	
 	uint32	posCurrentEMBlock = 0;
 	uint32	nIACHPos = 0;
 	CAICHHashAlgo* pHashAlg = m_pAICHHashSet->GetNewHashAlgo();
 
+	// This is all AICH.
+	
 	while (Required >= 64){
-        uint32 len = Required / 64; 
-        if (len > sizeof(X)/(64 * sizeof(X[0]))) 
-             len = sizeof(X)/(64 * sizeof(X[0])); 
-		if (in_string)
-			data->Read(&X,len*64);
-		else if (file)
-            fread(&X,len*64,1,file); 
-		else if (file2)
-			file2->Read(&X,len*64);
+		uint32 len = Required / 64; 
+		if (len > sizeof(X)/(64 * sizeof(X[0]))) {
+			len = sizeof(X)/(64 * sizeof(X[0])); 
+		}
+		data->Read(&X,len*64);
 
 		// SHA hash needs 180KB blocks
 		if (pShaHashOut != NULL){
@@ -833,24 +815,12 @@ void CKnownFile::CreateHashFromInput(FILE* file,CFile* file2, uint32 Length, uch
 			}
 		}
 
-		if (Output != NULL){
-			for (uint32 i = 0; i < len; i++) 
-			{ 
-				byteReverse((uchar*)(X + i*64), 16);
-				MD4Transform(Hash, (uint32*)(X + i*64)); 
-			}
-		}
 		Required -= len*64;
 	}
 	// bytes to read
 	Required = Length % 64;
 	if (Required != 0){
-		if (in_string)
-			data->Read(&X,Required);
-		else if (file)
-			fread(&X,Required,1,file);
-		else if (file2)
-			file2->Read(&X,Required);
+		data->Read(&X,Required);
 
 		if (pShaHashOut != NULL){
 			if (nIACHPos + Required >= EMBLOCKSIZE){
@@ -880,106 +850,25 @@ void CKnownFile::CreateHashFromInput(FILE* file,CFile* file2, uint32 Length, uch
 	}
 
 	if (Output != NULL){
-		// in byte scale 512 = 64, 448 = 56
-		if (Required >= 56){
-			X[Required] = 0x80;
-			PaddingStarted = TRUE;
-			memset(&X[Required + 1], 0, 63 - Required);
-			byteReverse((uchar*)X, 16);
-			MD4Transform(Hash, (uint32*)X);
-			Required = 0;
-		}
-		if (!PaddingStarted)
-			X[Required++] = 0x80;
-		memset(&X[Required], 0, 64 - Required);
+		// MD4: use crypto.
+	 
+         CryptoPP::MD4 md4_hasher; 	 
+  	 
+         md4_hasher.CalculateDigest(Output,in_string,Length);		
 		
-		// add size (convert to bits)
-		// Kry - Afaik << and >> are endian safe ;)
-		((uint32*)X)[14] = Length << 3;
-		((uint32*)X)[15] = Length >> 29;			
-		
-		byteReverse((uchar*)X, 16); 
-	
-		MD4Transform(Hash, (uint32*)X);
-		md4cpy(Output, Hash);
 	}
-
+		
 	delete pHashAlg;
-	if (data)
-		delete data;
+	delete data;
+	if (delete_in_string) {
+		delete[] in_string;		
+	}
 }
 
 const CMD4Hash& CKnownFile::GetPartHash(uint16 part) const {
 	wxASSERT( part < hashlist.GetCount() );
 		
 	return hashlist[part];
-}
-
-void CKnownFile::MD4Transform(uint32 Hash[4], uint32 x[16]) const
-{
-  uint32 a = Hash[0];
-  uint32 b = Hash[1];
-  uint32 c = Hash[2];
-  uint32 d = Hash[3];
-
-  /* Round 1 */
-  MD4_FF(a, b, c, d, x[ 0], S11); // 01
-  MD4_FF(d, a, b, c, x[ 1], S12); // 02
-  MD4_FF(c, d, a, b, x[ 2], S13); // 03
-  MD4_FF(b, c, d, a, x[ 3], S14); // 04
-  MD4_FF(a, b, c, d, x[ 4], S11); // 05
-  MD4_FF(d, a, b, c, x[ 5], S12); // 06
-  MD4_FF(c, d, a, b, x[ 6], S13); // 07
-  MD4_FF(b, c, d, a, x[ 7], S14); // 08
-  MD4_FF(a, b, c, d, x[ 8], S11); // 09
-  MD4_FF(d, a, b, c, x[ 9], S12); // 10
-  MD4_FF(c, d, a, b, x[10], S13); // 11
-  MD4_FF(b, c, d, a, x[11], S14); // 12
-  MD4_FF(a, b, c, d, x[12], S11); // 13
-  MD4_FF(d, a, b, c, x[13], S12); // 14
-  MD4_FF(c, d, a, b, x[14], S13); // 15
-  MD4_FF(b, c, d, a, x[15], S14); // 16
-
-  /* Round 2 */
-  MD4_GG(a, b, c, d, x[ 0], S21); // 17
-  MD4_GG(d, a, b, c, x[ 4], S22); // 18
-  MD4_GG(c, d, a, b, x[ 8], S23); // 19
-  MD4_GG(b, c, d, a, x[12], S24); // 20
-  MD4_GG(a, b, c, d, x[ 1], S21); // 21
-  MD4_GG(d, a, b, c, x[ 5], S22); // 22
-  MD4_GG(c, d, a, b, x[ 9], S23); // 23
-  MD4_GG(b, c, d, a, x[13], S24); // 24
-  MD4_GG(a, b, c, d, x[ 2], S21); // 25
-  MD4_GG(d, a, b, c, x[ 6], S22); // 26
-  MD4_GG(c, d, a, b, x[10], S23); // 27
-  MD4_GG(b, c, d, a, x[14], S24); // 28
-  MD4_GG(a, b, c, d, x[ 3], S21); // 29
-  MD4_GG(d, a, b, c, x[ 7], S22); // 30
-  MD4_GG(c, d, a, b, x[11], S23); // 31
-  MD4_GG(b, c, d, a, x[15], S24); // 32
-
-  /* Round 3 */
-  MD4_HH(a, b, c, d, x[ 0], S31); // 33
-  MD4_HH(d, a, b, c, x[ 8], S32); // 34
-  MD4_HH(c, d, a, b, x[ 4], S33); // 35
-  MD4_HH(b, c, d, a, x[12], S34); // 36
-  MD4_HH(a, b, c, d, x[ 2], S31); // 37
-  MD4_HH(d, a, b, c, x[10], S32); // 38
-  MD4_HH(c, d, a, b, x[ 6], S33); // 39
-  MD4_HH(b, c, d, a, x[14], S34); // 40
-  MD4_HH(a, b, c, d, x[ 1], S31); // 41
-  MD4_HH(d, a, b, c, x[ 9], S32); // 42
-  MD4_HH(c, d, a, b, x[ 5], S33); // 43
-  MD4_HH(b, c, d, a, x[13], S34); // 44
-  MD4_HH(a, b, c, d, x[ 3], S31); // 45
-  MD4_HH(d, a, b, c, x[11], S32); // 46
-  MD4_HH(c, d, a, b, x[ 7], S33); // 47
-  MD4_HH(b, c, d, a, x[15], S34); // 48
-
-  Hash[0] += a;
-  Hash[1] += b;
-  Hash[2] += c;
-  Hash[3] += d;
 }
 
 Packet*	CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient){

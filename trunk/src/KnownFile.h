@@ -209,9 +209,8 @@ public:
 protected:
 	bool	LoadTagsFromFile(const CFile* file);
 	bool	LoadDateFromFile(const CFile* file);
-	void	CreateHashFromFile(CFile* file, uint32 Length, uchar* Output, CAICHHashTree* pShaHashOut = NULL) const { CreateHashFromInput(NULL, file, Length, Output, NULL, pShaHashOut); }	
-	void	CreateHashFromFile(FILE* file, uint32 Length, uchar* Output, CAICHHashTree* pShaHashOut = NULL) const { CreateHashFromInput(file, NULL, Length, Output, NULL, pShaHashOut); }
-	void	CreateHashFromString(uchar* in_string, uint32 Length, uchar* Output, CAICHHashTree* pShaHashOut = NULL)	{CreateHashFromInput(NULL, NULL, Length,Output,in_string,pShaHashOut);}
+	void	CreateHashFromFile(CFile* file, uint32 Length, uchar* Output, CAICHHashTree* pShaHashOut = NULL) const { CreateHashFromInput(file, Length, Output, NULL, pShaHashOut); }	
+	void	CreateHashFromString(uchar* in_string, uint32 Length, uchar* Output, CAICHHashTree* pShaHashOut = NULL)	{CreateHashFromInput(NULL, Length,Output,in_string,pShaHashOut);}
 	void	LoadComment();//comment
 	void GetMetaDataTags();
 	ArrayOfCMD4Hash hashlist;
@@ -219,8 +218,7 @@ protected:
 	wxString m_strFilePath;	
 	CAICHHashSet*			m_pAICHHashSet;
 private:
-	void	CreateHashFromInput(FILE* file, CFile* file2, uint32 Length, uchar* Output, uchar* in_string, CAICHHashTree* pShaHashOut) const;
-	void MD4Transform(uint32 Hash[4], uint32 x[16]) const;
+	void	CreateHashFromInput(CFile* file, uint32 Length, uchar* Output, uchar* in_string, CAICHHashTree* pShaHashOut) const;
 	bool	m_bCommentLoaded;
 	uint16	m_iPartCount;
 	uint16  m_iED2KPartCount;
