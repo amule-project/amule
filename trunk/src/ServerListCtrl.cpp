@@ -670,16 +670,18 @@ bool CServerListCtrl::StaticServerFileAppend(CServer *server)
 	try {
 		// Remove any entry before writing to avoid duplicates
 		StaticServerFileRemove(server);
-		wxString staticsfile(theApp.ConfigDir +wxT("staticservers.dat"));
+		wxString staticsfile(theApp.ConfigDir + wxT("staticservers.dat"));
 		wxTextFile staticservers(staticsfile);
-		bool error;
+		wxASSERT(!staticservers.IsOpened());
+
 		if (wxFileExists(staticsfile)) {
-			error = staticservers.Open();
+			staticservers.Open();
 		} else {
-			error = staticservers.Create();
+			staticservers.Create();
 		}
-		if (error) {
-			AddLogLineM( false, wxString(_("Failed to open staticservers.dat")));
+		
+		if (!staticservers.IsOpened()) {
+			AddLogLineM( false, _("Failed to open ") + staticsfile);
 			return false;
 		}
 		staticservers.AddLine(server->GetAddress() + wxString::Format(wxT(":%i,%i,"),server->GetPort(), server->GetPreferences()) + server->GetListName());
