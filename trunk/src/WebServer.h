@@ -353,13 +353,25 @@ class CFileImage : public CAnyImage {
 		CFileImage(const char *name);
 };
 
+class CProgressImage : public CAnyImage {
+	protected:
+		wxString m_tmpl;
+	public:
+		CProgressImage(int size, wxString &tmpl) : CAnyImage(size), m_tmpl(tmpl)
+		{
+		}
+		
+		virtual wxString GetHTML() = 0;
+};
+
 #ifdef WITH_LIBPNG
 
 //
 // Dynamic png image generation from gap info
-class CDynImage : public CAnyImage {
+class CDynImage : public CProgressImage {
 		uint32 m_id;
 		otherfunctions::PartFileEncoderData &m_Encoder;
+		wxString m_name;
 		int m_width, m_height;
 		unsigned char **m_row_ptrs;
 		
@@ -370,14 +382,26 @@ class CDynImage : public CAnyImage {
 		static void png_write_fn(png_structp png_ptr, png_bytep data, png_size_t length);
 		
 	public:
-		CDynImage(uint32 id, int w, int h, otherfunctions::PartFileEncoderData &encoder);
+		CDynImage(uint32 id, int w, int h, wxString &tmpl, otherfunctions::PartFileEncoderData &encoder);
 
 		virtual unsigned char *RequestData(int &size);
+		virtual wxString GetHTML();
 };
+
 #else
 
 //
 // Fallback to original implementation
+class CDynImage : public CProgressImage {
+		DownloadFiles *m_file;
+	public:
+		CDynImage(DownloadFiles *file, wxString &tmpl) : CProgressImage(0, tmpl)
+		{
+			m_file = file;
+		}
+
+		virtual wxString GetHTML();
+};
 
 #endif
 
