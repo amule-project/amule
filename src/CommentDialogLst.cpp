@@ -72,7 +72,7 @@ bool CCommentDialogLst::OnInitDialog()
 	pmyListCtrl->InsertColumn(0, _("Username:"), LVCFMT_LEFT, 130);
 	pmyListCtrl->InsertColumn(1, _("File Name"), LVCFMT_LEFT, 130);
 	pmyListCtrl->InsertColumn(2, _("Rating"), LVCFMT_LEFT, 80);
-	pmyListCtrl->InsertColumn(3, _("Comment :"), LVCFMT_LEFT, 340);
+	pmyListCtrl->InsertColumn(3, _("Comment:"), LVCFMT_LEFT, 340);
 	CompleteList();
 	return TRUE;
 }
@@ -98,9 +98,9 @@ void CCommentDialogLst::CompleteList()
 	}
 	wxString info;
 	if (count==0) {
-		info = wxT("No comments");
+		info = _("No comments");
 	} else {
-		info = CastItoIShort(count) + wxT(" comment(s)");
+		info = CastItoIShort(count) + _(" comment(s)");
 	}
 	FindWindowById(IDC_CMSTATUS)->SetLabel(info);
 	m_file->UpdateFileRatingCommentAvail();
