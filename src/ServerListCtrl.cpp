@@ -113,6 +113,7 @@ void CServerListCtrl::RemoveServer( const CServer* server )
 		theApp.serverlist->RemoveServer( (CServer*)GetItemData( result ) );
 		DeleteItem( result );
 	}
+	ShowServerCount();
 }
 
 
