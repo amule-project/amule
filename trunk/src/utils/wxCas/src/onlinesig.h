@@ -53,8 +53,13 @@
 class OnLineSig
 {
 private:
-	double m_maxSessionDL;
-	wxDateTime m_maxSessionDlDate;
+	double m_sessionMaxDL;
+	wxDateTime m_sessionMaxDLDate;
+	bool m_isSessionMaxDlChanged;
+
+	double m_absoluteMaxDL;
+	wxDateTime m_absoluteMaxDlDate;
+	bool m_isAbsoluteMaxDlChanged;
 
 	int m_amuleState;
 	wxString m_serverName;
@@ -80,11 +85,9 @@ private:
 
 
 public:
-	/// Default constructor
-	OnLineSig ();
-
 	/// Constructor
-	OnLineSig ( const wxFileName& file );
+	OnLineSig ( const wxFileName& file, const double absoluteMaxDL = 0.0,
+	            const wxDateTime absoluteMaxDlDate = wxDateTime::Now() );
 
 	/// Destructor
 	~OnLineSig ();
@@ -164,8 +167,23 @@ public:
 	/// Get max Download date since wxCas is running
 	wxDateTime GetSessionMaxDlDate () const;
 
-	/// Reset max Download rate and date since wxCas is running
-	void ResetSessionMaxDl ();
+	/// Has the Max session DL rate been beated since last refresh
+	bool IsSessionMaxDlChanged() const;
+
+	/// Reset absolute max Download rate and date
+	void ResetSessionMaxDL ();
+
+	/// Get absolute max Download rate
+	wxString GetAbsoluteMaxDL () const;
+
+	/// Get absolute max Download date
+	wxDateTime GetAbsoluteMaxDlDate () const;
+
+	/// Has the absolute Max session DL rate been beated since last refresh
+	bool IsAbsoluteMaxDlChanged() const;
+
+	/// Reset absolute max Download rate
+	void ResetAbsoluteMaxDL ();
 };
 
 #endif /* _ONLINESIG_H */

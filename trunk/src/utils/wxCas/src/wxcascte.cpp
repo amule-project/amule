@@ -86,6 +86,10 @@ WxCasCte::FTP_USER_KEY ( wxT( "FtpUser" ) );
 const wxString
 WxCasCte::FTP_PASSWD_KEY ( wxT( "FtpPasswd" ) );
 
+const wxString
+WxCasCte::ABSOLUTE_MAX_DL_KEY ( wxT( "AbsoluteMaxDL" ) );
+const wxString
+WxCasCte::ABSOLUTE_MAX_DL_DATE_KEY ( wxT( "AbsoluteMaxDlDate" ) );
 
 // Default config parameters
 const wxString

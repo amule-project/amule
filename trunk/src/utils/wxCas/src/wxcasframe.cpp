@@ -98,6 +98,10 @@ WxCasFrame::WxCasFrame ( const wxString & title ) :
 	m_hitPanelSBox = new wxStaticBox ( m_mainPanel, -1, _( "Maximum DL rate since wxCas is running" ) );
 	m_hitPanelSBoxSizer = new wxStaticBoxSizer ( m_hitPanelSBox, wxHORIZONTAL );
 
+	// Hit Static Horizontal Box Sizer
+	m_absHitPanelSBox = new wxStaticBox ( m_mainPanel, -1, _( "Absolute Maximum DL rate during wxCas previous runs" ) );
+	m_absHitPanelSBoxSizer = new wxStaticBoxSizer ( m_absHitPanelSBox, wxHORIZONTAL );
+
 	// Statistic labels
 	m_statLine_1 = new wxStaticText ( m_mainPanel, -1, wxEmptyString );
 	m_statLine_2 = new wxStaticText ( m_mainPanel, -1, wxEmptyString );
@@ -110,6 +114,10 @@ WxCasFrame::WxCasFrame ( const wxString & title ) :
 	m_hitButton =
 	    new wxButton ( m_mainPanel, ID_HIT_BUTTON, wxString ( _( "Reset" ) ) );
 
+	m_absHitLine = new wxStaticText ( m_mainPanel, -1, wxEmptyString );
+	m_absHitButton =
+	    new wxButton ( m_mainPanel, ID_ABS_HIT_BUTTON, wxString ( _( "Reset" ) ) );
+
 #ifdef __LINUX__		// System monitoring on Linux
 
 	// Monitoring Static Vertical Box Sizer
@@ -120,11 +128,19 @@ WxCasFrame::WxCasFrame ( const wxString & title ) :
 	m_sysLine_2 = new wxStaticText ( m_mainPanel, -1, wxEmptyString );
 #endif
 
+	// Check if we have a previous DL max hit
+	//double absoluteMaxDL=prefs->Read ( WxCasCte::ABSOLUTE_MAX_DL_KEY, 0.0);
+	//wxDateTime absoluteMaxDlDate=prefs->Read ( WxCasCte::ABSOLUTE_MAX_DL_DATE_KEY, wxDateTime::Now());
+
+	double absoluteMaxDL = 0.0;
+	wxDateTime absoluteMaxDlDate = wxDateTime::Now();
+
 	// Add Online Sig file
 	m_aMuleSig = new OnLineSig ( wxFileName( prefs->
 	                             Read ( WxCasCte::AMULESIG_PATH_KEY,
 	                                    WxCasCte::DEFAULT_AMULESIG_PATH ),
-	                             WxCasCte::AMULESIG_FILENAME ) );
+	                             WxCasCte::AMULESIG_FILENAME ),
+	                             absoluteMaxDL, absoluteMaxDlDate );
 
 #ifdef __LINUX__		// System monitoring on Linux
 
@@ -139,8 +155,11 @@ WxCasFrame::WxCasFrame ( const wxString & title ) :
 	m_sigPanelSBoxSizer->Add ( m_statLine_5, 0, wxALL | wxALIGN_CENTER | wxGROW, 5 );
 	m_sigPanelSBoxSizer->Add ( m_statLine_6, 0, wxALL | wxALIGN_CENTER | wxGROW, 5 );
 
-	m_hitPanelSBoxSizer->Add ( m_hitLine, 1, wxALL | wxALIGN_CENTER | wxGROW, 5 );
-	m_hitPanelSBoxSizer->Add ( m_hitButton, 0, wxALL | wxALIGN_CENTER, 5 );
+	m_hitPanelSBoxSizer->Add ( m_hitLine, 0, wxALL | wxALIGN_LEFT | wxGROW, 5 );
+	m_hitPanelSBoxSizer->Add ( m_hitButton, 0, wxALL | wxALIGN_RIGHT, 5 );
+
+	m_absHitPanelSBoxSizer->Add ( m_absHitLine, 0, wxALL | wxALIGN_LEFT | wxGROW, 5 );
+	m_absHitPanelSBoxSizer->Add ( m_absHitButton, 0, wxALL | wxALIGN_RIGHT, 5 );
 
 #ifdef __LINUX__		// System monitoring on Linux
 
@@ -150,15 +169,17 @@ WxCasFrame::WxCasFrame ( const wxString & title ) :
 
 	// Main panel Layout
 	m_mainPanelVBox->Add ( m_staticLine, 0, wxALL | wxALIGN_CENTER | wxGROW );
-	
+
 	m_mainPanelVBox->Add ( m_sigPanelSBoxSizer, 0, wxALL | wxALIGN_CENTER | wxGROW, 10 );
-	
+
 #ifdef __LINUX__		// System monitoring on Linux
 
 	m_mainPanelVBox->Add ( m_monPanelSBoxSizer, 0, wxALL | wxALIGN_CENTER | wxGROW, 10 );
 #endif
 
 	m_mainPanelVBox->Add ( m_hitPanelSBoxSizer, 0, wxALL | wxALIGN_CENTER | wxGROW, 10 );
+
+	m_mainPanelVBox->Add ( m_absHitPanelSBoxSizer, 0, wxALL | wxALIGN_CENTER | wxGROW, 10 );
 
 #ifdef __WXMSW__
 
@@ -246,6 +267,7 @@ EVT_TOOL ( ID_BAR_ABOUT, WxCasFrame::OnBarAbout )
 EVT_TIMER ( ID_REFRESH_TIMER, WxCasFrame::OnRefreshTimer )
 EVT_TIMER ( ID_FTP_UPDATE_TIMER, WxCasFrame::OnFtpUpdateTimer )
 EVT_BUTTON ( ID_HIT_BUTTON, WxCasFrame::OnHitButton )
+EVT_BUTTON ( ID_ABS_HIT_BUTTON, WxCasFrame::OnAbsHitButton )
 END_EVENT_TABLE ()
 
 // Get Stat Bitmap
@@ -487,7 +509,15 @@ WxCasFrame::OnFtpUpdateTimer ( wxTimerEvent& WXUNUSED( event ) )
 void
 WxCasFrame::OnHitButton ( wxCommandEvent& WXUNUSED( event ) )
 {
-	m_aMuleSig->ResetSessionMaxDl();
+	m_aMuleSig->ResetSessionMaxDL();
+	UpdateStatsPanel ();
+}
+
+// Reset wxcas absolute hit
+void
+WxCasFrame::OnAbsHitButton ( wxCommandEvent& WXUNUSED( event ) )
+{
+	m_aMuleSig->ResetAbsoluteMaxDL();
 	UpdateStatsPanel ();
 }
 
@@ -502,7 +532,7 @@ WxCasFrame::UpdateAll ( bool forceFitting )
 		m_mainPanel->Fit();
 
 		// Fit main frame
-		SetClientSize(m_mainPanel->GetSize());
+		SetClientSize( m_mainPanel->GetSize() );
 	}
 }
 
@@ -597,6 +627,8 @@ WxCasFrame::UpdateStatsPanel ()
 		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
 
 		// Hits line 1
+
+		//if (m_aMuleSig->IsSessionMaxDlChanged()) {
 		newline = m_aMuleSig->GetSessionMaxDL ();
 		newline += _( " on " );
 		newline += m_aMuleSig->GetSessionMaxDlDate().Format( wxT( "%c" ) );
@@ -604,6 +636,19 @@ WxCasFrame::UpdateStatsPanel ()
 		m_hitLine->SetLabel ( newline );
 
 		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
+		//}
+
+		// Hits line 2
+
+		//if (m_aMuleSig->IsAbsoluteMaxDlChanged()) {
+		newline = m_aMuleSig->GetAbsoluteMaxDL ();
+		newline += _( " on " );
+		newline += m_aMuleSig->GetAbsoluteMaxDlDate().Format( wxT( "%c" ) );
+
+		m_absHitLine->SetLabel ( newline );
+
+		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
+		//}
 
 #ifdef __LINUX__		// System monitoring on Linux
 

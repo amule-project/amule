@@ -102,6 +102,11 @@ struct WxCasCte
 	/// Configuration key for FTP login password
 	static const wxString FTP_PASSWD_KEY;
 
+	/// Configuration key storing maximum DL rate during previous wxCas runs
+	static const wxString ABSOLUTE_MAX_DL_KEY;
+
+	/// Configuration key storing maximum DL rate date during previous wxCas runs
+	static const wxString ABSOLUTE_MAX_DL_DATE_KEY;
 
 	// Default config parameters
 

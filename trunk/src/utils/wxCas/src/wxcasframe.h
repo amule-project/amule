@@ -85,6 +85,9 @@ private:
 	wxStaticBox *m_hitPanelSBox;
 	wxStaticBoxSizer *m_hitPanelSBoxSizer;
 
+	wxStaticBox *m_absHitPanelSBox;
+	wxStaticBoxSizer *m_absHitPanelSBoxSizer;
+
 	wxStaticText *m_statLine_1;
 	wxStaticText *m_statLine_2;
 	wxStaticText *m_statLine_3;
@@ -92,8 +95,12 @@ private:
 	wxStaticText *m_statLine_5;
 	wxStaticText *m_statLine_6;
 
+	wxStaticText *m_absHitLine;
+	wxButton *m_absHitButton;
+
 	wxStaticText *m_hitLine;
 	wxButton *m_hitButton;
+
 
 	wxTimer * m_refresh_timer;
 	wxTimer * m_ftp_update_timer;
@@ -117,7 +124,8 @@ private:
 	    ID_BAR_ABOUT,
 	    ID_REFRESH_TIMER,
 	    ID_FTP_UPDATE_TIMER,
-	    ID_HIT_BUTTON
+	    ID_HIT_BUTTON,
+	    ID_ABS_HIT_BUTTON
 	};
 
 	// Get maximum of 2 uint
@@ -138,6 +146,7 @@ protected:
 	void OnRefreshTimer ( wxTimerEvent & event );
 	void OnFtpUpdateTimer ( wxTimerEvent & event );
 	void OnHitButton ( wxCommandEvent & event );
+	void OnAbsHitButton ( wxCommandEvent & event );
 
 	DECLARE_EVENT_TABLE ();
 
