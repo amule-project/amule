@@ -1455,72 +1455,76 @@ msgstr "ExternalConnClientThread: Falha na thread Create\n"
 
 #: src/ExternalConn.cpp:1501
 msgid "Unauthorized access attempt. Connection closed.\n"
-msgstr ""
+msgstr "Tentativa de acesso não aotorizado. Conexão encerrada.\n"
 
 #: src/ExternalConn.cpp:1509
 msgid "ExternalConnClientThread: connection closed\n"
-msgstr ""
+msgstr "ExternalConnClientThread: conexão encerrada.\n"
 
 #: src/ExternalConnector.cpp:205
 msgid "Error processing command - should never happen! Report bug, please\n"
-msgstr ""
+msgstr "Erro processando comando - isso jamais deveria acontecer! Reporte o bug, por favor\n"
 
 #: src/ExternalConnector.cpp:208
 msgid "Syntax error!\n"
-msgstr ""
+msgstr "Erro de Sintaxe!\n"
 
 #: src/ExternalConnector.cpp:354
 msgid ""
 "\n"
 "Creating client...\n"
 msgstr ""
+"\n"
+"Criando cliente..\n"
 
 #: src/ExternalConnector.cpp:357
 msgid "Now, doing connection....\n"
-msgstr ""
+msgstr "Agora, conectando...\n"
 
 #: src/ExternalConnector.cpp:362
 msgid "Using host '"
-msgstr ""
+msgstr "Usando host '"
 
 #: src/ExternalConnector.cpp:363
 msgid "' port:"
-msgstr ""
+msgstr "' porta:"
 
 #: src/ExternalConnector.cpp:365
 msgid "Trying to connect (timeout = 10 sec)...\n"
-msgstr ""
+msgstr "Tentando conectar (timeout = 10s)...\n"
 
 #: src/ExternalConnector.cpp:371
 msgid "Connection Failed. Unable to connect to the specified host\n"
-msgstr ""
+msgstr "Conexão Falhou. Impossível conectar ao host especificado\n"
 
 #: src/ExternalConnector.cpp:385
 #, c-format
 msgid "ExternalConn: Access denied because: %s\n"
-msgstr ""
+msgstr "ExternalConn: Acesso negado porque: %s\n"
 
 #: src/ExternalConnector.cpp:387 src/ExternalConnector.cpp:390
 msgid "ExternalConn: Access denied.\n"
-msgstr ""
+msgstr "ExternalConn: Acesso Negado.\n"
 
 #: src/ExternalConnector.cpp:393
 msgid "ExternalConn: Bad reply from server. Connection closed.\n"
-msgstr ""
+msgstr "ExternalConn: Resposta incorreta do servidor. Conexão encerrada.\n"
 
 #: src/ExternalConnector.cpp:396
 msgid "Succeeded! Connection established.\n"
-msgstr ""
+msgstr "Sucesso! Conexão estabelecida!\n"
 
 #: src/ExternalConnector.cpp:409
 msgid ""
 "\n"
 "Ok, exiting "
 msgstr ""
+"\n"
+"Ok, finalizando "
 
 #: src/ExternalConnector.cpp:414
 msgid "A socket error occured during authentication. Exiting.\n"
-msgstr ""
+msgstr "Erro de socket durante a autenticação. Encerrando.\n"
 
 #: src/FileDetailDialog.cpp:54
 msgid "File Details"
@@ -5042,6 +5046,8 @@ msgid ""
 "\n"
 "Ok, exiting Text Client...\n"
 msgstr ""
+"\n"
+"Ok, finalizando cliente Texto...\n"
 
 #: src/TextClient.cpp:175
 #, c-format
@@ -5050,89 +5056,96 @@ msgid ""
 "Using %s\n"
 "(c) aMule Dev Team"
 msgstr ""
+"amulecmd Versão DiaLoG"
+"Usando %s\n"
+"(c) Time de Desenvolvedores aMule"
 
 #: src/TextClient.cpp:178
 msgid "About amulecmd"
-msgstr ""
+msgstr "Sobre amulecmd"
 
 #: src/TextClient.cpp:280
 msgid "Invalid IP format. Use xxx.xxx.xxx.xxx:xxxx\n"
-msgstr ""
+msgstr "Formato do IP inválido. Use xxx.xxx.xxx.xxx:xxxx\n"
 
 #: src/TextClient.cpp:314 src/TextClient.cpp:325
 msgid "This command requieres an argument. Valid arguments: 'on', 'off'\n"
-msgstr ""
+msgstr "Esse comando precisa de parâmetro. Parâmetros válidos: 'on', 'off'\n"
 
 #: src/TextClient.cpp:340
 msgid "This command requieres an argument. Valid arguments: 'all', a number.\n"
-msgstr ""
+msgstr "Esse comando precisa de parâmetro. Parâmetros válidos: 'all', e um número\n"
 
 #: src/TextClient.cpp:358 src/TextClient.cpp:383
 msgid "Not a valid number\n"
-msgstr ""
+msgstr "Não é um número válido\n"
 
 #: src/TextClient.cpp:365
 msgid ""
 "This command requieres an argument. Valid arguments: 'all' or a number.\n"
-msgstr ""
+msgstr "Esse comando precisa de parâmetro. Parâmetros válidos: 'all', ou um número\n"
 
 #: src/TextClient.cpp:397
 msgid "Hint: Use Show DL or Show UL\n"
-msgstr ""
+msgstr "Dica: Use Show DL ou Show UL\n"
 
 #: src/TextClient.cpp:416
 msgid "IPLevel parameter must be in the range of 0-255.\n"
-msgstr ""
+msgstr "Parâmetro IPLevel precisa estar entre 0-255.\n"
 
 #: src/TextClient.cpp:430
 msgid "This option requires an argument."
-msgstr ""
+msgstr "Essa opção precisa de um parâmetro."
 
 #: src/TextClient.cpp:487
 msgid "Request failed."
-msgstr ""
+msgstr "Solicitação falhou"
 
 #: src/TextClient.cpp:493
 #, c-format
 msgid "IPFilter is %s.\n"
-msgstr ""
+msgstr "IPFilter está %s.\n"
 
 #: src/TextClient.cpp:493
 msgid "OFF"
-msgstr ""
+msgstr "Desligado"
 
 #: src/TextClient.cpp:493
 msgid "ON"
-msgstr ""
+msgstr "Ligado"
 
 #: src/TextClient.cpp:494
 #, c-format
 msgid "Current IPFilter Level is %d.\n"
-msgstr ""
+msgstr "Nível atual do IPFilter é %d.\n"
 
 #: src/TextClient.cpp:506 src/WebServer.cpp:739
 msgid "Not connected"
-msgstr ""
+msgstr "Não conectado"
 
 #: src/TextClient.cpp:509 src/WebServer.cpp:746
 msgid "Now connecting"
-msgstr ""
+msgstr "Conectando"
 
 #: src/TextClient.cpp:521
 msgid ""
 "\n"
 "Download:\t"
 msgstr ""
+"\n"
+"Baixando:\t"
 
 #: src/TextClient.cpp:522 src/TextClient.cpp:524
 msgid "/sec"
-msgstr ""
+msgstr "/s"
 
 #: src/TextClient.cpp:523
 msgid ""
 "\n"
 "Upload:\t"
 msgstr ""
+"\n"
+"Upload:\t"
 
 #: src/TextClient.cpp:526
 #, c-format
@@ -5140,15 +5153,17 @@ msgid ""
 "\n"
 "Clients in queue: \t%d\n"
 msgstr ""
+"\n"
+"Clientes em espera: \t%d\n"
 
 #: src/TextClient.cpp:546 src/TextClient.cpp:552
 msgid "\n"
-msgstr ""
+msgstr "\n"
 
 #: src/TextClient.cpp:571
 #, c-format
 msgid "Received an unknown reply from the server, OpCode = %#x."
-msgstr ""
+msgstr "Resposta recebida do servidor desconhecida, OpCode = %#x."
 
 #: src/TextClient.cpp:580 src/WebInterface.cpp:311
 msgid ""
@@ -5157,84 +5172,90 @@ msgid ""
 "<----------------\n"
 "\n"
 msgstr ""
+"\n"
+"-------------> Ajuda: Comandos disponíveis (maiúsculas ou minúsculas): "
+"<-------------\n"
+"\n"
 
 #: src/TextClient.cpp:581
 msgid "server IP"
-msgstr ""
+msgstr "IP do servidor"
 
 #: src/TextClient.cpp:581
 msgid "Connect to given/random server. No warn if failed!\n"
-msgstr ""
+msgstr "Conectar a qualquer servidor. Não avisar se falhar!\n"
 
 #: src/TextClient.cpp:583
 msgid "Disconnect from server.\n"
-msgstr ""
+msgstr "Desconectado do servidor.\n"
 
 #: src/TextClient.cpp:584
 msgid "Show server list.\n"
-msgstr ""
+msgstr "Exibir lista de servidores\n"
 
 #: src/TextClient.cpp:586
 msgid "Shows status and statistics.\n"
-msgstr ""
+msgstr "Exibir status e estatísticas\n"
 
 #: src/TextClient.cpp:587
 msgid "Shows Download/Upload queue.\n"
-msgstr ""
+msgstr "Exibir fila de Download/Upload\n"
 
 #: src/TextClient.cpp:588
 msgid "pattern"
-msgstr ""
+msgstr "padrão"
 
 #: src/TextClient.cpp:588
 msgid "Lists or finds downloads by name or number.\n"
-msgstr ""
+msgstr "Listar/localizar downloads por nome ou número\n"
 
 #: src/TextClient.cpp:589
 msgid "Resume file number n (or 'all').\n"
-msgstr ""
+msgstr "Continuar arquivo número n (ou 'all', para todos)\n"
 
 #: src/TextClient.cpp:590
 msgid "Pauses file number n (or 'all').\n"
-msgstr ""
+msgstr "Colocar em pausa arquivo número n (ou 'all')\n"
 
 #: src/TextClient.cpp:591
 msgid "Turn on/off amule IPFilter.\n"
-msgstr ""
+msgstr "Ligar/Desligar IPFilter no aMule\n"
 
 #: src/TextClient.cpp:592
 msgid "Reload IPFilter table from file.\n"
-msgstr ""
+msgstr "Recarregar tabela IPFilter de um arquivo\n"
 
 #: src/TextClient.cpp:595
 msgid "level"
-msgstr ""
+msgstr "nível"
 
 #: src/TextClient.cpp:595
 msgid "Shows/Sets current IP Filter level.\n"
-msgstr ""
+msgstr "Mostra/Define nível atual do IPFilter\n"
 
 #: src/TextClient.cpp:596
 msgid "ED2k Link"
-msgstr ""
+msgstr "Link ED2K"
 
 #: src/TextClient.cpp:596
 msgid ""
 "Adds <ED2k Link> to aMule.\n"
 "\t\t\t\tCurrently file and server links are supported.\n"
 msgstr ""
+"Adicione <link ED2k> ao aMule.\n"
+"\t\t\t\tAtualmente links de arquivos e servidores são suportados.\n"
 
 #: src/TextClient.cpp:597 src/WebInterface.cpp:312
 msgid "Shows this help.\n"
-msgstr ""
+msgstr "Exibir essa ajuda.\n"
 
 #: src/TextClient.cpp:598
 msgid "Exits Textclient.\n"
-msgstr ""
+msgstr "Encerra cliente texto\n"
 
 #: src/TextClient.cpp:599
 msgid "Shutdown amule\n"
-msgstr ""
+msgstr "Desligar aMule\n"
 
 #: src/TextClient.cpp:600 src/WebInterface.cpp:317
 msgid ""
@@ -5242,10 +5263,13 @@ msgid ""
 "----------------------------> End of listing "
 "<----------------------------------\n"
 msgstr ""
+"\n"
+"---------------------------> Fim da listagem "
+"<---------------------------------\n"
 
 #: src/TextClient.cpp:605
 msgid "aMule text client"
-msgstr ""
+msgstr "Cliente texto aMule"
 
 #: src/TextClient.cpp:607 src/WebInterface.cpp:324
 msgid ""
@@ -5253,11 +5277,13 @@ msgid ""
 "Use 'Help' for command list\n"
 "\n"
 msgstr ""
+"\n"
+"Use 'help' para lista de comandos\n"
+"\n"
 
 #: src/TransferWnd.cpp:190
 msgid "Are you sure you wish to cancel and delete all files in this category?"
-msgstr ""
-"Tem certeza que deseja cancelar e APAGAR TODOS os arquivos desta categoria?"
+msgstr "Deseja cancelar e APAGAR TODOS os arquivos desta categoria?"
 
 #: src/TransferWnd.cpp:190
 msgid "Confirmation Required"
@@ -5286,45 +5312,45 @@ msgstr "Arquivo solicitado não encontrado"
 #: src/utils/aLinkCreator/src/alcc.cpp:74
 #, c-format
 msgid "Processing file number %u: %s"
-msgstr ""
+msgstr "Processando arquivo número %u: %s"
 
 #: src/utils/aLinkCreator/src/alcc.cpp:78
 msgid "You have asked for part hashes (Only used for files > 9.5 MB)"
-msgstr ""
+msgstr "Pocê pediu por hash de partes (só é usado para arquivos > 9,5MB)"
 
 #: src/utils/aLinkCreator/src/alcc.cpp:82
 msgid "Please wait... "
-msgstr ""
+msgstr "Aguarde..."
 
 #: src/utils/aLinkCreator/src/alcc.cpp:92
 #, c-format
 msgid "%s ---> Non existant file !\n"
-msgstr ""
+msgstr "%s ---> Arquivo não existe !\n"
 
 #: src/utils/aLinkCreator/src/alc.cpp:59
 msgid "aLinkCreator, the aMule ed2k link creator"
-msgstr ""
+msgstr "aLinkCreator, o criador de Links ed2k do aMule"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:78
 #: src/utils/wxCas/src/wxcasframe.cpp:97
 msgid "Welcome!"
-msgstr ""
+msgstr "Bem-vindo!"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:98
 msgid "Input parameters"
-msgstr ""
+msgstr "Parâmetros de Entrada"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:109
 msgid "File to Hash"
-msgstr ""
+msgstr "Arquivo a gerar hash"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:113
 msgid "Add Optional URLs for this file"
-msgstr ""
+msgstr "URL para esse arquivo (opcional)"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:121
 msgid "Enter here the file you want to compute the Ed2k link"
-msgstr ""
+msgstr "Informe o arquivo que deseja criar o link ED2K"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:127
 msgid ""
@@ -5334,7 +5360,7 @@ msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:144
 msgid "Remove"
-msgstr ""
+msgstr "Remover"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:155
 msgid "Create link with part-hashes"
@@ -5833,15 +5859,15 @@ msgstr "Por favor, atualize seu arquivo aMule.tmpl!"
 
 #: src/WebServer.cpp:349
 msgid "Failed to load template "
-msgstr ""
+msgstr "Falha ao carregar modelo "
 
 #: src/WebServer.cpp:523
 msgid "***** logged in, getting page "
-msgstr ""
+msgstr "***** logado, buscando página "
 
 #: src/WebServer.cpp:524
 msgid "***** session is "
-msgstr ""
+msgstr "***** sessão está "
 
 #: src/WebServer.cpp:583 src/WebServer.cpp:1257 src/WebServer.cpp:1987
 #: src/WebServer.cpp:2098
@@ -5850,11 +5876,11 @@ msgstr "Acesso bloqueado!"
 
 #: src/WebServer.cpp:642
 msgid " :: field "
-msgstr ""
+msgstr " :: campo "
 
 #: src/WebServer.cpp:709
 msgid "*** replaced session with "
-msgstr ""
+msgstr "*** trocar sessão com "
 
 #: src/WebServer.cpp:714 src/WebServer.cpp:1761 src/WebServer.cpp:1804
 msgid "Web Control Panel"
@@ -5910,9 +5936,7 @@ msgstr "Remover servidor selecionado"
 
 #: src/WebServer.cpp:843
 msgid "Are you sure to remove this server from list?"
-msgstr ""
-"Você tem certeza que deseja remover\n"
-"este servidor da lista?"
+msgstr "Deseja remover este servidor da lista?"
 
 #: src/WebServer.cpp:975
 msgid "Downloaded total"
@@ -5932,12 +5956,12 @@ msgstr "Redução de prioridade"
 
 #: src/WebServer.cpp:1233 src/WebServer.cpp:1750
 msgid "Hide Queue"
-msgstr "Espera oculta"
+msgstr "Ocultar fila de Espera"
 
 #: src/WebServer.cpp:1240
 #, c-format
 msgid "Uploads (%i)"
-msgstr ""
+msgstr "Uploads (%i)"
 
 #: src/WebServer.cpp:1263
 msgid "Download Selected"
@@ -5974,7 +5998,7 @@ msgstr "Busca via web"
 
 #: src/WebServer.cpp:1616
 msgid "***_GetStats arrived\n"
-msgstr ""
+msgstr "***_GetStats chegou\n"
 
 #: src/WebServer.cpp:1740
 msgid "File Settings"
@@ -5994,7 +6018,7 @@ msgstr "Max. novas conexões / 5secs"
 
 #: src/WebServer.cpp:1745
 msgid "Gzip Compression"
-msgstr "compressão Gzip"
+msgstr "Compressão Gzip"
 
 #: src/WebServer.cpp:1746
 msgid "Save traffic, especially in graphs."
@@ -6002,7 +6026,7 @@ msgstr "Reduzir tráfego, especialmente em gráficos"
 
 #: src/WebServer.cpp:1748
 msgid "Enable or disable the display of waiting queue in transfer page."
-msgstr "Ativar or desativar o visor 'esperando na fila' na tab de tranferência"
+msgstr "Ativar or desativar exibição da fila de espera na aba de tranferência"
 
 #: src/WebServer.cpp:1751
 msgid "Refresh-Time of Pages"
