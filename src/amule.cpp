@@ -1534,7 +1534,7 @@ wxString CamuleApp::GetLog(bool reset)
 	}
 	char *tmp_buffer = new char[len];
 	logfile->Read(tmp_buffer, len);
-	wxString str(tmp_buffer);
+	wxString str(char2unicode(tmp_buffer));
 	delete [] tmp_buffer;
 	if ( reset ) {
 		applog->Close();
