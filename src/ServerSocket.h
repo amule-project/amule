@@ -71,7 +71,7 @@ class CServerSocket : public CEMSocket
 	CServerSocket() {};
 	
 public:
-	CServerSocket(CServerConnect* in_serverconnect, const wxProxyData *ProxyData = NULL);
+	CServerSocket(CServerConnect* in_serverconnect, const CProxyData *ProxyData = NULL);
 	virtual ~CServerSocket();
 
 	void	ConnectToServer(CServer* server);

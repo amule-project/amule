@@ -46,7 +46,7 @@ class CBarShader
 {
 public:
 	/**
-	 * Contructor.
+	 * Constructor.
 	 * 
 	 * @param height The height of the area upon which the span is drawn.
 	 * @param width  The width of the area upon which the span is drawn.

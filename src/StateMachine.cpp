@@ -27,27 +27,27 @@
 
 #include "StringFunctions.h"
 
-StateMachine::StateMachine(
+CStateMachine::CStateMachine(
 		const wxString &name,
-		const unsigned int max_states,
-		const t_sm_state initial_state )
+		const unsigned int maxStates,
+		const t_sm_state initialState )
 :
-m_state_mutex(wxMUTEX_RECURSIVE),
-m_queue_mutex(wxMUTEX_RECURSIVE),
+m_stateMutex(wxMUTEX_RECURSIVE),
+m_queueMutex(wxMUTEX_RECURSIVE),
 m_name(name),
-m_max_states(max_states),
-m_initial_state(initial_state)
+m_maxStates(maxStates),
+m_initialState(initialState)
 {
-	m_state = initial_state;
-	m_clock_counter = 0;
-	m_clocks_in_current_state = 0;
+	m_state = initialState;
+	m_clockCounter = 0;
+	m_clocksInCurrentState = 0;
 }
 
-StateMachine::~StateMachine()
+CStateMachine::~CStateMachine()
 {
 }
 
-void StateMachine::Clock()
+void CStateMachine::Clock()
 {
 	t_sm_state old_state;
 	t_sm_event event;
@@ -64,24 +64,24 @@ void StateMachine::Clock()
 	}
 	
 	/* State changes can only happen here */
-	wxMutexLocker lock(m_state_mutex);
+	wxMutexLocker lock(m_stateMutex);
 	m_state = next_state( event );
 
 //#if 0
 	/* Debug */
-	++m_clock_counter;
-	state_entry = ( m_state != old_state ) || ( m_clock_counter == 1 );
+	++m_clockCounter;
+	state_entry = ( m_state != old_state ) || ( m_clockCounter == 1 );
 	if( state_entry )
 	{
-		m_clocks_in_current_state = 0;
+		m_clocksInCurrentState = 0;
 		printf( "%s(%04d): %d -> %d\n",
-			unicode2char(m_name), m_clock_counter, old_state, m_state);
+			unicode2char(m_name), m_clockCounter, old_state, m_state);
 	}
-	++m_clocks_in_current_state;
+	++m_clocksInCurrentState;
 //#endif
 
 	/* Process new state entry */
-	if( m_state < m_max_states )
+	if( m_state < m_maxStates )
 	{
 		/* It should be ok to call Clock() recursively inside this
 		 * procedure because state change has already happened. Also
@@ -91,13 +91,13 @@ void StateMachine::Clock()
 }
 
 /* In multithreaded implementations, this must be locked */
-void StateMachine::Schedule(t_sm_event event)
+void CStateMachine::Schedule(t_sm_event event)
 {
-	wxMutexLocker lock(m_queue_mutex);
+	wxMutexLocker lock(m_queueMutex);
 	m_queue.push(event);
 }
 
-void StateMachine::flush_queue()
+void CStateMachine::flush_queue()
 {
 	while (!m_queue.empty()) {
 		m_queue.pop();

@@ -38,7 +38,7 @@
 
 #include "types.h"		// Needed for uint16 and uint32
 #include "CTypedPtrList.h"	// Needed for CTypedPtrList
-#include "Proxy.h"		// Needed for wxDatagramSocketProxy and amuleIPV4Address
+#include "Proxy.h"		// Needed for CDatagramSocketProxy and amuleIPV4Address
 
 class Packet;
 class CServer;
@@ -53,7 +53,7 @@ struct ServerUDPPacket {
 
 // Client to Server communication
 
-class CUDPSocket : public wxDatagramSocketProxy
+class CUDPSocket : public CDatagramSocketProxy
 #ifdef AMULE_DAEMON
 , wxThread
 #endif
@@ -64,7 +64,7 @@ public:
 	CUDPSocket(
 		CServerConnect* in_serverconnect,
 		amuleIPV4Address &addr,
-		const wxProxyData *ProxyData = NULL);
+		const CProxyData *ProxyData = NULL);
 	~CUDPSocket();
 
 	void	SendPacket(Packet* packet,CServer* host);

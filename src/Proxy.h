@@ -33,7 +33,7 @@
 #include <wx/string.h>		// For wxString
 
 #include "amuleIPV4Address.h"	// For amuleIPV4address
-#include "StateMachine.h"	// For StateMachine
+#include "StateMachine.h"	// For CStateMachine
 
 #if !wxCHECK_VERSION(2,5,1)
 	#define wxIPaddress wxIPV4address
@@ -60,7 +60,7 @@ const unsigned char SOCKS4_REPLY_FAILED_DIFFERENT_USERIDS	= 93;
 /*
  * SOCKS5 protocol implementation according to:
  * - RFC-1928: SOCKS Protocol Version 5
- * - RFC-1929: Username/Password Authentication for SOCKS V5
+ * - RFC-1929: username/password Authentication for SOCKS V5
  *
  * Also, for the future :) :
  * - RFC-1961: GSS-API Authentication Method for SOCKS Version 5
@@ -99,54 +99,83 @@ const unsigned char SOCKS5_REPLY_COMMAND_NOT_SUPPORTED	= 0x07;
 const unsigned char SOCKS5_REPLY_ATYP_NOT_SUPPORTED	= 0x08;
 
 //------------------------------------------------------------------------------
-// wxProxyType
+// CProxyType
 //------------------------------------------------------------------------------
 
 /*
  * These constants must match the integer values saved in the configuration file,
  * DO NOT CHANGE THIS ORDER!!!
  */
-enum wxProxyType {
-	wxPROXY_NONE = -1,
-	wxPROXY_SOCKS5,
-	wxPROXY_SOCKS4,
-	wxPROXY_HTTP
+enum CProxyType {
+	PROXY_NONE = -1,
+	PROXY_SOCKS5,
+	PROXY_SOCKS4,
+	PROXY_HTTP
 };
 
-//------------------------------------------------------------------------------
-// wxProxyData
-//------------------------------------------------------------------------------
 
-class wxProxyData
+//------------------------------------------------------------------------------
+// CProxyData
+//------------------------------------------------------------------------------
+/**
+ * The ProxyData class will hold information about the proxy server to be used.
+ */
+class CProxyData
 {
 public:
-	wxProxyData();
-	wxProxyData(
-		bool		ProxyEnable,
-		wxProxyType	ProxyType,
-		const wxString	&ProxyHostName,
-		unsigned short	ProxyPort,
-		bool		EnablePassword,
-		const wxString	&UserName,
-		const wxString	&Password
+	/**
+	 * Default constructor.
+	 */
+	CProxyData();
+	/**
+	 * Constructor.
+	 * 
+	 * @param proxyEnable	Whether proxy is enabled or not.
+	 * @param proxyType	The type of the proxy server.
+	 * @param proxyHostName	The proxy host name or IP address.
+	 * @param proxyPort	The proxy port number.
+	 * @param enablePassword Whether authentication should be performed.
+	 * @param userName	The user name to authenticate to the server.
+	 * @param password	The password to authenticate to the server.
+	 */
+	CProxyData(
+		bool		proxyEnable,
+		CProxyType	proxyType,
+		const wxString	&proxyHostName,
+		unsigned short	proxyPort,
+		bool		enablePassword,
+		const wxString	&userName,
+		const wxString	&password
 	);
-	void Empty();
+	/**
+	 * Clears the object contents.
+	 */
+	void Clear();
 
 public:
-	bool		m_ProxyEnable;
-	wxString	m_ProxyHostName;
-	unsigned short	m_ProxyPort;
-	wxProxyType	m_ProxyType;
-	bool		m_EnablePassword;
-	wxString	m_UserName;
-	wxString	m_Password;
+	//! Whether proxy is enabled or not.
+	bool		m_proxyEnable;
+	//! The type of the proxy server.
+	CProxyType	m_proxyType;
+	//! The proxy host name or IP address.
+	wxString	m_proxyHostName;
+	//! The proxy port number.
+	unsigned short	m_proxyPort;
+	//! Whether authentication should be performed.
+	bool		m_enablePassword;
+	//! The user name to authenticate to the server.
+	wxString	m_userName;
+	//! The password to authenticate to the server.
+	wxString	m_password;
 };
 
 //------------------------------------------------------------------------------
-// ProxyEventHandler
+// CProxyEventHandler
 //------------------------------------------------------------------------------
-
-class ProxyEventHandler :
+/**
+ * Event handler object used during proxy negotiation.
+ */
+class CProxyEventHandler :
 #ifndef AMULE_DAEMON
 public wxEvtHandler
 #else
@@ -154,23 +183,35 @@ public wxThread
 #endif
 {
 public:
-	ProxyEventHandler();
+	/**
+	 * Constructor.
+	 */
+	CProxyEventHandler();
 
 #ifndef AMULE_DAEMON
 private:
+	/**
+	 * Event handler function.
+	 */
 	void ProxySocketHandler(wxSocketEvent &event);
 	DECLARE_EVENT_TABLE();
 #else
 public:
-	~ProxyEventHandler();
+	/**
+	 * Destructor.
+	 */
+	~CProxyEventHandler();
 
 private:
+	/**
+	 * Thread entry point.
+	 */
 	void *Entry();
 #endif
 };
 
 //------------------------------------------------------------------------------
-// ProxyStateMachine
+// CProxyStateMachine
 //------------------------------------------------------------------------------
 /* This size is just to be a little bit greater than the UDP buffer used in aMule.
  * Proxy protocol needs much less than this. 1024 would be ok. Other options are
@@ -179,47 +220,70 @@ private:
  * It would be really more efficient if the final object was less than 
  * a page (4096 bytes) in size.
  */
-//const unsigned int wxPROXY_BUFFER_SIZE = 1024;
-const unsigned int wxPROXY_BUFFER_SIZE = 5*1024;
+//const unsigned int PROXY_BUFFER_SIZE = 1024;
+const unsigned int PROXY_BUFFER_SIZE = 5*1024;
 
-enum wxProxyCommand {
-	wxPROXY_CMD_CONNECT,
-	wxPROXY_CMD_BIND,
-	wxPROXY_CMD_UDP_ASSOCIATE
+enum CProxyCommand {
+	PROXY_CMD_CONNECT,
+	PROXY_CMD_BIND,
+	PROXY_CMD_UDP_ASSOCIATE
 };
 
-enum ProxyState {
+enum CProxyState {
 	PROXY_STATE_START = 0,
 	PROXY_STATE_END = 1
 };
 
-class ProxyStateMachine : public StateMachine
+/**
+ * The ProxyStateMachine class is the ancestor of all proxy classes.
+ *
+ * CProxyStateMachine will do all the common work that a proxy class must do
+ * and provide the necessary variables.
+ */
+class CProxyStateMachine : public CStateMachine
 {
 public:
-	ProxyStateMachine(
+	/**
+	 * Constructor.
+	 *
+	 * @param name		The name of the state machine. For debug messages only.
+	 * @param max_states	The maximum number of states that this machine will have.
+	 * @param proxyData	The necessary proxy information.
+	 * @param cmd		The type of proxy command to run.
+	 */
+	CProxyStateMachine(
 		wxString name,
 		const unsigned int max_states,
-		const wxProxyData &ProxyData,
-		wxProxyCommand cmd);
-	virtual ~ProxyStateMachine();
-	static wxString	&NewName(wxString &s, wxProxyCommand cmd);
+		const CProxyData &proxyData,
+		CProxyCommand cmd);
+	/**
+	 * Destructor.
+	 */
+	virtual ~CProxyStateMachine();
+	/**
+	 * Adds a small string to the state machine name, containing the proxy command.
+	 *
+	 * @param s	The original state machine name.
+	 * @param cmd	The proxy command.
+	 */
+	static wxString	&NewName(wxString &s, CProxyCommand cmd);
 	
 	/* Interface */
-	bool		Start(const wxIPaddress &PeerAddress, wxSocketClient *ProxyClientSocket);
+	bool		Start(const wxIPaddress &peerAddress, wxSocketClient *proxyClientSocket);
 	t_sm_state	HandleEvent(t_sm_event event);
 	void		AddDummyEvent();
 	void		ReactivateSocket();
 	char 		*GetBuffer() const			{ return (char *)m_buffer; }
-	wxIPaddress	&GetProxyBoundAddress(void) const	{ return *m_ProxyBoundAddress; }
-	unsigned char	GetLastReply(void) const		{ return m_LastReply; }
+	wxIPaddress	&GetProxyBoundAddress(void) const	{ return *m_proxyBoundAddress; }
+	unsigned char	GetLastReply(void) const		{ return m_lastReply; }
 	bool		IsEndState() const			{ return GetState() == PROXY_STATE_END; }
 
 protected:
 	wxSocketBase		&ProxyWrite(wxSocketBase &socket, const void *buffer, wxUint32 nbytes);
 	wxSocketBase		&ProxyRead(wxSocketBase &socket, void *buffer);
 #ifndef AMULE_DAEMON
-	bool			CanReceive() const	{ return m_CanReceive; };
-	bool			CanSend() const		{ return m_CanSend; };
+	bool			CanReceive() const	{ return m_canReceive; };
+	bool			CanSend() const		{ return m_canSend; };
 #else
 	bool			CanReceive() const	{ return true; };
 	bool			CanSend() const		{ return true; };
@@ -227,41 +291,41 @@ protected:
 	//
 	// Initialized at constructor
 	//
-	const wxProxyData	&m_ProxyData;
-	wxProxyCommand		m_ProxyCommand;
+	const CProxyData	&m_proxyData;
+	CProxyCommand		m_proxyCommand;
 	//
 	// Member variables
 	//
-	char			m_buffer[wxPROXY_BUFFER_SIZE];
-	bool			m_IsLost;
-	bool			m_IsConnected;
-	bool			m_CanReceive;
-	bool			m_CanSend;
+	char			m_buffer[PROXY_BUFFER_SIZE];
+	bool			m_isLost;
+	bool			m_isConnected;
+	bool			m_canReceive;
+	bool			m_canSend;
 	bool			m_ok;
-	unsigned int		m_LastRead;
-	unsigned int		m_LastWritten;
-	wxSocketError		m_LastError;
+	unsigned int		m_lastRead;
+	unsigned int		m_lastWritten;
+	wxSocketError		m_lastError;
 	//
 	// Will be initialized at Start()
 	//
-	wxIPaddress		*m_PeerAddress;
-	wxSocketClient		*m_ProxyClientSocket;	
-	wxIPaddress		*m_ProxyBoundAddress;
-	amuleIPV4Address	m_ProxyBoundAddressIPV4;
-	//wxIPV6address		m_ProxyBoundAddressIPV6;
+	wxIPaddress		*m_peerAddress;
+	wxSocketClient		*m_proxyClientSocket;	
+	wxIPaddress		*m_proxyBoundAddress;
+	amuleIPV4Address	m_proxyBoundAddressIPV4;
+	//wxIPV6address		m_proxyBoundAddressIPV6;
 	//
 	// Temporary variables
 	//
-	unsigned char		m_LastReply;
-	unsigned int		m_PacketLenght;
+	unsigned char		m_lastReply;
+	unsigned int		m_packetLenght;
 };
 
 //------------------------------------------------------------------------------
-// Socks5StateMachine
+// CSocks5StateMachine
 //------------------------------------------------------------------------------
-class Socks5StateMachine;
-typedef void (Socks5StateMachine::*Socks5StateProcessor)(bool entry);
-class Socks5StateMachine : public ProxyStateMachine
+class CSocks5StateMachine;
+typedef void (CSocks5StateMachine::*Socks5StateProcessor)(bool entry);
+class CSocks5StateMachine : public CProxyStateMachine
 {
 private:
 	static const unsigned int SOCKS5_MAX_STATES = 14;
@@ -285,9 +349,9 @@ private:
 
 public:
 	/* Constructor */
-	Socks5StateMachine(
-		const wxProxyData &ProxyData,
-		wxProxyCommand ProxyCommand);
+	CSocks5StateMachine(
+		const CProxyData &proxyData,
+		CProxyCommand proxyCommand);
 	void process_state(t_sm_state state, bool entry);
 	t_sm_state next_state(t_sm_event event);
 	
@@ -312,11 +376,11 @@ private:
 };
 
 //------------------------------------------------------------------------------
-// Socks4StateMachine
+// CSocks4StateMachine
 //------------------------------------------------------------------------------
-class Socks4StateMachine;
-typedef void (Socks4StateMachine::*Socks4StateProcessor)(bool entry);
-class Socks4StateMachine : public ProxyStateMachine
+class CSocks4StateMachine;
+typedef void (CSocks4StateMachine::*Socks4StateProcessor)(bool entry);
+class CSocks4StateMachine : public CProxyStateMachine
 {
 private:
 	static const unsigned int SOCKS4_MAX_STATES = 5;
@@ -331,9 +395,9 @@ private:
 
 public:
 	/* Constructor */
-	Socks4StateMachine(
-		const wxProxyData &ProxyData,
-		wxProxyCommand ProxyCommand);
+	CSocks4StateMachine(
+		const CProxyData &proxyData,
+		CProxyCommand proxyCommand);
 	void process_state(t_sm_state state, bool entry);
 	t_sm_state next_state(t_sm_event event);
 	
@@ -349,11 +413,11 @@ private:
 };
 
 //------------------------------------------------------------------------------
-// HttpStateMachine
+// CHttpStateMachine
 //------------------------------------------------------------------------------
-class HttpStateMachine;
-typedef void (HttpStateMachine::*HttpStateProcessor)(bool entry);
-class HttpStateMachine : public ProxyStateMachine
+class CHttpStateMachine;
+typedef void (CHttpStateMachine::*HttpStateProcessor)(bool entry);
+class CHttpStateMachine : public CProxyStateMachine
 {
 private:
 	static const unsigned int HTTP_MAX_STATES = 5;
@@ -368,9 +432,9 @@ private:
 
 public:
 	/* Constructor */
-	HttpStateMachine(
-		const wxProxyData &ProxyData,
-		wxProxyCommand ProxyCommand);
+	CHttpStateMachine(
+		const CProxyData &proxyData,
+		CProxyCommand proxyCommand);
 	void process_state(t_sm_state state, bool entry);
 	t_sm_state next_state(t_sm_event event);
 	
@@ -386,72 +450,72 @@ private:
 };
 
 //------------------------------------------------------------------------------
-// amuleProxyClientSocket
+// CProxySocket
 //------------------------------------------------------------------------------
 
-class wxDatagramSocketProxy;
+class CDatagramSocketProxy;
 
-class amuleProxyClientSocket : public wxSocketClient
+class CProxySocket : public wxSocketClient
 {
-friend class ProxyEventHandler;
+friend class CProxyEventHandler;
 public:
 	/* Constructor */
-	amuleProxyClientSocket(
+	CProxySocket(
 		wxSocketFlags flags = wxSOCKET_NONE,
-		const wxProxyData *ProxyData = NULL,
-		wxProxyCommand ProxyCommand = wxPROXY_CMD_CONNECT,
-		wxDatagramSocketProxy *UDPSocket = NULL);
+		const CProxyData *proxyData = NULL,
+		CProxyCommand proxyCommand = PROXY_CMD_CONNECT,
+		CDatagramSocketProxy *udpSocket = NULL);
 	
 	/* Destructor */
-	~amuleProxyClientSocket();
+	~CProxySocket();
 	
 	/* Interface */
-	void		SetProxyData(const wxProxyData *ProxyData);
-	bool		GetUseProxy() const	{ return m_UseProxy; }
-	char 		*GetBuffer() const	{ return m_ProxyStateMachine->GetBuffer(); }
+	void		SetProxyData(const CProxyData *proxyData);
+	bool		GetUseProxy() const	{ return m_useProxy; }
+	char 		*GetBuffer() const	{ return m_proxyStateMachine->GetBuffer(); }
 	wxIPaddress	&GetProxyBoundAddress(void) const
-						{ return m_ProxyStateMachine->GetProxyBoundAddress(); }
-	bool Start(const wxIPaddress &PeerAddress);
-	bool ProxyIsCapableOf(wxProxyCommand ProxyCommand) const;
-	bool ProxyNegotiationIsOver() const	{ return m_ProxyStateMachine->IsEndState(); }
-	wxDatagramSocketProxy *GetUDPSocket() const { return m_UDPSocket; }
+						{ return m_proxyStateMachine->GetProxyBoundAddress(); }
+	bool Start(const wxIPaddress &peerAddress);
+	bool ProxyIsCapableOf(CProxyCommand proxyCommand) const;
+	bool ProxyNegotiationIsOver() const	{ return m_proxyStateMachine->IsEndState(); }
+	CDatagramSocketProxy *GetUDPSocket() const { return m_udpSocket; }
 	
 private:
-	bool			m_UseProxy;
-	wxProxyData		m_ProxyData;
-	amuleIPV4Address	m_ProxyAddress;
-	ProxyStateMachine	*m_ProxyStateMachine;
-	wxDatagramSocketProxy	*m_UDPSocket;
+	bool			m_useProxy;
+	CProxyData		m_proxyData;
+	amuleIPV4Address	m_proxyAddress;
+	CProxyStateMachine	*m_proxyStateMachine;
+	CDatagramSocketProxy	*m_udpSocket;
 };
 
 //------------------------------------------------------------------------------
-// wxSocketClientProxy
+// CSocketClientProxy
 //------------------------------------------------------------------------------
 
-class wxSocketClientProxy : public amuleProxyClientSocket
+class CSocketClientProxy : public CProxySocket
 {
 public:
 	/* Constructor */
-	wxSocketClientProxy(
+	CSocketClientProxy(
 		wxSocketFlags flags = wxSOCKET_NONE,
-		const wxProxyData *ProxyData = NULL);
+		const CProxyData *proxyData = NULL);
 		
 	/* Interface */
 	bool Connect(wxIPaddress &address, bool wait);
 };
 
 //------------------------------------------------------------------------------
-// wxSocketServerProxy
+// CSocketServerProxy
 //------------------------------------------------------------------------------
 
-class wxSocketServerProxy : public wxSocketServer
+class CSocketServerProxy : public wxSocketServer
 {
 public:
 	/* Constructor */
-	wxSocketServerProxy(
+	CSocketServerProxy(
 		wxIPaddress &address,
 		wxSocketFlags flags = wxSOCKET_NONE,
-		const wxProxyData *ProxyData = NULL);
+		const CProxyData *proxyData = NULL);
 		
 	/* Interface */
 	
@@ -459,37 +523,37 @@ private:
 };
 
 //------------------------------------------------------------------------------
-// wxDatagramSocketProxy
+// CDatagramSocketProxy
 //------------------------------------------------------------------------------
 
-enum wxUDPOperation {
-	wxUDP_OPERATION_NONE,
-	wxUDP_OPERATION_RECV_FROM,
-	wxUDP_OPERATION_SEND_TO
+enum UDPOperation {
+	UDP_OPERATION_NONE,
+	UDP_OPERATION_RECV_FROM,
+	UDP_OPERATION_SEND_TO
 };
 
-const unsigned int wxPROXY_UDP_OVERHEAD_IPV4 		= 10;
-const unsigned int wxPROXY_UDP_OVERHEAD_DOMAIN_NAME	= 262;
-const unsigned int wxPROXY_UDP_OVERHEAD_IPV6		= 20;
-const unsigned int wxPROXY_UDP_MAXIMUM_OVERHEAD		= wxPROXY_UDP_OVERHEAD_DOMAIN_NAME;
+const unsigned int PROXY_UDP_OVERHEAD_IPV4 		= 10;
+const unsigned int PROXY_UDP_OVERHEAD_DOMAIN_NAME	= 262;
+const unsigned int PROXY_UDP_OVERHEAD_IPV6		= 20;
+const unsigned int PROXY_UDP_MAXIMUM_OVERHEAD		= PROXY_UDP_OVERHEAD_DOMAIN_NAME;
 
-class wxDatagramSocketProxy : public wxDatagramSocket
+class CDatagramSocketProxy : public wxDatagramSocket
 {
 #if !wxCHECK_VERSION(2,5,3)
-	DECLARE_ABSTRACT_CLASS(wxDatagramSocketProxy)
+	DECLARE_ABSTRACT_CLASS(CDatagramSocketProxy)
 #endif
 public:
 	/* Constructor */
-	wxDatagramSocketProxy(
+	CDatagramSocketProxy(
 		wxIPaddress &address,
 		wxSocketFlags flags = wxSOCKET_NONE,
-		const wxProxyData *ProxyData = NULL);
+		const CProxyData *proxyData = NULL);
 	
 	/* Destructor */
-	~wxDatagramSocketProxy();
+	~CDatagramSocketProxy();
 	
 	/* Interface */
-	void SetUDPSocketOk() { m_UDPSocketOk = true; }
+	void SetUDPSocketOk() { m_udpSocketOk = true; }
 	
 	/* wxDatagramSocket Interface */
 	virtual wxDatagramSocket& RecvFrom(
@@ -499,10 +563,10 @@ public:
 	virtual wxUint32 LastCount(void) const;
 	
 private:
-	bool			m_UDPSocketOk;
-	amuleProxyClientSocket	m_ProxyTCPSocket;
-	enum wxUDPOperation	m_LastUDPOperation;
-	unsigned int		m_LastUDPOverhead;
+	bool			m_udpSocketOk;
+	CProxySocket		m_proxyTCPSocket;
+	enum UDPOperation	m_lastUDPOperation;
+	unsigned int		m_lastUDPOverhead;
 };
 
 /******************************************************************************/

@@ -63,11 +63,11 @@
 // CClientUDPSocket -- Extended eMule UDP socket
 //
 
-IMPLEMENT_DYNAMIC_CLASS(CClientUDPSocket,wxDatagramSocketProxy)
+IMPLEMENT_DYNAMIC_CLASS(CClientUDPSocket, CDatagramSocketProxy)
 
-CClientUDPSocket::CClientUDPSocket(amuleIPV4Address &address, const wxProxyData *ProxyData)
+CClientUDPSocket::CClientUDPSocket(amuleIPV4Address &address, const CProxyData *ProxyData)
 :
-wxDatagramSocketProxy(address, wxSOCKET_NOWAIT, ProxyData)
+CDatagramSocketProxy(address, wxSOCKET_NOWAIT, ProxyData)
 #ifdef AMULE_DAEMON
  , wxThread(wxTHREAD_JOINABLE)
 #endif
@@ -273,7 +273,7 @@ bool CClientUDPSocket::SendTo(char* lpBuf,int nBufLen,uint32 dwIP, uint16 nPort)
 	addr.Service(nPort);
 
 	if(Ok()) {
-		wxDatagramSocketProxy::SendTo(addr,lpBuf,nBufLen);
+		CDatagramSocketProxy::SendTo(addr,lpBuf,nBufLen);
 	} else {
 		// hmm. if there is no socket then what?
 		return false;

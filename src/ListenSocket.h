@@ -95,7 +95,7 @@ friend class CClientReqSocketHandler;
 	DECLARE_DYNAMIC_CLASS(CClientReqSocket)
 
 public:
-	CClientReqSocket(CUpDownClient* in_client = 0, const wxProxyData *ProxyData = NULL);	
+	CClientReqSocket(CUpDownClient* in_client = 0, const CProxyData *ProxyData = NULL);	
 	virtual ~CClientReqSocket();
 	virtual	void 	OnInit();
 	virtual	bool 	Close(); /*	{return wxSocketBase::Close();}*/
@@ -159,7 +159,7 @@ public:
 #endif
 
 // CListenSocket command target
-class CListenSocket : public wxSocketServerProxy
+class CListenSocket : public CSocketServerProxy
 #ifdef AMULE_DAEMON
 , public wxThread
 #endif
@@ -169,7 +169,7 @@ class CListenSocket : public wxSocketServerProxy
 	CSocketGlobalThread global_sock_thread;
 #endif
 public:
-	CListenSocket(wxIPaddress &addr, const wxProxyData *ProxyData = NULL);
+	CListenSocket(wxIPaddress &addr, const CProxyData *ProxyData = NULL);
 	~CListenSocket();
 	bool	StartListening();
 	void	StopListening();

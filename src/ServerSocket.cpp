@@ -124,7 +124,7 @@ void CServerSocketHandler::ServerSocketHandler(wxSocketEvent& event)
 //
 // There can be only one. :)
 //
-static CServerSocketHandler TheServerSocketHandler;
+static CServerSocketHandler g_serverSocketHandler;
 
 #else
 CServerSocketHandler::CServerSocketHandler(CServerSocket *socket)
@@ -176,7 +176,7 @@ void *CServerSocketHandler::Entry()
 
 IMPLEMENT_DYNAMIC_CLASS(CServerSocket,CEMSocket)
 
-CServerSocket::CServerSocket(CServerConnect* in_serverconnect, const wxProxyData *ProxyData)
+CServerSocket::CServerSocket(CServerConnect* in_serverconnect, const CProxyData *ProxyData)
 :
 CEMSocket(ProxyData)
 {
@@ -186,7 +186,7 @@ CEMSocket(ProxyData)
 	info.Clear();
 	m_bIsDeleting = false;
 #ifndef AMULE_DAEMON	
-	my_handler = &TheServerSocketHandler;
+	my_handler = &g_serverSocketHandler;
 	SetEventHandler(*my_handler, SERVERSOCKET_HANDLER);
 	SetNotify(
 		wxSOCKET_CONNECTION_FLAG |
