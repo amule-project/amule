@@ -2969,7 +2969,7 @@ wxSizer *ServerInfoLog( wxWindow *parent, bool call_fit, bool set_sizer )
 
     wxBoxSizer *item4 = new wxBoxSizer( wxHORIZONTAL );
 
-    CMuleTextCtrl *item5 = new CMuleTextCtrl( parent, ID_SERVERINFO, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxVSCROLL|wxHSCROLL );
+    CMuleTextCtrl *item5 = new CMuleTextCtrl( parent, ID_SERVERINFO, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxVSCROLL );
     item4->Add( item5, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
 
     wxButton *item6 = new wxButton( parent, ID_BTN_RESET_SERVER, _("Reset"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -3004,7 +3004,7 @@ wxSizer *aMuleLog( wxWindow *parent, bool call_fit, bool set_sizer )
 
     wxBoxSizer *item4 = new wxBoxSizer( wxHORIZONTAL );
 
-    CMuleTextCtrl *item5 = new CMuleTextCtrl( parent, ID_LOGVIEW, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxVSCROLL|wxHSCROLL );
+    CMuleTextCtrl *item5 = new CMuleTextCtrl( parent, ID_LOGVIEW, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxVSCROLL );
     item4->Add( item5, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
 
     wxButton *item6 = new wxButton( parent, ID_BTN_RESET, _("Reset"), wxDefaultPosition, wxDefaultSize, 0 );
