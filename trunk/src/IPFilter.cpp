@@ -155,7 +155,7 @@ bool CIPFilter::m_inet_atoh( const wxString &str, uint32& ipA, uint32& ipB )
 	ipB = ( ipB << 8 ) | value;
 
 	// The only valid possibility is 8 fields.
-	return ( field == 7 );
+	return ( field == 7 && digit );
 }
 
 
