@@ -67,9 +67,6 @@ AC_CHECK_TOOL(LD, ld)
 
 # Add args to configure
 AC_ARG_ENABLE(debug,   [  --enable-debug          enable additional debugging output],
-              USE_DEBUG="$enableval", USE_DEBUG="no")
-
-AC_ARG_ENABLE(debug,   [  --disable-debug         disable additional debugging output],
               USE_DEBUG="$enableval", USE_DEBUG="yes")
 
 # to avoid conflicting, use "" when it is not used, and compare it to "optimise" value
