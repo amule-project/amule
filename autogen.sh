@@ -1,8 +1,8 @@
 #!/bin/sh
-
 # Helps bootstrapping 'aMule' when checked out from CVS.
 # Requires GNU autoconf, GNU automake and GNU which.
 
+export WANT_AUTOMAKE="1.7"
 (autoconf --version) >/dev/null 2>/dev/null || (echo "You need GNU autoconf to install from CVS (ftp://ftp.gnu.org/gnu/autoconf/)"; exit 1) || exit 1
 (automake --version) >/dev/null 2>/dev/null || (echo "You need GNU automake 1.7 to install from CVS (ftp://ftp.gnu.org/gnu/automake/)"; exit 1) || exit 1
 
