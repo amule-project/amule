@@ -93,15 +93,15 @@ class CECTag {
  * High level EC packet handler class
  */
 
-class CECPacket : private CECTag {
+class CECPacket : public CECTag {
 	friend class ECSocket;
 	public:
 				CECPacket(ec_opcode_t opCode) : CECTag(0, 0, NULL, false), m_opCode(opCode) {};
 				~CECPacket(void) {};
-				CECTag::AddTag;
-				CECTag::GetTagByIndex;
-				CECTag::GetTagByName;
-				CECTag::GetTagCount;
+//				CECTag::AddTag;
+//				CECTag::GetTagByIndex;
+//				CECTag::GetTagByName;
+//				CECTag::GetTagCount;
 		ec_opcode_t	GetOpCode(void) const { return m_opCode; }
 		uint32		GetPacketLength(void) const { return CECTag::GetTagLen(); }
 	private:

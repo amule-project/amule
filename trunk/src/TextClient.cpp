@@ -521,9 +521,15 @@ void CamulecmdApp::Process_Answer_v2(CECPacket *response)
 		case EC_OP_SERVER_LIST:
 			for(int i = 0; i < response->GetTagCount(); i ++) {
 				CECTag *tag = response->GetTagByIndex(i);
-				s += wxString::Format(wxT("%08x "), tag->GetTagByName(EC_TAG_ITEM_ID)->GetInt32Data()) +
-					tag->GetStringData();
-				s += _("\n");
+				EC_IPv4_t * addr = tag->GetIPv4Data();
+				wxString ip = wxString::Format(wxT("[%d.%d.%d.%d:%d]"), addr->ip[0], addr->ip[1], addr->ip[2], addr->ip[3], addr->port);
+				delete addr;
+				while (ip.Length() < 24) {
+					ip += wxT(" ");
+				}
+				s += ip;
+				s += tag->GetTagByName(EC_TAG_SERVER_NAME)->GetStringData();
+				s += wxT("\n");
 			}
 	}
 	Process_Answer(s);

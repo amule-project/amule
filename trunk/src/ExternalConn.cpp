@@ -306,6 +306,10 @@ void AddServerTo(CECTag *tag, CServer *server)
 		ecServer.AddTag(CECTag(EC_TAG_SERVER_USERS, tmpInt));
 	}
 
+	if ((tmpInt = server->GetMaxUsers()) != 0) {
+		ecServer.AddTag(CECTag(EC_TAG_SERVER_USERS_MAX, tmpInt));
+	}
+
 	if ((tmpInt = server->GetFiles()) != 0) {
 		ecServer.AddTag(CECTag(EC_TAG_SERVER_FILES, tmpInt));
 	}
@@ -330,7 +334,7 @@ void AddServerTo(CECTag *tag, CServer *server)
 }
 
 
-CECPacket *Get_EC_Response_StatRequest(const CECPacket *WXUNUSED(request))
+CECPacket *Get_EC_Response_StatRequest(const CECPacket *request)
 {
 	wxASSERT(request->GetOpCode() == EC_OP_STAT_REQ);
 	
@@ -613,27 +617,6 @@ CECPacket *Get_EC_Response_PartFile_Cmd(const CECPacket *request)
 	return response;
 }
 
-CECPacket *Get_EC_Response_ServerList(const CECPacket *WXUNUSED(request))
-{
-	CECPacket *response = new CECPacket(EC_OP_SERVER_LIST);
-	for(uint32 i = 0; i < theApp.serverlist->GetServerCount(); i++) {
-		CServer *curr_srv = theApp.serverlist->GetServerAt(i);
-		CECTag srv_tag(EC_TAG_SERVER, curr_srv->GetListName());
-		srv_tag.AddTag(CECTag(EC_TAG_ITEM_ID, PTR_2_ID(curr_srv)));
-		srv_tag.AddTag(CECTag(EC_TAG_SERVER_USERS, curr_srv->GetUsers()));
-		srv_tag.AddTag(CECTag(EC_TAG_SERVER_USERS_MAX, curr_srv->GetMaxUsers()));
-		srv_tag.AddTag(CECTag(EC_TAG_SERVER_FILES, curr_srv->GetFiles()));
-		srv_tag.AddTag(CECTag(EC_TAG_SERVER_DESC, curr_srv->GetDescription()));
-		uint32 ip = curr_srv->GetIP();
-		srv_tag.AddTag(CECTag(EC_TAG_SERVER_ADDRESS,
-			wxString::Format(wxT("%d.%d.%d.%d:%d"),
-				ip >> 24, (ip >> 16) & 0xff, (ip >> 8) & 0xff, ip & 0xff,
-				curr_srv->GetPort())));
-		response->AddTag(srv_tag);
-	}	
-	return response;
-}
-
 CECPacket *Get_EC_Response_Server(const CECPacket *request)
 {
 	CECPacket *response = new CECPacket(EC_OP_STRINGS);
@@ -716,7 +699,10 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request)
 			response = Get_EC_Response_Server(request);
 			break;
 		case EC_OP_GET_SERVER_LIST:
-			response = Get_EC_Response_ServerList(request);
+			response = new CECPacket(EC_OP_SERVER_LIST);
+			for(uint32 i = 0; i < theApp.serverlist->GetServerCount(); i++) {
+				AddServerTo(response, theApp.serverlist->GetServerAt(i));
+			}	
 			break;
 		case EC_OP_IPFILTER_CMD:
 			response = Process_IPFilter(request);
