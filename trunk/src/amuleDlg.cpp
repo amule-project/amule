@@ -147,7 +147,7 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 	}
 
 	is_safe_state = false;
-	is_hidden = false;
+//	is_hidden = false;
 
 	SetIcon(wxICON(aMule));
 
