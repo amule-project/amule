@@ -187,7 +187,7 @@ void CTransferWnd::UpdateCategory( int index, bool titleChanged )
 void CTransferWnd::OnSetCatStatus( wxCommandEvent& event )
 {
 	if ( event.GetId() == MP_CANCEL ) {
-		if ( wxMessageBox(_("Are you sure you wish to cancel and delete all files in this category?"),_("Confirmation Required"), wxYES_NO|wxCENTRE|wxICON_EXCLAMATION) == wxNO ) {
+		if ( wxMessageBox(_("Are you sure you wish to cancel and delete all files in this category?"),_("Confirmation Required"), wxYES_NO|wxCENTRE|wxICON_EXCLAMATION,(wxWindow*)theApp.amuledlg) == wxNO ) {
 			return;
 		}
 	}
@@ -215,7 +215,7 @@ void CTransferWnd::OnSetCatPriority( wxCommandEvent& event )
 
 void CTransferWnd::OnAddCategory( wxCommandEvent& WXUNUSED(event) )
 {
-	CCatDialog dialog( this );
+	CCatDialog dialog( (wxWindow*)theApp.amuledlg );
 	dialog.ShowModal();
 }
 
@@ -244,7 +244,7 @@ void CTransferWnd::OnDelCategory( wxCommandEvent& WXUNUSED(event) )
 
 void CTransferWnd::OnEditCategory( wxCommandEvent& WXUNUSED(event) )
 {
-	CCatDialog dialog( this, m_dlTab->GetSelection() );
+	CCatDialog dialog( (wxWindow*)theApp.amuledlg, m_dlTab->GetSelection() );
 	
 	dialog.ShowModal();
 }

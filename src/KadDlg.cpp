@@ -83,7 +83,7 @@ void	CKadDlg::OnBnClickedBootstrapClient(wxCommandEvent& WXUNUSED(evt)) {
 	if (FindWindowById(ID_NODECONNECT)->IsEnabled()) {
 		// Connect to node
 	} else {
-		wxMessageBox(_("Please fill all fields required"));
+		wxMessageBox(_("Please fill all fields required"), _("Node error"), wxOK, this);
 	}
 }
 

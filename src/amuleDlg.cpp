@@ -311,16 +311,17 @@ BEGIN_EVENT_TABLE(QueryDlg, wxDialog)
 END_EVENT_TABLE()
 
 
-void CamuleDlg::changeDesktopMode()
+void CamuleDlg::changeDesktopMode(wxWindow* parent)
 {
-	QueryDlg query(this);
+	QueryDlg query(parent);
 
 	wxRadioBox* radiobox = CastByID( ID_SYSTRAYSELECT, &query, wxRadioBox );
 
-	if ( thePrefs::GetDesktopMode() )
+	if ( thePrefs::GetDesktopMode() ) {
 		radiobox->SetSelection( thePrefs::GetDesktopMode() - 1 );
-	else
+	} else {
 		radiobox->SetSelection( 0 );
+	}
 
 	query.ShowModal();
 
@@ -334,7 +335,7 @@ void CamuleDlg::CreateSystray(const wxString& title)
 	// create the docklet (at this point we already have preferences!)
 	if( !thePrefs::GetDesktopMode() ) {
 		// ok, it's not set yet.
-		changeDesktopMode();
+		changeDesktopMode(this);
 	}
 #ifdef USE_WX_TRAY
 	m_wndTaskbarNotifier = new CMuleTrayIcon();
@@ -419,7 +420,7 @@ void CamuleDlg::OnToolBarButton(wxCommandEvent& ev)
 void CamuleDlg::OnAboutButton(wxCommandEvent& WXUNUSED(ev))
 {
 	if ( theApp.IsReady )
-		wxMessageBox(wxString::wxString( _("aMule - 'all-platform' p2p client based on eMule.\n\n Website: http://www.amule.org\n Forum: http://forum.amule.org \n FAQ: http://wiki.amule.org \n\n Copyright (C) 2003-2004 aMule Project \n")));
+		wxMessageBox(wxString::wxString( _("aMule - 'all-platform' p2p client based on eMule.\n\n Website: http://www.amule.org\n Forum: http://forum.amule.org \n FAQ: http://wiki.amule.org \n\n Copyright (C) 2003-2004 aMule Project \n")),wxString::Format("%s %s",_("About aMule"),VERSION), wxOK|wxCENTRE, this);
 }
 
 void CamuleDlg::OnPrefButton(wxCommandEvent& WXUNUSED(ev))
@@ -474,7 +475,7 @@ void CamuleDlg::OnBnConnect(wxCommandEvent& WXUNUSED(evt))
 
 void CamuleDlg::OnBnStatusText(wxCommandEvent& WXUNUSED(evt))
 {
-	wxMessageBox(CastChild( wxT("infoLabel"), wxStaticText )->GetLabel(), wxString(_("Status text")), wxOK|wxICON_INFORMATION);
+	wxMessageBox(CastChild( wxT("infoLabel"), wxStaticText )->GetLabel(), wxString(_("Status text")), wxOK|wxICON_INFORMATION, this);
 }
 
 void CamuleDlg::ResetLog(uint8 whichone)
@@ -704,7 +705,7 @@ void CamuleDlg::OnClose(wxCloseEvent& evt)
 	}
 
 	if (evt.CanVeto() && thePrefs::IsConfirmExitEnabled() ) {
-		if (wxNO == wxMessageBox(wxString(_("Do you really want to exit aMule?")), wxString(_("Exit confirmation")), wxYES_NO)) {
+		if (wxNO == wxMessageBox(wxString(_("Do you really want to exit aMule?")), wxString(_("Exit confirmation")), wxYES_NO, this)) {
 			evt.Veto();
 			return;
 		}
@@ -780,7 +781,7 @@ void CamuleDlg::ShowNotifier(wxString WXUNUSED(Text), int WXUNUSED(MsgType), boo
 void CamuleDlg::OnBnClickedFast(wxCommandEvent& WXUNUSED(evt))
 {
 	if (!theApp.serverconnect->IsConnected()) {
-		wxMessageDialog* msg = new wxMessageDialog(this, wxT("The ED2K link has been added but your download won't start until you connect to a server."), wxT("Not Connected"), wxOK|wxICON_INFORMATION);
+		wxMessageDialog* msg = new wxMessageDialog(this, _("The ED2K link has been added but your download won't start until you connect to a server."), _("Not Connected"), wxOK|wxICON_INFORMATION);
 		msg->ShowModal();
 		delete msg;
 	}
@@ -1070,7 +1071,7 @@ wxFileType *ft;                            /* Temporary storage for filetype. */
 		// TODO: some kind of configuration dialog here.
 		wxMessageBox(
 			_("Could not determine the command for running the browser."),
-			wxT("Browsing problem"), wxOK|wxICON_EXCLAMATION);
+			_("Browsing problem"), wxOK|wxICON_EXCLAMATION, this);
 		delete ft;
 		return;
 	}
@@ -1340,7 +1341,7 @@ void CamuleDlg::Apply_Clients_Skin(wxString file) {
 		
 		skinfile.Close();
 	} catch(wxString error) {
-		wxMessageBox(error);
+		wxMessageBox(error, _("Skinning failure"), wxOK, this);
 		if (skinfile.IsOpened()) {
 			skinfile.Close();
 		}

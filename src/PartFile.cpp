@@ -989,7 +989,7 @@ bool CPartFile::SavePartFile(bool Initial)
 #ifdef AMULE_DAEMON
 		AddLogLineM(true, _("Unable to open ") + m_fullname + _(" file - using ") + PARTMET_BAK_EXT + _(" file."));
 #else
-		wxMessageBox(_("Unable to open ") + m_fullname + _(" file - using ") + PARTMET_BAK_EXT + _(" file.\n"));
+		wxMessageBox(_("Unable to open ") + m_fullname + _(" file - using ") + PARTMET_BAK_EXT + _(" file.\n"), _("Partfile error"), wxOK, (wxWindow*)theApp.amuledlg);
 #endif
 		FS_wxCopyFile(m_fullname + PARTMET_BAK_EXT, m_fullname);
 	} else {
@@ -1002,7 +1002,7 @@ bool CPartFile::SavePartFile(bool Initial)
 #ifdef AMULE_DAEMON
 			AddLogLineM(true, _("file is 0 size somehow - using ") + wxString(PARTMET_BAK_EXT) + _(" file."));
 #else
-			wxMessageBox(m_fullname + _("file is 0 size somehow - using ") + PARTMET_BAK_EXT + _(" file.\n"));
+			wxMessageBox(m_fullname + _("file is 0 size somehow - using ") + PARTMET_BAK_EXT + _(" file.\n"), _("Partfile error"), wxOK, (wxWindow*)theApp.amuledlg);
 #endif
 			FS_wxCopyFile(m_fullname + PARTMET_BAK_EXT,m_fullname);
 		}

@@ -289,7 +289,7 @@ msgstr ""
 
 #: src/amuleDlg.cpp:477
 msgid "Status text"
-msgstr "Testo di status"
+msgstr "Messaggio di status"
 
 #: src/amuleDlg.cpp:593
 msgid "WARNING: You have recieved Low-ID!"
@@ -1111,7 +1111,7 @@ msgstr "Opzioni avanzate"
 
 #: src/DownloadListCtrl.cpp:295 src/SearchListCtrl.cpp:332
 msgid "Get Razorback 2's stats for this file"
-msgstr "Recupera le statistiche di Razorback 2 di questo file"
+msgstr "Vedi statistiche di Razorback 2 del file"
 
 #: src/DownloadListCtrl.cpp:299 src/SearchListCtrl.cpp:334
 msgid "jugle.net Fake Check"
@@ -1235,9 +1235,6 @@ msgstr "Sei sicuro di voler interrompere e cancellare questo file?\n"
 #: src/DownloadListCtrl.cpp:1403
 msgid "Are you sure that you want to cancel and delete these files ?\n"
 msgstr "Sei sicuro di voler interrompere e cancellare questi file?\n"
-
-msgid "Are you sure that you want to cancel and delete this file?\\n"
-msgstr "Sei sicuro di voler cancellare questo file?\\n"
 
 #: src/DownloadListCtrl.cpp:1585
 msgid "Feedback from: "
@@ -1667,7 +1664,7 @@ msgstr "' (IP:"
 
 #: src/ListenSocket.cpp:882
 msgid "Message filtered from '"
-msgstr "Messagio filtrato da '"
+msgstr "Messaggio filtrato da '"
 
 #: src/ListenSocket.cpp:912 src/ListenSocket.cpp:914 src/ListenSocket.cpp:967
 #: src/ListenSocket.cpp:1034 src/ListenSocket.cpp:1061
@@ -1954,7 +1951,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:124
 msgid "Pop-up status text"
-msgstr "Testo di status dei pop-up"
+msgstr "Apri pop-up"
 
 #: src/muuli_wdr.cpp:127
 msgid "Loading ..."
@@ -2165,7 +2162,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:457
 msgid "Shows Upload / Up-queue"
-msgstr "Mostra Upload / Coda Upload"
+msgstr "Mostra Upload/Coda Upload/Client"
 
 #: src/muuli_wdr.cpp:460 src/StatisticsDlg.cpp:606 src/TransferWnd.cpp:407
 msgid "Uploads"
@@ -2182,6 +2179,9 @@ msgstr "0"
 #: src/muuli_wdr.cpp:518 src/muuli_wdr.cpp:3492 src/muuli_wdr.cpp:3552
 msgid "Messages"
 msgstr "Messaggi"
+
+msgid "Message Filter"
+msgstr "Filtro messaggi"
 
 #: src/muuli_wdr.cpp:532
 msgid "Send"
@@ -2272,7 +2272,7 @@ msgstr "Fonti in trasferimento:"
 
 #: src/muuli_wdr.cpp:668
 msgid "Filepart-Count :"
-msgstr "Numero parti del file:"
+msgstr "Numero parti:"
 
 #: src/muuli_wdr.cpp:675
 msgid "Available :"
@@ -3281,6 +3281,9 @@ msgstr "Intervallo aggiornamento connessione al server: disabilitato"
 msgid "GUI Tweaks"
 msgstr "Tweaks GUI"
 
+msgid "Gui Tweaks"
+msgstr "Tweaks GUI"
+
 #: src/muuli_wdr.cpp:2495
 msgid "Download Queue Files Progress"
 msgstr "Avanzamento coda download"
@@ -3337,6 +3340,10 @@ msgstr "Mostra velocità di trasferimento nel titolo"
 msgid "Source Dropping"
 msgstr "Gestione fonti"
 
+#: src/muuli_wdr.cpp:2587
+msgid "Sources Dropping"
+msgstr "Gestione fonti"
+
 #: src/muuli_wdr.cpp:2594
 msgid "Keep sources"
 msgstr "Mantieni fonti"
@@ -3391,7 +3398,10 @@ msgstr "(Min 60 / Max 3600)"
 
 #: src/muuli_wdr.cpp:2668
 msgid "Remote Control"
-msgstr "Controllo remoto"
+msgstr "Controlli remoti"
+
+msgid "Remote Controls"
+msgstr "Controlli remoti"
 
 #: src/muuli_wdr.cpp:2673
 msgid "Webserver Parameters"
@@ -3893,7 +3903,7 @@ msgstr "In attesa"
 #: src/otherfunctions.cpp:476 src/PartFile.cpp:2787 src/TransferWnd.cpp:304
 #: src/WebServer.cpp:2198
 msgid "Downloading"
-msgstr "Download in corso"
+msgstr "In download"
 
 #: src/otherfunctions.cpp:477 src/PartFile.cpp:2783 src/TransferWnd.cpp:305
 #: src/WebServer.cpp:2198
@@ -4597,7 +4607,7 @@ msgstr "Dati trasferiti"
 
 #: src/SharedFilesCtrl.cpp:90
 msgid "Complete Sources"
-msgstr "Fonti Complete"
+msgstr "Fonti complete"
 
 #: src/SharedFilesCtrl.cpp:91
 msgid "Directory Path"
