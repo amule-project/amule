@@ -106,27 +106,35 @@ void CServerSocket::OnConnect(wxSocketError nErrorCode)
 {
 	//CAsyncSocket::OnConnect(nErrorCode);
 	switch (nErrorCode) {
-
-		case wxSOCKET_NOERROR: {
+		case wxSOCKET_NOERROR:
 			if (cur_server->HasDynIP()) {
 				struct sockaddr_in sockAddr;
 				memset(&sockAddr, 0, sizeof(sockAddr));
 				wxIPV4address tmpaddr;
 				GetPeer(tmpaddr);
-				//printf("Connection Event from %s : %u\n",unicode2char(tmpaddr.IPAddress()),cur_server->GetPort());
+				/*printf("Connection Event from %s : %u\n",
+					unicode2char(tmpaddr.IPAddress()),cur_server->GetPort());*/
 				sockAddr.sin_addr.s_addr = inet_addr(unicode2char(tmpaddr.IPAddress()));
 				cur_server->SetID(sockAddr.sin_addr.s_addr);
-				theApp.serverlist->GetServerByAddress(cur_server->GetAddress(),cur_server->GetPort())->SetID(sockAddr.sin_addr.s_addr);
+				// GetServerByAddress may return NULL, so we must test!
+				// This was the reason why amule would crash when trying to
+				// connect in wxWidgets 2.5.2
+				CServer *pServer = theApp.serverlist->GetServerByAddress(
+					cur_server->GetAddress(), cur_server->GetPort());
+				if (pServer) {
+					pServer->SetID(sockAddr.sin_addr.s_addr);
+				} else {
+					AddLogLineM(false,wxT("theApp.serverlist->GetServerByAddress() returned NULL"));
+					return;
+				}
 			}
 			SetConnectionState(CS_WAITFORLOGIN);
 			break;
-		}
 
-		case wxSOCKET_INVADDR :
+		case wxSOCKET_INVADDR:
 		case wxSOCKET_NOHOST:
 		case wxSOCKET_INVPORT:
-		case wxSOCKET_TIMEDOUT :
-			
+		case wxSOCKET_TIMEDOUT:
 			m_bIsDeleting = true;
 			SetConnectionState(CS_SERVERDEAD);
 			serverconnect->DestroySocket(this);
@@ -136,7 +144,6 @@ void CServerSocket::OnConnect(wxSocketError nErrorCode)
 		case wxSOCKET_MEMERR:
 		case wxSOCKET_INVOP:
 		default:
-			
 			m_bIsDeleting = true;
 			SetConnectionState(CS_FATALERROR);
 			serverconnect->DestroySocket(this);
