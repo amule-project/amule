@@ -2,7 +2,7 @@
 // Name:        wxcascanvas.cpp
 // Purpose:     wxCas canvas
 // Author:      ThePolish <thepolish@vipmail.ru>
-// Created:     2003/04/10
+// Created:     2004/04/15
 // Modified by:
 // Copyright:   (c) ThePolish <thepolish@vipmail.ru>
 // Licence:     GPL

@@ -2,7 +2,7 @@
 // Name:        wxcasframe.cpp
 // Purpose:     wxCas main frame
 // Author:      ThePolish <thepolish@vipmail.ru>
-// Created:     2003/04/10
+// Created:     2004/04/15
 // Modified by:
 // Copyright:   (c) ThePolish <thepolish@vipmail.ru>
 // Licence:     GPL
@@ -232,7 +232,7 @@ WxCasFrame::OnBarAbout (wxCommandEvent & event)
 {
 	wxMessageBox (_
 		      ("wxCas, aMule OnLigne Signature Statistics\n\n"
-		       "(c) 2004 ThePolish <thepolish@vipmail.ru> <pmth@free.fr>\n\n"
+		       "(c) 2004 ThePolish <thepolish@vipmail.ru>\n\n"
 		       "Based on CAS by Pedro de Oliveira <falso@rdk.homeip.net>\n\n"
 		       "Distributed under GPL"),
 		      _("About wxCas"), wxOK | wxCENTRE | wxICON_INFORMATION);
