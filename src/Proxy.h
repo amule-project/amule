@@ -27,6 +27,7 @@
 #include <wx/socket.h>		// For wxSocket*
 #include <wx/string.h>		// For wxString
 
+#include "amuleIPV4Address.h"	// For amuleIPV4address
 
 /******************************************************************************/
 
@@ -110,7 +111,7 @@ public:
 /******************************************************************************/
 
 #if !wxCHECK_VERSION(2,5,1)
-	#define wxIPaddress wxIPV4address
+	#define wxIPaddress amuleIPV4Address
 #endif
 
 class wxProxyEventHandler;
@@ -142,15 +143,15 @@ private:
 	bool DoSocks5CmdBind(void);
 	bool DoSocks5CmdUDPAssociate(void);
 	
-	wxProxyData	m_ProxyData;
-	char		m_buffer[1024];
-	wxIPV4address	m_ProxyAddress;
-	wxSocketClient	*m_ProxyClientSocket;
-	wxIPaddress	*m_TargetAddress;
-	wxIPV4address	m_TargetAddressIPV4;
-	//wxIPV6address	m_TargetAddressIPV6;
-	unsigned char	m_LastReply;
-	unsigned char	m_AddressType;
+	wxProxyData		m_ProxyData;
+	char			m_buffer[1024];
+	amuleIPV4Address	m_ProxyAddress;
+	wxSocketClient		*m_ProxyClientSocket;
+	wxIPaddress		*m_TargetAddress;
+	amuleIPV4Address	m_TargetAddressIPV4;
+	//wxIPV6address		m_TargetAddressIPV6;
+	unsigned char		m_LastReply;
+	unsigned char		m_AddressType;
 };
 
 /******************************************************************************/
