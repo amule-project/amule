@@ -57,8 +57,6 @@ class CMemFile;
 class Requested_File_Struct;
 class TransferredData;
 class CAICHHash;
-class wxMemoryDC;
-class wxRect;
 
 	
 // uploadstate
@@ -359,9 +357,6 @@ public:
 	void		SetRemoteQueueFull(bool flag)	{ m_bRemoteQueueFull = flag; }
 	bool		IsRemoteQueueFull() const 	{ return m_bRemoteQueueFull; }
 	void		SetRemoteQueueRank(uint16 nr);
-#ifndef AMULE_DAEMON
-	void		DrawStatusBar(wxMemoryDC* dc, const wxRect& rect, bool onlygreyrect, bool  bFlat);
-#endif	
 	bool		AskForDownload();
 	void		SendStartupLoadReq();
 	void		SendFileRequest();

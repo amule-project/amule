@@ -778,7 +778,7 @@ void CamuleDlg::OnBnClickedFast(wxCommandEvent& WXUNUSED(evt))
 		strlink.Trim(true);
 		strlink.Trim(false);
 		if ( !strlink.IsEmpty() ) {
-			theApp.downloadqueue->AddED2KLink( strlink, transferwnd->downloadlistctrl->curTab );
+			theApp.downloadqueue->AddED2KLink( strlink, transferwnd->downloadlistctrl->GetCategory() );
 		}
 	}
 	

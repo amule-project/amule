@@ -1,21 +1,23 @@
+//
 // This file is part of the aMule Project
 //
 // Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
 // Copyright (C) 2002 Merkur ( merkur-@users.sourceforge.net / http://www.emule-project.net )
 //
-//This program is free software; you can redistribute it and/or
-//modify it under the terms of the GNU General Public License
-//as published by the Free Software Foundation; either
-//version 2 of the License, or (at your option) any later version.
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either
+// version 2 of the License, or (at your option) any later version.
 //
-//This program is distributed in the hope that it will be useful,
-//but WITHOUT ANY WARRANTY; without even the implied warranty of
-//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//GNU General Public License for more details.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 //
-//You should have received a copy of the GNU General Public License
-//along with this program; if not, write to the Free Software
-//Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+//
 
 #ifndef DOWNLOADLISTCTRL_H
 #define DOWNLOADLISTCTRL_H
@@ -24,100 +26,269 @@
 #pragma interface "DownloadListCtrl.h"
 #endif
 
-#include <utility>		// Needed for std::pair
-#include <map>			// Needed for std::multimap
-#include <wx/defs.h>		// Needed before any other wx/*.h
+#include <map>				// Needed for std::multimap
 
-#include "types.h"		// Needed for uint8
+#include "types.h"			// Needed for uint8
 #include "MuleListCtrl.h"	// Needed for CMuleListCtrl
-#include "CTypedPtrList.h"	// Needed for CTypedPtrList
- 
+
+
 class CPartFile;
 class CUpDownClient;
 class wxBitmap;
+class wxRect;
+class wxDC;
 
-enum ItemType {FILE_TYPE=1,AVAILABLE_SOURCE=2,UNAVAILABLE_SOURCE=3};
-struct CtrlItem_Struct{
-	ItemType			type;
-	CPartFile*			owner;
-	void*				value;
-	CtrlItem_Struct*		parent;
-	DWORD				dwUpdated;
-	wxBitmap*			status;
+struct CtrlItem_Struct;
 
-	~CtrlItem_Struct() { if (status) delete status; }
-};
 
-// CDownloadListCtrl
 
+/**
+ * This class is responsible for representing the download queue.
+ *
+ * The CDownlodListCtrl class is responsible for drawing not only files being
+ * downloaded, but also sources assosiated with these. It is in many ways
+ * primary widget within the application, since it is here that users can
+ * inspect and manipulate their current downloads.
+ *
+ * Due to the fact that sources are one of the major sources of update-class,
+ * this class has been designed such that it does not need to recieve these 
+ * unless sources in question are actually being displayed. Upon the initial
+ * showing of sources (when a file is expanded), a current list of that file's
+ * sources are requested. If the sources are hidden again, the class will
+ * discard all knowledge of their existance.
+ */
 class CDownloadListCtrl : public CMuleListCtrl
 {
 public:
-	CDownloadListCtrl(wxWindow*& parent,int id,const wxPoint& pos,wxSize siz,int flags);
-	virtual	~CDownloadListCtrl();
-	uint8 curTab;
+	/**
+	 * Constructor.
+	 * 
+	 * @see CMuleListCtrl::CMuleListCtrl for documentation of parameters.
+	 */
+	 CDownloadListCtrl(
+	            wxWindow *parent,
+                wxWindowID winid = -1,
+                const wxPoint &pos = wxDefaultPosition,
+                const wxSize &size = wxDefaultSize,
+                long style = wxLC_ICON,
+                const wxValidator& validator = wxDefaultValidator,
+                const wxString &name = wxT("downloadlistctrl") );
+				
+	/**
+	 * Destructor.
+	 */	 
+	virtual	~CDownloadListCtrl();	
+
+
+	/**
+	 * Adds a file to the list, but it wont show unless it matches the current category.
+	 *
+	 * @param A valid pointer to a new partfile.
+	 *
+	 * Please note that duplicates wont be added.
+	 */
+	void AddFile( CPartFile* file );
+
+	/**
+	 * Adds a source belonging to the specified partfile.
+	 *
+	 * @param owner The owner of this specific source-entry, must be a valid pointer.
+	 * @param source The client object to be added, must be a valid pointer.
+	 * @param available If the source is a current source, or a A4AF source.
+	 *
+	 * Please note that the specified client will only be added to the list if it's
+	 * owner is shown and has ShowSources set to true, otherwise the source will 
+	 * simply be ignored. Duplicates wont be added.
+	 */
+	void AddSource( CPartFile* owner, CUpDownClient* source, bool available );
+
+	
+	/**
+	 * Removes a source from the list.
+	 *
+	 * @param source A pointer to the source to be removed.
+	 * @param owner Either a specific file, or NULL to remove the source from all files.
+	 */
+	void RemoveSource( CUpDownClient* source, CPartFile* owner );
+	
+	/**
+	 * Removes the specified file from the list.
+	 *
+	 * @param file A valid pointer of the file to be removed.
+	 *
+	 * This function also removes any sources assosiated with the file. 
+	 */
+	void RemoveFile( CPartFile* file );
+
+	
+	/**
+	 * Toggles showing of a file's sources on or off.
+	 *
+	 * @param file The file whoose sources should be shown/hidden.
+	 * @param show Whenever or not to show sources.
+	 */
+	void ShowSources( CPartFile* file, bool show );
+	
+	/**
+	 * Shows or hides the sources of a specific file.
+	 *
+	 * @param file A valid pointer to the file to be shown/hidden.
+	 * @param show Whenever or not to show the file.
+	 *
+	 * If the file is hidden, then its sources will also be hidden.
+	 */
+	void ShowFile( CPartFile* file, bool show );
+
+
+	/**
+	 * Updates the state of the specified item, possibly causing a redrawing.
+	 *
+	 * @param toupdate The source or file to be updated.
+	 *
+	 * Calling this function with a file as the argument will ensure that the 
+	 * file is hidden/shown depending on its state and the currently selected
+	 * category.
+	 */
 	void UpdateItem(void* toupdate);
-	void Init();
-	void AddFile(CPartFile* toadd);
-	void AddSource(CPartFile* owner,CUpDownClient* source,bool notavailable);
-	void RemoveSource(CUpDownClient* source,CPartFile* owner);
-	void RemoveFile(const CPartFile* toremove);
+
+
+	/**
+	 * Returns the current category.
+	 */
+	uint8 GetCategory();
+	
+	/**
+	 * Changes the displayed category and updates the list of shown files.
+	 * 
+	 * @param newCategory The new category to display.
+	 */
+	void ChangeCategory( int newCategory );
+
+	
+	/**
+	 * Clears all completed files from the list.
+	 */
 	void ClearCompleted();
-	void SetStyle();
-	void HideSources(CPartFile* toCollapse,bool isShift = false,bool isCtrl = false,bool isAlt = false);
+
+	/**
+	 * Updates the displayed number representing the ammount of files currently shown.
+	 */
 	void ShowFilesCount();
-	void ChangeCategory(int newsel);
-
-	void ShowSelectedFileDetails();
-	void HideFile(CPartFile* tohide);
-	void ShowFile(CPartFile* tohide);
 	
-	// lagloose
-	bool isShift;
-	void OnKeyUp(wxKeyEvent& event);
-	void OnKeyDown(wxKeyEvent& event);
-	// end lagloose
 	
-	virtual void OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxRect& rectHL,bool highlighted);
-	
-protected:
-	void DrawFileItem(wxDC* dc,int nColumn, const wxRect& rect,CtrlItem_Struct* lpCtrlItem);
-	void DrawSourceItem(wxDC* dc,int nColumn, const wxRect& rect,CtrlItem_Struct* lpCtrlItem);
-
-	static int s_lastOrder;
-	static int s_lastColumn;
-	static int wxCALLBACK SortProc(long lp1,long lp2,long lpSort);
-	static int Compare(CPartFile* file1, CPartFile* file2, long lParamSort);
-	static int Compare(const CUpDownClient* client1, const CUpDownClient* client2, long lParamSort);
-
-	void OnColumnLClick(wxListEvent& evt);
-	void OnLvnItemActivate(wxListEvent& evt);
-	void OnNMRclick(wxListEvent& evt);
-	void OnPriLow(wxCommandEvent& evt);
-	void OnPriNormal(wxCommandEvent& evt);
-	void OnPriHigh(wxCommandEvent& evt);
-	void OnMCancel(wxCommandEvent& evt);
-	bool ProcessEvent(wxEvent& evt);
-	void setPri(int newpri);
-	void collectSelections(CTypedPtrList<CPtrList,CPartFile*>* selectedList);
-	DECLARE_EVENT_TABLE()
-
 private:
-	bool ShowItemInCurrentCat(CPartFile* file,int newsel);
-	void PreviewFile(CPartFile* file);
-	bool 	this_is_the_moment();
-	int	last_moment;
 
-	typedef std::pair<void*,CtrlItem_Struct*> ListItemsPair;
-	typedef std::multimap<void*,CtrlItem_Struct*> ListItems;
+	/**
+	 * Overloaded function needed for custom drawing of items.
+	 */
+	virtual void OnDrawItem( int item, wxDC* dc, const wxRect& rect, const wxRect& rectHL, bool highlighted );
+
+	/**
+	 * Draws a file item.
+	 */
+	void	DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect, CtrlItem_Struct* item );
+
+	/**
+	 * Draws a source item.
+	 */
+	void	DrawSourceItem( wxDC* dc, int nColumn, const wxRect& rect, CtrlItem_Struct* item );
+
+	/**
+	 * Draws the status (chunk) bar for a file.
+	 */
+	void	DrawFileStatusBar( CPartFile* file, wxDC* dc, const wxRect& rect, bool bFlat );
+
+	/**
+	 * Draws the status (chunk) bar for a source.
+	 */
+	void	DrawSourceStatusBar( CUpDownClient* source, wxDC* dc, const wxRect& rect, bool  bFlat);
+
+
+	//! Used to keep track of which sorting order was last used.
+	static int s_lastOrder;
+	//! Used to keep track of which column was last used to sort from.
+	static int s_lastColumn;
+
+	
+	static int wxCALLBACK SortProc(long item1, long item2, long lpSort);
+	static int Compare(CPartFile* file1, CPartFile* file2, long lParamSort);
+	static int Compare(CUpDownClient* client1, CUpDownClient* client2, long lParamSort);
+	
+
+	// Event-handlers for files
+	void	OnCleanUpSources( wxCommandEvent& event ); 
+	void	OnCancelFile( wxCommandEvent& event );
+	void	OnSetPriority( wxCommandEvent& event );
+	void	OnSwapSources( wxCommandEvent& event );
+	void	OnSetCategory( wxCommandEvent& event );	
+	void	OnSetStatus( wxCommandEvent& event );
+	void	OnClearCompleted( wxCommandEvent& event );
+	void	OnGetED2KLink( wxCommandEvent& event );
+	void	OnGetFeedback( wxCommandEvent& event );
+	void	OnGetRazorStats( wxCommandEvent& event );
+	void	OnViewFileInfo( wxCommandEvent& event );
+	void	OnViewFileComments( wxCommandEvent& event );
+	void	OnPreviewFile( wxCommandEvent& event );
+	void	OnFakeCheckFile( wxCommandEvent& event );
+
+	// Event-handlers for sources
+	void	OnSwapSource( wxCommandEvent& event );
+	void	OnViewFiles( wxCommandEvent& event );
+	void	OnAddFriend( wxCommandEvent& event );
+	void	OnSendMessage( wxCommandEvent& event );
+	void	OnViewClientInfo( wxCommandEvent& event );
+
+	void	OnItemActivated( wxListEvent& event );
+	void	OnColumnLClick( wxListEvent& event );
+	void 	OnNMRclick( wxListEvent& event );
+
+
+	/**
+	 * Returns true if the given file should be shown in the specified category.
+	 *
+	 * @param file The file to be examined.
+	 * @param newel The new category selection.
+	 * @return True if the file should be shown, false otherwise.
+	 */
+	bool ShowItemInCurrentCat( CPartFile* file, int newsel );
+
+	/**
+	 * Executes the user-selected preview command on the specified file.
+	 *
+	 * @file The file to be previewed.
+	 */
+	void PreviewFile(CPartFile* file);
+
+
+	//! The type of list used to store items on the listctrl.
+	typedef std::multimap<const void*,CtrlItem_Struct*> ListItems;
+	//! Shortcut to the pair-type used on the list.
+	typedef ListItems::value_type ListItemsPair;
+	//! This list contains everything shown on the list. Sources are only to
+	//! be found on this list if they are being displayed, whereas files can
+	//! always be found on this list, even if they are currently hidden.
 	ListItems	m_ListItems;
 
-	wxMenu*		m_FileMenu;
-	wxMenu*		m_ClientMenu;
-	wxMenu*		m_PrioMenu;
-	wxBrush*	m_hilightBrush,*m_hilightUnfocusBrush;
+	
+	//! Pointer to the current menu object, used to avoid multiple menus.
+	wxMenu*		m_menu;
+	//! Pointer to a cached brush object.
+	wxBrush*	m_hilightBrush;
+	//! Pointer to a cached brush object.
+	wxBrush*	m_hilightUnfocusBrush;
+	
+
+	//! Cached variable used to save the width of the percentage text.
 	wxCoord textwidth;
+	//! Cached variable used to save the height of the percentage text.
 	wxCoord textheight;
+
+	
+	//! The currently displayed category
+	uint8 m_category;
+
+	DECLARE_EVENT_TABLE()
 };
 
-#endif // DOWNLOADLISTCTRL_H
+#endif
+
