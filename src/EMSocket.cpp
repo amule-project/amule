@@ -123,7 +123,7 @@ void CEMSocket::ClearQueues(){
 	m_bLinkedPackets = false;
 }
 
-void CEMSocket::OnClose(int nErrorCode){
+void CEMSocket::OnClose(int WXUNUSED(nErrorCode)){
 	
 	byConnected = ES_DISCONNECTED;
 	
@@ -388,7 +388,7 @@ void CEMSocket::OnSend(int nErrorCode){
 	} 
 }
 
-int CEMSocket::Send(char* lpBuf,int nBufLen,int nFlags)
+int CEMSocket::Send(char* lpBuf,int nBufLen,int WXUNUSED(nFlags))
 {
 	assert (sendbuffer == NULL || lpBuf == NULL );
 	if (lpBuf) {

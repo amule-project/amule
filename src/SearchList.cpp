@@ -149,7 +149,7 @@ CSearchFile::CSearchFile(const CMemFile* in_data, uint32 nSearchID, uint32 nServ
 	m_bPreviewPossible = false;
 }
 
-CSearchFile::CSearchFile(uint32 nSearchID, const CMD4Hash& pucFileHash, uint32 uFileSize, LPCTSTR pszFileName, int iFileType, int iAvailability)
+CSearchFile::CSearchFile(uint32 nSearchID, const CMD4Hash& pucFileHash, uint32 uFileSize, LPCTSTR pszFileName, int WXUNUSED(iFileType), int iAvailability)
 {
 	m_nSearchID = nSearchID;
 	m_abyFileHash = pucFileHash;
@@ -559,7 +559,7 @@ wxString CSearchList::GetWebList(const wxString& linePattern,int sortby,bool asc
 	return buffer;
 }
 
-void CSearchList::AddFileToDownloadByHash(const CMD4Hash& hash,uint8 cat) {
+void CSearchList::AddFileToDownloadByHash(const CMD4Hash& hash,uint8 WXUNUSED(cat)) {
 	for (POSITION pos = list.GetHeadPosition(); pos !=0; ){
 		CSearchFile* sf=list.GetNext(pos);//->GetSearchID() == nSearchID ){
 		if (hash == sf->GetFileHash()) {

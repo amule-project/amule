@@ -53,7 +53,7 @@ public:
 	char*			GetUDPHeader();
 	char*			GetPacket();
 	char*			DetachPacket();
-	inline wxUint32 const	GetRealPacketSize()	{ return size + 6; }
+	inline wxUint32 GetRealPacketSize() const	{ return size + 6; }
 	bool			IsSplitted()		{ return m_bSplitted; }
 	bool			IsLastSplitted()	{ return m_bLastSplitted; }
 	void			PackPacket();
@@ -61,10 +61,10 @@ public:
 	// -khaos--+++> Returns either -1, 0 or 1.  -1 is unset, 0 is from complete file, 1 is from part file
 	bool			IsFromPF()		{ return m_bFromPF; }
 	
-	inline uint8 const	GetOpCode() const	{ return opcode; }
+	inline uint8 	GetOpCode() const	{ return opcode; }
 	void			SetOpCode(uint8 oc)	{ opcode = oc; }
-	inline wxUint32 const	GetPacketSize() const	{ return size; }
-	inline uint8 const	GetProtocol() const	{ return prot; }
+	inline wxUint32 GetPacketSize() const	{ return size; }
+	inline uint8 	GetProtocol() const	{ return prot; }
 	inline void		SetProtocol(uint8 p)	{ prot = p; }
 	inline const char * 	GetDataBuffer(void) const { return pBuffer; }
 	inline void 		Copy16ToDataBuffer(const char *data) { md4cpy( pBuffer, data ); }

@@ -55,12 +55,12 @@ BEGIN_EVENT_TABLE(CCommentDialogLst,wxDialog)
 	EVT_BUTTON(IDCREF,CCommentDialogLst::OnBnClickedRefresh)
 END_EVENT_TABLE()
 
-void CCommentDialogLst::OnBnClickedApply(wxCommandEvent& evt)
+void CCommentDialogLst::OnBnClickedApply(wxCommandEvent& WXUNUSED(evt))
 {
 	EndModal(0);
 }
 
-void CCommentDialogLst::OnBnClickedRefresh(wxCommandEvent& evt)
+void CCommentDialogLst::OnBnClickedRefresh(wxCommandEvent& WXUNUSED(evt))
 {
 	CompleteList();
 }

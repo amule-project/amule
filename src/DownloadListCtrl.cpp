@@ -1915,7 +1915,7 @@ int CDownloadListCtrl::Compare(CPartFile * file1, CPartFile * file2, long lParam
 	}
 }
 
-int CDownloadListCtrl::Compare(const CUpDownClient * client1, const CUpDownClient * client2, long lParamSort, int sortMod)
+int CDownloadListCtrl::Compare(const CUpDownClient * client1, const CUpDownClient * client2, long lParamSort, int WXUNUSED(sortMod))
 {
 	switch (lParamSort) {
 		case 0:	//name asc

@@ -128,7 +128,7 @@ public:
 	void			OnFatalException();
 
 	// Barry - To find out if app is running or shutting/shut down
-	const bool IsRunning() { return (m_app_state == APP_STATE_RUNNING); }
+	bool IsRunning() const { return (m_app_state == APP_STATE_RUNNING); }
 
 	// ed2k URL functions
 	wxString		StripInvalidFilenameChars(const wxString& strText, bool bKeepSpaces = true);

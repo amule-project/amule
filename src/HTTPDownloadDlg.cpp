@@ -58,7 +58,7 @@ CHTTPDownloadDlg::CHTTPDownloadDlg(wxWindow* parent,wxString url,wxString tempNa
 
 }
 
-void CHTTPDownloadDlg::OnBtnCancel(wxCommandEvent& evt)
+void CHTTPDownloadDlg::OnBtnCancel(wxCommandEvent& WXUNUSED(evt))
 {
 
  thread->setDeleteGUI(false);

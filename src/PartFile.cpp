@@ -3015,7 +3015,7 @@ void CPartFile::SetLastAnsweredTimeTimeout()
 }
 
 
-Packet*	CPartFile::CreateSrcInfoPacket(CUpDownClient* forClient)
+Packet*	CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 {
 	if ( m_SrcList.IsEmpty() )
 		return NULL;

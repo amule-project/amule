@@ -72,7 +72,7 @@ private:
 
 class CED2KFileLink : public CED2KLink {
 public:
-  CED2KFileLink::CED2KFileLink(const TCHAR* name,const TCHAR* size, const TCHAR* hash,const TCHAR* sources);
+	CED2KFileLink(const TCHAR* name,const TCHAR* size, const TCHAR* hash,const TCHAR* sources);
 	virtual ~CED2KFileLink();
 	virtual LinkType GetKind() const;
 	virtual CED2KServerListLink* GetServerListLink();

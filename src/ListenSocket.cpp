@@ -2052,22 +2052,6 @@ bool CListenSocket::IsValidSocket(CClientReqSocket* totest)
 	return socket_list.Find(totest);
 }
 
-void CListenSocket::Debug_ClientDeleted(CUpDownClient* deleted)
-{
-	POSITION pos1, pos2;
-	for (pos1 = socket_list.GetHeadPosition();( pos2 = pos1 ) != NULL;) {
-		socket_list.GetNext(pos1);
-		#if 0
-		CClientReqSocket* cur_sock = socket_list.GetAt(pos2);
-		if (!AfxIsValidAddress(cur_sock, sizeof(CClientReqSocket))) {
-			AfxDebugBreak();
-		}
-		if (cur_sock->client == deleted) {
-			AfxDebugBreak();
-		}
-		#endif
-	}
-}
 
 void CListenSocket::UpdateConnectionsStatus()
 {

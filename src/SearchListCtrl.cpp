@@ -190,7 +190,7 @@ void CSearchListCtrl::AddResult(CSearchFile* toshow)
 	SortItems(SortProc, sortItem + (SortAscending ? 0:10));
 }
 
-void CSearchListCtrl::UpdateColor(long index,long count)
+void CSearchListCtrl::UpdateColor(long index,long WXUNUSED(count))
 {
 	wxListItem item;
 	item.m_itemId=index;

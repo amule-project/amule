@@ -65,11 +65,11 @@ CFileDetailDialog::~CFileDetailDialog()
 	m_timer.Stop();
 }
 
-void CFileDetailDialog::OnTimer(wxTimerEvent& evt) {
+void CFileDetailDialog::OnTimer(wxTimerEvent& WXUNUSED(evt)) {
 	UpdateData();
 }
 
-void CFileDetailDialog::OnClosewnd(wxCommandEvent& evt)
+void CFileDetailDialog::OnClosewnd(wxCommandEvent& WXUNUSED(evt))
 {
 	EndModal(0);
 }
@@ -165,7 +165,7 @@ void CFileDetailDialog::FillSourcenameList()
 		} else { 
 			SourcenameItem *item = (SourcenameItem *) pmyListCtrl->GetItemData(itempos); 
 			item->count++;
-			nameCountStr.Printf(wxT("%i"), item->count); 
+			nameCountStr.Printf(wxT("%l"), item->count); 
 			pmyListCtrl->SetItem(itempos, 1, nameCountStr); 
 		} 
 		pmyListCtrl->UpdateSort();
@@ -190,14 +190,14 @@ void CFileDetailDialog::FillSourcenameList()
 // End by Juanjo
 
 
-void CFileDetailDialog::OnBnClickedShowComment(wxCommandEvent& evt)
+void CFileDetailDialog::OnBnClickedShowComment(wxCommandEvent& WXUNUSED(evt))
 {
 	CCommentDialogLst* dialog=new CCommentDialogLst(this,m_file);
 	dialog->ShowModal();
 	delete dialog;
 }
 
-void CFileDetailDialog::OnBnClickedRename(wxCommandEvent& evt)
+void CFileDetailDialog::OnBnClickedRename(wxCommandEvent& WXUNUSED(evt))
 {
 	wxString NewFileName=GetDlgItem(IDC_FILENAME,wxTextCtrl)->GetValue();
 	m_file->SetFileName(NewFileName);
@@ -207,7 +207,7 @@ void CFileDetailDialog::OnBnClickedRename(wxCommandEvent& evt)
 	((wxTextCtrl*)FindWindowById(IDC_FILENAME))->SetValue(m_file->GetFileName());
 } 
 
-void CFileDetailDialog::OnBnClickedButtonStrip(wxCommandEvent& evt) {
+void CFileDetailDialog::OnBnClickedButtonStrip(wxCommandEvent& WXUNUSED(evt)) {
 	wxString filename,tempStr;
 	char c;
 	//filename=FindWindowById(IDC_FILENAME)->GetValue();
@@ -258,7 +258,7 @@ void CFileDetailDialog::OnBnClickedButtonStrip(wxCommandEvent& evt) {
 	GetDlgItem(IDC_FILENAME,wxTextCtrl)->SetValue(filename);
 }
 
-void CFileDetailDialog::OnBnClickedTakeOver(wxCommandEvent& evt)
+void CFileDetailDialog::OnBnClickedTakeOver(wxCommandEvent& WXUNUSED(evt))
 {
 	CFileDetailListCtrl* pmyListCtrl;
 	pmyListCtrl = (CFileDetailListCtrl*)FindWindowById(IDC_LISTCTRLFILENAMES);
@@ -274,7 +274,7 @@ void CFileDetailDialog::OnBnClickedTakeOver(wxCommandEvent& evt)
 	}
 }
 
-void CFileDetailDialog::OnListClickedTakeOver(wxListEvent& evt)
+void CFileDetailDialog::OnListClickedTakeOver(wxListEvent& WXUNUSED(evt))
 {
 	CFileDetailListCtrl* pmyListCtrl;
 	pmyListCtrl = (CFileDetailListCtrl*)FindWindowById(IDC_LISTCTRLFILENAMES);

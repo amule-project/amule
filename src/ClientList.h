@@ -88,7 +88,6 @@ public:
 	void	Process();
 	
 	bool	Debug_IsValidClient(CUpDownClient* tocheck) const;
-	void	Debug_SocketDeleted(CClientReqSocket* deleted);
 private:
 	CTypedPtrList<CPtrList, CUpDownClient*> list;
 	std::map<uint32, uint32> m_bannedList;

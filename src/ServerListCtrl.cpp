@@ -155,7 +155,7 @@ void CServerListCtrl::OnRclickServlist(wxListEvent& event)
 	PopupMenu(m_ServerMenu,event.GetPoint());
 }
 
-void CServerListCtrl::OnConnectTo(wxCommandEvent& event)
+void CServerListCtrl::OnConnectTo(wxCommandEvent& WXUNUSED(event))
 {
 	int connectcounter=0;
 	long item=-1;
@@ -179,7 +179,7 @@ void CServerListCtrl::OnConnectTo(wxCommandEvent& event)
 	theApp.amuledlg->ShowConnectionState(false);
 }
 
-void CServerListCtrl::OnRemove(wxEvent& event)
+void CServerListCtrl::OnRemove(wxEvent& WXUNUSED(event))
 {
 	long item=-1;
 	if (this->GetSelectedItemCount()>1) {
@@ -198,7 +198,7 @@ void CServerListCtrl::OnRemove(wxEvent& event)
 	}
 }
 
-void CServerListCtrl::OnCopyLink(wxCommandEvent& event)
+void CServerListCtrl::OnCopyLink(wxCommandEvent& WXUNUSED(event))
 {
 	long item=-1;
 	wxString buffer,link;
@@ -251,7 +251,7 @@ void CServerListCtrl::Localize()
 {
 }
 
-void CServerListCtrl::RemoveServer(CServer* todel,bool bDelToList)
+void CServerListCtrl::RemoveServer(CServer* todel,bool WXUNUSED(bDelToList))
 {
 	//LVFINDINFO find;
 	//find.flags = LVFI_PARAM;
@@ -399,9 +399,6 @@ void CServerListCtrl::RefreshServer(CServer* server)
 		default:
 			temp.Printf( _("No Pref"));
 			SetItem(itemnr,6,temp);
-	}
-	if(server->GetFailedCount() < 0) {
-		server->ResetFailedCount();
 	}
 	temp=wxString::Format( wxT("%i"),server->GetFailedCount());
 	SetItem(itemnr,7,temp);

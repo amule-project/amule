@@ -306,7 +306,7 @@ void COScopeCtrl::AppendPoints(double sTimestamp, float *apf[])
 
 
 
-void COScopeCtrl::OnPaint(wxPaintEvent& evt) 
+void COScopeCtrl::OnPaint(wxPaintEvent& WXUNUSED(evt)) 
 {	// no real plotting work is performed here unless we are coming out of a hidden state;
 	// normally, just putting the existing bitmaps on the client to avoid flicker, 
 	// establish a memory dc and then BitBlt it to the client
@@ -536,7 +536,7 @@ void COScopeCtrl::InvalidateCtrl(bool bInvalidateGraph, bool bInvalidateGrid)
 } // InvalidateCtrl
 
 
-void COScopeCtrl::OnTimer(wxTimerEvent& evt)
+void COScopeCtrl::OnTimer(wxTimerEvent& WXUNUSED(evt))
 /*	The timer is used to consolidate redrawing of the graphs:  when the user resizes
 	the application, we get multiple calls to OnSize.  If he changes several parameters
 	in the Preferences, we get several individual SetXYZ calls.  If we were to try to 

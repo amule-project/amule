@@ -119,7 +119,7 @@ void CColorFrameCtrl::SetBackgroundColor(COLORREF color)
 
  
 ////////////////////////////////////////////////////////////////////////////
-void CColorFrameCtrl::OnPaint(wxPaintEvent& evt) 
+void CColorFrameCtrl::OnPaint(wxPaintEvent& WXUNUSED(evt)) 
 {
   //CPaintDC dc(this) ;  // device context for painting
   wxPaintDC dc(this);
@@ -163,7 +163,7 @@ void CColorFrameCtrl::OnPaint(wxPaintEvent& evt)
 
 
 /////////////////////////////////////////////////////////////////////////////
-void CColorFrameCtrl::OnSize(wxSizeEvent& evt) 
+void CColorFrameCtrl::OnSize(wxSizeEvent& WXUNUSED(evt)) 
 {
   //CWnd::OnSize(nType, cx, cy) ;
 

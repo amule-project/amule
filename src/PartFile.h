@@ -69,9 +69,9 @@ public:
 	virtual ~CPartFile();
 
 	void 	SetPartFileStatus(uint8 newstatus);
-	bool	CreateFromFile(char* directory,char* filename)	{return false;}// not supported in this class
-	bool	LoadFromFile(FILE* file)						{return false;}
-	bool	WriteToFile(FILE* file)							{return false;}
+	virtual bool CreateFromFile(const wxString& WXUNUSED(directory), const wxString& WXUNUSED(filename), volatile int const* WXUNUSED(notify)) {return false;} // not supported in this class
+	virtual bool	LoadFromFile(const CFile* WXUNUSED(file))		{return false;}
+	bool	WriteToFile(CFile* file) const					{return false;}
 	bool	IsPartFile() const								{return !(status == PS_COMPLETE);}
 	uint32	Process(uint32 reducedownload, uint8 m_icounter);
 	uint8	LoadPartFile(wxString in_directory, wxString filename, bool getsizeonly=false);
@@ -112,8 +112,8 @@ public:
 	int	GetValidSourcesCount();
 	uint32	GetNeededSpace();
 	
-	wxString CPartFile::getPartfileStatus() const; //<<--9/21/02
-	sint32	CPartFile::getTimeRemaining() const; //<<--9/21/02
+	wxString getPartfileStatus() const; //<<--9/21/02
+	sint32	getTimeRemaining() const; //<<--9/21/02
 	time_t	lastseencomplete;
 	int		getPartfileStatusRang() const;
 
@@ -139,7 +139,7 @@ public:
 	void	PauseFileInsufficient();
 	void	ResumeFileInsufficient();
 
-	virtual	Packet* CreateSrcInfoPacket(CUpDownClient* forClient);
+	virtual	Packet* CreateSrcInfoPacket(const CUpDownClient* forClient);
 	//void	AddClientSources(CMemFile* sources);
 	void    AddClientSources(CMemFile* sources,uint8 sourceexchangeversion);
 

@@ -152,8 +152,6 @@ public:
 	float	GetAverageConnections()		{ return averageconnections; }
 	uint32	GetActiveConnections()		{ return activeconnections; }
 	
-	void	Debug_ClientDeleted(CUpDownClient* deleted);
-
 private:
 	bool bListening;
 	CPreferences* app_prefs;

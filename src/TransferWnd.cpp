@@ -108,7 +108,7 @@ void CTransferWnd::ShowQueueCount(uint32 number)
 	//this->GetDlgItem(IDC_QUEUECOUNT)->SetWindowText(buffer);
 }
 
-void CTransferWnd::SwitchUploadList(wxCommandEvent& evt)
+void CTransferWnd::SwitchUploadList(wxCommandEvent& WXUNUSED(evt))
 {
 	if( windowtransferstate == false) {
 		windowtransferstate=true;
@@ -375,19 +375,19 @@ void CTransferWnd::EditCatTabLabel(int index,wxString newlabel)
 	theApp.amuledlg->searchwnd->UpdateCatChoice();
 }
 
-void CTransferWnd::OnSashPositionChanged(wxSplitterEvent& evt)
+void CTransferWnd::OnSashPositionChanged(wxSplitterEvent& WXUNUSED(evt))
 {
 	theApp.amuledlg->split_pos = ((wxSplitterWindow*)FindWindow(wxT("splitterWnd")))->GetSashPosition();
 }
 
-void CTransferWnd::OnBtnClearDownloads(wxCommandEvent &evt) {
+void CTransferWnd::OnBtnClearDownloads(wxCommandEvent& WXUNUSED(evt)) {
 
     downloadlistctrl->Freeze();
     downloadlistctrl->ClearCompleted();
     downloadlistctrl->Thaw();
 }
 
-void CTransferWnd::OnBtnSwitchUpload(wxCommandEvent &evt) {
+void CTransferWnd::OnBtnSwitchUpload(wxCommandEvent& WXUNUSED(evt)) {
 	
 	if( windowtransferstate == false) {
 		windowtransferstate=true;
