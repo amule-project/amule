@@ -45,7 +45,7 @@ public:
 	void	Save();
 	void	Clear();
 	CKnownFile*	FindKnownFile(wxString filename,uint32 in_date,uint32 in_size);
-	CKnownFile*   FindKnownFileByID(const uchar* hash);
+	CKnownFile*   FindKnownFileByID(const CMD4Hash& hash);
 
 	uint16 requested;
 	uint32 transfered;

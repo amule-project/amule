@@ -41,7 +41,6 @@
 #include "ChatWnd.h"		// Needed for CChatWnd
 #include "sockets.h"		// Needed for CServerConnect
 #include "TransferWnd.h"	// Needed for transferwnd
-#include "MapKey.h"
 
 #include <wx/listimpl.cpp>
 #include <wx/dynarray.h>
@@ -294,7 +293,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 						client->SetWaitStartTime();
 					}
 					CSafeMemFile data_in((BYTE*)packet,size);
-					uchar reqfilehash[16];
+					CMD4Hash reqfilehash;
 					data_in.ReadHash16(reqfilehash);
 					CKnownFile* reqfile;
 					if ( (reqfile = theApp.sharedfiles->GetFileByID(reqfilehash)) == NULL ){
@@ -311,7 +310,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					}
 
 					// check to see if this is a new file they are asking for
-					if (md4cmp(client->GetUploadFileID(), reqfilehash) != 0) {
+					if (client->GetUploadFileID() != reqfilehash) {
 							client->SetCommentDirty();
 					}
 
@@ -549,7 +548,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 
 				CSafeMemFile data((BYTE*)packet,size);
 
-				uchar reqfilehash[16];
+				CMD4Hash reqfilehash;
 				data.ReadHash16(reqfilehash);
 
 				uint32 auStartOffsets[3];
@@ -629,7 +628,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				if (size != 16) {
 					throw wxString(wxT("Invalid OP_HASHSETREQUEST packet size"));
 				}
-				client->SendHashsetPacket(packet);
+				client->SendHashsetPacket((uchar*)packet);
 				break;
 			}
 			case OP_HASHSETANSWER: {
@@ -1171,7 +1170,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				}
 
 				CSafeMemFile data_in((BYTE*)packet,size);
-				uchar reqfilehash[16];
+				CMD4Hash reqfilehash;
 				data_in.ReadRaw(reqfilehash,16);
 				CKnownFile* reqfile;
 
@@ -1201,7 +1200,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 					}
 				}
 				// check to see if this is a new file they are asking for
-				if (md4cmp(client->GetUploadFileID(), reqfilehash) != 0) {
+				if (client->GetUploadFileID() != reqfilehash) {
 					client->SetCommentDirty();
 				}
 				client->SetUploadFileID(reqfile);
@@ -1301,7 +1300,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				}
 				
 				CSafeMemFile data_in((BYTE*)packet,size);
-				uchar reqfilehash[16];
+				CMD4Hash reqfilehash;
 				data_in.ReadRaw(reqfilehash,16);
 				CPartFile* reqfile = theApp.downloadqueue->GetFileByID(reqfilehash);
 				//Make sure we are downloading this file.

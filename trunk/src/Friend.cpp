@@ -27,9 +27,6 @@
 #include "otherfunctions.h"
 
 
-const char CFriend::sm_abyNullHash[16] = {0};
-
-
 CFriend::CFriend()
 {
 	m_dwLastSeen = 0;
@@ -39,18 +36,17 @@ CFriend::CFriend()
 	m_strName = wxT("");
 	m_LinkedClient = NULL;
 	m_dwHasHash = 0;
-	md4clr( m_abyUserhash );
 }
 
 
-CFriend::CFriend(uchar tm_abyUserhash[16], uint32 tm_dwLastSeen, uint32 tm_dwLastUsedIP, uint32 tm_nLastUsedPort, uint32 tm_dwLastChatted, wxString tm_strName, uint32 tm_dwHasHash)
+CFriend::CFriend( const CMD4Hash& userhash, uint32 tm_dwLastSeen, uint32 tm_dwLastUsedIP, uint32 tm_nLastUsedPort, uint32 tm_dwLastChatted, wxString tm_strName, uint32 tm_dwHasHash)
 {
 	m_dwLastSeen = tm_dwLastSeen;
 	m_dwLastUsedIP = tm_dwLastUsedIP;
 	m_nLastUsedPort = tm_nLastUsedPort;
 	m_dwLastChatted = tm_dwLastChatted;
 	if( tm_dwHasHash ) {
-		md4cpy(m_abyUserhash, tm_abyUserhash);
+		m_Userhash = userhash;
 		m_dwHasHash = 1;
 	} else {
 		m_dwHasHash = 0;
@@ -75,7 +71,7 @@ CFriend::CFriend(CUpDownClient* client)
 		m_strName = wxT("?");
 	}
 	
-	md4cpy(m_abyUserhash, client->GetUserHash());
+	m_Userhash = client->GetUserHash();
 	m_LinkedClient = client;
 	m_dwHasHash = 1;
 }
@@ -85,8 +81,8 @@ void CFriend::LoadFromFile(CFile* file)
 {
 	wxASSERT( file );
 
-	file->Read(m_abyUserhash, 16);
-	m_dwHasHash = md4cmp(m_abyUserhash, sm_abyNullHash) ? 1 : 0;
+	file->Read(m_Userhash, 16);
+	m_dwHasHash = !m_Userhash.IsEmpty();
 	file->Read(&m_dwLastUsedIP, 4);
 	file->Read(&m_nLastUsedPort, 2);
 	file->Read(&m_dwLastSeen, 4);
@@ -111,7 +107,7 @@ void CFriend::WriteToFile(CFile* file)
 {
 	wxASSERT( file );
 	
-	file->Write(m_abyUserhash, 16);
+	file->Write(m_Userhash, 16);
 	file->Write(&m_dwLastUsedIP, 4);
 	file->Write(&m_nLastUsedPort, 2);
 	file->Write(&m_dwLastSeen, 4);

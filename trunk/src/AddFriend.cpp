@@ -30,7 +30,7 @@
 #include "amuleDlg.h"	// Needed for amuleDlg
 #include "ChatWnd.h"
 #include "otherfunctions.h"
-
+#include "CMD4Hash.h"
 
 CAddFriend::CAddFriend(wxWindow* parent)
 : wxDialog(parent, 9995, _("Add a Friend"), wxDefaultPosition, wxDefaultSize,
@@ -79,14 +79,11 @@ void CAddFriend::OnAddBtn(wxCommandEvent& WXUNUSED(evt))
 	if ( name.IsEmpty() )
 		name = fullip;
 
-	if ( hash.IsEmpty() ) {
-		theApp.amuledlg->chatwnd->AddFriend( NULL, 0, ip, port, 0, name, 0 );
-	} else {
-		unsigned char userhash[16];
-		DecodeBase16( unicode2char(hash), 32, userhash );
+	CMD4Hash userhash;
+	if ( !hash.IsEmpty() )
+		userhash.Decode( hash );
 		
-		theApp.amuledlg->chatwnd->AddFriend( userhash, 0, ip, port, 0, name, 1 );
-	};
+	theApp.amuledlg->chatwnd->AddFriend( userhash, 0, ip, port, 0, name, ( hash.IsEmpty() ? 0 : 1 ) );
 	
 	EndModal(1);
 }

@@ -27,6 +27,7 @@
 #include "types.h"		// Needed for int8, int16, uint8, uint16, uint32 and uint64
 #include "CTypedPtrList.h"	// Needed for CTypedPtrList
 #include "GetTickCount.h"	// Needed for GetTickCount
+#include "CMD4Hash.h"
 #include "otherfunctions.h"
 #include <list>
 
@@ -139,38 +140,37 @@ public:
 	bool			Disconnected(wxString strReason, bool bFromSocket = false);
 	bool			TryToConnect(bool bIgnoreMaxCon = false);
 	void			ConnectionEstablished();
-	uint32			GetUserID()					{return m_nUserID;}
+	uint32			GetUserID() const			{return m_nUserID;}
 	void			SetUserID(uint32 nUserID)	{m_nUserID = nUserID;}	
-	wxString			GetUserName()		const	{return Username;}
-	uint32			GetIP()						{return m_dwUserIP;}
-	bool			HasLowID()					{return (m_nUserID < 16777216);}
-	wxString			GetFullIP()					{return FullUserIP;}
-	uint32			GetUserPort()				{return m_nUserPort;}
-	uint32			GetTransferedUp()			{return m_nTransferedUp;}
-	uint32			GetTransferedDown()			{return m_nTransferedDown;}
-	uint32			GetServerIP()				{return m_dwServerIP;}
+	const wxString&	GetUserName() const			{return m_Username;}
+	uint32			GetIP() const 				{return m_dwUserIP;}
+	bool			HasLowID() const 			{return (m_nUserID < 16777216);}
+	const wxString&		GetFullIP() const					{return m_FullUserIP;}
+	uint32			GetUserPort() const			{return m_nUserPort;}
+	uint32			GetTransferedUp() const 	{return m_nTransferedUp;}
+	uint32			GetTransferedDown() const	{return m_nTransferedDown;}
+	uint32			GetServerIP() const			{return m_dwServerIP;}
 	void			SetServerIP(uint32 nIP)		{m_dwServerIP = nIP;}
-	uint16			GetServerPort()				{return m_nServerPort;}
+	uint16			GetServerPort()	const		{return m_nServerPort;}
 	void			SetServerPort(uint16 nPort)	{m_nServerPort = nPort;}	
-	uchar*		GetUserHash()				{return (uchar*)m_achUserHash;}
-	void			SetUserHash(unsigned char* achUserHash)		{if(achUserHash) md4cpy(m_achUserHash,achUserHash); else md4clr(m_achUserHash); ValidateHash(); }
-	void			ValidateHash()				{ m_HasValidHash = ((uint32*)m_achUserHash)[0] != 0 || ((uint32*)m_achUserHash)[1] != 0 ||
-										((uint32*)m_achUserHash)[2] != 0 || ((uint32*)m_achUserHash)[3] != 0; }
-	bool			HasValidHash()				{return m_HasValidHash; }
-	uint32			GetVersion()				{return m_nClientVersion;}
-	uint8			GetMuleVersion()			{return m_byEmuleVersion;}
-	bool			ExtProtocolAvailable()		{return m_bEmuleProtocol;}
-	bool			IsEmuleClient()				{return m_byEmuleVersion;}
+	const CMD4Hash&	GetUserHash() const			{return m_UserHash;}
+	void			SetUserHash(const CMD4Hash& userhash)	{ m_UserHash = userhash; ValidateHash(); }
+	void			ValidateHash()				{ m_HasValidHash = !m_UserHash.IsEmpty(); }
+	bool			HasValidHash() const		{return m_HasValidHash; }
+	uint32			GetVersion() const			{return m_nClientVersion;}
+	uint8			GetMuleVersion() const		{return m_byEmuleVersion;}
+	bool			ExtProtocolAvailable() const	{return m_bEmuleProtocol;}
+	bool			IsEmuleClient()	const		{return m_byEmuleVersion;}
 	CClientCredits* Credits()					{return credits;}
-	bool			IsBanned()					{return (m_bBanned && m_nDownloadState != DS_DOWNLOADING);}
-	wxString		GetClientFilename()			{return ClientFilename;}
-	bool			SupportsUDP()				{return m_byUDPVer != 0 && m_nUDPPort != 0;}
-	uint16			GetUDPPort()				{return m_nUDPPort;}
+	bool			IsBanned() const			{return (m_bBanned && m_nDownloadState != DS_DOWNLOADING);}
+	const wxString&	GetClientFilename() const	{return ClientFilename;}
+	bool			SupportsUDP() const			{return m_byUDPVer != 0 && m_nUDPPort != 0;}
+	uint16			GetUDPPort() const			{return m_nUDPPort;}
 	void			SetUDPPort(uint16 nPort)	{ m_nUDPPort = nPort; }
-	uint8			GetUDPVersion()				{return m_byUDPVer;}
-	uint8			GetExtendedRequestsVersion(){return m_byExtendedRequestsVer;}
-	bool			IsFriend()					{return m_Friend != NULL;}
-	float			GetCompression()	{return (float)compressiongain/notcompressed*100.0f;} // Add rod show compression
+	uint8			GetUDPVersion() const		{return m_byUDPVer;}
+	uint8			GetExtendedRequestsVersion() const {return m_byExtendedRequestsVer;}
+	bool			IsFriend() const 			{return m_Friend != NULL;}
+	float			GetCompression() const		{return (float)compressiongain/notcompressed*100.0f;} // Add rod show compression
 	void			ResetCompressionGain() {compressiongain = 0; notcompressed=1;} // Add show compression
 
 	void			ClearDownloadBlockRequests();
@@ -181,9 +181,9 @@ public:
 	
 	void			CheckForGPLEvilDoer();
 
-	void			SetUserName(wxString NewName) { Username = NewName; }
+	void			SetUserName(wxString NewName) { m_Username = NewName; }
 	
-	uint8			GetClientSoft()				{return m_clientSoft;}
+	uint8			GetClientSoft() const		{return m_clientSoft;}
 	void			ReGetClientSoft();
 	bool			ProcessHelloAnswer(const char *pachPacket, uint32 nSize);
 	bool			ProcessHelloPacket(const char *pachPacket, uint32 nSize);
@@ -196,21 +196,21 @@ public:
 	void			SetLastSrcReqTime()			{m_dwLastSourceRequest = ::GetTickCount();}
 	void			SetLastSrcAnswerTime()		{m_dwLastSourceAnswer = ::GetTickCount();}
 	void			SetLastAskedForSources()	{m_dwLastAskedForSources = ::GetTickCount();}
-	uint32		GetLastSrcReqTime()			{return m_dwLastSourceRequest;}
-	uint32		GetLastSrcAnswerTime()		{return m_dwLastSourceAnswer;}
-	uint32		GetLastAskedForSources()	{return m_dwLastAskedForSources;}	
-	DWORD			GetEnteredConnectedState()	{return m_dwEnteredConnectedState;}
-	bool			GetFriendSlot()				{return m_bFriendSlot;}
+	uint32			GetLastSrcReqTime() const 	{return m_dwLastSourceRequest;}
+	uint32			GetLastSrcAnswerTime() const {return m_dwLastSourceAnswer;}
+	uint32			GetLastAskedForSources() const {return m_dwLastAskedForSources;}	
+	DWORD			GetEnteredConnectedState() const	{return m_dwEnteredConnectedState;}
+	bool			GetFriendSlot() const 		{return m_bFriendSlot;}
 	void			SetFriendSlot(bool bNV)		{m_bFriendSlot = bNV;}
 	void			SetCommentDirty(bool bDirty = true) {m_bCommentDirty = bDirty;}
-	uint8			GetSourceExchangeVersion()	{return m_bySourceExchangeVer;}
+	uint8			GetSourceExchangeVersion() const {return m_bySourceExchangeVer;}
 	bool			SafeSendPacket(Packet* packet);
 	
 	void			SendPublicKeyPacket();
 	void			SendSignaturePacket();
 	void			ProcessPublicKeyPacket(uchar* pachPacket, uint32 nSize);
 	void			ProcessSignaturePacket(uchar* pachPacket, uint32 nSize);
-	uint8			GetSecureIdentState()		{
+	uint8			GetSecureIdentState() {
 		if (m_SecureIdentState != IS_UNAVAILABLE) {
 			if (!SecIdentSupRec) {
 				printf("\nWrong Tags on SecIdentState packet!!\n");
@@ -237,18 +237,18 @@ public:
 	uint32  		notcompressed; // Add show compression
 	uint8			GetUploadState()			{return m_nUploadState;}
 	void			SetUploadState(uint8 news)	{m_nUploadState = news;}
-	uint32			GetWaitStartTime()			{return m_dwWaitTime;}
-	uint32			GetWaitTime()				{return m_dwUploadTime-m_dwWaitTime;}
-	bool			IsDownloading()				{return (m_nUploadState == US_UPLOADING);}
-	bool			HasBlocks()					{return !(m_BlockSend_queue.IsEmpty() && m_BlockRequests_queue.IsEmpty());}
-	float			GetKBpsUp()					{return kBpsUp;}
+	uint32			GetWaitStartTime() const	{return m_dwWaitTime;}
+	uint32			GetWaitTime() const 		{return m_dwUploadTime-m_dwWaitTime;}
+	bool			IsDownloading()	const 		{return (m_nUploadState == US_UPLOADING);}
+	bool			HasBlocks() const 			{return !(m_BlockSend_queue.IsEmpty() && m_BlockRequests_queue.IsEmpty());}
+	float			GetKBpsUp()	const 			{return kBpsUp;}
 	uint32			GetScore(bool sysvalue, bool isdownloading = false, bool onlybasevalue = false);
 	void			AddReqBlock(Requested_Block_Struct* reqblock);
 	bool			CreateNextBlockPackage();
 	void			SetUpStartTime(uint32 dwTime = 0);
-	uint32			GetUpStartTimeDelay()		{return ::GetTickCount() - m_dwUploadTime;}
+	uint32			GetUpStartTimeDelay() const	{return ::GetTickCount() - m_dwUploadTime;}
 	void			SetWaitStartTime(uint32 dwTime = 0);
-	void			SendHashsetPacket(const char* forfileid);
+	void			SendHashsetPacket(const CMD4Hash& forfileid);
 	bool			SupportMultiPacket() const { return m_bMultiPacket;	}	
 
 	void			SetUploadFileID(CKnownFile* newreqfile);
@@ -256,50 +256,50 @@ public:
 	void			ProcessFileInfo(CSafeMemFile* data, CPartFile* file);
 	void			ProcessFileStatus(bool bUdpPacket, CSafeMemFile* data, CPartFile* file);
 	
-	unsigned char*			GetUploadFileID()       {return requpfileid;}
+	const CMD4Hash&	GetUploadFileID() const	{return m_requpfileid;}
 	CPartFile*		GetDownloadFile()	{return reqfile;}
 	uint32			SendBlockData(float kBpsToSend);
 	void			ClearUploadBlockRequests();
 	void			SendRankingInfo();
 	void			SendCommentInfo(CKnownFile *file);
 	uint32			GetLastAskedDelay();
-	void			AddRequestCount(unsigned char* fileid);
+	void			AddRequestCount(const CMD4Hash& fileid);
 	bool 			IsDifferentPartBlock();
 	void			UnBan();
 	void			Ban();
 	bool			m_bAddNextConnect;  // VQB Fix for LowID slots only on connection
-	uint32			GetBanTime()				{return m_dwBanTime;}
-	uint32			GetAskedCount()				{return m_cAsked;}
+	uint32			GetBanTime() const			{return m_dwBanTime;}
+	uint32			GetAskedCount() const 		{return m_cAsked;}
 	void			AddAskedCount()				{m_cAsked++;}
 	void			SetAskedCount( uint32 m_cInAsked)				{m_cAsked = m_cInAsked;}
 	void			FlushSendBlocks();			// call this when you stop upload, or the socket might be not able to send
 	void			SetLastUpRequest()			{m_dwLastUpRequest = ::GetTickCount();}
-	uint32			GetLastUpRequest()			{return m_dwLastUpRequest;}
+	uint32			GetLastUpRequest() const 	{return m_dwLastUpRequest;}
 	void			UDPFileReasked();
-	uint32			GetSessionUp()			{return m_nTransferedUp - m_nCurSessionUp;}
-	void			ResetSessionUp()		{m_nCurSessionUp = m_nTransferedUp;} 
-	uint16			GetUpPartCount()			{return m_nUpPartCount;}
+	uint32			GetSessionUp() const 		{return m_nTransferedUp - m_nCurSessionUp;}
+	void			ResetSessionUp()			{m_nCurSessionUp = m_nTransferedUp;} 
+	uint16			GetUpPartCount() const 		{return m_nUpPartCount;}
 	void			DrawUpStatusBar(wxMemoryDC* dc, wxRect rect, bool onlygreyrect, bool  bFlat);
 
 	//download
-	uint32			GetAskedCountDown()				{return m_cDownAsked;} //<<--
+	uint32			GetAskedCountDown()	const 		{return m_cDownAsked;} //<<--
 	void			AddAskedCountDown()				{m_cDownAsked++;}
 	void			SetAskedCountDown( uint32 m_cInDownAsked)				{m_cDownAsked = m_cInDownAsked;}
-	uint8			GetDownloadState()			{return m_nDownloadState;}
+	uint8			GetDownloadState() const		{return m_nDownloadState;}
 	void			SetDownloadState(uint8 byNewState);
-	uint32			GetLastAskedTime()			{return m_dwLastAskedTime;}
+	uint32			GetLastAskedTime() const		{return m_dwLastAskedTime;}
 
-	inline bool		IsPartAvailable(uint16 iPart)	{return	( (iPart >= m_nPartCount) || (!m_abyPartStatus) )? 0:m_abyPartStatus[iPart];}	
+	bool			IsPartAvailable(uint16 iPart) const	{return	( (iPart >= m_nPartCount) || (!m_abyPartStatus) )? 0:m_abyPartStatus[iPart];}	
 	
-	bool			IsUpPartAvailable(uint16 iPart) {return ( (iPart >= m_nUpPartCount) || (!m_abyUpPartStatus) )? 0:m_abyUpPartStatus[iPart];}
+	bool			IsUpPartAvailable(uint16 iPart) const {return ( (iPart >= m_nUpPartCount) || (!m_abyUpPartStatus) )? 0:m_abyUpPartStatus[iPart];}
 
 	uint8*			GetPartStatus()				{return m_abyPartStatus;}
-	float			GetKBpsDown()				{return kBpsDown;}	// Emilio
+	float			GetKBpsDown() const			{return kBpsDown;}	// Emilio
 	float			CalculateKBpsDown();
-	uint16			GetRemoteQueueRank()		{return m_nRemoteQueueRank;}
-	uint16			GetOldRemoteQueueRank()		{return m_nOldRemoteQueueRank;}
+	uint16			GetRemoteQueueRank() const	{return m_nRemoteQueueRank;}
+	uint16			GetOldRemoteQueueRank() const	{return m_nOldRemoteQueueRank;}
 	void			SetRemoteQueueFull( bool flag )	{m_bRemoteQueueFull = flag;}
-	bool			IsRemoteQueueFull()			{return m_bRemoteQueueFull;}
+	bool			IsRemoteQueueFull() const 	{return m_bRemoteQueueFull;}
 	void			SetRemoteQueueRank(uint16 nr);
 	void			DrawStatusBar(wxMemoryDC* dc, wxRect rect, bool onlygreyrect, bool  bFlat);
 	bool			AskForDownload();
@@ -321,7 +321,7 @@ public:
 	// -khaos--+++> Download Sessions Stuff Imported from eMule 0.30c (Creteil) BEGIN ...
 	void			SetDownStartTime()			{m_dwDownStartTime = ::GetTickCount();}
 	uint32			GetDownTimeDifference()			{uint32 myTime = m_dwDownStartTime; m_dwDownStartTime = 0; return ::GetTickCount() - myTime;}
-	bool			GetTransferredDownMini()		{return m_bTransferredDownMini;}
+	bool			GetTransferredDownMini() const	{return m_bTransferredDownMini;}
 	void			SetTransferredDownMini()		{m_bTransferredDownMini=true;}
 	void			InitTransferredDownMini()		{m_bTransferredDownMini=false;}
 	//
@@ -333,30 +333,30 @@ public:
 	//		total.  This is for the Found Sources section of the tree.  This is a better, faster
 	//		option than looping through the lists for unavailable sources.
 	//
-	uint16			GetA4AFCount()				{return m_OtherRequests_list.GetCount();}
+	uint16			GetA4AFCount() const 		{return m_OtherRequests_list.GetCount();}
 	// -khaos--+++> Download Sessions Stuff Imported from eMule 0.30c (Creteil) END ...
 
-	uint16			GetUpCompleteSourcesCount()	{return m_nUpCompleteSourcesCount;}
+	uint16			GetUpCompleteSourcesCount() const {return m_nUpCompleteSourcesCount;}
 	void			SetUpCompleteSourcesCount(uint16 n)	{m_nUpCompleteSourcesCount= n;}
 	
 	int				sourcesslot;
 
 	//chat
-	uint8			GetChatState()				{return m_byChatstate;}
+	uint8			GetChatState() const 			{return m_byChatstate;}
 	void			SetChatState(uint8 nNewS)		{m_byChatstate = nNewS;}
 
 	//File Comment 
-	const wxString&	GetFileComment()			{return m_strComment;} 
+	const wxString&	GetFileComment() const 			{return m_strComment;} 
 	void			SetFileComment(char *desc)		{m_strComment = char2unicode(desc);}
-	uint8			GetFileRate()				{return m_iRate;}
+	uint8			GetFileRate() const				{return m_iRate;}
 	
-	wxString		GetSoftStr() { return m_clientVerString.Left(m_SoftLen); }
-	wxString		GetSoftVerStr() { return m_clientVerString.Mid(m_SoftLen+1); }
+	wxString		GetSoftStr() const 				{ return m_clientVerString.Left(m_SoftLen); }
+	wxString		GetSoftVerStr() const			{ return m_clientVerString.Mid(m_SoftLen+1); }
 	
 	void			SetFileRate(int8 iNewRate)		{m_iRate=iNewRate;}
 
-	uint16			GetKadPort() const	{ return m_nKadPort; }
-	void			SetKadPort(uint16 nPort) { m_nKadPort = nPort;	}
+	uint16			GetKadPort() const				{ return m_nKadPort; }
+	void			SetKadPort(uint16 nPort) 		{ m_nKadPort = nPort;	}
 	
 	// Barry - Process zip file as it arrives, don't need to wait until end of block
 	int unzip(Pending_Block_Struct *block, BYTE *zipped, uint32 lenZipped, BYTE **unzipped, uint32 *lenUnzipped, int iRecursion = 0);
@@ -403,9 +403,9 @@ private:
 	uint8	m_byDataCompVer;
 	uint8 m_SoftLen;
 	bool	m_bEmuleProtocol;
-	wxString	Username;
-	wxString FullUserIP;
-	uchar	m_achUserHash[16];
+	wxString	m_Username;
+	wxString	m_FullUserIP;
+	CMD4Hash	m_UserHash;
 	bool	m_HasValidHash;
 	uint16	m_nUDPPort;
 	uint8	m_byUDPVer;
@@ -460,7 +460,7 @@ private:
 	bool			m_bUsedComprUp;	//only used for interface output
 	uint32		m_nCurSessionUp;
 	uint16		m_nUpPartCount;
-	uchar		requpfileid[16];
+	CMD4Hash	m_requpfileid;
 	uint16		m_nUpCompleteSourcesCount;
 	public:
 	uint8*		m_abyUpPartStatus;

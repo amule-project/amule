@@ -70,7 +70,6 @@ amule_SOURCES = ListenSocket.cpp \
 	MuleGifCtrl.cpp \
 	HTTPDownloadDlg.cpp \
 	IPFilter.cpp \
-	CMD4Hash.cpp \
 	KnownFile.cpp \
 	KnownFileList.cpp \
 	listctrl.cpp \

@@ -39,7 +39,7 @@
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "amule.h"			// Needed for theApp
-#include "MapKey.h"		// Needed for CCKey
+#include "CMD4Hash.h"		// Needed for CMD4Hash
 #include "PartFile.h"		// Needed for PartFile
 #include "server.h"		// Needed for CServer
 
@@ -116,11 +116,11 @@ void CSharedFileList::AddFilesFromDirectory(wxString directory)
 		CKnownFile* toadd=filelist->FindKnownFile(fName.GetFullName(),fdate,koko);
 		//theApp.Yield();
 		if (toadd) {
-			if ( m_Files_map.find(CCKey(toadd->GetFileHash())) == m_Files_map.end() ) {
+			if ( m_Files_map.find(toadd->GetFileHash()) == m_Files_map.end() ) {
 				toadd->SetFilePath(directory);
 				output->ShowFile(toadd);
 				list_mut.Lock();
-				m_Files_map[CCKey(toadd->GetFileHash())] = toadd;
+				m_Files_map[toadd->GetFileHash()] = toadd;
 				list_mut.Unlock();
 			} else {
 				if ( wxStrcmp(fName.GetFullName().GetData(), toadd->GetFileName()) )
@@ -138,12 +138,12 @@ void CSharedFileList::SafeAddKFile(CKnownFile* toadd, bool bOnlyAdd){
 	// TODO: Check if the file is already known - only with another date
 	//CSingleLock sLock(&list_mut,true);
 	list_mut.Lock();
-	if ( m_Files_map.find(CCKey(toadd->GetFileHash())) != m_Files_map.end() )
+	if ( m_Files_map.find(toadd->GetFileHash()) != m_Files_map.end() )
 	{
 		list_mut.Unlock();
 		return;
 	}
-	m_Files_map[CCKey(toadd->GetFileHash())] = toadd;
+	m_Files_map[toadd->GetFileHash()] = toadd;
 	//sLock.Unlock();
 	list_mut.Unlock();
 
@@ -173,7 +173,7 @@ void CSharedFileList::SafeAddKFile(CKnownFile* toadd, bool bOnlyAdd){
 // removes first occurrence of 'toremove' in 'list'
 void CSharedFileList::RemoveFile(CKnownFile* toremove){
 	output->RemoveFile(toremove);
-	m_Files_map.erase(CCKey(toremove->GetFileHash()));
+	m_Files_map.erase(toremove->GetFileHash());
 }
 
 #define GetDlgItem(X) (wxStaticCast(wxWindow::FindWindowById((X)),wxButton))
@@ -311,15 +311,14 @@ uint64 CSharedFileList::GetDatasize() {
 	return fsize;
 }
 
-CKnownFile*	CSharedFileList::GetFileByID(uchar* filehash){
-	CCKey tkey(filehash);
-	if (m_Files_map.find(tkey) != m_Files_map.end())
-		return m_Files_map[tkey];
+CKnownFile*	CSharedFileList::GetFileByID(const CMD4Hash& filehash){
+	if (m_Files_map.find(filehash) != m_Files_map.end())
+		return m_Files_map[filehash];
 	else
 		return NULL;
 }
 
-short CSharedFileList::GetFilePriorityByID(uchar* filehash)
+short CSharedFileList::GetFilePriorityByID(const CMD4Hash& filehash)
 {
 	CKnownFile* tocheck = GetFileByID(filehash);
 	if (tocheck)
@@ -351,7 +350,7 @@ void CSharedFileList::GetSharedFilesByDirectory(const wxString directory,
 
 void CSharedFileList::ClearED2KPublishInfo(){
 	CKnownFile* cur_file;
-	CCKey bufKey;
+//	CCKey bufKey;
 
 	for (CKnownFileMap::iterator pos = m_Files_map.begin(); pos != m_Files_map.end(); pos++ ) {
 		cur_file = pos->second;

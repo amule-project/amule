@@ -107,7 +107,7 @@ void CUpDownClient::DrawStatusBar(wxMemoryDC* dc, wxRect rect, bool onlygreyrect
 
 bool CUpDownClient::Compare(CUpDownClient* tocomp, bool bIgnoreUserhash){
 	if(!bIgnoreUserhash && HasValidHash() && tocomp->HasValidHash())
-	    return !md4cmp(this->GetUserHash(), tocomp->GetUserHash());
+	    return (this->GetUserHash() == tocomp->GetUserHash());
 	if (HasLowID())
 		return ((this->GetUserID() == tocomp->GetUserID()) && (GetServerIP() == tocomp->GetServerIP()) && (this->GetUserPort() == tocomp->GetUserPort()));
 	else

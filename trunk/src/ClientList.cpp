@@ -29,7 +29,6 @@
 #include <wx/arrimpl.cpp> // this is a magic incantation which must be done!
 #include "opcodes.h"
 
-
 WX_DEFINE_OBJARRAY(ArrayOfPortAndHash);
 
 CClientList::CClientList(){
@@ -246,17 +245,6 @@ CUpDownClient* CClientList::FindClientByIP(uint32 clientip,uint16 port){
 		CUpDownClient* cur_client =	list.GetAt(pos2);
 		if (cur_client->GetIP() == clientip && cur_client->GetUserPort() == port)
 			return cur_client;
-	}
-	return 0;
-}
-
-CUpDownClient* CClientList::FindClientByUserHash(uchar* clienthash){
-	POSITION pos1, pos2;
-	for (pos1 = list.GetHeadPosition();( pos2 = pos1 ) != NULL;){
-		list.GetNext(pos1);
-		CUpDownClient* cur_client =	list.GetAt(pos2);
-		if (md4cmp(cur_client->GetUserHash() ,clienthash)  )
-				return cur_client;
 	}
 	return 0;
 }

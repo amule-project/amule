@@ -20,8 +20,8 @@
 #ifndef CMD4HASH_H
 #define CMD4HASH_H
 
-class wxString;
-
+#include <wx/string.h>
+#include "types.h"
 
 #define MD4HASH_LENGTH 16
 
@@ -44,21 +44,35 @@ public:
 	 * The default contructor creates an empty hash of length 16.
 	 * Each field of the char array has an initial value of zero.
 	 */
-	CMD4Hash();
+	CMD4Hash() {
+		Clear();
+	}
 	
 	/**
 	 * Cast a unsigned char array to a CMD4Hash.
 	 * 
-	 * @param hash The array to be cast. It MUST be 16 chars long, not including any possible zero-terminator!
+	 * @param hash The array to be cast. 
+	 *
+	 * Please note that the array must either be a NULL pointer or be at least
+	 * 16 chars long, not including any possible zero-terminator!
 	 */
-	CMD4Hash(unsigned char hash[]);
+	CMD4Hash(const unsigned char hash[]) {
+		if ( hash ) {
+			((uint64*)m_hash)[0] = ((uint64*)hash)[0];
+			((uint64*)m_hash)[1] = ((uint64*)hash)[1];
+		} else {
+			Clear();
+		}
+	}
 
 	/**
 	 * Copy constructor.
 	 *
 	 * @param hash The hash to be copied.
 	 */
-	CMD4Hash(const CMD4Hash& hash);
+	CMD4Hash(const CMD4Hash& hash) {
+		(*this) = hash.m_hash;
+	}
 
 	/**
 	 * Cast constructor from wxString.
@@ -66,9 +80,10 @@ public:
 	 * @param hash The hexadecimal representation to convert. Length MUST be 32!
 	 *
 	 * Casts the hexadecimal representation of a MD4 hash to a CMD4Hash.
-	 * It is estientially the same as calling the decode function.
 	 */
-	CMD4Hash(const wxString& hash);
+	CMD4Hash(const wxString& hash) {
+		Decode( hash );
+	}
 	
 	
 	/**
@@ -76,13 +91,31 @@ public:
 	 *
 	 * Returns true if all fields of both hashes are the same.
 	 */
-	bool operator == (const CMD4Hash& other_hash) const;
+	bool operator == (const CMD4Hash& other_hash) const {
+		return (((uint64*)m_hash)[0] == ((uint64*)other_hash.m_hash)[0] &&
+				((uint64*)m_hash)[1] == ((uint64*)other_hash.m_hash)[1] );
+	}
+	
 	/**
 	 * Non-equality operator
 	 *
 	 * Returns true if there is any difference between the two hashes.
 	 */
-	bool operator != (const CMD4Hash& other_hash) const;
+	bool operator != (const CMD4Hash& other_hash) const {
+		return !(*this == other_hash);
+	}
+
+	/**
+	 * Less than operator.
+	 *
+	 * @return True if the hash is less than other_hash, false otherwise.
+	 *
+	 * The purpose of this function is to enable the usage of CMD4Hashes in 
+	 * sorted STL containers like std::map.
+	 */
+	bool operator  < (const CMD4Hash& other_hash) const {
+		return memcmp(m_hash, other_hash.m_hash, 16) < 0;
+	}
 
 	
 	/**
@@ -94,7 +127,10 @@ public:
 	 * only if each field of the array contains the value zero.
 	 * To achive an empty hash, the function Clear() can be used.
 	 */
-	bool IsEmpty() const;
+	bool IsEmpty() const {
+		return (((uint64*)m_hash)[0] == 0 &&
+				((uint64*)m_hash)[1] == 0);
+	}
 	
 	/** 
 	 * Resets the contents of the hash.
@@ -102,7 +138,10 @@ public:
 	 * This functions sets the value of each field of the hash to zero.
 	 * IsEmpty() will return true after a call to this function.
 	 */
-	void Clear();
+	void Clear() {
+		((uint64*)m_hash)[0] = 0;
+		((uint64*)m_hash)[1] = 0;
+	}
 
 	
 	/**
@@ -110,28 +149,60 @@ public:
 	 *
 	 * @param hash The hash representation to be converted. Length must be 32.
 	 *
-	 * Based on functions from the Gnucleus project [found by Tarod].
 	 * This function converts a hexadecimal representation of a MD4
 	 * hash and stores it in the m_hash data-member.
 	 */ 
-	void Decode(const wxString& hash);
+	void Decode(const wxString& hash) {
+		wxASSERT(hash.Length() == MD4HASH_LENGTH * 2);
+
+		for ( uint16 i = 0; i < MD4HASH_LENGTH * 2; i++ ) {			
+			unsigned char word = toupper(hash[i]);
+
+			if ((word >= '0') && (word <= '9')) {
+				word -= '0';				
+			} else if ((word >= 'A') && (word <= 'F')) {
+				word -= 'A' - 10;
+			} else {
+				// Invalid chars
+				word = 0;
+			}
+			
+			if (i % 2 == 0) {
+				m_hash[i/2] = word << 4;
+			} else {
+				m_hash[i/2] += word;
+			}
+		} 
+	}
 	
 	/** 
 	 * Creates a 32 char long hexadecimal representation of a MD4 hash.
 	 *
 	 * @return Hexadecimal representation of the m_hash data-member.
 	 *
-	 * Based on functions from the Gnucleus project [found by Tarod].
 	 * This function creates a hexadecimal representation of the MD4 
 	 * hash stored in the m_hash data-member and returns it.
 	 */
-	wxString Encode() const;
+	wxString Encode() const {
+		wxString Base16Buff;
+
+		for ( uint16 i = 0; i < MD4HASH_LENGTH*2; i++ ) {
+			uint16 x = ( i % 2 == 0 ) ? ( m_hash[i/2] >> 4 ) : ( m_hash[i/2] & 0xf );
+
+			if ( x <  10 ) Base16Buff += (char)( x + '0' ); else 
+			if ( x >= 10 ) Base16Buff += (char)(  x + ( 'A' - 10 ));
+		}
+
+		return Base16Buff;
+	}
 
 	
 	/**
 	 * Explicitly set the hash-array to the contents of a unsigned char array.
 	 *
-	 * @param hash The array to be assigned. Must be of length 16.
+	 * @param hash The array to be assigned. 
+	 *
+	 * The hash must either be a NULL pointer or be of length 16.
 	 */
 	inline void SetHash(unsigned char hash[]) {
 		(*this) = hash;

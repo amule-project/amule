@@ -21,15 +21,12 @@
 #ifndef PREFERENCES_H
 #define PREFERENCES_H
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif // HAVE_CONFIG_H
-
 #include <ctime>		// Needed for time(2)
 
 #include "types.h"		// Needed for int8, int16, int32, int64, uint8, uint16, uint32 and uint64
 
 #include "MD5Sum.h"		// Needed for MD5Sum
+#include "CMD4Hash.h"
 #include "otherfunctions.h"
 #include "PrefsUnifiedDlg.h"			// Needed for UNIFIED_PREF_HANDLING
 #include <wx/dynarray.h>
@@ -129,7 +126,6 @@ struct Preferences_Struct{
 	int16	maxsourceperfile;
 	int16	trafficOMeterInterval;
 	int16	statsInterval;
-	uchar	userhash[16];
 	WINDOWPLACEMENT EmuleWindowPlacement;
 	int	maxGraphDownloadRate;
 	int	maxGraphUploadRate;
@@ -364,7 +360,7 @@ public:
 	uint16	GetUDPPort() const {return prefs->udpport;}
 	char*	GetIncomingDir() const {return prefs->incomingdir;}
 	char*	GetTempDir() const {return prefs->tempdir;}
-	uchar*	GetUserHash() const {return (uchar*)userhash;}
+	const CMD4Hash&	GetUserHash() const {return m_userhash;}
 	uint16	GetMaxUpload() const {return	prefs->maxupload;}
 	uint16	GetSlotAllocation() const {return	prefs->slotallocation;}
 	bool	IsICHEnabled() const {return prefs->ICH;}
@@ -644,7 +640,7 @@ private:
 	Preferences_Struct* prefs;
 	Preferences_Ext_Struct* prefsExt;
 
-	char userhash[16];
+	CMD4Hash m_userhash;
 	WORD m_wWinVer;
 
 	void LoadPreferences();

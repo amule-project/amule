@@ -26,6 +26,7 @@
 class wxString;
 class CFriend;
 class CUpDownClient;
+class CMD4Hash;
 
 class CFriendListCtrl : public CMuleListCtrl
 {
@@ -36,10 +37,10 @@ public:
 	bool		IsAlreadyFriend( uint32 dwLastUsedIP, uint32 nLastUsedPort ); 
 	void		SaveList();
 	bool		LoadList();
-	CFriend*	FindFriend(const uchar* achUserHash, uint32 dwIP, uint16 nPort) const;	
+	CFriend*	FindFriend( const CMD4Hash& userhash, uint32 dwIP, uint16 nPort) const;	
 	void 		AddFriend(CFriend* toadd);
 	void		AddFriend( CUpDownClient* toadd );
-	void		AddFriend( uchar userhash[16], uint32 lastSeen, uint32 lastUsedIP, uint32 lastUsedPort, uint32 lastChatted, wxString name, uint32 hasHash);
+	void		AddFriend( const CMD4Hash& userhash, uint32 lastSeen, uint32 lastUsedIP, uint32 lastUsedPort, uint32 lastChatted, wxString name, uint32 hasHash);
 	void		RemoveFriend(CFriend* todel);
 	void		RemoveFriend(CUpDownClient* todel);
 	void		RefreshFriend(CFriend* toupdate);

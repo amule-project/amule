@@ -29,7 +29,6 @@
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "CommentDialog.h"	// Needed for CCommentDialog
 #include "PartFile.h"		// Needed for CPartFile
-#include "MapKey.h"		// Needed for CCKey
 #include "SharedFileList.h"	// Needed for CKnownFileMap
 #include "opcodes.h"		// Needed for MP_PRIOVERYLOW
 #include "amule.h"		// Needed for theApp

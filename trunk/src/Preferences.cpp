@@ -55,7 +55,6 @@ CPreferences::CPreferences()
 	memset(prefsExt,0,sizeof(Preferences_Ext_Struct));
 
 	CreateUserHash();
-	md4cpy(&prefs->userhash,&userhash);
 
 	// load preferences.dat or set standart values
 	wxString fullpath(theApp.ConfigDir + wxT("preferences.dat"));
@@ -69,10 +68,9 @@ CPreferences::CPreferences()
 		if (ferror(preffile)) {
 			SetStandartValues();
 		}
-		md4cpy(&prefs->userhash,&prefsExt->userhash);
+		md4cpy(m_userhash,prefsExt->userhash);
 		prefs->EmuleWindowPlacement=prefsExt->EmuleWindowPlacement;
 		fclose(preffile);
-		md4cpy(&userhash,&prefs->userhash);
 		prefs->smartidstate=0;
 	}
 
@@ -102,8 +100,8 @@ CPreferences::CPreferences()
 		slistfile.Close();
 	}
 
-	userhash[5] = 14;
-	userhash[14] = 111;
+	m_userhash[5] = 14;
+	m_userhash[14] = 111;
 
 	if (!::wxDirExists(char2unicode(GetIncomingDir()))) {
 		::wxMkdir(char2unicode(GetIncomingDir()),0777);
@@ -113,15 +111,16 @@ CPreferences::CPreferences()
 		::wxMkdir(char2unicode(GetTempDir()),0777);
 	}
 
-	if (((int*)prefs->userhash)[0] == 0 && ((int*)prefs->userhash)[1] == 0 && ((int*)prefs->userhash)[2] == 0 && ((int*)prefs->userhash)[3] == 0) {
+	if (m_userhash.IsEmpty()) {
 		CreateUserHash();
 	}
+	
+	printf("Userhash loaded: %s\n", m_userhash.Encode().c_str());
 }
 
 void CPreferences::SetStandartValues()
 {
 	CreateUserHash();
-	md4cpy(&prefs->userhash,&userhash);
 	WINDOWPLACEMENT defaultWPM;
 	defaultWPM.length = sizeof(WINDOWPLACEMENT);
 	defaultWPM.rcNormalPosition.left=10;
@@ -151,7 +150,8 @@ bool CPreferences::Save()
 	if (preffile) {
 		prefsExt->version=PREFFILE_VERSION;
 		prefsExt->EmuleWindowPlacement=prefs->EmuleWindowPlacement;
-		md4cpy(&prefsExt->userhash,&prefs->userhash);
+		printf("Saving userhash: %s\n", m_userhash.Encode().c_str());
+		md4cpy(prefsExt->userhash,m_userhash.GetHash());
 		error = fwrite(prefsExt,sizeof(Preferences_Ext_Struct),1,preffile);
 		fclose(preffile);
 	} else {
@@ -183,11 +183,11 @@ void CPreferences::CreateUserHash()
 {
 	for (int i = 0;i != 8; i++) {
 		uint16	random = rand();
-		memcpy(&userhash[i*2],&random,2);
+		memcpy(&m_userhash[i*2],&random,2);
 	}
 	// mark as emule client. that will be need in later version
-	userhash[5] = 14;
-	userhash[14] = 111;
+	m_userhash[5] = 14;
+	m_userhash[14] = 111;
 }
 
 int32 CPreferences::GetColumnWidth(Table t, int index) const

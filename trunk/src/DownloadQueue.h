@@ -22,6 +22,7 @@
 
 #include "types.h"		// Needed for uint8, uint16, uint32 and uint64
 #include "position.h"
+#include "CMD4Hash.h"
 #include <deque>
 #include <list>
 
@@ -34,7 +35,7 @@ class CServer;
 class CSafeMemFile;
 
 struct Hostname_Entry {
-		unsigned char fileid[16];
+		CMD4Hash fileid;
 		wxString strHostname;
 		uint16 port;
 };
@@ -82,9 +83,9 @@ public:
 	void	AddSearchToDownload(CSearchFile* toadd,uint8 paused=2);
 	void	AddSearchToDownload(const wxString& link,uint8 paused=2);
 	void	AddFileLinkToDownload(class CED2KFileLink* pLink);
-	bool	IsFileExisting(unsigned char* fileid);
+	bool	IsFileExisting(const CMD4Hash& fileid);
 	bool	IsPartFile(void* totest);
-	CPartFile*	GetFileByID(unsigned char* filehash);
+	CPartFile*	GetFileByID(const CMD4Hash& filehash);
 	CPartFile* GetFileByIndex(int idx);
 	void    CheckAndAddSource(CPartFile* sender,CUpDownClient* source);
 	void    CheckAndAddKnownSource(CPartFile* sender,CUpDownClient* source);
@@ -138,7 +139,7 @@ public:
 	uint16	GetDownloadingFileCount();
 	uint16	GetPausedFileCount();
 	// Kry - HostNameSources
-	void AddToResolve(unsigned char* fileid, const wxString& pszHostname, uint16 port);
+	void AddToResolve(const CMD4Hash& fileid, const wxString& pszHostname, uint16 port);
 	bool OnHostnameResolved(struct sockaddr_in* inaddr);
 	std::deque<Hostname_Entry*> m_toresolve;
 	

@@ -27,7 +27,7 @@
 #include "otherfunctions.h" // md4cmp
 #include "amule.h"
 #include "amuleDlg.h"
-#include "MapKey.h"		// Needed for CCKey
+#include "CMD4Hash.h"		// Needed for CMD4Hash
 
 
 #include <wx/listimpl.cpp> // ye old magic incantation
@@ -175,15 +175,14 @@ CKnownFile* CKnownFileList::FindKnownFile(wxString filename,uint32 in_date,uint3
 	return IsOnDuplicates(filename, in_date, in_size);
 }
 
-CKnownFile* CKnownFileList::FindKnownFileByID(const uchar* hash)
+CKnownFile* CKnownFileList::FindKnownFileByID(const CMD4Hash& hash)
 {
 	wxMutexLocker sLock(list_mut);
 	
-	if (hash)
+	if (!hash.IsEmpty())
 	{
-		CCKey tkey(hash);
-		if (m_map.find(tkey) != m_map.end()) {
-			return m_map[tkey];
+		if (m_map.find(hash) != m_map.end()) {
+			return m_map[hash];
 		} else {
 			return NULL;	
 		}
@@ -200,7 +199,7 @@ bool CKnownFileList::SafeAddKFile(CKnownFile* toadd) {
 bool CKnownFileList::Append(CKnownFile* Record)
 {
 	if (Record->GetFileSize() > 0) {
-		CCKey tkey(Record->GetFileHash());
+		const CMD4Hash& tkey = Record->GetFileHash();
 		CKnownFileMap::iterator it = m_map.find(tkey);
 		if ( it == m_map.end() ) {
 			m_map[tkey] = Record;			

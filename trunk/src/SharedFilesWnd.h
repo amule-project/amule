@@ -28,6 +28,7 @@
 #include <wx/listbase.h>	// Needed for wxListEvent
 
 #include "resource.h"		// Needed for IDD_FILES
+#include "CMD4Hash.h"
 
 class CKnownFile;
 class CSharedFilesCtrl;
@@ -67,7 +68,7 @@ private:
 	wxGauge* pop_bartrans;
 
 	wxFont bold;
-	unsigned char shownFileHash[16];
+	CMD4Hash m_shownFileHash;
 	wxStaticBitmap m_ctrlStatisticsFrm;
 	void OnBtnReloadsharedfiles(wxCommandEvent &evt);
 };
