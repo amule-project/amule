@@ -179,7 +179,7 @@ AC_DEFUN([AM_PATH_WXCONFIG],
   dnl Then take wx-config itself
   
   if test "$vers" -ge 2005000; then
-    if test "$vers" -eq 2005003; then
+    if test "$vers" -ge 2005003; then
       wx_conig_base_libs="--libs base,net";
     else
       wx_conig_base_libs="--libs=base,net";
