@@ -1070,6 +1070,34 @@ bool amuleProxyClientSocket::Start(const wxIPaddress &PeerAddress)
 	
 	return ok;
 }
+	
+bool amuleProxyClientSocket::ProxyIsCapableOf(wxProxyCommand ProxyCommand) const
+{
+	bool ret;
+	
+	switch (m_ProxyData.m_ProxyType) {
+	case wxPROXY_NONE:
+		ret = false;
+		break;
+		
+	case wxPROXY_SOCKS5:
+		ret =	ProxyCommand == wxPROXY_CMD_CONNECT ||
+			ProxyCommand == wxPROXY_CMD_BIND ||
+			ProxyCommand == wxPROXY_CMD_UDP_ASSOCIATE;
+		break;
+		
+	case wxPROXY_SOCKS4:
+		ret =	ProxyCommand == wxPROXY_CMD_CONNECT ||
+			ProxyCommand == wxPROXY_CMD_BIND;
+		break;
+		
+	case wxPROXY_HTTP:
+		ret =	ProxyCommand == wxPROXY_CMD_CONNECT;
+		break;
+	}
+	
+	return ret;
+}
 
 //------------------------------------------------------------------------------
 // wxSocketClientProxy
@@ -1095,7 +1123,7 @@ bool wxSocketClientProxy::Connect(wxIPaddress &address, bool wait)
 {
 	bool ok;
 	
-	if (GetUseProxy()) {
+	if (GetUseProxy() && ProxyIsCapableOf(wxPROXY_CMD_CONNECT)) {
 		ok = Start(address);
 #ifndef AMULE_DAEMON
 		/* If proxy is beeing used, CServerSocketHandler will not receive a 
@@ -1172,7 +1200,8 @@ m_ProxyTCPSocket(wxSOCKET_NOWAIT, ProxyData, wxPROXY_CMD_UDP_ASSOCIATE)
 {
 	bool ok = false;
 	
-	if (m_ProxyTCPSocket.GetUseProxy()) {
+	if (	m_ProxyTCPSocket.GetUseProxy() &&
+		m_ProxyTCPSocket.ProxyIsCapableOf(wxPROXY_CMD_UDP_ASSOCIATE)) {
 		m_ProxyTCPSocket.Start(address);
 	} else {
 	}
