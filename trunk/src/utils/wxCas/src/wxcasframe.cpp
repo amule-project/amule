@@ -63,16 +63,22 @@ wxFrame ((wxFrame *) NULL, -1, title, wxDefaultPosition, wxDefaultSize,
   CreateStatusBar ();
   SetStatusText (_("Welcome!"));
 
-  // Frame Vertical Sizer
+  // Frame Vertical sizer
   m_frameVBox = new wxBoxSizer (wxVERTICAL);
+  
+  // Add Main panel to frame (needed by win32 for padding sub panels)
+  m_mainPanel = new wxPanel (this,-1);
+  m_frameVBox->Add (m_mainPanel, 0 , wxALL | wxADJUST_MINSIZE);
+  
+  // Main Panel Vertical Sizer
+  m_mainPanelVBox = new wxBoxSizer (wxVERTICAL);
 
   // Add static line to sizer
-  m_staticLine = new wxStaticLine (this, -1);
-  m_frameVBox->Add (m_staticLine, 0, wxALL | wxEXPAND);
+  m_staticLine = new wxStaticLine (m_mainPanel,-1);
+  m_mainPanelVBox->Add (m_staticLine, 0, wxALL | wxEXPAND);
 
   // Draw and populate panel
-  m_sigPanel = new wxPanel (this, -1, wxDefaultPosition,
-			    wxDefaultSize, wxTAB_TRAVERSAL, "wxCasPanel");
+  m_sigPanel = new wxPanel (m_mainPanel,-1);
 
   // Panel Vertical Sizer
   m_sigPanelSBox = new wxStaticBox (m_sigPanel, -1, "");
@@ -109,31 +115,34 @@ wxFrame ((wxFrame *) NULL, -1, title, wxDefaultPosition, wxDefaultSize,
   m_sigPanelSBoxSizer->Add (m_sysLine_2, 0, wxALL | wxADJUST_MINSIZE, 5);
 #endif
 
-  // Panel Layout
+  // Signature Panel Layout
   m_sigPanel->SetSizerAndFit (m_sigPanelSBoxSizer);
 
   // Add panel to sizer
-  m_frameVBox->Add (m_sigPanel, 0, wxALL | wxADJUST_MINSIZE, 10);
+  m_mainPanelVBox->Add (m_sigPanel, 0, wxALL | wxADJUST_MINSIZE,10);
 
   // Display Bitmap
-  m_imgPanel = new WxCasCanvas (this, m_sigPanel);
+  m_imgPanel = new WxCasCanvas (m_mainPanel, m_sigPanel);
 
   // Add Bimap to sizer
-  m_frameVBox->Add (m_imgPanel, 0, wxALL | wxADJUST_MINSIZE, 10);
+  m_mainPanelVBox->Add (m_imgPanel, 0, wxALL | wxADJUST_MINSIZE,10);
 
-// Toolbar Pixmaps
+  // Main panel Layout
+  m_mainPanel->SetSizerAndFit (m_mainPanelVBox);
+  
+  // Toolbar Pixmaps
   m_toolBarBitmaps[0] = wxBITMAP (refresh);
   m_toolBarBitmaps[1] = wxBITMAP (save);
   m_toolBarBitmaps[2] = wxBITMAP (print);
   m_toolBarBitmaps[3] = wxBITMAP (about);
   m_toolBarBitmaps[4] = wxBITMAP (stop);
 
-
   // Constructing toolbar
   m_toolbar =
     new wxToolBar (this, -1, wxDefaultPosition, wxDefaultSize,
 		   wxTB_HORIZONTAL | wxTB_FLAT);
-  SetToolBar (m_toolbar);
+		   
+  m_toolbar->SetToolBitmapSize(wxSize(32,32));
 
   m_toolbar->AddTool (ID_BAR_REFRESH, "Refresh", m_toolBarBitmaps[0],
 		      _("Stop Auto Refresh"));
@@ -153,9 +162,10 @@ wxFrame ((wxFrame *) NULL, -1, title, wxDefaultPosition, wxDefaultSize,
 
   m_toolbar->SetMargins (2, 2);
   m_toolbar->Realize ();
-
+  
   // Frame Layout
   SetAutoLayout (TRUE);
+  SetToolBar (m_toolbar);
   SetSizerAndFit (m_frameVBox);
 
   // Add timer
@@ -220,8 +230,8 @@ WxCasFrame::OnBarRefresh (wxCommandEvent & event)
       m_toolbar->InsertTool (0, ID_BAR_REFRESH, "Refresh",
 			     m_toolBarBitmaps[4], wxNullBitmap,
 			     wxITEM_NORMAL, _("Start Auto Refresh"));
+	  m_toolbar->Realize ();		 
       SetStatusText (_("Auto Refresh stopped"));
-
     }
   else
     {
@@ -230,6 +240,7 @@ WxCasFrame::OnBarRefresh (wxCommandEvent & event)
       m_toolbar->InsertTool (0, ID_BAR_REFRESH, "Refresh",
 			     m_toolBarBitmaps[0], wxNullBitmap,
 			     wxITEM_NORMAL, _("Stop Auto Refresh"));
+	  m_toolbar->Realize ();
       SetStatusText (_("Auto Refresh started"));
     }
 }
