@@ -64,11 +64,11 @@ Example
 
 */
 
-#pragma once
-//#include "Loggable.h"
+#ifndef __SHAHAHSET_H__
+#define __SHAHAHSET_H__
+
 #include <deque>
 #include "otherfunctions.h"
-#include <wx/list.h>
 
 #define HASHSIZE		20
 #define KNOWN2_MET_FILENAME		_T("known2.met")
@@ -131,7 +131,7 @@ class CAICHHashTree
 {
 	// Madness from eMule, and gcc don't like being friend with itself...
 	// That probably means gcc is not friend of gcc. So gcc hates itself.
-//	friend class CAICHHashTree; 
+	//	friend class CAICHHashTree; 
 	friend class CAICHHashSet;
 public:
 	CAICHHashTree(uint32 nDataSize, bool bLeftBranch, uint32 nBaseSize);
@@ -155,8 +155,8 @@ public:
 	CAICHHash		m_Hash;
 	uint32			m_nDataSize;		// size of data which is covered by this hash
 	uint32			m_nBaseSize;		// blocksize on which the lowest hash is based on
-	bool			m_bIsLeftBranch;	// left or right branch of the tree
-	bool			m_bHashValid;		// the hash is valid and not empty
+	bool			m_bIsLeftBranch;		// left or right branch of the tree
+	bool			m_bHashValid;			// the hash is valid and not empty
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -225,3 +225,5 @@ private:
 	EAICHStatus		m_eStatus;
 	deque<CAICHUntrustedHash> m_aUntrustedHashs;
 };
+
+#endif  //__SHAHAHSET_H__
