@@ -1079,7 +1079,9 @@ CSearchFile::CSearchFile(CEC_SearchFile_Tag *tag)
 	m_strFileName = tag->FileName();
 	m_abyFileHash = tag->ID();
 	m_nFileSize = tag->SizeFull();
-
+	m_SourceCount = tag->SourceCount();
+	m_CompleteSourceCount = 0;
+	
 	m_nSearchID = theApp.searchlist->m_curr_search;
 
 }
