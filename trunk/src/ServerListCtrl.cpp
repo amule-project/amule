@@ -200,7 +200,7 @@ void CServerListCtrl::RefreshServer( CServer* server )
 
 	SetItem( itemnr, COLUMN_SERVER_NAME, server->GetListName() );
 	SetItem( itemnr, COLUMN_SERVER_ADDR, server->GetAddress() );
-	SetItem( itemnr, COLUMN_SERVER_PORT, wxString::Format("%i", server->GetPort()) );
+	SetItem( itemnr, COLUMN_SERVER_PORT, wxString::Format(wxT("%i"), server->GetPort()) );
 	SetItem( itemnr, COLUMN_SERVER_DESC, server->GetDescription() );
 	
 	if ( server->GetPing() ) {
