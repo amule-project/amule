@@ -175,6 +175,7 @@ amule_SOURCES = \
 	sockets.cpp \
 	Statistics.cpp \
 	StatisticsDlg.cpp \
+	StateMachine.cpp \
 	StringFunctions.cpp \
 	TransferWnd.cpp \
 	UDPSocket.cpp \
@@ -224,7 +225,8 @@ amuled_SOURCES = \
         ServerList.cpp \
         ServerSocket.cpp \
         SharedFileList.cpp \
-	   Statistics.cpp \
+	StateMachine.cpp \
+	Statistics.cpp \
 	StringFunctions.cpp \
         sockets.cpp \
 	timer.cpp \
@@ -400,7 +402,8 @@ noinst_HEADERS = AddFileThread.h \
 		 sockets.h \
 		 Statistics.h \
 		 StatisticsDlg.h \
-	  	 StringFunctions.h \
+		 StateMachine.h \
+		 StringFunctions.h \
 		 SysTray.h \
 		 TextClient.h \
 		 TransferWnd.h \

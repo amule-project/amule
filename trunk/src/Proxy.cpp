@@ -110,6 +110,23 @@ void wxProxyData::Empty()
 
 /******************************************************************************/
 
+const unsigned int SOCKS5_MAX_STATES = 5;
+
+const state_processor_vector Socks5StateMachine::process_state[SOCKS5_MAX_STATES] =
+{
+	process_state_1,
+	process_state_1,
+	process_state_1,
+	process_state_1,
+	process_state_1,
+};
+	
+void Socks5StateMachine::process_state_1(bool entry)
+{
+}
+
+/******************************************************************************/
+
 wxSocketProxy::wxSocketProxy(const wxProxyData *ProxyData)
 {
 	SetProxyData(ProxyData);
