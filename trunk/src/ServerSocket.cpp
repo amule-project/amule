@@ -215,7 +215,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 						} else {	
 							servername = _("Server");
 						}
-						AddLogLineM(false, wxT("Error: ") + servername +
+						AddLogLineM(false, _("Error: ") + servername +
 														wxT(" (") + Uint32_16toStringIP_Port(cur_server->GetIP(), cur_server->GetPort()) + wxT(") - ") +
 														message.Mid(5,message.Len()).Trim(_T(" :")));
 						bOutputMessage = false;
@@ -229,13 +229,12 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 						} else {	
 							servername = _("Server");
 						}
-						AddLogLineM(false, wxT("Warning: ") + servername +
+						AddLogLineM(false, _("Warning: ") + servername +
 										wxT(" (") + Uint32_16toStringIP_Port(cur_server->GetIP(), cur_server->GetPort()) + wxT(") - ") +
 										message.Mid(5,message.Len()).Trim(_T(" :")));
 
 						bOutputMessage = false;
 					}
-					/* Give it a try ... (Creteil) END */
 
 					if (message.Find(wxT("[emDynIP: ")) != (-1) && message.Find(wxT("]")) != (-1) && message.Find(wxT("[emDynIP: ")) < message.Find(wxT("]"))){
 						wxString dynip = message.Mid(message.Find(wxT("[emDynIP: "))+10,message.Find(wxT("]")) - (message.Find(wxT("[emDynIP: "))+10));
@@ -439,8 +438,8 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				int addcount = 0;
 				while(count) {
 					CServer* srv = new CServer(
-														servers->ReadUInt16() ,  						// Port
-														Uint32toStringIP(servers->ReadUInt32())); 	// Ip
+								servers->ReadUInt16() ,				// Port
+								Uint32toStringIP(servers->ReadUInt32())); 	// Ip
 					srv->SetListName(srv->GetFullIP());
 					if (!theApp.AddServer(srv)) {
 						delete srv;
