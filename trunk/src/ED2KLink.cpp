@@ -27,6 +27,7 @@
 #include "ED2KLink.h"			// Interface declarations.
 #include "SafeFile.h"			// Needed for CSafeMemFile
 #include "NetworkFunctions.h"	// Needed for Uint32toStringIP
+#include "StringFunctions.h"	// Needed for unicode2char
 
 #include <vector>
 
@@ -197,7 +198,7 @@ CED2KFileLink::CED2KFileLink( const wxString& name, const wxString& size, const 
 			if ( current.Lower().StartsWith( wxT("sources,") ) ) {
 				current.Remove( 0, 8 );
 	
-				uint32 IP = CStringIPtoUint32( current.BeforeFirst( wxT(':') ) );
+				uint32 IP = StringIPtoUint32( current.BeforeFirst( wxT(':') ) );
 				uint32 Port = StrToULong( current.AfterFirst( wxT(':') ) );
 
 				// Sainity checking
@@ -272,7 +273,7 @@ CED2KFileLink::CED2KFileLink( const wxString& name, const wxString& size, const 
 		wxString strHash = masterhash;
 		
 		if ( !strHash.IsEmpty() ) {
-			if ( otherfunctions::DecodeBase32(masterhash, CAICHHash::GetHashSize(), m_AICHHash.GetRawHash()) == CAICHHash::GetHashSize()){
+			if ( otherfunctions::DecodeBase32( unicode2char(masterhash), CAICHHash::GetHashSize(), m_AICHHash.GetRawHash()) == CAICHHash::GetHashSize()){
 				m_bAICHHashValid = true;
 				wxASSERT( m_AICHHash.GetString().CmpNoCase(strHash) == 0 );
 			} else {
