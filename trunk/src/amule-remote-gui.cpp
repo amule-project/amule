@@ -90,6 +90,8 @@
 #include "ECPacket.h"
 #include "ECcodes.h"
 
+#include "MD5Sum.h"
+
 CEConnectDlg::CEConnectDlg() :
 	wxDialog(theApp.amuledlg, -1, _("Connect to remote amule"), wxDefaultPosition )
 {
@@ -103,6 +105,11 @@ CEConnectDlg::CEConnectDlg() :
 	CentreOnParent();
 }
 
+wxString CEConnectDlg::PassHash()
+{
+	return MD5Sum(passwd).GetHash();
+}
+	
 BEGIN_EVENT_TABLE(CEConnectDlg, wxDialog)
   EVT_BUTTON(wxID_OK, CEConnectDlg::OnOK)
 END_EVENT_TABLE()
@@ -115,6 +122,7 @@ void CEConnectDlg::OnOK(wxCommandEvent& evt)
 	s_port.ToLong((long int *)&port);
 	
 	host = CastChild(ID_REMOTE_HOST, wxTextCtrl)->GetValue();
+	passwd = CastChild(ID_EC_PASSWD, wxTextCtrl)->GetValue();
 }
 
 BEGIN_EVENT_TABLE(CamuleRemoteGuiApp, wxApp)
@@ -220,7 +228,7 @@ bool CamuleRemoteGuiApp::OnInit()
 			dialog->Destroy();
 			return false;
 		}
-	} while ( !connect->Connect(dialog->Host(), dialog->Port()) );
+	} while ( !connect->Connect(dialog->Host(), dialog->Port(), dialog->Login(), dialog->PassHash()) );
 	amuledlg->AddLogLine(true, _("Connected to amule at ") + dialog->Host());
 	dialog->Destroy();
 	
@@ -584,7 +592,8 @@ CRemoteConnect::CRemoteConnect()
 	m_isConnected = false;
 }
 
-bool CRemoteConnect::Connect(const wxString &host, int port)
+bool CRemoteConnect::Connect(const wxString &host, int port,
+	const wxString &WXUNUSED(login), const wxString &pass)
 {
 	wxIPV4address addr;
 
@@ -605,9 +614,7 @@ bool CRemoteConnect::Connect(const wxString &host, int port)
     packet.AddTag(CECTag(EC_TAG_CLIENT_VERSION, wxString(wxT("0x0001"))));
     packet.AddTag(CECTag(EC_TAG_PROTOCOL_VERSION, (uint16)EC_CURRENT_PROTOCOL_VERSION));
 
-    wxString pass_hash = wxT("81dc9bdb52d04dc20036dbd8313ed055");
-
-	packet.AddTag(CECTag(EC_TAG_PASSWD_HASH, pass_hash));
+	packet.AddTag(CECTag(EC_TAG_PASSWD_HASH, pass));
 
     if (! m_ECSocket->WritePacket(&packet) ) {
     	return false;
@@ -624,8 +631,12 @@ bool CRemoteConnect::Connect(const wxString &host, int port)
 		} else {
 		    AddLogLineM(true, _("ExternalConn: Access denied"));
 		}
+		delete reply;
+		return false;
     } else if (reply->GetOpCode() != EC_OP_AUTH_OK) {
         AddLogLineM(true,_("ExternalConn: Bad reply from server. Connection closed.\n"));
+		delete reply;
+		return false;
     } else {
         m_isConnected = true;
         if (reply->GetTagByName(EC_TAG_SERVER_VERSION)) {
