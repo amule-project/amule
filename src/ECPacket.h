@@ -31,6 +31,7 @@
 #endif
 #include "StringFunctions.h"	// Needed for char2UTF8
 #include "ECcodes.h"	// Needed for EC types
+#include "CMD4Hash.h"	// Needed for CMD4Hash
 
 #if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
 #pragma interface "ECPacket.h"
@@ -44,7 +45,6 @@
 class CECTag;
 class ECSocket;
 class wxSocketBase;
-class CMD4Hash;
 
 
 /**
@@ -80,7 +80,7 @@ class CECTag {
 		uint32		GetInt32Data(void) const { return ntohl(*((uint32 *)m_tagData)); }
 		wxString	GetStringData(void) const { return wxString(wxConvUTF8.cMB2WC((const char *)m_tagData), aMuleConv); }
 		EC_IPv4_t 	GetIPv4Data(void) const;
-		CMD4Hash	GetMD4Data(void) const;
+		CMD4Hash	GetMD4Data(void) const { return CMD4Hash((const char *)m_tagData); }
 	protected:
 				CECTag(wxSocketBase *sock, ECSocket& socket);
 		bool		WriteTag(wxSocketBase *sock, ECSocket& socket) const;

@@ -131,13 +131,8 @@ CECTag::CECTag(ec_tagname_t name, const CMD4Hash& data) : m_tagName(name), m_dyn
 	m_dataLen = 16;
 	m_tagData = malloc(16);
 	if (m_tagData != NULL) {
-#if wxBYTE_ORDER == wxLITTLE_ENDIAN
-		for (int i = 0; i < 16; ++i)
-			((unsigned char *)m_tagData)[i] = ((const unsigned char *)data)[15-i];
-#else
 		((uint64 *)m_tagData)[0] = ((uint64 *)data.GetHash())[0];
 		((uint64 *)m_tagData)[1] = ((uint64 *)data.GetHash())[1];
-#endif
 		m_error = 0;
 	} else {
 		m_error = 1;
@@ -573,27 +568,17 @@ EC_IPv4_t CECTag::GetIPv4Data(void) const
 	return p;
 }
 
-/**
- * Returns a CMD4Hash class.
+/*!
+ * \fn CMD4Hash CECTag::GetMD4Data(void) const
+ *
+ * \brief Returns a CMD4Hash class.
  *
  * This function takes care of converting from MSB to LSB as necessary.
  *
- * @return CMD4Hash class.
+ * \return CMD4Hash class.
  *
- * @see CECTag(ec_tagname_t, const CMD4Hash&)
+ * \sa CECTag(ec_tagname_t, const CMD4Hash&)
  */
-CMD4Hash CECTag::GetMD4Data(void) const
-{
-#if wxBYTE_ORDER == wxLITTLE_ENDIAN
-	unsigned char p[16];
-
-	for (int i = 0; i < 16; ++i)
-		p[i] = ((const unsigned char *)m_tagData)[15-i];
-	return CMD4Hash(p);
-#else
-	return CMD4Hash((const unsigned char *)m_tagData);
-#endif
-}
 
 /*!
  * \fn CECTag *CECTag::GetTagByIndex(unsigned int index) const
