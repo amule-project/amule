@@ -46,6 +46,15 @@
 
 //#define DEBUG_LOCAL_CLIENT_PROTOCOL
 //#define __PACKET_DEBUG__
+#ifdef TESTING_PROXY
+	static class wxProxyData pd(
+		wxT("localhost"),
+		1080,
+		wxPROXY_SOCKS5,
+		wxT(""),
+		wxT("")
+	);
+#endif
 
 // some client testing variables
 static wxString crash_name = wxT("[Invalid User Name]");
@@ -1292,14 +1301,6 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 		return true;
 	}
 
-#ifdef TESTING_PROXY
-	class wxProxyData pd;
-	pd.ProxyHostName = wxT("localhost");
-	pd.ProxyPort = 1080;
-	pd.ProxyType = wxPROXY_SOCKS5;
-	pd.Username = wxT("");
-	pd.Password = wxT("");
-#endif
 	if (!m_socket) {
 #ifdef TESTING_PROXY
 		m_socket = new CClientReqSocket(this, &pd);

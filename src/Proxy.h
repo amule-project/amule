@@ -106,14 +106,21 @@ class wxProxyData
 {
 public:
 	wxProxyData();
+	wxProxyData(
+		const wxString	&m_ProxyHostName,
+		unsigned short	m_ProxyPort,
+		wxProxyType	m_ProxyType,
+		const wxString	&m_Username,
+		const wxString	&m_Password
+	);
 	void Empty();
 
 public:
-	wxString ProxyHostName;
-	unsigned short ProxyPort;
-	wxProxyType ProxyType;
-	wxString Username;
-	wxString Password;
+	wxString	m_ProxyHostName;
+	unsigned short	m_ProxyPort;
+	wxProxyType	m_ProxyType;
+	wxString	m_Username;
+	wxString	m_Password;
 };
 
 /******************************************************************************/
