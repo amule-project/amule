@@ -49,6 +49,11 @@ src/UDPSocket.cpp
 src/UploadClient.cpp
 src/UploadListCtrl.cpp
 src/UploadQueue.cpp
+src/utils/aLinkCreator/src/alcc.cpp
+src/utils/aLinkCreator/src/alc.cpp
+src/utils/aLinkCreator/src/alcframe.cpp
+src/utils/aLinkCreator/src/ed2khash.cpp
+src/utils/aLinkCreator/src/md4.cpp
 src/utils/wxCas/src/linuxmon.cpp
 src/utils/wxCas/src/onlinesig.cpp
 src/utils/wxCas/src/wxcas.cpp
