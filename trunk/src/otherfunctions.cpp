@@ -524,6 +524,17 @@ void DumpMem(const void* where, uint32 size) {
 	printf("\n");	
 }
 
+//
+// Dump mem in dword format
+void DumpMem_DW(const uint32 *ptr, int count)
+{
+	for(int i = 0; i < count; i++) {
+		printf("%08x ", ptr[i]);
+		if ( (i % 4) == 3) printf("\n");
+	}
+	printf("\n");
+}
+
 /*
  * RLE encoder implementation. This is RLE implementation for very specific
  * purpose: encode DIFFERENCE between subsequent states of status bar.
@@ -673,7 +684,8 @@ void PartFileEncoderData::Decode(unsigned char *data, int len)
 	data += partsize;
 	uint32 gapsize = *((uint32 *)data);
 	data += sizeof(uint32);
-	m_gap_status.Realloc(gapsize);
+	printf("PartFileEncoderData: realloc to %d ( %x )\n", gapsize, gapsize);
+	m_gap_status.Realloc(gapsize*2*sizeof(uint32));
 	m_gap_status.Decode(data, len - 2*sizeof(uint32) - partsize);
 }
 
