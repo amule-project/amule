@@ -56,10 +56,12 @@ private:
 	double m_sessionMaxDL;
 	wxDateTime m_sessionMaxDLDate;
 	bool m_isSessionMaxDlChanged;
+	bool m_isSessionMaxDlReseted;
 
 	double m_absoluteMaxDL;
 	wxDateTime m_absoluteMaxDlDate;
 	bool m_isAbsoluteMaxDlChanged;
+	bool m_isAbsoluteMaxDlReseted;
 
 	int m_amuleState;
 	wxString m_serverName;

@@ -61,6 +61,9 @@ OnLineSig::OnLineSig ( const wxFileName& file,
 
 	m_absoluteMaxDL = absoluteMaxDL;
 	m_absoluteMaxDlDate = absoluteMaxDlDate;
+	
+	m_isSessionMaxDlReseted = false;
+	m_isAbsoluteMaxDlReseted = false;
 
 	Refresh ();
 }
@@ -102,22 +105,27 @@ OnLineSig::Refresh ()
 	text >> m_sessionUL;
 	text >> m_runTimeS;
 
-	m_isSessionMaxDlChanged = false;
-	m_isAbsoluteMaxDlChanged = false;
-
 	double dl;
 	m_DLRate.ToDouble ( &dl );
 
-	if ( dl > m_sessionMaxDL ) {
+	if ( dl > m_sessionMaxDL || m_isSessionMaxDlReseted ) {
 		m_sessionMaxDL = dl;
 		m_sessionMaxDLDate = wxDateTime::Now();
 		m_isSessionMaxDlChanged = true;
+		m_isSessionMaxDlReseted = false;
+	}
+	else {
+		m_isSessionMaxDlChanged = false;
 	}
 
-	if ( dl > m_absoluteMaxDL ) {
+	if ( dl > m_absoluteMaxDL || m_isAbsoluteMaxDlReseted ) {
 		m_absoluteMaxDL = dl;
 		m_absoluteMaxDlDate = wxDateTime::Now();
 		m_isAbsoluteMaxDlChanged = true;
+		m_isAbsoluteMaxDlReseted = false;
+	}
+	else {
+		m_isAbsoluteMaxDlChanged = false;
 	}
 }
 
@@ -262,7 +270,7 @@ void OnLineSig::ResetSessionMaxDL ()
 {
 	m_sessionMaxDL = 0.0;
 	m_sessionMaxDLDate = wxDateTime::Now();
-	m_isSessionMaxDlChanged = true;
+	m_isSessionMaxDlReseted = true;
 }
 
 bool OnLineSig::IsSessionMaxDlChanged() const
@@ -284,7 +292,7 @@ void OnLineSig::ResetAbsoluteMaxDL ()
 {
 	m_absoluteMaxDL = 0.0;
 	m_absoluteMaxDlDate = wxDateTime::Now();
-	m_isAbsoluteMaxDlChanged = true;
+	m_isAbsoluteMaxDlReseted = true;
 }
 
 bool OnLineSig::IsAbsoluteMaxDlChanged() const
