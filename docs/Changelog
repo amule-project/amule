@@ -89,13 +89,9 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		  (as old GTK tray!)
 
 	Kry:
+		* New SysTray Core written in wxWidgets (portable and transparent icon)
 		* A lot
 		* More to come...
-
-	lfroen:
-		* Amule remote gui implementation
-		* EC additions
-		* RLE encoder for shared files
 
 	Ken:
 		* Fixed Mac bug: window was a little larger each restart
@@ -111,8 +107,10 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		  list; server pings work.  Global search seems to work better.
 		  DNS lookup of servers and ED2K link sources should now work.
 
-	Kry:
-		* New SysTray Core written in wxWidgets (portable and transparent icon)
+	lfroen:
+		* aMule remote gui implementation
+		* EC additions
+		* RLE encoder for shared files
 
 	ObsessionAl:
 		* Patch to include CVS date in about box.
