@@ -118,7 +118,7 @@ void CDownloadQueue::LoadMetFiles( const wxString& path )
 
 	// Load part-files	
 	for ( size_t i = 0; i < files.size(); i++ ) {
-		printf("\rLoading PartFile %u of %u", i + 1, (unsigned)files.size());
+		printf("\rLoading PartFile %u of %u", (unsigned int)(i + 1), (unsigned int)files.size());
 			
 		fileName = wxFileName( files[i] ).GetFullName();
 		
