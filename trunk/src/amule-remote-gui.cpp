@@ -76,6 +76,7 @@
 #include "SharedFilesCtrl.h"		// Needed for CSharedFilesCtrl
 #include "DownloadListCtrl.h"		// Needed for CDownloadListCtrl
 #include "ClientListCtrl.h"
+#include "ServerListCtrl.h"
 
 #include "ECSocket.h"
 #include "ECPacket.h"
@@ -105,7 +106,13 @@ int CamuleRemoteGuiApp::OnExit()
 
 void CamuleRemoteGuiApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS&)
 {
-	sharedfiles->DoRequery(EC_OP_GET_SHARED_FILES, EC_TAG_KNOWNFILE);
+	if ( theApp.amuledlg->sharedfileswnd->IsShown() ) {
+		sharedfiles->DoRequery(EC_OP_GET_SHARED_FILES, EC_TAG_KNOWNFILE);
+		sharedfiles->ReloadControl();
+	} else if ( theApp.amuledlg->serverwnd->IsShown() ) {
+		//serverlist->FullReload(EC_OP_GET_SERVER_LIST);
+		//serverlist->ReloadControl();
+	}
 }
 
 void CamuleRemoteGuiApp::ShutDown() {
@@ -120,7 +127,6 @@ bool CamuleRemoteGuiApp::OnInit()
 		return false;
 	}
 
-	glob_prefs = new CPreferencesRem(0);
 	
 	// Create the Core timer
 	core_timer = new wxTimer(this,ID_CORETIMER);
@@ -145,14 +151,18 @@ bool CamuleRemoteGuiApp::OnInit()
 
 	CRemoteConnect *connect = new CRemoteConnect;
 	
+	// Load Preferences
+	glob_prefs = new CPreferencesRem(connect);
+	
 	statistics = new CStatisticsRem();
 	
 	clientlist = new CClientListRem(connect);
 	searchlist = new CSearchListRem(connect);
-	//knownfiles = new CKnownFilesRem(connect);
 	serverlist = new CServerListRem(connect);
 	
 	sharedfiles	= new CSharedFilesRem(connect);
+	knownfiles = new CKnownFilesRem(sharedfiles);
+
 	clientcredits = new CClientCreditsRem();
 	
 	// bugfix - do this before creating the uploadqueue
@@ -282,8 +292,6 @@ bool CamuleRemoteGuiApp::AddServer(CServer *)
 void CamuleRemoteGuiApp::NotifyEvent(GUIEvent event)
 {
 	switch (event.ID) {
-	        case SEARCH_REQ:
-			break;
 	        case SEARCH_ADD_TO_DLOAD:
 			break;
 
@@ -340,6 +348,9 @@ void CamuleRemoteGuiApp::NotifyEvent(GUIEvent event)
 CPreferencesRem::CPreferencesRem(CRemoteConnect *conn)
 {
 	m_conn = conn;
+
+	CPreferences::BuildItemList( theApp.ConfigDir);
+	CPreferences::LoadAllItems( wxConfigBase::Get() );
 }
 //
 // Container implementation
@@ -390,7 +401,7 @@ void CServerListRem::UpdateServerMetFromURL(wxString url)
 	// FIXME: add command
 }
 
-void CServerListRem::SaveServermetToFile()
+void CServerListRem::SaveServerMet()
 {
 	// lfroen: stub, nothing to do
 }
@@ -410,9 +421,9 @@ CServer *CServerListRem::GetServerByAddress(const wxString& address, uint16 port
 	return 0;
 }
 
-CServer *CServerListRem::CreateItem(CEC_Server_Tag *)
+CServer *CServerListRem::CreateItem(CEC_Server_Tag *tag)
 {
-	return 0;
+	return new CServer(tag);
 }
 
 void CServerListRem::DeleteItem(CServer *)
@@ -426,6 +437,17 @@ uint32 CServerListRem::GetItemID(CServer *)
 
 void CServerListRem::ProcessItemUpdate(CEC_Server_Tag *, CServer *)
 {
+	// server list is always realoaded from scratch
+	wxASSERT(0);
+}
+
+void CServerListRem::ReloadControl()
+{
+	for(uint32 i = 0;i < GetCount(); i++) {
+		CServer *srv = GetByIndex(i);
+		theApp.amuledlg->serverwnd->serverlistctrl->RefreshServer(srv);
+	}
+	m_dirty = false;
 }
 
 void CIPFilterRem::Reload()
@@ -444,10 +466,26 @@ CSharedFilesRem::CSharedFilesRem(CRemoteConnect *conn) : CRemoteContainer<CKnown
 {
 }
 
+void CSharedFilesRem::ReloadControl()
+{
+	if ( m_dirty ) {
+		theApp.amuledlg->sharedfileswnd->sharedfilesctrl->DeleteAllItems();
+	}
+	for(uint32 i = 0;i < GetCount(); i++) {
+		CKnownFile *f = GetByIndex(i);
+		if ( m_dirty ) {
+			theApp.amuledlg->sharedfileswnd->sharedfilesctrl->ShowFile(f);
+		} else {
+			theApp.amuledlg->sharedfileswnd->sharedfilesctrl->UpdateItem(f);
+		}
+	}
+	m_dirty = false;
+}
+
 void CSharedFilesRem::Reload(bool, bool)
 {
-	CECPacket req(EC_OP_SHAREDFILES_RELOAD);
-	m_conn->Send(&req);
+
+	//CECPacket req(EC_OP_SHAREDFILES_RELOAD);
 }
 
 void CSharedFilesRem::AddFilesFromDirectory(wxString)
@@ -455,21 +493,36 @@ void CSharedFilesRem::AddFilesFromDirectory(wxString)
 	// should not get here. You can't do it remotely.
 }
 
-CKnownFile *CSharedFilesRem::CreateItem(CEC_SharedFile_Tag *)
+CKnownFile *CSharedFilesRem::CreateItem(CEC_SharedFile_Tag *tag)
 {
-	return 0;
+	CKnownFile *file = new CKnownFile(tag);
+
+	m_enc_map[file->GetFileHash()] = otherfunctions::RLE_Data(file->GetPartCount(), true);
+
+	ProcessItemUpdate(tag, file);
+	
+	return file;
 }
 
-void CSharedFilesRem::DeleteItem(CKnownFile *)
+void CSharedFilesRem::DeleteItem(CKnownFile *file)
 {
+	m_enc_map.erase(file->GetFileHash());
 }
 
-CMD4Hash CSharedFilesRem::GetItemID(CKnownFile *)
+CMD4Hash CSharedFilesRem::GetItemID(CKnownFile *file)
 {
+	return file->GetFileHash();
 }
 
-void CSharedFilesRem::ProcessItemUpdate(CEC_SharedFile_Tag *, CKnownFile *)
+void CSharedFilesRem::ProcessItemUpdate(CEC_SharedFile_Tag *tag, CKnownFile *file)
 {
+	//printf("DEBUG: update of %p by %p\n", file, tag);
+	CECTag *parttag = tag->GetTagByName(EC_TAG_PARTFILE_PART_STATUS);
+	const unsigned char *data = m_enc_map[file->GetFileHash()].Decode((unsigned char *)parttag->GetTagData(),
+		parttag->GetTagDataLen());
+	for(int i = 0;i < file->GetPartCount();i++) {
+		file->m_AvailPartFrequency[i] = data[i];
+	}
 }
 
 /*!
@@ -532,7 +585,7 @@ bool CRemoteConnect::Connect(const char *host, int port)
                 AddLogLineM(true, _("Succeeded! Connection established.\n"));
         }
     }
-
+	return true;
 }
 
 CECPacket *CRemoteConnect::SendRecv(CECPacket *packet)

@@ -6,6 +6,7 @@
 #include "Statistics.h"
 #include "Preferences.h"
 #include "Statistics.h"
+#include "OtherFunctions.h"
 
 #include <map>
 #include <list>
@@ -58,6 +59,8 @@ class CRemoteContainer {
 		
 		// .size() is O(N) operation in stl
 		int m_item_count;
+		
+		bool m_dirty;
 	public:
 		CRemoteContainer(CRemoteConnect *conn)
 		{
@@ -71,6 +74,7 @@ class CRemoteContainer {
 		
 		uint32 GetCount()
 		{
+			//printf("DEBUG: %p of %d\n", this, m_item_count);
 			return m_item_count;
 		}
 		
@@ -78,6 +82,7 @@ class CRemoteContainer {
 		{
 			m_items.push_back(item);
 			m_items_hash[GetItemID(item)] = item;
+			m_idx_items.resize(m_item_count+1);
 			m_idx_items[m_item_count] = item;
 			m_item_count++;
 		}
@@ -90,7 +95,31 @@ class CRemoteContainer {
 		
 		T *GetByIndex(int index)
 		{
-			return ( (index > 0) && (index < m_item_count) ) ? m_idx_items[index] : NULL;
+			//printf("DEBUG: %p[%d] out of %d\n", this, index, m_item_count);
+			return ( (index >= 0) && (index < m_item_count) ) ? m_idx_items[index] : NULL;
+		}
+		
+		//
+		// Flush & reload
+		//
+		bool FullReload(int cmd)
+		{
+			CECPacket req(cmd);
+			CECPacket *reply = this->m_conn->SendRecv(&req);
+			if ( !reply ) {
+				return false;
+			}
+			m_dirty = true;
+			for(typename std::list<T *>::iterator j = this->m_items.begin(); j != this->m_items.end(); j++) {
+				this->DeleteItem(*j);
+			}
+			// flush list
+			m_items.erase(this->m_items.begin(), this->m_items.end());
+			m_items_hash.erase(this->m_items_hash.begin(), this->m_items_hash.end());
+			m_item_count = 0;
+			ProcessFull(reply);
+			delete reply;
+			return true;
 		}
 		
 		//
@@ -118,6 +147,7 @@ class CRemoteContainer {
 		
 			// Phase 3: request full info about files we don't have yet
 			if ( req_full.GetTagCount() ) {
+				m_dirty = true;
 				reply = this->m_conn->SendRecv(&req_full);
 				if ( !reply ) {
 					return false;
@@ -148,6 +178,7 @@ class CRemoteContainer {
 					T *item = m_items_hash[tag->ID()];
 					ProcessItemUpdate(tag, item);
 				} else {
+					m_dirty = true;
 					full_req->AddTag(CECTag(req_type, tag->ID()));
 				}
 			}
@@ -157,7 +188,7 @@ class CRemoteContainer {
 				if ( core_files.count(item_id) == 0 ) {
 					// item may contain data that need to be freed externally, before
 					// dtor is called and memory freed
-					
+					m_dirty = true;
 					this->DeleteItem(*j);
 					
 					del_ids.push_back(item_id);
@@ -230,12 +261,14 @@ class CServerListRem : public CRemoteContainer<CServer, uint32, CEC_Server_Tag> 
 		}
 		CServer *GetServerByAddress(const wxString& address, uint16 port);
 
+		void ReloadControl();
+
 		//
 		// Actions
 		//
 		void RemoveServer(CServer* server);
 		void UpdateServerMetFromURL(wxString url);
-		void SaveServermetToFile();
+		void SaveServerMet();
 		
 		//
 		// template
@@ -309,10 +342,13 @@ class CDownQueueRem : public CRemoteContainer<CPartFile, CMD4Hash, CEC_PartFile_
 };
 
 class CSharedFilesRem : public CRemoteContainer<CKnownFile, CMD4Hash, CEC_SharedFile_Tag> {
+		std::map<CMD4Hash, otherfunctions::RLE_Data> m_enc_map;
 	public:
 		CSharedFilesRem(CRemoteConnect *);
 		
 		CKnownFile *GetFileByID(CMD4Hash id) { return GetByID(id); }
+
+		void ReloadControl();
 
 		//
 		// Actions
@@ -329,11 +365,22 @@ class CSharedFilesRem : public CRemoteContainer<CKnownFile, CMD4Hash, CEC_Shared
 		void ProcessItemUpdate(CEC_SharedFile_Tag *, CKnownFile *);
 };
 
-class CKnownFilesRem : public CRemoteContainer<CKnownFile, CMD4Hash> {
+class CKnownFilesRem {
+		CSharedFilesRem *m_shared_files;
 	public:
-		CKnownFilesRem(CRemoteConnect *);
+		CKnownFilesRem(CSharedFilesRem *shared)
+		{
+			m_shared_files = shared;
+			
+			requested = 0;
+			transfered = 0;
+			accepted = 0;
+		}
 		
-		CKnownFile *FindKnownFileByID(const CMD4Hash& id) { return GetByID(id); }
+		CKnownFile *FindKnownFileByID(const CMD4Hash& id)
+		{
+			return m_shared_files->GetByID(id); 
+		}
 
         uint16 requested;
         uint32 transfered;

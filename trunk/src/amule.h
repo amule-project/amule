@@ -415,6 +415,7 @@ public:
 
 	void AddServerMessageLine(wxString &msg);
 	void QueueLogLine(bool addtostatusbar, const wxString& line);
+	void QueueDebugLogLine(bool addtostatusbar, const wxString& line) { QueueLogLine(addtostatusbar, line); }
 	
 	void SetOSFiles(wxString ) { /* onlinesig is created on remote side */ }
 	
