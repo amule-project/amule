@@ -144,6 +144,7 @@ float CClientCredits::GetScoreRatio(uint32 dwForIP)
 	return result;
 }
 
+#ifndef CLIENT_GUI
 
 CClientCreditsList::CClientCreditsList()
 {
@@ -352,6 +353,8 @@ void CClientCreditsList::Process()
 		SaveList();
 }
 
+#endif /* CLIENT_GUI */
+
 void CClientCredits::InitalizeIdent(){
 	if (m_pCredits->nKeySize == 0 ){
 		memset(m_abyPublicKey,0,80); // for debugging
@@ -408,6 +411,7 @@ EIdentState	CClientCredits::GetCurrentIdentState(uint32 dwForIP) const {
 	}
 }
 
+#ifndef CLIENT_GUI
 
 bool CClientCreditsList::CreateKeyPair(){
 	try{
@@ -694,3 +698,5 @@ void CClientCredits::ClearWaitStartTime(){
 	m_dwUnSecureWaitTime = 0;
 	m_dwSecureWaitTime = 0;
 }
+
+#endif /* CLIENT_GUI */
