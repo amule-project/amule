@@ -1,4 +1,4 @@
-// This file is part of the aMule Project
+
 //
 // Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
 // Copyright (C) 2002 Merkur ( merkur-@users.sourceforge.net / http://www.emule-project.net )
@@ -102,7 +102,6 @@ private:
 	bool ShowItemInCurrentCat(CPartFile* file,int newsel);
 	bool 	this_is_the_moment();
 	int	last_moment;
-
 
 	typedef std::pair<void*,CtrlItem_Struct*> ListItemsPair;
 	typedef std::multimap<void*,CtrlItem_Struct*> ListItems;

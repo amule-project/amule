@@ -6,6 +6,8 @@ Version 2.0.0rc8 - The "???????????" version.
 		* Added option to select the max and min size-type in advanced searches
 		* When "Extended Parameters" in Search tab is not selected, defaults are used
 		* Now "Auto-update serverlist at startup" checks if there's a serverlist to avoid annoying messages at startup
+		* "Clear completed downloads" is now disabled while no completed downloads are listed
+		* Fixed: Setting "A4AF to others" was broken
 
 	Phoenix:
 		* Added readline and history support to amuleweb/amulecmd text

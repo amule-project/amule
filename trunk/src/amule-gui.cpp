@@ -468,10 +468,10 @@ void CamuleGuiApp::NotifyEvent(GUIEvent event)
 					    ( (!cur_source->GetRequestFile()->IsA4AFAuto()) ||
 					      (cur_source->GetDownloadState() == DS_NONEEDEDPARTS))) {
 						cur_source->SwapToAnotherFile(true, false, false, file);
+						}
 					}
-				}
-		        }
-		}
+		        	}
+			}
 			break;
         	case PARTFILE_SWAP_A4AF_OTHERS: {
 			CPartFile *file = (CPartFile *)event.ptr_value;
@@ -483,10 +483,10 @@ void CamuleGuiApp::NotifyEvent(GUIEvent event)
 					CUpDownClient* cur_source = *it++;
 					
 					cur_source->SwapToAnotherFile(false, false, false, NULL);
+					}
 				}
 			}
 			break;
-		}
 	        case PARTFILE_SWAP_A4AF_THIS_AUTO:
 			((CPartFile *)event.ptr_value)->SetA4AFAuto(!((CPartFile *)event.ptr_value)->IsA4AFAuto());
 			break;
@@ -589,6 +589,10 @@ void CamuleGuiApp::NotifyEvent(GUIEvent event)
 			}
 			break;
 
+		// download
+	        case DLOAD_UPDATE_COMPLETED:
+			amuledlg->transferwnd->UpdateBtnClearDownloads();
+			break;
 						
 		// download ctrl
 		case DOWNLOAD_CTRL_UPDATEITEM:

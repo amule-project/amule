@@ -81,6 +81,7 @@ CDownloadQueue::CDownloadQueue(CSharedFileList* in_sharedfilelist)
 	lastudpsearchtime = 0;
 	lastudpstattime = 0;
 	udcounter = 0;
+	completedFilesExist = false;
 	m_iSearchedServers = 0;
 	m_datarateMS=0;
 	m_nDownDataRateMSOverhead = 0;

@@ -147,6 +147,10 @@ public:
 	// lfroen for ExternalConn
 	wxString getTextList(const wxString& file_to_search  = wxEmptyString) const;
 
+	bool	CompletedFilesExist() { return completedFilesExist; }
+	void	SetCompletedFilesExist() { completedFilesExist = true; }
+	void	UnsetCompletedFilesExist() { completedFilesExist = false; }
+
 protected:
 	bool	SendNextUDPPacket();
 	void	ProcessLocalRequests();
@@ -172,6 +176,7 @@ private:
 	uint32		m_dwNextTCPSrcReq;
 	int		m_iSearchedServers;
 	uint8		udcounter;
+	bool		completedFilesExist;
 
 	uint64		m_datarateMS;
 	long		m_nDownDatarateTotal;
