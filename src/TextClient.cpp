@@ -81,6 +81,7 @@ static CmdId commands[] = {
 	{ wxT("setupbwlimit"),	CMD_ID_SETUPBWLIMIT },
 	{ wxT("setdownbwlimit"),	CMD_ID_SETDOWNBWLIMIT },
 	{ wxT("getbwlimits"),	CMD_ID_GETBWLIMITS },
+	{ wxT("statistics"),	CMD_ID_STATTREE },
 	{ wxEmptyString,	0 },
 };
 
@@ -477,7 +478,10 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			request->AddTag(CECTag(EC_TAG_SELECT_PREFS, (uint32)EC_PREFS_CONNECTIONS));
 			request_list.push_back(request);
 			break;
-			
+		case CMD_ID_STATTREE:
+			request = new CECPacket(EC_OP_GET_STATSTREE);
+			request_list.push_back(request);
+			break;
 		default:
 			return -1;
 	}
@@ -515,6 +519,16 @@ wxString CastItoXBytes( uint64 count )
                 return wxString::Format( wxT("%.3f %s"), (float)count/1099511627776LL, _("TB") );
 
         return _("Error");
+}
+
+// Formats a statistics (sub)tree to text
+wxString StatTree2Text(CECTag *tree, int depth)
+{
+	wxString result = wxString(wxChar(' '), depth) + tree->GetStringData() + wxT("\n");
+	for (int i = 0; i < tree->GetTagCount(); ++i) {
+		result += StatTree2Text(tree->GetTagByIndex(i), depth + 1);
+	}
+	return result;
 }
 
 /*
@@ -623,6 +637,9 @@ void CamulecmdApp::Process_Answer_v2(CECPacket *response)
 				s += wxT("\n");
 			}
 			break;
+		case EC_OP_STATSTREE:
+			s += StatTree2Text(response->GetTagByIndex(0), 0);
+			break;
 		default:
 			s += wxString::Format(_("Received an unknown reply from the server, OpCode = %#x."), response->GetOpCode());
 	}
@@ -653,6 +670,7 @@ void CamulecmdApp::ShowHelp() {
 	Show(wxString(wxT("SetUpBWLimit <")) + wxString(_("limit")) + wxString(wxT(">\t")) + wxString(_("Sets maximum upload bandwidth.\n")));
 	Show(wxString(wxT("SetDownBWLimit <")) + wxString(_("limit")) + wxString(wxT(">\t")) + wxString(_("Sets maximum downloadload bandwidth.\n")));
 	Show(wxString(wxT("GetBWLimits\t\t")) + wxString(_("Displays bandwidth limits.\n")));
+	Show(wxString(wxT("Statistics\t\t")) + wxString(_("Displays full statistics tree.\n")));
 	Show(wxString(wxT("Help:\t\t\t")) + wxString(_("Shows this help.\n")));	
 	Show(wxString(wxT("Quit, exit:\t\t")) + wxString(_("Exits Textclient.\n")));
 	Show(wxString(wxT("Shutdown:\t\t")) + wxString(_("Shutdown amule\n")));

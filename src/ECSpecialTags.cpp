@@ -39,7 +39,6 @@
 #include "updownclient.h"
 #include "SharedFileList.h"
 #include "SearchList.h"
-#include "amule.h"		// Needed for theApp
 
 #else
 
@@ -240,6 +239,18 @@ CEC_SearchFile_Tag::CEC_SearchFile_Tag(CSearchFile *file, EC_DETAIL_LEVEL detail
 	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT, file->GetSourceCount()));
 }
 
+//
+// Tree
+//
+CEC_Tree_Tag::CEC_Tree_Tag(const StatsTreeSiblingIterator& tr) : CECTag(EC_TAG_TREE, *tr)
+{
+	StatsTreeSiblingIterator temp_it = tr.begin();
+	while (temp_it != tr.end()) {
+		AddTag(CEC_Tree_Tag(temp_it));
+		++temp_it;
+	}
+}
+
 #endif /* ! EC_REMOTE */
 
 //
@@ -263,4 +274,3 @@ CEC_Search_Tag::CEC_Search_Tag(wxString &name, EC_SEARCH_TYPE search_type, wxStr
 		AddTag(CECTag(EC_TAG_SEARCH_MAX_SIZE, max_size));
 	}
 }
-

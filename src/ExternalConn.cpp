@@ -1544,14 +1544,13 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request, CPartFile_Enc
 			response = new CECPacket(EC_OP_FAILED);
 #endif
 			break;
-		// FIXME: using v1 style communication
 		case EC_OP_GET_STATSTREE:
-			response = new CECPacket(EC_OP_STATSGRAPHS);
-			#ifdef AMULE_DAEMON
-			response->AddTag(CECTag(EC_TAG_STRING, wxT("FIXME: remove code from gui")));
-			#else
-			response->AddTag(CECTag(EC_TAG_STRING, theApp.amuledlg->statisticswnd->GetHTML()));
-			#endif				
+			response = new CECPacket(EC_OP_STATSTREE);
+			response->AddTag(CEC_Tree_Tag(theApp.statstree.begin().begin()));
+			if (request->GetDetailLevel() == EC_DETAIL_WEB) {
+				response->AddTag(CECTag(EC_TAG_SERVER_VERSION, wxT(PACKAGE_VERSION)));
+				response->AddTag(CECTag(EC_TAG_USER_NICK, thePrefs::GetUserNick()));
+			}
 			break;		
 		
 		default:
