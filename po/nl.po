@@ -1999,7 +1999,7 @@ msgstr "Veilig verbinden"
 
 #: src/muuli_wdr.cpp:2084
 msgid "Autoconnect to servers in static list only"
-msgstr "Autoverbindt alleen met servers in statische lijst"
+msgstr "Autoverbind alleen met servers in statische lijst"
 
 #: src/muuli_wdr.cpp:2087
 msgid "Set manually added servers to High Priority"
@@ -2091,7 +2091,7 @@ msgstr "Selecteer dit als u wilt dat aMule uw Schijfruimte controleert"
 
 #: src/muuli_wdr.cpp:2195
 msgid "    Min Disk Space:    "
-msgstr "    Min Schrijfruimte:    "
+msgstr "    Min Schijfruimte:    "
 
 #: src/muuli_wdr.cpp:2199
 msgid "Enter here the min disk space desired."
