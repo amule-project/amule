@@ -315,7 +315,7 @@ void CSearchDlg::OnBnClickedCancel(wxCommandEvent& WXUNUSED(evt))
 {
 	m_canceld = true;
 
- 	if ( m_globalsearch ) {
+ 	if ( m_globalsearch && theApp.searchlist->m_searchthread) {
 		theApp.searchlist->m_searchthread->Delete();
  	}
 	ResetControls();
