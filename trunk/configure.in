@@ -95,26 +95,6 @@ else
   WX_VERSION="any"
 fi
 
-AM_OPTIONS_CRYPTO
-
-
-CHECK_CRYPTO(5.1,CRYPTO=0)
-
-if test "$CRYPTO" != 0; then
-    AC_MSG_ERROR([
-	WARNING: crypto++ >= 5.1 is not found.
-	Please check that cryptopp-headers are in your default path, check out
-        LD_LIBRARY_PATH or equivalent variable.
-	Or this might also be that your cryptopp is instaled on other path.
-	Please try again with --with-crypto-prefix=/usr/include/
-	(replace  /usr/include/ with a valid path to your crypto directory).
-	The crypto folder must me named cryptopp. Sorry about the mess but it's the
-	only way because libcrypto has no make install.
-	If you use compiled packages use --with-crypto-lib to specify the lib path.
-	To download the lastest version check http://www.cryptopp.com for sources.
-    ])
-fi
-
 CHECK_ZLIB
 
 GET_WXGTK_VERSION
@@ -342,19 +322,6 @@ no) GTK_DEFS="$GTK_DEFS -D__NOGTK__"
 	;;
 esac
 
-case "$CRYPTO_PP_STYLE" in
-gentoo_debian) CXXFLAGS="$CXXFLAGS -I$crypto_prefix -D__CRYPTO_DEBIAN_GENTOO__"
-# Debian uses libcrypto++5.1 - it's not my fault, please soda patch the package
-	CRYPTOLIBS="-lcrypto++"
-	;;
-mdk_suse_fc) CXXFLAGS="$CXXFLAGS -I$crypto_prefix -D__CRYPTO_MDK_SUSE_FC__"
-	CRYPTOLIBS="-lcryptopp"
-	;;
-sources) CXXFLAGS="$CXXFLAGS -I$crypto_prefix -D__CRYPTO_SOURCE__"
-	CRYPTOLIBS="-lcryptopp"
-	;;
-esac
-
 case "$VERBOSE_OUTPUT" in
 yes)	if test x"$USE_DEBUG" = xno ; then
 		VERBOSE_OUTPUT=no
@@ -396,7 +363,6 @@ AM_CONDITIONAL(VERBOSE_OUTPUT, test x$USE_DEBUG = xyes -a x$VERBOSE_OUTPUT = xye
 AC_SUBST(GTK_DEFS)
 AC_SUBST(TRAY_FLAGS)
 AC_SUBST(CAS_DEFS)
-AC_SUBST(CRYPTOLIBS)
 
 # DO NOT MOVE UP...THAT'S A REASON TO BE HERE!!
 
@@ -478,7 +444,6 @@ echo "  Should aMule GUI Statistics (wxCas) be built?            ${WXCAS:-no}"
 echo
 echo "  **** General Libraries and Tools ****"
 echo "  Should ccache support be enabled?                        ${ccache:-no}"
-echo "  Crypto++ library/headers style?                          ${CRYPTO_PP_STYLE}"
 echo "  Libraries aMule will use to build:"
 echo "                                       wxWidgets          ${WXGTK_VERSION:-Not detected}"
 echo "                                       GTK                ${GTK_VERSION:-Not detected}"

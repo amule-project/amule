@@ -17,35 +17,6 @@
 //along with this program; if not, write to the Free Software
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-#ifdef __CRYPTO_DEBIAN_GENTOO__
-//	#include <crypto++/config.h>
-	#include <crypto++/base64.h>
-	#include <crypto++/osrng.h>
-	#include <crypto++/files.h>
-	#include <crypto++/sha.h>
-#else
-	#ifdef __CRYPTO_MDK_SUSE_FC__
-//		#include <cryptopp/config.h>
-		#include <cryptopp/base64.h>
-		#include <cryptopp/osrng.h>
-		#include <cryptopp/files.h>
-		#include <cryptopp/sha.h>
-	#else
-		#ifdef __CRYPTO_SOURCE__
-//			#include <crypto-5.1/config.h>
-			#include <crypto-5.1/base64.h>
-			#include <crypto-5.1/osrng.h>
-			#include <crypto-5.1/files.h>
-			#include <crypto-5.1/sha.h>
-		#else 
-//		#include <cryptopp/config.h>
-		#include <cryptopp/base64.h>
-		#include <cryptopp/osrng.h>
-		#include <cryptopp/files.h>
-		#include <cryptopp/sha.h>
-		#endif
-	#endif
-#endif
 
 #include <cmath>
 #include <ctime>
@@ -67,6 +38,8 @@
 #include "otherfunctions.h"	// Needed for GetTickCount
 #include "sockets.h"
 #include "CFile.h"
+
+#include "CryptoPP.h"
 
 //#include "StdAfx.h"
 
@@ -184,7 +157,7 @@ CClientCreditsList::~CClientCreditsList()
 	}
 	m_mapClients.clear();
 	if (m_pSignkey){
-		delete m_pSignkey;
+		delete (CryptoPP::RSASSA_PKCS1v15_SHA_Signer*)m_pSignkey;
 		m_pSignkey = NULL;
 	}
 }
@@ -407,15 +380,13 @@ EIdentState	CClientCredits::GetCurrentIdentState(uint32 dwForIP) const {
 }
 
 
-using namespace CryptoPP;
-
 bool CClientCreditsList::CreateKeyPair(){
 	try{
-		AutoSeededRandomPool rng;
-		InvertibleRSAFunction privkey;
+		CryptoPP::AutoSeededRandomPool rng;
+		CryptoPP::InvertibleRSAFunction privkey;
 		privkey.Initialize(rng,RSAKEYSIZE);
 
-		Base64Encoder privkeysink(new FileSink(unicode2char(theApp.ConfigDir + CRYPTKEY_FILENAME)));
+		CryptoPP::Base64Encoder privkeysink(new CryptoPP::FileSink(unicode2char(theApp.ConfigDir + CRYPTKEY_FILENAME)));
 		
 		privkey.DEREncode(privkeysink);
 		
@@ -466,11 +437,11 @@ void CClientCreditsList::InitalizeCrypting(){
 	// load key
 	try{
 		// load private key
-		FileSource filesource(unicode2char(theApp.ConfigDir + CRYPTKEY_FILENAME), true,new Base64Decoder);
-		m_pSignkey = new RSASSA_PKCS1v15_SHA_Signer(filesource);
+		CryptoPP::FileSource filesource(unicode2char(theApp.ConfigDir + CRYPTKEY_FILENAME), true,new CryptoPP::Base64Decoder);
+		m_pSignkey = new CryptoPP::RSASSA_PKCS1v15_SHA_Signer(filesource);
 		// calculate and store public key
-		RSASSA_PKCS1v15_SHA_Verifier pubkey(*m_pSignkey);
-		ArraySink asink(m_abyMyPublicKey, 80);
+		CryptoPP::RSASSA_PKCS1v15_SHA_Verifier pubkey(*((CryptoPP::RSASSA_PKCS1v15_SHA_Signer*)m_pSignkey));
+		CryptoPP::ArraySink asink(m_abyMyPublicKey, 80);
 		pubkey.DEREncode(asink);
 		m_nMyPublicKeyLen = asink.TotalPutLength();
 		asink.MessageEnd();
@@ -478,7 +449,7 @@ void CClientCreditsList::InitalizeCrypting(){
 	catch(...)
 	{
 		if (m_pSignkey){
-			delete m_pSignkey;
+			delete (CryptoPP::RSASSA_PKCS1v15_SHA_Signer*)m_pSignkey;
 			m_pSignkey = NULL;
 		}
 		AddLogLineM(false, _("IDS_CRYPT_INITFAILED\n"));
@@ -486,10 +457,12 @@ void CClientCreditsList::InitalizeCrypting(){
 	//Debug_CheckCrypting();
 }
 
-uint8 CClientCreditsList::CreateSignature(CClientCredits* pTarget, uchar* pachOutput, uint8 nMaxSize, uint32 ChallengeIP, uint8 byChaIPKind, CryptoPP::RSASSA_PKCS1v15_SHA_Signer* sigkey){
-	// sigkey param is used for debug only
-	if (sigkey == NULL)
-		sigkey = m_pSignkey;
+uint8 CClientCreditsList::CreateSignature(CClientCredits* pTarget, uchar* pachOutput, uint8 nMaxSize, uint32 ChallengeIP, uint8 byChaIPKind, void* sigkey){
+	
+	CryptoPP::RSASSA_PKCS1v15_SHA_Signer* signer = (CryptoPP::RSASSA_PKCS1v15_SHA_Signer*)sigkey;
+	// signer param is used for debug only
+	if (signer == NULL)
+		signer = (CryptoPP::RSASSA_PKCS1v15_SHA_Signer*)m_pSignkey;
 
 	// create a signature of the public key from pTarget
 	wxASSERT( pTarget );
@@ -499,8 +472,8 @@ uint8 CClientCreditsList::CreateSignature(CClientCredits* pTarget, uchar* pachOu
 		return 0;
 	try{
 		
-		SecByteBlock sbbSignature(sigkey->SignatureLength());
-		AutoSeededRandomPool rng;
+		CryptoPP::SecByteBlock sbbSignature(signer->SignatureLength());
+		CryptoPP::AutoSeededRandomPool rng;
 		byte abyBuffer[MAXPUBKEYSIZE+9];
 		uint32 keylen = pTarget->GetSecIDKeyLen();
 		memcpy(abyBuffer,pTarget->GetSecureIdent(),keylen);
@@ -514,8 +487,8 @@ uint8 CClientCreditsList::CreateSignature(CClientCredits* pTarget, uchar* pachOu
 			memcpy(abyBuffer+keylen+4,&ChallengeIP,4);
 			memcpy(abyBuffer+keylen+4+4,&byChaIPKind,1);
 		}
-		sigkey->SignMessage(rng, abyBuffer ,keylen+4+ChIpLen , sbbSignature.begin());
-		ArraySink asink(pachOutput, nMaxSize);
+		signer->SignMessage(rng, abyBuffer ,keylen+4+ChIpLen , sbbSignature.begin());
+		CryptoPP::ArraySink asink(pachOutput, nMaxSize);
 		asink.Put(sbbSignature.begin(), sbbSignature.size());
 		nResult = asink.TotalPutLength();			
 	}
@@ -536,8 +509,8 @@ bool CClientCreditsList::VerifyIdent(CClientCredits* pTarget, const uchar* pachS
 	}
 	bool bResult;
 	try{
-		StringSource ss_Pubkey((byte*)pTarget->GetSecureIdent(),pTarget->GetSecIDKeyLen(),true,0);
-		RSASSA_PKCS1v15_SHA_Verifier pubkey(ss_Pubkey);
+		CryptoPP::StringSource ss_Pubkey((byte*)pTarget->GetSecureIdent(),pTarget->GetSecIDKeyLen(),true,0);
+		CryptoPP::RSASSA_PKCS1v15_SHA_Verifier pubkey(ss_Pubkey);
 		// 4 additional bytes random data send from this client +5 bytes v2
 		byte abyBuffer[MAXPUBKEYSIZE+9];
 		memcpy(abyBuffer,m_abyMyPublicKey,m_nMyPublicKeyLen);
@@ -602,10 +575,10 @@ bool CClientCreditsList::CryptoAvailable() const {
 #ifdef _DEBUG
 bool CClientCreditsList::Debug_CheckCrypting(){
 	// create random key
-	AutoSeededRandomPool rng;
+	CryptoPP::AutoSeededRandomPool rng;
 
-	RSASSA_PKCS1v15_SHA_Signer priv(rng, 384);
-	RSASSA_PKCS1v15_SHA_Verifier pub(priv);
+	CryptoPP::RSASSA_PKCS1v15_SHA_Signer priv(rng, 384);
+	CryptoPP::RSASSA_PKCS1v15_SHA_Verifier pub(priv);
 
 	byte abyPublicKey[80];
 	ArraySink asink(abyPublicKey, 80);

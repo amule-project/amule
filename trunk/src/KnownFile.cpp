@@ -20,19 +20,6 @@
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 
-#ifdef __CRYPTO_DEBIAN_GENTOO__
-	#include <crypto++/md4.h>
-#else
-	#ifdef __CRYPTO_MDK_SUSE_FC__
-		#include <cryptopp/md4.h>
-	#else
-		#ifdef __CRYPTO_SOURCE__
-			#include <crypto-5.1/md4.h>			
-		#else 
-			#include <cryptopp/md4.h>
-		#endif
-	#endif
-#endif
 #include <wx/filefn.h>
 
 #include <wx/file.h>
@@ -57,6 +44,8 @@
 #include "amule.h"			// Needed for theApp
 #include "PartFile.h"		// Needed for SavePartFile
 #include "endianfix.h"
+
+#include "CryptoPP.h"		// Needed for MD4
 
 #include <wx/arrimpl.cpp> // this is a magic incantation which must be done!
 
