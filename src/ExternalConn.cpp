@@ -338,51 +338,6 @@ CECPacket *Process_IPFilter(const CECPacket *request)
 	return response;
 }	
 
-/*
-CECPacket *Get_EC_Response_IPFilter(const CECPacket *request)
-{
-	wxASSERT(request->GetOpCode() == EC_OP_IPFILTER_CMD);
-	
-	CECPacket *response = new CECPacket(EC_OP_STRINGS);
-
-	wxString msg;
-	if ( request->GetTagCount() ) {
-		wxString cmd = request->GetTagByIndex(0)->GetStringData();
-		if ( cmd == wxT("ON") ) {
-			thePrefs::SetIPFilterOn(true);
-			msg = _("OK: ipfilter turned ON");
-		} else if ( cmd == wxT("OFF") ) {
-			thePrefs::SetIPFilterOn(false);
-			msg = _("OK: ipfilter turned OFF");
-		} else if ( cmd == wxT("RELOAD") ) {
-			theApp.ipfilter->Reload();
-			msg = _("OK: ipfilter reloaded");
-		} else if ( cmd.IsNumber() ) {
-			long level;
-			cmd.ToLong(&level);
-			long oldlevel = thePrefs::GetIPFilterLevel();
-			if ( level <= 255 ) {
-				if ( level != oldlevel ) {
-					thePrefs::SetIPFilterLevel(level);
-					msg = wxString::Format(_("aMule IP Filter level is %d."), level);
-				} else {
-					msg = wxString::Format(_("aMule IP Filter level is already %d."), level);
-				}
-			} else {
-				msg = wxString::Format(_("Invalid IP Filter level entered: %d"), level);
-			}
-		} else {
-				msg = wxT("Invalid command in EC_IPLEVEL_CMD: ") + cmd;
-		}
-	} else {
-		msg = wxString::Format(_("aMule IP Filter level is %d."),
-			thePrefs::GetIPFilterLevel());
-	}
-	response->AddTag(CECTag(EC_TAG_STRING, msg));
-	return response;
-}
-*/
-
 CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request)
 {
 	wxASSERT(request->GetOpCode() == EC_OP_GET_DLOAD_QUEUE);
@@ -393,29 +348,27 @@ CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request)
 		CPartFile *cur_file = theApp.downloadqueue->GetFileByIndex(i);
 		CECTag filetag(EC_TAG_PARTFILE, cur_file->GetFileName());
 
-		filetag.AddTag(CECTag(EC_TAG_ITEM_ID,
-			wxString::Format(wxT("%lx"), (unsigned long)(cur_file))));
+		filetag.AddTag(CECTag(EC_TAG_ITEM_ID,PTR_2_ID(cur_file)));
 		filetag.AddTag(CECTag(EC_TAG_PARTFILE_SIZE_FULL,
-			//(uint32)cur_file->GetFileSize()));
-			wxString::Format(wxT("%ul"),cur_file->GetFileSize())));
+			(uint32)cur_file->GetFileSize()));
 		filetag.AddTag(CECTag(EC_TAG_PARTFILE_SIZE_XFER,
-			wxString::Format(wxT("%ul"),cur_file->GetTransfered())));
+			(uint32)cur_file->GetTransfered()));
 		filetag.AddTag(CECTag(EC_TAG_PARTFILE_SIZE_DONE,
-			wxString::Format(wxT("%ul"),cur_file->GetCompletedSize())));
+			(uint32)cur_file->GetCompletedSize()));
 		filetag.AddTag(CECTag(EC_TAG_PARTFILE_DOWN_SPEED,
-			wxString::Format(wxT("%li"),(long)(cur_file->GetKBpsDown()*1024))));
+			(uint32)(long)(cur_file->GetKBpsDown()*1024)));
 		filetag.AddTag(CECTag(EC_TAG_PARTFILE_STATUS,
 			cur_file->getPartfileStatus()));
 		filetag.AddTag(CECTag(EC_TAG_PARTFILE_PRIO,
-			wxString::Format(wxT("%d"),cur_file->IsAutoDownPriority() ? 
+			(uint32)(cur_file->IsAutoDownPriority() ? 
 							cur_file->GetDownPriority() + 10 :
 							cur_file->GetDownPriority())));
 		filetag.AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT,
-			wxString::Format(wxT("%d"),cur_file->GetSourceCount())));
+			(uint32)cur_file->GetSourceCount()));
 		filetag.AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT,
-			wxString::Format(wxT("%d"),cur_file->GetNotCurrentSourcesCount())));
+			(uint32)cur_file->GetNotCurrentSourcesCount()));
 		filetag.AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT_XFER,
-			wxString::Format(wxT("%d"),cur_file->GetTransferingSrcCount())));
+			(uint32)cur_file->GetTransferingSrcCount()));
 		filetag.AddTag(CECTag(EC_TAG_PARTFILE_ED2K_LINK,
 					(theApp.serverconnect->IsConnected() && !theApp.serverconnect->IsLowID()) ?
 						theApp.CreateED2kSourceLink(cur_file) :
@@ -438,8 +391,7 @@ CECPacket *Get_EC_Response_PartFile_Cmd(const CECPacket *request)
 
 	wxASSERT(idtag->GetTagName() == EC_TAG_ITEM_ID);
 
-	unsigned long id;
-	idtag->GetStringData().ToULong(&id, 16);
+	uint32 id = idtag->GetInt32Data();
 	for (unsigned int j = 0; j < theApp.downloadqueue->GetFileCount(); j++) {
 		CPartFile *curr_file = theApp.downloadqueue->GetFileByIndex(j);
 		if ( PTR_2_ID(curr_file) == id ) {
@@ -563,7 +515,6 @@ CECPacket *Get_EC_Response_PartFile_Cmd(const CECPacket *request)
 
 CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request)
 {
-	CALL_APP_DATA_LOCK;
 
 	if ( !request ) {
 		return 0;
