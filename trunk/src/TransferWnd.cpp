@@ -24,8 +24,6 @@
 #include <wx/splitter.h>
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/sizer.h>		// Needed for wxSizer
-#include <wx/menu.h>
-#include <wx/msgdlg.h>
 
 #include "TransferWnd.h"	// Interface declarations
 #include "amuleDlg.h"		// Needed for CamuleDlg
@@ -86,16 +84,16 @@ bool CTransferWnd::OnInitDialog()
 	m_dlTab=(CMuleNotebook*)FindWindowById(ID_CATEGORIES);
 
 	// show & cat-tabs
-	sprintf(theApp.glob_prefs->GetCategory(0)->title, "%s",unicode2char(GetCatTitle(theApp.glob_prefs->GetAllcatType())));
+	theApp.glob_prefs->GetCategory(0)->title = GetCatTitle(theApp.glob_prefs->GetAllcatType());
 
-	sprintf(theApp.glob_prefs->GetCategory(0)->incomingpath,"%s",theApp.glob_prefs->GetIncomingDir());
+	theApp.glob_prefs->GetCategory(0)->incomingpath = char2unicode(theApp.glob_prefs->GetIncomingDir());
+	
 	for (uint32 ix=0;ix<theApp.glob_prefs->GetCatCount();ix++) {
 		wxPanel* nullPanel=new wxPanel(m_dlTab);
-		wxString tmpstrstr(char2unicode(theApp.glob_prefs->GetCategory(ix)->title));
 		m_dlTab->AddPage(nullPanel,wxT("-")); // just temporary string.
 		// for some odd reason, wxwin2.5 and gtk2 will not allow non utf strings for AddPage()
 		// but they will be accepted in SetPageText().. so let's use this as a countermeasure
-		m_dlTab->SetPageText(ix,tmpstrstr);
+		m_dlTab->SetPageText(ix,theApp.glob_prefs->GetCategory(ix)->title);
 	}
 	
 	return true;
@@ -232,21 +230,19 @@ bool CTransferWnd::ProcessEvent(wxEvent& evt)
 		case MP_CAT_SET0+13: 
 		case MP_CAT_SET0+14: {
 			theApp.glob_prefs->SetAllcatType(event.GetId()-MP_CAT_SET0);
-			sprintf(theApp.glob_prefs->GetCategory(0)->title, "%s", unicode2char(GetCatTitle(theApp.glob_prefs->GetAllcatType())));
-			CString csName;
-			csName.Format(wxT("%s"), theApp.glob_prefs->GetCategory(0)->title );
-			EditCatTabLabel(0,csName);
+			theApp.glob_prefs->GetCategory(0)->title = GetCatTitle(theApp.glob_prefs->GetAllcatType());
+			EditCatTabLabel(0,theApp.glob_prefs->GetCategory(0)->title);
 			downloadlistctrl->ChangeCategory(0);
 			downloadlistctrl->InitSort();
 			break;
 		}
 
 		case MP_CAT_ADD: {
-			int newindex=AddCategorie("?",theApp.glob_prefs->GetIncomingDir(),"",false);
+			int newindex=AddCategorie(wxT("?"),char2unicode(theApp.glob_prefs->GetIncomingDir()),wxEmptyString,false);
 			//m_dlTab.InsertItem(newindex,theApp.glob_prefs->GetCatego
 			//	       ry(newindex)->title);
 			wxPanel* nullPanel=new wxPanel(m_dlTab,-1);
-			m_dlTab->AddPage(nullPanel,char2unicode(theApp.glob_prefs->GetCategory(newindex)->title));
+			m_dlTab->AddPage(nullPanel,theApp.glob_prefs->GetCategory(newindex)->title);
 			CCatDialog dialog(this,newindex);
 			dialog.OnInitDialog();
 			dialog.ShowModal();
@@ -260,9 +256,7 @@ bool CTransferWnd::ProcessEvent(wxEvent& evt)
 			dialog.OnInitDialog();
 			dialog.ShowModal();
 
-			CString csName;
-			csName.Format(wxT("%s"), theApp.glob_prefs->GetCategory(m_dlTab->GetSelection())->title );
-			EditCatTabLabel(m_dlTab->GetSelection(),csName);
+			EditCatTabLabel(m_dlTab->GetSelection(),theApp.glob_prefs->GetCategory(m_dlTab->GetSelection())->title );
 
 			theApp.glob_prefs->SaveCats();
 			break;
@@ -338,13 +332,13 @@ bool CTransferWnd::ProcessEvent(wxEvent& evt)
 	return false;
 }
 
-int CTransferWnd::AddCategorie(CString newtitle,CString newincoming,CString newcomment,bool addTab){
+int CTransferWnd::AddCategorie(wxString newtitle,wxString newincoming,wxString newcomment,bool addTab){
         Category_Struct* newcat=new Category_Struct;
 
-        sprintf(newcat->title,"%s",unicode2char(newtitle));
+        newcat->title = newtitle;
         newcat->prio=0;
-        sprintf(newcat->incomingpath,"%s",unicode2char(newincoming));
-        sprintf(newcat->comment,"%s",unicode2char(newcomment));
+        newcat->incomingpath = newincoming;
+        newcat->comment = newcomment;
         int index=theApp.glob_prefs->AddCat(newcat);
 
         if (addTab) {
@@ -356,7 +350,7 @@ int CTransferWnd::AddCategorie(CString newtitle,CString newincoming,CString newc
         return index;
 }
 
-void CTransferWnd::EditCatTabLabel(int index,CString newlabel)
+void CTransferWnd::EditCatTabLabel(int index,wxString newlabel)
 {
 	if (theApp.glob_prefs->ShowCatTabInfos()) {
 		CPartFile* cur_file;
@@ -374,8 +368,8 @@ void CTransferWnd::EditCatTabLabel(int index,CString newlabel)
 				}
 			}
 		}
-		CString title=newlabel;
-		newlabel.Format(wxT("%s (%i/%i)"),title.GetData(),dwl,count);
+		
+		newlabel += wxString::Format(wxT(" (%i/%i)"),dwl,count);
 	}
 	m_dlTab->SetPageText(index,newlabel);
 	theApp.amuledlg->searchwnd->UpdateCatChoice();

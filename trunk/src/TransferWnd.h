@@ -85,8 +85,8 @@ protected:
 	void OnNMRclickDLtab(wxMouseEvent& evt);
     void OnSashPositionChanged(wxSplitterEvent& evt);
 
-	int AddCategorie(CString newtitle,CString newincoming,CString newcomment,bool addTab);
-	void EditCatTabLabel(int index,CString newlabel);
+	int AddCategorie(wxString newtitle,wxString newincoming,wxString newcomment,bool addTab);
+	void EditCatTabLabel(int index,wxString newlabel);
 
 	CSplitterControl m_wndSplitter;
 	CMuleNotebook* m_dlTab;

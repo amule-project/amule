@@ -430,9 +430,9 @@ void CPreferences::LoadPreferences()
 void CPreferences::LoadCats() {
 	// default cat ... Meow! =(^.^)=
 	Category_Struct* newcat=new Category_Struct;
-	newcat->title[0] = 0;
-	newcat->incomingpath[0] = 0;
-	newcat->comment[0] = 0;
+	newcat->title = wxEmptyString;
+	newcat->incomingpath = wxEmptyString;
+	newcat->comment = wxEmptyString;
 	newcat->prio=0;
 	newcat->color=0;
 	AddCat( newcat );
@@ -447,11 +447,11 @@ void CPreferences::LoadCats() {
 		Category_Struct* newcat = new Category_Struct;
 
 
-		sprintf(newcat->title, "%s", unicode2char( cfg->Read( wxT("Title"), wxT("") )));
-		sprintf(newcat->incomingpath, "%s", unicode2char( cfg->Read( wxT("Incoming"), wxT("") )));
+		newcat->title = cfg->Read( wxT("Title"), wxT("") );
+		newcat->incomingpath = cfg->Read( wxT("Incoming"), wxT("") );
 
-		MakeFoldername(newcat->incomingpath);
-		sprintf(newcat->comment, "%s", unicode2char( cfg->Read( wxT("Comment"), wxT("") )));
+		newcat->incomingpath = MakeFoldername(newcat->incomingpath);
+		newcat->comment = cfg->Read( wxT("Comment"), wxT("") );
 
 		newcat->prio = cfg->Read( wxT("Priority"), 0l );
 
@@ -459,8 +459,8 @@ void CPreferences::LoadCats() {
 		newcat->color = atoll( unicode2char(color) );
 
 		AddCat(newcat);
-		if (!wxFileName::DirExists(char2unicode(newcat->incomingpath))) {
-			wxFileName::Mkdir(char2unicode(newcat->incomingpath),0777);
+		if (!wxFileName::DirExists(newcat->incomingpath)) {
+			wxFileName::Mkdir(newcat->incomingpath);
 		}
 	}
 }

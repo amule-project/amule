@@ -81,13 +81,9 @@ bool CCatDialog::OnInitDialog()
 
 void CCatDialog::UpdateData()
 {
-	CString buffer;
-	buffer.Format(wxT("%s"),m_myCat->title);
-	((wxTextCtrl*)FindWindowById(IDC_TITLE))->SetValue(buffer);
-	buffer.Format(wxT("%s"),m_myCat->incomingpath);
-	((wxTextCtrl*)FindWindowById(IDC_INCOMING))->SetValue(buffer);
-	buffer.Format(wxT("%s"),m_myCat->comment);
-	((wxTextCtrl*)FindWindowById(IDC_COMMENT))->SetValue(buffer);
+	((wxTextCtrl*)FindWindowById(IDC_TITLE))->SetValue(m_myCat->title);
+	((wxTextCtrl*)FindWindowById(IDC_INCOMING))->SetValue(m_myCat->incomingpath);
+	((wxTextCtrl*)FindWindowById(IDC_COMMENT))->SetValue(m_myCat->comment);
 	newcolor=m_myCat->color;
 	m_prio->SetSelection(m_myCat->prio);
 	mkBitmap(*m_bitmap);
@@ -118,25 +114,21 @@ void CCatDialog::OnBnClickedOk(wxCommandEvent& evt)
 {
 	CString oldpath=CString(m_myCat->incomingpath);
 	if (((wxTextCtrl*)FindWindowById(IDC_TITLE))->GetValue().Length()>0) {
-		strncpy(m_myCat->title,unicode2char(((wxTextCtrl*)FindWindowById(IDC_TITLE))->GetValue()),64);
+		m_myCat->title = ((wxTextCtrl*)FindWindowById(IDC_TITLE))->GetValue();
 	}
 
 	if (((wxTextCtrl*)FindWindowById(IDC_INCOMING))->GetValue().Length()>1) {
-		strncpy(m_myCat->incomingpath,unicode2char(((wxTextCtrl*)FindWindowById(IDC_INCOMING))->GetValue()),MAX_PATH);
+		m_myCat->incomingpath = ((wxTextCtrl*)FindWindowById(IDC_INCOMING))->GetValue();
 	}
 
-	strncpy(m_myCat->comment,unicode2char(((wxTextCtrl*)FindWindowById(IDC_COMMENT))->GetValue()),255);
-	MakeFoldername(m_myCat->incomingpath);
-	if (!::wxDirExists(char2unicode(m_myCat->incomingpath))) {
-		#ifdef __WXMSW__ // no file permissions on msw
-		wxMkDir(m_myCat->incomingpath);
-		#else
-		wxMkDir(m_myCat->incomingpath,0777);
-		#endif
+	m_myCat->comment = ((wxTextCtrl*)FindWindowById(IDC_COMMENT))->GetValue();
+	m_myCat->incomingpath = MakeFoldername(m_myCat->incomingpath);
+	if (!::wxDirExists(m_myCat->incomingpath)) {
+		::wxMkdir(m_myCat->incomingpath); // 0777 is the default
 	}
 
-	if (CString(m_myCat->incomingpath).CmpNoCase(oldpath)!=0) {
-		theApp.sharedfiles->AddFilesFromDirectory(char2unicode(m_myCat->incomingpath));
+	if (m_myCat->incomingpath.CmpNoCase(oldpath)!=0) {
+		theApp.sharedfiles->AddFilesFromDirectory(m_myCat->incomingpath);
 		theApp.sharedfiles->Reload();
 	}
 

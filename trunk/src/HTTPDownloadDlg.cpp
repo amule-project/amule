@@ -26,7 +26,6 @@
 	#include <wx/msw/winundef.h>
 #endif
 #include <wx/intl.h>
-#include <wx/sizer.h>
  
 #include "HTTPDownloadDlg.h"	// Interface declarations
 #include "MuleGifCtrl.h"

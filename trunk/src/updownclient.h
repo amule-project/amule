@@ -135,7 +135,7 @@ public:
 	CUpDownClient(uint16 in_port, uint32 in_userid, uint32 in_serverup, uint16 in_serverport,CPartFile* in_reqfile);
 	~CUpDownClient();
 //	void			Destroy();
-	bool			Disconnected(wxString strReason, bool bFromSocket = false);
+	bool			Disconnected(CString strReason, bool bFromSocket = false);
 	bool			TryToConnect(bool bIgnoreMaxCon = false);
 	void			ConnectionEstablished();
 	uint32			GetUserID()					{return m_nUserID;}

@@ -2323,8 +2323,8 @@ void CPartFile::CompleteFileEnded(int completing_result, wxString* newname) {
 	
 		delete newname;
 		
-		if(wxFileName::DirExists(char2unicode(theApp.glob_prefs->GetCategory(GetCategory())->incomingpath))) {
-			m_strFilePath = char2unicode(theApp.glob_prefs->GetCategory(m_category)->incomingpath);
+		if(wxFileName::DirExists(theApp.glob_prefs->GetCategory(GetCategory())->incomingpath)) {
+			m_strFilePath = theApp.glob_prefs->GetCategory(m_category)->incomingpath;
 		} else {
 			m_strFilePath = char2unicode(theApp.glob_prefs->GetIncomingDir());
 		}	
@@ -2411,8 +2411,8 @@ wxThread::ExitCode completingThread::Entry()
 	Completing_FileName = theApp.StripInvalidFilenameChars(Completing_FileName);
 
 	newname = new wxString();
-	if(wxFileName::DirExists(char2unicode(theApp.glob_prefs->GetCategory(Completing_Category)->incomingpath))) {
-		(*newname) =  char2unicode(theApp.glob_prefs->GetCategory(Completing_Category)->incomingpath);
+	if(wxFileName::DirExists(theApp.glob_prefs->GetCategory(Completing_Category)->incomingpath)) {
+		(*newname) =  theApp.glob_prefs->GetCategory(Completing_Category)->incomingpath;
 	} else {
 		(*newname) =  char2unicode(theApp.glob_prefs->GetIncomingDir());
 	}	

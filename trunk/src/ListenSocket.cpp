@@ -819,9 +819,9 @@ bool CClientReqSocket::ProcessPacket(char* packet, uint32 size, uint8 opcode)
 					for (CKnownFileMap::iterator pos = filemap.begin();pos != filemap.end(); pos++ ) {
 						list.AddTail((void*&)pos->second);
 					}
-					AddLogLineM(true,wxString::Format(wxT("User %s (%u) requested your sharedfiles-list -> %s"),client->GetUserName(),client->GetUserID(),_("Accepted")));
+					AddLogLineM(true,wxString(_("User ")) + char2unicode(client->GetUserName()) + wxString::Format(wxT(" (%u) requested your sharedfiles-list -> %s"),client->GetUserID(),_("Accepted")));
 				} else {
-					AddLogLineM(true,wxString::Format(wxT("User %s (%u) requested your sharedfiles-list -> %s"),client->GetUserName(),client->GetUserID(),_("Denied")));
+					AddLogLineM(true,wxString(_("User ")) + char2unicode(client->GetUserName()) + wxString::Format(wxT(" (%u) requested your sharedfiles-list -> %s"),client->GetUserID(),_("Denied")));
 				}
 				// now create the memfile for the packet
 				CSafeMemFile tempfile(80);
@@ -886,7 +886,7 @@ bool CClientReqSocket::ProcessPacket(char* packet, uint32 size, uint8 opcode)
 					wxString char_ptrDir;
 					// ... the categories folders ... (category 0 -> incoming)
 					for (uint32 ix=0;ix<theApp.glob_prefs->GetCatCount();ix++) {
-						char_ptrDir = char2unicode(theApp.glob_prefs->GetCategory(ix)->incomingpath);
+						char_ptrDir = theApp.glob_prefs->GetCategory(ix)->incomingpath;
 						bFoundFolder = false;
 						for (uint32 iDir=0; iDir < (uint32)folders_to_send.GetCount(); iDir++) {	
 							if (folders_to_send[iDir].CmpNoCase(char_ptrDir) == 0) {
@@ -1147,6 +1147,11 @@ bool CClientReqSocket::ProcessExtPacket(char* packet, uint32 size, uint8 opcode)
 		if (!client) {
 			throw wxString(wxT("Unknown clients sends extended protocol packet"));
 		}
+		if (!client->CheckHandshakeFinished(OP_EMULEPROT, opcode)) {
+			// Here comes a extended packet without finishing the hanshake.
+			// IMHO, we should disconnect the client.
+			throw wxString(wxT("Client send extended packet before finishing handshake"));
+		}
 		switch(opcode) {
 			case OP_MULTIPACKET: {
 				 // 0.42e
@@ -1159,8 +1164,6 @@ bool CClientReqSocket::ProcessExtPacket(char* packet, uint32 size, uint8 opcode)
 				if (client->IsBanned()) {
 					break;
 				}
-			
-				//client->CheckHandshakeFinished(OP_EMULEPROT, opcode);
 				
 				CSafeMemFile data_in((BYTE*)packet,size);
 				uchar reqfilehash[16];

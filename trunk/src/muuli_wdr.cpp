@@ -2577,114 +2577,69 @@ wxSizer *PreferencesGuiTweaksTab( wxWindow *parent, bool call_fit, bool set_size
 
     item0->Add( item1, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticBox *item6 = new wxStaticBox( parent, -1, _("GTK Theme Selector") );
+    wxStaticBox *item6 = new wxStaticBox( parent, -1, _("Download Queue Files Progress") );
     wxStaticBoxSizer *item5 = new wxStaticBoxSizer( item6, wxVERTICAL );
 
-    wxBoxSizer *item7 = new wxBoxSizer( wxVERTICAL );
+    wxCheckBox *item7 = new wxCheckBox( parent, IDC_PERCENT, _("Show percentage"), wxDefaultPosition, wxDefaultSize, 0 );
+    item7->SetValue( TRUE );
+    item5->Add( item7, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
-    wxBoxSizer *item8 = new wxBoxSizer( wxHORIZONTAL );
+    wxCheckBox *item8 = new wxCheckBox( parent, IDC_PROGBAR, _("Show progressbar "), wxDefaultPosition, wxDefaultSize, 0 );
+    item8->SetValue( TRUE );
+    item5->Add( item8, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
-    wxStaticText *item9 = new wxStaticText( parent, ID_TEXT, _("Theme :"), wxDefaultPosition, wxDefaultSize, 0 );
-    item8->Add( item9, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxRIGHT, 5 );
+    wxFlexGridSizer *item9 = new wxFlexGridSizer( 2, 0, 0 );
 
-    wxString *strs10 = (wxString*) NULL;
-    wxComboBox *item10 = new wxComboBox( parent, IDC_SELECTED_THEME, wxT(""), wxDefaultPosition, wxSize(200,-1), 0, strs10, wxCB_DROPDOWN );
-    item10->Enable( FALSE );
-    item8->Add( item10, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
+    wxBoxSizer *item10 = new wxBoxSizer( wxVERTICAL );
 
-    item7->Add( item8, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticText *item11 = new wxStaticText( parent, IDC_3DDEP, _("Progressbar Style"), wxDefaultPosition, wxDefaultSize, 0 );
+    item10->Add( item11, 1, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    item5->Add( item7, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticText *item12 = new wxStaticText( parent, ID_TEXT, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
+    item10->Add( item12, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item11 = new wxCheckBox( parent, IDC_USE_FONT, _("Use Font "), wxDefaultPosition, wxDefaultSize, 0 );
-    item11->Enable( FALSE );
-    item5->Add( item11, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
+    item9->Add( item10, 0, wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
 
-    wxBoxSizer *item12 = new wxBoxSizer( wxHORIZONTAL );
+    wxBoxSizer *item13 = new wxBoxSizer( wxVERTICAL );
 
-    wxTextCtrl *item13 = new wxTextCtrl( parent, IDC_SELECTED_FONT, wxT(""), wxDefaultPosition, wxSize(170,-1), 0 );
-    item13->Enable( FALSE );
-    item12->Add( item13, 1, wxALIGN_CENTER, 5 );
+    wxSlider *item14 = new wxSlider( parent, IDC_3DDEPTH, 10, 0, 20, wxDefaultPosition, wxSize(200,-1), wxSL_HORIZONTAL );
+    item13->Add( item14, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxButton *item14 = new wxButton( parent, IDC_FONT_BUTTON, _("Font"), wxDefaultPosition, wxSize(50,25), 0 );
-    item14->Enable( FALSE );
-    item12->Add( item14, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
+    wxBoxSizer *item15 = new wxBoxSizer( wxVERTICAL );
 
-    item5->Add( item12, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 5 );
+    wxGridSizer *item16 = new wxGridSizer( 1, 0, 0, 0 );
 
-    wxBoxSizer *item15 = new wxBoxSizer( wxHORIZONTAL );
+    wxStaticText *item17 = new wxStaticText( parent, IDC_FLAT, _("Flat"), wxDefaultPosition, wxDefaultSize, 0 );
+    item16->Add( item17, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
 
-    wxButton *item16 = new wxButton( parent, IDC_PREVIEW_THEME, _("Preview"), wxDefaultPosition, wxDefaultSize, 0 );
-    item16->Enable( FALSE );
-    item15->Add( item16, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxRIGHT|wxTOP|wxBOTTOM, 5 );
+    wxStaticText *item18 = new wxStaticText( parent, IDC_ROUND, _("Round"), wxDefaultPosition, wxDefaultSize, 0 );
+    item16->Add( item18, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
 
-    wxButton *item17 = new wxButton( parent, IDC_APPLY_THEME, _("Apply"), wxDefaultPosition, wxDefaultSize, 0 );
-    item17->Enable( FALSE );
-    item15->Add( item17, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxALL, 5 );
+    item15->Add( item16, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    item5->Add( item15, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
+    item13->Add( item15, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    item0->Add( item5, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxTOP, 5 );
+    item9->Add( item13, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxLEFT, 5 );
 
-    wxStaticBox *item19 = new wxStaticBox( parent, -1, _("Download Queue Files Progress") );
-    wxStaticBoxSizer *item18 = new wxStaticBoxSizer( item19, wxVERTICAL );
+    item5->Add( item9, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxTOP, 5 );
 
-    wxCheckBox *item20 = new wxCheckBox( parent, IDC_PERCENT, _("Show percentage"), wxDefaultPosition, wxDefaultSize, 0 );
-    item20->SetValue( TRUE );
-    item18->Add( item20, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+    item0->Add( item5, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxCheckBox *item21 = new wxCheckBox( parent, IDC_PROGBAR, _("Show progressbar "), wxDefaultPosition, wxDefaultSize, 0 );
-    item21->SetValue( TRUE );
-    item18->Add( item21, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+    wxStaticBox *item20 = new wxStaticBox( parent, -1, _("Misc Gui Tweaks") );
+    wxStaticBoxSizer *item19 = new wxStaticBoxSizer( item20, wxVERTICAL );
 
-    wxFlexGridSizer *item22 = new wxFlexGridSizer( 2, 0, 0 );
+    wxCheckBox *item21 = new wxCheckBox( parent, IDC_NEWSTYLETABS, _("Use old style tabs on preferences"), wxDefaultPosition, wxDefaultSize, 0 );
+    item19->Add( item21, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
-    wxBoxSizer *item23 = new wxBoxSizer( wxVERTICAL );
+    wxCheckBox *item22 = new wxCheckBox( parent, IDC_FED2KLH, _("Show Fast ED2K Links Handler"), wxDefaultPosition, wxDefaultSize, 0 );
+    item22->SetValue( TRUE );
+    item19->Add( item22, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
-    wxStaticText *item24 = new wxStaticText( parent, IDC_3DDEP, _("Progressbar Style"), wxDefaultPosition, wxDefaultSize, 0 );
-    item23->Add( item24, 1, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    wxCheckBox *item23 = new wxCheckBox( parent, IDC_EXTCATINFO, _("Show extended info on categories tabs"), wxDefaultPosition, wxDefaultSize, 0 );
+    item23->SetValue( TRUE );
+    item19->Add( item23, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
-    wxStaticText *item25 = new wxStaticText( parent, ID_TEXT, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
-    item23->Add( item25, 0, wxALIGN_CENTER_VERTICAL, 5 );
-
-    item22->Add( item23, 0, wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
-
-    wxBoxSizer *item26 = new wxBoxSizer( wxVERTICAL );
-
-    wxSlider *item27 = new wxSlider( parent, IDC_3DDEPTH, 10, 0, 20, wxDefaultPosition, wxSize(200,-1), wxSL_HORIZONTAL );
-    item26->Add( item27, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
-
-    wxBoxSizer *item28 = new wxBoxSizer( wxVERTICAL );
-
-    wxGridSizer *item29 = new wxGridSizer( 1, 0, 0, 0 );
-
-    wxStaticText *item30 = new wxStaticText( parent, IDC_FLAT, _("Flat"), wxDefaultPosition, wxDefaultSize, 0 );
-    item29->Add( item30, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
-
-    wxStaticText *item31 = new wxStaticText( parent, IDC_ROUND, _("Round"), wxDefaultPosition, wxDefaultSize, 0 );
-    item29->Add( item31, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
-
-    item28->Add( item29, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
-
-    item26->Add( item28, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
-
-    item22->Add( item26, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxLEFT, 5 );
-
-    item18->Add( item22, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxTOP, 5 );
-
-    item0->Add( item18, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-
-    wxStaticBox *item33 = new wxStaticBox( parent, -1, _("Misc Gui Tweaks") );
-    wxStaticBoxSizer *item32 = new wxStaticBoxSizer( item33, wxVERTICAL );
-
-    wxCheckBox *item34 = new wxCheckBox( parent, IDC_NEWSTYLETABS, _("Use old style tabs on preferences"), wxDefaultPosition, wxDefaultSize, 0 );
-    item32->Add( item34, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
-
-    wxCheckBox *item35 = new wxCheckBox( parent, IDC_FED2KLH, _("Show Fast ED2K Links Handler"), wxDefaultPosition, wxDefaultSize, 0 );
-    item35->SetValue( TRUE );
-    item32->Add( item35, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
-
-    item0->Add( item32, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item0->Add( item19, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     if (set_sizer)
     {

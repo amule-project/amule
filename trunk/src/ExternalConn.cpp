@@ -811,7 +811,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 		if (item.Left(22) == wxT("CATEGORIES GETCATTITLE")) {
 			if (item.Length() > 22) {
 				int catIndex = atoi(unicode2char(item.Mid(23)));
-				return((wxChar*) theApp.glob_prefs->GetCategory(catIndex)->title);
+				return((wxChar*) theApp.glob_prefs->GetCategory(catIndex)->title.GetData());
 			}
 		}
 		

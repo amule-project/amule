@@ -88,9 +88,9 @@ struct ProxySettings{
 
 #pragma pack(1)
 struct Category_Struct{
-	char	incomingpath[MAX_PATH];
-	char	title[64];
-	char	comment[255];
+	wxString	incomingpath;
+	wxString	title;
+	wxString	comment;
 	DWORD	color;
 	uint8	prio;
 };
@@ -111,22 +111,22 @@ struct Preferences_Struct{
 	uint16	udpport;
 	bool		UDPDisable;
 	uint16	maxconnections;
-	bool	reconnect;
-	bool	deadserver;
-	bool	scorsystem;
+	int8	reconnect;
+	int8	deadserver;
+	int8	scorsystem;
 	char	incomingdir[MAX_PATH];
 	char	tempdir[MAX_PATH];
-	bool	ICH;
-	bool	autoserverlist;
-	bool	updatenotify;
-	bool	mintotray;
-	bool	autoconnect;
-	bool	autoconnectstaticonly; // Barry
-	bool	autotakeed2klinks;     // Barry
-	bool	addnewfilespaused;     // Barry
+	int8	ICH;
+	int8	autoserverlist;
+	int8	updatenotify;
+	int8	mintotray;
+	int8	autoconnect;
+	int8	autoconnectstaticonly; // Barry
+	int8	autotakeed2klinks;     // Barry
+	int8	addnewfilespaused;     // Barry
 	int8	depth3D;			   // Barry
-	bool	addserversfromserver;
-	bool	addserversfromclient;
+	int8	addserversfromserver;
+	int8	addserversfromclient;
 	int16	maxsourceperfile;
 	int16	trafficOMeterInterval;
 	int16	statsInterval;
@@ -134,8 +134,8 @@ struct Preferences_Struct{
 	WINDOWPLACEMENT EmuleWindowPlacement;
 	int	maxGraphDownloadRate;
 	int	maxGraphUploadRate;
-	bool	beepOnError;
-	bool	confirmExit;
+	uint8	beepOnError;
+	uint8	confirmExit;
 	int16	downloadColumnWidths[13];
 	Bool	downloadColumnHidden[13];
 	int16	downloadColumnOrder[13];
@@ -158,17 +158,17 @@ struct Preferences_Struct{
 	Bool	clientListColumnHidden[8];
 	int16 	clientListColumnOrder[8];
 
-	bool	splashscreen;
-	bool	filterBadIP;
-	bool	onlineSig;
+	uint8	splashscreen;
+	uint8	filterBadIP;
+	uint8	onlineSig;
 
 	uint64  totalDownloadedBytes;
 	uint64	totalUploadedBytes;
 	uint16	languageID;
-	bool	transferDoubleclick;
+	int8	transferDoubleclick;
 	int8	m_iSeeShares;		// 0=everybody 1=friends only 2=noone
 	int8	m_iToolDelayTime;	// tooltip delay time in seconds
-	bool	bringtoforeground;
+	int8	bringtoforeground;
 	int8	splitterbarPosition;
 	uint16	deadserverretries;
 	uint32	m_dwServerKeepAliveTimeoutMins;
@@ -176,14 +176,14 @@ struct Preferences_Struct{
 	uint8   statsMax;
 	int8	statsAverageMinutes;
 
-	bool    useDownloadNotifier;
-	bool    useChatNotifier;
-	bool    useLogNotifier;	
-	bool    useSoundInNotifier;
-	bool	sendEmailNotifier;
-	bool    notifierPopsEveryChatMsg;
-	bool	notifierImportantError;
-	bool	notifierNewVersion;
+	int8    useDownloadNotifier;
+	int8    useChatNotifier;
+	int8    useLogNotifier;	
+	int8    useSoundInNotifier;
+	int8	sendEmailNotifier;
+	int8    notifierPopsEveryChatMsg;
+	int8	notifierImportantError;
+	int8	notifierNewVersion;
 	char    notifierSoundFilePath[510];
 
 	char	m_sircserver[50];
@@ -507,7 +507,7 @@ public:
 	CStringList adresses_list;
 
 	void 	SetLanguage();
-	bool 	AutoConnectStaticOnly()		{return prefs->autoconnectstaticonly;}	
+	int8 	AutoConnectStaticOnly()		{return prefs->autoconnectstaticonly;}	
 //	int8 	GetUpdateDays()			{return prefs->versioncheckdays;}
 //	uint32 	GetLastVC()			{return prefs->versioncheckLastAutomatic;}
 //	void   	UpdateLastVC()			{prefs->versioncheckLastAutomatic=time(NULL);}
@@ -524,7 +524,7 @@ public:
 	void	RemoveCat(size_t index);
 	uint32	GetCatCount()			{ return catMap.GetCount();}
 	Category_Struct* GetCategory(size_t index) { if (index>=0 && index<catMap.GetCount()) return catMap[index]; else return NULL;}
-	char*	GetCatPath(uint8 index)		{ return catMap[index]->incomingpath;}
+	wxString	GetCatPath(uint8 index)		{ return catMap[index]->incomingpath;}
 	DWORD	GetCatColor(size_t index)		{ if (index>=0 && index<catMap.GetCount()) return catMap[index]->color; else return 0;}
 
 //	bool	ShowRatingIndicator()		{ return prefs->indicateratings;}

@@ -28,7 +28,6 @@
 #include "CTypedPtrList.h"
 #include "types.h"			// Needed for int32, uint16 and uint64
 
-
 // must be moved to a file
 enum GUI_Event_ID {
 	INVALID_EVENT = 0,
