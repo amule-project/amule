@@ -501,7 +501,7 @@ bool CIPFilter::IsFiltered(uint32 IPTest)
 
 		if ( it != m_iplist.end() ) {
 			if ( it->AccessLevel < thePrefs::GetIPFilterLevel() ) {
-				AddDebugLogLineM( true, wxT("Filtered IP: ") + Uint32toStringIP( wxUINT32_SWAP_ALWAYS(IPTest) ) + wxT(" (") + it->Description + wxT(")") );
+				AddDebugLogLineM( false, logIPFilter, wxT("Filtered IP: ") + Uint32toStringIP( wxUINT32_SWAP_ALWAYS(IPTest) ) + wxT(" (") + it->Description + wxT(")") );
 				theApp.statistics->AddFilteredClient();
 				
 				return true;
@@ -536,13 +536,13 @@ void CIPFilter::DownloadFinished(uint32 result)
 		
 		// Load the downloaded file, which may be a zip archive
 		if ( !LoadFromFile( filename, true ) ) {
-			AddLogLineM(true, _("Failed to load the ipfilter from ") + thePrefs::IPFilterURL());
+			AddDebugLogLineM( true, logIPFilter, wxT("Failed to load the ipfilter from ") + thePrefs::IPFilterURL());
 		}
 		
 		// Remove the now unused file
 		wxRemoveFile( filename );
 	} else {
-		AddLogLineM(true, _("Failed to download the ipfilter from ") + thePrefs::IPFilterURL());
+		AddDebugLogLineM(true, logIPFilter, wxT("Failed to download the ipfilter from ") + thePrefs::IPFilterURL());
 	}
 }
 

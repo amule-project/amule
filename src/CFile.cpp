@@ -28,9 +28,8 @@
 
 #include "CFile.h"		// Interface declarations.
 
-#include "amule.h"		// Needed for theApp
-#include "Preferences.h"	// Needed for CPreferences
 #include "StringFunctions.h" // unicode2char
+#include "Preferences.h"
 #include "Logger.h"
 
 #ifdef HAVE_CONFIG_H
@@ -178,17 +177,16 @@ enum {
 		int num_entries;
 	
 		if ((num_entries = backtrace(bt_array, 6)) < 0) {
-			theApp.QueueLogLine(false, _("* Could not generate backtrace\n"));
+			AddDebugLogLineM( true, logCFile, wxT("* Could not generate backtrace") );
 		} else {
 			if ((bt_strings = backtrace_symbols(bt_array, num_entries)) == NULL) {
-				theApp.QueueLogLine(false,
-					_("* Could not get symbol names for backtrace\n"));
+				AddDebugLogLineM( true, logCFile, wxT("* Could not get symbol names for backtrace") );
 			}  else {
 				wxString wherefrom = bt_strings[value];
 				int starter = wherefrom.Find('(');
 				int ender = wherefrom.Find(')');
 				wherefrom = wherefrom.Mid(starter, ender-starter+1);
-				theApp.QueueLogLine(false, _("Called From: ") + wherefrom);
+				AddDebugLogLineM( false, logCFile, _("Called From: ") + wherefrom );
 			}
 		}	
 	#else // __LINUX__
@@ -266,7 +264,7 @@ CFile::CFile(const wxString& sFileName, OpenMode mode)
 bool CFile::Create(const wxString& sFileName, bool bOverwrite, int accessMode)
 {
 	if ( accessMode == -1 ) {
-		accessMode = CPreferences::GetFilePermissions();
+		accessMode = thePrefs::GetFilePermissions();
 	}
 	fFilePath = sFileName;
 	if (m_fd != fd_invalid) {
@@ -286,9 +284,7 @@ bool CFile::Create(const wxString& sFileName, bool bOverwrite, int accessMode)
 	}
 	
 #ifdef FILE_TRACKER
-	AddLogLineM(false,
-		wxString(_("Created file ")) << fFilePath <<
-		_(" with file descriptor " << m_fd));
+	AddDebugLogLineM( false, logCFile, wxString( wxT("Created file ") ) << fFilePath << wxT(" with file descriptor " << m_fd ) );
 	get_caller(2);
 #endif
 	
@@ -313,7 +309,7 @@ bool CFile::Create(const wxString& sFileName, bool bOverwrite, int accessMode)
 bool CFile::Open(const wxString& sFileName, OpenMode mode, int accessMode)
 {
 	if ( accessMode == -1 ) {
-		accessMode = CPreferences::GetFilePermissions();
+		accessMode = thePrefs::GetFilePermissions();
 	}
 	int flags = O_BINARY;
 #ifdef __linux__
@@ -370,9 +366,9 @@ bool CFile::Open(const wxString& sFileName, OpenMode mode, int accessMode)
 	}
       
 #ifdef FILE_TRACKER
-	theApp.QueueLogLine(false,
+	AddDebugLogLineM( false, logCFile, 
 		wxString(_("Opened file ")) << fFilePath <<
-		_(" with file descriptor ") << m_fd);
+		_(" with file descriptor ") << m_fd );
     	if (fromConstructor) {
 		get_caller(3);    
 	} else {
@@ -381,7 +377,7 @@ bool CFile::Open(const wxString& sFileName, OpenMode mode, int accessMode)
 #endif
     
 	if (m_fd == -1) {
-		theApp.QueueLogLine(true, _("Can't open file '") + sFileName + wxT("'"));
+		AddDebugLogLineM( true, logCFile, wxT("Can't open file '") + sFileName + wxT("'") );
 		/*
 			get_caller(4);    	    
 			get_caller(3);    
@@ -400,9 +396,9 @@ bool CFile::Open(const wxString& sFileName, OpenMode mode, int accessMode)
 bool CFile::Close() 
 {
 #ifdef FILE_TRACKER
-	AddLogLineM(false,
+	AddDebugLogLineM( false, logCFile,
 		wxString(_("Closing file ")) << fFilePath <<
-		_(" with file descriptor ") << m_fd);
+		_(" with file descriptor ") << m_fd );
 	get_caller(2);
 	wxASSERT(!fFilePath.IsEmpty());
 #endif
@@ -515,7 +511,7 @@ off_t CFile::Seek(off_t ofs, CFile::SeekMode mode) const
 
 	off_t iRc = lseek(m_fd, ofs, origin);
 	if ( iRc == -1 ) {
-		printf("Error in lseek: %s\n", strerror(errno));
+		AddDebugLogLineM( true, logCFile, wxString(wxT("Error in lseek: ")) + char2unicode(strerror(errno)));
 		m_error = true;
 		return wxInvalidOffset;
 	} else {
@@ -648,24 +644,24 @@ bool UTF8_CopyFile(wxString& from, wxString& to)
 	char buffer[FILE_COPY_BUFFER];
 	CFile input_file(from, CFile::read);
 	if (!input_file.IsOpened()) {
-		printf("Error on file copy (can't open original file)\n");
+		AddDebugLogLineM( true, logFileIO, wxT("Error on file copy. Can't open original file: ") + from );
 		return false;
 	}
 	CFile output_file(to, CFile::write);
 	if (!output_file.IsOpened()) {
-		printf("Error on file copy (can't create destination file)\n");
+		AddDebugLogLineM( true, logFileIO, wxT("Error on file copy. Can't create destination file: ") + to );
 		return false;
 	}
 	
 	int total_read, total_write;
 	while ((total_read = input_file.Read(buffer,FILE_COPY_BUFFER))) {
 		if (total_read == -1) {
-			printf("Unexpected error copying file! (read error)\n");
+			AddDebugLogLineM( true, logFileIO, wxT("Unexpected error copying file! (read error)") );
 			return false;
 		}
 		total_write = output_file.Write(buffer,total_read);
 		if (total_write != total_read) {
-			printf("Unexpected error copying file! (write error)\n");
+			AddDebugLogLineM( true, logFileIO, wxT("Unexpected error copying file! (write error)") );
 			return false;			
 		}	
 	}
@@ -686,8 +682,7 @@ CDirIterator::CDirIterator(wxString dir) {
 		DirPtr = opendir(unicode2UTF8(dir));
 	}
 	if (!DirPtr) {
-		AddDebugLogLineM(false,
-			wxT("Error enumerating files for dir ") + dir + wxT(" (permissions?)"));
+		AddDebugLogLineM( true, logFileIO, wxT("Error enumerating files for dir ") + dir + wxT(" (permissions?)") );
 	}
 }
 
