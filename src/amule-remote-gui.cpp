@@ -1034,10 +1034,10 @@ void CSearchListRem::Clear()
 	wxASSERT(0);
 }
 
-void CSearchListRem::NewSearch(wxString type, uint32 search_id)
+bool CSearchListRem::StartNewSearch(long nSearchID, bool global_search, wxString &searchString,
+	wxString& typeText, wxString &extension, uint32 min, uint32 max, uint32 availability)
 {
-	// FIXME: add code
-	wxASSERT(0);
+	return false;
 }
 
 void CSearchListRem::StopGlobalSearch()
