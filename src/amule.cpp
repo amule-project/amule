@@ -54,10 +54,6 @@
 					//   PACKAGE_STRING and VERSION
 #endif
 
-#ifdef __WXMAC__
-	#warning Kry? Get rid of this!
-	#include <wx/wx.h>
-#endif
 #include <wx/filefn.h>
 #include <wx/ffile.h>
 #include <wx/file.h>
