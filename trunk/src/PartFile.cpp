@@ -63,6 +63,7 @@
 #include "BarShader.h"		// Needed for CBarShader
 #include "GetTickCount.h"	// Needed for GetTickCount
 #include "ClientList.h"		// Needed for clientlist
+#include "NetworkFunctions.h" // Needed for Uint32toStringIP
 #include "color.h"
 #include "filefn.h"
 

@@ -19,22 +19,7 @@
 
 
 #include <wx/defs.h>		// Needed before any other wx/*.h
-#ifdef __WXMSW__
-	#include <winsock.h>
-	#include <wx/msw/winundef.h>
-#else
-	#include <netdb.h>
-	#include <sys/socket.h>
-	#include <netinet/in.h>
-	#include <arpa/inet.h>
-#endif
-
-//#include <pthread.h> aquatroll - think somebody forgot to delete the line, if it breaks: uncomment it
 #include <wx/intl.h>		// Needed for _
-
-#ifndef __linux__
-#include "otherfunctions.h"
-#endif
 
 #include "UDPSocket.h"		// Interface declarations.
 #include "packets.h"		// Needed for Packet
@@ -46,61 +31,12 @@
 #include "opcodes.h"		// Needed for OP_EDONKEYPROT
 #include "server.h"		// Needed for CServer
 #include "amule.h"			// Needed for theApp
+#include "NetworkFunctions.h" // Needed for CAsyncDNS
 #include "GetTickCount.h"
 
 #define get_uint32(p)	ENDIAN_SWAP_32(*((uint32*)(p)))
 #define get_uint16(p)	ENDIAN_SWAP_16(*((uint16*)(p)))
 
-class AsyncDNS : public wxThread
-{
-public:
-  AsyncDNS();
-  virtual ExitCode Entry();
-
-  wxString ipName;
-  CUDPSocket* socket;
-};
-
-AsyncDNS::AsyncDNS() : wxThread(wxTHREAD_DETACHED)
-{
-}
-
-wxThread::ExitCode AsyncDNS::Entry()
-{
-
-  struct hostent *result=NULL;
-#ifndef __WXMSW__
-  struct hostent ret;
-  int errorno=0;
-  char dataBuf[512]={0};
-#endif
-
-#if defined(__linux__)
-  gethostbyname_r(unicode2char(ipName),&ret,dataBuf,sizeof(dataBuf),&result,&errorno);
-#elif defined(__WXMSW__)
-  result = gethostbyname(unicode2char(ipName));
-#else
-  result = gethostbyname_r(unicode2char(ipName),&ret,dataBuf,sizeof(dataBuf),&errorno);
-#endif
-
-  if(result) {
-    #if defined(__WXMSW__)
-    unsigned long addr=*(unsigned long*)result->h_addr;
-    #else
-    unsigned long addr=*(unsigned long*)ret.h_addr;
-    #endif
-    struct sockaddr_in* newsi=(struct sockaddr_in*)malloc(sizeof(struct sockaddr_in));
-    // addr is in network byte order
-    newsi->sin_addr.s_addr = addr;
-
-    wxMuleInternalEvent evt(wxEVT_CORE_DNS_DONE);
-    evt.SetClientData(socket);
-    evt.SetExtraLong((long)newsi);
-    wxPostEvent(&theApp,evt);
-  }
-
-  return result;
-}
 
 IMPLEMENT_DYNAMIC_CLASS(CUDPSocket,wxDatagramSocket)
 
@@ -436,7 +372,7 @@ void CUDPSocket::SendPacket(Packet* packet,CServer* host){
 	// see if we need to dns()
 	if (cur_server->HasDynIP()) {
 		// This not an ip but a hostname. Resolve it.
-		AsyncDNS* dns=new AsyncDNS();
+		CAsyncDNS* dns=new CAsyncDNS();
 		if(dns->Create()!=wxTHREAD_NO_ERROR) {
 			// uh?
 			return;

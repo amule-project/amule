@@ -21,6 +21,7 @@
 #include "server.h"		// Interface declarations.
 #include "SafeFile.h"		// Needed for CSafeFile
 #include "otherfunctions.h"	// Needed for nstrdup
+#include "NetworkFunctions.h" // Needed for StringIPtoUint32
 #include "otherstructs.h"	// Needed for ServerMet_Struct
 #include "packets.h"		// Needed for CTag
 

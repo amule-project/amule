@@ -47,13 +47,13 @@ class CAICHHash;
  */
 static wxCSConv aMuleConv(wxT("iso8859-1"));
 #if wxUSE_UNICODE
-	#define unicode2char(x) (const char*) aMuleConv.cWX2MB(x)
-	#define unicode2charbuf(x) aMuleConv.cWX2MB(x)
-	#define char2unicode(x) aMuleConv.cMB2WX(x)
+	inline const char* unicode2char(wxString x) { return ((const char*) aMuleConv.cWX2MB(x));};
+	inline const wxCharBuffer unicode2charbuf(wxString x) { return aMuleConv.cWX2MB(x); };
+	inline const wxCharBuffer char2unicode(char* x) { return aMuleConv.cMB2WX(x); };
 #else
-	#define unicode2char(x) (const char*)( x )
-	#define unicode2charbuf(x) (const char*)(x)
-	#define char2unicode(x) (x)
+	inline const char* unicode2char(wxString x) { return ((const char*) x); };
+	inline const wxCharBuffer unicode2charbuf(wxString x) { return (const char*)x; };
+	inline const wxCharBuffer char2unicode(const char* x) { return x; };
 #endif
 #define aMuleConvToUTF8(x) (const char*) wxConvUTF8.cWC2MB((wxString(x)).wc_str(aMuleConv))
 
@@ -337,48 +337,5 @@ inline void md4cpy(const void* dst, const void* src) {
 
 // DumpMem ... Dumps mem ;)
 void DumpMem(const void* where, uint32 size);
-
-inline wxString Uint32toStringIP(uint32 ip) {
-	return wxString::Format(wxT("%u.%u.%u.%u"),(uint8)ip,(uint8)(ip>>8),(uint8)(ip>>16),(uint8)(ip>>24));	
-}
-
-inline wxString Uint32_16toStringIP_Port(uint32 ip, uint16 port) {
-	return wxString::Format(wxT("%u.%u.%u.%u:%u"),(uint8)ip,(uint8)(ip>>8),(uint8)(ip>>16),(uint8)(ip>>24),port);	
-}
-
-inline uint32 StringIPtoUint32(wxString str_ip) {
-	uint32 ip[4];
-	int result = sscanf(unicode2char(str_ip),"%d.%d.%d.%d",&ip[0],&ip[1],&ip[2],&ip[3]);
-	if (result==4) {
-		return (ip[0] | (ip[1] << 8) | (ip[2] << 16) | (ip[3] << 24));	
-	} else {
-		return 0; // Error on ip format.
-	}
-}
-
-#ifdef __FreeBSD__
-inline long long atoll(char const* s) {
-  return (long long) strtoll(s, (char **)NULL, 10);
-}
-#endif /* __FreeBSD__ */
-
-/*         BSD based OS support for gethostname_r       */
-#if 	defined(__FreeBSD__) || defined(__OpenBSD__) \
-	|| defined(__NetBSD__)  || defined(__DARWIN__)
-
-#include <wx/thread.h>		// Needed for wxMutex
-
-static wxMutex s_mutexProtectingGetHostByName;
-
-struct hostent* gethostbyname_r(
-	char const* name,
-	struct hostent* result,
-	char* buffer,
-	int buflen,
-	int* h_errnop
-);
-
-#endif /* BSD supoprt */
-
 
 #endif // OTHERFUNCTIONS_H

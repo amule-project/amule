@@ -19,6 +19,7 @@
 
 
 #include "types.h"
+
 #ifdef __WXMSW__
 	#include <winsock.h>
 #else
@@ -29,6 +30,7 @@
 	#include <netinet/in.h>		// Needed for inet_addr, htonl
 	#include <arpa/inet.h>		//
 #endif
+
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #ifdef __WXMSW__
 	#include <wx/msw/winundef.h>
@@ -54,9 +56,9 @@
 #include "SafeFile.h"		// Needed for CSafeFile
 #include "HTTPDownload.h"	// Needed for HTTPThread
 #include "Preferences.h"	// Needed for CPreferences
-#include "otherfunctions.h"	// Needed for misc. functions
 #include "amule.h"			// Needed for theApp
 #include "GetTickCount.h" // Neeed for GetTickCount
+#include "NetworkFunctions.h" // Needed for StringIPtoUint32
 
 //WX_DEFINE_LIST(CServerListList);
 
@@ -317,8 +319,8 @@ bool CServerList::IsGoodServerIP(CServer* in_server)
 			char* ipmask = strdup(filtered_blocks[i]);
 			char* addr = strtok(ipmask, "/");
 			char* n = strtok(NULL, "/");
-			filters[i].addr = StringIPtoUint32(char2unicode(addr));
 			#warning ENDIANESS -> Take care of this htonl
+			filters[i].addr = htonl(CStringIPtoUint32(addr));
 			filters[i].mask = htonl((1 << (32 - atoi(n))) - 1);
 			free(ipmask);
 		}

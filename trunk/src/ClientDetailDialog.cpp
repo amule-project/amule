@@ -27,6 +27,7 @@
 
 #include "ClientDetailDialog.h"	// Interface declarations
 #include "otherfunctions.h"	// Needed for CastItoIShort
+#include "NetworkFunctions.h" // Needed for Uint32toStringIP
 #include "ClientCredits.h"	// Needed for GetDownloadedTotal
 #include "PartFile.h"		// Needed for CPartFile
 #include "SharedFileList.h"	// Needed for CSharedFileList

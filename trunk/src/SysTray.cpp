@@ -50,6 +50,7 @@
 #include "opcodes.h"		// Needed for UNLIMITED
 #include "Preferences.h"	// Needed for CPreferences
 #include "amule.h"		// Needed for theApp
+#include "NetworkFunctions.h" // Needed for Uint32toStringIP
 
 #ifdef __WXGTK__
 	#include "eggtrayicon.h"	// Needed for egg_tray_icon_new

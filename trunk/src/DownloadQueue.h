@@ -40,37 +40,6 @@ struct Hostname_Entry {
 		uint16 port;
 };
 
-
-/*
-// SLUGFILLER: hostnameSources
-#define WM_HOSTNAMERESOLVED		(WM_USER + 0x101)
-
-class CSourceHostnameResolveWnd : public CWnd
-{
-// Construction
-public:
-	CSourceHostnameResolveWnd();
-	virtual ~CSourceHostnameResolveWnd();
-
-	void AddToResolve(const unsigned char* fileid, LPCTSTR pszHostname, uint16 port);
-
-protected:
-	//DECLARE_MESSAGE_MAP()
-	 DECLARE_EVENT_TABLE()
-	afx_msg LRESULT OnHostnameResolved(WPARAM wParam, LPARAM lParam);
-
-private:
-	struct Hostname_Entry {
-		unsigned char fileid[16];
-		wxString strHostname;
-		uint16 port;
-	};
-	CTypedPtrList<CPtrList, Hostname_Entry*> m_toresolve;
-	char m_aucHostnameBuffer[MAXGETHOSTSTRUCT];
-};
-// SLUGFILLER: hostnameSources
-*/
-
 class CDownloadQueue
 {
 	friend class CServerSocket;
@@ -88,7 +57,6 @@ public:
 	CPartFile *GetFileByIndex(unsigned int idx) const;
 	void    CheckAndAddSource(CPartFile* sender,CUpDownClient* source);
 	void    CheckAndAddKnownSource(CPartFile* sender,CUpDownClient* source);
-	// bool	RemoveSource(CUpDownClient* toremove, bool updatewindow = true);
 	bool	RemoveSource(CUpDownClient* toremove, bool updatewindow = true, bool bDoStatsUpdate = true); // delete later ->{ return RemoveSource(toremove,NULL,updatewindow);}
 	void	DeleteAll();
 	void	RemoveFile(CPartFile* toremove);
@@ -138,7 +106,7 @@ public:
 	uint16	GetPausedFileCount();
 	// Kry - HostNameSources
 	void AddToResolve(const CMD4Hash& fileid, const wxString& pszHostname, uint16 port);
-	bool OnHostnameResolved(struct sockaddr_in* inaddr);
+	bool OnHostnameResolved(uint32 ip);
 	std::deque<Hostname_Entry*> m_toresolve;
 	
 	void SaveSourceSeeds();
