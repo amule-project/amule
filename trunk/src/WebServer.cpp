@@ -673,9 +673,9 @@ wxString CWebServer::_ParseURL(ThreadData Data, wxString fieldname) {
 				sprintf(fromReplace, "%%%02x", i);
 				toReplace[0] = (char)i;
 				toReplace[1] = 0;
-				value.Replace(wxString::Format(wxT("%s"), fromReplace), wxString::Format(wxT("%s"), toReplace));
+				value.Replace(char2unicode(fromReplace), char2unicode(toReplace));
 				sprintf(fromReplace, "%%%02X", i);
-				value.Replace(wxString::Format(wxT("%s"), fromReplace), wxString::Format(wxT("%s"), toReplace));
+				value.Replace(char2unicode(fromReplace), char2unicode(toReplace));
 			}
 		}
 	}
