@@ -249,6 +249,14 @@ void CWebServer::Send_Discard_V2_Request(CECPacket *request)
 {
 		CECPacket *reply = webInterface->SendRecvMsg_v2(request);
 		if ( reply ) {
+			if ( reply->GetOpCode() == EC_OP_STRINGS ) {
+				for(int i = 0;i < reply->GetTagCount();i++) {
+					CECTag *tag = reply->GetTagByIndex(i);
+					if ( tag->GetTagName() == EC_TAG_STRING ) {
+						webInterface->Show(tag->GetStringData());
+					}
+				}
+			}
 			delete reply;
 		}
 }
@@ -698,7 +706,8 @@ wxString CWebServer::_ParseURL(ThreadData Data, wxString fieldname) {
 			}
 		}
 	}
-	pThis->webInterface->Show(_("*** URL parsed. returning ") + value + wxT("\n"));
+	// this for debug only
+	//pThis->webInterface->Show(_("*** URL parsed. returning ") + value + wxT("\n"));
 	return value;
 }
 
@@ -937,6 +946,9 @@ wxString CWebServer::_GetServerList(ThreadData Data) {
 	// Populating array
 	CECPacket srv_req(EC_OP_GET_SERVER_LIST);
 	CECPacket *srv_reply = pThis->webInterface->SendRecvMsg_v2(&srv_req);
+	if ( !srv_reply ) {
+		return wxEmptyString;
+	}
 	for(int i = 0; i < srv_reply->GetTagCount(); i ++) {
 		CECTag *tag = srv_reply->GetTagByIndex(i);
 		CECTag *tmpTag;
@@ -1021,16 +1033,22 @@ wxString CWebServer::_GetServerList(ThreadData Data) {
 		
 		wxString sT;
 		if (ServerArray[i]->nServerUsers > 0) {
-			if (ServerArray[i]->nServerMaxUsers > 0)
+			if (ServerArray[i]->nServerMaxUsers > 0) {
 				sT.Printf(wxT("%d (%d)"), ServerArray[i]->nServerUsers, ServerArray[i]->nServerMaxUsers);
-			else
+			} else {
 				sT.Printf(wxT("%d"), ServerArray[i]->nServerUsers);
+			}
+		} else {
+			sT = wxT("0");
 		}
 		
 		HTTPProcessData.Replace(wxT("[4]"), sT);
 		sT = wxEmptyString;
-		if (ServerArray[i]->nServerFiles > 0)
+		if (ServerArray[i]->nServerFiles > 0) {
 			sT.Printf(wxT("%d"), ServerArray[i]->nServerFiles);
+		} else {
+			sT = wxT("0");
+		}
 		
 		HTTPProcessData.Replace(wxT("[5]"), sT);
 		if ( IsSessionAdmin(Data,sSession) ) {
