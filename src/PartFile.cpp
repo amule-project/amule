@@ -336,13 +336,18 @@ CPartFile::~CPartFile()
 bool CPartFile::IsASanePartFile() const {
 	int sane;
 	
-	sane = 	MagicNumber1 == MAGIC_1 && 
+	sane = 	this &&
+		MagicNumber1 == MAGIC_1 && 
 		MagicNumber2 == MAGIC_2; 
 #if defined( __DEBUG__ )
 	if( !sane ) {
 		// scream loud!
 		printf("Bogus pointer to newfile detected!\n");
-		printf("MN1 = %u, MN2 = %u\n", MagicNumber1, MagicNumber2);
+		if(this) {
+			printf("MN1 = %u, MN2 = %u\n", MagicNumber1, MagicNumber2);
+		} else {
+			printf("'this' is a NULL pointer.\n");
+		}
 	}
 #endif // __DEBUG__
 
@@ -1592,7 +1597,7 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 			it != m_downloadingSourcesList.end(); 
 			it++ ) {
 			CUpDownClient *cur_src = *it;
-			if(cur_src && (cur_src->GetDownloadState() == DS_DOWNLOADING)) {
+			if(cur_src->IsASaneUpDownClient() && cur_src && (cur_src->GetDownloadState() == DS_DOWNLOADING)) {
 				wxASSERT( cur_src->socket );
 				if (cur_src->socket) {
 					transferingsrc++;
