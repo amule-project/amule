@@ -21,7 +21,7 @@
 //
 
 
-#if defined(__WXMAC__)
+#if defined(__WXMAC__) || defined(__WXCOCOA__)
 	#include <wx/wx.h>
 #endif
 #ifdef __WXMSW__
