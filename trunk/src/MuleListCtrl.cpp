@@ -312,7 +312,7 @@ void CMuleListCtrl::SetSortArrow(int iColumn, ArrowType atType)
 {
 	// integrated in listctrl..
 	switch(atType) {
-		case 263:
+		case arrowDown:
 			#ifndef __WXMSW__
 			wxODListCtrl::SetSortArrow(iColumn,(int)1);
 			#endif

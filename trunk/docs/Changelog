@@ -34,6 +34,7 @@ Version 2.0.0rc4 - The 'Target: REAL Stability' version.
 		* Fixed some solaris compilation problems (thanks to wolti)
 		* Fixed font problem after Xaignar's great flicker free
 		  work in download list control.
+		* Fixed broken sort arrow after flicker free clean up.
 		* Enabled mouse wheel scrolling in all aMule list controls.
 
 	Xaignar:
