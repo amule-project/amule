@@ -71,7 +71,6 @@ private:
 	CKnownFileMap		m_Files_map;
 	CPreferences*		app_prefs;
 	CServerConnect*		server;
-	CSharedFilesCtrl*       output;
 };
 
 #endif // SHAREDFILELIST_H

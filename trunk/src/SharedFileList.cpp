@@ -33,13 +33,11 @@
 #include "packets.h"		// Needed for Packet
 #include "SafeFile.h"		// Needed for CSafeMemFile
 #include "sockets.h"		// Needed for CServerConnect
-#include "SharedFilesCtrl.h"	// Needed for CSharedFilesCtrl
 #include "KnownFile.h"		// Needed for CKnownFile
 #include "KnownFileList.h"	// Needed for CKnownFileList
 #include "AddFileThread.h"	// Needed for CAddFileThread
 #include "Preferences.h"	// Needed for CPreferences
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
-#include "amuleDlg.h"		// Needed for CamuleDlg
 #include "amule.h"			// Needed for theApp
 #include "CMD4Hash.h"		// Needed for CMD4Hash
 #include "PartFile.h"		// Needed for PartFile
@@ -49,7 +47,6 @@ CSharedFileList::CSharedFileList(CPreferences* in_prefs,CServerConnect* in_serve
 	app_prefs = in_prefs;
 	server = in_server;
 	filelist = in_filelist;
-	output = 0;
 	reloading = false;
 	FindSharedFiles();
 }
@@ -129,7 +126,7 @@ void CSharedFileList::AddFilesFromDirectory(wxString directory)
 		if (toadd) {
 			if ( m_Files_map.find(toadd->GetFileHash()) == m_Files_map.end() ) {
 				toadd->SetFilePath(directory);
-				output->ShowFile(toadd);
+				Notify_SharedFilesShowFile(toadd);
 				list_mut.Lock();
 				m_Files_map[toadd->GetFileHash()] = toadd;
 				list_mut.Unlock();
@@ -160,12 +157,10 @@ void CSharedFileList::SafeAddKFile(CKnownFile* toadd, bool bOnlyAdd){
 	list_mut.Unlock();
 
 	if (bOnlyAdd) {
-		output->ShowFile(toadd);
+		Notify_SharedFilesShowFile(toadd);
 		return;
 	}
-	if (output) {
-		output->ShowFile(toadd);
-	}
+	Notify_SharedFilesShowFile(toadd);
 
 	// offer new file to server
 	if (!server->IsConnected()) {
@@ -193,7 +188,7 @@ void CSharedFileList::SafeAddKFile(CKnownFile* toadd, bool bOnlyAdd){
 
 // removes first occurrence of 'toremove' in 'list'
 void CSharedFileList::RemoveFile(CKnownFile* toremove){
-	output->RemoveFile(toremove);
+	Notify_SharedFilesRemoveFile(toremove);
 	m_Files_map.erase(toremove->GetFileHash());
 }
 
@@ -205,22 +200,17 @@ void CSharedFileList::Reload(bool sendtoserver, bool firstload){
 	// Kry - bah, let's use a var. 
 	if (!reloading) {
 		reloading = true;
-		output->DeleteAllItems();
+		Notify_SharedFilesRemoveAllItems();
 		FindSharedFiles();
-		if ((output) && (firstload == false)) {
-			output->ShowFileList(this);
+		if (firstload == false) {
+			Notify_SharedFilesShowFileList(this);
 		}
 		if (sendtoserver) {
 			SendListToServer();
 		}
-		output->InitSort();
+		Notify_SharedFilesInitSort();
 		reloading = false;
 	}
-}
-
-void CSharedFileList::SetOutputCtrl(CSharedFilesCtrl* in_ctrl){
-	output = in_ctrl;
-	output->ShowFileList(this);
 }
 
 void CSharedFileList::SendListToServer(){
@@ -372,7 +362,7 @@ short CSharedFileList::GetFilePriorityByID(const CMD4Hash& filehash)
 
 void CSharedFileList::UpdateItem(CKnownFile* toupdate)
 {
-	output->UpdateItem(toupdate);
+	Notify_SharedFilesUpdateItem(toupdate);
 }
 
 void CSharedFileList::GetSharedFilesByDirectory(const wxString directory,
