@@ -557,3 +557,11 @@ void CSearchList::AddFileToDownloadByHash(const CMD4Hash& hash, uint8 cat)
 		}
 	}
 }
+
+void CSearchList::StopGlobalSearch()
+{
+ 	if (m_searchthread) {
+		m_searchthread->Delete();
+		m_searchthread = 0;
+ 	}
+}

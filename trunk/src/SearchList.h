@@ -110,8 +110,7 @@ public:
 	void LocalSearchEnd();
 
 	Packet* 	m_searchpacket;
-	CGlobalSearchThread* m_searchthread;
-	
+	void StopGlobalSearch();
 private:
 	bool AddToList(CSearchFile* toadd, bool bClientResponse = false);
 
@@ -123,6 +122,8 @@ private:
 	wxString	m_resultType;
 	
 	long		m_CurrentSearch;
+
+	CGlobalSearchThread* m_searchthread;
 };
 
 #endif // SEARCHLIST_H
