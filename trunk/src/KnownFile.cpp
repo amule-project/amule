@@ -531,7 +531,7 @@ void CKnownFile::SetFileSize(uint32 nFileSize)
 
 	// nr. of parts to be used with OP_FILESTATUS
 	m_iED2KPartCount = nFileSize / PARTSIZE + 1;
-
+	wxASSERT(m_iED2KPartCount <= 441);
 	// nr. of parts to be used with OP_HASHSETANSWER
 	m_iED2KPartHashCount = nFileSize / PARTSIZE;
 	if (m_iED2KPartHashCount != 0)
