@@ -541,11 +541,11 @@ bool CamuleApp::OnInit()
 			if ( strncmp(entries->mnt_type, "vfat",4) == 0 ) {
 				if ( tempdir.StartsWith( char2unicode(entries->mnt_dir )) ) {
 					// Kry - We cannot addlogline because there's no GUI yet!
-					QueueLogLine(false,wxT("Temp dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings."));
+					AddLogLineM(false,wxT("Temp dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings."));
 					use_chmod = false;
 				}
 				if ( incomingdir.StartsWith( char2unicode(entries->mnt_dir )) ) {
-					QueueLogLine(false,wxT("Incoming dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings."));
+					AddLogLineM(false,wxT("Incoming dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings."));
 					use_chmod = false;
 				}
 				if (!use_chmod) {
@@ -569,11 +569,11 @@ bool CamuleApp::OnInit()
 		if ( !strcmp(mntbuf[i].f_fstypename,"msdos")) {
 			if ( tempdir.StartsWith( mntbuf[i].f_mntonname ) ) {
 				// Kry - We cannot addlogline because there's no GUI yet!
-      			QueueLogLine(false,"Temp dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings.");
+      			AddLogLineM(false,"Temp dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings.");
                     use_chmod = false;
 			}
 			if ( incomingdir.StartsWith( mntbuf[i].f_mntonname ) ) {
-				QueueLogLine(false,"Incoming dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings.");
+				AddLogLineM(false,"Incoming dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings.");
 				use_chmod = false;
 			}
 			if (!use_chmod) {
@@ -1321,7 +1321,7 @@ void CamuleApp::Localize_mule()
 	}
 
 	if ((!m_locale.Init(language)) && (language != wxLANGUAGE_DEFAULT) && (language != wxLANGUAGE_CUSTOM)) {
-		QueueLogLine(false,wxT("The selected locale seems not to be installed on your box. (Note: I'll try to set it anyway)"));
+		AddLogLineM(false,wxT("The selected locale seems not to be installed on your box. (Note: I'll try to set it anyway)"));
 	}
 	if (language != wxLANGUAGE_CUSTOM) {
 		m_locale.AddCatalogLookupPathPrefix(wxT(LOCALEDIR));
@@ -1463,19 +1463,13 @@ void CamuleApp::Trigger_New_version(wxString old_version, wxString new_version)
 
 }
 
-void CamuleApp::QueueLogLine(bool addtostatusbar, const wxChar* line, ...)
+void CamuleApp::QueueLogLine(bool addtostatusbar, wxString line)
 {
 	m_LogQueueLock.Enter();
 
 	QueuedLogLine new_line_to_log;
-
-	va_list argptr;
-	va_start(argptr, line);
-	wxString bufferline = wxString::FormatV( line, argptr );
-	bufferline.Truncate(1000); // Max size 1000 chars
-	va_end(argptr);
-
-	new_line_to_log.line = bufferline;
+	
+	new_line_to_log.line = line;
 	new_line_to_log.addtostatus = addtostatusbar;
 
 	QueuedAddLogLines.push_back(new_line_to_log);
