@@ -1000,7 +1000,7 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
         amulesig_out.Write("\n",1);
 
 	// Uptime
-	sprintf(buffer,"%s",CastSecondsToHM(unicode2char(GetUptimeSecs())));
+	sprintf(buffer,"%s",unicode2char(CastSecondsToHM(GetUptimeSecs())));
 	amulesig_out.Write(buffer, strlen(buffer));
 	amulesig_out.Write("\n",1);
 
