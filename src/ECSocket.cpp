@@ -19,10 +19,10 @@
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <netinet/in.h>		// Needed for hton, ntoh functions
 
 #include "ECSocket.h"
 
-#include "endianfix.h"		// For EndianSwap
 #include "gsocket-fix.h"	// Needed for wxSOCKET_REUSEADDR
 
 #include "ECPacket.h"		// Needed for CECPacket
@@ -56,10 +56,10 @@ ECSocket::~ECSocket(void)
 bool ECSocket::ReadNumber(wxSocketBase *sock, void *buffer, unsigned int len)
 {
 	sock->Read(buffer, len);
-#if wxBYTE_ORDER != wxLITTLE_ENDIAN
+#if wxBYTE_ORDER == wxLITTLE_ENDIAN
 	switch (len) {
-		case 2: ENDIAN_SWAP_I_16(buffer); break;
-		case 4: ENDIAN_SWAP_I_32(buffer); break;
+		case 2: *((uint16 *)buffer) = ntohs(*((uint16 *)buffer)); break;
+		case 4: *((uint32 *)buffer) = ntohl(*((uint32 *)buffer)); break;
 	}
 #endif
 	return (sock->LastCount() == len);
@@ -69,16 +69,16 @@ bool ECSocket::ReadNumber(wxSocketBase *sock, void *buffer, unsigned int len)
 bool ECSocket::WriteNumber(wxSocketBase *sock, const void *buffer, unsigned int len)
 {
 #if wxBYTE_ORDER == wxLITTLE_ENDIAN
-	sock->Write(buffer, len);
-#else
 	char tmp[8];
 
 	switch (len) {
-		case 1: *((int8 *)tmp) = *((int8 *)buffer); break;
-		case 2: *((int16 *)tmp) = ENDIAN_SWAP_16(*((int16 *)buffer));
-		case 4: *((int32 *)tmp) = ENDIAN_SWAP_32(*((int32 *)buffer));
+		case 1: *((uint8 *)tmp) = *((uint8 *)buffer); break;
+		case 2: *((uint16 *)tmp) = htons(*((uint16 *)buffer)); break;
+		case 4: *((uint32 *)tmp) = htonl(*((uint32 *)buffer)); break;
 	}
 	sock->Write(tmp, len);
+#else
+	sock->Write(buffer, len);
 #endif
 	return (sock->LastCount() == len);
 }

@@ -22,9 +22,9 @@
 
 #include "types.h"	// Needed for uint* types
 #include <wx/string.h>	// Needed for wxString
+#include <netinet/in.h>	// Needed for ntoh, hton functions
 #include "StringFunctions.h"	// Needed for aMuleConvToUTF8
 #include "ECcodes.h"	// Needed for EC types
-#include "endianfix.h"	// Needed for ENDIAN_SWAP_* macros
 
 // Commented out, because with current code it'll most likely scew up gcc optimizations
 //#pragma interface
@@ -70,8 +70,8 @@ class CECTag {
 		ec_tagname_t	GetTagName(void) const { return m_tagName; }
 			// Retrieving special data types
 		uint8		GetInt8Data(void) const { return *((uint8 *)m_tagData); }
-		uint16		GetInt16Data(void) const { return ENDIAN_SWAP_16(*((uint16 *)m_tagData)); }
-		uint32		GetInt32Data(void) const { return ENDIAN_SWAP_32(*((uint32 *)m_tagData)); }
+		uint16		GetInt16Data(void) const { return ntohs(*((uint16 *)m_tagData)); }
+		uint32		GetInt32Data(void) const { return ntohl(*((uint32 *)m_tagData)); }
 		wxString	GetStringData(void) const { return wxString(wxConvUTF8.cMB2WC((const char *)m_tagData), aMuleConv); }
 		EC_IPv4_t 	GetIPv4Data(void) const;
 	protected:
@@ -113,10 +113,10 @@ class CECPacket : private CECTag {
 		ec_opcode_t	GetOpCode(void) const { return m_opCode; }
 		uint32		GetPacketLength(void) const { return CECTag::GetTagLen(); }
 		EC_DETAIL_LEVEL GetDetailLevel() const
-		{
-			CECTag *tag = GetTagByName(EC_TAG_DETAIL_LEVEL);
-			return (tag) ? (EC_DETAIL_LEVEL)tag->GetInt8Data() : EC_DETAIL_GUI;
-		}
+				{
+					CECTag *tag = GetTagByName(EC_TAG_DETAIL_LEVEL);
+					return (tag) ? (EC_DETAIL_LEVEL)tag->GetInt8Data() : EC_DETAIL_GUI;
+				}
 	private:
 				CECPacket(wxSocketBase *sock, ECSocket& socket);
 		bool		WritePacket(wxSocketBase *sock, ECSocket& socket) const;
@@ -165,4 +165,4 @@ class CEC_PartStatus_Tag : public CECTag {
  		CEC_PartStatus_Tag(CPartFile *file, int statussize);
 };
 
-#endif /* ECPacket.h */
+#endif /* ECPACKET_H */
