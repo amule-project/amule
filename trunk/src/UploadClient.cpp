@@ -44,6 +44,7 @@
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "ClientList.h"
 #include "Statistics.h"
+#include "Logger.h"
 
 #ifndef AMULE_DAEMON
 	#include "TransferWnd.h"	// Needed for CTransferWnd

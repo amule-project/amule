@@ -47,6 +47,7 @@
 #include "GetTickCount.h"	// Needed for GetTickCount
 #include "NetworkFunctions.h" // Needed for CAsyncDNS
 #include "Statistics.h"		// Needed for CStatistics
+#include "Logger.h"
 
 #include <algorithm>
 #include <numeric>

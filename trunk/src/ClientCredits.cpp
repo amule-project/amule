@@ -40,7 +40,7 @@
 #include "SafeFile.h"		// Needed for CSafeFile
 #include "StringFunctions.h"	// Needed for unicode2char
 #include "OtherFunctions.h" 	// Needed for md4cpy
-
+#include "Logger.h"
 #include "ServerConnect.h" // Needed for CServerConnect
 #include "CFile.h"
 

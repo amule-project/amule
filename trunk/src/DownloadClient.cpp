@@ -41,6 +41,7 @@
 #include "SHAHashSet.h"
 #include "SharedFileList.h"
 #include "Statistics.h"
+#include "Logger.h"
 
 
 bool CUpDownClient::Compare(const CUpDownClient* tocomp, bool bIgnoreUserhash){

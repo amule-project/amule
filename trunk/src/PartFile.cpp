@@ -68,6 +68,7 @@
 #include "StringFunctions.h"	// Needed for CleanupFilename
 #include "filefn.h"
 #include "Statistics.h"		// Needed for CStatistics
+#include "Logger.h"
 
 #include <map>
 #include <algorithm>

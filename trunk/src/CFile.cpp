@@ -29,10 +29,9 @@
 #include "CFile.h"		// Interface declarations.
 
 #include "amule.h"		// Needed for theApp
-
 #include "Preferences.h"	// Needed for CPreferences
-
 #include "StringFunctions.h" // unicode2char
+#include "Logger.h"
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"             // Needed for HAVE_SYS_PARAM_H

@@ -31,6 +31,7 @@
 #include "StringFunctions.h" // Needed for unicode2char
 #include "amule.h"
 #include "CMD4Hash.h"		// Needed for CMD4Hash
+#include "Logger.h"
 
 #include <wx/listimpl.cpp> // ye old magic incantation
 WX_DEFINE_LIST(KnownFileList);

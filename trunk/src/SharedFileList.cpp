@@ -47,6 +47,7 @@
 #include "updownclient.h"
 #include "StringFunctions.h" // Needed for unicode2char
 #include "Statistics.h"		// Needed for CStatistics
+#include "Logger.h"
 
 #ifndef AMULE_DAEMON
 	#include "muuli_wdr.h"		// Needed for IDC_RELOADSHAREDFILES

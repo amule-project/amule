@@ -43,6 +43,7 @@
 #include "OtherStructs.h"	// Needed for Requested_Block_Struct
 #include "ServerConnect.h"		// Needed for CServerConnect
 #include "Statistics.h"
+#include "Logger.h"
 
 #include <wx/listimpl.cpp>
 #include <wx/dynarray.h>

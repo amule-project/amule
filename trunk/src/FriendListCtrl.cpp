@@ -40,6 +40,7 @@
 #include "OtherFunctions.h"
 #include "muuli_wdr.h"
 #include "SafeFile.h"
+#include "Logger.h"
 
 BEGIN_EVENT_TABLE(CFriendListCtrl, CMuleListCtrl)
 	EVT_RIGHT_DOWN(CFriendListCtrl::OnNMRclick)

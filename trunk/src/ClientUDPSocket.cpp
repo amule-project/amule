@@ -47,6 +47,7 @@
 #include "amule.h"			// Needed for theApp
 #include "OtherFunctions.h"
 #include "SafeFile.h"
+#include "Logger.h"
 
 //
 // CClientUDPSocket -- Extended eMule UDP socket
