@@ -96,6 +96,7 @@ WxCasFrame::WxCasFrame (const wxString & title):
   m_statLine_5 = new wxStaticText (m_sigPanel, -1, "");
   m_statLine_6 = new wxStaticText (m_sigPanel, -1, "");
   m_statLine_7 = new wxStaticText (m_sigPanel, -1, "");
+
 #ifdef __LINUX__		// System monitoring on Linux
 
   m_sysLine_1 = new wxStaticText (m_sigPanel, -1, "");
@@ -104,12 +105,11 @@ WxCasFrame::WxCasFrame (const wxString & title):
 
   // Add Online Sig file
   m_aMuleSig = new OnLineSig ();
+
 #ifdef __LINUX__		// System monitoring on Linux
 
   m_sysMonitor = new LinuxMon ();
 #endif
-
-  UpdateStatsPanel ();
 
   m_sigPanelSBoxSizer->Add (m_statLine_1, 0, wxALL | wxADJUST_MINSIZE, 5);
   m_sigPanelSBoxSizer->Add (m_statLine_2, 0, wxALL | wxADJUST_MINSIZE, 5);
@@ -118,6 +118,7 @@ WxCasFrame::WxCasFrame (const wxString & title):
   m_sigPanelSBoxSizer->Add (m_statLine_5, 0, wxALL | wxADJUST_MINSIZE, 5);
   m_sigPanelSBoxSizer->Add (m_statLine_6, 0, wxALL | wxADJUST_MINSIZE, 5);
   m_sigPanelSBoxSizer->Add (m_statLine_7, 0, wxALL | wxADJUST_MINSIZE, 5);
+
 #ifdef __LINUX__		// System monitoring on Linux
 
   m_sigPanelSBoxSizer->Add (m_sysLine_1, 0, wxALL | wxADJUST_MINSIZE, 5);
@@ -176,6 +177,7 @@ WxCasFrame::WxCasFrame (const wxString & title):
   m_toolbar->SetMargins (2, 2);
   m_toolbar->Realize ();
 
+
   // Frame Layout
   SetAutoLayout (TRUE);
   SetToolBar (m_toolbar);
@@ -184,12 +186,16 @@ WxCasFrame::WxCasFrame (const wxString & title):
   // Add timer
   m_timer = new wxTimer (this, ID_TIMER);
   m_timer->Start (1000 * wxGetApp ().GetConfig ()->Read (WxCasCte::REFRESH_RATE_KEY, WxCasCte::DEFAULT_REFRESH_RATE));	// s to ms
+
+  // Update stats
+  UpdateAll ();
 }
 
 // Destructor
 WxCasFrame::~WxCasFrame ()
 {
   delete m_aMuleSig;
+
 #ifdef __LINUX__		// System monitoring on Linux
 
   delete m_sysMonitor;
@@ -217,6 +223,7 @@ WxCasFrame::GetStatImage () const
     memdc;
     memdc.
     SelectObject (statBitmap);
+
 #ifdef __WXMSW__
 
     memdc.
@@ -248,7 +255,7 @@ WxCasFrame::GetStatImage () const
     statImage = new wxImage (statBitmap);
 
     return
-      statImage;
+      (statImage);
   }
 
 // Refresh button
@@ -328,9 +335,7 @@ void
 WxCasFrame::OnBarPrefs (wxCommandEvent & event)
 {
   WxCasPrefs *dlg = new WxCasPrefs (this);
-  if (dlg->ShowModal () == wxID_OK)
-  {}
-
+  dlg->ShowModal ();
   dlg->Destroy ();
 }
 
@@ -350,12 +355,49 @@ WxCasFrame::OnBarAbout (wxCommandEvent & event)
 void
 WxCasFrame::OnTimer (wxTimerEvent & event)
 {
-  UpdateStatsPanel ();
-  m_imgPanel->Update ();
+  UpdateAll ();
+
+  // Generate stat image if asked in config
+  if ((bool)
+      (wxGetApp ().GetConfig ()->
+       Read (WxCasCte::ENABLE_AUTOSTATIMG_KEY,
+             WxCasCte::DEFAULT_AUTOSTATIMG_ISENABLED)))
+    {
+      wxImage *statImage = GetStatImage ();
+
+      wxFileName fileName (wxGetApp ().GetConfig ()->
+                           Read (WxCasCte::AUTOSTATIMG_DIR_KEY,
+                                 WxCasCte::DEFAULT_AUTOSTATIMG_PATH),
+                           WxCasCte::AMULESIG_IMG_NAME,
+                           wxGetApp ().GetConfig ()->
+                           Read (WxCasCte::AUTOSTATIMG_TYPE_KEY,
+                                 WxCasCte::DEFAULT_AUTOSTATIMG_TYPE).
+                           Lower ());
+
+      if (!statImage->SaveFile (fileName.GetFullPath ()))
+        {
+          wxMessageBox (_("No handler for this file type."),
+                        _("File was not saved"), wxOK | wxCENTRE, this);
+        }
+      delete statImage;
+    }
 }
 
-// Accessors
+// Update all panels and frame, call Fit if needed
 void
+WxCasFrame::UpdateAll ()
+{
+  bool needFit = UpdateStatsPanel ();
+
+  if (needFit)
+    {
+      m_imgPanel->Update ();
+      Fit ();
+    }
+}
+
+// Update stat panel
+bool
 WxCasFrame::UpdateStatsPanel ()
 {
   // Set labels
@@ -366,9 +408,9 @@ WxCasFrame::UpdateStatsPanel ()
   m_sysMonitor->Refresh ();
 #endif
 
-  Freeze ();
-
   wxString newline;
+
+  Freeze ();
 
   // Stat line 1
   newline = "aMule ";
@@ -390,7 +432,6 @@ WxCasFrame::UpdateStatsPanel ()
   newline += m_aMuleSig->GetServerPort ();
   newline += _("] with ");
   newline += m_aMuleSig->GetConnexionIDType ();
-  ;
 
   m_statLine_2->SetLabel (newline);
 
@@ -538,6 +579,7 @@ WxCasFrame::UpdateStatsPanel ()
 #endif
 #endif
 
+  Thaw ();
 
   // Set status bar
   if (m_aMuleSig->IsRunning ())
@@ -549,39 +591,16 @@ WxCasFrame::UpdateStatsPanel ()
       SetStatusText (_("WARNING: aMule is NOT running"));
     }
 
-  Thaw ();
-
   // Resize only if needed
   if (m_maxLineCount != newMaxLineCount)
     {
-      // Fit to new lable size
-      Layout ();
-      Fit ();
+      // Fit to new label size
+      m_sigPanel->Fit ();
       m_maxLineCount = newMaxLineCount;
+      return (TRUE);
     }
-
-  // Generate stat image if asked in config
-  if ((bool)
-      (wxGetApp ().GetConfig ()->
-       Read (WxCasCte::ENABLE_AUTOSTATIMG_KEY,
-             WxCasCte::DEFAULT_AUTOSTATIMG_ISENABLED)))
+  else
     {
-      wxImage *statImage = GetStatImage ();
-
-      wxFileName fileName (wxGetApp ().GetConfig ()->
-                           Read (WxCasCte::AUTOSTATIMG_DIR_KEY,
-                                 WxCasCte::DEFAULT_AUTOSTATIMG_PATH),
-                           WxCasCte::AMULESIG_IMG_NAME,
-                           wxGetApp ().GetConfig ()->
-                           Read (WxCasCte::AUTOSTATIMG_TYPE_KEY,
-                                 WxCasCte::DEFAULT_AUTOSTATIMG_TYPE).
-                           Lower ());
-
-      if (!statImage->SaveFile (fileName.GetFullPath ()))
-        {
-          wxMessageBox (_("No handler for this file type."),
-                        _("File was not saved"), wxOK | wxCENTRE, this);
-        }
-      delete statImage;
+      return (FALSE);
     }
 }

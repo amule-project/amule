@@ -109,8 +109,4 @@ WxCasCanvas::DrawImg (wxDC *dc)
   dc->BeginDrawing();
   dc->DrawBitmap (bitmap, 0, 0);
   dc->EndDrawing();
-
-  // Frame layout
-  GetParent ()->Layout ();
-  GetParent ()->Fit ();
 }

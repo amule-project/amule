@@ -35,10 +35,8 @@
 #include <wx/wx.h>
 #endif
 
-class WxCasCte
+struct WxCasCte
   {
-  public:
-
     static const wxString AMULESIG_FILENAME;
     static const wxString AMULESIG_IMG_NAME;
 

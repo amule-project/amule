@@ -175,16 +175,16 @@ WxCasPrefs::WxCasPrefs (wxWindow * parent):wxDialog (parent, -1,
   m_mainVBox->Add (m_staticLine, 0, wxGROW | wxALIGN_CENTER | wxALL);
 
   // Button bar
-  m_buttonVBox = new wxBoxSizer (wxHORIZONTAL);
+  m_buttonHBox = new wxBoxSizer (wxHORIZONTAL);
   m_validateButton =
     new wxButton (this, ID_VALIDATE_BUTTON, wxString (_("Validate")));
   m_cancelButton =
     new wxButton (this, ID_CANCEL_BUTTON, wxString (_("Cancel")));
 
-  m_buttonVBox->Add (m_validateButton, 0, wxALIGN_CENTER | wxALL, 5);
-  m_buttonVBox->Add (m_cancelButton, 0, wxALIGN_CENTER | wxALL, 5);
+  m_buttonHBox->Add (m_validateButton, 0, wxALIGN_CENTER | wxALL, 5);
+  m_buttonHBox->Add (m_cancelButton, 0, wxALIGN_CENTER | wxALL, 5);
 
-  m_mainVBox->Add (m_buttonVBox, 0, wxALIGN_CENTER | wxALL, 10);
+  m_mainVBox->Add (m_buttonHBox, 0, wxALIGN_CENTER | wxALL, 10);
 
   // Layout
   SetAutoLayout (TRUE);
