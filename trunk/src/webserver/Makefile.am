@@ -19,9 +19,6 @@ dist_htmlimg_DATA = add_server.gif \
 		    cp_shared.gif \
 		    cp_stats.gif \
 		    emule.gif \
-		    GraphCon.gif \
-		    GraphDL.gif \
-		    GraphUL.gif \
 		    green.gif \
 		    greenpercent.gif \
 		    l_cancel.gif \

@@ -72,10 +72,6 @@ class CWSThread;
 class CWebSocket;
 class CMD4Hash;
 
-//shakraw - webserver code below
-//#define WEB_GRAPH_HEIGHT		120
-#define WEB_GRAPH_WIDTH			500
-
 #define SESSION_TIMEOUT_SECS	300	// 5 minutes session expiration
 #define SHORT_FILENAME_LENGTH	40	// Max size of file name.
 
@@ -725,7 +721,6 @@ class CWebServer {
 		void 	ReloadTemplates(void);
 	
 		int	UpdateSessionCount();
-		void 	AddStatsLine(UpDown* line);
 		uint16	GetSessionCount()	{ return m_Params.Sessions.GetCount();}
 		int 	GetWSPrefs();
 		void	Print(const wxString &s);
@@ -785,7 +780,12 @@ class CWebServer {
 		int		m_iSearchSortby;
 		bool		m_bSearchAsc;
 		unsigned int	m_nRefresh;
+
+		// Graph related
 		wxString	m_sLastHistoryTimeStamp;
+		uint16		m_nGraphHeight;
+		uint16		m_nGraphWidth;
+		uint16		m_nGraphScale;
 };
 
 #endif // WEBSERVER_H

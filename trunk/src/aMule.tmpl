@@ -487,8 +487,8 @@ function GotoCat(cat) {
  <td valign=top class="shared-line">[Priority]</td>
  <td valign=top class="shared-line">
 <acronym title="ED2K Link(s)"><a href="[FileLink]"><img src="l_ed2klink.gif" alt="ED2K Link(s)"></a></acronym>
-<acronym title="Increase Priority"><a href="?ses=[Session]&amp;w=shared&[PriorityUpLink]"><img src="l_up.gif" alt="Increase Priority"></a></acronym>
-<acronym title="Decrease Priority"><a href="?ses=[Session]&amp;w=shared&[PriorityDownLink]"><img src="l_down.gif" alt="Decrease Priority"></a></acronym>
+<acronym title="Increase Priority"><a href="?ses=[Session]&amp;w=shared&[PriorityUpLink]"><img src="l_up.gif" alt="[PriorityUp]"></a></acronym>
+<acronym title="Decrease Priority"><a href="?ses=[Session]&amp;w=shared&[PriorityDownLink]"><img src="l_down.gif" alt="[PriorityDown]"></a></acronym>
 </td>
 </tr>
 <--TMPL_SHARED_LINE_END-->
@@ -503,50 +503,73 @@ function GotoCat(cat) {
  <td valign=top class="shared-line-changed">[Priority]</td>
  <td valign=top class="shared-line-changed">
 <acronym title="ED2K Link(s)"><a href="[FileLink]"><img src="l_ed2klink.gif" alt=""ED2K Link(s)></a></acronym>
-<acronym title="Increase Priority"><a href="?ses=[Session]&amp;w=shared&[PriorityUpLink]"><img src="l_up.gif" alt="Increase Priority"></a></acronym>
-<acronym title="Decrease Priority"><a href="?ses=[Session]&amp;w=shared&[PriorityDownLink]"><img src="l_down.gif" alt="Decrease Priority"></a></acronym>
+<acronym title="Increase Priority"><a href="?ses=[Session]&amp;w=shared&[PriorityUpLink]"><img src="l_up.gif" alt="[PriorityUp]"></a></acronym>
+<acronym title="Decrease Priority"><a href="?ses=[Session]&amp;w=shared&[PriorityDownLink]"><img src="l_down.gif" alt="[PriorityDown]"></a></acronym>
 </td>
 </tr>
 </font>
 <--TMPL_SHARED_LINE_CHANGED_END-->
 <--TMPL_GRAPHS-->
 <SCRIPT language=JavaScript>
-   function traceGraph(SpeedString,imageURL,MaxSpeed) {
-         document.write('<table cellspacing=0 border=0 cellpadding=0 width="500px"><tr><td valign="bottom" height="150" width="100%"></td>');
+   function traceGraph(SpeedString,GraphColor,MaxSpeed) {
+         document.write('<table cellspacing=0 border=0 cellpadding=0 width="[GraphWidth]px"><tr><td valign="bottom" height="[GraphHeight]px" width="100%"></td>');
          var speed = SpeedString.split(",");
          if(MaxSpeed==0) MaxSpeed = 1; //No divide by 0 !
          for(i=0;i<speed.length;i++) {
                  speed[i]=new Number(speed[i])
                  if (speed[i]>MaxSpeed) speed[i]=MaxSpeed;
-                 size=Math.round(speed[i]*150/MaxSpeed);
-                 document.write('<td valign="bottom"><table height="'+ size +'px" width="1px" border=0 cellpadding=0 cellspacing=0><td background="' + imageURL + '" height="100%" width="100%"></td></table></td>');
+                 size=Math.round(speed[i]*[GraphHeight]/MaxSpeed);
+                 document.write('<td valign="bottom"><table height="'+ size +'px" width="1px" border=0 cellpadding=0 cellspacing=0><td bgcolor="' + GraphColor + '" height="100%" width="100%"></td></table></td>');
    	 }
     	 document.write('</tr></table>');
 }
 </SCRIPT>
 &nbsp;
 <table border=0 align=center cellpadding=0 cellspacing=0>
-<tr><td style="border-width:1px; border-color:green; border-style:solid;" valign="bottom" height="150px" background="back.gif">
+<tr><td>
+<table border=0 align=center cellpadding=0 cellspacing=0><tr><td style="border-width:1px; border-color:green; border-style:solid; background-position: bottom left;" valign="bottom" height="[GraphHeight]px" background="back.gif">
 <SCRIPT language=JavaScript>
 	var dlstring="[GraphDownload]";
-	traceGraph(dlstring,"GraphDL.gif",[MaxDownload]*1024);
+	traceGraph(dlstring,"green",[MaxDownload]*1024);
 </SCRIPT>
+</td></tr></table>
 </td></tr>
-<tr><td align=center><font color=black><font face=Tahoma style="font-size:8pt;">[TxtDownload]: Max [MaxDownload] [KByteSec], [TxtTime]: [ScaleTime]</font><br>&nbsp;</td></tr>
-<tr><td style="border-width:1px; border-color:red; border-style:solid;" valign="bottom" height="150px" background="back.gif">
+<tr><td>
+<table border=0 align=center cellpadding=0 cellspacing=0><tr><td align=center><font color=black><font face=Tahoma style="font-size:8pt;">[TxtDownload]: Max [MaxDownload] [KByteSec], [TxtTime]: [ScaleTime]</font><br>&nbsp;</td></tr></table>
+</td></tr>
+<tr><td>
+<table border=0 align=center cellpadding=0 cellspacing=0><tr><td style="border-width:1px; border-color:red; border-style:solid; background-position: bottom left;" valign="bottom" height="[GraphHeight]px" background="back.gif">
 <SCRIPT language=JavaScript>
 	var ulstring="[GraphUpload]";
-	traceGraph(ulstring,"GraphUL.gif",[MaxUpload]*1024);
+	traceGraph(ulstring,"red",[MaxUpload]*1024);
 </SCRIPT>
+</td></tr></table>
 </td></tr>
-<tr><td align=center><font color=black><font face=Tahoma style="font-size:8pt;">[TxtUpload]: Max [MaxUpload] [KByteSec], [TxtTime]: [ScaleTime]</font><br>&nbsp;</td></tr>
-<tr><td style="border-width:1px; border-color:blue; border-style:solid;" valign="bottom" height="150px" background="back.gif">
+<tr><td>
+<table border=0 align=center cellpadding=0 cellspacing=0><tr><td align=center><font color=black><font face=Tahoma style="font-size:8pt;">[TxtUpload]: Max [MaxUpload] [KByteSec], [TxtTime]: [ScaleTime]</font><br>&nbsp;</td></tr></table>
+</td></tr>
+<tr><td>
+<table border=0 align=center cellpadding=0 cellspacing=0><tr><td style="border-width:1px; border-color:blue; border-style:solid; background-position: bottom left;" valign="bottom" height="[GraphHeight]px" background="back.gif">
 <SCRIPT language=JavaScript>
 	var connstring="[GraphConnections]";
-	traceGraph(connstring,"GraphCon.gif",[MaxConnections]);
+	traceGraph(connstring,"blue",[MaxConnections]);
 </SCRIPT>
+</td></tr></table>
 </td></tr>
-<tr><td align=center><font color=black><font face=Tahoma style="font-size:8pt;">[TxtConnections]: Max [MaxConnections], [TxtTime]: [ScaleTime]</font></td></tr>
+<tr><td>
+<table border=0 align=center cellpadding=0 cellspacing=0><tr><td align=center><font color=black><font face=Tahoma style="font-size:8pt;">[TxtConnections]: Max [MaxConnections], [TxtTime]: [ScaleTime]</font></td></tr></table>
+</td></tr>
+<tr><td>
+<table border=0 align=center cellpadding=0 cellspacing=0><tr><td>
+<br>
+<form action="/" method="GET">
+<input type="hidden" name=ses value="[Session]">
+<input type="hidden" name=w value=graphs>
+<input type="hidden" name=refetch value=yes>
+<input type=submit value="[Refetch]" class="ibutton">
+</form>
+</td></tr></table>
+</td></tr>
 </table>
 <--TMPL_GRAPHS_END-->
 <--TMPL_LOG-->
@@ -663,6 +686,25 @@ function GotoCat(cat) {
 </td>
 </tr>
 
+<tr>
+<td align=left valign=middle bgcolor="#0066CC">
+<font face=Tahoma style="font-size:8pt;"><b>[GraphSettings]</b></font>
+</td>
+</tr>
+<tr><td align=left valign=top bgcolor="#3399FF">
+<table border=0>
+<tr><td><font face=Tahoma style="font-size:8pt;">[GraphWidthText]</font></td>
+<td><input type="text" name=gwidth size="5" class=dinput value="[GraphWidth]"></td>
+<td><font face=Tahoma style="font-size:8pt;">[pixels]</font></td></tr>
+<tr><td><font face=Tahoma style="font-size:8pt;">[GraphHeightText]</font></td>
+<td><input type="text" name=gheight size="5" class=dinput value="[GraphHeight]"></td>
+<td><font face=Tahoma style="font-size:8pt;">[pixels]</font></td></tr>
+<tr><td><font face=Tahoma style="font-size:8pt;">[GraphScaleText]</font></td>
+<td><input type="text" name=gscale size="5" class=dinput value="[GraphScale]"></td>
+<td><font face=Tahoma style="font-size:8pt;">[seconds]</font></td></tr>
+</table>
+</td></tr>
+
 <tr><td><br><font face=Tahoma style="font-size:10pt;" color=black>[aMuleAppName]</font></td></tr>
 <tr>
 <td align=left valign=middle bgcolor="#0066CC">
@@ -720,11 +762,13 @@ function GotoCat(cat) {
 </table>
 </td>
 </tr>
+
 <tr>
 <td align=center><br><input type=submit value="[Apply]"></td>
 </tr>
-</form>
+
 </table>
+</form>
 &nbsp;
 <--TMPL_PREFERENCES_END-->
 <--TMPL_LOGIN-->
