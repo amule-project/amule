@@ -928,25 +928,37 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 
 	// Open both files if needed
 	if (!emulesig_out.IsOpened()) {
-		if (!emulesig_out.Open(emulesig_path)) {
-			if (!emulesig_out.Create(emulesig_path)) {
-				AddLogLineM(true, wxString(_("Failed to save"))+_(" OnlineSig File"));
+		if ( !wxFileExists( emulesig_path ) ) {
+			if ( !emulesig_out.Create(emulesig_path) ) {
+				AddLogLineM(true, wxString(_("Failed to create"))+_(" OnlineSig File"));
 				// Will never try again.
 				amulesig_path.Clear();
 				emulesig_path.Clear();
 				return;
 			}
+		} else if  ( !emulesig_out.Open(emulesig_path) ) {
+			AddLogLineM(true, wxString(_("Failed to open"))+_(" OnlineSig File"));
+			// Will never try again.
+			amulesig_path.Clear();
+			emulesig_path.Clear();
+			return;
 		}
 	}
 	if (!amulesig_out.IsOpened()) {
-		if (!amulesig_out.Open(amulesig_path)) {
-			if (!amulesig_out.Create(amulesig_path)) {
-				AddLogLineM(true, wxString(_("Failed to save"))+_(" aMule OnlineSig File"));
+		if ( !wxFileExists( emulesig_path ) ) {
+			if ( !amulesig_out.Create(emulesig_path) ) {
+				AddLogLineM(true, wxString(_("Failed to create"))+_(" aMule OnlineSig File"));
 				// Will never try again.
 				amulesig_path.Clear();
 				emulesig_path.Clear();
 				return;
 			}
+		} else if  ( !amulesig_out.Open(emulesig_path) ) {
+			AddLogLineM(true, wxString(_("Failed to open"))+_(" aMule OnlineSig File"));
+			// Will never try again.
+			amulesig_path.Clear();
+			emulesig_path.Clear();
+			return;
 		}
 	}
 
