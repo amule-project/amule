@@ -32,6 +32,7 @@
 #include <wx/string.h>		// For wxString
 
 #include "amuleIPV4Address.h"	// For amuleIPV4address
+#include "StateMachine.h"	// For StateMachine
 
 /******************************************************************************/
 
@@ -132,6 +133,22 @@ public:
 	bool		m_EnablePassword;
 	wxString	m_UserName;
 	wxString	m_Password;
+};
+
+/******************************************************************************/
+
+enum Socks5State {
+	SOCKS5_STATE_1 = 0
+};
+
+class Socks5StateMachine : public StateMachine
+{
+public:
+	Socks5StateMachine();
+	
+private:
+	static void process_state_1(bool entry);
+	static const state_processor_vector process_state[];
 };
 
 /******************************************************************************/
