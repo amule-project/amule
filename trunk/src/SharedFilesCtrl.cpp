@@ -548,9 +548,9 @@ int CSharedFilesCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 			return item1->GetPermissions()-item2->GetPermissions();
 
 		case 5: //fileID asc
-			return strcasecmp((char*)item1->GetFileHash(),(char*)item2->GetFileHash());
+			return EncodeBase16( item1->GetFileHash(), 16 ).Cmp( EncodeBase16( item2->GetFileHash(), 16 ) );
 		case 25: //fileID desc
-			return strcasecmp((char*)item2->GetFileHash(),(char*)item1->GetFileHash());
+			return EncodeBase16( item2->GetFileHash(), 16 ).Cmp( EncodeBase16( item1->GetFileHash(), 16 ) );
 
 		case 6: //requests asc
 			return item1->statistic.GetRequests() - item2->statistic.GetRequests();
