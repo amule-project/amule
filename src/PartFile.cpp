@@ -2255,7 +2255,9 @@ void CPartFile::CompleteFile(bool bIsHashingDone)
 		Notify_DownloadCtrlHideSource(this);
 	}
 	if (!bIsHashingDone) {
+#ifdef DEBUG
 		printf("HashNotDone\n");
+#endif
 		SetPartFileStatus(PS_COMPLETING);
 		kBpsDown = 0.0;
 
@@ -2263,7 +2265,9 @@ void CPartFile::CompleteFile(bool bIsHashingDone)
 		CAddFileThread::AddFile(thePrefs::GetTempDir(), strPartFile, this );
 		return;
 	} else {
+#ifdef DEBUG
 		printf("HashDone\n");		
+#endif
 		StopFile();
 		m_is_A4AF_auto=false;
 		SetPartFileStatus(PS_COMPLETING);
