@@ -149,14 +149,14 @@ void CClientList::GetStatistics(uint32 &totalclient, uint32 stats[], clientmap16
 
 void CClientList::AddClient(CUpDownClient* toadd, bool WXUNUSED(bSkipDupTest) )
 {
-	// Ensure that a client waiting to get deleted cant get back on the clientlist
-	if ( !toadd->HasBeenDeleted() ) {
+	// Ensure that a client waiting to get deleted cant get back on the clientlist - disabled for now..
+/*	if ( !toadd->HasBeenDeleted() ) { */
 		#warning needs more code
 		//theApp.amuledlg->transferwnd->clientlistctrl->AddClient(toadd);
 		
 		// No need to manually test, as a std::set does not allow duplicates
 		list.insert(toadd);
-	}
+/*	} */
 }
 
 
