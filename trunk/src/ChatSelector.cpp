@@ -147,7 +147,7 @@ int CChatSelector::GetTabByClient(CUpDownClient* client)
 }
 
 
-void CChatSelector::ProcessMessage(CUpDownClient* sender, char* message)
+void CChatSelector::ProcessMessage(CUpDownClient* sender, const wxString& message)
 {
 	CChatSession* session = GetPageByClient(sender);
 
@@ -156,7 +156,7 @@ void CChatSelector::ProcessMessage(CUpDownClient* sender, char* message)
 	}
 	
 	session->AddText( sender->GetUserName(), COLOR_BLUE );
-	session->AddText( wxString(wxT(": ")) + wxString(char2unicode(message)) + wxString(wxT("\n")), COLOR_BLACK );
+	session->AddText( wxString(wxT(": ")) + message + wxString(wxT("\n")), COLOR_BLACK );
 }
 
 

@@ -333,17 +333,17 @@ void CSearchDlg::StartNewSearch()
 
 	// Parameter Minimum Size
 	wxString sizeMin=((wxTextCtrl*)FindWindowById(IDC_EDITSEARCHMIN))->GetValue();
-	uint32 min = atol(unicode2char(sizeMin)) * 1048576;
+	uint32 min = StrToLong(sizeMin) * 1048576;
 	
 	// Parameter Maximum Size
 	wxString sizeMax=((wxTextCtrl*)FindWindowById(IDC_EDITSEARCHMAX))->GetValue();
-	uint32 max = atol(unicode2char(sizeMax)) * 1048576;
+	uint32 max = StrToLong(sizeMax) * 1048576;
 	
 	if ( max < min ) max = 0;
 	
 	// Parameter Availability
 	wxString avaibilitystr = ((wxTextCtrl*)FindWindowById(IDC_EDITSEARCHAVAIBILITY))->GetValue();
-	uint32 avaibility = atol(unicode2char(avaibilitystr));
+	uint32 avaibility = StrToLong(avaibilitystr);
 	
 	
 	switch ( ((wxChoice*)FindWindowById(IDC_TypeSearch))->GetSelection() ) {

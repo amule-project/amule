@@ -616,7 +616,7 @@ void CPreferences::LoadCats() {
 		newcat->prio = cfg->Read( wxT("Priority"), 0l );
 
 		wxString color = cfg->Read( wxT("Color"), wxT("0") );
-		newcat->color = atoll( unicode2char(color) );
+		newcat->color = StrToULong(color);
 
 		AddCat(newcat);
 		if (!wxFileName::DirExists(newcat->incomingpath)) {

@@ -794,7 +794,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					Debug("  %s\n", message);
 				}
 				#endif				
-				theApp.amuledlg->chatwnd->ProcessMessage(client,message);
+				theApp.amuledlg->chatwnd->ProcessMessage(client, char2unicode(message));
 				delete[] message;
 				break;
 			}

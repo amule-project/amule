@@ -102,9 +102,7 @@ bool CClientDetailDialog::OnInitDialog() {
 	GetDlgItem(ID_DIP,wxStaticText)->SetLabel(m_client->GetFullIP() + wxString::Format(wxT(":%i"),m_client->GetUserPort()));
 
 	if (m_client->GetServerIP()) {
-		in_addr server;
-		server.s_addr = m_client->GetServerIP();
-		wxString srvaddr = char2unicode(inet_ntoa(server));
+		wxString srvaddr = IPToStr( m_client->GetServerIP() );
 		GetDlgItem(ID_DSIP,wxStaticText)->SetLabel(srvaddr);
 		
 		CServer* cserver = theApp.serverlist->GetServerByAddress(srvaddr, m_client->GetServerPort()); 

@@ -162,6 +162,22 @@ inline unsigned long StrToULong( const wxString& str ) {
 	return value;
 }
 
+/**
+ * Converts a long IP to a dotted address.
+ *
+ * @param IP The long ip to be converted.
+ * @return The ip in the form "x.x.x.x".
+ */
+wxString IPToStr( long IP );
+
+/**
+ * Converts a dotted IP address to a long.
+ *
+ * @param IP The IP address to be converted.
+ * @return A long representing the IP address or -1 if the conversation failed.
+ */
+long IPToLong( const wxString& IP );
+
 
 // md4cmp -- replacement for memcmp(hash1,hash2,16)
 // Like 'memcmp' this function returns 0, if hash1==hash2, and !0, if hash1!=hash2.

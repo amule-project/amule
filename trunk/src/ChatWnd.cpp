@@ -167,7 +167,7 @@ void CChatWnd::RefreshFriend(CFriend* toupdate)
 	chatselector->RefreshFriend(toupdate);
 }
 
-void CChatWnd::ProcessMessage(CUpDownClient* sender, char* message)
+void CChatWnd::ProcessMessage(CUpDownClient* sender, const wxString& message)
 {
 	chatselector->ProcessMessage(sender, message);
 }
