@@ -12,7 +12,7 @@ endif
 
 SUBDIRS = utils pixmaps $(OPT_WEB)
 
-EXTRA_DIST = strings.en Makengfile aMule.xpm *.h aMule.tmpl
+EXTRA_DIST = strings.en Makengfile aMule.xpm aMule.tmpl
 
 bin_PROGRAMS = amule
 
@@ -177,6 +177,104 @@ amulewebDLG_SOURCES = WebServer.cpp WebInterface.cpp WebSocket.cpp \
 amulewebDLG_CFLAGS = $(WX_CFLAGS) -DAMULEWEBDLG
 amulewebDLG_CXXFLAGS = $(WX_CXXFLAGS) -DAMULEWEBDLG 
 amulewebDLG_LDADD = $(WX_LIBS) $(ZLIB_LIBS)
+
+noinst_HEADERS = AddFileThread.h \
+		 AddFriend.h \
+		 amuleDlg.h \
+		 amule.h \
+		 amuleIPV4Address.h \
+		 BarShader.h \
+		 CArray.h \
+		 CatDialog.h \
+		 CFile.h \
+		 ChatSelector.h \
+		 ChatWnd.h \
+		 ClientCredits.h \
+		 ClientDetailDialog.h \
+		 ClientList.h \
+		 ClientUDPSocket.h \
+		 CMD4Hash.h \
+		 CMemFile.h \
+		 ColorFrameCtrl.h \
+		 color.h \
+		 CommentDialog.h \
+		 CommentDialogLst.h \
+		 CTypedPtrList.h \
+		 debugstuff.h \
+		 DirectoryTreeCtrl.h \
+		 DownloadListCtrl.h \
+		 DownloadQueue.h \
+		 ECSocket.h \
+		 ED2KLink.h \
+		 EditServerListDlg.h \
+		 eggtrayicon.h \
+		 EMSocket.h \
+		 endianfix.h \
+		 ExternalConn.h \
+		 FileDetailDialog.h \
+		 FileDetailListCtrl.h \
+		 filefn.h \
+		 Friend.h \
+		 FriendListCtrl.h \
+		 GetTickCount.h \
+		 gsocket-2.5.h \
+		 gsocket.h \
+		 gtk2-funcs.h \
+		 gtkplugxembed.h \
+		 HTTPDownloadDlg.h \
+		 inetdownload.h \
+		 IPFilter.h \
+		 KnownFile.h \
+		 KnownFileList.h \
+		 LastCommonRouteFinder.h \
+		 listbase.h \
+		 listctrl_gen.h \
+		 listctrl.h \
+		 ListenSocket.h \
+		 MD5Sum.h \
+		 MuleGifCtrl.h \
+		 MuleListCtrl.h \
+		 MuleNotebook.h \
+		 muuli_wdr.h \
+		 opcodes.h \
+		 OScopeCtrl.h \
+		 otherfunctions.h \
+		 otherstructs.h \
+		 packets.h \
+		 PartFile.h \
+		 Preferences.h \
+		 PrefsUnifiedDlg.h \
+		 Preview.h \
+		 QueueListCtrl.h \
+		 resource.h \
+		 SafeFile.h \
+		 SearchDlg.h \
+		 SearchListCtrl.h \
+		 SearchList.h \
+		 server.h \
+		 ServerListCtrl.h \
+		 ServerList.h \
+		 ServerSocket.h \
+		 ServerWnd.h \
+		 SharedFileList.h \
+		 SharedFilesCtrl.h \
+		 SharedFilesWnd.h \
+		 sockets.h \
+		 SplitterControl.h \
+		 StatisticsDlg.h \
+		 SysTray.h \
+		 TextClient.h \
+		 TransferWnd.h \
+		 types.h \
+		 UDPSocket.h \
+		 updownclient.h \
+		 UploadBandwidthThrottler.h \
+		 UploadListCtrl.h \
+		 UploadQueue.h \
+		 WebInterface.h \
+		 WebServer.h \
+		 WebSocket.h \
+		 xembed.h
 
 MAINTAINERCLEANFILES = Makefile.in
 
