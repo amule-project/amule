@@ -2241,7 +2241,7 @@ wxString CWebServer::_GetSearch(ThreadData Data) {
 		CECPacket *search_reply = webInterface->SendRecvMsg_v2(&search_req);
 		if (search_reply) {
 			if (CECTag *tag = search_reply->GetTagByIndex(0)) {
-				Out.Replace(wxT("[Message]"), tag->GetStringData());
+				Out.Replace(wxT("[Message]"), wxGetTranslation(tag->GetStringData()));
 			} else {
 				Out.Replace(wxT("[Message]"), wxEmptyString);
 			}
