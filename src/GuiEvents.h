@@ -27,9 +27,6 @@
 #endif
 
 #include "Types.h"
-#include  <map>
-#include  <list>
-#include  <set>
 
 class wxSocketBase;
 class wxSocketServer;
@@ -355,7 +352,6 @@ class GUIEvent : public wxEvent {
 #define Notify_ShowQueueCount(val)                  Notify_1_ValEvent(SHOW_QUEUE_COUNT, (uint32)val)
 #define Notify_ShowUpdateCatTabTitles()             Notify_0_ValEvent(SHOW_UPDATE_CAT_TABS)
 #define Notify_ShowGUI()             					Notify_0_ValEvent(SHOW_GUI)
-
 
 //
 // GUI -> core notification
