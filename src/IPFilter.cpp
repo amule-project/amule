@@ -35,6 +35,7 @@
 #include "NetworkFunctions.h"
 #include "Preferences.h"	// Needed for CPreferences
 #include "amule.h"			// Needed for theApp
+#include "Statistics.h"		// Needed for CStatistics
 #include "HTTPDownload.h"
 #include "GetTickCount.h"
 
@@ -61,13 +62,6 @@ void CIPFilter::Reload()
 	LoadFromDatFile(theApp.ConfigDir + wxT("ipfilter.dat"), false); // No merge on reload.
 }
 
-
-const wxString& CIPFilter::GetLastHit() const
-{
-	wxMutexLocker lock( m_mutex );
-	
-	return m_lasthit;
-}
 
 uint32 CIPFilter::BanCount() const
 {
@@ -472,7 +466,9 @@ bool CIPFilter::IsFiltered(uint32 IPTest)
 
 		if ( it != m_iplist.end() ) {
 			if ( it->AccessLevel < thePrefs::GetIPFilterLevel() ) {
-				m_lasthit = it->Description;
+				AddDebugLogLineM( true, wxT("Filtered IP: ") + Uint32toStringIP( IPTest ) + wxT("(") + it->Description + wxT(")") );
+				theApp.statistics->AddFilteredClient();
+				
 				return true;
 			}
 		}
