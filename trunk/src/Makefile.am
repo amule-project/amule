@@ -79,6 +79,7 @@ amule_SOURCES = ListenSocket.cpp \
 	HTTPDownloadDlg.cpp \
 	IPFilter.cpp \
 	KnownFile.cpp \
+	KadDlg.cpp \
 	KnownFileList.cpp \
 	listctrl.cpp \
 	MD5Sum.cpp \
@@ -229,6 +230,7 @@ noinst_HEADERS = AddFileThread.h \
 		 inetdownload.h \
 		 IPFilter.h \
 		 KnownFile.h \
+		 KadDlg.h \
 		 KnownFileList.h \
 		 LastCommonRouteFinder.h \
 		 listbase.h \
