@@ -1,4 +1,5 @@
 src/AddFriend.cpp
+src/AICHSyncThread.cpp
 src/amule.cpp
 src/amuled.cpp
 src/amuleDlg.cpp
@@ -43,6 +44,7 @@ src/ServerList.cpp
 src/ServerListCtrl.cpp
 src/ServerSocket.cpp
 src/ServerWnd.cpp
+src/SHAHashSet.cpp
 src/SharedFileList.cpp
 src/SharedFilesCtrl.cpp
 src/SharedFilesWnd.cpp
