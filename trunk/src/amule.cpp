@@ -1514,6 +1514,7 @@ void CamuleApp::UDPSocketHandler(wxSocketEvent& event) {
 
 void CamuleApp::ServerSocketHandler(wxSocketEvent& event) {
 	//printf("Got a server event\n");
+	//wxMessageBox(wxString::Format("Got Server Event %u",event.GetSocketEvent()));
 	
 	wxASSERT(event.GetSocket()->IsKindOf(CLASSINFO(CServerSocket)));
 	CServerSocket * socket = (CServerSocket*) event.GetSocket();
@@ -1610,7 +1611,7 @@ void CamuleApp::OnTCPTimer(wxTimerEvent& WXUNUSED(evt))
 	serverconnect->ConnectToAnyServer();
 }
 
-#if defined(__DEBUG__) && !(defined(__OPENBSD__))
+#if defined(__DEBUG__) && !(defined(__OPENBSD__)) && !(defined(__WXMAC__))
 
 	void CamuleApp::AddSocketDeleteDebug(uint32 socket_pointer, uint32 creation_time) {
 		
