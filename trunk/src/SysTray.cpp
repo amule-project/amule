@@ -188,8 +188,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 
 	// A few stats: Version, Limits and current speeds
 	{
-		wxString label;
-		label += wxString(wxT(MOD_VERSION_LONG)) + wxT(":\n");
+		wxString label = MOD_VERSION_LONG wxT(":\n");
 		label += wxString::Format(_("Download Speed: %.1f\n"), theApp.downloadqueue->GetKBps());
 		label += wxString::Format(_("Upload Speed: %.1f\n"), theApp.uploadqueue->GetKBps());
 		label += _("\nSpeed Limits:\n");
@@ -210,7 +209,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 			label += wxString::Format( _("DL: %d"), max_download);
 		}
 
-		item=gtk_menu_item_new_with_label( unicode2char( label ) );
+		item = gtk_menu_item_new_with_label( unicode2char( label ) );
 		gtk_container_add (GTK_CONTAINER (status_menu), item);
 	}
 	
