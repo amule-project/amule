@@ -100,9 +100,6 @@ class CPreferencesRem : public CPreferences {
 };
 
 //
-// Concept is similar to containers in amuleweb. But without sort and html
-// related code.
-//
 // T - type if item in container
 // I - type of id of item
 // G - type of tag used to create/update items
@@ -121,12 +118,15 @@ class CRemoteContainer {
 		// .size() is O(N) operation in stl
 		int m_item_count;
 		
-		bool m_dirty;
+		// use incremental tags algorithm
+		bool m_inc_tags;
 	public:
-		CRemoteContainer(CRemoteConnect *conn)
+		CRemoteContainer(CRemoteConnect *conn, bool inc_tags = false)
 		{
 			m_conn = conn;
 			m_item_count = 0;
+			
+			m_inc_tags = inc_tags;
 		}
 		
 		virtual ~CRemoteContainer()
@@ -135,7 +135,6 @@ class CRemoteContainer {
 		
 		uint32 GetCount()
 		{
-			//printf("DEBUG: %p of %d\n", this, m_item_count);
 			return m_item_count;
 		}
 		
@@ -156,7 +155,6 @@ class CRemoteContainer {
 		
 		T *GetByIndex(int index)
 		{
-			//printf("DEBUG: %p[%d] out of %d\n", this, index, m_item_count);
 			return ( (index >= 0) && (index < m_item_count) ) ? m_idx_items[index] : NULL;
 		}
 		
@@ -177,7 +175,6 @@ class CRemoteContainer {
 			if ( !reply ) {
 				return false;
 			}
-			m_dirty = true;
 			for(typename std::list<T *>::iterator j = this->m_items.begin(); j != this->m_items.end(); j++) {
 				this->DeleteItem(*j);
 			}
@@ -196,7 +193,7 @@ class CRemoteContainer {
 		//
 		bool DoRequery(int cmd, int tag)
 		{
-			CECPacket req_sts(cmd, EC_DETAIL_UPDATE);
+			CECPacket req_sts(cmd, m_inc_tags ? EC_DETAIL_INC_UPDATE : EC_DETAIL_UPDATE);
 		
 			//
 			// Phase 1: request status
@@ -217,14 +214,15 @@ class CRemoteContainer {
 		
 			delete reply;
 		
-			// Phase 3: request full info about files we don't have yet
-			if ( req_full.GetTagCount() ) {
-				m_dirty = true;
-				reply = this->m_conn->SendRecv(&req_full);
-				if ( !reply ) {
-					return false;
+			if ( !m_inc_tags ) {
+				// Phase 3: request full info about files we don't have yet
+				if ( req_full.GetTagCount() ) {
+					reply = this->m_conn->SendRecv(&req_full);
+					if ( !reply ) {
+						return false;
+					}
+					ProcessFull(reply);
 				}
-				ProcessFull(reply);	
 			}
 			return true;
 		}
@@ -253,8 +251,12 @@ class CRemoteContainer {
 					T *item = m_items_hash[tag->ID()];
 					ProcessItemUpdate(tag, item);
 				} else {
-					m_dirty = true;
-					full_req->AddTag(CECTag(req_type, tag->ID()));
+					if ( m_inc_tags ) {
+						T *item = this->CreateItem(tag);
+						AddItem(item);
+					} else {
+						full_req->AddTag(CECTag(req_type, tag->ID()));
+					}
 				}
 			}
 			std::list<I> del_ids;
@@ -263,7 +265,6 @@ class CRemoteContainer {
 				if ( core_files.count(item_id) == 0 ) {
 					// item may contain data that need to be freed externally, before
 					// dtor is called and memory freed
-					m_dirty = true;
 					this->DeleteItem(*j);
 					
 					del_ids.push_back(item_id);
@@ -279,7 +280,6 @@ class CRemoteContainer {
 				m_item_count--;
 				m_items_hash.erase(*j);
 				for(typename std::list<T *>::iterator k = this->m_items.begin(); k != this->m_items.end(); k++) {
-					//if ( *j == k->ID() ) {
 					if ( *j == GetItemID(*k) ) {
 						this->m_items.erase(k);
 						break;

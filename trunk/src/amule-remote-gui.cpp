@@ -706,7 +706,7 @@ void CIPFilterRem::Update(wxString /*url*/)
 /*
  * Shared files list
  */
-CSharedFilesRem::CSharedFilesRem(CRemoteConnect *conn) : CRemoteContainer<CKnownFile, CMD4Hash, CEC_SharedFile_Tag>(conn)
+CSharedFilesRem::CSharedFilesRem(CRemoteConnect *conn) : CRemoteContainer<CKnownFile, CMD4Hash, CEC_SharedFile_Tag>(conn, true)
 {
 }
 
@@ -757,12 +757,29 @@ void CSharedFilesRem::ProcessItemUpdate(CEC_SharedFile_Tag *tag, CKnownFile *fil
 	for(int i = 0;i < file->GetPartCount();i++) {
 		file->m_AvailPartFrequency[i] = data[i];
 	}
-	file->statistic.requested = tag->GetRequests();
-	file->statistic.alltimerequested = tag->GetAllRequests();
-	file->statistic.accepted = tag->GetAccepts();
-	file->statistic.alltimeaccepted = tag->GetAllAccepts();
-	file->statistic.transfered = tag->GetXferred();
-	file->statistic.alltimetransferred = tag->GetAllXferred();
+	if ( m_inc_tags ) {
+		tag->SetRequests(file->statistic.requested);
+		tag->SetAllRequests(file->statistic.alltimerequested);
+		tag->SetAccepts(file->statistic.accepted);
+		tag->SetAllAccepts(file->statistic.alltimeaccepted);
+		tag->SetXferred(file->statistic.transfered );
+		tag->SetAllXferred(file->statistic.alltimetransferred);
+		
+		tag->SetPrio(file->m_iUpPriority);
+	} else {
+		file->statistic.requested = tag->GetRequests();
+		file->statistic.alltimerequested = tag->GetAllRequests();
+		file->statistic.accepted = tag->GetAccepts();
+		file->statistic.alltimeaccepted = tag->GetAllAccepts();
+		file->statistic.transfered = tag->GetXferred();
+		file->statistic.alltimetransferred = tag->GetAllXferred();
+	}
+	if ( file->m_iUpPriority >= 10 ) {
+		file->m_iUpPriority -= 10;
+		file->m_bAutoUpPriority = true;
+	} else {
+		file->m_bAutoUpPriority = false;
+	}
 
 	theApp.knownfiles->requested += file->statistic.requested;
 	theApp.knownfiles->transfered += file->statistic.transfered;
@@ -1016,7 +1033,7 @@ void CUpQueueRem::UpdateStats(CEC_Stats_Tag *tag)
  * 
  */
  
-CDownQueueRem::CDownQueueRem(CRemoteConnect *conn) : CRemoteContainer<CPartFile, CMD4Hash, CEC_PartFile_Tag>(conn)
+CDownQueueRem::CDownQueueRem(CRemoteConnect *conn) : CRemoteContainer<CPartFile, CMD4Hash, CEC_PartFile_Tag>(conn, true)
 {
 }
 
@@ -1075,23 +1092,52 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 	//
 	// update status
 	//
-	file->kBpsDown = tag->Speed() / 1024.0;
-
-	if ( file->kBpsDown > 0 ) {
-		file->transfered = tag->SizeXfer();
-		file->percentcompleted = (100.0*file->completedsize) / file->m_nFileSize;
-		file->completedsize = tag->SizeDone();
-	}
-
-	file->transferingsrc = tag->SourceXferCount();
-	file->m_notCurrentSources = tag->SourceNotCurrCount();
-	file->m_source_count = tag->SourceCount();
-	file->m_a4af_source_count = tag->SourceCountA4AF();
-    file->status = tag->FileStatus();
-
-	file->lastseencomplete = tag->LastSeenComplete();
+	if ( m_inc_tags ) {
+		uint32 tmpval;
+		tag->SetSpeed(tmpval);
+		file->kBpsDown = tmpval / 1024.0;
+		
+		tag->SetSizeXfer(file->transfered);
+		tag->SetSizeDone(file->completedsize);
+		tag->SetSourceXferCount(file->transferingsrc);
+		tag->SetSourceNotCurrCount(file->m_notCurrentSources);
+		tag->SetSourceCount(file->m_source_count);
+		tag->SetSourceCountA4AF(file->m_a4af_source_count);
+	    tag->SetFileStatus(file->status);
 	
-	file->m_category = tag->FileCat();
+		tag->SetLastSeenComplete(tmpval);
+		file->lastseencomplete = tmpval;
+		
+		tag->SetFileCat(file->m_category);
+		
+		tag->SetPrio(file->m_iDownPriority);
+	} else {
+		file->kBpsDown = tag->Speed() / 1024.0;
+	
+		if ( file->kBpsDown > 0 ) {
+			file->transfered = tag->SizeXfer();
+			file->completedsize = tag->SizeDone();
+		}
+	
+		file->transferingsrc = tag->SourceXferCount();
+		file->m_notCurrentSources = tag->SourceNotCurrCount();
+		file->m_source_count = tag->SourceCount();
+		file->m_a4af_source_count = tag->SourceCountA4AF();
+	    file->status = tag->FileStatus();
+	
+		file->lastseencomplete = tag->LastSeenComplete();
+		
+		file->m_category = tag->FileCat();
+		
+		file->m_iDownPriority = tag->Prio();
+	}
+	file->percentcompleted = (100.0*file->completedsize) / file->m_nFileSize;
+	if ( file->m_iDownPriority >= 10 ) {
+		file->m_iDownPriority -= 10;
+		file->m_bAutoUpPriority = true;
+	} else {
+		file->m_bAutoUpPriority = false;
+	}
 
 	//
 	// Copy part/gap status
