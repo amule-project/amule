@@ -1666,7 +1666,10 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 		for( ; it != m_downloadingSourcesList.end(); ) {
 			CUpDownClient *cur_src = *it++;
 			if(cur_src->GetDownloadState() == DS_DOWNLOADING) {
+// lfroen: in daemon it actually can happen
+#ifndef AMULE_DAEMON
 				wxASSERT( cur_src->GetSocket() );
+#endif
 				if (cur_src->GetSocket()) {
 					transferingsrc++;
 					float kBpsClient = cur_src->CalculateKBpsDown();
