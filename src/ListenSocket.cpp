@@ -117,7 +117,7 @@ bool CClientReqSocket::CheckTimeOut()
 	
 	if (::GetTickCount() - timeout_timer > uTimeout){
 		timeout_timer = ::GetTickCount();
-		Disconnect(_("Timeout"));
+		Disconnect(wxT("Timeout"));
 		return true;
 	}
 	return false;	
@@ -130,10 +130,10 @@ void CClientReqSocket::OnClose(int nErrorCode)
 	CEMSocket::OnClose(nErrorCode);
 	if (nErrorCode > 0) {
 		wxString strError;
-		strError.Printf(_("Closed: %u"),nErrorCode);
+		strError.Printf(wxT("Closed: %u"),nErrorCode);
 		Disconnect(strError);
 	} else {
-		Disconnect(_("Close"));
+		Disconnect(wxT("Close"));
 	}
 }
 
@@ -245,7 +245,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 						client->Safe_Delete();
 						client = NULL;
 					}
-					Disconnect(_("IPFilter"));
+					Disconnect(wxT("IPFilter"));
 					return false;
 				}
 						
@@ -1088,7 +1088,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				}
 			}
 		}
-		Disconnect(_("UnCaught invalid packet exception On ProcessPacket\n"));
+		Disconnect(wxT("UnCaught invalid packet exception On ProcessPacket\n"));
 		return false;
 	}
 	catch(wxString error) {
@@ -1113,10 +1113,10 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			}
 			AddDebugLogLineM(false,wxString(_("A unknown client caused an error or did something bad: ")) + error + _(". Disconnecting client!"));
 		}
-		Disconnect(_("Client error on ListenSocket::ProcessPacket: ") + wxString(error));
+		Disconnect(wxT("Client error on ListenSocket::ProcessPacket: ") + wxString(error));
 		return false;
 	} catch (...) {
-		Disconnect(_("Unknown exception on ListenSocket::ProcessPacket"));
+		Disconnect(wxT("Unknown exception on ListenSocket::ProcessPacket"));
 	}
 	return true;
 }
@@ -1687,7 +1687,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				}
 			}
 		}
-		Disconnect(_("UnCaught invalid packet exception On ProcessPacket\n"));
+		Disconnect(wxT("UnCaught invalid packet exception On ProcessPacket\n"));
 		return false;
 	} catch(wxString error) {
 		AddDebugLogLineM(false, wxString::Format(_("A client caused an error or did something bad: %s. Disconnecting client!"), error.c_str()));
@@ -1709,10 +1709,10 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				}
 			}
 		}
-		Disconnect(_("Client error on ListenSocket::ProcessExtPacket: ") + error);
+		Disconnect(wxT("Client error on ListenSocket::ProcessExtPacket: ") + error);
 		return false;
 	} catch (...) {
-		Disconnect(_("Unknown exception on ListenSocket::ProcessExtPacket"));
+		Disconnect(wxT("Unknown exception on ListenSocket::ProcessExtPacket"));
 	}
 
 	return true;
@@ -1803,7 +1803,7 @@ bool CClientReqSocket::PacketReceived(Packet* packet)
 			if (client) {
 				client->SetDownloadState(DS_ERROR);
 			}
-			Disconnect(_("Unknown protocol"));
+			Disconnect(wxT("Unknown protocol"));
 			bResult = false;
 		}
 	}
