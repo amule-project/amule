@@ -105,6 +105,16 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, wxString title, wxPoint where, wxSize dl
 	wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxDIALOG_NO_PARENT|
 	wxTHICK_FRAME|wxMINIMIZE_BOX|wxMAXIMIZE_BOX|wxCLOSE_BOX )
 {
+
+	bool override_where = (where != wxDefaultPosition);
+	bool override_size = ((dlg_size.x != DEFAULT_SIZE_X) || (dlg_size.y != DEFAULT_SIZE_Y));
+	
+	if (!LoadGUIPrefs(override_where, override_size)) {
+		// Prefs not loaded for some reason, exit
+		printf("ERROR!!! Unable to load Preferences\n");
+		return;
+	}
+	
 	is_safe_state = false;
 	is_hidden = false;
 	
@@ -157,16 +167,7 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, wxString title, wxPoint where, wxSize dl
 	if (!gui_timer) {
 		AddLogLine(false, CString(_("Fatal Error: Failed to create Timer")));
 	}
-	
-	bool override_where = (where != wxDefaultPosition);
-	bool override_size = ((dlg_size.x != DEFAULT_SIZE_X) || (dlg_size.y != DEFAULT_SIZE_Y));
-	
-	if (!LoadGUIPrefs(override_where, override_size)) {
-		// Prefs not loaded for some reason, exit
-		printf("ERROR!!! Unable to load Preferences\n");
-		return;
-	}
-	
+		
 	// Set Serverlist as active window
 	activewnd=NULL;
 	SetActiveDialog(serverwnd);
@@ -817,17 +818,17 @@ bool CamuleDlg::LoadGUIPrefs(bool override_pos, bool override_size)
 	}
 
 	// The section where to save in in file
-	wxString section = "/Razor_Preferences/";
+	wxString section = wxT("/Razor_Preferences/");
 
 	// Get window size and position
-	int x1 = config->Read(_T(section+"MAIN_X_POS"), -1l);
-	int y1 = config->Read(_T(section+"MAIN_Y_POS"), -1l);
-	int x2 = config->Read(_T(section+"MAIN_X_SIZE"), 0l);
-	int y2 = config->Read(_T(section+"MAIN_Y_SIZE"), 0l);
+	int x1 = config->Read(_T(section+wxT("MAIN_X_POS")), -1l);
+	int y1 = config->Read(_T(section+wxT("MAIN_Y_POS")), -1l);
+	int x2 = config->Read(_T(section+wxT("MAIN_X_SIZE")), 0l);
+	int y2 = config->Read(_T(section+wxT("MAIN_Y_SIZE")), 0l);
 
-	split_pos = config->Read(_T(section+"SPLITTER_POS"), 463l);
+	split_pos = config->Read(_T(section+wxT("SPLITTER_POS")), 463l);
 	// Kry - Random usable pos for srv_split_pos
-	srv_split_pos = config->Read(_T(section+"SRV_SPLITTER_POS"), 463l);
+	srv_split_pos = config->Read(_T(section+wxT("SRV_SPLITTER_POS")), 463l);
 
 	if (!override_pos) {
 		// If x1 and y1 != 0 Redefine location
@@ -838,7 +839,7 @@ bool CamuleDlg::LoadGUIPrefs(bool override_pos, bool override_size)
 
 	if (!override_size) {
 		if (x2 > 0 && y2 > 0) {
-			SetClientSize(x2, y2 - 58);
+			SetClientSize(x2, y2);
 		}
 	}
 
