@@ -26,6 +26,7 @@
 #include <wx/file.h>
 #include <wx/datetime.h>
 #include <wx/config.h>
+#include <wx/textfile.h>
 
 #ifndef __SYSTRAY_DISABLED__
 #include "pixmaps/mule_TrayIcon.ico.xpm"
@@ -83,17 +84,17 @@ BEGIN_EVENT_TABLE(CamuleDlg, wxFrame)
 	EVT_TOOL(ID_BUTTONSTATISTICS, CamuleDlg::OnToolBarButton)
 
 	EVT_TOOL(ID_BUTTONNEWPREFERENCES, CamuleDlg::OnPrefButton)
-	
+
 	EVT_TOOL(ID_BUTTONCONNECT, CamuleDlg::OnBnConnect)
 
 	EVT_CLOSE(CamuleDlg::OnClose)
 	EVT_ICONIZE(CamuleDlg::OnMinimize)
-	
+
 	EVT_BUTTON(ID_BUTTON_FAST, CamuleDlg::OnBnClickedFast)
 	EVT_BUTTON(ID_PREFS_OK_TOP, CamuleDlg::OnBnClickedPrefOk)
-	
+
 	EVT_TIMER(ID_GUITIMER, CamuleDlg::OnGUITimer)
-	
+
 END_EVENT_TABLE()
 
 #ifndef wxCLOSE_BOX
@@ -108,24 +109,24 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, wxString title, wxPoint where, wxSize dl
 
 	wxInitAllImageHandlers();
 
-	imagelist.Create(16,16);	
-	
+	imagelist.Create(16,16);
+
 	for (uint32 i=0; i<22; i++) {
 		imagelist.Add(wxBitmap(clientImages(i)));
 	}
-	
+
 	bool override_where = (where != wxDefaultPosition);
 	bool override_size = ((dlg_size.x != DEFAULT_SIZE_X) || (dlg_size.y != DEFAULT_SIZE_Y));
-	
+
 	if (!LoadGUIPrefs(override_where, override_size)) {
 		// Prefs not loaded for some reason, exit
 		printf("ERROR!!! Unable to load Preferences\n");
 		return;
 	}
-	
+
 	is_safe_state = false;
 	is_hidden = false;
-	
+
 	SetIcon(wxICON(aMule));
 
 	srand(time(NULL));
@@ -139,13 +140,13 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, wxString title, wxPoint where, wxSize dl
 	wxFlexGridSizer *s_main = new wxFlexGridSizer(1);
 	s_main->AddGrowableCol(0);
 	s_main->AddGrowableRow(0);
-	
+
 	wxPanel* p_cnt = new wxPanel(this, -1, wxDefaultPosition, wxDefaultSize);
 	s_main->Add(p_cnt, 0, wxGROW|wxEXPAND, 0);
 	muleDlg(p_cnt, false, true);
 
 	SetSizer( s_main, true );
-	
+
 	// Create ToolBar from the one designed by wxDesigner (BigBob)
 	m_wndToolbar = CreateToolBar( wxTB_HORIZONTAL|wxNO_BORDER|wxTB_TEXT|
 	                                wxTB_3DBUTTONS|wxTB_FLAT|wxCLIP_CHILDREN );
@@ -153,9 +154,9 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, wxString title, wxPoint where, wxSize dl
 	muleToolbar( m_wndToolbar );
 
 	serverwnd = new CServerWnd(p_cnt);
-	
+
 	AddLogLine(true, wxT(PACKAGE_STRING));
-	
+
 	searchwnd = new CSearchDlg(p_cnt);
 	transferwnd = new CTransferWnd(p_cnt);
 	prefsunifiedwnd = new PrefsUnifiedDlg(p_cnt);
@@ -169,28 +170,28 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, wxString title, wxPoint where, wxSize dl
 	sharedfileswnd->Show(FALSE);
 	statisticswnd->Show(FALSE);
 	chatwnd->Show(FALSE);
-	
+
 	// Create the GUI timer
 	gui_timer=new wxTimer(this,ID_GUITIMER);
 	if (!gui_timer) {
 		AddLogLine(false, _("Fatal Error: Failed to create Timer"));
 	}
-		
+
 	// Set Serverlist as active window
 	activewnd=NULL;
 	SetActiveDialog(serverwnd);
-	m_wndToolbar->ToggleTool(ID_BUTTONSERVERS, true );	
+	m_wndToolbar->ToggleTool(ID_BUTTONSERVERS, true );
 
 	ToggleFastED2KLinksHandler();
-	
+
 	is_safe_state = true;
-	
+
 	Show(TRUE);
 
 #ifndef __SYSTRAY_DISABLED__
 	CreateSystray(wxString::Format(wxT("%s %s"), wxT(PACKAGE), wxT(VERSION)));
-#endif 
-	
+#endif
+
 	// splashscreen
 	#ifdef __USE_SPLASH__
 	if (theApp.glob_prefs->UseSplashScreen() && !theApp.glob_prefs->GetStartMinimized()) {
@@ -206,8 +207,8 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, wxString title, wxPoint where, wxSize dl
 	statisticswnd->Init();
 	statisticswnd->SetUpdatePeriod();
 
-	// must do initialisations here.. 
-	serverwnd->serverlistctrl->Init(theApp.serverlist);	
+	// must do initialisations here..
+	serverwnd->serverlistctrl->Init(theApp.serverlist);
 
 	// Initialize and sort all lists.
 	// FIX: Remove from here and put these back to the OnInitDialog()s
@@ -219,13 +220,13 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, wxString title, wxPoint where, wxSize dl
 	sharedfileswnd->sharedfilesctrl->InitSort();
 
 	// call the initializers
-	transferwnd->OnInitDialog();	
-	
+	transferwnd->OnInitDialog();
+
 	searchwnd->UpdateCatChoice();
-	
+
 	// Must we start minimized?
 	if (theApp.glob_prefs->GetStartMinimized()) {
-		#ifndef __SYSTRAY_DISABLED__	
+		#ifndef __SYSTRAY_DISABLED__
 		// Send it to tray?
 		if (theApp.glob_prefs->DoMinToTray()) {
 			Hide_aMule();
@@ -236,7 +237,7 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, wxString title, wxPoint where, wxSize dl
 			Iconize(TRUE);
 		#endif
 	}
-	
+
 }
 
 
@@ -257,9 +258,9 @@ void CamuleDlg::ToggleFastED2KLinksHandler()
 void CamuleDlg::SetActiveDialog(wxWindow* dlg)
 {
 	switch ( dlg->GetId() ) {
-		case IDD_TRANSFER:		
+		case IDD_TRANSFER:
 			if (theApp.glob_prefs->ShowCatTabInfos()) {
-				transferwnd->UpdateCatTabTitles();	
+				transferwnd->UpdateCatTabTitles();
 			}
 		case IDD_SERVER:
 		case IDD_SEARCH:
@@ -268,8 +269,8 @@ void CamuleDlg::SetActiveDialog(wxWindow* dlg)
 		case IDD_STATISTICS:
 			m_nActiveDialog = dlg->GetId();
 			break;
-		
-		
+
+
 		default:
 			printf("Unknown window passed to SetActiveDialog!\n");
 			return;
@@ -279,7 +280,7 @@ void CamuleDlg::SetActiveDialog(wxWindow* dlg)
 		activewnd->Show(FALSE);
 		contentSizer->Remove(activewnd);
 	}
-	
+
 	contentSizer->Add(dlg, 1, wxALIGN_LEFT|wxEXPAND);
 	dlg->Show(TRUE);
 	activewnd=dlg;
@@ -312,14 +313,14 @@ void CamuleDlg::changeDesktopMode()
 	QueryDlg query(this);
 
 	wxRadioBox* radiobox = (wxRadioBox*)query.FindWindow(ID_SYSTRAYSELECT);
-	
+
 	if ( theApp.glob_prefs->GetDesktopMode() )
 		radiobox->SetSelection( theApp.glob_prefs->GetDesktopMode() - 1 );
 	else
 		radiobox->SetSelection( 0 );
-	
+
 	query.ShowModal();
-	
+
 	theApp.glob_prefs->SetDesktopMode( radiobox->GetSelection() + 1 );
 }
 
@@ -332,7 +333,7 @@ void CamuleDlg::CreateSystray(const wxString& title)
 		// ok, it's not set yet.
 		changeDesktopMode();
 	}
-	
+
 	m_wndTaskbarNotifier = new CSysTray(this, theApp.glob_prefs->GetDesktopMode(), title);
 }
 
@@ -349,7 +350,7 @@ void CamuleDlg::RemoveSystray()
 void CamuleDlg::OnToolBarButton(wxCommandEvent& ev)
 {
 	static int lastbutton = ID_BUTTONSERVERS;
-	
+
 	// Kry - just if the app is ready for it
 	if ( theApp.IsReady ) {
 
@@ -389,7 +390,7 @@ void CamuleDlg::OnToolBarButton(wxCommandEvent& ev)
 					break;
 			}
 		}
-		
+
 		m_wndToolbar->ToggleTool(lastbutton, lastbutton == ev.GetId() );
 		lastbutton = ev.GetId();
 	}
@@ -493,8 +494,8 @@ void CamuleDlg::AddLogLine(bool addtostatusbar, const wxChar* line, ...)
 		Layout();
 	}
 
-	bufferline = wxDateTime::Now().FormatDate() + wxT(" ") 
-		+ wxDateTime::Now().FormatTime() + wxT(": ") 
+	bufferline = wxDateTime::Now().FormatDate() + wxT(" ")
+		+ wxDateTime::Now().FormatTime() + wxT(": ")
 		+ bufferline + wxT("\n");
 
 	wxTextCtrl* ct= (wxTextCtrl*)serverwnd->FindWindow(ID_LOGVIEW);
@@ -506,7 +507,7 @@ void CamuleDlg::AddLogLine(bool addtostatusbar, const wxChar* line, ...)
 	// Write into log file
 	wxString filename = theApp.ConfigDir + wxT("logfile");
 	wxTextFile file(filename);
-		
+
 	if (!file.Open()) {
 		printf("Error opening log file!\n");
 	}
@@ -526,7 +527,7 @@ void CamuleDlg::AddDebugLogLine(bool addtostatusbar, const wxChar* line, ...)
 		wxString bufferline = wxString::FormatV(line, argptr);
 		bufferline.Truncate(1000); // Max size 1000 chars
 		va_end(argptr);
-		
+
 		AddLogLine(addtostatusbar, bufferline);
 	}
 }
@@ -556,7 +557,7 @@ void CamuleDlg::ShowConnectionState(bool connected, wxString server, bool iconOn
 
 
 	serverwnd->UpdateMyInfo();
-	
+
 	state NewState = sUnknown;
 	if ( connected ) {
 		if ( theApp.serverconnect->IsLowID() ) {
@@ -575,7 +576,7 @@ void CamuleDlg::ShowConnectionState(bool connected, wxString server, bool iconOn
 		((wxStaticBitmap*)FindWindow(wxT("connImage")))->SetBitmap(connImages( NewState ));
 
 		m_wndToolbar->DeleteTool(ID_BUTTONCONNECT);
-		
+
 		wxStaticText* connLabel = (wxStaticText*)FindWindow(wxT("connLabel"));
 		switch ( NewState ) {
 			case sLowID:
@@ -586,12 +587,12 @@ void CamuleDlg::ShowConnectionState(bool connected, wxString server, bool iconOn
 				connLabel->SetLabel(server);
 				break;
 			}
-			
+
 			case sConnecting:
 				m_wndToolbar->InsertTool(0, ID_BUTTONCONNECT, wxString(_("Cancel")), connButImg(2), wxString(_("Stops the current connection attempts")));
 				connLabel->SetLabel(wxString(_("Connecting")));
 				break;
-			
+
 			case sDisconnected:
 				m_wndToolbar->InsertTool(0, ID_BUTTONCONNECT, wxString(_("Connect")), connButImg(0), wxString(_("Connect to any server")));
 				connLabel->SetLabel(wxString(_("Not Connected")));
@@ -601,7 +602,7 @@ void CamuleDlg::ShowConnectionState(bool connected, wxString server, bool iconOn
 			default:
 				break;
 		}
-		
+
 		m_wndToolbar->Realize();
 
 		ShowUserCount(0, 0);
@@ -613,18 +614,18 @@ void CamuleDlg::ShowConnectionState(bool connected, wxString server, bool iconOn
 void CamuleDlg::ShowUserCount(uint32 user_toshow, uint32 file_toshow)
 {
 	uint32 totaluser = 0, totalfile = 0;
-	
+
 	if( user_toshow || file_toshow ) {
 		theApp.serverlist->GetUserFileStatus( totaluser, totalfile );
 	}
-	
+
 	wxString buffer = 	_("Users: ") +
 							CastItoIShort(user_toshow) + wxT(" (") + CastItoIShort(totaluser) +
-							wxT(") | ") + 
+							wxT(") | ") +
 							 _("Files: ") +
-							CastItoIShort(file_toshow) + wxT(" (") + CastItoIShort(totalfile) + 
+							CastItoIShort(file_toshow) + wxT(" (") + CastItoIShort(totalfile) +
 							wxT(")");
-									
+
 	wxStaticCast(FindWindow(wxT("userLabel")), wxStaticText)->SetLabel(buffer);
 
 	Layout();
@@ -688,13 +689,13 @@ void CamuleDlg::OnClose(wxCloseEvent& evt)
 	is_safe_state = false;
 
 	// Stop the GUI Timer
-	delete gui_timer;	
-	
+	delete gui_timer;
+
 	// Kry - Save the sources seeds on app exit
 	if (theApp.glob_prefs->GetSrcSeedsOn()) {
 		theApp.downloadqueue->SaveSourceSeeds();
 	}
-	
+
 	theApp.OnlineSig(); // Added By Bouc7
 
 	// Close sockets to avoid new clients coming in
@@ -735,7 +736,7 @@ void CamuleDlg::OnClose(wxCloseEvent& evt)
 
 	#warning This will be here till the core close is != app close
 	theApp.ShutDown();
-	
+
 }
 
 
@@ -788,7 +789,7 @@ void CamuleDlg::OnBnClickedFast(wxCommandEvent& WXUNUSED(evt))
 		bigbob->ShowModal();
 		delete bigbob;
 	}
-	
+
 	StartFast((wxTextCtrl*)FindWindow(wxT("FastEd2kLinks")));
 }
 
@@ -798,23 +799,23 @@ void CamuleDlg::StartFast(wxTextCtrl *ctl)
 {
 	for ( int i = 0; i < ctl->GetNumberOfLines(); i++ ) {
 		wxString strlink = ctl->GetLineText(i);
-		
+
 		if ( strlink.IsEmpty() )
 			continue;
 
 		if ( strlink.Last() != '/' )
 			strlink += wxT("/");
-			
+
 		try {
 			CED2KLink* pLink = CED2KLink::CreateLinkFromUrl(unicode2char(strlink));
-			
+
 			if ( pLink ) {
 				if( pLink->GetKind() == CED2KLink::kFile ) {
 					theApp.downloadqueue->AddFileLinkToDownload(pLink->GetFileLink());
 				} else {
 					throw wxString(wxT("Bad link"));
 				}
-				
+
 				delete pLink;
 			} else {
 				printf("Failed to create ED2k link from URL\n");
@@ -911,7 +912,7 @@ bool CamuleDlg::SaveGUIPrefs()
 //hides amule
 void CamuleDlg::Hide_aMule(bool iconize)
 {
-	
+
 	if (!is_hidden) {
 		transferwnd->downloadlistctrl->Freeze();
 		transferwnd->uploadlistctrl->Freeze();
@@ -926,11 +927,11 @@ void CamuleDlg::Hide_aMule(bool iconize)
 			Iconize(TRUE);
 		}
 		Show(FALSE);
-		
+
 		is_hidden = true;
-		
-	} 
-	
+
+	}
+
 }
 
 
@@ -939,7 +940,7 @@ void CamuleDlg::Show_aMule(bool uniconize)
 {
 
 	if (is_hidden) {
-		
+
 		transferwnd->downloadlistctrl->Show(TRUE);
 		transferwnd->uploadlistctrl->Show(TRUE);
 		serverwnd->serverlistctrl->Show(TRUE);
@@ -954,11 +955,11 @@ void CamuleDlg::Show_aMule(bool uniconize)
 		if (uniconize) {
 			Show(TRUE);
 		}
-		
+
 		is_hidden = false;
 
-	} 
-	
+	}
+
 }
 
 
@@ -988,25 +989,25 @@ void CamuleDlg::OnBnClickedPrefOk(wxCommandEvent& WXUNUSED(event))
 void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 {
 	// Former TimerProc section
-	
+
 	static uint32	msPrev1, msPrev5, msPrevGraph, msPrevStats;
 	static uint32	msPrevHist;
-	
+
 	uint32 			msCur = theApp.GetUptimeMsecs();
 
 	// can this actually happen under wxwin ?
 	if (!SafeState()) {
 		return;
 	}
-	
+
 #warning BIG WARNING: FIX STATS ON MAC!
 #warning Can it be related to the fact we have two timers now?
 #warning I guess so - there MUST be a reason Tiku only added one.
 	if (msCur-msPrevHist > 1000) {
-		// unlike the other loop counters in this function this one will sometimes 
-		// produce two calls in quick succession (if there was a gap of more than one 
-		// second between calls to TimerProc) - this is intentional!  This way the 
-		// history list keeps an average of one node per second and gets thinned out 
+		// unlike the other loop counters in this function this one will sometimes
+		// produce two calls in quick succession (if there was a gap of more than one
+		// second between calls to TimerProc) - this is intentional!  This way the
+		// history list keeps an average of one node per second and gets thinned out
 		// correctly as time progresses.
 		msPrevHist += 1000;
 		#ifndef __WXMAC__
@@ -1015,7 +1016,7 @@ void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 	}
 
 	if (msCur-msPrev1 > 950) {  // approximately every second
-		msPrev1 = msCur;		
+		msPrev1 = msCur;
 		statisticswnd->UpdateConnectionsStatus();
 	}
 
@@ -1041,8 +1042,8 @@ void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 		msPrev5 = msCur;
 		ShowTransferRate();
 		if (theApp.glob_prefs->ShowCatTabInfos() && theApp.amuledlg->activewnd == theApp.amuledlg->transferwnd) {
-						theApp.amuledlg->transferwnd->UpdateCatTabTitles();		
+						theApp.amuledlg->transferwnd->UpdateCatTabTitles();
 		}
 	}
-	
+
 }
