@@ -1,4 +1,4 @@
-Version 2.0.0rc3 - The 'tiku' version.
+Version 2.0.0rc3 - The 'Target: Stability' version.
 -------------
 2004-04-22
 	
@@ -23,21 +23,63 @@ Version 2.0.0rc3 - The 'tiku' version.
 		* Added capability to create pngs with cas
 		* Fixed ed2k fast links handler
 	
-	Kry:	
+	Kry:
 
-		* Complete rewrite to emule 0.42x network code
-		* Rewrite of hashing thread 
-		* Fixed FAT32 bug
+		* Complete rewrite to emule 0.42x ed2k network code
+		* Rewrite of hashing thread. Also added a timeout to save resources.
+		   It times out after 1 min without hashing or receiving new files to hash, or 1 min since last hash, and dies gracefully.
+		* Fixed the crash on startup if incoming/temp folder are on FAT32
+		* Added Safe Max Connections code to Preferences->Tweaks. 
+		   This code will help all people with USB modems and crappy routers to not hang them.
+		* Identify to lugdunum > 16.45 with our proper extended version tag (2.0.0)
 		* Fixed & rewrote stats 
-		* Fixing Win32 compilation
+			* Added Shareaza & lphant
+			* Fixed mldonkey stats (do they have to change their compatible number this often?)
+			* Added aMule / eMule / eDonkey proper version handling
+			* Dynamic tree of client versions (no more void versions)
+			* Fixed the xmule inflated statitics on the stats tree
+		* Rewrote client icons handling
+			* Use alpha channel to show the extended protocol and secure ident
+			* Added Shareaza, xmule, lphant, bad_guy and unknown client icons
+		* Fixed chuck selection. Much, much, much, much faster downloads. Back to the 1.2.6 speeds :)
+		* Fixed Win32 compilation
+		* Fixed lowID warning message on start being void.
+		* Proper Win32 and Mac disabling of the vertical preferences
+		* Severe bug on wxRadio button on RseInt was preventing ANY radio button on preferences from working.
+		* Fixed crash on 'cancel' while downloading server list.
+		* Fixed a UpdatePartsInfo missing on KnownFile.cpp
+		* Fixes the fake-check custom browser textfield
+		* Added wxNB_MULTILINE to preferences notebook.
+		* Minor issue on the chunk selection (thanks to AndCycle on eMule forum)
+		* Fixed a SEVERE mem access issue on the hash of the file id to check on knownfilelist.
+		* Fixed a SEVERE memory bug on sending the shared folders
+		* Fixed not sending the incoming and categories folders when sharing folders.
+		* Fixed 'Friends' working as 'None' on 'view shared' preferences.
+		* No more [0xy.part] on preview of completed files
+		* Fixed the FAT32 rehashing of files on startup
+		* Fixed filters not being used on right click on main transfer tab -> new status
+		* Changed known file list from wxHashMap to std::map
+		* Fixed auto-update server list at startup
+		   Added posibility of multiple servelist urls too
+		* Fix for files publishing, reported by lugdunum to eMule/aMule developers.
+		* Proper use of ClearHelloProperties that fixes some crashes related to a var not being init.
+		* Added MOD_VERSION to hello type packets (just for CVS versions)
+		* Fixed packet processing on EMSocket error.
+		* Changed the full part (9.28Mb) lower limit for preview to 256Kb
+		* Added 'LI0' to the evil GPL doer checks.
+		* Bugfixes on the KnownFile::UpdatePartsInfo code.
+		* Added new verbose client info checkbox, to find out which clients are sending bad data.
 		* Fix UDP socket for Win32
-		* Preparing some 1.x / 2.x / CVS stats for aMule and Cleaned the Major version identifying
-		* Thread-safe log lines adding
-		* Completion Thread revamped --> No longer crashes, no longer asserts, and it's much nicer. I love it. ;)
+		* Re-added the timed part file buffer flush()
+		* Custom language support added
+		* Fixed FAT32 incoming/temp warning messages only shown on one of the folders.
+		* Fixed issues on packet unzip and crash on OP_CANCELTRANSFER already sent
+		* Added aMule 1.x / 2.x / CVS versioning.
+		* Thread-safe log lines adding using a queued loglines list.
+		* Completion Thread revamped --> No longer crashes, no longer asserts, and it's much nicer. 
 		* Fixed safe_delete (again)
 		* Fixed some memleaks
-		* Fixed better chuck selection
-		* Added new verbose info button, to find out which clients are sending bad data 
+		* Changed some CLists to wxLists
 		* Cleanup and fixing little bugs ;)
 		
 	Madcat:
@@ -92,7 +134,9 @@ Version 2.0.0rc3 - The 'tiku' version.
 		* All the bug-reporters, helpers, translators and users at http://forum.amule.org
 		* Batman who commited a mldonkey related fix, thanks :) 
 		* Jacobo221, Stefanero for their help and support on forum and all the other stuff ;) 
-	   As usual thx to eMule & wxWidgets devs and everyone i forgot ;)
+		* lugdunummaster for providing support on version tags and new features of lugdunum servers
+		.
+		 --- As usual thx to eMule & wxWidgets devs and everyone i forgot ;) ---
 
 ---------------------------------------------------------------------------------------------------------------
 
