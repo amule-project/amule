@@ -48,6 +48,10 @@
 
 //WX_DEFINE_LIST(SocketListL);
 
+BEGIN_EVENT_TABLE(CClientReqSocketHandler, wxEvtHandler)
+	EVT_SOCKET(CLIENTREQSOCKET_HANDLER, CClientReqSocketHandler::ClientReqSocketHandler)
+END_EVENT_TABLE()
+
 WX_DEFINE_OBJARRAY(ArrayOfwxStrings);
 
 IMPLEMENT_DYNAMIC_CLASS(CClientReqSocket,CEMSocket)
@@ -63,8 +67,9 @@ CClientReqSocket::CClientReqSocket(CPreferences* in_prefs,CUpDownClient* in_clie
 	theApp.listensocket->AddSocket(this);
 	ResetTimeOutTimer();
 	deletethis = false;
-
-	SetEventHandler(theApp,CLIENTREQSOCKET_HANDLER);
+	
+	my_handler = new CClientReqSocketHandler(this);
+	SetEventHandler(*my_handler,CLIENTREQSOCKET_HANDLER);
 	SetNotify(wxSOCKET_CONNECTION_FLAG|wxSOCKET_INPUT_FLAG|wxSOCKET_OUTPUT_FLAG|wxSOCKET_LOST_FLAG);
 	Notify(TRUE);
 }
@@ -81,6 +86,8 @@ CClientReqSocket::~CClientReqSocket()
 	}
 	client = NULL;
 	theApp.listensocket->RemoveSocket(this);
+	
+	delete my_handler;
 
 	//DEBUG_ONLY (theApp.clientlist->Debug_SocketDeleted(this));
 }
@@ -1732,6 +1739,42 @@ bool CClientReqSocket::Create()
 	OnInit();
 	return TRUE; //result;
 }
+
+
+void CClientReqSocketHandler::ClientReqSocketHandler(wxSocketEvent& event) {
+
+	if(!socket) {
+		// we are not mentally ready to receive anything
+		// or there is no socket on the event (got deleted?)
+		return;
+	}
+	
+	if (socket->OnDestroy()) {
+		return;
+	}
+
+	//printf("request at clientreqsocket\n");
+	switch(event.GetSocketEvent()) {
+		case wxSOCKET_LOST:
+			socket->OnError(socket->LastError());
+			break;
+		case wxSOCKET_INPUT:
+			socket->OnReceive(0);
+			break;
+		case wxSOCKET_OUTPUT:
+			socket->OnSend(0);
+			break;
+		case wxSOCKET_CONNECTION:
+			// connection stablished, nothing to do about it?
+			break;
+		default:
+			// connection requests should not arrive here..
+			wxASSERT(0);
+			break;
+	}
+	
+}
+
 
 IMPLEMENT_DYNAMIC_CLASS(CListenSocket,wxSocketServer)
 

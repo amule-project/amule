@@ -119,7 +119,7 @@ BEGIN_EVENT_TABLE(CamuleApp, wxApp)
 		// Listen Socket
 		EVT_SOCKET(LISTENSOCKET_HANDLER, CamuleApp::ListenSocketHandler)  
 		// Clients sockets
-		EVT_SOCKET(CLIENTREQSOCKET_HANDLER, CamuleApp::ClientReqSocketHandler)	
+		//EVT_SOCKET(CLIENTREQSOCKET_HANDLER, CamuleApp::ClientReqSocketHandler)	
 		// UDP Socket (servers)
 		EVT_SOCKET(UDPSOCKET_HANDLER, CamuleApp::UDPSocketHandler)	
 		// UDP Socket (clients)

@@ -57,6 +57,8 @@ WX_DECLARE_HASH_MAP(uint64, uint64, MyIntegerHash, MyIntegerEqual, MyHashMap2);
 
 // CClientReqSocket;
 
+class CClientReqSocketHandler;
+
 class CClientReqSocket : public CEMSocket
 {
 friend class CClientSocket;
@@ -97,7 +99,29 @@ private:
 //	void		Delete_Timed();
 	bool		ProcessPacket(char* packet, uint32 size,uint8 opcode);
 	bool		ProcessExtPacket(char* packet, uint32 size,uint8 opcode);
+
+    CClientReqSocketHandler* my_handler;
 };
+
+
+class CClientReqSocketHandler: 
+		public wxEvtHandler
+{
+	public:
+	CClientReqSocketHandler(CClientReqSocket* parent) {
+		socket = parent;
+	}
+	
+	CClientReqSocket* socket;
+	
+	private:
+	
+	void ClientReqSocketHandler(wxSocketEvent& event);
+	
+	DECLARE_EVENT_TABLE()
+};
+
+
 
 //WX_DECLARE_LIST(CClientReqSocket,SocketListL);
 
