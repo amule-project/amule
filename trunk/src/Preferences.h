@@ -234,6 +234,7 @@ public:
 	static uint64		GetTotalUploaded()		{ return s_totalUploadedBytes; }
 	static bool		IsConfirmExitEnabled()		{ return s_confirmExit; }
 	static bool		FilterBadIPs()			{ return s_filterBadIP; }
+	static void		SetFilterBadIPs(bool val)	{ s_filterBadIP = val; }
 	static bool		IsOnlineSignatureEnabled()	{ return s_onlineSig; }
 	static uint32		GetMaxGraphUploadRate()		{ return s_maxGraphUploadRate; }
 	static uint32		GetMaxGraphDownloadRate()	{ return s_maxGraphDownloadRate; }
@@ -259,6 +260,7 @@ public:
 	static WORD		GetLanguageID()			{ return s_languageID; }
 	static void		SetLanguageID(WORD new_id)	{ s_languageID = new_id; }
 	static uint8		CanSeeShares()			{ return s_iSeeShares; }
+	static void		SetCanSeeShares(uint8 val)	{ s_iSeeShares = val; }
 
 	static uint8		GetStatsMax()			{ return s_statsMax; }
 	static bool		UseFlatBar()			{ return (s_depth3D==0); }
@@ -394,8 +396,10 @@ public:
 	static void		SetIPFilterOn(bool val)		{ s_IPFilterOn = val; }
 	static uint8		GetIPFilterLevel()		{ return s_filterlevel;}
 	static void		SetIPFilterLevel(uint8 level)	{ s_filterlevel = level;}
-	static bool		IPFilterAutoLoad() { return s_IPFilterAutoLoad; }
-	static const wxString&	IPFilterURL() { return s_IPFilterURL; } 
+	static bool		IPFilterAutoLoad()		{ return s_IPFilterAutoLoad; }
+	static void		SetIPFilterAutoLoad(bool val)	{ s_IPFilterAutoLoad = val; }
+	static const wxString&	IPFilterURL()			{ return s_IPFilterURL; }
+	static void		SetIPFilterURL(wxString url)	{ s_IPFilterURL = url; }
 
 	// Kry - Source seeds On/Off
 	static bool		GetSrcSeedsOn() 		{ return s_UseSrcSeeds; }
@@ -409,6 +413,7 @@ public:
 	static void		SetVerbosePacketError(bool val)	{ s_VerbosePacketError = val; }
 	
 	static bool		IsSecureIdentEnabled()		{ return s_SecIdent; }
+	static void		SetSecureIdentEnabled(bool val)	{ s_SecIdent = val; }
 	
 	static bool		GetExtractMetaData()		{ return s_ExtractMetaData; }
 	static void		SetExtractMetaData(bool val)	{ s_ExtractMetaData = val; }
