@@ -90,6 +90,53 @@ bool CIPFilter::m_inet_atoh(wxString &s, uint32 *ip)
 	return ret;
 }
 
+bool CIPFilter::ProcessLineOk(wxString *sLine, unsigned long linecounter)
+{
+	// remove spaces from the left and right.
+	sLine->Strip(wxString::both);
+	// ignore comments & too short lines
+	if( 	sLine->GetChar(0) == '#' ||
+		sLine->GetChar(0) == '/' || 
+		sLine->Length() < 5 )
+		return false;
+	// Create the tokenizer. Fields are separated with commas. 
+	// Returns the empty last token if that is the case
+	wxStringTokenizer tokens( *sLine, wxT(","), wxTOKEN_RET_EMPTY_ALL );
+	// First token is IP Range
+	wxString IPRange = tokens.GetNextToken();
+	if( IPRange.IsEmpty() )
+		return false;
+	// Separate the two IP's
+	wxStringTokenizer IPToken( IPRange, wxT("-"), wxTOKEN_RET_EMPTY_ALL );
+	wxString sIPStart = IPToken.GetNextToken().Strip(wxString::both);
+	wxString sIPEnd   = IPToken.GetNextToken().Strip(wxString::both);
+	if( sIPStart.IsEmpty() || sIPEnd.IsEmpty() ) {
+		AddLogLineM(true, wxString::Format(_("Invalid line in file ipfilter.dat(%d)"), linecounter));
+		return false;
+	}
+	// Convert string IP's to host order IP numbers
+	uint32 IPStart, IPEnd;
+	bool ok = 
+		m_inet_atoh( sIPStart, &IPStart ) &&
+		m_inet_atoh( sIPEnd  , &IPEnd   );
+	if ( !ok ) {
+		AddLogLineM(true, wxString::Format(_("Invalid line in file ipfilter.dat(%d)"), linecounter));
+		return false;
+	}
+	// Second token is Access Level, default is 0.
+	long AccessLevel = 0;
+	wxString sAccessLevel = tokens.GetNextToken();
+	if ( !sAccessLevel.IsEmpty() ) {
+		sAccessLevel.ToLong(&AccessLevel);
+	}
+	// Third Token is description
+	wxString Description = tokens.GetNextToken();
+	// add a filter
+	AddBannedIPRange( IPStart, IPEnd, AccessLevel, Description );
+
+	return true;
+}
+
 int CIPFilter::LoadFromFile()
 {
 	int filtercounter = 0;
@@ -102,48 +149,14 @@ int CIPFilter::LoadFromFile()
 		for( ; !readFile.Eof(); sbuffer = readFile.GetNextLine() ) {
 			// increment line counter
 			linecounter++;
-			// remove spaces from the left and right.
-			sbuffer.Strip(wxString::both);
-			// ignore comments & too short lines
-			if( 	sbuffer.GetChar(0) == '#' ||
-				sbuffer.GetChar(0) == '/' || 
-				sbuffer.Length() < 5 )
-				continue;
-			// Create the tokenizer. Fields are separated with commas. 
-			// Returns the empty last token if that is the case
-			wxStringTokenizer tokens( sbuffer, wxT(","), wxTOKEN_RET_EMPTY_ALL );
-			// First token is IP Range
-			wxString IPRange = tokens.GetNextToken();
-			if( IPRange.IsEmpty() ) continue;
-			// Separate the two IP's
-			wxStringTokenizer IPToken( IPRange, wxT("-"), wxTOKEN_RET_EMPTY_ALL );
-			wxString sIPStart = IPToken.GetNextToken().Strip(wxString::both);
-			wxString sIPEnd   = IPToken.GetNextToken().Strip(wxString::both);
-			if( sIPStart.IsEmpty() || sIPEnd.IsEmpty() ) {
-				AddLogLineM(true, wxString::Format(_("Invalid line in file ipfilter.dat(%d)"), linecounter));
-				continue;
-			}
-			// Convert string IP's to host order IP numbers
-			uint32 IPStart, IPEnd;
-			bool ok = 
-				m_inet_atoh( sIPStart, &IPStart ) &&
-				m_inet_atoh( sIPEnd  , &IPEnd   );
-			if ( !ok ) {
-				AddLogLineM(true, wxString::Format(_("Invalid line in file ipfilter.dat(%d)"), linecounter));
-				continue;
-			}
-			// Second token is Access Level, default is 0.
-			long AccessLevel = 0;
-			wxString sAccessLevel = tokens.GetNextToken();
-			if ( !sAccessLevel.IsEmpty() ) {
-				sAccessLevel.ToLong(&AccessLevel);
-			}
-			// Third Token is description
-			wxString Description = tokens.GetNextToken();
-			// add a filter
-			AddBannedIPRange( IPStart, IPEnd, AccessLevel, Description );
+			// Process line
+			if( !ProcessLineOk(&sbuffer, linecounter) ) continue;
 			filtercounter++;
 		}
+		// Last line must be processed after.
+		linecounter++;
+		if( ProcessLineOk(&sbuffer, linecounter) ) filtercounter++;
+
 		// Close it for completeness ;)
 		readFile.Close();
 	}

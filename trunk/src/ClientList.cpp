@@ -17,16 +17,17 @@
 //along with this program; if not, write to the Free Software
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-#include "amule.h"			// Needed for theApp
+#include "amule.h"		// Needed for theApp
 #include "ClientList.h"		// Interface declarations.
 #include "ListenSocket.h"	// Needed for CClientReqSocket
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "UploadQueue.h"	// Needed for CUploadQueue
+#include "IPFilter.h"		// Needed for CIPFIlter
 #include "amuleDlg.h"
 #include "TransferWnd.h"
 #include "ClientCredits.h"
 #include <wx/intl.h>
-#include <wx/arrimpl.cpp> // this is a magic incantation which must be done!
+#include <wx/arrimpl.cpp>	 // this is a magic incantation which must be done!
 #include "opcodes.h"
 
 WX_DEFINE_OBJARRAY(ArrayOfPortAndHash);
@@ -357,7 +358,17 @@ void CClientList::RemoveBannedClient(uint32 dwIP){
 }
 
 void CClientList::FilterQueues() {
-	theApp.uploadqueue->RemoveFiltered();
-	theApp.downloadqueue->RemoveFiltered();
+	POSITION pos;
+	CUpDownClient *client;
+	// Filter client list
+	pos = list.GetHeadPosition();
+	while( pos ) {
+		client = list.GetNext(pos);
+		if (theApp.ipfilter->IsFiltered(client->GetIP())) {
+			delete client;
+#warning Xaignar, do not forget to add Safe_Delete here ;)
+			//client->Safe_Delete();
+		}
+	}
 }
 
