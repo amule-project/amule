@@ -146,6 +146,9 @@ AC_ARG_ENABLE(amulecmd,  [  --enable-amulecmd       Compile aMule command line c
 AC_ARG_ENABLE(amulecmdgui,  [  --enable-amulecmdgui    Compile aMule GUI client],
              GUI="$enableval", GUI="no")
 
+AC_ARG_ENABLE(amulecoregui,  [  --enable-amulecoregui    Compile aMule CORE separate from GUI client],
+             CORE_GUI="$enableval", CORE_GUI="no")
+
 AC_ARG_ENABLE(webserver,  [  --enable-webserver      Compile aMule WebServer],
               WEB="$enableval", WEB="no")
 
@@ -272,6 +275,7 @@ yes)	BUILD_AMULECMD="yes"
 	;;
 esac
 
+
 case "$WXBASE24FOUND" in
 1)	HAVE_AMULECMD="yes"
 	WXBASE_CFLAGS="$WXBASE_CFLAGS -DwxUSE_GUI=0"
@@ -386,6 +390,7 @@ AM_CONDITIONAL(WXCAS, test x$WXCAS = xyes)
 AM_CONDITIONAL(ALC, test x$ALC = xyes)
 AM_CONDITIONAL(ALCC, test x$ALCC = xyes)
 AM_CONDITIONAL(GUI, test x$GUI = xyes)
+AM_CONDITIONAL(CORE_GUI, test x$CORE_GUI = xyes)
 AM_CONDITIONAL(WEBGUI, test x$WEBGUI = xyes)
 AM_CONDITIONAL(COMPILE_CMD, test x$BUILD_AMULECMD = xyes)
 AM_CONDITIONAL(HAVE_WXBASE, test x$HAVE_AMULECMD = xyes)
@@ -460,6 +465,7 @@ esac
 echo "  Should ccache support be enabled?                        ${ccache:-no}"
 echo "  Should aMule command line client be built?               ${BUILD_AMULECMD:-no}"
 echo "  Should aMule GUI client be built?                        ${GUI:-no}"
+echo "  Should aMule core-gui version be built? (EXPERIMENTAL)   ${CORE_GUI:-no}"
 echo "  Should aMule WebServer be built?                         ${WEB:-no}"
 echo "  Should aMule WebServer GUI be built?                     ${WEBGUI:-no}"
 echo "  Should aMule ed2k links handler be built?                ${ED2K:-no}"

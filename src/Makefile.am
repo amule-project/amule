@@ -36,6 +36,10 @@ if ED2K
 bin_PROGRAMS += ed2k
 endif
 
+if CORE_GUI
+bin_PROGRAMS += amulegui
+endif
+
 bin_PROGRAMS += amule
 
 DEFS = -DHAVE_CONFIG_H
@@ -43,6 +47,44 @@ DEFS = -DHAVE_CONFIG_H
 BUILT_SOURCES =
 
 #LIBS = @LIBS@ 
+amulegui_SOURCES = amule-gui.cpp \
+	BarShader.cpp \
+	CatDialog.cpp \
+	CFile.cpp \
+	ChatSelector.cpp \
+	ChatWnd.cpp \
+	ClientCredits.cpp \
+	ClientDetailDialog.cpp \
+	ColorFrameCtrl.cpp \
+	CommentDialog.cpp \
+	CommentDialogLst.cpp \
+	DirectoryTreeCtrl.cpp \
+	DownloadListCtrl.cpp \
+	filemem.cpp \
+	FileDetailDialog.cpp \
+	FileDetailListCtrl.cpp \
+	FriendListCtrl.cpp \
+	listctrl.cpp \
+	muuli_wdr.cpp \
+	MuleListCtrl.cpp \
+	MuleNotebook.cpp \
+	MuleGifCtrl.cpp \
+	otherfunctions.cpp \
+	OScopeCtrl.cpp \
+	packets.cpp \
+	Preferences.cpp \
+	PrefsUnifiedDlg.cpp \
+	QueueListCtrl.cpp \
+	SearchDlg.cpp \
+	SearchList.cpp \
+	SearchListCtrl.cpp \
+	SharedFilesCtrl.cpp \
+	SharedFilesWnd.cpp \
+	ServerListCtrl.cpp \
+	StatisticsDlg.cpp \
+	TransferWnd.cpp \
+	UploadListCtrl.cpp \
+	amuleDlg.cpp 
 
 amule_SOURCES = ListenSocket.cpp \
 	ECSocket.cpp \
@@ -127,10 +169,12 @@ endif
 
 if HAVE_TRAY
 amule_SOURCES += eggtrayicon.c SysTray.cpp 
+amulegui_SOURCES += eggtrayicon.c SysTray.cpp 
 endif
 
 if HAVE_GTK
 amule_SOURCES += gtk2-funcs.c gtkplugxembed.c 
+amulegui_SOURCES += gtk2-funcs.c gtkplugxembed.c 
 endif
 
 if ADD_THROTTLER
@@ -144,6 +188,10 @@ endif
 amule_CFLAGS = $(TRAY_FLAGS) $(WX_CXXFLAGS) $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFLAGS)
 amule_CXXFLAGS = $(TRAY_FLAGS) $(WX_CXXFLAGS) $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFLAGS) $(CURL_FLAGS)
 amule_LDADD = $(WX_LIBS) $(GTK_LIBS) $(ZLIB_LIBS) $(CURL_LIBS) $(CRYPTOLIBS)
+
+amulegui_CFLAGS = $(TRAY_FLAGS) $(WX_CXXFLAGS) $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFLAGS) -DCLIENT_GUI
+amulegui_CXXFLAGS = $(TRAY_FLAGS) $(WX_CXXFLAGS) $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFLAGS) $(CURL_FLAGS) -DCLIENT_GUI
+amulegui_LDADD = $(WX_LIBS) $(GTK_LIBS) $(ZLIB_LIBS) $(CURL_LIBS) $(CRYPTOLIBS)
 
 ed2k_SOURCES = ED2KLinkParser.cpp
 ed2k_CFLAGS =
