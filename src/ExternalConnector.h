@@ -58,7 +58,7 @@ typedef struct s_CmdId {
 	int id;
 } CmdId;
 
-class wxFileConfig;
+class CECFileConfig;
 
 class CaMuleExternalConnector : public wxApp
 {
@@ -101,7 +101,7 @@ public:
 	void OnInitCmdLine(wxCmdLineParser& amuleweb_parser);
 	bool OnCmdLineParsed(wxCmdLineParser& parser);
 
-	wxFileConfig*	m_configFile;
+	CECFileConfig*	m_configFile;
 	wxString	m_configFileName;
 
 protected:
