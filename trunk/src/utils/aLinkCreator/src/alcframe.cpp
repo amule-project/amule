@@ -38,7 +38,6 @@
 #pragma hdrstop
 #endif
 
-#ifndef WX_PRECOMP || defined(__WXMAC__)
 #include <wx/filedlg.h>
 #include <wx/textfile.h>
 #include <wx/file.h>
@@ -48,7 +47,6 @@
 #include <wx/filename.h>
 #include <wx/clipbrd.h>
 #include <wx/dataobj.h>
-#endif
 
 #include "md4.h"
 #include "ed2khash.h"

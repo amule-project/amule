@@ -46,9 +46,7 @@
 #pragma hdrstop
 #endif
 
-#ifndef WX_PRECOMP || defined(__WXMAC__)
 #include <wx/ffile.h>
-#endif
 
 #include "md4.h"
 #include "bithelp.h"
