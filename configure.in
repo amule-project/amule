@@ -172,7 +172,7 @@ case "$GDLIBFOUND" in
 	GDLIB_LIBS="$GDLIB_LIBS -lgd"
 	;;
 *)AC_MSG_NOTICE([
-	WARNING: gd-lib >= 2.0.0 not found.
+	WARNING: gd-lib >= 2.0.0, or a functional gd.h (from gd-devel) not found.
 	gd-lib is needed for fully funtional cas. If you don't have gd-lib,
 	cas will be compiled, but you won't be able to create that cool
 	status image (text mode however will work). Also note that you should

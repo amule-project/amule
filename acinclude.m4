@@ -302,7 +302,7 @@ AC_DEFUN([AM_PATH_GDLIBCONFIG],
 
     if test "x$no_gdlib" = x ; then
        AC_MSG_RESULT(yes (version $GDLIB_VERSION))
-       ifelse([$2], , :, [$2])
+       AC_CHECK_HEADER([gd.h],[$2],[$3])
     else
        if test "x$GDLIB_VERSION" = x; then
 	  dnl no gdlib-config at all
@@ -320,6 +320,7 @@ AC_DEFUN([AM_PATH_GDLIBCONFIG],
        ifelse([$3], , :, [$3])
     fi
   fi
+
 
   AC_SUBST(GDLIB_CPPFLAGS)
   AC_SUBST(GDLIB_CFLAGS)
