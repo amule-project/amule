@@ -1,4 +1,6 @@
 /*
+ * This file is part of the aMule project.
+ *
  * Copyright (C) 2004 aMule Team (http://www.amule.org)
  *
  * This program is free software; you can redistribute it and/or
@@ -105,15 +107,6 @@ void wxProxyData::Empty()
 wxSocketProxy::wxSocketProxy(const wxProxyData *ProxyData)
 {
 	SetProxyData(ProxyData);
-}
-
-wxSocketProxy::~wxSocketProxy()
-{
-#if 0
-	// Never call delete on a socket! Call Destroy().
-	// delete m_ProxyClientSocket;
-	m_ProxyClientSocket->Destroy();
-#endif
 }
 
 void wxSocketProxy::SetProxyData(const wxProxyData *ProxyData)

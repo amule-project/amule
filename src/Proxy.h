@@ -1,4 +1,6 @@
 /*
+ * This file is part of the aMule project.
+ *
  * Copyright (C) 2004 aMule Team (http://www.amule.org)
  *
  * This program is free software; you can redistribute it and/or
@@ -144,8 +146,6 @@ class wxSocketProxy
 public:
 	/* Constructor */
 	wxSocketProxy(const wxProxyData *ProxyData);
-	/* Destructor */
-	~wxSocketProxy();
 	
 	/* Interface */
 	void		SetProxyData(const wxProxyData *ProxyData);
