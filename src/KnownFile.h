@@ -50,7 +50,7 @@
 #define PR_VERYHIGH			3
 #define PR_AUTO				5
 #define PR_POWERSHARE                   6 //added for powershare (deltaHF)
-#define SRV_PR_LOW			0
+#define SRV_PR_LOW			0 // Server priority
 #define SRV_PR_NORMAL			1
 #define SRV_PR_HIGH			2
 
