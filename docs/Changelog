@@ -112,14 +112,19 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		* Fixed a bug in UTF82unicode(), reported by Mr Faber.
 		* Got rid of sscanf in NetworkFunctions.h. This has caused a
 		crash once, reported by Mr Faber.
+		* Fixed a lock with high CPU usage when crashing in amuled,
+		because wxExecute() could be called from the FatalErrorHandler()
+		not from the main thread, which is currently prohibited in
+		wxWidgets.
 
 	volpol
 		* Patch to fix use of deprecated functions in wxGTK-2.5.3.
 
 	Special Thanks To:
 		* Bug and feature reporters:
-		rommel
+		alandar
 		Mr Faber
+		rommel
 
 --------------------------------------------------------------------------------
 
