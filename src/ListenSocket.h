@@ -114,8 +114,7 @@ private:
 class CSocketGlobalThread : public wxThread {
 	void *Entry();
 	
-	std::list<CClientReqSocket *> socket_list;
-	wxMutex list_mutex;
+	std::set<CClientReqSocket *> socket_list;
 public:
 	CSocketGlobalThread(/*CListenSocket *socket*/);
 	void AddSocket(CClientReqSocket* sock);

@@ -2053,8 +2053,10 @@ CClientReqSocketHandler::CClientReqSocketHandler(CClientReqSocket* parent)
 
 void *CClientReqSocketHandler::Entry()
 {
+	printf("CClientReqSocketHandler: start thread for %p\n", socket);
 	while ( !TestDestroy() ) {
-		if ( socket->deletethis ) {
+		CALL_APP_DATA_LOCK;
+		if ( socket->deletethis || socket->Error()) {
 			printf("CClientReqSocketHandler: socket %p being deleted\n", socket);
 			break;
 		}
@@ -2067,6 +2069,7 @@ void *CClientReqSocketHandler::Entry()
 		}
 	}
 	printf("CClientReqSocketHandler: thread for %p exited\n", socket);
+	CALL_APP_DATA_LOCK;
 	socket->my_handler = 0;
 	return 0;
 }
@@ -2183,6 +2186,7 @@ void *CListenSocket::Entry()
 				}
 				continue;
 			}
+			CALL_APP_DATA_LOCK;
 			OnAccept(0);
 		}
 	}
@@ -2244,7 +2248,7 @@ void CListenSocket::OnAccept(int nErrorCode)
 			// Create a new socket to deal with the connection
 			CClientReqSocket* newclient = new CClientReqSocket(app_prefs);
 			// Accept the connection and give it to the newly created socket
-			if (AcceptWith(*newclient, false)) {
+			if (AcceptWith(*newclient, true)) {
 				// OnInit currently does nothing
 				newclient->OnInit();
 			} else {
@@ -2411,38 +2415,34 @@ CSocketGlobalThread::CSocketGlobalThread() : wxThread(wxTHREAD_JOINABLE)
 
 void CSocketGlobalThread::AddSocket(CClientReqSocket* sock)
 {
-	wxMutexLocker locker(list_mutex);
-	socket_list.push_back(sock);
+	//CALL_APP_DATA_LOCK;
+	//printf("CClientReqSocket: socket %p added (%d total)\n", sock, socket_list.size());
+	//wxMutexLocker locker(list_mutex);
+	socket_list.insert(sock);
 }
 
 void CSocketGlobalThread::RemoveSocket(CClientReqSocket* sock)
 {
-	wxMutexLocker locker(list_mutex);
-	for (std::list<CClientReqSocket *>::iterator it = socket_list.begin();
-			it != socket_list.end(); it++) {
-			CClientReqSocket* cur_socket = *it;
-			if ( cur_socket == sock ) {
-				socket_list.erase(it);
-				return;
-			}
-		}
+	//CALL_APP_DATA_LOCK;
+	//wxMutexLocker locker(list_mutex);
+	//socket_list.remove(sock);
+	//printf("CClientReqSocket: socket %p removed\n", sock);
+	socket_list.erase(sock);
 }
 
 
 void *CSocketGlobalThread::Entry()
 {
+	AddDebugLogLineM(true, "Socket global thread running\n");
 	while ( !TestDestroy() ) {
 		Sleep(10);
-		wxMutexLocker locker(list_mutex);
-		for (std::list<CClientReqSocket *>::iterator it = socket_list.begin();
+		std::set<CClientReqSocket *> erase_list;
+		CALL_APP_DATA_LOCK;
+		for (std::set<CClientReqSocket *>::iterator it = socket_list.begin();
 			it != socket_list.end(); it++) {
 			CClientReqSocket* cur_sock = *it;
-			if (cur_sock->deletethis) {
-				it = socket_list.erase(it);
-				continue;
-			}
-			if ( cur_sock->WaitForLost(0, 0) ) {
-				it = socket_list.erase(it);
+			if (cur_sock->deletethis || cur_sock->Error()) {
+				erase_list.insert(cur_sock);
 				continue;
 			}
 			if ( !cur_sock->wxSocketBase::IsConnected() ) {
@@ -2450,6 +2450,10 @@ void *CSocketGlobalThread::Entry()
 					cur_sock->OnConnect(0);
 				}
 			} else {
+				if ( cur_sock->WaitForLost(0, 0) ) {
+					erase_list.insert(cur_sock);
+					continue;
+				}
 				if ( cur_sock->WaitForRead(0, 0) ) {
 					cur_sock->OnReceive(0);
 				}
@@ -2458,13 +2462,20 @@ void *CSocketGlobalThread::Entry()
 					
 					printf("Client %p started dload\n", client);
 						
-					it = socket_list.erase(it);
+					erase_list.insert(cur_sock);
 					CClientReqSocketHandler *t = new CClientReqSocketHandler(cur_sock);
 					// fire & forget
 					t->Run();
 				}
 			}
 		}
+		for (std::set<CClientReqSocket *>::iterator it = erase_list.begin();
+			it != erase_list.end(); it++) {
+			CClientReqSocket* cur_sock = *it;
+			socket_list.erase(cur_sock);
+			//socket_list.remove(cur_sock);
+		}
+		//list_mutex.Unlock();
 	}
 	return 0;
 }

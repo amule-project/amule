@@ -144,23 +144,19 @@ IMPLEMENT_APP(CamuleApp)
 
 int CamuleApp::OnRun()
 {
-	wxMutexGuiLeave();
 	// lfroen: this loop is instead core timer.
 	// Actually, using such loop is worst design decision i ever
 	// saw. Right way is to have thread per socket.
 	while ( 1 ) {
-		wxMutexGuiEnter();
+		wxThread::Sleep(100);
+		// lock data after sleep
+		CALL_APP_DATA_LOCK;
 		OnCoreTimer(*((wxEvent *)0));
 		ProcessPendingEvents();
-		wxMutexGuiLeave();
-		wxSleep(100);
+		
 	}
 	return 0;
 }
-
-// Global timer. Used to cache GetTickCount() results for better performance.
-class MyTimer *mytimer;
-
 
 static void UnlimitResource(RLIMIT_RESOURCE resType)
 {
@@ -271,10 +267,6 @@ int CamuleApp::OnExit()
 		localserver = NULL;
 	}
 	
-	if (mytimer) {
-		delete mytimer;
-	}
-
 	if (m_app_state!=APP_STATE_STARTING) {
 		printf("aMule shutdown completed.\n");
 	}
@@ -316,10 +308,6 @@ bool CamuleApp::OnInit()
 	stat_serverConnectTime = 0;
 	sTransferDelay = 0.0;
 
-
-	// Madcat - Initialize timer as the VERY FIRST thing to avoid any issues later.
-	// Kry - I love to init the vars on init, even before timer.
-	mytimer = new MyTimer();
 
 	Start_time = GetTickCount64();
 
@@ -854,24 +842,6 @@ wxString CamuleApp::GenFakeCheckUrl2(const CAbstractFile *f)
 
 	return strURL;
 }
-
-// Sets the contents of the clipboard. Prior content  erased.
-bool CamuleApp::CopyTextToClipboard(wxString strText)
-{
-#warning lfroen - how do i ?
-
-// 	if (wxTheClipboard->Open()) {
-// 		wxTheClipboard->UsePrimarySelection(TRUE);
-// 		wxTheClipboard->SetData(new wxTextDataObject(strText));
-// 		wxTheClipboard->Close();
-
-// 		return true;
-// 	} else {
-// 		return false;
-// 	}
-	return false;
-}
-
 
 /* Original implementation by Bouc7 of the eMule Project.
    aMule Signature idea was designed by BigBob and implemented
