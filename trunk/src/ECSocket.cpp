@@ -27,7 +27,7 @@ wxString ECSocket::SendRecvMsg(const wxChar *msg) {
 
 	wxString response("");
 
-  	size_t len  = (wxStrlen(msg) + 1) * sizeof(wxChar);
+  	uint16 len  = (wxStrlen(msg) + 1) * sizeof(wxChar);
 
 	this->SetFlags(wxSOCKET_WAITALL);
 	this->Write(len);
