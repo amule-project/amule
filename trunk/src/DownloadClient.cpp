@@ -585,8 +585,8 @@ void CUpDownClient::SetDownloadState(uint8 byNewState)
 			if (byNewState == DS_NONE) {
 				if (m_abyPartStatus) {
 					delete[] m_abyPartStatus;
+					m_abyPartStatus = NULL;
 				}
-				m_abyPartStatus = 0;
 				m_nPartCount = 0;
 			}
 			if (socket && byNewState != DS_ERROR) {

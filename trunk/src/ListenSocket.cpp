@@ -1088,15 +1088,26 @@ bool CClientReqSocket::ProcessPacket(char* packet, uint32 size, uint8 opcode)
 		return false;
 	}
 	catch(wxString error) {
-		#ifdef __DEBUG__
-		printf("Caught wxString error %s on ListenSocket\n", error.c_str());
-		#endif
 		if (client) {
+			#ifdef __DEBUG__
+			if (error.IsEmpty()) {
+				printf("\tCaught error:\n\t\tError: Unknown\n\t\tClientData: %s\n\ton ListenSocket\n",client->GetClientFullInfo().c_str());
+			} else {
+				printf("\tCaught error:\n\t\tError: %s\n\t\tClientData: %s\n\ton ListenSocket\n", error.c_str(),client->GetClientFullInfo().c_str());
+			}
+			#endif						
 			client->SetDownloadState(DS_ERROR);
 			// TODO write this into a debugfile
 			theApp.amuledlg->AddDebugLogLine(false,CString(_("Client '%s' (IP:%s) caused an error: %s. Disconnecting client!")),client->GetUserName(),client->GetFullIP(),error.GetData());
 		} else {
-			theApp.amuledlg->AddDebugLogLine(false,CString(_("A client caused an error or did something bad: %s. Disconnecting client!")),error.GetData());
+			#ifdef __DEBUG__
+			if (error.IsEmpty()) {
+				printf("\tCaught error:\n\t\tError: Unknown\n\t\tClientData: Unknown\n\ton ListenSocket\n");
+			} else {
+				printf("\tCaught error:\n\t\tError: %s\n\t\tClientData: Unknown\n\ton ListenSocket\n", error.c_str());
+			}
+			#endif			
+			theApp.amuledlg->AddDebugLogLine(false,CString(_("A unknown client caused an error or did something bad: %s. Disconnecting client!")),error.GetData());
 		}
 		Disconnect(CString("Client error on ListenSocket ProcessPacket: ") + CString(error));
 		return false;
@@ -1551,12 +1562,27 @@ bool CClientReqSocket::ProcessExtPacket(char* packet, uint32 size, uint8 opcode)
 		}
 	}
 	catch(wxString error) {
-		#ifdef __DEBUG__
-		printf("Caught wxString error %s on ListenSocket\n", error.c_str());
-		#endif
 		theApp.amuledlg->AddDebugLogLine(false,CString(_("A client caused an error or did something bad: %s. Disconnecting client!")),error.GetData());
 		if (client) {
+			wxASSERT(!error.IsEmpty());
+			#ifdef __DEBUG__
+			if (error.IsEmpty()) {
+				
+				printf("\tCaught error:\n\t\tError: Unknown\n\t\tClientData: %s\n\ton ListenSocket\n",client->GetClientFullInfo().c_str());
+			} else {
+				printf("\tCaught error:\n\t\tError: %s\n\t\tClientData: %s\n\ton ListenSocket\n", error.c_str(),client->GetClientFullInfo().c_str());
+			}
+			#endif		
 			client->SetDownloadState(DS_ERROR);
+		} else {
+			wxASSERT(!error.IsEmpty());
+			#ifdef __DEBUG__
+			if (error.IsEmpty()) {
+				printf("\tCaught error:\n\t\tError: Unknown\n\t\tClientData: Unknown\n\ton ListenSocket\n");
+			} else {
+				printf("\tCaught error:\n\t\tError: %s\n\t\tClientData: Unknown\n\ton ListenSocket\n", error.c_str());
+			}
+			#endif						
 		}
 		Disconnect(CString("Client error on ListenSocket ProcessExtPacket: ") + error);
 		return false;

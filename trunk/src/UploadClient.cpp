@@ -189,12 +189,17 @@ uint32 CUpDownClient::GetScore(bool sysvalue, bool isdownloading, bool onlybasev
 		// the first 15 min downloadtime counts as 15 min waitingtime and you get a 15 min bonus while you are in the first 15 min :)
 		// (to avoid 20 sec downloads) after this the score won't raise anymore 
 		fBaseValue = (float)(m_dwUploadTime-GetWaitStartTime());
+		wxASSERT ( m_dwUploadTime-GetWaitStartTime() >= 0 ); //oct 28, 02: changed this from "> 0" to ">= 0"
 		fBaseValue += (float)(::GetTickCount() - m_dwUploadTime > 900000)? 900000:1800000;
 		fBaseValue /= 1000;
 	}
 	//gjn 2003-01-14 added following if statement to get the credit system to work
 	if(theApp.glob_prefs->UseCreditSystem()) {
-		fBaseValue *= credits->GetScoreRatio(GetIP());
+		float modif = credits->GetScoreRatio(GetIP());
+		fBaseValue *= modif;
+		if( !m_bySupportSecIdent && modif == 1 ) {
+			fBaseValue *= 0.95f;		
+		}
 	}
 	if (!onlybasevalue) {
 		fBaseValue *= (float(filepriority)/10.0f);
@@ -377,76 +382,6 @@ bool CUpDownClient::CreateNextBlockPackage(){
 
 }
 
-void CUpDownClient::ProcessUpFileStatus(char* packet,uint32 size){
-	//printf("entered in : CUpDownClient::ProcessUpFileStatus\n");
-	if (m_abyUpPartStatus) {
-		delete[] m_abyUpPartStatus;
-		m_abyUpPartStatus = NULL;	// added by jicxicmic
-	}
-	m_nUpPartCount = 0;
-	m_nUpCompleteSourcesCount= 0;
-	
-	/*
-	printf("ExtendedRequestsVersion = %i, size = %i\n",GetExtendedRequestsVersion(),size);
-	DumpMem(packet,size);
-	*/
-
-	if( GetExtendedRequestsVersion() == 0 ) {
-		return;	
-	}	
-	
-	if( size == 16 ) {
-		return;
-	}	
-	
-
-	
-	CSafeMemFile data((BYTE*)packet,size);
-	uchar cfilehash[16];
-	data.ReadRaw(cfilehash,16);
-	CKnownFile* tempreqfile = theApp.sharedfiles->GetFileByID(cfilehash);
-	uint16 nED2KUpPartCount;
-	data.Read(nED2KUpPartCount);
-	if (!nED2KUpPartCount){
-		m_nUpPartCount = tempreqfile->GetPartCount();
-		m_abyUpPartStatus = new uint8[m_nUpPartCount];
-		memset(m_abyUpPartStatus,0,m_nUpPartCount);
-	}
-	else{
-		if (tempreqfile->GetED2KPartCount() != nED2KUpPartCount){
-			m_nUpPartCount = 0;
-			return;
-		}
-		m_nUpPartCount = tempreqfile->GetPartCount();
-		m_abyUpPartStatus = new uint8[m_nUpPartCount];
-		uint16 done = 0;
-		while (done != m_nUpPartCount){
-			uint8 toread;
-			data.Read(toread);
-			for (sint32 i = 0;i != 8;i++){
-				m_abyUpPartStatus[done] = ((toread>>i)&1)? 1:0;
-//				We may want to use this for another feature..
-//				if (m_abyUpPartStatus[done] && !tempreqfile->IsComplete(done*PARTSIZE,((done+1)*PARTSIZE)-1))
-//					bPartsNeeded = true;
-				done++;
-				if (done == m_nUpPartCount)
-					break;
-			}
-		}
-		if ((GetExtendedRequestsVersion() > 1) && (data.GetLength() - data.GetPosition() > 1)) {
-			uint16 nCompleteCountLast = GetUpCompleteSourcesCount();
-			uint16 nCompleteCountNew;
-			data.Read(nCompleteCountNew);
-			SetUpCompleteSourcesCount(nCompleteCountNew);
-			if (nCompleteCountLast != nCompleteCountNew)	{
-				tempreqfile->UpdatePartsInfo();
-			}
-		}
-	}
-
-	theApp.amuledlg->transferwnd->queuelistctrl->RefreshClient(this);
-}
-
 void CUpDownClient::CreateStandartPackets(byte* data,uint32 togo, Requested_Block_Struct* currentblock){
 	//printf("entered in : CUpDownClient::CreateStandartPackets\n");
 	uint32 nPacketSize;
@@ -510,64 +445,77 @@ void CUpDownClient::CreatePackedPackets(byte* data,uint32 togo, Requested_Block_
 
 void CUpDownClient::ProcessExtendedInfo(CSafeMemFile* data, CKnownFile* tempreqfile)
 {
-	if (m_abyUpPartStatus) 
-	{
-		delete[] m_abyUpPartStatus;
-		m_abyUpPartStatus = NULL;	// added by jicxicmic
-	}
-	m_nUpPartCount = 0;
-	m_nUpCompleteSourcesCount= 0;
-	if( GetExtendedRequestsVersion() == 0 )
-		return;
-	if (data->GetLength() == 16){
-		return;
-		// to all developers: in the next version the client will be disconnected when causing this error!
-		//please fix your protocol implementation (shareaza, xmule, etc)!
-	}
-	uint16 nED2KUpPartCount;
-	data->Read(nED2KUpPartCount);
-	if (!nED2KUpPartCount)
-	{
-		m_nUpPartCount = tempreqfile->GetPartCount();
-		m_abyUpPartStatus = new uint8[m_nUpPartCount];
-		memset(m_abyUpPartStatus,0,m_nUpPartCount);
-	}
-	else
-	{
-		if (tempreqfile->GetED2KPartCount() != nED2KUpPartCount)
-		{
-			//We already checked if we are talking about the same file.. So if we get here, something really strange happened!
-			m_nUpPartCount = 0;
+	try {
+		if (m_abyUpPartStatus)  {
+			delete[] m_abyUpPartStatus;
+			m_abyUpPartStatus = NULL;	// added by jicxicmic
+		}
+	
+		m_nUpPartCount = 0;
+		m_nUpCompleteSourcesCount= 0;
+		
+		if( GetExtendedRequestsVersion() == 0 ) {
 			return;
 		}
-		m_nUpPartCount = tempreqfile->GetPartCount();
-		m_abyUpPartStatus = new uint8[m_nUpPartCount];
-		uint16 done = 0;
-		while (done != m_nUpPartCount)
-		{
-			uint8 toread;
-			data->Read(toread);
-			for (sint32 i = 0;i != 8;i++){
-				m_abyUpPartStatus[done] = ((toread>>i)&1)? 1:0;
-//				We may want to use this for another feature..
-//				if (m_abyUpPartStatus[done] && !tempreqfile->IsComplete(done*PARTSIZE,((done+1)*PARTSIZE)-1))
-//					bPartsNeeded = true;
-				done++;
-				if (done == m_nUpPartCount)
-					break;
+		
+		if (data->GetLength() == 16) {
+			return;
+			// to all developers: in the next version the client will be disconnected when causing this error!
+			//please fix your protocol implementation (shareaza, xmule, etc)!
+		}
+		
+		uint16 nED2KUpPartCount;
+		data->Read(nED2KUpPartCount);
+		if (!nED2KUpPartCount) {
+			m_nUpPartCount = tempreqfile->GetPartCount();
+			m_abyUpPartStatus = new uint8[m_nUpPartCount];
+			memset(m_abyUpPartStatus,0,m_nUpPartCount);
+		} else {
+			if (tempreqfile->GetED2KPartCount() != nED2KUpPartCount) {
+				//We already checked if we are talking about the same file.. So if we get here, something really strange happened!
+				m_nUpPartCount = 0;
+				return;
+			}
+		
+			m_nUpPartCount = tempreqfile->GetPartCount();
+			m_abyUpPartStatus = new uint8[m_nUpPartCount];
+			uint16 done = 0;
+			while (done != m_nUpPartCount) {
+				uint8 toread;
+				data->Read(toread);
+				for (sint32 i = 0;i != 8;i++){
+					m_abyUpPartStatus[done] = ((toread>>i)&1)? 1:0;
+					//	We may want to use this for another feature..
+					//	if (m_abyUpPartStatus[done] && !tempreqfile->IsComplete(done*PARTSIZE,((done+1)*PARTSIZE)-1))
+					// bPartsNeeded = true;
+					done++;
+					if (done == m_nUpPartCount) {
+						break;
+					}
+				}
+			}
+			
+			if (GetExtendedRequestsVersion() > 1) {
+				uint16 nCompleteCountLast = GetUpCompleteSourcesCount();
+				uint16 nCompleteCountNew;
+				data->Read(nCompleteCountNew);
+				SetUpCompleteSourcesCount(nCompleteCountNew);
+				if (nCompleteCountLast != nCompleteCountNew) {
+					tempreqfile->UpdatePartsInfo();
+				}
 			}
 		}
-		if (GetExtendedRequestsVersion() > 1)
-		{
-			uint16 nCompleteCountLast = GetUpCompleteSourcesCount();
-			uint16 nCompleteCountNew;
-			data->Read(nCompleteCountNew);
-			SetUpCompleteSourcesCount(nCompleteCountNew);
-			if (nCompleteCountLast != nCompleteCountNew)
-			{
-				tempreqfile->UpdatePartsInfo();
-			}
+	} catch (CInvalidPacket InvalidPacket) {
+		wxString error = "CUpDownClient::ProcessExtendedInfo: ";
+		if (strlen(InvalidPacket.what())) {
+			error += InvalidPacket.what();
+		} else {
+			error += "Unknown InvalidPacket exception";
 		}
+		throw(error);
+	} catch (...) {
+		wxString error = "CUpDownClient::ProcessExtendedInfo: Unknown Exception";
+		throw(error);
 	}
 	theApp.amuledlg->transferwnd->queuelistctrl->RefreshClient(this);
 }
