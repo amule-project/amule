@@ -30,8 +30,6 @@
 #include "endianfix.h"
 #include "otherstructs.h" // for Gap_Struct
 
-#include <list>
-
 namespace otherfunctions {
 	
 /**
@@ -318,21 +316,23 @@ class RLE_Data {
 class PartFileEncoderData {
 public:
 	RLE_Data m_part_status;
-	std::list<Gap_Struct> m_gap_list;
+	RLE_Data m_gap_status;
 	
 	PartFileEncoderData() { }
-	PartFileEncoderData(int part_count) : m_part_status(part_count, true) { }
-	
-	void ApplyGapDiffs(std::list<Gap_Struct> &diff_list);
-	
+	PartFileEncoderData(int part_count, int gap_count) :
+		m_part_status(part_count, true), m_gap_status(gap_count*sizeof(uint32), true)
+	{
+	}
+		
 	// for stl
-	PartFileEncoderData(const PartFileEncoderData &obj) : m_part_status(obj.m_part_status), m_gap_list(obj.m_gap_list)
+	PartFileEncoderData(const PartFileEncoderData &obj) :
+		m_part_status(obj.m_part_status), m_gap_status(obj.m_gap_status)
 	{
 	}
 	PartFileEncoderData &operator=(const PartFileEncoderData &obj)
 	{
 		m_part_status = obj.m_part_status;
-		m_gap_list = obj.m_gap_list;
+		m_gap_status = obj.m_gap_status;
 		return *this;
 	}
 };
