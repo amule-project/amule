@@ -49,6 +49,7 @@
 #include "otherfunctions.h"	// Needed for GetTickCount
 #include "amule.h"			// Needed for theApp
 #include "Preferences.h"
+#include "ClientList.h"
 
 //TODO rewrite the whole networkcode, use overlapped sockets
 
@@ -58,7 +59,6 @@ CUploadQueue::CUploadQueue(CPreferences* in_prefs){
 	msPrevProcess = ::GetTickCount();
 	kBpsEst = 2.0;
 	kBpsUp = 0.0;
-	bannedcount = 0;
 	successfullupcount = 0;
 	failedupcount = 0;
 	totaluploadtime = 0;
@@ -92,6 +92,7 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd){
 			CUpDownClient* cur_client =	waitinglist.GetAt(pos2);
 			// clear dead clients
 			if ((::GetTickCount() - cur_client->GetLastUpRequest() > MAX_PURGEQUEUETIME) || !theApp.sharedfiles->GetFileByID(cur_client->GetUploadFileID()) ) {
+				cur_client->ClearWaitStartTime();
 				RemoveFromWaitingQueue(pos2,true);	
 				if (!cur_client->socket) {
 					if(cur_client->Disconnected(_("AddUpNextClient - purged"))) {
@@ -362,18 +363,6 @@ POSITION CUploadQueue::GetDownloadingClient(CUpDownClient* client)
 	return uploadinglist.Find( client );
 }
 
-void CUploadQueue::UpdateBanCount()
-{
-	int count=0;
-	for (POSITION pos = waitinglist.GetHeadPosition();pos != 0; ) {
-		CUpDownClient* cur_client= waitinglist.GetNext(pos);
-		if(cur_client->IsBanned()) {
-			count++;
-		}
-	}
-	SetBanCount(count);
-}
-
 void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit)
 {
 
@@ -383,23 +372,17 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
 	}
 	
 	if (client->IsBanned()) {
-		if (::GetTickCount() - client->GetBanTime() > 18000000) {
-			client->UnBan();
-		} else {
-			return;
-		}
+		return;
 	}
 
 	client->AddAskedCount();
 	client->SetLastUpRequest();
 
-	if (!bIgnoreTimelimit) {
-		client->AddRequestCount(client->GetUploadFileID());
-	}
-
 	// check for double
-	for (POSITION pos = waitinglist.GetHeadPosition();pos != 0;waitinglist.GetNext(pos)) {
-		CUpDownClient* cur_client= waitinglist.GetAt(pos);
+	uint16 cSameIP = 0;
+	for (POSITION pos = waitinglist.GetHeadPosition();pos != 0; ) {
+		POSITION pos2 = pos;
+		CUpDownClient* cur_client= waitinglist.GetNext(pos);
 		if (cur_client == client) { // already on queue
 			if (client->m_bAddNextConnect && (uploadinglist.GetCount() < theApp.glob_prefs->GetMaxUpload())){
 				if (lastupslotHighID) {
@@ -415,21 +398,75 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
 			Notify_QlistRefreshClient(client);
 			return;			
 		} else if ( client->Compare(cur_client) ) {
+			theApp.clientlist->AddTrackClient(client); // in any case keep track of this client
+				
 			// another client with same ip or hash
 			AddDebugLogLineM(false,wxString::Format(_("Client '%s' and '%s' have the same userhash or IP - removed '%s'"),unicode2char(client->GetUserName()),unicode2char(cur_client->GetUserName()),unicode2char(cur_client->GetUserName())));
-			RemoveFromWaitingQueue(pos,true);	
-			if (!cur_client->socket) {
-				if(cur_client->Disconnected(_("AddClientToQueue - same userhash 1"))) {
-					delete cur_client;
-				}				
+
+			if ( cur_client->credits && cur_client->credits->GetCurrentIdentState(cur_client->GetIP()) == IS_IDENTIFIED)
+			{
+				//cur_client has a valid secure hash, don't remove him
+#ifdef __USE_DEBUG__
+				if (thePrefs.GetVerbose())
+					AddDebugLogLine(false,CString(GetResString(IDS_SAMEUSERHASH)),client->GetUserName(),cur_client->GetUserName(),client->GetUserName() );
+#endif
+				return;
 			}
-			return;
+
+			if (client->credits != NULL && client->credits->GetCurrentIdentState(client->GetIP()) == IS_IDENTIFIED)
+			{
+				//client has a valid secure hash, add him remove other one
+#ifdef __ENABLE_DEBUG__
+				if (thePrefs.GetVerbose())
+					AddDebugLogLine(false,CString(GetResString(IDS_SAMEUSERHASH)),client->GetUserName(),cur_client->GetUserName(),cur_client->GetUserName() );
+#endif
+				RemoveFromWaitingQueue(pos2,true);
+				if (!cur_client->socket) {
+					if (cur_client->Disconnected("AddClientToQueue - same userhash 1")) {
+						delete cur_client;
+					}
+				}
+			} else {
+				// remove both since we dont know who the bad on is
+#ifdef __ENABLE_DEBUG__
+				if (thePrefs.GetVerbose())
+					AddDebugLogLine(false,CString(GetResString(IDS_SAMEUSERHASH)),client->GetUserName(),cur_client->GetUserName(),"Both" );
+#endif
+				RemoveFromWaitingQueue(pos2,true);
+				if (!cur_client->socket) {
+					if (cur_client->Disconnected("AddClientToQueue - same userhash 2")) {
+						delete cur_client;
+					}
+				}
+				return;
+			}
+		} else if (client->GetIP() == cur_client->GetIP()) {
+			// same IP, different port, different userhash
+			cSameIP++;
 		}
 	}
 	// done
+	if (cSameIP >= 3)
+	{
+		// do not accept more than 3 clients from the same IP
+#ifdef __ENABLE_DEBUG__
+		if (thePrefs.GetVerbose())
+			DEBUG_ONLY( AddDebugLogLine(false,"%s's (%s) request to enter the queue was rejected, because of too many clients with the same IP", client->GetUserName(), ipstr(client->GetConnectIP())) );
+#endif
+		return;
+	}
+	else if (theApp.clientlist->GetClientsFromIP(client->GetIP()) >= 3)
+	{
+#ifdef __ENABLE_DEBUG__
+		if (thePrefs.GetVerbose())
+			DEBUG_ONLY( AddDebugLogLine(false,"%s's (%s) request to enter the queue was rejected, because of too many clients with the same IP (found in TrackedClientsList)", client->GetUserName(), ipstr(client->GetConnectIP())) );
+#endif
+		return;
+	}
+	
 
 	// Add clients server to list.
-	if (theApp.glob_prefs->AddServersFromClient()) {
+	if (theApp.glob_prefs->AddServersFromClient() && client->GetServerIP() && client->GetServerPort()) {
 		in_addr host;
 		host.s_addr = client->GetServerIP();
 		CServer* srv = new CServer(client->GetServerPort(), char2unicode(inet_ntoa(host)));
@@ -447,7 +484,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
 		reqfile->statistic.AddRequest();
 	}
 	// TODO find better ways to cap the list
-	if ((uint32)waitinglist.GetCount() > (theApp.glob_prefs->GetQueueSize()+bannedcount)) {
+	if ((uint32)waitinglist.GetCount() > (theApp.glob_prefs->GetQueueSize())) {
 		return;
 	}
 	if (client->IsDownloading()) {
@@ -471,6 +508,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
 
 bool CUploadQueue::RemoveFromUploadQueue(CUpDownClient* client, bool updatewindow)
 {
+	theApp.clientlist->AddTrackClient(client); // Keep track of this client
 	POSITION pos = uploadinglist.Find( client );
 	if ( pos != NULL ) {
 		if (updatewindow) {

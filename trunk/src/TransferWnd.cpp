@@ -35,13 +35,13 @@
 #include "opcodes.h"		// Needed for MP_CAT_SET0
 #include "DownloadListCtrl.h"	// Needed for CDownloadListCtrl
 #include "UploadListCtrl.h"	// Needed for CUploadListCtrl
-#include "UploadQueue.h"	// Needed for CUploadQueue
 #include "otherfunctions.h"	// Needed for GetCatTitle
 #include "amule.h"			// Needed for theApp
 #include "QueueListCtrl.h"	// Needed for CQueueListCtrl
 #include "muuli_wdr.h"		// Needed for ID_CATEGORIES
 #include "SearchDlg.h"		// Needed for CSearchDlg->UpdateCatChoice()
 #include "MuleNotebook.h"
+#include "ClientList.h"
 
 // CTransferWnd dialog
 
@@ -100,8 +100,7 @@ bool CTransferWnd::OnInitDialog()
 
 void CTransferWnd::ShowQueueCount(uint32 number)
 {
-	wxString fmtstr= (wxString::Format(wxT("%u (%u ") ,number,theApp.uploadqueue->GetBanCount()) + _("Banned")) 
-+wxT(")");
+	wxString fmtstr= (wxString::Format(wxT("%u (%u ") ,number,theApp.clientlist->GetBannedCount()) + ("Banned")) +wxT(")");
 	wxStaticCast(FindWindowByName(wxT("clientCount")),wxStaticText)->SetLabel(fmtstr);
 }
 

@@ -42,6 +42,7 @@
 #include "opcodes.h"		// Needed for PARTSIZE
 #include "BarShader.h"		// Needed for CBarShader
 #include "updownclient.h"	// Needed for CUpDownClient
+#include "ClientList.h"
 
 //	members of CUpDownClient
 //	which are mainly used for uploading functions 
@@ -531,20 +532,37 @@ void CUpDownClient::AddReqBlock(Requested_Block_Struct* reqblock){
 
 }
 
-void CUpDownClient::SetUpStartTime(uint32 dwTime){
-	//printf("entered in : CUpDownClient::SetUpStartTime\n");
-	if (dwTime)
-		m_dwUploadTime = dwTime;
-	else
-		m_dwUploadTime = ::GetTickCount();
+uint32 CUpDownClient::GetWaitStartTime() const
+{
+	uint32 dwResult = 0;
+	
+	if ( credits ) {
+		dwResult = credits->GetSecureWaitStartTime(GetIP());
+		
+		if (dwResult > m_dwUploadTime && IsDownloading()) {
+			//this happens only if two clients with invalid securehash are in the queue - if at all
+			dwResult = m_dwUploadTime - 1;
+
+#if __ENABLE_DEBUG__
+			if (thePrefs.GetVerbose())
+				DEBUG_ONLY(AddDebugLogLine(false,"Warning: CUpDownClient::GetWaitStartTime() waittime Collision (%s)",GetUserName()));
+#endif
+		}
+	}
+		
+	return dwResult;
 }
 
-void CUpDownClient::SetWaitStartTime(uint32 dwTime){
-	//printf("entered in : CUpDownClient::SetWaitStartTime\n");
-	if (dwTime)
-		m_dwWaitTime = dwTime;
-	else
-		m_dwWaitTime = ::GetTickCount();
+void CUpDownClient::SetWaitStartTime() {
+	if ( credits ) {
+		credits->SetSecWaitStartTime(GetIP());
+	}
+}
+
+void CUpDownClient::ClearWaitStartTime(){
+	if ( credits ) {
+		credits->ClearWaitStartTime();
+	}
 }
 
 uint32 CUpDownClient::SendBlockData(float kBpsToSend){
@@ -717,55 +735,61 @@ void CUpDownClient::SendCommentInfo(CKnownFile* file)
 	socket->SendPacket(packet,true);
 }
 
-void  CUpDownClient::AddRequestCount(const CMD4Hash& fileid){
-	//printf("entered in : CUpDownClient::AddRequestCount\n");
-	for (POSITION pos = m_RequestedFiles_list.GetHeadPosition();pos != 0; ){
-		Requested_File_Struct* cur_struct = m_RequestedFiles_list.GetNext(pos);
-		if (!md4cmp(cur_struct->fileid,fileid)){
-			if (::GetTickCount() - cur_struct->lastasked < MIN_REQUESTTIME && !GetFriendSlot()){ 
-				if (GetDownloadState() != DS_DOWNLOADING)
-					cur_struct->badrequests++;
-				if (cur_struct->badrequests == BADCLIENTBAN){
-					Ban();
-				}
-			}
-			else{
-				if (cur_struct->badrequests)
-					cur_struct->badrequests--;
-			}
-			cur_struct->lastasked = ::GetTickCount();
-			return;
-		}
-	}
-	Requested_File_Struct* new_struct = new Requested_File_Struct;
-	memset(new_struct,0,sizeof(Requested_File_Struct));
-	md4cpy(new_struct->fileid,fileid);
-	new_struct->lastasked = ::GetTickCount();
-	m_RequestedFiles_list.AddHead(new_struct);
-}
-
 void  CUpDownClient::UnBan(){
-	//printf("entered in : CUpDownClient::UnBan\n");
-	m_bBanned = false;
-	m_dwBanTime = 0;
-	SetWaitStartTime();
-	theApp.uploadqueue->UpdateBanCount();
+	m_Aggressiveness = 0;
+	
+	theApp.clientlist->AddTrackClient(this);
+	theApp.clientlist->RemoveBannedClient( GetIP() );
+	SetUploadState(US_NONE);
+	ClearWaitStartTime();
+	
 	Notify_ShowQueueCount(theApp.uploadqueue->GetWaitingUserCount());
-	for (POSITION pos = m_RequestedFiles_list.GetHeadPosition();pos != 0; ) {
-		Requested_File_Struct* cur_struct = m_RequestedFiles_list.GetNext(pos);
-		cur_struct->badrequests = 0;
-		cur_struct->lastasked = 0;	
-	}
 	//Notify_QlistRefreshClient(this);
 }
 
 void CUpDownClient::Ban(){
-	//printf("entered in : CUpDownClient::Ban\n");
-	m_bBanned = true;
-	theApp.uploadqueue->UpdateBanCount();
-	Notify_ShowQueueCount(theApp.uploadqueue->GetWaitingUserCount());
-	m_dwBanTime = ::GetTickCount();
-	Notify_QlistRefreshClient(this);
+	theApp.clientlist->AddTrackClient(this);
+	theApp.clientlist->AddBannedClient( GetIP() );
+	
 	AddDebugLogLineM(false,wxString::Format(_("Client '%s' seems to be an aggressive client and is banned from the uploadqueue"),unicode2char(GetUserName())));
+	
+	SetUploadState(US_BANNED);
+	
+	Notify_ShowQueueCount(theApp.uploadqueue->GetWaitingUserCount());
+	Notify_QlistRefreshClient(this);
+}
+
+bool CUpDownClient::IsBanned() const
+{
+	return ( (theApp.clientlist->IsBannedClient(GetIP()) ) && m_nDownloadState != DS_DOWNLOADING);
+}
+
+	
+void CUpDownClient::CheckForAggressive()
+{
+	uint32 cur_time = ::GetTickCount();
+	
+	// First call, initalize
+	if ( !m_LastFileRequest ) {
+		m_LastFileRequest = cur_time;
+		return;
+	}
+	
+	// Is this an aggressive request?
+	if ( ( cur_time - m_LastFileRequest ) < MIN_REQUESTTIME ) {
+		m_Aggressiveness += 3;
+		
+		// Is the client EVIL?
+		if ( m_Aggressiveness >= 10 && (!IsBanned() && m_nDownloadState != DS_DOWNLOADING )) {
+			printf("Aggressive client banned (score: %d): %s -- %s -- %s\n", m_Aggressiveness, unicode2char(m_Username), unicode2char(m_strModVersion), unicode2char(m_clientVerString));
+			Ban();
+		}
+	} else {
+		// Polite request, reward client
+		if ( m_Aggressiveness )
+			m_Aggressiveness--;
+	}
+
+	m_LastFileRequest = cur_time;
 }
 

@@ -125,7 +125,6 @@ void CUpDownClient::Init()
 	m_cShowDR = 0;
 	m_reqfile = 0;	
 	m_cFailed = 0;
-	m_dwBanTime = 0;
 	m_nMaxSendAllowed = 0;
 	m_nTransferedUp = 0;
 	m_cSendblock = 0;
@@ -138,7 +137,6 @@ void CUpDownClient::Init()
 	m_dwUserIP = 0;
 	m_nUserID = 0;
 	m_nServerPort = 0;
-	m_bBanned = false;
 	//m_bFileListRequested = false;
 	m_iFileListRequested = 0;
 	m_dwLastUpRequest = 0;
@@ -182,7 +180,6 @@ void CUpDownClient::Init()
 	m_bIsML = false;
 	m_Friend = NULL;
 	m_iRate=0;
-	m_strComment=wxT("");
 	m_nCurSessionUp = 0;
 	m_clientSoft=SO_UNKNOWN;
 	
@@ -210,7 +207,9 @@ void CUpDownClient::Init()
 	m_bHelloAnswerPending = false;
 	m_fSentCancelTransfer = 0;
 	Extended_aMule_SO = 0;
-
+	m_Aggressiveness = 0;
+	m_LastFileRequest = 0;
+	
 	ClearHelloProperties();	
 }
 
@@ -255,13 +254,8 @@ CUpDownClient::~CUpDownClient()
 	for (POSITION pos = m_DownloadBlocks_list.GetHeadPosition();pos != 0; ) {
 		delete m_DownloadBlocks_list.GetNext(pos);
 	}
-	
 	m_DownloadBlocks_list.RemoveAll();
-	for (POSITION pos = m_RequestedFiles_list.GetHeadPosition();pos != 0; ) {
-		delete m_RequestedFiles_list.GetNext(pos);
-	}
 	
-	m_RequestedFiles_list.RemoveAll();
 	for (POSITION pos = m_PendingBlocks_list.GetHeadPosition();pos != 0; ) {
 		Pending_Block_Struct *pending = m_PendingBlocks_list.GetNext(pos);
 		delete pending->block;
@@ -281,7 +275,7 @@ CUpDownClient::~CUpDownClient()
 	
 	if (m_iRate>0 || m_strComment.Length()>0) {
 		m_iRate=0; 
-		m_strComment.Empty();
+		m_strComment.Clear();
 		if (m_reqfile) {
 			m_reqfile->UpdateFileRatingCommentAvail();
 		}
@@ -1549,18 +1543,18 @@ void CUpDownClient::ProcessSharedFileList(const char* pachPacket, uint32 nSize, 
 
 void CUpDownClient::ResetFileStatusInfo()
 {
+	m_nPartCount = 0;
 	if (m_abyPartStatus) {
 		delete[] m_abyPartStatus;
 		m_abyPartStatus = NULL;
 	}
-	m_nPartCount = 0;
 
 	#warning ADDME - Import needed // m_strClientFilename = "";
 
 	m_bCompleteSource = false;
 	m_dwLastAskedTime = 0;
 	m_iRate=0;
-	m_strComment.Empty();
+	m_strComment.Clear();
 }
 
 wxString CUpDownClient::GetUploadFileInfo()

@@ -96,6 +96,7 @@ bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, uint
 				if (size != 16) {
 					break;
 				}
+				
 				CSafeMemFile data_in((BYTE*)packet, size);
 				uchar reqfilehash[16];
 				data_in.ReadRaw(reqfilehash,16);		
@@ -107,7 +108,9 @@ bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, uint
 					break;
 				}
 				CUpDownClient* sender = theApp.uploadqueue->GetWaitingClientByIP(host);
-				if (sender){					
+				if (sender){
+					sender->CheckForAggressive();
+					
 					//Make sure we are still thinking about the same file
 					if (md4cmp(reqfilehash, sender->GetUploadFileID()) == 0) {
 					
