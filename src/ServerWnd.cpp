@@ -35,6 +35,7 @@
 #include "HTTPDownloadDlg.h"	// Needed for CHTTPDownloadDlg
 #include "otherfunctions.h"	// Needed for GetTickCount
 #include "Preferences.h"	// Needed for CPreferences
+#include "sockets.h"
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "amule.h"			// Needed for theApp
 
@@ -68,6 +69,11 @@ CServerWnd::CServerWnd(wxWindow* pParent /*=NULL*/)
 	wxTextCtrl* cv=(wxTextCtrl*)FindWindowById(ID_SERVERINFO);
 	cv->AppendText(wxT("This is aMule")+wxString(wxT(" "))+wxString(wxT(VERSION))+wxT(" (based on eMule)\n"));
 	cv->AppendText(wxT("Visit http://www.amule.org to check if a new version is available.\n"));
+
+	// Insert two columns, currently without a header
+	wxListCtrl* MyInfoList = (wxListCtrl*)FindWindow(ID_MYSERVINFO);
+	MyInfoList->InsertColumn(0, wxT(""));	
+	MyInfoList->InsertColumn(1, wxT(""));	
 }
 
 CServerWnd::~CServerWnd()
@@ -162,15 +168,16 @@ void CServerWnd::OnBnClickedResetServerLog(wxCommandEvent& WXUNUSED(evt))
 
 void CServerWnd::UpdateMyInfo()
 {
-	#if 0
+	wxListCtrl* MyInfoList = (wxListCtrl*)FindWindow(ID_MYSERVINFO);
+	
 	wxString buffer;
 
 	MyInfoList->DeleteAllItems();
 	MyInfoList->InsertItem(0, wxString(_("Status"))+":");
 	if (theApp.serverconnect->IsConnected()) {
-		MyInfoList->SetItemText(0, 1, _("Connected"));
+		MyInfoList->SetItem(0, 1, _("Connected"));
 	}	else {
-		MyInfoList->SetItemText(0, 1, _("Disconnected"));
+		MyInfoList->SetItem(0, 1, _("Disconnected"));
 	}
 
 	if (theApp.serverconnect->IsConnected()) {
@@ -184,23 +191,21 @@ void CServerWnd::UpdateMyInfo()
 			uint8 b=myid/(256);myid-=b*256;
 			buffer.Printf("%i.%i.%i.%i:%i",myid,b,c,d,theApp.glob_prefs->GetPort());
 		}
-		MyInfoList->SetItemText(1,1,buffer);
+		MyInfoList->SetItem(1,1,buffer);
 
 		buffer.Printf("%u",theApp.serverconnect->GetClientID());
 		MyInfoList->InsertItem(2,_("ID"));
 		if (theApp.serverconnect->IsConnected()) {
-			MyInfoList->SetItemText(2, 1, buffer);
+			MyInfoList->SetItem(2, 1, buffer);
 		}
 
 		MyInfoList->InsertItem(3,"");
 		if (theApp.serverconnect->IsLowID()) {
-			MyInfoList->SetItemText(3, 1,_("Low ID"));
+			MyInfoList->SetItem(3, 1,_("Low ID"));
 		}	else {
-			MyInfoList->SetItemText(3, 1,_("High ID"));
+			MyInfoList->SetItem(3, 1,_("High ID"));
 		}
 	}
-	#endif
-//	printf("TODO: MyInfo @ CServerWnd (GUI missing)\n");
 }
 
 void CServerWnd::OnSashPositionChanged(wxSplitterEvent& WXUNUSED(evt))
