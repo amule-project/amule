@@ -41,9 +41,13 @@
 #endif // HAVE_CONFIG_H
 
 #ifndef __SYSTRAY_DISABLED__
-#include "pixmaps/mule_TrayIcon.ico.xpm"
-#include "pixmaps/mule_Tr_yellow.ico.xpm"
-#include "pixmaps/mule_Tr_grey.ico.xpm"
+	#ifdef USE_WX_TRAY
+		#include "pixmaps/mule_TrayIcon_big.ico.xpm"
+	#else
+		#include "pixmaps/mule_TrayIcon.ico.xpm"
+	#endif
+	#include "pixmaps/mule_Tr_yellow.ico.xpm"
+	#include "pixmaps/mule_Tr_grey.ico.xpm"
 #endif // __SYSTRAY_DISABLED__
 #include "amuleDlg.h"		// Interface declarations.
 #include "otherfunctions.h"	// Needed for CastItoIShort

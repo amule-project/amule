@@ -72,12 +72,25 @@ void CMuleTrayIcon::SetTrayIcon(wxIcon& Icon, uint32 percent)
 {
 	CurrentIcon = Icon;
 	// Do whatever to the icon before drawing it (percent)
-	
+
+	wxColour temp;
 	
 	IconWithSpeed.SelectObject(CurrentIcon);
 
-//	wxColour temp;
-//	IconWithSpeed.GetPixel(0,0, &temp);
+	// Get the transparency colour.
+	IconWithSpeed.GetPixel(0,0, &temp);
+
+	IconWithSpeed.SelectObject(wxNullBitmap);
+	
+	// Set a new mask with transparency removed
+	wxMask* new_mask = new wxMask(CurrentIcon, temp);
+	
+	CurrentIcon.SetMask(new_mask);
+	
+	IconWithSpeed.SelectObject(CurrentIcon);
+	
+	// Get the solid background.
+	IconWithSpeed.GetPixel(0,0, &temp);
 	
 	// Set the colour for the traffic bar.
 	IconWithSpeed.SetBrush(*wxTRANSPARENT_BRUSH);
@@ -86,11 +99,13 @@ void CMuleTrayIcon::SetTrayIcon(wxIcon& Icon, uint32 percent)
 	// Speed bar is: centered, taking 80% of the icon heigh, and 
 	// right-justified taking a 10% of the icon width.
 	// X
+
 	int Bar_xSize = (Icon.GetWidth() / 4); 
-	int Bar_xPos = Bar_xSize*2; 
+	int Bar_xPos = Icon.GetWidth() - Bar_xSize -1; 
+		
 	// Y
-	int Bar_yPos = (Icon.GetHeight() / 10); // 0 + 10% = start ;)
-	int Bar_ySize = Icon.GetHeight() - (Bar_yPos * 2); // 10% * 8 = 80% ;)
+	int Bar_yPos = 0;
+	int Bar_ySize = Icon.GetHeight()-2; 
 	 
 	IconWithSpeed.DrawRectangle(Bar_xPos, Bar_yPos, Bar_xSize, Bar_ySize);
 	
@@ -99,14 +114,15 @@ void CMuleTrayIcon::SetTrayIcon(wxIcon& Icon, uint32 percent)
 	
 	int NewSize = ((Bar_ySize -2) * percent) / 100;
 	
-	IconWithSpeed.DrawRectangle(Bar_xPos + 1, Bar_yPos + (Bar_ySize - NewSize) + 1, Bar_xSize -2 , NewSize);
-	
+	IconWithSpeed.DrawRectangle(Bar_xPos + 1, (Bar_yPos + 1) + ((Bar_ySize -2) - NewSize), Bar_xSize -2 , NewSize);
+
 	// Unselect the icon.
 	IconWithSpeed.SelectObject(wxNullBitmap);	
 	
-//	wxMask* new_mask = new wxMask(CurrentIcon, temp);
+
+	new_mask = new wxMask(CurrentIcon, temp);
 	
-//	CurrentIcon.SetMask(new_mask);
+	CurrentIcon.SetMask(new_mask);
 	
 	UpdateTray();
 }
