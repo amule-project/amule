@@ -24,16 +24,6 @@
 #pragma implementation "ServerConnect.h"
 #endif
 
-#ifdef __WXMSW__
-	#include <winsock.h>
-	#include <wx/defs.h>
-	#include <wx/msw/winundef.h>
-#else
-	#include <netdb.h>
-#endif
-#include <unistd.h>
-
-
 #include "ServerConnect.h"		// Interface declarations.
 #include "SearchList.h"		// Needed for CSearchList
 #include "GetTickCount.h"	// Needed for GetTickCount
@@ -53,6 +43,7 @@
 #include "Preferences.h"	// Needed for CPreferences
 #include "updownclient.h"	// for SO_AMULE
 #include "Statistics.h"
+#include "NetworkFunctions.h" // for StringHosttoUint32
 
 #ifndef AMULE_DAEMON
 	#include "SearchDlg.h"		// Needed for CSearchDlg
@@ -582,14 +573,8 @@ void CServerConnect::InitLocalIP()
 {
 	m_nLocalIP = 0;
 
-	#warning Gah, ugly as Xaignar. Can someone review this?
 	try{
-		char szHost[256];
-		if (gethostname(szHost, sizeof szHost) == 0){
-			hostent* pHostEnt = gethostbyname(szHost);
-			if (pHostEnt != NULL && pHostEnt->h_length == 4 && pHostEnt->h_addr_list[0] != NULL)
-				m_nLocalIP = ENDIAN_SWAP_32(*((uint32*)pHostEnt->h_addr_list[0]));
-		}
+		m_nLocalIP = StringHosttoUint32(GetLocalHost());
 	}
 	catch(...){
 		// at least two ppl reported crashs when using 'gethostbyname' with third party winsock DLLs

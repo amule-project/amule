@@ -27,15 +27,20 @@
 
 #ifdef __WXMSW__
 	#include <winsock.h>
+	#include <wx/defs.h>
+	#include <wx/msw/winundef.h>
 #else
-#ifdef __BSD__
-       #include <sys/types.h>
-#endif /* __BSD__ */
+	#ifdef __BSD__
+     	  #include <sys/types.h>
+	#endif /* __BSD__ */
+	
+	#include <netdb.h>
 	#include <sys/socket.h>		//
 	#include <netinet/in.h>		// Needed for inet_addr, htonl
 	#include <arpa/inet.h>		//
 #endif
-
+	
+#include <unistd.h> // Needed for gethostname()
 
 
 bool StringIPtoUint32(const wxString &strIP, uint32& Ip)
@@ -86,6 +91,9 @@ bool StringIPtoUint32(const wxString &strIP, uint32& Ip)
 
 uint32 StringHosttoUint32(const wxString &Host)
 {
+	if (Host.IsEmpty()) {
+		return 0;
+	}
 	// Why using native things when we have a wrapper for it :)
 	wxIPV4address solver;
 	solver.Hostname(Host);
@@ -98,8 +106,16 @@ uint32 StringHosttoUint32(const wxString &Host)
 	}
 }
 
-
-
+wxString GetLocalHost() {
+	char szHost[256];
+	// Get our hostname
+	wxString Host;
+	if (gethostname(szHost, sizeof szHost) == 0){
+		// This is safe. Host shouldn't be unicoded.
+		Host = wxConvCurrent->cMB2WX(szHost);
+	}
+	return Host;
+}
 
 /**
  * Used to store the ranges.
@@ -227,4 +243,3 @@ wxThread::ExitCode CAsyncDNS::Entry()
 	return NULL;
 }
 #endif /* ! EC_REMOTE */
-
