@@ -128,6 +128,7 @@ amule_SOURCES = \
 	ClientCredits.cpp \
 	ClientDetailDialog.cpp \
 	ClientList.cpp \
+	DeadSourceList.cpp \
 	ClientListCtrl.cpp \
 	ClientUDPSocket.cpp \
 	ColorFrameCtrl.cpp \
@@ -211,6 +212,7 @@ amuled_SOURCES = \
         CFile.cpp \
         ClientCredits.cpp \
         ClientList.cpp \
+		DeadSourceList.cpp \
         ClientUDPSocket.cpp \
         DownloadClient.cpp \
         DownloadQueue.cpp \

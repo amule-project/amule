@@ -34,6 +34,8 @@
 
 #include "OtherStructs.h"	// Needed for Gap_Struct
 #include "CTypedPtrList.h"
+#include "DeadSourceList.h"	// Needed for CDeadSourceList
+
 
 #include <set>
 #include <list>
@@ -231,7 +233,28 @@ public:
 	const CList<Requested_Block_Struct*>& GetRequestedBlockList() const { return requestedblocks_list; }
 
 
+	/**
+	 * Adds a source to the list of dead sources.
+	 *
+	 * @param client The source to be recorded as dead for this file.
+	 */
+	void		AddDeadSource(const CUpDownClient* client);
+
+	/**
+	 * Checks if a source is recorded as being dead for this file.
+	 *
+	 * @param client The client to evaluate.
+	 * @return True if dead, false otherwise.
+	 *
+	 * Sources that are dead are not to be considered valid
+	 * sources and should not be added to the partfile.
+	 */
+	bool		IsDeadSource(const CUpDownClient* client);
+
 protected:
+	//! A local list of sources that are invalid for this file.
+	CDeadSourceList	m_deadSources;
+	
 	bool	m_showSources;
 	
 	uint32	m_validSources;

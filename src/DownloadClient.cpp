@@ -939,9 +939,14 @@ void CUpDownClient::UDPReaskACK(uint16 nNewQR)
 
 void CUpDownClient::UDPReaskFNF()
 {
-	if (GetDownloadState()!=DS_DOWNLOADING){ // avoid premature deletion of 'this' client
-		// 0.42e
+	// avoid premature deletion of 'this' client
+	if (GetDownloadState()!=DS_DOWNLOADING){
 		m_bUDPPending = false;
+
+		if (m_reqfile) {
+			m_reqfile->AddDeadSource(this);
+		}
+		
 		theApp.downloadqueue->RemoveSource(this);
 		if (!m_socket) {
 			if (Disconnected(wxT("UDPReaskFNF m_socket=NULL"))) {

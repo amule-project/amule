@@ -418,6 +418,12 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender, CUpDownClient* source)
 		return;
 	}
 
+	// Filter sources which are known to be dead/useless
+	if ( theApp.clientlist->IsDeadSource( source ) || sender->IsDeadSource(source) ) {
+		source->Safe_Delete();
+		return;
+	}
+
 	
 	// Find all clients with the same hash
 	if ( source->HasValidHash() ) {
@@ -500,6 +506,10 @@ void CDownloadQueue::CheckAndAddKnownSource(CPartFile* sender,CUpDownClient* sou
 		return;
 	}
 
+	// Filter sources which are known to be dead/useless
+	if ( sender->IsDeadSource(source) ) {
+		return;
+	}
 
 	CPartFile* file = source->GetRequestFile();
 	

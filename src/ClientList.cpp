@@ -69,6 +69,7 @@ public:
 
 
 CClientList::CClientList()
+	: m_deadSources( true )
 {
 	m_dwLastBannCleanUp = 0;
 	m_dwLastTrackedCleanUp = 0;
@@ -705,3 +706,16 @@ const CClientList::IDMap& CClientList::GetClientList()
 {
 	return m_clientList;
 }
+
+
+void CClientList::AddDeadSource(const CUpDownClient* client)
+{
+	m_deadSources.AddDeadSource( client );
+}
+
+
+bool CClientList::IsDeadSource(const CUpDownClient* client)
+{
+	return m_deadSources.IsDeadSource( client );
+}
+

@@ -611,10 +611,13 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				if (size == 16)
 				{
 					// if that client does not have my file maybe has another different
-					const CPartFile* reqfile = theApp.downloadqueue->GetFileByID((uchar*)packet);
-					if (!reqfile) {
+					CPartFile* reqfile = theApp.downloadqueue->GetFileByID((uchar*)packet);
+					if ( reqfile) {
+						reqfile->AddDeadSource( m_client );
+					} else {
 						break;
 					}
+						
 					// we try to swap to another file ignoring no needed parts files
 					switch (m_client->GetDownloadState())
 					{
