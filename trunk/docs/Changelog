@@ -78,7 +78,7 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 
 	Kry:
 		* A lot
-		
+
 	lfroen:
 		* Amule remote gui implementation
 		* EC additions
@@ -178,6 +178,10 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		* Fixed lots of segfaults in amuleweb, thanks to alandar and
 		Mr Faber.
 		* Updated proxy debug code to use new logger.
+		* Fixed a subtle bug in UINICODE builds. Now UTF-8 enabled
+		UNICODE builds can read extended ANSI file names. In
+		particular, UTF-8 UNICODE aMule build was not remembering
+		an extended ANSI directory name for a shared directory.
 
 	volpol:
 		* Patch to fix use of deprecated functions in wxGTK-2.5.3.
