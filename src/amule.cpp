@@ -548,8 +548,10 @@ bool CamuleApp::OnInit()
 	}
 	file.Close();
 	// Load Preferences
+	PrefsUnifiedDlg::BuildItemList(glob_prefs, theApp.ConfigDir);
+	PrefsUnifiedDlg::LoadAllItems(*(wxConfig::Get()));
 	glob_prefs = new CPreferences();
-
+	
 	// Build the filenames for the two OS files
 	SetOSFiles(glob_prefs->GetOSDir());
 
