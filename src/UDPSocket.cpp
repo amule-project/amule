@@ -69,16 +69,20 @@ AsyncDNS::AsyncDNS() : wxThread(wxTHREAD_DETACHED)
 
 wxThread::ExitCode AsyncDNS::Entry()
 {
-  struct hostent ret,*result=NULL;
+
+  struct hostent *result=NULL;
+#ifndef __WXMSW__
+  struct hostent ret;
   int errorno=0;
   char dataBuf[512]={0};
+#endif
 
 #if defined(__linux__)
   gethostbyname_r(ipName.GetData(),&ret,dataBuf,sizeof(dataBuf),&result,&errorno);
 #elif defined(__WXMSW__)
   result = gethostbyname(ipName.GetData());
 #else
-  result = gethostbyname_r(ipName.GetData(),&ret,dataBuf,sizeof(dataBuf),&errorno); 
+  result = gethostbyname_r(ipName.GetData(),&ret,dataBuf,sizeof(dataBuf),&errorno);
 #endif
 
   if(result) {
@@ -86,16 +90,16 @@ wxThread::ExitCode AsyncDNS::Entry()
     unsigned long addr=*(unsigned long*)result->h_addr;
     #else
     unsigned long addr=*(unsigned long*)ret.h_addr;
-    #endif    
+    #endif
     struct sockaddr_in* newsi=(struct sockaddr_in*)malloc(sizeof(struct sockaddr_in));//new struct sockaddr_in;
     newsi->sin_addr.s_addr=addr;
 
     wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED,TM_DNSDONE);
     evt.SetClientData(socket);
     evt.SetExtraLong((long)newsi);
-    wxPostEvent(&theApp,evt);    
+    wxPostEvent(&theApp,evt);
   }
-  
+
 
 
   return result;
@@ -105,7 +109,7 @@ IMPLEMENT_DYNAMIC_CLASS(CUDPSocket,wxDatagramSocket)
 
 //static wxIPV4address tmpaddress;
 
-CUDPSocket::CUDPSocket(CServerConnect* in_serverconnect,wxIPV4address& address) 
+CUDPSocket::CUDPSocket(CServerConnect* in_serverconnect,wxIPV4address& address)
 : wxDatagramSocket(address,wxSOCKET_NOWAIT){
   //m_hWndResolveMessage = NULL;
   sendbuffer = 0;
@@ -153,7 +157,7 @@ void CUDPSocket::OnReceive(int nErrorCode){
 	char* fromIP=inet_ntoa(addr_in);
 
 	if (buffer[0] == (char)OP_EDONKEYPROT && length != static_cast<wxUint32>(-1))
-	  //ProcessPacket(buffer+2,length-2,buffer[1],(char*)addr.Hostname().GetData(),addr.Service()); //serverbuffer.GetBuffer(),port);	  
+	  //ProcessPacket(buffer+2,length-2,buffer[1],(char*)addr.Hostname().GetData(),addr.Service()); //serverbuffer.GetBuffer(),port);
 	  ProcessPacket(buffer+2,length-2,buffer[1],fromIP,addr.Service()); //serverbuffer.GetBuffer(),port);
 	else if ((buffer[0] == (char)OP_EMULEPROT) && length != static_cast<wxUint32>(-1))
 	  //ProcessExtPacket(buffer+2,length-2,buffer[1],(char*)addr.Hostname().GetData(),addr.Service()); //serverbuffer.GetBuffer(),port);
@@ -209,7 +213,7 @@ bool CUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, char* host
 				theApp.downloadqueue->AddDownDataOverheadOther(size);
 
 				break;
-			}				
+			}
 			case OP_GLOBFOUNDSORUCES:{
 				theApp.downloadqueue->AddDownDataOverheadOther(size);
 				CSafeMemFile* data = new CSafeMemFile((BYTE*)packet,size);
@@ -252,7 +256,7 @@ bool CUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, char* host
 				while (iLeft > 0);
 				delete data;
 				break;
-			}				
+			}
 
  			case OP_GLOBSERVSTATRES:{
 				// Imported from 0.30
@@ -262,7 +266,7 @@ bool CUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, char* host
 #define get_uint32(p)	*((uint32*)(p))
 				uint32 challenge = get_uint32(packet);
 				if( challenge != update->GetChallenge() )
-					return true; 
+					return true;
 				uint32 cur_user = get_uint32(packet+4);
 				uint32 cur_files = get_uint32(packet+8);
 				uint32 cur_maxusers = 0;
@@ -289,7 +293,7 @@ bool CUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, char* host
 					//printf("->> reading Stats from server, flags are %i\n",uUDPFlags);
 					update->SetUDPFlags( uUDPFlags );
 					theApp.amuledlg->serverwnd->serverlistctrl->RefreshServer( update );
-				}				
+				}
 				break;
 			}
 
@@ -361,7 +365,7 @@ void CUDPSocket::AsyncResolveDNS(LPCTSTR lpszHostAddress, UINT nHostPort){
 	m_SaveAddr = sockAddr;
 
 	if (sockAddr.sin_addr.s_addr == INADDR_NONE){
-		/* Resolve hostname "hostname" asynchronously */ 
+		/* Resolve hostname "hostname" asynchronously */
 		memset(DnsHostBuffer, 0, sizeof(DnsHostBuffer));
 
 		DnsTaskHandle = WSAAsyncGetHostByName(
@@ -398,7 +402,7 @@ void CUDPSocket::DnsLookupDone(struct sockaddr_in* inaddr) {
     cur_server = 0;
     return;
   }
-  
+
   if (m_SaveAddr.sin_addr.s_addr == INADDR_NONE){
     m_SaveAddr.sin_addr.s_addr = inaddr->sin_addr.s_addr;
   }
