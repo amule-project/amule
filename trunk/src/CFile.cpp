@@ -278,7 +278,7 @@ bool CFile::Create(const wxString& szFileName, bool bOverwrite, int accessMode)
 	#endif
 	
 	if ( m_fd == -1 ) {
-		wxLogSysError(_("can't create file '%s'"), unicode2char(szFileName));
+		wxLogSysError(_("can't create file '") + szFileName + wxT("'"));
 		return FALSE;
 	} else {
 		//Attach(m_fd);
@@ -352,7 +352,7 @@ bool CFile::Open(const wxString& szFileName, OpenMode mode, int accessMode)
     
     if ( m_fd == -1 )
     {
-   		theApp.QueueLogLine(true, wxString::Format(_("Can't open file '%s'"), unicode2char(szFileName)));
+   		theApp.QueueLogLine(true, _("Can't open file '") + szFileName + wxT("'"));
 		/*
 			get_caller(4);    	    
 			get_caller(3);    
@@ -641,8 +641,11 @@ CDirIterator::CDirIterator(wxString dir) {
 	if (DirStr.Last() != wxFileName::GetPathSeparator()) {
 		DirStr += wxFileName::GetPathSeparator();
 	}
-	
-	if (((DirPtr = opendir(unicode2char(dir)))) == NULL) {
+	#if wxUSE_UNICODE
+	if (((DirPtr = opendir(unicode2UTF8(dir)))) == NULL) {
+	#else
+	if (((DirPtr = opendir(unicode2char(dir)))) == NULL) {		
+	#endif
 		AddDebugLogLineM(false, wxT("Error enumerating files for dir ")+dir);
     }
 }
