@@ -1001,8 +1001,9 @@ void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 		msPrev5 = msCur;
 		ShowTransferRate();
 		if (thePrefs::ShowCatTabInfos() && theApp.amuledlg->activewnd == theApp.amuledlg->transferwnd) {
-			theApp.amuledlg->transferwnd->UpdateCatTabTitles();
+			transferwnd->UpdateCatTabTitles();
 		}
+		transferwnd->downloadlistctrl->SortList();
 	}
 
 }
