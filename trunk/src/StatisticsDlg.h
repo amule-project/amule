@@ -114,18 +114,6 @@ protected:
 	float kBpsDownSession;
 	uint32 m_ilastMaxConnReached;
 
-	// tree-folders
-	HTREEITEM h_shared,h_transfer,h_connection,h_clients,h_servers,h_upload,h_download,h_uptime;
-	HTREEITEM down1,down2,down3,down4,down5,down6,down7;
-	HTREEITEM up1,up2,up3,up4,up5,up6,up7,up8,up9,up10;
-	HTREEITEM tran0;
-	HTREEITEM con1,con2,con3,con4,con5,con6,con7,con8,con9,con10,con11,con12,con13;
-	HTREEITEM shar1,shar2,shar3;
-	HTREEITEM cli1,cli2,cli3,cli4,cli5,cli6,cli7,cli8,cli9,cli10, cli10_1, cli10_2, cli11, cli12,cli13,cli14,cli15,cli16,cli17;
-	VersionItem cli_versions[18];
-	
-	HTREEITEM srv1,srv2,srv3,srv4,srv5,srv6,srv7,srv8,srv9;
-
 	void SetStatsRanges(int min, int max);
  public:
 
