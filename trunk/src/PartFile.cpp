@@ -502,6 +502,10 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool fro
 					}					
 					case FT_CATEGORY: {
 						m_category = newtag->tag.intvalue;
+						if (m_category > theApp.glob_prefs->GetCatCount() - 1 ) {
+							m_category = 0;
+						}
+						
 						delete newtag;
 						break;
 					}
@@ -3322,13 +3326,19 @@ const wxDateTime& CPartFile::GetLastChangeDatetime() const
 }
 
 
-uint8 CPartFile::GetCategory()
+uint8 CPartFile::GetCategory() const
 {
-	if(m_category>theApp.glob_prefs->GetCatCount()-1) {
-		m_category=0;
-	}
 	return m_category;
 }
+
+void CPartFile::SetCategory(uint8 cat)
+{
+	wxASSERT( cat < theApp.glob_prefs->GetCatCount() );
+	
+	m_category = cat; 
+	SavePartFile(); 
+}
+
 
 
 wxString CPartFile::GetProgressString(uint16 size)

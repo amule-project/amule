@@ -109,7 +109,7 @@ public:
 	 * @param source A pointer to the source to be removed.
 	 * @param owner Either a specific file, or NULL to remove the source from all files.
 	 */
-	void RemoveSource( CUpDownClient* source, CPartFile* owner );
+	void RemoveSource( const CUpDownClient* source, const CPartFile* owner );
 	
 	/**
 	 * Removes the specified file from the list.
@@ -149,13 +149,13 @@ public:
 	 * file is hidden/shown depending on its state and the currently selected
 	 * category.
 	 */
-	void UpdateItem(void* toupdate);
+	void UpdateItem(const void* toupdate);
 
 
 	/**
 	 * Returns the current category.
 	 */
-	uint8 GetCategory();
+	uint8 GetCategory() const;
 	
 	/**
 	 * Changes the displayed category and updates the list of shown files.
@@ -173,7 +173,7 @@ public:
 	/**
 	 * Updates the displayed number representing the ammount of files currently shown.
 	 */
-	void ShowFilesCount();
+	void ShowFilesCount() const;
 	
 	
 private:
@@ -186,22 +186,22 @@ private:
 	/**
 	 * Draws a file item.
 	 */
-	void	DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect, CtrlItem_Struct* item );
+	void	DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect, CtrlItem_Struct* item ) const;
 
 	/**
 	 * Draws a source item.
 	 */
-	void	DrawSourceItem( wxDC* dc, int nColumn, const wxRect& rect, CtrlItem_Struct* item );
+	void	DrawSourceItem( wxDC* dc, int nColumn, const wxRect& rect, CtrlItem_Struct* item ) const;
 
 	/**
 	 * Draws the status (chunk) bar for a file.
 	 */
-	void	DrawFileStatusBar( CPartFile* file, wxDC* dc, const wxRect& rect, bool bFlat );
+	void	DrawFileStatusBar( const CPartFile* file, wxDC* dc, const wxRect& rect, bool bFlat ) const;
 
 	/**
 	 * Draws the status (chunk) bar for a source.
 	 */
-	void	DrawSourceStatusBar( CUpDownClient* source, wxDC* dc, const wxRect& rect, bool  bFlat);
+	void	DrawSourceStatusBar( const CUpDownClient* source, wxDC* dc, const wxRect& rect, bool  bFlat) const;
 
 
 	//! Used to keep track of which sorting order was last used.
@@ -212,7 +212,7 @@ private:
 	
 	static int wxCALLBACK SortProc(long item1, long item2, long lpSort);
 	static int Compare( const CPartFile* file1, const CPartFile* file2, long lParamSort );
-	static int Compare(CUpDownClient* client1, CUpDownClient* client2, long lParamSort);
+	static int Compare( const CUpDownClient* client1, const CUpDownClient* client2, long lParamSort);
 	
 
 	// Event-handlers for files
@@ -250,7 +250,7 @@ private:
 	 * @param newel The new category selection.
 	 * @return True if the file should be shown, false otherwise.
 	 */
-	bool ShowItemInCurrentCat( CPartFile* file, int newsel );
+	bool ShowItemInCurrentCat( const CPartFile* file, int newsel ) const;
 
 	/**
 	 * Executes the user-selected preview command on the specified file.
@@ -280,12 +280,6 @@ private:
 	//! Pointer to a cached brush object.
 	wxBrush*	m_hilightUnfocusBrush;
 	
-
-	//! Cached variable used to save the width of the percentage text.
-	wxCoord textwidth;
-	//! Cached variable used to save the height of the percentage text.
-	wxCoord textheight;
-
 	
 	//! The currently displayed category
 	uint8 m_category;
