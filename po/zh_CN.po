@@ -1,0 +1,3802 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR &lt;EMAIL@ADDRESS&gt;, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: aMule CVS\n"
+"POT-Creation-Date: 2004-02-19 15:58+0100\n"
+"PO-Revision-Date: 2004-02-04 07:00+0100\n"
+"Last-Translator: Chen Nan\n"
+"Language-Team: aMule Team <http://www.amule.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Report-Msgid-Bugs-To: \n"
+
+#: src/AddFriend.cpp:37
+msgid "Add a Friend"
+msgstr "加入好友"
+
+#: src/AddFriend.cpp:75 src/AddFriend.cpp:82
+msgid "You have to enter a valid IP and port!"
+msgstr "请输入正确IP地址和端口！"
+
+#: src/amule.cpp:495
+#, c-format
+msgid "Port %d is not available. You will be LOWID"
+msgstr "端口 %d 已被占用。你会成为低ID。"
+
+#: src/amule.cpp:497
+#, c-format
+msgid ""
+"Port %d is not available !!\n"
+"\n"
+"This will mean that you will be LOWID.\n"
+"\n"
+"Use netstat to determine when port becomes available\n"
+"and try starting amule again."
+msgstr ""
+"端口 %d 已被占用。\n"
+"这意味着你会成为低ID。\n"
+"\n"
+"请先用 netstat 命令来监测端口是否被占用，\n"
+"然后再启动 aMule。"
+
+#: src/amule.cpp:498 src/ServerSocket.cpp:203 src/ServerSocket.cpp:214
+msgid "Error"
+msgstr "ERROR"
+
+#: src/amule.cpp:696
+msgid "You need a HighID to create a valid sourcelink"
+msgstr "你需要高ID来产生源链接"
+
+#: src/amule.cpp:756 src/amule.cpp:759
+msgid "Failed to save"
+msgstr "存盘失败: "
+
+#: src/amule.cpp:756
+msgid " OnlineSig File"
+msgstr "线上签名文件"
+
+#: src/amule.cpp:1097
+msgid ""
+"The selected locale seems not to be installed on your box\n"
+" You must generate it to use this language.\n"
+"A good start on linux systems is the file /etc/locale.gen and the package "
+"'locales'\n"
+"Good luck!\n"
+"(Note: I'll try to set it anyway)"
+msgstr ""
+"您所选择的地区设置在您的计算机上似乎没有安装\n"
+"无论如何，我还是会先尝试你所选择的地区设置。"
+
+#: src/amule.cpp:1158
+msgid "Could not determine the command for running the browser."
+msgstr "无法确定运行浏览器的命令"
+
+#: src/amule.cpp:1191
+msgid ""
+"Unable to launch browser. Please set correct browserexecutable path in "
+"Preferences."
+msgstr "无法运行浏览器。请更正设置中的浏览器路径。"
+
+#: src/amuleDlg.cpp:262
+msgid "Desktop integration"
+msgstr "桌面集成"
+
+#: src/amuleDlg.cpp:744
+msgid "Disconnect"
+msgstr "断开连接"
+
+#: src/amuleDlg.cpp:744
+msgid "Disconnect from current server"
+msgstr "服务器连接已中断"
+
+#: src/amuleDlg.cpp:760
+msgid "Connection established on:"
+msgstr "已成功连接到:"
+
+#: src/amuleDlg.cpp:776 src/DownloadListCtrl.cpp:256 src/muuli_wdr.cpp:133
+#: src/muuli_wdr.cpp:427 src/muuli_wdr.cpp:937 src/muuli_wdr.cpp:1023
+#: src/muuli_wdr.cpp:1096 src/muuli_wdr.cpp:2952 src/muuli_wdr.cpp:3057
+#: src/muuli_wdr.cpp:3376 src/PreferencesDlg.cpp:77 src/TransferWnd.cpp:183
+msgid "Cancel"
+msgstr "取消"
+
+#: src/amuleDlg.cpp:776
+msgid "Stops the current connection attempts"
+msgstr "终止连接尝试"
+
+#: src/amuleDlg.cpp:788 src/amuleDlg.cpp:960 src/ChatSelector.cpp:319
+#: src/DownloadListCtrl.cpp:1261 src/SysTray.cpp:180
+#: src/UploadListCtrl.cpp:234 src/UploadListCtrl.cpp:527
+msgid "Connecting"
+msgstr "正在连接"
+
+#: src/amuleDlg.cpp:796 src/amuleDlg.cpp:814 src/amuleDlg.cpp:1072
+#: src/SearchDlg.cpp:342
+msgid "Not Connected"
+msgstr "未连接"
+
+#: src/amuleDlg.cpp:802 src/muuli_wdr.cpp:3403
+msgid "Connect"
+msgstr "连接"
+
+#: src/amuleDlg.cpp:802 src/muuli_wdr.cpp:3403 src/SysTray.cpp:502
+msgid "Connect to any server"
+msgstr "连接到任意服务器"
+
+#: src/amuleDlg.cpp:816 src/amuleDlg.cpp:873 src/ServerWnd.cpp:167
+msgid "Disconnected"
+msgstr "连接已断"
+
+#: src/amuleDlg.cpp:832 src/ServerListCtrl.cpp:218
+msgid "Users"
+msgstr "用户数"
+
+#: src/amuleDlg.cpp:832 src/muuli_wdr.cpp:2917 src/muuli_wdr.cpp:3341
+#: src/PPgFiles.cpp:42 src/server.cpp:344 src/ServerListCtrl.cpp:219
+msgid "Files"
+msgstr "文件"
+
+#: src/amuleDlg.cpp:856
+#, c-format
+msgid "Up: %.1f(%.1f) | Down: %.1f(%.1f)"
+msgstr "上传: %.1f(%.1f) | 下载: %.1f(%.1f)"
+
+#: src/amuleDlg.cpp:858
+#, c-format
+msgid "Up: %.1f | Down: %.1f"
+msgstr "上传: %.1f | 下载: %.1f"
+
+#: src/amuleDlg.cpp:871 src/ServerWnd.cpp:165
+msgid "Connected"
+msgstr "已建立连接"
+
+#: src/amuleDlg.cpp:908
+msgid "Do you really want to exit aMule?"
+msgstr "您确定要关闭 aMule 吗?"
+
+#: src/amuleDlg.cpp:908
+msgid "Exit confirmation"
+msgstr "退出确认"
+
+#: src/amuleDlg.cpp:1029
+#fuzzy
+msgid "&Transfers"
+msgstr "传输文件 (&T)"
+
+#: src/amuleDlg.cpp:1030
+msgid "&Servers"
+msgstr "服务器 (&S)"
+
+#: src/amuleDlg.cpp:1031
+msgid "S&earch"
+msgstr "搜索 (&e)"
+
+#: src/amuleDlg.cpp:1032
+msgid "Shared &Files"
+msgstr "共享文件 (&F)"
+
+#: src/amuleDlg.cpp:1033
+msgid "&Messages"
+msgstr "消息 (&M)"
+
+#: src/amuleDlg.cpp:1034
+msgid "St&atistics"
+msgstr "统计 (&a)"
+
+#: src/amuleDlg.cpp:1035
+msgid "&Preferences"
+msgstr "首选项 (&P)"
+
+#: src/amuleDlg.cpp:1072 src/SearchDlg.cpp:342
+msgid "You are not connected to a server!"
+msgstr "您现在没有连接到服务器上！"
+
+#: src/amuleDlg.cpp:1106 src/DownloadQueue.cpp:1047 src/PartFile.cpp:221
+#: src/PartFile.cpp:243
+#, c-format
+msgid "This ed2k link is invalid (%s)"
+msgstr "该 ED2K 链接无效 (%s)"
+
+#: src/amuleDlg.cpp:1107 src/DownloadQueue.cpp:1048 src/PartFile.cpp:222
+#: src/PartFile.cpp:244
+#, c-format
+msgid "Invalid link: %s"
+msgstr "无效链接: %s"
+
+#: src/BaseClient.cpp:804 src/ListenSocket.cpp:181
+#, c-format
+msgid "Filtered IP: %s (%s)"
+msgstr "屏蔽 IP: %s (%s)"
+
+#: src/BaseClient.cpp:1288
+#, c-format
+msgid "Rating for file '%s' received: %i"
+msgstr "文件 '%s' 的评级已收到: %i"
+
+#: src/BaseClient.cpp:1295
+#, c-format
+msgid "Description for file '%s' received: %s"
+msgstr "文件 '%s' 的描述已收到: %s"
+
+#: src/BaseClient.cpp:1429
+#, c-format
+msgid "Unable to retrieve shared files from '%s'"
+msgstr "无法获取 '%s' 的共享文件"
+
+#: src/BaseClient.cpp:1729 src/ClientDetailDialog.cpp:73
+#: src/ClientDetailDialog.cpp:83 src/ClientDetailDialog.cpp:91
+#: src/ClientDetailDialog.cpp:92 src/ClientDetailDialog.cpp:104
+#: src/ClientDetailDialog.cpp:142 src/ClientDetailDialog.cpp:160
+#: src/ClientDetailDialog.cpp:163 src/ClientDetailDialog.cpp:164
+#: src/ClientDetailDialog.cpp:219 src/ClientDetailDialog.cpp:220
+#: src/ClientDetailDialog.cpp:221 src/ClientDetailDialog.cpp:228
+#: src/DownloadListCtrl.cpp:998 src/DownloadListCtrl.cpp:1231
+#: src/DownloadListCtrl.cpp:1292 src/FileDetailDialog.cpp:114
+#: src/PartFile.cpp:3050 src/PartFile.cpp:3211 src/PartFile.cpp:3217
+#: src/ServerWnd.cpp:173 src/UploadListCtrl.cpp:243 src/UploadListCtrl.cpp:543
+msgid "Unknown"
+msgstr "未知"
+
+#: src/BaseClient.cpp:1753
+#, c-format
+msgid "Requesting shared files from '%s'"
+msgstr "正在请求 '%s' 的共享文件"
+
+#: src/BaseClient.cpp:1757
+#, c-format
+msgid "Requesting shared files from user %s (%u) is already in progress"
+msgstr "已经在请求 %s (%u) 的共享文件"
+
+#: src/BaseClient.cpp:1790
+#, c-format
+msgid "NickName: %s\n"
+msgstr "昵称: %s\n"
+
+#: src/BaseClient.cpp:1792
+msgid "Requested:"
+msgstr "请求:"
+
+#: src/BaseClient.cpp:1794
+#, c-format
+msgid ""
+"Filestats for this session: Accepted %d of %d requests, %s transferred\n"
+msgstr "本次运行文件统计: 接受了 %d/%d 个请求，已传送 %s\n"
+
+#: src/BaseClient.cpp:1794
+#, c-format
+msgid "Filestats for all sessions: Accepted %d of %d requests"
+msgstr "整体文件统计: 接受了 %d/%d 个请求"
+
+#: src/BaseClient.cpp:1800
+msgid "Requested unknown file"
+msgstr "请求未知文件"
+
+#: src/CatDialog.cpp:49 src/DownloadListCtrl.cpp:303 src/TransferWnd.cpp:151
+msgid "Category"
+msgstr "分类"
+
+#: src/CatDialog.cpp:103
+msgid "Choose a folder for incoming files"
+msgstr "请选择下载文件夹"
+
+#: src/CFile.cpp:219
+#, c-format
+msgid "can't create file '%s'"
+msgstr "无法产生文件: '%s'"
+
+#: src/CFile.cpp:265
+#, c-format
+msgid "Can't open file '%s'"
+msgstr "无法开启文件: '%s'"
+
+#: src/CFile.cpp:279
+#, c-format
+msgid "can't close file descriptor %d"
+msgstr "无法关闭文件导引 %d"
+
+#: src/CFile.cpp:305
+#, c-format
+msgid "can't read from file descriptor %d"
+msgstr "无法读取文件导引 %d"
+
+#: src/CFile.cpp:327
+#, c-format
+msgid "can't write to file descriptor %d"
+msgstr "无法写入文件导引 %d"
+
+#: src/CFile.cpp:341
+#, c-format
+msgid "can't flush file descriptor %d"
+msgstr "无法清空文件导引 %d"
+
+#: src/CFile.cpp:362
+msgid "unknown seek origin"
+msgstr "未知搜寻原点"
+
+#: src/CFile.cpp:393
+#, c-format
+msgid "can't get seek position on file descriptor %d"
+msgstr "无法在文件导引 %d 中读取搜寻位置"
+
+#: src/CFile.cpp:425
+#, c-format
+msgid "can't find length of file on file descriptor %d"
+msgstr "无法在文件导引 %d 中读取文件大小"
+
+#: src/CFile.cpp:459
+#, c-format
+msgid "can't determine if the end of file is reached on descriptor %d"
+msgstr "无法基于文件导引 %d 中确定是否抵达文件终点"
+
+#: src/CFile.cpp:463
+msgid "invalid eof() return value."
+msgstr "eof() 返回值无效"
+
+#: src/ChatSelector.cpp:127
+msgid ""
+"Instant Messaging\n"
+"  \n"
+"Right-click on any client and select 'Send Message' to start a chatsession"
+msgstr ""
+"短消息\n"
+"  \n"
+"右键点击任意用户然后选择 '发送消息' 以开始对话"
+
+#: src/ChatSelector.cpp:175
+msgid "*** Chatsession Start : "
+msgstr "*** 对话开始 : "
+
+#: src/ChatSelector.cpp:288
+msgid "Message from"
+msgstr "短消息来自于"
+
+#: src/ChatSelector.cpp:345
+msgid "failed"
+msgstr "失败"
+
+#: src/ChatSelector.cpp:348
+msgid "*** Disconnected"
+msgstr "*** 连接已断"
+
+#: src/ClientCredits.cpp:171 src/ClientCredits.cpp:221
+msgid "Failed to load creditfile"
+msgstr "积分文件载入失败"
+
+#: src/ClientCredits.cpp:255
+msgid "Credits expired!"
+msgstr "积分已过期"
+
+#: src/ClientCredits.cpp:272
+msgid "Failed to save creditfile"
+msgstr "积分文件存盘失败"
+
+#: src/ClientCredits.cpp:446
+msgid "IDS_CRYPT_INITFAILED|n"
+msgstr ""
+
+#: src/ClientDetailDialog.cpp:46
+msgid "Client Details"
+msgstr "用户信息"
+
+#: src/ClientDetailDialog.cpp:86
+msgid "ClientSoftware ->"
+msgstr "用户软件"
+
+#: src/ClientDetailDialog.cpp:86
+msgid "<- ClientVersion ->v"
+msgstr "<- 用户软件版本 ->v"
+
+#: src/ClientDetailDialog.cpp:86
+#fuzzy
+msgid "<- ClientModString ->"
+msgstr "用户软件版本代号"
+
+#: src/ClientDetailDialog.cpp:145 src/DownloadListCtrl.cpp:248
+#: src/DownloadListCtrl.cpp:947 src/muuli_wdr.cpp:3019
+#: src/QueueListCtrl.cpp:410 src/ServerListCtrl.cpp:92
+#: src/ServerListCtrl.cpp:339 src/SharedFilesCtrl.cpp:108
+#: src/SharedFilesCtrl.cpp:186 src/SharedFilesCtrl.cpp:385
+msgid "Low"
+msgstr "低"
+
+#: src/ClientDetailDialog.cpp:145 src/DownloadListCtrl.cpp:250
+#: src/DownloadListCtrl.cpp:961 src/muuli_wdr.cpp:3021
+#: src/QueueListCtrl.cpp:407 src/ServerListCtrl.cpp:94
+#: src/ServerListCtrl.cpp:347 src/SharedFilesCtrl.cpp:110
+#: src/SharedFilesCtrl.cpp:194 src/SharedFilesCtrl.cpp:411
+msgid "High"
+msgstr "高"
+
+#: src/ClientDetailDialog.cpp:177 src/ClientDetailDialog.cpp:179
+#: src/FileDetailDialog.cpp:101 src/FileDetailDialog.cpp:103
+#: src/muuli_wdr.cpp:1944 src/muuli_wdr.cpp:1957 src/muuli_wdr.cpp:1983
+#: src/muuli_wdr.cpp:1996 src/muuli_wdr.cpp:2009 src/StatisticsDlg.cpp:120
+#: src/StatisticsDlg.cpp:122 src/UploadListCtrl.cpp:508
+#: src/UploadListCtrl.cpp:511
+msgid "kB/s"
+msgstr "kB/s"
+
+#: src/ClientDetailDialog.cpp:193
+#fuzzy
+msgid "Not Supported"
+msgstr "不被支持"
+
+#: src/ClientDetailDialog.cpp:197 src/ServerListCtrl.cpp:221
+msgid "Failed"
+msgstr "失败次数"
+
+#: src/ClientDetailDialog.cpp:201
+msgid "Not complete"
+msgstr "未完成"
+
+#: src/ClientDetailDialog.cpp:205
+msgid "Bad Guy"
+msgstr "坏蛋"
+
+#: src/ClientDetailDialog.cpp:209
+msgid "Verified - OK"
+msgstr "验证已通过"
+
+#: src/ClientDetailDialog.cpp:214
+#fuzzy
+msgid "Not Avaiable"
+msgstr "不在"
+
+#: src/ClientList.cpp:181
+#, c-format
+msgid ""
+"WARNING! Found matching client, to a currently connected client: %s (%s) and "
+"with %s"
+msgstr "警告！ 发现与已连接用户重覆的用户： %s (%s) 和 %s"
+
+#: src/ClientUDPSocket.cpp:177 src/UDPSocket.cpp:305
+msgid ""
+"Error while processing incoming UDP Packet (Most likely a misconfigured "
+"server)"
+msgstr "接收的UDP数据包处理过程中发生错误极有可能是由于该服务器的设置有问题"
+
+#: src/CommentDialog.cpp:34 src/CommentDialogLst.cpp:36
+msgid "File Comments"
+msgstr "文件注释"
+
+#: src/CommentDialogLst.cpp:71
+msgid "Username:"
+msgstr "用户名："
+
+#: src/CommentDialogLst.cpp:72 src/DownloadListCtrl.cpp:615
+#: src/FileDetailListCtrl.cpp:42 src/PartFile.cpp:3227
+#: src/SearchListCtrl.cpp:67 src/SharedFilesCtrl.cpp:78
+msgid "File Name"
+msgstr "文件名"
+
+#: src/CommentDialogLst.cpp:73 src/QueueListCtrl.cpp:104
+#: src/QueueListCtrl.cpp:126 src/QueueListCtrl.cpp:211
+msgid "Rating"
+msgstr "评级"
+
+#: src/CommentDialogLst.cpp:74 src/muuli_wdr.cpp:2990
+msgid "Comment :"
+msgstr "注释 :"
+
+#: src/CommentDialogLst.cpp:101
+msgid "No comments"
+msgstr "没有注释"
+
+#: src/DownloadClient.cpp:614
+#, c-format
+msgid ""
+"Ignoring %u bytes of block %u-%u because of errornous zstream state for file "
+"\"%s\""
+msgstr "由于文件压缩数据流状态出现错误，放弃了 %u bytes 于数据块 %u-%u 于文件 \"%s\""
+
+#: src/DownloadClient.cpp:656 src/DownloadClient.cpp:670
+#, c-format
+msgid "Corrupted compressed packet for %s received (error %i)"
+msgstr "接收到损坏的压缩数据包 %s (error %i)"
+
+#: src/DownloadClient.cpp:713
+#, c-format
+msgid "Unknown exception in %s: file \"%s\""
+msgstr "%s 中出现未知异常: file \"%s\""
+
+#: src/DownloadListCtrl.cpp:249 src/DownloadListCtrl.cpp:954
+#: src/muuli_wdr.cpp:3020 src/QueueListCtrl.cpp:416 src/ServerListCtrl.cpp:93
+#: src/ServerListCtrl.cpp:343 src/SharedFilesCtrl.cpp:109
+#: src/SharedFilesCtrl.cpp:190 src/SharedFilesCtrl.cpp:398
+msgid "Normal"
+msgstr "普通"
+
+#: src/DownloadListCtrl.cpp:251 src/muuli_wdr.cpp:3022
+#: src/SharedFilesCtrl.cpp:113
+msgid "Auto"
+msgstr "自动"
+
+#: src/DownloadListCtrl.cpp:254 src/muuli_wdr.cpp:495
+#: src/StatisticsDlg.cpp:616
+msgid "Downloads"
+msgstr "下载次数"
+
+#: src/DownloadListCtrl.cpp:255 src/DownloadListCtrl.cpp:622
+#: src/ServerListCtrl.cpp:97 src/SharedFilesCtrl.cpp:81
+#: src/SharedFilesCtrl.cpp:120
+msgid "Priority"
+msgstr "优先级"
+
+#: src/DownloadListCtrl.cpp:257 src/TransferWnd.cpp:184
+msgid "&Stop"
+msgstr "停止(&S)"
+
+#: src/DownloadListCtrl.cpp:258 src/TransferWnd.cpp:185
+msgid "&Pause"
+msgstr "暂停 (&P)"
+
+#: src/DownloadListCtrl.cpp:259 src/TransferWnd.cpp:186
+msgid "&Resume"
+msgstr "续传(&R)"
+
+#: src/DownloadListCtrl.cpp:271
+msgid "Swap every A4AF to this file now"
+msgstr "立即转移所有 A4AF 到这个文件"
+
+#: src/DownloadListCtrl.cpp:272
+msgid "Swap every A4AF to this file (Auto)"
+msgstr "自动转移所有 A4AF 到这个文件"
+
+#: src/DownloadListCtrl.cpp:273
+msgid "Swap every A4AF to any other file now"
+msgstr "立即转移所有 A4AF 到其它文件"
+
+#: src/DownloadListCtrl.cpp:275
+msgid "Drop No Needed Sources now"
+msgstr "立即清理无可供下载的源"
+
+#: src/DownloadListCtrl.cpp:276
+msgid "Drop Full Queue Sources now"
+msgstr "立即清理队列已满的源"
+
+#: src/DownloadListCtrl.cpp:277
+msgid "Drop High Queue Rating Sources now"
+msgstr "立即清理队列超长的源"
+
+#: src/DownloadListCtrl.cpp:278
+msgid "Clean Up Sources now (NNS, FQS && HQRS)"
+msgstr "立即清理所有无用源"
+
+#: src/DownloadListCtrl.cpp:280
+msgid "Extended Options"
+msgstr "扩展选项"
+
+#: src/DownloadListCtrl.cpp:283
+msgid "&Open the file"
+msgstr "打开文件 (&O)"
+
+#: src/DownloadListCtrl.cpp:284 src/muuli_wdr.cpp:2679
+msgid "Preview"
+msgstr "预览"
+
+#: src/DownloadListCtrl.cpp:286
+msgid "Show file &details"
+msgstr "显示文件信息"
+
+#: src/DownloadListCtrl.cpp:287 src/muuli_wdr.cpp:858
+msgid "Show all comments"
+msgstr "显示所有注释"
+
+#: src/DownloadListCtrl.cpp:288 src/SearchListCtrl.cpp:131
+msgid "Check Fake"
+msgstr "检查虚假"
+
+#: src/DownloadListCtrl.cpp:290
+msgid "C&lear completed"
+msgstr "清除已完成的文件 (&l)"
+
+#: src/DownloadListCtrl.cpp:292 src/ServerListCtrl.cpp:106
+#: src/SharedFilesCtrl.cpp:126
+msgid "Copy ED2k &link to clipboard"
+msgstr "拷贝 ED2k 连接到剪贴板 (&l)"
+
+#: src/DownloadListCtrl.cpp:293 src/SharedFilesCtrl.cpp:129
+msgid "Copy ED2k link to clipboard (&HTML)"
+msgstr "拷贝 ED2k 连接到剪贴板 (HTML)"
+
+#: src/DownloadListCtrl.cpp:306
+msgid "unassign"
+msgstr "清除"
+
+#: src/DownloadListCtrl.cpp:310
+msgid "Assign to category"
+msgstr "分类"
+
+#: src/DownloadListCtrl.cpp:318
+msgid "Show Lists"
+msgstr "显示列表"
+
+#: src/DownloadListCtrl.cpp:320
+msgid "Hide Lists"
+msgstr "隐藏列表"
+
+#: src/DownloadListCtrl.cpp:330
+msgid "Preview ["
+msgstr "预览 ["
+
+#: src/DownloadListCtrl.cpp:377 src/FriendListCtrl.cpp:110
+#: src/QueueListCtrl.cpp:142 src/QueueListCtrl.cpp:176
+#: src/UploadListCtrl.cpp:147
+msgid "Show &Details"
+msgstr "显示附加信息 (&D)"
+
+#: src/DownloadListCtrl.cpp:378 src/QueueListCtrl.cpp:177
+#: src/UploadListCtrl.cpp:148
+msgid "Add to Friends"
+msgstr "加为好友"
+
+#: src/DownloadListCtrl.cpp:379 src/FriendListCtrl.cpp:117
+#: src/QueueListCtrl.cpp:179 src/UploadListCtrl.cpp:149
+msgid "View Files"
+msgstr "显示文件"
+
+#: src/DownloadListCtrl.cpp:616 src/SearchListCtrl.cpp:68
+#: src/SharedFilesCtrl.cpp:79
+msgid "Size"
+msgstr "大小"
+
+#: src/DownloadListCtrl.cpp:617 src/UploadListCtrl.cpp:89
+msgid "Transferred"
+msgstr "已传输"
+
+#: src/DownloadListCtrl.cpp:618 src/otherfunctions.cpp:547
+#: src/TransferWnd.cpp:160
+msgid "Completed"
+msgstr "已完成"
+
+#: src/DownloadListCtrl.cpp:619 src/UploadListCtrl.cpp:88
+msgid "Speed"
+msgstr "速度"
+
+#: src/DownloadListCtrl.cpp:620
+msgid "Progress"
+msgstr "进度"
+
+#: src/DownloadListCtrl.cpp:621 src/FileDetailListCtrl.cpp:43
+#: src/SearchListCtrl.cpp:69
+msgid "Sources"
+msgstr "源"
+
+#: src/DownloadListCtrl.cpp:623 src/muuli_wdr.cpp:2641 src/PartFile.cpp:3230
+#: src/ServerWnd.cpp:163 src/UploadListCtrl.cpp:92
+msgid "Status"
+msgstr "状态"
+
+#: src/DownloadListCtrl.cpp:624
+msgid "Time Remaining"
+msgstr "剩余时间"
+
+#: src/DownloadListCtrl.cpp:625
+msgid "Last Seen Complete"
+msgstr "最后一次发现完整文件"
+
+#: src/DownloadListCtrl.cpp:626
+msgid "Last Reception"
+msgstr "最后一次下载"
+
+#: src/DownloadListCtrl.cpp:945
+msgid "Auto [Lo]"
+msgstr "自动 [低]"
+
+#: src/DownloadListCtrl.cpp:952 src/SharedFilesCtrl.cpp:167
+#: src/SharedFilesCtrl.cpp:457
+msgid "Auto [No]"
+msgstr "自动 [普]"
+
+#: src/DownloadListCtrl.cpp:959 src/SharedFilesCtrl.cpp:171
+#: src/SharedFilesCtrl.cpp:455
+msgid "Auto [Hi]"
+msgstr "自动 [高]"
+
+#: src/DownloadListCtrl.cpp:1197
+#, c-format
+msgid "eDonkey v%i"
+msgstr ""
+
+#: src/DownloadListCtrl.cpp:1200
+#, c-format
+msgid "eDonkeyHybrid v%i"
+msgstr ""
+
+#: src/DownloadListCtrl.cpp:1204
+#, c-format
+msgid "eMule v%02X"
+msgstr ""
+
+#: src/DownloadListCtrl.cpp:1211
+#, c-format
+msgid "aMule [ %s ]"
+msgstr ""
+
+#: src/DownloadListCtrl.cpp:1213
+#, c-format
+msgid "aMule v0.%02X"
+msgstr ""
+
+#: src/DownloadListCtrl.cpp:1217
+#, c-format
+msgid "lMule/xMule v0.%02X"
+msgstr ""
+
+#: src/DownloadListCtrl.cpp:1220
+msgid "Old MLdonkey"
+msgstr "旧 MlDonkey"
+
+#: src/DownloadListCtrl.cpp:1223
+msgid "New MLdonkey"
+msgstr "新 MlDonkey"
+
+#: src/DownloadListCtrl.cpp:1240 src/DownloadListCtrl.cpp:1271
+msgid "Queue Full"
+msgstr "队列已满"
+
+#: src/DownloadListCtrl.cpp:1264
+msgid "Asking"
+msgstr "正在询问"
+
+#: src/DownloadListCtrl.cpp:1267 src/UploadListCtrl.cpp:237
+#: src/UploadListCtrl.cpp:530
+msgid "Connecting via server"
+msgstr "通过服务器连接中"
+
+#: src/DownloadListCtrl.cpp:1273 src/TransferWnd.cpp:117
+msgid "On Queue"
+msgstr "在排队"
+
+#: src/DownloadListCtrl.cpp:1277 src/UploadListCtrl.cpp:240
+#: src/UploadListCtrl.cpp:535
+msgid "Transferring"
+msgstr "下载中"
+
+#: src/DownloadListCtrl.cpp:1280
+msgid "Receiving hashset"
+msgstr "正在接收校检码"
+
+#: src/DownloadListCtrl.cpp:1283
+msgid "No needed parts"
+msgstr "没有需要的部分"
+
+#: src/DownloadListCtrl.cpp:1286
+msgid "Cannot connect LowID to LowID"
+msgstr "无法连接两个低ID用户"
+
+#: src/DownloadListCtrl.cpp:1289
+msgid "Too many connections"
+msgstr "连接过多"
+
+#: src/DownloadListCtrl.cpp:1295
+msgid "Asked for another file"
+msgstr "已要求其它文件 (A4AF)"
+
+#: src/DownloadListCtrl.cpp:1517
+msgid "Are you sure that you want to cancel and delete this file ?\n"
+msgstr "您确定要取消下载并删除该文件吗？\n"
+
+#: src/DownloadListCtrl.cpp:1520
+msgid "Are you sure that you want to cancel and delete these files ?\n"
+msgstr "您确定要取消下载并删除这些文件吗？\n"
+
+#: src/DownloadListCtrl.cpp:2054
+#, c-format
+msgid "Downloads (%i)"
+msgstr "下载 (%i)"
+
+#: src/DownloadQueue.cpp:160
+msgid "No part files found"
+msgstr "没有找到 part 文件"
+
+#: src/DownloadQueue.cpp:162
+#, c-format
+msgid "Found %i part files"
+msgstr "发现 %i 个 part 文件"
+
+#: src/DownloadQueue.cpp:293 src/DownloadQueue.cpp:295
+#, c-format
+msgid "Downloading %s"
+msgstr "正在下载 %s"
+
+#: src/DownloadQueue.cpp:307 src/DownloadQueue.cpp:313
+#, c-format
+msgid "You are already trying to download the file %s"
+msgstr "您已经在下载文件 %s"
+
+#: src/DownloadQueue.cpp:309
+#, c-format
+msgid "You already have the file %s"
+msgstr "您已下载了文件 %s"
+
+#: src/DownloadQueue.cpp:1042
+msgid "Bad link."
+msgstr "无效连接"
+
+#: src/ED2KLink.cpp:427 src/ED2KLink.cpp:436
+msgid "not a well-formed ed2k link"
+msgstr "ED2K 链接格式错误"
+
+#: src/ED2KLink.cpp:448
+msgid "Not an ED2K server or file link"
+msgstr "不是 ED2K 服务器或文件链接"
+
+#: src/EditServerListDlg.cpp:77
+#, c-format
+msgid "can't write file '%s'"
+msgstr "无法写文件 '%s'"
+
+#: src/ExternalConn.cpp:115
+msgid "New external connection accepted\n"
+msgstr "接受了新的外部连接\n"
+
+#: src/ExternalConn.cpp:117
+msgid ""
+"Error: couldn't accept a new external connection\n"
+"\n"
+msgstr ""
+"错误: 无法接收外来连接\n"
+"\n"
+
+
+#: src/FileDetailDialog.cpp:99
+msgid "done"
+msgstr "完成"
+
+#: src/filefn.cpp:142
+#, c-format
+msgid "Failed to copy the file '%s' to '%s'"
+msgstr ""
+
+#: src/filefn.cpp:158
+#, c-format
+msgid "Impossible to get permissions for file '%s'"
+msgstr "无法取得文件 '%s' 的许可"
+
+#: src/filefn.cpp:172
+#, c-format
+msgid "Impossible to overwrite the file '%s'"
+msgstr "无法覆盖文件 '%s'"
+
+#: src/filefn.cpp:225
+#, c-format
+msgid "Impossible to set permissions for the file '%s'"
+msgstr "无法设置文件 '%s' 的许可"
+
+#: src/FriendListCtrl.cpp:65 src/QueueListCtrl.cpp:101
+#: src/QueueListCtrl.cpp:123 src/QueueListCtrl.cpp:196
+#: src/UploadListCtrl.cpp:86
+msgid "Username"
+msgstr "用户名"
+
+#: src/FriendListCtrl.cpp:106 src/muuli_wdr.cpp:576 src/muuli_wdr.cpp:2232
+msgid "Friends"
+msgstr "好友"
+
+#: src/FriendListCtrl.cpp:113
+msgid "Add a friend"
+msgstr "加好友"
+
+#: src/FriendListCtrl.cpp:115
+msgid "Remove Friend"
+msgstr "删除好友"
+
+#: src/FriendListCtrl.cpp:116
+msgid "Send &Message"
+msgstr "发消息 (&M)"
+
+#: src/FriendListCtrl.cpp:118
+#fuzzy
+msgid "Establish Friend Slot"
+msgstr "建立好友条"
+
+#: src/HTTPDownloadDlg.cpp:34
+msgid "Downloading..."
+msgstr "正在下载..."
+
+#: src/IPFilter.cpp:178
+#, c-format
+msgid "Loaded ipfilter with %d IP addresses."
+msgstr "成功载入IP地址过滤，共有 %d 个IP地址。"
+
+#: src/KnownFileList.cpp:89
+msgid "Error: the file known.met is corrupted, unable to load known files"
+msgstr "错误: 文件 known.met 已损坏，无法读取已知文件列表"
+
+#: src/KnownFileList.cpp:93
+#, c-format
+msgid ""
+"Unexpected file error while reading known.met: %s, unable to load known files"
+msgstr ""
+"读取文件 known.met 过程中发生意外错误: %s, 无法读取已知文件列表"
+
+#: src/ListenSocket.cpp:590 src/ListenSocket.cpp:592
+#, c-format
+msgid "User %s (%u) requested your sharedfiles-list -> %s"
+msgstr "用户 %s (%u) 请求了共享文件列表 -> %s"
+
+#: src/ListenSocket.cpp:590 src/ListenSocket.cpp:623 src/ListenSocket.cpp:682
+msgid "accepted"
+msgstr "已接受"
+
+#: src/ListenSocket.cpp:592 src/ListenSocket.cpp:658 src/ListenSocket.cpp:703
+msgid "denied"
+msgstr "已拒绝"
+
+#: src/ListenSocket.cpp:623 src/ListenSocket.cpp:658
+#, c-format
+msgid "User %s (%u) requested your shareddirectories-list -> %s"
+msgstr "用户 %s (%u) 请求了共享文件夹列表 -> %s"
+
+#: src/ListenSocket.cpp:682 src/ListenSocket.cpp:703
+#, c-format
+msgid "User %s (%u) requested your sharedfiles-list for directory %s -> %s"
+msgstr "用户 %s (%u) 请求了文件夹 %s 内的共享文件列表 -> %s"
+
+#: src/ListenSocket.cpp:725
+#, c-format
+msgid "User %s (%u) shares directory %s"
+msgstr "用户 %s (%u) 共享文件夹 %s"
+
+#: src/ListenSocket.cpp:756
+#, c-format
+msgid "User %s (%u) sent sharedfiles-list for directory %s"
+msgstr "用户 %s (%u) 发送了文件夹 %s 内的共享文件列表"
+
+#: src/ListenSocket.cpp:761
+#, c-format
+msgid "User %s (%u) finished sending sharedfiles-list"
+msgstr "用户 %s (%u) 完成了共享文件列表的发送"
+
+#: src/ListenSocket.cpp:764
+#, c-format
+msgid "User %s (%u) sent unwanted sharedfiles-list"
+msgstr "用户 %s (%u) 发送了未经请求的共享文件列表"
+
+#: src/ListenSocket.cpp:774
+#, c-format
+msgid "User %s (%u) denied access to shareddirectories/files-list"
+msgstr "用户 %s (%u) 拒绝提供共享文件／文件夹列表"
+
+#: src/ListenSocket.cpp:800
+#, c-format
+msgid "Client '%s' (IP:%s) caused an error: %s. Disconnecting client!"
+msgstr "用户 '%s' (IP:%s) 造成错误: %s. 正在切断连接!"
+
+#: src/ListenSocket.cpp:802 src/ListenSocket.cpp:945
+#, c-format
+msgid ""
+"A client caused an error or did something bad: %s. Disconnecting client!"
+msgstr ""
+"某用户造成错误或试图攻击: %s. 正在切断连接!"
+
+#: src/ListenSocket.cpp:972
+#, c-format
+msgid "Client '%s' (IP:%s) caused an error: %u. Disconnecting client!"
+msgstr "用户 '%s' (IP:%s) 造成错误: %u. 正在切断连接!"
+
+#: src/ListenSocket.cpp:974
+#, c-format
+msgid "Unknown client (IP:%s) caused an error: %u. Disconnecting client!"
+msgstr "未知用户 (IP:%s) 造成错误: %u. 正在切断连接!"
+
+#: src/ListenSocket.cpp:977
+msgid "A client caused an error or did something bad. Disconnecting client !"
+msgstr "某用户造成错误或试图攻击,正在切断连接!"
+
+#: src/muuli_wdr.cpp:48
+msgid "Concurrent Downloads"
+msgstr "并行下载"
+
+#: src/muuli_wdr.cpp:53
+msgid "1-5"
+msgstr ""
+
+#: src/muuli_wdr.cpp:61
+msgid "6-15"
+msgstr ""
+
+#: src/muuli_wdr.cpp:68
+msgid "16+"
+msgstr ""
+
+#: src/muuli_wdr.cpp:75
+msgid "Connection Type"
+msgstr "连接类型"
+
+#: src/muuli_wdr.cpp:78
+msgid "Select your connection type here :"
+msgstr "请选择连接类型 :"
+
+#: src/muuli_wdr.cpp:90
+msgid "True download bandwidth"
+msgstr "实际下载带宽"
+
+#: src/muuli_wdr.cpp:100
+msgid "True upload bandwidth"
+msgstr "实际上传带宽"
+
+#: src/muuli_wdr.cpp:112
+msgid "Unit:"
+msgstr "单位："
+
+#: src/muuli_wdr.cpp:115
+msgid "kbits/sec"
+msgstr ""
+
+#: src/muuli_wdr.cpp:119
+msgid "kBytes/sec"
+msgstr ""
+
+#: src/muuli_wdr.cpp:129 src/muuli_wdr.cpp:933 src/muuli_wdr.cpp:2682
+msgid "Apply"
+msgstr "应用"
+
+#: src/muuli_wdr.cpp:157
+msgid ""
+"For system tray integration to work,\n"
+"you must specify which desktop you are using.\n"
+"You can change this later from preferences."
+msgstr ""
+"为了使系统状态栏集成正常工作，\n"
+"您必需确定您所使用的桌面系统。\n"
+"您以后可以设置中更改此选项。"
+
+#: src/muuli_wdr.cpp:163
+msgid "Desktop"
+msgstr "桌面"
+
+#: src/muuli_wdr.cpp:166
+msgid "Gnome 2.x (or other XEMBED compatible)"
+msgstr ""
+
+#: src/muuli_wdr.cpp:169
+msgid "KDE 3.x"
+msgstr ""
+
+#: src/muuli_wdr.cpp:172
+msgid "KDE 2.x / Gnome 1.2 "
+msgstr ""
+
+#: src/muuli_wdr.cpp:175
+msgid "No systray integration, please"
+msgstr "取消系统状态栏集成"
+
+#: src/muuli_wdr.cpp:183 src/muuli_wdr.cpp:2948 src/muuli_wdr.cpp:3053
+#: src/muuli_wdr.cpp:3372 src/PreferencesDlg.cpp:75
+msgid "OK"
+msgstr "确定"
+
+#: src/muuli_wdr.cpp:220
+msgid "Fast ED2K Links Handler (Direct Download)"
+msgstr "快速 ED2K 链接处理 (直接下载)"
+
+#: src/muuli_wdr.cpp:230
+msgid "Commit"
+msgstr "确定"
+
+#: src/muuli_wdr.cpp:239
+msgid "Loading ..."
+msgstr "正在装入..."
+
+#: src/muuli_wdr.cpp:247
+msgid "Number of users on the server you are connected to ..."
+msgstr "当前服务器上用户数 ..."
+
+#: src/muuli_wdr.cpp:250
+msgid "Users: 0"
+msgstr "用户: 0"
+
+#: src/muuli_wdr.cpp:261
+msgid "Up: 0.0 | Down: 0.0"
+msgstr "上传: 0.0 | 下载: 0.0"
+
+#: src/muuli_wdr.cpp:272
+msgid "Not Connected ..."
+msgstr "未连接"
+
+#: src/muuli_wdr.cpp:331
+msgid "Search"
+msgstr "查找"
+
+#: src/muuli_wdr.cpp:341
+msgid "Name"
+msgstr "名字"
+
+#: src/muuli_wdr.cpp:349 src/muuli_wdr.cpp:3187
+msgid "Reset"
+msgstr "重置"
+
+#: src/muuli_wdr.cpp:353 src/SearchListCtrl.cpp:70 src/SharedFilesCtrl.cpp:80
+msgid "Type"
+msgstr "类型"
+
+#: src/muuli_wdr.cpp:360 src/otherfunctions.cpp:240 src/otherfunctions.cpp:261
+#: src/SearchDlg.cpp:585 src/SearchList.cpp:402
+msgid "Any"
+msgstr "任何"
+
+#: src/muuli_wdr.cpp:361 src/otherfunctions.cpp:253
+msgid "Archives"
+msgstr "存档"
+
+#: src/muuli_wdr.cpp:362 src/otherfunctions.cpp:245 src/otherfunctions.cpp:554
+#: src/SearchDlg.cpp:385 src/TransferWnd.cpp:168
+msgid "Audio"
+msgstr "音乐"
+
+#: src/muuli_wdr.cpp:363 src/otherfunctions.cpp:259 src/otherfunctions.cpp:556
+#: src/TransferWnd.cpp:170
+msgid "CD-Images"
+msgstr "CD映象"
+
+#: src/muuli_wdr.cpp:364 src/otherfunctions.cpp:248 src/otherfunctions.cpp:557
+#: src/SearchDlg.cpp:394 src/TransferWnd.cpp:171
+msgid "Pictures"
+msgstr "图片"
+
+#: src/muuli_wdr.cpp:365 src/otherfunctions.cpp:255 src/SearchDlg.cpp:391
+msgid "Programs"
+msgstr "程序"
+
+#: src/muuli_wdr.cpp:366 src/otherfunctions.cpp:251
+msgid "Videos"
+msgstr "录像"
+
+#: src/muuli_wdr.cpp:381
+msgid "Min Size"
+msgstr "大小下限"
+
+#: src/muuli_wdr.cpp:387
+msgid "Max Size"
+msgstr "大小上限"
+
+#: src/muuli_wdr.cpp:393
+msgid "Extension"
+msgstr "扩展名"
+
+#: src/muuli_wdr.cpp:399
+msgid "Min Availability"
+msgstr "最低源数"
+
+#: src/muuli_wdr.cpp:411
+msgid "Search global"
+msgstr "全球搜索"
+
+#: src/muuli_wdr.cpp:422
+msgid "Start"
+msgstr "开始"
+
+#: src/muuli_wdr.cpp:432 src/SearchListCtrl.cpp:137
+msgid "Clear All"
+msgstr "清除所有"
+
+#: src/muuli_wdr.cpp:452
+msgid "Search Results"
+msgstr "搜索结果"
+
+#: src/muuli_wdr.cpp:464
+msgid "Download selected"
+msgstr "下载已选项"
+
+#: src/muuli_wdr.cpp:534 src/StatisticsDlg.cpp:604 src/TransferWnd.cpp:126
+msgid "Uploads"
+msgstr "上传"
+
+#: src/muuli_wdr.cpp:593 src/muuli_wdr.cpp:3409
+msgid "Messages"
+msgstr "消息"
+
+#: src/muuli_wdr.cpp:611
+msgid "Send"
+msgstr "发送"
+
+#: src/muuli_wdr.cpp:614 src/muuli_wdr.cpp:861 src/muuli_wdr.cpp:984
+#: src/muuli_wdr.cpp:1724
+msgid "Close"
+msgstr "关闭"
+
+#: src/muuli_wdr.cpp:645 src/muuli_wdr.cpp:1501 src/muuli_wdr.cpp:2901
+#: src/muuli_wdr.cpp:3325 src/PPgGeneral.cpp:45
+msgid "General"
+msgstr "常规"
+
+#: src/muuli_wdr.cpp:651
+msgid "Full Name :"
+msgstr "全名："
+
+#: src/muuli_wdr.cpp:654 src/muuli_wdr.cpp:661 src/muuli_wdr.cpp:668
+#: src/muuli_wdr.cpp:679 src/muuli_wdr.cpp:686 src/muuli_wdr.cpp:693
+#: src/muuli_wdr.cpp:710 src/muuli_wdr.cpp:720 src/muuli_wdr.cpp:730
+#: src/muuli_wdr.cpp:740 src/muuli_wdr.cpp:751 src/muuli_wdr.cpp:755
+#: src/muuli_wdr.cpp:764 src/muuli_wdr.cpp:771 src/muuli_wdr.cpp:793
+#: src/muuli_wdr.cpp:800 src/muuli_wdr.cpp:807 src/muuli_wdr.cpp:1162
+#: src/muuli_wdr.cpp:1173 src/muuli_wdr.cpp:1182 src/muuli_wdr.cpp:1193
+#: src/muuli_wdr.cpp:1202 src/muuli_wdr.cpp:1213 src/muuli_wdr.cpp:1518
+#: src/muuli_wdr.cpp:1522 src/muuli_wdr.cpp:1547 src/muuli_wdr.cpp:1551
+#: src/muuli_wdr.cpp:1555 src/muuli_wdr.cpp:1576 src/muuli_wdr.cpp:1580
+#: src/muuli_wdr.cpp:1584 src/muuli_wdr.cpp:1602 src/muuli_wdr.cpp:1625
+#: src/muuli_wdr.cpp:1629 src/muuli_wdr.cpp:1633 src/muuli_wdr.cpp:1654
+#: src/muuli_wdr.cpp:1658 src/muuli_wdr.cpp:1662 src/muuli_wdr.cpp:1687
+#: src/muuli_wdr.cpp:1691 src/muuli_wdr.cpp:1709 src/muuli_wdr.cpp:1713
+msgid "N/A"
+msgstr ""
+
+#: src/muuli_wdr.cpp:658
+msgid "met-File :"
+msgstr "met 文件"
+
+#: src/muuli_wdr.cpp:665 src/PartFile.cpp:3228
+msgid "Hash :"
+msgstr "校检码 :"
+
+#: src/muuli_wdr.cpp:676
+msgid "Filesize :"
+msgstr "文件大小 :"
+
+#: src/muuli_wdr.cpp:683
+msgid "Partfilestatus :"
+msgstr "Part 文件状态 :"
+
+#: src/muuli_wdr.cpp:690
+msgid "Last seen complete :"
+msgstr "最后发现完整共享文件 :"
+
+#: src/muuli_wdr.cpp:701 src/muuli_wdr.cpp:1594 src/StatisticsDlg.cpp:601
+msgid "Transfer"
+msgstr "传输"
+
+#: src/muuli_wdr.cpp:707
+msgid "Found Sources :"
+msgstr "已发现源 :"
+
+#: src/muuli_wdr.cpp:714
+msgid "Transferring Sources :"
+msgstr "正在传输的源 :"
+
+#: src/muuli_wdr.cpp:717
+#fuzzy
+msgid "Filepart-Count :"
+msgstr "文件部分数 :"
+
+#: src/muuli_wdr.cpp:724
+#fuzzy
+msgid "Available :"
+msgstr "可用 :"
+
+#: src/muuli_wdr.cpp:727
+msgid "Datarate :"
+msgstr "数据率 :"
+
+#: src/muuli_wdr.cpp:737 src/muuli_wdr.cpp:1199 src/muuli_wdr.cpp:1210
+msgid "Transferred :"
+msgstr "已传输"
+
+#: src/muuli_wdr.cpp:744
+msgid "Completed Size :"
+msgstr "已完成大小 :"
+
+#: src/muuli_wdr.cpp:768
+msgid " / ("
+msgstr ""
+
+#: src/muuli_wdr.cpp:775 src/muuli_wdr.cpp:975
+msgid ")"
+msgstr ""
+
+#: src/muuli_wdr.cpp:784 src/muuli_wdr.cpp:2241
+msgid "Intelligent Corruption Handling"
+msgstr "智能数据损坏处理 (ICH)"
+
+#: src/muuli_wdr.cpp:790
+msgid "Lost to corruption :"
+msgstr "因数据损坏而丢失 :"
+
+#: src/muuli_wdr.cpp:797
+msgid "Gained by compression :"
+msgstr "压缩效益 :"
+
+#: src/muuli_wdr.cpp:804
+msgid "Packages saved by I.C.H. :"
+msgstr "由 ICH 挽救的数据包 :"
+
+#: src/muuli_wdr.cpp:821
+msgid "Source Names"
+msgstr "源名称"
+
+#: src/muuli_wdr.cpp:831
+#, fuzzy
+msgid "Takeover"
+msgstr ""
+
+#: src/muuli_wdr.cpp:836
+msgid "Cleanup"
+msgstr "清除"
+
+#: src/muuli_wdr.cpp:846
+msgid "Rename"
+msgstr "更名"
+
+#: src/muuli_wdr.cpp:887
+msgid "Comment this file (this text will be show by all users)"
+msgstr "为该文件加注释 (给所有用户看)"
+
+#: src/muuli_wdr.cpp:895
+msgid "Clear"
+msgstr "清除"
+
+#: src/muuli_wdr.cpp:901
+msgid ""
+"For a film you can say its length, its story, language ...\n"
+"and if it's a fake, you can tell that to other users of aMule."
+msgstr ""
+"您可以说明电影的长度，情节和语言等等...\n"
+"如果电影是假冒的，您可以提醒其它用户。"
+
+#: src/muuli_wdr.cpp:910
+msgid "File Quality"
+msgstr "文件质量"
+
+#: src/muuli_wdr.cpp:915 src/otherfunctions.cpp:362 src/otherfunctions.cpp:380
+msgid "Not rated"
+msgstr "未评级"
+
+#: src/muuli_wdr.cpp:916 src/otherfunctions.cpp:365
+msgid "Invalid / Corrupt / Fake"
+msgstr "无效 / 损坏 / 假冒"
+
+#: src/muuli_wdr.cpp:917 src/otherfunctions.cpp:368
+msgid "Poor"
+msgstr "差"
+
+#: src/muuli_wdr.cpp:918 src/otherfunctions.cpp:371
+msgid "Good"
+msgstr "好"
+
+#: src/muuli_wdr.cpp:919 src/otherfunctions.cpp:374
+msgid "Fair"
+msgstr "一般"
+
+#: src/muuli_wdr.cpp:920 src/otherfunctions.cpp:377
+msgid "Excellent"
+msgstr "很好"
+
+#: src/muuli_wdr.cpp:925
+msgid "Choose the file rating or advice users if the file is invalid ..."
+msgstr "选择文件评级或者提醒其它用户该文件是无效的"
+
+#: src/muuli_wdr.cpp:968
+msgid "("
+msgstr ""
+
+#: src/muuli_wdr.cpp:971
+msgid "No comment(s)"
+msgstr "无注释"
+
+#: src/muuli_wdr.cpp:981
+msgid "Refresh"
+msgstr "刷新"
+
+#: src/muuli_wdr.cpp:1014
+msgid "Downloading, please wait ..."
+msgstr "正在下载，请等待 ..."
+
+#: src/muuli_wdr.cpp:1047
+msgid "Required Information"
+msgstr "要求的信息"
+
+#: src/muuli_wdr.cpp:1052 src/muuli_wdr.cpp:1537
+msgid "IP Address :"
+msgstr "IP 地址："
+
+#: src/muuli_wdr.cpp:1058
+msgid "Port :"
+msgstr "端口："
+
+#: src/muuli_wdr.cpp:1068
+msgid "Additional Information"
+msgstr "附加信息"
+
+#: src/muuli_wdr.cpp:1073 src/muuli_wdr.cpp:1508
+msgid "Username :"
+msgstr "用户名："
+
+#: src/muuli_wdr.cpp:1079 src/muuli_wdr.cpp:1511
+msgid "Userhash :"
+msgstr "用户编码"
+
+#: src/muuli_wdr.cpp:1092 src/muuli_wdr.cpp:3255
+msgid "Add"
+msgstr "添加"
+
+#: src/muuli_wdr.cpp:1125 src/SharedFilesCtrl.cpp:105
+#: src/StatisticsDlg.cpp:673
+msgid "Shared Files"
+msgstr "共享文件"
+
+#: src/muuli_wdr.cpp:1137 src/muuli_wdr.cpp:2929 src/muuli_wdr.cpp:3353
+#: src/muuli_wdr.cpp:3410 src/PPgStats.cpp:42 src/StatisticsDlg.cpp:599
+msgid "Statistics"
+msgstr "统计"
+
+#: src/muuli_wdr.cpp:1145
+msgid "Current Session"
+msgstr "本次运行"
+
+#: src/muuli_wdr.cpp:1152 src/StatisticsDlg.cpp:958
+msgid "Total"
+msgstr "总和"
+
+#: src/muuli_wdr.cpp:1159 src/muuli_wdr.cpp:1170
+msgid "Requested :"
+msgstr "已请求 :"
+
+#: src/muuli_wdr.cpp:1179 src/muuli_wdr.cpp:1190
+msgid "Active Uploads :"
+msgstr "活跃上传 :"
+
+#: src/muuli_wdr.cpp:1226 src/SharedFileList.cpp:188
+#: src/SharedFileList.cpp:196
+msgid "Reload"
+msgstr "刷新"
+
+#: src/muuli_wdr.cpp:1299
+msgid "Download-Speed"
+msgstr "下载速度"
+
+#: src/muuli_wdr.cpp:1308 src/muuli_wdr.cpp:1433
+msgid "Current"
+msgstr "当前"
+
+#: src/muuli_wdr.cpp:1323 src/muuli_wdr.cpp:1448
+msgid "Running average"
+msgstr "动态平均值"
+
+#: src/muuli_wdr.cpp:1334 src/muuli_wdr.cpp:1459
+msgid "Session average"
+msgstr "本次运行平均值"
+
+#: src/muuli_wdr.cpp:1367 src/muuli_wdr.cpp:2407
+msgid "Active downloads"
+msgstr "活跃下载"
+
+#: src/muuli_wdr.cpp:1378
+msgid "Active connections (1:1)"
+msgstr "活跃连接 (1:1)"
+
+#: src/muuli_wdr.cpp:1393 src/muuli_wdr.cpp:2408
+msgid "Active uploads"
+msgstr "活跃上传"
+
+#: src/muuli_wdr.cpp:1424
+msgid "Upload-Speed"
+msgstr "上传速度"
+
+#: src/muuli_wdr.cpp:1534
+msgid "Clientsoftware :"
+msgstr "客户软件 :"
+
+#: src/muuli_wdr.cpp:1540
+msgid "Server IP :"
+msgstr "服务器 IP :"
+
+#: src/muuli_wdr.cpp:1563
+msgid "Clientversion :"
+msgstr "客户软件版本 :"
+
+#: src/muuli_wdr.cpp:1566
+#, fuzzy
+msgid "ID :"
+msgstr ""
+
+#: src/muuli_wdr.cpp:1569
+msgid "Servername :"
+msgstr "服务器名称"
+
+#: src/muuli_wdr.cpp:1599
+msgid "Currently downloading :"
+msgstr "正在下载 :"
+
+#: src/muuli_wdr.cpp:1612
+msgid "Downloaded (this session) :"
+msgstr "下载  (本次运行) :"
+
+#: src/muuli_wdr.cpp:1615
+msgid "Average downloadrate :"
+msgstr "平均下载速度 :"
+
+#: src/muuli_wdr.cpp:1618
+msgid "Downloaded total :"
+msgstr "下载总量 :"
+
+#: src/muuli_wdr.cpp:1641
+msgid "Uploaded (this session) :"
+msgstr "上传 (本次运行) :"
+
+#: src/muuli_wdr.cpp:1644
+msgid "Average Uploadrate :"
+msgstr "平均上传速度 :"
+
+#: src/muuli_wdr.cpp:1647
+msgid "Uploaded total :"
+msgstr "上传总量 :"
+
+#: src/muuli_wdr.cpp:1672
+msgid "Scores"
+msgstr "分数"
+
+#: src/muuli_wdr.cpp:1677
+msgid "DL/UP Modifier :"
+msgstr "下载/上传 比率 :"
+
+#: src/muuli_wdr.cpp:1680
+msgid "Rating (total) :"
+msgstr "评级 (总和) :"
+
+#: src/muuli_wdr.cpp:1699
+msgid "Securehash :"
+msgstr "安全校检码 :"
+
+#: src/muuli_wdr.cpp:1702
+msgid "Uploadqueue score :"
+msgstr "上传队列分数 :"
+
+#: src/muuli_wdr.cpp:1750
+msgid "Nick"
+msgstr "昵称"
+
+#: src/muuli_wdr.cpp:1753
+msgid "Someone using aMule (http://amule.sourceforge.net)"
+msgstr "aMule 用户 (http://amule.sourceforge.net)"
+
+#: src/muuli_wdr.cpp:1758
+msgid "Language"
+msgstr "语言"
+
+#: src/muuli_wdr.cpp:1763
+msgid "System default"
+msgstr "系统默认"
+
+#: src/muuli_wdr.cpp:1764
+msgid "Basque"
+msgstr ""
+
+#: src/muuli_wdr.cpp:1765
+msgid "Bulgarian"
+msgstr "保加利亚语"
+
+#: src/muuli_wdr.cpp:1766
+msgid "Catalan"
+msgstr ""
+
+#: src/muuli_wdr.cpp:1767
+msgid "Dutch"
+msgstr "荷兰语"
+
+#: src/muuli_wdr.cpp:1768
+msgid "English"
+msgstr "英语"
+
+#: src/muuli_wdr.cpp:1769
+msgid "Estonian"
+msgstr ""
+
+#: src/muuli_wdr.cpp:1770
+msgid "French"
+msgstr "法语"
+
+#: src/muuli_wdr.cpp:1771
+msgid "Galego"
+msgstr ""
+
+#: src/muuli_wdr.cpp:1772
+msgid "German"
+msgstr "德语"
+
+#: src/muuli_wdr.cpp:1773
+msgid "German (Swiss)"
+msgstr "德语 (瑞士)"
+
+#: src/muuli_wdr.cpp:1774
+msgid "Italian"
+msgstr "意大利语"
+
+#: src/muuli_wdr.cpp:1775
+msgid "Korean"
+msgstr "韩语"
+
+#: src/muuli_wdr.cpp:1776
+msgid "Lithuanian"
+msgstr "立托尼亚语"
+
+#: src/muuli_wdr.cpp:1777
+msgid "Polish"
+msgstr "芬兰语"
+
+#: src/muuli_wdr.cpp:1778
+msgid "Portuguese"
+msgstr "葡萄牙语"
+
+#: src/muuli_wdr.cpp:1779
+msgid "Portuguese (Brazil)"
+msgstr "葡萄牙语 (巴西)"
+
+#: src/muuli_wdr.cpp:1780
+msgid "Russian"
+msgstr "俄语"
+
+#: src/muuli_wdr.cpp:1781
+msgid "Spanish"
+msgstr "西班牙语"
+
+#: src/muuli_wdr.cpp:1782
+msgid "Spanish (Chile)"
+msgstr "西班牙语 (智利)"
+
+#: src/muuli_wdr.cpp:1783
+msgid "Spanish (Mexico)"
+msgstr "西班牙语 (墨西哥)"
+
+#: src/muuli_wdr.cpp:1784
+msgid "Turkey"
+msgstr "土耳其语"
+
+#: src/muuli_wdr.cpp:1793
+msgid "Misc Options"
+msgstr "其它选项"
+
+#: src/muuli_wdr.cpp:1800
+msgid "Progressbar Style"
+msgstr "进程条风格"
+
+#: src/muuli_wdr.cpp:1817
+msgid "Flat"
+msgstr "平"
+
+#: src/muuli_wdr.cpp:1820
+msgid "Round"
+msgstr "圆弧"
+
+#: src/muuli_wdr.cpp:1831
+msgid "Beep on errors"
+msgstr "遇错误发出蜂鸣警报"
+
+#: src/muuli_wdr.cpp:1834
+msgid "Bring to front on link click"
+msgstr "鼠标点击链接是将程序移至前台"
+
+#: src/muuli_wdr.cpp:1838
+msgid "Downloadlist doubleclick to expand"
+msgstr "鼠标双击展开下载列表"
+
+#: src/muuli_wdr.cpp:1842
+msgid "Minimize to trayicon"
+msgstr "最小化到系统状态栏"
+
+#: src/muuli_wdr.cpp:1845
+msgid "Enable Online-Signature"
+msgstr "启用线上签名"
+
+#: src/muuli_wdr.cpp:1849
+msgid "Prompt on exit"
+msgstr "退出时确认"
+
+#: src/muuli_wdr.cpp:1855
+msgid "Tooltip Delay Time in secs (1s to 5s)"
+msgstr "工具提示延迟时间秒数 (1-5)"
+
+#: src/muuli_wdr.cpp:1863
+msgid "Systray Integration"
+msgstr "系统状态栏集成"
+
+#: src/muuli_wdr.cpp:1868
+msgid "Startup"
+msgstr "启动"
+
+#: src/muuli_wdr.cpp:1881
+msgid "5 Days"
+msgstr "5 天"
+
+#: src/muuli_wdr.cpp:1886
+msgid "Check for new version"
+msgstr "获取新版本信息"
+
+#: src/muuli_wdr.cpp:1896
+msgid "Show Splashscreen"
+msgstr "显示启动画面"
+
+#: src/muuli_wdr.cpp:1900
+msgid "Start minimized"
+msgstr "启动后最小化"
+
+#: src/muuli_wdr.cpp:1903
+msgid "Show Fast ED2K Links Handler"
+msgstr "显示快捷 ED2K 链接处理"
+
+#: src/muuli_wdr.cpp:1929
+msgid "Line Capacities"
+msgstr "连线容量"
+
+#: src/muuli_wdr.cpp:1936 src/muuli_wdr.cpp:1975 src/SearchListCtrl.cpp:128
+msgid "Download"
+msgstr "下载"
+
+#: src/muuli_wdr.cpp:1949 src/muuli_wdr.cpp:1988
+msgid "Upload"
+msgstr "上传"
+
+#: src/muuli_wdr.cpp:1968
+msgid "Bandwith Limits"
+msgstr "带宽限制"
+
+#: src/muuli_wdr.cpp:2001
+msgid "Slot Allocation"
+msgstr "空挡分派"
+
+#: src/muuli_wdr.cpp:2024
+msgid "Clientport"
+msgstr "用户端口"
+
+#: src/muuli_wdr.cpp:2031
+msgid "TCP"
+msgstr ""
+
+#: src/muuli_wdr.cpp:2041
+msgid "UDP"
+msgstr ""
+
+#: src/muuli_wdr.cpp:2051
+msgid "disable"
+msgstr "禁用"
+
+#: src/muuli_wdr.cpp:2064
+msgid "Max Sources per File"
+msgstr "单个文件最大源数"
+
+#: src/muuli_wdr.cpp:2071
+msgid "Hard Limit"
+msgstr "绝对上限"
+
+#: src/muuli_wdr.cpp:2083
+msgid "Connection Limits"
+msgstr "连接限制"
+
+#: src/muuli_wdr.cpp:2090
+msgid "Max Connections"
+msgstr "最大连接数"
+
+#: src/muuli_wdr.cpp:2109
+msgid "Autoconnect on startup"
+msgstr "启动后自动连接"
+
+#: src/muuli_wdr.cpp:2112
+msgid "Reconnect on loss"
+msgstr "断线后自动重接"
+
+#: src/muuli_wdr.cpp:2116
+msgid "Show overhead bandwith"
+msgstr "显示带宽浪费"
+
+#: src/muuli_wdr.cpp:2120
+msgid "Connection Wizard"
+msgstr "连接向导"
+
+#: src/muuli_wdr.cpp:2150
+msgid "Remove dead server after"
+msgstr "删除无法连接服务器如果"
+
+#: src/muuli_wdr.cpp:2157
+msgid "retries"
+msgstr "次连接失败"
+
+#: src/muuli_wdr.cpp:2164
+msgid "Auto-update serverlist at startup"
+msgstr "启动后自动更新服务器列表"
+
+#: src/muuli_wdr.cpp:2169
+msgid "List"
+msgstr "列表"
+
+#: src/muuli_wdr.cpp:2176
+msgid "Always filter bad IPs"
+msgstr "过滤无效 IP 地址"
+
+#: src/muuli_wdr.cpp:2180
+msgid "Update serverlist when connecting to a server"
+msgstr "与服务器连接时更新服务器列表"
+
+#: src/muuli_wdr.cpp:2184
+msgid "Update serverlist when a client connect"
+msgstr "与其它用户连接时更新服务器列表"
+
+#: src/muuli_wdr.cpp:2188
+msgid "Use priority system"
+msgstr "启用优先级系统"
+
+#: src/muuli_wdr.cpp:2192
+msgid "Use smart LowID check on connect"
+msgstr "连接时启用智能低ID检测"
+
+#: src/muuli_wdr.cpp:2196
+msgid "Safe connect"
+msgstr "安全连接"
+
+#: src/muuli_wdr.cpp:2199
+msgid "Autoconnect to servers in static list only"
+msgstr "只自动连接到静态服务器列表里的服务器"
+
+#: src/muuli_wdr.cpp:2202
+msgid "Set manually added servers to High Priority"
+msgstr "设置用户输入的服务器为高优先级"
+
+#: src/muuli_wdr.cpp:2226
+msgid "See my shares"
+msgstr "查询本地共享文件列表"
+
+#: src/muuli_wdr.cpp:2229
+msgid "Everybody"
+msgstr "任何人都可以"
+
+#: src/muuli_wdr.cpp:2235
+msgid "No One"
+msgstr "任何人都不可以"
+
+#: src/muuli_wdr.cpp:2244
+msgid "I.C.H. active"
+msgstr "I.C.H 已启用"
+
+#: src/muuli_wdr.cpp:2253
+msgid "Add files to download in pause mode"
+msgstr "添加新下载文件时设为暂停状态"
+
+#: src/muuli_wdr.cpp:2257
+msgid "Add files to download with auto priority"
+msgstr "添加新下载文件时设优先级为自动状态"
+
+#: src/muuli_wdr.cpp:2261
+msgid "Try to download first and last chunks first"
+msgstr "尝试先下载文件的第一段和最后一段"
+
+#: src/muuli_wdr.cpp:2265
+msgid "Add new shared files with auto priority"
+msgstr "添加新共享文件时设优先级为自动状态"
+
+#: src/muuli_wdr.cpp:2269
+msgid "Try to transfer full chunks to all uploads"
+msgstr "尝试传送完整数据段给所有用户"
+
+#: src/muuli_wdr.cpp:2273
+msgid "Start next paused file when a file completed"
+msgstr "文件下载完毕是开始下一个暂停的文件"
+
+#: src/muuli_wdr.cpp:2297
+msgid "Incoming Directory :"
+msgstr "接收文件夹 :"
+
+#: src/muuli_wdr.cpp:2305 src/muuli_wdr.cpp:2318 src/muuli_wdr.cpp:2346
+#: src/muuli_wdr.cpp:2461
+msgid "Browse"
+msgstr "浏览"
+
+#: src/muuli_wdr.cpp:2312
+msgid "Temporary Directory :"
+msgstr "临时文件夹"
+
+#: src/muuli_wdr.cpp:2323
+msgid "Shared Directories"
+msgstr "共享的文件夹"
+
+#: src/muuli_wdr.cpp:2336
+msgid "Video Player"
+msgstr "录像播放器"
+
+#: src/muuli_wdr.cpp:2343
+msgid "mplayer -idx"
+msgstr ""
+
+#: src/muuli_wdr.cpp:2353
+msgid "Create Backup to preview"
+msgstr "预览前备份文件"
+
+#: src/muuli_wdr.cpp:2376
+msgid "Graphs"
+msgstr "图表"
+
+#: src/muuli_wdr.cpp:2379 src/muuli_wdr.cpp:2424
+msgid "Update delay : 5 secs"
+msgstr "刷新延迟 : 5 秒"
+
+#: src/muuli_wdr.cpp:2385
+msgid "Time for average graph: 100 mins"
+msgstr "平均值图表显示时间: 100 分钟"
+
+#: src/muuli_wdr.cpp:2391 src/PPgStats.cpp:142
+msgid "Select Statistics Colors"
+msgstr "选择统计图表使用颜色"
+
+#: src/muuli_wdr.cpp:2398
+msgid "Background"
+msgstr "背景"
+
+#: src/muuli_wdr.cpp:2399
+msgid "Grid"
+msgstr "网格"
+
+#: src/muuli_wdr.cpp:2400
+msgid "Download current"
+msgstr "目前下载"
+
+#: src/muuli_wdr.cpp:2401
+msgid "Download running average"
+msgstr "动态平均下载"
+
+#: src/muuli_wdr.cpp:2402
+msgid "Download session average"
+msgstr "本次运行平均下载"
+
+#: src/muuli_wdr.cpp:2403
+msgid "Upload current"
+msgstr "目前上传"
+
+#: src/muuli_wdr.cpp:2404
+msgid "Upload running average"
+msgstr "动态平均上传"
+
+#: src/muuli_wdr.cpp:2405
+msgid "Upload session average"
+msgstr "本次运行平均上传"
+
+#: src/muuli_wdr.cpp:2406
+msgid "Active connections"
+msgstr "活跃连接"
+
+#: src/muuli_wdr.cpp:2409
+msgid "Systray Icon Speedbar"
+msgstr "系统状态栏图标速度显示"
+
+#: src/muuli_wdr.cpp:2414 src/muuli_wdr.cpp:3043
+msgid "Select"
+msgstr "选择"
+
+#: src/muuli_wdr.cpp:2421
+msgid "Statistics Tree"
+msgstr "统计树"
+
+#: src/muuli_wdr.cpp:2450
+msgid "Messages popup"
+msgstr "消息弹出"
+
+#: src/muuli_wdr.cpp:2453
+msgid "Use sound"
+msgstr "启用声音"
+
+#: src/muuli_wdr.cpp:2468
+msgid "Pop out when :"
+msgstr "以下情况弹出窗口 :"
+
+#: src/muuli_wdr.cpp:2471
+msgid "New entry on log"
+msgstr "日志中添加了新内容"
+
+#: src/muuli_wdr.cpp:2474
+msgid "Starts a new chat session"
+msgstr "开始新的短消息对话"
+
+#: src/muuli_wdr.cpp:2477
+msgid "A new chat message is received"
+msgstr "收到新短消息"
+
+#: src/muuli_wdr.cpp:2480
+msgid "A download is added or finished"
+msgstr "添加或完成了下载文件"
+
+#: src/muuli_wdr.cpp:2483
+msgid "New aMule version detected"
+msgstr "发现新 aMule 版本"
+
+#: src/muuli_wdr.cpp:2486
+#, fuzzy
+msgid "Urgent OOD, serverconnection lost"
+msgstr ""
+
+#: src/muuli_wdr.cpp:2494
+msgid "Notify by Mail"
+msgstr "邮件通知"
+
+#: src/muuli_wdr.cpp:2497
+msgid "Send an Email when transfer complete."
+msgstr "下载完成后用电子邮件通知"
+
+#: src/muuli_wdr.cpp:2503
+msgid "SMTP server :"
+msgstr "电邮服务器 :"
+
+#: src/muuli_wdr.cpp:2509
+msgid "Email Address :"
+msgstr "电邮地址 :"
+
+#: src/muuli_wdr.cpp:2537
+msgid "aMule Tweaks Advertisements && Parameters"
+msgstr "aMule 特殊设置"
+
+#: src/muuli_wdr.cpp:2543
+msgid "!!! WARNING !!!"
+msgstr ""
+
+#: src/muuli_wdr.cpp:2552
+msgid ""
+"Do not change these setting unless you know\n"
+"what you are doing, otherwise you can easily\n"
+"make things worse for yourself.\n"
+"\n"
+"aMule will run fine without adjusting any of\n"
+"these settings."
+msgstr ""
+"注意：如果你不清楚以下设置的含义请不要随意更改，\n"
+"否则你可能弄巧成拙。即使不改动这些设置，aMule\n"
+"也完全可以正常运行。"
+
+#: src/muuli_wdr.cpp:2564
+msgid "Max new connections / 5 secs"
+msgstr "5 秒内最大新连接数"
+
+#: src/muuli_wdr.cpp:2570
+msgid "Verbose (additional program feedback)"
+msgstr "显示详细信息"
+
+#: src/muuli_wdr.cpp:2573
+msgid "Autotake ED2K Links only during runtime"
+msgstr "只有正在运行时才处理 ED2K 链接"
+
+#: src/muuli_wdr.cpp:2577
+msgid "Show transfer rates on title"
+msgstr "标题栏显示传送速度"
+
+#: src/muuli_wdr.cpp:2581
+msgid "File Buffer Size: 240000 bytes"
+msgstr "文件缓冲: 24000 bytes"
+
+#: src/muuli_wdr.cpp:2587
+msgid "Upload Queue Size: 5000 clients"
+msgstr "上传队列长度: 5000 用户"
+
+#: src/muuli_wdr.cpp:2593
+msgid "Server connection refresh interval: Disable"
+msgstr "服务器连接刷新周期: 禁用"
+
+#: src/muuli_wdr.cpp:2599
+msgid "Upload/Download list refresh when updated"
+msgstr "上传/下载列表在有数据更动时刷新"
+
+#: src/muuli_wdr.cpp:2603 src/PPgTweaks.cpp:194
+msgid "Upload/Download list refresh time: Realtime"
+msgstr "上传/下载列表更新周期: 实时"
+
+#: src/muuli_wdr.cpp:2629
+msgid "Arrange Downloads"
+msgstr "排列下载文件"
+
+#: src/muuli_wdr.cpp:2632
+msgid "Enable auto-arranging download list "
+msgstr "启用自动排列下载文件列表"
+
+#: src/muuli_wdr.cpp:2635
+msgid "Download speed"
+msgstr "下载速度"
+
+#: src/muuli_wdr.cpp:2638
+msgid "Number of sources"
+msgstr "源的数量"
+
+#: src/muuli_wdr.cpp:2646
+msgid "GTK Theme Selector"
+msgstr "GTK 主题选择"
+
+#: src/muuli_wdr.cpp:2653
+msgid "Theme :"
+msgstr "主题 :"
+
+#: src/muuli_wdr.cpp:2664
+msgid "Use Font "
+msgstr "使用字体 "
+
+#: src/muuli_wdr.cpp:2672
+msgid "Font"
+msgstr "字体"
+
+#: src/muuli_wdr.cpp:2707
+msgid "No Needed Sources Handling"
+msgstr "无可供下载数据断的源的处理"
+
+#: src/muuli_wdr.cpp:2710
+msgid "Enable auto drop No Needed Sources"
+msgstr "启用自动清除无可供下载数据断的源"
+
+#: src/muuli_wdr.cpp:2716
+msgid "Extended Dropping"
+msgstr "拓展无用源清除"
+
+#: src/muuli_wdr.cpp:2719
+#fuzzy
+msgid "Drop sources anyway"
+msgstr "无条件清除无用源"
+
+#: src/muuli_wdr.cpp:2723
+msgid "Send sources to any other file before dropping (High CPU)"
+msgstr "清除无用源前把源分配到其它下载文件 (大CPU用量)"
+
+#: src/muuli_wdr.cpp:2728
+msgid "Full Queue Sources Handling"
+msgstr "队列已满的源的处理"
+
+#: src/muuli_wdr.cpp:2731
+msgid "Enable auto drop Full Queue Sources"
+msgstr "启用自动清除队列已满的源"
+
+#: src/muuli_wdr.cpp:2737
+msgid "High Queue Rating Sources Handling"
+msgstr "队列过长的源的处理"
+
+#: src/muuli_wdr.cpp:2740
+msgid "Enable auto drop High Queue Rating Sources"
+msgstr "启用自动清除队列过长的源"
+
+#: src/muuli_wdr.cpp:2746
+msgid "High Queue Rating value"
+msgstr "队列长度"
+
+#: src/muuli_wdr.cpp:2752
+msgid "(Min 300 / Max 3000)"
+msgstr "(最低 300 / 最高 3000)"
+
+#: src/muuli_wdr.cpp:2759
+msgid "Auto Drop Sources Timer"
+msgstr "自动源清楚计时"
+
+#: src/muuli_wdr.cpp:2764
+msgid "Timer (in secs)"
+msgstr "计时 (秒)"
+
+#: src/muuli_wdr.cpp:2770
+msgid "(Min 60 / 3600 Max)"
+msgstr "(最低 60 / 最高 3600)"
+
+#: src/muuli_wdr.cpp:2795
+msgid "Webserver Parameters"
+msgstr "HTTP服务器参数"
+
+#: src/muuli_wdr.cpp:2798
+msgid "Enable Webserver"
+msgstr "启用HTTP服务器"
+
+#: src/muuli_wdr.cpp:2803
+msgid "Webserver port"
+msgstr "HTTP服务器端口"
+
+#: src/muuli_wdr.cpp:2813
+msgid "Page Refresh Time (in secs)"
+msgstr "页刷新周期 (秒)"
+
+#: src/muuli_wdr.cpp:2821
+msgid "Enable Gzip compression"
+msgstr "启用 Gzip 压缩"
+
+#: src/muuli_wdr.cpp:2825
+msgid "Enable Low rights User"
+msgstr "启用低权限用户"
+
+#: src/muuli_wdr.cpp:2831
+msgid "Full rights password"
+msgstr "绝对权限用户"
+
+#: src/muuli_wdr.cpp:2837
+msgid "Low rights password"
+msgstr "低权限用户密码"
+
+#: src/muuli_wdr.cpp:2847
+msgid "External Connection Parameters"
+msgstr "外部连接参数"
+
+#: src/muuli_wdr.cpp:2850
+msgid "Accept external connections"
+msgstr "接收外部连接"
+
+#: src/muuli_wdr.cpp:2853
+msgid "Use TCP ports instead of unix local sockets"
+msgstr "使用TCP端口而不是Unix的本地接口"
+
+#: src/muuli_wdr.cpp:2858
+msgid "External TCP port"
+msgstr "外部TCP端口"
+
+#: src/muuli_wdr.cpp:2868
+msgid "Enable password"
+msgstr "启用密码"
+
+#: src/muuli_wdr.cpp:2905 src/muuli_wdr.cpp:3329 src/PPgConnection.cpp:47
+#: src/StatisticsDlg.cpp:625 src/Wizard.cpp:235
+msgid "Connection"
+msgstr "连接"
+
+#: src/muuli_wdr.cpp:2909 src/muuli_wdr.cpp:3333
+msgid "Remote Controls"
+msgstr "远程控制"
+
+#: src/muuli_wdr.cpp:2913 src/muuli_wdr.cpp:3337 src/PPgServer.cpp:43
+#: src/ServerListCtrl.cpp:90 src/ServerSocket.cpp:204 src/ServerSocket.cpp:215
+msgid "Server"
+msgstr "服务器"
+
+#: src/muuli_wdr.cpp:2921 src/muuli_wdr.cpp:3345 src/PPgSourcesDropping.cpp:40
+msgid "Sources Dropping"
+msgstr "源的精简"
+
+#: src/muuli_wdr.cpp:2925 src/muuli_wdr.cpp:3349 src/PPgDirectories.cpp:46
+msgid "Directories"
+msgstr "目录"
+
+#: src/muuli_wdr.cpp:2933 src/muuli_wdr.cpp:3357 src/PPgNotify.cpp:33
+msgid "Notify"
+msgstr "通知"
+
+#: src/muuli_wdr.cpp:2937 src/muuli_wdr.cpp:3361
+msgid "aMule Tweaks"
+msgstr "aMule 特殊设置"
+
+#: src/muuli_wdr.cpp:2941 src/muuli_wdr.cpp:3365
+msgid "Gui Tweaks"
+msgstr "用户界面特殊设置"
+
+#: src/muuli_wdr.cpp:2980
+msgid "Title :"
+msgstr "标题 :"
+
+#: src/muuli_wdr.cpp:3000
+msgid "Incoming Dir :"
+msgstr "接收文件夹"
+
+#: src/muuli_wdr.cpp:3006
+msgid "..."
+msgstr ""
+
+#: src/muuli_wdr.cpp:3013
+msgid "Change priority for new assigned files :"
+msgstr "设置新加入的文件优先级为 :"
+
+#: src/muuli_wdr.cpp:3018
+msgid "Dont change"
+msgstr "不要改变"
+
+#: src/muuli_wdr.cpp:3032
+msgid "Select color for this Category (currently selected) :"
+msgstr "选择该类别颜色 (当前选择) :"
+
+#: src/muuli_wdr.cpp:3097
+msgid "Clients on queue :"
+msgstr "队列长度 :"
+
+#: src/muuli_wdr.cpp:3100
+msgid "0"
+msgstr ""
+
+#: src/muuli_wdr.cpp:3132
+msgid "Display server motd when connected ..."
+msgstr "连接后显示服务器当日通告"
+
+#: src/muuli_wdr.cpp:3135 src/muuli_wdr.cpp:3296
+msgid "Server Info"
+msgstr "服务器信息"
+
+#: src/muuli_wdr.cpp:3170 src/muuli_wdr.cpp:3292
+msgid "aMule Log"
+msgstr "aMule 日志"
+
+#: src/muuli_wdr.cpp:3222
+msgid "Click on this button to update the servers list from URL ..."
+msgstr "按此按钮从该网址更新服务器列表 ..."
+
+#: src/muuli_wdr.cpp:3226
+msgid "Serverlist"
+msgstr "服务器列表"
+
+#: src/muuli_wdr.cpp:3230
+msgid ""
+"http://ocbmaurice.dyndns.org/pl/slist.pl/server.met?download/server-good.met"
+msgstr ""
+
+#: src/muuli_wdr.cpp:3237
+msgid "Manual Server Add : Name"
+msgstr "添加服务器: 名称"
+
+#: src/muuli_wdr.cpp:3243
+msgid "IP:Port"
+msgstr "IP地址:端口"
+
+#: src/muuli_wdr.cpp:3249
+msgid ":"
+msgstr ""
+
+#: src/muuli_wdr.cpp:3256
+#fuzzy
+msgid "Add manually a server (fill fields to the left before) ..."
+msgstr "手工加入新服务器 (添入左侧空格) ..."
+
+#: src/muuli_wdr.cpp:3405 src/StatisticsDlg.cpp:662
+msgid "Servers"
+msgstr "服务器"
+
+#: src/muuli_wdr.cpp:3405
+msgid "Servers List Window"
+msgstr "服务器列表窗口"
+
+#: src/muuli_wdr.cpp:3406
+msgid "Searches"
+msgstr "搜索"
+
+#: src/muuli_wdr.cpp:3406
+msgid "Searches Window"
+msgstr "搜索窗口"
+
+#: src/muuli_wdr.cpp:3407
+msgid "Transfers"
+msgstr "传输文件"
+
+#: src/muuli_wdr.cpp:3407
+msgid "Files Transfers Window"
+msgstr "文件传送窗口"
+
+#: src/muuli_wdr.cpp:3408
+msgid "SharedFiles"
+msgstr "共享文件"
+
+#: src/muuli_wdr.cpp:3408
+msgid "Shared Files Window"
+msgstr "共享文件窗口"
+
+#: src/muuli_wdr.cpp:3409
+msgid "Messages Window"
+msgstr "消息窗口"
+
+#: src/muuli_wdr.cpp:3410
+msgid "Statistics Graph Window"
+msgstr "统计图像窗口"
+
+#: src/muuli_wdr.cpp:3412 src/PreferencesDlg.cpp:48
+msgid "Preferences"
+msgstr "设置"
+
+#: src/muuli_wdr.cpp:3412
+msgid "Preferences Settings Window"
+msgstr "设置窗口"
+
+#: src/muuli_wdr.cpp:3414
+msgid "New Prefs"
+msgstr "新设置"
+
+#: src/muuli_wdr.cpp:3414
+msgid "News Preferences Work in Progress"
+msgstr "新设置 (开发中)"
+
+#: src/OScopeCtrl.cpp:270
+#, c-format
+msgid "Disabled [%s]"
+msgstr "已禁用 [%s]"
+
+#: src/otherfunctions.cpp:75 src/PartFile.cpp:3230
+msgid "Bytes"
+msgstr ""
+
+#: src/otherfunctions.cpp:77
+msgid "KB"
+msgstr ""
+
+#: src/otherfunctions.cpp:79
+msgid "MB"
+msgstr ""
+
+#: src/otherfunctions.cpp:81
+msgid "GB"
+msgstr ""
+
+#: src/otherfunctions.cpp:83
+msgid "TB"
+msgstr ""
+
+#: src/otherfunctions.cpp:92
+msgid "K"
+msgstr ""
+
+#: src/otherfunctions.cpp:94
+msgid "M"
+msgstr ""
+
+#: src/otherfunctions.cpp:96
+msgid "G"
+msgstr ""
+
+#: src/otherfunctions.cpp:98
+msgid "T"
+msgstr ""
+
+#: src/otherfunctions.cpp:107
+msgid "secs"
+msgstr ""
+
+#: src/otherfunctions.cpp:109
+msgid "mins"
+msgstr ""
+
+#: src/otherfunctions.cpp:111 src/otherfunctions.cpp:113
+msgid "h"
+msgstr ""
+
+#: src/otherfunctions.cpp:113
+msgid "D"
+msgstr ""
+
+#: src/otherfunctions.cpp:544 src/TransferWnd.cpp:156
+msgid "all"
+msgstr "所有"
+
+#: src/otherfunctions.cpp:545 src/TransferWnd.cpp:157
+msgid "all others"
+msgstr "其它"
+
+#: src/otherfunctions.cpp:546 src/TransferWnd.cpp:159
+msgid "Incomplete"
+msgstr "未完成"
+
+#: src/otherfunctions.cpp:548 src/PartFile.cpp:2470 src/TransferWnd.cpp:161
+msgid "Waiting"
+msgstr "等待中"
+
+#: src/otherfunctions.cpp:549 src/PartFile.cpp:2468 src/TransferWnd.cpp:162
+msgid "Downloading"
+msgstr "正在下载"
+
+#: src/otherfunctions.cpp:550 src/PartFile.cpp:2487 src/TransferWnd.cpp:163
+msgid "Erroneous"
+msgstr "已出错"
+
+#: src/otherfunctions.cpp:551 src/PartFile.cpp:2484 src/TransferWnd.cpp:164
+msgid "Paused"
+msgstr "已暂停"
+
+#: src/otherfunctions.cpp:552 src/PartFile.cpp:2491 src/TransferWnd.cpp:165
+msgid "Stopped"
+msgstr "已停止"
+
+#: src/otherfunctions.cpp:553 src/SearchDlg.cpp:388 src/TransferWnd.cpp:167
+msgid "Video"
+msgstr "视频"
+
+#: src/otherfunctions.cpp:555 src/TransferWnd.cpp:169
+msgid "Archive"
+msgstr "归档"
+
+#: src/otherfunctions.cpp:558 src/TransferWnd.cpp:172
+msgid "Text"
+msgstr "文本"
+
+#: src/otherfunctions.cpp:560
+msgid "?"
+msgstr ""
+
+#: src/PartFile.cpp:391 src/PartFile.cpp:397
+#fuzzy
+msgid "ERROR: Failed to create partfile)"
+msgstr "错误: 无法建立 part 文件"
+
+#: src/PartFile.cpp:427
+#, c-format
+msgid "Error: Failed to open part.met file! (%s => %s)"
+msgstr "错误: 无法读取 part.met 文件 (%s => %s)"
+
+#: src/PartFile.cpp:434
+#, c-format
+msgid "Error: Invalid part.met fileversion! (%s => %s)"
+msgstr "错误: 无效 part.met 文件 (%s => %s)"
+
+#: src/PartFile.cpp:457
+#, c-format
+msgid "Error: %s (%s) is corrupt"
+msgstr "错误: %s (%s) 已损坏"
+
+#: src/PartFile.cpp:594
+#, c-format
+msgid "Failed to open %s (%s)"
+msgstr "无法读取 %s (%s)"
+
+#: src/PartFile.cpp:628
+#, c-format
+msgid "Warning: %s might be corrupted"
+msgstr "警告: %s 可能已损坏"
+
+#: src/PartFile.cpp:674 src/PartFile.cpp:791 src/PartFile.cpp:797
+#, c-format
+msgid "ERROR while saving partfile: %s (%s => %s)"
+msgstr "part 文件存盘是发生错误: %s (%s => %s)"
+
+#: src/PartFile.cpp:674
+msgid ".part file not found"
+msgstr "找不到 .part 文件"
+
+#: src/PartFile.cpp:804
+#, c-format
+msgid "Unable to open %s file - using .bak file.\n"
+msgstr "无法读取文件 %s - 用 .bak 文件替代.\n"
+
+#: src/PartFile.cpp:812
+#, c-format
+msgid ""
+"%s file is 0 size somehow - using .bak file.\n"
+" Please report on http://forum.amule.org\n"
+msgstr ""
+"%s 文件长度为零 - 用 .bak 文件替代\n"
+"请到我们的论坛汇报这个bug (http://forum.amule.org)\n"
+
+#: src/PartFile.cpp:839
+#, c-format
+msgid "Found corrupted part (%i) in %s"
+msgstr "发现损坏数据段 (%i) - 文件 %s"
+
+#: src/PartFile.cpp:851
+#, c-format
+msgid "Finished rehashing %s"
+msgstr "完成了校检码生成 %s"
+
+#: src/PartFile.cpp:2078
+#, c-format
+msgid "Unexpected file error while completing %s. File paused"
+msgstr "在完成文件 %s 时遇到意外性文件错误. 文件已暂停"
+
+#: src/PartFile.cpp:2093 src/PartFile.cpp:2100 src/PartFile.cpp:2211
+#: src/PartFile.cpp:2219 src/PartFile.cpp:2227
+#, c-format
+msgid "Failed to delete %s"
+msgstr "无法删除 %s"
+
+#: src/PartFile.cpp:2111
+#, c-format
+msgid "Finished downloading %s :-)"
+msgstr "完成下载 %s :-)"
+
+#: src/PartFile.cpp:2112
+msgid "Downloaded:"
+msgstr "已下载:"
+
+#: src/PartFile.cpp:2116
+#, c-format
+msgid "A file with that name already exists, the file has been saved as %s"
+msgstr "文件名已存在, 文件已另存为 %s"
+
+#: src/PartFile.cpp:2239
+#, c-format
+msgid "Warning: Unable to hash downloaded part - hashset incomplete (%s)"
+msgstr "警告: 无法生成校检码 - 校检码残缺 (%s)"
+
+#: src/PartFile.cpp:2243
+#, c-format
+msgid ""
+"Error: Unable to hash downloaded part - hashset incomplete (%s). This should "
+"never happen"
+msgstr ""
+"警告: 无法生成校检码 - 校检码残缺 (%s). 正常情况下这是不应该发生的"
+
+#: src/PartFile.cpp:2475
+msgid "Hashing"
+msgstr "正在生成校检码"
+
+#: src/PartFile.cpp:2478
+msgid "Completing"
+msgstr "正在完成"
+
+#: src/PartFile.cpp:2481
+msgid "Complete"
+msgstr "完成"
+
+#: src/PartFile.cpp:2902
+msgid "ERROR: Cannot write to disk"
+msgstr "错误: 无法写入硬盘"
+
+#: src/PartFile.cpp:2978
+#, c-format
+msgid "Downloaded part %i is corrupt :(  (%s)"
+msgstr "下载的数据段 %i 已损坏 :( (%s)"
+
+#: src/PartFile.cpp:3000
+#, c-format
+msgid "ICH: Recovered corrupted part %i  (%s)"
+msgstr "ICH: 修复了损坏的数据段 %i (%s)"
+
+#: src/PartFile.cpp:3050
+#, c-format
+msgid "Unexpected file error while writing %s : %s"
+msgstr "些入文件 %s 时发生意外错误 : %s"
+
+#: src/PartFile.cpp:3228
+#, c-format
+msgid ""
+"Partfilename: %s\n"
+"Parts: %d , %s: %d (%.1f%%)\n"
+msgstr ""
+"Part 文件名: %s\n"
+"数据段: %d , %s: %d (%.1f%%)\n"
+
+#: src/PartFile.cpp:3229
+#, c-format
+msgid "%d%% done (%s) - Transferring from %d sources"
+msgstr "%d%% 已完成 (%s) - 下载源 %d"
+
+#: src/PartFile.cpp:3231
+msgid "Available"
+msgstr "可用"
+
+#: src/PartFile.cpp:3233
+msgid "Last Seen Complete :"
+msgstr "最后一次发现完整源 :"
+
+#: src/PartFile.cpp:3233
+msgid "Last Reception:"
+msgstr "最后一次下载:"
+
+#: src/PPgDirectories.cpp:106
+msgid "Browse for videoplayer"
+msgstr "浏览寻找录像播放器"
+
+#: src/PPgDirectories.cpp:106
+msgid "Executable (*)|*||"
+msgstr "可执行文件 (*)|*||"
+
+#: src/PPgGeneral.cpp:173
+msgid "Language change will not be applied until aMule is restarted."
+msgstr "语言设置更动在重新启动 aMule 后才会生效"
+
+#: src/PPgNotify.cpp:125
+#fuzzy
+msgid "Browse wav"
+msgstr "浏览 wav 文件"
+
+#: src/PPgNotify.cpp:125
+#fuzzy
+msgid "File wav (*.wav)|*.wav||"
+msgstr "文件 wav (*.wav)|*.wav||"
+
+#: src/PPgServer.cpp:169
+msgid "Edit Serverlist"
+msgstr "编辑服务器列表"
+
+#: src/PPgServer.cpp:170
+msgid ""
+"Add here URL's to download server.met files.\n"
+"Only one url on each line."
+msgstr ""
+"加入下载 server.met 文件的网址.\n"
+"每行只限一个网址."
+
+#: src/PPgStats.cpp:151 src/PPgStats.cpp:177
+msgid "Update: Disabled"
+msgstr "刷新: 已禁用"
+
+#: src/PPgStats.cpp:154 src/PPgStats.cpp:180
+#, c-format
+msgid "Update period: %i sec"
+msgstr "刷新周期: %i 秒"
+
+#: src/PPgStats.cpp:157 src/PPgStats.cpp:183
+#, c-format
+msgid "Update period: %i secs"
+msgstr "刷新周期: %i 秒"
+
+#: src/PPgStats.cpp:167
+#, c-format
+msgid "Time for running averages: %i mins"
+msgstr "动态平均统计时间范围: %i 分钟"
+
+#: src/PPgTweaks.cpp:47
+msgid "Tweaks"
+msgstr "特殊设置"
+
+#: src/PPgTweaks.cpp:171
+#, c-format
+msgid "File Buffer Size %i bytes"
+msgstr "文件缓冲区大小: %i bytes"
+
+#: src/PPgTweaks.cpp:175
+#, c-format
+msgid "Upload Queue Size %i clients"
+msgstr "上传队列长度: %i 个用户"
+
+#: src/PPgTweaks.cpp:180
+msgid "Server connection refresh interval: Disabled"
+msgstr "服务器连接刷新周期: 已禁用"
+
+#: src/PPgTweaks.cpp:182
+#, c-format
+msgid "Server connection refresh interval %i min"
+msgstr "服务器连接刷新周期: %i 分钟"
+
+#: src/PPgTweaks.cpp:185
+#, c-format
+msgid "Server connection refresh interval %i mins"
+msgstr "服务器连接刷新周期: %i 分钟"
+
+#: src/PPgTweaks.cpp:191
+msgid "Upload/Download list refresh time: Disable"
+msgstr "上传/下载列表刷新周期: 已禁用"
+
+#: src/PPgTweaks.cpp:196
+#, c-format
+msgid "Upload/Download list refresh time: %i sec"
+msgstr "上传/下载列表刷新周期: %i 秒"
+
+#: src/PPgTweaks.cpp:199
+#, c-format
+msgid "Upload/Download list refresh time: %i secs"
+msgstr "上传/下载列表刷新周期: %i 秒"
+
+#: src/QueueListCtrl.cpp:102 src/QueueListCtrl.cpp:124
+#: src/QueueListCtrl.cpp:201 src/SearchListCtrl.cpp:127
+#: src/UploadListCtrl.cpp:87
+msgid "File"
+msgstr "文件"
+
+#: src/QueueListCtrl.cpp:103 src/QueueListCtrl.cpp:125
+#: src/QueueListCtrl.cpp:206
+msgid "File Priority"
+msgstr "文件优先级"
+
+#: src/QueueListCtrl.cpp:105 src/QueueListCtrl.cpp:127
+#: src/QueueListCtrl.cpp:216
+msgid "Score"
+msgstr "分数"
+
+#: src/QueueListCtrl.cpp:106 src/QueueListCtrl.cpp:128
+#: src/QueueListCtrl.cpp:221
+msgid "Asked"
+msgstr "已请求"
+
+#: src/QueueListCtrl.cpp:107 src/QueueListCtrl.cpp:129
+#: src/QueueListCtrl.cpp:226
+msgid "Last Seen"
+msgstr "最后连接"
+
+#: src/QueueListCtrl.cpp:108 src/QueueListCtrl.cpp:130
+#: src/QueueListCtrl.cpp:231
+msgid "Entered Queue"
+msgstr "进入队列"
+
+#: src/QueueListCtrl.cpp:109 src/QueueListCtrl.cpp:131
+#: src/QueueListCtrl.cpp:236 src/TransferWnd.cpp:101
+msgid "Banned"
+msgstr "封杀"
+
+#: src/QueueListCtrl.cpp:110 src/SharedFilesCtrl.cpp:87
+#: src/UploadListCtrl.cpp:93
+msgid "Obtained Parts"
+msgstr "已下载数据段"
+
+#: src/QueueListCtrl.cpp:141 src/QueueListCtrl.cpp:175
+#: src/StatisticsDlg.cpp:638 src/UploadListCtrl.cpp:146
+msgid "Clients"
+msgstr "客户"
+
+#: src/QueueListCtrl.cpp:143 src/QueueListCtrl.cpp:178
+msgid "Unban"
+msgstr "取消封杀"
+
+#: src/QueueListCtrl.cpp:146 src/QueueListCtrl.cpp:181
+msgid "Show Uploads"
+msgstr "显示上传"
+
+#: src/QueueListCtrl.cpp:401 src/SharedFilesCtrl.cpp:112
+#: src/SharedFilesCtrl.cpp:202 src/SharedFilesCtrl.cpp:437
+msgid "PowerShare[Release]"
+msgstr "发布"
+
+#: src/QueueListCtrl.cpp:404 src/SharedFilesCtrl.cpp:111
+#: src/SharedFilesCtrl.cpp:198 src/SharedFilesCtrl.cpp:424
+msgid "Very High"
+msgstr "极高"
+
+#: src/QueueListCtrl.cpp:413 src/SharedFilesCtrl.cpp:107
+#: src/SharedFilesCtrl.cpp:182 src/SharedFilesCtrl.cpp:372
+msgid "Very low"
+msgstr "极低"
+
+#: src/QueueListCtrl.cpp:431
+msgid "LowID"
+msgstr "低ID"
+
+#: src/QueueListCtrl.cpp:449 src/ServerListCtrl.cpp:360
+msgid "Yes"
+msgstr "是"
+
+#: src/QueueListCtrl.cpp:451 src/ServerListCtrl.cpp:362
+msgid "No"
+msgstr "无"
+
+#: src/SearchListCtrl.cpp:71 src/SharedFilesCtrl.cpp:83
+msgid "FileID"
+msgstr "文件编号"
+
+#: src/SearchListCtrl.cpp:129
+msgid "Copy ED2k link to clipboard"
+msgstr "拷贝 ED2K 链接到剪贴板"
+
+#: src/SearchListCtrl.cpp:130
+msgid "Copy ED2k link to clipboard (HTML)"
+msgstr "拷贝 ED2K 链接到剪贴板 (HTML)"
+
+#: src/SearchListCtrl.cpp:136
+msgid "Close this search result"
+msgstr "关闭该搜索结果"
+
+#: src/server.cpp:328
+#, c-format
+msgid "Description: %s"
+msgstr "信息: %s"
+
+#: src/server.cpp:331 src/ServerListCtrl.cpp:215 src/ServerWnd.cpp:171
+msgid "IP"
+msgstr ""
+
+#: src/server.cpp:333 src/ServerWnd.cpp:171
+msgid "Port"
+msgstr "端口"
+
+#: src/server.cpp:336 src/ServerListCtrl.cpp:217
+msgid "Ping"
+msgstr ""
+
+#: src/server.cpp:340
+#, c-format
+msgid "User: %i"
+msgstr "用户: %i"
+
+#: src/ServerList.cpp:68
+msgid ""
+"No serverlist address entry in 'addresses.dat' found. Please paste a valid "
+"serverlist address into this file in order to auto-update your serverlist"
+msgstr ""
+"'addresses.dat' 文件内没有服务器列表地址. 请粘贴"
+"一个有效服务器列表地址到该文件以自动更新服务器列表."
+
+#: src/ServerList.cpp:68
+msgid "Unable to retrieve serverlist"
+msgstr "无法取得服务器列表"
+
+#: src/ServerList.cpp:90 src/ServerWnd.cpp:92
+#, c-format
+msgid "Failed to download the serverlist from %s"
+msgstr "无法从 %s 下载服务器列表"
+
+#: src/ServerList.cpp:134 src/ServerList.cpp:139
+msgid "Failed to load server.met!"
+msgstr "无法载入 server.met!"
+
+#: src/ServerList.cpp:145
+#, c-format
+msgid "Invalid versiontag in server.met (0x%X)!"
+msgstr "server.met 中的版本标签无效 (0x%X)!"
+
+#: src/ServerList.cpp:196
+#, c-format
+msgid "%i servers in server.met found"
+msgstr "server.met 中有 %i 个服务器"
+
+#: src/ServerList.cpp:198
+#, c-format
+msgid "%d servers added"
+msgstr "%d 新增添的服务器"
+
+#: src/ServerList.cpp:202
+msgid "Error: the file server.met is corrupted"
+msgstr "错误: server.met 文件已损坏"
+
+#: src/ServerList.cpp:506 src/ServerWnd.cpp:136
+msgid "Server added: "
+msgstr "增添服务器: "
+
+#: src/ServerList.cpp:742
+msgid "Failed to save server.met!"
+msgstr "无法存盘 server.met"
+
+#: src/ServerListCtrl.cpp:96
+msgid "Connect to this server"
+msgstr "连接到该服务器"
+
+#: src/ServerListCtrl.cpp:98
+msgid "Add to static"
+msgstr "加入静态列表"
+
+#: src/ServerListCtrl.cpp:99
+msgid "Remove from static server list"
+msgstr "从静态列表中删除"
+
+#: src/ServerListCtrl.cpp:103
+msgid "Remove server"
+msgstr "删除服务器"
+
+#: src/ServerListCtrl.cpp:104
+msgid "Remove all servers"
+msgstr "删除所有服务器"
+
+#: src/ServerListCtrl.cpp:214
+msgid "Server Name"
+msgstr "服务器名称"
+
+#: src/ServerListCtrl.cpp:216
+msgid "Description"
+msgstr "描述"
+
+#: src/ServerListCtrl.cpp:220
+msgid "Preference"
+msgstr "设置"
+
+#: src/ServerListCtrl.cpp:222
+msgid "Static"
+msgstr "静态"
+
+#: src/ServerListCtrl.cpp:351
+msgid "No Pref"
+msgstr "无设置"
+
+#: src/ServerListCtrl.cpp:663 src/ServerListCtrl.cpp:701
+msgid "Failed to open staticservers.dat"
+msgstr "无法打开文件 staticservers.dat"
+
+#: src/ServerListCtrl.cpp:672
+msgid "Added to static server list"
+msgstr "已加入静态文件列表"
+
+#: src/ServerListCtrl.cpp:743
+#, c-format
+msgid "Servers (%i)"
+msgstr "服务器 (%i)"
+
+#: src/ServerSocket.cpp:307
+#, c-format
+msgid "New clientid is %u"
+msgstr "新用户 %u"
+
+#: src/ServerSocket.cpp:378
+msgid "Unknown server info received !"
+msgstr "收到未知服务器信息 !"
+
+#: src/ServerSocket.cpp:443
+#, c-format
+msgid "Received %d new servers"
+msgstr "收到 %d 个新服务器"
+
+#: src/ServerSocket.cpp:480
+msgid "Server rejected last command"
+msgstr "服务器拒绝了上一个明令"
+
+#: src/ServerSocket.cpp:501
+#, c-format
+msgid "Connecting to %s (%s:%i)..."
+msgstr "正在连接 %s (%s:%i)..."
+
+#: src/ServerSocket.cpp:512
+#, c-format
+msgid "Error while connecting to %s (%s:%i): %d"
+msgstr "连接中发生错误 %s (%s:%i): %d"
+
+#: src/ServerSocket.cpp:525
+#, c-format
+msgid "Error in serversocket: %s (%s:%i): %u"
+msgstr "服务器接口错误: %s (%s:%i): %u"
+
+#: src/ServerWnd.cpp:67
+msgid "This is "
+msgstr "这是 "
+
+#: src/ServerWnd.cpp:67
+msgid " (based on "
+msgstr "(基于 "
+
+#: src/ServerWnd.cpp:68
+msgid "Visit http://www.amule.org to check if a new version is available.\n"
+msgstr "请访问 http://www.amule.org 以下载最新版本\n"
+
+#: src/ServerWnd.cpp:78
+msgid "Invalid URL"
+msgstr "无效 URL"
+
+#: src/ServerWnd.cpp:107
+msgid "Please enter a serveraddress"
+msgstr "请输入服务器地址"
+
+#: src/ServerWnd.cpp:113
+msgid "Incomplete serverport: Please enter a serverport"
+msgstr "服务器端口不完整: 请输入服务器端口"
+
+#: src/ServerWnd.cpp:134
+msgid "Server not added!"
+msgstr "没有记录服务器!"
+
+#: src/ServerWnd.cpp:184
+msgid "ID"
+msgstr ""
+
+#: src/ServerWnd.cpp:191
+msgid "Low ID"
+msgstr "低 ID"
+
+#: src/ServerWnd.cpp:193
+msgid "High ID"
+msgstr "高 ID"
+
+#: src/SharedFileList.cpp:86 src/SharedFileList.cpp:88
+#, c-format
+msgid "Found %i known shared files"
+msgstr "发现 %i 已知共享文件"
+
+#: src/SharedFileList.cpp:189
+msgid "Loading..."
+msgstr "正在装入..."
+
+#: src/SharedFilesCtrl.cpp:82
+msgid "Permission"
+msgstr "许可"
+
+#: src/SharedFilesCtrl.cpp:84
+msgid "Requests"
+msgstr "请求"
+
+#: src/SharedFilesCtrl.cpp:85
+msgid "Accepted Requests"
+msgstr "接受的请求"
+
+#: src/SharedFilesCtrl.cpp:86
+msgid "Transferred Data"
+msgstr "已传送数据"
+
+#: src/SharedFilesCtrl.cpp:116 src/SharedFilesCtrl.cpp:213
+#: src/SharedFilesCtrl.cpp:353
+msgid "Public"
+msgstr "公共"
+
+#: src/SharedFilesCtrl.cpp:117 src/SharedFilesCtrl.cpp:211
+#: src/SharedFilesCtrl.cpp:340
+msgid "Friends only"
+msgstr "只限好友"
+
+#: src/SharedFilesCtrl.cpp:118
+msgid "Locked"
+msgstr "已锁定"
+
+#: src/SharedFilesCtrl.cpp:121
+msgid "Permissions"
+msgstr "许可"
+
+#: src/SharedFilesCtrl.cpp:123
+msgid "Change this file's comment..."
+msgstr "更改该文件的注释"
+
+#: src/SharedFilesCtrl.cpp:127
+msgid "Copy ED2k link to clipboard (&Source)"
+msgstr "拷贝 ED2K 链接到剪贴板 (源)"
+
+#: src/SharedFilesCtrl.cpp:128
+msgid "Copy ED2k link to clipboard (Hostname)"
+msgstr "拷贝 ED2K 链接到剪贴板 (计算机名)"
+
+#: src/SharedFilesCtrl.cpp:175 src/SharedFilesCtrl.cpp:453
+msgid "Auto [Re]"
+msgstr "自动 [发布]"
+
+#: src/SharedFilesCtrl.cpp:209 src/SharedFilesCtrl.cpp:324
+msgid "Hidden"
+msgstr "隐藏"
+
+#: src/SharedFilesCtrl.cpp:321 src/SharedFilesCtrl.cpp:337
+msgid "You cannot change permissions while a file is still downloading!"
+msgstr "文件正在下载,无法改变许可."
+
+#: src/SharedFilesCtrl.cpp:603
+#, c-format
+msgid "Shared Files (%i)"
+msgstr "共享文件 (%i)"
+
+#: src/sockets.cpp:52
+msgid "Failed to connect to all servers listed. Making another pass."
+msgstr "无法连接列表中的所有服务器. 开始新的一轮尝试."
+
+#: src/sockets.cpp:94 src/sockets.cpp:104
+msgid "No valid servers to connect in serverlist found"
+msgstr "服务器列表中没有有效服务器可供连接"
+
+#: src/sockets.cpp:161
+#, c-format
+msgid "Connected to %s (%s:%i)"
+msgstr "已连接到 %s (%s:%i)"
+
+#: src/sockets.cpp:199
+#, c-format
+msgid "Connection established on: %s"
+msgstr "已连接到: %s"
+
+#: src/sockets.cpp:246
+msgid "Fatal Error while trying to connect. Internet connection might be down"
+msgstr "连接出现严重错误. 网络连接可能有问题"
+
+#: src/sockets.cpp:250
+#, c-format
+msgid "Lost connection to %s (%s:%i)"
+msgstr "连接已断 %s (%s:%i)"
+
+#: src/sockets.cpp:253
+#, c-format
+msgid "%s (%s:%i) appears to be dead."
+msgstr "%s (%s:%i) 可能已当机"
+
+#: src/sockets.cpp:263
+#, c-format
+msgid "%s (%s:%i) appears to be full"
+msgstr "%s (%s:%i) 可能已没有空位"
+
+#: src/sockets.cpp:278
+#, c-format
+msgid "Automatic connection to server will retry in %d seconds"
+msgstr "服务器自动连接会在 %d 秒后重新尝试"
+
+#: src/sockets.cpp:298
+msgid "Connection lost"
+msgstr "连接已断"
+
+#: src/sockets.cpp:307
+#, c-format
+msgid "Connecting to %s (%s:%i ) failed."
+msgstr "连接失败 %s (%s:%i )"
+
+#: src/sockets.cpp:356
+#fuzzy
+msgid "Error: Socket invalid at timeoutcheck"
+msgstr "错误: 接口无效"
+
+#: src/sockets.cpp:362
+#, c-format
+msgid "Connection attempt to %s (%s:%i ) timed out"
+msgstr "连接超时 %s (%s:%i )"
+
+#: src/sockets.cpp:476
+msgid "Refreshing server connection"
+msgstr "正在刷新服务器连接"
+
+#: src/StatisticsDlg.cpp:523
+#, c-format
+msgid "Active connections (1:%u)"
+msgstr "活跃连接 (1:%u)"
+
+#: src/StatisticsDlg.cpp:600 src/StatisticsDlg.cpp:602
+#: src/StatisticsDlg.cpp:605 src/StatisticsDlg.cpp:606
+#: src/StatisticsDlg.cpp:607 src/StatisticsDlg.cpp:608
+#: src/StatisticsDlg.cpp:609 src/StatisticsDlg.cpp:610
+#: src/StatisticsDlg.cpp:611 src/StatisticsDlg.cpp:612
+#: src/StatisticsDlg.cpp:613 src/StatisticsDlg.cpp:614
+#: src/StatisticsDlg.cpp:617 src/StatisticsDlg.cpp:618
+#: src/StatisticsDlg.cpp:619 src/StatisticsDlg.cpp:620
+#: src/StatisticsDlg.cpp:621 src/StatisticsDlg.cpp:622
+#: src/StatisticsDlg.cpp:623 src/StatisticsDlg.cpp:626
+#: src/StatisticsDlg.cpp:627 src/StatisticsDlg.cpp:628
+#: src/StatisticsDlg.cpp:629 src/StatisticsDlg.cpp:630
+#: src/StatisticsDlg.cpp:631 src/StatisticsDlg.cpp:632
+#: src/StatisticsDlg.cpp:633 src/StatisticsDlg.cpp:634
+#: src/StatisticsDlg.cpp:635 src/StatisticsDlg.cpp:636
+#: src/StatisticsDlg.cpp:639 src/StatisticsDlg.cpp:640
+#: src/StatisticsDlg.cpp:641 src/StatisticsDlg.cpp:642
+#: src/StatisticsDlg.cpp:643 src/StatisticsDlg.cpp:644
+#: src/StatisticsDlg.cpp:645 src/StatisticsDlg.cpp:646
+#: src/StatisticsDlg.cpp:647 src/StatisticsDlg.cpp:648
+#: src/StatisticsDlg.cpp:649 src/StatisticsDlg.cpp:650
+#: src/StatisticsDlg.cpp:651 src/StatisticsDlg.cpp:652
+#: src/StatisticsDlg.cpp:653 src/StatisticsDlg.cpp:654
+#: src/StatisticsDlg.cpp:655 src/StatisticsDlg.cpp:656
+#: src/StatisticsDlg.cpp:657 src/StatisticsDlg.cpp:658
+#: src/StatisticsDlg.cpp:659 src/StatisticsDlg.cpp:663
+#: src/StatisticsDlg.cpp:664 src/StatisticsDlg.cpp:665
+#: src/StatisticsDlg.cpp:666 src/StatisticsDlg.cpp:667
+#: src/StatisticsDlg.cpp:668 src/StatisticsDlg.cpp:669
+#: src/StatisticsDlg.cpp:670 src/StatisticsDlg.cpp:671
+#: src/StatisticsDlg.cpp:674 src/StatisticsDlg.cpp:675
+#: src/StatisticsDlg.cpp:676
+msgid "Waiting..."
+msgstr "等待中..."
+
+#: src/StatisticsDlg.cpp:660 src/StatisticsDlg.cpp:832
+#, c-format
+msgid "Filtered: %i"
+msgstr "屏蔽: %i"
+
+#: src/StatisticsDlg.cpp:703 src/SysTray.cpp:297
+msgid "Uptime: "
+msgstr "运行时间: "
+
+#: src/StatisticsDlg.cpp:705
+#, c-format
+msgid "Downloaded Data (Session (Total)): %s (%s)"
+msgstr "下载数据量 (本次运行 (总和)): %s (%s)"
+
+#: src/StatisticsDlg.cpp:707 src/StatisticsDlg.cpp:723
+#, c-format
+msgid "Total Overhead (Packets): %s (%s)"
+msgstr "总无用数据量 (本次运行 (总和)): %s (%s)"
+
+#: src/StatisticsDlg.cpp:709 src/StatisticsDlg.cpp:725
+#, c-format
+msgid "File Request Overhead (Packets): %s (%s)"
+msgstr "文件请求无用数据 (本次运行 (总和)): %s (%s)"
+
+#: src/StatisticsDlg.cpp:711 src/StatisticsDlg.cpp:727
+#, c-format
+msgid "Source Exchange Overhead (Packets): %s (%s)"
+msgstr "源交换无用数据 (本次运行 (总和)): %s (%s)"
+
+#: src/StatisticsDlg.cpp:713 src/StatisticsDlg.cpp:729
+#, c-format
+msgid "Server Overhead (Packets): %s (%s)"
+msgstr "服务器无用数据 (本次运行 (总和)): %s (%s)"
+
+#: src/StatisticsDlg.cpp:715
+#, c-format
+msgid "Found Sources: %i"
+msgstr "发现源: %i"
+
+#: src/StatisticsDlg.cpp:717
+#, c-format
+msgid "Active Downloads (chunks): %i"
+msgstr "活跃下载 (数据段): %i"
+
+#: src/StatisticsDlg.cpp:721
+#, c-format
+msgid "Uploaded Data (Session (Total)): %s (%s)"
+msgstr "上传数据量 (本次运行 (总和)): %s (%s)"
+
+#: src/StatisticsDlg.cpp:731
+#, c-format
+msgid "Active Uploads: %i"
+msgstr "活跃上传: %i"
+
+#: src/StatisticsDlg.cpp:733
+#, c-format
+msgid "Waiting Uploads: %i"
+msgstr "等待上传: %i"
+
+#: src/StatisticsDlg.cpp:735
+#, c-format
+msgid "Total successful upload sessions: %i"
+msgstr "总成功上传片段: %i"
+
+#: src/StatisticsDlg.cpp:737
+#, c-format
+msgid "Total failed upload sessions: %i"
+msgstr "总失败上传片段: %i"
+
+#: src/StatisticsDlg.cpp:740
+#, c-format
+msgid "Average upload time: %s"
+msgstr "平均上传时间: %s"
+
+#: src/StatisticsDlg.cpp:744
+#, c-format
+msgid "Average Downloadrate (Session): %.2f kB/s"
+msgstr "平均下载速度 (本次运行): %.2f kB/s"
+
+#: src/StatisticsDlg.cpp:747
+#, c-format
+msgid "Average Uploadrate (Session): %.2f kB/s"
+msgstr "平均上传速度 (本次运行): %.2f kB/s"
+
+#: src/StatisticsDlg.cpp:750
+#, c-format
+msgid "Max Downloadrate Average (Session): %.2f kB/s"
+msgstr "平均最高下载速度 (本次运行): %.2f kB/s"
+
+#: src/StatisticsDlg.cpp:752
+#, c-format
+msgid "Max Downloadrate (Session): %.2f kB/s"
+msgstr "最高下载速度 (本次运行): %.2f kB/s"
+
+#: src/StatisticsDlg.cpp:756 src/StatisticsDlg.cpp:758
+#, c-format
+msgid "Reconnects: %i"
+msgstr "再连接: %i"
+
+#: src/StatisticsDlg.cpp:763
+msgid "waiting for transfer..."
+msgstr "等待传输..."
+
+#: src/StatisticsDlg.cpp:765
+#, c-format
+msgid "Time Since First Transfer: %s"
+msgstr "首次传输到现在时间: %s"
+
+#: src/StatisticsDlg.cpp:770
+#, c-format
+msgid "Uptime: %s"
+msgstr "运行时间: %s"
+
+#: src/StatisticsDlg.cpp:775 src/StatisticsDlg.cpp:987
+msgid "waiting for connection..."
+msgstr "等待连接..."
+
+#: src/StatisticsDlg.cpp:777
+#, c-format
+msgid "Connected To Server Since: %s"
+msgstr "与服务器连接时间: %s"
+
+#: src/StatisticsDlg.cpp:783 src/StatisticsDlg.cpp:786
+#: src/StatisticsDlg.cpp:790
+msgid "Session UL:DL Ratio (Total):"
+msgstr "本次运行 上传:下载 比率 (总和):"
+
+#: src/StatisticsDlg.cpp:790
+#, c-format
+msgid "%s Not available"
+msgstr "%s 无"
+
+#: src/StatisticsDlg.cpp:796
+#, c-format
+msgid "Number of Shared Files: %i"
+msgstr "共享文件数: %i"
+
+#: src/StatisticsDlg.cpp:799
+#, c-format
+msgid "Total size of Shared Files: %s"
+msgstr "共享文件总和: %s"
+
+#: src/StatisticsDlg.cpp:807
+#, c-format
+msgid "Average filesize: %s"
+msgstr "平均文件大小: %s"
+
+#: src/StatisticsDlg.cpp:823
+#, c-format
+msgid "eMule: %i (%1.1f%%)"
+msgstr ""
+
+#: src/StatisticsDlg.cpp:824
+#, c-format
+msgid "aMule: %i (%1.1f%%)"
+msgstr ""
+
+#: src/StatisticsDlg.cpp:825
+#, c-format
+msgid "lMule/xMule: %i (%1.1f%%)"
+msgstr ""
+
+#: src/StatisticsDlg.cpp:826
+#, c-format
+msgid "eDonkeyHybrid: %i (%1.1f%%)"
+msgstr ""
+
+#: src/StatisticsDlg.cpp:827
+#, c-format
+msgid "eDonkey: %i (%1.1f%%)"
+msgstr ""
+
+#: src/StatisticsDlg.cpp:828
+#, c-format
+msgid "cDonkey: %i (%1.1f%%)"
+msgstr ""
+
+#: src/StatisticsDlg.cpp:829
+#, c-format
+msgid "Old MLDonkey: %i (%1.1f%%)"
+msgstr "旧 MLDonkey: %i (%1.1f%%)"
+
+#: src/StatisticsDlg.cpp:830
+#, c-format
+msgid "New MLDonkey: %i (%1.1f%%)"
+msgstr "新 MLDonkey: %i (%1.1f%%)"
+
+#: src/StatisticsDlg.cpp:831
+#, c-format
+msgid "Unknown: %i"
+msgstr "未知: %i"
+
+#: src/StatisticsDlg.cpp:956
+msgid "Working Servers"
+msgstr "正常运行的服务器"
+
+#: src/StatisticsDlg.cpp:957
+msgid "Failed Servers"
+msgstr "当机的服务器"
+
+#: src/StatisticsDlg.cpp:959
+msgid "Deleted Servers"
+msgstr "已删除的服务器"
+
+#: src/StatisticsDlg.cpp:960
+msgid "Users on Working Servers"
+msgstr "正常运行服务器上的用户总数"
+
+#: src/StatisticsDlg.cpp:961
+msgid "Files on Working Servers"
+msgstr "正常运行服务器上的文件总数"
+
+#: src/StatisticsDlg.cpp:962
+msgid "Total Users"
+msgstr "用户总数"
+
+#: src/StatisticsDlg.cpp:963
+msgid "Total Files"
+msgstr "文件总数"
+
+#: src/StatisticsDlg.cpp:964
+msgid "Active Connections (estimate)"
+msgstr "活跃连接 (估计值)"
+
+#: src/StatisticsDlg.cpp:965
+#, c-format
+#fuzzy
+msgid "Server Occupation: %.2f%%"
+msgstr "服务器占用率: %.2f%%"
+
+#: src/StatisticsDlg.cpp:976 src/StatisticsDlg.cpp:979
+msgid "Max Connection Limit Reached"
+msgstr "连接总数已达到上限"
+
+#: src/StatisticsDlg.cpp:984
+msgid "Average Connections (estimate)"
+msgstr "平均连接 (估计值)"
+
+#: src/StatisticsDlg.cpp:989
+msgid "Peak Connections (estimate)"
+msgstr "最高连接 (估计值)"
+
+#: src/SysTray.cpp:69
+msgid "Detection Disabled"
+msgstr "探测已禁用"
+
+#: src/SysTray.cpp:80
+#
+msgid "Not Found"
+msgstr "未找到"
+
+#: src/SysTray.cpp:237 src/SysTray.cpp:239 src/SysTray.cpp:361
+#: src/SysTray.cpp:406
+msgid "Unlimited"
+msgstr "无限制"
+
+#: src/SysTray.cpp:245
+msgid "aMule "
+msgstr ""
+
+#: src/SysTray.cpp:245
+msgid "Actual Speed Limits:"
+msgstr "实际速度限制: "
+
+#: src/SysTray.cpp:245
+msgid "DL: "
+msgstr "下载: "
+
+#: src/SysTray.cpp:245
+#
+msgid " kb/s "
+msgstr ""
+
+#: src/SysTray.cpp:245
+msgid "UP: "
+msgstr "上传: "
+
+#: src/SysTray.cpp:245 src/SysTray.cpp:369 src/SysTray.cpp:376
+#: src/SysTray.cpp:383 src/SysTray.cpp:390 src/SysTray.cpp:397
+#: src/SysTray.cpp:414 src/SysTray.cpp:421 src/SysTray.cpp:428
+#: src/SysTray.cpp:435 src/SysTray.cpp:442
+#
+msgid " kb/s"
+msgstr ""
+
+#: src/SysTray.cpp:249
+msgid "aMule Tray Menu Info"
+msgstr "aMule 状态栏 菜单 信息"
+
+#: src/SysTray.cpp:252
+#
+msgid "Nick: "
+msgstr "昵称: "
+
+#: src/SysTray.cpp:253
+#fuzzy
+msgid "Nick: Not Ready"
+msgstr "昵称: 未就绪"
+
+#: src/SysTray.cpp:260
+msgid "Hash: "
+msgstr "校检码: "
+
+#: src/SysTray.cpp:262
+#fuzzy
+msgid "Hash: Not Ready"
+msgstr "校检码: 未就绪"
+
+#: src/SysTray.cpp:266
+msgid "ClientID: "
+msgstr "客户代号: "
+
+#: src/SysTray.cpp:268
+msgid "ID: Not Connected"
+msgstr "代号: 未连接"
+
+#: src/SysTray.cpp:274
+msgid "IP: "
+msgstr ""
+
+#: src/SysTray.cpp:279
+msgid "TCP Port: "
+msgstr "TCP 端口："
+
+#: src/SysTray.cpp:281
+msgid "TCP Port: Not Ready"
+msgstr "TCP 端口：未就绪"
+
+#: src/SysTray.cpp:286
+msgid "UDP Port: "
+msgstr "UDP 端口："
+
+#: src/SysTray.cpp:288
+msgid "UDP Port: Not Ready"
+msgstr "UDP 端口：未就绪"
+
+#: src/SysTray.cpp:291
+msgid "Online Signature: Enabled"
+msgstr "线上签名: 启用"
+
+#: src/SysTray.cpp:292
+msgid "Online Signature: Disabled"
+msgstr "线上签名: 禁用"
+
+#: src/SysTray.cpp:299
+msgid "Uptime: None"
+msgstr "运行时间: 无"
+
+#: src/SysTray.cpp:304
+msgid "ServerName: "
+msgstr "服务器名称"
+
+#: src/SysTray.cpp:308
+msgid "ServerIP: "
+msgstr "服务器 IP: "
+
+#: src/SysTray.cpp:313
+msgid "ServerName: Not Connected"
+msgstr "服务器名称: 未连接"
+
+#: src/SysTray.cpp:315
+msgid "ServerIP: Not Connected"
+msgstr "服务器 IP: 未连接"
+
+#: src/SysTray.cpp:321
+msgid "Shared Files: "
+msgstr "共享文件: "
+
+#: src/SysTray.cpp:325
+msgid "Queued Clients: "
+msgstr "队列中用户: "
+
+#: src/SysTray.cpp:329
+msgid "Total DL: "
+msgstr "总下载: "
+
+#: src/SysTray.cpp:329 src/SysTray.cpp:333
+msgid " GB"
+msgstr ""
+
+#: src/SysTray.cpp:333
+msgid "Total UP: "
+msgstr "总上传: "
+
+#: src/SysTray.cpp:339
+msgid "aMule Tray Menu"
+msgstr "aMule 状态栏 菜单"
+
+#: src/SysTray.cpp:350
+msgid "Personal Infos"
+msgstr "个人信息"
+
+#: src/SysTray.cpp:448
+msgid "Show"
+msgstr "显示"
+
+#: src/SysTray.cpp:457
+msgid "Hide"
+msgstr "隐藏"
+
+#: src/SysTray.cpp:466
+msgid "All To Max Speed"
+msgstr "全设为最高速度"
+
+#: src/SysTray.cpp:475
+msgid "All To Min Speed"
+msgstr "全设为最低速度"
+
+#: src/SysTray.cpp:484
+msgid "Download Limit"
+msgstr "下载限制"
+
+#: src/SysTray.cpp:493
+msgid "Upload Limit"
+msgstr "上传限制"
+
+#: src/SysTray.cpp:511
+msgid "Disconnect from server"
+msgstr "服务器连接中断"
+
+#: src/SysTray.cpp:520
+msgid "Exit"
+msgstr "退出"
+
+#: src/SysTray.cpp:595 src/SysTray.cpp:622
+msgid "aMule for Linux"
+msgstr ""
+
+#: src/TransferWnd.cpp:174
+msgid "Select view filter"
+msgstr "选择显示过滤"
+
+#: src/TransferWnd.cpp:177
+msgid "Add category"
+msgstr "新建分类"
+
+#: src/TransferWnd.cpp:178
+msgid "Edit category"
+msgstr "编辑分类"
+
+#: src/TransferWnd.cpp:179
+msgid "Remove category"
+msgstr "删除分类"
+
+#: src/TransferWnd.cpp:306
+msgid "Are you sure you wish to cancel and delete all files in this category?"
+msgstr "您确定要删除分类中的所有下载文件吗?"
+
+#: src/TransferWnd.cpp:306
+msgid "Confirmation Required"
+msgstr "需要确认"
+
+#: src/UDPSocket.cpp:340
+msgid "Error while processing incoming extended protocol UDP Packet"
+msgstr "处理接收到的拓展协议UDP数据包时发生错误"
+
+#: src/UploadClient.cpp:364
+#, c-format
+msgid ""
+"Client '%s' caused error while creating package (%s) - disconnecting client"
+msgstr "用户 '%s' 在产生数据包 (%s) 时造成错误 - 正在切断该用户连接"
+
+#: src/UploadClient.cpp:626
+msgid "requested file not found"
+msgstr "找不到请求的文件"
+
+#: src/UploadClient.cpp:747
+#, c-format
+msgid ""
+"Client '%s' seems to be an aggressive client and is banned from the "
+"uploadqueue"
+msgstr ""
+"用户 '%s' 可能使用的是妖魔版 - 该用户已被封杀."
+
+#: src/UploadListCtrl.cpp:90
+msgid "Waited"
+msgstr "已等待"
+
+#: src/UploadListCtrl.cpp:91
+msgid "Upload Time"
+msgstr "上传时间"
+
+#: src/UploadListCtrl.cpp:151
+msgid "Show Queue"
+msgstr "显示队列"
+
+#: src/UploadQueue.cpp:59
+msgid "Fatal Error: Failed to create Timer"
+msgstr "严重错误: 无法建立计时器"
+
+#: src/UploadQueue.cpp:156
+#, c-format
+msgid "%s [%s:%i] using %s removed : invalide eMule client"
+msgstr "用户 %s [%s:%i] 使用软件 %s 已被删除 : 非法 eMule 版本"
+
+#: src/UploadQueue.cpp:160
+#, c-format
+msgid "%s [%s:%i] using %s removed : suspicious mod string change"
+msgstr "用户 %s [%s:%i] 使用软件 %s 已被删除 : 可疑版本代号"
+
+#: src/UploadQueue.cpp:164
+#, c-format
+msgid "%s [%s:%i] using %s removed : known leecher"
+msgstr "用户 %s [%s:%i] 使用软件 %s 已被删除 : 已知的吸血鬼"
+
+#: src/UploadQueue.cpp:168
+#, c-format
+msgid "%s [%s:%i] using %s removed : suspicious hash change"
+msgstr "用户 %s [%s:%i] 使用软件 %s 已被删除 : 可疑的用户代码变动"
+
+#: src/UploadQueue.cpp:172
+#, c-format
+msgid "%s [%s:%i] using %s removed : use your own hash"
+msgstr "用户 %s [%s:%i] 使用软件 %s 已被删除 : 盗用他人用户代码"
+
+#: src/UploadQueue.cpp:176
+#, c-format
+msgid "%s [%s:%i] using %s removed : suspicious name change"
+msgstr "用户 %s [%s:%i] 使用软件 %s 已被删除 : 可疑的用户名变动"
+
+#: src/UploadQueue.cpp:228
+#, c-format
+msgid ""
+"%s [%s:%i] using %s removed : leecher, invalid eMule or irregular Donkey"
+msgstr ""
+"用户 %s [%s:%i] 使用软件 %s 已被删除 : 吸血鬼, 非法版本"
+
+#: src/UploadQueue.cpp:451
+#, c-format
+msgid "Client '%s' and '%s' have the same userhash or IP - removed '%s'"
+msgstr "用户 '%s' 和 '%s' 用户代码或IP重叠 - 已删除 '%s'"
+
+#: src/Wizard.cpp:43
+msgid "Wizard"
+msgstr "向导"
+
+#: src/Wizard.cpp:236
+msgid "Down (kbit/s)"
+msgstr "下载 (kbit/s)"
+
+#: src/Wizard.cpp:237
+msgid "Up (kbit/s)"
+msgstr "上传 (kbit/s)"
+
+#: src/Wizard.cpp:240
+msgid "Custom"
+msgstr "自定义"
+
+#: src/Wizard.cpp:240
+msgid "(enter below!)"
+msgstr "(在下面输入!)"
+
+#: src/Wizard.cpp:241
+msgid "56-k Modem"
+msgstr "56-k 调制解调器"
+
+#: src/Wizard.cpp:242
+msgid "ISDN"
+msgstr ""
+
+#: src/Wizard.cpp:243
+msgid "ISDN 2x"
+msgstr ""
+
+#: src/Wizard.cpp:244 src/Wizard.cpp:245 src/Wizard.cpp:246 src/Wizard.cpp:247
+#: src/Wizard.cpp:248 src/Wizard.cpp:249 src/Wizard.cpp:250 src/Wizard.cpp:251
+#: src/Wizard.cpp:252 src/Wizard.cpp:253 src/Wizard.cpp:254
+msgid "xDSL"
+msgstr ""
+
+#: src/Wizard.cpp:255 src/Wizard.cpp:256
+msgid "Cable"
+msgstr "有线电视网"
+
+#: src/Wizard.cpp:257
+msgid "T1"
+msgstr "T1"
+
+#: src/Wizard.cpp:258
+msgid "T3+"
+msgstr "T3+"
+
+#: src/Wizard.cpp:259
+msgid "100 Mbits"
+msgstr ""
+
+#: src/Wizard.cpp:260
+msgid "155 Mbits (ATM)"
+msgstr ""
