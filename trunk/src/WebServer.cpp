@@ -86,49 +86,32 @@ inline BYTE toHex(const BYTE &x) {
 }
 
 //shakraw, same as URLEncode() from otherfunctions.h
-wxString URLEncode(wxString sIn) {
-    wxString sOut;
-	
-    const int nLen = sIn.Length() + 1;
+wxString URLEncode(wxString sIn)
+{
+	const unsigned int nLen = sIn.Length();
+	register unsigned int n;
+	wxChar c;
+	wxString sOut;
+	sOut.Alloc(nLen);
 
-    register LPBYTE pOutTmp = NULL;
-    LPBYTE pOutBuf = NULL;
-    register LPBYTE pInTmp = NULL;
-    LPBYTE pInBuf =(LPBYTE)sIn.GetWriteBuf(nLen); //GetData(); //GetBuffer(nLen);
-	
-    //alloc out buffer
-    pOutBuf = (LPBYTE)sOut.GetWriteBuf(nLen*3-2); //GetData(); //GetBuffer(nLen  * 3 - 2);//new BYTE [nLen  * 3];
-
-    if(pOutBuf)
-    {
-        pInTmp	= pInBuf;
-	pOutTmp = pOutBuf;
-		
 	// do encoding
-	while (*pInTmp)
+	for ( n = 0; n < nLen; n++ )
 	{
-	    if(isalnum(*pInTmp))
-	        *pOutTmp++ = *pInTmp;
-	    else
-	        if(isspace(*pInTmp))
-		    *pOutTmp++ = '+';
-		else
-		{
-		    *pOutTmp++ = '%';
-		    *pOutTmp++ = toHex(*pInTmp>>4);
-		    *pOutTmp++ = toHex(*pInTmp%16);
+		c = sIn[n];
+		if (isalnum(c)) {
+	        	sOut += c;
+		} else {
+		        if (isspace(c)) {
+				sOut += '+';
+			} else {
+				sOut += '%';
+				sOut += toHex(c >> 4);
+				sOut += toHex(c % 16);
+			}
 		}
-	    pInTmp++;
 	}
-	*pOutTmp = '\0';
-	sOut=sOut.Format(wxT("%s"), pOutBuf);
-	//delete [] pOutBuf;
-	//Out.ReleaseBuffer();
-	sOut.UngetWriteBuf();
-    }
-    //sIn.ReleaseBuffer();
-    sIn.UngetWriteBuf();
-    return sOut;
+	
+	return sOut;
 }
 
 //shakraw, same as LeadingZero() from otherfunctions.h
