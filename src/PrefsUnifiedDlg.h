@@ -30,7 +30,7 @@
 #endif
 
 #define UNIFIED_PREF_HANDLING
-//#define DISABLE_OLDPREFS	
+//#define DISABLE_OLDPREFS
 
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/dialog.h>		// Needed for wxDialog
@@ -44,6 +44,9 @@
 //----------------------------------------------------------------------------
 // PrefsUnifiedDlg
 //----------------------------------------------------------------------------
+
+class Rse;
+struct Preferences_Struct;
 
 class PrefsUnifiedDlg: public wxDialog
 {
