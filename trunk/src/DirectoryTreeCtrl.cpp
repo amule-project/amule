@@ -269,7 +269,7 @@ bool CDirectoryTreeCtrl::HasSharedSubdirectory(wxString const& strDir)
 	while(tStrDir.Len() > 0 && tStrDir.Last() == wxT('/'))
 		tStrDir.RemoveLast();						// Minus possible trailing slashes.
 	tStrDir += wxT("/"); // last char always a / 
-	size_t tStrDirLen = tStrDir.Len() // Speed reasons
+	size_t tStrDirLen = tStrDir.Len(); // Speed reasons
 	for (unsigned int i = 0; i < m_lstShared.GetCount(); ++i)
 	{
 		wxString const& str(m_lstShared[i]);
@@ -309,10 +309,11 @@ void CDirectoryTreeCtrl::CheckChanged(wxTreeItemId hItem, bool bChecked)
 
 bool CDirectoryTreeCtrl::IsShared(wxString const& strDir)
 {
+	wxString tStrDir = strDir;
 	while(tStrDir.Len() > 0 && tStrDir.Last() == wxT('/'))
 		tStrDir.RemoveLast();						// Minus possible trailing slashes.
 	tStrDir += wxT("/"); // last char always a / 
-	size_t tStrDirLen = tStrDir.Len() // Speed reasons
+	size_t tStrDirLen = tStrDir.Len(); // Speed reasons
 	for (unsigned int i = 0; i < m_lstShared.GetCount(); ++i)
 	{
 		wxString const& str(m_lstShared[i]);
