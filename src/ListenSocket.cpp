@@ -818,9 +818,9 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					for (CKnownFileMap::iterator pos = filemap.begin();pos != filemap.end(); pos++ ) {
 						list.AddTail((void*&)pos->second);
 					}
-					AddLogLineM(true,wxString(_("User ")) + char2unicode(client->GetUserName()) + wxString::Format(wxT(" (%u) requested your sharedfiles-list -> %s"),client->GetUserID(),_("Accepted")));
+					AddLogLineM(true,wxString(_("User ")) + client->GetUserName() + wxString::Format(wxT(" (%u) requested your sharedfiles-list -> %s"),client->GetUserID(),_("Accepted")));
 				} else {
-					AddLogLineM(true,wxString(_("User ")) + char2unicode(client->GetUserName()) + wxString::Format(wxT(" (%u) requested your sharedfiles-list -> %s"),client->GetUserID(),_("Denied")));
+					AddLogLineM(true,wxString(_("User ")) + client->GetUserName() + wxString::Format(wxT(" (%u) requested your sharedfiles-list -> %s"),client->GetUserID(),_("Denied")));
 				}
 				// now create the memfile for the packet
 				CSafeMemFile tempfile(80);
