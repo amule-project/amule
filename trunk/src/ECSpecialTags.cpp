@@ -132,6 +132,9 @@ CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level
 		(uint32)(file->IsAutoDownPriority() ? 
 						file->GetDownPriority() + 10 : file->GetDownPriority())));
 
+	AddTag(CECTag(EC_TAG_PARTFILE_CAT, file->GetCategory()));
+	//AddTag(CECTag(EC_TAG_PARTFILE_LAST_SEEN_COMP, file->lastseencomplete));
+
 	if (detail_level == EC_DETAIL_UPDATE) {
 			return;
 	}
