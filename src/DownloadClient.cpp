@@ -214,7 +214,7 @@ void CUpDownClient::SendFileRequest()
 	}
 	
 	CSafeMemFile dataFileReq(16+16);
-	dataFileReq.WriteHash16(m_reqfile->GetFileHash());
+	dataFileReq.WriteHash16(m_reqfile->GetFileHash().GetHash());
 
 	if( SupportMultiPacket() ) {
 		dataFileReq.WriteUInt8(OP_REQUESTFILENAME);
