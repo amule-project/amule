@@ -1145,7 +1145,7 @@ void CKnownFile::UpdateAutoUpPriority(void)
 
 		if ( GetQueuedCount() > 20 ) {
 			if ( GetUpPriority() != PR_LOW ) {
-				SetUpPriority(PR_LOW);
+				SetUpPriority(PR_LOW, false);
 				theApp.amuledlg->sharedfileswnd->sharedfilesctrl->UpdateItem(this);
 			}
 			return;
@@ -1153,13 +1153,13 @@ void CKnownFile::UpdateAutoUpPriority(void)
 
 		if ( GetQueuedCount() > 1 ) {
 			if ( GetUpPriority() != PR_NORMAL ) {
-				SetUpPriority(PR_NORMAL);
+				SetUpPriority(PR_NORMAL, false);
 				theApp.amuledlg->sharedfileswnd->sharedfilesctrl->UpdateItem(this);
 		}
 		return;
 	}
 	if ( GetUpPriority() != PR_HIGH ) {
-		SetUpPriority(PR_HIGH);
+		SetUpPriority(PR_HIGH, false);
 		theApp.amuledlg->sharedfileswnd->sharedfilesctrl->UpdateItem(this);
 	}
 }
