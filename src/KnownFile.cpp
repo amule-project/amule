@@ -1141,7 +1141,7 @@ void CKnownFile::UpdatePartsInfo()
 	m_AvailPartFrequency.Clear();
 	m_AvailPartFrequency.Alloc(partcount);
 	
-	m_AvailPartFrequency.Insert(/*Item*/0, /*pos*/0, partcount);
+	m_AvailPartFrequency.Insert(/*Item*/(uint16) 1, /*pos*/0, partcount);
 
 	ArrayOfUInts16 count;	
 	
@@ -1149,8 +1149,13 @@ void CKnownFile::UpdatePartsInfo()
 		count.Alloc(m_ClientUploadList.GetCount());	
 	}
 
+	uint k_test = 0;
+	printf("File %s \n\tCount= %u\n",GetFileName().c_str(),m_ClientUploadList.GetCount());
+	
 	for (POSITION pos = m_ClientUploadList.GetHeadPosition(); pos != 0; ) {
+		k_test++;
 		CUpDownClient* cur_src = m_ClientUploadList.GetNext(pos);
+		printf("\tIt_%u partcount= %u GetPartCount= %u\n",k_test,partcount);
 		//This could be a partfile that just completed.. Many of these clients will not have this information.
 		if(cur_src->m_abyUpPartStatus && cur_src->GetUpPartCount() == partcount ) {
 			for (uint16 i = 0; i < partcount; i++) {

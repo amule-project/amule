@@ -165,11 +165,6 @@ public:
 
 	// nr. of 9MB parts according the file size wrt ED2K protocol (OP_FILESTATUS)
 	__inline uint16 GetED2KPartCount() const { return m_iED2KPartCount; }
-
-	uint32	date;
-	// Kry - 0.30 import
-	uint32	dateC;
-	
 	
 	// file upload priority
 	uint8	GetUpPriority()			{return m_iUpPriority;}
@@ -190,8 +185,7 @@ public:
 	void	RemoveUploadingClient(CUpDownClient* client);
 	void	NewAvailPartsInfo();
 	void	DrawShareStatusBar(wxDC* dc, wxRect rect, bool onlygreyrect, bool bFlat);
-
-	CFileStatistic statistic;
+	
 	// comment 
 	CString	GetFileComment()		{if (!m_bCommentLoaded) LoadComment(); return m_strComment;} 
 	void	SetFileComment(CString strNewComment);
@@ -204,6 +198,18 @@ public:
 	virtual	Packet*	CreateSrcInfoPacket(CUpDownClient* forClient);
 	
 	void	UpdatePartsInfo();	
+
+	uint32	date;
+	uint32	dateC;
+	
+	CFileStatistic statistic;
+	
+	time_t m_nCompleteSourcesTime;
+	uint16 m_nCompleteSourcesCount;
+	uint16 m_nCompleteSourcesCountLo;
+	uint16 m_nCompleteSourcesCountHi;
+	CTypedPtrList<CPtrList, CUpDownClient*> m_ClientUploadList;	
+	ArrayOfUInts16 m_AvailPartFrequency;
 	
 protected:
 	bool	LoadTagsFromFile(CFile* file);
@@ -231,16 +237,6 @@ private:
 	static	CBarShader s_ShareStatusBar;
 	bool	m_PublishedED2K;
 
-	ArrayOfUInts16 m_AvailPartFrequency;
-
-/* Creteil Begin */
-public:
-	time_t m_nCompleteSourcesTime;
-	uint16 m_nCompleteSourcesCount;
-	uint16 m_nCompleteSourcesCountLo;
-	uint16 m_nCompleteSourcesCountHi;
-/* Creteil End */
-	CTypedPtrList<CPtrList, CUpDownClient*> m_ClientUploadList;
 };
 
 // permission values for shared files
