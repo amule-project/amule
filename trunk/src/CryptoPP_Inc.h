@@ -1,6 +1,4 @@
-#warning SOMEONE FIX THIS PLEASE :D
-
-#if EMBEDDED_CRYPTO
+#ifdef EMBEDDED_CRYPTO
 	#include "CryptoPP.h"
 #else
 	#ifdef __CRYPTO_DEBIAN_GENTOO__
