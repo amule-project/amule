@@ -202,9 +202,12 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 	transferwnd = new CTransferWnd(p_cnt);
 	sharedfileswnd = new CSharedFilesWnd(p_cnt);
 	statisticswnd = new CStatisticsDlg(p_cnt);
+#ifdef CLIENT_GUI
+	chatwnd = 0;
+#else
 	chatwnd = new CChatWnd(p_cnt);
+#endif
 	kadwnd = new CKadDlg(p_cnt);
-
 	serverwnd->Show(FALSE);
 	searchwnd->Show(FALSE);
 	transferwnd->Show(FALSE);

@@ -833,6 +833,10 @@ void CamuleGuiApp::NotifyEvent(GUIEvent event)
 	        case SEARCH_ADD_RESULT:
 				amuledlg->searchwnd->AddResult( (CSearchFile *)event.ptr_value );
 			break;
+#ifndef CLIENT_GUI
+/*!
+ * lfroen: chat doesnt work in core. So remote gui will not have chat page at all
+ */
 		// chat window
 		case CHAT_REFRESH_FRIEND:
 			if ( amuledlg->chatwnd ) {
@@ -855,6 +859,7 @@ void CamuleGuiApp::NotifyEvent(GUIEvent event)
 								event.string_value);
 			}
 			break;
+#endif
 		// logging
 		case ADDLOGLINE:
 			if (amuledlg) {
