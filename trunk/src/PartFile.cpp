@@ -210,7 +210,7 @@ CPartFile::CPartFile(CSearchFile* searchresult)
 							if (!strcasecmp(pTag->tag.tagname, FT_ED2K_MEDIA_BITRATE) && pTag->tag.intvalue == 0)
 								break;
 
-							printf("CPartFile::CPartFile(CSearchFile*): added tag %s\n", unicode2char(pTag->GetFullInfo()));
+							AddDebugLogLineM( false, wxT("CPartFile::CPartFile(CSearchFile*): added tag ") + pTag->GetFullInfo() );
 							CTag* newtag = new CTag(pTag->tag);
 							taglist.Add(newtag);
 							bTagAdded = true;
@@ -237,7 +237,7 @@ CPartFile::CPartFile(CSearchFile* searchresult)
 							if (pTag->tag.type == 2 && pTag->tag.stringvalue.IsEmpty())
 								break;
 
-							printf("CPartFile::CPartFile(CSearchFile*): added tag %s\n", unicode2char(pTag->GetFullInfo()));
+							AddDebugLogLineM( false, wxT("CPartFile::CPartFile(CSearchFile*): added tag ") + pTag->GetFullInfo() );
 							CTag* newtag = new CTag(pTag->tag);
 							taglist.Add(newtag);
 							bTagAdded = true;
@@ -246,8 +246,9 @@ CPartFile::CPartFile(CSearchFile* searchresult)
 					}
 				}
 
-				if (!bTagAdded)
-					printf("CPartFile::CPartFile(CSearchFile*): ignored tag %s\n", unicode2char(pTag->GetFullInfo()));
+				if (!bTagAdded) {
+					AddDebugLogLineM( false, wxT("CPartFile::CPartFile(CSearchFile*): ignored tag ") + pTag->GetFullInfo() );
+				}
 			}
 		}
 	}
@@ -282,7 +283,7 @@ CPartFile::~CPartFile()
 	// But, where does this wrong handle comes from?
 	
 	if (m_hpartfile.IsOpened() && (m_hpartfile.fd() > 2)) { 
-			FlushBuffer(true);
+		FlushBuffer(true);
 	}
 	
 	if (m_hpartfile.IsOpened() && (m_hpartfile.fd() > 2)) {
@@ -852,56 +853,33 @@ bool CPartFile::SavePartFile(bool Initial)
 		#if wxUSE_UNICODE					
 		// 0 (unicoded part file name) 
 		// We write it with BOM to kep eMule compatibility
-		CTag(FT_FILENAME,m_strFileName).WriteTagToFile(&file,utf8strOptBOM);	
+		WriteCTagToFile( FT_FILENAME, m_strFileName, &file, utf8strOptBOM );
 		#endif
 		
-		CTag(FT_FILENAME,m_strFileName).WriteTagToFile(&file);	// 1
-		CTag(FT_FILESIZE,m_nFileSize).WriteTagToFile(&file);	// 2
-		CTag(FT_TRANSFERED,transfered).WriteTagToFile(&file);	// 3
-		CTag(FT_STATUS,(m_paused)? 1:0).WriteTagToFile(&file);	// 4
+		WriteCTagToFile( FT_FILENAME,	m_strFileName,	&file );	// 1
+		WriteCTagToFile( FT_FILESIZE,	m_nFileSize,	&file );	// 2
+		WriteCTagToFile( FT_TRANSFERED,	transfered,		&file );	// 3
+		WriteCTagToFile( FT_STATUS,		(m_paused?1:0),	&file );	// 4
 
-		CTag* prioritytag;
-		uint8 autoprio = PR_AUTO;
-		if(IsAutoDownPriority()) {
-			prioritytag = new CTag(FT_DLPRIORITY,autoprio);
+		if ( IsAutoDownPriority() ) {
+			WriteCTagToFile( FT_DLPRIORITY,		(uint8)PR_AUTO,		&file );	// 5
+			WriteCTagToFile( FT_OLDDLPRIORITY,	(uint8)PR_AUTO,		&file );	// 6
 		} else {
-			prioritytag = new CTag(FT_DLPRIORITY,m_iDownPriority);
+			WriteCTagToFile( FT_DLPRIORITY,		m_iDownPriority,	&file );	// 5
+			WriteCTagToFile( FT_OLDDLPRIORITY,	m_iDownPriority,	&file );	// 6
 		}
-		prioritytag->WriteTagToFile(&file);			// 5
-		delete prioritytag;
-		if(IsAutoDownPriority()) {
-			prioritytag = new CTag(FT_OLDDLPRIORITY,autoprio);
-		} else {
-			prioritytag = new CTag(FT_OLDDLPRIORITY,m_iDownPriority);
-		}
-		prioritytag->WriteTagToFile(&file);                      // 6
-		delete prioritytag;
-		
-		CTag* lsctag = new CTag(FT_LASTSEENCOMPLETE,lsc);
-		lsctag->WriteTagToFile(&file);				// 7
-		delete lsctag;
 
-		CTag* ulprioritytag;
-		if(IsAutoUpPriority()) {
-			ulprioritytag = new CTag(FT_ULPRIORITY,autoprio);
+		WriteCTagToFile( FT_LASTSEENCOMPLETE, lsc, 		&file );	// 7
+
+		if ( IsAutoUpPriority() ) {
+			WriteCTagToFile( FT_ULPRIORITY,		(uint8)PR_AUTO,		&file );	// 8
+			WriteCTagToFile( FT_OLDULPRIORITY,	(uint8)PR_AUTO,		&file );	// 9
 		} else {
-			ulprioritytag = new CTag(FT_ULPRIORITY,GetUpPriority());
+			WriteCTagToFile( FT_ULPRIORITY,		GetUpPriority(),	&file );	// 8
+			WriteCTagToFile( FT_OLDULPRIORITY,	GetUpPriority(),	&file );	// 9
 		}
-		ulprioritytag->WriteTagToFile(&file);			// 8
-		delete ulprioritytag;
-		
-		if(IsAutoUpPriority()) {
-			ulprioritytag = new CTag(FT_OLDULPRIORITY,autoprio);
-		} else {
-			ulprioritytag = new CTag(FT_OLDULPRIORITY,GetUpPriority());
-		}
-		ulprioritytag->WriteTagToFile(&file);			// 9
-		delete ulprioritytag;
-		
-		// Madcat - Category setting.
-		CTag* categorytab = new CTag(FT_CATEGORY,m_category);
-		categorytab->WriteTagToFile(&file);			// 10
-		delete categorytab;
+	
+		WriteCTagToFile( FT_CATEGORY, 	m_category,		&file ); 	// 10
 
 		// currupt part infos
 		POSITION posCorruptedPart = corrupted_list.GetHeadPosition();
@@ -915,8 +893,8 @@ bool CPartFile::SavePartFile(bool Initial)
 				strCorruptedParts += wxString::Format(wxT("%u"), (UINT)uCorruptedPart);
 			}
 			wxASSERT( !strCorruptedParts.IsEmpty() );
-			CTag tagCorruptedParts(FT_CORRUPTEDPARTS, strCorruptedParts);
-			tagCorruptedParts.WriteTagToFile(&file); // 11?
+			
+			WriteCTagToFile( FT_CORRUPTEDPARTS, strCorruptedParts, &file); // 11?
 		}
 
 		//AICH Filehash
@@ -929,25 +907,24 @@ bool CPartFile::SavePartFile(bool Initial)
 		for (uint32 j = 0; j != (uint32)taglist.GetCount();++j) {
 			taglist[j]->WriteTagToFile(&file);
 		}
+		
 		// gaps
-		char* namebuffer = new char[10];
+		char namebuffer[10];
 		char* number = &namebuffer[1];
 		uint16 i_pos = 0;
 		for (POSITION pos = gaplist.GetHeadPosition();pos != 0;gaplist.GetNext(pos)) {
 			sprintf(number,"%d",i_pos);
 			namebuffer[0] = FT_GAPSTART;
-			CTag* gapstarttag = new CTag(namebuffer,gaplist.GetAt(pos)->start);
-			gapstarttag->WriteTagToFile(&file);
+			
+			WriteCTagToFile( namebuffer, gaplist.GetAt(pos)->start, &file );
 			// gap start = first missing byte but gap ends = first non-missing byte
 			// in edonkey but I think its easier to user the real limits
 			namebuffer[0] = FT_GAPEND;
-			CTag* gapendtag = new CTag(namebuffer,(gaplist.GetAt(pos)->end)+1);
-			gapendtag->WriteTagToFile(&file);
-			delete gapstarttag;
-			delete gapendtag;
+			
+			WriteCTagToFile( namebuffer, gaplist.GetAt(pos)->end + 1, &file );
+			
 			++i_pos;
 		}
-		delete[] namebuffer;
 		
 		if ( file.Error() ) {
 			throw wxString(wxT("Unexpected write error"));
@@ -965,13 +942,11 @@ bool CPartFile::SavePartFile(bool Initial)
 			file.Close();
 		}	
 		
-		printf("Uncatched exception on CPartFile::SavePartFile!!!\n"); 
+		printf("Uncaught exception in CPartFile::SavePartFile!!!\n"); 
 	}
 	
 	file.Close();
 
-	//file.Flush();
-	
 	if (!Initial) {
 		wxRemoveFile(m_fullname + wxT(".backup"));
 	}
@@ -996,7 +971,9 @@ bool CPartFile::SavePartFile(bool Initial)
 	return true;
 }
 
-void CPartFile::SaveSourceSeeds() {
+
+void CPartFile::SaveSourceSeeds()
+{
 	// Kry - Sources seeds
 	// Copyright (c) Angel Vidal (Kry) 2004
 	// Based on a Feature request, this saves the last 5 sources of the file,
@@ -1072,7 +1049,6 @@ void CPartFile::SaveSourceSeeds() {
 		//file.Write(&dwServerIP,4);
 		//file.Write(&nServerPort,2);
 	}	
-	file.Flush();
 	file.Close();
 
 	AddLogLineM(false, wxString::Format(_("Saved %i sources seeds for partfile: "), n_sources) + m_fullname + wxT("(") + m_strFileName +wxT(")"));
@@ -2370,19 +2346,20 @@ void  CPartFile::RemoveAllSources(bool bTryToSwap)
 	UpdateFileRatingCommentAvail();
 }
 
+
 void CPartFile::Delete()
 {
-	printf("Canceling\n");
+	AddLogLineM( false, _("Deleting file: ") + GetFileName() );
 	// Barry - Need to tell any connected clients to stop sending the file
 	StopFile(true);
-	printf("\tStopped\n");
+	AddLogLineM( false, _("\tStopped") );
 	
 	theApp.sharedfiles->RemoveFile(this);
-	printf("\tRemoved from shared\n");
+	AddLogLineM( false, _("\tRemoved from shared") );
 	theApp.downloadqueue->RemoveFile(this);
-	printf("\tRemoved from download queue\n");
+	AddLogLineM( false, _("\tRemoved from download queue") );
 	Notify_DownloadCtrlRemoveFile(this);
-	printf("\tRemoved transferwnd\n");
+	AddLogLineM( false, _("\tRemoved transferwnd") );
 
 	// Kry - WTF? 
 	// eMule had same problem with lseek error ... and override with a simple 
@@ -2392,45 +2369,45 @@ void CPartFile::Delete()
 		m_hpartfile.Close();
 	}
 
-	printf("\tClosed\n");
+	AddLogLineM( false, _("\tClosed") );
 	
 	if (!wxRemoveFile(m_fullname)) {
-		AddLogLineM(true, _("Failed to delete ") + m_fullname);
-		printf("\tFailed to remove .part.met\n");
+		AddLogLineM( true, _("\tFailed to delete ") + m_fullname);
 	} else {
-		printf("\tRemoved .part.met\n");
+		AddLogLineM( false, _("\tRemoved .part.met") );
 	}
 
 	wxString strPartFile = m_fullname.Left( m_fullname.Length() - 4 );
 	
 	if (!wxRemoveFile(strPartFile)) {
-		AddLogLineM(true,_("Failed to delete ") + strPartFile);
-		printf("\tFailed to removed .part\n");	
+		AddLogLineM( true, _("Failed to delete ") + strPartFile );
 	} else {
-		printf("\tRemoved .part\n");
+		AddLogLineM( false, _("\tRemoved .part") );
 	}
 	
 	wxString BAKName = m_fullname + PARTMET_BAK_EXT;
 
 	if (!wxRemoveFile(BAKName)) {
-		AddLogLineM(true,_("Failed to delete ") + BAKName);
-		printf("\tFailed to remove .BAK\n");
+		AddLogLineM( true, _("Failed to delete ") + BAKName);
 	} else {
-		printf("\tRemoved .BAK\n");
+		AddLogLineM( false, _("\tRemoved .BAK") );
 	}
 	
 	wxString SEEDSName = m_fullname + wxT(".seeds");
 	
 	if (wxFileName::FileExists(SEEDSName)) {
-		if (!wxRemoveFile(SEEDSName)) {
-			AddLogLineM(true,_("Failed to delete ") + SEEDSName);
+		if ( wxRemoveFile(SEEDSName) ) {
+			AddLogLineM( false, _("\tRemoved .seeds") );
+		} else {
+			AddLogLineM( true, _("Failed to delete ") + SEEDSName );
 		}
-		printf("\tRemoved .seeds\n");
 	}
 
-	printf("Done\n");
+	AddLogLineM( false, _("Done") );
+	
 	delete this;
 }
+
 
 bool CPartFile::HashSinglePart(uint16 partnumber)
 {
@@ -2454,8 +2431,8 @@ bool CPartFile::HashSinglePart(uint16 partnumber)
 
 		if (GetPartCount() > 1) {
 			if (hashresult != GetPartHash(partnumber)) {
-				printf("HashResult: %s\n", unicode2char(hashresult.Encode()));
-				printf("GetPartHash(%i): %s\n",partnumber, unicode2char(GetPartHash(partnumber).Encode()));
+				AddLogLineM( false, _("Expected part-hash: ") + GetPartHash(partnumber).Encode() );
+				AddLogLineM( false, _("Actual part-hash: ") + hashresult.Encode() );
 				return false;
 			} else {
 				return true;
@@ -2623,17 +2600,14 @@ CPacket *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 		return CKnownFile::CreateSrcInfoPacket(forClient);
 
 	if (forClient->GetRequestFile() != this) {
-		//printf("IT's not requesting this!!! oops!!\n");
 		return NULL;
 	}
 
 	if ( !(GetStatus() == PS_READY || GetStatus() == PS_EMPTY)) {
-		//printf("Not ready!\n");
 		return NULL;
 	}
 
 	if ( m_SrcList.empty() ) {
-		//printf("No sources!\n");
 		return NULL;
 	}
 
@@ -2701,7 +2675,6 @@ CPacket *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 		}
 	}
 	if (!nCount) {
-		//printf("Nothing!\n");
 		return 0;
 	}
 	data.Seek(16, wxFromStart);
@@ -2730,7 +2703,6 @@ void CPartFile::AddClientSources(CSafeMemFile* sources,uint8 sourceexchangeversi
 			dwID = wxUINT32_SWAP_ALWAYS(dwID);
 		}
 		
-		//printf("Added source exchange v%u: %u(%s)\n",sourceexchangeversion,dwID,unicode2char(Uint32toStringIP(dwID)));
 		uint16 nPort = sources->ReadUInt16();
 		uint32 dwServerIP = sources->ReadUInt32();
 		uint16 nServerPort = sources->ReadUInt16();
