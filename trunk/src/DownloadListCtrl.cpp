@@ -70,25 +70,9 @@ END_EVENT_TABLE()
 
 void preloadImages(wxImageList * imgs)
 {
-
-	imgs->Add(wxBitmap(clientImages(0)));
-	imgs->Add(wxBitmap(clientImages(1)));
-	imgs->Add(wxBitmap(clientImages(2)));
-	imgs->Add(wxBitmap(clientImages(3)));
-	imgs->Add(wxBitmap(clientImages(4)));
-	imgs->Add(wxBitmap(clientImages(5)));
-	imgs->Add(wxBitmap(clientImages(6)));
-	imgs->Add(wxBitmap(clientImages(7)));
-	imgs->Add(wxBitmap(clientImages(8)));
-	imgs->Add(wxBitmap(clientImages(9)));
-	imgs->Add(wxBitmap(clientImages(10)));
-	imgs->Add(wxBitmap(clientImages(11)));
-	imgs->Add(wxBitmap(clientImages(17)));
-	imgs->Add(wxBitmap(clientImages(18)));
-	imgs->Add(wxBitmap(clientImages(21)));
-	imgs->Add(wxBitmap(clientImages(22)));
-	imgs->Add(wxBitmap(clientImages(23)));
-	imgs->Add(wxBitmap(clientImages(24)));	
+	for (uint32 i=0; i<22; i++) {
+		imgs->Add(wxBitmap(clientImages(i)));
+	}
 }
 
 //IMPLEMENT_DYNAMIC(CDownloadListCtrl, CListBox)
@@ -843,10 +827,10 @@ void CDownloadListCtrl::DrawFileItem(wxDC * dc, int nColumn, LPRECT lpRect, Ctrl
 			case 0:{
 					// file name
 					if (lpPartFile->HasComment() || lpPartFile->HasRating()) {
-						int image = 9;
+						int image = 6;
 						if (lpPartFile->HasRating()) {
 							if (lpPartFile->HasBadRating()) {
-								image = 10;
+								image = 5;
 							}
 						}
 						// it's already centered by OnDrawItem() ... 
@@ -1121,48 +1105,69 @@ void CDownloadListCtrl::DrawSourceItem(wxDC * dc, int nColumn, LPRECT lpRect, Ct
 						m_ImageList.Draw(3, *dc, point.x, point.y, ILD_NORMAL);
 					}
 					cur_rec.left += 20;
+					POINT point2 = { cur_rec.left, cur_rec.top + 1 };
+					uint8 clientImage;
 					if (lpUpDownClient->IsFriend()) {
-						POINT point2 = { cur_rec.left, cur_rec.top + 1 };
-						m_ImageList.Draw(6, *dc, point2.x, point.y, ILD_NORMAL);
-						cur_rec.left += 20;
-					} else if (lpUpDownClient->ExtProtocolAvailable() && lpUpDownClient->GetClientSoft() == SO_AMULE) {
-						POINT point2 = { cur_rec.left, cur_rec.top + 1 };
-						if (lpUpDownClient->Credits() && lpUpDownClient->Credits()->GetCurrentIdentState(lpUpDownClient->GetIP()) == IS_IDENTIFIED) {
-							m_ImageList.Draw(15, *dc, point2.x, point.y, ILD_NORMAL);
-						} else {
-							m_ImageList.Draw(12, *dc, point2.x, point.y, ILD_NORMAL);		
-						}
-						cur_rec.left += 20;
-					} else if (lpUpDownClient->ExtProtocolAvailable()) {
-						POINT point2 = { cur_rec.left, cur_rec.top + 1 };
-						if (lpUpDownClient->Credits() && lpUpDownClient->Credits()->GetCurrentIdentState(lpUpDownClient->GetIP()) == IS_IDENTIFIED) {
-							m_ImageList.Draw(14, *dc, point2.x, point.y, ILD_NORMAL);
-						} else {
-							m_ImageList.Draw(5, *dc, point2.x, point.y, ILD_NORMAL);		
-						}														
-						cur_rec.left += 20;
+						clientImage = 13;
 					} else {
-						POINT point2 = { cur_rec.left, cur_rec.top + 1 };
-						if (lpUpDownClient->GetClientSoft() == SO_MLDONKEY || lpUpDownClient->GetClientSoft() == SO_NEW_MLDONKEY) {
-							m_ImageList.Draw(8, *dc, point2.x, point.y, ILD_NORMAL);
-						} else if (lpUpDownClient->GetClientSoft() == SO_AMULE) {
-							if (lpUpDownClient->Credits() && lpUpDownClient->Credits()->GetCurrentIdentState(lpUpDownClient->GetIP()) == IS_IDENTIFIED) {
-								m_ImageList.Draw(17, *dc, point2.x, point.y, ILD_NORMAL);
-							} else {
-								m_ImageList.Draw(13, *dc, point2.x, point.y, ILD_NORMAL);
-							}						
-						} else if (lpUpDownClient->GetClientSoft() == SO_EDONKEYHYBRID) {
-							m_ImageList.Draw(11, *dc, point2.x, point.y, ILD_NORMAL);
-						} else {
-							if (lpUpDownClient->Credits() && lpUpDownClient->Credits()->GetCurrentIdentState(lpUpDownClient->GetIP()) == IS_IDENTIFIED) {
-								m_ImageList.Draw(16, *dc, point2.x, point.y, ILD_NORMAL);
-							} else {
-								m_ImageList.Draw(7, *dc, point2.x, point.y, ILD_NORMAL);		
-							}														
-						}
-						cur_rec.left += 20;
+						switch (lpUpDownClient->GetClientSoft()) {
+							case SO_AMULE: 
+								clientImage = 17;
+								break;
+							case SO_MLDONKEY:
+							case SO_NEW_MLDONKEY:
+							case SO_NEW2_MLDONKEY:
+								clientImage = 15;
+								break;
+							case SO_EDONKEY:
+							case SO_EDONKEYHYBRID:
+								// Maybe we would like to make different icons?
+								clientImage = 16;
+								break;
+							case SO_EMULE:
+								clientImage = 14;
+								break;
+							case SO_LPHANT:
+								clientImage = 18;
+								break;
+							case SO_SHAREAZA:
+								clientImage = 19;
+								break;
+							case SO_LXMULE:
+								clientImage = 20;
+								break;
+							default:
+								// cDonkey, Compat Unk
+								// No icon for those yet. Using the eMule one + '?'
+								clientImage = 21;
+								break;
+						}	
 					}
-
+					
+					m_ImageList.Draw(clientImage, *dc, point2.x, point.y, ILD_NORMAL);
+					
+					if (lpUpDownClient->ExtProtocolAvailable()) {
+						// Ext protocol -> Draw the '+'
+						m_ImageList.Draw(7, *dc, point2.x, point.y, ILD_NORMAL);		
+					}
+					
+					if (lpUpDownClient->Credits()) {
+						switch (lpUpDownClient->Credits()->GetCurrentIdentState(lpUpDownClient->GetIP())) {
+							case IS_IDENTIFIED:
+								// the 'v'
+								m_ImageList.Draw(8, *dc, point2.x, point.y, ILD_NORMAL);
+								break;		
+							case IS_IDBADGUY:
+								// the 'X'
+								m_ImageList.Draw(9, *dc, point2.x, point.y, ILD_NORMAL);
+								break;
+							default:
+								break;
+						}
+					}
+					
+					cur_rec.left += 20;					
+					
 					if (!lpUpDownClient->GetUserName()) {
 						buffer = "?";
 					} else {
