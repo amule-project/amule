@@ -535,7 +535,7 @@ void CServerList::AddServersFromTextFile(wxString strFilename,bool isstaticserve
 
 		// create server object and add it to the list
 		CServer* nsrv = new CServer(atoi(unicode2char(strPort)), strHost);
-		nsrv->SetListName((char*) unicode2char(strName));
+		nsrv->SetListName(strName);
 
 		// emanuelw(20030924) fix: isstaticserver now is used! before it was always true
 		nsrv->SetIsStaticMember(isstaticserver);
