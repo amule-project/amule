@@ -1752,10 +1752,11 @@ void CUpDownClient::SendSecIdentStatePacket(){
 	uint8 nValue = 0;
 	if (credits){
 		if (theApp.clientcredits->CryptoAvailable()){
-			if (credits->GetSecIDKeyLen() == 0)
+			if (credits->GetSecIDKeyLen() == 0) {
 				nValue = IS_KEYANDSIGNEEDED;
-			else if (m_dwLastSignatureIP != GetIP())
+			} else if (m_dwLastSignatureIP != GetIP()) {
 				nValue = IS_SIGNATURENEEDED;
+			}
 		}
 		if (nValue == 0){
 			theApp.amuledlg->AddDebugLogLine(false, "Not sending SecIdentState Packet, because State is Zero");
