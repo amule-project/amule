@@ -44,6 +44,11 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		  manual patching for wxFIXED_MINSIZE required.
 		* Fix for rommel's report of IP filter problem.
 
+	Ken:
+		* Fixed Mac bug: window was a little larger each restart
+		* Fixed aMule.tmpl so Safari can work with amuleweb
+		* On Mac, enabled Command-clicking in lists to toggle selection
+
 	Special Thanks To:
 		* Bug and feature reporters:
 		rommel
