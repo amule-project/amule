@@ -261,7 +261,7 @@ void CamuleDlg::ShowED2KLinksHandler( bool show )
 		wxLogWarning(wxT("Unable to find Fast ED2K Links handler sizer! Hiding FED2KLH aborted."));
 		return;
 	}
-	s_fed2klh->Show(show);
+	
 	s_dlgcnt->Show( s_fed2klh, show );
 	s_dlgcnt->Layout();
 }
