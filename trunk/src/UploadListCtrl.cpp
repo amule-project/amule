@@ -65,23 +65,6 @@ CUploadListCtrl::CUploadListCtrl(wxWindow*& parent,int id,const wxPoint& pos,wxS
 	for (uint32 i=0; i<22; i++) {
 		imagelist.Add(wxBitmap(clientImages(i)));
 	}
-	#if 0
-	// load images
-	imagelist.Add(wxBitmap(clientImages(7)));
-	imagelist.Add(wxBitmap(clientImages(5)));
-	imagelist.Add(wxBitmap(clientImages(12)));
-	imagelist.Add(wxBitmap(clientImages(13)));
-	imagelist.Add(wxBitmap(clientImages(6)));
-	imagelist.Add(wxBitmap(clientImages(8)));
-	imagelist.Add(wxBitmap(clientImages(14)));
-	imagelist.Add(wxBitmap(clientImages(11)));
-	imagelist.Add(wxBitmap(clientImages(15)));
-	imagelist.Add(wxBitmap(clientImages(16)));
-	imagelist.Add(wxBitmap(clientImages(17)));
-	imagelist.Add(wxBitmap(clientImages(18)));
-	imagelist.Add(wxBitmap(clientImages(19)));
-	imagelist.Add(wxBitmap(clientImages(20)));
-	#endif
 }
 
 void CUploadListCtrl::Init()
