@@ -2529,9 +2529,9 @@ uint8 CPartFile::PerformFileComplete()
 			completed_errno |= UNEXP_FILE_ERROR;
 			paused = true;
 			SetPartFileStatus(PS_ERROR);
-		//	wxMutexGuiEnter();
+			wxMutexGuiEnter();
 			theApp.downloadqueue->StartNextFile();
-		//	wxMutexGuiLeave();
+			wxMutexGuiLeave();
 			return FALSE;
 		}
 		if ( !wxRemoveFile(partfilename) ) {
@@ -2560,16 +2560,16 @@ uint8 CPartFile::PerformFileComplete()
 	SetAutoUpPriority(false);
 	theApp.downloadqueue->RemoveFile(this);
 	//theApp.amuledlg->transferwnd.downloadlistctrl.UpdateItem(this);
-	//wxMutexGuiEnter();
+	wxMutexGuiEnter();
 	UpdateDisplayedInfo();
 	theApp.amuledlg->transferwnd->downloadlistctrl->ShowFilesCount();
-//	wxMutexGuiLeave();
+	wxMutexGuiLeave();
 	//SHAddToRecentDocs(SHARD_PATH, fullname); // This is a real nasty call that takes ~110 ms on my 1.4 GHz Athlon and isn't really needed afai see...[ozon]
 	// Barry - Just in case
 	transfered = m_nFileSize;
-//	wxMutexGuiEnter();
+	wxMutexGuiEnter();
 	theApp.downloadqueue->StartNextFile();
-//	wxMutexGuiLeave();
+	wxMutexGuiLeave();
 	
 	return completed_errno;
 }
