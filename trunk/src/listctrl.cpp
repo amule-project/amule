@@ -693,6 +693,9 @@ public:
     void OnScroll(wxScrollWinEvent& event) ;
 
     void OnPaint( wxPaintEvent &event );
+	void OnErase( wxEraseEvent& event ) {
+		event.Skip( !HasFlag(wxLC_OWNERDRAW) );
+	}
 
     void DrawImage( int index, wxDC *dc, int x, int y );
     void GetImageSize( int index, int &width, int &height ) const;
@@ -2419,6 +2422,7 @@ IMPLEMENT_DYNAMIC_CLASS(wxODListMainWindow,wxScrolledWindow)
 
 BEGIN_EVENT_TABLE(wxODListMainWindow,wxScrolledWindow)
   EVT_PAINT          (wxODListMainWindow::OnPaint)
+  EVT_ERASE_BACKGROUND (wxODListMainWindow::OnErase)
   EVT_MOUSE_EVENTS   (wxODListMainWindow::OnMouse)
   EVT_CHAR           (wxODListMainWindow::OnChar)
   EVT_KEY_DOWN       (wxODListMainWindow::OnKeyDown)
@@ -2995,15 +2999,35 @@ void wxODListMainWindow::OnPaint( wxPaintEvent &WXUNUSED(event) )
                 continue;
             }
 
-	    if(HasFlag(wxLC_OWNERDRAW)) {
-	      ((wxODListCtrl*)m_parent)->OnDrawItem(line,&dc,rectLine,GetLineHighlightRect(line),IsHighlighted(line));
-	    } else {
-	      GetLine(line)->DrawInReportMode( &dc,
-					       rectLine,
-					       GetLineHighlightRect(line),
-					       IsHighlighted(line) );
-	    }
+			if ( HasFlag(wxLC_OWNERDRAW) ) {
+				((wxODListCtrl*)m_parent)->OnDrawItem(line,&dc,rectLine,GetLineHighlightRect(line),IsHighlighted(line));
+			} else {
+				GetLine(line)->DrawInReportMode( &dc,
+												 rectLine,
+												 GetLineHighlightRect(line),
+												 IsHighlighted(line) );
+	    	}
         }
+
+		// Clean up after the last item, because we ignore ERASE_BACKGROUND events
+		if ( HasFlag(wxLC_OWNERDRAW) && ( visibleTo + 1 == GetItemCount() ) ) {
+			// Get the last visible item, anything below is cleared
+			wxRect last = GetLineRect(visibleTo);
+
+			// The the actual display size
+			int width = 0, height = 0;
+			GetClientSize( &width, &height );
+		
+			// Since visibleTo can include items partly past the bottom, we have
+			// ensure that we dont overwrite items below the visible area
+			if ( last.GetBottom() < height ) {
+				dc.SetPen( wxPen( GetBackgroundColour(), 1, wxSOLID) );
+				dc.SetBrush( wxBrush( GetBackgroundColour(), wxSOLID ) );
+		
+				// Clear the area below the last visible item
+				dc.DrawRectangle( 0, last.GetBottom(), last.GetWidth(), height - last.GetBottom() );
+			}
+		}
 
         if ( HasFlag(wxLC_HRULES) )
         {
