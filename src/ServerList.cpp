@@ -302,7 +302,7 @@ void CServerList::ServerStats()
 			uint32 randomness = 1 + (int) (((float)(0xFFFF))*rand()/(RAND_MAX+1.0));
 			uint32 uDescReqChallenge = ((uint32)randomness << 16) + INV_SERV_DESC_LEN; // 0xF0FF = an 'invalid' string length.
 			packet = new Packet( OP_SERVER_DESC_REQ,4);
-			packet->CopyUInt32ToDataBuffer(uDescReqChallenge);
+			packet->CopyUInt32ToDataBuffer(ENDIAN_SWAP_32(uDescReqChallenge));
 			theApp.uploadqueue->AddUpDataOverheadServer(packet->GetPacketSize());
 			theApp.serverconnect->SendUDPPacket(packet, ping_server, true);
 		} else {
