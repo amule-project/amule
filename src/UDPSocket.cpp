@@ -148,7 +148,7 @@ CUDPSocket::~CUDPSocket(){
 	//m_udpwnd.DestroyWindow();
 }
 
-void CUDPSocket::OnReceive(int WXUNUSED(nErrorCode)){
+void CUDPSocket::OnReceive(int WXUNUSED(nErrorCode)) {
 	char buffer[5000];
 	wxString serverbuffer;
 	//uint32 port;
@@ -176,8 +176,9 @@ bool CUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, const wxSt
 		// Imported: OP_GLOBSEARCHRES, OP_GLOBFOUNDSORUCES (yes, soruces)  & OP_GLOBSERVSTATRES
 		// This makes Server UDP Flags to be set correctly so we use less bandwith on asking servers for sources
 		// Also we process Search results and Found sources correctly now on 16.40 behaviour.
+//		printf("UDP packet processing\n");
 		switch(opcode){
-			case OP_GLOBSEARCHRES:{
+			case OP_GLOBSEARCHRES: {
 				theApp.downloadqueue->AddDownDataOverheadOther(size);
 				CSafeMemFile* data = new CSafeMemFile((BYTE*)packet,size);
 				// process all search result packets
@@ -214,6 +215,7 @@ bool CUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, const wxSt
 				break;
 			}
 			case OP_GLOBFOUNDSORUCES:{
+//				printf("Sources coming...\n");
 				theApp.downloadqueue->AddDownDataOverheadOther(size);
 				CSafeMemFile* data = new CSafeMemFile((BYTE*)packet,size);
 				// process all source packets
@@ -532,7 +534,7 @@ void CUDPSocket::SendPacket(Packet* packet,CServer* host){
 void *CUDPSocket::Entry()
 {
 	while ( !TestDestroy() ) {
-		if ( WaitForRead(0, 10) ) {
+		if ( WaitForRead(0, 1000) ) {
 			CALL_APP_DATA_LOCK;
 			OnReceive(0);
 		}
