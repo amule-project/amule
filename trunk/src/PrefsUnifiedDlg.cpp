@@ -133,6 +133,7 @@ PrefsPage pages[] =
     {
         { _("General"),				PreferencesGeneralTab,			13,	NULL },
         { _("Connection"),			PreferencesConnectionTab,		14,	NULL },
+		{ _("Message Filter"),      PreferencesMessagesTab,         23, NULL },
         { _("Remote Controls"),		PreferencesRemoteControlsTab,	11,	NULL },
         { _("Online Signature"),	PreferencesOnlineSigTab,	 	21,	NULL },
         { _("Server"),				PreferencesServerTab,			15,	NULL },
