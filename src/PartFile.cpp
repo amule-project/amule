@@ -3016,7 +3016,15 @@ void CPartFile::UpdateAvailablePartsCount()
 	uint16 iPartCount = GetPartCount();
 	for (uint32 ixPart = 0; ixPart < iPartCount; ixPart++) {		
 		for(POSITION pos = m_SrcList.GetHeadPosition(); pos;) {
-			if (m_SrcList.GetNext(pos)->IsPartAvailable(ixPart)) {
+#ifdef __DEBUG__
+#warning phoenix - caught one insane source here in a backtrace - IV
+			CUpDownClient* cur_src = m_SrcList.GetNext(pos);
+			if (!cur_src->IsASaneUpDownClient(true, "CPartFile::UpdateAvailablePartsCount", __FILE__, __LINE__)) {
+				debugprintf(true,"\tcontinue4\n");
+				continue;
+			}
+#endif __DEBUG__
+			if (cur_src->IsPartAvailable(ixPart)) {
 				availablecounter++;
 				break;
 			}
