@@ -26,6 +26,7 @@
 #include <wx/sizer.h>		// Needed for wxSizer
 #include <wx/menu.h>
 #include <wx/msgdlg.h>
+#include <wx/stattext.h>
 
 #include "TransferWnd.h"	// Interface declarations
 #include "amuleDlg.h"		// Needed for CamuleDlg

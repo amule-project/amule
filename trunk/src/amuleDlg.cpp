@@ -32,6 +32,7 @@
 #include <wx/msgdlg.h>
 #include <wx/log.h>
 #include <wx/statbmp.h>
+#include <wx/stattext.h>
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
