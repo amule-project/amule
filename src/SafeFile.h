@@ -158,12 +158,12 @@ __inline uint8 PeekUInt8(const void* p)
 
 __inline uint16 PeekUInt16(const void* p)
 {
-	return *((uint16*)p);
+	return ENDIAN_SWAP_16(*((uint16*)p));
 }
 
 __inline uint32 PeekUInt32(const void* p)
 {
-	return *((uint32*)p);
+	return ENDIAN_SWAP_32(*((uint32*)p));
 }
 
 
