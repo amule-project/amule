@@ -492,7 +492,7 @@ yes)
 	CXX="$CXX"
 esac
 
-AC_CONFIG_FILES([src/Makefile src/pixmaps/Makefile src/utils/Makefile src/utils/aLinkCreator/Makefile src/utils/aLinkCreator/src/Makefile src/utils/cas/Makefile src/utils/wxCas/Makefile src/utils/wxCas/doc/Makefile src/utils/wxCas/src/Makefile src/utils/xas/Makefile src/webserver/Makefile src/kademlia/Makefile src/kademlia/utils/Makefile intl/Makefile po/Makefile.in m4/Makefile docs/Makefile Makefile Compilation.flags])
+AC_CONFIG_FILES([src/Makefile src/pixmaps/Makefile src/utils/Makefile src/utils/aLinkCreator/Makefile src/utils/aLinkCreator/src/Makefile src/utils/cas/Makefile src/utils/wxCas/Makefile src/utils/wxCas/src/Makefile src/utils/xas/Makefile src/webserver/Makefile src/kademlia/Makefile src/kademlia/utils/Makefile intl/Makefile po/Makefile.in m4/Makefile docs/Makefile Makefile Compilation.flags])
 AC_OUTPUT
 
 echo
