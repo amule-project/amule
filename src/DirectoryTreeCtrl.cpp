@@ -159,7 +159,7 @@ void CDirectoryTreeCtrl::AddChildItem(wxTreeItemId hBranch, wxString const& strT
 {
 	wxString strDir = GetFullPath(hBranch);
 	size_t len = strDir.Len();
-	if (hBranch.IsOk() && len > 0 && strDir.c_str()[len - 1] != '/') {
+	if (hBranch.IsOk() && len > 0 && strDir.Last() != wxT('/')) {
 		strDir += wxT("/");
 	}
 	strDir += strText;
@@ -247,7 +247,7 @@ void CDirectoryTreeCtrl::SetSharedDirectories(wxArrayString* list)
 	for (unsigned int i = 0; i < list->GetCount(); ++i) {
 		wxString const* str = &list->Item(i);
 		size_t len = str->Len();
-		if (len > 0 && str->c_str()[len - 1] != '/')
+		if (len > 0 && str->Last() != wxT('/'))
 		{
 			tmp = *str;
 			tmp += '/';
@@ -265,25 +265,25 @@ void CDirectoryTreeCtrl::SetSharedDirectories(wxArrayString* list)
 
 bool CDirectoryTreeCtrl::HasSharedSubdirectory(wxString const& strDir)
 {
-	wxChar const* pStrDir = strDir.c_str();				// c_str() is fast (just returns a pointer).
-	size_t strDirLen = strDir.Len();
-	while(strDirLen > 0 && pStrDir[strDirLen - 1] == '/')
-		--strDirLen;						// Minus possible trailing slashes.
+	wxString tStrDir = strDir;
+	while(tStrDir.Len() > 0 && tStrDir.Last() == wxT('/'))
+		tStrDir.RemoveLast();						// Minus possible trailing slashes.
+	tStrDir += wxT("/"); // last char always a / 
+	size_t tStrDirLen = tStrDir.Len() // Speed reasons
 	for (unsigned int i = 0; i < m_lstShared.GetCount(); ++i)
 	{
 		wxString const& str(m_lstShared[i]);
-		size_t strLen = str.Len();
-		if (strDirLen < strLen - 1)				// Minus 1 strips trailing slash of str.
+		if (tStrDirLen < str.Len() - 1)				// Minus 1 strips trailing slash of str.
 		{
-			wxChar const* pStr = str.c_str();
 			if (
 #ifdef __UNIX__
-			    wxStrncmp(pStrDir, pStr, strDirLen) == 0 &&
+			    str.StartsWith(tStrDir) 
 #else
-			    wxStrnicmp(pStrDir, pStr, strDirLen) == 0 &&
+			    str.MakeLower().StartsWith(tStrDir.MakeLower())
 #endif
-			    pStr[strDirLen] == '/')
-				return true;
+				) {
+					return true;
+				}
 		}
 	}
 	return false;
@@ -309,24 +309,28 @@ void CDirectoryTreeCtrl::CheckChanged(wxTreeItemId hItem, bool bChecked)
 
 bool CDirectoryTreeCtrl::IsShared(wxString const& strDir)
 {
-	wxChar const* pStrDir = strDir.c_str();				// c_str() is fast (just returns a pointer).
-	size_t strDirLen = strDir.Len();
-	while(strDirLen > 1 && pStrDir[strDirLen - 1] == '/')
-		--strDirLen;						// Minus possible trailing slashes.
+	while(tStrDir.Len() > 0 && tStrDir.Last() == wxT('/'))
+		tStrDir.RemoveLast();						// Minus possible trailing slashes.
+	tStrDir += wxT("/"); // last char always a / 
+	size_t tStrDirLen = tStrDir.Len() // Speed reasons
 	for (unsigned int i = 0; i < m_lstShared.GetCount(); ++i)
 	{
 		wxString const& str(m_lstShared[i]);
-		if (strDirLen == str.Len() - 1 &&			// Minus 1 because str ends on a slash.
+		if (tStrDirLen < str.Len() - 1)				// Minus 1 strips trailing slash of str.
+		{
+			if (
 #ifdef __UNIX__
-			    wxStrncmp(pStrDir, str.c_str(), strDirLen) == 0
+			    str.Cmp(tStrDir)
 #else
-			    wxStrnicmp(pStrDir, str.c_str(), strDirLen) == 0
+			    str.CmpNoCase(tStrDir)
 #endif
-		    ) {
-			return true;
-			}
+				) {
+					return true;
+				}
+		}
 	}
-	return false;
+	return false;	
+	
 }
 
 void CDirectoryTreeCtrl::AddShare(wxString strDir)
