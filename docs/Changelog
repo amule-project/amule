@@ -28,8 +28,10 @@ Version 2.0.0-rc2 - The Unnamed version.
 		   When publishing a file, we also inform the server if the file is complete or not.
 		   Search results show the count of complete sources sent by the server next to the sources
 		   found: i.e. 100 (28) meaning 100 sources, 28 of them complete (72 incomplete or old client)
-		* Added parsing of the new 0.4x eMule tags on hello packets.
 		* Added sending of the extended emule version using amule version, with additional rc version
+		* Added parsing of the new 0.4x eMule tags on hello packets.		
+		* Added parsing the Secure Ident packets for new eMule versions. Reduce overhead on download/upload.
+		* Added HandShake check on upload request.
 		* Rewrote display of client version on transfers page to handle the client soft/version correctly on any client.
 		   That means eDonkeyHybrids and eMule does show now the correct version (i.e edonkey 0.50.1 or emule 0.42d)
 		   aMule shows now as either "aMule (based on eMule v0.xx)" (< 2.0.0-rc1) or aMule "A.B.C-rcX" (>= 2.0.0-rc2)
