@@ -211,10 +211,6 @@ void CSearchDlg::OnSearchPageChanged(wxNotebookEvent& WXUNUSED(evt))
 
 void CSearchDlg::OnBnClickedStart(wxCommandEvent& WXUNUSED(evt))
 {
-	if ( !m_notebook->GetPageCount() ) {
-		s_searchresults->Show(s_stext, false);
-		s_searchresults->Show(s_sresults);
-	}
 	wxString searchString = CastChild( IDC_SEARCHNAME, wxTextCtrl )->GetValue();
 	searchString.Trim(true);
 	searchString.Trim(false);	
@@ -223,6 +219,10 @@ void CSearchDlg::OnBnClickedStart(wxCommandEvent& WXUNUSED(evt))
 		return;
 	}
 
+	if ( !m_notebook->GetPageCount() ) {
+		s_searchresults->Show(s_stext, false);
+		s_searchresults->Show(s_sresults);
+	}
 
 	wxChoice* choice = CastChild( ID_SEARCHTYPE, wxChoice );
 
