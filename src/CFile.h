@@ -74,7 +74,7 @@ public:
 		// def ctor
 	CFile() { m_fd = fd_invalid; m_error = FALSE; }
 		// open specified file (may fail, use IsOpened())
-	CFile(const wxChar *szFileName, OpenMode mode = read);
+	CFile(const wxString& szFileName, OpenMode mode = read);
 		// attach to (already opened) file
 	CFile(int fd) { m_fd = fd; m_error = FALSE; }
 
@@ -84,8 +84,8 @@ public:
 		// create a new file (with the default value of bOverwrite, it will fail if
 		// the file already exists, otherwise it will overwrite it and succeed)
 		// Default permissions will use the ones specified through CPreferences::GetFilePermissions
-	virtual bool Create(const wxChar *szFileName, bool bOverwrite = FALSE, int access = -1 );
-	virtual bool Open(const wxChar *szFileName, OpenMode mode = read, int access = -1 );
+	virtual bool Create(const wxString& szFileName, bool bOverwrite = FALSE, int access = -1 );
+	virtual bool Open(const wxString& szFileName, OpenMode mode = read, int access = -1 );
 	// Kry -Added for windoze compatibility.
 	off_t GetLength() const { return Length(); }
 

@@ -45,6 +45,7 @@ CKnownFileList::~CKnownFileList() {
 
 bool CKnownFileList::Init() {
 	CSafeFile file;
+	uint32 result = false;
 	try {
 		
 		wxString fullpath(theApp.ConfigDir + wxT("known.met"));
@@ -52,18 +53,14 @@ bool CKnownFileList::Init() {
 			return false;
 		}
 		
-		uint8 header;
 		file.Open(fullpath);
-		file.Read(&header,1);
-		if (header != MET_HEADER) {
+		if (file.ReadUInt8() /*header*/ != MET_HEADER) {
 			file.Close();
 			return false;
 		}
 		//CSingleLock sLock(&list_mut,true); // to make sure that its thread-safe
 		wxMutexLocker sLock(list_mut);
-		uint32 RecordsNumber;
-		file.Read(&RecordsNumber,4);
-		ENDIAN_SWAP_I_32(RecordsNumber);
+		uint32 RecordsNumber = file.ReadUInt32();
 		for (uint32 i = 0; i != RecordsNumber; i++) {
 			CKnownFile* pRecord =  new CKnownFile();
 			if (!pRecord->LoadFromFile(&file)){
@@ -75,25 +72,12 @@ bool CKnownFileList::Init() {
 		}
 		//sLock.Unlock();
 		file.Close();
-		return true;
+		result = true;
+	} catch (...) {
+		AddLogLineM(true,_("Error reading known.met file! (corrupted?)\n"));
 	}
-#if 0
-	catch(CFileException* error) {
-		if (error->m_cause == CFileException::endOfFile)
-			AddLogLineM(true, _("Error: the file known.met is corrupted, unable to load known files"));
-		else{
-			char buffer[150];
-			error->GetErrorMessage(buffer,150);
-			AddLogLineM(true, _("Unexpected file error while reading known.met: %s, unable to load known files"), buffer);
-		}
-		error->Delete();	//memleak fix
-		return false;
-	}
-#endif
-	catch (...) {
-		printf("Caught unknown exception on CKnownFileList::Init()\n");
-		return false;
-	}
+	
+	return result;
 }
 
 void CKnownFileList::Save() {

@@ -216,9 +216,7 @@ void CClientCreditsList::LoadList()
 		}	
 	
 	
-		uint32 count;
-		file.Read(&count, 4);
-		ENDIAN_SWAP_I_32(count);
+		uint32 count = file.ReadUInt32();
 
 		const uint32 dwExpired = time(NULL) - 12960000; // today - 150 day
 		uint32 cDeleted = 0;

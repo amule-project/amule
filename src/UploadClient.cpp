@@ -312,17 +312,16 @@ void CUpDownClient::CreateStandartPackets(const byte* data,uint32 togo, Requeste
 			if (togo < nPacketSize*2)
 				nPacketSize = togo;
 			togo -= nPacketSize;
-
-			Packet* packet = new Packet(OP_SENDINGPART,nPacketSize+24);
-			packet->CopyToDataBuffer(0, (const char *)GetUploadFileID().GetHash(), 16);
-			uint32 statpos = ENDIAN_SWAP_32((currentblock->EndOffset - togo) - nPacketSize);	
-			packet->CopyToDataBuffer(16, (const char *)&statpos, 4);
-			uint32 endpos = ENDIAN_SWAP_32((currentblock->EndOffset - togo));	
-			packet->CopyToDataBuffer(20, (const char *)&endpos, 4);
+			
+			CSafeMemFile data(nPacketSize+24);
+			data.WriteHash16(GetUploadFileID().GetHash());
+			data.WriteUInt32((currentblock->EndOffset - togo) - nPacketSize);
+			data.WriteUInt32((currentblock->EndOffset - togo));
 			char *tempbuf = new char[nPacketSize];
 			memfile.Read(tempbuf, nPacketSize);
-			packet->CopyToDataBuffer(24, tempbuf, nPacketSize);
+			data.Write(tempbuf, nPacketSize);
 			delete [] tempbuf;
+			Packet* packet = new Packet(&data,OP_EMULEPROT,OP_SENDINGPART);
 			m_BlockSend_queue.AddTail(packet);
 		}
 	} catch (...) {
@@ -342,7 +341,6 @@ void CUpDownClient::CreatePackedPackets(const byte* data,uint32 togo, Requested_
 	
 	try {
 		CMemFile memfile(output,newsize);
-		uint32 endiannewsize = ENDIAN_SWAP_32(newsize);	
 		togo = newsize;
 		uint32 nPacketSize;
 		if (togo > 10240) 
@@ -355,15 +353,15 @@ void CUpDownClient::CreatePackedPackets(const byte* data,uint32 togo, Requested_
 				nPacketSize = togo;
 			togo -= nPacketSize;
 
-			Packet* packet = new Packet(OP_COMPRESSEDPART,nPacketSize+24,OP_EMULEPROT);
-			packet->CopyToDataBuffer(0, (const char *)GetUploadFileID().GetHash(), 16);
-			uint32 statpos = ENDIAN_SWAP_32(currentblock->StartOffset);
-			packet->CopyToDataBuffer(16, (const char *)&statpos, 4);
-			packet->CopyToDataBuffer(20, (const char *)&endiannewsize, 4);
+			CSafeMemFile data(nPacketSize+24);
+			data.WriteHash16(GetUploadFileID().GetHash());
+			data.WriteUInt32(currentblock->StartOffset);
+			data.WriteUInt32(newsize);			
 			char *tempbuf = new char[nPacketSize];
 			memfile.Read(tempbuf, nPacketSize);
-			packet->CopyToDataBuffer(24, tempbuf, nPacketSize);
+			data.Write(tempbuf,nPacketSize);
 			delete [] tempbuf;
+			Packet* packet = new Packet(&data, OP_EMULEPROT, OP_COMPRESSEDPART);
 			m_BlockSend_queue.AddTail(packet);
 		}
 		delete[] output;

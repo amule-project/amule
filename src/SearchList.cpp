@@ -104,11 +104,13 @@ Packet *CreateSearchPacket(wxString &searchString, wxString& typeText,
 	const byte typeParameter = 2;
 	const byte numericParameter = 3;
 	const uint16 andParameter = 0x0000;	
-	const uint32 typeNemonic = 0x00030001;
+	// Kry - sadly, it has to keep like this, It's 3 bytes, god knows why.
+	// So we can't use any WriteUInt*
+	const char typeNemonic[3] = {0x01,0x00,0x03};
+	const char extensionNemonic[3] = {0x01,0x00,0x04};
 	const uint32 minNemonic = 0x02000101;
 	const uint32 maxNemonic = 0x02000102;
 	const uint32 avaibilityNemonic = 0x15000101;
-	const uint32 extensionNemonic = 0x00040001;
 	
 	for ( int i = 0; i < parametercount - 1; ++i )
 		data->WriteUInt16(andParameter);
@@ -122,12 +124,7 @@ Packet *CreateSearchPacket(wxString &searchString, wxString& typeText,
 	if ( !typeText.IsEmpty() ) {
 		data->WriteUInt8( typeParameter );		// Search-Type is a type parameter type
 		data->WriteString( typeText ); 			// Write the parameter
-#if wxBYTE_ORDER == wxLITTLE_ENDIAN
-		data->Write(&typeNemonic, 3); 		// Nemonic for this kind of parameter (only 3 bytes!!)
-#else
-		uint32 endian_corrected = ENDIAN_SWAP_32(typeNemonic);
-		data->Write(&endian_corrected, 3); 	// Nemonic for this kind of parameter (only 3 bytes!!)
-#endif
+		data->Write(typeNemonic, 3); 		// Nemonic for this kind of parameter (only 3 bytes!!)
 	}
 	
 	if ( min > 0 ) {
@@ -151,12 +148,7 @@ Packet *CreateSearchPacket(wxString &searchString, wxString& typeText,
 	if ( !extension.IsEmpty() ) {
 		data->WriteUInt8( stringParameter );	// Write the parameter type
 		data->WriteString( extension );			// Write the parameter
-#if wxBYTE_ORDER == wxLITTLE_ENDIAN
-		data->Write(&extensionNemonic, 3); // Nemonic for this kind of parameter (only 3 bytes!!)
-#else
-		uint32 endian_corrected = ENDIAN_SWAP_32(extensionNemonic);
-		data->Write(&endian_corrected, 3); // Nemonic for this kind of parameter (only 3 bytes!!)
-#endif		
+		data->Write(extensionNemonic, 3); // Nemonic for this kind of parameter (only 3 bytes!!)
 	}
 
 	Packet* packet = new Packet(data);
