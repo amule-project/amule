@@ -193,7 +193,60 @@ void CMuleNotebook::OnPopupCloseOthers(wxCommandEvent& WXUNUSED(evt))
 	}
 }
 
+#if wxCHECK_VERSION(2,5,4)
 
+void CMuleNotebook::MouseClick(wxMouseEvent &event)
+{
+
+	if (GetImageList() == NULL) {
+		// This Mulenotebook has no images on tabs, so nothing to do.
+		event.Skip();
+		return; 
+	}
+
+	long xpos, ypos;
+	event.GetPosition(&xpos, &ypos);
+	
+	long flags = 0;
+	int tab = HitTest(wxPoint(xpos,ypos),&flags);	
+	
+	if ((tab != -1) &&  (flags == wxNB_HITTEST_ONICON)) {
+		// User did click on a 'x'
+		DeletePage(tab);
+	} else {
+		// Is not a 'x'. Send this event up.
+		event.Skip();
+	}
+	
+}
+
+void CMuleNotebook::MouseMotion(wxMouseEvent &event)
+{
+
+	if (GetImageList() == NULL) {
+		// This Mulenotebook has no images on tabs, so nothing to do.
+		event.Skip();
+		return;
+	}
+	
+	long flags = 0;
+	int tab = HitTest(wxPoint(event.m_x,event.m_y),&flags);	
+
+	// Clear the highlight for all tabs.
+	for (int i=0;i<(int)GetPageCount();++i) {
+		SetPageImage(i, 0);
+	}
+	
+	if ((tab != -1) &&  (flags == wxNB_HITTEST_ONICON)) {
+		// Mouse is over a 'x'
+		SetPageImage(tab, 1);		
+	} else {
+		// Is not a 'x'. Send this event up.
+		event.Skip();
+	}
+
+}
+#else
 /**
  * Copyright (c) 2004-2005 Alo Sarv <madcat_@users.sourceforge.net>
  * Most important function in this class. Here we do some serious math to figure
@@ -345,3 +398,4 @@ void CMuleNotebook::MouseMotion(wxMouseEvent &event)
 	}
 	event.Skip();
 }
+#endif

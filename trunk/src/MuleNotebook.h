@@ -114,12 +114,14 @@ public:
 	void SetPopupHandler( wxWindow* widget );
 
 protected:
+	#if wxCHECK_VERSION(2,5,4)
 	// Madcat - closing engine
 	void CalculatePositions();   // Fills the widths/begins/ends arrays
+	wxArrayInt widths, begins, ends;       // Positions of tabs
+	#endif
+
 	void MouseClick(wxMouseEvent &event);  // Mouse clicks event handler
 	void MouseMotion(wxMouseEvent &event); // Mouse moving around
-	wxArrayInt widths, begins, ends;       // Positions of tabs
-
 	
 	/**
 	 * Event-handler for right-clicks that takes care of displaying the popup-menu.
@@ -151,4 +153,3 @@ protected:
 };
 
 #endif
-
