@@ -100,6 +100,7 @@
 #include "Statistics.h"
 #include "AICHSyncThread.h"
 #include "Logger.h"
+#include "Format.h"
 
 #ifndef AMULE_DAEMON
 	#include <wx/splash.h>			// Needed for wxSplashScreen
@@ -1312,6 +1313,23 @@ void CamuleApp::SetOSFiles(const wxString new_path)
 	}
 }
 
+
+void CamuleApp::OnAssert(const wxChar *file, int line, 
+						 const wxChar *cond, const wxChar *msg)
+{
+	if ( wxThread::IsMain() ) {
+		AMULE_APP_BASE::OnAssert( file, line, cond, msg );
+	} else {
+		wxString errmsg = CFormat( wxT("%s:%d: Assertion '%s' failed. %s\n") )
+			% file % line % cond % ( msg ? msg : wxT("") );
+
+		printf("%s\n", unicode2char( errmsg ));
+		
+		raise( SIGABRT );
+	}
+}
+
+
 void CamuleApp::OnUDPDnsDone(wxEvent& e)
 {
 	wxMuleInternalEvent& evt = *((wxMuleInternalEvent*)&e);
@@ -1319,11 +1337,13 @@ void CamuleApp::OnUDPDnsDone(wxEvent& e)
 	socket->OnHostnameResolved(evt.GetExtraLong());
 }
 
+
 void CamuleApp::OnSourceDnsDone(wxEvent& e)
 {
 	wxMuleInternalEvent& evt = *((wxMuleInternalEvent*)&e);	
 	downloadqueue->OnHostnameResolved(evt.GetExtraLong());
 }
+
 
 void CamuleApp::OnServerDnsDone(wxEvent& e)
 {
@@ -1332,6 +1352,7 @@ void CamuleApp::OnServerDnsDone(wxEvent& e)
 	CServerSocket* socket=(CServerSocket*)evt.GetClientData();	
 	socket->OnHostnameResolved(evt.GetExtraLong());
 }
+
 
 void CamuleApp::OnNotifyEvent(wxEvent& e)
 {

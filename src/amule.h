@@ -245,6 +245,11 @@ public:
 
 protected:
 	/**
+	 * Handles asserts in a thread-safe manner.
+	 */
+	void OnAssert(const wxChar *file, int line, const wxChar *cond, const wxChar *msg);
+	
+	/**
 	 * This class is used to contain log messages that are to be displayed
 	 * on the GUI, when it is currently impossible to do so. This is in order 
 	 * to allows us to queue messages till after the dialog has been created.
