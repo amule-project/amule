@@ -21,7 +21,7 @@
 #define DOWNLOADQUEUE_H
 
 #include "types.h"		// Needed for uint8, uint16, uint32 and uint64
-#include "CString.h"		// Needed for CString
+#include "position.h"
 #include <deque>
 #include <list>
 
@@ -35,7 +35,7 @@ class CSafeMemFile;
 
 struct Hostname_Entry {
 		unsigned char fileid[16];
-		CString strHostname;
+		wxString strHostname;
 		uint16 port;
 };
 
@@ -61,7 +61,7 @@ protected:
 private:
 	struct Hostname_Entry {
 		unsigned char fileid[16];
-		CString strHostname;
+		wxString strHostname;
 		uint16 port;
 	};
 	CTypedPtrList<CPtrList, Hostname_Entry*> m_toresolve;
@@ -80,7 +80,7 @@ public:
 	void	Process();
 	void	Init();
 	void	AddSearchToDownload(CSearchFile* toadd,uint8 paused=2);
-	void	AddSearchToDownload(CString link,uint8 paused=2);
+	void	AddSearchToDownload(const wxString& link,uint8 paused=2);
 	void	AddFileLinkToDownload(class CED2KFileLink* pLink);
 	bool	IsFileExisting(unsigned char* fileid);
 	bool	IsPartFile(void* totest);
@@ -138,7 +138,7 @@ public:
 	uint16	GetDownloadingFileCount();
 	uint16	GetPausedFileCount();
 	// Kry - HostNameSources
-	void AddToResolve(unsigned char* fileid, CString pszHostname, uint16 port);
+	void AddToResolve(unsigned char* fileid, const wxString& pszHostname, uint16 port);
 	bool OnHostnameResolved(struct sockaddr_in* inaddr);
 	std::deque<Hostname_Entry*> m_toresolve;
 	
