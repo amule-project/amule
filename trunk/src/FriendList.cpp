@@ -212,11 +212,15 @@ void CFriendList::StartChatSession(const CMD4Hash& userhash, uint32 dwIP, uint16
 		CUpDownClient* client = friend_client->GetLinkedClient();
 		if (!client) {
 			client = new CUpDownClient(friend_client->GetPort(), friend_client->GetIP(), 0, 0, 0);
+			client->SetIP(friend_client->GetIP());
 			client->SetUserName(friend_client->GetName());
 			theApp.clientlist->AddClient(client);
 			friend_client->LinkClient(client);			
 		}
+	} else {
+		printf("CRITICAL - no client on StartChatSession\n");
 	}
+	
 }
 	
 void CFriendList::UpdateFriendName(const CMD4Hash& userhash, const wxString& name, uint32 dwIP, uint16 nPort) {

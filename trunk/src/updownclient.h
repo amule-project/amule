@@ -519,6 +519,13 @@ public:
 	 * @return True if the socket exists, false otherwise.
 	 */
 	bool		DisableDownloadLimit();
+	
+	/**
+	 * Sends a message to a client
+	 *
+	 * @return True if sent, false if connecting
+	 */
+	bool	SendMessage(const wxString& message);
  	
 private:
 	/**
@@ -739,6 +746,7 @@ public:
 private:
 	wxString		m_clientVerString;
 	wxString 		m_sClientOSInfo;
+	wxString		m_pendingMessage;
 
 	int SecIdentSupRec;
 };

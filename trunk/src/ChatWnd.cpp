@@ -76,7 +76,7 @@ void CChatWnd::StartSession(CDlgFriend* friend_client, bool setfocus)
 		if (setfocus) {
 			theApp.amuledlg->SetActiveDialog(CamuleDlg::ChatWnd, this);
 		}
-		chatselector->StartSession(friend_client, true);
+		chatselector->StartSession(GUI_ID(friend_client->m_ip, friend_client->m_port), friend_client->m_name, true);
 	}
 }
 
@@ -84,6 +84,7 @@ void CChatWnd::StartSession(CDlgFriend* friend_client, bool setfocus)
 void CChatWnd::OnBnClickedCsend(wxCommandEvent& WXUNUSED(evt))
 {
 	wxString message = CastChild(IDC_CMESSAGE, wxTextCtrl)->GetValue();
+	
 	SendMessage(message);
 }
 
@@ -118,24 +119,24 @@ void CChatWnd::RefreshFriend(const CMD4Hash& userhash, const wxString& name, uin
 	if (toupdate) {
 		toupdate->m_name = name;
 		friendlistctrl->RefreshFriend(toupdate);
-		chatselector->RefreshFriend(toupdate);
+		chatselector->RefreshFriend(GUI_ID(toupdate->m_ip, toupdate->m_port),name);
 	}
 }
 
-void CChatWnd::ProcessMessage(CUpDownClient* sender, const wxString& message)
+void CChatWnd::ProcessMessage(uint64 sender, const wxString& message)
 {
 	chatselector->ProcessMessage(sender, message);
 }
 
-void CChatWnd::ConnectionResult(CUpDownClient* sender, bool success)
+void CChatWnd::ConnectionResult(bool success, const wxString& message, uint64 id)
 {
-	chatselector->ConnectionResult(sender, success);
+	chatselector->ConnectionResult(success, message, id);
 }
 
-void CChatWnd::SendMessage(const wxString& message, CUpDownClient* to)
+void CChatWnd::SendMessage(const wxString& message, const wxString& client_name, uint64 to_id)
 {
 	
-	if (chatselector->SendMessage( message, to )) {
+	if (chatselector->SendMessage( message, client_name, to_id )) {
 		CastChild(IDC_CMESSAGE, wxTextCtrl)->Clear();
 	}
 

@@ -46,10 +46,10 @@ public:
 	void	AddFriend(const CMD4Hash& userhash, const wxString& name, uint32 lastUsedIP, uint32 lastUsedPort);
 	void	RefreshFriend(const CMD4Hash& userhash, const wxString& name, uint32 lastUsedIP, uint32 lastUsedPort);
 
-	void	ProcessMessage(CUpDownClient* sender, const wxString& message);
-	void 	ConnectionResult(CUpDownClient* sender, bool success);
+	void	ProcessMessage(uint64 sender, const wxString& message);
+	void 	ConnectionResult(bool success, const wxString& message, uint64 id);
 
-	void	SendMessage(const wxString& message, CUpDownClient* to = NULL);
+	void	SendMessage(const wxString& message, const wxString& client_name = wxEmptyString, uint64 to_id = 0);
 		
 protected:
 	void	OnBnClickedCsend(wxCommandEvent& evt);

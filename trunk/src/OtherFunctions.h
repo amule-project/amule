@@ -314,6 +314,13 @@ void DumpMem_DW(const uint32 *ptr, int count);
 // Prints backtrace
 void print_backtrace(uint8 n);
 
+// Returns special source ID for GUI.
+// It's actually IP<<16+Port
+#define GUI_ID(x,y) (uint64)((((uint64)x)<<16) + (uint64)y)
+// And so...
+#define PORT_FROM_GUI_ID(x) (x & 0xFFFF)
+#define IP_FROM_GUI_ID(x) (x >> 16)
+
 /*!
  * General purpose RLE implementation. Just encode or create
  * differential data with previous

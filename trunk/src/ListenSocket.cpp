@@ -865,7 +865,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					}
 					m_client->m_bMsgFiltered=true;
 				} else {
-					Notify_ChatProcessMsg(m_client, message);
+					Notify_ChatProcessMsg(GUI_ID(m_client->GetIP(),m_client->GetUserPort()), m_client->GetUserName() + wxT("|") + message);
 				}
 				break;
 			}

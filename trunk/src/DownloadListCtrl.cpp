@@ -876,7 +876,8 @@ void CDownloadListCtrl::OnSendMessage( wxCommandEvent& WXUNUSED(event) )
 			_("Send message to user"),
 			_("Message to send:"));
 		if ( !message.IsEmpty() ) {
-			theApp.amuledlg->chatwnd->SendMessage(message, source);
+			#warning EC NEEDED
+			theApp.amuledlg->chatwnd->SendMessage(message, source->GetUserName(),GUI_ID(source->GetIP(),source->GetUserPort()));
 		}
 	}
 #endif
@@ -2236,4 +2237,3 @@ void CDownloadListCtrl::PreviewFile(CPartFile* file)
 		AddLogLineM( false, wxString( _("Command: ") ) + command );
 	}
 }
-

@@ -831,20 +831,14 @@ void CamuleGuiApp::NotifyEvent(const GUIEvent& event)
 				amuledlg->chatwnd->RefreshFriend(NULL, event.string_value, event.long_value, event.short_value);
 			}
 			break;
-		case CHAT_FIND_FRIEND:
-			if ( amuledlg->chatwnd ) {
-				amuledlg->chatwnd->FindFriend(*(CMD4Hash *)event.ptr_value, event.long_value, event.short_value);
-			}
-			break;
 		case CHAT_CONN_RESULT:
 			if ( amuledlg->chatwnd ) {
-				amuledlg->chatwnd->ConnectionResult((CUpDownClient *)event.ptr_value, event.byte_value);
+				amuledlg->chatwnd->ConnectionResult(event.byte_value, event.string_value, event.longlong_value);
 			}
 			break;
 		case CHAT_PROCESS_MSG:
 			if ( amuledlg->chatwnd ) {
-				amuledlg->chatwnd->ProcessMessage((CUpDownClient *)event.ptr_value,
-												  event.string_value);
+				amuledlg->chatwnd->ProcessMessage(event.longlong_value, event.string_value);
 			}
 			break;
 #endif

@@ -1174,7 +1174,8 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket){
 
 	if (GetChatState() != MS_NONE){
 		bDelete = false;
-		Notify_ChatConnResult(this,false);
+		m_pendingMessage.Clear();
+		Notify_ChatConnResult(false,GUI_ID(GetIP(),GetUserPort()),wxEmptyString);
 	}
 
 	if (!bFromSocket && m_socket){
@@ -1346,8 +1347,17 @@ void CUpDownClient::ConnectionEstablished()
 	#endif
 
 	// ok we have a connection, lets see if we want anything from this client
-	if (GetChatState() == MS_CONNECTING || GetChatState() == MS_CHATTING) {
-		Notify_ChatConnResult(this,true);
+	if (GetChatState() == MS_CONNECTING) {
+		SetChatState( MS_CHATTING );
+	}
+	
+	if (GetChatState() == MS_CHATTING) {
+		bool result = true;
+		if (!m_pendingMessage.IsEmpty()) {
+			result = SendMessage(m_pendingMessage);
+		}
+		Notify_ChatConnResult(result,GUI_ID(GetIP(),GetUserPort()),m_pendingMessage);
+		m_pendingMessage.Clear();
 	}
 
 	switch(GetDownloadState()) {
@@ -2087,4 +2097,29 @@ uint8 CUpDownClient::GetSecureIdentState() {
 	}
 	
 	return m_SecureIdentState;
+}
+
+bool CUpDownClient::SendMessage(const wxString& message) {
+	// Already connecting?
+	if (GetChatState() == MS_CONNECTING) {
+		return false;
+	}
+	if (IsConnected()) {
+		CSafeMemFile data;
+		data.WriteString(message);
+		CPacket* packet = new CPacket(&data);
+		packet->SetOpCode(OP_MESSAGE);
+		theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());
+		SendPacket(packet, true, true);
+		return true;
+	} else {
+		// Queue all messages till we're able to send them (or discard them)
+		if (!m_pendingMessage.IsEmpty()) {
+			m_pendingMessage += wxT("\n");
+		}
+		m_pendingMessage += message;
+		SetChatState(MS_CONNECTING);
+		TryToConnect();
+		return false;
+	}	
 }

@@ -208,7 +208,7 @@ void CFriendListCtrl::OnItemActivated(wxListEvent& WXUNUSED(evt))
 
 void CFriendListCtrl::LoadList()
 {
-	#warning ASK THE LIST TO CORE!
+	#warning EC: ASK THE LIST TO CORE!
 	
 	for(FriendList::iterator it = theApp.friendlist->m_FriendList.begin(); it != theApp.friendlist->m_FriendList.end(); ++it) {
 		CFriend* core_friend = *it;
@@ -288,9 +288,9 @@ void CFriendListCtrl::OnPopupMenu(wxCommandEvent& evt)
 	
 	switch (evt.GetId()) {
 		case MP_MESSAGE: {
-			#warning CORE/GUI!
+			theApp.amuledlg->chatwnd->StartSession(cur_friend);			
+			#warning CORE/GUI!			
 			theApp.friendlist->StartChatSession(cur_friend->m_hash, cur_friend->m_ip, cur_friend->m_port);
-			theApp.amuledlg->chatwnd->StartSession(cur_friend);
 			break;
 		}
 		
@@ -308,10 +308,10 @@ void CFriendListCtrl::OnPopupMenu(wxCommandEvent& evt)
 		
 		case MP_DETAIL: {
 			if (cur_friend->islinked) {
-			#warning EC: We need a reply packet with a full CUpDownClient
-			CClientDetailDialog* dialog = new CClientDetailDialog(this, theApp.friendlist->FindFriend(cur_friend->m_hash, cur_friend->m_ip, cur_friend->m_port)->GetLinkedClient());
-			dialog->ShowModal();
-			delete dialog;
+				#warning EC: We need a reply packet with a full CUpDownClient
+				CClientDetailDialog* dialog = new CClientDetailDialog(this, theApp.friendlist->FindFriend(cur_friend->m_hash, cur_friend->m_ip, cur_friend->m_port)->GetLinkedClient());
+				dialog->ShowModal();
+				delete dialog;
 			}
 			break;
 		}
