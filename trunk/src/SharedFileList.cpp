@@ -115,13 +115,7 @@ void CSharedFileList::AddFilesFromDirectory(wxString directory)
 
 		uint32 fdate=wxFileModificationTime(fname);
 
-		#ifdef __linux__ 
-		int b = open(unicode2char(fname), O_RDONLY | O_LARGEFILE);
-		#else
-		int b = open(unicode2char(fname), O_RDONLY);
-		#endif
-		wxASSERT(b!=-1);
-		CFile new_file(b);
+		CFile new_file(fname, CFile::read);
 
 		wxASSERT(new_file.IsOpened());
 
@@ -140,7 +134,7 @@ void CSharedFileList::AddFilesFromDirectory(wxString directory)
 				m_Files_map[toadd->GetFileHash()] = toadd;
 				list_mut.Unlock();
 			} else {
-				if (!fname.Cmp(toadd->GetFileName())) {
+				if (fname.Cmp(toadd->GetFileName())) {
 					printf("Warning: File '%s' already shared as '%s'\n", unicode2char(directory + fname), unicode2char(toadd->GetFileName()));
 				}
 			}
