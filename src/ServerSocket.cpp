@@ -37,7 +37,6 @@
 #include "PartFile.h"		// Needed for CPartFile
 #include "MemFile.h"		// Needed for CMemFile
 #include "SearchList.h"		// Needed for CSearchList
-#include "OtherStructs.h"	// Needed for LoginAnswer_Struct
 #include "Preferences.h"	// Needed for CPreferences
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "OPCodes.h"		// Needed for OP_SERVERMESSAGE
