@@ -721,12 +721,7 @@ public:
 			langSelector->Append(wxGetTranslation(aMuleLanguages[m_sortOrder[i]].name));
 		}
 
-		if ( Cfg_Tmpl<int>::TransferToWindow() ) {
-			
-			return true;
-		}
-		
-		return false;
+		return Cfg_Tmpl<int>::TransferToWindow();
 	}
 
 protected:
