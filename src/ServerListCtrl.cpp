@@ -337,7 +337,14 @@ void CServerListCtrl::HighlightServer(const CServer* server, bool highlight)
 //	Kry - Gui hangs while we do this...
 //	A safer hack it to change only the connecting server and handle the disconections
 //	for(long pos = 0; pos < GetItemCount(); ++pos) {
-		connected = (long)server;
+		// Only set the connection if we highlight
+		if ( highlight ) {
+			connected = (long)server;
+		} else if ( connected == (long)server ) {
+			// Reset the connected server
+			connected = -1;
+		}
+		
 		wxListItem myitem;
 		myitem.SetId(itemnr);
 		GetItem(myitem);
