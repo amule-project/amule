@@ -228,6 +228,9 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 	unsigned int nChars = 0;
 	wxString sOp;
 	wxString buffer;
+
+	AddLogLineM(false, wxT("Remote command: ") + item);
+
 	//---------------------------------------------------------------------
 	// WEBPAGE
 	//---------------------------------------------------------------------
@@ -953,13 +956,13 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			uint32 stats[2];
 			wxString ServerStatus;
 			if (theApp.serverconnect->IsConnected())
-				ServerStatus = wxT("Connected");
+				ServerStatus = wxString(_("Connected"));
 			else if (theApp.serverconnect->IsConnecting())
-				ServerStatus = wxT("Connecting");
+				ServerStatus = wxString(_("Connecting"));
 			else
-				ServerStatus = wxT("Not Connected");
+				ServerStatus = wxString(_("Not connected"));
 			theApp.downloadqueue->GetDownloadStats(stats);
-			return wxString::Format( wxT(
+			return wxString::Format(_(
 				"Server: " + ServerStatus + "\n"
 				"Statistics: \n"
 				" Downloading files: %u\n"
@@ -972,34 +975,44 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 					theApp.uploadqueue->GetWaitingUserCount());
 		}
 
+		if (item.Left(9) == wxT("CMDSEARCH")) {
+			wxString args = item.Mid(9); 
+			if ( args.IsEmpty() ) {
+				return theApp.downloadqueue->getTextList();
+			}
+			else
+				return theApp.downloadqueue->getTextList(args);
+		}
+
 		if (item == wxT("DL_QUEUE")) {
+		// oldish. Now CMDSEARCH with no args
 			return theApp.downloadqueue->getTextList();
 		}
 
 		if (item == wxT("UL_QUEUE")) {
-			return wxT("We should be showing UL list here");
+			return wxString(_("We should be showing UL list here"));
 		}
 		
 		if (item == wxT("CONNSTAT")) {
 		// kept for backwards compatibility. Now in "Stats"
 			if (theApp.serverconnect->IsConnected()) {
-				return wxT("Connected");
+				return wxString(_("Connected"));
 			//Start - Added by shakraw
 			} else if (theApp.serverconnect->IsConnecting()) {
-				return wxT("Connecting");
+				return wxString(_("Connecting"));
 			//End
 			} else {
-				return wxT("Not Connected");
+				return wxString(_("Not connected"));
 			}
 		}
 
 		if (item == wxT("RECONN")) { //shakraw, should be replaced by SERVER CONNECT [ip] below?
 			if (theApp.serverconnect->IsConnected()) {
-				return wxT("Already Connected");
+				return wxString(_("Already Connected"));
 			} else {
 				theApp.serverconnect->ConnectToAnyServer();
 				Notify_ShowConnState(false,wxEmptyString);
-				return wxT("Reconected");
+				return wxString(_("Reconected"));
 			}
 		}
 
@@ -1007,15 +1020,15 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			if (theApp.serverconnect->IsConnected()) {
 				theApp.serverconnect->Disconnect();
 				theApp.OnlineSig(); // Added By Bouc7
-				return wxT("Disconnected");
+				return wxString(_("Disconnected"));
 			} else {
-				return wxT("Already Disconnected");
+				return wxString(_("Already disconnected"));
 			}
 		}
-		
+
 		if (item == wxT("RELOADIPF")) {
 			theApp.ipfilter->Reload();
-			return wxT("IPFilter Reloaded");
+			return wxString(_("IPFilter reloaded"));
 		}
 		
 		if (item.Left(12) == wxT("SET IPFILTER")) {
@@ -1025,16 +1038,14 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				theApp.clientlist->FilterQueues();
 			}
 			wxString msg = wxString::Format(_("IPFilter state set to '%s'."), unicode2char(param));
-			AddLogLineM(true, msg);
 			return msg;
 		}
 
 		if (item == wxT("GETIPLEVEL") ) {
 			wxString msg = wxString::Format(_("aMule IP Filter level is %d."), theApp.glob_prefs->GetIPFilterLevel());
-			AddLogLineM(true, msg);
 			return msg;
 		}
-		
+
 		if (item.Left(10) == wxT("SETIPLEVEL") ) {
 			wxString args = item.Mid(11);
 			int32 level = StrToLong(args);
@@ -1050,29 +1061,26 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			} else {
 				msg = wxString(_("Invalid IP Filter level entered: ")) + args + wxT(".");
 			}
-			AddLogLineM(true, msg);
 			return msg;
 		}
-				
+		
 		if ( item.Left(5).Cmp(wxT("PAUSE")) == 0 ) {
 			if ( item.Mid(5).IsNumber() ) {
 				unsigned int fileID = StrToLong(item.Mid(5));
 				if ( fileID < theApp.downloadqueue->GetFileCount() ) {
 					if (theApp.downloadqueue->GetFileByIndex(fileID)->IsPartFile()) {
 						theApp.downloadqueue->GetFileByIndex(fileID)->PauseFile();
-						printf("Paused\n");
 						return theApp.downloadqueue->getTextList();
-					} else return wxT("Not part file");
-				} else return wxT("Out of range");
+					} else return _("Not part file");
+				} else return wxString(_("Out of range"));
 			} else if ( item.Mid(5) == wxT("ALL") ) {
 				for ( unsigned int fileID = ((unsigned) theApp.downloadqueue->GetFileCount()); fileID ; fileID-- ) {
 					if (theApp.downloadqueue->GetFileByIndex(fileID-1)->IsPartFile()) {
 						theApp.downloadqueue->GetFileByIndex(fileID-1)->PauseFile();
 					}
 				}
-				printf("Paused all\n");
 				return theApp.downloadqueue->getTextList();
-			} else return wxT("Not a number");
+			} else return wxString(_("Not a number"));
 		} 
 		
 		if ( item.Left(6).Cmp(wxT("RESUME")) == 0 ) {
@@ -1082,10 +1090,9 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 					if (theApp.downloadqueue->GetFileByIndex(fileID)->IsPartFile()) {
 						theApp.downloadqueue->GetFileByIndex(fileID)->ResumeFile();
 						theApp.downloadqueue->GetFileByIndex(fileID)->SavePartFile();
-						printf("Resumed\n");
 						return theApp.downloadqueue->getTextList();
-					} else return wxT("Not part file");
-				} else return wxT("Out of range");
+					} else return wxString(_("Not part file"));
+				} else return wxString(_("Out of range"));
 			} else if ( item.Mid(6) == wxT("ALL") ) {
 				for ( unsigned int fileID = ((unsigned) theApp.downloadqueue->GetFileCount()); fileID ; fileID-- ) {
 					if (theApp.downloadqueue->GetFileByIndex(fileID-1)->IsPartFile()) {
@@ -1093,9 +1100,8 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 						theApp.downloadqueue->GetFileByIndex(fileID-1)->SavePartFile();
 					}
 				}
-				printf("Resumed all\n");
 				return theApp.downloadqueue->getTextList();
-			} else return wxT("Not a number");
+			} else return wxString(_("Not a number"));
 		} 
 
 		//shakraw, amuleweb protocol communication start

@@ -145,7 +145,8 @@ public:
 	void LoadSourceSeeds();
 	
 	// lfroen for ExternalConn
-	wxString getTextList() const;
+	wxString getTextList(const wxString& file_to_search  = wxEmptyString) const;
+
 protected:
 	bool	SendNextUDPPacket();
 	void	ProcessLocalRequests();

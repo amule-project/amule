@@ -3,9 +3,15 @@ Version 2.0.0rc7 - The "xxxxxxxxxxxxxxxx" version.
 2004-10-XX
 
 	Jacobo221:
+		On aMuleCMD:
+		* Added 'list' (or 'find') command to search for a file in the downloads queue by name or by number (or just show all)
 		* Added the ability to resume/pause all downloads at the same time through amulecmd (very handy when all downloads have been paused due to lack of space)
 		* Fixed two bugs on amulecmd by which using 'pause' or 'resume' without arguments would pause/resume the oldest download.
+		* Fixed a bug so that help command no longer is send to core
+		* Fixed other commands sending blank data to core
+		* Cleaned unneeded output log messages + added sent command messages to log (for easier security monitoring)
 		* Several command simplifications on amulecmd to make it easier to use (while maintaining backwards compatibility).
+		* Lots of translations lacks
 
 	KingFish:
 		* Fixed broken compilation in SysTray.cpp with gcc 3.3.4.
