@@ -29,7 +29,7 @@
 #include "GetTickCount.h"	// Needed for GetTickCount
 #include "CMD4Hash.h"
 #include "otherfunctions.h"
-#include <map>
+#include <list>
 
 class CPartFile;
 class CClientReqSocket;
@@ -123,6 +123,11 @@ enum EInfoPacketState{
 };
 
 
+
+struct PartFileStamp {
+	CPartFile* file;
+	DWORD timestamp;
+};
 
 class CUpDownClient {
 	friend class CUploadQueue;
@@ -310,13 +315,13 @@ public:
 	void		SendFileRequest();
 	void		ProcessHashSet(const char *packet, uint32 size);
 	bool		AddRequestForAnotherFile(CPartFile* file);
-	bool		DeleteFileRequest(CPartFile* file);
-	void		DeleteAllFileRequests();
 	void		SendBlockRequests();
 	void		ProcessBlockPacket(const char* packet, uint32 size, bool packed = false);
 	uint16		GetAvailablePartCount() const;
 	bool		SwapToAnotherFile(bool bIgnoreNoNeeded, bool ignoreSuspensions, bool bRemoveCompletely, CPartFile* toFile = NULL);
-
+	void		DontSwapTo(CPartFile* file);
+	bool		IsSwapSuspended(const CPartFile* file);
+	bool		DoSwap(CPartFile* SwapTo, bool anotherfile = false);
 	void		UDPReaskACK(uint16 nNewQR);
 	void		UDPReaskFNF();
 	void		UDPReaskForDownload();
@@ -327,6 +332,17 @@ public:
 	bool		GetTransferredDownMini() const	{ return m_bTransferredDownMini; }
 	void		SetTransferredDownMini()	{ m_bTransferredDownMini=true; }
 	void		InitTransferredDownMini()	{ m_bTransferredDownMini=false; }
+	//
+	//	A4AF Stats Stuff:
+	//		In CPartFile::Process, I am going to keep a tally of how many clients
+	//		in that PF's source list are A4AF for other files.  This tally is worthless
+	//		to the PartFile that it belongs to, but when we add all of these counts up for
+	//		each PartFile, we will get an accurate count of how many A4AF requests there are
+	//		total.  This is for the Found Sources section of the tree.  This is a better, faster
+	//		option than looping through the lists for unavailable sources.
+	//
+	uint16		GetA4AFCount() const 		{ return m_OtherRequests_list.GetCount(); }
+
 	uint16		GetUpCompleteSourcesCount() const { return m_nUpCompleteSourcesCount; }
 	void		SetUpCompleteSourcesCount(uint16 n){ m_nUpCompleteSourcesCount = n; }
 	
@@ -368,35 +384,6 @@ public:
 	wxString	GetClientFullInfo();
 
 private:
-	/**
-	 * This struct is used to keep track of CPartFiles which this source shares.
-	 */
-	struct A4AFStamp {
-		//! Signifies if this sources has needed parts for this file. 
-		bool NeededParts;
-		//! This is set when we wish to avoid swapping to this file for a while.
-		DWORD timestamp;
-	};
-	
-	//! I typedef in the name of readability!
-	typedef std::map<CPartFile*, A4AFStamp> A4AFList;
-	//! This list contains all PartFiles which this client can be used as a source for.
-	A4AFList m_A4AF_list;
-	
-	/**
-	 * Helper function used by SwapToAnotherFile().
-	 *
-	 * @param it The iterator of the PartFile to be examined.
-	 * @param ignorenoneeded Do not check for the status NoNeededParts when checking the file.
-	 * @param ignoresuspended Do not check the timestamp when checking the file.
-	 * @return True if the file is a viable target, false otherwise.
-	 *
-	 * This function is used to perform checks to see if we should consider 
-	 * this file a viable target for A4AF swapping. Unless ignoresuspended is
-	 * true, it will examine the timestamp of the file and reset it if needed.
-	 */
-	 bool		IsValidSwapTarget( A4AFList::iterator it, bool ignorenoneeded = false, bool ignoresuspended = false );
-	
 	CPartFile*	m_reqfile;
 
 	// base
@@ -451,6 +438,7 @@ private:
 	
 	uint32		m_byCompatibleClient;
 	CTypedPtrList<CPtrList, Packet*>	m_WaitingPackets_list;
+	std::list<PartFileStamp>	m_DontSwap_list;
 	DWORD		m_lastRefreshedDLDisplay;
 
 	//upload
@@ -539,6 +527,9 @@ public:
 	uint8*		m_abyPartStatus;
 
 public:
+	CTypedPtrList<CPtrList, CPartFile*>	m_OtherRequests_list;
+	CTypedPtrList<CPtrList, CPartFile*>	m_OtherNoNeeded_list;
+
 	bool IsValidSource() const	{ return m_ValidSource; };
 	void SetValidSource(bool in)	{ m_ValidSource = in; };
 
