@@ -1,5 +1,6 @@
 src/AddFriend.cpp
 src/amule.cpp
+src/amuled.cpp
 src/amuleDlg.cpp
 src/BaseClient.cpp
 src/CatDialog.cpp
@@ -11,6 +12,7 @@ src/ClientList.cpp
 src/ClientUDPSocket.cpp
 src/CommentDialog.cpp
 src/CommentDialogLst.cpp
+src/CryptoPP.cpp
 src/DownloadClient.cpp
 src/DownloadListCtrl.cpp
 src/DownloadQueue.cpp
@@ -27,6 +29,7 @@ src/IPFilter.cpp
 src/KadDlg.cpp
 src/KnownFileList.cpp
 src/ListenSocket.cpp
+src/MuleTextCtrl.cpp
 src/muuli_wdr.cpp
 src/OScopeCtrl.cpp
 src/otherfunctions.cpp
