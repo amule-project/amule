@@ -854,6 +854,7 @@ enum {
 	EC_TAG_USER_NICK,		///< (\c string) Nickname of the user.
 	EC_TAG_USER_USERHASH,		///< (!!TODO!!) Our userhash. Read only! (i.e. in a SET operation it will be ignored)
 
+
 	//
 	// Preferences - Connections
 	//

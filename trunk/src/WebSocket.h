@@ -22,7 +22,9 @@
 #ifndef WEBSOCKET_H
 #define WEBSOCKET_H
 
-#pragma interface
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma interface "WebSocket.h"
+#endif
 
 #include <wx/thread.h>
 #include <wx/dynarray.h>

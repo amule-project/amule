@@ -27,7 +27,9 @@
 	#include <unistd.h>
 #endif
 
-#pragma implementation
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma implementation "WebInterface.h"
+#endif
 //-------------------------------------------------------------------
 #include "MD5Sum.h"
 

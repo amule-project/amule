@@ -27,7 +27,9 @@
 #include "ECcodes.h"	// Needed for EC types
 #include "ECPacket.h"	// Needed for CECTag
 
-#pragma interface
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma interface "ECSpecialTags.h"
+#endif
 
 /*
  * Specific tags for specific requests

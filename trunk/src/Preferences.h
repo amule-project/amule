@@ -21,7 +21,9 @@
 #ifndef PREFERENCES_H
 #define PREFERENCES_H
 
-#pragma interface
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma interface "Preferences.h"
+#endif
 
 #include "types.h"				// Needed for ints
 #include "CMD4Hash.h"
