@@ -38,7 +38,8 @@
 //-------------------------------------------------------------------
 
 #if wxUSE_GUI
-#include <wx/textctrl.h>
+#include <wx/textctrl.h>	// For wxTextCtrl
+#include <wx/timer.h>		// For wxTimer
 class CamulewebFrame : public wxFrame
 {
 public:
@@ -46,12 +47,14 @@ public:
 		const wxSize& size, long style = wxDEFAULT_FRAME_STYLE);
 
 	// event handlers (these functions should _not_ be virtual)
-	void OnQuit(wxCommandEvent& event);
-	void OnAbout(wxCommandEvent& event);
-	void OnCommandEnter(wxCommandEvent& event);
+	void OnQuit(wxCommandEvent &event);
+	void OnAbout(wxCommandEvent &event);
+	void OnCommandEnter(wxCommandEvent &event);
 	void OnIdle(wxIdleEvent &e);
+	void OnTimerEvent(wxTimerEvent &WXUNUSED(event));
 	wxTextCtrl *log_text;
 	wxTextCtrl *cmd_control;
+	wxTimer *m_timer;
 
 private:
 	wxLog *logTargetOld;

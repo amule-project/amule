@@ -102,7 +102,8 @@ enum
     // menu)
     amulecmd_About = wxID_ABOUT,
     Event_Comand_ID = 32001,
-    amuleFrame_ID = 32000 
+    amuleFrame_ID = 32000,
+    Timer_ID
 };
 
 
@@ -110,6 +111,8 @@ BEGIN_EVENT_TABLE(CamulecmdFrame, wxFrame)
 	EVT_MENU(amulecmd_Quit, CamulecmdFrame::OnQuit)
 	EVT_MENU(amulecmd_About, CamulecmdFrame::OnAbout)
 	EVT_TEXT_ENTER(Event_Comand_ID, CamulecmdFrame::OnComandEnter)
+	EVT_IDLE(CamulecmdFrame::OnIdle)
+	EVT_TIMER(Timer_ID, CamulecmdFrame::OnTimerEvent)
 END_EVENT_TABLE()
 
 //-------------------------------------------------------------------
@@ -157,6 +160,9 @@ vsizer->Add(cmd_control, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0);
 
 	SetSizer(vsizer);
 	vsizer->SetSizeHints(this);
+
+	m_timer = new wxTimer(this, Timer_ID);
+	m_timer->Start(5000);
 }
 
 void CamulecmdFrame::OnQuit(wxCommandEvent& WXUNUSED(event))
@@ -192,6 +198,11 @@ void CamulecmdFrame::OnComandEnter(wxCommandEvent& WXUNUSED(event)) {
 void CamulecmdFrame::OnIdle(wxIdleEvent &WXUNUSED(event))
 {
 	theApp.MainThreadIdleNow();
+}
+
+void CamulecmdFrame::OnTimerEvent(wxTimerEvent &WXUNUSED(event))
+{
+	wxWakeUpIdle();
 }
 //-------------------------------------------------------------------
 #endif // wxUSE_GUI

@@ -122,6 +122,8 @@ Version 2.0.0rc6 - The '???' version.
 		  (unicoded or not).
 		* Fixed an unprotected call to strlen() in ECSockets.cpp, if 
 		  you pass a NULL pointer to it, the program segfaults.
+		* Added a timer for idle repainting in amulewebDLG and
+		  amulecmdDLG.
 
 	rommel:
 		* Patch to implement the commands serverconnect and reloadipf
