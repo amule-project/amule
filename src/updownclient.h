@@ -353,7 +353,7 @@ public:
 	// Barry - Process zip file as it arrives, don't need to wait until end of block
 	int unzip(Pending_Block_Struct *block, BYTE *zipped, uint32 lenZipped, BYTE **unzipped, uint32 *lenUnzipped, int iRecursion = 0);
 	// Barry - Sets string to show parts downloading, eg NNNYNNNNYYNYN
-	void 			ShowDownloadingParts(CString *partsYN);
+	wxString		ShowDownloadingParts();
 	void 			UpdateDisplayedInfo(bool force=false);
 	int 			GetFileListRequested() { return m_iFileListRequested; }
 	void 			SetFileListRequested(int iFileListRequested) { m_iFileListRequested = iFileListRequested; }
