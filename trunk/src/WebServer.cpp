@@ -259,13 +259,13 @@ int CWebServer::GetWSPrefs(void)
 	}
 	// we have selected only the webserver preferences
 	CECTag *wsprefs = reply->GetTagByIndex(0);
-	delete reply;
 	
 	CECTag *tag;
 	int wsport = 0;
 	if (wsprefs && (tag = wsprefs->GetTagByName(EC_TAG_WEBSERVER_PORT)) ) {
 		wsport = tag->GetInt16Data();
 	} else {
+		delete reply;
 		return 0;
 	}
 
@@ -307,6 +307,8 @@ int CWebServer::GetWSPrefs(void)
 		m_nRefresh = 120;
 	}
 	
+	delete reply;
+
 	return wsport;
 }
 
