@@ -1032,7 +1032,6 @@ void CPartFile::SaveSourceSeeds() {
 	
 	// Write the file
 	if (!n_sources) {
-		theApp.amuledlg->AddLogLine(false,CString(_("File %s has no sources so no .seed saved")),fullname);
 		return;
 	} 
 	
@@ -1093,7 +1092,6 @@ void CPartFile::LoadSourceSeeds() {
 	
 	uint8 src_count;
 	file.Read(&src_count,1);	
-	printf("src_count %i\n",src_count);
 
 	for (int i=0;i<src_count;i++) {
 	
