@@ -733,7 +733,7 @@ void PrefsUnifiedDlg::BuildItemList(Preferences_Struct *prefs, char * appdir)  /
 	listRse.Append(new RseBool(0, prefs->filterserverbyip, "FilterServersByIP", false));	// no GUI yet
 	listRse.Append(new RseInt(0, prefs->filterlevel, "FilterLevel", 127));					// no GUI yet
 	listRse.Append(new RseBool(IDC_CHECKDISKSPACE, prefs->checkDiskspace, "CheckDiskspace", true));			// no GUI yet
-	listRse.Append(new RseInt(IDC_MINDISKSPACE, prefs->m_uMinFreeDiskSpace, "MinFreeDiskSpace", 0));		// no GUI yet
+	listRse.Append(new RseInt(IDC_MINDISKSPACE, prefs->m_uMinFreeDiskSpace, "MinFreeDiskSpace", 1));		// no GUI yet
 	listRse.Append(new RseString(0, prefs->yourHostname,sizeof(prefs->yourHostname), "YourHostname", "")); // no GUI yet
 
 	listRse.Append(new RseBool(IDC_AUTOCONNECTSTATICONLY, prefs->autoconnectstaticonly, "AutoConnectStaticOnly", false)); 
@@ -911,7 +911,7 @@ void PrefsUnifiedDlg::BuildItemList(Preferences_Struct *prefs, char * appdir)  /
 	listRse.Append(new RseString(IDC_FCHECKSELF, prefs->CustomBrowser, sizeof(prefs->CustomBrowser), "CustomBrowser", "", "FakeCheck"));
 	listRse.Append(new RseInt(IDC_FCHECK, prefs->Browser, "Browser", 0));	
 	listRse.Append(new RseBool(IDC_SAFEMAXCONN, prefs->UseSafeMaxConn, "SafeMaxConn", false)); 		
-	
+	listRse.Append(new RseBool(IDC_VERBOSEPACKETERROR, prefs->VerbosePacketError, "VerbosePacketError", false)); 
 }
 
 //==============================================================================

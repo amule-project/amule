@@ -347,119 +347,120 @@ wxSizer *PreferencesNotifyTab( wxWindow *parent, bool call_fit = TRUE, bool set_
 #define IDC_MAXCON5SEC 10253
 #define IDC_SAFEMAXCONN 10254
 #define IDC_VERBOSE 10255
-#define IDC_AUTOTAKEED2KLINKS 10256
-#define IDC_SHOWRATEONTITLE 10257
-#define IDC_FILEBUFFERSIZE_STATIC 10258
-#define IDC_FILEBUFFERSIZE 10259
-#define IDC_QUEUESIZE_STATIC 10260
-#define IDC_QUEUESIZE 10261
-#define IDC_SERVERKEEPALIVE_LABEL 10262
-#define IDC_SERVERKEEPALIVE 10263
+#define IDC_VERBOSEPACKETERROR 10256
+#define IDC_AUTOTAKEED2KLINKS 10257
+#define IDC_SHOWRATEONTITLE 10258
+#define IDC_FILEBUFFERSIZE_STATIC 10259
+#define IDC_FILEBUFFERSIZE 10260
+#define IDC_QUEUESIZE_STATIC 10261
+#define IDC_QUEUESIZE 10262
+#define IDC_SERVERKEEPALIVE_LABEL 10263
+#define IDC_SERVERKEEPALIVE 10264
 wxSizer *PreferencesaMuleTweaksTab( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-#define IDC_ENABLE_AUTO_ARRANGING 10264
-#define ID_RADIOBUTTON 10265
-#define IDC_SELECTED_THEME 10266
-#define IDC_USE_FONT 10267
-#define IDC_SELECTED_FONT 10268
-#define IDC_FONT_BUTTON 10269
-#define IDC_PREVIEW_THEME 10270
-#define IDC_APPLY_THEME 10271
-#define IDC_PERCENT 10272
-#define IDC_PROGBAR 10273
-#define IDC_3DDEP 10274
-#define IDC_3DDEPTH 10275
-#define IDC_FLAT 10276
-#define IDC_ROUND 10277
-#define IDC_NEWSTYLETABS 10278
-#define IDC_FED2KLH 10279
+#define IDC_ENABLE_AUTO_ARRANGING 10265
+#define ID_RADIOBUTTON 10266
+#define IDC_SELECTED_THEME 10267
+#define IDC_USE_FONT 10268
+#define IDC_SELECTED_FONT 10269
+#define IDC_FONT_BUTTON 10270
+#define IDC_PREVIEW_THEME 10271
+#define IDC_APPLY_THEME 10272
+#define IDC_PERCENT 10273
+#define IDC_PROGBAR 10274
+#define IDC_3DDEP 10275
+#define IDC_3DDEPTH 10276
+#define IDC_FLAT 10277
+#define IDC_ROUND 10278
+#define IDC_NEWSTYLETABS 10279
+#define IDC_FED2KLH 10280
 wxSizer *PreferencesGuiTweaksTab( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-#define IDC_ENABLE_AUTO_NNS 10280
-#define IDC_AUTO_NNS_EXTENDED_RADIO 10281
-#define IDC_ENABLE_AUTO_FQS 10282
-#define IDC_ENABLE_AUTO_HQRS 10283
-#define IDC_HQR_VALUE 10284
-#define IDC_AUTO_DROP_TIMER 10285
+#define IDC_ENABLE_AUTO_NNS 10281
+#define IDC_AUTO_NNS_EXTENDED_RADIO 10282
+#define IDC_ENABLE_AUTO_FQS 10283
+#define IDC_ENABLE_AUTO_HQRS 10284
+#define IDC_HQR_VALUE 10285
+#define IDC_AUTO_DROP_TIMER 10286
 wxSizer *PreferencesSourcesDroppingTab( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-#define IDC_ENABLE_WEB 10286
-#define IDC_WEB_PORT 10287
-#define IDC_WEB_REFRESH_TIMEOUT 10288
-#define IDC_WEB_GZIP 10289
-#define IDC_ENABLE_WEB_LOW 10290
-#define IDC_WEB_PASSWD 10291
-#define IDC_WEB_PASSWD_LOW 10292
-#define IDC_EXT_CONN_ACCEPT 10293
-#define IDC_EXT_CONN_USETCP 10294
-#define IDC_EXT_CONN_TCP_PORT 10295
-#define IDC_EXT_CONN_PASSWD_ENABLE 10296
-#define IDC_EXT_CONN_PASSWD 10297
+#define IDC_ENABLE_WEB 10287
+#define IDC_WEB_PORT 10288
+#define IDC_WEB_REFRESH_TIMEOUT 10289
+#define IDC_WEB_GZIP 10290
+#define IDC_ENABLE_WEB_LOW 10291
+#define IDC_WEB_PASSWD 10292
+#define IDC_WEB_PASSWD_LOW 10293
+#define IDC_EXT_CONN_ACCEPT 10294
+#define IDC_EXT_CONN_USETCP 10295
+#define IDC_EXT_CONN_TCP_PORT 10296
+#define IDC_EXT_CONN_PASSWD_ENABLE 10297
+#define IDC_EXT_CONN_PASSWD 10298
 wxSizer *PreferencesRemoteControlsTab( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-#define ID_NOTEBOOK_TOP 10298
-#define ID_PREFS_OK_TOP 10299
-#define ID_PREFS_CANCEL_TOP 10300
+#define ID_NOTEBOOK_TOP 10299
+#define ID_PREFS_OK_TOP 10300
+#define ID_PREFS_CANCEL_TOP 10301
 wxSizer *preferencesDlgTop( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-#define IDC_STATIC_TITLE 10301
-#define IDC_TITLE 10302
-#define IDC_STATIC_COMMENT 10303
-#define IDC_COMMENT 10304
-#define IDC_STATIC_INCOMING 10305
-#define IDC_INCOMING 10306
-#define IDC_BROWSE 10307
-#define IDC_STATIC_PRIO 10308
-#define IDC_PRIOCOMBO 10309
-#define IDC_STATIC_COLOR 10310
-#define ID_BOX_CATCOLOR 10311
-#define IDC_CATCOLOR 10312
+#define IDC_STATIC_TITLE 10302
+#define IDC_TITLE 10303
+#define IDC_STATIC_COMMENT 10304
+#define IDC_COMMENT 10305
+#define IDC_STATIC_INCOMING 10306
+#define IDC_INCOMING 10307
+#define IDC_BROWSE 10308
+#define IDC_STATIC_PRIO 10309
+#define IDC_PRIOCOMBO 10310
+#define IDC_STATIC_COLOR 10311
+#define ID_BOX_CATCOLOR 10312
+#define IDC_CATCOLOR 10313
 wxSizer *CategoriesEditWindow( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-#define ID_SPLATTER 10313
+#define ID_SPLATTER 10314
 wxSizer *transferDlg( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-#define ID_SERVERINFO 10314
-#define ID_BTN_RESET_SERVER 10315
+#define ID_SERVERINFO 10315
+#define ID_BTN_RESET_SERVER 10316
 wxSizer *ServerInfoLog( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-#define ID_LOGVIEW 10316
-#define ID_BTN_RESET 10317
+#define ID_LOGVIEW 10317
+#define ID_BTN_RESET 10318
 wxSizer *aMuleLog( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-#define ID_UPDATELIST 10318
-#define IDC_SERVERLISTURL 10319
-#define IDC_SERVERNAME 10320
-#define IDC_IPADDRESS 10321
-#define IDC_SPORT 10322
-#define ID_ADDTOLIST 10323
-#define ID_SERVERLIST 10324
+#define ID_UPDATELIST 10319
+#define IDC_SERVERLISTURL 10320
+#define IDC_SERVERNAME 10321
+#define IDC_IPADDRESS 10322
+#define IDC_SPORT 10323
+#define ID_ADDTOLIST 10324
+#define ID_SERVERLIST 10325
 wxSizer *serverListDlgUp( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-#define ID_SRVLOG_NOTEBOOK 10325
+#define ID_SRVLOG_NOTEBOOK 10326
 wxSizer *serverListDlgDown( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-#define ID_NOTEBOOK_LEFT 10326
-#define ID_PREFS_OK_LEFT 10327
-#define ID_PREFS_CANCEL_LEFT 10328
+#define ID_NOTEBOOK_LEFT 10327
+#define ID_PREFS_OK_LEFT 10328
+#define ID_PREFS_CANCEL_LEFT 10329
 wxSizer *preferencesDlgLeft( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-#define ID_LOCALETEXT 10329
-#define ID_LOCALENEVERAGAIN 10330
+#define ID_LOCALETEXT 10330
+#define ID_LOCALENEVERAGAIN 10331
 wxSizer *LocaleWarning( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
 // Declare menubar functions
 
 // Declare toolbar functions
 
-#define ID_BUTTONCONNECT 10331
-#define ID_BUTTONSERVERS 10332
-#define ID_BUTTONSEARCH 10333
-#define ID_BUTTONTRANSFER 10334
-#define ID_BUTTONSHARED 10335
-#define ID_BUTTONMESSAGES 10336
-#define ID_BUTTONSTATISTICS 10337
-#define ID_BUTTONNEWPREFERENCES 10338
+#define ID_BUTTONCONNECT 10332
+#define ID_BUTTONSERVERS 10333
+#define ID_BUTTONSEARCH 10334
+#define ID_BUTTONTRANSFER 10335
+#define ID_BUTTONSHARED 10336
+#define ID_BUTTONMESSAGES 10337
+#define ID_BUTTONSTATISTICS 10338
+#define ID_BUTTONNEWPREFERENCES 10339
 void muleToolbar( wxToolBar *parent );
 
 // Declare bitmap functions
