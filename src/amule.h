@@ -50,6 +50,15 @@ class CClientUDPSocket;
 class CIPFilter;
 class wxServer;
 
+
+#ifdef __DEBUG__
+	typedef struct {
+		uint32 socket_n;
+		uint32 creation_time;
+		wxString backtrace;
+	} socket_deletion_log_item;
+#endif
+
 	
 #define theApp wxGetApp()
 
@@ -135,6 +144,10 @@ public:
 	CClientUDPSocket*	clientudp;
 	CIPFilter*			ipfilter;
 
+#ifdef __DEBUG__
+	void AddSocketDeleteDebug(uint32 socket_pointer, uint32 creation_time);
+#endif
+
 protected:
 	// Socket handlers
 	void ListenSocketHandler(wxSocketEvent& event);
@@ -153,6 +166,9 @@ protected:
 	void 			SetTimeOnTransfer();
 	wxCriticalSection m_LogQueueLock;
 	CList<QueuedLogLine>	QueuedAddLogLines;
+#ifdef __DEBUG__
+	CList<socket_deletion_log_item>	SocketDeletionList;
+#endif
 	wxLocale		m_locale;
 	DECLARE_EVENT_TABLE()
 };

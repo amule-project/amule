@@ -25,6 +25,10 @@
 #include "types.h"		// Needed for uint8 and uint32
 #include "CTypedPtrList.h"	// Needed for CTypedPtrList
 
+#ifdef __DEBUG__
+	#include "amule.h"
+#endif
+
 class Packet;
 
 #define ERR_WRONGHEADER		0x01
@@ -97,6 +101,7 @@ private:
 	
 	#ifdef __DEBUG__
 	bool from_destroy;
+	uint32 created;
 	#endif
 
 	CList<Packet*, Packet*> controlpacket_queue;

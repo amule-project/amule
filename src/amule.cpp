@@ -160,13 +160,44 @@ static void SetResourceLimits()
 int CamuleApp::OnExit()
 {
 	printf("Now, exiting main app...\n");
+	
+	delete serverlist; 
+	serverlist = NULL;
+	delete searchlist; 
+	searchlist = NULL;
+	delete clientcredits; 
+	clientcredits = NULL;
+	// Destroying CDownloadQueue calls destructor for CPartFile
+	// calling CSharedFileList::SafeAddKFile occasally.
 
-	if (ipfilter) 
+	delete sharedfiles;
+	sharedfiles = NULL;
+	delete knownfiles; 
+	knownfiles = NULL;
+
+	delete serverconnect; 
+	serverconnect = NULL;
+	
+	delete listensocket;	
+	listensocket = NULL;
+	
+	delete clientlist; 
+	clientlist = NULL;
+	
+	delete uploadqueue; 
+	uploadqueue = NULL;
+	
+	delete downloadqueue; 
+	downloadqueue = NULL;
+	
+	if (ipfilter) {
 		delete ipfilter;
-
+	}
+	
 	delete ECServerHandler;
-
-	delete listensocket;
+	
+	delete glob_prefs; 
+	glob_prefs = NULL;	
 	
 	printf("aMule shutdown completed.\n");
 	
@@ -1481,6 +1512,7 @@ void CamuleApp::UDPSocketHandler(wxSocketEvent& event) {
 
 
 void CamuleApp::ServerSocketHandler(wxSocketEvent& event) {
+	//printf("Got a server event\n");
 	
 	wxASSERT(event.GetSocket()->IsKindOf(CLASSINFO(CServerSocket)));
 	CServerSocket * socket = (CServerSocket*) event.GetSocket();
@@ -1576,3 +1608,59 @@ void CamuleApp::OnTCPTimer(wxTimerEvent& WXUNUSED(evt))
 	
 	serverconnect->ConnectToAnyServer();
 }
+
+#ifdef __DEBUG__
+	void CamuleApp::AddSocketDeleteDebug(uint32 socket_pointer, uint32 creation_time) {
+		
+		socket_deletion_log_item current_socket;
+		socket_deletion_log_item temp_socket;
+		
+		current_socket.socket_n = socket_pointer;
+		current_socket.creation_time = creation_time;
+		current_socket.backtrace = "";
+		
+		void *bt_array[6];	// 6 should be enough ?!?
+		char **bt_strings;
+		int num_entries;
+
+		if ((num_entries = backtrace(bt_array, 6)) < 0) {
+			current_socket.backtrace += "* Could not generate backtrace\n";
+		} else {
+			if ((bt_strings = backtrace_symbols(bt_array, num_entries)) == NULL) {
+				current_socket.backtrace += "* Could not get symbol names for backtrace\n";
+			}  else {
+				int n;
+				if (num_entries < 5) {
+					n = num_entries;
+				} else {
+					n = 5;
+				}
+				for (int i = n; i > 0; i--) {
+					current_socket.backtrace += wxString::Format("[%d] %s | ", i, bt_strings[i]);
+				}
+				current_socket.backtrace += "END";
+			}
+		}
+	
+		POSITION pos = SocketDeletionList.GetHeadPosition();
+		while (pos) {
+			temp_socket = SocketDeletionList.GetNext(pos);
+			if ((temp_socket.socket_n == socket_pointer) && (temp_socket.creation_time == creation_time)) {
+				
+				printf("\n-----------------------RSB FOUND!!!!!!!!!!!!!!!!!!!!!!!!!------------\n");
+				printf("First deletion  (ptr: %u time: %u) BT:\n",temp_socket.socket_n, temp_socket.creation_time);
+				printf("-> %s\n\n",temp_socket.backtrace.c_str());
+				
+				printf("Second deletion (ptr: %u time: %u) BT:\n",current_socket.socket_n,current_socket.creation_time);
+				printf("-> %s\n\n",current_socket.backtrace.c_str());
+				
+				printf("--------------------------- Get Ready for RC4---------------------------\n");
+				
+				//wxASSERT(0);	
+			}
+		}
+		
+		SocketDeletionList.AddTail(current_socket);
+		
+	}
+#endif

@@ -23,65 +23,20 @@
 
 #include "EMSocket.h"		// Interface declarations.
 #include "packets.h"		// Needed for Packet
+#include "GetTickCount.h"
 
 #define MAX_SIZE 2000000
 
 IMPLEMENT_DYNAMIC_CLASS(CEMSocket,wxSocketClient)
-
-#if 0
-namespace {
-	inline void EMTrace(char* fmt, ...) {
-#ifdef _DEBUG
-		va_list argptr;
-		char bufferline[512];
-		va_start(argptr, fmt);
-		_vsnprintf(bufferline, 512, fmt, argptr);
-		va_end(argptr);
-		//(Ornis+)
-		char osDate[30],osTime[30]; 
-		char temp[1024]; 
-		_strtime( osTime );
-		_strdate( osDate );
-		int len = _snprintf(temp,1021,"%s %s: %s",osDate,osTime,bufferline);
-		temp[len++] = 0x0d;
-		temp[len++] = 0x0a;
-		temp[len+1] = 0;
-		HANDLE hFile = CreateFile("c:\\EMSocket.log",           // open MYFILE.TXT 
-                GENERIC_WRITE,              // open for reading 
-                FILE_SHARE_READ,           // share for reading 
-                NULL,                      // no security 
-                OPEN_ALWAYS,               // existing file only 
-                FILE_ATTRIBUTE_NORMAL,     // normal file 
-                NULL);                     // no attr. template 
-  
-		if (hFile != INVALID_HANDLE_VALUE) 
-		{ 
-			DWORD nbBytesWritten = 0;
-			SetFilePointer(hFile, 0, NULL, FILE_END);
-			bool b = WriteFile(
-				hFile,                    // handle to file
-				temp,                // data buffer
-				len,     // number of bytes to write
-				&nbBytesWritten,  // number of bytes written
-				NULL        // overlapped buffer
-			);
-			CloseHandle(hFile);
-		}
-#else
-		va_list argptr;
-		va_start(argptr, fmt);
-		va_end(argptr);
-#endif
-	}
-}
-#endif
 
 CEMSocket::CEMSocket(void)
   : wxSocketClient(wxSOCKET_NOWAIT/*wxSOCKET_BLOCK*/)
 {
 	#ifdef __DEBUG__
 	from_destroy =  false;
+	created = GetTickCount();
 	#endif		
+	
 	byConnected = ES_NOTCONNECTED;
 	
 	limitenabled = false;
@@ -102,6 +57,7 @@ CEMSocket::CEMSocket(void)
 
 	m_bLinkedPackets = false;
 	DoingDestroy = false;
+	
 }
 
 CEMSocket::~CEMSocket(){
@@ -116,13 +72,15 @@ CEMSocket::~CEMSocket(){
 	Notify(FALSE);
 	ClearQueues();
 	OnClose(0);
+	
   //AsyncSelect(0);
 }
 
 void CEMSocket::Destroy() {
 	#ifdef __DEBUG__
+	//theApp.AddSocketDeleteDebug((uint32) this,created);
 	from_destroy =  true;
-	#endif	
+	#endif
 	if (!DoingDestroy) {		
 		DoingDestroy = true;
 		wxSocketClient::Destroy();
