@@ -153,6 +153,10 @@ AC_ARG_ENABLE(gsocket, [  --disable-gsocket       Disable gsocket.c linking],
 AC_ARG_ENABLE(uss, [  --enable-uss        Enable USS (not working atm)],
 		USE_USS="$enableval", USE_USS="no")
 		
+AC_ARG_ENABLE([verbose],
+	AC_HELP_STRING([--enable-verbose],[Enable verbose debug output]),
+	[VERBOSE_OUTPUT="$enableval"], [VERBOSE_OUTPUT="no"])
+		
 # systray disable
 AC_MSG_CHECKING([whether SysTray should be compiled])
 AC_ARG_ENABLE(systray, [  --disable-systray       Disable SysTray compilation],
@@ -308,6 +312,19 @@ sources) CXXFLAGS="$CXXFLAGS -I$crypto_prefix -D__CRYPTO_SOURCE__"
 	;;
 esac
 
+case "$VERBOSE_OUTPUT" in
+yes)	if test x"$USE_DEBUG" = xno ; then
+		VERBOSE_OUTPUT=no
+		AC_MSG_NOTICE([
+	WARNING: --enable-verbose is void with --disable-debug. 
+	Ignoring verbose option.
+	])
+	else
+		CXXFLAGS="$CXXFLAGS -D__VERBOSE_OUTPUT__";
+	fi
+	;;
+esac
+
 AC_DEFINE_UNQUOTED(LOCALEDIR, "`eval echo $datadir/locale`", [Define where the locales are.])
 # we have it anyway by now
 
@@ -315,7 +332,6 @@ XRCFLAGS="-Isrc"
 CXXFLAGS="$CXXFLAGS $DEBUG_FLAGS $OPTIMISE_FLAGS $PROFILE_FLAGS"
 CFLAGS="$CFLAGS $DEBUG_FLAGS $OPTIMISE_FLAGS $PROFILE_FLAGS"
 LDFLAGS="$LDFLAGS $PROFILE_FLAGS"
-AM_CONDITIONAL(USE_DEBUG, test x$USE_DEBUG = xyes)
 AM_CONDITIONAL(WEB, test x$WEB = xyes)
 AM_CONDITIONAL(ED2K, test x$ED2K = xyes)
 AM_CONDITIONAL(CAS, test x$CAS = xyes)
@@ -329,6 +345,7 @@ AM_CONDITIONAL(ADD_GSOCKET, test x$USE_GSOCKET = xyes)
 AM_CONDITIONAL(ADD_THROTTLER, test x$USE_USS = xyes)
 AM_CONDITIONAL(HAVE_TRAY, test x$systray = xyes)
 AM_CONDITIONAL(HAVE_GTK, test x$gtk = xyes)
+AM_CONDITIONAL(VERBOSE_OUTPUT, test x$USE_DEBUG = xyes -a x$VERBOSE_OUTPUT = xyes)
 AC_SUBST(GTK_DEFS)
 AC_SUBST(TRAY_FLAGS)
 AC_SUBST(CAS_DEFS)
@@ -376,6 +393,7 @@ echo
 echo "  Configured aMule ${AMULE_VERSION} for '${host}'."
 echo
 echo "  Should aMule be compiled in debug mode?                  ${USE_DEBUG:-no}"
+echo "  Should aMule be compiled with verbose console output?    ${VERBOSE_OUTPUT:-no}"
 echo "  Should aMule be compiled with upload speed sense?        ${USE_USS:-no}"
 echo "  Should aMule be compiled with profiling?                 ${USE_PROFILE:-no}"
 echo "  Should aMule be compiled with optimizations?             ${USE_OPTIMIZE:-no}"
