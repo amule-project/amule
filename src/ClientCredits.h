@@ -23,24 +23,6 @@
 #include <cstddef>		// Needed for NULL
 #include <ctime>		// Needed for time(2)
 
-#ifdef __CRYPTO_DEBIAN_GENTOO__
-	#include <crypto++/config.h>
-	#include <crypto++/rsa.h>
-#else
-	#ifdef __CRYPTO_MDK_SUSE_FC__
-		#include <cryptopp/config.h>
-		#include <cryptopp/rsa.h>
-	#else
-		#ifdef __CRYPTO_SOURCE__
-			#include <crypto-5.1/config.h>
-			#include <crypto-5.1/rsa.h>
-		#else //needed for standard path
-			#include <cryptopp/config.h>
-			#include <cryptopp/rsa.h>
-		#endif
-	#endif
-#endif
-
 #include "types.h"		// Needed for uint16 and uint32
 #include <map>
 
@@ -123,7 +105,7 @@ public:
 	~CClientCreditsList();
 	
 			// return signature size, 0 = Failed | use sigkey param for debug only
-	uint8	CreateSignature(CClientCredits* pTarget, uchar* pachOutput, uint8 nMaxSize, uint32 ChallengeIP, uint8 byChaIPKind, CryptoPP::RSASSA_PKCS1v15_SHA_Signer* sigkey = NULL);
+	uint8	CreateSignature(CClientCredits* pTarget, uchar* pachOutput, uint8 nMaxSize, uint32 ChallengeIP, uint8 byChaIPKind, void* sigkey = NULL);
 	bool	VerifyIdent(CClientCredits* pTarget, const uchar* pachSignature, uint8 nInputSize, uint32 dwForIP, uint8 byChaIPKind);	
 
 	CClientCredits* GetCredit(const CMD4Hash& key);
@@ -143,7 +125,8 @@ private:
 	std::map<CMD4Hash, CClientCredits*> m_mapClients;
 	CPreferences*	m_pAppPrefs;
 	uint32			m_nLastSaved;
-	CryptoPP::RSASSA_PKCS1v15_SHA_Signer*		m_pSignkey;
+	// A void* to avoid having to include the large CryptoPP.h file
+	void*		m_pSignkey;
 	byte			m_abyMyPublicKey[80];
 	uint8			m_nMyPublicKeyLen;
 };

@@ -88,6 +88,7 @@ amulegui_SOURCES = amule-gui.cpp \
 	amuleDlg.cpp 
 
 amule_SOURCES = ListenSocket.cpp \
+	CryptoPP.cpp \
 	EMSocket.cpp \
 	AddFriend.cpp \
 	AddFileThread.cpp \
@@ -159,6 +160,7 @@ amule_SOURCES = ListenSocket.cpp \
 	amuleDlg.cpp 
 
 amuled_SOURCES = ListenSocket.cpp \
+		CryptoPP.cpp \
         ECSocket.cpp \
         EMSocket.cpp \
         AddFileThread.cpp \
@@ -261,6 +263,7 @@ amulewebDLG_CXXFLAGS = $(WX_CXXFLAGS) -DAMULEWEBDLG
 amulewebDLG_LDADD = $(WX_LIBS) $(ZLIB_LIBS)
 
 noinst_HEADERS = AddFileThread.h \
+		 CryptoPP.h \
 		 AddFriend.h \
 		 amuleDlg.h \
 		 amule.h \

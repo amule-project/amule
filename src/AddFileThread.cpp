@@ -17,20 +17,6 @@
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifdef __CRYPTO_DEBIAN_GENTOO__
-	#include <crypto++/md4.h>
-#else 
-	#ifdef __CRYPTO_MDK_SUSE_FC__
-		#include <cryptopp/md4.h>
-	#else
-		#ifdef __CRYPTO_SOURCE__
-			#include <crypto-5.1/md4.h>			
-		#else 
-			#include <cryptopp/md4.h>
-		#endif
-	#endif
-#endif
-
 
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/event.h>		// Needed for wxCommandEvent
@@ -44,6 +30,8 @@
 #include "opcodes.h"		// Needed for TM_HASHTHREADFINISHED
 #include "PartFile.h"		// Needed for CKnownFile and CPartFile
 #include "CFile.h"			// Needed for CFile
+
+#include "CryptoPP.h"		// Needed for MD4
 
 //! Size to hash in one go: PARTSIZE/95, which is 100kb.
 const int CRUMBSIZE = PARTSIZE/95;
