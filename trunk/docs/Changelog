@@ -29,6 +29,7 @@ Version 2.0.0rc8 - The "???????????" version.
 		* Optimizations in the RLE code.
 		* Based on kry's patch, also darken paused files' progress
 		  bar.
+		* Translations updates.
 		* Fixed: Servers priority now working. (reported by Sir)
 		* Fixed: Now all unset Server Priorities are set to normal.
 		  (reported by plaenky)
@@ -91,7 +92,7 @@ Version 2.0.0rc8 - The "???????????" version.
 		* Contributors:
 		  Baz,		boutros,
 		  fossybaer,	Frankk,
-		  han,		janaru,
+		  han,		junaru,
 		  sebaX,	skolnick,
 		  sLiCeR\,	Vollstrecker,
 		  volpop
