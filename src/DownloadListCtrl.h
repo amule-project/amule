@@ -86,8 +86,8 @@ protected:
 	void OnColResize(wxListEvent& evt);
 
 	CPreferences::Table TablePrefs()	{ return CPreferences::tableDownload; }
-	void DrawFileItem(wxDC* dc,int nColumn,LPRECT lpRect,CtrlItem_Struct* lpCtrlItem);
-	void DrawSourceItem(wxDC* dc,int nColumn,LPRECT lpRect,CtrlItem_Struct* lpCtrlItem);
+	void DrawFileItem(wxDC* dc,int nColumn, const wxRect& rect,CtrlItem_Struct* lpCtrlItem);
+	void DrawSourceItem(wxDC* dc,int nColumn, const wxRect& rect,CtrlItem_Struct* lpCtrlItem);
 	void OnColumnClick(wxListEvent& evt);
 	static int wxCALLBACK SortProc(long lp1,long lp2,long lpSort);
 	static int Compare(CPartFile* file1, CPartFile* file2, long lParamSort);

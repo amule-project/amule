@@ -32,6 +32,7 @@
 #include <algorithm>		// Needed for std::min
 #include <wx/font.h>
 #include <wx/dcmemory.h>
+#include <wx/datetime.h>
 
 #include "DownloadListCtrl.h"	// Interface declarations
 #include "otherfunctions.h"	// Needed for CheckShowItemInGivenCat
@@ -387,219 +388,156 @@ void CDownloadListCtrl::OnColResize(wxListEvent& WXUNUSED(evt))
 	return;
 }
 
-void CDownloadListCtrl::OnDrawItem(int item, wxDC * dc, const wxRect & rect, const wxRect & rectHL, bool highlighted)
+void CDownloadListCtrl::OnDrawItem(int item, wxDC* dc, const wxRect& rect, const wxRect& rectHL, bool highlighted)
 {
 	/* Don't do any drawing if there's nobody to see it. */
-
 	if (!theApp.amuledlg->SafeState() || (theApp.amuledlg->GetActiveDialog() != IDD_TRANSFER)) {
 		return;
 	}
+
+	// Create a temporary bitmap upon which we draw. Later the contents are blit'd
+	// onto the provided DC. Doing it this way avoids flicker, since there is only
+	// done one visible drawing.
+	wxBitmap buffer( rect.GetWidth(), rect.GetHeight() );
+	wxMemoryDC tmp_dc;
+	tmp_dc.SelectObject( buffer );
 	
 	CtrlItem_Struct *content = (CtrlItem_Struct *) GetItemData(item);
 
+	
+	// Define text-color and background
 	if ((content->type == FILE_TYPE) && (highlighted)) {
 		if (GetFocus()) {
-			dc->SetBackground(*m_hilightBrush);
-			dc->SetTextForeground(wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHTTEXT));
+			tmp_dc.SetBackground(*m_hilightBrush);
+			tmp_dc.SetTextForeground(wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHTTEXT));
 		} else {
-			dc->SetBackground(*m_hilightUnfocusBrush);
-			dc->SetTextForeground(wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHTTEXT));
+			tmp_dc.SetBackground(*m_hilightUnfocusBrush);
+			tmp_dc.SetTextForeground(wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHTTEXT));
 		}
 	} else {
-		dc->SetBackground(*(wxTheBrushList->FindOrCreateBrush(wxSystemSettings::GetColour(wxSYS_COLOUR_LISTBOX), wxSOLID)));
-		dc->SetTextForeground(wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT));
+		tmp_dc.SetBackground(*(wxTheBrushList->FindOrCreateBrush(wxSystemSettings::GetColour(wxSYS_COLOUR_LISTBOX), wxSOLID)));
+		tmp_dc.SetTextForeground(wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT));
 	}
 	
-	if (content->type==FILE_TYPE) {
-		/* If we have category, override textforeground with what category tells us. */		
+
+	// Define the border of the drawn area
+	if ( highlighted ) {
+		wxColour old;
+		if ( ( content->type == FILE_TYPE ) && !GetFocus() ) {
+			old = m_hilightUnfocusBrush->GetColour();
+		} else {
+			old = m_hilightBrush->GetColour();
+		}
+	
+		wxColor newcol( ((int)old.Red() * 65) / 100, ((int)old.Green() * 65) / 100, ((int)old.Blue() * 65) / 100);
+		
+		tmp_dc.SetPen( wxPen(newcol, 1, wxSOLID) );
+	} else {
+		tmp_dc.SetPen(*wxTRANSPARENT_PEN);
+	}
+
+
+	tmp_dc.SetBrush(tmp_dc.GetBackground());
+	// Mapping the rectHL onto the bitmap
+	tmp_dc.DrawRectangle( rectHL.x - rect.x, rectHL.y - rect.y, rectHL.width, rectHL.height );	
+	
+	tmp_dc.SetPen(*wxTRANSPARENT_PEN);
+
+	if ( content->type == FILE_TYPE ) {
+		// If we have category, override textforeground with what category tells us.
 		CPartFile *file = (CPartFile *) content->value;
-		if (file->GetCategory() > 0) {
-			dc->SetTextForeground(theApp.glob_prefs->GetCatColor(file->GetCategory()));
+		if ( file->GetCategory() ) {
+			tmp_dc.SetTextForeground(theApp.glob_prefs->GetCatColor(file->GetCategory()));
 		}		
 	}
 
-	/* we must fill the background */
-	wxPen mypen;
-	if (content->type == FILE_TYPE && highlighted) {
-		/* set pen so that we'll get nice border */
-		wxColour old = GetFocus()? m_hilightBrush->GetColour() : m_hilightUnfocusBrush->GetColour();
-		wxColour newcol = wxColour(((int)old.Red() * 65) / 100, ((int)old.Green() * 65) / 100, ((int)old.Blue() * 65) / 100);
-		mypen = wxPen(newcol, 1, wxSOLID);
-		dc->SetPen(mypen);
-	} else {
-		if (content->type != FILE_TYPE && highlighted) {
-			wxColour old = m_hilightBrush->GetColour();
-			wxColour newcol = wxColour(((int)old.Red() * 65) / 100, ((int)old.Green() * 65) / 100, ((int)old.Blue() * 65) / 100);
-			mypen = wxPen(newcol, 1, wxSOLID);
-			dc->SetPen(mypen);
+	// Various constant values we use
+	const int iTextOffset = ( rect.GetHeight() - tmp_dc.GetCharHeight() + 1) / 2;
+	const int iOffset = 4;
+
+	// The starting end ending position of the tree
+	int tree_start = 0;
+	int tree_end = 0;
+	
+	wxRect cur_rec( iOffset, 0, 0, rect.height );
+	for (int iCurrent = 0; iCurrent < GetColumnCount(); iCurrent++) {
+		wxListItem listitem;
+		GetColumn(iCurrent, listitem);
+	
+		cur_rec.width = listitem.GetWidth() - 2*iOffset;
+		
+		// Make a copy of the current rectangle so we can apply specific tweaks
+		wxRect target_rec = cur_rec;
+		if (iCurrent == 5) {
+			tree_start = cur_rec.x - iOffset;
+			tree_end   = cur_rec.x + iOffset;
+			
+			// Double the offset to make room for the cirle-marker
+			target_rec.x += iOffset;
+			target_rec.width -= iOffset;
 		} else {
-			dc->SetPen(*wxTRANSPARENT_PEN);
+			// will ensure that text is about in the middle ;)
+			target_rec.y += iTextOffset;
 		}
+		
+		// Draw the item
+		if ( content->type == FILE_TYPE ) {
+			DrawFileItem(&tmp_dc, iCurrent, target_rec, content);
+		} else {
+			DrawSourceItem(&tmp_dc, iCurrent, target_rec, content);
+		}
+		
+		// Increment to the next column
+		cur_rec.x += listitem.GetWidth();
 	}
-	dc->SetBrush(dc->GetBackground());
-	/* lagloose: removes flicker
-	   Madcat: Breaking rectangle lines :( Figure out a way to keep rectangles, and become my 
-	   personal hero :) */
-	dc->DrawRectangle(rectHL);
-	/* end lagloose */
-	dc->SetPen(*wxTRANSPARENT_PEN);
-	RECT cur_rec;
-	int tree_start = 0, tree_end = 0;
-	bool notLast = item + 1 != GetItemCount();
-	bool notFirst = item != 0;
-	cur_rec.left = rect.x;
-	cur_rec.top = rect.y;
-	cur_rec.right = rect.x + rect.width;
-	cur_rec.bottom = rect.y + rect.height;
-	int iOffset = 4;	//dc->GetTextExtent(_T(" "), 1 ).cx*2;
-	int iCount = GetColumnCount();	//pHeaderCtrl->GetItemCount();
-	cur_rec.right = cur_rec.left;
-	cur_rec.right -= iOffset;
-	cur_rec.left += iOffset;
+	 
+	// Draw tree last so it draws over selected and focus (looks better)
+	if ( tree_start < tree_end ) {
+		// Gather some information
+		const bool notLast = item + 1 != GetItemCount();
+		const bool notFirst = item != 0;
+		const bool hasNext = notLast && ((CtrlItem_Struct *)GetItemData(item + 1))->type != 1;
+		const bool isOpenRoot = hasNext && content->type == 1;
+		const bool isChild = content->type != FILE_TYPE;
+		
+		// Might as well calculate these now
+		const int treeCenter = tree_start + 3;
+		const int middle = ( cur_rec.height + 1 ) / 2;
 
-	if (content->type == FILE_TYPE) {
-		for (int iCurrent = 0; iCurrent < iCount; iCurrent++) {
-			int iColumn = iCurrent;	//pHeaderCtrl->OrderToIndex(iCurrent);
-			wxListItem listitem;
-			GetColumn(iColumn, listitem);
-			int cx = listitem.GetWidth();
-			if (iColumn == 5) {
-				int iNextLeft = cur_rec.left + cx;
-				//set up tree vars
-				cur_rec.left = cur_rec.right + iOffset;
-				cur_rec.right = cur_rec.left + std::min(8, cx);
-				tree_start = cur_rec.left + 1;
-				tree_end = cur_rec.right;
-				//normal column stuff
-				cur_rec.left = cur_rec.right + 1;
-				cur_rec.right = tree_start + cx - iOffset;
-				DrawFileItem(dc, 5, &cur_rec, content);
-				cur_rec.left = iNextLeft;
-			} else {
-				cur_rec.right += cx;
-				cur_rec.top += 3;	// will ensure that text is about in the middle ;)
-				DrawFileItem(dc, iColumn, &cur_rec, content);
-				cur_rec.top -= 3;
-				cur_rec.left += cx;
-			}
-		}
-	} else if (content->type == AVAILABLE_SOURCE || content->type == UNAVAILABLE_SOURCE) {
-		for (int iCurrent = 0; iCurrent < iCount; iCurrent++) {
-
-			int iColumn = iCurrent;	//pHeaderCtrl->OrderToIndex(iCurrent);
-			wxListItem listitem;
-			GetColumn(iColumn, listitem);
-			int cx = listitem.GetWidth();
-
-			if (iColumn == 5) {
-				int iNextLeft = cur_rec.left + cx;
-				//set up tree vars
-				cur_rec.left = cur_rec.right + iOffset;
-				cur_rec.right = cur_rec.left + std::min(8, cx);
-				tree_start = cur_rec.left + 1;
-				tree_end = cur_rec.right;
-				//normal column stuff
-				cur_rec.left = cur_rec.right + 1;
-				cur_rec.right = tree_start + cx - iOffset;
-				DrawSourceItem(dc, 5, &cur_rec, content);
-				cur_rec.left = iNextLeft;
-			} else {
-				while (iCurrent < iCount) {
-					int iNext = iCurrent + 1;	//pHeaderCtrl->OrderToIndex(iCurrent + 1);
-					if (iNext == 1 /*|| iNext == 5 || iNext == 7 || iNext == 8 */ ) {
-						wxListItem newlistitem;
-						GetColumn(iNext, newlistitem);
-						cx += newlistitem.GetWidth();	//GetColumnWidth(iNext);
-					} else {
-						break;
-					}
-					iCurrent++;
-				}
-				cur_rec.right += cx;
-				cur_rec.top += 3;	// will ensure that text is about in the middle ;)
-				DrawSourceItem(dc, iColumn, &cur_rec, content);
-				cur_rec.top -= 3;
-				cur_rec.left += cx;
-			}
-		}
-	}
-
-	//draw tree last so it draws over selected and focus (looks better)
-	if (tree_start < tree_end) {
-		//set new bounds
-		RECT tree_rect;
-		tree_rect.top = rect.y;	//lpDrawItemStruct->rcItem.top;
-		tree_rect.bottom = rect.y + rect.height;	//lpDrawItemStruct->rcItem.bottom;
-		tree_rect.left = tree_start;
-		tree_rect.right = tree_end;
-		// TODO:varmaanki clipper?
-		//dc->SetBoundsRect(&tree_rect, DCB_DISABLE);
-
-		//gather some information
-		bool hasNext = notLast && ((CtrlItem_Struct *) this->GetItemData(item + 1))->type != 1;
-		bool isOpenRoot = hasNext && content->type == 1;
-		bool isChild = content->type != FILE_TYPE;
-		//might as well calculate these now
-		int treeCenter = tree_start + 3;
-		int middle = (cur_rec.top + cur_rec.bottom + 1) / 2;
-
-		//set up a new pen for drawing the tree
-		wxPen pn;
-		//pn.CreatePen(PS_SOLID, 1, dc->GetTextColor());
-		pn = *(wxThePenList->FindOrCreatePen(dc->GetTextForeground(), 1, wxSOLID));
-		//oldpn = dc->SelectObject(&pn);
-		dc->SetPen(pn);
+		// Set up a new pen for drawing the tree
+		tmp_dc.SetPen( *(wxThePenList->FindOrCreatePen(tmp_dc.GetTextForeground(), 1, wxSOLID)) );
 
 		if (isChild) {
-			//draw the line to the status bar
-			//dc->MoveTo(tree_end, middle);
-			//dc->LineTo(tree_start + 3, middle);
-			dc->DrawLine(tree_end, middle, tree_start + 3, middle);
+			// Draw the line to the status bar
+			tmp_dc.DrawLine(tree_end, middle, tree_start + 3, middle);
 
-			//draw the line to the child node
+			// Draw the line to the child node
 			if (hasNext) {
-				//dc->MoveTo(treeCenter, middle);
-				//dc->LineTo(treeCenter, cur_rec.bottom + 1);
-				dc->DrawLine(treeCenter, middle, treeCenter, cur_rec.bottom + 1);
+				tmp_dc.DrawLine(treeCenter, middle, treeCenter, cur_rec.height + 1);
 			}
-		} else if (isOpenRoot) {
-			//draw circle
-			RECT circle_rec;
-			//COLORREF crBk = dc->GetBkColor();
-			wxColour crBk = dc->GetBackground().GetColour();
-			circle_rec.top = middle - 2;
-			circle_rec.bottom = middle + 3;
-			circle_rec.left = treeCenter - 2;
-			circle_rec.right = treeCenter + 3;
-			dc->DrawLine(circle_rec.left, circle_rec.top, circle_rec.right, circle_rec.top);
-			dc->DrawLine(circle_rec.right, circle_rec.top, circle_rec.right, circle_rec.bottom);
-			dc->DrawLine(circle_rec.right, circle_rec.bottom, circle_rec.left, circle_rec.bottom);
-			dc->DrawLine(circle_rec.left, circle_rec.bottom, circle_rec.left, circle_rec.top);
-			//dc->FrameRect(&circle_rec, &CBrush(dc->GetTextColor()));
-			//dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(dc->GetTextForeground(),wxSOLID)));
-
-			wxPen oldpen = dc->GetPen();
-			dc->SetPen(*(wxThePenList->FindOrCreatePen(crBk, 1, wxSOLID)));
-			dc->DrawPoint(circle_rec.left, circle_rec.top);
-			dc->DrawPoint(circle_rec.right, circle_rec.top);
-			dc->DrawPoint(circle_rec.left, circle_rec.bottom);
-			dc->DrawPoint(circle_rec.right, circle_rec.bottom);
-			dc->SetPen(oldpen);
-
-			//draw the line to the child node
+			
+			// Draw the line back up to parent node
+			if (notFirst) {
+				tmp_dc.DrawLine(treeCenter, middle, treeCenter, 0);
+			}
+		} else if ( isOpenRoot ) {
+			// Draw empty circle
+			tmp_dc.SetBrush(*wxTRANSPARENT_BRUSH);
+			
+			tmp_dc.DrawCircle( treeCenter, middle, 3 );			
+			
+			// Draw the line to the child node
 			if (hasNext) {
-				//dc->MoveTo(treeCenter, middle + 3);
-				//dc->LineTo(treeCenter, cur_rec.bottom + 1);
-				dc->DrawLine(treeCenter, middle + 3, treeCenter, cur_rec.bottom + 1);
-
+				tmp_dc.DrawLine(treeCenter, middle + 3, treeCenter, cur_rec.height + 1);
 			}
 		}
-		//draw the line back up to parent node
-		if (notFirst && isChild) {
-			dc->DrawLine(treeCenter, middle, treeCenter, cur_rec.top - 1);
-		}
+
 	}
-	
+
+	// Copy the result of all this drawing to the target DC
+	dc->Blit( rect.x, rect.y, rect.width, rect.height, &tmp_dc, 0, 0 );
+
+	tmp_dc.SelectObject( wxNullBitmap );
 }
 
 void CDownloadListCtrl::Init()
@@ -810,18 +748,17 @@ void CDownloadListCtrl::UpdateItem(void *toupdate)
 	}
 }
 
-void CDownloadListCtrl::DrawFileItem(wxDC * dc, int nColumn, LPRECT lpRect, CtrlItem_Struct * lpCtrlItem)
+void CDownloadListCtrl::DrawFileItem(wxDC* dc, int nColumn, const wxRect& rect, CtrlItem_Struct* lpCtrlItem)
 {
-	if (lpRect->left < lpRect->right) {
-
+	if ( rect.GetWidth() > 0 ) {
 		// force clipper (clip 2 px more than the rectangle from the right side)
-		wxDCClipper clipper(*dc, lpRect->left, lpRect->top, lpRect->right - lpRect->left - 2, lpRect->bottom - lpRect->top);
+		wxDCClipper clipper(*dc, rect.GetX(), rect.GetY(), rect.GetWidth() - 2, rect.GetHeight() );
 
-		wxString buffer;
 		CPartFile *lpPartFile = (CPartFile *) lpCtrlItem->value;
+		
 		switch (nColumn) {
-
-			case 0:{
+			case 0:
+				{
 					// file name
 					if (lpPartFile->HasComment() || lpPartFile->HasRating()) {
 						int image = 6;
@@ -830,57 +767,53 @@ void CDownloadListCtrl::DrawFileItem(wxDC * dc, int nColumn, LPRECT lpRect, Ctrl
 								image = 5;
 							}
 						}
+
 						// it's already centered by OnDrawItem() ... 
-						POINT point = { lpRect->left, lpRect->top /*+3 */  };
-						//m_ImageList.Draw(dc, image, point, ILD_NORMAL);
-						m_ImageList.Draw(image, *dc, point.x, point.y - 1, wxIMAGELIST_DRAW_TRANSPARENT);
-						lpRect->left += 15;
-						dc->DrawText(lpPartFile->GetFileName(), lpRect->left, lpRect->top);
-						lpRect->left -= 15;
+						m_ImageList.Draw(image, *dc, rect.GetX(), rect.GetY() - 1, wxIMAGELIST_DRAW_TRANSPARENT);
+						dc->DrawText(lpPartFile->GetFileName(), rect.GetX() + 15, rect.GetY());
 					} else {
-						dc->DrawText(lpPartFile->GetFileName(), lpRect->left, lpRect->top);
+						dc->DrawText(lpPartFile->GetFileName(), rect.GetX(), rect.GetY());
 					}
 				}
 				break;
 
 			case 1:	// size
-				buffer = CastItoXBytes(lpPartFile->GetFileSize());
-				//dc->DrawText(buffer,(int)strlen(buffer),lpRect, DLC_DT_TEXT);
-				dc->DrawText(buffer, lpRect->left, lpRect->top);
+				{
+					wxString buffer = CastItoXBytes(lpPartFile->GetFileSize());
+					dc->DrawText(buffer, rect.GetX(), rect.GetY());
+				}
 				break;
 
 			case 2:	// transfered
-				buffer = CastItoXBytes(lpPartFile->GetTransfered()).GetData();
-				//dc->DrawText(buffer,(int)strlen(buffer),lpRect, DLC_DT_TEXT);   
-				dc->DrawText(buffer, lpRect->left, lpRect->top);
+				{
+					wxString buffer = CastItoXBytes(lpPartFile->GetTransfered());
+					dc->DrawText(buffer, rect.GetX(), rect.GetY());
+				}
 				break;
 
 			case 3:	// transfered complete
-				buffer = CastItoXBytes(lpPartFile->GetCompletedSize());
-				dc->DrawText(buffer, lpRect->left, lpRect->top);
+				{
+					wxString buffer = CastItoXBytes(lpPartFile->GetCompletedSize());
+					dc->DrawText(buffer, rect.GetX(), rect.GetY());
+				}
 				break;
 
 			case 4:	// speed
-				if (lpPartFile->GetTransferingSrcCount() == 0) {
-					buffer = wxT("");
-				} else {
-					buffer.Printf(wxT("%.1f %s"), lpPartFile->GetKBpsDown(), wxT("kB/s"));
+				{
+					if ( lpPartFile->GetTransferingSrcCount() ) {
+						wxString buffer = wxString::Format(wxT("%.1f %s"), lpPartFile->GetKBpsDown(), wxT("kB/s"));
+						dc->DrawText(buffer, rect.GetX(), rect.GetY());
+					}
 				}
-
-				dc->DrawText(buffer, lpRect->left, lpRect->top);
 				break;
 
-			#ifndef DISABLE_PROGRESS
-
+#ifndef DISABLE_PROGRESS
 			case 5:	// progress
 				{
-//					lpRect->bottom--;
-//					lpRect->top++;
-
 					if (theApp.glob_prefs->ShowProgBar()) {
 
-						int iWidth = lpRect->right - lpRect->left;
-						int iHeight = (lpRect->bottom - lpRect->top);
+						int iWidth  = rect.GetWidth();
+						int iHeight = rect.GetHeight();
 	
 						// DO NOT DRAW IT ALL THE TIME
 						DWORD dwTicks = GetTickCount();
@@ -890,30 +823,28 @@ void CDownloadListCtrl::DrawFileItem(wxDC * dc, int nColumn, LPRECT lpRect, Ctrl
 							if (lpCtrlItem->status == NULL) {
 								lpCtrlItem->status = new wxBitmap(iWidth, iHeight);
 							} else {
-								//delete lpCtrlItem->status;
-							//lpCtrlItem->status=NULL;
-								//lpCtrlItem->status=new wxBitmap(iWidth,iHeight);
-								lpCtrlItem->status->Create(iWidth, iHeight);	//SetWidth(iWidth);
+								// Only recreate if the size has changed
+								if ( ( lpCtrlItem->status->GetWidth() != iWidth ) ) 
+									lpCtrlItem->status->Create(iWidth, iHeight);
 							}
-							//lpCtrlItem->status->Create(iWidth,iHeight);
 							cdcStatus.SelectObject(*(lpCtrlItem->status));
 	
 							lpPartFile->DrawStatusBar(&cdcStatus, wxRect(0, 0, iWidth, iHeight), theApp.glob_prefs->UseFlatBar());
-							lpCtrlItem->dwUpdated = dwTicks + (rand() % 128);
+							lpCtrlItem->dwUpdated = dwTicks + 1000; // Plus one second
 	
 						} else {
 							cdcStatus.SelectObject(*(lpCtrlItem->status));
 						}
 
-						dc->Blit(lpRect->left, lpRect->top+1, iWidth, iHeight, &cdcStatus, 0, 0);
+						dc->Blit( rect.GetX(), rect.GetY() + 1, iWidth, iHeight, &cdcStatus, 0, 0);
 						cdcStatus.SelectObject(wxNullBitmap);
 					}
 					if (theApp.glob_prefs->ShowPercent()) {					
 						// ts: Percentage of completing
 						// Kry - Modified for speed
-						buffer.Printf(wxT("%.1f %%"), lpPartFile->GetPercentCompleted());
-						int middlex = (lpRect->left + lpRect->right) >> 1;
-						int middley = (lpRect->bottom + lpRect->top) >> 1;
+						wxString buffer = wxString::Format(wxT("%.1f %%"), lpPartFile->GetPercentCompleted());
+						int middlex = (2*rect.GetX() + rect.GetWidth()) >> 1;
+						int middley = (2*rect.GetY() + rect.GetHeight()) >> 1;
 						dc->GetTextExtent(buffer, &textwidth, &textheight);
 							wxColour AktColor = dc->GetTextForeground();
 						if (theApp.glob_prefs->ShowProgBar()) {
@@ -924,14 +855,9 @@ void CDownloadListCtrl::DrawFileItem(wxDC * dc, int nColumn, LPRECT lpRect, Ctrl
 						dc->DrawText(buffer, middlex - (textwidth >> 1), middley - (textheight >> 1));
 						dc->SetTextForeground(AktColor);					
 					}
-
-//					lpRect->bottom++;
-//					lpRect->top--;
-					
 				}
 				break;
-
-				#endif
+#endif
 
 			case 6:	// sources
 				{
@@ -939,97 +865,78 @@ void CDownloadListCtrl::DrawFileItem(wxDC * dc, int nColumn, LPRECT lpRect, Ctrl
 					uint16 sc = lpPartFile->GetSourceCount();
 					uint16 ncsc = lpPartFile->GetNotCurrentSourcesCount();				
 
-					if(ncsc>0) {
-						buffer = buffer + wxString::Format(wxT("%i/"),sc-ncsc);
+					wxString buffer;
+					if ( ncsc ) {
+						buffer = wxString::Format(wxT("%i/%i"), sc - ncsc, sc);
+					} else {					
+						buffer = wxString::Format(wxT("%i"),sc);
 					}
 					
-					buffer = buffer + wxString::Format(wxT("%i"),sc);
-					
-					if (lpPartFile->GetSrcA4AFCount()>0 ) {
-						buffer = buffer + (wxString::Format(wxT("+%i"),lpPartFile->GetSrcA4AFCount()));						
+					if ( lpPartFile->GetSrcA4AFCount() ) {
+						buffer = buffer + wxString::Format(wxT("+%i"),lpPartFile->GetSrcA4AFCount());
 					}
 					
-					buffer = buffer + (wxString::Format(wxT(" (%i)"),lpPartFile->GetTransferingSrcCount()));
-					dc->DrawText(buffer, lpRect->left, lpRect->top);
+					buffer = buffer + wxString::Format(wxT(" (%i)"),lpPartFile->GetTransferingSrcCount());
+					dc->DrawText(buffer, rect.GetX(), rect.GetY());
 				}
 				break;
 
-			case 7:	// prio
-				switch(lpPartFile->GetDownPriority()) {
-				case PR_LOW:
-					if ( lpPartFile->IsAutoDownPriority() ) {
-						dc->DrawText(_("Auto [Lo]"), lpRect->left, lpRect->top);
-					} else {
-						dc->DrawText(_("Low"), lpRect->left, lpRect->top);
+			case 7:	// Priority
+				if ( lpPartFile->IsAutoDownPriority() ) {
+					switch ( lpPartFile->GetDownPriority() ) {
+						case PR_LOW:	dc->DrawText(_("Auto [Lo]"), rect.GetX(), rect.GetY()); break;
+						case PR_NORMAL:	dc->DrawText(_("Auto [No]"), rect.GetX(), rect.GetY()); break;
+						case PR_HIGH:	dc->DrawText(_("Auto [Hi]"), rect.GetX(), rect.GetY()); break;
 					}
-					break;
-				case PR_NORMAL:
-					if ( lpPartFile->IsAutoDownPriority() ) {
-						dc->DrawText(_("Auto [No]"), lpRect->left, lpRect->top);
-					} else {
-						dc->DrawText(_("Normal"), lpRect->left, lpRect->top);
+				} else {
+					switch ( lpPartFile->GetDownPriority() ) {
+						case PR_LOW:	dc->DrawText(_("Low"),    rect.GetX(), rect.GetY());	break;
+						case PR_NORMAL:	dc->DrawText(_("Normal"), rect.GetX(), rect.GetY());	break;
+						case PR_HIGH:	dc->DrawText(_("High"),   rect.GetX(), rect.GetY());	break;
 					}
-					break;
-				case PR_HIGH:
-					if ( lpPartFile->IsAutoDownPriority() ) {
-						dc->DrawText(_("Auto [Hi]"), lpRect->left, lpRect->top);
-					} else {
-						dc->DrawText(_("High"), lpRect->left, lpRect->top);
-					}
-					break;
 				}
 				break;
-
-			case 8:	// <<--9/21/02
-				//buffer.Printf("%s", lpPartFile->getPartfileStatus().GetData());
-				//dc->DrawText(buffer,(int)strlen(buffer),lpRect, DLC_DT_TEXT);
-				dc->DrawText(lpPartFile->getPartfileStatus(), lpRect->left, lpRect->top);
+			case 8: // Status
+				dc->DrawText(lpPartFile->getPartfileStatus(), rect.GetX(), rect.GetY());
 				break;
 
 			case 9:	// remaining time & size
 				{
-					//char bufferSize[50];
-					//char bufferTime[50];
+					wxString buffer;
+					if ( lpPartFile->GetStatus() != PS_COMPLETING && lpPartFile->GetStatus() != PS_COMPLETE ) {
+						//size
+						uint32 remains = lpPartFile->GetFileSize() - lpPartFile->GetCompletedSize();
 
-					//size
-					uint32 remains;
-					remains = lpPartFile->GetFileSize() - lpPartFile->GetCompletedSize();	//<<-- 09/27/2002, CML
-
-					// time
-					sint32 restTime = lpPartFile->getTimeRemaining();
-					buffer = CastSecondsToHM(restTime) + wxT(" (") + CastItoXBytes(remains) + wxT(")");
-					if (lpPartFile->GetStatus() == PS_COMPLETING || lpPartFile->GetStatus() == PS_COMPLETE) {
-						buffer = wxT("");
+						// time
+						sint32 restTime = lpPartFile->getTimeRemaining();
+						buffer = CastSecondsToHM(restTime) + wxT(" (") + CastItoXBytes(remains) + wxT(")");
 					}
-					//dc->DrawText(buffer,(int)strlen(buffer),lpRect, DLC_DT_TEXT);
-					dc->DrawText(buffer, lpRect->left, lpRect->top);
+
+					dc->DrawText(buffer, rect.GetX(), rect.GetY());
 				}
 				break;
 			case 10:	// last seen complete
 				{
-					if (lpPartFile->lastseencomplete == 0) {
-						buffer = _("Unknown");
+					wxString buffer;
+					if ( lpPartFile->lastseencomplete ) {
+						buffer = wxDateTime( lpPartFile->lastseencomplete ).Format( wxT("%y/%m/%d %H:%M:%S") );
 					} else {
-						char tmpstr[512];
-						static char const* lastseencomplete_fmt = "%y/%m/%d %H:%M:%S"; // Suppress compiler warning.changed by deltaHF (Georg Ludwig fix)
-						strftime(tmpstr, sizeof(tmpstr), lastseencomplete_fmt,
-						         localtime(&lpPartFile->lastseencomplete));
-						buffer = char2unicode(tmpstr);
+						buffer = _("Unknown");
 					}
-					dc->DrawText(buffer, lpRect->left, lpRect->top);
+					
+					dc->DrawText(buffer, rect.GetX(), rect.GetY());
 				}
 				break;
 			case 11:	// last receive
 				if (!IsColumnHidden(11)) {
-					if (lpPartFile->GetLastChangeDatetime() != 0) {
-						char tmpstr[512];
-						time_t kello = lpPartFile->GetLastChangeDatetime();
-						static char const* lastchangedate_fmt = "%y/%m/%d %H:%M:%S"; // Suppress compiler warning.changed by deltaHF (Georg Ludwig fix)
-						strftime(tmpstr, sizeof(tmpstr), lastchangedate_fmt, localtime(&kello));
-						buffer = char2unicode(tmpstr);
-					} else
-						buffer = wxT("");
-					dc->DrawText(buffer, lpRect->left, lpRect->top);
+					wxString buffer;
+					if ( lpPartFile->GetLastChangeDatetime() ) {
+						buffer = wxDateTime( lpPartFile->lastseencomplete ).Format( wxT("%y/%m/%d %H:%M:%S") );
+					} else {
+						buffer = _("Unknown");
+					}
+
+					dc->DrawText(buffer, rect.GetX(), rect.GetY());
 				}
 		}
 	}
@@ -1037,65 +944,58 @@ void CDownloadListCtrl::DrawFileItem(wxDC * dc, int nColumn, LPRECT lpRect, Ctrl
 
 #define ILD_NORMAL wxIMAGELIST_DRAW_TRANSPARENT
 
-void CDownloadListCtrl::DrawSourceItem(wxDC * dc, int nColumn, LPRECT lpRect, CtrlItem_Struct * lpCtrlItem)
+void CDownloadListCtrl::DrawSourceItem(wxDC * dc, int nColumn, const wxRect& rect, CtrlItem_Struct * lpCtrlItem)
 {
-	if (lpRect->left < lpRect->right) {
+	if ( rect.GetWidth() > 0 ) {
 
 		// force clipper (clip 2 px more than the rectangle from the right side)
-		wxDCClipper clipper(*dc, lpRect->left, lpRect->top, lpRect->right - lpRect->left - 2, lpRect->bottom - lpRect->top);
+		wxDCClipper clipper(*dc, rect.GetX(), rect.GetY(), rect.GetWidth() - 2, rect.GetHeight());
 		wxString buffer;
-		CUpDownClient *lpUpDownClient = (CUpDownClient *) lpCtrlItem->value;
+		CUpDownClient* lpUpDownClient = (CUpDownClient *) lpCtrlItem->value;
+		
 		switch (nColumn) {
-
 			case 0:	// icon, name, status
 				{
-					RECT cur_rec;
-					memcpy(&cur_rec, lpRect, sizeof(RECT));
+					wxRect cur_rec = rect;
 					// +3 is added by OnDrawItem()... so take it off
 					// Kry - eMule says +1, so I'm trusting it
-					POINT point = { cur_rec.left, cur_rec.top+1 };
+					POINT point = { cur_rec.GetX(), cur_rec.GetY()+1 };
+					
 					if (lpCtrlItem->type == 2) {
+						uint8 image = 0;
 						switch (lpUpDownClient->GetDownloadState()) {
 							case DS_CONNECTING:
-								m_ImageList.Draw(1, *dc, point.x, point.y, ILD_NORMAL);
-								break;
 							case DS_CONNECTED:
-								m_ImageList.Draw(1, *dc, point.x, point.y, ILD_NORMAL);
-								break;
 							case DS_WAITCALLBACK:
-								m_ImageList.Draw(1, *dc, point.x, point.y, ILD_NORMAL);
+							case DS_TOOMANYCONNS:
+								image = 1;
 								break;
 							case DS_ONQUEUE:
 								if (lpUpDownClient->IsRemoteQueueFull()) {
-									m_ImageList.Draw(3, *dc, point.x, point.y, ILD_NORMAL);
+									image = 3;
 								} else {
-									m_ImageList.Draw(2, *dc, point.x, point.y, ILD_NORMAL);
+									image = 2;
 								}
 								break;
 							case DS_DOWNLOADING:
-								m_ImageList.Draw(0, *dc, point.x, point.y, ILD_NORMAL);
-								break;
 							case DS_REQHASHSET:
-								m_ImageList.Draw(0, *dc, point.x, point.y, ILD_NORMAL);
+								image = 0;
 								break;
 							case DS_NONEEDEDPARTS:
-								m_ImageList.Draw(3, *dc, point.x, point.y, ILD_NORMAL);
-								break;
 							case DS_LOWTOLOWIP:
-								m_ImageList.Draw(3, *dc, point.x, point.y, ILD_NORMAL);
-								break;
-							case DS_TOOMANYCONNS:
-								m_ImageList.Draw(1, *dc, point.x, point.y, ILD_NORMAL);
+								image = 3;
 								break;
 							default:
-								m_ImageList.Draw(4, *dc, point.x, point.y, ILD_NORMAL);
+								image = 4;
 						}
+								
+						m_ImageList.Draw(image, *dc, point.x, point.y, ILD_NORMAL);
 					} else {
-
 						m_ImageList.Draw(3, *dc, point.x, point.y, ILD_NORMAL);
 					}
-					cur_rec.left += 20;
-					POINT point2 = { cur_rec.left, cur_rec.top + 1 };
+					cur_rec.x += 20;
+					POINT point2 = { cur_rec.GetX(), cur_rec.GetY() + 1 };
+					
 					uint8 clientImage;
 					if (lpUpDownClient->IsFriend()) {
 						clientImage = 13;
@@ -1111,7 +1011,6 @@ void CDownloadListCtrl::DrawSourceItem(wxDC * dc, int nColumn, LPRECT lpRect, Ct
 								break;
 							case SO_EDONKEY:
 							case SO_EDONKEYHYBRID:
-								// Maybe we would like to make different icons?
 								clientImage = 16;
 								break;
 							case SO_EMULE:
@@ -1156,34 +1055,24 @@ void CDownloadListCtrl::DrawSourceItem(wxDC * dc, int nColumn, LPRECT lpRect, Ct
 						}
 					}
 					
-					cur_rec.left += 20;					
-					
-					lpRect->left += 40;
-					
 					if (lpUpDownClient->GetUserName().IsEmpty()) {
-						dc->DrawText(wxT("?"), lpRect->left, lpRect->top);
+						dc->DrawText(wxT("?"), rect.GetX() + 40, rect.GetY());
 					} else {
-						dc->DrawText( lpUpDownClient->GetUserName(), lpRect->left, lpRect->top);						
+						dc->DrawText( lpUpDownClient->GetUserName(), rect.GetX() + 40, rect.GetY());						
 					}								
-					
-					lpRect->left -= 40;
 				}
 				break;
 
 			case 1:	// size
 				break;
 
-			case 2:
-				if (!IsColumnHidden(3)) {
-					dc->DrawText(wxT(""), lpRect->left, lpRect->top);
-					break;
-				}
+			case 2: // Transfered
+				break;
 
 			case 3:	// completed
 				if (lpCtrlItem->type == 2 && lpUpDownClient->GetTransferedDown()) {
 					buffer = CastItoXBytes(lpUpDownClient->GetTransferedDown());
-					//dc->DrawText(buffer,(int)strlen(buffer),lpRect, DLC_DT_TEXT); 
-					dc->DrawText(buffer, lpRect->left, lpRect->top);
+					dc->DrawText(buffer, rect.GetX(), rect.GetY());
 				}
 				break;
 
@@ -1195,8 +1084,7 @@ void CDownloadListCtrl::DrawSourceItem(wxDC * dc, int nColumn, LPRECT lpRect, Ct
 					} else {
 						buffer.Printf(wxT("%.1f %s"), lpUpDownClient->GetKBpsDown(), "kB/s");
 					}
-					//dc->DrawText(buffer,(int)strlen(buffer),lpRect, DLC_DT_TEXT);
-					dc->DrawText(buffer, lpRect->left, lpRect->top);
+					dc->DrawText(buffer, rect.GetX(), rect.GetY());
 				}
 				break;
 
@@ -1205,11 +1093,8 @@ void CDownloadListCtrl::DrawSourceItem(wxDC * dc, int nColumn, LPRECT lpRect, Ct
 			case 5:	// file info
 				{
 					if (theApp.glob_prefs->ShowProgBar()) {
-						lpRect->bottom--;
-						lpRect->top++;
-
-						int iWidth = lpRect->right - lpRect->left;
-						int iHeight = lpRect->bottom - lpRect->top;
+						int iWidth = rect.GetWidth();
+						int iHeight = rect.GetHeight() - 2;
 
 						DWORD dwTicks = GetTickCount();
 						wxMemoryDC cdcStatus;
@@ -1218,24 +1103,21 @@ void CDownloadListCtrl::DrawSourceItem(wxDC * dc, int nColumn, LPRECT lpRect, Ct
 							if (lpCtrlItem->status == NULL) {
 								lpCtrlItem->status = new wxBitmap(iWidth, iHeight);
 							} else {
-								//delete lpCtrlItem->status;
-								//lpCtrlItem->status=NULL;
-								//lpCtrlItem->status=new wxBitmap(iWidth,iHeight);
-								lpCtrlItem->status->Create(iWidth, iHeight);
+								// Only recreate if size has changed
+								if ( lpCtrlItem->status->GetWidth() != iWidth )
+									lpCtrlItem->status->Create(iWidth, iHeight);
 							}
 
 							cdcStatus.SelectObject(*(lpCtrlItem->status));
 
 							lpUpDownClient->DrawStatusBar(&cdcStatus, wxRect(0, 0, iWidth, iHeight), (lpCtrlItem->type == 3), theApp.glob_prefs->UseFlatBar());
-							lpCtrlItem->dwUpdated = dwTicks + (rand() % 128);
+							lpCtrlItem->dwUpdated = dwTicks + 1000; // Plus one second
 						} else {
 							cdcStatus.SelectObject(*(lpCtrlItem->status));
 						}
-						dc->Blit(lpRect->left, lpRect->top, iWidth, iHeight, &cdcStatus, 0, 0);
+						
+						dc->Blit(rect.GetX(), rect.GetY() + 1, iWidth, iHeight, &cdcStatus, 0, 0);
 						cdcStatus.SelectObject(wxNullBitmap);
-
-						lpRect->top--;
-						lpRect->bottom++;
 					}
 				}
 				break;
@@ -1244,7 +1126,7 @@ void CDownloadListCtrl::DrawSourceItem(wxDC * dc, int nColumn, LPRECT lpRect, Ct
 
 			case 6:{
 				// Version				
-				dc->DrawText(lpUpDownClient->GetClientVerString(), lpRect->left, lpRect->top);
+				dc->DrawText(lpUpDownClient->GetClientVerString(), rect.GetX(), rect.GetY());
 				break;
 			}
 
@@ -1252,7 +1134,7 @@ void CDownloadListCtrl::DrawSourceItem(wxDC * dc, int nColumn, LPRECT lpRect, Ct
 				if (lpUpDownClient->GetDownloadState() == DS_ONQUEUE) {
 					if (lpUpDownClient->IsRemoteQueueFull()) {
 						buffer = _("Queue Full");
-						dc->DrawText(buffer, lpRect->left, lpRect->top);
+						dc->DrawText(buffer, rect.GetX(), rect.GetY());
 					} else {
 						if (lpUpDownClient->GetRemoteQueueRank()) {
 							sint16 qrDiff = lpUpDownClient->GetRemoteQueueRank() - lpUpDownClient->GetOldRemoteQueueRank();
@@ -1263,16 +1145,10 @@ void CDownloadListCtrl::DrawSourceItem(wxDC * dc, int nColumn, LPRECT lpRect, Ct
 							if( qrDiff > 0 ) dc->SetTextForeground(*wxRED);
 							//if( qrDiff == 0 ) dc->SetTextForeground(*wxLIGHT_GREY);
 							buffer.Printf(wxT("QR: %u (%i)"), lpUpDownClient->GetRemoteQueueRank(), qrDiff);
-							dc->DrawText(buffer, lpRect->left, lpRect->top);
+							dc->DrawText(buffer, rect.GetX(), rect.GetY());
 							dc->SetTextForeground(savedColour);
-						} else {
-							buffer = wxT("");
-							dc->DrawText(buffer, lpRect->left, lpRect->top);
-						}
+						} 
 					}
-				} else {
-					buffer = wxT("");
-					dc->DrawText(buffer, lpRect->left, lpRect->top);
 				}
 				break;
 
@@ -1319,7 +1195,7 @@ void CDownloadListCtrl::DrawSourceItem(wxDC * dc, int nColumn, LPRECT lpRect, Ct
 						buffer += wxT(" (") + lpUpDownClient->GetRequestFile()->GetFileName() + wxT(")");
 					
 				}
-				dc->DrawText(buffer, lpRect->left, lpRect->top);
+				dc->DrawText(buffer, rect.GetX(), rect.GetY());
 				break;
 
 			case 9:	// remaining time & size
