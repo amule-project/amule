@@ -1,5 +1,25 @@
 Version 2.0.0rc4 - The 'Target: REAL Stability' version.
 2004-0X-XX
+        
+        Citroklar:
+	
+        deltaHF:
+	        * Added websearch function (filehash.com)
+                * Added jugle.net as Fake-check URL
+		* New buttons added:
+                  - reload sharedfiles
+                  - switch upload/uploadqueue
+                  - clear completed files
+		* Added 3 new columns in upload window (Client Software , Upload/Download , Remote Status)
+		* Added 'Client Software' column in upload-queue window
+		* "Asked for another file" on sources now with the filename that is asked for ( i.e. A4AF -> xyz.avi)
+                * Added 'copy file feedback to clipboard' function
+		* Added new Toolbar icons [ thx to http://www.everaldo.com ;) ]
+		* Added icons in Preferences
+		* Download menu changed
+		* Work on skin support
+		
+		
 	Hetfield:
 		* Fixed unicode issues on SysTray.cpp, now apps is really unicoded!
 		* deleted separated i18n stuff from SysTray, now uses global one
@@ -8,7 +28,9 @@ Version 2.0.0rc4 - The 'Target: REAL Stability' version.
 		* Fixed unicode issues in serverlist updates and download tab
 		* Fixed unicode issues that stopped adding files to download from ed2k utility 
 		  and internal link handler
-
+        
+	Kry:
+		  
 	Phoenix:
 		* Patch to --enable-stdin to aid in debug with valgrind.
 		* code cleaning in module Packets, made a lot of stuff private
@@ -36,20 +58,21 @@ Version 2.0.0rc4 - The 'Target: REAL Stability' version.
 		  work in download list control.
 		* Fixed broken sort arrow after flicker free clean up.
 		* Enabled mouse wheel scrolling in all aMule list controls.
-		* Fixed two unhandled events in amule.cpp: CHAT_REFRESH_FRIEND
-		  and CHAT_FIND_FRIEND.
-
+                * Fixed two unhandled events in amule.cpp: CHAT_REFRESH_FRIEND and CHAT_FIND_FRIEND.
+        
+	thepolish:
+	
 	Xaignar:
 		* Merged lists used to identify file-types to avoid duplicity.
 		* Added wrapper-class around MD4 hashes.
-		  * Fixed a number of places where the hashes where used as NULL-terminated strings, despite
-		    them not having a NULL-terminator.
-		  * Most functions using hashes now use the MD4 wrapper class for arguments.
+		* Fixed a number of places where the hashes where used as NULL-terminated strings, despite
+		  them not having a NULL-terminator.
+		* Most functions using hashes now use the MD4 wrapper class for arguments.
 		* Fixed rare possibility of ending with an unclosed file in CServerListCtrl.
 		* Fixed unsafe parsing of OP_SERVERIDENT type packets.
 		* Fixed unsafe passing of strings as arguments to functions using format-strings.
-		* Changed the chat-dialogs to textctrls, which means that it is now possible to copy text (the unix way) by highlighting it.
-		* Fixed some mem-leaks.
+		* Changed the chat-dialogs to textctrls, which means that it is now possible to copy text (the unix way) by              highlighting it.
+		* Fixed some memleaks.
 		* Fixed "&"s not being escaped on status-bar.
 		* Fixed incorrect source exchange packet format (Many thanks to the eMule Plus team for reporting).
 		* Started to document source-files with a Doxygen compatible comment format.
@@ -61,33 +84,35 @@ Version 2.0.0rc4 - The 'Target: REAL Stability' version.
 		* Fixed a number of uninitialized variables.
 		* Fixed several warnings about non-existing files.
 		* Fixes warning about not being able to create dir "" on first run.
-		* Changed "Extended Drop Sources" preferences, with the result that the option will be reset to "Swap Sources" when this version of aMule is first run.
+		* Changed "Extended Drop Sources" preferences, with the result that the option will be reset to "Swap Sources" when      this version of aMule is first run.
 		* Got rid of most warnings when compiling.
 		* Lots of work on getting rid of c-strings.
 		* Fixed bug that would cause deleted sources not to be removed from the A4AF lists. This was a major source of crashes.
 		* Improved performance and safety of the source lists used with PartFiles.
 		* Lots of small imports from eMule.
-		* Made reqfile attribute of CUpDownClient private and added wrapper functions to fix the avilable-part information getting out of sync.
+		* Made reqfile attribute of CUpDownClient private and added wrapper functions to fix the avilable-part information       getting out of sync.
 		* Cleanup of includes.
-		* Fixed that we were always sending an OP_REASKACK packet and then the correct packet when recieving an OP_REASKFILEPING.
+		* Fixed that we were always sending an OP_REASKACK packet and then the correct packet when recieving an                  OP_REASKFILEPING.
 		* Fixed Bug 45: URLs are now properly escaped when opening browsers for Fake-check and such.
-		* Fixed Bug 62: aMule will now be brought to front when left-clicking on the tray icon and when it is redisplayed after having been hidden.
+		* Fixed Bug 62: aMule will now be brought to front when left-clicking on the tray icon and when it is redisplayed        after having been hidden.
 		* Added checks against aggressive clients (clients who reask for files too often).
-		* Imported checks for known leech-clients from the BlackRat eMule mod ( Many thanks to Le Rat Noir and inoteb for allowing us to use their work ).
+		* Imported checks for known leech-clients from the BlackRat eMule mod ( Many thanks to Le Rat Noir and inoteb for        allowing us to use their work ). 
 		* Removed the following files:
-		  * ini2.*
-		  * CString.h
-		  * mfc.h
-		  * position.h
+		  - ini2.*
+		  - CString.h
+		  - mfc.h
+		  - position.h
 		* Cleaned up the following files:
-		  * CTypedPtrList.h
-		  * BarShader.*
+		  - CTypedPtrList.h
+		  - BarShader.*
 		* Many other smaller changes.
 	
 	
 	Special thanks to:
-		* Le Rat Noir and Inoteb of the BlackRat eMule mod (http://www.blackrat.fr.tc/) for allowing us to make use of their work on detecting bad clients.
+		* Le Rat Noir and Inoteb of the BlackRat eMule mod (http://www.blackrat.fr.tc/) for allowing us to make use of their     work on detecting bad clients.
 		* Optimazer and the eMule Plus team for reporting a bug in source-exchange packets.
+		* Everaldo (http://www.everaldo.com) for new icons
+		* TheBlackHand and Hawkster eMule mods 
 
 		
 Version 2.0.0rc3 - The 'Target: Stability' version.
