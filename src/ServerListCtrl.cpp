@@ -59,6 +59,7 @@ CServerListCtrl::CServerListCtrl(wxWindow*& parent,int id,const wxPoint& pos,wxS
 	memset(&asc_sort,0,8);
 	m_ServerPrioMenu=NULL;
 	m_ServerMenu=NULL;
+	connected = -1;
 }
 
 void CServerListCtrl::OnLDclick(wxMouseEvent& event)
@@ -216,12 +217,13 @@ bool CServerListCtrl::Init(CServerList* in_list)
 	InsertColumn(0,_("Server Name"),wxLIST_FORMAT_LEFT,150);
 	InsertColumn(1,_("IP"),wxLIST_FORMAT_LEFT,140);
 	InsertColumn(2,_("Description") ,wxLIST_FORMAT_LEFT, 150);
-	InsertColumn(3,_("Ping"),wxLIST_FORMAT_LEFT, 50);
-	InsertColumn(4,_("Users"),wxLIST_FORMAT_LEFT, 50);
-	InsertColumn(5,_("Files"),wxLIST_FORMAT_LEFT, 50);
+	InsertColumn(3,_("Ping"),wxLIST_FORMAT_LEFT, 25);
+	InsertColumn(4,_("Users"),wxLIST_FORMAT_LEFT, 40);
+	InsertColumn(5,_("Files"),wxLIST_FORMAT_LEFT, 45);
 	InsertColumn(6,_("Preference"),wxLIST_FORMAT_LEFT, 60);
-	InsertColumn(7,_("Failed"),wxLIST_FORMAT_LEFT, 50);
-	InsertColumn(8,_("Static"),wxLIST_FORMAT_LEFT, 50);
+	InsertColumn(7,_("Failed"),wxLIST_FORMAT_LEFT, 40);
+	InsertColumn(8,_("Static"),wxLIST_FORMAT_LEFT, 40);
+	InsertColumn(9,_("Version"),wxLIST_FORMAT_LEFT, 80);	
 
 	asc_sort[3]=true;asc_sort[4]=true;asc_sort[5]=true;asc_sort[7]=true;
 	// perhaps not yet
@@ -252,13 +254,35 @@ void CServerListCtrl::RemoveServer(CServer* todel,bool bDelToList)
 	//LVFINDINFO find;
 	//find.flags = LVFI_PARAM;
 	//find.lParam = (LPARAM)todel;
+	
+	
 	sint32 result = FindItem(-1,(long)todel);
 	if (result != (-1) ) {
 		server_list->RemoveServer((CServer*)GetItemData(result));
 		DeleteItem(result);
 	}
+	
+	
 	return;
 }
+void CServerListCtrl::RemoveAllServers(int state)
+{
+	int pos=GetNextItem(-1,wxLIST_NEXT_ALL,state);
+	int found = -1;
+	while (pos != -1) {
+		if (GetItemData(pos) == connected) {
+			wxMessageBox(wxT("You are connected to a server you are trying to delete. Please disconnect first. The server was NOT deleted."), wxT("Info"), wxOK);	
+			found = pos;
+			} else {
+				server_list->RemoveServer((CServer*)this->GetItemData(pos));
+				DeleteItem(pos);					
+			}
+				pos=GetNextItem(found,wxLIST_NEXT_ALL,state);													
+		}
+				
+	ShowFilesCount();
+}
+
 
 // Remove Dead Servers
 void CServerListCtrl::RemoveDeadServer()
@@ -293,16 +317,22 @@ bool CServerListCtrl::AddServer(CServer* toadd,bool bAddToList)
 	return true;
 }
 
-void CServerListCtrl::HighlightServer(const CServer* server)
+void CServerListCtrl::HighlightServer(const CServer* server, bool highlight)
 // Copyright (C) 2004 pure_ascii ( pure_ascii@users.sourceforge.net / http://www.amule.org )
 {
+
 	long itemnr=FindItem(-1,(long)server);
-	for(long pos = 0; pos < GetItemCount(); ++pos) {
+	
+	if (itemnr!=-1) {
+//	Kry - Gui hangs while we do this...
+//	A safer hack it to change only the connecting server and handle the disconections	
+//	for(long pos = 0; pos < GetItemCount(); ++pos) {
+		connected = (long)server;
 		wxListItem myitem;
-		myitem.SetId(pos);
+		myitem.SetId(itemnr);
 		GetItem(myitem);
 		wxFont myfont = myitem.GetFont();
-		myfont.SetWeight((pos==itemnr) ? wxBOLD : wxNORMAL);
+		myfont.SetWeight((highlight) ? wxBOLD : wxNORMAL);
 		myitem.SetFont(myfont);
 		SetItem(myitem);
 	} 
@@ -378,6 +408,9 @@ void CServerListCtrl::RefreshServer(CServer* server)
 	} else {
 		SetItem(itemnr,8,_("No"));
 	}
+	
+	SetItem(itemnr,9,server->GetVersion());
+			
 }
 
 bool CServerListCtrl::ProcessEvent(wxEvent& evt)
@@ -388,6 +421,7 @@ bool CServerListCtrl::ProcessEvent(wxEvent& evt)
 		
 	wxCommandEvent& event=(wxCommandEvent&)evt;
 	int item=GetNextItem(-1,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
+
 	if (event.GetId()==MP_REMOVEALL) {
 		if(theApp.serverconnect->IsConnecting()) {
 			theApp.downloadqueue->StopUDPRequests();
@@ -395,9 +429,8 @@ bool CServerListCtrl::ProcessEvent(wxEvent& evt)
 			theApp.serverconnect->Disconnect();
 			theApp.amuledlg->ShowConnectionState(false);
 		}
-		server_list->RemoveAllServers();
-		DeleteAllItems();
-		ShowFilesCount();
+		
+		RemoveAllServers(wxLIST_STATE_DONTCARE);
 		return true;
 	}
 	
@@ -426,17 +459,11 @@ bool CServerListCtrl::ProcessEvent(wxEvent& evt)
 					break;
 				}
 				case MP_REMOVE: {
-					int pos=GetNextItem(-1,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
-					while (pos != -1) {
-						item = pos;
-						server_list->RemoveServer((CServer*)this->GetItemData(item));
-						DeleteItem(item);
-						pos=GetNextItem(-1,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
-					}
-					ShowFilesCount();
+					RemoveAllServers(wxLIST_STATE_SELECTED);
 					return true;					
 					break;
 				}
+				
 				case MP_ADDTOSTATIC: {
 					int pos=GetNextItem(-1,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
 					while(pos != -1) {
@@ -665,6 +692,10 @@ int CServerListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 			return item2->IsStaticMember() - item1->IsStaticMember();
 		case 108: //staticservers-
 			return item1->IsStaticMember() - item2->IsStaticMember();
+		case 9: // version
+			return CString(item1->GetVersion()).CmpNoCase(item2->GetVersion());			
+		case 109: //version-
+			return CString(item2->GetVersion()).CmpNoCase(item1->GetVersion());
 		default:
 			return 0; 
 	}

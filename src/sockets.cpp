@@ -205,7 +205,7 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender){
 		theApp.amuledlg->AddLogLine(true,CString(_("Connection established on: %s")),sender->cur_server->GetListName());
 		theApp.amuledlg->ShowConnectionState(true,sender->cur_server->GetListName());
 		CServer* update = theApp.serverlist->GetServerByAddress(sender->cur_server->GetAddress(),sender->cur_server->GetPort());
-		theApp.amuledlg->serverwnd->serverlistctrl->HighlightServer(update);
+		theApp.amuledlg->serverwnd->serverlistctrl->HighlightServer(update, true);
 		connectedsocket = sender;
 		StopConnectionTry();
 		theApp.sharedfiles->SendListToServer();
@@ -377,6 +377,8 @@ void CServerConnect::CheckForTimeout()
 
 bool CServerConnect::Disconnect(){
 	if (connected && connectedsocket){
+		CServer* update = theApp.serverlist->GetServerByAddress(this->connectedsocket->cur_server->GetAddress(),this->connectedsocket->cur_server->GetPort());
+		theApp.amuledlg->serverwnd->serverlistctrl->HighlightServer(update, false);
 		DestroySocket(connectedsocket);
 		connectedsocket = NULL;
 		connected = false;
