@@ -54,7 +54,7 @@ public:
 	char*			GetUDPHeader();
 	char*			GetPacket();
 	char*			DetachPacket();
-	inline wxUint32 GetRealPacketSize() const	{ return size + 6; }
+	inline uint32 GetRealPacketSize() const	{ return size + 6; }
 	bool			IsSplitted()		{ return m_bSplitted; }
 	bool			IsLastSplitted()	{ return m_bLastSplitted; }
 	void			PackPacket();
@@ -64,7 +64,7 @@ public:
 	
 	inline uint8 	GetOpCode() const	{ return opcode; }
 	void			SetOpCode(uint8 oc)	{ opcode = oc; }
-	inline wxUint32 GetPacketSize() const	{ return size; }
+	inline uint32 GetPacketSize() const	{ return size; }
 	inline uint8 	GetProtocol() const	{ return prot; }
 	inline void		SetProtocol(uint8 p)	{ prot = p; }
 	inline const char * 	GetDataBuffer(void) const { return pBuffer; }
