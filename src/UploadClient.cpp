@@ -781,7 +781,9 @@ void CUpDownClient::CheckForAggressive()
 		
 		// Is the client EVIL?
 		if ( m_Aggressiveness >= 10 && (!IsBanned() && m_nDownloadState != DS_DOWNLOADING )) {
+#ifdef __VERBOSE_OUTPUT__
 			printf("Aggressive client banned (score: %d): %s -- %s -- %s\n", m_Aggressiveness, unicode2char(m_Username), unicode2char(m_strModVersion), unicode2char(m_clientVerString));
+#endif
 			Ban();
 		}
 	} else {
