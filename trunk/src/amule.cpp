@@ -602,7 +602,6 @@ bool CamuleApp::OnInit()
 
 	// init downloadqueue
 	downloadqueue->Init();
-	amuledlg->AddLogLine(true, PACKAGE_STRING);
 
 	sharedfiles->SetOutputCtrl((CSharedFilesCtrl *) amuledlg->sharedfileswnd->FindWindow("sharedFilesCt"));
 
@@ -634,8 +633,13 @@ bool CamuleApp::OnInit()
 	listensocket->StartListening();
 
 	// If we wern't able to start listening, we need to warn the user
+
 	if ( !listensocket->Ok() ) {
-		amuledlg->AddLogLine(false, wxT(_("Port %d is not available. You will be LOWID")), glob_prefs->GetPort());
+		GUIEvent event(ADDLOGLINE);
+		event.string_value = wxString::Format(_("Port %d is not available. You will be LOWID"), glob_prefs->GetPort());
+		event.byte_value = true;
+		NotifyEvent(event);
+		#warning we need to move this lowid warning to the GUI itself.
 		wxMessageBox(wxT(wxString::Format(_("Port %d is not available !!\n\nThis mean that you will be LOWID.\n\nCheck your network to make sure the port is open for output and input."), glob_prefs->GetPort())), _("Error"), wxOK | wxICON_ERROR);
 	}
 
@@ -671,8 +675,8 @@ bool CamuleApp::OnInit()
 	IsReady = true;
 	
 	// Kry - Load the sources seeds on app init
-	if (theApp.glob_prefs->GetSrcSeedsOn()) {
-		theApp.downloadqueue->LoadSourceSeeds();
+	if (glob_prefs->GetSrcSeedsOn()) {
+		downloadqueue->LoadSourceSeeds();
 	}
 
 	return TRUE;
@@ -1412,11 +1416,11 @@ void CamuleApp::FlushQueuedLogLines() {
 	
 	m_LogQueueLock.Enter();
 	
-	wxASSERT(theApp.amuledlg);
+	wxASSERT(amuledlg);
 	
 	while (!QueuedAddLogLines.IsEmpty()) {
 		line_to_add = QueuedAddLogLines.RemoveHead();
-		theApp.amuledlg->AddLogLine(line_to_add.addtostatus, "%s", line_to_add.line.c_str());
+		amuledlg->AddLogLine(line_to_add.addtostatus, "%s", line_to_add.line.c_str());
 	}
 	
 	m_LogQueueLock.Leave();
@@ -1809,6 +1813,14 @@ void CamuleApp::NotifyEvent(GUIEvent event) {
 				QueueLogLine(event.byte_value,event.string_value);
 			}
 			break;
+		case ADDDEBUGLOGLINE:
+			if (amuledlg) {
+				amuledlg->AddDebugLogLine(event.byte_value,event.string_value);
+			} else {
+				wxASSERT(0);
+				//QueueLogLine(event.byte_value,event.string_value);
+			}
+			break;			
 		default:
 			printf("Unknown event notified to wxApp\n");
 			wxASSERT(0);
