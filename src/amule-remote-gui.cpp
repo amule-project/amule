@@ -90,6 +90,33 @@
 #include "ECPacket.h"
 #include "ECcodes.h"
 
+CEConnectDlg::CEConnectDlg() :
+	wxDialog(theApp.amuledlg, -1, _("Connect to remote amule"), wxDefaultPosition )
+{
+	CoreConnect(this, TRUE);
+	
+	//
+	// FIXME: there should be preferences for this
+	CastChild(ID_REMOTE_PORT, wxTextCtrl)->SetValue(wxT("4712"));
+	CastChild(ID_REMOTE_HOST, wxTextCtrl)->SetValue(wxT("localhost"));
+	
+	CentreOnParent();
+}
+
+BEGIN_EVENT_TABLE(CEConnectDlg, wxDialog)
+  EVT_BUTTON(wxID_OK, CEConnectDlg::OnOK)
+END_EVENT_TABLE()
+
+void CEConnectDlg::OnOK(wxCommandEvent& evt)
+{
+	wxDialog::OnOK(evt);
+	
+	wxString s_port = CastChild(ID_REMOTE_PORT, wxTextCtrl)->GetValue();
+	s_port.ToLong((long int *)&port);
+	
+	host = CastChild(ID_REMOTE_HOST, wxTextCtrl)->GetValue();
+}
+
 BEGIN_EVENT_TABLE(CamuleRemoteGuiApp, wxApp)
 
 	// Core timer
@@ -182,9 +209,17 @@ bool CamuleRemoteGuiApp::OnInit()
 	// Create main dialog
 	InitGui(0, geom_string);
 
-	connect->Connect(wxT("localhost"), 4712);
+	CEConnectDlg *dialog = new CEConnectDlg;
+	do {
+		
+		if ( dialog->ShowModal() != wxID_OK ) {
+			dialog->Destroy();
+			return false;
+		}
+	} while ( !connect->Connect(dialog->Host(), dialog->Port()) );
+	dialog->Destroy();
+	AddLogLineM(true, _("Connected to amule at ") + dialog->Host());
 	
-	//m_app_state = APP_STATE_RUNNING;
 	IsReady = true;
 	
 	// Start the Core Timer
@@ -524,7 +559,6 @@ CMD4Hash CSharedFilesRem::GetItemID(CKnownFile *file)
 
 void CSharedFilesRem::ProcessItemUpdate(CEC_SharedFile_Tag *tag, CKnownFile *file)
 {
-	//printf("DEBUG: update of %p by %p\n", file, tag);
 	CECTag *parttag = tag->GetTagByName(EC_TAG_PARTFILE_PART_STATUS);
 	const unsigned char *data = m_enc_map[file->GetFileHash()].Decode((unsigned char *)parttag->GetTagData(),
 		parttag->GetTagDataLen());
@@ -565,6 +599,7 @@ bool CRemoteConnect::Connect(const wxString &host, int port)
     packet.AddTag(CECTag(EC_TAG_PROTOCOL_VERSION, (uint16)0x01f1));
 
     wxString pass_hash = wxT("81dc9bdb52d04dc20036dbd8313ed055");
+
 	packet.AddTag(CECTag(EC_TAG_PASSWD_HASH, pass_hash));
 
     if (! m_ECSocket->WritePacket(&packet) ) {
@@ -693,15 +728,18 @@ bool CDownQueueRem::IsPartFile(const CKnownFile *) const
 	return false;
 }
 
-CPartFile *CDownQueueRem::CreateItem(CEC_PartFile_Tag *)
+CPartFile *CDownQueueRem::CreateItem(CEC_PartFile_Tag *tag)
 {
+	//return new CPartFile(tag);
+	return 0;
 }
 
 void CDownQueueRem::DeleteItem(CPartFile *)
 {
 }
-CMD4Hash CDownQueueRem::GetItemID(CPartFile *)
+CMD4Hash CDownQueueRem::GetItemID(CPartFile *file)
 {
+	return file->GetFileHash();
 }
 void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *, CPartFile *)
 {

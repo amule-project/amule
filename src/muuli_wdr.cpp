@@ -3643,6 +3643,81 @@ wxSizer *PreferencesProxyTab( wxWindow *parent, bool call_fit, bool set_sizer )
     return item0;
 }
 
+wxSizer *CoreConnect( wxWindow *parent, bool call_fit, bool set_sizer )
+{
+    wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
+
+    wxBoxSizer *item1 = new wxBoxSizer( wxHORIZONTAL );
+
+    wxBoxSizer *item2 = new wxBoxSizer( wxVERTICAL );
+
+    wxBoxSizer *item3 = new wxBoxSizer( wxHORIZONTAL );
+
+    wxStaticText *item4 = new wxStaticText( parent, ID_TEXT, _("Connect to:"), wxDefaultPosition, wxDefaultSize, 0 );
+    item3->Add( item4, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    CMuleTextCtrl *item5 = new CMuleTextCtrl( parent, ID_REMOTE_HOST, _("localhost"), wxDefaultPosition, wxSize(160,-1), 0 );
+    item3->Add( item5, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    wxStaticText *item6 = new wxStaticText( parent, ID_TEXT, _(":"), wxDefaultPosition, wxDefaultSize, 0 );
+    item3->Add( item6, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    CMuleTextCtrl *item7 = new CMuleTextCtrl( parent, ID_REMOTE_PORT, _("4712"), wxDefaultPosition, wxSize(60,-1), 0 );
+    item3->Add( item7, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    item2->Add( item3, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    wxStaticBox *item9 = new wxStaticBox( parent, -1, _("Login to remote amule") );
+    wxStaticBoxSizer *item8 = new wxStaticBoxSizer( item9, wxVERTICAL );
+
+    wxBoxSizer *item10 = new wxBoxSizer( wxHORIZONTAL );
+
+    wxStaticText *item11 = new wxStaticText( parent, ID_TEXT, _("User name"), wxDefaultPosition, wxSize(80,-1), 0 );
+    item10->Add( item11, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    CMuleTextCtrl *item12 = new CMuleTextCtrl( parent, ID_EC_LOGIN, _("amule"), wxDefaultPosition, wxSize(100,-1), 0 );
+    item12->Enable( false );
+    item10->Add( item12, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    item8->Add( item10, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    wxBoxSizer *item13 = new wxBoxSizer( wxHORIZONTAL );
+
+    wxStaticText *item14 = new wxStaticText( parent, ID_TEXT, _("Password"), wxDefaultPosition, wxSize(80,-1), 0 );
+    item13->Add( item14, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    CMuleTextCtrl *item15 = new CMuleTextCtrl( parent, ID_EC_PASSWD, wxT(""), wxDefaultPosition, wxSize(100,-1), wxTE_PASSWORD );
+    item13->Add( item15, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    item8->Add( item13, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    item2->Add( item8, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    item1->Add( item2, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    item0->Add( item1, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    wxBoxSizer *item16 = new wxBoxSizer( wxHORIZONTAL );
+
+    wxButton *item17 = new wxButton( parent, wxID_OK, _("Connect"), wxDefaultPosition, wxDefaultSize, 0 );
+    item17->SetDefault();
+    item16->Add( item17, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    wxButton *item18 = new wxButton( parent, wxID_CANCEL, _("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
+    item16->Add( item18, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    item0->Add( item16, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    if (set_sizer)
+    {
+        parent->SetSizer( item0 );
+        if (call_fit)
+            item0->SetSizeHints( parent );
+    }
+    
+    return item0;
+}
+
 // Implement menubar functions
 
 // Implement toolbar functions

@@ -24,6 +24,27 @@ class CSearchFile;
 class CPartFile;
 class CUpDownClient;
 
+#include <wx/dialog.h>
+
+class CEConnectDlg : public wxDialog {
+		wxString host;
+		int port;
+		
+		wxString login, passwd;
+		
+		void OnOK(wxCommandEvent& event);
+		
+		DECLARE_EVENT_TABLE()
+	public:
+		CEConnectDlg();
+		
+		wxString Host() { return host; }
+		int Port() { return port; }
+
+		wxString Login() { return login; }
+		wxString PassHash();
+};
+
 class CRemoteConnect {
 		ECSocket *m_ECSocket;
 		bool m_isConnected;
