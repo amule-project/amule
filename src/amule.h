@@ -366,7 +366,6 @@ class CamuleRemoteGuiApp : public wxApp, public CamuleGuiBase {
 
 public:
 	wxString	m_FrameTitle;
-	CamuleDlg*	amuledlg;
 
 	bool CopyTextToClipboard(wxString strText);
 
@@ -375,7 +374,7 @@ public:
 	uint32 GetUptimeMsecs();
 
 	bool IsReady;
-	CPreferences *glob_prefs;
+	CPreferencesRem *glob_prefs;
 	wxString ConfigDir;
 	
 	//

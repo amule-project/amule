@@ -75,7 +75,6 @@ amulegui_SOURCES = \
 	EditServerListDlg.cpp \
 	FileDetailDialog.cpp \
 	FileDetailListCtrl.cpp \
-	FriendListCtrl.cpp \
 	KadDlg.cpp \
 	KnownFile.cpp \
 	listctrl.cpp \
@@ -94,6 +93,7 @@ amulegui_SOURCES = \
 	Packet.cpp \
 	Preferences.cpp \
 	PrefsUnifiedDlg.cpp \
+	Proxy.cpp \
 	SHA.cpp \
 	SHAHashSet.cpp \
 	SafeFile.cpp \
@@ -104,6 +104,7 @@ amulegui_SOURCES = \
 	SharedFilesCtrl.cpp \
 	SharedFilesWnd.cpp \
 	ServerListCtrl.cpp \
+	Statistics.cpp \
 	StatisticsDlg.cpp \
 	StringFunctions.cpp \
 	TransferWnd.cpp
