@@ -132,9 +132,12 @@
 BEGIN_EVENT_TABLE(CamuleApp, wxApp)
 
 	// Socket handlers
+	// lfroen: under wxBase there's no events, but WaitFor<> are blocking
+	// so it will use threads instead
+#ifndef AMULE_DAEMON
 		// Listen Socket
-		//EVT_SOCKET(LISTENSOCKET_HANDLER, CamuleApp::ListenSocketHandler)
-		
+		EVT_SOCKET(LISTENSOCKET_HANDLER, CamuleApp::ListenSocketHandler)
+#endif
 		// UDP Socket (servers)
 		EVT_SOCKET(UDPSOCKET_HANDLER, CamuleApp::UDPSocketHandler)
 		// UDP Socket (clients)
@@ -1438,6 +1441,26 @@ void CamuleApp::SetOSFiles(const wxString new_path) {
 		emulesig_path = wxEmptyString;
 		amulesig_path = wxEmptyString;
 	}
+}
+
+void CamuleApp::ListenSocketHandler(wxSocketEvent& event)
+{
+        wxASSERT(event.GetSocket()->IsKindOf(CLASSINFO(CListenSocket)));
+        CListenSocket *socket = (CListenSocket*) event.GetSocket();
+        if(!socket) {
+                // we are not mentally ready to receive anything
+                // or there is no socket on the event (got deleted?)
+                return;
+        }
+        switch(event.GetSocketEvent()) {
+                case wxSOCKET_CONNECTION:
+                        socket->OnAccept(0);
+                        break;
+                default:
+                        // shouldn't get other than connection events...
+                        wxASSERT(0);
+                        break;
+        }
 }
 
 void CamuleApp::UDPSocketHandler(wxSocketEvent& event)
