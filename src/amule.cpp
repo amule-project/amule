@@ -602,9 +602,12 @@ bool CamuleApp::OnInit()
 	searchlist	= new CSearchList();
 	knownfiles	= new CKnownFileList();
 	serverlist	= new CServerList();
+	
+	// Creates the UDP socket TCP+3.
+	// Used for source asking on servers.
 	serverconnect	= new CServerConnect(serverlist);
+	
 	sharedfiles	= new CSharedFileList(serverconnect, knownfiles);
-
 	clientcredits	= new CClientCreditsList();
 	
 	// bugfix - do this before creating the uploadqueue
@@ -632,13 +635,18 @@ bool CamuleApp::OnInit()
 	amuleIPV4Address myaddr;
 	myaddr.AnyAddress();
 
-	// Create the ListenSocket (aMule TCP socket)
+	// Create the ListenSocket (aMule TCP socket).
+	// Used for Client Port / Connections from other clients,
+	// Client to Client Source Exchange.
+	// Default is 4662.
 	printf("*** TCP socket at %d\n", thePrefs::GetPort());
 	myaddr.Service(thePrefs::GetPort());
 	listensocket = new CListenSocket(myaddr);
 	
+	// Create the UDP socket.
+	// Used for extended eMule protocol, Queue Rating, File Reask Ping.
+	// Default is port 4672.
 	if (!thePrefs::IsUDPDisabled()) {
-		// Create UDP socket
 		myaddr.Service(thePrefs::GetUDPPort());
 //#ifdef TESTING_PROXY
 		clientudp = new CClientUDPSocket(myaddr, thePrefs::GetProxyData());
