@@ -197,13 +197,15 @@ void CServerUDPSocket::ProcessPacket(CSafeMemFile& packet, int16 size, int8 opco
 
  			case OP_GLOBSERVSTATRES:{
 				// Imported from 0.43b
-				
-				if( size < 12 || !update) {
-					throw(wxString(wxT("Invalid OP_GLOBSERVSTATRES packet or unknown server")));
+				if (!update) {
+					throw wxString(wxT("Unknown server on a OP_GLOBSERVSTATRES packet (") + host + wxString::Format(wxT(":%d)"), port-4));
+				}
+				if( size < 12) {
+					throw(wxString(wxString::Format(wxT("Invalid OP_GLOBSERVSTATRES packet (size=%d)"),size)));
 				}
 				uint32 challenge = packet.ReadUInt32();
 				if (challenge != update->GetChallenge()) {
-					throw(wxString(wxT("Invalid challenge on OP_GLOBSERVSTATRES packet")));
+					throw(wxString(wxString::Format(wxT("Invalid challenge on OP_GLOBSERVSTATRES packet (0x%x != 0x%x)"),challenge,update->GetChallenge())));
 				}
 				uint32 cur_user = packet.ReadUInt32();
 				uint32 cur_files = packet.ReadUInt32();
