@@ -151,27 +151,27 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd){
 		switch (newclient->leechertype){
 		/* Add log line according to leecher type */
 			case 1 : {
-				theApp.amuledlg->AddLogLine(false, CString(_("%s [%s:%i] using %s removed : invalide eMule client")),newclient->m_pszUsername,newclient->m_szFullUserIP,newclient->m_nUserPort,newclient->m_clientVerString.c_str());
+				AddLogLineM(false, wxString::Format(_("%s [%s:%i] using %s removed : invalide eMule client"),newclient->m_pszUsername,newclient->m_szFullUserIP,newclient->m_nUserPort,newclient->m_clientVerString.c_str()));
 				break;
 			}
 			case 2 : {
-				theApp.amuledlg->AddLogLine(false, CString(_("%s [%s:%i] using %s removed : suspicious mod string change")),newclient->m_pszUsername,newclient->m_szFullUserIP,newclient->m_nUserPort,newclient->m_clientVerString.c_str());
+				AddLogLineM(false, wxString::Format(_("%s [%s:%i] using %s removed : suspicious mod string change"),newclient->m_pszUsername,newclient->m_szFullUserIP,newclient->m_nUserPort,newclient->m_clientVerString.c_str()));
 				break;
 			}
 			case 3 : {
-				theApp.amuledlg->AddLogLine(false, CString(_("%s [%s:%i] using %s removed : known leecher")),newclient->m_pszUsername,newclient->m_szFullUserIP,newclient->m_nUserPort,newclient->m_clientVerString.c_str());
+				AddLogLineM(false, wxString::Format(_("%s [%s:%i] using %s removed : known leecher"),newclient->m_pszUsername,newclient->m_szFullUserIP,newclient->m_nUserPort,newclient->m_clientVerString.c_str()));
 				break;
 			}
 			case 4 : {
-				theApp.amuledlg->AddLogLine(false, CString(_("%s [%s:%i] using %s removed : suspicious hash change")),newclient->m_pszUsername,newclient->m_szFullUserIP,newclient->m_nUserPort,newclient->m_clientVerString.c_str());
+				AddLogLineM(false, wxString::Format(_("%s [%s:%i] using %s removed : suspicious hash change"),newclient->m_pszUsername,newclient->m_szFullUserIP,newclient->m_nUserPort,newclient->m_clientVerString.c_str()));
 				break;
 			}
 			case 5 : {
-				theApp.amuledlg->AddLogLine(false, CString(_("%s [%s:%i] using %s removed : use your own hash")),newclient->m_pszUsername,newclient->m_szFullUserIP,newclient->m_nUserPort,newclient->m_clientVerString.c_str());
+				AddLogLineM(false, wxString::Format(_("%s [%s:%i] using %s removed : use your own hash"),newclient->m_pszUsername,newclient->m_szFullUserIP,newclient->m_nUserPort,newclient->m_clientVerString.c_str()));
 				break;
 			}
 			default : {
-				theApp.amuledlg->AddLogLine(false, CString(_("%s [%s:%i] using %s removed : suspicious name change")),newclient->m_pszUsername,newclient->m_szFullUserIP,newclient->m_nUserPort,newclient->m_clientVerString.c_str());
+				AddLogLineM(false, wxString::Format(_("%s [%s:%i] using %s removed : suspicious name change"),newclient->m_pszUsername,newclient->m_szFullUserIP,newclient->m_nUserPort,newclient->m_clientVerString.c_str()));
 			}
 		}
 		// remove client !
@@ -223,7 +223,7 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd){
 		// thief !
 		newclient->thief=true;
 		theApp.uploadqueue->RemoveFromUploadQueue(newclient,true);
-		theApp.amuledlg->AddLogLine(false, CString(_("%s [%s:%i] using %s removed : leecher, invalid eMule or irregular Donkey")),newclient->GetUserName(),newclient->GetFullIP(),newclient->GetUserPort(),newclient->GetClientVerString().c_str());
+		AddLogLineM(false, wxString::Format(_("%s [%s:%i] using %s removed : leecher, invalid eMule or irregular Donkey"),newclient->GetUserName(),newclient->GetFullIP(),newclient->GetUserPort(),newclient->GetClientVerString().c_str()));
 		return;
 	}	
 
@@ -419,7 +419,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
 			return;			
 		} else if ( client->Compare(cur_client) ) {
 			// another client with same ip or hash
-			theApp.amuledlg->AddDebugLogLine(false,CString(_("Client '%s' and '%s' have the same userhash or IP - removed '%s'")),client->GetUserName(),cur_client->GetUserName(),cur_client->GetUserName() );
+			AddDebugLogLineM(false,wxString::Format(_("Client '%s' and '%s' have the same userhash or IP - removed '%s'"),client->GetUserName(),cur_client->GetUserName(),cur_client->GetUserName()));
 			RemoveFromWaitingQueue(pos,true);	
 			if (!cur_client->socket) {
 				if(cur_client->Disconnected("AddClientToQueue - same userhash 1")) {
