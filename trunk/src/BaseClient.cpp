@@ -2099,6 +2099,14 @@ uint8 CUpDownClient::GetSecureIdentState() {
 bool CUpDownClient::SendMessage(const wxString& message) {
 	// Already connecting?
 	if (GetChatState() == MS_CONNECTING) {
+		// Queue all messages till we're able to send them (or discard them)
+		if (!m_pendingMessage.IsEmpty()) {
+			m_pendingMessage += wxT("\n");
+		} else {
+			// There must be a message to send
+			wxASSERT(0);
+		}
+		m_pendingMessage += message;		
 		return false;
 	}
 	if (IsConnected()) {
@@ -2110,11 +2118,7 @@ bool CUpDownClient::SendMessage(const wxString& message) {
 		SendPacket(packet, true, true);
 		return true;
 	} else {
-		// Queue all messages till we're able to send them (or discard them)
-		if (!m_pendingMessage.IsEmpty()) {
-			m_pendingMessage += wxT("\n");
-		}
-		m_pendingMessage += message;
+		m_pendingMessage = message;
 		SetChatState(MS_CONNECTING);
 		TryToConnect();
 		return false;
