@@ -254,6 +254,8 @@ class ItemsContainer {
 		{
 			m_webApp = webApp;
 			m_SortReverse = false;
+			// by default, sort by first enum
+			m_SortOrder = (E)0;
 		}
 		virtual ~ItemsContainer() { }
 		
@@ -291,7 +293,7 @@ class ItemsContainer {
 		{
 			wxString sField = m_SortHeaders[m_SortOrder];
 			// invert sort order in link
-			wxString sSortRev(!m_SortReverse ? wxT("&sortreverse=true") : wxT("&sortreverse=false"));
+			wxString sSortRev(m_SortReverse ? wxT("&sortreverse=true") : wxT("&sortreverse=false"));
 			for(typename std::map<E, wxString>::iterator i = m_SortHeaders.begin();
 				i != m_SortHeaders.end(); i++) {
 					if (sField == i->second) {
@@ -305,10 +307,14 @@ class ItemsContainer {
 		/*!
 		 * Convert string to right enum value
 		 */
-		void SetSortOrder(wxString &order, bool reverse)
+		void SetSortOrder(wxString &order, wxString &reverse)
 		{
-			m_SortOrder = m_SortStrVals[order];
-			m_SortReverse = reverse;
+			if ( !order.IsEmpty() ) {
+				m_SortOrder = m_SortStrVals[order];
+			}
+			if ( !reverse.IsEmpty() ) {
+				m_SortReverse = (reverse == wxT("true")) ? false : true;
+			}
 		}
 		/*!
 		 * Re-query server: refresh all dataset
