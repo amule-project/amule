@@ -242,7 +242,7 @@ bool CChatSelector::SendMessage(char* message)
 		return false;
 	}
 	if (ci->client->socket && ci->client->socket->IsConnected()) {
-		CSafeMemFile data;
+		CFile data;
 		data.Write(wxString(message));
 		Packet* packet = new Packet(&data);
 		packet->opcode = OP_MESSAGE;
@@ -304,7 +304,7 @@ void CChatSelector::ConnectingResult(CUpDownClient* sender,bool success)
 		ci->messagepending = 0;
 	} else {
 		ci->log->AppendKeyWord(CString(" ok\n"),RGB(255,0,0));
-		CSafeMemFile data;
+		CFile data;
 		data.Write(wxString(ci->messagepending));
 		Packet* packet = new Packet(&data);
 		packet->opcode = OP_MESSAGE;
