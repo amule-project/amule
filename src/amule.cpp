@@ -1983,7 +1983,7 @@ void CamuleApp::NotifyEvent(GUIEvent event) {
 			downloadqueue->SetCatPrio(event.long_value, event.short_value);
 			break;
 	        case DLOAD_SET_CAT_STATUS:
-			downloadqueue->SetCatStatus(event.long_value, event.short_value);
+			// downloadqueue->SetCatStatus(event.long_value, event.short_value);
 			break;
 		// CORE->GUI
 		// queue list
@@ -2042,7 +2042,8 @@ void CamuleApp::NotifyEvent(GUIEvent event) {
 			if ( amuledlg->transferwnd && amuledlg->transferwnd->downloadlistctrl ) {
 				// for remote gui just send message
 				amuledlg->transferwnd->downloadlistctrl->Freeze();
-				if (!CheckShowItemInGivenCat((CPartFile*)event.ptr_value,
+				if (!amuledlg->transferwnd->downloadlistctrl->CheckShowItemInGivenCat(
+							     (CPartFile*)event.ptr_value,
 							     amuledlg->transferwnd->downloadlistctrl->curTab)) {
 					amuledlg->transferwnd->downloadlistctrl->HideFile((CPartFile*)event.ptr_value);
 				} else {

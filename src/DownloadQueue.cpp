@@ -1020,42 +1020,6 @@ void CDownloadQueue::SetCatPrio(int cat, uint8 newprio)
 	}
 }
 
-void CDownloadQueue::SetCatStatus(int cat, int newstatus)
-{
-	bool reset=false;
-	std::deque<CPartFile*>::iterator it = filelist.begin();
-	while (it != filelist.end()) {
-		CPartFile* cur_file = (*it);
-		if (!cur_file) {
-			continue;
-		}
-
-		if (CheckShowItemInGivenCat(cur_file,cat)) {
-			switch (newstatus) {
-				case MP_CANCEL:
-					cur_file->Delete();
-					reset=true;
-					break;
-				case MP_PAUSE:
-					cur_file->PauseFile();
-					break;
-				case MP_STOP:
-					cur_file->StopFile();
-					break;
-				case MP_RESUME:
-					if (cur_file->GetStatus()==PS_PAUSED) {
-						cur_file->ResumeFile();
-					}
-					break;
-			}
-		}
-		it++;
-		if (reset) {
-			reset = false;
-			it = filelist.begin();
-		}
-	}
-}
 
 uint16 CDownloadQueue::GetDownloadingFileCount()
 {

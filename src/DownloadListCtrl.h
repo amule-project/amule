@@ -68,6 +68,9 @@ public:
 	void HideSources(CPartFile* toCollapse,bool isShift = false,bool isCtrl = false,bool isAlt = false);
 	void ShowFilesCount();
 	void ChangeCategory(int newsel);
+	void SetCatStatus(int cat, int newstatus);
+	bool CheckShowItemInGivenCat(CPartFile* file, int inCategory);
+
 	wxString getTextList();
 	void ShowSelectedFileDetails();
 	void HideFile(CPartFile* tohide);
@@ -78,8 +81,7 @@ public:
 	void OnKeyUp(wxKeyEvent& event);
 	void OnKeyDown(wxKeyEvent& event);
 	// end lagloose
-
-public:
+	
 	virtual void OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxRect& rectHL,bool highlighted);
 	
 protected:

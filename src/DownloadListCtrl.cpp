@@ -2044,3 +2044,105 @@ bool CDownloadListCtrl::this_is_the_moment() {
 		return false;	
 	}
 }
+
+
+bool CDownloadListCtrl::CheckShowItemInGivenCat(CPartFile* file, int inCategory)
+{
+	// easy normal cases
+	bool IsInCat;
+	bool IsNotFiltered = true;
+
+	IsInCat = ((inCategory==0) || (inCategory>0 && inCategory==file->GetCategory()));
+
+	switch (theApp.glob_prefs->GetAllcatType()) {
+		case 1:
+			IsNotFiltered = ((file->GetCategory()==0) || (inCategory>0));
+			break;
+		case 2:
+			IsNotFiltered = (file->IsPartFile());
+			break;
+		case 3:
+			IsNotFiltered = (!file->IsPartFile());
+			break;
+		case 4:
+			IsNotFiltered = ((file->GetStatus()==PS_READY|| file->GetStatus()==PS_EMPTY) && file->GetTransferingSrcCount()==0);
+			break;
+		case 5:
+			IsNotFiltered = ((file->GetStatus()==PS_READY|| file->GetStatus()==PS_EMPTY) && file->GetTransferingSrcCount()>0);
+			break;
+		case 6:
+			IsNotFiltered = ( file->GetStatus() == PS_ERROR );
+			break;
+		case 7:
+			IsNotFiltered = ((file->GetStatus()==PS_PAUSED) && (!file->IsStopped()));
+			break;
+		case 8:
+			IsNotFiltered = file->IsStopped();
+			break;
+		case 9:
+			IsNotFiltered = GetFiletype(file->GetFileName()) == ftVideo;
+			break;
+		case 10:
+			IsNotFiltered = GetFiletype(file->GetFileName()) == ftAudio;
+			break;
+		case 11:
+			IsNotFiltered = GetFiletype(file->GetFileName()) == ftArchive;
+			break;
+		case 12:
+			IsNotFiltered = GetFiletype(file->GetFileName()) == ftCDImage;
+			break;
+		case 13:
+			IsNotFiltered = GetFiletype(file->GetFileName()) == ftPicture;
+			break;
+		case 14:
+			IsNotFiltered = GetFiletype(file->GetFileName()) == ftText;
+			break;
+	}
+	
+	return (IsNotFiltered && IsInCat);
+}
+
+
+void CDownloadListCtrl::SetCatStatus(int cat, int newstatus)
+{
+	bool reset = false;
+
+	ListItems::iterator it = m_ListItems.begin();
+
+	while ( it != m_ListItems.end() ) {
+		if ( it->second->type != FILE_TYPE )
+			continue;
+	
+		CPartFile* cur_file = (CPartFile*)it->second->value;
+		if (!cur_file) {
+			continue;
+		}
+
+		if (CheckShowItemInGivenCat(cur_file,cat)) {
+			switch (newstatus) {
+				case MP_CANCEL:
+					cur_file->Delete();
+					reset=true;
+					break;
+				case MP_PAUSE:
+					cur_file->PauseFile();
+					break;
+				case MP_STOP:
+					cur_file->StopFile();
+					break;
+				case MP_RESUME:
+					if (cur_file->GetStatus()==PS_PAUSED) {
+						cur_file->ResumeFile();
+					}
+					break;
+			}
+		}
+		
+		if (reset) {
+			reset = false;
+			it = m_ListItems.begin();
+		} else {
+			++it;
+		}		
+	}
+}

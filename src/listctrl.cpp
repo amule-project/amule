@@ -3018,15 +3018,17 @@ void wxODListMainWindow::OnPaint( wxPaintEvent &WXUNUSED(event) )
 			int width = 0, height = 0;
 			GetClientSize( &width, &height );
 		
+			dc.SetPen( wxPen( GetBackgroundColour(), 1, wxSOLID) );
+			dc.SetBrush( wxBrush( GetBackgroundColour(), wxSOLID ) );
+		
+		
 			// Clear below if this is the last item
 			if ( visibleTo + 1 == GetItemCount() ) {
 
 				// Since visibleTo can include items partly past the bottom, we have
 				// ensure that we dont overwrite items below the visible area
 				if ( last.GetBottom() < height ) {
-					dc.SetPen( wxPen( GetBackgroundColour(), 1, wxSOLID) );
-					dc.SetBrush( wxBrush( GetBackgroundColour(), wxSOLID ) );
-		
+					
 					// Clear the area below the last visible item
 					dc.DrawRectangle( 0, last.GetBottom(), last.GetWidth(), height - last.GetBottom() );
 				}
@@ -3035,7 +3037,6 @@ void wxODListMainWindow::OnPaint( wxPaintEvent &WXUNUSED(event) )
 			// Clear to the right of the last column if the columns dont fill everything
 			if ( last.GetWidth() < width ) {
 				// Clear the area below the last visible item
-				dc.SetBrush( wxBrush( GetBackgroundColour(), wxSOLID ) );
 				dc.DrawRectangle( last.GetWidth(), 0, width - last.GetWidth(), height );
 			}
 		}

@@ -29,13 +29,6 @@
 #endif
 
 #include "otherfunctions.h"	// Interface declarations
-#include "PartFile.h"		// Needed for CPartFile
-#include "KnownFile.h"		// Needed for CAbstractFile
-#include "amule.h"
-#include "filefn.h"
-#include "Preferences.h"
-
-#include <ctype.h>
 
 wxString ConvertChar2Unicode(const char* c_string) {
 	 return wxConvLocal.cMB2WX(c_string);
@@ -397,63 +390,6 @@ wxString GetCatTitle(int catid)
 }
 
 
-bool CheckShowItemInGivenCat(CPartFile* file, int inCategory)
-{
-	// easy normal cases
-	bool IsInCat;
-	bool IsNotFiltered = true;
-
-	IsInCat = ((inCategory==0) || (inCategory>0 && inCategory==file->GetCategory()));
-
-	switch (theApp.glob_prefs->GetAllcatType()) {
-		case 1:
-			IsNotFiltered = ((file->GetCategory()==0) || (inCategory>0));
-			break;
-		case 2:
-			IsNotFiltered = (file->IsPartFile());
-			break;
-		case 3:
-			IsNotFiltered = (!file->IsPartFile());
-			break;
-		case 4:
-			IsNotFiltered = ((file->GetStatus()==PS_READY|| file->GetStatus()==PS_EMPTY) && file->GetTransferingSrcCount()==0);
-			break;
-		case 5:
-			IsNotFiltered = ((file->GetStatus()==PS_READY|| file->GetStatus()==PS_EMPTY) && file->GetTransferingSrcCount()>0);
-			break;
-		case 6:
-			IsNotFiltered = ( file->GetStatus() == PS_ERROR );
-			break;
-		case 7:
-			IsNotFiltered = ((file->GetStatus()==PS_PAUSED) && (!file->IsStopped()));
-			break;
-		case 8:
-			IsNotFiltered = file->IsStopped();
-			break;
-		case 9:
-			IsNotFiltered = GetFiletype(file->GetFileName()) == ftVideo;
-			break;
-		case 10:
-			IsNotFiltered = GetFiletype(file->GetFileName()) == ftAudio;
-			break;
-		case 11:
-			IsNotFiltered = GetFiletype(file->GetFileName()) == ftArchive;
-			break;
-		case 12:
-			IsNotFiltered = GetFiletype(file->GetFileName()) == ftCDImage;
-			break;
-		case 13:
-			IsNotFiltered = GetFiletype(file->GetFileName()) == ftPicture;
-			break;
-		case 14:
-			IsNotFiltered = GetFiletype(file->GetFileName()) == ftText;
-			break;
-	}
-	
-	return (IsNotFiltered && IsInCat);
-}
-
-
 
 void HexDump(const void *buffer, unsigned long buflen)
 {
@@ -472,60 +408,10 @@ void HexDump(const void *buffer, unsigned long buflen)
 }
 
 
-// Backup the file by copying to the same filename with appendix added
-bool BackupFile(const wxString& filename, const wxString& appendix)
-{
-
-	if ( !FS_wxCopyFile(filename, filename + appendix) ) {
-		printf("info: Could not create backup of '%s'\n",unicode2char(filename));
-		return false;
-	}
-	
-	// Kry - Safe Backup
-	CFile safebackupfile;
-	safebackupfile.Open(filename + appendix,CFile::read);
-	safebackupfile.Flush();
-	safebackupfile.Close();
-	// Kry - Safe backup end
-	
-	return true;
-}
-
-
-// Kry - Added to get rid of fstab quiet flag on vfat
-bool FS_wxCopyFile(const wxString& file1, const wxString& file2,bool overwrite)
-{
-	bool result;
-	
-	if ( theApp.use_chmod ) {
-		result = wxCopyFile(file1,file2,overwrite);
-	} else {
-		result = wxCopyFile_fat32(file1,file2,overwrite);
-	}
-	
-	return result;
-}
-
-
-/* A function to rename files that will avoid chmoding under linux on FAT 
-   partitions, which would otherwise result in a lot of warnings. */
-bool FS_wxRenameFile(const wxString& file1, const wxString& file2)
-{
-	bool result;
-	
-	if ( theApp.use_chmod ) {
-		result = wxRenameFile(file1,file2);
-	} else {
-		result = wxRenameFile_fat32(file1,file2);
-	}
-	
-	return result;
-}
-
-
 int wxCMPFUNC_CONV Uint16CompareValues(uint16* first, uint16* second) {
        return (((int)*first) - ((int)*second)) ;
 }      
+
 
 // DumpMem ... Dumps mem ;)
 void DumpMem(const void* where, uint32 size) {

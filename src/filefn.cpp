@@ -22,15 +22,10 @@
 // ----------------------------------------------------------------------------
 
 
-#include <cctype>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <ctime>
+#include <wx/defs.h>
 #include <wx/utils.h>
 #include <wx/intl.h>
 #include <wx/file.h>
-#include <wx/filename.h>
 #include <wx/dir.h>
 
 #if defined(__WXMAC__)
@@ -52,10 +47,6 @@
     #include <fcntl.h>
 #endif
 
-#ifdef __WXPM__
-    #include <process.h>
-    #include "wx/os2/private.h"
-#endif
 #if defined(__WINDOWS__) && !defined(__WXMICROWIN__) && !defined(__WXWINE__)
 #if !defined( __GNUWIN32__ ) && !defined( __MWERKS__ ) && !defined(__SALFORDC__)
     #include <direct.h>
@@ -63,28 +54,6 @@
     #include <io.h>
 #endif // __WINDOWS__
 #endif // native Win compiler
-
-#if defined(__DOS__)
-    #ifdef __WATCOMC__
-        #include <direct.h>
-        #include <dos.h>
-        #include <io.h>
-    #endif
-    #ifdef __DJGPP__
-        #include <unistd.h>
-    #endif
-#endif
-
-#ifdef __BORLANDC__ // Please someone tell me which version of Borland needs
-                    // this (3.1 I believe) and how to test for it.
-                    // If this works for Borland 4.0 as well, then no worries.
-    #include <dir.h>
-#endif
-
-#ifdef __SALFORDC__
-    #include <dir.h>
-    #include <unix.h>
-#endif
 
 #include <wx/log.h>
 
@@ -111,15 +80,12 @@
     #endif // __GNUWIN32__
 #endif // __WINDOWS__
 
-// TODO: Borland probably has _wgetcwd as well?
-#ifdef _MSC_VER
-    #define HAVE_WGETCWD
-#endif
-
 // ----------------------------------------------------------------------------
 // constants
 // -------------------------------------------------------------------------
 #include "filefn.h"		// Interface declarations.
+#include "CFile.h"
+#include "amule.h"
 
 // we need to translate Mac filenames before passing them to OS functions
 #define MY_OS_FILENAME(s) (s.fn_str())
@@ -157,7 +123,7 @@ wxCopyFile_fat32 (const wxString& file1, const wxString& file2, bool overwrite, 
     }
 
     // open file1 for reading
-    wxFile fileIn(file1, wxFile::read);
+    CFile fileIn(file1, CFile::read);
     if ( !fileIn.IsOpened() )
         return FALSE;
 
@@ -179,7 +145,7 @@ wxCopyFile_fat32 (const wxString& file1, const wxString& file2, bool overwrite, 
     // create file2 with the same permissions than file1 and open it for
     // writing
     
-    wxFile fileOut;
+    CFile fileOut;
     if ( !fileOut.Create(file2, overwrite, fbuf.st_mode & 0777) )
         return FALSE;
 
@@ -245,3 +211,54 @@ wxRenameFile_fat32 (const wxString& file1, const wxString& file2, bool WXUNUSED(
   // Give up
   return FALSE;
 }
+
+// Kry - Added to get rid of fstab quiet flag on vfat
+bool FS_wxCopyFile(const wxString& file1, const wxString& file2,bool overwrite)
+{
+	bool result;
+	
+	if ( theApp.use_chmod ) {
+		result = wxCopyFile(file1,file2,overwrite);
+	} else {
+		result = wxCopyFile_fat32(file1,file2,overwrite);
+	}
+	
+	return result;
+}
+
+
+/* A function to rename files that will avoid chmoding under linux on FAT 
+   partitions, which would otherwise result in a lot of warnings. */
+bool FS_wxRenameFile(const wxString& file1, const wxString& file2)
+{
+	bool result;
+	
+	if ( theApp.use_chmod ) {
+		result = wxRenameFile(file1,file2);
+	} else {
+		result = wxRenameFile_fat32(file1,file2);
+	}
+	
+	return result;
+}
+
+
+// Backup the file by copying to the same filename with appendix added
+bool BackupFile(const wxString& filename, const wxString& appendix)
+{
+
+	if ( !FS_wxCopyFile(filename, filename + appendix) ) {
+		wxLogSysError( _("info: Could not create backup of '%s'\n"), filename.c_str() );
+		return false;
+	}
+	
+	// Kry - Safe Backup
+	CFile safebackupfile;
+	safebackupfile.Open(filename + appendix,CFile::read);
+	safebackupfile.Flush();
+	safebackupfile.Close();
+	// Kry - Safe backup end
+	
+	return true;
+}
+
