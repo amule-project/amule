@@ -253,6 +253,24 @@ bool CIPFilter::m_inet_atoh(wxString &s, uint32 *ip)
 	return ret;
 }
 
+
+/**
+ * Helper-function for removing bad chars from str-IPs
+ */
+wxString CleanUp( const wxString& str ) 
+{
+	wxString result;
+
+	for ( unsigned int i = 0; i < str.Length(); i++ ) {
+		if ( ( str[i] >= wxT('0') && str[i] <= wxT('9') ) || str[i] == wxT('.') ) {
+			result += str[i];		
+		}
+	}
+
+	return result;
+}
+
+
 bool CIPFilter::ProcessLineOk(const wxString& sLine, unsigned long linecounter)
 {
 	// remove spaces from the left and right.
@@ -276,6 +294,11 @@ bool CIPFilter::ProcessLineOk(const wxString& sLine, unsigned long linecounter)
 	wxStringTokenizer IPToken( IPRange, wxT("-"), wxTOKEN_RET_EMPTY_ALL );
 	wxString sIPStart = IPToken.GetNextToken().Strip(wxString::both);
 	wxString sIPEnd   = IPToken.GetNextToken().Strip(wxString::both);
+	
+	// Ensure that we only have valid chars in the ips
+	sIPStart = CleanUp( sIPStart );
+	sIPEnd   = CleanUp( sIPEnd );
+	
 	if( sIPStart.IsEmpty() || sIPEnd.IsEmpty() ) {
 		AddLogLineM(true, wxString::Format(_("Invalid line in file ipfilter.dat(%d)"), linecounter));
 		return false;
