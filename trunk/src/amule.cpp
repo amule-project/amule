@@ -1383,7 +1383,7 @@ void CamuleApp::OnTCPTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 void CamuleApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 {
 	// Former TimerProc section
-	static uint32	msPrev1, msPrev5, msPrevSave;
+	static uint32	msPrev1, msPrev5, msPrevSave, msPrev10;
 	uint32 msCur = statistics->GetUptimeMsecs();
 	static uint32	msPrevHist;
 
@@ -1426,6 +1426,7 @@ void CamuleApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 		
 	}
 
+	
 	if (msCur-msPrev5 > 5000) {  // every 5 seconds
 		msPrev5 = msCur;
 		listensocket->Process();
@@ -1434,9 +1435,13 @@ void CamuleApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 		FlushQueuedLogLines();
 		// Stats tree is updated every 5 seconds. Maybe we should make it match prefs.
 		statistics->UpdateStatsTree();
-		downloadqueue->SortByPriority();
 	}
 
+	if (msCur-msPrev5 > 10000) {  // every 10 seconds
+		msPrev10 = msCur;
+		downloadqueue->SortByPriority();
+	}	
+	
 	if (msCur-msPrevSave >= 60000) {
 		msPrevSave = msCur;
 		wxString buffer;

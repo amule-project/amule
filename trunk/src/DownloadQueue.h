@@ -58,10 +58,10 @@ public:
 	void	Process();
 	void	Init();
 	void	AddSearchToDownload(CSearchFile* toadd, uint8 category);
-	bool	IsFileExisting(const CMD4Hash& fileid) const;
-	bool	IsPartFile(const CKnownFile* totest) const;
-	CPartFile *GetFileByID(const CMD4Hash& filehash) const;
-	CPartFile *GetFileByIndex(unsigned int idx) const;
+	bool	IsFileExisting(const CMD4Hash& fileid);
+	bool	IsPartFile(const CKnownFile* totest);
+	CPartFile *GetFileByID(const CMD4Hash& filehash);
+	CPartFile *GetFileByIndex(unsigned int idx);
 	void    CheckAndAddSource(CPartFile* sender,CUpDownClient* source);
 	void    CheckAndAddKnownSource(CPartFile* sender,CUpDownClient* source);
 	bool	RemoveSource(CUpDownClient* toremove, bool updatewindow = true, bool bDoStatsUpdate = true); // delete later ->{ return RemoveSource(toremove,NULL,updatewindow);}
@@ -119,9 +119,6 @@ public:
 	void SaveSourceSeeds();
 	void LoadSourceSeeds();
 	
-	// lfroen for ExternalConn
-	wxString getTextList(const wxString& file_to_search  = wxEmptyString) const;
-
 	bool	CompletedFilesExist() { return completedFilesExist; }
 	void	SetCompletedFilesExist() { completedFilesExist = true; }
 	void	UnsetCompletedFilesExist() { completedFilesExist = false; }
@@ -174,6 +171,8 @@ private:
 	std::deque<int>	m_AverageDDRO_list;
 
 	// uint32 sumavgDDRO;
+
+	bool do_not_sort_please;
 
 	DWORD m_lastRefreshedDLDisplay;
 
