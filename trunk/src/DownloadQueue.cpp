@@ -274,40 +274,6 @@ void CDownloadQueue::StartNextFile()
 	}
 }
 
-void CDownloadQueue::AddFileLinkToDownload(CED2KFileLink* pLink, uint8 category)
-{
-	CPartFile* newfile = new CPartFile(pLink);
-	if (!newfile) {
-		// Very Bad Things Happened
-		printf("Really evil thing happened trying to create a partfile\n");
-		return;
-	}
-	if (newfile->GetStatus() == PS_ERROR) {
-		// This can be a ed2k link for a currently downloading file
-		// so we'll try to add the sources to the file anyway.
-		delete newfile;
-		newfile=NULL;
-	} else {
-		AddDownload(newfile,thePrefs::AddNewFilesPaused(), category);
-	}
-	
-	if (pLink->HasValidSources()) {
-		if (newfile) {
-			newfile->AddClientSources(pLink->SourcesList,1);
-		} else {
-			CPartFile* partfile = GetFileByID(pLink->GetHashKey());
-			if (partfile) {
-				partfile->AddClientSources(pLink->SourcesList,1);
-			}
-		}
-	}
-	
-	if(pLink->HasHostnameSources()) {
-		for (POSITION pos = pLink->m_HostnameSourcesList.GetHeadPosition(); pos != NULL; pLink->m_HostnameSourcesList.GetNext(pos)) {
-			AddToResolve(pLink->GetHashKey(), pLink->m_HostnameSourcesList.GetAt(pos)->strHostname, pLink->m_HostnameSourcesList.GetAt(pos)->nPort);
-		}
-	}
-}
 
 void CDownloadQueue::AddDownload(CPartFile* newfile, bool paused, uint8 category)
 {
@@ -1364,12 +1330,12 @@ bool CDownloadQueue::AddED2KLink( const CED2KFileLink* link, int category )
 	
 	// Add specified sources, specified by IP
 	if ( link->HasValidSources() ) {
-		file->AddClientSources( link->SourcesList, 1 );
+		file->AddClientSources( link->m_sources, 1 );
 	}
 	
 	// Add specified sources, specified by hostname
 	if ( link->HasHostnameSources() ) {
-		const CTypedPtrList<CPtrList, SUnresolvedHostname*>& list = link->m_HostnameSourcesList;
+		const CTypedPtrList<CPtrList, SUnresolvedHostname*>& list = link->m_hostSources;
 		
 		for ( POSITION pos = list.GetHeadPosition(); pos; list.GetNext(pos) ) {
 			AddToResolve( link->GetHashKey(), list.GetAt(pos)->strHostname, list.GetAt(pos)->nPort );
