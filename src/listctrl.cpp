@@ -3434,7 +3434,11 @@ void wxODListMainWindow::OnMouse( wxMouseEvent &event )
         m_lineLastClicked = current;
 
         size_t oldCurrent = m_current;
+#if wxCHECK_VERSION(2, 5, 3)
         bool cmdModifierDown = event.CmdDown();
+#else
+        bool cmdModifierDown = event.ControlDown();
+#endif
         if ( IsSingleSel() || !(cmdModifierDown || event.ShiftDown()) )
         {
             HighlightAll( FALSE );
