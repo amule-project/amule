@@ -56,6 +56,8 @@ protected:
 #endif
 	virtual bool ProcessEvent(wxEvent& evt);
 	void OnNMRclick(wxMouseEvent& evt);
+	void OnItemSelected(wxListEvent& evt);
+	
 private:
 	//CTitleMenu m_ClientMenu;
 	wxImageList imagelist;
