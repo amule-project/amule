@@ -29,6 +29,14 @@
 	#include <netinet/in.h>
 	#include <arpa/inet.h>
 #endif
+/*
+ * INADDR_BROADCAST is identical to INADDR_NONE which is not defined
+ * on all systems. INADDR_BROADCAST should be fine to indicate an error.
+ */
+#ifndef INADDR_NONE
+#define INADDR_NONE INADDR_BROADCAST
+#endif
+
 #include <wx/datetime.h>	// Needed for wxDateTime
 
 #include "ED2KLink.h"		// Interface declarations.
