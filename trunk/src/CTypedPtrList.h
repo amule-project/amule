@@ -41,7 +41,7 @@ struct POSITION
 };
 
 
-template <class TYPE, class ARG_TYPE = TYPE const&>
+template <class TYPE, class ARG_TYPE = const TYPE&>
 class CList
 {
 private:
