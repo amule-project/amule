@@ -181,6 +181,8 @@ void CDownloadQueue::Init()
 			delete toadd;
 		}
 		fileName=::wxFindNextFile();
+		// Dont leave the gui blank while loading the files, so ugly...
+		if ( !(count % 10) ) ::wxSafeYield();
 	}
 	if(count == 0) {
 		AddLogLineM(false, _("No part files found"));

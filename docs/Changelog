@@ -29,6 +29,8 @@ Version 2.0.0rc6 - The '???' version.
 		* Fixed a small wxString bug in CamuleDlg::AddLogLine() 
 		  in amuleDlg.cpp.
 		* Improoved wxSting usage in ExternalConn.cpp.
+		* Yielding in DownloadQueue.cpp Init() so that gui is not 
+		  blank when loading lots of files.
 
 	rommel:
 		* Patch to implement the commands serverconnect and reloadipf
