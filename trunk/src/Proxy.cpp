@@ -400,7 +400,7 @@ bool wxSocketProxy::DoSocks5AuthenticationUsernamePassword(void)
 		// Process the server's reply
 		ok = 	!m_ProxyClientSocket->Error() &&
 			m_ProxyClientSocket->LastCount() == LenPacket &&
-			m_buffer[0] == SOCKS5_VERSION &&
+			m_buffer[0] == SOCKS5_AUTH_VERSION_USERNAME_PASSWORD &&
 			m_buffer[1] == SOCKS5_REPLY_SUCCEED;
 	}
 	
@@ -548,10 +548,9 @@ bool wxSocketProxy::DoSocks5CmdBind(void)
 
 bool wxSocketProxy::DoSocks5CmdUDPAssociate(void)
 {
-	// TODO
-	bool ok = false;
+	// Nothing to do here.
 	
-	return ok;
+	return true;
 }
 
 bool wxSocketProxy::DoHttp(wxIPaddress &address, wxProxyCommand cmd)
