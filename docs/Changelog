@@ -299,6 +299,12 @@ Version 2.0.0rc6 - The "We're so EVIL that we make you lose a sock in every pair
 
 	Xaignar:
 		* Other stuff I'm too lazy to write or have forgotten about. ;)
+		* Initial multi-sorting on download list. Upon changing sort-column,
+		  any items that were evaulated to equal will be resorted by the 
+		  last used column.
+		* Fixed the constant resetting of the category dropdown-menu in
+		  the searchdlg.
+		* Fixed "&"s being replaced with "&&" on the log-view.
 		* Only displayed category color when the items arn't highlighted
 		  on the download list, to improve readability. (thanks to Seagull)
 		* Optimized the IPFilter-code.
@@ -441,6 +447,8 @@ Version 2.0.0rc6 - The "We're so EVIL that we make you lose a sock in every pair
 		
 	Special Thanks To:
 		* Lucasvr, for providing fixes for compilation with some wx versions.
+		* Seagull, for providing fixes and suggestions.
+		* likesylph, for providing a fix for the StripInvalidFilenameChars function.
 		* All translators
 		* All testers
 		* BrianHV and the people at #wxwidgets for their help and supportç
