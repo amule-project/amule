@@ -3104,7 +3104,7 @@ Packet*	CPartFile::CreateSrcInfoPacket(CUpDownClient* forClient)
 		result->PackPacket();
 	}
 	//if (thePrefs.GetDebugSourceExchange()) {
-		theApp.amuledlg->AddDebugLogLine( false, wxT("Send:Source User(%s) File(%s) Count(%i)"), forClient->GetUserName(), GetFileName().c_str(), nCount );
+		theApp.amuledlg->AddDebugLogLine( false, wxT("Send:Source User(%s) File(%s) Count(%i)"), unicode2char(forClient->GetUserName()), unicode2char(GetFileName()), nCount );
 	//}
 	return result;
 }

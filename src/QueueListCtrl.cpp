@@ -207,7 +207,7 @@ void CQueueListCtrl::Localize() {
 
 void CQueueListCtrl::AddClient(CUpDownClient* client){
   uint32 itemnr=GetItemCount();
-  itemnr=InsertItem(itemnr,char2unicode(client->GetUserName()));
+  itemnr=InsertItem(itemnr,client->GetUserName());
   SetItemData(itemnr,(long)client);
 
   wxListItem myitem;
@@ -364,9 +364,8 @@ void CQueueListCtrl::OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxRec
 			imagelist.Draw(7,*dc,cur_rec.left,cur_rec.top+1,wxIMAGELIST_DRAW_TRANSPARENT);
 		}		
 		
-		Sbuffer.Printf(wxT("%s"), client->GetUserName());
 		cur_rec.left +=20;
-		dc->DrawText(Sbuffer,cur_rec.left,cur_rec.top+3);
+		dc->DrawText(client->GetUserName(),cur_rec.left,cur_rec.top+3);
 		cur_rec.left -=20;
 		break;
 	}
@@ -559,9 +558,9 @@ int CQueueListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 	CKnownFile* file2 = theApp.sharedfiles->GetFileByID(item2->GetUploadFileID());
 		switch(lParamSort) {
 		case 0:
-			return wxString(char2unicode(item1->GetUserName())).CmpNoCase(char2unicode(item2->GetUserName()));
+			return item1->GetUserName().CmpNoCase(item2->GetUserName());
 		case 100:
-			return wxString(char2unicode(item2->GetUserName())).CmpNoCase(char2unicode(item1->GetUserName()));
+			return item2->GetUserName().CmpNoCase(item1->GetUserName());
 		case 1:
 			if( (file1 != NULL) && (file2 != NULL)) {
 				return file1->GetFileName().CmpNoCase(file2->GetFileName());

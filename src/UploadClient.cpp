@@ -121,7 +121,7 @@ void CUpDownClient::DrawUpStatusBar(wxMemoryDC* dc, wxRect rect, bool onlygreyre
 uint32 CUpDownClient::GetScore(bool sysvalue, bool isdownloading, bool onlybasevalue)
 {
 	//TODO: complete this (friends, uploadspeed, amuleuser etc etc)
-	if (!m_pszUsername) {
+	if (!Username.IsEmpty()) {
 		return 0;
 	}
 
@@ -369,7 +369,7 @@ bool CUpDownClient::CreateNextBlockPackage(){
 		}
 	}
 	catch(wxString error){
-		AddDebugLogLineM(false,wxString::Format(_("Client '%s' caused error while creating package (%s) - disconnecting client"),GetUserName(),error.GetData()));
+		AddDebugLogLineM(false,wxString::Format(_("Client '%s' caused error while creating package (%s) - disconnecting client"),unicode2char(GetUserName()),error.GetData()));
 		theApp.uploadqueue->RemoveFromUploadQueue(this);
 		if (filedata)
 			delete[] filedata;
@@ -507,7 +507,7 @@ void CUpDownClient::ProcessExtendedInfo(CSafeMemFile* data, CKnownFile* tempreqf
 				data->Read(nCompleteCountNew);
 				SetUpCompleteSourcesCount(nCompleteCountNew);
 				if (nCompleteCountLast != nCompleteCountNew) {
-					tempreqfile->UpdatePartsInfo();
+					//tempreqfile->UpdatePartsInfo();
 				}
 			}
 		}
@@ -811,7 +811,7 @@ void CUpDownClient::Ban(){
 	theApp.amuledlg->transferwnd->ShowQueueCount(theApp.uploadqueue->GetWaitingUserCount());
 	m_dwBanTime = ::GetTickCount();
 	theApp.amuledlg->transferwnd->queuelistctrl->RefreshClient(this);
-	AddDebugLogLineM(false,wxString::Format(_("Client '%s' seems to be an aggressive client and is banned from the uploadqueue"),GetUserName()));
+	AddDebugLogLineM(false,wxString::Format(_("Client '%s' seems to be an aggressive client and is banned from the uploadqueue"),unicode2char(GetUserName())));
 }
 
 void CUpDownClient::UDPFileReasked(){

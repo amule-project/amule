@@ -106,9 +106,9 @@ CChatSession* CChatSelector::StartSession(CUpDownClient* client, bool show)
 	CChatSession* chatsession = new CChatSession(this);
 	chatsession->client = client;
 
-	wxString text = wxString(wxT("*** Chatsession Start : ")) + char2unicode(client->GetUserName()) + wxT("\n");
+	wxString text = wxString(wxT("*** Chatsession Start : ")) + client->GetUserName() + wxT("\n");
 	chatsession->AddText( text, COLOR_BLACK );
-	AddPage(chatsession, char2unicode(client->GetUserName()), show, 0);
+	AddPage(chatsession, client->GetUserName(), show, 0);
 	
 	client->SetChatState(MS_CHATTING);
 
@@ -155,7 +155,7 @@ void CChatSelector::ProcessMessage(CUpDownClient* sender, char* message)
 		session = StartSession( sender, true );
 	}
 	
-	session->AddText( wxString(char2unicode(sender->GetUserName())), COLOR_BLUE );
+	session->AddText( sender->GetUserName(), COLOR_BLUE );
 	session->AddText( wxString(wxT(": ")) + wxString(char2unicode(message)) + wxString(wxT("\n")), COLOR_BLACK );
 }
 

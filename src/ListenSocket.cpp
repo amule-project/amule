@@ -598,7 +598,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				theApp.downloadqueue->AddDownDataOverheadFileRequest(size);
 				theApp.uploadqueue->RemoveFromUploadQueue(client);
 				if (theApp.glob_prefs->GetVerbose()) {
-					AddDebugLogLineM(false,wxString::Format(wxT("%s: Upload session ended due canceled transfer."), client->GetUserName()));
+					AddDebugLogLineM(false, client->GetUserName() + wxT(": Upload session ended due canceled transfer."));
 				}
 				break;
 			}
@@ -613,7 +613,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				if (size>=16 && !md4cmp(client->GetUploadFileID(),packet)) {
 					theApp.uploadqueue->RemoveFromUploadQueue(client);
 					if (theApp.glob_prefs->GetVerbose()) {
-						AddDebugLogLineM(false,wxString::Format(wxT("%s: Upload session ended due ended transfer."), client->GetUserName()));
+						AddDebugLogLineM(false, client->GetUserName() + wxT(": Upload session ended due ended transfer."));
 					}
 				}
 				break;
@@ -774,11 +774,11 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				if ((uint32)length + 2 != size) {
 					throw wxString(wxT("Invalid message packet"));
 				}
-				AddLogLineM(true,wxString::Format(wxT("New Message from '%s' (IP:%s)"),client->GetUserName(), client->GetFullIP()));
+				AddLogLineM(true,wxString(wxT("New message from '")) + client->GetUserName() + wxString::Format(wxT("' (IP:%s)"), client->GetFullIP()));
 				#warning TODO: CHECK MESSAGE FILTERING!
 				//filter me?
 				if ( (theApp.glob_prefs->MsgOnlyFriends() && !client->IsFriend()) ||
-					 (theApp.glob_prefs->MsgOnlySecure() && client->GetUserName()==NULL) ) {
+					 (theApp.glob_prefs->MsgOnlySecure() && client->GetUserName()==wxEmptyString) ) {
 					#if 0
 					if (!client->m_bMsgFiltered) {
 						AddDebugLogLine(false,"Filtered Message from '%s' (IP:%s)",client->GetUserName(), client->GetFullIP());
@@ -867,7 +867,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					break;
 				}
 				if ((theApp.glob_prefs->CanSeeShares()==vsfaEverybody) || ((theApp.glob_prefs->CanSeeShares()==vsfaFriends) && client->IsFriend())) {
-					theApp.amuledlg->AddLogLine(true,_("User %s (%u) requested your shareddirectories-list -> %s"),client->GetUserName(),client->GetUserID(),_("accepted"));			
+					AddLogLineM(true,wxString(_("User ")) + client->GetUserName() + wxString::Format(wxT(" (%u) requested your shareddirectories-list -> "),client->GetUserID()) + _("accepted"));			
 
 					// Kry - This new code from eMule will avoid duplicated folders
 					
@@ -934,7 +934,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 						DebugSend("OP__AskSharedDirsDeniedAnswer", client);
 					}
 					#endif
-					theApp.amuledlg->AddLogLine(true,_("User %s (%u) requested your shareddirectories-list -> %s"),client->GetUserName(),client->GetUserID(),_("denied"));
+					AddLogLineM(true,wxString(_("User ")) + client->GetUserName() + wxString::Format(wxT(" (%u) requested your shareddirectories-list -> "),client->GetUserID()) + _("denied"));			
 					Packet* replypacket = new Packet(OP_ASKSHAREDDENIEDANS, 0);
 					theApp.uploadqueue->AddUpDataOverheadOther(replypacket->GetPacketSize());
 					SendPacket(replypacket, true, true);
@@ -959,7 +959,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				wxString strReqDir;
 				data.Read(strReqDir);
 				if (theApp.glob_prefs->CanSeeShares()==vsfaEverybody || (theApp.glob_prefs->CanSeeShares()==vsfaFriends && client->IsFriend())) {
-					theApp.amuledlg->AddLogLine(true,_("User %s (%u) requested your sharedfiles-list for directory %s -> %s"),client->GetUserName(),client->GetUserID(),strReqDir.GetData(),_("accepted"));
+					AddLogLineM(true,wxString(_("User ")) + client->GetUserName() + wxString::Format(wxT(" (%u) requested your sharedfiles-list for directory "),client->GetUserID()) + strReqDir + wxT(" -> ") + _("accepted"));			
 					wxASSERT( data.GetPosition() == data.GetLength() );
 					CTypedPtrList<CPtrList, CKnownFile*> list;
 					
@@ -994,7 +994,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					theApp.uploadqueue->AddUpDataOverheadOther(replypacket->GetPacketSize());
 					SendPacket(replypacket, true, true);
 				} else {
-					theApp.amuledlg->AddLogLine(true,_("User %s (%u) requested your sharedfiles-list for directory %s -> %s"),client->GetUserName(),client->GetUserID(),strReqDir.GetData(),_("denied"));
+					AddLogLineM(true,wxString(_("User ")) + client->GetUserName() + wxString::Format(wxT(" (%u) requested your sharedfiles-list for directory "),client->GetUserID()) + strReqDir + wxT(" -> ") + _("denied"));			
 					#ifdef __USE_DEBUG__
 					if (thePrefs.GetDebugClientTCPLevel() > 0) {
 						DebugSend("OP__AskSharedDeniedAnswer", client);
@@ -1023,7 +1023,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					for (uint32 i = 0; i < uDirs; i++){
 						wxString strDir;
 						data.Read(strDir);
-						theApp.amuledlg->AddLogLine(true,_("User %s (%u) shares directory %s"),client->GetUserName(),client->GetUserID(),strDir.GetData());
+						AddLogLineM(true,wxString(_("User ")) + client->GetUserName() + wxString::Format(_(" (%u) shares directory "),client->GetUserID()) + strDir);
 						#ifdef __USE_DEBUG__
 						if (thePrefs.GetDebugClientTCPLevel() > 0) {
 							DebugSend("OP__AskSharedFilesInDirectory", client);
@@ -1040,7 +1040,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					wxASSERT( data.GetPosition() == data.GetLength() );
 					client->SetFileListRequested(uDirs);
 				} else {
-						AddLogLineM(true,wxString::Format(wxT("Client %s ID %u sent unasked shared dir files"),client->GetUserName(),client->GetUserID()));
+						AddLogLineM(true,wxString(_("User ")) + client->GetUserName() + wxString::Format(_(" (%u) sent unasked shared dirs."),client->GetUserID()));
 				}
       			break;
       		}
@@ -1058,14 +1058,14 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				data.Read(strDir);
 
 				if (client->GetFileListRequested() > 0){
-					theApp.amuledlg->AddLogLine(true,_("User %s (%u) sent sharedfiles-list for directory %s"),client->GetUserName(),client->GetUserID(),strDir.GetData());
-					#warning We need a new ProcessSharedFileList that can handle dirs.
-					client->ProcessSharedFileList(packet + data.GetPosition(), size - data.GetPosition(), (char*)strDir.GetData());
+					AddLogLineM(true,wxString(_("User ")) + client->GetUserName() + wxString::Format(_(" (%u) sent sharedfiles-list for directory %s"),client->GetUserID()) + strDir);
+					#warning We need a new ProcessSharedFileList that can handle dirs. ___UNICODE___
+					client->ProcessSharedFileList(packet + data.GetPosition(), size - data.GetPosition(), unicode2char(strDir));
 					if (client->GetFileListRequested() == 0) {
-						theApp.amuledlg->AddLogLine(true,_("User %s (%u) finished sending sharedfiles-list"),client->GetUserName(),client->GetUserID());
+						AddLogLineM(true,wxString(_("User ")) + client->GetUserName() + wxString::Format(_(" (%u) finished sending sharedfiles-list"),client->GetUserID()));
 					}
 				} else {
-					theApp.amuledlg->AddLogLine(true,_("User %s (%u) sent unwanted sharedfiles-list"),client->GetUserName(),client->GetUserID());
+					AddLogLineM(true,wxString(_("User ")) + client->GetUserName() + wxString::Format(_(" (%u) sent unwanted sharedfiles-list"),client->GetUserID()));					
 				}
 				break;
 			}
@@ -1078,7 +1078,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				
 				theApp.downloadqueue->AddDownDataOverheadOther(size);
 				wxASSERT( size == 0 );
-				theApp.amuledlg->AddLogLine(true,_("User %s (%u) denied access to shareddirectories/files-list"),client->GetUserName(),client->GetUserID());
+				AddLogLineM(true,wxString(_("User ")) + client->GetUserName() + wxString::Format(_(" (%u) denied access to shareddirectories/files-list"),client->GetUserID()));												
 				client->SetFileListRequested(0);			
 				break;
 			default:
@@ -1120,7 +1120,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			}
 			client->SetDownloadState(DS_ERROR);
 			// TODO write this into a debugfile
-			theApp.amuledlg->AddDebugLogLine(false,_("Client '%s' (IP:%s) caused an error: %s. Disconnecting client!"),client->GetUserName(),client->GetFullIP(),error.GetData());
+			AddDebugLogLineM(false,wxString(_("Client '")) + client->GetUserName() + wxString::Format(_(" (IP:%s) caused an error: "), client->GetFullIP()) + error + _(". Disconnecting client!"));
 		} else {
 			if (theApp.glob_prefs->GetVerbosePacketError()) {
 				if (error.IsEmpty()) {
@@ -1129,7 +1129,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					printf("\tCaught error:\n\t\tError: %s\n\t\tClientData: Unknown\n\ton ListenSocket::ProcessPacket\n", unicode2char(error));
 				}
 			}
-			theApp.amuledlg->AddDebugLogLine(false,_("A unknown client caused an error or did something bad: %s. Disconnecting client!"),error.GetData());
+			AddDebugLogLineM(false,wxString(_("A unknown client caused an error or did something bad: ")) + error + _(". Disconnecting client!"));
 		}
 		Disconnect(wxT("Client error on ListenSocket::ProcessPacket: ") + wxString(error));
 		return false;
@@ -1754,7 +1754,8 @@ void CClientReqSocket::OnError(int nErrorCode)
 		// 107  -> Transport endpoint is not connected
 		if (client) {
 			if (client->GetUserName()) {
-				strError.Printf(_("Client '%s' (IP:%s) caused an error: %u. Disconnecting client!"),client->GetUserName(),client->GetFullIP(),nErrorCode);
+				strError = wxString(_("Client '")) + client->GetUserName();
+				strError += wxString::Format(_("' (IP:%s) caused an error: %u. Disconnecting client!"),client->GetFullIP(),nErrorCode);
 			} else {
 				strError.Printf(_("Unknown client (IP:%s) caused an error: %u. Disconnecting client!"),client->GetFullIP(),nErrorCode);
 			}
@@ -1788,6 +1789,7 @@ bool CClientReqSocket::PacketReceived(Packet* packet)
 /**/
 			bResult = ProcessPacket(packet->GetDataBuffer(),uRawSize,packet->GetOpCode());
 			break;
+		
 		case OP_PACKEDPROT:
 			if (!packet->UnPackPacket()) {
 				theApp.amuledlg->AddDebugLogLine(false,wxT("Failed to decompress client TCP packet; protocol=0x%02x  opcode=0x%02x  size=%u"), packet->GetProtocol(), packet->GetOpCode(), packet->GetPacketSize());				

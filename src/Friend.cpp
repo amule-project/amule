@@ -69,8 +69,10 @@ CFriend::CFriend(CUpDownClient* client)
 	m_nLastUsedPort = client->GetUserPort();
 	m_dwLastChatted = 0;
 	
-	if ( client->GetUserName() ) {
-		m_strName = char2unicode(client->GetUserName());
+	if ( !client->GetUserName().IsEmpty() ) {
+		m_strName = client->GetUserName();
+	} else {
+		m_strName = wxT("?");
 	}
 	
 	md4cpy(m_abyUserhash, client->GetUserHash());

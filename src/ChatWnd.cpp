@@ -66,7 +66,7 @@ CChatWnd::CChatWnd(wxWindow* pParent)
 
 void CChatWnd::StartSession(CUpDownClient* client)
 {
-	if ( client->GetUserName() ) {
+	if ( !client->GetUserName().IsEmpty() ) {
 		theApp.amuledlg->SetActiveDialog(this);
 		chatselector->StartSession(client, true);
 	}

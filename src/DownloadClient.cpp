@@ -226,7 +226,7 @@ void CUpDownClient::SendFileRequest()
 			SetLastAskedForSources();
 			#ifdef __USE_DEBUG__
 			if (thePrefs.GetDebugSourceExchange()) 
-				AddDebugLogLine( false, "Send:Source Request User(%s) File(%s)", GetUserName(), reqfile->GetFileName() );
+				AddDebugLogLine( false, "Send:Source Request User(%s) File(%s)", unicode2char(GetUserName()), reqfile->GetFileName() );
 			#endif
 		}
 		#ifdef __USE_DEBUG__
@@ -292,7 +292,7 @@ void CUpDownClient::SendFileRequest()
 			SetLastAskedForSources();
 		    #ifdef __USE_DEBUG__
 			if (thePrefs.GetDebugSourceExchange())
-				AddDebugLogLine( false, "Send:Source Request User(%s) File(%s)", GetUserName(), reqfile->GetFileName() );
+				AddDebugLogLine( false, "Send:Source Request User(%s) File(%s)", unicode2char(GetUserName()), reqfile->GetFileName() );
 			#endif
 		}
 	}
