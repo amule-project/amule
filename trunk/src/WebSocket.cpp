@@ -45,7 +45,7 @@ void *CWSThread::Entry() {
 	ws->Print("\nWSThread: Thread started\n");	
 	// Create the address - listen on localhost:ECPort
 	wxIPV4address addr;
-	addr.AnyAddress();
+	addr.Hostname("localhost");
 	addr.Service(wsport);
 	ws->Print("WSThread: created service\n");
 
@@ -54,7 +54,7 @@ void *CWSThread::Entry() {
 	
 	// We use Ok() here to see if the server is really listening
 	if (! m_WSSocket->Ok()) {
-		ws->Print("WSThread: could create socket on %s:%d\n", addr.Hostname().GetData(), addr.Service());	
+		ws->Print("WSThread: could not create socket on %s:%d\n", addr.Hostname().GetData(), addr.Service());	
 	} else {
 		ws->Print("WSThread: created socket listening on %s:%d\n", addr.Hostname().GetData(), addr.Service());	
 
