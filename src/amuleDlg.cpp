@@ -432,9 +432,9 @@ void CamuleDlg::OnPrefButton(wxCommandEvent& WXUNUSED(ev))
 {
 	if ( theApp.IsReady ) {
 		// Check if there's already a dialog
-		if ( PrefsUnifiedDlg::GetPrefsID() ) {
+		if ( CPreferences::GetPrefsID() ) {
 			// Raise the preferences-dialog.
-			FindWindow( PrefsUnifiedDlg::GetPrefsID() )->Raise();
+			FindWindow( CPreferences::GetPrefsID() )->Raise();
 		} else {
 			// No existing dialog, create a new one	
 			PrefsUnifiedDlg* prefswnd = new PrefsUnifiedDlg( this );
@@ -744,7 +744,7 @@ void CamuleDlg::OnClose(wxCloseEvent& evt)
 
 	if (theApp.glob_prefs) {
 		theApp.glob_prefs->Save();
-		PrefsUnifiedDlg::SaveAllItems( wxConfig::Get() );
+		CPreferences::SaveAllItems( wxConfig::Get() );
 	}
 
 	transferwnd->downloadlistctrl->DeleteAllItems();

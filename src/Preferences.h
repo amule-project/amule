@@ -24,6 +24,8 @@
 #include "types.h"		// Needed for int8, int16, int32, int64, uint8, uint16, uint32 and uint64
 
 #include "CMD4Hash.h"
+#include "MD5Sum.h"
+#include "otherfunctions.h"
 
 #include <wx/dynarray.h>
 
@@ -32,6 +34,13 @@
 #if wxCHECK_VERSION(2, 5, 2)
 #	include <wx/arrstr.h>	// Needed for wxArrayString
 #endif
+#include <wx/config.h>
+#include <wx/valgen.h>
+#include <wx/tokenzr.h>
+#include <wx/control.h>
+
+#include <map>
+#include <list>
 
 enum EViewSharedFilesAccess{
 	vsfaEverybody = 0,
@@ -61,8 +70,518 @@ struct Category_Struct{
 #pragma pack()
 
 #undef Bool	// Yeah right.
+/**
+ * Base-class for automatically loading and saving of preferences.
+ *
+ * The purpose of this class is to perform two tasks:
+ * 1) To load and save a variable using wxConfig
+ * 2) If nescecarry, to syncronize it with a widget
+ *
+ * This pure-virtual class servers as the base of all the Cfg types
+ * defined below, and exposes the entire interface.
+ *
+ * Please note that for reasons of simplicity these classes dont provide
+ * direct access to the variables they maintain, as there is no real need
+ * for this.
+ *
+ * To create a sub-class you need only provide the Load/Save functionality,
+ * as it is given that not all variables have a widget assosiated.
+ */
+class Cfg_Base
+{
+public:
+	/**
+	 * Constructor.
+	 *
+	 * @param keyname This is the keyname under which the variable is to be saved.
+	 */
+	Cfg_Base( const wxString& keyname )
+	 : m_key( keyname ),
+	   m_changed( false )
+	{}
+
+	/**
+	 * Destructor.
+	 */
+	virtual ~Cfg_Base() {}
+
+	/**
+	 * This function loads the assosiated variable from the provided config object.
+	 */
+	virtual void LoadFromFile(wxConfigBase* cfg) = 0;
+	/**
+	 * This function saves the assosiated variable to the provided config object.
+	 */
+	virtual void SaveToFile(wxConfigBase* cfg) = 0;
+
+	/**
+	 * Syncs the variable with the contents of the widget.
+	 *
+	 * @return True of success, false otherwise.
+	 */
+	virtual bool TransferFromWindow()	{ return false; }
+	/**
+	 * Syncs the widget with the contents of the variable.
+	 *
+	 * @return True of success, false otherwise.
+	 */
+	virtual bool TransferToWindow()		{ return false; }
+
+	/**
+	 * Connects a widget with the specified ID to the Cfg object.
+	 *
+	 * @param id The ID of the widget.
+	 * @param parent A pointer to the widgets parent, to speed up searches.
+	 * @return True on success, false otherwise.
+	 *
+	 * This function only makes sense for Cfg-classes that have the capability
+	 * to interact with a widget, see Cfg_Tmpl::ConnectToWidget().
+	 */	 
+	virtual	bool ConnectToWidget( int WXUNUSED(id), wxWindow* WXUNUSED(parent) = NULL )	{ return false; }
+
+	/**
+	 * Gets the key assosiated with Cfg object.
+	 *
+	 * @return The config-key of this object.
+	 */
+	virtual const wxString& GetKey()	{ return m_key; }
+
+
+	/**
+	 * Specifies if the variable has changed since the TransferFromWindow() call.
+	 *
+	 * @return True if the variable has changed, false otherwise.
+	 */
+	virtual bool HasChanged() 			{ return m_changed; }
+
+
+protected:
+	/**
+	 * Sets the changed status.
+	 *
+	 * @param changed The new status.
+	 */
+	virtual void SetChanged( bool changed )
+	{ 
+		m_changed = changed;
+	};
+	
+private:
+
+	//! The Config-key under which to save the variable
+	wxString	m_key;
+
+	//! The changed-status of the variable
+	bool		m_changed;
+};
+
+
+/**
+ * Template Cfg class for connecting with widgets.
+ *
+ * This template provides the base functionionality needed to syncronize a 
+ * variable with a widget. However, please note that wxGenericValidator only
+ * supports a few types (int, wxString, bool and wxArrayInt), so this template 
+ * can't always be used directly.
+ *
+ * Cfg_Str and Cfg_Bool are able to use this template directly, whereas Cfg_Int
+ * makes use of serveral workaround to enable it to be used with integers other
+ * than int.
+ */
+template <typename TYPE>
+class Cfg_Tmpl : public Cfg_Base
+{
+public:
+	/**
+	 * Constructor.
+	 *
+	 * @param keyname
+	 * @param value
+	 * @param defaultVal
+	 */
+	Cfg_Tmpl( const wxString& keyname, TYPE& value, const TYPE& defaultVal )
+	 : Cfg_Base( keyname ),
+	   m_value( value ),
+	   m_default( defaultVal ),
+	   m_widget( NULL )
+	{}
+
+#ifndef AMULE_DAEMON
+	/**
+	 * Connects the Cfg to a widget.
+	 * 
+	 * @param id The ID of the widget to be connected.
+	 * @param parent The parent of the widget. Use this to speed up searches.
+	 *
+	 * This function works by setting the wxValidator of the class. This however
+	 * poses some restrictions on which variable types can be used for this
+	 * template, as noted above. It also poses some limits on the widget types,
+	 * refer to the wx documentation for those.
+	 */
+	virtual	bool ConnectToWidget( int id, wxWindow* parent = NULL )
+	{
+		if ( id ) {
+			m_widget = wxWindow::FindWindowById( id, parent );
+		
+			if ( m_widget ) {
+				wxGenericValidator validator( &m_value );
+
+				m_widget->SetValidator( validator );
+			
+				return true;
+			}
+		} else {
+			m_widget = NULL;
+		}
+
+		return false;
+	}
+	
+	
+	/**
+	 * Sets the assosiated variable to the value of the widget.
+	 *
+	 * @return True on success, false otherwise.
+	 */
+	virtual bool TransferFromWindow()
+	{
+		if ( m_widget ) {
+			wxValidator* validator = m_widget->GetValidator();
+
+			if ( validator ) {
+				TYPE temp = m_value;
+			
+				if ( validator->TransferFromWindow() ) {
+					SetChanged( temp != m_value );
+
+					return true;
+				}
+			}
+		} 
+		
+		return false;
+	}
+	
+	/**
+	 * Sets the assosiated variable to the value of the widget.
+	 *
+	 * @return True on success, false otherwise.
+	 */
+	virtual bool TransferToWindow()
+	{
+		if ( m_widget ) {
+			wxValidator* validator = m_widget->GetValidator();
+
+			if ( validator ) {
+				return validator->TransferToWindow();
+			}
+		}
+
+		return false;
+	}
+#endif
+
+protected:
+	//! Reference to the assosiated variable
+	TYPE&	m_value;
+
+	//! Default variable value
+	TYPE	m_default;
+	
+	//! Pointer to the widget assigned to the Cfg instance
+	wxWindow*	m_widget;
+};
+
+
+/**
+ * Cfg class for wxStrings.
+ */
+class Cfg_Str : public Cfg_Tmpl<wxString>
+{
+public:
+	/**
+	 * Constructor
+	 *
+	 *
+	 */
+	Cfg_Str( const wxString& keyname, wxString& value, const wxString& defaultVal = wxT("") )
+	 : Cfg_Tmpl<wxString>( keyname, value, defaultVal )
+	{}
+
+	/**
+	 * Saves the string to specified wxConfig.
+	 *
+	 * @param cfg The wxConfig to save the variable to.
+	 */
+	virtual void LoadFromFile(wxConfigBase* cfg)
+	{
+		cfg->Read( GetKey(), &m_value, m_default );
+	}
+	
+	/**
+	 * Loads the string to specified wxConfig using the specified default value.
+	 *
+	 * @param cfg The wxConfig to load the variable from.
+	 */
+	virtual void SaveToFile(wxConfigBase* cfg)
+	{
+		cfg->Write( GetKey(), m_value );
+	}
+};
+
+
+/**
+ * Cfg-class for encrypting strings, for example for passwords.
+ */
+class Cfg_Str_Encrypted : public Cfg_Str
+{
+public:
+	/**
+	 * Constructor.
+	 *
+	 * @param
+	 * @param
+	 * @param 
+	 */
+	Cfg_Str_Encrypted( const wxString& keyname, wxString& value, const wxString& defaultVal = wxT("") )
+	 : Cfg_Str( keyname, value, defaultVal )
+	{}
+
+	/**
+	 *
+	 *
+	 */
+	virtual bool TransferFromWindow()
+	{
+		// Store current value to see if it has changed
+		wxString temp;
+
+		// Shakraw, when storing value, store it encrypted here (only if changed in prefs)
+		if ( Cfg_Str::TransferFromWindow() ) {
+			if ( temp != m_value ) {
+				if ( temp.IsEmpty() ) {
+					m_value = temp;
+				} else {
+					m_value = MD5Sum(temp).GetHash();
+				}
+			}
+
+			return true;
+		}
+
+		return false;
+	}
+};
+
+
+/**
+ * Cfg class that takes care of integer types.
+ *
+ * This template is needed since wxValidator only supports normals ints, and 
+ * wxConfig for the matter only supports longs, thus some worksarounds are
+ * needed. 
+ *
+ * There are two work-arounds:
+ *  1) wxValidator only supports int*, so we need a immediate variable to act
+ *     as a storage. Thus we use Cfg_Tmpl<int> as base class. Thus this class
+ *     contains a integer which we use to pass the value back and forth 
+ *     between the widgets.
+ *
+ *  2) wxConfig uses longs to save and read values, thus we need an immediate
+ *     stage when loading and saving the value.
+ */
+template <typename TYPE>
+class Cfg_Int : public Cfg_Tmpl<int>
+{
+public:
+	Cfg_Int( const wxString& keyname, TYPE& value, int defaultVal = 0 )
+	 : Cfg_Tmpl<int>( keyname, m_temp_value, defaultVal ),
+	   m_real_value( value ),
+	   m_temp_value( value )
+	{}
+
+
+	virtual void LoadFromFile(wxConfigBase* cfg)
+	{
+		long tmp = 0;
+		cfg->Read( GetKey(), &tmp, m_default ); 
+			
+		// Set the temp value
+		m_temp_value = (int)tmp;
+		// Set the actual value
+		m_real_value = (TYPE)tmp;
+	}
+
+	virtual void SaveToFile(wxConfigBase* cfg)
+	{
+		long tmp = (long)m_real_value;
+		
+		cfg->Write( GetKey(), tmp );
+	}
+	
+
+	virtual bool TransferFromWindow()
+	{
+		Cfg_Tmpl<int>::TransferFromWindow(); 
+
+		m_real_value = (TYPE)m_temp_value;
+
+		return true;
+	}
+	
+	virtual bool TransferToWindow()
+	{
+		m_temp_value = (int)m_real_value;
+	
+		Cfg_Tmpl<int>::TransferToWindow();
+
+		return true;
+	}
+
+
+protected:
+
+	TYPE&	m_real_value;
+	int		m_temp_value;
+};
+
+
+/**
+ * Helper function for creating new Cfg_Ints.
+ *
+ * @param keyname The cfg-key under which the item should be saved.
+ * @param value The variable to syncronize. The type of this variable defines the type used to create the Cfg_Int.
+ * @param defaultVal The default value if the key isn't found when loading the value.
+ * @return A pointer to the new Cfg_Int object. The caller is responsible for deleting it.
+ *
+ * This template-function returns a Cfg_Int of the appropriate type for the 
+ * variable used as argument and should be used to avoid having to specify
+ * the integer type when adding a new Cfg_Int, since that's just increases
+ * the maintainence burden.
+ */
+template <class TYPE>
+Cfg_Base* MkCfg_Int( const wxString& keyname, TYPE& value, int defaultVal )
+{
+	return new Cfg_Int<TYPE>( keyname, value, defaultVal );
+}
+
+
+/**
+ * Cfg-class for bools.
+ */
+class Cfg_Bool : public Cfg_Tmpl<bool>
+{
+public:
+	Cfg_Bool( const wxString& keyname, bool& value, bool defaultVal )
+	 : Cfg_Tmpl<bool>( keyname, value, defaultVal )
+	{}
+
+	
+	virtual void LoadFromFile(wxConfigBase* cfg)
+	{
+		cfg->Read( GetKey(), &m_value, m_default );
+	}
+	
+	virtual void SaveToFile(wxConfigBase* cfg)
+	{
+		cfg->Write( GetKey(), m_value );
+	}
+};
+
+
+/**
+ * Cfg-class for uint64s, with no assisiated widgets.
+ */
+class Cfg_Counter : public Cfg_Base
+{
+public:
+	Cfg_Counter( const wxString& keyname, uint64& value )
+	 : Cfg_Base( keyname ),
+	   m_value( value )
+	{
+
+	}
+
+	virtual void LoadFromFile(wxConfigBase* cfg)
+	{
+		wxString buffer;
+		
+		cfg->Read( GetKey(), &buffer, wxT("0") );
+		
+		m_value = atoll(unicode2char(buffer));
+	}
+	
+	virtual void SaveToFile(wxConfigBase* cfg)
+	{
+		wxString str = wxString::Format(wxT("%llu"),(unsigned long long)m_value);
+		
+		cfg->Write( GetKey(), str );
+	}
+	
+protected:
+	uint64& m_value;
+};
+
+
+/**
+ * Cfg-class for arrays of uint16, with no assisiated widgets.
+ */
+class Cfg_Columns : public Cfg_Base
+{
+public:
+	Cfg_Columns( const wxString& keyname, uint16* array, int count, int defaultVal )
+	 : Cfg_Base( keyname ),
+	   m_array( array ),
+	   m_default_val( defaultVal ),
+	   m_count( count )
+	{
+	}
+
+
+	virtual void LoadFromFile(wxConfigBase* cfg)
+	{
+		// Set default values
+		for ( int i = 0; i < m_count; i++ )
+			m_array[i] = m_default_val;
+			
+		wxString buffer;
+		if ( cfg->Read( GetKey(), &buffer, wxT("") ) ) {
+			int counter = 0;
+			
+			wxStringTokenizer tokenizer( buffer, wxT(",") );
+			while ( tokenizer.HasMoreTokens() && ( counter < m_count ) ) 
+			{
+				m_array[counter++] = atoi( unicode2char( tokenizer.GetNextToken() ) );
+			}
+		}
+	}
+	
+	
+	virtual void SaveToFile(wxConfigBase* cfg)
+	{
+		wxString buffer;
+
+		for ( int i = 0; i < m_count; i++ ) {
+			if ( i ) buffer << wxT(",");
+
+			buffer << m_array[i];
+		}
+	
+		cfg->Write( GetKey(), buffer );
+	}
+
+
+protected:
+	uint16*	m_array;
+	int		m_default_val;
+	int 	m_count;
+};
+
 
 WX_DECLARE_OBJARRAY(Category_Struct*, ArrayOfCategory_Struct);
+
+const int cntStatColors = 13;
+
 
 class CPreferences{
 public:
@@ -295,11 +814,31 @@ public:
 	static uint8	GetToolTipDelay()		{ return s_iToolDelayTime; }
 
 	static void		CheckUlDlRatio();
-
+	
+	static void BuildItemList( const wxString& appdir );
+	static void LoadAllItems(wxConfigBase* cfg);
+	static void SaveAllItems(wxConfigBase* cfg);
+	
+	static int  GetPrefsID() { return s_ID; }
 protected:
 	void	CreateUserHash();
 	void	SetStandartValues();
-	static int32 GetRecommendedMaxConnections(); 
+	static int32 GetRecommendedMaxConnections();
+	
+	static void SetPrefsID(int ID)	{ s_ID = ID; }
+	//! Contains the ID of the current window or zero if no preferences window has been created.
+	static int s_ID;
+
+	//! Temporary storage for statistic-colors.
+	static COLORREF	s_colors[cntStatColors];
+	//! Reference for checking if the colors has changed.
+	static COLORREF	s_colors_ref[cntStatColors];
+	 
+	typedef std::list<Cfg_Base*>		CFGList;
+	typedef std::map<int, Cfg_Base*>	CFGMap;
+
+	static CFGMap	s_CfgList;
+	static CFGList	s_MiscList;
 
 private:
 	Preferences_Ext_Struct* prefsExt;

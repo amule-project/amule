@@ -49,9 +49,6 @@ class CDirectoryTreeCtrl;
 
 
 
-const int cntStatColors = 13;
-
-
 class PrefsUnifiedDlg : public wxDialog
 {
 public:
@@ -62,30 +59,7 @@ public:
     bool TransferFromWindow();
 	bool TransferToWindow();
 
-	static int  GetPrefsID()		{ return s_ID; }
-
-	static void BuildItemList( const wxString& appdir );
-	static void LoadAllItems(wxConfigBase* cfg);
-	static void SaveAllItems(wxConfigBase* cfg);
-
 protected:
-	static void SetPrefsID(int ID)	{ s_ID = ID; }
-
-	//! Contains the ID of the current window or zero if no preferences window has been created.
-	static int s_ID;
-
-	//! Temporary storage for statistic-colors.
-	static COLORREF	s_colors[cntStatColors];
-	//! Reference for checking if the colors has changed.
-	static COLORREF	s_colors_ref[cntStatColors];
-
-	typedef std::list<Cfg_Base*>		CFGList;
-	typedef std::map<int, Cfg_Base*>	CFGMap;
-
-	static CFGMap	s_CfgList;
-	static CFGList	s_MiscList;
-
-
 	bool			CfgChanged(int ID);
 	Cfg_Base*		GetCfg(int id);	
 	

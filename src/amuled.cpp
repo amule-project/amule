@@ -94,7 +94,7 @@
 #include "PartFile.h"		// Needed for CPartFile
 #include "AddFileThread.h"	// Needed for CAddFileThread
 #include "packets.h"
-
+#include "PrefsUnifiedDlg.h"
 
 #ifdef HAVE_SYS_RESOURCE_H
 #include <sys/resource.h>
@@ -335,7 +335,6 @@ bool CamuleApp::OnInit()
 	cmdline.AddSwitch(wxT("v"), wxT("version"), wxT("Displays the current version number."));
 	cmdline.AddSwitch(wxT("h"), wxT("help"), wxT("Displays this information."));
 	cmdline.AddSwitch(wxT("i"), wxT("enable-stdin"), wxT("Does not disable stdin."));
-	cmdline.AddOption(wxT("geometry"), wxT(""), wxT("Sets the geometry of the app.\n\t\t\t<str> uses the same format as standard X11 apps:\n\t\t\t[=][<width>{xX}<height>][{+-}<xoffset>{+-}<yoffset>]"));
 	cmdline.Parse();
 
 	if ( cmdline.Found(wxT("version")) ) {
@@ -366,7 +365,8 @@ bool CamuleApp::OnInit()
 	wxString host = wxT("localhost");
 	wxString IPC = wxT("aMule IPC TESTRUN");
 	wxClient* client = new wxClient();
-	wxConnectionBase* conn = client->MakeConnection(host, server, IPC);
+	//wxConnectionBase* conn = client->MakeConnection(host, server, IPC);
+	wxConnectionBase* conn = 0;
 
 	// If the connection failed, conn is NULL
 	if ( conn ) {
@@ -453,17 +453,13 @@ bool CamuleApp::OnInit()
 	}
 	file.Close();
 	// Load Preferences
+	CPreferences::BuildItemList( theApp.ConfigDir);
+	CPreferences::LoadAllItems( wxConfig::Get() );
 	glob_prefs = new CPreferences();
 
 	// Build the filenames for the two OS files
 	SetOSFiles(glob_prefs->GetOSDir());
 
-	// Create the Core timer
-	core_timer=new CTimer(this,ID_CORETIMER);
-	if (!core_timer) {
-		printf("Fatal Error: Failed to create Core Timer");
-		OnExit();
-	}
 
 	// Display notification on new version or first run
 	wxTextFile vfile( ConfigDir + wxFileName::GetPathSeparator() + wxT("lastversion") );
@@ -556,7 +552,6 @@ bool CamuleApp::OnInit()
 
 #endif // __BSD__
 #endif
-
 
 	// Load localization settings
 	Localize_mule();
@@ -1676,7 +1671,19 @@ void CamuleApp::NotifyEvent(GUIEvent event)
 	switch (event.ID) {
 		// GUI->CORE events
 		// it's daemon, so gui isn't here, but macros can be used as function calls
-		
+		case SHOW_CONN_STATE:
+			if ( event.byte_value ) {
+				const char *id = theApp.serverconnect->IsLowID() ? "LOW" : "HIGH";
+
+				printf("LOG: connected to %s , id is %s\n", event.string_value.c_str(), id);
+			} else {
+				if ( theApp.serverconnect->IsConnecting() ) {
+					printf("LOG: connecting to %s ...\n", event.string_value.c_str());
+				} else {
+					printf("LOG: disconnected\n");
+				}
+			}
+			break;
 		// search
 	        case SEARCH_REQ:
 			uploadqueue->AddUpDataOverheadServer(((Packet *)event.ptr_value)->GetPacketSize());
