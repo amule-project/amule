@@ -388,6 +388,8 @@ enum {
 	 */
 	EC_TAG_STATS_UL_QUEUE_LEN,
 	
+	EC_TAG_STATS_USERS_ON_SERVER,
+
 	/*!
 	 * \brief Info about CPartFile
 	 * 
