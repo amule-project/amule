@@ -26,9 +26,10 @@
 #include "BarShader.h"		// Interface declarations.
 
 
-#define HALF(X) (((X) + 1) / 2)
-
 const float Pi = 3.14159265358979323846264338328;
+
+#define HALF(X) (((X) + 1) / 2)
+#define DEFAULT_DEPTH 10
 
 
 CBarShader::CBarShader(uint32 height, uint32 width)
@@ -36,13 +37,13 @@ CBarShader::CBarShader(uint32 height, uint32 width)
   m_Height( height ),
   m_FileSize( 1 ),
   m_Modifiers( NULL ),
-  m_used3dlevel( 10 )
+  m_used3dlevel( DEFAULT_DEPTH )
 {
 	m_spanlist.push_front(BarSpan(0, 1));
 }
 
 
-CBarShader::~CBarShader(void)
+CBarShader::~CBarShader()
 {
 	if ( m_Modifiers ) {
 		delete[] m_Modifiers;
@@ -243,6 +244,12 @@ void CBarShader::Draw( wxDC* dc, int iLeft, int iTop, bool bFlat )
 		
 			++bsCurrent;
 		} else {
+			/* If the width of the current span is less than a pixel, we take 
+			   as many spans as will fit in one pixel and calculate the 
+			   "weight" of their colors PLUS the color weight of the adjacent
+			   span. This means that we wont get sharp "streaks" from small
+			   gaps, but rather blured lines, which fade in with the next span. */
+		
 			float fRed = 0;
 			float fGreen = 0;
 			float fBlue = 0;
@@ -257,8 +264,8 @@ void CBarShader::Draw( wxDC* dc, int iLeft, int iTop, bool bFlat )
 				iLast = bsCurrent->end;
 				
 				if ( bsCurrent->end > iEnd )
-					break;			
-								
+					break;
+				
 				bsCurrent++;
 			} while ( bsCurrent != m_spanlist.end() );
 			
@@ -277,7 +284,7 @@ void CBarShader::FillRect(wxDC *dc, const wxRect& rectSpan, DWORD color, bool bF
 {
 	wxASSERT( dc );
 
-	if( !color || bFlat ) {
+	if( bFlat || !color ) {
 		wxBrush brush( WxColourFromCr(color), wxSOLID );
 		dc->SetBrush( brush );
 		dc->DrawRectangle( rectSpan );

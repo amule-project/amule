@@ -103,16 +103,6 @@ public:
 	// Draws the bar
 	void Draw( wxDC* dc, int iLeft, int iTop, bool bFlat );
 
-	void DebugPrint() {
-		SpanList::iterator it = m_spanlist.begin();
-
-		printf("\n\n");
-		while ( it != m_spanlist.end() ) {
-			printf("%d -- %d-%d\n", it->color, it->start, it->end);
-			it++;
-		}
-	}
-
 protected:
 	/* This calculates the modifiers used to create the 3d effect. In essence, 
 	   the effect is created by using a sinus curve to calculate the "darkness"
