@@ -781,6 +781,7 @@ void CPreferences::BuildItemList( const wxString& appdir )  // gets called at in
 	s_CfgList[IDC_FILTER]			= new Cfg_Bool( wxT("/eMule/FilterBadIPs"), s_filterBadIP, true );
 	s_CfgList[IDC_AUTOIPFILTER] = new Cfg_Bool( wxT("/eMule/IPFilterAutoLoad"), s_IPFilterAutoLoad, true );
 	s_CfgList[IDC_IPFILTERURL]	= new Cfg_Str(  wxT("/eMule/IPFilterURL"), s_IPFilterURL, wxEmptyString );
+	s_CfgList[ID_IPFILTERLEVEL]	= MkCfg_Int( wxT("/eMule/FilterLevel"), s_filterlevel, 127 );
 
 	/**
 	 * The folowing doesn't have an assosiated widget.
@@ -789,7 +790,6 @@ void CPreferences::BuildItemList( const wxString& appdir )  // gets called at in
 	s_MiscList.push_back( new Cfg_Counter( wxT("/Statistics/TotalUploadedBytes"),	s_totalUploadedBytes ) );
 	s_MiscList.push_back(    MkCfg_Int( wxT("/eMule/SplitterbarPosition"),		s_splitterbarPosition, 75 ) );
 	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/FilterServersByIP"),		s_filterserverbyip, false ) );
-	s_MiscList.push_back(    MkCfg_Int( wxT("/eMule/FilterLevel"),			s_filterlevel, 127 ) );
 	s_MiscList.push_back( new Cfg_Str(  wxT("/eMule/YourHostname"),			s_yourHostname, wxEmptyString ) );
 	s_MiscList.push_back( new Cfg_Str(  wxT("/eMule/DateTimeFormat"),		s_datetimeformat, wxT("%A, %x, %X") ) );
 
