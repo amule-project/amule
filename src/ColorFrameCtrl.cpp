@@ -69,7 +69,7 @@ bool CColorFrameCtrl::Create(DWORD dwStyle, const RECT& rect,
 		                     CWnd* pParentWnd, UINT nID) 
 {
 	bool result ;
-	static CString className = AfxRegisterWndClass(CS_HREDRAW | CS_VREDRAW) ;
+	static wxString className = AfxRegisterWndClass(CS_HREDRAW | CS_VREDRAW) ;
 
 	result = CWnd::CreateEx( WS_EX_STATICEDGE, 
 		                      className, NULL, dwStyle, 

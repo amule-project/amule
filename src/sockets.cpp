@@ -319,7 +319,7 @@ void CServerConnect::ConnectionFailed(CServerSocket* sender){
 				ConnectToAnyServer();		
 			}
 			if (theApp.glob_prefs->GetNotifierPopOnImportantError()) {
-				theApp.amuledlg->ShowNotifier(CString(_("Connection lost")), TBN_IMPORTANTEVENT, false);
+				theApp.amuledlg->ShowNotifier(_("Connection lost"), TBN_IMPORTANTEVENT, false);
 			}
 			theApp.amuledlg->ShowConnectionState(false,wxT(""),true);
 			break;

@@ -21,7 +21,6 @@
 #define ED2KLINK_H
 
 #include "types.h"		// Needed for uint16 and uint32
-#include "CString.h"		// Needed for CString
 #include "CTypedPtrList.h"	// Needed for CTypedPtrList
 #include "otherfunctions.h" // Needed for unicode2char & char2unicode
 
@@ -29,7 +28,7 @@ class CMemFile;
 
 // Imported from 0.30d
 struct SUnresolvedHostname{
-	CString strHostname;
+	wxString strHostname;
 	uint16 nPort;
 };
 // EOI

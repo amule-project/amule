@@ -906,7 +906,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				sItem=sItem.Mid(brk+1); brk=sItem.First(wxT("\t"));
 				int sortBy = atoi(unicode2char(sItem.Left(brk)));
 				bool searchAsc = (atoi(unicode2char(sItem.Mid(brk+1))) == 0) ? false : true;
-				return(theApp.searchlist->GetWebList((CString)sResultLine, sortBy, searchAsc));
+				return(theApp.searchlist->GetWebList(sResultLine, sortBy, searchAsc));
 			}
 		}
 		
@@ -2314,7 +2314,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 						int sortBy = atoi(unicode2char(sItem.Left(separator+1).GetData()));
 						if (sortBy >= 0) {
 							bool searchAsc = (atoi(unicode2char(sItem.Mid(separator+1).GetData())) == 0) ? false : true;
-							return((wxChar*)theApp.searchlist->GetWebList((CString)sResultLine, sortBy, searchAsc).GetData());
+							return((wxChar*)theApp.searchlist->GetWebList(sResultLine, sortBy, searchAsc).GetData());
 						}
 					}
 				}

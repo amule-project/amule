@@ -31,7 +31,6 @@
 
 #include "types.h"		// Needed for RECT
 #include "color.h"			// Needed for COLORREF and RGB
-#include "CString.h"		// Needed for CString
 
 /////////////////////////////////////////////////////////////////////////////
 // COScopeCtrl window

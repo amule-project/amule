@@ -33,7 +33,6 @@
 
 #include "types.h"		// Needed for uint16 and uint32
 #include "resource.h"		// Needed for IDD_SEARCH
-#include "CString.h"		// Needed for CString
 #include "server.h"			// Needed for CServer
 
 #include <set>

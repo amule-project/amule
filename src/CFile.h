@@ -20,7 +20,6 @@
 #include <wx/string.h>		// Needed for wxString
 #include <wx/filefn.h>		// Needed for wxSeekMode and seek related stuff.
 
-#include "CString.h"		// Needed for CString
 
 
 // ----------------------------------------------------------------------------
@@ -89,7 +88,7 @@ public:
   // Kry -Added for windoze compatibility.
   off_t GetLength( ) { return Length(); }
   
-  bool Open(CString szFileName, OpenMode mode = read, int access = wxS_DEFAULT) {
+  bool Open(const wxString& szFileName, OpenMode mode = read, int access = wxS_DEFAULT) {
     return Open(szFileName.GetData(),mode,access);
   };
   virtual bool Close();  // Close is a NOP if not opened

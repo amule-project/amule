@@ -582,7 +582,7 @@ void CMuleListCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 	CRect rcCol(rcBounds);
 
 	//the label!
-	CString sLabel = GetItemText(iItem, 0);
+	wxString sLabel = GetItemText(iItem, 0);
 	//labels are offset by a certain amount 
 	//this offset is related to the width of a space character
 	CRect rcHighlight;

@@ -87,9 +87,9 @@ void CSharedFileList::FindSharedFiles() {
 
 	uint32 newFiles = CAddFileThread::GetCount();
 	if (!newFiles) {
-		theApp.amuledlg->AddLogLine(false,CString(_("Found %i known shared files")),m_Files_map.size());
+		theApp.amuledlg->AddLogLine(false,_("Found %i known shared files"),m_Files_map.size());
 	} else {
-		theApp.amuledlg->AddLogLine(false,CString(_("Found %i known shared files, %i unknown")),m_Files_map.size(),newFiles);
+		theApp.amuledlg->AddLogLine(false,_("Found %i known shared files, %i unknown"),m_Files_map.size(),newFiles);
 	}
 }
 

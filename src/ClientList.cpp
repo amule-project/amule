@@ -225,7 +225,7 @@ bool CClientList::AttachToAlreadyKnown(CUpDownClient** client, CClientReqSocket*
 					}
 	
 					//IDS_CLIENTCOL Warning: Found matching client, to a currently connected client: %s (%s) and %s (%s)
-					theApp.amuledlg->AddDebugLogLine(true,CString(_("WARNING! Found matching client, to a currently connected client: %s (%s) and with %s")),tocheck->GetUserName(),tocheck->GetFullIP(),found_client->GetUserName(),found_client->GetFullIP());
+					theApp.amuledlg->AddDebugLogLine(true,_("WARNING! Found matching client, to a currently connected client: %s (%s) and with %s"),tocheck->GetUserName(),tocheck->GetFullIP(),found_client->GetUserName(),found_client->GetFullIP());
 					return false;
 				}
 				found_client->socket->client = 0;

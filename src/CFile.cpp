@@ -268,7 +268,7 @@ bool CFile::Open(const wxChar *szFileName, OpenMode mode, int accessMode)
     int fd = wxOpen( szFileName, flags ACCESS(accessMode));
     if ( fd == -1 )
     {
-    	theApp.amuledlg->AddLogLine(true, CString(_("Can't open file '%s'")), szFileName);
+    	theApp.amuledlg->AddLogLine(true, _("Can't open file '%s'"), szFileName);
         return FALSE;
     }
     else {
