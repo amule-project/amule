@@ -113,6 +113,10 @@ CWCThread::CWCThread(CWebServer *ws, wxSocketBase *sock) {
     stWebSocket.m_dwHttpHeaderLen = 0;
     stWebSocket.m_dwHttpContentLen = 0;
 }
+CWCThread::~CWCThread()
+{
+	delete [] stWebSocket.m_pBuf;
+}
 
 
 // thread execution starts here
