@@ -388,7 +388,7 @@ wxSizer *transferTopPane( wxWindow *parent, bool call_fit, bool set_sizer )
 
     CMuleNotebook *item5 = new CMuleNotebook( parent, ID_CATEGORIES, wxDefaultPosition, wxSize(15,30), 0 );
     wxASSERT( item5 );
-    item1->Add( item5, 1, wxALIGN_CENTER|wxFIXED_MINSIZE, 5 );
+    item1->Add( item5, 1, wxALIGN_CENTER, 5 );
 
     wxBitmapButton *item6 = new wxBitmapButton( parent, ID_BTNSWWINDOW, amuleDlgImages( 16 ), wxDefaultPosition, wxSize(20,20) );
     item6->SetToolTip( _("switch download list to clients you're downloading from, with files also (some day)") );
@@ -467,7 +467,7 @@ wxSizer *messagePage( wxWindow *parent, bool call_fit, bool set_sizer )
     item1->Add( item3, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
     CFriendListCtrl *item6 = new CFriendListCtrl( parent, ID_FRIENDLIST, wxDefaultPosition, wxSize(160,120), wxLC_REPORT|wxSUNKEN_BORDER );
-    item1->Add( item6, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxRIGHT|wxBOTTOM|wxFIXED_MINSIZE, 5 );
+    item1->Add( item6, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxRIGHT|wxBOTTOM, 5 );
 
     item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
 
@@ -897,7 +897,7 @@ wxSizer *downloadDlg( wxWindow *parent, bool call_fit, bool set_sizer )
 
     MuleGifCtrl *item1 = new MuleGifCtrl(parent,ID_ANIMATE,wxPoint(0,0),wxSize(272,60),wxNO_BORDER);
     wxASSERT( item1 );
-    item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL|wxFIXED_MINSIZE, 5 );
+    item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     wxStaticText *item2 = new wxStaticText( parent, ID_TEXT, _("Downloading, please wait ..."), wxDefaultPosition, wxDefaultSize, 0 );
     item0->Add( item2, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
@@ -1136,7 +1136,7 @@ item6->SetName(wxT("dloadScope"));
 
     wxWindow *item11 = new CColorFrameCtrl(parent,IDC_C0,20,14);
     wxASSERT( item11 );
-    item10->Add( item11, 0, wxALIGN_CENTER|wxFIXED_MINSIZE, 5 );
+    item10->Add( item11, 0, wxALIGN_CENTER, 5 );
 
     wxStaticText *item12 = new wxStaticText( parent, ID_TEXT, _("Current"), wxDefaultPosition, wxDefaultSize, 0 );
     item10->Add( item12, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxLEFT, 5 );
@@ -1151,7 +1151,7 @@ item6->SetName(wxT("dloadScope"));
 
     wxWindow *item15 = new CColorFrameCtrl(parent,IDC_C0_3,20,14);
     wxASSERT( item15 );
-    item14->Add( item15, 0, wxALIGN_CENTER|wxFIXED_MINSIZE, 5 );
+    item14->Add( item15, 0, wxALIGN_CENTER, 5 );
 
     wxStaticText *item16 = new wxStaticText( parent, ID_TEXT, _("Running average"), wxDefaultPosition, wxDefaultSize, 0 );
     item14->Add( item16, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxLEFT, 5 );
@@ -1162,7 +1162,7 @@ item6->SetName(wxT("dloadScope"));
 
     wxWindow *item18 = new CColorFrameCtrl(parent,IDC_C0_2,20,14);
     wxASSERT( item18 );
-    item17->Add( item18, 0, wxALIGN_CENTER|wxFIXED_MINSIZE, 5 );
+    item17->Add( item18, 0, wxALIGN_CENTER, 5 );
 
     wxStaticText *item19 = new wxStaticText( parent, ID_TEXT, _("Session average"), wxDefaultPosition, wxDefaultSize, 0 );
     item17->Add( item19, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxLEFT, 5 );
@@ -1195,7 +1195,7 @@ item23->SetName(wxT("otherScope"));
 
     wxWindow *item27 = new CColorFrameCtrl(parent,IDC_S3,20,14);
     wxASSERT( item27 );
-    item26->Add( item27, 0, wxALIGN_CENTER|wxLEFT|wxFIXED_MINSIZE, 5 );
+    item26->Add( item27, 0, wxALIGN_CENTER|wxLEFT, 5 );
 
     wxStaticText *item28 = new wxStaticText( parent, ID_TEXT, _("Active downloads"), wxDefaultPosition, wxDefaultSize, 0 );
     item26->Add( item28, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxLEFT, 5 );
@@ -1206,7 +1206,7 @@ item23->SetName(wxT("otherScope"));
 
     wxWindow *item30 = new CColorFrameCtrl(parent,IDC_S0,20,14);
     wxASSERT( item30 );
-    item29->Add( item30, 0, wxALIGN_CENTER|wxLEFT|wxFIXED_MINSIZE, 5 );
+    item29->Add( item30, 0, wxALIGN_CENTER|wxLEFT, 5 );
 
     wxStaticText *item31 = new wxStaticText( parent, ID_ACTIVEC, _("Active connections (1:1)"), wxDefaultPosition, wxDefaultSize, 0 );
     item29->Add( item31, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxLEFT, 5 );
@@ -1219,7 +1219,7 @@ item23->SetName(wxT("otherScope"));
 
     wxWindow *item33 = new CColorFrameCtrl(parent,IDC_S1,20,14);
     wxASSERT( item33 );
-    item32->Add( item33, 0, wxALIGN_CENTER|wxFIXED_MINSIZE, 5 );
+    item32->Add( item33, 0, wxALIGN_CENTER, 5 );
 
     wxStaticText *item34 = new wxStaticText( parent, ID_TEXT, _("Active uploads"), wxDefaultPosition, wxDefaultSize, 0 );
     item32->Add( item34, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxLEFT, 5 );
@@ -1257,7 +1257,7 @@ item39->SetName(wxT("uloadScope"));
 
     wxWindow *item44 = new CColorFrameCtrl(parent,IDC_C1,20,14);
     wxASSERT( item44 );
-    item43->Add( item44, 0, wxALIGN_CENTER|wxLEFT|wxFIXED_MINSIZE, 5 );
+    item43->Add( item44, 0, wxALIGN_CENTER|wxLEFT, 5 );
 
     wxStaticText *item45 = new wxStaticText( parent, ID_TEXT, _("Current"), wxDefaultPosition, wxDefaultSize, 0 );
     item43->Add( item45, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxLEFT, 5 );
@@ -1272,7 +1272,7 @@ item39->SetName(wxT("uloadScope"));
 
     wxWindow *item48 = new CColorFrameCtrl(parent,IDC_C1_3,20,14);
     wxASSERT( item48 );
-    item47->Add( item48, 0, wxALIGN_CENTER|wxFIXED_MINSIZE, 5 );
+    item47->Add( item48, 0, wxALIGN_CENTER, 5 );
 
     wxStaticText *item49 = new wxStaticText( parent, ID_TEXT, _("Running average"), wxDefaultPosition, wxDefaultSize, 0 );
     item47->Add( item49, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxLEFT, 5 );
@@ -1283,7 +1283,7 @@ item39->SetName(wxT("uloadScope"));
 
     wxWindow *item51 = new CColorFrameCtrl(parent,IDC_C1_2,20,14);
     wxASSERT( item51 );
-    item50->Add( item51, 0, wxALIGN_CENTER|wxFIXED_MINSIZE, 5 );
+    item50->Add( item51, 0, wxALIGN_CENTER, 5 );
 
     wxStaticText *item52 = new wxStaticText( parent, ID_TEXT, _("Session average"), wxDefaultPosition, wxDefaultSize, 0 );
     item50->Add( item52, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxLEFT, 5 );
@@ -3406,31 +3406,36 @@ wxSizer *PreferencesOnlineSigTab( wxWindow *parent, bool call_fit, bool set_size
 
     item0->Add( item1, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item4 = new wxCheckBox( parent, IDC_ONLINESIG, _("Enable Online-Signature"), wxDefaultPosition, wxDefaultSize, 0 );
-    item4->SetValue( TRUE );
-    item4->SetToolTip( _("Enables the writing of the OS file, which can be used by external apps to create signatures and the like.") );
-    item0->Add( item4, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 10 );
+    wxStaticBox *item5 = new wxStaticBox( parent, -1, _("Enable/Disable") );
+    wxStaticBoxSizer *item4 = new wxStaticBoxSizer( item5, wxHORIZONTAL );
 
-    wxStaticBox *item6 = new wxStaticBox( parent, -1, _("Update Frequency (Secs):") );
-    wxStaticBoxSizer *item5 = new wxStaticBoxSizer( item6, wxVERTICAL );
+    wxCheckBox *item6 = new wxCheckBox( parent, IDC_ONLINESIG, _("Enable Online-Signature"), wxDefaultPosition, wxDefaultSize, 0 );
+    item6->SetValue( TRUE );
+    item6->SetToolTip( _("Enables the writing of the OS file, which can be used by external apps to create signatures and the like.") );
+    item4->Add( item6, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxSpinCtrl *item7 = new wxSpinCtrl( parent, ID_SPINCTRL, wxT("5"), wxDefaultPosition, wxSize(100,-1), 0, 0, 100, 5 );
-    item7->SetToolTip( _("Change the frequency (in seconds) of Online Signature updates.") );
-    item5->Add( item7, 0, wxALIGN_CENTER|wxALL, 5 );
+    item0->Add( item4, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    item0->Add( item5, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxStaticBox *item8 = new wxStaticBox( parent, -1, _("Update Frequency (Secs):") );
+    wxStaticBoxSizer *item7 = new wxStaticBoxSizer( item8, wxVERTICAL );
 
-    wxStaticBox *item9 = new wxStaticBox( parent, -1, _("Online Signature Directory:") );
-    wxStaticBoxSizer *item8 = new wxStaticBoxSizer( item9, wxHORIZONTAL );
+    wxSpinCtrl *item9 = new wxSpinCtrl( parent, ID_SPINCTRL, wxT("5"), wxDefaultPosition, wxSize(100,-1), 0, 0, 100, 5 );
+    item9->SetToolTip( _("Change the frequency (in seconds) of Online Signature updates.") );
+    item7->Add( item9, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    CMuleTextCtrl *item10 = new CMuleTextCtrl( parent, IDC_OSDIR, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
-    item8->Add( item10, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+    item0->Add( item7, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxButton *item11 = new wxButton( parent, IDC_SELOSDIR, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
-    item11->SetToolTip( _("Click here to select the directory containing the the Online Signature files.") );
-    item8->Add( item11, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+    wxStaticBox *item11 = new wxStaticBox( parent, -1, _("Online Signature Directory:") );
+    wxStaticBoxSizer *item10 = new wxStaticBoxSizer( item11, wxHORIZONTAL );
 
-    item0->Add( item8, 0, wxGROW|wxALL, 5 );
+    CMuleTextCtrl *item12 = new CMuleTextCtrl( parent, IDC_OSDIR, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
+    item10->Add( item12, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+
+    wxButton *item13 = new wxButton( parent, IDC_SELOSDIR, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
+    item13->SetToolTip( _("Click here to select the directory containing the the Online Signature files.") );
+    item10->Add( item13, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+
+    item0->Add( item10, 0, wxGROW|wxALL, 5 );
 
     if (set_sizer)
     {
