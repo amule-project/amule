@@ -74,7 +74,7 @@ bool	StringIPtoUint32(const wxString &strIP, uint32& Ip);
 inline uint32 StringIPtoUint32(const wxString &strIP)
 {
 	uint32 ip = 0;
-	StringIPtoUint32( strIP );
+	StringIPtoUint32( strIP, ip );
 	
 	return ip;
 }
