@@ -4116,7 +4116,7 @@ msgstr "Totale Upload"
 
 #: src/WebServer.cpp:1365
 msgid "Are you sure that you want to cancel and delete this file?\\n"
-msgstr "Sei sicuro di voler cancellare questo file?\n"
+msgstr "Sei sicuro di voler cancellare questo file?\\n"
 
 #: src/WebServer.cpp:1440 src/WebServer.cpp:1736 src/WebServer.cpp:1741
 msgid "Increase Priority"
