@@ -2729,11 +2729,12 @@ bool CPartFile::IsCorruptedPart(uint16 partnumber)
 	return corrupted_list.Find(partnumber);
 }
 
-void CPartFile::SetDownPriority(uint8 np, bool bSave )
+void CPartFile::SetDownPriority(uint8 np, bool bSave, bool bRefresh )
 {
 	m_iDownPriority = np;
 	theApp.downloadqueue->SortByPriority();
-	theApp.downloadqueue->CheckDiskspace();
+ // theApp.downloadqueue->CheckDiskspace();
+	if ( bRefresh )
 	UpdateDisplayedInfo(true);
 	if ( bSave )
 		SavePartFile();
@@ -3163,13 +3164,13 @@ void CPartFile::UpdateAutoDownPriority()
 	}
 	if (GetSourceCount() <= RARE_FILE) {
 		if ( GetDownPriority() != PR_HIGH )
-			SetDownPriority(PR_HIGH, false);
+			SetDownPriority(PR_HIGH, false, false);
 	} else if (GetSourceCount() < 100) {
 		if ( GetDownPriority() != PR_NORMAL )
-			SetDownPriority(PR_NORMAL, false);
+			SetDownPriority(PR_NORMAL, false, false);
 	} else {
 		if ( GetDownPriority() != PR_LOW )
-			SetDownPriority(PR_LOW, false);
+			SetDownPriority(PR_LOW, false, false);
 	}
 }
 
@@ -3538,7 +3539,8 @@ void CPartFile::UpdateDisplayedInfo(bool force)
 {
 	DWORD curTick = ::GetTickCount();
 
-	if(force || curTick-m_lastRefreshedDLDisplay > MINWAIT_BEFORE_DLDISPLAY_WINDOWUPDATE+(uint32)(rand()/(RAND_MAX/1000))) {
+	 // Wait 1.5s between each redraw
+	 if(force || curTick-m_lastRefreshedDLDisplay > MINWAIT_BEFORE_DLDISPLAY_WINDOWUPDATE + 500 ) {
 		theApp.amuledlg->transferwnd->downloadlistctrl->UpdateItem(this);
 		m_lastRefreshedDLDisplay = curTick;
 	}
