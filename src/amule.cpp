@@ -1326,14 +1326,6 @@ void CamuleApp::Localize_mule()
 
 	}
 
-	if (language != wxLANGUAGE_CUSTOM) {
-		m_locale.AddCatalogLookupPathPrefix(wxT(LOCALEDIR));
-		m_locale.AddCatalog(wxT(PACKAGE));
-	} else {
-		m_locale.AddCatalogLookupPathPrefix(wxString::Format(wxT("%s/.aMule"), getenv("HOME")));
-		m_locale.AddCatalog(wxT("custom"));
-	}
-
 	int language_flags = 0;
 	
 	if ((language != wxLANGUAGE_CUSTOM) && (language != wxLANGUAGE_ITALIAN_NAPOLITAN)) {
@@ -1343,6 +1335,15 @@ void CamuleApp::Localize_mule()
 	if ((!m_locale.Init(language,language_flags)) && (language != wxLANGUAGE_DEFAULT) && (language != wxLANGUAGE_CUSTOM)) {
 		AddLogLineM(false,wxT("The selected locale seems not to be installed on your box. (Note: I'll try to set it anyway)"));
 	}
+
+        if (language != wxLANGUAGE_CUSTOM) {
+                m_locale.AddCatalogLookupPathPrefix(wxT(LOCALEDIR));
+                m_locale.AddCatalog(wxT(PACKAGE));
+        } else {
+                m_locale.AddCatalogLookupPathPrefix(wxString::Format(wxT("%s/.aMule"), getenv("HOME")));
+                m_locale.AddCatalog(wxT("custom"));
+        }
+
 }
 
 
