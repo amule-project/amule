@@ -275,7 +275,7 @@ void CSearchList::NewSearch(const wxString& resTypes, uint16 nSearchID){
 	m_nCurrentSearch = nSearchID;
 	myHashList="";
 
-	foundFilesCount.SetAt(nSearchID,0);
+	foundFilesCount[nSearchID] = 0;
 }
 
 uint16 CSearchList::ProcessSearchanswer(char* in_packet, uint32 size, CUpDownClient* Sender){
@@ -293,7 +293,7 @@ uint16 CSearchList::ProcessSearchanswer(char* in_packet, uint32 size, CUpDownCli
 			throw CInvalidPacket("short packet reading search result count");
 		}	
 		uint32 mySearchID=( (Sender != NULL)? (uint32)Sender : m_nCurrentSearch);
-		foundFilesCount.SetAt(mySearchID,0);
+		foundFilesCount[mySearchID] = 0;
 
 		try
 		{
@@ -472,9 +472,7 @@ bool CSearchList::AddToList(CSearchFile* toadd, bool bClientResponse){
 		}
 	}
 	if (list.AddTail(toadd)) {	
-		uint16 tempValue;
-		foundFilesCount.Lookup(toadd->GetSearchID(),tempValue);
-		foundFilesCount.SetAt(toadd->GetSearchID(),tempValue+1);
+		foundFilesCount[toadd->GetSearchID()]++;
 	}
 	if (outputwnd) {
 		outputwnd->AddResult(toadd);
@@ -499,9 +497,7 @@ uint16 CSearchList::GetResultCount(){
 }
 
 uint16 CSearchList::GetFoundFiles(uint32 searchID) {
-	uint16 returnVal;
-	foundFilesCount.Lookup(searchID,returnVal);
-	return returnVal;
+	return foundFilesCount[ searchID ];
 }
 
 wxString CSearchList::GetWebList(const wxString& linePattern,int sortby,bool asc) const {

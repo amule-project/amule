@@ -844,11 +844,11 @@ void CStatisticsDlg::ShowStatistics()
 
 	// statsclientstatus : original idea and code by xrmb
 	
-	CMap<uint16, uint16, uint32, uint32> clientStatus;
-	CMap<uint32, uint32, uint32, uint32> clientVersionEDonkey;
-	CMap<uint32, uint32, uint32, uint32> clientVersionEDonkeyHybrid;
-	CMap<uint32, uint32, uint32, uint32> clientVersionEMule;
-	CMap<uint32, uint32, uint32, uint32> clientVersionAMule;
+	CClientList::clientmap16 clientStatus;
+	CClientList::clientmap32 clientVersionEDonkey;
+	CClientList::clientmap32 clientVersionEDonkeyHybrid;
+	CClientList::clientmap32 clientVersionEMule;
+	CClientList::clientmap32 clientVersionAMule;
 	uint32 totalclient;
 	theApp.clientlist->GetStatistics(totalclient, myStats, &clientStatus, &clientVersionEDonkey, &clientVersionEDonkeyHybrid, &clientVersionEMule, &clientVersionAMule);
 	totalclient -= myStats[0];
@@ -901,14 +901,14 @@ void CStatisticsDlg::ShowStatistics()
 		uint32	currtop = 0;
 		uint32	lasttop = 0xFFFFFFFF;
 		for(uint32 i=0; i<4; i++) {
-			POSITION pos=clientVersionEDonkey.GetStartPosition();
+			CClientList::clientmap32::iterator it = clientVersionEDonkey.begin();
 			uint32 topver=0;
 			uint32 topcnt=0;
 			double topper=0;
-			while(pos) {
-				uint32	ver;
-				uint32	cnt;
-				clientVersionEDonkey.GetNextAssoc(pos, ver, cnt);
+			for ( ; it != clientVersionEDonkey.end(); ++it ) {
+				uint32	ver = it->first;
+				uint32	cnt = it->second;
+				
 				if(currtop<ver && ver<lasttop && ver != 0x91) {
 					double percent = (double)cnt/totcnt;
 					if( lasttop == 0xFFFFFFFF && ((totcnt > 75 && ((cnt <= 2) || percent < 0.01)) || (totcnt > 50 && cnt <= 1))) {
@@ -954,14 +954,13 @@ void CStatisticsDlg::ShowStatistics()
 		uint32	currtop = 0;
 		uint32	lasttop = 0xFFFFFFFF;
 		for(uint32 i=0; i<4; i++) {
-			POSITION pos=clientVersionEDonkeyHybrid.GetStartPosition();
+			CClientList::clientmap32::iterator it = clientVersionEDonkeyHybrid.begin();
 			uint32 topver=0;
 			uint32 topcnt=0;
 			double topper=0;
-			while(pos) {
-				uint32	ver;
-				uint32	cnt;
-				clientVersionEDonkeyHybrid.GetNextAssoc(pos, ver, cnt);
+			for ( ; it != clientVersionEDonkeyHybrid.end(); ++it ) {
+				uint32	ver = it->first;
+				uint32	cnt = it->second;
 				if(currtop<ver && ver<lasttop && ver != 0x91) {
 					double percent = (double)cnt/totcnt;
 					if( lasttop == 0xFFFFFFFF && ((totcnt > 75 && ((cnt <= 2) || percent < 0.01)) || (totcnt > 50 && cnt <= 1))) {
@@ -1006,14 +1005,13 @@ void CStatisticsDlg::ShowStatistics()
 		uint32	currtop = 0;
 		uint32	lasttop = 0xFFFFFFFF;
 		for(uint32 i=0; i<4; i++) {
-			POSITION pos=clientVersionEMule.GetStartPosition();
+			CClientList::clientmap32::iterator it = clientVersionEMule.begin();
 			uint32 topver=0;
 			uint32 topcnt=0;
 			double topper=0;
-			while(pos) {
-				uint32	ver;
-				uint32	cnt;
-				clientVersionEMule.GetNextAssoc(pos, ver, cnt);
+			for ( ; it != clientVersionEMule.end(); ++it ) {
+				uint32	ver = it->first;;
+				uint32	cnt = it->second;
 				if(currtop<ver && ver<lasttop )	{
 					double percent = (double)cnt/totcnt;
 					if( lasttop == 0xFFFFFFFF && ((totcnt > 75 && ((cnt <= 2) || percent < 0.01)) || (totcnt > 50 && cnt <= 1))) {
@@ -1058,14 +1056,13 @@ void CStatisticsDlg::ShowStatistics()
 		uint32	currtop = 0;
 		uint32	lasttop = 0xFFFFFFFF;
 		for(uint32 i=0; i<4; i++) {
-			POSITION pos=clientVersionAMule.GetStartPosition();
+			CClientList::clientmap32::iterator it = clientVersionAMule.begin();
 			uint32 topver=0;
 			uint32 topcnt=0;
 			double topper=0;
-			while(pos) {
-				uint32	ver;
-				uint32	cnt;
-				clientVersionAMule.GetNextAssoc(pos, ver, cnt);
+			for ( ; it != clientVersionAMule.end(); ++it ) {
+				uint32	ver = it->first;
+				uint32	cnt = it->second;
 				if(currtop<ver && ver<lasttop )	{
 					double percent = (double)cnt/totcnt;
 					if( lasttop == 0xFFFFFFFF && ((totcnt > 75 && ((cnt <= 2) || percent < 0.01)) || (totcnt > 50 && cnt <= 1))) {

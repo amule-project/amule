@@ -63,10 +63,10 @@
 #include "packets.h"		// Needed for CTag
 #include "SearchList.h"		// Needed for CSearchFile
 #include "BarShader.h"		// Needed for CBarShader
-#include "mfc.h"			// itoa
 #include "GetTickCount.h"	// Needed for GetTickCount
 #include "ClientList.h"	// Needed for clientlist
 
+#include <map>
 
 #define PROGRESS_HEIGHT 3
 
@@ -115,18 +115,18 @@ CPartFile::CPartFile(CSearchFile* searchresult)
 					};
 					for (int t = 0; t < ARRSIZE(_aMetaTags); t++)
 					{
-						if (pTag->tag.type == _aMetaTags[t].nType && !stricmp(pTag->tag.tagname, _aMetaTags[t].pszName))
+						if (pTag->tag.type == _aMetaTags[t].nType && !strcasecmp(pTag->tag.tagname, _aMetaTags[t].pszName))
 						{
 							// skip string tags with empty string values
 							if (pTag->tag.type == 2 && (pTag->tag.stringvalue == NULL || pTag->tag.stringvalue[0] == '\0'))
 								break;
 
 							// skip "length" tags with "0: 0" values
-							if (!stricmp(pTag->tag.tagname, FT_MEDIA_LENGTH) && (!strcmp(pTag->tag.stringvalue, "0: 0") || !strcmp(pTag->tag.stringvalue, "0:0")))
+							if (!strcasecmp(pTag->tag.tagname, FT_MEDIA_LENGTH) && (!strcmp(pTag->tag.stringvalue, "0: 0") || !strcmp(pTag->tag.stringvalue, "0:0")))
 								break;
 
 							// skip "bitrate" tags with '0' values
-							if (!stricmp(pTag->tag.tagname, FT_MEDIA_BITRATE) && pTag->tag.intvalue == 0)
+							if (!strcasecmp(pTag->tag.tagname, FT_MEDIA_BITRATE) && pTag->tag.intvalue == 0)
 								break;
 
 							printf("CPartFile::CPartFile(CSearchFile*): added tag %s\n", unicode2char(pTag->GetFullInfo()));
@@ -382,7 +382,7 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool get
 	bool isnewstyle;
 	uint8 version,partmettype=PMT_UNKNOWN;
 	
-	CMap<uint16, uint16, Gap_Struct*, Gap_Struct*> gap_map; // Slugfiller
+	std::map<uint16, Gap_Struct*> gap_map; // Slugfiller
 	transfered = 0;
 	
 	m_partmetfilename = filename;
@@ -566,9 +566,10 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool get
 						newtag->tag.tagname[0] == FT_GAPEND)) {
 							Gap_Struct* gap;
 							uint16 gapkey = atoi(&newtag->tag.tagname[1]);
-							if (!gap_map.Lookup(gapkey, gap)) {
+
+							if ( gap_map.find( gapkey ) == gap_map.end() ) {
 								gap = new Gap_Struct;
-								gap_map.SetAt(gapkey, gap);
+								gap_map[gapkey] = gap;
 								gap->start = (uint32)-1;
 								gap->end = (uint32)-1;
 							}
@@ -646,10 +647,10 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool get
 		return partmettype;
 	}
 	// Now to flush the map into the list (Slugfiller)
-	for (POSITION pos = gap_map.GetStartPosition(); pos != NULL; ){
-		Gap_Struct* gap;
-		uint16 gapkey;
-		gap_map.GetNextAssoc(pos, gapkey, gap);
+	std::map<uint16, Gap_Struct*>::iterator it = gap_map.begin();
+	for ( ; it != gap_map.end(); ++it ) {
+		uint16 gapkey = it->first;
+		Gap_Struct* gap = it->second;
 		// SLUGFILLER: SafeHash - revised code, and extra safety
 		if (((int)gap->start) != -1 && ((int)gap->end) != -1 && gap->start <= gap->end && gap->start < m_nFileSize){
 			if (gap->end >= m_nFileSize) {
@@ -2951,7 +2952,7 @@ bool CPartFile::PreviewAvailable()
 				if (!(eFileType == ED2KFT_VIDEO || eFileType == ED2KFT_AUDIO || eFileType == ED2KFT_CDIMAGE)) {
 					// check the ED2K file type
 					LPCSTR pszED2KFileType = GetStrTagValue(FT_FILETYPE);
-					if (pszED2KFileType == NULL || !(!stricmp(pszED2KFileType, "Audio") || !stricmp(pszED2KFileType, "Video"))) {
+					if (pszED2KFileType == NULL || !(!strcasecmp(pszED2KFileType, "Audio") || !strcasecmp(pszED2KFileType, "Video"))) {
 						return false;
 					}
 				}

@@ -22,11 +22,11 @@
 
 #include <wx/dynarray.h>
 #include "types.h"		// Needed for uint16 and uint32
-#include "MapKey.h"		// Needed for CMap
 #include "CTypedPtrList.h"	// Needed for CPtrList
 #include "GetTickCount.h"
 #include "updownclient.h"	// Needed for CUpDownClient
 
+#include <map>
 
 class CUpDownClient;
 class CClientReqSocket;
@@ -65,7 +65,11 @@ public:
 	~CClientList();
 	void	AddClient(CUpDownClient* toadd,bool bSkipDupTest = false);
 	void	RemoveClient(CUpDownClient* toremove);
-	void	GetStatistics(uint32 &totalclient, uint32 stats[], CMap<uint16, uint16, uint32, uint32> *clientStatus=NULL, CMap<uint32, uint32, uint32, uint32> *clientVersionEDonkey=NULL, CMap<uint32, uint32, uint32, uint32> *clientVersionEDonkeyHybrid=NULL, CMap<uint32, uint32, uint32, uint32> *clientVersionEMule=NULL, CMap<uint32, uint32, uint32, uint32> *clientVersionAMule=NULL); // xrmb : statsclientstatus
+
+	typedef std::map<uint16, uint32> clientmap16;
+	typedef std::map<uint32, uint32> clientmap32;
+	
+	void	GetStatistics(uint32 &totalclient, uint32 stats[], clientmap16 *clientStatus=NULL, clientmap32 *clientVersionEDonkey=NULL, clientmap32 *clientVersionEDonkeyHybrid=NULL, clientmap32 *clientVersionEMule=NULL, clientmap32 *clientVersionAMule=NULL); // xrmb : statsclientstatus
 	void	DeleteAll();
 	bool	AttachToAlreadyKnown(CUpDownClient** client, CClientReqSocket* sender);
 	CUpDownClient* FindClientByIP(uint32 clientip,uint16 port);
@@ -79,7 +83,7 @@ public:
 	void	AddBannedClient(uint32 dwIP);
 	bool	IsBannedClient(uint32 dwIP);
 	void	RemoveBannedClient(uint32 dwIP);
-	uint16	GetBannedCount()			{return m_bannedList.GetCount(); }
+	uint16	GetBannedCount()			{return m_bannedList.size(); }
 
 
 	void	Process();
@@ -88,8 +92,8 @@ public:
 	void	Debug_SocketDeleted(CClientReqSocket* deleted);
 private:
 	CTypedPtrList<CPtrList, CUpDownClient*> list;
-	CMap<uint32, uint32, uint32, uint32> m_bannedList;
-	CMap<uint32, uint32, CDeletedClient*, CDeletedClient*> m_trackedClientsList;
+	std::map<uint32, uint32> m_bannedList;
+	std::map<uint32, CDeletedClient*> m_trackedClientsList;
 	uint32	m_dwLastBannCleanUp;
 	uint32	m_dwLastTrackedCleanUp;
 };

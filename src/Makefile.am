@@ -74,7 +74,6 @@ amule_SOURCES = ListenSocket.cpp \
 	KnownFile.cpp \
 	KnownFileList.cpp \
 	listctrl.cpp \
-	mfc.cpp \
 	MD5Sum.cpp \
 	MuleListCtrl.cpp \
 	MuleNotebook.cpp \
