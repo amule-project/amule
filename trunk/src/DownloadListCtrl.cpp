@@ -915,7 +915,7 @@ void CDownloadListCtrl::DrawFileItem(wxDC* dc, int nColumn, const wxRect& rect, 
 				{	
 					wxString buffer;
 					if ( lpPartFile->GetLastChangeDatetime() ) {
-						buffer = wxDateTime( lpPartFile->lastseencomplete ).Format( wxT("%y/%m/%d %H:%M:%S") );
+						buffer = wxDateTime( lpPartFile->GetLastChangeDatetime() ).Format( wxT("%y/%m/%d %H:%M:%S") );
 					} else {
 						buffer = _("Unknown");
 					}
