@@ -138,10 +138,12 @@ void CEMSocket::OnReceive(int nErrorCode){
 	// the 2 meg size was taken from another place
 	static char GlobalReadBuffer[MAX_SIZE];
 
-	// Check for an error code
-	if(nErrorCode != 0){
-		OnError(nErrorCode);
-		return;
+	if(nErrorCode) {
+		uint32 error = LastError(); 
+		if (error != wxSOCKET_WOULDBLOCK) {
+			OnError(nErrorCode);
+			return;
+		}
 	}
 	
 	// Check current connection state

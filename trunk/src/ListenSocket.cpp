@@ -38,7 +38,7 @@
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "otherstructs.h"	// Needed for Requested_Block_Struct
 #include "sockets.h"		// Needed for CServerConnect
-
+#include "amuleIPV4Address.h"
 #include <wx/listimpl.cpp>
 #include <wx/dynarray.h>
 #include <wx/arrimpl.cpp>	// this is a magic incantation which must be done!
@@ -66,6 +66,7 @@ CClientReqSocket::CClientReqSocket(CPreferences* in_prefs, CUpDownClient* in_cli
 	theApp.listensocket->AddSocket(this);
 	ResetTimeOutTimer();
 	deletethis = false;
+	connection_retries = 0;
 #ifdef AMULE_DAEMON
 	my_handler = 0;
 	Notify(false);
@@ -93,6 +94,7 @@ bool CClientReqSocket::Close()
 // Used in BaseClient.cpp, but not here.
 bool CClientReqSocket::Create()
 {
+	connection_retries = 0;
 	theApp.listensocket->AddConnection();
 	OnInit();
 	return true;
@@ -1948,6 +1950,8 @@ void CClientReqSocket::OnConnect(int nErrorCode)
 		wxString error = wxString::Format(_("Client TCP socket error (OnConnect): %u"),nErrorCode);
 		AddDebugLogLineM(false, error);
 		Disconnect(error);
+	} else {
+		connection_retries = 0;
 	}
 }
 
@@ -1962,20 +1966,60 @@ void CClientReqSocket::OnError(int nErrorCode)
 {
 	// 0.42e
 	wxString strError;
+	
+	wxASSERT(wxSOCKET_WOULDBLOCK == 7);
+	
+	if ((nErrorCode != 107) && (nErrorCode != 0)) {
+		if (m_client) {
+			if (!m_client->GetUserName().IsEmpty()) {
+				strError = _("Client '") + m_client->GetUserName() + wxT("'");
+			} else {
+				strError = _("An unnamed client");
+			}
+			strError += wxString::Format(_(" (IP:%s) caused an socket blocking error."),unicode2char(m_client->GetFullIP()));
+		} else {
+			strError = _("A client caused an socket blocking error.");
+		}
+		
+		strError += wxString::Format(_("Retries: %u."), connection_retries);
+		
+		#define MAX_RETRIES 2
+		
+		if ((connection_retries > MAX_RETRIES) || (!m_client)) {
+			strError += _("Client disconnected (max retries allowed reached)");
+			Disconnect(strError);
+		} else {
+			strError += wxString::Format(_("Trying to reconnect... (retries left: %u)"), MAX_RETRIES-connection_retries);
+			byConnected = ES_DISCONNECTED;
+
+			amuleIPV4Address tmp;
+			tmp.Hostname(m_client->GetFullIP());
+			tmp.Service(m_client->GetUserPort());
+		
+			Connect(tmp,FALSE);			
+			
+			connection_retries++;			
+		}
+		
+		AddDebugLogLineM(false, strError);
+		
+		return;
+	}
+	
 	if (theApp.glob_prefs->GetVerbose() && (nErrorCode != 0) && (nErrorCode != 107)) {
 		// 0    -> No Error / Disconect
 		// 107  -> Transport endpoint is not connected
 		if (m_client) {
 			if (m_client->GetUserName()) {
-				strError = wxString(_("Client '")) + m_client->GetUserName();
+				strError = wxString(_("OnError: Client '")) + m_client->GetUserName();
 				strError += wxString::Format(_("' (IP:%s) caused an error: %u. Disconnecting client!"),
 					m_client->GetFullIP().c_str(), nErrorCode);
 			} else {
-				strError.Printf(_("Unknown client (IP:%s) caused an error: %u. Disconnecting client!"),
+				strError.Printf(_("OnError: Unknown client (IP:%s) caused an error: %u. Disconnecting client!"),
 					m_client->GetFullIP().c_str(), nErrorCode);
 			}
 		} else {
-			strError.Printf(_("A client caused an error or did something bad (error %u). Disconnecting client !"),
+			strError.Printf(_("OnError: A client caused an error or did something bad (error %u). Disconnecting client !"),
 				nErrorCode);
 		}
 		AddLogLineM(false, strError);
@@ -2033,6 +2077,7 @@ CClientReqSocketHandler::CClientReqSocketHandler(CClientReqSocket* parent)
 {
 	socket = parent;
 	socket->my_handler = this;
+
 #ifdef AMULE_DAEMON
 	if ( Create() != wxTHREAD_NO_ERROR ) {
 		printf("ERROR: CClientReqSocketHandler failed create\n");
