@@ -158,7 +158,7 @@ bool		CPreferences::s_bDAP;
 bool		CPreferences::s_bUAP;
 bool		CPreferences::s_bDisableKnownClientList;
 bool		CPreferences::s_bDisableQueueList;
-bool		CPreferences::s_showRatesInTitle;
+bool		CPreferences::s_ShowRatesOnTitle;
 wxString	CPreferences::s_VideoPlayer;
 bool		CPreferences::s_moviePreviewBackup;
 bool		CPreferences::s_indicateratings;
