@@ -597,6 +597,7 @@ void RLE_Data::Realloc(int size)
 	if ( size == m_len ) {
 		return;
 	}
+
 	unsigned char *buff = new unsigned char[size];
 	if ( size > m_len ) {
 		memset(buff + m_len, 0, size - m_len);
@@ -604,10 +605,10 @@ void RLE_Data::Realloc(int size)
 	} else {
 		memcpy(buff, m_buff, size);
 	}
-	delete m_buff;
+	delete [] m_buff;
 	m_buff = buff;
 	
-	m_enc_buff = new unsigned char[size*4/3 + 1];
+	buff = new unsigned char[size*4/3 + 1];
 	if ( size > m_len ) {
 		memset(buff + m_len*4/3 + 1, 0, (size - m_len)*4/3);
 		memcpy(buff, m_enc_buff, m_len*4/3 + 1);
@@ -616,6 +617,8 @@ void RLE_Data::Realloc(int size)
 	}
 	delete [] m_enc_buff;
 	m_enc_buff = buff;
+
+	m_len = size;
 }
 
 const unsigned char *RLE_Data::Decode(const unsigned char *buff)
