@@ -959,7 +959,7 @@ wxString CamuleApp::GenFakeCheckUrl(const CAbstractFile *f)
 wxString CamuleApp::GenFakeCheckUrl2(const CAbstractFile *f)
 {
 	
-    wxString strURL = wxT("http://www.jugle.net/?fakecheck=%s");
+	wxString strURL = wxT("http://www.jugle.net/?fakecheck=%s");
 	
 	strURL = wxURL::ConvertToValidURI( strURL +  CreateED2kLink( f ) );
 
