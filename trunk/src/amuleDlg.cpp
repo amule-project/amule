@@ -1079,13 +1079,13 @@ enum ClientSkinEnum {
 	Client_xMule_Smiley,
 	Client_Unknown,
 	// Add items here.
-	UNUSED
+	CLIENT_SKIN_UNUSED
 };
 
 
 void CamuleDlg::Apply_Clients_Skin(wxString file) {
 	
-	#define ClientItemNumber UNUSED+1
+	#define ClientItemNumber CLIENT_SKIN_UNUSED+1
 	
 	SkinItem bitmaps_found[ClientItemNumber];
 	
