@@ -69,7 +69,7 @@ public:
 	void InitializeFromLink(CED2KFileLink* fileLink);
 	virtual ~CPartFile();
 	
-	bool	CreateFromFile(wxString directory, wxString filename, void* pvProgressParam) {return false;}// not supported in this class
+	bool	CreateFromFile(wxString WXUNUSED(directory), wxString WXUNUSED(filename), void* WXUNUSED(pvProgressParam)) {return false;}// not supported in this class
 	void 	SetPartFileStatus(uint8 newstatus);
 	virtual bool LoadFromFile(const CFile* WXUNUSED(file)) const { return false; }
 	bool	WriteToFile(CFile* file) const	{ return false; }
