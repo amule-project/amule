@@ -2177,7 +2177,12 @@ void CamuleApp::NotifyEvent(GUIEvent event) {
 				amuledlg->chatwnd->ConnectionResult((CUpDownClient *)event.ptr_value, event.byte_value);
 			}
 			break;
-
+		case CHAT_PROCESS_MSG:
+			if ( amuledlg->chatwnd ) {
+				amuledlg->chatwnd->ProcessMessage((CUpDownClient *)event.ptr_value,
+								event.string_value);
+			}
+			break;
 		// logging
 		case ADDLOGLINE:
 			if (amuledlg) {

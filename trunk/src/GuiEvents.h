@@ -67,6 +67,7 @@ enum GUI_Event_ID {
 	CHAT_REFRESH_FRIEND,
 	CHAT_FIND_FRIEND,
 	CHAT_CONN_RESULT,
+	CHAT_PROCESS_MSG,
 	// notification
 	SHOW_NOTIFIER,
 	SHOW_CONN_STATE,
@@ -133,6 +134,17 @@ class GUIEvent {
 		ptr_aux_value   = new_aux_ptr;
 	}
 
+	GUIEvent(GUI_Event_ID new_id, void *new_ptr,  wxString &str) {
+		ID              = new_id;
+		byte_value      = 0;
+		short_value	= 0;
+		long_value      = 0;
+		longlong_value  = 0;
+                string_value    = str;
+		ptr_value       = new_ptr;
+		ptr_aux_value   = NULL;
+	}
+	
 	GUIEvent(GUI_Event_ID new_id, void *new_ptr,  byte value8) {
 		ID              = new_id;
 		byte_value      = value8;
@@ -240,11 +252,12 @@ class GUIEvent {
 
 // search
 #define Notify_SearchCancel(ptr)                    Notify_1_ValEvent(SEARCH_CANCEL, ptr)
-#define Notify_SearchLocalEnd(ptr)                  Notify_1_ValEvent(SEARCH_LOCAL_END, ptr)
+#define Notify_SearchLocalEnd()                     Notify_0_ValEvent(SEARCH_LOCAL_END)
 
 // chat
 #define Notify_ChatRefreshFriend(ptr)               Notify_1_ValEvent(CHAT_REFRESH_FRIEND, ptr)
 #define Notify_ChatConnResult(ptr, val)             Notify_2_ValEvent(CHAT_CONN_RESULT, (void *)ptr, (byte)val)
+#define Notify_ChatProcessMsg(ptr, val)             Notify_2_ValEvent(CHAT_PROCESS_MSG, (CUpDownClient *)ptr, val)
 
 // misc
 #define Notify_ShowNotifier(str, val0, val1)        Notify_3_ValEvent(SHOW_NOTIFIER, val0, str, val1)
@@ -253,8 +266,8 @@ class GUIEvent {
 #define Notify_ShowUpdateCatTabTitles()             Notify_0_ValEvent(SHOW_UPDATE_CAT_TABS)
 #define Notify_ShowGUI()             					Notify_0_ValEvent(SHOW_GUI)
 
-#define AddLogLineM(x,y); 			theApp.NotifyEvent(GUIEvent(ADDLOGLINE,x,y));
-#define AddDebugLogLineM(x,y); 	theApp.NotifyEvent(GUIEvent(ADDDEBUGLOGLINE,x,y));
+#define AddLogLineM(x,y); 			theApp.NotifyEvent(GUIEvent(ADDLOGLINE,(byte)x,y));
+#define AddDebugLogLineM(x,y); 	theApp.NotifyEvent(GUIEvent(ADDDEBUGLOGLINE,(byte)x,y));
 
 //
 // GUI -> core notification
@@ -328,7 +341,7 @@ class Notify_Event_Msg {
 
 	bool PtrLooksGood()
 	{
-		return ((data_len < 1024) && ( ((unsigned long)ptr_value > 0x04000000) ) );
+		return ((data_len < 1024) && ( ((uint32)ptr_value > 0x04000000) ) );
 	}
 	Notify_Event_Msg(GUIEvent &event);
 	Notify_Event_Msg() {}
@@ -366,7 +379,7 @@ class PtrsXferClient : public wxThread {
 	uint32 data_buff_size;
 	void *data_buff;
 
-	typedef unsigned long ptr_type;
+	typedef unsigned int ptr_type;
 	// assuming that sizeof(ptr) == sizeof(int)
 	std::map<ptr_type, ptr_type> ptr_hash;
 

@@ -44,7 +44,7 @@
 
 // members of CUpDownClient
 // which are mainly used for downloading functions
-
+#ifndef AMULE_DAEMON
 void CUpDownClient::DrawStatusBar(wxMemoryDC* dc, wxRect rect, bool onlygreyrect, bool  bFlat)
 {
 	static CBarShader s_StatusBar(16);
@@ -102,6 +102,7 @@ void CUpDownClient::DrawStatusBar(wxMemoryDC* dc, wxRect rect, bool onlygreyrect
 	}
 	s_StatusBar.Draw(dc, rect.x, rect.y, bFlat);
 }
+#endif
 
 bool CUpDownClient::Compare(const CUpDownClient* tocomp, bool bIgnoreUserhash){
 	if(!bIgnoreUserhash && HasValidHash() && tocomp->HasValidHash())
