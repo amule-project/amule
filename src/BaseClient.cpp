@@ -1535,6 +1535,7 @@ void CUpDownClient::SetUserName(char* pszNewName)
 {
 	if (m_pszUsername) {
 		delete[] m_pszUsername;
+		m_pszUsername = NULL;
 	}
 	if( pszNewName ) {
 		m_pszUsername = nstrdup(pszNewName);
