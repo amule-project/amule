@@ -739,7 +739,7 @@ wxSizer *fileDetails( wxWindow *parent, bool call_fit, bool set_sizer )
 
     CFileDetailListCtrl *item63 = new CFileDetailListCtrl( parent, IDC_LISTCTRLFILENAMES, wxDefaultPosition, wxSize(-1,90), wxLC_REPORT|wxSUNKEN_BORDER );
     wxASSERT( item63 );
-    item61->Add( item63, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    item61->Add( item63, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxFIXED_MINSIZE, 5 );
 
     wxBoxSizer *item64 = new wxBoxSizer( wxHORIZONTAL );
 
