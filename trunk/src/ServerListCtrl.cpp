@@ -691,13 +691,11 @@ bool CServerListCtrl::StaticServerFileAppend(CServer *server)
 		StaticServerFileRemove(server);
 		wxString staticsfile(theApp.ConfigDir + wxT("staticservers.dat"));
 		wxTextFile staticservers(staticsfile);
-		wxASSERT(!staticservers.IsOpened());
-
-		if (wxFileExists(staticsfile)) {
-			staticservers.Open();
-		} else {
+		
+		if ( !wxFileExists(staticsfile) )
 			staticservers.Create();
-		}
+
+		staticservers.Open();
 		
 		if (!staticservers.IsOpened()) {
 			AddLogLineM( false, _("Failed to open ") + staticsfile);
