@@ -905,7 +905,11 @@ uint32 CUpDownClientListRem::GetItemID(CUpDownClient *client)
 
 void CUpDownClientListRem::ProcessItemUpdate(CEC_UpDownClient_Tag *tag, CUpDownClient *client)
 {
-	client->m_nDownloadState = tag->ClientState();
+	uint16 state = tag->ClientState();
+	
+	client->m_nDownloadState = state & 0xff;
+	client->m_nUploadState = (state >> 8) & 0xff;
+	
 	client->kBpsUp = tag->SpeedUp() / 1024.0;
 	if ( client->m_nDownloadState == DS_DOWNLOADING ) {
 		client->kBpsDown = tag->SpeedDown() / 1024.0;

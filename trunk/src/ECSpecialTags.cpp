@@ -220,7 +220,8 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAI
 	AddTag(CECTag(EC_TAG_CLIENT_DOWNLOAD_TOTAL, (uint32)client->Credits()->GetDownloadedTotal()));
 	AddTag(CECTag(EC_TAG_CLIENT_UPLOAD_SESSION, (uint32)client->GetSessionUp()));
 	
-	AddTag(CECTag(EC_TAG_CLIENT_STATE, client->GetDownloadState()));
+	AddTag(CECTag(EC_TAG_CLIENT_STATE,
+		uint16((uint16)client->GetDownloadState() | (((uint16)client->GetUploadState()) << 8) )));
 
 	AddTag(CECTag(EC_TAG_CLIENT_UP_SPEED, (uint32)(client->GetKBpsUp()*1024.0)));
 	if ( client->GetDownloadState() == DS_DOWNLOADING ) {
