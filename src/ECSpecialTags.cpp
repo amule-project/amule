@@ -181,6 +181,12 @@ CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, EC_DETAIL_LEVEL d
 	AddTag(CECTag(EC_TAG_KNOWNFILE_ACCEPT_COUNT, (uint32)file->statistic.GetAccepts()));
 	AddTag(CECTag(EC_TAG_KNOWNFILE_ACCEPT_COUNT_ALL, (uint32)file->statistic.GetAllTimeAccepts()));
 
+	AddTag(CECTag(EC_TAG_KNOWNFILE_XFERRED, (uint32)file->statistic.GetTransfered()));
+	AddTag(CECTag(EC_TAG_KNOWNFILE_XFERRED_ALL, (uint32)file->statistic.GetAllTimeTransfered()));
+	
+	AddTag(CECTag(EC_TAG_PARTFILE_PRIO,
+		(uint32)(file->IsAutoUpPriority() ? file->GetUpPriority() + 10 : file->GetUpPriority())));
+
 	if (detail_level == EC_DETAIL_UPDATE) {
 			return;
 	}
@@ -189,9 +195,6 @@ CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, EC_DETAIL_LEVEL d
 
 	AddTag(CECTag(EC_TAG_PARTFILE_SIZE_FULL, (uint32)file->GetFileSize()));
 
-	AddTag(CECTag(EC_TAG_PARTFILE_PRIO,
-		(uint32)(file->IsAutoUpPriority() ? 
-						file->GetUpPriority() + 10 : file->GetUpPriority())));
 
 	AddTag(CECTag(EC_TAG_PARTFILE_ED2K_LINK,
 				(theApp.serverconnect->IsConnected() && !theApp.serverconnect->IsLowID()) ?

@@ -1308,6 +1308,9 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request, CPartFile_Enc
 		//
 		//
 		//
+		case EC_OP_GET_SHARED_FILES:
+			response = Get_EC_Response_GetSharedFiles(request);
+			break;
 		case EC_OP_GET_DLOAD_QUEUE:
 			response = Get_EC_Response_GetDownloadQueue(request, enc_map);
 			break;
