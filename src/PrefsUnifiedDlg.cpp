@@ -1213,6 +1213,12 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent &event)
 	CheckRateUnlimited(prseMaxDown);
 	Prse(IDC_UDPDISABLE)->SetCtrlValue(!Prse(IDC_UDPPORT)->GetMemValue());
 
+	
+	// save the preferences on ok
+	
+	if (theApp.glob_prefs) {
+		theApp.glob_prefs->Save(); }
+	
 	if (Prse(IDC_FED2KLH)->WasChanged()) 
 		theApp.amuledlg->ToggleFastED2KLinksHandler();
 	if (Prse(IDC_LANGUAGE)->WasChanged())
