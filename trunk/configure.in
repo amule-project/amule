@@ -258,9 +258,7 @@ AC_MSG_RESULT($need_gui)
 # Check for wx
 AM_OPTIONS_WXCONFIG
 AM_OPTIONS_WXBASECONFIG
-
 AM_PATH_WXCONFIG(2.4.2)
-
 havegtk="not_needed"
 if test "x${need_gui}" = "xyes" ; then
 
@@ -527,11 +525,12 @@ yes)	PROFILE_FLAGS="-pg"
 	;;
 esac
 
+AC_MSG_CHECKING([if the applications should be statically linked])
 case "$USE_DEBUG_STATIC" in
 yes)	LDFLAGS="$LDFLAGS -static"
-	WX_LIBS="$WX_LIBS `gtk-config --libs` -lgthread"
 	;;
 esac
+AC_MSG_RESULT($USE_DEBUG_STATIC)
 
 if test "x$prefix" != "xNONE"; then
 	aMuleInstallPrefix=$prefix

@@ -63,8 +63,8 @@ AC_DEFUN([AM_OPTIONS_WXBASECONFIG],
 dnl ---------------------------------------------------------------------------
 dnl AM_PATH_WXCONFIG(VERSION, [ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
 dnl
-dnl Test for wxWidgets, and define WX_C*FLAGS, WX_LIBS and WX_LIBS_STATIC
-dnl (the latter is for static linking against wxWidgets). Set WX_CONFIG_NAME
+dnl Test for wxWidgets, and define WX_C*FLAGS and WX_LIBS (this will also be
+dnl used for static linking against wxWidgets). Set WX_CONFIG_NAME
 dnl environment variable to override the default name of the wx-config script
 dnl to use. Set WX_CONFIG_PATH to specify the full path to wx-config - in this
 dnl case the macro won't even waste time on tests for its existence.
@@ -124,7 +124,7 @@ AC_DEFUN([AM_PATH_WXCONFIG],
 
         case "$USE_DEBUG_STATIC" in
           yes)
-            WX_LIBS_STATIC=`$WX_CONFIG_WITH_ARGS --static --libs`
+            WX_LIBS=`$WX_CONFIG_WITH_ARGS --static --libs`
             ;;
           *)
             WX_LIBS=`$WX_CONFIG_WITH_ARGS --libs`
@@ -157,7 +157,6 @@ AC_DEFUN([AM_PATH_WXCONFIG],
         WX_CPPFLAGS=""
         WX_CXXFLAGS=""
         WX_LIBS=""
-        WX_LIBS_STATIC=""
         ifelse([$3], , :, [$3])
 
         AC_MSG_ERROR([
@@ -193,7 +192,6 @@ AC_DEFUN([AM_PATH_WXCONFIG],
       WX_CPPFLAGS=""
       WX_CXXFLAGS=""
       WX_LIBS=""
-      WX_LIBS_STATIC=""
 
     fi
   fi
@@ -204,7 +202,6 @@ AC_DEFUN([AM_PATH_WXCONFIG],
   AC_SUBST(WX_CFLAGS_ONLY)
   AC_SUBST(WX_CXXFLAGS_ONLY)
   AC_SUBST(WX_LIBS)
-  AC_SUBST(WX_LIBS_STATIC)
   AC_SUBST(WX_VERSION)
   
   dnl Now checking if it is a 2.5 or more version
@@ -223,7 +220,7 @@ AC_DEFUN([AM_PATH_WXCONFIG],
 
     case "$USE_DEBUG_STATIC" in
 	  yes)
-        WXBASE_LIBS_STATIC=`$WXBASE_CONFIG_WITH_ARGS --static ${wx_conig_base_libs}`
+        WXBASE_LIBS=`$WXBASE_CONFIG_WITH_ARGS --static ${wx_conig_base_libs}`
 		;;
 	 *)
         WXBASE_LIBS=`$WXBASE_CONFIG_WITH_ARGS ${wx_conig_base_libs}`
@@ -247,7 +244,6 @@ AC_DEFUN([AM_PATH_WXCONFIG],
     AC_SUBST(WXBASE_CFLAGS_ONLY)
     AC_SUBST(WXBASE_CXXFLAGS_ONLY)
     AC_SUBST(WXBASE_LIBS)
-    AC_SUBST(WXBASE_LIBS_STATIC)
     AC_SUBST(WXBASE_VERSION)
   else
   
@@ -299,7 +295,7 @@ AC_DEFUN([AM_PATH_WXCONFIG],
 
         case "$USE_DEBUG_STATIC" in
 		  yes)
-            WXBASE_LIBS_STATIC=`$WXBASE_CONFIG_WITH_ARGS --static --libs`
+            WXBASE_LIBS=`$WXBASE_CONFIG_WITH_ARGS --static --libs`
 			;;
 		  *)
             WXBASE_LIBS=`$WXBASE_CONFIG_WITH_ARGS --libs`
@@ -335,7 +331,6 @@ AC_DEFUN([AM_PATH_WXCONFIG],
          WXBASE_CPPFLAGS=""
          WXBASE_CXXFLAGS=""
          WXBASE_LIBS=""
-         WXBASE_LIBS_STATIC=""
          ifelse([$3], , :, [$3])
 	 
          AC_MSG_NOTICE([
@@ -363,7 +358,6 @@ AC_DEFUN([AM_PATH_WXCONFIG],
     AC_SUBST(WXBASE_CFLAGS_ONLY)
     AC_SUBST(WXBASE_CXXFLAGS_ONLY)
     AC_SUBST(WXBASE_LIBS)
-    AC_SUBST(WXBASE_LIBS_STATIC)
     AC_SUBST(WXBASE_VERSION)
   fi
 ])
