@@ -145,12 +145,32 @@ CECPacket * ECSocket::ReadPacket(wxSocketBase *sock)
 	}
 	if ((flags & 0x01) != 0) {
 		// TODO: compression not implemented yet !
+		return NULL;
 	}
 	CECPacket *p = new CECPacket(sock, *this);
+#ifndef KEEP_PARTIAL_PACKETS
 	if (p->m_error != 0) {
 		delete p;
-		return NULL;
-	} else {
-		return p;
+		p = NULL;
 	}
+#endif
+	return p;
+}
+
+#warning TODO: implement this
+const uint8 *ECSocket::ReadData(wxSocketBase *sock)
+{
+	return NULL;
+}
+
+
+bool ECSocket::WriteData(wxSocketBase *sock, const void *buffer, unsigned int len)
+{
+	uint8 flags = 0x20;
+
+	// TODO: Compression not implemented!
+	// if (packet.GetPacketLength() > 1024) flags |= 0x01;
+
+	if (!WriteNumber(sock, &flags, 1)) return false;
+	return WriteBuffer(sock, buffer, len);
 }
