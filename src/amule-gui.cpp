@@ -25,14 +25,7 @@
 
 #ifdef __WXGTK__
 
-	#ifdef __BSD__
-     	#include <sys/param.h>
-       	#include <sys/mount.h>
-	#else
-		#include <mntent.h>
-	#endif /* __BSD__ */
-
-#include <X11/Xlib.h>		// Needed for XParseGeometry
+	#include <X11/Xlib.h>		// Needed for XParseGeometry
 	#include <gdk/gdk.h>
 	#include <gtk/gtk.h>
 

@@ -38,7 +38,11 @@
      	#include <sys/param.h>
        	#include <sys/mount.h>
 	#else 
-		#include <mntent.h>
+		#ifdef __SOLARIS__
+			#include <sys/mnttab.h>
+		#else
+			#include <mntent.h>
+		#endif
 	#endif /* __BSD__ */
 
 #endif
@@ -568,28 +572,50 @@ bool CamuleApp::OnInit()
 	   This is done by reading through fstab entries and comparing to the
 	   folders used for incomming and temp files. */
 #ifndef __BSD__
-	FILE* mnt_tab = setmntent("/etc/mtab","r");
+	#ifdef __SOLARIS__
+		FILE* mnt_tab = fopen("/etc/mtab","r");		
+	#else
+		FILE* mnt_tab = setmntent("/etc/mtab","r");
+	#endif
 	if ( mnt_tab ) {
 		wxString incomingdir = thePrefs::GetIncomingDir();
 		wxString tempdir = thePrefs::GetTempDir();
-		struct mntent* entries;
-
-		entries = getmntent(mnt_tab);
-		while ( entries ) {
-			if ( strncmp(entries->mnt_type, "vfat",4) == 0 ) {
-				#if wxUSE_UNICODE
-				if ( tempdir.StartsWith( UTF82unicode(entries->mnt_dir )) ) {
-				#else 
-				if ( tempdir.StartsWith( char2unicode(entries->mnt_dir )) ) {
-				#endif
+		#ifdef __SOLARIS__
+			struct mnttab entries;
+			while ( getmntent(mnt_tab,&entries )!=-1) {
+				if ( strncmp(entries.mnt_fstype, "vfat",4) == 0 ) {
+					#if wxUSE_UNICODE
+					if ( tempdir.StartsWith( UTF82unicode(entries.mnt_mountp )) ) {
+					#else 
+					if ( tempdir.StartsWith( char2unicode(entries.mnt_mountp )) ) {
+					#endif
+		#else
+			struct mntent* entries;
+			entries = getmntent(mnt_tab);
+			while ( entries ) {
+				if ( strncmp(entries->mnt_type, "vfat",4) == 0 ) {
+					#if wxUSE_UNICODE
+					if ( tempdir.StartsWith( UTF82unicode(entries->mnt_dir )) ) {
+					#else 
+					if ( tempdir.StartsWith( char2unicode(entries->mnt_dir )) ) {
+					#endif
+		#endif	
 					// Kry - We cannot addlogline because there's no GUI yet!
 					AddLogLineM(false,_("Temp dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings."));
 					use_chmod = false;
 				}
-				#if wxUSE_UNICODE
-				if ( incomingdir.StartsWith( UTF82unicode(entries->mnt_dir )) ) {
+				#ifdef __SOLARIS__
+					#if wxUSE_UNICODE
+					if ( incomingdir.StartsWith( UTF82unicode(entries.mnt_mountp )) ) {
+					#else
+					if ( incomingdir.StartsWith( char2unicode(entries.mnt_mountp)) ) {
+					#endif
 				#else
-				if ( incomingdir.StartsWith( char2unicode(entries->mnt_dir )) ) {
+					#if wxUSE_UNICODE
+					if ( incomingdir.StartsWith( UTF82unicode(entries->mnt_dir )) ) {
+					#else
+					if ( incomingdir.StartsWith( char2unicode(entries->mnt_dir )) ) {
+					#endif
 				#endif
 					AddLogLineM(false,_("Incoming dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings."));
 					use_chmod = false;
@@ -598,7 +624,9 @@ bool CamuleApp::OnInit()
 					break;
 				}
 			}
-			entries = getmntent(mnt_tab);
+			#ifndef __SOLARIS__
+				entries = getmntent(mnt_tab);
+			#endif
 		}
 		fclose(mnt_tab);
 	}
