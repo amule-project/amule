@@ -999,12 +999,11 @@ PrefsUnifiedDlg::PrefsUnifiedDlg(wxWindow *parent)
 			#if (wxMINOR_VERSION < 5)
 				prefs_sizer->Remove(PrefsPanels[i]);
 			#endif	
-			//printf("i: %u, w = %u      h = %u\n",i,w,h);
+
 		}
 		
 		
 		CurrentPrefsPanel = PrefsPanels[0];				
-		
 		#if (wxMINOR_VERSION < 5)
 			prefs_sizer->Add(CurrentPrefsPanel,0,wxGROW|wxEXPAND);
 		#endif
