@@ -242,17 +242,19 @@ void CChatSelector::ConnectionResult(CUpDownClient* sender, bool success)
 		ci->messagepending.Clear();
 	} else {
 		ci->AddText( wxString(wxT(" ok\n")), COLOR_RED );
-		
-		CSafeMemFile data;
-		data.WriteString(ci->messagepending);
-		Packet* packet = new Packet(&data);
-		packet->SetOpCode(OP_MESSAGE);
-		theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
-		if ( ci->client->SendPacket(packet, true, true) ) {
-			ci->AddText( theApp.glob_prefs->GetUserNick(), COLOR_GREEN );
-			ci->AddText( wxT(": ") + ci->messagepending + wxT("\n"), COLOR_BLACK );
-		
-			ci->messagepending.Clear();
+		// Kry - Woops, fix for the everlasting void message sending.
+		if (!ci->messagepending.IsEmpty()) {
+			CSafeMemFile data;
+			data.WriteString(ci->messagepending);
+			Packet* packet = new Packet(&data);
+			packet->SetOpCode(OP_MESSAGE);
+			theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
+			if ( ci->client->SendPacket(packet, true, true) ) {
+				ci->AddText( theApp.glob_prefs->GetUserNick(), COLOR_GREEN );
+				ci->AddText( wxT(": ") + ci->messagepending + wxT("\n"), COLOR_BLACK );
+			
+				ci->messagepending.Clear();
+			}
 		}
 	}
 	
