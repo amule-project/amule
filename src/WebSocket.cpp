@@ -45,7 +45,7 @@ void *CWSThread::Entry() {
 	ws->Print("\nWSThread: Thread started\n");	
 	// Create the address - listen on localhost:ECPort
 	wxIPV4address addr;
-	addr.Hostname("localhost");
+	addr.AnyAddress();
 	addr.Service(wsport);
 	ws->Print("WSThread: created service\n");
 
