@@ -204,7 +204,7 @@ public:
 	char 		*GetBuffer() const			{ return (char *)m_buffer; }
 	wxIPaddress	&GetProxyBoundAddress(void) const	{ return *m_ProxyBoundAddress; }
 	unsigned char	GetLastReply(void) const		{ return m_LastReply; }
-	bool IsEndState() const					{ return m_state == PROXY_STATE_END; }
+	bool IsEndState() const					{ return GetState() == PROXY_STATE_END; }
 
 protected:
 	wxSocketBase		&ProxyWrite(wxSocketBase &socket, const void *buffer, wxUint32 nbytes);
