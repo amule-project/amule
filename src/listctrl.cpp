@@ -42,6 +42,8 @@
 // ----------------------------------------------------------------------------
 
 
+#include "types.h"		// For wxCHECK_VERSION_FULL
+
 // For compilers that support precompilation, includes "wx.h".
 #include "wx/wxprec.h"
 
@@ -2046,7 +2048,7 @@ void wxODListHeaderWindow::OnPaint( wxPaintEvent &WXUNUSED(event) )
     // do *not* use the listctrl colour for headers - one day we will have a
     // function to set it separately
     //dc.SetTextForeground( *wxBLACK );
-#if wxCHECK_VERSION_FULL(2,5,3,3)
+#if wxCHECK_VERSION_FULL(2,5,3,2)
 dc.SetTextForeground(wxSystemSettingsNative::
                             GetColour( wxSYS_COLOUR_WINDOWTEXT ));
 #else 
