@@ -118,11 +118,6 @@ CDownloadListCtrl::~CDownloadListCtrl()
 	}
 	delete m_hilightBrush;
 	delete m_hilightUnfocusBrush;
-
-	if ( m_PrioMenu )
-		delete m_PrioMenu;
-	if ( m_FileMenu )
-		delete m_FileMenu;
 }
 
 void CDownloadListCtrl::HideSources(CPartFile * toCollapse, bool isShift, bool isCtrl, bool isAlt)
