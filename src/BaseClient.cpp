@@ -488,7 +488,7 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 		m_FullUserIP = address.IPAddress();
 		SetIP(StringIPtoUint32(m_FullUserIP));
 	} else {
-		throw wxString(wxT("Huh, socket failure. Avoided crash this time.\n"));
+		throw wxString(wxT("Huh, socket failure. Avoided crash this time."));
 	}
 
 	if (thePrefs::AddServersFromClient()) {
@@ -577,7 +577,7 @@ bool CUpDownClient::SendHelloPacket() {
 	theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());
 	SendPacket(packet,true);
 	m_bHelloAnswerPending = true;
-	AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_HELLO to ") + GetFullIP() + wxT("\n") );
+	AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_HELLO to ") + GetFullIP() );
 	return true;
 }
 
@@ -667,12 +667,12 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer, bool OSInfo) {
 		
 		if (!bAnswer) {
 			if (!OSInfo) {
-				AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_EMULEINFO to ") + GetFullIP() + wxT("\n") );
+				AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_EMULEINFO to ") + GetFullIP() );
 			} else {
-				AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_EMULEINFO/OS_INFO to ") + GetFullIP() + wxT("\n") );
+				AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_EMULEINFO/OS_INFO to ") + GetFullIP() );
 			}
 		} else {
-			AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_EMULEINFOANSWER to ") + GetFullIP() + wxT("\n") );
+			AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_EMULEINFOANSWER to ") + GetFullIP() );
 		}
 	}
 }
@@ -842,7 +842,7 @@ bool CUpDownClient::ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize)
 						 "Sent by %s on ip %s port %i using client %x version %x\n"
 						 "User Disconnected.\n"
 						 "Packet dump:\n"
-						 "%s\n") )
+						 "%s") )
 				% GetUserName()
 				% GetFullIP()
 				% GetUserPort()
@@ -1018,9 +1018,9 @@ void CUpDownClient::ProcessMuleCommentPacket(const char *pachPacket, uint32 nSiz
 		delete[] desc;
 
 		AddDebugLogLineM( true, logPacketErrors,
-			CFormat( wxT("Invalid MuleComment packet - %s\n\n"
+			CFormat( wxT("Invalid MuleComment packet - %s\n"
 						 "Sent by %s on ip %s port %i using client %i version %i\n"
-						 "User Disconnected.\n") )
+						 "User Disconnected.") )
 				% e.what()
 				% GetUserName()
 				% GetFullIP()
@@ -1036,9 +1036,9 @@ void CUpDownClient::ProcessMuleCommentPacket(const char *pachPacket, uint32 nSiz
 		delete[] desc;
 
 		AddDebugLogLineM( true, logPacketErrors,
-			CFormat( wxT("Invalid MuleComment packet - Unknown exception\n\n"
+			CFormat( wxT("Invalid MuleComment packet - Unknown exception\n"
 						 "Sent by %s on ip %s port %i using client %i version %i\n"
-						 "User Disconnected.\n") )
+						 "User Disconnected.") )
 				% GetUserName()
 				% GetFullIP()
 				% GetUserPort()
@@ -1967,7 +1967,7 @@ void CUpDownClient::SendPublicIPRequest(){
 
 void CUpDownClient::ProcessPublicIPAnswer(const byte* pbyData, uint32 uSize){
 	if (uSize != 4)
-		throw wxString(wxT("Wrong Packet size on Public IP answer\n"));
+		throw wxString(wxT("Wrong Packet size on Public IP answer"));
 	uint32 dwIP = PeekUInt32(pbyData);
 	if (m_fNeedOurPublicIP == true){ // did we?
 		m_fNeedOurPublicIP = false;

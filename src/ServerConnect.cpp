@@ -238,12 +238,12 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 		CPacket* packet = new CPacket(&data);
 		packet->SetOpCode(OP_LOGINREQUEST);
 		#ifdef DEBUG_CLIENT_PROTOCOL
-		AddLogLineM(true,wxT("Client: OP_LOGINREQUEST\n"));
-		AddLogLineM(true,wxString(wxT("        Hash     : ")) << thePrefs::GetUserHash().Encode() << wxT("\n"));
-		AddLogLineM(true,wxString(wxT("        ClientID : ")) << GetClientID() << wxT("\n"));
-		AddLogLineM(true,wxString(wxT("        Port     : ")) << thePrefs::GetPort() << wxT("\n"));
-		AddLogLineM(true,wxString(wxT("        User Nick: ")) << thePrefs::GetUserNick() << wxT("\n"));
-		AddLogLineM(true,wxString(wxT("        Edonkey  : ")) << EDONKEYVERSION << wxT("\n"));
+		AddLogLineM(true,wxT("Client: OP_LOGINREQUEST"));
+		AddLogLineM(true,wxString(wxT("        Hash     : ")) << thePrefs::GetUserHash().Encode());
+		AddLogLineM(true,wxString(wxT("        ClientID : ")) << GetClientID());
+		AddLogLineM(true,wxString(wxT("        Port     : ")) << thePrefs::GetPort());
+		AddLogLineM(true,wxString(wxT("        User Nick: ")) << thePrefs::GetUserNick());
+		AddLogLineM(true,wxString(wxT("        Edonkey  : ")) << EDONKEYVERSION);
 		#endif
 		theApp.statistics->AddUpDataOverheadServer(packet->GetPacketSize());
 		SendPacket(packet, true, sender);
@@ -272,7 +272,7 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 			theApp.statistics->AddUpDataOverheadServer(packet->GetPacketSize());
 			SendPacket(packet, true);
 			#ifdef DEBUG_CLIENT_PROTOCOL
-			AddLogLineM(true,wxT("Client: OP_GETSERVERLIST\n"));
+			AddLogLineM(true,wxT("Client: OP_GETSERVERLIST"));
 			#endif
 		}
 	}
@@ -580,7 +580,7 @@ void CServerConnect::KeepConnectionAlive()
 		CPacket* packet = new CPacket(files);
 		packet->SetOpCode(OP_OFFERFILES);
 		#ifdef DEBUG_CLIENT_PROTOCOL
-		AddLogLineM(true,wxT("Client: OP_OFFERFILES\n"));
+		AddLogLineM(true,wxT("Client: OP_OFFERFILES"));
 		#endif
 		// compress packet
 		//   - this kind of data is highly compressable (N * (1 MD4 and at least 3 string meta data tags and 1 integer meta data tag))

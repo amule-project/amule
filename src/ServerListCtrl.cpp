@@ -528,7 +528,7 @@ void CServerListCtrl::OnRemoveServers( wxCommandEvent& event )
 {
 	if ( event.GetId() == MP_REMOVEALL ) {
 		if ( GetItemCount() ) {
-			wxString question = _("Are you sure that you wish to delete all servers?\n");
+			wxString question = _("Are you sure that you wish to delete all servers?");
 	
 			if ( wxMessageBox( question, _("Cancel"), wxICON_QUESTION | wxYES_NO) == wxYES ) {
 				if ( theApp.serverconnect->IsConnecting() ) {
@@ -543,7 +543,7 @@ void CServerListCtrl::OnRemoveServers( wxCommandEvent& event )
 		}
 	} else if ( event.GetId() == MP_REMOVE ) {
 		if ( GetSelectedItemCount() ) {
-			wxString question = _("Are you sure that you wish to delete the selected server(s)?\n");
+			wxString question = _("Are you sure that you wish to delete the selected server(s)?");
 	
 			if ( wxMessageBox( question, _("Cancel"), wxICON_QUESTION | wxYES_NO) == wxYES ) {
 				RemoveAllServers( wxLIST_STATE_SELECTED, true);

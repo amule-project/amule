@@ -631,7 +631,7 @@ bool CamuleApp::OnInit()
 	// Check if we have the old style locale config
 	wxChar ch = thePrefs::GetLanguageID().GetChar(0);
 	if (ch >= '0' && ch <= '9') {
-		wxString info(_("Your locale has been changed to System Default due to a configuration change. Sorry.\n"));
+		wxString info(_("Your locale has been changed to System Default due to a configuration change. Sorry."));
 		thePrefs::SetLanguageID(wxLang2Str(wxLANGUAGE_DEFAULT));
 		ShowAlert(info, _("Info"), wxCENTRE | wxOK | wxICON_ERROR);
 	}
@@ -1672,7 +1672,7 @@ wxString CamuleApp::GetServerLog(bool reset)
 {
 	wxString ret = server_msg;
 	if ( reset ) {
-	        server_msg = wxT("");
+		server_msg.Clear();
 	}
 	return ret;
 }

@@ -1141,7 +1141,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			m_client->SetDownloadState(DS_ERROR);
 		}
 		
-		Disconnect(wxT("UnCaught invalid packet exception On ProcessPacket\n"));
+		Disconnect(wxT("UnCaught invalid packet exception On ProcessPacket"));
 		return false;
 	} catch (const wxString& error) {
 		AddDebugLogLineM( false, logPacketErrors, 

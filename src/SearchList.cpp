@@ -413,7 +413,7 @@ bool CSearchList::AddToList(CSearchFile* toadd, bool bClientResponse)
 		!(m_resultType == wxString(wxT("Any")) ||
 		GetFiletypeByName(toadd->GetFileName(), false) == m_resultType)) {
 		AddDebugLogLineM( false, logSearch,
-			CFormat( wxT("Dropped result type %s != %s, file %s\n") )
+			CFormat( wxT("Dropped result type %s != %s, file %s") )
 				% GetFiletypeByName(toadd->GetFileName(),false)
 				% m_resultType
 				% toadd->GetFileName() 

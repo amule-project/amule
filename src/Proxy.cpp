@@ -191,7 +191,7 @@ bool CProxyStateMachine::Start(const wxIPaddress &peerAddress, wxSocketClient *p
 		m_peerAddress = new amuleIPV4Address(peer);
 	} catch (const std::bad_cast& e) {
 		// Should process other types of wxIPAddres before quitting
-		AddDebugLogLineM(false, logProxy, wxT("(1)bad_cast exception!\n"));
+		AddDebugLogLineM(false, logProxy, wxT("(1)bad_cast exception!"));
 		wxASSERT(false);
 		return false;
 	}
@@ -207,28 +207,28 @@ t_sm_state CProxyStateMachine::HandleEvent(t_sm_event event)
 	switch(event)
 	{
 	case wxSOCKET_CONNECTION:
-		AddDebugLogLineM(false, logProxy, wxT("Connection event\n"));
+		AddDebugLogLineM(false, logProxy, wxT("Connection event"));
 		m_isConnected = true;
 		break;
 		
 	case wxSOCKET_INPUT:
-		AddDebugLogLineM(false, logProxy, wxT("Input event\n"));
+		AddDebugLogLineM(false, logProxy, wxT("Input event"));
 		m_canReceive = true;
 		break;
 		
 	case wxSOCKET_OUTPUT:
-		AddDebugLogLineM(false, logProxy, wxT("Output event\n"));
+		AddDebugLogLineM(false, logProxy, wxT("Output event"));
 		m_canSend = true;
 		break;
 		
 	case wxSOCKET_LOST:
-		AddDebugLogLineM(false, logProxy, wxT("Lost connection event\n"));
+		AddDebugLogLineM(false, logProxy, wxT("Lost connection event"));
 		m_isLost = true;
 		m_ok = false;
 		break;
 		
 	default:
-		AddDebugLogLineM(false, logProxy, wxT("Unknown event\n"));
+		AddDebugLogLineM(false, logProxy, wxT("Unknown event"));
 		break;
 	}
 	
@@ -427,7 +427,7 @@ void CSocks5StateMachine::process_state(t_sm_state state, bool entry)
 		otherfunctions::DumpMem(m_buffer, n, m_state_name[state], m_ok);
 	} else {
 		AddDebugLogLineM(false, logProxy,
-			wxString(wxT("wait state -- ")) << m_state_name[state] << wxT("\n"));
+			wxString(wxT("wait state -- ")) << m_state_name[state]);
 	}
 #endif // __DEBUG__
 }
@@ -482,7 +482,7 @@ t_sm_state CSocks5StateMachine::next_state(t_sm_event event)
 					break;
 				}
 			} else {
-				AddDebugLogLineM(false, logProxy, wxT("Cant send\n"));
+				AddDebugLogLineM(false, logProxy, wxT("Cant send"));
 			}
 		} else {
 			ret = SOCKS5_STATE_END;
@@ -833,7 +833,7 @@ void CSocks4StateMachine::process_state(t_sm_state state, bool entry)
 		otherfunctions::DumpMem(m_buffer, n, m_state_name[state], m_ok);
 	} else {
 		AddDebugLogLineM(false, logProxy,
-			wxString(wxT("wait state -- ")) << m_state_name[state] << wxT("\n"));
+			wxString(wxT("wait state -- ")) << m_state_name[state]);
 	}
 #endif // __DEBUG__
 }
@@ -1003,7 +1003,7 @@ void CHttpStateMachine::process_state(t_sm_state state, bool entry)
 		otherfunctions::DumpMem(m_buffer, n, m_state_name[state], m_ok);
 	} else {
 		AddDebugLogLineM(false, logProxy,
-			wxString(wxT("wait state -- ")) << m_state_name[state] << wxT("\n"));
+			wxString(wxT("wait state -- ")) << m_state_name[state]);
 	}
 #endif // __DEBUG__
 }
@@ -1345,7 +1345,7 @@ wxDatagramSocket &CDatagramSocketProxy::RecvFrom(
 					a.Service( ENDIAN_NTOHS( RawPeekUInt16( m_proxyTCPSocket.GetBuffer()+8) ) );
 				} catch (const std::bad_cast& e) {
 					AddDebugLogLineM(false, logProxy,
-						wxT("(2)bad_cast exception!\n"));
+						wxT("(2)bad_cast exception!"));
 					wxASSERT(false);
 				}
 			}

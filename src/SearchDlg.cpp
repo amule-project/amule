@@ -392,7 +392,7 @@ void CSearchDlg::StartNewSearch()
 		return;
 	}
 
-	wxString typeText(wxT("Any")), extension(wxT(""));
+	wxString typeText(wxT("Any")), extension;
 	uint32 min = 0, max = 0, availability = 0;
 	
 	if (CastChild(ID_EXTENDEDSEARCHCHECK, wxCheckBox)->GetValue()) {

@@ -275,7 +275,7 @@ void CClientCreditsList::LoadList()
 		file.Close();
 
 		if ( error ) {
-			AddDebugLogLineM( true, logCredits, wxT("WARNING: Corruptions found while reading Creditfile!\n") );
+			AddDebugLogLineM( true, logCredits, wxT("WARNING: Corruptions found while reading Creditfile!") );
 		} else {
 			AddLogLineM(false, wxString::Format(_("Creditfile loaded, %u clients are known"),count-cDeleted) );
 	

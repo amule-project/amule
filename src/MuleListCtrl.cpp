@@ -183,7 +183,7 @@ void CMuleListCtrl::LoadSettings()
 
 	// Set the column widts
 	wxString buffer;
-	if ( cfg->Read( wxT("/eMule/TableWidths") + name, &buffer, wxT("") ) ) {
+	if ( cfg->Read( wxT("/eMule/TableWidths") + name, &buffer, wxEmptyString ) ) {
 		int counter = 0;
 		
 		wxStringTokenizer tokenizer( buffer, wxT(",") );
