@@ -334,7 +334,7 @@ bool CClientUDPSocket::SendPacket(Packet* packet, uint32 dwIP, uint16 nPort)
 void *CClientUDPSocket::Entry()
 {
 	while ( !TestDestroy() ) {
-		if ( WaitForRead(0, 10) ) {
+		if ( WaitForRead(1, 0) ) {
 			CALL_APP_DATA_LOCK;
 			OnReceive(0);
 		}
