@@ -1373,13 +1373,16 @@ void CUpDownClient::ReGetClientSoft()
 				m_clientVerString = _("Shareaza");
 				break;
 			case SO_MLDONKEY:
+				m_clientSoft = SO_MLDONKEY;
 				m_clientVerString = _("Old MlDonkey");
 				break;
 			case SO_NEW_MLDONKEY:
 			case SO_NEW2_MLDONKEY:
+				m_clientSoft = SO_NEW_MLDONKEY;
 				m_clientVerString = _("New MlDonkey");
 				break;		
 			case SO_LPHANT:
+				m_clientSoft = SO_LPHANT;
 				m_clientVerString = _("lphant");
 				break;					
 			default:
