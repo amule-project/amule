@@ -179,7 +179,8 @@ CWebServer::CWebServer(CamulewebApp *webApp) {
 
 
 CWebServer::~CWebServer(void) {
-	if (m_bServerWorking) StopSockets();
+	//stop web socket thread
+	wsThread->Delete();
 }
 
 
@@ -187,9 +188,18 @@ CWebServer::~CWebServer(void) {
 void CWebServer::StartServer(void) {
 	if (!m_bServerWorking) {
 		ReloadTemplates();
-		StartSockets(this);
-		m_bServerWorking = true;
-		webInterface->Print("Web Server: Started\n");
+
+		//create the thread...
+		wsThread = new CWSThread(this);
+		if ( wsThread->Create() != wxTHREAD_NO_ERROR ) {
+			webInterface->Print("Can't create web socket thread\n");
+		} else {
+			//...and run it
+			wsThread->Run();
+ 
+			m_bServerWorking = true;
+			webInterface->Print("Web Server: Started\n");
+		}
 	} else
 		webInterface->Print("Web Server: running\n");
 }
@@ -197,10 +207,18 @@ void CWebServer::StartServer(void) {
 //restart web socket and reload templates
 void CWebServer::RestartServer(void) {
 	if (m_bServerWorking) {
-		StopSockets();
+		if (wsThread) wsThread->Delete();
 	}
-	StartSockets(this);
-	webInterface->Print("Web Server: Restarted\n");
+	
+	//create the thread...
+	wsThread = new CWSThread(this);
+	if ( wsThread->Create() != wxTHREAD_NO_ERROR ) {
+		webInterface->Print("Can't create web socket thread\n");
+	} else {
+		//...and run it
+		wsThread->Run();
+		webInterface->Print("Web Server: Restarted\n");
+	}
 }
 
 
@@ -208,7 +226,7 @@ void CWebServer::RestartServer(void) {
 void CWebServer::StopServer(void) {
 	if (m_bServerWorking) {
 		m_bServerWorking = false;
-		StopSockets();
+		if (wsThread) wsThread->Delete();
 		webInterface->Print("Web Server: Stopped\n");
 	} else
 		webInterface->Print("Web Server: not running\n");
@@ -220,6 +238,17 @@ int CWebServer::GetWSPort(void) {
 	return(atoi(webInterface->SendRecvMsg("PREFERENCES GETWSPORT").GetData()));
 }
 
+//sends output to web interface
+void CWebServer::Print(char *sFormat, ...) {
+	char buffer[5000];
+
+	va_list argptr;
+	va_start(argptr, sFormat);
+	vsnprintf(buffer, 5000, sFormat, argptr);
+	va_end(argptr);
+	
+	webInterface->Print(buffer);
+}
 
 //reload template file
 void CWebServer::ReloadTemplates(void) {

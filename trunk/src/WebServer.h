@@ -52,10 +52,12 @@
 #include "types.h"
 
 #include "WebInterface.h"
+#include <wx/thread.h>
 
 #include <wx/dynarray.h>
 
 class TransferredData;
+class CWSThread;
 class CWebSocket;
 
 //shakraw, these are defined in PartFile.h, but if I include PartFile.h
@@ -248,7 +250,8 @@ class CWebServer {
 		uint16	GetSessionCount()	{ return m_Params.Sessions.GetCount();}
 		bool 	IsRunning()	{ return true /*m_bServerWorking*/;}  //shakraw, useless now
 		int 	GetWSPort(); //shakraw
-
+		void	Print(char *sFormat, ...);
+		
 	protected:
 		static void	ProcessURL(ThreadData);
 		static void	ProcessFileReq(ThreadData);
@@ -296,6 +299,7 @@ class CWebServer {
 		static wxString	GetSubCatLabel(int cat);
 		// Common data
 		CamulewebApp	*webInterface;
+		CWSThread		*wsThread;
 		GlobalParams	m_Params;
 		WebTemplates	m_Templates;
 		bool		m_bServerWorking;

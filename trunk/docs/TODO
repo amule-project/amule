@@ -62,7 +62,6 @@
 		+ Graphs
 		+ Categories
 		+ DownloadLink
-	- rewrite websocket to be xplatform (high)
 	- ssl support for communication protocol
 
 - hellimod:
