@@ -173,37 +173,17 @@ public:
 	virtual void SetWxControl(wxControl *pc)
 	{ 
 		pctrl=pc;  
-// Note: a bool should always be represented by a checkbox; but we currently have some
-// radiobuttons used for that purpose, so for now that control type is supported here too
-#ifndef CLEAN_BOOLS
-		if (pctrl->IsKindOf(CLASSINFO(wxCheckBox))) 
-			wxc = wxcCheck; 
-		else if (pctrl->IsKindOf(CLASSINFO(wxRadioButton))) 
-			wxc = wxcRadioButton;
-		wxASSERT(wxc!=wxcNone);
-#else
 		wxASSERT(pctrl->IsKindOf(CLASSINFO(wxCheckBox))); 
 		wxc = wxcCheck;	
-#endif
 	}
 	
 	virtual int GetCtrlValue()				
 	{ 
-#ifndef CLEAN_BOOLS
-		if (wxc == wxcRadioButton)
-			return ((wxRadioButton *)pctrl)->GetValue();
-		else
-#endif
 		return ((wxCheckBox *)pctrl)->GetValue(); 
 	}
 	
 	virtual void SetCtrlValue(int val)		
 	{ 
-#ifndef CLEAN_BOOLS
-		if (wxc == wxcRadioButton)
-			((wxRadioButton *)pctrl)->SetValue( val ); 
-		else
-#endif
 		((wxCheckBox *)pctrl)->SetValue( val ); 
 	}
 	
@@ -370,29 +350,6 @@ private:
 	void		*piSet;
 	int32		iDef;
 	int32		iPrev;
-};
-
-
-
-class RseRadio: public Rse {
-// A special item type for the semi-independent radio buttons we currently use in aMule.
-// The items will disappear when we convert all radio groups to wxRadioBox (which will
-// provide a simpler interface).  All control access handled by parent RseInt.
-	
-public:
-	RseRadio(int ID, int ID_predecessor): Rse(ID, wxT("radio follower")), idPred(ID_predecessor)  {}
-		
-	virtual void SetWxControl(wxControl *pc)
-	{ 
-		pctrl=pc;  
-		wxASSERT(pctrl->IsKindOf(CLASSINFO(wxRadioButton))); 
-		wxc = wxcRadioButton;	
-	}
-
-	virtual int	IdLinkedTo()	{ return idPred; }
-		
-private:
-	int idPred;
 };
 
 
@@ -711,9 +668,7 @@ void PrefsUnifiedDlg::BuildItemList(Preferences_Struct *prefs, const wxString ap
 	listRse.Append(new RseInt(IDC_MAXSOURCEPERFILE, prefs->maxsourceperfile, wxT("MaxSourcesPerFile"), 300,wxT("eMule")));
 	listRse.Append(new RseInt(IDC_LANGUAGE, prefs->languageID, wxT("Language"), 0,wxT("eMule")));
 
-	listRse.Append(new RseInt(IDC_SEESHARE1, prefs->m_iSeeShares, wxT("SeeShare"), 2,wxT("eMule")));
-	listRse.Append(new RseRadio(IDC_SEESHARE2, IDC_SEESHARE1));  // to be subsumed by wxRadioBox
-	listRse.Append(new RseRadio(IDC_SEESHARE3, IDC_SEESHARE2));  // to be subsumed by wxRadioBox
+	listRse.Append(new RseInt(IDC_SEESHARES, prefs->m_iSeeShares, wxT("SeeShare"), 2,wxT("eMule")));
 	listRse.Append(new RseInt(IDC_TOOLTIPDELAY, prefs->m_iToolDelayTime, wxT("ToolTipDelay"), 1, wxT("eMule")));
 
 	listRse.Append(new RseInt(IDC_SLIDER, prefs->trafficOMeterInterval, wxT("StatGraphsInterval"), 3, wxT("eMule")));
@@ -916,11 +871,7 @@ void PrefsUnifiedDlg::BuildItemList(Preferences_Struct *prefs, const wxString ap
 
 	listRse.Append(new RseBool(0, prefs->dontcompressavi, wxT("DontCompressAvi"), false, wxT("WebServer")));  // no GUI yet
 
-	listRse.Append(new RseBool(IDC_ENABLE_AUTO_NNS, prefs->DropNoNeededSources, wxT("NoNeededSources"), false, wxT("Razor_Preferences")));
-/* These two wxRadioButtons are handled like : if one checked then the other unchecked */
-/* Note: two mutually exclusive bool vars should be combined into one, and shown as a checkbox [Emilio] */
-/* Addendum:  something is wrong in muuli.wdr: a checkbox AND a radio button with the same ID=IDC_ENABLE_AUTO_NNS */ 
-	listRse.Append(new RseBool(IDC_AUTO_NNS_EXTENDED_RADIO, prefs->SwapNoNeededSources, wxT("SwapNoNeededSources"), false, wxT("Razor_Preferences")));
+	listRse.Append(new RseInt(IDC_EXTENDED_DROP, prefs->NoNeededSources, wxT("NoNeededSources"), 1, wxT("Razor_Preferences")));
 
 	listRse.Append(new RseBool(IDC_ENABLE_AUTO_FQS, prefs->DropFullQueueSources, wxT("FullQueueSources"), false, wxT("Razor_Preferences")));
 	listRse.Append(new RseBool(IDC_ENABLE_AUTO_HQRS, prefs->DropHighQueueRankingSources, wxT("HighQueueRankingSources"), false, wxT("Razor_Preferences")));
