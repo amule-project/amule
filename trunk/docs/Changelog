@@ -110,6 +110,17 @@ Version 2.0.0rc6 - The '???' version.
 		* Modify Xas to handle runtime in seconds
 		* Modify wxCas to handle runtime in seconds
 		
+	Xaignar:
+		* Rewrote the file-hashing thread for greater flexibility and better error-handling.
+		* Imported the parts of Crypto++ needed by aMule, which means that no external Crypto++ libs are needed anymore.
+		* Reworked the systray dialog and fixed the rate-limit bugs associated with it.
+		* Fixed the inverted priority bug in the download queue which caused low-priority files to get connections before high-priority files.
+		* A number of other smaller bugfixes and improvements.
+		
+		
+	Special Thanks To:
+		Lucasvr, for providing fixes for compilation with some wx versions.
+		
 
 Version 2.0.0rc5 - The 'Let's recover our release speed' version.
 ----------
