@@ -500,24 +500,46 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender,CUpDownClient* source)
 		}
 	}
 
-	//our new source is real new but maybe it is already uploading to us?
-	//if yes the known client will be attached to the var "source"
-	//and the old sourceclient will be deleted
-	if (theApp.clientlist->AttachToAlreadyKnown(&source,0)) {
-		source->SetRequestFile( sender );
-		// No more need for this
-		// source->SetDownloadFile(sender);
+	// Our new source is real new but maybe it is already uploading to us?
+	// If yes the known client will be attached to the var "source" and the old
+	// source-client will be deleted. However, if the request file of the known 
+	// source is NULL, then we have to treat it almost like a new source and if
+	// it isn't NULL and not "sender", then we have to try to swap it.
+	if ( theApp.clientlist->AttachToAlreadyKnown(&source,0) ) {
+		// Already queued for another file?
+		if ( source->GetRequestFile() ) {
+			// If we're already queued for the rigth file, then there's nothing to do
+			if ( sender != source->GetRequestFile() ) {	
+				// Add to request list so SwapToAnotherFile will work
+				source->AddRequestForAnotherFile( sender );
+
+				// And try to swap to sender
+				source->SwapToAnotherFile( false, false, false, sender );
+			}
+		} else {
+			// Source was known, but reqfile NULL. I'm not sure if this can 
+			// happen, but it's best to be certain, so I handle this case as well
+			if ( source->GetFileRate() || !source->GetFileComment().IsEmpty() ) {
+				sender->UpdateFileRatingCommentAvail();
+			}
+	
+			sender->m_SrcList.insert(source);
+	
+			Notify_DownloadCtrlAddSource(sender, source, false);
+		}
 	} else {
-		theApp.clientlist->AddClient(source,true);
+		// Unknown client, add it to the clients list
+		theApp.clientlist->AddClient(source, true);
+	
+		if ( source->GetFileRate() || !source->GetFileComment().IsEmpty() ) {
+			sender->UpdateFileRatingCommentAvail();
+		}
+	
+		sender->m_SrcList.insert(source);
+	
+		Notify_DownloadCtrlAddSource(sender, source, false);
 	}
-
-	if (source->GetFileRate()>0 || source->GetFileComment().Length()>0) {
-		sender->UpdateFileRatingCommentAvail();
-	}
-
-	sender->m_SrcList.insert(source);
-	sender->IsCountDirty = true;
-	Notify_DownloadCtrlAddSource(sender,source,false);
+	
 	UpdateDisplayedInfo();
 }
 
@@ -545,15 +567,12 @@ void CDownloadQueue::CheckAndAddKnownSource(CPartFile* sender,CUpDownClient* sou
 		}
 	}
 	source->SetRequestFile( sender );
-	// No more need for this
-	// source->SetDownloadFile(sender);
 
-	if (source->GetFileRate()>0 || source->GetFileComment().Length()>0) {
+	if (source->GetFileRate() || !source->GetFileComment().IsEmpty() ) {
 		sender->UpdateFileRatingCommentAvail();
 	}
 
 	sender->m_SrcList.insert(source);
-	sender->IsCountDirty = true;
 	Notify_DownloadCtrlAddSource(sender,source,false);
 	UpdateDisplayedInfo();
 }
