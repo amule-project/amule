@@ -2681,6 +2681,7 @@ void CPartFile::StopPausedFile()
 
 void CPartFile::PauseFile(bool bInsufficient)
 {
+	
 	m_iLastPausePurge = time(NULL);
 	theApp.downloadqueue->RemoveLocalServerRequest(this);
 
@@ -2747,32 +2748,36 @@ wxString CPartFile::getPartfileStatus() const
 
 	wxString mybuffer; 
 
-	if (GetTransferingSrcCount()>0) {
-		mybuffer=_("Downloading");
-	}	else {
-		mybuffer=_("Waiting");
+	if ((status == PS_HASHING) || (status == PS_WAITINGFORHASH)) {
+		mybuffer=_("Hashing");		
+	} else {	
+	
+		switch (GetStatus()) {
+			case PS_COMPLETING:
+				mybuffer=_("Completing");
+				break; 
+			case PS_COMPLETE:
+				mybuffer=_("Complete");
+				break; 
+			case PS_PAUSED:
+				mybuffer=_("Paused");
+				break; 
+			case PS_ERROR:
+				mybuffer=_("Erroneous");
+				break;
+			default:
+				if (GetTransferingSrcCount()>0) {
+					mybuffer=_("Downloading");
+				}	else {
+					mybuffer=_("Waiting");
+				}
+				break;				
+		} 
+		if (stopped && (GetStatus()!=PS_COMPLETE)) {
+			mybuffer=_("Stopped");
+		}		
 	}
-	switch (GetStatus()) {
-		case PS_HASHING: 
-		case PS_WAITINGFORHASH:
-			mybuffer=_("Hashing");
-			break; 
-		case PS_COMPLETING:
-			mybuffer=_("Completing");
-			break; 
-		case PS_COMPLETE:
-			mybuffer=_("Complete");
-			break; 
-		case PS_PAUSED:
-			mybuffer=_("Paused");
-			break; 
-		case PS_ERROR:
-			mybuffer=_("Erroneous");
-			break;
-	} 
-	if (stopped && (GetStatus()!=PS_COMPLETE)) {
-		mybuffer=_("Stopped");
-	}
+	
 	return mybuffer; 
 } 
 
