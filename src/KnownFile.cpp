@@ -975,7 +975,7 @@ void CKnownFile::CreateHashFromInput(FILE* file,CFile* file2, int Length, uchar*
 	if (Required >= 56){
 		X[Required] = 0x80;
 		PaddingStarted = TRUE;
-		memset(&X[Required], 0, 64 - Required);
+		memset(&X[Required + 1], 0, 63 - Required);
 		MD4Transform(Hash, (uint32*)X);
 		Required = 0;
 	}
