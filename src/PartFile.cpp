@@ -3629,6 +3629,33 @@ void CPartFile::UpdatePartsFrequency( CUpDownClient* client, bool increment )
 
 #else   // CLIENT_GUI
 
+CPartFile::CPartFile(CEC_PartFile_Tag *tag)
+{
+	m_strFileName = tag->FileName();
+	m_abyFileHash = tag->ID();
+	m_nFileSize = tag->SizeFull();
+    m_iPartCount = (m_nFileSize + (PARTSIZE - 1)) / PARTSIZE;
+    status = tag->FileStatus();
+    
+    // is it ok ?
+    m_stopped = 0;
+    
+	m_SrcpartFrequency.SetCount(m_iPartCount);
+	m_iDownPriority = tag->Prio();
+	if ( m_iDownPriority >= 10 ) {
+		m_iDownPriority-= 10;
+		m_bAutoDownPriority = true;
+	} else {
+		m_bAutoDownPriority = false;
+	}
+	// FIXME: !
+	m_category = 0;
+	hasComment = 0;
+	hasRating = 0;
+	hasBadRating = 0;
+	
+}
+
 /*
  * Remote gui specific code
  */
@@ -3807,6 +3834,8 @@ bool CPartFile::IsPureGap(uint32 start, uint32 end)
 	return false;
 }
 
+#ifndef CLIENT_GUI
+
 uint8 CPartFile::GetStatus(bool ignorepause) const
 {
 	if (	(!m_paused && !m_insufficient) ||
@@ -3821,8 +3850,6 @@ uint8 CPartFile::GetStatus(bool ignorepause) const
 		return PS_PAUSED;
 	}
 }
-
-#ifndef CLIENT_GUI
 
 void CPartFile::AddDeadSource(const CUpDownClient* client)
 {

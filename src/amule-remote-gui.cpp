@@ -750,6 +750,24 @@ CMD4Hash CDownQueueRem::GetItemID(CPartFile *file)
 }
 void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 {
+	//
+	// update status
+	//
+	file->transfered = tag->SizeXfer();
+	file->percentcompleted = (100.0*file->completedsize) / file->m_nFileSize;
+	
+	file->completedsize = tag->SizeDone();
+
+	file->transferingsrc = tag->SourceXferCount();
+	file->m_notCurrentSources = tag->SourceNotCurrCount();
+	file->m_source_count = tag->SourceCount();
+	file->m_a4af_source_count = tag->SourceCountA4AF();
+
+	file->kBpsDown = tag->Speed() / 1024.0;
+	
+	//
+	// Copy part/gap status
+	//
 	CECTag *gaptag = tag->GetTagByName(EC_TAG_PARTFILE_GAP_STATUS);
 	CECTag *parttag = tag->GetTagByName(EC_TAG_PARTFILE_PART_STATUS);
 	CECTag *reqtag = tag->GetTagByName(EC_TAG_PARTFILE_REQ_STATUS);
@@ -794,6 +812,11 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 			Requested_Block_Struct* block = file->requestedblocks_list.GetNext(curr_pos);
 			block->StartOffset = ntohl(reqparts[i].start);
 			block->EndOffset = ntohl(reqparts[i].end);
+		}
+		// copy parts frequency
+		const unsigned char *part_info = encoder.m_part_status.Buffer();
+		for(int i = 0;i < file->GetPartCount();i++) {
+			file->m_SrcpartFrequency[i] = part_info[i];
 		}
 	} else {
 		printf("ERROR: %p %p %p\n", gaptag, parttag, reqtag);

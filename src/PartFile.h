@@ -104,16 +104,27 @@ public:
 	void	WriteCompleteSourcesCount(CSafeMemFile* file);
 	bool 	CanAddSource(uint32 userid, uint16 port, uint32 serverip, uint16 serverport, uint8* pdebug_lowiddropped);
 	void	AddSources(CSafeMemFile& sources,uint32 serverip, uint16 serverport);
+#ifdef CLIENT_GUI
+	uint8	GetStatus() const { return status; }
+	uint8	GetStatus(bool /*ignorepause = false*/) const { return status; }
+#else
 	uint8	GetStatus(bool ignorepause = false) const;
+#endif
 	virtual void	UpdatePartsInfo();
 	const wxString& GetPartMetFileName() const { return m_partmetfilename; }
 	uint32	GetTransfered() const		{ return transfered; }
 	const wxString& GetFullName() const	{ return m_fullname; }
 	float	GetKBpsDown() const		{ return kBpsDown; }
 	double	GetPercentCompleted() const	{ return percentcompleted; }
-	
+
+#ifndef CLIENT_GUI
 	uint16	GetSourceCount() const		{ return m_SrcList.size(); }
 	uint16	GetSrcA4AFCount() const		{ return A4AFsrclist.size(); }
+#else
+	uint16 m_source_count, m_a4af_source_count;
+	uint16	GetSourceCount() const		{ return m_source_count; }
+	uint16	GetSrcA4AFCount() const		{ return m_a4af_source_count; }
+#endif
 	uint16	GetTransferingSrcCount() const	{ return transferingsrc; }
 	uint16  	GetNotCurrentSourcesCount()	const	{ return m_notCurrentSources; };
 	int			GetValidSourcesCount()			const	{ return m_validSources; };
@@ -360,6 +371,7 @@ private:
 
 friend class CPartFile_Encoder;
 friend class completingThread;
+friend class CDownQueueRem;
 };
 
 class completingThread : public wxThread
