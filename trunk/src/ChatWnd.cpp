@@ -55,6 +55,20 @@ CChatWnd::CChatWnd(wxWindow* pParent)
 	friendlist   = CastChild( ID_FRIENDLIST, CFriendListCtrl );
 }
 
+#ifdef CLIENT_GUI
+/*
+ * This GUI is not functional (yet, if ever). So functions are replaced with their stubs
+ * for compile/link to work
+ */
+void CChatWnd::OnBnClickedCsend(wxCommandEvent& WXUNUSED(evt))
+{
+}
+
+void CChatWnd::OnBnClickedCclose(wxCommandEvent& WXUNUSED(evt))
+{
+}
+
+#else
 
 void CChatWnd::StartSession(CUpDownClient* client, bool setfocus)
 {
@@ -122,3 +136,4 @@ void CChatWnd::SendMessage(const wxString& message)
 
 	CastChild(IDC_CMESSAGE, wxTextCtrl)->SetFocus();
 }
+#endif
