@@ -2673,7 +2673,7 @@ wxSizer *PreferencesRemoteControlsTab( wxWindow *parent, bool call_fit, bool set
     wxStaticBox *item5 = new wxStaticBox( parent, -1, _("Webserver Parameters") );
     wxStaticBoxSizer *item4 = new wxStaticBoxSizer( item5, wxVERTICAL );
 
-    wxCheckBox *item6 = new wxCheckBox( parent, IDC_ENABLE_WEB, _("Enable Webserver"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxCheckBox *item6 = new wxCheckBox( parent, IDC_ENABLE_WEB, _("Run Webserver on startup"), wxDefaultPosition, wxDefaultSize, 0 );
     item4->Add( item6, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
     wxBoxSizer *item7 = new wxBoxSizer( wxHORIZONTAL );
@@ -3500,22 +3500,26 @@ wxSizer *PreferencesMessagesTab( wxWindow *parent, bool call_fit, bool set_sizer
     wxCheckBox *item6 = new wxCheckBox( parent, IDC_MSGFILTER, _("Filter incoming messages (except current chat):"), wxDefaultPosition, wxDefaultSize, 0 );
     item4->Add( item6, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxCheckBox *item7 = new wxCheckBox( parent, IDC_MSGFILTER_ALL, _("Filter all messages"), wxDefaultPosition, wxDefaultSize, 0 );
-    item4->Add( item7, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxStaticBox *item8 = new wxStaticBox( parent, -1, _("Filtering Options:") );
+    wxStaticBoxSizer *item7 = new wxStaticBoxSizer( item8, wxVERTICAL );
 
-    wxCheckBox *item8 = new wxCheckBox( parent, IDC_MSGFILTER_WORD, _("Filter messages containing:"), wxDefaultPosition, wxDefaultSize, 0 );
-    item8->SetValue( TRUE );
-    item4->Add( item8, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxCheckBox *item9 = new wxCheckBox( parent, IDC_MSGFILTER_ALL, _("Filter all messages"), wxDefaultPosition, wxDefaultSize, 0 );
+    item7->Add( item9, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 25 );
 
-    wxStaticLine *item9 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(20,-1), wxLI_HORIZONTAL );
-    item4->Add( item9, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxCheckBox *item10 = new wxCheckBox( parent, IDC_MSGFILTER_NONFRIENDS, _("Filter messages from people not on your friend list"), wxDefaultPosition, wxDefaultSize, 0 );
+    item7->Add( item10, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 25 );
 
-    wxTextCtrl *item10 = new wxTextCtrl( parent, IDC_MSGWORD, _("leech leecher Ketamine"), wxDefaultPosition, wxSize(80,-1), 0 );
-    item10->SetToolTip( _("add here the words amule should filter and block messages including it") );
-    item4->Add( item10, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxCheckBox *item11 = new wxCheckBox( parent, IDC_MSGFILTER_NONSECURE, _("Filter messages from unknown clients"), wxDefaultPosition, wxDefaultSize, 0 );
+    item7->Add( item11, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 25 );
 
-    wxStaticLine *item11 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(20,-1), wxLI_HORIZONTAL );
-    item4->Add( item11, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxCheckBox *item12 = new wxCheckBox( parent, IDC_MSGFILTER_WORD, _("Filter messages containing (use ',' as separator):"), wxDefaultPosition, wxDefaultSize, 0 );
+    item7->Add( item12, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 25 );
+
+    wxTextCtrl *item13 = new wxTextCtrl( parent, IDC_MSGWORD, _("leech,leecher,Ketamine"), wxDefaultPosition, wxSize(80,-1), 0 );
+    item13->SetToolTip( _("add here the words amule should filter and block messages including it") );
+    item7->Add( item13, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT, 50 );
+
+    item4->Add( item7, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     item0->Add( item4, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 

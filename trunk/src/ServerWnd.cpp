@@ -55,25 +55,24 @@ BEGIN_EVENT_TABLE(CServerWnd,wxPanel)
 	EVT_SPLITTER_SASH_POS_CHANGED(ID_SRV_SPLITTER,CServerWnd::OnSashPositionChanged)
 END_EVENT_TABLE()
 
-CServerWnd::CServerWnd(wxWindow* pParent /*=NULL*/)
+CServerWnd::CServerWnd(wxWindow* pParent /*=NULL*/, int splitter_pos)
 : wxPanel(pParent, -1)
 {
-	wxSizer* content=serverListDlg(this,TRUE);
-	content->Show(this,TRUE);
+	wxSizer* sizer = serverListDlg(this,TRUE);
 
 	// init serverlist
 	// no use now. too early.
 	CServerListCtrl* list= CastChild( ID_SERVERLIST, CServerListCtrl );
 	serverlistctrl=list;
 
-	wxTextCtrl* cv = CastChild( ID_SERVERINFO, wxTextCtrl );
-	cv->AppendText(wxString(_("This is aMule ")) + wxString(wxT(VERSION)) + wxString(_(" (based on eMule)\n")));
-	cv->AppendText(_("Visit http://www.amule.org to check if a new version is available.\n"));
-
+	CastChild( ID_SRV_SPLITTER, wxSplitterWindow )->SetSashPosition(splitter_pos, true);
+	
 	// Insert two columns, currently without a header
 	wxListCtrl* MyInfoList = CastChild( ID_MYSERVINFO, wxListCtrl );
 	MyInfoList->InsertColumn(0, wxEmptyString);
 	MyInfoList->InsertColumn(1, wxEmptyString);
+	
+	sizer->Show(this,TRUE);
 }
 
 CServerWnd::~CServerWnd()

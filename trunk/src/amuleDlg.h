@@ -150,6 +150,8 @@ protected:
 
 	void OnGUITimer(wxTimerEvent& evt);
 
+	void OnMainGUISizeChange(wxSizeEvent& evt);
+
 private:
 
 	wxToolBar*	m_wndToolbar;
