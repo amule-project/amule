@@ -232,7 +232,7 @@ bool CClientList::AttachToAlreadyKnown(CUpDownClient** client, CClientReqSocket*
 					AddDebugLogLineM(true, wxString::Format(_("WARNING! Found matching client, to a currently connected client: %s (%s) and with %s"), tocheck->GetUserName().c_str(), tocheck->GetFullIP().c_str(), found_client->GetUserName().c_str(), found_client->GetFullIP().c_str()));
 					return false;
 				}
-				found_client->GetSocket()->client = NULL;
+				found_client->GetSocket()->SetClient( NULL );
 				found_client->GetSocket()->Safe_Delete();
 			}
 			found_client->SetSocket( sender );
