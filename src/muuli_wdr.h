@@ -473,24 +473,30 @@ wxSizer *PreferencesOnlineSigTab( wxWindow *parent, bool call_fit = TRUE, bool s
 #define IDC_MSGWORD 10345
 wxSizer *PreferencesMessagesTab( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-#define ID_CHECKBOX 10346
-#define ID_CHOICE 10347
+#define ID_PROXY_ENABLE_PROXY 10346
+#define ID_PROXY_TYPE 10347
+#define ID_PROXY_NAME 10348
+#define ID_PROXY_PORT 10349
+#define ID_PROXY_ENABLE_PASSWORD 10350
+#define ID_PROXY_USER 10351
+#define ID_PROXY_PASSWORD 10352
+#define ID_PROXY_AUTO_SERVER_CONNECT_WITHOUT_PROXY 10353
 wxSizer *PreferencesProxyTab( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
 // Declare menubar functions
 
 // Declare toolbar functions
 
-#define ID_BUTTONCONNECT 10348
-#define ID_BUTTONSERVERS 10349
-#define ID_BUTTONKAD 10350
-#define ID_BUTTONSEARCH 10351
-#define ID_BUTTONTRANSFER 10352
-#define ID_BUTTONSHARED 10353
-#define ID_BUTTONMESSAGES 10354
-#define ID_BUTTONSTATISTICS 10355
-#define ID_BUTTONNEWPREFERENCES 10356
-#define ID_ABOUT 10357
+#define ID_BUTTONCONNECT 10354
+#define ID_BUTTONSERVERS 10355
+#define ID_BUTTONKAD 10356
+#define ID_BUTTONSEARCH 10357
+#define ID_BUTTONTRANSFER 10358
+#define ID_BUTTONSHARED 10359
+#define ID_BUTTONMESSAGES 10360
+#define ID_BUTTONSTATISTICS 10361
+#define ID_BUTTONNEWPREFERENCES 10362
+#define ID_ABOUT 10363
 void muleToolbar( wxToolBar *parent );
 
 // Declare bitmap functions

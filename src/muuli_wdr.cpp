@@ -3563,7 +3563,8 @@ wxSizer *PreferencesProxyTab( wxWindow *parent, bool call_fit, bool set_sizer )
     wxFlexGridSizer *item6 = new wxFlexGridSizer( 2, 0, 0 );
     item6->AddGrowableCol( 1 );
 
-    wxCheckBox *item7 = new wxCheckBox( parent, ID_CHECKBOX, _("Enable Proxy"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxCheckBox *item7 = new wxCheckBox( parent, ID_PROXY_ENABLE_PROXY, _("Enable Proxy"), wxDefaultPosition, wxDefaultSize, 0 );
+    item7->SetToolTip( _("Enable/disable proxy support") );
     item6->Add( item7, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     item6->Add( 20, 20, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
@@ -3577,19 +3578,22 @@ wxSizer *PreferencesProxyTab( wxWindow *parent, bool call_fit, bool set_sizer )
         _("Socks4"), 
         _("HTTP")
     };
-    wxChoice *item9 = new wxChoice( parent, ID_CHOICE, wxDefaultPosition, wxSize(100,-1), 3, strs9, 0 );
+    wxChoice *item9 = new wxChoice( parent, ID_PROXY_TYPE, wxDefaultPosition, wxSize(100,-1), 3, strs9, 0 );
+    item9->SetToolTip( _("The type of proxy you are connecting to") );
     item6->Add( item9, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     wxStaticText *item10 = new wxStaticText( parent, ID_TEXT, _("Proxy host:"), wxDefaultPosition, wxDefaultSize, 0 );
     item6->Add( item10, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxTextCtrl *item11 = new wxTextCtrl( parent, ID_TEXTCTRL, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
+    wxTextCtrl *item11 = new wxTextCtrl( parent, ID_PROXY_NAME, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
+    item11->SetToolTip( _("The proxy host name") );
     item6->Add( item11, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     wxStaticText *item12 = new wxStaticText( parent, ID_TEXT, _("Proxy port:"), wxDefaultPosition, wxDefaultSize, 0 );
     item6->Add( item12, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxTextCtrl *item13 = new wxTextCtrl( parent, ID_TEXTCTRL, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
+    wxTextCtrl *item13 = new wxTextCtrl( parent, ID_PROXY_PORT, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
+    item13->SetToolTip( _("The proxy port") );
     item6->Add( item13, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     item4->Add( item6, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
@@ -3599,7 +3603,8 @@ wxSizer *PreferencesProxyTab( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticBox *item15 = new wxStaticBox( parent, -1, _("Authentication") );
     wxStaticBoxSizer *item14 = new wxStaticBoxSizer( item15, wxVERTICAL );
 
-    wxCheckBox *item16 = new wxCheckBox( parent, ID_CHECKBOX, _("Enable authentication"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxCheckBox *item16 = new wxCheckBox( parent, ID_PROXY_ENABLE_PASSWORD, _("Enable authentication"), wxDefaultPosition, wxDefaultSize, 0 );
+    item16->SetToolTip( _("Enable/disable username/password authentication") );
     item14->Add( item16, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     wxFlexGridSizer *item17 = new wxFlexGridSizer( 2, 0, 0 );
@@ -3608,20 +3613,22 @@ wxSizer *PreferencesProxyTab( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticText *item18 = new wxStaticText( parent, ID_TEXT, _("Username:"), wxDefaultPosition, wxDefaultSize, 0 );
     item17->Add( item18, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxTextCtrl *item19 = new wxTextCtrl( parent, ID_TEXTCTRL, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
+    wxTextCtrl *item19 = new wxTextCtrl( parent, ID_PROXY_USER, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
+    item19->SetToolTip( _("The username to use to connect to the proxy") );
     item17->Add( item19, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     wxStaticText *item20 = new wxStaticText( parent, ID_TEXT, _("Password:"), wxDefaultPosition, wxDefaultSize, 0 );
     item17->Add( item20, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxTextCtrl *item21 = new wxTextCtrl( parent, ID_TEXTCTRL, wxT(""), wxDefaultPosition, wxSize(80,-1), wxTE_PASSWORD );
+    wxTextCtrl *item21 = new wxTextCtrl( parent, ID_PROXY_PASSWORD, wxT(""), wxDefaultPosition, wxSize(80,-1), wxTE_PASSWORD );
+    item21->SetToolTip( _("The password to use to connect to the proxy") );
     item17->Add( item21, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     item14->Add( item17, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     item0->Add( item14, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxCheckBox *item22 = new wxCheckBox( parent, ID_CHECKBOX, _("Automatic server connect without proxy"), wxDefaultPosition, wxSize(350,-1), 0 );
+    wxCheckBox *item22 = new wxCheckBox( parent, ID_PROXY_AUTO_SERVER_CONNECT_WITHOUT_PROXY, _("Automatic server connect without proxy"), wxDefaultPosition, wxSize(350,-1), 0 );
     item0->Add( item22, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     if (set_sizer)
