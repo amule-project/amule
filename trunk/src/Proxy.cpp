@@ -99,13 +99,13 @@ void wxSocketProxy::SetProxyData(const wxProxyData *ProxyData)
 	} else {
 		m_ProxyData.Empty();
 	}
-	m_ProxyBoundAddress = NULL;
 }
 
 bool wxSocketProxy::Start(wxIPaddress &address, enum wxProxyCommand cmd, wxSocketClient *socket)
 {
 	bool ok = false;
 
+	m_ProxyBoundAddress = NULL;
 printf("wxSocketClientProxy\nHostname Orig:%s, IPAddr:%s, Port:%d\n",
 unicode2char(address.Hostname()),
 unicode2char(address.IPAddress()),
