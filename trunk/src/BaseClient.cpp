@@ -312,6 +312,24 @@ CUpDownClient::~CUpDownClient()
 	//printf("END\n");
 }
 
+void CUpDownClient::ClearHelloProperties()
+{
+	m_nUDPPort = 0;
+	m_byUDPVer = 0;
+	m_byDataCompVer = 0;
+	m_byEmuleVersion = 0;
+	m_bySourceExchangeVer = 0;
+	m_byAcceptCommentVer = 0;
+	m_byExtendedRequestsVer = 0;
+	m_byCompatibleClient = 0;
+	m_nKadPort = 0;
+	m_bySupportSecIdent = 0;
+	m_bSupportsPreview = 0;
+	m_nClientVersion = 0;
+	m_fSharedDirectories = 0;
+	m_bMultiPacket = 0;
+}
+
 void CUpDownClient::ProcessHelloPacket(char* pachPacket, uint32 nSize)
 {
 	CSafeMemFile data((BYTE*)pachPacket,nSize);
@@ -327,6 +345,8 @@ void CUpDownClient::ProcessHelloPacket(char* pachPacket, uint32 nSize)
 		 */
 		throw wxString(wxT("Invalid Hello packet: Other userhash sizes than 16 are not implemented"));
 	}
+	// eMule 0.42: reset all client properties; a client may not send a particular emule tag any longer
+	ClearHelloProperties();	
 	ProcessHelloTypePacket(&data);
 }
 
@@ -348,7 +368,7 @@ void CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
 		data->Read(m_nUserID);
 		uint16 nUserPort = 0;
 		data->Read(nUserPort); // hmm clientport is sent twice - why?
-
+		DWORD dwEmuleTags = 0;
 		uint32 tagcount;
 		data->Read(tagcount);
 		for (uint32 i = 0;i < tagcount; i++){
@@ -365,9 +385,77 @@ void CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
 				case CT_VERSION:
 					m_nClientVersion = temptag.tag.intvalue;
 					break;
+				case ET_MOD_VERSION:
+					if (temptag.tag.type == 2) {
+						m_strModVersion = temptag.tag.stringvalue;
+					} else if (temptag.tag.type == 3) {
+						m_strModVersion.Format(_T("ModID=%u"), temptag.tag.intvalue);						
+					} else {
+						m_strModVersion = _T("ModID=<Unknwon>");
+					}
+					break;			
 				case CT_PORT:
 					nUserPort = temptag.tag.intvalue;
 					break;
+				case CT_EMULE_UDPPORTS:
+					// 16 KAD Port
+					// 16 UDP Port
+					m_nKadPort = (uint16)(temptag.tag.intvalue >> 16);
+					m_nUDPPort = (uint16)temptag.tag.intvalue;
+					dwEmuleTags |= 1;
+					#ifdef __PACKET_DEBUG__
+					printf("Hello type packet processing with eMule ports UDP=%i KAD=%i\n",m_nUDPPort,m_nKadPort);
+					#endif
+					break;				
+				case CT_EMULE_MISCOPTIONS1:
+					//  4 --Reserved for future use--
+					//  4 UDP version
+					//  4 Data compression version
+					//  4 Secure Ident
+					//  4 Source Exchange
+					//  4 Ext. Requests
+					//  4 Comments
+					//	1 --Reserved for future use--
+					//	1 No 'View Shared Files' supported
+					//	1 MultiPacket
+					//  1 Preview
+					m_byUDPVer				= (temptag.tag.intvalue >> 4*6) & 0x0f;
+					m_byDataCompVer			= (temptag.tag.intvalue >> 4*5) & 0x0f;
+					m_bySupportSecIdent		= (temptag.tag.intvalue >> 4*4) & 0x0f;
+					m_bySourceExchangeVer	= (temptag.tag.intvalue >> 4*3) & 0x0f;
+					m_byExtendedRequestsVer	= (temptag.tag.intvalue >> 4*2) & 0x0f;
+					m_byAcceptCommentVer	= (temptag.tag.intvalue >> 4*1) & 0x0f;
+					m_fNoViewSharedFiles	= (temptag.tag.intvalue >> 1*2) & 0x01;
+					m_bMultiPacket			= (temptag.tag.intvalue >> 1*1) & 0x01;
+					m_fSupportsPreview		= (temptag.tag.intvalue >> 1*0) & 0x01;
+					dwEmuleTags |= 2;
+					#ifdef __PACKET_DEBUG__
+					printf("Hello type packet processing with eMule Misc Options:\n");
+					printf("m_byUDPVer = %i\n",m_byUDPVer);
+					printf("m_byDataCompVer = %i\n",m_byDataCompVer);
+					printf("m_bySupportSecIdent = %i\n",m_bySupportSecIdent);
+					printf("m_bySourceExchangeVer = %i\n",m_bySourceExchangeVer);
+					printf("m_byExtendedRequestsVer = %i\n",m_byExtendedRequestsVer);
+					printf("m_byAcceptCommentVer = %i\n",m_byAcceptCommentVer);
+					printf("m_fNoViewSharedFiles = %i\n",m_fNoViewSharedFiles);
+					printf("m_bMultiPacket = %i\n",m_bMultiPacket);
+					printf("m_fSupportsPreview = %i\n",m_fSharedDirectories);
+					printf("That's all.\n");
+					#endif					
+
+					break;				
+				case CT_EMULE_VERSION:
+					//  8 Compatible Client ID
+					//  7 Mjr Version (Doesn't really matter..)
+					//  7 Min Version (Only need 0-99)
+					//  3 Upd Version (Only need 0-5)
+					//  7 Bld Version (Only need 0-99)
+					m_byCompatibleClient = (temptag.tag.intvalue >> 24);
+					m_nClientVersion = temptag.tag.intvalue & 0x00ffffff;
+					m_byEmuleVersion = 0x99;
+					m_fSharedDirectories = 1;
+					dwEmuleTags |= 4;
+					break;				
 			}
 		}
 		
@@ -402,13 +490,14 @@ void CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
 		printf("Sent by %s on ip %s port %i using client %i version %i\n",GetUserName(),GetFullIP(),GetUserPort(),GetClientSoft(),GetMuleVersion());
 		printf("User Disconnected.\n");		
 	}
-			
+	/* Kry - Added the CT_EMULE_VERSION tag		
 	if( m_nClientVersion > 10000 && m_nClientVersion < 100000 )
 		m_nClientVersion = m_nClientVersion - (m_nClientVersion/10000)*10000;
 	if( m_nClientVersion > 1000 )
 		m_nClientVersion = m_nClientVersion - (m_nClientVersion/1000)*1000;
 	if( m_nClientVersion < 100 )
 		m_nClientVersion *= 10;
+	*/
 	// tecxx 1609 2002 - add client's servet to serverlist (Moved to uploadqueue.cpp)
 
 	if (socket) {
@@ -674,7 +763,7 @@ void CUpDownClient::ProcessMuleInfoPacket(char* pachPacket, uint32 nSize)
 					// Bit   6- 0: secure identification
 					m_bySupportSecIdent = temptag.tag.intvalue & 3;
 					m_bSupportsPreview = (temptag.tag.intvalue & 128) > 0;
-					break;/*
+					break;
 				case ET_MOD_VERSION:
 					if (temptag.tag.type == 2)
 						m_strModVersion = temptag.tag.stringvalue;
@@ -682,7 +771,7 @@ void CUpDownClient::ProcessMuleInfoPacket(char* pachPacket, uint32 nSize)
 						m_strModVersion.Format(_T("ModID=%u"), temptag.tag.intvalue);
 					else
 						m_strModVersion = _T("ModID=<Unknwon>");
-					break;*/
+					break;
 				default:
 					//printf("Mule Unk Tag 0x%02x=%x\n", temptag.tag.specialtag, (UINT)temptag.tag.intvalue);
 					break;

@@ -272,7 +272,23 @@
 #define	CT_NAME					0x01
 #define	CT_VERSION				0x11
 #define	CT_PORT					0x0f
-#define	CT_FRIENDSHARING			0x66
+#define	CT_EMULE_RESERVED1		0xf0
+#define	CT_EMULE_RESERVED2		0xf1
+#define	CT_EMULE_RESERVED3		0xf2
+#define	CT_EMULE_RESERVED4		0xf3
+#define	CT_EMULE_RESERVED5		0xf4
+#define	CT_EMULE_RESERVED6		0xf5
+#define	CT_EMULE_RESERVED7		0xf6
+#define	CT_EMULE_RESERVED8		0xf7
+#define	CT_EMULE_RESERVED9		0xf8
+#define	CT_EMULE_UDPPORTS		0xf9
+#define	CT_EMULE_MISCOPTIONS1	0xfa
+#define	CT_EMULE_VERSION		0xfb
+#define CT_EMULE_RESERVED10		0xfc
+#define CT_EMULE_RESERVED11		0xfd
+#define CT_EMULE_RESERVED12		0xfe
+#define CT_EMULE_RESERVED13		0xff
+
 
 #define	MP_MESSAGE				10102
 #define	MP_DETAIL				10103
