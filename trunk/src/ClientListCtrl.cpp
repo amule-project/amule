@@ -633,7 +633,7 @@ int CUploadingView::SortProc( long item1, long item2, long sortData )
 		// Sort by requested file
 		case 1: {
 			CKnownFile* file1 = client1->GetUploadFile();
-			CKnownFile* file2 = client1->GetUploadFile();
+			CKnownFile* file2 = client2->GetUploadFile();
 
 			if ( file1 && file2  ) {
 				return mode * file1->GetFileName().CmpNoCase( file2->GetFileName() );
