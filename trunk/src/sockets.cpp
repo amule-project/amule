@@ -403,7 +403,7 @@ void CServerConnect::CheckForTimeout()
 			return;
 		}
 
-		if ( it->first - dwCurTick > CONSERVTIMEOUT) {
+		if ( dwCurTick - it->first > CONSERVTIMEOUT) {
 			DWORD key = it->first;
 			CServerSocket* value = it->second;
 			
@@ -411,7 +411,6 @@ void CServerConnect::CheckForTimeout()
 			
 			it++;
 			connectionattemps.erase( key );
-			
 
 			TryAnotherConnectionrequest();
 			DestroySocket( value );
