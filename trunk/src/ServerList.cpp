@@ -40,22 +40,21 @@
 	#define wxMessageBox(x,y,z) AddLogLineM(true,x)
 #endif
 
-#include "ServerList.h"		// Interface declarations.
-#include "ListenSocket.h"	// Needed for CListenSocket
-#include "DownloadQueue.h"	// Needed for CDownloadQueue
-#include "UploadQueue.h"	// Needed for CUploadQueue
+#include "ServerList.h"			// Interface declarations.
+#include "ListenSocket.h"		// Needed for CListenSocket
+#include "DownloadQueue.h"		// Needed for CDownloadQueue
 #include "ServerConnect.h"		// Needed for CServerConnect
-#include "Server.h"		// Needed for CServer and SRV_PR_*
-#include "OtherStructs.h"	// Needed for ServerMet_Struct
-#include "Packet.h"		// Needed for CInvalidPacket
-#include "OPCodes.h"		// Needed for MET_HEADER
-#include "SafeFile.h"		// Needed for CSafeFile
-#include "HTTPDownload.h"	// Needed for HTTPThread
-#include "Preferences.h"	// Needed for CPreferences
-#include "amule.h"			// Needed for theApp
-#include "GetTickCount.h" // Neeed for GetTickCount
-#include "NetworkFunctions.h" // Needed for StringIPtoUint32
-#include "Statistics.h"		// Needed for CStatistics
+#include "Server.h"				// Needed for CServer and SRV_PR_*
+#include "OtherStructs.h"		// Needed for ServerMet_Struct
+#include "Packet.h"				// Needed for CInvalidPacket
+#include "OPCodes.h"			// Needed for MET_HEADER
+#include "SafeFile.h"			// Needed for CSafeFile
+#include "HTTPDownload.h"		// Needed for HTTPThread
+#include "Preferences.h"		// Needed for CPreferences
+#include "amule.h"				// Needed for theApp
+#include "GetTickCount.h"		// Neeed for GetTickCount
+#include "NetworkFunctions.h"	// Needed for StringIPtoUint32
+#include "Statistics.h"			// Needed for CStatistics
 
 
 CServerList::CServerList()
@@ -73,7 +72,7 @@ bool CServerList::Init()
 	wxString strTempFilename;
 	printf("*** reading servers\n");
 	strTempFilename = theApp.ConfigDir + wxT("server.met");
-	bool bRes = AddServermetToList(strTempFilename, false);
+	bool bRes = LoadServerMet(strTempFilename);
 
 	// insert static servers from textfile
 	strTempFilename=  theApp.ConfigDir + wxT("staticservers.dat");
@@ -89,26 +88,23 @@ bool CServerList::Init()
 }
 
 
-bool CServerList::AddServermetToList(const wxString& strFile, bool merge)
+bool CServerList::LoadServerMet(const wxString& strFile)
 {
+	bool merge = !list.IsEmpty();
 	
-	if (!merge) {
-		Notify_ServerRemoveAll();
-		RemoveAllServers();
-	}
-	CSafeFile servermet;
-	if(!wxFileExists(strFile)) {
-		AddLogLineM(false, _("Failed to load server.met!"));
+	if ( !wxFileExists(strFile) ) {
+		AddLogLineM( false, _("Server.met file not found!") );
 		return false;
 	}
 
-	if (!servermet.Open(strFile,CFile::read)){ 
-		AddLogLineM(false, _("Failed to load server.met!"));
+	CSafeFile servermet( strFile,CFile::read );
+	if ( !servermet.IsOpened() ){ 
+		AddLogLineM( false, _("Failed to open server.met!") );
 		return false;
 	}
 
+	
 	try {
-
 		Notify_ServerFreeze();
 		
 		uchar version = servermet.ReadUInt8();
@@ -123,34 +119,30 @@ bool CServerList::AddServermetToList(const wxString& strFile, bool merge)
 		ServerMet_Struct sbuffer;
 		uint32 iAddCount = 0;
 
-		for (uint32 j = 0;j < fservercount; ++j) {
-			// get server
-
-			sbuffer.ip = servermet.ReadUInt32();
-			sbuffer.port = servermet.ReadUInt16();
-			
-			sbuffer.tagcount = servermet.ReadUInt32();
+		for ( uint32 j = 0; j < fservercount; ++j ) {
+			sbuffer.ip			= servermet.ReadUInt32();
+			sbuffer.port		= servermet.ReadUInt16();
+			sbuffer.tagcount	= servermet.ReadUInt32();
 			
 			CServer* newserver = new CServer(&sbuffer);
 
-			//add tags
-			for (uint32 i=0;i < sbuffer.tagcount; ++i) {
+			// Load tags
+			for ( uint32 i = 0; i < sbuffer.tagcount; ++i ) {
 				newserver->AddTagFromFile(&servermet);
-				// Removing warning. As long as SRV_PR_MIN is = 0, no need to compare
-				if ( /* newserver->GetPreferences() < SRV_PR_MIN || */ newserver->GetPreferences() > SRV_PR_MAX)
-					newserver->SetPreference(SRV_PR_NORMAL);
 			}
 
-			if (newserver->GetPreferences() > SRV_PR_HIGH) {
+			if ( newserver->GetPreferences() > SRV_PR_HIGH ) {
 				newserver->SetPreference(SRV_PR_NORMAL);
 			}
 			
 			// set listname for server
-			if (newserver->GetListName().IsEmpty()) {
+			if ( newserver->GetListName().IsEmpty() ) {
 				newserver->SetListName(wxT("Server ") +newserver->GetAddress());
 			}
-			if (!theApp.AddServer(newserver)) {
-				CServer* update = theApp.serverlist->GetServerByAddress(newserver->GetAddress(), newserver->GetPort());
+			
+			
+			if ( !theApp.AddServer(newserver) ) {
+				CServer* update = GetServerByAddress(newserver->GetAddress(), newserver->GetPort());
 				if(update) {
 					update->SetListName( newserver->GetListName());
 					if(!newserver->GetDescription().IsEmpty()) {
@@ -164,6 +156,7 @@ bool CServerList::AddServermetToList(const wxString& strFile, bool merge)
 			}
 
 		}
+		
 		Notify_ServerThaw();
     
 		if (!merge) {
@@ -171,14 +164,12 @@ bool CServerList::AddServermetToList(const wxString& strFile, bool merge)
 		} else {
 			AddLogLineM(true, wxString::Format(_("%d servers added"), iAddCount));
 		}
-	}
-	catch (CInvalidPacket e) {
+	} catch (CInvalidPacket e) {
 		AddLogLineM(true,_("Error: the file server.met is corrupted"));
-		servermet.Close();
 		Notify_ServerThaw();
 		return false;
 	}
-	servermet.Close();
+	
 	return true;
 }
 
@@ -345,7 +336,7 @@ void CServerList::GetUserFileStatus(uint32 &user, uint32 &file)
 
 CServerList::~CServerList()
 {
-	SaveServermetToFile();
+	SaveServerMet();
 	while ( !list.IsEmpty() ) {
 		delete list.GetTail();
 		list.RemoveTail();
@@ -524,11 +515,11 @@ CServer* CServerList::GetServerByIP(uint32 nIP, uint16 nPort){
 }
 
 
-bool CServerList::SaveServermetToFile()
+bool CServerList::SaveServerMet()
 {
-	wxString newservermet(theApp.ConfigDir + wxT("server.met.new"));
-	CSafeFile servermet;
-	servermet.Open(newservermet, CFile::write);
+	wxString newservermet = theApp.ConfigDir + wxT("server.met.new");
+	
+	CSafeFile servermet( newservermet, CFile::write );
 	if (!servermet.IsOpened()) {
 		AddLogLineM(false,_("Failed to save server.met!"));
 		return false;
@@ -536,82 +527,66 @@ bool CServerList::SaveServermetToFile()
 
 
 	servermet.WriteUInt8(0xE0);
-	
-	uint32 fservercount = list.GetCount(); 
-	servermet.WriteUInt32(fservercount);
-	
-	CServer* nextserver;
-	
-		for (uint32 j = 0; j != fservercount; ++j) {
-			nextserver = GetServerByIndex(j);
+	servermet.WriteUInt32( list.GetCount() );
 
-			uint16 tagcount = 12;
-			if (!nextserver->GetListName().IsEmpty()) 
-				++tagcount;
-			if (!nextserver->GetDynIP().IsEmpty())
-				++tagcount;
-			if (!nextserver->GetDescription().IsEmpty())
-				++tagcount;
-			if (nextserver->GetConnPort() != nextserver->GetPort())
-				++tagcount;		
-			
-			servermet.WriteUInt32(nextserver->GetIP());
-			servermet.WriteUInt16(nextserver->GetPort());
-			servermet.WriteUInt32(tagcount);
-						
-			if (!nextserver->GetListName().IsEmpty()) {
-				CTag servername( ST_SERVERNAME, nextserver->GetListName() );
-				servername.WriteTagToFile(&servermet);
-			}
-			if (!nextserver->GetDynIP().IsEmpty()) {
-				CTag serverdynip( ST_DYNIP, nextserver->GetDynIP() );
-				serverdynip.WriteTagToFile(&servermet);
-			}
-			if (!nextserver->GetDescription().IsEmpty()) {
-				CTag serverdesc( ST_DESCRIPTION, nextserver->GetDescription() );
-				serverdesc.WriteTagToFile(&servermet);
-			}
-			if (nextserver->GetConnPort() != nextserver->GetPort()) {
-				CTag auxportslist( ST_AUXPORTSLIST, nextserver->GetAuxPortsList() );
-				auxportslist.WriteTagToFile(&servermet);
-			}
-			CTag serverfail(ST_FAIL, nextserver->GetFailedCount() );
-			serverfail.WriteTagToFile(&servermet);
-			CTag serverpref( ST_PREFERENCE, nextserver->GetPreferences() );
-			serverpref.WriteTagToFile(&servermet);
-			CTag serveruser("users", nextserver->GetUsers() );
-			serveruser.WriteTagToFile(&servermet);
-			CTag serverfiles("files", nextserver->GetFiles() );
-			serverfiles.WriteTagToFile(&servermet);
-			CTag serverping(ST_PING, nextserver->GetPing() );
-			serverping.WriteTagToFile(&servermet);
-			CTag serverlastp(ST_LASTPING, nextserver->GetLastPinged() );
-			serverlastp.WriteTagToFile(&servermet);
-			CTag servermaxusers(ST_MAXUSERS, nextserver->GetMaxUsers() );
-			servermaxusers.WriteTagToFile(&servermet);
-			CTag softfiles(ST_SOFTFILES, nextserver->GetSoftFiles() );
-			softfiles.WriteTagToFile(&servermet);
-			CTag hardfiles(ST_HARDFILES, nextserver->GetHardFiles() );
-			hardfiles.WriteTagToFile(&servermet);
-			CTag version(ST_VERSION, nextserver->GetVersion());
-			version.WriteTagToFile(&servermet);
-			CTag tagUDPFlags(ST_UDPFLAGS, nextserver->GetUDPFlags() );
-			tagUDPFlags.WriteTagToFile(&servermet);
-			CTag tagLowIDUsers(ST_LOWIDUSERS, nextserver->GetLowIDUsers() );
-			tagLowIDUsers.WriteTagToFile(&servermet);			
+	
+	for ( POSITION pos = list.GetHeadPosition(); pos; ) {
+		CServer* server = list.GetNext( pos );
+
+		uint16 tagcount = 12;
+		if ( !server->GetListName().IsEmpty() ) 			++tagcount;
+		if ( !server->GetDynIP().IsEmpty() )				++tagcount;
+		if ( !server->GetDescription().IsEmpty() )			++tagcount;
+		if ( server->GetConnPort() != server->GetPort() )	++tagcount;		
+		
+		servermet.WriteUInt32(server->GetIP());
+		servermet.WriteUInt16(server->GetPort());
+		servermet.WriteUInt32(tagcount);
+					
+		if ( !server->GetListName().IsEmpty() ) {
+			CTag( ST_SERVERNAME,	server->GetListName()		).WriteTagToFile( &servermet );
+		}
+		
+		if ( !server->GetDynIP().IsEmpty() ) {
+			CTag( ST_DYNIP,			server->GetDynIP()			).WriteTagToFile( &servermet );
+		}
+		
+		if ( !server->GetDescription().IsEmpty() ) {
+			CTag( ST_DESCRIPTION,	server->GetDescription()	).WriteTagToFile( &servermet );
+		}
+		
+		if ( server->GetConnPort() != server->GetPort() ) {
+			CTag( ST_AUXPORTSLIST,	server->GetAuxPortsList()	).WriteTagToFile( &servermet );
+		}
+		
+		CTag( ST_FAIL,			server->GetFailedCount()	).WriteTagToFile( &servermet );
+		CTag( ST_PREFERENCE,	server->GetPreferences()	).WriteTagToFile( &servermet );
+		CTag( "users",			server->GetUsers()			).WriteTagToFile( &servermet );
+		CTag( "files",			server->GetFiles()			).WriteTagToFile( &servermet );
+		CTag( ST_PING,			server->GetPing()			).WriteTagToFile( &servermet );
+		CTag( ST_LASTPING,		server->GetLastPinged()		).WriteTagToFile( &servermet );
+		CTag( ST_MAXUSERS,		server->GetMaxUsers()		).WriteTagToFile( &servermet );
+		CTag( ST_SOFTFILES,		server->GetSoftFiles()		).WriteTagToFile( &servermet );
+		CTag( ST_HARDFILES,		server->GetHardFiles()		).WriteTagToFile( &servermet );
+		CTag( ST_VERSION,		server->GetVersion()		).WriteTagToFile( &servermet );
+		CTag( ST_UDPFLAGS,		server->GetUDPFlags()		).WriteTagToFile( &servermet );
+		CTag( ST_LOWIDUSERS,	server->GetLowIDUsers()		).WriteTagToFile( &servermet );
 	}
 	
-	servermet.Flush();
 	servermet.Close();
-	wxString curservermet(theApp.ConfigDir + wxT("server.met"));
-	wxString oldservermet(theApp.ConfigDir + wxT("server_met.old"));
+	wxString curservermet = theApp.ConfigDir + wxT("server.met");
+	wxString oldservermet = theApp.ConfigDir + wxT("server_met.old");
+	
 	if ( wxFileExists(oldservermet) ) {
 		wxRemoveFile(oldservermet);
 	}
+	
 	if ( wxFileExists(curservermet) ) {
-		wxRenameFile(curservermet,oldservermet);
+		wxRenameFile(curservermet, oldservermet);
 	}
-	wxRenameFile(newservermet,curservermet);
+	
+	wxRenameFile(newservermet, curservermet);
+	
 	return true;
 }
 
@@ -620,7 +595,7 @@ void CServerList::RemoveDeadServers()
 {
 	if ( thePrefs::DeadServer() ) {
 		for ( POSITION pos = list.GetHeadPosition(); pos != NULL; ) {
-			CServer* cur_server = theApp.serverlist->list.GetNext( pos );
+			CServer* cur_server = list.GetNext( pos );
 			if ( cur_server->GetFailedCount() > thePrefs::GetDeadserverRetries() && !cur_server->IsStaticMember()) {
 				RemoveServer(cur_server);
 			}
@@ -645,8 +620,8 @@ void CServerList::DownloadFinished(uint32 result) {
 	if(result==1) {
 		wxString strTempFilename(theApp.ConfigDir + wxT("server.met.download"));
 		// curl succeeded. proceed with server.met loading
-		theApp.serverlist->AddServermetToList(strTempFilename);
-		theApp.serverlist->SaveServermetToFile();
+		LoadServerMet(strTempFilename);
+		SaveServerMet();
 		// So, file is loaded and merged, and also saved
 		wxRemoveFile(strTempFilename);
 	} else {
@@ -697,8 +672,8 @@ void CServerList::AutoDownloadFinished(uint32 result) {
 	if(result==1) {
 		wxString strTempFilename(theApp.ConfigDir + wxT("server_auto.met"));
 		// curl succeeded. proceed with server.met loading
-		theApp.serverlist->AddServermetToList(strTempFilename);
-		theApp.serverlist->SaveServermetToFile();
+		LoadServerMet(strTempFilename);
+		SaveServerMet();
 		// So, file is loaded and merged, and also saved
 		wxRemoveFile(strTempFilename);
 	} else {

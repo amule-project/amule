@@ -50,8 +50,8 @@ public:
 	void		RemoveServer(CServer* out_server);
 	void		RemoveAllServers();
 	void		RemoveDeadServers();	
-	bool		AddServermetToList(const wxString& strFile, bool merge = true);
-	bool		SaveServermetToFile(); //<<--9/22/02
+	bool		LoadServerMet(const wxString& strFile);
+	bool		SaveServerMet();
 	void		ServerStats();
 	void		ResetServerPos()	{serverpos = 0;}
 	CServer*	GetNextServer();

@@ -126,7 +126,7 @@ void CServerWnd::OnBnClickedAddserver(wxCommandEvent& WXUNUSED(evt))
 		}
 		delete toadd;
 	}
-	theApp.serverlist->SaveServermetToFile();
+	theApp.serverlist->SaveServerMet();
 
 	CastChild( IDC_SERVERNAME, wxTextCtrl )->Clear();
 	CastChild( IDC_IPADDRESS, wxTextCtrl )->Clear();
