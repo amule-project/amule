@@ -74,6 +74,15 @@ CTransferWnd::CTransferWnd(wxWindow* pParent /*=NULL*/)
 	// allow notebook to dispatch right mouse clicks to us
 	CMuleNotebook* nb=(CMuleNotebook*)FindWindowById(ID_CATEGORIES);
 	nb->SetMouseListener(GetEventHandler());
+	#if (wxMINOR_VERSION > 4) && (wxRELEASE_NUMBER > 1)
+	nb->SetSizeHints(-1,32,-1,32);
+	wxBitmapButton* bmap = (wxBitmapButton*)FindWindowById(ID_BTNSWWINDOW);
+	transfer_top_boxsizer->Detach(nb);
+	transfer_top_boxsizer->Detach(bmap);
+	transfer_top_boxsizer->Add( nb, 1, wxALIGN_BOTTOM|wxALIGN_CENTER_HORIZONTAL|wxFIXED_MINSIZE, 5 );
+	transfer_top_boxsizer->Add( bmap, 0, wxALIGN_CENTER|wxALL, 5 );
+	Layout();
+	#endif
 	windowtransferstate=false;
 	CatMenu=false;
 }
