@@ -855,7 +855,7 @@ wxString CamuleApp::StripInvalidFilenameChars(const wxString& strText, bool bKee
 				continue;
 			default:
 				// Many illegal for filenames in windows below the 32th char (which is space).
-				if ( strText[i] >= wxT(' ') ) {
+				if ( (wxUChar) strText[i] > 31 ) {
 						result += strText[i];
 				}
 		}
