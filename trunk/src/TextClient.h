@@ -44,7 +44,7 @@ public:
 	void OnQuit(wxCommandEvent& event);
 	void OnAbout(wxCommandEvent& event);
 	void OnComandEnter(wxCommandEvent& event);
-	void OnSize( wxSizeEvent& event );
+	void OnIdle(wxIdleEvent &e);
 	wxTextCtrl *log_text;
 	wxTextCtrl *cmd_control;
 	
