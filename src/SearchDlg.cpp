@@ -366,6 +366,8 @@ void CSearchDlg::OnBnClickedClear(wxCommandEvent& WXUNUSED(ev))
 
 	FindWindow(IDC_CLEAR_RESULTS)->Enable(FALSE);
 	FindWindow(IDC_SDOWNLOAD)->Enable(FALSE);
+
+	CastChild( IDC_SEARCHNAME, wxTextCtrl )->Clear();
 }
 
 
@@ -494,6 +496,7 @@ void CSearchDlg::OnBnClickedReset(wxCommandEvent& WXUNUSED(evt))
 	
 	FindWindow(IDC_SEARCH_RESET)->Enable(FALSE);
 }
+
 
 void CSearchDlg::UpdateCatChoice()
 {
