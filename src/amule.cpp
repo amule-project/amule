@@ -65,6 +65,7 @@
 #include <wx/cmdline.h>			// Needed for wxCmdLineParser
 #include <wx/tokenzr.h>			// Needed for wxStringTokenizer
 #include <wx/msgdlg.h>			// Needed for wxMessageBox
+#include <wx/url.h>
 
 #include "amule.h"				// Interface declarations.
 #include "GetTickCount.h"		// Needed for GetTickCount
@@ -851,15 +852,14 @@ wxString CamuleApp::CreateHTMLED2kLink(CAbstractFile* f)
 // Generates an URL for checking if a file is "fake"
 wxString CamuleApp::GenFakeCheckUrl(CAbstractFile *f)
 {
-	wxString strURL = "http://donkeyfakes.gambri.net/fakecheck/update/fakecheck.php?ed2k=";
+	wxString strURL = "http://donkeyfakes.gambri.net/index.php?action=search&ed2k=";
 	
-	wxString strED2kURL = CreateED2kLink( f );
+	strURL = wxURL::ConvertToValidURI( strURL +  CreateED2kLink( f ) );
 
-	// Various symbols that don't work in URLs... add as neccesery.
-	strED2kURL.Replace( " ", "." );
-	strED2kURL.Replace( "&", "%262" );
-
-	strURL += strED2kURL;
+	// The following cause problems, so we escape them
+	strURL.Replace("\"", "%22");
+	strURL.Replace("'",  "%27");
+	strURL.Replace("`",  "%60");
 
 	return strURL;
 }
