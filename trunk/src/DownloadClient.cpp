@@ -219,7 +219,7 @@ void CUpDownClient::SendFileRequest()
 		if( IsEmuleClient() ) {
 			SetRemoteQueueFull( true );
 			SetRemoteQueueRank(0);
-		}	
+		}
 		if(IsSourceRequestAllowed())	{
 			dataFileReq.Write((uint8)OP_REQUESTSOURCES);
 			reqfile->SetLastAnsweredTimeTimeout();
@@ -1053,12 +1053,13 @@ uint16 CUpDownClient::GetAvailablePartCount()
 
 void CUpDownClient::SetRemoteQueueRank(uint16 nr)
 {
+	m_nOldRemoteQueueRank = m_nRemoteQueueRank;
 	m_nRemoteQueueRank = nr;
 	UpdateDisplayedInfo();
 }
 
 void CUpDownClient::UDPReaskACK(uint16 nNewQR)
-{ 
+{
 	// 0.42e
 	m_bUDPPending = false;
 	SetRemoteQueueRank(nNewQR);
@@ -1150,7 +1151,7 @@ void CUpDownClient::UpdateDisplayedInfo(bool force)
 bool CUpDownClient::DoSwap(CPartFile* SwapTo, bool bRemoveCompletely)
 {
 	if (reqfile) {
-		// Dirty fix. Why is reqfile NULL?	
+		// Dirty fix. Why is reqfile NULL?
 		POSITION pos = reqfile->m_SrcList.Find(this);
 		if(pos)	{
 			// remove this client from the A4AF list of our new reqfile
@@ -1159,11 +1160,11 @@ bool CUpDownClient::DoSwap(CPartFile* SwapTo, bool bRemoveCompletely)
 				SwapTo->A4AFsrclist.RemoveAt(pos2);
 				theApp.amuledlg->transferwnd->downloadlistctrl->RemoveSource(this,SwapTo);
 			}
-	
+
 			reqfile->m_SrcList.RemoveAt(pos);
 			reqfile->IsCountDirty = true;
 			reqfile->RemoveDownloadingSource(this);
-	
+
 			if(!bRemoveCompletely) {
 				reqfile->A4AFsrclist.AddTail(this);
 				if (GetDownloadState() == DS_NONEEDEDPARTS) {
@@ -1178,16 +1179,17 @@ bool CUpDownClient::DoSwap(CPartFile* SwapTo, bool bRemoveCompletely)
 			SetDownloadState(DS_NONE);
 			ResetFileStatusInfo();
 			m_nRemoteQueueRank = 0;
-			
+			m_nOldRemoteQueueRank = 0;
+
 			reqfile->UpdatePartsInfo();
 			reqfile->UpdateAvailablePartsCount();
 			reqfile = SwapTo;
-	
+
 			SwapTo->m_SrcList.AddTail(this);
 			SwapTo->IsCountDirty = true;
 			theApp.amuledlg->transferwnd->downloadlistctrl->AddSource(SwapTo,this,false);
-	
-	
+
+
 			return true;
 		}
 	}
