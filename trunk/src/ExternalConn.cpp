@@ -382,8 +382,6 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 		
 		if (item.Left(15) == "PREFS GETWSPASS") {
 			wxString pwdHash = item.Mid(16);
-printf("pwdHash: %s\n", pwdHash.GetData());
-printf("pwdHash: %s\n", theApp.glob_prefs->GetWSPass().GetData());			
 			if (pwdHash == theApp.glob_prefs->GetWSPass()) {
 				theApp.amuledlg->AddLogLine(false, "Webserver-Admin-Login");
 				return("AdminLogin");
