@@ -1,21 +1,23 @@
+//
 // This file is part of the aMule Project
 //
 // Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
 // Copyright (C)2002 Tiku & Patrizio Bassi aka Hetfield <hetfield@email.it>
 //
-//This program is free software; you can redistribute it and/or
-//modify it under the terms of the GNU General Public License
-//as published by the Free Software Foundation; either
-//version 2 of the License, or (at your option) any later version.
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either
+// version 2 of the License, or (at your option) any later version.
 //
-//This program is distributed in the hope that it will be useful,
-//but WITHOUT ANY WARRANTY; without even the implied warranty of
-//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//GNU General Public License for more details.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 //
-//You should have received a copy of the GNU General Public License
-//along with this program; if not, write to the Free Software
-//Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+//
 
 #ifndef SYSTRAY_H
 #define SYSTRAY_H
@@ -61,11 +63,11 @@ enum DesktopMode
 
 #if defined(__UTF8_SYSTRAY_ENABLED__) || wxUSE_UNICODE 
 	// On unicode builds on gtk, UTF8 must be used!
-	#define char2gtk(x) 		char2UTF8(x)
-	#define unicode2gtk(x) 	unicode2UTF8(x)
+	inline const wxCharBuffer char2gtk(const char *x) { return char2UTF8(x); }
+	inline const wxCharBuffer unicode2gtk(wxString x) { return unicode2UTF8(x); }
 #else
-	#define char2gtk(x) 		unicode2char(x)
-	#define unicode2gtk(x) 	unicode2char(x)
+	inline const wxCharBuffer char2gtk(const char *x) { return x; }
+	inline const wxCharBuffer unicode2gtk(wxString x) { return unicode2char(x); }
 #endif
 
 class wxWindow;
