@@ -1440,34 +1440,6 @@ void CamuleApp::SetOSFiles(const wxString new_path) {
 	}
 }
 
-void CamuleApp::ListenSocketHandler(wxSocketEvent& event)
-{
-	wxASSERT(event.GetSocket()->IsKindOf(CLASSINFO(CListenSocket)));
-	CListenSocket *socket = (CListenSocket*) event.GetSocket();
-	if (!socket) {
-		// This should never happen, anyway, there is nothing to do.
-		wxASSERT(0);
-		return;
-	}
-	if (!IsReady) {
-		// Even if we are not ready to start listening, we must 
-		// accept the connection, otherwise no other connection
-		// events will happen. So we Accept() it and destroy the
-		// socket imediately.
-		wxSocketBase *s = socket->Accept(false);
-		s->Destroy();
-	}
-	switch(event.GetSocketEvent()) {
-		case wxSOCKET_CONNECTION:
-			socket->OnAccept(0);
-			break;
-		default:
-			// shouldn't get other than connection events...
-			wxASSERT(0);
-			break;
-	}
-}
-
 void CamuleApp::UDPSocketHandler(wxSocketEvent& event)
 {
 	wxASSERT(event.GetSocket()->IsKindOf(CLASSINFO(CUDPSocket)));
@@ -1486,7 +1458,6 @@ void CamuleApp::UDPSocketHandler(wxSocketEvent& event)
 			break;
 	}
 }
-
 
 void CamuleApp::ClientUDPSocketHandler(wxSocketEvent& event) {
 
