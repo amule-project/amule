@@ -25,6 +25,7 @@
 #include "types.h"		// Needed for int8 and int32
 #include "EMSocket.h"		// Needed for CEMSocket
 #include "CString.h"		// Needed for CString
+class CServerSocketHandler;
 
 class CServer;
 
@@ -62,6 +63,28 @@ private:
 	char*	rbuffer;
 	bool	m_bIsDeleting;	// true: socket is already in deletion phase, don't destroy it in ::StopConnectionTry
     DWORD	m_dwLastTransmission;
+
+    CServerSocketHandler* my_handler;
+	
 };
 
+
+
+class CServerSocketHandler: 
+		public wxEvtHandler
+{
+	public:
+	CServerSocketHandler(CServerSocket* parent) {
+		socket = parent;
+	}
+	
+	CServerSocket* socket;
+	
+	
+	private:
+	
+	void ServerSocketHandler(wxSocketEvent& event);
+	
+	DECLARE_EVENT_TABLE()
+};
 #endif // SERVERSOCKET_H

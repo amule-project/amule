@@ -64,6 +64,10 @@
 
 //#define SERVER_NET_TEST 
 
+BEGIN_EVENT_TABLE(CServerSocketHandler, wxEvtHandler)
+	EVT_SOCKET(SERVERSOCKET_HANDLER, CServerSocketHandler::ServerSocketHandler)
+END_EVENT_TABLE()
+
 IMPLEMENT_DYNAMIC_CLASS(CServerSocket,CEMSocket)
 
 CServerSocket::CServerSocket(CServerConnect* in_serverconnect)
@@ -75,7 +79,8 @@ CServerSocket::CServerSocket(CServerConnect* in_serverconnect)
 	cur_server = 0;
 	info= wxT("");
 	m_bIsDeleting = false;
-	SetEventHandler(theApp,SERVERSOCKET_HANDLER);
+	my_handler = new CServerSocketHandler(this);
+	SetEventHandler(*my_handler,SERVERSOCKET_HANDLER);
 	SetNotify(wxSOCKET_CONNECTION_FLAG|wxSOCKET_INPUT_FLAG|wxSOCKET_OUTPUT_FLAG|wxSOCKET_LOST_FLAG);
 	Notify(TRUE);
 	m_dwLastTransmission = 0;	
@@ -86,10 +91,13 @@ CServerSocket::~CServerSocket()
 	// remove event handler...
 	SetNotify(0);
 	Notify(FALSE);
+	
 	if (cur_server) {
 		delete cur_server;
 	}
 	cur_server = NULL;
+	
+	delete my_handler;
 }
 
 
@@ -599,4 +607,38 @@ bool CServerSocket::SendPacket(Packet* packet, bool delpacket, bool controlpacke
 {
 	m_dwLastTransmission = GetTickCount();
 	return CEMSocket::SendPacket(packet, delpacket, controlpacket);
+}
+
+
+void CServerSocketHandler::ServerSocketHandler(wxSocketEvent& event) {
+	//printf("Got a server event\n");
+	//wxMessageBox(wxString::Format("Got Server Event %u",event.GetSocketEvent()));
+	
+	if (!socket) {
+		return;
+	}
+
+	if (socket->OnDestroy()) {
+		return;
+	}
+	
+	switch(event.GetSocketEvent()) {
+		case wxSOCKET_CONNECTION:
+			socket->OnConnect(wxSOCKET_NOERROR);
+			break;
+		case wxSOCKET_LOST:
+			socket->OnError(socket->LastError());
+			break;
+		case wxSOCKET_INPUT:
+			socket->OnReceive(wxSOCKET_NOERROR);
+			break;
+		case wxSOCKET_OUTPUT:
+			socket->OnSend(wxSOCKET_NOERROR);
+			break;
+		default:
+			wxASSERT(0);
+			break;
+	}
+	
+	
 }
