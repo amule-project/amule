@@ -213,7 +213,7 @@ bool CamulewebApp::OnInit() {
 	CaMuleExternalConnector::OnInit();
 	frame = new CamulewebFrame(_("amuleweb DLG"), wxPoint(50, 50), wxSize(APP_INIT_SIZE_X, APP_INIT_SIZE_Y));
 	frame->Show(true);
-	ConnectAndRun(wxT("aMuleweb"), commands);
+	ConnectAndRun(wxT("aMuleweb"), wxT(VERSION), commands);
 
 	return true;
 }
@@ -221,7 +221,7 @@ bool CamulewebApp::OnInit() {
 #else
 
 int CamulewebApp::OnRun() {
-	ConnectAndRun(wxT("aMuleweb"), commands);
+	ConnectAndRun(wxT("aMuleweb"), wxT(VERSION), commands);
 
 	return true;
 }

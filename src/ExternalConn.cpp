@@ -19,6 +19,10 @@
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"		// Needed for VERSION
+#endif
+
 #include "ExternalConn.h"	// Interface declarations
 #include "otherfunctions.h"	// Needed for EncodeBase16
 #include "ED2KLink.h"		// Needed for CED2KLink
@@ -222,7 +226,9 @@ CECPacket *ExternalConn::Authenticate(const CECPacket *request)
 
 	if (request->GetOpCode() == EC_OP_AUTH_REQ) {
 		CECTag *clientName = request->GetTagByName(EC_TAG_CLIENT_NAME);
-		AddLogLineM(false, _("Connecting client: ") + ((clientName == NULL) ? wxString(_("Unknown")) : clientName->GetStringData()));
+		CECTag *clientVersion = request->GetTagByName(EC_TAG_CLIENT_VERSION);
+		AddLogLineM(false, _("Connecting client: ") + ((clientName == NULL) ? wxString(_("Unknown")) : clientName->GetStringData()) +
+			wxT(" ") + ((clientVersion == NULL) ? wxString(_("Unknown version")) : clientVersion->GetStringData()));
 		CECTag *passwd = request->GetTagByName(EC_TAG_PASSWD_HASH);
 		CECTag *protocol = request->GetTagByName(EC_TAG_PROTOCOL_VERSION);
 		if (protocol != NULL) {
@@ -253,6 +259,8 @@ CECPacket *ExternalConn::Authenticate(const CECPacket *request)
 		response = new CECPacket(EC_OP_AUTH_FAIL);
 		response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Invalid request, you should first authenticate.")));
 	}
+
+	response->AddTag(CECTag(EC_TAG_SERVER_VERSION, wxT(VERSION)));
 
 	if (response->GetOpCode() == EC_OP_AUTH_OK) {
 		AddLogLineM(false, _("Access granted."));

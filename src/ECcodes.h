@@ -115,7 +115,8 @@ enum {
 		 * \brief Authentication failed.
 		 *
 		 * \par Tags:
-		 *	::EC_TAG_STRING (optional) describing the reason why authentication was rejected.
+		 *	::EC_TAG_STRING (optional) describing the reason why authentication was rejected.\n
+		 *	::EC_TAG_SERVER_VERSION aMule version.
 		 */
 	EC_OP_AUTH_FAIL,
 
@@ -123,7 +124,7 @@ enum {
 		 * \brief Authentication succeeded.
 		 *
 		 * \par Tags:
-		 *	(none)
+		 *	::EC_TAG_SERVER_VERSION aMule version.
 		 */
 	EC_OP_AUTH_OK,
 
