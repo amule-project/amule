@@ -12,6 +12,11 @@ Version 2.0.0rc5 -
 		* Fixed a problem with gsocket-2.5.c when using wxWidgets
 		  version 2.5.2 and up. Now amule runs with 2.5.2.
 		* New ipfilter code.
+		* Found the reason why wx-2.5.2 gui was messed: starting with
+		  wx-2.5.2, a new flag must be added when adding components to
+		  sizers to keep the old behaviour (wxFIXED_MINSIZE). This
+		  constant is defined to zero in amule.h when wx-version is
+		  less than 2.5.2, so that amule still compiles in old wx.
 
 Version 2.0.0rc4 - The 'Mules and rabbits like apples too' version.
 
