@@ -617,7 +617,7 @@ void CUpDownClient::SendHashsetPacket(const CMD4Hash& forfileid)
 {
 	CKnownFile* file = theApp.sharedfiles->GetFileByID( forfileid );
 	if ( !file ) {
-		file = theApp.knownfiles->FindKnownFileByID(forfileid);
+		file = theApp.downloadqueue->GetFileByID(forfileid);
 
 		if ( !file ) {
 			AddLogLineM(false, _("Hashset requested for unknown file: ") + forfileid.Encode() );
@@ -629,7 +629,7 @@ void CUpDownClient::SendHashsetPacket(const CMD4Hash& forfileid)
 			return;
 		}
 	} else if ( !file->GetHashCount() ) {
-		file = theApp.knownfiles->FindKnownFileByID(forfileid);
+		file = theApp.downloadqueue->GetFileByID(forfileid);
 		
 		if ( !file || !file->GetHashCount() ) {
 			AddDebugLogLineM(false, wxT("Requested hashset could not be found"));
