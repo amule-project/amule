@@ -197,6 +197,20 @@ void CamulewebApp::LocalShow(const wxString &s)
 }
 #endif
 
+void CamulewebApp::OnInitCmdLine(wxCmdLineParser& amuleweb_parser)
+{
+	CaMuleExternalConnector::OnInitCmdLine(amuleweb_parser);
+	amuleweb_parser.AddOption(wxT("t"), wxT("template"), 
+		wxT("loads template from file <template file>"), 
+		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL);
+}
+
+bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
+{
+	m_HasTemplate = parser.Found(wxT("template"), &m_TemplateFileName);
+	return CaMuleExternalConnector::OnCmdLineParsed(parser);
+}
+
 int CamulewebApp::ProcessCommand(int ID) {
 	switch (ID) {
 		case CMD_ID_HELP:

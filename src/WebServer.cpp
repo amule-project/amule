@@ -254,9 +254,12 @@ void CWebServer::ReloadTemplates(void) {
 	delete[] s;
 	
 	m_Params.sETag = MD5Sum(m_Params.sLastModified).GetHash();
-
-	wxString sFile = sFile.Format(wxT("%s/.aMule/aMule.tmpl"), getenv("HOME"));
-		
+	
+	wxString sFileMask(wxT("%s/.aMule/aMule.tmpl"));
+	wxString sFile = sFile.Format(sFileMask, getenv("HOME"));
+	if( webInterface->m_HasTemplate) {
+		sFile = webInterface->m_TemplateFileName;
+	}
 	if (!wxFileName::FileExists(sFile)) {
 		// no file. do nothing.
 		webInterface->SendRecvMsg(wxString::Format(wxT("LOGGING ADDLOGLINE %d %s"), true, wxString::Format(_("Can't load templates: Can't open file %s"), sFile.GetData()).GetData()));

@@ -71,6 +71,12 @@ public:
 	void Pre_Shell();
 	int ProcessCommand(int ID);
 
+	// other command line switches
+	void	OnInitCmdLine(wxCmdLineParser& amuleweb_parser);
+	bool	OnCmdLineParsed(wxCmdLineParser& parser);
+	wxString m_TemplateFileName;
+	bool	m_HasTemplate;
+	
 #if wxUSE_GUI
 public:
 	void LocalShow(const wxString &s);
