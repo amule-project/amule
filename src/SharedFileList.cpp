@@ -183,6 +183,15 @@ void CSharedFileList::SafeAddKFile(CKnownFile* toadd, bool bOnlyAdd){
 	CreateOfferedFilePacket(toadd,files, true);
 	Packet* packet = new Packet(files);
 	packet->SetOpCode(OP_OFFERFILES);
+	// compress packet
+	//   - this kind of data is highly compressable (N * (1 MD4 and at least 3 string meta data tags and 1 integer meta data tag))
+	//   - the min. amount of data needed for one published file is ~100 bytes
+	//   - this function is called once when connecting to a server and when a file becomes shareable - so, it's called rarely.
+	//   - if the compressed size is still >= the original size, we send the uncompressed packet
+	// therefor we always try to compress the packet
+	if (server->GetCurrentServer() && (server->GetCurrentServer()->GetTCPFlags() & SRV_TCPFLG_COMPRESSION)){
+		packet->PackPacket();
+	}
 	delete files;
 	theApp.uploadqueue->AddUpDataOverheadServer(packet->GetPacketSize());
 	server->SendPacket(packet,true);
@@ -233,6 +242,15 @@ void CSharedFileList::SendListToServer(){
 	}
 	Packet* packet = new Packet(files);
 	packet->SetOpCode(OP_OFFERFILES);
+	// compress packet
+	//   - this kind of data is highly compressable (N * (1 MD4 and at least 3 string meta data tags and 1 integer meta data tag))
+	//   - the min. amount of data needed for one published file is ~100 bytes
+	//   - this function is called once when connecting to a server and when a file becomes shareable - so, it's called rarely.
+	//   - if the compressed size is still >= the original size, we send the uncompressed packet
+	// therefor we always try to compress the packet
+	if (server->GetCurrentServer() && (server->GetCurrentServer()->GetTCPFlags() & SRV_TCPFLG_COMPRESSION)){
+		packet->PackPacket();
+	}
 	delete files;
 	theApp.uploadqueue->AddUpDataOverheadServer(packet->GetPacketSize());
 	server->SendPacket(packet,true);
