@@ -19,6 +19,8 @@
 
 #include <zlib.h>
 #include <cmath>		// Needed for std::exp
+#include <wx/filename.h>        // Needed for wxFileName::GetPathSeparator()
+
 #include "otherfunctions.h"	// Needed for nstrdup
 
 #include "ClientUDPSocket.h"	// Needed for CClientUDPSocket
@@ -272,7 +274,7 @@ bool CUpDownClient::CreateNextBlockPackage(){
 				fullname = ((CPartFile*)srcfile)->GetFullName();
 				fullname.Truncate(fullname.Length()-4);
 			} else{
-				fullname = srcfile->GetFilePath() + wxT("/")  + srcfile->GetFileName();
+				fullname = srcfile->GetFilePath() + wxFileName::GetPathSeparator() + srcfile->GetFileName();
 			}
 		
 			uint32 togo;

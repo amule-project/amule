@@ -518,7 +518,7 @@ bool CamuleApp::OnInit()
 			// Copy .dat files to the aMule dir
 			wxString file = wxFindFirstFile(xMulePrefDir + wxFileName::GetPathSeparator() + wxT("*.dat"), wxFILE);
   			while ( !file.IsEmpty() ) {
-				wxCopyFile( file, ConfigDir + wxFileName::GetPathSeparator() + file.AfterLast('/'));
+				wxCopyFile( file, ConfigDir + wxFileName::GetPathSeparator() + file.AfterLast(wxFileName::GetPathSeparator()));
 
 				file = wxFindNextFile();
   			}
