@@ -988,19 +988,33 @@ void HttpStateMachine::process_send_command_request(bool entry)
 		wxCharBuffer buf(unicode2charbuf(m_PeerAddress->IPAddress()));
 		const char *host = (const char *)buf;
 		uint16 port = m_PeerAddress->Service();
-		wxString UserPass = m_ProxyData.m_UserName + wxT(":") + m_ProxyData.m_Password;
-		wxString UserPassEncoded =
-			otherfunctions::EncodeBase64(m_buffer, wxPROXY_BUFFER_SIZE);
+		wxString UserPass;
+		wxString UserPassEncoded;
+		if (m_ProxyData.m_EnablePassword) {
+			UserPass = m_ProxyData.m_UserName + wxT(":") + m_ProxyData.m_Password;
+			UserPassEncoded =
+				otherfunctions::EncodeBase64(m_buffer, wxPROXY_BUFFER_SIZE);
+		}
 		wxString msg;
 		
 		switch (m_ProxyCommand) {
 		case wxPROXY_CMD_CONNECT:
-			msg = wxString::Format(
-				wxT(
-				"CONNECT %s:%d HTTP/1.1\r\n"
-				"Host: %s:%d\r\n"
-				"Proxy-Authorization: Basic %s\r\n"),
-				host, port, host, port, unicode2char(UserPassEncoded));
+			if (m_ProxyData.m_EnablePassword) {
+				msg = wxString::Format(
+					wxT(
+					"CONNECT %s:%d HTTP/1.1\r\n"
+					"Host: %s:%d\r\n"
+					"Authorization: Basic %s"
+					"Proxy-Authorization: Basic %s\r\n"),
+					host, port, host, port, unicode2char(UserPassEncoded),
+					unicode2char(UserPassEncoded));
+			} else {
+				msg = wxString::Format(
+					wxT(
+					"CONNECT %s:%d HTTP/1.1\r\n"
+					"Host: %s:%d\r\n\r\n"),
+					host, port, host, port);
+			}
 			break;
 			
 		case wxPROXY_CMD_BIND:
@@ -1022,12 +1036,15 @@ printf("wait state -- process_send_command_request\n");
 	}
 }
 
+/* 14 chars */
+#define HTTP_AUTH_OK_1_0 "HTTP/1.0 200\r\n"
+#define HTTP_AUTH_OK_1_1 "HTTP/1.1 200\r\n"
+const static int HTTP_AUTH_OK_LENGHT = 14;
 void HttpStateMachine::process_receive_command_reply(bool entry)
 {
-// TODO - still using socks4 code
 	if (entry) {
 		// Receive the server's reply
-		m_PacketLenght = 8;
+		m_PacketLenght = HTTP_AUTH_OK_LENGHT;
 		ProxyRead(*m_ProxyClientSocket, m_buffer, m_PacketLenght);
 dump("process_receive_command_reply", m_ok, m_buffer, 0);
 	} else {
@@ -1038,26 +1055,13 @@ printf("wait state -- process_receive_command_reply\n");
 
 void HttpStateMachine::process_process_command_reply(bool entry)
 {
-// TODO - still using socks4 code
 	if (entry) {
 		m_LastReply = m_buffer[1];
 		
 		// Process the server's reply
 		m_ok = m_ok &&
-			m_buffer[0] == SOCKS4_VERSION &&
-			m_buffer[1] == SOCKS4_REPLY_GRANTED;
-		if (m_ok) {
-			// Read BND.PORT
-			const unsigned int Port_offset = 2;
-			m_ok = m_ProxyBoundAddressIPV4.Service(ntohs(
-				*((uint16 *)(m_buffer+Port_offset)) ));
-			// Read BND.ADDR
-			const unsigned int Addr_offset = 4;
-			m_ok = m_ok &&
-				m_ProxyBoundAddressIPV4.Hostname(Uint32toStringIP(
-					*((uint32 *)(m_buffer+Addr_offset)) ));
-			m_ProxyBoundAddress = &m_ProxyBoundAddressIPV4;
-		}
+			!memcmp(m_buffer, HTTP_AUTH_OK_1_0, 5) ||
+			!memcmp(m_buffer, HTTP_AUTH_OK_1_1, 5);
 dump("process_process_command_reply", m_ok, m_buffer, m_PacketLenght);
 	} else {
 printf("wait state -- process_receive_command_reply\n");
