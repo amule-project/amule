@@ -1184,7 +1184,7 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
 		m_pAICHHashSet->SetOwner(this); 
 	}
 	else if (status == PS_COMPLETING) {
-		AddDebugLogLineM(false, _("Failed to store new AICH Hashset for completed file: ") + GetFileName());
+		AddDebugLogLineM(false, wxT("Failed to store new AICH Hashset for completed file: ") + GetFileName());
 	}
 
 	
