@@ -243,7 +243,7 @@ void CSearchListCtrl::UpdateSources(CSearchFile* toupdate)
 	long index=FindItem(-1,(long)toupdate);
 	if(index!=(-1)) {
 		char buffer[50];
-		sprintf(buffer,"%d",toupdate->GetSourceCount());
+		sprintf(buffer,"%d (%d)",toupdate->GetSourceCount(),toupdate->GetCompleteSourceCount());
 		SetItem(index,2,buffer);
 		UpdateColor(index,toupdate->GetSourceCount());
 	}

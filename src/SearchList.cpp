@@ -206,18 +206,26 @@ char* CSearchFile::GetStrTagValue(uint8 tagname){
 	return 0;
 }
 
-uint32 CSearchFile::AddSources(uint32 count){
+uint32 CSearchFile::AddSources(uint32 count, uint32 count_complete){
 	for (int i = 0; i != taglist.GetSize(); i++){
 		if (taglist[i]->tag.specialtag == FT_SOURCES){
 			taglist[i]->tag.intvalue += count;
 			return taglist[i]->tag.intvalue;
 		}
+		if (taglist[i]->tag.specialtag == FT_COMPLETE_SOURCES){
+			taglist[i]->tag.intvalue += count_complete;
+			return taglist[i]->tag.intvalue;
+		}		
 	}
 	return 0;
 }
 
 uint32 CSearchFile::GetSourceCount(){
 	return GetIntTagValue(FT_SOURCES);
+}
+
+uint32 CSearchFile::GetCompleteSourceCount(){
+	return GetIntTagValue(FT_COMPLETE_SOURCES);
 }
 
 CSearchList::CSearchList(){
@@ -452,7 +460,7 @@ bool CSearchList::AddToList(CSearchFile* toadd, bool bClientResponse){
 	for (POSITION pos = list.GetHeadPosition(); pos != NULL; list.GetNext(pos)){
 		CSearchFile* cur_file = list.GetAt(pos);
 		if ( (!memcmp(toadd->GetFileHash(),cur_file->GetFileHash(),16)) && cur_file->GetSearchID() ==  toadd->GetSearchID()){
-			cur_file->AddSources(toadd->GetIntTagValue(FT_SOURCES));
+			cur_file->AddSources(toadd->GetIntTagValue(FT_SOURCES),toadd->GetIntTagValue(FT_COMPLETE_SOURCES));
 			if (outputwnd) {
 				outputwnd->UpdateSources(cur_file);
 			}
