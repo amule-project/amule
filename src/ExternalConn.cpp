@@ -1026,8 +1026,8 @@ CECTag *CPartFile_Encoder::Encode()
 	uint32 *gap_buff_ptr = m_gap_buffer;
 	while ( curr_pos ) {
 		Gap_Struct *curr = m_file->gaplist.GetNext(curr_pos);
-		*gap_buff_ptr++ = curr->start;
-		*gap_buff_ptr++ = curr->end;
+		*gap_buff_ptr++ = ENDIAN_SWAP_32(curr->start);
+		*gap_buff_ptr++ = ENDIAN_SWAP_32(curr->end);
 	}
 
 	m_enc_data.m_gap_status.Realloc(m_gap_buffer_size);
