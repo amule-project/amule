@@ -108,9 +108,11 @@ BEGIN_EVENT_TABLE(CamuleDaemonApp, wxAppConsole)
 	EVT_CUSTOM(wxEVT_NOTIFY_EVENT, -1, CamuleDaemonApp::OnNotifyEvent)
 
 	// Async dns handling
-	EVT_CUSTOM(wxEVT_CORE_DNS_DONE, -1, CamuleDaemonApp::OnDnsDone)
+	EVT_CUSTOM(wxEVT_CORE_UDP_DNS_DONE, -1, CamuleDaemonApp::OnUDPDnsDone)
 	
-	EVT_CUSTOM(wxEVT_CORE_SOURCE_DNS_DONE, -1, CamuleDaemonApp::OnSourcesDnsDone)
+	EVT_CUSTOM(wxEVT_CORE_SOURCE_DNS_DONE, -1, CamuleDaemonApp::OnSourceDnsDone)
+
+	EVT_CUSTOM(wxEVT_CORE_SERVER_DNS_DONE, -1, CamuleDaemonApp::OnServerDnsDone)
 
 	// Hash ended notifier
 	EVT_CUSTOM(wxEVT_CORE_FILE_HASHING_FINISHED, -1, CamuleDaemonApp::OnFinishedHashing)

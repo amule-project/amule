@@ -437,14 +437,15 @@ void CServerConnect::CheckForTimeout()
 		if ( dwCurTick - it->first > CONSERVTIMEOUT) {
 			DWORD key = it->first;
 			CServerSocket* value = it->second;
+			++it;
+			if (!value->IsSolving()) {
+				AddLogLineM(false,wxString(_("Connection attempt to ")) + value->info + wxT(" (") + value->cur_server->GetFullIP() + wxString::Format(_(":%i) timed out."),value->cur_server->GetPort()));
 			
-			AddLogLineM(false,wxString(_("Connection attempt to ")) + value->info + wxT(" (") + value->cur_server->GetFullIP() + wxString::Format(_(":%i) timed out."),value->cur_server->GetPort()));			
-			
-			it++;
-			connectionattemps.erase( key );
-
-			TryAnotherConnectionrequest();
-			DestroySocket( value );
+				connectionattemps.erase( key );
+	
+				TryAnotherConnectionrequest();
+				DestroySocket( value );
+			}				
 		} else {
 			++it;
 		}

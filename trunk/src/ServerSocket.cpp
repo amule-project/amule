@@ -198,6 +198,7 @@ CEMSocket(ProxyData)
 	my_handler = new CServerSocketHandler(this);
 #endif
 	m_dwLastTransmission = 0;	
+	m_IsSolving = false;
 }
 
 CServerSocket::~CServerSocket()
@@ -651,22 +652,29 @@ void CServerSocket::ConnectToServer(CServer* server)
 	cur_server = new CServer(server);
 	AddLogLineM(false, _("Connecting to ") + cur_server->GetListName() + wxT(" (") + server->GetAddress() + wxT(" - ") + cur_server->GetFullIP() + wxString::Format(wxT(":%i)"),cur_server->GetConnPort()));
 	SetConnectionState(CS_CONNECTING);
-	// This must be used if we want to reverse-check the addr of the server
-	#define GET_ADDR true
-	#ifdef GET_ADDR
-	wxIPV4address addr;
-	#else
-	amuleIPV4Address addr;
-	#endif
-	addr.Hostname(server->GetAddress());
-	addr.Service(server->GetConnPort());
-	AddDebugLogLineM(true, wxT("Server ") + server->GetAddress() + wxString::Format(wxT(" Port %i"),server->GetConnPort()));
-	#ifdef GET_ADDR
-	AddDebugLogLineM(true, wxT("Addr ") + addr.Hostname() + wxString::Format(wxT(" Port %i"),server->GetConnPort()));
-	#endif
-	Connect(addr, false);
+	
+	info = cur_server->GetListName();		
 
-	info = server->GetListName();
+	// This must be used if we want to reverse-check the addr of the server
+	if (cur_server->HasDynIP() || !cur_server->GetIP()) {
+		m_IsSolving = true;
+		// Send it to solving thread.
+		CAsyncDNS* dns = new CAsyncDNS(server->GetAddress(), DNS_SERVER_CONNECT, this);
+	
+		if ( dns->Create() == wxTHREAD_NO_ERROR ) {
+			if ( dns->Run() != wxTHREAD_NO_ERROR ) {
+				dns->Delete();
+				AddLogLineM(false, _("Cannot create DNS solving thread for connecting to ")+cur_server->GetAddress());
+			}
+		} else {
+			dns->Delete();
+			AddLogLineM(false, _("Cannot create DNS solving thread for connecting to ")+cur_server->GetAddress());
+		}
+	} else {
+		// Nothing to solve, we already have the IP
+		OnHostnameResolved(cur_server->GetIP());
+	}	
+
 }
 
 void CServerSocket::OnError(wxSocketError nErrorCode)
@@ -735,6 +743,23 @@ bool CServerSocket::SendPacket(Packet* packet, bool delpacket, bool controlpacke
 {
 	m_dwLastTransmission = GetTickCount();
 	return CEMSocket::SendPacket(packet, delpacket, controlpacket);
+}
+
+
+void CServerSocket::OnHostnameResolved(uint32 ip) {
+	printf("Server hostname resolved\n");
+	m_IsSolving = false;
+	if (ip) {
+		amuleIPV4Address addr;
+		addr.Hostname(ip);
+		addr.Service(cur_server->GetConnPort());
+		AddDebugLogLineM(true, wxT("Server ") + cur_server->GetAddress() + wxT("(") + Uint32toStringIP(ip) + wxT(")") + wxString::Format(wxT(" Port %i"), cur_server->GetConnPort()));
+		Connect(addr, false);
+	} else {
+		AddLogLineM(true, _("Could not solve dns for server ") + cur_server->GetAddress() + _(" : Unable to connect!"));
+		OnConnect(wxSOCKET_NOHOST);
+	}
+	
 }
 
 #ifdef AMULE_DAEMON

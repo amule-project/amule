@@ -94,6 +94,7 @@
 #include "DownloadQueue.h"		// Needed for CDownloadQueue
 #include "ClientCredits.h"		// Needed for CClientCreditsList
 #include "ClientUDPSocket.h"		// Needed for CClientUDPSocket
+#include "ServerSocket.h"		// Needed for CServerSocket
 #include "SharedFileList.h"		// Needed for CSharedFileList
 #include "sockets.h"			// Needed for CServerConnect
 #include "ServerList.h"			// Needed for CServerList
@@ -103,7 +104,6 @@
 #include "Preferences.h"		// Needed for CPreferences
 #include "ListenSocket.h"		// Needed for CListenSocket
 #include "ExternalConn.h"		// Needed for ExternalConn & MuleConnection
-#include "ServerSocket.h"		// Needed for CServerSocket
 #include "UDPSocket.h"			// Needed for CUDPSocket
 #include "PartFile.h"			// Needed for CPartFile
 #include "AddFileThread.h"		// Needed for CAddFileThread
@@ -1393,19 +1393,26 @@ void CamuleApp::SetOSFiles(const wxString new_path) {
 	}
 }
 
-void CamuleApp::OnDnsDone(wxEvent& e)
+void CamuleApp::OnUDPDnsDone(wxEvent& e)
 {
 	wxMuleInternalEvent& evt = *((wxMuleInternalEvent*)&e);
 	CUDPSocket* socket=(CUDPSocket*)evt.GetClientData();	
-	socket->DnsLookupDone(evt.GetExtraLong());
+	socket->OnHostnameResolved(evt.GetExtraLong());
 }
 
-void CamuleApp::OnSourcesDnsDone(wxEvent& e)
+void CamuleApp::OnSourceDnsDone(wxEvent& e)
 {
 	wxMuleInternalEvent& evt = *((wxMuleInternalEvent*)&e);	
 	downloadqueue->OnHostnameResolved(evt.GetExtraLong());
 }
 
+void CamuleApp::OnServerDnsDone(wxEvent& e)
+{
+	printf("Server hostname notified\n");
+	wxMuleInternalEvent&	evt = *((wxMuleInternalEvent*)&e);	
+	CServerSocket* socket=(CServerSocket*)evt.GetClientData();	
+	socket->OnHostnameResolved(evt.GetExtraLong());
+}
 
 void CamuleApp::OnNotifyEvent(wxEvent& e)
 {
@@ -1843,4 +1850,5 @@ DEFINE_EVENT_TYPE(wxEVT_CORE_FILE_HASHING_SHUTDOWN)
 DEFINE_EVENT_TYPE(wxEVT_CORE_FINISHED_FILE_COMPLETION)
 DEFINE_EVENT_TYPE(wxEVT_CORE_FINISHED_HTTP_DOWNLOAD)
 DEFINE_EVENT_TYPE(wxEVT_CORE_SOURCE_DNS_DONE)
-DEFINE_EVENT_TYPE(wxEVT_CORE_DNS_DONE)
+DEFINE_EVENT_TYPE(wxEVT_CORE_UDP_DNS_DONE)
+DEFINE_EVENT_TYPE(wxEVT_CORE_SERVER_DNS_DONE)

@@ -32,9 +32,6 @@
 #include <wx/socket.h>
 #include "StringFunctions.h"
 
-// Foward declaration
-class CUDPSocket;
-
 
 /****************************************************/ 
 /******************* Inlines ************************/
@@ -68,7 +65,13 @@ inline uint32 StringHosttoUint32(const wxString &Host) {
 	// Why using native things when we have a wrapper for it :)
 	wxIPV4address solver;
 	solver.Hostname(Host);
-	return StringIPtoUint32(solver.IPAddress());
+	uint32 result = StringIPtoUint32(solver.IPAddress());
+	if (result != (uint32)-1) {
+		return result;
+	} else {
+		// This actually happens on wrong hostname
+		return 0;
+	}
 }
 
 // Checks an ip to see if it is valid, depending on current preferences.
@@ -114,14 +117,22 @@ inline bool IsGoodIP(uint32 nIP)
 // Implementation of Asynchronous dns resolving using wxThread 
 //	 and internal wxIPV4address handling of dns
 
+enum DnsSolveType {
+	DNS_UDP,
+	DNS_SOURCE,
+	DNS_SERVER_CONNECT
+};
+
 class CAsyncDNS : public wxThread
 {
 public:
-	CAsyncDNS();
+	CAsyncDNS(const wxString& ipName, DnsSolveType type, void* socket = NULL);
 	virtual ExitCode Entry();
 
-	wxString ipName;
-	CUDPSocket* socket;
+private:
+	DnsSolveType m_type;
+	wxString m_ipName;
+	void* m_socket;
 };
 
 #endif /* ! EC_REMOTE */

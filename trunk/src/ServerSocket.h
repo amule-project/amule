@@ -86,6 +86,8 @@ public:
 	void	OnError(wxSocketError nErrorCode);
 	bool	PacketReceived(Packet* packet);
 	bool	SendPacket(Packet* packet, bool delpacket = true,bool controlpacket = true);
+	bool	IsSolving() const { return m_IsSolving;};
+ 	void	OnHostnameResolved(uint32 ip);
  	CServer *GetServerConnected() const { return serverconnect->GetCurrentServer(); }
 	CServerSocketHandler *GetEventHandler(void) const { return my_handler; }
 	
@@ -104,7 +106,9 @@ private:
 	int32	sizereceived;
 	char*	rbuffer;
 	bool	m_bIsDeleting;	// true: socket is already in deletion phase, don't destroy it in ::StopConnectionTry
-    DWORD	m_dwLastTransmission;
+	DWORD	m_dwLastTransmission;
+
+	bool m_IsSolving;
 
     CServerSocketHandler* my_handler;
 	
