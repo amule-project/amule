@@ -529,6 +529,8 @@ void CUpDownClient::SendBlockRequests()
 		pblock->fRecovered = 0;
 		m_PendingBlocks_list.AddTail(pblock);
 	}
+	
+	
 	if (m_PendingBlocks_list.IsEmpty()) {
 		if (!GetSentCancelTransfer()){
 			CPacket* packet = new CPacket(OP_CANCELTRANSFER,0);
@@ -546,6 +548,7 @@ void CUpDownClient::SendBlockRequests()
 	
 	POSITION pos = m_PendingBlocks_list.GetHeadPosition();
 
+	//printf("Block Request:\n");
 	for (uint32 i = 0; i != 3; i++) {
 		if (pos) {
 			Pending_Block_Struct* pending = m_PendingBlocks_list.GetNext(pos);
@@ -555,7 +558,9 @@ void CUpDownClient::SendBlockRequests()
 			pending->fZStreamError = 0;
 			pending->fRecovered = 0;
 			data.WriteUInt32(pending->block->StartOffset);
+			//printf("\tBlock %i Start: %i Size: %i\n", i,pending->block->StartOffset, (pending->block->EndOffset+1)- pending->block->StartOffset);
 		} else {
+			//printf("\tBlock %i Start: 0\n", i);
 			data.WriteUInt32(0);
 		}
 	}
@@ -569,6 +574,8 @@ void CUpDownClient::SendBlockRequests()
 			data.WriteUInt32(0);
 		}
 	}
+	
+	//printf("Block Request End\n");
 	
 	CPacket* packet = new CPacket(&data,OP_EDONKEYPROT, OP_REQUESTPARTS);
 	theApp.statistics->AddUpDataOverheadFileRequest(packet->GetPacketSize());
@@ -1345,4 +1352,3 @@ void CUpDownClient::ProcessAICHFileHash(CSafeMemFile* data, const CPartFile* fil
 		AddDebugLogLineM( false, logAICHTransfer, wxT("ProcessAICHFileHash(): PartFile not found or Partfile differs from requested file, ") + GetClientFullInfo() );
 	}
 }
-
