@@ -1,5 +1,5 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/// Name:         AlcHash Class
+/// Name:         Ed2kHash Class
 ///
 /// Purpose:      aMule ed2k link creator
 ///
@@ -25,23 +25,22 @@
 /// 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef _ALCHASH_H
-#define _ALCHASH_H
+#ifndef _ED2KHASH_H
+#define _ED2KHASH_H
 
 #ifdef __GNUG__
-#pragma interface "alchash.h"
+#pragma interface "ed2khash.h"
 #endif
 
 // Include wxWindows' headers
 #ifndef WX_PRECOMP
 #include <wx/wx.h>
-#endif
-
 #include <wx/filename.h>
+#endif
 
 #include "md4.h"
 
-class AlcHash
+class Ed2kHash:public MD4
   {
   private:
 
@@ -56,10 +55,10 @@ class AlcHash
 
   public:
     /// Constructor
-    AlcHash ();
+    Ed2kHash ();
 
     /// Destructor
-    ~AlcHash ();
+    ~Ed2kHash ();
 
     /// Set Ed2k hash from a file
     void SetED2KHashFromFile(const wxFileName& filename);
@@ -74,4 +73,4 @@ class AlcHash
     wxString GetED2KLink(const wxArrayString& arrayOfUrls=0, const bool addPartHashes=FALSE);
   };
 
-#endif /* _ALCHASH_H */
+#endif /* _ED2KHASH_H */

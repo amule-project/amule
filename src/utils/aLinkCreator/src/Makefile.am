@@ -2,14 +2,14 @@ bin_PROGRAMS = alc
      
 alc_SOURCES = alc.cpp \
 		alcframe.cpp \
-		alchash.cpp \
+		ed2khash.cpp \
 		alcpix.cpp \
 		md4.cpp \
 		activitybar.cpp
 	
 noinst_HEADERS = alc.h \
 		alcframe.h \
-		alchash.h \
+		ed2khash.h \
 		alcpix.h \
 		md4.h \
 		activitybar.h \
