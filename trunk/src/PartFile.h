@@ -71,7 +71,7 @@ public:
 	virtual ~CPartFile();
 	
 	bool	IsASanePartFile() const;
-	bool	IsASaneFileClientCombination(
+	bool	IsASaneFileClientCombination( bool verbose, 
 			const CUpDownClient* cur_src, const CUpDownClient* forClient = 0) const;
 	void 	SetPartFileStatus(uint8 newstatus);
 	virtual bool CreateFromFile(
