@@ -10,7 +10,7 @@ else
 endif
 
 PROJECT = amule
-CC = C:\MinGWStudio\MinGW\bin\g++.exe
+CC = C:\MinGWStudio\MinGW_3.4\bin\g++.exe
 
 WINDRES = $(COMPILER_BIN)windres.exe
 ifeq ($(CFG),Debug)
@@ -39,7 +39,7 @@ ifeq ($(CFG),Release)
   RC_PREPROC = --define __WIN32__ --define __WIN95__ --define __GNUWIN32__ 
   RCFLAGS = 
   LIB_DIRS = -L"C:/MinGWStudio/Lib" 
-  LIBS = -lcryptopp -lcurl -lz -lws2_32 -lwxmsw -lregex -lpng -ljpeg -lzlib -ltiff -lstdc++ -lgcc -lodbc32 -lwsock32 -lwinspool -lwinmm -lshell32 -lcomctl32 -lctl3d32 -lodbc32 -ladvapi32 -lodbc32 -lwsock32 -lopengl32 -lglu32 -lole32 -loleaut32 -luuid 
+  LIBS = -lstdc++ -lcryptopp -lcurl -lz -lws2_32 -lwxmsw -lregex -lpng -ljpeg -lzlib -ltiff -lstdc++ -lgcc -lodbc32 -lwsock32 -lwinspool -lwinmm -lshell32 -lcomctl32 -lctl3d32 -lodbc32 -ladvapi32 -lodbc32 -lwsock32 -lopengl32 -lglu32 -lole32 -loleaut32 -luuid 
   LDFLAGS = -pipe -s  -Wl,--subsystem,windows -mwindows
 endif
 
@@ -122,7 +122,9 @@ SRC_OBJS = \
   $(OBJ_DIR)/HTTPDownloadDlg.o	\
   $(OBJ_DIR)/KnownFile.o	\
   $(OBJ_DIR)/amuleDlg.o	\
-  $(OBJ_DIR)/ECSocket.o
+  $(OBJ_DIR)/ECSocket.o	\
+  $(OBJ_DIR)/SHA.o	\
+  $(OBJ_DIR)/SHAHashSet.o
 
 RSRC_OBJS = \
   $(OBJ_DIR)/amule.res
@@ -368,8 +370,11 @@ src/amule.h	\
 src/PartFile.h	\
 src/BarShader.h	\
 src/updownclient.h	\
+src/SHAHashSet.h	\
+src/SharedFileList.h	\
 src/DownloadListCtrl.h	\
-src/TransferWnd.h
+src/TransferWnd.h	\
+src/color.h
 	$(compile_source)
 
 $(OBJ_DIR)/DownloadListCtrl.o: src/DownloadListCtrl.cpp	\
@@ -387,7 +392,8 @@ src/amuleDlg.h	\
 src/muuli_wdr.h	\
 src/color.h	\
 src/ClientCredits.h	\
-src/Preferences.h
+src/Preferences.h	\
+src/listbase.h
 	$(compile_source)
 
 $(OBJ_DIR)/DownloadQueue.o: src/DownloadQueue.cpp	\
@@ -546,10 +552,8 @@ src/MD5Sum.h
 
 $(OBJ_DIR)/MuleListCtrl.o: src/MuleListCtrl.cpp	\
 src/MuleListCtrl.h	\
-src/Preferences.h	\
 src/otherfunctions.h	\
-src/opcodes.h	\
-src/amule.h
+src/opcodes.h
 	$(compile_source)
 
 $(OBJ_DIR)/MuleNotebook.o: src/MuleNotebook.cpp	\
@@ -642,7 +646,8 @@ src/updownclient.h	\
 src/opcodes.h	\
 src/amule.h	\
 src/color.h	\
-src/Preferences.h
+src/Preferences.h	\
+src/listbase.h
 	$(compile_source)
 
 $(OBJ_DIR)/SafeFile.o: src/SafeFile.cpp	\
@@ -814,7 +819,8 @@ src/amule.h	\
 src/color.h	\
 src/sockets.h	\
 src/Preferences.h	\
-src/BarShader.h
+src/BarShader.h	\
+src/listbase.h
 	$(compile_source)
 
 $(OBJ_DIR)/SharedFilesWnd.o: src/SharedFilesWnd.cpp	\
@@ -924,7 +930,8 @@ src/updownclient.h	\
 src/opcodes.h	\
 src/muuli_wdr.h	\
 src/color.h	\
-src/Preferences.h
+src/Preferences.h	\
+src/listbase.h
 	$(compile_source)
 
 $(OBJ_DIR)/UploadQueue.o: src/UploadQueue.cpp	\
@@ -993,7 +1000,9 @@ src/ChatWnd.h
 $(OBJ_DIR)/listctrl.o: src/listctrl.cpp	\
 src/listctrl.h	\
 src/pixmaps/sort_dn.xpm	\
-src/pixmaps/sort_up.xpm
+src/pixmaps/sort_up.xpm	\
+src/pixmaps/sort_dnx2.xpm	\
+src/pixmaps/sort_upx2.xpm
 	$(compile_source)
 
 $(OBJ_DIR)/muuli_wdr.o: src/muuli_wdr.cpp	\
@@ -1099,8 +1108,7 @@ src/SharedFileList.h	\
 src/KnownFileList.h	\
 src/amule.h	\
 src/PartFile.h	\
-src/endianfix.h	\
-src/CryptoPP_Inc.h
+src/endianfix.h
 	$(compile_source)
 
 $(OBJ_DIR)/amuleDlg.o: src/amuleDlg.cpp	\
@@ -1149,5 +1157,22 @@ $(OBJ_DIR)/ECSocket.o: src/ECSocket.cpp	\
 src/ECSocket.h	\
 src/endianfix.h	\
 src/gsocket-fix.h
+	$(compile_source)
+
+$(OBJ_DIR)/SHA.o: src/SHA.cpp	\
+src/SHA.h
+	$(compile_source)
+
+$(OBJ_DIR)/SHAHashSet.o: src/SHAHashSet.cpp	\
+src/SHAHashSet.h	\
+src/opcodes.h	\
+src/amule.h	\
+src/SafeFile.h	\
+src/KnownFile.h	\
+src/Preferences.h	\
+src/SHA.h	\
+src/updownclient.h	\
+src/DownloadQueue.h	\
+src/PartFile.h
 	$(compile_source)
 
