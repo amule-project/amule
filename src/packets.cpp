@@ -432,7 +432,7 @@ CTag::CTag(const CFile &in_data)
 		in_data.Seek(len, wxFromCurrent);
 	}
 	else{
-		if (tag.type==0x00) wxASSERT(0);
+		if (tag.type==0x00) throw(CInvalidPacket("Bad met file"));
 		if (length == 1)
 			printf("CTag::CTag(CFile*); Unknown tag: type=0x%02X  specialtag=%u\n", tag.type, tag.specialtag);
 		else
