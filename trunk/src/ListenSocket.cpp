@@ -128,13 +128,13 @@ void CClientReqSocket::Delete_Timed()
 
 void CClientReqSocket::Safe_Delete()
 {
-	deltimer = ::GetTickCount();
+	//deltimer = ::GetTickCount();
 	// if (m_hSocket != INVALID_SOCKET)
 	//  ShutDown(2);
 	client = NULL;
 	byConnected = ES_DISCONNECTED;
 	deletethis = true;
-	Destroy();
+	//Destroy();
 }
 
 bool CClientReqSocket::ProcessPacket(char* packet, uint32 size, uint8 opcode)
@@ -1096,7 +1096,7 @@ void CListenSocket::Process()
 		opensockets++;
 
 		if (cur_sock->deletethis) {
-			cur_sock->Close();
+			//cur_sock->Close();
 			cur_sock->Destroy();
 		} else {
 			socket_list.GetAt( pos2 )->CheckTimeOut();
