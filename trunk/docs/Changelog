@@ -173,16 +173,145 @@ Version 2.0.0rc6 - The '???' version.
 		  code, and revert get_path() breakage
 
 	Xaignar:
-		* Rewrote the file-hashing thread for greater flexibility and 
-		  better error-handling.
-		* Imported the parts of Crypto++ needed by aMule, which means 
-		  that no external Crypto++ libs are needed anymore.
-		* Reworked the systray dialog and fixed the rate-limit bugs 
-		  associated with it.
-		* Fixed the inverted priority bug in the download queue which 
-		  caused low-priority
-		  files to get connections before high-priority files.
-		* A number of other smaller bugfixes and improvements.
+		* Other stuff I'm too lazy to write or have forgotten about. ;)
+		* Only displayed category color when the items arn't highlighted
+		  on the download list, to improve readability. (thanks to Seagull)
+		* Optimized the IPFilter-code.
+		* Improved the CDownloadListCtrl::Updateitem function so that it 
+		  doesn't search the list for hidden items.
+		* Improved sorting of clients by QR on the download list.
+		* Removed a number of unsued files, cutting down archive-size
+		  by around 900kb.
+		* Changed systray behavior to match KDE/GNOME. Single-clicks hide/show.
+		* Fixed the "Last Recieved" column, which would show the 
+		  same as the "Last Seen Completed" column.
+		* Fixed the placement of sources on the download list, where they 
+		  would sometimes be placed with the wrong file.
+		* Cleanup of the new AICHSyncThread class.
+		* Removed extra newlines before writing text to the logfile,
+		  to avoid having a double-spaced file.
+		* Fixed loading of addresses.dat, where the first line would
+		  be ignored and replaced the messagebox with a log-line.
+		* Fix the percentage displayed on the progress-bars being rounded,
+		  which would result in non-completed files showing 100%.
+		* Added the ability for the user to specify permission settings for 
+		  fildes and directories. These settings default to 640 for files and
+		  750 for directories and are used throughout the app, with the 
+		  exception of files created with wxTextFile, as that class lacks 
+		  support for permissions. Will be fixed later		  
+		* Cleanup of CServerListCtrl:
+		  - The sorting of the list is now always maintained, including when items 
+		    on the list are updated or new items updated.
+		  - Cleanup of the popup-menu.
+		  - Disallow connecting to multiple servers at the same time.
+		  - Other changes.
+		* Reduced the overhead of the overhead calculation by using 
+		  code that didn't require iterating through a list every time.
+		* Added checks to avoid the user getting spammed with the "Connected
+		  to user" and "Disconnected ..." when having an open chat-window.
+		* Second reworking of the SearchDlg
+		  - The crash on searching should be fixed now.
+		  - Initial cleanups of the SearchList class
+		* Cleanup of the SearchListCtrl class
+		  - Results will now always be sorted
+		  - Syncronized all lists during runtime, so that they behave 
+		    as a single list.
+		  - Improving the coloring of items.
+		* Cleanup of the CMuleNotebook class
+		* Cleanup of the CMuleListCtrl class:
+		  - Added double-arrow for alternate sorting.
+		  - Centralized a lot of logical plus lots of other changes
+		* Double-buffered all listctrls using custom drawing, to reduce flicker.
+		* Added warning if the user recieves LowID from the server.
+		* Disallowing the user to send empty messages in the chat window.
+		* Rewrote the PrefsUnifiedDlg class
+		  - Removed the Rse classes and create a more clean replacement.
+		  - Made the dialog mode-less.
+		  - Removed the un-implemented Notify page
+		  - Serveral other changes.
+		* Updated the version reporting capabilities of aMule, so that it
+		  will report version, wxWidgets type and version and if unicode
+		  has been enabled or not.
+		* Added the new MuleTextCtrl class which supports the traditional
+		  popup-menu with Cut/Copy/Past/Clear and Select All. All existing
+		  wxTextCtrls were replaced with this new class.
+		* Imported the parts of Crypto++ that aMule needs into two files
+		  with permission from the Crypto++ developer. This means that aMule 
+		  now compiles without the user having Crypto++ installed, though it 
+		  is still possible to use external Crypto++ installations if the user
+		  wishes to do so.
+		* Fixed some compilation problems with aLinkCreator and wx-2.5.2.
+		* Fixed the First-Time-Message being displayed twice and rewrote it 
+		  somewhat since it was becomming quite outdated.
+		* Fixed the "unable to open preferences.dat" bugs.
+		* Fixed the ability to add static servers.
+		* Cleanup of column sorting functions.
+		* Fixed a bug where CServer::HasDynIP would always return true.
+		  This would result in need-less dns lookups.
+		* Removed a redundant attempt at adding servers from connected 
+		  clients.
+		* Fix for Packet::PackPackets function where new size of packet 
+		  wouldn't be saved.
+		* Fixed some access to the dialog-window ptr after it had been
+		  deleted. This was causing some odd behavior once in a while
+		  on termination.
+		* Fixed the downloadqueue sorting, which was reversed. Low-priorty 
+		  files having high priority and high-priority files having low 
+		  priority. (Thanks to thomas001 for noticing)
+		* Rewroked the systray:
+		  - Fixed the the problems with the rate-limiting functionality.
+		  - Enabled use of PublicIP requests, so that the tray will show
+		    the users actual IP rather than the interface IP.
+		  - Some changes of the menu-structure.
+		* Complete reworking of the hashing thread:
+		  - More informative output
+		  - Much better error handling
+		  - Handles duplicate files gracefully
+		  - Reads only 128kb (instead of 9mb) at a time to avoid killing 
+		    the harddisk entirely while the thread is running.
+		  - Made the thread terminate when no files are left, instead
+		    of timing out as before.
+		* Disconnected otherfunctions.h from the rest of the aMule code,
+		  so that it should be possible to use it in external apps.
+		* Added checks when using the client-pointer in the socket-code,
+		  since that suffered from the same problem as the previously 
+		  fixed clients (they have a habbit of dying at random).
+		* Added function for truncanating displayed filenames, which is now
+		  used in file-details dialog, to avoid it getting resized to 
+		  extreme widths.
+		* Some work on readying the Info tab on servers, deltaHF_ did the
+		  rest of the work.
+		* Small re-fix for the "mis-matching hash"-bug fix
+		* Reworked the SearchDlg once
+		  - Added Jugle.net websearch
+		  - Added results-count to the result tabs
+		  - Other smaller changes 
+		* Fixed mem-leak where certian client-objects wouldn't be deleted. 
+		  Specifically those that were removed from the download queue but 
+		  wern't on the upload queue and didn't have a active socket.
+		* Removed debugging functionality no longer needed.
+		* Removed variable-arguments logging functions, since they were 
+		  only needed in a very few places and posed a potential risk 
+		  everywhere else.
+		* Fixed StripInvalidFilenameChars function to avoid legit letters
+		  being dropped (thanks to likesylph).
+		* Changed all file-accessing to use CFile rather than a mix of CFile, 
+		  wxFile and FILE.
+		
+		* Removed a number of warnings.
+		* Cleanups of the following files
+		  - AICHSyncThread.*
+		  - ServerListCtrl.*
+		  - SearchListCtrl.*
+		  - MuleNotebook.*
+		  - MuleListCtrl.*
+		  - PrefsUnifiedDlg.*
+		  - SysTray.*
+		  - AddFileThread.*
+		  - SearchDlg.*
+		  - CMemFile.h and filemem.cpp
+		  - SafeFiles.*
+		  - CFile.*
 
 		
 	Special Thanks To:
