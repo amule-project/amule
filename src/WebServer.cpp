@@ -1348,7 +1348,7 @@ wxString CWebServer::_GetSharedFilesList(ThreadData Data) {
 	// commands: setpriority, reload
 	if (!_ParseURL(Data, wxT("hash")).IsEmpty() && !_ParseURL(Data, wxT("setpriority")).IsEmpty() && IsSessionAdmin(Data,sSession)) {
 		CECTag tag(EC_TAG_KNOWNFILE, CMD4Hash(_ParseURL(Data, wxT("hash"))));
-		tag.AddTag(CECTag(EC_TAG_PARTFILE_PRIO, (uint32)StrToLong(_ParseURL(Data, wxT("setpriority")))));
+		tag.AddTag(CECTag(EC_TAG_PARTFILE_PRIO, (uint8)StrToLong(_ParseURL(Data, wxT("setpriority")))));
 		CECPacket prio_req(EC_OP_SHARED_SET_PRIO);
 		prio_req.AddTag(tag);
 		Send_Discard_V2_Request(&prio_req);
