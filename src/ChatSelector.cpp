@@ -183,6 +183,7 @@ void CChatSelector::ProcessMessage(CUpDownClient* sender, const wxString& messag
 	session->AddText( wxString(wxT(": ")) + message + wxString(wxT("\n")), COLOR_BLACK );
 }
 
+#ifndef CLIENT_GUI
 
 bool CChatSelector::SendMessage( const wxString& message )
 {
@@ -228,7 +229,6 @@ bool CChatSelector::SendMessage( const wxString& message )
 	
 	return true;
 }
-
 
 //#warning Creteil?  I know you are here Creteil... follow the white rabbit.
 /* Madcat - knock knock ...
@@ -320,3 +320,4 @@ void CChatSelector::RefreshFriend(CFriend* toupdate)
 		};
 	}	
 }
+#endif
