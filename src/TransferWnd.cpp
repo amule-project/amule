@@ -100,7 +100,7 @@ bool CTransferWnd::OnInitDialog()
 
 void CTransferWnd::ShowQueueCount(uint32 number)
 {
-	wxString fmtstr= (wxString::Format(wxT("%u (%u ") ,number,theApp.clientlist->GetBannedCount()) + ("Banned")) +wxT(")");
+	wxString fmtstr= (wxString::Format(wxT("%u (%u ") ,number,theApp.clientlist->GetBannedCount()) + wxT("Banned")) +wxT(")");
 	wxStaticCast(FindWindowByName(wxT("clientCount")),wxStaticText)->SetLabel(fmtstr);
 }
 
