@@ -27,7 +27,6 @@
 #include "ClientUDPSocket.h"	// Needed for CClientUDPSocket
 #include "ClientCredits.h"	// Needed for CClientCredits
 #include "packets.h"		// Needed for Packet
-#include "TransferWnd.h"	// Needed for CTransferWnd
 #include "SafeFile.h"		// Needed for CSafeMemFile
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
@@ -44,6 +43,10 @@
 #include "BarShader.h"		// Needed for CBarShader
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "ClientList.h"
+
+#ifndef AMULE_DAEMON
+	#include "TransferWnd.h"	// Needed for CTransferWnd
+#endif
 
 //	members of CUpDownClient
 //	which are mainly used for uploading functions 

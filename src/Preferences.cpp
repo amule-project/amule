@@ -46,9 +46,9 @@
 #include "CFile.h"
 #include "MD5Sum.h"
 
+#ifndef AMULE_DAEMON
 #include <wx/control.h>
 #include <wx/slider.h>
-#ifndef AMULE_DAEMON
 #include "muuli_wdr.h"
 #include "StatisticsDlg.h"
 #endif

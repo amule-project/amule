@@ -92,7 +92,6 @@
 #include "PartFile.h"		// Needed for CPartFile
 #include "AddFileThread.h"	// Needed for CAddFileThread
 #include "packets.h"
-#include "PrefsUnifiedDlg.h"
 #include "AICHSyncThread.h"
 
 #ifdef HAVE_SYS_RESOURCE_H
@@ -265,4 +264,3 @@ CFriend *CamuleDaemonApp::FindFriend(CMD4Hash *WXUNUSED(hash), uint32 WXUNUSED(i
 // 	}
 	return NULL;
 }
-

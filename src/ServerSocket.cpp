@@ -48,7 +48,6 @@
 #include "SafeFile.h"		// Needed for CSafeMemFile
 #include "PartFile.h"		// Needed for CPartFile
 #include "CMemFile.h"		// Needed for CMemFile
-#include "SearchDlg.h"		// Needed for CSearchDlg
 #include "SearchList.h"		// Needed for CSearchList
 #include "otherstructs.h"	// Needed for LoginAnswer_Struct
 #include "Preferences.h"	// Needed for CPreferences
@@ -58,13 +57,16 @@
 #include "sockets.h"		// Needed for CS_WAITFORLOGIN
 #include "ServerList.h"		// Needed for CServerList
 #include "server.h"		// Needed for CServer
-#include "amuleDlg.h"		// Needed for CamuleDlg
 #include "amule.h"		// Needed for theApp
 #include "amuleIPV4Address.h" // Needed for amuleIPV4Address
 
 //#define DEBUG_SERVER_PROTOCOL
 
 #ifndef AMULE_DAEMON
+
+#include "SearchDlg.h"		// Needed for CSearchDlg
+#include "amuleDlg.h"		// Needed for CamuleDlg
+
 BEGIN_EVENT_TABLE(CServerSocketHandler, wxEvtHandler)
 	EVT_SOCKET(SERVERSOCKET_HANDLER, CServerSocketHandler::ServerSocketHandler)
 END_EVENT_TABLE()

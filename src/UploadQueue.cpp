@@ -35,13 +35,11 @@
 #include "UploadQueue.h"	// Interface declarations
 #include "ServerList.h"		// Needed for CServerList
 #include "ClientCredits.h"	// Needed for CClientCreditsList
-#include "OScopeCtrl.h"		// Needed for DelayPoints
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "server.h"			// Needed for CServer
 #include "sockets.h"		// Needed for CServerConnect
 #include "KnownFile.h"		// Needed for CKnownFile
 #include "packets.h"		// Needed for Packet
-#include "TransferWnd.h"	// Needed for CTransferWnd
 #include "ListenSocket.h"	// Needed for CClientReqSocket
 #include "SharedFileList.h"	// Needed for CSharedFileList
 #include "opcodes.h"		// Needed for MAX_PURGEQUEUETIME
@@ -50,6 +48,11 @@
 #include "amule.h"		// Needed for theApp
 #include "Preferences.h"
 #include "ClientList.h"
+
+#ifndef AMULE_DAEMON
+	#include "OScopeCtrl.h"		// Needed for DelayPoints
+	#include "TransferWnd.h"	// Needed for CTransferWnd	
+#endif
 
 #include <numeric>
 
@@ -602,4 +605,3 @@ CUpDownClient* CUploadQueue::GetNextClient(CUpDownClient* lastclient)
 		return waitinglist.GetAt(pos);
 	}
 }
-
