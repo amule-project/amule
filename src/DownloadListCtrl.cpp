@@ -821,7 +821,7 @@ void CDownloadListCtrl::DrawFileItem(wxDC * dc, int nColumn, LPRECT lpRect, Ctrl
 		// force clipper (clip 2 px more than the rectangle from the right side)
 		wxDCClipper clipper(*dc, lpRect->left, lpRect->top, lpRect->right - lpRect->left - 2, lpRect->bottom - lpRect->top);
 
-		CString buffer;
+		wxString buffer;
 		CPartFile *lpPartFile = (CPartFile *) lpCtrlItem->value;
 		switch (nColumn) {
 
@@ -848,25 +848,25 @@ void CDownloadListCtrl::DrawFileItem(wxDC * dc, int nColumn, LPRECT lpRect, Ctrl
 				break;
 
 			case 1:	// size
-				buffer.Format(wxT("%s"), CastItoXBytes(lpPartFile->GetFileSize()).GetData());
+				buffer = CastItoXBytes(lpPartFile->GetFileSize());
 				//dc->DrawText(buffer,(int)strlen(buffer),lpRect, DLC_DT_TEXT);
 				dc->DrawText(buffer, lpRect->left, lpRect->top);
 				break;
 
 			case 2:	// transfered
-				buffer.Format(wxT("%s"), CastItoXBytes(lpPartFile->GetTransfered()).GetData());
+				buffer = CastItoXBytes(lpPartFile->GetTransfered()).GetData();
 				//dc->DrawText(buffer,(int)strlen(buffer),lpRect, DLC_DT_TEXT);   
 				dc->DrawText(buffer, lpRect->left, lpRect->top);
 				break;
 
 			case 3:	// transfered complete
-				buffer.Format(wxT("%s"), CastItoXBytes(lpPartFile->GetCompletedSize()).GetData());
+				buffer = CastItoXBytes(lpPartFile->GetCompletedSize());
 				dc->DrawText(buffer, lpRect->left, lpRect->top);
 				break;
 
 			case 4:	// speed
 				if (lpPartFile->GetTransferingSrcCount() == 0) {
-					buffer = "";
+					buffer = wxT("");
 				} else {
 					buffer.Format(wxT("%.1f %s"), lpPartFile->GetKBpsDown(), "kB/s");
 				}
@@ -1004,9 +1004,9 @@ void CDownloadListCtrl::DrawFileItem(wxDC * dc, int nColumn, LPRECT lpRect, Ctrl
 					}
 					// time
 					sint32 restTime = lpPartFile->getTimeRemaining();
-					buffer.Format(wxT("%s (%s)"), CastSecondsToHM(restTime).GetData(), CastItoXBytes(remains).GetData());
+					buffer = CastSecondsToHM(restTime) + wxT(" (") + CastItoXBytes(remains) + wxT(")");
 					if (lpPartFile->GetStatus() == PS_COMPLETING || lpPartFile->GetStatus() == PS_COMPLETE) {
-						buffer = "";
+						buffer = wxT("");
 					}
 					//dc->DrawText(buffer,(int)strlen(buffer),lpRect, DLC_DT_TEXT);
 					dc->DrawText(buffer, lpRect->left, lpRect->top);
@@ -1015,13 +1015,13 @@ void CDownloadListCtrl::DrawFileItem(wxDC * dc, int nColumn, LPRECT lpRect, Ctrl
 			case 10:	// last seen complete
 				{
 					if (lpPartFile->lastseencomplete == 0) {
-						buffer = (_("Unknown"));
+						buffer = _("Unknown");
 					} else {
 						char tmpstr[512];
 						static char const* lastseencomplete_fmt = "%y/%m/%d %H:%M:%S"; // Suppress compiler warning.changed by deltaHF (Georg Ludwig fix)
 						strftime(tmpstr, sizeof(tmpstr), lastseencomplete_fmt,
 						         localtime(&lpPartFile->lastseencomplete));
-						buffer = tmpstr;	//lpPartFile->lastseencomplete.Format("%A, %x, %X");
+						buffer = char2unicode(tmpstr);
 					}
 					dc->DrawText(buffer, lpRect->left, lpRect->top);
 				}
@@ -1033,9 +1033,9 @@ void CDownloadListCtrl::DrawFileItem(wxDC * dc, int nColumn, LPRECT lpRect, Ctrl
 						time_t kello = lpPartFile->GetLastChangeDatetime();
 						static char const* lastchangedate_fmt = "%y/%m/%d %H:%M:%S"; // Suppress compiler warning.changed by deltaHF (Georg Ludwig fix)
 						strftime(tmpstr, sizeof(tmpstr), lastchangedate_fmt, localtime(&kello));
-						buffer = tmpstr;	//lpPartFile->GetLastChangeDatetime().Format( theApp.glob_prefs->GetDateTimeFormat());
+						buffer = char2unicode(tmpstr);
 					} else
-						buffer = "";
+						buffer = wxT("");
 					dc->DrawText(buffer, lpRect->left, lpRect->top);
 				}
 		}
@@ -1050,7 +1050,7 @@ void CDownloadListCtrl::DrawSourceItem(wxDC * dc, int nColumn, LPRECT lpRect, Ct
 
 		// force clipper (clip 2 px more than the rectangle from the right side)
 		wxDCClipper clipper(*dc, lpRect->left, lpRect->top, lpRect->right - lpRect->left - 2, lpRect->bottom - lpRect->top);
-		CString buffer;
+		wxString buffer;
 		CUpDownClient *lpUpDownClient = (CUpDownClient *) lpCtrlItem->value;
 		switch (nColumn) {
 
@@ -1166,9 +1166,9 @@ void CDownloadListCtrl::DrawSourceItem(wxDC * dc, int nColumn, LPRECT lpRect, Ct
 					cur_rec.left += 20;					
 					
 					if (!lpUpDownClient->GetUserName()) {
-						buffer = "?";
+						buffer = wxT("?");
 					} else {
-						buffer.Format(wxT("%s"), lpUpDownClient->GetUserName());
+						buffer = char2unicode(lpUpDownClient->GetUserName());
 					}
 					//dc->DrawText(buffer, cur_rec.left, cur_rec.top);
 					lpRect->left += 40;
@@ -1188,7 +1188,7 @@ void CDownloadListCtrl::DrawSourceItem(wxDC * dc, int nColumn, LPRECT lpRect, Ct
 
 			case 3:	// completed
 				if (lpCtrlItem->type == 2 && lpUpDownClient->GetTransferedDown()) {
-					buffer.Format(wxT("%s"), CastItoXBytes(lpUpDownClient->GetTransferedDown()).GetData());
+					buffer = CastItoXBytes(lpUpDownClient->GetTransferedDown());
 					//dc->DrawText(buffer,(int)strlen(buffer),lpRect, DLC_DT_TEXT); 
 					dc->DrawText(buffer, lpRect->left, lpRect->top);
 				}
@@ -1198,7 +1198,7 @@ void CDownloadListCtrl::DrawSourceItem(wxDC * dc, int nColumn, LPRECT lpRect, Ct
 
 				if (lpCtrlItem->type == 2) {
 					if (lpUpDownClient->GetKBpsDown()<0.001) {
-						buffer = "";
+						buffer = wxT("");
 					} else {
 						buffer.Format(wxT("%.1f %s"), lpUpDownClient->GetKBpsDown(), "kB/s");
 					}
@@ -1258,7 +1258,7 @@ void CDownloadListCtrl::DrawSourceItem(wxDC * dc, int nColumn, LPRECT lpRect, Ct
 			case 7:	// prio
 				if (lpUpDownClient->GetDownloadState() == DS_ONQUEUE) {
 					if (lpUpDownClient->IsRemoteQueueFull()) {
-						buffer.Format(wxT("%s"), (_("Queue Full")));
+						buffer = _("Queue Full");
 						dc->DrawText(buffer, lpRect->left, lpRect->top);
 					} else {
 						if (lpUpDownClient->GetRemoteQueueRank()) {
@@ -1273,12 +1273,12 @@ void CDownloadListCtrl::DrawSourceItem(wxDC * dc, int nColumn, LPRECT lpRect, Ct
 							dc->DrawText(buffer, lpRect->left, lpRect->top);
 							dc->SetTextForeground(savedColour);
 						} else {
-							buffer = "";
+							buffer = wxT("");
 							dc->DrawText(buffer, lpRect->left, lpRect->top);
 						}
 					}
 				} else {
-					buffer = "";
+					buffer = wxT("");
 					dc->DrawText(buffer, lpRect->left, lpRect->top);
 				}
 				break;
