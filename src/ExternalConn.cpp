@@ -1188,6 +1188,9 @@ CECPacket *SetPreferencesFromRequest(const CECPacket *request)
 		}
 	}
 
+	// Save the preferences
+	theApp.glob_prefs->Save();
+
 	CECPacket *response = new CECPacket(EC_OP_NOOP);
 	return response;
 }
