@@ -1124,9 +1124,13 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
 				}
 			}
 			*/
-			if (!(result->GetPartHash(i) && !md4cmp(result->GetPartHash(i),this->GetPartHash(i)))){
-				if (IsComplete(i*PARTSIZE,((i+1)*PARTSIZE)-1)){
-					theApp.amuledlg->AddLogLine(false, _("Found corrupted part (%i) in %i parts file %s - FileResultHash |%s| FileHash |%s|"), i + 1, GetED2KPartHashCount(), m_strFileName.c_str(), EncodeBase16(result->GetPartHash(i), 16).c_str(), EncodeBase16(GetPartHash(i), 16).c_str());
+			if (!( i < result->GetHashCount() && !md4cmp(result->GetPartHash(i),this->GetPartHash(i)))){
+				if (IsComplete(i*PARTSIZE,((i+1)*PARTSIZE)-1)) {
+					CMD4Hash wronghash;
+					if ( i < result->GetHashCount() )
+						wronghash = result->GetPartHash(i);
+				
+					theApp.amuledlg->AddLogLine(false, _("Found corrupted part (%i) in %i parts file %s - FileResultHash |%s| FileHash |%s|"), i + 1, GetED2KPartHashCount(), m_strFileName.c_str(), wronghash.Encode(), GetPartHash(i).Encode().c_str());
 				
 					AddGap(i*PARTSIZE,((((i+1)*PARTSIZE)-1) >= m_nFileSize) ? m_nFileSize-1 : ((i+1)*PARTSIZE)-1);
 					errorfound = true;
@@ -2706,7 +2710,7 @@ bool CPartFile::HashSinglePart(uint16 partnumber)
 		theApp.amuledlg->AddLogLine(true, _("Warning: Unable to hash downloaded part - hashset incomplete (%s)"), GetFileName().c_str());
 		this->hashsetneeded = true;
 		return true;
-	} else if(!GetPartHash(partnumber) && GetPartCount() != 1) {
+	} else if ((GetHashCount() <= partnumber) && GetPartCount() != 1) {
 		theApp.amuledlg->AddLogLine(true, _("Error: Unable to hash downloaded part - hashset incomplete (%s). This should never happen"),GetFileName().c_str());
 		this->hashsetneeded = true;
 		return true;		
