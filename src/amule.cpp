@@ -1438,6 +1438,7 @@ void CamuleApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 		FlushQueuedLogLines();
 		// Stats tree is updated every 5 seconds. Maybe we should make it match prefs.
 		statistics->UpdateStatsTree();
+		downloadqueue->SortByPriority();
 	}
 
 	if (msCur-msPrevSave >= 60000) {

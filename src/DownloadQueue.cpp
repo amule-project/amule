@@ -736,8 +736,46 @@ bool ComparePartFiles(const CPartFile* file1, const CPartFile* file2) {
 		// the PR_LOW file gets sources before the PR_HIGH file ...
 		return (file1->GetDownPriority() > file2->GetDownPriority());
 	} else {
-		// Use normal alpha-numeric comparison here, lesser before greater
-		return file1->GetPartMetFileName().CmpNoCase( file2->GetPartMetFileName() ) < 0;
+		// Kry: Sorting for most non-current sourcing ratio
+		
+		uint16 sources_1 = file1->GetSourceCount() * 100;
+		uint16 sources_2 = file2->GetSourceCount() * 100;
+		
+		if (!sources_1) {
+			// No sources -> Less prio
+			return false;
+		}
+
+		if (!sources_2) {
+			// No sources -> Less prio
+			return true;
+		}
+		
+		uint16 not_current_1 = file1->GetNotCurrentSourcesCount() * 100;
+		uint16 not_current_2 = file2->GetNotCurrentSourcesCount() * 100;
+		
+		if (!not_current_1) {
+			// Sources avail. but none connected. Go up.
+			return true;
+		}
+		
+		if (!not_current_2) {
+			// Sources avail. but none connected. Go up.
+			return false;
+		}	
+		
+		//bool ratio = file1->GetNotCurrentSourcesRatio() > file2->GetNotCurrentSourcesRatio();
+		
+		// Very simple algorithm: if (a) has a lower % of connected sources, go up
+		bool ratio = (not_current_1/sources_1) > (not_current_2/sources_2);
+			
+		if (ratio) {
+			return ratio;
+		} else {		
+			// If both files has same ratio (something incredibly absurd)		
+			// Use normal alpha-numeric comparison here, lesser before greater*/
+			return file1->GetPartMetFileName().CmpNoCase( file2->GetPartMetFileName() ) < 0;
+		}
 	}
 }
 
