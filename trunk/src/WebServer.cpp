@@ -95,6 +95,7 @@ wxString _SpecialChars(wxString str) {
 
 CWebServer::CWebServer(CamulewebApp *webApp):
 	m_ServersInfo(webApp), m_SharedFilesInfo(webApp), m_DownloadFilesInfo(webApp, &m_ImageLib),
+	m_UploadsInfo(webApp),
 	m_ImageLib(wxString(char2unicode(getenv("HOME"))) + wxT("/.aMule/webserver/"))
 {
 	webInterface = webApp;
@@ -2272,12 +2273,6 @@ bool ServersInfo::ServersInfo::ReQuery()
 	return true;
 }
 
-bool ServersInfo::ProcessUpdate(CECPacket *)
-{
-	// no updates expected
-	return false;
-}
-
 bool ServersInfo::CompareItems(const ServerEntry &i1, const ServerEntry &i2)
 {
 	bool Result;
@@ -2575,6 +2570,36 @@ bool DownloadFilesInfo::CompareItems(const DownloadFiles &i1, const DownloadFile
 			break;
 	}
 	return Result ^ m_SortReverse;
+}
+
+UploadsInfo::UploadsInfo(CamulewebApp *webApp) : ItemsContainer<UploadFiles, int>(webApp)
+{
+}
+
+bool UploadsInfo::ReQuery()
+{
+	CECPacket up_req(EC_OP_GET_ULOAD_QUEUE, EC_DETAIL_WEB);
+	CECPacket *up_reply = m_webApp->SendRecvMsg_v2(&up_req);
+	if ( !up_reply ) {
+		return false;
+	}
+	//
+	// query succeded - flush existing values and refill
+	EraseAll();
+	for(int i = 0; i < up_reply->GetTagCount(); i ++) {
+		CECTag *tag = up_reply->GetTagByIndex(i);
+		
+		UploadFiles curr;
+		curr.sUserName = tag->GetTagByName(EC_TAG_CLIENT_NAME)->GetStringData();
+		curr.nSpeed = tag->GetTagByName(EC_TAG_PARTFILE_SPEED)->GetInt32Data();
+		curr.nTransferredUp = tag->GetTagByName(EC_TAG_PARTFILE_SIZE_XFER_UP)->GetInt32Data();
+		curr.nTransferredDown = tag->GetTagByName(EC_TAG_PARTFILE_SIZE_XFER)->GetInt32Data();
+		
+		AddItem(curr);
+	}
+	delete up_reply;
+	
+	return true;
 }
 
 /*!

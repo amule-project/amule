@@ -192,8 +192,10 @@ class ServerEntry {
 };
 
 class UploadFiles {
+	public:
 		wxString  sUserName;
-		uint32 nTransferred;
+		uint32 nTransferredUp;
+		uint32 nTransferredDown;
 		uint32 nSpeed;
 		//
 		// Don't need filename - sharedfiles already have it
@@ -426,6 +428,8 @@ class UpdatableItemsContainer : public ItemsContainer<T, E> {
 class UploadsInfo : public ItemsContainer<UploadFiles, int> {
 	public:
 		UploadsInfo(CamulewebApp *webApp);
+
+		virtual bool ReQuery();
 };
 
 class ServersInfo : public ItemsContainer<ServerEntry, xServerSort> {
@@ -436,7 +440,6 @@ class ServersInfo : public ItemsContainer<ServerEntry, xServerSort> {
 		ServersInfo(CamulewebApp *webApp);
 
 		virtual bool ReQuery();
-		virtual bool ProcessUpdate(CECPacket *update);
 
 		bool CompareItems(const ServerEntry &i1, const ServerEntry &i2);
 };
@@ -694,6 +697,8 @@ class CWebServer {
 	ServersInfo m_ServersInfo;
 	SharedFilesInfo m_SharedFilesInfo;
 	DownloadFilesInfo m_DownloadFilesInfo;
+	UploadsInfo m_UploadsInfo;
+	
 	CImageLib m_ImageLib;
 	
 	public:
