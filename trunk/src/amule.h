@@ -25,6 +25,7 @@
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/app.h>			// Needed for wxApp
 #include <wx/intl.h>		// Needed for wxLocale
+#include <wx/file.h>
 
 #include "types.h"			// Needed for int32, uint16 and uint64
 #include "GuiEvents.h"
@@ -248,6 +249,8 @@ public:
 	
 	wxString ConfigDir;
 
+	void AddLogLine(const wxString &msg);
+
 protected:
 	/**
 	 * This class is used to contain log messages that are to be displayed
@@ -293,6 +296,10 @@ protected:
 	wxString amulesig_path;
 	
 	uint32 m_dwPublicIP;
+	
+	wxFile *applog;
+	bool enable_stdout_log;
+	wxString server_msg;
 
 };
 
