@@ -78,13 +78,16 @@ public:
 	virtual void OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxRect& rectHL,bool highlighted);
 	
 protected:
-	void OnColResize(wxListEvent& evt);
-
 	void DrawFileItem(wxDC* dc,int nColumn, const wxRect& rect,CtrlItem_Struct* lpCtrlItem);
 	void DrawSourceItem(wxDC* dc,int nColumn, const wxRect& rect,CtrlItem_Struct* lpCtrlItem);
+
+	static int s_lastOrder;
+	static int s_lastColumn;
 	static int wxCALLBACK SortProc(long lp1,long lp2,long lpSort);
 	static int Compare(CPartFile* file1, CPartFile* file2, long lParamSort);
 	static int Compare(const CUpDownClient* client1, const CUpDownClient* client2, long lParamSort);
+
+	void OnColumnLClick(wxListEvent& evt);
 	void OnLvnItemActivate(wxListEvent& evt);
 	void OnNMRclick(wxListEvent& evt);
 	void OnPriLow(wxCommandEvent& evt);
