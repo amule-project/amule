@@ -1878,6 +1878,14 @@ void CamuleApp::NotifyEvent(GUIEvent event) {
 	        case SEARCH_GLOBAL_REQ:
 			serverconnect->SendUDPPacket((Packet *)event.ptr_value, (CServer *)event.ptr_aux_value, false);
 			break;
+	        case SEARCH_ADD_TO_DLOAD:
+			downloadqueue->AddSearchToDownload((CSearchFile *)event.ptr_value, event.byte_value);
+			break;
+	        case SEARCH_ADD_RESULT:
+			break;
+	        case SEARCH_UPDATE_SOURCES:
+			
+			break;
 
 		// PartFile
 	        case PARTFILE_REMOVE_NO_NEEDED:
@@ -1940,6 +1948,7 @@ void CamuleApp::NotifyEvent(GUIEvent event) {
 	        case PARTFILE_PRIO_SET:
 			((CPartFile *)event.ptr_value)->SetDownPriority(event.long_value,
 									event.longlong_value, event.longlong_value);
+			break;
 	        case PARTFILE_SET_CAT:
 			((CPartFile *)event.ptr_value)->SetCategory(event.byte_value);
 			break;
@@ -1960,6 +1969,16 @@ void CamuleApp::NotifyEvent(GUIEvent event) {
 			break;
 	        case KNOWNFILE_SET_PERM:
 			((CKnownFile *)event.ptr_value)->SetPermissions(event.byte_value);
+			break;
+	        case KNOWNFILE_SET_COMMENT:
+			((CKnownFile *)event.ptr_value)->SetFileComment(event.string_value);
+			break;
+			// download queue
+	        case DLOAD_SET_CAT_PRIO:
+			downloadqueue->SetCatPrio(event.long_value, event.short_value);
+			break;
+	        case DLOAD_SET_CAT_STATUS:
+			downloadqueue->SetCatStatus(event.long_value, event.short_value);
 			break;
 		// CORE->GUI
 		// queue list
