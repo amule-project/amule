@@ -57,6 +57,8 @@ CServer::CServer(ServerMet_Struct* in_data)
 	maxusers=0;
 	m_uTCPFlags = 0;
 	m_uUDPFlags = 0;
+	softfiles = 0;
+	hardfiles = 0;
 }
 
 CServer::CServer(uint16 in_port, char* i_addr)

@@ -31,7 +31,7 @@ static wxString KnownFileHash(const char* filename, uint32 date, uint32 size)
 
 static wxString KnownFileHash(CKnownFile *file)
 {
-	return KnownFileHash(file->GetFileName(), file->GetFileDate(),
+	return KnownFileHash(file->GetFileName().c_str(), file->GetFileDate(),
 	                     file->GetFileSize());
 }
 
