@@ -65,6 +65,7 @@ amulegui_SOURCES = \
 	ColorFrameCtrl.cpp \
 	CommentDialog.cpp \
 	CommentDialogLst.cpp \
+	DataToText.cpp \
 	DirectoryTreeCtrl.cpp \
 	DownloadListCtrl.cpp \
 	ED2KLink.cpp \
@@ -74,10 +75,12 @@ amulegui_SOURCES = \
 	EditServerListDlg.cpp \
 	FileDetailDialog.cpp \
 	FileDetailListCtrl.cpp \
+	Format.cpp \
 	FriendListCtrl.cpp \
 	KadDlg.cpp \
 	KnownFile.cpp \
 	listctrl.cpp \
+	Logger.cpp \
 	MD5Sum.cpp \
 	MemFile.cpp \
 	MuleGifCtrl.cpp \
@@ -87,7 +90,6 @@ amulegui_SOURCES = \
 	muuli_wdr.cpp \
 	NetworkFunctions.cpp \
 	OtherFunctions.cpp \
-	DataToText.cpp \
 	OScopeCtrl.cpp \
 	PartFile.cpp \
 	Packet.cpp \
@@ -107,19 +109,15 @@ amulegui_SOURCES = \
 	Statistics.cpp \
 	StatisticsDlg.cpp \
 	StringFunctions.cpp \
-	Format.cpp \
-	Logger.cpp \
-	TransferWnd.cpp
+	TransferWnd.cpp 
 
 amule_SOURCES = \
-	kademlia/io/ByteIO.cpp \
-	kademlia/io/DataIO.cpp \
-	kademlia/io/FileIO.cpp \
-	kademlia/io/IOException.cpp \
-	kademlia/utils/UInt128.cpp \
 	AddFriend.cpp \
 	AddFileThread.cpp \
 	AICHSyncThread.cpp \
+	amule.cpp \
+	amule-gui.cpp \
+	amuleDlg.cpp \
 	BarShader.cpp \
 	BaseClient.cpp \
 	ChatSelector.cpp \
@@ -129,12 +127,13 @@ amule_SOURCES = \
 	ClientCredits.cpp \
 	ClientDetailDialog.cpp \
 	ClientList.cpp \
-	DeadSourceList.cpp \
 	ClientListCtrl.cpp \
 	ClientUDPSocket.cpp \
 	ColorFrameCtrl.cpp \
 	CommentDialog.cpp \
 	CommentDialogLst.cpp \
+	DataToText.cpp \
+	DeadSourceList.cpp \
 	DirectoryTreeCtrl.cpp \
 	DownloadClient.cpp \
 	DownloadListCtrl.cpp \
@@ -149,11 +148,10 @@ amule_SOURCES = \
 	FileDetailDialog.cpp \
 	FileDetailListCtrl.cpp \
 	filefn.cpp \
+	Format.cpp \
 	Friend.cpp \
 	FriendList.cpp \
 	FriendListCtrl.cpp \
-	MemFile.cpp \
-	MuleGifCtrl.cpp \
 	HTTPDownload.cpp \
 	IPFilter.cpp \
 	KnownFile.cpp \
@@ -161,7 +159,10 @@ amule_SOURCES = \
 	KnownFileList.cpp \
 	ListenSocket.cpp \
 	listctrl.cpp \
+	Logger.cpp \
+	MemFile.cpp \
 	MD5Sum.cpp \
+	MuleGifCtrl.cpp \
 	MuleListCtrl.cpp \
 	MuleNotebook.cpp \
 	MuleTextCtrl.cpp \
@@ -169,7 +170,6 @@ amule_SOURCES = \
 	NetworkFunctions.cpp \
 	OScopeCtrl.cpp \
 	OtherFunctions.cpp \
-	DataToText.cpp \
 	Packet.cpp \
 	PartFile.cpp \
 	Preferences.cpp \
@@ -195,27 +195,26 @@ amule_SOURCES = \
 	StatisticsDlg.cpp \
 	StateMachine.cpp \
 	StringFunctions.cpp \
-	Format.cpp \
-	Logger.cpp \
 	TransferWnd.cpp \
 	UploadClient.cpp \
 	UploadQueue.cpp \
-	amule.cpp \
-	amule-gui.cpp \
-	amuleDlg.cpp 
+	kademlia/io/ByteIO.cpp \
+	kademlia/io/DataIO.cpp \
+	kademlia/io/FileIO.cpp \
+	kademlia/io/IOException.cpp \
+	kademlia/utils/UInt128.cpp
 
 amuled_SOURCES = \
-	kademlia/utils/UInt128.cpp \
 	AICHSyncThread.cpp \
         AddFileThread.cpp \
+        amule.cpp \
+        amuled.cpp \
         BaseClient.cpp \
-        SHA.cpp \
-        SHAHashSet.cpp \
         CFile.cpp \
         ClientCredits.cpp \
         ClientList.cpp \
-	DeadSourceList.cpp \
         ClientUDPSocket.cpp \
+	DeadSourceList.cpp \
         DownloadClient.cpp \
         DownloadQueue.cpp \
         ECSocket.cpp \
@@ -225,6 +224,7 @@ amuled_SOURCES = \
         EMSocket.cpp \
         ExternalConn.cpp \
         filefn.cpp \
+	Format.cpp \
         Friend.cpp \
 	FriendList.cpp \
 	HTTPDownload.cpp \
@@ -232,6 +232,7 @@ amuled_SOURCES = \
         KnownFile.cpp \
         KnownFileList.cpp \
 	ListenSocket.cpp \
+	Logger.cpp \
         MD5Sum.cpp \
         MemFile.cpp \
 	NetworkFunctions.cpp \
@@ -247,17 +248,20 @@ amuled_SOURCES = \
         ServerList.cpp \
         ServerSocket.cpp \
         ServerUDPSocket.cpp \
+        SHA.cpp \
+        SHAHashSet.cpp \
         SharedFileList.cpp \
 	StateMachine.cpp \
 	Statistics.cpp \
 	StringFunctions.cpp \
-	Format.cpp \
-	Logger.cpp \
 	Timer.cpp \
         UploadClient.cpp \
         UploadQueue.cpp \
-        amule.cpp \
-        amuled.cpp 
+	kademlia/io/ByteIO.cpp \
+	kademlia/io/DataIO.cpp \
+	kademlia/io/FileIO.cpp \
+	kademlia/io/IOException.cpp \
+	kademlia/utils/UInt128.cpp
 
 if ADD_GSOCKET
 if ADD_24GSOCKET
