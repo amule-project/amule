@@ -869,20 +869,6 @@ bool CamuleApp::ReinitializeNetwork(wxString *msg)
 	myaddr.Service(thePrefs::ECPort());
 	ECServerHandler = new ExternalConn(myaddr, msg);
 
-	// Create the UDP socket.
-	// Used for extended eMule protocol, Queue Rating, File Reask Ping.
-	// Default is port 4672.
-	if (!thePrefs::IsUDPDisabled()) {
-		myaddr.Service(thePrefs::GetUDPPort());
-//#ifdef TESTING_PROXY
-		clientudp = new CClientUDPSocket(myaddr, thePrefs::GetProxyData());
-		*msg << wxT("*** Client UDP socket (extended eMule) at ") <<
-			ip << wxT(":") << thePrefs::GetUDPPort() << wxT("\n");
-	} else {
-		*msg << wxT("*** Client UDP socket (extended eMule) disabled on preferences\n");
-		clientudp = NULL;
-	}
-	
 	// Creates the UDP socket TCP+3.
 	// Used for source asking on servers.
 	myaddr.Service(thePrefs::GetPort()+3);
@@ -919,6 +905,20 @@ bool CamuleApp::ReinitializeNetwork(wxString *msg)
 			"Check your network to make sure the port is open for output and input.");
 		ShowAlert(err, _("Error"), wxOK | wxICON_ERROR);
 	}
+
+	// Create the UDP socket.
+	// Used for extended eMule protocol, Queue Rating, File Reask Ping.
+	// Default is port 4672.
+	if (!thePrefs::IsUDPDisabled()) {
+		myaddr.Service(thePrefs::GetUDPPort());
+//#ifdef TESTING_PROXY
+		clientudp = new CClientUDPSocket(myaddr, thePrefs::GetProxyData());
+		*msg << wxT("*** Client UDP socket (extended eMule) at ") <<
+			ip << wxT(":") << thePrefs::GetUDPPort() << wxT("\n");
+	} else {
+		*msg << wxT("*** Client UDP socket (extended eMule) disabled on preferences\n");
+		clientudp = NULL;
+	}	
 	
 	return ok;
 }
