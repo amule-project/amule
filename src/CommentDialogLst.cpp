@@ -84,7 +84,7 @@ void CCommentDialogLst::CompleteList()
   
 	CPartFile::SourceSet::iterator it = m_file->m_SrcList.begin();
 	for ( ; it != m_file->m_SrcList.end(); ++it ) {
-		cur_src = *it;
+		CUpDownClient *cur_src = *it;
 
 		if (cur_src->GetFileComment().Length()>0 || cur_src->GetFileRate()>0) {
 			pmyListCtrl->InsertItem(count, cur_src->GetUserName());
