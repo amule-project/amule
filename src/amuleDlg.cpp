@@ -123,7 +123,7 @@ BEGIN_EVENT_TABLE(CamuleDlg, wxFrame)
 END_EVENT_TABLE()
 
 #ifndef wxCLOSE_BOX
-#	define wxCLOSE_BOX 0
+	#define wxCLOSE_BOX 0
 #endif
 
 CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wxSize dlg_size) : wxFrame(
@@ -134,6 +134,7 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 	last_iconizing = 0;
 	prefs_dialog = NULL;
 	
+	m_wndTaskbarNotifier = NULL;
 	
 	wxInitAllImageHandlers();
 	curl_global_init(CURL_GLOBAL_ALL);
@@ -212,26 +213,32 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 
 	is_safe_state = true;
 
-	Show(TRUE);
-
-#ifndef __SYSTRAY_DISABLED__
-	CreateSystray(wxString::Format(wxT("%s %s"), wxT(PACKAGE), wxT(VERSION)));
-#endif
-
 	// Init statistics stuff, better do it asap
 	statisticswnd->Init();
 	statisticswnd->SetUpdatePeriod();
 
 	searchwnd->UpdateCatChoice();
+
+#ifndef __SYSTRAY_DISABLED__
+	if (thePrefs::UseTrayIcon()) {
+		CreateSystray();
+	}
+#endif
+
+	Show(TRUE);
+
 	// Must we start minimized?
-	if (thePrefs::GetStartMinimized() && (thePrefs::GetDesktopMode() != 4)) { 
+	if (thePrefs::GetStartMinimized()) { 
 		#ifndef __SYSTRAY_DISABLED__
-		// Send it to tray?
-		if (thePrefs::DoMinToTray()) {
-			Hide_aMule();
-		} else {
-			Iconize(TRUE);
-		}
+		 	if (thePrefs::UseTrayIcon() && 
+			#if !USE_WX_TRAY
+				(thePrefs::GetDesktopMode() != 4) &&
+			#endif
+		 		thePrefs::DoMinToTray()) {
+					Hide_aMule();
+				} else {
+					Iconize(TRUE);
+				}
 		#else
 			Iconize(TRUE);
 		#endif
@@ -278,73 +285,118 @@ void CamuleDlg::SetActiveDialog(DialogType type, wxWindow* dlg)
 	dlg->Refresh( true );
 }
 
-
-class QueryDlg : public wxDialog {
-public:
-	QueryDlg(wxWindow* parent) : wxDialog(
-		parent, 21373, _("Desktop integration"), wxDefaultPosition, wxDefaultSize,
-		wxDEFAULT_DIALOG_STYLE|wxSYSTEM_MENU )
-	{
-		wxSizer* content=desktopDlg(this, TRUE);
-		content->Show(this, TRUE);
-		Centre();
-	};
-protected:
-	void OnOk(wxCommandEvent& WXUNUSED(evt)) { EndModal(0); };
-	DECLARE_EVENT_TABLE();
-};
-
-BEGIN_EVENT_TABLE(QueryDlg, wxDialog)
-	EVT_BUTTON(ID_OK, QueryDlg::OnOk)
-END_EVENT_TABLE()
-
-
-void CamuleDlg::changeDesktopMode()
-{
-	QueryDlg query(this);
-
-	wxRadioBox* radiobox = CastByID( ID_SYSTRAYSELECT, &query, wxRadioBox );
-
-	if ( thePrefs::GetDesktopMode() )
-		radiobox->SetSelection( thePrefs::GetDesktopMode() - 1 );
-	else
-		radiobox->SetSelection( 0 );
-
-	query.ShowModal();
-
-	thePrefs::SetDesktopMode( radiobox->GetSelection() + 1 );
-}
-
-
 #ifndef __SYSTRAY_DISABLED__
-#if USE_WX_TRAY
-void CamuleDlg::CreateSystray(const wxString& WXUNUSED(title))
-#else
-void CamuleDlg::CreateSystray(const wxString& title)
-#endif
-{
-	// create the docklet (at this point we already have preferences!)
-	if( !thePrefs::GetDesktopMode() ) {
-		// ok, it's not set yet.
-		changeDesktopMode();
-	}
-#if USE_WX_TRAY
-	m_wndTaskbarNotifier = new CMuleTrayIcon();
-	wxASSERT(m_wndTaskbarNotifier->IsOk());
-#else
-	m_wndTaskbarNotifier = new CSysTray(this, (DesktopMode)thePrefs::GetDesktopMode(), title);
-#endif
-}
 
+	#if !USE_WX_TRAY
+		class QueryDlg : public wxDialog {
+		public:
+			QueryDlg(wxWindow* parent) : wxDialog(
+				parent, 21373, _("Desktop integration"), wxDefaultPosition, wxDefaultSize,
+				wxDEFAULT_DIALOG_STYLE|wxSYSTEM_MENU )
+			{
+				wxSizer* content=desktopDlg(this, TRUE);
+				content->Show(this, TRUE);
+				Centre();
+			};
+		protected:
+			void OnOk(wxCommandEvent& WXUNUSED(evt)) { EndModal(0); };
+			DECLARE_EVENT_TABLE();
+		};
 
-void CamuleDlg::RemoveSystray()
-{
-	if (m_wndTaskbarNotifier) {
-		delete m_wndTaskbarNotifier;
+		BEGIN_EVENT_TABLE(QueryDlg, wxDialog)
+			EVT_BUTTON(ID_OK, QueryDlg::OnOk)
+		END_EVENT_TABLE()
+	
+		void CamuleDlg::changeDesktopMode()
+		{
+			QueryDlg query(this);
+
+			wxRadioBox* radiobox = CastByID( ID_SYSTRAYSELECT, &query, wxRadioBox );
+
+			if ( thePrefs::GetDesktopMode() ) {
+				radiobox->SetSelection( thePrefs::GetDesktopMode() - 1 );
+			} else {
+				radiobox->SetSelection( 0 );
+			}
+
+			query.ShowModal();
+
+			thePrefs::SetDesktopMode( radiobox->GetSelection() + 1 );
+		}
+
+		void CamuleDlg::UpdateTrayIcon(int percent)
+		{
+			// ei hienostelua. tarvii kuitenki pelleill?gtk:n kanssa
+			// Whatever that means, it's working.
+			int pVals16[1] = {percent};
+			char** data;
+			if(!theApp.serverconnect) {
+				data = mule_Tr_grey_ico;
+			} else {
+				if (theApp.serverconnect->IsConnected()) {
+				if(!theApp.serverconnect->IsLowID()) {
+						data = mule_TrayIcon_ico;
+					} else {
+						data = mule_Tr_yellow_ico;
+					}
+				} else {
+					data = mule_Tr_grey_ico;
+				}
+			}		
+			m_wndTaskbarNotifier->SetTrayIcon(data, pVals16 );
+		}
+
+		
+		void CamuleDlg::CreateSystray()
+		{
+
+			// create the docklet (at this point we already have preferences!)
+			if( !thePrefs::GetDesktopMode() ) {
+				// ok, it's not set yet.
+				changeDesktopMode();
+			}
+
+			m_wndTaskbarNotifier = new CSysTray(this, (DesktopMode)thePrefs::GetDesktopMode(), wxString::Format(wxT("%s %s"), wxT(PACKAGE), wxT(VERSION)));
+		}
+
+		
+	#else
+		
+		void CamuleDlg::UpdateTrayIcon(int percent)
+		{
+			if(!theApp.serverconnect) {
+				m_wndTaskbarNotifier->SetTrayIcon(TRAY_ICON_DISCONNECTED, percent);
+			} else {
+				if (theApp.serverconnect->IsConnected()) {
+					if(!theApp.serverconnect->IsLowID()) {
+						m_wndTaskbarNotifier->SetTrayIcon(TRAY_ICON_HIGHID, percent);
+					} else {
+					m_wndTaskbarNotifier->SetTrayIcon(TRAY_ICON_LOWID, percent);
+					}
+				} else {
+					m_wndTaskbarNotifier->SetTrayIcon(TRAY_ICON_DISCONNECTED, percent);
+				}
+			}
+		}
+			
+		void CamuleDlg::CreateSystray()
+		{
+			m_wndTaskbarNotifier = new CMuleTrayIcon();
+			wxASSERT(m_wndTaskbarNotifier->IsOk());
+		}	
+		
+	#endif
+
+	// This one is common to both implementations
+	void CamuleDlg::RemoveSystray()
+	{
+		if (m_wndTaskbarNotifier) {
+			delete m_wndTaskbarNotifier;
+			m_wndTaskbarNotifier = NULL;
+		}
 	}
-}
+	
 #endif // __SYSTRAY_DISABLED__
-
 
 void CamuleDlg::OnToolBarButton(wxCommandEvent& ev)
 {
@@ -654,17 +706,19 @@ void CamuleDlg::ShowTransferRate()
 	}
 
 #ifndef __SYSTRAY_DISABLED__
-	// set trayicon-icon
-	int percentDown = (int)ceil((kBpsDown*100) / thePrefs::GetMaxGraphDownloadRate());
-	UpdateTrayIcon( ( percentDown > 100 ) ? 100 : percentDown);
-
-	wxString buffer2;
-	if ( theApp.serverconnect->IsConnected() ) {
-		buffer2 = wxT("aMule (") +buffer + wxT(" | ") + _("Connected") + wxT(")");
-	} else {
-		buffer2 = wxT("aMule (") +buffer + wxT(" | ") +  _("Disconnected") + wxT(")");
+	if (m_wndTaskbarNotifier) {
+		// set trayicon-icon
+		int percentDown = (int)ceil((kBpsDown*100) / thePrefs::GetMaxGraphDownloadRate());
+		UpdateTrayIcon( ( percentDown > 100 ) ? 100 : percentDown);
+	
+		wxString buffer2;
+		if ( theApp.serverconnect->IsConnected() ) {
+			buffer2 = wxT("aMule (") +buffer + wxT(" | ") + _("Connected") + wxT(")");
+		} else {
+			buffer2 = wxT("aMule (") +buffer + wxT(" | ") +  _("Disconnected") + wxT(")");
+		}
+		m_wndTaskbarNotifier->SetTrayToolTip(buffer2);
 	}
-	m_wndTaskbarNotifier->SetTrayToolTip(buffer2);
 #endif
 
 	wxStaticBitmap* bmp = CastChild( wxT("transferImg"), wxStaticBitmap );
@@ -701,49 +755,6 @@ void CamuleDlg::OnClose(wxCloseEvent& evt)
 	theApp.ShutDown();
 
 }
-
-
-#ifndef __SYSTRAY_DISABLED__
-void CamuleDlg::UpdateTrayIcon(int percent)
-{
-	// ei hienostelua. tarvii kuitenki pelleill?gtk:n kanssa
-	// Whatever that means, it's working now.
-	
-	#if USE_WX_TRAY
-		if(!theApp.serverconnect) {
-			m_wndTaskbarNotifier->SetTrayIcon(TRAY_ICON_DISCONNECTED, percent);
-		} else {
-			if (theApp.serverconnect->IsConnected()) {
-				if(!theApp.serverconnect->IsLowID()) {
-					m_wndTaskbarNotifier->SetTrayIcon(TRAY_ICON_HIGHID, percent);
-				} else {
-					m_wndTaskbarNotifier->SetTrayIcon(TRAY_ICON_LOWID, percent);
-				}
-			} else {
-				m_wndTaskbarNotifier->SetTrayIcon(TRAY_ICON_DISCONNECTED, percent);
-			}
-		}
-	#else
-		int pVals16[1] = {percent};
-		char** data;
-		if(!theApp.serverconnect) {
-			data = mule_Tr_grey_ico;
-		} else {
-			if (theApp.serverconnect->IsConnected()) {
-				if(!theApp.serverconnect->IsLowID()) {
-					data = mule_TrayIcon_ico;
-				} else {
-					data = mule_Tr_yellow_ico;
-				}
-			} else {
-				data = mule_Tr_grey_ico;
-			}
-		}		
-		m_wndTaskbarNotifier->SetTrayIcon(data, pVals16 );
-	#endif
-}
-#endif // __SYSTRAY_DISABLED__
-
 
 //BEGIN - enkeyDEV(kei-kun) -TaskbarNotifier-
 void CamuleDlg::ShowNotifier(wxString WXUNUSED(Text), int WXUNUSED(MsgType), bool WXUNUSED(ForceSoundOFF))

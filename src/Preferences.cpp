@@ -106,6 +106,7 @@ bool		CPreferences::s_tableSortAscendingServer;
 bool		CPreferences::s_tableSortAscendingClientList;
 bool		CPreferences::s_scorsystem;
 bool		CPreferences::s_mintotray;
+bool		CPreferences::s_trayiconenabled;
 bool		CPreferences::s_addnewfilespaused;
 bool		CPreferences::s_addserversfromserver;
 bool		CPreferences::s_addserversfromclient;
@@ -774,8 +775,9 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	NewCfgItem(IDC_EXT_CONN_PASSWD,	(new Cfg_Str_Encrypted( wxT("/ExternalConnect/ECPassword"), s_ECPassword, wxEmptyString )));
 
 	/**
-	 * GUI behavoir
+	 * GUI behavior
 	 **/
+	NewCfgItem(IDC_ENABLETRAYICON,	(new Cfg_Bool( wxT("/eMule/EnableTrayIcon"), s_trayiconenabled, false )));
 	NewCfgItem(IDC_MINTRAY,		(new Cfg_Bool( wxT("/eMule/MinToTray"), s_mintotray, false )));
 	NewCfgItem(IDC_EXIT,		(new Cfg_Bool( wxT("/eMule/ConfirmExit"), s_confirmExit, false )));
 	NewCfgItem(IDC_DBLCLICK,	(new Cfg_Bool( wxT("/eMule/TransferDoubleClick"), s_transferDoubleclick, true )));
