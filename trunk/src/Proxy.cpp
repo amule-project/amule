@@ -1,29 +1,29 @@
-/*
- * This file is part of the aMule project.
- *
- * Copyright (C) 2004-2005 aMule Team (http://www.amule.org)
- * Copyright (C) 2004-2005 Marcelo Jimenez (phoenix@amule.org)
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- */
+//
+// This file is part of the aMule project.
+//
+// Copyright (C) 2004-2005 aMule Team (http://www.amule.org)
+// Copyright (C) 2004-2005 Marcelo Jimenez (phoenix@amule.org)
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either version 2
+// of the License, or (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+//
 
-/******************************************************************************/
 
 #if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
 #pragma implementation "Proxy.h"
 #endif
+
 
 #include "Proxy.h"		/* for Interface		*/
 
@@ -33,7 +33,6 @@
 
 #include <netinet/in.h>		/* for htons()			*/
 
-#include "amule.h"		/* Needed for wxGetApp		*/
 #include "OPCodes.h"		/* for PROXY_SOCKET_HANDLER	*/
 #include "NetworkFunctions.h"	/* for StringIPtoUint32()	*/
 #include "OtherFunctions.h"	/* for EncodeBase64()		*/
@@ -316,64 +315,34 @@ void CProxyStateMachine::ReactivateSocket()
 	 * receive a wxSOCKET_CONNECTION event, because the connection has
 	 * already started with the proxy. So we must add a wxSOCKET_CONNECTION
 	 * event to make things go undetected. A wxSOCKET_OUTPUT event is also
-	 * necessary to start sending data to the server. */
-	 
-	/*    If the wxSocket had a GetEventHandler() method, this could be 
-	 * much more cleaner. All this fuzz with dynamic_cast<>() is because
-	 * the GetEventHandler() method had to be implemented in CClientReqSocket
-	 * and CServerSocket, and both are aMule classes. Maybe we can add this
-	 * method to a common ancestor?
-	 *    Another possibility (for wxWidgets) would be if 
-	 * SaveState()/RestoreState() also saved/restored the event handler, 
-	 * which is currently not the case, and will probably never be, because
-	 * most certainly will break wxWidgets code compatibility. */
-	if (CClientReqSocket *s1 =
-		dynamic_cast<CClientReqSocket *>(m_proxyClientSocket)) {
-		CClientReqSocketHandler *h = s1->GetEventHandler();
-		m_proxyClientSocket->SetEventHandler(*h, CLIENTREQSOCKET_HANDLER);
-		wxSocketEvent e(CLIENTREQSOCKET_HANDLER);
-		e.m_event = wxSOCKET_CONNECTION;
-		e.SetEventObject(m_proxyClientSocket);
-		h->AddPendingEvent(e);
-		e.m_event = wxSOCKET_OUTPUT;
-		h->AddPendingEvent(e);
-		if (!m_ok) {
-			e.m_event = wxSOCKET_LOST;
-			h->AddPendingEvent(e);
-		}
-		s1->RestoreState();
-	} else if (CServerSocket *s2 =
-		dynamic_cast<CServerSocket *>(m_proxyClientSocket)) {
-		CServerSocketHandler *h = s2->GetEventHandler();
-		m_proxyClientSocket->SetEventHandler(*h, SERVERSOCKET_HANDLER);
-		wxSocketEvent e(SERVERSOCKET_HANDLER);
-		e.m_event = wxSOCKET_CONNECTION;
-		e.SetEventObject(m_proxyClientSocket);
-		h->AddPendingEvent(e);
-		e.m_event = wxSOCKET_OUTPUT;
-		h->AddPendingEvent(e);
-		if (!m_ok) {
-			e.m_event = wxSOCKET_LOST;
-			h->AddPendingEvent(e);
-		}
-		s2->RestoreState();
-	} else if (CProxySocket *s3 = 
-		dynamic_cast<CProxySocket *>(m_proxyClientSocket)) {
-		// If the socket was not of the types above, then we assume
-		// we are in the UDP socket case.
-		wxASSERT(m_proxyCommand == PROXY_CMD_UDP_ASSOCIATE);
-		CDatagramSocketProxy *udp = s3->GetUDPSocket();
-		if (udp) {
-			if(m_ok) {
-				// From now on, the UDP socket can be used,
-				// remove the protection.
-				udp->SetUDPSocketOk();
-			}
+	 * necessary to start sending data to the server. */ 
+	CProxySocket *s = dynamic_cast<CProxySocket *>(m_proxyClientSocket);
+	// If that is not true, we are in serious trouble...
+	wxASSERT(s);
+	if (CDatagramSocketProxy *udp = s->GetUDPSocket()) {
+		// The original socket was an UDP socket
+		if(m_ok) {
+			// From now on, the UDP socket can be used,
+			// remove the protection.
+			udp->SetUDPSocketOk();
 		}
 		// No need to call RestoreState(), that socket will no longer
 		// be used after proxy negotiation.
 	} else {
-		wxASSERT(false);
+		// The original socket was a TCP socket
+		s->RestoreEventHandler();
+		wxSocketEvent e(s->GetEventHandlerId());
+		e.m_event = wxSOCKET_CONNECTION;
+		e.SetEventObject(s);
+		wxEvtHandler *h(s->GetEventHandler());
+		h->AddPendingEvent(e);
+		e.m_event = wxSOCKET_OUTPUT;
+		h->AddPendingEvent(e);
+		if (!m_ok) {
+			e.m_event = wxSOCKET_LOST;
+			h->AddPendingEvent(e);
+		}
+		s->RestoreState();
 	}
 #endif
 }
@@ -500,7 +469,7 @@ void CSocks5StateMachine::process_state(t_sm_state state, bool entry)
 	if (entry) {
 		dump(m_state_name[state], m_ok, m_buffer, n);
 	} else {
-		printf("wait state -- %s\n",
+		printf(	"wait state -- %s\n",
 			(const char *)unicode2char(m_state_name[state]));
 	}
 #endif // __DEBUG__
@@ -1225,11 +1194,15 @@ CProxySocket::CProxySocket(
 	CProxyCommand proxyCommand,
 	CDatagramSocketProxy *udpSocket)
 :
-wxSocketClient(flags)
+wxSocketClient(flags),
+m_proxyStateMachine(NULL),
+m_udpSocket(udpSocket),
+m_socketEventHandler(NULL),
+m_socketEventHandlerId(0),
+m_savedSocketEventHandler(NULL),
+m_savedSocketEventHandlerId(0)
 {
 	SetProxyData(proxyData);
-	m_proxyStateMachine = NULL;
-	m_udpSocket = udpSocket;
 	if (m_useProxy) {
 		switch (m_proxyData.m_proxyType) {
 		case PROXY_NONE:
@@ -1275,12 +1248,12 @@ void CProxySocket::SetProxyData(const CProxyData *proxyData)
 
 bool CProxySocket::Start(const wxIPaddress &peerAddress)
 {
-	//
-	// Important note! SaveState()/RestoreState() DO NOT save/restore
-	// the event handler.
-	//
 	SaveState();
 #ifndef AMULE_DAEMON
+	// Important note! SaveState()/RestoreState() DO NOT save/restore
+	// the event handler. The method SaveEventHandler() has been created
+	// for that.
+	SaveEventHandler();
 	SetEventHandler(g_proxyEventHandler, PROXY_SOCKET_HANDLER);
 	SetNotify(
 		wxSOCKET_CONNECTION_FLAG |
