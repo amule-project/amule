@@ -220,8 +220,8 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender){
 		connectedsocket = sender;
 		theApp.amuledlg->ShowConnectionState(true,connectedsocket->cur_server->GetListName());
 		CServer* update = theApp.serverlist->GetServerByAddress(connectedsocket->cur_server->GetAddress(),sender->cur_server->GetPort());
-		theApp.amuledlg->serverwnd->serverlistctrl->HighlightServer(update, true);
 		StopConnectionTry();
+		theApp.amuledlg->serverwnd->serverlistctrl->HighlightServer(update, true);
 		theApp.sharedfiles->ClearED2KPublishInfo();
 		theApp.sharedfiles->SendListToServer();
 		theApp.amuledlg->serverwnd->serverlistctrl->RemoveDeadServer();
