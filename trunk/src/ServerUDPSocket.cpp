@@ -129,7 +129,7 @@ int CServerUDPSocket::DoReceive(amuleIPV4Address& addr, char* buffer, uint32 max
 		wxSocketEvent input_event(SERVERUDPSOCKET_HANDLER);
 		input_event.m_event = (wxSocketNotify)(wxSOCKET_INPUT);
 		input_event.SetEventObject(this);
-		//theApp.AddPendingEvent(input_event);
+		theApp.AddPendingEvent(input_event);
 	}
 	#endif
 	return length;
@@ -324,11 +324,8 @@ void CServerUDPSocket::ProcessPacket(CSafeMemFile& packet, int16 size, int8 opco
 				printf("Unknown Server UDP opcode %x\n",opcode);
 		}
 	} catch(wxString error) {
-		printf(	"Brrrrrr wrong UDP packet from server! (%s)\n",
-			(const char *)unicode2char(error));
 		AddDebugLogLineM(false, wxT("Error while processing incoming UDP Packet: ") + error);
 	} catch(...) {
-		printf("Brrrrrr wrong UDP packet from server!\n");
 		AddDebugLogLineM(false,
 			wxT("Error while processing incoming UDP Packet (Most likely a misconfigured server)"));
 	}
