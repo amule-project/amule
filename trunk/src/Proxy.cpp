@@ -777,7 +777,7 @@ wxDatagramSocket &wxDatagramSocketProxy::RecvFrom(
 	m_LastUDPOperation = wxUDP_OPERATION_RECV_FROM;
 	if (m_UseProxy) {
 		char *bufUDP = new char[nBytes + wxPROXY_UDP_MAXIMUM_OVERHEAD];
-		wxDatagramSocket &ret = RecvFrom(m_SocketProxy.GetProxyBoundAddress(), bufUDP, nBytes + wxPROXY_UDP_MAXIMUM_OVERHEAD);
+		wxDatagramSocket &ret = wxDatagramSocket::RecvFrom(m_SocketProxy.GetProxyBoundAddress(), bufUDP, nBytes + wxPROXY_UDP_MAXIMUM_OVERHEAD);
 		unsigned int offset;
 		
 		switch (m_SocketProxy.m_buffer[3]) {
@@ -801,7 +801,7 @@ wxDatagramSocket &wxDatagramSocketProxy::RecvFrom(
 		memcpy(buf, bufUDP + offset, nBytes);
 		return ret;
 	} else {
-		return RecvFrom(addr, buf, nBytes);
+		return wxDatagramSocket::RecvFrom(addr, buf, nBytes);
 	}
 }
 
@@ -819,9 +819,9 @@ wxDatagramSocket &wxDatagramSocketProxy::SendTo(
 		*((uint16 *)(m_SocketProxy.m_buffer+8)) = htons(addr.Service());
 		memcpy(m_SocketProxy.m_buffer + wxPROXY_UDP_OVERHEAD_IPV4, buf, nBytes);
 		nBytes += wxPROXY_UDP_OVERHEAD_IPV4;
-		return SendTo(m_SocketProxy.GetProxyBoundAddress(), m_SocketProxy.m_buffer, nBytes);
+		return wxDatagramSocket::SendTo(m_SocketProxy.GetProxyBoundAddress(), m_SocketProxy.m_buffer, nBytes);
 	} else {
-		return SendTo(addr, buf, nBytes);
+		return wxDatagramSocket::SendTo(addr, buf, nBytes);
 	}
 }
 
