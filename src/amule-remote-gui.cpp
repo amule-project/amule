@@ -201,7 +201,6 @@ void CamuleRemoteGuiApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS&)
 	
 	if ( amuledlg->sharedfileswnd->IsShown() ) {
 		sharedfiles->DoRequery(EC_OP_GET_SHARED_FILES, EC_TAG_KNOWNFILE);
-		sharedfiles->ReloadControl();
 	} else if ( amuledlg->serverwnd->IsShown() ) {
 		//serverlist->FullReload(EC_OP_GET_SERVER_LIST);
 		//serverlist->ReloadControl();
@@ -691,22 +690,6 @@ CSharedFilesRem::CSharedFilesRem(CRemoteConnect *conn) : CRemoteContainer<CKnown
 {
 }
 
-void CSharedFilesRem::ReloadControl()
-{
-	if ( m_dirty ) {
-		theApp.amuledlg->sharedfileswnd->sharedfilesctrl->DeleteAllItems();
-	}
-	for(uint32 i = 0;i < GetCount(); i++) {
-		CKnownFile *f = GetByIndex(i);
-		if ( m_dirty ) {
-			theApp.amuledlg->sharedfileswnd->sharedfilesctrl->ShowFile(f);
-		} else {
-			theApp.amuledlg->sharedfileswnd->sharedfilesctrl->UpdateItem(f);
-		}
-	}
-	m_dirty = false;
-}
-
 void CSharedFilesRem::Reload(bool, bool)
 {
 	CECPacket req(EC_OP_SHAREDFILES_RELOAD);
@@ -727,12 +710,17 @@ CKnownFile *CSharedFilesRem::CreateItem(CEC_SharedFile_Tag *tag)
 
 	ProcessItemUpdate(tag, file);
 	
+	theApp.amuledlg->sharedfileswnd->sharedfilesctrl->ShowFile(file);
+	
 	return file;
 }
 
 void CSharedFilesRem::DeleteItem(CKnownFile *file)
 {
 	m_enc_map.erase(file->GetFileHash());
+	
+	theApp.amuledlg->sharedfileswnd->sharedfilesctrl->RemoveFile(file);
+	
 	delete file;
 }
 
@@ -749,6 +737,7 @@ void CSharedFilesRem::ProcessItemUpdate(CEC_SharedFile_Tag *tag, CKnownFile *fil
 	for(int i = 0;i < file->GetPartCount();i++) {
 		file->m_AvailPartFrequency[i] = data[i];
 	}
+	theApp.amuledlg->sharedfileswnd->sharedfilesctrl->UpdateItem(file);
 }
 
 /*!
