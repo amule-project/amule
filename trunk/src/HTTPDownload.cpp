@@ -75,11 +75,16 @@ void CHTTPThreadDlg::OnBtnCancel(wxCommandEvent& WXUNUSED(evt))
 
 void CHTTPThreadDlg::StopAnimation() { 
 	ani->Stop();
+	if (ani) {
+		ani->Stop();
+	}
 };
 
 CHTTPThreadDlg::~CHTTPThreadDlg() {
 	Show(false);
-	ani->Stop();
+	if (ani) {
+		ani->Stop();
+	}
 }
 
 void CHTTPThreadDlg::UpdateGauge(int dltotal,int dlnow) {	

@@ -121,13 +121,15 @@ bool CServerList::AddServermetToList(const wxString& strFile, bool merge)
 		return false;
 	}
 
-	if ( (1 != servermet.Read(&version,1)) || (version != 0xE0 && version != MET_HEADER)) {
-		servermet.Close();
-		AddLogLineM(false, wxString::Format(_("Invalid versiontag in server.met (0x%x , size %i)!"),version, sizeof(version)));
-		return false;
-	}
-
 	try {
+
+		Notify_ServerFreeze();
+		
+		if ( (1 != servermet.Read(&version,1)) || (version != 0xE0 && version != MET_HEADER)) {
+			AddLogLineM(false, wxString::Format(_("Invalid versiontag in server.met (0x%x , size %i)!"),version, sizeof(version)));
+			throw CInvalidPacket("Corrupted server.met");
+		}
+
 		uint32 fservercount;
 		if (4 != servermet.Read(&fservercount,4)) {
 			throw CInvalidPacket("Corrupted server.met");
@@ -137,7 +139,6 @@ bool CServerList::AddServermetToList(const wxString& strFile, bool merge)
 
 		ServerMet_Struct sbuffer;
 		uint32 iAddCount = 0;
-		Notify_ServerFreeze();
 
 		for (uint32 j = 0;j < fservercount;j++) {
 			// get server
