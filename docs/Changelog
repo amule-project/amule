@@ -133,6 +133,8 @@ Version 2.0.0rc6 - The '???' version.
 		  (m_ll <= LONG_MAX)" failed: wxLongLong to long conversion
 		  loss of precision.
 		* Reimplemented "Show Rates On Title" preference.
+		* Initial import of new MD4 hash code from emule 0.44a into
+		  KnownFile.{cpp,h}.
 
 	rommel:
 		* Patch to implement the commands serverconnect and reloadipf
