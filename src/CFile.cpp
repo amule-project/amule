@@ -26,6 +26,10 @@
 #include "CFile.h"		// Interface declarations.
 
 #ifdef __WXMAC__
+	#define FILE_TRACKER	1
+#endif
+
+#ifdef FILE_TRACKER
 	#include "GuiEvents.h"
 #endif
 
@@ -161,6 +165,7 @@ enum {
 #include <wx/filename.h>
 #include <wx/filefn.h>
 
+
 // ============================================================================
 // implementation of CFile
 // ============================================================================
@@ -228,7 +233,7 @@ bool CFile::Create(const wxChar *szFileName, bool bOverwrite, int accessMode)
 			ACCESS(accessMode) );
 #endif
 	
-	#ifdef __WXMAC__
+	#ifdef FILE_TRACKER
 		AddLogLineM(false,wxString(wxT("Created file ")) + fFilePath + wxString::Format(wxT(" with file descriptor %i"),fd));
 	#endif
 	
@@ -278,7 +283,7 @@ bool CFile::Open(const wxChar *szFileName, OpenMode mode, int accessMode)
 
     int fd = wxOpen( szFileName, flags ACCESS(accessMode));
     
-	#ifdef __WXMAC__
+	#ifdef FILE_TRACKER
 		AddLogLineM(false,wxString(wxT("Opened file ")) + fFilePath  + wxString::Format(wxT(" with file descriptor %i"),fd));
 	#endif
     
@@ -297,7 +302,7 @@ bool CFile::Open(const wxChar *szFileName, OpenMode mode, int accessMode)
 bool CFile::Close() const
 {
 
-	#ifdef __WXMAC__
+	#ifdef FILE_TRACKER
 		AddLogLineM(false,wxString(wxT("Closing file ")) + fFilePath + wxString::Format(wxT(" with file descriptor %i"),m_fd));
 	#endif
 
