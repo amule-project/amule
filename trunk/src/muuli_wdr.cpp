@@ -1592,7 +1592,7 @@ wxSizer *PreferencesGeneralTab( wxWindow *parent, bool call_fit, bool set_sizer 
         _("Arabic"), 
         _("Basque"), 
         _("Bulgarian"), 
-        _("Chinese"), 
+        _("Chinese (Simplified)"), 
         _("Danish"), 
         _("Dutch"), 
         _("English"), 
@@ -1616,9 +1616,10 @@ wxSizer *PreferencesGeneralTab( wxWindow *parent, bool call_fit, bool set_sizer 
         _("Catalan"), 
         _("Croatian"), 
         _("Italian (Napoletan)"), 
-        _("Custom")
+        _("Custom"), 
+        _("Chinese (Traditional)")
     };
-    wxChoice *item8 = new wxChoice( parent, IDC_LANGUAGE, wxDefaultPosition, wxSize(100,30), 29, strs8, 0 );
+    wxChoice *item8 = new wxChoice( parent, IDC_LANGUAGE, wxDefaultPosition, wxSize(100,30), 30, strs8, 0 );
     item6->Add( item8, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
     item2->Add( item6, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxLEFT|wxTOP, 5 );
