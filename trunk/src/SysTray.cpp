@@ -106,17 +106,6 @@ void do_show()
 }
 
 
-// shows or hides amule depending on current visibility
-void showgui()
-{
-	if ( theApp.amuledlg->IsShown() ) {
-		do_hide();
-	} else {
-		do_show();
-	}
-}
-
-
 // Connect to a server
 void connect_any_server()
 {
@@ -497,14 +486,15 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 
 static gboolean tray_clicked(GtkWidget* event_box, GdkEventButton* event, gpointer data)
 {
-	// Mouse wheel or middle click + left double click
-	if ( (event->button == 1 && event->type == GDK_2BUTTON_PRESS) ||event->button == 2) {
-		showgui();
-		return true;
-	} else if ( event->button == 1 && event->type == GDK_BUTTON_PRESS ) {
-		if ( !theApp.amuledlg->IsIconized() ) {
-			theApp.amuledlg->Raise();
+	// Left or middle-click hides or shows the gui
+	if ( ( event->button == 1 || event->button == 2 ) && event->type == GDK_BUTTON_PRESS ) {
+		if ( theApp.amuledlg->IsShown() ) {
+			do_hide();
+		} else {
+			do_show();
 		}
+	
+		return true;
 	}
 
 	//mouse right click
