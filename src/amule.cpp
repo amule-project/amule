@@ -943,11 +943,6 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 void CamuleApp::OnFatalException()
 {
 #ifndef __WXMSW__
-	// Close sockets first.
-	if ( listensocket )
-		listensocket->Destroy();
-	if ( clientudp )
-		clientudp->Destroy();
 
 	// (stkn) create backtrace
 #ifdef __WXGTK__
