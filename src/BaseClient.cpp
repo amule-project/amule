@@ -1039,19 +1039,24 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
 	const UINT uAcceptCommentVer	= 1;
 	const UINT uNoViewSharedFiles	= (theApp.glob_prefs->CanSeeShares() == vsfaNobody) ? 1 : 0; // for backward compatibility this has to be a 'negative' flag
 	const UINT uMultiPacket			= 1;
-	const UINT uSupportPreview		= 0; //(thePrefs.CanSeeShares() != vsfaNobody) ? 1 : 0; // set 'Preview supported' only if 'View Shared Files' allowed
+	const UINT uSupportPreview		= 0; // No network preview at all.
+	const UINT uPeerCache			= 0; // No peercache for aMule, baby
+	const UINT uUnicodeSupport		= 0; // No unicode support yet.
+	const UINT nAICHVer				= 0; // AICH is DISABLED right now.
+	
 	CTag tagMisOptions(CT_EMULE_MISCOPTIONS1, 
-//				(						<< 4*7) |
+				(nAICHVer				<< ((4*7)+1)) |
+				(uUnicodeSupport		<< 4*7) |
 				(uUdpVer				<< 4*6) |
 				(uDataCompVer			<< 4*5) |
 				(uSupportSecIdent		<< 4*4) |
 				(uSourceExchangeVer		<< 4*3) |
 				(uExtendedRequestsVer	<< 4*2) |
 				(uAcceptCommentVer		<< 4*1) |
-//				(						<< 1*3) |
+				(uPeerCache				<< 1*3) |
 				(uNoViewSharedFiles		<< 1*2) |
 				(uMultiPacket			<< 1*1) |
-				(uSupportPreview		<< 1*0) );
+				(uSupportPreview		<< 1*0) );	
 	tagMisOptions.WriteTagToFile(data);
 
 #ifdef __CVS__

@@ -229,15 +229,10 @@ void CUpDownClient::SendFileRequest()
 			dataFileReq.WriteUInt8(OP_REQUESTSOURCES);
 			m_reqfile->SetLastAnsweredTimeTimeout();
 			SetLastAskedForSources();
-			#ifdef __USE_DEBUG__
-			if (thePrefs.GetDebugSourceExchange()) 
-				AddDebugLogLineM( false, wxString::Format(wxT("Send:Source Request User(%s) File(%s)"), GetUserName().c_str(), m_reqfile->GetFileName().c_str()));
-			#endif
 		}
-		#ifdef __USE_DEBUG__
-		if (thePrefs.GetDebugClientTCPLevel() > 0)
-			DebugSend("OP__MultiPacket", this, (char*)m_reqfile->GetFileHash());
-		#endif
+		if (IsSupportingAICH()){
+			dataFileReq.WriteUInt8(OP_AICHFILEHASHREQ);
+		}		
 		Packet* packet = new Packet(&dataFileReq, OP_EMULEPROT);
 		packet->SetOpCode(OP_MULTIPACKET);
 		theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->GetPacketSize());
@@ -250,10 +245,6 @@ void CUpDownClient::SendFileRequest()
 		if( GetExtendedRequestsVersion() > 1 ){
 			m_reqfile->WriteCompleteSourcesCount(&dataFileReq);
 		}
-		#ifdef __USE_DEBUG__
-		if (thePrefs.GetDebugClientTCPLevel() > 0)
-			DebugSend("OP__FileRequest", this, (char*)m_reqfile->GetFileHash());
-		#endif
 		Packet* packet = new Packet(&dataFileReq);
 		packet->SetOpCode(OP_REQUESTFILENAME);
 		theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->GetPacketSize());
@@ -263,10 +254,6 @@ void CUpDownClient::SendFileRequest()
 		// if the remote client answers the OP_REQUESTFILENAME with OP_REQFILENAMEANSWER the file is shared by the remote client. if we
 		// know that the file is shared, we know also that the file is complete and don't need to request the file status.
 		if (m_reqfile->GetPartCount() > 1) {
-			#ifdef __USE_DEBUG__
-			if (thePrefs.GetDebugClientTCPLevel() > 0)
-				DebugSend("OP__SetReqFileID", this, (char*)m_reqfile->GetFileHash());
-			#endif
 			CSafeMemFile dataSetReqFileID(16);
 			dataSetReqFileID.WriteHash16(m_reqfile->GetFileHash());
 			packet = new Packet(&dataSetReqFileID);
@@ -280,26 +267,18 @@ void CUpDownClient::SendFileRequest()
 			SetRemoteQueueRank(0);
 		}	
 		if(IsSourceRequestAllowed()) {
-			#ifdef __USE_DEBUG__
-		    if (thePrefs.GetDebugClientTCPLevel() > 0){
-			    DebugSend("OP__RequestSources", this, (char*)m_reqfile->GetFileHash());
-			    if (GetLastAskedForSources() == 0)
-				    Debug("  first source request\n");
-			    else
-				    Debug("  last source request was before %s\n", CastSecondsToHM((GetTickCount() - GetLastAskedForSources())/1000));
-		    }
-		    #endif
 			m_reqfile->SetLastAnsweredTimeTimeout();
 			Packet* packet = new Packet(OP_REQUESTSOURCES,16,OP_EMULEPROT);
 			packet->Copy16ToDataBuffer((const char *)m_reqfile->GetFileHash().GetHash());
 			theApp.uploadqueue->AddUpDataOverheadSourceExchange(packet->GetPacketSize());
 			SendPacket(packet,true,true);
 			SetLastAskedForSources();
-		    #ifdef __USE_DEBUG__
-			if (thePrefs.GetDebugSourceExchange())
-				AddDebugLogLineM(false, wxString::Format(wxT"Send:Source Request User(%s) File(%s)", GetUserName().c_str(), m_reqfile->GetFileName().c_str()));
-			#endif
 		}
+		if (IsSupportingAICH()){
+			Packet* packet = new Packet(OP_AICHFILEHASHREQ,16,OP_EMULEPROT);
+			packet->Copy16ToDataBuffer((const char *)m_reqfile->GetFileHash().GetHash());
+			SendPacket(packet,true,true);
+		}		
 	}
 }
 
@@ -1341,7 +1320,7 @@ void CUpDownClient::SendAICHRequest(CPartFile* pForFile, uint16 nPart){
 	SafeSendPacket(packet);
 }
 
-void CUpDownClient::ProcessAICHAnswer(char* packet, UINT size)
+void CUpDownClient::ProcessAICHAnswer(const char* packet, UINT size)
 {
 	if (m_fAICHRequested == FALSE){
 		throw wxString(_("Received unrequested AICH Packet"));
@@ -1389,7 +1368,7 @@ void CUpDownClient::ProcessAICHAnswer(char* packet, UINT size)
 	CAICHHashSet::ClientAICHRequestFailed(this);
 }
 
-void CUpDownClient::ProcessAICHRequest(char* packet, UINT size){
+void CUpDownClient::ProcessAICHRequest(const char* packet, UINT size){
 	if (size != 16 + 2 + CAICHHash::GetHashSize())
 		throw wxString(_T("Received AICH Request Packet with wrong size"));
 	
@@ -1437,12 +1416,14 @@ void CUpDownClient::ProcessAICHRequest(char* packet, UINT size){
 	SafeSendPacket(packAnswer);
 }
 
-void CUpDownClient::ProcessAICHFileHash(CSafeMemFile* data, CPartFile* file){
-	CPartFile* pPartFile = file;
-	if (pPartFile == NULL){
+void CUpDownClient::ProcessAICHFileHash(CSafeMemFile* data, const CPartFile* file){
+	CPartFile* pPartFile;
+	if (file == NULL){
 		uchar abyHash[16];
 		data->ReadHash16(abyHash);
 		pPartFile = theApp.downloadqueue->GetFileByID(abyHash);
+	} else {
+		pPartFile = (CPartFile*)file;
 	}
 	CAICHHash ahMasterHash(data);
 	if(pPartFile != NULL && pPartFile == GetRequestFile()){
