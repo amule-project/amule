@@ -95,7 +95,7 @@ uint8 CServerList::AutoUpdate()
 	while (Pos != NULL) {
 		strURLToDownload = app_prefs->adresses_list.GetNext(Pos); 
 		if (strURLToDownload.Find(wxT("://")) == -1) {
-			theApp.amuledlg->AddLogLine(true, CString(_("Invalid URL %s")),strURLToDownload.c_str());
+			theApp.amuledlg->AddLogLine(true, _("Invalid URL ") + strURLToDownload);
 		} else {
 			strTempFilename =  theApp.ConfigDir + wxString::Format(wxT("server_auto%u.met"), temp_count);
 
