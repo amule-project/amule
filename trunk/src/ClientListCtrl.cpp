@@ -1024,12 +1024,20 @@ int CClientsView::SortProc( long item1, long item2, long sortData )
 			return mode * CmpAny( client1->GetDownloadState(), client2->GetDownloadState() );
 		
 		// Sort by data downloaded
-		case 4:
-			if ( client1->credits && client2->credits ) {
-				return CmpAny( client1->credits->GetDownloadedTotal(), client2->credits->GetDownloadedTotal() );
-			}
+		case 4: {
+			uint64 clientA = 0;
+			uint64 clientB = 0;
 
-			return -mode * CmpAny( client1->credits, client2->credits );
+			if ( client1->credits ) {
+				clientA = client1->credits->GetDownloadedTotal();
+			}
+			
+			if ( client2->credits ) {
+				clientB = client2->credits->GetDownloadedTotal();
+			}
+			
+			return mode * CmpAny( clientA, clientB );
+		}
 		
 		
 		// Sort by client-software
