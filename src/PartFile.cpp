@@ -3065,9 +3065,9 @@ bool CPartFile::IsASaneFileClientCombination(const CUpDownClient* cur_src, const
 #if defined( __DEBUG__ )
 		if (!sane) {
 			printf("CPartFile->GetPartStatus() = %d\n", n);
-			printf("cur_src->m_nPartCount = %d\n", cur_src->m_nPartCount);
+			printf("cur_src->m_nPartCount      = %d\n", cur_src->m_nPartCount);
 			if (forClient)
-				printf("forClient->m_nPartCount = %d\n", forClient->m_nPartCount);
+				printf("forClient->m_nPartCount    = %d\n", forClient->m_nPartCount);
 		}
 #endif // __DEBUG__
 	}
