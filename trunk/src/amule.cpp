@@ -928,13 +928,13 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 	amulesig_out.Write(buffer, strlen(buffer));
 	amulesig_out.Write("\n",1);
 
-	// Total received in GB
-	sprintf(buffer, "%.2f", (float)(stat_sessionReceivedBytes+glob_prefs->GetTotalDownloaded()) / 1073741824);
+	// Total received in bytes 
+	sprintf(buffer, "%llu", (stat_sessionReceivedBytes+glob_prefs->GetTotalDownloaded()));
 	amulesig_out.Write(buffer, strlen(buffer));
 	amulesig_out.Write("\n",1);
 
-	// Total sent in GB
-	sprintf(buffer, "%.2f", (float)(stat_sessionSentBytes+glob_prefs->GetTotalUploaded()) / 1073741824);
+	// Total sent in bytes
+	sprintf(buffer, "%llu", (stat_sessionSentBytes+glob_prefs->GetTotalUploaded()));
 	amulesig_out.Write(buffer, strlen(buffer));
 	amulesig_out.Write("\n",1);
 
@@ -943,17 +943,17 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 	amulesig_out.Write(buffer, strlen(buffer));
 	amulesig_out.Write("\n",1);
 
-        // Total received in MB in session
-        sprintf(buffer, "%.2f", (float)(stat_sessionReceivedBytes) / 1048576);
+        // Total received bytes in session
+	sprintf(buffer, "%llu", (stat_sessionReceivedBytes));
         amulesig_out.Write(buffer, strlen(buffer));
         amulesig_out.Write("\n",1);
 				
-        // Total sent in GB in session
-        sprintf(buffer, "%.2f", (float)(stat_sessionSentBytes) / 1048576);
+        // Total sent bytes in session
+	sprintf(buffer, "%llu", (stat_sessionSentBytes));
         amulesig_out.Write(buffer, strlen(buffer));
         amulesig_out.Write("\n",1);
 
-	// Uptime
+	// Uptime 
 	sprintf(buffer,"%s",CastSecondsToHM(theApp.GetUptimeSecs()).GetData());
 	amulesig_out.Write(buffer, strlen(buffer));
 	amulesig_out.Write("\n",1);
