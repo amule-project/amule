@@ -291,6 +291,24 @@ CECPacket *Get_EC_Response_StatRequest(const CECPacket *request)
 	return response;
 }
 
+CECPacket *Get_EC_Response_GetSharedFiles(const CECPacket *request)
+{
+	wxASSERT(request->GetOpCode() == EC_OP_GET_SHARED_FILES);
+
+	EC_DETAIL_LEVEL detail_level = request->GetDetailLevel();
+	CECPacket *response = new CECPacket(EC_OP_SHARED_FILES);
+	
+	for (int i = 0; i < theApp.sharedfiles->GetCount(); ++i) {
+		const CKnownFile *cur_file = theApp.sharedfiles->GetFileByIndex(i);
+		if ( !cur_file) {
+			// lfroen: wtf - can this really happen ?!
+			continue;
+		}
+		response->AddTag(CEC_SharedFile_Tag(cur_file, detail_level));
+	}
+	return response;
+}
+
 CECPacket *Get_EC_Response_GetUpQueue(const CECPacket *request)
 {
 	wxASSERT(request->GetOpCode() == EC_OP_GET_ULOAD_QUEUE);

@@ -81,16 +81,9 @@ class CEC_PartFile_Tag : public CECTag {
 		#endif /* EC_REMOTE */
 };
 
-
-class CEC_PartStatus_Tag : public CECTag {
- 	public:
- 		CEC_PartStatus_Tag(CPartFile *file, int statussize);
-};
-
-
 class CEC_SharedFile_Tag : public CECTag {
 	public:
-		CEC_SharedFile_Tag(CKnownFile *file, EC_DETAIL_LEVEL detail_level);
+		CEC_SharedFile_Tag(const CKnownFile *file, EC_DETAIL_LEVEL detail_level);
 		
  		uint32		FileID()	{ return GetInt32Data(); }
  		wxString	FileName()	{ return GetTagByName(EC_TAG_PARTFILE_NAME)->GetStringData(); }

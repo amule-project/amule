@@ -271,6 +271,14 @@ enum {
 		 */
 	EC_OP_ULOAD_QUEUE,
 
+		/*!
+		 * \brief Get shared files
+		 * 
+		 * \par Tags:
+		 *  \b ::EC_TAG_KNOWNFILE (*) info about each file
+		 */
+	EC_OP_SHARED_FILES,
+
 		/*
 		 * \brief Reloads the shared files list.
 		 */
