@@ -179,13 +179,18 @@ AC_DEFUN([AM_PATH_WXCONFIG],
   dnl Then take wx-config itself
   
   if test "$vers" -ge 2005000; then
-    AC_MSG_WARN(wxWidgets >=2.5.0: Using wx-config --libs=base,net)
+    if test "$vers" -eq 2005003; then
+      wx_conig_base_libs="--libs base,net";
+    else
+      wx_conig_base_libs="--libs=base,net";
+    fi
+    AC_MSG_WARN(wxWidgets >=2.5.0: Using wx-config ${wx_conig_base_libs})
   
     WXBASE_CONFIG_NAME=$WX_CONFIG_NAME
     WXBASE_CONFIG_WITH_ARGS=$WX_CONFIG_WITH_ARGS
   
-    WXBASE_LIBS=`$WXBASE_CONFIG_WITH_ARGS --libs=base,net`
-    WXBASE_LIBS_STATIC=`$WXBASE_CONFIG_WITH_ARGS --static --libs=base,net`
+    WXBASE_LIBS=`$WXBASE_CONFIG_WITH_ARGS ${wx_conig_base_libs}`
+    WXBASE_LIBS_STATIC=`$WXBASE_CONFIG_WITH_ARGS --static ${wx_conig_base_libs}`
       
     dnl we have CPPFLAGS included in CFLAGS included in CXXFLAGS
     WXBASE_CPPFLAGS=`$WXBASE_CONFIG_WITH_ARGS --cppflags`
