@@ -131,8 +131,6 @@ void CUpDownClient::Init()
 	m_nUserPort = 0;
 	m_nPartCount = 0;
 	m_nUpPartCount = 0;
-	m_abyPartStatus = 0;
-	m_abyUpPartStatus = 0;
 	m_dwLastAskedTime = 0;
 	m_nDownloadState = DS_NONE;
 	m_dwUploadTime = 0;
@@ -228,18 +226,6 @@ CUpDownClient::~CUpDownClient()
 		m_socket->Destroy();
 		// Paranoia
 		m_socket = NULL;
-	}
-	
-	
-	if (m_abyPartStatus) {
-		delete[] m_abyPartStatus;
-		m_abyPartStatus = NULL;
-	}
-
-	
-	if (m_abyUpPartStatus) {
-		delete[] m_abyUpPartStatus;
-		m_abyUpPartStatus = NULL;
 	}
 	
 	
@@ -1625,10 +1611,11 @@ void CUpDownClient::ProcessSharedFileList(const char* pachPacket, uint32 nSize, 
 void CUpDownClient::ResetFileStatusInfo()
 {
 	m_nPartCount = 0;
-	if (m_abyPartStatus) {
-		delete[] m_abyPartStatus;
-		m_abyPartStatus = NULL;
+	
+	if ( m_reqfile ) {
+		m_reqfile->UpdatePartsFrequency( this, false );
 	}
+	m_downPartStatus.clear();
 
 	m_clientFilename.Clear();
 

@@ -317,8 +317,6 @@ CPartFile::~CPartFile()
 		SavePartFile();			
 	}
 
-	m_SrcpartFrequency.Clear();
-	
 	POSITION pos;
 	for (pos = gaplist.GetHeadPosition();pos != 0;) {
 		delete gaplist.GetNext(pos);
@@ -373,11 +371,6 @@ void CPartFile::CreatePartFile()
 	
 	
 	hashsetneeded = GetED2KPartHashCount();
-	
-	m_SrcpartFrequency.Clear();
-	m_SrcpartFrequency.Alloc(GetPartCount());
-	
-	m_SrcpartFrequency.Insert(/*Item*/0, /*pos*/0, GetPartCount());
 	
 	paused = false;
 	SavePartFile(true);
@@ -750,11 +743,6 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool get
 	}
 	// SLUGFILLER: SafeHash
 
-	m_SrcpartFrequency.Clear();
-	m_SrcpartFrequency.Alloc(GetPartCount());
-	
-	m_SrcpartFrequency.Insert(/*Item*/0, /*pos*/0, GetPartCount());
-	
 	SetPartFileStatus(PS_EMPTY);
 	
 	// check hashcount, file status etc
@@ -1842,8 +1830,8 @@ void CPartFile::AddSources(CSafeMemFile* sources,uint32 serverip, uint16 serverp
 	}
 }
 
-void CPartFile::UpdatePartsInfo() {
-
+void CPartFile::UpdatePartsInfo()
+{
 	if( !IsPartFile() ) {
 		CKnownFile::UpdatePartsInfo();
 		return;
@@ -1852,30 +1840,12 @@ void CPartFile::UpdatePartsInfo() {
 	// Cache part count
 	uint16 partcount = GetPartCount();
 	bool flag = (time(NULL) - m_nCompleteSourcesTime > 0); 
-	
-	// Reset Part Count and allocate it with 0es
-	
-	m_SrcpartFrequency.Clear();
-	m_SrcpartFrequency.Alloc(partcount);
-	
-	m_SrcpartFrequency.Insert(/*Item*/(uint16)0, /*pos*/0, partcount);
 
-	ArrayOfUInts16 count;	
-	
-	if (flag) {
-		count.Alloc(GetSourceCount());	
-	}
-	
-	for ( SourceSet::iterator it = m_SrcList.begin(); it != m_SrcList.end(); ++it ) {
-		CUpDownClient *cur_src = *it;
-		for (uint16 i = 0; i < partcount; ++i)	{
-			if (cur_src->IsPartAvailable(i)) {
-				m_SrcpartFrequency[i] +=1;
-			}
-		}
-		if (flag) {
-			count.Add(cur_src->GetUpCompleteSourcesCount());
-		}
+	// Ensure the frequency-list is ready
+	if ( m_SrcpartFrequency.GetCount() != GetPartCount() ) {
+		m_SrcpartFrequency.Clear();
+
+		m_SrcpartFrequency.Add( 0, GetPartCount() );
 	}
 
 	// Find number of available parts
@@ -1888,10 +1858,20 @@ void CPartFile::UpdatePartsInfo() {
 	if ( ( availablecounter == partcount ) && ( m_availablePartsCount < partcount ) ) {
 		lastseencomplete = time(NULL);
 	}
+		
 	m_availablePartsCount = availablecounter;
-	
 
-	if( flag ) {
+	if ( flag ) {
+		ArrayOfUInts16 count;	
+	
+		count.Alloc(GetSourceCount());	
+	
+		for ( SourceSet::iterator it = m_SrcList.begin(); it != m_SrcList.end(); ++it ) {
+			if ( !(*it)->GetUpPartStatus().empty() && (*it)->GetUpPartCount() == partcount ) {
+				count.Add( (*it)->GetUpCompleteSourcesCount() );
+			}
+		}
+	
 		m_nCompleteSourcesCount = m_nCompleteSourcesCountLo = m_nCompleteSourcesCountHi = 0;
 	
 		for (uint16 i = 0; i < partcount; ++i)	{
@@ -2028,7 +2008,7 @@ bool CPartFile::GetNextRequestedBlock(CUpDownClient* sender, Requested_Block_Str
 	if(count == NULL) {
 		return false;
 	}
-	if(sender->GetPartStatus() == NULL) {
+	if ( sender->GetPartStatus().empty() ) {
 		return false;
 	}
 	// Define and create the list of the chunks to download
@@ -2989,11 +2969,11 @@ Packet *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 		}
 		
 		// only send source which have needed parts for this client if possible
-		const uint8* srcstatus = cur_src->GetPartStatus();
-		if (srcstatus) {
-			const uint8* reqstatus = forClient->GetPartStatus();
+		const BitVector& srcstatus = cur_src->GetPartStatus();
+		if ( !srcstatus.empty() ) {
+			const BitVector& reqstatus = forClient->GetPartStatus();
 			int n = GetPartCount();
-			if (reqstatus) {
+			if ( !reqstatus.empty() ) {
 				// only send sources which have needed parts for this client
 				for (int x = 0; x < n; ++x) {
 					if (srcstatus[x] && !reqstatus[x]) {
@@ -4094,4 +4074,41 @@ bool CPartFile::DelSource( CUpDownClient* client )
 	return m_SrcList.erase( client );
 }
 
+
+void CPartFile::UpdatePartsFrequency( CUpDownClient* client, bool increment )
+{
+	const BitVector& freq = client->GetPartStatus();
+	
+	if ( m_SrcpartFrequency.GetCount() != GetPartCount() ) {
+		m_SrcpartFrequency.Clear();
+
+		m_SrcpartFrequency.Add( 0, GetPartCount() );
+
+		if ( !increment ) {
+			return;
+		}
+	}
+	
+	
+	unsigned int size = freq.size();
+
+	if ( size != m_SrcpartFrequency.GetCount() ) {
+		return;
+	}
+	
+	
+	if ( increment ) {
+		for ( unsigned int i = 0; i < size; i++ ) {
+			if ( freq[i] ) {
+				m_SrcpartFrequency[i]++;
+			}
+		}
+	} else {
+		for ( unsigned int i = 0; i < size; i++ ) {
+			if ( freq[i] ) {
+				m_SrcpartFrequency[i]--;
+			}
+		}
+	}
+}
 	

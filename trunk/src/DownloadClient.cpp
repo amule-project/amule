@@ -83,9 +83,9 @@ void CUpDownClient::DrawStatusBar(wxMemoryDC* dc, const wxRect& rect, bool onlyg
 	// Barry - was only showing one part from client, even when reserved bits from 2 parts
 	wxString gettingParts = ShowDownloadingParts();
 
-	if (!onlygreyrect && m_abyPartStatus) {
+	if (!onlygreyrect && !m_downPartStatus.empty() ) {
 		for (uint32 i = 0;i != m_nPartCount;i++) {
-			if (m_abyPartStatus[i]) {
+			if ( m_downPartStatus[i]) {
 				uint32 uEnd;
 				if (PARTSIZE*(i+1) > m_reqfile->GetFileSize()) {
 					uEnd = m_reqfile->GetFileSize();
@@ -301,31 +301,15 @@ void CUpDownClient::ProcessFileInfo(const CSafeMemFile* data, const CPartFile* f
 	// know that the file is shared, we know also that the file is complete and don't need to request the file status.
 	if (m_reqfile->GetPartCount() == 1)
 	{
-		if (m_abyPartStatus)
-		{
-			delete[] m_abyPartStatus;
-			m_abyPartStatus = NULL;
-		}
 		m_nPartCount = m_reqfile->GetPartCount();
-		m_abyPartStatus = new uint8[m_nPartCount];
-		memset(m_abyPartStatus,1,m_nPartCount);
+		
+		m_reqfile->UpdatePartsFrequency( this, false );	// Decrement
+		m_downPartStatus.clear();
+		m_downPartStatus.resize( m_nPartCount, 1 );
+		m_reqfile->UpdatePartsFrequency( this, true );	// Increment
+		
 		m_bCompleteSource = true;
 
-		#if __USE_DEBUG__
-		if (thePrefs.GetDebugClientTCPLevel() > 0)
-		{
-		    int iNeeded = 0;
-		    for (int i = 0; i < m_nPartCount; i++)
-			    if (!m_reqfile->IsComplete(i*PARTSIZE,((i+1)*PARTSIZE)-1))
-				    iNeeded++;
-			char* psz = new char[m_nPartCount + 1];
-			for (int i = 0; i < m_nPartCount; i++)
-				psz[i] = m_abyPartStatus[i] ? '#' : '.';
-			psz[i] = '\0';
-			Debug("  Parts=%u  %s  Needed=%u\n", m_nPartCount, psz, iNeeded);
-			delete[] psz;
-		}
-		#endif
 		UpdateDisplayedInfo();
 		// even if the file is <= PARTSIZE, we _may_ need the hashset for that file (if the file size == PARTSIZE)
 		if (m_reqfile->hashsetneeded)
@@ -363,30 +347,18 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, const CSafeMemFile* data,
 	}
 	
 	uint16 nED2KPartCount = data->ReadUInt16();
-	if (m_abyPartStatus)
-	{
-		delete[] m_abyPartStatus;
-		m_abyPartStatus = NULL;
-	}
+	
+	m_reqfile->UpdatePartsFrequency( this, false );	// Decrement
+	m_downPartStatus.clear();
+	
 	bool bPartsNeeded = false;
 	int iNeeded = 0;
 	if (!nED2KPartCount)
 	{
 		m_nPartCount = m_reqfile->GetPartCount();
-		m_abyPartStatus = new uint8[m_nPartCount];
-		memset(m_abyPartStatus,1,m_nPartCount);
+		m_downPartStatus.resize( m_nPartCount, 1);
 		bPartsNeeded = true;
 		m_bCompleteSource = true;
-
-		#if __USE_DEBUG__
-		if (bUdpPacket ? (thePrefs.GetDebugClientUDPLevel() > 0) : (thePrefs.GetDebugClientTCPLevel() > 0)) 		{
-			for (int i = 0; i < m_nPartCount; i++) {
-				if (!m_reqfile->IsComplete(i*PARTSIZE,((i+1)*PARTSIZE)-1)) {
-					iNeeded++;
-				}
-			}
-		}
-		#endif
 	}
 	else
 	{
@@ -401,29 +373,38 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, const CSafeMemFile* data,
 		m_nPartCount = m_reqfile->GetPartCount();
 
 		m_bCompleteSource = false;
-		m_abyPartStatus = new uint8[m_nPartCount];
+		m_downPartStatus.resize( m_nPartCount, 0 );
 		uint16 done = 0;
-		while (done != m_nPartCount)
-		{
-			uint8 toread = data->ReadUInt8();
-			for (sint32 i = 0;i != 8;i++)
-			{
-				m_abyPartStatus[done] = ((toread>>i)&1)? 1:0; 	
-				if (m_abyPartStatus[done])
-				{
-					if (!m_reqfile->IsComplete(done*PARTSIZE,((done+1)*PARTSIZE)-1)){
-						bPartsNeeded = true;
-						iNeeded++;
+	
+		try {
+			while (done != m_nPartCount) {
+				uint8 toread = data->ReadUInt8();
+			
+				for ( uint8 i = 0;i < 8; i++ ) {
+					m_downPartStatus[done] = ((toread>>i)&1)? 1:0;
+				
+					if ( m_downPartStatus[done] ) {
+						if (!m_reqfile->IsComplete(done*PARTSIZE,((done+1)*PARTSIZE)-1)){
+							bPartsNeeded = true;
+							iNeeded++;
+						}
+					}
+					done++;
+					if (done == m_nPartCount) {
+						break;
 					}
 				}
-				done++;
-				if (done == m_nPartCount) {
-					break;
-				}
 			}
+		} catch( ... ) {
+			// We want the counts to be updated, even if we fail to read everything
+			m_reqfile->UpdatePartsFrequency( this, true );	// Increment
+			
+			throw;
 		}
 	}
 	
+	m_reqfile->UpdatePartsFrequency( this, true );	// Increment
+
 	UpdateDisplayedInfo();
 
 	// NOTE: This function is invoked from TCP and UDP socket!
@@ -523,10 +504,8 @@ void CUpDownClient::SetDownloadState(uint8 byNewState)
 			bytesReceivedCycle = 0;
 			msReceivedPrev = 0;
 			if (byNewState == DS_NONE) {
-				if (m_abyPartStatus) {
-					delete[] m_abyPartStatus;
-					m_abyPartStatus = NULL;
-				}
+				m_reqfile->UpdatePartsFrequency( this, false );	// Decrement				
+				m_downPartStatus.clear();
 				m_nPartCount = 0;
 			}
 			if (m_socket && byNewState != DS_ERROR) {
@@ -1245,18 +1224,15 @@ bool CUpDownClient::IsValidSwapTarget( A4AFList::iterator it, bool ignorenoneede
 void CUpDownClient::SetRequestFile(CPartFile* reqfile)
 {
 	if ( m_reqfile != reqfile ) {
-		// Paranoia. Ensure that no calls to IsPartAvailble will seg-fault while we delete stuff
-		m_nPartCount = 0;
-		if ( m_abyPartStatus ) {
-			delete[] m_abyPartStatus;
-			m_abyPartStatus = NULL;
-		}
-			
 		// Decrement the source-count of the old request-file
 		if ( m_reqfile ) {
 			m_reqfile->ClientStateChanged( GetDownloadState(), -1 );
+			m_reqfile->UpdatePartsFrequency( this, false );
 		}
-			
+
+		m_nPartCount = 0;
+		m_downPartStatus.clear();
+		
 		m_reqfile = reqfile;
 		
 		if ( reqfile ) {

@@ -372,11 +372,8 @@ void CUpDownClient::CreatePackedPackets(const byte* data,uint32 togo, Requested_
 void CUpDownClient::ProcessExtendedInfo(const CSafeMemFile *data, CKnownFile *tempreqfile)
 {
 	try {
-		if (m_abyUpPartStatus)  {
-			delete[] m_abyUpPartStatus;
-			m_abyUpPartStatus = NULL;
-		}
-	
+		m_requpfile->UpdateUpPartsFrequency( this, false ); // Decrement
+		m_upPartStatus.clear();		
 		m_nUpPartCount = 0;
 		m_nUpCompleteSourcesCount= 0;
 		
@@ -395,8 +392,7 @@ void CUpDownClient::ProcessExtendedInfo(const CSafeMemFile *data, CKnownFile *te
 		uint16 nED2KUpPartCount = data->ReadUInt16();
 		if (!nED2KUpPartCount) {
 			m_nUpPartCount = tempreqfile->GetPartCount();
-			m_abyUpPartStatus = new uint8[m_nUpPartCount];
-			memset(m_abyUpPartStatus,0,m_nUpPartCount);
+			m_upPartStatus.resize( m_nUpPartCount, 0 );
 		} else {
 			if (tempreqfile->GetED2KPartCount() != nED2KUpPartCount) {
 				//We already checked if we are talking about the same file.. So if we get here, something really strange happened!
@@ -405,22 +401,30 @@ void CUpDownClient::ProcessExtendedInfo(const CSafeMemFile *data, CKnownFile *te
 			}
 		
 			m_nUpPartCount = tempreqfile->GetPartCount();
-			m_abyUpPartStatus = new uint8[m_nUpPartCount];
-			uint16 done = 0;
-			while (done != m_nUpPartCount) {
-				uint8 toread = data->ReadUInt8();
-				for (sint32 i = 0;i != 8;i++){
-					m_abyUpPartStatus[done] = ((toread>>i)&1)? 1:0;
-					//	We may want to use this for another feature..
-					//	if (m_abyUpPartStatus[done] && !tempreqfile->IsComplete(done*PARTSIZE,((done+1)*PARTSIZE)-1))
-					// bPartsNeeded = true;
-					done++;
-					if (done == m_nUpPartCount) {
-						break;
+			m_upPartStatus.resize( m_nUpPartCount, 0 );
+		
+			try {
+				uint16 done = 0;
+				while (done != m_nUpPartCount) {
+					uint8 toread = data->ReadUInt8();
+					for (sint32 i = 0;i != 8;i++){
+						m_upPartStatus[done] = (toread>>i)&1;
+						//	We may want to use this for another feature..
+						//	if (m_upPartStatus[done] && !tempreqfile->IsComplete(done*PARTSIZE,((done+1)*PARTSIZE)-1))
+						// bPartsNeeded = true;
+						done++;
+						if (done == m_nUpPartCount) {
+							break;
+						}
 					}
 				}
+			} catch ( ... ) {
+				// We want the increment the frequency even if we didn't read everything
+				m_requpfile->UpdateUpPartsFrequency( this, true ); // Increment
+				
+				throw;
 			}
-			
+
 			if (GetExtendedRequestsVersion() > 1) {
 				uint16 nCompleteCountLast = GetUpCompleteSourcesCount();
 				uint16 nCompleteCountNew = data->ReadUInt16();
@@ -437,11 +441,15 @@ void CUpDownClient::ProcessExtendedInfo(const CSafeMemFile *data, CKnownFile *te
 		} else {
 			error += wxT("Unknown InvalidPacket exception");
 		}
+		
 		throw(error);
 	} catch (...) {
 		wxString error = wxT("CUpDownClient::ProcessExtendedInfo: Unknown Exception");
 		throw(error);
 	}
+	
+	m_requpfile->UpdateUpPartsFrequency( this, true ); // Increment
+	
 	Notify_QlistRefreshClient(this);
 }
 
@@ -458,6 +466,7 @@ void CUpDownClient::SetUploadFileID(CKnownFile* newreqfile)
 		if ( m_requpfile ) {
 			m_requpfile->SubQueuedCount();
 			m_requpfile->RemoveUploadingClient(this);
+			m_requpfile->UpdateUpPartsFrequency( this, false ); // Decrement
 		}
 
 		m_requpfile = newreqfile;
@@ -465,9 +474,16 @@ void CUpDownClient::SetUploadFileID(CKnownFile* newreqfile)
 		if ( m_requpfile ) {
 			m_requpfile->AddQueuedCount();
 			m_requpfile->AddUploadingClient(this);
-			m_requpfileid = m_requpfile->GetFileHash();
+			
+			if ( m_requpfileid != m_requpfile->GetFileHash() ) {
+				m_requpfileid = m_requpfile->GetFileHash();
+				m_upPartStatus.clear();
+			} else {
+				m_requpfile->UpdateUpPartsFrequency( this, true ); // Increment
+			}
 		} else {
 			m_requpfileid.Clear();
+			m_upPartStatus.clear();
 		}
 	}
 }

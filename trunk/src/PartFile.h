@@ -206,8 +206,19 @@ public:
 
 	bool	AddSource( CUpDownClient* client );
 	bool	DelSource( CUpDownClient* client );
-	
-	
+
+	/**
+	 * Updates the requency of avilable parts from with the data the client provides.
+	 *
+	 * @param client The clients whoose available parts should be considered.
+	 * @param increment If true, the counts are incremented, otherwise they are decremented.
+	 *
+	 * This functions updates the frequency list of file-parts, using the clients 
+	 * parts-status. This function should be called by clients every time they update their
+	 * parts-status, or when they are added or removed from the file.
+	 */
+	void	UpdatePartsFrequency( CUpDownClient* client, bool increment );
+
 	ArrayOfUInts16	m_SrcpartFrequency;
 protected:
 	uint32	m_validSources;
