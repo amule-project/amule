@@ -60,6 +60,7 @@
 #include "opcodes.h"		// Needed for MINWAIT_BEFORE_DLDISPLAY_WINDOWUPDATE
 #include "otherfunctions.h"	// Needed for GetTickCount
 #include "SearchDlg.h"		// Needed for CSearchDlg->GetCatChoice()
+#include <algorithm>
 
 // Max. file IDs per UDP packet
 // ----------------------------
@@ -112,8 +113,8 @@ void CDownloadQueue::UpdateDisplayedInfo(bool force)
 
 void CDownloadQueue::AddPartFilesToShare()
 {
-	for (POSITION pos = filelist.GetHeadPosition();pos != 0;filelist.GetNext(pos)) {
-		CPartFile* cur_file = filelist.GetAt(pos);
+	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
+		CPartFile* cur_file = filelist[i];
 		if (cur_file->GetStatus(true) == PS_READY) {
 			sharedfilelist->SafeAddKFile(cur_file,true);
 			printf("Sharing %s\n",cur_file->GetFullName());
@@ -158,7 +159,7 @@ void CDownloadQueue::Init()
 		if (toadd->LoadPartFile(app_prefs->GetTempDir(),(char*)myFileName.GetFullName().GetData())) {
 			count++;
 			printf("Done.\n");
-			filelist.AddTail(toadd); // to downloadqueue
+			filelist.push_back(toadd); // to downloadqueue
 			if (toadd->GetStatus(true) == PS_READY) {
 				sharedfilelist->SafeAddKFile(toadd); // part files are always shared files
 			}
@@ -180,34 +181,34 @@ void CDownloadQueue::Init()
 
 CDownloadQueue::~CDownloadQueue()
 {
-	for (POSITION pos =filelist.GetHeadPosition();pos != 0;filelist.GetNext(pos)) {
-		delete filelist.GetAt(pos);
+	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
+		delete filelist[i];
 	}
 
 }
 
 void CDownloadQueue::SavePartFiles(bool del /*= false*/)
 {
-	for (POSITION pos =filelist.GetHeadPosition();pos != 0;filelist.GetNext(pos)) {
-		filelist.GetAt(pos)->m_hpartfile.Flush();
-		filelist.GetAt(pos)->SavePartFile();
+	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
+		filelist[i]->m_hpartfile.Flush();
+		filelist[i]->SavePartFile();
 		if (del) {
-			delete filelist.GetAt(pos);
+			delete filelist[i];
 		}
 	}
 }
 
 void CDownloadQueue::SaveSourceSeeds()
 {
-	for (POSITION pos =filelist.GetHeadPosition();pos != 0;filelist.GetNext(pos)) {
-		filelist.GetAt(pos)->SaveSourceSeeds();
+	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
+		filelist[i]->SaveSourceSeeds();
 	}
 }
 
 void CDownloadQueue::LoadSourceSeeds()
 {
-	for (POSITION pos =filelist.GetHeadPosition();pos != 0;filelist.GetNext(pos)) {
-		filelist.GetAt(pos)->LoadSourceSeeds();
+	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
+		filelist[i]->LoadSourceSeeds();
 	}
 }
 
@@ -255,8 +256,8 @@ void CDownloadQueue::StartNextFile()
 	}
 
 	CPartFile*  pfile = NULL;
-	for (POSITION pos = filelist.GetHeadPosition();pos != 0;filelist.GetNext(pos)) {
-		CPartFile* cur_file = filelist.GetAt(pos);
+	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
+		CPartFile* cur_file = filelist[i];
 		if (cur_file->GetStatus() == PS_PAUSED) {
 			if (!pfile) {
 				pfile = cur_file;
@@ -310,11 +311,11 @@ void CDownloadQueue::AddFileLinkToDownload(CED2KFileLink* pLink)
 void CDownloadQueue::AddDownload(CPartFile* newfile,bool paused)
 {
 	// Creteil - Add in paused mode if there is already file(s) downloading
-	if ((paused) && filelist.GetHeadPosition() != 0) {
+	if ((paused) && !filelist.empty()) {
 		newfile->StopFile();
 	}
 
-	filelist.AddTail(newfile);
+	filelist.push_back(newfile);
 	SortByPriority();
 	CheckDiskspace();
 
@@ -365,8 +366,9 @@ void CDownloadQueue::Process()
 	udcounter++;
 	
 	// Since we imported the SortByPriority, there's no point on having separate loops
-	for (POSITION pos = filelist.GetHeadPosition();pos != 0;){
-		CPartFile* cur_file = filelist.GetNext(pos);
+	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
+
+		CPartFile* cur_file = filelist[i];
 		if (cur_file->GetStatus() == PS_READY || cur_file->GetStatus() == PS_EMPTY){
 			datarate += cur_file->Process(downspeed, udcounter);
 		}
@@ -411,9 +413,9 @@ void CDownloadQueue::Process()
 }
 
 CPartFile* CDownloadQueue::GetFileByID(uchar* filehash){
-	for (POSITION pos = filelist.GetHeadPosition();pos != 0;filelist.GetNext(pos)){
-		if (!memcmp(filehash,filelist.GetAt(pos)->GetFileHash(),16))
-			return filelist.GetAt(pos);
+	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
+		if (!memcmp(filehash,filelist[i]->GetFileHash(),16))
+			return filelist[i];
 	}
 	return 0;
 }
@@ -422,16 +424,16 @@ CPartFile* CDownloadQueue::GetFileByIndex(int index){
 //      if (index>=filelist.GetCount()) return 0;
 	int count=0;
 
-	for (POSITION pos = filelist.GetHeadPosition();pos != 0;filelist.GetNext(pos)){
-		if (count==index) return filelist.GetAt(pos);
+	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
+		if (count==index) return filelist[i];
 		count++;
 	}
 	return 0;
 }
 
 bool CDownloadQueue::IsPartFile(void* totest){
-	for (POSITION pos = filelist.GetHeadPosition();pos != 0;filelist.GetNext(pos))
-		if (totest == filelist.GetAt(pos))
+	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) 
+		if (totest == filelist[i])
 			return true;
 	return false;
 }
@@ -462,8 +464,8 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender,CUpDownClient* source)
 	// because it was already done in parent functions
 
 	// uses this only for temp. clients
-	for (POSITION pos = filelist.GetHeadPosition();pos != 0;filelist.GetNext(pos)) {
-		CPartFile* cur_file = filelist.GetAt(pos);
+	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
+		CPartFile* cur_file = filelist[i];
 		for (int sl=0;sl<SOURCESSLOTS;sl++) if (!cur_file->srclists[sl].IsEmpty())
 		for (POSITION pos2 = cur_file->srclists[sl].GetHeadPosition();pos2 != 0; cur_file->srclists[sl].GetNext(pos2)) {
 			if (cur_file->srclists[sl].GetAt(pos2)->Compare(source)) {
@@ -520,8 +522,8 @@ void CDownloadQueue::CheckAndAddKnownSource(CPartFile* sender,CUpDownClient* sou
 	*/
 
 	// use this for client which are already know (downloading for example)
-	for (POSITION pos = filelist.GetHeadPosition();pos != 0;filelist.GetNext(pos)) {
-		CPartFile* cur_file = filelist.GetAt(pos);
+	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
+		CPartFile* cur_file = filelist[i];
 		for (int sl=0;sl<SOURCESSLOTS;sl++) {
 			if (!cur_file->srclists[sl].IsEmpty()) {
 				if (cur_file->srclists[sl].Find(source)) {
@@ -554,8 +556,8 @@ void CDownloadQueue::CheckAndAddKnownSource(CPartFile* sender,CUpDownClient* sou
 bool CDownloadQueue::RemoveSource(CUpDownClient* toremove, bool	updatewindow, bool bDoStatsUpdate)
 {
 	bool removed = false;
-	for (POSITION pos = filelist.GetHeadPosition();pos != 0;filelist.GetNext(pos)) {
-		CPartFile* cur_file = filelist.GetAt(pos);
+	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
+		CPartFile* cur_file = filelist[i];
 		for (int sl=0;sl<SOURCESSLOTS;sl++) if (!cur_file->srclists[sl].IsEmpty()) {
 			for (POSITION pos2 = cur_file->srclists[sl].GetHeadPosition();pos2 != 0; cur_file->srclists[sl].GetNext(pos2)) {
 				if (toremove == cur_file->srclists[sl].GetAt(pos2)) {
@@ -653,9 +655,10 @@ void CDownloadQueue::RemoveFile(CPartFile* toremove)
 
 	RemoveLocalServerRequest(toremove);
 
-	for (POSITION pos = filelist.GetHeadPosition();pos != 0;filelist.GetNext(pos)) {
-		if (toremove == filelist.GetAt(pos)) {
-			filelist.RemoveAt(pos);
+	for ( std::deque<CPartFile*>::iterator it = filelist.begin(); it != filelist.end(); it++ ) {
+		if (toremove == (*it)) {
+			delete (*it);
+			filelist.erase(it);
 			return;
 		}
 	}
@@ -664,9 +667,8 @@ void CDownloadQueue::RemoveFile(CPartFile* toremove)
 }
 
 void CDownloadQueue::DeleteAll(){
-	POSITION pos;
-	for (pos = filelist.GetHeadPosition();pos != 0;filelist.GetNext(pos)){
-		CPartFile* cur_file = filelist.GetAt(pos);
+	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
+		CPartFile* cur_file = filelist[i];
 		for (int sl=0;sl<SOURCESSLOTS;sl++) if (!cur_file->srclists[sl].IsEmpty())
 			cur_file->srclists[sl].RemoveAll();
 		cur_file->IsCountDirty = true;
@@ -679,8 +681,8 @@ void CDownloadQueue::DeleteAll(){
 
 bool CDownloadQueue::SendNextUDPPacket()
 {
-	
-	if (filelist.IsEmpty() || !theApp.serverconnect->IsUDPSocketAvailable()	|| !theApp.serverconnect->IsConnected()) {
+
+	if (filelist.empty() || !theApp.serverconnect->IsUDPSocketAvailable()	|| !theApp.serverconnect->IsConnected()) {
 		return false;
 	}
 	if (!cur_udpserver) {
@@ -705,19 +707,20 @@ bool CDownloadQueue::SendNextUDPPacket()
 				// we just started the global source searching
 				// or have switched the server
 				// get first file to search sources for
-				nextfile = filelist.GetHead();
+				nextfile = filelist.front();
 				lastfile = nextfile;
 			} else {
-				POSITION pos = filelist.Find(lastfile);
-				if (pos == 0) {
+				std::deque<CPartFile*>::iterator it;
+				it = std::find(filelist.begin(), filelist.end(), lastfile);
+				if (it == filelist.end()) {
 					// the last file is no longer in the DL-list
 					// (may have been finished or canceld)
 					// get first file to search sources for
-					nextfile = filelist.GetHead();
+					nextfile = filelist.front();
 					lastfile = nextfile;
 				} else {
-					filelist.GetNext(pos);
-					if (pos == 0) {
+					it++;
+					if (it == filelist.end()) {
 						// finished asking the current server for all files
 						// if there are pending requests for the current server, send them
 						if (dataGlobGetSources.GetLength() > 0) {
@@ -749,10 +752,10 @@ bool CDownloadQueue::SendNextUDPPacket()
 						iMaxFilesPerPacket = GetMaxFilesPerUDPServerPacket();
 
 						// have selected a new server; get first file to search sources for
-						nextfile = filelist.GetHead();
+						nextfile = filelist.front();
 						lastfile = nextfile;
 					} else {
-						nextfile = filelist.GetAt(pos);
+						nextfile = (*it);
 						lastfile = nextfile;
 					}
 				}
@@ -774,9 +777,10 @@ bool CDownloadQueue::SendNextUDPPacket()
 	// send max 40 udp request to one server per interval, if we have more than 40 files, we rotate the list and use it as Queue
 	if (m_cRequestsSentToServer >= MAX_REQUESTS_PER_SERVER) {
 		// move the last 40 files to the head
-		if (filelist.GetCount() >= MAX_REQUESTS_PER_SERVER) {
+		if (filelist.size() > MAX_REQUESTS_PER_SERVER) {
 			for (int i = 0; i != MAX_REQUESTS_PER_SERVER; i++) {
-				filelist.AddHead(filelist.RemoveTail());
+				filelist.push_front( filelist.back() );
+				filelist.pop_back();
 			}
 		}
 
@@ -825,7 +829,7 @@ void CDownloadQueue::SortByPriority()
 
 void CDownloadQueue::SortByPriority()
 {
-	uint16 n = filelist.GetCount();
+	uint16 n = filelist.size();
 	if (!n) {
 		return;
 	}
@@ -834,15 +838,15 @@ void CDownloadQueue::SortByPriority()
 		HeapSort(i, n-1);
 	}
 	for ( i = n; --i; ) {
-		SwapParts(filelist.FindIndex(0), filelist.FindIndex(i));
+		std::swap(filelist[0], filelist[i]);
 		HeapSort(0, i-1);
 	}
 }
 
-bool CDownloadQueue::CompareParts(POSITION pos1, POSITION pos2)
+bool CDownloadQueue::CompareParts(int pos1, int pos2)
 {
-	CPartFile* file1 = filelist.GetAt(pos1);
-	CPartFile* file2 = filelist.GetAt(pos2);
+	CPartFile* file1 = filelist[pos1];
+	CPartFile* file2 = filelist[pos2];
 	if (file1->GetDownPriority() == file2->GetDownPriority()) {
 		return (wxString::wxString(file1->GetPartMetFileName()).CmpNoCase(file2->GetPartMetFileName()))>=0;
 	}
@@ -852,31 +856,23 @@ bool CDownloadQueue::CompareParts(POSITION pos1, POSITION pos2)
 	return false;
 }
 
-void CDownloadQueue::SwapParts(POSITION pos1, POSITION pos2)
-{
-	CPartFile* file1 = filelist.GetAt(pos1);
-	CPartFile* file2 = filelist.GetAt(pos2);
-	filelist.SetAt(pos1, file2);
-	filelist.SetAt(pos2, file1);
-}
-
 void CDownloadQueue::HeapSort(uint16 first, uint16 last)
 {
 	uint16 r;
-	POSITION pos1 = filelist.FindIndex(first);
+	uint16 pos1 = first;
 	for ( r = first; !(r & 0x8000) && (r<<1) < last; ) {
 		uint16 r2 = (r<<1)+1;
-		POSITION pos2 = filelist.FindIndex(r2);
+		uint16 pos2 = r2;
 		if (r2 != last) {
-			POSITION pos3 = pos2;
-			filelist.GetNext(pos3);
+			uint16 pos3 = pos2;
+			pos3++;
 			if (!CompareParts(pos2, pos3)) {
 				pos2 = pos3;
 				r2++;
 			}
 		}
 		if (!CompareParts(pos1, pos2)) {
-			SwapParts(pos1, pos2);
+			std::swap(filelist[pos1], filelist[pos2]);
 			r = r2;
 			pos1 = pos2;
 		} else {
@@ -890,10 +886,9 @@ void CDownloadQueue::ResetLocalServerRequests()
 	m_dwNextTCPSrcReq = 0;
 	m_localServerReqQueue.RemoveAll();
 
-	POSITION pos = filelist.GetHeadPosition();
-	while (pos != NULL)
+	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) 
 	{ 
-		CPartFile* pFile = filelist.GetNext(pos);
+		CPartFile* pFile = filelist[i];
 		UINT uState = pFile->GetStatus();
 		if (uState == PS_READY || uState == PS_EMPTY)
 			pFile->ResumeFile();
@@ -1004,8 +999,8 @@ void CDownloadQueue::GetDownloadStats(int results[])
 	results[0]=0;
 	results[1]=0;
 
-	for (POSITION pos =theApp.downloadqueue->filelist.GetHeadPosition();pos != 0;theApp.downloadqueue->filelist.GetNext(pos)) {
-		CPartFile* cur_file =  filelist.GetAt(pos);
+	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
+		CPartFile* cur_file =  filelist[i];
 		results[0]+=cur_file->GetSourceCount();
 		results[1]+=cur_file->GetTransferingSrcCount();
 	}
@@ -1013,8 +1008,8 @@ void CDownloadQueue::GetDownloadStats(int results[])
 
 CUpDownClient* CDownloadQueue::GetDownloadClientByIP(uint32 dwIP)
 {
-	for (POSITION pos = filelist.GetHeadPosition();pos != 0;filelist.GetNext(pos)) {
-		CPartFile* cur_file = filelist.GetAt(pos);
+	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
+		CPartFile* cur_file = filelist[i];
 		for (int sl=0;sl<SOURCESSLOTS;sl++) if (!cur_file->srclists[sl].IsEmpty())
 		for (POSITION pos2 = cur_file->srclists[sl].GetHeadPosition();pos2 != 0; cur_file->srclists[sl].GetNext(pos2)) {
 			if (dwIP == cur_file->srclists[sl].GetAt(pos2)->GetIP()) {
@@ -1111,8 +1106,8 @@ void CDownloadQueue::RemoveSourceFromPartFile(CPartFile* file, CUpDownClient* cl
 void CDownloadQueue::DisableAllA4AFAuto(void)
 {
 	CPartFile* cur_file;
-	for (POSITION pos = filelist.GetHeadPosition(); pos != NULL; filelist.GetNext(pos)) {
-		cur_file = (CPartFile*)filelist.GetAt(pos);
+	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
+		cur_file = (CPartFile*)filelist[i];
 		if (cur_file != NULL) {
 			cur_file->SetA4AFAuto(false);
 		}
@@ -1122,8 +1117,8 @@ void CDownloadQueue::DisableAllA4AFAuto(void)
 
 void CDownloadQueue::ResetCatParts(int cat)
 {
-	for (POSITION pos = filelist.GetHeadPosition();pos != 0;filelist.GetNext(pos)) {
-		CPartFile* cur_file = filelist.GetAt(pos);
+	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
+		CPartFile* cur_file = filelist[i];
 		if (cur_file->GetCategory()==cat) {
 			cur_file->SetCategory(0);
 		} else if (cur_file->GetCategory() > cat) {
@@ -1134,8 +1129,8 @@ void CDownloadQueue::ResetCatParts(int cat)
 
 void CDownloadQueue::SetCatPrio(int cat, uint8 newprio)
 {
-	for (POSITION pos = filelist.GetHeadPosition();pos != 0;filelist.GetNext(pos)) {
-		CPartFile* cur_file = filelist.GetAt(pos);
+	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
+		CPartFile* cur_file = filelist[i];
 		if (cat==0 || cur_file->GetCategory()==cat) {
 			if (newprio==PR_AUTO) {
 				cur_file->SetAutoDownPriority(true);
@@ -1151,9 +1146,9 @@ void CDownloadQueue::SetCatPrio(int cat, uint8 newprio)
 void CDownloadQueue::SetCatStatus(int cat, int newstatus)
 {
 	bool reset=false;
-	POSITION pos= filelist.GetHeadPosition();
-	while (pos != 0) {
-		CPartFile* cur_file = filelist.GetAt(pos);
+	std::deque<CPartFile*>::iterator it = filelist.begin();
+	while (it != filelist.end()) {
+		CPartFile* cur_file = (*it);
 		if (!cur_file) {
 			continue;
 		}
@@ -1176,10 +1171,10 @@ void CDownloadQueue::SetCatStatus(int cat, int newstatus)
 					break;
 			}
 		}
-		filelist.GetNext(pos);
+		it++;
 		if (reset) {
 			reset = false;
-			pos = filelist.GetHeadPosition();
+			it = filelist.begin();
 		}
 	}
 }
@@ -1187,8 +1182,8 @@ void CDownloadQueue::SetCatStatus(int cat, int newstatus)
 uint16 CDownloadQueue::GetDownloadingFileCount()
 {
 	uint16 result = 0;
-	for (POSITION pos = filelist.GetHeadPosition();pos != 0;) {
-		CPartFile* cur_file = filelist.GetNext(pos);
+	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
+		CPartFile* cur_file = filelist[i];
 		if (cur_file->GetStatus() == PS_READY || cur_file->GetStatus() == PS_EMPTY) {
 			result++;
 		}
@@ -1199,8 +1194,8 @@ uint16 CDownloadQueue::GetDownloadingFileCount()
 uint16 CDownloadQueue::GetPausedFileCount()
 {
 	uint16 result = 0;
-	for (POSITION pos = filelist.GetHeadPosition();pos != 0;) {
-		CPartFile* cur_file = filelist.GetNext(pos);
+	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
+		CPartFile* cur_file = filelist[i];
 		if (cur_file->GetStatus() == PS_PAUSED) {
 			result++;
 		}
@@ -1219,8 +1214,8 @@ void CDownloadQueue::CheckDiskspace(bool bNotEnoughSpaceLeft)
 	// If disabled, resume any previously paused files
 	if (!theApp.glob_prefs->IsCheckDiskspaceEnabled()) {
 		if (!bNotEnoughSpaceLeft) { // avoid worse case, if we already had 'disk full'
-			for (POSITION pos1 = filelist.GetHeadPosition(); pos1 != NULL;) {
-				CPartFile* cur_file = filelist.GetNext(pos1);
+			for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
+				CPartFile* cur_file = filelist[i];
 				switch(cur_file->GetStatus()) {
 					case PS_ERROR:
 					case PS_COMPLETING:
@@ -1237,8 +1232,8 @@ void CDownloadQueue::CheckDiskspace(bool bNotEnoughSpaceLeft)
 	// 'bNotEnoughSpaceLeft' - avoid worse case, if we already had 'disk full'
 	uint64 nTotalAvailableSpace = bNotEnoughSpaceLeft ? 0 : free.GetValue();
 	if (theApp.glob_prefs->GetMinFreeDiskSpace() == 0) {
-		for (POSITION pos1 = filelist.GetHeadPosition(); pos1 != NULL;) {
-			CPartFile* cur_file = filelist.GetNext(pos1);
+		for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
+			CPartFile* cur_file = filelist[i];
 			switch(cur_file->GetStatus()) {
 				case PS_ERROR:
 				case PS_COMPLETING:
@@ -1262,8 +1257,8 @@ void CDownloadQueue::CheckDiskspace(bool bNotEnoughSpaceLeft)
 			}
 		}
 	} else {
-		for (POSITION pos1 = filelist.GetHeadPosition(); pos1 != NULL;) {
-			CPartFile* cur_file = filelist.GetNext(pos1);
+		for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
+			CPartFile* cur_file = filelist[i];
 			switch(cur_file->GetStatus()) {
 				case PS_ERROR:
 				case PS_COMPLETING:
