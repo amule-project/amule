@@ -413,6 +413,25 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 		theApp.amuledlg->SetTitle(theApp.m_FrameTitle);
 	}
 
+	
+	// Changes related to the statistics-dlg
+	if ( CfgChanged(IDC_SLIDER) ) {
+		theApp.amuledlg->statisticswnd->SetUpdatePeriod();
+	}
+
+	if ( CfgChanged(IDC_SLIDER3) ) {
+		theApp.amuledlg->statisticswnd->ResetAveragingTime();
+	}
+	
+	if ( CfgChanged(IDC_DOWNLOAD_CAP) ) {
+		theApp.amuledlg->statisticswnd->SetARange( true, CPreferences::GetMaxGraphDownloadRate() );
+	}
+
+	if ( CfgChanged(IDC_UPLOAD_CAP) ) {
+		theApp.amuledlg->statisticswnd->SetARange( false, CPreferences::GetMaxGraphUploadRate() );
+	}
+
+
 	// Final actions:
 	// Reset the ID so that a new dialog can be created
 	s_ID = 0;

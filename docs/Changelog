@@ -58,6 +58,8 @@ Version 2.0.0rc7 - The "99,6% Final" version.
 		  "Asked For Another File" on download queue.
 		  
 	Xaignar:
+		* Ensured that the statistics-dialog would be updated when preferences
+		  relating to it where changed.
 		* Added sainity checks to category-loading, to avoid adding categories
 		  without incomming dir or name.
 		* Initial fix for crashes if aMule tried to share an inaccessible folder.
