@@ -37,35 +37,16 @@ WX_DEFINE_LIST(TagList);
 
 CServer::CServer(ServerMet_Struct* in_data)
 {
-	taglist=new TagList;
 	port = in_data->port;
-	tagcount = 0;
 	ip = in_data->ip;
-	in_addr host;
-	host.s_addr = ip;
-	strcpy(ipfull,inet_ntoa(host));
-	files = 0;
-	users = 0;
-	preferences = 0;
-	ping = 0;
-	description = 0;
-	listname = 0;
-	dynip = 0;
-	failedcount = 0; 
-	lastpinged = 0;
-	staticservermember=0;
-	maxusers=0;
-	m_uTCPFlags = 0;
-	m_uUDPFlags = 0;
-	softfiles = 0;
-	hardfiles = 0;
+
+	Init();
 }
 
 CServer::CServer(uint16 in_port, char* i_addr)
 {
-	taglist = new TagList;
+
 	port = in_port;
-	tagcount = 0;
 	if (inet_addr(i_addr) == INADDR_NONE) {
 		dynip = nstrdup(i_addr);
 		ip = 0;
@@ -73,21 +54,9 @@ CServer::CServer(uint16 in_port, char* i_addr)
 		ip = inet_addr(i_addr);
 		dynip = 0;
 	}
-	in_addr host;
-	host.s_addr = ip;
-	strcpy(ipfull,inet_ntoa(host));
-	files = 0;
-	users = 0;
-	preferences = 0;
-	ping = 0;
-	description = 0;
-	listname = 0;
-	failedcount = 0; 
-	lastpinged = 0;
-	staticservermember=0;
-	maxusers=0;
-	m_uTCPFlags = 0;
-	m_uUDPFlags = 0;
+	
+	Init();
+
 }
 
 // copy constructor
@@ -128,6 +97,10 @@ CServer::CServer(CServer* pOld)
 	m_strVersion = pOld->m_strVersion;
 	m_uTCPFlags = pOld->m_uTCPFlags;
 	m_uUDPFlags = pOld->m_uUDPFlags;
+	challenge = pOld->challenge;
+	softfiles = pOld->softfiles;
+	hardfiles = pOld->hardfiles;
+	
 }
 
 CServer::~CServer()
@@ -150,6 +123,33 @@ CServer::~CServer()
 		taglist=NULL;
 	}
 }
+
+void CServer::Init() {
+	
+	in_addr host;
+	host.s_addr = ip;
+	strcpy(ipfull,inet_ntoa(host));
+	
+	taglist = new TagList;
+	tagcount = 0;
+	files = 0;
+	users = 0;
+	preferences = 0;
+	ping = 0;
+	description = 0;
+	listname = 0;
+	dynip = 0;
+	failedcount = 0; 
+	lastpinged = 0;
+	staticservermember=0;
+	maxusers=0;
+	m_uTCPFlags = 0;
+	m_uUDPFlags = 0;
+	challenge = 0;
+	softfiles = 0;
+	hardfiles = 0;	
+	
+}	
 
 bool CServer::AddTagFromFile(CFile* servermet){
 	if (servermet == 0)
