@@ -107,6 +107,9 @@ void CUpDownClient::DrawStatusBar(wxMemoryDC* dc, wxRect rect, bool onlygreyrect
 #endif
 
 bool CUpDownClient::Compare(const CUpDownClient* tocomp, bool bIgnoreUserhash){
+	if (!tocomp) {
+		return false;
+	}
 	if(!bIgnoreUserhash && HasValidHash() && tocomp->HasValidHash())
 	    return (this->GetUserHash() == tocomp->GetUserHash());
 	if (HasLowID())
