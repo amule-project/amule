@@ -218,7 +218,7 @@ bool CClientDetailDialog::OnInitDialog() {
 			}
 		} else {
 			printf("Crypto not available\n");
-			GetDlgItem(IDC_CDIDENT,wxStaticText)->SetLabel(CString(_("Not Avaiable")));
+			GetDlgItem(IDC_CDIDENT,wxStaticText)->SetLabel(CString(_("Not Available")));
 		}
 		
 		
