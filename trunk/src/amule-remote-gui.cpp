@@ -164,9 +164,8 @@ void CamuleRemoteGuiApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS&)
 		//serverlist->ReloadControl();
 	} else if ( theApp.amuledlg->transferwnd->IsShown() ) {
 		downloadqueue->DoRequery(EC_OP_GET_DLOAD_QUEUE, EC_TAG_PARTFILE);
-		//downloadqueue->ReloadControl();
 	} else if ( theApp.amuledlg->searchwnd->IsShown() ) {
-		if ( searchlist->m_curr_search != 0 ) {
+		if ( searchlist->m_curr_search != -1 ) {
 			searchlist->DoRequery(EC_OP_SEARCH_RESULTS, EC_TAG_SEARCHFILE);
 		}
 	}
@@ -880,7 +879,9 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 	//
 	// update status
 	//
-	file->kBpsDown = tag->Speed() / 1024.0;
+	uint32 speed = tag->Speed();
+	file->kBpsDown = speed / 1024.0;
+	m_kbps = speed / 1024;
 
 	if ( file->kBpsDown > 0 ) {
 		file->transfered = tag->SizeXfer();
@@ -953,6 +954,12 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 		printf("ERROR: %p %p %p\n", gaptag, parttag, reqtag);
 	}
 	theApp.amuledlg->transferwnd->downloadlistctrl->UpdateItem(file);
+}
+
+bool CDownQueueRem::Phase1Done(CECPacket *)
+{
+	m_kbps = 0;
+	return true;
 }
 
 void CDownQueueRem::Pause(CPartFile *file)
@@ -1034,7 +1041,7 @@ void CClientListRem::FilterQueues()
 
 CSearchListRem::CSearchListRem(CRemoteConnect *conn) : CRemoteContainer<CSearchFile, CMD4Hash, CEC_SearchFile_Tag>(conn)
 {
-	m_curr_search = 0;
+	m_curr_search = -1;
 }
 
 void CSearchListRem::Clear()
@@ -1053,6 +1060,9 @@ bool CSearchListRem::StartNewSearch(long nSearchID, bool global_search, wxString
 		
 	m_conn->Send(&search_req);
 	m_curr_search = nSearchID;
+	
+	Flush();
+	
 	return true;
 }
 
@@ -1097,6 +1107,20 @@ CMD4Hash CSearchListRem::GetItemID(CSearchFile *file)
 
 void CSearchListRem::ProcessItemUpdate(CEC_SearchFile_Tag *, CSearchFile *)
 {
+}
+
+bool CSearchListRem::Phase1Done(CECPacket *reply)
+{
+	CECTag *status = reply->GetTagByName(EC_TAG_SEARCH_STATUS);
+	
+	if ( status && (status->GetInt8Data() == 0) ) {
+		
+		if ( (reply->GetTagCount() - 1) <= GetCount() ) {
+			m_curr_search = -1;
+			return false;
+		}
+	}
+	return true;
 }
 
 bool CUpDownClient::IsBanned() const
