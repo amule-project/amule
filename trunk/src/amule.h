@@ -244,10 +244,12 @@ public:
 	uint32 sent;
 
 protected:
+#ifdef __WXDEBUG__
 	/**
 	 * Handles asserts in a thread-safe manner.
 	 */
-	void OnAssert(const wxChar *file, int line, const wxChar *cond, const wxChar *msg);
+	virtual void OnAssert(const wxChar *file, int line, const wxChar *cond, const wxChar *msg);
+#endif
 	
 	/**
 	 * This class is used to contain log messages that are to be displayed

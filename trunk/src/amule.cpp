@@ -1314,6 +1314,7 @@ void CamuleApp::SetOSFiles(const wxString new_path)
 }
 
 
+#ifdef __WXDEBUG__
 void CamuleApp::OnAssert(const wxChar *file, int line, 
 						 const wxChar *cond, const wxChar *msg)
 {
@@ -1328,6 +1329,7 @@ void CamuleApp::OnAssert(const wxChar *file, int line,
 		raise( SIGABRT );
 	}
 }
+#endif
 
 
 void CamuleApp::OnUDPDnsDone(wxEvent& e)
