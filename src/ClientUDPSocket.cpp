@@ -63,7 +63,7 @@
 
 IMPLEMENT_DYNAMIC_CLASS(CClientUDPSocket,wxDatagramSocketProxy)
 
-CClientUDPSocket::CClientUDPSocket(wxIPV4address address, const wxProxyData *ProxyData)
+CClientUDPSocket::CClientUDPSocket(amuleIPV4Address &address, const wxProxyData *ProxyData)
 :
 wxDatagramSocketProxy(address, wxSOCKET_NOWAIT, ProxyData)
 #ifdef AMULE_DAEMON
