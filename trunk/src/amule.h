@@ -35,10 +35,6 @@
 	#define wxFIXED_MINSIZE 0
 #endif
 
-// __VA_ARGS__ is not ansi standard 
-void AddDebugLogLineF(bool addtostatus, const wxChar *line, ...);
-void AddLogLineF(bool addtostatus, const wxChar *line, ...);
-
 class CAbstractFile;
 class ExternalConn;
 class CamuleDlg;
@@ -113,7 +109,7 @@ public:
 	// websearch function
 	wxString        GenWebSearchUrl( const wxString &filename );
 	
-	void QueueLogLine(bool addtostatusbar, wxString line);
+	void QueueLogLine(bool addtostatusbar, const wxString& line);
 	void FlushQueuedLogLines();
 		
 	// Misc functions

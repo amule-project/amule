@@ -1540,7 +1540,7 @@ void CamuleApp::Trigger_New_version(wxString old_version, wxString new_version)
 
 }
 
-void CamuleApp::QueueLogLine(bool addtostatusbar, wxString line)
+void CamuleApp::QueueLogLine(bool addtostatusbar, const wxString& line)
 {
 	m_LogQueueLock.Enter();
 
@@ -2274,27 +2274,6 @@ void CamuleApp::NotifyEvent(GUIEvent event) {
 
 };
 
-
-void AddLogLineF(bool addtostatus, const wxChar *line, ...)
-{
-	va_list argptr;
-	va_start(argptr, line);
-	wxString bufferline = wxString::FormatV(line, argptr);
-	bufferline.Truncate(1000); // Max size 1000 chars
-	va_end(argptr);
-	AddLogLineM(addtostatus, bufferline);
-}
-		
-
-void AddDebugLogLineF(bool addtostatus, const wxChar *line, ...)
-{
-	va_list argptr;
-	va_start(argptr, line);
-	wxString bufferline = wxString::FormatV(line, argptr);
-	bufferline.Truncate(1000); // Max size 1000 chars
-	va_end(argptr);
-	AddDebugLogLineM(addtostatus, bufferline);
-}
 
 bool CamuleApp::AddServer(CServer *srv)
 {

@@ -47,7 +47,6 @@
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "MuleNotebook.h"
 #include "GetTickCount.h"
-#include "debugstuff.h"		// Needed for debugprintf
 
 #define ID_SEARCHTIMER 55219
 
@@ -301,18 +300,12 @@ void CSearchDlg::OnBnClickedSdownload(wxCommandEvent& WXUNUSED(evt))
 	
 	wxNotebookPage* page = notebook->GetPage(notebook->GetSelection());
 	if ( page == NULL ) {
-		AddLogLineM(false,wxT("page == NULL in CSearchDlg::OnBnClickedSdownload -- please, report this on amule forums: www.amule.org"));
-#ifdef __DEBUG__
-		debugprintf(true, "page == NULL in CSearchDlg::OnBnClickedSdownload -- please, report this on amule forums: www.amule.org");
-#endif
+		printf("page == NULL in CSearchDlg::OnBnClickedSdownload -- please, report this on amule forums: www.amule.org");
 		return;
 	}
 	CSearchListCtrl* searchlistctrl = (CSearchListCtrl*)FindWindowById(ID_SEARCHLISTCTRL, page);
 	if ( searchlistctrl == NULL ) {
-		AddLogLineM(false,wxT("searchlistctrl == NULL in CSearchDlg::OnBnClickedSdownload -- please, report this on amule forums: www.amule.org"));
-#ifdef __DEBUG__
-		debugprintf(true, "searchlistctrl == NULL in CSearchDlg::OnBnClickedSdownload -- please, report this on amule forums: www.amule.org");
-#endif
+		printf("searchlistctrl == NULL in CSearchDlg::OnBnClickedSdownload -- please, report this on amule forums: www.amule.org");
 		return;
 	}
 

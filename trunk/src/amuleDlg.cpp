@@ -487,14 +487,10 @@ void CamuleDlg::ResetDebugLog()
 }
 
 
-void CamuleDlg::AddLogLine(bool addtostatusbar, const wxChar* line, ...)
+void CamuleDlg::AddLogLine(bool addtostatusbar, const wxString& line)
 {
 
-	va_list argptr;
-	va_start(argptr, line);
-	wxString bufferline = wxString::FormatV( line, argptr );
-	bufferline.Truncate(1000); // Max size 1000 chars
-	va_end(argptr);
+	wxString bufferline = line.Left(1000); // Max length 1000 chars
 
 	// Remove newlines at end, they cause problems with the layout...
 	while ( bufferline.Last() == '\n' )
@@ -534,14 +530,10 @@ void CamuleDlg::AddLogLine(bool addtostatusbar, const wxChar* line, ...)
 }
 
 
-void CamuleDlg::AddDebugLogLine(bool addtostatusbar, const wxChar* line, ...)
+void CamuleDlg::AddDebugLogLine(bool addtostatusbar, const wxString& line)
 {
 	if (theApp.glob_prefs->GetVerbose()) {
-		va_list argptr;
-		va_start(argptr, line);
-		wxString bufferline = wxString::FormatV(line, argptr);
-		bufferline.Truncate(1000); // Max size 1000 chars
-		va_end(argptr);
+		wxString bufferline = line.Left(1000); // Max size 1000 chars
 
 		AddLogLine(addtostatusbar, bufferline);
 	}

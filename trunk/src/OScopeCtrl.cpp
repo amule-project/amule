@@ -273,7 +273,7 @@ void COScopeCtrl::RecreateGrid()
 	// x units
 	strTemp = CastSecondsToHM((nPlotWidth/nShiftPixels) * (int)floor(sLastPeriod+0.5));
 		// floor(x + 0.5) is a way of doing round(x) that works with gcc < 3 ...
-	strXUnits.Printf((bStopped ? _("Disabled [%s]") : wxT("%s")), unicode2char(strTemp));
+	strXUnits.Printf((bStopped ? _("Disabled [%s]") : wxT("%s")), strTemp.c_str());
 	
 	dcGrid->GetTextExtent(strXUnits,&sizX,&sizY);
 	dcGrid->DrawText(strXUnits,(rectPlot.left+rectPlot.right)/2-sizX/2,rectPlot.bottom+4);

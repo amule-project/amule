@@ -1102,7 +1102,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			}
 			client->SetDownloadState(DS_ERROR);
 			// TODO write this into a debugfile
-			AddDebugLogLineM(false,wxString(_("Client '")) + client->GetUserName() + wxString::Format(_(" (IP:%s) caused an error: "), unicode2char(client->GetFullIP())) + error + _(". Disconnecting client!"));
+			AddDebugLogLineM(false,wxString(_("Client '")) + client->GetUserName() + wxString::Format(_(" (IP:%s) caused an error: "), client->GetFullIP().c_str()) + error + _(". Disconnecting client!"));
 		} else {
 			if (theApp.glob_prefs->GetVerbosePacketError()) {
 				if (error.IsEmpty()) {
@@ -1534,7 +1534,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 									DebugSend("OP__AnswerSources", client, (char*)file->GetFileHash());
 								}
 								if (thePrefs.GetDebugSourceExchange()) {
-									AddDebugLogLineF( false, "RCV:Source Request User(%s) File(%s)", client->GetUserName(), file->GetFileName().GetData());
+									AddDebugLogLineM(false, wxString::Format(wxT("RCV:Source Request User(%s) File(%s)"), client->GetUserName().c_str(), file->GetFileName().c_str()));
 								}
 								#endif
 							}
@@ -1690,7 +1690,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 		Disconnect(wxT("UnCaught invalid packet exception On ProcessPacket\n"));
 		return false;
 	} catch(wxString error) {
-		AddDebugLogLineF(false,_("A client caused an error or did something bad: %s. Disconnecting client!"),error.GetData());
+		AddDebugLogLineM(false, wxString::Format(_("A client caused an error or did something bad: %s. Disconnecting client!"), error.c_str()));
 		if (client) {
 			if (theApp.glob_prefs->GetVerbosePacketError()) {
 				if (error.IsEmpty()) {			
@@ -1754,9 +1754,9 @@ void CClientReqSocket::OnError(int nErrorCode)
 		if (client) {
 			if (client->GetUserName()) {
 				strError = wxString(_("Client '")) + client->GetUserName();
-				strError += wxString::Format(_("' (IP:%s) caused an error: %u. Disconnecting client!"),unicode2char(client->GetFullIP()),nErrorCode);
+				strError += wxString::Format(_("' (IP:%s) caused an error: %u. Disconnecting client!"), client->GetFullIP().c_str(),nErrorCode);
 			} else {
-				strError.Printf(_("Unknown client (IP:%s) caused an error: %u. Disconnecting client!"),unicode2char(client->GetFullIP()),nErrorCode);
+				strError.Printf(_("Unknown client (IP:%s) caused an error: %u. Disconnecting client!"), client->GetFullIP().c_str(), nErrorCode);
 			}
 		} else {
 			strError.Printf(_("A client caused an error or did something bad (error %u). Disconnecting client !"),nErrorCode);
@@ -1791,7 +1791,7 @@ bool CClientReqSocket::PacketReceived(Packet* packet)
 		
 		case OP_PACKEDPROT:
 			if (!packet->UnPackPacket()) {
-				AddDebugLogLineF(false,wxT("Failed to decompress client TCP packet; protocol=0x%02x  opcode=0x%02x  size=%u"), packet->GetProtocol(), packet->GetOpCode(), packet->GetPacketSize());				
+				AddDebugLogLineM(false, wxString::Format(wxT("Failed to decompress client TCP packet; protocol=0x%02x  opcode=0x%02x  size=%u"), packet->GetProtocol(), packet->GetOpCode(), packet->GetPacketSize()));
 				bResult = false;
 				break;
 			}

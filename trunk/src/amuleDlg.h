@@ -62,8 +62,8 @@ public:
 	CamuleDlg(wxWindow* pParent=NULL, wxString title=wxT(""),wxPoint where = wxDefaultPosition, wxSize dlg_size = wxSize(DEFAULT_SIZE_X,DEFAULT_SIZE_Y));
 	~CamuleDlg();
 
-	void AddLogLine(bool addtostatusbar, const wxChar* line, ...);
-	void AddDebugLogLine(bool addtostatusbar, const wxChar* line, ...);
+	void AddLogLine(bool addtostatusbar, const wxString& line);
+	void AddDebugLogLine(bool addtostatusbar, const wxString& line);
 	void AddServerMessageLine(wxString& message);
 	void ResetLog(uint8 whichone = 1);
 	void ResetDebugLog();

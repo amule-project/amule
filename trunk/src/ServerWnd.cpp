@@ -90,7 +90,7 @@ void CServerWnd::UpdateServerMetFromURL(wxString strURL)
 		theApp.serverlist->SaveServermetToFile();
 		printf("Saving of server.met file Done !!!\n");
 	} else {
-		AddLogLineF(true, _("Failed to download the serverlist from %s"), strURL.GetData());
+		AddLogLineM(true, wxString::Format(_("Failed to download the serverlist from %s"), strURL.c_str()));
 	}
 	delete dlg;
 }

@@ -219,7 +219,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 							servername = _("Server");
 						}
 						AddDebugLogLineM(false, _("Error ") + servername +
-														wxString::Format(wxT(" (%s:%u) - "),unicode2char(cur_server->GetAddress()), cur_server->GetPort()) 
+														wxString::Format(wxT(" (%s:%u) - "), cur_server->GetAddress().c_str(), cur_server->GetPort()) 
 														+ message.Mid(5,message.Len()).Trim(_T(" :")))
 						bOutputMessage = false;
 
@@ -233,7 +233,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 							servername = _("Server");
 						}
 						AddDebugLogLineM(false, _("Warning ") + servername +
-														wxString::Format(wxT(" (%s:%u) - "),unicode2char(cur_server->GetAddress()), cur_server->GetPort()) 
+														wxString::Format(wxT(" (%s:%u) - "), cur_server->GetAddress().c_str(), cur_server->GetPort()) 
 														+ message.Mid(5,message.Len()).Trim(_T(" :")))
 
 						bOutputMessage = false;
@@ -324,7 +324,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 					theApp.OnlineSig();       // Added By Bouc7
 				}
 				serverconnect->SetClientID(la->clientid);
-				AddLogLineF(false,_("New clientid is %u"),la->clientid);
+				AddLogLineM(false, wxString::Format(_("New clientid is %u"),la->clientid));
 				
 				
 				// Kry - No need for this. eMule doesn't do it either.
@@ -460,7 +460,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				}
 				delete servers;
 				if (addcount) {
-					AddLogLineF(false,_("Received %d new servers"), addcount);
+					AddLogLineM(false, wxString::Format(_("Received %d new servers"), addcount));
 				}
 				theApp.serverlist->SaveServermetToFile();
 				AddLogLineM(true,_("Saving of server.met file Done !!!\n"));
@@ -555,7 +555,7 @@ bool CServerSocket::PacketReceived(Packet* packet)
 				#ifdef SERVER_NET_TEST
 				AddLogLineM(true,_("FAILED\n"));
 				#endif
-				AddDebugLogLineF(false,_("Failed to decompress server TCP packet: protocol=0x%02x  opcode=0x%02x  size=%u"), packet ? packet->GetProtocol() : 0, packet ? packet->GetOpCode() : 0, packet ? packet->GetPacketSize() : 0);
+				AddDebugLogLineM(false, wxString::Format(_("Failed to decompress server TCP packet: protocol=0x%02x  opcode=0x%02x  size=%u"), packet ? packet->GetProtocol() : 0, packet ? packet->GetOpCode() : 0, packet ? packet->GetPacketSize() : 0));
 				theApp.downloadqueue->AddDownDataOverheadServer(packet->GetPacketSize());
 				return true;
 			}
@@ -570,11 +570,11 @@ bool CServerSocket::PacketReceived(Packet* packet)
 			#endif			
 			ProcessPacket(packet->GetDataBuffer(), packet->GetPacketSize(), packet->GetOpCode());
 		} else {
-			AddDebugLogLineF(false,_("Received server TCP packet with unknown protocol: protocol=0x%02x  opcode=0x%02x  size=%u"), packet ? packet->GetProtocol() : 0, packet ? packet->GetOpCode() : 0, packet ? packet->GetPacketSize() : 0);
+			AddDebugLogLineM(false, wxString::Format(_("Received server TCP packet with unknown protocol: protocol=0x%02x  opcode=0x%02x  size=%u"), packet ? packet->GetProtocol() : 0, packet ? packet->GetOpCode() : 0, packet ? packet->GetPacketSize() : 0));
 			theApp.downloadqueue->AddDownDataOverheadServer(packet->GetPacketSize());
 		}
 	} catch(...) {
-		AddDebugLogLineF(false,_("Error: Unhandled exception while processing server TCP packet: protocol=0x%02x  opcode=0x%02x  size=%u"), packet ? packet->GetProtocol() : 0, packet ? packet->GetOpCode() : 0, packet ? packet->GetPacketSize() : 0);
+		AddDebugLogLineM(false, wxString::Format(_("Error: Unhandled exception while processing server TCP packet: protocol=0x%02x  opcode=0x%02x  size=%u"), packet ? packet->GetProtocol() : 0, packet ? packet->GetOpCode() : 0, packet ? packet->GetPacketSize() : 0));
 		wxASSERT(0);
 		return false;		
 	}

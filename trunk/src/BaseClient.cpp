@@ -55,7 +55,6 @@
 #include "opcodes.h"		// Needed for SOURCESSLOTS
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "amuleIPV4Address.h"	// Needed for amuleIPV4Address
-#include "debugstuff.h"		// Needed for debugprintf
 
 //#define NET_TEST 
 
@@ -90,14 +89,6 @@ CUpDownClient::CUpDownClient(uint16 in_port, uint32 in_userid,uint32 in_serverip
 
 void CUpDownClient::Init()
 {
-
-	#ifdef __DEBUG__
-
-	MagicNumber1 = MAGIC_1;
-	MagicNumber2 = MAGIC_2;
-
-	#endif
-
 	credits = 0;
 	//memset(reqfileid, 0, sizeof reqfileid);
 	// m_nAvDownDatarate = 0;  // unused
@@ -263,13 +254,6 @@ CUpDownClient::~CUpDownClient()
 
 	//DEBUG_ONLY (theApp.listensocket->Debug_ClientDeleted(this));
 	SetUploadFileID(NULL);
-	
-	#ifdef __DEBUG__
-
-	MagicNumber1 = MAGIC_2;
-	MagicNumber2 = MAGIC_1;
-
-	#endif
 }
 
 void CUpDownClient::ClearHelloProperties()
@@ -569,13 +553,13 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 	if (credits == NULL){
 		credits = pFoundCredits;
 		if (!theApp.clientlist->ComparePriorUserhash(m_dwUserIP, m_nUserPort, pFoundCredits)){
-			AddDebugLogLineM(false, wxString::Format(wxT("Clients: %s (%s), Banreason: Userhash changed (Found in TrackedClientsList)"), unicode2char(GetUserName()), unicode2char(GetFullIP()))); 
+			AddDebugLogLineM(false, wxString::Format(wxT("Clients: %s (%s), Banreason: Userhash changed (Found in TrackedClientsList)"), GetUserName().c_str(), GetFullIP().c_str())); 
 			Ban();
 		}	
 	} else if (credits != pFoundCredits){
 		// userhash change ok, however two hours "waittime" before it can be used
 		credits = pFoundCredits;
-		AddDebugLogLineM(false, wxString::Format(wxT("Clients: %s (%s), Banreason: Userhash changed"), unicode2char(GetUserName()), unicode2char(GetFullIP()))); 
+		AddDebugLogLineM(false, wxString::Format(wxT("Clients: %s (%s), Banreason: Userhash changed"), GetUserName().c_str(), GetFullIP().c_str())); 
 		Ban();
 	}
 
@@ -1762,7 +1746,7 @@ void CUpDownClient::SendSignaturePacket(){
 		///* delete this line later*/ DEBUG_ONLY(AddDebugLogLine(false, "sending signature key to '%s'", GetUserName()));
 	// do we have a challenge value recieved (actually we should if we are in this function)
 	if (credits->m_dwCryptRndChallengeFrom == 0){
-		AddDebugLogLineM(false, wxString::Format(wxT("Want to send signature but challenge value is invalid - User ") + GetUserName()));
+		AddDebugLogLineM(false, wxString(wxT("Want to send signature but challenge value is invalid - User ")) + GetUserName());
 		return;
 	}
 	// v2
@@ -1884,7 +1868,7 @@ void CUpDownClient::ProcessSignaturePacket(const uchar* pachPacket, uint32 nSize
 		//AddDebugLogLine(false, "'%s' has passed the secure identification, V2 State: %i", GetUserName(), byChaIPKind);
 	}
 	else {
-		AddDebugLogLineF(false,  GetUserName() + _(" has failed the secure identification, V2 State: %i"), byChaIPKind);
+		AddDebugLogLineM(false,  GetUserName() + wxString::Format(_(" has failed the secure identification, V2 State: %i"), byChaIPKind));
 	}
 	m_dwLastSignatureIP = GetIP(); 
 }
@@ -2230,50 +2214,6 @@ void CUpDownClient::ProcessPublicIPAnswer(const BYTE* pbyData, UINT uSize){
 			theApp.SetPublicIP(dwIP);
 	}	
 }
-
-
-
-#ifdef __DEBUG__
-#warning Dont forget to remove this and the magic numbers when the bug is gone.
-bool CUpDownClient::IsASaneUpDownClient(bool verbose, char *function, char *file, int line) const
-{
-	bool sane = this != NULL;
-
-	if (sane) {
-		sane = 	MagicNumber1 == MAGIC_1 && 
-			MagicNumber2 == MAGIC_2;
-		if (sane) {
-			sane = m_reqfile != NULL;
-			if (sane) {
-				// we're ok, add more sanity checks here.
-			}
-#ifdef __DEBUG__
-			else if (verbose) {
-				debugprintf(verbose, "Bogus UpDownClient source detected!\n");
-				debugprintf(verbose, "\tsource has NULL m_reqfile!\n");
-				debugprintf(verbose, "\tfunction: %s(%s:%d)\n", function, file, line);
-			}
-#endif // __DEBUG__
-		}
-#ifdef __DEBUG__
-		else if(verbose) {
-			debugprintf(verbose, "Bogus UpDownClient object detected!\n", function, file, line);
-			debugprintf(verbose, "\tMN1 = %u, MN2 = %u\n", MagicNumber1, MagicNumber2);
-			debugprintf(verbose, "\tfunction: %s(%s:%d)\n", function, file, line);
-		}
-#endif // __DEBUG__
-	}
-#ifdef __DEBUG__
-	else if( verbose ) {
-		debugprintf(verbose, "Bogus pointer to UpDownClient detected!\n");
-		debugprintf(verbose, "\t'this' is a NULL pointer.\n");
-		debugprintf(verbose, "\tfunction: %s(%s:%d)\n", function, file, line);
-	}
-#endif // __DEBUG__
-
-	return sane;
-}
-#endif // __DEBUG__
 
 
 bool CUpDownClient::IsConnected() const

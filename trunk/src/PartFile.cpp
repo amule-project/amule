@@ -62,7 +62,6 @@
 #include "BarShader.h"		// Needed for CBarShader
 #include "GetTickCount.h"	// Needed for GetTickCount
 #include "ClientList.h"		// Needed for clientlist
-#include "debugstuff.h"		// Needed for debugprintf
 #include "color.h"
 
 #include <map>
@@ -219,13 +218,6 @@ CPartFile::CPartFile(CED2KFileLink* fileLink)
 
 void CPartFile::Init()
 {
-	#ifdef __DEBUG__
-
-	MagicNumber1 = MAGIC_1;
-	MagicNumber2 = MAGIC_2;
-
-	#endif
-
 	m_nLastBufferFlushTime = 0;
 
 	newdate = true;
@@ -427,7 +419,7 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool get
 		metFile.Read(&version,1);
 		if (version != PARTFILE_VERSION  && version!= PARTFILE_SPLITTEDVERSION ){
 			metFile.Close();
-			AddLogLineF(false, _("Error: Invalid part.met fileversion! (%s => %s)"), m_partmetfilename.c_str(), m_strFileName.c_str());
+			AddLogLineM(false, wxString::Format(_("Error: Invalid part.met fileversion! (%s => %s)"), m_partmetfilename.c_str(), m_strFileName.c_str()));
 			return false;
 		}
 
@@ -477,7 +469,7 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool get
 				switch(newtag->tag.specialtag) {
 					case FT_FILENAME: {
 						if(newtag->tag.stringvalue == NULL) {
-							AddLogLineF(true, _("Error: %s (%s) is corrupt"), m_partmetfilename.c_str(), m_strFileName.c_str());
+							AddLogLineM(true, wxString::Format(_("Error: %s (%s) is corrupt"), m_partmetfilename.c_str(), m_strFileName.c_str()));
 							delete newtag;
 							return false;
 						}
@@ -636,10 +628,10 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool get
 	} catch (CInvalidPacket e) {
 
 		if (metFile.Eof()) {
-			AddLogLineF(true, _("Error: %s (%s) is corrupt, unable to load file"), m_partmetfilename.c_str(), GetFileName().c_str());
+			AddLogLineM(true, wxString::Format(_("Error: %s (%s) is corrupt, unable to load file"), m_partmetfilename.c_str(), GetFileName().c_str()));
 		} else {
 			// This error message makes no sense...
-// 			AddLogLineF(true, _("Unexpected file error while reading server.met: %s, unable to load serverlist"), m_partmetfilename.c_str(), GetFileName().c_str(), m_fullname.c_str());
+// 			AddLogLineM(true, wxString::Format(_("Unexpected file error while reading server.met: %s, unable to load serverlist"), m_partmetfilename.c_str(), GetFileName().c_str(), m_fullname.c_str()));
 		}
 		printf(" - Caught an error - ");
 		if (metFile.IsOpened()) {
@@ -674,7 +666,7 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool get
 	// open permanent handle
 	wxString strSearchPath = m_fullname.Left( m_fullname.Length() - 4 );
 	if ( !m_hpartfile.Open(strSearchPath, CFile::read_write)) {
-		AddLogLineF(false, _("Failed to open %s (%s)"), m_fullname.c_str(), m_strFileName.c_str());
+		AddLogLineM(false, wxString::Format(_("Failed to open %s (%s)"), m_fullname.c_str(), m_strFileName.c_str()));
 		return false;
 	}
 
@@ -723,7 +715,7 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool get
 
 		time_t file_date = wxFileModificationTime(m_fullname);
 		if ( (((time_t)date) < (time_t)(file_date - 10)) || (((time_t)date) > (time_t)(file_date + 10))) {
-			AddLogLineF(false, _("Warning: %s might be corrupted"), m_fullname.c_str(), m_strFileName.c_str());
+			AddLogLineM(false, wxString::Format(_("Warning: %s might be corrupted"), m_fullname.c_str(), m_strFileName.c_str()));
 			// rehash
 			SetPartFileStatus(PS_WAITINGFORHASH);
 			//CAddFileThread::AddFile(directory, searchpath, this);
@@ -876,7 +868,7 @@ bool CPartFile::SavePartFile(bool Initial)
 			file.Close();
 		}
 		
-		AddLogLineF(false, _("ERROR while saving partfile: %s (%s => %s)"), unicode2char(error), unicode2char(m_partmetfilename), unicode2char(m_strFileName));
+		AddLogLineM(false, wxString::Format(_("ERROR while saving partfile: %s (%s => %s)"), error.c_str(), m_partmetfilename.c_str(), m_strFileName.c_str()));
 		return false;
 	} catch (...) {
 		if (file.IsOpened()) {
@@ -974,7 +966,7 @@ void CPartFile::SaveSourceSeeds() {
 	file.Create(m_fullname + wxT(".seeds"), true);
 	
 	if (!file.IsOpened()) {
-		AddLogLineF(false,_("Failed to save part.met.seeds file for %s"), m_fullname.c_str());
+		AddLogLineM(false, wxString::Format(_("Failed to save part.met.seeds file for %s"), m_fullname.c_str()));
 	}	
 
 	uint8 src_count = source_seeds.GetCount();
@@ -994,7 +986,7 @@ void CPartFile::SaveSourceSeeds() {
 	file.Flush();
 	file.Close();
 
-	AddLogLineF(false, _("Saved %i sources seeds for partfile: %s (%s)"), n_sources, m_fullname.c_str(), m_strFileName.c_str());
+	AddLogLineM(false, wxString::Format(_("Saved %i sources seeds for partfile: %s (%s)"), n_sources, m_fullname.c_str(), m_strFileName.c_str()));
 	
 }	
 
@@ -1011,12 +1003,12 @@ void CPartFile::LoadSourceSeeds() {
 	file.Open(m_fullname + wxT(".seeds"),CFile::read);
 
 	if (!file.IsOpened()) {
-		AddLogLineF(false,_("Partfile %s (%s) has no seeds file"), m_partmetfilename.c_str(), m_strFileName.c_str());
+		AddLogLineM(false, wxString::Format(_("Partfile %s (%s) has no seeds file"), m_partmetfilename.c_str(), m_strFileName.c_str()));
 		return;
 	}	
 	
 	if (!file.Length()>1) {
-		AddLogLineF(false,_("Partfile %s (%s) has void seeds file"), m_partmetfilename.c_str(), m_strFileName.c_str());
+		AddLogLineM(false, wxString::Format(_("Partfile %s (%s) has void seeds file"), m_partmetfilename.c_str(), m_strFileName.c_str()));
 		return;
 	}	
 	
@@ -1053,7 +1045,7 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
 	if (GetED2KPartHashCount() == 0){
 		if (IsComplete(0, m_nFileSize-1)){
 			if (result->GetFileHash() != GetFileHash()){
-				AddLogLineF(false, _("Found corrupted part (%i) in 0 parts file %s - FileResultHash |%s| FileHash |%s|"), 1, m_strFileName.c_str(),EncodeBase16(result->GetFileHash(), 16).c_str(), EncodeBase16(GetFileHash(), 16).c_str());
+				AddLogLineM(false, wxString::Format(_("Found corrupted part (%i) in 0 parts file %s - FileResultHash |%s| FileHash |%s|"), 1, m_strFileName.c_str(), EncodeBase16(result->GetFileHash(), 16).c_str(), EncodeBase16(GetFileHash(), 16).c_str()));
 				AddGap(0, m_nFileSize-1);
 				errorfound = true;
 			}
@@ -1068,8 +1060,8 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
 			/*
 			if (IsComplete(i*PARTSIZE,((i+1)*PARTSIZE)-1)){
 				if (!(result->GetPartHash(i) && !md4cmp(result->GetPartHash(i),GetPartHash(i)))){
-					AddLogLineF(false, _("Found corrupted part (%i) in %i parts file %s - FileResultHash |%s| FileHash |%s|"), i+1, GetED2KPartHashCount(), m_strFileName.c_str(),result->GetPartHash(i),GetPartHash(i));							
-//					AddLogLineF(false, _("Found corrupted part (%i) in %s"), i+1, m_strFileName.c_str());		
+					AddLogLineM(false, wxString::Format(_("Found corrupted part (%i) in %i parts file %s - FileResultHash |%s| FileHash |%s|"), i+1, GetED2KPartHashCount(), m_strFileName.c_str(),result->GetPartHash(i),GetPartHash(i)));
+//					AddLogLineM(false, wxString::Format(_("Found corrupted part (%i) in %s"), i+1, m_strFileName.c_str()));
 					AddGap(i*PARTSIZE,((((i+1)*PARTSIZE)-1) >= m_nFileSize) ? m_nFileSize-1 : ((i+1)*PARTSIZE)-1);
 					errorfound = true;
 				}
@@ -1081,14 +1073,14 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
 					if ( i < result->GetHashCount() )
 						wronghash = result->GetPartHash(i);
 				
-					AddLogLineF(false, _("Found corrupted part (%i) in %i parts file %s - FileResultHash |%s| FileHash |%s|"), i + 1, GetED2KPartHashCount(), m_strFileName.c_str(), wronghash.Encode().c_str(), GetPartHash(i).Encode().c_str());
+					AddLogLineM(false, wxString::Format(_("Found corrupted part (%i) in %i parts file %s - FileResultHash |%s| FileHash |%s|"), i + 1, GetED2KPartHashCount(), m_strFileName.c_str(), wronghash.Encode().c_str(), GetPartHash(i).Encode().c_str()));
 				
 					AddGap(i*PARTSIZE,((((i+1)*PARTSIZE)-1) >= m_nFileSize) ? m_nFileSize-1 : ((i+1)*PARTSIZE)-1);
 					errorfound = true;
 				}
 			} else {
 				if (!IsComplete(i*PARTSIZE,((i+1)*PARTSIZE)-1)){
-					AddLogLineF(false, _("Found completed part (%i) in %s"), i+1, m_strFileName.c_str());
+					AddLogLineM(false, wxString::Format(_("Found completed part (%i) in %s"), i+1, m_strFileName.c_str()));
 					FillGap(i*PARTSIZE,((((i+1)*PARTSIZE)-1) >= m_nFileSize) ? m_nFileSize-1 : ((i+1)*PARTSIZE)-1);
 					RemoveBlockFromList(i*PARTSIZE,((((i+1)*PARTSIZE)-1) >= m_nFileSize) ? m_nFileSize-1 : ((i+1)*PARTSIZE)-1);
 				}
@@ -1102,7 +1094,7 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
 			return;
 		}
 		else {
-			AddLogLineF(false, _("Finished rehashing %s"), m_strFileName.c_str());
+			AddLogLineM(false, wxString::Format(_("Finished rehashing %s"), m_strFileName.c_str()));
 		}
 	}
 	else{
@@ -1552,14 +1544,6 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 		std::list<CUpDownClient *>::iterator it = m_downloadingSourcesList.begin();
 		for( ; it != m_downloadingSourcesList.end(); ) {
 			CUpDownClient *cur_src = *it++;
-#ifdef __DEBUG__
-//#warning caught one insane source here in a backtrace - I
-			// if(!IsASaneFileClientCombination(false, "CPartFile::Process", __FILE__, __LINE__, cur_src)) {
-			if (!cur_src->IsASaneUpDownClient(true, "CPartFile::Process", __FILE__, __LINE__)) {
-				debugprintf(true, "\tcontinue1\n");
-				continue;
-			}
-#endif // __DEBUG__
 			if(cur_src->GetDownloadState() == DS_DOWNLOADING) {
 				wxASSERT( cur_src->GetSocket() );
 				if (cur_src->GetSocket()) {
@@ -1584,15 +1568,6 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 		CUpDownClient* cur_src;
 		for ( SourceSet::iterator it = m_SrcList.begin(); it != m_SrcList.end(); ) {
 			cur_src = *it++;
-#ifdef __DEBUG__
-//#warning caught one insane source here in a backtrace - II
-			//if(!IsASaneFileClientCombination(false, "CPartFile::Process", __FILE__, __LINE__, cur_src)) {
-			if (!cur_src->IsASaneUpDownClient(true, "CPartFile::Process", __FILE__, __LINE__)) {
-				// this happens all the time.
-				debugprintf(true, "\tcontinue2\n");
-				continue;
-			}
-#endif // __DEBUG__
 			uint8 download_state=cur_src->GetDownloadState();
 			switch (download_state) {
 				case DS_DOWNLOADING: {
@@ -1822,12 +1797,12 @@ void CPartFile::AddSources(CSafeMemFile* sources,uint32 serverip, uint16 serverp
 		if (userid >= 16777216) {
 			if (theApp.glob_prefs->FilterBadIPs()) {
 				if (!IsGoodIP(userid)) { // check for 0-IP, localhost and optionally for LAN addresses
-					//AddDebugLogLine(false, _T("Ignored source (IP=%s) received from server"), inet_ntoa(*(in_addr*)&userid));
+					//AddDebugLogLineM(false, _T("Ignored source (IP=%s) received from server"), inet_ntoa(*(in_addr*)&userid));
 					continue;
 				}
 			}
 			if (theApp.ipfilter->IsFiltered(userid)) {
-				//AddDebugLogLine(false, _T("IPfiltered source IP=%s (%s) received from server"), inet_ntoa(*(in_addr*)&userid), theApp.ipfilter->GetLastHit());
+				//AddDebugLogLineM(false, _T("IPfiltered source IP=%s (%s) received from server"), inet_ntoa(*(in_addr*)&userid), theApp.ipfilter->GetLastHit());
 				continue;
 			}
 		}
@@ -1874,13 +1849,6 @@ void CPartFile::UpdatePartsInfo() {
 	for ( SourceSet::iterator it = m_SrcList.begin(); it != m_SrcList.end(); ++it ) {
 		CUpDownClient *cur_src = *it;
 		for (uint16 i = 0; i < partcount; i++)	{
-#ifdef __DEBUG__
-//#warning caught an insane source here in a backtrace - III
-			if(!IsASaneFileClientCombination(true, "CPartFile::UpdatePartsInfo", __FILE__, __LINE__, cur_src)) {
-				debugprintf(true, "\tcontinue3\n");
-				continue;
-			}
-#endif // __DEBUG__
 			if (cur_src->IsPartAvailable(i)) {
 				m_SrcpartFrequency[i] +=1;
 			}
@@ -2335,17 +2303,17 @@ void CPartFile::CompleteFileEnded(int completing_result, wxString* newname) {
 		paused = true;
 		SetPartFileStatus(PS_ERROR);
 		theApp.downloadqueue->StartNextFile();	
-		AddLogLineF(true, _("Unexpected file error while completing %s. File paused"), GetFileName().c_str());
+		AddLogLineM(true, wxString::Format(_("Unexpected file error while completing %s. File paused"), GetFileName().c_str()));
 		delete newname;
 		return;
 	}	
 	
 	if (completing_result & DELETE_FAIL_MET) {
-		AddLogLineF(true, _("WARNING: Failed to delete %s"), m_fullname.c_str());
+		AddLogLineM(true, wxString::Format(_("WARNING: Failed to delete %s"), m_fullname.c_str()));
 	}	
 	
 	if (completing_result & DELETE_FAIL_MET_BAK) {
-		AddLogLineF(true, _("WARNING: Failed to delete %s%s"), m_fullname.c_str(), PARTMET_BAK_EXT);
+		AddLogLineM(true, wxString::Format(_("WARNING: Failed to delete %s%s"), m_fullname.c_str(), PARTMET_BAK_EXT));
 	}	
 	
 	if (completing_result & SAME_NAME_RENAMED) {
@@ -2353,15 +2321,15 @@ void CPartFile::CompleteFileEnded(int completing_result, wxString* newname) {
 	}		
 
 	if (completing_result & DELETE_FAIL_MET) {
-		AddLogLineF(true,wxT("WARNING: could not remove original '%s' after creating backup\n"), m_partmetfilename.Left(m_partmetfilename.Length()-4).c_str());
+		AddLogLineM(true, wxString::Format(_("WARNING: could not remove original '%s' after creating backup\n"), m_partmetfilename.Left(m_partmetfilename.Length()-4).c_str()));
 	}	
 	
 	if (completing_result & DELETE_FAIL_SEEDS) {
-		AddLogLineF(true,wxT("WARNING: Failed to delete %s.seeds\n"), m_partmetfilename.c_str());
+		AddLogLineM(true, wxString::Format(_("WARNING: Failed to delete %s.seeds\n"), m_partmetfilename.c_str()));
 	}	
 
 	
-	AddLogLineF(true, _("Finished downloading %s :-)"), GetFileName().c_str());
+	AddLogLineM(true, wxString::Format(_("Finished downloading %s :-)"), GetFileName().c_str()));
 	Notify_ShowNotifier(wxString(_("Downloaded:"))+wxT("\n")+GetFileName(), TBN_DLOAD, 0);
 }
 
@@ -2597,11 +2565,11 @@ void CPartFile::Delete()
 bool CPartFile::HashSinglePart(uint16 partnumber)
 {
 	if ((GetHashCount() <= partnumber) && (GetPartCount() > 1)) {
-		AddLogLineF(true, _("Warning: Unable to hash downloaded part - hashset incomplete (%s)"), GetFileName().c_str());
+		AddLogLineM(true, wxString::Format(_("Warning: Unable to hash downloaded part - hashset incomplete (%s)"), GetFileName().c_str()));
 		hashsetneeded = true;
 		return true;
 	} else if ((GetHashCount() <= partnumber) && GetPartCount() != 1) {
-		AddLogLineF(true, _("Error: Unable to hash downloaded part - hashset incomplete (%s). This should never happen"),GetFileName().c_str());
+		AddLogLineM(true, wxString::Format(_("Error: Unable to hash downloaded part - hashset incomplete (%s). This should never happen"),GetFileName().c_str()));
 		hashsetneeded = true;
 		return true;		
 	} else {
@@ -2938,13 +2906,6 @@ void CPartFile::UpdateAvailablePartsCount()
 	for (uint32 ixPart = 0; ixPart < iPartCount; ixPart++) {		
 		for( SourceSet::iterator it = m_SrcList.begin(); it != m_SrcList.end(); ++it) {
 			CUpDownClient *cur_src = *it;
-#ifdef __DEBUG__
-//#warning caught one insane source here in a backtrace - IV
-			if (!cur_src->IsASaneUpDownClient(true, "CPartFile::UpdateAvailablePartsCount", __FILE__, __LINE__)) {
-				debugprintf(true,"\tcontinue4\n");
-				continue;
-			}
-#endif // __DEBUG__
 			if (cur_src->IsPartAvailable(ixPart)) {
 				availablecounter++;
 				break;
@@ -3000,12 +2961,6 @@ Packet *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 			int n = GetPartCount();
 			if (reqstatus) {
 				// only send sources which have needed parts for this client
-#ifdef __DEBUG__
-//#warning hack to see the mixed sources problem - I
-				if(!IsASaneFileClientCombination(true, "CPartFile::CreateSrcInfoPacket", __FILE__, __LINE__, cur_src, forClient)) {
-					continue;
-				}
-#endif // __DEBUG__
 				for (int x = 0; x < n; x++) {
 					if (srcstatus[x] && !reqstatus[x]) {
 						bNeeded = true;
@@ -3016,12 +2971,6 @@ Packet *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 				// if we don't know the need parts for this client, 
 				// return any source currently a client sends it's 
 				// file status only after it has at least one complete part
-#ifdef __DEBUG__
-//#warning hack to see the mixed sources problem - II
-				if(!IsASaneFileClientCombination(true, "CPartFile::CreateSrcInfoPacket", __FILE__, __LINE__, cur_src)) {
-					continue;
-				}
-#endif // __DEBUG__
 				for (int x = 0; x < GetPartCount(); x++){
 					if (srcstatus[x]) {
 						bNeeded = true;
@@ -3064,7 +3013,7 @@ Packet *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 		result->PackPacket();
 	}
 	//if (thePrefs.GetDebugSourceExchange()) {
-		AddDebugLogLineF( false, wxT("Send:Source User(%s) File(%s) Count(%i)"), unicode2char(forClient->GetUserName()), unicode2char(GetFileName()), nCount );
+		AddDebugLogLineM( false, wxString::Format(wxT("Send:Source User(%s) File(%s) Count(%i)"), forClient->GetUserName().c_str(), GetFileName().c_str(), nCount ));
 	//}
 	return result;
 }
@@ -3165,7 +3114,7 @@ uint32 CPartFile::WriteToBuffer(uint32 transize, BYTE *data, uint32 start, uint3
 
 	// Occasionally packets are duplicated, no point writing it twice
 	if (IsComplete(start, end)) {
-		AddDebugLogLineF(false, wxT("File '%s' has already been written from %ld to %ld\n"), GetFileName().c_str(), start, end);
+		AddDebugLogLineM(false, wxString::Format(wxT("File '%s' has already been written from %lu to %lu\n"), GetFileName().c_str(), (long)start, (long)end));
 		return 0;
 	}
 
@@ -3234,7 +3183,7 @@ void CPartFile::FlushBuffer(void)
 	*/
 	wxLongLong total = 0, free = 0;
 	if (wxGetDiskSpace(theApp.glob_prefs->GetTempDir(), &total, &free) && free < PARTSIZE) {
-		AddLogLineF(true, _("ERROR: Cannot write to disk"));
+		AddLogLineM(true, _("ERROR: Cannot write to disk"));
 		PauseFile();
 		return;
 	}
@@ -3314,14 +3263,14 @@ void CPartFile::FlushBuffer(void)
 			if (IsComplete(PARTSIZE * partNumber, (PARTSIZE * (partNumber + 1)) - 1)) {
 				// Is part corrupt
 				if (!HashSinglePart(partNumber)) {
-					AddLogLineF(true, _("Downloaded part %i is corrupt :(  (%s)"), partNumber, GetFileName().c_str());
+					AddLogLineM(true, wxString::Format(_("Downloaded part %i is corrupt :(  (%s)"), partNumber, GetFileName().c_str()));
 					AddGap(PARTSIZE*partNumber, (PARTSIZE*partNumber + partRange));
 					corrupted_list.AddTail(partNumber);
 					// Reduce transfered amount by corrupt amount
 					m_iLostDueToCorruption += (partRange + 1);
 				} else {
 					if (!hashsetneeded) {
-						AddDebugLogLineF(false, wxT("Finished part %u of \"%s\""), partNumber, GetFileName().c_str());
+						AddDebugLogLineM(false, wxString::Format(wxT("Finished part %u of \"%s\""), partNumber, GetFileName().c_str()));
 					}
 					
 					// if this part was successfully completed (although ICH is active), remove from corrupted list
@@ -3347,7 +3296,7 @@ void CPartFile::FlushBuffer(void)
 					if (posCorrupted)
 						corrupted_list.RemoveAt(posCorrupted);
 					
-					AddLogLineF(true, _("ICH: Recovered corrupted part %i  (%s)"), partNumber,GetFileName().c_str());
+					AddLogLineM(true, wxString::Format(_("ICH: Recovered corrupted part %i  (%s)"), partNumber,GetFileName().c_str()));
 					
 					// Successfully recovered part, make it available for sharing
 					if (status == PS_EMPTY) {
@@ -3404,7 +3353,7 @@ void CPartFile::FlushBuffer(void)
 		}
 	}
 	catch(...) {
-		AddLogLineF(true, _("Unexpected file error while writing %s : %s"), GetFileName().c_str(), _("Unknown"));
+		AddLogLineM(true, wxString::Format(_("Unexpected file error while writing %s : %s"), GetFileName().c_str(), _("Unknown")));
 		SetPartFileStatus(PS_ERROR);
 		paused = true;
 		m_iLastPausePurge = time(NULL);
@@ -3478,14 +3427,6 @@ void CPartFile::UpdateFileRatingCommentAvail()
 	for ( SourceSet::iterator it = m_SrcList.begin(); it != m_SrcList.end(); ++it ) {
 		CUpDownClient* cur_src = *it;
 		
-#ifdef __DEBUG__
-//#warning caught one insane source here in a backtrace - III
-		if (!cur_src->IsASaneUpDownClient(true, "CPartFile::UpdateFileRatingCommentAvail", __FILE__, __LINE__)) {
-			// this happens all the time.
-			debugprintf(true, "\tcontinue5\n");
-			continue;
-		}
-#endif // __DEBUG__
 		if (cur_src->GetFileComment().Length()>0) {
 			hasComment=true;
 		}
@@ -3701,13 +3642,7 @@ void CPartFile::AddDownloadingSource(CUpDownClient* client)
 	std::list<CUpDownClient *>::iterator it = 
 		std::find(m_downloadingSourcesList.begin(), m_downloadingSourcesList.end(), client);
 	if (it == m_downloadingSourcesList.end()) {
-#ifdef __DEBUG__
-		if (client->IsASaneUpDownClient(true, "CPartFile::AddDownloadingSource", __FILE__, __LINE__)) {
-			m_downloadingSourcesList.push_back(client);
-		}
-#else // __DEBUG__
 		m_downloadingSourcesList.push_back(client);
-#endif // __DEBUG__
 	}
 }
 
@@ -3770,116 +3705,3 @@ void CPartFile::SetStatus(uint8 in)
 	}
 }
 
-#ifdef __DEBUG__
-#warning Dont forget to remove this and the magic numbers when the bug is gone.
-bool CPartFile::IsASanePartFile(bool verbose, char *function, char *file, int line) const {
-	bool sane = this != NULL;
-	// The problem here is that if this is invalid, we are not even able to
-	// access the magic numbers without segfaulting. Anyway, sooner or later we
-	// would segfault.
-	if (sane) {
-		sane = 	MagicNumber1 == MAGIC_1 && 
-			MagicNumber2 == MAGIC_2; 
-		if(sane) {
-			// we're ok, add more sanity checks here
-		}
-#ifdef __DEBUG__
-		else {
-			debugprintf(verbose, "Bogus CPartFile detected!\n");
-			debugprintf(verbose, "\tMN1 = %u, MN2 = %u\n", MagicNumber1, MagicNumber2);
-			debugprintf(verbose, "\tfunction: %s(%s:%d)\n", function, file, line);
-		}
-#endif // __DEBUG__
-	}
-#ifdef __DEBUG__
-	else {
-		debugprintf(verbose, "Bogus pointer to CPartFile detected!\n");
-		debugprintf(verbose, "\t'this' is a NULL pointer.\n");
-		debugprintf(verbose, "\tfunction: %s(%s:%d)\n", function, file, line);
-	}
-#endif // __DEBUG__
-	
-	return sane;
-}
-
-/** 
- * Sometimes this function is beeing called whitout the last parameter. 
- * When this happens, forClient == 0.
- */
-bool CPartFile::IsASaneFileClientCombination(
-	bool verbose, char *function, char *file, int line, 
-	const CUpDownClient *cur_src, const CUpDownClient *forClient) const
-{
-	bool sane_this = IsASanePartFile(true, function, file, line);
-	bool sane_cur_src = 
-		cur_src->IsASaneUpDownClient(true, function, file, line);
-	bool sane_forClient = true;
-	if (forClient) {
-		sane_forClient =
-			forClient->IsASaneUpDownClient(true, function, file, line);
-	}
-	
-	// So, we only enter here if:
-	// 1) this is sane
-	// 2) cur_src is sane
-	// 3) forClient != NULL and forClient is sane
-	// By processing the sane == true case first, we can ifdef the else without
-	// loosing the functionality.
-	bool sane = sane_this && sane_cur_src && sane_forClient;
-	if (sane) {
-		// Test for hash equality
-		sane = (GetFileHash() == cur_src->GetRequestFile()->GetFileHash());
-		if (forClient) {
-			sane = sane && (GetFileHash() == forClient->GetRequestFile()->GetFileHash());
-		}
-		if (sane) {
-			// Test for part count equality
-			// If m_nPartCount is zero in the source, it's ok
-			int n = GetPartCount();
-			int ncur = cur_src->m_nPartCount;
-			sane = (n == ncur) || (ncur == 0);
-			if (forClient) {
-				int nfor = forClient->m_nPartCount;
-				sane = sane && ( (n == nfor) || (nfor == 0) );
-			}
-			if (sane) {
-				// we're ok, if you want, add other sanity checks here.
-			}
-#ifdef __DEBUG__
-			else if (verbose) {
-				debugprintf(verbose, "Mismatching Part Counts!\n");
-				debugprintf(verbose, "CPartFile->GetPartStatus() = %d\n", n);
-				debugprintf(verbose, "cur_src->m_nPartCount      = %d\n", cur_src->m_nPartCount);
-				if (forClient) {
-					debugprintf(verbose, "forClient->m_nPartCount    = %d\n", forClient->m_nPartCount);
-				}
-				debugprintf(verbose, "\tFilenames are: \n");
-				debugprintf(verbose, "\tthis   : %s\n", (const char *)(GetFileName().mb_str()));
-				debugprintf(verbose, "\tcur_src: %s\n", (const char *)(cur_src->GetRequestFile()->GetFileName().mb_str()));
-				if (forClient) {
-					debugprintf(verbose, "\tfor_clt: %s\n", (const char *)(forClient->GetRequestFile()->GetFileName().mb_str()));
-				}
-				debugprintf(verbose, "\tfunction: %s(%s:%d)\n", function, file, line);
-			}
-#endif // __DEBUG__
-		}
-#ifdef __DEBUG__
-		else if (verbose) {
-			debugprintf(verbose, "Mismatching hashes!\n");
-			debugprintf(verbose, "\tthis   : %s\n", (const char *)(GetFileHash().Encode().mb_str()));
-			debugprintf(verbose, "\tcur_src: %s\n", (const char *)(cur_src->GetRequestFile()->GetFileHash().Encode().mb_str()));
-			if (forClient && forClient->GetRequestFile())
-				debugprintf(verbose, "\tfor_clt: %s\n", (const char *)(forClient->GetRequestFile()->GetFileHash().Encode().mb_str()));
-			debugprintf(verbose, "\tFilenames are: \n");
-			debugprintf(verbose, "\tthis   : %s\n", (const char *)(GetFileName().mb_str()));
-			debugprintf(verbose, "\tcur_src: %s\n", (const char *)(cur_src->GetRequestFile()->GetFileName().mb_str()));
-			if (forClient && forClient->GetRequestFile())
-				debugprintf(verbose, "\tfor_clt: %s\n", (const char *)(forClient->GetRequestFile()->GetFileName().mb_str()));
-			debugprintf(verbose, "\tfunction: %s(%s:%d)\n", function, file, line);
-		}
-#endif // __DEBUG__
-	}
-	
-	return sane;
-}
-#endif // __DEBUG__
