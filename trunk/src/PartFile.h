@@ -39,8 +39,6 @@ class CMemFile;
 class wxMemoryDC;
 class wxRect;
 
-WX_DECLARE_LIST(Chunk, ListOfChunks);
-
 
 //#define BUFFER_SIZE_LIMIT	500000 // Max bytes before forcing a flush
 #define BUFFER_TIME_LIMIT	60000   // Max milliseconds before forcing a flush
