@@ -22,25 +22,30 @@
 #include <cstdio>
 #include <cstring>
 #if !defined( __WXMSW__ )
-#include <unistd.h>
+	#include <unistd.h>
 #else
-#define AMULECMDDLG 1
+	#define AMULECMDDLG 1
 #endif
+#include <wx/tokenzr.h>
 
 #include "TextClient.h"
+
 #include "MD5Sum.h"
 #include "endianfix.h"
 #include "ECSocket.h"
 
-#define CMD_ID_QUIT -1
-#define CMD_ID_HELP 1
-#define CMD_ID_STATS 2
-#define CMD_ID_SHOW 3
-#define CMD_ID_RESUME 4
-#define CMD_ID_PAUSE 5
-#define CMD_ID_SRVSTAT 6
-#define CMD_ID_CONN 7
-#define CMD_ID_DISCONN 8
+#define CMD_ID_QUIT		-1
+#define CMD_ID_HELP		1
+#define CMD_ID_STATS		2
+#define CMD_ID_SHOW		3
+#define CMD_ID_RESUME		4
+#define CMD_ID_PAUSE		5
+#define CMD_ID_SRVSTAT		6
+#define CMD_ID_CONN		7
+#define CMD_ID_DISCONN		8
+#define CMD_ID_CONN_TO_SRV	9
+#define CMD_ID_RELOAD_IPFILTER	10
+#define CMD_ID_SET_IPFILTER	11
 
 #define APP_INIT_SIZE_X 640
 #define APP_INIT_SIZE_Y 480
@@ -69,203 +74,198 @@ enum
 BEGIN_EVENT_TABLE(CamulecmdFrame, wxFrame)
     EVT_MENU(amulecmd_Quit,  CamulecmdFrame::OnQuit)
     EVT_MENU(amulecmd_About, CamulecmdFrame::OnAbout)
-//    EVT_TEXT(Event_Comand_ID, CamulecmdFrame::OnComandChange)
     EVT_TEXT_ENTER(Event_Comand_ID, CamulecmdFrame::OnComandEnter)
     EVT_SIZE      (CamulecmdFrame::OnSize)
 END_EVENT_TABLE()
 #endif
 
-//MuleConnection *	conn = NULL;
-//MuleClient *				client;
-char *cmdargs = NULL;
+wxString cmdargs;
 ECSocket *m_ECClient = NULL;
 bool isConnected = false;
 
-/*
-wxConnectionBase *MuleClient::OnMakeConnection()
-{
-    return new MuleConnection;
+void Show(const wxString& line) {
+#ifndef AMULECMDDLG
+	printf("%s", unicode2char(line));
+#else
+	theApp.frame->log_text->AppendText(line);
+#endif
 }
-
-bool MuleConnection::OnAdvise(const wxString& topic, const wxString& item, wxChar *data, int size, wxIPCFormat format)
-{
-    return TRUE;
-}
-*/
-
-void Show(char *Stringformat,...) {
-	char bufferline[5000];
-
-	va_list argptr;
-	va_start(argptr, Stringformat);
-	vsnprintf(bufferline, 5000, Stringformat, argptr);
-	va_end(argptr);
-	#ifndef AMULECMDDLG
-	printf("%s",bufferline);
-	#else
-	theApp.frame->log_text->AppendText(wxString::Format(wxT("%s"),bufferline));
-	//wxLogMessage(_T(bufferline));
-	#endif
-}
-
-/*
-bool MuleConnection::OnDisconnect()
-{
-	Show("Disconnected: aMule might have exited\n");
-	#ifndef AMULECMDDLG
-	theApp.OnExit();
-	#else
-	if (theApp.frame) {	
-		wxCommandEvent Temp;
-		theApp.frame->OnQuit(Temp);
-	}
-	#endif
- 	conn = NULL;
-    return wxConnection::OnDisconnect();
-}
-*/
 
 void ShowGreet() {
-	Show("\n---------------------------------\n");
-	Show("|       aMule text client       |\n");
-	Show("---------------------------------\n\n");
-	Show("\nUse 'Help' for command list\n\n");
+	Show(_("\n---------------------------------\n"));
+	Show(_(  "|       aMule text client       |\n"));
+	Show(_(  "---------------------------------\n\n"));
+	Show(_("\nUse 'Help' for command list\n\n"));
 }
 
 void ShowHelp() {
-	Show("\n->Help: Avalaible commands :\n\n");	
-	Show("Quit: Exits Textclient.\t\t\t\t\tSyns: quit, Exit, exit\n");	
-	Show("Help: Shows this help.\t\t\t\t\tSyns: help\n");	
-	Show("Stats: Shows statistics.\t\t\t\tSyns: stats\n");	
-	Show("Show DL: Shows Download queue\n");	
-	Show("Resume n: Resume file number n.\t\t\t\tSyns: resume\n");
-	Show("Pause n: Pauses file number n.\t\t\t\tSyns: pause\n");
-	Show("ServerStatus: Tell us if connected/not connected. \tSyns: serverstatus\n");
-	Show("Connect: Tries to connect to any server.\t\tSyns: connect\n");
-	Show("\tWARNING: Doesn't warn if failed\n.");
-	Show("Disconnect: Disconnect from server. \t\t\tSyns: disconnect\n\n");
-	Show("->End of listing\n");
+	Show(_("\n->Help: Avalaible commands (case insensitive):\n\n"));	
+	Show(_("help:\n\tShows this help.\n"));	
+	Show(_("quit, exit:\n\tExits Textclient.\n"));	
+	Show(_("stats:\n\tShows statistics.\n"));	
+	Show(_("show DL:\n\tShows Download queue.\n"));	
+	Show(_("resume n:\n\tResume file number n.\n"));
+	Show(_("pause n:\n\tPauses file number n.\n"));
+	Show(_("ServerStatus:\n\tTell us if connected/not connected.\n"));
+	Show(_("connect:\n\tTries to connect to any server. WARNING: Doesn't warn if failed\n"));
+	Show(_("disconnect:\n\tDisconnect from server.\n"));
+	Show(_("server connect 'name' 'port':\n\tConnect to specified server and port.\n"));
+	Show(_("ReloadIPF:\n\tReload IPFilter table from file.\n"));
+	Show(_("Setipfilter on/off:\n\tTurn on/of amule IPFilter.\n"));
+	Show(_("\n->End of listing\n"));
 }
-#ifndef AMULECMDDLG
-void GetCommand(char* buffer, size_t buffer_size) {
-	Show("\naMule$ "); 
-	fflush(stdin);
-	fgets(buffer, buffer_size, stdin);
-}
-#endif
 
-int GetIDFromString(char* buffer) {
-	if ((strncmp(buffer,"Quit",4)==0) || (strncmp(buffer,"quit",4)==0) || (strncmp(buffer,"Exit",4)==0) || (strncmp(buffer,"exit",4) ==0)) {
-		return(CMD_ID_QUIT);
-	} else if ((strncmp(buffer,"Help",4)==0) || (strncmp(buffer,"help",4)==0)) {
-		return(CMD_ID_HELP);
-	} else if ((strncmp(buffer,"Stats",5)==0) || (strncmp(buffer,"stats",5)==0)) {
-		return(CMD_ID_STATS);
-	} else if ((strncmp(buffer,"Show",4)==0) || (strncmp(buffer,"show",4)==0)) {
-		cmdargs = (buffer + 5);
-		return(CMD_ID_SHOW);
-	} else if ((strncmp(buffer,"pause",5)==0) || (strncmp(buffer,"Pause",5)==0)) {
-		cmdargs = (buffer + 6);
-		return(CMD_ID_PAUSE);
-	} else if ((strncmp(buffer,"resume",6)==0) || (strncmp(buffer,"Resume",6)==0)) {
-		cmdargs = (buffer + 7);
-		return(CMD_ID_RESUME);
-	} else if ((strncmp(buffer,"serverstatus",12)==0) || (strncmp(buffer,"ServerStatus",12)==0)) {
-		return(CMD_ID_SRVSTAT);
-	} else if ((strncmp(buffer,"connect",7)==0) || (strncmp(buffer,"Connect",7)==0)) {
-		return(CMD_ID_CONN);
-	} else if ((strncmp(buffer,"disconnect",10)==0) || (strncmp(buffer,"Disconnect",10)==0)) {
-		return(CMD_ID_DISCONN);
+typedef struct s_CmdId {
+	const wxString cmd;
+	int id;
+} CmdId;
+
+int GetIDFromString(wxString &buffer) {
+	static CmdId commands[] = {
+		{ wxT("quit"),		CMD_ID_QUIT },
+		{ wxT("exit"),		CMD_ID_QUIT },
+		{ wxT("help"),		CMD_ID_HELP },
+		{ wxT("stats"),		CMD_ID_STATS },
+		{ wxT("show"),		CMD_ID_SHOW },
+		{ wxT("pause"),		CMD_ID_PAUSE },
+		{ wxT("resume"),	CMD_ID_RESUME },
+		{ wxT("serverstatus"),	CMD_ID_SRVSTAT },
+		{ wxT("connect"),	CMD_ID_CONN },
+		{ wxT("disconnect"),	CMD_ID_DISCONN },
+		{ wxT("serverconnect"),	CMD_ID_CONN_TO_SRV },
+		{ wxT("reloadipf"),	CMD_ID_RELOAD_IPFILTER  },
+		{ wxT("setipfilter"),	CMD_ID_SET_IPFILTER },
+		{ wxEmptyString, 0 },
+	};
+	wxStringTokenizer tokens(buffer);
+	wxString cmd = tokens.GetNextToken().MakeLower();
+	cmdargs = wxEmptyString;
+	while ( tokens.HasMoreTokens() ) {
+		cmdargs += tokens.GetNextToken().MakeLower();
 	}
-	return(0);
+	
+	register int i = 0;
+	bool found = false;
+	while ( !found && commands[i].cmd != wxEmptyString ) {
+		found = commands[i].cmd == cmd;
+		if (!found) {
+			i++;
+		}
+	}
+	
+	return commands[i].id;
 }
 
-void Process_Answer(int ID,char* answer) {
-	char* t;
-	t=strtok(answer,"\n");
-	while (t!=NULL) {
-		Show("%s\n",t);
-		t=strtok(NULL,"\n");
+void Process_Answer(const wxString& answer) {
+	wxStringTokenizer tokens(answer, wxT("\n"));
+	wxString t;
+	while ( tokens.HasMoreTokens() ) {
+		Show(tokens.GetNextToken() + wxT("\n"));
 	}
 }
 
-
-int ProcessCommand(int ID) {
-	int fileID;
-	char reqbuffer [256];	
-	switch (ID) {
-				case CMD_ID_HELP:
-					ShowHelp();
-				    break;
- 				case CMD_ID_STATS:
-					//Process_Answer(CMD_ID_STATS, conn->Request("STATS", NULL));
-					Process_Answer(CMD_ID_STATS, (char*) m_ECClient->SendRecvMsg(wxT("STATS")).GetData());
-				break;
- 				case CMD_ID_SRVSTAT:
-					//Process_Answer(CMD_ID_SRVSTAT, conn->Request("CONNSTAT", NULL));
-					Process_Answer(CMD_ID_SRVSTAT, (char*) m_ECClient->SendRecvMsg(wxT("CONNSTAT")).GetData());
-				break;
- 				case CMD_ID_CONN:
-					//Process_Answer(CMD_ID_CONN, conn->Request("RECONN", NULL));
-					Process_Answer(CMD_ID_CONN, (char*) m_ECClient->SendRecvMsg(wxT("RECONN")).GetData());
-				break;
- 				case CMD_ID_DISCONN:
-					//Process_Answer(CMD_ID_DISCONN, conn->Request("DISCONN", NULL));
-					Process_Answer(CMD_ID_DISCONN, (char*) m_ECClient->SendRecvMsg(wxT("DISCONN")).GetData());
-				break;
- 				case CMD_ID_PAUSE:
-					if (sscanf(cmdargs,"%i",&fileID)) {
-						sprintf(reqbuffer,"PAUSE%i",fileID);
-				    	//Process_Answer(CMD_ID_PAUSE, conn->Request(reqbuffer, NULL));
-						Process_Answer(CMD_ID_PAUSE, (char*) unicode2char(m_ECClient->SendRecvMsg(char2unicode(reqbuffer)))); 
-					} else Show("Not a valid number\n");
-				break;
- 				case CMD_ID_RESUME:
-					if (sscanf(cmdargs,"%i",&fileID)) {
-						sprintf(reqbuffer,"RESUME%i",fileID);
-				    	//Process_Answer(CMD_ID_RESUME, conn->Request(reqbuffer, NULL));
-						Process_Answer(CMD_ID_RESUME, (char*) unicode2char(m_ECClient->SendRecvMsg(char2unicode(reqbuffer))));
-					} else Show("Not a valid number\n");
-				break;
- 				case CMD_ID_SHOW:
-					if (strncmp(cmdargs,"DL",2)==0) {
-							//Process_Answer(CMD_ID_SHOW, conn->Request("DL_QUEUE", NULL));
-						Process_Answer(CMD_ID_SHOW, (char*) m_ECClient->SendRecvMsg(wxT("DL_QUEUE")).GetData());
-					} else if (strncmp(cmdargs,"UL",2)==0) {
-							//Process_Answer(CMD_ID_SHOW, conn->Request("UL_QUEUE", NULL));
-						Process_Answer(CMD_ID_SHOW, (char*) m_ECClient->SendRecvMsg(wxT("UL_QUEUE")).GetData());
-					} else Show("Hint: Use Show DL or Show UL\n");
-				break;
-				default:
-					return(-1);
-					break;
-			}
-	return(0);
-}
-bool Parse_Command(char* buffer) {
-	int cmd_ID;
-	cmd_ID=GetIDFromString(buffer);
-		if (cmd_ID) {
-			if (cmd_ID==CMD_ID_QUIT) {
-				return true;
+int ProcessCommand(int CmdId) {
+	long FileId;
+	wxString msg;
+	switch (CmdId) {
+		case CMD_ID_HELP:
+			ShowHelp();
+			return 0;
+			
+		case CMD_ID_STATS:
+			msg = wxT("STATS");
+			break;
+			
+ 		case CMD_ID_SRVSTAT:
+			msg = wxT("CONNSTAT");
+			break;
+			
+ 		case CMD_ID_CONN:
+			msg = wxT("RECONN");
+			break;
+			
+ 		case CMD_ID_DISCONN:
+			msg = wxT("DISCONN");
+			break;
+			
+		case CMD_ID_CONN_TO_SRV:
+			msg = wxT("SERVER CONNECT ") + cmdargs;
+			break;
+			
+		case CMD_ID_RELOAD_IPFILTER:
+			msg = wxT("RELOADIPF");
+			break;
+			
+		case CMD_ID_SET_IPFILTER:
+			msg = wxT("SET IPFILTER ") + cmdargs;
+			break;
+			
+		case CMD_ID_PAUSE:
+			if (cmdargs.IsNumber()) {
+				cmdargs.ToLong(&FileId);
+				msg.Printf(wxT("PAUSE%li"), FileId);
 			} else {
-					if (ProcessCommand(cmd_ID)<0) {
-						Show("Error processing command - should never happen! Report bug, please\n");
-					} 
+				Show(_("Not a valid number\n"));
+				return -1;
 			}
-		} else Show("Syntax error!\n");
-	return false;
+			break;
+			
+		case CMD_ID_RESUME:
+			if (cmdargs.IsNumber()) {
+				cmdargs.ToLong(&FileId);
+				msg.Printf(wxT("RESUME%li"), FileId);
+			} else {
+				Show(_("Not a valid number\n"));
+				return -1;
+			}
+			break;
+			
+		case CMD_ID_SHOW:
+			if ( cmdargs.Left(2) == wxT("DL") ) {
+				msg = wxT("DL_QUEUE");
+			} else if ( cmdargs.Left(2) == wxT("UL") ) {
+				msg = wxT("UL_QUEUE");
+			} else {
+				Show(_("Hint: Use Show DL or Show UL\n"));
+				return -1;
+			}
+			break;
+			
+		default:
+			return -1;
+	}
+	Process_Answer(m_ECClient->SendRecvMsg(msg));
+	
+	return 0;
+}
+
+bool Parse_Command(wxString &buffer) {
+	int cmd_ID = GetIDFromString(buffer);
+	bool quit = cmd_ID == CMD_ID_QUIT;
+	if ( cmd_ID && !quit ) {
+		if (ProcessCommand(cmd_ID) < 0) {
+			Show(_("Error processing command - should never happen! Report bug, please\n"));
+		}
+	} else if (!cmd_ID) {
+		Show(_("Syntax error!\n"));
+	}
+	
+	return quit;
 }
 
 #ifndef AMULECMDDLG
 
 void TextClientShell() {
 	char buffer[256];
+	wxString buf;
 
-	bool The_End=false;
+	bool The_End = false;
 	do {
-		GetCommand(buffer, sizeof(buffer));
-		The_End = Parse_Command(buffer);
+		Show(wxT("\naMule$ "));
+		fflush(stdin);
+		fgets(buffer, 256, stdin);
+		buf = char2unicode(buffer);
+		The_End = Parse_Command(buf);
 	} while ((!The_End) && (isConnected));
 }
 
@@ -321,7 +321,7 @@ bool CamulecmdApp::OnInit() {
 #else
 int CamulecmdApp::OnRun() {
 #endif
-	Show("\nThis is amulecmd (TextClient)\n\n");
+	Show(_("\nThis is amulecmd (TextClient)\n\n"));
 
 	wxString * temp_wxpasswd;
 
@@ -349,61 +349,35 @@ int CamulecmdApp::OnRun() {
 	//printf("pass |%s| MD5HASH = |%s|\n",t_passwd,temp_wxpasswd->GetData());;
 	delete temp_wxpasswd;
 
-	Show("\nCreating client...\n");
+	Show(_("\nCreating client...\n"));
 	//client = new MuleClient;
 	// Create the socket
 	m_ECClient = new ECSocket();
 	
-	Show("Now, doing connection....\n");
+	Show(_("Now, doing connection....\n"));
 
 	wxIPV4address addr;
 	addr.Hostname(hostName);
 	addr.Service(sPort);
   
-	//Show("Using host %s port %s\n",hostName.c_str(), server.c_str());
-	Show("Using host %s port %d\n", addr.Hostname().GetData(), addr.Service());
+	Show(wxString::Format(_("Using host %s port %d\n"), addr.Hostname().GetData(), addr.Service()));
 	m_ECClient->Connect(addr, FALSE);
 	m_ECClient->WaitOnConnect(10);
 	
-	/*
-	conn = (MuleConnection *) client->MakeConnection(hostName, server, passwd);
-	if (!conn) {
-		// no connection => close gracefully
-		Show("aMule is not running, not accepting connections or wrong password supplied\n");
-		} else {
-		ShowGreet();
-
-#ifndef AMULECMDDLG			
-		TextClientShell();
-		Show("\nOk, exiting Text Client...\n");
-		conn->Disconnect();
-	}
-	
-	if (conn) {
-		delete conn;
-	}
-	if (client) {
-    	delete client;
-	}
-#else
-	}
-#endif
-	*/
-	
 	if (!m_ECClient->IsConnected())
 		// no connection => close gracefully
-		Show("Connection Failed. Unable to connect to the specified host\n");
+		Show(_("Connection Failed. Unable to connect to the specified host\n"));
 	else {
 		//Authenticate ourself
 		if (m_ECClient->SendRecvMsg(wxString::Format(wxT("AUTH %s"), passwd.GetData())) == wxT("Access Denied")) {
-			Show("ExternalConn: Access Denied.\n");
+			Show(_("ExternalConn: Access Denied.\n"));
 		} else {
 			isConnected=true;
-	    	Show("Succeeded ! Connection established\n");
+	    	Show(_("Succeeded ! Connection established\n"));
 			ShowGreet();
 #ifndef AMULECMDDLG
 			TextClientShell();		
-			Show("\nOk, exiting Text Client...\n");
+			Show(_("\nOk, exiting Text Client...\n"));
 #endif
 		}
 	}
@@ -443,7 +417,7 @@ CamulecmdFrame::CamulecmdFrame(const wxString& title, const wxPoint& pos, const 
 void CamulecmdFrame::OnQuit(wxCommandEvent& WXUNUSED(event))
 {
     // TRUE is to force the frame to close
-    Show("\nOk, exiting Text Client...\n");
+    Show(_("\nOk, exiting Text Client...\n"));
     Close(TRUE);
 }
 
@@ -480,3 +454,4 @@ void CamulecmdFrame::OnSize( wxSizeEvent& WXUNUSED(event) )
     if (cmd_control) cmd_control->SetSize( 2, y-30-2, x-4,30);
 }
 #endif
+
