@@ -664,7 +664,7 @@ CECPacket *Get_EC_Response_Search(const CECPacket *request)
 
 CECPacket *Get_EC_Response_Set_SharedFile_Prio(const CECPacket *request)
 {
-	CECPacket *response = new CECPacket(EC_OP_STRINGS);
+	CECPacket *response = new CECPacket(EC_OP_NOOP);
 	for (int i = 0;i < request->GetTagCount();i++) {
 		const CECTag *tag = request->GetTagByIndex(i);
 		CMD4Hash hash = tag->GetMD4Data();
@@ -677,6 +677,7 @@ CECPacket *Get_EC_Response_Set_SharedFile_Prio(const CECPacket *request)
 			cur_file->SetAutoUpPriority(1);
 			cur_file->UpdateAutoUpPriority();
 		} else {
+			cur_file->SetAutoUpPriority(0);
 			cur_file->SetUpPriority(prio);
 		}
 	}
