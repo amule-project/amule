@@ -195,10 +195,10 @@ void CSharedFilesCtrl::UpdateFile( CKnownFile* file, long itemnr )
 
 	SetItem( itemnr, ID_SHARED_COL_ID, file->GetFileHash().Encode() );
 
-	buffer.Printf( wxT("%u (%u)"), file->statistic.GetRequests(), file->statistic.GetAllTimeRequests() );
+	buffer = wxString::Format( wxT("%u (%u)"), file->statistic.GetRequests(), file->statistic.GetAllTimeRequests() );
 	SetItem( itemnr, ID_SHARED_COL_REQ, buffer );
 	
-	buffer.Printf( wxT("%u (%u)"), file->statistic.GetAccepts(), file->statistic.GetAllTimeAccepts() );
+	buffer = wxString::Format( wxT("%u (%u)"), file->statistic.GetAccepts(), file->statistic.GetAllTimeAccepts() );
 	SetItem( itemnr, ID_SHARED_COL_AREQ, buffer );
 	
 	buffer = CastItoXBytes(file->statistic.GetTransfered()) + wxT(" (") + CastItoXBytes(file->statistic.GetAllTimeTransfered()) + wxT(")");
@@ -206,14 +206,14 @@ void CSharedFilesCtrl::UpdateFile( CKnownFile* file, long itemnr )
 
 	if ( file->m_nCompleteSourcesCountLo == 0 ) {
 		if ( file->m_nCompleteSourcesCountHi ) {
-			buffer.Printf(wxT("< %u"), file->m_nCompleteSourcesCountHi );
+			buffer = wxString::Format(wxT("< %u"), file->m_nCompleteSourcesCountHi );
 		} else {
 			buffer = wxT("0");
 		}
 	} else if (file->m_nCompleteSourcesCountLo == file->m_nCompleteSourcesCountHi) {
-		buffer.Printf(wxT("%u"), file->m_nCompleteSourcesCountLo);
+		buffer = wxString::Format(wxT("%u"), file->m_nCompleteSourcesCountLo);
 	} else {
-		buffer.Printf(wxT("%u - %u"), file->m_nCompleteSourcesCountLo, file->m_nCompleteSourcesCountHi);
+		buffer = wxString::Format(wxT("%u - %u"), file->m_nCompleteSourcesCountLo, file->m_nCompleteSourcesCountHi);
 	}
 
 	SetItem( itemnr, ID_SHARED_COL_CMPL, buffer );

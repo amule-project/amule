@@ -671,13 +671,6 @@ uint32 CClientCredits::GetSecureWaitStartTime(uint32 dwForIP){
 			}
 			else{	// bad boy
 				// this can also happen if the client has not identified himself yet, but will do later - so maybe he is not a bad boy :) .
-				/*wxString buffer2, buffer;
-				for (uint16 i = 0;i != 16;i++){
-					buffer2.Printf("%02X",this->m_pCredits->abyKey[i]);
-					buffer+=buffer2;
-				}
-				AddDebugLogLine(false,"Warning: WaitTime resetted due to Invalid Ident for Userhash %s",buffer.GetBuffer());*/
-				
 				m_dwUnSecureWaitTime = ::GetTickCount();
 				m_dwWaitTimeIP = dwForIP;
 				return m_dwUnSecureWaitTime;

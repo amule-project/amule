@@ -95,22 +95,22 @@ void CFileDetailDialog::UpdateData()
 	CastChild(IDC_FHASH,wxStaticText)->SetLabel(EncodeBase16(m_file->GetFileHash(), 16));
 	CastChild(IDC_FSIZE,wxControl)->SetLabel(CastItoXBytes(m_file->GetFileSize()));
 	CastChild(IDC_PFSTATUS,wxControl)->SetLabel(m_file->getPartfileStatus());
-	bufferS.Printf(wxT("%i(%i)"),m_file->GetPartCount(),m_file->GetHashCount());
+	bufferS = wxString::Format(wxT("%i(%i)"),m_file->GetPartCount(),m_file->GetHashCount());
 	CastChild(IDC_PARTCOUNT,wxControl)->SetLabel(bufferS);
 	CastChild(IDC_TRANSFERED,wxControl)->SetLabel(CastItoXBytes(m_file->GetTransfered()));
 	CastChild(IDC_FD_STATS1,wxControl)->SetLabel(CastItoXBytes(m_file->GetLostDueToCorruption()));
 	CastChild(IDC_FD_STATS2,wxControl)->SetLabel(CastItoXBytes(m_file->GetGainDueToCompression()));
 	CastChild(IDC_FD_STATS3,wxControl)->SetLabel(CastItoIShort(m_file->TotalPacketsSavedDueToICH()));
 	CastChild(IDC_COMPLSIZE,wxControl)->SetLabel(CastItoXBytes(m_file->GetCompletedSize()));
-	bufferS.Printf(wxT("%.2f "),m_file->GetPercentCompleted());
+	bufferS = wxString::Format(wxT("%.2f "),m_file->GetPercentCompleted());
 	CastChild(IDC_PROCCOMPL,wxControl)->SetLabel(bufferS+wxT("% ")+wxString(_("done")));
-	bufferS.Printf(wxT("%.2f %s"),(float)m_file->GetKBpsDown(),_("kB/s"));
+	bufferS = wxString::Format(wxT("%.2f %s"),(float)m_file->GetKBpsDown(),_("kB/s"));
 	CastChild(IDC_DATARATE,wxControl)->SetLabel(bufferS);
-	bufferS.Printf(wxT("%i"),m_file->GetSourceCount());
+	bufferS = wxString::Format(wxT("%i"),m_file->GetSourceCount());
 	CastChild(IDC_SOURCECOUNT,wxControl)->SetLabel(bufferS);
-	bufferS.Printf(wxT("%i"),m_file->GetTransferingSrcCount());
+	bufferS = wxString::Format(wxT("%i"),m_file->GetTransferingSrcCount());
 	CastChild(IDC_SOURCECOUNT2,wxControl)->SetLabel(bufferS);
-	bufferS.Printf(wxT("%i (%.1f%%)"),m_file->GetAvailablePartCount(),(float) ((m_file->GetAvailablePartCount()*100)/ m_file->GetPartCount()));
+	bufferS = wxString::Format(wxT("%i (%.1f%%)"),m_file->GetAvailablePartCount(),(float) ((m_file->GetAvailablePartCount()*100)/ m_file->GetPartCount()));
 	CastChild(IDC_PARTAVAILABLE,wxControl)->SetLabel(bufferS);
 
 	if (m_file->lastseencomplete==0) {
@@ -169,7 +169,7 @@ void CFileDetailDialog::FillSourcenameList()
 		} else { 
 			SourcenameItem *item = (SourcenameItem *) pmyListCtrl->GetItemData(itempos); 
 			item->count++;
-			nameCountStr.Printf(wxT("%li"), item->count); 
+			nameCountStr = wxString::Format(wxT("%li"), item->count); 
 			pmyListCtrl->SetItem(itempos, 1, nameCountStr); 
 		} 
 	}

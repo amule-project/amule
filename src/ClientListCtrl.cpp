@@ -542,7 +542,7 @@ void CUploadingView::DrawCell( CUpDownClient* client, int column, wxDC* dc, cons
 			break;
 		
 		case 3:
-			buffer.Printf( wxT("%.1f"), client->GetKBpsUp() );
+			buffer = wxString::Format( wxT("%.1f"), client->GetKBpsUp() );
 				
 			if ( client->GetDownloadState() == DS_DOWNLOADING ) {
 				buffer += wxString::Format( wxT("/%.1f"), client->GetKBpsDown() );
@@ -608,7 +608,7 @@ void CUploadingView::DrawCell( CUpDownClient* client, int column, wxDC* dc, cons
 					buffer = _("Queue Full");
 				} else {
 					if (client->GetRemoteQueueRank()) {
-						buffer.Printf(_("QR: %u"), client->GetRemoteQueueRank());
+						buffer = wxString::Format(_("QR: %u"), client->GetRemoteQueueRank());
 					} else {
 						buffer = _("Unknown");
 					}
@@ -776,19 +776,19 @@ void CQueuedView::DrawCell( CUpDownClient* client, int column, wxDC* dc, const w
 			break;
 			
 		case 4:
-			buffer.Printf( wxT("%.1f"), (float)client->GetScore(false,false,true) );
+			buffer = wxString::Format( wxT("%.1f"), (float)client->GetScore(false,false,true) );
 			break;
 		
 		case 5:
 			if ( client->HasLowID() ) {
-				buffer.Printf( wxT("%i %s"), client->GetScore(false), _("LowID") );
+				buffer = wxString::Format( wxT("%i %s"), client->GetScore(false), _("LowID") );
 			} else {
-				buffer.Printf(wxT("%i"),client->GetScore(false));
+				buffer = wxString::Format(wxT("%i"),client->GetScore(false));
 			}
 			break;
 			
 		case 6:
-			buffer.Printf( wxT("%i"), client->GetAskedCount() );
+			buffer = wxString::Format( wxT("%i"), client->GetAskedCount() );
 			break;
 		
 		case 7:

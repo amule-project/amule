@@ -178,7 +178,7 @@ void CamulecmdFrame::OnQuit(wxCommandEvent& WXUNUSED(event))
 void CamulecmdFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
 {
 	wxString msg;
-	msg.Printf(
+	msg = wxString::Format(
 		_("amulecmd DLG version\n"
 		"Using %s\n(c) aMule Dev Team"),
 		wxVERSION_STRING);

@@ -166,7 +166,7 @@ void CamulewebFrame::OnQuit(wxCommandEvent& WXUNUSED(event))
 void CamulewebFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
 {
 	wxString msg;
-	msg.Printf( 
+	msg = wxString::Format( 
 		_("amuleweb [DLG version]\n"
 		"Using %s\n(c) aMule Dev Team"),
 		wxVERSION_STRING);

@@ -1480,10 +1480,10 @@ void CamuleApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 		wxString buffer;
 		
 		wxConfigBase* cfg = wxConfigBase::Get();
-		buffer.Printf(wxT("%llu"),(long long unsigned int)(theApp.statistics->GetSessionReceivedBytes() + thePrefs::GetTotalDownloaded()));
+		buffer = wxString::Format(wxT("%llu"),(long long unsigned int)(theApp.statistics->GetSessionReceivedBytes() + thePrefs::GetTotalDownloaded()));
 		cfg->Write(wxT("/Statistics/TotalDownloadedBytes"), buffer);
 
-		buffer.Printf(wxT("%llu"),(long long unsigned int)(theApp.statistics->GetSessionSentBytes()+thePrefs::GetTotalUploaded()));
+		buffer = wxString::Format(wxT("%llu"),(long long unsigned int)(theApp.statistics->GetSessionSentBytes()+thePrefs::GetTotalUploaded()));
 		cfg->Write(wxT("/Statistics/TotalUploadedBytes"), buffer);
 	}
 
