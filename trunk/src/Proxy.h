@@ -179,6 +179,7 @@ protected:
 	bool			CanReceive() const	{ return true; };
 	bool			CanSend() const		{ return true; };
 #endif
+	bool			m_IsLost;
 	bool			m_IsConnected;
 	bool			m_CanReceive;
 	bool			m_CanSend;
