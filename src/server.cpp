@@ -60,10 +60,16 @@ CServer::CServer(uint16 in_port, const wxString i_addr)
 // copy constructor
 CServer::CServer(CServer* pOld)
 {
-	taglist=new TagList;
-	for(TagList::Node* pos = pOld->taglist->GetFirst(); pos != NULL;pos=pos->GetNext()) {
-		CTag* pOldTag = pos->GetData(); //pOld->taglist->GetAt(pos);
-		taglist->Append(pOldTag->CloneTag()); //AddTail(pOldTag->CloneTag());
+	wxASSERT(pOld != NULL);
+	taglist = new TagList;
+	// Got a bt here with pOld->taglist == NULL. Check that.
+	if (pOld && pOld->taglist) {
+		for(	TagList::Node* pos = pOld->taglist->GetFirst();
+			pos != NULL;
+			pos = pos->GetNext()) {
+			CTag* pOldTag = pos->GetData(); //pOld->taglist->GetAt(pos);
+			taglist->Append(pOldTag->CloneTag()); //AddTail(pOldTag->CloneTag());
+		}
 	}
 	port = pOld->port;
 	ip = pOld->ip; 
