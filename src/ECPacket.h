@@ -26,6 +26,7 @@
 #include "ECcodes.h"	// Needed for EC types
 #include "endianfix.h"	// Needed for ENDIAN_SWAP_* macros
 
+#pragma interface
 
 // Define this to keep partial packets
 // (those that had an error upon reception/creation)
