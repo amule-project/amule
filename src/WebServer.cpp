@@ -2091,7 +2091,11 @@ wxString CWebServer::_GetSearch(ThreadData Data) {
 	SearchInfo::ItemIterator i = m_SearchInfo.GetBeginIterator();
 	while (i != m_SearchInfo.GetEndIterator()) {
 		wxString line = m_Templates.sSearchResultLine;
-		line.Replace("[FILENAME]", i->sFileName);
+		if ( i->bPresent ) {
+			line.Replace("[FILENAME]", wxT("<font color=\"#00FF00\">") + i->sFileName + wxT("</font>"));
+		} else {
+			line.Replace("[FILENAME]", i->sFileName);
+		}
 		line.Replace("[FILESIZE]", CastItoXBytes(i->lFileSize));
 		line.Replace("[SOURCECOUNT]", wxString::Format(wxT("%u"), i->lSourceCount));
 		line.Replace("[FILEHASH]", i->nHash.Encode());
@@ -2654,6 +2658,7 @@ SearchFile::SearchFile(CEC_SearchFile_Tag *tag)
 	sFileName = tag->FileName();
 	lFileSize = tag->SizeFull();
 	lSourceCount = tag->SourceCount();
+	bPresent = tag->AlreadyHave();
 }
 
 void SearchFile::ProcessUpdate(CEC_SearchFile_Tag *tag)
