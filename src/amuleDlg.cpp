@@ -84,9 +84,6 @@
 #include "aMule.xpm"
 #endif
 
-#ifdef __USE_SPLASH__
-#include "splash.xpm"
-#endif
 
 BEGIN_EVENT_TABLE(CamuleDlg, wxFrame)
 
@@ -224,17 +221,6 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 #ifndef __SYSTRAY_DISABLED__
 	CreateSystray(wxString::Format(wxT("%s %s"), wxT(PACKAGE), wxT(VERSION)));
 #endif
-
-	// splashscreen
-	#ifdef __USE_SPLASH__
-	if (theApp.glob_prefs->UseSplashScreen() && !theApp.glob_prefs->GetStartMinimized()) {
-		new wxSplashScreen( wxBitmap(splash_xpm),
-		                    wxSPLASH_CENTRE_ON_SCREEN|wxSPLASH_TIMEOUT,
-		                    5000, NULL, -1, wxDefaultPosition, wxDefaultSize,
-		                    wxSIMPLE_BORDER|wxSTAY_ON_TOP
-		);
-	}
-	#endif
 
 	// Init statistics stuff, better do it asap
 	statisticswnd->Init();

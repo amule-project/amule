@@ -217,7 +217,6 @@ public:
 	static uint64		GetTotalDownloaded()		{ return s_totalDownloadedBytes; }
 	static uint64		GetTotalUploaded()		{ return s_totalUploadedBytes; }
 	static bool		IsConfirmExitEnabled()		{ return s_confirmExit; }
-	static bool		UseSplashScreen()		{ return s_splashscreen; }
 	static bool		FilterBadIPs()			{ return s_filterBadIP; }
 	static bool		IsOnlineSignatureEnabled()	{ return s_onlineSig; }
 	static uint32		GetMaxGraphUploadRate()		{ return s_maxGraphUploadRate; }
@@ -500,7 +499,6 @@ protected:
 	static bool	s_confirmExit;
 
 
-	static bool	s_splashscreen;
 	static bool	s_filterBadIP;
 	static bool	s_onlineSig;
 

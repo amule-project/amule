@@ -95,7 +95,6 @@ uint16		CPreferences::s_statsInterval;
 uint32		CPreferences::s_maxGraphDownloadRate;
 uint32		CPreferences::s_maxGraphUploadRate;
 bool		CPreferences::s_confirmExit;
-bool		CPreferences::s_splashscreen;
 bool		CPreferences::s_filterBadIP;
 bool		CPreferences::s_onlineSig;
 uint64		CPreferences::s_totalDownloadedBytes;
@@ -720,7 +719,6 @@ void CPreferences::BuildItemList( const wxString& appdir )  // gets called at in
 	/**
 	 * GUI behavoir
 	 **/
-	s_CfgList[IDC_SPLASHON]		= new Cfg_Bool( wxT("/eMule/Splashscreen"), s_splashscreen, true );
 	s_CfgList[IDC_MINTRAY]		= new Cfg_Bool( wxT("/eMule/MinToTray"), s_mintotray, false );
 	s_CfgList[IDC_EXIT]		= new Cfg_Bool( wxT("/eMule/ConfirmExit"), s_confirmExit, false );
 	s_CfgList[IDC_DBLCLICK]		= new Cfg_Bool( wxT("/eMule/TransferDoubleClick"), s_transferDoubleclick, true );
