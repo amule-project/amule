@@ -1195,7 +1195,8 @@ void CamuleDlg::Show_aMule(bool uniconize) {
 	}
 }
 
-void CamuleDlg::OnMinimize(wxEvent& evt) { 
+void CamuleDlg::OnMinimize(wxEvent& evt) {
+#ifndef __SYSTRAY_DISABLED__	
 	if (theApp.amuledlg->IsIconized()) {
 		if (theApp.glob_prefs->DoMinToTray()) {
 			theApp.amuledlg->Hide_aMule(false);
@@ -1209,6 +1210,7 @@ void CamuleDlg::OnMinimize(wxEvent& evt) {
 			}
 		}
 	}
+#endif
 }
 
 void CamuleDlg::OnBnNewPreferences(wxEvent& ev) {
