@@ -1608,11 +1608,7 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 					}*/
 				case MP_VIEW:{
 					if (selectedCount == 1) {
-						if ( file->GetStatus() == PS_COMPLETE ) {
-							file->PreviewFile();
-						} else {
-							file->PreviewFile();
-						}
+						PreviewFile(file);
 					}
 					done = true;
 					break;
@@ -2073,4 +2069,36 @@ bool CDownloadListCtrl::this_is_the_moment() {
 	} else {
 		return false;	
 	}
+}
+
+bool CDownloadListCtrl::PreviewFile(CPartFile* file) {
+
+	wxString command;
+
+	// If no player set in preferences, use mplayer.
+	if (thePrefs::GetVideoPlayer().IsEmpty()) {
+		command.Append(wxT("mplayer"));
+	} else {
+		command.Append(thePrefs::GetVideoPlayer());
+	}
+	// Need to use quotes in case filename contains spaces.
+	command.Append(wxT(" \""));
+	if ( file->GetStatus() == PS_COMPLETE ) {
+		command.Append(thePrefs::GetIncomingDir() + wxFileName::GetPathSeparator() + fle->GetFileName());
+	} else {
+		command.Append(file->GetFullName());
+		// Remove the .met from filename.
+		for (int i=0;i<4;++i) {
+			command.RemoveLast();
+		}
+	}
+	#warning Need PreviewSmallBlocks preferences.
+	/*
+	if (thePrefs.GetPreviewSmallBlocks()) {
+		FlushBuffer(true);
+	}
+	*/
+	command.Append(wxT("\""));
+	wxExecute(command);
+	
 }
