@@ -3045,7 +3045,9 @@ Packet*	CPartFile::CreateSrcInfoPacket(CUpDownClient* forClient)
 				// only send sources which have needed parts for this client
 				#warning Phoenix - ugly hack to see the problem - I
 				if( cur_src->m_nPartCount != forClient->m_nPartCount ) {
-					printf("%d %d %d\n",n, cur_src->m_nPartCount, forClient->m_nPartCount);
+#ifdef __DEBUG__
+					printf("CPartFile->GetPartStatus() = %d, cur_src->m_nPartCount = %d,  forClient->m_nPartCount = %d\n", n, cur_src->m_nPartCount, forClient->m_nPartCount);
+#endif // __DEBUG__
 					n = cur_src->m_nPartCount < forClient->m_nPartCount ? cur_src->m_nPartCount : forClient->m_nPartCount;
 				}
 				for (int x = 0; x < n; x++) {
@@ -3059,7 +3061,9 @@ Packet*	CPartFile::CreateSrcInfoPacket(CUpDownClient* forClient)
 				// currently a client sends it's file status only after it has at least one complete part,
 				#warning Phoenix - ugly hack to see the problem - II
 				if( n != cur_src->m_nPartCount ) {
-					printf("%d %d\n",n, cur_src->m_nPartCount);
+#ifdef __DEBUG__
+					printf("CPartFile->GetPartStatus() = %d, cur_src->m_nPartCount = %d\n", n, cur_src->m_nPartCount);
+#endif // __DEBUG__
 					n = cur_src->m_nPartCount;
 				}
 				for (int x = 0; x < GetPartCount(); x++){
