@@ -65,8 +65,7 @@ CMD4Hash::CMD4Hash()
 CMD4Hash::CMD4Hash(unsigned char hash[])
 {
 	wxASSERT(hash);
-	for ( uint16 i = 0; i < MD4HASH_LENGTH; i++ )
-		m_hash[i] = hash[i];
+	memcpy(m_hash, hash, MD4HASH_LENGTH);
 }
 
 
