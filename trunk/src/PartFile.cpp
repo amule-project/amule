@@ -1481,21 +1481,21 @@ void CPartFile::DrawStatusBar( wxMemoryDC* dc, wxRect rect, bool bFlat )
 
 		// Place each gap, one PART at a time
 		for ( uint32 i = start; i < end; ++i ) {
-			COLORREF color;
-			if ( i < m_SrcpartFrequency.GetCount() && m_SrcpartFrequency[i]) {
-				int blue = 210 - ( 22 * ( m_SrcpartFrequency[i] - 1 ) );
-				color = RGB( 0, ( blue < 0 ? 0 : blue ), 255 );
-			} else {
-				color = crMissing;
-			}	
+			COLORREF color = crMissing;
+			if ( i < m_SrcpartFrequency.GetCount() ) {
+				if (m_SrcpartFrequency[i]) {
+					int blue = 210 - ( 22 * ( m_SrcpartFrequency[i] - 1 ) );
+					color = RGB( 0, ( blue < 0 ? 0 : blue ), 255 );
+				}
+			}
 		
+			if (IsStopped() || IsPaused()) {
+				color = DarkenColour(color,2);
+			}			
+
 			uint32 gap_begin = ( i == start   ? gap->start : PARTSIZE * i );
 			uint32 gap_end   = ( i == end - 1 ? gap->end   : PARTSIZE * ( i + 1 ) );
 		
-			if (IsStopped()) {
-				color = DarkenColour(color,2);
-			}			
-			
 			s_ChunkBar.FillRange( gap_begin, gap_end,  color);
 		}
 	}
@@ -1504,7 +1504,7 @@ void CPartFile::DrawStatusBar( wxMemoryDC* dc, wxRect rect, bool bFlat )
 	for ( POSITION pos = requestedblocks_list.GetHeadPosition(); pos; ) {
 		COLORREF color = crPending;
 		Requested_Block_Struct* block = requestedblocks_list.GetNext( pos );
-		if (IsStopped()) {
+		if (IsStopped() || IsPaused()) {
 			color = DarkenColour(color,2);
 		}					
 		s_ChunkBar.FillRange( block->StartOffset, block->EndOffset, color );
