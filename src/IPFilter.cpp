@@ -85,14 +85,14 @@ void CIPFilter::AddBannedIPRange(uint32 IPStart, uint32 IPEnd, uint16 AccessLeve
 		
 		while ( it != iplist.end() ) {
 			// Begins before the current span
-			if ( IPStart < it->second->IPStart ) {
+			if ( IPStart < it->first ) {
 				// Never touches the current span
-				if ( IPEnd < it->second->IPStart - 1 ) {
+				if ( IPEnd < it->first - 1 ) {
 					break;
 				}
 
 				// Stops just before the current span
-				else if ( IPEnd == it->second->IPStart - 1 ) {
+				else if ( IPEnd == it->first - 1 ) {
 					// If same AccessLevel: Merge
 					if ( AccessLevel == it->second->AccessLevel ) {
 						IPEnd = it->second->IPEnd;
@@ -113,10 +113,9 @@ void CIPFilter::AddBannedIPRange(uint32 IPStart, uint32 IPEnd, uint16 AccessLeve
 						} else {
 							// Re-insert the partially covered span
 							IPRange_Struct* item = it->second;
-							item->IPStart = IPEnd + 1;
 
 							iplist.erase( it );
-							iplist[ item->IPStart ] = item;
+							iplist[ IPEnd + 1 ] = item;
 						}
 
 						break;
@@ -129,7 +128,7 @@ void CIPFilter::AddBannedIPRange(uint32 IPStart, uint32 IPEnd, uint16 AccessLeve
 				}
 			}
 			// It starts at the current span
-			else if ( IPStart == it->second->IPStart ) {
+			else if ( IPStart == it->first ) {
 				// Covers only part of the current span
 				if ( IPEnd < it->second->IPEnd ) {
 					// Same AccessLevel, nothing to do
@@ -138,10 +137,9 @@ void CIPFilter::AddBannedIPRange(uint32 IPStart, uint32 IPEnd, uint16 AccessLeve
 					} else {
 						// Re-insert the partially covered span
 						IPRange_Struct* item = it->second;
-						item->IPStart = IPEnd + 1;
 
 						iplist.erase( it );
-						iplist[ item->IPStart ] = item;
+						iplist[ IPEnd + 1 ] = item;
 					}
 
 					break;
@@ -155,7 +153,7 @@ void CIPFilter::AddBannedIPRange(uint32 IPStart, uint32 IPEnd, uint16 AccessLeve
 			}
 
 			// Starts inside the current span or after the current span
-			else if ( IPStart > it->second->IPStart ) {
+			else if ( IPStart > it->first ) {
 				// Starts inside the current span
 				if ( IPStart < it->second->IPEnd ) {
 					// Ends inside the current span
@@ -173,18 +171,17 @@ void CIPFilter::AddBannedIPRange(uint32 IPStart, uint32 IPEnd, uint16 AccessLeve
 						// Create a new span to cover the second block
 						IPRange_Struct* item = new IPRange_Struct();
 						*item = *it->second;
-						item->IPStart     = IPEnd + 1;
 						item->IPEnd       = oldend;
 						
 						// Insert the new span	
-						iplist[ item->IPStart ] = item;
+						iplist[ IPEnd + 1 ] = item;
 						
 						break;
 					} else {
 						// If access-level is the same, then we remove the current and
 						// resize the new span
 						if ( AccessLevel == it->second->AccessLevel ) {
-							IPStart = it->second->IPStart;
+							IPStart = it->first;
 							
 							IPListMap::iterator tmp = it++;
 							iplist.erase( tmp );
@@ -198,7 +195,7 @@ void CIPFilter::AddBannedIPRange(uint32 IPStart, uint32 IPEnd, uint16 AccessLeve
 					// If access-level is the same, then we remove the current and
 					// resize the new span
 					if ( AccessLevel == it->second->AccessLevel ) {
-						IPStart = it->second->IPStart;
+						IPStart = it->first;
 						
 						IPListMap::iterator tmp = it++;
 						iplist.erase( tmp );
@@ -218,7 +215,6 @@ void CIPFilter::AddBannedIPRange(uint32 IPStart, uint32 IPEnd, uint16 AccessLeve
 
 
 	IPRange_Struct *newFilter = new IPRange_Struct();
-	newFilter->IPStart	= IPStart;
 	newFilter->IPEnd	= IPEnd;
 	wxASSERT(AccessLevel < 256);
 	newFilter->AccessLevel	= AccessLevel;
@@ -374,7 +370,7 @@ void CIPFilter::SaveToFile() {
 	while(it != iplist.end()) {
 		wxString line;
 		// Range Start
-		line += Uint32toStringIP(wxUINT32_SWAP_ALWAYS(it->second->IPStart));
+		line += Uint32toStringIP(wxUINT32_SWAP_ALWAYS(it->first));
 		// Make it nice
 		for (uint32 i = line.Len(); i < 15; i++) { // 15 -> "xxx.xxx.xxx.xxx"
 			line += wxT(" ");
