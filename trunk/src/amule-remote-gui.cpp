@@ -924,6 +924,7 @@ CUpDownClient::CUpDownClient(CEC_UpDownClient_Tag *tag)
 	m_nUserID = tag->ID();
 	m_Username = tag->ClientName();
 	m_clientSoft = tag->ClientSoftware();
+	m_UserHash = tag->UserID();
 	
 	m_Friend = 0;
 	
