@@ -36,19 +36,44 @@
 #include "SharedFileList.h" // Needed for GetFileByID
 #include "DownloadQueue.h"  // Needed for GetFileByID
 
-CGlobalSearchThread::CGlobalSearchThread(Packet *packet)
+CGlobalSearchThread::CGlobalSearchThread(Packet *packet, CSearchList *owner) : wxThread(wxTHREAD_JOINABLE)
 {
 	CGlobalSearchThread::packet = packet;
+	CGlobalSearchThread::owner = owner;
 	
 	CServer* current = theApp.serverconnect->GetCurrentServer();
 	current = theApp.serverlist->GetServerByIP( current->GetIP(), current->GetPort() );
 	askedlist.insert( current );
 	
 	packet->SetOpCode(OP_GLOBSEARCHREQ);
+	Create();
 }
 
-void CGlobalSearchThread::Start()
+CGlobalSearchThread::~CGlobalSearchThread()
 {
+	delete packet;
+}
+
+void *CGlobalSearchThread::Entry()
+{
+	CServer* current = theApp.serverconnect->GetCurrentServer();
+	current = theApp.serverlist->GetServerByIP( current->GetIP(), current->GetPort() );
+	
+	for ( uint16 i = 0; i < theApp.serverlist->GetServerCount(); i++ ) {
+		if ( TestDestroy() ) {
+			break;
+		}
+		CServer* server = theApp.serverlist->GetNextSearchServer();
+		if ( server == current ) {
+			continue;
+		}
+		Sleep(750);
+		theApp.serverconnect->SendUDPPacket(packet, server, false);
+		CoreNotify_Search_Update_Progress(i * 100 / theApp.serverlist->GetServerCount());
+	}
+	Sleep(1000);
+	CoreNotify_Search_Update_Progress(0xffff);
+	return 0;
 }
 
 Packet *CreateSearchPacket(wxString &searchString, wxString& typeText,
@@ -320,23 +345,6 @@ void CSearchList::RemoveResults(long nSearchID){
 	}
 }
 
-// void CSearchList::ShowResults(long nSearchID){
-// 	CSearchListCtrl* outputwnd = GetSearchListControl(nSearchID);
-// 	if ( outputwnd ) {
-// 		//outputwnd->SetRedraw(false);
-// 		for (POSITION pos = list.GetHeadPosition(); pos !=0;list.GetNext(pos)){
-// 			if( ((CSearchFile*)list.GetAt(pos))->GetSearchID() == nSearchID ){
-// 				outputwnd->AddResult(list.GetAt(pos));
-// 			}
-// 		}
-// 		//outputwnd->SetRedraw(true);
-// 	
-// 		// Update the result count
-// 		theApp.amuledlg->searchwnd->UpdateHitCount( outputwnd );
-// 	}
-// 
-// 	UngetSearchListControl(outputwnd);
-// }
 
 void CSearchList::NewSearch(const wxString& resTypes, long nSearchID){
 	resultType=resTypes;
@@ -344,6 +352,15 @@ void CSearchList::NewSearch(const wxString& resTypes, long nSearchID){
 	myHashList=wxEmptyString;
 
 	foundFilesCount[nSearchID] = 0;
+}
+
+void CSearchList::LocalSearchEnd()
+{
+	if ( searchpacket ) {
+		searchthread = new CGlobalSearchThread(searchpacket, this);
+		searchthread->Run();
+	}
+	Notify_SearchLocalEnd();
 }
 
 // NEVER called: commenting it out untill someone will explain why it's here
@@ -516,7 +533,7 @@ bool CSearchList::AddToList(CSearchFile* toadd, bool bClientResponse){
 		CSearchFile* cur_file = list.GetNext(pos);
 		if ( (toadd->GetFileHash() == cur_file->GetFileHash()) && cur_file->GetSearchID() ==  toadd->GetSearchID()){
 			cur_file->AddSources(toadd->GetIntTagValue(FT_SOURCES),toadd->GetIntTagValue(FT_COMPLETE_SOURCES));
-			CoreNotify_Search_Update_Sources(toadd, cur_file);
+			Notify_Search_Update_Sources(toadd, cur_file);
 			delete toadd;
 			return true;
 		}
@@ -524,7 +541,7 @@ bool CSearchList::AddToList(CSearchFile* toadd, bool bClientResponse){
 	if (list.AddTail(toadd)) {	
 		foundFilesCount[toadd->GetSearchID()]++;
 	}
-	CoreNotify_Search_Add_Result(toadd);
+	Notify_Search_Add_Result(toadd);
 	return true;
 }
 

@@ -108,11 +108,11 @@ enum GUI_Event_ID {
 	KNOWNFILE_SET_PERM,
 	KNOWNFILE_SET_COMMENT,
 	// search
-	SEARCH_LOCAL_REQ,
-	SEARCH_GLOBAL_REQ,
+	SEARCH_REQ,
 	SEARCH_ADD_TO_DLOAD,
 	SEARCH_ADD_RESULT,
 	SEARCH_UPDATE_SOURCES,
+	SEARCH_UPDATE_PROGRESS,
 	// download queue
 	DLOAD_SET_CAT_PRIO,
 	DLOAD_SET_CAT_STATUS,
@@ -264,6 +264,8 @@ class GUIEvent {
 // search
 #define Notify_SearchCancel()                       Notify_0_ValEvent(SEARCH_CANCEL)
 #define Notify_SearchLocalEnd()                     Notify_0_ValEvent(SEARCH_LOCAL_END)
+#define Notify_Search_Update_Sources(s, f)          Notify_2_ValEvent(SEARCH_UPDATE_SOURCES,(CSearchFile *)s, (CSearchFile *)f);
+#define Notify_Search_Add_Result(s)                 Notify_1_ValEvent(SEARCH_ADD_RESULT,(CSearchFile *)s);
 
 // chat
 #define Notify_ChatRefreshFriend(ptr)               Notify_1_ValEvent(CHAT_REFRESH_FRIEND, ptr)
@@ -306,12 +308,11 @@ class GUIEvent {
 #define CoreNotify_KnownFile_Comment_Set(ptr, val)  Notify_2_ValEvent(KNOWNFILE_SET_PERM,(CKnownFile *)ptr, val);
 
 // Search
-#define CoreNotify_Search_Local_Req(ptr)            Notify_1_ValEvent(SEARCH_LOCAL_REQ,(Packet *)ptr);
-#define CoreNotify_Search_Global_Req(ptr, ser)      Notify_2_ValEvent(SEARCH_GLOBAL_REQ,(Packet *)ptr, (CServer *)ser);
-#define CoreNotify_Search_Add_Download(ptr, val)    Notify_2_ValEvent(SEARCH_ADD_TO_DLOAD,(CSearchFile *)ptr, (uint8)val);
-#define CoreNotify_Search_Add_Result(s)      Notify_1_ValEvent(SEARCH_ADD_RESULT,(CSearchFile *)s);
-#define CoreNotify_Search_Update_Sources(s, f)       Notify_2_ValEvent(SEARCH_UPDATE_SOURCES,(CSearchFile *)s, (CSearchFile *)f);
+#define CoreNotify_Search_Req(ptr, global)          Notify_2_ValEvent(SEARCH_REQ,(Packet *)ptr, global);
 
+#define CoreNotify_Search_Add_Download(ptr, val)    Notify_2_ValEvent(SEARCH_ADD_TO_DLOAD,(CSearchFile *)ptr, (uint8)val);
+
+#define CoreNotify_Search_Update_Progress(val)      Notify_1_ValEvent(SEARCH_UPDATE_PROGRESS, (uint32)val);
 // download queue
 #define CoreNotify_Download_Set_Cat_Prio(cat, pri)  Notify_2_ValEvent(DLOAD_SET_CAT_PRIO, cat, pri);
 #define CoreNotify_Download_Set_Cat_Status(cat, st) Notify_2_ValEvent(DLOAD_SET_CAT_STATUS, cat, st);

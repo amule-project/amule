@@ -73,7 +73,6 @@ BEGIN_EVENT_TABLE(CSearchDlg, wxPanel)
 	EVT_BUTTON(IDC_CANCELS, CSearchDlg::OnBnClickedCancels)
 	EVT_BUTTON(IDC_CLEARALL, CSearchDlg::OnBnClickedClearall)
 	
-	EVT_TIMER(ID_SEARCHTIMER, CSearchDlg::OnTimer)
 	EVT_LIST_ITEM_SELECTED(ID_SEARCHLISTCTRL, CSearchDlg::OnListItemSelected)
 	EVT_BUTTON(IDC_SDOWNLOAD, CSearchDlg::OnBnClickedSdownload)
 	EVT_BUTTON(IDC_SEARCH_RESET, CSearchDlg::OnBnClickedSearchReset)
@@ -93,7 +92,7 @@ END_EVENT_TABLE()
 
 
 CSearchDlg::CSearchDlg(wxWindow* pParent)
-: wxPanel(pParent, -1), m_timer(this, ID_SEARCHTIMER)
+: wxPanel(pParent, -1)
 {
 	last_search_time = 0;
 	
@@ -106,6 +105,7 @@ CSearchDlg::CSearchDlg(wxWindow* pParent)
 
 	progressbar = (wxGauge*)FindWindow(ID_SEARCHPROGRESS);
 	wxASSERT( progressbar );
+	progressbar->SetRange(100);
 	
 	notebook = (CMuleNotebook*)FindWindow(ID_NOTEBOOK);
 	wxASSERT( notebook );
@@ -251,50 +251,6 @@ void CSearchDlg::OnSpinFieldsChange(wxSpinEvent& WXUNUSED(evt))
 	FieldsChanged();
 }
 
-
-// This function handles global searches
-void CSearchDlg::OnTimer(wxTimerEvent& WXUNUSED(evt))
-{
-	if ( theApp.serverconnect->IsConnected() ) {
-		CServer* toask = NULL;
-		
-		for ( uint16 i = 0; i < theApp.serverlist->GetServerCount(); i++ ) {
-			/* Get the next server. Safer than using GetServerAt() in this case,
-			   as it will just wrap if the list is reduced. GetNextSearchServer 
-			   position is not reset, which means that chances of getting a new
-			   server immediatly are improved. */
-			CServer* server = theApp.serverlist->GetNextSearchServer();
-		
-			// Check if we have asked this server before
-			if ( askedlist.find( server ) == askedlist.end() ) {
-				// We know know a server which havent been asked yet, no need to continue looking
-				toask = server;
-				break;
-			}
-		}
-		
-		// If we found a valid server
-		if ( toask ) {
-			// Add the the server to the list of asked servers
-			askedlist.insert( toask );
-
-			// Ask the server
-			CoreNotify_Search_Global_Req(searchpacket, toask);
-			
-			// Increment the progress bar only if there are tabs
-			if ( notebook->GetPageCount() && ( progressbar->GetValue() < progressbar->GetRange() ) ) {
-				progressbar->SetValue( progressbar->GetValue() + 1 );
-			}
-		} else {
-				OnBnClickedCancels(nullEvent);
-		};
-	} else {
-		// Cancel if we arn't connected
-		OnBnClickedCancels(nullEvent);
-	}
-}
-
-
 bool CSearchDlg::CheckTabNameExists(wxString searchString) 
 {
 	int nPages = notebook->GetPageCount();
@@ -312,8 +268,6 @@ void CSearchDlg::CreateNewTab(wxString searchString, long nSearchID)
 {
     CSearchListCtrl* list = new CSearchListCtrl( (wxWindow*)notebook, ID_SEARCHLISTCTRL, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxNO_BORDER );
 	
-	progressbar->SetRange( theApp.serverlist->GetServerCount() - 1 );
-
 	list->Init(theApp.searchlist);
 	list->ShowResults(nSearchID);
 	
@@ -329,19 +283,15 @@ void CSearchDlg::OnBnClickedCancels(wxCommandEvent& WXUNUSED(evt))
 {
 	canceld = true;
 
-	if (globalsearch) {
-		delete searchpacket;
-		searchpacket = NULL;
-		globalsearch = false;
-	}
+ 	if (globalsearch) {
+		theApp.searchlist->searchthread->Delete();
+ 	}
 
-	m_timer.Stop();
 	progressbar->SetValue(0);
 
 	FindWindow(IDC_CANCELS)->Disable();
 	FindWindow(IDC_STARTS)->Enable();
 }
-
 
 void CSearchDlg::LocalSearchEnd(uint16 WXUNUSED(count))
 {
@@ -349,8 +299,6 @@ void CSearchDlg::LocalSearchEnd(uint16 WXUNUSED(count))
 		if (!globalsearch) {
 			FindWindow(IDC_CANCELS)->Disable();
 			FindWindow(IDC_STARTS)->Enable();
-		} else {
-			m_timer.Start(750);
 		}
 	}
 }
@@ -451,19 +399,7 @@ void CSearchDlg::StartNewSearch()
 	
 	globalsearch = ((wxChoice*)FindWindow(ID_SEARCHTYPE))->GetSelection() == 1;
 
-	CoreNotify_Search_Local_Req(packet);
-	if ( globalsearch ) {
-		askedlist.clear();
-		
-		// Add the current server to the askedlist, so that we dont send a UDP packet to it
-		CServer* current = theApp.serverconnect->GetCurrentServer();
-		         current = theApp.serverlist->GetServerByIP( current->GetIP(), current->GetPort() );
-		askedlist.insert( current );
-				 
-		searchpacket = packet;
-		searchpacket->SetOpCode(OP_GLOBSEARCHREQ);
-		globalsearch = true;
-	}
+	CoreNotify_Search_Req(packet, globalsearch);
 	
 	CreateNewTab(searchString + wxT(" (0)"), m_nSearchID);
 }
