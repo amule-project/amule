@@ -592,7 +592,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 		}
 		if (item == "TRANSFER DL_LIST") {
 			// returns one string where each line is formatted as:
-			// %s\t%ld\t%ld\t%d\t%ld\t%d\t%s\t%d\t%s\t%ld\t%ld\t%ld\t%s\t%s\t%d\n
+			// %s\t%ul\t%ul\t%ul\t%f\t%li\t%u\t%s\t%u\t%s\t%u\t%u\t%u\t%s\t%s\t%d\n
 			wxString buffer("");
 			wxString tempFileInfo("");
 			//int tempPrio;
@@ -600,25 +600,26 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				CPartFile *cur_file = theApp.downloadqueue->GetFileByIndex(i);
 				if (cur_file) {
 					buffer+=wxString::Format("%s\t", cur_file->GetFileName().c_str());
-					buffer+=wxString::Format("%u\t", cur_file->GetFileSize());
-					buffer+=wxString::Format("%u\t", cur_file->GetTransfered());
+					buffer+=wxString::Format("%ul\t", cur_file->GetFileSize());
+					buffer+=wxString::Format("%ul\t", cur_file->GetCompletedSize());
+					buffer+=wxString::Format("%ul\t", cur_file->GetTransfered());
 					buffer+=wxString::Format("%f\t", cur_file->GetPercentCompleted());
 #ifdef DOWNLOADRATE_FILTERED
 					buffer+=wxString::Format("%li\t", (long)(cur_file->GetKBpsDown()*1024));
 #else
-					buffer+=wxString::Format("%u\t", cur_file->GetDatarate());
+					buffer+=wxString::Format("%ul\t", cur_file->GetDatarate());
 #endif
-					buffer+=wxString::Format("%d\t", cur_file->GetStatus());
+					buffer+=wxString::Format("%u\t", cur_file->GetStatus());
 					buffer+=wxString::Format("%s\t", cur_file->getPartfileStatus().c_str());
 					if (cur_file->IsAutoDownPriority()) {
-						buffer+=wxString::Format("%d\t", cur_file->GetDownPriority()+10);
+						buffer+=wxString::Format("%u\t", cur_file->GetDownPriority()+10);
 					} else {
-						buffer+=wxString::Format("%d\t", cur_file->GetDownPriority());
+						buffer+=wxString::Format("%u\t", cur_file->GetDownPriority());
 					}
 					buffer+=EncodeBase16(cur_file->GetFileHash(), 16)+wxString("\t");
-					buffer+=wxString::Format("%d\t", cur_file->GetSourceCount());
-					buffer+=wxString::Format("%d\t", cur_file->GetNotCurrentSourcesCount());
-					buffer+=wxString::Format("%d\t", cur_file->GetTransferingSrcCount());
+					buffer+=wxString::Format("%u\t", cur_file->GetSourceCount());
+					buffer+=wxString::Format("%u\t", cur_file->GetNotCurrentSourcesCount());
+					buffer+=wxString::Format("%u\t", cur_file->GetTransferingSrcCount());
 					if (theApp.serverconnect->IsConnected() && theApp.serverconnect->IsLowID()) {
 						buffer+=theApp.CreateED2kSourceLink(cur_file)+wxString("\t");
 					} else {
@@ -638,7 +639,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 		}
 		if (item == "TRANSFER UL_LIST") {
 			// returns one string where each line is formatted as:
-			// %s\t%s\t%s\t%f\t%f\t%li\n"
+			// %s\t%s\t%s\t%ul\t%ul\t%li\n"
 			wxString buffer("");
 			wxString tempFileInfo("");
 			for (POSITION pos = theApp.uploadqueue->GetFirstFromUploadList();
@@ -655,8 +656,8 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 					} else {
 						buffer+=wxString("?\t");
 					}
-					buffer+=wxString::Format("%li\t", (long)cur_client->GetTransferedDown());
-					buffer+=wxString::Format("%li\t", (long)cur_client->GetTransferedUp());
+					buffer+=wxString::Format("%ul\t", cur_client->GetTransferedDown());
+					buffer+=wxString::Format("%ul\t", cur_client->GetTransferedUp());
 					buffer+=wxString::Format("%li\n", (long)(cur_client->GetKBpsUp()*1024.0));
 				}
 			}

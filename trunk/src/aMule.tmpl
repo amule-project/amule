@@ -23,7 +23,7 @@
   <table border="0" cellpadding="4" cellspacing="0">
   <tr>
 	<td class="tabs" align="center">
-		&nbsp;<a href="http://www.amule.org" target="_blank"><img src="emule.gif"></a>
+		&nbsp;<a href="http://amule.sourceforge.net" target="_blank"><img src="emule.gif"></a>
 		<font face="Tahoma" style="font-size:13pt;" color="#000000">[aMuleAppName]<br>[WebControl]</font>
 	</td>
 	<td class="tabs" align="center" width="30">	&nbsp;	</td>
@@ -296,14 +296,15 @@ function GotoCat(cat) {
 </script>
 
 <font face=Tahoma style="font-size:8pt;">
-<table border=0 align=center cellpadding=4 cellspacing=0 width="100%" bgcolor="#99CCFF">
+<table border=0 align=center cellpadding=3 cellspacing=0 width="100%" bgcolor="#99CCFF">
 <tr>
- <td class="smallheader" style="background-color: #000000" colspan="7"><img src="arrow_down.gif"> <b>[DownloadList]</b></td>
+ <td class="smallheader" style="background-color: #000000" colspan="8"><img src="arrow_down.gif"> <b>[DownloadList]</b></td>
  <td align="right" class="smallheader" style="background-color: #000000">[CATBOX]</td>
 </tr>
 <tr>
  <td valign=middle class="down-header-left"><a href="?ses=[Session]&amp;w=transfer&amp;sort=name[SortName][CatSel]"><b>[Filename]</b></a></td>
  <td valign=middle class="down-header"><a href="?ses=[Session]&amp;w=transfer&amp;sort=size[SortSize][CatSel]"><b>[Size]</b></a></td>
+ <td valign=middle class="down-header"><a href="?ses=[Session]&amp;w=transfer&amp;sort=completed[SortCompleted][CatSel]"><b>[Completed]</b></a></td>
  <td valign=middle class="down-header"><a href="?ses=[Session]&amp;w=transfer&amp;sort=transferred[SortTransferred][CatSel]"><b>[Transferred]</b></a></td>
  <td valign=middle class="down-header"><a href="?ses=[Session]&amp;w=transfer&amp;sort=progress[SortProgress][CatSel]"><b>[Progress]</b></a></td>
  <td valign=middle class="down-header"><a href="?ses=[Session]&amp;w=transfer&amp;sort=speed[SortSpeed][CatSel]"><b>[Speed]</b></a></td>
@@ -316,6 +317,7 @@ function GotoCat(cat) {
 <tr>
  <td valign=middle class="down-header-left"><b>[TotalDown]</b></td>
  <td valign=middle class="down-header-right"><b>[TotalDownSize]</b></td>
+ <td valign=middle class="down-header-right"><b>[TotalDownCompleted]</b></td>
  <td valign=middle class="down-header-right"><b>[TotalDownTransferred]</b></td>
  <td valign=middle class="down-header">&nbsp;</td>
  <td valign=middle class="down-header-right"><b>[TotalDownSpeed]</b></td>
@@ -330,13 +332,14 @@ function GotoCat(cat) {
  <td valign=top class="down-line-left"><acronym title="[FileInfo]">[ShortFileName]</acronym></td>
  <td valign=top class="down-line-right">[2]</td>
  <td valign=top class="down-line-right">[3]</td>
+ <td valign=top class="down-line-right">[4]</td>
  <td valign=middle class="down-line">
  <table width=[PROGRESSBARWIDTHVAL] height=11 border=1 class="percent_table" cellpadding=0 cellspacing=0 bordercolor="#000000"><tr><td>
  [DownloadBar]</td></tr></table></td>
- <td valign=top class="down-line-right">[4]</td>
- <td valign=top class="down-line">[5]</td>
- <td valign=top class="down-line">[PrioVal]</td>
+ <td valign=top class="down-line-right">[5]</td>
  <td valign=top class="down-line">[6]</td>
+ <td valign=top class="down-line">[PrioVal]</td>
+ <td valign=top class="down-line">[7]</td>
 </tr>
 <--TMPL_TRANSFER_DOWN_LINE_END-->
 <--TMPL_TRANSFER_DOWN_LINE_GOOD-->
@@ -737,7 +740,7 @@ font-size: 11px;
 <tr>
 <td align=center bgcolor="#0066CC">
 <br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.amule.org" target="_blank"><img src="logo.jpg"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://amule.sourceforge.net" target="_blank"><img src="logo.jpg"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <p><font face=Tahoma style="font-size:10pt;"><b>[WebControl]</b><br>[Login]</font></p>
 </td>
 </tr>
@@ -829,10 +832,13 @@ font-size: 11px;
   [Name] <input name="tosearch" type="text" size="15">
   <br><br>
   [Type] <select name="media">
-  <option value="">[Any]</option>
+  <option value="Any">[Any]</option>
+  <option value="Archives">[Archives]</option>
   <option value="Audio">[Audio]</option>
-  <option value="Video">[Video]</option>
-  <option value="Pro">[Other]</option>
+  <option value="CD-Images">[CD-Images]</option>
+  <option value="Pictures">[Pictures]</option>
+  <option value="Programs">[Programs]</option>
+  <option value="Videos">[Videos]</option>
   </select>
   <br><br>
   <input type="hidden" name=ses value="[Session]">
@@ -875,11 +881,13 @@ font-size: 11px;
   <table>
   <tr><td class=tabs width=150>[Name]</td><td><input name="tosearch" type="text" size="40"></td></tr>
   <tr><td class=tabs>[Type]</td><td><select name="type">
-  <option value="[Any]">[Any]</option>
-  <option value="[Audio]">[Audio]</option>
-  <option value="[Image]">[Image]</option>
-  <option value="[Video]">[Video]</option>
-  <option value="[Other]">[Other]</option>
+  <option value="Any">[Any]</option>
+  <option value="Archives">[Archives]</option>
+  <option value="Audio">[Audio]</option>
+  <option value="CD-Images">[CD-Images]</option>
+  <option value="Pictures">[Pictures]</option>
+  <option value="Programs">[Programs]</option>
+  <option value="Videos">[Videos]</option>
   </select>
   </td></tr>
   <tr><td class=tabs>[SizeMin]</td><td><input name="min" type="text" size="10"></td></tr>

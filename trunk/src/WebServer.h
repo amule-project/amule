@@ -88,9 +88,10 @@ typedef struct { time_t startTime; long lSession; bool admin;} Session;
 typedef struct {
 	wxString	sFileName;
 	wxString	sFileStatus;
-	long		lFileSize;
-	long		lFileTransferred;
-	long		lFileSpeed;
+	unsigned long	lFileSize;
+	unsigned long	lFileCompleted;
+	unsigned long	lFileTransferred;
+	unsigned long	lFileSpeed;
 	long		lSourceCount;
 	long		lNotCurrentSourceCount;
 	long		lTransferringSourceCount;
@@ -121,6 +122,7 @@ typedef struct {
 typedef enum {
 	DOWN_SORT_NAME,
 	DOWN_SORT_SIZE,
+	DOWN_SORT_COMPLETED,
 	DOWN_SORT_TRANSFERRED,
 	DOWN_SORT_SPEED,
 	DOWN_SORT_PROGRESS

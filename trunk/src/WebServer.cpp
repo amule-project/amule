@@ -1121,6 +1121,8 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 			pThis->m_Params.DownloadSort = DOWN_SORT_NAME;
 		else if (_ParseURL(Data, "sort") == "size")
 			pThis->m_Params.DownloadSort = DOWN_SORT_SIZE;
+		else if (_ParseURL(Data, "sort") == "completed")
+			pThis->m_Params.DownloadSort = DOWN_SORT_COMPLETED;
 		else if (_ParseURL(Data, "sort") == "transferred")
 			pThis->m_Params.DownloadSort = DOWN_SORT_TRANSFERRED;
 		else if (_ParseURL(Data, "sort") == "speed")
@@ -1170,6 +1172,11 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	else
 		Out.Replace("[SortSize]", "");
 	
+	if (pThis->m_Params.DownloadSort == DOWN_SORT_COMPLETED)
+		Out.Replace("[SortCompleted]", "&sortreverse=" + sDownloadSortRev);
+	else
+		Out.Replace("[SortCompleted]", "");
+
 	if (pThis->m_Params.DownloadSort == DOWN_SORT_TRANSFERRED)
 		Out.Replace("[SortTransferred]", "&sortreverse=" + sDownloadSortRev);
 	else
@@ -1187,7 +1194,9 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	
 	Out.Replace("[Filename]", _("File Name"));
 	Out.Replace("[Size]", _("Size"));
-	Out.Replace("[Transferred]", _("Complete"));
+	//here we should 
+	Out.Replace("[Completed]", _("Complete"));
+	Out.Replace("[Transferred]", _("Transferred"));
 	Out.Replace("[Progress]", _("Progress"));
 	Out.Replace("[Speed]", _("Speed"));
 	Out.Replace("[Sources]", _("Sources"));
@@ -1200,7 +1209,7 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	wxString OutE = pThis->m_Templates.sTransferDownLine;
 	wxString OutE2 = pThis->m_Templates.sTransferDownLineGood;
 
-	float fTotalSize = 0, fTotalTransferred = 0, fTotalSpeed = 0;
+	float fTotalSize = 0, fTotalTransferred = 0, fTotalCompleted = 0, fTotalSpeed = 0;
 	ArrayOfDownloadFiles FilesArray;
 
 	// Populating array
@@ -1219,13 +1228,15 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 		brk=sEntry.First("\t");
 		dFile->sFileName = _SpecialChars(sEntry.Left(brk));
 		sEntry = sEntry.Mid(brk+1); brk=sEntry.First("\t");
-		dFile->lFileSize = atol(sEntry.Left(brk).GetData());
+		sEntry.Left(brk).ToULong(&dFile->lFileSize);
 		sEntry = sEntry.Mid(brk+1); brk=sEntry.First("\t");
-		dFile->lFileTransferred = atol(sEntry.Left(brk).GetData());
+		sEntry.Left(brk).ToULong(&dFile->lFileCompleted);
+		sEntry = sEntry.Mid(brk+1); brk=sEntry.First("\t");		
+		sEntry.Left(brk).ToULong(&dFile->lFileTransferred);
 		sEntry = sEntry.Mid(brk+1); brk=sEntry.First("\t");
 		dFile->fCompleted = atof(sEntry.Left(brk).GetData());
 		sEntry = sEntry.Mid(brk+1); brk=sEntry.First("\t");
-		dFile->lFileSpeed = atol(sEntry.Left(brk).GetData());
+		sEntry.Left(brk).ToULong(&dFile->lFileSpeed);
 		sEntry = sEntry.Mid(brk+1); brk=sEntry.First("\t");
 		dFile->nFileStatus = atoi(sEntry.Left(brk).GetData());
 		sEntry = sEntry.Mid(brk+1); brk=sEntry.First("\t");
@@ -1235,11 +1246,11 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 		sEntry = sEntry.Mid(brk+1); brk=sEntry.First("\t");
 		dFile->sFileHash = sEntry.Left(brk);
 		sEntry = sEntry.Mid(brk+1); brk=sEntry.First("\t");
-		dFile->lSourceCount = atol(sEntry.Left(brk).GetData());
+		dFile->lSourceCount = atoi(sEntry.Left(brk).GetData());
 		sEntry = sEntry.Mid(brk+1); brk=sEntry.First("\t");
-		dFile->lNotCurrentSourceCount = atol(sEntry.Left(brk).GetData());
+		dFile->lNotCurrentSourceCount = atoi(sEntry.Left(brk).GetData());
 		sEntry = sEntry.Mid(brk+1); brk=sEntry.First("\t");
-		dFile->lTransferringSourceCount = atol(sEntry.Left(brk).GetData());
+		dFile->lTransferringSourceCount = atoi(sEntry.Left(brk).GetData());
 		sEntry = sEntry.Mid(brk+1); brk=sEntry.First("\t");
 		dFile->sED2kLink = sEntry.Left(brk);
 		sEntry = sEntry.Mid(brk+1); brk=sEntry.First("\t");
@@ -1327,6 +1338,9 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 					break;
 				case DOWN_SORT_SIZE:
 					bSwap = FilesArray[i]->lFileSize < FilesArray[i+1]->lFileSize;
+					break;
+				case DOWN_SORT_COMPLETED:
+					bSwap = FilesArray[i]->lFileCompleted < FilesArray[i+1]->lFileCompleted;
 					break;
 				case DOWN_SORT_TRANSFERRED:
 					bSwap = FilesArray[i]->lFileTransferred < FilesArray[i+1]->lFileTransferred;
@@ -1441,15 +1455,22 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 		} else
 			HTTPProcessData.Replace("[3]", "-");
 
+		if (FilesArray[i]->lFileCompleted > 0) {
+			fTotalCompleted += FilesArray[i]->lFileCompleted;
+
+			HTTPProcessData.Replace("[4]", castItoXBytes(FilesArray[i]->lFileCompleted));
+		} else
+			HTTPProcessData.Replace("[4]", "-");
+		
 		HTTPProcessData.Replace("[DownloadBar]", _GetDownloadGraph(Data,FilesArray[i]->sFileHash));
 
 		if (FilesArray[i]->lFileSpeed > 0.0f) {
 			fTotalSpeed += FilesArray[i]->lFileSpeed;
 
 			HTTPTemp.Printf("%8.2f %s", FilesArray[i]->lFileSpeed/1024.0 ,_("kB/s"));
-			HTTPProcessData.Replace("[4]", HTTPTemp);
+			HTTPProcessData.Replace("[5]", HTTPTemp);
 		} else
-			HTTPProcessData.Replace("[4]", "-");
+			HTTPProcessData.Replace("[5]", "-");
 		
 		if (FilesArray[i]->lSourceCount > 0) {
 			HTTPTemp.Printf("%li&nbsp;/&nbsp;%8li&nbsp;(%li)",
@@ -1457,9 +1478,9 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 				FilesArray[i]->lSourceCount,
 				FilesArray[i]->lTransferringSourceCount
 			);
-			HTTPProcessData.Replace("[5]", HTTPTemp);
+			HTTPProcessData.Replace("[6]", HTTPTemp);
 		} else
-			HTTPProcessData.Replace("[5]", "-");
+			HTTPProcessData.Replace("[6]", "-");
 		
 		switch (FilesArray[i]->nFilePrio) {
 			case 0: HTTPTemp=_("Low");break;
@@ -1477,7 +1498,7 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 		}
 	
 		HTTPProcessData.Replace("[PrioVal]", HTTPTemp);
-		HTTPProcessData.Replace("[6]", sActions);
+		HTTPProcessData.Replace("[7]", sActions);
 
 		sDownList += HTTPProcessData;
 	}
@@ -1488,6 +1509,7 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	// Elandal: cast from float to integral type always drops fractions.
 	// avoids implicit cast warning
 	Out.Replace("[TotalDownSize]", castItoXBytes((uint64)fTotalSize));
+	Out.Replace("[TotalDownCompleted]", castItoXBytes((uint64)fTotalCompleted));
 	Out.Replace("[TotalDownTransferred]", castItoXBytes((uint64)fTotalTransferred));
 	
 	Out.Replace("[ClearCompletedButton]",(completedAv && IsSessionAdmin(Data,sSession))?pThis->m_Templates.sClearCompleted :wxString(wxT("")));
@@ -1508,7 +1530,8 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	//upload list
 	wxString sTransferULList = pThis->webInterface->SendRecvMsg("TRANSFER UL_LIST");
 	wxString HTTPProcessData;
-	float transfDown, transfUp, transfDatarate; 
+	unsigned long transfDown, transfUp;
+	long transfDatarate; 
 	while (sTransferULList.Length()>0) {
 		newLinePos=sTransferULList.First("\n");
 
@@ -1525,11 +1548,11 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 		HTTPProcessData.Replace("[2]", _SpecialChars(sEntry.Left(brk)));
 		sEntry=sEntry.Mid(brk+1); brk=sEntry.First("\t");
 		
-		transfDown = atoi(sEntry.Left(brk).GetData());
+		sEntry.Left(brk).ToULong(&transfDown);
 		fTotalSize += transfDown;
 		sEntry=sEntry.Mid(brk+1); brk=sEntry.First("\t");
 		
-		transfUp = (float) atoi(sEntry.Left(brk).GetData());
+		sEntry.Left(brk).ToULong(&transfUp);
 		fTotalTransferred += transfUp;
 		sEntry=sEntry.Mid(brk+1);
 
@@ -1537,7 +1560,7 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 		HTTPTemp.Printf("%s / %s", castItoXBytes((uint64)transfDown).GetData(),castItoXBytes((uint64)transfUp).GetData());
 		HTTPProcessData.Replace("[3]", HTTPTemp);
 
-		transfDatarate = (float) atoi(sEntry.GetData());
+		sEntry.ToLong(&transfDatarate);
 		fTotalSpeed += transfDatarate;
 		
 		HTTPTemp.Printf("%8.2f " +wxString(_("kB/s")), transfDatarate/1024.0);
