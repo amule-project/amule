@@ -241,7 +241,7 @@ void CUpDownClient::ProcessFileInfo(char* packet,uint32 size)
 	m_pszClientFilename = new char[Filename.Length()+1];
 	strncpy(m_pszClientFilename, Filename.GetData(), Filename.Length());
 	// Kry - Hum. Just to be sure.
-	memset(m_pszClientFilename, 0, Filename.Length()+1);
+	m_pszClientFilename[Filename.Length()] = 0;
 	delete data;
 
 	if ( (!reqfile) || memcmp(cfilehash,reqfile->GetFileHash(),16)) {
