@@ -20,6 +20,7 @@
 
 #include <ctime>
 #include <sys/types.h>
+#include <fcntl.h>
 #include <sys/stat.h>
 #include <unistd.h>
 #include <wx/msgdlg.h>
@@ -96,11 +97,6 @@ void CSharedFileList::FindSharedFiles() {
 	}
 }
 
-  #include <wx/encconv.h>
-       #include <sys/types.h>
-       #include <sys/stat.h>
-       #include <fcntl.h>
-
 void CSharedFileList::AddFilesFromDirectory(wxString directory)
 {
 
@@ -125,6 +121,7 @@ void CSharedFileList::AddFilesFromDirectory(wxString directory)
 		#endif
 		wxASSERT(b!=-1);
 		wxFile new_file(b);
+
 		wxASSERT(new_file.IsOpened());
 
 		if(fname.Find(wxT('/'),TRUE) != -1) {  // starts at end
