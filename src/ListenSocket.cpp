@@ -61,7 +61,7 @@ CClientReqSocket::CClientReqSocket(CPreferences* in_prefs,CUpDownClient* in_clie
 	theApp.listensocket->AddSocket(this);
 	ResetTimeOutTimer();
 	deletethis = false;
-	deltimer = 0;
+	OnDestroy = false;
 
 	SetEventHandler(*theApp.amuledlg,ID_SOKETTI);
 	SetNotify(wxSOCKET_CONNECTION_FLAG|wxSOCKET_INPUT_FLAG|wxSOCKET_OUTPUT_FLAG|wxSOCKET_LOST_FLAG);
@@ -116,6 +116,8 @@ void CClientReqSocket::Disconnect()
 	}
 }
 
+/* Kry - this eMule function has no use for us, because we have Destroy()
+
 void CClientReqSocket::Delete_Timed()
 {
 	// it seems that MFC Sockets call socketfunctions after they are deleted,
@@ -125,7 +127,7 @@ void CClientReqSocket::Delete_Timed()
 		delete this;
 	}
 }
-
+*/
 void CClientReqSocket::Safe_Delete()
 {
 	//deltimer = ::GetTickCount();
@@ -1096,10 +1098,12 @@ void CListenSocket::Process()
 		opensockets++;
 
 		if (cur_sock->deletethis) {
-			//cur_sock->Close();
-			cur_sock->Destroy();
+			if (!cur_sock->OnDestroy) {
+				cur_sock->Destroy();
+				cur_sock->OnDestroy= true;
+			}
 		} else {
-			socket_list.GetAt( pos2 )->CheckTimeOut();
+			cur_sock->CheckTimeOut();
 		}
 	}
 	if ((GetOpenSockets()+5 < app_prefs->GetMaxConnections() || theApp.serverconnect->IsConnecting()) && !bListening) {
