@@ -298,28 +298,35 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 
 			
 		case CMD_ID_RELOAD_IPFILTER:
-			request = new CECPacket(EC_OP_IPFILTER_CMD);
-			request->AddTag(CECTag(EC_TAG_IPFILTER_STATUS, (uint8)2));
+			request = new CECPacket(EC_OP_IPFILTER_RELOAD);
 			request_list.push_back(request);
 			break;
 			
 		case CMD_ID_SET_IPFILTER:
 			if ( ! args.IsEmpty() ) {
-				request = new CECPacket(EC_OP_IPFILTER_CMD);
+				CECTag *reqTag = NULL;
 				if (args.IsSameAs(wxT("ON"), false)) {
-					request->AddTag(CECTag(EC_TAG_IPFILTER_STATUS, (uint8)1));
+					reqTag = new CECTag(EC_TAG_IPFILTER_ENABLED, (uint8)1);
 				} else if (args.IsSameAs(wxT("OFF"), false)) {
-					request->AddTag(CECTag(EC_TAG_IPFILTER_STATUS, (uint8)0));
+					reqTag = new CECTag(EC_TAG_IPFILTER_ENABLED, (uint8)0);
 				} else {
 					Show(_("This command requieres an argument. Valid arguments: 'on', 'off'\n"));
-					delete request;
 					return 0;
 				}
-				request_list.push_back(request);
+				if (reqTag) {
+					request = new CECPacket(EC_OP_SET_PREFERENCES);
+					CECEmptyTag prefs(EC_TAG_PREFS_SECURITY);
+					prefs.AddTag(*reqTag);
+					request->AddTag(prefs);
+					request_list.push_back(request);
+				}
 			} else {
 				Show(_("This command requieres an argument. Valid arguments: 'on', 'off'\n"));
 				return 0;
 			}
+			request = new CECPacket(EC_OP_GET_PREFERENCES);
+			request->AddTag(CECTag(EC_TAG_SELECT_PREFS, (uint32)EC_PREFS_SECURITY));
+			request_list.push_back(request);
 			break;
 
 		case CMD_ID_DLOAD_QUEUE:
@@ -396,17 +403,21 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 		case CMD_ID_SET_IPLEVEL:
 			// kept for backwards compatibility only
 		case CMD_ID_IPLEVEL:
-			request = new CECPacket(EC_OP_IPFILTER_CMD);
 			if ( !args.IsEmpty() ) {
 				unsigned long int level = 0;
 				if (args.ToULong(&level) == true && level < 256) {
-					request->AddTag(CECTag(EC_TAG_IPFILTER_LEVEL, (uint8)level));
+					request = new CECPacket(EC_OP_SET_PREFERENCES);
+					CECEmptyTag prefs(EC_TAG_PREFS_SECURITY);
+					prefs.AddTag(CECTag(EC_TAG_IPFILTER_LEVEL, (uint8)level));
+					request->AddTag(prefs);
+					request_list.push_back(request);
 				} else {
 					Show(_("IPLevel parameter must be in the range of 0-255.\n"));
-					delete request;
 					return 0;
 				}
 			}
+			request = new CECPacket(EC_OP_GET_PREFERENCES);
+			request->AddTag(CECTag(EC_TAG_SELECT_PREFS, (uint32)EC_PREFS_SECURITY));
 			request_list.push_back(request);
 			break;
 
@@ -460,19 +471,15 @@ void CamulecmdApp::Process_Answer_v2(CECPacket *response)
 	wxASSERT(response);
 
 	switch (response->GetOpCode()) {
-		case EC_OP_MISC_DATA:
-			for (int i = 0; i < response->GetTagCount(); ++i) {
-				CECTag *tag = response->GetTagByIndex(i);
-				switch (tag->GetTagName()) {
-					case EC_TAG_IPFILTER_STATUS:
-						s += wxString::Format(_("IPFilter is %s.\n"), (tag->GetInt8Data() == 0) ? _("OFF") : _("ON"));
-						break;
-					case EC_TAG_IPFILTER_LEVEL:
-						s += wxString::Format(_("Current IPFilter Level is %d.\n"), tag->GetInt8Data());
-						break;
+		case EC_OP_PREFERENCES:
+			{
+				CECTag *tab = response->GetTagByName(EC_TAG_PREFS_SECURITY);
+				if (tab) {
+					s += wxString::Format(_("IPFilter is %s.\n"), (tab->GetTagByName(EC_TAG_IPFILTER_ENABLED) == NULL) ? _("OFF") : _("ON"));
+					s += wxString::Format(_("Current IPFilter Level is %d.\n"), tab->GetTagByName(EC_TAG_IPFILTER_LEVEL)->GetInt8Data());
 				}
 			}
-			break;
+			break;		
 		case EC_OP_STRINGS:
 			for (int i = 0; i < response->GetTagCount(); ++i) {
 				s += response->GetTagByIndex(i)->GetStringData();

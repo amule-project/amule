@@ -288,40 +288,6 @@ CECPacket *Get_EC_Response_StatRequest(const CECPacket *request)
 	return response;
 }
 
-CECPacket *Process_IPFilter(const CECPacket *request)
-{
-	wxASSERT(request->GetOpCode() == EC_OP_IPFILTER_CMD);
-	
-	CECPacket *response = new CECPacket(EC_OP_MISC_DATA);
-
-	for (int i = 0; i < request->GetTagCount(); ++i) {
-		CECTag *data = request->GetTagByIndex(i);
-		switch (data->GetTagName()) {
-			case EC_TAG_IPFILTER_STATUS:
-				switch (data->GetInt8Data()) {
-					case 0:	// IPFILTER OFF
-						thePrefs::SetIPFilterOn(false);
-						response->AddTag(CECTag(EC_TAG_IPFILTER_STATUS, (uint8)0));
-						return response;
-					case 1: // IPFILTER ON
-						thePrefs::SetIPFilterOn(true);
-						response->AddTag(CECTag(EC_TAG_IPFILTER_STATUS, (uint8)1));
-						break;
-					case 2: // IPFILTER RELOAD
-						theApp.ipfilter->Reload();
-						response->AddTag(CECTag(EC_TAG_IPFILTER_STATUS, thePrefs::GetIPFilterOn() ? (uint8)1 : (uint8)0));
-						break;
-				}
-				break;
-			case EC_TAG_IPFILTER_LEVEL:
-				thePrefs::SetIPFilterLevel(data->GetInt8Data());
-				break;
-		}
-	}
-	response->AddTag(CECTag(EC_TAG_IPFILTER_LEVEL, (uint8)thePrefs::GetIPFilterLevel()));
-	return response;
-}	
-
 CECPacket *Get_EC_Response_GetUpQueue(const CECPacket *request)
 {
 	wxASSERT(request->GetOpCode() == EC_OP_GET_ULOAD_QUEUE);
@@ -715,7 +681,25 @@ CECPacket *ProcessPreferencesRequest(const CECPacket *request)
 	}
 
 	if (selection & EC_PREFS_SECURITY) {
-		#warning TODO
+		CECEmptyTag secPrefs(EC_TAG_PREFS_SECURITY);
+		secPrefs.AddTag(CECTag(EC_TAG_SECURITY_CAN_SEE_SHARES, thePrefs::CanSeeShares()));
+		secPrefs.AddTag(CECTag(EC_TAG_SECURITY_FILE_PERMISSIONS, (uint32)thePrefs::GetFilePermissions()));
+		secPrefs.AddTag(CECTag(EC_TAG_SECURITY_DIR_PERMISSIONS, (uint32)thePrefs::GetDirPermissions()));
+		if (thePrefs::GetIPFilterOn()) {
+			secPrefs.AddTag(CECEmptyTag(EC_TAG_IPFILTER_ENABLED));
+		}
+		if (thePrefs::IPFilterAutoLoad()) {
+			secPrefs.AddTag(CECEmptyTag(EC_TAG_IPFILTER_AUTO_UPDATE));
+		}
+		secPrefs.AddTag(CECTag(EC_TAG_IPFILTER_UPDATE_URL, thePrefs::IPFilterURL()));
+		secPrefs.AddTag(CECTag(EC_TAG_IPFILTER_LEVEL, thePrefs::GetIPFilterLevel()));
+		if (thePrefs::FilterBadIPs()) {
+			secPrefs.AddTag(CECEmptyTag(EC_TAG_IPFILTER_FILTER_BAD));
+		}
+		if (thePrefs::IsSecureIdentEnabled()) {
+			secPrefs.AddTag(CECEmptyTag(EC_TAG_SECURITY_USE_SECIDENT));
+		}
+		response->AddTag(secPrefs);
 	}
 
 	if (selection & EC_PREFS_CORETWEAKS) {
@@ -883,7 +867,33 @@ CECPacket *SetPreferencesFromRequest(const CECPacket *request)
 	}
 
 	if ((thisTab = request->GetTagByName(EC_TAG_PREFS_SECURITY)) != NULL) {
-		#warning TODO
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_SECURITY_CAN_SEE_SHARES)) != NULL) {
+			thePrefs::SetCanSeeShares(oneTag->GetInt8Data());
+		}
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_SECURITY_FILE_PERMISSIONS)) != NULL) {
+			thePrefs::SetFilePermissions(oneTag->GetInt32Data());
+		}
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_SECURITY_DIR_PERMISSIONS)) != NULL) {
+			thePrefs::SetDirPermissions(oneTag->GetInt32Data());
+		}
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_IPFILTER_ENABLED)) != NULL) {
+			thePrefs::SetIPFilterOn(oneTag->GetInt8Data() != 0);
+		}
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_IPFILTER_AUTO_UPDATE)) != NULL) {
+			thePrefs::SetIPFilterAutoLoad(oneTag->GetInt8Data() != 0);
+		}
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_IPFILTER_UPDATE_URL)) != NULL) {
+			thePrefs::SetIPFilterURL(oneTag->GetStringData());
+		}
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_IPFILTER_LEVEL)) != NULL) {
+			thePrefs::SetIPFilterLevel(oneTag->GetInt8Data());
+		}
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_IPFILTER_FILTER_BAD)) != NULL) {
+			thePrefs::SetFilterBadIPs(oneTag->GetInt8Data() != 0);
+		}
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_SECURITY_USE_SECIDENT)) != NULL) {
+			thePrefs::SetSecureIdentEnabled(oneTag->GetInt8Data() != 0);
+		}
 	}
 
 	if ((thisTab = request->GetTagByName(EC_TAG_PREFS_CORETWEAKS)) != NULL) {
@@ -1027,8 +1037,9 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request)
 		//
 		// IPFilter
 		//
-		case EC_OP_IPFILTER_CMD:
-			response = Process_IPFilter(request);
+		case EC_OP_IPFILTER_RELOAD:
+			theApp.ipfilter->Reload();
+			response = new CECPacket(EC_OP_NOOP);
 			break;
 		//
 		// Preferences
@@ -1096,7 +1107,6 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request)
 wxString ExternalConn::ProcessRequest(const wxString& item) {
 	CALL_APP_DATA_LOCK;
 
-	unsigned int nChars = 0;
 	wxString sOp;
 	wxString buffer;
 

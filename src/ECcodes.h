@@ -276,19 +276,9 @@ enum {
 	//
 
 		/*!
-		 * \brief Change/query IPFilter settings: on, off, level, reload
-		 *
-		 * Set/get IPFilter settings, both TAGs may be present or omitted.
-		 * When used without TAGs, just query current IPFilter level.
-		 * The server will reply with an ::EC_OP_MISC_DATA packet, with
-		 * EC_TAG_IPFILTER_* tags, that contain the current IPFilter
-		 * values.
-		 *
-		 * \par Tags:
-		 *	::EC_TAG_IPFILTER_STATUS (0-1) Sets IPFilter ON, OFF or RELOAD.\n
-		 *	::EC_TAG_IPFILTER_LEVEL (0-1) Sets IPFilter level.
+		 * \brief Reloads IPFilter.
 		 */
-	EC_OP_IPFILTER_CMD,
+	EC_OP_IPFILTER_RELOAD,
 
 
 	//
@@ -785,37 +775,6 @@ enum {
 
 
 	//
-	// IPFilter
-	//
-
-		/*!
-		 * \brief Status of IPFilter (current/desired)
-		 *
-		 * Values (uint8):
-		 * <ul>
-		 *	<li>0 - OFF</li>
-		 *	<li>1 - ON</li>
-		 *	<li>2 - RELOAD</li>
-		 * </ul>
-		 *
-		 * \par Child TAGs:
-		 *	(none)
-		 */
-	EC_TAG_IPFILTER_STATUS,
-		/*!
-		 * \brief IPFilter level
-		 *
-		 * In an ::EC_OP_IPFILTER_CMD packet, it sets the iplevel
-		 * to its contents (uint8), in an ::EC_OP_MISC_DATA packet
-		 * it holds the current ip level.
-		 *
-		 * \par Child TAGs:
-		 *	(none)
-		 */
-	EC_TAG_IPFILTER_LEVEL,
-
-
-	//
 	// Preferences
 	//
 
@@ -1060,9 +1019,33 @@ enum {
 		* \brief Preferences - Security.
 		*
 		* \par Child TAGs:
+		*	::EC_TAG_PREFS_SECURITY\n
+		*	::EC_TAG_SECURITY_CAN_SEE_SHARES\n
+		*	::EC_TAG_SECURITY_FILE_PERMISSIONS\n
+		*	::EC_TAG_SECURITY_DIR_PREMISSIONS\n
+		*	::EC_TAG_IPFILTER_ENABLE\n
+		*	::EC_TAG_IPFILTER_AUTO_UPDATE\n
+		*	::EC_TAG_IPFILTER_UPDATE_URL\n
+		*	::EC_TAG_IPFILTER_LEVEL\n
+		*	::EC_TAG_IPFILTER_FILTER_BAD\n
+		*	::EC_TAG_SECURITY_USE_SECIDENT
 		*/
 	EC_TAG_PREFS_SECURITY,
-/* <---> */
+	EC_TAG_SECURITY_CAN_SEE_SHARES,		///< (\c uint8) Who can see shared files?
+						/*!< <ul>
+							<li>0 - Everybody</li>
+							<li>1 - Friends only</li>
+							<li>2 - Nobody</li>
+							</ul>
+						*/
+	EC_TAG_SECURITY_FILE_PERMISSIONS,	///< (\c uint32) Permissions on newly created files.
+	EC_TAG_SECURITY_DIR_PERMISSIONS,	///< (\c uint32) Permissions on newly created directories.
+	EC_TAG_IPFILTER_ENABLED,		///< (boolean) IPFilter enabled.
+	EC_TAG_IPFILTER_AUTO_UPDATE,		///< (boolean) Auto-update IPFilter from URL at startup.
+	EC_TAG_IPFILTER_UPDATE_URL,		///< (\c string) IPFilter auto-update URL.
+	EC_TAG_IPFILTER_LEVEL,			///< (\c uint8) IPFilter filtering level.
+	EC_TAG_IPFILTER_FILTER_BAD,		///< (boolean) Always filter bad IPs.
+	EC_TAG_SECURITY_USE_SECIDENT,		///< (boolean) Use Secure Identification.
 
 
 	//
