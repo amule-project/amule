@@ -47,9 +47,9 @@ class LinuxMon
   private:
     wxString m_uptime;
 
-    float m_sysLoad_1;
-    float m_sysLoad_5;
-    float m_sysLoad_15;
+    wxString m_sysLoad_1;
+    wxString m_sysLoad_5;
+    wxString m_sysLoad_15;
 
     static const wxFileName UPTIME_FILE;
     static const wxFileName LOADAVG_FILE;
@@ -68,13 +68,13 @@ class LinuxMon
     wxString GetUptime () const;
 
     /// Get 1min average CPU load
-    float GetSysLoad_1 () const;
+    wxString GetSysLoad_1 () const;
 
     /// Get 5min averag CPU load
-    float GetSysLoad_5 () const;
+    wxString GetSysLoad_5 () const;
 
     /// Get 15min averag CPU load
-    float GetSysLoad_15 () const;
+    wxString GetSysLoad_15 () const;
   };
 
 #endif /* _LINUXMON_H */

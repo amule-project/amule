@@ -54,9 +54,9 @@ LinuxMon::LOADAVG_FILE (wxT("/proc/loadavg"));
 LinuxMon::LinuxMon ()
 {
   m_uptime = _("Unknown");
-  m_sysLoad_1 = 0.0;
-  m_sysLoad_5 = 0.0;
-  m_sysLoad_15 = 0.0;
+  m_sysLoad_1 = wxT("0.00");
+  m_sysLoad_5 = wxT("0.00");
+  m_sysLoad_15 = wxT("0.00");
 }
 
 // Destructor
@@ -98,19 +98,19 @@ LinuxMon::GetUptime () const
     return m_uptime;
   }
 
-float
+wxString
 LinuxMon::GetSysLoad_1 () const
   {
     return m_sysLoad_1;
   }
 
-float
+wxString
 LinuxMon::GetSysLoad_5 () const
   {
     return m_sysLoad_5;
   }
 
-float
+wxString
 LinuxMon::GetSysLoad_15 () const
   {
     return m_sysLoad_15;
