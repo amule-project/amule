@@ -259,7 +259,7 @@ CECPacket *ExternalConn::Authenticate(const CECPacket *request)
 		const CECTag *protocol = request->GetTagByName(EC_TAG_PROTOCOL_VERSION);
 		if (protocol != NULL) {
 			uint16 proto_version = protocol->GetInt16Data();
-			if (proto_version == 0x01f1) {
+			if (proto_version == EC_CURRENT_PROTOCOL_VERSION) {
 				if (passwd && passwd->GetStringData() == thePrefs::ECPassword()) {
 					response = new CECPacket(EC_OP_AUTH_OK);
 				} else {

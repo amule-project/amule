@@ -603,7 +603,7 @@ bool CRemoteConnect::Connect(const wxString &host, int port)
     CECPacket packet(EC_OP_AUTH_REQ);
     packet.AddTag(CECTag(EC_TAG_CLIENT_NAME, wxString(wxT("amule-remote"))));
     packet.AddTag(CECTag(EC_TAG_CLIENT_VERSION, wxString(wxT("0x0001"))));
-    packet.AddTag(CECTag(EC_TAG_PROTOCOL_VERSION, (uint16)0x01f1));
+    packet.AddTag(CECTag(EC_TAG_PROTOCOL_VERSION, (uint16)EC_CURRENT_PROTOCOL_VERSION));
 
     wxString pass_hash = wxT("81dc9bdb52d04dc20036dbd8313ed055");
 
