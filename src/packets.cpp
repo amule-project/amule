@@ -440,7 +440,8 @@ CTag::CTag(const CFile &in_data)
 	}
 }
 
-CTag::~CTag(){
+CTag::~CTag()
+{
 }
 
 bool CTag::WriteTagToFile(CFile* file)
