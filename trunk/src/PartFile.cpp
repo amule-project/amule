@@ -1189,8 +1189,7 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
 	}
 	SetStatus(PS_READY);
 	SavePartFile();
-	theApp.sharedfiles->SafeAddKFile(this);	
-	
+	theApp.sharedfiles->SafeAddKFile(this);		
 }
 
 void CPartFile::AddGap(uint32 start, uint32 end)
@@ -2038,7 +2037,7 @@ void CPartFile::NewSrcPartsInfo(){
 		}
 		m_nCompleteSourcesTime = time(NULL) + (60);
 	}
-	UpdateDisplayedInfo(true);
+	UpdateDisplayedInfo();
 }	
 
 // Kry - Importing nice feature from from 030d
@@ -2868,7 +2867,7 @@ void CPartFile::PauseFile(bool bInsufficient)
 	} else {
 		paused = true;
 	}
-	SetStatus(status);
+	
 #ifdef DOWNLOADRATE_FILTERED
 	kBpsDown = 0.0;
 #else
@@ -2876,12 +2875,15 @@ void CPartFile::PauseFile(bool bInsufficient)
 #endif
 	transferingsrc = 0;
 	m_anStates[DS_DOWNLOADING] = 0;
+	
+	SetStatus(status);
+	
 	if (!bInsufficient) {
 		theApp.downloadqueue->SortByPriority();
 		theApp.downloadqueue->CheckDiskspace();
 		SavePartFile();
 	}
-	UpdateDisplayedInfo(true);
+
 }
 
 void CPartFile::ResumeFile()
