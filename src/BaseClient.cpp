@@ -720,7 +720,7 @@ bool CUpDownClient::ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize)
 	try {
 
 		const CSafeMemFile data((BYTE*)pachPacket,nSize);
-		m_byCompatibleClient = 0;
+
 		//The version number part of this packet will soon be useless since it is only able to go to v.99.
 		//Why the version is a uint8 and why it was not done as a tag like the eDonkey hello packet is not known..
 		//Therefore, sooner or later, we are going to have to switch over to using the eDonkey hello packet to set the version.
@@ -760,6 +760,8 @@ bool CUpDownClient::ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize)
 		} else {
 			
 			// Old eMule sending tags
+			
+			m_byCompatibleClient = 0;
 			
 			m_byEmuleVersion = mule_version;
 
