@@ -1843,9 +1843,10 @@ wxSizer *PreferencesGeneralTab( wxWindow *parent, bool call_fit, bool set_sizer 
         _("Spanish (Chile)"), 
         _("Spanish (Mexico)"), 
         _("Turkey"), 
-        _("Hungarian")
+        _("Hungarian"), 
+        _("Catalan")
     };
-    wxChoice *item7 = new wxChoice( parent, IDC_LANGUAGE, wxDefaultPosition, wxSize(100,30), 27, strs7, 0 );
+    wxChoice *item7 = new wxChoice( parent, IDC_LANGUAGE, wxDefaultPosition, wxSize(100,30), 28, strs7, 0 );
     item5->Add( item7, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
     item1->Add( item5, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxLEFT|wxTOP, 5 );
