@@ -281,35 +281,3 @@ noinst_HEADERS = AddFileThread.h \
 		 xembed.h
 
 MAINTAINERCLEANFILES = Makefile.in
-
-
-# Special Exceptions
-#
-#listctrl.cpp:
-#	$(CXX) $(INCLUDES) $(GTK_CFLAGS) $(DEFS) -c `$(WX_CONFIG_PATH) --cxxflags` listctrl.cpp
-#
-#MuleNotebook.cpp:
-#	$(CXX) $(INCLUDES) $(GTK_CFLAGS) $(DEFS) -c `$(WX_CONFIG_PATH) --cxxflags` MuleNotebook.cpp
-#
-#SysTray.cpp:
-#	$(CXX) $(INCLUDES) $(GTK_CFLAGS) $(DEFS) -I. -c `$(WX_CONFIG_PATH) --cxxflags` SysTray.cpp
-#
-#ED2KLinkParser.cpp:
-#	$(CXX) ED2KLinkParser.cpp
-#
-# implementation
-
-	
-SUFFIXES=.cpp .c .cpp
-	
-.c.cpp :
-	$(CC) -c $<
-
-.cpp.cpp :
-	$(CXX) -I. -c  $<
-
-all: $(bin_PROGRAMS)
-
-
-clean:
-	rm -f *.o
