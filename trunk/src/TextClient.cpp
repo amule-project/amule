@@ -233,12 +233,27 @@ void CamulecmdApp::TextShell(const wxString& prompt, CmdId commands[])
 
 void CamulecmdApp::Process_Answer_v2(CECPacket *reply)
 {
-	wxString answer;
-		{
-			answer = ECv2_Response2String(reply);
-			delete reply;
-		}
-		Process_Answer(answer);
+	wxString answer = wxEmptyString;
+
+	switch (reply->GetOpCode()) {
+		case EC_OP_MISC_DATA:
+			for (int i = 0; i < reply->GetTagCount(); ++i) {
+				CECTag *tag = reply->GetTagByIndex(i);
+				switch (tag->GetTagName()) {
+					case EC_TAG_IPFILTER_STATUS:
+						answer += wxString::Format(_("IPFilter is %s.\n"), (tag->GetInt8Data() == 0) ? _("OFF") : _("ON"));
+						break;
+					case EC_TAG_IPFILTER_LEVEL:
+						answer += wxString::Format(_("Current IPFilter Level is %d.\n"), tag->GetInt8Data());
+						break;
+				}
+			}
+			break;
+		default:
+				answer = ECv2_Response2String(reply);
+				break;
+	}
+	Process_Answer(answer);
 }
 
 int CamulecmdApp::ProcessCommand(int CmdId)
@@ -280,15 +295,21 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			
 		case CMD_ID_RELOAD_IPFILTER:
 			request = new CECPacket(EC_OP_IPFILTER_CMD);
-			request->AddTag(CECTag(EC_TAG_STRING, wxT("RELOAD")));
+			request->AddTag(CECTag(EC_TAG_IPFILTER_STATUS, (uint8)2));
 			break;
 			
 		case CMD_ID_SET_IPFILTER:
 			if ( ! args.IsEmpty() ) {
 				request = new CECPacket(EC_OP_IPFILTER_CMD);
-				request->AddTag(CECTag(EC_TAG_STRING, args));
+				if (args.IsSameAs(wxT("ON"), false)) {
+					request->AddTag(CECTag(EC_TAG_IPFILTER_STATUS, (uint8)1));
+				} else if (args.IsSameAs(wxT("OFF"), false)) {
+					request->AddTag(CECTag(EC_TAG_IPFILTER_STATUS, (uint8)0));
+				} else {
+					Show(_("This command requieres an argument. Valid arguments: 'on', 'off'\n"));
+				}
 			} else {
-				Show(_("This command requieres an argument. Valid arguments: 'yes', 'no'\n"));
+				Show(_("This command requieres an argument. Valid arguments: 'on', 'off'\n"));
 				return 0;
 			}
 			break;
@@ -330,7 +351,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			break;
 			
 		case CMD_ID_SHOW:
-		// kept for backwards compatibility. Now 'list'
+			// kept for backwards compatibility. Now 'list'
 			if ( args.Left(2) == wxT("dl") ) {
 				request = new CECPacket(EC_OP_GET_DLOAD_QUEUE);
 			} else if ( args.Left(2) == wxT("ul") ) {
@@ -341,29 +362,22 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			}
 			break;
 
-		case CMD_ID_IPLEVEL:
-			if ( !args.IsEmpty() ) {
-				request = new CECPacket(EC_OP_IPFILTER_CMD);
-				request->AddTag(CECTag(EC_TAG_STRING, args));
-			}
-			break;
-
 		case CMD_ID_GET_IPLEVEL:
-		// kept for backwards compatibility only
-			request = new CECPacket(EC_OP_IPFILTER_CMD);
-			break;
-
+			// kept for backwards compatibility only
 		case CMD_ID_SET_IPLEVEL:
-		// kept for backwards compatibility only
-			if ( ! args.IsEmpty() ) {
-				request = new CECPacket(EC_OP_IPFILTER_CMD);
-				request->AddTag(CECTag(EC_TAG_STRING, args));
-			} else {
-				Show(_("This command requieres an argument. Valid arguments: 0 - 255\n"));
-				return 0;
+			// kept for backwards compatibility only
+		case CMD_ID_IPLEVEL:
+			request = new CECPacket(EC_OP_IPFILTER_CMD);
+			if ( !args.IsEmpty() ) {
+				unsigned long int level = 0;
+				if (args.ToULong(&level) == true && level < 256) {
+					request->AddTag(CECTag(EC_TAG_IPFILTER_LEVEL, (uint8)level));
+				} else {
+					Show(_("IPLevel parameter must be in the range of 0-255.\n"));
+				}
 			}
 			break;
-			
+
 		default:
 			return -1;
 	}
@@ -372,6 +386,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 	if ( request ) {
 		wxString answer;
 		CECPacket *reply = SendRecvMsg_v2(request);
+		delete request;
 		if ( reply ) {
 			Process_Answer_v2(reply);
 			delete reply;
@@ -390,9 +405,9 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 wxString ECv2_Response2String(CECPacket *response)
 {
 	wxString s;
-	if ( !response ) {
-		return wxEmptyString;
-	}
+//	if ( !response ) {
+//		return wxEmptyString;
+//	}
 	switch(response->GetOpCode()) {
 		case EC_OP_STRINGS:
 			s = response->GetTagByIndex(0)->GetStringData();
@@ -434,7 +449,7 @@ void CamulecmdApp::ShowHelp() {
 	Show(wxString(wxT("List <")) + wxString(_("pattern")) + wxString(wxT(">:\t\t")) + wxString(_("Lists or finds downloads by name or number.\n")));
 	Show(wxString(wxT("Resume [n | all]:\t")) + wxString(_("Resume file number n (or 'all').\n")));
 	Show(wxString(wxT("Pause [n | all]:\t")) + wxString(_("Pauses file number n (or 'all').\n")));
-	Show(wxString(wxT("SetIPFilter <on | off>:\t")) + wxString(_("Turn on/of amule IPFilter.\n")));
+	Show(wxString(wxT("SetIPFilter <on | off>:\t")) + wxString(_("Turn on/off amule IPFilter.\n")));
 	Show(wxString(wxT("ReloadIPF:\t\t")) + wxString(_("Reload IPFilter table from file.\n")));
 //	Show(wxString(wxT("GetIPLevel:\t\t")) + wxString(_("Shows current IP Filter level.\n")));
 //	Show(wxString(wxT("SetIPLevel <")) + wxString(_("new level")) + wxString(wxT(">:\t")) + wxString(_("Changes current IP Filter level.\n")));

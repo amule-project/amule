@@ -304,6 +304,41 @@ CECPacket *Get_EC_Response_StatRequest(const CECPacket *request)
 	return response;
 }
 
+CECPacket *Process_IPFilter(const CECPacket *request)
+{
+	wxASSERT(request->GetOpCode() == EC_OP_IPFILTER_CMD);
+	
+	CECPacket *response = new CECPacket(EC_OP_MISC_DATA);
+
+	if (request->GetTagCount() != 0) {
+		CECTag *data = request->GetTagByIndex(0);
+		switch (data->GetTagName()) {
+			case EC_TAG_IPFILTER_STATUS:
+				switch (data->GetInt8Data()) {
+					case 0:	// IPFILTER OFF
+						thePrefs::SetIPFilterOn(false);
+						response->AddTag(CECTag(EC_TAG_IPFILTER_STATUS, (uint8)0));
+						return response;
+					case 1: // IPFILTER ON
+						thePrefs::SetIPFilterOn(true);
+						response->AddTag(CECTag(EC_TAG_IPFILTER_STATUS, (uint8)1));
+						break;
+					case 2: // IPFILTER RELOAD
+						theApp.ipfilter->Reload();
+						response->AddTag(CECTag(EC_TAG_IPFILTER_STATUS, thePrefs::GetIPFilterOn() ? (uint8)1 : (uint8)0));
+						break;
+				}
+				break;
+			case EC_TAG_IPFILTER_LEVEL:
+				thePrefs::SetIPFilterLevel(data->GetInt8Data());
+				break;
+		}
+	}
+	response->AddTag(CECTag(EC_TAG_IPFILTER_LEVEL, (uint8)thePrefs::GetIPFilterLevel()));
+	return response;
+}	
+
+/*
 CECPacket *Get_EC_Response_IPFilter(const CECPacket *request)
 {
 	wxASSERT(request->GetOpCode() == EC_OP_IPFILTER_CMD);
@@ -346,6 +381,7 @@ CECPacket *Get_EC_Response_IPFilter(const CECPacket *request)
 	response->AddTag(CECTag(EC_TAG_STRING, msg));
 	return response;
 }
+*/
 
 CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request)
 {
@@ -527,6 +563,8 @@ CECPacket *Get_EC_Response_PartFile_Cmd(const CECPacket *request)
 
 CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request)
 {
+	CALL_APP_DATA_LOCK;
+
 	if ( !request ) {
 		return 0;
 	}
@@ -550,7 +588,7 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request)
 			response = Get_EC_Response_GetDownloadQueue(request);
 			break;
 		case EC_OP_IPFILTER_CMD:
-			response = Get_EC_Response_IPFilter(request);
+			response = Process_IPFilter(request);
 			break;
 		case EC_OP_PARTFILE_REMOVE_NO_NEEDED:
 		case EC_OP_PARTFILE_REMOVE_FULL_QUEUE:

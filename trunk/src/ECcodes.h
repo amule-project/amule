@@ -161,7 +161,7 @@ enum {
 		 */
 	EC_OP_GET_DLOAD_QUEUE,
 
-		/*!
+		/*
 		 * \brief Perform action on file in queue.
 		 *
 		 * \par Tags:
@@ -310,6 +310,32 @@ enum {
 	EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT,
 	EC_TAG_PARTFILE_SOURCE_COUNT_XFER,
 	EC_TAG_PARTFILE_ED2K_LINK,
+
+		/*!
+		 * \brief Status of IPFilter (current/desired)
+		 *
+		 * Values (uint8):
+		 * <ul>
+		 *	<li>0 - OFF</li>
+		 *	<li>1 - ON</li>
+		 *	<li>2 - RELOAD</li>
+		 * </ul>
+		 *
+		 * \par Child TAGs:
+		 *	(none)
+		 */
+	EC_TAG_IPFILTER_STATUS,
+		/*!
+		 * \brief IPFilter level
+		 *
+		 * In an ::EC_OP_IPFILTER_CMD packet, it sets the iplevel
+		 * to its contents (uint8), in an ::EC_OP_MISC_DATA packet
+		 * it holds the current ip level.
+		 *
+		 * \par Child TAGs:
+		 *	(none)
+		 */
+	EC_TAG_IPFILTER_LEVEL,
 
 };
 
