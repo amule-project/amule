@@ -322,7 +322,7 @@ void CUpDownClient::CreateStandartPackets(const byte* data,uint32 togo, Requeste
 			memfile.Read(tempbuf, nPacketSize);
 			data.Write(tempbuf, nPacketSize);
 			delete [] tempbuf;
-			Packet* packet = new Packet(&data,OP_EMULEPROT,OP_SENDINGPART);
+			Packet* packet = new Packet(&data,OP_EDONKEYPROT,OP_SENDINGPART);
 			m_BlockSend_queue.AddTail(packet);
 		}
 	} catch (...) {
