@@ -79,11 +79,11 @@ class CECTag {
 		bool		ReadChildren(wxSocketBase *sock, ECSocket& socket);
 		bool		WriteChildren(wxSocketBase *sock, ECSocket& socket) const;
 		int		m_error;
+		const void *	m_tagData;
 	private:
 		ec_tagname_t	m_tagName;
 		uint16		m_tagCount;
 		unsigned int	m_dataLen;
-		const void *	m_tagData;
 		const bool	m_dynamic;
 		uint16		m_listSize;
 		_taglist_t	m_tagList;
@@ -109,6 +109,44 @@ class CECPacket : public CECTag {
 				CECPacket(wxSocketBase *sock, ECSocket& socket);
 		bool		WritePacket(wxSocketBase *sock, ECSocket& socket) const;
 		ec_opcode_t	m_opCode;
+};
+
+class CServer;
+class CPartFile;
+/*!
+ * Specific tags for specific requests
+ */
+class CEC_Server_Tag : public CECTag {
+ 	public:
+ 		CEC_Server_Tag(CServer *);
+};
+
+class CEC_ConnState_Tag : public CECTag {
+ 	public:
+ 		CEC_ConnState_Tag();
+};
+
+class CEC_PartFile_Tag : public CECTag {
+ 	public:
+ 		CEC_PartFile_Tag(CPartFile *file, bool onlystatus, bool includeparts);
+ 		
+ 		uint32 FileID() { return GetInt32Data(); }
+ 		wxString FileName() { return GetTagByName(EC_TAG_PARTFILE_NAME)->GetStringData(); }
+ 		uint32 SizeFull() { return GetTagByName(EC_TAG_PARTFILE_SIZE_FULL)->GetInt32Data(); }
+ 		uint32 SizeXfer() { return GetTagByName(EC_TAG_PARTFILE_SIZE_XFER)->GetInt32Data(); }
+  		uint32 SizeDone() { return GetTagByName(EC_TAG_PARTFILE_SIZE_DONE)->GetInt32Data(); }
+ 		wxString FileEd2kLink() { return GetTagByName(EC_TAG_PARTFILE_ED2K_LINK)->GetStringData(); }
+ 		wxString FileStatus() { return GetTagByName(EC_TAG_PARTFILE_STATUS)->GetStringData(); }
+  		uint32 SourceCount() { return GetTagByName(EC_TAG_PARTFILE_SOURCE_COUNT)->GetInt32Data(); }
+  		uint32 SourceNotCurrCount() { return GetTagByName(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT)->GetInt32Data(); }
+  		uint32 SourceXferCount() { return GetTagByName(EC_TAG_PARTFILE_SOURCE_COUNT_XFER)->GetInt32Data(); }
+  		uint32 Speed() { return GetTagByName(EC_TAG_PARTFILE_SPEED)->GetInt32Data(); }
+  		uint32 Prio() { return GetTagByName(EC_TAG_PARTFILE_PRIO)->GetInt32Data(); }
+};
+
+class CEC_PartStatus_Tag : public CECTag {
+ 	public:
+ 		CEC_PartStatus_Tag(CPartFile *file, int statussize);
 };
 
 #endif /* ECPACKET_H */

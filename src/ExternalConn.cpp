@@ -362,46 +362,27 @@ CECPacket *Get_EC_Response_GetUpQueue(const CECPacket *request)
 }	
 
 CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request)
-{
-	wxASSERT(request->GetOpCode() == EC_OP_GET_DLOAD_QUEUE);
-	
+{	
 	CECPacket *response = new CECPacket(EC_OP_DLOAD_QUEUE);
 	
-	uint32 flags = request->GetTagByName(EC_TAG_FLAGS) ? request->GetTagByName(EC_TAG_FLAGS)->GetInt32Data() : 0;
-	
+	bool OnlyStatus = (request->GetOpCode() == EC_OP_GET_DLOAD_QUEUE_STATUS);
+	bool IncludeParts = (request->GetOpCode() == EC_OP_GET_DLOAD_QUEUE_PARTS_STATUS);
+	//
+	// request can contain list of queried items
+	std::set<uint32> queryitems;
+	for (int i = 0;i < request->GetTagCount();i++) {
+		CECTag *tag = request->GetTagByIndex(i);
+		queryitems.insert(tag->GetInt32Data());
+	}
 	for (unsigned int i = 0; i < theApp.downloadqueue->GetFileCount(); i++) {
 		CPartFile *cur_file = theApp.downloadqueue->GetFileByIndex(i);
-		CECTag filetag(EC_TAG_PARTFILE, PTR_2_ID(cur_file));
-		filetag.AddTag(CECTag(EC_TAG_PARTFILE_STATUS,
-			cur_file->getPartfileStatus()));
-		if ( flags & EC_LIST_ONLY_STATUS ) {
+	
+		if ( !queryitems.empty() && !queryitems.count(PTR_2_ID(cur_file)) ) {
 			continue;
 		}
-		filetag.AddTag(CECTag(EC_TAG_PARTFILE_NAME,cur_file->GetFileName()));
 
-		filetag.AddTag(CECTag(EC_TAG_PARTFILE_SIZE_FULL,
-			(uint32)cur_file->GetFileSize()));
-		filetag.AddTag(CECTag(EC_TAG_PARTFILE_SIZE_XFER,
-			(uint32)cur_file->GetTransfered()));
-		filetag.AddTag(CECTag(EC_TAG_PARTFILE_SIZE_DONE,
-			(uint32)cur_file->GetCompletedSize()));
-		filetag.AddTag(CECTag(EC_TAG_PARTFILE_SPEED,
-			(uint32)(long)(cur_file->GetKBpsDown()*1024)));
-		filetag.AddTag(CECTag(EC_TAG_PARTFILE_PRIO,
-			(uint32)(cur_file->IsAutoDownPriority() ? 
-							cur_file->GetDownPriority() + 10 :
-							cur_file->GetDownPriority())));
-		filetag.AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT,
-			(uint32)cur_file->GetSourceCount()));
-		filetag.AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT,
-			(uint32)cur_file->GetNotCurrentSourcesCount()));
-		filetag.AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT_XFER,
-			(uint32)cur_file->GetTransferingSrcCount()));
-		filetag.AddTag(CECTag(EC_TAG_PARTFILE_ED2K_LINK,
-					(theApp.serverconnect->IsConnected() && !theApp.serverconnect->IsLowID()) ?
-						theApp.CreateED2kSourceLink(cur_file) :
-						theApp.CreateED2kLink(cur_file)));
-						
+		CEC_PartFile_Tag filetag(cur_file, OnlyStatus, IncludeParts);
+
 		response->AddTag(filetag);
 	}
 
@@ -618,6 +599,8 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request)
 			response->AddTag(CEC_ConnState_Tag());
 			break;
 		case EC_OP_GET_DLOAD_QUEUE:
+		case EC_OP_GET_DLOAD_QUEUE_STATUS:
+		case EC_OP_GET_DLOAD_QUEUE_PARTS_STATUS:
 			response = Get_EC_Response_GetDownloadQueue(request);
 			break;
 		case EC_OP_GET_ULOAD_QUEUE:
@@ -2772,3 +2755,35 @@ CEC_ConnState_Tag::CEC_ConnState_Tag() : CECTag(EC_TAG_STATS_CONNSTATE,
 	}
 }
 
+CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, bool onlystatus, bool includeparts) : CECTag(EC_TAG_PARTFILE, PTR_2_ID(file))
+{
+	AddTag(CECTag(EC_TAG_PARTFILE_STATUS, file->getPartfileStatus()));
+
+	if ( includeparts || (file->getPartfileStatus() == wxT("Downloading")) ) {
+		AddTag(CEC_PartStatus_Tag(file, 100));
+	}
+	if ( onlystatus ) {
+		return;
+	}
+	
+	AddTag(CECTag(EC_TAG_PARTFILE_NAME,file->GetFileName()));
+
+	AddTag(CECTag(EC_TAG_PARTFILE_SIZE_FULL, (uint32)file->GetFileSize()));
+	AddTag(CECTag(EC_TAG_PARTFILE_SIZE_XFER, (uint32)file->GetTransfered()));
+	AddTag(CECTag(EC_TAG_PARTFILE_SIZE_DONE, (uint32)file->GetCompletedSize()));
+	AddTag(CECTag(EC_TAG_PARTFILE_SPEED, (uint32)(file->GetKBpsDown()*1024)));
+	AddTag(CECTag(EC_TAG_PARTFILE_PRIO,
+		(uint32)(file->IsAutoDownPriority() ? 
+						file->GetDownPriority() + 10 : file->GetDownPriority())));
+	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT, (uint32)file->GetSourceCount()));
+	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT, (uint32)file->GetNotCurrentSourcesCount()));
+	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT_XFER, (uint32)file->GetTransferingSrcCount()));
+	AddTag(CECTag(EC_TAG_PARTFILE_ED2K_LINK,
+				(theApp.serverconnect->IsConnected() && !theApp.serverconnect->IsLowID()) ?
+					theApp.CreateED2kSourceLink(file) : theApp.CreateED2kLink(file)));
+}
+
+CEC_PartStatus_Tag::CEC_PartStatus_Tag(CPartFile *file, int size) : CECTag(EC_TAG_PARTFILE_PART_STATUS,
+	file->GetProgressString(size))
+{
+}

@@ -35,6 +35,8 @@
 
 #include <list>
 #include <map>
+#include <vector>
+
 
 //-------------------------------------------------------------------
 #ifndef WIN32
@@ -69,23 +71,28 @@ typedef struct { float download; float upload; long connections; } UpDown;
 
 typedef struct { time_t startTime; long lSession; bool admin;} Session;
 
-typedef struct {
-	wxString	sFileName;
-	wxString	sFileStatus;
-	unsigned long	lFileSize;
-	unsigned long	lFileCompleted;
-	unsigned long	lFileTransferred;
-	unsigned long	lFileSpeed;
-	long		lSourceCount;
-	long		lNotCurrentSourceCount;
-	long		lTransferringSourceCount;
-	double		fCompleted;
-	long		lFileStatus;
-	long		lFilePrio;
-	wxString	sFileHash;
-	wxString	sED2kLink;
-	wxString	sFileInfo;
-} DownloadFiles;
+class DownloadFiles {
+	public:
+		wxString	sFileName;
+		wxString	sFileStatus;
+		unsigned long	lFileSize;
+		unsigned long	lFileCompleted;
+		unsigned long	lFileTransferred;
+		unsigned long	lFileSpeed;
+		long		lSourceCount;
+		long		lNotCurrentSourceCount;
+		long		lTransferringSourceCount;
+		double		fCompleted;
+		long		lFileStatus;
+		long		lFilePrio;
+		wxString	sFileHash;
+		wxString	sED2kLink;
+		wxString	sFileInfo;
+	
+		static class DownloadFilesInfo *GetContainerInstance();
+		
+		uint32 file_id;
+};
 
 class SharedFiles {
 	public:
@@ -294,6 +301,23 @@ class SharedFilesInfo : public ItemsContainer<SharedFiles, xSharedSort> {
 		virtual bool ProcessUpdate(CECPacket *update);
 
 		bool CompareItems(const SharedFiles &i1, const SharedFiles &i2);
+};
+
+class DownloadFilesInfo : public ItemsContainer<DownloadFiles, xDownloadSort> {
+		// need duplicate list with a map, so check "do we already have"
+		// will take O(log(n)) instead of O(n)
+		// map will contain pointers to items in list 
+		std::map<uint32, DownloadFiles *> m_files;
+	public:
+		// can be only one instance.
+		static DownloadFilesInfo *m_This;
+		
+		DownloadFilesInfo(CamulewebApp *webApp);
+		
+		virtual bool ReQuery();
+		virtual bool ProcessUpdate(CECPacket *update);
+
+		bool CompareItems(const DownloadFiles &i1, const DownloadFiles &i2);
 };
 
 typedef struct {
