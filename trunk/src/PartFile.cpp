@@ -599,7 +599,7 @@ uint8 CPartFile::LoadPartFile(LPCTSTR in_directory, LPCTSTR filename, bool getsi
 			uint16 parts=GetPartCount();	// assuming we will get all hashsets
 			
 			for (uint16 i = 0; i < parts && (metFile.Tell()+16<metFile.Length()); i++){
-				uchar* cur_hash = new uchar[16];
+				CMD4Hash cur_hash;
 				metFile.Read(cur_hash, 16);
 				hashlist.Add(cur_hash);
 			}
@@ -1130,7 +1130,7 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
 					if ( i < result->GetHashCount() )
 						wronghash = result->GetPartHash(i);
 				
-					theApp.amuledlg->AddLogLine(false, _("Found corrupted part (%i) in %i parts file %s - FileResultHash |%s| FileHash |%s|"), i + 1, GetED2KPartHashCount(), m_strFileName.c_str(), wronghash.Encode(), GetPartHash(i).Encode().c_str());
+					theApp.amuledlg->AddLogLine(false, _("Found corrupted part (%i) in %i parts file %s - FileResultHash |%s| FileHash |%s|"), i + 1, GetED2KPartHashCount(), m_strFileName.c_str(), wronghash.Encode().c_str(), GetPartHash(i).Encode().c_str());
 				
 					AddGap(i*PARTSIZE,((((i+1)*PARTSIZE)-1) >= m_nFileSize) ? m_nFileSize-1 : ((i+1)*PARTSIZE)-1);
 					errorfound = true;
