@@ -381,19 +381,6 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client)
 	}
 	
 
-	// Add clients server to list.
-	if (theApp.glob_prefs->AddServersFromClient() && client->GetServerIP() && client->GetServerPort()) {
-		in_addr host;
-		host.s_addr = client->GetServerIP();
-		CServer* srv = new CServer(client->GetServerPort(), char2unicode(inet_ntoa(host)));
-		srv->SetListName(srv->GetAddress());
-		
-		if (!theApp.AddServer(srv)) {
-			delete srv;
-		}
-		
-	}
-
 	// statistic values
 	CKnownFile* reqfile = theApp.sharedfiles->GetFileByID(client->GetUploadFileID());
 	if (reqfile) {
