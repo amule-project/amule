@@ -35,6 +35,7 @@
 #include "opcodes.h"		// Needed for TM_HASHTHREADFINISHED
 #include "PartFile.h"		// Needed for CKnownFile and CPartFile
 #include "CFile.h"			// Needed for CFile
+#include "AICHSyncThread.h"	// Needed for CAICHSyncThread
 
 #include "CryptoPP_Inc.h"	// Needed for MD4
 
@@ -73,6 +74,9 @@ uint8 CAddFileThread::s_count;
 CAddFileThread::CAddFileThread()
 	: wxThread(wxTHREAD_DETACHED)
 {
+	// Ensure that the AICH thread isn't running
+	if ( CAICHSyncThread::IsRunning() )
+		CAICHSyncThread::Stop();
 }
 
 
