@@ -126,7 +126,7 @@ void ProxyEventHandler::ProxySocketHandler(wxSocketEvent& event)
 	} else {
 		// we're doomed :)
 	}
-//	sock->m_ProxyStateMachine->Clock();
+	sock->m_ProxyStateMachine->Clock();
 }
 
 #else
@@ -182,7 +182,8 @@ bool ProxyStateMachine::Start(const wxIPaddress &PeerAddress, wxSocketClient *Pr
 		m_PeerAddress = new wxIPV4address(peer);
 	} catch (std::bad_cast e) {
 		// Should process other types of wxIPAddres before quitting
-		printf("bad_cast\n");
+		printf("bad_cast exception!\n");
+		
 		return false;
 	}
 	
@@ -192,25 +193,10 @@ bool ProxyStateMachine::Start(const wxIPaddress &PeerAddress, wxSocketClient *Pr
 		unicode2char(m_PeerAddress->IPAddress()),
 		m_PeerAddress->Service());
 	
-	// Run the state machine.
-	while (!IsEndState() ) {
-		wxGetApp().Yield();
-		Clock();
-	}
-//	Clock();
-//	wxGetApp().Yield();
+	// Run the state machine, just let the events start to happen.
+	wxGetApp().Yield();
+	
 	return true;
-	
-	// Debug message
-	if (m_ProxyBoundAddress) {
-		printf("Proxy Bound Address: IP:%s, Port:%u, ok:%d\n",
-			unicode2char(GetProxyBoundAddress().IPAddress()),
-			GetProxyBoundAddress().Service(), m_ok);
-	} else {
-		printf("Failed to bind proxy address, ok=%d\n", m_ok);
-	}
-	
-	return m_ok;
 }
 
 t_sm_state ProxyStateMachine::HandleEvent(t_sm_event event)
@@ -275,6 +261,15 @@ void ProxyStateMachine::AddDummyEvent()
 
 void ProxyStateMachine::ReactivateSocket()
 {
+	// Debug message
+	if (m_ProxyBoundAddress) {
+		printf("Proxy Bound Address: IP:%s, Port:%u, ok:%d\n",
+			unicode2char(GetProxyBoundAddress().IPAddress()),
+			GetProxyBoundAddress().Service(), m_ok);
+	} else {
+		printf("Failed to bind proxy address, ok=%d\n", m_ok);
+	}
+	
 #ifndef AMULE_DAEMON
 	/* If proxy is beeing used, CServerSocketHandler will not receive a 
 	 * wxSOCKET_CONNECTION event, because the connection has already 
@@ -498,6 +493,15 @@ t_sm_state Socks5StateMachine::next_state(t_sm_event event)
 	return ret;
 }
 
+/*
+ * So, this is how you do it: the state machine is clocked by the events
+ * that happen inside the event handler. You can add a dummy event whenever
+ * you see that the system will not generate an event. But don't add dummy
+ * events before reads, reads should only be performed after input events.
+ * Maybe it makes sense to add a dummy event before a read if there is no
+ * state change (wait state).
+ */
+
 void Socks5StateMachine::process_start(bool entry)
 {
 	if (entry) {
@@ -533,6 +537,7 @@ dump("process_send_query_authentication_method", m_ok, m_buffer, m_PacketLenght)
 	} else {
 printf("wait state -- process_send_query_authentication_method\n");
 	}
+//	AddDummyEvent();
 }
 
 void Socks5StateMachine::process_receive_authentication_method(bool entry)
@@ -545,7 +550,7 @@ dump("process_receive_authentication_method", m_ok, m_buffer, 0);
 	} else {
 printf("wait state -- process_receive_authentication_method\n");
 	}
-//	AddDummyEvent();
+	AddDummyEvent();
 }
 
 void Socks5StateMachine::process_process_authentication_method(bool entry)
@@ -557,21 +562,24 @@ dump("process_process_authentication_method", m_ok, m_buffer, m_PacketLenght);
 	} else {
 printf("wait state -- process_receive_authentication_method\n");
 	}
-//	AddDummyEvent();
+	AddDummyEvent();
 }
 
 void Socks5StateMachine::process_send_authentication_gssapi(bool)
 {
 	// TODO or not TODO? That is the question...
 	m_ok = false;
+//	AddDummyEvent();
 }
 
 void Socks5StateMachine::process_receive_authentication_gssapi(bool)
 {
+	AddDummyEvent();
 }
 
 void Socks5StateMachine::process_process_authentication_gssapi(bool)
 {
+	AddDummyEvent();
 }
 
 void Socks5StateMachine::process_send_authentication_username_password(bool entry)
@@ -611,7 +619,7 @@ dump("process_receive_authentication_username_password", m_ok, m_buffer, 0);
 	} else {
 printf("wait state -- process_receive_authentication_username_password\n");
 	}
-//	AddDummyEvent();
+	AddDummyEvent();
 }
 
 void Socks5StateMachine::process_process_authentication_username_password(bool entry)
@@ -626,7 +634,7 @@ dump("process_process_authentication_username_password", m_ok, m_buffer, m_Packe
 	} else {
 printf("wait state -- process_receive_authentication_username_password\n");
 	}
-//	AddDummyEvent();
+	AddDummyEvent();
 }
 
 void Socks5StateMachine::process_send_command_request(bool entry)
@@ -674,7 +682,7 @@ dump("process_receive_command_reply", m_ok, m_buffer, 0);
 	} else {
 printf("wait state -- process_receive_command_reply\n");
 	}
-//	AddDummyEvent();
+	AddDummyEvent();
 }
 
 void Socks5StateMachine::process_process_command_reply(bool entry)
@@ -740,12 +748,11 @@ void Socks5StateMachine::process_process_command_reply(bool entry)
 					*((uint16 *)(m_buffer+Port_offset)) ));
 			}
 		}
-		Clock();
 dump("process_process_command_reply", m_ok, m_buffer, m_PacketLenght);
 	} else {
 printf("wait state -- process_receive_command_reply\n");
 	}
-//	AddDummyEvent();
+	AddDummyEvent();
 }
 
 //------------------------------------------------------------------------------
@@ -868,6 +875,7 @@ dump("process_receive_command_reply", m_ok, m_buffer, 0);
 	} else {
 printf("wait state -- process_receive_command_reply\n");
 	}
+	AddDummyEvent();
 }
 
 void Socks4StateMachine::process_process_command_reply(bool entry)
@@ -895,6 +903,7 @@ dump("process_process_command_reply", m_ok, m_buffer, m_PacketLenght);
 	} else {
 printf("wait state -- process_receive_command_reply\n");
 	}
+	AddDummyEvent();
 }
 
 //------------------------------------------------------------------------------
@@ -1024,6 +1033,7 @@ dump("process_receive_command_reply", m_ok, m_buffer, 0);
 	} else {
 printf("wait state -- process_receive_command_reply\n");
 	}
+	AddDummyEvent();
 }
 
 void HttpStateMachine::process_process_command_reply(bool entry)
@@ -1052,6 +1062,7 @@ dump("process_process_command_reply", m_ok, m_buffer, m_PacketLenght);
 	} else {
 printf("wait state -- process_receive_command_reply\n");
 	}
+	AddDummyEvent();
 }
 
 //------------------------------------------------------------------------------
@@ -1125,13 +1136,9 @@ bool amuleProxyClientSocket::Start(const wxIPaddress &PeerAddress)
 	Notify(false);
 #endif
 	Connect(m_ProxyAddress, false);
-	// Without this flag, we would end up with more states, 
-	// because we can't test the read buffer until we get 
-	// the next input event.
 //	SetFlags(wxSOCKET_WAITALL);
-//	SetFlags(wxSOCKET_NOWAIT);
-	// wxSOCKET_WAITALL tends to assert inside wx, while wxSOCKET_NONE behaves better.
 	SetFlags(wxSOCKET_NONE);
+//	SetFlags(wxSOCKET_NOWAIT);
 	bool ok = m_ProxyStateMachine->Start(PeerAddress, this);
 	RestoreState();
 	
