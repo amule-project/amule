@@ -17,6 +17,40 @@
 #include <stdlib.h>
 #include <string.h>
 
+
+char *convbytes(char input[15])
+{
+	float bytes;
+	static char output[50];
+
+	bytes=atof(input);
+
+	if (bytes/1024 < 1) sprintf(output,"%.2f Bytes",bytes);
+	else
+	{
+		bytes=bytes/1024;
+		if (bytes/1024 < 1) sprintf(output,"%.2f KB",bytes);
+		else
+		{
+			bytes=bytes/1024;
+			if (bytes/1024 < 1) sprintf(output,"%.2f MB",bytes);
+			else
+			{
+				bytes=bytes/1024;
+				if (bytes/1024 < 1) sprintf(output,"%.2f GB",bytes);
+				else
+				{
+					bytes=bytes/1024;
+					sprintf(output,"%.2f TB",bytes);
+				}
+			}
+		}
+
+	}
+
+	return output;
+}
+
 int main()
 {
 	/* Declaration of variables */
@@ -33,7 +67,7 @@ int main()
 	/* open the file and if not exists exit with an error */
 	if ((amulesig = fopen(path, "r")) == NULL)
 	{
-		puts("Unable to open the file\nCheck if you have amule sig enabled");
+		printf("Unable to open the file\nCheck if you have amule sig enabled");
 		return 0;
 	}
 
@@ -73,8 +107,15 @@ int main()
 		printf("%s is on %s [%s:%s] with ",stats[9],stats[1],stats[2],stats[3]);
 		if (stats[4][0]=='H') printf("HighID\n"); 
 		else printf("LowID\n");
-		printf("Total Download: %s GB, Upload %s GB\n",stats[10],stats[11]);
-		printf("Session Download: %s MB, Upload %s MB\n",stats[13],stats[14]);
+
+		strcpy(stats[10],convbytes(stats[10])); // total download
+		strcpy(stats[11],convbytes(stats[11])); // total upload
+		printf("Total Download: %s, Upload %s\n",stats[10],stats[11]);
+
+		strcpy(stats[13],convbytes(stats[13])); // sess. download
+		strcpy(stats[14],convbytes(stats[14])); // sess. upload
+		printf("Session Download: %s, Upload %s\n",stats[13],stats[14]);
+
 		printf("Download : %s kB/s, Upload : %s kB/s\n",stats[5],stats[6]);
 		printf("Sharing : %s file(s), Clients on queue: %s\n",stats[8],stats[7]);
 	}
