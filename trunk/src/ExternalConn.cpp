@@ -338,6 +338,36 @@ CECPacket *Process_IPFilter(const CECPacket *request)
 	return response;
 }	
 
+CECPacket *Get_EC_Response_GetUpQueue(const CECPacket *request)
+{
+	wxASSERT(request->GetOpCode() == EC_OP_GET_ULOAD_QUEUE);
+	
+	CECPacket *response = new CECPacket(EC_OP_ULOAD_QUEUE);
+	
+	POSITION pos = theApp.uploadqueue->GetFirstFromUploadList();
+	while (	pos ) {
+
+		CUpDownClient* cur_client = theApp.uploadqueue->GetQueueClientAt(pos);
+		theApp.uploadqueue->GetNextFromUploadList(pos);
+		if (!cur_client) {
+			continue;
+		}
+		CECTag cli_tag(EC_TAG_UPDOWN_CLIENT, cur_client->GetUserName());
+		cli_tag.AddTag(CECTag(EC_TAG_ITEM_ID, PTR_2_ID(cur_client)));
+		CKnownFile* file = theApp.sharedfiles->GetFileByID(cur_client->GetUploadFileID());
+		if (file) {
+			cli_tag.AddTag(CECTag(EC_TAG_PARTFILE, file->GetFileName()));
+		} else {
+			cli_tag.AddTag(CECTag(EC_TAG_PARTFILE, wxString(wxT("?"))));
+		}
+		cli_tag.AddTag(CECTag(EC_TAG_PARTFILE_SIZE_XFER, (uint32)cur_client->GetTransferedUp()));
+		cli_tag.AddTag(CECTag(EC_TAG_PARTFILE_SPEED, (uint32)(cur_client->GetKBpsUp()*1024.0)));
+		response->AddTag(cli_tag);
+	}
+	
+	return response;
+}	
+
 CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request)
 {
 	wxASSERT(request->GetOpCode() == EC_OP_GET_DLOAD_QUEUE);
@@ -355,7 +385,7 @@ CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request)
 			(uint32)cur_file->GetTransfered()));
 		filetag.AddTag(CECTag(EC_TAG_PARTFILE_SIZE_DONE,
 			(uint32)cur_file->GetCompletedSize()));
-		filetag.AddTag(CECTag(EC_TAG_PARTFILE_DOWN_SPEED,
+		filetag.AddTag(CECTag(EC_TAG_PARTFILE_SPEED,
 			(uint32)(long)(cur_file->GetKBpsDown()*1024)));
 		filetag.AddTag(CECTag(EC_TAG_PARTFILE_STATUS,
 			cur_file->getPartfileStatus()));
@@ -587,6 +617,9 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request)
 			break;
 		case EC_OP_GET_DLOAD_QUEUE:
 			response = Get_EC_Response_GetDownloadQueue(request);
+			break;
+		case EC_OP_GET_ULOAD_QUEUE:
+			response = Get_EC_Response_GetUpQueue(request);
 			break;
 		case EC_OP_SERVER_DISCONNECT:
 		case EC_OP_SERVER_CONNECT:

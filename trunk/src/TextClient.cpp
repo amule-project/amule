@@ -390,7 +390,8 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 				request = new CECPacket(EC_OP_GET_DLOAD_QUEUE);
 				request_list.push_back(request);
 			} else if ( args.Left(2) == wxT("ul") ) {
-				msg = wxT("UL_QUEUE");
+				request = new CECPacket(EC_OP_GET_ULOAD_QUEUE);
+				request_list.push_back(request);
 			} else {
 				Show(_("Hint: Use Show DL or Show UL\n"));
 				return 0;
@@ -468,6 +469,15 @@ wxString ECv2_Response2String(CECPacket *response)
 					tag->GetTagByName(EC_TAG_PARTFILE_STATUS)->GetStringData();
 					
 				s += _("\n");
+			}
+			break;
+		case EC_OP_ULOAD_QUEUE:
+			for(int i = 0; i < response->GetTagCount(); i ++) {
+				CECTag *tag = response->GetTagByIndex(i);
+				s += _("\n");
+				s += wxString::Format(wxT("%08x "), tag->GetTagByName(EC_TAG_ITEM_ID)->GetInt32Data()) +
+					tag->GetStringData() + wxT(" ") +
+					tag->GetTagByName(EC_TAG_PARTFILE)->GetStringData();
 			}
 			break;
 		case EC_OP_SERVER_LIST:

@@ -161,6 +161,14 @@ enum {
 		 */
 	EC_OP_GET_DLOAD_QUEUE,
 
+		/*!
+		 * \brief Request for upload queue - currect uploads
+		 *
+		 * \par Tags:
+		 *	(none)
+		 */
+	EC_OP_GET_ULOAD_QUEUE,
+
 		/*
 		 * \brief Perform action on file in queue.
 		 *
@@ -197,6 +205,14 @@ enum {
 		 *	\b ::EC_TAG_PARTFILE (1+) info about file in download queue
 		 */
 	EC_OP_DLOAD_QUEUE,
+
+		/*!
+		 * \brief Get upload queue.
+		 *
+		 * \par Tags:
+		 *	\b ::EC_TAG_UPDOWN_CLIENT (1+) info about client in queue
+		 */
+	EC_OP_ULOAD_QUEUE,
 
 		/*!
 		 * \brief Change/query IPFilter settings: on, off, level, reload
@@ -338,7 +354,7 @@ enum {
 	EC_TAG_PARTFILE_SIZE_FULL,
 	EC_TAG_PARTFILE_SIZE_XFER,
 	EC_TAG_PARTFILE_SIZE_DONE,
-	EC_TAG_PARTFILE_DOWN_SPEED,
+	EC_TAG_PARTFILE_SPEED,
 	EC_TAG_PARTFILE_STATUS,
 	EC_TAG_PARTFILE_PRIO,
 	EC_TAG_PARTFILE_SOURCE_COUNT,
@@ -346,7 +362,7 @@ enum {
 	EC_TAG_PARTFILE_SOURCE_COUNT_XFER,
 	EC_TAG_PARTFILE_ED2K_LINK,
 
-	/*@
+	/*!
 	 * \brief Info about server
 	 * 
 	 * Value (string): name of server
@@ -359,7 +375,19 @@ enum {
 	EC_TAG_SERVER_ADDRESS,
 	EC_TAG_SERVER_USERS,
 	EC_TAG_SERVER_FILES,
-	
+
+	/*!
+	 * \brief Info about up-down client
+	 * 
+	 * Value (string): name,id of connected user
+	 * 
+	 * \par Child TAGs:
+	 *  ::EC_TAG_PARTFILE
+	 *  ::EC_TAG_PARTFILE_SIZE_XFER
+	 *  ::EC_TAG_PARTFILE_SPEED
+	 */
+	EC_TAG_UPDOWN_CLIENT,
+
 		/*!
 		 * \brief Status of IPFilter (current/desired)
 		 *
