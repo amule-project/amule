@@ -67,7 +67,6 @@ public:
 	void AddDebugLogLine(bool addtostatusbar, const wxString& line);
 	void AddServerMessageLine(wxString& message);
 	void ResetLog(uint8 whichone = 1);
-	void ResetDebugLog();
 	
 	void ShowConnectionState(bool connected, const wxString &server = wxEmptyString);
 	void ShowUserCount(uint32 toshow, uint32 filetoshow);
