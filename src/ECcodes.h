@@ -535,10 +535,6 @@ enum {
 					// tags: EC_TAG_STRING: v1.0 message
 };
 
-/*!
- * Turn pointer into 32-bit thingie int aka ID
- */
-#define PTR_2_ID(ptr) ((uint32)ptr)
 
 /******************************************************************************/
 
@@ -614,8 +610,6 @@ enum {
 		 *	(none)
 		 */
 	EC_TAG_PROTOCOL_VERSION,
-
-	EC_TAG_ITEM_ID,
 
 		/*!
 		 * \brief Selects response detail level.

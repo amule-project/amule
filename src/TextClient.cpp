@@ -243,7 +243,6 @@ void CamulecmdApp::TextShell(const wxString& prompt, CmdId commands[])
 
 int CamulecmdApp::ProcessCommand(int CmdId)
 {
-	uint32 FileId;
 	wxString args = GetCmdArgs();
 	CECPacket *request = 0;
 	std::list<CECPacket *> request_list;
@@ -344,24 +343,26 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			if ( args.IsEmpty() ) {
 				Show(_("This command requieres an argument. Valid arguments: 'all', a number.\n"));
 				return 0;
-			} else if (args.ToULong((unsigned long *)&FileId, 16)) {
-				request = new CECPacket(EC_OP_PARTFILE_PAUSE);
-				request->AddTag(CECTag(EC_TAG_ITEM_ID, FileId));
-				request_list.push_back(request);
 			} else if ( args.Left(3) == wxT("all") ) {
-				CECPacket request_all (EC_OP_GET_DLOAD_QUEUE);
+				CECPacket request_all(EC_OP_GET_DLOAD_QUEUE, EC_DETAIL_CMD);
 				CECPacket *reply_all = SendRecvMsg_v2(&request_all);
 				
+				request = new CECPacket(EC_OP_PARTFILE_PAUSE);
 				for(int i = 0;i < reply_all->GetTagCount();i++) {
-					CECTag *tag = reply_all->GetTagByIndex(i);
-					FileId = tag->GetTagByName(EC_TAG_ITEM_ID)->GetInt32Data();
-					request = new CECPacket(EC_OP_PARTFILE_PAUSE);
-					request->AddTag(CECTag(EC_TAG_ITEM_ID, FileId));
-					request_list.push_back(request);
+					request->AddTag(CECTag(EC_TAG_PARTFILE, reply_all->GetTagByIndex(i)->GetMD4Data()));
 				}
+				request_list.push_back(request);
+				delete reply_all;
 			} else {
-				Show(_("Not a valid number\n"));
-				return 0;
+				CMD4Hash hash(args);
+				if (!hash.IsEmpty()) {
+					request = new CECPacket(EC_OP_PARTFILE_PAUSE);
+					request->AddTag(CECTag(EC_TAG_PARTFILE, hash));
+					request_list.push_back(request);
+				} else {
+					Show(_("Not a valid number\n"));
+					return 0;
+				}
 			}
 			break;
 			
@@ -369,24 +370,26 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			if ( args.IsEmpty() ) {
 				Show(_("This command requieres an argument. Valid arguments: 'all' or a number.\n"));
 				return 0;
-			} else if (args.ToULong((unsigned long *)&FileId, 16)) {
-				request = new CECPacket(EC_OP_PARTFILE_RESUME);
-				request->AddTag(CECTag(EC_TAG_ITEM_ID, FileId));
-				request_list.push_back(request);
 			} else if ( args.Left(3) == wxT("all") ) {
-				CECPacket request_all (EC_OP_GET_DLOAD_QUEUE);
+				CECPacket request_all(EC_OP_GET_DLOAD_QUEUE, EC_DETAIL_CMD);
 				CECPacket *reply_all = SendRecvMsg_v2(&request_all);
 				
+				request = new CECPacket(EC_OP_PARTFILE_RESUME);
 				for(int i = 0;i < reply_all->GetTagCount();i++) {
-					CECTag *tag = reply_all->GetTagByIndex(i);
-					FileId = tag->GetTagByName(EC_TAG_ITEM_ID)->GetInt32Data();
-					request = new CECPacket(EC_OP_PARTFILE_RESUME);
-					request->AddTag(CECTag(EC_TAG_ITEM_ID, FileId));
-					request_list.push_back(request);
+					request->AddTag(CECTag(EC_TAG_PARTFILE, reply_all->GetTagByIndex(i)->GetMD4Data()));
 				}
+				request_list.push_back(request);
+				delete reply_all;
 			} else {
-				Show(_("Not a valid number\n"));
-				return 0;
+				CMD4Hash hash(args);
+				if (!hash.IsEmpty()) {
+					request = new CECPacket(EC_OP_PARTFILE_RESUME);
+					request->AddTag(CECTag(EC_TAG_PARTFILE, hash));
+					request_list.push_back(request);
+				} else {
+					Show(_("Not a valid number\n"));
+					return 0;
+				}
 			}
 			break;
 			
@@ -603,8 +606,8 @@ void CamulecmdApp::Process_Answer_v2(CECPacket *response)
 			for(int i = 0; i < response->GetTagCount(); i ++) {
 				CECTag *tag = response->GetTagByIndex(i);
 				s += wxT("\n");
-				s += wxString::Format(wxT("%08x "), tag->GetTagByName(EC_TAG_ITEM_ID)->GetInt32Data()) +
-					tag->GetStringData() + wxT(" ") +
+				s += wxString::Format(wxT("%10u "), tag->GetInt32Data()) +
+					tag->GetTagByName(EC_TAG_CLIENT_NAME)->GetStringData() + wxT(" ") +
 					tag->GetTagByName(EC_TAG_PARTFILE)->GetStringData() + wxT(" ") +
 					CastItoXBytes(tag->GetTagByName(EC_TAG_PARTFILE_SIZE_XFER)->GetInt32Data()) + wxT(" ") +
 					CastItoXBytes(tag->GetTagByName(EC_TAG_PARTFILE_SPEED)->GetInt32Data()) + _("/sec");
