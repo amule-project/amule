@@ -1354,7 +1354,7 @@ void CamuleApp::Localize_mule()
 			language = wxLANGUAGE_SPANISH_MEXICAN;
 			break;
 		case 23:
-			//Turkish makes weird things with .eMule file!!! why?
+			//Turkish makes weird things with config file!!! why?
 			//language = wxLANGUAGE_TURKISH;
 			language = wxLANGUAGE_DEFAULT;
 			break;
