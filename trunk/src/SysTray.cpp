@@ -642,7 +642,7 @@ void CSysTray::DrawIconMeter(GdkPixmap* pix,GdkBitmap* mask,int nLevel,int nPos)
 
 	gdk_rgb_gc_set_background(gc,0);
 	// border color is black :)
-	gdk_rgb_gc_set_foreground(gc, wxSystemSettings::GetColour( wxSYS_COLOUR_MENU  ).GetPixel());
+	gdk_rgb_gc_set_foreground(gc,0);
 	gdk_draw_rectangle(pix,gc,1,((SysTrayWidth-1)/SysTrayBarCount)*nPos+SysTraySpacing,SysTrayHeight-((nLevel*(SysTrayHeight-1)/SysTrayMaxValue)+1),((SysTrayWidth-1)/SysTrayBarCount)*(nPos+1)+1,SysTrayHeight);
 	// then draw to mask (look! it must be initialised even if it is not used!)
 	GdkGC* newgc=gdk_gc_new(mask);
