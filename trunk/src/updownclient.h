@@ -225,7 +225,7 @@ public:
 	bool		ProcessHelloPacket(const char *pachPacket, uint32 nSize);
 	void		SendHelloAnswer();
 	bool		SendHelloPacket();
-	void		SendMuleInfoPacket(bool bAnswer);
+	void		SendMuleInfoPacket(bool bAnswer, bool OSInfo = false);
 	void		ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize);
 	void		ProcessMuleCommentPacket(const char *pachPacket, uint32 nSize);
 	bool		Compare(const CUpDownClient* tocomp, bool bIgnoreUserhash = false);
@@ -416,6 +416,8 @@ public:
 	void		SetSentCancelTransfer(bool bVal) { m_fSentCancelTransfer = bVal; }
 	
 	wxString	GetClientFullInfo();
+	
+	const wxString& GetClientOSInfo() const { return m_sClientOSInfo; }
 
 	void			ProcessPublicIPAnswer(const BYTE* pbyData, UINT uSize);
 	void			SendPublicIPRequest();
@@ -679,6 +681,7 @@ public:
 
 private:
 	wxString		m_clientVerString;
+	wxString 		m_sClientOSInfo;
 
 	int SecIdentSupRec;
 };
