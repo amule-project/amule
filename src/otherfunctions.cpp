@@ -66,6 +66,10 @@ wxString GetMuleVersion()
 	ver += wxT(" (Unicoded)");
 #endif
 	
+#ifdef CVSDATE
+	ver += wxString::Format( wxT(" (Snapshot: %s)"), wxT(CVSDATE));
+#endif
+	
 	return ver;
 }
 
