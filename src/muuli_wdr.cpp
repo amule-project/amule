@@ -2180,6 +2180,7 @@ wxSizer *PreferencesFilesTab( wxWindow *parent, bool call_fit, bool set_sizer )
 
     wxCheckBox *item22 = new wxCheckBox( parent, IDC_FULLALLOCATE, _("Allocate full disk space for .part files"), wxDefaultPosition, wxDefaultSize, 0 );
     item22->SetToolTip( _("This option reduces fragmentation but slows down the part file creation and will disable sparse files") );
+    item22->Enable( FALSE );
     item21->Add( item22, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
     wxCheckBox *item23 = new wxCheckBox( parent, IDC_CHUNKALLOC, _("Allocate full chucks for .part files"), wxDefaultPosition, wxDefaultSize, 0 );
