@@ -580,8 +580,6 @@ bool CUpDownClient::SendHelloPacket() {
 	m_socket->GetPeer(address);
 	#warning Kry - why is IPAddress returning wrong endianess?
 	if ( theApp.ipfilter->IsFiltered(ENDIAN_SWAP_32(StringIPtoUint32(address.IPAddress())))) {
-		AddDebugLogLineM(true, wxT("Filtered IP: ") +GetFullIP() + wxT("(") + theApp.ipfilter->GetLastHit() + wxT(")"));
-		theApp.statistics->AddFilteredClient();
 		if (Disconnected(wxT("IPFilter"))) {
 			Safe_Delete();
 			return false;

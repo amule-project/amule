@@ -91,11 +91,6 @@ public:
 
 	
 	/**
-	 * Returns the description of the last range to be hit.
-	 */
-	const wxString& GetLastHit() const;
-	
-	/**
 	 * Returns the number of banned ranges.
 	 */
 	uint32	BanCount() const;
@@ -224,9 +219,6 @@ private:
 	
 	//! The map of IP-anges
 	IPMap m_iplist;
-
-	//! The description belonging to the last range that was hit in IsFiltered
-	wxString m_lasthit;
 
 	//! Mutex used to ensure thread-safety of this class
 	mutable wxMutex	m_mutex;

@@ -411,8 +411,6 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 
 				// if IP is filtered, dont reply but disconnect...
 				if (theApp.ipfilter->IsFiltered(m_client->GetIP())) {
-					AddDebugLogLineM(true,wxT("Filtered IP: ") + m_client->GetFullIP() + wxT("(") + theApp.ipfilter->GetLastHit() + wxT(")"));					
-					theApp.statistics->AddFilteredClient();
 					if (bNewClient) {
 						m_client->Safe_Delete();
 						m_client = NULL;
