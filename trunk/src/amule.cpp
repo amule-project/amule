@@ -1723,9 +1723,6 @@ bool CamuleApp::AddServer(CServer *srv)
 }
 
 //
-// lfroen: logging is not unicode-aware, and it should not be !
-// Phoenix: You must be joking. :)
-// -> Why?
 // Kry Yay, unicoding via streams
 #if wxCHECK_VERSION(2,5,3)
 #include <wx/sstream.h>
