@@ -80,7 +80,7 @@ CServerListCtrl::CServerListCtrl( wxWindow *parent, wxWindowID winid, const wxPo
 	InsertColumn( 3, _("Ping"),			wxLIST_FORMAT_LEFT, 25);
 	InsertColumn( 4, _("Users"),		wxLIST_FORMAT_LEFT, 40);
 	InsertColumn( 5, _("Files"),		wxLIST_FORMAT_LEFT, 45);
-	InsertColumn( 6, _("Preference"),	wxLIST_FORMAT_LEFT, 60);
+	InsertColumn( 6, _("Priority"),		wxLIST_FORMAT_LEFT, 60);
 	InsertColumn( 7, _("Failed"),		wxLIST_FORMAT_LEFT, 40);
 	InsertColumn( 8, _("Static"),		wxLIST_FORMAT_LEFT, 40);
 	InsertColumn( 9, _("Version"),		wxLIST_FORMAT_LEFT, 80);
@@ -222,7 +222,7 @@ void CServerListCtrl::RefreshServer( CServer* server )
 		case SRV_PR_LOW:	SetItem( itemnr, 6, _("Low") );		break;
 		case SRV_PR_NORMAL:	SetItem( itemnr, 6, _("Normal") );	break;
 		case SRV_PR_HIGH:	SetItem( itemnr, 6, _("High") );	break;
-		default:			SetItem( itemnr, 6, _("No Pref") );
+		default:			SetItem( itemnr, 6, wxT("---") );
 	}
 
 	SetItem( itemnr, 7, wxString::Format( wxT("%i"),server->GetFailedCount() ) );
