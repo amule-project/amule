@@ -388,7 +388,9 @@ DECLARE_APP(CamuleGuiApp)
 
 #else /* !CLIENT_GUI */
 
-class CamuleRemoteGuiApp : public CamuleApp {
+#include "amule-remote-gui.h"
+
+class CamuleRemoteGuiApp : public wxApp, public CamuleGuiBase {
 	AMULE_TIMER_CLASS* core_timer;
 
 	virtual int InitGui(bool geometry_enable, wxString &geometry_string);
@@ -405,6 +407,34 @@ public:
 
 	void ShutDown();
 
+	uint32 GetUptimeMsecs();
+
+	bool IsReady;
+	CPreferences *glob_prefs;
+	wxString ConfigDir;
+	
+	//
+	// Provide access to core data thru EC
+	CServerConnectRem *serverconnect;
+	CServerListRem *serverlist;
+	CUpQueueRem *uploadqueue;
+	CDownQueueRem *downloadqueue;
+	CSharedFilesRem *sharedfiles;
+	CKnownFilesRem *knownfiles;
+	CClientCreditsRem *clientcredits;
+	CClientListRem *clientlist;
+	CIPFilterRem *ipfilter;
+	CSearchListRem *searchlist;
+	
+	bool AddServer(CServer *srv);
+
+	wxString CreateED2kLink(const CAbstractFile* f);
+	wxString CreateHTMLED2kLink(const CAbstractFile* f);
+	wxString CreateED2kSourceLink(const CAbstractFile* f);
+	wxString CreateED2kHostnameSourceLink(const CAbstractFile* f);
+	wxString GenFakeCheckUrl(const CAbstractFile *f);
+	wxString GenFakeCheckUrl2(const CAbstractFile *f);
+	
 	virtual void NotifyEvent(GUIEvent event);
 
 	wxString GetLog(bool reset = false);
@@ -412,6 +442,8 @@ public:
 
 	void AddServerMessageLine(wxString &msg);
 
+	void SetOSFiles(wxString ) { /* onlinesig is created on remote side */ }
+	
 	DECLARE_EVENT_TABLE()
 };
 

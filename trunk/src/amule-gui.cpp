@@ -290,6 +290,8 @@ void CamuleGuiBase::NotifyEvent(GUIEvent event)
 {
 }
 
+#ifndef CLIENT_GUI
+
 int CamuleGuiApp::InitGui(bool geometry_enable, wxString &geometry_string)
 {
 	CamuleGuiBase::InitGui(geometry_enable, geometry_string);
@@ -896,3 +898,5 @@ void CamuleGuiApp::AddServerMessageLine(wxString &msg)
 	amuledlg->AddServerMessageLine(msg);
 	CamuleApp::AddServerMessageLine(msg);
 }
+
+#endif /* CLIENT_GUI */
