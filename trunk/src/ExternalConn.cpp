@@ -616,7 +616,10 @@ CECPacket *ProcessPreferencesRequest(const CECPacket *request)
 	}
 
 	if (selection & EC_PREFS_GENERAL) {
-		#warning TODO
+		CECEmptyTag user_prefs(EC_TAG_PREFS_GENERAL);
+		user_prefs.AddTag(CECTag(EC_TAG_USER_NICK, thePrefs::GetUserNick()));
+		// TODO: Add userhash
+		response->AddTag(user_prefs);
 	}
 
 	if (selection & EC_PREFS_CONNECTIONS) {
@@ -695,7 +698,37 @@ CECPacket *ProcessPreferencesRequest(const CECPacket *request)
 	}
 
 	if (selection & EC_PREFS_SERVERS) {
-		#warning TODO
+		CECEmptyTag srv_prefs(EC_TAG_PREFS_SERVERS);
+		if (thePrefs::DeadServer()) {
+			srv_prefs.AddTag(CECEmptyTag(EC_TAG_SERVERS_REMOVE_DEAD));
+		}
+		srv_prefs.AddTag(CECTag(EC_TAG_SERVERS_DEAD_SERVER_RETRIES, (uint16)thePrefs::GetDeadserverRetries()));
+		if (thePrefs::AutoServerlist()) {
+			srv_prefs.AddTag(CECEmptyTag(EC_TAG_SERVERS_AUTO_UPDATE));
+		}
+		// Here should come the URL list...
+		if (thePrefs::AddServersFromServer()) {
+			srv_prefs.AddTag(CECEmptyTag(EC_TAG_SERVERS_ADD_FROM_SERVER));
+		}
+		if (thePrefs::AddServersFromClient()) {
+			srv_prefs.AddTag(CECEmptyTag(EC_TAG_SERVERS_ADD_FROM_CLIENT));
+		}
+		if (thePrefs::Score()) {
+			srv_prefs.AddTag(CECEmptyTag(EC_TAG_SERVERS_USE_SCORE_SYSTEM));
+		}
+		if (thePrefs::GetSmartIdCheck()) {
+			srv_prefs.AddTag(CECEmptyTag(EC_TAG_SERVERS_SMART_ID_CHECK));
+		}
+		if (thePrefs::IsSafeServerConnectEnabled()) {
+			srv_prefs.AddTag(CECEmptyTag(EC_TAG_SERVERS_SAFE_SERVER_CONNECT));
+		}
+		if (thePrefs::AutoConnectStaticOnly()) {
+			srv_prefs.AddTag(CECEmptyTag(EC_TAG_SERVERS_AUTOCONN_STATIC_ONLY));
+		}
+		if (thePrefs::IsManualHighPrio()) {
+			srv_prefs.AddTag(CECEmptyTag(EC_TAG_SERVERS_MANUAL_HIGH_PRIO));
+		}
+		response->AddTag(srv_prefs);
 	}
 
 	if (selection & EC_PREFS_FILES) {
@@ -819,7 +852,9 @@ CECPacket *SetPreferencesFromRequest(const CECPacket *request)
 	*/
 
 	if ((thisTab = request->GetTagByName(EC_TAG_PREFS_GENERAL)) != NULL) {
-		#warning TODO
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_USER_NICK)) != NULL) {
+			thePrefs::SetUserNick(oneTag->GetStringData());
+		}
 	}
 
 	if ((thisTab = request->GetTagByName(EC_TAG_PREFS_CONNECTIONS)) != NULL) {
@@ -913,7 +948,37 @@ CECPacket *SetPreferencesFromRequest(const CECPacket *request)
 	}
 
 	if ((thisTab = request->GetTagByName(EC_TAG_PREFS_SERVERS)) != NULL) {
-		#warning TODO
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_SERVERS_REMOVE_DEAD)) != NULL) {
+			thePrefs::SetDeadServer(oneTag->GetInt8Data() != 0);
+		}
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_SERVERS_DEAD_SERVER_RETRIES)) != NULL) {
+			thePrefs::SetDeadserverRetries(oneTag->GetInt16Data());
+		}
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_SERVERS_AUTO_UPDATE)) != NULL) {
+			thePrefs::SetAutoServerlist(oneTag->GetInt8Data() != 0);
+		}
+		// Here should come the URL list...
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_SERVERS_ADD_FROM_SERVER)) != NULL) {
+			thePrefs::SetAddServersFromServer(oneTag->GetInt8Data() != 0);
+		}
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_SERVERS_ADD_FROM_CLIENT)) != NULL) {
+			thePrefs::SetAddServersFromClient(oneTag->GetInt8Data() != 0);
+		}
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_SERVERS_USE_SCORE_SYSTEM)) != NULL) {
+			thePrefs::SetScoreSystem(oneTag->GetInt8Data() != 0);
+		}
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_SERVERS_SMART_ID_CHECK)) != NULL) {
+			thePrefs::SetSmartIdCheck(oneTag->GetInt8Data() != 0);
+		}
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_SERVERS_SAFE_SERVER_CONNECT)) != NULL) {
+			thePrefs::SetSafeServerConnectEnabled(oneTag->GetInt8Data() != 0);
+		}
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_SERVERS_AUTOCONN_STATIC_ONLY)) != NULL) {
+			thePrefs::SetAutoConnectStaticOnly(oneTag->GetInt8Data() != 0);
+		}
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_SERVERS_MANUAL_HIGH_PRIO)) != NULL) {
+			thePrefs::SetManualHighPrio(oneTag->GetInt8Data() != 0);
+		}
 	}
 
 	if ((thisTab = request->GetTagByName(EC_TAG_PREFS_FILES)) != NULL) {
