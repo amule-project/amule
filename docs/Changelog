@@ -7,6 +7,8 @@ Version 2.0.0-rc2 - The Unnamed version.
 		  Prevents your downloads to completely lost on a wrong .part.met write.
 		  This is the first step on bittorrent partial downloads import.
 
+	Hetfield:
+		* Added new inclusion path if distro in not detected
 
 Version 2.0.0-rc1 - The 'Mules and Rabbits love carrots' version.
 -------------
