@@ -746,8 +746,8 @@ void CDownloadListCtrl::OnGetFeedback( wxCommandEvent& WXUNUSED(event) )
 		feed << wxString(_("File Name:")) + wxT(" ") + file->GetFileName() + wxT("\r\n");
 		feed << wxString(_("File size:")) + wxT(" MB") + (file->GetFileSize()/1048576) + wxT("\r\n");
 		feed << wxString(_("Download:")) + wxT(" ") + (file->GetCompletedSize()/1048576) + wxT("\r\n");
-		feed << wxString(_("Sources:"))  + wxT("%u\r\n ") + file->GetSourceCount();
-		feed << wxString(_("Complete Sources:")) + wxT("%u\r\n") + file->m_nCompleteSourcesCount;
+		feed << wxString(_("Sources:"))  + wxT("%u\r\n ") + (file->GetSourceCount());
+		feed << wxString(_("Complete Sources:")) + wxT("%u\r\n") + (file->m_nCompleteSourcesCount);
 	}
 
 	if ( !feed.IsEmpty() ) {
