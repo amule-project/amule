@@ -85,7 +85,7 @@ AC_ARG_ENABLE(amulecmd,  [  --enable-amulecmd       Compile aMule command line c
 AC_ARG_ENABLE(amulecmdgui,  [  --enable-amulecmdgui    Compile aMule GUI client],
              GUI="$enableval", GUI="no")
 
-AC_ARG_ENABLE(amule-gui,  [  --enable-amule-gui    Compile aMule remote GUI],
+AC_ARG_ENABLE(amule-gui,  [  --enable-amule-gui    Compile aMule remote GUI > WARNING - don't use it. It DOESN'T work yet! <],
              AMULE_GUI="$enableval", AMULE_GUI="no")
 
 AC_ARG_ENABLE(amule-daemon,  [  --enable-amule-daemon    Compile aMule daemon version],
