@@ -445,11 +445,12 @@ bool CDownloadQueue::IsPartFile(const CKnownFile* totest) const{
 void CDownloadQueue::CheckAndAddSource(CPartFile* sender,CUpDownClient* source)
 {
 	// if we block loopbacks at this point it should prevent us from connecting to ourself
-	// Bodo: If one has running two clients running on the same system,
-	// Bodo: does this prevent us from conneting to the other client?
-	if(!source->HasLowID() && (source->GetUserID() & 0xFF) == 0x7F) {
-		delete source;
-		return;
+	if ( source->HasValidHash() ) {
+		if ( source->GetUserHash() == theApp.glob_prefs->GetUserHash() ) {
+			AddDebugLogLineM(false, wxT("Tried to add source with matching hash to your own."));
+			delete source;
+			return;
+		}
 	}
 
 	/*
@@ -518,11 +519,9 @@ void CDownloadQueue::CheckAndAddKnownSource(CPartFile* sender,CUpDownClient* sou
 		return;
 	}
 
-	/*
 	if (sender->IsStopped()) {
 		return;
 	}
-	*/
 
 	// use this for client which are already know (downloading for example)
 	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
