@@ -608,6 +608,9 @@ bool CamuleApp::OnInit()
 	// Build the filenames for the two OS files
 	SetOSFiles(thePrefs::GetOSDir());
 
+	// Load localization settings
+	Localize_mule();
+
 	// Display notification on new version or first run
 	wxTextFile vfile( ConfigDir + wxFileName::GetPathSeparator() + wxT("lastversion") );
 	wxString newMule(wxT(VERSION));
@@ -746,9 +749,6 @@ bool CamuleApp::OnInit()
 
 #endif // __BSD__
 #endif
-
-	// Load localization settings
-	Localize_mule();
 
 	statistics = new CStatistics();
 	
