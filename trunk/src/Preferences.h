@@ -33,6 +33,7 @@
 #include <vector>
 
 
+class CPreferences;
 class wxConfigBase;
 class wxWindow;
 
@@ -174,6 +175,11 @@ private:
 
 
 const int cntStatColors = 13;
+
+
+//! This typedef is a shortcut similar to the theApp shortcut, but uses :: instead of .
+//! It only allows access to static preference functions, however this is to be desired anyway.
+typedef CPreferences thePrefs;
 
 
 class CPreferences
@@ -633,5 +639,6 @@ protected:
 	
 	static bool	s_FastED2KLinksHandler;	// Madcat - Toggle Fast ED2K Links Handler
 };
+
 
 #endif // PREFERENCES_H
