@@ -968,6 +968,9 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 			Out = _("Got no response from aMule.");
 		}
 	}
+	if ( !HTTPTemp.IsEmpty() ) {
+		sCat = wxEmptyString;
+	}
 	//
 	// Commands
 	//
