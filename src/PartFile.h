@@ -32,13 +32,14 @@
 #include "GetTickCount.h"	// Needed for GetTickCount
 
 #include "updownclient.h"  // temporarily needed for #define DOWNLOADRATE_FILTERED
+#include "otherstructs.h"	// Needed for Gap_Struct
 
 class CSearchFile;
 class CUpDownClient;
 class completingThread;
-class Requested_Block_Struct;
 class CMemFile;
-class Gap_Struct;
+
+WX_DECLARE_LIST(Chunk, ListOfChunks);
 
 
 //#define BUFFER_SIZE_LIMIT	500000 // Max bytes before forcing a flush
