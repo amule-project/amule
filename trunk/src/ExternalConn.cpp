@@ -96,9 +96,8 @@ ExternalConn::ExternalConn(amuleIPV4Address addr, wxString *msg)
 		int port = addr.Service();
 		wxString ip = addr.IPAddress();
 		if (m_ECServer->Ok()) {
-			msgLocal = wxString::Format(
-				wxT("*** TCP socket (ECServer) listening on %s:%d"), 
-					unicode2char(ip), port);
+			msgLocal = wxT("*** TCP socket (ECServer) listening on ") + ip + 
+				wxString::Format(wxT(":%d"), port);
 			*msg += msgLocal + wxT("\n");
 			AddLogLineM(false, msgLocal);
 #ifdef AMULE_DAEMON

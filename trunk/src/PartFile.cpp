@@ -1064,7 +1064,7 @@ void CPartFile::SaveSourceSeeds() {
 	file.Create(m_fullname + wxT(".seeds"), true);
 	
 	if (!file.IsOpened()) {
-		AddLogLineM(false, wxString::Format(_("Failed to save part.met.seeds file for %s"), unicode2char(m_fullname)));
+		AddLogLineM(false, _("Failed to save part.met.seeds file for ") + m_fullname);
 	}	
 
 	uint8 src_count = source_seeds.GetCount();
@@ -1084,7 +1084,7 @@ void CPartFile::SaveSourceSeeds() {
 	file.Flush();
 	file.Close();
 
-	AddLogLineM(false, wxString::Format(_("Saved %i sources seeds for partfile: %s (%s)"), n_sources, unicode2char(m_fullname), unicode2char(m_strFileName)));
+	AddLogLineM(false, wxString::Format(_("Saved %i sources seeds for partfile: "), n_sources) + m_fullname + wxT("(") + m_strFileName +wxT(")"));
 	
 }	
 
