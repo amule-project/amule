@@ -104,7 +104,7 @@ void CSharedFileList::AddFilesFromDirectory(char* directory)
 		sprintf(searchpath,"%s*",directory);
 	}
 	
-	wxString fname=::wxFindFirstFile(searchpath,wxFILE);
+	wxString fname=::wxFindFirstFile(char2unicode(searchpath),wxFILE);
 	delete[] searchpath;
   	
 	if (fname.IsEmpty()) {
@@ -121,13 +121,13 @@ void CSharedFileList::AddFilesFromDirectory(char* directory)
 		uint32 fdate=wxFileModificationTime(fname);
 		int koko;
 		struct stat sbf;
-		stat(fname.GetData(),&sbf);
+		stat(unicode2char(fname.GetData()),&sbf);
 		koko=sbf.st_size;
 		CKnownFile* toadd=filelist->FindKnownFile((char*)fName.GetFullName().GetData(),fdate,koko);
 		//theApp.Yield();
 		if (toadd) {
 			if ( m_Files_map.find(CCKey(toadd->GetFileHash())) == m_Files_map.end() ) {
-				toadd->SetFilePath(directory);
+				toadd->SetFilePath(char2unicode(directory));
 				output->ShowFile(toadd);
 				list_mut.Lock();
 				m_Files_map[CCKey(toadd->GetFileHash())] = toadd;
@@ -138,7 +138,7 @@ void CSharedFileList::AddFilesFromDirectory(char* directory)
 			}
 		} else {
 			//not in knownfilelist - start adding thread to hash file
-			CAddFileThread::AddFile(directory, fName.GetFullName().GetData());
+			CAddFileThread::AddFile(char2unicode(directory), fName.GetFullName().GetData());
 		}
 		fname=::wxFindNextFile();
 	}

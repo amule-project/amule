@@ -96,7 +96,7 @@ bool XBMDraw::GetImage(CString &sImage)
 			// hopefully this is enough
 			char *tmpbuf=new char[2*nSize];			
 			sprintf(tmpbuf,"\n<script language=\"javascript\">\n%s = \'#define _width %d\\n#define _height %d\\nstatic unsigned char _bits[] = { %s }\'\n</script>\n",
-				unicode2char(m_sName),m_nWidth,m_nHeight,sBits);
+				m_sName.GetData(),m_nWidth,m_nHeight,sBits);
 
 			sImage=CString(tmpbuf);
 			delete[] sBits;
@@ -144,7 +144,7 @@ CString XBMDraw::GetImageTag()
 	try
 	{
 		CString sRet;
-		sRet.Printf(wxT("<img src=\"javascript:%s\" width=\"%d\" height=\"%d\">"), m_sName, m_nWidth, m_nHeight);
+		sRet.Printf(wxT("<img src=\"javascript:%s\" width=\"%d\" height=\"%d\">"), m_sName.GetData(), m_nWidth, m_nHeight);
 		return sRet;
 	}
 	catch(...)

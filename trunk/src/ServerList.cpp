@@ -94,7 +94,7 @@ uint8 CServerList::AutoUpdate()
 	POSITION Pos = app_prefs->adresses_list.GetHeadPosition(); 
 	while (Pos != NULL) {
 		strURLToDownload = app_prefs->adresses_list.GetNext(Pos); 
-		if (strURLToDownload.Find("://") == -1) {
+		if (strURLToDownload.Find(wxT("://")) == -1) {
 			theApp.amuledlg->AddLogLine(true, CString(_("Invalid URL %s")),strURLToDownload.c_str());
 		} else {
 			strTempFilename=  theApp.glob_prefs->GetAppDir() + wxString::Format(wxT("server_auto%u.met"), temp_count);
@@ -495,9 +495,9 @@ void CServerList::AddServersFromTextFile(CString strFilename,bool isstaticserver
 		}
 
 		// fetch host
-		int pos = strLine.Find(":");
+		int pos = strLine.Find(wxT(":"));
 		if (pos == -1) {
-			pos = strLine.Find(",");
+			pos = strLine.Find(wxT(","));
 			if (pos == -1) {
 				continue;
 			}
@@ -505,7 +505,7 @@ void CServerList::AddServersFromTextFile(CString strFilename,bool isstaticserver
 		wxString strHost = strLine.Left(pos);
 		strLine = strLine.Mid(pos+1);
 		// fetch  port
-		pos = strLine.Find(",");
+		pos = strLine.Find(wxT(","));
 		if (pos == -1) {
 			continue;
 		}
@@ -513,12 +513,12 @@ void CServerList::AddServersFromTextFile(CString strFilename,bool isstaticserver
 		strLine = strLine.Mid(pos+1);
 
 		// Barry - fetch priority
-		pos = strLine.Find(",");
+		pos = strLine.Find(wxT(","));
 		int priority = SRV_PR_HIGH;
 		if (pos == 1) {
 			wxString strPriority = strLine.Left(pos);
 			try {
-				priority = atoi(strPriority.GetData());
+				priority = atoi(unicode2char(strPriority));
 				if ((priority < 0) || (priority > 2)) {
 					priority = SRV_PR_HIGH;
 				}
@@ -529,8 +529,8 @@ void CServerList::AddServersFromTextFile(CString strFilename,bool isstaticserver
 
 		// fetch name
 		wxString strName = strLine;
-		strName.Replace("\r", "");
-		strName.Replace("\n", "");
+		strName.Replace(wxT("\r"),wxT( ""));
+		strName.Replace(wxT("\n"),wxT( ""));
 
 		// emanuelw(20030924) fix: if there is no name the ip is set as name
 		if(wxStrlen(strName) == 0) {
@@ -538,7 +538,7 @@ void CServerList::AddServersFromTextFile(CString strFilename,bool isstaticserver
 		}
 
 		// create server object and add it to the list
-		CServer* nsrv = new CServer(atoi(strPort), (char*)strHost.GetData());
+		CServer* nsrv = new CServer(atoi(unicode2char(strPort)), unicode2char(strHost));
 		nsrv->SetListName((char*)strName.GetData());
 
 		// emanuelw(20030924) fix: isstaticserver now is used! before it was always true
@@ -554,7 +554,7 @@ void CServerList::AddServersFromTextFile(CString strFilename,bool isstaticserver
 
 		if (!theApp.amuledlg->serverwnd->serverlistctrl->AddServer(nsrv, true))	{
 			delete nsrv;
-			CServer* srvexisting = GetServerByAddress((char*)strHost.GetData(), atoi(strPort));
+			CServer* srvexisting = GetServerByAddress((char*)strHost.GetData(), atoi(unicode2char(strPort)));
 			if (srvexisting) {
 				srvexisting->SetListName((char*)strName.GetData());
 				srvexisting->SetIsStaticMember(true);

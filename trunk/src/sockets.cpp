@@ -80,7 +80,7 @@ void CServerConnect::ConnectToAnyServer(uint32 startAt,bool prioSort,bool isAuto
 	lastStartAt=startAt;
 	StopConnectionTry();
 	Disconnect();
-	theApp.amuledlg->ShowConnectionState(false,"",true);
+	theApp.amuledlg->ShowConnectionState(false,wxT(""),true);
 	connecting = true;
 	singleconnecting = false;
 
@@ -217,7 +217,7 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender){
 		theApp.stat_serverConnectTime=GetTickCount64();
 		connected = true;
 		theApp.amuledlg->AddLogLine(true,CString(_("Connection established on: %s")),sender->cur_server->GetListName());
-		theApp.amuledlg->ShowConnectionState(true,sender->cur_server->GetListName());
+		theApp.amuledlg->ShowConnectionState(true,char2unicode(sender->cur_server->GetListName()));
 		CServer* update = theApp.serverlist->GetServerByAddress(sender->cur_server->GetAddress(),sender->cur_server->GetPort());
 		theApp.amuledlg->serverwnd->serverlistctrl->HighlightServer(update, true);
 		connectedsocket = sender;
@@ -303,7 +303,7 @@ void CServerConnect::ConnectionFailed(CServerSocket* sender){
 				m_idRetryTimer.SetOwner(&theApp,TM_TCPSOCKET);
 				m_idRetryTimer.Start(1000*CS_RETRYCONNECTTIME);
 			}
-			theApp.amuledlg->ShowConnectionState(false,"",true);
+			theApp.amuledlg->ShowConnectionState(false,wxT(""),true);
 			break;
 		}
 		case CS_DISCONNECTED:{
@@ -321,7 +321,7 @@ void CServerConnect::ConnectionFailed(CServerSocket* sender){
 			if (theApp.glob_prefs->GetNotifierPopOnImportantError()) {
 				theApp.amuledlg->ShowNotifier(CString(_("Connection lost")), TBN_IMPORTANTEVENT, false);
 			}
-			theApp.amuledlg->ShowConnectionState(false,"",true);
+			theApp.amuledlg->ShowConnectionState(false,wxT(""),true);
 			break;
 		}
 		case CS_ERROR:
@@ -352,7 +352,7 @@ void CServerConnect::ConnectionFailed(CServerSocket* sender){
 			TryAnotherConnectionrequest();
 		}
 	}
-	theApp.amuledlg->ShowConnectionState(false,"",true);
+	theApp.amuledlg->ShowConnectionState(false,wxT(""),true);
 }
 
 #if 0
@@ -398,7 +398,7 @@ bool CServerConnect::Disconnect(){
 		DestroySocket(connectedsocket);
 		connectedsocket = NULL;
 		connected = false;
-		theApp.amuledlg->ShowConnectionState(false,"");
+		theApp.amuledlg->ShowConnectionState(false,wxT(""));
 		//theApp.amuledlg->serverwnd->servermsgbox.AppendText(CString("\n\n\n\n"));
 		theApp.stat_serverConnectTime=0;
 		return true;
@@ -446,7 +446,7 @@ CServer* CServerConnect::GetCurrentServer(){
 
 void CServerConnect::SetClientID(uint32 newid){
 	clientid = newid;
-	theApp.amuledlg->ShowConnectionState(IsConnected(),GetCurrentServer()->GetListName() );
+	theApp.amuledlg->ShowConnectionState(IsConnected(),char2unicode(GetCurrentServer()->GetListName()) );
 }
 
 void CServerConnect::DestroySocket(CServerSocket* pSck){

@@ -228,9 +228,9 @@ void CSharedFilesCtrl::UpdateFile(CKnownFile* file,uint32 itemnr)
 
 	SetItem(itemnr,5,EncodeBase16(file->GetFileHash(), 16));
 
-	buffer.Format("%u (%u)",file->statistic.GetRequests(),file->statistic.GetAllTimeRequests());SetItem(itemnr,6,buffer);
-	buffer.Format("%u (%u)",file->statistic.GetAccepts(),file->statistic.GetAllTimeAccepts());SetItem(itemnr,7,buffer);
-	buffer.Format("%s (%s)",CastItoXBytes(file->statistic.GetTransfered()).GetData(), CastItoXBytes(file->statistic.GetAllTimeTransfered()).GetData());SetItem(itemnr,8,buffer);
+	buffer.Format(wxT("%u (%u)"),file->statistic.GetRequests(),file->statistic.GetAllTimeRequests());SetItem(itemnr,6,buffer);
+	buffer.Format(wxT("%u (%u)"),file->statistic.GetAccepts(),file->statistic.GetAllTimeAccepts());SetItem(itemnr,7,buffer);
+	buffer.Format(wxT("%s (%s)"),CastItoXBytes(file->statistic.GetTransfered()).GetData(), CastItoXBytes(file->statistic.GetAllTimeTransfered()).GetData());SetItem(itemnr,8,buffer);
 }
 
 void CSharedFilesCtrl::ShowFile(CKnownFile* file)
@@ -271,7 +271,7 @@ bool CSharedFilesCtrl::ProcessEvent(wxEvent& evt)
 					wxString str;
 					do {
 						CKnownFile* file2 = (CKnownFile*)GetItemData(i);
-						str += theApp.CreateED2kLink(file2) + "\n";
+						str += theApp.CreateED2kLink(file2) + wxT("\n");
 					} while ((i=GetNextItem(i,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED)) != -1);
 					theApp.CopyTextToClipboard(str);
 					break;
@@ -286,7 +286,7 @@ bool CSharedFilesCtrl::ProcessEvent(wxEvent& evt)
 					wxString str;
 					do {
 						CKnownFile* file2 = (CKnownFile*)GetItemData(i);
-						str += theApp.CreateED2kSourceLink(file2) + "\n";
+						str += theApp.CreateED2kSourceLink(file2) + wxT("\n");
 					} while ((i=GetNextItem(i,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED)) != -1);
 					theApp.CopyTextToClipboard(str);
 					break;
@@ -301,7 +301,7 @@ bool CSharedFilesCtrl::ProcessEvent(wxEvent& evt)
 					wxString str;
 					do {
 						CKnownFile* file2 = (CKnownFile*)GetItemData(i);
-						str += theApp.CreateED2kHostnameSourceLink(file2) + "\n";
+						str += theApp.CreateED2kHostnameSourceLink(file2) + wxT("\n");
 					} while ((i=GetNextItem(i,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED)) != -1);
 					theApp.CopyTextToClipboard(str);
 					break;
@@ -316,7 +316,7 @@ bool CSharedFilesCtrl::ProcessEvent(wxEvent& evt)
 					wxString str;
 					do {
 						CKnownFile* file2 = (CKnownFile*)GetItemData(i);
-						str += theApp.CreateHTMLED2kLink(file2) + "\n";
+						str += theApp.CreateHTMLED2kLink(file2) + wxT("\n");
 					} while ((i=GetNextItem(i,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED)) != -1);
 					theApp.CopyTextToClipboard(str);
 					break;
@@ -511,9 +511,9 @@ int CSharedFilesCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 	CKnownFile* item2 = (CKnownFile*)lParam2;	
 	switch(lParamSort){
 		case 0: //filename asc
-			return strcasecmp(item1->GetFileName().c_str(),item2->GetFileName().c_str());
+			return item1->GetFileName().CmpNoCase(item2->GetFileName());
 		case 20: //filename desc
-			return strcasecmp(item2->GetFileName().c_str(),item1->GetFileName().c_str());
+			return item2->GetFileName().CmpNoCase(item1->GetFileName());
 
 		case 1: //filesize asc
 			return item1->GetFileSize()==item2->GetFileSize()?0:(item1->GetFileSize()>item2->GetFileSize()?1:-1);
@@ -523,9 +523,9 @@ int CSharedFilesCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 
 
 		case 2: //filetype asc
-			return strcasecmp( GetFiletypeByName(item1->GetFileName()).c_str(),GetFiletypeByName( item2->GetFileName()).c_str() );
+			return GetFiletypeByName(item1->GetFileName()).CmpNoCase(GetFiletypeByName( item2->GetFileName()));
 		case 22: //filetype desc
-			return strcasecmp( GetFiletypeByName(item2->GetFileName()).c_str(),GetFiletypeByName( item1->GetFileName()).c_str() );
+			return GetFiletypeByName(item2->GetFileName()).CmpNoCase(GetFiletypeByName( item1->GetFileName()));
 
 		case 3: //prio asc
 			if(item1->GetUpPriority() == PR_VERYLOW )

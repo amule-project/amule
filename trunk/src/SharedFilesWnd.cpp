@@ -49,13 +49,13 @@ CSharedFilesWnd::CSharedFilesWnd(wxWindow* pParent /*=NULL*/)
 	wxSizer* content=sharedfilesDlg(this,TRUE);
 	content->Show(this,TRUE);
 
-	pop_bar=(wxGauge*)FindWindowByName("popbar");
-	pop_baraccept=(wxGauge*)FindWindowByName("popbarAccept");
-	pop_bartrans=(wxGauge*)FindWindowByName("popbarTrans");
+	pop_bar=(wxGauge*)FindWindowByName(wxT("popbar"));
+	pop_baraccept=(wxGauge*)FindWindowByName(wxT("popbarAccept"));
+	pop_bartrans=(wxGauge*)FindWindowByName(wxT("popbarTrans"));
 
 	// can't do here. 
 	//theApp.sharedfiles->SetOutputCtrl((CSharedFilesCtrl*)FindWindowByName("sharedFilesCt"));
-	sharedfilesctrl=(CSharedFilesCtrl*)(FindWindowByName("sharedFilesCt"));
+	sharedfilesctrl=(CSharedFilesCtrl*)(FindWindowByName(wxT("sharedFilesCt")));
 }
 
 CSharedFilesWnd::~CSharedFilesWnd()
@@ -101,21 +101,21 @@ void CSharedFilesWnd::ShowDetails(CKnownFile* cur_file)
 	pop_bar->SetValue(cur_file->statistic.GetRequests());
 	//pop_bar.SetShowPercent();			
 	sprintf(buffer,"%u",cur_file->statistic.GetRequests());
-	GetDlgItem(IDC_SREQUESTED)->SetLabel(buffer);
+	GetDlgItem(IDC_SREQUESTED)->SetLabel(char2unicode(buffer));
 
 	sprintf(buffer,"%u",cur_file->statistic.GetAccepts());
 	pop_baraccept->SetRange(theApp.knownfiles->accepted);
 	pop_baraccept->SetValue(cur_file->statistic.GetAccepts());
 	//pop_baraccept.SetShowPercent();
-	GetDlgItem(IDC_SACCEPTED)->SetLabel(buffer);
+	GetDlgItem(IDC_SACCEPTED)->SetLabel(char2unicode(buffer));
 	
 	GetDlgItem(IDC_STRANSFERED2)->SetLabel(CastItoXBytes(cur_file->statistic.GetAllTimeTransfered()));
 
 	sprintf(buffer,"%u",cur_file->statistic.GetAllTimeRequests());
-	GetDlgItem(IDC_SREQUESTED2)->SetLabel(buffer);
+	GetDlgItem(IDC_SREQUESTED2)->SetLabel(char2unicode(buffer));
 
 	sprintf(buffer,"%u",cur_file->statistic.GetAllTimeAccepts());
-	GetDlgItem(IDC_SACCEPTED2)->SetLabel(buffer);
+	GetDlgItem(IDC_SACCEPTED2)->SetLabel(char2unicode(buffer));
 
 	memcpy(shownFileHash,cur_file->GetFileHash(),16);
 
