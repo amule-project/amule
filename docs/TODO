@@ -54,7 +54,6 @@
 - shak:
 	- web interface features (high):
 		+ Graphs
-		+ Categories
 	- ssl support for communication protocol
 
 - hellimod:

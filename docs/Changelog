@@ -125,6 +125,7 @@ Version 2.0.0-rc2 - The 'white rabbit' version.
 		* WebServer cleanly stopped before exit
 		* Fixed multiple file download bug in webserver search section
 		* Fixed ed2k download link
+		* Fixed categories for web interface
 		  
 	thepolish:
 	
