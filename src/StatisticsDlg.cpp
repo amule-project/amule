@@ -696,7 +696,7 @@ void  CStatisticsDlg::InitTree()
 #ifdef  __DEBUG__
 	cli17= stattree->AppendItem(h_clients,_("Waiting...")); // HasSocket
 #endif
-	cli7= stattree->AppendItem(h_clients,_("Filtered: %i"));
+	cli7= stattree->AppendItem(h_clients,_("Waiting..."));
 
 
 	h_servers = stattree->AppendItem(root,_("Servers"));
