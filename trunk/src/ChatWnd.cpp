@@ -143,9 +143,9 @@ void CChatWnd::OnBnClickedCclose(wxCommandEvent& WXUNUSED(evt))
 }
 
 
-CFriend* CChatWnd::FindFriend(const uchar* achUserHash, uint32 dwIP, uint16 nPort)
+CFriend* CChatWnd::FindFriend(const CMD4Hash& userhash, uint32 dwIP, uint16 nPort)
 {
-	return friendlist->FindFriend(achUserHash, dwIP, nPort);
+	return friendlist->FindFriend(userhash, dwIP, nPort);
 }
 
 
@@ -155,7 +155,7 @@ void CChatWnd::AddFriend(CUpDownClient* toadd)
 }
 
 
-void CChatWnd::AddFriend(uchar userhash[16], uint32 lastSeen, uint32 lastUsedIP, uint32 lastUsedPort, uint32 lastChatted, wxString name, uint32 hasHash)
+void CChatWnd::AddFriend(const CMD4Hash& userhash, uint32 lastSeen, uint32 lastUsedIP, uint32 lastUsedPort, uint32 lastChatted, wxString name, uint32 hasHash)
 {
 	friendlist->AddFriend( userhash, lastSeen, lastUsedIP, lastUsedPort, lastChatted, name, hasHash);
 }
