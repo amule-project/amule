@@ -623,18 +623,19 @@ CECPacket *Get_EC_Response_Server(const CECPacket *request)
 	CECTag *srv_tag = request->GetTagByIndex(0);
 	CServer *srv = 0;
 	if ( srv_tag ) {
-		uint32 srv_id = srv_tag->GetInt32Data();
+		EC_IPv4_t *addr = srv_tag->GetIPv4Data();
+		uint32 srv_ip = addr->ip[0] | (addr->ip[1] << 8) | (addr->ip[2] << 16) | (addr->ip[3] << 24);
 		for(uint32 i = 0; i < theApp.serverlist->GetServerCount(); i++) {
 			CServer *curr_srv = theApp.serverlist->GetServerAt(i);
-			if ( PTR_2_ID(curr_srv) == srv_id ) {
+			if ( curr_srv->GetIP() == srv_ip && curr_srv->GetPort() == addr->port) {
 				srv = curr_srv;
 				break;
 			}
 		}
-		// tag with id passed, but server not found
+		// server tag passed, but server not found
 		if ( !srv ) {
 			response->AddTag(CECTag(EC_TAG_STRING,
-						_("ERROR: server not found by id")));
+						wxString::Format(_("ERROR: server [%d.%d.%d.%d:%d] not found"), addr->ip[0], addr->ip[1], addr->ip[2], addr->ip[3], addr->port)));
 			return response;
 		}
 	}
@@ -649,7 +650,7 @@ CECPacket *Get_EC_Response_Server(const CECPacket *request)
 				response->AddTag(CECTag(EC_TAG_STRING, _("OK: server removed")));
 			} else {
 				response->AddTag(CECTag(EC_TAG_STRING,
-							_("ERROR: id must present in this command")));
+							_("ERROR: need to define server to be removed")));
 			}
 			break;
 		case EC_OP_SERVER_CONNECT:
@@ -658,7 +659,7 @@ CECPacket *Get_EC_Response_Server(const CECPacket *request)
 				response->AddTag(CECTag(EC_TAG_STRING, _("OK: trying to connect")));
 			} else {
 				theApp.serverconnect->ConnectToAnyServer();
-				response->AddTag(CECTag(EC_TAG_STRING, _("OK: connecting to any server")));
+				response->AddTag(CECTag(EC_TAG_STRING, _("OK: connecting to a random server")));
 			}
 			break;
 	}	

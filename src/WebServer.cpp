@@ -822,23 +822,38 @@ wxString CWebServer::_GetServerList(ThreadData Data) {
 
 	wxString sCmd = _ParseURL(Data, wxT("c"));
 	if (sCmd == wxT("connect") && IsSessionAdmin(Data,sSession) ) {
-		wxString sID = _ParseURL(Data, wxT("id"));
-		uint32 id;
-		CECPacket req(EC_OP_SERVER_CONNECT);
-		if ( sID.ToULong((unsigned long *)&id, 16) ) {
-			req.AddTag(CECTag(EC_TAG_ITEM_ID, id));
+		wxString sIP = _ParseURL(Data, wxT("ip"));
+		wxString sPort = _ParseURL(Data, wxT("port"));
+		uint32 ip;
+		uint32 port;
+		if ( sIP.ToULong((unsigned long *)&ip, 16) && sPort.ToULong((unsigned long *)&port, 10) ) {
+			EC_IPv4_t addr;
+			CECPacket req(EC_OP_SERVER_CONNECT);
+			addr.ip[0] = (uint8)ip;
+			addr.ip[1] = (uint8)(ip >> 8);
+			addr.ip[2] = (uint8)(ip >> 16);
+			addr.ip[3] = (uint8)(ip >> 24);
+			addr.port = port;
+			req.AddTag(CECTag(EC_TAG_SERVER, &addr));
+			pThis->Send_Discard_V2_Request(&req);
 		}
-		pThis->Send_Discard_V2_Request(&req);
 	} else if (sCmd == wxT("disconnect") && IsSessionAdmin(Data,sSession)) {
 		CECPacket req(EC_OP_SERVER_DISCONNECT);
 		pThis->Send_Discard_V2_Request(&req);
 	} else if (sCmd == wxT("remove") && IsSessionAdmin(Data,sSession)) {
-		wxString sID = _ParseURL(Data, wxT("id"));
-		uint32 id;
-		CECPacket req(EC_OP_SERVER_CONNECT);
-		if ( sID.ToULong((unsigned long *)&id, 16) ) {
+		wxString sIP = _ParseURL(Data, wxT("ip"));
+		wxString sPort = _ParseURL(Data, wxT("port"));
+		uint32 ip;
+		uint32 port;
+		if ( sIP.ToULong((unsigned long *)&ip, 16) && sPort.ToULong((unsigned long *)&port, 10) ) {
+			EC_IPv4_t addr;
 			CECPacket req(EC_OP_SERVER_REMOVE);
-			req.AddTag(CECTag(EC_TAG_ITEM_ID, id));
+			addr.ip[0] = (uint8)ip;
+			addr.ip[1] = (uint8)(ip >> 8);
+			addr.ip[2] = (uint8)(ip >> 16);
+			addr.ip[3] = (uint8)(ip >> 24);
+			addr.port = port;
+			req.AddTag(CECTag(EC_TAG_SERVER, &addr));
 			pThis->Send_Discard_V2_Request(&req);
 		}
 	} else if (sCmd == wxT("options")) {
@@ -936,8 +951,8 @@ wxString CWebServer::_GetServerList(ThreadData Data) {
 		{
 			EC_IPv4_t *addr = tag->GetIPv4Data();
 			Entry->sServerIP = wxString::Format(wxT("%d.%d.%d.%d : %d"), addr->ip[0], addr->ip[1], addr->ip[2], addr->ip[3], addr->port);
-			// will be removed in the near future
-			Entry->nServerID = (uint32)addr->ip;
+			Entry->nServerIP = addr->ip[0] | (addr->ip[1] << 8) | (addr->ip[2] << 16) | (addr->ip[3] << 24);
+			Entry->nServerPort = addr->port;
 			delete addr;
 		}
 		if ((tmpTag = tag->GetTagByName(EC_TAG_SERVER_USERS)) != NULL) {
@@ -1020,11 +1035,11 @@ wxString CWebServer::_GetServerList(ThreadData Data) {
 		HTTPProcessData.Replace(wxT("[5]"), sT);
 		if ( IsSessionAdmin(Data,sSession) ) {
 			HTTPProcessData.Replace(wxT("[6]"),
-						wxString::Format(wxT("?ses=%s&w=server&c=connect&id=%08x"),
-								 sSession.GetData(), ServerArray[i]->nServerID));
+						wxString::Format(wxT("?ses=%s&w=server&c=connect&ip=%08x&port=%d"),
+								 sSession.GetData(), ServerArray[i]->nServerIP, ServerArray[i]->nServerPort));
 			HTTPProcessData.Replace(wxT("[LinkRemove]"),
-						wxString::Format(wxT("?ses=%s&w=server&c=remove&id=%08x"),
-								 sSession.GetData(), ServerArray[i]->nServerID));
+						wxString::Format(wxT("?ses=%s&w=server&c=remove&ip=%08x&port=%d"),
+								 sSession.GetData(), ServerArray[i]->nServerIP, ServerArray[i]->nServerPort));
 		} else {
 			HTTPProcessData.Replace(wxT("[6]"), GetPermissionDenied());
 			HTTPProcessData.Replace(wxT("[LinkRemove]"), GetPermissionDenied());
