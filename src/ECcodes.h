@@ -286,6 +286,16 @@ enum {
 	EC_OP_SHAREDFILES_RELOAD,
 
 
+		/*!
+		 * \brief Command to start new search
+		 */
+	EC_OP_SEARCH_START,
+	
+		/*!
+		 * \brief Search results returned to client
+		 */
+	EC_OP_SEARCH_RESULTS,
+	
 	//
 	// IPFilter
 	//
@@ -829,6 +839,28 @@ enum {
 	 */
 	EC_TAG_UPDOWN_CLIENT,
 
+	//
+	// Search
+	//
+	
+		/*!
+		 * \brief Type of search requested
+		 * 
+		 * Value: (\c uint32) EC_SEARCH_TYPE
+		 */
+	EC_TAG_SEARCH_TYPE,
+	
+		/*!
+		 * \brief Search parameters
+		 */
+	EC_TAG_SEARCH_NAME,
+	
+	EC_TAG_SEARCH_MIN_SIZE,
+	EC_TAG_SEARCH_MAX_SIZE,
+	EC_TAG_SEARCH_FILE_TYPE,
+	EC_TAG_SEARCH_EXTENSION,
+	EC_TAG_SEARCH_AVAILABILITY,
+
 
 	//
 	// Preferences
@@ -1218,6 +1250,15 @@ enum EC_DETAIL_LEVEL {
 };
 
 
+/*!
+ * Search type
+ */
+ 
+enum EC_SEARCH_TYPE {
+	EC_SEARCH_LOCAL,
+	EC_SEARCH_GLOBAL,
+	EC_SEARCH_WEB,
+};
 /*
  * EC Preferences selection bit values.
  */
