@@ -1886,7 +1886,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 									DebugSend("OP__AnswerSources", m_client, (char*)file->GetFileHash());
 								}
 								if (thePrefs.GetDebugSourceExchange()) {
-									AddDebugLogLineM(false, wxString::Format(wxT("RCV:Source Request User(%s) File(%s)"), unicode2char(m_client->GetUserName()), unicode2char(file->GetFileName())));
+									AddDebugLogLineM(false, wxT("RCV:Source Request User(") + m_client->GetUserName() + wxT(") File(") + file->GetFileName() + wxT(")"));
 								}
 								#endif
 							}
@@ -2214,15 +2214,15 @@ void CClientReqSocket::OnError(int nErrorCode)
 			// 107  -> Transport endpoint is not connected
 			if (m_client) {
 				if (m_client->GetUserName()) {
-					strError = wxString(_("OnError: Client '")) + m_client->GetUserName();
-					strError += wxString::Format(_("' (IP:%s) caused an error: %u. Disconnecting client!"),
-						unicode2char(m_client->GetFullIP()), nErrorCode);
+					strError = _("OnError: Client '") + m_client->GetUserName() +
+								 _("' (IP:") + m_client->GetFullIP() + 
+								wxString::Format(_(") caused an error: %u. Disconnecting client!"),nErrorCode);
 				} else {
-					strError.Printf(_("OnError: Unknown client (IP:%s) caused an error: %u. Disconnecting client!"),
-						unicode2char(m_client->GetFullIP()), nErrorCode);
+					strError = _("OnError: Unknown client (IP:") + 
+					  m_client->GetFullIP() + wxString::Format(_(") caused an error: %u. Disconnecting client!"),nErrorCode);
 				}
 			} else {
-				strError.Printf(_("OnError: A client caused an error or did something bad (error %u). Disconnecting client !"),
+				strError = wxString::Format(_("OnError: A client caused an error or did something bad (error %u). Disconnecting client !"),
 					nErrorCode);
 			}
 			AddDebugLogLineM(false, strError);

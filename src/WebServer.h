@@ -555,7 +555,7 @@ class CAnyImage {
 class CFileImage : public CAnyImage {
 		wxString m_name;
 	public:
-		CFileImage(const char *name);
+		CFileImage(const wxString& name);
 		
 		bool OpenOk() { return m_size != 0; }
 };

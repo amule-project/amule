@@ -636,7 +636,7 @@ void CUpDownClient::ProcessBlockPacket(const char *packet, uint32 size, bool pac
 			// Found reserved block
 				
 			if (cur_block->fZStreamError){
-				AddDebugLogLineM(false, wxString::Format(wxT("Ignoring %u bytes of block %u-%u because of errornous zstream state for file \"%s\""), size - HEADER_SIZE, nStartPos, nEndPos, unicode2char(m_reqfile->GetFileName())));
+				AddDebugLogLineM(false, wxString::Format(wxT("Ignoring %u bytes of block %u-%u because of errornous zstream state for file : "), size - HEADER_SIZE, nStartPos, nEndPos) + m_reqfile->GetFileName());
 				m_reqfile->RemoveBlockFromList(cur_block->block->StartOffset, cur_block->block->EndOffset);
 				return;
 			}
@@ -684,7 +684,7 @@ void CUpDownClient::ProcessBlockPacket(const char *packet, uint32 size, bool pac
 						nEndPos = cur_block->block->StartOffset + cur_block->totalUnzipped - 1;
 
 						if (nStartPos > cur_block->block->EndOffset || nEndPos > cur_block->block->EndOffset) {
-							AddDebugLogLineM(false, wxString::Format(wxT("Corrupted compressed packet for %s received (error %i)"), unicode2char(m_reqfile->GetFileName()), 666));
+							AddDebugLogLineM(false, wxT("Corrupted compressed packet for ") + m_reqfile->GetFileName() + wxT(" received (error 666)"));
 							m_reqfile->RemoveBlockFromList(cur_block->block->StartOffset, cur_block->block->EndOffset);
 						} else {
 							// Write uncompressed data to file
@@ -949,7 +949,7 @@ void CUpDownClient::UDPReaskFNF()
 			}
 		}
 	} else {
-		AddDebugLogLineM(false,wxString::Format(wxT("UDP ANSWER FNF : %s - did not remove client because of current download state"), unicode2char(GetUserName())));
+		AddDebugLogLineM(false, wxT("UDP ANSWER FNF : ") + GetUserName() + wxT(" - did not remove client because of current download state")); 
 	}
 }
 

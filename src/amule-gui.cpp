@@ -199,6 +199,7 @@ int CamuleGuiBase::InitGui(bool geometry_enabled, wxString &geom_string)
 	if ( geometry_enabled ) {	
 		// I plan on moving this to a seperate function, as it just clutters up OnInit()
 #ifdef __WXGTK__
+		// Nothing we can do against this unicode2char either.
 		XParseGeometry(unicode2char(geom_string), &geometry_x, &geometry_y, &geometry_width, &geometry_height);
 		geometry_enabled = true;
 #elif defined (__WXMSW__)

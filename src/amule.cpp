@@ -885,10 +885,10 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 	// Open both files for writing
 	CFile amulesig_out, emulesig_out;
 	if (!emulesig_out.Open(emulesig_path, CFile::write)) {
-		AddLogLineM(true, wxString(_("Failed to save"))+wxString(_(" OnlineSig File")));
+		AddLogLineM(true, wxString(_("Failed to save"))+_(" OnlineSig File"));
 	}
 	if (!amulesig_out.Open(amulesig_path, CFile::write)) {
-		AddLogLineM(true, wxString(_("Failed to save"))+wxString(_(" aMule OnlineSig File")));
+		AddLogLineM(true, wxString(_("Failed to save"))+_(" aMule OnlineSig File"));
 	}
 
 	char buffer[256];
@@ -1086,6 +1086,7 @@ void CamuleApp::OnFatalException()
 			funcname[i] = wxBtString.Mid(posLPar + 1, len);
 			if (funcname[i].Mid(0,2) == wxT("_Z")) {
 				int status;
+				// This unicode2char is unavoidable (and only used for backtraces anyway)
 				char *demangled = abi::__cxa_demangle(unicode2char(funcname[i]), NULL, NULL, &status);
 				if (!status) {
 					funcname[i] = char2unicode(demangled);

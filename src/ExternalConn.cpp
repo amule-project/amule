@@ -111,10 +111,9 @@ ExternalConn::ExternalConn(amuleIPV4Address addr, wxString *msg)
 			}
 #endif
 		} else {
-			msgLocal = wxString::Format(
-				wxT("Could not listen for external connections at %s:%d!"),
-					unicode2char(ip), port);
-			*msg += msgLocal  + wxT("\n");
+			msgLocal = wxT("Could not listen for external connections at ") + ip + 
+				wxString::Format(wxT(":%d!"), port);
+			*msg += msgLocal + wxT("\n");
 			AddLogLineM(false, msgLocal);
 		}
 	} else {

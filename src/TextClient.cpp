@@ -270,6 +270,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			if ( ! args.IsEmpty() ) {
 				unsigned int ip[4];
 				unsigned int port;
+				// Not much we can do against this unicode2char.
 				int result = sscanf(unicode2char(args), "%d.%d.%d.%d:%d", &ip[0], &ip[1], &ip[2], &ip[3], &port);
 				if (result == 5) {
 					EC_IPv4_t addr;
@@ -694,4 +695,3 @@ int CamulecmdApp::OnRun() {
 	
 	return true;
 }
-
