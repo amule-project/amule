@@ -96,7 +96,7 @@ BEGIN_EVENT_TABLE(CamuleDlg, wxFrame)
 	EVT_TOOL(ID_BUTTONMESSAGES, CamuleDlg::OnToolBarButton)
 	EVT_TOOL(ID_BUTTONSTATISTICS, CamuleDlg::OnToolBarButton)
 	EVT_TOOL(ID_BUTTONKAD, CamuleDlg::OnToolBarButton)
-    EVT_TOOL(ID_ABOUT, CamuleDlg::OnToolBarButton)
+	EVT_TOOL(ID_ABOUT, CamuleDlg::OnAboutButton)
 	
 	EVT_TOOL(ID_BUTTONNEWPREFERENCES, CamuleDlg::OnPrefButton)
 
@@ -397,10 +397,9 @@ void CamuleDlg::OnToolBarButton(wxCommandEvent& ev)
 					SetActiveDialog(KadWnd, kadwnd);
 					break;
 				
-				case ID_ABOUT:
-				    wxMessageBox(wxString::wxString(
-				_("aMule - 'all-platform' p2p client based on eMule.\n\n Website: http://www.amule.org\n Forum: http://forum.amule.org \n FAQ: http://wiki.amule.org \n\n Copyright (C) 2003-2004 aMule Project \n")));
-                    break;
+				//case ID_ABOUT:
+				//	wxMessageBox(wxString::wxString( _("aMule - 'all-platform' p2p client based on eMule.\n\n Website: http://www.amule.org\n Forum: http://forum.amule.org \n FAQ: http://wiki.amule.org \n\n Copyright (C) 2003-2004 aMule Project \n")));
+                    		//	break;
 				     
 				
 				// This shouldn't happen, but just in case
@@ -415,6 +414,12 @@ void CamuleDlg::OnToolBarButton(wxCommandEvent& ev)
 	}
 }
 
+
+void CamuleDlg::OnAboutButton(wxCommandEvent& WXUNUSED(ev))
+{
+	if ( theApp.IsReady )
+		wxMessageBox(wxString::wxString( _("aMule - 'all-platform' p2p client based on eMule.\n\n Website: http://www.amule.org\n Forum: http://forum.amule.org \n FAQ: http://wiki.amule.org \n\n Copyright (C) 2003-2004 aMule Project \n")));
+}
 
 void CamuleDlg::OnPrefButton(wxCommandEvent& WXUNUSED(ev))
 {
