@@ -77,8 +77,35 @@ class CamulewebFrame : public wxFrame {
 
 // GUI Version
 class CamulewebApp : public wxApp
-
 #else // AMULEWEBDLG
+class CamulewebApp : public wxApp
+#endif // AMULEWEBDLG
+{
+	public:
+		void 		Print(char *sFormat, ...);
+		wxString	SendRecvMsg(const wxChar *msg);
+#ifdef AMULEWEBDLG
+	private:
+		// GUI Version
+		virtual bool	OnInit();
+		int		OnExit();
+		CamulewebFrame 	*frame;
+#else // AMULEWEBDLG
+	private:
+		// Command line version
+		virtual int 	OnRun();
+		virtual void 	OnInitCmdLine(wxCmdLineParser& amuleweb_parser) {
+			amuleweb_parser.SetDesc(cmdLineDesc); 
+		}
+		virtual bool 	OnCmdLineParsed(wxCmdLineParser& amuleweb_parser);
+		
+		bool 		m_HasCommandLinePassword;
+		wxString	m_CommandLinePassword;
+#endif // AMULEWEBDLG
+	private:
+		wxString 	sPort;
+		wxString 	hostName;
+};
 
 /******************************************************************************
  * The next set of conditionals are used to find out the value of wxUSE_GUI
@@ -99,43 +126,6 @@ class CamulewebApp : public wxApp
 #endif
 #endif
 /******************************************************************************/
-
-// Command line version
-// This wxCHECK_VERSION should not be necessary, it is only here until the 
-// wxApp -> wxAppConsole mapping issue is not resolved in wxWidgets.
-#if wxCHECK_VERSION(2,5,0)
-//#if 0
-class CamulewebApp : public wxAppConsole
-#else  // wxCHECK_VERSION
-class CamulewebApp : public wxApp
-#endif // wxCHECK_VERSION
-
-#endif // AMULEWEBDLG
-{
-	public:
-		void 		Print(char *sFormat, ...);
-		wxString	SendRecvMsg(const wxChar *msg);
-#ifdef AMULEWEBDLG
-	private:
-		// GUI Version
-		virtual bool	OnInit();
-		int		OnExit();
-		CamulewebFrame 	*frame;
-#else // AMULEWEBDLG
-	private:
-		// Command line version
-		virtual int 	OnRun();
-		virtual void 	OnInitCmdLine(wxCmdLineParser& amuleweb_parser)
-			{ amuleweb_parser.SetDesc(cmdLineDesc); }
-		virtual bool 	OnCmdLineParsed(wxCmdLineParser& amuleweb_parser);
-		
-		bool 		m_HasCommandLinePassword;
-		wxString	m_CommandLinePassword;
-#endif // AMULEWEBDLG
-	private:
-		wxString 	sPort;
-		wxString 	hostName;
-};
 
 #endif //WEBINTERFACE_H
 

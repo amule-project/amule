@@ -41,10 +41,10 @@
 #ifndef AMULECMDDLG
  static const wxCmdLineEntryDesc cmdLineDesc[] =
 {
-//	{ wxCMD_LINE_OPTION, "h", "help",  "show this help" },
+	{ wxCMD_LINE_OPTION, wxT("h"), wxT("help"),  wxT("show this help") },
 	{ wxCMD_LINE_OPTION, wxT("rh"), wxT("remote-host"),  wxT("host where aMule is running (default localhost)")},
 	{ wxCMD_LINE_OPTION, wxT("p"), wxT("port"),   wxT("aMule's port for External Connection"),wxCMD_LINE_VAL_NUMBER},
-
+	{ wxCMD_LINE_OPTION, wxT("pw"), wxT("password"), wxT("Password.")},
 	{ wxCMD_LINE_NONE }
 };
 #endif
@@ -72,28 +72,27 @@ private:
 };
 #endif
 
-#if wxCHECK_VERSION(2,5,0)
-//#if 0
-class CamulecmdApp : public wxAppConsole
-#else  // wxCHECK_VERSION
 class CamulecmdApp : public wxApp
-#endif // wxCHECK_VERSION
 {
+#ifdef AMULECMDDLG
 public:
-	
-#ifndef AMULECMDDLG
-	virtual int 			OnRun();
-	virtual void OnInitCmdLine(wxCmdLineParser& amulecmd_parser) {
+	virtual bool 	OnInit();
+	virtual int	OnExit();
+	CamulecmdFrame *frame;
+#else
+private:
+	virtual int 	OnRun();
+	virtual void 	OnInitCmdLine(wxCmdLineParser& amulecmd_parser) {
 		amulecmd_parser.SetDesc(cmdLineDesc); 	
 	}
-	virtual bool OnCmdLineParsed(wxCmdLineParser& amulecmd_parser);
-#else
-	virtual bool 			OnInit();
-	virtual int			OnExit();
-	CamulecmdFrame *frame;
+	virtual bool 	OnCmdLineParsed(wxCmdLineParser& amulecmd_parser);
+	bool 		m_HasCommandLinePassword;
+	wxString	m_CommandLinePassword;
+
 #endif
-	wxString sPort;
-	wxString hostName;
+private:
+	wxString	sPort;
+	wxString	hostName;
 };
 
 /*
