@@ -38,8 +38,8 @@ ArrayOfCWCThread s_wcThreads;
 static wxMutex *s_mutex_wcThreads;
 
 /*** CWSThread ***/
-CWSThread::CWSThread(CWebServer *ws) {
-	this->ws = ws;
+CWSThread::CWSThread(CWebServer *webserver) {
+	ws = webserver;
 	
 	//retrieve web server listening port
 	wsport = ws->GetWSPrefs();
