@@ -98,8 +98,8 @@ amulegui_SOURCES = \
 	TransferWnd.cpp \
 	amule.cpp
 
-amule_SOURCES = ListenSocket.cpp \
-	EMSocket.cpp \
+amule_SOURCES = \
+	kademlia/utils/UInt128.cpp \
 	AddFriend.cpp \
 	AddFileThread.cpp \
 	AICHSyncThread.cpp \
@@ -112,6 +112,7 @@ amule_SOURCES = ListenSocket.cpp \
 	ClientCredits.cpp \
 	ClientDetailDialog.cpp \
 	ClientList.cpp \
+	ClientListCtrl.cpp \
 	ClientUDPSocket.cpp \
 	ColorFrameCtrl.cpp \
 	CommentDialog.cpp \
@@ -120,11 +121,12 @@ amule_SOURCES = ListenSocket.cpp \
 	DownloadClient.cpp \
 	DownloadListCtrl.cpp \
 	DownloadQueue.cpp \
-	ED2KLink.cpp \
 	ECSocket.cpp \
 	ECPacket.cpp \
 	ECSpecialTags.cpp \
+	ED2KLink.cpp \
 	EditServerListDlg.cpp \
+	EMSocket.cpp \
 	ExternalConn.cpp \
 	FileDetailDialog.cpp \
 	FileDetailListCtrl.cpp \
@@ -138,6 +140,7 @@ amule_SOURCES = ListenSocket.cpp \
 	KnownFile.cpp \
 	KadDlg.cpp \
 	KnownFileList.cpp \
+	ListenSocket.cpp \
 	listctrl.cpp \
 	MD5Sum.cpp \
 	MuleListCtrl.cpp \
@@ -175,19 +178,14 @@ amule_SOURCES = ListenSocket.cpp \
 	TransferWnd.cpp \
 	UDPSocket.cpp \
 	UploadClient.cpp \
-	ClientListCtrl.cpp \
 	UploadQueue.cpp \
 	amule.cpp \
 	amule-gui.cpp \
 	amuleDlg.cpp \
-	kademlia/utils/UInt128.cpp
 
-amuled_SOURCES = ListenSocket.cpp \
+amuled_SOURCES = \
+	kademlia/utils/UInt128.cpp \
 	AICHSyncThread.cpp \
-        ECSocket.cpp \
-	ECPacket.cpp \
-	ECSpecialTags.cpp \
-        EMSocket.cpp \
         AddFileThread.cpp \
         BaseClient.cpp \
         SHA.cpp \
@@ -198,7 +196,11 @@ amuled_SOURCES = ListenSocket.cpp \
         ClientUDPSocket.cpp \
         DownloadClient.cpp \
         DownloadQueue.cpp \
+        ECSocket.cpp \
+	ECPacket.cpp \
+	ECSpecialTags.cpp \
         ED2KLink.cpp \
+        EMSocket.cpp \
         ExternalConn.cpp \
         filemem.cpp \
         filefn.cpp \
@@ -207,6 +209,7 @@ amuled_SOURCES = ListenSocket.cpp \
         IPFilter.cpp \
         KnownFile.cpp \
         KnownFileList.cpp \
+	ListenSocket.cpp \
         MD5Sum.cpp \
 	NetworkFunctions.cpp \
         otherfunctions.cpp \
@@ -227,8 +230,7 @@ amuled_SOURCES = ListenSocket.cpp \
         UploadClient.cpp \
         UploadQueue.cpp \
         amule.cpp \
-        amuled.cpp \
-	kademlia/utils/UInt128.cpp
+        amuled.cpp 
 
 if ADD_GSOCKET
 if ADD_24GSOCKET
