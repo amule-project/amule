@@ -688,7 +688,7 @@ CDirIterator::CDirIterator(wxString dir) {
 	}
 	if (!DirPtr) {
 		AddDebugLogLineM(false,
-			wxT("Error enumerating files for dir ") + dir);
+			wxT("Error enumerating files for dir ") + dir + wxT(" (permissions?)"));
 	}
 }
 
