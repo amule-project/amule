@@ -732,15 +732,16 @@ bool CClientList::SendMessage(uint64 client_id, const wxString& message)
 	AddDebugLogLineM( false, logClient, wxT("Trying to Send Message.") );
 	if (client) {
 		AddDebugLogLineM( false, logClient, wxT("Sending.") );
-		return client->SendMessage(message);
 	} else {
 		AddDebugLogLineM( true, logClient, 
-			CFormat( wxT("No client (GUI_ID %lli [%s:%llu]) found in CClientList::SendMessage()\n") ) 
+			CFormat( wxT("No client (GUI_ID %lli [%s:%llu]) found in CClientList::SendMessage(). Creating\n") ) 
 				% client_id 
 				% Uint32toStringIP(IP_FROM_GUI_ID(client_id))
 				% PORT_FROM_GUI_ID(client_id) );
-		return false;
+		client = new CUpDownClient(PORT_FROM_GUI_ID(client_id),IP_FROM_GUI_ID(client_id),0,0,NULL);
+		AddClient(client);
 	}
+	return client->SendMessage(message);
 }
 
 void CClientList::SetChatState(uint64 client_id, uint8 state) {
