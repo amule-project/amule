@@ -20,9 +20,7 @@
 // this file will implement GNOME/KDE compatible system tray icon
 
 #ifndef __WXMSW__
-	#if defined(__BSD__) || (__NetBSD__)
-		#include <sys/types.h>
-	#endif /* *BSD */
+	#include <sys/types.h>
 
 	#include <cstddef>			// Needed for NULL. Must be BEFORE gtk/gdk headers!
 	#include <sys/socket.h>		//
