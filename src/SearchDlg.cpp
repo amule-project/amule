@@ -120,6 +120,9 @@ CSearchDlg::CSearchDlg(wxWindow* pParent)
 	
 	ToggleLinksHandler();
 	
+	((wxChoice*)FindWindow(ID_SEARCHTYPE))->SetSelection(0);
+	((wxChoice*)FindWindow(IDC_TypeSearch))->SetSelection(0);
+	
 	// Not there initially.
 	s_searchsizer->Show(s_extendedsizer, false);
 	Layout();
@@ -717,5 +720,3 @@ void CSearchDlg::OnPopupCloseOthers(wxCommandEvent& WXUNUSED(evt))
 		notebook->DeletePage( i );
 	}
 }
-
-
