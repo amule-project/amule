@@ -227,7 +227,8 @@ inline void md4cpy(const void* dst, const void* src) {
 	((uint32*)dst)[3] = ((uint32*)src)[3];
 }
 
-
+// DumpMem ... Dumps mem ;)
+void DumpMem(const void* where, uint32 size);
 
 #ifdef __FreeBSD__
 inline long long atoll(char const* s) {

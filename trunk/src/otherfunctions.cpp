@@ -493,6 +493,16 @@ int wxCMPFUNC_CONV Uint16CompareValues(uint16* first, uint16* second) {
        return (((int)*first) - ((int)*second)) ;
 }      
 
+// DumpMem ... Dumps mem ;)
+void DumpMem(const void* where, uint32 size) {
+	for (uint32 i = 0; i< size; i++) {
+		printf("|%2x",(uint8)((char*)where)[i]);
+		if ((i % 16) == 15) {
+			printf("\n");
+		}			
+	}	
+	printf("\n");	
+}
 
 /*         BSD based OS support for gethostname_r       */
 
