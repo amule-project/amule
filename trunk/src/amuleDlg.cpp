@@ -776,7 +776,7 @@ void CamuleDlg::UpdateTrayIcon(int percent)
 		} else {
 			if (theApp.serverconnect->IsConnected()) {
 				if(!theApp.serverconnect->IsLowID()) {
-					data = mule_Tr_grey_ico;
+					data = mule_TrayIcon_ico;
 				} else {
 					data = mule_Tr_yellow_ico;
 				}
