@@ -201,6 +201,7 @@ void CamuleRemoteGuiApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS&)
 		//serverlist->ReloadControl();
 	} else if ( theApp.amuledlg->transferwnd->IsShown() ) {
 		downloadqueue->DoRequery(EC_OP_GET_DLOAD_QUEUE, EC_TAG_PARTFILE);
+		uploadqueue->ReQueryUp();
 	} else if ( theApp.amuledlg->searchwnd->IsShown() ) {
 		if ( searchlist->m_curr_search != -1 ) {
 			searchlist->DoRequery(EC_OP_SEARCH_RESULTS, EC_TAG_SEARCHFILE);
@@ -292,7 +293,7 @@ bool CamuleRemoteGuiApp::OnInit()
 	
 	serverlist->FullReload(EC_OP_GET_SERVER_LIST);
 	serverlist->ReloadControl();
-	
+	sharedfiles->DoRequery(EC_OP_GET_SHARED_FILES, EC_TAG_KNOWNFILE);
 	glob_prefs->LoadRemote();
 	
 	IsReady = true;
@@ -827,6 +828,9 @@ void CRemoteConnect::Send(CECPacket *packet)
     delete reply;
 }
 
+/*
+ * List of uploading and waiting clients.
+ */
 CUpDownClientListRem::CUpDownClientListRem(CRemoteConnect *conn) : CRemoteContainer<CUpDownClient, uint32, CEC_UpDownClient_Tag>(conn)
 {
 }
@@ -845,26 +849,49 @@ POSITION CUpDownClientListRem::GetFirstFromList()
 CUpDownClient *CUpDownClientListRem::GetNextFromList(POSITION &pos)
 {
 	std::list<CUpDownClient *>::iterator *i = (std::list<CUpDownClient *>::iterator *)pos.m_ptr;
+	CUpDownClient *client = *(*i);
 	(*i)++;
 	if ( *i == m_items.end() ) {
 		pos = 0;
-		return 0;
 	}
-	return *(*i);
+	return client;
 }
 
-CUpDownClient::CUpDownClient(CEC_UpDownClient_Tag *)
+CUpDownClient::CUpDownClient(CEC_UpDownClient_Tag *tag)
+{
+	m_nUserID = tag->ID();
+	m_Username = tag->ClientName();
+	kBpsDown = tag->Speed() / 1024.0;
+	
+	if ( tag->HaveFile() ) {
+		CMD4Hash filehash = tag->FileID();
+		m_requpfile = theApp.sharedfiles->GetByID(filehash);
+		if ( !m_requpfile ) {
+			m_requpfile = theApp.downloadqueue->GetByID(filehash);
+		}
+	} else {
+		m_requpfile = 0;
+	}
+	
+	// FIXME !
+	credits = 0;
+}
+
+CUpDownClient::~CUpDownClient()
 {
 }
 
 CUpDownClient *CUpDownClientListRem::CreateItem(CEC_UpDownClient_Tag *tag)
 {
 	CUpDownClient *client = new CUpDownClient(tag);
+	
+	theApp.amuledlg->transferwnd->clientlistctrl->InsertClient(client, vtUploading);
 	return client;
 }
 
-void CUpDownClientListRem::DeleteItem(CUpDownClient *)
+void CUpDownClientListRem::DeleteItem(CUpDownClient *client)
 {
+	delete client;
 }
 
 uint32 CUpDownClientListRem::GetItemID(CUpDownClient *client)
@@ -872,8 +899,9 @@ uint32 CUpDownClientListRem::GetItemID(CUpDownClient *client)
 	return client->GetUserID();
 }
 
-void CUpDownClientListRem::ProcessItemUpdate(CEC_UpDownClient_Tag *, CUpDownClient *)
+void CUpDownClientListRem::ProcessItemUpdate(CEC_UpDownClient_Tag *tag, CUpDownClient *client)
 {
+	client->kBpsDown = tag->Speed() / 1024.0;
 }
 
 CUpQueueRem::CUpQueueRem(CRemoteConnect *conn) : m_up_list(conn), m_wait_list(conn)

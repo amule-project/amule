@@ -40,6 +40,7 @@
 #include "updownclient.h"
 #include "SharedFileList.h"
 #include "SearchList.h"
+#include "ClientCredits.h"
 
 #else
 
@@ -214,7 +215,11 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAI
 	CECTag(EC_TAG_UPDOWN_CLIENT, client->GetUserID())
 {
 	AddTag(CECTag(EC_TAG_PARTFILE_SIZE_XFER, (uint32)client->GetTransferedDown()));
-	AddTag(CECTag(EC_TAG_PARTFILE_SIZE_XFER_UP, (uint32)client->GetTransferedUp()));
+	
+	AddTag(CECTag(EC_TAG_CLIENT_UPLOAD_TOTAL, (uint32)client->Credits()->GetUploadedTotal()));
+	AddTag(CECTag(EC_TAG_CLIENT_DOWNLOAD_TOTAL, (uint32)client->Credits()->GetDownloadedTotal()));
+	AddTag(CECTag(EC_TAG_CLIENT_UPLOAD_SESSION, (uint32)client->GetSessionUp()));
+	
 	AddTag(CECTag(EC_TAG_PARTFILE_SPEED, (uint32)(client->GetKBpsUp()*1024.0)));
 
 	if (detail_level == EC_DETAIL_UPDATE) {
@@ -222,6 +227,9 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAI
 	}
 
 	AddTag(CECTag(EC_TAG_CLIENT_NAME, client->GetUserName()));
+	AddTag(CECTag(EC_TAG_CLIENT_SOFTWARE, client->GetClientSoft()));
+	AddTag(CECTag(EC_TAG_CLIENT_FRIEND, (uint8)client->IsFriend()));
+	
 	CKnownFile* file = theApp.sharedfiles->GetFileByID(client->GetUploadFileID());
 	if (file) {
 		AddTag(CECTag(EC_TAG_KNOWNFILE, file->GetFileHash()));
