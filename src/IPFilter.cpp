@@ -392,12 +392,17 @@ void CIPFilter::SaveToFile() {
 
 void CIPFilter::RemoveAllIPs()
 {
+
+  /* prevents access violation errors */
+  IPListMap temp = iplist;
+
+  iplist.clear();
+
 	// For wxObjArray classes, this destroys all of the array elements 
 	// and additionally frees the memory allocated to the array.
-	for( IPListMap::iterator it = iplist.begin(); it != iplist.end(); it++ ) {
+	for( IPListMap::iterator it = temp.begin(); it != temp.end(); it++ ) {
 		delete it->second;
 	}
-	iplist.clear();
 }
 
 /*
