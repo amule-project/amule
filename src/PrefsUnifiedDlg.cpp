@@ -898,6 +898,8 @@ void PrefsUnifiedDlg::BuildItemList(Preferences_Struct *prefs, const wxString ap
 	listRse.Append(new RseBool(IDC_SAFEMAXCONN, prefs->UseSafeMaxConn, wxT("SafeMaxConn"), false, wxT("FakeCheck"))); 		
 	listRse.Append(new RseBool(IDC_VERBOSEPACKETERROR, prefs->VerbosePacketError, wxT("VerbosePacketError"), false, wxT("FakeCheck"))); 
 	listRse.Append(new RseDirAssured(IDC_OSDIR, prefs->OSDirectory, appdir, wxT("OSDirectory"), wxT(""), wxT("FakeCheck")));	
+	listRse.Append(new RseBool(/*IDC_USESKIN*/0, prefs->UseSkinFile, wxT("UseSkinFile"), false, wxT("MiscGUIOptions"))); 
+	listRse.Append(new RseDirAssured(/*IDC_SKINFILE*/0, prefs->SkinFile, appdir, wxT("SkinFile"), wxT(""), wxT("MiscGUIOptions")));	
 }
 
 //==============================================================================
