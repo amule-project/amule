@@ -1022,8 +1022,8 @@ enum {
 		*	::EC_TAG_PREFS_SECURITY\n
 		*	::EC_TAG_SECURITY_CAN_SEE_SHARES\n
 		*	::EC_TAG_SECURITY_FILE_PERMISSIONS\n
-		*	::EC_TAG_SECURITY_DIR_PREMISSIONS\n
-		*	::EC_TAG_IPFILTER_ENABLE\n
+		*	::EC_TAG_SECURITY_DIR_PERMISSIONS\n
+		*	::EC_TAG_IPFILTER_ENABLED\n
 		*	::EC_TAG_IPFILTER_AUTO_UPDATE\n
 		*	::EC_TAG_IPFILTER_UPDATE_URL\n
 		*	::EC_TAG_IPFILTER_LEVEL\n
@@ -1097,7 +1097,7 @@ enum EC_DETAIL_LEVEL {
 	EC_DETAIL_CMD,		///< aMuleCmd uses this level to obtain only basic information
 	EC_DETAIL_WEB,		///< aMuleWeb uses this level to obtain represenative (but not full) information
 	EC_DETAIL_GUI,		///< the (upcoming) remote gui will use this (default) value, to obtain full information
-	EC_DETAIL_UPDATE,   ///< return only fields that constatly change (rate, ping, part status)
+	EC_DETAIL_UPDATE,	///< return only fields that constatly change (rate, ping, part status)
 };
 
 

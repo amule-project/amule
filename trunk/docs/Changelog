@@ -4,6 +4,7 @@ Version 2.0.0rc8 - The "???????????" version.
 
 	Hetfield:
 		* Some fix in new Tray system and desktopMode bypass
+
 	Jacobo221:
 		* Added option to select the max and min size-type in advanced
 		  searches.
@@ -62,24 +63,27 @@ Version 2.0.0rc8 - The "???????????" version.
 		* Initial work on EC protocol version 2.0.
 		* Fixed a crash on broken language files (.po)
 		* Some GUI cosmetics.
-		* Lots of translation fixes.
+		* Lots of i18n fixes.
 		* As a side effect, fixed the "Any" search in webserver.
-		* Fixed webserver connection with empty passwords :)
-		* Fixed webserver connection with guest account
+		* Fixed webserver connection with empty passwords. :)
+		* Fixed webserver connection with guest account.
+		* Added "add <ed2k link>" command to amulecmd.
+		* Tracked down and killed a number of hidden bugs.
 
         Special Thanks To:
 
                 * Bug and feature reporters:
-		  Sir,		jolupa,
-		  Pableron,	Banerjee,
-		  m2kio,	juanii,
-		  jaguarwan,	kdka,
-		  ecforum
+		  Banerjee,	ecforum,
+		  jaguarwan,	jolupa,
+		  juanii,	kdka,
+		  m2kio,	Pableron,
+		  plaenky,	Sir
 
 		* Contributors:
+		  Baz,		boutros,
 		  Frankk,	han,
-		  Vollstrecker, boutros,
-		  skolnick,	volpop
+		  skolnick,	Vollstrecker,
+		  volpop
 
                 * Everyone at:
                    #amule       irc.freenode.net

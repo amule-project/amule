@@ -1051,6 +1051,7 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request)
 					response = new CECPacket(EC_OP_NOOP);
 				} else if ( pLink->GetKind() == CED2KLink::kServer ) {
 					CServer *server = new CServer(((CED2KServerLink *)pLink)->GetPort(), Uint32toStringIP(((CED2KServerLink *)pLink)->GetIP()));
+					server->SetListName(Uint32toStringIP(((CED2KServerLink *)pLink)->GetIP()));
 					theApp.serverlist->AddServer(server);
 					Notify_ServerAdd(server);
 					response = new CECPacket(EC_OP_NOOP);

@@ -44,6 +44,7 @@ enum {
 	CMD_ID_DLOAD_QUEUE,
 	CMD_ID_SHUTDOWN,
 	CMD_ID_SERVERLIST,
+	CMD_ID_ADDLINK,
 };
 //-------------------------------------------------------------------
 //

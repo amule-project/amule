@@ -119,6 +119,7 @@ CED2KServerLink::CED2KServerLink(const TCHAR* ip,const TCHAR* port)
 	if ( ul > 0xFFFF )
 		throw wxString(wxT("bad port number"));
 	m_port = static_cast<uint16>(ul);
+	m_ip = StringIPtoUint32(ip);
 	m_defaultName = wxT("Server ");
 	m_defaultName += Uint32toStringIP(m_ip);
 	m_defaultName += wxT(":");

@@ -66,9 +66,10 @@ static CmdId commands[] = {
 	{ wxT("setiplevel"),	CMD_ID_SET_IPLEVEL },
 	{ wxT("iplevel"),	CMD_ID_IPLEVEL },
 	{ wxT("list"),		CMD_ID_DLOAD_QUEUE },
-	//{ wxT("find"),		CMD_ID_CMDSEARCH },
-	{ wxT("shutdown"),		CMD_ID_SHUTDOWN },
-	{ wxT("servers"),		CMD_ID_SERVERLIST },
+	//{ wxT("find"),	CMD_ID_CMDSEARCH },
+	{ wxT("shutdown"),	CMD_ID_SHUTDOWN },
+	{ wxT("servers"),	CMD_ID_SERVERLIST },
+	{ wxT("add"),		CMD_ID_ADDLINK },
 	// backward compat commands
 	{ wxT("connectto"),	CMD_ID_CONN_TO_SRV },
 	{ wxT("serverstatus"),	CMD_ID_SRVSTAT },
@@ -420,6 +421,15 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			request->AddTag(CECTag(EC_TAG_SELECT_PREFS, (uint32)EC_PREFS_SECURITY));
 			request_list.push_back(request);
 			break;
+		case CMD_ID_ADDLINK:
+			if ( ! args.IsEmpty() ) {
+				request = new CECPacket(EC_OP_ED2K_LINK);
+				request->AddTag(CECTag(EC_TAG_STRING, args));
+				request_list.push_back(request);
+			} else {
+				Show(_("This option requires an argument."));
+			}
+			break;
 
 		default:
 			return -1;
@@ -471,6 +481,11 @@ void CamulecmdApp::Process_Answer_v2(CECPacket *response)
 	wxASSERT(response);
 
 	switch (response->GetOpCode()) {
+		case EC_OP_NOOP:
+			break;
+		case EC_OP_FAILED:
+			s += _("Request failed.");
+			break;
 		case EC_OP_PREFERENCES:
 			{
 				CECTag *tab = response->GetTagByName(EC_TAG_PREFS_SECURITY);
@@ -551,6 +566,9 @@ void CamulecmdApp::Process_Answer_v2(CECPacket *response)
 				s += tag->GetTagByName(EC_TAG_SERVER_NAME)->GetStringData();
 				s += wxT("\n");
 			}
+			break;
+		default:
+			s += wxString::Format(_("Received an unknown reply from the server, OpCode = %#x."), response->GetOpCode());
 	}
 	Process_Answer(s);
 }
@@ -574,7 +592,8 @@ void CamulecmdApp::ShowHelp() {
 	Show(wxString(wxT("ReloadIPF:\t\t")) + wxString(_("Reload IPFilter table from file.\n")));
 //	Show(wxString(wxT("GetIPLevel:\t\t")) + wxString(_("Shows current IP Filter level.\n")));
 //	Show(wxString(wxT("SetIPLevel <")) + wxString(_("new level")) + wxString(wxT(">:\t")) + wxString(_("Changes current IP Filter level.\n")));
-	Show(wxString(wxT("IPLevel [")) + wxString(_("level")) + wxString(_("]:\t")) + wxString(_("Shows/Sets current IP Filter level.\n")));
+	Show(wxString(wxT("IPLevel [")) + wxString(_("level")) + wxString(wxT("]:\t")) + wxString(_("Shows/Sets current IP Filter level.\n")));
+	Show(wxString(wxT("Add <")) + wxString(_("ED2k Link")) + wxString(wxT(">\t\t")) + wxString(_("Adds <ED2k Link> to aMule.\n\t\t\t\tCurrently file and server links are supported.\n")));
 	Show(wxString(wxT("Help:\t\t\t")) + wxString(_("Shows this help.\n")));	
 	Show(wxString(wxT("Quit:\t\t\t")) + wxString(_("Exits Textclient.\n")));
 	Show(wxString(wxT("Shutdown:\t\t\t")) + wxString(_("Shutdown amule\n")));
