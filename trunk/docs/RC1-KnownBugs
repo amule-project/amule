@@ -8,4 +8,5 @@ Kry:
 	I can make a NEW VERSION check, but I need someone to have a 'newversion' file on our webspace.
 	Fix the memleak I know it's thre ;)
 	What to do with tags type 0?
-	
+	Fix sharedfiles prio on restart (are not saved)
+        Fake Check doesn't work
