@@ -1595,9 +1595,8 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 
 	if (m_icounter < 10) {
 		for(	std::list<CUpDownClient *>::iterator it = m_downloadingSourcesList.begin();
-			it != m_downloadingSourcesList.end(); 
-			it++ ) {
-			CUpDownClient *cur_src = *it;
+			it != m_downloadingSourcesList.end(); ) {
+			CUpDownClient *cur_src = *it++;
 			if(cur_src->IsASaneUpDownClient("CPartFile::Process", __FILE__, __LINE__ ) && cur_src && (cur_src->GetDownloadState() == DS_DOWNLOADING)) {
 				wxASSERT( cur_src->socket );
 				if (cur_src->socket) {
@@ -3056,24 +3055,29 @@ bool CPartFile::IsASaneFileClientCombination(
 		sane_forClient =
 			forClient->IsASaneUpDownClient("IsASaneFileClientCombination", __FILE__, __LINE__);
 	}
+
+	if ( forClient && !forClient->reqfile ) {
+		printf("forClient has NULL reqfile!\n");
+	}
+	
 	if (sane_this) {
 		if (sane_cur_src) {
 			sane = sane && (GetFileHash() == cur_src->reqfile->GetFileHash());
 		}
 		if (sane_forClient) {
-			sane = sane && (GetFileHash() == forClient->reqfile->GetFileHash());
+			sane = sane && forClient->reqfile && (GetFileHash() == forClient->reqfile->GetFileHash());
 		}
 #if defined( __DEBUG__ )
 		if (!sane && verbose) {
 			printf("Mismatching hashes!\n");
 			printf("\tthis   : %s\n", 	unicode2char(GetFileHash().Encode().c_str()));
 			printf("\tcur_src: %s\n", unicode2char(cur_src->reqfile->GetFileHash().Encode().c_str()));
-			if (forClient)
+			if (forClient && forClient->reqfile)
 				printf("\tfor_clt: %s\n", unicode2char(forClient->reqfile->GetFileHash().Encode().c_str()));
 			printf("Filenames are: \n");
 			printf("\tthis   : %s\n", unicode2char(GetFileName().c_str()));
 			printf("\tcur_src: %s\n", unicode2char(cur_src->reqfile->GetFileName().c_str()));
-			if (forClient)
+			if (forClient && forClient->reqfile)
 				printf("\tfor_clt: %s\n", unicode2char(forClient->reqfile->GetFileName().c_str()));
 #endif // __DEBUG__
 		} else if (this != NULL) {
@@ -3090,7 +3094,7 @@ bool CPartFile::IsASaneFileClientCombination(
 				printf("Filenames are: \n");
 				printf("\tthis   : %s\n", unicode2char(GetFileName().c_str()));
 				printf("\tcur_src: %s\n", unicode2char(cur_src->reqfile->GetFileName().c_str()));
-				if (forClient)
+				if (forClient && forClient->reqfile)
 					printf("\tfor_clt: %s\n", 	unicode2char(forClient->reqfile->GetFileName().c_str()));
 			}
 #endif // __DEBUG__
