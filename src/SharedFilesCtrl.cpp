@@ -36,6 +36,7 @@
 #include "sockets.h"		// Needed for CServerConnect
 #include "Preferences.h"
 #include "BarShader.h"
+#include "listbase.h"
 
 #include <wx/msgdlg.h>
 #include <wx/stattext.h>

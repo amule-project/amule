@@ -35,6 +35,7 @@
 #include "muuli_wdr.h"		// Needed for ID_UPLOADLIST
 #include "color.h"		// Needed for G_BLEND and SYSCOLOR
 #include "Preferences.h"	// Needed for CPreferences
+#include "listbase.h"
 
 #include <wx/menu.h>
 #include <wx/textdlg.h>
