@@ -427,7 +427,7 @@ void CamuleGuiApp::ServerUDPSocketHandler(wxSocketEvent& event)
 		wxSocketEvent input_event(SERVERUDPSOCKET_HANDLER);
 		input_event.m_event = (wxSocketNotify)(wxSOCKET_INPUT);
 		input_event.SetEventObject(socket);
-		//theApp.AddPendingEvent(input_event);
+		theApp.AddPendingEvent(input_event);
 		#endif				
 		return;
 	}
@@ -458,7 +458,7 @@ void CamuleGuiApp::ClientUDPSocketHandler(wxSocketEvent& event)
 		wxSocketEvent input_event(CLIENTUDPSOCKET_HANDLER);
 		input_event.m_event = (wxSocketNotify)(wxSOCKET_INPUT);
 		input_event.SetEventObject(socket);
-		//theApp.AddPendingEvent(input_event);
+		theApp.AddPendingEvent(input_event);
 		#endif		
 		return;
 	}
