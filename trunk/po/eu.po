@@ -1,0 +1,3719 @@
+# translation of amule-1.2.5.po to Euskara
+# translation of source_strings.po to Euskara
+# This file is distributed under the same license as the aMule package.
+# Copyright (C) YEAR aMule Team.
+# Piarres Beobide Egaña <pi@beobide.net>, 2004.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: amule-1.2.5\n"
+"POT-Creation-Date: 2004-02-08 02:38+0100\n"
+"PO-Revision-Date: 2004-02-10 01:01+0100\n"
+"Last-Translator: Piarres Beobide Egaña <pi@beobide.net>\n"
+"Language-Team: Euskara <eu@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.0.2\n"
+
+#: src/AddFriend.cpp:37
+msgid "Add a Friend"
+msgstr "Gehitu laguna"
+
+#: src/AddFriend.cpp:75
+#: src/AddFriend.cpp:82
+msgid "You have to enter a valid IP and port!"
+msgstr "Baliozko IP helbide eta ataka bat sartu behar dituzu!"
+
+#: src/amule.cpp:496
+#, c-format
+msgid "Port %d is not available. You will be LOWID"
+msgstr "Ezin da %d ataka konektatu beraz zuk ID baxua izango duzu"
+
+#: src/amule.cpp:498
+#, c-format
+msgid ""
+"Port %d is not available !!\n"
+"\n"
+"This will mean that you will be LOWID.\n"
+"\n"
+"Use netstat to determine when port becomes available\n"
+"and try starting amule again."
+msgstr ""
+"Ezin da %d ataka konektatu\n"
+"\n"
+" berz zuk ID baxua izango duzu\n"
+"\n"
+"Erabili netstat zein ataka erabilgarri duzun jakiteko\n"
+"eta saiatu amule berriz abiarazten."
+
+#: src/amule.cpp:499
+#: src/ServerSocket.cpp:203
+#: src/ServerSocket.cpp:214
+msgid "Error"
+msgstr "Errorea"
+
+#: src/amule.cpp:695
+msgid "You need a HighID to create a valid sourcelink"
+msgstr "ID altua behar duzu "
+
+#: src/amule.cpp:755
+#: src/amule.cpp:758
+msgid "Failed to save"
+msgstr "Huts gordetzerakoan"
+
+#: src/amule.cpp:755
+msgid " OnlineSig File"
+msgstr "Linean sinadura fitxategia"
+
+#: src/amuleDlg.cpp:245
+msgid "Desktop integration"
+msgstr "Idazmahai integrazioa"
+
+#: src/amuleDlg.cpp:706
+msgid "Disconnect"
+msgstr "Deskonektatu"
+
+#: src/amuleDlg.cpp:706
+msgid "Disconnect from current server"
+msgstr "Deskonektatu uneko zerbitzaritik"
+
+#: src/amuleDlg.cpp:722
+msgid "Connection established on:"
+msgstr "Konexioa aktibatua:"
+
+#: src/amuleDlg.cpp:738
+#: src/DownloadListCtrl.cpp:256
+#: src/muuli_wdr.cpp:133
+#: src/muuli_wdr.cpp:425
+#: src/muuli_wdr.cpp:934
+#: src/muuli_wdr.cpp:1020
+#: src/muuli_wdr.cpp:1093
+#: src/muuli_wdr.cpp:2930
+#: src/muuli_wdr.cpp:3035
+#: src/PreferencesDlg.cpp:77
+#: src/TransferWnd.cpp:183
+msgid "Cancel"
+msgstr "Utzi"
+
+#: src/amuleDlg.cpp:738
+msgid "Stops the current connection attempts"
+msgstr "Geratu uneko konexio saiakerak"
+
+#: src/amuleDlg.cpp:750
+#: src/amuleDlg.cpp:922
+#: src/ChatSelector.cpp:319
+#: src/DownloadListCtrl.cpp:1260
+#: src/SysTray.cpp:174
+#: src/UploadListCtrl.cpp:234
+#: src/UploadListCtrl.cpp:527
+msgid "Connecting"
+msgstr "Konektatzen"
+
+#: src/amuleDlg.cpp:758
+#: src/amuleDlg.cpp:776
+#: src/amuleDlg.cpp:1034
+#: src/SearchDlg.cpp:341
+msgid "Not Connected"
+msgstr "Konekatatu gabe"
+
+#: src/amuleDlg.cpp:764
+#: src/muuli_wdr.cpp:3302
+msgid "Connect"
+msgstr "Konektatu"
+
+#: src/amuleDlg.cpp:764
+#: src/muuli_wdr.cpp:3302
+#: src/SysTray.cpp:498
+msgid "Connect to any server"
+msgstr "Konektatu edozein zerbitzarira"
+
+#: src/amuleDlg.cpp:778
+#: src/amuleDlg.cpp:835
+#: src/ServerWnd.cpp:167
+msgid "Disconnected"
+msgstr "Deskonektatuta"
+
+#: src/amuleDlg.cpp:794
+#: src/ServerListCtrl.cpp:218
+msgid "Users"
+msgstr "Erabi."
+
+#: src/amuleDlg.cpp:794
+#: src/muuli_wdr.cpp:2895
+#: src/PPgFiles.cpp:42
+#: src/server.cpp:259
+#: src/ServerListCtrl.cpp:219
+msgid "Files"
+msgstr "Fitxategiak"
+
+#: src/amuleDlg.cpp:818
+#, c-format
+msgid "Up: %.1f(%.1f) | Down: %.1f(%.1f)"
+msgstr "Gora: %.1f(%.1f) | Behera: %.1f(%.1f)"
+
+#: src/amuleDlg.cpp:820
+#, c-format
+msgid "Up: %.1f | Down: %.1f"
+msgstr "Gora: %.1f | Behera: %.1f"
+
+#: src/amuleDlg.cpp:833
+#: src/ServerWnd.cpp:165
+msgid "Connected"
+msgstr "Konektaturik"
+
+#: src/amuleDlg.cpp:870
+msgid "Do you really want to exit aMule?"
+msgstr "Benetan aMule itxi egin nahi duzu?"
+
+#: src/amuleDlg.cpp:870
+msgid "Exit confirmation"
+msgstr "Irteera berrespena"
+
+#: src/amuleDlg.cpp:991
+msgid "&Transfers"
+msgstr "&Transferentziak"
+
+#: src/amuleDlg.cpp:992
+msgid "&Servers"
+msgstr "&Zerbitzariak"
+
+#: src/amuleDlg.cpp:993
+msgid "S&earch"
+msgstr "&Bilatu"
+
+#: src/amuleDlg.cpp:994
+msgid "Shared &Files"
+msgstr "Partekatutako &Fitxategiak"
+
+#: src/amuleDlg.cpp:995
+msgid "&Messages"
+msgstr "&Mezuak"
+
+#: src/amuleDlg.cpp:996
+msgid "St&atistics"
+msgstr "Est&atistikak"
+
+#: src/amuleDlg.cpp:997
+msgid "&Preferences"
+msgstr "Hobes&penak"
+
+#: src/amuleDlg.cpp:1034
+#: src/SearchDlg.cpp:341
+msgid "You are not connected to a server!"
+msgstr "Ez zaude zerbitzari batetara konektaturik!"
+
+#: src/amuleDlg.cpp:1068
+#: src/DownloadQueue.cpp:1043
+#: src/PartFile.cpp:123
+#: src/PartFile.cpp:145
+#, c-format
+msgid "This ed2k link is invalid (%s)"
+msgstr "ed2k esteka hau baliogabe da (%s)"
+
+#: src/amuleDlg.cpp:1069
+#: src/DownloadQueue.cpp:1044
+#: src/PartFile.cpp:124
+#: src/PartFile.cpp:146
+#, c-format
+msgid "Invalid link: %s"
+msgstr "Baliogabeko esteka: %s"
+
+#: src/BaseClient.cpp:631
+#: src/ListenSocket.cpp:181
+#, c-format
+msgid "Filtered IP: %s (%s)"
+msgstr "Iragazitako IP-a:%s(%s)"
+
+#: src/BaseClient.cpp:1004
+#, c-format
+msgid "Rating for file '%s' received: %i"
+msgstr "'%s' fitxategiaren kalifikazioa jasoa: %i"
+
+#: src/BaseClient.cpp:1011
+#, c-format
+msgid "Description for file '%s' received: %s"
+msgstr "%s fitxategiaren azalpena jaso da: %s"
+
+#: src/BaseClient.cpp:1145
+#, c-format
+msgid "Unable to retrieve shared files from '%s'"
+msgstr "Ezin da '%s'-ren partekatutako fitxategi zerrenda ikusi"
+
+#: src/BaseClient.cpp:1445
+#: src/ClientDetailDialog.cpp:73
+#: src/ClientDetailDialog.cpp:83
+#: src/ClientDetailDialog.cpp:91
+#: src/ClientDetailDialog.cpp:92
+#: src/ClientDetailDialog.cpp:104
+#: src/ClientDetailDialog.cpp:142
+#: src/ClientDetailDialog.cpp:160
+#: src/ClientDetailDialog.cpp:163
+#: src/ClientDetailDialog.cpp:164
+#: src/ClientDetailDialog.cpp:188
+#: src/ClientDetailDialog.cpp:189
+#: src/ClientDetailDialog.cpp:190
+#: src/ClientDetailDialog.cpp:197
+#: src/DownloadListCtrl.cpp:997
+#: src/DownloadListCtrl.cpp:1230
+#: src/DownloadListCtrl.cpp:1291
+#: src/FileDetailDialog.cpp:112
+#: src/PartFile.cpp:2933
+#: src/PartFile.cpp:3094
+#: src/PartFile.cpp:3100
+#: src/ServerWnd.cpp:173
+#: src/UploadListCtrl.cpp:243
+#: src/UploadListCtrl.cpp:543
+msgid "Unknown"
+msgstr "Ezezaguna"
+
+#: src/BaseClient.cpp:1469
+#, c-format
+msgid "Requesting shared files from '%s'"
+msgstr "Partekatutako fitxategi zerrenda '%s'-tik eskaturik"
+
+#: src/BaseClient.cpp:1473
+#, c-format
+msgid "Requesting shared files from user %s (%u) is already in progress"
+msgstr "%s (%u) erabiltzailearen fitxategiak ikusteko eskakizuna egina dago dagoeneko"
+
+#: src/BaseClient.cpp:1506
+#, c-format
+msgid "NickName: %s\n"
+msgstr "Ezizena: %s\n"
+
+#: src/BaseClient.cpp:1508
+msgid "Requested:"
+msgstr "Eskaerak:"
+
+#: src/BaseClient.cpp:1510
+#, c-format
+msgid "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
+msgstr "Fitxategi estatistikak saio honentzat. Onarturik %d  %d eskakizunetik, %s transferiturik\n"
+
+#: src/BaseClient.cpp:1510
+#, c-format
+msgid "Filestats for all sessions: Accepted %d of %d requests"
+msgstr "Fitxategi estatistikak saio guztientzat. Onarturik %d  %d eskakizunetik"
+
+#: src/BaseClient.cpp:1516
+msgid "Requested unknown file"
+msgstr "Fitxategi ezezaguna eskaturik"
+
+#: src/CatDialog.cpp:49
+#: src/DownloadListCtrl.cpp:302
+#: src/TransferWnd.cpp:151
+msgid "Category"
+msgstr "Kategoria"
+
+#: src/CatDialog.cpp:103
+msgid "Choose a folder for incoming files"
+msgstr "Aukeratu karpeta bat deskagatutako fitxategientzat:"
+
+#: src/CFile.cpp:219
+#, c-format
+msgid "can't create file '%s'"
+msgstr "Ezin da '%s' fitxategia sortu "
+
+#: src/CFile.cpp:265
+#, c-format
+msgid "Can't open file '%s'"
+msgstr "Ezin da fitxategia abiarazi:'%s'"
+
+#: src/CFile.cpp:279
+#, c-format
+msgid "can't close file descriptor %d"
+msgstr "Ezin %d fitxategi deskribatzailea ireki"
+
+#: src/CFile.cpp:305
+#, c-format
+msgid "can't read from file descriptor %d"
+msgstr "Ezin %d fitxategi deskribatzailea irakurri"
+
+#: src/CFile.cpp:327
+#, c-format
+msgid "can't write to file descriptor %d"
+msgstr "Ezin %d fitxategi deskribatzailea idatzi"
+
+#: src/CFile.cpp:341
+#, c-format
+msgid "can't flush file descriptor %d"
+msgstr "Ezin %d fitxategi deskribatzailea berdindu"
+
+#: src/CFile.cpp:362
+msgid "unknown seek origin"
+msgstr "Bilaketa jatorri ezezaguna"
+
+#: src/CFile.cpp:393
+#, c-format
+msgid "can't get seek position on file descriptor %d"
+msgstr "Ezin da bilaketa posizioa hartu fitxategi argibideetatik: %d"
+
+#: src/CFile.cpp:425
+#, c-format
+msgid "can't find length of file on file descriptor %d"
+msgstr "ezin da iftxcategi tamaina aurkitu deskibapenean: %d"
+
+#: src/CFile.cpp:459
+#, c-format
+msgid "can't determine if the end of file is reached on descriptor %d"
+msgstr "Ezin da jakin fitxategi amaiera ailatu den deskribapenan:  %d"
+
+#: src/CFile.cpp:463
+msgid "invalid eof() return value."
+msgstr "eof() erretorno balio baliogabea"
+
+#: src/ChatSelector.cpp:127
+msgid ""
+"Instant Messaging\n"
+"  \n"
+"Right-click on any client and select 'Send Message' to start a chatsession"
+msgstr ""
+"Uneko mezularitza\n"
+"  \n"
+"Ekuineko klik egin edozein bezerotan eta aukeratu 'Mezua bidali' txat saioa abiarazteko."
+
+#: src/ChatSelector.cpp:175
+msgid "*** Chatsession Start : "
+msgstr "*** Txat saio hasiera . "
+
+#: src/ChatSelector.cpp:288
+msgid "Message from"
+msgstr "Mezua Nork"
+
+#: src/ChatSelector.cpp:345
+msgid "failed"
+msgstr "hutsegiteak"
+
+#: src/ChatSelector.cpp:348
+msgid "*** Disconnected"
+msgstr "*** Deskonektatuta"
+
+#: src/ClientCredits.cpp:107
+#: src/ClientCredits.cpp:154
+#: src/ClientCredits.cpp:284
+msgid "Failed to load creditfile"
+msgstr "Huts egin du kreditu fitxategi kargatzerakoan"
+
+#: src/ClientCredits.cpp:114
+#: src/ClientCredits.cpp:290
+msgid "Creditfile is out of date and will be replaced"
+msgstr "Kreditu fitxategia denboraz kanpo dago eta aldatu egin behar da"
+
+#: src/ClientCredits.cpp:175
+#, c-format
+msgid "Creditfile loaded, %u clients are known"
+msgstr "Kreditu fitxategia kargaturik, %u bezero ezagutzen dira"
+
+#: src/ClientCredits.cpp:187
+#: src/ClientCredits.cpp:315
+msgid "Failed to save creditfile"
+msgstr "Kreditu fitsagia gordetzerakoan huts egin du "
+
+#: src/ClientCredits.cpp:305
+msgid "Creditfile loaded"
+msgstr "Kreditu fitxategia kargaturik"
+
+#: src/ClientDetailDialog.cpp:46
+msgid "Client Details"
+msgstr "Bezero xehetasunak"
+
+#: src/ClientDetailDialog.cpp:86
+msgid "ClientSoftware ->"
+msgstr "BezeroSoftwarea ->"
+
+#: src/ClientDetailDialog.cpp:86
+msgid "<- ClientVersion ->v"
+msgstr "<- ClientVersion ->b"
+
+#: src/ClientDetailDialog.cpp:86
+msgid "<- ClientModString ->"
+msgstr "<- ClientModString ->"
+
+#: src/ClientDetailDialog.cpp:145
+#: src/DownloadListCtrl.cpp:248
+#: src/DownloadListCtrl.cpp:946
+#: src/muuli_wdr.cpp:2997
+#: src/QueueListCtrl.cpp:410
+#: src/ServerListCtrl.cpp:92
+#: src/ServerListCtrl.cpp:339
+#: src/SharedFilesCtrl.cpp:108
+#: src/SharedFilesCtrl.cpp:186
+#: src/SharedFilesCtrl.cpp:385
+msgid "Low"
+msgstr "Baxua"
+
+#: src/ClientDetailDialog.cpp:145
+#: src/DownloadListCtrl.cpp:250
+#: src/DownloadListCtrl.cpp:960
+#: src/muuli_wdr.cpp:2999
+#: src/QueueListCtrl.cpp:407
+#: src/ServerListCtrl.cpp:94
+#: src/ServerListCtrl.cpp:347
+#: src/SharedFilesCtrl.cpp:110
+#: src/SharedFilesCtrl.cpp:194
+#: src/SharedFilesCtrl.cpp:411
+msgid "High"
+msgstr "Altua"
+
+#: src/ClientDetailDialog.cpp:177
+#: src/ClientDetailDialog.cpp:179
+#: src/FileDetailDialog.cpp:99
+#: src/FileDetailDialog.cpp:101
+#: src/muuli_wdr.cpp:1922
+#: src/muuli_wdr.cpp:1935
+#: src/muuli_wdr.cpp:1961
+#: src/muuli_wdr.cpp:1974
+#: src/muuli_wdr.cpp:1987
+#: src/StatisticsDlg.cpp:120
+#: src/StatisticsDlg.cpp:122
+#: src/UploadListCtrl.cpp:508
+#: src/UploadListCtrl.cpp:511
+msgid "kB/s"
+msgstr "kB/s"
+
+#: src/ClientUDPSocket.cpp:177
+#: src/UDPSocket.cpp:305
+msgid "Error while processing incoming UDP Packet (Most likely a misconfigured server)"
+msgstr "Errorea sarrerako UDP paketea prozesatzerakoan (Normalean gaizki konfiguratutako zerbitzaria)"
+
+#: src/CommentDialog.cpp:34
+#: src/CommentDialogLst.cpp:36
+msgid "File Comments"
+msgstr "Fitxategi Iruzkinak"
+
+#: src/CommentDialogLst.cpp:71
+msgid "Username:"
+msgstr "Erabiltzaile-izena:"
+
+#: src/CommentDialogLst.cpp:72
+#: src/DownloadListCtrl.cpp:614
+#: src/FileDetailDialog.cpp:141
+#: src/PartFile.cpp:3110
+#: src/SearchListCtrl.cpp:67
+#: src/SharedFilesCtrl.cpp:78
+msgid "File Name"
+msgstr "Fitxategi-izena"
+
+#: src/CommentDialogLst.cpp:73
+#: src/QueueListCtrl.cpp:104
+#: src/QueueListCtrl.cpp:126
+#: src/QueueListCtrl.cpp:211
+msgid "Rating"
+msgstr "Kalifikazioa"
+
+#: src/CommentDialogLst.cpp:74
+#: src/muuli_wdr.cpp:2968
+msgid "Comment :"
+msgstr "Iruzkina:"
+
+#: src/CommentDialogLst.cpp:101
+msgid "No comments"
+msgstr "Ez dago iruzkinik"
+
+#: src/DownloadClient.cpp:616
+#, c-format
+msgid "Ignoring %u bytes of block %u-%u because of errornous zstream state for file \"%s\""
+msgstr "%u byte %u -%u blokekoak ez ikusia egiten, \"%s\" fitxategiaren zstream egoeran erroreagatik"
+
+#: src/DownloadClient.cpp:657
+#: src/DownloadClient.cpp:671
+msgid "Corrupted compressed packet for %s received (error %i)"
+msgstr "Akatsdun konprimitutako paketea jasoa %s (%i errorea)"
+
+#: src/DownloadClient.cpp:714
+#, c-format
+msgid "Unknown exception in %s: file \"%s\""
+msgstr "Eszepzio ezezaguna %s-n: \"%s\" fitxategia"
+
+#: src/DownloadListCtrl.cpp:249
+#: src/DownloadListCtrl.cpp:953
+#: src/muuli_wdr.cpp:2998
+#: src/QueueListCtrl.cpp:416
+#: src/ServerListCtrl.cpp:93
+#: src/ServerListCtrl.cpp:343
+#: src/SharedFilesCtrl.cpp:109
+#: src/SharedFilesCtrl.cpp:190
+#: src/SharedFilesCtrl.cpp:398
+msgid "Normal"
+msgstr "Normala"
+
+#: src/DownloadListCtrl.cpp:251
+#: src/muuli_wdr.cpp:3000
+#: src/SharedFilesCtrl.cpp:113
+msgid "Auto"
+msgstr "Auto"
+
+#: src/DownloadListCtrl.cpp:254
+#: src/muuli_wdr.cpp:493
+#: src/StatisticsDlg.cpp:589
+msgid "Downloads"
+msgstr "Deskargak"
+
+#: src/DownloadListCtrl.cpp:255
+#: src/DownloadListCtrl.cpp:621
+#: src/ServerListCtrl.cpp:97
+#: src/SharedFilesCtrl.cpp:81
+#: src/SharedFilesCtrl.cpp:120
+msgid "Priority"
+msgstr "Lehentasuna"
+
+#: src/DownloadListCtrl.cpp:257
+#: src/TransferWnd.cpp:184
+msgid "&Stop"
+msgstr "&Gelditu"
+
+#: src/DownloadListCtrl.cpp:258
+#: src/TransferWnd.cpp:185
+msgid "&Pause"
+msgstr "&Pausa"
+
+#: src/DownloadListCtrl.cpp:259
+#: src/TransferWnd.cpp:186
+msgid "&Resume"
+msgstr "&Berrekin"
+
+#: src/DownloadListCtrl.cpp:271
+msgid "Swap every A4AF to this file now"
+msgstr "Jeistsi fitxategi honen A4AF guztiak orain"
+
+#: src/DownloadListCtrl.cpp:272
+msgid "Swap every A4AF to this file (Auto)"
+msgstr "Jeistsi fitxategi honen A4AF guztiak (Auto)"
+
+#: src/DownloadListCtrl.cpp:273
+msgid "Swap every A4AF to any other file now"
+msgstr "Jeistsi fitxategi guztien a4af guztiak orain"
+
+#: src/DownloadListCtrl.cpp:275
+msgid "Drop No Needed Sources now"
+msgstr "Behar ez diren Iturburuak orain ezabatu."
+
+#: src/DownloadListCtrl.cpp:276
+msgid "Drop Full Queue Sources now"
+msgstr "Ezabatu ilara betea duten iturburuak orain"
+
+#: src/DownloadListCtrl.cpp:277
+msgid "Drop High Queue Rating Sources now"
+msgstr "Ezabatu Ilara luzea duten iturburuak orain"
+
+#: src/DownloadListCtrl.cpp:278
+msgid "Clean Up Sources now (NNS, FQS && HQRS)"
+msgstr "Garbitu iturburuak orain (NNS, FQS && HQRS)"
+
+#: src/DownloadListCtrl.cpp:280
+msgid "Extended Options"
+msgstr "Hedatutako Aukerak"
+
+#: src/DownloadListCtrl.cpp:283
+msgid "&Open the file"
+msgstr "&Ireki fitxategia"
+
+#: src/DownloadListCtrl.cpp:284
+#: src/muuli_wdr.cpp:2657
+msgid "Preview"
+msgstr "Aurrebista"
+
+#: src/DownloadListCtrl.cpp:286
+msgid "Show file &details"
+msgstr "Erakutsi &xehetasunak"
+
+#: src/DownloadListCtrl.cpp:287
+#: src/muuli_wdr.cpp:855
+msgid "Show all comments"
+msgstr "Erakutsi iruzkin guztiak"
+
+#: src/DownloadListCtrl.cpp:289
+msgid "C&lear completed"
+msgstr "G&arbitu bukaturikoa"
+
+#: src/DownloadListCtrl.cpp:291
+#: src/ServerListCtrl.cpp:106
+#: src/SharedFilesCtrl.cpp:126
+msgid "Copy ED2k &link to clipboard"
+msgstr "Kopiatu ED2k &lotura arbelera"
+
+#: src/DownloadListCtrl.cpp:292
+#: src/SharedFilesCtrl.cpp:129
+msgid "Copy ED2k link to clipboard (&HTML)"
+msgstr "Kopiatu ED2k esteka arbelara (&HTML)"
+
+#: src/DownloadListCtrl.cpp:305
+msgid "unassign"
+msgstr "ezarri gabea"
+
+#: src/DownloadListCtrl.cpp:309
+msgid "Assign to category"
+msgstr "Ezarri kategoria bat"
+
+#: src/DownloadListCtrl.cpp:317
+msgid "Show Lists"
+msgstr "Erakutsi Zerrendak"
+
+#: src/DownloadListCtrl.cpp:319
+msgid "Hide Lists"
+msgstr "Ezkutatu Zerrendak"
+
+#: src/DownloadListCtrl.cpp:329
+msgid "Preview ["
+msgstr "Aurrebista"
+
+#: src/DownloadListCtrl.cpp:376
+#: src/FriendListCtrl.cpp:110
+#: src/QueueListCtrl.cpp:142
+#: src/QueueListCtrl.cpp:176
+#: src/UploadListCtrl.cpp:147
+msgid "Show &Details"
+msgstr "Erakutsi &Xehetasunak"
+
+#: src/DownloadListCtrl.cpp:377
+#: src/QueueListCtrl.cpp:177
+#: src/UploadListCtrl.cpp:148
+msgid "Add to Friends"
+msgstr "Gehitu lagun zerrendara"
+
+#: src/DownloadListCtrl.cpp:378
+#: src/FriendListCtrl.cpp:117
+#: src/QueueListCtrl.cpp:179
+#: src/UploadListCtrl.cpp:149
+msgid "View Files"
+msgstr "Ikusi Fitxategiak"
+
+#: src/DownloadListCtrl.cpp:615
+#: src/SearchListCtrl.cpp:68
+#: src/SharedFilesCtrl.cpp:79
+msgid "Size"
+msgstr "Tamaina"
+
+#: src/DownloadListCtrl.cpp:616
+#: src/UploadListCtrl.cpp:89
+msgid "Transferred"
+msgstr "Tranferituta"
+
+#: src/DownloadListCtrl.cpp:617
+#: src/otherfunctions.cpp:547
+#: src/TransferWnd.cpp:160
+msgid "Completed"
+msgstr "Amaitua"
+
+#: src/DownloadListCtrl.cpp:618
+#: src/UploadListCtrl.cpp:88
+msgid "Speed"
+msgstr "Abiadura"
+
+#: src/DownloadListCtrl.cpp:619
+msgid "Progress"
+msgstr "Egoera"
+
+#: src/DownloadListCtrl.cpp:620
+#: src/FileDetailDialog.cpp:142
+#: src/SearchListCtrl.cpp:69
+msgid "Sources"
+msgstr "Iturburuak"
+
+#: src/DownloadListCtrl.cpp:622
+#: src/muuli_wdr.cpp:2619
+#: src/PartFile.cpp:3113
+#: src/ServerWnd.cpp:163
+#: src/UploadListCtrl.cpp:92
+msgid "Status"
+msgstr "Egoera"
+
+#: src/DownloadListCtrl.cpp:623
+msgid "Time Remaining"
+msgstr "Denbora Faltan"
+
+#: src/DownloadListCtrl.cpp:624
+msgid "Last Seen Complete"
+msgstr "Azkenez Osoa Ikusirik"
+
+#: src/DownloadListCtrl.cpp:625
+msgid "Last Reception"
+msgstr "Azkena"
+
+#: src/DownloadListCtrl.cpp:944
+msgid "Auto [Lo]"
+msgstr "Auto [Bax]"
+
+#: src/DownloadListCtrl.cpp:951
+#: src/SharedFilesCtrl.cpp:167
+#: src/SharedFilesCtrl.cpp:457
+msgid "Auto [No]"
+msgstr "Auto [No]"
+
+#: src/DownloadListCtrl.cpp:958
+#: src/SharedFilesCtrl.cpp:171
+#: src/SharedFilesCtrl.cpp:455
+msgid "Auto [Hi]"
+msgstr "Auto[Alt]"
+
+#: src/DownloadListCtrl.cpp:1196
+#, c-format
+msgid "eDonkey v%i"
+msgstr "eDonkey b%i"
+
+#: src/DownloadListCtrl.cpp:1199
+#, c-format
+msgid "eDonkeyHybrid v%i"
+msgstr "eDonkeyHibridoa b%i"
+
+#: src/DownloadListCtrl.cpp:1203
+#, c-format
+msgid "eMule v%02X"
+msgstr "eMule b%02X"
+
+#: src/DownloadListCtrl.cpp:1210
+#, c-format
+msgid "aMule [ %s ]"
+msgstr "aMule [ %s ]"
+
+#: src/DownloadListCtrl.cpp:1212
+#, c-format
+msgid "aMule v0.%02X"
+msgstr "aMule b0.%02X"
+
+#: src/DownloadListCtrl.cpp:1216
+#, c-format
+msgid "lMule/xMule v0.%02X"
+msgstr "lMule/xMule b0.%02X"
+
+#: src/DownloadListCtrl.cpp:1219
+msgid "Old MLdonkey"
+msgstr "MlDonkey Zaharra"
+
+#: src/DownloadListCtrl.cpp:1222
+msgid "New MLdonkey"
+msgstr "MlDonkey Berria"
+
+#: src/DownloadListCtrl.cpp:1239
+#: src/DownloadListCtrl.cpp:1270
+msgid "Queue Full"
+msgstr "Ilara Osoa"
+
+#: src/DownloadListCtrl.cpp:1263
+msgid "Asking"
+msgstr "Eskatzen"
+
+#: src/DownloadListCtrl.cpp:1266
+#: src/UploadListCtrl.cpp:237
+#: src/UploadListCtrl.cpp:530
+msgid "Connecting via server"
+msgstr "Konektatu zebitzaria bidez"
+
+#: src/DownloadListCtrl.cpp:1272
+#: src/TransferWnd.cpp:117
+msgid "On Queue"
+msgstr "Ilaran"
+
+#: src/DownloadListCtrl.cpp:1276
+#: src/UploadListCtrl.cpp:240
+#: src/UploadListCtrl.cpp:535
+msgid "Transferring"
+msgstr "Transferring"
+
+#: src/DownloadListCtrl.cpp:1279
+msgid "Receiving hashset"
+msgstr "Aztertze ezarpenak jasotzen"
+
+#: src/DownloadListCtrl.cpp:1282
+msgid "No needed parts"
+msgstr "Ez du behar den zatirik"
+
+#: src/DownloadListCtrl.cpp:1285
+msgid "Cannot connect LowID to LowID"
+msgstr "Ezin da IDBaxua-IDBaxua konektatu"
+
+#: src/DownloadListCtrl.cpp:1288
+msgid "Too many connections"
+msgstr "Konexio gehiegi"
+
+#: src/DownloadListCtrl.cpp:1294
+msgid "Asked for another file"
+msgstr "Beste fitxategi batez galdeturik"
+
+#: src/DownloadListCtrl.cpp:1516
+msgid "Are you sure that you want to cancel and delete this file ?\n"
+msgstr "Zihur al zaude fitxategi hau ezeztatu eta ezabatu nahi duzula?\n"
+
+#: src/DownloadListCtrl.cpp:1519
+msgid "Are you sure that you want to cancel and delete these files ?\n"
+msgstr "Zihur al zaude fitxategi hauek ezeztatu eta ezabatu nahi dituzula?\n"
+
+#: src/DownloadListCtrl.cpp:2043
+#, c-format
+msgid "Downloads (%i)"
+msgstr "Deskargak (%i)"
+
+#: src/DownloadQueue.cpp:160
+msgid "No part files found"
+msgstr "Ez da zati fitxategirik aurkitu"
+
+#: src/DownloadQueue.cpp:162
+#, c-format
+msgid "Found %i part files"
+msgstr "%i zati fitxategi aurkitu dira"
+
+#: src/DownloadQueue.cpp:293
+#: src/DownloadQueue.cpp:295
+#, c-format
+msgid "Downloading %s"
+msgstr "%s Deskargatzen"
+
+#: src/DownloadQueue.cpp:303
+#: src/DownloadQueue.cpp:309
+#, c-format
+msgid "You are already trying to download the file %s"
+msgstr "Dagoeneko fitxategi hau deskargatzen ari zara: %s"
+
+#: src/DownloadQueue.cpp:305
+#, c-format
+msgid "You already have the file %s"
+msgstr "Zuk dagoeneko baduzu %s"
+
+#: src/DownloadQueue.cpp:1038
+msgid "Bad link."
+msgstr "Esteka okerra"
+
+#: src/ED2KLink.cpp:427
+#: src/ED2KLink.cpp:436
+msgid "not a well-formed ed2k link"
+msgstr "Ez da ongi eratutako ed2k esteka"
+
+#: src/ED2KLink.cpp:448
+msgid "Not an ED2K server or file link"
+msgstr "Ez da ED2K zerbitzari edo fitxategi esteka"
+
+#: src/EditServerListDlg.cpp:77
+#, c-format
+msgid "can't write file '%s'"
+msgstr "Ezin da '%s' fitxategia idatzi"
+
+#: src/FileDetailDialog.cpp:97
+msgid "done"
+msgstr "eginda"
+
+#: src/filefn.cpp:142
+#, c-format
+msgid "Failed to copy the file '%s' to '%s'"
+msgstr "Huts '%s' fittxategia '%s'-ra kopiatzerakoan"
+
+#: src/filefn.cpp:158
+msgid "Impossible to get permissions for file '%s'"
+msgstr "Ezinezkoa baimenak lortzea fitxategi honentzat: %s"
+
+#: src/filefn.cpp:172
+#, c-format
+msgid "Impossible to overwrite the file '%s'"
+msgstr "Ezinezkoa '%s' fitxategia gainidaztea"
+
+#: src/filefn.cpp:225
+#, c-format
+msgid "Impossible to set permissions for the file '%s'"
+msgstr "Ezinezkoa '%s' fitxategiari baimenak ezartzea"
+
+#: src/FriendListCtrl.cpp:65
+#: src/QueueListCtrl.cpp:101
+#: src/QueueListCtrl.cpp:123
+#: src/QueueListCtrl.cpp:196
+#: src/UploadListCtrl.cpp:86
+msgid "Username"
+msgstr "Erabiltzaile-izena"
+
+#: src/FriendListCtrl.cpp:106
+#: src/muuli_wdr.cpp:574
+#: src/muuli_wdr.cpp:2210
+msgid "Friends"
+msgstr "Lagunak"
+
+#: src/FriendListCtrl.cpp:113
+msgid "Add a friend"
+msgstr "Laguna gehitu"
+
+#: src/FriendListCtrl.cpp:115
+msgid "Remove Friend"
+msgstr "Ezabatu laguna"
+
+#: src/FriendListCtrl.cpp:116
+msgid "Send &Message"
+msgstr "Bidali &Mezua"
+
+#: src/FriendListCtrl.cpp:118
+msgid "Establish Friend Slot"
+msgstr "Ezarri lagunen ataka"
+
+#: src/HTTPDownloadDlg.cpp:34
+msgid "Downloading..."
+msgstr "Deskaragatzen..."
+
+#: src/IPFilter.cpp:178
+#, c-format
+msgid "Loaded ipfilter with %d IP addresses."
+msgstr "IP iragazkia kargaturik %d  IP helbidearekin."
+
+#: src/KnownFileList.cpp:89
+msgid "Error: the file known.met is corrupted, unable to load known files"
+msgstr "Errorea know.met fitxategia apurturturik dago, ezin da fitxategi ezagunen zerenda kargatu"
+
+#: src/KnownFileList.cpp:93
+#, c-format
+msgid "Unexpected file error while reading known.met: %s, unable to load known files"
+msgstr "Espero gabeko fitxategi errorea  know.met fitxategia irakurtzerakoan. %s ezin da fitxategi ezagunen zerenda kargatu"
+
+#: src/ListenSocket.cpp:590
+#: src/ListenSocket.cpp:592
+#, c-format
+msgid "User %s (%u) requested your sharedfiles-list -> %s"
+msgstr "%s (%u) erabiltzaileak zure partekatu fitxategiaren zerrenda ikusi nahi du -> %s"
+
+#: src/ListenSocket.cpp:590
+#: src/ListenSocket.cpp:623
+#: src/ListenSocket.cpp:682
+msgid "accepted"
+msgstr "onartua"
+
+#: src/ListenSocket.cpp:592
+#: src/ListenSocket.cpp:658
+#: src/ListenSocket.cpp:703
+msgid "denied"
+msgstr "ezeztatua"
+
+#: src/ListenSocket.cpp:623
+#: src/ListenSocket.cpp:658
+#, c-format
+msgid "User %s (%u) requested your shareddirectories-list -> %s"
+msgstr "%s (%u) erabiltzaileak zure partekatu karpeta zerrenda ikusteko eskaera egin du -> %s"
+
+#: src/ListenSocket.cpp:682
+#: src/ListenSocket.cpp:703
+#, c-format
+msgid "User %s (%u) requested your sharedfiles-list for directory %s -> %s"
+msgstr "%s (%u) erabiltzaileak zure partekatu %s karpetaren fitxategi zerrenda ikusteko eskakizuna egin du -> %s"
+
+#: src/ListenSocket.cpp:725
+#, c-format
+msgid "User %s (%u) shares directory %s"
+msgstr "%s (%u) erabiltzailearen %s partekatutako direktorioa"
+
+#: src/ListenSocket.cpp:756
+#, c-format
+msgid "User %s (%u) sent sharedfiles-list for directory %s"
+msgstr "%s (%u) erabiltzaileak %s direktorioko partekatutako fitxategi zerrenda bidali du"
+
+#: src/ListenSocket.cpp:761
+#, c-format
+msgid "User %s (%u) finished sending sharedfiles-list"
+msgstr "%s (%u) erabiltzaileak partekatutako fitxategi zerrenda bidaltzeaz bukatu du"
+
+#: src/ListenSocket.cpp:764
+#, c-format
+msgid "User %s (%u) sent unwanted sharedfiles-list"
+msgstr "%s (%u) erabiltzaileak eskatu gabeko partekatutako fitxategi zerrenda bidali du"
+
+#: src/ListenSocket.cpp:774
+#, c-format
+msgid "User %s (%u) denied access to shareddirectories/files-list"
+msgstr " %s (%u) erabiltzaileak bere partekatuak/fitxategi zerrenda ikustea ukatu du"
+
+#: src/ListenSocket.cpp:800
+#, c-format
+msgid "Client '%s' (IP:%s) caused an error: %s. Disconnecting client!"
+msgstr "'%s' bezeroak (IP %s) errore bat sortu du: %s Bezeroa deskonektatzen"
+
+#: src/ListenSocket.cpp:802
+#: src/ListenSocket.cpp:924
+msgid "A client caused an error or did something bad: %s. Disconnecting client!"
+msgstr "bezero batek errore bat sortu edo zerbait gaizki eginfu: %s bezeoa deskonektatzen!"
+
+#: src/ListenSocket.cpp:951
+#, c-format
+msgid "Client '%s' (IP:%s) caused an error: %u. Disconnecting client!"
+msgstr "'%s' bezeroak (IP %s) errore bat sortu du: %u Bezeroa deskonektatzen"
+
+#: src/ListenSocket.cpp:953
+#, c-format
+msgid "Unknown client (IP:%s) caused an error: %u. Disconnecting client!"
+msgstr "Bezero ezezagun (IP %s) errore bat sortu du: %u Bezeroa deskonektatzen"
+
+#: src/ListenSocket.cpp:956
+msgid "A client caused an error or did something bad. Disconnecting client !"
+msgstr "Bezero batek errore bat sortu edo zerbait gaizki egin du. Bezeoa deskonektatzen !"
+
+#: src/muuli_wdr.cpp:48
+msgid "Concurrent Downloads"
+msgstr "Baterako Deskargak"
+
+#: src/muuli_wdr.cpp:53
+msgid "1-5"
+msgstr "1-5"
+
+#: src/muuli_wdr.cpp:61
+msgid "6-15"
+msgstr "6-15"
+
+#: src/muuli_wdr.cpp:68
+msgid "16+"
+msgstr "16+"
+
+#: src/muuli_wdr.cpp:75
+msgid "Connection Type"
+msgstr "Konexio Mota"
+
+#: src/muuli_wdr.cpp:78
+msgid "Select your connection type here :"
+msgstr "Hautatu zure konexio mota hemen :"
+
+#: src/muuli_wdr.cpp:90
+msgid "True download bandwidth"
+msgstr "Benetazko deskarga abiadura"
+
+#: src/muuli_wdr.cpp:100
+msgid "True upload bandwidth"
+msgstr "Benetazko igoera abiadura"
+
+#: src/muuli_wdr.cpp:112
+msgid "Unit:"
+msgstr "unitatea:"
+
+#: src/muuli_wdr.cpp:115
+msgid "kbits/sec"
+msgstr "kbits/seg"
+
+#: src/muuli_wdr.cpp:119
+msgid "kBytes/sec"
+msgstr "kBytes/seg"
+
+#: src/muuli_wdr.cpp:129
+#: src/muuli_wdr.cpp:930
+#: src/muuli_wdr.cpp:2660
+msgid "Apply"
+msgstr "Ezarri"
+
+#: src/muuli_wdr.cpp:157
+msgid ""
+"For system tray integration to work,\n"
+"you must specify which desktop you are using.\n"
+"You can change this later from preferences."
+msgstr ""
+"Sistema barra integrazioak funtzionatzeko\n"
+"zein idazmahai erabiltzera ari zaren ezarri behar duzu.\n"
+"HAu geroago hobespenetan aldatu dezakezu."
+
+#: src/muuli_wdr.cpp:163
+msgid "Desktop"
+msgstr "Idazmahaia"
+
+#: src/muuli_wdr.cpp:166
+msgid "Gnome 2.x (or other XEMBED compatible)"
+msgstr "Gnome 2.x (edo XEMBED onartzen duen beste bat)"
+
+#: src/muuli_wdr.cpp:169
+msgid "KDE 3.x"
+msgstr "KDE 3.x"
+
+#: src/muuli_wdr.cpp:172
+msgid "KDE 2.x / Gnome 1.2 "
+msgstr "KDE 2.x / Gnome 1.2 "
+
+#: src/muuli_wdr.cpp:175
+msgid "No systray integration, please"
+msgstr "Ez erbili sistema barrarekiko integraziorik"
+
+#: src/muuli_wdr.cpp:183
+#: src/muuli_wdr.cpp:2926
+#: src/muuli_wdr.cpp:3031
+#: src/PreferencesDlg.cpp:75
+msgid "OK"
+msgstr "Ados"
+
+#: src/muuli_wdr.cpp:219
+msgid "Fast ED2K Links Handler (Direct Download)"
+msgstr "ED2K esteka kudeatzaile azkarra (Deskarga zuzena)"
+
+#: src/muuli_wdr.cpp:228
+msgid "Commit"
+msgstr "Burutu"
+
+#: src/muuli_wdr.cpp:237
+msgid "Loading ..."
+msgstr "Kargatzen ..."
+
+#: src/muuli_wdr.cpp:245
+msgid "Number of users on the server you are connected to ..."
+msgstr "Konektatuta zauden zerbitzariarene rabiltzaile kopurua ..."
+
+#: src/muuli_wdr.cpp:248
+msgid "Users: 0"
+msgstr "Erabiltzaile: 0"
+
+#: src/muuli_wdr.cpp:259
+msgid "Up: 0.0 | Down: 0.0"
+msgstr "Gora: 0.0 | Behera: 0.0"
+
+#: src/muuli_wdr.cpp:270
+msgid "Not Connected ..."
+msgstr "Ez Konektaturik..."
+
+#: src/muuli_wdr.cpp:329
+msgid "Search"
+msgstr "Bilatu"
+
+#: src/muuli_wdr.cpp:339
+msgid "Name"
+msgstr "Izena"
+
+#: src/muuli_wdr.cpp:347
+#: src/muuli_wdr.cpp:3165
+msgid "Reset"
+msgstr "Berezarri"
+
+#: src/muuli_wdr.cpp:351
+#: src/SearchListCtrl.cpp:70
+#: src/SharedFilesCtrl.cpp:80
+msgid "Type"
+msgstr "Mota"
+
+#: src/muuli_wdr.cpp:358
+#: src/otherfunctions.cpp:240
+#: src/otherfunctions.cpp:261
+#: src/SearchDlg.cpp:584
+#: src/SearchList.cpp:402
+msgid "Any"
+msgstr "Edozein"
+
+#: src/muuli_wdr.cpp:359
+#: src/otherfunctions.cpp:253
+msgid "Archives"
+msgstr "Konprimituak"
+
+#: src/muuli_wdr.cpp:360
+#: src/otherfunctions.cpp:245
+#: src/otherfunctions.cpp:554
+#: src/SearchDlg.cpp:384
+#: src/TransferWnd.cpp:168
+msgid "Audio"
+msgstr "Audioa"
+
+#: src/muuli_wdr.cpp:361
+#: src/otherfunctions.cpp:259
+#: src/otherfunctions.cpp:556
+#: src/TransferWnd.cpp:170
+msgid "CD-Images"
+msgstr "CD-Imaginak"
+
+#: src/muuli_wdr.cpp:362
+#: src/otherfunctions.cpp:248
+#: src/otherfunctions.cpp:557
+#: src/SearchDlg.cpp:393
+#: src/TransferWnd.cpp:171
+msgid "Pictures"
+msgstr "Irudiak"
+
+#: src/muuli_wdr.cpp:363
+#: src/otherfunctions.cpp:255
+#: src/SearchDlg.cpp:390
+msgid "Programs"
+msgstr "Programak"
+
+#: src/muuli_wdr.cpp:364
+#: src/otherfunctions.cpp:251
+msgid "Videos"
+msgstr "Bideoak"
+
+#: src/muuli_wdr.cpp:379
+msgid "Min Size"
+msgstr "Gutx. Tamaina"
+
+#: src/muuli_wdr.cpp:385
+msgid "Max Size"
+msgstr "Gehi. Tamaina"
+
+#: src/muuli_wdr.cpp:391
+msgid "Extension"
+msgstr "Hedapena"
+
+#: src/muuli_wdr.cpp:397
+msgid "Min Availability"
+msgstr "Gutx. Erabilgarritasuna"
+
+#: src/muuli_wdr.cpp:409
+msgid "Search global"
+msgstr "Bilatu orokorki"
+
+#: src/muuli_wdr.cpp:420
+msgid "Start"
+msgstr "Hasiera"
+
+#: src/muuli_wdr.cpp:430
+#: src/SearchListCtrl.cpp:136
+msgid "Clear All"
+msgstr "Dena Garbitu"
+
+#: src/muuli_wdr.cpp:450
+msgid "Search Results"
+msgstr "Bilaketaren emaitzak"
+
+#: src/muuli_wdr.cpp:462
+msgid "Download selected"
+msgstr "Deskargatu aukeratutakoak"
+
+#: src/muuli_wdr.cpp:532
+#: src/StatisticsDlg.cpp:577
+#: src/TransferWnd.cpp:126
+msgid "Uploads"
+msgstr "Igoerak"
+
+#: src/muuli_wdr.cpp:591
+#: src/muuli_wdr.cpp:3308
+msgid "Messages"
+msgstr "Mezuak"
+
+#: src/muuli_wdr.cpp:609
+msgid "Send"
+msgstr "Bidali"
+
+#: src/muuli_wdr.cpp:612
+#: src/muuli_wdr.cpp:858
+#: src/muuli_wdr.cpp:981
+#: src/muuli_wdr.cpp:1720
+msgid "Close"
+msgstr "Itxi"
+
+#: src/muuli_wdr.cpp:643
+#: src/muuli_wdr.cpp:1498
+#: src/muuli_wdr.cpp:2879
+#: src/PPgGeneral.cpp:44
+msgid "General"
+msgstr "Orokorra"
+
+#: src/muuli_wdr.cpp:649
+msgid "Full Name :"
+msgstr "Izen osoa:"
+
+#: src/muuli_wdr.cpp:652
+#: src/muuli_wdr.cpp:659
+#: src/muuli_wdr.cpp:666
+#: src/muuli_wdr.cpp:677
+#: src/muuli_wdr.cpp:684
+#: src/muuli_wdr.cpp:691
+#: src/muuli_wdr.cpp:708
+#: src/muuli_wdr.cpp:718
+#: src/muuli_wdr.cpp:728
+#: src/muuli_wdr.cpp:738
+#: src/muuli_wdr.cpp:749
+#: src/muuli_wdr.cpp:753
+#: src/muuli_wdr.cpp:762
+#: src/muuli_wdr.cpp:769
+#: src/muuli_wdr.cpp:791
+#: src/muuli_wdr.cpp:798
+#: src/muuli_wdr.cpp:805
+#: src/muuli_wdr.cpp:1159
+#: src/muuli_wdr.cpp:1170
+#: src/muuli_wdr.cpp:1179
+#: src/muuli_wdr.cpp:1190
+#: src/muuli_wdr.cpp:1199
+#: src/muuli_wdr.cpp:1210
+#: src/muuli_wdr.cpp:1515
+#: src/muuli_wdr.cpp:1519
+#: src/muuli_wdr.cpp:1544
+#: src/muuli_wdr.cpp:1548
+#: src/muuli_wdr.cpp:1552
+#: src/muuli_wdr.cpp:1573
+#: src/muuli_wdr.cpp:1577
+#: src/muuli_wdr.cpp:1581
+#: src/muuli_wdr.cpp:1599
+#: src/muuli_wdr.cpp:1622
+#: src/muuli_wdr.cpp:1626
+#: src/muuli_wdr.cpp:1630
+#: src/muuli_wdr.cpp:1651
+#: src/muuli_wdr.cpp:1655
+#: src/muuli_wdr.cpp:1659
+#: src/muuli_wdr.cpp:1684
+#: src/muuli_wdr.cpp:1688
+#: src/muuli_wdr.cpp:1709
+msgid "N/A"
+msgstr "N A"
+
+#: src/muuli_wdr.cpp:656
+msgid "met-File :"
+msgstr "met Fitxategia:"
+
+#: src/muuli_wdr.cpp:663
+#: src/PartFile.cpp:3111
+msgid "Hash :"
+msgstr "Aztertze zenbakia"
+
+#: src/muuli_wdr.cpp:674
+msgid "Filesize :"
+msgstr "Fitxategi tamaina :"
+
+#: src/muuli_wdr.cpp:681
+msgid "Partfilestatus :"
+msgstr "Fitxategi zati egoera:"
+
+#: src/muuli_wdr.cpp:688
+msgid "Last seen complete :"
+msgstr "Azkenez osorik ikusia:"
+
+#: src/muuli_wdr.cpp:699
+#: src/muuli_wdr.cpp:1591
+#: src/StatisticsDlg.cpp:574
+msgid "Transfer"
+msgstr "Transferentzia"
+
+#: src/muuli_wdr.cpp:705
+msgid "Found Sources :"
+msgstr "Aurkitutako iturburuak:"
+
+#: src/muuli_wdr.cpp:712
+msgid "Transferring Sources :"
+msgstr "Iturburuak trasnferitzen:"
+
+#: src/muuli_wdr.cpp:715
+msgid "Filepart-Count :"
+msgstr "Fitxategi zati Kopurua:"
+
+#: src/muuli_wdr.cpp:722
+msgid "Available :"
+msgstr "Erabilgarri:"
+
+#: src/muuli_wdr.cpp:725
+msgid "Datarate :"
+msgstr "Data Abiadura:"
+
+#: src/muuli_wdr.cpp:735
+#: src/muuli_wdr.cpp:1196
+#: src/muuli_wdr.cpp:1207
+msgid "Transferred :"
+msgstr "Tranferituta:"
+
+#: src/muuli_wdr.cpp:742
+msgid "Completed Size :"
+msgstr "Amaitua Tamaina:"
+
+#: src/muuli_wdr.cpp:766
+msgid " / ("
+msgstr " / ("
+
+#: src/muuli_wdr.cpp:773
+#: src/muuli_wdr.cpp:972
+msgid ")"
+msgstr ")"
+
+#: src/muuli_wdr.cpp:782
+#: src/muuli_wdr.cpp:2219
+msgid "Intelligent Corruption Handling"
+msgstr "Korrupzio Kudeaketa Adimentsua"
+
+#: src/muuli_wdr.cpp:788
+msgid "Lost to corruption :"
+msgstr "Apurketetan galdutakoa:"
+
+#: src/muuli_wdr.cpp:795
+msgid "Gained by compression :"
+msgstr "Konpresioaz irabazitakoa:"
+
+#: src/muuli_wdr.cpp:802
+msgid "Packages saved by I.C.H. :"
+msgstr "I.C.H. gordetako paketeak :"
+
+#: src/muuli_wdr.cpp:819
+msgid "Source Names"
+msgstr "Iturburu Izenak"
+
+#: src/muuli_wdr.cpp:828
+msgid "Takeover"
+msgstr "KONPONDU !!!!!!"
+
+#: src/muuli_wdr.cpp:833
+msgid "Cleanup"
+msgstr "Garbitu"
+
+#: src/muuli_wdr.cpp:843
+msgid "Rename"
+msgstr "Izena aldatu"
+
+#: src/muuli_wdr.cpp:884
+msgid "Comment this file (this text will be show by all users)"
+msgstr "Iruzkina jarri fitxategi honi (testua beste erabiltzaileak irakurri dezakete)"
+
+#: src/muuli_wdr.cpp:892
+msgid "Clear"
+msgstr "Garbitu"
+
+#: src/muuli_wdr.cpp:898
+msgid ""
+"For a film you can say its length, its story, language ...\n"
+"and if it's a fake, you can tell that to other users of aMule."
+msgstr ""
+"Filme batentzat bere luzera, hizkuntza ... esan ditzazketu.\n"
+"eta gezurra bada, zuk beste aMule erabiltzeei abisatu dezakezu."
+
+#: src/muuli_wdr.cpp:907
+msgid "File Quality"
+msgstr "Fitxategi Kalitatea"
+
+#: src/muuli_wdr.cpp:912
+#: src/otherfunctions.cpp:362
+#: src/otherfunctions.cpp:380
+msgid "Not rated"
+msgstr "Kalifikatu gabea"
+
+#: src/muuli_wdr.cpp:913
+#: src/otherfunctions.cpp:365
+msgid "Invalid / Corrupt / Fake"
+msgstr "Baliogabe / Apurturik / Gezurra"
+
+#: src/muuli_wdr.cpp:914
+#: src/otherfunctions.cpp:368
+msgid "Poor"
+msgstr "Pobrea"
+
+#: src/muuli_wdr.cpp:915
+#: src/otherfunctions.cpp:371
+msgid "Good"
+msgstr "Ondo"
+
+#: src/muuli_wdr.cpp:916
+#: src/otherfunctions.cpp:374
+msgid "Fair"
+msgstr "Oso ona"
+
+#: src/muuli_wdr.cpp:917
+#: src/otherfunctions.cpp:377
+msgid "Excellent"
+msgstr "Ezinobea"
+
+#: src/muuli_wdr.cpp:922
+msgid "Choose the file rating or advice users if the file is invalid ..."
+msgstr "Fitxategi kalifikazioa hartu edo fitxategia baliogabea bada besteak abisatu ..."
+
+#: src/muuli_wdr.cpp:965
+msgid "("
+msgstr "("
+
+#: src/muuli_wdr.cpp:968
+msgid "No comment(s)"
+msgstr "Iruzkinik ez"
+
+#: src/muuli_wdr.cpp:978
+msgid "Refresh"
+msgstr "Berritu"
+
+#: src/muuli_wdr.cpp:1011
+msgid "Downloading, please wait ..."
+msgstr "Deskargatzen, itxoin mesedez..."
+
+#: src/muuli_wdr.cpp:1044
+msgid "Required Information"
+msgstr "Behar den Informazioa"
+
+#: src/muuli_wdr.cpp:1049
+#: src/muuli_wdr.cpp:1534
+msgid "IP Address :"
+msgstr "IP Helbidea:"
+
+#: src/muuli_wdr.cpp:1055
+msgid "Port :"
+msgstr "Ataka:"
+
+#: src/muuli_wdr.cpp:1065
+msgid "Additional Information"
+msgstr "Bestelako Informazioa"
+
+#: src/muuli_wdr.cpp:1070
+#: src/muuli_wdr.cpp:1505
+msgid "Username :"
+msgstr "Erabiltzaile-izena:"
+
+#: src/muuli_wdr.cpp:1076
+#: src/muuli_wdr.cpp:1508
+msgid "Userhash :"
+msgstr "Erabiltzaile aztertze zenbakia"
+
+#: src/muuli_wdr.cpp:1089
+#: src/muuli_wdr.cpp:3233
+msgid "Add"
+msgstr "Gehitu"
+
+#: src/muuli_wdr.cpp:1122
+#: src/SharedFilesCtrl.cpp:105
+#: src/StatisticsDlg.cpp:646
+msgid "Shared Files"
+msgstr "Partekatutako Fitxategiak"
+
+#: src/muuli_wdr.cpp:1134
+#: src/muuli_wdr.cpp:2907
+#: src/muuli_wdr.cpp:3309
+#: src/PPgStats.cpp:42
+#: src/StatisticsDlg.cpp:572
+msgid "Statistics"
+msgstr "Estatistikak"
+
+#: src/muuli_wdr.cpp:1142
+msgid "Current Session"
+msgstr "Uneko Saioa"
+
+#: src/muuli_wdr.cpp:1149
+#: src/StatisticsDlg.cpp:934
+msgid "Total"
+msgstr "Guztira"
+
+#: src/muuli_wdr.cpp:1156
+#: src/muuli_wdr.cpp:1167
+msgid "Requested :"
+msgstr "Eskaerak:"
+
+#: src/muuli_wdr.cpp:1176
+#: src/muuli_wdr.cpp:1187
+msgid "Active Uploads :"
+msgstr "Igoerak:"
+
+#: src/muuli_wdr.cpp:1223
+#: src/SharedFileList.cpp:188
+#: src/SharedFileList.cpp:196
+msgid "Reload"
+msgstr "Berritu"
+
+#: src/muuli_wdr.cpp:1296
+msgid "Download-Speed"
+msgstr "Deskarga Abiadura"
+
+#: src/muuli_wdr.cpp:1305
+#: src/muuli_wdr.cpp:1430
+msgid "Current"
+msgstr "Unekoa"
+
+#: src/muuli_wdr.cpp:1320
+#: src/muuli_wdr.cpp:1445
+msgid "Running average"
+msgstr "Funztionamentu bataz bestekoa"
+
+#: src/muuli_wdr.cpp:1331
+#: src/muuli_wdr.cpp:1456
+msgid "Session average"
+msgstr "saio batez bestekoa"
+
+#: src/muuli_wdr.cpp:1364
+#: src/muuli_wdr.cpp:2385
+msgid "Active downloads"
+msgstr "Deskarga aktiboak"
+
+#: src/muuli_wdr.cpp:1375
+msgid "Active connections (1:1)"
+msgstr "konexio aktiboak (1:1)"
+
+#: src/muuli_wdr.cpp:1390
+#: src/muuli_wdr.cpp:2386
+msgid "Active uploads"
+msgstr "Igoera aktiboak"
+
+#: src/muuli_wdr.cpp:1421
+msgid "Upload-Speed"
+msgstr "Igoera Abiadura"
+
+#: src/muuli_wdr.cpp:1531
+msgid "Clientsoftware :"
+msgstr "Bezresoftwarea :"
+
+#: src/muuli_wdr.cpp:1537
+msgid "Server IP :"
+msgstr "Zerbitzaria IP:"
+
+#: src/muuli_wdr.cpp:1560
+msgid "Clientversion :"
+msgstr "BezeroBertsioa:"
+
+#: src/muuli_wdr.cpp:1563
+msgid "ID :"
+msgstr "ID:"
+
+#: src/muuli_wdr.cpp:1566
+msgid "Servername :"
+msgstr "Zerbitzari izena:"
+
+#: src/muuli_wdr.cpp:1596
+msgid "Currently downloading :"
+msgstr "Uneko deskargak : "
+
+#: src/muuli_wdr.cpp:1609
+msgid "Downloaded (this session) :"
+msgstr "Deskargaturik (saio hau) :"
+
+#: src/muuli_wdr.cpp:1612
+msgid "Average downloadrate :"
+msgstr "Batez bestekoa deskarga:"
+
+#: src/muuli_wdr.cpp:1615
+msgid "Downloaded total :"
+msgstr "Guztira deskargaturikoa :"
+
+#: src/muuli_wdr.cpp:1638
+msgid "Uploaded (this session) :"
+msgstr "Igotakoa (saio hau) :"
+
+#: src/muuli_wdr.cpp:1641
+msgid "Average Uploadrate :"
+msgstr "Batez besteko igoera abiadura :"
+
+#: src/muuli_wdr.cpp:1644
+msgid "Uploaded total :"
+msgstr "Guztira igotakoa:"
+
+#: src/muuli_wdr.cpp:1669
+msgid "Scores"
+msgstr "Puntuak"
+
+#: src/muuli_wdr.cpp:1674
+msgid "DL/UP Modifier :"
+msgstr "DL/UP Aldagaia:"
+
+#: src/muuli_wdr.cpp:1677
+msgid "Rating (total) :"
+msgstr "Kalifikazioa (guztirea) :"
+
+#: src/muuli_wdr.cpp:1699
+msgid "Uploadqueue score :"
+msgstr "Igoera ilara puntuazioa:"
+
+#: src/muuli_wdr.cpp:1746
+msgid "Nick"
+msgstr "Ezizena"
+
+#: src/muuli_wdr.cpp:1749
+msgid "Someone using aMule (http://amule.sourceforge.net)"
+msgstr "aMule erabiltzen duen norbait (http://amule.sourceforge.net)"
+
+#: src/muuli_wdr.cpp:1754
+msgid "Language"
+msgstr "Hizkuntza"
+
+#: src/muuli_wdr.cpp:1759
+msgid "Catalan"
+msgstr "Katalana "
+
+#: src/muuli_wdr.cpp:1760
+msgid "English"
+msgstr "Ingelesa"
+
+#: src/muuli_wdr.cpp:1761
+msgid "French"
+msgstr "Frantsesa"
+
+#: src/muuli_wdr.cpp:1762
+msgid "Galego"
+msgstr "Galiziar"
+
+#: src/muuli_wdr.cpp:1763
+msgid "German"
+msgstr "Alemaniera"
+
+#: src/muuli_wdr.cpp:1764
+msgid "Italian"
+msgstr "Italiera"
+
+#: src/muuli_wdr.cpp:1765
+msgid "Russian"
+msgstr "Errusiera"
+
+#: src/muuli_wdr.cpp:1766
+msgid "Spanish (Chile)"
+msgstr "Gaztelania (Txile)"
+
+#: src/muuli_wdr.cpp:1775
+msgid "Misc Options"
+msgstr "Beste aukerak"
+
+#: src/muuli_wdr.cpp:1782
+msgid "Progressbar Style"
+msgstr "Aurrerapen barra Estiloa"
+
+#: src/muuli_wdr.cpp:1799
+msgid "Flat"
+msgstr "Laua"
+
+#: src/muuli_wdr.cpp:1802
+msgid "Round"
+msgstr "Biribildu"
+
+#: src/muuli_wdr.cpp:1813
+msgid "Beep on errors"
+msgstr "Beep egin erroreeetan"
+
+#: src/muuli_wdr.cpp:1816
+msgid "Bring to front on link click"
+msgstr "Lehen planoan ipini esteka batetan klikatzerakoan"
+
+#: src/muuli_wdr.cpp:1820
+msgid "Downloadlist doubleclick to expand"
+msgstr "Deskarga zerreda klik bikoitza irekitzeko"
+
+#: src/muuli_wdr.cpp:1824
+msgid "Minimize to trayicon"
+msgstr "Ikonotu ikono barrara"
+
+#: src/muuli_wdr.cpp:1827
+msgid "Enable Online-Signature"
+msgstr "Gaitu Sinadura linean"
+
+#: src/muuli_wdr.cpp:1831
+msgid "Prompt on exit"
+msgstr "Galdetu ireteterakoan"
+
+#: src/muuli_wdr.cpp:1837
+msgid "Tooltip Delay Time in secs (1s to 5s)"
+msgstr "Argibide atzerapen denbora segundutan (1-etik 5-era)"
+
+#: src/muuli_wdr.cpp:1845
+msgid "Systray Integration"
+msgstr "Sistema barra integrazioa"
+
+#: src/muuli_wdr.cpp:1850
+msgid "Startup"
+msgstr "Hasiera"
+
+#: src/muuli_wdr.cpp:1863
+msgid "5 Days"
+msgstr "5 Egun"
+
+#: src/muuli_wdr.cpp:1868
+msgid "Check for new version"
+msgstr "Arakatu bertsio berri baten bila"
+
+#: src/muuli_wdr.cpp:1878
+msgid "Show Splashscreen"
+msgstr "Erakutsi Abiarazte pantaila"
+
+#: src/muuli_wdr.cpp:1882
+msgid "Start minimized"
+msgstr "Hasi txikiturik"
+
+#: src/muuli_wdr.cpp:1907
+msgid "Line Capacities"
+msgstr "konexio gaitasunak"
+
+#: src/muuli_wdr.cpp:1914
+#: src/muuli_wdr.cpp:1953
+#: src/SearchListCtrl.cpp:128
+msgid "Download"
+msgstr "Deskargatu"
+
+#: src/muuli_wdr.cpp:1927
+#: src/muuli_wdr.cpp:1966
+msgid "Upload"
+msgstr "Igo"
+
+#: src/muuli_wdr.cpp:1946
+msgid "Bandwith Limits"
+msgstr "Konexio gaitasunak"
+
+#: src/muuli_wdr.cpp:1979
+msgid "Slot Allocation"
+msgstr "Slot kokapena"
+
+#: src/muuli_wdr.cpp:2002
+msgid "Clientport"
+msgstr "BezeroAtaka"
+
+#: src/muuli_wdr.cpp:2009
+msgid "TCP"
+msgstr "TCP"
+
+#: src/muuli_wdr.cpp:2019
+msgid "UDP"
+msgstr "UDP"
+
+#: src/muuli_wdr.cpp:2029
+msgid "disable"
+msgstr "ezgaitu"
+
+#: src/muuli_wdr.cpp:2042
+msgid "Max Sources per File"
+msgstr "Fitxategiko iturburu muga"
+
+#: src/muuli_wdr.cpp:2049
+msgid "Hard Limit"
+msgstr "Muga gogorra"
+
+#: src/muuli_wdr.cpp:2061
+msgid "Connection Limits"
+msgstr "Konexio mugak"
+
+#: src/muuli_wdr.cpp:2068
+msgid "Max Connections"
+msgstr "Gehinezko konexioak"
+
+#: src/muuli_wdr.cpp:2087
+msgid "Autoconnect on startup"
+msgstr "Konektatu abiaraztekoan"
+
+#: src/muuli_wdr.cpp:2090
+msgid "Reconnect on loss"
+msgstr "berkonektatu konexioa galtzean"
+
+#: src/muuli_wdr.cpp:2094
+msgid "Show overhead bandwith"
+msgstr "Ikusi konexio erabilpena"
+
+#: src/muuli_wdr.cpp:2098
+msgid "Connection Wizard"
+msgstr "Konexio laguntzailea"
+
+#: src/muuli_wdr.cpp:2128
+msgid "Remove dead server after"
+msgstr "Ezabatu hildako zerbitzaria geroago"
+
+#: src/muuli_wdr.cpp:2135
+msgid "retries"
+msgstr "saiakerak"
+
+#: src/muuli_wdr.cpp:2142
+msgid "Auto-update serverlist at startup"
+msgstr "Auto-eguneratu zerbitzari zerrenda abiaraztean"
+
+#: src/muuli_wdr.cpp:2147
+msgid "List"
+msgstr "Zerrenda"
+
+#: src/muuli_wdr.cpp:2154
+msgid "Always filter bad IPs"
+msgstr "Beti iragazi okerreko IP-ak"
+
+#: src/muuli_wdr.cpp:2158
+msgid "Update serverlist when connecting to a server"
+msgstr "Eguneratu  zerbitzari zerrenda zerbitzari batetara konektatzean"
+
+#: src/muuli_wdr.cpp:2162
+msgid "Update serverlist when a client connect"
+msgstr "Eguneratu  zerbitzari zerrenda bezero bat konektatzerakoan"
+
+#: src/muuli_wdr.cpp:2166
+msgid "Use priority system"
+msgstr "Erabili lehentasun sistema"
+
+#: src/muuli_wdr.cpp:2170
+msgid "Use smart LowID check on connect"
+msgstr "Erabili IDbaxu egiaztapena konektatzerakoan"
+
+#: src/muuli_wdr.cpp:2174
+msgid "Safe connect"
+msgstr "Konexio ziurra"
+
+#: src/muuli_wdr.cpp:2177
+msgid "Autoconnect to servers in static list only"
+msgstr "Estatiko zerbitzarieta bakarrik autokonektatu"
+
+#: src/muuli_wdr.cpp:2180
+msgid "Set manually added servers to High Priority"
+msgstr "Ezarri eskuz gehitutako zerbitzariak lehentasun altuan"
+
+#: src/muuli_wdr.cpp:2204
+msgid "See my shares"
+msgstr "Erakutsi nire partekatutakoak"
+
+#: src/muuli_wdr.cpp:2207
+msgid "Everybody"
+msgstr "Edozeini"
+
+#: src/muuli_wdr.cpp:2213
+msgid "No One"
+msgstr "Inorri"
+
+#: src/muuli_wdr.cpp:2222
+msgid "I.C.H. active"
+msgstr "K.K.A. gaiturik"
+
+#: src/muuli_wdr.cpp:2231
+msgid "Add files to download in pause mode"
+msgstr "Gehitu fitxategiak deskargetara geldirik"
+
+#: src/muuli_wdr.cpp:2235
+msgid "Add files to download with auto priority"
+msgstr "Gehitu fitxategiak deskarga zerrendara auto-lehentasunarekin"
+
+#: src/muuli_wdr.cpp:2239
+msgid "Try to download first and last chunks first"
+msgstr "Saiatu lehen eta azken zatiak hasieran deskargatzen"
+
+#: src/muuli_wdr.cpp:2243
+msgid "Add new shared files with auto priority"
+msgstr "Gehitu partekatutako fitxategi berriak auto-lehentasunarekin"
+
+#: src/muuli_wdr.cpp:2247
+msgid "Try to transfer full chunks to all uploads"
+msgstr "saiatu zati osoak transferitzen bidaltze guztietan"
+
+#: src/muuli_wdr.cpp:2251
+msgid "Start next paused file when a file completed"
+msgstr "Abiarazi geratutako hurrengo fitxategia bat bukatzerakoan"
+
+#: src/muuli_wdr.cpp:2275
+msgid "Incoming Directory :"
+msgstr "Deskaraga direktorioa:"
+
+#: src/muuli_wdr.cpp:2283
+#: src/muuli_wdr.cpp:2296
+#: src/muuli_wdr.cpp:2324
+#: src/muuli_wdr.cpp:2439
+msgid "Browse"
+msgstr "Arakatu"
+
+#: src/muuli_wdr.cpp:2290
+msgid "Temporary Directory :"
+msgstr "Aldi baterakoa Direktorioa:"
+
+#: src/muuli_wdr.cpp:2301
+msgid "Shared Directories"
+msgstr "Partekatutako direktorioak"
+
+#: src/muuli_wdr.cpp:2314
+msgid "Video Player"
+msgstr "Bideo-erreproduzitzailea"
+
+#: src/muuli_wdr.cpp:2321
+msgid "mplayer -idx"
+msgstr "mplayer -idx"
+
+#: src/muuli_wdr.cpp:2331
+msgid "Create Backup to preview"
+msgstr "Sortu Babeskopia  aurreikusteko"
+
+#: src/muuli_wdr.cpp:2354
+msgid "Graphs"
+msgstr "Grafikak"
+
+#: src/muuli_wdr.cpp:2357
+#: src/muuli_wdr.cpp:2402
+msgid "Update delay : 5 secs"
+msgstr "Eguneratze atzerapena : 5 seg"
+
+#: src/muuli_wdr.cpp:2363
+msgid "Time for average graph: 100 mins"
+msgstr "Bataz besteko grafika denbora : 100 min"
+
+#: src/muuli_wdr.cpp:2369
+#: src/PPgStats.cpp:142
+msgid "Select Statistics Colors"
+msgstr "Hauatat  Estatistikak Koloreak"
+
+#: src/muuli_wdr.cpp:2376
+msgid "Background"
+msgstr "Atzeko planoa"
+
+#: src/muuli_wdr.cpp:2377
+msgid "Grid"
+msgstr "Sareta"
+
+#: src/muuli_wdr.cpp:2378
+msgid "Download current"
+msgstr "Uneko deskaragak"
+
+#: src/muuli_wdr.cpp:2379
+msgid "Download running average"
+msgstr "Martxan deskargak bataz bestean"
+
+#: src/muuli_wdr.cpp:2380
+msgid "Download session average"
+msgstr "Saioaren bataz besteko deskargak"
+
+#: src/muuli_wdr.cpp:2381
+msgid "Upload current"
+msgstr "Uneko igoerak"
+
+#: src/muuli_wdr.cpp:2382
+msgid "Upload running average"
+msgstr "Martxan igoerak bataz bestean"
+
+#: src/muuli_wdr.cpp:2383
+msgid "Upload session average"
+msgstr "Saioaren bataz besteko igoerak"
+
+#: src/muuli_wdr.cpp:2384
+msgid "Active connections"
+msgstr "Konexio aktiboak"
+
+#: src/muuli_wdr.cpp:2387
+msgid "Systray Icon Speedbar"
+msgstr "Sistema barra Abiadura barra ikonoa"
+
+#: src/muuli_wdr.cpp:2392
+#: src/muuli_wdr.cpp:3021
+msgid "Select"
+msgstr "Hautatu"
+
+#: src/muuli_wdr.cpp:2399
+msgid "Statistics Tree"
+msgstr "Estatistika zuhaitza"
+
+#: src/muuli_wdr.cpp:2428
+msgid "Messages popup"
+msgstr "Mezu popup"
+
+#: src/muuli_wdr.cpp:2431
+msgid "Use sound"
+msgstr "Erabili soinua"
+
+#: src/muuli_wdr.cpp:2446
+msgid "Pop out when :"
+msgstr "Leihoa ireki :"
+
+#: src/muuli_wdr.cpp:2449
+msgid "New entry on log"
+msgstr "Log-ean sarrera berria"
+
+#: src/muuli_wdr.cpp:2452
+msgid "Starts a new chat session"
+msgstr "Txat saio berri bat hasi"
+
+#: src/muuli_wdr.cpp:2455
+msgid "A new chat message is received"
+msgstr "Txat mezu berri bat jaso da"
+
+#: src/muuli_wdr.cpp:2458
+msgid "A download is added or finished"
+msgstr "DEskarga gehitu edo amaitu da"
+
+#: src/muuli_wdr.cpp:2461
+msgid "New aMule version detected"
+msgstr "aMule bertsio berria aurkitua"
+
+#: src/muuli_wdr.cpp:2464
+msgid "Urgent OOD, serverconnection lost"
+msgstr "Presazkoa OOD, zerbitzari konexioa galduta !!"
+
+#: src/muuli_wdr.cpp:2472
+msgid "Notify by Mail"
+msgstr "Jakinarazi ePostaz"
+
+#: src/muuli_wdr.cpp:2475
+msgid "Send an Email when transfer complete."
+msgstr "Bidali ePosta mezu bat deskarga amaitzerakoan"
+
+#: src/muuli_wdr.cpp:2481
+msgid "SMTP server :"
+msgstr "SMTP zerbitzaria"
+
+#: src/muuli_wdr.cpp:2487
+msgid "Email Address :"
+msgstr "Eposta Helbidea:"
+
+#: src/muuli_wdr.cpp:2515
+msgid "aMule Tweaks Advertisements && Parameters"
+msgstr "aMule Aldagaiak Abisuak && Parametroak"
+
+#: src/muuli_wdr.cpp:2521
+msgid "!!! WARNING !!!"
+msgstr "!!! KONTUZ !!!"
+
+#: src/muuli_wdr.cpp:2530
+msgid ""
+"Do not change these setting unless you know\n"
+"what you are doing, otherwise you can easily\n"
+"make things worse for yourself.\n"
+"\n"
+"aMule will run fine without adjusting any of\n"
+"these settings."
+msgstr ""
+"Ezarpen hauek ez aldatu ez badakizu zer egiten\n"
+"ari zaren, bestela normalean gauzak daudenak\n"
+"baino okerrago geratuko dira zuretzat\n"
+"\n"
+"Amulek ondo funtzionatu bherko luke ezarpen\n"
+"hauek aldatu gabe."
+
+#: src/muuli_wdr.cpp:2542
+msgid "Max new connections / 5 secs"
+msgstr "Gehienezko konexio berria / 5 seg"
+
+#: src/muuli_wdr.cpp:2548
+msgid "Verbose (additional program feedback)"
+msgstr "Arazpena (programaren informazio hedatua)"
+
+#: src/muuli_wdr.cpp:2551
+msgid "Autotake ED2K Links only during runtime"
+msgstr "Abiarazita dafoenean ED2K estekak atxikitu"
+
+#: src/muuli_wdr.cpp:2555
+msgid "Show transfer rates on title"
+msgstr "Erakutsi transferentziak izenburuan"
+
+#: src/muuli_wdr.cpp:2559
+msgid "File Buffer Size: 240000 bytes"
+msgstr "Fitxategia  Buffer Tamaina: 240000 bytes"
+
+#: src/muuli_wdr.cpp:2565
+msgid "Upload Queue Size: 5000 clients"
+msgstr "Igoera ilara tamaina: 5000 bezero"
+
+#: src/muuli_wdr.cpp:2571
+msgid "Server connection refresh interval: Disable"
+msgstr "Zerbitzari konexio berritze aldia: Ezgaiturik"
+
+#: src/muuli_wdr.cpp:2577
+msgid "Upload/Download list refresh when updated"
+msgstr "Igo/Deskarga zerrenda berritu eguneratzean"
+
+#: src/muuli_wdr.cpp:2581
+#: src/PPgTweaks.cpp:194
+msgid "Upload/Download list refresh time: Realtime"
+msgstr "Igo/Deskarga zerrenda berritze aldia: Errealean"
+
+#: src/muuli_wdr.cpp:2607
+msgid "Arrange Downloads"
+msgstr "Egokitu deskargak"
+
+#: src/muuli_wdr.cpp:2610
+msgid "Enable auto-arranging download list "
+msgstr "Gaitu deskarga zerrenda auto-antolaketa"
+
+#: src/muuli_wdr.cpp:2613
+msgid "Download speed"
+msgstr "Deskarga abiadura"
+
+#: src/muuli_wdr.cpp:2616
+msgid "Number of sources"
+msgstr "Jatorri kopurua:"
+
+#: src/muuli_wdr.cpp:2624
+msgid "GTK Theme Selector"
+msgstr "GTK gai hautatzailea"
+
+#: src/muuli_wdr.cpp:2631
+msgid "Theme :"
+msgstr "Gaia :"
+
+#: src/muuli_wdr.cpp:2642
+msgid "Use Font "
+msgstr "Erabili Letra-tipoa "
+
+#: src/muuli_wdr.cpp:2650
+msgid "Font"
+msgstr "Letra-tipoa"
+
+#: src/muuli_wdr.cpp:2685
+msgid "No Needed Sources Handling"
+msgstr "Behar diren Iturburuak ez dituztenak kudeatzen"
+
+#: src/muuli_wdr.cpp:2688
+msgid "Enable auto drop No Needed Sources"
+msgstr "Gaitu auto ukatzea behar ez diren iturburuak"
+
+#: src/muuli_wdr.cpp:2694
+msgid "Extended Dropping"
+msgstr "Ukatze Hedatua"
+
+#: src/muuli_wdr.cpp:2697
+msgid "Drop sources anyway"
+msgstr "Ukatu iturburuak ala ere"
+
+#: src/muuli_wdr.cpp:2701
+msgid "Send sources to any other file before dropping (High CPU)"
+msgstr "Bidali edozeini iturburuak "
+
+#: src/muuli_wdr.cpp:2706
+msgid "Full Queue Sources Handling"
+msgstr "Ilada beteko iturburuak kudeaketa"
+
+#: src/muuli_wdr.cpp:2709
+msgid "Enable auto drop Full Queue Sources"
+msgstr "Gaitu auto ukatzea Ilara beteko Iturburuak"
+
+#: src/muuli_wdr.cpp:2715
+msgid "High Queue Rating Sources Handling"
+msgstr "Ilara handiko jatorrien kudeaketa"
+
+#: src/muuli_wdr.cpp:2718
+msgid "Enable auto drop High Queue Rating Sources"
+msgstr "Gaitu auto ukatzea ilara handiko Iturburuak"
+
+#: src/muuli_wdr.cpp:2724
+msgid "High Queue Rating value"
+msgstr "Ilara altuko klazifikazio balioa"
+
+#: src/muuli_wdr.cpp:2730
+msgid "(Min 300 / Max 3000)"
+msgstr "(Gutx. 300 / Gehi. 3000)"
+
+#: src/muuli_wdr.cpp:2737
+msgid "Auto Drop Sources Timer"
+msgstr "Iturburu auto ukatzeko ordutegia"
+
+#: src/muuli_wdr.cpp:2742
+msgid "Timer (in secs)"
+msgstr "Aldia (segundotan)"
+
+#: src/muuli_wdr.cpp:2748
+msgid "(Min 60 / 3600 Max)"
+msgstr "(Gutx. 60 / Gehi. 3600)"
+
+#: src/muuli_wdr.cpp:2773
+msgid "Webserver Parameters"
+msgstr "Web zerbitzari ezarpenak"
+
+#: src/muuli_wdr.cpp:2776
+msgid "Enable Webserver"
+msgstr "Gaitu WEb zerbitzaria"
+
+#: src/muuli_wdr.cpp:2781
+msgid "Webserver port"
+msgstr "Web zerbitzari ataka"
+
+#: src/muuli_wdr.cpp:2791
+msgid "Page Refresh Time (in secs)"
+msgstr "Orrialdea berritzeko denbora (segundutan)"
+
+#: src/muuli_wdr.cpp:2799
+msgid "Enable Gzip compression"
+msgstr "Gaitu Gzip konpresioa"
+
+#: src/muuli_wdr.cpp:2803
+msgid "Enable Low rights User"
+msgstr "Gaitu baimen gutxiko erabiltzailea"
+
+#: src/muuli_wdr.cpp:2809
+msgid "Full rights password"
+msgstr "Baimen osorako pasahitza"
+
+#: src/muuli_wdr.cpp:2815
+msgid "Low rights password"
+msgstr "Baimen baxuko pasahitza"
+
+#: src/muuli_wdr.cpp:2825
+msgid "External Connection Parameters"
+msgstr "Hurruneko konexio ezarpenak"
+
+#: src/muuli_wdr.cpp:2828
+msgid "Accept external connections"
+msgstr "Onartu hurruneko konexioak"
+
+#: src/muuli_wdr.cpp:2831
+msgid "Use TCP ports instead of unix local sockets"
+msgstr "TCP atakak erabili unix socket lokakal beharrean"
+
+#: src/muuli_wdr.cpp:2836
+msgid "External TCP port"
+msgstr "hurruneko TCP ataka"
+
+#: src/muuli_wdr.cpp:2846
+msgid "Enable password"
+msgstr "Gaitu pasahitza"
+
+#: src/muuli_wdr.cpp:2883
+#: src/PPgConnection.cpp:47
+#: src/StatisticsDlg.cpp:598
+#: src/Wizard.cpp:235
+msgid "Connection"
+msgstr "Konexioa"
+
+#: src/muuli_wdr.cpp:2887
+msgid "Remote Controls"
+msgstr "Hurruneko Kontrolak"
+
+#: src/muuli_wdr.cpp:2891
+#: src/PPgServer.cpp:43
+#: src/ServerListCtrl.cpp:90
+#: src/ServerSocket.cpp:204
+#: src/ServerSocket.cpp:215
+msgid "Server"
+msgstr "Zerbitzaria"
+
+#: src/muuli_wdr.cpp:2899
+#: src/PPgSourcesDropping.cpp:40
+msgid "Sources Dropping"
+msgstr "Iturburuak garbitzen"
+
+#: src/muuli_wdr.cpp:2903
+#: src/PPgDirectories.cpp:46
+msgid "Directories"
+msgstr "Direktorioak"
+
+#: src/muuli_wdr.cpp:2911
+#: src/PPgNotify.cpp:33
+msgid "Notify"
+msgstr "Jakinarazi"
+
+#: src/muuli_wdr.cpp:2915
+msgid "aMule Tweaks"
+msgstr "aMule Aldagaiak"
+
+#: src/muuli_wdr.cpp:2919
+msgid "Gui Tweaks"
+msgstr "Gui Aldagaiak"
+
+#: src/muuli_wdr.cpp:2958
+msgid "Title :"
+msgstr "Titulua:"
+
+#: src/muuli_wdr.cpp:2978
+msgid "Incoming Dir :"
+msgstr "Deskarga direktorioa:"
+
+#: src/muuli_wdr.cpp:2984
+msgid "..."
+msgstr "..."
+
+#: src/muuli_wdr.cpp:2991
+msgid "Change priority for new assigned files :"
+msgstr "Aldatu lehentasuna fitxategi berrientzat :"
+
+#: src/muuli_wdr.cpp:2996
+msgid "Dont change"
+msgstr "Ez aldatu"
+
+#: src/muuli_wdr.cpp:3010
+msgid "Select color for this Category (currently selected) :"
+msgstr "Hautatu kolorea kategoria honentzat (unean aukeratutakoa):"
+
+#: src/muuli_wdr.cpp:3075
+msgid "Clients on queue :"
+msgstr "Bezeroak ilaran:"
+
+#: src/muuli_wdr.cpp:3078
+msgid "0"
+msgstr "0"
+
+#: src/muuli_wdr.cpp:3110
+msgid "Display server motd when connected ..."
+msgstr "Bistaratu zerbitzariko motd konektatzerakoan..."
+
+#: src/muuli_wdr.cpp:3113
+#: src/muuli_wdr.cpp:3274
+msgid "Server Info"
+msgstr "Zerbitzari argibideak"
+
+#: src/muuli_wdr.cpp:3148
+#: src/muuli_wdr.cpp:3270
+msgid "aMule Log"
+msgstr "aMule Log"
+
+#: src/muuli_wdr.cpp:3200
+msgid "Click on this button to update the servers list from URL ..."
+msgstr "Klik egin botoi honetan zerbitzari zerrenda URL-tik eguneratzeko ..."
+
+#: src/muuli_wdr.cpp:3204
+msgid "Serverlist"
+msgstr "Zerbitzari Zerrenda"
+
+#: src/muuli_wdr.cpp:3208
+msgid "http://ocbmaurice.dyndns.org/pl/slist.pl/server.met?download/server-max.met"
+msgstr "http://ocbmaurice.dyndns.org/pl/slist.pl/server.met?download/server-max.met"
+
+#: src/muuli_wdr.cpp:3215
+msgid "Manual Server Add : Name"
+msgstr "Zerbitzaria eskuz gehitu: Izena"
+
+#: src/muuli_wdr.cpp:3221
+msgid "IP:Port"
+msgstr "IP Ataka"
+
+#: src/muuli_wdr.cpp:3227
+msgid ":"
+msgstr ":"
+
+#: src/muuli_wdr.cpp:3234
+msgid "Add manually a server (fill fields to the left before) ..."
+msgstr "Gehitu zerbitzari bat eskuz (sar datuak ezkerrean lehenik)"
+
+#: src/muuli_wdr.cpp:3304
+#: src/StatisticsDlg.cpp:635
+msgid "Servers"
+msgstr "Zerbitzariak"
+
+#: src/muuli_wdr.cpp:3304
+msgid "Servers list"
+msgstr "Zerbitzari zerrenda"
+
+#: src/muuli_wdr.cpp:3305
+msgid "Searches"
+msgstr "Bilaketa"
+
+#: src/muuli_wdr.cpp:3305
+msgid "Searches Window"
+msgstr "Blaketa leihoa"
+
+#: src/muuli_wdr.cpp:3306
+msgid "Transfers"
+msgstr "Transferentziak"
+
+#: src/muuli_wdr.cpp:3306
+msgid "Files Transfers"
+msgstr "Fitxategi Transferentziak"
+
+#: src/muuli_wdr.cpp:3307
+msgid "SharedFiles"
+msgstr "Partekatutakoak"
+
+#: src/muuli_wdr.cpp:3307
+msgid "Shared Files Window"
+msgstr "Partekatutako fitxategi leihoa"
+
+#: src/muuli_wdr.cpp:3308
+msgid "Messages Window"
+msgstr "Mezu leihoa"
+
+#: src/muuli_wdr.cpp:3309
+msgid "Statistics Graph Window"
+msgstr "Estatistika grafiko leihoa"
+
+#: src/muuli_wdr.cpp:3311
+#: src/PreferencesDlg.cpp:48
+msgid "Preferences"
+msgstr "Hobespenak"
+
+#: src/muuli_wdr.cpp:3311
+msgid "Preferences Settings Windows"
+msgstr "Hobespen ezarpen leihoak"
+
+#: src/otherfunctions.cpp:75
+#: src/PartFile.cpp:3113
+msgid "Bytes"
+msgstr "Byte-ak"
+
+#: src/otherfunctions.cpp:77
+msgid "KB"
+msgstr "KB"
+
+#: src/otherfunctions.cpp:79
+msgid "MB"
+msgstr "MB"
+
+#: src/otherfunctions.cpp:81
+msgid "GB"
+msgstr "GB"
+
+#: src/otherfunctions.cpp:83
+msgid "TB"
+msgstr "TB"
+
+#: src/otherfunctions.cpp:92
+msgid "K"
+msgstr "A"
+
+#: src/otherfunctions.cpp:94
+msgid "M"
+msgstr "M"
+
+#: src/otherfunctions.cpp:96
+msgid "G"
+msgstr "A"
+
+#: src/otherfunctions.cpp:98
+msgid "T"
+msgstr "T"
+
+#: src/otherfunctions.cpp:107
+msgid "secs"
+msgstr "seg"
+
+#: src/otherfunctions.cpp:109
+msgid "mins"
+msgstr "min"
+
+#: src/otherfunctions.cpp:111
+#: src/otherfunctions.cpp:113
+msgid "h"
+msgstr "L"
+
+#: src/otherfunctions.cpp:113
+msgid "D"
+msgstr "D"
+
+#: src/otherfunctions.cpp:544
+#: src/TransferWnd.cpp:156
+msgid "all"
+msgstr "denak"
+
+#: src/otherfunctions.cpp:545
+#: src/TransferWnd.cpp:157
+msgid "all others"
+msgstr "Beste denak"
+
+#: src/otherfunctions.cpp:546
+#: src/TransferWnd.cpp:159
+msgid "Incomplete"
+msgstr "Amaiatugabea"
+
+#: src/otherfunctions.cpp:548
+#: src/PartFile.cpp:2353
+#: src/TransferWnd.cpp:161
+msgid "Waiting"
+msgstr "Zain"
+
+#: src/otherfunctions.cpp:549
+#: src/PartFile.cpp:2351
+#: src/TransferWnd.cpp:162
+msgid "Downloading"
+msgstr "Deskargatzen"
+
+#: src/otherfunctions.cpp:550
+#: src/PartFile.cpp:2370
+#: src/TransferWnd.cpp:163
+msgid "Erroneous"
+msgstr "Akatsduna"
+
+#: src/otherfunctions.cpp:551
+#: src/PartFile.cpp:2367
+#: src/TransferWnd.cpp:164
+msgid "Paused"
+msgstr "Geraturik"
+
+#: src/otherfunctions.cpp:552
+#: src/PartFile.cpp:2374
+#: src/TransferWnd.cpp:165
+msgid "Stopped"
+msgstr "Gelditua"
+
+#: src/otherfunctions.cpp:553
+#: src/SearchDlg.cpp:387
+#: src/TransferWnd.cpp:167
+msgid "Video"
+msgstr "Bideoa"
+
+#: src/otherfunctions.cpp:555
+#: src/TransferWnd.cpp:169
+msgid "Archive"
+msgstr "Fitxategia"
+
+#: src/otherfunctions.cpp:558
+#: src/TransferWnd.cpp:172
+msgid "Text"
+msgstr "Testua"
+
+#: src/otherfunctions.cpp:560
+msgid "?"
+msgstr "?"
+
+#: src/PartFile.cpp:293
+#: src/PartFile.cpp:299
+msgid "ERROR: Failed to create partfile)"
+msgstr "ERROREA: Huts zati fitxategia sortzerakoan)"
+
+#: src/PartFile.cpp:327
+msgid "Error: Failed to open part.met file! (%s => %s)"
+msgstr "Errorea: Huts part.met fitxategia irekitzerakoan (%s => %s)"
+
+#: src/PartFile.cpp:334
+msgid "Error: Invalid part.met fileversion! (%s => %s)"
+msgstr "Errorea:Baliogabeko part.met fitxategi bertsioa (%s => %s)"
+
+#: src/PartFile.cpp:357
+msgid "Error: %s (%s) is corrupt"
+msgstr "Errorea: %s (%s)  apurturik dago"
+
+#: src/PartFile.cpp:481
+msgid "Failed to open %s (%s)"
+msgstr "Huts egin du irekitzarakoan: %s (%s)"
+
+#: src/PartFile.cpp:515
+msgid "Warning: %s might be corrupted"
+msgstr "Abisua : %s apurtua dirudi "
+
+#: src/PartFile.cpp:561
+#: src/PartFile.cpp:675
+#: src/PartFile.cpp:681
+msgid "ERROR while saving partfile: %s (%s => %s)"
+msgstr "ERROREA zati fitxategia gordetzerakoan: %s (%s => %s)"
+
+#: src/PartFile.cpp:561
+msgid ".part file not found"
+msgstr ".part fitxategia ez da aurkitu"
+
+#: src/PartFile.cpp:688
+msgid "Unable to open %s file - using .bak file.\n"
+msgstr "Ezin da %s fitxategira ireki. .bak fitxategia erabiltzen\n"
+
+#: src/PartFile.cpp:696
+msgid ""
+"%s file is 0 size somehow - using .bak file.\n"
+" Please report on http://forum.amule.org\n"
+msgstr ""
+"%s fitxategia 0 tamainakoa da- .bak fitxategia erabiltzen\n"
+"Mesedez abisua eman http://forum.amule.org\n"
+
+#: src/PartFile.cpp:722
+msgid "Found corrupted part (%i) in %s"
+msgstr "Apurtutako zatia (%i) aurkiturik : %s"
+
+#: src/PartFile.cpp:734
+msgid "Finished rehashing %s"
+msgstr "Amaitutako berrazterketa: %s"
+
+#: src/PartFile.cpp:1961
+msgid "Unexpected file error while completing %s. File paused"
+msgstr "Espero ez zen erorea %s osatzerakoan. Fitxategia gelditurik"
+
+#: src/PartFile.cpp:1976
+#: src/PartFile.cpp:1983
+#: src/PartFile.cpp:2094
+#: src/PartFile.cpp:2102
+#: src/PartFile.cpp:2110
+msgid "Failed to delete %s"
+msgstr "Huts ezabatzerakoan: %s"
+
+#: src/PartFile.cpp:1994
+msgid "Finished downloading %s :-)"
+msgstr "Deskarga amaituta %s :-)"
+
+#: src/PartFile.cpp:1995
+msgid "Downloaded:"
+msgstr "Deskargaturik:"
+
+#: src/PartFile.cpp:1999
+msgid "A file with that name already exists, the file has been saved as %s"
+msgstr "Izen honetako fitxategi bat badago dagoeneko, izen honez gordeko da : %s"
+
+#: src/PartFile.cpp:2122
+msgid "Warning: Unable to hash downloaded part - hashset incomplete (%s)"
+msgstr "Abisua: Ezin da deskargatutako zatia aztertu - aztertze burua ez dago osorik (%s)"
+
+#: src/PartFile.cpp:2126
+msgid "Error: Unable to hash downloaded part - hashset incomplete (%s). This should never happen"
+msgstr ""
+"Errorea: Ezin da deskargatutako zatia aztertu - azterketa buruak ez dago osorik (%s). Hau ez zen\n"
+"inoiz gertatu beharko."
+
+#: src/PartFile.cpp:2358
+msgid "Hashing"
+msgstr "Aztertzen"
+
+#: src/PartFile.cpp:2361
+msgid "Completing"
+msgstr "Osotzen"
+
+#: src/PartFile.cpp:2364
+msgid "Complete"
+msgstr "Amaitua"
+
+#: src/PartFile.cpp:2785
+msgid "ERROR: Cannot write to disk"
+msgstr "ERROREA: Ezin da diskoan idatzi"
+
+#: src/PartFile.cpp:2861
+msgid "Downloaded part %i is corrupt :(  (%s)"
+msgstr "Deskargatutako %i zatia apurtrik dago :(  (%sO)"
+
+#: src/PartFile.cpp:2883
+msgid "ICH: Recovered corrupted part %i  (%s)"
+msgstr "ICH : Konponduta %i apurtutako zatia (%s)"
+
+#: src/PartFile.cpp:2933
+msgid "Unexpected file error while writing %s : %s"
+msgstr "Espero ez zen fitxategi errorea %s idazten: %s"
+
+#: src/PartFile.cpp:3111
+msgid ""
+"Partfilename: %s\n"
+"Parts: %d , %s: %d (%.1f%%)\n"
+msgstr ""
+"Fitxategi zati izena: %s\n"
+"Zatiak: %d , %s: %d (%.1f%%)\n"
+
+#: src/PartFile.cpp:3112
+msgid "%d%% done (%s) - Transferring from %d sources"
+msgstr "%d%% egina (%s) - %d jatorritik transferitzen"
+
+#: src/PartFile.cpp:3114
+msgid "Available"
+msgstr "Erabilgarri"
+
+#: src/PartFile.cpp:3116
+msgid "Last Seen Complete :"
+msgstr "Azkenez osoa ikusirik:"
+
+#: src/PartFile.cpp:3116
+msgid "Last Reception:"
+msgstr "Azken deskarga:"
+
+#: src/PPgDirectories.cpp:106
+msgid "Browse for videoplayer"
+msgstr "Arakatu bideo erreproduktorea"
+
+#: src/PPgDirectories.cpp:106
+msgid "Executable (*)|*||"
+msgstr "Abiarazgarria (*)|*||"
+
+#: src/PPgNotify.cpp:125
+msgid "Browse wav"
+msgstr "Arakatu wav"
+
+#: src/PPgNotify.cpp:125
+msgid "File wav (*.wav)|*.wav||"
+msgstr "wav fitxategia (*.wav)|*.wav||"
+
+#: src/PPgServer.cpp:169
+msgid "Edit Serverlist"
+msgstr "Editatu zerbitzari zerrenda"
+
+#: src/PPgServer.cpp:170
+msgid ""
+"Add here URL's to download server.met files.\n"
+"Only one url on each line."
+msgstr ""
+"Gehitu hemen server.met deskargatzeko URL-a.\n"
+"URL helbide bat lerro bakoitzean."
+
+#: src/PPgStats.cpp:150
+#: src/PPgStats.cpp:169
+msgid "Update: Disabled"
+msgstr "Eguneratu: Ezgaiturik"
+
+#: src/PPgStats.cpp:152
+msgid "Update period: %i sec%s"
+msgstr "Berritze aldia: %i seg %s"
+
+#: src/PPgStats.cpp:160
+msgid "Time for running averages: %i mins"
+msgstr "Aldia martxa bataz bestekoa: %i min"
+
+#: src/PPgStats.cpp:171
+msgid "Update period: %i secs"
+msgstr "Berritze aldia: %i seg"
+
+#: src/PPgTweaks.cpp:47
+msgid "Tweaks"
+msgstr "Aldagaiak"
+
+#: src/PPgTweaks.cpp:171
+msgid "File Buffer Size %i bytes"
+msgstr "Fitxategia buffer tamaina %i bite"
+
+#: src/PPgTweaks.cpp:175
+msgid "Upload Queue Size %i clients"
+msgstr "Igoera ilara tamaina: %i bezero"
+
+#: src/PPgTweaks.cpp:180
+msgid "Server connection refresh interval: Disabled"
+msgstr "Zerbitzarira konexio berritze aldia: Ezgaiturik"
+
+#: src/PPgTweaks.cpp:182
+msgid "Server connection refresh interval %i min"
+msgstr "Zerbitzarira konexio berritze aldia: %i min"
+
+#: src/PPgTweaks.cpp:185
+msgid "Server connection refresh interval %i mins"
+msgstr "Zerbitzarira konexio berritze aldia: %i min"
+
+#: src/PPgTweaks.cpp:191
+msgid "Upload/Download list refresh time: Disable"
+msgstr "Deskarga/Igoera zerrenda berritze aldia: Ezgaiturik"
+
+#: src/PPgTweaks.cpp:196
+msgid "Upload/Download list refresh time: %i sec"
+msgstr "Deskarga/Igoera zerrenda berritze aldia: %i seg"
+
+#: src/PPgTweaks.cpp:199
+msgid "Upload/Download list refresh time: %i secs"
+msgstr "Deskarga/Igoera zerrenda berritze aldia: %i seg"
+
+#: src/QueueListCtrl.cpp:102
+#: src/QueueListCtrl.cpp:124
+#: src/QueueListCtrl.cpp:201
+#: src/SearchListCtrl.cpp:127
+#: src/UploadListCtrl.cpp:87
+msgid "File"
+msgstr "Fitxategia"
+
+#: src/QueueListCtrl.cpp:103
+#: src/QueueListCtrl.cpp:125
+#: src/QueueListCtrl.cpp:206
+msgid "File Priority"
+msgstr "Fitxategia Lehentasuna"
+
+#: src/QueueListCtrl.cpp:105
+#: src/QueueListCtrl.cpp:127
+#: src/QueueListCtrl.cpp:216
+msgid "Score"
+msgstr "Puntuak"
+
+#: src/QueueListCtrl.cpp:106
+#: src/QueueListCtrl.cpp:128
+#: src/QueueListCtrl.cpp:221
+msgid "Asked"
+msgstr "Galdeturik"
+
+#: src/QueueListCtrl.cpp:107
+#: src/QueueListCtrl.cpp:129
+#: src/QueueListCtrl.cpp:226
+msgid "Last Seen"
+msgstr "Azkenez ikusia"
+
+#: src/QueueListCtrl.cpp:108
+#: src/QueueListCtrl.cpp:130
+#: src/QueueListCtrl.cpp:231
+msgid "Entered Queue"
+msgstr "Ilaran jarri da"
+
+#: src/QueueListCtrl.cpp:109
+#: src/QueueListCtrl.cpp:131
+#: src/QueueListCtrl.cpp:236
+#: src/TransferWnd.cpp:101
+msgid "Banned"
+msgstr "Ukatuak"
+
+#: src/QueueListCtrl.cpp:110
+#: src/SharedFilesCtrl.cpp:87
+#: src/UploadListCtrl.cpp:93
+msgid "Obtained Parts"
+msgstr "Eskuratutako zatiak"
+
+#: src/QueueListCtrl.cpp:141
+#: src/QueueListCtrl.cpp:175
+#: src/StatisticsDlg.cpp:611
+#: src/UploadListCtrl.cpp:146
+msgid "Clients"
+msgstr "Bezeroak"
+
+#: src/QueueListCtrl.cpp:143
+#: src/QueueListCtrl.cpp:178
+msgid "Unban"
+msgstr "Barkatu"
+
+#: src/QueueListCtrl.cpp:146
+#: src/QueueListCtrl.cpp:181
+msgid "Show Uploads"
+msgstr "Erakutsi Igoerak"
+
+#: src/QueueListCtrl.cpp:401
+#: src/SharedFilesCtrl.cpp:112
+#: src/SharedFilesCtrl.cpp:202
+#: src/SharedFilesCtrl.cpp:437
+msgid "PowerShare[Release]"
+msgstr "GzutizPartekatu"
+
+#: src/QueueListCtrl.cpp:404
+#: src/SharedFilesCtrl.cpp:111
+#: src/SharedFilesCtrl.cpp:198
+#: src/SharedFilesCtrl.cpp:424
+msgid "Very High"
+msgstr "Oso Altua"
+
+#: src/QueueListCtrl.cpp:413
+#: src/SharedFilesCtrl.cpp:107
+#: src/SharedFilesCtrl.cpp:182
+#: src/SharedFilesCtrl.cpp:372
+msgid "Very low"
+msgstr "Oso txikia"
+
+#: src/QueueListCtrl.cpp:431
+msgid "LowID"
+msgstr "IDBaxua"
+
+#: src/QueueListCtrl.cpp:449
+#: src/ServerListCtrl.cpp:360
+msgid "Yes"
+msgstr "Bai"
+
+#: src/QueueListCtrl.cpp:451
+#: src/ServerListCtrl.cpp:362
+msgid "No"
+msgstr "Ez"
+
+#: src/SearchListCtrl.cpp:71
+#: src/SharedFilesCtrl.cpp:83
+msgid "FileID"
+msgstr "FitxategiID"
+
+#: src/SearchListCtrl.cpp:129
+msgid "Copy ED2k link to clipboard"
+msgstr "Kopiatu ED2k esteka arbelera"
+
+#: src/SearchListCtrl.cpp:130
+msgid "Copy ED2k link to clipboard (HTML)"
+msgstr "Kopiatu ED2k esteka arbelera (HTML)"
+
+#: src/SearchListCtrl.cpp:135
+msgid "Close this search result"
+msgstr "Itxi bilaketa emaitza hau"
+
+#: src/server.cpp:243
+msgid "Description: %s"
+msgstr "Azalpena: %s"
+
+#: src/server.cpp:246
+#: src/ServerListCtrl.cpp:215
+#: src/ServerWnd.cpp:171
+msgid "IP"
+msgstr "IP"
+
+#: src/server.cpp:248
+#: src/ServerWnd.cpp:171
+msgid "Port"
+msgstr "Ataka"
+
+#: src/server.cpp:251
+#: src/ServerListCtrl.cpp:217
+msgid "Ping"
+msgstr "Ping"
+
+#: src/server.cpp:255
+msgid "User: %i"
+msgstr "Erabiltzailea: %i"
+
+#: src/ServerList.cpp:68
+msgid "No serverlist address entry in 'addresses.dat' found. Please paste a valid serverlist address into this file in order to auto-update your serverlist"
+msgstr "'addresses.dat' fitxategian ez da zerbitzari zerrenda helbiderik aurkitu. Mesedez itsasi baliozko zerbitzari zerrenda helbide bat fitxategian zerbitzari zerenda auto-eguneratzeko"
+
+#: src/ServerList.cpp:68
+msgid "Unable to retrieve serverlist"
+msgstr "Ezin da zerbitzari zerrenda eskuratu"
+
+#: src/ServerList.cpp:90
+#: src/ServerWnd.cpp:92
+msgid "Failed to download the serverlist from %s"
+msgstr "Huts egin du zerbitzari zerrenda hemendik deskargatzerakoan %s"
+
+#: src/ServerList.cpp:134
+#: src/ServerList.cpp:139
+msgid "Failed to load server.met!"
+msgstr "Huts server.met kargatzerakoan!"
+
+#: src/ServerList.cpp:145
+msgid "Invalid versiontag in server.met (0x%X)!"
+msgstr "Bertsio marka baliogabea server.met fitxategian (0x%X)!"
+
+#: src/ServerList.cpp:196
+msgid "%i servers in server.met found"
+msgstr "%i zerbitzari aurkiturik server.met fitxategian"
+
+#: src/ServerList.cpp:198
+msgid "%d servers added"
+msgstr "%d zerbitzari gehiturik"
+
+#: src/ServerList.cpp:202
+msgid "Error: the file server.met is corrupted"
+msgstr "Errorea: server.met fitxategia apurturik dago"
+
+#: src/ServerList.cpp:506
+#: src/ServerWnd.cpp:136
+msgid "Server added: "
+msgstr "Zerbitzaria gehiturik :"
+
+#: src/ServerList.cpp:741
+msgid "Failed to save server.met!"
+msgstr "Huts server.met gordetzerakoan!"
+
+#: src/ServerListCtrl.cpp:96
+msgid "Connect to this server"
+msgstr "Konektatu -zerbitzari honetara"
+
+#: src/ServerListCtrl.cpp:98
+msgid "Add to static"
+msgstr "Gehitu estatikoei"
+
+#: src/ServerListCtrl.cpp:99
+msgid "Remove from static server list"
+msgstr "Kendu zerbitzari estatiko zerrendatik"
+
+#: src/ServerListCtrl.cpp:103
+msgid "Remove server"
+msgstr "Kendu zerbitzaria"
+
+#: src/ServerListCtrl.cpp:104
+msgid "Remove all servers"
+msgstr "Kendu zerbitzari guztiak"
+
+#: src/ServerListCtrl.cpp:214
+msgid "Server Name"
+msgstr "Zerbitzaria Izena"
+
+#: src/ServerListCtrl.cpp:216
+msgid "Description"
+msgstr "Azalpena"
+
+#: src/ServerListCtrl.cpp:220
+msgid "Preference"
+msgstr "Hobespena"
+
+#: src/ServerListCtrl.cpp:221
+msgid "Failed"
+msgstr "Huts egin du"
+
+#: src/ServerListCtrl.cpp:222
+msgid "Static"
+msgstr "Estatikoa"
+
+#: src/ServerListCtrl.cpp:351
+msgid "No Pref"
+msgstr "Pref Gabea"
+
+#: src/ServerListCtrl.cpp:663
+#: src/ServerListCtrl.cpp:701
+msgid "Failed to open staticservers.dat"
+msgstr "Huts staticservers.dat irekitzerakoan"
+
+#: src/ServerListCtrl.cpp:672
+msgid "Added to static server list"
+msgstr "Zerbitzari estatiko zerrendara gehiturik"
+
+#: src/ServerListCtrl.cpp:743
+msgid "Servers (%i)"
+msgstr "Zerbitzariak (%i)"
+
+#: src/ServerSocket.cpp:307
+msgid "New clientid is %u"
+msgstr "Bezero id berria: %u"
+
+#: src/ServerSocket.cpp:378
+msgid "Unknown server info received !"
+msgstr "Zerbitzari informazio ezezaguna jasoa!"
+
+#: src/ServerSocket.cpp:443
+msgid "Received %d new servers"
+msgstr "%d zerbitzari berri jasoak"
+
+#: src/ServerSocket.cpp:480
+msgid "Server rejected last command"
+msgstr "Zerbitzariak azken komadoa ukatu du"
+
+#: src/ServerSocket.cpp:501
+msgid "Connecting to %s (%s:%i)..."
+msgstr "Konektatzen %s (%s %i)..."
+
+#: src/ServerSocket.cpp:512
+msgid "Error while connecting to %s (%s:%i): %d"
+msgstr "Error hona konektatzerakoan:  %s (%s:%i): %d"
+
+#: src/ServerSocket.cpp:525
+msgid "Error in serversocket: %s (%s:%i): %u"
+msgstr "Errorera zerbitzari socketean: %s (%s:%i): %u"
+
+#: src/ServerWnd.cpp:67
+msgid "This is "
+msgstr "Hau da "
+
+#: src/ServerWnd.cpp:67
+msgid " (based on "
+msgstr " (honetan oinarritua"
+
+#: src/ServerWnd.cpp:68
+msgid "Visit http://www.amule.org to check if a new version is available.\n"
+msgstr "http://www.amule.org erabili bertsio berririk eskuragarri dagoen jakiteko\n"
+
+#: src/ServerWnd.cpp:78
+msgid "Invalid URL"
+msgstr "Baliogabeko URLa"
+
+#: src/ServerWnd.cpp:107
+msgid "Please enter a serveradress"
+msgstr "Mesedes sartu zerbitzari helbide bat"
+
+#: src/ServerWnd.cpp:113
+msgid "Incomplete serverport: Please enter a serverport"
+msgstr "Zerbitzari ataka baliogabea. Sar ezazu zerbitzari ataka zenbakia"
+
+#: src/ServerWnd.cpp:134
+msgid "Server not added!"
+msgstr "Zerbitzaria ez da gehitu!"
+
+#: src/ServerWnd.cpp:184
+msgid "ID"
+msgstr "ID"
+
+#: src/ServerWnd.cpp:191
+msgid "Low ID"
+msgstr "ID Baxua"
+
+#: src/ServerWnd.cpp:193
+msgid "High ID"
+msgstr "ID Altua"
+
+#: src/SharedFileList.cpp:86
+#: src/SharedFileList.cpp:88
+msgid "Found %i known shared files"
+msgstr "%i ezagututako partekatutako fitxategi aurkiturik"
+
+#: src/SharedFileList.cpp:189
+msgid "Loading..."
+msgstr "Kargatzen..."
+
+#: src/SharedFilesCtrl.cpp:82
+msgid "Permission"
+msgstr "Baimena"
+
+#: src/SharedFilesCtrl.cpp:84
+msgid "Requests"
+msgstr "Eskakizunak"
+
+#: src/SharedFilesCtrl.cpp:85
+msgid "Accepted Requests"
+msgstr "Onartutako eskakizunak"
+
+#: src/SharedFilesCtrl.cpp:86
+msgid "Transferred Data"
+msgstr "Tranferituta Datuak"
+
+#: src/SharedFilesCtrl.cpp:116
+#: src/SharedFilesCtrl.cpp:213
+#: src/SharedFilesCtrl.cpp:353
+msgid "Public"
+msgstr "Publikoa"
+
+#: src/SharedFilesCtrl.cpp:117
+#: src/SharedFilesCtrl.cpp:211
+#: src/SharedFilesCtrl.cpp:340
+msgid "Friends only"
+msgstr "Lagunak bakarrik"
+
+#: src/SharedFilesCtrl.cpp:118
+msgid "Locked"
+msgstr "Blokeatua"
+
+#: src/SharedFilesCtrl.cpp:121
+msgid "Permissions"
+msgstr "Baimenak"
+
+#: src/SharedFilesCtrl.cpp:123
+msgid "Change this file's comment..."
+msgstr "Aldatu fitxategi honen iruzkina..."
+
+#: src/SharedFilesCtrl.cpp:127
+msgid "Copy ED2k link to clipboard (&Source)"
+msgstr "Kopiatu ED2k esteka arbelara (&Iturburua)"
+
+#: src/SharedFilesCtrl.cpp:128
+msgid "Copy ED2k link to clipboard (Hostname)"
+msgstr "Kopiatu ED2k esteka arbelara (Hostalaria)"
+
+#: src/SharedFilesCtrl.cpp:175
+#: src/SharedFilesCtrl.cpp:453
+msgid "Auto [Re]"
+msgstr "Auto[No]"
+
+#: src/SharedFilesCtrl.cpp:209
+#: src/SharedFilesCtrl.cpp:324
+msgid "Hidden"
+msgstr "Ezkutua"
+
+#: src/SharedFilesCtrl.cpp:321
+#: src/SharedFilesCtrl.cpp:337
+msgid "You cannot change permissions while a file is still downloading!"
+msgstr "Ezin dituzu oraindik deskargatzen ari den fitxategi baten baimenak aldatu!"
+
+#: src/SharedFilesCtrl.cpp:603
+msgid "Shared Files (%i)"
+msgstr "Partekatutako fitxategiak (%i)"
+
+#: src/sockets.cpp:50
+msgid "Failed to connect to all servers listed. Making another pass."
+msgstr "Huts zerrendako zerbitzari guztietara konektatzen saiatzerakoan, berriz hasiko nahiz."
+
+#: src/sockets.cpp:92
+#: src/sockets.cpp:102
+msgid "No valid servers to connect in serverlist found"
+msgstr "Ez da konektatzeko baliozko zerbitzaririk aurkitu zerbitzari zerrendan"
+
+#: src/sockets.cpp:157
+msgid "Connected to %s (%s:%i)"
+msgstr "%s (%s:%i)-ra konektaturik"
+
+#: src/sockets.cpp:195
+msgid "Connection established on: %s"
+msgstr "Konexioa aktibatuta hona: %s"
+
+#: src/sockets.cpp:242
+msgid "Fatal Error while trying to connect. Internet connection might be down"
+msgstr "Errore konponezina konektatu saiatzean. Internet konexioa eroria egon daiteke"
+
+#: src/sockets.cpp:246
+msgid "Lost connection to %s (%s:%i)"
+msgstr "%s (%s:%i)-ra konexioa galduta"
+
+#: src/sockets.cpp:249
+msgid "%s (%s:%i) appears to be dead."
+msgstr "%s (%s:%i) hilik dagoela dirudi"
+
+#: src/sockets.cpp:259
+msgid "%s (%s:%i) appears to be full"
+msgstr "%s (%s:%i) beterik dagoela dirudi"
+
+#: src/sockets.cpp:274
+msgid "Automatic connection to server will retry in %d seconds"
+msgstr "Zerbitzariarekiko konexio automatikoa berriz saiatuko da %d segundutan"
+
+#: src/sockets.cpp:294
+msgid "Connection lost"
+msgstr "Konexioa galdu egin da"
+
+#: src/sockets.cpp:303
+msgid "Connecting to %s (%s:%i ) failed."
+msgstr "%s (%s:%i)-ra konektatzean huts"
+
+#: src/sockets.cpp:352
+msgid "Error: Socket invalid at timeoutcheck"
+msgstr "Errorea: Soket baliogabea denboraz kanpo arakatzean"
+
+#: src/sockets.cpp:358
+msgid "Connection attempt to %s (%s:%i ) timed out"
+msgstr "%s (%s:%i )-ra konexio saiakera denboraz kanpo geratu da"
+
+#: src/sockets.cpp:471
+msgid "Refreshing server connection"
+msgstr "Zerbitzari konexioa berritzen"
+
+#: src/StatisticsDlg.cpp:496
+msgid "Active connections (1:%u)"
+msgstr "Konexio aktiboak (1:%u)"
+
+#: src/StatisticsDlg.cpp:573
+#: src/StatisticsDlg.cpp:575
+#: src/StatisticsDlg.cpp:578
+#: src/StatisticsDlg.cpp:579
+#: src/StatisticsDlg.cpp:580
+#: src/StatisticsDlg.cpp:581
+#: src/StatisticsDlg.cpp:582
+#: src/StatisticsDlg.cpp:583
+#: src/StatisticsDlg.cpp:584
+#: src/StatisticsDlg.cpp:585
+#: src/StatisticsDlg.cpp:586
+#: src/StatisticsDlg.cpp:587
+#: src/StatisticsDlg.cpp:590
+#: src/StatisticsDlg.cpp:591
+#: src/StatisticsDlg.cpp:592
+#: src/StatisticsDlg.cpp:593
+#: src/StatisticsDlg.cpp:594
+#: src/StatisticsDlg.cpp:595
+#: src/StatisticsDlg.cpp:596
+#: src/StatisticsDlg.cpp:599
+#: src/StatisticsDlg.cpp:600
+#: src/StatisticsDlg.cpp:601
+#: src/StatisticsDlg.cpp:602
+#: src/StatisticsDlg.cpp:603
+#: src/StatisticsDlg.cpp:604
+#: src/StatisticsDlg.cpp:605
+#: src/StatisticsDlg.cpp:606
+#: src/StatisticsDlg.cpp:607
+#: src/StatisticsDlg.cpp:608
+#: src/StatisticsDlg.cpp:609
+#: src/StatisticsDlg.cpp:612
+#: src/StatisticsDlg.cpp:613
+#: src/StatisticsDlg.cpp:614
+#: src/StatisticsDlg.cpp:615
+#: src/StatisticsDlg.cpp:616
+#: src/StatisticsDlg.cpp:617
+#: src/StatisticsDlg.cpp:618
+#: src/StatisticsDlg.cpp:619
+#: src/StatisticsDlg.cpp:620
+#: src/StatisticsDlg.cpp:621
+#: src/StatisticsDlg.cpp:622
+#: src/StatisticsDlg.cpp:623
+#: src/StatisticsDlg.cpp:624
+#: src/StatisticsDlg.cpp:625
+#: src/StatisticsDlg.cpp:626
+#: src/StatisticsDlg.cpp:627
+#: src/StatisticsDlg.cpp:628
+#: src/StatisticsDlg.cpp:629
+#: src/StatisticsDlg.cpp:630
+#: src/StatisticsDlg.cpp:631
+#: src/StatisticsDlg.cpp:632
+#: src/StatisticsDlg.cpp:636
+#: src/StatisticsDlg.cpp:637
+#: src/StatisticsDlg.cpp:638
+#: src/StatisticsDlg.cpp:639
+#: src/StatisticsDlg.cpp:640
+#: src/StatisticsDlg.cpp:641
+#: src/StatisticsDlg.cpp:642
+#: src/StatisticsDlg.cpp:643
+#: src/StatisticsDlg.cpp:644
+#: src/StatisticsDlg.cpp:647
+#: src/StatisticsDlg.cpp:648
+#: src/StatisticsDlg.cpp:649
+msgid "Waiting..."
+msgstr "Zain..."
+
+#: src/StatisticsDlg.cpp:633
+#: src/StatisticsDlg.cpp:808
+msgid "Filtered: %i"
+msgstr "Iragazirik %i"
+
+#: src/StatisticsDlg.cpp:678
+msgid "Downloaded Data (Session (Total)): %s (%s)"
+msgstr "Deskargatutako Datuak (Saioa (Guztira)): %s (%s)"
+
+#: src/StatisticsDlg.cpp:680
+#: src/StatisticsDlg.cpp:696
+msgid "Total Overhead (Packets): %s (%s)"
+msgstr "Guztira Burukoak (paketeak): %s (%s)"
+
+#: src/StatisticsDlg.cpp:682
+#: src/StatisticsDlg.cpp:698
+msgid "File Request Overhead (Packets): %s (%s)"
+msgstr "Fitxategia Eskakizun burukoak(paketeak): %s (%s)"
+
+#: src/StatisticsDlg.cpp:684
+#: src/StatisticsDlg.cpp:700
+msgid "Source Exchange Overhead (Packets): %s (%s)"
+msgstr "Jatorri elkareman Burukoak (paketeak): %s (%s)"
+
+#: src/StatisticsDlg.cpp:686
+#: src/StatisticsDlg.cpp:702
+msgid "Server Overhead (Packets): %s (%s)"
+msgstr "Zerbitzari burukoak (paketeak): %s (%s)"
+
+#: src/StatisticsDlg.cpp:688
+msgid "Found Sources: %i"
+msgstr "Aurkitutako iturburuak: %i"
+
+#: src/StatisticsDlg.cpp:690
+msgid "Active Downloads (chunks): %i"
+msgstr "Deskarga Aktiboa (zatiak): %i"
+
+#: src/StatisticsDlg.cpp:694
+msgid "Uploaded Data (Session (Total)): %s (%s)"
+msgstr "Igotako Datuak (Saioa (Guztira)): %s (%s)"
+
+#: src/StatisticsDlg.cpp:704
+msgid "Active Uploads: %i"
+msgstr "Igoera Aktiboak: %i"
+
+#: src/StatisticsDlg.cpp:706
+msgid "Waiting Uploads: %i"
+msgstr "Igotzeko Zain: %i"
+
+#: src/StatisticsDlg.cpp:708
+msgid "Total successful upload sessions: %i"
+msgstr "Guztira igoera saio arrakastatsuak: %i"
+
+#: src/StatisticsDlg.cpp:710
+msgid "Total failed upload sessions: %i"
+msgstr "Guztira igoera saio akatsdunak: %i"
+
+#: src/StatisticsDlg.cpp:713
+msgid "Average upload time: %s"
+msgstr "Batez besteko igoera denbora: %s"
+
+#: src/StatisticsDlg.cpp:717
+msgid "Average Downloadrate (Session): %.2f kB/s"
+msgstr "Batez besteko deskarga abiadura (Saioa): %.2f kB/s"
+
+#: src/StatisticsDlg.cpp:720
+msgid "Average Uploadrate (Session): %.2f kB/s"
+msgstr "Batez besteko igoera abiadura (Saioa)%.2f kB/s"
+
+#: src/StatisticsDlg.cpp:723
+msgid "Max Downloadrate Average (Session): %.2f kB/s"
+msgstr "Batez bestekoa deskarga abiadura muga (Saioa): %.2f kB/s"
+
+#: src/StatisticsDlg.cpp:725
+msgid "Max Downloadrate (Session): %.2f kB/s"
+msgstr "Gehienezo Deskarga abiadura (Saioa): %.2f kB/s"
+
+#: src/StatisticsDlg.cpp:729
+#: src/StatisticsDlg.cpp:731
+msgid "Reconnects: %i"
+msgstr "Berkonexioak: %i"
+
+#: src/StatisticsDlg.cpp:736
+msgid "waiting for transfer..."
+msgstr "transeferentzia itxaroten..."
+
+#: src/StatisticsDlg.cpp:739
+msgid "Time Since First Transfer: %s"
+msgstr "Denbora lehen trsanferentziatik: %s"
+
+#: src/StatisticsDlg.cpp:750
+#: src/StatisticsDlg.cpp:963
+msgid "waiting for connection..."
+msgstr "konexioa itxaroten..."
+
+#: src/StatisticsDlg.cpp:753
+msgid "Connected To Server Since: %s"
+msgstr "Zerbitzaria noiztik konetatua: %s"
+
+#: src/StatisticsDlg.cpp:759
+#: src/StatisticsDlg.cpp:762
+#: src/StatisticsDlg.cpp:766
+msgid "Session UL:DL Ratio (Total):"
+msgstr "Saio UL:DL tasa (Guztira): "
+
+#: src/StatisticsDlg.cpp:766
+msgid "%s Not available"
+msgstr "%s ez da erabilgarri"
+
+#: src/StatisticsDlg.cpp:772
+msgid "Number of Shared Files: %i"
+msgstr "Partekatutako fitxategi zenbakia: %i"
+
+#: src/StatisticsDlg.cpp:775
+msgid "Total size of Shared Files: %s"
+msgstr "Guztira Konpartitutako Fitxategi tamaina: %s"
+
+#: src/StatisticsDlg.cpp:783
+msgid "Average filesize: %s"
+msgstr "Batez bestekoa fitxategi tamaina: %s"
+
+#: src/StatisticsDlg.cpp:799
+msgid "eMule: %i (%1.1f%%)"
+msgstr "eMule: %i (%1.1f%%)"
+
+#: src/StatisticsDlg.cpp:800
+msgid "aMule: %i (%1.1f%%)"
+msgstr "aMule: %i (%1.1f%%)"
+
+#: src/StatisticsDlg.cpp:801
+msgid "lMule/xMule: %i (%1.1f%%)"
+msgstr "lMule/xMule: %i (%1.1f%%)"
+
+#: src/StatisticsDlg.cpp:802
+msgid "eDonkeyHybrid: %i (%1.1f%%)"
+msgstr "eDonkeyHybrid: %i (%1.1f%%)"
+
+#: src/StatisticsDlg.cpp:803
+msgid "eDonkey: %i (%1.1f%%)"
+msgstr "eDonkey: %i (%1.1f%%)"
+
+#: src/StatisticsDlg.cpp:804
+msgid "cDonkey: %i (%1.1f%%)"
+msgstr "cDonkey: %i (%1.1f%%)"
+
+#: src/StatisticsDlg.cpp:805
+msgid "Old MLDonkey: %i (%1.1f%%)"
+msgstr "MLDonkey Zaharra: %i (%1.1f%%)"
+
+#: src/StatisticsDlg.cpp:806
+msgid "New MLDonkey: %i (%1.1f%%)"
+msgstr "MLDonkey Berria: %i (%1.1f%%)"
+
+#: src/StatisticsDlg.cpp:807
+msgid "Unknown: %i"
+msgstr "Ezezaguna: %i"
+
+#: src/StatisticsDlg.cpp:932
+msgid "Working Servers"
+msgstr "Aktibatutako zerbitzariak"
+
+#: src/StatisticsDlg.cpp:933
+msgid "Failed Servers"
+msgstr "Huts egin duten zerbitzariak"
+
+#: src/StatisticsDlg.cpp:935
+msgid "Deleted Servers"
+msgstr "Ezabatutako zerbitzariak"
+
+#: src/StatisticsDlg.cpp:936
+msgid "Users on Working Servers"
+msgstr "Erabiltzaileak aktibatutako zerbitzarian"
+
+#: src/StatisticsDlg.cpp:937
+msgid "Files on Working Servers"
+msgstr "Fitxategiak aktibatutako zerbitzarian"
+
+#: src/StatisticsDlg.cpp:938
+msgid "Total Users"
+msgstr "Guztira Erabiltzaileak"
+
+#: src/StatisticsDlg.cpp:939
+msgid "Total Files"
+msgstr "Guztira Fitxategiak"
+
+#: src/StatisticsDlg.cpp:940
+msgid "Active Connections (estimate)"
+msgstr "Konexio Aktiboak (kalkulua)"
+
+#: src/StatisticsDlg.cpp:941
+msgid "Server Occupation: %.2f%%"
+msgstr "Zerbitzari lan karga %.2f%%"
+
+#: src/StatisticsDlg.cpp:952
+#: src/StatisticsDlg.cpp:955
+msgid "Max Connection Limit Reached"
+msgstr "Konexio mugara iritxi da"
+
+#: src/StatisticsDlg.cpp:960
+msgid "Average Connections (estimate)"
+msgstr "Batez bestekoa Konexioak"
+
+#: src/StatisticsDlg.cpp:965
+msgid "Peak Connections (estimate)"
+msgstr "Konexio gailurrak (kalkulua)"
+
+#: src/SysTray.cpp:444
+msgid "Show"
+msgstr "Erakutsi"
+
+#: src/SysTray.cpp:453
+msgid "Hide"
+msgstr "Ezkutatu"
+
+#: src/SysTray.cpp:462
+msgid "All To Max Speed"
+msgstr "Dena abiadura txikienera"
+
+#: src/SysTray.cpp:471
+msgid "All To Min Speed"
+msgstr "Dena abiadura handienera"
+
+#: src/SysTray.cpp:480
+msgid "Download Limit"
+msgstr "Deskarga muga"
+
+#: src/SysTray.cpp:489
+msgid "Upload Limit"
+msgstr "Igoera muga"
+
+#: src/SysTray.cpp:507
+msgid "Disconnect from server"
+msgstr "Deskonektatu zerbitzaritik"
+
+#: src/SysTray.cpp:516
+msgid "Exit"
+msgstr "Irten"
+
+#: src/SysTray.cpp:591
+#: src/SysTray.cpp:618
+msgid "aMule for Linux"
+msgstr "aMule Linuxentzat"
+
+#: src/TransferWnd.cpp:174
+msgid "Select view filter"
+msgstr "Hautatu ikuspen iruzkina"
+
+#: src/TransferWnd.cpp:177
+msgid "Add category"
+msgstr "Gehitu kategoria"
+
+#: src/TransferWnd.cpp:178
+msgid "Edit category"
+msgstr "Editatu kategoria"
+
+#: src/TransferWnd.cpp:179
+msgid "Remove category"
+msgstr "Ezabatu kategoria"
+
+#: src/TransferWnd.cpp:306
+msgid "Are you sure you wish to cancel and delete all files in this category?"
+msgstr "Zihur zaude katgoria honetako fitxategi guztiak ezeztatu eta ezabatu nahi dituzula?"
+
+#: src/TransferWnd.cpp:306
+msgid "Confirmation Required"
+msgstr "Baieztapena Beharrezkoa"
+
+#: src/UDPSocket.cpp:340
+msgid "Error while processing incoming extended protocol UDP Packet"
+msgstr "Errorea UDP protokoloko sarrera pakete hedatu bat prozesatzerakoan"
+
+#: src/UploadClient.cpp:363
+msgid "Client '%s' caused error while creating package (%s) - disconnecting client"
+msgstr "'%s' bezeroak errore bat sortu du fitxategia sortzerakoan (%s) - bezeroa deskonektatzen"
+
+#: src/UploadClient.cpp:625
+msgid "requested file not found"
+msgstr "Eskatutakofitxategia ez da aurkitu"
+
+#: src/UploadClient.cpp:746
+msgid "Client '%s' seems to be an aggressive client and is banned from the uploadqueue"
+msgstr "'%s' bezeroak oldarkorra ematen du eta igoera hiladan ukatua izan da"
+
+#: src/UploadListCtrl.cpp:90
+msgid "Waited"
+msgstr "Itxoindakoa"
+
+#: src/UploadListCtrl.cpp:91
+msgid "Upload Time"
+msgstr "Ordu Denbora"
+
+#: src/UploadListCtrl.cpp:151
+msgid "Show Queue"
+msgstr "Erakutsi Ilara"
+
+#: src/UploadQueue.cpp:59
+msgid "Fatal Error: Failed to create Timer"
+msgstr "Errore konponezina. Akats ordutegia sortzerakoan"
+
+#: src/UploadQueue.cpp:156
+msgid "%s [%s:%i] using %s removed : invalide eMule client"
+msgstr "%s [%s:%i] %s erabiltzailea ezabaturik : Baliogabeko eMule bezeoa"
+
+#: src/UploadQueue.cpp:160
+msgid "%s [%s:%i] using %s removed : suspicious mod string change"
+msgstr "%s [%s:%i] %s erabiltzailea ezabaturik : mod kate aldaketa susmagarria"
+
+#: src/UploadQueue.cpp:164
+msgid "%s [%s:%i] using %s removed : known leecher"
+msgstr "%s [%s:%i] %s erabiltzailea ezabaturik : leecher ezagutua"
+
+#: src/UploadQueue.cpp:168
+msgid "%s [%s:%i] using %s removed : suspicious hash change"
+msgstr "%s [%s:%i] %s erabiltzailea ezabaturik : aztertze aldaketa susmagarria"
+
+#: src/UploadQueue.cpp:172
+msgid "%s [%s:%i] using %s removed : use your own hash"
+msgstr "%s [%s:%i] %s erabiltzailea ezabaturik : zure aztertzea erabiltzen du"
+
+#: src/UploadQueue.cpp:176
+msgid "%s [%s:%i] using %s removed : suspicious name change"
+msgstr "%s [%s:%i] %s erabiltzailea ezabaturik :izen aldaketa susmagarria"
+
+#: src/UploadQueue.cpp:228
+msgid "%s [%s:%i] using %s removed : leecher, invalid eMule or irregular Donkey"
+msgstr "%s [%s:%i] %s erabiltzailea ezabaturik : llecher, baliogabeko eMule edo Donkey irregularra"
+
+#: src/UploadQueue.cpp:450
+msgid "Client '%s' and '%s' have the same userhash or IP - removed '%s'"
+msgstr "'%s' eta '%s' bezeroak erabiltzaile aztertze zenbaki edo IP berdina dute - '%s' ezabaturik"
+
+#: src/Wizard.cpp:43
+msgid "Wizard"
+msgstr "Laguntzaile"
+
+#: src/Wizard.cpp:236
+msgid "Down (kbit/s)"
+msgstr "Behera (kbit/s)"
+
+#: src/Wizard.cpp:237
+msgid "Up (kbit/s)"
+msgstr "Gora (kbit/s)"
+
+#: src/Wizard.cpp:240
+msgid "Custom"
+msgstr "Pertsonalizatu"
+
+#: src/Wizard.cpp:240
+msgid "(enter below!)"
+msgstr "(sar behean!)"
+
+#: src/Wizard.cpp:241
+msgid "56-k Modem"
+msgstr "56k Modema"
+
+#: src/Wizard.cpp:242
+msgid "ISDN"
+msgstr "ISDN"
+
+#: src/Wizard.cpp:243
+msgid "ISDN 2x"
+msgstr "ISDN 2x"
+
+#: src/Wizard.cpp:244
+#: src/Wizard.cpp:245
+#: src/Wizard.cpp:246
+#: src/Wizard.cpp:247
+#: src/Wizard.cpp:248
+#: src/Wizard.cpp:249
+#: src/Wizard.cpp:250
+#: src/Wizard.cpp:251
+#: src/Wizard.cpp:252
+#: src/Wizard.cpp:253
+#: src/Wizard.cpp:254
+msgid "xDSL"
+msgstr "xDSL"
+
+#: src/Wizard.cpp:255
+#: src/Wizard.cpp:256
+msgid "Cable"
+msgstr "Kablea"
+
+#: src/Wizard.cpp:257
+msgid "T1"
+msgstr "T1"
+
+#: src/Wizard.cpp:258
+msgid "T3+"
+msgstr "T3+"
+
+#: src/Wizard.cpp:259
+msgid "100 Mbits"
+msgstr "100 Mbits"
+
+#: src/Wizard.cpp:260
+msgid "155 Mbits (ATM)"
+msgstr "155 Mbits (ATM)"
+
