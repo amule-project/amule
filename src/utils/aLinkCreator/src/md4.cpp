@@ -7,6 +7,8 @@
 ///
 /// Copyright (C) 2004 by ThePolish
 ///
+/// Copyright (C) 2004 by Phoenix
+///
 /// Copyright (C) 2004 by Madcat
 ///
 /// Copyright (C) 2002, 2003, 2004 by Michael Buesch
@@ -16,8 +18,6 @@
 /// written by Colin Plumb in 1993.
 ///
 /// This code implements the MD4 message-digest algorithm.
-///
-/// Pixmaps from http://jimmac.musichall.cz/ikony.php3 | http://www.everaldo.com | http://www.amule.org
 ///
 /// This program is free software; you can redistribute it and/or modify
 /// it under the terms of the GNU General Public License as published by
@@ -325,7 +325,7 @@ wxString MD4::calcMd4FromString(const wxString &buf)
 }
 
 /// Get Md4 hash from a file
-wxString MD4::calcMd4FromFile(const wxString &filename, MD4Hook hook, bool *aborted)
+wxString MD4::calcMd4FromFile(const wxString &filename, MD4Hook hook)
 {
   unsigned int bufSize;
   unsigned char ret[MD4_HASHLEN_BYTE];
@@ -338,37 +338,43 @@ wxString MD4::calcMd4FromFile(const wxString &filename, MD4Hook hook, bool *abor
     {
       return wxEmptyString;
     }
-
-  bufSize = calcBufSize(file.Length());
-  char *buf = new char[bufSize];
-
-  bool keep_going = true;
-  size_t read = 0;
-  size_t totalread = 0;
-
-  MD4Init(&hdc);
-  while (!file.Eof() && keep_going)
+  else
     {
-      if (hook)
+      bufSize = calcBufSize(file.Length());
+      char *buf = new char[bufSize];
+
+      bool keep_going = true;
+      size_t read = 0;
+      size_t totalread = 0;
+
+      bool goAhead = true;
+
+      MD4Init(&hdc);
+      while (!file.Eof() && keep_going)
         {
-          keep_going = hook( (int)((double)(100.0 * totalread) / file.Length()));
+          if (hook)
+            {
+              goAhead = hook( (int)((double)(100.0 * totalread) / file.Length()));
+            }
+          if (goAhead)
+            {
+              read = file.Read(buf, bufSize);
+              MD4Update(&hdc, reinterpret_cast<unsigned char const *>(buf),
+                        read );
+              totalread += read;
+            }
+          else
+            {
+              return (_("Canceled !"));
+            }
         }
-      if (keep_going)
-        {
-          read = file.Read(buf, bufSize);
-          MD4Update(&hdc, reinterpret_cast<unsigned char const *>(buf),
-                    read );
-          totalread += read;
-        }
+      MD4Final(&hdc, ret);
+
+      delete [] buf;
+
+      return charToHex(reinterpret_cast<const char *>(ret),
+                       MD4_HASHLEN_BYTE);
     }
-  MD4Final(&hdc, ret);
-
-  *aborted = keep_going;
-
-  delete [] buf;
-
-  return charToHex(reinterpret_cast<const char *>(ret),
-                   MD4_HASHLEN_BYTE);
 }
 
 /// Convert hash to hexa string

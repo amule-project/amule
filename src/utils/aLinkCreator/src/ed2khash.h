@@ -7,7 +7,7 @@
 ///
 /// Copyright (C) 2004 by ThePolish
 ///
-/// Pixmaps from http://www.everaldo.com and http://www.amule.org
+/// Copyright (C) 2004 by Phoenix
 ///
 /// This program is free software; you can redistribute it and/or modify
 /// it under the terms of the GNU General Public License as published by
@@ -70,7 +70,7 @@ class Ed2kHash:public MD4
     wxArrayString GetED2KHash();
 
     /// Get Ed2k link
-    wxString GetED2KLink(const wxArrayString& arrayOfUrls=0, const bool addPartHashes=FALSE);
+    wxString GetED2KLink(const wxArrayString& arrayOfUrls=0, const bool addPartHashes=false);
   };
 
 #endif /* _ED2KHASH_H */

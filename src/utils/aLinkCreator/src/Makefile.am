@@ -5,7 +5,6 @@ alc_SOURCES = alc.cpp \
 		ed2khash.cpp \
 		alcpix.cpp \
 		md4.cpp \
-		activitybar.cpp
 
 alcc_SOURCES = alcc.cpp \
 		ed2khash.cpp \
@@ -17,7 +16,6 @@ noinst_HEADERS = alc.h \
 		ed2khash.h \
 		alcpix.h \
 		md4.h \
-		activitybar.h \
 		bithelp.h
 
 alc_CFLAGS = $(WX_CFLAGS)
