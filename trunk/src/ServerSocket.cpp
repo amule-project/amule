@@ -113,7 +113,7 @@ void CServerSocket::OnConnect(wxSocketError nErrorCode)
 				memset(&sockAddr, 0, sizeof(sockAddr));
 				wxIPV4address tmpaddr;
 				GetPeer(tmpaddr);
-				printf("Connection Event from %s : %u\n",unicode2char(tmpaddr.IPAddress()),cur_server->GetPort());
+				//printf("Connection Event from %s : %u\n",unicode2char(tmpaddr.IPAddress()),cur_server->GetPort());
 				sockAddr.sin_addr.s_addr = inet_addr(unicode2char(tmpaddr.IPAddress()));
 				cur_server->SetID(sockAddr.sin_addr.s_addr);
 				theApp.serverlist->GetServerByAddress(cur_server->GetAddress(),cur_server->GetPort())->SetID(sockAddr.sin_addr.s_addr);
@@ -193,7 +193,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 					wxString message = wxMessage.GetData();
 
 					bool bOutputMessage = true;
-					if (message.StartsWith(wxT("server version")) == 0) {
+					if (message.StartsWith(wxT("server version"))) {
 						wxString strVer = message.Mid(15,64); // truncate string to avoid misuse by servers in showing ads
 						strVer.Trim();
 						CServer* eserver = theApp.serverlist->GetServerByAddress(cur_server->GetAddress(),cur_server->GetPort());
@@ -266,8 +266,8 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				// save TCP flags in 'cur_server'
 				wxASSERT(cur_server);
 				if (cur_server) {
-					if (size >= sizeof(LoginAnswer_Struct)+4) {
-						cur_server->SetTCPFlags(*((uint32*)(packet + sizeof(LoginAnswer_Struct))));
+					if (size >= sizeof(LoginAnswer_Struct)+4) {						
+						cur_server->SetTCPFlags(ENDIAN_SWAP_32(*((uint32*)(packet + sizeof(LoginAnswer_Struct)))));
 					} else {
 						cur_server->SetTCPFlags(0);
 					}
@@ -370,6 +370,8 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				memcpy(&cur_user,packet,4);
 				uint32 cur_files;
 				memcpy(&cur_files,packet+4,4);
+				ENDIAN_SWAP_I_32(cur_user);
+				ENDIAN_SWAP_I_32(cur_files);
 				update = theApp.serverlist->GetServerByAddress(cur_server->GetAddress(), cur_server->GetPort());
 				if (update) {
 					update->SetUserCount(cur_user);
@@ -384,7 +386,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				#ifdef SERVER_NET_TEST
 				AddLogLineM(true,_("ServerMsg - OP_ServerIdent\n"));
 				#endif
-				DumpMem(packet,size);
+				//DumpMem(packet,size);
 
 				theApp.downloadqueue->AddDownDataOverheadServer(size);
 				if (size<38) {
@@ -471,8 +473,10 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				if (size == 6) {
 					uint32 dwIP;
 					memcpy(&dwIP,packet,4);
+					ENDIAN_SWAP_I_32(dwIP);
 					uint16 nPort;
 					memcpy(&nPort,packet+4,2);
+					ENDIAN_SWAP_I_16(nPort);
 					CUpDownClient* client = theApp.clientlist->FindClientByIP(dwIP,nPort);
 					if (client) {
 						client->TryToConnect();
@@ -622,19 +626,15 @@ void CServerSocketHandler::ServerSocketHandler(wxSocketEvent& event) {
 	
 	switch(event.GetSocketEvent()) {
 		case wxSOCKET_CONNECTION:
-			printf("wxSOCKET_CONNECTION\n");
 			socket->OnConnect(wxSOCKET_NOERROR);
 			break;
 		case wxSOCKET_LOST:
-			printf("wxSOCKET_LOST\n");
 			socket->OnError(socket->LastError());
 			break;
 		case wxSOCKET_INPUT:
-			printf("wxSOCKET_INPUT\n");
 			socket->OnReceive(wxSOCKET_NOERROR);
 			break;
 		case wxSOCKET_OUTPUT:
-			printf("wxSOCKET_OUTPUT\n");
 			socket->OnSend(wxSOCKET_NOERROR);
 			break;
 		default:
