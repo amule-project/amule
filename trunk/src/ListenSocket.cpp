@@ -216,13 +216,7 @@ void CClientReqSocket::OnInit()
 
 bool CClientReqSocket::Close()
 {
-	if (IsConnected()) {
-		return CEMSocket::Close();
-	} else {
-		// This can happen even twice, because Safe_Delete and wxSocketBase::Destroy 
-		// call Close()
-		return false;
-	}
+	return CEMSocket::Close();
 }
 
 // Used in BaseClient.cpp, but not here.
