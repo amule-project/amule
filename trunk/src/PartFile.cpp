@@ -387,7 +387,7 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool get
 {
 	#warning getsizeonly is ignored because we do not import yet
 	
-	bool isnewstyle;
+	bool isnewstyle = false;
 	uint8 version,partmettype=PMT_UNKNOWN;
 	
 	std::map<uint16, Gap_Struct*> gap_map; // Slugfiller

@@ -1208,7 +1208,7 @@ void CUpDownClient::ClearDownloadBlockRequests()
 	m_PendingBlocks_list.RemoveAll();
 }
 
-bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket){
+bool CUpDownClient::Disconnected(const wxString& WXUNUSED(strReason), bool bFromSocket){
 	//If this is a KAD client object, just delete it!
 	//wxASSERT(theApp.clientlist->IsValidClient(this));
 
