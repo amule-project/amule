@@ -1716,6 +1716,7 @@ void CamuleApp::OnCoreTimer(wxTimerEvent& WXUNUSED(evt))
 		msPrev1 = msCur;
 		clientcredits->Process();
 		serverlist->Process();
+		clientlist->Process();
 		if( serverconnect->IsConnecting() && !serverconnect->IsSingleConnect() ) {
 			serverconnect->TryAnotherConnectionrequest();
 		}
