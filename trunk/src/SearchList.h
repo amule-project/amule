@@ -24,6 +24,7 @@
 #include "types.h"		// Needed for uint8, uint16 and uint32
 #include "KnownFile.h"		// Needed for CAbstractFile
 #include "CMemFile.h"		// Needed for CMemFile
+#include "CTypedPtrList.h"
 
 #include <map>
 #include <vector>

@@ -44,10 +44,10 @@
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/dynarray.h>
 
+#include <set>
+
 #include "types.h"		// Needed for int8, uint8, uint16, uint32 and uint64
 #include "opcodes.h"		// Needed for PARTSIZE
-#include "CTypedPtrList.h"	// Needed for CTypedPtrList
-
 
 #define	PS_READY			0
 #define	PS_EMPTY			1
@@ -208,7 +208,10 @@ public:
 	uint16 m_nCompleteSourcesCount;
 	uint16 m_nCompleteSourcesCountLo;
 	uint16 m_nCompleteSourcesCountHi;
-	CTypedPtrList<CPtrList, CUpDownClient*> m_ClientUploadList;	
+	
+	// Maybe find a common place for this typedef?
+	typedef std::set<CUpDownClient*> SourceSet;
+	SourceSet m_ClientUploadList;
 	ArrayOfUInts16 m_AvailPartFrequency;
 	
 protected:
