@@ -196,8 +196,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				wxStringTokenizer token(strMessages,wxT("\r\n"),wxTOKEN_DEFAULT );
 
 				while (token.HasMoreTokens()) {
-					wxString wxMessage = token.GetNextToken();
-					wxString message = wxMessage.GetData();
+					wxString message = token.GetNextToken();
 
 					bool bOutputMessage = true;
 					if (message.StartsWith(wxT("server version"))) {

@@ -30,11 +30,10 @@
 
 #include "otherfunctions.h"	// Interface declarations
 #include "config.h"		// Needed for VERSION
-#include "SHAHashSet.h"
 
 #include <cctype>
 
-
+namespace otherfunctions {
 
 wxString GetMuleVersion()
 {
@@ -202,10 +201,11 @@ wxString GetFiletypeByName(const wxString& filename)
 
 bool IsEmptyFile(const wxString& filename)
 {
-  if (wxFile::Exists(filename.GetData())) {
-       wxFile file(filename.GetData());
-       if (file.IsOpened())
+  if (wxFile::Exists(filename)) {
+       wxFile file(filename);
+       if (file.IsOpened()) {
             return ( file.Length() == 0 );
+	  }
   }
   return true;
 }
@@ -454,10 +454,6 @@ unsigned int DecodeBase32(const char *base32Buffer, unsigned int base32BufLen, u
 	return nDecodeLen;
 }
 
-unsigned int DecodeBase32(const char* base32Buffer, CAICHHash& Hash){
-	return DecodeBase32(base32Buffer, Hash.GetHashSize(), Hash.GetRawHash());
-}
-
 wxString EncodeBase64(const char* buffer, unsigned int bufLen)
 {
 	// TODO
@@ -525,3 +521,5 @@ void DumpMem(const void* where, uint32 size) {
 	}	
 	printf("\n");	
 }
+
+} // End namespace

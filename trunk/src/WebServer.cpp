@@ -47,6 +47,7 @@
 #include "MD5Sum.h"
 #include "otherstructs.h"	// Needed for TransferredData
 #include "otherfunctions.h"	// Needed for atoll, ED2KFT_*
+#include  "NetworkFunctions.h" // Needed for StringIPtoUint32
 #include "types.h"
 #include "WebSocket.h"		// Needed for StopSockets()
 
@@ -70,82 +71,9 @@ WX_DEFINE_OBJARRAY(ArrayOfDownloadFiles);
 
 #define WEB_SERVER_TEMPLATES_VERSION	4
 
-//common functions -- start
-//shakraw, same as CastItoXBytes() from otherfunctions.h
-wxString castItoXBytes(uint64 count) {
-    wxString buffer;
-	
-    if (count < 1024)
-        buffer.Printf(wxT("%.0f %s"),(float)count, wxT("Bytes"));
-    else if (count < 1048576)
-        buffer.Printf(wxT("%.0f %s"),(float)count/1024, wxT("KB"));
-    else if (count < 1073741824)
-        buffer.Printf(wxT("%.2f %s"),(float)count/1048576, wxT("MB"));
-    else if (count < 1099511627776LL)
-        buffer.Printf(wxT("%.2f %s"),(float)count/1073741824, wxT("GB"));
-    else
-        buffer.Printf(wxT("%.3f %s"),(float)count/1099511627776LL, wxT("TB"));
-	
-    return buffer;
-}
+wxString CWebServer::imgs_folder;
 
-//shakraw, same as toHex() from otherfunctions.h
-inline BYTE toHex(const BYTE &x) {
-	return x > 9 ? x + 55: x + 48;
-}
-
-//shakraw, same as URLEncode() from otherfunctions.h
-wxString URLEncode(wxString sIn)
-{
-	const unsigned int nLen = sIn.Length();
-	register unsigned int n;
-	wxChar c;
-	wxString sOut;
-	sOut.Alloc(nLen);
-
-	// do encoding
-	for ( n = 0; n < nLen; ++n )
-	{
-		c = sIn[n];
-		if (isalnum(c)) {
-	        	sOut += c;
-		} else {
-		        if (isspace(c)) {
-				sOut += '+';
-			} else {
-				sOut += '%';
-				sOut += toHex(c >> 4);
-				sOut += toHex(c % 16);
-			}
-		}
-	}
-	
-	return sOut;
-}
-
-//shakraw, same as LeadingZero() from otherfunctions.h
-wxString leadingZero(uint32 units) {
-	wxString temp;
-	if (units<10) temp.Printf(wxT("0%i"),units); else temp.Printf(wxT("%i"),units);
-	return temp;
-}
-
-//shakraw, same as CastSecondsToHM() from otherfunctions.h
-wxString castSecondsToHM(sint32 count) {
-	wxString buffer;
-	if (count < 0)
-		buffer = wxT("?"); 
-	else if (count < 60)
-		buffer.Printf(wxT("%i %s"),count, _("secs")); 
-	else if (count < 3600) 
-		buffer.Printf(wxT("%i:%s %s"),count/60,leadingZero(count-(count/60)*60).GetData(), _("mins"));
-	else if (count < 86400) 
-		buffer.Printf(wxT("%i:%s %s"),count/3600,leadingZero((count-(count/3600)*3600)/60).GetData(), _("h"));
-	else 
-		buffer.Printf(wxT("%i %s %i %s"),count/86400, _("D"), (count-(count/86400)*86400)/3600, _("h")); 
-	return buffer;
-} 
-//common functions -- end
+using namespace otherfunctions;
 
 wxString _SpecialChars(wxString str) {
 	str.Replace(wxT("&"),wxT("&amp;"));
@@ -169,6 +97,8 @@ CWebServer::CWebServer(CamulewebApp *webApp):
 	m_iSearchSortby = 3;
 	m_bSearchAsc = 0;
 
+	imgs_folder = wxString::Format(wxT("%s/.aMule/webserver/"), getenv("HOME"));
+		
 	m_bServerWorking = false; // not running (listening) yet
 }
 
@@ -274,7 +204,7 @@ void CWebServer::ReloadTemplates(void) {
 	}
 	if (!wxFileName::FileExists(sFile)) {
 		// no file. do nothing.
-		webInterface->SendRecvMsg(wxString::Format(wxT("LOGGING ADDLOGLINE %d %s"), true, wxString::Format(_("Can't load templates: Can't open file %s"), sFile.GetData()).GetData()));
+		webInterface->SendRecvMsg(wxT("LOGGING ADDLOGLINE (true) ") + (_("Can't load templates: Can't open file ") + sFile));
 		return;
 	}
 
@@ -287,9 +217,9 @@ void CWebServer::ReloadTemplates(void) {
 			sAll += sLine + wxT("\n");
 		}
 		wxString sVersion = _LoadTemplate(sAll,wxT("TMPL_VERSION"));
-		long lVersion = atol((char*) sVersion.GetData());
+		long lVersion = StrToLong(sVersion);
 		if (lVersion < WEB_SERVER_TEMPLATES_VERSION) {
-			webInterface->SendRecvMsg(wxString::Format(wxT("LOGGING ADDLOGLINE %d %s"), true, wxString::Format(_("Can't load templates: Can't open file %s"), sFile.GetData()).GetData()));
+			webInterface->SendRecvMsg(wxT("LOGGING ADDLOGLINE (true) ") + (_("Can't load templates: Can't open file ") + sFile));
 		} else {
 			m_Templates.sHeader = _LoadTemplate(sAll,wxT("TMPL_HEADER"));
 			m_Templates.sHeaderMetaRefresh = _LoadTemplate(sAll,wxT("TMPL_HEADER_META_REFRESH"));
@@ -325,7 +255,7 @@ void CWebServer::ReloadTemplates(void) {
 			m_Templates.sAddServerBox = _LoadTemplate(sAll,wxT("TMPL_ADDSERVERBOX"));
 			m_Templates.sWebSearch = _LoadTemplate(sAll,wxT("TMPL_WEBSEARCH"));
 			m_Templates.sSearch = _LoadTemplate(sAll,wxT("TMPL_SEARCH"));
-			m_Templates.iProgressbarWidth=atoi((char*) _LoadTemplate(sAll,wxT("PROGRESSBARWIDTH")).GetData());
+			m_Templates.iProgressbarWidth=StrToLong(_LoadTemplate(sAll,wxT("PROGRESSBARWIDTH")));
 			m_Templates.sSearchHeader = _LoadTemplate(sAll,wxT("TMPL_SEARCH_RESULT_HEADER"));
 			m_Templates.sSearchResultLine = _LoadTemplate(sAll,wxT("TMPL_SEARCH_RESULT_LINE"));
 			m_Templates.sProgressbarImgs = _LoadTemplate(sAll,wxT("PROGRESSBARIMGS"));
@@ -339,7 +269,7 @@ void CWebServer::ReloadTemplates(void) {
 			m_Templates.sProgressbarImgs.Replace(wxT("[PROGRESSGIFINTERNAL]"),wxT("%i"));
 		}
 	} else {
-		webInterface->SendRecvMsg(wxString::Format(wxT("LOGGING ADDLOGLINE %d %s"), true, wxString::Format(_("Can't load templates: Can't open file %s"), sFile.GetData()).GetData()));
+		webInterface->SendRecvMsg(wxT("LOGGING ADDLOGLINE (true) ") + (_("Can't load templates: Can't open file %s") + sFile));
 	}
 }
 
@@ -391,7 +321,7 @@ void CWebServer::ProcessImgFileReq(ThreadData Data) {
 	wxString filename=Data.sURL;
 	wxString contenttype;
 
-	pThis->webInterface->Show(wxString(wxT("inc. fname=")) + filename + wxT("\n"));
+	pThis->webInterface->Show(wxT("inc. fname=") + filename + wxT("\n"));
 	if (filename.Right(4).MakeLower()==wxT(".gif")) contenttype=wxT("Content-Type: image/gif\r\n");
 	else if (filename.Right(4).MakeLower()==wxT(".jpg") || filename.Right(5).MakeLower()==wxT(".jpeg")) contenttype=wxT("Content-Type: image/jpg\r\n");
 	else if (filename.Right(4).MakeLower()==wxT(".bmp")) contenttype=wxT("Content-Type: image/bmp\r\n");
@@ -404,28 +334,24 @@ void CWebServer::ProcessImgFileReq(ThreadData Data) {
 	contenttype += wxT("Last-Modified: ") + pThis->m_Params.sLastModified + wxT("\r\n");
 	contenttype += wxT("ETag: ") + pThis->m_Params.sETag + wxT("\r\n");
 	
-	filename=filename.Right(filename.Length()-1);
-	//filename.Replace("/","\\");
-	//filename=wxString(theApp.glob_prefs->GetAppDir())+"webserver/"+filename;
-	//filename=getenv("HOME") + wxString("/.aMule/webserver/") + wxString(filename);
-	filename.Printf(wxT("%s/.aMule/webserver/%s"), getenv("HOME"), filename.GetData());
 	pThis->webInterface->Show(wxT("**** imgrequest: ") + filename + wxT("\n"));
 
-	if (!wxFileName::FileExists(filename)) {
-		pThis->webInterface->Show(wxT("**** imgrequest: file ") + filename + wxT(" does not exists\n"));
+	wxFFile fis(imgs_folder + filename.Right(filename.Length()-1));
+	if (!fis.IsOpened()) {
+		pThis->webInterface->Show(wxT("**** imgrequest: file ") + filename + wxT(" does not exists or you have no permisions\n"));
+	} else {
+		size_t file_size = fis.Length();
+		char* img_data = new char[file_size];
+		size_t bytes_read;
+		if ((bytes_read = fis.Read(img_data,file_size)) != file_size) {
+			pThis->webInterface->Show(wxT("**** imgrequest: file ") + filename + wxT(" was not fully read\n"));				
+		}
+		// Try to send as much as possible if it failed
+		Data.pSocket->SendContent(unicode2char(contenttype),(void*)img_data,bytes_read);	
+		delete img_data;
 	}
-
-	wxFileInputStream* fis = new wxFileInputStream(filename);
-	if (fis->Ok()) {
-		fis->SeekI(0,wxFromEnd);
-		off_t koko=fis->TellI();
-		fis->SeekI(0,wxFromStart);
-		char* buffer=new char[koko];
-		fis->Read((void*)buffer,koko);
-		Data.pSocket->SendContent((char*)contenttype.GetData(),(void*)buffer,fis->LastRead());
-		delete fis;
-		delete[] buffer;
-	}
+	
+	
 }
 
 
@@ -438,24 +364,24 @@ void CWebServer::ProcessStyleFileReq(ThreadData Data) {
 	wxString contenttype;
 	pThis->webInterface->Show(wxT("inc. fname=") + filename + wxT("\n"));
 	contenttype = wxT("Content-Type: text/css\r\n");
-	filename = filename.Right(filename.Length()-1);
-	filename = wxString() << char2unicode(getenv("HOME")) << wxT("/.aMule/webserver/") << filename;
+	
 	pThis->webInterface->Show(wxT("**** cssrequest: ") + filename + wxT("\n"));
-	if (wxFileName::FileExists(filename)) {
-		wxFileInputStream* fis = new wxFileInputStream(filename);
-		if(fis->Ok()) {
-			fis->SeekI(0,wxFromEnd);
-			off_t koko = fis->TellI();
-			fis->SeekI(0,wxFromStart);
-			char* buffer = new char[koko];
-			fis->Read((void*)buffer, koko);
-			Data.pSocket->SendContent((char*)contenttype.GetData(),(void*)buffer,fis->LastRead());
-			delete fis;
-			delete[] buffer;
-		}
+	
+	wxFFile fis(imgs_folder + filename.Right(filename.Length()-1));
+	if (!fis.IsOpened()) {
+		pThis->webInterface->Show(wxT("**** cssrequest: file ") + filename + wxT(" does not exists or you have no permisions\n"));
 	} else {
-		pThis->webInterface->Show(wxT("**** imgrequest: file") + filename + wxT(" does not exists\n"));
+		size_t file_size = fis.Length();
+		char* css_data = new char[file_size];
+		size_t bytes_read;
+		if ((bytes_read = fis.Read(css_data,file_size)) != file_size) {
+			pThis->webInterface->Show(wxT("**** cssrequest: file ") + filename + wxT(" was not fully read\n"));				
+		}
+		// Try to send as much as possible if it failed
+		Data.pSocket->SendContent(unicode2char(contenttype),(void*)css_data,bytes_read);	
+		delete css_data;
 	}
+	
 }
 
 void CWebServer::ProcessURL(ThreadData Data) {
@@ -511,14 +437,14 @@ void CWebServer::ProcessURL(ThreadData Data) {
 			// to wrong wxWidgets configuration.
 			//
 			// save failed attempt (ip,time)
-			TransferredData newban = {inet_addr((char*) ip.GetData()), ::GetTickCount()}; 
+			TransferredData newban = {StringIPtoUint32(ip), ::GetTickCount()}; 
 			pThis->m_Params.badlogins.Add(&newban);
 			login = false;
 			pThis->webInterface->Show(wxT("*** login failed\n"));
 		}
 		isUseGzip = false;
 		if (login) {
-			uint32 ipn = inet_addr((char*) ip.GetData());
+			uint32 ipn = StringIPtoUint32(ip);
 			for (size_t i = 0; i < pThis->m_Params.badlogins.GetCount();) {
 				if (ipn == pThis->m_Params.badlogins[i]->datalen) {
 					pThis->m_Params.badlogins.RemoveAt(i);
@@ -571,7 +497,7 @@ void CWebServer::ProcessURL(ThreadData Data) {
 				uLongf destLen = Out.Length() + 1024;
 				gzipOut = new TCHAR[destLen];
 				if( _GzipCompress((Bytef*)gzipOut, &destLen, 
-				   (const Bytef*)(TCHAR*)Out.GetData(), Out.Length(), Z_DEFAULT_COMPRESSION) == Z_OK) {
+				   (const Bytef*)unicode2char(Out), Out.Length(), Z_DEFAULT_COMPRESSION) == Z_OK) {
 					bOk = true;
 					gzipLen = destLen;
 				}
@@ -889,11 +815,13 @@ wxString CWebServer::_GetServerList(ThreadData Data) {
 		HTTPProcessData.Replace(wxT("[5]"), sT);
 		if ( IsSessionAdmin(Data,sSession) ) {
 			HTTPProcessData.Replace(wxT("[6]"),
-						wxString::Format(wxT("?ses=%s&w=server&c=connect&ip=%08x&port=%d"),
-								 sSession.GetData(), i->nServerIP, i->nServerPort));
+						wxT("?ses=") + sSession + 
+							wxString::Format(wxT("&w=server&c=connect&ip=%08x&port=%d"),
+								 i->nServerIP, i->nServerPort));
 			HTTPProcessData.Replace(wxT("[LinkRemove]"),
-						wxString::Format(wxT("?ses=%s&w=server&c=remove&ip=%08x&port=%d"),
-								 sSession.GetData(), i->nServerIP, i->nServerPort));
+						wxT("?ses=") + sSession + 
+						wxString::Format(wxT("&w=server&c=remove&ip=%08x&port=%d"),
+								  i->nServerIP, i->nServerPort));
 		} else {
 			HTTPProcessData.Replace(wxT("[6]"), GetPermissionDenied());
 			HTTPProcessData.Replace(wxT("[LinkRemove]"), GetPermissionDenied());
@@ -997,8 +925,6 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	
 	pThis->m_DownloadFilesInfo.ReQuery();
 
-	// Populating array
-	
 	//
 	// Displaying
 	//
@@ -1071,21 +997,21 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 
 		fTotalSize += i->lFileSize;
 
-		HTTPProcessData.Replace(wxT("[2]"), castItoXBytes(i->lFileSize));
+		HTTPProcessData.Replace(wxT("[2]"), CastItoXBytes(i->lFileSize));
 
 		if (i->lFileTransferred > 0) {
 			fTotalTransferred += i->lFileTransferred;
-
-			HTTPProcessData.Replace(wxT("[3]"), castItoXBytes(i->lFileTransferred));
-		} else
+			HTTPProcessData.Replace(wxT("[3]"), CastItoXBytes(i->lFileCompleted));
+		} else {
 			HTTPProcessData.Replace(wxT("[3]"), wxT("-"));
+		}
 
 		if (i->lFileCompleted > 0) {
 			fTotalCompleted += i->lFileCompleted;
-
-			HTTPProcessData.Replace(wxT("[4]"), castItoXBytes(i->lFileCompleted));
-		} else
+			HTTPProcessData.Replace(wxT("[4]"), CastItoXBytes(i->lFileTransferred));
+		} else {
 			HTTPProcessData.Replace(wxT("[4]"), wxT("-"));
+		}
 		
 		HTTPProcessData.Replace(wxT("[DownloadBar]"), _GetDownloadGraph(Data, (int)i->fCompleted, i->sPartStatus));
 
@@ -1131,9 +1057,9 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	Out.Replace(wxT("[PriorityDown]"), _("Decrease Priority"));
 	// Elandal: cast from float to integral type always drops fractions.
 	// avoids implicit cast warning
-	Out.Replace(wxT("[TotalDownSize]"), castItoXBytes((uint64)fTotalSize));
-	Out.Replace(wxT("[TotalDownCompleted]"), castItoXBytes((uint64)fTotalCompleted));
-	Out.Replace(wxT("[TotalDownTransferred]"), castItoXBytes((uint64)fTotalTransferred));
+	Out.Replace(wxT("[TotalDownSize]"), CastItoXBytes((uint64)fTotalSize));
+	Out.Replace(wxT("[TotalDownCompleted]"), CastItoXBytes((uint64)fTotalCompleted));
+	Out.Replace(wxT("[TotalDownTransferred]"), CastItoXBytes((uint64)fTotalTransferred));
 	
 	HTTPTemp.Printf(wxT("%8.2f %s"), fTotalSpeed/1024.0,_("kB/s"));
 	Out.Replace(wxT("[TotalDownSpeed]"), HTTPTemp);
@@ -1177,15 +1103,12 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 		fTotalTransferred += transfUp;
 		sEntry=sEntry.Mid(brk+1);
 
-		wxString HTTPTemp;
-		HTTPTemp.Printf(wxT("%s / %s"), castItoXBytes((uint64)transfDown).GetData(),castItoXBytes((uint64)transfUp).GetData());
-		HTTPProcessData.Replace(wxT("[3]"), HTTPTemp);
+		HTTPProcessData.Replace(wxT("[3]"), CastItoXBytes((uint64)transfDown) + wxT(" / ") + CastItoXBytes((uint64)transfUp));
 
 		sEntry.ToLong(&transfDatarate);
 		fTotalSpeed += transfDatarate;
 		
-		HTTPTemp.Printf(wxT("%8.2f kB/s"), transfDatarate/1024.0);
-		HTTPProcessData.Replace(wxT("[4]"), HTTPTemp);
+		HTTPProcessData.Replace(wxT("[4]"), wxString::Format(wxT("%8.2f kB/s"), transfDatarate/1024.0));
 		
 		sUpList += HTTPProcessData;
 	}
@@ -1193,10 +1116,8 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	Out.Replace(wxT("[UploadFilesList]"), sUpList);
 	// Elandal: cast from float to integral type always drops fractions.
 	// avoids implicit cast warning
-	HTTPTemp.Printf(wxT("%s / %s"), castItoXBytes((uint64)fTotalSize).GetData(), castItoXBytes((uint64)fTotalTransferred).GetData());
-	Out.Replace(wxT("[TotalUpTransferred]"), HTTPTemp);
-	HTTPTemp.Printf(wxT("%8.2f kB/s"), fTotalSpeed/1024.0);
-	Out.Replace(wxT("[TotalUpSpeed]"), HTTPTemp);
+	Out.Replace(wxT("[TotalUpTransferred]"), CastItoXBytes((uint64)fTotalSize) + wxT(" / ") + CastItoXBytes((uint64)fTotalTransferred));
+	Out.Replace(wxT("[TotalUpSpeed]"), wxString::Format(wxT("%8.2f kB/s"), fTotalSpeed/1024.0));
 
 	if (pThis->m_Params.bShowUploadQueue) {
 		Out.Replace(wxT("[UploadQueue]"), pThis->m_Templates.sTransferUpQueueShow);
@@ -1230,16 +1151,17 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 			sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
 			HTTPProcessData.Replace(wxT("[FileName]"), _SpecialChars(sEntry.Left(brk)));
 			sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
-			sprintf(HTTPTempC, "%i" , atoi((char*) sEntry.Left(brk).GetData()));
+			sprintf(HTTPTempC, "%i" , (int)StrToLong(sEntry.Left(brk)));
 			sEntry=sEntry.Mid(brk+1);
 			
 			wxString HTTPTemp = HTTPTemp.Format(wxT("%s"), HTTPTempC);
 			HTTPProcessData.Replace(wxT("[Score]"), HTTPTemp);
 
-			if (atoi((char*) sEntry.GetData()))
+			if (StrToLong(sEntry)) {
 				HTTPProcessData.Replace(wxT("[Banned]"), _("Yes"));
-			else
+			} else {
 				HTTPProcessData.Replace(wxT("[Banned]"), _("No"));
+			}
 		}
 		
 		Out.Replace(wxT("[QueueList]"), sQueue);
@@ -1253,10 +1175,10 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	Out.Replace(wxT("[CLEARCOMPLETED]"), _("C&lear completed"));
 
 	Out.Replace(wxT("[DownloadList]"),
-		wxString::Format(wxT("%s (%u)"), _("Downloads"), pThis->m_DownloadFilesInfo.ItemCount()));
+		wxString::Format(wxT("Downloads (%u)"), pThis->m_DownloadFilesInfo.ItemCount()));
 	Out.Replace(wxT("[UploadList]"),
-		wxString::Format(wxT("%s (%i)"),
-			_("Upload"), atoi((char*) pThis->webInterface->SendRecvMsg(wxT("QUEUE UL_GETLENGTH")).GetData())));
+		wxString::Format(_("Uploads (%i)"),
+			StrToLong(pThis->webInterface->SendRecvMsg(wxT("QUEUE UL_GETLENGTH")))));
 	Out.Replace(wxT("[CatSel]"), sCat);
 
 	return Out;
@@ -1284,10 +1206,11 @@ wxString CWebServer::_GetDownloadLink(ThreadData Data) {
 	Out.Replace(wxT("[Session]"), sSession);
 
 	// categories
-	if (atoi((char*) pThis->webInterface->SendRecvMsg(wxT("CATEGORIES GETCATCOUNT")).GetData()) > 1)
+	if (StrToLong(pThis->webInterface->SendRecvMsg(wxT("CATEGORIES GETCATCOUNT"))) > 1) {
 		InsertCatBox(pThis, Out, 0, pThis->m_Templates.sCatArrow );
-	else 
+	} else {
 		Out.Replace(wxT("[CATBOX]"),wxEmptyString);
+	}
 
 	return Out;
 }
@@ -1303,7 +1226,7 @@ wxString CWebServer::_GetSharedFilesList(ThreadData Data) {
 	//
 	// commands: setpriority, reload
 	if (!_ParseURL(Data, wxT("hash")).IsEmpty() && !_ParseURL(Data, wxT("setpriority")).IsEmpty() && IsSessionAdmin(Data,sSession)) 
-		_SetSharedFilePriority(pThis, _ParseURL(Data, wxT("hash")), atoi((char*) _ParseURL(Data, wxT("setpriority")).GetData()));
+		_SetSharedFilePriority(pThis, _ParseURL(Data, wxT("hash")), StrToLong(_ParseURL(Data, wxT("setpriority"))));
 
 	if (_ParseURL(Data, wxT("reload")) == wxT("true")) {
 		pThis->webInterface->SendRecvMsg(wxT("SHAREDFILES RELOAD"));
@@ -1345,12 +1268,12 @@ wxString CWebServer::_GetSharedFilesList(ThreadData Data) {
 		else
 			HTTPProcessData.Replace(wxT("[ShortFileName]"), _SpecialChars(i->sFileName));
 
-		HTTPProcessData.Replace(wxT("[FileSize]"), castItoXBytes(i->lFileSize));
+		HTTPProcessData.Replace(wxT("[FileSize]"), CastItoXBytes(i->lFileSize));
 		HTTPProcessData.Replace(wxT("[FileLink]"), i->sED2kLink);
 
-		HTTPProcessData.Replace(wxT("[FileTransferred]"), castItoXBytes(i->nFileTransferred));
+		HTTPProcessData.Replace(wxT("[FileTransferred]"), CastItoXBytes(i->nFileTransferred));
 
-		HTTPProcessData.Replace(wxT("[FileAllTimeTransferred]"), castItoXBytes(i->nFileAllTimeTransferred));
+		HTTPProcessData.Replace(wxT("[FileAllTimeTransferred]"), CastItoXBytes(i->nFileAllTimeTransferred));
 
 		HTTPProcessData.Replace(wxT("[FileRequests]"), wxString::Format(wxT("%i"), i->nFileRequests));
 
@@ -1379,10 +1302,10 @@ wxString CWebServer::_GetSharedFilesList(ThreadData Data) {
 		}
 		
 		HTTPProcessData.Replace(wxT("[PriorityUpLink]"),
-			wxString::Format(wxT("hash=%s&setpriority=%i"), i->sFileHash.GetData(), upperpriority));
+			wxT("hash=") +  i->sFileHash + wxString::Format(wxT("&setpriority=%i"), upperpriority));
 
 		HTTPProcessData.Replace(wxT("[PriorityDownLink]"),
-			wxString::Format(wxT("hash=%s&setpriority=%i"), i->sFileHash.GetData(), lesserpriority));
+			wxT("hash=") +  i->sFileHash + wxString::Format(wxT("&setpriority=%i"), lesserpriority));
 
 		sSharedList += HTTPProcessData;
 		i++;
@@ -1436,15 +1359,17 @@ wxString CWebServer::_GetGraphs(ThreadData Data) {
 	int brk = sGraphs.First(wxT("\t"));
 	
 	wxString sScale;
-	sScale.Printf(wxT("%s"), castSecondsToHM(atoi((char*) sGraphs.Left(brk).GetData()) * WEB_GRAPH_WIDTH).GetData() );
-	sGraphs = sGraphs.Mid(brk+1); brk=sGraphs.First(wxT("\t"));
+	sScale = CastSecondsToHM(StrToLong(sGraphs.Left(brk)) * WEB_GRAPH_WIDTH);
+	sGraphs = sGraphs.Mid(brk+1); 
+	brk=sGraphs.First(wxT("\t"));
 
 	wxString s1, s2, s3;
-	s1.Printf(wxT("%d"), atoi((char*) sGraphs.Left(brk).GetData()) + 4);
-	sGraphs = sGraphs.Mid(brk+1); brk=sGraphs.First(wxT("\t"));
-	s2.Printf(wxT("%d"), atoi((char*) sGraphs.Left(brk).GetData()) + 4);
+	s1.Printf(wxT("%li"), StrToLong(sGraphs.Left(brk)) + 4);
+	sGraphs = sGraphs.Mid(brk+1); 
+	brk=sGraphs.First(wxT("\t"));
+	s2.Printf(wxT("%li"), StrToLong(sGraphs.Left(brk)) + 4);
 	sGraphs = sGraphs.Mid(brk+1);
-	s3.Printf(wxT("%d"), atoi((char*) sGraphs.GetData()) + 20);
+	s3.Printf(wxT("%li"), StrToLong(sGraphs) + 20);
 	
 	Out.Replace(wxT("[ScaleTime]"), sScale);
 	Out.Replace(wxT("[MaxDownload]"), s1);
@@ -1512,15 +1437,13 @@ wxString CWebServer::_GetWebSearch(ThreadData Data) {
     
 	wxString Out = pThis->m_Templates.sWebSearch;
 	if (_ParseURL(Data, wxT("tosearch")) != wxEmptyString) {
-		wxString query = query.Format(wxT("http://www.filedonkey.com/fdsearch/index.php?media=%s&pattern=%s&action=search&name=FD-Search&op=modload&file=index&requestby=amule"), _ParseURL(Data, wxT("media")).GetData(), _ParseURL(Data, wxT("tosearch")).GetData());
-		
-		wxString tosearch = tosearch.Format(wxT("%s"), _ParseURL(Data, wxT("tosearch")).GetData());
-		tosearch = URLEncode(tosearch);
-		tosearch.Replace(wxT("%20"), wxT("+"));
-		
-		Out.Append(wxT("\n<script language=\"javascript\">"));
-		Out.Append(wxString::Format(wxT("\n searchwindow=window.open('%s','searchwindow');"), query.GetData()));
-		Out.Append(wxT("\n</script>"));
+
+		Out += wxT("\n<script language=\"javascript\">\n searchwindow=window.open('http://www.filedonkey.com/fdsearch/index.php?media=") +
+					_ParseURL(Data, wxT("media")) +
+					wxT("&pattern=") + 
+					 _ParseURL(Data, wxT("tosearch")) + 
+					wxT("&action=search&name=FD-Search&op=modload&file=index&requestby=amule','searchwindow');\n</script>");
+
 	}
 	
 	Out.Replace(wxT("[Session]"), sSession);
@@ -1555,7 +1478,8 @@ wxString CWebServer::_GetLog(ThreadData Data) {
 	}
 	
 	Out.Replace(wxT("[Clear]"), _("Reset"));
-	Out.Replace(wxT("[Log]"), wxString::Format(wxT("%s<br><a name=\"end\"></a>"), _SpecialChars(pThis->webInterface->SendRecvMsg(wxT("LOG GETALLLOGENTRIES"))).GetData()));
+	Out.Replace(wxT("[Log]"), _SpecialChars(pThis->webInterface->SendRecvMsg(wxT("LOG GETALLLOGENTRIES"))) + 
+										wxT("<br><a name=\"end\"></a>"));
 	Out.Replace(wxT("[Session]"), sSession);
 
 	return Out;
@@ -1600,7 +1524,8 @@ wxString CWebServer::_GetDebugLog(ThreadData Data) {
 	}
 	Out.Replace(wxT("[Clear]"), _("Reset"));
 
-	Out.Replace(wxT("[DebugLog]"), wxString::Format(wxT("%s<br><a name=\"end\"></a>"), _SpecialChars(pThis->webInterface->SendRecvMsg(wxT("LOG GETALLDEBUGLOGENTRIES"))).GetData()));
+	Out.Replace(wxT("[DebugLog]"), _SpecialChars(pThis->webInterface->SendRecvMsg(wxT("LOG GETALLDEBUGLOGENTRIES"))) +
+											wxT("<br><a name=\"end\"></a>"));
 	Out.Replace(wxT("[Session]"), sSession);
 
 	return Out;
@@ -1659,28 +1584,28 @@ wxString CWebServer::_GetPreferences(ThreadData Data) {
 			pThis->m_Params.bShowUploadQueue = false;
 		}
 		if (_ParseURL(Data, wxT("refresh")) != wxEmptyString) {
-			prefList+=wxString::Format(wxT("%d\t"), atoi((char*) _ParseURL(Data, wxT("refresh")).GetData()));
+			prefList+=wxString::Format(wxT("%li\t"), StrToLong(_ParseURL(Data, wxT("refresh"))));
 		}
 		if (_ParseURL(Data, wxT("maxdown")) != wxEmptyString) {
-			prefList+=wxString::Format(wxT("%d\t"), atoi((char*) _ParseURL(Data, wxT("maxdown")).GetData()));
+			prefList+=wxString::Format(wxT("%li\t"), StrToLong(_ParseURL(Data, wxT("maxdown"))));
 		}
 		if (_ParseURL(Data, wxT("maxup")) != wxEmptyString) {
-			prefList+=wxString::Format(wxT("%d\t"), atoi((char*) _ParseURL(Data, wxT("maxup")).GetData()));
+			prefList+=wxString::Format(wxT("%li\t"), StrToLong(_ParseURL(Data, wxT("maxup"))));
 		}
 		if (_ParseURL(Data, wxT("maxcapdown")) != wxEmptyString) {
-			prefList+=wxString::Format(wxT("%d\t"), atoi((char*) _ParseURL(Data, wxT("maxcapdown")).GetData()));
+			prefList+=wxString::Format(wxT("%li\t"), StrToLong(_ParseURL(Data, wxT("maxcapdown"))));
 		}
 		if (_ParseURL(Data, wxT("maxcapup")) != wxEmptyString) {
-			prefList+=wxString::Format(wxT("%d\t"), atoi((char*) _ParseURL(Data, wxT("maxcapup")).GetData()));
+			prefList+=wxString::Format(wxT("%li\t"), StrToLong(_ParseURL(Data, wxT("maxcapup"))));
 		}
 		if (_ParseURL(Data, wxT("maxsources")) != wxEmptyString) {
-			prefList+=wxString::Format(wxT("%d\t"), atoi((char*) _ParseURL(Data, wxT("maxsources")).GetData()));
+			prefList+=wxString::Format(wxT("%li\t"), StrToLong(_ParseURL(Data, wxT("maxsources"))));
 		}
 		if (_ParseURL(Data, wxT("maxconnections")) != wxEmptyString) {
-			prefList+=wxString::Format(wxT("%d\t"), atoi((char*) _ParseURL(Data, wxT("maxconnections")).GetData()));
+			prefList+=wxString::Format(wxT("%li\t"), StrToLong(_ParseURL(Data, wxT("maxconnections"))));
 		}
 		if (_ParseURL(Data, wxT("maxconnectionsperfive")) != wxEmptyString) {
-			prefList+=wxString::Format(wxT("%d\t"), atoi((char*) _ParseURL(Data, wxT("maxconnectionsperfive")).GetData()));
+			prefList+=wxString::Format(wxT("%li\t"), StrToLong(_ParseURL(Data, wxT("maxconnectionsperfive"))));
 		}
 
 		prefList+=wxString::Format(wxT("%d\t"), ((_ParseURL(Data, wxT("fullchunks")).MakeLower() == wxT("on")) ? 1 : 0));
@@ -1693,7 +1618,7 @@ wxString CWebServer::_GetPreferences(ThreadData Data) {
 	//sPreferencesList formatted as: %d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d
 	wxString sPreferences = pThis->webInterface->SendRecvMsg(wxT("WEBPAGE GETPREFERENCES"));
 	brk = sPreferences.First(wxT("\t"));
-	if (atoi((char*) sPreferences.Left(brk).GetData())) {
+	if (StrToLong(sPreferences.Left(brk))) {
 		Out.Replace(wxT("[UseGzipVal]"), wxT("checked"));
 	} else {
 		Out.Replace(wxT("[UseGzipVal]"), wxEmptyString);
@@ -1704,29 +1629,29 @@ wxString CWebServer::_GetPreferences(ThreadData Data) {
 		Out.Replace(wxT("[ShowUploadQueueVal]"), wxEmptyString);
 	}
 	sPreferences=sPreferences.Mid(brk+1); brk=sPreferences.First(wxT("\t"));
-	if (atoi((char*) sPreferences.Left(brk).GetData())) {
+	if (StrToLong(sPreferences.Left(brk))) {
 		Out.Replace(wxT("[FirstAndLastVal]"), wxT("checked"));
 	} else {
 		Out.Replace(wxT("[FirstAndLastVal]"), wxEmptyString);
 	}
 	sPreferences=sPreferences.Mid(brk+1); brk=sPreferences.First(wxT("\t"));
-	if (atoi((char*) sPreferences.Left(brk).GetData())) {
+	if (StrToLong(sPreferences.Left(brk))) {
 		Out.Replace(wxT("[FullChunksVal]"), wxT("checked"));
 	} else {
 		Out.Replace(wxT("[FullChunksVal]"), wxEmptyString);
 	}
 	
 	sPreferences=sPreferences.Mid(brk+1); brk=sPreferences.First(wxT("\t"));
-	wxString sRefresh = sRefresh.Format(wxT("%d"), atoi((char*) sPreferences.Left(brk).GetData()));
+	wxString sRefresh = sRefresh.Format(wxT("%li"), StrToLong(sPreferences.Left(brk)));
 	Out.Replace(wxT("[RefreshVal]"), sRefresh);
 	sPreferences=sPreferences.Mid(brk+1); brk=sPreferences.First(wxT("\t"));
-	sRefresh.Printf(wxT("%d"), atoi((char*) sPreferences.Left(brk).GetData()));
+	sRefresh.Printf(wxT("%li"), StrToLong(sPreferences.Left(brk)));
 	Out.Replace(wxT("[MaxSourcesVal]"), sRefresh);
 	sPreferences=sPreferences.Mid(brk+1); brk=sPreferences.First(wxT("\t"));
-	sRefresh.Printf(wxT("%d"), atoi((char*) sPreferences.Left(brk).GetData()));
+	sRefresh.Printf(wxT("%li"), StrToLong(sPreferences.Left(brk)));
 	Out.Replace(wxT("[MaxConnectionsVal]"), sRefresh);
 	sPreferences=sPreferences.Mid(brk+1); brk=sPreferences.First(wxT("\t"));
-	sRefresh.Printf(wxT("%d"), atoi((char*) sPreferences.Left(brk).GetData()));
+	sRefresh.Printf(wxT("%li"), StrToLong(sPreferences.Left(brk)));
 	Out.Replace(wxT("[MaxConnectionsPer5Val]"), sRefresh);
 
 	wxString colon(wxT(":"));
@@ -1756,23 +1681,28 @@ wxString CWebServer::_GetPreferences(ThreadData Data) {
 	Out.Replace(wxT("[aMuleAppName]"), wxT("aMule"));
 	Out.Replace(wxT("[Apply]"), _("Apply"));
 
-	wxString sT;
-	sPreferences=sPreferences.Mid(brk+1); brk=sPreferences.First(wxT("\t"));
-	int n = atoi((char*) sPreferences.Left(brk).GetData());
-	if (n < 0 || n == 65535) n = 0;
-	sT.Printf(wxT("%d"), n);
-	Out.Replace(wxT("[MaxDownVal]"), sT);
-	sPreferences=sPreferences.Mid(brk+1); brk=sPreferences.First(wxT("\t"));
-	n = atoi((char*) sPreferences.Left(brk).GetData());
-	if (n < 0 || n == 65535) n = 0;
-	sT.Printf(wxT("%d"), n);
-	Out.Replace(wxT("[MaxUpVal]"), sT);
-	sPreferences=sPreferences.Mid(brk+1); brk=sPreferences.First(wxT("\t"));
-	sT.Printf(wxT("%d"), atoi((char*) sPreferences.Left(brk).GetData()));
-	Out.Replace(wxT("[MaxCapDownVal]"), sT);
+	sPreferences=sPreferences.Mid(brk+1); 
+	brk=sPreferences.First(wxT("\t"));
+	int n = StrToLong(sPreferences.Left(brk));
+	if (n < 0 || n == 65535) {
+		n = 0;
+	}
+	Out.Replace(wxT("[MaxDownVal]"), wxString::Format(wxT("%d"), n));
+	
+	sPreferences=sPreferences.Mid(brk+1); 
+	brk=sPreferences.First(wxT("\t"));
+	n = StrToLong(sPreferences.Left(brk));
+	if (n < 0 || n == 65535)  {
+		n = 0;
+	}
+	Out.Replace(wxT("[MaxUpVal]"), wxString::Format(wxT("%d"), n));
+	
+	sPreferences=sPreferences.Mid(brk+1); 
+	brk=sPreferences.First(wxT("\t"));
+	Out.Replace(wxT("[MaxCapDownVal]"), sPreferences.Left(brk));
+	
 	sPreferences=sPreferences.Mid(brk+1);
-	sT.Printf(wxT("%d"), atoi((char*) sPreferences.GetData()));
-	Out.Replace(wxT("[MaxCapUpVal]"), sT);
+	Out.Replace(wxT("[MaxCapUpVal]"), sPreferences);
 
 	return Out;
 }
@@ -1967,7 +1897,7 @@ Session CWebServer::GetSessionByID(ThreadData Data,long sessionID) {
 
 
 bool CWebServer::IsSessionAdmin(ThreadData Data,wxString SsessionID) {
-	long sessionID=atoll((char*) SsessionID.GetData());
+	long sessionID= StrToLong(SsessionID);
 	CWebServer *pThis = (CWebServer *)Data.pThis;
 	
 	if (pThis != NULL) {
@@ -2035,26 +1965,26 @@ wxString CWebServer::_GetDownloadGraph(ThreadData Data, int percent, wxString &s
 	wxString Out = wxEmptyString;
 
 	// and now make a graph out of the array - need to be in a progressive way
-	uint8 lastcolor = atoi(s_ChunkBar.Left(1));
+	uint8 lastcolor = StrToLong(s_ChunkBar.Left(1));
 	uint16 lastindex=0;
 	
 	for (uint16 i = 0; i < s_ChunkBar.Length(); i++) {
-		if ( (lastcolor!= atoi(s_ChunkBar.Mid(i,1))) || (i == s_ChunkBar.Length()-1) ) {
-				Out += wxString::Format(pThis->m_Templates.sProgressbarImgs.GetData(),
-					progresscolor[lastcolor].GetData(), i - lastindex);
+		if ( (lastcolor!= StrToLong(s_ChunkBar.Mid(i,1))) || (i == s_ChunkBar.Length()-1) ) {
+				Out += wxString::Format(pThis->m_Templates.sProgressbarImgs,
+					unicode2char(progresscolor[lastcolor]), i - lastindex);
 
-			lastcolor = atoi(s_ChunkBar.Mid(i,1));
+			lastcolor = StrToLong(s_ChunkBar.Mid(i,1));
 			lastindex = i;
 		}
 	}
 
 	int complx = pThis->m_Templates.iProgressbarWidth*percent/100;
 	if ( complx ) {
-		Out = wxString::Format((pThis->m_Templates.sProgressbarImgsPercent+wxT("<br>")).GetData(),
-			progresscolor[11].GetData(),complx) + Out;
+		Out = wxString::Format((pThis->m_Templates.sProgressbarImgsPercent+wxT("<br>")),
+			unicode2char(progresscolor[11]),complx) + Out;
 	} else {
-		Out = wxString::Format((pThis->m_Templates.sProgressbarImgsPercent+wxT("<br>")).GetData(),
-			progresscolor[0].GetData(),5) + Out;
+		Out = wxString::Format((pThis->m_Templates.sProgressbarImgsPercent+wxT("<br>")),
+			unicode2char(progresscolor[0]),5) + Out;
 	}
 	return Out;
 }
@@ -2083,8 +2013,8 @@ wxString CWebServer::_GetSearch(ThreadData Data) {
 		wxString sParams;
 		sParams.Printf(sToSearch+wxT("\n"));
 		sParams.Append(_ParseURL(Data, wxT("type"))+wxT("\n"));
-		sParams.Append(wxString::Format(wxT("%ld\n"), atol((char*) _ParseURL(Data, wxT("min")).GetData())*1048576));
-		sParams.Append(wxString::Format(wxT("%ld\n"), atol((char*) _ParseURL(Data, wxT("max")).GetData())*1048576));
+		sParams.Append(wxString::Format(wxT("%ld\n"), StrToLong(_ParseURL(Data, wxT("min")))*1048576));
+		sParams.Append(wxString::Format(wxT("%ld\n"), StrToLong(_ParseURL(Data, wxT("max")))*1048576));
 		sParams.Append(_ParseURL(Data, wxT("avail"))+wxT("\n"));
 		sParams.Append(_ParseURL(Data, wxT("ext"))+wxT("\n"));
 		sParams.Append(_ParseURL(Data, wxT("method"))+wxT("\n"));
@@ -2097,17 +2027,18 @@ wxString CWebServer::_GetSearch(ThreadData Data) {
 		Out.Replace(wxT("[Message]"),wxEmptyString);
 
 	wxString sSort = _ParseURL(Data, wxT("sort"));
-	if (sSort.Length()>0) pThis->m_iSearchSortby=atoi((char*) sSort.GetData());
+	if (sSort.Length()>0) pThis->m_iSearchSortby = StrToLong(sSort);
 	sSort = _ParseURL(Data, wxT("sortAsc"));
-	if (sSort.Length()>0) pThis->m_bSearchAsc=atoi((char*) sSort.GetData());
+	if (sSort.Length()>0) pThis->m_bSearchAsc = StrToLong(sSort);
 
 	wxString result = pThis->m_Templates.sSearchHeader + pThis->webInterface->SendRecvMsg(wxString::Format(wxT("SEARCH WEBLIST %s\t%d\t%d"), pThis->m_Templates.sSearchResultLine.GetData(), pThis->m_iSearchSortby, pThis->m_bSearchAsc));
 	
 	// categoriesa
-	if (atoi((char*) pThis->webInterface->SendRecvMsg(wxT("CATEGORIES GETCATCOUNT")).GetData()) > 1)
+	if (StrToLong(pThis->webInterface->SendRecvMsg(wxT("CATEGORIES GETCATCOUNT"))) > 1) {
 		InsertCatBox(pThis, Out, 0, pThis->m_Templates.sCatArrow);
-	else
+	} else {
 		Out.Replace(wxT("[CATBOX]"),wxEmptyString);
+	}
 
 	Out.Replace(wxT("[SEARCHINFOMSG]"),wxEmptyString);
 	Out.Replace(wxT("[RESULTLIST]"), result);
@@ -2210,27 +2141,29 @@ void CWebServer::InsertCatBox(CWebServer *pThis, wxString &Out, int preselect, w
 	wxString tempBuf, tempBuf2, tempBuf3;
 	wxString catTitle;
 	
-	if (jump) 
-		tempBuf2=wxT("onchange=GotoCat(this.form.cat.options[this.form.cat.selectedIndex].value)>");
-	else 
-		tempBuf2=wxT(">");
+	tempBuf = wxT("<form><select name=\"cat\" size=\"1\"");
 	
-	tempBuf.Printf(wxT("<form><select name=\"cat\" size=\"1\"%s"), tempBuf2.GetData());
+	if (jump)  {
+		tempBuf += wxT("onchange=GotoCat(this.form.cat.options[this.form.cat.selectedIndex].value)>");
+	} else {
+		tempBuf += wxT(">");
+	}
 
-	int catCount = atoi((char*) pThis->webInterface->SendRecvMsg(wxT("CATEGORIES GETCATCOUNT")).GetData());
+	// Construct the categories options string.
+	int catCount = StrToLong(pThis->webInterface->SendRecvMsg(wxT("CATEGORIES GETCATCOUNT")));
 	for (int i = 0; i < catCount; ++i) {
-		tempBuf3 = (i==preselect) ? wxT(" selected") : wxT("");
 		catTitle = pThis->webInterface->SendRecvMsg(wxString::Format(wxT("CATEGORIES GETCATTITLE %d"), i));
-		tempBuf2.Printf(wxT("<option%s value=\"%i\">%s</option>"), tempBuf3.GetData(), i, (i==0) ? _("all") : catTitle.GetData());
-		tempBuf.Append(tempBuf2);
+		tempBuf += wxString() + 
+						wxT("<option") + ((i==preselect) ? wxT(" selected") : wxT(""))	+ 
+						wxString::Format(wxT(" value=\"%i\">"),i) + ((i==0) ? wxString(_("all")) : catTitle) + 
+						wxT("</option>");
 	}
 	
 	if (extraCats) {
 		// code moved to CWebServer::GetStatusBox
 	}
 	
-	tempBuf.Append(wxT("</select></form>"));
-	Out.Replace(wxT("[CATBOX]"), boxlabel+tempBuf);
+	Out.Replace(wxT("[CATBOX]"), boxlabel + tempBuf + wxT("</select></form>"));
 }
 
 
@@ -2411,29 +2344,29 @@ bool SharedFilesInfo::ReQuery()
 		brk=sEntry.First(wxT("\t"));
 		dFile.sFileName = _SpecialChars(sEntry.Left(brk));
 		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
-		dFile.lFileSize = atol((char*) sEntry.Left(brk).GetData());
+		dFile.lFileSize = StrToLong(sEntry.Left(brk));
 		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
 		dFile.sED2kLink = sEntry.Left(brk);
 		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
-		dFile.nFileTransferred = atol((char*) sEntry.Left(brk).GetData());
+		dFile.nFileTransferred = StrToLong(sEntry.Left(brk));
 		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
-		dFile.nFileAllTimeTransferred = atoll((char*) sEntry.Left(brk).GetData());
+		dFile.nFileAllTimeTransferred = atoll(unicode2char(sEntry.Left(brk)));
 		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
-		dFile.nFileRequests = atoi((char*) sEntry.Left(brk).GetData());
+		dFile.nFileRequests = StrToLong(sEntry.Left(brk));
 		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
-		dFile.nFileAllTimeRequests = atol((char*) sEntry.Left(brk).GetData());
+		dFile.nFileAllTimeRequests = StrToLong(sEntry.Left(brk));
 		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
-		dFile.nFileAccepts = atoi((char*) sEntry.Left(brk).GetData());
+		dFile.nFileAccepts = StrToLong(sEntry.Left(brk));
 		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
-		dFile.nFileAllTimeAccepts = atol((char*) sEntry.Left(brk).GetData());
+		dFile.nFileAllTimeAccepts = StrToLong(sEntry.Left(brk));
 		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
 		dFile.sFileHash = sEntry.Left(brk);
 		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
 		dFile.sFilePriority = sEntry.Left(brk);
 		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
-		dFile.nFilePriority = atoi((char*) sEntry.Left(brk).GetData());
+		dFile.nFilePriority = StrToLong(sEntry.Left(brk));
 		sEntry=sEntry.Mid(brk+1);
-		if (atoi((char*) sEntry.GetData())==0) {
+		if (StrToLong(sEntry.Left(brk))==0) {
 			dFile.bFileAutoPriority = false;
 		} else {
 			dFile.bFileAutoPriority = true;
@@ -2636,5 +2569,3 @@ bool DownloadFilesInfo::CompareItems(const DownloadFiles &i1, const DownloadFile
 	}
 	return Result ^ m_SortReverse;
 }
-
-

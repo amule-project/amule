@@ -273,13 +273,13 @@ amulecmdDLG_CXXFLAGS = $(WX_CXXFLAGS) -DAMULECMDDLG
 amulecmdDLG_LDADD = $(WX_LIBS)
 
 amuleweb_SOURCES =  WebServer.cpp WebInterface.cpp WebSocket.cpp \
-	MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp
+	MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp otherfunctions.cpp 
 amuleweb_CFLAGS = $(WXBASE_CFLAGS)
 amuleweb_CXXFLAGS = $(WXBASE_CXXFLAGS)
 amuleweb_LDADD = $(WXBASE_LIBS) $(ZLIB_LIBS) $(READLINE_LIBS)
 
 amulewebDLG_SOURCES = WebServer.cpp WebInterface.cpp WebSocket.cpp \
-	 MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp
+	 MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp otherfunctions.cpp
 amulewebDLG_CFLAGS = $(WX_CFLAGS) -DAMULEWEBDLG
 amulewebDLG_CXXFLAGS = $(WX_CXXFLAGS) -DAMULEWEBDLG 
 amulewebDLG_LDADD = $(WX_LIBS) $(ZLIB_LIBS)

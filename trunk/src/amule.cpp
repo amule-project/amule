@@ -944,7 +944,6 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 
 	// Uptime
 	if (zero) {
-		//sprintf(buffer,"%s",unicode2char(CastSecondsToHM(0).GetData()));
 		sprintf(buffer,"%u",0);
 		amulesig_out.Write(buffer, strlen(buffer));
 		amulesig_out.Write("\n",1);

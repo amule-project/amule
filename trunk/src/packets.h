@@ -31,6 +31,8 @@
 class CMemFile;
 class CFile;
 
+using namespace otherfunctions;
+
 //			CLIENT TO SERVER
 
 //			PACKET CLASS

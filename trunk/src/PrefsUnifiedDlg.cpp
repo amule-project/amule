@@ -382,7 +382,7 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 	// do sanity checking, special processing, and user notifications here
 	thePrefs::CheckUlDlRatio();
 
-	if ( IsEmptyFile(theApp.ConfigDir + wxT("addresses.dat")) && CastChild(IDC_AUTOSERVER, wxCheckBox)->IsChecked() ) {
+	if ( otherfunctions::IsEmptyFile(theApp.ConfigDir + wxT("addresses.dat")) && CastChild(IDC_AUTOSERVER, wxCheckBox)->IsChecked() ) {
 		thePrefs::UnsetAutoServerStart();
 		wxMessageBox(wxString::wxString( _(
 			"Your Auto-update servers list is in blank.\n"
@@ -500,7 +500,7 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 			break;
 
 		case IDC_AUTOSERVER:
-			if ( IsEmptyFile(theApp.ConfigDir + wxT("addresses.dat")) && CastChild(event.GetId(), wxCheckBox)->IsChecked() ) {
+			if ( otherfunctions::IsEmptyFile(theApp.ConfigDir + wxT("addresses.dat")) && CastChild(event.GetId(), wxCheckBox)->IsChecked() ) {
 				wxMessageBox(wxString::wxString( _(
 					"Your Auto-update servers list is in blank.\n"
 					"Please fill in at least one URL to point to a valid server.met file.\n"

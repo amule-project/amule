@@ -61,7 +61,7 @@ EditServerListDlg::EditServerListDlg(wxWindow *parent,
 
   Centre( wxBOTH );
 
-  if (wxFile::Exists(filename.GetData()))
+  if (wxFile::Exists(filename))
   	m_textctrl->LoadFile(filename);
   
   m_textctrl->SetFocus();
@@ -78,5 +78,5 @@ void EditServerListDlg::OnOK(wxCommandEvent& WXUNUSED(event) )
 	if (m_textctrl->SaveFile(m_file))
 		EndModal(1);
 	else
-		wxLogSysError(_("can't write file '%s'"), m_file.GetData());
+		wxLogSysError(_("can't write to file '") +  m_file + wxT("'"));
 }

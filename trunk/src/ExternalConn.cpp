@@ -59,6 +59,8 @@
 #include "ECPacket.h"		// Needed for CECPacket, CECTag
 #include "ECcodes.h"		// Needed for OPcodes, TAGnames
 
+using namespace otherfunctions;
+
 enum
 {	// id for sockets
 	SERVER_ID = 1000,
@@ -1117,13 +1119,14 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				buffer += cur_client->GetUserName() + wxT("\t");
 				tempFileInfo = cur_client->GetUploadFileInfo();
 				tempFileInfo.Replace(wxT("\n"), wxT("|"));
-				buffer += wxString::Format(wxT("%s\t"), tempFileInfo.GetData());
+				buffer += tempFileInfo + wxT("\t");
 				CKnownFile* file = theApp.sharedfiles->GetFileByID(cur_client->GetUploadFileID());
 				if (file) {
-					buffer+=wxString::Format(wxT("%s\t"), file->GetFileName().GetData());
+					buffer+=file->GetFileName();
 				} else {
-					buffer+=wxString(wxT("?\t"));
+					buffer+=wxT("?");
 				}
+				buffer += wxT("\t");
 				buffer+=wxString::Format(wxT("%ul\t"), cur_client->GetTransferedDown());
 				buffer+=wxString::Format(wxT("%ul\t"), cur_client->GetTransferedUp());
 				buffer+=wxString::Format(wxT("%li\n"), (long)(cur_client->GetKBpsUp()*1024.0));
@@ -1698,7 +1701,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 					int separator = item.Mid(19).Find(wxT(" "));
 					if (item.Mid(19, separator).IsNumber()) {
 						flag = StrToLong(item.Mid(19, separator));
-						AddLogLineM(flag, wxString::Format(wxT("%s"), (item.Mid(19+separator+1)).GetData()));
+						AddLogLineM(flag, item.Mid(19+separator+1));
 						return wxT("Line Logged");
 					}
 				}
@@ -2581,7 +2584,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 						int sortBy = StrToLong(sItem.Left(separator+1));
 						if (sortBy >= 0) {
 							bool searchAsc = StrToLong(sItem.Mid(separator+1));
-							return((wxChar*)theApp.searchlist->GetWebList(sResultLine, sortBy, searchAsc).GetData());
+							return theApp.searchlist->GetWebList(sResultLine, sortBy, searchAsc);
 						}
 					}
 				}

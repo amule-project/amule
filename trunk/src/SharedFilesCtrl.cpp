@@ -64,7 +64,7 @@ BEGIN_EVENT_TABLE(CSharedFilesCtrl,CMuleListCtrl)
 	EVT_MENU( MP_GETHOSTNAMESOURCEED2KLINK,	CSharedFilesCtrl::OnCreateURI )
 END_EVENT_TABLE()
 
-
+using namespace otherfunctions;
 
 CSharedFilesCtrl::CSharedFilesCtrl(wxWindow* parent, int id, const wxPoint& pos, wxSize size, int flags)
 	: CMuleListCtrl(parent, id, pos, size, flags | wxLC_OWNERDRAW )
@@ -609,4 +609,3 @@ void CSharedFilesCtrl::DrawAvailabilityBar(CKnownFile* file, wxDC* dc, wxRect re
 
    	s_ChunkBar.Draw(dc, rect.GetLeft(), rect.GetTop(), CPreferences::UseFlatBar() ); 
 }
-

@@ -490,7 +490,7 @@ bool wxSocketProxy::DoHttpRequest(wxIPaddress& address, unsigned char cmd)
 		wxT("%s:%s"),
 		unicode2char(m_ProxyData.Username),
 		unicode2char(m_ProxyData.Password));
-	wxString UserPassEncoded = EncodeBase64(m_buffer, wxPROXY_BUFFER_SIZE);
+	wxString UserPassEncoded = otherfunctions::EncodeBase64(m_buffer, wxPROXY_BUFFER_SIZE);
 	wxString msg = wxString::Format(
 		wxT(
 		"CONNECT %s:%d HTTP/1.1\r\n"
@@ -560,4 +560,3 @@ m_SocketProxy(ProxyData)
 }
 
 /******************************************************************************/
-

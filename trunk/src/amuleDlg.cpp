@@ -86,6 +86,8 @@
 
 #include "aMule.xpm"
 
+using namespace otherfunctions;
+
 BEGIN_EVENT_TABLE(CamuleDlg, wxFrame)
 
 	EVT_TOOL(ID_BUTTONSERVERS, CamuleDlg::OnToolBarButton)

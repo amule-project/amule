@@ -636,7 +636,7 @@ bool CKnownFile::LoadTagsFromFile(const CFile* file)
 				}
 				case FT_AICH_HASH:{
 					CAICHHash hash;
-					if (DecodeBase32(newtag->tag.stringvalue,hash) == CAICHHash::GetHashSize()) {
+					if (hash.DecodeBase32(newtag->tag.stringvalue) == CAICHHash::GetHashSize()) {
 						m_pAICHHashSet->SetMasterHash(hash, AICH_HASHSETCOMPLETE);
 					} else {
 						wxASSERT( false );
@@ -1175,4 +1175,3 @@ void CKnownFile::UpdateUpPartsFrequency( CUpDownClient* client, bool increment )
 		}
 	}
 }
-
