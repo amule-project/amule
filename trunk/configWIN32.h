@@ -70,7 +70,7 @@
 #define HAVE_GETPAGESIZE 1
 
 /* Define to 1 if you have the `getrlimit' function. */
-/* #define HAVE_GETRLIMIT 1 */
+/* #undef HAVE_GETRLIMIT 1 */
 
 /* Define if the GNU gettext() function is already present or preinstalled. */
 #define HAVE_GETTEXT 1
@@ -159,7 +159,7 @@
 #define HAVE_SETLOCALE 1
 
 /* Define to 1 if you have the `setrlimit' function. */
-#define HAVE_SETRLIMIT 1
+/* #undef HAVE_SETRLIMIT 1 */
 
 /* Define to 1 if you have the `sqrt' function. */
 /* #undef HAVE_SQRT */
@@ -215,7 +215,7 @@
 #define HAVE_SYS_PARAM_H 1
 
 /* Define to 1 if you have the <sys/resource.h> header file. */
-/* #define HAVE_SYS_RESOURCE_H 1 */
+/* #undef HAVE_SYS_RESOURCE_H 1 */
 
 /* Define to 1 if you have the <sys/socket.h> header file. */
 #define HAVE_SYS_SOCKET_H 1

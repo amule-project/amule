@@ -17,14 +17,14 @@ ifeq ($(CFG),Debug)
   OBJ_DIR = Debug
   OUTPUT_DIR = Debug
   TARGET = amule.exe
-  C_INCLUDE_DIRS = -I"C:/msys/1.0/home/fox/amule-dev-cvs/." -I"C:/MinGWStudio/Include" 
+  C_INCLUDE_DIRS = -I"C:/msys/1.0/home/fox/amule-dev-cvs/." -I"C:/MinGWStudio/Include" -I"C:/MinGWStudio/Lib/wx/include/msw-2.5" 
   C_PREPROC = -D_X86_=1 -DWIN32 -D_WIN32 -DWINVER=0x0400 -D__WIN95__ -D__GNUWIN32__ -D__WIN32__ -DSTRICT -D__WXMSW__ -D__WINDOWS__ -D__WXDEBUG__ 
   CFLAGS = -pipe -DHAVE_CONFIG_H -D__SYSTRAY_DISABLED__ -g2 -O0 -frtti -fexceptions 
   RC_INCLUDE_DIRS = --include-dir "C:/MinGWStudio/Include" 
   RC_PREPROC = --define __WIN32__ --define __WIN95__ --define __GNUWIN32__ 
   RCFLAGS = 
   LIB_DIRS = -L"C:/MinGWStudio/Lib" 
-  LIBS = -lcryptopp -lcurld -lzd -lws2_32 -lwxmswd -lregexd -lpngd -ljpegd -lzlibd -ltiffd -lstdc++ -lgcc -lodbc32 -lwsock32 -lwinspool -lwinmm -lshell32 -lcomctl32 -lctl3d32 -lodbc32 -ladvapi32 -lodbc32 -lwsock32 -lopengl32 -lglu32 -lole32 -loleaut32 -luuid 
+  LIBS = -lcryptopp -lcurld -lzd -lws2_32 -lwx_msw_adv-2.5 -lwx_msw_core-2.5 -lwx_msw_html-2.5 -lwx_base-2.5 -lwx_base_net-2.5 -lwx_base_xml-2.5 -lwxexpat -lwxregex -lwxpng -lwxjpeg -lwxzlib -lwxtiff -lstdc++ -lgcc -lodbc32 -lwsock32 -lwinspool -lwinmm -lshell32 -lcomctl32 -lctl3d32 -lodbc32 -ladvapi32 -lodbc32 -lwsock32 -lopengl32 -lglu32 -lole32 -loleaut32 -luuid 
   LDFLAGS = -pipe  -Wl,--subsystem,windows -mwindows
 endif
 
@@ -32,14 +32,14 @@ ifeq ($(CFG),Release)
   OBJ_DIR = Release
   OUTPUT_DIR = Release
   TARGET = amule.exe
-  C_INCLUDE_DIRS = -I"C:/msys/1.0/home/fox/amule-dev-cvs/." -I"C:/MinGWStudio/Include" 
+  C_INCLUDE_DIRS = -I"C:/msys/1.0/home/fox/amule-dev-cvs/." -I"C:/MinGWStudio/Include" -I"C:/MinGWStudio/Lib/wx/include/msw-2.5" 
   C_PREPROC = -D_X86_=1 -DWIN32 -D_WIN32 -DWINVER=0x0400 -D__WIN95__ -D__GNUWIN32__ -D__WIN32__ -DSTRICT -D__WXMSW__ -D__WINDOWS__ 
   CFLAGS = -pipe -DHAVE_CONFIG_H -D__SYSTRAY_DISABLED__ -g0 -O2 -frtti -fexceptions 
   RC_INCLUDE_DIRS = --include-dir "C:/MinGWStudio/Include" 
   RC_PREPROC = --define __WIN32__ --define __WIN95__ --define __GNUWIN32__ 
   RCFLAGS = 
   LIB_DIRS = -L"C:/MinGWStudio/Lib" 
-  LIBS = -lcryptopp -lcurl -lz -lws2_32 -lwxmsw -lregex -lpng -ljpeg -lzlib -ltiff -lstdc++ -lgcc -lodbc32 -lwsock32 -lwinspool -lwinmm -lshell32 -lcomctl32 -lctl3d32 -lodbc32 -ladvapi32 -lodbc32 -lwsock32 -lopengl32 -lglu32 -lole32 -loleaut32 -luuid 
+  LIBS = -lcryptopp -lcurl -lz -lws2_32 -lwx_msw_adv-2.5 -lwx_msw_core-2.5 -lwx_msw_html-2.5 -lwx_base-2.5 -lwx_base_net-2.5 -lwx_base_xml-2.5 -lwxexpat -lwxregex -lwxpng -lwxjpeg -lwxzlib -lwxtiff -lstdc++ -lgcc -lodbc32 -lwsock32 -lwinspool -lwinmm -lshell32 -lcomctl32 -lctl3d32 -lodbc32 -ladvapi32 -lodbc32 -lwsock32 -lopengl32 -lglu32 -lole32 -loleaut32 -luuid 
   LDFLAGS = -pipe -s  -Wl,--subsystem,windows -mwindows
 endif
 
@@ -118,13 +118,13 @@ SRC_OBJS = \
   $(OBJ_DIR)/IPFilter.o	\
   $(OBJ_DIR)/MuleTextCtrl.o	\
   $(OBJ_DIR)/EMSocket.o	\
-  $(OBJ_DIR)/gsocket.o	\
   $(OBJ_DIR)/HTTPDownloadDlg.o	\
   $(OBJ_DIR)/KnownFile.o	\
   $(OBJ_DIR)/amuleDlg.o	\
   $(OBJ_DIR)/ECSocket.o	\
   $(OBJ_DIR)/SHA.o	\
-  $(OBJ_DIR)/SHAHashSet.o
+  $(OBJ_DIR)/SHAHashSet.o	\
+  $(OBJ_DIR)/AICHSyncThread.o
 
 RSRC_OBJS = \
   $(OBJ_DIR)/amule.res
@@ -478,13 +478,13 @@ src/otherfunctions.h
 	$(compile_source)
 
 $(OBJ_DIR)/FriendListCtrl.o: src/FriendListCtrl.cpp	\
+src/amule.h	\
 src/amuleDlg.h	\
 src/FriendListCtrl.h	\
 src/ClientDetailDialog.h	\
 src/AddFriend.h	\
 src/ClientList.h	\
 src/ChatWnd.h	\
-src/amule.h	\
 src/opcodes.h	\
 src/updownclient.h	\
 src/Friend.h	\
@@ -985,6 +985,7 @@ src/UDPSocket.h	\
 src/PartFile.h	\
 src/AddFileThread.h	\
 src/packets.h	\
+src/AICHSyncThread.h	\
 src/muuli_wdr.h	\
 src/amuleDlg.h	\
 src/SearchDlg.h	\
@@ -1027,7 +1028,8 @@ src/MuleTextCtrl.h
 	$(compile_source)
 
 $(OBJ_DIR)/otherfunctions.o: src/otherfunctions.cpp	\
-src/otherfunctions.h
+src/otherfunctions.h	\
+src/SHAHashSet.h
 	$(compile_source)
 
 $(OBJ_DIR)/packets.o: src/packets.cpp	\
@@ -1082,10 +1084,6 @@ $(OBJ_DIR)/EMSocket.o: src/EMSocket.cpp	\
 src/EMSocket.h	\
 src/packets.h	\
 src/GetTickCount.h
-	$(compile_source)
-
-$(OBJ_DIR)/gsocket.o: src/gsocket.c	\
-src/gsocket.h
 	$(compile_source)
 
 $(OBJ_DIR)/HTTPDownloadDlg.o: src/HTTPDownloadDlg.cpp	\
@@ -1174,5 +1172,20 @@ src/SHA.h	\
 src/updownclient.h	\
 src/DownloadQueue.h	\
 src/PartFile.h
+	$(compile_source)
+
+$(OBJ_DIR)/AICHSyncThread.o: src/AICHSyncThread.cpp	\
+src/AICHSyncThread.h	\
+src/SHAHashSet.h	\
+src/SafeFile.h	\
+src/KnownFile.h	\
+src/SHA.h	\
+src/amule.h	\
+src/amuleDlg.h	\
+src/SharedFileList.h	\
+src/KnownFileList.h	\
+src/Preferences.h	\
+src/SharedFilesWnd.h	\
+src/SharedFilesCtrl.h
 	$(compile_source)
 
