@@ -247,15 +247,17 @@ public:
 	uint8		GetSecureIdentState() {
 		if (m_SecureIdentState != IS_UNAVAILABLE) {
 			if (!SecIdentSupRec) {
-				printf("\nWrong Tags on SecIdentState packet!!\n");
-				printf("%s\n",unicode2char(GetClientFullInfo()));
-				printf("User Disconnected.\n");			
-			
-				// Kry - This assert is a fucking BIG PROBLEM!
-				// This means m_SecureIdentState != IS_UNAVAILABLE
-				// and no secure ident packet received or requested.
-				// That means - Mem Corruption.			
-				wxASSERT(SecIdentSupRec);			
+				// This can be caused by a 0.30x based client which sends the old
+				// style Hello packet, and the mule info packet, but between them they
+				// send a secure ident state packet (after a hello but before we have 
+				// the SUI capabilities). This is a misbehaving client, and somehow I
+				// Feel like ti should be dropped. But then again, it won't harm to use
+				// this SUI state if they are reporting no SUI (won't be used) and if 
+				// they report using SUI on the mule info packet, it's ok to use it.
+				
+				AddDebugLogLineM(false, wxT("A client sent secure ident state before telling us the SUI capabilities"));
+				AddDebugLogLineM(false, wxT("Client info: ") + GetClientFullInfo());
+				AddDebugLogLineM(false, wxT("This client won't be disconnected, but it should be. :P"));
 			}
 		}
 		
