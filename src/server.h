@@ -78,7 +78,7 @@ public:
 	uint32	GetFailedCount()	const	{return failedcount;} 
 	void	SetID(uint32 newip);
 	const wxString&	GetDynIP()			const	{return dynip;}
-	bool	HasDynIP()			const		{return dynip;}
+	bool	HasDynIP()			const		{return dynip.Length();}
 	void	SetDynIP(const wxString& newdynip);
 	uint32	GetLastPinged()	const			{return lastpinged;}
 	void	SetLastPinged(uint32 in_lastpinged)			{lastpinged = in_lastpinged;}
