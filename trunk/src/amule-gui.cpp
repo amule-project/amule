@@ -170,7 +170,9 @@ bool CamuleGuiApp::OnInit()
 	// Kry - I love to init the vars on init, even before timer.
 	mytimer = new MyTimer();
 	
-	CamuleApp::OnInit();
+	if ( !CamuleApp::OnInit() ) {
+		return false;
+	}
 	
 	// Create the Core timer
 	core_timer=new wxTimer(this,ID_CORETIMER);
