@@ -207,9 +207,11 @@ off_t CMemFile::Read(void* buf, off_t length) const
 
 size_t CMemFile::Write(const void* buf, size_t length)
 {
-	if ( length == 0 )
-		return 0;
+	wxASSERT(buf);
 	
+	if ( length == 0 || buf == NULL)
+		return 0;
+
 	// Needs more space?
 	if (m_position + length > m_BufferSize) {
 		enlargeBuffer(m_position + length);
