@@ -232,7 +232,7 @@ protected:
 	ArrayOfCTag taglist;
 	wxString m_strFilePath;	
 	CAICHHashSet*			m_pAICHHashSet;
-private:
+
 	void	CreateHashFromInput(CFile* file, uint32 Length, uchar* Output, uchar* in_string, CAICHHashTree* pShaHashOut) const;
 	bool	m_bCommentLoaded;
 	uint16	m_iPartCount;
