@@ -31,7 +31,6 @@
 #include "pixmaps/mule_Tr_yellow.ico.xpm"
 #include "pixmaps/mule_Tr_grey.ico.xpm"
 #endif // __SYSTRAY_DISABLED__
-#include "UDPSocket.h"		// Needed for CUDPSocket
 #include "amuleDlg.h"		// Interface declarations.
 #include "otherfunctions.h"	// Needed for CastItoIShort
 #include "ED2KLink.h"		// Needed for CED2KLink
@@ -65,19 +64,15 @@
 #include "amule.h"			// Needed for theApp
 #include "opcodes.h"		// Needed for TM_FINISHEDHASHING
 #include "muuli_wdr.h"		// Needed for ID_BUTTONSERVERS
-#include "ServerSocket.h"	// Needed for ID_SOKETTI
 
 #if defined(__WXGTK__) || defined(__WXMOTIF__) || defined(__WXMAC__) || defined(__WXMGL__) || defined(__WXX11__)
 #include "aMule.xpm"
 #endif
 
 #define ID_UQTIMER 59742
-#define TM_DNSDONE 17851
-#define TM_SOURCESDNSDONE 17869
 
 BEGIN_EVENT_TABLE(CamuleDlg, wxFrame)
-	EVT_SOCKET(ID_SOKETTI, CamuleDlg::socketHandler)
-	
+
 	EVT_TOOL(ID_BUTTONSERVERS, CamuleDlg::OnToolBarButton)
 	EVT_TOOL(ID_BUTTONSEARCH, CamuleDlg::OnToolBarButton)
 	EVT_TOOL(ID_BUTTONTRANSFER, CamuleDlg::OnToolBarButton)
@@ -93,31 +88,12 @@ BEGIN_EVENT_TABLE(CamuleDlg, wxFrame)
 	EVT_TIMER(TM_TCPSOCKET, CamuleDlg::OnSocketTimer)
 	EVT_MENU(TM_FINISHEDHASHING, CamuleDlg::OnFinishedHashing)
 	EVT_MENU(TM_FILECOMPLETIONFINISHED, CamuleDlg::OnFinishedCompletion)
-	EVT_MENU(TM_DNSDONE, CamuleDlg::OnDnsDone)
-	EVT_MENU(TM_SOURCESDNSDONE, CamuleDlg::OnSourcesDnsDone)
 	EVT_CLOSE(CamuleDlg::OnClose)
 	EVT_ICONIZE(CamuleDlg::OnMinimize)
 	EVT_MENU(TM_HASHTHREADFINISHED, CamuleDlg::OnHashingShutdown)
 	EVT_BUTTON(ID_BUTTON_FAST, CamuleDlg::OnBnClickedFast)
 	EVT_BUTTON(ID_PREFS_OK_TOP, CamuleDlg::OnBnClickedPrefOk)
 END_EVENT_TABLE()
-
-
-
-void CamuleDlg::OnDnsDone(wxCommandEvent& evt)
-{
-	CUDPSocket* socket=(CUDPSocket*)evt.GetClientData();
-	struct sockaddr_in *si=(struct sockaddr_in*)evt.GetExtraLong();
-	socket->DnsLookupDone(si);
-}
-
-
-void CamuleDlg::OnSourcesDnsDone(wxCommandEvent& evt)
-{
-	struct sockaddr_in *si=(struct sockaddr_in*)evt.GetExtraLong();
-	theApp.downloadqueue->OnHostnameResolved(si);
-}
-
 
 void CamuleDlg::OnFinishedHashing(wxCommandEvent& evt)
 {
@@ -408,103 +384,6 @@ void CamuleDlg::OnPrefButton(wxCommandEvent& WXUNUSED(ev))
 		prefsunifiedwnd->ShowModal();
 	}
 }
-
-
-void CamuleDlg::socketHandler(wxSocketEvent& event)
-{
-	wxSocketBase * current_socket = event.GetSocket();
-	
-	if(!IsRunning() || !current_socket) {
-		// we are not mentally ready to receive anything
-		// or there is no socket on the event (got deleted?)
-		return;
-	}
-
-	if(current_socket->IsKindOf(CLASSINFO(CListenSocket))) {
-		CListenSocket* soc=(CListenSocket*)current_socket;
-		switch(event.GetSocketEvent()) {
-			case wxSOCKET_CONNECTION:
-				soc->OnAccept(0);
-				break;
-			default:
-				// shouldn't get other than connection events...
-				break;
-		}
-		return;
-	}
-
-	if(current_socket->IsKindOf(CLASSINFO(CClientReqSocket))) {
-		CClientReqSocket* soc=(CClientReqSocket*)current_socket;
-		//printf("request at clientreqsocket\n");
-		switch(event.GetSocketEvent()) {
-			case wxSOCKET_LOST:
-				soc->OnError(errno);
-				break;
-			case wxSOCKET_INPUT:
-				soc->OnReceive(0);
-				break;
-			case wxSOCKET_OUTPUT:
-				soc->OnSend(0);
-				break;
-			default:
-				// connection requests should not arrive here..
-				break;
-		}
-		return;
-	}
-
-	if(current_socket->IsKindOf(CLASSINFO(CUDPSocket))) {
-		CUDPSocket* soc=(CUDPSocket*)current_socket;
-		switch(event.GetSocketEvent()) {
-			case wxSOCKET_INPUT:
-				soc->OnReceive(0);
-				break;
-			default:
-				break;
-		}
-		return;
-	}
-
-	if(current_socket->IsKindOf(CLASSINFO(CServerSocket))) {
-		CServerSocket* soc=(CServerSocket*)current_socket;
-		switch(event.GetSocketEvent()) {
-			case wxSOCKET_CONNECTION:
-				soc->OnConnect(wxSOCKET_NOERROR);
-				break;
-			case wxSOCKET_LOST:
-				soc->OnError(soc->LastError());
-				break;
-			case wxSOCKET_INPUT:
-				soc->OnReceive(wxSOCKET_NOERROR);
-				break;
-			case wxSOCKET_OUTPUT:
-				soc->OnSend(wxSOCKET_NOERROR);
-				break;
-			default:
-				break;
-		}
-		return;
-	}
-
-	if(current_socket->IsKindOf(CLASSINFO(CClientUDPSocket))) {
-		CClientUDPSocket* soc=(CClientUDPSocket*)current_socket;
-		switch(event.GetSocketEvent()) {
-			case wxSOCKET_INPUT:
-				soc->OnReceive(0);
-				break;
-			case wxSOCKET_OUTPUT:
-				soc->OnSend(0);
-				break;
-			default:
-				break;
-		}
-		return;
-	}
-
-	printf("*** SHOULD NOT END UP HERE\n");
-	printf("** class is %s\n", current_socket->GetClassInfo()->GetClassName());
-}
-
 
 CamuleDlg::~CamuleDlg()
 {

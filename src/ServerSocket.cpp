@@ -75,7 +75,7 @@ CServerSocket::CServerSocket(CServerConnect* in_serverconnect)
 	cur_server = 0;
 	info="";
 	m_bIsDeleting = false;
-	SetEventHandler(*theApp.amuledlg,ID_SOKETTI);
+	SetEventHandler(theApp,SERVERSOCKET_HANDLER);
 	SetNotify(wxSOCKET_CONNECTION_FLAG|wxSOCKET_INPUT_FLAG|wxSOCKET_OUTPUT_FLAG|wxSOCKET_LOST_FLAG);
 	Notify(TRUE);
 	m_dwLastTransmission = 0;	

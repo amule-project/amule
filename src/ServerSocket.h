@@ -28,10 +28,6 @@
 
 class CServer;
 
-#ifndef ID_SOKETTI
-#define ID_SOKETTI 7772
-#endif
-
 class CServerSocket : public CEMSocket
 {
   DECLARE_DYNAMIC_CLASS(CServerSocket)

@@ -52,8 +52,6 @@ class CSysTray;
 #define MP_EXIT			4004
 
 #define ID_UQTIMER		59742
-#define TM_DNSDONE		17851
-#define TM_SOURCESDNSDONE	17869
 #define TM_TCPSOCKET	4333
 // Kry - Not used??
 #define TM_UDPSOCKET	4322
@@ -125,7 +123,7 @@ public:
 	int					srv_split_pos;
 
 protected:
-	void socketHandler(wxSocketEvent& event);
+
 	void OnUQTimer(wxTimerEvent& evt);
 	void OnUDPTimer(wxTimerEvent& evt);
 	void OnSocketTimer(wxTimerEvent& evt);
@@ -135,8 +133,6 @@ protected:
 	void OnBnClickedPrefOk(wxCommandEvent &event);
 	void OnFinishedHashing(wxCommandEvent& evt);
 	void OnFinishedCompletion(wxCommandEvent& evt);
-	void OnDnsDone(wxCommandEvent& evt);
-	void OnSourcesDnsDone(wxCommandEvent& evt);
 	void OnMinimize(wxIconizeEvent& evt);
 	void OnHashingShutdown(wxCommandEvent&);
 	void OnBnClickedFast(wxCommandEvent& evt);

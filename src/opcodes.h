@@ -34,7 +34,19 @@
 #define    SEC2MS(sec)             ((sec)*1000)
 #define    MIN2MS(min)             SEC2MS((min)*60)
 
+// socket handlers
 
+#define LISTENSOCKET_HANDLER 			wxID_HIGHEST+123 // random safe ID
+#define CLIENTREQSOCKET_HANDLER		wxID_HIGHEST+124 
+#define UDPSOCKET_HANDLER				wxID_HIGHEST+125
+#define SERVERSOCKET_HANDLER			wxID_HIGHEST+126
+#define CLIENTUDPSOCKET_HANDLER		wxID_HIGHEST+127
+
+// Custom Events
+
+#define ID_UQTIMER 							wxID_HIGHEST + 128
+#define TM_DNSDONE 						wxID_HIGHEST + 129
+#define TM_SOURCESDNSDONE 			wxID_HIGHEST + 130
 
 
 // MOD Note: Do not change this part - Merkur

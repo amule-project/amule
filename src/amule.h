@@ -24,6 +24,8 @@
 #include <wx/app.h>			// Needed for wxApp
 #include <wx/intl.h>		// Needed for wxLocale
 #include <wx/string.h>		// Needed for wxString
+#include <wx/event.h>	
+#include <wx/socket.h>
 
 #include "CTypedPtrList.h"
 #include "types.h"			// Needed for int32, uint16 and uint64
@@ -133,10 +135,23 @@ public:
 	CIPFilter*			ipfilter;
 
 protected:
+	// Socket handlers
+	void ListenSocketHandler(wxSocketEvent& event);
+	void ClientReqSocketHandler(wxSocketEvent& event);
+	void UDPSocketHandler(wxSocketEvent& event);
+	void ServerSocketHandler(wxSocketEvent& event);
+	void ClientUDPSocketHandler(wxSocketEvent& event);
+
+
+	void OnDnsDone(wxCommandEvent& evt);
+	void OnSourcesDnsDone(wxCommandEvent& evt);
+
+
 	void 			SetTimeOnTransfer();
 	wxCriticalSection m_LogQueueLock;
 	CList<QueuedLogLine>	QueuedAddLogLines;
 	wxLocale		m_locale;
+	DECLARE_EVENT_TABLE()
 };
 
 DECLARE_APP(CamuleApp)
