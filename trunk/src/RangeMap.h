@@ -562,7 +562,7 @@ private:
 	RangeIterator resize( uint32 start, uint32 end, RangeIterator it ) {
 		VALUE item( it->second.second );
 
-		m_ranges.erase( it-- );
+		m_ranges.erase( it++ );
 
 		return m_ranges.insert( it, RangePair( start, RangeItems( end, item ) ) );		
 	}
