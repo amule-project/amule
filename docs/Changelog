@@ -49,6 +49,7 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		  and CServerSocketHandler.
 		* In StateMachine.cpp, m_state is now private and state machine code 
 		  is now thread safe.
+		* Added base64 encoding/decoding support to aMule.
 		
 	Ken:
 		* Fixed Mac bug: window was a little larger each restart
