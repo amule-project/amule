@@ -345,11 +345,20 @@ void CamuleGuiApp::UDPSocketHandler(wxSocketEvent& event)
 {
 	wxASSERT(event.GetSocket()->IsKindOf(CLASSINFO(CUDPSocket)));
 	CUDPSocket * socket = (CUDPSocket*) event.GetSocket();
-	if(!IsReady || !socket) {
-		// we are not mentally ready to receive anything
-		// or there is no socket on the event (got deleted?)
+	
+	if(!socket) {
+		// This should never happen, anyway, there is nothing to do.
+		wxASSERT(0);
 		return;
 	}
+
+	if (!IsReady) {
+		// Even if we are not ready to start listening, we must
+		// flush the buffer
+		socket->ReceiveAndDiscard();
+		return;
+	}	
+	
 	switch(event.GetSocketEvent()) {
 		case wxSOCKET_INPUT:
 			socket->OnReceive(0);
@@ -364,11 +373,20 @@ void CamuleGuiApp::ClientUDPSocketHandler(wxSocketEvent& event) {
 
 	wxASSERT(event.GetSocket()->IsKindOf(CLASSINFO(CClientUDPSocket)));
 	CClientUDPSocket * socket = (CClientUDPSocket*) event.GetSocket();
-	if(!IsReady || !socket) {
-		// we are not mentally ready to receive anything
-		// or there is no socket on the event (got deleted?)
+
+	if(!socket) {
+		// This should never happen, anyway, there is nothing to do.
+		wxASSERT(0);
 		return;
 	}
+
+	if (!IsReady) {
+		// Even if we are not ready to start listening, we must
+		// flush the buffer
+		socket->ReceiveAndDiscard();
+		return;
+	}	
+
 	switch(event.GetSocketEvent()) {
 		case wxSOCKET_INPUT:
 			socket->OnReceive(0);
@@ -825,4 +843,3 @@ void CamuleGuiApp::AddServerMessageLine(wxString &msg)
 	amuledlg->AddServerMessageLine(msg);
 	CamuleApp::AddServerMessageLine(msg);
 }
-

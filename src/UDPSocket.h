@@ -76,6 +76,7 @@ protected:
 	
  public:
 	virtual void OnReceive(int nErrorCode);
+ 	void ReceiveAndDiscard();
 private:
 	LPCTSTR m_lpszHostAddress;
 	unsigned int m_nHostPort;

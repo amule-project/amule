@@ -148,13 +148,13 @@ CUDPSocket::~CUDPSocket(){
 	//m_udpwnd.DestroyWindow();
 }
 
+#define SERVER_UDP_BUFFER_SIZE 5000
+
 void CUDPSocket::OnReceive(int WXUNUSED(nErrorCode)) {
-	char buffer[5000];
-	wxString serverbuffer;
-	//uint32 port;
+	char buffer[SERVER_UDP_BUFFER_SIZE];
+
 	wxIPV4address addr;
-	//wxUint32 length = ReceiveFrom(buffer,5000,serverbuffer,port);
-	RecvFrom(addr,buffer,5000);
+	RecvFrom(addr,buffer,SERVER_UDP_BUFFER_SIZE);
 	wxUint32 length = LastCount();
 	// strip IP address from wxSockAddress (do not call Hostname(). we do not want DNS)
 
@@ -164,6 +164,15 @@ void CUDPSocket::OnReceive(int WXUNUSED(nErrorCode)) {
 		theApp.downloadqueue->AddDownDataOverheadOther(length-2);
 	  //ProcessExtPacket(buffer+2,length-2,buffer[1],addr.IPAddress(),addr.Service()); 
 }
+
+
+void CUDPSocket::ReceiveAndDiscard() {
+	char buffer[SERVER_UDP_BUFFER_SIZE];
+	
+	wxIPV4address addr;
+	RecvFrom(addr,buffer,SERVER_UDP_BUFFER_SIZE);
+	// And just discard it :)	
+};
 
 bool CUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, const wxString& host, uint16 port){
 	try{

@@ -81,12 +81,13 @@ CClientUDPSocket::~CClientUDPSocket()
 	Notify(FALSE);
 }
 
+#define CLIENT_UDP_BUFFER_SIZE 5000
+
 void CClientUDPSocket::OnReceive(int WXUNUSED(nErrorCode))
 {
-	char buffer[5000];
-	wxString serverbuffer;
+	char buffer[CLIENT_UDP_BUFFER_SIZE];
 	wxIPV4address addr;
-	RecvFrom(addr,buffer,5000);
+	RecvFrom(addr,buffer,CLIENT_UDP_BUFFER_SIZE);
 	wxUint32 length = LastCount();
 
 	if (buffer[0] == (char)OP_EMULEPROT && length != static_cast<wxUint32>(-1)) {
@@ -94,6 +95,13 @@ void CClientUDPSocket::OnReceive(int WXUNUSED(nErrorCode))
 	}
 }
 
+void CClientUDPSocket::ReceiveAndDiscard() {
+	
+	char buffer[CLIENT_UDP_BUFFER_SIZE];
+	wxIPV4address addr;
+	RecvFrom(addr,buffer,CLIENT_UDP_BUFFER_SIZE);	
+	// And the discard.
+}
 
 bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, uint32 host, uint16 port)
 {
