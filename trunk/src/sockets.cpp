@@ -129,7 +129,7 @@ void CServerConnect::ConnectToServer(CServer* server, bool multiconnect){
 	singleconnecting = !multiconnect;
 
 	CServerSocket* newsocket = new CServerSocket(this);
-	m_lstOpenSockets.AddTail((void*&)newsocket);
+	m_lstOpenSockets.AddTail(newsocket);
 	newsocket->ConnectToServer(server);
 
 	DWORD x=GetTickCount();
@@ -150,7 +150,7 @@ void CServerConnect::StopConnectionTry(){
 	// close all currenty opened sockets except the one which is connected to our current server
 	for( POSITION pos = m_lstOpenSockets.GetHeadPosition(); pos != NULL; )
 	{
-		CServerSocket* pSck = (CServerSocket*)m_lstOpenSockets.GetNext(pos);
+		CServerSocket* pSck = m_lstOpenSockets.GetNext(pos);
 		if (pSck == connectedsocket)		// don't destroy socket which is connected to server
 			continue;
 		if (pSck->m_bIsDeleting == false)	// don't destroy socket if it is going to destroy itself later on

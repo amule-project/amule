@@ -97,7 +97,7 @@ private:
 	CServerSocket*	connectedsocket;
 	CServerList*	used_list;
 	CUDPSocket*		udpsocket;
-	CTypedPtrList<CPtrList,void*>		m_lstOpenSockets;	// list of currently opened sockets
+	CTypedPtrList<CPtrList, CServerSocket*>		m_lstOpenSockets;	// list of currently opened sockets
 	//unsigned int		m_idRetryTimer;
 	wxTimer m_idRetryTimer;
 	uint32	m_nLocalIP;
