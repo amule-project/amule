@@ -3571,7 +3571,7 @@ bool CPartFile::RemoveSource(CUpDownClient* toremove, bool updatewindow, bool bD
 {
 	wxASSERT( toremove );
 
-	theApp.downloadqueue->RemoveSource( toremove, updatewindow, bDoStatsUpdate );
+	bool result = theApp.downloadqueue->RemoveSource( toremove, updatewindow, bDoStatsUpdate );
 
 	// Check if the client should be deleted, but not if the client is already dying
 	if ( !toremove->GetSocket() && !toremove->HasBeenDeleted() ) {
@@ -3580,6 +3580,7 @@ bool CPartFile::RemoveSource(CUpDownClient* toremove, bool updatewindow, bool bD
 		}
 	}
 
+	return result;
 }
 
 /* Razor 1a - Modif by MikaelB
