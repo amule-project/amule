@@ -156,17 +156,13 @@ void CServerSocket::OnReceive(wxSocketError nErrorCode)
 		serverconnect->DestroySocket(this);
 		return;
 	}
-	if (nErrorCode==wxSOCKET_NOERROR) {
-		CEMSocket::OnReceive(0);
-	} else {
-		CEMSocket::OnReceive((int)nErrorCode);
-	}
+	CEMSocket::OnReceive((int)nErrorCode);
 	m_dwLastTransmission = GetTickCount();
 }
 
 bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 {
-	try{
+	try {
 		#ifdef SERVER_NET_TEST
 		AddLogLineM(true,_("Processing Server Packet: "));
 		#endif
@@ -504,9 +500,12 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				;
 		}
 		return true;
-	}
-	catch(wxString error) {
+	} catch (wxString error) {
 		AddLogLineM(false,_("Unhandled error while processing packet from server - ") + error);
+		SetConnectionState(CS_DISCONNECTED);
+		return false;
+	} catch (...) {
+		AddLogLineM(false, _("Unknown exception while processing packet from server!"));
 		SetConnectionState(CS_DISCONNECTED);
 		return false;
 	}
@@ -546,26 +545,14 @@ bool CServerSocket::PacketReceived(Packet* packet)
 	#endif
 	try {
 		if (packet->GetProtocol() == OP_PACKEDPROT) {
-			#ifdef SERVER_NET_TEST
-			AddLogLineM(true,_("Compressed packet, uncompressing... "));
-			#endif
 			if (!packet->UnPackPacket(250000)){
-				#ifdef SERVER_NET_TEST
-				AddLogLineM(true,_("FAILED\n"));
-				#endif
 				AddDebugLogLineM(false, wxString::Format(_("Failed to decompress server TCP packet: protocol=0x%02x  opcode=0x%02x  size=%u"), packet ? packet->GetProtocol() : 0, packet ? packet->GetOpCode() : 0, packet ? packet->GetPacketSize() : 0));
 				theApp.downloadqueue->AddDownDataOverheadServer(packet->GetPacketSize());
 				return true;
 			}
-			#ifdef SERVER_NET_TEST
-			AddLogLineM(true,_("SUCCESS\n"));
-			#endif
 			packet->SetProtocol(OP_EDONKEYPROT);
 		}
 		if (packet->GetProtocol() == OP_EDONKEYPROT) {
-			#ifdef SERVER_NET_TEST
-			AddLogLineM(true,_("Uncompressed packet\n"));
-			#endif			
 			ProcessPacket(packet->GetDataBuffer(), packet->GetPacketSize(), packet->GetOpCode());
 		} else {
 			AddDebugLogLineM(false, wxString::Format(_("Received server TCP packet with unknown protocol: protocol=0x%02x  opcode=0x%02x  size=%u"), packet ? packet->GetProtocol() : 0, packet ? packet->GetOpCode() : 0, packet ? packet->GetPacketSize() : 0));
