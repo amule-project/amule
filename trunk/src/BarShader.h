@@ -25,8 +25,7 @@
 #endif
 
 #include "types.h"		// Needed for uint16 and uint32
-
-#include <list>
+#include "RangeMap.h"	// Needed for CRangeMap
 
 
 class wxRect;
@@ -79,40 +78,15 @@ public:
 	 *
 	 * Changes the height of the bar, used when it is drawn.
 	 */
-	void SetHeight( int height ) {
-		if( m_Height != height ) {
-			m_Height = height;
+	void SetHeight( int height );
 
-			// Reset the modifers
-			if ( m_Modifiers ) {
-				delete[] m_Modifiers;
-				m_Modifiers = NULL;
-			}
-		}
-	}
-	
+
 	/**
 	 * Sets the 3D-depth of the bar
 	 *
 	 * @param depth A value in the range from 1 to 5.
 	 */
-	void Set3dDepth( int depth ) {
-		if ( depth < 1 ) {
-			depth = 1;
-		} else if ( depth > 5 ) {
-			depth = 5;
-		}
-	
-		if ( m_used3dlevel != depth ) {
-			m_used3dlevel = depth;
-	
-			// Reset the modifers
-			if ( m_Modifiers ) {
-				delete[] m_Modifiers;
-				m_Modifiers = NULL;
-			}
-		}
-	}
+	void Set3dDepth( int depth );
 
 	
 	/**
@@ -161,9 +135,7 @@ public:
 	 * present and therefore, they might end up pointing past current
 	 * filesize if the size if smaller than before.
 	 */
-	void SetFileSize(uint32 fileSize) {
-		m_FileSize = fileSize;
-	}
+	void SetFileSize(uint32 fileSize);
 
 	/**
 	 * Fills in a range with a certain color.
@@ -225,36 +197,10 @@ private:
 	double* m_Modifiers;
 	//! The current 3d level 
 	uint16 m_used3dlevel;
-	
-	
-	/**
-	 * This structure is used to represent a span in a CBarShader.
-	 */
-	struct BarSpan
-	{
-		//! The start position of the span
-		uint32		start;
-		//! The end position of the span
-		uint32		end;
-		//! The color of the span. 
-		DWORD		color;
 
-		/**
-		 * Constructor.
-		 *
-		 * @param s The start position of the new span
-		 * @param e The end position of the new span
-		 * @param cr The color of the new span
-		 */
-		BarSpan(uint32 s, uint32 e, DWORD cr = 0)
-		 : start( s ),
-		   end( e ),
-		   color( cr )
-		{}
-	};
-
-	//! SpanList is defined as a std::list of BarSpans for the sake of readability.
-	typedef std::list<BarSpan> SpanList;
+	
+	//! SpanList is defined as a CRangeMap with DWORDs as range-data
+	typedef CRangeMap< DWORD > SpanList;
 	//! The list of spans. This list is kept sorted.
 	SpanList m_spanlist;
 };
