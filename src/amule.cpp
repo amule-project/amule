@@ -52,6 +52,7 @@
 	#include "config.h"		// Needed for HAVE_GETRLIMIT, HAVE_SETRLIMIT,
 					//   HAVE_SYS_RESOURCE_H, LOCALEDIR, PACKAGE, 
 					//   PACKAGE_STRING and VERSION
+#endif
 
 #ifdef __WXMAC__
 	#warning Kry? Get rid of this!
@@ -864,7 +865,7 @@ wxString CamuleApp::StripInvalidFilenameChars(const wxString& strText, bool bKee
 wxString CamuleApp::CreateED2kLink(const CAbstractFile *f)
 {
 	// Construct URL like this: ed2k://|file|<filename>|<size>|<hash>|/
-	wxString strURL	= wxT("ed2k://|file|") <<
+	wxString strURL	= wxString(wxT("ed2k://|file|")) <<
 		StripInvalidFilenameChars(f->GetFileName(), true) << wxT("|") <<
 		f->GetFileSize() << wxT("|") <<
 		EncodeBase16( f->GetFileHash(), 16 ) << wxT("|/");
