@@ -2644,7 +2644,7 @@ CFileImage::CFileImage(const char *name) : CAnyImage(0), m_name(char2unicode(nam
 		} else {
 			printf("CFileImage: file %s have zero length\n", unicode2char(m_name));
 		}
-		wxString ext = wxString(name).Right(3).MakeLower();
+		wxString ext = m_name.Right(3).MakeLower();
 		if ( ext == wxT("css") ) {
 			SetHttpType(wxT("text/css"));
 		} else {
@@ -2717,7 +2717,7 @@ unsigned char *CDynImage::RequestData(int &size)
 wxString CDynImage::GetHTML()
 {
 	// template contain %s (name) %d (width)
-	return wxString::Format(m_tmpl, unicode2char(m_name), m_width);
+	return wxString::Format(m_template, unicode2char(m_name), m_width);
 }
 
 #endif
@@ -2755,7 +2755,7 @@ CAnyImage *CImageLib::GetImage(wxString &name)
 		return img;
 	}
 	wxFileName filename(m_image_dir + name);
-	CFileImage *fimg = new CFileImage(filename.GetFullPath());
+	CFileImage *fimg = new CFileImage(unicode2char(filename.GetFullPath()));
 	if ( fimg->OpenOk() ) {
 		m_image_map[name] = fimg;
 		return fimg;
