@@ -147,6 +147,7 @@ amule_SOURCES = ListenSocket.cpp \
 	Preferences.cpp \
 	PrefsUnifiedDlg.cpp \
 	Preview.cpp \
+	Proxy.cpp \
 	SafeFile.cpp \
 	SearchDlg.cpp \
 	SearchList.cpp \
@@ -361,6 +362,7 @@ noinst_HEADERS = AddFileThread.h \
 		 Preferences.h \
 		 PrefsUnifiedDlg.h \
 		 Preview.h \
+		 Proxy.cpp \
 		 SafeFile.h \
 		 SearchDlg.h \
 		 SearchListCtrl.h \
@@ -393,3 +395,4 @@ noinst_HEADERS = AddFileThread.h \
 
 
 MAINTAINERCLEANFILES = Makefile.in
+
