@@ -25,6 +25,10 @@
 
 #include "CFile.h"		// Interface declarations.
 
+#ifdef __WXMAC__
+	#include "GuiEvents.h"
+#endif
+
 #include "amule.h"		// Needed for theApp
 
 #ifdef HAVE_CONFIG_H
@@ -223,6 +227,11 @@ bool CFile::Create(const wxChar *szFileName, bool bOverwrite, int accessMode)
 			(bOverwrite ? O_TRUNC : O_EXCL)
 			ACCESS(accessMode) );
 #endif
+	
+	#ifdef __WXMAC__
+		AddLogLineM(false,wxString(wxT("Created file ")) + *szFileName + wxString::Format(wxT(" with file descriptor %u"),fd));
+	#endif
+	
 	if ( fd == -1 ) {
 		wxLogSysError(_("can't create file '%s'"), szFileName);
 		return FALSE;
@@ -268,6 +277,11 @@ bool CFile::Open(const wxChar *szFileName, OpenMode mode, int accessMode)
     }
 
     int fd = wxOpen( szFileName, flags ACCESS(accessMode));
+    
+	#ifdef __WXMAC__
+		AddLogLineM(false,wxString(wxT("Opened file ")) + *szFileName + wxString::Format(wxT(" with file descriptor %u"),fd));
+	#endif
+    
     if ( fd == -1 )
     {
     	AddLogLineM(true, wxString::Format(_("Can't open file '%s'"), szFileName));
@@ -282,7 +296,12 @@ bool CFile::Open(const wxChar *szFileName, OpenMode mode, int accessMode)
 // close
 bool CFile::Close() const
 {
-    if ( IsOpened() ) {
+
+	#ifdef __WXMAC__
+		AddLogLineM(false,wxString(wxT("Closing file ")) + fFilePath + wxString::Format(wxT(" with file descriptor %u"),fd));
+	#endif
+
+	if ( IsOpened() ) {
         if ( close(m_fd) == -1 ) {
             wxLogSysError(_("can't close file descriptor %d"), m_fd);
             m_fd = fd_invalid;
