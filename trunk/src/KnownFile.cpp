@@ -134,18 +134,14 @@ CKnownFile::~CKnownFile(){
 }
 
 void CKnownFile::AddUploadingClient(CUpDownClient* client){
-	if ( m_ClientUploadList.find(client) != m_ClientUploadList.end() ) {
-		m_ClientUploadList.insert(client);
-	}
+	m_ClientUploadList.insert(client);
 }
 
 
 
 
 void CKnownFile::RemoveUploadingClient(CUpDownClient* client){
-	if ( m_ClientUploadList.find(client) != m_ClientUploadList.end() ) {
-		m_ClientUploadList.erase(client);
-	}
+	m_ClientUploadList.erase(client);
 }
 
 void CKnownFile::SetFilePath(const wxString& strFilePath)
