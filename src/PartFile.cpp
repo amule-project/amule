@@ -1141,7 +1141,7 @@ void CPartFile::LoadSourceSeeds() {
 
 void CPartFile::PartFileHashFinished(CKnownFile* result)
 {
-
+	date = result->date;
 	newdate = true;
 	bool errorfound = false;
 	if (GetED2KPartHashCount() == 0){
