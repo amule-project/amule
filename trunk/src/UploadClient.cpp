@@ -260,7 +260,7 @@ bool CUpDownClient::CreateNextBlockPackage(){
 	}
 	CFile file;
 	byte* filedata = 0;
-	char* fullname = 0;
+	wxString fullname = wxEmptyString;
 	try{
 		while (!m_BlockRequests_queue.IsEmpty()){
 			Requested_Block_Struct* currentblock = m_BlockRequests_queue.GetHead();
@@ -269,12 +269,10 @@ bool CUpDownClient::CreateNextBlockPackage(){
 				throw wxString(wxT("requested file not found"));
 
 			if (srcfile->IsPartFile() && ((CPartFile*)srcfile)->GetStatus() != PS_COMPLETE){
-				fullname = nstrdup(unicode2char(((CPartFile*)srcfile)->GetFullName()));
-				fullname[strlen(fullname)-4] = 0;			
-			}
-			else{
-				fullname = new char[strlen(unicode2char(srcfile->GetFilePath()))+strlen(unicode2char(srcfile->GetFileName()))+10];
-				sprintf(fullname,"%s/%s",unicode2char(srcfile->GetFilePath()),unicode2char(srcfile->GetFileName()));
+				fullname = ((CPartFile*)srcfile)->GetFullName();
+				fullname.Truncate(fullname.Length()-4);
+			} else{
+				fullname = srcfile->GetFilePath() + wxT("/")  + srcfile->GetFileName();
 			}
 		
 			uint32 togo;
@@ -293,8 +291,6 @@ bool CUpDownClient::CreateNextBlockPackage(){
 			if (!srcfile->IsPartFile()){
 			  if (!file.Open(fullname,CFile::read)) //CFile::modeRead|CFile::osSequentialScan|CFile::shareDenyNone))
 					throw wxString(wxT("Failed to open requested file"));
-				delete[] fullname;
-				fullname = 0;
 				file.Seek(currentblock->StartOffset);
 				
 				filedata = new byte[togo+500];
@@ -306,8 +302,6 @@ bool CUpDownClient::CreateNextBlockPackage(){
 			}
 			else{
 				CPartFile* partfile = (CPartFile*)srcfile;
-				delete[] fullname;
-				fullname = 0;
 				partfile->m_hpartfile.Seek(currentblock->StartOffset);
 				
 				filedata = new byte[togo+500];
@@ -337,8 +331,6 @@ bool CUpDownClient::CreateNextBlockPackage(){
 		theApp.uploadqueue->RemoveFromUploadQueue(this);
 		if (filedata)
 			delete[] filedata;
-		if (fullname)
-			delete[] fullname;
 		return false;
 	}
 	//AddDebugLogLine(false,"Debug: Packet done. Size: %i",blockpack->GetLength());

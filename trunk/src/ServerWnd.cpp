@@ -120,9 +120,9 @@ void CServerWnd::OnBnClickedAddserver(wxCommandEvent& WXUNUSED(evt))
 	wxString servername;
 	servername=((wxTextCtrl*)FindWindowById(IDC_SERVERNAME))->GetLineText(0);
 	if (!servername.IsEmpty()) {
-		toadd->SetListName((char*)servername.GetData());
+		toadd->SetListName(servername);
 	} else {
-		toadd->SetListName((char*)serveraddr.GetData());
+		toadd->SetListName(serveraddr);
 	}
 	if (!serverlistctrl->AddServer(toadd,true)) {
 		CServer* update = theApp.serverlist->GetServerByAddress(toadd->GetAddress(), toadd->GetPort());

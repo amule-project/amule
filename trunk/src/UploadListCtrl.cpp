@@ -488,7 +488,7 @@ void CUploadListCtrl::OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxRe
 							break;
 						case US_UPLOADING:
 							// lagloose
-							Sbuffer = "<-- ";
+							Sbuffer = wxT("<-- ");
 							Sbuffer.Append(_("Transferring"));
 							if (client->GetDownloadState() == DS_DOWNLOADING) {
 								Sbuffer.Append(wxT(" -->"));
