@@ -195,7 +195,7 @@ void CSearchDlg::OnBnClickedStarts(wxCommandEvent& WXUNUSED(evt))
 
 		// Web Search (Jugle.net)
 		case 3:
-    		theApp.amuledlg->LaunchUrl(theApp.amuledlg->GenWebSearchUrl(searchString, CamuleDlg::wsFileHash));
+    		theApp.amuledlg->LaunchUrl(theApp.amuledlg->GenWebSearchUrl(searchString, CamuleDlg::wsJugle));
 			break;
 
 		// Error
