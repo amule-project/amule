@@ -25,10 +25,11 @@
  */
 
 #ifndef __EXTERNALCONNECTOR_H__
-
 #define __EXTERNALCONNECTOR_H__
 
-#pragma interface
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma interface "ExternalConnector.h"
+#endif
 
 #include <wx/app.h>		// For wxApp and mainly, for wxUSE_GUI
 #include <wx/cmdline.h>		// For wxCmdLineEntryDesc

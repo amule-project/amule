@@ -27,7 +27,9 @@
 #endif
 
 //-------------------------------------------------------------------
-#pragma implementation
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma implementation "TextClient.h"
+#endif
 #include "TextClient.h"
 //-------------------------------------------------------------------
 

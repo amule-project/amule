@@ -28,7 +28,9 @@
 #include "StringFunctions.h"	// Needed for aMuleConvToUTF8
 #include "ECcodes.h"	// Needed for EC types
 
-#pragma interface
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma interface "ECPacket.h"
+#endif
 
 // Define this to keep partial packets
 // (those that had an error upon reception/creation)

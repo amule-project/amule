@@ -22,7 +22,9 @@
 
 //-------------------------------------------------------------------
 
-#pragma implementation
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma implementation "ExternalConnector.h"
+#endif
 #include "ExternalConnector.h"
 
 //-------------------------------------------------------------------

@@ -21,7 +21,9 @@
 #ifndef TEXTCLIENT_H
 #define TEXTCLIENT_H
 
-#pragma interface
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma interface "TextClient.h"
+#endif
 
 #ifndef WIN32
 	#include "config.h"

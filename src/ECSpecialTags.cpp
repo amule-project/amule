@@ -19,7 +19,9 @@
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#pragma implementation
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma implementation "ECSpecialTags.h"
+#endif
 
 #include "ECPacket.h"		// Needed for CECTag
 #include "ECcodes.h"		// Needed for TAGnames

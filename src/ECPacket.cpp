@@ -16,7 +16,9 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#pragma implementation
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma implementation "ECPacket.h"
+#endif
 
 #include "ECPacket.h"	// Needed for ECTag, ECPacket
 #include "ECSocket.h"	// Needed for ECSocket

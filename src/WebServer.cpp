@@ -31,7 +31,9 @@
 #include <stdlib.h>
 #include <math.h> // Needed for cos, M_PI
 
-#pragma implementation
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma implementation "WebServer.h"
+#endif
 #include "WebServer.h"
 
 //-------------------------------------------------------------------
