@@ -787,8 +787,12 @@ void CamuleGuiApp::NotifyEvent(GUIEvent event)
 			break;
 		case SEARCH_UPDATE_PROGRESS:
 			if ( amuledlg->searchwnd ) {
-				if ( event.long_value == 0xffff && !amuledlg->searchwnd->IsGlobalSearch() ) {
-					amuledlg->searchwnd->ResetControls();
+				if ( event.long_value == 0xffff ) {
+					if (amuledlg->searchwnd->IsGlobalSearch()) {
+						amuledlg->searchwnd->m_progressbar->SetValue(0);
+					} else {
+						amuledlg->searchwnd->ResetControls();
+					}
 				} else {
 					amuledlg->searchwnd->m_progressbar->SetValue(event.long_value);
 				}
