@@ -640,7 +640,7 @@ wxString  CDirIterator::FindNextFile() {
 					break;
 				default:
 					// Fallback to stat
-					stat(unicode2char(DirStr + dp->d_name),buf);
+					stat(unicode2char(DirStr + char2unicode(dp->d_name)),buf);
 					if (S_ISREG(buf->st_mode)) {
 						if (type == CDirIterator::File) { 
 							found = true; 
