@@ -22,6 +22,11 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 
 	geeko:
 		* Patch to complete html functionality of cas.
+		* Fixed seg fault in cvs due to wrong type check.
+
+	gnucco:
+		* Improved the sources column and sorting in search window.
+		  Now can toggle total sources/completed ascending/descending.
 
 	GonoszTopi:
 		* Unicode fixes:
@@ -386,9 +391,18 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		alandar
 		feralertx
 		Frankk
+		markb
+		monkeyboy
 		Mr Faber
+		ObsessionAl
+		OldFrog
 		peper
 		rommel
+		S0undt3ch
+		skolnick
+		thedude0001
+		Vollstrecker
+		volpop
 
 --------------------------------------------------------------------------------
 
