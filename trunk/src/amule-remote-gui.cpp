@@ -147,6 +147,9 @@ void CamuleRemoteGuiApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS&)
 	} else if ( theApp.amuledlg->serverwnd->IsShown() ) {
 		//serverlist->FullReload(EC_OP_GET_SERVER_LIST);
 		//serverlist->ReloadControl();
+	} else if ( theApp.amuledlg->transferwnd->IsShown() ) {
+		downloadqueue->DoRequery(EC_OP_GET_DLOAD_QUEUE, EC_TAG_PARTFILE);
+		//downloadqueue->ReloadControl();
 	}
 }
 
@@ -725,13 +728,17 @@ void CDownQueueRem::ResetCatParts(int)
 bool CDownQueueRem::IsPartFile(const CKnownFile *) const
 {
 	// hope i understand it right
-	return false;
+	return true;
 }
 
 CPartFile *CDownQueueRem::CreateItem(CEC_PartFile_Tag *tag)
 {
-	//return new CPartFile(tag);
-	return 0;
+	CPartFile *file = new CPartFile(tag);
+	m_enc_map[file->GetFileHash()] = otherfunctions::PartFileEncoderData(file->GetPartCount(), 10);
+	ProcessItemUpdate(tag, file);
+	
+	theApp.amuledlg->transferwnd->downloadlistctrl->AddFile(file);
+	return file;
 }
 
 void CDownQueueRem::DeleteItem(CPartFile *)
@@ -741,8 +748,57 @@ CMD4Hash CDownQueueRem::GetItemID(CPartFile *file)
 {
 	return file->GetFileHash();
 }
-void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *, CPartFile *)
+void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 {
+	CECTag *gaptag = tag->GetTagByName(EC_TAG_PARTFILE_GAP_STATUS);
+	CECTag *parttag = tag->GetTagByName(EC_TAG_PARTFILE_PART_STATUS);
+	CECTag *reqtag = tag->GetTagByName(EC_TAG_PARTFILE_REQ_STATUS);
+	if (gaptag && parttag && reqtag) {
+		POSITION curr_pos;
+
+		wxASSERT(m_enc_map.count(file->GetFileHash()));
+		
+		otherfunctions::PartFileEncoderData &encoder = m_enc_map[file->GetFileHash()];
+		encoder.Decode(
+			(unsigned char *)gaptag->GetTagData(), gaptag->GetTagDataLen(),
+			(unsigned char *)parttag->GetTagData(), parttag->GetTagDataLen());
+			
+		const Gap_Struct *reqparts = (const Gap_Struct *)reqtag->GetTagData();
+		int reqcount = reqtag->GetTagDataLen() / sizeof(Gap_Struct);
+		
+		// adjust size of gaplist to reqcount
+		int gap_size = encoder.m_gap_status.Size() / (2 * sizeof(uint32));
+		while ( file->gaplist.GetCount() > gap_size ) {
+			file->gaplist.RemoveHead();
+		}
+		while ( file->gaplist.GetCount() != gap_size ) {
+			file->gaplist.AddHead(new Gap_Struct);
+		}
+		const uint32 *gap_info = (const uint32 *)encoder.m_gap_status.Buffer();
+		curr_pos = file->gaplist.GetHeadPosition();
+		for (int j = 0; j < gap_size;j++) {
+			Gap_Struct* gap = file->gaplist.GetNext(curr_pos);
+			gap->start = ntohl(gap_info[2*j]);
+			gap->end = ntohl(gap_info[2*j+1]);
+		}
+		
+		// adjust size of requested block list
+		while ( file->requestedblocks_list.GetCount() > reqcount ) {
+			file->requestedblocks_list.RemoveHead();
+		}
+		while ( file->requestedblocks_list.GetCount() != reqcount ) {
+			file->requestedblocks_list.AddHead(new Requested_Block_Struct);
+		}
+		curr_pos = file->requestedblocks_list.GetHeadPosition();
+		for (int i = 0; i < reqcount;i++) {
+			Requested_Block_Struct* block = file->requestedblocks_list.GetNext(curr_pos);
+			block->StartOffset = ntohl(reqparts[i].start);
+			block->EndOffset = ntohl(reqparts[i].end);
+		}
+	} else {
+		printf("ERROR: %p %p %p\n", gaptag, parttag, reqtag);
+	}
+	//theApp.amuledlg->transferwnd->downloadlistctrl->UpdateItem(file);
 }
 
 CClientListRem::CClientListRem(CRemoteConnect *conn)
