@@ -436,25 +436,25 @@ if test x$USE_EMBEDDED_CRYPTO = xno; then
 	  
 	  AC_MSG_CHECKING([for crypto++ version >= $min_crypto_version])
 	  
-	  #We don't use AC_CHECK_FILE to avoid caching.
+	  # We don't use AC_CHECK_FILE to avoid caching.
 
 	  if test x$crypto_prefix != x ; then
-		  if test -f $crypto_prefix/local.h; then
+		  if test -f $crypto_prefix/cryptlib.h; then
 		  CRYPTO_PP_STYLE="sources"
-		  crypto_version=`grep PACKAGE_VERSION $crypto_prefix/local.h | cut -d\" -f2`
+		  crypto_version=`grep "Reference Manual" $crypto_prefix/cryptlib.h | cut -d' ' -f5`
 		  fi
 	  else
           crypto_prefix="/usr"
           fi
           
-	  if test -f $crypto_prefix/include/cryptopp/local.h; then
+	  if test -f $crypto_prefix/include/cryptopp/cryptlib.h; then
 		  CRYPTO_PP_STYLE="mdk_suse_fc"
-		  crypto_version=`grep PACKAGE_VERSION $crypto_prefix/include/cryptopp/local.h | cut -d\" -f2`
+		  crypto_version=`grep "Reference Manual" $crypto_prefix/include/cryptopp/cryptlib.h | cut -d' ' -f5`
 	  fi
 	  
-	  if test -f $crypto_prefix/include/crypto++/local.h; then
+	  if test -f $crypto_prefix/include/crypto++/cryptlib.h; then
 		  CRYPTO_PP_STYLE="gentoo_debian"
-		  crypto_version=`grep PACKAGE_VERSION $crypto_prefix/include/crypto++/local.h | cut -d\" -f2`
+		  crypto_version=`grep "Reference Manual" $crypto_prefix/include/crypto++/cryptlib.h | cut -d' ' -f5`
 	  fi
 
 	  vers=`echo $crypto_version | $AWK 'BEGIN { FS = "."; } { printf "% d", ([$]1 * 1000 + [$]2) * 1000 + [$]3;}'`
