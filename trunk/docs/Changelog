@@ -173,9 +173,135 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		Mr Faber.
 		* Updated proxy debug code to use new logger.
 
-	volpol
+	volpol:
 		* Patch to fix use of deprecated functions in wxGTK-2.5.3.
 
+	Xaignar:
+		* Renamed the config file from ~/.eMule to ~/.aMule/amule.conf.
+		  The old file will not be removed, in order to allow backwards
+		  compatibility.
+		* aMule now automatically removes unavailable files from the 
+		  list of shared files.
+		* Fixed right-clicking not selecting the tab being clicked on.
+		* Fixed casts to pointers of higher alignment where it could
+		  cause allignment crashes on SPARC, created general function
+		  for doing this safely both SPARC and non-SPARC machinces.
+		* Added a typesafe replacement for printf, designed with 
+		  inspiration from the format class in the boost library.
+		* Improved logging capabilities. It is now possible to enable/
+		  disable debugging output by category. All existing debug 
+		  calls where changed to support this. This can be controlled
+		  in the preference dialog.
+		* Fixed some problems with the connect dialog for remote gui.
+		* Some pass-by-value fixes.
+		* Moving de-initialization code from the CamuleApp destructor
+		  to OnExit. This insures that the app-object would be valid
+		  while the shutdown is in progress.
+		* Moved deinialization code from OnRun in amuled to OnExit in
+		  order to ensure that it was also run on premature exits.
+		* Made safe connection-rate calculations the default behavior,
+		  which should help avoid too fast connections.
+		* Add class for keeping track of unusable sources, based on
+		  the same class in eMule. This should reduce the ammounts
+		  of connections made since bad sources are not re-asked too
+		  often.
+		* Fixed servers with IP 0.0.0.0 being added to serverlist.
+		* Fix to IP-range parser in CIPFilter. Incorrect range in the
+		  form "a.b.c.d-e.f.g." would not be caught.
+		* Misc cleanups in CServerList.
+		* Fixed creation of online-sig files.
+		* Made DownloadQueue and ServerList observables.
+		* Added a Observer/Observable implementation. This was needed
+		  to implement a queue that would be kept in sync with another
+		  queue thus allowing thread-safe delayed iteration over a list.
+		* Fixed crash in search-list, where the search-packet would be
+		  deleted twice.
+		* Removed the usage of "ED2KServers" file, as the download-queue
+		  now takes care of handling all types of ed2k-links.
+		* Rewrote 'ed2k' utility in c++ and fixed support for extra
+		  information appended to ed2k links.
+		* Merged IP-check functions and moved it to NetworkFunctions.*.
+		* Fixed usage of uninitialized variables in CPartFile constructor.
+		* Removing unsused functions from CServerList.
+		* Removed unused CArray.h file.
+		* Fixed pontial wrong tag-count in server.met writing, which
+		  would result in a corrupt file.
+		* Disabled connection-try code, due to inherent problems with it.
+		* Reworked the CDownloadQueue class.
+		* Fixed creation of ED2K links for servers.
+		* Removed the need for seperate AICH hashings of completing files.
+		  Instead both AICH hashsets and MD4 hashes are created during
+		  completion, and the AICH is simply discarded if corruptions are
+		  found. This however is rare, and thus doing both at the same time
+		  results in less time spent hashing.
+		* Improved upon the "requested file not found" log-message, which
+		  would happen when a client requested the hashset for an unknown
+		  file.
+		* Reworked the checks for free disk-space, should behave much
+		  more consistantly now.
+		* Fixed files being hashed twice, once when completed and again
+		  after aMule had been restarted.
+		* Make use of native GTK2 popup menu for text-ctrls when possible.
+		* Disabled aMule on systems where wxGTK is older than version
+		  2.5.1 and is compiled against GTK2. The big honking warning
+		  in the log proved to be useless, but this should work ...
+		* Added helper-function to of.h for removing values from a stl-list.
+		* Fixed usage of windows font-type "Arial" in statistics-dialog.
+		* Fixed logging of filtered IPs. Only 2 of four cases were logged.
+		* Disallow External Connections if no valid password has been set.
+		* Fixed both sources and files getting shown for the file-count
+		  in the transfer dialog.
+		* Added date to version-information for CVS snapshots.
+		* Reworked CBarShader, making it use the CRangeMap class and getting
+		  rid of needless floating-point math.
+		* Fixed downloads being assigned to the default category despite
+		  the extended options being disabled in search dialog.
+		* Moved overhead calculations to the CStatistics class.
+		* Removed enabling/disabling of the clear-downloads buttons. The
+		  checks touched far too much code without adding much.
+		* Moved StripInvalidFilenameChars from CamuleApp to StringFunctions
+		  and renamed it to CleanupFilename.
+		* Fixed pending file-blocks not being properly removed when
+		  client-objects were destroyed, resulting in parts of files
+		  that could not be downloaded until aMule had been restarted.
+		* Fixed re-filtering of sources when IP-filter level had been
+		  changed in the preferences.
+		* Reworked CIPFilter class:
+		  * Huge improvements in loading-speeds (~6x).
+		  * Added support for loading zipped files.
+		  * Switched to using the CRangeMap class.
+		* Added CRangeMap class, which is a map with two keys, an
+		  start and an end key, with a single value attached. This
+		  was previously duplicated serveral places.
+		* Fixed problems with deleting multiple items on serverlist.
+		* Misc code-cleanups.
+		* Added the ability to delete servers using the delete-key.
+		* Fixed sorting by the "Transfered down" field on client-list.
+		* Added ruby-script for detecting common issues.
+		* More work on properly marking getter function const.
+		* Reworked the CDownloadListCtrl class.
+		* Added overloaded versions of CmpAny functions for strings.
+		* Reduced memory usage of IP-ranges in CIPfiler by removing
+		  redundant information.
+		* Fixed extremly non-optimal function in CDownloadQueue which
+		  was used many places. Could locate item in vector through 
+		  counting of iterator increments.
+		* Fixed pre-shutdown message to something more closely reflecting
+		  the actual events taking place.
+		* Collected common "Data To Human-Readable" functions in file-set.
+		* Reworked the ED2K-link classes.
+		* Reworked handling of ED2K links, making behavior consistant
+		  everywhere and fixing support for |serverlist| URLs.
+		* Changed time-span of overhead calculations from 5s to 15s.
+		* Removed redundant message displayed when files were added to a
+		  a non-connected mule.
+		* Added missing Add-Overhead calls for various packets.
+		* Fixed a mem-leak in CFileDataIO::WriteString.
+		* Fixed compilation of Proxy with wxGTK-2.4.2.
+		* Changed default configure options. Now only 'amule' and 'ed2k' are
+		  compiled by default, since other apps require extra dependancies.
+
+	
 	Special Thanks To:
 		* Bug and feature reporters:
 		alandar
