@@ -234,7 +234,7 @@ CUpDownClient::~CUpDownClient()
 	}
 
 
-	if (m_iRate>0 || m_strComment.Length()>0) {
+	if (m_iRate>0 || !m_strComment.IsEmpty()) {
 		m_iRate=0;
 		m_strComment = wxEmptyString;
 		if (m_reqfile) {
@@ -1031,31 +1031,15 @@ void CUpDownClient::ProcessMuleCommentPacket(const char *pachPacket, uint32 nSiz
 		
 		AddDebugLogLineM(false, wxT("Rating for file '") + m_clientFilename + wxString::Format(wxT("' received: %i"), m_iRate));
 
-		uint32 length = data.ReadUInt32();
+		// The comment is unicoded, with a uin32 len and safe read 
+		// (won't break if string size is < than advertised len)
+		m_strComment = data.ReadString(GetUnicodeSupport(), 4 /* bytes (it's a uint32)*/, true);
 
-		// Avoid triggering exception, even if part of the comment is missing
-		if ( length > data.GetLength() - data.GetPosition() ) {
-			length = data.GetLength() - data.GetPosition();
-		}
+		AddDebugLogLineM(false, wxT("Description for file '") + m_clientFilename + wxT("' received: ") + m_strComment);
 
-		if ( length > 50 ) {
-			length = 50;
-		}
-
-		if ( length > 0 ) {
-			#warning Lacks Comment Filtering
-
-			desc = new char[length + 1];
-			desc[length] = 0;
-
-			data.Read(desc, length);
-
-			m_strComment = char2unicode(desc);
-
-			AddDebugLogLineM(false, wxT("Description for file '") + m_clientFilename + wxT("' received: ") + m_strComment);
-
-			m_reqfile->SetHasComment(true);
-		}
+		m_reqfile->SetHasComment(true);
+		// Update file rating
+		m_reqfile->UpdateFileRatingCommentAvail();
 
 	}
 	catch ( CStrangePacket )
