@@ -51,7 +51,7 @@ CDebugCategory g_debugcats[] = {
 	CDebugCategory( logLocalClient,		wxT("Local Client Protocol") ),
 	CDebugCategory( logRemoteClient,	wxT("Remote Client Protocl") ),
 	CDebugCategory( logPacketErrors,	wxT("Packet Parsing Errors") ),
-	CDebugCategory( logCFile,			wxT("The CFile Class") ),
+	CDebugCategory( logCFile,			wxT("CFile") ),
 	CDebugCategory( logFileIO,			wxT("FileIO") ),
 	CDebugCategory( logZLib,			wxT("ZLib") ),
 	CDebugCategory( logAICHThread,		wxT("AICH-Hasher") ),
