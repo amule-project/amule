@@ -204,7 +204,7 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 		data.WriteUInt16(thePrefs::GetPort());
 		data.WriteUInt32(5); // tagcount
 
-		CTag tagname(CT_NAME,unicode2char(thePrefs::GetUserNick()));
+		CTag tagname(CT_NAME,thePrefs::GetUserNick());
 		tagname.WriteTagToFile(&data);
 
 		CTag tagversion(CT_VERSION,EDONKEYVERSION);
