@@ -77,19 +77,71 @@ class CEC_PartFile_Tag : public CECTag {
  		CMD4Hash	FileHash()	{ return GetMD4Data(); }
 		wxString	FileHashString() { return GetMD4Data().Encode(); }
 
- 		wxString	FileName()	{ return GetTagByName(EC_TAG_PARTFILE_NAME)->GetStringData(); }
- 		uint32		SizeFull()	{ return GetTagByName(EC_TAG_PARTFILE_SIZE_FULL)->GetInt32Data(); }
- 		uint32		SizeXfer()	{ return GetTagByName(EC_TAG_PARTFILE_SIZE_XFER)->GetInt32Data(); }
-  		uint32		SizeDone()	{ return GetTagByName(EC_TAG_PARTFILE_SIZE_DONE)->GetInt32Data(); }
- 		wxString	FileEd2kLink()	{ return GetTagByName(EC_TAG_PARTFILE_ED2K_LINK)->GetStringData(); }
- 		uint8		FileStatus()	{ return GetTagByName(EC_TAG_PARTFILE_STATUS)->GetInt8Data(); }
-  		uint32		SourceCount()	{ return GetTagByName(EC_TAG_PARTFILE_SOURCE_COUNT)->GetInt32Data(); }
-  		uint32		SourceNotCurrCount()	{ return GetTagByName(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT)->GetInt32Data(); }
-  		uint32		SourceXferCount()	{ return GetTagByName(EC_TAG_PARTFILE_SOURCE_COUNT_XFER)->GetInt32Data(); }
-  		uint32		SourceCountA4AF()	{ return GetTagByName(EC_TAG_PARTFILE_SOURCE_COUNT_A4AF)->GetInt32Data(); }
-  		uint32		Speed()		{ return GetTagByName(EC_TAG_PARTFILE_SPEED)->GetInt32Data(); }
-  		uint32		Prio()		{ return GetTagByName(EC_TAG_PARTFILE_PRIO)->GetInt32Data(); }
-  		wxString	PartStatus()	{ return GetTagByName(EC_TAG_PARTFILE_PART_STATUS)->GetStringData(); }
+ 		wxString	FileName()
+		{
+			CECTag *tag =  GetTagByName(EC_TAG_PARTFILE_NAME);
+			return tag ? tag->GetStringData() : wxT("");
+		}
+ 		uint32		SizeFull()
+		{
+			CECTag *tag =  GetTagByName(EC_TAG_PARTFILE_SIZE_FULL);
+			return tag ? tag->GetInt32Data() : 0;
+		}
+ 		uint32		SizeXfer()
+		{
+			CECTag *tag =  GetTagByName(EC_TAG_PARTFILE_SIZE_XFER);
+			return tag ? tag->GetInt32Data() : 0;
+		}
+  		uint32		SizeDone()
+		{
+			CECTag *tag =  GetTagByName(EC_TAG_PARTFILE_SIZE_DONE);
+			return tag ? tag->GetInt32Data() : 0;
+		}
+ 		wxString	FileEd2kLink()
+		{
+			CECTag *tag =  GetTagByName(EC_TAG_PARTFILE_ED2K_LINK);
+			return tag ? tag->GetStringData() : wxT("");
+		}
+ 		uint8		FileStatus()
+		{
+			CECTag *tag =  GetTagByName(EC_TAG_PARTFILE_STATUS);
+			return tag ? tag->GetInt8Data() : 0;
+		}
+  		uint32		SourceCount()
+		{
+			CECTag *tag =  GetTagByName(EC_TAG_PARTFILE_SOURCE_COUNT);
+			return tag ? tag->GetInt32Data() : 0;
+		}
+  		uint32		SourceNotCurrCount()
+		{
+			CECTag *tag =  GetTagByName(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT);
+			return tag ? tag->GetInt32Data() : 0;
+		}
+  		uint32		SourceXferCount()
+		{
+			CECTag *tag =  GetTagByName(EC_TAG_PARTFILE_SOURCE_COUNT_XFER);
+			return tag ? tag->GetInt32Data() : 0;
+		}
+  		uint32		SourceCountA4AF()
+		{
+			CECTag *tag =  GetTagByName(EC_TAG_PARTFILE_SOURCE_COUNT_A4AF);
+			return tag ? tag->GetInt32Data() : 0;
+		}
+  		uint32		Speed()	
+		{
+			CECTag *tag =  GetTagByName(EC_TAG_PARTFILE_SPEED);
+			return tag ? tag->GetInt32Data() : 0;
+		}
+  		uint32		Prio()
+		{
+			CECTag *tag =  GetTagByName(EC_TAG_PARTFILE_PRIO);
+			return tag ? tag->GetInt32Data() : 0;
+		}
+  		wxString	PartStatus()
+		{
+			CECTag *tag =  GetTagByName(EC_TAG_PARTFILE_PART_STATUS);
+			return tag ? tag->GetStringData() : wxT("");
+		}
 
 		#ifdef EC_REMOTE
 		wxString	GetFileStatusString();
@@ -204,9 +256,21 @@ class CEC_SearchFile_Tag : public CECTag {
  		CMD4Hash	FileHash()	{ return GetMD4Data(); }
 		wxString	FileHashString() { return GetMD4Data().Encode(); }
 
- 		wxString	FileName()	{ return GetTagByName(EC_TAG_PARTFILE_NAME)->GetStringData(); }
- 		uint32		SizeFull()	{ return GetTagByName(EC_TAG_PARTFILE_SIZE_FULL)->GetInt32Data(); }
-  		uint32		SourceCount()	{ return GetTagByName(EC_TAG_PARTFILE_SOURCE_COUNT)->GetInt32Data(); }
+ 		wxString	FileName()
+ 		{
+			CECTag *tag =  GetTagByName(EC_TAG_PARTFILE_NAME);
+			return tag ? tag->GetStringData() : wxT("");
+		}
+		uint32		SizeFull()
+		{
+			CECTag *tag =  GetTagByName(EC_TAG_PARTFILE_SIZE_FULL);
+			return tag ? tag->GetInt32Data() : 0;
+		}
+  		uint32		SourceCount()
+		{
+			CECTag *tag =  GetTagByName(EC_TAG_PARTFILE_SOURCE_COUNT);
+			return tag ? tag->GetInt32Data() : 0;
+		}
   		bool		AlreadyHave()	{ return GetTagByName(EC_TAG_KNOWNFILE) != 0; }
 };
 
