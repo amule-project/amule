@@ -935,25 +935,64 @@ CECTag *CPartFile_Encoder::Encode()
 {
 	//
 	// compare gaps lists, calculate difference
+	std::list<Gap_Struct> diff_list;
 	std::list<Gap_Struct>::iterator prev = m_gap_list.begin();
 	POSITION curr_pos = m_file->gaplist.GetHeadPosition();
 	unsigned int gap_ptr;
 	while ( curr_pos ) {
+		Gap_Struct diff;
 		Gap_Struct *curr = m_file->gaplist.GetAt(curr_pos);
-		gap_ptr = curr->start;
+		gap_ptr = prev->start;
 		while ( curr->end <= prev->end ) {
 			if ( gap_ptr != curr->start ) {
-				// diff = { gap_ptr, curr.start }
+				diff.start = gap_ptr;
+				diff.end = curr->start;
+				diff_list.push_back(diff);
 			}
 			gap_ptr = curr->end;
 			curr = m_file->gaplist.GetNext(curr_pos);
 		}
 		if ( gap_ptr != prev->end ) {
-			// diff = { gap_ptr, prev.end }
+				diff.start = gap_ptr;
+				diff.end = prev->end;
+				diff_list.push_back(diff);
+		}
+		prev++;
+	}
+	
+	//
+	// now go over prev list again, and change it to curr
+	// by applying diffs. Similar to CPartFile->FillGap
+	std::list<Gap_Struct>::iterator diff = diff_list.begin();
+	prev = m_gap_list.begin();
+	while (diff != diff_list.end()) {
+		if ( diff->start >= prev->start ) {
+			// insert new gaps before next element - and erase current
+			while ( diff->end <= prev->end ) {
+				Gap_Struct new_diff;
+				new_diff.start = prev->start;
+				new_diff.end = diff->start;
+				if ( new_diff.start != new_diff.end ) {
+					m_gap_list.insert(prev, new_diff);
+				}
+				diff++;
+			}
+			if ( diff->end < prev->end )  {
+				Gap_Struct new_diff;
+				new_diff.start = diff->end;
+				new_diff.end = prev->end;
+				m_gap_list.insert(prev, new_diff);				
+			}
+			std::list<Gap_Struct>::iterator to_erase = prev;
+			prev++;
+			m_gap_list.erase(to_erase);
+		} else {
 			prev++;
 		}
 	}
-	//m_part_status.Encode(m_file->m_SrcpartFrequency);
+	
+	int enc_size;
+	m_part_status.Encode(m_file->m_SrcpartFrequency, enc_size);
 	return 0;
 }
 
