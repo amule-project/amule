@@ -74,11 +74,11 @@ class EC_IPv4_t {
  * EC FLAG values
  */
 
-//#define EC_FLAG_ZLIB		0x00000001
-//#define EC_FLAG_UTF8_TAGLEN	0x00000002
+#define EC_FLAG_ZLIB		0x00000001
+#define EC_FLAG_UTF8_NUMBERS	0x00000002
 #define EC_FLAG_ACCEPTS		0x00000010
 
-#define EC_FLAG_UNKNOWN_MASK	0xff7f7f0f
+#define EC_FLAG_UNKNOWN_MASK	0xff7f7f0c
 
 
 /**
