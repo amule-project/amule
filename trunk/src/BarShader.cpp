@@ -229,7 +229,9 @@ void CBarShader::Draw( wxDC* dc, int iLeft, int iTop, bool bFlat )
 	rectSpan.height = m_Height;
 	rectSpan.width  = 0;
 
+#ifdef AMULE_DAEMON
 	dc->SetPen(*wxTRANSPARENT_PEN);
+#endif
 	
 	double m_PixelsPerByte = (double)m_Width / m_FileSize;
 	double m_BytesPerPixel = (double)m_FileSize / m_Width;
@@ -291,6 +293,17 @@ void CBarShader::Draw( wxDC* dc, int iLeft, int iTop, bool bFlat )
 	}
 }
 
+/*!
+ * Daemon will create only 1 line of the bar, and remote side will
+ * replicate it as needed, even with 3D effect
+ */
+#ifdef AMULE_DAEMON
+
+void CBarShader::FillRect(wxDC *dc, const wxRect& rectSpan, DWORD color, bool bFlat)
+{
+}
+
+#else
 
 void CBarShader::FillRect(wxDC *dc, const wxRect& rectSpan, DWORD color, bool bFlat)
 {
@@ -329,3 +342,4 @@ void CBarShader::FillRect(wxDC *dc, const wxRect& rectSpan, DWORD color, bool bF
 
 	dc->SetBrush(wxNullBrush);
 }
+#endif // AMULE_DAEMON

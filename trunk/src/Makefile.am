@@ -178,6 +178,7 @@ amule_SOURCES = ListenSocket.cpp \
 
 amuled_SOURCES = ListenSocket.cpp \
 	AICHSyncThread.cpp \
+	BarShader.cpp \
         ECSocket.cpp \
 	ECPacket.cpp \
 	ECSpecialTags.cpp \
