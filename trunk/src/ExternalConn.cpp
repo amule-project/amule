@@ -992,8 +992,20 @@ CECTag *CPartFile_Encoder::Encode()
 	}
 	
 	int enc_size;
-	m_part_status.Encode(m_file->m_SrcpartFrequency, enc_size);
-	return 0;
+	const unsigned char *enc_data = m_part_status.Encode(m_file->m_SrcpartFrequency, enc_size);
+
+	CECTag *etag = new CECTag(EC_TAG_PARTFILE_PART_STATUS, enc_size +
+		diff_list.size() * sizeof(uint32) * 2, 0, false);
+	
+	// rle-encoded data is byte stream. remove const'ness
+	memcpy((void *)etag->GetTagData(), enc_data, enc_size);
+	// gap list is list of pairs of uint32 number - keep endiness
+	uint32 *gap_data = (uint32 *)( ((char *)etag->GetTagData()) + enc_size );
+	for (diff = diff_list.begin(); diff != diff_list.end(); diff++) {
+		*gap_data++ = ENDIAN_SWAP_32(diff->start);
+		*gap_data++ = ENDIAN_SWAP_32(diff->end);
+	}
+	return etag;
 }
 
 
