@@ -87,7 +87,7 @@ CSearchFile::CSearchFile(CSearchFile* copyfrom)
 	m_nClientID = copyfrom->GetClientID();
 	m_nClientPort = copyfrom->GetClientPort();
 	m_nClientServerPort = copyfrom->GetClientServerPort();
-	m_pszDirectory = copyfrom->m_pszDirectory? nstrdup(m_pszDirectory) : NULL;
+	m_pszDirectory = copyfrom->m_pszDirectory ? nstrdup(copyfrom->m_pszDirectory) : NULL;
 	m_nSearchID = copyfrom->GetSearchID();
 	for (i = 0; i < copyfrom->taglist.GetCount(); i++)
 		taglist.Add(new CTag(*copyfrom->taglist.GetAt(i)));
@@ -188,6 +188,9 @@ CSearchFile::~CSearchFile(){
 	}
 	taglist.RemoveAll();
 	taglist.SetSize(0);
+
+	if (m_pszDirectory)
+		delete[] m_pszDirectory;
 }
 
 uint32 CSearchFile::GetIntTagValue(uint8 tagname){

@@ -1053,7 +1053,7 @@ bool CClientReqSocket::ProcessPacket(char* packet, uint32 size, uint8 opcode)
 
 				if (client->GetFileListRequested() > 0){
 					theApp.amuledlg->AddLogLine(true,CString(_("User %s (%u) sent sharedfiles-list for directory %s")),client->GetUserName(),client->GetUserID(),strDir.GetData());
-					// We need a new ProcessSharedFileList that can handle dirs.
+					#warning We need a new ProcessSharedFileList that can handle dirs.
 					client->ProcessSharedFileList(packet + data.GetPosition(), size - data.GetPosition(), (char*)strDir.GetData());
 					if (client->GetFileListRequested() == 0) {
 						theApp.amuledlg->AddLogLine(true,CString(_("User %s (%u) finished sending sharedfiles-list")),client->GetUserName(),client->GetUserID());
