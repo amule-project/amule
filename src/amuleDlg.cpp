@@ -154,7 +154,7 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, wxString title, wxPoint where, wxSize dl
 
 	serverwnd = new CServerWnd(p_cnt);
 	
-	AddLogLine(true, PACKAGE_STRING);
+	AddLogLine(true, wxT(PACKAGE_STRING));
 	
 	searchwnd = new CSearchDlg(p_cnt);
 	transferwnd = new CTransferWnd(p_cnt);
@@ -364,7 +364,7 @@ void CamuleDlg::OnToolBarButton(wxCommandEvent& ev)
 				case ID_BUTTONSERVERS:
 					SetActiveDialog(serverwnd);
 					// Set serverlist splitter position
-					((wxSplitterWindow*)FindWindow("SrvSplitterWnd"))->SetSashPosition(srv_split_pos, true);
+					((wxSplitterWindow*)FindWindow(wxT("SrvSplitterWnd")))->SetSashPosition(srv_split_pos, true);
 					break;
 
 				case ID_BUTTONSEARCH:
@@ -374,7 +374,7 @@ void CamuleDlg::OnToolBarButton(wxCommandEvent& ev)
 				case ID_BUTTONTRANSFER:
 					SetActiveDialog(transferwnd);
 					// Set splitter position
-					((wxSplitterWindow*)FindWindow("splitterWnd"))->SetSashPosition(split_pos, true);
+					((wxSplitterWindow*)FindWindow(wxT("splitterWnd")))->SetSashPosition(split_pos, true);
 					break;
 
 				case ID_BUTTONSHARED:
@@ -448,7 +448,7 @@ void CamuleDlg::ResetLog(uint8 whichone)
 		case 1:
 			ct=(wxTextCtrl*)serverwnd->FindWindow(ID_LOGVIEW);
 			// Delete log file aswell.
-			wxRemoveFile(wxString::Format("%s/.aMule/logfile", getenv("HOME")));
+			wxRemoveFile(wxString::Format(wxT("%s/.aMule/logfile"), getenv("HOME")));
 			break;
 		case 2:
 			ct=(wxTextCtrl*)serverwnd->FindWindow(ID_SERVERINFO);
@@ -458,7 +458,7 @@ void CamuleDlg::ResetLog(uint8 whichone)
 	}
 
 	if(ct) {
-		ct->SetValue("");
+		ct->SetValue(wxT(""));
 	}
 }
 
@@ -483,10 +483,10 @@ void CamuleDlg::AddLogLine(bool addtostatusbar, const wxChar* line, ...)
 		bufferline.RemoveLast();
 
 	// Escape "&"s, which would otherwise not show up
-	bufferline.Replace("&", "&&");
+	bufferline.Replace(wxT("&"), wxT("&&"));
 
 	if (addtostatusbar) {
-		wxStaticText* text=(wxStaticText*)FindWindow("infoLabel");
+		wxStaticText* text=(wxStaticText*)FindWindow(wxT("infoLabel"));
 		text->SetLabel(bufferline);
 		Layout();
 	}
@@ -502,7 +502,7 @@ void CamuleDlg::AddLogLine(bool addtostatusbar, const wxChar* line, ...)
 	}
 
 	// Write into log file
-	wxString filename = wxString::Format("%s/.aMule/logfile", getenv("HOME"));
+	wxString filename = wxString::Format(wxT("%s/.aMule/logfile"), getenv("HOME"));
 	wxFile file(filename, wxFile::write_append);
 
 	if ( file.IsOpened() ) {
@@ -521,7 +521,7 @@ void CamuleDlg::AddDebugLogLine(bool addtostatusbar, const wxChar* line, ...)
 		bufferline.Truncate(1000); // Max size 1000 chars
 		va_end(argptr);
 		
-		AddLogLine(addtostatusbar, "%s", bufferline.c_str());
+		AddLogLine(addtostatusbar, wxT("%s"), bufferline.c_str());
 	}
 }
 
@@ -531,13 +531,13 @@ void CamuleDlg::AddServerMessageLine(char* line, ...)
 	wxString content;
 	va_list argptr;
 	va_start(argptr, line);
-	wxString bufferline = wxString::FormatV( line, argptr );
+	wxString bufferline = wxString::FormatV( char2unicode(line), argptr );
 	bufferline.Truncate(500); // Max size 500 chars
 	va_end(argptr);
 
 	wxTextCtrl* cv=(wxTextCtrl*)serverwnd->FindWindow(ID_SERVERINFO);
 	if(cv) {
-		cv->AppendText(bufferline + "\n");
+		cv->AppendText(bufferline + wxT("\n"));
 		cv->ShowPosition(cv->GetValue().Length()-1);
 	}
 }
@@ -566,16 +566,16 @@ void CamuleDlg::ShowConnectionState(bool connected, wxString server, bool iconOn
 
 
 	if ( LastState != NewState ) {
-		((wxStaticBitmap*)FindWindow("connImage"))->SetBitmap(connImages( NewState ));
+		((wxStaticBitmap*)FindWindow(wxT("connImage")))->SetBitmap(connImages( NewState ));
 
 		m_wndToolbar->DeleteTool(ID_BUTTONCONNECT);
 		
-		wxStaticText* connLabel = (wxStaticText*)FindWindow("connLabel");
+		wxStaticText* connLabel = (wxStaticText*)FindWindow(wxT("connLabel"));
 		switch ( NewState ) {
 			case sLowID:
 			case sHighID: {
 				m_wndToolbar->InsertTool(0, ID_BUTTONCONNECT, wxString(_("Disconnect")), connButImg(1), wxString(_("Disconnect from current server")));
-				wxStaticText* tx=(wxStaticText*)FindWindow("infoLabel");
+				wxStaticText* tx=(wxStaticText*)FindWindow(wxT("infoLabel"));
 				tx->SetLabel(wxString(_("Connection established on:")) + wxString(server));
 				connLabel->SetLabel(server);
 				break;
@@ -612,9 +612,9 @@ void CamuleDlg::ShowUserCount(uint32 user_toshow, uint32 file_toshow)
 		theApp.serverlist->GetUserFileStatus( totaluser, totalfile );
 	}
 	
-	wxString buffer = wxString::Format( "%s: %s(%s) | %s: %s(%s)", _("Users"), CastItoIShort(user_toshow).c_str(), CastItoIShort(totaluser).c_str(), _("Files"), CastItoIShort(file_toshow).c_str(), CastItoIShort(totalfile).c_str());
+	wxString buffer = wxString::Format( wxT("%s: %s(%s) | %s: %s(%s)"), _("Users"), CastItoIShort(user_toshow).c_str(), CastItoIShort(totaluser).c_str(), _("Files"), CastItoIShort(file_toshow).c_str(), CastItoIShort(totalfile).c_str());
 	
-	wxStaticCast(FindWindow("userLabel"), wxStaticText)->SetLabel(buffer);
+	wxStaticCast(FindWindow(wxT("userLabel")), wxStaticText)->SetLabel(buffer);
 
 	Layout();
 }
@@ -635,7 +635,7 @@ void CamuleDlg::ShowTransferRate()
 	}
 	buffer.Truncate(50); // Max size 50
 
-	((wxStaticText*)FindWindow("speedLabel"))->SetLabel(buffer);
+	((wxStaticText*)FindWindow(wxT("speedLabel")))->SetLabel(buffer);
 	Layout();
 
 
@@ -646,16 +646,16 @@ void CamuleDlg::ShowTransferRate()
 
 	wxString buffer2;
 	if ( theApp.serverconnect->IsConnected() ) {
-		buffer2.Printf("aMule (%s | %s)", buffer.c_str(), _("Connected") );
+		buffer2.Printf(wxT("aMule (%s | %s)"), buffer.c_str(), _("Connected") );
 	} else {
-		buffer2.Printf("aMule (%s | %s)", buffer.c_str(), _("Disconnected") );
+		buffer2.Printf(wxT("aMule (%s | %s)"), buffer.c_str(), _("Disconnected") );
 	}
-	char* buffer3 = nstrdup(buffer2.c_str());
+	char* buffer3 = nstrdup(unicode2char(buffer2));
 	m_wndTaskbarNotifier->TraySetToolTip(buffer3);
 	delete[] buffer3;
 #endif
 
-	wxStaticBitmap* bmp=(wxStaticBitmap*)FindWindow("transferImg");
+	wxStaticBitmap* bmp=(wxStaticBitmap*)FindWindow(wxT("transferImg"));
 	bmp->SetBitmap(dlStatusImages((kBpsUp>0.01 ? 2 : 0) + (kBpsDown>0.01 ? 1 : 0)));
 }
 
@@ -773,12 +773,12 @@ void CamuleDlg::ShowNotifier(wxString Text, int MsgType, bool ForceSoundOFF)
 void CamuleDlg::OnBnClickedFast(wxCommandEvent& WXUNUSED(evt))
 {
 	if (!theApp.serverconnect->IsConnected()) {
-		wxMessageDialog* bigbob = new wxMessageDialog(this, wxT(_("The ED2K link has been added but your download won't start until you connect to a server.")), wxT(_("Not Connected")), wxOK|wxICON_INFORMATION);
+		wxMessageDialog* bigbob = new wxMessageDialog(this, wxT("The ED2K link has been added but your download won't start until you connect to a server."), wxT("Not Connected"), wxOK|wxICON_INFORMATION);
 		bigbob->ShowModal();
 		delete bigbob;
 	}
 	
-	StartFast((wxTextCtrl*)FindWindow("FastEd2kLinks"));
+	StartFast((wxTextCtrl*)FindWindow(wxT("FastEd2kLinks")));
 }
 
 
@@ -792,16 +792,16 @@ void CamuleDlg::StartFast(wxTextCtrl *ctl)
 			continue;
 
 		if ( strlink.Last() != '/' )
-			strlink += "/";
+			strlink += wxT("/");
 			
 		try {
-			CED2KLink* pLink = CED2KLink::CreateLinkFromUrl(strlink);
+			CED2KLink* pLink = CED2KLink::CreateLinkFromUrl(unicode2char(strlink));
 			
 			if ( pLink ) {
 				if( pLink->GetKind() == CED2KLink::kFile ) {
 					theApp.downloadqueue->AddFileLinkToDownload(pLink->GetFileLink());
 				} else {
-					throw wxString("Bad link");
+					throw wxString(wxT("Bad link"));
 				}
 				
 				delete pLink;
@@ -814,7 +814,7 @@ void CamuleDlg::StartFast(wxTextCtrl *ctl)
 			theApp.amuledlg->AddLogLine( true, _("Invalid link: %s"), msg.c_str());
 		}
 	}
-ctl->SetValue("");
+ctl->SetValue(wxT(""));
 }
 
 
@@ -832,14 +832,14 @@ bool CamuleDlg::LoadGUIPrefs(bool override_pos, bool override_size)
 	wxString section = wxT("/Razor_Preferences/");
 
 	// Get window size and position
-	int x1 = config->Read(_T(section+wxT("MAIN_X_POS")), -1l);
-	int y1 = config->Read(_T(section+wxT("MAIN_Y_POS")), -1l);
-	int x2 = config->Read(_T(section+wxT("MAIN_X_SIZE")), 0l);
-	int y2 = config->Read(_T(section+wxT("MAIN_Y_SIZE")), 0l);
+	int x1 = config->Read(section+wxT("MAIN_X_POS"), -1l);
+	int y1 = config->Read(section+wxT("MAIN_Y_POS"), -1l);
+	int x2 = config->Read(section+wxT("MAIN_X_SIZE"), 0l);
+	int y2 = config->Read(section+wxT("MAIN_Y_SIZE"), 0l);
 
-	split_pos = config->Read(_T(section+wxT("SPLITTER_POS")), 463l);
+	split_pos = config->Read(section+wxT("SPLITTER_POS"), 463l);
 	// Kry - Random usable pos for srv_split_pos
-	srv_split_pos = config->Read(_T(section+wxT("SRV_SPLITTER_POS")), 463l);
+	srv_split_pos = config->Read(section+wxT("SRV_SPLITTER_POS"), 463l);
 
 	if (!override_pos) {
 		// If x1 and y1 != 0 Redefine location
@@ -870,7 +870,7 @@ bool CamuleDlg::SaveGUIPrefs()
 		return false;
 	}
 	// The section where to save in in file
-	wxString section = "/Razor_Preferences/";
+	wxString section = wxT("/Razor_Preferences/");
 
 	// Main window location and size
 	int x1, y1, x2, y2;
@@ -878,16 +878,16 @@ bool CamuleDlg::SaveGUIPrefs()
 	GetSize(&x2, &y2);
 
 	// Saving window size and position
-	config->Write(_T(section+"MAIN_X_POS"), (long) x1);
-	config->Write(_T(section+"MAIN_Y_POS"), (long) y1);
-	config->Write(_T(section+"MAIN_X_SIZE"), (long) x2);
-	config->Write(_T(section+"MAIN_Y_SIZE"), (long) y2);
+	config->Write(section+wxT("MAIN_X_POS"), (long) x1);
+	config->Write(section+wxT("MAIN_Y_POS"), (long) y1);
+	config->Write(section+wxT("MAIN_X_SIZE"), (long) x2);
+	config->Write(section+wxT("MAIN_Y_SIZE"), (long) y2);
 
 	// Saving sash position of splitter in transfer window
-	config->Write(_T(section+"SPLITTER_POS"), (long) split_pos);
+	config->Write(section+wxT("SPLITTER_POS"), (long) split_pos);
 
 	// Saving sash position of splitter in server window
-	config->Write(_T(section+"SRV_SPLITTER_POS"), (long) srv_split_pos);
+	config->Write(section+wxT("SRV_SPLITTER_POS"), (long) srv_split_pos);
 
 	config->Flush(true);
 
