@@ -29,6 +29,23 @@ Version 2.0.0rc7 - The "99,6% Final" version.
 	KingFish:
 		* Fixed broken compilation in SysTray.cpp with gcc 3.3.4.
 		
+	Kry:
+		* Fixed: 	Crashes related to animation deletion on http download dialog
+		* Fixed: 	0-size server.met file crashing aMule on startup and on download.
+		* Fixed:	GUI blocking on server connection.
+		* Fixed: 	The last (hopefully) "fixed minsize" bug. FileDetail dialog was growing :)
+		* Misc code cleaning.
+		* Mac: 
+			* Enabling wxCocoa compilation
+			* Fixed: 	Secure Ident was not working on big endian archs.
+			* Fixed: 	ClientID endianess issues leading to faking low/high id
+			* Fixed: 	Several fields were not having correct size on preferences.
+			* 
+			* Fixed: 	Curl preform_multi was crashing the http download dialog on Mac.
+					This means server.met update and ipfilter update was crashing.
+					Currently the fix disables 'Cancel' button on that dialog, while we
+					wait for curl lib to fix this issue.
+		
 	lfroen:
 	        * Removed debug printf's in timer.cpp
 		* Fix for deadlock on connection timeout in ServerSocket.cpp
@@ -38,6 +55,11 @@ Version 2.0.0rc7 - The "99,6% Final" version.
 		* Fixed unclosed sockets (CLOSE_WAIT) and few stability problems
 		* Make CEMSocket::OnReceive thread safe. MAX_SIZE reduced, cause even theoretically tcp can buffer up to 64K
 		* amuled fixes
+		
+	mfs:
+		* Fixed crashes on friendlist when keeping keys pressed
+		* Fixed one server not being removed when several servers selected
+		* Fixed access problems on deleting the ipfilter while accessing it
 		
 	Phoenix:
 		* Fixed '&' char next to Preferences in amuleweb web page, as
