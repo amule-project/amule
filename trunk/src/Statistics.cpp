@@ -38,6 +38,7 @@
 #include "ServerConnect.h"
 #include "SharedFileList.h"
 #include "ServerList.h"
+#include "Format.h"		// Needed for CFormat
 
 #include <cmath>
 
@@ -759,7 +760,7 @@ void CStatistics::UpdateStatsTree() {
 	resize=false;
 
 	if (Start_time>0) {
-		(*h_uptime) = _("Uptime: ") + CastSecondsToHM(GetUptimeSecs());
+		(*h_uptime) = CFormat(_("Uptime: %s") ) % CastSecondsToHM(GetUptimeSecs());
 	}
 
 	theApp.downloadqueue->GetDownloadStats(myStats);
@@ -775,7 +776,7 @@ void CStatistics::UpdateStatsTree() {
 										+ GetDownDataOverheadServerPackets() 
 										+ GetDownDataOverheadOtherPackets();
 
-	(*down1) = _("Downloaded Data (Session (Total)): ") +
+	(*down1) = CFormat(_("Downloaded Data (Session (Total)): %s") ) %
 										a_brackets_b(
 											CastItoXBytes( stat_sessionReceivedBytes),
 											CastItoXBytes( stat_sessionReceivedBytes+thePrefs::GetTotalDownloaded()));
@@ -790,22 +791,22 @@ void CStatistics::UpdateStatsTree() {
 	(*down1_8) = wxT("Other: ") + CastItoXBytes(downloaded_Other);
 	
 	
-	(*down2) = _("Total Overhead (Packets): ") +
+	(*down2) = CFormat(_("Total Overhead (Packets): %s") ) %
 										a_brackets_b(
 											CastItoXBytes(DownOHTotal), 
 											CastItoIShort(DownOHTotalPackets));
 
-	(*down3) = _("File Request Overhead (Packets): ") +
+	(*down3) = CFormat(_("File Request Overhead (Packets): %s") ) %
 										a_brackets_b(
 											CastItoXBytes(GetDownDataOverheadFileRequest()),
 											CastItoIShort(GetDownDataOverheadFileRequestPackets()));
 											
-	(*down4) = _("Source Exchange Overhead (Packets): ") +
+	(*down4) = CFormat(_("Source Exchange Overhead (Packets): %s") ) %
 										a_brackets_b(
 											CastItoXBytes(GetDownDataOverheadSourceExchange()),
 											CastItoIShort(GetDownDataOverheadSourceExchangePackets()));	
 
-	(*down5) = _("Server Overhead (Packets): ") +
+	(*down5) = CFormat(_("Server Overhead (Packets): %s") ) %
 										a_brackets_b(
 											CastItoXBytes(GetDownDataOverheadServer()),
 											CastItoIShort(GetDownDataOverheadServerPackets()));
@@ -814,7 +815,7 @@ void CStatistics::UpdateStatsTree() {
 	
 	(*down7) = wxString::Format(_("Active Downloads (chunks): %i"),myStats[1]);
 	
-	(*up1) = _("Uploaded Data (Session (Total)): ") + 
+	(*up1) = CFormat(_("Uploaded Data (Session (Total)): %s") ) % 
 										a_brackets_b(
 											CastItoXBytes( stat_sessionSentBytes),
 											CastItoXBytes( stat_sessionSentBytes+thePrefs::GetTotalUploaded()));
@@ -829,22 +830,22 @@ void CStatistics::UpdateStatsTree() {
 									+ GetUpDataOverheadServerPackets() 
 									+ GetUpDataOverheadOtherPackets();		
 
-	(*up2) = _("Total Overhead (Packets): ") + 
+	(*up2) = CFormat(_("Total Overhead (Packets): %s") ) % 
 										a_brackets_b(
 											CastItoXBytes( UpOHTotal), 
 											CastItoIShort(UpOHTotalPackets));
 
-	(*up3) = _("File Request Overhead (Packets): ") + 
+	(*up3) = CFormat(_("File Request Overhead (Packets): %s") ) % 
 										a_brackets_b(
 											CastItoXBytes(GetUpDataOverheadFileRequest()),
 											CastItoIShort(GetUpDataOverheadFileRequestPackets()));
 											
-	(*up4) = _("Source Exchange Overhead (Packets): ") +
+	(*up4) = CFormat(_("Source Exchange Overhead (Packets): %s") ) %
 										a_brackets_b(
 											CastItoXBytes(GetUpDataOverheadSourceExchange()),
 											CastItoIShort(GetUpDataOverheadSourceExchangePackets()));
 											
-	(*up5) = _("Server Overhead (Packets): ") +
+	(*up5) = CFormat(_("Server Overhead (Packets): %s") ) %
 										a_brackets_b(
 											CastItoXBytes(GetUpDataOverheadServer()),
 											CastItoIShort(GetUpDataOverheadServerPackets()));
@@ -853,7 +854,7 @@ void CStatistics::UpdateStatsTree() {
 	(*up7) = wxString::Format(_("Waiting Uploads: %i"),theApp.uploadqueue->GetWaitingUserCount());
 	(*up8) = wxString::Format(_("Total successful upload sessions: %i"),theApp.uploadqueue->GetSuccessfullUpCount());
 	(*up9) = wxString::Format(_("Total failed upload sessions: %i"),theApp.uploadqueue->GetFailedUpCount());
-	(*up10) = wxString::Format(_("Average upload time: ") + CastSecondsToHM(theApp.uploadqueue->GetAverageUpTime()));
+	(*up10) = CFormat(_("Average upload time: %s")) % CastSecondsToHM(theApp.uploadqueue->GetAverageUpTime());
 
 	if (stat_transferStarttime>0) {
 		(*con1) = wxString::Format(_("Average Downloadrate (Session): %.2f kB/s"),kBpsDownSession);
@@ -868,46 +869,44 @@ void CStatistics::UpdateStatsTree() {
 	if (stat_transferStarttime==0) {
 		(*con4) = _("waiting for transfer...");
 	} else {
-		(*con4) =  _("Time Since First Transfer: ") + CastSecondsToHM(GetTransferSecs());
+		(*con4) =  CFormat(_("Time Since First Transfer: %s")) % CastSecondsToHM(GetTransferSecs());
 	}
 
 	if (stat_serverConnectTime==0) {
 		(*con5) = _("Waiting for connection...");
 	}	else {
-		(*con5) = _("Connected To Server Since: ") + CastSecondsToHM(GetServerSecs());
+		(*con5) = CFormat(_("Connected To Server Since: %s")) % CastSecondsToHM(GetServerSecs());
 	}
 
-	(*con6) = wxString::Format(wxT("%s: %i"),_("Active Connections (estimate)"), theApp.listensocket->GetActiveConnections());	
+	(*con6) = wxString::Format(_("Active Connections (estimate): %i"), theApp.listensocket->GetActiveConnections());
 	uint32 m_itemp = theApp.listensocket->GetMaxConnectionReached();
 	if( m_itemp != m_ilastMaxConnReached ) {
 		
 		wxDateTime now = wxDateTime::Now();
 
-		(*con7) = wxString::Format(wxT("%s: %i : "),_("Max Connection Limit Reached"),m_itemp) +  now.FormatISODate() + wxT(" ") + now.FormatISOTime();
+		(*con7) = CFormat(_("Max Connection Limit Reached: %i : %s")) % m_itemp % (now.FormatISODate() + wxT(" ") + now.FormatISOTime());
 
 		m_ilastMaxConnReached = m_itemp;
 	} else if( m_itemp == 0 ) {
-		(*con7) = wxString::Format(wxT("%s: %s"),_("Max Connection Limit Reached"), _("Never"));
+		(*con7) = _("Max Connection Limit Reached: Never");
 	}
 
 	if(theApp.serverconnect->IsConnected()) {
-		(*con8) = wxString::Format(wxT("%s: %f"),_("Average Connections (estimate)"),(theApp.listensocket->GetAverageConnections()));
+		(*con8) = wxString::Format(_("Average Connections (estimate): %f"),theApp.listensocket->GetAverageConnections());
 	} else {
-		(*con8) = _("waiting for connection...");
+		(*con8) = _("Waiting for connection...");
 	}
-	(*con9) = wxString::Format(wxT("%s: %i"),_("Peak Connections (estimate)"),theApp.listensocket->GetPeakConnections());
+	(*con9) = wxString::Format(_("Peak Connections (estimate): %i"),theApp.listensocket->GetPeakConnections());
 
 		
 	if (stat_sessionReceivedBytes>0 && stat_sessionSentBytes>0 ) {
 		if (stat_sessionReceivedBytes<stat_sessionSentBytes) {
-			(*tran0) = _("Session UL:DL Ratio (Total): ") 
-						+  wxString::Format(wxT("%.2f : 1"),(float)stat_sessionSentBytes/stat_sessionReceivedBytes);
+			(*tran0) = CFormat(_("Session UL:DL Ratio (Total): %s")) % wxString::Format(wxT("%.2f : 1"),(float)stat_sessionSentBytes/stat_sessionReceivedBytes);
 		} else {
-			(*tran0) = _("Session UL:DL Ratio (Total): ")
-						+ wxString::Format(wxT("1 : %.2f"),(float)stat_sessionReceivedBytes/stat_sessionSentBytes);
+			(*tran0) = CFormat(_("Session UL:DL Ratio (Total): %s")) % wxString::Format(wxT("1 : %.2f"),(float)stat_sessionReceivedBytes/stat_sessionSentBytes);
 		}
 	} else {
-			(*tran0) = wxString(_("Session UL:DL Ratio (Total): ")) + _("Not available");
+			(*tran0) = _("Session UL:DL Ratio (Total): Not available");
 	}
 
 
@@ -916,13 +915,9 @@ void CStatistics::UpdateStatsTree() {
 	(*shar1) = wxString::Format(_("Number of Shared Files: %i"),file_count);
 
 	uint64 allsize=theApp.sharedfiles->GetDatasize();
-	(*shar2) = wxString::Format(_("Total size of Shared Files: ") + CastItoXBytes(allsize));
+	(*shar2) = CFormat(_("Total size of Shared Files: %s")) % CastItoXBytes(allsize);
 	
-	if(file_count != 0) {
-		(*shar3) = _("Average filesize: ") +  CastItoXBytes((uint64)allsize/file_count);
-	} else {
-		(*shar3) = wxString(_("Average filesize: ")) + wxT("-");
-	}
+	(*shar3) = CFormat(_("Average filesize: %s")) % ( (file_count != 0) ? CastItoXBytes((uint64)allsize/file_count) : wxT("-") );
 
 	// get clientversion-counts
 

@@ -63,6 +63,7 @@
 #include "BarShader.h"		// Needed for CBarShader
 #include "Preferences.h"
 #include "Logger.h"
+#include "Format.h"		// Needed for CFormat
 
 #include <list>
 
@@ -740,16 +741,13 @@ void CDownloadListCtrl::OnGetFeedback( wxCommandEvent& WXUNUSED(event) )
 	for ( ItemList::iterator it = files.begin(); it != files.end(); ++it ) {
 		CPartFile* file = (CPartFile*)(*it)->value;
 	
-		feed << _("Feedback from: ") <<	thePrefs::GetUserNick() << wxT("\r\n");
-		feed << _("Client: aMule ") << wxT(VERSION) << wxT("\r\n");
-		feed << _("File Name: ") + file->GetFileName() + wxT("\r\n");
-		feed << _("File size: ") << (file->GetFileSize()/1048576) <<
-			_(" MB") << wxT("\r\n");
-		feed << _("Download: ") << (file->GetCompletedSize()/1048576) <<
-			_(" MB") << wxT("\r\n");
-		feed << _("Sources: ") << file->GetSourceCount() << wxT("\r\n");
-		feed << _("Complete Sources: ") << file->m_nCompleteSourcesCount <<
-			wxString(wxT("\r\n"));
+		feed << CFormat(_("Feedback from: %s\r\n")) % thePrefs::GetUserNick();
+		feed << CFormat(_("Client: aMule %s\r\n")) % wxT(VERSION);
+		feed << CFormat(_("File Name: %s\r\n")) % file->GetFileName();
+		feed << CFormat(_("File size: %u MB\r\n")) % (file->GetFileSize()/1048576);
+		feed << CFormat(_("Download: %u MB\r\n")) % (file->GetCompletedSize()/1048576);
+		feed << CFormat(_("Sources: %u\r\n")) % file->GetSourceCount();
+		feed << CFormat(_("Complete Sources: %u\r\n")) % file->m_nCompleteSourcesCount;
 	}
 
 	if ( !feed.IsEmpty() ) {
@@ -2262,6 +2260,6 @@ void CDownloadListCtrl::PreviewFile(CPartFile* file)
 	// <jacobo221> mplayer users (like me) should use xterm -T "aMule Preview" -iconic -e mplayer -idx
 	if (!wxExecute(command,wxEXEC_ASYNC)) {
 		AddLogLineM( true, _("ERROR: Failed to execute external media-player!") );
-		AddLogLineM( false, wxString( _("Command: ") ) + command );
+		AddLogLineM( false, CFormat( _("Command: %s") ) % command );
 	}
 }

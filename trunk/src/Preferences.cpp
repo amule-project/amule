@@ -58,7 +58,7 @@
 #include "CFile.h"
 #include "MD5Sum.h"
 #include "Logger.h"
-#include "Format.h"
+#include "Format.h"		// Needed for CFormat
 
 #ifndef AMULE_DAEMON
 #include <wx/valgen.h>

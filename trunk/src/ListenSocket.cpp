@@ -45,10 +45,10 @@
 #include "Packet.h"		// Needed for CPacket
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "OtherStructs.h"	// Needed for Requested_Block_Struct
-#include "ServerConnect.h"		// Needed for CServerConnect
+#include "ServerConnect.h"	// Needed for CServerConnect
 #include "Statistics.h"
 #include "Logger.h"
-#include "Format.h"
+#include "Format.h"		// Needed for CFormat
 
 #include <wx/listimpl.cpp>
 #include <wx/dynarray.h>
@@ -709,7 +709,11 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					} else {
 						if ( CLogger::IsEnabled( logClient ) ) {
 								if (auEndOffsets[i] != 0 || auStartOffsets[i] != 0) {
-									AddLogLineM( false, wxString::Format(_("Client requests invalid %u. file block %u-%u (%d bytes): "), i, auStartOffsets[i], auEndOffsets[i], auEndOffsets[i] - auStartOffsets[i])  + m_client->GetFullIP());
+									wxString msg = wxString::Format(_("Client requests invalid %u."), i);
+									msg += wxT(" ") + wxString::Format(_("File block %u-%u (%d bytes):"), auStartOffsets[i], auEndOffsets[i], auEndOffsets[i] - auStartOffsets[i]);
+									msg += wxT(" ") + m_client->GetFullIP();
+								//	AddLogLineM( false, CFormat(_("Client requests invalid %u. file block %u-%u (%d bytes): %s")) % i % auStartOffsets[i] % auEndOffsets[i] % auEndOffsets[i] - auStartOffsets[i] % m_client->GetFullIP());
+									AddLogLineM(false, msg);
 								}
 							}
 						}
@@ -882,15 +886,13 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					for (CKnownFileMap::iterator pos = filemap.begin();pos != filemap.end(); pos++ ) {
 						list.AddTail((void*&)pos->second);
 					}
-					AddLogLineM( true, CFormat( _("User %s (%u) requested your requested your sharedfiles-list -> %s"))
+					AddLogLineM( true, CFormat( _("User %s (%u) requested your requested your sharedfiles-list -> Accepted"))
 						% m_client->GetUserName() 
-						% m_client->GetUserID()
-						% _("Accepted") );
+						% m_client->GetUserID() );
 				} else {
-					AddLogLineM( true, CFormat( _("User %s (%u) requested your requested your sharedfiles-list -> %s"))
+					AddLogLineM( true, CFormat( _("User %s (%u) requested your requested your sharedfiles-list -> Denied"))
 						% m_client->GetUserName() 
-						% m_client->GetUserID()
-						% _("Denied") );
+						% m_client->GetUserID() );
 				}
 				// now create the memfile for the packet
 				CSafeMemFile tempfile(80);
@@ -927,10 +929,9 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					break;
 				}
 				if ((thePrefs::CanSeeShares()==vsfaEverybody) || ((thePrefs::CanSeeShares()==vsfaFriends) && m_client->IsFriend())) {
-					AddLogLineM( true, CFormat( _("User %s (%u) requested your shareddirectories-list -> %s") )
+					AddLogLineM( true, CFormat( _("User %s (%u) requested your shareddirectories-list -> Accepted") )
 						% m_client->GetUserName()
-						% m_client->GetUserID()
-						% _("Accepted") );
+						% m_client->GetUserID() );
 
 					// Kry - This new code from eMule will avoid duplicated folders
 					ArrayOfwxStrings folders_to_send;
@@ -986,10 +987,9 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					theApp.statistics->AddUpDataOverheadOther(replypacket->GetPacketSize());
 					SendPacket(replypacket, true, true);
 				} else {
-					AddLogLineM( true, CFormat( _("User %s (%u) requested your shareddirectories-list -> %s") )
+					AddLogLineM( true, CFormat( _("User %s (%u) requested your shareddirectories-list -> Denied") )
 						% m_client->GetUserName()
-						% m_client->GetUserID()
-						% _("Denied") );
+						% m_client->GetUserID() );
 
 					CPacket* replypacket = new CPacket(OP_ASKSHAREDDENIEDANS, 0);
 					theApp.statistics->AddUpDataOverheadOther(replypacket->GetPacketSize());
@@ -1090,7 +1090,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				wxString strDir = data.ReadString(m_client->GetUnicodeSupport());
 
 				if (m_client->GetFileListRequested() > 0){
-					AddLogLineM( true, CFormat( _("User %s (%u) sent sharedfiles-list for directory ") )
+					AddLogLineM( true, CFormat( _("User %s (%u) sent sharedfiles-list for directory %s") )
 						% m_client->GetUserName()
 						% m_client->GetUserID()
 						% strDir );

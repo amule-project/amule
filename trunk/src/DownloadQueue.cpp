@@ -52,7 +52,7 @@
 #include "NetworkFunctions.h" // Needed for CAsyncDNS
 #include "Statistics.h"		// Needed for CStatistics
 #include "Logger.h"
-#include "Format.h"
+#include "Format.h"		// Needed for CFormat
 
 #include <algorithm>
 #include <numeric>
@@ -153,7 +153,7 @@ void CDownloadQueue::LoadMetFiles( const wxString& path )
 	if ( GetFileCount() == 0 ) {
 		AddLogLineM(false, _("No part files found"));
 	} else {
-		AddLogLineM(false, wxString::Format(_("Found %u part files"), GetFileCount() ));
+		AddLogLineM(false, wxString::Format(_("Found %u part files"), GetFileCount()) );
 		
 		DoSortByPriority();
 		CheckDiskspace( path );
@@ -311,7 +311,7 @@ void CDownloadQueue::AddDownload(CPartFile* file, bool paused, uint8 category)
 
 	file->SetCategory(category);
 	Notify_DownloadCtrlAddFile( file );
-	AddLogLineM(true, _("Downloading ") + file->GetFileName() );
+	AddLogLineM(true, CFormat(_("Downloading %s")) % file->GetFileName() );
 }
 
 
@@ -1242,7 +1242,7 @@ bool CDownloadQueue::AddED2KLink( const wxString& link, int category )
 		
 		return result;
 	} catch ( const wxString& err ) {
-		AddLogLineM( true, CFormat( _("Invalid ed2k link! Error: %s") ) % err);
+		AddLogLineM( true, CFormat( _("Invalid ed2k link! Error: %s")) % err);
 	}
 	
 	return false;

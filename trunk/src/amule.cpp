@@ -101,7 +101,7 @@
 #include "Statistics.h"
 #include "AICHSyncThread.h"
 #include "Logger.h"
-#include "Format.h"
+#include "Format.h"		// Needed for CFormat
 
 #ifndef AMULE_DAEMON
 	#include <wx/splash.h>			// Needed for wxSplashScreen
@@ -1085,7 +1085,7 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 	
 	// Open both files if needed
 	if ( !emulesig_out.Create( m_emulesig_path) ) {
-		AddLogLineM(true, wxString(_("Failed to create"))+_(" OnlineSig File"));
+		AddLogLineM(true, _("Failed to create OnlineSig File"));
 		// Will never try again.
 		m_amulesig_path.Clear();
 		m_emulesig_path.Clear();
@@ -1093,7 +1093,7 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 	}
 	
 	if ( !amulesig_out.Create(m_amulesig_path) ) {
-		AddLogLineM(true, wxString(_("Failed to create"))+_(" aMule OnlineSig File"));
+		AddLogLineM(true, _("Failed to create aMule OnlineSig File"));
 		// Will never try again.
 		m_amulesig_path.Clear();
 		m_emulesig_path.Clear();
@@ -1267,20 +1267,19 @@ void CamuleApp::Localize_mule()
 // Is called when the user runs a new version of aMule
 void CamuleApp::Trigger_New_version(wxString new_version)
 {
-	wxString info = _(" --- This is the first time you run aMule %s ---\n\n");
-	info.Replace( wxT("%s"), new_version );
+	wxString info = wxT(" --- ") + CFormat(_("This is the first time you run aMule %s")) % new_version + wxT(" ---\n\n");
 	if (new_version == wxT("CVS")) {
-		info += _("This version is a testing version, updated daily, and \n");
+		info += _("This version is a testing version, updated daily, and\n");
 		info += _("we give no warranty it won't break anything, burn your house,\n");
-		info += _("or kill your dog. But it *should* be safe to use anyway. \n");
+		info += _("or kill your dog. But it *should* be safe to use anyway.\n");
 	} 
 	
 	// General info
 	info += wxT("\n");
-	info += _("More information, support and new releases can found at our homepage, \n");
-	info += _("at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net. \n");
+	info += _("More information, support and new releases can found at our homepage,\n");
+	info += _("at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n");
 	info += wxT("\n");
-	info += _("Feel free to report any bugs to forum.amule.org");
+	info += _("Feel free to report any bugs to http://forum.amule.org");
 
 	ShowAlert(info, _("Info"), wxCENTRE | wxOK | wxICON_ERROR);
 }

@@ -31,6 +31,8 @@
 #pragma implementation "ECFileConfig.h"
 #endif
 
+#include "Format.h"		// Needed for CFormat
+
 #include <stdio.h>		// Needed for fprintf(stderr, ...)
 #include <wx/filefn.h>
 #include <wx/intl.h>		// For _()
@@ -305,9 +307,7 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxSt
 	addr.Hostname(m_host);
 	addr.Service(m_port);
 
-	Show(	_("Using host '") + addr.Hostname() + 
-		_("' port:") + wxString::Format(wxT("%d"), addr.Service()) + 
-		wxT("\n") );
+	Show( CFormat(_("Using host '%s' port: %d\n")) % addr.Hostname() % addr.Service());
 	Show(_("Trying to connect (timeout = 10 sec)...\n"));
   	m_ECClient->Connect(addr, false);
 	m_ECClient->WaitOnConnect(10);
@@ -328,7 +328,7 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxSt
 			if (reply->GetTagCount() > 0) {
 			    CECTag *reason = reply->GetTagByName(EC_TAG_STRING);
 			    if (reason != NULL) {
-				Show(wxString(_("ExternalConn: Access denied because: ")) + wxGetTranslation(reason->GetStringData()) + wxT("\n"));
+				Show(CFormat(_("ExternalConn: Access denied because: %s\n")) % wxGetTranslation(reason->GetStringData()));
 			    } else {
 				Show(_("ExternalConn: Access denied.\n"));
 			    }
@@ -340,7 +340,7 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxSt
 		    } else {
 			m_isConnected = true;
 			if (reply->GetTagByName(EC_TAG_SERVER_VERSION)) {
-				Show(_("Succeeded! Connection established to aMule ") + reply->GetTagByName(EC_TAG_SERVER_VERSION)->GetStringData() + wxT("\n"));
+				Show(CFormat(_("Succeeded! Connection established to aMule %s\n")) % reply->GetTagByName(EC_TAG_SERVER_VERSION)->GetStringData());
 			} else {
 				Show(_("Succeeded! Connection established.\n"));
 			}
@@ -356,7 +356,7 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxSt
 			} else {
 				TextShell(ProgName, commands);
 			}
-			Show(_("\nOk, exiting ") + ProgName + wxT("...\n"));
+			Show(CFormat(_("\nOk, exiting %s...\n")));
 #endif
 			Post_Shell();
 		    }

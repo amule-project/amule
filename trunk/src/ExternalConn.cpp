@@ -54,7 +54,7 @@
 #include "ECcodes.h"		// Needed for OPcodes, TAGnames
 #include "ECSpecialTags.h"	// Needed for special EC tag creator classes
 #include "Statistics.h"
-#include "Format.h"
+#include "Format.h"		// Needed for CFormat
 
 using namespace otherfunctions;
 
@@ -545,9 +545,9 @@ CECPacket *Get_EC_Response_PartFile_Cmd(const CECPacket *request)
 		CPartFile *pfile = theApp.downloadqueue->GetFileByID( hash );
 		
 		if ( !pfile ) {
-			AddLogLineM(false,_("Remote PartFile command failed: FileHash not found: ") + hash.Encode());
+			AddLogLineM(false,CFormat(_("Remote PartFile command failed: FileHash not found: %s")) % hash.Encode());
 			response = new CECPacket(EC_OP_FAILED);
-			response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("FileHash not found: ") + hash.Encode()));
+			response->AddTag(CECTag(EC_TAG_STRING, CFormat(wxTRANSLATE("FileHash not found: %s")) % hash.Encode()));
 			//return response;
 			break;
 		}
@@ -651,7 +651,7 @@ CECPacket *Get_EC_Response_Server(const CECPacket *request)
 		if ( !srv ) {
 			response = new CECPacket(EC_OP_FAILED);
 			response->AddTag(CECTag(EC_TAG_STRING,
-						wxString(wxTRANSLATE("server not found: ")) + srv_tag->GetIPv4Data().StringIP()));
+						CFormat(wxTRANSLATE("server not found: %s")) % srv_tag->GetIPv4Data().StringIP()));
 			return response;
 		}
 	}
@@ -998,7 +998,7 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 				if ( theApp.downloadqueue->AddED2KLink( link ) ) {
 					response = new CECPacket(EC_OP_NOOP);
 				} else {
-					AddLogLineM(true, _("ExternalConn: Unable to understand ed2k link '") + link + wxT("'."));
+					AddLogLineM(true, CFormat(_("ExternalConn: Unable to understand ed2k link '%s'.")) % link);
 					response = new CECPacket(EC_OP_FAILED);
 				}
 			}

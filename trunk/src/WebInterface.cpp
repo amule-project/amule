@@ -49,6 +49,7 @@
 #include "OtherFunctions.h"
 #include "WebInterface.h"
 #include "WebServer.h"
+#include "Format.h"		// Needed for CFormat
 
 //-------------------------------------------------------------------
 
@@ -355,7 +356,7 @@ bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 		}
 		if (!GetTemplateDir(m_TemplateName, m_TemplateDir)) {
 			// no reason to run webserver without a template
-			fprintf(stderr, (const char *)unicode2char(_("FATAL ERROR: Cannot find template: ") + m_TemplateName + wxT("\n")));
+			fprintf(stderr, (const char *)unicode2char(CFormat(_("FATAL ERROR: Cannot find template: %s")) % m_TemplateName + wxT("\n")));
 			exit(1);
 			//return false;
 		}
@@ -429,17 +430,17 @@ void CamulewebApp::ShowHelp() {
 //                                  1         2         3         4         5         6         7         8
 //                         12345678901234567890123456789012345678901234567890123456789012345678901234567890
 	Show(         _("\n----------------> Help: Available commands (case insensitive): <----------------\n\n"));	
-	Show(wxString(wxT("Help:\t\t\t")) + wxString(_("Shows this help.\n")));
-	//Show(wxString(wxT("Start:\t\t\t)) + wxString(_("Start web server.\n")));
-	//Show(wxString(wxT("Stop:\t\t\t))  + wxString(_("Stop web server.\n")));
-	//Show(wxString(wxT("Restart:\t\t\t)) + wxString(_("Restart web server.\n")));
-	Show(wxString(wxT("Quit, Exit:\t\t")) + wxString(_("Exits aMuleWeb.\n")));
+	Show(wxT("Help:\t\t\t") + _("Shows this help.\n"));
+	//Show(wxT("Start:\t\t\t) + _("Start web server.\n"));
+	//Show(wxT("Stop:\t\t\t)  + _("Stop web server.\n"));
+	//Show(wxT("Restart:\t\t\t) + _("Restart web server.\n"));
+	Show(wxT("Quit, Exit:\t\t") + _("Exits aMuleWeb.\n"));
 	Show(         _("\n----------------------------> End of listing <----------------------------------\n"));
 }
 
 void CamulewebApp::ShowGreet() {
 	Show(wxT("\n---------------------------------\n"));
-	Show(wxString(wxT("|       ")) + wxString(_("aMule Web Server")) + wxString(wxT("        |\n")));
+	Show(wxT("|       ")) + wxString(_("aMule Web Server") + wxT("        |\n"));
 	Show(wxT("---------------------------------\n\n"));
 	Show(_("\nUse 'Help' for command list\n\n"));
 }
