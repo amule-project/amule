@@ -906,11 +906,16 @@ void CPreferences::SetMaxDownload(uint16 in)
 void CPreferences::CheckUlDlRatio()
 {
 	// Backwards compatibility
-	if ( s_maxupload == 0xFFFF )	s_maxupload = 0;
+	if ( s_maxupload == 0xFFFF )
+		s_maxupload = UNLIMITED;
 
 	// Backwards compatibility
-	if ( s_maxdownload == 0xFFFF )	s_maxdownload = 0;
+	if ( s_maxdownload == 0xFFFF )
+		s_maxdownload = UNLIMITED;
 		
+	if ( s_maxupload == UNLIMITED )
+		return;
+	
 	// Enforce the limits
 	if ( s_maxupload < 4  ) {
 		if ( ( s_maxupload * 3 < s_maxdownload ) || ( s_maxdownload == 0 ) )
