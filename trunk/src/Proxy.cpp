@@ -483,13 +483,10 @@ bool wxSocketProxy::DoHttp(wxIPaddress& address, wxProxyCommand cmd)
 bool wxSocketProxy::DoHttpRequest(wxIPaddress& address, unsigned char cmd)
 {
 	// Prepare the request command buffer
-	wxCharBuffer buf = unicode2char(address.IPAddress());
+	wxCharBuffer buf(unicode2charbuf(address.IPAddress()));
 	const char *host = (const char *)buf;
 	uint16 port = address.Service();
-	wxString UserPass = wxString::Format(
-		wxT("%s:%s"),
-		unicode2char(m_ProxyData.Username),
-		unicode2char(m_ProxyData.Password));
+	wxString UserPass = m_ProxyData.Username + wxT(":") + m_ProxyData.Password;
 	wxString UserPassEncoded = otherfunctions::EncodeBase64(m_buffer, wxPROXY_BUFFER_SIZE);
 	wxString msg = wxString::Format(
 		wxT(
