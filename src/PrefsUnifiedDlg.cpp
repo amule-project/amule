@@ -51,7 +51,7 @@
 #include "SharedFileList.h"	// Needed for CSharedFileList
 #include "StatisticsDlg.h"	// Needed for graph parameters, colors
 #include "Wizard.h"			// Needed for Wizard
-
+#include "IPFilter.h"		// Needed for CIPFilter
 
 
 // The following classes are used for table-driven access to user-definable settings,
@@ -875,7 +875,8 @@ void PrefsUnifiedDlg::BuildItemList(Preferences_Struct *prefs, char * appdir)  /
 	listRse.AddTail(new RseBool(IDC_EXT_CONN_USETCP, prefs->ECUseTCPPort, "ECUseTCPPort", false,"ExternalConnect"));
 	listRse.AddTail(new RseInt(IDC_EXT_CONN_TCP_PORT, prefs->ECPort, "ECPort", 4712, "ExternalConnect"));
 	listRse.AddTail(new RseStringEncrypted(IDC_EXT_CONN_PASSWD, prefs->ECPassword, sizeof(prefs->ECPassword), "ECPassword", "ExternalConnect"));
-	listRse.AddTail(new RseBool(0, prefs->bDlgTabsOnTop, "DlgTabsOnTop", false));  // no GUI yet
+	listRse.AddTail(new RseBool(0, prefs->bDlgTabsOnTop, "DlgTabsOnTop", false));  // no GUI yet	
+	listRse.AddTail(new RseBool(IDC_IPFONOFF, prefs->IPFilterOn, "IpFilterOn", true)); 	 
 
 }
 
@@ -915,6 +916,7 @@ BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	EVT_BUTTON(IDC_EDITADR, PrefsUnifiedDlg::OnButtonEditAddr)
 	EVT_BUTTON(ID_DESKTOPMODE, PrefsUnifiedDlg::OnButtonSystray)
 	EVT_BUTTON(IDC_WIZARD, PrefsUnifiedDlg::OnButtonWizard)
+	EVT_BUTTON(IDC_IPFRELOAD, PrefsUnifiedDlg::OnButtonIPFilterReload)
 	EVT_BUTTON(IDC_COLOR_BUTTON, PrefsUnifiedDlg::OnButtonColorChange)
 	EVT_CHOICE(IDC_COLORSELECTOR, PrefsUnifiedDlg::OnColorCategorySelected)
 END_EVENT_TABLE()
@@ -1289,8 +1291,9 @@ void PrefsUnifiedDlg::OnButtonEditAddr(wxEvent& evt)
 	delete test;
 }
 
-
-
+void PrefsUnifiedDlg::OnButtonIPFilterReload(wxCommandEvent &event) {
+	theApp.ipfilter->Reload();
+}	
 void PrefsUnifiedDlg::LoadAllItems(CIni& ini)
 {
 	for (POSITION pos=listRse.GetHeadPosition();  pos!=NULL;  pos=listRse.NextAt(pos)) {

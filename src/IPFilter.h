@@ -21,6 +21,7 @@
 #include "types.h"		// Needed for uint8, uint16 and uint32
 #include "CString.h"		// Needed for CString
 #include "CArray.h"		// Needed for CArray
+#include <wx/thread.h>
 
 struct IPRange_Struct {
    uint32           IPstart;
@@ -30,8 +31,11 @@ struct IPRange_Struct {
    ~IPRange_Struct() {  }
 };
 
+static wxMutex s_IPfilter_Data_mutex;
+
 class CIPFilter
 {
+	
 public:
 	CIPFilter();
 	~CIPFilter();
@@ -42,9 +46,9 @@ public:
 	bool	IsFiltered(uint32 IP2test);
 	CString GetLastHit()				{ return lasthit;}
 	uint16	BanCount()					{ return iplist.GetCount(); }
-private:
+	void 	Reload();
+private: 
 	CString lasthit;
-	//CMutex m_Mutex;
 	CArray<IPRange_Struct*,IPRange_Struct*> iplist;
 };
 

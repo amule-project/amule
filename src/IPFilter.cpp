@@ -33,6 +33,13 @@ CIPFilter::~CIPFilter(){
 	RemoveAllIPs();
 }
 
+void CIPFilter::Reload(){
+	wxMutexLocker lock(s_IPfilter_Data_mutex);
+	RemoveAllIPs();
+	lasthit="";
+	LoadFromFile();
+}
+
 void CIPFilter::AddBannedIPRange(uint32 IPfrom,uint32 IPto,uint8 filter, CString desc){
 	IPRange_Struct* newFilter=new IPRange_Struct();
 	IPRange_Struct* search;
@@ -192,7 +199,7 @@ void CIPFilter::RemoveAllIPs(){
 }
 
 bool CIPFilter::IsFiltered(uint32 IP2test){
-	if (iplist.GetCount()==0) return false;
+	if ((iplist.GetCount()==0) || (!theApp.glob_prefs->GetIPFilterOn()) ) return false;
 
 	//CSingleLock(&m_Mutex,TRUE); // will be unlocked on exit
 

@@ -297,9 +297,9 @@ struct Preferences_Struct{
 	bool 	ECUseTCPPort;
 	int32	ECPort;
 	char	ECPassword[256];
-	// Added when  MD5 password enabled
-	//	char		ECLowPassword[256]; 
-
+	
+	// Kry - IPFilter On/Off
+	bool		IPFilterOn;
 	
 	bool	FastED2KLinksHandler;	// Madcat - Toggle Fast ED2K Links Handler
 	bool	bDlgTabsOnTop;			// Creteil: dlg aesthetics
@@ -715,6 +715,9 @@ public:
 	// Madcat - Fast ED2K Links Handler Toggling
 	bool	GetFED2KLH() { return prefs->FastED2KLinksHandler; }
 	bool	BDlgTabsOnTop()	{ return prefs->bDlgTabsOnTop; }
+	
+	// Kry - Ip filter On/Off
+	bool GetIPFilterOn() { return prefs->IPFilterOn; }
 	
 #ifndef UNIFIED_PREF_HANDLING
 	void	SetStatsColor(int index,DWORD value) 	{prefs->statcolors[index]=value;}

@@ -85,7 +85,7 @@ private:
 
 private:
     // WDR: handler declarations for PrefsUnifiedDlg
-    void OnOk(wxCommandEvent &event);
+	void OnOk(wxCommandEvent &event);
 	void OnCancel(wxCommandEvent &event);
 	void OnButtonBrowseWav(wxEvent &event);
 	void OnButtonBrowseVideoplayer(wxEvent &event);
@@ -94,10 +94,12 @@ private:
 	void OnButtonSystray(wxEvent& event);
 	void OnButtonEditAddr(wxEvent& event);
 	void OnButtonColorChange(wxCommandEvent &event);
+	void OnButtonIPFilterReload(wxCommandEvent &event);
 	void OnSpinMaxDLR(wxCommandEvent &event);
 	void OnColorCategorySelected(wxCommandEvent &event);
 	void OnCheckBoxChange(wxEvent &event);
 	void OnScroll(wxCommandEvent &event);
+
 
 private:
     DECLARE_EVENT_TABLE()
