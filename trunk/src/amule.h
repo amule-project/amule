@@ -89,6 +89,9 @@ enum Core_Event_ID {
 	FILE_COMPLETION_FINISHED,
 	
 	SOURCE_DNS_DONE,
+	DNS_DONE,
+			
+	EVENT_TIMER,
 };
 
 DECLARE_EVENT_TYPE(wxEVT_CORE_FILE_HASHING_FINISHED, wxEVT_USER_FIRST+FILE_HASHING_FINISHED)
@@ -96,10 +99,12 @@ DECLARE_EVENT_TYPE(wxEVT_CORE_FILE_HASHING_SHUTDOWN, wxEVT_USER_FIRST+FILE_HASHI
 DECLARE_EVENT_TYPE(wxEVT_CORE_FINISHED_FILE_COMPLETION, wxEVT_USER_FIRST+FILE_COMPLETION_FINISHED)
 
 DECLARE_EVENT_TYPE(wxEVT_CORE_SOURCE_DNS_DONE, wxEVT_USER_FIRST+SOURCE_DNS_DONE)
+DECLARE_EVENT_TYPE(wxEVT_CORE_DNS_DONE, wxEVT_USER_FIRST+DNS_DONE)
 
 class wxMuleInternalEvent : public wxEvent {
 	void *m_ptr;
 	long m_value;
+	int  m_commandInt;
 	public:
 	wxMuleInternalEvent(int id, void *ptr = 0, long value = 0) : wxEvent(-1, id)
 	{
@@ -118,6 +123,15 @@ class wxMuleInternalEvent : public wxEvent {
 	{
 		return m_value;
 	}
+	void SetInt(int i)
+	{
+		m_commandInt = i;
+	}
+	long GetInt() const
+	{
+		return m_commandInt; 
+	}
+
 	void SetClientData(void *ptr)
 	{
 		m_ptr = ptr;
@@ -252,7 +266,7 @@ protected:
 	void ClientUDPSocketHandler(wxSocketEvent& event);
 
 
-	void OnDnsDone(wxCommandEvent& evt);
+	void OnDnsDone(wxEvent& evt);
 	void OnSourcesDnsDone(wxEvent& evt);
 
 	void OnUDPTimer(wxTimerEvent& evt);
@@ -261,7 +275,7 @@ protected:
 	void OnCoreTimer(wxTimerEvent& evt);
 
 	void OnFinishedHashing(wxEvent& evt);
-	void OnFinishedCompletion(wxCommandEvent& evt);
+	void OnFinishedCompletion(wxEvent& evt);
 	void OnHashingShutdown(wxEvent&);
 
 	void SetTimeOnTransfer();

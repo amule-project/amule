@@ -134,8 +134,7 @@ BEGIN_EVENT_TABLE(CamuleApp, wxApp)
 	// Socket handlers
 		// Listen Socket
 		EVT_SOCKET(LISTENSOCKET_HANDLER, CamuleApp::ListenSocketHandler)
-		// Clients sockets
-		//EVT_SOCKET(CLIENTREQSOCKET_HANDLER, CamuleApp::ClientReqSocketHandler)
+		
 		// UDP Socket (servers)
 		EVT_SOCKET(UDPSOCKET_HANDLER, CamuleApp::UDPSocketHandler)
 		// UDP Socket (clients)
@@ -151,8 +150,8 @@ BEGIN_EVENT_TABLE(CamuleApp, wxApp)
 		EVT_TIMER(ID_CORETIMER, CamuleApp::OnCoreTimer)
 
 	// Async dns handling
-		EVT_MENU(TM_DNSDONE, CamuleApp::OnDnsDone)
-
+		EVT_CUSTOM(wxEVT_CORE_DNS_DONE, -1, CamuleApp::OnDnsDone)
+		
 		EVT_CUSTOM(wxEVT_CORE_SOURCE_DNS_DONE, -1, CamuleApp::OnSourcesDnsDone)
 	// Hash ended notifier
 
@@ -163,7 +162,7 @@ BEGIN_EVENT_TABLE(CamuleApp, wxApp)
 		EVT_CUSTOM(wxEVT_CORE_FILE_HASHING_SHUTDOWN, -1, CamuleApp::OnHashingShutdown)
 
 	// File completion ended notifier
-		EVT_MENU(TM_FILECOMPLETIONFINISHED, CamuleApp::OnFinishedCompletion)
+		EVT_CUSTOM(wxEVT_CORE_FINISHED_FILE_COMPLETION, -1, CamuleApp::OnFinishedCompletion)
 
 END_EVENT_TABLE()
 
@@ -1542,8 +1541,9 @@ void CamuleApp::ClientUDPSocketHandler(wxSocketEvent& event) {
 	}
 }
 
-void CamuleApp::OnDnsDone(wxCommandEvent& evt)
+void CamuleApp::OnDnsDone(wxEvent& e)
 {
+	wxMuleInternalEvent& evt = *((wxMuleInternalEvent*)&e);
 	CUDPSocket* socket=(CUDPSocket*)evt.GetClientData();
 	struct sockaddr_in *si=(struct sockaddr_in*)evt.GetExtraLong();
 	socket->DnsLookupDone(si);
@@ -1676,8 +1676,9 @@ void CamuleApp::OnFinishedHashing(wxEvent& e)
 	return;
 }
 
-void CamuleApp::OnFinishedCompletion(wxCommandEvent& evt)
+void CamuleApp::OnFinishedCompletion(wxEvent& e)
 {
+	wxMuleInternalEvent& evt = *((wxMuleInternalEvent*)&e);
 	CPartFile* completed = (CPartFile*)evt.GetClientData();
 	wxASSERT(completed);
 	completed->CompleteFileEnded(evt.GetInt(), (wxString*)evt.GetExtraLong());
@@ -2168,4 +2169,4 @@ DEFINE_EVENT_TYPE(wxEVT_CORE_FILE_HASHING_FINISHED)
 DEFINE_EVENT_TYPE(wxEVT_CORE_FILE_HASHING_SHUTDOWN)
 DEFINE_EVENT_TYPE(wxEVT_CORE_FINISHED_FILE_COMPLETION)
 DEFINE_EVENT_TYPE(wxEVT_CORE_SOURCE_DNS_DONE)
-
+DEFINE_EVENT_TYPE(wxEVT_CORE_DNS_DONE)

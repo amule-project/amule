@@ -424,7 +424,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				memcpy (temp,&buffer[num+8],num2);
 				temp[num2]=0; //close the string
 				update->SetDescription(char2unicode(temp));
-				theApp.amuledlg->ShowConnectionState(true,update->GetListName());
+				Notify_ShowConnState(true,update->GetListName());
 				Notify_ServerRefresh(update);
 				delete[] temp;
 				delete[] buffer;
