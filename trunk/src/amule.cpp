@@ -921,7 +921,11 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 	amulesig_out.Write("\n",1);
 
 	// amule version
-	sprintf(buffer,"%s",VERSION);
+#ifdef CVSDATE
+	sprintf(buffer, "%s %s", VERSION, CVSDATE);
+#else
+    strcpy(buffer, VERSION);
+#endif
 	amulesig_out.Write(buffer, strlen(buffer));
 	amulesig_out.Write("\n",1);
 
