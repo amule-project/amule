@@ -236,25 +236,18 @@ public:
 			return m_ranges.insert( m_ranges.end(), RangePair( start, RangeItems( end, object ) ) );
 		}
 
-        // Find first range whose start comes after the new start
-		RangeIterator it;
-		
-		// Check the last element first, since sequential insertions are commen
-		if ( size() ) {
-			// Get the last actual range object-iterato
-			it = --m_ranges.end();
+        // Find first range whose start comes after the new start. We check
+		// the last element first, since sequential insertions are commen
+		RangeIterator it = --m_ranges.end();
 
-			// The endkey of the last element must be smaller than our start-key
-			if ( it->second.first >= start ) {
-				it = m_ranges.upper_bound( start );
+		// The endkey of the last element must be smaller than our start-key
+		if ( it->second.first >= start ) {
+			it = m_ranges.upper_bound( start );
 
-				if ( it != m_ranges.begin() ) {
-					// Go back to the last range which starts at or before key
-					it--;
-				}
+			if ( it != m_ranges.begin() ) {
+				// Go back to the last range which starts at or before key
+				--it;
 			}
-		} else {
-			it = m_ranges.end();
 		}
 
 
