@@ -406,7 +406,7 @@ void CSearchDlg::StartNewSearch()
 		return;
 	}
 
-	wxString typeText = "Any", extension = "";
+	wxString typeText = wxT("Any"), extension = wxT("");
 	uint32 min = 0, max = 0, availability = 0;
 	
 	if (CastChild(ID_EXTENDEDSEARCHCHECK, wxCheckBox)->GetValue()) {
