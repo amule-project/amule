@@ -45,6 +45,8 @@
 //! Max number of threads. Change if you have > 1 CPUs ;)
 const unsigned int MAXTHREADCOUNT = 1;
 
+const uchar default_zero_hash[16] = { 0x31, 0xD6, 0xCF, 0xE0, 0xD1, 0x6A, 0xE9, 0x31, 
+												0xB7, 0x3C, 0x59, 0xD7, 0xE0, 0xC0, 0x89, 0xC0 };
 
 /**
  * Container for queued files.
@@ -382,7 +384,7 @@ wxThread::ExitCode CAddFileThread::Entry()
 		
 		// This loops creates the part-hashes, loop-de-loop.
 		while ( !error && ( file.GetPosition() < file.GetLength() ) && IsRunning() ) {
-			error = !CreateNextPartHash( &file, knownfile, needsAICH );
+			error = !CreateNextPartHash( &file, knownfile, needsAICH );	
 		}
 
 
@@ -474,14 +476,16 @@ bool CAddFileThread::CreateNextPartHash( CFile* file, CKnownFile* owner, bool cr
 		// Less than PARTSIZE left, reduce read-length		
 		cur_length = file->GetLength() - file->GetPosition();
 	}
+	
+	// Is this file EXACTLY (n * PARTSIZE) long?
+	bool zero_hash = ((file->GetPosition() + PARTSIZE) == file->GetLength());
 
-	// Sainity check, this shoulnd't happen due to the loop calling this function, but ...
+	// Sanity check, this shoulnd't happen due to the loop calling this function, but ...
 	if ( cur_length == 0 ) {
 		printf("Hasher: Warning, EOF in CreateNextPartHash!\n");
 	
 		return false;
 	}
-	
 
 	byte* data = new byte[cur_length];
 		
@@ -513,6 +517,14 @@ bool CAddFileThread::CreateNextPartHash( CFile* file, CKnownFile* owner, bool cr
 	// Store the md4 hash
 	owner->hashlist.Add( (uchar*)hash );
 
+	
+	// Kry This is because of the ed2k implementation for parts. A 2 * PARTSIZE 
+	// file i.e. will have 3 parts (check CKnownFile::SetFileSize for comments). 
+	// So we have to create the hash for the 0-size data, which will be the default
+	// md4 hash for null data: 31D6CFE0D16AE931B73C59D7E0C089C0	
+	if ( zero_hash ) {
+		owner->hashlist.Add( default_zero_hash );
+	}
 
 	delete[] data;
 
