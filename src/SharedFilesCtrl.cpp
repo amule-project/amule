@@ -323,7 +323,7 @@ void CSharedFilesCtrl::OnSetPriority( wxCommandEvent& event )
 }
 
 
-void CSharedFilesCtrl::OnSetPriorityAuto( wxCommandEvent& event )
+void CSharedFilesCtrl::OnSetPriorityAuto( wxCommandEvent& WXUNUSED(event) )
 {
 	long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	
@@ -371,7 +371,7 @@ void CSharedFilesCtrl::OnCreateURI( wxCommandEvent& event )
 }
 
 
-void CSharedFilesCtrl::OnEditComment( wxCommandEvent& event )
+void CSharedFilesCtrl::OnEditComment( wxCommandEvent& WXUNUSED(event) )
 {
 	long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	

@@ -146,7 +146,7 @@ void CSharedFilesWnd::OnBtnReloadShared( wxCommandEvent& WXUNUSED(evt) )
 }
 
 
-void CSharedFilesWnd::OnItemActivated(wxListEvent& evt)
+void CSharedFilesWnd::OnItemActivated(wxListEvent& WXUNUSED(evt))
 {
 	SelectionUpdated();
 }

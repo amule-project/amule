@@ -1158,33 +1158,6 @@ void CamuleApp::OnFatalException()
 #endif
 }
 
-#define wxGTK_WINDOW 1
-#define SHIFT (8 * (sizeof(short int) - sizeof(char)))
-
-static bool GetColourWidget(int &red, int &green, int &blue, int type)
-{
-#ifdef __WXGTK__
-	GtkWidget *widget;
-        GtkStyle *def;
-
-        if (type == wxGTK_WINDOW) {
-                widget = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-                (def = gtk_rc_get_style(widget)) ? : (def =gtk_widget_get_default_style());
-        }
-        else return FALSE;
-
-        GdkColor *col;
-        col = def->bg;
-        red = col[GTK_STATE_NORMAL].red;
-        green = col[GTK_STATE_NORMAL].green;
-        blue = col[GTK_STATE_NORMAL].blue;
-        gtk_widget_destroy(widget);
-        return TRUE;
-#else
-	return FALSE;
-#endif
-}
-
 
 // Sets the localization of aMule
 void CamuleApp::Localize_mule()

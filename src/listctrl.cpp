@@ -189,7 +189,7 @@ public:
     void Clear() { m_itemsSel.Clear(); m_count = 0; m_defaultState = FALSE; }
 
     // must be called when a new item is inserted/added
-    void OnItemAdd(size_t item) { wxFAIL_MSG( _T("TODO") ); }
+    void OnItemAdd(size_t WXUNUSED(item)) { wxFAIL_MSG( _T("TODO") ); }
 
     // must be called when an item is deleted
     void OnItemDelete(size_t item);
@@ -1510,7 +1510,7 @@ void wxODListLineData::CalculateSize( wxDC *dc, int spacing )
 }
 
 void wxODListLineData::SetPosition( int x, int y,
-                                  int window_width,
+                                  int WXUNUSED(window_width),
                                   int spacing )
 {
     wxODListItemDataList::Node *node = m_items.GetFirst();

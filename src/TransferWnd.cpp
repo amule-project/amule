@@ -213,7 +213,7 @@ void CTransferWnd::OnSetCatPriority( wxCommandEvent& event )
 }
 
 
-void CTransferWnd::OnAddCategory( wxCommandEvent& event )
+void CTransferWnd::OnAddCategory( wxCommandEvent& WXUNUSED(event) )
 {
 	CCatDialog dialog( this );
 	dialog.ShowModal();
