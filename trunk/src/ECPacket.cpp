@@ -60,6 +60,7 @@ CECTag::CECTag(ec_tagname_t name, unsigned int length, const void *data, bool co
 	} else {
 		m_tagData = data;
 	}
+	m_tagList = NULL;
 	m_listSize = 0;
 };
 
@@ -82,6 +83,7 @@ CECTag::CECTag(ec_tagname_t name, unsigned int length, void **dataptr)  : m_tagN
 		m_error = 1;
 	}
 	*dataptr = (void *)m_tagData;
+	m_tagList = NULL;
 	m_listSize = 0;
 	m_tagCount = 0;
 }
@@ -272,7 +274,7 @@ CECTag::~CECTag(void)
 	for (int i=0; i<m_tagCount; i++) {
 		delete (*m_tagList)[i];
 	}
-	free(m_tagList);
+//	free(m_tagList);
 }
 
 /**
