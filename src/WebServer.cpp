@@ -642,9 +642,12 @@ wxString CWebServer::_ParseURLArray(ThreadData Data, wxString fieldname) {
 			temp=_ParseURL(Data,fieldname);
 			if (temp=="") break;
 			res.Append(temp+"|");
-			URL.Remove(pos,10);
+			Data.sURL.Remove(pos, 10);
+			URL=Data.sURL;
+			//URL.Remove(pos,10);
 		} else break;
 	}
+
 	return res;
 }
 
