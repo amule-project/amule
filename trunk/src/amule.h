@@ -23,10 +23,6 @@
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/app.h>			// Needed for wxApp
 #include <wx/intl.h>		// Needed for wxLocale
-#include <wx/string.h>		// Needed for wxString
-#include <wx/event.h>	
-#include <wx/socket.h>
-#include <wx/timer.h>		// Needed for wxTimerEvent
 
 #include "CTypedPtrList.h"
 #include "types.h"			// Needed for int32, uint16 and uint64
@@ -49,7 +45,10 @@ class CClientCreditsList;
 class CClientUDPSocket;
 class CIPFilter;
 class wxServer;
-
+class wxString;
+class wxSocketEvent;
+class wxTimerEvent;
+class wxCommandEvent;
 
 #ifdef __DEBUG__
 	typedef struct {
