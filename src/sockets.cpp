@@ -85,7 +85,7 @@ void CServerConnect::ConnectToAnyServer(uint32 startAt,bool prioSort,bool isAuto
 	Disconnect();
 	connecting = true;
 	singleconnecting = false;
-	Notify_ShowConnState(false,wxT(""),true);
+	Notify_ShowConnState(false,wxT(""));
 
 
 	// Barry - Only auto-connect to static server option
@@ -132,7 +132,7 @@ void CServerConnect::ConnectToServer(CServer* server, bool multiconnect)
 	}
 	connecting = true;
 	singleconnecting = !multiconnect;
-	Notify_ShowConnState(false,wxT(""),true);
+	Notify_ShowConnState(false,wxT(""));
 
 	CServerSocket* newsocket = new CServerSocket(this);
 	m_lstOpenSockets.AddTail(newsocket);
@@ -147,7 +147,7 @@ void CServerConnect::StopConnectionTry()
 	connectionattemps.clear();
 	connecting = false;
 	singleconnecting = false;
-	Notify_ShowConnState(false,wxT(""),true);
+	Notify_ShowConnState(false,wxT(""));
 
 	if (m_idRetryTimer.IsRunning()) 
 	{ 
@@ -235,7 +235,7 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 		connected = true;
 		AddLogLineM(true, _("Connection established on: ") + sender->cur_server->GetListName());
 		connectedsocket = sender;
-		Notify_ShowConnState(true,connectedsocket->cur_server->GetListName(), false);
+		Notify_ShowConnState(true,connectedsocket->cur_server->GetListName());
 		
 		StopConnectionTry();
 		
@@ -257,7 +257,7 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 			#endif
 		}
 	}
-	Notify_ShowConnState(false,wxT(""),true);
+	Notify_ShowConnState(false,wxT(""));
 }
 
 
@@ -340,7 +340,7 @@ void CServerConnect::ConnectionFailed(CServerSocket* sender){
 				m_idRetryTimer.SetOwner(&theApp,TM_TCPSOCKET);
 				m_idRetryTimer.Start(1000*CS_RETRYCONNECTTIME);
 			}
-			Notify_ShowConnState(false,wxT(""),true);
+			Notify_ShowConnState(false,wxT(""));
 			break;
 		}
 		case CS_DISCONNECTED:{
@@ -360,7 +360,7 @@ void CServerConnect::ConnectionFailed(CServerSocket* sender){
 			if (theApp.glob_prefs->GetNotifierPopOnImportantError()) {
 				Notify_ShowNotifier(wxString(_("Connection lost")), TBN_IMPORTANTEVENT, false);
 			}
-			Notify_ShowConnState(false,wxT(""),true);
+			Notify_ShowConnState(false,wxT(""));
 			break;
 		}
 		case CS_ERROR:
@@ -389,7 +389,7 @@ void CServerConnect::ConnectionFailed(CServerSocket* sender){
 			TryAnotherConnectionrequest();
 		}
 	}
-	Notify_ShowConnState(false,wxT(""),true);
+	Notify_ShowConnState(false,wxT(""));
 }
 
 #if 0
@@ -447,7 +447,7 @@ bool CServerConnect::Disconnect()
 		theApp.SetPublicIP(0);
 		DestroySocket(connectedsocket);
 		connectedsocket = NULL;
-		Notify_ShowConnState(false,wxT(""),0);
+		Notify_ShowConnState(false,wxT(""));
 		theApp.stat_serverConnectTime=0;
 		return true;
 	}
@@ -505,7 +505,7 @@ void CServerConnect::SetClientID(uint32 newid)
 	if (!IsLowIDED2K(newid))
 		theApp.SetPublicIP(newid);
 
-	Notify_ShowConnState(IsConnected(),GetCurrentServer()->GetListName(), 0);
+	Notify_ShowConnState(IsConnected(),GetCurrentServer()->GetListName());
 }
 
 

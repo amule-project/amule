@@ -2444,8 +2444,7 @@ wxThread::ExitCode completingThread::Entry()
 void completingThread::OnExit(){
 	
 	// Kry - Notice the app that the completion has finished for this file.		
-	
-	wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED,TM_FILECOMPLETIONFINISHED);
+	wxMuleInternalEvent evt(wxEVT_CORE_FINISHED_FILE_COMPLETION);
 	evt.SetClientData(completing);
 	evt.SetInt((int)completing_result);
 	evt.SetExtraLong((long)newname);

@@ -101,7 +101,7 @@ wxThread::ExitCode AsyncDNS::Entry()
     // addr is in network byte order
     newsi->sin_addr.s_addr = addr;
 
-    wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED,TM_DNSDONE);
+    wxMuleInternalEvent evt(wxEVT_CORE_DNS_DONE);
     evt.SetClientData(socket);
     evt.SetExtraLong((long)newsi);
     wxPostEvent(&theApp,evt);
