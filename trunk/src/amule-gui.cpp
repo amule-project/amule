@@ -491,21 +491,21 @@ void CamuleGuiApp::NotifyEvent(GUIEvent event)
 			((CPartFile *)event.ptr_value)->SetA4AFAuto(!((CPartFile *)event.ptr_value)->IsA4AFAuto());
 			break;
 	        case PARTFILE_PAUSE:
-			((CPartFile *)event.ptr_value)->PauseFile(event.byte_value);
+			((CPartFile *)event.ptr_value)->PauseFile();
 			break;
 	        case PARTFILE_RESUME:
 			((CPartFile *)event.ptr_value)->ResumeFile();
 			((CPartFile *)event.ptr_value)->SavePartFile();
 			break;
 	        case PARTFILE_STOP:
-			((CPartFile *)event.ptr_value)->StopFile(event.byte_value);
+			((CPartFile *)event.ptr_value)->StopFile();
 			break;
 	        case PARTFILE_PRIO_AUTO:
 			((CPartFile *)event.ptr_value)->SetAutoDownPriority(event.long_value);
 			break;
 	        case PARTFILE_PRIO_SET:
 			((CPartFile *)event.ptr_value)->SetDownPriority(event.long_value,
-									event.longlong_value, event.longlong_value);
+									event.longlong_value);
 			break;
 	        case PARTFILE_SET_CAT:
 			((CPartFile *)event.ptr_value)->SetCategory(event.byte_value);
