@@ -79,6 +79,9 @@ namespace {
 CEMSocket::CEMSocket(void)
   : wxSocketClient(wxSOCKET_NOWAIT/*wxSOCKET_BLOCK*/)
 {
+	#ifdef __DEBUG__
+	from_destroy =  false;
+	#endif		
 	byConnected = ES_NOTCONNECTED;
 	
 	limitenabled = false;
@@ -98,12 +101,15 @@ CEMSocket::CEMSocket(void)
 	sent = 0;
 
 	m_bLinkedPackets = false;
+	DoingDestroy = false;
 }
 
 CEMSocket::~CEMSocket(){
    //EMTrace("CEMSocket::~CEMSocket() on %d",(SOCKET)this);
   //printf("CEMSocket::~CEMSocket() on %d\n",this);
-    
+	#ifdef __DEBUG__
+	wxASSERT(from_destroy);
+	#endif	    
 	byConnected = ES_DISCONNECTED;
 
 	SetNotify(0);
@@ -113,6 +119,15 @@ CEMSocket::~CEMSocket(){
   //AsyncSelect(0);
 }
 
+void CEMSocket::Destroy() {
+	#ifdef __DEBUG__
+	from_destroy =  true;
+	#endif	
+	if (!DoingDestroy) {		
+		DoingDestroy = true;
+		wxSocketClient::Destroy();
+	}	
+}
 
 void CEMSocket::ClearQueues(){
   //EMTrace("CEMSocket::ClearQueues on %d",(SOCKET)this);

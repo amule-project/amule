@@ -67,7 +67,6 @@ CClientReqSocket::CClientReqSocket(CPreferences* in_prefs,CUpDownClient* in_clie
 	theApp.listensocket->AddSocket(this);
 	ResetTimeOutTimer();
 	deletethis = false;
-	OnDestroy = false;
 
 	SetEventHandler(*theApp.amuledlg,ID_SOKETTI);
 	SetNotify(wxSOCKET_CONNECTION_FLAG|wxSOCKET_INPUT_FLAG|wxSOCKET_OUTPUT_FLAG|wxSOCKET_LOST_FLAG);
@@ -165,7 +164,6 @@ void CClientReqSocket::Delete_Timed()
 */
 void CClientReqSocket::Safe_Delete()
 {
-	if (!OnDestroy) {
 		//deltimer = ::GetTickCount();
 		// if (m_hSocket != INVALID_SOCKET)
 		//  ShutDown(2);
@@ -175,9 +173,7 @@ void CClientReqSocket::Safe_Delete()
 		client = NULL;
 		byConnected = ES_DISCONNECTED;
 		// deletethis = true;
-		OnDestroy = true;
 		Destroy();
-	}
 }
 
 bool CClientReqSocket::ProcessPacket(char* packet, uint32 size, uint8 opcode)
@@ -1837,7 +1833,7 @@ void CListenSocket::Process()
 		CClientReqSocket* cur_sock = socket_list.GetAt(pos2);
 		opensockets++;
 
-		if (!cur_sock->OnDestroy) {
+		if (!cur_sock->OnDestroy()) {
 			cur_sock->CheckTimeOut();
 		}
 	}
