@@ -50,6 +50,11 @@ CFriendList::CFriendList()
 CFriendList::~CFriendList()
 {
 	SaveList();
+
+	while ( m_FriendList.size() ) {
+		delete m_FriendList.front();
+		m_FriendList.pop_front();
+	}
 }
 
 
