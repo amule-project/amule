@@ -53,7 +53,7 @@ dnl ---------------------------------------------------------------------------
 AC_DEFUN(AM_OPTIONS_WXBASECONFIG,
 [
    AC_ARG_WITH(wxbase-prefix, [  --with-wxbase-prefix=PREFIX   Prefix where wxWidgets base is installed (optional)],
-               wxbase_config_prefix="$withval", wx_config_prefix="")
+               wxbase_config_prefix="$withval", wxbase_config_prefix="")
    AC_ARG_WITH(wxbase-exec-prefix,[  --with-wxbase-exec-prefix=PREFIX Exec prefix where wxWidgetsbase  is installed (optional)],
                wxbase_config_exec_prefix="$withval", wxbase_config_exec_prefix="")
    AC_ARG_WITH(wxbase-config,[  --with-wxbase-config=CONFIG   wxbase-config script to use (optional)],
@@ -228,8 +228,8 @@ AC_DEFUN(AM_PATH_WXCONFIG,
        WXBASE_LOOKUP_PATH="$WXBASE_LOOKUP_PATH:$wxbase_config_prefix/bin"
     fi
 
-    dnl don't search the PATH if WX_CONFIG_NAME is absolute filename
-    if test -x "$WX_CONFIG_NAME" ; then
+    dnl don't search the PATH if WXBASE_CONFIG_NAME is absolute filename
+    if test -x "$WXBASE_CONFIG_NAME" ; then
        AC_MSG_CHECKING(for wxbase-config)
        WXBASE_CONFIG_PATH="$WXBASE_CONFIG_NAME"
        AC_MSG_RESULT($WXBASE_CONFIG_PATH)
