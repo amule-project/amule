@@ -256,7 +256,9 @@ CED2KFileLink::CED2KFileLink(const TCHAR* name,const TCHAR* size, const TCHAR* h
 				SourcesList->WriteUInt16(nCount); // init to 0, we'll fix this at the end.
 				// for each "ip:port" source string until the end
 				// limit to prevent overflow (uint16 due to CPartFile::AddClientSources)
-#define MAXSHORT 65535
+#ifndef __WXMSW__			
+	#define MAXSHORT 65535
+#endif
 				while( *pCh != 0 && nCount < MAXSHORT ) {
 					pIP = pCh;
 					// find the end of this ip:port string & start of next ip:port string.

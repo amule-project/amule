@@ -17,14 +17,14 @@ ifeq ($(CFG),Debug)
   OBJ_DIR = Debug
   OUTPUT_DIR = Debug
   TARGET = amule.exe
-  C_INCLUDE_DIRS = -I"C:/cygwin/home/fox/amule-dev-cvs/." -I"C:/MinGWStudio/Include" 
+  C_INCLUDE_DIRS = -I"C:/msys/1.0/home/fox/amule-dev-cvs/." -I"C:/MinGWStudio/Include" 
   C_PREPROC = -D_X86_=1 -DWIN32 -D_WIN32 -DWINVER=0x0400 -D__WIN95__ -D__GNUWIN32__ -D__WIN32__ -DSTRICT -D__WXMSW__ -D__WINDOWS__ -D__WXDEBUG__ 
-  CFLAGS = -pipe -DHAVE_CONFIG_H -D__SYSTRAY_DISABLED__ -Wall -g2 -O0 -frtti -fexceptions 
+  CFLAGS = -pipe -DHAVE_CONFIG_H -D__SYSTRAY_DISABLED__ -g2 -O0 -frtti -fexceptions 
   RC_INCLUDE_DIRS = --include-dir "C:/MinGWStudio/Include" 
   RC_PREPROC = --define __WIN32__ --define __WIN95__ --define __GNUWIN32__ 
   RCFLAGS = 
   LIB_DIRS = -L"C:/MinGWStudio/Lib" 
-  LIBS = -lcurld -lzd -lws2_32 -lwxmswd -lregexd -lpngd -ljpegd -lzlibd -ltiffd -lstdc++ -lgcc -lodbc32 -lwsock32 -lwinspool -lwinmm -lshell32 -lcomctl32 -lctl3d32 -lodbc32 -ladvapi32 -lodbc32 -lwsock32 -lopengl32 -lglu32 -lole32 -loleaut32 -luuid 
+  LIBS = -lcryptopp -lcurld -lzd -lws2_32 -lwxmswd -lregexd -lpngd -ljpegd -lzlibd -ltiffd -lstdc++ -lgcc -lodbc32 -lwsock32 -lwinspool -lwinmm -lshell32 -lcomctl32 -lctl3d32 -lodbc32 -ladvapi32 -lodbc32 -lwsock32 -lopengl32 -lglu32 -lole32 -loleaut32 -luuid 
   LDFLAGS = -pipe  -Wl,--subsystem,windows -mwindows
 endif
 
@@ -32,14 +32,14 @@ ifeq ($(CFG),Release)
   OBJ_DIR = Release
   OUTPUT_DIR = Release
   TARGET = amule.exe
-  C_INCLUDE_DIRS = -I"C:/cygwin/home/fox/amule-dev-cvs/." -I"C:/MinGWStudio/Include" 
+  C_INCLUDE_DIRS = -I"C:/msys/1.0/home/fox/amule-dev-cvs/." -I"C:/MinGWStudio/Include" 
   C_PREPROC = -D_X86_=1 -DWIN32 -D_WIN32 -DWINVER=0x0400 -D__WIN95__ -D__GNUWIN32__ -D__WIN32__ -DSTRICT -D__WXMSW__ -D__WINDOWS__ 
-  CFLAGS = -pipe -DHAVE_CONFIG_H -D__SYSTRAY_DISABLED__ -Wall -g0 -O2 -frtti -fexceptions 
+  CFLAGS = -pipe -DHAVE_CONFIG_H -D__SYSTRAY_DISABLED__ -g0 -O2 -frtti -fexceptions 
   RC_INCLUDE_DIRS = --include-dir "C:/MinGWStudio/Include" 
   RC_PREPROC = --define __WIN32__ --define __WIN95__ --define __GNUWIN32__ 
   RCFLAGS = 
   LIB_DIRS = -L"C:/MinGWStudio/Lib" 
-  LIBS = -lcurl -lz -lws2_32 -lwxmsw -lregex -lpng -ljpeg -lzlib -ltiff -lstdc++ -lgcc -lodbc32 -lwsock32 -lwinspool -lwinmm -lshell32 -lcomctl32 -lctl3d32 -lodbc32 -ladvapi32 -lodbc32 -lwsock32 -lopengl32 -lglu32 -lole32 -loleaut32 -luuid 
+  LIBS = -lcryptopp -lcurl -lz -lws2_32 -lwxmsw -lregex -lpng -ljpeg -lzlib -ltiff -lstdc++ -lgcc -lodbc32 -lwsock32 -lwinspool -lwinmm -lshell32 -lcomctl32 -lctl3d32 -lodbc32 -ladvapi32 -lodbc32 -lwsock32 -lopengl32 -lglu32 -lole32 -loleaut32 -luuid 
   LDFLAGS = -pipe -s  -Wl,--subsystem,windows -mwindows
 endif
 
@@ -119,10 +119,10 @@ SRC_OBJS = \
   $(OBJ_DIR)/MuleTextCtrl.o	\
   $(OBJ_DIR)/EMSocket.o	\
   $(OBJ_DIR)/gsocket.o	\
-  $(OBJ_DIR)/CryptoPP.o	\
   $(OBJ_DIR)/HTTPDownloadDlg.o	\
   $(OBJ_DIR)/KnownFile.o	\
-  $(OBJ_DIR)/amuleDlg.o
+  $(OBJ_DIR)/amuleDlg.o	\
+  $(OBJ_DIR)/ECSocket.o
 
 RSRC_OBJS = \
   $(OBJ_DIR)/amule.res
@@ -179,7 +179,7 @@ src/amule.h	\
 src/opcodes.h	\
 src/PartFile.h	\
 src/CFile.h	\
-src/CryptoPP.h
+src/CryptoPP_Inc.h
 	$(compile_source)
 
 $(OBJ_DIR)/AddFriend.o: src/AddFriend.cpp	\
@@ -282,7 +282,7 @@ src/SafeFile.h	\
 src/otherfunctions.h	\
 src/sockets.h	\
 src/CFile.h	\
-src/CryptoPP.h
+src/CryptoPP_Inc.h
 	$(compile_source)
 
 $(OBJ_DIR)/ClientDetailDialog.o: src/ClientDetailDialog.cpp	\
@@ -386,7 +386,8 @@ src/updownclient.h	\
 src/amuleDlg.h	\
 src/muuli_wdr.h	\
 src/color.h	\
-src/ClientCredits.h
+src/ClientCredits.h	\
+src/Preferences.h
 	$(compile_source)
 
 $(OBJ_DIR)/DownloadQueue.o: src/DownloadQueue.cpp	\
@@ -429,21 +430,21 @@ src/ED2KLink.h	\
 src/server.h	\
 src/ServerList.h	\
 src/SharedFileList.h	\
-src/StatisticsDlg.h	\
-src/ServerWnd.h	\
-src/muuli_wdr.h	\
 src/PartFile.h	\
 src/sockets.h	\
 src/DownloadListCtrl.h	\
-src/TransferWnd.h	\
-src/amuleDlg.h	\
 src/UploadQueue.h	\
 src/DownloadQueue.h	\
 src/amule.h	\
 src/SearchList.h	\
 src/IPFilter.h	\
 src/ClientList.h	\
-src/gsocket-fix.h
+src/Preferences.h	\
+src/StatisticsDlg.h	\
+src/ServerWnd.h	\
+src/muuli_wdr.h	\
+src/TransferWnd.h	\
+src/amuleDlg.h
 	$(compile_source)
 
 $(OBJ_DIR)/FileDetailDialog.o: src/FileDetailDialog.cpp	\
@@ -496,7 +497,6 @@ src/otherfunctions.h
 
 $(OBJ_DIR)/KnownFileList.o: src/KnownFileList.cpp	\
 src/KnownFileList.h	\
-src/Preferences.h	\
 src/SafeFile.h	\
 src/PartFile.h	\
 src/otherfunctions.h	\
@@ -546,6 +546,7 @@ src/MD5Sum.h
 
 $(OBJ_DIR)/MuleListCtrl.o: src/MuleListCtrl.cpp	\
 src/MuleListCtrl.h	\
+src/Preferences.h	\
 src/otherfunctions.h	\
 src/opcodes.h	\
 src/amule.h
@@ -560,7 +561,6 @@ src/OScopeCtrl.h	\
 src/StatisticsDlg.h	\
 src/amuleDlg.h	\
 src/otherfunctions.h	\
-src/GetTickCount.h	\
 src/amule.h	\
 src/color.h
 	$(compile_source)
@@ -594,20 +594,23 @@ src/filefn.h
 	$(compile_source)
 
 $(OBJ_DIR)/Preferences.o: src/Preferences.cpp	\
+src/amule.h	\
 src/otherfunctions.h	\
 src/opcodes.h	\
-src/amule.h	\
 src/Preferences.h	\
-src/CFile.h
+src/CFile.h	\
+src/muuli_wdr.h	\
+src/StatisticsDlg.h	\
+src/MD5Sum.h
 	$(compile_source)
 
 $(OBJ_DIR)/PrefsUnifiedDlg.o: src/PrefsUnifiedDlg.cpp	\
-src/amule.h	\
-src/otherfunctions.h	\
 src/PrefsUnifiedDlg.h	\
-src/CTypedPtrList.h	\
-src/EditServerListDlg.h	\
+src/amule.h	\
 src/amuleDlg.h	\
+src/color.h	\
+src/otherfunctions.h	\
+src/EditServerListDlg.h	\
 src/SharedFileList.h	\
 src/StatisticsDlg.h	\
 src/IPFilter.h	\
@@ -615,7 +618,8 @@ src/SearchList.h	\
 src/DownloadQueue.h	\
 src/ClientList.h	\
 src/DirectoryTreeCtrl.h	\
-src/MD5Sum.h
+src/Preferences.h	\
+src/muuli_wdr.h
 	$(compile_source)
 
 $(OBJ_DIR)/Preview.o: src/Preview.cpp	\
@@ -637,7 +641,8 @@ src/amuleDlg.h	\
 src/updownclient.h	\
 src/opcodes.h	\
 src/amule.h	\
-src/color.h
+src/color.h	\
+src/Preferences.h
 	$(compile_source)
 
 $(OBJ_DIR)/SafeFile.o: src/SafeFile.cpp	\
@@ -662,7 +667,8 @@ src/SearchListCtrl.h	\
 src/muuli_wdr.h	\
 src/amuleDlg.h	\
 src/MuleNotebook.h	\
-src/GetTickCount.h
+src/GetTickCount.h	\
+src/Preferences.h
 	$(compile_source)
 
 $(OBJ_DIR)/SearchList.o: src/SearchList.cpp	\
@@ -698,7 +704,8 @@ src/amuleDlg.h	\
 src/opcodes.h	\
 src/amule.h	\
 src/color.h	\
-src/MuleNotebook.h
+src/MuleNotebook.h	\
+src/Preferences.h
 	$(compile_source)
 
 $(OBJ_DIR)/ServerList.o: src/ServerList.cpp	\
@@ -733,7 +740,8 @@ src/amule.h	\
 src/server.h	\
 src/opcodes.h	\
 src/muuli_wdr.h	\
-src/otherfunctions.h
+src/otherfunctions.h	\
+src/Preferences.h
 	$(compile_source)
 
 $(OBJ_DIR)/ServerSocket.o: src/ServerSocket.cpp	\
@@ -805,6 +813,7 @@ src/opcodes.h	\
 src/amule.h	\
 src/color.h	\
 src/sockets.h	\
+src/Preferences.h	\
 src/BarShader.h
 	$(compile_source)
 
@@ -854,6 +863,7 @@ src/QueueListCtrl.h	\
 src/muuli_wdr.h	\
 src/SearchDlg.h	\
 src/MuleNotebook.h	\
+src/Preferences.h	\
 src/ClientList.h
 	$(compile_source)
 
@@ -913,7 +923,8 @@ src/ClientCredits.h	\
 src/updownclient.h	\
 src/opcodes.h	\
 src/muuli_wdr.h	\
-src/color.h
+src/color.h	\
+src/Preferences.h
 	$(compile_source)
 
 $(OBJ_DIR)/UploadQueue.o: src/UploadQueue.cpp	\
@@ -967,7 +978,7 @@ src/UDPSocket.h	\
 src/PartFile.h	\
 src/AddFileThread.h	\
 src/packets.h	\
-src/PrefsUnifiedDlg.h	\
+src/muuli_wdr.h	\
 src/amuleDlg.h	\
 src/SearchDlg.h	\
 src/SearchListCtrl.h	\
@@ -1068,14 +1079,10 @@ $(OBJ_DIR)/gsocket.o: src/gsocket.c	\
 src/gsocket.h
 	$(compile_source)
 
-$(OBJ_DIR)/CryptoPP.o: src/CryptoPP.cpp	\
-src/CryptoPP.h
-	$(compile_source)
-
 $(OBJ_DIR)/HTTPDownloadDlg.o: src/HTTPDownloadDlg.cpp	\
+src/muuli_wdr.h	\
 src/HTTPDownloadDlg.h	\
 src/MuleGifCtrl.h	\
-src/muuli_wdr.h	\
 src/inetdownload.h	\
 src/otherfunctions.h
 	$(compile_source)
@@ -1093,7 +1100,7 @@ src/KnownFileList.h	\
 src/amule.h	\
 src/PartFile.h	\
 src/endianfix.h	\
-src/CryptoPP.h
+src/CryptoPP_Inc.h
 	$(compile_source)
 
 $(OBJ_DIR)/amuleDlg.o: src/amuleDlg.cpp	\
@@ -1136,5 +1143,11 @@ src/muuli_wdr.h	\
 src/PrefsUnifiedDlg.h	\
 src/aMule.xpm	\
 src/splash.xpm
+	$(compile_source)
+
+$(OBJ_DIR)/ECSocket.o: src/ECSocket.cpp	\
+src/ECSocket.h	\
+src/endianfix.h	\
+src/gsocket-fix.h
 	$(compile_source)
 
