@@ -522,14 +522,9 @@ void CSearchDlg::DeleteAllSearchs()
 		printf("error: nb=NULL in deletesearch\n");
 		return;
 	}
-	if(nb->GetPageCount() > 0) {
-		/* Remove all notebook pages */
-		for(unsigned int i= (unsigned int)nb->GetPageCount()-1; i>=0; i--) {
-			if(nb->GetPage(i) != NULL) {
-				nb->DeletePage(i);
-			}
-		}
-	}
+	
+	nb->DeleteAllPages();
+
 	FindWindowById(IDC_CLEARALL)->Enable(FALSE);
 }
 
