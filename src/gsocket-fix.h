@@ -20,6 +20,20 @@
 
 #define __GSOCKET_FIX_H__
 
+#if !defined(wxSUBRELEASE_NUMBER)
+	#define wxSUBRELEASE_NUMBER 0
+#endif
+
+#if !defined(wxCHECK_VERSION_FULL)
+
+	#define wxCHECK_VERSION_FULL(major,minor,release,subrel) \
+		wxCHECK_VERSION(major, minor, release) && \
+			((major) != wxMAJOR_VERSION || \
+			 (minor) != wxMINOR_VERSION || \
+			 (release) != wxRELEASE_NUMBER || \
+			 (subrel) >= wxSUBRELEASE_NUMBER)
+
+#endif
 
 // This flag is only defined from version 2.5.2.3 and up.
 #if !wxCHECK_VERSION_FULL(2,5,2,3)
