@@ -63,6 +63,11 @@ Version 2.0.0
 	shakraw:
 		* Some fixes on web interface file type search, and code cleaning
 		* Fixed amule crash when closing socket
+		* size_t seems to break Mac compilation - anyway uintt6 is enought for
+		  messages
+		* Modified RseStringEncrypted. Now we encrypt passwd just (and only)
+		  when changing them in prefs' dialog. So, now we use always encrypted
+		  passwords, noone in clear neither in memory or disk.
 		
 	neiro:
 		* Helped with OpenBSD port by providing a workbench
