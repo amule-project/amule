@@ -64,9 +64,7 @@
 #endif
 
 #ifdef HAVE_CONFIG_H
-	#include "config.h"		// Needed for HAVE_GETRLIMIT, HAVE_SETRLIMIT,
-					//   HAVE_SYS_RESOURCE_H, LOCALEDIR, PACKAGE, 
-					//   PACKAGE_STRING and VERSION
+	#include "config.h"		// Needed for CVSDATE
 #endif
 
 #include <wx/filefn.h>

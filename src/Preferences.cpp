@@ -42,7 +42,7 @@
 
 #include "amule.h"
 #ifdef HAVE_CONFIG_H
-#include "config.h"		// Needed for PACKAGE_NAME and PACKAGE_STRING
+#include "config.h"		// Needed for PACKAGE_STRING
 #endif
 #include "OtherFunctions.h"
 #include "StringFunctions.h"

@@ -29,10 +29,6 @@
 #include <wx/defs.h>
 #include <wx/wx.h>
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"		// Needed for HAVE_GETRLIMIT, HAVE_SETRLIMIT, HAVE_SYS_RESOURCE_H,
-#endif				//   LOCALEDIR, PACKAGE, PACKAGE_STRING and VERSION
-
 #include "Types.h"
 #include "amule.h"
 

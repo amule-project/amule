@@ -46,7 +46,7 @@
 #include <wx/mimetype.h>
 
 #ifdef HAVE_CONFIG_H
-#include "config.h"
+#include "config.h"		// Needed for CVSDATE, PACKAGE, VERSION
 #endif // HAVE_CONFIG_H
 
 #include "amuleDlg.h"		// Interface declarations.
