@@ -1820,11 +1820,11 @@ void CPartFile::AddSources(CSafeMemFile& sources,uint32 serverip, uint16 serverp
 		// "Filter LAN IPs" and "IPfilter" the received sources IP addresses
 		if (userid >= 16777216) {
 			if (thePrefs::FilterBadIPs()) {
-				if (!IsGoodIP(userid)) { // check for 0-IP, localhost and optionally for LAN addresses
+				if (!IsGoodIP(ENDIAN_SWAP_32(userid))) { // check for 0-IP, localhost and optionally for LAN addresses
 					continue;
 				}
 			}
-			if (theApp.ipfilter->IsFiltered(userid)) {
+			if (theApp.ipfilter->IsFiltered(ENDIAN_SWAP_32(userid))) {
 				continue;
 			}
 		}

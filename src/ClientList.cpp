@@ -29,6 +29,7 @@
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "opcodes.h"
 #include "GetTickCount.h"	// Needed for GetTickCount()
+#include "endianfix.h"      // Needed for ENDIAN_SWAP_32
 
 
 #include <algorithm>
@@ -647,7 +648,7 @@ void CClientList::FilterQueues()
 	for ( IDMap::iterator it = m_ipList.begin(); it != m_ipList.end(); ) {
 		IDMap::iterator tmp = it++;
 		
-		if ( theApp.ipfilter->IsFiltered( tmp->second->GetIP() ) ) {
+		if ( theApp.ipfilter->IsFiltered( ENDIAN_SWAP_32(tmp->second->GetIP()) ) ) {
 			tmp->second->Safe_Delete();
 		}
 	}
