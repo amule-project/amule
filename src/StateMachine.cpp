@@ -26,16 +26,16 @@
 
 
 StateMachine::StateMachine(
-		wxString &name,
-		unsigned int max_states,
-		t_sm_state initial_state,
-		state_processor_vector *process_state )
+		const wxString &name,
+		const unsigned int max_states,
+		const t_sm_state initial_state,
+		const state_processor_vector *process_state )
 :
 m_name(name),
 m_max_states(max_states),
 m_initial_state(initial_state),
-m_clock_counter(0),
-m_process_state(process_state)
+m_process_state(process_state),
+m_clock_counter(0)
 {
 }
 
