@@ -241,19 +241,19 @@ void CMuleTrayIcon::SetTrayIcon(int Icon, uint32 percent)
 		
 		// Do whatever to the icon before drawing it (percent)
 	
-		wxColour temp;
+	//	wxColour temp;
 		
-		IconWithSpeed.SelectObject(CurrentIcon);
+	//	IconWithSpeed.SelectObject(CurrentIcon);
 	
 		// Get the transparency colour.
-		IconWithSpeed.GetPixel(0,0, &temp);
+	//	IconWithSpeed.GetPixel(0,0, &temp);
 	
-		IconWithSpeed.SelectObject(wxNullBitmap);
+	//	IconWithSpeed.SelectObject(wxNullBitmap);
 		
 		// Set a new mask with transparency removed
-		wxMask* new_mask = new wxMask(CurrentIcon, temp);
+	//	wxMask* new_mask = new wxMask(CurrentIcon, temp);
 		
-		CurrentIcon.SetMask(new_mask);
+		//CurrentIcon.SetMask(new_mask);
 		
 		IconWithSpeed.SelectObject(CurrentIcon);
 		
