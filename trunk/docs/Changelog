@@ -13,6 +13,7 @@ Version 2.0.0rc6 - The '???' version.
 		* Configure option added: --enable-embedded_crypto to use amule crypto code
 		and bypass crypto libs. Also fix freeze problem.
 		* fixed crypto usage in core with configure and compilation flags
+		* Re-enable Pentium4 and SSE2 optimizations fro Crypto stuff
 
 	Jacobo:
 		* Fixed issue on the About button.
