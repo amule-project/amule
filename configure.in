@@ -545,6 +545,12 @@ esac
 AC_DEFINE_UNQUOTED(LOCALEDIR, "`eval echo $datadir/locale`", [Define where the locales are.])
 # we have it anyway by now
 
+# Try to set the CVS checkout-date, sadly only available for scripted checkouts
+if test -f "CVSDATE"
+then
+	AC_DEFINE_UNQUOTED(CVSDATE, "`cat CVSDATE`", [The checkout date.])
+fi
+
 XRCFLAGS="-Isrc"
 CXXFLAGS="$CXXFLAGS $DEBUG_FLAGS $OPTIMISE_FLAGS $PROFILE_FLAGS"
 CFLAGS="$CFLAGS $DEBUG_FLAGS $OPTIMISE_FLAGS $PROFILE_FLAGS"
