@@ -274,7 +274,7 @@ void CamuleDlg::ToogleED2KLinksHandler()
 		wxLogWarning(wxT("Unable to find Fast ED2K Links handler sizer! Toogling FED2KLH aborted."));
 		return;
 	}
-	ShowED2KLinksHandler(!s_fed2klh->IsShown());
+	ShowED2KLinksHandler(!s_dlgcnt->IsShown(s_fed2klh));
 }
 
 void CamuleDlg::SetActiveDialog(DialogType type, wxWindow* dlg)
