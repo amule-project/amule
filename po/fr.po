@@ -1,3 +1,4 @@
+# translation of fr.po to Français
 # translation of source_strings.po to Français
 # Copyright (C) 2004 Free Software Foundation, Inc.
 # This file is distributed under the same license as the PACKAGE package.
@@ -5,10 +6,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: source_strings\n"
+"Project-Id-Version: fr\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2004-07-27 11:36+0200\n"
-"PO-Revision-Date: 2004-07-27 15:03+0200\n"
+"PO-Revision-Date: 2004-07-29 14:02+0200\n"
 "Last-Translator: ThePolish <ThePolish@vipmail.ru>\n"
 "Language-Team: Français <fr@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1126,11 +1127,11 @@ msgstr ""
 
 #: src/DownloadQueue.cpp:858
 msgid "Local server source request for file \""
-msgstr ""
+msgstr "Requête au serveur de sources local pour le fichier \""
 
 #: src/DownloadQueue.cpp:858
 msgid "\" not sent because of status '"
-msgstr ""
+msgstr "\" non envoyée à cause du status '"
 
 #: src/DownloadQueue.cpp:961
 msgid "Bad link."
@@ -1149,12 +1150,12 @@ msgstr "Ce lien 'ed2k' est invalide (%s)"
 #: src/DownloadQueue.cpp:1131 src/DownloadQueue.cpp:1152
 #, c-format
 msgid "Free Disk Space (Total): %lli\n"
-msgstr ""
+msgstr "Escpace disque libre (Total): %lli\n"
 
 #: src/DownloadQueue.cpp:1132 src/DownloadQueue.cpp:1153
 #, c-format
 msgid "File : %s, Needed Space : %i - PAUSED !!!\n"
-msgstr ""
+msgstr "Fichier : %s, Espace disque requis : %i - EN PAUSE !!!\n"
 
 #: src/ED2KLink.cpp:445 src/ED2KLink.cpp:454
 msgid "not a well-formed ed2k link"
@@ -1181,20 +1182,20 @@ msgstr "Erreur: Impossible d'accepter la nouvelle connexion externe\n"
 
 #: src/ExternalConn.cpp:407
 msgid "Webserver-Admin-Login"
-msgstr ""
+msgstr "Serveur Web-Login Administrateur"
 
 #: src/ExternalConn.cpp:412
 msgid "Webserver-Guest-Login"
-msgstr ""
+msgstr "Serveur Web-Login Invité"
 
 #: src/ExternalConn.cpp:415
 msgid "Webserver: Failed Loginattempt"
-msgstr ""
+msgstr "Serveur Web: Echec du Login"
 
 #: src/ExternalConn.cpp:999
 #, c-format
 msgid "IPFilter state set to '%s'."
-msgstr ""
+msgstr "Filtre IP réglé sur '%s'."
 
 #: src/ExternalConn.cpp:2296 src/otherfunctions.cpp:53
 msgid "Bytes"
@@ -1226,51 +1227,55 @@ msgstr "Dernière fois reçu:"
 
 #: src/ExternalConnector.cpp:147
 msgid "Error processing command - should never happen! Report bug, please\n"
-msgstr ""
+msgstr "Erreur durant le traitement de la commande - Cela ne devrait jamais arriver! Rapportez le bug, svp\n"
 
 #: src/ExternalConnector.cpp:150
 msgid "Syntax error!\n"
-msgstr ""
+msgstr "Erreur de syntaxe !\n"
 
 #: src/ExternalConnector.cpp:241
 msgid ""
 "\n"
 "Creating client...\n"
 msgstr ""
+"\n"
+"Creation du client en cours...\n"
 
 #: src/ExternalConnector.cpp:244
 msgid "Now, doing connection....\n"
-msgstr ""
+msgstr "Maintenant, établissement de la connexion....\n"
 
 #: src/ExternalConnector.cpp:249
 msgid "Using host '"
-msgstr ""
+msgstr "Utilisant l'hôte '"
 
 #: src/ExternalConnector.cpp:250
 msgid "' port:"
-msgstr ""
+msgstr "' port:"
 
 #: src/ExternalConnector.cpp:252
 msgid "Trying to connect (timeout = 10 sec)...\n"
-msgstr ""
+msgstr "Essai de connexion (timeout = 10 s)...\n"
 
 #: src/ExternalConnector.cpp:258
 msgid "Connection Failed. Unable to connect to the specified host\n"
-msgstr ""
+msgstr "Echec de la connexion. Impossible de se connecter à l'hôte spécifié\n"
 
 #: src/ExternalConnector.cpp:262
 msgid "ExternalConn: Access Denied.\n"
-msgstr ""
+msgstr "Connexion Externe: Accés interdit.\n"
 
 #: src/ExternalConnector.cpp:265
 msgid "Succeeded! Connection established.\n"
-msgstr ""
+msgstr "Succès! Connexion établie.\n"
 
 #: src/ExternalConnector.cpp:272
 msgid ""
 "\n"
 "Ok, exiting "
 msgstr ""
+"\n"
+"Ok, sortie de l'application "
 
 #: src/FileDetailDialog.cpp:101
 msgid "done"
@@ -1346,7 +1351,7 @@ msgstr "Filtres IP chargés avec %d adresses IP"
 
 #: src/KadDlg.cpp:86
 msgid "Please fill all fields required"
-msgstr ""
+msgstr "Remplir tous les champs requis svp"
 
 #: src/KnownFileList.cpp:85
 msgid "Error: the file known.met is corrupted, unable to load known files"
@@ -1360,27 +1365,27 @@ msgstr "Erreur inattendue en lisant known.met: %s, impossible de charger les fic
 #: src/ListenSocket.cpp:611
 #, c-format
 msgid "Client requests invalid %u. file block %u-%u (%d bytes): "
-msgstr ""
+msgstr "Requête client invalide %u. bloc du fichier %u-%u (%d octets): "
 
 #: src/ListenSocket.cpp:628
 msgid ": Upload session ended due canceled transfer."
-msgstr ""
+msgstr ": Session d'upload terminée à cause de l'annulation du transfert."
 
 #: src/ListenSocket.cpp:643
 msgid ": Upload session ended due ended transfer."
-msgstr ""
+msgstr ": Session d'upload terminée à cause de fin du transfert."
 
 #: src/ListenSocket.cpp:791
 msgid "New message from '"
-msgstr ""
+msgstr "Nouveau message de '"
 
 #: src/ListenSocket.cpp:791 src/ListenSocket.cpp:802
 msgid "' (IP:"
-msgstr ""
+msgstr "' (IP:"
 
 #: src/ListenSocket.cpp:802
 msgid "Message filtered from '"
-msgstr ""
+msgstr "Message filtré de '"
 
 #: src/ListenSocket.cpp:831 src/ListenSocket.cpp:833 src/ListenSocket.cpp:880
 #: src/ListenSocket.cpp:947 src/ListenSocket.cpp:971 src/ListenSocket.cpp:1006
@@ -1393,7 +1398,7 @@ msgstr "Utilisateur "
 #: src/ListenSocket.cpp:831 src/ListenSocket.cpp:833
 #, c-format
 msgid " (%u) requested your sharedfiles-list -> %s"
-msgstr ""
+msgstr " (%u) a demandé votre liste de fichiers partagés -> %s"
 
 #: src/ListenSocket.cpp:831
 msgid "Accepted"
@@ -1406,20 +1411,20 @@ msgstr "Refusé"
 #: src/ListenSocket.cpp:880 src/ListenSocket.cpp:947
 #, c-format
 msgid " (%u) requested your shareddirectories-list -> "
-msgstr ""
+msgstr " (%u) a demandé votre liste de repertoires partagés -> "
 
 #: src/ListenSocket.cpp:880 src/ListenSocket.cpp:971
 msgid "accepted"
-msgstr "accepté"
+msgstr "Accepté"
 
 #: src/ListenSocket.cpp:947 src/ListenSocket.cpp:1006
 msgid "denied"
-msgstr "refusé"
+msgstr "Refusé"
 
 #: src/ListenSocket.cpp:971 src/ListenSocket.cpp:1006
 #, c-format
 msgid " (%u) requested your sharedfiles-list for directory "
-msgstr ""
+msgstr " (%u) a demandé votre liste de fichiers partagés dans le répertoire "
 
 #: src/ListenSocket.cpp:1033
 #, c-format
@@ -1434,7 +1439,7 @@ msgstr " (%u) a envoyé des répertoires de partage non demandés."
 #: src/ListenSocket.cpp:1068
 #, c-format
 msgid " (%u) sent sharedfiles-list for directory "
-msgstr ""
+msgstr " (%u) a envoyé sa liste de fichier partagés pour le répertoire "
 
 #: src/ListenSocket.cpp:1072
 #, c-format
@@ -1454,7 +1459,7 @@ msgstr " (%u) a refusé l'accès à sa liste de fichiers/répertoires partagés.
 #: src/ListenSocket.cpp:1093
 #, c-format
 msgid "Edonkey packet: unknown opcode: %i %x"
-msgstr ""
+msgstr "Paquet Edonkey: opcode inconnu: %i %x"
 
 #: src/ListenSocket.cpp:1130 src/ListenSocket.cpp:1792
 msgid "Client '"
@@ -1476,12 +1481,12 @@ msgstr "Un client inconnu a causé une erreur ou fait quelque chose de mal: "
 #: src/ListenSocket.cpp:1573
 #, c-format
 msgid "RCV:Source Request User(%s) File(%s)"
-msgstr ""
+msgstr "RCV:Source Request User(%s) Fichier(%s)"
 
 #: src/ListenSocket.cpp:1704
 #, c-format
 msgid "eMule packet : unknown opcode: %i %x"
-msgstr ""
+msgstr "Paquet eMule: opcode inconnu: %i %x"
 
 #: src/ListenSocket.cpp:1729
 #, c-format
@@ -1512,7 +1517,7 @@ msgstr "Un client a causé une erreur ou fait quelquechose de mal (erreur %u). D
 
 #: src/ListenSocket.cpp:1802
 msgid "No error or error 107 (Transport endpoint is not connected)"
-msgstr ""
+msgstr "Pas d'erreur ou erreur 107 (Le noeud de destination n'est pas connecté)"
 
 #: src/ListenSocket.cpp:1830
 #, c-format
@@ -1520,6 +1525,8 @@ msgid ""
 "Failed to decompress client TCP packet; protocol=0x%02x  opcode=0x%02x  size="
 "%u"
 msgstr ""
+"Impossible de décompresser le paquet TCP client; protocole=0x%02x  opcode=0x%02x  taille="
+"%u"
 
 #: src/muuli_wdr.cpp:62
 msgid ""
@@ -1594,7 +1601,7 @@ msgstr "Rechercher"
 
 #: src/muuli_wdr.cpp:219
 msgid "Name:"
-msgstr ""
+msgstr "Nom:"
 
 #: src/muuli_wdr.cpp:225 src/muuli_wdr.cpp:810
 #: src/utils/aLinkCreator/src/alcframe.cpp:146
@@ -1607,23 +1614,23 @@ msgstr "Effacer tout"
 
 #: src/muuli_wdr.cpp:237
 msgid "Search Type:"
-msgstr ""
+msgstr "Type de recherche:"
 
 #: src/muuli_wdr.cpp:242
 msgid "Server (Local)"
-msgstr ""
+msgstr "Serveur (Local)"
 
 #: src/muuli_wdr.cpp:243
 msgid "Server (Global)"
-msgstr ""
+msgstr "Serveur (Global)"
 
 #: src/muuli_wdr.cpp:244
 msgid "FileHash (Web)"
-msgstr ""
+msgstr "FileHash (Web)"
 
 #: src/muuli_wdr.cpp:245
 msgid "Jugle (Web)"
-msgstr ""
+msgstr "Jugle (Web)"
 
 #: src/muuli_wdr.cpp:253 src/utils/aLinkCreator/src/alcframe.cpp:223
 #: src/WebServer.cpp:1650 src/WebServer.cpp:2131
@@ -1632,15 +1639,15 @@ msgstr "Démarrer"
 
 #: src/muuli_wdr.cpp:260
 msgid "Stop"
-msgstr ""
+msgstr "Arrêter"
 
 #: src/muuli_wdr.cpp:268
 msgid "Show Extended Parameters"
-msgstr ""
+msgstr "Afficher des options étendues"
 
 #: src/muuli_wdr.cpp:276
 msgid "File Type:"
-msgstr ""
+msgstr "Type de fichier:"
 
 #: src/muuli_wdr.cpp:281 src/otherfunctions.cpp:161 src/SearchList.cpp:435
 #: src/WebServer.cpp:2123 src/WebServer.cpp:2738
@@ -1684,23 +1691,23 @@ msgstr "Vidéos"
 
 #: src/muuli_wdr.cpp:296
 msgid "Category:"
-msgstr ""
+msgstr "Categorie:"
 
 #: src/muuli_wdr.cpp:306
 msgid "Min Size:"
-msgstr ""
+msgstr "Taille mini:"
 
 #: src/muuli_wdr.cpp:315
 msgid "Max Size:"
-msgstr ""
+msgstr "Taille maxi:"
 
 #: src/muuli_wdr.cpp:324
 msgid "Availability:"
-msgstr ""
+msgstr "Disponibilité:"
 
 #: src/muuli_wdr.cpp:333
 msgid "Extension:"
-msgstr ""
+msgstr "Extension:"
 
 #: src/muuli_wdr.cpp:341 src/WebServer.cpp:1648
 msgid "Download Selected"
@@ -1708,11 +1715,11 @@ msgstr "Téléchargement sélectionné"
 
 #: src/muuli_wdr.cpp:347
 msgid "Results"
-msgstr ""
+msgstr "Resultats"
 
 #: src/muuli_wdr.cpp:359
 msgid "ED2k Link Handler"
-msgstr ""
+msgstr "Prise en charge des liens Ed2K"
 
 #: src/muuli_wdr.cpp:397
 msgid "Clears completed downloads"
@@ -2127,7 +2134,7 @@ msgstr "Bulgare"
 
 #: src/muuli_wdr.cpp:1592
 msgid "Chinese (Simplified)"
-msgstr ""
+msgstr "Chinois (Simplifié)"
 
 #: src/muuli_wdr.cpp:1593
 msgid "Danish"
@@ -2227,7 +2234,7 @@ msgstr "Personnalisé"
 
 #: src/muuli_wdr.cpp:1617
 msgid "Chinese (Traditional)"
-msgstr ""
+msgstr "Chinois (Traditionel)"
 
 #: src/muuli_wdr.cpp:1626
 msgid "Misc Options"
@@ -2434,7 +2441,7 @@ msgstr "Recharger"
 
 #: src/muuli_wdr.cpp:1975
 msgid "Server Options"
-msgstr ""
+msgstr "Options du serveur"
 
 #: src/muuli_wdr.cpp:1980
 msgid "Remove dead server after"
@@ -3053,7 +3060,7 @@ msgstr "Ajouter manuellement un serveur (remplir les champs à gauche avant)"
 
 #: src/muuli_wdr.cpp:3129 src/muuli_wdr.cpp:3362
 msgid "My Info"
-msgstr ""
+msgstr "Mes infos"
 
 #: src/muuli_wdr.cpp:3160 src/PrefsUnifiedDlg.cpp:918
 #: src/StatisticsDlg.cpp:651
@@ -3201,11 +3208,11 @@ msgstr "Fenêtre des Préférences"
 
 #: src/muuli_wdr.cpp:3400
 msgid "About"
-msgstr ""
+msgstr "A propos"
 
 #: src/muuli_wdr.cpp:3400
 msgid "About/Help"
-msgstr ""
+msgstr "A propos/Aide"
 
 #: src/OScopeCtrl.cpp:276
 #, c-format
@@ -3382,15 +3389,15 @@ msgstr "Impossible d'ouvrir "
 
 #: src/PartFile.cpp:892
 msgid "file - using "
-msgstr ""
+msgstr "fichier - utilisant "
 
 #: src/PartFile.cpp:892 src/PartFile.cpp:901
 msgid " file.\n"
-msgstr ""
+msgstr " fichier.\n"
 
 #: src/PartFile.cpp:901
 msgid "file is 0 size somehow - using "
-msgstr ""
+msgstr "le fichier a une taille nulle - utilisant"
 
 #: src/PartFile.cpp:969
 #, c-format
@@ -3462,12 +3469,12 @@ msgstr "ATTENTION: Une fichier portant ce nom existe déjà, le fichier a été 
 #: src/PartFile.cpp:2324
 #, c-format
 msgid "WARNING: could not remove original '%s' after creating backup\n"
-msgstr ""
+msgstr "ATTENTION: impossible de supprimer le fichier original '%s' après avoir créé la sauvergarde\n"
 
 #: src/PartFile.cpp:2328
 #, c-format
 msgid "WARNING: Failed to delete %s.seeds\n"
-msgstr ""
+msgstr "ATTENTION: impossible de supprimer les semences (seeds) de %s.\n"
 
 #: src/PartFile.cpp:2332
 #, c-format
@@ -3510,12 +3517,12 @@ msgstr "Terminé"
 #: src/PartFile.cpp:3016
 #, c-format
 msgid "Send:Source User(%s) File(%s) Count(%i)"
-msgstr ""
+msgstr "Envoyé: Source User(%s) Fichier(%s) Numéro(%i)"
 
 #: src/PartFile.cpp:3117
 #, c-format
 msgid "File '%s' has already been written from %lu to %lu\n"
-msgstr ""
+msgstr "Le fichier '%s' a déjà été écrit de %lu vers %lu\n"
 
 #: src/PartFile.cpp:3186
 msgid "ERROR: Cannot write to disk"
@@ -3529,7 +3536,7 @@ msgstr "La partie téléchargée %i est corrompue:-( (%s)"
 #: src/PartFile.cpp:3273
 #, c-format
 msgid "Finished part %u of \"%s\""
-msgstr ""
+msgstr "Partie %u de \"%s\" terminée"
 
 #: src/PartFile.cpp:3299
 #, c-format
@@ -3625,7 +3632,7 @@ msgstr "File wav (*.wav)|*.wav||"
 
 #: src/PrefsUnifiedDlg.cpp:1405
 msgid "Browse skin file"
-msgstr ""
+msgstr "Parcourir les fichiers des thèmes"
 
 #: src/PrefsUnifiedDlg.cpp:1411
 msgid "Browse for videoplayer"
@@ -3870,7 +3877,7 @@ msgstr "Version"
 msgid ""
 "You are connected to a server you are trying to delete. Please disconnect "
 "first. The server was NOT deleted."
-msgstr ""
+msgstr "Vous ête connécté au serveur que vous tentez de supprimer. Déconnectez-vous d'abord svp. Le serveur n'a PAS été supprimé."
 
 #: src/ServerListCtrl.cpp:407
 msgid "No Pref"
@@ -3895,7 +3902,7 @@ msgstr "Serveurs (%i)"
 
 #: src/ServerSocket.cpp:126
 msgid "theApp.serverlist->GetServerByAddress() returned NULL"
-msgstr ""
+msgstr "theApp.serverlist->GetServerByAddress() a retourné NULL"
 
 #: src/ServerSocket.cpp:173
 msgid "Processing Server Packet: "
@@ -4086,7 +4093,7 @@ msgstr "Serveur non ajouté"
 
 #: src/ServerWnd.cpp:176
 msgid "Status:"
-msgstr ""
+msgstr "Status:"
 
 #: src/ServerWnd.cpp:199
 msgid "ID"
@@ -4204,12 +4211,12 @@ msgstr "Connexion perdue à "
 #: src/sockets.cpp:278
 #, c-format
 msgid ":%i) appears to be dead."
-msgstr ""
+msgstr ":%i) semble être mort."
 
 #: src/sockets.cpp:288
 #, c-format
 msgid ":%i) appears to be full."
-msgstr ""
+msgstr ":%i) semble être plein."
 
 #: src/sockets.cpp:303
 #, c-format
@@ -4223,7 +4230,7 @@ msgstr "Connexion perdue"
 #: src/sockets.cpp:333
 #, c-format
 msgid ":%i) failed"
-msgstr ""
+msgstr ":%i) a échoué"
 
 #: src/sockets.cpp:378
 msgid "Error: Socket invalid at timeoutcheck"
@@ -4236,7 +4243,7 @@ msgstr "Tentative de connexion à "
 #: src/sockets.cpp:387
 #, c-format
 msgid ":%i) timed out."
-msgstr ""
+msgstr ":%i) timed out."
 
 #: src/sockets.cpp:503
 msgid "Refreshing server connection"
@@ -4725,14 +4732,16 @@ msgid ""
 "\n"
 "Ok, exiting Text Client...\n"
 msgstr ""
+"\n"
+"Ok, sortie de l'application Text Client...\n"
 
 #: src/TextClient.cpp:249 src/TextClient.cpp:259
 msgid "Not a valid number\n"
-msgstr ""
+msgstr "Nombre invalide\n"
 
 #: src/TextClient.cpp:270
 msgid "Hint: Use Show DL or Show UL\n"
-msgstr ""
+msgstr "Astuce: Utilisez Afficher les DL ou Afficher les UL\n"
 
 #: src/TextClient.cpp:284 src/WebInterface.cpp:214
 msgid ""
@@ -4740,60 +4749,81 @@ msgid ""
 "->Help: Avalaible commands (case insensitive):\n"
 "\n"
 msgstr ""
+"\n"
+"->Aide: commandes disponibles (Non sensibles à la casse):\n"
+"\n"
 
 #: src/TextClient.cpp:285 src/WebInterface.cpp:215
 msgid ""
 "help:\n"
 "\tShows this help.\n"
 msgstr ""
+"help:\n"
+"\tAffiche cette aide.\n"
 
 #: src/TextClient.cpp:286
 msgid ""
 "quit, exit:\n"
 "\tExits Textclient.\n"
 msgstr ""
+"quit, exit:\n"
+"\tQuitte Textclient.\n"
 
 #: src/TextClient.cpp:287
 msgid ""
 "stats:\n"
 "\tShows statistics.\n"
 msgstr ""
+"stats:\n"
+"\tAffiche les statistiques.\n"
 
 #: src/TextClient.cpp:288
 msgid ""
 "show DL:\n"
 "\tShows Download queue.\n"
 msgstr ""
+"show DL:\n"
+"\tAffiche la file d'attente des Downloads.\n"
 
 #: src/TextClient.cpp:289
 msgid ""
 "resume n:\n"
 "\tResume file number n.\n"
 msgstr ""
+"resume n:\n"
+"\tResume le fichier numéro n.\n"
 
 #: src/TextClient.cpp:290
 msgid ""
 "pause n:\n"
 "\tPauses file number n.\n"
 msgstr ""
+"pause n:\n"
+"\tPause le fichier numéro n.\n"
 
 #: src/TextClient.cpp:291
 msgid ""
 "ServerStatus:\n"
 "\tTell us if connected/not connected.\n"
 msgstr ""
+"ServerStatus:\n"
+"\tAffiche si on est connecté ou déconnecté.\n"
 
 #: src/TextClient.cpp:292
 msgid ""
 "connect:\n"
 "\tTries to connect to any server. WARNING: Doesn't warn if failed\n"
 msgstr ""
+"connect:\n"
+"\tEssaye de se connecter à n'importe quel serveur. ATTENTION: N'averti pas en cas d'échec\n"
 
 #: src/TextClient.cpp:293
 msgid ""
 "disconnect:\n"
 "\tDisconnect from server.\n"
 msgstr ""
+"disconnect:\n"
+"\tSe deconnecte du serveur\n"
 
 #: src/TextClient.cpp:294
 msgid ""
@@ -4818,6 +4848,8 @@ msgid ""
 "\n"
 "->End of listing\n"
 msgstr ""
+"\n"
+"->Fin de la liste\n"
 
 #: src/TextClient.cpp:301 src/WebInterface.cpp:224
 msgid ""
@@ -4841,6 +4873,9 @@ msgid ""
 "Use 'Help' for command list\n"
 "\n"
 msgstr ""
+"\n"
+"Utilisez 'Help' pour obtenir la liste des commandes\n"
+"\n"
 
 #: src/TransferWnd.cpp:175
 msgid "Select view filter"
@@ -4877,11 +4912,11 @@ msgstr "Erreur de traitement du paquet UDP entrant"
 
 #: src/UploadClient.cpp:218
 msgid "Session ended due to new chunk."
-msgstr ""
+msgstr "Fin de session pour cause de nouveau chunk."
 
 #: src/UploadClient.cpp:223
 msgid "Session ended due to different file."
-msgstr ""
+msgstr "Fin de session pour cause de fichier différent."
 
 #: src/UploadClient.cpp:334
 #, c-format
@@ -5071,6 +5106,14 @@ msgid ""
 "\n"
 "Distributed under GPL"
 msgstr ""
+"aLinkCreator, le créateur de liens Ed2k d'aMule\n"
+"\n"
+"(c) 2004 ThePolish <thepolish@vipmail.ru>\n"
+"\n"
+"Pixmaps par http://www.everaldo.com et http://www.icomania.com\n"
+"et http://jimmac.musichall.cz/ikony.php3\n"
+"\n"
+"Distribué sous licence GPL"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:474
 #: src/utils/aLinkCreator/src/alcframe.cpp:475
@@ -5403,6 +5446,8 @@ msgid ""
 "\n"
 "Ok, exiting Web Client...\n"
 msgstr ""
+"\n"
+"Ok, sortie de l'application Web Client...\n"
 
 #: src/WebInterface.cpp:219
 msgid ""
@@ -5416,27 +5461,27 @@ msgstr ""
 
 #: src/WebServer.cpp:180 src/WebServer.cpp:201
 msgid "Can't create web socket thread\n"
-msgstr ""
+msgstr "Impossible de créer un thread pour la socket Web\n"
 
 #: src/WebServer.cpp:186
 msgid "Web Server: Started\n"
-msgstr ""
+msgstr "Serveur Web: démarré\n"
 
 #: src/WebServer.cpp:189
 msgid "Web Server: running\n"
-msgstr ""
+msgstr "Serveur Web: en fonctionnement\n"
 
 #: src/WebServer.cpp:205
 msgid "Web Server: Restarted\n"
-msgstr ""
+msgstr "Serveur Web: redémarré\n"
 
 #: src/WebServer.cpp:215
 msgid "Web Server: Stopped\n"
-msgstr ""
+msgstr "Serveur Web: arrêté\n"
 
 #: src/WebServer.cpp:217
 msgid "Web Server: not running\n"
-msgstr ""
+msgstr "Serveur Web: arrêté\n"
 
 #: src/WebServer.cpp:249 src/WebServer.cpp:266 src/WebServer.cpp:316
 #, c-format
@@ -5453,15 +5498,15 @@ msgstr ""
 
 #: src/WebServer.cpp:334
 msgid "Failed to load template "
-msgstr ""
+msgstr "Impossible de charger le template "
 
 #: src/WebServer.cpp:535
 msgid "***** logged in, getting page "
-msgstr ""
+msgstr "***** connecté, chargement de la page "
 
 #: src/WebServer.cpp:536
 msgid "***** session is "
-msgstr ""
+msgstr "***** la session est "
 
 #: src/WebServer.cpp:600 src/WebServer.cpp:1642 src/WebServer.cpp:2577
 #: src/WebServer.cpp:2714
@@ -5470,15 +5515,15 @@ msgstr "Accès refusé !"
 
 #: src/WebServer.cpp:658
 msgid " :: field "
-msgstr ""
+msgstr " :: champs "
 
 #: src/WebServer.cpp:691
 msgid "*** URL parsed. returning "
-msgstr ""
+msgstr "*** URL parsée. retour"
 
 #: src/WebServer.cpp:734
 msgid "*** replaced session with "
-msgstr ""
+msgstr "*** session remplacéepar "
 
 #: src/WebServer.cpp:739 src/WebServer.cpp:2349 src/WebServer.cpp:2393
 msgid "Web Control Panel"
@@ -5596,7 +5641,7 @@ msgstr "Recherche Web"
 
 #: src/WebServer.cpp:2209
 msgid "***_GetStats arrived\n"
-msgstr ""
+msgstr "***_GetStats est arrivé\n"
 
 #: src/WebServer.cpp:2328
 msgid "File Settings"
@@ -5709,5 +5754,4 @@ msgstr "Méthode"
 #: src/WebServer.cpp:2765
 msgid "Global (Server)"
 msgstr "Globale (Serveur)"
-
 
