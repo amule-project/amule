@@ -729,7 +729,7 @@ void CDownloadListCtrl::RemoveFile(const CPartFile * toremove)
 
 void CDownloadListCtrl::UpdateItem(void* toupdate)
 {
-	if ( theApp.amuledlg->IsDialogVisible( CamuleDlg::TransferWnd ) ) {
+	if ( theApp.amuledlg->IsDialogVisible( CamuleDlg::TransferWnd ) && !theApp.amuledlg->IsIconized() ) {
 		// Retrieve all entries matching the source
 		std::pair < ListItems::const_iterator, ListItems::const_iterator > rangeIt = m_ListItems.equal_range(toupdate);
 		
