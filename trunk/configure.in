@@ -11,13 +11,27 @@ CXXFLAGS=" $CXXFLAGS"
 
 # Checks for programs.
 AC_PROG_CXX
+AC_PROG_CXXCPP
 AC_PROG_CC
 AC_PROG_CPP
-# Checks for libraries.
+AC_PROG_MAKE_SET
+AC_PROG_INSTALL
 
+# Find the right ranlib, even when cross-compiling
+# And for some other tools for cross compilation
+AC_CHECK_TOOL(RANLIB, ranlib)
+AC_CHECK_TOOL(STRIP, strip)
+AC_CHECK_TOOL(AR, ar)
+AC_CHECK_TOOL(LD, ld)
+AC_CHECK_TOOL(WINDRES, windres)
+
+
+# Checks for gettext.
 AM_GNU_GETTEXT
 AM_GNU_GETTEXT_VERSION(0.11.5)
 
+
+# Checks for libraries.
 AM_OPTIONS_WXCONFIG
 
 AM_PATH_WXCONFIG(2.4.2)
@@ -228,11 +242,11 @@ openbsd*)
 		DEBUG_FLAGS="-Wall -g -fno-inline -D__DEBUG__"
 	fi
 	;;
-mingw32*)
-	AC_CHECK_TOOL(WINDRES, windres, :)
-	;;
-cygwin*)
-	AC_CHECK_TOOL(WINDRES, windres, :)
+*cygwin* | *mingw32*)
+	SYS=win32
+	if test "${WINDRES}" = "" ; then
+		AC_MSG_ERROR([Required resource tool 'windres' not found on PATH.])
+	fi
 	;;
 esac
 
@@ -364,7 +378,7 @@ AM_CONDITIONAL(HAVE_GTK, test x$gtk = xyes)
 AM_CONDITIONAL(VERBOSE_OUTPUT, test x$USE_DEBUG = xyes -a x$VERBOSE_OUTPUT = xyes)
 
 # Compilation of rc file with minGW
-AM_CONDITIONAL(USE_MINGW, test "${SYS}" = "mingw32")
+AM_CONDITIONAL(USE_MINGW, test "${SYS}" = "win32")
 
 AC_SUBST(GTK_DEFS)
 AC_SUBST(TRAY_FLAGS)
