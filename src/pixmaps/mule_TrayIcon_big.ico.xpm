@@ -1,7 +1,7 @@
 /* XPM */
 static char * mule_TrayIcon_big_ico_xpm[] = {
 "22 22 169 2",
-"  	c None",
+"  	c #ff0000",
 ". 	c #642909",
 "+ 	c #682C0A",
 "@ 	c #662B0A",
@@ -172,6 +172,7 @@ static char * mule_TrayIcon_big_ico_xpm[] = {
 "L.	c #783911",
 "                                            ",
 "                                            ",
+"                                            ",
 "          .                                 ",
 "          .                                 ",
 "        . +                                 ",
@@ -190,5 +191,4 @@ static char * mule_TrayIcon_big_ico_xpm[] = {
 ". + 7.8.9.0.a.b.c.d.e.f.g.h.i.I             ",
 ". j.k.l.m.* n.@ o.p.q.r.s.t.u.              ",
 ". v.w.x.y.z.A..   B.C.D.E.F.                ",
-". G.H.I.J.K.L..                             ",
-"                                            "};
+". G.H.I.J.K.L..                             "};

@@ -106,9 +106,9 @@ class CMuleTrayIcon : public wxTaskBarIcon {
 		int Old_Icon;
 		int Old_SpeedSize;
 	
-		wxIcon Disconnected_Icon;
-		wxIcon LowId_Icon;
-		wxIcon HighId_Icon;
+		int Disconnected_Icon_size;
+		int LowId_Icon_size;
+		int HighId_Icon_size;
 	
 		wxIcon CurrentIcon;
 		wxMemoryDC IconWithSpeed;

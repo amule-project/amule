@@ -1,7 +1,7 @@
 /* XPM */
 static char * mule_Tr_grey_big_ico_xpm[] = {
 "22 22 106 2",
-"  	c None",
+"  	c #ff0000",
 ". 	c #3B3B3B",
 "+ 	c #3E3E3E",
 "@ 	c #3D3D3D",
