@@ -870,8 +870,8 @@ void PrefsUnifiedDlg::BuildItemList(Preferences_Struct *prefs, const wxString ap
 
 	listRse.Append(new RseBool(0, prefs->dontcompressavi, wxT("DontCompressAvi"), false, wxT("WebServer")));  // no GUI yet
 
-	listRse.Append(new RseInt(IDC_EXTENDED_DROP, prefs->NoNeededSources, wxT("NoNeededSources"), 1, wxT("Razor_Preferences")));
-
+	listRse.Append(new RseInt(IDC_NNS_HANDLING, prefs->NoNeededSources, wxT("NoNeededSourcesHandling"), 2, wxT("Razor_Preferences")));
+	
 	listRse.Append(new RseBool(IDC_ENABLE_AUTO_FQS, prefs->DropFullQueueSources, wxT("FullQueueSources"), false, wxT("Razor_Preferences")));
 	listRse.Append(new RseBool(IDC_ENABLE_AUTO_HQRS, prefs->DropHighQueueRankingSources, wxT("HighQueueRankingSources"), false, wxT("Razor_Preferences")));
 	listRse.Append(new RseInt(IDC_HQR_VALUE, prefs->HighQueueRanking, wxT("HighQueueRanking"), 1200, wxT("Razor_Preferences")));
