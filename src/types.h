@@ -51,8 +51,16 @@ typedef uint8_t		BYTE;
 	typedef uint16_t	WORD;
 	typedef uint32_t	UINT;
 #else 
+	typedef bool		BOOL;
+
 	typedef uint32_t	UINT;
 	typedef uint32_t*	UINT_PTR;
+	typedef uint32_t*	PUINT;
+
+	typedef long		LONG;
+	typedef unsigned LONG	ULONG;
+
+
 	typedef uint8_t		byte;
 	typedef uint32_t	DWORD;
 	typedef int32_t		LONG;
@@ -73,6 +81,10 @@ typedef uint8_t		BYTE;
 	typedef char        	TCHAR;
 	typedef TCHAR*      	LPTSTR;
 	typedef const TCHAR*	LPCTSTR;
+
+	typedef wchar_t			WCHAR;
+	typedef WCHAR*			LPWSTR;
+	typedef const WCHAR*	LPCWSTR;
 
 	typedef uint32_t	COLORREF;
 	typedef int16_t 	WPARAM;
