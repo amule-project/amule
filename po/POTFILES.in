@@ -45,6 +45,7 @@ src/SharedFilesWnd.cpp
 src/sockets.cpp
 src/StatisticsDlg.cpp
 src/SysTray.cpp
+src/TextClient.cpp
 src/TransferWnd.cpp
 src/UDPSocket.cpp
 src/UploadClient.cpp
