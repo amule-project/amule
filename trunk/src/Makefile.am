@@ -1,10 +1,19 @@
 bin_PROGRAMS =
+
+dist_icon_DATA =
+dist_util_DATA =
+
+icondir = $(datadir)/pixmaps
+utildir = $(datadir)/applications
+
 if GUI
 bin_PROGRAMS += amulecmdDLG
 endif
+
 if COMPILE_CMD
 bin_PROGRAMS += amulecmd   
 endif
+
 if WEB
 bin_PROGRAMS += amuleweb
 htmldir = $(datadir)/amuleweb
@@ -12,6 +21,7 @@ dist_html_DATA = aMule.tmpl
 htmlimgdir = $(htmldir)/webserver
 dist_htmlimg_DATA = webserver/*.gif
 endif
+
 if WEBGUI
 bin_PROGRAMS += amulewebDLG
 htmldir = $(datadir)/amuleweb
@@ -19,15 +29,22 @@ dist_html_DATA = aMule.tmpl
 htmlimgdir = $(htmldir)/webserver
 dist_htmlimg_DATA = webserver/*.gif
 endif
+
 if CAS
 bin_PROGRAMS += cas
+dist_icon_DATA += utils/cas/stat.png
 endif
+
 if WXCAS
 bin_PROGRAMS += wxcas
+dist_icon_DATA += utils/wxCas/pixmaps/wxcas.xpm
+dist_util_DATA += utils/wxCas/wxcas.desktop
 endif
+
 if ED2K
 bin_PROGRAMS += ed2k
 endif
+
 bin_PROGRAMS += amule
 
 DEFS = -DHAVE_CONFIG_H
