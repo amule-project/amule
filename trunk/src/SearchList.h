@@ -40,8 +40,9 @@ public:
 
 	uint32	GetIntTagValue(uint8 tagname);
 	char*	GetStrTagValue(uint8 tagname);
-	uint32	AddSources(uint32 count);
+	uint32	AddSources(uint32 count, uint32 count_complete);
 	uint32	GetSourceCount();
+	uint32	GetCompleteSourceCount();
 	uint32	GetSearchID() {return m_nSearchID;}
 
 	uint32	GetClientID() const			{ return m_nClientID; }
