@@ -295,7 +295,7 @@ bool PrefsUnifiedDlg::TransferToWindow()
 	FindWindow( IDC_MINDISKSPACE )->Enable( CPreferences::IsCheckDiskspaceEnabled() );
 	FindWindow( IDC_SKINFILE )->Enable( CPreferences::UseSkin() );
 	FindWindow( IDC_OSDIR )->Enable( CPreferences::IsOnlineSignatureEnabled() );
-#warning UDPDisable isn't implemented!
+#warning UDPDisable isnt implemented!
 	FindWindow( IDC_UDPPORT )->Enable( !CPreferences::s_UDPDisable );
 	FindWindow( IDC_SERVERRETRIES )->Enable( CPreferences::DeadServer );
 	FindWindow( IDC_HQR_VALUE )->Enable( CPreferences::DropHighQueueRankingSources() );
