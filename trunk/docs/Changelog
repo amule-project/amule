@@ -41,12 +41,17 @@ Version 2.0.0rc4 - The 'Target: REAL Stability' version.
 	Kry:
 
 	Phoenix:
+		* code cleaning in several modules due to making the members
+		  size, opcode and prot private in packets.h.
+		* CFile Close(), Read() and Seek() made const. Seek() needed
+		  the use of mutable with m_fd to be const.
+		* put lots of consts around the code in the routines that
+		  should be so.
 		* Patch to --enable-stdin to aid in debug with valgrind.
 		* code cleaning in module Packets, made a lot of stuff private
 		  now.
 		* small hacks to print debug messages and avoid crashes,
 		  mainly in PartFile.cpp.
-		* lots of consts around the code.
 		* sanity checks in debug mode (MagicNumbers) to aid finding
 		  bogus clients and files.
 		* created debugstuff module, debug build only.
@@ -79,6 +84,9 @@ Version 2.0.0rc4 - The 'Target: REAL Stability' version.
 		  to connect to server with wxWidgets-2.5.2.
 		* Fixed compilation and linking in 2.5.x for amulecmd. Same
 		  problem as amuleweb.
+		* commited a patch from wolti that fixes compilation on 
+		  sparc/Solaris systems.
+		* More sparc compilation fixes, thanks to wimms.
 
 	thepolish:
 		* wxCas:
