@@ -248,7 +248,7 @@ void COScopeCtrl::RecreateGrid()
 	}
 
 	// create some fonts (horizontal and vertical)
-	wxFont* axisFont = new wxFont(10,wxSWISS,wxNORMAL,wxNORMAL,FALSE,wxT("Arial"));
+	wxFont* axisFont = new wxFont(10,wxSWISS,wxNORMAL,wxNORMAL,FALSE);
 	dcGrid->SetFont(*axisFont);//,this);
 
 	// y max
