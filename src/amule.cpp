@@ -1535,6 +1535,7 @@ void CamuleApp::ShutDown() {
 	if (CAICHSyncThread::IsRunning()) {
 		CAICHSyncThread::Stop();
 	}
+	
 }
 
 #if defined(__DEBUG__) 
@@ -1699,6 +1700,7 @@ wxString CamuleApp::GetLog(bool reset)
 	logfile->Read(tmp_buffer, len);
 	wxString str(char2unicode(tmp_buffer));
 	delete [] tmp_buffer;
+	delete logfile;
 	if ( reset ) {
 #if wxCHECK_VERSION(2,5,3)
 		delete applog;
