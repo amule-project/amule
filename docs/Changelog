@@ -7,7 +7,7 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		
     deltaHF:
 	    * GUI for auto-sort download queue.
-		* TCP and UDP port start now at 0 (remember - running amule as root is insecure!!!)
+		* TCP and UDP port start now at 0 (remember - running amule as root is insecure!!)
 
 	GonoszTopi:
 		* Unicode fixes:
