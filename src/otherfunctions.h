@@ -63,6 +63,10 @@ int CmpAny(const TYPE& ArgA, const TYPE& ArgB)
 	}
 }
 
+void ZeroMemory(void* Ptr, size_t Size) {
+	memset(Ptr,0,Size);
+}
+
 
 /**
  * Returns a description of the version of aMule being used.
@@ -77,7 +81,9 @@ wxString GetMuleVersion();
 
 
 // From Gnucleus project [found by Tarod]
-// Converts 'buffer' with length 'bufLen' to a wxString
+// Converts 'buffer' with length 'bufLen' to a wxString, base 32
+wxString EncodeBase32(const unsigned char* buffer, unsigned int bufLen);
+// Converts 'buffer' with length 'bufLen' to a wxString, base 16
 wxString EncodeBase16(const unsigned char* buffer, unsigned int bufLen);
 // Converts the string 'base16Buffer' with length 'base16BufLen' to a hash in 'buffer'.
 void DecodeBase16(const char *base16Buffer, unsigned int base16BufLen, unsigned char *buffer);
