@@ -78,9 +78,11 @@ bool CMuleNotebook::DeletePage(int nPage)
 	bool result = wxNotebook::DeletePage( nPage );
 
 	// Ensure a valid selection
-	if ( GetPageCount() && GetSelection() >= GetPageCount() ) {
+	if ( GetPageCount() && (int)GetSelection() >= (int)GetPageCount() ) {
 		SetSelection( GetPageCount() - 1 );
 	}
+	
+	return result;
 }
 
 
