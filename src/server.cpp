@@ -43,15 +43,14 @@ CServer::CServer(uint16 in_port, const wxString i_addr)
 
 	port = in_port;
 	ip = StringIPtoUint32(i_addr);
+
+	Init();
+
+	// GonoszTopi - Init() would clear dynip !
 	if (!ip) {
 		// If ip == 0, the address is a hostname
 		dynip = i_addr;
-	} else {
-		dynip.Clear();
 	}
-	
-	Init();
-
 }
 
 // copy constructor
