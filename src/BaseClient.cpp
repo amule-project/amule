@@ -86,8 +86,7 @@ CUpDownClient::CUpDownClient(uint16 in_port, uint32 in_userid,uint32 in_serverip
 		}
 	#else
  	if(!HasLowID()) {
-		#warning Kry WHY OH WHY!
-		m_nConnectIP = ENDIAN_SWAP_32(in_userid);
+		m_nConnectIP = in_userid;
 	}
 	#endif
 
@@ -578,7 +577,6 @@ bool CUpDownClient::SendHelloPacket() {
 	// if IP is filtered, dont greet him but disconnect...
 	amuleIPV4Address address;
 	m_socket->GetPeer(address);
-	#warning Kry - why is IPAddress returning wrong endianess?
 	if ( theApp.ipfilter->IsFiltered(StringIPtoUint32(address.IPAddress()))) {
 		if (Disconnected(wxT("IPFilter"))) {
 			Safe_Delete();
@@ -2116,8 +2114,7 @@ void CUpDownClient::SetIP( uint32 val )
 
 	m_dwUserIP = val;
 
-	#warning Kry - WHY OH WHY!!!!!!!
-	m_nConnectIP = ENDIAN_SWAP_32(val);
+	m_nConnectIP = val;
 }
 
 

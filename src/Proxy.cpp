@@ -772,7 +772,8 @@ void CSocks5StateMachine::process_send_command_request(bool entry)
 		}
 		m_buffer[2] = SOCKS5_RSV;
 		m_buffer[3] = SOCKS5_ATYP_IPV4_ADDRESS;
-		*((uint32 *)(m_buffer+4)) = StringIPtoUint32(m_peerAddress->IPAddress());
+		*((uint32 *)(m_buffer+4)) =
+			ENDIAN_SWAP_32(StringIPtoUint32(m_peerAddress->IPAddress()));
 		*((uint16 *)(m_buffer+8)) = htons(m_peerAddress->Service());
 		
 		// Send the command packet
@@ -815,9 +816,8 @@ void CSocks5StateMachine::process_process_command_reply(bool entry)
 			{
 				const unsigned int addrOffset = 4;
 				portOffset = 8;
-				wxString strAddr = Uint32toStringIP(
-					*((uint32 *)(m_buffer+addrOffset)) );
-				m_proxyBoundAddressIPV4.Hostname(strAddr);
+				m_proxyBoundAddressIPV4.Hostname(ENDIAN_SWAP_32(
+					*((uint32 *)(m_buffer+addrOffset)) ));
 				m_proxyBoundAddress = &m_proxyBoundAddressIPV4;
 				break;
 			}
@@ -954,7 +954,8 @@ void CSocks4StateMachine::process_send_command_request(bool entry)
 			break;
 		}
 		*((uint16 *)(m_buffer+2)) = htons(m_peerAddress->Service());
-		*((uint32 *)(m_buffer+4)) = StringIPtoUint32(m_peerAddress->IPAddress());
+		*((uint32 *)(m_buffer+4)) =
+			ENDIAN_SWAP_32(StringIPtoUint32(m_peerAddress->IPAddress()));
 		unsigned int offsetUser = 8;
 		unsigned char lenUser = m_proxyData.m_userName.Len();
 		memcpy(m_buffer + offsetUser, 
@@ -999,7 +1000,7 @@ void CSocks4StateMachine::process_process_command_reply(bool entry)
 			// Read BND.ADDR
 			const unsigned int addrOffset = 4;
 			m_ok = m_ok &&
-				m_proxyBoundAddressIPV4.Hostname(Uint32toStringIP(
+				m_proxyBoundAddressIPV4.Hostname(ENDIAN_SWAP_32(
 					*((uint32 *)(m_buffer+addrOffset)) ));
 			m_proxyBoundAddress = &m_proxyBoundAddressIPV4;
 		}
@@ -1383,7 +1384,7 @@ wxDatagramSocket &CDatagramSocketProxy::RecvFrom(
 				offset = PROXY_UDP_OVERHEAD_IPV4;
 				try {
 					amuleIPV4Address &a = dynamic_cast<amuleIPV4Address &>(addr);
-					a.Hostname(Uint32toStringIP(
+					a.Hostname(ENDIAN_SWAP_32(
 						*((uint32 *)(m_proxyTCPSocket.GetBuffer()+4)) ));
 					a.Service(ntohs(
 						*((uint16 *)(m_proxyTCPSocket.GetBuffer()+8)) ));
@@ -1439,7 +1440,8 @@ wxDatagramSocket &CDatagramSocketProxy::SendTo(
 			m_proxyTCPSocket.GetBuffer()[1] = SOCKS5_RSV;	// Reserved
 			m_proxyTCPSocket.GetBuffer()[2] = 0;		// FRAG
 			m_proxyTCPSocket.GetBuffer()[3] = SOCKS5_ATYP_IPV4_ADDRESS;
-			*((uint32 *)(m_proxyTCPSocket.GetBuffer()+4)) = StringIPtoUint32(addr.IPAddress());
+			*((uint32 *)(m_proxyTCPSocket.GetBuffer()+4)) =
+				ENDIAN_SWAP_32(StringIPtoUint32(addr.IPAddress()));
 			*((uint16 *)(m_proxyTCPSocket.GetBuffer()+8)) = htons(addr.Service());
 			memcpy(m_proxyTCPSocket.GetBuffer() + PROXY_UDP_OVERHEAD_IPV4, buf, nBytes);
 			nBytes += PROXY_UDP_OVERHEAD_IPV4;
