@@ -87,6 +87,7 @@ Version 2.0.0rc8 - The "???????????" version.
 		  amulecmd.
 		* Made wxTRANSLATE actually work.
 		* Fixed graphs in webserver. Also added the missing back.gif file.
+		* Fixed buffer overflow problem in ed2k link handler.
 
 	Special Thanks To:
 

@@ -55,7 +55,8 @@ void UnescapeURI(char *buf)
 void AddLink(char *ed2klink)
 {
 FILE *ed2kfile;
-char filename[100];
+char *filename;
+char *homedir;
 	
 	/* First do some checking wether the link is correct. */
 	if ((ed2klink[strlen(ed2klink)-35] != '|') && (ed2klink[strlen(ed2klink)-34] != '|')) {
@@ -64,7 +65,13 @@ char filename[100];
 	}
 
 	/* Link seemed ok, add it to file. */
-	sprintf(filename,"%s/.aMule/ED2KLinks",getenv("HOME"));
+	homedir = getenv("HOME");
+	if ((filename = (char *)malloc(strlen(homedir) + 18)) == NULL) {
+		printf("Memory allocation error.\n");
+		return;
+	}
+	strcpy(filename, homedir);
+	strcat(filename, "/.aMule/ED2KLinks");
 	ed2kfile = fopen(filename,"a");
 	if (ed2kfile != NULL) {
 		fprintf(ed2kfile,"%s\n",ed2klink);
@@ -73,6 +80,7 @@ char filename[100];
 	} else {
 		printf("Error opening file %s.\n", filename);
 	}
+	free(filename);
 }
 
 // emanuelw(20030924) added: AddServer()
@@ -80,41 +88,67 @@ char filename[100];
 void AddServer(char *ed2klink)
 {
 	FILE *ed2kfile;
-	char filename[100];
+	char *homedir;
+	char *filename;
 	char bufferIP[16];
 	char bufferPORT[6];
-	
+
 	char* server = NULL;
 	char* ip = NULL;
 	char* port = NULL;
 	char* portEnd = NULL;
-	
+
 	memset(bufferIP,0,16);
 	memset(bufferPORT,0,6);
-	
-	server = strchr(ed2klink,'|') + 1;
-	
-	if(server != NULL)
-		ip = strchr(server,'|') + 1;
-		
-	if(ip != NULL)
-		port = strchr(ip,'|') + 1;
-		
-	if (port != NULL)
-	{
-		portEnd = strchr(port,'|') + 1;
-		sprintf(filename,"%s/.aMule/ED2KServers",getenv("HOME"));
+
+	server = strchr(ed2klink,'|');
+
+	if (server != NULL) {
+		server++;
+		ip = strchr(server,'|');
+	}
+
+	if (ip != NULL) {
+		ip++;
+		port = strchr(ip,'|');
+	}
+
+	if (port != NULL) {
+		*port++ = '\0';
+		portEnd = strchr(port,'|');
+	}
+
+	if (portEnd != NULL) {
+		*portEnd = '\0';
+		homedir = getenv("HOME");
+		if ((filename = (char *)malloc(strlen(homedir) + 20)) == NULL) {
+			printf("Memory allocation error.\n");
+			return;
+		}
+		strcpy(filename, homedir);
+		strcat(filename, "/.aMule/ED2KServers");
 		ed2kfile = fopen(filename,"a");
 		if (ed2kfile != NULL)
 		{
-			strncpy(bufferIP,ip,strlen(ip)-strlen(port)-1);
-			strncpy(bufferPORT,port,strlen(port)-strlen(portEnd)-1);
-			fprintf(ed2kfile, "%s:%s,1,\n", bufferIP, bufferPORT);
+			char *serverLink;
+			if ((serverLink = (char *)malloc(strlen(ip) + strlen(port) + 6)) == NULL) {
+				printf("Memory allocation error.\n");
+				free(filename);
+				return;
+			}
+			strcpy(serverLink, ip);
+			strcat(serverLink, ":");
+			strcat(serverLink, port);
+			strcat(serverLink, ",1,\n");
+			fprintf(ed2kfile, serverLink);
 			printf("Successfully wrote ED2K-Server link to file.\n");
 			fclose(ed2kfile);
+			free(serverLink);
 		} 
-		else
-			printf("Error opening file %s.\n", filename);		
+		else {
+			printf("Error opening file %s.\n", filename);
+		}
+		free(filename);
 	}
 	else
 		printf("Invalid ED2K-Server link.\n");	
@@ -131,28 +165,25 @@ int main(int argc, char *argv[])
 		UnescapeURI(param);
 		if (!strncmp(param, "ed2k://|file|", 13) && (strlen(param)>55)) {
 			AddLink(param);
-		} else if (!strncmp(param, "ed2k://|server|", 15) && (strlen(param)>32)) {
+		} else if (!strncmp(param, "ed2k://|server|", 15) && (strlen(param)>25)) {
 			AddServer(param);
 		} else if (!strncmp(param, "--version", 9)) {
-			printf("aMule ED2K links parser v1.01\n");
-		} else if (!strncmp(param, "ed2k://|server|", 15) && (strlen(param)>32)) {
-			AddServer(param);
+			printf("aMule ED2K links parser v1.02\n");
 		} else if (!strncmp(param, "--help", 6)) {
-			printf("aMule ED2K links parser v1.01\n\n");
+			printf("aMule ED2K links parser v1.02\n\n");
 			printf("Enter ed2k links as commandline arguments, and they will be saved into $HOME/.aMule/ED2KLinks\n");
 			printf("file, from where aMule will pick them up and add to download queue once per second.\n");
-			printf("Currently, only file links are supported.\n\n");
+			printf("Currently, file and server links are supported.\n\n");
 			printf("Usage:\n");
 			printf("       --help          Prints this help.\n");
 			printf("       --version       Displays version info.\n");
 			printf("       ed2k://|file|   Sends ed2k link to $HOME/.aMule/ED2KLinks file.\n");
 			printf("       ed2k://|server| Sends ed2k link to $HOME/.aMule/ED2KServer file.\n");
 		} else {
-			if (strncmp(param, "ed2k://|file|", 13)) {
-				printf("Invalid ED2K link.\nReason: First 13 characters don't match 'ed2k://|file|'\n");
-			}
-			if (strlen(param)<=55) {
-				printf("Invalid ED2K Link.\nReason: Link length is below 55 characters.\n");
+			if (strncmp(param, "ed2k://|file|", 13) && strncmp(param, "ed2k://|server|", 15)) {
+				printf("Invalid ED2K link.\nReason: Unable to determine link type.\n");
+			} else {
+				printf("Invalid ED2K Link.\nReason: Link too short.\n");
 			}
 			result = 1;
 		}
