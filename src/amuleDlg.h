@@ -88,7 +88,7 @@ public:
 	void ShowTransferRate(bool forceAll=true);
 	void ShowStatistics();
 	bool StatisticsWindowActive()	{return (activewnd == (wxWindow*)statisticswnd);}
-	void ResetLog();
+	void ResetLog(uint8 whichone = 1);
 	void ResetDebugLog();
 	void StopTimer();
 	// Barry - To find out if app is running or shutting/shut down

@@ -63,6 +63,7 @@ public:
 	//afx_msg void OnBnClickedAddserver();
 	//afx_msg void OnBnClickedUpdateservermetfromurl();
 	void OnBnClickedResetLog(wxEvent& evt);
+	void OnBnClickedResetServerLog(wxEvent& evt);
 private:
 	wxStaticBitmap m_ctrlNewServerFrm;
 	wxStaticBitmap m_ctrlUpdateServerFrm;

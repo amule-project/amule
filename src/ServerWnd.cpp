@@ -50,6 +50,7 @@ BEGIN_EVENT_TABLE(CServerWnd,wxPanel)
 	EVT_BUTTON(ID_UPDATELIST,CServerWnd::OnBnClickedUpdateservermetfromurl)
 	EVT_TEXT_ENTER(IDC_SERVERLISTURL,CServerWnd::OnBnClickedUpdateservermetfromurl)
 	EVT_BUTTON(ID_BTN_RESET, CServerWnd::OnBnClickedResetLog)
+	EVT_BUTTON(ID_BTN_RESET_SERVER, CServerWnd::OnBnClickedResetServerLog)
 	EVT_SPLITTER_SASH_POS_CHANGED(ID_SRV_SPLITTER,CServerWnd::OnSashPositionChanged)
 END_EVENT_TABLE()
 
@@ -152,7 +153,12 @@ void CServerWnd::OnBnClickedUpdateservermetfromurl(wxEvent& evt)
 
 void CServerWnd::OnBnClickedResetLog(wxEvent& evt)
 {
-	theApp.amuledlg->ResetLog();
+	theApp.amuledlg->ResetLog(1);
+}
+
+void CServerWnd::OnBnClickedResetServerLog(wxEvent& evt)
+{
+	theApp.amuledlg->ResetLog(2);
 }
 
 void CServerWnd::UpdateMyInfo()
