@@ -27,6 +27,7 @@
 #include <wx/menu.h>
 #include <wx/msgdlg.h>
 #include <wx/stattext.h>
+#include <wx/bmpbuttn.h>
 
 #include "TransferWnd.h"	// Interface declarations
 #include "amuleDlg.h"		// Needed for CamuleDlg
