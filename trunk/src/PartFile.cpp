@@ -2982,8 +2982,12 @@ void CPartFile::PauseFile(bool bInsufficient)
 			for( POSITION pos = srclists[sl].GetHeadPosition(); pos != NULL;) {
 				CUpDownClient* cur_src = srclists[sl].GetNext(pos);
 				if (cur_src->GetDownloadState() == DS_DOWNLOADING) {
-					theApp.uploadqueue->AddUpDataOverheadOther(packet->size);
-					cur_src->socket->SendPacket(packet,false,true);
+					if (!cur_src->GetSentCancelTransfer()) {				
+						theApp.uploadqueue->AddUpDataOverheadOther(packet->size);
+						cur_src->socket->SendPacket(packet,false,true);
+						cur_src->SetDownloadState(DS_ONQUEUE);
+						cur_src->SetSentCancelTransfer(1);
+					}
 					cur_src->SetDownloadState(DS_ONQUEUE);
 				}
 			}
@@ -2995,6 +2999,7 @@ void CPartFile::PauseFile(bool bInsufficient)
 		insufficient = true;
 	} else {
 		paused = true;
+		insufficient = false;
 	}
 	
 #ifdef DOWNLOADRATE_FILTERED

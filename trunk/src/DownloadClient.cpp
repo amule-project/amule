@@ -651,42 +651,50 @@ void CUpDownClient::SendBlockRequests()
 		pblock->block = m_DownloadBlocks_list.RemoveHead();
 		pblock->zStream = NULL;
 		pblock->totalUnzipped = 0;
-		pblock->bZStreamError = false;
+		pblock->fZStreamError = 0;
+		pblock->fRecovered = 0;
 		m_PendingBlocks_list.AddTail(pblock);
 	}
 	if (m_PendingBlocks_list.IsEmpty()) {
-		Packet* packet = new Packet(OP_CANCELTRANSFER,0);
-		theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->size);
-		socket->SendPacket(packet,true,true);
+		if (!GetSentCancelTransfer()){
+			Packet* packet = new Packet(OP_CANCELTRANSFER,0);
+			theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->size);
+			socket->SendPacket(packet,true,true);
+			SetSentCancelTransfer(1);
+		}
 		SetDownloadState(DS_NONEEDEDPARTS);
 		return;
 	}
-	Packet* packet = new Packet(OP_REQUESTPARTS,40);
-	CMemFile* data = new CMemFile((BYTE*)packet->pBuffer,40);
-	data->WriteRaw(reqfile->GetFileHash(),16);
+	#define iPacketSize 16+(3*4)+(3*4) // 40
+	Packet* packet = new Packet(OP_REQUESTPARTS,iPacketSize);
+	CSafeMemFile data((BYTE*)packet->pBuffer,iPacketSize);
+	data.WriteHash16(reqfile->GetFileHash());
 	POSITION pos = m_PendingBlocks_list.GetHeadPosition();
 
-	Requested_Block_Struct* block;
 	for (uint32 i = 0; i != 3; i++) {
 		if (pos) {
-			block = m_PendingBlocks_list.GetAt(pos)->block;
-			m_PendingBlocks_list.GetNext(pos);
-			data->Write(block->StartOffset);
+			Pending_Block_Struct* pending = m_PendingBlocks_list.GetNext(pos);
+			wxASSERT( pending->block->StartOffset <= pending->block->EndOffset );
+			//ASSERT( pending->zStream == NULL );
+			//ASSERT( pending->totalUnzipped == 0 );
+			pending->fZStreamError = 0;
+			pending->fRecovered = 0;
+			data.Write((uint32)pending->block->StartOffset);
 		} else {
-			data->Write((uint32)0);
+			data.Write((uint32)0);
 		}
 	}
 	pos = m_PendingBlocks_list.GetHeadPosition();
 	for (uint32 i = 0; i != 3; i++) {
 		if (pos) {
-			block = m_PendingBlocks_list.GetAt(pos)->block;
-			m_PendingBlocks_list.GetNext(pos);
-			data->Write(block->EndOffset+1);
+			Requested_Block_Struct* block = m_PendingBlocks_list.GetNext(pos)->block;
+			uint32 endpos = block->EndOffset+1;
+			data.Write(endpos);			
 		} else {
-			data->Write((uint32)0);
+			data.Write((uint32)0);
 		}
 	}
-	delete data;
+
 	theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->size);
 	socket->SendPacket(packet,true,true);
 }
@@ -770,7 +778,7 @@ void CUpDownClient::ProcessBlockPacket(char *packet, uint32 size, bool packed)
 			if ((cur_block->block->StartOffset <= nStartPos) && (cur_block->block->EndOffset >= nStartPos)) {
 				// Found reserved block
 				
-				if (cur_block->bZStreamError){
+				if (cur_block->fZStreamError){
 					AddDebugLogLine(false, CString(_("Ignoring %u bytes of block %u-%u because of errornous zstream state for file \"%s\"")), size - HEADER_SIZE, nStartPos, nEndPos, reqfile->GetFileName().GetData());
 					reqfile->RemoveBlockFromList(cur_block->block->StartOffset, cur_block->block->EndOffset);
 					return;
@@ -791,6 +799,7 @@ void CUpDownClient::ProcessBlockPacket(char *packet, uint32 size, bool packed)
 					cur_block->block );
 				} else {
 					// Packed
+					wxASSERT( (int)size > 0 );
 					// Create space to store unzipped data, the size is
 					// only an initial guess, will be resized in unzip()
 					// if not big enough
@@ -803,10 +812,11 @@ void CUpDownClient::ProcessBlockPacket(char *packet, uint32 size, bool packed)
 
 					// Try to unzip the packet
 					int result = unzip(cur_block, (BYTE *)(packet + HEADER_SIZE), (size - HEADER_SIZE), &unzipped, &lenUnzipped);
-					if (result == Z_OK) {
-						wxASSERT( (int)lenUnzipped > 0 );
+					if (result == Z_OK && ((int)lenUnzipped >= 0)) {
+						
 						// Write any unzipped data to disk
 						if (lenUnzipped > 0) {
+							wxASSERT( (int)lenUnzipped > 0 );
 							// Use the current start and end
 							// positions for the uncompressed data
 							nStartPos = cur_block->block->StartOffset + cur_block->totalUnzipped - lenUnzipped;
@@ -841,7 +851,7 @@ void CUpDownClient::ProcessBlockPacket(char *packet, uint32 size, bool packed)
 						// Although we can't further use the current zstream, there is no need to disconnect the sending 
 						// client because the next zstream (a series of 10K-blocks which build a 180K-block) could be
 						// valid again. Just ignore all further blocks for the current zstream.
-						cur_block->bZStreamError = true;
+						cur_block->fZStreamError = 1;
 						cur_block->totalUnzipped = 0; // bluecow's fix
 					}
 					delete [] unzipped;
@@ -1027,10 +1037,13 @@ float CUpDownClient::CalculateKBpsDown() {
 		UpdateDisplayedInfo();
 	}
 	if ((::GetTickCount() - m_dwLastBlockReceived) > DOWNLOADTIMEOUT){
-		Packet* packet = new Packet(OP_CANCELTRANSFER,0);
-		theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->size);
-		socket->SendPacket(packet,true,true);
-		SetDownloadState(DS_ONQUEUE);
+		if (!GetSentCancelTransfer()){
+			Packet* packet = new Packet(OP_CANCELTRANSFER,0);
+			theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->size);
+			socket->SendPacket(packet,true,true);
+			SetSentCancelTransfer(1);
+		}
+		SetDownloadState(DS_ONQUEUE);		
 	}
 		
 	return kBpsDown;
