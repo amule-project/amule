@@ -252,7 +252,10 @@ void CClientUDPSocket::OnSend(int nErrorCode)
 		char* sendbuffer = new char[cur_packet->packet->GetPacketSize()+2];
 		memcpy(sendbuffer, cur_packet->packet->GetUDPHeader(), 2);
 		memcpy(sendbuffer+2, cur_packet->packet->GetDataBuffer(), cur_packet->packet->GetPacketSize());
-		if (!SendTo(sendbuffer, cur_packet->packet->GetPacketSize()+2, cur_packet->dwIP, cur_packet->nPort)) {
+		bool is_sent = SendTo(sendbuffer, cur_packet->packet->GetPacketSize()+2, cur_packet->dwIP, cur_packet->nPort);
+		if ((is_sent) || (!is_sent && !IsBusy())) {
+			// Either we sent the packet, or faced an error different from WOULDBLOCK,
+			// like the other guy is not there anymore, so drop it.
 			controlpacket_queue.RemoveHead();
 			delete cur_packet->packet;
 			delete cur_packet;
@@ -280,10 +283,8 @@ bool CClientUDPSocket::SendTo(char* lpBuf,int nBufLen,uint32 dwIP, uint16 nPort)
 		uint32 error = LastError();
 		if (error == wxSOCKET_WOULDBLOCK) {
 			m_bWouldBlock = true;
-			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 	return true;
 }
