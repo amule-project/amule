@@ -1824,66 +1824,69 @@ void CamuleApp::ShutDown() {
 }
 
 
-#if defined(__DEBUG__) && defined(__LINUX__)
-
-	void CamuleApp::AddSocketDeleteDebug(uint32 socket_pointer, uint32 creation_time) {
-
-		socket_deletion_log_item current_socket;
-		socket_deletion_log_item temp_socket;
-
-		current_socket.socket_n = socket_pointer;
-		current_socket.creation_time = creation_time;
-		current_socket.backtrace = wxT("");
-
-		void *bt_array[6];	// 6 should be enough ?!?
-		char **bt_strings;
-		int num_entries;
-
-		if ((num_entries = backtrace(bt_array, 6)) < 0) {
-			current_socket.backtrace += wxT("* Could not generate backtrace\n");
-		} else {
-			if ((bt_strings = backtrace_symbols(bt_array, num_entries)) == NULL) {
-				current_socket.backtrace += wxT("* Could not get symbol names for backtrace\n");
-			}  else {
-				int n;
-				if (num_entries < 5) {
-					n = num_entries;
-				} else {
-					n = 5;
+#if defined(__DEBUG__) 
+	#if defined(__LINUX__)
+	
+		void CamuleApp::AddSocketDeleteDebug(uint32 socket_pointer, uint32 creation_time) {
+	
+			socket_deletion_log_item current_socket;
+			socket_deletion_log_item temp_socket;
+	
+			current_socket.socket_n = socket_pointer;
+			current_socket.creation_time = creation_time;
+			current_socket.backtrace = wxT("");
+	
+			void *bt_array[6];	// 6 should be enough ?!?
+			char **bt_strings;
+			int num_entries;
+	
+			if ((num_entries = backtrace(bt_array, 6)) < 0) {
+				current_socket.backtrace += wxT("* Could not generate backtrace\n");
+			} else {
+				if ((bt_strings = backtrace_symbols(bt_array, num_entries)) == NULL) {
+					current_socket.backtrace += wxT("* Could not get symbol names for backtrace\n");
+				}  else {
+					int n;
+					if (num_entries < 5) {
+						n = num_entries;
+					} else {
+						n = 5;
+					}
+					for (int i = n - 1; i >= 0; i--) {
+						current_socket.backtrace += wxString::Format(wxT("[%d] %s | "), i, bt_strings[i]);
+					}
+					current_socket.backtrace += wxT("END");
 				}
-				for (int i = n - 1; i >= 0; i--) {
-					current_socket.backtrace += wxString::Format(wxT("[%d] %s | "), i, bt_strings[i]);
-				}
-				current_socket.backtrace += wxT("END");
 			}
+	
+			uint32 size = SocketDeletionList.size();
+			for ( uint32 i = 0; i < size; ++i ) {
+				if (( SocketDeletionList[i].socket_n == socket_pointer) && ( SocketDeletionList[i].creation_time == creation_time)) {
+	
+					printf("\n-----------------------RSB FOUND!!!!!!!!!!!!!!!!!!!!!!!!!------------\n");
+					printf("First deletion  (ptr: %u time: %u) BT:\n",temp_socket.socket_n, temp_socket.creation_time);
+					printf("-> %s\n\n",unicode2char(temp_socket.backtrace));
+	
+					printf("Second deletion (ptr: %u time: %u) BT:\n",current_socket.socket_n,current_socket.creation_time);
+					printf("-> %s\n\n",unicode2char(current_socket.backtrace));
+	
+					printf("--------------------------- Get Ready for RC4---------------------------\n");
+	
+					//wxASSERT(0);
+				}
+			}
+	
+			SocketDeletionList.push_back(current_socket);
+	
 		}
 
-		uint32 size = SocketDeletionList.size();
-		for ( uint32 i = 0; i < size; ++i ) {
-			if (( SocketDeletionList[i].socket_n == socket_pointer) && ( SocketDeletionList[i].creation_time == creation_time)) {
-
-				printf("\n-----------------------RSB FOUND!!!!!!!!!!!!!!!!!!!!!!!!!------------\n");
-				printf("First deletion  (ptr: %u time: %u) BT:\n",temp_socket.socket_n, temp_socket.creation_time);
-				printf("-> %s\n\n",unicode2char(temp_socket.backtrace));
-
-				printf("Second deletion (ptr: %u time: %u) BT:\n",current_socket.socket_n,current_socket.creation_time);
-				printf("-> %s\n\n",unicode2char(current_socket.backtrace));
-
-				printf("--------------------------- Get Ready for RC4---------------------------\n");
-
-				//wxASSERT(0);
-			}
+	#else
+		void CamuleApp::AddSocketDeleteDebug(uint32 socket_pointer, uint32 creation_time) {
+		// No backtrace on this platform.
 		}
-
-		SocketDeletionList.push_back(current_socket);
-
-	}
-
-#else
-	void CamuleApp::AddSocketDeleteDebug(uint32 socket_pointer, uint32 creation_time) {
-	// No backtrace on this platform.
-	}
-#endif
+	#endif // __LINUX__
+		
+#endif // __DEBUG__
 	
 
 void CamuleApp::NotifyEvent(GUIEvent event) {
