@@ -61,11 +61,13 @@ enum
 	SOCKET_ID
 };
 
+#ifndef AMULE_DAEMON
 BEGIN_EVENT_TABLE(ExternalConn, wxEvtHandler)
 	EVT_SOCKET(SERVER_ID, ExternalConn::OnServerEvent)
 	EVT_SOCKET(AUTH_ID,   ExternalConn::OnSocketEvent)
 	EVT_SOCKET(SOCKET_ID, ExternalConn::OnSocketEvent)
 END_EVENT_TABLE()
+#endif
 
 ExternalConn::ExternalConn()
 #ifdef AMULE_DAEMON
