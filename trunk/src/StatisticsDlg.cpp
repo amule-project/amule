@@ -316,7 +316,7 @@ unsigned CStatisticsDlg::GetHistory(  // Assemble arrays of sample points for a 
 	else
 		sTarget = (sStep==1.0 ? phr->sTimestamp : std::floor(phr->sTimestamp/sStep) * sStep); 
 
-	HR		**ahr, **pphr;
+	HR		**ahr = NULL, **pphr = NULL;
 	bool	bRateGraph = (pscope!=pscopeConn);	// rate graph or connections graph?
 	if (bRateGraph) {
 		ahr = new HR* [cntPoints];
