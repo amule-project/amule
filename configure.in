@@ -110,8 +110,10 @@ if test "$CRYPTO" != 0; then
 	Please check that cryptopp-headers are in your default path, check out
         LD_LIBRARY_PATH or equivalent variable.
 	Or this might also be that your cryptopp is instaled on other path.
-	Please try again with --with-crypto-pfx=/usr/include/cryptopp
-	(replace  /usr/include/cryptopp with a valid path to your crypto directory).
+	Please try again with --with-crypto-prefix=/usr/include/
+	(replace  /usr/include/ with a valid path to your crypto directory).
+	The crypto folder must me named cryptopp. Sorry about the mess but it's the
+	only way because libcrypto has no make install.
 	If you use compiled packages use --with-crypto-lib to specify the lib path.
 	To download the lastest version check http://www.cryptopp.com for sources.
     ])
