@@ -2199,7 +2199,7 @@ wxString CWebServer::GetStatusBox(wxString &preselect)
 		
 	// those are values that CPartFile->GetPartfileStatus return. They don't ment be translated
 	const wxChar * catvalues[] = {
-		_(""), wxT("Waiting"), wxT("Downloading"), wxT("Erroneous"), wxT("Paused"), wxT("Stopped") };
+		wxT(""), wxT("Waiting"), wxT("Downloading"), wxT("Erroneous"), wxT("Paused"), wxT("Stopped") };
 		
 	for (int i = 0; i < (int)(sizeof(catnames)/sizeof(catnames[0])); i++) {
 		if ( catvalues[i] == preselect ) {
