@@ -186,7 +186,7 @@ void CClientCreditsList::LoadList()
 	uint8 version;
 	file.Read(&version, 1);
 	if (version != CREDITFILE_VERSION && version != CREDITFILE_VERSION_29){
-		theApp.amuledlg->AddLogLine(false, GetResString(IDS_ERR_CREDITFILEOLD));
+		theApp.amuledlg->AddLogLine(false, _("Creditfile is out of date and will be replaced"));
 		file.Close();
 		return;
 	}
@@ -262,9 +262,9 @@ void CClientCreditsList::LoadList()
 	file.Close();
 
 	if (cDeleted>0) {
-		theApp.amuledlg->AddLogLine(false, GetResString(IDS_CREDITFILELOADED) + CString(_("Credits expired!")), count-cDeleted,cDeleted);
+		theApp.amuledlg->AddLogLine(false, _("Creditfile loaded, %u clients are known") + CString(_("Credits expired!")), count-cDeleted,cDeleted);
 	} else {
-		theApp.amuledlg->AddLogLine(false, GetResString(IDS_CREDITFILELOADED), count);
+		theApp.amuledlg->AddLogLine(false, _("Creditfile loaded, %u clients are known"), count);
 	}
 
 }
