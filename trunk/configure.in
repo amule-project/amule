@@ -1,7 +1,6 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_PREREQ(2.59)
 AC_INIT([aMule],[CVS],[deltahf@amule.org])
 AC_CANONICAL_TARGET
 AM_INIT_AUTOMAKE
