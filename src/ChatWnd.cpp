@@ -73,7 +73,7 @@ void CChatWnd::StartSession(CDlgFriend* friend_client, bool setfocus)
 		chatselector->StartSession(GUI_ID(friend_client->m_ip, friend_client->m_port), friend_client->m_name, true);
 	}
 
-	if ( !chatselector->GetPageCount() ) {
+	if ( chatselector->GetPageCount() == 1 ) {
 		GetParent()->FindWindow(IDC_CSEND)->Enable(true);
 		GetParent()->FindWindow(IDC_CCLOSE)->Enable(true);
 		GetParent()->FindWindow(IDC_CMESSAGE)->Enable(true);
@@ -100,7 +100,7 @@ void CChatWnd::OnAllPagesClosed(wxNotebookEvent& WXUNUSED(evt))
 	GetParent()->FindWindow(IDC_CSEND)->Enable(false);
 	GetParent()->FindWindow(IDC_CCLOSE)->Enable(false);
 	GetParent()->FindWindow(IDC_CMESSAGE)->Enable(false);
-	// GetParent()->FindWindow(IDC_CMESSAGE)->Clear();
+	((wxTextCtrl*) GetParent()->FindWindow(IDC_CMESSAGE))->Clear();
 }
 
 
