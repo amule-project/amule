@@ -919,7 +919,7 @@ void CDownloadQueue::AddLinksFromFile()
 
 	if ( file.Open() ) {
 		for ( unsigned int i = 0; i < file.GetLineCount(); i++ ) {
-			wxString line = file.GetLine( i );
+			wxString line = file.GetLine( i ).Strip( wxString::both );
 			
 			if ( !line.IsEmpty() ) {
 				// Special case! used by a secondary running mule to raise this one.
