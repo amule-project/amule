@@ -225,13 +225,18 @@ bool CUpDownClient::IsASaneUpDownClient() const
 {
 	int sane;
 	
-	sane = 	MagicNumber1 == MAGIC_1 && 
+	sane = 	this &&
+		MagicNumber1 == MAGIC_1 && 
 		MagicNumber2 == MAGIC_2; 
 #if defined( __DEBUG__ )
 	if( !sane ) {
 		// scream loud!
 		printf("Bogus pointer to UpDownClient detected!\n");
-		printf("MN1 = %u, MN2 = %u\n", MagicNumber1, MagicNumber2);
+		if(this) {
+			printf("MN1 = %u, MN2 = %u\n", MagicNumber1, MagicNumber2);
+		} else {
+			printf("'this' is a NULL pointer.\n");
+		}
 	}
 #endif // __DEBUG__
 
