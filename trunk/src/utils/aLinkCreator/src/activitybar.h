@@ -66,7 +66,7 @@ class ActivityBar:public wxGauge
     ActivityBar(wxWindow* parent, wxWindowID id, int range, int speed,
                 const wxPoint&  pos = wxDefaultPosition, const wxSize& size = wxDefaultSize,
                 long style = wxGA_HORIZONTAL, const wxValidator& validator = wxDefaultValidator,
-                const wxString& name = "activitybar");
+                const wxString& name = wxT("activitybar"));
 
     ~ActivityBar();
 
