@@ -220,8 +220,9 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAI
 {
 	AddTag(CECTag(EC_TAG_PARTFILE_SIZE_XFER, (uint32)client->GetTransferedDown()));
 	
-	AddTag(CECTag(EC_TAG_CLIENT_UPLOAD_TOTAL, (uint32)client->Credits()->GetUploadedTotal()));
-	AddTag(CECTag(EC_TAG_CLIENT_DOWNLOAD_TOTAL, (uint32)client->Credits()->GetDownloadedTotal()));
+	AddTag(CECTag(EC_TAG_CLIENT_UPLOAD_TOTAL, client->Credits()->GetUploadedTotal()));
+	AddTag(CECTag(EC_TAG_CLIENT_DOWNLOAD_TOTAL, client->Credits()->GetDownloadedTotal()));
+	
 	AddTag(CECTag(EC_TAG_CLIENT_UPLOAD_SESSION, (uint32)client->GetSessionUp()));
 	
 	AddTag(CECTag(EC_TAG_CLIENT_STATE,
