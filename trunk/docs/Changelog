@@ -113,6 +113,7 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 
 	lfroen:
 		* aMule remote gui implementation
+		* Support for categories in webserver
 		* EC additions
 		* RLE encoder for shared files
 
