@@ -62,8 +62,6 @@
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "amule.h"		// Needed for theApp
 
-//#define SERVER_NET_TEST 
-
 BEGIN_EVENT_TABLE(CServerSocketHandler, wxEvtHandler)
 	EVT_SOCKET(SERVERSOCKET_HANDLER, CServerSocketHandler::ServerSocketHandler)
 END_EVENT_TABLE()
