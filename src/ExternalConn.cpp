@@ -117,8 +117,8 @@ ExternalConn::ExternalConn(amuleIPV4Address addr, wxString *msg)
 			AddLogLineM(false, msgLocal);
 		}
 	} else {
-		*msg += wxT("External connections disabled in config file .eMule\n");
-		AddLogLineM(false,_("External connections disabled in config file .eMule"));
+		*msg += wxT("External connections disabled in config file\n");
+		AddLogLineM(false,_("External connections disabled in config file"));
 	}
 }
 

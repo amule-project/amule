@@ -3615,7 +3615,15 @@ CPartFile::CPartFile(CEC_PartFile_Tag *tag)
     // is it ok ?
     m_stopped = 0;
     
+//	m_SrcpartFrequency.SetCount(m_iPartCount);
+	#if wxCHECK_VERSION(2, 5, 0)
 	m_SrcpartFrequency.SetCount(m_iPartCount);
+	#else
+	// wx2.4 has no SetCount.
+	if (m_SrcpartFrequency.Count() < m_iPartCount) {
+		m_SrcpartFrequency.Add(0, m_iPartCount - m_SrcpartFrequency.Count());
+	}
+	#endif
 	m_iDownPriority = tag->Prio();
 	if ( m_iDownPriority >= 10 ) {
 		m_iDownPriority-= 10;
