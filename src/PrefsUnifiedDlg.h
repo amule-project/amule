@@ -75,7 +75,8 @@ private:
 	CDirectoryTreeCtrl* pdtcShareSelector;
 	wxChoice*	pchoiceColor;
 	wxButton*	pbuttonColor;
-
+	wxPanel*		CurrentPrefsPanel;
+	wxPanel*		PrefsPanels[11];
 private:
     // WDR: handler declarations for PrefsUnifiedDlg
 	void OnOk(wxCommandEvent &event);
@@ -93,6 +94,7 @@ private:
 	void OnCheckBoxChange(wxCommandEvent &event);
 	void OnFakeBrowserChange(wxCommandEvent &event);
 	void OnScroll(wxScrollEvent &event);
+	void OnPrefsPageChange(wxListEvent& event);
 
 private:
     DECLARE_EVENT_TABLE()
