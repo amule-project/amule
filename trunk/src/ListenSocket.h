@@ -176,7 +176,6 @@ private:
 	
 	bool bListening;
 	
-	uint16 opensockets;
 	uint16 m_OpenSocketsInterval;
 	uint32 maxconnectionreached;
 	wxIPV4address happyCompiler;

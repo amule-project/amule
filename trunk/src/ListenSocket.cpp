@@ -2246,7 +2246,6 @@ wxSocketServer(addr, wxSOCKET_NOWAIT|wxSOCKET_REUSEADDR)
 {
 	// 0.42e - vars not used by us
 	bListening = false;
-	opensockets = 0;
 	maxconnectionreached = 0;
 	m_OpenSocketsInterval = 0;
 	m_nPeningConnections = 0;
@@ -2374,14 +2373,12 @@ void CListenSocket::OnAccept(int nErrorCode)
 void CListenSocket::AddConnection()
 {
 	m_OpenSocketsInterval++;
-	opensockets++;
 }
 
 void CListenSocket::Process()
 {
 	// 042e + Kry changes for Destroy
 	m_OpenSocketsInterval = 0;
-	opensockets = socket_list.size();
 	SocketSet::iterator it = socket_list.begin();
 	while ( it != socket_list.end() ) {
 		CClientReqSocket* cur_socket = *it++;
