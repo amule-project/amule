@@ -388,7 +388,8 @@ void CamuleRemoteGuiApp::NotifyEvent(const GUIEvent& event)
 {
 	switch (event.ID) {
 	        case SEARCH_ADD_TO_DLOAD:
-			break;
+		        downloadqueue->AddSearchToDownload((CSearchFile *)event.ptr_value, event.byte_value);
+				break;
 
 	        case PARTFILE_REMOVE_NO_NEEDED:
 			break;
@@ -1064,6 +1065,15 @@ void CDownQueueRem::Category(CPartFile *file, uint8 cat)
 	m_conn->Send(&req);
 }
 
+void CDownQueueRem::AddSearchToDownload(CSearchFile* file, uint8 category)
+{
+	CECPacket req(EC_OP_DOWNLOAD_SEARCH_RESULT);
+	CECTag hashtag(EC_TAG_PARTFILE, file->GetFileHash());
+	hashtag.AddTag(CECTag(EC_TAG_PARTFILE_CAT, category));
+	req.AddTag(hashtag);
+	
+	m_conn->Send(&req);
+}
 
 CClientListRem::CClientListRem(CRemoteConnect *conn)
 {
@@ -1165,6 +1175,20 @@ bool CSearchListRem::Phase1Done(CECPacket *reply)
 			wxASSERT(0);
 	}
 	return true;
+}
+
+void CSearchListRem::RemoveResults(long nSearchID)
+{
+	std::map<long, std::vector<CSearchFile *> >::iterator it = m_Results.find(nSearchID);
+	
+	if ( it != m_Results.end() ) {
+        std::vector<CSearchFile *> &list = it->second;
+
+        for (unsigned int i = 0; i < list.size(); i++) {
+			delete list[i];
+		}
+        m_Results.erase(it);
+	}
 }
 
 bool CUpDownClient::IsBanned() const

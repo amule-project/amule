@@ -421,7 +421,8 @@ class CDownQueueRem : public CRemoteContainer<CPartFile, CMD4Hash, CEC_PartFile_
 		bool AddED2KLink(const wxString &link, int category = 0);
 		void UnsetCompletedFilesExist();
 		void ResetCatParts(int cat);
-
+		void AddSearchToDownload(CSearchFile* toadd, uint8 category);
+		
 		void UpdateStats(CEC_Stats_Tag *);
 		//
 		// template
@@ -521,6 +522,8 @@ class CSearchListRem : public CRemoteContainer<CSearchFile, CMD4Hash, CEC_Search
 		
 		int m_curr_search;
 		std::map<long, std::vector<CSearchFile *> > m_Results;
+
+		void RemoveResults(long nSearchID);
 		//
 		// Actions
 		//
@@ -530,7 +533,7 @@ class CSearchListRem : public CRemoteContainer<CSearchFile, CMD4Hash, CEC_Search
 			wxString& typeText, wxString &extension, uint32 min, uint32 max, uint32 availability);
 			
 		void StopGlobalSearch();
-
+		
 		//
 		// template
 		//
