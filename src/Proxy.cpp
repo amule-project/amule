@@ -35,7 +35,7 @@
 
 #include "amule.h"		/* Needed for wxGetApp		*/
 #include "OPCodes.h"		/* for PROXY_SOCKET_HANDLER	*/
-#include "NetworkFunctions.h"	/* for CStringIPtoUint32()	*/
+#include "NetworkFunctions.h"	/* for StringIPtoUint32()	*/
 #include "OtherFunctions.h"	/* for EncodeBase64()		*/
 
 
