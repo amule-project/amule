@@ -26,6 +26,8 @@
 #endif
 
 #include <wx/string.h>
+#include <ctype.h>
+
 #include "Types.h"
 #include "ArchSpecific.h"
 
