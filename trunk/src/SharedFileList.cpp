@@ -99,20 +99,30 @@ void CSharedFileList::FindSharedFiles() {
 }
 
 
-// Checks if the dir a is the same as b. If they are, then logs the message and returns.
-#define CHECKDIRECTORY( a, b, msg )								\
-	{															\
-		wxString tmp = a;										\
-		if ( tmp.Last() != wxFileName::GetPathSeparator() ) {	\
-			tmp += wxFileName::GetPathSeparator();				\
-		}														\
-																\
-		if ( tmp == b ) {										\
-			AddLogLineM(true, msg);								\
-																\
-			return;												\
-		}														\
+// Checks if the dir a is the same as b. If they are, then logs the message and returns true.
+bool CheckDirectory( const wxString& a, const wxString& b, bool fatal )
+{
+	wxString tmp = a;
+	if ( tmp.Last() != wxFileName::GetPathSeparator() ) {
+		tmp += wxFileName::GetPathSeparator();
 	}
+	
+	if ( tmp == b ) {
+		wxString msg;
+
+		if ( fatal ) {
+			msg = wxString::Format( _("ERROR! Attempted to share %s"), a.c_str() );
+		} else {
+			msg = wxString::Format( _("WARNING! Sharing the following directory is not recommended: %s"), a.c_str() );
+		}
+		
+		AddLogLineM(true, msg);
+		
+		return true;
+	}
+
+	return false;
+}
 		
 
 void CSharedFileList::AddFilesFromDirectory(wxString directory)
@@ -127,12 +137,17 @@ void CSharedFileList::AddFilesFromDirectory(wxString directory)
 
 
 	// Do not allow these folders to be shared:
-	//  - The users home-dir
 	//  - The .aMule folder
 	//  - The Temp folder
-	CHECKDIRECTORY( wxGetHomeDir(),			directory, _("WARNING! Attempted to share \"home\" dir!") );
-	CHECKDIRECTORY( theApp.ConfigDir,		directory, _("WARNING! Attempted to share \".aMule\" dir!") );
-	CHECKDIRECTORY( thePrefs::GetTempDir(),	directory, _("WARNING! Attempted to share \"Temp\" dir!") );
+	// The following dirs just result in a warning.
+	//  - The users home-dir
+	CheckDirectory( wxGetHomeDir(),	directory, false );
+		
+	if ( CheckDirectory( theApp.ConfigDir,	directory, true ) )
+		return;
+		
+	if ( CheckDirectory( thePrefs::GetTempDir(), directory, true ) )
+		return;
 
 
 	CDirIterator SharedDir(directory); 
