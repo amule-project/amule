@@ -1966,7 +1966,7 @@ void CClientReqSocket::OnError(int nErrorCode)
 	
 	wxASSERT(wxSOCKET_WOULDBLOCK == 7);
 	
-	if ((nErrorCode != 107) && (nErrorCode != 0)) {
+	if (nErrorCode == 7) {
 		if (m_client) {
 			if (!m_client->GetUserName().IsEmpty()) {
 				strError = wxT("Client '") + m_client->GetUserName() + wxT("'");
@@ -2002,7 +2002,7 @@ void CClientReqSocket::OnError(int nErrorCode)
 		
 		return;
 	}
-	
+
 	if (thePrefs::GetVerbose() && (nErrorCode != 0) && (nErrorCode != 107)) {
 		// 0    -> No Error / Disconect
 		// 107  -> Transport endpoint is not connected
