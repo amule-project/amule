@@ -80,54 +80,6 @@ typedef struct { float download; float upload; long connections; } UpDown;
 
 typedef struct { time_t startTime; long lSession; bool admin;} Session;
 
-class CProgressImage;
-class DownloadFiles {
-	public:
-		wxString	sFileName;
-		uint8		nFileStatus;
-		wxString	sFileStatus;
-		unsigned long	lFileSize;
-		unsigned long	lFileCompleted;
-		unsigned long	lFileTransferred;
-		unsigned long	lFileSpeed;
-		long		lSourceCount;
-		long		lNotCurrentSourceCount;
-		long		lTransferringSourceCount;
-		double		fCompleted;
-		long		lFilePrio;
-		wxString	sFileHash;
-		wxString	sED2kLink;
-		wxString	sFileInfo;
-		wxString	sPartStatus;
-		
-		otherfunctions::PartFileEncoderData m_Encoder;
-		std::vector<Gap_Struct> m_ReqParts;
-		
-		static class DownloadFilesInfo *GetContainerInstance();
-
-		uint32 file_id;
-		CProgressImage *m_Image;
-};
-
-class SharedFiles {
-	public:
-		wxString	sFileName;
-		long		lFileSize;
-		uint32		nFileTransferred;
-		uint64		nFileAllTimeTransferred;
-		uint16		nFileRequests;
-		uint32		nFileAllTimeRequests;
-		uint16		nFileAccepts;
-		uint32		nFileAllTimeAccepts;
-		uint8		nFilePriority;
-		wxString	sFilePriority;
-		bool		bFileAutoPriority;
-		wxString 	sFileHash;
-		wxString	sED2kLink;
-
-		static class SharedFilesInfo *GetContainerInstance();
-};
-
 typedef enum {
 	DOWN_SORT_NAME,
 	DOWN_SORT_SIZE,
@@ -158,6 +110,61 @@ typedef enum {
 	SERVER_SORT_FILES
 } xServerSort;
 
+WX_DECLARE_OBJARRAY(UpDown*, ArrayOfUpDown);
+WX_DECLARE_OBJARRAY(Session*, ArrayOfSession);
+WX_DECLARE_OBJARRAY(TransferredData*, ArrayOfTransferredData);
+
+class CProgressImage;
+class DownloadFiles {
+	public:
+		wxString	sFileName;
+		uint8		nFileStatus;
+		wxString	sFileStatus;
+		unsigned long	lFileSize;
+		unsigned long	lFileCompleted;
+		unsigned long	lFileTransferred;
+		unsigned long	lFileSpeed;
+		long		lSourceCount;
+		long		lNotCurrentSourceCount;
+		long		lTransferringSourceCount;
+		double		fCompleted;
+		long		lFilePrio;
+		wxString	sFileHash;
+		wxString	sED2kLink;
+		wxString	sFileInfo;
+		wxString	sPartStatus;
+		
+		uint32 file_id;
+		CProgressImage *m_Image;
+		otherfunctions::PartFileEncoderData m_Encoder;
+		std::vector<Gap_Struct> m_ReqParts;
+
+		// container require this		
+		static class DownloadFilesInfo *GetContainerInstance();
+		uint32 ID() { return file_id; }
+};
+
+class SharedFiles {
+	public:
+		wxString	sFileName;
+		long		lFileSize;
+		uint32		nFileTransferred;
+		uint64		nFileAllTimeTransferred;
+		uint16		nFileRequests;
+		uint32		nFileAllTimeRequests;
+		uint16		nFileAccepts;
+		uint32		nFileAllTimeAccepts;
+		uint8		nFilePriority;
+		wxString	sFilePriority;
+		bool		bFileAutoPriority;
+		wxString 	sFileHash;
+		wxString	sED2kLink;
+		uint32 file_id;
+
+		static class SharedFilesInfo *GetContainerInstance();
+		uint32 ID() { return file_id; }
+};
+
 class ServerEntry {
 	public:
 		wxString	sServerName;
@@ -170,6 +177,7 @@ class ServerEntry {
 		int		nServerFiles;
 	
 		static class ServersInfo *GetContainerInstance();
+		uint32 ID() { return nServerIP; }
 };
 
 /*!
@@ -185,11 +193,6 @@ bool operator < (const T &i1, const T &i2)
 	return T::GetContainerInstance()->CompareItems(i1, i2);
 }
 
-
-WX_DECLARE_OBJARRAY(UpDown*, ArrayOfUpDown);
-WX_DECLARE_OBJARRAY(Session*, ArrayOfSession);
-WX_DECLARE_OBJARRAY(TransferredData*, ArrayOfTransferredData);
-
 /*!
  * T - type of items in container
  * E - type of enum for sort order
@@ -199,7 +202,7 @@ class ItemsContainer {
 	protected:
 		CamulewebApp *m_webApp;
 		std::list<T> m_items;
-		
+
 		// map string value to enum: derived class
 		// must init this map in ctor
 		std::map<wxString, E> m_SortStrVals;
@@ -246,9 +249,11 @@ class ItemsContainer {
 			return m_SortReverse;
 		}
 		
-		void AddItem(T &item)
+		T *AddItem(T &item)
 		{
 			m_items.push_back(item);
+			T *real_ptr = &(m_items.back());
+			return real_ptr;
 		}
 
 		/*!
@@ -292,6 +297,75 @@ class ItemsContainer {
 		ItemIterator GetEndIterator()
 		{
 			return m_items.end();
+		}
+};
+
+/*!
+ * T - type of items in container
+ * E - type of enum for sort order
+ * I - type of item ID
+ * G - type of tag in EC
+ */
+template <class T, class E, class G, class I = uint32>
+class UpdatableItemsContainer : public ItemsContainer<T, E> {
+	protected:
+		// need duplicate list with a map, so check "do we already have"
+		// will take O(log(n)) instead of O(n)
+		// map will contain pointers to items in list 
+		std::map<I, T *> m_items_hash;
+	public:
+		UpdatableItemsContainer(CamulewebApp *webApp) : ItemsContainer<T, E>(webApp)
+		{
+		}
+		
+		T *AddItem(T &item)
+		{
+			T *real_ptr = ItemsContainer<T, E>::AddItem(item);
+			m_items_hash[item.ID()] = real_ptr;
+			return real_ptr;
+		}
+	
+		/*!
+		 * Process answer of update request, create list of new items for
+		 * full request later. Also remove items that no longer exist in core
+		 */
+		void ProcessUpdate(CECTag *reply, CECTag *full_req, int req_type)
+		{
+			std::set<I> core_files;
+			for (int i = 0;i < reply->GetTagCount();i++) {
+				G *tag = (G *)reply->GetTagByIndex(i);
+		
+				core_files.insert(tag->ID());
+				if ( m_items_hash.count(tag->ID()) ) {
+					T *item = m_items_hash[tag->ID()];
+					item->ProcessUpdate(tag);
+				} else {
+					full_req->AddTag(CECTag(req_type, tag->ID()));
+				}
+			}
+			for(typename std::list<T>::iterator j = ItemsContainer<T, E>::m_items.begin();
+				j != ItemsContainer<T, E>::m_items.end();j++) {
+				if ( core_files.count(j->ID()) == 0 ) {
+					// item may contain data that need to be freed externally, before
+					// dtor is called and memory freed
+					this->ItemDeleted(j);
+					
+					m_items_hash.erase(j->ID());
+					ItemsContainer<T, E>::m_items.erase(j);
+				}
+			}
+		}
+		
+		void ProcessFull(CECTag *reply)
+		{
+			for (int i = 0;i < reply->GetTagCount();i++) {
+				G *tag = (G *)reply->GetTagByIndex(i);
+				// initialize item data from EC tag
+				T item(tag);
+				T *real_ptr = AddItem(item);
+				// initialize any external data that may depend on this item
+				this->ItemInserted(real_ptr);
+			}
 		}
 };
 
