@@ -1650,6 +1650,7 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 		}
 	}
 
+
 	// check if we want new sources from server --> MOVED for 16.40 version
 	old_trans=transferingsrc;
 	transferingsrc = 0;
@@ -1659,6 +1660,40 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 	datarate = 0;  
 #endif
 
+	if (m_icounter < 10) {
+		for(POSITION pos = m_downloadingSourcesList.GetHeadPosition();pos!=0;)
+		{
+			cur_src = m_downloadingSourcesList.GetNext(pos);
+			if(cur_src && cur_src->GetDownloadState() == DS_DOWNLOADING)
+			{
+				wxASSERT( cur_src->socket );
+				if (cur_src->socket)
+				{
+					transferingsrc++;
+	#ifdef DOWNLOADRATE_FILTERED
+					float kBpsClient = cur_src->CalculateKBpsDown();
+					kBpsDown += kBpsClient;
+//					printf("ReduceDownload %i",reducedownload);
+					if (reducedownload) {
+						uint32 limit = (uint32)((float)reducedownload*kBpsClient);
+//						printf(" Limit %i\n",limit);
+	#else
+					uint32 cur_datarate = cur_src->CalculateDownloadRate();
+					datarate += cur_datarate;
+					if (reducedownload) {
+						uint32 limit = reducedownload*cur_datarate/1000;
+	#endif
+						if(limit<1000 && reducedownload == 200)
+							limit +=1000;
+						else if(limit<1)
+							limit = 1;
+						cur_src->socket->SetDownloadLimit(limit);
+					}
+				}
+			}
+		}
+	} else {
+		
 		POSITION pos1, pos2;
 		for (uint32 sl = 0; sl < SOURCESSLOTS; sl++) {
 			if (!srclists[sl].IsEmpty()) {
@@ -1840,7 +1875,7 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 	
 		// calculate datarate, set limit etc.
 		
-
+	}			
 
 	count++;
 	
@@ -1853,6 +1888,7 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 		}
 		m_bPercentUpdated = false;
 	}
+	
 	
 	
 #ifdef DOWNLOADRATE_FILTERED
