@@ -11,6 +11,11 @@ Version 2.0.0rc6 - The "We're so EVIL that we make you lose a sock in every pair
 		* Added hability for send msg to clients in upload queue, without having to add 
 		  them as friends (based on Kry's download queue send-on-right-click implementation)
 		* Translations update.
+		
+	falso:
+		* New upstream cas version. Now supports creating html pages with the statistics
+		* Now cas runs on netbsd.
+		* Misc fixes on cas.
 
 	GonoszTopi:
 		* Patch to fix buffer overflow in cas when line had more than
@@ -130,6 +135,20 @@ Version 2.0.0rc6 - The "We're so EVIL that we make you lose a sock in every pair
 			HTTPDownloadDlg.*	-> HTTPDownload.* (no longer a GUI file)
 			
 
+	lfroen:
+		* Core/GUI separation:
+			* Moved all GUI code out of Core files.
+			* Made a new socket engine to be able to use wxSocket on wxBase, even when
+			   wxBase has no event pool.
+			* aMule daemon is now functional,  but it still need hard testing.
+			   Enable it using --enable-amule-daemon.
+			   You can control it via any EC app (amulecmd, amuleweb)
+			* aMule separated GUI does not compile right now, and the communication
+			   with the core will be improved as EC is rewritten by GonoszTopi.
+		* Fixed crash on DownloadClient
+		* 
+		* Misc aMule fixes here and there :)
+			
 	Littletux:
 		* Patch to include UTF-8 support in systray.
 		* Patch to fix configure.in UTF-8 SysTray code.
