@@ -23,6 +23,7 @@ src/filefn.cpp
 src/FriendListCtrl.cpp
 src/HTTPDownloadDlg.cpp
 src/IPFilter.cpp
+src/KadDlg.cpp
 src/KnownFileList.cpp
 src/ListenSocket.cpp
 src/muuli_wdr.cpp
