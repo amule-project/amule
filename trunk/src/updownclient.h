@@ -227,7 +227,7 @@ public:
 	void		SendHelloAnswer();
 	bool		SendHelloPacket();
 	void		SendMuleInfoPacket(bool bAnswer, bool OSInfo = false);
-	void		ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize);
+	bool		ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize);
 	void		ProcessMuleCommentPacket(const char *pachPacket, uint32 nSize);
 	bool		Compare(const CUpDownClient* tocomp, bool bIgnoreUserhash = false);
 	void		SetLastSrcReqTime()		{ m_dwLastSourceRequest = ::GetTickCount(); }

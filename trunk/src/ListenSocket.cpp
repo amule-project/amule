@@ -1473,8 +1473,6 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				// 0.43b
 				theApp.downloadqueue->AddDownDataOverheadOther(size);
 
-				m_client->ProcessMuleInfoPacket(packet,size);
-					
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0){
 
@@ -1482,13 +1480,14 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 					Debug("  %s\n", m_client->DbgGetMuleInfo());
 				}				
 				#endif
-				// start secure identification, if
-				//  - we have received eD2K and eMule info (old eMule)
-				if (m_client->GetInfoPacketsReceived() == IP_BOTH) {
-					m_client->InfoPacketsReceived();
-				}
-				if (m_client->GetClientOSInfo().IsEmpty()) {
-					// If it's not a OS Info packet, is an old aMule, reply the mule info.
+				
+				if (!m_client->ProcessMuleInfoPacket(packet,size)) { 
+					// If it's not a OS Info packet, is an old client
+					// start secure identification, if
+					//  - we have received eD2K and eMule info (old eMule)
+					if (m_client->GetInfoPacketsReceived() == IP_BOTH) {	
+						m_client->InfoPacketsReceived();
+					}
 					m_client->SendMuleInfoPacket(true);
 				}
 				break;

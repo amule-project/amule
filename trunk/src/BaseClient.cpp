@@ -714,9 +714,11 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer, bool OSInfo) {
 	}
 }
 
-void CUpDownClient::ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize)
+bool CUpDownClient::ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize)
 {
 
+	uint8 protocol_version;
+	
 	try {
 
 		const CSafeMemFile data((BYTE*)pachPacket,nSize);
@@ -727,7 +729,7 @@ void CUpDownClient::ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize)
 		//No sense making a third value sent for versions..
 		uint8 mule_version = data.ReadUInt8();
 
-		uint8 protocol_version = data.ReadUInt8();
+		protocol_version = data.ReadUInt8();
 
 		uint32 tagcount = data.ReadUInt32();
 		
@@ -768,7 +770,7 @@ void CUpDownClient::ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize)
 			}
 			
 			if (!(m_bEmuleProtocol = (protocol_version == EMULE_PROTOCOL))) {
-				return;	
+				return false;	
 			}
 			
 			for (uint32 i = 0;i < tagcount; i++){
@@ -888,6 +890,8 @@ void CUpDownClient::ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize)
 		throw wxString(wxT("Wrong Tags on Mule Info packet"));
 	}
 
+	return (protocol_version == 0xFF); // This was a OS_Info?
+	
 }
 
 void CUpDownClient::SendHelloAnswer()
