@@ -1405,8 +1405,7 @@ wxDatagramSocket &wxDatagramSocketProxy::RecvFrom(
 				break;
 			}
 			memcpy(buf, bufUDP + offset, nBytes);
-printf("RecvFrom\n");
-dump("nbufUDP:", 3, bufUDP, wxDatagramSocket::LastCount());
+dump("RecvFrom", 3, bufUDP, wxDatagramSocket::LastCount());
 			/* Only delete buffer if it was dynamically created */
 			if (bufUDP != m_ProxyTCPSocket.GetBuffer()) {
 				/* We should use a fixed buffer to avoid
@@ -1444,8 +1443,7 @@ wxDatagramSocket &wxDatagramSocketProxy::SendTo(
 			wxDatagramSocket::SendTo(
 				m_ProxyTCPSocket.GetProxyBoundAddress(),
 				m_ProxyTCPSocket.GetBuffer(), nBytes);
-printf("SendTo\n");
-dump("buf:", 3, m_ProxyTCPSocket.GetBuffer(), nBytes);
+dump("SendTo", 3, m_ProxyTCPSocket.GetBuffer(), nBytes);
 		}
 	} else {
 		wxDatagramSocket::SendTo(addr, buf, nBytes);
