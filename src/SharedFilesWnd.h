@@ -53,7 +53,6 @@ protected:
 	DECLARE_EVENT_TABLE()
 
 	void OnLvnItemActivateSflist(wxListEvent& evt);
-	void OnBnClickedReloadsharedfiles(wxCommandEvent& ev);
 	//afx_msg void OnLvnItemActivateSflist(NMHDR *pNMHDR, LRESULT *pResult);
 	//afx_msg void OnNMClickSflist(NMHDR *pNMHDR, LRESULT *pResult);
 private:
@@ -70,6 +69,7 @@ private:
 	wxFont bold;
 	unsigned char shownFileHash[16];
 	wxStaticBitmap m_ctrlStatisticsFrm;
+	void OnBtnReloadsharedfiles(wxCommandEvent &evt);
 };
 
 #endif // SHAREDFILESWND_H

@@ -102,6 +102,8 @@ private:
 	int m_iOldToolTipItemQueue;	
 	int rightclickindex;
 	bool CatMenu;
+	void OnBtnClearDownloads(wxCommandEvent &evt);
+	void OnBtnSwitchUpload(wxCommandEvent &evt);
 };
 
 #endif // TRANSFERWND_H

@@ -49,6 +49,8 @@ BEGIN_EVENT_TABLE(CTransferWnd,wxPanel)
 	EVT_NOTEBOOK_PAGE_CHANGED(ID_CATEGORIES,CTransferWnd::OnSelchangeDltab)
 	EVT_RIGHT_DOWN(CTransferWnd::OnNMRclickDLtab)
 	EVT_SPLITTER_SASH_POS_CHANGED(ID_SPLATTER, CTransferWnd::OnSashPositionChanged)
+	EVT_BUTTON(ID_BTNCLRCOMPL, CTransferWnd::OnBtnClearDownloads)
+	EVT_BUTTON(ID_BTNSWITCHUP, CTransferWnd::OnBtnSwitchUpload)
 END_EVENT_TABLE()
 
 
@@ -381,3 +383,32 @@ void CTransferWnd::OnSashPositionChanged(wxSplitterEvent& evt)
 {
 	theApp.amuledlg->split_pos = ((wxSplitterWindow*)FindWindow("splitterWnd"))->GetSashPosition();
 }
+
+void CTransferWnd::OnBtnClearDownloads(wxCommandEvent &evt) {
+
+    downloadlistctrl->Freeze();
+    downloadlistctrl->ClearCompleted();
+    downloadlistctrl->Thaw();
+}
+
+void CTransferWnd::OnBtnSwitchUpload(wxCommandEvent &evt) {
+	
+	if( windowtransferstate == false) {
+		windowtransferstate=true;
+		// hide the upload list
+		queueSizer->Remove(uploadlistctrl);
+		uploadlistctrl->Show(FALSE);
+		queueSizer->Add(queuelistctrl,1,wxGROW|wxALIGN_CENTER_VERTICAL ,5);
+		queuelistctrl->Show();
+		queueSizer->Layout();
+	} else {
+		windowtransferstate=false;
+		// hide the queuelist
+		queueSizer->Remove(queuelistctrl);
+		queuelistctrl->Show(FALSE);
+		queueSizer->Add(uploadlistctrl,1,wxGROW|wxALIGN_CENTER_VERTICAL, 5);
+		uploadlistctrl->Show();
+		queueSizer->Layout();
+	}
+}
+
