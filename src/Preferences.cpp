@@ -65,12 +65,12 @@ int8	CPreferences::s_versioncheckdays;
 int16	CPreferences::s_downloadColumnWidths[13];
 CPreferences::Bool	CPreferences::s_downloadColumnHidden[13];
 int16	CPreferences::s_downloadColumnOrder[13];
-int16	CPreferences::s_uploadColumnWidths[8];
-CPreferences::Bool	CPreferences::s_uploadColumnHidden[8];
-int16	CPreferences::s_uploadColumnOrder[8];
-int16	CPreferences::s_queueColumnWidths[10];
-CPreferences::Bool	CPreferences::s_queueColumnHidden[10];
-int16	CPreferences::s_queueColumnOrder[10];
+int16	CPreferences::s_uploadColumnWidths[11];
+CPreferences::Bool	CPreferences::s_uploadColumnHidden[11];
+int16	CPreferences::s_uploadColumnOrder[11];
+int16	CPreferences::s_queueColumnWidths[11];
+CPreferences::Bool	CPreferences::s_queueColumnHidden[11];
+int16	CPreferences::s_queueColumnOrder[11];
 int16	CPreferences::s_searchColumnWidths[5];
 CPreferences::Bool	CPreferences::s_searchColumnHidden[5];
 int16	CPreferences::s_searchColumnOrder[5];
@@ -357,23 +357,40 @@ void CPreferences::CreateUserHash()
 	m_userhash[14] = 111;
 }
 
+
+// Macros to check if the element is not out of bounds
+// If you add new columns and this triggers, then you need to 
+// increase the size of the arrays in question to the correct size.
+#define CHECKANDRETURN(array, index) if ( index < ARRSIZE(array) ) { \
+		return array[index]; \
+	} else { \
+		printf("Attempting to read past end of array at line %d in %s\n", __LINE__, __FILE__); \
+		return 0; \
+	}
+#define CHECKANDSET(array, index, value) if ( index < ARRSIZE(array) ) { \
+		array[index] = value; \
+	} else { \
+		printf("Attempting to write past end of array at line %d in %s\n", __LINE__, __FILE__); \
+	}
+
+
 int32 CPreferences::GetColumnWidth(Table t, int index)
 {
 	switch(t) {
 	case tableDownload:
-		return s_downloadColumnWidths[index];
+		CHECKANDRETURN( s_downloadColumnWidths,   index );
 	case tableUpload:
-		return s_uploadColumnWidths[index];
+		CHECKANDRETURN( s_uploadColumnWidths,     index );
 	case tableQueue:
-		return s_queueColumnWidths[index];
+		CHECKANDRETURN( s_queueColumnWidths,      index );
 	case tableSearch:
-		return s_searchColumnWidths[index];
+		CHECKANDRETURN( s_searchColumnWidths,     index );
 	case tableShared:
-		return s_sharedColumnWidths[index];
+		CHECKANDRETURN( s_sharedColumnWidths,     index );
 	case tableServer:
-		return s_serverColumnWidths[index];
+		CHECKANDRETURN( s_serverColumnWidths,     index );
 	case tableClientList:
-		return s_clientListColumnWidths[index];
+		CHECKANDRETURN( s_clientListColumnWidths, index );
 	case tableNone:
 	default:
 		return 0;
@@ -384,25 +401,25 @@ void CPreferences::SetColumnWidth(Table t, int index, int32 width)
 {
 	switch(t) {
 	case tableDownload:
-		s_downloadColumnWidths[index] = width;
+		CHECKANDSET( s_downloadColumnWidths,   index, width );
 		break;
 	case tableUpload:
-		s_uploadColumnWidths[index] = width;
+		CHECKANDSET( s_uploadColumnWidths,     index, width );
 		break;
 	case tableQueue:
-		s_queueColumnWidths[index] = width;
+		CHECKANDSET( s_queueColumnWidths,      index, width );
 		break;
 	case tableSearch:
-		s_searchColumnWidths[index] = width;
+		CHECKANDSET( s_searchColumnWidths,     index, width );
 		break;
 	case tableShared:
-		s_sharedColumnWidths[index] = width;
+		CHECKANDSET( s_sharedColumnWidths,     index, width );
 		break;
 	case tableServer:
-		s_serverColumnWidths[index] = width;
+		CHECKANDSET( s_serverColumnWidths,     index, width );
 		break;
 	case tableClientList:
-		s_clientListColumnWidths[index] = width;
+		CHECKANDSET( s_clientListColumnWidths, index, width );
 		break;
 	case tableNone:
 	default:
@@ -414,19 +431,19 @@ bool CPreferences::GetColumnHidden(Table t, int index)
 {
 	switch(t) {
 	case tableDownload:
-		return s_downloadColumnHidden[index];
+		CHECKANDRETURN( s_downloadColumnHidden,   index );
 	case tableUpload:
-		return s_uploadColumnHidden[index];
+		CHECKANDRETURN( s_uploadColumnHidden,     index );
 	case tableQueue:
-		return s_queueColumnHidden[index];
+		CHECKANDRETURN( s_queueColumnHidden,      index );
 	case tableSearch:
-		return s_searchColumnHidden[index];
+		CHECKANDRETURN( s_searchColumnHidden,     index );
 	case tableShared:
-		return s_sharedColumnHidden[index];
+		CHECKANDRETURN( s_sharedColumnHidden,     index );
 	case tableServer:
-		return s_serverColumnHidden[index];
+		CHECKANDRETURN( s_serverColumnHidden,     index );
 	case tableClientList:
-		return s_clientListColumnHidden[index];
+		CHECKANDRETURN( s_clientListColumnHidden, index );
 	case tableNone:
 	default:
 		return FALSE;
@@ -437,25 +454,25 @@ void CPreferences::SetColumnHidden(Table t, int index, bool bHidden)
 {
 	switch(t) {
 	case tableDownload:
-		s_downloadColumnHidden[index] = bHidden;
+		CHECKANDSET( s_downloadColumnHidden,   index, bHidden );
 		break;
 	case tableUpload:
-		s_uploadColumnHidden[index] = bHidden;
+		CHECKANDSET( s_uploadColumnHidden,     index, bHidden );
 		break;
 	case tableQueue:
-		s_queueColumnHidden[index] = bHidden;
+		CHECKANDSET( s_queueColumnHidden,      index, bHidden );
 		break;
 	case tableSearch:
-		s_searchColumnHidden[index] = bHidden;
+		CHECKANDSET( s_searchColumnHidden,     index, bHidden );
 		break;
 	case tableShared:
-		s_sharedColumnHidden[index] = bHidden;
+		CHECKANDSET( s_sharedColumnHidden,     index, bHidden );
 		break;
 	case tableServer:
-		s_serverColumnHidden[index] = bHidden;
+		CHECKANDSET( s_serverColumnHidden,     index, bHidden );
 		break;
 	case tableClientList:
-		s_clientListColumnHidden[index] = bHidden;
+		CHECKANDSET( s_clientListColumnHidden, index, bHidden );
 		break;
 	case tableNone:
 	default:
@@ -467,19 +484,19 @@ int32 CPreferences::GetColumnOrder(Table t, int index)
 {
 	switch(t) {
 	case tableDownload:
-		return s_downloadColumnOrder[index];
+		CHECKANDRETURN( s_downloadColumnOrder,   index );
 	case tableUpload:
-		return s_uploadColumnOrder[index];
+		CHECKANDRETURN( s_uploadColumnOrder,     index );
 	case tableQueue:
-		return s_queueColumnOrder[index];
+		CHECKANDRETURN( s_queueColumnOrder,      index );
 	case tableSearch:
-		return s_searchColumnOrder[index];
+		CHECKANDRETURN( s_searchColumnOrder,     index );
 	case tableShared:
-		return s_sharedColumnOrder[index];
+		CHECKANDRETURN( s_sharedColumnOrder,     index );
 	case tableServer:
-		return s_serverColumnOrder[index];
+		CHECKANDRETURN( s_serverColumnOrder,     index );
 	case tableClientList:
-		return s_clientListColumnOrder[index];
+		CHECKANDRETURN( s_clientListColumnOrder, index );
 	case tableNone:
 	default:
 		return 0;
