@@ -1182,7 +1182,7 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 // This is debug code, to be removed later
 //pThis->webInterface->Dump(sTransferDLList);
 	wxStringTokenizer sTransferDLTokens( sTransferDLList, wxT("\n") );
-	int cnt = 0;
+//	int cnt = 0;
 	while (sTransferDLTokens.HasMoreTokens()) {
 		//
 		// Get download entry and tokenize
