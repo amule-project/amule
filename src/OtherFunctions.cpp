@@ -39,6 +39,7 @@
 #endif
 
 #include "OtherFunctions.h"	// Interface declarations
+#include "Format.h"		// Needed for CFormat
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"		// Needed for a number of defines
@@ -147,9 +148,9 @@ wxString CastSecondsToHM(sint32 count)
 	else if (count < 3600)
 		return wxString::Format( wxT("%i:%02i %s"), count/60, (count % 60), _("mins") );
 	else if (count < 86400)
-		return wxString::Format( wxT("%i:%02i %s"), count/3600, (count % 3600)/60, _("h") );
+		return wxString::Format( wxT("%i:%02i %s"), count/3600, (count % 3600)/60, _("hours") );
 	else
-		return wxString::Format( wxT("%i %s %02i %s"), count/86400, _("D") , (count % 86400) / 3600, _("h") );
+		return wxString::Format( wxT("%i %s %02i %s"), count/86400, _("Days") , (count % 86400) / 3600, _("hours") );
 		
 	return _("Error");
 }

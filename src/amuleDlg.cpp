@@ -96,7 +96,7 @@
 #include "StringFunctions.h"	// Needed for unicode2char
 #include "Statistics.h"		// Needed for CStatistics
 #include "Logger.h"
-#include "Format.h"
+#include "Format.h"		// Needed for CFormat
 
 #ifndef __WXMSW__
 #include "aMule.xpm"
@@ -191,11 +191,11 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 	serverwnd = new CServerWnd(p_cnt, srv_split_pos);
 
 	AddLogLineM(false, wxEmptyString);
-	AddLogLineM(false, CFormat(_(" - This is aMule %s based on eMule.")) % GetMuleVersion());
+	AddLogLineM(false, wxT(" - ") + CFormat(_("This is aMule %s based on eMule.")) % GetMuleVersion());
 	#if wxCHECK_VERSION(2,5,0)
-	AddLogLineM(false, CFormat(_("   Running on %s")) % wxGetOsDescription());
+	AddLogLineM(false, wxT("   ") + CFormat(_("Running on %s")) % wxGetOsDescription());
 	#endif
-	AddLogLineM(false, _(" - Visit http://www.amule.org to check if a new version is available."));
+	AddLogLineM(false, wxT(" - ") + wxString(_("Visit http://www.amule.org to check if a new version is available.")));
 	AddLogLineM(false, wxEmptyString);
 
 	searchwnd = new CSearchDlg(p_cnt);
@@ -503,17 +503,17 @@ void CamuleDlg::OnToolBarButton(wxCommandEvent& ev)
 
 void CamuleDlg::OnAboutButton(wxCommandEvent& WXUNUSED(ev))
 {
-	wxString msg;
+	wxString msg = wxT(" ");
 #ifdef CLIENT_GUI
-	msg << _(" aMule remote control") << wxT(VERSION);
+	msg << _("aMule remote control") << wxT(VERSION);
 #else
-	msg << _(" aMule ") << wxT(VERSION);
+	msg << wxT("aMule") << wxT(VERSION);
 #endif
+	msg << wxT(" ");
 #ifdef CVSDATE
-	msg << wxT(" Snapshot:\n ") << wxT(CVSDATE);
+	msg << _("Snapshot:") << wxT("\n ") << wxT(CVSDATE);
 #endif
-	msg << _(
-		"\n\n"
+	msg << wxT("\n\n") << _(
 		" 'All-Platform' p2p client based on eMule \n\n"
 		" Website: http://www.amule.org \n"
 		" Forum: http://forum.amule.org \n"

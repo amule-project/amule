@@ -64,7 +64,7 @@
 #include "Types.h"
 #include "WebSocket.h"		// Needed for StopSockets()
 #include "ECcodes.h"
-#include "Format.h"
+#include "Format.h"		// Needed for CFormat
 
 #ifndef __WXMSW__
 	#include "netinet/in.h"	// Needed for ntohl()
@@ -356,7 +356,7 @@ void CWebServer::Send_Discard_V2_Request(CECPacket *request)
 			if (	reply->GetTagCount() &&
 				(tag = reply->GetTagByIndex(0)) ) {
 				webInterface->Show(
-					CFormat(_("Request failed with the following error: %s .")) %
+					CFormat(_("Request failed with the following error: %s.")) %
 					wxString(wxGetTranslation(tag->GetStringData())));
 			} else {
 				webInterface->Show(_("Request failed with an unknown error."));
@@ -441,7 +441,7 @@ void CWebServer::ReloadTemplates(void) {
 				
 		}
 	} else {
-		webInterface->Show(CFormat(_("Can't load templates: Can't open file ")) % sFile);
+		webInterface->Show(CFormat(_("Can't load templates: Can't open file %s")) % sFile);
 	}
 }
 
@@ -790,10 +790,7 @@ wxString CWebServer::_GetHeader(ThreadData Data, long lSession) {
 		CECTag *server = tag->GetTagByIndex(0);
 		CECTag *sname  = server ? server->GetTagByName(EC_TAG_SERVER_NAME) : NULL;
 		if (server && sname) {
-			sConnected = _("Connected to ");
-			sConnected += sname->GetStringData() + wxT(" ");
-			sConnected += server->GetIPv4Data().StringIP() + wxT(" ");
-			sConnected += tag->HaveLowID() ? _("with LowID") : _("with HighID");
+			sConnected = CFormat(_("Connected to %s %s %s")) % sname->GetStringData() % server->GetIPv4Data().StringIP() % (tag->HaveLowID() ? _("with LowID") : _("with HighID"));
 		} else {
 			return wxEmptyString;
 		}
@@ -2389,7 +2386,7 @@ wxString CWebServer::GetStatusBox(wxString &preselect)
 	"onchange=GotoCat(this.form.cat.options[this.form.cat.selectedIndex].value)>"));
 		
 	const wxString catnames[] = {
-		wxTRANSLATE("all others"),
+		wxTRANSLATE("All others"),
 		wxTRANSLATE("Waiting"),
 		wxTRANSLATE("Downloading"),
 		wxTRANSLATE("Erroneous"),

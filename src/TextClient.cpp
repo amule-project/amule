@@ -55,6 +55,7 @@
 #include "ECcodes.h"
 #include "ECPacket.h"
 #include "ECSpecialTags.h"
+#include "Format.h"		// Needed for CFormat
 
 #define APP_INIT_SIZE_X 640
 #define APP_INIT_SIZE_Y 480
@@ -569,8 +570,7 @@ void CamulecmdApp::Process_Answer_v2(CECPacket *response)
 			if (response->GetTagCount()) {
 				CECTag *tag = response->GetTagByIndex(0);
 				if (tag) {
-					s <<	_("Request failed with the following error: ") <<
-						wxGetTranslation(tag->GetStringData()) << wxT(".");
+					s <<	CFormat(_("Request failed with the following error: %s.")) % wxGetTranslation(tag->GetStringData());
 				} else {
 					s << msgFailedUnknown;
 				}
@@ -621,26 +621,23 @@ void CamulecmdApp::Process_Answer_v2(CECPacket *response)
 					CECTag *server = connState ? connState->GetTagByIndex(0) : NULL;
 					CECTag *serverName = server ? server->GetTagByName(EC_TAG_SERVER_NAME) : NULL;
 					if (server && serverName) {
-						s << 	_("Connected to ") <<
-							serverName->GetStringData() <<
-							wxT(" ") << server->GetIPv4Data().StringIP() << wxT(" ") <<
-							(connState->HaveLowID() ? _("with LowID") : _("with HighID"));
+						s << 	CFormat(_("Connected to %s %s ")) % serverName->GetStringData() % server->GetIPv4Data().StringIP() % (connState->HaveLowID() ? _("with LowID") : _("with HighID"));
 					}
 					break;
 				}
 			}
 			CECTag *tmpTag;
 			if ((tmpTag = response->GetTagByName(EC_TAG_STATS_DL_SPEED)) != 0) {
-				s <<	_("\nDownload:\t") << CastItoXBytes(tmpTag->GetInt32Data()) << _("/sec");
+				s <<	wxString::Format(_("\nDownload:\t %d/sec"), CastItoXBytes(tmpTag->GetInt32Data()));
 			}
 			if ((tmpTag = response->GetTagByName(EC_TAG_STATS_UL_SPEED)) != 0) {
-				s <<	_("\nUpload:\t") << CastItoXBytes(tmpTag->GetInt32Data()) << _("/sec");
+				s <<	wxString::Format(_("\nUpload:\t%d/sec"), CastItoXBytes(tmpTag->GetInt32Data()));
 			}
 			if ((tmpTag = response->GetTagByName(EC_TAG_STATS_UL_QUEUE_LEN)) != 0) {
-				s << 	_("\nClients in queue: \t") << tmpTag->GetInt32Data() << wxT("\n");
+				s << 	wxString::Format(_("\nClients in queue:\t%d\n"), tmpTag->GetInt32Data());
 			}
 			if ((tmpTag = response->GetTagByName(EC_TAG_STATS_TOTAL_SRC_COUNT)) != 0) {
-				s << 	_("\nTotal sources: \t") << tmpTag->GetInt32Data() << wxT("\n");
+				s << 	wxString::Format(_("\nTotal sources:\t%d\n"), tmpTag->GetInt32Data());
 			}
 			break;
 		}
@@ -660,7 +657,7 @@ void CamulecmdApp::Process_Answer_v2(CECPacket *response)
 							(int)tag->SourceCount()) <<
 						tag->GetFileStatusString();
 						if ( tag->SourceXferCount() > 0) {
-							s << wxT(" ") << CastItoXBytes(tag->Speed()) << _("/sec");
+							s << wxT(" ") + wxString::Format(_("%s/sec"), CastItoXBytes(tag->Speed()));
 						}
 					s << wxT("\n");
 				}
@@ -679,7 +676,7 @@ void CamulecmdApp::Process_Answer_v2(CECPacket *response)
 						clientName->GetStringData() << wxT(" ") <<
 						partfileName->GetStringData() << wxT(" ") <<
 						CastItoXBytes(partfileSizeXfer->GetInt32Data()) << wxT(" ") <<
-						CastItoXBytes(partfileSpeed->GetInt32Data()) << _("/sec");
+						wxString::Format(_("%s/sec"), CastItoXBytes(partfileSpeed->GetInt32Data()));
 				}
 			}
 			break;
@@ -708,36 +705,36 @@ void CamulecmdApp::ShowHelp() {
 //                                  1         2         3         4         5         6         7         8
 //                         12345678901234567890123456789012345678901234567890123456789012345678901234567890
 	Show(_("\n--------------------> Available commands (case insensitive): <------------------\n\n"));
-	Show(wxString(wxT("Connect [")) + wxString(_("server IP")) + wxString(wxT("]\t")) + wxString(_("Connect to given/random server. No warn if failed!\n")));
-//	Show(wxString(wxT("ConnectTo [")) + wxString(_("name")) + wxString(wxT("] [")) + wxString(_("port")) + wxString(wxT("]:\t")) + wxString(_("Connect to specified server and port.\n")));
-	Show(wxString(wxT("Disconnect:\t\t")) + wxString(_("Disconnect from server.\n")));
-	Show(wxString(wxT("Servers:\t\t")) + wxString(_("Show server list.\n")));
-//	Show(wxString(wxT("ServerStatus:\t\t")) + wxString(_("Tell us if connected/not connected.\n")));
-	Show(wxString(wxT("Stats:\t\t\t")) + wxString(_("Shows status and statistics.\n")));
-	Show(wxString(wxT("Show DL | UL:\t\t")) + wxString(_("Shows Download/Upload queue.\n")));
-//	Show(wxString(wxT("List <")) + wxString(_("pattern")) + wxString(wxT(">:\t\t")) + wxString(_("Lists or finds downloads by name or number.\n")));
-	Show(wxString(wxT("Resume [n | all]:\t")) + wxString(_("Resume file number n (or 'all').\n")));
-	Show(wxString(wxT("Pause [n | all]:\t")) + wxString(_("Pauses file number n (or 'all').\n")));
-	Show(wxString(wxT("SetIPFilter <on | off>:\t")) + wxString(_("Turn on/off amule IPFilter.\n")));
-	Show(wxString(wxT("ReloadIPF:\t\t")) + wxString(_("Reload IPFilter table from file.\n")));
-//	Show(wxString(wxT("GetIPLevel:\t\t")) + wxString(_("Shows current IP Filter level.\n")));
-//	Show(wxString(wxT("SetIPLevel <")) + wxString(_("new level")) + wxString(wxT(">:\t")) + wxString(_("Changes current IP Filter level.\n")));
-	Show(wxString(wxT("IPLevel [")) + wxString(_("level")) + wxString(wxT("]:\t")) + wxString(_("Shows/Sets current IP Filter level.\n")));
-	Show(wxString(wxT("Add <")) + wxString(_("ED2k_Link")) + wxString(wxT(">:\t\t")) + wxString(_("Adds <ED2k_Link> (file or server) to aMule.\n")));
-	Show(wxString(wxT("SetUpBWLimit <")) + wxString(_("limit")) + wxString(wxT(">:\t")) + wxString(_("Sets maximum upload bandwidth.\n")));
-	Show(wxString(wxT("SetDownBWLimit <")) + wxString(_("limit")) + wxString(wxT(">:\t")) + wxString(_("Sets maximum download bandwidth.\n")));
-	Show(wxString(wxT("GetBWLimits:\t\t")) + wxString(_("Displays bandwidth limits.\n")));
-	Show(wxString(wxT("Statistics:\t\t")) + wxString(_("Displays full statistics tree.\n")));
-	Show(wxString(wxT("ReloadShared:\t\t")) + wxString(_("Reload shared files list.\n")));
-	Show(wxString(wxT("Help:\t\t\t")) + wxString(_("Shows this help.\n")));	
-	Show(wxString(wxT("Quit, exit:\t\t")) + wxString(_("Exits aMulecmd.\n")));
-	Show(wxString(wxT("Shutdown:\t\t")) + wxString(_("Shutdown aMule\n")));
+	Show(wxT("Connect [") + _("server IP") + wxT("]\t") + _("Connect to given/random server. No warn if failed!\n"));
+//	Show(wxT("ConnectTo [") + _("name") + wxT("] [") + _("port") + wxT("]:\t") + _("Connect to specified server and port.\n"));
+	Show(wxT("Disconnect:\t\t") + _("Disconnect from server.\n"));
+	Show(wxT("Servers:\t\t") + _("Show server list.\n"));
+//	Show(wxT("ServerStatus:\t\t") + _("Tell us if connected/not connected.\n"));
+	Show(wxT("Stats:\t\t\t") + _("Shows status and statistics.\n"));
+	Show(wxT("Show DL | UL:\t\t") + _("Shows Download/Upload queue.\n"));
+//	Show(wxT("List <") + _("pattern") + wxT(">:\t\t") + _("Lists or finds downloads by name or number.\n"));
+	Show(wxT("Resume [n | all]:\t") + _("Resume file number n (or 'all').\n"));
+	Show(wxT("Pause [n | all]:\t") + _("Pauses file number n (or 'all').\n"));
+	Show(wxT("SetIPFilter <on | off>:\t") + _("Turn on/off amule IPFilter.\n"));
+	Show(wxT("ReloadIPF:\t\t") + _("Reload IPFilter table from file.\n"));
+//	Show(wxT("GetIPLevel:\t\t") + _("Shows current IP Filter level.\n"));
+//	Show(wxT("SetIPLevel <") + _("new level") + wxT(">:\t") + _("Changes current IP Filter level.\n"));
+	Show(wxT("IPLevel [") + _("level") + wxT("]:\t")) + _("Shows/Sets current IP Filter level.\n"));
+	Show(wxT("Add <") + _("ED2k_Link") + wxT(">:\t\t")) + _("Adds <ED2k_Link> (file or server) to aMule.\n"));
+	Show(wxT("SetUpBWLimit <") + _("limit") + wxT(">:\t")) + _("Sets maximum upload bandwidth.\n"));
+	Show(wxT("SetDownBWLimit <") + _("limit") + wxT(">:\t")) + _("Sets maximum download bandwidth.\n"));
+	Show(wxT("GetBWLimits:\t\t") + _("Displays bandwidth limits.\n"));
+	Show(wxT("Statistics:\t\t") + _("Displays full statistics tree.\n"));
+	Show(wxT("ReloadShared:\t\t") + _("Reload shared files list.\n"));
+	Show(wxT("Help:\t\t\t") + _("Shows this help.\n"));	
+	Show(wxT("Quit, exit:\t\t") + _("Exits aMulecmd.\n"));
+	Show(wxT("Shutdown:\t\t") + _("Shutdown aMule\n"));
 	Show(_("\n----------------------------> End of listing <----------------------------------\n"));
 }
 
 void CamulecmdApp::ShowGreet() {
 	Show(wxT("\n---------------------------------\n"));
-	Show(wxString(wxT("|       ")) + wxString(_("aMule text client")) + wxString(wxT("       |\n")));
+	Show(wxT("|       ") + _("aMule text client") + wxT("       |\n"));
 	Show(wxT("---------------------------------\n\n"));
 	// Do not merge the line below, or translators could translate "Help"
 	Show(wxString::Format(_("\nUse '%s' for command list\n\n"), wxT("Help")));

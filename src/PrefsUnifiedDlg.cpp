@@ -67,6 +67,7 @@
 #include "Preferences.h"
 #include "muuli_wdr.h"
 #include "Logger.h"
+#include "Format.h"		// Needed for CFormat
 
 
 BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
@@ -548,7 +549,7 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 
 	if (thePrefs::GetShowRatesOnTitle()) {
 		// This avoids a 5 seconds delay to show the title
-		theApp.amuledlg->SetTitle(theApp.m_FrameTitle + _(" -- Up: 0.0 | Down: 0.0"));
+		theApp.amuledlg->SetTitle(theApp.m_FrameTitle + wxT(" -- ") + _("Up: 0.0 | Down: 0.0"));
 	} else {
 		// This resets the title
 		theApp.amuledlg->SetTitle(theApp.m_FrameTitle);
@@ -765,23 +766,23 @@ void PrefsUnifiedDlg::OnButtonSystray(wxCommandEvent& WXUNUSED(evt))
 
 void PrefsUnifiedDlg::OnButtonDir(wxCommandEvent& event)
 {
-	wxString type = _("Choose a folder for ");
+	wxString type;
 
 	int id = 0;
 	switch ( event.GetId() ) {
 	case IDC_SELTEMPDIR:
 		id = IDC_TEMPFILES;
-		type += _("Temporary files");
+		type = _("Temporary files");
 		break;
 
 	case IDC_SELINCDIR:
 		id = IDC_INCFILES;
-		type += _("Incomming files");
+		type = _("Incomming files");
 		break;
 
 	case IDC_SELOSDIR:
 		id = IDC_OSDIR;
-		type += _("Online Signatures");
+		type = _("Online Signatures");
 		break;
 
 	default:
@@ -789,8 +790,10 @@ void PrefsUnifiedDlg::OnButtonDir(wxCommandEvent& event)
 		return;
 	}
 
-	wxTextCtrl* widget	= CastChild( id, wxTextCtrl );
-	wxString dir		= widget->GetValue();
+	type = CFormat(_("Choose a folder for %s")) % type;
+
+	wxTextCtrl* widget = CastChild( id, wxTextCtrl );
+	wxString dir = widget->GetValue();
 
 	wxString str = wxDirSelector( type, dir );
 

@@ -42,6 +42,7 @@
 #include "Server.h"		// Needed for CServer
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "muuli_wdr.h"		// Needed for ID_CLOSEWND
+#include "Format.h"		// Needed for CFormat
 #include <wx/stattext.h>
 #include <wx/sizer.h>
 #include <wx/msgdlg.h>
@@ -93,7 +94,7 @@ bool CClientDetailDialog::OnInitDialog() {
 	CastChild(ID_DSOFT,wxStaticText)->SetLabel(m_client->GetSoftStr());
 	CastChild(ID_DVERSION,wxStaticText)->SetLabel(m_client->GetSoftVerStr());
 
-	CastChild(ID_DID,wxStaticText)->SetLabel(wxString::Format(wxT("%u (%s)"),m_client->GetUserID(),(m_client->HasLowID() ? _("Low"):_("High"))));
+	CastChild(ID_DID,wxStaticText)->SetLabel(wxString::Format(wxT("%u (%s)"),m_client->GetUserID(),(m_client->HasLowID() ? _("LowID"):_("HighID"))));
 	
 	CastChild(ID_DIP,wxStaticText)->SetLabel(m_client->GetFullIP() + wxString::Format(wxT(":%i"),m_client->GetUserPort()));
 
@@ -171,7 +172,7 @@ bool CClientDetailDialog::OnInitDialog() {
 	
 	wxString OSInfo = m_client->GetClientOSInfo();
 	if (!OSInfo.IsEmpty()) {
-		wxMessageBox(_("aMule O.S. info is: ") + OSInfo);
+		wxMessageBox(CFormat(_("aMule O.S. info is: %s")) % OSInfo);
 	}
 	
 	return true;

@@ -49,6 +49,7 @@
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "PartFile.h"		// Needed for CPartFile
 #include "Color.h"		// Needed for SYSCOLOR
+#include "Format.h"		// Needed for CFormat
 
 #define ID_MY_TIMER 1652
 
@@ -106,16 +107,16 @@ void CFileDetailDialog::UpdateData()
 	CastChild(IDC_FHASH,wxStaticText)->SetLabel(EncodeBase16(m_file->GetFileHash(), 16));
 	CastChild(IDC_FSIZE,wxControl)->SetLabel(CastItoXBytes(m_file->GetFileSize()));
 	CastChild(IDC_PFSTATUS,wxControl)->SetLabel(m_file->getPartfileStatus());
-	bufferS = wxString::Format(wxT("%i(%i)"),m_file->GetPartCount(),m_file->GetHashCount());
+	bufferS = wxString::Format(wxT("%i (%i)"),m_file->GetPartCount(),m_file->GetHashCount());
 	CastChild(IDC_PARTCOUNT,wxControl)->SetLabel(bufferS);
 	CastChild(IDC_TRANSFERED,wxControl)->SetLabel(CastItoXBytes(m_file->GetTransfered()));
 	CastChild(IDC_FD_STATS1,wxControl)->SetLabel(CastItoXBytes(m_file->GetLostDueToCorruption()));
 	CastChild(IDC_FD_STATS2,wxControl)->SetLabel(CastItoXBytes(m_file->GetGainDueToCompression()));
 	CastChild(IDC_FD_STATS3,wxControl)->SetLabel(CastItoIShort(m_file->TotalPacketsSavedDueToICH()));
 	CastChild(IDC_COMPLSIZE,wxControl)->SetLabel(CastItoXBytes(m_file->GetCompletedSize()));
-	bufferS = wxString::Format(wxT("%.2f "),m_file->GetPercentCompleted());
-	CastChild(IDC_PROCCOMPL,wxControl)->SetLabel(bufferS+wxT("% ")+wxString(_("done")));
-	bufferS = wxString::Format(wxT("%.2f %s"),(float)m_file->GetKBpsDown(),_("kB/s"));
+	bufferS = wxString::Format(_("%.2f%% done"),m_file->GetPercentCompleted());
+	CastChild(IDC_PROCCOMPL,wxControl)->SetLabel(bufferS);
+	bufferS = wxString::Format(_("%.2f kB/s"),(float)m_file->GetKBpsDown());
 	CastChild(IDC_DATARATE,wxControl)->SetLabel(bufferS);
 	bufferS = wxString::Format(wxT("%i"),m_file->GetSourceCount());
 	CastChild(IDC_SOURCECOUNT,wxControl)->SetLabel(bufferS);

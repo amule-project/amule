@@ -75,7 +75,7 @@
 #include "filefn.h"
 #include "Statistics.h"		// Needed for CStatistics
 #include "Logger.h"
-#include "Format.h"
+#include "Format.h"		// Needed for CFormat
 
 #include <map>
 #include <algorithm>
@@ -388,7 +388,7 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 			if (from_backup) {
 				AddLogLineM(false, _(
 					"Error: Backup part.met file is 0 size! "
-					"Search http://forum.amule.org for .part.met recovery solutions "));	
+					"Search http://forum.amule.org for .part.met recovery solutions"));	
 			} else {
 				AddLogLineM(false, CFormat( _("Error: part.met file is 0 size: %s ==> %s") )
 					% m_partmetfilename
@@ -2233,7 +2233,7 @@ void CPartFile::CompleteFileEnded(int completing_result, wxString* newname) {
 		AddLogLineM(true, CFormat( _("WARNING: Failed to delete %s.seeds")) % m_partmetfilename );
 	}	
 
-	AddLogLineM(true, CFormat( _("Finished downloading: %s ") ) % GetFileName() );
+	AddLogLineM(true, CFormat( _("Finished downloading: %s") ) % GetFileName() );
 	
 #ifndef __SYSTRAY_DISABLED__
 	Notify_ShowNotifier( CFormat( _("Downloaded:\n%s") ) % GetFileName(), TBN_DLOAD, 0);

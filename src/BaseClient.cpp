@@ -51,7 +51,7 @@
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "FriendList.h"		// Needed for CFriendList
 #include "Statistics.h"
-#include "Format.h"
+#include "Format.h"		// Needed for CFormat
 #include "Logger.h"
 
 //#define __PACKET_DEBUG__
@@ -1671,14 +1671,12 @@ wxString CUpDownClient::GetUploadFileInfo()
 	if(this == NULL) return wxEmptyString;
 	
 	// build info text and display it
-	wxString sRet = _("NickName: ");
-	sRet += GetUserName() + wxString::Format(wxT(" ID: %u "),GetUserID());
+	wxString sRet;
+	sRet = (CFormat(_("NickName: %s ID: %u")) % GetUserName() % GetUserID()) + wxT(" ");
 	if (m_reqfile) {
 		sRet += _("Requested:") + wxString(m_reqfile->GetFileName()) + wxT("\n");
-		sRet += wxString::Format(_("Filestats for this session: Accepted %d of %d requests, "),m_reqfile->statistic.GetAccepts(), m_reqfile->statistic.GetRequests());
-		sRet += CastItoXBytes(m_reqfile->statistic.GetTransfered()) + _(" transferred\n");
-		sRet += wxString::Format(_("Filestats for all sessions: Accepted %d of %d requests, "),m_reqfile->statistic.GetAllTimeAccepts(), m_reqfile->statistic.GetAllTimeRequests());
-		sRet += CastItoXBytes(m_reqfile->statistic.GetAllTimeTransfered()) + _(" transferred\n");		
+		sRet += CFormat(_("Filestats for this session: Accepted %d of %d requests, %s transferred\n")) % m_reqfile->statistic.GetAccepts() % m_reqfile->statistic.GetRequests() % CastItoXBytes(m_reqfile->statistic.GetTransfered());
+		sRet += CFormat(_("Filestats for all sessions: Accepted %d of %d requests, %s transferred\n")) % m_reqfile->statistic.GetAllTimeAccepts() % m_reqfile->statistic.GetAllTimeRequests() % CastItoXBytes(m_reqfile->statistic.GetAllTimeTransfered());
 	} else {
 		sRet += _("Requested unknown file");
 	}

@@ -55,6 +55,7 @@
 #include "Friend.h"
 #include "FriendList.h"
 #include "ClientList.h"
+#include "Format.h"		// Needed for CFormat
 
 
 // Default colors, 
@@ -141,8 +142,7 @@ CChatSession* CChatSelector::StartSession(uint64 client_id, const wxString& clie
 	chatsession->m_client_id = client_id;
 
 	wxString text;
-	text += _(" *** Chat-Session Started: ") + client_name + wxT(" - ");
-	text += wxDateTime::Now().FormatISODate() + wxT(" ") + wxDateTime::Now().FormatISOTime();
+	text = wxT(" *** ") + (CFormat(_("Chat-Session Started: %s - %s %s")) % client_name % wxDateTime::Now().FormatISODate() % wxDateTime::Now().FormatISOTime());
 	
 	chatsession->AddText( text, COLOR_RED );
 	AddPage(chatsession, client_name, show, 0);

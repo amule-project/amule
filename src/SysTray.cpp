@@ -64,6 +64,7 @@
 #include "amule.h"		// Needed for theApp
 #include "NetworkFunctions.h"	// Needed for Uint32toStringIP
 #include "Logger.h"
+#include "Format.h"		// Needed for CFormat
 
 #ifdef __WXGTK__
 	#include "eggtrayicon.h"	// Needed for egg_tray_icon_new
@@ -179,10 +180,11 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 		// Check for upload limits
 		unsigned int max_upload = thePrefs::GetMaxUpload();
 		if ( max_upload == UNLIMITED ) {
-			label += wxString::Format( _("UL: None, "));
+			label += wxString::Format( _("UL: None"));
 		} else {
-			label += wxString::Format( _("UL: %u, "), max_upload);
+			label += wxString::Format( _("UL: %u"), max_upload);
 		}
+		label += wxT(", ");
 	
 		// Check for download limits
 		unsigned int max_download = thePrefs::GetMaxDownload();
@@ -215,13 +217,8 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 
 	// User nick-name
 	{
-		wxString temp = _("Nickname: ");
+		wxString temp = CFormat(_("Nickname: %s")) % ( thePrefs::GetUserNick().IsEmpty() ? wxString(_("No Nickname Selected!")) : thePrefs::GetUserNick() );
 			
-		if ( thePrefs::GetUserNick().IsEmpty() )
-			temp += _("No Nickname Selected!");
-		else
-			temp += thePrefs::GetUserNick();
-		
 		info_item = gtk_menu_item_new_with_label( unicode2gtk( temp ) );
 		gtk_container_add(GTK_CONTAINER(info_menu), info_item);
 	}
@@ -229,7 +226,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 	
 	// Client ID
 	{
-		wxString temp = _("ClientID: ");
+		wxString temp = wxString(_("ClientID:")) + wxT(" ");
 		
 		if (theApp.serverconnect->IsConnected()) {
 			unsigned long id = theApp.serverconnect->GetClientID();
@@ -246,15 +243,15 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 
 	// Current Server and Server IP
 	{
-		wxString temp_name = _("ServerName: ");
-		wxString temp_ip   = _("ServerIP: ");
+		wxString temp_name = wxString(_("ServerName:")) + wxT(" ");
+		wxString temp_ip   = wxString(_("ServerIP:")) + wxT(" ");
 		
 		if ( theApp.serverconnect->GetCurrentServer() ) {
 			temp_name += theApp.serverconnect->GetCurrentServer()->GetListName();
 			temp_ip   += theApp.serverconnect->GetCurrentServer()->GetFullIP();
 		} else {
-			temp_name += _("Not Connected");
-			temp_ip   += _("Not Connected");
+			temp_name += wxString(_("Not Connected"));
+			temp_ip   += wxString(_("Not Connected"));
 		}
 
 		info_item = gtk_menu_item_new_with_label( unicode2gtk( temp_name ) );
@@ -267,12 +264,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 
 	// IP Address
 	{
-		wxString temp = _("IP: ");
-		if ( theApp.GetPublicIP() ) {
-			temp += Uint32toStringIP(theApp.GetPublicIP()); 
-		} else {
-			temp += _("Unknown");
-		}
+		wxString temp = CFormat(_("IP: %s")) % ( (theApp.GetPublicIP()) ? Uint32toStringIP(theApp.GetPublicIP()) : wxString(_("Unknown")) );
 	
 		info_item = gtk_menu_item_new_with_label( unicode2gtk( temp ) );
 		gtk_container_add (GTK_CONTAINER (info_menu), info_item);
@@ -282,7 +274,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 	// TCP PORT
 	{
 		if (thePrefs::GetPort()) {
-			wxString temp = wxString::Format(wxT("%s%d"), _("TCP Port: "), thePrefs::GetPort());
+			wxString temp = CFormat(_("TCP Port: %d")) % thePrefs::GetPort();
 			info_item=gtk_menu_item_new_with_label( unicode2gtk( temp ) );
 		} else
 			info_item=gtk_menu_item_new_with_label(char2gtk(unicode2char(_("TCP Port: Not Ready"))));
@@ -294,7 +286,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 	// UDP PORT
 	{
 		if (thePrefs::GetUDPPort()) {
-			wxString temp = wxString::Format(wxT("%s%d"), _("UDP Port: "), thePrefs::GetUDPPort());	
+			wxString temp = wxString::Format(_("UDP Port: %d"), thePrefs::GetUDPPort());
 			info_item=gtk_menu_item_new_with_label( unicode2gtk( temp ) );
 		} else
 			info_item=gtk_menu_item_new_with_label(char2gtk(unicode2char(_("UDP Port: Not Ready"))));
@@ -316,7 +308,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 
 	// Uptime
 	{
-		wxString temp = _("Uptime: ") + CastSecondsToHM(theApp.statistics->GetUptimeSecs());
+		wxString temp = CFormat(_("Uptime: %s")) % CastSecondsToHM(theApp.statistics->GetUptimeSecs());
 								   
 		info_item=gtk_menu_item_new_with_label( unicode2gtk(temp));
 		gtk_container_add (GTK_CONTAINER (info_menu), info_item);
@@ -325,7 +317,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 
 	// Number of shared files
 	{
-		wxString temp = wxString::Format(wxT("%s%d"), _("Shared Files: "), theApp.sharedfiles->GetCount());
+		wxString temp = CFormat(_("Shared Files: %s")) % theApp.sharedfiles->GetCount();
 		info_item=gtk_menu_item_new_with_label( unicode2gtk( temp ) );
 		gtk_container_add(GTK_CONTAINER (info_menu), info_item);
 	}
@@ -333,7 +325,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 
 	// Number of queued clients
 	{
-		wxString temp = wxString::Format(wxT("%s%d"), _("Queued Clients: "), theApp.uploadqueue->GetWaitingUserCount() );
+		wxString temp = CFormat(_("Queued Clients: %d")) % theApp.uploadqueue->GetWaitingUserCount();
 		info_item=gtk_menu_item_new_with_label( unicode2gtk(temp));
 		gtk_container_add (GTK_CONTAINER (info_menu), info_item);
 	}
@@ -342,7 +334,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 	// Total Downloaded
 	{
 		wxString temp = CastItoXBytes( theApp.statistics->GetSessionReceivedBytes() + thePrefs::GetTotalDownloaded() );
-		temp = wxString(_("Total DL: ")) + temp;
+		temp = CFormat(_("Total DL: %s")) % temp;
 		info_item=gtk_menu_item_new_with_label( unicode2gtk( temp ) );
 		gtk_container_add (GTK_CONTAINER (info_menu), info_item);
 	}
@@ -351,7 +343,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 	// Total Uploaded
 	{
 		wxString temp = CastItoXBytes( theApp.statistics->GetSessionSentBytes() + thePrefs::GetTotalUploaded() );
-		temp = wxString(_("Total UL: ")) + temp;
+		temp = CFormat(_("Total UL: %s")) % temp;
 		info_item=gtk_menu_item_new_with_label( unicode2gtk( temp ) );
 		gtk_container_add (GTK_CONTAINER (info_menu), info_item);
 	}
