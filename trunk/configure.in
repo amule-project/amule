@@ -21,45 +21,7 @@ AM_GNU_GETTEXT_VERSION(0.11.5)
 
 AM_OPTIONS_WXCONFIG
 
-AM_PATH_WXCONFIG(2.4.0, WXFOUND=1)
-
-if test "$WXFOUND" != 1; then
-    AC_MSG_ERROR([
-        Please check that wx-config is in path, the directory
-        where wxWidgets libraries are installed (returned by
-        'wx-config --libs' command) is in LD_LIBRARY_PATH or
-        equivalent variable and wxWidgets is version 2.4.0 or above.
-	Or this might also be a bug in our configure. Please try again
-	with --with-wx-config=/usr/bin/wx-config
-	(replace /usr/bin/wx-config with a valid path to your wx-config)
-	* Note:
-	Most probably, either one of the above aren't correct, you don't
-	have wxGTK installed, or are missing wxGTK-devel (or equivalent) package.
-    ])
-fi
-
-AM_OPTIONS_WXBASECONFIG
-
-AM_PATH_WXBASECONFIG(2.4.0, WXBASEFOUND=1)
-
-if test "$WXBASEFOUND" != 1; then
-    AC_MSG_NOTICE([
-	WARNING: libwx_base >= 2.4.0 is not found.
-	This is not needed for compiling aMule, but it is for compiling amulecmd.
-	If you have no wxbase, amulecmd will be linked against wxgtk, thus removing
-	all the non-graphical client meaning at all.
-        Please check that wxbase-2.4-config is in path, the directory
-        where wxWidgets base libraries are installed (returned by
-        'wxbase-2.4-config --libs' command) is in LD_LIBRARY_PATH or
-        equivalent variable and wxWidgets base is version 2.4.0 or above.
-	Or this might also be that your wxbase-config has other name.
-	Please try again with --with-wxbase-config=/usr/bin/wxbase-config
-	(replace /usr/bin/wxbase-config with a valid path to your wxbase-config)
-	* Note:
-	Most probably, either one of the above aren't correct, you don't
-	have wxbase installed, or are missing wxbase-devel (or equivalent) package.
-    ])
-fi
+AM_PATH_WXCONFIG(2.4.0)
 
 AM_OPTIONS_CURLCONFIG
 
