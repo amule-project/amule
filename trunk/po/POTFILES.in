@@ -15,7 +15,6 @@ src/ClientListCtrl.cpp
 src/CommentDialog.cpp
 src/CommentDialogLst.cpp
 src/CryptoPP.cpp
-src/CryptoPP.h
 src/DataToText.cpp
 src/DownloadClient.cpp
 src/DownloadListCtrl.cpp
@@ -65,7 +64,6 @@ src/UploadClient.cpp
 src/utils/aLinkCreator/src/alcc.cpp
 src/utils/aLinkCreator/src/alc.cpp
 src/utils/aLinkCreator/src/alcframe.cpp
-src/utils/aLinkCreator/src/bithelp.h
 src/utils/aLinkCreator/src/ed2khash.cpp
 src/utils/aLinkCreator/src/md4.cpp
 src/utils/wxCas/src/linuxmon.cpp
