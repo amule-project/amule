@@ -7,7 +7,7 @@ Version 2.0.0rc4 - The 'Target: REAL Stability' version.
 		* updated italian and napoletanean translations
 		* Fixed unicode issues in serverlist updates and download tab
 		* Fixed unicode issues that stopped adding files to download from ed2k utility 
-                  and internal link handler
+		  and internal link handler
 
 	Phoenix:
 		* Patch to --enable-stdin to aid in debug with valgrind.
@@ -22,6 +22,19 @@ Version 2.0.0rc4 - The 'Target: REAL Stability' version.
 		* new configure option --enale-verbose, so that normal users
 		  are not flooded with debug messages.
 		* MagicNumbers are swapped to signal deleted source/PartFile.
+		* Removed deprecated wxArrayString::Remove(size_t nIndex,
+		  size_t nRemove = 1) using wxArrayString::RemoveAt(size_t
+		  nIndex, size_t nRemove = 1) now.
+		* Get rid of evil wxString::GetWriteBuff() and
+		  wxString::UngetWriteBuf() in ECSocket.h.
+		* Added -pw/--password command line option to amuleweb.
+		* Small unicode fixes.
+		* Fixed a messed up display in html code in aMule.tmpl (thanks
+		  to steve.reaver)
+		* Fixed some solaris compilation problems (thanks to wolti)
+		* Fixed font problem after Xaignar's great flicker free
+		  work in download list control.
+		* Enabled mouse wheel scrolling in all aMule list controls.
 
 	Xaignar:
 		* Merged lists used to identify file-types to avoid duplicity.
