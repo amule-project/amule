@@ -500,17 +500,15 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender,CUpDownClient* source)
 	// If yes the known client will be attached to the var "source" and the old
 	// source-client will be deleted. However, if the request file of the known 
 	// source is NULL, then we have to treat it almost like a new source and if
-	// it isn't NULL and not "sender", then we have to try to swap it.
-	if ( theApp.clientlist->AttachToAlreadyKnown(&source,0) ) {
+	// it isn't NULL and not "sender", then we shouldn't move it, but rather add
+	// a request for the new file.
+	if ( theApp.clientlist->AttachToAlreadyKnown(&source, 0) ) {
 		// Already queued for another file?
 		if ( source->GetRequestFile() ) {
 			// If we're already queued for the rigth file, then there's nothing to do
 			if ( sender != source->GetRequestFile() ) {	
-				// Add to request list so SwapToAnotherFile will work
+				// Add the new file to the request list
 				source->AddRequestForAnotherFile( sender );
-
-				// And try to swap to sender
-				source->SwapToAnotherFile( true, true, false, sender );
 			}
 		} else {
 			// Source was known, but reqfile NULL. I'm not sure if this can 
