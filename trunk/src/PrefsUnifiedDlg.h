@@ -82,6 +82,7 @@ private:
 	void OnOk(wxCommandEvent &event);
 	void OnCancel(wxCommandEvent &event);
 	void OnButtonBrowseWav(wxCommandEvent &event);
+	void OnButtonBrowseSkin(wxCommandEvent &event);
 	void OnButtonBrowseVideoplayer(wxCommandEvent &event);
 	void OnButtonWizard(wxCommandEvent &event);
 	void OnButtonDir(wxCommandEvent& event);

@@ -856,7 +856,7 @@ void PrefsUnifiedDlg::BuildItemList(CPreferences *prefs, const wxString& appdir)
 	listRse.Append(new RseBool(IDC_VERBOSEPACKETERROR, prefs->s_VerbosePacketError, wxT("VerbosePacketError"), false, wxT("FakeCheck"))); 
 	listRse.Append(new RseDirAssured(IDC_OSDIR, prefs->s_OSDirectory, appdir, wxT("OSDirectory"), wxT(""), wxT("FakeCheck")));	
 	listRse.Append(new RseBool(IDC_USESKIN, prefs->s_UseSkinFile, wxT("UseSkinFile"), false, wxT("SkinGUIOptions"))); 
-	listRse.Append(new RseDirAssured(IDC_SKINFILE, prefs->s_SkinFile, appdir, wxT("SkinFile"), wxT(""), wxT("SkinGUIOptions")));	
+	listRse.Append(new RseString(IDC_SKINFILE, prefs->s_SkinFile, wxT("SkinFile"), wxT(""), wxT("SkinGUIOptions")));	
 }
 
 //==============================================================================
@@ -891,7 +891,7 @@ BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	EVT_BUTTON(IDC_SELTEMPDIR, PrefsUnifiedDlg::OnButtonDir)
 	EVT_BUTTON(IDC_SELINCDIR,  PrefsUnifiedDlg::OnButtonDir)
 	EVT_BUTTON(IDC_SELOSDIR,  PrefsUnifiedDlg::OnButtonDir)
-	EVT_BUTTON(IDC_SELSKINFILE,  PrefsUnifiedDlg::OnButtonDir)
+	EVT_BUTTON(IDC_SELSKINFILE,  PrefsUnifiedDlg::OnButtonBrowseSkin)
 	EVT_BUTTON(IDC_BTN_BROWSE_WAV, PrefsUnifiedDlg::OnButtonBrowseWav)
 	EVT_BUTTON(IDC_BROWSEV, PrefsUnifiedDlg::OnButtonBrowseVideoplayer)
 	EVT_BUTTON(IDC_EDITADR, PrefsUnifiedDlg::OnButtonEditAddr)
@@ -1384,8 +1384,6 @@ void PrefsUnifiedDlg::OnButtonDir(wxCommandEvent& event)
 		prse = Prse(IDC_INCFILES);
 	else if (idButton == IDC_SELOSDIR)
 		prse = Prse(IDC_OSDIR);
-	else if (idButton == IDC_SELSKINFILE)
-		prse = Prse(IDC_SKINFILE);
 	else
 		wxASSERT(false);
 	((RseDirAssured*)prse)->SelectDir();
@@ -1399,7 +1397,11 @@ void PrefsUnifiedDlg::OnButtonBrowseWav(wxCommandEvent& WXUNUSED(evt))
 	Prse(IDC_EDIT_TBN_WAVFILE)->SetCtrlValue(str);
 }
 
-
+void PrefsUnifiedDlg::OnButtonBrowseSkin(wxCommandEvent& WXUNUSED(evt))
+{
+	wxString str = wxFileSelector(_("Browse skin file"),wxT(""),wxT(""),wxT("*"));
+	Prse(IDC_SKINFILE)->SetCtrlValue(str);
+}
 
 void PrefsUnifiedDlg::OnButtonBrowseVideoplayer(wxCommandEvent& WXUNUSED(e))
 {
