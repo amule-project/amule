@@ -19,6 +19,14 @@ Version 2.0.0rc5 -
 		  sizers to keep the old behaviour (wxFIXED_MINSIZE). This
 		  constant is defined to zero in amule.h when wx-version is
 		  less than 2.5.2, so that amule still compiles in old wx.
+	ThePolish:
+		* Add win32 MakefileWIN32, configureWIN32.h and project file amule.msp
+		* Make win32 use winsock2 for IPFilter
+		* Enable alc, alcc, wxCas translations with aMule catalog
+		* Use normalized includes for wx in wxCas, alc and alcc
+		* Limit the server name length in wxCas to avoid a too large window
+		* New icon for alc
+		* Global fr translation
 
 Version 2.0.0rc4 - The 'Mules and rabbits like apples too' version.
 
