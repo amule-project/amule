@@ -60,6 +60,8 @@ class CUpDownClient;
 class CEC_Prefs_Packet : public CECPacket {
  	public:
  		CEC_Prefs_Packet(uint32 selection, EC_DETAIL_LEVEL);
+ 		
+ 		void Apply();
 };
 
 class CEC_Server_Tag : public CECTag {
