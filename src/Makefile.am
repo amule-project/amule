@@ -284,13 +284,13 @@ amulecmdDLG_LDADD = $(WX_LIBS)
 amuleweb_SOURCES =  WebServer.cpp WebInterface.cpp WebSocket.cpp \
 	MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp otherfunctions.cpp ECSpecialTags.cpp
 amuleweb_CFLAGS = $(WXBASE_CFLAGS) $(LIBPNG_CFLAGS) $(AMULEWEB_DEFS) -DEC_REMOTE
-amuleweb_CXXFLAGS = $(WXBASE_CXXFLAGS) $(AMULEWEB_DEFS) -DEC_REMOTE
+amuleweb_CXXFLAGS = $(WXBASE_CXXFLAGS) $(LIBPNG_CXXFLAGS) $(AMULEWEB_DEFS) -DEC_REMOTE
 amuleweb_LDADD = $(WXBASE_LIBS) $(ZLIB_LIBS) $(READLINE_LIBS) $(LIBPNG_LDFLAGS) $(LIBPNG_LIBS)
 
 amulewebDLG_SOURCES = WebServer.cpp WebInterface.cpp WebSocket.cpp \
 	 MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp otherfunctions.cpp ECSpecialTags.cpp
 amulewebDLG_CFLAGS = $(WX_CFLAGS) $(LIBPNG_CFLAGS) $(AMULEWEB_DEFS) -DAMULEWEBDLG -DEC_REMOTE
-amulewebDLG_CXXFLAGS = $(WX_CXXFLAGS) -DAMULEWEBDLG  -DEC_REMOTE
+amulewebDLG_CXXFLAGS = $(WX_CXXFLAGS) $(LIBPNG_CXXFLAGS) $(AMULEWEB_DEFS) -DAMULEWEBDLG  -DEC_REMOTE
 amulewebDLG_LDADD = $(WX_LIBS) $(ZLIB_LIBS) $(LIBPNG_LDFLAGS) $(LIBPNG_LIBS)
 
 noinst_HEADERS = AddFileThread.h \
