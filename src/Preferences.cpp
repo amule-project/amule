@@ -481,7 +481,7 @@ void CPreferences::SavePreferences()
 	
 	wxString fp(fullpath), bf("eMule");
 	
-	printf("Preferences saving in %%s\n",fullpath);
+	printf("Preferences saving in %s\n",fullpath);
 	
 	CIni ini(fp, bf);
 	delete[] fullpath;
