@@ -281,9 +281,9 @@ void CSearchDlg::OnBnClickedSdownload(wxCommandEvent& WXUNUSED(evt))
 	
 	wxNotebookPage* page = notebook->GetPage(notebook->GetSelection());
 	if ( page == NULL ) {
-		AddLogLineM(false,wxT("page == NULL in CSearchDlg::OnBnClickedSdownload -- please, report this on amule foruns: www.amule.org"));
+		AddLogLineM(false,wxT("page == NULL in CSearchDlg::OnBnClickedSdownload -- please, report this on amule forums: www.amule.org"));
 #ifdef __DEBUG__
-		debugprintf(true, "page == NULL in CSearchDlg::OnBnClickedSdownload -- please, report this on amule foruns: www.amule.org");
+		debugprintf(true, "page == NULL in CSearchDlg::OnBnClickedSdownload -- please, report this on amule forums: www.amule.org");
 #endif
 		return;
 	}
