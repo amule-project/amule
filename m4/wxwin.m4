@@ -58,6 +58,8 @@ dnl Get the cflags and libraries from the wx-config script
 dnl
 AC_DEFUN(AM_PATH_WXCONFIG,
 [
+  AC_REQUIRE([AC_PROG_AWK])
+
   dnl do we have wx-config name: it can be wx-config or wxd-config or ...
   if test x${WX_CONFIG_NAME+set} != xset ; then
      WX_CONFIG_NAME=wx-config
@@ -95,40 +97,11 @@ AC_DEFUN(AM_PATH_WXCONFIG,
     WX_CONFIG_WITH_ARGS="$WX_CONFIG_PATH $wx_config_args"
 
     WX_VERSION=`$WX_CONFIG_WITH_ARGS --version`
-    wx_config_major_version=`echo $WX_VERSION | \
-           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\1/'`
-    wx_config_minor_version=`echo $WX_VERSION | \
-           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\2/'`
-    wx_config_micro_version=`echo $WX_VERSION | \
-           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\3/'`
-
-    wx_requested_major_version=`echo $min_wx_version | \
-           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\1/'`
-    wx_requested_minor_version=`echo $min_wx_version | \
-           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\2/'`
-    wx_requested_micro_version=`echo $min_wx_version | \
-           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\3/'`
-
-    wx_ver_ok=""
-    if test $wx_config_major_version -gt $wx_requested_major_version; then
-      wx_ver_ok=yes
-    else
-      if test $wx_config_major_version -eq $wx_requested_major_version; then
-         if test $wx_config_minor_version -gt $wx_requested_minor_version; then
-            wx_ver_ok=yes
-         else
-            if test $wx_config_minor_version -eq $wx_requested_minor_version; then
-               if test $wx_config_micro_version -ge $wx_requested_micro_version; then
-                  wx_ver_ok=yes
-               fi
-            fi
-         fi
-      fi
-    fi
-
-    if test "x$wx_ver_ok" = x ; then
-      no_wx=yes
-    else
+    
+    vers=`echo $WX_VERSION | $AWK 'BEGIN { FS = "."; } { printf "% d", ([$]1 * 1000 + [$]2) * 1000 + [$]3;}'`
+    minvers=`echo $min_wx_version | $AWK 'BEGIN { FS = "."; } { printf "% d", ([$]1 * 1000 + [$]2) * 1000 + [$]3;}'`
+    
+    if test -n "$vers" && test "$vers" -ge $minvers; then
       WX_LIBS=`$WX_CONFIG_WITH_ARGS --libs`
       WX_LIBS_STATIC=`$WX_CONFIG_WITH_ARGS --static --libs`
 
@@ -139,6 +112,8 @@ AC_DEFUN(AM_PATH_WXCONFIG,
 
       WX_CFLAGS_ONLY=`echo $WX_CFLAGS | sed "s@^$WX_CPPFLAGS *@@"`
       WX_CXXFLAGS_ONLY=`echo $WX_CXXFLAGS | sed "s@^$WX_CFLAGS *@@"`
+    else
+      no_wx=yes
     fi
 
     if test "x$no_wx" = x ; then
@@ -158,9 +133,22 @@ AC_DEFUN(AM_PATH_WXCONFIG,
        WX_LIBS=""
        WX_LIBS_STATIC=""
        ifelse([$3], , :, [$3])
+       
+       AC_MSG_ERROR([
+        Please check that wx-config is in path, the directory
+        where wxWidgets libraries are installed (returned by
+        'wx-config --libs' command) is in LD_LIBRARY_PATH or
+        equivalent variable and wxWidgets is version 2.4.0 or above.
+	Or this might also be a bug in our configure. Please try again
+	with --with-wx-config=/usr/bin/wx-config
+	(replace /usr/bin/wx-config with a valid path to your wx-config)
+	* Note:
+	Most probably, either one of the above aren't correct, you don't
+	have wxGTK installed, or are missing wxGTK-devel (or equivalent) package.
+       ])
     fi
   fi
-
+  
   AC_SUBST(WX_CPPFLAGS)
   AC_SUBST(WX_CFLAGS)
   AC_SUBST(WX_CXXFLAGS)
@@ -169,4 +157,138 @@ AC_DEFUN(AM_PATH_WXCONFIG,
   AC_SUBST(WX_LIBS)
   AC_SUBST(WX_LIBS_STATIC)
   AC_SUBST(WX_VERSION)
+  
+  dnl Now checking if it is a 2.5 or more version
+  dnl Then take wx-config itself
+  
+  if test "$vers" -ge 2005000; then
+    AC_MSG_WARN(wxWidgets >=2.5.0: Using wx-config --libs=base)
+  
+    WXBASE_CONFIG_NAME=$WX_CONFIG_NAME
+    WXBASE_CONFIG_WITH_ARGS=$WX_CONFIG_WITH_ARGS
+  
+    WXBASE_LIBS=`$WXBASE_CONFIG_WITH_ARGS --libs=base`
+    WXBASE_LIBS_STATIC=`$WXBASE_CONFIG_WITH_ARGS --static --libs=base`
+      
+    dnl we have CPPFLAGS included in CFLAGS included in CXXFLAGS
+    WXBASE_CPPFLAGS=`$WXBASE_CONFIG_WITH_ARGS --cppflags`
+    WXBASE_CXXFLAGS=`$WXBASE_CONFIG_WITH_ARGS --cxxflags`
+    WXBASE_CFLAGS=`$WXBASE_CONFIG_WITH_ARGS --cflags`
+
+    WXBASE_CFLAGS_ONLY=`echo $WXBASE_CFLAGS | sed "s@^$WXBASE_CPPFLAGS *@@"`
+    WXBASE_CXXFLAGS_ONLY=`echo $WXBASE_CXXFLAGS | sed "s@^$WXBASE_CFLAGS *@@"`
+  
+    AC_SUBST(WXBASE_CPPFLAGS)
+    AC_SUBST(WXBASE_CFLAGS)
+    AC_SUBST(WXBASE_CXXFLAGS)
+    AC_SUBST(WXBASE_CFLAGS_ONLY)
+    AC_SUBST(WXBASE_CXXFLAGS_ONLY)
+    AC_SUBST(WXBASE_LIBS)
+    AC_SUBST(WXBASE_LIBS_STATIC)
+    AC_SUBST(WXBASE_VERSION)
+  else
+  
+    dnl For wx  < 2.5.0, looking for wxbase-config
+  
+    dnl do we have wxbase-config name: it can be wxbase-config or wxd-config or ...
+    if test x${WXBASE_CONFIG_NAME+set} != xset ; then
+     WXBASE_CONFIG_NAME=wxbase-2.4-config
+    fi
+    if test "x$wxbase_config_name" != x ; then
+       WXBASE_CONFIG_NAME="$wxbase_config_name"
+    fi
+
+    dnl deal with optional prefixes
+    if test x$wxbase_config_exec_prefix != x ; then
+       wxbase_config_args="$wxbase_config_args --exec-prefix=$wxbase_config_exec_prefix"
+       WXBASE_LOOKUP_PATH="$wxbase_config_exec_prefix/bin"
+    fi
+    if test x$wxbase_config_prefix != x ; then
+       wxbase_config_args="$wxbase_config_args --prefix=$wxbase_config_prefix"
+       WXBASE_LOOKUP_PATH="$WXBASE_LOOKUP_PATH:$wxbase_config_prefix/bin"
+    fi
+
+    dnl don't search the PATH if WX_CONFIG_NAME is absolute filename
+    if test -x "$WX_CONFIG_NAME" ; then
+       AC_MSG_CHECKING(for wxbase-config)
+       WXBASE_CONFIG_PATH="$WXBASE_CONFIG_NAME"
+       AC_MSG_RESULT($WXBASE_CONFIG_PATH)
+    else
+       AC_PATH_PROG(WXBASE_CONFIG_PATH, $WXBASE_CONFIG_NAME, no, "$WXBASE_LOOKUP_PATH:$PATH")
+    fi
+
+    if test "$WXBASE_CONFIG_PATH" != "no" ; then
+      WXBASE_VERSION=""
+      no_wxbase=""
+
+      min_wxbase_version=ifelse([$1], ,2.2.6,$1)
+      AC_MSG_CHECKING(for wxWidgets base version >= $min_wxbase_version)
+
+      WXBASE_CONFIG_WITH_ARGS="$WXBASE_CONFIG_PATH $wxbase_config_args"
+
+      WXBASE_VERSION=`$WXBASE_CONFIG_WITH_ARGS --version`
+      vers=`echo $WXBASE_VERSION | $AWK 'BEGIN { FS = "."; } { printf "% d", ([$]1 * 1000 + [$]2) * 1000 + [$]3;}'`
+      minvers=`echo $min_wxbase_version | $AWK 'BEGIN { FS = "."; } { printf "% d", ([$]1 * 1000 + [$]2) * 1000 + [$]3;}'`
+    
+      if test -n "$vers" && test "$vers" -ge $minvers; then
+        WXBASE_LIBS=`$WXBASE_CONFIG_WITH_ARGS --libs`
+        WXBASE_LIBS_STATIC=`$WXBASE_CONFIG_WITH_ARGS --static --libs`
+      
+        dnl we have CPPFLAGS included in CFLAGS included in CXXFLAGS
+        WXBASE_CPPFLAGS=`$WXBASE_CONFIG_WITH_ARGS --cppflags`
+        WXBASE_CXXFLAGS=`$WXBASE_CONFIG_WITH_ARGS --cxxflags`
+        WXBASE_CFLAGS=`$WXBASE_CONFIG_WITH_ARGS --cflags`
+
+        WXBASE_CFLAGS_ONLY=`echo $WXBASE_CFLAGS | sed "s@^$WXBASE_CPPFLAGS *@@"`
+        WXBASE_CXXFLAGS_ONLY=`echo $WXBASE_CXXFLAGS | sed "s@^$WXBASE_CFLAGS *@@"`
+      else 
+        no_wxbase=yes    
+      fi
+
+      if test "x$no_wxbase" = x ; then
+         AC_MSG_RESULT(yes (version $WXBASE_VERSION))
+         ifelse([$2], , :, [$2])
+      else
+         if test "x$WXBASE_VERSION" = x; then
+	    dnl no wxbase-config at all
+	    AC_MSG_RESULT(no)
+         else
+	    AC_MSG_RESULT(no (version $WXBASE_VERSION is not new enough))
+         fi
+
+         WXBASE_CFLAGS=""
+         WXBASE_CPPFLAGS=""
+         WXBASE_CXXFLAGS=""
+         WXBASE_LIBS=""
+         WXBASE_LIBS_STATIC=""
+         ifelse([$3], , :, [$3])
+	 
+         AC_MSG_NOTICE([
+	  WARNING: libwx_base >= 2.4.0 is not found.
+	  This is not needed for compiling aMule, but it is for compiling amulecmd.
+	  If you have no wxbase, amulecmd will be linked against wxgtk, thus removing
+	  all the non-graphical client meaning at all.
+          Please check that wxbase-2.4-config is in path, the directory
+          where wxWidgets base libraries are installed (returned by
+          'wxbase-2.4-config --libs' command) is in LD_LIBRARY_PATH or
+          equivalent variable and wxWidgets base is version 2.4.0 or above.
+	  Or this might also be that your wxbase-config has other name.
+	  Please try again with --with-wxbase-config=/usr/bin/wxbase-config
+	  (replace /usr/bin/wxbase-config with a valid path to your wxbase-config)
+	  * Note:
+	  Most probably, either one of the above aren't correct, you don't
+	  have wxbase installed, or are missing wxbase-devel (or equivalent) package.
+	 ])
+      fi
+    fi
+
+    AC_SUBST(WXBASE_CPPFLAGS)
+    AC_SUBST(WXBASE_CFLAGS)
+    AC_SUBST(WXBASE_CXXFLAGS)
+    AC_SUBST(WXBASE_CFLAGS_ONLY)
+    AC_SUBST(WXBASE_CXXFLAGS_ONLY)
+    AC_SUBST(WXBASE_LIBS)
+    AC_SUBST(WXBASE_LIBS_STATIC)
+    AC_SUBST(WXBASE_VERSION)
+  fi
 ])
