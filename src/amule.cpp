@@ -1045,12 +1045,14 @@ void CamuleApp::OnFatalException()
 	if (wxString(MOD_VERSION_LONG) == wxT("aMule CVS")) {
 		fprintf(stderr, "\n--------------------------------------------------------------------------------\n");
 		fprintf(stderr, "Oops, aMule crashed!\n");
-		fprintf(stderr, "Hey, stop crying, freak! You wanted the edge, now you fell down. Live with it! :)\n");
+		fprintf(stderr, "Hey, stop crying, freak! You wanted the edge, now you fell down. Live with it!\n");
+		fprintf(stderr, "If you want this fixed, post it on the backtrace forum on http:\\www.amule.org\n");
 		fprintf(stderr, "Program version is: %s\n", unicode2char(GetMuleVersion()));
 		fprintf(stderr, "----------------------------=| BACKTRACE FOLLOWS: |=----------------------------\n\n");
 	} else {
 		fprintf(stderr, "\n--------------------------------------------------------------------------------\n");
 		fprintf(stderr, "OOPS! Houston, we have a situation: seems like aMule crashed!\n");
+		fprintf(stderr, "Please, post these lines on the backtrace forum on http:\\www.amule.org\n");
 		fprintf(stderr, "Program version is: %s\n", unicode2char(GetMuleVersion()));
 		fprintf(stderr, "----------------------------=| BACKTRACE FOLLOWS: |=----------------------------\n\n");
 	}
