@@ -167,16 +167,11 @@ void CServerUDPSocket::ProcessPacket(CSafeMemFile& packet, int16 size, int8 opco
 				break;
 			}
 			case OP_GLOBFOUNDSOURCES:{
-				printf("Got a UDP sources packet from server\n");
-
 				// process all source packets
 				do{
 					uint8 fileid[16];
 					packet.ReadHash16(fileid);
 					if (CPartFile* file = theApp.downloadqueue->GetFileByID(fileid)) {
-						wxString msg(wxT("\tAdding sources for file "));
-						msg << file->GetFileName() << wxT("\n");
-						printf("%s", unicode2char(msg));
 						file->AddSources(packet, StringIPtoUint32(host), port-4);
 					} else {
 						printf("\tSources received for unknown file\n");
@@ -193,13 +188,9 @@ void CServerUDPSocket::ProcessPacket(CSafeMemFile& packet, int16 size, int8 opco
 						if (protocol != OP_EDONKEYPROT || new_opcode != OP_GLOBFOUNDSOURCES) {
 							printf("\tServer sources reply got additional bogus bytes\n");
 							break;
-						} else {
-							printf("\tAdditional packet\n");
-						}
+						} 
 					}
 				} while ((packet.GetPosition() + 2) < size);
-								
-				printf("Finished sources\n");
 				break;
 			}
 
