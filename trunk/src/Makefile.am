@@ -1,14 +1,28 @@
-EXTRA_DIST = strings.en Makengfile aMule.xpm *.h pixmaps/*.xpm pixmaps/*.gif
+if WEB
+  OPT_WEB = webserver
+  dist_html_DATA = aMule.tmpl
+  htmldir = $(datadir)/amuleweb
+else
+if WEBGUI
+  OPT_WEB = webserver
+  dist_html_DATA = aMule.tmpl
+  htmldir = $(datadir)/amuleweb
+endif
+endif
 
-bin_PROGRAMS =
+SUBDIRS = utils pixmaps $(OPT_WEB)
 
-dist_icon_DATA =
-dist_util_DATA =
-dist_doc_DATA = 
+EXTRA_DIST = strings.en Makengfile aMule.xpm *.h aMule.tmpl
 
-icondir = $(datadir)/pixmaps
-utildir = $(datadir)/applications
-docdir = $(datadir)/doc/$(PACKAGE_NAME)-$(PACKAGE_VERSION)
+bin_PROGRAMS = amule
+
+if WEB
+bin_PROGRAMS += amuleweb
+endif
+
+if WEBGUI
+bin_PROGRAMS += amulewebDLG
+endif
 
 if GUI
 bin_PROGRAMS += amulecmdDLG
@@ -18,56 +32,9 @@ if COMPILE_CMD
 bin_PROGRAMS += amulecmd   
 endif
 
-if WEB
-bin_PROGRAMS += amuleweb
-htmldir = $(datadir)/amuleweb
-dist_html_DATA = aMule.tmpl
-htmlimgdir = $(htmldir)/webserver
-dist_htmlimg_DATA = webserver/*.gif
-endif
-
-EXTRA_DIST += aMule.tmpl webserver/*.gif
-
-if WEBGUI
-bin_PROGRAMS += amulewebDLG
-htmldir = $(datadir)/amuleweb
-dist_html_DATA = aMule.tmpl
-htmlimgdir = $(htmldir)/webserver
-dist_htmlimg_DATA = webserver/*.gif
-endif
-
-EXTRA_DIST += utils/cas/*.h utils/cas/README
-
-if CAS
-bin_PROGRAMS += cas
-dist_icon_DATA += utils/cas/stat.png
-endif
-
-EXTRA_DIST += utils/wxCas/src/*.h \
-	      utils/wxCas/pixmaps/*.xpm utils/wxCas/pixmaps/*.bmp \
-	      utils/wxCas/wxcas.msp utils/wxCas/wxcas.rc \
-	      utils/wxCas/ABOUT-NLS  utils/wxCas/ChangeLog \
-	      utils/wxCas/NEWS utils/wxCas/README \
-	      utils/wxCas/TODO utils/wxCas/AUTHORS \
-	      utils/wxCas/COPYING
-
-if WXCAS
-bin_PROGRAMS += wxcas
-dist_icon_DATA += utils/wxCas/pixmaps/wxcas.xpm
-dist_util_DATA += utils/wxCas/wxcas.desktop
-dist_doc_DATA += utils/wxCas/doc/wxcas_reference_manual.pdf \
-	utils/wxCas/doc/wxcas_user_manual.pdf	      
-endif
-
-# Xas plugin
-dist_plugins_DATA = utils/xas/xas.pl
-pluginsdir = $(libdir)/xchat/plugins
-
 if ED2K
 bin_PROGRAMS += ed2k
 endif
-
-bin_PROGRAMS += amule
 
 DEFS = -DHAVE_CONFIG_H
 
@@ -176,28 +143,6 @@ amule_LDADD = $(WX_LIBS) $(GTK_LIBS) $(ZLIB_LIBS) $(CURL_LIBS) $(CRYPTOLIBS)
 
 ed2k_SOURCES = ED2KLinkParser.cpp
 ed2k_CFLAGS =
-
-cas_SOURCES = utils/cas/cas.c \
-	      utils/cas/functions.c \
-              utils/cas/configfile.c \
-              utils/cas/graphics.c
-
-#cas_CXXFLAGS= ""
-#cas_LIBS= "" 
-cas_CFLAGS= $(GDLIB_CFLAGS) $(CAS_DEFS)
-cas_LDADD= $(GDLIB_LDFLAGS) $(GDLIB_LIBS) 
-
-wxcas_SOURCES = utils/wxCas/src/onlinesig.cpp \
-		utils/wxCas/src/linuxmon.cpp \
-		utils/wxCas/src/wxcas.cpp \
-		utils/wxCas/src/wxcasprint.cpp \
-		utils/wxCas/src/wxcasframe.cpp \
-		utils/wxCas/src/wxcasprefs.cpp \
-		utils/wxCas/src/wxcascte.cpp
-
-wxcas_CFLAGS = $(WX_CFLAGS)		
-wxcas_CXXFLAGS = $(WX_CXXFLAGS)
-wxcas_LDADD = $(WX_LIBS)
 
 amulecmd_SOURCES = TextClient.cpp MD5Sum.cpp ECSocket.cpp
 if HAVE_WXBASE
