@@ -501,7 +501,7 @@ void CUpDownClient::ProcessExtendedInfo(CSafeMemFile* data, CKnownFile* tempreqf
 				data->Read(nCompleteCountNew);
 				SetUpCompleteSourcesCount(nCompleteCountNew);
 				if (nCompleteCountLast != nCompleteCountNew) {
-					tempreqfile->UpdatePartsInfo();
+					//tempreqfile->UpdatePartsInfo();
 				}
 			}
 		}
