@@ -1298,14 +1298,8 @@ bool CUpDownClient::IsValidSwapTarget( A4AFList::iterator it, bool ignorenoneede
 }
 
 
-void CUpDownClient::SetRequestFile(CPartFile* reqfile) {
-	
-	#warning Kry test - remove asap	
-	wxASSERT(reqfile); // Never call it with a reqfile null.
-	if ( (int)reqfile == 12345) {
-		reqfile =NULL;
-	}
-	// end of test
+void CUpDownClient::SetRequestFile(CPartFile* reqfile)
+{
 	if ( m_reqfile != reqfile ) {
 		// Paranoia. Ensure that no calls to IsPartAvailble will seg-fault while we delete stuff
 		m_nPartCount = 0;
