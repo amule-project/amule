@@ -79,6 +79,7 @@
 #include "opcodes.h"		// Needed for TM_FINISHEDHASHING
 #include "muuli_wdr.h"		// Needed for ID_BUTTONSERVERS
 #include "PrefsUnifiedDlg.h"
+#include "GetTickCount.h"	// Needed for GetTickCount()
 
 #include "aMule.xpm"
 

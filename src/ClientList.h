@@ -21,7 +21,6 @@
 #define CLIENTLIST_H
 
 #include "types.h"		// Needed for uint16 and uint32
-#include "GetTickCount.h"
 
 #include <set>
 #include <list>

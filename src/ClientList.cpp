@@ -28,6 +28,7 @@
 #include "ClientCredits.h"
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "opcodes.h"
+#include "GetTickCount.h"	// Needed for GetTickCount()
 #include <wx/intl.h>
 #include <wx/arrimpl.cpp> // this is a magic incantation which must be done!
 #include <wx/dynarray.h>
