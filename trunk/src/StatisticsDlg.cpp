@@ -375,7 +375,7 @@ unsigned CStatisticsDlg::GetHistoryForWeb(  // Assemble arrays of sample points 
 	double		LastTimeStamp = phr->sTimestamp;
 	double		sTarget = LastTimeStamp;
 	
-	HR	**pphr = new (HR *) [cntPoints];
+	HR	**pphr = new HR *[cntPoints];
 
 	do {
 		while ((posPrev=listHR.PrevAt(pos)) != NULL	// find next history record
