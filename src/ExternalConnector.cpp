@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 aMule Team ( http://www.amule.org )
+ * Copyright (C) 2004 aMule Team (http://www.amule.org)
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -50,7 +50,7 @@
 // Static data initialization -- memorize this, you'll need some day!
 // 
 //-------------------------------------------------------------------
-const wxCmdLineEntryDesc CaMuleExternalConnector::cmdLineDesc[6] = 
+const wxCmdLineEntryDesc CaMuleExternalConnector::cmdLineDesc[7] = 
 {
 	{ wxCMD_LINE_OPTION, wxT("h"), wxT("help"),
 		wxT("show this help") },
@@ -62,6 +62,8 @@ const wxCmdLineEntryDesc CaMuleExternalConnector::cmdLineDesc[6] =
 		wxT("Password.") },
 	{ wxCMD_LINE_SWITCH, wxT("f"), wxT("file-config"), 
 		wxT("Read configuration (password/port) from file.") },
+	{ wxCMD_LINE_SWITCH, wxT("q"), wxT("quiet"), 
+		wxT("Do not print any output to stdout.") },
 	{ wxCMD_LINE_NONE }
 };
 
@@ -73,22 +75,25 @@ CaMuleExternalConnector::CaMuleExternalConnector()
 	m_isConnected = false;
 	m_HasCommandLinePassword = false;
 	m_HasConfigFromFile = false;
+	m_KeepQuiet = false;
 }
 
 void CaMuleExternalConnector::Show(const wxString &s)
 {
+	if( !m_KeepQuiet ) {
 #if wxUSE_GUI
-	if ( wxThread::IsMain() ) {
-		LocalShow(s);
-	} else {
-		// Print it later
-		wxMutexLocker lock(m_mutex_printlist);
-		m_printlist.push_back(s);
-		//wxWakeUpIdle();
-	}
+		if ( wxThread::IsMain() ) {
+			LocalShow(s);
+		} else {
+			// Print it later
+			wxMutexLocker lock(m_mutex_printlist);
+			m_printlist.push_back(s);
+			//wxWakeUpIdle();
+		}
 #else
-	printf("%s", unicode2char(s));
+		printf("%s", unicode2char(s));
 #endif
+	}
 }
 
 #if wxUSE_GUI
@@ -308,6 +313,7 @@ bool CaMuleExternalConnector::OnCmdLineParsed(wxCmdLineParser& parser)
 
 	m_HasCommandLinePassword = parser.Found(wxT("password"), &m_CommandLinePassword);
 	m_HasConfigFromFile = parser.Found(wxT("file-config"));
+	m_KeepQuiet = parser.Found(wxT("quiet"));
 
 	return result;
 }

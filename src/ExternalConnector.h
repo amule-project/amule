@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 aMule Team ( http://www.amule.org )
+ * Copyright (C) 2004 aMule Team (http://www.amule.org)
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -83,7 +83,7 @@ public:
 	bool OnCmdLineParsed(wxCmdLineParser& parser);
 
 private:
-	static const wxCmdLineEntryDesc cmdLineDesc[6];
+	static const wxCmdLineEntryDesc cmdLineDesc[7];
 	
 	wxString	m_cmdargs;
 	ECSocket* 	m_ECClient;
@@ -91,6 +91,7 @@ private:
 	bool 		m_HasCommandLinePassword;
 	wxString	m_CommandLinePassword;
 	bool		m_HasConfigFromFile;
+	bool		m_KeepQuiet;
 	wxString 	m_sPort;
 	wxString 	m_sHostName;	
 
