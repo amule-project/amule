@@ -169,7 +169,7 @@ enum {
 		 * \brief Handle ED2k link.
 		 *
 		 * \par Tags:
-		 *	\b ::EC_TAG_STRING (1+) holding ED2k link.
+		 *	::EC_TAG_STRING (1+) holding ED2k link.
 		 */
 	EC_OP_ED2K_LINK,
 
@@ -205,7 +205,7 @@ enum {
 		 * Status information about files/users/limits/speeds etc
 		 * 
 		 * \par Tags:
-		 *  \b ::EC_TAG_STATS_*
+		 *	::EC_TAG_STATS_*
 		 */
 	EC_OP_STATS,
 
@@ -213,7 +213,7 @@ enum {
 		 * \brief Request for download queue.
 		 *
 		 * \par Tags:
-		 *  ::EC_TAG_PARTFILE (*) info can be requested for selected list only
+		 *	::EC_TAG_PARTFILE (*) info can be requested for selected list only
 		 */
 	EC_OP_GET_DLOAD_QUEUE,
 		
@@ -221,7 +221,7 @@ enum {
 		 * \brief Request for upload queue - currect uploads
 		 *
 		 * \par Tags:
-		 *  ::EC_TAG_PARTFILE (*) status can be requested for selected list only
+		 *	::EC_TAG_PARTFILE (*) status can be requested for selected list only
 		 */
 	EC_OP_GET_ULOAD_QUEUE,
 
@@ -235,7 +235,7 @@ enum {
 		 * \brief Perform action on file in queue.
 		 *
 		 * \par Tags:
-		 *	\b ::EC_TAG_ITEM_ID (1+) item (object) to perform command on
+		 *	::EC_TAG_PARTFILE (1+) item (object) to perform command on
 		 */
 	EC_OP_PARTFILE_REMOVE_NO_NEEDED,
 	EC_OP_PARTFILE_REMOVE_FULL_QUEUE,
@@ -260,7 +260,7 @@ enum {
 		 * \brief Get download queue.
 		 *
 		 * \par Tags:
-		 *	\b ::EC_TAG_PARTFILE (1+) info about file in download queue
+		 *	::EC_TAG_PARTFILE (1+) info about file in download queue
 		 */
 	EC_OP_DLOAD_QUEUE,
 		
@@ -268,7 +268,7 @@ enum {
 		 * \brief Get upload queue.
 		 *
 		 * \par Tags:
-		 *	\b ::EC_TAG_UPDOWN_CLIENT (1+) info about client in queue
+		 *	::EC_TAG_UPDOWN_CLIENT (1+) info about client in queue
 		 */
 	EC_OP_ULOAD_QUEUE,
 
@@ -276,7 +276,7 @@ enum {
 		 * \brief Get shared files
 		 * 
 		 * \par Tags:
-		 *  \b ::EC_TAG_KNOWNFILE (*) info about each file
+		 *	::EC_TAG_KNOWNFILE (*) info about each file
 		 */
 	EC_OP_SHARED_FILES,
 
@@ -335,7 +335,7 @@ enum {
 		 * \brief Remove server from list.
 		 *
 		 * \par Tags:
-		 *	::EC_TAG_SERVER (1) identified the server to be removed
+		 *	::EC_TAG_SERVER (1) identifies the server to be removed
 		 */
 	EC_OP_SERVER_REMOVE,
 
@@ -660,7 +660,7 @@ enum {
 	/*!
 	 * \brief Info about CPartFile
 	 * 
-	 * Value (string): file name (the full one)
+	 * Value: MD4 hash (16 bytes)
 	 * 
 	 * \par Chld TAGs:
 	 *  ::EC_TAG_PARTFILE_*

@@ -586,7 +586,7 @@ void CamulecmdApp::Process_Answer_v2(CECPacket *response)
 				filesize = tag->SizeFull();
 				donesize = tag->SizeDone();
 					
-				s += wxString::Format(wxT("%08x "), tag->FileID()) +
+				s += tag->FileHashString() + wxT(" ") +
 					tag->FileName() +
 					wxString::Format(wxT("\t [%.1f%%] %i/%i - "),
 						((float)donesize) / ((float)filesize)*100.0,

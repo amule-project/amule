@@ -68,6 +68,7 @@
 class TransferredData;
 class CWSThread;
 class CWebSocket;
+class CMD4Hash;
 
 //shakraw - webserver code below
 #define WEB_GRAPH_HEIGHT		120
@@ -133,15 +134,14 @@ class DownloadFiles {
 		wxString	sED2kLink;
 		wxString	sFileInfo;
 		wxString	sPartStatus;
+		CMD4Hash	nHash;
 		
-		uint32 file_id;
 		CProgressImage *m_Image;
 		otherfunctions::PartFileEncoderData m_Encoder;
 		std::vector<Gap_Struct> m_ReqParts;
 
 		// container require this		
 		static class DownloadFilesInfo *GetContainerInstance();
-		uint32 ID() { return file_id; }
 };
 
 class SharedFiles {
@@ -401,7 +401,7 @@ class DownloadFilesInfo : public ItemsContainer<DownloadFiles, xDownloadSort> {
 		// need duplicate list with a map, so check "do we already have"
 		// will take O(log(n)) instead of O(n)
 		// map will contain pointers to items in list 
-		std::map<uint32, DownloadFiles *> m_files;
+		std::map<CMD4Hash, DownloadFiles *> m_files;
 		CImageLib *m_ImageLib;
 		
 		// parameters of progress images

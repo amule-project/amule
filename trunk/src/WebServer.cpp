@@ -884,7 +884,7 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 			//file_cmd = new CECPacket(EC_OP_KNOWNFILE_SET_UP_PRIO);
 		}
 		if ( file_cmd ) {
-			file_cmd->AddTag(CECTag(EC_TAG_PARTFILE, sFileHash));
+			file_cmd->AddTag(CECTag(EC_TAG_PARTFILE, CMD4Hash(sFileHash)));
 			Send_Discard_V2_Request(file_cmd);
 			delete file_cmd;
 		}
@@ -2462,16 +2462,16 @@ bool DownloadFilesInfo::ReQuery()
 	
 	//
 	// Phase 2: update status, mark new files for subsequent query
-	std::set<uint32> core_files;
+	std::set<CMD4Hash> core_files;
 	CECPacket req_full(EC_OP_GET_DLOAD_QUEUE);
 
 	for (int i = 0;i < reply->GetTagCount();i++) {
 		CEC_PartFile_Tag *tag = (CEC_PartFile_Tag *)reply->GetTagByIndex(i);
 
-		core_files.insert(tag->FileID());
-		if ( m_files.count(tag->FileID()) ) {
+		core_files.insert(tag->FileHash());
+		if ( m_files.count(tag->FileHash()) ) {
 			// already have it - update status
-			DownloadFiles *file = m_files[tag->FileID()];
+			DownloadFiles *file = m_files[tag->FileHash()];
 			file->lSourceCount = tag->SourceCount();
 			file->lNotCurrentSourceCount = tag->SourceNotCurrCount();
 			file->nFileStatus = tag->FileStatus();
@@ -2500,7 +2500,7 @@ bool DownloadFilesInfo::ReQuery()
 			}
 		} else {
 			// don't have it - prepare to request full info
-			req_full.AddTag(CECTag(EC_TAG_PARTFILE, tag->FileID()));
+			req_full.AddTag(CECTag(EC_TAG_PARTFILE, tag->FileHash()));
 		}
 	}
 	delete reply;
@@ -2509,12 +2509,12 @@ bool DownloadFilesInfo::ReQuery()
 	// Phase 2.5: remove files that core no longer have; mark files with
 	// status = "downloading" for parts query
 	for(std::list<DownloadFiles>::iterator i = m_items.begin(); i != m_items.end();i++) {
-		if ( core_files.count(i->file_id) == 0 ) {
+		if ( core_files.count(i->nHash) == 0 ) {
 #ifdef WITH_LIBPNG
 			m_ImageLib->RemoveImage(wxT("/") + i->m_Image->Name());
 #endif
 			delete i->m_Image;
-			m_files.erase(i->file_id);
+			m_files.erase(i->nHash);
 			m_items.erase(i);
 		}
 	}
@@ -2530,7 +2530,7 @@ bool DownloadFilesInfo::ReQuery()
 			CEC_PartFile_Tag *tag = (CEC_PartFile_Tag *)reply->GetTagByIndex(i);
 
 			DownloadFiles file;
-			file.file_id = tag->FileID();
+			file.nHash = tag->FileHash();
 			file.sFileName = tag->FileName();
 			file.lFileSize = tag->SizeFull();
 			file.lFileCompleted = tag->SizeDone();
@@ -2543,7 +2543,7 @@ bool DownloadFilesInfo::ReQuery()
 			file.nFileStatus = tag->FileStatus();
 			file.sFileStatus = tag->GetFileStatusString();
 			file.lFilePrio = tag->Prio();
-			file.sFileHash = wxString::Format(wxT("%08x"), tag->FileID());
+			file.sFileHash = tag->FileHashString();
 			file.sED2kLink = tag->FileEd2kLink();
 			file.sPartStatus = tag->PartStatus();
 						
@@ -2569,7 +2569,7 @@ bool DownloadFilesInfo::ReQuery()
 			// can invalidate pointers.
 			m_items.push_back(file);
 			DownloadFiles *real_ptr = &(m_items.back());
-			m_files[file.file_id] = real_ptr;
+			m_files[file.nHash] = real_ptr;
 			
 //			real_ptr->m_Image = new CDynImage(file.file_id, m_width, m_height,
 //				file.lFileSize, m_Template, &real_ptr->m_Encoder);
@@ -2863,7 +2863,7 @@ int CProgressImage::compare_gaps(const void *g1, const void *g2)
 CDynImage::CDynImage(int width, int height, wxString &tmpl, DownloadFiles *file) :
 	CProgressImage(width, height, tmpl, file), m_modifiers(height)
 {
-	m_name = wxString::Format(wxT("dyn_%d.png"), m_file->file_id);
+	m_name = wxT("dyn_") + m_file->sFileHash + wxT(".png");
 	
 	//
 	// Allocate array of "row pointers" - libpng need it in this form
@@ -2954,7 +2954,7 @@ unsigned char *CDynImage::RequestData(int &size)
 CDynImage::CDynImage(int width, int height, wxString &tmpl, DownloadFiles *file) :
 	CProgressImage(width, height, tmpl, file)
 {
-	m_name = wxString::Format(wxT("dyn_%d.png"), m_file->file_id);
+	m_name = wxT("dyn_") + m_file->sFileHash + wxT(".png");
 	
 }
 

@@ -26,6 +26,7 @@
 #include <wx/string.h>	// Needed for wxString
 #include "ECcodes.h"	// Needed for EC types
 #include "ECPacket.h"	// Needed for CECTag
+#include "CMD4Hash.h"	// Needed for CMD4Hash
 
 #if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
 #pragma interface "ECSpecialTags.h"
@@ -62,7 +63,8 @@ class CEC_PartFile_Tag : public CECTag {
  	public:
  		CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level);
  		
- 		uint32		FileID()	{ return GetInt32Data(); }
+ 		CMD4Hash	FileHash()	{ return GetMD4Data(); }
+		wxString	FileHashString() { return GetMD4Data().Encode(); }
  		wxString	FileName()	{ return GetTagByName(EC_TAG_PARTFILE_NAME)->GetStringData(); }
  		uint32		SizeFull()	{ return GetTagByName(EC_TAG_PARTFILE_SIZE_FULL)->GetInt32Data(); }
  		uint32		SizeXfer()	{ return GetTagByName(EC_TAG_PARTFILE_SIZE_XFER)->GetInt32Data(); }
