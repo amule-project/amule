@@ -103,7 +103,7 @@ CECTag::CECTag(ec_tagname_t name, const EC_IPv4_t& data) : m_tagName(name), m_dy
 {
 
 	m_dataLen = sizeof(EC_IPv4_t);
-	m_tagData = new EC_IPv4_t;
+	m_tagData = malloc(sizeof(EC_IPv4_t));
 	if (m_tagData != NULL) {
 		*((uint32 *)(((EC_IPv4_t *)m_tagData)->ip)) = *((uint32 *)(data.ip));
 		((EC_IPv4_t *)m_tagData)->port = htons(data.port);
@@ -129,7 +129,7 @@ CECTag::CECTag(ec_tagname_t name, const CMD4Hash& data) : m_tagName(name), m_dyn
 {
 
 	m_dataLen = 16;
-	m_tagData = new unsigned char[16];
+	m_tagData = malloc(16);
 	if (m_tagData != NULL) {
 #if wxBYTE_ORDER == wxLITTLE_ENDIAN
 		for (int i = 0; i < 16; ++i)
