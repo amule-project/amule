@@ -15,7 +15,7 @@ Version 2.0.0rc7 - The "99,6% Final" version.
 
 		On aMuleCMD:
 		* Added 'list' (or 'find') command to search for a file in the downloads queue by name or by number (or just show all)
-		* Added the ability to resume/pause all downloads at the same time through amulecmd (very handy when all downloads have been paused due to lack of space)
+		* Added the ability to resume/pause all downloads at the same time through amulecmd (very handy when all downloads have been paused due   to lack of space)
 		* Fixed two bugs on amulecmd by which using 'pause' or 'resume' without arguments would pause/resume the oldest download.
 		* Fixed a bug so that help command no longer is send to core
 		* Fixed other commands sending blank data to core
@@ -25,7 +25,17 @@ Version 2.0.0rc7 - The "99,6% Final" version.
 
 	KingFish:
 		* Fixed broken compilation in SysTray.cpp with gcc 3.3.4.
-
+		
+	lfroen:
+	        * Removed debug printf's in timer.cpp
+		* Fix for deadlock on connection timeout in ServerSocket.cpp
+                * Fixed assert when build with wx-cvs
+		* Added option for disabling SIGSEG handling: useful for debuging in amuled.cpp
+		* EMSocket.h cleanup
+		* Fixed unclosed sockets (CLOSE_WAIT) and few stability problems
+		* Make CEMSocket::OnReceive thread safe. MAX_SIZE reduced, cause even theoretically tcp can buffer up to 64K
+		* amuled fixes
+		
 	Phoenix:
 		* Fixed '&' char next to Preferences in amuleweb web page, as
 		  reported by DreamWalker.
