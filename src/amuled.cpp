@@ -204,7 +204,7 @@ void CamuleDaemonApp::ShowAlert(wxString msg, wxString title, int flags)
 }
 
 
-void CamuleDaemonApp::NotifyEvent(GUIEvent event)
+void CamuleDaemonApp::NotifyEvent(const GUIEvent& event)
 {
 	switch (event.ID) {
 		// GUI->CORE events

@@ -172,7 +172,7 @@ public:
 	// derived classes may override those
 	virtual int InitGui(bool geometry_enable, wxString &geometry_string);
 
-	virtual void NotifyEvent(GUIEvent event) = 0;
+	virtual void NotifyEvent(const GUIEvent& event) = 0;
 	virtual void ShowAlert(wxString msg, wxString title, int flags) = 0;
 	
 	// Barry - To find out if app is running or shutting/shut down
@@ -318,7 +318,7 @@ public:
 	
 	bool CopyTextToClipboard( wxString strText );
 
-	virtual void NotifyEvent(GUIEvent event);
+	virtual void NotifyEvent(const GUIEvent& event);
 	virtual int InitGui(bool geometry_enable, wxString &geometry_string);
 	virtual void ShowAlert(wxString msg, wxString title, int flags);
 };
@@ -345,7 +345,7 @@ public:
 	CFriend *FindFriend(CMD4Hash *hash, uint32 ip, uint16 port);
 	
 	void ShutDown();
-	virtual void NotifyEvent(GUIEvent event);
+	virtual void NotifyEvent(const GUIEvent& event);
 	
 	wxString GetLog(bool reset = false);
 	wxString GetServerLog(bool reset = false);
@@ -410,7 +410,7 @@ public:
 	wxString GenFakeCheckUrl(const CAbstractFile *f);
 	wxString GenFakeCheckUrl2(const CAbstractFile *f);
 	
-	virtual void NotifyEvent(GUIEvent event);
+	virtual void NotifyEvent(const GUIEvent& event);
 
 	wxString GetLog(bool reset = false);
 	wxString GetServerLog(bool reset = false);
@@ -442,7 +442,7 @@ class CamuleDaemonApp : public CamuleApp {
 public:
 	void ExitMainLoop() { m_Exit = true; }
 
-	virtual void NotifyEvent(GUIEvent event);
+	virtual void NotifyEvent(const GUIEvent& event);
 
 	CFriend *FindFriend(CMD4Hash *hash, uint32 ip, uint16 port);
 	bool CopyTextToClipboard(wxString strText);
