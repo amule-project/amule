@@ -2042,14 +2042,16 @@ void CClientReqSocketHandler::ClientReqSocketHandler(wxSocketEvent& event)
 // 
 
 // Do we really need that?
-//IMPLEMENT_DYNAMIC_CLASS(CListenSocket,wxSocketServer)
+IMPLEMENT_DYNAMIC_CLASS(CListenSocket,wxSocketServer)
 
 CListenSocket::CListenSocket(CPreferences* in_prefs, wxSockAddress& addr)
 :
 // wxSOCKET_NOWAIT    - means non-blocking i/o
 // wxSOCKET_REUSEADDR - means we can reuse the socket imediately (wx-2.5.3)
-wxSocketServer(addr, wxSOCKET_NOWAIT|wxSOCKET_REUSEADDR),
-wxThread(wxTHREAD_JOINABLE) 
+wxSocketServer(addr, wxSOCKET_NOWAIT|wxSOCKET_REUSEADDR)
+#ifdef AMULE_DAEMON
+,wxThread(wxTHREAD_JOINABLE) 
+#endif
 {
 	// 0.42e - vars not used by us
 	bListening = false;
@@ -2064,17 +2066,19 @@ wxThread(wxTHREAD_JOINABLE)
 	activeconnections = 0;
 	// Set the listen socket event handler -- The handler is written in amule.cpp
 	if (Ok()) {
-// 		SetEventHandler(theApp, LISTENSOCKET_HANDLER);
-// 		SetNotify(wxSOCKET_CONNECTION_FLAG);
-// 		Notify(true);
+#ifdef AMULE_DAEMON
+	if ( Create() != wxTHREAD_NO_ERROR ) {
+		AddLogLineM(true,wxT("CListenSocket: can not create my thread\n"));
+	}
 		Notify(false);
-		
+#else
+ 		SetEventHandler(theApp, LISTENSOCKET_HANDLER);
+ 		SetNotify(wxSOCKET_CONNECTION_FLAG);
+ 		Notify(true);
+#endif	
 		printf("ListenSocket: Ok.\n");
 	} else {
 		AddLogLineM(true,wxT("Error: Could not listen to TCP port.\n"));
-	}
-	if ( Create() != wxTHREAD_NO_ERROR ) {
-		AddLogLineM(true,wxT("CListenSocket: can not create my thread\n"));
 	}
 }
 
@@ -2086,12 +2090,14 @@ CListenSocket::~CListenSocket()
 	KillAllSockets();
 }
 
+//
+// lfroen - this used only in daemon where sockets are threaded
+//
+#ifdef AMULE_DAEMON
 void *CListenSocket::Entry()
 {
 	while ( !TestDestroy() ) {
-		// lfroen - WaitForAccept using busy waiting on wxGTK !
-		// see src/unix/gsocket.cpp in wx source
-		if ( WaitForAccept(0, 1) ) {
+		if ( WaitForAccept() ) {
 			if ( !theApp.IsReady ) {
 				wxSocketBase *s = Accept(false);
 				if ( s ) {
@@ -2102,21 +2108,20 @@ void *CListenSocket::Entry()
 			wxMutexGuiEnter();
 			OnAccept(0);
 			wxMutexGuiLeave();
-		} else {
-			// lfroen - can't Yield from non-main thead
-			wxThread::Sleep(10);
 		}
 	}
 	return 0;
 }
+#endif
 
 bool CListenSocket::StartListening()
 {
 	// 0.42e
 	bListening = true;
 	//return (this->Create(app_prefs->GetPort(),SOCK_STREAM,FD_ACCEPT) && this->Listen());
-	
+#ifdef AMULE_DAEMON
 	Run();
+#endif
 	return true;
 }
 

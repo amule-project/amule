@@ -23,15 +23,21 @@
 #define EXTERNALCONN_H
 
 #include <wx/thread.h>		// For ExitCode
+#include <wx/event.h>		// For ExitCode
 
 #include "ECSocket.h"
 
 class CPartFile;
 class wxSocketServer;
 class wxSocketEvent;
-class ExternalConnServerThread;
 
-class ExternalConn {
+#ifdef AMULE_DAEMON
+#define EXTERNAL_CONN_BASE wxThread
+#else
+#define EXTERNAL_CONN_BASE wxEvtHandler
+#endif
+
+class ExternalConn : public EXTERNAL_CONN_BASE {
 	public:
 		ExternalConn();
 		~ExternalConn();
@@ -39,27 +45,21 @@ class ExternalConn {
 		wxString Authenticate(const wxString& item);
 		wxString ProcessRequest(const wxString& item);
 	
+		void Read(wxSocketBase *sock, wxString& s);
+		void Write(wxSocketBase *sock, const wxString& s);
+	
 	private:
 		wxString GetDownloadFileInfo(const CPartFile* file);
-		ExternalConnServerThread *server;
-};
-
-//
-// lfroen: need 2 threads here - 1 listening and 1 per client
-//
-class ExternalConnServerThread : public wxThread {
-	public:
-		ExternalConnServerThread(ExternalConn *owner);
-		~ExternalConnServerThread();
-		bool Ready()
-		{
-			return m_ECServer && m_ECServer->Ok();
-		}
 		
-	private:
-		ExitCode Entry();
 		
-		ExternalConn *m_owner;
+#ifdef AMULE_DAEMON
+		void *Entry();
+#else
+		// event handlers (these functions should _not_ be virtual)
+		DECLARE_EVENT_TABLE()
+		void OnServerEvent(wxSocketEvent& event);
+		void OnSocketEvent(wxSocketEvent& event);
+#endif
 		wxSocketServer *m_ECServer;
 		int m_numClients;
 };
@@ -72,8 +72,6 @@ class ExternalConnClientThread : public wxThread {
 	private:
 		ExitCode Entry();
 		
-		void Read(wxSocketBase *sock, wxString& s);
-		void Write(wxSocketBase *sock, const wxString& s);
 
 		ExternalConn *m_owner;
 		wxSocketBase *m_sock;

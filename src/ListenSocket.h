@@ -105,14 +105,18 @@ private:
 
 
 // CListenSocket command target
-class CListenSocket : public wxSocketServer, public wxThread {
-	//DECLARE_DYNAMIC_CLASS(CListenSocket)
+class CListenSocket : public wxSocketServer
+#ifdef AMULE_DAEMON
+, public wxThread
+#endif
+{
+	DECLARE_DYNAMIC_CLASS(CListenSocket)
 
-	void *Entry();
-public:
 	// The default constructor is here only because of IMPLEMENT_DYNAMIC_CLASS
 	// in ListenSocket.cpp. Do we really need that?
-	//CListenSocket() : wxSocketServer(happyCompiler, wxSOCKET_REUSEADDR){};
+	CListenSocket() : wxSocketServer(happyCompiler, wxSOCKET_REUSEADDR){};
+	void *Entry();
+public:
 	CListenSocket(CPreferences* in_prefs,wxSockAddress& addr);
 	~CListenSocket();
 	bool	StartListening();
