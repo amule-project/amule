@@ -279,6 +279,8 @@ CECPacket *Get_EC_Response_StatRequest(const CECPacket *request)
 		response->AddTag(CECTag(EC_TAG_STATS_ED2K_ID, (uint32)theApp.serverconnect->clientid));
 		response->AddTag(CECTag(EC_TAG_STATS_SERVER,
 			theApp.serverconnect->GetCurrentServer()->GetListName()));
+		response->AddTag(CECTag(EC_TAG_STATS_USERS_ON_SERVER,
+			theApp.serverconnect->GetCurrentServer()->GetUsers()));
 	} else {
 		if (theApp.serverconnect->IsConnecting()) {
 			response->AddTag(CECTag(EC_TAG_STATS_ED2K_ID, (uint32)0xffffffff));
@@ -290,10 +292,10 @@ CECPacket *Get_EC_Response_StatRequest(const CECPacket *request)
 	}
 	//
 	// ul/dl speeds
-	response->AddTag(CECTag(EC_TAG_STATS_UL_SPEED, (uint32)theApp.uploadqueue->GetKBps()));
-	response->AddTag(CECTag(EC_TAG_STATS_DL_SPEED, (uint32)theApp.downloadqueue->GetKBps()));
-	response->AddTag(CECTag(EC_TAG_STATS_UL_SPEED_LIMIT, (uint32)thePrefs::GetMaxUpload()));
-	response->AddTag(CECTag(EC_TAG_STATS_DL_SPEED_LIMIT, (uint32)thePrefs::GetMaxDownload()));
+	response->AddTag(CECTag(EC_TAG_STATS_UL_SPEED, (uint32)(theApp.uploadqueue->GetKBps()*1024.0)));
+	response->AddTag(CECTag(EC_TAG_STATS_DL_SPEED, (uint32)(theApp.downloadqueue->GetKBps()*1024.0)));
+	response->AddTag(CECTag(EC_TAG_STATS_UL_SPEED_LIMIT, (uint32)(thePrefs::GetMaxUpload()*1024.0)));
+	response->AddTag(CECTag(EC_TAG_STATS_DL_SPEED_LIMIT, (uint32)(thePrefs::GetMaxDownload()*1024.0)));
 	
 	response->AddTag(CECTag(EC_TAG_STATS_CURR_UL_COUNT,
 		(uint32)theApp.uploadqueue->GetUploadQueueLength()));
