@@ -36,6 +36,7 @@
 	#include <wx/textdlg.h>	// For GetTextFromUser, GetPasswordFromUser
 #endif
 #include <wx/config.h>		// For wxConfig
+#include <wx/fileconf.h>	// For wxFileConfig
 #include <wx/intl.h>		// For _()
 #include <wx/tokenzr.h>		// For wxStringTokenizer
 
@@ -51,11 +52,16 @@
 //-------------------------------------------------------------------
 const wxCmdLineEntryDesc CaMuleExternalConnector::cmdLineDesc[6] = 
 {
-	{ wxCMD_LINE_OPTION, wxT("h"), wxT("help"),  wxT("show this help") },
-	{ wxCMD_LINE_OPTION, wxT("rh"), wxT("remote-host"), wxT("host where aMule is running (default localhost)") },
-	{ wxCMD_LINE_OPTION, wxT("p"), wxT("port"), wxT("aMule's port for External Connection"), wxCMD_LINE_VAL_NUMBER },
-	{ wxCMD_LINE_OPTION, wxT("pw"), wxT("password"), wxT("Password.") },
-	{ wxCMD_LINE_OPTION, wxT("pf"), wxT("pass-from-file"), wxT("Password from file.") },
+	{ wxCMD_LINE_OPTION, wxT("h"), wxT("help"),
+		wxT("show this help") },
+	{ wxCMD_LINE_OPTION, wxT("rh"), wxT("remote-host"),
+		wxT("host where aMule is running (default localhost)") },
+	{ wxCMD_LINE_OPTION, wxT("p"), wxT("port"),
+		wxT("aMule's port for External Connection"), wxCMD_LINE_VAL_NUMBER },
+	{ wxCMD_LINE_OPTION, wxT("pw"), wxT("password"), 
+		wxT("Password.") },
+	{ wxCMD_LINE_SWITCH, wxT("f"), wxT("file-config"), 
+		wxT("Read configuration (password/port) from file.") },
 	{ wxCMD_LINE_NONE }
 };
 
@@ -66,7 +72,7 @@ CaMuleExternalConnector::CaMuleExternalConnector()
 	m_ECClient = NULL;
 	m_isConnected = false;
 	m_HasCommandLinePassword = false;
-	m_HasPasswordFromFile = false;
+	m_HasConfigFromFile = false;
 }
 
 void CaMuleExternalConnector::Show(const wxString &s)
@@ -188,24 +194,38 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, CmdId comm
 	wxString pass_plain;
 	wxString pass_hash;
 
-	// HostName and Port
-#if wxUSE_GUI
-	m_sHostName = wxGetTextFromUser(_T("Enter hostname or ip of the box running aMule"), _T("Enter Hostname"), _T("localhost"));
-	m_sPort = wxGetTextFromUser(_T("Enter port for aMule's External Connection"), _T("Enter Port"), _T("4712"));
-#else  // wxUse_GUI
-#endif // wxUse_GUI
-
-	// Password
-	if ( m_HasCommandLinePassword ) {
+	// HostName, Port and Password
+	if ( m_HasConfigFromFile ) {
+		// Do nothing, just don't do the rest ;)
+		// m_sHostName and m_sPort have already been set in OnCmdLineParsed()
+	} else if ( m_HasCommandLinePassword ) {
 		pass_plain = m_CommandLinePassword;
 	} else {
 #if wxUSE_GUI
-		pass_plain = ::wxGetPasswordFromUser(_T("Enter password for mule connection (OK if no pass defined)"), _T("Enter Password"));
+		m_sHostName = wxGetTextFromUser(
+			_T("Enter hostname or ip of the box running aMule"),
+			_T("Enter Hostname"), wxT("localhost"));
+		m_sPort = wxGetTextFromUser(
+			_T("Enter port for aMule's External Connection"),
+			_T("Enter Port"), wxT("4712"));
+		pass_plain = ::wxGetPasswordFromUser(
+			_T("Enter password for mule connection (OK if no pass defined)"), 
+			_T("Enter Password"));
 #else  // wxUse_GUI
-		pass_plain = char2unicode(getpass("Enter password for mule connection (return if no pass defined): "));
+		pass_plain = char2unicode(
+			getpass("Enter password for mule connection (return if no pass defined): "));
 #endif // wxUse_GUI
 	}
-	if ( !pass_plain.IsEmpty() ) {
+	
+	if ( m_HasConfigFromFile ) {
+		wxFileConfig eMuleIni(
+			wxT("eMule"),
+			wxT("eMule-project"),
+			wxT(".eMule")
+		);
+		m_sPort   = eMuleIni.Read(wxT("/ExternalConnect/ECPort"));
+		pass_hash = eMuleIni.Read(wxT("/ExternalConnect/ECPassword"));
+	} else if ( !pass_plain.IsEmpty() ) {
 		pass_hash = MD5Sum(pass_plain).GetHash();
 	} else {
 		pass_hash = wxEmptyString;
@@ -226,8 +246,8 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, CmdId comm
 	addr.Hostname(m_sHostName);
 	addr.Service(m_sPort);
 
-	Show(	_("Using host ") + addr.Hostname() + 
-		_("port ") + wxString::Format(wxT("%d"), addr.Service()) + 
+	Show(	_("Using host '") + addr.Hostname() + 
+		_("' port:") + wxString::Format(wxT("%d"), addr.Service()) + 
 		wxT("\n") );
 	Show(_("Trying to connect (timeout = 10 sec)...\n"));
   	m_ECClient->Connect(addr, FALSE);
@@ -287,7 +307,7 @@ bool CaMuleExternalConnector::OnCmdLineParsed(wxCmdLineParser& parser)
 	}
 
 	m_HasCommandLinePassword = parser.Found(wxT("password"), &m_CommandLinePassword);
-	m_HasPasswordFromFile = parser.Found(wxT("pass-from-file"), &m_CommandLinePassword);
+	m_HasConfigFromFile = parser.Found(wxT("file-config"));
 
 	return result;
 }
