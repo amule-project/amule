@@ -28,6 +28,16 @@ Version 2.0.0rc4 - The 'Target: REAL Stability' version.
 		* Fixed unicode issues that stopped adding files to download from ed2k utility 
 		  and internal link handler
 
+	Jacobo221:
+		* New feature to open webpages in new tab instead of new window
+		* Fixed a compatibility bug in OnlineSig with eMule's and added connecting support
+		* Fixed bug in Statistics limits in Preferences
+		* Fixed bug in Upload/UpQueue button
+		* Fixed SERV.4 bug
+		* Fixed DISP.14 bug
+		* Added DOS compatibility into CAS and update onlinesig support
+		* Several features in XAS (see XAS's changelog)
+
 	Kry:
 
 	Phoenix:
