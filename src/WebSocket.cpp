@@ -1,8 +1,8 @@
 // ws2.cpp : Defines the entry point for the application.
 // This file is part of the aMule project.
 //
-// Copyright (c) 2003-2004 aMule Project
-//Copyright (C)2002 Merkur ( merkur-@users.sourceforge.net / http://www.emule-project.net )
+// Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
+// Copyright (C) 2002 Merkur ( merkur-@users.sourceforge.net / http://www.emule-project.net )
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
