@@ -10,4 +10,8 @@ if ALC
   OPT_ALC = aLinkCreator
 endif
 
+if ALCC
+  OPT_ALC = aLinkCreator
+endif
+
 SUBDIRS = xas $(OPT_CAS) $(OPT_WXCAS) $(OPT_ALC)
