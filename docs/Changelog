@@ -16,6 +16,9 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		* TCP and UDP port start now at 0 (remember - running amule as root is insecure!!)
 		* Added aMule version info into "About" popup.
 
+	geeko:
+		* Patch to complete html functionality of cas.
+
 	GonoszTopi:
 		* Unicode fixes:
 			- UTF-8 conversion (found by littletux)
@@ -58,6 +61,8 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		was performing unnecessary DNS.
 		* Applied patch from volpol to fix use of deprecated functions
 		in wxGTK-2.5.3.
+		* Applied patch from geeko to complete html functionality of
+		cas.
 
 	Ken:
 		* Fixed Mac bug: window was a little larger each restart

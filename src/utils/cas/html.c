@@ -41,76 +41,91 @@
 
 int create_html(char stats[20][80], char *lines[6], char template[120])
 {
-	// strings
+	// Strings
 	char version[25], upload[25], download[25];
-	// ficheiro
-	int fd,ler,t,size;
-	char *mem;
-	struct stat sb;
-	FILE *temp;
-
-
-	snprintf(version, 25, "cas %s", CAS_VERSION);
-	snprintf(upload, 25, "%s kB/s", stats[6]);
-	snprintf(download, 25, "%s kB/s", stats[5]);
-
-
 	char *search[] = {"#VERSION#", "#CLIENT#", "#NICK#", "#UPLOADRATE#" ,
 		"#DOWNLOADRATE#" , "#QUEUE#" , "#NUMSHARE#" , "#SESSIONUP#" ,
 		"#SESSIONDOWN#" , "#TOTALUP#", "#TOTALDOWN#" , "#SERVER#" , "#IP#",
 		"#PORT#" };
+
+	snprintf(version, 25, "cas %s", CAS_VERSION);
+	snprintf(upload, 25, "%s kB/s", stats[6]);
+	snprintf(download, 25, "%s kB/s", stats[5]);
 
 	char *repl[] = { version , lines[0] , stats[9] , upload , download ,
 		stats[7] , stats[8] , stats[14] , stats[13] , stats[11] , stats[10] ,
 		stats[1] , stats[2] , stats[3] };
 
 	// get some memory to read the template into
-	if ((fd = open (template, O_RDONLY)) < 0)
+	int fdTmpl;
+	if ((fdTmpl = open(template, O_RDONLY)) < 0)
 	{
 		printf("\n\n%s\n",template);
 		perror("Could not open file");
 		exit (43);
 	}
-
-	if(fstat(fd, &sb) < 0){
+	
+	struct stat sb;
+	if (fstat(fdTmpl, &sb) < 0)
+	{
 		perror("Could not stat file");
 		exit(43);
 	}
+	close(fdTmpl);
 
-	size = sb.st_size*2;
-
-	mem = malloc(size);
-
-	if (mem==NULL)
+	// 2 times the size of the template should be enougth
+	int size = sb.st_size*2;
+	char *mem = malloc(size);
+	if (NULL == mem)
 	{
 		printf("coulnt malloc\n");
 		exit(44);
 	}
+	memset(mem, '\0', size);
 
-	memset(mem, '\0', (size));
-	close(fd);
-
-	// read the template to the memory
-	temp = fopen(template,"r");
-	while ((ler=fgetc(temp)) != EOF)
+	// read the template into the memory
+	int ler;
+	FILE *fTmpl = fopen(template,"r");
+	while ((ler=fgetc(fTmpl)) != EOF)
 	{
 		sprintf(mem,"%s%c",mem,ler);
 	}
+	fclose(fTmpl);
+	
+	//printf ("HTML: %s\n", mem);
 
-	for (t=0;t<=13;t++)
+	int t;
+	for (t=0; t<=13; t++)
 	{
-		char *mem2 = mem;
-		mem = replace(search[t],repl[t],mem2,size);
-		free(mem2);
+		// replace the special tags
+		replace(mem, search[t], repl[t]);
 	}
-	//		mem = replace(search[t],repl[t],mem,size);
 
+	//printf("FINAL: %s\n",mem);
 
-	printf("%s",mem);
+	char *path = get_path(".aMule/aMule-online-sign.html");
+	if (NULL == path)
+	{
+		printf("could not get the HTML path\n");
+		free(mem);
+		return 0;
+	}
+	
+	FILE *fHTML = NULL;
+	if ((fHTML = fopen(path, "w")) == NULL)
+	{
+		printf("Unable to create file\n");
+		free(path);
+		free(mem);
+		exit(44);
+	}
+	free(path);
 
-	fclose(temp);
+	fprintf(fHTML, "%s", mem);
+	fclose(fHTML);
 	free(mem);
+	
+	printf("HTML file created.\n");
 
-	return 0;
+	return 1;
 }
-
