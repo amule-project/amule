@@ -311,6 +311,12 @@ struct Preferences_Struct{
 	
 	bool		ExtractMetaData;
 	
+	bool		AllocFullPart;
+	bool		AllocFullChunk;
+	
+	uint16	Browser;
+	char		CustomBrowser[256];
+	
 	bool	FastED2KLinksHandler;	// Madcat - Toggle Fast ED2K Links Handler
 	bool	bDlgTabsOnTop;			// Creteil: dlg aesthetics
 };
