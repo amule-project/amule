@@ -310,8 +310,8 @@ CECPacket *Process_IPFilter(const CECPacket *request)
 	
 	CECPacket *response = new CECPacket(EC_OP_MISC_DATA);
 
-	if (request->GetTagCount() != 0) {
-		CECTag *data = request->GetTagByIndex(0);
+	for (int i = 0; i < request->GetTagCount(); ++i) {
+		CECTag *data = request->GetTagByIndex(i);
 		switch (data->GetTagName()) {
 			case EC_TAG_IPFILTER_STATUS:
 				switch (data->GetInt8Data()) {
