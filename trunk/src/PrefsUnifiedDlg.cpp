@@ -1187,7 +1187,7 @@ void PrefsUnifiedDlg::OnScroll(wxScrollEvent &event)
 
 
 
-void PrefsUnifiedDlg::OnOk(wxCommandEvent &event)
+void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 {
 	TransferDataFromWindow();
 	
@@ -1224,7 +1224,7 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent &event)
 }
 
 
-void PrefsUnifiedDlg::OnCancel(wxCommandEvent &event)
+void PrefsUnifiedDlg::OnCancel(wxCommandEvent& WXUNUSED(event))
 {
 	// undo interactive changes here, e.g. stats graphs parameter settings
 	Prse(IDC_SLIDER)->RestorePrevValue();
@@ -1272,7 +1272,7 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 	}
 }
 
-void PrefsUnifiedDlg::OnButtonColorChange(wxCommandEvent &event)
+void PrefsUnifiedDlg::OnButtonColorChange(wxCommandEvent& WXUNUSED(event))
 {
 	int index = GetColorIndex();
 	wxColour col = WxColourFromCr(aprseColor[index]->GetMemValue());
@@ -1285,19 +1285,19 @@ void PrefsUnifiedDlg::OnButtonColorChange(wxCommandEvent &event)
 }
 
 
-void PrefsUnifiedDlg::OnColorCategorySelected(wxCommandEvent& evt)
+void PrefsUnifiedDlg::OnColorCategorySelected(wxCommandEvent& WXUNUSED(evt))
 {
 	pbuttonColor->SetBackgroundColour(WxColourFromCr(aprseColor[GetColorIndex()]->GetMemValue()));
 }
 
 
-void PrefsUnifiedDlg::OnFakeBrowserChange(wxCommandEvent& evt)
+void PrefsUnifiedDlg::OnFakeBrowserChange(wxCommandEvent& WXUNUSED(evt))
 {
 	Prse(IDC_FCHECK)->StoreDlgValue();
 	Prse(IDC_FCHECKSELF)->SetEnabled(Prse(IDC_FCHECK)->GetMemValue()==(Prse(IDC_FCHECK)->GetCtrlCount() -1));
 }
 
-void PrefsUnifiedDlg::OnButtonSystray(wxCommandEvent& evt)
+void PrefsUnifiedDlg::OnButtonSystray(wxCommandEvent& WXUNUSED(evt))
 {
 	theApp.amuledlg->changeDesktopMode();
 }
@@ -1325,7 +1325,7 @@ void PrefsUnifiedDlg::OnButtonDir(wxCommandEvent& event)
 
 
 
-void PrefsUnifiedDlg::OnButtonBrowseWav(wxCommandEvent& evt)
+void PrefsUnifiedDlg::OnButtonBrowseWav(wxCommandEvent& WXUNUSED(evt))
 {
 	wxString str = wxFileSelector(_("Browse wav"),wxT(""),wxT(""),wxT("*.wav"),_("File wav (*.wav)|*.wav||"));
 	Prse(IDC_EDIT_TBN_WAVFILE)->SetCtrlValue(str);
@@ -1333,7 +1333,7 @@ void PrefsUnifiedDlg::OnButtonBrowseWav(wxCommandEvent& evt)
 
 
 
-void PrefsUnifiedDlg::OnButtonBrowseVideoplayer(wxCommandEvent& e)
+void PrefsUnifiedDlg::OnButtonBrowseVideoplayer(wxCommandEvent& WXUNUSED(e))
 {
 	wxString str=wxFileSelector(_("Browse for videoplayer"),wxT(""),wxT(""),wxT(""),_("Executable (*)|*||"));
 	if(!str.IsEmpty()) 
@@ -1342,7 +1342,7 @@ void PrefsUnifiedDlg::OnButtonBrowseVideoplayer(wxCommandEvent& e)
 
 
 
-void PrefsUnifiedDlg::OnButtonEditAddr(wxCommandEvent& evt)
+void PrefsUnifiedDlg::OnButtonEditAddr(wxCommandEvent& WXUNUSED(evt))
 {
 	wxString fullpath(theApp.ConfigDir + wxT("addresses.dat"));
 	
@@ -1353,9 +1353,10 @@ void PrefsUnifiedDlg::OnButtonEditAddr(wxCommandEvent& evt)
 	delete test;
 }
 
-void PrefsUnifiedDlg::OnButtonIPFilterReload(wxCommandEvent &event) {
+void PrefsUnifiedDlg::OnButtonIPFilterReload(wxCommandEvent& WXUNUSED(event)) {
 	theApp.ipfilter->Reload();
 }	
+
 void PrefsUnifiedDlg::LoadAllItems(wxConfigBase& ini)
 {
 	wxListOfRseNode *pos;

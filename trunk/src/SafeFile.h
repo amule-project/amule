@@ -27,14 +27,14 @@
 class CSafeFile : public CFile{
 public:
 	CSafeFile();
-	CSafeFile::CSafeFile(LPCSTR lpszFileName, unsigned int nOpenFlags);
+	CSafeFile(LPCSTR lpszFileName, unsigned int nOpenFlags);
 	unsigned int Read(void* lpBuf, unsigned int nCount);
 };
 
 class CSafeMemFile : public CMemFile{ // memFile
 public:
 	CSafeMemFile(unsigned int nGrowBytes = 0);
-	CSafeMemFile::CSafeMemFile(BYTE* lpBuffer, unsigned int nBufferSize, unsigned int nGrowBytes = 0);
+	CSafeMemFile(BYTE* lpBuffer, unsigned int nBufferSize, unsigned int nGrowBytes = 0);
 /*
   virtual off_t Read(int8& v)             { return CMemFile::Read(v); };
   virtual off_t Read(int16& v)            { return CMemFile::Read(v); };
@@ -57,7 +57,7 @@ protected:
 class CSafeBufferedFile : public CFile{
 public:
 	CSafeBufferedFile();
-	CSafeBufferedFile::CSafeBufferedFile(LPCSTR lpszFileName,UINT nOpenFlags);
+	CSafeBufferedFile(LPCSTR lpszFileName,UINT nOpenFlags);
 	virtual UINT Read(void* lpBuf,UINT nCount);
 };
 

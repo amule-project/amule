@@ -63,7 +63,7 @@ public:
 	bool OnDestroy() { return DoingDestroy; };
 	//protected:
 	// this functions are public on our code because of the amuleDlg::socketHandler
-	virtual void	OnError(int nErrorCode) { };
+	virtual void	OnError(int WXUNUSED(nErrorCode)) { };
 	virtual void	OnSend(int nErrorCode);	
 	virtual void	OnReceive(int nErrorCode);
 	
@@ -72,7 +72,7 @@ public:
 	uint32 created;
 	#endif
 
-	virtual bool	PacketReceived(Packet* packet) { return false; };
+	virtual bool	PacketReceived(Packet* WXUNUSED(packet)) { return false; };
 
 	virtual void	OnClose(int nErrorCode);
 	uint8	byConnected;

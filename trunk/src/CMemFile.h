@@ -35,8 +35,8 @@ public:
 	BYTE* Detach();
 	virtual ~CMemFile();
 	virtual unsigned long GetPosition() const 		{ return fPosition; };
-	virtual bool GetStatus(unsigned long none) const 	{ return 1; };
-	off_t Seek(off_t offset, wxSeekMode from = wxFromStart);
+	virtual bool GetStatus(unsigned long none) const 	{ return true; };
+	virtual off_t Seek(off_t offset, wxSeekMode from = wxFromStart);
 	virtual void SetLength(unsigned long newLen);
 	virtual off_t Length() const { return fFileSize; };
 //	virtual void Abort();

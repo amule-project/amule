@@ -73,7 +73,7 @@ CClientUDPSocket::~CClientUDPSocket()
 	Notify(FALSE);
 }
 
-void CClientUDPSocket::OnReceive(int nErrorCode)
+void CClientUDPSocket::OnReceive(int WXUNUSED(nErrorCode))
 {
 	char buffer[5000];
 	wxString serverbuffer;

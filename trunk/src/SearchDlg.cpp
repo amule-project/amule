@@ -248,7 +248,7 @@ void CSearchDlg::OnBnClickedCancels(wxCommandEvent& WXUNUSED(evt))
 }
 
 
-void CSearchDlg::LocalSearchEnd(uint16 count)
+void CSearchDlg::LocalSearchEnd(uint16 WXUNUSED(count))
 {
 	if (!canceld) {
 		if (!globalsearch) {
@@ -598,7 +598,7 @@ void CSearchDlg::OnPopupCloseOthers(wxCommandEvent& WXUNUSED(evt))
 
 
 
-void CSearchDlg::OnBtnWebSearch(wxCommandEvent &evt)
+void CSearchDlg::OnBtnWebSearch(wxCommandEvent& WXUNUSED(evt))
 {
 	wxTextCtrl* txtctrl = (wxTextCtrl*)FindWindow(IDC_SEARCHWEBNAME);
     theApp.LaunchUrl(theApp.GenWebSearchUrl(txtctrl->GetValue()));

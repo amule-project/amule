@@ -69,7 +69,7 @@ void CSharedFilesWnd::Check4StatUpdate(CKnownFile* file)
 	if (file->GetFileHash() == m_shownFileHash) ShowDetails(file);
 }
 
-void CSharedFilesWnd::OnLvnItemActivateSflist(wxListEvent& evt)
+void CSharedFilesWnd::OnLvnItemActivateSflist(wxListEvent& WXUNUSED(evt))
 {
 	long item=-1;
 	#ifdef __WXMSW__
@@ -128,7 +128,7 @@ void CSharedFilesWnd::Localize()
 {
 }
 
-void CSharedFilesWnd::OnBtnReloadsharedfiles(wxCommandEvent &evt) {
+void CSharedFilesWnd::OnBtnReloadsharedfiles(wxCommandEvent& WXUNUSED(evt)) {
 
 	theApp.sharedfiles->Reload(true, false);
 }

@@ -54,7 +54,7 @@ class myThread : public wxThread
 //  myThread::myThread(wxEvtHandler* parent,char* urlname,char* filename);
   ~myThread();
 
-myThread::myThread(wxEvtHandler* parent, wxString urlname, wxString filename):wxThread(wxTHREAD_JOINABLE) {
+  myThread(wxEvtHandler* parent, wxString urlname, wxString filename):wxThread(wxTHREAD_JOINABLE) {
 
   url= urlname;
   tempfile=filename;

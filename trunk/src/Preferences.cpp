@@ -402,7 +402,7 @@ void CPreferences::SaveCats()
 			cfg->Write( wxT("Title"), catMap[i]->title );
 			cfg->Write( wxT("Incoming"), catMap[i]->incomingpath );
 			cfg->Write( wxT("Comment"), catMap[i]->comment );
-			cfg->Write( wxT("Color"), wxString::Format(wxT("%lu"), catMap[i]->color) );
+			cfg->Write( wxT("Color"), wxString::Format(wxT("%u"), catMap[i]->color) );
 			cfg->Write( wxT("Priority"), catMap[i]->prio );
 		}
 	}

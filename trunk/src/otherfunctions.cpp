@@ -66,7 +66,7 @@ wxString CastItoIShort(uint64 count)
 	wxString output;
 
 	if (count < 1000)
-		output.Printf(wxT("%i"),count);
+		output.Printf(wxT("%llu"), count);
 	else if (count < 1000000)
 		output.Printf(wxT("%.0f%s"),(float)count/1000, _("K") );
 	else if (count < 1000000000)

@@ -485,11 +485,11 @@ public:
 	int32	AddCat(Category_Struct* cat) { catMap.Add(cat); return catMap.GetCount()-1;}
 	void	RemoveCat(size_t index);
 	uint32	GetCatCount() const { return catMap.GetCount();}
-	Category_Struct* GetCategory(size_t index) const { if (index>=0 && index<catMap.GetCount()) return catMap[index]; else return NULL;}
+	Category_Struct* GetCategory(size_t index) const { if (index<catMap.GetCount()) return catMap[index]; else return NULL;}
 
 	const wxString&	GetCatPath(uint8 index) const { return catMap[index]->incomingpath;}
 
-	DWORD	GetCatColor(size_t index) const { if (index>=0 && index<catMap.GetCount()) return catMap[index]->color; else return 0;}
+	DWORD	GetCatColor(size_t index) const { if (index<catMap.GetCount()) return catMap[index]->color; else return 0;}
 
 	int32	GetAllcatType() const { return prefs->allcatType;}
 	void	SetAllcatType(int32 in) const { prefs->allcatType=in; }

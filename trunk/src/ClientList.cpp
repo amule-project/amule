@@ -250,13 +250,6 @@ CUpDownClient* CClientList::FindClientByIP(uint32 clientip,uint16 port){
 }
 
 
-void CClientList::Debug_SocketDeleted(CClientReqSocket* deleted){
-	POSITION pos1, pos2;
-	for (pos1 = list.GetHeadPosition();( pos2 = pos1 ) != NULL;){
-		list.GetNext(pos1);
-	}
-}
-
 bool CClientList::Debug_IsValidClient(CUpDownClient* tocheck) const {
 	return list.Find(tocheck);
 }

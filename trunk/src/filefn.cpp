@@ -231,7 +231,7 @@ wxCopyFile_fat32 (const wxString& file1, const wxString& file2, bool overwrite, 
 
 // Kry - more aditions.
 bool
-wxRenameFile_fat32 (const wxString& file1, const wxString& file2, bool do_chmod)
+wxRenameFile_fat32 (const wxString& file1, const wxString& file2, bool WXUNUSED(do_chmod))
 {
   // Normal system call
   if ( wxRename (file1, file2) == 0 )

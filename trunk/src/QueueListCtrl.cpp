@@ -623,7 +623,7 @@ int CQueueListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 	}
 }
 
-void CQueueListCtrl::OnTimer(wxTimerEvent& evt)
+void CQueueListCtrl::OnTimer(wxTimerEvent& WXUNUSED(evt))
 {
 	// Don't do anything if the app is shutting down - can cause unhandled exceptions
 	if (!theApp.amuledlg->SafeState() || !theApp.glob_prefs->GetUpdateQueueList()) {

@@ -569,7 +569,7 @@ bool CServerSocket::PacketReceived(Packet* packet)
 	return true;
 }
 
-void CServerSocket::OnClose(wxSocketError nErrorCode)
+void CServerSocket::OnClose(wxSocketError WXUNUSED(nErrorCode))
 {
 	CEMSocket::OnClose(0);
 	if (connectionstate == CS_WAITFORLOGIN) {

@@ -1874,7 +1874,7 @@ void CUpDownClient::InfoPacketsReceived(){
 	}
 }
 
-bool CUpDownClient::CheckHandshakeFinished(UINT protocol, UINT opcode) const
+bool CUpDownClient::CheckHandshakeFinished(UINT WXUNUSED(protocol), UINT WXUNUSED(opcode)) const
 {
 	if (m_bHelloAnswerPending){
 		//	throw CString(wxT("Handshake not finished")); // -> disconnect client

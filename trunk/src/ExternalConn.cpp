@@ -105,7 +105,7 @@ ExternalConn::~ExternalConn() {
 }
 
 
-void ExternalConn::OnServerEvent(wxSocketEvent& event) {
+void ExternalConn::OnServerEvent(wxSocketEvent& WXUNUSED(event)) {
 	wxSocketBase *sock;
 
 	// Accept new connection if there is one in the pending

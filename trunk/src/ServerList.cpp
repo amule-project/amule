@@ -166,7 +166,7 @@ bool CServerList::AddServermetToList(const wxString& strFile, bool merge)
 
 	if ( (1 != servermet.Read(&version,1)) || (version != 0xE0 && version != MET_HEADER)) {
 		servermet.Close();
-		theApp.amuledlg->AddLogLine(false,_("Invalid versiontag in server.met (0x%i , size %i)!")),version, sizeof(version);
+		theApp.amuledlg->AddLogLine(false,_("Invalid versiontag in server.met (0x%x , size %i)!"),version, sizeof(version));
 		return false;
 	}
 
