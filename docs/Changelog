@@ -64,7 +64,9 @@ Version 2.0.0rc4 - The 'Mules and rabbits like apples too' version.
 		* Overloaded the wxSocketClient::Destroy to a safer version, to check cases when deletion is not called from Destroy()
 		* Fixed the disconnection of clients that have MS_CHATTING state.
 		* Fixed the usage of QueueLogLine fucntion to avoid crashed on too fast computers ;)
-		* Fixes a mem corruption due to lphant icon size (we all know lphants are big)
+		* Remove spaces from search string start and end.
+		* Remove spaces from ed2k links start and end.
+		* Fixed a mem corruption due to lphant icon size (we all know lphants are big)
 		* Splitted internal core and GUI events 
 			* Socket events mover to core
 			* Timer got separated into core_timer and gui_timer, each one with the matching functions.
