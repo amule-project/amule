@@ -31,6 +31,8 @@ Version 2.0.0rc8 - The "???????????" version.
 		  use READLINE_LIBS instead.
 		* Fixed crash in aMule when amuleweb tried to get transfers
 		  tab and aMule had never connected to a server before.
+		* New backtrace output with demangled function names, file
+		  names and line numbers, when possible.
 
 	GonoszTopi:
 		* Initial work on EC protocol version 2.0.
