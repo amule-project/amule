@@ -393,7 +393,10 @@ class CDynImage : public CProgressImage {
 //
 // Fallback to original implementation
 class CDynImage : public CProgressImage {
+	private:
 		DownloadFiles *m_file;
+		wxString m_name;
+		int m_width;
 	public:
 		CDynImage(DownloadFiles *file, wxString &tmpl) : CProgressImage(0, tmpl)
 		{
