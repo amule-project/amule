@@ -648,8 +648,9 @@ if test x$USE_EMBEDDED_CRYPTO = xno; then
 	  AC_MSG_RESULT($result)
           AC_SUBST(crypto_prefix)
 else
-echo "crypto check disabled, using embedded libs"
-CRYPTO_PP_STYLE="embedded"
+	AC_MSG_CHECKING([whether to use embedded Crypto])
+	AC_MSG_RESULT(yes)
+	CRYPTO_PP_STYLE="embedded"
 fi
 
 AC_SUBST(CRYPTO_PP_STYLE)
