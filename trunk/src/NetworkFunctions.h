@@ -40,29 +40,56 @@
 // Network ip/host handling functions
 // These functions takes IPs in anti-host order and IPs in anti-host order
 
-inline wxString Uint32toStringIP(uint32 ip) {
+inline wxString Uint32toStringIP(uint32 ip)
+{
 	return wxString::Format(wxT("%u.%u.%u.%u"),(uint8)ip,(uint8)(ip>>8),(uint8)(ip>>16),(uint8)(ip>>24));	
 }
 
-inline wxString Uint32_16toStringIP_Port(uint32 ip, uint16 port) {
+inline wxString Uint32_16toStringIP_Port(uint32 ip, uint16 port)
+{
 	return wxString::Format(wxT("%u.%u.%u.%u:%u"),(uint8)ip,(uint8)(ip>>8),(uint8)(ip>>16),(uint8)(ip>>24),port);	
 }
 
-inline uint32 CStringIPtoUint32(const char* str_ip) {
+inline uint32 StringIPtoUint32(const wxString &strIP)
+{
 	uint32 ip[4];
-	int result = sscanf(str_ip,"%d.%d.%d.%d",&ip[0],&ip[1],&ip[2],&ip[3]);
-	if (result==4) {
-		return (ip[0] | (ip[1] << 8) | (ip[2] << 16) | (ip[3] << 24));	
-	} else {
-		return 0; // Error on ip format.
+	uint32 ret = 0;
+	bool error = false;
+	unsigned long u = 0;
+	wxString strTmp(strIP);
+	for( int i = 0; i < 3; ++i) {
+		int j = strTmp.Find(wxT("."));
+		if (error = (j == -1)) {
+			break;
+		}
+		if (error = !strTmp.Left(j).ToULong(&u)) {
+			break;
+		}
+		if (error = (u > 255)) {
+			break;
+		}
+		ip[i] = u;
+		strTmp = strTmp.Mid(j+1);
 	}
+	if (!error) {
+		error = !strTmp.ToULong(&u);
+		if (!error) {
+			error = u > 255;
+			if (!error) {
+				ip[3] = u;
+				ret = ip[0] | (ip[1] << 8) | (ip[2] << 16) | (ip[3] << 24);
+			}
+		}
+	}
+	if (error) {
+		printf("Error on ip format!\n");
+	}
+	
+	return ret;
 }
 
-inline uint32 StringIPtoUint32(const wxString &str_ip) {
-	return CStringIPtoUint32(unicode2char(str_ip));
-}
-
-inline uint32 StringHosttoUint32(const wxString &Host) {
+inline uint32 StringHosttoUint32(const wxString &Host)
+{
 	// Why using native things when we have a wrapper for it :)
 	wxIPV4address solver;
 	solver.Hostname(Host);

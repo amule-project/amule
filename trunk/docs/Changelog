@@ -109,7 +109,9 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		not beeing translated.
 		* Small adjusts to ObsessionAl patch to include CVS date in
 		about box.
-		* Fixed a small bug in UTF82unicode(), reported by Mr Faber.
+		* Fixed a bug in UTF82unicode(), reported by Mr Faber.
+		* Got rid of sscanf in NetworkFunctions.h. This has caused a
+		crash once, reported by Mr Faber.
 
 	volpol
 		* Patch to fix use of deprecated functions in wxGTK-2.5.3.
