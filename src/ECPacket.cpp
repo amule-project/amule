@@ -122,7 +122,7 @@ CECTag::CECTag(ec_tagname_t name, const EC_IPv4_t& data) : m_tagName(name), m_dy
 	m_dataLen = sizeof(EC_IPv4_t);
 	m_tagData = malloc(sizeof(EC_IPv4_t));
 	if (m_tagData != NULL) {
-		*((uint32 *)(((EC_IPv4_t *)m_tagData)->ip)) = *((uint32 *)(data.ip));
+		RawPokeUInt32( ((EC_IPv4_t *)m_tagData)->ip, RawPeekUInt32( data.ip ) );
 		((EC_IPv4_t *)m_tagData)->port = ENDIAN_HTONS(data.port);
 		m_error = 0;
 	} else {
@@ -146,8 +146,8 @@ CECTag::CECTag(ec_tagname_t name, const CMD4Hash& data) : m_tagName(name), m_dyn
 	m_dataLen = 16;
 	m_tagData = malloc(16);
 	if (m_tagData != NULL) {
-		((uint64 *)m_tagData)[0] = ((uint64 *)data.GetHash())[0];
-		((uint64 *)m_tagData)[1] = ((uint64 *)data.GetHash())[1];
+		RawPokeUInt64( (char*)m_tagData,		RawPeekUInt64( data.GetHash() ) );
+		RawPokeUInt64( (char*)m_tagData + 8,	RawPeekUInt64( data.GetHash() + 8 ) );
 		m_error = 0;
 	} else {
 		m_error = 1;
@@ -228,7 +228,7 @@ CECTag::CECTag(ec_tagname_t name, uint8 data) : m_tagName(name), m_dynamic(true)
 	m_dataLen = 1;
 	m_tagData = malloc(m_dataLen);
 	if (m_tagData != NULL) {
-		*((uint8 *)m_tagData) = data;
+		PokeUInt8( (void*)m_tagData, data );
 		m_error = 0;
 	} else {
 		m_error = 1;
@@ -250,7 +250,7 @@ CECTag::CECTag(ec_tagname_t name, uint16 data) : m_tagName(name), m_dynamic(true
 	m_dataLen = 2;
 	m_tagData = malloc(m_dataLen);
 	if (m_tagData != NULL) {
-		*((uint16 *)m_tagData) = ENDIAN_HTONS(data);
+		RawPokeUInt16( (void*)m_tagData, ENDIAN_HTONS( data ) );
 		m_error = 0;
 	} else {
 		m_error = 1;
@@ -272,7 +272,7 @@ CECTag::CECTag(ec_tagname_t name, uint32 data) : m_tagName(name), m_dynamic(true
 	m_dataLen = 4;
 	m_tagData = malloc(m_dataLen);
 	if (m_tagData != NULL) {
-		*((uint32 *)m_tagData) = ENDIAN_HTONL(data);
+		RawPokeUInt32( (void*)m_tagData, ENDIAN_HTONL( data ) );
 		m_error = 0;
 	} else {
 		m_error = 1;
@@ -546,7 +546,7 @@ EC_IPv4_t CECTag::GetIPv4Data(void) const
 {
 	EC_IPv4_t p;
 
-	*((uint32 *)(p.ip)) = *((uint32 *)(((EC_IPv4_t *)m_tagData)->ip));
+	RawPokeUInt32( p.ip, RawPeekUInt32( ((EC_IPv4_t *)m_tagData)->ip ) );
 	p.port = ENDIAN_NTOHS(((EC_IPv4_t *)m_tagData)->port);
 
 	return p;

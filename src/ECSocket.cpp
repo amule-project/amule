@@ -26,7 +26,7 @@
 #include "ECSocket.h"
 
 #include "gsocket-fix.h"	// Needed for wxSOCKET_REUSEADDR
-#include "EndianFix.h" // Needed for ENDIAN_NTOHL
+#include "ArchSpecific.h" // Needed for ENDIAN_NTOHL
 
 #include "ECcodes.h"		// Needed for the EC_FLAG_* values
 #include "ECPacket.h"		// Needed for CECPacket
@@ -439,17 +439,21 @@ bool ECSocket::ReadNumber(wxSocketBase *sock, void *buffer, unsigned int len, vo
 		if (remains) if (!ReadBuffer(sock, &(mb[1]), remains, opaque)) return false;
 		if (utf8_mbtowc(&wc, mb, 6) == -1) return false;	// Invalid UTF-8 code sequence
 		switch (len) {
-			case 1: *((uint8 *)buffer) = (uint8)wc; break;
-			case 2:	*((uint16 *)buffer) = (uint16)wc; break;
-			case 4: *((uint32 *)buffer) = (uint32)wc; break;
+			case 1: PokeUInt8( buffer,  wc ); break;
+			case 2:	RawPokeUInt16( buffer, wc ); break;
+			case 4: RawPokeUInt32( buffer, wc ); break;
 		}
 	} else {
 		if ( !ReadBuffer(sock, buffer, len, opaque) ) {
 			return false;
 		}
 		switch (len) {
-			case 2: *((uint16 *)buffer) = ENDIAN_NTOHS(*((uint16 *)buffer)); break;
-			case 4: *((uint32 *)buffer) = ENDIAN_NTOHL(*((uint32 *)buffer)); break;
+			case 2:
+				RawPokeUInt16( buffer, ENDIAN_NTOHS( RawPeekUInt16( buffer ) ) );
+				break;
+			case 4:
+				RawPokeUInt32( buffer, ENDIAN_NTOHL( RawPeekUInt32( buffer ) ) );
+				break;
 		}
 	}
 	return true;
@@ -463,9 +467,9 @@ bool ECSocket::WriteNumber(wxSocketBase *sock, const void *buffer, unsigned int 
 		uint32 wc;
 		int mb_len;
 		switch (len) {
-			case 1: wc = *((uint8 *)buffer); break;
-			case 2: wc = *((uint16 *)buffer); break;
-			case 4: wc = *((uint32 *)buffer); break;
+			case 1: wc = PeekUInt8( buffer ); break;
+			case 2: wc = RawPeekUInt16( buffer ); break;
+			case 4: wc = RawPeekUInt32( buffer ); break;
 		}
 		if ((mb_len = utf8_wctomb(mb, wc, 6)) == -1) return false;	// Something is terribly wrong...
 		return WriteBuffer(sock, mb, mb_len, opaque);
@@ -473,9 +477,9 @@ bool ECSocket::WriteNumber(wxSocketBase *sock, const void *buffer, unsigned int 
 		char tmp[8];
 
 		switch (len) {
-			case 1: *((uint8 *)tmp) = *((uint8 *)buffer); break;
-			case 2: *((uint16 *)tmp) = ENDIAN_NTOHS(*((uint16 *)buffer)); break;
-			case 4: *((uint32 *)tmp) = ENDIAN_NTOHL(*((uint32 *)buffer)); break;
+			case 1: PokeUInt8( tmp, PeekUInt8( buffer ) ); break;
+			case 2: RawPokeUInt16( tmp, ENDIAN_NTOHS( RawPeekUInt16( buffer ) ) ); break;
+			case 4: RawPokeUInt32( tmp, ENDIAN_NTOHL( RawPeekUInt32( buffer ) ) ); break;
 		}
 		return WriteBuffer(sock, tmp, len, opaque);
 	}

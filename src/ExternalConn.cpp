@@ -1275,7 +1275,7 @@ void CPartFile_Encoder::Encode(CECTag *parent)
 		sizeof(uint32) + gap_enc_size, (void **)&tagdata);
 
 	// real number of gaps - so remote size can realloc
-	*((uint32 *)tagdata) = ENDIAN_HTONL(gap_list_size);
+	RawPokeUInt32( tagdata, ENDIAN_HTONL( gap_list_size ) );
 	tagdata += sizeof(uint32);
 	memcpy(tagdata, gap_enc_data, gap_enc_size);
 

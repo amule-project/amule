@@ -1278,7 +1278,7 @@ void PartFileEncoderData::Decode(unsigned char *gapdata, int gaplen, unsigned ch
 	m_part_status.Decode(partdata, partlen);
 
 	// in a first dword - real size
-	uint32 gapsize = ENDIAN_NTOHL(*((uint32 *)gapdata));
+	uint32 gapsize = ENDIAN_NTOHL( RawPeekUInt32( gapdata ) );
 	gapdata += sizeof(uint32);
 	m_gap_status.Realloc(gapsize*2*sizeof(uint32));
 

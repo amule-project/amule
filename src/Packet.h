@@ -34,6 +34,7 @@
 #include "Types.h"		// Needed for int8, int32, uint8 and uint32
 #include "OPCodes.h"		// Needed for OP_EDONKEYPROT
 #include "SafeFile.h"		// Needed for CFileDataIO
+#include "ArchSpecific.h"
 #include "OtherFunctions.h"
 
 class CMemFile;
@@ -80,7 +81,7 @@ public:
 	void 			CopyToDataBuffer(unsigned int offset, const char *data, unsigned int n);
 	void			CopyUInt32ToDataBuffer(uint32 data, unsigned int offset = 0) { 
 		wxASSERT(offset <= size - sizeof(uint32) );
-		*((uint32*)(pBuffer + offset)) = ENDIAN_SWAP_32(data);
+		PokeUInt32( pBuffer + offset, data );
 	}
 	
 private:

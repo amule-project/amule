@@ -509,7 +509,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 					CSafeMemFile data((BYTE*)packet,size);
 					uint8 aucHash[16];
 					data.ReadHash16(aucHash);				
-					if (((uint32*)aucHash)[0] == 0x2A2A2A2A){ // No endian problem here
+					if (RawPeekUInt32(aucHash) == 0x2A2A2A2A){ // No endian problem here
 						const wxString& rstrVersion = update->GetVersion();
 						if (!rstrVersion.IsEmpty()) {
 							update->SetVersion(wxT("eFarm ") + rstrVersion);

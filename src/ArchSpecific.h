@@ -1,0 +1,232 @@
+//
+// This file is part of the aMule Project
+//
+// Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
+// Copyright (C) 2002 Merkur ( merkur-@users.sourceforge.net / http://www.emule-project.net )
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either
+// version 2 of the License, or (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+//
+
+#ifndef ARCHSPECIFIC_H
+#define ARCHSPECIFIC_H
+
+
+#include "Types.h"
+
+
+
+
+#if wxBYTE_ORDER == wxLITTLE_ENDIAN
+	#define ENDIAN_SWAP_16(x) (x)
+	#define ENDIAN_SWAP_I_16(x) {}
+	#define ENDIAN_SWAP_32(x) (x)
+	#define ENDIAN_SWAP_I_32(x) {}
+	#if defined __GNUC__ && __GNUC__ >= 2
+		#define ENDIAN_SWAP_64(x) (x)
+		#define ENDIAN_SWAP_I_64(x) {}
+	#endif
+	// ntohs
+	#define ENDIAN_NTOHS(x) ( wxUINT16_SWAP_ALWAYS(x) )
+	// ntohl
+	#define ENDIAN_NTOHL(x) ( wxUINT32_SWAP_ALWAYS(x) )
+	// htons
+	#define ENDIAN_HTONS(x) ( wxUINT16_SWAP_ALWAYS(x) )
+	// htonl
+	#define ENDIAN_HTONL(x) ( wxUINT32_SWAP_ALWAYS(x) )	
+#else
+	#define ENDIAN_SWAP_16(x) (wxUINT16_SWAP_ALWAYS(x))
+	#define ENDIAN_SWAP_I_16(x) x = wxUINT16_SWAP_ALWAYS(x)
+	#define ENDIAN_SWAP_32(x) (wxUINT32_SWAP_ALWAYS(x))
+	#define ENDIAN_SWAP_I_32(x) x = wxUINT32_SWAP_ALWAYS(x)
+	#if defined __GNUC__ && __GNUC__ >= 2
+		#define ENDIAN_SWAP_64(x) (wxUINT64_SWAP_ALWAYS(x))
+		#define ENDIAN_SWAP_I_64(x) x = wxUINT64_FROM_LE(x)
+	#endif
+	// ntohs
+	#define ENDIAN_NTOHS(x) (x) 
+	// ntohl
+	#define ENDIAN_NTOHL(x) (x) 
+	// htons
+	#define ENDIAN_HTONS(x) (x) 
+	// htonl
+	#define ENDIAN_HTONL(x) (x) 	
+#endif
+
+
+
+/**
+ * Returns the value in the given bytestream.
+ *
+ * The value is returned exactly as it is found.
+ */
+// \{
+inline uint16 RawPeekUInt16(const void* p);
+inline uint32 RawPeekUInt32(const void* p);
+inline uint64 RawPeekUInt64(const void* p);
+// \}
+
+
+
+/**
+ * Writes the specified value into the bytestream.
+ *
+ * The value is written exactly as it is.
+ */
+// \{
+inline void RawPokeUInt16(void* p, uint16 nVal);
+inline void RawPokeUInt32(void* p, uint32 nVal);
+inline void RawPokeUInt64(void* p, uint64 nVal);
+// \}
+
+
+/**
+ * Returns the value in the given bytestream.
+ *
+ * The value is returned as little-endian.
+ */
+// \{
+inline uint8 PeekUInt8(const void* p);
+inline uint16 PeekUInt16(const void* p);
+inline uint32 PeekUInt32(const void* p);
+// \}
+
+
+/**
+ * Writes the specified value into the bytestream.
+ *
+ * The value is written as little-endian.
+ */
+// \{
+inline void PokeUInt8(void* p, uint8 nVal);
+inline void PokeUInt16(void* p, uint16 nVal);
+inline void PokeUInt32(void* p, uint32 nVal);
+// \}
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Peek - helper functions for read-accessing memory without modifying the memory pointer
+
+inline uint16 RawPeekUInt16(const void* p)
+{
+#ifndef __sparc__
+	return *((uint16*)p);
+#else
+	uint16 value;
+	memcpy( &value, p, sizeof( uint16 ) );
+	return value;
+#endif
+}
+
+
+inline uint32 RawPeekUInt32(const void* p)
+{
+#ifndef __sparc__
+	return *((uint32*)p);
+#else
+	uint32 value;
+	memcpy( &value, p, sizeof( uint32 ) );
+	return value;
+#endif
+}
+
+
+inline uint64 RawPeekUInt64(const void* p)
+{
+#ifndef __sparc__
+	return *((uint64*)p);
+#else
+	uint64 value;
+	memcpy( &value, p, sizeof( uint64 ) );
+	return value;
+#endif
+}
+
+
+inline uint8 PeekUInt8(const void* p)
+{
+	return *((uint8*)p);
+}
+
+
+inline uint16 PeekUInt16(const void* p)
+{
+	return ENDIAN_SWAP_16( RawPeekUInt16( p ) );
+}
+
+
+inline uint32 PeekUInt32(const void* p)
+{
+	return ENDIAN_SWAP_32( RawPeekUInt32( p ) );
+}
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Poke - helper functions for write-accessing memory without modifying the memory pointer
+
+
+inline void RawPokeUInt16(void* p, uint16 nVal)
+{
+#ifndef __sparc__
+	*((uint16*)p) = nVal;
+#else
+	memcpy( p, &nVal, sizeof(uint16) );
+#endif
+}
+
+
+inline void RawPokeUInt32(void* p, uint32 nVal)
+{
+#ifndef __sparc__
+	*((uint32*)p) = nVal;
+#else
+	memcpy( p, &nVal, sizeof(uint32) );
+#endif
+}
+
+
+inline void RawPokeUInt64(void* p, uint64 nVal)
+{
+#ifndef __sparc__
+	*((uint64*)p) = nVal;
+#else
+	memcpy( p, &nVal, sizeof(uint64) );
+#endif
+}
+
+
+inline void PokeUInt8(void* p, uint8 nVal)
+{
+	*((uint8*)p) = nVal;
+}
+
+
+inline void PokeUInt16(void* p, uint16 nVal)
+{
+	RawPokeUInt16( p, ENDIAN_SWAP_16( nVal ) );
+}
+
+
+inline void PokeUInt32(void* p, uint32 nVal)
+{
+	RawPokeUInt32( p, ENDIAN_SWAP_32( nVal ) );
+}
+
+
+#endif

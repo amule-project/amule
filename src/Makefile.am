@@ -359,7 +359,7 @@ noinst_HEADERS = AddFileThread.h \
 		 EditServerListDlg.h \
 		 eggtrayicon.h \
 		 EMSocket.h \
-		 EndianFix.h \
+		 ArchSpecific.h \
 		 ExternalConnector.h \
 		 ExternalConn.h \
 		 FileDetailDialog.h \
