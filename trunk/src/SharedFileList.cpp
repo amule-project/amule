@@ -69,11 +69,12 @@ void CSharedFileList::FindSharedFiles() {
 	}
 
 	/* Global incoming dir and all category incoming directories are automatically shared. */
+
 	AddFilesFromDirectory(theApp.glob_prefs->GetIncomingDir());
 	for (uint32 i = 1;i < theApp.glob_prefs->GetCatCount();i++) {
 		AddFilesFromDirectory(theApp.glob_prefs->GetCatPath(i));
 	}
-	//for (POSITION pos = app_prefs->shareddir_list.GetHeadPosition();pos != 0;app_prefs->shareddir_list.GetNext(pos))
+
 	// remove bogus entries first
 	for (unsigned int ij = 0; ij < app_prefs->shareddir_list.GetCount(); ++ij) {
 		if(!wxFileName::DirExists(app_prefs->shareddir_list.Item(ij))) {
@@ -81,6 +82,7 @@ void CSharedFileList::FindSharedFiles() {
 			--ij;
 		}
 	}
+	
 	for (unsigned int ii = 0; ii < app_prefs->shareddir_list.GetCount(); ++ii) {
 		AddFilesFromDirectory(app_prefs->shareddir_list.Item(ii));
 	}
@@ -100,10 +102,15 @@ void CSharedFileList::FindSharedFiles() {
 
 void CSharedFileList::AddFilesFromDirectory(wxString directory)
 {
-		
+	
+	if (directory.Last() != wxT('/')) {
+		directory += wxT("/");
+	}
+	
 	wxString fname=::wxFindFirstFile(directory,wxFILE);
   	
 	if (fname.IsEmpty()) {
+		printf("Empty dir %s shared\n",unicode2char(directory));
     		return;
 	}
 	while(!fname.IsEmpty()) {  
@@ -190,7 +197,7 @@ void CSharedFileList::Reload(bool sendtoserver, bool firstload){
 	// deltaHF - removed the old ugly button and changed the code to use the new small one
 	GetDlgItem(ID_BTNRELSHARED)->Disable();
 	output->DeleteAllItems();
-	this->FindSharedFiles();
+	FindSharedFiles();
 	if ((output) && (firstload == false)) {
 		output->ShowFileList(this);
 	}
