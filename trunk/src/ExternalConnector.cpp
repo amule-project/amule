@@ -328,6 +328,10 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxSt
 		packet.AddTag(CECTag(EC_TAG_PASSWD_HASH, m_password));
 	}
 
+#ifdef CVSDATE
+	packet.AddTag(CECTag(EC_TAG_CVSDATE, wxT(CVSDATE)));
+#endif
+
 	// Clear passwords
 	pass_plain		= wxT("01234567890123456789");
 

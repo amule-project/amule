@@ -681,6 +681,10 @@ bool CRemoteConnect::Connect(const wxString &host, int port,
 
 	packet.AddTag(CECTag(EC_TAG_PASSWD_HASH, pass));
 
+#ifdef CVSDATE
+	packet.AddTag(CECTag(EC_TAG_CVSDATE, wxT(CVSDATE)));
+#endif
+
     if (! m_ECSocket->WritePacket(&packet) ) {
     	return false;
     }
