@@ -104,7 +104,7 @@ Packet::Packet(CMemFile* datafile, uint8 protocol)
 	free(tmp); 
 }
 
-Packet::Packet(int8 in_opcode, wxInt32 in_size, uint8 protocol, bool bFromPF)
+Packet::Packet(int8 in_opcode, uint32 in_size, uint8 protocol, bool bFromPF)
 {
 	size		= in_size;
 	opcode		= in_opcode;
