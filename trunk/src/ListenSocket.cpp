@@ -2233,6 +2233,10 @@ CListenSocket::~CListenSocket()
 	// 0.42e + Discard() for discarding the bytes on queue
 	Discard();
 	Close();
+#ifdef AMULE_DAEMON
+	AddLogLineM(true,wxT("CListenSocket: destroy"));
+	global_sock_thread.Delete();
+#endif
 	KillAllSockets();
 }
 
@@ -2535,6 +2539,7 @@ void *CSocketGlobalThread::Entry()
 		}
  
 	}
+	AddLogLineM(false, _("CSocketGlobalThread: exited"));
 	return 0;
 }
 
