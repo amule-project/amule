@@ -682,10 +682,10 @@ bool CamuleApp::OnInit()
 		#ifdef __SOLARIS__
 			struct mnttab entries;
 			while ( getmntent(mnt_tab,&entries )!=-1) {
-				if ( (!strncmp(entries->mnt_type, "vfat",4)) 
-					|| (!strncmp(entries->mnt_type, "fat",3)) 
-					|| (!strncmp(entries->mnt_type, "msdos",5)) 
-					|| (!strncmp(entries->mnt_type, "smbfs",5)) 
+				if ( (!strncmp(entries.mnt_fstype, "vfat",4)) 
+					|| (!strncmp(entries.mnt_fstype, "fat",3)) 
+					|| (!strncmp(entries.mnt_fstype, "msdos",5)) 
+					|| (!strncmp(entries.mnt_fstype, "smbfs",5)) 
 				) {
 					#if wxUSE_UNICODE
 					if ( tempdir.StartsWith( UTF82unicode(entries.mnt_mountp )) ) {
