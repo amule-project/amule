@@ -1926,7 +1926,7 @@ void CDownloadListCtrl::ShowFilesCount()
 		const CtrlItem_Struct *cur_item = it->second;
 		if (cur_item->type == FILE_TYPE) {
 			CPartFile *file = (CPartFile *) cur_item->value;
-			if ( ShowItemInCurrentCat( file, curTab ) {
+			if ( ShowItemInCurrentCat( file, curTab ) ) {
 				count++;
 			}
 		}
