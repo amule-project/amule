@@ -748,7 +748,7 @@ wxString CamuleApp::StripInvalidFilenameChars(wxString strText, bool bKeepSpaces
 wxString CamuleApp::CreateED2kLink(CAbstractFile* f)
 {
 	wxString strLink;
-	strLink = strLink.Format("ed2k://|file|%s|%d|%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x|/",
+	strLink = strLink.Format("ed2k://|file|%s|%u|%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x|/",
 	StripInvalidFilenameChars(f->GetFileName(), true).GetData(),
 	f->GetFileSize(), f->GetFileHash()[0], f->GetFileHash()[1],
 	f->GetFileHash()[2], f->GetFileHash()[3], f->GetFileHash()[4],
