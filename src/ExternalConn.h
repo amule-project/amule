@@ -166,6 +166,29 @@ class CKnownFile_Encoder {
 
 typedef CFileEncoderMap<CKnownFile , CKnownFile_Encoder, CSharedFileList> CKnownFile_Encoder_Map;
 
+template <class T, ec_opcode_t OP>
+class CTagSet : public std::set<T> {
+		void InSet(const CECTag *tag, uint32)
+		{
+			this->insert(tag->GetInt32Data());
+		}
+		void InSet(const CECTag *tag, CMD4Hash)
+		{
+			this->insert(tag->GetMD4Data());
+		}
+	public:
+		CTagSet(const CECPacket *request) : std::set<T>()
+		{
+			for (int i = 0;i < request->GetTagCount();i++) {
+				const CECTag *tag = request->GetTagByIndex(i);
+				if ( tag->GetTagName() == OP ) {
+					this->InSet(tag, T());
+				}
+			}
+		}
+};
+
+		
 #ifdef AMULE_DAEMON
 #define EXTERNAL_CONN_BASE wxThread
 #else

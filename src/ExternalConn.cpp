@@ -338,13 +338,7 @@ CECPacket *Get_EC_Response_GetSharedFiles(const CECPacket *request, CKnownFile_E
 
 	//
 	// request can contain list of queried items
-	std::set<CMD4Hash> queryitems;
-	for (int i = 0;i < request->GetTagCount();i++) {
-		const CECTag *tag = request->GetTagByIndex(i);
-		if ( tag->GetTagName() == EC_TAG_KNOWNFILE ) {
-			queryitems.insert(tag->GetMD4Data());
-		}
-	}
+	CTagSet<CMD4Hash, EC_TAG_KNOWNFILE> queryitems(request);
 
 	encoders.UpdateEncoders(theApp.sharedfiles);
 	
@@ -366,6 +360,15 @@ CECPacket *Get_EC_Response_GetSharedFiles(const CECPacket *request, CKnownFile_E
 	return response;
 }
 
+CECPacket *Get_EC_Response_GetWaitQueue(const CECPacket *request)
+{
+	wxASSERT(request->GetOpCode() == EC_OP_WAIT_QUEUE);
+	
+	CECPacket *response = new CECPacket(EC_OP_WAIT_QUEUE);
+	
+	return response;
+}
+
 CECPacket *Get_EC_Response_GetUpQueue(const CECPacket *request)
 {
 	wxASSERT(request->GetOpCode() == EC_OP_GET_ULOAD_QUEUE);
@@ -373,15 +376,10 @@ CECPacket *Get_EC_Response_GetUpQueue(const CECPacket *request)
 	CECPacket *response = new CECPacket(EC_OP_ULOAD_QUEUE);
 	
 	EC_DETAIL_LEVEL detail_level = request->GetDetailLevel();
+
 	//
 	// request can contain list of queried items
-	std::set<uint32> queryitems;
-	for (int i = 0;i < request->GetTagCount();i++) {
-		const CECTag *tag = request->GetTagByIndex(i);
-		if ( tag->GetTagName() == EC_TAG_UPDOWN_CLIENT ) {
-			queryitems.insert(tag->GetInt32Data());
-		}
-	}
+	CTagSet<uint32, EC_TAG_UPDOWN_CLIENT> queryitems(request);
 	
 	POSITION pos = theApp.uploadqueue->GetFirstFromUploadList();
 	while (	pos ) {
@@ -408,13 +406,7 @@ CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request,
 	EC_DETAIL_LEVEL detail_level = request->GetDetailLevel();
 	//
 	// request can contain list of queried items
-	std::set<CMD4Hash> queryitems;
-	for (int i = 0;i < request->GetTagCount();i++) {
-		const CECTag *tag = request->GetTagByIndex(i);
-		if ( tag->GetTagName() == EC_TAG_PARTFILE ) {
-			queryitems.insert(tag->GetMD4Data());
-		}
-	}
+	CTagSet<CMD4Hash, EC_TAG_PARTFILE> queryitems(request);
 	
 	encoders.UpdateEncoders(theApp.downloadqueue);
 
@@ -605,13 +597,7 @@ CECPacket *Get_EC_Response_Search_Results(const CECPacket *request)
 	EC_DETAIL_LEVEL detail_level = request->GetDetailLevel();
 	//
 	// request can contain list of queried items
-	std::set<CMD4Hash> queryitems;
-	for (int i = 0;i < request->GetTagCount();i++) {
-		const CECTag *tag = request->GetTagByIndex(i);
-		if ( tag->GetTagName() == EC_TAG_SEARCHFILE ) {
-			queryitems.insert(tag->GetMD4Data());
-		}
-	}
+	CTagSet<CMD4Hash, EC_TAG_SEARCHFILE> queryitems(request);
 
 	std::vector<CSearchFile*> list(theApp.searchlist->GetSearchResults(0xffff));
 	std::vector<CSearchFile*>::const_iterator it = list.begin();
