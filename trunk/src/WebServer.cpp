@@ -235,7 +235,7 @@ void CWebServer::ReloadTemplates(void) {
 		
 	if (!wxFileName::FileExists(sFile)) {
 		// no file. do nothing.
-		webInterface->SendRecvMsg(wxString::Format("LOGGING ADDLOGLINE %d %s", true, _("Can't load templates: Can't open file %s"), sFile.GetData()));
+		webInterface->SendRecvMsg(wxString::Format("LOGGING ADDLOGLINE %d %s", true, wxString::Format(_("Can't load templates: Can't open file %s"), sFile.GetData()).GetData()));
 		return;
 	}
 
@@ -253,7 +253,7 @@ void CWebServer::ReloadTemplates(void) {
 		wxString sVersion = _LoadTemplate(sAll,"TMPL_VERSION");
 		long lVersion = atol(sVersion);
 		if (lVersion < WEB_SERVER_TEMPLATES_VERSION) {
-			webInterface->SendRecvMsg(wxString::Format("LOGGING ADDLOGLINE %d %s", true, _("Can't load templates: Can't open file %s"), sFile.GetData()));
+			webInterface->SendRecvMsg(wxString::Format("LOGGING ADDLOGLINE %d %s", true, wxString::Format(_("Can't load templates: Can't open file %s"), sFile.GetData()).GetData()));
 		} else {
 			m_Templates.sHeader = _LoadTemplate(sAll,"TMPL_HEADER");
 			m_Templates.sHeaderMetaRefresh = _LoadTemplate(sAll,"TMPL_HEADER_META_REFRESH");
@@ -303,7 +303,7 @@ void CWebServer::ReloadTemplates(void) {
 			m_Templates.sProgressbarImgs.Replace("[PROGRESSGIFINTERNAL]","%i");
 		}
 	} else {
-		webInterface->SendRecvMsg(wxString::Format("LOGGING ADDLOGLINE %d %s", true, _("Can't load templates: Can't open file %s"), sFile.GetData()));
+		webInterface->SendRecvMsg(wxString::Format("LOGGING ADDLOGLINE %d %s", true, wxString::Format(_("Can't load templates: Can't open file %s"), sFile.GetData()).GetData()));
 	}
 }
 
@@ -498,7 +498,7 @@ void CWebServer::ProcessURL(ThreadData Data) {
 		isUseGzip = false; // [Julien]
 		if (login) {
 			uint32 ipn=inet_addr( ip) ;
-			for (int i = 0; i < pThis->m_Params.badlogins.GetCount();) {
+			for (size_t i = 0; i < pThis->m_Params.badlogins.GetCount();) {
 				if (ipn == pThis->m_Params.badlogins[i]->datalen) {
 					pThis->m_Params.badlogins.RemoveAt(i);
 				} else 
@@ -575,7 +575,7 @@ void CWebServer::ProcessURL(ThreadData Data) {
 		uint32 faults=0;
 
 		// check for bans
-		for (int i = 0; i < pThis->m_Params.badlogins.GetCount();i++)
+		for (size_t i = 0; i < pThis->m_Params.badlogins.GetCount();i++)
 			if (pThis->m_Params.badlogins[i]->datalen==ip) faults++;
 
 		if (faults>4) {
@@ -924,9 +924,9 @@ wxString CWebServer::_GetServerList(ThreadData Data) {
 
 	// Sorting (simple bubble sort, we don't have tons of data here)
 	bool bSorted = true;
-	for (int nMax = 0;bSorted && nMax < ServerArray.GetCount()*2; nMax++) {
+	for (size_t nMax = 0;bSorted && nMax < ServerArray.GetCount()*2; nMax++) {
 		bSorted = false;
-		for (int i = 0; i < ServerArray.GetCount() - 1; i++) {
+		for (size_t i = 0; i < ServerArray.GetCount() - 1; i++) {
 			bool bSwap = false;
 			switch(pThis->m_Params.ServerSort) {
 				case SERVER_SORT_NAME:
@@ -961,7 +961,7 @@ wxString CWebServer::_GetServerList(ThreadData Data) {
 	
 	// Displaying
 	wxString sList = "";
-	for (int i = 0; i < ServerArray.GetCount(); i++) {
+	for (size_t i = 0; i < ServerArray.GetCount(); i++) {
 		wxString HTTPProcessData = OutE; // Copy Entry Line to Temp
 		HTTPProcessData.Replace("[1]", ServerArray[i]->sServerName);
 		HTTPProcessData.Replace("[2]", ServerArray[i]->sServerDescription);
@@ -1242,9 +1242,9 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	
 	// Sorting (simple bubble sort, we don't have tons of data here)
 	bool bSorted = true;
-	for (int nMax = 0;bSorted && nMax < FilesArray.GetCount()*2; nMax++) {
+	for (size_t nMax = 0;bSorted && nMax < FilesArray.GetCount()*2; nMax++) {
 		bSorted = false;
-		for (int i = 0; i < FilesArray.GetCount() - 1; i++) {
+		for (size_t i = 0; i < FilesArray.GetCount() - 1; i++) {
 			bool bSwap = false;
 			switch (pThis->m_Params.DownloadSort) {
 				case DOWN_SORT_NAME:
@@ -1281,7 +1281,7 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	wxString sDownList = "";
 	wxString HTTPTemp;
 
-	for (int i = 0; i < FilesArray.GetCount(); i++) {
+	for (size_t i = 0; i < FilesArray.GetCount(); i++) {
 		wxString JSfileinfo=FilesArray[i]->sFileInfo;
 		//JSfileinfo.Replace("\n","\\n");
 		JSfileinfo.Replace("|","\\n");
@@ -1766,9 +1766,9 @@ wxString CWebServer::_GetSharedFilesList(ThreadData Data) {
 	// Sorting (simple bubble sort, we don't have tons of data here)
 	bool bSorted = true;
 	
-	for (int nMax = 0;bSorted && nMax < SharedArray.GetCount()*2; nMax++) {
+	for (size_t nMax = 0;bSorted && nMax < SharedArray.GetCount()*2; nMax++) {
 		bSorted = false;
-		for (int i = 0; i < SharedArray.GetCount() - 1; i++) {
+		for (size_t i = 0; i < SharedArray.GetCount() - 1; i++) {
 			bool bSwap = false;
 			switch (pThis->m_Params.SharedSort) {
 				case SHARED_SORT_NAME:
@@ -1829,7 +1829,7 @@ wxString CWebServer::_GetSharedFilesList(ThreadData Data) {
 
 	// Displaying
 	wxString sSharedList = "";
-	for (int i = 0; i < SharedArray.GetCount(); i++) {
+	for (size_t i = 0; i < SharedArray.GetCount(); i++) {
 		char HTTPTempC[100] = "";
 		wxString HTTPProcessData;
 		if (SharedArray[i]->sFileHash == _ParseURL(Data,"hash") )
@@ -1910,7 +1910,7 @@ wxString CWebServer::_GetGraphs(ThreadData Data) {
 	wxString sGraphDownload = "", sGraphUpload = "", sGraphCons = "";
 	wxString sTmp = "";
 	
-	for (int i = 0; i < WEB_GRAPH_WIDTH; i++) {
+	for (size_t i = 0; i < WEB_GRAPH_WIDTH; i++) {
 		if (i < pThis->m_Params.PointsForWeb.GetCount()) {
 			if (i != 0) {
 				sGraphDownload += ",";
@@ -2421,7 +2421,7 @@ bool CWebServer::_IsLoggedIn(ThreadData Data, long lSession) {
 	_RemoveTimeOuts(Data,lSession);
 
 	// find our session
-	for (int i = 0; i < pThis->m_Params.Sessions.GetCount(); i++) {
+	for (size_t i = 0; i < pThis->m_Params.Sessions.GetCount(); i++) {
 		if (pThis->m_Params.Sessions[i]->lSession == lSession && lSession != 0) {
 			// if found, also reset expiration time
 			pThis->m_Params.Sessions[i]->startTime = time(NULL);
@@ -2446,7 +2446,7 @@ bool CWebServer::_RemoveSession(ThreadData Data, long lSession) {
 		return "";
 
 	// find our session
-	for (int i = 0; i < pThis->m_Params.Sessions.GetCount(); i++) {
+	for (size_t i = 0; i < pThis->m_Params.Sessions.GetCount(); i++) {
 		if (pThis->m_Params.Sessions[i]->lSession == lSession && lSession != 0) {
 			pThis->m_Params.Sessions.RemoveAt(i);
 			pThis->webInterface->SendRecvMsg(wxString::Format("LOG ADDLOGLINE %s", _("Webserver: Logout")));
@@ -2461,7 +2461,7 @@ Session CWebServer::GetSessionByID(ThreadData Data,long sessionID) {
 	CWebServer *pThis = (CWebServer *)Data.pThis;
 	
 	if (pThis != NULL) {
-		for (int i = 0; i < pThis->m_Params.Sessions.GetCount(); i++) {
+		for (size_t i = 0; i < pThis->m_Params.Sessions.GetCount(); i++) {
 			if (pThis->m_Params.Sessions[i]->lSession == sessionID && sessionID != 0)
 				return *(pThis->m_Params.Sessions[i]);
 		}
@@ -2480,7 +2480,7 @@ bool CWebServer::IsSessionAdmin(ThreadData Data,wxString SsessionID) {
 	CWebServer *pThis = (CWebServer *)Data.pThis;
 	
 	if (pThis != NULL) {
-		for (int i = 0; i < pThis->m_Params.Sessions.GetCount(); i++) {
+		for (size_t i = 0; i < pThis->m_Params.Sessions.GetCount(); i++) {
 			if (pThis->m_Params.Sessions[i]->lSession == sessionID && sessionID != 0)
 				return pThis->m_Params.Sessions[i]->admin;
 		}
@@ -2694,7 +2694,7 @@ wxString CWebServer::_GetSearch(ThreadData Data) {
 
 int CWebServer::UpdateSessionCount() {
 	// remove old bans
-	for (int i = 0; i < m_Params.badlogins.GetCount();) {
+	for (size_t i = 0; i < m_Params.badlogins.GetCount();) {
 		uint32 diff= ::GetTickCount() - m_Params.badlogins[i]->timestamp ;
 		if (diff >1000U*60U*15U && (::GetTickCount() > m_Params.badlogins[i]->timestamp)) {
 			m_Params.badlogins.RemoveAt(i);
@@ -2703,7 +2703,7 @@ int CWebServer::UpdateSessionCount() {
 	}
 
 	// count & remove old session
-	for (int i = 0; i < m_Params.Sessions.GetCount();) {
+	for (size_t i = 0; i < m_Params.Sessions.GetCount();) {
 	  time_t ts=time(NULL)-m_Params.Sessions[i]->startTime;
 	  if (ts > SESSION_TIMEOUT_SECS) {
 	    m_Params.Sessions.RemoveAt(i);
