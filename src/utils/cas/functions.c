@@ -29,25 +29,39 @@
 #include <stdlib.h>
 #include <string.h>
 
+/* XXX This needs to be replaced so that we use
+ * autoconf to detect the target OS -- As of now
+ * it should compile fine in other non UNIX-like
+ * platforms, at the expense of only being sure
+ * that UNIX-specific code will be compiled if
+ * using GCC (which defines those __unix__ macros)
+ * autoconf defines should be in place to test for
+ * functions like getpwuid() in UNIX-like systems
+ * instead of doing this...
+ */
+#if defined(unix) || defined(__unix__) || defined(__unix)
 #include <unistd.h>
 #include <pwd.h>
 #include <errno.h>
 #include <fcntl.h>
+#define CAS_UNIX
+#endif
 
 /* try (hard) to get correct path for aMule signature
  * !! it's caller's responsibility to free return value
  */
-// Jacobo221 - [ToDo] port to DOS
 char *get_path(char *file)
 {
 	char *ret, *home;	/* caller should free return value */
 	static char *saved_home = NULL;
 	static size_t home_len = 0;
-	static size_t total_len = 0;
 
 	if (saved_home == NULL) {
 		/* get home directory */
 		if ( (home = getenv("HOME")) == NULL) {
+#ifndef CAS_UNIX
+			return NULL;
+#else
 			/* if $HOME is not available try user database */
 			uid_t uid;
 			struct passwd *pwd;
@@ -57,12 +71,25 @@ char *get_path(char *file)
 			endpwent();
 
 			// if (pwd == NULL || pwd->pw_dir == NULL) could brake on left-handed compilers
-			if (pwd == NULL)
-				return NULL;
-			if (pwd->pw_dir == NULL)
+			/* XXX
+			 * Section 6.5.14 of ANSI C specs (grab C99 at http://www.nirvani.net/docs/ansi_c.pdf)
+			 * states this:
+			 * "Unlike the bitwise | operator, the || operator _guarantees_ left-to-right
+			 * evaluation; there is a sequence point after the evaluation of the first
+			 * operand. If the first operand compares unequal to 0, the second operand
+			 * _is not evaluated_."
+			 *
+			 * I'm going to revert it and wait until Jacobo or whoever changed it
+			 * screams loudly, tries to kill me, and explains why this has to be
+			 * this way. Maybe pre-ansi compilers? Doubtful.
+			 *
+			 * - Unleashed
+			 */
+			if (pwd == NULL || pwd->pw_dir == NULL)
 				return NULL;
 
 			home = pwd->pw_dir;
+#endif /* CAS_UNIX */
 		}
 
 		/* save the result for future calls */
@@ -72,22 +99,27 @@ char *get_path(char *file)
 	}
 
 	/* get full path space */
-	// Kry - Guys... do 'man malloc'
-	total_len = (home_len + strlen("/") + strlen(file)) * sizeof(char) + 1 /* for '\0' */ ;
-	ret = malloc(total_len);
+
+	/* Unleashed - Guys... you broke this and it was OK
+	 * "+ 2" means "plus '/' and '\0'"
+	 */
+	ret = malloc((home_len + strlen(file) + 2) * sizeof(char));
 	if (ret == NULL)
 		return NULL;
 
 	strcpy(ret, saved_home);
 	strcat(ret, "/");
 	strcat(ret, file);
-	ret[total_len] = '\0';
+	/* the string is guaranteed to be null-terminated
+	 * so no need to do this...
+	 * ret[total_len] = '\0';
+	 */
 
 	return ret;
 }
 
 /*
- * this function is used to convert bytes to any to other units
+ * this function is used to convert bytes to any other unit
  * nicer to the eye.
  *
  * return "Bad format" if could not convert string
@@ -135,7 +167,7 @@ char *replace(char *search, char *replace, char *template, int size)
 
 	if (output==NULL)
 	{
-		printf("coulnt malloc\n");
+		printf("couldn't malloc\n");
 		exit(44);
 	}
 
@@ -149,7 +181,7 @@ char *replace(char *search, char *replace, char *template, int size)
 	{
 		read=template[a];
 
-		sprintf(buffer,"%s%c",buffer,read);
+		snprintf(buffer,255,"%s%c",buffer,read);
 
 		if(read==search[i]) 
 		{
@@ -158,13 +190,13 @@ char *replace(char *search, char *replace, char *template, int size)
 		else 
 		{ 
 			i=0;
-			sprintf(output,"%s%s",output,buffer);
+			snprintf(output,size,"%s%s",output,buffer);
 			buffer[0]=0;
 		}               
 
 		if(i == strlen(search))
 		{
-			sprintf(output,"%s%s",output,replace);
+			snprintf(output,size,"%s%s",output,replace);
 			i=0;
 			buffer[0]=0;
 		}
@@ -181,15 +213,15 @@ char *timeconv(char *input)
 	static char ret[50];
 
 	if (count < 0)
-		sprintf (ret,"?");
+		snprintf (ret,50,"?");
 	else if (count < 60)
-		sprintf (ret,"%02i %s", count, "secs" );
+		snprintf (ret,50,"%02i %s", count, "secs" );
 	else if (count < 3600)
-		sprintf (ret,"%i:%02i %s", count/60, (count % 60), "mins" );
+		snprintf (ret,50,"%i:%02i %s", count/60, (count % 60), "mins" );
 	else if (count < 86400)
-		sprintf (ret,"%i:%02i %s", count/3600, (count % 3600)/60, "h" );
+		snprintf (ret,50,"%i:%02i %s", count/3600, (count % 3600)/60, "h" );
 	else
-		sprintf (ret,"%i %s %02i %s", count/86400, "D" , (count % 86400) / 3600, "h" );
+		snprintf (ret,50,"%i %s %02i %s", count/86400, "D" , (count % 86400) / 3600, "h" );
 
 	return (ret);
 }
