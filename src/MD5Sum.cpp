@@ -56,7 +56,7 @@ wxString MD5Sum::Calculate(wxString sSource)
 	MD5Final (digest, &context);
 
 	m_sHash = wxEmptyString;
-	for (int i = 0; i < 16; i++)
+	for (int i = 0; i < 16; ++i)
 	{
 		wxString sT;
 		sT.Printf(wxT("%02x"), digest[i]);
@@ -145,65 +145,57 @@ void MD5Init (MD5_CTX *context)
  */
 void MD5Update (MD5_CTX *context, unsigned char *input, unsigned int inputLen)
 {
-  unsigned int i, index, partLen;
+	unsigned int i, index, partLen;
 
-  /* Compute number of bytes mod 64 */
-  index = (unsigned int)((context->count[0] >> 3) & 0x3F);
+	/* Compute number of bytes mod 64 */
+	index = (unsigned int)((context->count[0] >> 3) & 0x3F);
 
-  /* Update number of bits */
-  if ((context->count[0] += ((UINT4)inputLen << 3))
-   < ((UINT4)inputLen << 3))
- context->count[1]++;
-  context->count[1] += ((UINT4)inputLen >> 29);
+	/* Update number of bits */
+	if ((context->count[0] += ((UINT4)inputLen << 3)) < ((UINT4)inputLen << 3)) {
+		context->count[1]++;
+	}
+	context->count[1] += ((UINT4)inputLen >> 29);
+	partLen = 64 - index;
 
-  partLen = 64 - index;
+	/* Transform as many times as possible. */
+	if (inputLen >= partLen) {
+		MD5_memcpy((POINTER)&context->buffer[index], (POINTER)input, partLen);
+		MD5Transform (context->state, context->buffer);
 
-  /* Transform as many times as possible.
-*/
-  if (inputLen >= partLen) {
- MD5_memcpy
-   ((POINTER)&context->buffer[index], (POINTER)input, partLen);
- MD5Transform (context->state, context->buffer);
-
- for (i = partLen; i + 63 < inputLen; i += 64)
-   MD5Transform (context->state, &input[i]);
-
- index = 0;
-  }
-  else
- i = 0;
-
-  /* Buffer remaining input */
-  MD5_memcpy
- ((POINTER)&context->buffer[index], (POINTER)&input[i],
-  inputLen-i);
+		for (i = partLen; i + 63 < inputLen; i += 64) {
+			MD5Transform (context->state, &input[i]);
+		}
+		index = 0;
+	} else {
+		i = 0;
+	}
+	/* Buffer remaining input */
+	MD5_memcpy((POINTER)&context->buffer[index], (POINTER)&input[i], inputLen-i);
 }
 
 /* MD5 finalization. Ends an MD5 message-digest operation, writing the
-  the message digest and zeroizing the context.
+ * the message digest and zeroizing the context. 
  */
 void MD5Final (unsigned char digest[16], MD5_CTX *context)
 {
-  unsigned char bits[8];
-  unsigned int index, padLen;
+	unsigned char bits[8];
+	unsigned int index, padLen;
 
-  /* Save number of bits */
-  Encode (bits, context->count, 8);
+	/* Save number of bits */
+	Encode (bits, context->count, 8);
 
-  /* Pad out to 56 mod 64.
-*/
-  index = (unsigned int)((context->count[0] >> 3) & 0x3f);
-  padLen = (index < 56) ? (56 - index) : (120 - index);
-  MD5Update (context, PADDING, padLen);
+	/* Pad out to 56 mod 64. */
+	index = (unsigned int)((context->count[0] >> 3) & 0x3f);
+	padLen = (index < 56) ? (56 - index) : (120 - index);
+	MD5Update (context, PADDING, padLen);
 
-  /* Append length (before padding) */
-  MD5Update (context, bits, 8);
-  /* Store state in digest */
-  Encode (digest, context->state, 16);
+	/* Append length (before padding) */
+	MD5Update (context, bits, 8);
+	/* Store state in digest */
+	Encode (digest, context->state, 16);
 
-  /* Zeroize sensitive information.
-*/
-  MD5_memset ((POINTER)context, 0, sizeof (*context));
+	/* Zeroize sensitive information.*/
+	MD5_memset ((POINTER)context, 0, sizeof (*context));
 }
 
 /* MD5 basic transformation. Transforms state based on block.
@@ -292,7 +284,7 @@ static void MD5Transform (UINT4 state[4], unsigned char block[64])
   state[3] += d;
 
   /* Zeroize sensitive information.
-*/
+   */
   MD5_memset ((POINTER)x, 0, sizeof (x));
 }
 

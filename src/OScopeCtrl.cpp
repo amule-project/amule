@@ -68,7 +68,7 @@ COLORREF crPreset [ 16 ] = {
 	bmapGrid=NULL;
 
 	PlotData_t* ppds = pdsTrends;
-	for(unsigned i=0; i<nTrends; i++, ppds++){
+	for(unsigned i=0; i<nTrends; ++i, ++ppds){
 		ppds->crPlot = (i<15 ? crPreset[i] : RGB(255, 255, 255)); 
 		ppds->penPlot=*(wxThePenList->FindOrCreatePen(wxColour(GetRValue(ppds->crPlot),GetGValue(ppds->crPlot),GetBValue(ppds->crPlot)),1,wxSOLID));
 		ppds->fPrev = ppds->fLowerLimit = ppds->fUpperLimit = 0.0;
@@ -133,7 +133,7 @@ void COScopeCtrl::SetRange(float fLower, float fUpper, unsigned iTrend)
 
 void COScopeCtrl::SetRanges(float fLower, float fUpper)
 {
-	for(unsigned iTrend=0; iTrend<nTrends; iTrend++)
+	for(unsigned iTrend=0; iTrend<nTrends; ++iTrend)
 		SetRange(fLower, fUpper, iTrend);
 }  // SetRanges
 
@@ -234,7 +234,7 @@ void COScopeCtrl::RecreateGrid()
 	wxPen grPen(col,1,wxSOLID);
 	dcGrid->SetPen(grPen);
 
-	for(j=1; j<(nYGrids+1); j++){
+	for(j=1; j<(nYGrids+1); ++j){
 		GridPos = (rectPlot.bottom-rectPlot.top)*j/( nYGrids + 1 ) + rectPlot.top ;
 		for (unsigned int i = rectPlot.left; i < rectPlot.right; i += 4)
 		  dcGrid->DrawPoint(i,GridPos);
@@ -377,7 +377,7 @@ void COScopeCtrl::OnSize(wxSizeEvent& evt)
 	nPlotHeight = rectPlot.bottom-rectPlot.top;
 	nPlotWidth  = rectPlot.right-rectPlot.left;
 	PlotData_t* ppds = pdsTrends;
-	for(unsigned iTrend=0; iTrend<nTrends; iTrend++, ppds++) {
+	for(unsigned iTrend=0; iTrend<nTrends; ++iTrend, ++ppds) {
 		ppds->fVertScale = (float)nPlotHeight / (ppds->fUpperLimit-ppds->fLowerLimit); 
 		ppds->yPrev = GetPlotY(ppds->fPrev, ppds);
 	}
@@ -452,7 +452,7 @@ void COScopeCtrl::DrawPoints(float *apf[], unsigned cntPoints)
 	unsigned cntPixelOffset = std::min((unsigned)(nPlotWidth-1), (cntPoints-1)*nShiftPixels);
 	PlotData_t* ppds = pdsTrends;
 
-	for (unsigned iTrend=0; iTrend<nTrends; iTrend++, ppds++) {
+	for (unsigned iTrend=0; iTrend<nTrends; ++iTrend, ++ppds) {
 		pf = apf[iTrend] + cntPoints - 1;
 		yPrev = ppds->yPrev;
 		dcPlot->SetPen(ppds->penPlot);
@@ -471,7 +471,7 @@ void COScopeCtrl::PlotHistory(unsigned cntPoints, bool bShiftGraph, bool bRefres
 {
 	unsigned i, cntFilled;
 	float *apf[nTrends];  
-	for (i=0; i<nTrends; i++)
+	for (i=0; i<nTrends; ++i)
 		apf[i] = new float[cntPoints];
 	double sFinal = (bStopped ? sLastTimestamp : -1.0);
 	cntFilled = theApp.amuledlg->statisticswnd->GetHistory(cntPoints, sLastPeriod, sFinal, apf, this);
@@ -480,7 +480,7 @@ void COScopeCtrl::PlotHistory(unsigned cntPoints, bool bShiftGraph, bool bRefres
 			ShiftGraph(cntFilled);
 		} else {  // fresh graph, we need to preset fPrev, yPrev
 			PlotData_t* ppds = pdsTrends;	
-    		for(i=0; i<nTrends; i++, ppds++)
+    		for(i=0; i<nTrends; ++i, ++ppds)
 				ppds->yPrev = GetPlotY(ppds->fPrev = *(apf[i] + cntFilled - 1), ppds);
 			cntFilled--;
 		}
@@ -488,7 +488,7 @@ void COScopeCtrl::PlotHistory(unsigned cntPoints, bool bShiftGraph, bool bRefres
 		if (bRefresh)
 			Refresh(FALSE);
 	}
-	for (i=0; i<nTrends; i++)
+	for (i=0; i<nTrends; ++i)
 		delete[] apf[i];
 } // PlotHistory
 
