@@ -267,7 +267,9 @@ CEC_Prefs_Packet::CEC_Prefs_Packet(uint32 selection, EC_DETAIL_LEVEL detail_leve
 
 	if (selection & EC_PREFS_SECURITY) {
 		CECEmptyTag secPrefs(EC_TAG_PREFS_SECURITY);
-		secPrefs.AddTag(CECTag(EC_TAG_SECURITY_CAN_SEE_SHARES, thePrefs::CanSeeShares()));
+		if (thePrefs::CanSeeShares()) {
+			secPrefs.AddTag(CECEmptyTag(EC_TAG_SECURITY_CAN_SEE_SHARES));
+		}
 		secPrefs.AddTag(CECTag(EC_TAG_SECURITY_FILE_PERMISSIONS, (uint32)thePrefs::GetFilePermissions()));
 		secPrefs.AddTag(CECTag(EC_TAG_SECURITY_DIR_PERMISSIONS, (uint32)thePrefs::GetDirPermissions()));
 		if (thePrefs::GetIPFilterOn()) {
@@ -297,6 +299,188 @@ CEC_Prefs_Packet::CEC_Prefs_Packet(uint32 selection, EC_DETAIL_LEVEL detail_leve
 		cwPrefs.AddTag(CECTag(EC_TAG_CORETW_UL_QUEUE, thePrefs::GetQueueSize()));
 		cwPrefs.AddTag(CECTag(EC_TAG_CORETW_SRV_KEEPALIVE_TIMEOUT, thePrefs::GetServerKeepAliveTimeout()));
 		AddTag(cwPrefs);
+	}
+}
+
+/*
+ * This will set all preferences except of categories, which are work as following:
+ *  -> On remote gui they are loaded on startup, and then changed on-command
+ *  -> Webserver doesn't supposed to change it.
+ */
+void CEC_Prefs_Packet::Apply()
+{
+	const CECTag * thisTab;
+	const CECTag * oneTag;
+
+	if ((thisTab = GetTagByName(EC_TAG_PREFS_GENERAL)) != NULL) {
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_USER_NICK)) != NULL) {
+			thePrefs::SetUserNick(oneTag->GetStringData());
+		}
+	}
+
+	if ((thisTab = GetTagByName(EC_TAG_PREFS_CONNECTIONS)) != NULL) {
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_CONN_UL_CAP)) != NULL) {
+			thePrefs::SetMaxGraphUploadRate(oneTag->GetInt32Data());
+		}
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_CONN_DL_CAP)) != NULL) {
+			thePrefs::SetMaxGraphDownloadRate(oneTag->GetInt32Data());
+		}
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_CONN_MAX_UL)) != NULL) {
+			thePrefs::SetMaxUpload(oneTag->GetInt16Data());
+		}
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_CONN_MAX_DL)) != NULL) {
+			thePrefs::SetMaxDownload(oneTag->GetInt16Data());
+		}
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_CONN_SLOT_ALLOCATION)) != NULL) {
+			thePrefs::SetSlotAllocation(oneTag->GetInt16Data());
+		}
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_CONN_TCP_PORT)) != NULL) {
+			thePrefs::SetPort(oneTag->GetInt16Data());
+		}
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_CONN_UDP_PORT)) != NULL) {
+			thePrefs::SetUDPPort(oneTag->GetInt16Data());
+		}
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_CONN_UDP_DISABLE)) != NULL) {
+			thePrefs::SetUDPDisable(oneTag->GetInt8Data() != 0);
+		}
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_CONN_MAX_FILE_SOURCES)) != NULL) {
+			thePrefs::SetMaxSourcesPerFile(oneTag->GetInt16Data());
+		}
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_CONN_MAX_CONN)) != NULL) {
+			thePrefs::SetMaxConnections(oneTag->GetInt16Data());
+		}
+		thePrefs::SetAutoConnect(thisTab->GetTagByName(EC_TAG_CONN_AUTOCONNECT) != NULL);
+		thePrefs::SetReconnect(thisTab->GetTagByName(EC_TAG_CONN_RECONNECT) != NULL);
+	}
+
+	if ((thisTab = GetTagByName(EC_TAG_PREFS_MESSAGEFILTER)) != NULL) {
+		thePrefs::SetMustFilterMessages(thisTab->GetTagByName(EC_TAG_MSGFILTER_ENABLED) != NULL);
+		thePrefs::SetFilterAllMessages(thisTab->GetTagByName(EC_TAG_MSGFILTER_ALL) != NULL);
+		thePrefs::SetMsgOnlyFriends(thisTab->GetTagByName(EC_TAG_MSGFILTER_FRIENDS) != NULL);
+		thePrefs::SetMsgOnlySecure(thisTab->GetTagByName(EC_TAG_MSGFILTER_SECURE) != NULL);
+		thePrefs::SetFilterByKeywords(thisTab->GetTagByName(EC_TAG_MSGFILTER_BY_KEYWORD) != NULL);
+
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_MSGFILTER_KEYWORDS)) != NULL) {
+			thePrefs::SetMessageFilterString(oneTag->GetStringData());
+		}
+	}
+
+	if ((thisTab = GetTagByName(EC_TAG_PREFS_REMOTECTRL)) != NULL) {
+		thePrefs::SetWSIsEnabled(thisTab->GetTagByName(EC_TAG_WEBSERVER_AUTORUN) != NULL);
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_WEBSERVER_PORT)) != NULL) {
+			thePrefs::SetWSPort(oneTag->GetInt16Data());
+		}
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_PASSWD_HASH)) != NULL) {
+			thePrefs::SetWSPass(oneTag->GetMD4Data().Encode());
+		}
+		thePrefs::SetWSIsLowUserEnabled(thisTab->GetTagByName(EC_TAG_WEBSERVER_GUEST) != 0);
+		if ((oneTag->GetTagByName(EC_TAG_PASSWD_HASH)) != NULL) {
+			thePrefs::SetWSLowPass(oneTag->GetTagByName(EC_TAG_PASSWD_HASH)->GetMD4Data().Encode());
+		}
+		thePrefs::SetWebUseGzip(thisTab->GetTagByName(EC_TAG_WEBSERVER_USEGZIP) != 0);
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_WEBSERVER_REFRESH)) != NULL) {
+			thePrefs::SetWebPageRefresh(oneTag->GetInt32Data());
+		}
+	}
+
+	if ((thisTab = GetTagByName(EC_TAG_PREFS_ONLINESIG)) != NULL) {
+		thePrefs::SetOnlineSignatureEnabled(thisTab->GetTagByName(EC_TAG_ONLINESIG_ENABLED) != 0);
+	}
+
+	if ((thisTab = GetTagByName(EC_TAG_PREFS_SERVERS)) != NULL) {
+		thePrefs::SetDeadServer(thisTab->GetTagByName(EC_TAG_SERVERS_REMOVE_DEAD) != NULL);
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_SERVERS_DEAD_SERVER_RETRIES)) != NULL) {
+			thePrefs::SetDeadserverRetries(oneTag->GetInt16Data());
+		}
+		thePrefs::SetAutoServerlist(thisTab->GetTagByName(EC_TAG_SERVERS_AUTO_UPDATE) != NULL);
+		// Here should come the URL list...
+		thePrefs::SetAddServersFromServer(thisTab->GetTagByName(EC_TAG_SERVERS_ADD_FROM_SERVER) != NULL);
+		thePrefs::SetAddServersFromClient(thisTab->GetTagByName(EC_TAG_SERVERS_ADD_FROM_CLIENT) != NULL);
+		thePrefs::SetScoreSystem(thisTab->GetTagByName(EC_TAG_SERVERS_USE_SCORE_SYSTEM) != NULL);
+		thePrefs::SetSmartIdCheck(thisTab->GetTagByName(EC_TAG_SERVERS_SMART_ID_CHECK) != NULL);
+		thePrefs::SetSafeServerConnectEnabled(thisTab->GetTagByName(EC_TAG_SERVERS_SAFE_SERVER_CONNECT) != NULL);
+		thePrefs::SetAutoConnectStaticOnly(thisTab->GetTagByName(EC_TAG_SERVERS_AUTOCONN_STATIC_ONLY) != NULL);
+		thePrefs::SetManualHighPrio(thisTab->GetTagByName(EC_TAG_SERVERS_MANUAL_HIGH_PRIO) != NULL);
+	}
+
+	if ((thisTab = GetTagByName(EC_TAG_PREFS_FILES)) != NULL) {
+		thePrefs::SetICHEnabled(thisTab->GetTagByName(EC_TAG_FILES_ICH_ENABLED) != 0);
+		thePrefs::SetTrustingEveryHash(thisTab->GetTagByName(EC_TAG_FILES_AICH_TRUST) != 0);
+		thePrefs::SetAddNewFilesPaused(thisTab->GetTagByName(EC_TAG_FILES_NEW_PAUSED) != 0);
+		thePrefs::SetNewAutoDown(thisTab->GetTagByName(EC_TAG_FILES_NEW_AUTO_DL_PRIO) != 0);
+		thePrefs::SetPreviewPrio(thisTab->GetTagByName(EC_TAG_FILES_PREVIEW_PRIO) != 0);
+		thePrefs::SetNewAutoUp(thisTab->GetTagByName(EC_TAG_FILES_NEW_AUTO_UL_PRIO) != 0);
+		thePrefs::SetTransferFullChunks(thisTab->GetTagByName(EC_TAG_FILES_UL_FULL_CHUNKS) != 0);
+		thePrefs::SetStartNextFile(thisTab->GetTagByName(EC_TAG_FILES_START_NEXT_PAUSED) != 0);
+		thePrefs::SetSrcSeedsOn(oneTag->GetInt8Data() != 0);
+		thePrefs::SetExtractMetaData(thisTab->GetTagByName(EC_TAG_FILES_EXTRACT_METADATA) != 0);
+		thePrefs::SetAllocFullChunk(thisTab->GetTagByName(EC_TAG_FILES_ALLOC_FULL_CHUNKS) != 0);
+		thePrefs::SetAllocFullPart(thisTab->GetTagByName(EC_TAG_FILES_ALLOC_FULL_SIZE) != 0);
+		thePrefs::SetCheckDiskspaceEnabled(thisTab->GetTagByName(EC_TAG_FILES_CHECK_FREE_SPACE) != 0);
+		
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_FILES_MIN_FREE_SPACE)) != NULL) {
+			thePrefs::SetMinFreeDiskSpace(oneTag->GetInt32Data());
+		}
+	}
+
+	if ((thisTab = GetTagByName(EC_TAG_PREFS_SRCDROP)) != NULL) {
+		thePrefs::SetNoNeededSources(thisTab->GetTagByName(EC_TAG_SRCDROP_NONEEDED) != 0);
+		thePrefs::SetDropFullQueueSources(thisTab->GetTagByName(EC_TAG_SRCDROP_DROP_FQS) != 0);
+		thePrefs::SetDropHighQueueRankingSources(thisTab->GetTagByName(EC_TAG_SRCDROP_DROP_HQRS) != 0);
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_SRCDROP_HQRS_VALUE)) != NULL) {
+			thePrefs::SetHighQueueRanking(oneTag->GetInt16Data());
+		}
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_SRCDROP_AUTODROP_TIMER)) != NULL) {
+			thePrefs::SetAutoDropTimer(oneTag->GetInt16Data());
+		}
+	}
+
+	if ((thisTab = GetTagByName(EC_TAG_PREFS_DIRECTORIES)) != NULL) {
+		#warning TODO
+	}
+
+	if ((thisTab = GetTagByName(EC_TAG_PREFS_STATISTICS)) != NULL) {
+		#warning TODO
+	}
+
+	if ((thisTab = GetTagByName(EC_TAG_PREFS_SECURITY)) != NULL) {
+		thePrefs::SetCanSeeShares(thisTab->GetTagByName(EC_TAG_SECURITY_CAN_SEE_SHARES) != 0);
+
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_SECURITY_FILE_PERMISSIONS)) != NULL) {
+			thePrefs::SetFilePermissions(oneTag->GetInt32Data());
+		}
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_SECURITY_DIR_PERMISSIONS)) != NULL) {
+			thePrefs::SetDirPermissions(oneTag->GetInt32Data());
+		}
+		thePrefs::SetIPFilterOn(thisTab->GetTagByName(EC_TAG_IPFILTER_ENABLED) != 0);
+		thePrefs::SetIPFilterAutoLoad(thisTab->GetTagByName(EC_TAG_IPFILTER_AUTO_UPDATE) != 0);
+
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_IPFILTER_UPDATE_URL)) != NULL) {
+			thePrefs::SetIPFilterURL(oneTag->GetStringData());
+		}
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_IPFILTER_LEVEL)) != NULL) {
+			thePrefs::SetIPFilterLevel(oneTag->GetInt8Data());
+		}
+		thePrefs::SetFilterLanIPs(thisTab->GetTagByName(EC_TAG_IPFILTER_FILTER_LAN) != 0);
+		thePrefs::SetSecureIdentEnabled(thisTab->GetTagByName(EC_TAG_SECURITY_USE_SECIDENT) != 0);
+	}
+
+	if ((thisTab = GetTagByName(EC_TAG_PREFS_CORETWEAKS)) != NULL) {
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_CORETW_MAX_CONN_PER_FIVE)) != NULL) {
+			thePrefs::SetMaxConsPerFive(oneTag->GetInt16Data());
+		}
+
+		thePrefs::SetVerbose(thisTab->GetTagByName(EC_TAG_CORETW_VERBOSE) != 0);
+
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_CORETW_FILEBUFFER)) != NULL) {
+			thePrefs::SetFileBufferSize(oneTag->GetInt32Data());
+		}
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_CORETW_UL_QUEUE)) != NULL) {
+			thePrefs::SetQueueSize(oneTag->GetInt32Data());
+		}
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_CORETW_SRV_KEEPALIVE_TIMEOUT)) != NULL) {
+			thePrefs::SetServerKeepAliveTimeout(oneTag->GetInt32Data());
+		}
 	}
 }
 

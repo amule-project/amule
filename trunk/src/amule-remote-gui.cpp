@@ -501,6 +501,12 @@ void CamuleRemoteGuiApp::NotifyEvent(const GUIEvent& event)
 	}
 }
 
+/*
+ * Preferences: holds both local and remote settings.
+ * 
+ * First, everything is loaded from local config file. Later, settings
+ * that are relevant on remote side only are loaded thru EC
+ */
 CPreferencesRem::CPreferencesRem(CRemoteConnect *conn)
 {
 	m_conn = conn;
@@ -521,11 +527,12 @@ bool CPreferencesRem::LoadRemote()
 	if ( !prefs ) {
 		return false;
 	}
-	CECTag *curr;
-	if ( (curr = prefs->GetTagByName(EC_TAG_PREFS_CATEGORIES)) != 0 ) {
+	((CEC_Prefs_Packet *)prefs)->Apply();
+
+	if ( prefs->GetTagByName(EC_TAG_PREFS_CATEGORIES) != 0 ) {
 		// start from '1' to skip default category "all"
-		for (int i = 1; i < curr->GetTagCount(); i++) {
-			CECTag *cat_tag = curr->GetTagByIndex(i);
+		for (int i = 1; i < prefs->GetTagByName(EC_TAG_PREFS_CATEGORIES)->GetTagCount(); i++) {
+			const CECTag *cat_tag = prefs->GetTagByName(EC_TAG_PREFS_CATEGORIES)->GetTagByIndex(i);
 			Category_Struct *cat = new Category_Struct;
 			cat->title = cat_tag->GetTagByName(EC_TAG_CATEGORY_TITLE)->GetStringData();
 			cat->incomingpath = cat_tag->GetTagByName(EC_TAG_CATEGORY_PATH)->GetStringData();
@@ -537,7 +544,9 @@ bool CPreferencesRem::LoadRemote()
 			theApp.amuledlg->transferwnd->AddCategory(cat);
 		}
 	}
+
 	delete prefs;
+	
 	return true;
 }
 
