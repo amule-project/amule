@@ -398,8 +398,6 @@ CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request,
 		if ( detail_level != EC_DETAIL_UPDATE ) {
 			enc.ResetEncoder();
 		}
-		//CECTag *etag = enc.Encode();
-		//filetag.AddTag(etag);
 		enc.Encode(&filetag);
 
 		response->AddTag(filetag);
@@ -615,6 +613,30 @@ CECPacket *Get_EC_Response_Server(const CECPacket *request)
 	return response;
 }
 
+CECPacket *Get_EC_Response_Search_Results(const CECPacket *request)
+{
+	CECPacket *response = new CECPacket(EC_OP_SEARCH_RESULTS);
+	EC_DETAIL_LEVEL detail_level = request->GetDetailLevel();
+	//
+	// request can contain list of queried items
+	std::set<CMD4Hash> queryitems;
+	for (int i = 0;i < request->GetTagCount();i++) {
+		CECTag *tag = request->GetTagByIndex(i);
+		if ( tag->GetTagName() == EC_TAG_SEARCHFILE ) {
+			queryitems.insert(tag->GetMD4Data());
+		}
+	}
+	std::vector<CSearchFile*> list(theApp.searchlist->GetSearchResults(0xffff));
+	std::vector<CSearchFile*>::const_iterator it = list.begin();
+	while (it != list.end()) {
+		CSearchFile* sf = *it++;
+		if ( !queryitems.empty() && !queryitems.count(sf->GetFileHash()) ) {
+			continue;
+		}
+		response->AddTag(CEC_SearchFile_Tag(sf, detail_level));
+	}	
+	return response;
+}
 
 CECPacket *Get_EC_Response_Search(const CECPacket *request)
 {
@@ -1454,6 +1476,10 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request, CPartFile_Enc
 		//
 		case EC_OP_SEARCH_START:
 			response = Get_EC_Response_Search(request);
+			break;
+
+		case EC_OP_SEARCH_RESULTS:
+			response = Get_EC_Response_Search_Results(request);
 			break;
 
 		//

@@ -227,21 +227,13 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAI
 //
 // Search reply
 //
-CEC_SearchFile_Tag::CEC_SearchFile_Tag(CSearchFile *file) : CECTag(EC_TAG_KNOWNFILE, file->GetFileHash())
+CEC_SearchFile_Tag::CEC_SearchFile_Tag(CSearchFile *file, EC_DETAIL_LEVEL detail_level) : CECTag(EC_TAG_KNOWNFILE, file->GetFileHash())
 {
-	AddTag(CECTag(EC_TAG_PARTFILE_NAME, file->GetFileName()));
-	AddTag(CECTag(EC_TAG_PARTFILE_SIZE_FULL, file->GetFileSize()));
-	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT, file->GetSourceCount()));
-}
-
-CEC_Search_Tag::CEC_Search_Tag(const std::vector<CSearchFile*> list, uint32 progress) :
-	CECTag(EC_OP_SEARCH_RESULTS, progress)
-{
-	std::vector<CSearchFile*>::const_iterator it = list.begin();
-	while (it != list.end()) {
-		CSearchFile* sf = (*it);
-		AddTag(CEC_SearchFile_Tag(sf));
+	if ( detail_level != EC_DETAIL_WEB ) {
+		AddTag(CECTag(EC_TAG_PARTFILE_NAME, file->GetFileName()));
+		AddTag(CECTag(EC_TAG_PARTFILE_SIZE_FULL, file->GetFileSize()));
 	}
+	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT, file->GetSourceCount()));
 }
 
 #endif /* ! EC_REMOTE */

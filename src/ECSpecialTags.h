@@ -129,7 +129,7 @@ class CEC_UpDownClient_Tag : public CECTag {
 
 class CEC_SearchFile_Tag : public CECTag {
 	public:
-		CEC_SearchFile_Tag(CSearchFile *file);
+		CEC_SearchFile_Tag(CSearchFile *file, EC_DETAIL_LEVEL detail_level);
 
 		// template needs it
  		CMD4Hash	ID()	{ return GetMD4Data(); }
@@ -148,9 +148,6 @@ class CEC_Search_Tag : public CECTag {
 		CEC_Search_Tag(wxString &name, EC_SEARCH_TYPE search_type, wxString &file_type,
 			wxString &extension, uint32 avail, uint32 min_size, uint32 max_size);
 			
-		// search reply
-		CEC_Search_Tag(const std::vector<CSearchFile*> list, uint32 progress);
-		
 		wxString SearchText() { return GetTagByName(EC_TAG_SEARCH_NAME)->GetStringData(); }
 		EC_SEARCH_TYPE SearchType() { return (EC_SEARCH_TYPE)GetInt32Data(); }
 		uint32 MinSize()

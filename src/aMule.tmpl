@@ -972,13 +972,12 @@ font-size: 11px;
 <--TMPL_SEARCH_END-->
 <--TMPL_SEARCH_RESULT_HEADER-->
 <tr>
-<td class="websearch-line"><b><font face=Tahoma style="font-size:8pt;"><a href="?ses=[Session]&amp;w=search&amp;sort=0&amp;sortAsc=[SORTASCVALUE0]">[Filename]</a></font></b></td>
-<td class="websearch-line" width=50><b><font face=Tahoma style="font-size:8pt;"><a href="?ses=[Session]&amp;w=search&amp;sort=1&amp;sortAsc=[SORTASCVALUE1]">[Filesize]</a></font></b></td>
-<td class="websearch-line"><b><font face=Tahoma style="font-size:8pt;"><a href="?ses=[Session]&amp;w=search&amp;sort=2&amp;sortAsc=[SORTASCVALUE2]">[Filehash]</a></font></b></td>
-<td class="websearch-line"><b><font face=Tahoma style="font-size:8pt;"><a href="?ses=[Session]&amp;w=search&amp;sort=3&amp;sortAsc=[SORTASCVALUE3]">[Sources]</a></b></td>
+<td class="websearch-line"><b><font face=Tahoma style="font-size:8pt;"><a href="?ses=[Session]&amp;w=search&amp;sort=name[SortName]">[Filename]</a></font></b></td>
+<td class="websearch-line" width=50><b><font face=Tahoma style="font-size:8pt;"><a href="?ses=[Session]&amp;w=search&amp;sort=size[SortSize]">[Filesize]</a></font></b></td>
+<td class="websearch-line"><b><font face=Tahoma style="font-size:8pt;"><a href="?ses=[Session]&amp;w=search&amp;sort=sources[SortSources]">[Sources]</a></b></td>
 <td class="websearch-line" width=100><b><font face=Tahoma style="font-size:8pt;">[Download]</font></b></td>
 </tr>
 <--TMPL_SEARCH_RESULT_HEADER_END-->
 <--TMPL_SEARCH_RESULT_LINE-->
-<tr><td align="left"><font face=Tahoma style="font-size:8pt;">%s</font></td><td class="websearch-line"><font face=Tahoma style="font-size:8pt;">%s</font></td><td class="websearch-line"><font face=Tahoma style="font-size:8pt;">%s</font></td><td class="websearch-line"><font face=Tahoma style="font-size:8pt;">%u</font></td><td class="websearch-line"><input type="checkbox" name="downloads" value="%s"></td></tr>
+<tr><td align="left"><font face=Tahoma style="font-size:8pt;">[FILENAME]</font></td><td class="websearch-line"><font face=Tahoma style="font-size:8pt;">[FILESIZE]</font></td><td class="websearch-line"><font face=Tahoma style="font-size:8pt;">[SOURCECOUNT]</font></td><td class="websearch-line"><input type="checkbox" name="downloads" value="[FILEHASH]"></td></tr>
 <--TMPL_SEARCH_RESULT_LINE_END-->
