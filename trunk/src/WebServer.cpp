@@ -999,7 +999,7 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	wxString sDownList;
 	DownloadFilesInfo::ItemIterator i = pThis->m_DownloadFilesInfo.GetBeginIterator();
 	while (i != pThis->m_DownloadFilesInfo.GetEndIterator()) {
-		wxString sFileStatus = i->GetFileStatus;
+		wxString sFileStatus = i->GetFileStatus();
 
 		if ( sCat.Length() && (sCat != sFileStatus)) {
 			i++;
