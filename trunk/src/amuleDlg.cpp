@@ -646,12 +646,13 @@ void CamuleDlg::ShowUserCount(uint32 user_toshow, uint32 file_toshow)
 		theApp.serverlist->GetUserFileStatus( totaluser, totalfile );
 	}
 
-	wxString buffer = 	_("Users: ") +
-							CastItoIShort(user_toshow) + wxT(" (") + CastItoIShort(totaluser) +
-							wxT(") | ") +
-							 _("Files: ") +
-							CastItoIShort(file_toshow) + wxT(" (") + CastItoIShort(totalfile) +
-							wxT(")");
+	wxString buffer =
+		_("Users: ") +
+		CastItoIShort(user_toshow) + wxT(" (") + CastItoIShort(totaluser) +
+		wxT(") | ") +
+		 _("Files: ") +
+		CastItoIShort(file_toshow) + wxT(" (") + CastItoIShort(totalfile) +
+		wxT(")");
 
 	wxStaticCast(FindWindow(wxT("userLabel")), wxStaticText)->SetLabel(buffer);
 
@@ -660,9 +661,8 @@ void CamuleDlg::ShowUserCount(uint32 user_toshow, uint32 file_toshow)
 
 void CamuleDlg::ShowTransferRate()
 {
-	float	kBpsUp = theApp.uploadqueue->GetKBps();
-	float 	kBpsDown = theApp.downloadqueue->GetKBps();
-
+	float kBpsUp = theApp.uploadqueue->GetKBps();
+	float kBpsDown = theApp.downloadqueue->GetKBps();
 	wxString buffer;
 	if( theApp.glob_prefs->ShowOverhead() )
 	{
@@ -677,6 +677,11 @@ void CamuleDlg::ShowTransferRate()
 	((wxStaticText*)FindWindow(wxT("speedLabel")))->SetLabel(buffer);
 	Layout();
 
+	// Show upload/download speed in title
+	if (theApp.glob_prefs->GetShowRatesOnTitle()) {
+		wxString UpDownSpeed = wxString::Format(wxT(" -- Up: %.1f | Down: %.1f"), kBpsUp, kBpsDown);
+		SetTitle(theApp.m_FrameTitle + UpDownSpeed);
+	}
 
 #ifndef __SYSTRAY_DISABLED__
 	// set trayicon-icon

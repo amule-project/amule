@@ -640,174 +640,166 @@ void CPreferences::BuildItemList( const wxString& appdir )  // gets called at in
 	/**
 	 * Debugging
 	 **/
-	s_CfgList[IDC_VERBOSE]			= new Cfg_Bool( wxT("/eMule/Verbose"), s_bVerbose, false );
-	s_CfgList[IDC_VERBOSEPACKETERROR]	= new Cfg_Bool( wxT("/FakeCheck/VerbosePacketError"), s_VerbosePacketError, false );
+	s_CfgList[IDC_VERBOSE]		= new Cfg_Bool( wxT("/eMule/Verbose"), s_bVerbose, false );
+	s_CfgList[IDC_VERBOSEPACKETERROR]= new Cfg_Bool( wxT("/FakeCheck/VerbosePacketError"), s_VerbosePacketError, false );
 
 
 	/**
 	 * Connection settings
 	 **/
-	s_CfgList[IDC_MAXUP]			=    MkCfg_Int( wxT("/eMule/MaxUpload"), s_maxupload, 0 );
-	s_CfgList[IDC_MAXDOWN]			=    MkCfg_Int( wxT("/eMule/MaxDownload"), s_maxdownload, 0 );
-	s_CfgList[IDC_SLOTALLOC]		=    MkCfg_Int( wxT("/eMule/SlotAllocation"), s_slotallocation, 2 );
-	s_CfgList[IDC_PORT]				=    MkCfg_Int( wxT("/eMule/Port"), s_port, 4662 );
-	s_CfgList[IDC_UDPPORT]			=    MkCfg_Int( wxT("/eMule/UDPPort"), s_udpport, 4672 );
-	s_CfgList[IDC_UDPDISABLE]		= new Cfg_Bool( wxT("/eMule/UDPDisable"), s_UDPDisable, false );
-	s_CfgList[IDC_AUTOCONNECT]		= new Cfg_Bool( wxT("/eMule/Autoconnect"), s_autoconnect, true );
+	s_CfgList[IDC_MAXUP]		=    MkCfg_Int( wxT("/eMule/MaxUpload"), s_maxupload, 0 );
+	s_CfgList[IDC_MAXDOWN]		=    MkCfg_Int( wxT("/eMule/MaxDownload"), s_maxdownload, 0 );
+	s_CfgList[IDC_SLOTALLOC]	=    MkCfg_Int( wxT("/eMule/SlotAllocation"), s_slotallocation, 2 );
+	s_CfgList[IDC_PORT]		=    MkCfg_Int( wxT("/eMule/Port"), s_port, 4662 );
+	s_CfgList[IDC_UDPPORT]		=    MkCfg_Int( wxT("/eMule/UDPPort"), s_udpport, 4672 );
+	s_CfgList[IDC_UDPDISABLE]	= new Cfg_Bool( wxT("/eMule/UDPDisable"), s_UDPDisable, false );
+	s_CfgList[IDC_AUTOCONNECT]	= new Cfg_Bool( wxT("/eMule/Autoconnect"), s_autoconnect, true );
 	s_CfgList[IDC_MAXSOURCEPERFILE]	=    MkCfg_Int( wxT("/eMule/MaxSourcesPerFile"), s_maxsourceperfile, 300 );
-	s_CfgList[IDC_MAXCON]			=    MkCfg_Int( wxT("/eMule/MaxConnections"), s_maxconnections, GetRecommendedMaxConnections() );
-	s_CfgList[IDC_MAXCON5SEC]		=    MkCfg_Int( wxT("/eMule/MaxConnectionsPerFiveSeconds"), s_MaxConperFive, 20 );
-	s_CfgList[IDC_SAFEMAXCONN]		= new Cfg_Bool( wxT("/FakeCheck/SafeMaxConn"), s_UseSafeMaxConn, false );
+	s_CfgList[IDC_MAXCON]		=    MkCfg_Int( wxT("/eMule/MaxConnections"), s_maxconnections, GetRecommendedMaxConnections() );
+	s_CfgList[IDC_MAXCON5SEC]	=    MkCfg_Int( wxT("/eMule/MaxConnectionsPerFiveSeconds"), s_MaxConperFive, 20 );
+	s_CfgList[IDC_SAFEMAXCONN]	= new Cfg_Bool( wxT("/FakeCheck/SafeMaxConn"), s_UseSafeMaxConn, false );
 
 
 	/**
 	 * Servers
 	 **/ 
-	s_CfgList[IDC_REMOVEDEAD]		= new Cfg_Bool( wxT("/eMule/RemoveDeadServer"), s_deadserver, 1 );
+	s_CfgList[IDC_REMOVEDEAD]	= new Cfg_Bool( wxT("/eMule/RemoveDeadServer"), s_deadserver, 1 );
 	s_CfgList[IDC_SERVERRETRIES]	=    MkCfg_Int( wxT("/eMule/DeadServerRetry"), s_deadserverretries, 2 );
 	s_CfgList[IDC_SERVERKEEPALIVE]	=    MkCfg_Int( wxT("/eMule/ServerKeepAliveTimeout"), s_dwServerKeepAliveTimeoutMins, 0 );
-	s_CfgList[IDC_RECONN]			= new Cfg_Bool( wxT("/eMule/Reconnect"), s_reconnect, true );
-	s_CfgList[IDC_SCORE]			= new Cfg_Bool( wxT("/eMule/Scoresystem"), s_scorsystem, true );
-	s_CfgList[IDC_AUTOSERVER]		= new Cfg_Bool( wxT("/eMule/Serverlist"), s_autoserverlist, false );
-	s_CfgList[IDC_UPDATESERVERCONNECT]	= new Cfg_Bool( wxT("/eMule/AddServersFromServer"), s_addserversfromserver, true);
-	s_CfgList[IDC_UPDATESERVERCLIENT]	= new Cfg_Bool( wxT("/eMule/AddServersFromClient"), s_addserversfromclient, true );
-	s_CfgList[IDC_SAFESERVERCONNECT]	 = new Cfg_Bool( wxT("/eMule/SafeServerConnect"), s_safeServerConnect, false );
+	s_CfgList[IDC_RECONN]		= new Cfg_Bool( wxT("/eMule/Reconnect"), s_reconnect, true );
+	s_CfgList[IDC_SCORE]		= new Cfg_Bool( wxT("/eMule/Scoresystem"), s_scorsystem, true );
+	s_CfgList[IDC_AUTOSERVER]	= new Cfg_Bool( wxT("/eMule/Serverlist"), s_autoserverlist, false );
+	s_CfgList[IDC_UPDATESERVERCONNECT]= new Cfg_Bool( wxT("/eMule/AddServersFromServer"), s_addserversfromserver, true);
+	s_CfgList[IDC_UPDATESERVERCLIENT]= new Cfg_Bool( wxT("/eMule/AddServersFromClient"), s_addserversfromclient, true );
+	s_CfgList[IDC_SAFESERVERCONNECT]= new Cfg_Bool( wxT("/eMule/SafeServerConnect"), s_safeServerConnect, false );
 	s_CfgList[IDC_AUTOCONNECTSTATICONLY] = new Cfg_Bool( wxT("/eMule/AutoConnectStaticOnly"), s_autoconnectstaticonly, false ); 
-	s_CfgList[IDC_SMARTIDCHECK]		= new Cfg_Bool( wxT("/eMule/SmartIdCheck"), s_smartidcheck, true );
+	s_CfgList[IDC_SMARTIDCHECK]	= new Cfg_Bool( wxT("/eMule/SmartIdCheck"), s_smartidcheck, true );
 
 
 	/**
 	 * Files
 	 **/
-	s_CfgList[IDC_TEMPFILES]		= new Cfg_Str(  wxT("/eMule/TempDir"), s_tempdir,			appdir + wxT("Temp") );
-	s_CfgList[IDC_INCFILES]			= new Cfg_Str(  wxT("/eMule/IncomingDir"), s_incomingdir,	appdir + wxT("Incoming") );
-	s_CfgList[IDC_ICH]				= new Cfg_Bool( wxT("/eMule/ICH"), s_ICH, true );
-	s_CfgList[IDC_METADATA] 		= new Cfg_Bool( wxT("/ExternalConnect/ExtractMetaDataTags"), s_ExtractMetaData, false );
-	s_CfgList[IDC_CHUNKALLOC]		= new Cfg_Bool( wxT("/ExternalConnect/FullChunkAlloc"), s_AllocFullChunk, false );
-	s_CfgList[IDC_FULLALLOCATE]		= new Cfg_Bool( wxT("/ExternalConnect/FullPartAlloc"), s_AllocFullPart, false );
+	s_CfgList[IDC_TEMPFILES]	= new Cfg_Str(  wxT("/eMule/TempDir"), 	s_tempdir, appdir + wxT("Temp") );
+	s_CfgList[IDC_INCFILES]		= new Cfg_Str(  wxT("/eMule/IncomingDir"), s_incomingdir, appdir + wxT("Incoming") );
+	s_CfgList[IDC_ICH]		= new Cfg_Bool( wxT("/eMule/ICH"), s_ICH, true );
+	s_CfgList[IDC_METADATA] 	= new Cfg_Bool( wxT("/ExternalConnect/ExtractMetaDataTags"), s_ExtractMetaData, false );
+	s_CfgList[IDC_CHUNKALLOC]	= new Cfg_Bool( wxT("/ExternalConnect/FullChunkAlloc"), s_AllocFullChunk, false );
+	s_CfgList[IDC_FULLALLOCATE]	= new Cfg_Bool( wxT("/ExternalConnect/FullPartAlloc"), s_AllocFullPart, false );
 	s_CfgList[IDC_CHECKDISKSPACE]	= new Cfg_Bool( wxT("/eMule/CheckDiskspace"), s_checkDiskspace, true );
-	s_CfgList[IDC_MINDISKSPACE]		=    MkCfg_Int( wxT("/eMule/MinFreeDiskSpace"), s_uMinFreeDiskSpace, 1 );
-	s_CfgList[IDC_ADDNEWFILESPAUSED]	= new Cfg_Bool( wxT("/eMule/AddNewFilesPaused"), s_addnewfilespaused, false );
-	s_CfgList[IDC_PREVIEWPRIO]		= new Cfg_Bool( wxT("/eMule/PreviewPrio"), s_bpreviewprio, false );
-	s_CfgList[IDC_MANUALSERVERHIGHPRIO]	= new Cfg_Bool( wxT("/eMule/ManualHighPrio"), s_bmanualhighprio, false );
+	s_CfgList[IDC_MINDISKSPACE]	=    MkCfg_Int( wxT("/eMule/MinFreeDiskSpace"), s_uMinFreeDiskSpace, 1 );
+	s_CfgList[IDC_ADDNEWFILESPAUSED]= new Cfg_Bool( wxT("/eMule/AddNewFilesPaused"), s_addnewfilespaused, false );
+	s_CfgList[IDC_PREVIEWPRIO]	= new Cfg_Bool( wxT("/eMule/PreviewPrio"), s_bpreviewprio, false );
+	s_CfgList[IDC_MANUALSERVERHIGHPRIO]= new Cfg_Bool( wxT("/eMule/ManualHighPrio"), s_bmanualhighprio, false );
 	s_CfgList[IDC_FULLCHUNKTRANS] 	= new Cfg_Bool( wxT("/eMule/FullChunkTransfers"), s_btransferfullchunks, true );
 	s_CfgList[IDC_STARTNEXTFILE]	= new Cfg_Bool( wxT("/eMule/StartNextFile"), s_bstartnextfile, false );
 	s_CfgList[IDC_FILEBUFFERSIZE]	=    MkCfg_Int( wxT("/eMule/FileBufferSizePref"), s_iFileBufferSize, 16 );
-	s_CfgList[IDC_DAP]				= new Cfg_Bool( wxT("/eMule/DAPPref"), s_bDAP, true );
-	s_CfgList[IDC_UAP]				= new Cfg_Bool( wxT("/eMule/UAPPref"), s_bUAP, true );
+	s_CfgList[IDC_DAP]		= new Cfg_Bool( wxT("/eMule/DAPPref"), s_bDAP, true );
+	s_CfgList[IDC_UAP]		= new Cfg_Bool( wxT("/eMule/UAPPref"), s_bUAP, true );
 
 
 	/**
 	 * External Connections
 	 */
-	s_CfgList[IDC_OSDIR]			= new Cfg_Str(  wxT("/eMule/OSDirectory"), s_OSDirectory,	appdir );
-	s_CfgList[IDC_ONLINESIG]		= new Cfg_Bool( wxT("/eMule/OnlineSignature"), s_onlineSig, false );
-	s_CfgList[IDC_ENABLE_WEB]		= new Cfg_Bool( wxT("/WebServer/Enabled"), s_bWebEnabled, false );
-	s_CfgList[IDC_WEB_PASSWD]		= new Cfg_Str_Encrypted( wxT("/WebServer/Password"), s_sWebPassword );
+	s_CfgList[IDC_OSDIR]		= new Cfg_Str(  wxT("/eMule/OSDirectory"), s_OSDirectory,	appdir );
+	s_CfgList[IDC_ONLINESIG]	= new Cfg_Bool( wxT("/eMule/OnlineSignature"), s_onlineSig, false );
+	s_CfgList[IDC_ENABLE_WEB]	= new Cfg_Bool( wxT("/WebServer/Enabled"), s_bWebEnabled, false );
+	s_CfgList[IDC_WEB_PASSWD]	= new Cfg_Str_Encrypted( wxT("/WebServer/Password"), s_sWebPassword );
 	s_CfgList[IDC_WEB_PASSWD_LOW]	= new Cfg_Str_Encrypted( wxT("/WebServer/PasswordLow"), s_sWebLowPassword );
-	s_CfgList[IDC_WEB_PORT]			=    MkCfg_Int( wxT("/WebServer/Port"), s_nWebPort, 4711 );
-	s_CfgList[IDC_WEB_GZIP]			= new Cfg_Bool( wxT("/WebServer/UseGzip"), s_bWebUseGzip, true );
+	s_CfgList[IDC_WEB_PORT]		=    MkCfg_Int( wxT("/WebServer/Port"), s_nWebPort, 4711 );
+	s_CfgList[IDC_WEB_GZIP]		= new Cfg_Bool( wxT("/WebServer/UseGzip"), s_bWebUseGzip, true );
 	s_CfgList[IDC_ENABLE_WEB_LOW]	= new Cfg_Bool( wxT("/WebServer/UseLowRightsUser"), s_bWebLowEnabled, false );
-	s_CfgList[IDC_WEB_REFRESH_TIMEOUT]	=    MkCfg_Int( wxT("/WebServer/PageRefreshTime"), s_nWebPageRefresh, 120 );
+	s_CfgList[IDC_WEB_REFRESH_TIMEOUT]=  MkCfg_Int( wxT("/WebServer/PageRefreshTime"), s_nWebPageRefresh, 120 );
 	s_CfgList[IDC_EXT_CONN_ACCEPT]	= new Cfg_Bool( wxT("/ExternalConnect/AcceptExternalConnections"), s_AcceptExternalConnections, true );
 	s_CfgList[IDC_EXT_CONN_USETCP]	= new Cfg_Bool( wxT("/ExternalConnect/ECUseTCPPort"), s_ECUseTCPPort, false );
-	s_CfgList[IDC_EXT_CONN_TCP_PORT]	=    MkCfg_Int( wxT("/ExternalConnect/ECPort"), s_ECPort, 4712 );
+	s_CfgList[IDC_EXT_CONN_TCP_PORT]=    MkCfg_Int( wxT("/ExternalConnect/ECPort"), s_ECPort, 4712 );
 	s_CfgList[IDC_EXT_CONN_PASSWD]	= new Cfg_Str_Encrypted( wxT("/ExternalConnect/ECPassword"), s_ECPassword, wxEmptyString );
 
 
 	/**
 	 * GUI behavoir
 	 **/
-	s_CfgList[IDC_SPLASHON]			= new Cfg_Bool( wxT("/eMule/Splashscreen"), s_splashscreen, true );
-	s_CfgList[IDC_MINTRAY]			= new Cfg_Bool( wxT("/eMule/MinToTray"), s_mintotray, false );
-	s_CfgList[IDC_EXIT]				= new Cfg_Bool( wxT("/eMule/ConfirmExit"), s_confirmExit, false );
-	s_CfgList[IDC_DBLCLICK]			= new Cfg_Bool( wxT("/eMule/TransferDoubleClick"), s_transferDoubleclick, true );
-	s_CfgList[IDC_STARTMIN]			= new Cfg_Bool( wxT("/eMule/StartupMinimized"), s_startMinimized, false );
+	s_CfgList[IDC_SPLASHON]		= new Cfg_Bool( wxT("/eMule/Splashscreen"), s_splashscreen, true );
+	s_CfgList[IDC_MINTRAY]		= new Cfg_Bool( wxT("/eMule/MinToTray"), s_mintotray, false );
+	s_CfgList[IDC_EXIT]		= new Cfg_Bool( wxT("/eMule/ConfirmExit"), s_confirmExit, false );
+	s_CfgList[IDC_DBLCLICK]		= new Cfg_Bool( wxT("/eMule/TransferDoubleClick"), s_transferDoubleclick, true );
+	s_CfgList[IDC_STARTMIN]		= new Cfg_Bool( wxT("/eMule/StartupMinimized"), s_startMinimized, false );
 
-
+	
 	/**
 	 * GUI appearence
 	 **/
-	s_CfgList[IDC_3DDEPTH]			=    MkCfg_Int( wxT("/eMule/3DDepth"), s_depth3D, 10 );
-	s_CfgList[IDC_TOOLTIPDELAY]		=    MkCfg_Int( wxT("/eMule/ToolTipDelay"), s_iToolDelayTime, 1 );
-	s_CfgList[IDC_SHOWOVERHEAD]		= new Cfg_Bool( wxT("/eMule/ShowOverhead"), s_bshowoverhead, false );
-	s_CfgList[IDC_EXTCATINFO]		= new Cfg_Bool( wxT("/eMule/ShowInfoOnCatTabs"), s_showCatTabInfos, false );
-	s_CfgList[IDC_FED2KLH]			= new Cfg_Bool( wxT("/Razor_Preferences/FastED2KLinksHandler"), s_FastED2KLinksHandler, true );
-	s_CfgList[IDC_PROGBAR]			= new Cfg_Bool( wxT("/ExternalConnect/ShowProgressBar"),	s_ProgBar, true );
-	s_CfgList[IDC_PERCENT]			= new Cfg_Bool( wxT("/ExternalConnect/ShowPercent"), 		s_Percent, false );
+	s_CfgList[IDC_3DDEPTH]		=    MkCfg_Int( wxT("/eMule/3DDepth"), s_depth3D, 10 );
+	s_CfgList[IDC_TOOLTIPDELAY]	=    MkCfg_Int( wxT("/eMule/ToolTipDelay"), s_iToolDelayTime, 1 );
+	s_CfgList[IDC_SHOWOVERHEAD]	= new Cfg_Bool( wxT("/eMule/ShowOverhead"), s_bshowoverhead, false );
+	s_CfgList[IDC_EXTCATINFO]	= new Cfg_Bool( wxT("/eMule/ShowInfoOnCatTabs"), s_showCatTabInfos, false );
+	s_CfgList[IDC_FED2KLH]		= new Cfg_Bool( wxT("/Razor_Preferences/FastED2KLinksHandler"), s_FastED2KLinksHandler, true );
+	s_CfgList[IDC_PROGBAR]		= new Cfg_Bool( wxT("/ExternalConnect/ShowProgressBar"), s_ProgBar, true );
+	s_CfgList[IDC_PERCENT]		= new Cfg_Bool( wxT("/ExternalConnect/ShowPercent"), s_Percent, false );
+	s_CfgList[IDC_USESKIN]		= new Cfg_Bool( wxT("/SkinGUIOptions/UseSkinFile"), s_UseSkinFile, false );
+	s_CfgList[IDC_SKINFILE]		= new Cfg_Str(  wxT("/SkinGUIOptions/SkinFile"), s_SkinFile, wxEmptyString );
+	s_CfgList[IDC_SHOWRATEONTITLE]	= new Cfg_Bool( wxT("/eMule/ShowRatesOnTitle"), s_ShowRatesOnTitle, false );
 
-	s_CfgList[IDC_USESKIN]			= new Cfg_Bool( wxT("/SkinGUIOptions/UseSkinFile"), s_UseSkinFile, false );
-	s_CfgList[IDC_SKINFILE]			= new Cfg_Str(  wxT("/SkinGUIOptions/SkinFile"), s_SkinFile, wxEmptyString );
-
-
+	
 	/**
 	 * External Apps
 	 */
-	s_CfgList[IDC_VIDEOPLAYER]		= new Cfg_Str(  wxT("/eMule/VideoPlayer"), s_VideoPlayer, wxEmptyString );
-	s_CfgList[IDC_VIDEOBACKUP]		= new Cfg_Bool( wxT("/eMule/VideoPreviewBackupped"), s_moviePreviewBackup, true );
+	s_CfgList[IDC_VIDEOPLAYER]	= new Cfg_Str(  wxT("/eMule/VideoPlayer"), s_VideoPlayer, wxEmptyString );
+	s_CfgList[IDC_VIDEOBACKUP]	= new Cfg_Bool( wxT("/eMule/VideoPreviewBackupped"), s_moviePreviewBackup, true );
 
-
+	
 	/**
 	 * Statistics
 	 **/
-	s_CfgList[IDC_SLIDER]			=    MkCfg_Int( wxT("/eMule/StatGraphsInterval"), s_trafficOMeterInterval, 3 );
-	s_CfgList[IDC_SLIDER2]			=    MkCfg_Int( wxT("/eMule/statsInterval"), s_statsInterval, 30 );
-	s_CfgList[IDC_DOWNLOAD_CAP]		=    MkCfg_Int( wxT("/eMule/DownloadCapacity"), s_maxGraphDownloadRate, 3 );
-	s_CfgList[IDC_UPLOAD_CAP]		=    MkCfg_Int( wxT("/eMule/UploadCapacity"), s_maxGraphUploadRate, 3 );
-	s_CfgList[IDC_SLIDER3] 			=    MkCfg_Int( wxT("/eMule/StatsAverageMinutes"), s_statsAverageMinutes, 5 );
-	s_CfgList[IDC_SLIDER4]			=    MkCfg_Int( wxT("/eMule/VariousStatisticsMaxValue"), s_statsMax, 100 );
+	s_CfgList[IDC_SLIDER]		=    MkCfg_Int( wxT("/eMule/StatGraphsInterval"), s_trafficOMeterInterval, 3 );
+	s_CfgList[IDC_SLIDER2]		=    MkCfg_Int( wxT("/eMule/statsInterval"), s_statsInterval, 30 );
+	s_CfgList[IDC_DOWNLOAD_CAP]	=    MkCfg_Int( wxT("/eMule/DownloadCapacity"), s_maxGraphDownloadRate, 3 );
+	s_CfgList[IDC_UPLOAD_CAP]	=    MkCfg_Int( wxT("/eMule/UploadCapacity"), s_maxGraphUploadRate, 3 );
+	s_CfgList[IDC_SLIDER3] 		=    MkCfg_Int( wxT("/eMule/StatsAverageMinutes"), s_statsAverageMinutes, 5 );
+	s_CfgList[IDC_SLIDER4]		=    MkCfg_Int( wxT("/eMule/VariousStatisticsMaxValue"), s_statsMax, 100 );
 
-
+	
 	/**
 	 * Sources
 	 **/
 	s_CfgList[IDC_ENABLE_AUTO_FQS]	= new Cfg_Bool( wxT("/Razor_Preferences/FullQueueSources"), s_DropFullQueueSources,  false );
 	s_CfgList[IDC_ENABLE_AUTO_HQRS]	= new Cfg_Bool( wxT("/Razor_Preferences/HighQueueRankingSources"), s_DropHighQueueRankingSources, false );
-	s_CfgList[IDC_HQR_VALUE]		=    MkCfg_Int( wxT("/Razor_Preferences/HighQueueRanking"), s_HighQueueRanking, 1200 );
+	s_CfgList[IDC_HQR_VALUE]	=    MkCfg_Int( wxT("/Razor_Preferences/HighQueueRanking"), s_HighQueueRanking, 1200 );
 	s_CfgList[IDC_AUTO_DROP_TIMER]	=    MkCfg_Int( wxT("/Razor_Preferences/AutoDropTimer"), s_AutoDropTimer, 240 );
-	s_CfgList[IDC_NNS_HANDLING]		=    MkCfg_Int( wxT("/Razor_Preferences/NoNeededSourcesHandling"), s_NoNeededSources, 2 );
-	s_CfgList[IDC_SRCSEEDS]			= new Cfg_Bool( wxT("/ExternalConnect/UseSrcSeeds"),		s_UseSrcSeeds, false );
-	 
+	s_CfgList[IDC_NNS_HANDLING]	=    MkCfg_Int( wxT("/Razor_Preferences/NoNeededSourcesHandling"), s_NoNeededSources, 2 );
+	s_CfgList[IDC_SRCSEEDS]		= new Cfg_Bool( wxT("/ExternalConnect/UseSrcSeeds"), s_UseSrcSeeds, false );
 
+	
 	/**
 	 * Security
 	 **/
-	s_CfgList[IDC_SEESHARES]		=    MkCfg_Int( wxT("/eMule/SeeShare"),					s_iSeeShares, 2 );
-	s_CfgList[IDC_SECIDENT]			= new Cfg_Bool( wxT("/ExternalConnect/UseSecIdent"),	s_SecIdent, true );
-	s_CfgList[IDC_IPFONOFF]			= new Cfg_Bool( wxT("/ExternalConnect/IpFilterOn"),		s_IPFilterOn, true );
-	s_CfgList[IDC_FILTER]			= new Cfg_Bool( wxT("/eMule/FilterBadIPs"),				s_filterBadIP, true );
+	s_CfgList[IDC_SEESHARES]	=    MkCfg_Int( wxT("/eMule/SeeShare"),	s_iSeeShares, 2 );
+	s_CfgList[IDC_SECIDENT]		= new Cfg_Bool( wxT("/ExternalConnect/UseSecIdent"), s_SecIdent, true );
+	s_CfgList[IDC_IPFONOFF]		= new Cfg_Bool( wxT("/ExternalConnect/IpFilterOn"), s_IPFilterOn, true );
+	s_CfgList[IDC_FILTER]		= new Cfg_Bool( wxT("/eMule/FilterBadIPs"), s_filterBadIP, true );
 
-
-
-
-
-
+	
 	/**
 	 * The folowing doesn't have an assosiated widget.
 	 **/
-
-
 	s_MiscList.push_back( new Cfg_Counter( wxT("/Statistics/TotalDownloadedBytes"), s_totalDownloadedBytes ) );
 	s_MiscList.push_back( new Cfg_Counter( wxT("/Statistics/TotalUploadedBytes"),	s_totalUploadedBytes ) );
-	s_MiscList.push_back(    MkCfg_Int( wxT("/eMule/SplitterbarPosition"),			s_splitterbarPosition, 75 ) );
-	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/FilterServersByIP"),			s_filterserverbyip, false ) );
-	s_MiscList.push_back(    MkCfg_Int( wxT("/eMule/FilterLevel"),					s_filterlevel, 127 ) );
-	s_MiscList.push_back( new Cfg_Str(  wxT("/eMule/YourHostname"),					s_yourHostname, wxEmptyString ) );
-	s_MiscList.push_back( new Cfg_Str(  wxT("/eMule/DateTimeFormat"),				s_datetimeformat, wxT("%A, %x, %X") ) );
-	
+	s_MiscList.push_back(    MkCfg_Int( wxT("/eMule/SplitterbarPosition"),		s_splitterbarPosition, 75 ) );
+	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/FilterServersByIP"),		s_filterserverbyip, false ) );
+	s_MiscList.push_back(    MkCfg_Int( wxT("/eMule/FilterLevel"),			s_filterlevel, 127 ) );
+	s_MiscList.push_back( new Cfg_Str(  wxT("/eMule/YourHostname"),			s_yourHostname, wxEmptyString ) );
+	s_MiscList.push_back( new Cfg_Str(  wxT("/eMule/DateTimeFormat"),		s_datetimeformat, wxT("%A, %x, %X") ) );
 
-	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/IndicateRatings"),				s_indicateratings, true ) );
-	s_MiscList.push_back(    MkCfg_Int( wxT("/eMule/AllcatType"),					s_allcatType, 0 ) );
-	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/ShowAllNotCats"),				s_showAllNotCats, false ) );
-	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/ResumeNextFromSameCat"),		s_resumeSameCat, false ) );
-	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/DontRecreateStatGraphsOnResize"),	s_resumeSameCat, false ) );
-	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/DisableKnownClientList"),		s_bDisableKnownClientList, false ) );
-	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/DisableQueueList"),				s_bDisableQueueList, false ) );
-	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/MessagesFromFriendsOnly"),		s_msgonlyfriends, false ) );
+	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/IndicateRatings"),		s_indicateratings, true ) );
+	s_MiscList.push_back(    MkCfg_Int( wxT("/eMule/AllcatType"),			s_allcatType, 0 ) );
+	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/ShowAllNotCats"),		s_showAllNotCats, false ) );
+	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/ResumeNextFromSameCat"),	s_resumeSameCat, false ) );
+	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/DontRecreateStatGraphsOnResize"),s_resumeSameCat, false ) );
+	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/DisableKnownClientList"),	s_bDisableKnownClientList, false ) );
+	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/DisableQueueList"),		s_bDisableQueueList, false ) );
+	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/MessagesFromFriendsOnly"),	s_msgonlyfriends, false ) );
 	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/MessageFromValidSourcesOnly"),	s_msgsecure, true ) );
-	s_MiscList.push_back(    MkCfg_Int( wxT("/eMule/MaxMessageSessions"),			s_maxmsgsessions, 50 ) );
-	s_MiscList.push_back( new Cfg_Str(  wxT("/eMule/WebTemplateFile"),				s_sTemplateFile, wxT("eMule.tmpl") ) );
-
+	s_MiscList.push_back(    MkCfg_Int( wxT("/eMule/MaxMessageSessions"),		s_maxmsgsessions, 50 ) );
+	s_MiscList.push_back( new Cfg_Str(  wxT("/eMule/WebTemplateFile"),		s_sTemplateFile, wxT("eMule.tmpl") ) );
 
 	s_MiscList.push_back(   MkCfg_Int( wxT("/Statistics/DesktopMode"), s_desktopMode, 4 ) );
 

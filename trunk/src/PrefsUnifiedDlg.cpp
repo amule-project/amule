@@ -352,10 +352,17 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 		theApp.SetOSFiles( widget->GetValue() );
 	}
 
-
-	if ( theApp.glob_prefs->GetIPFilterOn() )
+	if (theApp.glob_prefs->GetIPFilterOn()) {
 		theApp.clientlist->FilterQueues();
+	}
 
+	if (theApp.glob_prefs->GetShowRatesOnTitle()) {
+		// This avoids a 5 seconds delay to show the title
+		theApp.amuledlg->SetTitle(theApp.m_FrameTitle + wxT(" -- Up: 0.0 | Down: 0.0"));
+	} else {
+		// This resets the title
+		theApp.amuledlg->SetTitle(theApp.m_FrameTitle);
+	}
 
 	// Final actions:
 	// Reset the ID so that a new dialog can be created
