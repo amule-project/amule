@@ -682,7 +682,11 @@ bool CamuleApp::OnInit()
 		#ifdef __SOLARIS__
 			struct mnttab entries;
 			while ( getmntent(mnt_tab,&entries )!=-1) {
-				if ( strncmp(entries.mnt_fstype, "vfat",4) == 0 ) {
+				if ( (!strncmp(entries->mnt_type, "vfat",4)) 
+					|| (!strncmp(entries->mnt_type, "fat",3)) 
+					|| (!strncmp(entries->mnt_type, "msdos",5)) 
+					|| (!strncmp(entries->mnt_type, "smbfs",5)) 
+				) {
 					#if wxUSE_UNICODE
 					if ( tempdir.StartsWith( UTF82unicode(entries.mnt_mountp )) ) {
 					#else 
@@ -692,7 +696,11 @@ bool CamuleApp::OnInit()
 			struct mntent* entries;
 			entries = getmntent(mnt_tab);
 			while ( entries ) {
-				if ( strncmp(entries->mnt_type, "vfat",4) == 0 ) {
+				if ( (!strncmp(entries->mnt_type, "vfat",4)) 
+					|| (!strncmp(entries->mnt_type, "fat",3)) 
+					|| (!strncmp(entries->mnt_type, "msdos",5)) 
+					|| (!strncmp(entries->mnt_type, "smbfs",5)) 
+				) {
 					#if wxUSE_UNICODE
 					if ( tempdir.StartsWith( UTF82unicode(entries->mnt_dir )) ) {
 					#else 
@@ -741,7 +749,11 @@ bool CamuleApp::OnInit()
 
 	size = getmntinfo(&mntbuf, MNT_NOWAIT);
 	for (i = 0; i < size; i++) {
-		if ( !strcmp(mntbuf[i].f_fstypename,"msdos")) {
+		if ( (!strncmp(mntbuf[i].f_fstypename,"vfat",4))
+			|| (!strncmp(mntbuf[i].f_fstypename,"fat",3))
+			|| (!strncmp(mntbuf[i].f_fstypename,"msdos",5))
+			|| (!strncmp(mntbuf[i].f_fstypename,"smbfs",5))
+		) {
 			#if wxUSE_UNICODE
 			if ( tempdir.StartsWith( UTF82unicode( mntbuf[i].f_mntonname )) ) {
 			#else
