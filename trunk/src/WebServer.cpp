@@ -2126,6 +2126,7 @@ wxString CWebServer::_GetWebSearch(ThreadData Data) {
 	Out.Replace(wxT("[CD-Images]"), _("CD-Images"));
 	Out.Replace(wxT("[Pictures]"), _("Pictures"));
 	Out.Replace(wxT("[Programs]"), _("Programs"));
+	Out.Replace(wxT("[Texts]"), _("Texts"));
 	Out.Replace(wxT("[Videos]"), _("Video"));
 	Out.Replace(wxT("[Search]"), _("Start"));
 	Out.Replace(wxT("[WebSearch]"), _("Web-based Search"));
@@ -2740,6 +2741,7 @@ wxString CWebServer::_GetSearch(ThreadData Data) {
 	Out.Replace(wxT("[CD-Images]"), _("CD-Images"));
 	Out.Replace(wxT("[Pictures]"), _("Pictures"));
 	Out.Replace(wxT("[Programs]"), _("Programs"));
+	Out.Replace(wxT("[Texts]"), _("Texts"));
 	Out.Replace(wxT("[Videos]"), _("Video"));
 	Out.Replace(wxT("[Search]"), _("Search"));
 	Out.Replace(wxT("[RefetchResults]"), _("Refetch Results"));
