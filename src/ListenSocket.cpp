@@ -174,8 +174,13 @@ void CClientReqSocket::Disconnect(const wxString& strReason)
 
 	if (m_client) {
 		if (m_client->Disconnected(strReason, true)) {
-			m_client->SetSocket( NULL );
-			m_client->Safe_Delete();
+			// Somehow, Safe_Delete() is beeing called by Disconnected(),
+			// or any other function that sets m_client to NULL,
+			// so we must check m_client first.
+			if (m_client) {
+				m_client->SetSocket( NULL );
+				m_client->Safe_Delete();
+			}
 		} 
 		m_client = NULL;
 	}
