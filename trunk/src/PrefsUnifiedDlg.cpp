@@ -199,6 +199,9 @@ PrefsUnifiedDlg::PrefsUnifiedDlg(wxWindow* parent)
 	prefs_sizer->Add( pages[0].m_widget, 0, wxGROW|wxEXPAND );
 	m_CurrentPanel->Show( true );
 
+	// Select the first item
+	PrefsIcons->SetItemState( 0, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
+
 	// We now have the needed minimum height and width
 	prefs_sizer->SetMinSize( width, height );
 
