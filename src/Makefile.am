@@ -1,3 +1,5 @@
+EXTRA_DIST = strings.en Makengfile *.h pixmaps/*.xpm pixmaps/*.gif
+
 bin_PROGRAMS =
 
 dist_icon_DATA =
@@ -35,6 +37,7 @@ endif
 if CAS
 bin_PROGRAMS += cas
 dist_icon_DATA += utils/cas/stat.png
+EXTRA_DIST += utils/cas/*.h utils/cas/README
 endif
 
 if WXCAS
@@ -43,6 +46,13 @@ dist_icon_DATA += utils/wxCas/pixmaps/wxcas.xpm
 dist_util_DATA += utils/wxCas/wxcas.desktop
 dist_doc_DATA += utils/wxCas/doc/wxcas_reference_manual.pdf \
 	utils/wxCas/doc/wxcas_user_manual.pdf
+EXTRA_DIST += utils/wxCas/src/*.h \
+	      utils/wxCas/pixmaps/*.xpm utils/wxCas/pixmaps/*.bmp\
+	      utils/wxCas/wxcas.msp utils/wxCas/wxcas.rc \
+	      utils/wxCas/ABOUT-NLS  utils/wxCas/ChangeLog \
+	      utils/wxCas/NEWS utils/wxCas/README \
+	      utils/wxCas/TODO utils/wxCas/AUTHORS \
+	      utils/wxCas/COPYING	      
 endif
 
 # Xas plugin
@@ -58,7 +68,6 @@ bin_PROGRAMS += amule
 DEFS = -DHAVE_CONFIG_H
 
 BUILT_SOURCES =
-EXTRA_DIST =  strings.en *.h pixmaps Makengfile
 
 LIBS = @LIBS@ 
 amule_SOURCES = ListenSocket.cpp \
@@ -180,7 +189,8 @@ wxcas_SOURCES = utils/wxCas/src/onlinesig.cpp \
 		utils/wxCas/src/wxcasprint.cpp \
 		utils/wxCas/src/wxcasframe.cpp \
 		utils/wxCas/src/wxcasprefs.cpp \
-		utils/wxCas/src/wxcascte.cpp		
+		utils/wxCas/src/wxcascte.cpp
+
 wxcas_CFLAGS = $(WX_CFLAGS)		
 wxcas_CXXFLAGS = $(WX_CXXFLAGS)
 wxcas_LDADD = $(WX_LIBS)
