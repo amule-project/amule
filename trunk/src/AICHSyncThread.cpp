@@ -45,8 +45,6 @@ using namespace std;
 // And well, IMHO first time warning should be on the checkversion.
 // Grep TODO on file for changes needed.
 
-wxMutex CamuleApp::hashing_mut;
-
 /////////////////////////////////////////////////////////////////////////////////////////
 ///CAICHSyncThread
 
