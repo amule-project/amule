@@ -60,18 +60,7 @@ amule_SOURCES = ListenSocket.cpp \
 	otherfunctions.cpp \
 	packets.cpp \
 	PartFile.cpp \
-	PPgConnection.cpp \
-	PPgDirectories.cpp \
-	PPgFiles.cpp \
-	PPgGeneral.cpp \
-	PPgNotify.cpp \
-	PPgServer.cpp \
-	PPgStats.cpp \
-	PPgTweaks.cpp \
-	PPgSourcesDropping.cpp \
-	PPgGuiTweaks.cpp \
 	Preferences.cpp \
-	PreferencesDlg.cpp \
 	PrefsUnifiedDlg.cpp \
 	Preview.cpp \
 	QueueListCtrl.cpp \
