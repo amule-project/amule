@@ -140,6 +140,7 @@ void CFriendListCtrl::OnItemSelected(wxListEvent& WXUNUSED(evt))
 
 void CFriendListCtrl::OnItemActivated(wxListEvent& WXUNUSED(evt))
 {
+#ifndef CLIENT_GUI
 	int cursel = GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
 	
 	CFriend* cur_friend = (CFriend*)GetItemData(cursel);
@@ -157,6 +158,7 @@ void CFriendListCtrl::OnItemActivated(wxListEvent& WXUNUSED(evt))
 		theApp.clientlist->AddClient(chatclient);
 		theApp.amuledlg->chatwnd->StartSession(chatclient);
 	}
+#endif
 }
 
 
@@ -298,6 +300,7 @@ void CFriendListCtrl::OnPopupMenu(wxCommandEvent& evt)
 	
 	switch (evt.GetId()) {
 		case MP_MESSAGE: {
+#ifndef CLIENT_GUI
 			if (cur_friend->m_LinkedClient) {
 				theApp.amuledlg->chatwnd->StartSession(cur_friend->m_LinkedClient);
 			} else {
@@ -306,6 +309,7 @@ void CFriendListCtrl::OnPopupMenu(wxCommandEvent& evt)
 				theApp.clientlist->AddClient(chatclient);
 				theApp.amuledlg->chatwnd->StartSession(chatclient);
 			}
+#endif
 			break;
 		}
 		

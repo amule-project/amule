@@ -1626,16 +1626,20 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 					done = true;
 					break;
 				case MP_ADDFRIEND:
+#ifndef CLIENT_GUI
 					theApp.amuledlg->chatwnd->AddFriend(client);
+#endif
 					done = true;
 					break;
 				case MP_SENDMESSAGE: {
+#ifndef CLIENT_GUI
 					wxString message = ::wxGetTextFromUser(_("Send message to user"),_("Message to send:"));
 					if (!message.IsEmpty()) {
 						// false -> no focus set
 						theApp.amuledlg->chatwnd->StartSession(client, false);
 						theApp.amuledlg->chatwnd->SendMessage(message);
 					}
+#endif
 					done = true;
 					break;
 				}
