@@ -490,7 +490,7 @@ uint32 DecodeBase32(const char* pszInput, uchar* paucOutput, uint32 nBufferLen)
 	DWORD nBits	= 0;
 	int nCount	= 0;
 
-	for ( int nChars = nInputLen ; --nChars ; ++pszInput )
+	for ( int nChars = nInputLen ; nChars-- ; ++pszInput )
 	{
 		if ( *pszInput >= 'A' && *pszInput <= 'Z' )
 			nBits |= ( *pszInput - 'A' );
