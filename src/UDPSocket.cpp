@@ -194,8 +194,9 @@ bool CUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, char* host
 				// process all search result packets
 				int iLeft;
 				do{
-					uint16 uResultCount = theApp.searchlist->ProcessUDPSearchanswer(data, inet_addr(host), port-4);
-
+					/*uint16 uResultCount =*/ theApp.searchlist->ProcessUDPSearchanswer(data, inet_addr(host), port-4);
+					// There is no need because we don't limit the global results
+					// theApp.amuledlg->searchwnd->AddUDPResult(uResultCount);
 					// check if there is another source packet
 					iLeft = (int)(data->GetLength() - data->GetPosition());
 					if (iLeft >= 2){
@@ -220,10 +221,9 @@ bool CUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, char* host
 				}
 				while (iLeft > 0);
 				delete data;
-/*
+
 				theApp.downloadqueue->AddDownDataOverheadOther(size);
-				theApp.amuledlg->searchwnd->AddUDPResult(theApp.searchlist->ProcessUDPSearchanswer(packet,size));
-*/
+
 				break;
 			}				
 			case OP_GLOBFOUNDSORUCES:{
