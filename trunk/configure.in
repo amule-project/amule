@@ -554,8 +554,16 @@ XRCFLAGS="-Isrc"
 CXXFLAGS="$CXXFLAGS $DEBUG_FLAGS $OPTIMIZE_FLAGS $PROFILE_FLAGS"
 CFLAGS="$CFLAGS $DEBUG_FLAGS $OPTIMIZE_FLAGS $PROFILE_FLAGS"
 
-dnl -lpthread is needed by Debian
-LDFLAGS="$LDFLAGS $PROFILE_FLAGS -lpthread"
+LDFLAGS="$LDFLAGS $PROFILE_FLAGS"
+dnl -lpthread is needed by Debian but FreeBSD < 5 doesnt support it
+AC_MSG_CHECKING([if this is a FreeBSD 4 or earlier system])
+if test x"`uname -s`" = xFreeBSD && test 0`uname -r | cut -c 1` -lt 5; then
+	LDFLAGS="$LDFLAGS -pthread"
+	AC_MSG_RESULT(yes)
+else
+	LDFLAGS="$LDFLAGS -lpthread"
+	AC_MSG_RESULT(no)
+fi
 AM_CONDITIONAL(USE_EMBEDDED_CRYPTO, test x$USE_EMBEDDED_CRYPTO = xyes)
 AM_CONDITIONAL(WEB, test x$WEB = xyes)
 AM_CONDITIONAL(ED2K, test x$ED2K = xyes)
