@@ -42,14 +42,14 @@
 /**
  * Dumps a buffer to stdout
  */
-static void dump(const char *msg, bool ok, const void *buff, int n)
+static void dump(const wxString &msg, bool ok, const void *buff, int n)
 {
 	register const unsigned char *p = (const unsigned char *)buff;
 	register int lines = (n + 15)/ 16;
 	register int chars = 0;
 	
 	if (msg) {
-		printf("%s - ok=%d, %d bytes\n", msg, ok, n);
+		printf("%s - ok=%d, %d bytes\n", unicode2char(msg), ok, n);
 	}
 	for( int i = 0; i < lines; ++i) {
 		int chars_save = chars;
@@ -237,13 +237,6 @@ bool CProxyStateMachine::Start(const wxIPaddress &peerAddress, wxSocketClient *p
 		return false;
 	}
 	
-#if 0
-	// Debug message
-	printf("CProxyStateMachine::Start\nIPAddr:%s, Port:%d\n",
-		unicode2char(m_peerAddress->IPAddress()),
-		m_peerAddress->Service());
-#endif
-	
 	// To run the state machine, return and just let the events start to happen.
 	return true;
 }
@@ -314,21 +307,6 @@ void CProxyStateMachine::AddDummyEvent()
 
 void CProxyStateMachine::ReactivateSocket()
 {
-#if 0
-	// Debug message
-	if (m_ok) {
-		if (m_proxyBoundAddress) {
-			printf("Proxy Bound Address: IP:%s, Port:%u, ok:%d\n",
-				unicode2char(GetProxyBoundAddress().IPAddress()),
-				GetProxyBoundAddress().Service(), m_ok);
-		} else {
-			printf("Failed to bind proxy address (ok for http proxy), ok=%d\n", m_ok);
-		}
-	} else {
-		printf("Proxy request failed, ok=%d\n", m_ok);
-	}
-#endif
-	
 #ifndef AMULE_DAEMON
 	/*    If proxy is beeing used, then the TCP socket handlers 
 	 * (CServerSocketHandler and CClientReqSocketHandler) will not
@@ -517,7 +495,7 @@ void CSocks5StateMachine::process_state(t_sm_state state, bool entry)
 	}
 	
 	if (entry) {
-		dump(unicode2char(m_state_name[state]), m_ok, m_buffer, n);
+		dump(m_state_name[state], m_ok, m_buffer, n);
 	} else {
 		printf("wait state -- %s\n", unicode2char(m_state_name[state]));
 	}
@@ -925,7 +903,7 @@ void CSocks4StateMachine::process_state(t_sm_state state, bool entry)
 	}
 	
 	if (entry) {
-		dump(unicode2char(m_state_name[state]), m_ok, m_buffer, n);
+		dump(m_state_name[state], m_ok, m_buffer, n);
 	} else {
 		printf("wait state -- %s\n", unicode2char(m_state_name[state]));
 	}
@@ -1096,7 +1074,7 @@ void CHttpStateMachine::process_state(t_sm_state state, bool entry)
 	}
 	
 	if (entry) {
-		dump(unicode2char(m_state_name[state]), m_ok, m_buffer, n);
+		dump(m_state_name[state], m_ok, m_buffer, n);
 	} else {
 		printf("wait state -- %s\n", unicode2char(m_state_name[state]));
 	}
@@ -1156,8 +1134,7 @@ void CHttpStateMachine::process_send_command_request(bool entry)
 {
 	if (entry) {
 		// Prepare the request command buffer
-		wxCharBuffer buf(unicode2charbuf(m_peerAddress->IPAddress()));
-		const char *host = (const char *)buf;
+		wxString ip = m_peerAddress->IPAddress();
 		uint16 port = m_peerAddress->Service();
 		wxString userPass;
 		wxString userPassEncoded;
@@ -1170,21 +1147,15 @@ void CHttpStateMachine::process_send_command_request(bool entry)
 		
 		switch (m_proxyCommand) {
 		case PROXY_CMD_CONNECT:
+			msg <<
+			wxT("CONNECT ") << ip << wxT(":") << port << wxT(" HTTP/1.1\r\n") <<
+			wxT("Host: ")   << ip << wxT(":") << port << wxT("\r\n");
 			if (m_proxyData.m_enablePassword) {
-				msg = wxString::Format(
-					wxT(
-					"CONNECT %s:%d HTTP/1.1\r\n"
-					"Host: %s:%d\r\n"
-					"Authorization: Basic %s"
-					"Proxy-Authorization: Basic %s\r\n"),
-					host, port, host, port, unicode2char(userPassEncoded),
-					unicode2char(userPassEncoded));
+				msg << 
+				wxT("Authorization: Basic ")       << userPassEncoded << wxT("\r\n") <<
+				wxT("Proxy-Authorization: Basic ") << userPassEncoded << wxT("\r\n");
 			} else {
-				msg = wxString::Format(
-					wxT(
-					"CONNECT %s:%d HTTP/1.1\r\n"
-					"Host: %s:%d\r\n\r\n"),
-					host, port, host, port);
+				msg << wxT("\r\n");
 			}
 			break;
 			
