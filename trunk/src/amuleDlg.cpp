@@ -1085,7 +1085,7 @@ enum ClientSkinEnum {
 
 void CamuleDlg::Apply_Clients_Skin(wxString file) {
 	
-	#define ClientItemNumber CLIENT_SKIN_UNUSED+1
+	#define ClientItemNumber CLIENT_SKIN_UNUSED
 	
 	SkinItem bitmaps_found[ClientItemNumber];
 	

@@ -84,6 +84,8 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		amulecmd.
 		* Fixed a problem with saving the preferences, that in some
 		situations would not be saved.
+		* Fixed an assert when loading skins, the count number was one
+		unit too high.
 
 	Ken:
 		* Fixed Mac bug: window was a little larger each restart
