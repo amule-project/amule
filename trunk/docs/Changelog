@@ -35,7 +35,8 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		* More proxy updates, we are getting there.
 		* Small UI bug: double click on a server did not change the
 		"Connect" button to "Cancel".
-		* Changed some deprecated IsKindOf(CLASSINFO()) to wxDynamicCast().
+		* Changed some deprecated IsKindOf(CLASSINFO()) to
+		wxDynamicCast().
 		* Fixed crash in CUpDownClient::SendFileRequest(), short
 		circuit evaluation was reversed.
 		* Created Proxy dialog on preferences.
@@ -44,17 +45,19 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		* Fix for rommel's report of IP filter problem.
 		* No more IsKindOf(), all replaced by dynamic_cast<>().
 		* No more wxDynamicCast(), all replaced by dynamic_cast<>().
-		* Fixed multiple instances of event handlers in CClientReqSocketHandler
-		and CServerSocketHandler.
-		* In StateMachine.cpp, m_state is now private and state machine code 
-		is now thread safe.
+		* Fixed multiple instances of event handlers in
+		CClientReqSocketHandler	and CServerSocketHandler.
+		* In StateMachine.cpp, m_state is now private and state machine
+		code is now thread safe.
 		* Added base64 encoding/decoding support to aMule.
 		* SOCKS5 and SOCKS4 proxy support is working now.
 		* HTTP proxy support is working now.
 		* Changed the output of the "Oops" to give better instructions
 		to the user.
-		* Fixed a bug in proxy code that was making gui too slow. Code was 
-		performing unnecessary DNS.
+		* Fixed a bug in proxy code that was making gui too slow. Code
+		was performing unnecessary DNS.
+		* Applied patch from volpol to fix use of deprecated functions
+		in wxGTK-2.5.3.
 
 	Ken:
 		* Fixed Mac bug: window was a little larger each restart
@@ -62,6 +65,9 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		* On Mac, enabled Command-clicking in lists to toggle selection
 		* Solved the DECLARE_ABSTRACT_CLASS() mistery on wx-2.4.2. Now
 		we can have UDP socks5 with wx-2.4.2.
+
+	volpol
+		* Patch to fix use of deprecated functions in wxGTK-2.5.3.
 
 	Special Thanks To:
 		* Bug and feature reporters:

@@ -771,15 +771,26 @@ wxString CamuleApp::CreateHTMLED2kLink(const CAbstractFile* f)
 	return strCode;
 }
 
+wxString validateURI(const wxString url)
+{
+	wxString strURI;
+#if wxCHECK_VERSION(2,5,3)
+	wxURI* uri = new wxURI(url);
+	strURI=uri->BuildURI();
+#else
+	strURI=wxURL::ConvertToValidURI(url);
+	// The following cause problems, so we escape them
+	strURI.Replace(wxT("\""), wxT("%22")); 
+	strURI.Replace(wxT("'"),  wxT("%27")); 
+	strURI.Replace(wxT("`"),  wxT("%60")); 
+#endif
+	return strURI;
+}
 // Generates an URL for checking if a file is "fake"
 wxString CamuleApp::GenFakeCheckUrl(const CAbstractFile *f)
 {
 	wxString strURL = wxT("http://donkeyfakes.gambri.net/index.php?action=search&ed2k=");
-	strURL = wxURL::ConvertToValidURI( strURL +  CreateED2kLink( f ) );
-	// The following cause problems, so we escape them
-	strURL.Replace(wxT("\""), wxT("%22"));
-	strURL.Replace(wxT("'"),  wxT("%27"));
-	strURL.Replace(wxT("`"),  wxT("%60"));
+	strURL = validateURI( strURL +  CreateED2kLink( f ) );
 	return strURL;
 }
 
@@ -787,10 +798,7 @@ wxString CamuleApp::GenFakeCheckUrl(const CAbstractFile *f)
 wxString CamuleApp::GenFakeCheckUrl2(const CAbstractFile *f)
 {
 	wxString strURL = wxT("http://www.jugle.net/?fakecheck=%s");
-	strURL = wxURL::ConvertToValidURI( strURL +  CreateED2kLink( f ) );
-	strURL.Replace(wxT("\""), wxT("%22"));
-	strURL.Replace(wxT("'"),  wxT("%27"));
-	strURL.Replace(wxT("`"),  wxT("%60"));
+	strURL = validateURI( strURL +  CreateED2kLink( f ) );
 	return strURL;
 }
 
