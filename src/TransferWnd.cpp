@@ -176,8 +176,10 @@ void CTransferWnd::OnNMRclickDLtab(wxMouseEvent& evt) {
 		}
 
 		menu->Append(MP_CAT_ADD,_("Add category"));
-		menu->Append(MP_CAT_EDIT,_("Edit category"));
-		menu->Append(MP_CAT_REMOVE, _("Remove category"));
+		if(nb->GetSelection()!=0) {
+			menu->Append(MP_CAT_EDIT,_("Edit category"));
+			menu->Append(MP_CAT_REMOVE, _("Remove category"));
+		}
 		menu->AppendSeparator();
 		//menu->Append(472834,_("Priority"),m_PrioMenu);
 
@@ -259,16 +261,18 @@ bool CTransferWnd::ProcessEvent(wxEvent& evt)
 			break;
 		}
 		case MP_CAT_REMOVE: {
-			theApp.downloadqueue->ResetCatParts(m_dlTab->GetSelection());
-			theApp.glob_prefs->RemoveCat(m_dlTab->GetSelection());
-			m_dlTab->RemovePage(m_dlTab->GetSelection());
-			m_dlTab->SetSelection(0);
-			downloadlistctrl->ChangeCategory(0);
-			theApp.glob_prefs->SaveCats();
-			if (theApp.glob_prefs->GetCatCount()==1) {
-				theApp.glob_prefs->SetAllcatType(0);
+			if (m_dlTab->GetSelection() != 0) {
+				theApp.downloadqueue->ResetCatParts(m_dlTab->GetSelection());
+				theApp.glob_prefs->RemoveCat(m_dlTab->GetSelection());
+				m_dlTab->RemovePage(m_dlTab->GetSelection());
+				m_dlTab->SetSelection(0);
+				downloadlistctrl->ChangeCategory(0);
+				theApp.glob_prefs->SaveCats();
+				if (theApp.glob_prefs->GetCatCount()==1) {
+					theApp.glob_prefs->SetAllcatType(0);
+				}
+				theApp.amuledlg->searchwnd->UpdateCatChoice();
 			}
-			theApp.amuledlg->searchwnd->UpdateCatChoice();
 			break;
 		}
 		case MP_PRIOLOW: {
