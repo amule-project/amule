@@ -25,7 +25,6 @@
 
 #include <wx/sizer.h> // Must be first or compilation fail on win32 !!!
 #include <cerrno>
-#include <csignal>
 #include <cmath>
 #include <curl/curl.h>
 #include <wx/textctrl.h>
@@ -162,11 +161,6 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 	SetIcon(wxICON(aMule));
 
 	srand(time(NULL));
-
-	// get rid of sigpipe
-#ifndef __WXMSW__
-	signal(SIGPIPE, SIG_IGN);
-#endif
 
 	// Create new sizer and stuff a wxPanel in there.
 	wxFlexGridSizer *s_main = new wxFlexGridSizer(1);
