@@ -262,7 +262,7 @@ bool CFile::Create(const wxChar *szFileName, bool bOverwrite, int accessMode)
 	    Close();	
     }
 
-	m_fd = creat( szFileName , accessMode);
+	m_fd = creat( unicode2char(szFileName) , accessMode);
 	
 	#ifdef FILE_TRACKER
 		AddLogLineM(false,wxString(_("Created file ")) + fFilePath + wxString::Format(_(" with file descriptor %i"),m_fd));
