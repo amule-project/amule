@@ -136,8 +136,8 @@ cas_SOURCES = utils/cas/cas.c \
 
 #cas_CXXFLAGS= ""
 #cas_LIBS= "" 
-cas_CFLAGS= $(GDLIB_CFLAGS)
-cas_LDADD= $(GDLIB_LDFLAGS) $(GDLIB_LIBS) -lgd
+cas_CFLAGS= $(GDLIB_CFLAGS) $(CAS_DEFS)
+cas_LDADD= $(GDLIB_LDFLAGS) $(GDLIB_LIBS) 
 
 wxcas_SOURCES = utils/wxCas/src/onlinesig.cpp \
 		utils/wxCas/src/wxcas.cpp \
