@@ -85,8 +85,8 @@ public:
 		: id(0), strName(szIniName), szSection(szIniSection), pctrl(NULL), wxc(wxcNone), prseLink(NULL)  {}
 	virtual ~Rse() {}
 
-	virtual void LoadFromFile(wxConfigBase& ini)	{}
-	virtual void SaveToFile(wxConfigBase& ini)  	{}
+	virtual void LoadFromFile(wxConfigBase &)	{}
+	virtual void SaveToFile(wxConfigBase &)		{}
 		
 	void TransferToDlg() 					
 	{ 
@@ -106,16 +106,16 @@ public:
 	virtual void RestorePrevValue()			{}
 	virtual void StoreDlgValue()			{}
 	virtual bool WasChanged()			{ return false; }
-	virtual void SetWxControl(wxControl *pc)	{}
+	virtual void SetWxControl(wxControl *)		{}
 		
 	int Id() 					{ return id; }
 	virtual int GetMemValue()			{ return 0; }
-	virtual wxString GetMemStringValue()		{ return wxT(""); }
-	virtual void SetMemValue(int val)		{}
+	virtual wxString GetMemStringValue()		{ return wxEmptyString; }
+	virtual void SetMemValue(int)			{}
 	virtual int GetCtrlValue()			{ return 0; }
-	virtual void SetCtrlValue(int val)		{}
-	virtual void SetCtrlValue(wxString str)		{}
-	virtual void SetCtrlRange(int iMin, int iMax) 	{}
+	virtual void SetCtrlValue(int)			{}
+	virtual void SetCtrlValue(const wxString &)	{}
+	virtual void SetCtrlRange(int, int)		{}
 	virtual int GetDefaultValue()			{ return 0; }
 	virtual int GetPrevValue()			{ return 0; }
 	virtual int GetCtrlCount()			{ wxASSERT(false); return 0;}
@@ -465,9 +465,9 @@ public:
 		}
 	}
 		
-	virtual bool WasChanged()					{ return bWasChanged; }
+	virtual bool WasChanged()			{ return bWasChanged; }
 	
-	virtual void SetCtrlValue(wxString str)		{ ((wxTextCtrl*)pctrl)->SetValue(str); }
+	virtual void SetCtrlValue(const wxString &str)	{ ((wxTextCtrl*)pctrl)->SetValue(str); }
 
 	virtual void SetWxControl(wxControl *pc)
 	{ 
