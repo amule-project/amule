@@ -110,22 +110,22 @@ void CServerWnd::Localize()
 void CServerWnd::OnBnClickedAddserver(wxCommandEvent& WXUNUSED(evt))
 {
 	wxString serveraddr;
-	if(((wxTextCtrl*)FindWindowById(IDC_IPADDRESS))->GetLineText(0).IsEmpty()) {
+	if(((wxTextCtrl*)FindWindowById(IDC_IPADDRESS))->GetValue().IsEmpty()) {
 		AddLogLineM(true, _("Please enter a serveraddress"));
 		return;
 	} else {
-		serveraddr=((wxTextCtrl*)FindWindowById(IDC_IPADDRESS))->GetLineText(0);
+		serveraddr=((wxTextCtrl*)FindWindowById(IDC_IPADDRESS))->GetValue();
 	}
-	if (((wxTextCtrl*)FindWindowById(IDC_SPORT))->GetLineText(0).IsEmpty()) {
+	if (((wxTextCtrl*)FindWindowById(IDC_SPORT))->GetValue().IsEmpty()) {
 		AddLogLineM(true, _("Incomplete serverport: Please enter a serverport"));
 		return;
 	}
   
 	wxString portstr;
-	portstr=((wxTextCtrl*)FindWindowById(IDC_SPORT))->GetLineText(0);
+	portstr=((wxTextCtrl*)FindWindowById(IDC_SPORT))->GetValue();
 	CServer* toadd = new CServer(atoi(unicode2char(portstr)),serveraddr);
 	wxString servername;
-	servername=((wxTextCtrl*)FindWindowById(IDC_SERVERNAME))->GetLineText(0);
+	servername=((wxTextCtrl*)FindWindowById(IDC_SERVERNAME))->GetValue();
 	if (!servername.IsEmpty()) {
 		toadd->SetListName(servername);
 	} else {
@@ -152,7 +152,7 @@ void CServerWnd::OnBnClickedAddserver(wxCommandEvent& WXUNUSED(evt))
 void CServerWnd::OnBnClickedUpdateservermetfromurl(wxCommandEvent& WXUNUSED(evt))
 {
 	wxString strURL;
-	strURL=((wxTextCtrl*)FindWindowById(IDC_SERVERLISTURL))->GetLineText(0);
+	strURL=((wxTextCtrl*)FindWindowById(IDC_SERVERLISTURL))->GetValue();
 	UpdateServerMetFromURL(strURL);
 }
 
