@@ -1,0 +1,8 @@
+Kry:
+	UDP Disable button remains unpushed.
+	Please add 'never show again' to the locale warning
+	Fix crypto++ issues on configure, etc
+	Sources seem to be disconected after short time. Find why.  (debug version)
+	The hangup on startup. Why?
+	Why is GetFileComment called roughtly 100x more than other functions?
+
