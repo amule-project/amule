@@ -274,8 +274,6 @@ CECPacket *Get_EC_Response_StatRequest(const CECPacket *request)
 	wxASSERT(request->GetOpCode() == EC_OP_STAT_REQ);
 	
 	CECPacket *response = new CECPacket(EC_OP_STATS);
-	
-	response->AddTag(CEC_ConnState_Tag());
 
 	//
 	// ul/dl speeds
@@ -610,6 +608,11 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request)
 			break;
 		case EC_OP_STAT_REQ:
 			response = Get_EC_Response_StatRequest(request);
+		case EC_OP_GET_CONNSTATE:
+			if (!response) {
+				response = new CECPacket(EC_OP_MISC_DATA);
+			}
+			response->AddTag(CEC_ConnState_Tag());
 			break;
 		case EC_OP_GET_DLOAD_QUEUE:
 			response = Get_EC_Response_GetDownloadQueue(request);

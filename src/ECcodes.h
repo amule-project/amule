@@ -139,13 +139,24 @@ enum {
 		/*!
 		 * \brief Request statistics.
 		 *
-		 * Request from client, server must reply with statistics string.
+		 * Request from client, server must reply with statistics (::EC_OP_STATS).
 		 *
 		 * \par Tags:
 		 *	(none)
 		 */
 	EC_OP_STAT_REQ,
 	
+		/*!
+		 * \brief Request connection state.
+		 *
+		 * Request from client, server replies with an ::EC_OP_MISC_DATA
+		 * packet containing an ::EC_TAG_STATS_CONNSTATE tag.
+		 *
+		 * \par Tags:
+		 *	(none)
+		 */
+	EC_OP_GET_CONNSTATE,
+
 		/*!
 		 * \brief Reply to stats request
 		 * 
