@@ -318,9 +318,7 @@ bool CamuleRemoteGuiApp::OnInit()
 	serverlist->ReloadControl();
 	sharedfiles->DoRequery(EC_OP_GET_SHARED_FILES, EC_TAG_KNOWNFILE);
 	glob_prefs->LoadRemote();
-	
-	IsReady = true;
-	
+		
 	// Start the Core Timer
 	core_timer->Start(1000);	
 

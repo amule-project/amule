@@ -211,7 +211,6 @@ CamuleApp::CamuleApp()
 	
 	ConfigDir = GetConfigDir();
 	
-	IsReady		= false;
 	clientlist	= NULL;
 	searchlist	= NULL;
 	knownfiles	= NULL;
@@ -815,17 +814,15 @@ bool CamuleApp::OnInit()
 		printf("%s", (const char *)unicode2char(msg));
 	}
 
-	m_app_state = APP_STATE_RUNNING;
-
 	// reload shared files
 	sharedfiles->Reload(true);
 	
 	// Ensure that the up/down ratio is used
 	CPreferences::CheckUlDlRatio();
 
-	// The user may now click on buttons
-	IsReady = true;
-
+	// The user can start pressing buttons like mad if he feels like it.
+	m_app_state = APP_STATE_RUNNING;
+	
 	// Kry - Load the sources seeds on app init
 	if (thePrefs::GetSrcSeedsOn()) {
 		downloadqueue->LoadSourceSeeds();
@@ -1344,7 +1341,7 @@ void CamuleApp::OnNotifyEvent(wxEvent& e)
 
 void CamuleApp::OnTCPTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 {
-	if(!IsReady) {
+	if(!IsRunning()) {
 		return;
 	}
 	serverconnect->StopConnectionTry();
@@ -1361,8 +1358,7 @@ void CamuleApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 	static uint32	msPrev1, msPrev5, msPrevSave, msPrevHist, msPrevOS;
 	uint32 msCur = statistics->GetUptimeMsecs();
 
-	// can this actually happen under wxwin ?
-	if (!IsRunning() || !IsReady) {
+	if (!IsRunning()) {
 		return;
 	}
 
@@ -1496,7 +1492,6 @@ void CamuleApp::OnFinishedCompletion(wxEvent& e)
 void CamuleApp::ShutDown() {
 	// Signal the hashing thread to terminate
 	m_app_state = APP_STATE_SHUTINGDOWN;
-	IsReady =  false;
 	
 	// Kry - Save the sources seeds on app exit
 	if (thePrefs::GetSrcSeedsOn()) {

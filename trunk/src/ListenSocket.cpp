@@ -1943,7 +1943,7 @@ void *CListenSocket::Entry()
 {
 	while ( !TestDestroy() ) {
 		if ( WaitForAccept(1, 0) ) {
-			if ( !theApp.IsReady ) {
+			if ( !theApp.IsRunning() ) {
 				wxSocketBase *s = Accept(false);
 				if ( s ) {
 					s->Destroy();

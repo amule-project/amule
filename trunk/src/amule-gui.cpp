@@ -389,7 +389,7 @@ void CamuleGuiApp::ListenSocketHandler(wxSocketEvent& event)
 		return;
 	}
 	
-	if (!IsReady) {
+	if (!IsRunning()) {
 		// Even if we are not ready to start listening, we must
 		// accept the connection, otherwise no other connection
 		// events will happen. So we Accept() it and destroy the
@@ -421,7 +421,7 @@ void CamuleGuiApp::ServerUDPSocketHandler(wxSocketEvent& event)
 		return;
 	}
 
-	if (!IsReady) {
+	if (!IsRunning() && !IsOnShutDown()) {
 		// Back to the queue!
 		#ifndef AMULE_DAEMON
 		// Daemon doesn't need this because it's a thread, checking every X time.
@@ -452,7 +452,7 @@ void CamuleGuiApp::ClientUDPSocketHandler(wxSocketEvent& event)
 		return;
 	}
 
-	if (!IsReady) {
+	if (!IsRunning() && !IsOnShutDown()) {
 		// Back to the queue!
 		#ifndef AMULE_DAEMON
 		// Daemon doesn't need this because it's a thread, checking every X time.
