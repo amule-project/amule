@@ -93,9 +93,10 @@ CSearchDlg::CSearchDlg(wxWindow* pParent /*=NULL*/)
 	CMuleNotebook* nb=(CMuleNotebook*)FindWindowById(ID_NOTEBOOK);
 
 	// initialise the image list
-	m_ImageList.Add(wxBitmap(amuleSpecial(3)));
-	m_ImageList.Add(wxBitmap(amuleSpecial(4)));
-	nb->AssignImageList(&m_ImageList);
+	wxImageList* m_ImageList = new wxImageList();
+	m_ImageList->Add(wxBitmap(amuleSpecial(3)));
+	m_ImageList->Add(wxBitmap(amuleSpecial(4)));
+	nb->AssignImageList(m_ImageList);
 
 	// allow notebook to dispatch right mouse clicks to us
 	nb->SetMouseListener(GetEventHandler());

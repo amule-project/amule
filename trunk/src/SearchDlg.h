@@ -95,7 +95,6 @@ private:
 	uint16		m_nSearchID;
 	wxComboBox	typebox;
 	wxComboBox	Stypebox;
-	wxImageList	m_ImageList;
 	wxTimer 	m_timer;
 	wxStaticBitmap	m_ctrlSearchFrm;
 	wxStaticBitmap	m_ctrlWebSearchFrm;
