@@ -50,7 +50,7 @@ bool CKnownFileList::Init() {
 	CSafeFile file;
 	try {
 		
-		CString fullpath(theApp.ConfigDir + wxT("known.met"));
+		wxString fullpath(theApp.ConfigDir + wxT("known.met"));
 		if (!wxFileExists(fullpath)) {//CFile::modeRead|CFile::osSequentialScan)) {
 			return false;
 		}
@@ -83,11 +83,11 @@ bool CKnownFileList::Init() {
 #if 0
 	catch(CFileException* error) {
 		if (error->m_cause == CFileException::endOfFile)
-			theApp.amuledlg->AddLogLine(true, CString(_("Error: the file known.met is corrupted, unable to load known files")));
+			theApp.amuledlg->AddLogLine(true, _("Error: the file known.met is corrupted, unable to load known files"));
 		else{
 			char buffer[150];
 			error->GetErrorMessage(buffer,150);
-			theApp.amuledlg->AddLogLine(true, CString(_("Unexpected file error while reading known.met: %s, unable to load known files")), buffer);
+			theApp.amuledlg->AddLogLine(true, _("Unexpected file error while reading known.met: %s, unable to load known files"), buffer);
 		}
 		error->Delete();	//memleak fix
 		return false;
@@ -102,7 +102,7 @@ bool CKnownFileList::Init() {
 void CKnownFileList::Save() {
 
 	CFile* file = new CFile();
-	CString fullpath(theApp.ConfigDir + wxT("known.met"));
+	wxString fullpath(theApp.ConfigDir + wxT("known.met"));
 	file->Open(fullpath, CFile::write);
 	if (!(file->IsOpened())) {
 		delete file;
@@ -111,14 +111,14 @@ void CKnownFileList::Save() {
 
 
 	wxMutexLocker sLock(list_mut);
-	//theApp.amuledlg->AddLogLine(false,CString(_("KnownFileList Save Starts")).GetData());
+	//theApp.amuledlg->AddLogLine(false,_("KnownFileList Save Starts"));
 	uint8 ucHeader = MET_HEADER;
-	//theApp.amuledlg->AddLogLine(false,CString(_("Saved MET_HEADER")).GetData());
+	//theApp.amuledlg->AddLogLine(false,_("Saved MET_HEADER"));
 	file->Write(&ucHeader, 1);
 	uint32 RecordsNumber = m_map.size() + duplicates.GetCount();
-	//theApp.amuledlg->AddLogLine(false,CString(_("RecordsNumber = %i")).GetData(), RecordsNumber);
+	//theApp.amuledlg->AddLogLine(false,_("RecordsNumber = %i"), RecordsNumber);
 	ENDIAN_SWAP_I_32(RecordsNumber);
-	//theApp.amuledlg->AddLogLine(false,CString(_("Endian RecordsNumber = %i")).GetData(), RecordsNumber);		
+	//theApp.amuledlg->AddLogLine(false,_("Endian RecordsNumber = %i"), RecordsNumber);		
 	file->Write(&RecordsNumber,4);
 	RecordsNumber = m_map.size();
 	CKnownFileMap::iterator it = m_map.begin();
@@ -137,7 +137,7 @@ void CKnownFileList::Save() {
 	
 	file->Flush();
 	file->Close();
-	//theApp.amuledlg->AddLogLine(false,CString(_("KnownFileList Save Ends")).GetData());	
+	//theApp.amuledlg->AddLogLine(false,_("KnownFileList Save Ends"));	
 	delete file;
 }
 

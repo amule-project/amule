@@ -21,7 +21,6 @@
 #define IPFILTER_H
 
 #include "types.h"		// Needed for uint8, uint16 and uint32
-#include "CString.h"		// Needed for CString
 #include <wx/thread.h>
 #include <wx/dynarray.h>
 
@@ -29,7 +28,7 @@ struct IPRange_Struct {
    uint32           IPstart;
    uint32           IPend;
    uint8			filter;
-   CString			description;
+   wxString			description;
    ~IPRange_Struct() {  }
 };
 
@@ -43,7 +42,7 @@ class CIPFilter
 public:
 	CIPFilter();
 	~CIPFilter();
-	void	AddBannedIPRange(uint32 IPfrom,uint32 IPto,uint8 filter, CString desc);
+	void	AddBannedIPRange(uint32 IPfrom,uint32 IPto,uint8 filter, const wxString& desc);
 	void	RemoveAllIPs();
 	int		LoadFromFile();
 	void	SaveToFile();

@@ -41,7 +41,7 @@ XBMDraw::~XBMDraw()
 	}
 }
 
-bool XBMDraw::CreateImage(CString sName, int nWidth, int nHeight, BYTE bBackground)
+bool XBMDraw::CreateImage(const wxString& sName, int nWidth, int nHeight, BYTE bBackground)
 {
 	try
 	{
@@ -63,7 +63,7 @@ bool XBMDraw::CreateImage(CString sName, int nWidth, int nHeight, BYTE bBackgrou
 	return false;
 }
 
-bool XBMDraw::GetImage(CString &sImage)
+bool XBMDraw::GetImage(wxString &sImage)
 {
 	try
 	{
@@ -98,7 +98,7 @@ bool XBMDraw::GetImage(CString &sImage)
 			sprintf(tmpbuf,"\n<script language=\"javascript\">\n%s = \'#define _width %d\\n#define _height %d\\nstatic unsigned char _bits[] = { %s }\'\n</script>\n",
 				m_sName.GetData(),m_nWidth,m_nHeight,sBits);
 
-			sImage=CString(tmpbuf);
+			sImage=wxString(tmpbuf);
 			delete[] sBits;
 			delete[] tmpbuf;
 
@@ -139,11 +139,11 @@ bool XBMDraw::Plot(int x, int y, bool bXOR)
 	return false;
 }
 
-CString XBMDraw::GetImageTag()
+wxString XBMDraw::GetImageTag()
 {
 	try
 	{
-		CString sRet;
+		wxString sRet;
 		sRet.Printf(wxT("<img src=\"javascript:%s\" width=\"%d\" height=\"%d\">"), m_sName.GetData(), m_nWidth, m_nHeight);
 		return sRet;
 	}

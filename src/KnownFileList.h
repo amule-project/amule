@@ -24,7 +24,6 @@
 #include <wx/hashmap.h>		// Needed for WX_DECLARE_HASH_MAP, wxStringHash and wxStringEqual
 #include <wx/thread.h>		// Needed for wxMutex
 
-#include "CString.h"		// Needed for CString
 
 #include "types.h"		// Needed for uint16 and uint32
 #include "SharedFileList.h" // CKnownFileMap

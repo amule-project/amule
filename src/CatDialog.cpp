@@ -112,7 +112,7 @@ void CCatDialog::OnBnClickedBrowse(wxCommandEvent& evt)
 
 void CCatDialog::OnBnClickedOk(wxCommandEvent& evt)
 {
-	CString oldpath=CString(m_myCat->incomingpath);
+	wxString oldpath=m_myCat->incomingpath;
 	if (((wxTextCtrl*)FindWindowById(IDC_TITLE))->GetValue().Length()>0) {
 		m_myCat->title = ((wxTextCtrl*)FindWindowById(IDC_TITLE))->GetValue();
 	}

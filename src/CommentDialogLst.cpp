@@ -31,7 +31,6 @@
 #include "PartFile.h"		// Needed for CPartFile
 #include "opcodes.h"		// Needed for SOURCESSLOTS
 #include "updownclient.h"	// Needed for CUpDownClient
-#include "CString.h"	// Needed for CString
 
 //IMPLEMENT_DYNAMIC(CCommentDialogLst, CDialog)
 CCommentDialogLst::CCommentDialogLst(wxWindow*parent,CPartFile* file)
@@ -70,10 +69,10 @@ void CCommentDialogLst::OnBnClickedRefresh(wxCommandEvent& evt)
 
 bool CCommentDialogLst::OnInitDialog()
 {
-	pmyListCtrl->InsertColumn(0, CString(_("Username:")), LVCFMT_LEFT, 130);
-	pmyListCtrl->InsertColumn(1, CString(_("File Name")), LVCFMT_LEFT, 130);
-	pmyListCtrl->InsertColumn(2, CString(_("Rating")), LVCFMT_LEFT, 80);
-	pmyListCtrl->InsertColumn(3, CString(_("Comment :")), LVCFMT_LEFT, 340);
+	pmyListCtrl->InsertColumn(0, _("Username:"), LVCFMT_LEFT, 130);
+	pmyListCtrl->InsertColumn(1, _("File Name"), LVCFMT_LEFT, 130);
+	pmyListCtrl->InsertColumn(2, _("Rating"), LVCFMT_LEFT, 80);
+	pmyListCtrl->InsertColumn(3, _("Comment :"), LVCFMT_LEFT, 340);
 	CompleteList();
 	return TRUE;
 }
@@ -97,7 +96,7 @@ void CCommentDialogLst::CompleteList()
 			count++;
 		}
 	}
-	CString info;
+	wxString info;
 	if (count==0) {
 		info = wxT("No comments");
 	} else {

@@ -56,7 +56,7 @@ END_EVENT_TABLE()
 //IMPLEMENT_DYNAMIC(CClientDetailDialog, CDialog)
 
 CClientDetailDialog::CClientDetailDialog(wxWindow* parent,CUpDownClient* client)
-: wxDialog(parent,9997,CString(_("Client Details")),wxDefaultPosition,wxDefaultSize,wxDEFAULT_DIALOG_STYLE)
+: wxDialog(parent,9997,_("Client Details"),wxDefaultPosition,wxDefaultSize,wxDEFAULT_DIALOG_STYLE)
 {
 	m_client = client;
 	wxSizer* content=clientDetails(this,TRUE);
@@ -83,7 +83,7 @@ bool CClientDetailDialog::OnInitDialog() {
 	if (m_client->GetUserName()) {
 		GetDlgItem(ID_DNAME,wxStaticText)->SetLabel(char2unicode(m_client->GetUserName()));
 	} else {
-		GetDlgItem(ID_DNAME,wxStaticText)->SetLabel(CString(_("Unknown")));
+		GetDlgItem(ID_DNAME,wxStaticText)->SetLabel(_("Unknown"));
 	}	
 
 	if (m_client->GetUserName()) {
@@ -93,7 +93,7 @@ bool CClientDetailDialog::OnInitDialog() {
 		}
 		GetDlgItem(ID_DHASH,wxStaticText)->SetLabel(char2unicode(buffer));
 	} else {
-		GetDlgItem(ID_DHASH,wxStaticText)->SetLabel(CString(_("Unknown")));
+		GetDlgItem(ID_DHASH,wxStaticText)->SetLabel(_("Unknown"));
 	}
 	
 	printf("ClientSoftware ->%.2x<- ClientVersion ->v%.2x<- ClientModString ->%s\n",m_client->GetClientSoft(), m_client->GetMuleVersion(), unicode2char(m_client->GetClientModString()));

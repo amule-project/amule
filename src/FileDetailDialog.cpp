@@ -32,7 +32,6 @@
 #include "CommentDialogLst.h"	// Needed for CCommentDialogLst
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "PartFile.h"		// Needed for CPartFile
-#include "CString.h"		// Needed for CString
 #include "color.h"		// Needed for SYSCOLOR
 
 #define ID_MY_TIMER 1652
@@ -78,7 +77,7 @@ void CFileDetailDialog::OnClosewnd(wxCommandEvent& evt)
 #define GetDlgItem(a,b) wxStaticCast(FindWindowById((a)),b)
 void CFileDetailDialog::UpdateData()
 {
-	CString bufferS;
+	wxString bufferS;
 	GetDlgItem(IDC_FNAME,wxStaticText)->SetLabel(MakeStringEscaped(m_file->GetFileName().GetData()));
 	GetDlgItem(IDC_METFILE,wxStaticText)->SetLabel(m_file->GetFullName());
 	wxString tmp=GetDlgItem(IDC_FILENAME,wxTextCtrl)->GetValue();
@@ -90,26 +89,26 @@ void CFileDetailDialog::UpdateData()
 	GetDlgItem(IDC_FHASH,wxStaticText)->SetLabel(EncodeBase16(m_file->GetFileHash(), 16));
 	GetDlgItem(IDC_FSIZE,wxControl)->SetLabel(CastItoXBytes(m_file->GetFileSize()));
 	GetDlgItem(IDC_PFSTATUS,wxControl)->SetLabel(m_file->getPartfileStatus());
-	bufferS.Format(wxT("%i(%i)"),m_file->GetPartCount(),m_file->GetHashCount());
+	bufferS.Printf(wxT("%i(%i)"),m_file->GetPartCount(),m_file->GetHashCount());
 	GetDlgItem(IDC_PARTCOUNT,wxControl)->SetLabel(bufferS);
 	GetDlgItem(IDC_TRANSFERED,wxControl)->SetLabel(CastItoXBytes(m_file->GetTransfered()));
 	GetDlgItem(IDC_FD_STATS1,wxControl)->SetLabel(CastItoXBytes(m_file->GetLostDueToCorruption()).GetData());
 	GetDlgItem(IDC_FD_STATS2,wxControl)->SetLabel(CastItoXBytes(m_file->GetGainDueToCompression()).GetData());
 	GetDlgItem(IDC_FD_STATS3,wxControl)->SetLabel(CastItoIShort(m_file->TotalPacketsSavedDueToICH()));
 	GetDlgItem(IDC_COMPLSIZE,wxControl)->SetLabel(CastItoXBytes(m_file->GetCompletedSize()));
-	bufferS.Format(wxT("%.2f "),m_file->GetPercentCompleted());
-	GetDlgItem(IDC_PROCCOMPL,wxControl)->SetLabel(bufferS+CString("% ")+CString(_("done")));
-	bufferS.Format(wxT("%.2f %s"),(float)m_file->GetKBpsDown(),CString(_("kB/s")).GetData());
+	bufferS.Printf(wxT("%.2f "),m_file->GetPercentCompleted());
+	GetDlgItem(IDC_PROCCOMPL,wxControl)->SetLabel(bufferS+wxT("% ")+wxString(_("done")));
+	bufferS.Printf(wxT("%.2f %s"),(float)m_file->GetKBpsDown(),_("kB/s"));
 	GetDlgItem(IDC_DATARATE,wxControl)->SetLabel(bufferS);
-	bufferS.Format(wxT("%i"),m_file->GetSourceCount());
+	bufferS.Printf(wxT("%i"),m_file->GetSourceCount());
 	GetDlgItem(IDC_SOURCECOUNT,wxControl)->SetLabel(bufferS);
-	bufferS.Format(wxT("%i"),m_file->GetTransferingSrcCount());
+	bufferS.Printf(wxT("%i"),m_file->GetTransferingSrcCount());
 	GetDlgItem(IDC_SOURCECOUNT2,wxControl)->SetLabel(bufferS);
-	bufferS.Format(wxT("%i (%.1f%%)"),m_file->GetAvailablePartCount(),(float) ((m_file->GetAvailablePartCount()*100)/ m_file->GetPartCount()));
+	bufferS.Printf(wxT("%i (%.1f%%)"),m_file->GetAvailablePartCount(),(float) ((m_file->GetAvailablePartCount()*100)/ m_file->GetPartCount()));
 	GetDlgItem(IDC_PARTAVAILABLE,wxControl)->SetLabel(bufferS);
 
 	if (m_file->lastseencomplete==0) {
-		bufferS.Format(CString(_("Unknown")).MakeLower());
+		bufferS = wxString(_("Unknown")).MakeLower();
 	} else {
 		char tmps[80];
 		static char const* lastseencomplete_fmt = "%A, %x, %X";	// Suppress compiler warning.
@@ -133,7 +132,7 @@ void CFileDetailDialog::FillSourcenameList()
 	CUpDownClient* cur_src; 
 	CFileDetailListCtrl* pmyListCtrl; 
 	int itempos; 
-	CString nameCountStr; 
+	wxString nameCountStr; 
 	pmyListCtrl = (CFileDetailListCtrl*)FindWindowById(IDC_LISTCTRLFILENAMES); 
 
 // PA: imported new version from emule 0.30e
@@ -148,7 +147,7 @@ void CFileDetailDialog::FillSourcenameList()
 	// update
 	for (POSITION pos = m_file->m_SrcList.GetHeadPosition(); pos != NULL; ) { 
 		cur_src = m_file->m_SrcList.GetNext(pos); 
-		if (cur_src->reqfile!=m_file || CString(cur_src->GetClientFilename()).GetLength()==0)
+		if (cur_src->reqfile!=m_file || wxString(cur_src->GetClientFilename()).Length()==0)
 			continue;
 
 		if ((itempos=pmyListCtrl->FindItem(-1,wxString(char2unicode(cur_src->GetClientFilename())))) == -1) { 
@@ -166,7 +165,7 @@ void CFileDetailDialog::FillSourcenameList()
 		} else { 
 			SourcenameItem *item = (SourcenameItem *) pmyListCtrl->GetItemData(itempos); 
 			item->count++;
-			nameCountStr.Format(wxT("%i"), item->count); 
+			nameCountStr.Printf(wxT("%i"), item->count); 
 			pmyListCtrl->SetItem(itempos, 1, nameCountStr); 
 		} 
 		pmyListCtrl->UpdateSort();
@@ -203,7 +202,7 @@ void CFileDetailDialog::OnBnClickedRename(wxCommandEvent& evt)
 	wxString NewFileName=GetDlgItem(IDC_FILENAME,wxTextCtrl)->GetValue();
 	m_file->SetFileName(NewFileName);
 	m_file->SavePartFile(); 
-	FindWindowById(IDC_FNAME)->SetLabel(MakeStringEscaped(CString(m_file->GetFileName().GetData())));
+	FindWindowById(IDC_FNAME)->SetLabel(MakeStringEscaped(m_file->GetFileName()));
 	FindWindowById(IDC_METFILE)->SetLabel(m_file->GetFullName());
 	((wxTextCtrl*)FindWindowById(IDC_FILENAME))->SetValue(m_file->GetFileName());
 } 
@@ -255,7 +254,7 @@ void CFileDetailDialog::OnBnClickedButtonStrip(wxCommandEvent& evt) {
 		}
 	}
 
-	//FindWindowById(IDC_FILENAME)->SetValue(MakeStringEscaped(CString(filename.GetData())));
+	//FindWindowById(IDC_FILENAME)->SetValue(MakeStringEscaped(wxString(filename.GetData())));
 	GetDlgItem(IDC_FILENAME,wxTextCtrl)->SetValue(filename);
 }
 
