@@ -913,6 +913,11 @@ void CamuleDlg::Hide_aMule(bool iconize)
 	if (IsShown() && ((last_iconizing + 2000) < GetTickCount())) { // 1 secs for sanity
 	//	is_hidden = true;
 		last_iconizing = GetTickCount();
+
+		if (prefs_dialog) {
+			prefs_dialog->Iconize(true);;
+			prefs_dialog->Show(false);
+		}
 		
 		if (iconize) {
 			Iconize(TRUE);
@@ -931,14 +936,16 @@ void CamuleDlg::Show_aMule(bool uniconize)
 	//	is_hidden = false;
 		last_iconizing = GetTickCount();
 		
-		if (prefs_dialog) {
-			prefs_dialog->Show(true);
-		}
-		
 		if (uniconize) {
 			Show(TRUE);
 			Raise();
 		}
+		
+		if (prefs_dialog) {
+			prefs_dialog->Show(true);
+			prefs_dialog->Raise();
+		}
+	
 	}
 
 }
@@ -1034,35 +1041,7 @@ void CamuleDlg::LaunchUrl( const wxString& url )
 {
 	wxString cmd;
 
-#ifdef __WXMAC__
-
-	#if 0
-	// Kry -Uh?
-	wxString url1(url);
-	if (url1.Left(5) != wxT("file:"))
-		url1 = wxNativePathToURL(url1);
-
-	OSStatus err;
-	ICInstance inst;
-	SInt32 startSel;
-	SInt32 endSel;
-
-	err = ICStart(&inst, 'STKA'); // put your app creator code here
-	if (err == noErr) {
-		#if !TARGET_CARBON
-		err = ICFindConfigFile(inst, 0, nil);
-		#endif
-		if (err == noErr) {
-		startSel = 0;
-		endSel = wxStrlen(url1);
-		err = ICLaunchURL(inst, "\p", url1, endSel, &startSel, &endSel);
-		}
-		ICStop(inst);
-	}
-	#endif
-
-
-#elif defined (__WXMSW__)
+#if defined (__WXMSW__)
 wxFileType *ft;                            /* Temporary storage for filetype. */
 
 	ft = wxTheMimeTypesManager->GetFileTypeFromExtension(wxT("html"));
