@@ -39,7 +39,7 @@ Command-line options take precedence over config-file options.
 \fBamulewebDLG\fR is the GUI version of \fBamuleweb\fR, and they are exactly the same (except for the interface, of course).
 .TP
 \fB\-h\fR, \fB\-\-host\fR=\fI<host>\fR
-host where aMule is running (default: \fIlocalhost\fR).
+Host where aMule is running (default: \fIlocalhost\fR).
 \fI<host>\fR might be an IP address or a DNS name
 .TP
 \fB\-p\fR, \fB\-\-port\fR=\fI<port>\fR
@@ -49,50 +49,49 @@ aMule's port for External Connections, as set in Preferences->Remote Controls (d
 External Connections password
 .TP
 \fB\-f\fR, \fB\-\-config\-file\fR=\fI<path>\fR
-use the given configuration file.
+Use the given configuration file.
 Default configuration file is \fI~/.aMule/remote.conf\fR
 .TP
 \fB\-q\fR, \fB\-\-quiet\fR
-do not print any output to stdout.
-You may want to use \fB\-q\fR to daemonize the webserwer,
-i.e. running as '\fBamuleweb \-q &\fR'
+Do not print any output to stdout.
+You may want to use \fB\-q\fR to daemonize the webserwer, i.e. running as '\fBamuleweb \-q &\fR'
 .TP
 \fB\-v\fR, \fB\-\-verbose\fR
-be verbose \- show also debug messages
+Be verbose \- show also debug messages
 .TP
 \fB\-w\fR, \fB\-\-write\-config\fR
-write command line options to config file and exit
+Write command line options to config file and exit
 .TP
 \fB\-\-create\-config\-from\fR=\fI<path>\fR
-create config file based upon \fI<path>\fR, which must point to a valid aMule config file, and then exit
+Create config file based upon \fI<path>\fR, which must point to a valid aMule config file, and then exit
 .TP
 \fB\-t\fR, \fB\-\-template\fR=\fI<name>\fR
-loads the template named \fI<name>\fR. See also the section
+Loads the template named \fI<name>\fR. See also the section
 .B SKIN SUPPORT
 .TP
 \fB\-s\fR, \fB\-\-server\-port\fR=\fI<port>\fR
-webserver's HTTP port. This is the port you can point your browser to (default: \fI4711\fR)
+Webserver's HTTP port. This is the port you can point your browser to (default: \fI4711\fR)
 .TP
 \fB\-z\fR, \fB\-\-enable\-gzip\fR
-enable using gzip compression in HTTP traffic to save bandwidth
+Enable using gzip compression in HTTP traffic to save bandwidth
 .TP
 \fB\-Z\fR, \fB\-\-disable\-gzip\fR
-disable using gzip compression (this is the default)
+Disable using gzip compression (this is the default)
 .TP
 \fB\-A\fR, \fB\-\-admin\-pass\fR=\fI<passwd>\fR
-full access password for webserver
+Full access password for webserver
 .TP
 \fB\-G\fR, \fB\-\-guest\-pass\fR=\fI<passwd>\fR
-guest password for webserver
+Guest password for webserver
 .TP
 \fB\-a\fR, \fB\-\-allow\-guest\fR
-allow guest access
+Allow guest access
 .TP
 \fB\-d\fR, \fB\-\-deny\-guest\fR
-deny guest access (default)
+Deny guest access (default)
 .TP
 \fB\-L\fR, \fB\-\-load\-settings\fR
-load/save webserver settings from/to remote aMule.
+Load/save webserver settings from/to remote aMule.
 This causes amuleweb to ignore command-line and config-file settings, and load them from aMule.
 When saving preferences none will be written to the config file, but to aMule.
 (Of course, this works only for those settings, that can be set in aMule's Preferences->Remote Controls)
@@ -104,10 +103,10 @@ aMule uses this option when starting amuleweb at aMule startup.
 This option causes all other command-line and config-file settings to be ignored, preferences to be read from the given config file, and also implies the \fB\-q \-L\fR options.
 .TP
 \fB\-\-help\fR
-display usage help information and exit
+Display usage help information and exit
 .TP
 \fB\-\-version\fR
-output program version information and exit
+Output program version information and exit
 .SH SKIN SUPPORT
 \fBamuleweb\fR is capable of displaying information in different skins.
 These skins are called templates, and you can make amuleweb load a specific template via the \fB\-t\fR command line option.

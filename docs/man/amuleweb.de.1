@@ -49,50 +49,50 @@ aMule's Port für Externe Verbindungen, wie eingestellt unter Einstellungen-> Re
 Externe Verbindung Password
 .TP
 \fB\-f\fR, \fB\-\-config\-file\fR=\fI<path>\fR
-nutze die vorgegebene Konfigurationsdatei. 
+Nutze die vorgegebene Konfigurationsdatei. 
 Standart Konfigurationsdatei ist \fI~/.aMule/remote.conf\fR
 .TP
 \fB\-q\fR, \fB\-\-quiet\fR
-gibt keine Infos nach stdout.
+Gibt keine Infos nach stdout.
 Man kann diese Option nutzen um den Webserver zum Daemon zu machen,
 z.B mit '\fBamuleweb \-q &\fR'
 .TP
 \fB\-v\fR, \fB\-\-verbose\fR
-sei verbose \- zeige ebenfalls Debug Ausgaben.
+Sei verbose \- zeige ebenfalls Debug Ausgaben.
 .TP
 \fB\-w\fR, \fB\-\-write\-config\fR
-schreibe Kommandozeilen Optionen in die Konfigurationsdatei und beende.
+Schreibe Kommandozeilen Optionen in die Konfigurationsdatei und beende.
 .TP
 \fB\-\-create\-config\-from\fR=\fI<path>\fR
-erstelle eine Konfigdaite basierend auf\fI<path>\fR, dieser Pfad muss auf eine gültige aMUle KOnfigdatei zeigen, und dann beenden
+Erstelle eine Konfigdaite basierend auf\fI<path>\fR, dieser Pfad muss auf eine gültige aMUle KOnfigdatei zeigen, und dann beenden
 .TP
 \fB\-t\fR, \fB\-\-template\fR=\fI<name>\fR
-läd das Template mit dem Namen \fI<name>\fR. Siehe hierzu den Abschnitt
+Läd das Template mit dem Namen \fI<name>\fR. Siehe hierzu den Abschnitt
 .B SKIN UNTERSTUETZUNG
 .TP
 \fB\-s\fR, \fB\-\-server\-port\fR=\fI<port>\fR
 Webserver's HTTP port. Dies ist der Port wohin man später seinen Webbrowser richtet (standart: \fI4711\fR)
 .TP
 \fB\-z\fR, \fB\-\-enable\-gzip\fR
-aktiviert gzip kompremierung im HTTP Verkehr um Bandbreite zu sparen
+Aktiviert gzip kompremierung im HTTP Verkehr um Bandbreite zu sparen
 .TP
 \fB\-Z\fR, \fB\-\-disable\-gzip\fR
-deaktieviert die gzip kompremierung (die ist standart)
+Deaktieviert die gzip kompremierung (die ist standart)
 .TP
 \fB\-A\fR, \fB\-\-admin\-pass\fR=\fI<passwd>\fR
-volle zugriffsrechte Nutzer Passwort für den Webserver
+Volle zugriffsrechte Nutzer Passwort für den Webserver
 .TP
 \fB\-G\fR, \fB\-\-guest\-pass\fR=\fI<passwd>\fR
 Gast Passwort für den Webserver
 .TP
 \fB\-a\fR, \fB\-\-allow\-guest\fR
-gestatte Gast Zugang
+Gestatte Gast Zugang
 .TP
 \fB\-d\fR, \fB\-\-deny\-guest\fR
-verbiete Gast Zugang (standart)
+Verbiete Gast Zugang (standart)
 .TP
 \fB\-L\fR, \fB\-\-load\-settings\fR
-lade/speichere webserver Einstellungen von/nach remote aMule.
+Lade/speichere webserver Einstellungen von/nach remote aMule.
 Dies bewirkt das amuleweb alle Kommandozeilen und Konfigzeilen Optionen ignoriert, und diese direkt von aMule läd.
 Beim speichern werden die Einstellungen nicht in die Konfigdatei gespeichert sondern direkt in aMule.
 (Natürlich funktioniert dies nur für die Optionen, welche auch unter aMule's Einstellunge->Remote Controls eingestellt werden können)
@@ -104,10 +104,10 @@ aMule nutzt diese Option wenn amuleweb automatish beim Programmstart gestartet w
 Diese Option bewirkt das all andern Kommandozeilen und Konfigdatei einstellungen ignoriert werden, Einstellungen werden von der angegebenen Datei gelesen, und zusätzlich werden die \fB\-q \-L\fR Optionen gesetzt.
 .TP
 \fB\-\-help\fR
-zeigt diese Hilfe an
+Zeigt diese Hilfe an
 .TP
 \fB\-\-version\fR
-zeigt die Versionsnummer and und beendet
+Zeigt die Versionsnummer and und beendet
 .SH SKIN UNTERSTUETZUNG
 \fBamuleweb\fR hat die möglichkeit die Webseiten in verschiedenen Skins darzustellen.
 Diese Skins nennen sich Templates, und man kann amuleweb eine komplett anderes Gesicht geben mit der \fB\-t\fR Option.
