@@ -38,20 +38,22 @@
  */
 	#include <wx/timer.h>
 	#ifndef __WXMSW__ // already defined in winbase.h
-	#define GetTickCount() mytimer->GetTickCountNow()
+	#define GetTickCount() MyTimer::GetTickCountNow()
 	#endif
-	#define GetTickCount64() mytimer->GetTickCountNow64()
-	extern class MyTimer *mytimer;
-	class MyTimer : public wxTimer {
+	#define GetTickCount64() MyTimer::GetTickCountNow64()
+	class MyTimer : public wxTimer 
+	{
 	public:
 		MyTimer() { tic32 = tic64 = wxGetLocalTimeMillis().GetValue(); Start(20); }
-		uint32 GetTickCountNow() { return tic32; }
-		uint64 GetTickCountNow64() { return tic64; }
+		static uint32 GetTickCountNow() { return tic32; }
+		static uint64 GetTickCountNow64() { return tic64; }
 	private:
 		void Notify() { tic32 = tic64 = wxGetLocalTimeMillis().GetValue(); }
-		uint32 tic32;
-		uint64 tic64;
+		
+		static uint32 tic32;
+		static uint64 tic64;
 	};
+
 
 #else
 /**

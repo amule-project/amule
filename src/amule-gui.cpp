@@ -144,8 +144,14 @@ END_EVENT_TABLE()
 
 IMPLEMENT_APP(CamuleGuiApp)
 
+
+// Initialization of the static MyTimer member variables.
+uint32 MyTimer::tic32 = 0;
+uint64 MyTimer::tic64 = 0;
+	
 // Global timer. Used to cache GetTickCount() results for better performance.
-class MyTimer *mytimer;
+class MyTimer* mytimer = NULL;
+
 
 int CamuleGuiApp::OnExit()
 {
@@ -161,6 +167,7 @@ void CamuleGuiApp::ShutDown() {
 	CamuleApp::ShutDown();
 	if (mytimer) {
 		delete mytimer;
+		mytimer = NULL;
 	}
 }
 
