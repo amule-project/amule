@@ -44,7 +44,7 @@
 #include "opcodes.h"		// Needed for OP_*
 #include "updownclient.h"	// Needed for CUpDownClient
 
-#define DEBUG_LOCAL_CLIENT_PROTOCOL
+//#define DEBUG_LOCAL_CLIENT_PROTOCOL
 //#define __PACKET_DEBUG__
 
 // some client testing variables
@@ -1499,7 +1499,7 @@ void CUpDownClient::ReGetClientSoft()
 				m_clientVerString = wxT("lphant");
 				break;
 			case SO_EMULEPLUS:
-				m_clientSoft = SO_EMULE;
+				m_clientSoft = SO_EMULEPLUS;
 				m_clientVerString = wxT("eMule+");
 				break;
 			case SO_HYDRANODE:

@@ -368,9 +368,9 @@ void CClientList::GetStatistics(uint32 &totalclient, uint32 stats[], ClientMap *
 				if(clientVersionEDonkeyHybrid)
 					(*clientVersionEDonkeyHybrid)[cur_client->GetVersion()]++;
 				break;
+				
 			case SO_EMULE   :
 			case SO_OLDEMULE:
-				stats[2]++;
 				if(clientVersionEMule) {
 					uint8 version = cur_client->GetMuleVersion();
 					if (version == 0xFF || version == 0x66 || version==0x69 || version==0x90 || version==0x33 || version==0x60) {
@@ -378,7 +378,10 @@ void CClientList::GetStatistics(uint32 &totalclient, uint32 stats[], ClientMap *
 					}
 					(*clientVersionEMule)[cur_client->GetVersion()]++;
 				}
+			case SO_EMULEPLUS: // And SO_EMULE and SO_OLDEMULE (no break before this)
+				stats[2]++;
 				break;
+			
 			case SO_CDONKEY : 
 				stats[5]++;
 				break;
