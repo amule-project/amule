@@ -109,7 +109,6 @@ class ExternalConn : public EXTERNAL_CONN_BASE {
 		ExternalConn(amuleIPV4Address addr, wxString *msg);
 		~ExternalConn();
 	
-		wxString ProcessRequest(const wxString& item);
 		CECPacket *ProcessRequest2(const CECPacket *request, CPartFile_Encoder_Map &enc_map);
 	
 		CECPacket *Authenticate(const CECPacket *);

@@ -1228,6 +1228,10 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	Out.Replace(wxT("[TotalUpTransferred]"), CastItoXBytes(fTotalSize) + wxT(" / ") + CastItoXBytes(fTotalTransferred));
 	Out.Replace(wxT("[TotalUpSpeed]"), CastItoXBytes(fTotalSpeed) + wxT(" /s"));
 
+/*	gonosztopi - commented out, because ECv1 is now obsolete, and the corresponding 
+	ECv2 methods are still missing.
+	By the way, the ECv1 part from ExternalConn.cpp has already been deleted - so it
+	didn't work ...
 	if (m_Params.bShowUploadQueue) {
 		Out.Replace(wxT("[UploadQueue]"), m_Templates.sTransferUpQueueShow);
 		Out.Replace(wxT("[UploadQueueList]"), _("On Queue"));
@@ -1276,8 +1280,9 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 		
 		Out.Replace(wxT("[QueueList]"), sQueue);
 	} else {
+*/
 		Out.Replace(wxT("[UploadQueue]"), m_Templates.sTransferUpQueueHide);
-	}
+//	}
 
 	Out.Replace(wxT("[ShowQueue]"), _("Show Queue"));
 	Out.Replace(wxT("[HideQueue]"), _("Hide Queue"));
@@ -1288,8 +1293,7 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	Out.Replace(wxT("[DownloadList]"),
 		wxString::Format(wxT("Downloads (%u)"), m_DownloadFilesInfo.ItemCount()));
 	Out.Replace(wxT("[UploadList]"),
-		wxString::Format(_("Uploads (%i)"),
-			StrToLong(webInterface->SendRecvMsg(wxT("QUEUE UL_GETLENGTH")))));
+		wxString::Format(_("Uploads (%i)"), m_UploadsInfo.ItemCount()));
 	Out.Replace(wxT("[CatSel]"), sCat);
 
 	return Out;
