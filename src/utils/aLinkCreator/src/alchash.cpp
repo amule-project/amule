@@ -10,7 +10,7 @@
 /// Pixmaps from http://www.everaldo.com and http://www.amule.org
 ///
 /// This program is free software; you can redistribute it and/or modify
-///  it under the terms of the GNU General Public License as published by
+/// it under the terms of the GNU General Public License as published by
 /// the Free Software Foundation; either version 2 of the License, or
 /// (at your option) any later version.
 ///
@@ -36,7 +36,7 @@
 #pragma hdrstop
 #endif
 
-#include <wx/ffile.h>
+#include <wx/file.h>
 #include <wx/regex.h>
 
 #include "alchash.h"
@@ -44,77 +44,84 @@
 
 /// Constructor
 AlcHash::AlcHash()
-{}
+{
+  m_ed2kArrayOfHashes = 0;
+  m_filename=wxEmptyString;
+  m_fileSize=0;
+}
 
 /// Destructor
 AlcHash::~AlcHash()
 {}
 
-/// Get Md4 hash from a file
-wxString AlcHash::GetMD4HashFromFile (const wxFileName& filename)
+/// Set Ed2k hash from a file
+void AlcHash::SetED2KHashFromFile(const wxFileName& filename)
 {
-  return (GetMD4HashFromFile(filename.GetFullPath()));
-}
-
-/// Get Md4 hash from a file
-wxString AlcHash::GetMD4HashFromFile(const wxString& filename)
-{
-  MD4 md4;
-  return (md4.calcMd4FromFile(filename));
-}
-
-/// Get Ed2k hash from a file
-wxString AlcHash::GetED2KHashFromFile(const wxFileName& filename)
-{
-  return (GetED2KHashFromFile(filename.GetFullPath()));
-}
-
-/// Get Ed2k hash from a file
-wxString AlcHash::GetED2KHashFromFile(const wxString& filename)
-{
-  MD4 md4;
-  return (md4.calcEd2kFromFile(filename));
-}
-
-/// Get Ed2k link from a file
-wxString AlcHash::GetED2KLinkFromFile(const wxFileName& filename, const wxString& ed2kHash)
-{
-  // Check file
-  wxFFile file(filename.GetFullPath());
+  // Check file (wxFile destructor will close the file)
+  wxFile file(filename.GetFullPath());
   if (! file.IsOpened())
     {
-      return (_("Unable to open ")+filename.GetFullPath());
+      wxLogError (_("Unable to open %$"),filename.GetFullPath().c_str());
     }
-
-  size_t fileSize = file.Length();
-  file.Close();
-
   // Check for file size
-  if (fileSize > (size_t)-1)
+  else if (file.Length() > (size_t)-1)
     {
-      return (_("The file ") + filename.GetFullPath() +
-              _(" is to big for the Donkey: maximum allowed is 4 GB."));
+      wxLogError (_("The file %s is to big for the Donkey: maximum allowed is 4 GB."), filename.GetFullPath().c_str());
+    }
+  else
+    {
+      MD4 md4;
+
+      // Set members
+      m_fileSize = file.Length();
+      m_ed2kArrayOfHashes=md4.calcEd2kFromFile(filename.GetFullPath());
+      m_filename = filename.GetFullName();
+    }
+}
+
+/// Set Ed2k hash from a file
+void AlcHash::SetED2KHashFromFile(const wxString& filename)
+{
+  SetED2KHashFromFile(wxFileName(filename));
+}
+
+/// Get Ed2k link
+wxString AlcHash::GetED2KLink(const wxArrayString& arrayOfUrls, const bool addPartHashes)
+{
+  // Constructing ed2k basic link
+  wxString ed2kLink = wxT("ed2k://|file|")+CleanFilename(m_filename)
+                      +wxT("|")+ wxString::Format(wxT("%u"),m_fileSize) +wxT("|")+ m_ed2kArrayOfHashes.Last() + wxT("|");
+
+
+  // Add optional URLs
+  if (!arrayOfUrls.IsEmpty())
+    {
+      size_t i;
+      for (i=0;i<arrayOfUrls.GetCount();i++)
+        {
+          ed2kLink += wxT("s=") + arrayOfUrls[i] + wxT("|");
+        }
     }
 
-  // Compute ed2k hash if not provided
-  wxString hash(ed2kHash);
-  if (hash.IsEmpty())
+  // Add Optional part-hashes
+  if (addPartHashes && m_ed2kArrayOfHashes.GetCount()>1)
     {
-      hash = GetED2KHashFromFile(filename);
+      ed2kLink += wxT("p=");
+      size_t i;
+      for (i=0;i<(m_ed2kArrayOfHashes.GetCount()-1);i++)
+        {
+          ed2kLink += m_ed2kArrayOfHashes[i] + wxT(":");
+        }
+      ed2kLink.RemoveLast(); // Remove last :
+      ed2kLink += wxT("|");
     }
 
-  // Constructing ed2k link
-  wxString ed2kLink = wxT("ed2k://|file|")+CleanFilename(filename.GetFullName())
-                      +wxT("|")+ wxString::Format(wxT("%u"),fileSize) +wxT("|")+ hash + wxT("|");
+  // Add last slash
+  ed2kLink += wxT("/");
 
   return ed2kLink;
 }
 
-/// Get Ed2k link from a file
-wxString AlcHash::GetED2KLinkFromFile(const wxString& filename, const wxString& ed2kHash)
-{
-  return (GetED2KLinkFromFile(wxFileName(filename), ed2kHash));
-}
 
 /// Strip all non-alphanumeric characters of a filename string
 wxString AlcHash::CleanFilename(const wxString& filename)
@@ -125,4 +132,10 @@ wxString AlcHash::CleanFilename(const wxString& filename)
   toStrip.Replace(&name, wxT("_"));
 
   return (name);
+}
+
+/// Get Ed2k Array of hashes
+wxArrayString AlcHash::GetED2KHash()
+{
+  return (m_ed2kArrayOfHashes);
 }

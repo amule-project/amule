@@ -10,7 +10,7 @@
 /// Pixmaps from http://www.everaldo.com and http://www.amule.org
 ///
 /// This program is free software; you can redistribute it and/or modify
-///  it under the terms of the GNU General Public License as published by
+/// it under the terms of the GNU General Public License as published by
 /// the Free Software Foundation; either version 2 of the License, or
 /// (at your option) any later version.
 ///
@@ -45,6 +45,10 @@ class AlcHash
   {
   private:
 
+    wxArrayString m_ed2kArrayOfHashes;
+    wxString m_filename;
+    size_t m_fileSize;
+
   protected:
 
     /// Strip all non-alphanumeric characters of a filename string
@@ -57,23 +61,17 @@ class AlcHash
     /// Destructor
     ~AlcHash ();
 
-    /// Get Md4 hash from a file
-    wxString GetMD4HashFromFile (const wxFileName& filename);
+    /// Set Ed2k hash from a file
+    void SetED2KHashFromFile(const wxFileName& filename);
 
-    /// Get Md4 hash from a file
-    wxString GetMD4HashFromFile(const wxString& filename);
+    /// Set Ed2k hash from a file
+    void SetED2KHashFromFile(const wxString& filename);
 
-    /// Get Ed2k hash from a file
-    wxString GetED2KHashFromFile(const wxFileName& filename);
+    /// Get Ed2k Array of hashes
+    wxArrayString GetED2KHash();
 
-    /// Get Ed2k hash from a file
-    wxString GetED2KHashFromFile(const wxString& filename);
-
-    /// Get Ed2k link from a file
-    wxString GetED2KLinkFromFile(const wxFileName& filename, const wxString& ed2kHash=wxEmptyString);
-
-    /// Get Ed2k link from a file
-    wxString GetED2KLinkFromFile(const wxString& filename, const wxString& ed2kHash=wxEmptyString);
+    /// Get Ed2k link
+    wxString GetED2KLink(const wxArrayString& arrayOfUrls=0, const bool addPartHashes=FALSE);
   };
 
 #endif /* _ALCHASH_H */
