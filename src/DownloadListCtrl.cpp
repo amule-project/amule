@@ -50,7 +50,6 @@
 #include "PartFile.h"			// Needed for CPartFile
 #include "CommentDialogLst.h"	// Needed for CCommentDialogLst
 #include "FileDetailDialog.h"	// Needed for CFileDetailDialog
-#include "DownloadQueue.h"		// Needed for CDownloadQueue
 #include "updownclient.h"		// Needed for CUpDownClient
 #include "amuleDlg.h"			// Needed for CamuleDlg
 #include "muuli_wdr.h"			// Needed for ID_DLOADLIST
