@@ -63,7 +63,7 @@ dnl ----------------------------------------------------
 
 AC_DEFUN(GET_GTK2_VERSION,
 [
-  GTK2_VERSION=`$PKG_CONFIG --modversion gtk+-2.0`
+  GTK_VERSION=`$PKG_CONFIG --modversion gtk+-2.0`
   AC_SUBST(GTK_VERSION)
 ])
 
