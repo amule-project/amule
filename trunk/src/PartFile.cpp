@@ -3279,7 +3279,7 @@ void CPartFile::FlushBuffer(void)
 	in temp dir before flushing. If not enough space, pause the file,
 	add log line and abort flushing.
 	*/
-	wxLongLong total, free;
+	wxLongLong total = 0, free = 0;
 	if (wxGetDiskSpace(char2unicode(theApp.glob_prefs->GetTempDir()), &total, &free) && free < PARTSIZE) {
 		theApp.amuledlg->AddLogLine(true, _("ERROR: Cannot write to disk"));
 		PauseFile();
@@ -3297,7 +3297,7 @@ void CPartFile::FlushBuffer(void)
 
 		bool bCheckDiskspace = theApp.glob_prefs->IsCheckDiskspaceEnabled() && theApp.glob_prefs->GetMinFreeDiskSpace() > 0;
 
-		wxLongLong total, free;
+		wxLongLong total = 0, free = 0;
 		wxGetDiskSpace(char2unicode(theApp.glob_prefs->GetTempDir()), &total, &free);
 		typedef unsigned long long uint64;
 		// WHY IS THIS NOT USED? ... //uint64 GetFreeDiskSpaceX = free.GetValue();
@@ -3416,7 +3416,7 @@ void CPartFile::FlushBuffer(void)
 					case PS_COMPLETE:
 						break;
 					default: {
-						wxLongLong total, free;
+						wxLongLong total = 0, free = 0;
 						wxGetDiskSpace(char2unicode(theApp.glob_prefs->GetTempDir()), &total, &free);
 						typedef unsigned long long uint64;
 						uint64 GetFreeDiskSpaceX = free.GetValue();

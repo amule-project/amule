@@ -1133,7 +1133,7 @@ void CDownloadQueue::CheckDiskspace(bool bNotEnoughSpaceLeft)
 		}
 		return;
 	}
-	wxLongLong total, free;
+	wxLongLong total = 0, free = 0;
 	wxGetDiskSpace(char2unicode(theApp.glob_prefs->GetTempDir()), &total, &free);
 	// 'bNotEnoughSpaceLeft' - avoid worse case, if we already had 'disk full'
 	uint64 nTotalAvailableSpace = bNotEnoughSpaceLeft ? 0 : free.GetValue();
