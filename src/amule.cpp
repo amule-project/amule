@@ -568,13 +568,13 @@ bool CamuleApp::OnInit()
 	size = getmntinfo(&mntbuf, MNT_NOWAIT);
 	for (i = 0; i < size; i++) {
 		if ( !strcmp(mntbuf[i].f_fstypename,"msdos")) {
-			if ( tempdir.StartsWith( mntbuf[i].f_mntonname ) ) {
+			if ( tempdir.StartsWith( char2unicode( mntbuf[i].f_mntonname )) ) {
 				// Kry - We cannot addlogline because there's no GUI yet!
-      			AddLogLineM(false,"Temp dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings.");
+      			AddLogLineM(false,wxT("Temp dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings."));
                     use_chmod = false;
 			}
-			if ( incomingdir.StartsWith( mntbuf[i].f_mntonname ) ) {
-				AddLogLineM(false,"Incoming dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings.");
+			if ( incomingdir.StartsWith( char2unicode( mntbuf[i].f_mntonname ) ) ) {
+				AddLogLineM(false,wxT("Incoming dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings."));
 				use_chmod = false;
 			}
 			if (!use_chmod) {
