@@ -858,7 +858,7 @@ bool CClientReqSocket::ProcessPacket(char* packet, uint32 size, uint8 opcode)
 				if (client->IsBanned()) {
 					break;
 				}
-				if (theApp.glob_prefs->CanSeeShares()==vsfaEverybody || (theApp.glob_prefs->CanSeeShares()==vsfaFriends && client->IsFriend())) {
+				if ((theApp.glob_prefs->CanSeeShares()==vsfaEverybody) || ((theApp.glob_prefs->CanSeeShares()==vsfaFriends) && client->IsFriend())) {
 					theApp.amuledlg->AddLogLine(true,CString(_("User %s (%u) requested your shareddirectories-list -> %s")),client->GetUserName(),client->GetUserID(),_("accepted"));			
 
 					// Kry - This new code from eMule will avoid duplicated folders
@@ -867,40 +867,39 @@ bool CClientReqSocket::ProcessPacket(char* packet, uint32 size, uint8 opcode)
 					
 					uint32 uDirs = theApp.glob_prefs->shareddir_list.GetCount();
 				
+					// the shared folders
 					for (uint32 iDir=0; iDir < uDirs; iDir++) {
 						folders_to_send.Add(wxString(theApp.glob_prefs->shareddir_list[iDir]));
 					}			
 					
-					wxString strDir;
+					bool bFoundFolder = false;
 					
-					// and the incoming folders
+					char* char_ptrDir;
+					// ... the categories folders ... (category 0 -> incoming)
 					for (uint32 ix=0;ix<theApp.glob_prefs->GetCatCount();ix++) {
-						strDir=wxString(theApp.glob_prefs->GetCategory(ix)->incomingpath);
-						bool bFoundFolder = false;
+						char_ptrDir = theApp.glob_prefs->GetCategory(ix)->incomingpath;
+						bFoundFolder = false;
 						for (uint32 iDir=0; iDir < (uint32)folders_to_send.GetCount(); iDir++) {	
-							if (folders_to_send[iDir].CmpNoCase(strDir)) {
+							if (folders_to_send[iDir].CmpNoCase(char_ptrDir) == 0) {
 								bFoundFolder = true;
 								break;
 							}
 						}			
 						if (!bFoundFolder) {
-							folders_to_send.Add(strDir);
-						}
-						
+							folders_to_send.Add(wxString(char_ptrDir));
+						}							
 					}
-
-					// Magic thing from the eDonkey Hybrids...
-					strDir = OP_INCOMPLETE_SHARED_FILES;
-					bool bFoundFolder = false;
-					for (uint32 iDir = 0; iDir < (uint32) folders_to_send.GetCount(); iDir++)
-					{
-						if (strDir.CmpNoCase(folders_to_send[iDir]) == 0) {
+		
+					// ... and the Magic thing from the eDonkey Hybrids...
+					bFoundFolder = false;
+					for (uint32 iDir = 0; iDir < (uint32) folders_to_send.GetCount(); iDir++) {
+						if (folders_to_send[iDir].CmpNoCase(OP_INCOMPLETE_SHARED_FILES) == 0) {
 							bFoundFolder = true;
 							break;
 						}
 					}
 					if (!bFoundFolder) {
-						folders_to_send.Add(strDir);
+						folders_to_send.Add(wxString(OP_INCOMPLETE_SHARED_FILES));
 					}
 					
 					// Send packet.
@@ -927,7 +926,7 @@ bool CClientReqSocket::ProcessPacket(char* packet, uint32 size, uint8 opcode)
 						DebugSend("OP__AskSharedDirsDeniedAnswer", client);
 					}
 					#endif
-					theApp.amuledlg->AddLogLine(true,CString(_("User %s (%u) requested your shareddirectories-list -> %s")),client->GetUserName(),client->GetUserID(),CString(_("denied")).GetData());
+					theApp.amuledlg->AddLogLine(true,CString(_("User %s (%u) requested your shareddirectories-list -> %s")),client->GetUserName(),client->GetUserID(),_("denied"));
 					Packet* replypacket = new Packet(OP_ASKSHAREDDENIEDANS, 0);
 					theApp.uploadqueue->AddUpDataOverheadOther(replypacket->size);
 					SendPacket(replypacket, true, true);
@@ -952,7 +951,7 @@ bool CClientReqSocket::ProcessPacket(char* packet, uint32 size, uint8 opcode)
 				wxString strReqDir;
 				data.Read(strReqDir);
 				if (theApp.glob_prefs->CanSeeShares()==vsfaEverybody || (theApp.glob_prefs->CanSeeShares()==vsfaFriends && client->IsFriend())) {
-					theApp.amuledlg->AddLogLine(true,CString(_("User %s (%u) requested your sharedfiles-list for directory %s -> %s")),client->GetUserName(),client->GetUserID(),strReqDir.GetData(),CString(_("accepted")).GetData());
+					theApp.amuledlg->AddLogLine(true,CString(_("User %s (%u) requested your sharedfiles-list for directory %s -> %s")),client->GetUserName(),client->GetUserID(),strReqDir.GetData(),_("accepted"));
 					wxASSERT( data.GetPosition() == data.GetLength() );
 					CTypedPtrList<CPtrList, CKnownFile*> list;
 					
@@ -987,7 +986,7 @@ bool CClientReqSocket::ProcessPacket(char* packet, uint32 size, uint8 opcode)
 					theApp.uploadqueue->AddUpDataOverheadOther(replypacket->size);
 					SendPacket(replypacket, true, true);
 				} else {
-					theApp.amuledlg->AddLogLine(true,CString(_("User %s (%u) requested your sharedfiles-list for directory %s -> %s")),client->GetUserName(),client->GetUserID(),strReqDir.GetData(),CString(_("denied")).GetData());
+					theApp.amuledlg->AddLogLine(true,CString(_("User %s (%u) requested your sharedfiles-list for directory %s -> %s")),client->GetUserName(),client->GetUserID(),strReqDir.GetData(),_("denied"));
 					#ifdef __USE_DEBUG__
 					if (thePrefs.GetDebugClientTCPLevel() > 0) {
 						DebugSend("OP__AskSharedDeniedAnswer", client);
