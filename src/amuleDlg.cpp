@@ -579,7 +579,7 @@ void CamuleDlg::ShowConnectionState(bool connected, const wxString &server)
 					connButImg(1), wxNullBitmap, wxITEM_NORMAL,
 					_("Disconnect from current server"));
 				wxStaticText* tx = CastChild( wxT("infoLabel"), wxStaticText );
-				tx->SetLabel(_("Connection established on:") + server);
+				tx->SetLabel(_("Connection established on: ") + server);
 				connLabel->SetLabel(server);
 				break;
 			}
