@@ -297,6 +297,10 @@ void ProxyStateMachine::ReactivateSocket()
 		h->AddPendingEvent(e);
 		e.m_event = wxSOCKET_OUTPUT;
 		h->AddPendingEvent(e);
+		if (m_IsLost) {
+			e.m_event = wxSOCKET_LOST;
+			h->AddPendingEvent(e);
+		}
 		return;
 	}
 	CServerSocket *s2 = dynamic_cast<CServerSocket *>(m_ProxyClientSocket);
@@ -306,6 +310,10 @@ void ProxyStateMachine::ReactivateSocket()
 		h->AddPendingEvent(e);
 		e.m_event = wxSOCKET_OUTPUT;
 		h->AddPendingEvent(e);
+		if (m_IsLost) {
+			e.m_event = wxSOCKET_LOST;
+			h->AddPendingEvent(e);
+		}
 		return;
 	}
 #endif
