@@ -6,6 +6,9 @@ Version 2.0.0rc7 - The "xxxxxxxxxxxxxxxx" version.
 		* Added session ratio and total ratio to XAS
 
 	Jacobo221:
+		aMule GUI:
+		* Fixed two almost-the-same bugs when clicked download button and no items where selected (as reported by powtrix/willy, thanks)
+
 		On aMuleCMD:
 		* Added 'list' (or 'find') command to search for a file in the downloads queue by name or by number (or just show all)
 		* Added the ability to resume/pause all downloads at the same time through amulecmd (very handy when all downloads have been paused due to lack of space)
