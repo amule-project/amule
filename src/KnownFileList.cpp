@@ -154,8 +154,8 @@ void CKnownFileList::Clear() {
 	
 }
 
-CKnownFile* CKnownFileList::FindKnownFile(wxString filename,uint32 in_date,uint32 in_size) {
-	
+CKnownFile* CKnownFileList::FindKnownFile(wxString filename,uint32 in_date,uint32 in_size){
+
 	wxMutexLocker sLock(list_mut);
 	
 	CKnownFile* cur_file;
@@ -170,8 +170,8 @@ CKnownFile* CKnownFileList::FindKnownFile(wxString filename,uint32 in_date,uint3
 	return IsOnDuplicates(filename, in_date, in_size);
 }
 
-CKnownFile* CKnownFileList::FindKnownFileByID(const CMD4Hash& hash)
-{
+CKnownFile* CKnownFileList::FindKnownFileByID(const CMD4Hash& hash) {
+	
 	wxMutexLocker sLock(list_mut);
 	
 	if (!hash.IsEmpty())
@@ -222,16 +222,22 @@ bool CKnownFileList::Append(CKnownFile* Record)
 	}
 }
 
-CKnownFile* CKnownFileList::IsOnDuplicates(wxString filename,uint32 in_date,uint32 in_size) {
-	CKnownFile* cur_file;
-	KnownFileList::Node* node = duplicates.GetFirst();
-	while (node) {
-		CKnownFile* duplicate = node->GetData();
-		cur_file = duplicate;
+CKnownFile* CKnownFileList::IsOnDuplicates(wxString filename,uint32 in_date,uint32 in_size) const {
+
+	for (KnownFileList::Node* node = duplicates.GetFirst(); node != NULL; node = node->GetNext()) {
+		CKnownFile* cur_file = node->GetData();
 		if ((abs((int)cur_file->GetFileDate() - (int)in_date) < 20) && cur_file->GetFileSize() == in_size && !cur_file->GetFileName().Cmp(filename)) {
 			return cur_file;
 		}
-		node = node->GetNext();
+		
 	}	
 	return NULL;
+}
+
+bool CKnownFileList::IsKnownFile(const CKnownFile* file) 
+{
+	if (file) {
+		return FindKnownFileByID(file->GetFileHash()) != NULL;
+	}
+	return false;
 }

@@ -46,6 +46,7 @@ public:
 	void	Clear();
 	CKnownFile*	FindKnownFile(wxString filename,uint32 in_date,uint32 in_size);
 	CKnownFile*   FindKnownFileByID(const CMD4Hash& hash);
+	bool	IsKnownFile(const CKnownFile* file);
 
 	uint16 requested;
 	uint32 transfered;
@@ -56,7 +57,7 @@ private:
 
 	bool	Append(CKnownFile*);
 
-	CKnownFile* IsOnDuplicates(wxString filename,uint32 in_date,uint32 in_size);
+	CKnownFile* IsOnDuplicates(wxString filename,uint32 in_date,uint32 in_size) const;
 
 	KnownFileList	duplicates;
 	CKnownFileMap	m_map;

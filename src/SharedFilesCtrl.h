@@ -44,6 +44,8 @@ public:
 	void	UpdateItem(CKnownFile* toupdate);
 	void	Localize();
 	void	ShowFilesCount();
+	void	SetAICHHashing(uint32 nVal)				{ nAICHHashing = nVal; } 
+
 protected:
 	virtual bool AltSortAllowed( int column );
 
@@ -51,13 +53,14 @@ protected:
 	static int wxCALLBACK SortProc(long lParam1, long lParam2, long lParamSort);
 	void		OnNMRclick(wxListEvent& evt);
 	virtual bool ProcessEvent(wxEvent& evt);
-
+	
 	CBarShader s_ShareStatusBar;
 
 	wxMenu* m_SharedFilesMenu;
 	wxMenu		   m_PrioMenu;
 	wxMenu		   m_PermMenu;
 	CSharedFileList* sflist;
+	volatile uint32 nAICHHashing;
 
 	DECLARE_EVENT_TABLE()
 };

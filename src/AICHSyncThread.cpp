@@ -29,6 +29,7 @@
 #include "KnownFileList.h"
 #include "Preferences.h"
 #include "SharedFilesWnd.h"
+#include "SharedFilesCtrl.h"	
 #include <wx/debug.h>
 
 
@@ -41,7 +42,8 @@ static char THIS_FILE[]=__FILE__;
 using namespace std;
 
 
-#if 0
+wxMutex CamuleApp::hashing_mut;
+
 /////////////////////////////////////////////////////////////////////////////////////////
 ///CAICHSyncThread
 
@@ -147,7 +149,7 @@ void* CAICHSyncThread::Entry()
 		while (theApp.sharedfiles->GetCount() != 0){
 			Sleep(100);
 		}
-		wxMutexLocker sLock1(&theApp.hashing_mut); // only one filehash at a time
+		wxMutexLocker sLock1(theApp.hashing_mut); // only one filehash at a time
 		// sLock1.Lock(); // Mutex Locker locks on constructor.
 		uint32 cDone = 0;
 		for (KnownFilePtrList::iterator it = m_liToHash.begin();it != m_liToHash.end(); ++it)
@@ -156,7 +158,7 @@ void* CAICHSyncThread::Entry()
 				return 0;
 			}
 			theApp.amuledlg->sharedfileswnd->sharedfilesctrl->SetAICHHashing(m_liToHash.size()-cDone);
-			if (theApp.amuledlg->sharedfileswnd->sharedfilesctrl->m_hWnd != NULL)
+			if (theApp.amuledlg->sharedfileswnd->sharedfilesctrl != NULL)
 				theApp.amuledlg->sharedfileswnd->sharedfilesctrl->ShowFilesCount();
 			
 			CKnownFile* pCurFile = *(it);
@@ -169,14 +171,12 @@ void* CAICHSyncThread::Entry()
 			cDone++;
 		}
 
-		theApp.amuledlg->sharedfileswnd->sharedfilesctrl.SetAICHHashing(0);
-		if (theApp.amuledlg->sharedfileswnd->sharedfilesctrl.m_hWnd != NULL)
-			theApp.amuledlg->sharedfileswnd->sharedfilesctrl.ShowFilesCount();
+		theApp.amuledlg->sharedfileswnd->sharedfilesctrl->SetAICHHashing(0);
+		if (theApp.amuledlg->sharedfileswnd->sharedfilesctrl != NULL)
+			theApp.amuledlg->sharedfileswnd->sharedfilesctrl->ShowFilesCount();
 		// sLock1.Unlock(); // And unlocks on destructor
 	}
 
-	theApp.QueueDebugLogLine(false, _("AICHSyncThread finished"));
+	//theApp.QueueDebugLogLine(false, _("AICHSyncThread finished"));
 	return 0;
 }
-
-#endif

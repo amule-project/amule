@@ -243,6 +243,9 @@ public:
 	
 	wxString ConfigDir;
 	
+	
+	static wxMutex hashing_mut;
+
 protected:
 	/**
 	 * This class is used to contain log messages that are to be displayed
@@ -303,4 +306,3 @@ protected:
 DECLARE_APP(CamuleApp)
 
 #endif // AMULE_H
-
