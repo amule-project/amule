@@ -101,6 +101,7 @@
 
 #warning This ones must be removed ASAP - exception: amuledlg, will be the LAST one.
 #include "amuleDlg.h"			// Needed for CamuleDlg
+#include "SearchDlg.h"			// Needed for CSearchDlg
 #include "ServerListCtrl.h"		// Needed for CServerListCtrl
 #include "SharedFilesCtrl.h"	// Needed for CSharedFilesCtrl
 #include "QueueListCtrl.h"		// Needed for CQueueListCtrl
@@ -1899,9 +1900,120 @@ void CamuleApp::NotifyEvent(GUIEvent event) {
 	}
 
 	switch (event.ID) {
+		// queue list
+		case QLIST_CTRL_ADD_CLIENT:
+			amuledlg->transferwnd->queuelistctrl->AddClient((CUpDownClient*)event.ptr_value);
+			break;
+		case QLIST_CTRL_RM_CLIENT:
+			amuledlg->transferwnd->uploadlistctrl->RemoveClient((CUpDownClient*)event.ptr_value);
+			break;
+		case QLIST_CTRL_REFRESH_CLIENT:
+			amuledlg->transferwnd->uploadlistctrl->RefreshClient((CUpDownClient*)event.ptr_value);
+			break;
+		// shared files
 		case SHAREDFILES_UPDATEITEM:
 			amuledlg->sharedfileswnd->sharedfilesctrl->UpdateItem((CKnownFile*)event.ptr_value);
 			break;
+		// download ctrl
+		case DOWNLOAD_CTRL_UPDATEITEM:
+			amuledlg->transferwnd->downloadlistctrl->UpdateItem((CPartFile*)event.ptr_value);
+			break;
+		case DOWNLOAD_CTRL_ADD_FILE:
+			amuledlg->transferwnd->downloadlistctrl->AddFile((CPartFile*)event.ptr_value);
+			break;
+		case DOWNLOAD_CTRL_ADD_SOURCE:
+			amuledlg->transferwnd->downloadlistctrl->AddSource((CPartFile*)event.ptr_value,
+									   (CUpDownClient*)event.ptr_aux_value,
+									   event.byte_value);
+			break;
+		case DOWNLOAD_CTRL_RM_FILE:
+			amuledlg->transferwnd->downloadlistctrl->RemoveFile((CPartFile*)event.ptr_value);
+			break;
+		case DOWNLOAD_CTRL_RM_SOURCE:
+			amuledlg->transferwnd->downloadlistctrl->RemoveSource((CUpDownClient*)event.ptr_value,
+									      (CPartFile*)event.ptr_aux_value);
+			break;
+		case DOWNLOAD_CTRL_CHANGE_CAT:
+			amuledlg->transferwnd->downloadlistctrl->ChangeCategory(event.long_value);
+			break;
+		case DOWNLOAD_CTRL_HIDE_FILE:
+			amuledlg->transferwnd->downloadlistctrl->HideFile((CPartFile*)event.ptr_value);
+			break;
+		case DOWNLOAD_CTRL_HIDE_SOURCE:
+			amuledlg->transferwnd->downloadlistctrl->HideSources((CPartFile*)event.ptr_value);
+			break;
+		case DOWNLOAD_CTRL_INIT_SORT:
+			amuledlg->transferwnd->downloadlistctrl->InitSort();
+			break;
+		case DOWNLOAD_CTRL_SHOW_FILE:
+			amuledlg->transferwnd->downloadlistctrl->ShowFile((CPartFile*)event.ptr_value);
+			break;
+		case DOWNLOAD_CTRL_SHOW_FILES_COUNT:
+			amuledlg->transferwnd->downloadlistctrl->ShowFilesCount();
+			break;
+		case DOWNLOAD_CTRL_THAW:
+			amuledlg->transferwnd->downloadlistctrl->Thaw();
+			break;
+		case DOWNLOAD_CTRL_FREEZE:
+			amuledlg->transferwnd->downloadlistctrl->Freeze();
+			break;
+		// upload ctrl
+		case UPLOAD_CTRL_ADD_CLIENT:
+			amuledlg->transferwnd->uploadlistctrl->AddClient((CUpDownClient*)event.ptr_value);
+			break;
+		case UPLOAD_CTRL_REFRESH_CLIENT:
+			amuledlg->transferwnd->uploadlistctrl->RefreshClient((CUpDownClient*)event.ptr_value);
+			break;
+		case UPLOAD_CTRL_RM_CLIENT:
+			amuledlg->transferwnd->uploadlistctrl->RemoveClient((CUpDownClient*)event.ptr_value);
+			break;
+		// server
+		case SERVER_ADD:
+			amuledlg->serverwnd->serverlistctrl->AddServer((CServer*)event.ptr_value, true);
+			break;
+		case SERVER_RM:
+			amuledlg->serverwnd->serverlistctrl->RemoveServer((CServer*)event.ptr_value);
+			break;
+		case SERVER_RM_DEAD:
+			amuledlg->serverwnd->serverlistctrl->RemoveDeadServer();
+			break;
+		case SERVER_RM_ALL:
+			amuledlg->serverwnd->serverlistctrl->DeleteAllItems();
+			break;
+		case SERVER_HIGHLIGHT:
+			amuledlg->serverwnd->serverlistctrl->HighlightServer((CServer*)event.ptr_value,
+									     event.byte_value);
+			break;
+		case SERVER_REFRESH:
+			amuledlg->serverwnd->serverlistctrl->RefreshServer((CServer*)event.ptr_value);
+			break;
+		case SERVER_FREEZE:
+			amuledlg->serverwnd->serverlistctrl->Freeze();
+			break;
+		case SERVER_THAW:
+			amuledlg->serverwnd->serverlistctrl->Thaw();
+			break;
+
+		// notification
+		case SHOW_NOTIFIER:
+			amuledlg->ShowNotifier(_(""),0,0);
+			break;
+		case SHOW_CONN_STATE:
+			amuledlg->ShowConnectionState(event.byte_value, event.string_value,
+						      event.long_value);
+			break;
+		case SHOW_QUEUE_COUNT:
+			amuledlg->transferwnd->ShowQueueCount(event.long_value);
+			break;
+		case SHOW_UPDATE_CAT_TABS:
+			amuledlg->transferwnd->UpdateCatTabTitles();
+			break;
+			
+		// search window
+		case SEARCH_CANCEL:
+			amuledlg->searchwnd->OnBnClickedCancels(*(wxCommandEvent *)event.ptr_value);
+			break;
+		// logging
 		case ADDLOGLINE:
 			if (amuledlg) {
 				amuledlg->AddLogLine(event.byte_value,event.string_value);
