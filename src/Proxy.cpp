@@ -109,6 +109,10 @@ bool wxSocketProxy::Start(wxIPaddress &address, enum wxProxyCommand cmd)
 			case wxPROXY_SOCKS5:
 				ok = DoSocks5(address, cmd);
 				break;
+				
+			case wxPROXY_HTTP:
+				ok = DoHttp(address, cmd);
+				break;
 			}
 			m_ProxyClientSocket->Destroy();
 		}
@@ -142,11 +146,23 @@ bool wxSocketProxy::DoSocks4(wxIPaddress &address, wxProxyCommand cmd)
 	return ok;
 }
 
-bool wxSocketProxy::DoSocks4Request(wxIPaddress &address, unsigned char cmd)
+bool wxSocketProxy::DoSocks4Request(wxIPaddress &address, wxProxyCommand cmd)
 {
 	// Prepare the request command buffer
 	m_buffer[0] = SOCKS4_VERSION;
-	m_buffer[1] = cmd;
+	switch (cmd) {
+	case wxPROXY_CMD_CONNECT:
+		m_buffer[1] = SOCKS4_CMD_CONNECT;
+		break;
+		
+	case wxPROXY_CMD_BIND:
+		m_buffer[1] = SOCKS4_CMD_BIND;
+		break;
+		
+	case wxPROXY_CMD_UDP_ASSOCIATE:
+		/* Not supported, cannot happen */
+		return false;
+	}
 	*((uint16 *)(m_buffer+2)) = htons(address.Service());
 	*((uint32 *)(m_buffer+4)) = StringIPtoUint32(address.IPAddress());
 	unsigned int OffsetUser = 8;
@@ -212,7 +228,7 @@ bool wxSocketProxy::DoSocks4CmdBind(void)
 bool wxSocketProxy::DoSocks5(wxIPaddress &address, wxProxyCommand cmd)
 {
 	// Use the short circuit evaluation
-	int ok = 
+	bool ok = 
 		DoSocks5Authentication() && 
 		DoSocks5Request(address, cmd) &&
 		DoSocks5Reply();
@@ -257,7 +273,7 @@ bool wxSocketProxy::DoSocks5Authentication(void)
 		// Receive the method selection message
 		LenPacket = 2;
 		m_ProxyClientSocket->Read(m_buffer, LenPacket);
-		m_LastReply = m_buffer[1];	
+		m_LastReply = m_buffer[1];
 		ok =	!m_ProxyClientSocket->Error() &&
 			m_ProxyClientSocket->LastCount() == LenPacket &&
 			m_buffer[0] == SOCKS5_VERSION;
@@ -331,11 +347,23 @@ bool wxSocketProxy::DoSocks5AuthenticationUsernamePassword(void)
 	return ok;
 }
 
-bool wxSocketProxy::DoSocks5Request(wxIPaddress &address, unsigned char cmd)
+bool wxSocketProxy::DoSocks5Request(wxIPaddress &address, wxProxyCommand cmd)
 {
 	// Prepare the request command buffer
 	m_buffer[0] = SOCKS5_VERSION;
-	m_buffer[1] = cmd;
+	switch (cmd) {
+	case wxPROXY_CMD_CONNECT:
+		m_buffer[1] = SOCKS5_CMD_CONNECT;
+		break;
+		
+	case wxPROXY_CMD_BIND:
+		m_buffer[1] = SOCKS5_CMD_BIND;
+		break;
+		
+	case wxPROXY_CMD_UDP_ASSOCIATE:
+		m_buffer[1] = SOCKS5_CMD_UDP_ASSOCIATE;
+		break;
+	}
 	m_buffer[2] = SOCKS5_RSV;
 	m_buffer[3] = SOCKS5_ATYP_IPV4_ADDRESS;
 	*((uint32 *)(m_buffer+4)) = StringIPtoUint32(address.IPAddress());
@@ -491,7 +519,7 @@ bool wxSocketProxy::DoHttp(wxIPaddress &address, wxProxyCommand cmd)
 	return ok;
 }
 
-bool wxSocketProxy::DoHttpRequest(wxIPaddress &address, unsigned char cmd)
+bool wxSocketProxy::DoHttpRequest(wxIPaddress &address, wxProxyCommand cmd)
 {
 	// Prepare the request command buffer
 	wxCharBuffer buf(unicode2charbuf(address.IPAddress()));
@@ -500,12 +528,25 @@ bool wxSocketProxy::DoHttpRequest(wxIPaddress &address, unsigned char cmd)
 	wxString UserPass = m_ProxyData.Username + wxT(":") + m_ProxyData.Password;
 	wxString UserPassEncoded =
 		otherfunctions::EncodeBase64(m_buffer, wxPROXY_BUFFER_SIZE);
-	wxString msg = wxString::Format(
-		wxT(
-		"CONNECT %s:%d HTTP/1.1\r\n"
-		"Host: %s:%d\r\n"
-		"Proxy-Authorization: Basic %s\r\n"),
-		host, port, host, port, unicode2char(UserPassEncoded));
+	wxString msg;
+	switch (cmd) {
+	case wxPROXY_CMD_CONNECT:
+		msg = wxString::Format(
+			wxT(
+			"CONNECT %s:%d HTTP/1.1\r\n"
+			"Host: %s:%d\r\n"
+			"Proxy-Authorization: Basic %s\r\n"),
+			host, port, host, port, unicode2char(UserPassEncoded));
+		break;
+		
+	case wxPROXY_CMD_BIND:
+		/* Is this possible? */
+		return false;
+		
+	case wxPROXY_CMD_UDP_ASSOCIATE:
+		/* Is this possible? */
+		return false;
+	}
 	
 	// Send the command packet
 	unsigned int LenPacket = msg.Len();

@@ -65,9 +65,9 @@ const unsigned char SOCKS5_AUTH_METHOD_GSSAPI			= 0x01;
 const unsigned char SOCKS5_AUTH_METHOD_USERNAME_PASSWORD	= 0x02;
 const unsigned char SOCKS5_AUTH_METHOD_NO_ACCEPTABLE_METHODS	= 0xFF;
 
-const unsigned char SOCKS5_CMD_CONNECT		= 0x00;
-const unsigned char SOCKS5_CMD_BIND		= 0x01;
-const unsigned char SOCKS5_CMD_UDP_ASSOCIATE	= 0x02;
+const unsigned char SOCKS5_CMD_CONNECT		= 0x01;
+const unsigned char SOCKS5_CMD_BIND		= 0x02;
+const unsigned char SOCKS5_CMD_UDP_ASSOCIATE	= 0x03;
 
 const unsigned char SOCKS5_RSV = 0x00;
 
@@ -89,7 +89,8 @@ const unsigned char SOCKS5_REPLY_ATYP_NOT_SUPPORTED	= 0x08;
 
 enum wxProxyType {
 	wxPROXY_SOCKS4,
-	wxPROXY_SOCKS5
+	wxPROXY_SOCKS5,
+	wxPROXY_HTTP
 };
 
 enum wxProxyCommand {
@@ -134,7 +135,7 @@ public:
 private:
 	/* SOCKS4 */
 	bool DoSocks4(wxIPaddress &address, wxProxyCommand cmd);
-	bool DoSocks4Request(wxIPaddress &address, unsigned char cmd);
+	bool DoSocks4Request(wxIPaddress &address, wxProxyCommand cmd);
 	bool DoSocks4Reply(void);
 	bool DoSocks4CmdConnect(void);
 	bool DoSocks4CmdBind(void);
@@ -144,7 +145,7 @@ private:
 	bool DoSocks5Authentication(void);
 	bool DoSocks5AuthenticationUsernamePassword(void);
 	bool DoSocks5AuthenticationGSSAPI(void);
-	bool DoSocks5Request(wxIPaddress &address, unsigned char cmd);
+	bool DoSocks5Request(wxIPaddress &address, wxProxyCommand cmd);
 	bool DoSocks5Reply(void);
 	bool DoSocks5CmdConnect(void);
 	bool DoSocks5CmdBind(void);
@@ -152,7 +153,7 @@ private:
 
 	/* HTTP */
 	bool DoHttp(wxIPaddress &address, wxProxyCommand cmd);
-	bool DoHttpRequest(wxIPaddress &address, unsigned char cmd);
+	bool DoHttpRequest(wxIPaddress &address, wxProxyCommand cmd);
 	bool DoHttpReply(void);
 	bool DoHttpCmdConnect(void);
 	
@@ -223,7 +224,7 @@ public:
 	void Close(void) { m_SocketServer->Close(); }
 	wxSocketBase& Discard(void) { return m_SocketServer->Discard(); }
 	void Notify(bool notify) { m_SocketServer->Notify(notify); }
-	bool Ok() const	{ return m_SocketServer->Ok(); }
+	bool Ok() const	{ return m_SocketServer ? m_SocketServer->Ok() : false; }
 	void SetEventHandler(wxEvtHandler& handler, int id = -1) { m_SocketServer->SetEventHandler(handler, id); }
 	void SetNotify(wxSocketEventFlags flags) { m_SocketServer->SetNotify(flags); }
 	bool WaitForAccept(long seconds = -1, long millisecond = 0) { return m_SocketServer->WaitForAccept(seconds, millisecond); }
