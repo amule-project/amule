@@ -53,8 +53,8 @@ public:
 	wxMutex	list_mut;
 	CKnownFile*	GetFileByID(const CMD4Hash& filehash);
 	short	GetFilePriorityByID(const CMD4Hash& filehash);
-	CKnownFile*     GetFileByIndex(int index);
-	CKnownFileList*		filelist;
+	const CKnownFile* GetFileByIndex(unsigned int index) const;
+	CKnownFileList*	filelist;
 	void	CreateOfferedFilePacket(CKnownFile* cur_file,CSafeMemFile* files, bool toserver);
 	uint64	GetDatasize();
 	uint16	GetCount()	{return m_Files_map.size(); }

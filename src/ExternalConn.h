@@ -33,15 +33,13 @@ class ExternalConn : public wxEvtHandler {
 		void OnServerEvent(wxSocketEvent& event);
 		void OnAuthEvent(wxSocketEvent& event);
 		void OnSocketEvent(wxSocketEvent& event);
-	
 		wxString Authenticate(const wxString& item);
 		wxString ProcessRequest(const wxString& item);
 	
 	private:
-		wxString GetDownloadFileInfo(CPartFile* file);
-	
+		wxString GetDownloadFileInfo(const CPartFile* file);
 		wxSocketServer *m_ECServer;
-		int             m_numClients;
+		int m_numClients;
   	
 	DECLARE_EVENT_TABLE()
 };

@@ -1508,7 +1508,7 @@ int CPartFile::GetValidSourcesCount()
 	return counter;
 }
 
-uint16 CPartFile::GetNotCurrentSourcesCount()
+uint16 CPartFile::GetNotCurrentSourcesCount() const
 {
 	uint16 counter = 0;
 

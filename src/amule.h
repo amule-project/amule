@@ -87,36 +87,36 @@ enum APPState {
 class CamuleApp : public AMULE_APP_BASE
 {
 public:
-					CamuleApp() {};
-	virtual			~CamuleApp() {};
+			CamuleApp() {};
+	virtual		~CamuleApp() {};
 #ifdef AMULE_DAEMON
-	virtual int   OnRun();
+	virtual int	OnRun();
 #endif
 
 	virtual bool	OnInit();
-	int				OnExit();
-	void			OnFatalException();
+	int		OnExit();
+	void		OnFatalException();
 
 	// Barry - To find out if app is running or shutting/shut down
 	bool IsRunning() const { return (m_app_state == APP_STATE_RUNNING); }
 
 	// ed2k URL functions
-	wxString		StripInvalidFilenameChars(const wxString& strText, bool bKeepSpaces = true);
-	wxString		CreateED2kLink( CAbstractFile* f );
-	wxString		CreateHTMLED2kLink( CAbstractFile* f );
-	wxString		CreateED2kSourceLink( CAbstractFile* f );
-	wxString		CreateED2kHostnameSourceLink( CAbstractFile* f );
-	wxString		GenFakeCheckUrl(CAbstractFile *file);
-	wxString        GenFakeCheckUrl2(CAbstractFile *file);
+	wxString	StripInvalidFilenameChars(const wxString& strText, bool bKeepSpaces = true);
+	wxString	CreateED2kLink(const CAbstractFile* f);
+	wxString	CreateHTMLED2kLink(const CAbstractFile* f);
+	wxString	CreateED2kSourceLink(const CAbstractFile* f);
+	wxString	CreateED2kHostnameSourceLink(const CAbstractFile* f);
+	wxString	GenFakeCheckUrl(const CAbstractFile *f);
+	wxString        GenFakeCheckUrl2(const CAbstractFile *f);
 	
-	void QueueLogLine(bool addtostatusbar, const wxString& line);
-	void FlushQueuedLogLines();
+	void		QueueLogLine(bool addtostatusbar, const wxString& line);
+	void		FlushQueuedLogLines();
 		
 	// Misc functions
-	bool			CopyTextToClipboard( wxString strText );
-	void			OnlineSig(bool zero = false); 
-	void			Localize_mule();
-	void			Trigger_New_version(wxString old_version, wxString new_version);
+	bool		CopyTextToClipboard( wxString strText );
+	void		OnlineSig(bool zero = false); 
+	void		Localize_mule();
+	void		Trigger_New_version(wxString old_version, wxString new_version);
 	
 	// Kry - External connections
 	wxServer*		localserver;	
@@ -125,33 +125,33 @@ public:
 	ExternalConn*	ECServerHandler;
 
 	// Kry - avoid chmod on win32
-	bool use_chmod;
-	bool IsReady;
+	bool		use_chmod;
+	bool		IsReady;
 	
 	uint32	GetPublicIP() const;	// return current (valid) public IP or 0 if unknown
 	void		SetPublicIP(const uint32 dwIP);
 
 	// Statistic functions. I plan on moving these to a class of their own -- Xaignar
-	void			UpdateReceivedBytes(int32 bytesToAdd);
-	uint64			GetUptimeMsecs();
-	uint32			GetUptimeSecs();
-	uint32			GetTransferSecs();
-	uint32			GetServerSecs();
-	void			UpdateSentBytes(int32 bytesToAdd);
+	void		UpdateReceivedBytes(int32 bytesToAdd);
+	uint64		GetUptimeMsecs();
+	uint32		GetUptimeSecs();
+	uint32		GetTransferSecs();
+	uint32		GetServerSecs();
+	void		UpdateSentBytes(int32 bytesToAdd);
 
 	// Statistic variables. I plan on moving these to a class of their own -- Xaignar
-	uint64			Start_time;
-	double			sTransferDelay;
-	uint64			stat_sessionReceivedBytes;
-	uint64			stat_sessionSentBytes;
-	uint32			stat_reconnects;
-	uint64			stat_transferStarttime;
-	uint64			stat_serverConnectTime;
-	uint32			stat_filteredclients;
+	uint64		Start_time;
+	double		sTransferDelay;
+	uint64		stat_sessionReceivedBytes;
+	uint64		stat_sessionSentBytes;
+	uint32		stat_reconnects;
+	uint64		stat_transferStarttime;
+	uint64		stat_serverConnectTime;
+	uint32		stat_filteredclients;
 
 
 	// Other parts of the interface and such
-	CamuleDlg*			amuledlg;
+	CamuleDlg*		amuledlg;
 	CPreferences*		glob_prefs;
 	CDownloadQueue*		downloadqueue;
 	CUploadQueue*		uploadqueue;
@@ -164,7 +164,7 @@ public:
 	CSearchList*		searchlist;
 	CClientCreditsList*	clientcredits;
 	CClientUDPSocket*	clientudp;
-	CIPFilter*			ipfilter;
+	CIPFilter*		ipfilter;
 
 	void ShutDown();
 	
@@ -215,18 +215,18 @@ protected:
 	void OnFinishedCompletion(wxCommandEvent& evt);
 	void OnHashingShutdown(wxCommandEvent&);
 
-	void 			SetTimeOnTransfer();
+	void SetTimeOnTransfer();
 	
 	wxTimer* core_timer;
 		
 	wxCriticalSection m_LogQueueLock;
-	std::list<QueuedLogLine>	QueuedAddLogLines;
+	std::list<QueuedLogLine> QueuedAddLogLines;
 #ifdef __DEBUG__
 	std::deque<socket_deletion_log_item>	SocketDeletionList;
 #endif
-	wxLocale		m_locale;
+	wxLocale m_locale;
 
-	APPState			m_app_state;	
+	APPState m_app_state;	
 
 	wxString emulesig_path;
 	wxString amulesig_path;
@@ -239,3 +239,4 @@ protected:
 DECLARE_APP(CamuleApp)
 
 #endif // AMULE_H
+

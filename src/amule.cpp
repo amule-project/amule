@@ -877,7 +877,7 @@ wxString CamuleApp::StripInvalidFilenameChars(const wxString& strText, bool bKee
 
 
 // Returns a ed2k file URL
-wxString CamuleApp::CreateED2kLink(CAbstractFile* f)
+wxString CamuleApp::CreateED2kLink(const CAbstractFile *f)
 {
 	wxString strURL;
 
@@ -894,7 +894,7 @@ wxString CamuleApp::CreateED2kLink(CAbstractFile* f)
 }
 
 // Returns a ed2k source URL
-wxString CamuleApp::CreateED2kSourceLink(CAbstractFile* f)
+wxString CamuleApp::CreateED2kSourceLink(const CAbstractFile *f)
 {
 	if ( !serverconnect->IsConnected() || serverconnect->IsLowID() ) {
 		return wxEmptyString;
@@ -915,7 +915,7 @@ wxString CamuleApp::CreateED2kSourceLink(CAbstractFile* f)
 
 // Returns a ed2k source URL using a hostname rather than IP. Currently, the
 // hostname doesn't appear to be set, thus this function wont work as intended.
-wxString CamuleApp::CreateED2kHostnameSourceLink(CAbstractFile* f)
+wxString CamuleApp::CreateED2kHostnameSourceLink(const CAbstractFile* f)
 {
 	wxString strURL;
 
@@ -933,7 +933,7 @@ wxString CamuleApp::CreateED2kHostnameSourceLink(CAbstractFile* f)
 
 
 // Creates a ED2k hyperlink
-wxString CamuleApp::CreateHTMLED2kLink(CAbstractFile* f)
+wxString CamuleApp::CreateHTMLED2kLink(const CAbstractFile* f)
 {
 	wxString strCode = wxT("<a href=\"") + CreateED2kLink(f) + wxT("\">") + StripInvalidFilenameChars(f->GetFileName(), true) + wxT("</a>");
 	return strCode;
@@ -941,7 +941,7 @@ wxString CamuleApp::CreateHTMLED2kLink(CAbstractFile* f)
 
 
 // Generates an URL for checking if a file is "fake"
-wxString CamuleApp::GenFakeCheckUrl(CAbstractFile *f)
+wxString CamuleApp::GenFakeCheckUrl(const CAbstractFile *f)
 {
 	wxString strURL = wxT("http://donkeyfakes.gambri.net/index.php?action=search&ed2k=");
 
@@ -956,7 +956,7 @@ wxString CamuleApp::GenFakeCheckUrl(CAbstractFile *f)
 }
 
 // jugle.net fake check
-wxString CamuleApp::GenFakeCheckUrl2(CAbstractFile *f)
+wxString CamuleApp::GenFakeCheckUrl2(const CAbstractFile *f)
 {
 	
     wxString strURL = wxT("http://www.jugle.net/?fakecheck=%s");

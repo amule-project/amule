@@ -108,7 +108,7 @@ public:
 	uint16	GetTransferingSrcCount() const	{ return transferingsrc; }
 	float	GetKBpsDown() const		{ return kBpsDown; }
 	float	GetPercentCompleted() const	{ return percentcompleted; }
-	uint16  GetNotCurrentSourcesCount();
+	uint16  GetNotCurrentSourcesCount() const;
 	int	GetValidSourcesCount();
 	uint32	GetNeededSpace();
 	
