@@ -319,8 +319,8 @@ void CSearchDlg::StartNewSearch()
 	}
 	
 	wxString extension = ((wxTextCtrl*)FindWindowById(IDC_EDITSEARCHEXTENSION))->GetValue();
-	if ( !extension.IsEmpty() && !extension.StartsWith(".") ) {
-		extension = "." + extension;
+	if ( !extension.IsEmpty() && !extension.StartsWith(wxT(".")) ) {
+		extension = wxT(".") + extension;
 	}		
 		
 	wxString typeText = ((wxChoice*)FindWindowById(IDC_TypeSearch))->GetStringSelection();
@@ -328,27 +328,27 @@ void CSearchDlg::StartNewSearch()
 
 	// Parameter Minimum Size
 	wxString sizeMin=((wxTextCtrl*)FindWindowById(IDC_EDITSEARCHMIN))->GetValue();
-	uint32 min = atol(sizeMin.c_str()) * 1048576;
+	uint32 min = atol(unicode2char(sizeMin)) * 1048576;
 	
 	// Parameter Maximum Size
 	wxString sizeMax=((wxTextCtrl*)FindWindowById(IDC_EDITSEARCHMAX))->GetValue();
-	uint32 max = atol(sizeMax.c_str()) * 1048576;
+	uint32 max = atol(unicode2char(sizeMax)) * 1048576;
 	
 	if ( max < min ) max = 0;
 	
 	// Parameter Availability
 	wxString avaibilitystr = ((wxTextCtrl*)FindWindowById(IDC_EDITSEARCHAVAIBILITY))->GetValue();
-	uint32 avaibility = atol(avaibilitystr.c_str());
+	uint32 avaibility = atol(unicode2char(avaibilitystr));
 	
 	
 	switch ( ((wxChoice*)FindWindowById(IDC_TypeSearch))->GetSelection() ) {
-		case 0: typeText = "Any"; break;
-		case 1: typeText = "Archives"; break;
-		case 2: typeText = "Audio"; break;
-		case 3: typeText = "CD-Images"; break;
-		case 4: typeText = "Pictures"; break;
-		case 5: typeText = "Programs"; break;
-		case 6: typeText = "Videos"; break;
+		case 0: typeText = wxT("Any"); break;
+		case 1: typeText = wxT("Archives"); break;
+		case 2: typeText = wxT("Audio"); break;
+		case 3: typeText = wxT("CD-Images"); break;
+		case 4: typeText = wxT("Pictures"); break;
+		case 5: typeText = wxT("Programs"); break;
+		case 6: typeText = wxT("Videos"); break;
 		default:
 			printf("Warning! Unknown search-category ( %s ) selected!\n", typeText.c_str());
 			break;

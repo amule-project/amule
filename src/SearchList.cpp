@@ -82,7 +82,7 @@ CSearchFile::CSearchFile(CSearchFile* copyfrom)
 	
 	md4cpy(m_abyFileHash, copyfrom->GetFileHash());
 	SetFileSize(copyfrom->GetIntTagValue(FT_FILESIZE));
-	SetFileName(copyfrom->GetStrTagValue(FT_FILENAME));
+	SetFileName(char2unicode(copyfrom->GetStrTagValue(FT_FILENAME)));
 	m_nClientServerIP = copyfrom->GetClientServerIP();
 	m_nClientID = copyfrom->GetClientID();
 	m_nClientPort = copyfrom->GetClientPort();
@@ -135,7 +135,7 @@ CSearchFile::CSearchFile(CMemFile* in_data, uint32 nSearchID, uint32 nServerIP, 
 		iSize = 2;		// required by tag format
 	}
 
-	m_strFileName = tempName;
+	m_strFileName = char2unicode(tempName);
 	
 	SetFileSize(GetIntTagValue(FT_FILESIZE));
 
@@ -162,7 +162,7 @@ CSearchFile::CSearchFile(uint32 nSearchID, const uchar* pucFileHash, uint32 uFil
 	taglist.Add(new CTag(FT_FILESIZE, uFileSize));
 	taglist.Add(new CTag(FT_FILENAME, pszFileName));
 	taglist.Add(new CTag(FT_SOURCES, iAvailability));
-	SetFileName(pszFileName);
+	SetFileName(char2unicode(pszFileName));
 	SetFileSize(uFileSize);
 
 	m_nClientID = 0;
@@ -284,7 +284,7 @@ uint16 CSearchList::ProcessSearchanswer(char* in_packet, uint32 size, CUpDownCli
 	CSafeMemFile* packet = new CSafeMemFile((BYTE*)in_packet,size,0);
 
 	if(Sender) {
-	  theApp.amuledlg->searchwnd->CreateNewTab(Sender->GetUserName(),(uint32)Sender);
+	  theApp.amuledlg->searchwnd->CreateNewTab(char2unicode(Sender->GetUserName()),(uint32)Sender);
 	}
 
 	try
@@ -345,8 +345,8 @@ uint16 CSearchList::ProcessSearchanswer(char* in_packet, uint32 size, CUpDownCli
 		pParams = NULL;
 	}
 	*/
-	if (!theApp.amuledlg->searchwnd->CheckTabNameExists(Sender->GetUserName())) {
-		theApp.amuledlg->searchwnd->CreateNewTab(Sender->GetUserName(),nSearchID);
+	if (!theApp.amuledlg->searchwnd->CheckTabNameExists(char2unicode(Sender->GetUserName()))) {
+		theApp.amuledlg->searchwnd->CreateNewTab(char2unicode(Sender->GetUserName()),nSearchID);
 	}
 	
 	CSafeMemFile packet((BYTE*)in_packet,size);

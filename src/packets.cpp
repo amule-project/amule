@@ -280,12 +280,12 @@ CTag::CTag(int8 special, LPCSTR strvalue){
 CTag::CTag(LPCSTR name, const wxString& strvalue){
 	tag.tagname = nstrdup(name);
 	tag.type = 2;
-	tag.stringvalue = nstrdup(strvalue.c_str());
+	tag.stringvalue = nstrdup(unicode2char(strvalue.c_str()));
 }
 
 CTag::CTag(uint8 special, const wxString& strvalue){
 	tag.type = 2;
-	tag.stringvalue = nstrdup(strvalue.c_str());
+	tag.stringvalue = nstrdup(unicode2char(strvalue.c_str()));
 	tag.specialtag = special;
 }
 
@@ -418,7 +418,7 @@ CString CTag::GetFullInfo() const
 	CString strTag;
 	if (tag.tagname){
 		strTag = _T('\"');
-		strTag += tag.tagname;
+		strTag += (char2unicode(tag.tagname));
 		strTag += _T('\"');
 	}
 	else{
@@ -427,18 +427,18 @@ CString CTag::GetFullInfo() const
 	strTag += _T("=");
 	if (tag.type == 2){
 		strTag += _T("\"");
-		strTag += tag.stringvalue;
+		strTag += (char2unicode(tag.stringvalue));
 		strTag += _T("\"");
 	}
 	else if (tag.type == 3){
 		TCHAR szBuff[16];
 		snprintf(szBuff, 10, "%i",tag.intvalue);
-		strTag += szBuff;
+		strTag += (char2unicode(szBuff));
 	}
 	else if (tag.type == 4){
 		TCHAR szBuff[16];
 		snprintf(szBuff, ELEMENT_COUNT(szBuff), "%f", tag.floatvalue);
-		strTag += szBuff;
+		strTag += (char2unicode(szBuff));
 	}
 	else{
 		CString strBuff;

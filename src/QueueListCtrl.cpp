@@ -207,7 +207,7 @@ void CQueueListCtrl::Localize() {
 
 void CQueueListCtrl::AddClient(CUpDownClient* client){
   uint32 itemnr=GetItemCount();
-  itemnr=InsertItem(itemnr,client->GetUserName());
+  itemnr=InsertItem(itemnr,char2unicode(client->GetUserName()));
   SetItemData(itemnr,(long)client);
 
   wxListItem myitem;
@@ -364,7 +364,7 @@ void CQueueListCtrl::OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxRec
 			imagelist.Draw(7,*dc,cur_rec.left,cur_rec.top+1,wxIMAGELIST_DRAW_TRANSPARENT);
 		}		
 		
-		Sbuffer.Format("%s", client->GetUserName());
+		Sbuffer.Format(wxT("%s"), client->GetUserName());
 		cur_rec.left +=20;
 		dc->DrawText(Sbuffer,cur_rec.left,cur_rec.top+3);
 		cur_rec.left -=20;
@@ -372,65 +372,65 @@ void CQueueListCtrl::OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxRec
 	}
 	case 1:
 	  if(file)
-	    Sbuffer.Format("%s", file->GetFileName().GetData());
+	    Sbuffer.Format(wxT("%s"), file->GetFileName().GetData());
 	  else
-	    Sbuffer = "?";
+	    Sbuffer = wxT("?");
 	  break;
 	case 2:
 	  if(file){
 	    switch(file->GetUpPriority()){
 	    case PR_POWERSHARE:                    //added for powershare (deltaHF)
-	      Sbuffer.Format("%s",CString(_("PowerShare[Release]")).GetData());
+	      Sbuffer.Format(wxT("%s"),CString(_("PowerShare[Release]")).GetData());
 	      break; //end
 	    case PR_VERYHIGH:
-	      Sbuffer.Format("%s",CString(_("Very High")).GetData());
+	      Sbuffer.Format(wxT("%s"),CString(_("Very High")).GetData());
 	      break;
 	    case PR_HIGH: 
-	      Sbuffer.Format("%s",CString(_("High")).GetData());
+	      Sbuffer.Format(wxT("%s"),CString(_("High")).GetData());
 	      break; 
 	    case PR_LOW: 
-	      Sbuffer.Format("%s",CString(_("Low")).GetData());
+	      Sbuffer.Format(wxT("%s"),CString(_("Low")).GetData());
 	      break; 
 	    case PR_VERYLOW:
-	      Sbuffer.Format("%s",CString(_("Very low")).GetData());
+	      Sbuffer.Format(wxT("%s"),CString(_("Very low")).GetData());
 	      break;
 	    default: 
-	      Sbuffer.Format("%s",CString(_("Normal")).GetData());
+	      Sbuffer.Format(wxT("%s"),CString(_("Normal")).GetData());
 	      break; 
 	    }
 	  }
 	  else
-	    Sbuffer = "?";
+	    Sbuffer = wxT("?");
 	  break;
 	case 3:
-	  Sbuffer.Format("%.1f",(float)client->GetScore(false,false,true));
+	  Sbuffer.Format(wxT("%.1f"),(float)client->GetScore(false,false,true));
 	  break;
 	case 4:
 		if (client->HasLowID()){
 			if (client->m_bAddNextConnect) {
-				Sbuffer.Format("%i ****",client->GetScore(false));
+				Sbuffer.Format(wxT("%i ****"),client->GetScore(false));
 			} else {
-                  	Sbuffer.Format("%i "+CString(_("LowID")),client->GetScore(false));
+                  	Sbuffer.Format(wxT("%i ")+CString(_("LowID")),client->GetScore(false));
 			}
 		} else {
-			Sbuffer.Format("%i",client->GetScore(false));
+			Sbuffer.Format(wxT("%i"),client->GetScore(false));
 		}
 		break;		
 	  break;
 	case 5:
-	  Sbuffer.Format("%i",client->GetAskedCount());
+	  Sbuffer.Format(wxT("%i"),client->GetAskedCount());
 	  break;
 	case 6:
-	  Sbuffer.Format("%s", CastSecondsToHM((::GetTickCount() - client->GetLastUpRequest())/1000).GetData());
+	  Sbuffer.Format(wxT("%s"), CastSecondsToHM((::GetTickCount() - client->GetLastUpRequest())/1000).GetData());
 	  break;
 	case 7:
-	  Sbuffer.Format("%s", CastSecondsToHM((::GetTickCount() - client->GetWaitStartTime())/1000).GetData());
+	  Sbuffer.Format(wxT("%s"), CastSecondsToHM((::GetTickCount() - client->GetWaitStartTime())/1000).GetData());
 	  break;
 	case 8:
 	  if(client->IsBanned())
-	    Sbuffer.Format("%s",CString(_("Yes")).GetData());
+	    Sbuffer.Format(wxT("%s"),CString(_("Yes")).GetData());
 	  else
-	    Sbuffer.Format("%s",CString(_("No")).GetData());
+	    Sbuffer.Format(wxT("%s"),CString(_("No")).GetData());
 	  break;
 	case 9:
 	  if( client->GetUpPartCount()){
@@ -559,9 +559,9 @@ int CQueueListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 	CKnownFile* file2 = theApp.sharedfiles->GetFileByID(item2->GetUploadFileID());
 		switch(lParamSort) {
 		case 0:
-			return CString(item1->GetUserName()).CmpNoCase(item2->GetUserName());
+			return CString(char2unicode(item1->GetUserName())).CmpNoCase(char2unicode(item2->GetUserName()));
 		case 100:
-			return CString(item2->GetUserName()).CmpNoCase(item1->GetUserName());
+			return CString(char2unicode(item2->GetUserName())).CmpNoCase(char2unicode(item1->GetUserName()));
 		case 1:
 			if( (file1 != NULL) && (file2 != NULL)) {
 				return CString(file1->GetFileName()).CmpNoCase(file2->GetFileName());
