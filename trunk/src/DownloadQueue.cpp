@@ -620,7 +620,7 @@ bool CDownloadQueue::SendNextUDPPacket()
 
 	// loop until the packet is filled or a packet was sent
 	bool bSentPacket = false;
-	CSafeMemFile dataGlobGetSources(16);
+	CSafeMemFile dataGlobGetSources(20); // 20 is because 16 + 4 (worst scenario).
 	int iFiles = 0;
 	
 	while (iFiles < iMaxFilesPerPacket && !bSentPacket) {
@@ -688,6 +688,9 @@ bool CDownloadQueue::SendNextUDPPacket()
 
 		if (!bSentPacket && nextfile && nextfile->GetSourceCount() < thePrefs::GetMaxSourcePerFileUDP()) {
 			dataGlobGetSources.WriteHash16(nextfile->GetFileHash());
+			if (m_cur_udpserver->GetUDPFlags() & SRV_UDPFLG_EXT_GETSOURCES2) {
+				dataGlobGetSources.WriteUInt32(nextfile->GetFileSize());
+			}			
 			iFiles++;
 		}
 	}
@@ -841,10 +844,14 @@ void CDownloadQueue::ProcessLocalRequests()
 				iFiles++;
 
 				// create request packet
-				CPacket* packet = new CPacket(OP_GETSOURCES,16);
-				packet->Copy16ToDataBuffer((const char *)cur_file->GetFileHash().GetHash());
-				dataTcpFrame.Write(packet->GetPacket(), packet->GetRealPacketSize());
-				delete packet;
+				CSafeMemFile data(20);
+				data.WriteHash16((const uchar *)cur_file->GetFileHash().GetHash());
+				// Kry - lugdunum extended protocol on 17.3 to handle filesize properly.
+				// There is no need to check anything, old server ignore the extra 4 bytes.
+				data.WriteUInt32(cur_file->GetFileSize());
+				CPacket packet(&data);
+				packet.SetOpCode(OP_GETSOURCES);
+				dataTcpFrame.Write(packet.GetPacket(), packet.GetRealPacketSize());
 			}
 		}
 
@@ -1094,10 +1101,24 @@ bool CDownloadQueue::SendGlobGetSourcesUDPPacket(CSafeMemFile& data)
 		}
 	}	
 		
-	int iFileIDs = data.GetLength() / 16;
+	int item_size;
+	if (m_cur_udpserver->GetUDPFlags() & SRV_UDPFLG_EXT_GETSOURCES2) {
+		item_size = (16 + 4); // (hash + size)
+	} else {
+		item_size = 16;
+	}
+	
+	int iFileIDs = data.GetLength() / item_size;
+	
 	CPacket packet(&data);
 
-	packet.SetOpCode(OP_GLOBGETSOURCES);
+	if (item_size == 16) {
+		packet.SetOpCode(OP_GLOBGETSOURCES);
+	} else {
+		printf("----Sending special UDP packet with extended file request info----\n");
+		packet.SetOpCode(OP_GLOBGETSOURCES2);
+	}
+	
 	theApp.statistics->AddUpDataOverheadServer(packet.GetPacketSize());
 	theApp.serverconnect->SendUDPPacket(&packet,m_cur_udpserver,false);
 

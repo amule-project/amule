@@ -168,7 +168,7 @@ const unsigned int UNLIMITED =	 		0;
 #define	OP_OFFERFILES				0x15	// <count 4>(<HASH 16><ID 4><PORT 2><1 Tag_set>)[count]
 #define	OP_SEARCHREQUEST			0x16	// <Query_Tree>
 #define	OP_DISCONNECT				0x18	// (not verified)
-#define	OP_GETSOURCES				0x19	// <HASH 16>
+#define	OP_GETSOURCES				0x19	// <HASH 16> /v2 <HASH 16><SIZE_4> (17.3)
 #define	OP_SEARCH_USER				0x1A	// <Query_Tree>
 #define	OP_CALLBACKREQUEST			0x1C	// <ID 4>
 #define	OP_QUERY_CHATS				0x1D	// (deprecated not supported by server any longer)
@@ -192,6 +192,7 @@ const unsigned int UNLIMITED =	 		0;
 #define	OP_USERS_LIST           		0x43    // <count 4>(<HASH 16><ID 4><PORT 2><1 Tag_set>)[count]
 
 //client <-> UDP server
+#define	OP_GLOBGETSOURCES2		0x94	// <HASH 16><SIZE_4>*
 #define	OP_GLOBSERVSTATREQ			0x96	// (null)
 #define	OP_GLOBSERVSTATRES			0x97	// <USER 4><FILES 4>
 #define	OP_GLOBSEARCHREQ			0x98	// <search_tree>
