@@ -205,7 +205,7 @@ void CFileDetailDialog::Rename(wxEvent& evt)
 	wxString NewFileName=GetDlgItem(IDC_FILENAME,wxTextCtrl)->GetValue();
 	m_file->SetFileName((char*)NewFileName.GetData()); 
 	m_file->SavePartFile(); 
-	FindWindowById(IDC_FNAME)->SetLabel(m_file->GetFileName());
+	FindWindowById(IDC_FNAME)->SetLabel(MakeStringEscaped(CString(m_file->GetFileName().GetData())));
 	FindWindowById(IDC_METFILE)->SetLabel(m_file->GetFullName());
 	((wxTextCtrl*)FindWindowById(IDC_FILENAME))->SetValue(m_file->GetFileName());
 } 
