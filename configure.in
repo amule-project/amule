@@ -142,9 +142,6 @@ AC_ARG_ENABLE(static,  [  --enable-static         Produce a statically linked ex
 AC_ARG_ENABLE(gsocket, [  --disable-gsocket       Disable gsocket.c linking],
 		USE_GSOCKET="$disableval", USE_GSOCKET="yes")
 
-AC_ARG_ENABLE(releasegrp, [  --enable-releasegrp     Enable release group code],
-                USE_RELEASE="$enableval", USE_RELEASE="no")
-
 # systray disable
 AC_MSG_CHECKING([whether SysTray should be compiled])
 AC_ARG_ENABLE(systray, [  --disable-systray       Disable SysTray compilation],
@@ -167,7 +164,7 @@ AC_SUBST(gtk)
 
 # debugging only
 AC_MSG_CHECKING([whether progress bar drawing should be disabled])
-AC_ARG_ENABLE(memdbg, [  --enable-memdbg         Disable progress bar drawing],
+AC_ARG_ENABLE(bardraw, [  --disable-bardraw         Disable progress bar drawing],
 		DISABLE_PROGRESS="$enableval", DISABLE_PROGRESS="no")
 AC_MSG_RESULT($DISABLE_PROGRESS)
 AC_SUBST(DISABLE_PROGRESS)
@@ -378,13 +375,13 @@ echo "  Should aMule be compiled with safe systray?              ${USE_SAFE_TRAY
 echo "  Should aMule be compiled with pure GTK code?             ${gtk}"
 echo "  Should aMule be compiled without bar drawing?            ${DISABLE_PROGRESS:-no}"
 echo "  Should aMule be linked against patched gsocket?          ${USE_24GSOCKET:-no}"
-echo "  Should aMule be compiled against own cryptopp lib?       ${OWN_CRYPTO:-no}"
-echo "  Should ccache support be enabled?                        ${ccache:-no}"
-echo "  Should amulecmd be built?                                ${BUILD_AMULECMD:-no}"
 case "$BUILDAMULECMD" in
 yes)	echo "  Should amulecmd (TextClient) be linked against wxbase?   ${HAVE_AMULECMD:-no}"
 	;;
 esac
+echo "  Should ccache support be enabled?                        ${ccache:-no}"
+echo "  Should amulecmd be built?                                ${BUILD_AMULECMD:-no}"
+echo "  Crypto++ library/headers style?                          ${CRYPTO_PP_STYLE}"
 echo
 echo "  Which libraries should aMule use?"
 echo "                                       wxWidgets          ${WXGTK_VERSION:-Not detected}"
