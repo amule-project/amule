@@ -185,7 +185,7 @@ void CServerListCtrl::RefreshServer( CServer* server )
 			sorted &= ( SortProc( (long)server, GetItemData( itemnr - 1 ), sortby ) >= 0 );
 
 		// Check if we are still "larger" than the item after us
-		if ( GetItemCount() - 1 > itemnr )
+		if ( itemnr < GetItemCount() -1 )
 			sorted &= ( SortProc( (long)server, GetItemData( itemnr + 1 ), sortby ) <= 0 );
 
 		if ( !sorted ) {

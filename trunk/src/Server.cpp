@@ -167,11 +167,17 @@ bool CServer::AddTagFromFile(CFileDataIO* servermet){
 	
 	switch(tag->tag.specialtag){		
 	case ST_SERVERNAME:
-		listname = tag->tag.stringvalue;
+		#if wxUSE_UNICODE
+		if (listname.IsEmpty())
+		#endif
+			listname = tag->tag.stringvalue;
 		delete tag;
 		break;
 	case ST_DESCRIPTION:
-		description = tag->tag.stringvalue;		
+		#if wxUSE_UNICODE
+		if (description.IsEmpty())
+		#endif
+			description = tag->tag.stringvalue;		
 		delete tag;
 		break;
 	case ST_PREFERENCE:
@@ -185,7 +191,10 @@ bool CServer::AddTagFromFile(CFileDataIO* servermet){
 		delete tag;
 		break;
 	case ST_DYNIP:
-		dynip = tag->tag.stringvalue;
+		#if wxUSE_UNICODE
+		if (dynip.IsEmpty())
+		#endif	
+			dynip = tag->tag.stringvalue;
 		delete tag;
 		break;
 	case ST_FAIL:
@@ -215,7 +224,10 @@ bool CServer::AddTagFromFile(CFileDataIO* servermet){
 		break;
 	case ST_VERSION:
 		if (tag->tag.type == 2)
-			m_strVersion = tag->tag.stringvalue;
+			#ifdef wxUSE_UNICODE
+			if (m_strVersion.IsEmpty())
+			#endif
+				m_strVersion = tag->tag.stringvalue;
 		delete tag;
 		break;
 	case ST_UDPFLAGS:

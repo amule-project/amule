@@ -538,20 +538,48 @@ bool CServerList::SaveServerMet()
 		if ( !server->GetDynIP().IsEmpty() )				++tagcount;
 		if ( !server->GetDescription().IsEmpty() )			++tagcount;
 		if ( server->GetConnPort() != server->GetPort() )	++tagcount;		
+		#if wxUSE_UNICODE
+		// For unicoded name, description, and dynip
+		if ( !server->GetListName().IsEmpty() ) {
+			++tagcount;
+		}
+		if ( !server->GetDynIP().IsEmpty() ) {
+			++tagcount;
+		}
+		if ( !server->GetDescription().IsEmpty() ) {
+			++tagcount;
+		}
+		if (!server->GetVersion().IsEmpty()){
+			++tagcount;
+		}
+		#endif
+		
 		
 		servermet.WriteUInt32(server->GetIP());
 		servermet.WriteUInt16(server->GetPort());
 		servermet.WriteUInt32(tagcount);
 					
 		if ( !server->GetListName().IsEmpty() ) {
+			#if wxUSE_UNICODE
+			// This is BOM to keep eMule compatibility
+			CTag( ST_SERVERNAME,	server->GetListName()		).WriteTagToFile( &servermet,  utf8strOptBOM);
+			#endif
 			CTag( ST_SERVERNAME,	server->GetListName()		).WriteTagToFile( &servermet );
 		}
 		
 		if ( !server->GetDynIP().IsEmpty() ) {
+			#if wxUSE_UNICODE
+			// This is BOM to keep eMule compatibility
+			CTag( ST_DYNIP,			server->GetDynIP()			).WriteTagToFile( &servermet, utf8strOptBOM );
+			#endif			
 			CTag( ST_DYNIP,			server->GetDynIP()			).WriteTagToFile( &servermet );
 		}
 		
 		if ( !server->GetDescription().IsEmpty() ) {
+			#if wxUSE_UNICODE
+			// This is BOM to keep eMule compatibility
+			CTag( ST_DESCRIPTION,	server->GetDescription()	).WriteTagToFile( &servermet, utf8strOptBOM );
+			#endif			
 			CTag( ST_DESCRIPTION,	server->GetDescription()	).WriteTagToFile( &servermet );
 		}
 		
@@ -568,7 +596,12 @@ bool CServerList::SaveServerMet()
 		CTag( ST_MAXUSERS,		server->GetMaxUsers()		).WriteTagToFile( &servermet );
 		CTag( ST_SOFTFILES,		server->GetSoftFiles()		).WriteTagToFile( &servermet );
 		CTag( ST_HARDFILES,		server->GetHardFiles()		).WriteTagToFile( &servermet );
-		CTag( ST_VERSION,		server->GetVersion()		).WriteTagToFile( &servermet );
+		if (!server->GetVersion().IsEmpty()){
+			#if wxUSE_UNICODE			
+			CTag( ST_VERSION,		server->GetVersion()		).WriteTagToFile( &servermet, utf8strOptBOM );
+			#endif
+			CTag( ST_VERSION,		server->GetVersion()		).WriteTagToFile( &servermet );
+		}
 		CTag( ST_UDPFLAGS,		server->GetUDPFlags()		).WriteTagToFile( &servermet );
 		CTag( ST_LOWIDUSERS,	server->GetLowIDUsers()		).WriteTagToFile( &servermet );
 	}
@@ -704,4 +737,3 @@ void CServerList::ObserverAdded( ObserverType* o )
 
 	NotifyObservers( EventType( EventType::INITIAL, &ilist ), o );
 }
-

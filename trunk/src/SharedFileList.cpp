@@ -520,6 +520,7 @@ void CSharedFileList::CreateOfferedFilePacket(CKnownFile* cur_file,CSafeMemFile*
 
 	EUtf8Str eStrEncode;
 
+#if wxUSE_UNICODE
 	if (pServer != NULL && (pServer->GetTCPFlags() & SRV_TCPFLG_UNICODE)){
 		// eserver doesn't properly support searching with ASCII-7 strings in BOM-UTF8 published strings
 		//eStrEncode = utf8strOptBOM;
@@ -531,6 +532,9 @@ void CSharedFileList::CreateOfferedFilePacket(CKnownFile* cur_file,CSafeMemFile*
 			eStrEncode = utf8strRaw;
 		}
 	}
+#else
+	eStrEncode = utf8strNone;
+#endif
 	
 	if (cur_file->GetFileName()) {
 		CTag* nametag = new CTag(FT_FILENAME,cur_file->GetFileName());
