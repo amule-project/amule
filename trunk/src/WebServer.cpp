@@ -826,17 +826,17 @@ wxString CWebServer::_GetServerList(ThreadData Data) {
 		wxString sPort = _ParseURL(Data, wxT("port"));
 		uint32 ip;
 		uint32 port;
+		CECPacket req(EC_OP_SERVER_CONNECT);
 		if ( sIP.ToULong((unsigned long *)&ip, 16) && sPort.ToULong((unsigned long *)&port, 10) ) {
 			EC_IPv4_t addr;
-			CECPacket req(EC_OP_SERVER_CONNECT);
 			addr.ip[0] = (uint8)ip;
 			addr.ip[1] = (uint8)(ip >> 8);
 			addr.ip[2] = (uint8)(ip >> 16);
 			addr.ip[3] = (uint8)(ip >> 24);
 			addr.port = port;
 			req.AddTag(CECTag(EC_TAG_SERVER, &addr));
-			pThis->Send_Discard_V2_Request(&req);
 		}
+		pThis->Send_Discard_V2_Request(&req);
 	} else if (sCmd == wxT("disconnect") && IsSessionAdmin(Data,sSession)) {
 		CECPacket req(EC_OP_SERVER_DISCONNECT);
 		pThis->Send_Discard_V2_Request(&req);
