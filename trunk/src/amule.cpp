@@ -542,7 +542,7 @@ bool CamuleApp::OnInit()
 	sharedfiles->SetOutputCtrl((CSharedFilesCtrl *) amuledlg->sharedfileswnd->FindWindow("sharedFilesCt"));
 
 	// then init firend list
-	friendlist->SetWindow((CFriendListCtrl *) amuledlg->transferwnd->FindWindow(ID_FRIENDLIST));
+	friendlist->SetWindow((CFriendListCtrl *)((wxPanel*)amuledlg->chatwnd)->FindWindow(ID_FRIENDLIST));
 	friendlist->ShowFriends();
 
 
