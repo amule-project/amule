@@ -1231,9 +1231,6 @@ CPartFile_Encoder::CPartFile_Encoder(int size): m_enc_data(size, 0)
 
 CPartFile_Encoder::~CPartFile_Encoder()
 {
-	if (m_gap_buffer) {
-		delete [] m_gap_buffer;
-	}
 }
 		
 // stl side :)
