@@ -19,6 +19,7 @@
 
 #include <wx/mstream.h>
 #include <wx/gifdecod.h>
+#include <wx/window.h>
 #include <wx/dcbuffer.h>
 
 #include "MuleGifCtrl.h"
