@@ -81,6 +81,7 @@
 #include "SharedFileList.h"	// Needed for CSharedFileList
 #include "PartFile.h"		// Needed for CPartFile
 #include "KnownFile.h"		// Needed for CKnownFile
+#include "ListenSocket.h"	// Needed for CListenSocket
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "amule.h"		// Needed for theApp
 #include "opcodes.h"		// Needed for TM_FINISHEDHASHING
@@ -933,7 +934,6 @@ void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 	// Former TimerProc section
 
 	static uint32	/*msPrev1, */msPrev5, msPrevGraph, msPrevStats;
-	static uint32	msPrevHist;
 
 	uint32 			msCur = theApp.GetUptimeMsecs();
 
@@ -942,32 +942,22 @@ void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 		return;
 	}
 
-	if (msCur-msPrevHist > 1000) {
-		// unlike the other loop counters in this function this one will sometimes
-		// produce two calls in quick succession (if there was a gap of more than one
-		// second between calls to TimerProc) - this is intentional!  This way the
-		// history list keeps an average of one node per second and gets thinned out
-		// correctly as time progresses.
-		msPrevHist += 1000;
-		
-		statisticswnd->RecordHistory();
-		
-	}
-
-/* Here used to be the update of the connection graphs on GUI. Now it's requested.
-	if (msCur-msPrev1 > 950) {  // approximately every second
-		msPrev1 = msCur;
-		statisticswnd->UpdateConnectionsStatus();
-	}
-*/
-	
 	bool bStatsVisible = (!IsIconized() && StatisticsWindowActive());
 	int msGraphUpdate= thePrefs::GetTrafficOMeterInterval()*1000;
 	if ((msGraphUpdate > 0)  && ((msCur / msGraphUpdate) > (msPrevGraph / msGraphUpdate))) {
 		// trying to get the graph shifts evenly spaced after a change in the update period
 		msPrevGraph = msCur;
 		
-		statisticswnd->UpdateStatGraphs(bStatsVisible);
+		HR* phr = &theApp.listHR.GetTail();
+		float cUp, cDown, cConn;
+		cUp   = (float)phr->cntUploads;
+		cDown = (float)phr->cntConnections;
+		cConn = (float)phr->cntDownloads;
+		const float *apfDown[] = { &theApp.kBpsDownSession, &theApp.kBpsDownAvg, &theApp.kBpsDownCur };
+		const float *apfUp[] = { &theApp.kBpsUpSession, &theApp.kBpsUpAvg, &theApp.kBpsUpCur };
+		const float *apfConn[] = { &cUp, &cDown, &cConn };
+		const float **graph_points[3] = { apfDown, apfUp, apfConn };
+		statisticswnd->UpdateStatGraphs(bStatsVisible, theApp.listensocket->GetPeakConnections(), phr->sTimestamp, graph_points);
 	
 	}
 

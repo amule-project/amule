@@ -1312,7 +1312,6 @@ void CPartFile_Encoder::Encode(CECTag *parent)
 }
 
 
-#ifndef AMULE_DAEMON
 // FIXME: remove code from GUI
 CECPacket *GetStatsGraphs(const CECPacket *request)
 {
@@ -1333,7 +1332,7 @@ CECPacket *GetStatsGraphs(const CECPacket *request)
 			uint16 nScale = request->GetTagByName(EC_TAG_STATSGRAPH_SCALE)->GetInt16Data();
 			uint16 nMaxPoints = request->GetTagByName(EC_TAG_STATSGRAPH_WIDTH)->GetInt16Data();
 			uint32 *graphData;
-			unsigned int numPoints = theApp.amuledlg->statisticswnd->GetHistoryForWeb(nMaxPoints, (double)nScale, &dTimestamp, &graphData);
+			unsigned int numPoints = theApp.GetHistoryForWeb(nMaxPoints, (double)nScale, &dTimestamp, &graphData);
 			if (numPoints) {
 				response = new CECPacket(EC_OP_STATSGRAPHS);
 				response->AddTag(CECTag(EC_TAG_STATSGRAPH_DATA, 3 * numPoints * sizeof(uint32), graphData));
@@ -1354,7 +1353,6 @@ CECPacket *GetStatsGraphs(const CECPacket *request)
 		return new CECPacket(EC_OP_FAILED);
 	}
 }
-#endif /* ! AMULE_DAEMON */
 
 CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request, CPartFile_Encoder_Map &enc_map)
 {
@@ -1538,11 +1536,8 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request, CPartFile_Enc
 		// Statistics
 		//
 		case EC_OP_GET_STATSGRAPHS:
-#ifndef AMULE_DAEMON
 			response = GetStatsGraphs(request);
-#else
-			response = new CECPacket(EC_OP_FAILED);
-#endif
+//			response = new CECPacket(EC_OP_FAILED);
 			break;
 		case EC_OP_GET_STATSTREE:
 			response = new CECPacket(EC_OP_STATSTREE);
