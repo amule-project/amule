@@ -87,6 +87,7 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		* New popup menu and events management for new wx SysTray
 		* Speed Bar color (on the new wxTray) is setted in the statistics color selection 
 		  (as old GTK tray!)
+		* Some configure checks and cleanup
 
 	Kry:
 		* New SysTray Core written in wxWidgets (portable and transparent icon)
