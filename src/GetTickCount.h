@@ -24,6 +24,8 @@
 #define GETTICKCOUNT_H
 #include "types.h"		// Needed for uint32
 
+#include <winbase.h>
+
 #if wxUSE_GUI && wxUSE_TIMER && !defined(AMULE_DAEMON)
 /**
  * Copyright (C) 2004 Alo Sarv <madcat_@users.sourceforge.net>
@@ -33,7 +35,9 @@
  * is being called exactly 50 times per second at any case, no more no less.
  */
 	#include <wx/timer.h>
+	#ifndef __WXMSW__ // already defined in winbase.h
 	#define GetTickCount() mytimer->GetTickCountNow()
+	#endif
 	#define GetTickCount64() mytimer->GetTickCountNow64()
 	extern class MyTimer *mytimer;
 	class MyTimer : public wxTimer {

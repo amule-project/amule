@@ -22,13 +22,13 @@
 #include <wx/intl.h>		// Needed for _
 #include <wx/menu.h>		// Needed for wxMenu
 
+#include "amule.h"			// Needed for theApp: let it first or fail under win32
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "FriendListCtrl.h"	// Interface declarations
 #include "ClientDetailDialog.h"	// Needed for CClientDetailDialog
 #include "AddFriend.h"		// Needed for CAddFriend
 #include "ClientList.h"		// Needed for CClientList
 #include "ChatWnd.h"		// Needed for CChatWnd
-#include "amule.h"			// Needed for theApp
 #include "opcodes.h"		// Needed for MP_DETAIL
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "Friend.h"		// Needed for CFriend
