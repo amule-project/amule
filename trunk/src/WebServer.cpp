@@ -1422,17 +1422,18 @@ wxString CWebServer::_GetGraphs(ThreadData Data) {
 	wxString sSession = _ParseURL(Data, wxT("ses"));
     
 	CECPacket *request = new CECPacket(EC_OP_GET_PREFERENCES);
-	if (request) {
-		request->AddTag(CECTag(EC_TAG_SELECT_PREFS, (uint32)EC_PREFS_CONNECTIONS));
-		delete request;
-	} else {
+	if (!request) {
 		return wxEmptyString;
 	}
 
 	uint32 max_ul = 0;
 	uint32 max_dl = 0;
 	uint16 max_conn = 0;	
+
+	request->AddTag(CECTag(EC_TAG_SELECT_PREFS, (uint32)EC_PREFS_CONNECTIONS));
 	CECPacket *response = webInterface->SendRecvMsg_v2(request);
+	delete request;
+
 	if (response) {
 		CECTag *t1 = response->GetTagByIndex(0);
 		CECTag *t2 = t1 ? t1->GetTagByName(EC_TAG_CONN_UL_CAP) : NULL;
@@ -1452,6 +1453,9 @@ wxString CWebServer::_GetGraphs(ThreadData Data) {
 	}
 	
 	request = new CECPacket(EC_OP_GET_STATSGRAPHS, EC_DETAIL_WEB);
+	if (!request) {
+		return wxEmptyString;
+	}
 	request->AddTag(CECTag(EC_TAG_STATSGRAPH_WIDTH, m_nGraphWidth));
 	request->AddTag(CECTag(EC_TAG_STATSGRAPH_SCALE, m_nGraphScale));
 	if (_ParseURL(Data, wxT("refetch")) != wxT("yes")) {
