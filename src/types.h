@@ -125,16 +125,22 @@ class CTimer {
 	wxEvtHandler *owner;
 	int id;
 	class CTimerThread : public wxThread {
-		unsigned long period;
+		unsigned long m_period;
+		bool m_oneShot;
+		wxEvtHandler *m_owner;
+		int m_id;
+		
+		void *Entry();
+
 		public:
-		CTimerThread(CTimer *owner, unsigned long period);
-		int OnRun();
+		CTimerThread(wxEvtHandler *owner, unsigned long period, bool oneShot, int id);
 	};
+	CTimerThread *thread;
 	public:
 	CTimer(wxEvtHandler *owner = 0, int timerid = -1);
 	~CTimer();
 	void SetOwner(wxEvtHandler *owner, int id = -1);
-	bool Start(int millisecs = -1, bool oneShot = false);
+	bool Start(int millisecs, bool oneShot = false);
 	bool IsRunning() const;
 	void Stop();
 };
