@@ -298,11 +298,9 @@ void CUpDownClient::Safe_Delete()
 {
 	// Because we are delaying the deletion, we might end up trying to delete 
 	// it twice, however, this is normal and shouldn't trigger any failures
-	if ( m_SafelyDeleted ) {
-		// Tmp warning
-		printf("WARNING! CLIENT DELETED TWICE!\n");
+	if ( m_SafelyDeleted ) 
 		return;
-	} 
+ 
 	
 	m_SafelyDeleted = true;
 		
