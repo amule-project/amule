@@ -27,6 +27,8 @@ Version 2.0.0rc7 - The "xxxxxxxxxxxxxxxx" version.
 		  "Asked For Another File" on download queue.
 		  
 	Xaignar:
+		* Fixed the shared-files list, which would draw columns regardless 
+		  of whenever or not they were hidden.
 		* Fixed the progress-bars in the shared-files dialog. It should now
 		  work properly for both part and completed files.
 		* Fixed a bug in the ipfilter, where non-numeric chars on lines would

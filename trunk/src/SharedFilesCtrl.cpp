@@ -674,26 +674,29 @@ void CSharedFilesCtrl::OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxR
 		int width = columnItem.GetWidth();
 		columnRect.SetWidth(width-2*SPARE_PIXELS_HORZ);
 		wxDCClipper clipper(*dc, columnRect);
-		switch ( iColumn )
-		{
-		case 9: {
-			if ( file->GetPartCount() ) {
-				columnRect.height--;
-				columnRect.y++;
-				file->DrawShareStatusBar(dc, columnRect, false, CPreferences::UseFlatBar());
-				columnRect.height++;
-				columnRect.y--;
-			}
-			break;
-		}
 		
-		default:
-			columnItem.m_col = iColumn;
-			columnItem.m_itemId = item;
-			GetItem(columnItem);
-			dc->DrawText(columnItem.m_text, columnRect.GetLeft(), columnRect.GetTop()+SPARE_PIXELS_VERT_TEXT);
-			break;
-
+		if ( GetColumnWidth( iColumn ) ) {
+			switch ( iColumn )
+			{
+			case 9: {
+				if ( file->GetPartCount() ) {
+					columnRect.height--;
+					columnRect.y++;
+					file->DrawShareStatusBar(dc, columnRect, false, CPreferences::UseFlatBar());
+					columnRect.height++;
+					columnRect.y--;
+				}
+				break;
+			}
+			
+			default:
+				columnItem.m_col = iColumn;
+				columnItem.m_itemId = item;
+				GetItem(columnItem);
+				dc->DrawText(columnItem.m_text, columnRect.GetLeft(), columnRect.GetTop()+SPARE_PIXELS_VERT_TEXT);
+				break;
+	
+			}
 		}
 
 		columnRect.SetLeft(columnRect.GetLeft()+width);
