@@ -20,9 +20,9 @@
 #ifndef MULELISTCTRL_H
 #define MULELISTCTRL_H
 
+#include "Preferences.h"	// Needed for CPreferences
 #include "listctrl_gen.h"	// Needed for wxODListCtrl
 #include "types.h"		// Needed for LPCTSTR
-#include "Preferences.h"	// Needed for CPreferences
 #include "resource.h"		// Needed for IDB_DOWN
 #include "color.h"		// Needed for COLORREF
 
