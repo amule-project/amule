@@ -64,7 +64,7 @@ class CEC_PartFile_Tag : public CECTag {
  		CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level);
  		
 		// template needs it
-		uint32		ID()	{ return GetMD4Data(); }
+		CMD4Hash		ID()	{ return GetMD4Data(); }
 
  		CMD4Hash	FileHash()	{ return GetMD4Data(); }
 		wxString	FileHashString() { return GetMD4Data().Encode(); }
@@ -92,7 +92,7 @@ class CEC_SharedFile_Tag : public CECTag {
 		CEC_SharedFile_Tag(const CKnownFile *file, EC_DETAIL_LEVEL detail_level);
 
 		// template needs it
- 		uint32		ID()	{ return GetMD4Data(); }
+ 		CMD4Hash		ID()	{ return GetMD4Data(); }
 
  		CMD4Hash	FileHash()	{ return GetMD4Data(); }
 		wxString	FileHashString() { return GetMD4Data().Encode(); }
