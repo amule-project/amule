@@ -1341,7 +1341,42 @@ wxString CWebServer::_GetGraphs(ThreadData WXUNUSED(Data)) {
 	wxString Out = m_Templates.sGraphs;	
 	wxString sGraphDownload, sGraphUpload, sGraphCons;
 	wxString sTmp;	
-/*	
+
+	CECPacket *request = new CECPacket(EC_OP_GET_PREFERENCES);
+	request->AddTag(CECTag(EC_TAG_SELECT_PREFS, (uint32)EC_PREFS_CONNECTIONS));
+	CECPacket *response = webInterface->SendRecvMsg_v2(request);
+	uint32 max_ul = response->GetTagByIndex(0)->GetTagByName(EC_TAG_CONN_UL_CAP)->GetInt32Data();
+	uint32 max_dl = response->GetTagByIndex(0)->GetTagByName(EC_TAG_CONN_DL_CAP)->GetInt32Data();
+	uint16 max_conn = response->GetTagByIndex(0)->GetTagByName(EC_TAG_CONN_MAX_CONN)->GetInt16Data();
+	delete response;
+	delete request;
+
+	uint16 nScale = 3;	// default graph update delay
+
+	request = new CECPacket(EC_OP_GET_STATSGRAPHS, EC_DETAIL_WEB);
+	request->AddTag(CECTag(EC_TAG_STATSGRAPH_WIDTH, (uint16)WEB_GRAPH_WIDTH));
+	request->AddTag(CECTag(EC_TAG_STATSGRAPH_SCALE, nScale));
+	if (!m_sLastHistoryTimeStamp.IsEmpty()) {
+		request->AddTag(CECTag(EC_TAG_STATSGRAPH_LAST, m_sLastHistoryTimeStamp));
+	}
+	response = webInterface->SendRecvMsg_v2(request);
+	delete request;
+
+	if (response->GetOpCode() == EC_OP_STATSGRAPHS) {
+		m_sLastHistoryTimeStamp = response->GetTagByName(EC_TAG_STATSGRAPH_LAST)->GetStringData();
+		CECTag *dataTag = response->GetTagByName(EC_TAG_STATSGRAPH_DATA);
+		const uint32 *data = (const uint32 *)dataTag->GetTagData();
+		unsigned int numItems = dataTag->GetTagDataLen() / sizeof(uint32);
+		for (unsigned int i = 0; i < numItems;) {
+			UpDown *dataLine = new UpDown;
+			dataLine->download = data[i++];
+			dataLine->upload = data[i++];
+			dataLine->connections = data[i++];
+			AddStatsLine(dataLine);
+		}
+	}
+	delete response;
+
 	for (size_t i = 0; i < WEB_GRAPH_WIDTH; ++i) {
 		if (i < m_Params.PointsForWeb.GetCount()) {
 			if (i != 0) {
@@ -1350,22 +1385,17 @@ wxString CWebServer::_GetGraphs(ThreadData WXUNUSED(Data)) {
 				sGraphCons.Append(wxT(","));
 			}
 			// download
-			sTmp.Format(wxT("%d") , (uint32) (m_Params.PointsForWeb[i]->download*1024));
+			sTmp = wxString::Format(wxT("%d") , (uint32) (m_Params.PointsForWeb[i]->download));
 			sGraphDownload += sTmp;
 			// upload
-			sTmp.Format(wxT("%d") , (uint32) (m_Params.PointsForWeb[i]->upload*1024));
+			sTmp = wxString::Format(wxT("%d") , (uint32) (m_Params.PointsForWeb[i]->upload));
 			sGraphUpload += sTmp;
 			// connections
-			sTmp.Format(wxT("%d") , (uint32) (m_Params.PointsForWeb[i]->connections));
+			sTmp = wxString::Format(wxT("%d") , (uint32) (m_Params.PointsForWeb[i]->connections));
 			sGraphCons += sTmp;
 		}
 	}
-*/	
 
-	//sGraphs formatted as: %d\t%d\t%d\t%d
-	CECPacket req(EC_OP_GET_STATSGRAPHS);
-	CECPacket *response = webInterface->SendRecvMsg_v2(&req);
-	wxString sGraphs =  response->GetTagByIndex(0)->GetStringData();
 	/*
 	#ifdef WITH_LIBPNG 
 	CECTag* ImageTag = response->GetTagByName(EC_TAG_IMAGE);
@@ -1391,22 +1421,13 @@ wxString CWebServer::_GetGraphs(ThreadData WXUNUSED(Data)) {
 	Out.Replace(wxT("[KByteSec]"), _("kB/s"));
 	Out.Replace(wxT("[TxtTime]"), _("Time"));
 
-	delete response;
-
-	int brk = sGraphs.First(wxT("\t"));
-	
 	wxString sScale;
-	sScale = CastSecondsToHM(StrToLong(sGraphs.Left(brk)) * WEB_GRAPH_WIDTH);
-	sGraphs = sGraphs.Mid(brk+1); 
-	brk=sGraphs.First(wxT("\t"));
+	sScale = CastSecondsToHM(nScale * WEB_GRAPH_WIDTH);
 
 	wxString s1, s2, s3;
-	s1.Printf(wxT("%li"), StrToLong(sGraphs.Left(brk)) + 4);
-	sGraphs = sGraphs.Mid(brk+1); 
-	brk=sGraphs.First(wxT("\t"));
-	s2.Printf(wxT("%li"), StrToLong(sGraphs.Left(brk)) + 4);
-	sGraphs = sGraphs.Mid(brk+1);
-	s3.Printf(wxT("%li"), StrToLong(sGraphs) + 20);
+	s1.Printf(wxT("%u"), max_dl + 4);
+	s2.Printf(wxT("%u"), max_ul + 4);
+	s3.Printf(wxT("%u"), max_conn + 20);
 	
 	Out.Replace(wxT("[ScaleTime]"), sScale);
 	Out.Replace(wxT("[MaxDownload]"), s1);
@@ -1565,16 +1586,13 @@ wxString CWebServer::_GetDebugLog(ThreadData Data) {
 }
 
 
+// FIXME: Using v1-style communication
 wxString CWebServer::_GetStats(ThreadData Data) {
 
 	webInterface->DebugShow(wxT("***_GetStats arrived\n"));
 
 	wxString sSession = _ParseURL(Data, wxT("ses"));
 
-	// refresh statistics.. ARGH. NO NO NO NO
-	// (it will be done in statisticsdlg and in main thread)
-	//theApp.amuledlg->statisticswnd.ShowStatistics(true);
-	
 	wxString Out = m_Templates.sStats;
 	
 	CECPacket req(EC_OP_GET_STATSTREE);
