@@ -56,7 +56,7 @@ class EC_IPv4_t {
 
 		wxString StringIP(bool brackets = true)
 		{
-			return wxString::Format(wxT(brackets ? "[%d.%d.%d.%d:%d]" : "%d.%d.%d.%d : %d"), ip[0], ip[1], ip[2], ip[3], port);
+			return wxString::Format(brackets ? wxT("[%d.%d.%d.%d:%d]") : wxT("%d.%d.%d.%d : %d"), ip[0], ip[1], ip[2], ip[3], port);
 		}
 		
 		uint8 ip[4];
