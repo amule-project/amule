@@ -70,6 +70,9 @@ BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	EVT_CHECKBOX(ID_PROXY_ENABLE_PASSWORD,	PrefsUnifiedDlg::OnCheckBoxChange)
 //	EVT_CHECKBOX(ID_PROXY_AUTO_SERVER_CONNECT_WITHOUT_PROXY,	PrefsUnifiedDlg::OnCheckBoxChange)
 	
+	// Connection
+	EVT_SPINCTRL(IDC_PORT,			PrefsUnifiedDlg::OnTCPClientPortChange)
+	
 	// The rest. Organize it!
 	EVT_CHECKBOX(IDC_UDPDISABLE,		PrefsUnifiedDlg::OnCheckBoxChange)
 	EVT_CHECKBOX(IDC_CHECKDISKSPACE,	PrefsUnifiedDlg::OnCheckBoxChange)
@@ -97,7 +100,7 @@ BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	EVT_BUTTON(IDC_SELINCDIR,		PrefsUnifiedDlg::OnButtonDir)
 	EVT_BUTTON(IDC_SELOSDIR,		PrefsUnifiedDlg::OnButtonDir)
 
-	EVT_SPINCTRL( IDC_TOOLTIPDELAY,		PrefsUnifiedDlg::OnToolTipDelayChange)
+	EVT_SPINCTRL(IDC_TOOLTIPDELAY,		PrefsUnifiedDlg::OnToolTipDelayChange)
 
 	EVT_BUTTON(IDC_EDITADR,			PrefsUnifiedDlg::OnButtonEditAddr)
 	EVT_BUTTON(ID_DESKTOPMODE,		PrefsUnifiedDlg::OnButtonSystray)
@@ -315,7 +318,11 @@ bool PrefsUnifiedDlg::TransferToWindow()
 		thePrefs::s_colors[i] = CStatisticsDlg::acrStat[i];
 		thePrefs::s_colors_ref[i] = CStatisticsDlg::acrStat[i];
 	}
-
+	
+	// Connection tab
+	wxSpinEvent e;
+	OnTCPClientPortChange(e);
+	
 	// Proxy tab initialization
 	if (!CastChild(ID_PROXY_ENABLE_PROXY, wxCheckBox)->IsChecked()) {
 		FindWindow(ID_PROXY_TYPE)->Enable(false);
@@ -880,4 +887,14 @@ void PrefsUnifiedDlg::OnRateLimitChanged( wxSpinEvent& event )
 		}
 	}
 }
+
+
+void PrefsUnifiedDlg::OnTCPClientPortChange(wxSpinEvent& WXUNUSED(event))
+{
+	int port = CastChild(IDC_PORT, wxSpinCtrl)->GetValue();
+	wxString txt;
+	txt << wxT("Client UDP port: ") << port + 3;
+	CastChild(ID_TEXT_CLIENT_UDP_PORT, wxStaticText)->SetLabel(txt);
+}
+
 

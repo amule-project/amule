@@ -70,6 +70,8 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		* Preparing the field to bind to a fixed interface.
 		* Sanity checks on socket creation.
 		* Fixed the backtrace message.
+		* Added a static text to Preferences->Connection->Client TCP
+		port to show the value of the client UDP port.
 
 	Ken:
 		* Fixed Mac bug: window was a little larger each restart

@@ -139,6 +139,7 @@ protected:
 	void OnToolTipDelayChange(wxSpinEvent& event);
 	void OnScrollBarChange( wxScrollEvent& event );
 	void OnRateLimitChanged( wxSpinEvent& event );
+	void OnTCPClientPortChange(wxSpinEvent& event);
 
 	void OnInitDialog( wxInitDialogEvent& evt );
 
