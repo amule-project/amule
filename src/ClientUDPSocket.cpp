@@ -79,11 +79,7 @@ void CClientUDPSocket::OnReceive(int nErrorCode)
 
 	// strip IP address from wxSockAddress (do not call Hostname(). we do not want DNS)
 	struct in_addr addr_in;
-	#ifdef __WXMSW__
 	addr_in.s_addr = inet_addr(addr.IPAddress().c_str());
-	#else
-	addr_in.s_addr=GAddress_INET_GetHostAddress(addr.GetAddress());
-	#endif
 	char* fromIP=inet_ntoa(addr_in);
 
 	//wxUint32 length = ReceiveFrom(buffer,5000,serverbuffer,port);

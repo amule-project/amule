@@ -114,11 +114,7 @@ void CServerSocket::OnConnect(int nErrorCode)
 				// GetPeer(sockAddr);
 				wxIPV4address tmpaddr;
 				GetPeer(tmpaddr);
-				#ifdef __WXMSW__
 				sockAddr.sin_addr.s_addr = inet_addr(tmpaddr.IPAddress().c_str());
-				#else
-				sockAddr.sin_addr.s_addr = GAddress_INET_GetHostAddress(tmpaddr.GetAddress());
-				#endif
 				cur_server->SetID(sockAddr.sin_addr.s_addr);
 				theApp.serverlist->GetServerByAddress(cur_server->GetAddress(),cur_server->GetPort())->SetID(sockAddr.sin_addr.s_addr);
 			}

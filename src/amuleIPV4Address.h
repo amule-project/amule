@@ -37,18 +37,16 @@
 class amuleIPV4Address : public wxIPV4address {
   public:
   amuleIPV4Address(void) { }
-  #ifndef __WXMSW__
-  virtual bool Hostname(unsigned long addr)
-      {
-        return (GAddress_INET_SetHostAddress(m_address,addr) == GSOCK_NOERROR);
-      }
-  virtual bool Hostname(char* addr)
-      {
-	struct in_addr inaddr;
-	inet_aton(addr,&inaddr);
-	return (GAddress_INET_SetHostAddress(m_address,inaddr.s_addr) == GSOCK_NOERROR);
-      }
-  #endif
+  
+  	virtual bool Hostname(unsigned long addr) {
+		return GAddress_INET_SetHostAddress(m_address,addr)==GSOCK_NOERROR;
+	};
+	virtual bool Hostname(char* addr) {
+		struct in_addr inaddr;
+		inet_aton(addr,&inaddr);
+		return GAddress_INET_SetHostAddress(m_address,inaddr.s_addr)==GSOCK_NOERROR;
+	}
+  
 };
 
 #endif // AMULEIPV4ADDRESS_H
