@@ -234,7 +234,7 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 	searchwnd->UpdateCatChoice();
 
 	// Must we start minimized?
-	if (thePrefs::GetStartMinimized() && (thePrefs::GetDesktopMode() != 4)) {
+	if (thePrefs::GetStartMinimized() /*&& (thePrefs::GetDesktopMode() != 4)*/) {
 		#ifndef __SYSTRAY_DISABLED__
 		// Send it to tray?
 		if (thePrefs::DoMinToTray()) {
@@ -937,7 +937,7 @@ void CamuleDlg::Show_aMule(bool uniconize)
 void CamuleDlg::OnMinimize(wxIconizeEvent& evt)
 {
 #ifndef __SYSTRAY_DISABLED__
-	if (thePrefs::DoMinToTray() && (thePrefs::GetDesktopMode() != 4)) {
+	if (thePrefs::DoMinToTray() /*&& (thePrefs::GetDesktopMode() != 4)*/) {
 		if (evt.Iconized()) {
 			Hide_aMule(false);
 		} else {
