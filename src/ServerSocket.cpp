@@ -60,7 +60,7 @@
 #include "amule.h"		// Needed for theApp
 #include "amuleIPV4Address.h" // Needed for amuleIPV4Address
 
-#define DEBUG_SERVER_PROTOCOL
+//#define DEBUG_SERVER_PROTOCOL
 
 #ifndef AMULE_DAEMON
 
