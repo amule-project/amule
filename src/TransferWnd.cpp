@@ -89,8 +89,8 @@ CTransferWnd::CTransferWnd( wxWindow* pParent )
 	nb->SetPopupHandler( this );
 	
 	// Set default category
-	theApp.glob_prefs->GetCategory(0)->title = GetCatTitle(theApp.glob_prefs->GetAllcatType());
-	theApp.glob_prefs->GetCategory(0)->incomingpath = theApp.glob_prefs->GetIncomingDir();
+	theApp.glob_prefs->GetCategory(0)->title = GetCatTitle(thePrefs::GetAllcatType());
+	theApp.glob_prefs->GetCategory(0)->incomingpath = thePrefs::GetIncomingDir();
 	
 	// Show default + userdefined categories
 	for ( uint32 i = 0; i < theApp.glob_prefs->GetCatCount(); i++ ) {
@@ -156,7 +156,7 @@ void CTransferWnd::UpdateCategory( int index, bool titleChanged )
 {
 	wxString label = theApp.glob_prefs->GetCategory( index )->title;
 
-	if ( theApp.glob_prefs->ShowCatTabInfos() ) {
+	if ( thePrefs::ShowCatTabInfos() ) {
 		uint16 files = 0;
 		uint16 download = 0;
 		
@@ -232,7 +232,7 @@ void CTransferWnd::OnDelCategory( wxCommandEvent& WXUNUSED(event) )
 		downloadlistctrl->ChangeCategory(0);
 		
 		if ( theApp.glob_prefs->GetCatCount() == 1 ) {
-			theApp.glob_prefs->SetAllcatType(0);
+			thePrefs::SetAllcatType(0);
 		}
 		
 		theApp.glob_prefs->SaveCats();
@@ -252,8 +252,8 @@ void CTransferWnd::OnEditCategory( wxCommandEvent& WXUNUSED(event) )
 
 void CTransferWnd::OnSetDefaultCat( wxCommandEvent& event )
 {
-	theApp.glob_prefs->SetAllcatType( event.GetId() - MP_CAT_SET0 );
-	theApp.glob_prefs->GetCategory(0)->title = GetCatTitle( theApp.glob_prefs->GetAllcatType() );
+	thePrefs::SetAllcatType( event.GetId() - MP_CAT_SET0 );
+	theApp.glob_prefs->GetCategory(0)->title = GetCatTitle( thePrefs::GetAllcatType() );
 
 	UpdateCategory( 0 );
 	

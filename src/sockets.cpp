@@ -189,7 +189,7 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 		}
 		
 		CSafeMemFile data(256);
-		data.WriteHash16(theApp.glob_prefs->GetUserHash());
+		data.WriteHash16(thePrefs::GetUserHash());
 		// Why pass an ID, if we are loggin in?
 		data.WriteUInt32(GetClientID());
 		data.WriteUInt16(thePrefs::GetPort());

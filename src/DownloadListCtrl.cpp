@@ -823,7 +823,7 @@ void CDownloadListCtrl::DrawFileItem(wxDC* dc, int nColumn, const wxRect& rect, 
 #ifndef DISABLE_PROGRESS
 			case 5:	// progress
 				{
-					if (theApp.glob_prefs->ShowProgBar()) {
+					if (thePrefs::ShowProgBar()) {
 
 						int iWidth  = rect.GetWidth();
 						int iHeight = rect.GetHeight();
@@ -842,7 +842,7 @@ void CDownloadListCtrl::DrawFileItem(wxDC* dc, int nColumn, const wxRect& rect, 
 							}
 							cdcStatus.SelectObject(*(lpCtrlItem->status));
 	
-							lpPartFile->DrawStatusBar(&cdcStatus, wxRect(0, 0, iWidth, iHeight), theApp.glob_prefs->UseFlatBar());
+							lpPartFile->DrawStatusBar(&cdcStatus, wxRect(0, 0, iWidth, iHeight), thePrefs::UseFlatBar());
 							lpCtrlItem->dwUpdated = dwTicks + 1000; // Plus one second
 	
 						} else {
@@ -852,7 +852,7 @@ void CDownloadListCtrl::DrawFileItem(wxDC* dc, int nColumn, const wxRect& rect, 
 						dc->Blit( rect.GetX(), rect.GetY() + 1, iWidth, iHeight, &cdcStatus, 0, 0);
 						cdcStatus.SelectObject(wxNullBitmap);
 					}
-					if (theApp.glob_prefs->ShowPercent()) {
+					if (thePrefs::ShowPercent()) {
 						// Percentage of completing
 						// We strip anything below the first decimal point, to avoid Format doing roundings
 						float percent = floor( lpPartFile->GetPercentCompleted() * 10.0f ) / 10.0f;
@@ -862,7 +862,7 @@ void CDownloadListCtrl::DrawFileItem(wxDC* dc, int nColumn, const wxRect& rect, 
 						int middley = (2*rect.GetY() + rect.GetHeight()) >> 1;
 						dc->GetTextExtent(buffer, &textwidth, &textheight);
 							wxColour AktColor = dc->GetTextForeground();
-						if (theApp.glob_prefs->ShowProgBar()) {
+						if (thePrefs::ShowProgBar()) {
 							dc->SetTextForeground(*wxWHITE);
 						} else {	
 							dc->SetTextForeground(*wxBLACK);
@@ -1106,7 +1106,7 @@ void CDownloadListCtrl::DrawSourceItem(wxDC * dc, int nColumn, const wxRect& rec
 
 			case 5:	// file info
 				{
-					if (theApp.glob_prefs->ShowProgBar()) {
+					if (thePrefs::ShowProgBar()) {
 						int iWidth = rect.GetWidth();
 						int iHeight = rect.GetHeight() - 2;
 
@@ -1124,7 +1124,7 @@ void CDownloadListCtrl::DrawSourceItem(wxDC * dc, int nColumn, const wxRect& rec
 
 							cdcStatus.SelectObject(*(lpCtrlItem->status));
 
-							lpUpDownClient->DrawStatusBar(&cdcStatus, wxRect(0, 0, iWidth, iHeight), (lpCtrlItem->type == 3), theApp.glob_prefs->UseFlatBar());
+							lpUpDownClient->DrawStatusBar(&cdcStatus, wxRect(0, 0, iWidth, iHeight), (lpCtrlItem->type == 3), thePrefs::UseFlatBar());
 							lpCtrlItem->dwUpdated = dwTicks + 1000; // Plus one second
 						} else {
 							cdcStatus.SelectObject(*(lpCtrlItem->status));
@@ -1588,7 +1588,7 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 					break;
 				case MP_WS :{
 					wxString feed = wxEmptyString;
-					feed += wxString(_("Feedback from: ")) + theApp.glob_prefs->GetUserNick() + wxString(wxT("\r\n"));
+					feed += wxString(_("Feedback from: ")) + thePrefs::GetUserNick() + wxString(wxT("\r\n"));
 					feed += wxString(_("Client: aMule ")) +  wxString(wxT(VERSION)) + wxString(wxT("\r\n"));
 					feed += wxString(_("File Name: ")) + file->GetFileName() + wxString(wxT("\r\n"));
 					feed += wxString::Format(_("File size: %i MB"), file->GetFileSize()/1048576) + wxString(wxT("\r\n"));; 
@@ -1603,7 +1603,7 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 							break;
 						}
 						char *buffer = new char[250];
-						sprintf(buffer, "%s/%s", unicode2char(theApp.glob_prefs->GetIncomingDir()), unicode2char(file->GetFileName()));
+						sprintf(buffer, "%s/%s", unicode2char(thePrefs::GetIncomingDir()), unicode2char(file->GetFileName()));
 						//ShellOpenFile(buffer);
 						printf("===> open %s\n", buffer);
 						delete[] buffer;
@@ -1931,7 +1931,7 @@ void CDownloadListCtrl::ShowFilesCount()
 		const CtrlItem_Struct *cur_item = it->second;
 		if (cur_item->type == FILE_TYPE) {
 			CPartFile *file = (CPartFile *) cur_item->value;
-			if (file->GetCategory() == curTab || (!theApp.glob_prefs->ShowAllNotCats() && file->GetCategory() > 0 && curTab == 0)) {
+			if (file->GetCategory() == curTab || (!thePrefs::ShowAllNotCats() && file->GetCategory() > 0 && curTab == 0)) {
 				count++;
 			}
 		}
@@ -2039,7 +2039,7 @@ void CDownloadListCtrl::ShowFile(CPartFile * toshow)
 
 bool CDownloadListCtrl::ShowItemInCurrentCat(CPartFile * file, int newsel)
 {
-	return (((newsel == 0 && !theApp.glob_prefs->ShowAllNotCats()) || (newsel == 0 && theApp.glob_prefs->ShowAllNotCats() && file->GetCategory() == 0)) || (newsel > 0 && newsel == file->GetCategory()));
+	return (((newsel == 0 && !thePrefs::ShowAllNotCats()) || (newsel == 0 && thePrefs::ShowAllNotCats() && file->GetCategory() == 0)) || (newsel > 0 && newsel == file->GetCategory()));
 }
 
 //lagloose

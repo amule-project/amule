@@ -49,7 +49,7 @@
 CIPFilter::CIPFilter(){
 	lasthit = wxEmptyString;
 	LoadFromFile(theApp.ConfigDir + wxT("ipfilter.dat"), false); // No merge on construction
-	if (theApp.glob_prefs->IPFilterAutoLoad()) {
+	if (thePrefs::IPFilterAutoLoad()) {
 		Update();	
 	}
 }
@@ -434,7 +434,7 @@ void CIPFilter::RemoveAllIPs()
 bool CIPFilter::IsFiltered(uint32 IPTest)
 {
 	// Return false if not using ip filter or ip filter is disabled
-	if ( iplist.empty() || ( !theApp.glob_prefs->GetIPFilterOn() ) )
+	if ( iplist.empty() || ( !thePrefs::GetIPFilterOn() ) )
 		return false;
 	
 	IPTest = ntohl(IPTest);
@@ -449,7 +449,7 @@ bool CIPFilter::IsFiltered(uint32 IPTest)
 		// Check if this range covers the IP
 		if ( IPTest <= it->second->IPEnd ) {
 			// Is this filter active with the current access-level?
-			if ( it->second->AccessLevel < theApp.glob_prefs->GetIPFilterLevel() ) {
+			if ( it->second->AccessLevel < thePrefs::GetIPFilterLevel() ) {
 				lasthit = it->second->Description;
 				return true;
 			}
@@ -461,7 +461,7 @@ bool CIPFilter::IsFiltered(uint32 IPTest)
 
 void CIPFilter::Update(wxString strURL) {
 	if (strURL.IsEmpty()) {
-		strURL = theApp.glob_prefs->IPFilterURL();
+		strURL = thePrefs::IPFilterURL();
 	}
 	if (!strURL.IsEmpty()) {
 		wxString strTempFilename(theApp.ConfigDir + wxT("ipfilter.dat.download"));
@@ -479,6 +479,6 @@ void CIPFilter::DownloadFinished(uint32 result) {
 		// So, file is loaded and merged, and also saved to ipfilter.dat
 		wxRemoveFile(strTempFilename);
 	} else {
-		AddLogLineM(true, _("Failed to download the ipfilter from ") + theApp.glob_prefs->IPFilterURL());
+		AddLogLineM(true, _("Failed to download the ipfilter from ") + thePrefs::IPFilterURL());
 	}
 }

@@ -808,7 +808,7 @@ void CAICHHashSet::UntrustedHashReceived(const CAICHHash& Hash, uint32 dwFromIP)
 		return;
 	}
 	// the check if we trust any hash
-	if ( theApp.glob_prefs->IsTrustingEveryHash() ||
+	if ( thePrefs::IsTrustingEveryHash() ||
 		(nMostTrustedIPs >= MINUNIQUEIPS_TOTRUST && (100 * nMostTrustedIPs)/nSigningIPsTotal >= MINPERCENTAGE_TOTRUST)){
 		//trusted
 // TODO			

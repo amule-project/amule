@@ -377,14 +377,14 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 	TransferFromWindow();
 
 	// do sanity checking, special processing, and user notifications here
-	theApp.glob_prefs->CheckUlDlRatio();
+	thePrefs::CheckUlDlRatio();
 
 	// save the preferences on ok
 	theApp.glob_prefs->Save();
 
 
 	if ( CfgChanged(IDC_FED2KLH) && theApp.amuledlg->GetActiveDialog() != CamuleDlg::SearchWnd )
-		theApp.amuledlg->ShowED2KLinksHandler( theApp.glob_prefs->GetFED2KLH() );
+		theApp.amuledlg->ShowED2KLinksHandler( thePrefs::GetFED2KLH() );
 
 	if ( CfgChanged(IDC_LANGUAGE) )
 		wxMessageBox(wxString::wxString(_("Language change will not be applied until aMule is restarted.")));
@@ -401,11 +401,11 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 		theApp.SetOSFiles( widget->GetValue() );
 	}
 
-	if (theApp.glob_prefs->GetIPFilterOn()) {
+	if (thePrefs::GetIPFilterOn()) {
 		theApp.clientlist->FilterQueues();
 	}
 
-	if (theApp.glob_prefs->GetShowRatesOnTitle()) {
+	if (thePrefs::GetShowRatesOnTitle()) {
 		// This avoids a 5 seconds delay to show the title
 		theApp.amuledlg->SetTitle(theApp.m_FrameTitle + wxT(" -- Up: 0.0 | Down: 0.0"));
 	} else {

@@ -168,7 +168,7 @@ bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, uint
 						AddLogLineM(false, _("Client UDP socket; ReaskFilePing; reqfile does not match"));
 					}						
 				} else {
-					if (((uint32)theApp.uploadqueue->GetWaitingUserCount() + 50) > theApp.glob_prefs->GetQueueSize()) {
+					if (((uint32)theApp.uploadqueue->GetWaitingUserCount() + 50) > thePrefs::GetQueueSize()) {
 						Packet* response = new Packet(OP_QUEUEFULL,0,OP_EMULEPROT);
 						theApp.uploadqueue->AddUpDataOverheadFileRequest(response->GetPacketSize());
 						SendPacket(response,host,port);

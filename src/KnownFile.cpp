@@ -115,7 +115,7 @@ CKnownFile::CKnownFile() :
 {
 	statistic.fileParent = this;
 	
-	m_bAutoUpPriority = theApp.glob_prefs->GetNewAutoUp();
+	m_bAutoUpPriority = thePrefs::GetNewAutoUp();
 	m_iUpPriority = ( m_bAutoUpPriority ) ? PR_HIGH : PR_NORMAL;
 	m_pAICHHashSet = new CAICHHashSet(this);
 }
@@ -162,7 +162,7 @@ void CKnownFile::GetMetaDataTags()
 // Kry - TODO - GetMetaTags
 // Problem: types on id3lib mess with our types
 	
-	if (theApp.glob_prefs->GetExtractMetaData() == 0)
+	if (thePrefs::GetExtractMetaData() == 0)
 		return;
 
 	// open file
@@ -237,7 +237,7 @@ void CKnownFile::GetMetaDataTags()
 			theApp->AddDebugLogLine(false, _T("Unhandled exception while extracting file meta (MP3) data from \"%s\""), szFullPath);
 		}
 	}
-	else if (theApp.glob_prefs->GetExtractMetaData() > 1)
+	else if (thePrefs::GetExtractMetaData() > 1)
 	{
 		// starting the MediaDet object takes a noticeable amount of time.. avoid starting that object
 		// for files which are not expected to contain any Audio/Video data.
