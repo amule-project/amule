@@ -80,7 +80,7 @@ CChatSession::~CChatSession()
 }
 
 
-void CChatSession::AddText(const wxString& text, const wxTextAttr& style)
+void CChatSession::AddText(const wxString& text, const wxTextAttr& style, bool newline)
 {
 	// Split multi-line messages into individual lines
 	wxStringTokenizer tokens( text, wxT("\n") );
@@ -99,7 +99,12 @@ void CChatSession::AddText(const wxString& text, const wxTextAttr& style)
 		
 		SetDefaultStyle(style);
 	
-		AppendText( tokens.GetNextToken() + wxT("\n") );
+		AppendText( tokens.GetNextToken() );
+
+		// Only add newlines after the last line if it is desired
+		if ( tokens.HasMoreTokens() || newline ) {
+			AppendText( wxT("\n") );
+		}
 	}
 }
 
@@ -137,7 +142,7 @@ CChatSession* CChatSelector::StartSession(uint64 client_id, const wxString& clie
 
 	wxString text;
 	text += _(" *** Chat-Session Started: ") + client_name + wxT(" - ");
-	text += wxDateTime::Now().FormatISODate() + wxT(" ") + wxDateTime::Now().FormatISOTime() + wxT("\n");
+	text += wxDateTime::Now().FormatISODate() + wxT(" ") + wxDateTime::Now().FormatISOTime();
 	
 	chatsession->AddText( text, COLOR_RED );
 	AddPage(chatsession, client_name, show, 0);
@@ -207,12 +212,12 @@ void CChatSelector::ProcessMessage(uint64 sender_id, const wxString& message)
 	if ( !session->m_active ) {
 		session->m_active = true;
 		
-		session->AddText( _("*** Connected to Client ***\n"), COLOR_RED );
+		session->AddText( _("*** Connected to Client ***"), COLOR_RED );
 	}
 	
 	// Page text is client name
-	session->AddText( GetPageText(GetTabByClientID(sender_id)), COLOR_BLUE );
-	session->AddText( wxT(": ") + client_message + wxT("\n"), COLOR_BLACK );
+	session->AddText( GetPageText(GetTabByClientID(sender_id)), COLOR_BLUE, false );
+	session->AddText( wxT(": ") + client_message, COLOR_BLACK );
 }
 
 bool CChatSelector::SendMessage( const wxString& message, const wxString& client_name, uint64 to_id )
@@ -245,10 +250,10 @@ bool CChatSelector::SendMessage( const wxString& message, const wxString& client
 	
 	#ifndef CLIENT_GUI
 	if (theApp.clientlist->SendMessage(ci->m_client_id, message)) {
-		ci->AddText( thePrefs::GetUserNick(), COLOR_GREEN );
-		ci->AddText( wxT(": ") + message + wxT("\n"), COLOR_BLACK );
+		ci->AddText( thePrefs::GetUserNick(), COLOR_GREEN, false );
+		ci->AddText( wxT(": ") + message, COLOR_BLACK );
 	} else {
-		ci->AddText( _("*** Connecting to Client ***\n") , COLOR_RED );
+		ci->AddText( _("*** Connecting to Client ***"), COLOR_RED );
 	}
 	#endif
 
@@ -279,15 +284,15 @@ void CChatSelector::ConnectionResult(bool success, const wxString& message, uint
 	}
 	
 	if ( !success ) {
-		ci->AddText( _("*** Failed to Connect to client / Connection lost ***\n"), COLOR_RED );
+		ci->AddText( _("*** Failed to Connect to client / Connection lost ***"), COLOR_RED );
 	
 		ci->m_active = false;
 	} else {
 		// Kry - Woops, fix for the everlasting void message sending.
 		if ( !message.IsEmpty() ) {
-			ci->AddText( _("*** Connected to Client ***\n"), COLOR_RED );
-			ci->AddText( thePrefs::GetUserNick(), COLOR_GREEN );
-			ci->AddText( wxT(": ") + message + wxT("\n"), COLOR_BLACK );
+			ci->AddText( _("*** Connected to Client ***"), COLOR_RED );
+			ci->AddText( thePrefs::GetUserNick(), COLOR_GREEN, false );
+			ci->AddText( wxT(": ") + message, COLOR_BLACK );
 		}
 	}
 }
