@@ -65,8 +65,6 @@ CPreferences::CFGList	CPreferences::s_MiscList;
 
 
 /* Proxy */
-bool		CPreferences::s_ProxyEnableProxy;
-bool		CPreferences::s_ProxyEnablePassword;
 //bool		CPreferences::s_Proxy????;
 wxProxyData	CPreferences::s_ProxyData;
 
@@ -703,11 +701,11 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	/**
 	 * Proxy
 	 **/
-	NewCfgItem(ID_PROXY_ENABLE_PROXY,	(new Cfg_Bool( wxT("/Proxy/ProxyEnableProxy"), s_ProxyEnableProxy, false )));
+	NewCfgItem(ID_PROXY_ENABLE_PROXY,	(new Cfg_Bool( wxT("/Proxy/ProxyEnableProxy"), s_ProxyData.m_ProxyEnable, false )));
 	NewCfgItem(ID_PROXY_TYPE,		(MkCfg_Int( wxT("/Proxy/ProxyType"), s_ProxyData.m_ProxyType, 0 )));
 	NewCfgItem(ID_PROXY_NAME,		(new Cfg_Str( wxT("/Proxy/ProxyName"), s_ProxyData.m_ProxyHostName, wxEmptyString )));
 	NewCfgItem(ID_PROXY_PORT,		(MkCfg_Int( wxT("/Proxy/ProxyPort"), s_ProxyData.m_ProxyPort, 1080 )));
-	NewCfgItem(ID_PROXY_ENABLE_PASSWORD,	(new Cfg_Bool( wxT("/Proxy/ProxyEnablePassword"), s_ProxyEnablePassword, false )));
+	NewCfgItem(ID_PROXY_ENABLE_PASSWORD,	(new Cfg_Bool( wxT("/Proxy/ProxyEnablePassword"), s_ProxyData.m_EnablePassword, false )));
 	NewCfgItem(ID_PROXY_USER,		(new Cfg_Str( wxT("/Proxy/ProxyUser"), s_ProxyData.m_UserName, wxEmptyString )));
 	NewCfgItem(ID_PROXY_PASSWORD,		(new Cfg_Str( wxT("/Proxy/ProxyPassword"), s_ProxyData.m_Password, wxEmptyString )));
 // These were copied from eMule config file, maybe someone with windows can complete this?

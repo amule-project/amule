@@ -1296,8 +1296,8 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 
 	if (!m_socket) {
 #ifdef TESTING_PROXY
-		m_socket = new CClientReqSocket(this, thePrefs::GetProxyData());
-//		m_socket = new CClientReqSocket(this);
+//		m_socket = new CClientReqSocket(this, thePrefs::GetProxyData());
+		m_socket = new CClientReqSocket(this);
 #else
 		m_socket = new CClientReqSocket(this);
 #endif
@@ -1308,8 +1308,8 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 	} else if (!m_socket->IsConnected()) {
 		m_socket->Safe_Delete();
 #ifdef TESTING_PROXY
-		m_socket = new CClientReqSocket(this, thePrefs::GetProxyData());
-//		m_socket = new CClientReqSocket(this);
+//		m_socket = new CClientReqSocket(this, thePrefs::GetProxyData());
+		m_socket = new CClientReqSocket(this);
 #else
 		m_socket = new CClientReqSocket(this);
 #endif

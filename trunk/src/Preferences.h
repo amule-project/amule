@@ -544,9 +544,6 @@ protected:
 	static bool	s_autoconnectstaticonly;
 
 ////////////// PROXY
-
-	static bool	s_ProxyEnableProxy;
-	static bool	s_ProxyEnablePassword;
 //	static bool	s_Proxy????;
 	static wxProxyData s_ProxyData;
 
