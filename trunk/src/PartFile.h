@@ -157,6 +157,7 @@ public:
 	uint64	GetGainDueToCompression() const	{ return m_iGainDueToCompression; }
 	uint32	TotalPacketsSavedDueToICH()const{ return m_iTotalPacketsSavedDueToICH; }
 	bool	IsStopped() const		{ return stopped; }
+	bool	IsPaused() const		{ return paused; }
 	bool	HasComment() const		{ return hasComment; }
 	bool	HasRating() const		{ return hasRating; }
 	bool	HasBadRating() const		{ return hasBadRating; }
