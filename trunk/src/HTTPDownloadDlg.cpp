@@ -31,6 +31,7 @@
 #include "MuleGifCtrl.h"
 #include "muuli_wdr.h"		// Needed for ID_CANCEL
 #include "inetdownload.h"	// Needed for inetDownload
+#include "otherfunctions.h"	// Needed for unicode2char
 
 BEGIN_EVENT_TABLE(CHTTPDownloadDlg,wxDialog)
   EVT_BUTTON(ID_CANCEL,CHTTPDownloadDlg::OnBtnCancel)
@@ -50,7 +51,7 @@ CHTTPDownloadDlg::CHTTPDownloadDlg(wxWindow* parent,wxString url,wxString tempNa
 
   Centre();
 
-  thread=new myThread(this,(char*)url.GetData(),(char*)tempName.GetData());
+  thread=new myThread(this,url,tempName);
   thread->Create();
   thread->Run();
 
@@ -99,11 +100,11 @@ wxThread::ExitCode myThread::Entry() {
  curl_global_init(CURL_GLOBAL_ALL);
  if (TestDestroy()) return NULL;
  curl_handle = curl_easy_init();
- outfile = fopen(tempfile, "w");
+ outfile = fopen(unicode2char(tempfile), "w");
  if (TestDestroy()) {fclose(outfile); return NULL; }
  if (outfile!=NULL) {
 
-    curl_easy_setopt(curl_handle, CURLOPT_URL, url);
+    curl_easy_setopt(curl_handle, CURLOPT_URL, unicode2char(url));
     curl_easy_setopt(curl_handle, CURLOPT_VERBOSE, TRUE);
     curl_easy_setopt(curl_handle, CURLOPT_MAXREDIRS , 10);
     curl_easy_setopt(curl_handle, CURLOPT_FOLLOWLOCATION , 1);
