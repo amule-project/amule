@@ -107,6 +107,10 @@ amulegui_SOURCES = \
 	TransferWnd.cpp
 
 amule_SOURCES = \
+	kademlia/io/ByteIO.cpp \
+	kademlia/io/DataIO.cpp \
+	kademlia/io/FileIO.cpp \
+	kademlia/io/IOException.cpp \
 	kademlia/utils/UInt128.cpp \
 	AddFriend.cpp \
 	AddFileThread.cpp \
