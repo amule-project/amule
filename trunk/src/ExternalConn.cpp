@@ -242,80 +242,89 @@ wxString ExternalConn::Authenticate(const wxString& item) {
 	
 //TODO: do a function for each command
 wxString ExternalConn::ProcessRequest(const wxString& item) {
-		//WEBPAGE
+		// WEBPAGE
 		if (item == wxT("WEBPAGE HEADER")) {
-			//returns one string formatted as:
-			//%d\t%s\t%s\t%d\t%d\t%f\t%f\t%d\t%d
-			wxString buffer(wxT(""));
-			buffer+=wxString::Format(wxT("%d\t"), theApp.glob_prefs->GetWebPageRefresh());
+			// returns one string formatted as:
+			// %d\t%s\t%s\t%d\t%d\t%f\t%f\t%d\t%d
+			wxString buffer = wxString::Format(wxT("%d\t"), 
+				theApp.glob_prefs->GetWebPageRefresh());
 			
 			if (theApp.serverconnect->IsConnected())
-				buffer+=wxString(wxT("Connected\t"));
+				buffer += wxString(wxT("Connected\t"));
 			else if (theApp.serverconnect->IsConnecting())
-				buffer+=wxString(wxT("Connecting\t"));
+				buffer += wxString(wxT("Connecting\t"));
 			else
-				buffer+=wxString(wxT("Disconnected\t"));
+				buffer += wxString(wxT("Disconnected\t"));
 			
 			if (theApp.serverconnect->IsConnected() || theApp.serverconnect->IsConnecting()) {
 				if (theApp.serverconnect->IsLowID())
-					buffer+=wxString(wxT("Low ID\t"));
+					buffer += wxString(wxT("Low ID\t"));
 				else
-					buffer+=wxString(wxT("High ID\t"));
+					buffer += wxString(wxT("High ID\t"));
 				
 				if (theApp.serverconnect->IsConnected()) {
-					buffer+= theApp.serverconnect->GetCurrentServer()->GetListName() + wxT("\t");
-					buffer+=wxString::Format(wxT("%d\t"), theApp.serverconnect->GetCurrentServer()->GetUsers());
+					buffer += theApp.serverconnect->GetCurrentServer()->GetListName() +
+						wxString::Format(wxT("\t%d\t"),
+							theApp.serverconnect->GetCurrentServer()->GetUsers());
 				}
 			}
 			
-			buffer+=wxString::Format(wxT("%.1f\t"), theApp.uploadqueue->GetKBps());
-			buffer+=wxString::Format(wxT("%.1f\t"), theApp.downloadqueue->GetKBps());
+			buffer += wxString::Format(wxT("%.1f\t%.1f\t%d\t%d\t"), 
+				theApp.uploadqueue->GetKBps(),
+				theApp.downloadqueue->GetKBps(),
+				theApp.glob_prefs->GetMaxUpload(),
+				theApp.glob_prefs->GetMaxDownload());
 			
-			buffer+=wxString::Format(wxT("%d\t"), theApp.glob_prefs->GetMaxUpload());
-			buffer+=wxString::Format(wxT("%d\t"), theApp.glob_prefs->GetMaxDownload());
-			
-			return((wxChar*)buffer.GetData());
+			return buffer;
 		}
 		if (item == wxT("WEBPAGE GETGRAPH")) {
 			//returns one string formatted as:
 			//%d\t%d\t%d\t%d
-			wxString buffer(wxT(""));
+			wxString buffer = wxString::Format(wxT("%d\t%d\t%d\t%d"), 
+				theApp.glob_prefs->GetTrafficOMeterInterval(),
+				theApp.glob_prefs->GetMaxGraphDownloadRate(),
+				theApp.glob_prefs->GetMaxGraphUploadRate(),
+				theApp.glob_prefs->GetMaxConnections());
 			
-			buffer+=wxString::Format(wxT("%d\t"), theApp.glob_prefs->GetTrafficOMeterInterval());
-			buffer+=wxString::Format(wxT("%d\t"), theApp.glob_prefs->GetMaxGraphDownloadRate());
-			buffer+=wxString::Format(wxT("%d\t"), theApp.glob_prefs->GetMaxGraphUploadRate());
-			buffer+=wxString::Format(wxT("%d"), theApp.glob_prefs->GetMaxConnections());
-			
-			return((wxChar*) buffer.GetData());
+			return buffer;
 		}
 		if (item == wxT("WEBPAGE STATISTICS")) {
-			wxString buffer(wxT(""));
-			
 			int filecount = theApp.downloadqueue->GetFileCount();
 			uint32 stats[2]; // get the source count
 			theApp.downloadqueue->GetDownloadStats(stats);
-
-			buffer+=theApp.amuledlg->statisticswnd->GetHTML()+wxString(wxT("\t"));
-			buffer+=wxString::Format(wxT("Statistics: \n Downloading files: %d\n Found sources: %d\n Active downloads: %d\n Active Uploads: %d\n Users on upload queue: %d")			, filecount, stats[0], stats[1], theApp.uploadqueue->GetUploadQueueLength(), theApp.uploadqueue->GetWaitingUserCount());
+			wxString buffer = theApp.amuledlg->statisticswnd->GetHTML() +
+				wxString::Format(wxT(
+				"\tStatistics: \n"
+				"\t\tDownloading files: %d\n"
+				"\t\tFound sources: %d\n"
+				"\t\tActive downloads: %d\n"
+				"\t\tActive Uploads: %d\n"
+				"\t\tUsers on upload queue: %d"),
+				filecount, stats[0], stats[1], 
+				theApp.uploadqueue->GetUploadQueueLength(), 
+				theApp.uploadqueue->GetWaitingUserCount());
 			
-			return((wxChar*) buffer.GetData());
+			return buffer;
 		}
 		if (item == wxT("WEBPAGE GETPREFERENCES")) {
-			//returns one string formatted as:
-			//%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d
-			wxString buffer(wxT(""));
-
-			theApp.glob_prefs->GetWebUseGzip() ? buffer+=wxString(wxT("1\t")) : buffer+=wxString(wxT("0\t"));
-			theApp.glob_prefs->GetPreviewPrio() ? buffer+=wxString(wxT("1\t")) : buffer+=wxString(wxT("0\t"));
-			theApp.glob_prefs->TransferFullChunks() ? buffer+=wxString(wxT("1\t")) : buffer+=wxString(wxT("0\t"));
-			buffer+=wxString::Format(wxT("%d\t"), theApp.glob_prefs->GetWebPageRefresh());
-			buffer+=wxString::Format(wxT("%d\t"), theApp.glob_prefs->GetMaxSourcePerFile());
-			buffer+=wxString::Format(wxT("%d\t"), theApp.glob_prefs->GetMaxConnections());
-			buffer+=wxString::Format(wxT("%d\t"), theApp.glob_prefs->GetMaxConperFive());
-			buffer+=wxString::Format(wxT("%d\t"), theApp.glob_prefs->GetMaxDownload());
-			buffer+=wxString::Format(wxT("%d\t"), theApp.glob_prefs->GetMaxUpload());
-			buffer+=wxString::Format(wxT("%d\t"), theApp.glob_prefs->GetMaxGraphDownloadRate());
-			buffer+=wxString::Format(wxT("%d"), theApp.glob_prefs->GetMaxGraphUploadRate());
+			// returns one string formatted as:
+			// %d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d
+			wxString buffer(wxEmptyString);
+			theApp.glob_prefs->GetWebUseGzip() ?
+				buffer += wxT("1\t") : buffer += wxT("0\t");
+			theApp.glob_prefs->GetPreviewPrio() ?
+				buffer += wxT("1\t") : buffer += wxT("0\t");
+			theApp.glob_prefs->TransferFullChunks() ?
+				buffer += wxT("1\t") : buffer += wxT("0\t");
+			buffer += wxString::Format(wxT("%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d"),
+				theApp.glob_prefs->GetWebPageRefresh(),
+				theApp.glob_prefs->GetMaxSourcePerFile(),
+				theApp.glob_prefs->GetMaxConnections(),
+				theApp.glob_prefs->GetMaxConperFive(),
+				theApp.glob_prefs->GetMaxDownload(),
+				theApp.glob_prefs->GetMaxUpload(),
+				theApp.glob_prefs->GetMaxGraphDownloadRate(),
+				theApp.glob_prefs->GetMaxGraphUploadRate());
 			
 			return((wxChar*) buffer.GetData());
 		}
