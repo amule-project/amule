@@ -176,7 +176,9 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, wxString title) : wxFrame(
 	SetIcon(wxICON(aMule));
 
 	theApp.amuledlg = this;
-
+	
+	list_no_refresh = false;
+	
 	m_app_state=APP_STATE_STARTING;
 	srand(time(NULL));
 
