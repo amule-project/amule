@@ -2468,18 +2468,16 @@ wxThread::ExitCode completingThread::Entry()
 		*newname = strTestName;
 	}
 
-        if (!FS_wxRenameFile(partfilename, *newname)) {
-		completing_result |= UNEXP_FILE_ERROR;
-		return NULL;
-		/*
+	if (!FS_wxRenameFile(partfilename, *newname)) {
+
 		if (!FS_wxCopyFile(partfilename, *newname)) {
 			completing_result |= UNEXP_FILE_ERROR;
 			return NULL;
 		}
+		
 		if ( !wxRemoveFile(partfilename) ) {
 			completing_result |= DELETE_FAIL_PART;
 		}
-		*/
 	}
 	
 	if (!wxRemoveFile(Completing_Fullname)) {
@@ -2503,15 +2501,6 @@ wxThread::ExitCode completingThread::Entry()
 	return NULL;
 }
 
-/*
-void completingThread::setFile(CPartFile* pFile)
-{
-	if (pFile!=NULL) {
-		completing = pFile;
-	}
-}
-*/
-
 void completingThread::OnExit(){
 	
 	// Kry - Notice the app that the completion has finished for this file.		
@@ -2523,24 +2512,6 @@ void completingThread::OnExit(){
 	wxPostEvent(&theApp,evt);
 	
 }
-
-/*
-UINT CPartFile::CompleteThreadProc(CPartFile* pFile)
-{
-	UINT return_code;
-	if (!pFile) {
-		printf("NOT pFile !!!\n");
-		return_code=-1;
-	} else {
-		printf("pFile->PerformFileComplete(); !!!\n");
-   		pFile->PerformFileComplete();
-		return_code=0;
-	}
-	// Kry - Fixed completethread not exiting
-	pthread_exit((UINT*)&return_code);
-   	return 0;
-}
-*/
 
 
 // Lord KiRon - using threads for file completion
