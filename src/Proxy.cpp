@@ -39,19 +39,47 @@
 #include "otherfunctions.h"	/* for EncodeBase64()		*/
 
 
-static void dump(char *s, bool ok, const void *v, int n)
+/**
+ * Dumps a buffer to stdout
+ */
+static void dump(char *msg, bool ok, const void *buff, int n)
 {
-	register int lines = n / 16 + 1;
-	register int c = 0;
-	register const unsigned char *p = (const unsigned char *)v;
-	if (s) {
-		printf("%s - ok=%d\n", s, ok);
+	register const unsigned char *p = (const unsigned char *)buff;
+	register int lines = (n + 15)/ 16;
+	register int chars = 0;
+	if (msg) {
+		printf("%s - ok=%d, %d bytes\n", msg, ok, n);
 	}
 	for( int i = 0; i < lines; ++i) {
-		for( int j = 0; j < 16 && c < n; ++j) {
-			printf("0x%02X ", p[c++]);
+		int chars_save = chars;
+		int j;
+		// Prints the hexadecimal codes
+		for( j = 0; j < 16 && chars < n; ++j) {
+			printf("%02X ", p[chars++]);
 		}
-		printf("\n");
+		// Completes the missing spaces
+		for( int k = j; k < 16; ++k)
+		{
+			printf("   ");
+		}
+		// Rewind and print the ASCII codes
+		chars = chars_save;
+		printf("|");
+		for( j = 0; j < 16 && chars < n; ++j) {
+			char l = p[chars++];
+			if (isspace(l)) {
+				l = ' ';
+			} else if (!isgraph(l)) {
+				l = '.';
+			}
+			printf("%c", l);
+		}
+		// Completes the missing spaces
+		for( int k = j; k < 16; ++k)
+		{
+			printf(" ");
+		}
+		printf("|\n");
 	}
 	printf("\n");
 }
@@ -152,14 +180,16 @@ ProxyStateMachine::ProxyStateMachine(
 		wxProxyCommand ProxyCommand)
 :
 StateMachine(name, max_states, PROXY_STATE_START),
-m_ProxyData(ProxyData)
+m_ProxyData(ProxyData),
+m_ProxyCommand(ProxyCommand)
 {
 	m_IsLost = false;
 	m_IsConnected = false;
 	m_CanReceive = false;
 	m_CanSend = false;
 	m_ok = true;
-	m_ProxyCommand = ProxyCommand;
+	m_LastRead = 0;
+	m_LastWritten = 0;
 	// Will be initialized at Start()
 	m_PeerAddress = NULL;
 	m_ProxyClientSocket = NULL;
@@ -193,9 +223,7 @@ bool ProxyStateMachine::Start(const wxIPaddress &PeerAddress, wxSocketClient *Pr
 		unicode2char(m_PeerAddress->IPAddress()),
 		m_PeerAddress->Service());
 	
-	// Run the state machine, just let the events start to happen.
-	wxGetApp().Yield();
-	
+	// To run the state machine, return and just let the events start to happen.
 	return true;
 }
 
@@ -223,6 +251,7 @@ t_sm_state ProxyStateMachine::HandleEvent(t_sm_event event)
 	case wxSOCKET_LOST:
 		printf("Lost connection event\n");
 		m_IsLost = true;
+		m_ok = false;
 		break;
 		
 	default:
@@ -245,7 +274,10 @@ void ProxyStateMachine::AddDummyEvent()
 {
 #ifndef AMULE_DAEMON
 	wxSocketEvent e(PROXY_SOCKET_HANDLER);
-	e.m_event = (wxSocketNotify)(wxSOCKET_INPUT + wxSOCKET_OUTPUT + wxSOCKET_CONNECTION + wxSOCKET_LOST);
+	// Make sure this is an unknown event :)
+	e.m_event = (wxSocketNotify)(
+		wxSOCKET_INPUT + wxSOCKET_OUTPUT +
+		wxSOCKET_CONNECTION + wxSOCKET_LOST);
 	e.SetEventObject(m_ProxyClientSocket);
 	TheProxyEventHandler.AddPendingEvent(e);
 #endif
@@ -262,12 +294,16 @@ void ProxyStateMachine::AddDummyEvent()
 void ProxyStateMachine::ReactivateSocket()
 {
 	// Debug message
-	if (m_ProxyBoundAddress) {
-		printf("Proxy Bound Address: IP:%s, Port:%u, ok:%d\n",
-			unicode2char(GetProxyBoundAddress().IPAddress()),
-			GetProxyBoundAddress().Service(), m_ok);
+	if (m_ok) {
+		if (m_ProxyBoundAddress) {
+			printf("Proxy Bound Address: IP:%s, Port:%u, ok:%d\n",
+				unicode2char(GetProxyBoundAddress().IPAddress()),
+				GetProxyBoundAddress().Service(), m_ok);
+		} else {
+			printf("Failed to bind proxy address (ok for http proxy), ok=%d\n", m_ok);
+		}
 	} else {
-		printf("Failed to bind proxy address, ok=%d\n", m_ok);
+		printf("Proxy request failed, ok=%d\n", m_ok);
 	}
 	
 #ifndef AMULE_DAEMON
@@ -292,7 +328,7 @@ void ProxyStateMachine::ReactivateSocket()
 		h->AddPendingEvent(e);
 		e.m_event = wxSOCKET_OUTPUT;
 		h->AddPendingEvent(e);
-		if (m_IsLost) {
+		if (!m_ok) {
 			e.m_event = wxSOCKET_LOST;
 			h->AddPendingEvent(e);
 		}
@@ -305,7 +341,7 @@ void ProxyStateMachine::ReactivateSocket()
 		h->AddPendingEvent(e);
 		e.m_event = wxSOCKET_OUTPUT;
 		h->AddPendingEvent(e);
-		if (m_IsLost) {
+		if (!m_ok) {
 			e.m_event = wxSOCKET_LOST;
 			h->AddPendingEvent(e);
 		}
@@ -317,11 +353,13 @@ void ProxyStateMachine::ReactivateSocket()
 wxSocketBase &ProxyStateMachine::ProxyWrite(wxSocketBase &socket, const void *buffer, wxUint32 nbytes)
 {
 	wxSocketBase &ret = socket.Write(buffer, nbytes);
+	m_LastWritten = m_ProxyClientSocket->LastCount();
+	/* Set the status of this operation */
+	m_LastError = wxSOCKET_NOERROR;
 	m_ok = !m_ProxyClientSocket->Error();
-	wxSocketError LastErr = wxSOCKET_NOERROR;
 	if (!m_ok) {
-		LastErr = m_ProxyClientSocket->LastError();
-		m_ok = LastErr == wxSOCKET_WOULDBLOCK;
+		m_LastError = m_ProxyClientSocket->LastError();
+		m_ok = m_LastError == wxSOCKET_WOULDBLOCK;
 		if (m_ok) {
 			m_CanSend = false;
 		}
@@ -330,14 +368,18 @@ wxSocketBase &ProxyStateMachine::ProxyWrite(wxSocketBase &socket, const void *bu
 	return ret;
 }
 
-wxSocketBase &ProxyStateMachine::ProxyRead(wxSocketBase &socket, void *buffer, wxUint32 nbytes)
+wxSocketBase &ProxyStateMachine::ProxyRead(wxSocketBase &socket, void *buffer)
 {
-	wxSocketBase &ret = socket.Read(buffer, nbytes);
+	/* Always try to read the full buffer. That explicitly demands that
+	 * the socket has the flag wxSOCKET_NONE. */
+	wxSocketBase &ret = socket.Read(buffer, wxPROXY_BUFFER_SIZE);
+	m_LastRead = m_ProxyClientSocket->LastCount();
+	/* Set the status of this operation */
+	m_LastError = wxSOCKET_NOERROR;
 	m_ok = !m_ProxyClientSocket->Error();
-	wxSocketError LastErr = wxSOCKET_NOERROR;
 	if (!m_ok) {
-		LastErr = m_ProxyClientSocket->LastError();
-		m_ok = LastErr == wxSOCKET_WOULDBLOCK;
+		m_LastError = m_ProxyClientSocket->LastError();
+		m_ok = m_LastError == wxSOCKET_WOULDBLOCK;
 		if (m_ok) {
 			m_CanReceive = false;
 		}
@@ -378,6 +420,11 @@ void Socks5StateMachine::process_state(t_sm_state state, bool entry)
 	(this->*m_process_state[state])(entry);
 }
 
+/**
+ * Code this such that the next state is only entered when it is able to
+ * perform the operation (read or write). State processing will assume
+ * that it can read or write upon entry of the state.
+ */
 t_sm_state Socks5StateMachine::next_state(t_sm_event event)
 {
 	// Default is stay in current state
@@ -493,13 +540,20 @@ t_sm_state Socks5StateMachine::next_state(t_sm_event event)
 	return ret;
 }
 
-/*
- * So, this is how you do it: the state machine is clocked by the events
+/**
+ * 	So, this is how you do it: the state machine is clocked by the events
  * that happen inside the event handler. You can add a dummy event whenever
  * you see that the system will not generate an event. But don't add dummy
  * events before reads, reads should only be performed after input events.
- * Maybe it makes sense to add a dummy event before a read if there is no
+ *
+ * 	Maybe it makes sense to add a dummy event before a read if there is no
  * state change (wait state).
+ *
+ * 	The event system will generate at least 2 events, one wxSOCKET_CONNECTION,
+ * one wxSOCKET_OUTPUT, so we will have 2 clocks in our state machine. Plus, each
+ * time there is unread data in the receive buffer of the socket, a wxSOCKET_INPUT
+ * event will be generated. If you feel you will need more clocks than these, use
+ * AddDummyEvent(), but I suggest you review your state machine design first.
  */
 
 void Socks5StateMachine::process_start(bool entry)
@@ -509,7 +563,6 @@ dump("process_start", m_ok, NULL, 0);
 	} else {
 printf("wait state -- process_start\n");
 	}
-//	AddDummyEvent();
 }
 
 void Socks5StateMachine::process_end(bool)
@@ -537,7 +590,6 @@ dump("process_send_query_authentication_method", m_ok, m_buffer, m_PacketLenght)
 	} else {
 printf("wait state -- process_send_query_authentication_method\n");
 	}
-//	AddDummyEvent();
 }
 
 void Socks5StateMachine::process_receive_authentication_method(bool entry)
@@ -545,11 +597,17 @@ void Socks5StateMachine::process_receive_authentication_method(bool entry)
 	if (entry) {
 		// Receive the method selection message
 		m_PacketLenght = 2;
-		ProxyRead(*m_ProxyClientSocket, m_buffer, m_PacketLenght);
+		ProxyRead(*m_ProxyClientSocket, m_buffer);
 dump("process_receive_authentication_method", m_ok, m_buffer, 0);
 	} else {
 printf("wait state -- process_receive_authentication_method\n");
 	}
+	/* This is added because there will be no more input events. If the 
+	 * world was a nice place, we could think about joining the
+	 * process_receive and the process_process states here, but some day
+	 * we might have to deal with the fact that the i/o operation has been
+	 * incomplete, and that we must finish our job the next time we enter
+	 * this state. */
 	AddDummyEvent();
 }
 
@@ -558,10 +616,13 @@ void Socks5StateMachine::process_process_authentication_method(bool entry)
 	if (entry) {
 		m_LastReply = m_buffer[1];
 		m_ok = m_ok && m_buffer[0] == SOCKS5_VERSION;
-dump("process_process_authentication_method", m_ok, m_buffer, m_PacketLenght);
+dump("process_process_authentication_method", m_ok, m_buffer, m_LastRead);
 	} else {
 printf("wait state -- process_receive_authentication_method\n");
 	}
+	/* Ok, this one is here because wxSOCKET_OUTPUT events only happen
+	 * once when you connect the socket, and after that, only after a
+	 * wxSOCKET_WOULDBLOCK error happens. */
 	AddDummyEvent();
 }
 
@@ -569,7 +630,6 @@ void Socks5StateMachine::process_send_authentication_gssapi(bool)
 {
 	// TODO or not TODO? That is the question...
 	m_ok = false;
-//	AddDummyEvent();
 }
 
 void Socks5StateMachine::process_receive_authentication_gssapi(bool)
@@ -606,7 +666,6 @@ dump("process_send_authentication_username_password", m_ok, m_buffer, m_PacketLe
 	} else {
 printf("wait state -- process_send_authentication_username_password\n");
 	}
-//	AddDummyEvent();
 }
 
 void Socks5StateMachine::process_receive_authentication_username_password(bool entry)
@@ -614,7 +673,7 @@ void Socks5StateMachine::process_receive_authentication_username_password(bool e
 	if (entry) {
 		// Receive the server's authentication response
 		m_PacketLenght = 2;
-		ProxyRead(*m_ProxyClientSocket, m_buffer, m_PacketLenght);
+		ProxyRead(*m_ProxyClientSocket, m_buffer);
 dump("process_receive_authentication_username_password", m_ok, m_buffer, 0);
 	} else {
 printf("wait state -- process_receive_authentication_username_password\n");
@@ -630,7 +689,7 @@ void Socks5StateMachine::process_process_authentication_username_password(bool e
 		m_ok =	m_ok &&
 			m_buffer[0] == SOCKS5_AUTH_VERSION_USERNAME_PASSWORD &&
 			m_buffer[1] == SOCKS5_REPLY_SUCCEED;
-dump("process_process_authentication_username_password", m_ok, m_buffer, m_PacketLenght);
+dump("process_process_authentication_username_password", m_ok, m_buffer, m_LastRead);
 	} else {
 printf("wait state -- process_receive_authentication_username_password\n");
 	}
@@ -667,17 +726,15 @@ dump("process_send_command_request", m_ok, m_buffer, m_PacketLenght);
 	} else {
 printf("wait state -- process_send_command_request\n");
 	}
-//	AddDummyEvent();
 }
 
 void Socks5StateMachine::process_receive_command_reply(bool entry)
 {
 	if (entry) {
-		// Try to minimize the number of Read operations
 		// The minimum number of bytes to read is 10 in the case of
 		// ATYP == SOCKS5_ATYP_IPV4_ADDRESS
 		m_PacketLenght = 10;
-		ProxyRead(*m_ProxyClientSocket, m_buffer, m_PacketLenght);
+		ProxyRead(*m_ProxyClientSocket, m_buffer);
 dump("process_receive_command_reply", m_ok, m_buffer, 0);
 	} else {
 printf("wait state -- process_receive_command_reply\n");
@@ -688,10 +745,8 @@ printf("wait state -- process_receive_command_reply\n");
 void Socks5StateMachine::process_process_command_reply(bool entry)
 {
 	if (entry) {
-		// Already read 10 bytes
 		m_LastReply = m_buffer[1];
 		unsigned char AddressType = m_buffer[3];
-		
 		// Process the server's reply
 		m_ok = m_ok &&
 			m_buffer[0] == SOCKS5_VERSION &&
@@ -712,27 +767,20 @@ void Socks5StateMachine::process_process_command_reply(bool entry)
 			}
 			case SOCKS5_ATYP_DOMAINNAME:
 			{
-				// Read the size
-				unsigned int LenPacket = m_buffer[4] + 2 - 10;
+				// Read the domain name
 				const unsigned int Addr_offset = 5;
-				Port_offset = 10 + LenPacket;
-				// Read the rest of the address and port
-				m_PacketLenght += LenPacket + 2;
-				ProxyRead(*m_ProxyClientSocket, m_buffer + 10, LenPacket);
-				if (m_ok) {
-					m_buffer[Port_offset] = 0;
-					m_ProxyBoundAddressIPV4.Hostname(
-						char2unicode(m_buffer+Addr_offset));
-					m_ProxyBoundAddress = &m_ProxyBoundAddressIPV4;
-				}
+				Port_offset = 10 + m_buffer[4];
+				char c = m_buffer[Port_offset];
+				m_buffer[Port_offset] = 0;
+				m_ProxyBoundAddressIPV4.Hostname(
+					char2unicode(m_buffer+Addr_offset));
+				m_ProxyBoundAddress = &m_ProxyBoundAddressIPV4;
+				m_buffer[Port_offset] = c;
 				break;
 			}
 			case SOCKS5_ATYP_IPV6_ADDRESS:
 			{
 				Port_offset = 20;
-				unsigned int LenPacket = 16 - 10 + 2;
-				m_PacketLenght += LenPacket;
-				ProxyRead(*m_ProxyClientSocket, m_buffer + 10, LenPacket);
 				// TODO
 				// IPV6 not yet implemented in wx
 				//m_ProxyBoundAddress.Hostname(Uint128toStringIP(
@@ -742,13 +790,13 @@ void Socks5StateMachine::process_process_command_reply(bool entry)
 				break;
 			}
 			}
-			if (m_ok) {
-				// Read BND.PORT
-				m_ok = m_ProxyBoundAddress->Service(ntohs(
-					*((uint16 *)(m_buffer+Port_offset)) ));
-			}
+			// Set the packet length at last
+			m_PacketLenght = Port_offset + 2;
+			// Read BND.PORT
+			m_ProxyBoundAddress->Service(ntohs(
+				*((uint16 *)(m_buffer+Port_offset)) ));
 		}
-dump("process_process_command_reply", m_ok, m_buffer, m_PacketLenght);
+dump("process_process_command_reply", m_ok, m_buffer, m_LastRead);
 	} else {
 printf("wait state -- process_receive_command_reply\n");
 	}
@@ -870,7 +918,7 @@ void Socks4StateMachine::process_receive_command_reply(bool entry)
 	if (entry) {
 		// Receive the server's reply
 		m_PacketLenght = 8;
-		ProxyRead(*m_ProxyClientSocket, m_buffer, m_PacketLenght);
+		ProxyRead(*m_ProxyClientSocket, m_buffer);
 dump("process_receive_command_reply", m_ok, m_buffer, 0);
 	} else {
 printf("wait state -- process_receive_command_reply\n");
@@ -885,7 +933,7 @@ void Socks4StateMachine::process_process_command_reply(bool entry)
 		
 		// Process the server's reply
 		m_ok = m_ok &&
-			m_buffer[0] == SOCKS4_VERSION &&
+			m_buffer[0] == SOCKS4_REPLY_CODE &&
 			m_buffer[1] == SOCKS4_REPLY_GRANTED;
 		if (m_ok) {
 			// Read BND.PORT
@@ -899,7 +947,7 @@ void Socks4StateMachine::process_process_command_reply(bool entry)
 					*((uint32 *)(m_buffer+Addr_offset)) ));
 			m_ProxyBoundAddress = &m_ProxyBoundAddressIPV4;
 		}
-dump("process_process_command_reply", m_ok, m_buffer, m_PacketLenght);
+dump("process_process_command_reply", m_ok, m_buffer, m_LastRead);
 	} else {
 printf("wait state -- process_receive_command_reply\n");
 	}
@@ -1036,16 +1084,13 @@ printf("wait state -- process_send_command_request\n");
 	}
 }
 
-/* 14 chars */
-#define HTTP_AUTH_OK_1_0 "HTTP/1.0 200\r\n"
-#define HTTP_AUTH_OK_1_1 "HTTP/1.1 200\r\n"
-const static int HTTP_AUTH_OK_LENGHT = 14;
 void HttpStateMachine::process_receive_command_reply(bool entry)
 {
 	if (entry) {
-		// Receive the server's reply
-		m_PacketLenght = HTTP_AUTH_OK_LENGHT;
-		ProxyRead(*m_ProxyClientSocket, m_buffer, m_PacketLenght);
+		// Receive the server's reply -- Use a large number, but don't
+		// Expect to get it all. HTTP protocol does not have a fixed length.
+		m_PacketLenght = wxPROXY_BUFFER_SIZE;
+		ProxyRead(*m_ProxyClientSocket, m_buffer);
 dump("process_receive_command_reply", m_ok, m_buffer, 0);
 	} else {
 printf("wait state -- process_receive_command_reply\n");
@@ -1053,16 +1098,26 @@ printf("wait state -- process_receive_command_reply\n");
 	AddDummyEvent();
 }
 
+/*
+ * HTTP Proxy server response should be something like:
+ * "HTTP/1.1 200 Connection established\r\n\r\n"
+ * but that may vary. The important thing is the "200"
+ * code, that means success.
+ */
+const static char HTTP_AUTH_RESPONSE[] = "HTTP/";
+const static int  HTTP_AUTH_RESPONSE_LENGHT = strlen(HTTP_AUTH_RESPONSE);
 void HttpStateMachine::process_process_command_reply(bool entry)
 {
 	if (entry) {
-		m_LastReply = m_buffer[1];
-		
+		// The position of the first space in the buffer
+		int i = 8;
+		while (m_buffer[i] == ' ') {
+			i++;
+		}
 		// Process the server's reply
-		m_ok = m_ok &&
-			!memcmp(m_buffer, HTTP_AUTH_OK_1_0, 5) ||
-			!memcmp(m_buffer, HTTP_AUTH_OK_1_1, 5);
-dump("process_process_command_reply", m_ok, m_buffer, m_PacketLenght);
+		m_ok =	!memcmp(m_buffer + 0, HTTP_AUTH_RESPONSE, HTTP_AUTH_RESPONSE_LENGHT) &&
+			!memcmp(m_buffer + i, "200", 3);
+dump("process_process_command_reply", m_ok, m_buffer, m_LastRead);
 	} else {
 printf("wait state -- process_receive_command_reply\n");
 	}
