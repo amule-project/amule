@@ -3086,7 +3086,6 @@ void CImageLib::RemoveImage(const wxString &name)
 {
 	CAnyImage *prev = m_image_map[name];
 	if ( prev ) {
-		delete prev;
 		m_image_map.erase(name);
 	}
 }
