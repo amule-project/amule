@@ -25,8 +25,6 @@
 #ifndef	ECCODES_H
 #define	ECCODES_H
 
-#pragma interface
-
 /*
  * EC types
  */

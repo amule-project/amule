@@ -1,6 +1,4 @@
 /*
- * This file is part of the aMule Project
- *
  * Copyright (C) 2004 aMule Team (http://www.amule.org)
  *
  * This program is free software; you can redistribute it and/or
