@@ -289,7 +289,7 @@ void CSharedFilesCtrl::OnSetPermissions( wxCommandEvent& event )
 				// Only show the message once
 				warned = true;
 
-				wxMessageBox( _("You cannot change permissions while a file is still downloading!"),_("Unable to change permissions"),wxOK,(wxWindow*)theApp.amuledlg);
+				wxMessageBox( _("You cannot change permissions while a file is still downloading!") );
 			}
 		} else {
 			CoreNotify_KnownFile_Perm_Set( file, permission );
@@ -349,7 +349,7 @@ void CSharedFilesCtrl::OnCreateURI( wxCommandEvent& event )
 
 	if ( event.GetId() == MP_GETSOURCEED2KLINK ) {
 		if ( !theApp.serverconnect->IsConnected() || theApp.serverconnect->IsLowID() ) {
-			wxMessageBox(_("You need a HighID to create a valid sourcelink"),_("Unable to create ED2k link"),wxOK, (wxWindow*)theApp.amuledlg);
+			wxMessageBox(_("You need a HighID to create a valid sourcelink"));
 
 			return;
 		}
@@ -383,7 +383,7 @@ void CSharedFilesCtrl::OnEditComment( wxCommandEvent& WXUNUSED(event) )
 	if ( index > -1 ) {
 		CKnownFile* file = (CKnownFile*)GetItemData( index );
 
-		CCommentDialog dialog( (wxWindow*)theApp.amuledlg, file );
+		CCommentDialog dialog( this, file );
 	
 		dialog.ShowModal();
 	}

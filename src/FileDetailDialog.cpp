@@ -195,7 +195,7 @@ void CFileDetailDialog::FillSourcenameList()
 
 void CFileDetailDialog::OnBnClickedShowComment(wxCommandEvent& WXUNUSED(evt))
 {
-	CCommentDialogLst* dialog=new CCommentDialogLst((wxWindow*)theApp.amuledlg,m_file);
+	CCommentDialogLst* dialog=new CCommentDialogLst(this,m_file);
 	dialog->ShowModal();
 	delete dialog;
 }

@@ -22,8 +22,6 @@ Version 2.0.0rc8 - The "???????????" version.
 		  (useful when it doesn't fit the window).
 		* Merged Preview and Open File and enabled Open File.
 		* New Port column in Servers tab (splitting IP column).
-		* Now child-windows will always be on top of their parent
-		  window.
 		* Moved "Always filter bad IPs" from Server to Security
 		  in Preferences.
 		* Changed "Preference" in servers tab as suggested by Sir and
@@ -31,9 +29,6 @@ Version 2.0.0rc8 - The "???????????" version.
 		* Optimizations in the RLE code.
 		* Based on kry's patch, also darken paused files' progress
 		  bar.
-		* Set title to all windows in the app.
-		* Sorted translations in menu in alphabetical order + added
-		  slovenian translation (thanks to Typhon and Gusar)
 		* Fixed: Servers priority now working. (reported by Sir)
 		* Fixed: Now all unset Server Priorities are set to normal.
 		  (reported by plaenky)

@@ -421,7 +421,7 @@ bool CamuleApp::OnInit()
 				file = xMuleDir.FindNextFile();
   			}
 
-			ShowAlert(_("Copied old ~/.xMule config and credit files to ~/.aMule\nHowever, be sure NOT to remove .xMule if your Incoming / Temp folders are still there ;)"), _("Config import"), wxOK);
+			ShowAlert(_("Copied old ~/.xMule config and credit files to ~/.aMule\nHowever, be sure NOT to remove .xMule if your Incoming / Temp folders are still there ;)"), _("Info"), wxOK);
 		} else {
 			// No settings to import, new to build.
 			wxMkdir( ConfigDir, CPreferences::GetDirPermissions() );
@@ -1122,112 +1122,109 @@ void CamuleApp::Localize_mule()
 			language = wxLANGUAGE_BULGARIAN;
 			break;
 		case 4:
-			//strcpy(newlang,"ca_ES");
-			language = wxLANGUAGE_CATALAN;
-			break;
-		case 5:
 			//strcpy(newlang,"zh_CN");
 			language = wxLANGUAGE_CHINESE_SIMPLIFIED;
 			break;
-		case 6:
-			//strcpy(newlang,"zh_TW");
-			language = wxLANGUAGE_CHINESE_TRADITIONAL;
-			break;
-		case 7:
-			//strcpy(newlang,"hr");
-			language = wxLANGUAGE_CROATIAN;
-			break;
-		case 8:
+		case 5:
 			//strcpy(newlang,"da_DK");
 			language = wxLANGUAGE_DANISH;
 			break;
-		case 9:
+		case 6:
 			//strcpy(newlang,"nl_NL");
 			language = wxLANGUAGE_DUTCH;
 			break;
-		case 10:
+		case 7:
 			//strcpy(newlang,"en_GB");
 			language = wxLANGUAGE_ENGLISH;
 			break;
-		case 11:
+		case 8:
 			//strcpy(newlang,"et_EE");
 			language = wxLANGUAGE_ESTONIAN;
 			break;
-		case 12:
+		case 9:
 			//strcpy(newlang,"fi");
 			language = wxLANGUAGE_FINNISH;
 			break;
-		case 13:
+		case 10:
 			//strcpy(newlang,"fr_FR");
 			language = wxLANGUAGE_FRENCH;
 			break;
-		case 14:
+		case 11:
 			//strcpy(newlang,"gl_ES");
 			language = wxLANGUAGE_GALICIAN;
 			break;
-		case 15:
+		case 12:
 			//strcpy(newlang,"de_DE");
 			language = wxLANGUAGE_GERMAN;
 			break;
-		case 16:
-			//strcpy(newlang,"hu");
-			language = wxLANGUAGE_HUNGARIAN;
-			break;
-		case 17:
+		case 13:
 			//strcpy(newlang,"it_IT");
 			language = wxLANGUAGE_ITALIAN;
 			break;
-		case 18:
-			//strcpy(newlang,"it_CH");
-			language = wxLANGUAGE_ITALIAN_SWISS;
-			break;
-		case 19:
+		case 14:
 			//strcpy(newlang,"ko_KR");
 			language = wxLANGUAGE_KOREAN;
 			break;
-		case 20:
+		case 15:
 			//strcpy(newlang,"lt_LT");
 			language = wxLANGUAGE_LITHUANIAN;
 			break;
-		case 21:
+		case 16:
 			//strcpy(newlang,"pl_PL");
 			language = wxLANGUAGE_POLISH;
 			break;
-		case 22:
+		case 17:
 			//strcpy(newlang,"pt_PT");
 			language = wxLANGUAGE_PORTUGUESE;
 			break;
-		case 23:
+		case 18:
 			//strcpy(newlang,"pt_BR");
 			language = wxLANGUAGE_PORTUGUESE_BRAZILIAN;
 			break;
-		case 24:
+		case 19:
 			//strcpy(newlang,"ru_RU");
 			language = wxLANGUAGE_RUSSIAN;
 			break;
-		case 25:
-			language = wxLANGUAGE_SLOVENIAN;
-			break;
-		case 26:
+		case 20:
 			//strcpy(newlang,"es_ES");
 			language = wxLANGUAGE_SPANISH;
 			break;
-		case 27:
+		case 21:
 			//strcpy(newlang,"es_CH");
 			language = wxLANGUAGE_SPANISH_CHILE;
 			break;
-		case 28:
+		case 22:
 			//strcpy(newlang,"es_MX");
 			language = wxLANGUAGE_SPANISH_MEXICAN;
 			break;
-		case 29:
+		case 23:
 			//Turkish makes weird things with .eMule file!!! why?
 			//language = wxLANGUAGE_TURKISH;
 			language = wxLANGUAGE_DEFAULT;
 			break;
-		case 30:
+		case 24:
+			//strcpy(newlang,"hu");
+			language = wxLANGUAGE_HUNGARIAN;
+			break;
+		case 25:
+			//strcpy(newlang,"ca_ES");
+			language = wxLANGUAGE_CATALAN;
+			break;
+		case 26:
+			//strcpy(newlang,"hr");
+			language = wxLANGUAGE_CROATIAN;
+			break;
+		case 27:
+			//strcpy(newlang,"it_CH");
+			language = wxLANGUAGE_ITALIAN_SWISS;
+			break;
+		case 28:
 			//strcpy(newlang,"custom");
 			language = wxLANGUAGE_CUSTOM;
+			break;
+		case 29:
+			//strcpy(newlang,"zh_TW");
+			language = wxLANGUAGE_CHINESE_TRADITIONAL;
 			break;
 		default:
 			language = wxLANGUAGE_DEFAULT;
@@ -1276,7 +1273,7 @@ void CamuleApp::Trigger_New_version(wxString new_version)
 	info += _("Your locale has been changed to System Default due to a version change. Sorry.\n");
 	info += _("Feel free to report any bugs to forum.amule.org");
 
-	ShowAlert(info, _("aMule"), wxCENTRE | wxOK | wxICON_ERROR);
+	ShowAlert(info, _("Info"), wxCENTRE | wxOK | wxICON_ERROR);
 
 	// Set to system default... no other way AFAIK unless we change the save type.
 	thePrefs::SetLanguageID(0);
