@@ -90,7 +90,7 @@ private:
 	bool 		m_isConnected;
 	bool 		m_HasCommandLinePassword;
 	wxString	m_CommandLinePassword;
-	bool		m_HasPasswordFromFile;
+	bool		m_HasConfigFromFile;
 	wxString 	m_sPort;
 	wxString 	m_sHostName;	
 

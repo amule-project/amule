@@ -34,6 +34,11 @@ Version 2.0.0rc6 - The '???' version.
 		  blank when loading lots of files.
 		* A little better font/color handling in amulewebDLG and 
 		  amulecmdDLG.
+		* New command line parameter for amuleweb, amulewebDLG,
+		  amulecmd and amulecmdDLG: -f. This parameter reads the
+		  ECPpassword and the ECPort from the [ExternalConnect]
+		  section of file ~/.eMule. This way, the plain text password
+		  doesn't have to be passed in the command line.
 
 	rommel:
 		* Patch to implement the commands serverconnect and reloadipf
