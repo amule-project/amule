@@ -312,6 +312,8 @@ struct Preferences_Struct{
 	
 	// Kry - Safe Max Connections
 	bool		UseSafeMaxConn;
+	
+	bool		VerbosePacketError;
 
 	bool		ProgBar;
 	bool		Percent;	
@@ -749,6 +751,8 @@ public:
 	
 	// Kry - Safe Max Connections
 	bool GetSafeMaxConn() { return prefs->UseSafeMaxConn; }
+	
+	bool GetVerbosePacketError() { return prefs->VerbosePacketError; }
 	
 	bool IsSecureIdentEnabled() { return prefs->SecIdent; }
 	
