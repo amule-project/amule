@@ -62,7 +62,6 @@
 CServerList::CServerList()
 {
 	serverpos = 0;
-	searchserverpos = 0;
 	statserverpos = 0;
 	delservercount = 0;
 	m_nLastED2KServerLinkCheck = ::GetTickCount();
@@ -502,25 +501,6 @@ CServer* CServerList::GetNextServer()
 	return nextserver;
 }
 
-CServer* CServerList::GetNextSearchServer()
-{
-	CServer* nextserver = 0;
-	uint32 i = 0;
-	while (!nextserver && i != (uint32)list.GetCount()) {
-		POSITION posIndex = list.FindIndex(searchserverpos);
-		if (posIndex == NULL) {	// check if search position is still valid (could be corrupted by server delete operation)
-			posIndex = list.GetHeadPosition();
-			searchserverpos=0;
-		}
-		nextserver = list.GetAt(posIndex);
-		++searchserverpos;
-		++i;
-		if (searchserverpos == (uint32)list.GetCount()) {
-			searchserverpos = 0;
-		}
-	}
-	return nextserver;
-}
 
 CServer* CServerList::GetNextStatServer()
 {
@@ -543,27 +523,6 @@ CServer* CServerList::GetNextStatServer()
 	return nextserver;
 }
 
-
-CServer* CServerList::GetNextServer(CServer* lastserver)
-{
-	if (list.IsEmpty()) {
-		return 0;
-	}
-	if (!lastserver) {
-		return list.GetHead();
-	}
-
-	POSITION pos = list.Find(lastserver);
-	if (!pos) {
-		return list.GetHead();
-	}
-	list.GetNext(pos);
-	if (!pos) {
-		return NULL;
-	} else {
-		return list.GetAt(pos);
-	}
-}
 
 CServer* CServerList::GetServerByAddress(const wxString& address, uint16 port)
 {
