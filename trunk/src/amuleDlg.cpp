@@ -441,17 +441,18 @@ void CamuleDlg::btnPreferences(wxEvent& ev) {
 }
 
 void CamuleDlg::socketHandler(wxSocketEvent& event) {
-	if(!event.GetSocket()) {
+
+	wxSocketBase * current_socket = event.GetSocket();
+	
+	if(!IsRunning() || !current_socket) {
+		// we are not mentally ready to receive anything
+		// or there is no socket on the event (got deleted?)
 		return;
 	}
 
-	if(!IsRunning()) {
-	// we are not mentally ready to receive anything
-	return;
-	}
 
-	if(event.GetSocket()->IsKindOf(CLASSINFO(CListenSocket))) {
-		CListenSocket* soc=(CListenSocket*)event.GetSocket();
+	if(current_socket->IsKindOf(CLASSINFO(CListenSocket))) {
+		CListenSocket* soc=(CListenSocket*)current_socket;
 		switch(event.GetSocketEvent()) {
 			case wxSOCKET_CONNECTION:
 				soc->OnAccept(0);
@@ -463,8 +464,8 @@ void CamuleDlg::socketHandler(wxSocketEvent& event) {
 		return;
 	}
 
-	if(event.GetSocket()->IsKindOf(CLASSINFO(CClientReqSocket))) {
-		CClientReqSocket* soc=(CClientReqSocket*)event.GetSocket();
+	if(current_socket->IsKindOf(CLASSINFO(CClientReqSocket))) {
+		CClientReqSocket* soc=(CClientReqSocket*)current_socket;
 		//printf("request at clientreqsocket\n");
 		switch(event.GetSocketEvent()) {
 			case wxSOCKET_LOST:
@@ -483,8 +484,8 @@ void CamuleDlg::socketHandler(wxSocketEvent& event) {
 		return;
 	}
 
-	if(event.GetSocket()->IsKindOf(CLASSINFO(CUDPSocket))) {
-		CUDPSocket* soc=(CUDPSocket*)event.GetSocket();
+	if(current_socket->IsKindOf(CLASSINFO(CUDPSocket))) {
+		CUDPSocket* soc=(CUDPSocket*)current_socket;
 		switch(event.GetSocketEvent()) {
 			case wxSOCKET_INPUT:
 				soc->OnReceive(0);
@@ -495,20 +496,20 @@ void CamuleDlg::socketHandler(wxSocketEvent& event) {
 		return;
 	}
 
-	if(event.GetSocket()->IsKindOf(CLASSINFO(CServerSocket))) {
-		CServerSocket* soc=(CServerSocket*)event.GetSocket();
+	if(current_socket->IsKindOf(CLASSINFO(CServerSocket))) {
+		CServerSocket* soc=(CServerSocket*)current_socket;
 		switch(event.GetSocketEvent()) {
 			case wxSOCKET_CONNECTION:
-				soc->OnConnect(0);
+				soc->OnConnect(wxSOCKET_NOERROR);
 				break;
 			case wxSOCKET_LOST:
-				soc->OnError(errno);
+				soc->OnError(soc->LastError());
 				break;
 			case wxSOCKET_INPUT:
-				soc->OnReceive(0);
+				soc->OnReceive(wxSOCKET_NOERROR);
 				break;
 			case wxSOCKET_OUTPUT:
-				soc->OnSend(0);
+				soc->OnSend(wxSOCKET_NOERROR);
 				break;
 			default:
 				break;
@@ -516,8 +517,8 @@ void CamuleDlg::socketHandler(wxSocketEvent& event) {
 		return;
 	}
 
-	if(event.GetSocket()->IsKindOf(CLASSINFO(CClientUDPSocket))) {
-		CClientUDPSocket* soc=(CClientUDPSocket*)event.GetSocket();
+	if(current_socket->IsKindOf(CLASSINFO(CClientUDPSocket))) {
+		CClientUDPSocket* soc=(CClientUDPSocket*)current_socket;
 		switch(event.GetSocketEvent()) {
 			case wxSOCKET_INPUT:
 				soc->OnReceive(0);
@@ -532,7 +533,7 @@ void CamuleDlg::socketHandler(wxSocketEvent& event) {
 	}
 
 	printf("*** SHOULD NOT END UP HERE\n");
-	printf("** class is %s\n",event.GetSocket()->GetClassInfo()->GetClassName());
+	printf("** class is %s\n",current_socket->GetClassInfo()->GetClassName());
 }
 
 CamuleDlg::~CamuleDlg()
