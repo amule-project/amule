@@ -3344,7 +3344,7 @@ wxSizer *PreferencesSecurityTab( wxWindow *parent, bool call_fit, bool set_sizer
     item27->AddGrowableCol( 1 );
 
     wxStaticText *item28 = new wxStaticText( parent, ID_TEXT, _("URL:"), wxDefaultPosition, wxDefaultSize, 0 );
-    item27->Add( item28, 0, wxALIGN_CENTER|wxLEFT, 5 );
+    item27->Add( item28, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
 
     wxTextCtrl *item29 = new wxTextCtrl( parent, IDC_IPFILTERURL, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
     item29->Enable( false );
