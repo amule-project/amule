@@ -26,9 +26,9 @@ AM_PATH_WXCONFIG(2.4.0, WXFOUND=1)
 if test "$WXFOUND" != 1; then
     AC_MSG_ERROR([
         Please check that wx-config is in path, the directory
-        where wxWindows libraries are installed (returned by
+        where wxWidgets libraries are installed (returned by
         'wx-config --libs' command) is in LD_LIBRARY_PATH or
-        equivalent variable and wxWindows is version 2.4.0 or above.
+        equivalent variable and wxWidgets is version 2.4.0 or above.
 	Or this might also be a bug in our configure. Please try again
 	with --with-wx-config=/usr/bin/wx-config
 	(replace /usr/bin/wx-config with a valid path to your wx-config)
@@ -49,9 +49,9 @@ if test "$WXBASEFOUND" != 1; then
 	If you have no wxbase, amulecmd will be linked against wxgtk, thus removing
 	all the non-graphical client meaning at all.
         Please check that wxbase-2.4-config is in path, the directory
-        where wxWindows base libraries are installed (returned by
+        where wxWidgets base libraries are installed (returned by
         'wxbase-2.4-config --libs' command) is in LD_LIBRARY_PATH or
-        equivalent variable and wxWindows base is version 2.4.0 or above.
+        equivalent variable and wxWidgets base is version 2.4.0 or above.
 	Or this might also be that your wxbase-config has other name.
 	Please try again with --with-wxbase-config=/usr/bin/wxbase-config
 	(replace /usr/bin/wxbase-config with a valid path to your wxbase-config)
@@ -379,6 +379,6 @@ yes)	echo "  Should amulecmd (TextClient) be linked against wxbase?   ${HAVE_AMU
 esac
 echo
 echo "  Which libraries should aMule use?"
-echo "                                       wxWindows          ${WXGTK_VERSION:-Not detected}"
+echo "                                       wxWidgets          ${WXGTK_VERSION:-Not detected}"
 echo "                                       GTK                ${GTK_VERSION:-Not detected}"
 echo ""
