@@ -199,7 +199,7 @@ bool wxSocketProxy::DoSocks4Reply(void)
 	if (ok) {
 		// Read BND.PORT
 		const unsigned int Port_offset = 2;
-		m_TargetAddress->Service(ntohs(
+		m_TargetAddressIPV4.Service(ntohs(
 			*((uint16 *)(m_buffer+Port_offset)) ));
 		// Read BND.ADDR
 		const unsigned int Addr_offset = 4;
@@ -409,9 +409,18 @@ bool wxSocketProxy::DoSocks5Reply(void)
 			ok = 	!m_ProxyClientSocket->Error() &&
 				m_ProxyClientSocket->LastCount() == LenPacket;
 			if (ok) {
-				m_TargetAddressIPV4.Hostname(Uint32toStringIP(
-					*((uint32 *)(m_buffer+Addr_offset)) ));
+				wxString strAddr = Uint32toStringIP(
+					*((uint32 *)(m_buffer+Addr_offset)) );
+//				if (strAddr == wxT("0.0.0.0") ) {
+//					ok = m_TargetAddressIPV4.AnyAddress();
+//				} else {
+//					ok = m_TargetAddressIPV4.Hostname(strAddr);
+//				}
+				ok = m_TargetAddressIPV4.Hostname(strAddr);
 				m_TargetAddress = &m_TargetAddressIPV4;
+printf("Hostname1 %s\n", unicode2char(strAddr));
+printf("Hostname2 %s\n", unicode2char(m_TargetAddress->Hostname()));
+printf("Ok1 = %d\n", ok);
 			}
 			break;
 		}
@@ -461,10 +470,11 @@ bool wxSocketProxy::DoSocks5Reply(void)
 			// Read BND.PORT
 			LenPacket = 2;
 			m_ProxyClientSocket->Read(m_buffer+Port_offset, LenPacket);
-			m_TargetAddress->Service(ntohs(
-				*((uint16 *)(m_buffer+Port_offset)) ));
 			ok =	!m_ProxyClientSocket->Error() &&
-				m_ProxyClientSocket->LastCount() == LenPacket;
+				m_ProxyClientSocket->LastCount() == LenPacket &&
+				m_TargetAddress->Service(ntohs(
+					*((uint16 *)(m_buffer+Port_offset)) ));
+printf("Ok2 = %d\n", ok);
 		}
 	}
 
@@ -480,10 +490,9 @@ bool wxSocketProxy::DoSocks5CmdConnect(void)
 
 bool wxSocketProxy::DoSocks5CmdBind(void)
 {
-	// TODO
-	bool ok = false;
+	// Nothing to do here.
 	
-	return ok;
+	return true;
 }
 
 bool wxSocketProxy::DoSocks5CmdUDPAssociate(void)
@@ -624,23 +633,38 @@ wxSocketServerProxy::wxSocketServerProxy(
 :
 m_SocketProxy(ProxyData)
 {
+printf("Hostname Orig:%s, IPAddr:%s\n", unicode2char(address.Hostname()),unicode2char(address.IPAddress()));
 	m_UseProxy = ProxyData != NULL;
 	if (m_UseProxy) {
 		bool ok = m_SocketProxy.Start(address, wxPROXY_CMD_BIND);
 		if (ok) {
 			m_SocketServer = new wxSocketServer(
 				m_SocketProxy.GetTargetAddress(), flags);
+printf("Proxy socket: ip:%s, port:%u, ok:%d\n",
+	unicode2char(m_SocketProxy.GetTargetAddress().IPAddress()),
+	m_SocketProxy.GetTargetAddress().Service(),
+	m_SocketServer->Ok());
+			if (!m_SocketServer->Ok()) {
+				m_SocketServer->Destroy();
+				m_SocketServer = NULL;
+			}
 		} else {
 			m_SocketServer = NULL;
 		}
 	} else {
 		m_SocketServer = new wxSocketServer(address, flags);
+printf("Normal socket: ip:%s, port:%u, ok:%d\n",
+	unicode2char(address.IPAddress()),
+	address.Service(),
+	m_SocketServer->Ok());
 	}
 }
 
 wxSocketServerProxy::~wxSocketServerProxy()
 {
-	delete m_SocketServer;
+	if (m_SocketServer) {
+		m_SocketServer->Destroy();
+	}
 }
 
 void wxSocketServerProxy::SetProxyData(const wxProxyData *ProxyData)

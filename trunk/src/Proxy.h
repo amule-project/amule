@@ -157,12 +157,16 @@ private:
 	bool DoHttpReply(void);
 	bool DoHttpCmdConnect(void);
 	
+private:
 	wxProxyData		m_ProxyData;
 	char			m_buffer[wxPROXY_BUFFER_SIZE];
 	amuleIPV4Address	m_ProxyAddress;
 	wxSocketClient		*m_ProxyClientSocket;
 	wxIPaddress		*m_TargetAddress;
-	amuleIPV4Address	m_TargetAddressIPV4;
+//
+//	I need this one resolving DNS, please leave it.
+//	amuleIPV4Address	m_TargetAddressIPV4;
+	wxIPV4address		m_TargetAddressIPV4;
 	//wxIPV6address		m_TargetAddressIPV6;
 	unsigned char		m_LastReply;
 	unsigned char		m_AddressType;
