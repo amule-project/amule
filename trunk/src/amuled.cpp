@@ -1601,15 +1601,18 @@ void CamuleApp::NotifyEvent(GUIEvent event)
 	        case SEARCH_ADD_TO_DLOAD:
 			downloadqueue->AddSearchToDownload((CSearchFile *)event.ptr_value, event.byte_value);
 			break;
+
+		case SHAREDFILES_SHOW_ITEM:
+			//printf("SHAREDFILES_SHOW_ITEM: %p\n", event.ptr_value);
+			break;
+			
 		case DOWNLOAD_CTRL_ADD_SOURCE:
 		/*
 		printf("ADD_SOURCE: adding source %p to partfile %s\n",
 		       event.ptr_aux_value, ((CPartFile*)event.ptr_value)->GetFullName().c_str());
 		*/
-		break;
+			break;
 
-		// log is not unicode-compatible. And it shouldn't be.
-		// FIXME: write to file, enable sending log to webserver
 		case ADDLOGLINE:
 			AddLogLine(event.string_value);
 			break;
@@ -1667,9 +1670,13 @@ wxString CamuleApp::GetLog(bool WXUNUSED(reset))
 	return log;
 }
 
-wxString CamuleApp::GetServerLog(bool WXUNUSED(reset))
+wxString CamuleApp::GetServerLog(bool reset)
 {
-	return server_msg;
+	wxString ret = server_msg;
+	if ( reset ) {
+		server_msg = wxT("");
+	}
+	return ret;
 }
 
 wxString CamuleApp::GetDebugLog(bool reset)
@@ -1679,9 +1686,8 @@ wxString CamuleApp::GetDebugLog(bool reset)
 
 void CamuleApp::AddServerMessageLine(wxString &msg)
 {
-	server_msg += msg;
+	server_msg += msg + wxT("\n");
 	AddLogLine(wxT("ServerMessage: ") + msg);
-	//printf("ServerMessage: %s", unicode2char(msg));
 }
 
 void CamuleApp::RunAICHThread()
