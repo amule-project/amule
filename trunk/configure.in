@@ -42,7 +42,7 @@ openbsd*)
 	])
 	;;
 solaris*)
-	RESOLV_LIB="-lresolv"
+	RESOLV_LIB="-lresolv -lnsl"
 esac
 
 AC_SUBST(RESOLV_LIB)
