@@ -51,6 +51,7 @@
 #include "amule.h"		// Needed for theApp
 #include "Preferences.h"
 #include "ClientList.h"
+#include "Statistics.h"		// Needed for CStatistics
 
 #ifndef AMULE_DAEMON
 	#include "OScopeCtrl.h"		// Needed for DelayPoints
