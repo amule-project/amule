@@ -27,6 +27,7 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		* Endianness fixes in EC.
 		* Fixed appearing strange characters at the end of webserver's
 		  log and debug log pages.
+		* Fixed logo.jpg being not installed.
 
 	Kry:
 
