@@ -86,6 +86,7 @@
 #include <wx/tokenzr.h>			// Needed for wxStringTokenizer
 #include <wx/msgdlg.h>			// Needed for wxMessageBox
 #include <wx/url.h>
+#include <wx/checkbox.h>
 
 #include "amule.h"			// Interface declarations.
 #include "GetTickCount.h"		// Needed for GetTickCount
@@ -688,7 +689,6 @@ void CServerListRem::ReloadControl()
 		CServer *srv = GetByIndex(i);
 		theApp.amuledlg->serverwnd->serverlistctrl->RefreshServer(srv);
 	}
-	m_dirty = false;
 }
 
 void CIPFilterRem::Reload()
