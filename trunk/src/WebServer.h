@@ -495,48 +495,48 @@ class CWebServer {
 		void	Send_Discard_V2_Request(CECPacket *request);
 
 	protected:
-		static void	ProcessURL(ThreadData);
-		static void	ProcessFileReq(ThreadData);
-		static void 	ProcessImgFileReq(ThreadData);
-		static void 	ProcessStyleFileReq(ThreadData);
+		void	ProcessURL(ThreadData);
+		void	ProcessFileReq(ThreadData);
+		void 	ProcessImgFileReq(ThreadData);
+		void 	ProcessStyleFileReq(ThreadData);
 	
 	private:
-		static wxString	_GetHeader(ThreadData, long lSession);
-		static wxString	_GetFooter(ThreadData);
-		static wxString	_GetServerList(ThreadData);
-		static wxString	_GetTransferList(ThreadData);
-		static wxString	_GetDownloadLink(ThreadData);
-		static wxString	_GetSharedFilesList(ThreadData);
-		static wxString	_GetGraphs(ThreadData);
-		static wxString	_GetLog(ThreadData);
-		static wxString	_GetServerInfo(ThreadData);
-		static wxString	_GetDebugLog(ThreadData);
-		static wxString	_GetStats(ThreadData);
-		static wxString	_GetPreferences(ThreadData);
-		static wxString	_GetLoginScreen(ThreadData);
-		static wxString	_GetConnectedServer(ThreadData);
-		static wxString _GetAddServerBox(ThreadData Data);
-		static wxString	_GetWebSearch(ThreadData Data);
-		static wxString _GetSearch(ThreadData);
+		wxString	_GetHeader(ThreadData, long lSession);
+		wxString	_GetFooter(ThreadData);
+		wxString	_GetServerList(ThreadData);
+		wxString	_GetTransferList(ThreadData);
+		wxString	_GetDownloadLink(ThreadData);
+		wxString	_GetSharedFilesList(ThreadData);
+		wxString	_GetGraphs(ThreadData);
+		wxString	_GetLog(ThreadData);
+		wxString	_GetServerInfo(ThreadData);
+		wxString	_GetDebugLog(ThreadData);
+		wxString	_GetStats(ThreadData);
+		wxString	_GetPreferences(ThreadData);
+		wxString	_GetLoginScreen(ThreadData);
+		wxString	_GetConnectedServer(ThreadData);
+		wxString _GetAddServerBox(ThreadData Data);
+		wxString	_GetWebSearch(ThreadData Data);
+		wxString _GetSearch(ThreadData);
 
-		static wxString	_ParseURL(ThreadData Data, wxString fieldname); 
-		static wxString	_ParseURLArray(ThreadData Data, wxString fieldname);
-		static bool	_IsLoggedIn(ThreadData Data, long lSession);
-		static void	_RemoveTimeOuts(ThreadData Data, long lSession);
-		static bool	_RemoveSession(ThreadData Data, long lSession);
-		static bool	_GetFileHash(wxString sHash, unsigned char *FileHash);
-		static wxString	_GetPlainResString(UINT nID, bool noquote = false);
-		static int	_GzipCompress(Bytef *dest, uLongf *destLen, const Bytef *source, uLong sourceLen, int level);
-		static void	_SetSharedFilePriority(CWebServer *pThis, wxString hash, uint8 priority);
-		static wxString	_GetWebCharSet();
+		wxString	_ParseURL(ThreadData Data, wxString fieldname); 
+		wxString	_ParseURLArray(ThreadData Data, wxString fieldname);
+		bool	_IsLoggedIn(ThreadData Data, long lSession);
+		void	_RemoveTimeOuts(ThreadData Data, long lSession);
+		bool	_RemoveSession(ThreadData Data, long lSession);
+		bool	_GetFileHash(wxString sHash, unsigned char *FileHash);
+		wxString	_GetPlainResString(UINT nID, bool noquote = false);
+		int	_GzipCompress(Bytef *dest, uLongf *destLen, const Bytef *source, uLong sourceLen, int level);
+		void	_SetSharedFilePriority(wxString hash, uint8 priority);
+		wxString	_GetWebCharSet();
 		wxString	_LoadTemplate(wxString sAll, wxString sTemplateName);
-		static Session	GetSessionByID(ThreadData Data,long sessionID);
-		static bool	IsSessionAdmin(ThreadData Data,wxString SsessionID);
-		static wxString	GetPermissionDenied();
-		static wxString	_GetDownloadGraph(ThreadData Data,int percent, wxString &s_ChunkBar);
+		Session	GetSessionByID(ThreadData Data,long sessionID);
+		bool	IsSessionAdmin(ThreadData Data,wxString SsessionID);
+		wxString	GetPermissionDenied();
+		wxString	_GetDownloadGraph(ThreadData Data,int percent, wxString &s_ChunkBar);
 
-		static void	InsertCatBox(wxString &Out, int preselect, wxString boxlabel, CECTag *cats, bool jump=false);
-		static wxString GetStatusBox(wxString &preselect);
+		void	InsertCatBox(wxString &Out, int preselect, wxString boxlabel, CECTag *cats, bool jump=false);
+		wxString GetStatusBox(wxString &preselect);
 
 		// Common data
 		CamulewebApp	*webInterface;
@@ -547,7 +547,7 @@ class CWebServer {
 		int		m_iSearchSortby;
 		bool		m_bSearchAsc;
 		unsigned int	m_nRefresh;
-		static wxString imgs_folder;
+		wxString imgs_folder;
 };
 
 #endif // WEBSERVER_H

@@ -313,7 +313,7 @@ void CWebSocket::OnRequestReceived(char* pHeader, wxUint32 dwHeaderLen, char* pD
 
 	ThreadData Data;
 	Data.sURL = sURL;
-	Data.pThis = m_pParent;
+	Data.pThis = 0; // Will be removed
 	Data.pSocket = this;
 
 	if (!imgreq && !stylereq) m_pParent->ProcessURL(Data);
