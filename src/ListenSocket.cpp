@@ -1348,9 +1348,18 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 		if (m_client) {
 			if (thePrefs::GetVerbosePacketError()) {
 				if (!strlen(ErrorPacket.what())) {
-					printf("\tCaught InvalidPacket exception:\n\t\tError: Unknown\n\t\tClientData: %s\n\ton ListenSocket::ProcesstPacket\n",unicode2char(m_client->GetClientFullInfo()));
+					printf(	"\tCaught InvalidPacket exception:\n"
+						"\t\tError: Unknown\n"
+						"\t\tClientData: %s\n"
+						"\ton ListenSocket::ProcesstPacket\n",
+						(const char *)unicode2char(m_client->GetClientFullInfo()));
 				} else {
-					printf("\tCaught InvalidPacket exception:\n\t\tError: %s\n\t\tClientData: %s\n\ton ListenSocket::ProcesstPacket\n", ErrorPacket.what(),unicode2char(m_client->GetClientFullInfo()));
+					printf(	"\tCaught InvalidPacket exception:\n"
+						"\t\tError: %s\n"
+						"\t\tClientData: %s\n"
+						"\ton ListenSocket::ProcesstPacket\n",
+						ErrorPacket.what(),
+						(const char *)unicode2char(m_client->GetClientFullInfo()));
 				}
 			}
 			m_client->SetDownloadState(DS_ERROR);
@@ -1370,23 +1379,45 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 		if (m_client) {
 			if (thePrefs::GetVerbosePacketError()) {
 				if (error.IsEmpty()) {
-					printf("\tCaught error:\n\t\tError: Unknown\n\t\tClientData: %s\n\ton ListenSocket::ProcessPacket\n",unicode2char(m_client->GetClientFullInfo()));
+					printf(	"\tCaught error:\n"
+						"\t\tError: Unknown\n"
+						"\t\tClientData: %s\n"
+						"\ton ListenSocket::ProcessPacket\n",
+						(const char *)unicode2char(m_client->GetClientFullInfo()));
 				} else {
-					printf("\tCaught error:\n\t\tError: %s\n\t\tClientData: %s\n\ton ListenSocket::ProcessPacket\n", unicode2char(error),unicode2char(m_client->GetClientFullInfo()));
+					printf(	"\tCaught error:\n"
+						"\t\tError: %s\n"
+						"\t\tClientData: %s\n"
+						"\ton ListenSocket::ProcessPacket\n",
+						(const char *)unicode2char(error),
+						(const char *)unicode2char(m_client->GetClientFullInfo()));
 				}
 			}
 			m_client->SetDownloadState(DS_ERROR);
 			// TODO write this into a debugfile
-			AddDebugLogLineM(false, wxT("Client '") + m_client->GetUserName() + wxT(" (IP:") + m_client->GetFullIP() + wxT(") caused an error: ") + error + wxT(". Disconnecting client!"));
+			AddDebugLogLineM(false,
+				wxT("Client '") + m_client->GetUserName() +
+				wxT(" (IP:") + m_client->GetFullIP() +
+				wxT(") caused an error: ") + error +
+				wxT(". Disconnecting client!"));
 		} else {
 			if (thePrefs::GetVerbosePacketError()) {
 				if (error.IsEmpty()) {
-					printf("\tCaught error:\n\t\tError: Unknown\n\t\tClientData: Unknown\n\ton ListenSocket::ProcessPacket\n");
+					printf(	"\tCaught error:\n"
+						"\t\tError: Unknown\n"
+						"\t\tClientData: Unknown\n"
+						"\ton ListenSocket::ProcessPacket\n");
 				} else {
-					printf("\tCaught error:\n\t\tError: %s\n\t\tClientData: Unknown\n\ton ListenSocket::ProcessPacket\n", unicode2char(error));
+					printf(	"\tCaught error:\n"
+						"\t\tError: %s\n"
+						"\t\tClientData: Unknown\n"
+						"\ton ListenSocket::ProcessPacket\n",
+						(const char *)unicode2char(error));
 				}
 			}
-			AddDebugLogLineM(false,wxString(wxT("A unknown client caused an error or did something bad: ")) + error + wxT(". Disconnecting client!"));
+			AddDebugLogLineM(false,
+				wxString(wxT("A unknown client caused an error or did something bad: ")) +
+				error + wxT(". Disconnecting client!"));
 		}
 		Disconnect(wxT("Client error on ListenSocket::ProcessPacket: ") + wxString(error));
 		return false;
@@ -2058,40 +2089,73 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 		if (m_client) {
 			if (thePrefs::GetVerbosePacketError()) {
 				if (!strlen(ErrorPacket.what())) {
-					printf("\tCaught InvalidPacket exception:\n\t\tError: Unknown\n\t\tClientData: %s\n\ton ListenSocket::ProcessExtPacket\n",unicode2char(m_client->GetClientFullInfo()));
+					printf(	"\tCaught InvalidPacket exception:\n"
+						"\t\tError: Unknown\n"
+						"\t\tClientData: %s\n"
+						"\ton ListenSocket::ProcessExtPacket\n",
+						(const char *)unicode2char(m_client->GetClientFullInfo()));
 				} else {
-					printf("\tCaught InvalidPacket exception:\n\t\tError: %s\n\t\tClientData: %s\n\ton ListenSocket::ProcessExtPacket\n", ErrorPacket.what(),unicode2char(m_client->GetClientFullInfo()));
+					printf(	"\tCaught InvalidPacket exception:\n"
+						"\t\tError: %s\n"
+						"\t\tClientData: %s\n"
+						"\ton ListenSocket::ProcessExtPacket\n",
+						ErrorPacket.what(),
+						(const char *)unicode2char(m_client->GetClientFullInfo()));
 				}
 			}
 			m_client->SetDownloadState(DS_ERROR);
 		} else {
 			if (thePrefs::GetVerbosePacketError()) {
 				if (!strlen(ErrorPacket.what())) {				
-					printf("\tCaught InvalidPacket exception:\n\t\tError: Unknown\n\t\tClientData: Unknown\n\ton ListenSocket::ProcessExtPacket\n");
+					printf(	"\tCaught InvalidPacket exception:\n"
+						"\t\tError: Unknown\n"
+						"\t\tClientData: Unknown\n"
+						"\ton ListenSocket::ProcessExtPacket\n");
 				} else {
-					printf("\tCaught InvalidPacket exception:\n\t\tError: %s\n\t\tClientData: Unknown\n\ton ListenSocket::ProcessExtPacket\n", ErrorPacket.what());
+					printf(	"\tCaught InvalidPacket exception:\n"
+						"\t\tError: %s\n"
+						"\t\tClientData: Unknown\n"
+						"\ton ListenSocket::ProcessExtPacket\n",
+						ErrorPacket.what());
 				}
 			}
 		}
 		Disconnect(wxT("UnCaught invalid packet exception On ProcessPacket\n"));
 		return false;
 	} catch(wxString error) {
-		AddDebugLogLineM(false, wxT("A client caused an error or did something bad: ") + error + _(". Disconnecting client!"));
+		AddDebugLogLineM(false,
+			wxT("A client caused an error or did something bad: ") +
+			error + _(". Disconnecting client!"));
 		if (m_client) {
 			if (thePrefs::GetVerbosePacketError()) {
 				if (error.IsEmpty()) {			
-					printf("\tCaught error:\n\t\tError: Unknown\n\t\tClientData: %s\n\ton ListenSocket::ProcessExtPacket\n",unicode2char(m_client->GetClientFullInfo()));
+					printf(	"\tCaught error:\n"
+						"\t\tError: Unknown\n"
+						"\t\tClientData: %s\n"
+						"\ton ListenSocket::ProcessExtPacket\n",
+						(const char *)unicode2char(m_client->GetClientFullInfo()));
 				} else {
-					printf("\tCaught error:\n\t\tError: %s\n\t\tClientData: %s\n\ton ListenSocket::ProcessExtPacket\n", unicode2char(error),unicode2char(m_client->GetClientFullInfo()));
+					printf(	"\tCaught error:\n"
+						"\t\tError: %s\n"
+						"\t\tClientData: %s\n"
+						"\ton ListenSocket::ProcessExtPacket\n",
+						(const char *)unicode2char(error),
+						(const char *)unicode2char(m_client->GetClientFullInfo()));
 				}
 			}
 			m_client->SetDownloadState(DS_ERROR);
 		} else {
 			if (thePrefs::GetVerbosePacketError()) {
 				if (error.IsEmpty()) {
-					printf("\tCaught error:\n\t\tError: Unknown\n\t\tClientData: Unknown\n\ton ListenSocket\n");
+					printf(	"\tCaught error:\n"
+						"\t\tError: Unknown\n"
+						"\t\tClientData: Unknown\n\ton ListenSocket\n");
 				} else {
-					printf("\tCaught error:\n\t\tError: %s\n\t\tClientData: Unknown\n\ton ListenSocket\n", unicode2char(error));
+					printf(	"\tCaught error:\n"
+						"\t\tError: %s\n"
+						"\t\tClientData: Unknown\n"
+						"\ton ListenSocket\n",
+						(const char *)unicode2char(error));
 				}
 			}
 		}

@@ -357,7 +357,7 @@ unsigned int ReadBufferFromSocket(wxSocketBase *sock, void *buffer, unsigned int
 		wxString msg = GetSocketError(LastErrorValue);
 		//
 		// some better logging must be here
-		printf("ECSocket::ReadBufferFromSocket error %s\n", unicode2char(msg));
+		printf("ECSocket::ReadBufferFromSocket error %s\n", (const char *)unicode2char(msg));
 #endif
 	} else {
 		if (ErrorCode) *ErrorCode = wxSOCKET_NOERROR;
@@ -397,7 +397,7 @@ unsigned int WriteBufferToSocket(wxSocketBase *sock, const void *buffer, unsigne
 		wxString msg = GetSocketError(LastErrorValue);
 		//
 		// some better logging must be here
-		printf("ECSocket::WriteBufferToSocket error %s\n", unicode2char(msg));
+		printf("ECSocket::WriteBufferToSocket error %s\n", (const char *)unicode2char(msg));
 #endif
 	} else {
 		if (ErrorCode) *ErrorCode = wxSOCKET_NOERROR;

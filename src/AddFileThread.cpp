@@ -339,7 +339,8 @@ wxThread::ExitCode CAddFileThread::Entry()
 	
 		// Attempt to open the file
 		if ( !file.Open( filename, CFile::read ) ) {
-			printf("Hasher: Warning, failed to open file, skipping: %s\n", unicode2char(filename));
+			printf("Hasher: Warning, failed to open file, skipping: %s\n",
+				(const char *)unicode2char(filename));
 			
 			// Whoops, something's wrong. Delete the item and continue
 			RemoveFromQueue( current );
@@ -349,7 +350,8 @@ wxThread::ExitCode CAddFileThread::Entry()
 
 		// We only support files <= 4gigs
 		if ( (uint64)file.GetLength() >= (uint64)(4294967295U) ) {
-			printf("Hasher: Warning, file is bigger than 4GB, skipping: %s\n", unicode2char(filename));
+			printf("Hasher: Warning, file is bigger than 4GB, skipping: %s\n",
+				(const char *)unicode2char(filename));
 			
 			// Delete and continue 
 			RemoveFromQueue( current );
@@ -357,7 +359,8 @@ wxThread::ExitCode CAddFileThread::Entry()
 		}
 
 		if (!file.GetLength()) {
-			printf("Hasher: 0-size file, skipping: %s\n", unicode2char(filename));
+			printf("Hasher: 0-size file, skipping: %s\n",
+				(const char *)unicode2char(filename));
 			
 			// Delete and continue 
 			RemoveFromQueue( current );
@@ -390,9 +393,11 @@ wxThread::ExitCode CAddFileThread::Entry()
 		if ( needsAICH ) {
 			knownfile->GetAICHHashset()->FreeHashSet();
 		
-			printf("Hasher: Starting to create MD4 and AICH hash for file: %s\n", unicode2char(current->m_name));
+			printf("Hasher: Starting to create MD4 and AICH hash for file: %s\n",
+				(const char *)unicode2char(current->m_name));
 		} else {
-			printf("Hasher: Starting to create MD4 hash for file: %s\n", unicode2char(current->m_name));
+			printf("Hasher: Starting to create MD4 hash for file: %s\n",
+				(const char *)unicode2char(current->m_name));
 		}
 		
 		
@@ -404,7 +409,8 @@ wxThread::ExitCode CAddFileThread::Entry()
 
 		// Checking if something went wrong
 		if ( error ) {
-			printf("Hasher: Error while reading file, skipping: %s\n", unicode2char(current->m_name));
+			printf("Hasher: Error while reading file, skipping: %s\n",
+				(const char *)unicode2char(current->m_name));
 		
 			// Remove the temp-result
 			delete knownfile;
@@ -448,7 +454,8 @@ wxThread::ExitCode CAddFileThread::Entry()
 					m_pAICHHashSet->SetStatus(AICH_HASHSETCOMPLETE);
 		
 					if ( !m_pAICHHashSet->SaveHashSet() ) {
-						printf("Hasher: Warning, failed to save AICH hashset for file: %s\n", unicode2char(current->m_name));
+						printf("Hasher: Warning, failed to save AICH hashset for file: %s\n",
+							(const char *)unicode2char(current->m_name));
 					}
 				}
 			}
@@ -459,7 +466,8 @@ wxThread::ExitCode CAddFileThread::Entry()
 			evt.SetClientData( knownfile );
 			evt.SetExtraLong( (long)current->m_owner );
 
-			printf("Hasher: Finished hashing file: %s\n", unicode2char(current->m_name));
+			printf("Hasher: Finished hashing file: %s\n",
+				(const char *)unicode2char(current->m_name));
 			
 			RemoveFromQueue( current );
 			wxPostEvent(&theApp, evt);

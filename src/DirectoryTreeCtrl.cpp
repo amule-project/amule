@@ -32,10 +32,10 @@
 #include "CFile.h"
 
 #ifdef __WXMSW__
-	#define ROOT_CHAR		wxT('\\')
+	#define ROOT_CHAR	wxT('\\')
 	#define ROOT_STRING	wxT("\\")
 #else
-	#define ROOT_CHAR		wxT('/')
+	#define ROOT_CHAR	wxT('/')
 	#define ROOT_STRING	wxT("/")
 #endif
 
@@ -215,8 +215,6 @@ wxString CDirectoryTreeCtrl::GetFullPath(wxTreeItemId hItem)
 
 void CDirectoryTreeCtrl::AddSubdirectories(wxTreeItemId hBranch, wxString folder)
 {
-
-	
 	// we must collect values first because we'll call FindFirstFile() again in AddChildItem() ...
 	wxArrayString ary;
 
@@ -224,7 +222,6 @@ void CDirectoryTreeCtrl::AddSubdirectories(wxTreeItemId hBranch, wxString folder
 	wxString fname = SharedDir.FindFirstFile(CDirIterator::Dir); // We just want dirs
 	
 	while(!fname.IsEmpty()) {
-
 		if(fname.Find(wxT('/'),TRUE) != -1) {  // starts at end
 			// Take just the last folder of the path
 			fname=fname.Mid(fname.Find(ROOT_CHAR,TRUE)+1);  

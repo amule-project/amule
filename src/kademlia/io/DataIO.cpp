@@ -238,7 +238,8 @@ CTag *CDataIO::readTag(bool bOptACP)
 	}
 	catch (...)
 	{
-		printf("Invalid Kad tag; type=0x%02x name=0x%02x", type, (unicode2char(name))[0]);
+		printf("Invalid Kad tag; type=0x%02x name=0x%02x",
+			type, ((const char *)unicode2char(name))[0]);
 		delete retVal;
 		throw;
 	}

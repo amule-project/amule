@@ -301,11 +301,13 @@ void CServerUDPSocket::ProcessPacket(CSafeMemFile& packet, int16 size, int8 opco
 				printf("Unknown Server UDP opcode %x\n",opcode);
 		}
 	} catch(wxString error) {
-		printf("Brrrrrr wrong UDP packet from server! (%s)\n",unicode2char(error));
-		AddDebugLogLineM(false,wxT("Error while processing incoming UDP Packet: ")+error);
+		printf(	"Brrrrrr wrong UDP packet from server! (%s)\n",
+			(const char *)unicode2char(error));
+		AddDebugLogLineM(false, wxT("Error while processing incoming UDP Packet: ") + error);
 	} catch(...) {
 		printf("Brrrrrr wrong UDP packet from server!\n");
-		AddDebugLogLineM(false,wxT("Error while processing incoming UDP Packet (Most likely a misconfigured server)"));
+		AddDebugLogLineM(false,
+			wxT("Error while processing incoming UDP Packet (Most likely a misconfigured server)"));
 	}
 	
 	if (update) {

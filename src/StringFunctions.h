@@ -36,48 +36,41 @@
 
 // Unicode <-> char* conversion functions
 
-/*
- * Please, DO NOT store pointers returned by unicode2char(), because they 
- * get free'ed as soon as the return value of cWX2MB gets out of scope.
- * If you need to store a pointer, use unicode2charbuf() instead, which has
- * a return type of wxCharBuffer, and then cast it to a char pointer, e.g.:
- * 
- * const wxCharBuffer buf = unicode2charbuf(aWxString);
- * const char *p = (const char *)buf;
- * 
- * --- Now you can freely use p                              ---
- * --- don't worry about memory allocation, memory will be   ---
- * --- free'ed when buf gets out of scope, i.e., upon return ---
- * 
- */
+//
+// Please, DO NOT store pointers returned by unicode2char(), because they 
+// get free'ed as soon as the return value of cWX2MB gets out of scope.
+// If you need to store a pointer, use a buffer of type wxWX2MBbuf,
+// and then cast it to a char pointer, e.g.:
+// 
+// const wxWX2MBbuf buf = unicode2char(aWxString);
+// const char *p = (const char *)buf;
+// 
+// --- Now you can freely use p                              ---
+// --- don't worry about memory allocation, memory will be   ---
+// --- free'ed when buf gets out of scope, i.e., upon return ---
+// 
 static wxCSConv aMuleConv(wxT("iso8859-1"));
-#if wxUSE_UNICODE
-	/* 
-	 * Unfortunately, unicode2char() cannot be a function, because upon function
-	 * return the object to which the returned (const char *) pointer points to
-	 * gets out of scope. So, we stick to the macro version for now.
-	 */
-	#define unicode2char(x) (const char*) aMuleConv.cWX2MB(x)
-	//inline const char* unicode2char(wxString x) { return ((const char*) aMuleConv.cWX2MB(x));};
-	inline const wxCharBuffer unicode2charbuf(wxString x) { return aMuleConv.cWX2MB(x); };
-	inline const wxWCharBuffer char2unicode(const char* x) { return aMuleConv.cMB2WX(x); };
-	inline const wxWCharBuffer UTF82unicode (const char* x) { return wxConvUTF8.cMB2WX(x); };
+//
+// wxMB2WXbuf, wxWX2MBbuf are always the appropriate return type,
+// either (wxChar *) or (wxWCharBuffer)
+//
+// Simplify those names
+// 
+#define Unicode2CharBuf	const wxWX2MBbuf
+#define Char2UnicodeBuf const wxMB2WXbuf
 
-#else
-	inline const char* unicode2char(wxString x) { return ((const char*) x); };
-	inline const wxCharBuffer unicode2charbuf(wxString x) { return (const char*)x; };
-	inline const wxCharBuffer char2unicode(const char* x) { return x; };
-	
-	inline const wxCharBuffer UTF82unicode (const char* x) { return wxConvUTF8.cMB2WX(x); };
+inline Unicode2CharBuf unicode2char(wxString    x) { return (const char *)aMuleConv.cWX2MB(x); }
+inline Char2UnicodeBuf char2unicode(const char *x) { return               aMuleConv.cMB2WX(x); }
 
-#endif
+inline Unicode2CharBuf unicode2UTF8(wxString    x) { return (const char *)wxConvUTF8.cWX2MB(x); }
+inline Char2UnicodeBuf UTF82unicode(const char *x) { return               wxConvUTF8.cMB2WX(x); }
 
+inline const wxCharBuffer char2UTF8(const char *x) { return unicode2UTF8(char2unicode(x)); }
+inline const wxCharBuffer UTF82char(const char *x) { return unicode2char(UTF82unicode(x)); }
 
-// Use define, the returned pointer points to local data
-#define unicode2UTF8(x)	(const char *)wxConvUTF8.cWC2MB(x.wc_str(wxConvLocal))
-#define char2UTF8(x)	(const char *)wxConvUTF8.cWC2MB(wxString(x).wc_str(wxConvLocal))
-	
+//
 // Replaces "&" with "&&" in 'in' for use with text-labels
+//
 inline wxString MakeStringEscaped(wxString in) {
 	in.Replace(wxT("&"),wxT("&&"));
 	return in;

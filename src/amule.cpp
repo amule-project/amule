@@ -417,9 +417,9 @@ bool CamuleApp::OnInit()
 	
 	if ( cmdline.Found(wxT("version")) ) {
 #ifndef AMULE_DAEMON		
-		printf("aMule %s\n", unicode2char(GetMuleVersion()));
+		printf("aMule %s\n", (const char *)unicode2char(GetMuleVersion()));
 #else
-		printf("aMule Daemon %s\n", unicode2char(GetMuleVersion()));
+		printf("aMule Daemon %s\n", (const char *)unicode2char(GetMuleVersion()));
 #endif
 		return false;
 	}
@@ -693,7 +693,7 @@ bool CamuleApp::OnInit()
 	bool ok;
 	ok = ReinitializeNetwork(&msg);
 	if (!msg.IsEmpty()) {
-		printf("%s", unicode2char(msg));
+		printf("%s", (const char *)unicode2char(msg));
 	}
 
 	m_app_state = APP_STATE_RUNNING;
@@ -1231,7 +1231,7 @@ void CamuleApp::OnFatalException()
 	fprintf(stderr, "You should also try to generate a real backtrace of this error, please read:\n");
 	fprintf(stderr, "    http://www.amule.org/wiki/index.php/Backtraces\n");
 	fprintf(stderr, "----------------------------=| BACKTRACE FOLLOWS: |=----------------------------\n\n");
-	fprintf(stderr, "aMule version is: %s\n\n", unicode2char(GetMuleVersion()));
+	fprintf(stderr, "aMule version is: %s\n\n", (const char *)unicode2char(GetMuleVersion()));
 	
 	for (int i = 0; i < num_entries; ++i) {
 		/* If we have no function name, use the result from addr2line */
@@ -1253,7 +1253,7 @@ void CamuleApp::OnFatalException()
 			btLine += libname[i];
 		}
 		/* Print */
-		fprintf(stderr, "%s\n", unicode2char(btLine) );
+		fprintf(stderr, "%s\n", (const char *)unicode2char(btLine) );
 	}
 	fprintf(stderr, "\n--------------------------------------------------------------------------------\n");
 	delete [] libname;
@@ -1662,7 +1662,7 @@ void CamuleApp::OnFinishedHashing(wxEvent& e)
 				}
 			}
 		} else {
-			printf("File not added to sharedlist: %s\n", unicode2char(result->GetFileName()));
+			printf("File not added to sharedlist: %s\n", (const char *)unicode2char(result->GetFileName()));
 			delete result;
 		}
 	}
@@ -1729,7 +1729,6 @@ void CamuleApp::ShutDown() {
 
 #if defined(__DEBUG__) 
 	#if defined(__LINUX__)
-	
 		void CamuleApp::AddSocketDeleteDebug(uint32 socket_pointer, uint32 creation_time) {
 	
 			socket_deletion_log_item current_socket;
@@ -1764,25 +1763,21 @@ void CamuleApp::ShutDown() {
 	
 			uint32 size = SocketDeletionList.size();
 			for ( uint32 i = 0; i < size; ++i ) {
-				if (( SocketDeletionList[i].socket_n == socket_pointer) && ( SocketDeletionList[i].creation_time == creation_time)) {
-	
+				if (	( SocketDeletionList[i].socket_n == socket_pointer) &&
+					( SocketDeletionList[i].creation_time == creation_time)) {
 					printf("\n-----------------------RSB FOUND!!!!!!!!!!!!!!!!!!!!!!!!!------------\n");
-					printf("First deletion  (ptr: %u time: %u) BT:\n",temp_socket.socket_n, temp_socket.creation_time);
-					printf("-> %s\n\n",unicode2char(temp_socket.backtrace));
-	
-					printf("Second deletion (ptr: %u time: %u) BT:\n",current_socket.socket_n,current_socket.creation_time);
-					printf("-> %s\n\n",unicode2char(current_socket.backtrace));
-	
+					printf("First deletion  (ptr: %u time: %u) BT:\n",
+						temp_socket.socket_n, temp_socket.creation_time);
+					printf("-> %s\n\n", (const char *)unicode2char(temp_socket.backtrace));	
+					printf("Second deletion (ptr: %u time: %u) BT:\n",
+						current_socket.socket_n,current_socket.creation_time);
+					printf("-> %s\n\n", (const char *)unicode2char(current_socket.backtrace));	
 					printf("--------------------------- Get Ready for RC4---------------------------\n");
-	
 					//wxASSERT(0);
 				}
 			}
-	
 			SocketDeletionList.push_back(current_socket);
-	
 		}
-
 	#else
 		void CamuleApp::AddSocketDeleteDebug(uint32 socket_pointer, uint32 creation_time) {
 		// No backtrace on this platform.
@@ -1790,8 +1785,6 @@ void CamuleApp::ShutDown() {
 	#endif // __LINUX__
 		
 #endif // __DEBUG__
-
-
 
 
 bool CamuleApp::AddServer(CServer *srv)
@@ -1817,8 +1810,8 @@ void CamuleApp::AddLogLine(const wxString &msg)
 	(*applog) << stream;
 	applog->Sync();
 
-	if ( enable_stdout_log ) { 
-		puts(unicode2charbuf(full_line));
+	if (enable_stdout_log) { 
+		puts(unicode2char(full_line));
 	}
 
 }
@@ -1831,13 +1824,13 @@ void CamuleApp::AddLogLine(const wxString &msg)
 	applog->Flush();
 
 	if (enable_stdout_log) {
-		const wxCharBuffer date_str_buf = unicode2charbuf(curr_date);
+		const Unicode2CharBuf date_str_buf = unicode2char(curr_date);
 		const char *date_str = (const char *)date_str_buf;
 		// conversion may fail, so must check date_str
 		if (date_str) {
 			fputs(date_str, stdout);
 		}
-		const wxCharBuffer c_msg_buf = unicode2charbuf(msg);
+		const Unicode2CharBuf c_msg_buf = unicode2char(msg);
 		const char *c_msg = (const char *)c_msg_buf;
 		// conversion may fail, so must check c_msg
 		if (c_msg) {

@@ -94,7 +94,8 @@ CDownloadQueue::~CDownloadQueue()
 
 void CDownloadQueue::LoadMetFiles( const wxString& path )
 {
-	printf("Loading temp files from %s.\n", unicode2char(path) );
+	printf("Loading temp files from %s.\n",
+		(const char *)unicode2char(path));
 	
 	CDirIterator TempDir( path );
 	wxString fileName = TempDir.FindFirstFile( CDirIterator::File, wxT("*.part.met") );
@@ -102,13 +103,13 @@ void CDownloadQueue::LoadMetFiles( const wxString& path )
 	while ( !fileName.IsEmpty() ) {
 		fileName = wxFileName( fileName ).GetFullName();
 		
-		printf("\t- %s: ",unicode2char( fileName));
+		printf("\t- %s: ", (const char *)unicode2char(fileName));
 		
 		CPartFile* toadd = new CPartFile();
-		bool result = toadd->LoadPartFile( path, fileName );
+		bool result = toadd->LoadPartFile(path, fileName);
 		if (!result) {
 			// Try from backup
-			result = toadd->LoadPartFile( path, fileName, true);
+			result = toadd->LoadPartFile(path, fileName, true);
 		}
 		
 		if (result) {
@@ -249,7 +250,6 @@ void CDownloadQueue::AddDownload(CPartFile* file, bool paused, uint8 category)
 
 	NotifyObservers( EventType( EventType::INSERTED, file ) );
 
-	
 	// Ask for sources if we are not stopped
 	if ( !file->IsStopped() ) {
 		wxMutexLocker lock( m_mutex );

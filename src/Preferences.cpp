@@ -644,7 +644,8 @@ CPreferences::CPreferences()
 		CreateUserHash();
 	}
 	
-	printf("Userhash loaded: %s\n", unicode2char(s_userhash.Encode()));
+	printf(	"Userhash loaded: %s\n",
+		(const char *)unicode2char(s_userhash.Encode()));
 }
 
 //
@@ -1043,7 +1044,8 @@ bool CPreferences::Save()
 		preffile.Create( fullpath );
 	
 	if ( preffile.Open(fullpath, CFile::read_write) ) {
-		printf("Saving userhash: %s\n", unicode2char(s_userhash.Encode()));
+		printf(	"Saving userhash: %s\n",
+			(const char *)unicode2char(s_userhash.Encode()));
 		
 		Preferences_Ext_Struct prefsExt;
 		memset( &prefsExt, 0, sizeof(Preferences_Ext_Struct) );

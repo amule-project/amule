@@ -141,7 +141,7 @@ void CaMuleExternalConnector::Show(const wxString &s)
 			//wxWakeUpIdle();
 		}
 #else
-		printf("%s", unicode2char(s));
+		printf("%s", (const char *)unicode2char(s));
 #endif
 	}
 }
@@ -149,7 +149,7 @@ void CaMuleExternalConnector::Show(const wxString &s)
 void CaMuleExternalConnector::Dump(const wxString &s)
 {
 	FILE *fp = fopen("x.txt", "a");
-	fprintf(fp, "%s", unicode2char(s));
+	fprintf(fp, "%s", (const char *)unicode2char(s));
 	fclose(fp);
 }
 
@@ -221,7 +221,7 @@ void CaMuleExternalConnector::GetCommand(const wxString &prompt, char* buffer, s
 {
 	if( !m_KeepQuiet ) {
 #if wxUSE_GUI
-		const wxCharBuffer buf = unicode2charbuf(
+		const wxCharBuffer buf = unicode2char(
 			wxGetTextFromUser(prompt, _T("Enter Command")));
 		const char *text = (const char *)buf;
 #else
@@ -230,7 +230,7 @@ void CaMuleExternalConnector::GetCommand(const wxString &prompt, char* buffer, s
 			free(m_InputLine);
 			m_InputLine = (char *)NULL;
 		}
-		const wxCharBuffer buf = unicode2charbuf(prompt + wxT("$ "));
+		Unicode2CharBuf buf(unicode2char(prompt + wxT("$ ")));
 		const char *p = (const char *)buf;
 		m_InputLine = readline(p);
 		if (m_InputLine && *m_InputLine) {

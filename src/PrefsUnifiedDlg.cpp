@@ -258,7 +258,7 @@ wxDialog(parent, -1, _("Preferences"), wxDefaultPosition, wxDefaultSize,
 		// Checking for failures
 		if ( !it->second->ConnectToWidget( it->first, this ) ) {
 			printf("Failed to connect Cfg to widget with the ID %d and key %s\n",
-				it->first, unicode2char(it->second->GetKey()));
+				it->first, (const char *)unicode2char(it->second->GetKey()));
 		}
 	}
 	Fit();
@@ -308,7 +308,7 @@ bool PrefsUnifiedDlg::TransferToWindow()
 		// Checking for failures
 		if ( !it->second->TransferToWindow() ) {
 			printf("Failed to transfer data from Cfg to Widget with the ID %d and key %s\n",
-				it->first, unicode2char(it->second->GetKey()));
+				it->first, (const char *)unicode2char(it->second->GetKey()));
 		}
 	}
 
@@ -385,7 +385,7 @@ bool PrefsUnifiedDlg::TransferFromWindow()
 		// Checking for failures
 		if ( !it->second->TransferFromWindow() ) {
 			printf("Failed to transfer data from Widget to Cfg with the ID %d and key %s\n",
-				it->first, unicode2char(it->second->GetKey()));
+				it->first, (const char *)unicode2char(it->second->GetKey()));
 		}
 	}
 

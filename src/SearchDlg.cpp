@@ -439,7 +439,8 @@ void CSearchDlg::StartNewSearch()
 				typeText = wxT("Videos"); 
 				break;
 			default:
-				printf("Warning! Unknown search-category ( %s ) selected!\n", unicode2char(typeText));
+				printf("Warning! Unknown search-category ( %s ) selected!\n",
+					(const char *)unicode2char(typeText));
 				break;
 		}
 		// This will break if we change the order (good to know!)

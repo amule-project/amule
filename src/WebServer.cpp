@@ -2974,7 +2974,7 @@ CFileImage::CFileImage(const wxString& name) : CAnyImage(0), m_name(name)
 			Realloc(fis.Length());
 			m_size = fis.Read(m_data,file_size);
 		} else {
-			printf("CFileImage: file %s have zero length\n", unicode2char(m_name));
+			printf("CFileImage: file %s have zero length\n", (const char *)unicode2char(m_name));
 		}
 		wxString ext = m_name.Right(3).MakeLower();
 		if ( ext == wxT("css") ) {
@@ -2983,7 +2983,7 @@ CFileImage::CFileImage(const wxString& name) : CAnyImage(0), m_name(name)
 			SetHttpType(wxT("image/") + ext);
 		}
 	} else {
-		printf("CFileImage: failed to open %s\n", unicode2char(m_name));
+		printf("CFileImage: failed to open %s\n", (const char *)unicode2char(m_name));
 	}
 }
 

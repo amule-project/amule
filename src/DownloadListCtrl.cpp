@@ -585,27 +585,24 @@ void CDownloadListCtrl::OnCleanUpSources( wxCommandEvent& event )
 }
 
 
-void CDownloadListCtrl::OnCancelFile( wxCommandEvent& WXUNUSED(event) )
+void CDownloadListCtrl::OnCancelFile(wxCommandEvent& WXUNUSED(event))
 {
-	ItemList files = ::GetSelectedItems( this, itFILES );
-	
-	if ( files.size() ) {
-	
-		wxString question = _("Are you sure that you wish to delete the selected file(s)?\n");
-	
-		if ( wxMessageBox( question, _("Cancel"), wxICON_QUESTION | wxYES_NO) == wxYES ) {
-
-			for ( ItemList::iterator it = files.begin(); it != files.end(); ++it ) {
-				CPartFile* file = (CPartFile*)(*it)->value;
-		
-				switch ( file->GetStatus() ) {
-					case PS_WAITINGFORHASH:
-					case PS_HASHING:
-					case PS_COMPLETING:
-					case PS_COMPLETE:
-						break;
-					default:
-						CoreNotify_PartFile_Delete( file );
+	ItemList files = ::GetSelectedItems(this, itFILES);
+	if (files.size()) {	
+		wxString question = 
+			_("Are you sure that you wish to delete the selected file(s)?\n");	
+		if (wxMessageBox( question, _("Cancel"), wxICON_QUESTION | wxYES_NO) == wxYES) {
+			for (ItemList::iterator it = files.begin(); it != files.end(); ++it) {
+				CPartFile* file = (CPartFile*)(*it)->value;		
+				switch (file->GetStatus()) {
+				case PS_WAITINGFORHASH:
+				case PS_HASHING:
+				case PS_COMPLETING:
+				case PS_COMPLETE:
+					break;
+				default:
+					CoreNotify_PartFile_Delete(file);
+					ShowFilesCount(-1);
 				}
 			}
 		}

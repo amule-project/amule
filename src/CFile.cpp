@@ -1,6 +1,8 @@
+/////////////////////////////////////////////////////////////////////////////
+//
 // This file is part of the aMule Project
 //
-// Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
+// Copyright (c) 2003-2005 aMule Project ( http://www.amule-project.net )
 //
 /////////////////////////////////////////////////////////////////////////////
 // Name:        file.cpp
@@ -180,7 +182,8 @@ enum {
 			theApp.QueueLogLine(false, _("* Could not generate backtrace\n"));
 		} else {
 			if ((bt_strings = backtrace_symbols(bt_array, num_entries)) == NULL) {
-				theApp.QueueLogLine(false, _("* Could not get symbol names for backtrace\n"));
+				theApp.QueueLogLine(false,
+					_("* Could not get symbol names for backtrace\n"));
 			}  else {
 				wxString wherefrom = bt_strings[value];
 				int starter = wherefrom.Find('(');
@@ -189,16 +192,14 @@ enum {
 				theApp.QueueLogLine(false, _("Called From: ") + wherefrom);
 			}
 		}	
-	#else 
+	#else // __LINUX__
 		// Dummy function for non-linux
 		void get_caller(int value) {
 			
 		}
-	#endif
+	#endif // __LINUX__
 }
-
-
-#endif
+#endif // FILE_TRACKER
 
 
 // ============================================================================
@@ -218,22 +219,22 @@ bool CFile::Access(const wxChar *name, OpenMode mode)
 {
 	int how;
 
-	switch ( mode )
-	{
-		default:
-			wxFAIL_MSG(wxT("bad CFile::Access mode parameter."));
-			// fall through
-		case read:
-			how = R_OK;
-			break;
-
-		case write:
-			how = W_OK;
-			break;
-		case read_write:
-			how = R_OK | W_OK;
-			break;
+	switch ( mode ) {
+	default:
+		wxFAIL_MSG(wxT("bad CFile::Access mode parameter."));
+		// fall through
+	case read:
+		how = R_OK;
+		break;
+	
+	case write:
+		how = W_OK;
+		break;
+	case read_write:
+		how = R_OK | W_OK;
+		break;
 	}
+
 	return wxAccess(name, how) == 0;
 }
 
@@ -242,152 +243,183 @@ bool CFile::Access(const wxChar *name, OpenMode mode)
 // ----------------------------------------------------------------------------
 
 // ctors
-CFile::CFile(const wxString& szFileName, OpenMode mode)
+CFile::CFile(const wxString& sFileName, OpenMode mode)
 {
 	m_fd = fd_invalid;
-	m_error = FALSE;
-
-	#ifdef FILE_TRACKER
-		Open(szFileName, mode,12345);
-	#else
-		Open(szFileName, mode);
-	#endif
+	m_error = false;
+	
+#ifdef FILE_TRACKER
+	Open(sFileName, mode, 12345);
+#else
+	Open(sFileName, mode);
+#endif
 }
 
+//
 // create the file, fail if it already exists and !bOverwrite
-bool CFile::Create(const wxString& szFileName, bool bOverwrite, int accessMode)
+// 
+// When creating files, we will always first try to create an ANSI file name,
+// even if that means an extended ANSI file name. Only if it is not possible
+// to do that, we fall back to  UTF-8 file names. This is unicode safe and is
+// the only way to guarantee that we can later open any file in the file system,
+// even if it is not an UTF-8 valid sequence.
+// 
+bool CFile::Create(const wxString& sFileName, bool bOverwrite, int accessMode)
 {
-	if ( accessMode == -1 )
+	if ( accessMode == -1 ) {
 		accessMode = CPreferences::GetFilePermissions();
-
-	fFilePath=szFileName;
-
-    if (m_fd != fd_invalid) {
-	    Close();	
-    }
-
-    if (wxFileExists(szFileName) && !bOverwrite) {
-		return FALSE;
-    }
-    
-    m_fd = creat( unicode2UTF8(szFileName) , accessMode);
+	}
+	fFilePath = sFileName;
+	if (m_fd != fd_invalid) {
+		Close();	
+	}
+	if (wxFileExists(sFileName) && !bOverwrite) {
+		return false;
+	}
+	// Test if it is possible to use an ANSI name
+	Unicode2CharBuf tmpFileName(unicode2char(sFileName));
+	if (tmpFileName) {
+		// Use an ANSI name
+		m_fd = creat(tmpFileName, accessMode);
+	} else {
+		// Use an UTF-8 name
+		m_fd = creat(unicode2UTF8(sFileName), accessMode);
+	}
 	
-	#ifdef FILE_TRACKER
-		AddLogLineM(false,wxString(_("Created file ")) + fFilePath + wxString::Format(_(" with file descriptor %i"),m_fd));
-    		get_caller(2);
-	#endif
+#ifdef FILE_TRACKER
+	AddLogLineM(false,
+		wxString(_("Created file ")) << fFilePath <<
+		_(" with file descriptor " << m_fd));
+	get_caller(2);
+#endif
 	
-	if ( m_fd == -1 ) {
-		wxLogSysError(_("can't create file '") + szFileName + wxT("'"));
-		return FALSE;
+	if (m_fd == -1) {
+		wxLogSysError(_("can't create file '") + sFileName + wxT("'"));
+		return false;
 	} else {
 		//Attach(m_fd);
-		return TRUE;
+		return true;
 	}
 }
 
+//
 // open the file
-bool CFile::Open(const wxString& szFileName, OpenMode mode, int accessMode)
+// 
+// When opening files, we will always first try to create an ANSI file name,
+// even if that means an extended ANSI file name. Only if it is not possible
+// to do that, we fall back to  UTF-8 file names. This is unicode safe and is
+// the only way to guarantee that we can open any file in the file system,
+// even if it is not an UTF-8 valid sequence.
+//
+bool CFile::Open(const wxString& sFileName, OpenMode mode, int accessMode)
 {
-	if ( accessMode == -1 )
+	if ( accessMode == -1 ) {
 		accessMode = CPreferences::GetFilePermissions();
-
-    int flags = O_BINARY;
+	}
+	int flags = O_BINARY;
 #ifdef __linux__
 	flags |=  O_LARGEFILE;
 #endif
+	fFilePath = sFileName;
+
+#ifdef FILE_TRACKER
+	bool fromConstructor = false;
+	if (accessMode == 12345) {
+		fromConstructor = true;
+		accessMode = wxS_DEFAULT;
+	} 
+#endif
+    
+	switch ( mode ) {
+	case read:
+		flags |= O_RDONLY;
+		break;
 	
-    fFilePath=szFileName;
-
-	#ifdef FILE_TRACKER
-		bool fromConstructor = false;
-		if (accessMode == 12345) {
-			fromConstructor = true;
-			accessMode = wxS_DEFAULT;
-		} 
-    #endif
-    
-    switch ( mode )
-    {
-        case read:
-            flags |= O_RDONLY;
-            break;
-
-        case write_append:
-            if ( CFile::Exists(szFileName) )
-            {
-                flags |= O_WRONLY | O_APPEND;
-                break;
-            }
-            //else: fall through as write_append is the same as write if the
-            //      file doesn't exist
-
-        case write:
-            flags |= O_WRONLY | O_CREAT | O_TRUNC;
-            break;
-
-        case write_excl:
-            flags |= O_WRONLY | O_CREAT | O_EXCL;
-            break;
-
-        case read_write:
-            flags |= O_RDWR;
-            break;
-    }
-
-    if (m_fd != fd_invalid) {
-	    Close();	
-    }
-
-    m_fd = open( unicode2UTF8(szFileName), flags ACCESS(accessMode));
-      
-	#ifdef FILE_TRACKER
-		theApp.QueueLogLine(false,wxString(_("Opened file ")) + fFilePath  + wxString::Format(_(" with file descriptor %i"),m_fd));
-    		if (fromConstructor) {
-			get_caller(3);    
-		} else {
-			get_caller(3);    
+	case write_append:
+		if (CFile::Exists(sFileName))
+		{
+			flags |= O_WRONLY | O_APPEND;
+			break;
 		}
-	#endif
+		//else: fall through as write_append is the same as write if the
+		//      file doesn't exist
+	
+	case write:
+		flags |= O_WRONLY | O_CREAT | O_TRUNC;
+		break;
+	
+	case write_excl:
+		flags |= O_WRONLY | O_CREAT | O_EXCL;
+		break;
+
+	case read_write:
+		flags |= O_RDWR;
+        	break;
+	}
+
+	if (m_fd != fd_invalid) {
+		Close();	
+	}
+	// Test if it is possible to use an ANSI name
+	Unicode2CharBuf tmpFileName(unicode2char(sFileName));
+	if (tmpFileName) {
+		// Use an ANSI name
+		m_fd = open(tmpFileName, flags ACCESS(accessMode));
+	} else {
+		// Use an UTF-8 name
+		m_fd = open(unicode2UTF8(sFileName), flags ACCESS(accessMode));
+	}
+      
+#ifdef FILE_TRACKER
+	theApp.QueueLogLine(false,
+		wxString(_("Opened file ")) << fFilePath <<
+		_(" with file descriptor ") << m_fd);
+    	if (fromConstructor) {
+		get_caller(3);    
+	} else {
+		get_caller(3);    
+	}
+#endif
     
-    if ( m_fd == -1 )
-    {
-   		theApp.QueueLogLine(true, _("Can't open file '") + szFileName + wxT("'"));
+	if (m_fd == -1) {
+		theApp.QueueLogLine(true, _("Can't open file '") + sFileName + wxT("'"));
 		/*
 			get_caller(4);    	    
 			get_caller(3);    
 			get_caller(2);    
-	    */
-        	return FALSE;
-    }
-       else {
-   //     Attach(m_fd);
-        return TRUE;
-    }
-    
+		*/
+		return false;
+	} else {
+		//Attach(m_fd);
+		return true;
+	}    
 }
 
+//
 // close
+// 
 bool CFile::Close() 
 {
-
-	#ifdef FILE_TRACKER
-		AddLogLineM(false,wxString(_("Closing file ")) + fFilePath + wxString::Format(_(" with file descriptor %i"),m_fd));
-		get_caller(2);
-		wxASSERT(!fFilePath.IsEmpty());
-	#endif
-
+#ifdef FILE_TRACKER
+	AddLogLineM(false,
+		wxString(_("Closing file ")) << fFilePath <<
+		_(" with file descriptor ") << m_fd);
+	get_caller(2);
+	wxASSERT(!fFilePath.IsEmpty());
+#endif
 	if ( IsOpened() ) {
-        if ( close(m_fd) == -1 ) {
-            wxLogSysError(_("can't close file descriptor %d"), m_fd);
-            m_fd = fd_invalid;
-            return FALSE;
-        }
-        else
-            m_fd = fd_invalid;
-    } else wxASSERT(0);
-
-    return TRUE;
+		if (close(m_fd) == -1) {
+			wxLogSysError(_("can't close file descriptor %d"), m_fd);
+			m_fd = fd_invalid;
+			return false;
+		} else {
+			m_fd = fd_invalid;
+		}
+	} else {
+		wxASSERT(0);
+	}
+	
+	return true;
 }
 
 // ----------------------------------------------------------------------------
@@ -397,21 +429,20 @@ bool CFile::Close()
 // read
 off_t CFile::Read(void *pBuf, off_t nCount) const
 {
-    wxCHECK( (pBuf != NULL) && IsOpened(), 0 );
+	wxCHECK( (pBuf != NULL) && IsOpened(), 0 );
 
 #ifdef __MWERKS__
-    off_t iRc = ::read(m_fd, (char*) pBuf, nCount);
+	off_t iRc = ::read(m_fd, (char*) pBuf, nCount);
 #else
-    off_t iRc = ::read(m_fd, pBuf, nCount);
+	off_t iRc = ::read(m_fd, pBuf, nCount);
 #endif
-    if ( iRc == -1 ) {
-        wxLogSysError(_("can't read from file descriptor %d"), m_fd);
-	    m_error = TRUE;
-        return wxInvalidOffset;
-    }
-    else {
+	if ( iRc == -1 ) {
+		wxLogSysError(_("can't read from file descriptor %d"), m_fd);
+		m_error = true;
+		return wxInvalidOffset;
+	} else {
 		return (off_t)iRc;
-    }
+	}
 }
 
 // write
@@ -419,41 +450,39 @@ size_t CFile::Write(const void *pBuf, size_t nCount)
 {
 	wxASSERT(pBuf != NULL);
 	wxASSERT(IsOpened());
-
 #ifdef __MWERKS__
 #if __MSL__ >= 0x6000
-    size_t iRc = ::write(m_fd, (void*) pBuf, nCount);
+	size_t iRc = ::write(m_fd, (void*) pBuf, nCount);
 #else
-    size_t iRc = ::write(m_fd, (const char*) pBuf, nCount);
+	size_t iRc = ::write(m_fd, (const char*) pBuf, nCount);
 #endif
 #else
-    size_t iRc = ::write(m_fd, pBuf, nCount);
+	size_t iRc = ::write(m_fd, pBuf, nCount);
 #endif
-    if ( ((int)iRc) == -1 ) {
-        wxLogSysError(_("can't write to file descriptor %d"), m_fd);
-        m_error = TRUE;
-        return (size_t)0;
-    }
-    else
-        return iRc;
+	if ( ((int)iRc) == -1 ) {
+		wxLogSysError(_("can't write to file descriptor %d"), m_fd);
+		m_error = true;
+		return (size_t)0;
+	} else {
+		return iRc;
+	}
 }
 
 // flush
 bool CFile::Flush()
 {
-    if ( IsOpened() ) {
-		#ifdef __WXMSW__
-		if (_commit(m_fd) == -1)
-		#else
-	        if ( fsync(m_fd) == -1 ) 
-		#endif
-		{
-		    wxLogSysError(_("can't flush file descriptor %d"), m_fd);
-	    		m_error = TRUE;			
-	            return FALSE;
+	if ( IsOpened() ) {
+#ifdef __WXMSW__
+		if (_commit(m_fd) == -1) {
+#else
+	        if ( fsync(m_fd) == -1 ) {
+#endif
+			wxLogSysError(_("can't flush file descriptor %d"), m_fd);
+			m_error = true;			
+			return false;
 		}
     }
-    return TRUE;
+    return true;
 }
 
 // ----------------------------------------------------------------------------
@@ -488,7 +517,7 @@ off_t CFile::Seek(off_t ofs, CFile::SeekMode mode) const
 	off_t iRc = lseek(m_fd, ofs, origin);
 	if ( iRc == -1 ) {
 		printf("Error in lseek: %s\n", strerror(errno));
-		m_error = TRUE;
+		m_error = true;
 		return wxInvalidOffset;
 	} else {
 		return (off_t) iRc;
@@ -498,120 +527,138 @@ off_t CFile::Seek(off_t ofs, CFile::SeekMode mode) const
 // get current off_t
 off_t CFile::GetPosition() const
 {
-    wxASSERT( IsOpened() );
-
-    off_t iRc = wxTell(m_fd);
-    if ( iRc == -1 ) {
-        wxLogSysError(_("can't get seek position on file descriptor %d"), m_fd);
-        return wxInvalidOffset;
-    }
-    else
-        return (off_t)iRc;
+	wxASSERT( IsOpened() );
+	
+	off_t iRc = wxTell(m_fd);
+	if (iRc == -1) {
+		wxLogSysError(_("can't get seek position on file descriptor %d"), m_fd);
+		return wxInvalidOffset;
+	} else {
+		return (off_t)iRc;
+	}
 }
 
 // get current file length
 off_t CFile::Length() const
 {
-    wxASSERT( IsOpened() );
-
+	wxASSERT( IsOpened() );
+	
 #ifdef __VISUALC__
-    off_t iRc = _filelength(m_fd);
+	off_t iRc = _filelength(m_fd);
 #else // !VC++
-    off_t iRc = wxTell(m_fd);
-    if ( iRc != -1 ) {
-        // @ have to use const_cast :-(
-        off_t iLen = ((CFile *)this)->SeekEnd();
-        if ( iLen != -1 ) {
-            // restore old position
-            if ( ((CFile *)this)->Seek(iRc) == -1 ) {
-                // error
-                iLen = -1;
-            }
-        }
-
-        iRc = iLen;
-    }
+	off_t iRc = wxTell(m_fd);
+	if ( iRc != -1 ) {
+		// @ have to use const_cast :-(
+		off_t iLen = ((CFile *)this)->SeekEnd();
+		if ( iLen != -1 ) {
+			// restore old position
+			if ( ((CFile *)this)->Seek(iRc) == -1 ) {
+				// error
+				iLen = -1;
+			}
+		}
+		iRc = iLen;
+	}
 #endif  // VC++
-
-    if ( iRc == -1 ) {
-        wxLogSysError(_("can't find length of file on file descriptor %d"), m_fd);
-        return wxInvalidOffset;
-    }
-    else
-        return (off_t)iRc;
+	
+	if ( iRc == -1 ) {
+		wxLogSysError(_("can't find length of file on file descriptor %d"), m_fd);
+		return wxInvalidOffset;
+	} else {
+		return (off_t)iRc;
+	}
 }
 bool CFile::SetLength(off_t new_len) {
-
-	#ifdef __WXMSW__
+#ifdef __WXMSW__
 	return chsize(this->fd(), new_len);
-	#else
+#else
 	return ftruncate(this->fd(), new_len);
-	#endif
+#endif
 }	
 
 // is end of file reached?
 bool CFile::Eof() const
 {
-    wxASSERT( IsOpened() );
-
-    off_t iRc;
-
+	wxASSERT( IsOpened() );
+	
+	off_t iRc;
+	
 #if defined(__DOS__) || defined(__UNIX__) || defined(__GNUWIN32__) || defined( __MWERKS__ ) || defined(__SALFORDC__)
-    // @@ this doesn't work, of course, on unseekable file descriptors
-    off_t ofsCur = GetPosition(),
-    ofsMax = Length();
-    if ( ofsCur == (off_t)wxInvalidOffset || ofsMax == (off_t)wxInvalidOffset )
-        iRc = -1;
-    else
-        iRc = ofsCur == ofsMax;
+	// @@ this doesn't work, of course, on unseekable file descriptors
+	off_t ofsCur = GetPosition(),
+	ofsMax = Length();
+	if ( ofsCur == (off_t)wxInvalidOffset || ofsMax == (off_t)wxInvalidOffset ) {
+		iRc = -1;
+	} else {
+		iRc = ofsCur == ofsMax;
+	}
 #else  // Windows and "native" compiler
-    iRc = eof(m_fd);
+	iRc = eof(m_fd);
 #endif // Windows/Unix
-
-    switch ( iRc ) {
-        case 1:
-            break;
-
-        case 0:
-            return FALSE;
-
-        case -1:
-            wxLogSysError(_("can't determine if the end of file is reached on descriptor %d"), m_fd);
-                break;
-
-        default:
-            wxFAIL_MSG(_("invalid eof() return value."));
-    }
-
-    return TRUE;
+	
+	switch ( iRc ) {
+	case 1:
+		break;
+	
+	case 0:
+		return false;
+	
+	case -1:
+		wxLogSysError(_("can't determine if the end of file is reached on descriptor %d"), m_fd);
+		break;
+	
+	default:
+		wxFAIL_MSG(_("invalid eof() return value."));
+	}
+	
+	return true;
 }
 
-bool UTF8_MoveFile(wxString& from, wxString& to) {	
-	#if wxUSE_UNICODE
-	return (rename(unicode2UTF8(from),unicode2UTF8(to))==0);
-	#else
-	return (rename(unicode2char(from),unicode2char(to))==0);
-	#endif
+//
+// When moving file, first try an ANSI move, only then try UTF-8.
+// 
+bool UTF8_MoveFile(wxString& from, wxString& to) {
+	bool ret = false;
+	Unicode2CharBuf tmpFrom(unicode2char(from));
+	Unicode2CharBuf tmpTo(unicode2char(to));
+	if (tmpFrom) {
+		if (tmpTo) {
+			ret = rename(tmpFrom, tmpTo) == 0;
+		} else {
+			ret = rename(tmpFrom, unicode2UTF8(to)) == 0;
+		}
+	} else {
+		if (tmpTo) {
+			ret = rename(unicode2UTF8(from), tmpTo) == 0;
+		} else {
+			ret = rename(unicode2UTF8(from), unicode2UTF8(to)) == 0;
+		}
+	}
+
+	return ret;
 }
 
 #define FILE_COPY_BUFFER 5*1024
 
+//
+// When copying file, first try an ANSI name, only then try UTF-8.
+// This is done in the CFile constructor.
+// 
 bool UTF8_CopyFile(wxString& from, wxString& to)
 {
 	char buffer[FILE_COPY_BUFFER];
-	CFile input_file(from,CFile::read);
+	CFile input_file(from, CFile::read);
 	if (!input_file.IsOpened()) {
 		printf("Error on file copy (can't open original file)\n");
 		return false;
 	}
-	CFile output_file(to,CFile::write);
+	CFile output_file(to, CFile::write);
 	if (!output_file.IsOpened()) {
 		printf("Error on file copy (can't create destination file)\n");
 		return false;
 	}
 	
 	int total_read, total_write;
-	
 	while ((total_read = input_file.Read(buffer,FILE_COPY_BUFFER))) {
 		if (total_read == -1) {
 			printf("Unexpected error copying file! (read error)\n");
@@ -623,22 +670,29 @@ bool UTF8_CopyFile(wxString& from, wxString& to)
 			return false;			
 		}	
 	}
+	
 	return true;
 }
 
-
+// When iterating dir, first try an UTF-8 file name so that we don't loose
+// information, only then try an ANSI name.
 CDirIterator::CDirIterator(wxString dir) {
 	DirStr = dir;
 	if (DirStr.Last() != wxFileName::GetPathSeparator()) {
 		DirStr += wxFileName::GetPathSeparator();
 	}
-	#if wxUSE_UNICODE
-	if (((DirPtr = opendir(unicode2UTF8(dir)))) == NULL) {
-	#else
-	if (((DirPtr = opendir(unicode2char(dir)))) == NULL) {		
-	#endif
-		AddDebugLogLineM(false, wxT("Error enumerating files for dir ")+dir);
-    }
+	Unicode2CharBuf tmpDir(unicode2UTF8(dir));
+	if (tmpDir) {
+		if ((DirPtr = opendir(tmpDir)) == NULL) {
+			AddDebugLogLineM(false,
+				wxT("Error enumerating files for dir ") + dir);
+		}
+	} else {
+		if ((DirPtr = opendir(unicode2char(dir))) == NULL) {
+			AddDebugLogLineM(false,
+				wxT("Error enumerating files for dir ") + dir);
+		}
+	}
 }
 
 CDirIterator::~CDirIterator() {	
@@ -657,6 +711,7 @@ wxString CDirIterator::FindFirstFile(FileType search_type, wxString search_mask)
 	return FindNextFile();
 }
 
+// First try an ANSI name, only then try UTF-8.
 wxString  CDirIterator::FindNextFile() {
 
 	if (!DirPtr) {
@@ -666,86 +721,97 @@ wxString  CDirIterator::FindNextFile() {
 	dp = readdir(DirPtr);
 	
 	bool found = false;
-	
 	wxString FoundName;
-	
-	struct stat* buf=(struct stat*)malloc(sizeof(struct stat));
-
+	struct stat* buf = (struct stat*)malloc(sizeof(struct stat));
 	while (dp!=NULL && !found) {
-
-		if ((type == CDirIterator::Any)) {
+		if (type == CDirIterator::Any) {
 			// return anything.
 			found = true;
-		} else {		/*
+		} else {
+#if 0
 			switch (dp->d_type) {
-				case DT_DIR:
-					if (type == CDirIterator::Dir)  {
-						found = true;
-					} else {
-						dp = readdir(DirPtr);	
-					}
-					break;
-				case DT_REG:
-					if (type == CDirIterator::File)  {
-						found = true;
-					} else {
-						dp = readdir(DirPtr);					
-					}
-					break;
-				default:
-*/
-					// Fallback to stat
-					wxString FullName = DirStr + UTF82unicode(dp->d_name);
-					stat(unicode2UTF8(FullName),buf);
-					if (S_ISREG(buf->st_mode)) {
-						if (type == CDirIterator::File) { 
+			case DT_DIR:
+				if (type == CDirIterator::Dir)  {
+					found = true;
+				} else {
+					dp = readdir(DirPtr);	
+				}
+				break;
+			case DT_REG:
+				if (type == CDirIterator::File)  {
+					found = true;
+				} else {
+					dp = readdir(DirPtr);					
+				}
+				break;
+			default:
+#endif
+				// Fallback to stat
+				// The file name came from the OS, it is a sequence of
+				// bytes ending in a zero. First try an UTF-8 conversion,
+				// so that we don't loose information. Only then stick
+				// to an ANSI name.
+				Char2UnicodeBuf tmpFoundName(UTF82unicode(dp->d_name));
+				FoundName = tmpFoundName ?
+					tmpFoundName : char2unicode(dp->d_name);
+				wxString FullName(DirStr + FoundName);
+				// It might not be possible to use ANSI, so test.
+				Unicode2CharBuf tmpFullName(unicode2char(FullName));
+				if (tmpFullName) {
+					stat(tmpFullName, buf);
+				} else {
+					stat(unicode2UTF8(FullName), buf);
+				}
+				if (S_ISREG(buf->st_mode)) {
+					if (type == CDirIterator::File) { 
+						found = true; 
+					} else { 
+						dp = readdir(DirPtr);
+					} 
+				} else {
+					if (S_ISDIR(buf->st_mode)) {
+						if (type == CDirIterator::Dir) {
 							found = true; 
 						} else { 
 							dp = readdir(DirPtr);
-						} 
-					} else {
-						if (S_ISDIR(buf->st_mode)) {
-							
-							if (type == CDirIterator::Dir) {
-								found = true; 
-							} else { 
-								dp = readdir(DirPtr);
-							}
-						} else {				
-							// unix socket, block device, etc
-							dp = readdir(DirPtr);
 						}
+					} else {				
+						// unix socket, block device, etc
+						dp = readdir(DirPtr);
 					}
-/*					break;
-			}*/
+				}
+#if 0
+				break;
+			}
+#endif
 		}
 		if (found) {
-			FoundName = UTF82unicode(dp->d_name);
-			if (
-				(!FileMask.IsEmpty() && !FoundName.Matches(FileMask)) 
-				|| FoundName.IsSameAs(wxT(".")) || FoundName.IsSameAs(wxT(".."))) {
+			if (	(!FileMask.IsEmpty() && !FoundName.Matches(FileMask)) ||
+				FoundName.IsSameAs(wxT(".")) ||
+				FoundName.IsSameAs(wxT(".."))) {
 				found = false;	
 				dp = readdir(DirPtr);
 			}
 		}
 	}
-			
 	free(buf);
-	
-	if (dp!=NULL) {
+	if (dp != NULL) {
 		return DirStr + FoundName;	
 	} else {
 		return wxEmptyString;
 	}
 }
 
-
+// First try an ANSI name, only then try UTF-8.
 time_t GetLastModificationTime(wxString& file) {
 	struct stat buf;
-	#if wxUSE_UNICODE
-	stat(unicode2UTF8(file),&buf);
-	#else
-	stat(unicode2char(file),&buf);
-	#endif
+	Unicode2CharBuf tmpFile(unicode2char(file));
+	if (tmpFile) {
+		stat(tmpFile, &buf);
+	} else {
+		stat(unicode2UTF8(file), &buf);
+	}
+
 	return buf.st_mtime;
 }
+

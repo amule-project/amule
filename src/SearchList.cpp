@@ -399,8 +399,13 @@ bool CSearchList::AddToList(CSearchFile* toadd, bool bClientResponse)
 	}
 	
 	// If the result was not the type user wanted, drop it.
-	if (!bClientResponse && !(m_resultType == wxString(wxT("Any")) || GetFiletypeByName(toadd->GetFileName(), false)==m_resultType)){
-		printf("Dropped result type %s != %s, file %s\n",unicode2char(GetFiletypeByName(toadd->GetFileName(),false)),unicode2char(m_resultType), unicode2char(toadd->GetFileName()));
+	if (	!bClientResponse &&
+		!(m_resultType == wxString(wxT("Any")) ||
+		GetFiletypeByName(toadd->GetFileName(), false) == m_resultType)) {
+		printf(	"Dropped result type %s != %s, file %s\n",
+			(const char *)unicode2char(GetFiletypeByName(toadd->GetFileName(),false)),
+			(const char *)unicode2char(m_resultType),
+			(const char *)unicode2char(toadd->GetFileName()));
 		delete toadd;
 		return false;
 	}
