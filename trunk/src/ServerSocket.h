@@ -52,7 +52,7 @@ public:
 	void	OnConnect(wxSocketError nErrorCode);
 	void	OnReceive(wxSocketError nErrorCode);
 	void	OnError(wxSocketError nErrorCode);
-	void	PacketReceived(Packet* packet);
+	bool	PacketReceived(Packet* packet);
 	bool   SendPacket(Packet* packet, bool delpacket = true,bool controlpacket = true);
 private:
 	bool	ProcessPacket(char* packet, uint32 size, int8 opcode);

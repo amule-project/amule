@@ -1188,37 +1188,39 @@ void CDownloadListCtrl::DrawSourceItem(wxDC * dc, int nColumn, LPRECT lpRect, Ct
 
 			case 5:	// file info
 				{
-					lpRect->bottom--;
-					lpRect->top++;
+					if (theApp.glob_prefs->ShowProgBar()) {
+						lpRect->bottom--;
+						lpRect->top++;
 
-					int iWidth = lpRect->right - lpRect->left;
-					int iHeight = lpRect->bottom - lpRect->top;
+						int iWidth = lpRect->right - lpRect->left;
+						int iHeight = lpRect->bottom - lpRect->top;
 
-					DWORD dwTicks = GetTickCount();
-					wxMemoryDC cdcStatus;
+						DWORD dwTicks = GetTickCount();
+						wxMemoryDC cdcStatus;
 
-					if (lpCtrlItem->dwUpdated + (4 * DLC_BARUPDATE) < dwTicks || !lpCtrlItem->status || iWidth != lpCtrlItem->status->GetWidth() || !lpCtrlItem->dwUpdated) {
-						if (lpCtrlItem->status == NULL) {
-							lpCtrlItem->status = new wxBitmap(iWidth, iHeight);
+						if (lpCtrlItem->dwUpdated + (4 * DLC_BARUPDATE) < dwTicks || !lpCtrlItem->status || iWidth != lpCtrlItem->status->GetWidth() || !lpCtrlItem->dwUpdated) {
+							if (lpCtrlItem->status == NULL) {
+								lpCtrlItem->status = new wxBitmap(iWidth, iHeight);
+							} else {
+								//delete lpCtrlItem->status;
+								//lpCtrlItem->status=NULL;
+								//lpCtrlItem->status=new wxBitmap(iWidth,iHeight);
+								lpCtrlItem->status->Create(iWidth, iHeight);
+							}
+
+							cdcStatus.SelectObject(*(lpCtrlItem->status));
+
+							lpUpDownClient->DrawStatusBar(&cdcStatus, wxRect(0, 0, iWidth, iHeight), (lpCtrlItem->type == 3), theApp.glob_prefs->UseFlatBar());
+							lpCtrlItem->dwUpdated = dwTicks + (rand() % 128);
 						} else {
-							//delete lpCtrlItem->status;
-							//lpCtrlItem->status=NULL;
-							//lpCtrlItem->status=new wxBitmap(iWidth,iHeight);
-							lpCtrlItem->status->Create(iWidth, iHeight);
+							cdcStatus.SelectObject(*(lpCtrlItem->status));
 						}
+						dc->Blit(lpRect->left, lpRect->top, iWidth, iHeight, &cdcStatus, 0, 0);
+						cdcStatus.SelectObject(wxNullBitmap);
 
-						cdcStatus.SelectObject(*(lpCtrlItem->status));
-
-						lpUpDownClient->DrawStatusBar(&cdcStatus, wxRect(0, 0, iWidth, iHeight), (lpCtrlItem->type == 3), theApp.glob_prefs->UseFlatBar());
-						lpCtrlItem->dwUpdated = dwTicks + (rand() % 128);
-					} else {
-						cdcStatus.SelectObject(*(lpCtrlItem->status));
+						lpRect->top--;
+						lpRect->bottom++;
 					}
-					dc->Blit(lpRect->left, lpRect->top, iWidth, iHeight, &cdcStatus, 0, 0);
-					cdcStatus.SelectObject(wxNullBitmap);
-
-					lpRect->top--;
-					lpRect->bottom++;
 				}
 				break;
 

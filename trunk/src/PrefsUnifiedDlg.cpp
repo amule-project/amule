@@ -910,7 +910,7 @@ void PrefsUnifiedDlg::BuildItemList(Preferences_Struct *prefs, char * appdir)  /
 	listRse.Append(new RseBool(IDC_FULLALLOCATE, prefs->AllocFullPart, "FullPartAlloc", false)); 		
 	listRse.Append(new RseString(IDC_FCHECKSELF, prefs->CustomBrowser, sizeof(prefs->CustomBrowser), "CustomBrowser", "", "FakeCheck"));
 	listRse.Append(new RseInt(IDC_FCHECK, prefs->Browser, "Browser", 0));	
-
+	listRse.Append(new RseBool(IDC_SAFEMAXCONN, prefs->UseSafeMaxConn, "SafeMaxConn", false)); 		
 	
 }
 

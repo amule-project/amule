@@ -26,6 +26,10 @@
 
 #include "types.h"		// Needed for uint8, uint16, uint32 and uint64
 #include "EMSocket.h"		// Needed for CEMSocket
+#include "CString.h"
+#include <wx/dynarray.h>
+
+WX_DECLARE_OBJARRAY(wxString, ArrayOfwxStrings);
 
 class CUpDownClient;
 class CPacket;
@@ -64,7 +68,8 @@ public:
 
 	CClientReqSocket(CPreferences* in_prefs, CUpDownClient* in_client = 0);	
 	~CClientReqSocket();
-	void		Disconnect();
+	void		Disconnect(CString strReason);
+
 
 	void		ResetTimeOutTimer();
 	bool		CheckTimeOut();
@@ -89,7 +94,7 @@ public:
 
 
 protected:
-	void		 PacketReceived(Packet* packet);
+	bool	 PacketReceived(Packet* packet);
 private:
 //	void		Delete_Timed();
 	bool		ProcessPacket(char* packet, uint32 size,uint8 opcode);
@@ -120,7 +125,14 @@ public:
 	void	AddConnection();
 	void	RecalculateStats();
 	void	ReStartListening();
-
+	void	UpdateConnectionsStatus();
+	
+	float	GetMaxConperFiveModifier();
+	uint32	GetPeakConnections()		{ return peakconnections; }
+	uint32	GetTotalConnectionChecks()	{ return totalconnectionchecks; }
+	float	GetAverageConnections()		{ return averageconnections; }
+	uint32	GetActiveConnections()		{ return activeconnections; }
+	
 	void	Debug_ClientDeleted(CUpDownClient* deleted);
 private:
 	bool bListening;
@@ -133,6 +145,10 @@ private:
 	wxIPV4address happyCompiler;
 	uint16	m_ConnectionStates[3];
 	uint16	m_nPeningConnections;
+	uint32	peakconnections;
+	uint32	totalconnectionchecks;
+	float	averageconnections;
+	uint32	activeconnections;
 
 public:
 	MyHashMap1 offensecounter;

@@ -35,7 +35,7 @@
 #define    MIN2MS(min)             SEC2MS((min)*60)
 
 
-#define	MOD_VERSION				"aMule CVS"
+
 
 // MOD Note: Do not change this part - Merkur
 #define	CURRENT_VERSION_SHORT			0x30
@@ -45,9 +45,17 @@
 
 // aMule version 
 
-// relaser - REMOVE THE CVS BITS! LEAVE IT AS 0x02 FOR MAJOR 2
-#define	VERSION_MJR		(0x10        |    0x02) 
-// Kry -                   ^- CVS     ^- Major
+// No more Mod Version unless we're cvs
+// RELEASERS: REMOVE THE DEFINE ON THE RELEASES, PLEASE
+#define __CVS__
+
+#ifdef __CVS__
+	#define	MOD_VERSION				"aMule CVS"
+	#define	VERSION_MJR		(0x10        |    0x02) 
+	// Kry -                   ^- CVS     ^- Major
+#else
+	#define	VERSION_MJR		0x02
+#endif
 
 #define	VERSION_MIN		0
 #define	VERSION_UPDATE	0 
@@ -73,10 +81,10 @@
 #define	FILEREASKTIME				1300000	// 1300000 <- original value ***
 #define	SERVERREASKTIME				800000  // don't set this too low, it wont speed up anything, but it could kill amule or your internetconnection
 #define	UDPSERVERREASKTIME			1300000	// 1300000 <- original value ***
-#define	SOURCECLIENTREASK			600000
+//#define	SOURCECLIENTREASK			600000
 #define	SOURCECLIENTREASKS		MIN2MS(40)	//40 mins
 #define	SOURCECLIENTREASKF		MIN2MS(5)	//5 mins
-#define	MINCOMMONPENALTY			9
+#define	MINCOMMONPENALTY			4
 #define	UDPSERVERSTATTIME			5000
 #define	UDPSERVSTATREASKTIME			14400
 #define	UDPSERVERPORT				4665	// default udp port
@@ -91,7 +99,7 @@
 #define	MAX_UP_CLIENTS_ALLOWED			100	// max. clients allowed regardless UPLOAD_CLIENT_DATARATE or any other factors. Don't set this too low, use DATARATE to adjust uploadspeed per client
 #define	DOWNLOADTIMEOUT				100000
 #define	CONSERVTIMEOUT				25000	// agelimit for pending connection attempts
-#define	RARE_FILE				25
+#define	RARE_FILE				50
 #define	BADCLIENTBAN				4
 #define	MIN_REQUESTTIME				590000
 #define	MAX_PURGEQUEUETIME			3600000
@@ -205,6 +213,10 @@
 #define	OP_MULTIPACKET				0x92
 #define	OP_MULTIPACKETANSWER	0x93
 
+
+// this 'identifier' is used for referencing shared part (incomplete) files with the OP_ASKSHAREDDIRS and related opcodes
+// it was introduced with eDonkeyHybrid and is considered as part of the protocol.
+#define OP_INCOMPLETE_SHARED_FILES "!Incomplete Files"
 
 // extened prot client <-> extened prot client
 #define	OP_EMULEINFO				0x01	//

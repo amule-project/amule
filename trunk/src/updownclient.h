@@ -95,6 +95,7 @@ enum EClientSoftware{
 	SO_LXMULE				= 2,
 	SO_AMULE				= 3,
 	SO_SHAREAZA			= 4,
+	SO_NEW2_MLDONKEY	= 10,
 	SO_LPHANT				= 20,
 	SO_EDONKEYHYBRID	= 50,
 	SO_EDONKEY			= 51,
@@ -135,8 +136,8 @@ public:
 	CUpDownClient(CClientReqSocket* sender = 0);
 	CUpDownClient(uint16 in_port, uint32 in_userid, uint32 in_serverup, uint16 in_serverport,CPartFile* in_reqfile);
 	~CUpDownClient();
-	void			Destroy();
-	void			Disconnected();
+//	void			Destroy();
+	bool			Disconnected(CString strReason, bool bFromSocket = false);
 	bool			TryToConnect(bool bIgnoreMaxCon = false);
 	void			ConnectionEstablished();
 	uint32			GetUserID()					{return m_nUserID;}
@@ -152,7 +153,7 @@ public:
 	void			SetServerIP(uint32 nIP)		{m_dwServerIP = nIP;}
 	uint16			GetServerPort()				{return m_nServerPort;}
 	void			SetServerPort(uint16 nPort)	{m_nServerPort = nPort;}	
-	unsigned char*		GetUserHash()				{return (unsigned char*)m_achUserHash;}
+	uchar*		GetUserHash()				{return (uchar*)m_achUserHash;}
 	void			SetUserHash(unsigned char* achUserHash)		{if(achUserHash) memcpy(m_achUserHash,achUserHash,16); else memset(m_achUserHash,0,16); }
 	bool			HasValidHash()				{return ((int*)m_achUserHash)[0] != 0 || ((int*)m_achUserHash)[1] != 0 ||
 												        ((int*)m_achUserHash)[2] != 0 || ((int*)m_achUserHash)[3] != 0; }
@@ -172,18 +173,21 @@ public:
 	float			GetCompression()	{return (float)compressiongain/notcompressed*100.0f;} // Add rod show compression
 	void			ResetCompressionGain() {compressiongain = 0; notcompressed=1;} // Add show compression
 
+	void			ClearDownloadBlockRequests();
 	void			RequestSharedFileList();
 	void			ProcessSharedFileList(char* pachPacket, uint32 nSize, LPCTSTR pszDirectory = NULL);
 	
-        wxString                 GetUploadFileInfo();
+	wxString		GetUploadFileInfo();
+	
+	void			CheckForGPLEvilDoer();
 
 	void			SetUserName(char* pszNewName);
 	uint8			GetClientSoft()				{return m_clientSoft;}
 	void			ReGetClientSoft();
-	void			ProcessHelloAnswer(char* pachPacket, uint32 nSize);
+	bool			ProcessHelloAnswer(char* pachPacket, uint32 nSize);
 	bool			ProcessHelloPacket(char* pachPacket, uint32 nSize);
 	void			SendHelloAnswer();
-	void			SendHelloPacket();
+	bool			SendHelloPacket();
 	void			SendMuleInfoPacket(bool bAnswer);
 	void			ProcessMuleInfoPacket(char* pachPacket, uint32 nSize);
 	void			ProcessMuleCommentPacket(char* pachPacket, uint32 nSize);
@@ -220,11 +224,11 @@ public:
 	//upload
 	uint32			compressiongain; // Add show compression
 	uint32  		notcompressed; // Add show compression
-	uint8			GetUploadState()			{return m_byUploadState;}
-	void			SetUploadState(uint8 news)	{m_byUploadState = news;}
+	uint8			GetUploadState()			{return m_nUploadState;}
+	void			SetUploadState(uint8 news)	{m_nUploadState = news;}
 	uint32			GetWaitStartTime()			{return m_dwWaitTime;}
 	uint32			GetWaitTime()				{return m_dwUploadTime-m_dwWaitTime;}
-	bool			IsDownloading()				{return (m_byUploadState == US_UPLOADING);}
+	bool			IsDownloading()				{return (m_nUploadState == US_UPLOADING);}
 	bool			HasBlocks()					{return !(m_BlockSend_queue.IsEmpty() && m_BlockRequests_queue.IsEmpty());}
 	float			GetKBpsUp()					{return kBpsUp;}
 	uint32			GetScore(bool sysvalue, bool isdownloading = false, bool onlybasevalue = false);
@@ -234,10 +238,8 @@ public:
 	uint32			GetUpStartTimeDelay()		{return ::GetTickCount() - m_dwUploadTime;}
 	void			SetWaitStartTime(uint32 dwTime = 0);
 	void			SendHashsetPacket(char* forfileid);
-	void			SetUploadFileID(unsigned char* tempreqfileid);
 	bool			SupportMultiPacket() const { return m_bMultiPacket;	}	
-	#warning New from 0.42x, the old versions are DEPRECATED!
-	
+
 	void			SetUploadFileID(CKnownFile* newreqfile);
 	void			ProcessExtendedInfo(CSafeMemFile* data, CKnownFile* tempreqfile);
 	void			ProcessFileInfo(CSafeMemFile* data, CPartFile* file);
@@ -291,11 +293,9 @@ public:
 	bool			IsRemoteQueueFull()			{return m_bRemoteQueueFull;}
 	void			SetRemoteQueueRank(uint16 nr);
 	void			DrawStatusBar(wxMemoryDC* dc, wxRect rect, bool onlygreyrect, bool  bFlat);
-	void			AskForDownload();
+	bool			AskForDownload();
 	void			SendStartupLoadReq();
 	void			SendFileRequest();
-	void			ProcessFileInfo(char* packet,uint32 size);
-	void			ProcessFileStatus(char* packet,uint32 size);
 	void			ProcessHashSet(char* packet,uint32 size);
 	bool			AddRequestForAnotherFile(CPartFile* file);
 	void			SendBlockRequests();
@@ -363,6 +363,15 @@ public:
 		
 	CPartFile*		reqfile;
 	
+	bool			GetSentCancelTransfer() const 
+					{
+						return m_fSentCancelTransfer;
+					}
+	void			SetSentCancelTransfer(bool bVal)
+					{
+						m_fSentCancelTransfer = bVal;
+					}	
+	
 private:
 
 	// base
@@ -385,7 +394,7 @@ private:
 	bool	m_bEmuleProtocol;
 	char*	m_pszUsername;
 	char	m_szFullUserIP[21];
-	char	m_achUserHash[16];
+	uchar	m_achUserHash[16];
 	uint16	m_nUDPPort;
 	uint8	m_byUDPVer;
 	uint8	m_bySourceExchangeVer;
@@ -424,22 +433,22 @@ private:
 	//upload
 	void CreateStandartPackets(unsigned char* data,uint32 togo, Requested_Block_Struct* currentblock);
 	void CreatePackedPackets(unsigned char* data,uint32 togo, Requested_Block_Struct* currentblock);
-	float		kBpsUp;
+	float			kBpsUp;
 	uint32		msSentPrev;
-	bool		m_bBanned;
+	bool			m_bBanned;
 	uint32		m_nTransferedUp;
-	uint8		m_byUploadState;
+	uint8			m_nUploadState;
 	uint32		m_dwWaitTime;
 	uint32		m_dwUploadTime;
 	uint32		m_nMaxSendAllowed;
 	uint32		m_cAsked;
 	uint32		m_dwLastUpRequest;
 	uint32		m_dwBanTime;
-	bool		m_bUsedComprUp;	//only used for interface output
+	bool			m_bUsedComprUp;	//only used for interface output
 	uint32		m_nCurSessionUp;
 	uint16		m_nUpPartCount;
 	static		CBarShader s_UpStatusBar;
-	unsigned char		requpfileid[16];
+	uchar		requpfileid[16];
 	uint16		m_nUpCompleteSourcesCount;
 	public:
 	uint8*		m_abyUpPartStatus;
@@ -499,6 +508,7 @@ private:
 	unsigned int m_fHashsetRequesting : 1, // we have sent a hashset request to this client
 		m_fNoViewSharedFiles : 1, // client has disabled the 'View Shared Files' feature, if this flag is not set, we just know that we don't know for sure if it is enabled
 		m_fSupportsPreview   : 1,		
+		m_fSentCancelTransfer: 1, // we have sent an OP_CANCELTRANSFER in the current connection		
 		m_fSharedDirectories : 1; // client supports OP_ASKSHAREDIRS opcodes
 		
 	/* Razor 1a - Modif by MikaelB */
@@ -567,5 +577,8 @@ public:
 	int	leechertype; // what kind of leecher is it ?
   
 };
+
+#define	MAKE_CLIENT_VERSION(mjr, min, upd) \
+	((UINT)(mjr)*100U*10U*100U + (UINT)(min)*100U*10U + (UINT)(upd)*100U)
 
 #endif // UPDOWNCLIENT_H

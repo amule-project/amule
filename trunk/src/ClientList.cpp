@@ -58,11 +58,15 @@ void CClientList::GetStatistics(uint32 &totalclient, uint32 stats[], CMap<uint8,
 	if(clientVersionEMule)		clientVersionEMule->RemoveAll();
 	POSITION pos1, pos2;
 
-	for (int i=0;i<11;i++) stats[i]=0;
+	for (int i=0;i<15;i++) stats[i]=0;
 
 	for (pos1 = list.GetHeadPosition();( pos2 = pos1 ) != NULL;){
 		list.GetNext(pos1);
 		CUpDownClient* cur_client =	list.GetAt(pos2);
+		
+		if (cur_client->HasLowID()) {
+			stats[11]++;		
+		}
 		
 		switch (cur_client->GetClientSoft()) {
 			case SO_UNKNOWN : 
@@ -83,6 +87,9 @@ void CClientList::GetStatistics(uint32 &totalclient, uint32 stats[], CMap<uint8,
 				stats[2]++;
 				if(clientVersionEMule) {
 					uint8 version = cur_client->GetMuleVersion();
+					if (version == 0xFF || version == 0x66 || version==0x69 || version==0x90 || version==0x33 || version==0x60) {
+						continue;					
+					}
 					(*clientVersionEMule)[version]++;
 				}
 				break;
@@ -99,6 +106,7 @@ void CClientList::GetStatistics(uint32 &totalclient, uint32 stats[], CMap<uint8,
 				stats[3]++;
 				break;
 			case SO_NEW_MLDONKEY:
+			case SO_NEW2_MLDONKEY:
 				stats[7]++;
 				break;
 			case SO_COMPAT_UNK:
@@ -108,7 +116,21 @@ void CClientList::GetStatistics(uint32 &totalclient, uint32 stats[], CMap<uint8,
 				stats[10]++;
 				break;
 		}
-
+		
+		if (cur_client->Credits() != NULL){
+			switch(cur_client->Credits()->GetCurrentIdentState(cur_client->GetIP())){
+				case IS_IDENTIFIED:
+					stats[12]++;
+					break;
+				case IS_IDFAILED:
+				case IS_IDNEEDED:
+				case IS_IDBADGUY:
+					stats[13]++;
+				default:
+					break;
+			}
+		}
+		
 		//if(clientStatus) (*clientStatus)[cur_client->GetDownloadState()]++;
 	}
 }

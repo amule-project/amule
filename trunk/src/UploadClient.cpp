@@ -349,7 +349,7 @@ bool CUpDownClient::CreateNextBlockPackage(){
 				}
 			}
 
-			SetUploadFileID(currentblock->FileID);
+			SetUploadFileID(srcfile);
 			if (m_byDataCompVer == 1 && (!strstr(srcfile->GetFileName().c_str(),".zip")) && (!strstr(srcfile->GetFileName().c_str(),".rar")) && (!strstr(srcfile->GetFileName().c_str(),".ace")))
 				CreatePackedPackets(filedata,togo,currentblock);
 			else
@@ -507,29 +507,6 @@ void CUpDownClient::CreatePackedPackets(byte* data,uint32 togo, Requested_Block_
 	}
 	delete[] output;
 }
-
-#warning - DEPRECATED
-void CUpDownClient::SetUploadFileID(uchar* tempreqfileid){
-	CKnownFile* newreqfile = NULL;
-	if( tempreqfileid )
-		newreqfile = theApp.sharedfiles->GetFileByID(tempreqfileid);
-	CKnownFile* oldreqfile = theApp.sharedfiles->GetFileByID(requpfileid);
-	if(newreqfile == oldreqfile)
-		return;
-	if(newreqfile){
-		newreqfile->AddQueuedCount();
-		newreqfile->AddUploadingClient(this);
-		memcpy(requpfileid,tempreqfileid,16);
-	}
-	else{
-		memset(requpfileid, 0, 16);
-	}
-	if(oldreqfile){
-		oldreqfile->SubQueuedCount();
-		oldreqfile->RemoveUploadingClient(this);
-	}
-}
-
 
 void CUpDownClient::ProcessExtendedInfo(CSafeMemFile* data, CKnownFile* tempreqfile)
 {

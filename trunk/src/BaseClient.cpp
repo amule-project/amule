@@ -169,7 +169,7 @@ void CUpDownClient::Init()
 	m_pszClientFilename = 0;
 	m_dwUploadTime = 0;
 	m_nTransferedDown = 0;
-	m_byUploadState = US_NONE;
+	m_nUploadState = US_NONE;
 	m_dwLastBlockReceived = 0;
 	m_byEmuleVersion = 0;
 	m_byDataCompVer = 0;
@@ -224,6 +224,7 @@ void CUpDownClient::Init()
 	m_bAddNextConnect = false;  // VQB Fix for LowID slots only on connection
 	m_SoftLen = 0;
 	m_bHelloAnswerPending = false;
+	m_fSentCancelTransfer = 0;
 }
 
 
@@ -243,7 +244,7 @@ CUpDownClient::~CUpDownClient()
 	}
 	//printf("2...");
 	if (socket) {
-		socket->client = 0; // Kry - Doesn't Safe_Delete do this already?
+		socket->client = 0; // Kry - Wouldn't Safe_Delete() not delete the client then?
 		socket->Safe_Delete();
 	}
 	//printf("3...");
@@ -298,18 +299,18 @@ CUpDownClient::~CUpDownClient()
 
 	//printf("11...");
 	if (m_iRate>0 || m_strComment.GetLength()>0) {
-		m_iRate=0; m_strComment="";
+		m_iRate=0; 
+		m_strComment.Empty();
 		if (reqfile) {
 			reqfile->UpdateFileRatingCommentAvail();
 		}
 	}
-	//printf("12...");
-	m_PendingBlocks_list.RemoveAll();
+
 #ifndef DOWNLOADRATE_FILTERED
 	m_AvarageDDR_list.RemoveAll();
 #endif
 	//DEBUG_ONLY (theApp.listensocket->Debug_ClientDeleted(this));
-	SetUploadFileID((uchar*)NULL);
+	SetUploadFileID(NULL);
 	//printf("END\n");
 }
 
@@ -345,6 +346,7 @@ bool CUpDownClient::ProcessHelloPacket(char* pachPacket, uint32 nSize)
 		 *       - the magic number is spread all over the source
 		 *       - the answer packet lacks the size field
 		 */
+		wxASSERT(0);
 		throw wxString(wxT("Invalid Hello packet: Other userhash sizes than 16 are not implemented"));
 	}
 	// eMule 0.42: reset all client properties; a client may not send a particular emule tag any longer
@@ -352,11 +354,12 @@ bool CUpDownClient::ProcessHelloPacket(char* pachPacket, uint32 nSize)
 	return ProcessHelloTypePacket(&data);
 }
 
-void CUpDownClient::ProcessHelloAnswer(char* pachPacket, uint32 nSize)
+bool CUpDownClient::ProcessHelloAnswer(char* pachPacket, uint32 nSize)
 {
 	CSafeMemFile data((BYTE*)pachPacket,nSize);
+	bool bIsMule = ProcessHelloTypePacket(&data);
 	m_bHelloAnswerPending = false;
-	ProcessHelloTypePacket(&data);
+	return bIsMule;
 }
 
 bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
@@ -364,11 +367,12 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
 		
 	m_bIsHybrid = false;
 	m_bIsML = false;
+	m_fNoViewSharedFiles = 0;
 	DWORD dwEmuleTags = 0;
 	
 	try {	
 	
-		data->ReadRaw((unsigned char*)m_achUserHash,16);
+		data->ReadHash16(m_achUserHash);
 		data->Read(m_nUserID);
 		uint16 nUserPort = 0;
 		data->Read(nUserPort); // hmm clientport is sent twice - why?
@@ -382,8 +386,9 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
 						delete[] m_pszUsername;
 						m_pszUsername = NULL; // needed, in case 'nstrdup' fires an exception!!
 					}
-					if( temptag.tag.stringvalue )
+					if( temptag.tag.stringvalue ) {
 						m_pszUsername = nstrdup(temptag.tag.stringvalue);
+					}
 					break;
 				case CT_VERSION:
 					m_nClientVersion = temptag.tag.intvalue;
@@ -467,7 +472,7 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
 		data->Read(m_nServerPort);
 		// Hybrid now has an extra uint32.. What is it for?
 		// Also, many clients seem to send an extra 6? These are not eDonkeys or Hybrids..
-		if ( data->GetLength() - data->GetPosition() == 4 ){
+		if ( data->GetLength() - data->GetPosition() == sizeof(uint32) ){
 			// Kry - Changes on eMule code for compat.
 			char test[4];
 			// lemonfan - this is not an "normal" string, so wxString cant be used
@@ -529,28 +534,26 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
 		}
 	}
 
-	if(!HasLowID() || m_nUserID == 0)
-		m_nUserID = m_dwUserIP;
+	if(!HasLowID() || m_nUserID == 0) {
+		m_nUserID = ntohl(m_dwUserIP);
+	}
 
 	// get client credits
-	uchar key[16];
-	md4cpy(key,m_achUserHash);
-	CClientCredits* pFoundCredits = theApp.clientcredits->GetCredit(key);
+	CClientCredits* pFoundCredits = theApp.clientcredits->GetCredit(m_achUserHash);
 	if (credits == NULL){
 		credits = pFoundCredits;
 		if (!theApp.clientlist->ComparePriorUserhash(m_dwUserIP, m_nUserPort, pFoundCredits)){
 			theApp.amuledlg->AddDebugLogLine(false, "Clients: %s (%s), Banreason: Userhash changed (Found in TrackedClientsList)", GetUserName(), GetFullIP()); 
 			Ban();
 		}	
-	}
-	else if (credits != pFoundCredits){
+	} else if (credits != pFoundCredits){
 		// userhash change ok, however two hours "waittime" before it can be used
 		credits = pFoundCredits;
 		theApp.amuledlg->AddDebugLogLine(false, "Clients: %s (%s), Banreason: Userhash changed", GetUserName(),GetFullIP()); 
 		Ban();
 	}
 
-	if ((m_Friend = theApp.friendlist->SearchFriend(key, m_dwUserIP, m_nUserPort)) != NULL){
+	if ((m_Friend = theApp.friendlist->SearchFriend(m_achUserHash, m_dwUserIP, m_nUserPort)) != NULL){
 		// Link the friend to that client
 		if (m_Friend->m_LinkedClient){
 			if (m_Friend->m_LinkedClient != this){
@@ -562,9 +565,9 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
 				// move an assigned friend slot between different client instances which are/were also friends
 				m_Friend->m_LinkedClient->SetFriendSlot(bFriendSlot);
 			}
-		}
-		else
+		} else {
 			m_Friend->m_LinkedClient = this;
+		}
 		md4cpy(m_Friend->m_abyUserhash,GetUserHash());
 		m_Friend->m_dwHasHash = md4cmp(m_Friend->m_abyUserhash, CFriend::sm_abyNullHash) ? 1 : 0;
 		m_Friend->m_strName = m_pszUsername;
@@ -612,48 +615,64 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
 }
 
 
-void CUpDownClient::SendHelloPacket() {
-	if (socket) {
-		struct sockaddr_in sockAddr;
-		memset(&sockAddr, 0, sizeof(sockAddr));
-		//uint32 nSockAddrLen = sizeof(sockAddr);
-		//socket->GetPeerName((SOCKADDR*)&sockAddr,(int*)&nSockAddrLen);
-		wxIPV4address address;
-		socket->GetPeer(address);
-		sockAddr.sin_addr.s_addr = inet_addr(address.IPAddress().c_str());
-		if ( theApp.ipfilter->IsFiltered(sockAddr.sin_addr.s_addr)) {
-			theApp.amuledlg->AddDebugLogLine(true,CString(_("Filtered IP: %s (%s)")).GetData(),GetFullIP(),theApp.ipfilter->GetLastHit().GetData());
-			Disconnected();
-			theApp.stat_filteredclients++;
-			return;
+bool CUpDownClient::SendHelloPacket() {
+
+	if (socket == NULL){
+		wxASSERT(0);
+		return true;
+	}
+	
+	// if IP is filtered, dont greet him but disconnect...
+	struct sockaddr_in sockAddr;
+	memset(&sockAddr, 0, sizeof(sockAddr));
+	//uint32 nSockAddrLen = sizeof(sockAddr);
+	//socket->GetPeerName((SOCKADDR*)&sockAddr,(int*)&nSockAddrLen);
+	wxIPV4address address;
+	socket->GetPeer(address);
+	sockAddr.sin_addr.s_addr = inet_addr(address.IPAddress().c_str());
+	if ( theApp.ipfilter->IsFiltered(sockAddr.sin_addr.s_addr)) {
+		theApp.amuledlg->AddDebugLogLine(true,CString(_("Filtered IP: %s (%s)")).GetData(),GetFullIP(),theApp.ipfilter->GetLastHit().GetData());
+		theApp.stat_filteredclients++;
+		if (Disconnected("IPFilter")) {
+			delete this;
+			return false;
 		}
+		return true;
 	}
-	CMemFile* data = new CMemFile();
-	data->Write((uint8)16);
-	SendHelloTypePacket(data);
-	Packet* packet = new Packet(data);
-	delete data;
+
+	CSafeMemFile data(128);
+	data.Write((uint8)16); // size of userhash
+	SendHelloTypePacket(&data);
+	Packet* packet = new Packet(&data);
 	packet->opcode = OP_HELLO;
-	if (socket) {
-		theApp.uploadqueue->AddUpDataOverheadOther(packet->size);
-		socket->SendPacket(packet,true);
-	}
+	theApp.uploadqueue->AddUpDataOverheadOther(packet->size);
+	socket->SendPacket(packet,true);
 	m_bHelloAnswerPending = true;
+	return true;
 }
 
 void CUpDownClient::SendMuleInfoPacket(bool bAnswer) {
+
+	if (socket == NULL){
+		wxASSERT(0);
+		return;
+	}
+	
 	CMemFile* data = new CMemFile();
 	data->Write((uint8)CURRENT_VERSION_SHORT);
 	data->Write((uint8)EMULE_PROTOCOL);
 
+
+	#ifdef __CVS__
 	// Support for ET_MOD_VERSION [BlackRat]
-	// lemonfan - I count 9 tags...
-	// Kry - Yes, my fault
-	data->Write((uint32)9); /* 7 -> 8 */ 
+	data->Write((uint32)9); 
+	#else
+	data->Write((uint32)8);  // NO MOD_VERSION
+	#endif
 
 	CTag tag1(ET_COMPRESSION,1);
 	tag1.WriteTagToFile(data);
-	CTag tag2(ET_UDPVER,3);
+	CTag tag2(ET_UDPVER,4);
 	tag2.WriteTagToFile(data);
 	CTag tag3(ET_UDPPORT,theApp.glob_prefs->GetUDPPort());
 	tag3.WriteTagToFile(data);
@@ -665,11 +684,12 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer) {
 	tag6.WriteTagToFile(data);
 	
 	uint32 dwTagValue = (theApp.clientcredits->CryptoAvailable() ? 3 : 0);
-
-	// Kry - Needs the preferences && the preview code form eMule
+	// Kry - Needs the preview code from eMule	
 	/*
-	if (theApp.glob_prefs->IsPreviewEnabled())
+	// set 'Preview supported' only if 'View Shared Files' allowed
+	if (theApp.glob_prefs->CanSeeShares() != vsfaNobody) {
 		dwTagValue |= 128;
+	}
 	*/
 	CTag tag7(ET_FEATURES, dwTagValue);
 	tag7.WriteTagToFile(data);
@@ -677,11 +697,13 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer) {
 	CTag tag8(ET_COMPATIBLECLIENT,SO_AMULE);
 	tag8.WriteTagToFile(data);
 
+#ifdef __CVS__
 	// Support for tag ET_MOD_VERSION
 	wxString mod_name(MOD_VERSION);
 	CTag tag9(ET_MOD_VERSION, mod_name);
 	tag9.WriteTagToFile(data);
 	// Maella end
+#endif
 
 	Packet* packet = new Packet(data,OP_EMULEPROT);
 	delete data;
@@ -797,6 +819,7 @@ void CUpDownClient::ProcessMuleInfoPacket(char* pachPacket, uint32 nSize)
 					else {
 						m_strModVersion = _T("ModID=<Unknwon>");
 					}
+					CheckForGPLEvilDoer();
 					break;
 				default:
 					//printf("Mule Unk Tag 0x%02x=%x\n", temptag.tag.specialtag, (UINT)temptag.tag.intvalue);
@@ -833,28 +856,32 @@ void CUpDownClient::ProcessMuleInfoPacket(char* pachPacket, uint32 nSize)
 	ReGetClientSoft();
 
 	m_byInfopacketsReceived |= IP_EMULEPROTPACK;
-	if (m_byInfopacketsReceived == IP_BOTH)
-		InfoPacketsReceived();
+
 }
 
 void CUpDownClient::SendHelloAnswer()
 {
-	CMemFile* data = new CMemFile();
-	SendHelloTypePacket(data);
-	Packet* packet = new Packet(data);
-	delete data;
+
+	if (socket == NULL){
+		wxASSERT(0);
+		return;
+	}	
+	
+	CSafeMemFile data(128);
+	SendHelloTypePacket(&data);
+	Packet* packet = new Packet(&data);
 	packet->opcode = OP_HELLOANSWER;
-	if (socket) {
-		theApp.uploadqueue->AddUpDataOverheadOther(packet->size);
-		socket->SendPacket(packet,true);
-	}
+
+	theApp.uploadqueue->AddUpDataOverheadOther(packet->size);
+	socket->SendPacket(packet,true);
+
 }
 
 void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 {
-	data->WriteRaw(theApp.glob_prefs->GetUserHash(),16);
-	data->Write(theApp.serverconnect->GetClientID());
-	data->Write(theApp.glob_prefs->GetPort());
+	data->WriteHash16(theApp.glob_prefs->GetUserHash());
+	data->Write((uint32)theApp.serverconnect->GetClientID());
+	data->Write((uint16)theApp.glob_prefs->GetPort());
 	
 	// Kry - This is the tagcount!!! Be sure to update it!!
 	data->Write((uint32)5);
@@ -945,6 +972,7 @@ void CUpDownClient::ProcessMuleCommentPacket(char* pachPacket, uint32 nSize)
 		theApp.amuledlg->AddDebugLogLine(false,_("Rating for file '%s' received: %i"),m_pszClientFilename,m_iRate);
 		if (length>50) length=50;
 		if (length>0){
+			#warning Lacks Comment Filtering
 			char* desc=new char[length+1];
 			memset(desc,0,length+1);
 			if ( (unsigned int)length != data.ReadRaw(desc,length) ) {
@@ -975,256 +1003,228 @@ void CUpDownClient::ProcessMuleCommentPacket(char* pachPacket, uint32 nSize)
 		return;
 	}		
 
-	if (reqfile->HasRating() || reqfile->HasComment()) theApp.amuledlg->transferwnd->downloadlistctrl->UpdateItem(reqfile);
+	if (reqfile->HasRating() || reqfile->HasComment()) { 
+		theApp.amuledlg->transferwnd->downloadlistctrl->UpdateItem(reqfile);
+	}
 }
 
-void CUpDownClient::Disconnected()
+void CUpDownClient::ClearDownloadBlockRequests()
 {
-	#ifdef NET_TEST
-	printf("Disconnecting...\n");
+	for (POSITION pos = m_DownloadBlocks_list.GetHeadPosition();pos != 0;){
+		Requested_Block_Struct* cur_block = m_DownloadBlocks_list.GetNext(pos);
+		if (reqfile){
+			reqfile->RemoveBlockFromList(cur_block->StartOffset,cur_block->EndOffset);
+		}
+		delete cur_block;
+	}
+	m_DownloadBlocks_list.RemoveAll();
+
+	for (POSITION pos = m_PendingBlocks_list.GetHeadPosition();pos != 0;){
+		Pending_Block_Struct *pending = m_PendingBlocks_list.GetNext(pos);
+		if (reqfile){
+			reqfile->RemoveBlockFromList(pending->block->StartOffset, pending->block->EndOffset);
+		}
+
+		delete pending->block;
+		// Not always allocated
+		if (pending->zStream){
+			inflateEnd(pending->zStream);
+			delete pending->zStream;
+		}
+		delete pending;
+	}
+	m_PendingBlocks_list.RemoveAll();
+}
+
+bool CUpDownClient::Disconnected(CString strReason, bool bFromSocket){
+	//If this is a KAD client object, just delete it!
+	//wxASSERT(theApp.clientlist->IsValidClient(this));
+
+	#ifdef __USE_KAD__
+	SetKadState(KS_NONE);
 	#endif
 	
-	
 	if (GetUploadState() == US_UPLOADING) {
-		#ifdef NET_TEST
-		printf("UPLOADING Disconnect - Out of queue\n");
-		#endif
 		theApp.uploadqueue->RemoveFromUploadQueue(this);
 	}
-
-	if (m_BlockSend_queue.GetCount() > 0) {
-		// Although this should not happen, it happens sometimes. The problem we may run into here is as follows:
-		//
-		// 1.) If we do not clear the block send requests for that client, we will send those blocks next time the client
-		// gets an upload slot. But because we are starting to send any available block send requests right _before_ the
-		// remote client had a chance to prepare to deal with them, the first sent blocks will get dropped by the client.
-		// Worst thing here is, because the blocks are zipped and can therefore only be uncompressed when the first block
-		// was received, all of those sent blocks will create a lot of uncompress errors at the remote client.
-		//
-		// 2.) The remote client may have already received those blocks from some other client when it gets the next
-		// upload slot.
-		theApp.amuledlg->AddDebugLogLine(false, "Disconnected client %u. Block send queue=%u.", GetUserID(), m_BlockSend_queue.GetCount());
-		ClearUploadBlockRequests();
-	}
-
-	if (GetDownloadState() == DS_DOWNLOADING){
-		#ifdef NET_TEST
-		printf("DOWNLOADING Disconnect - To QUEUE\n");
-		#endif
+	
+	if (GetDownloadState() == DS_DOWNLOADING) {
 		SetDownloadState(DS_ONQUEUE);
-	} else if(GetDownloadState() == DS_CONNECTED) {
-		// client didn't responsed to our request for some reasons (remotely banned?)
-		// or it just doesn't has this file, so try to swap first
-		// if (!SwapToAnotherFile()) {
-		if (!SwapToAnotherFile(true, true, true, NULL)) {
-			theApp.downloadqueue->RemoveSource(this);
-		}
 	}
+	else{
+		// ensure that all possible block requests are removed from the partfile
+		ClearDownloadBlockRequests();
 
-
+		if(GetDownloadState() == DS_CONNECTED){
+		    // client didn't responsed to our request for some reasons (remotely banned?)
+		    // or it just doesn't has this file, so try to swap first
+		    if (!SwapToAnotherFile(true, true, true, NULL)){
+			    theApp.downloadqueue->RemoveSource(this);
+			    //DEBUG_ONLY(AddDebugLogLine(false, "Removed %s from downloadqueue - didn't responsed to filerequests",GetUserName()));
+		    }
+	    }
+	}
+		
 	// The remote client does not have to answer with OP_HASHSETANSWER *immediatly* 
 	// after we've sent OP_HASHSETREQUEST. It may occure that a (buggy) remote client 
 	// is sending use another OP_FILESTATUS which would let us change to DL-state to DS_ONQUEUE.
 	if (((GetDownloadState() == DS_REQHASHSET) || m_fHashsetRequesting) && (reqfile)) {
-		#ifdef NET_TEST
-		printf("Requesting HASHSET Disconnect - Set Needed\n");
-		#endif
-        	reqfile->hashsetneeded= true;
+        reqfile->hashsetneeded = true;
 	}
+
+	//wxASSERT(theApp.clientlist->IsValidClient(this));
 
 	//check if this client is needed in any way, if not delete it
 	bool bDelete = true;
-	switch(m_byUploadState) {
+	switch(m_nUploadState){
 		case US_ONUPLOADQUEUE:
-			#ifdef NET_TEST
-			printf("ULState - On upload queue - don't delete\n");
-			#endif
 			bDelete = false;
-	}
-	switch(m_nDownloadState) {
+			break;
+	};
+	switch(m_nDownloadState){
 		case DS_ONQUEUE:
 		case DS_TOOMANYCONNS:
 		case DS_NONEEDEDPARTS:
 		case DS_LOWTOLOWIP:
-			#ifdef NET_TEST
-			printf("DLState - On queue or TooManyConns or NoNeededParts or LOWTOLOWIP - don't delete\n");
-			#endif
 			bDelete = false;
-	}
-	switch(m_byUploadState) {
+	};
+
+	switch(m_nUploadState){
 		case US_CONNECTING:
 		case US_WAITCALLBACK:
 		case US_ERROR:
-			#ifdef NET_TEST		
-			printf("ULState - Connecting or WaitCallback or Error - Delete\n");
-			#endif
 			bDelete = true;
-	}
-	switch(m_nDownloadState) {
-		case DS_CONNECTING: {
-			#ifdef NET_TEST
-			printf("DLState - Connecting\n");
-			#endif
-			m_cFailed++;
-			if (m_cFailed <= 2) {
-				#ifdef NET_TEST
-				printf("\tLess than 2 retries - retrying...\n");
-				#endif
-				TryToConnect();
-				return;
-			}
-		}
+	};
+	switch(m_nDownloadState){
+		case DS_CONNECTING:
 		case DS_WAITCALLBACK:
 		case DS_ERROR:
-			#ifdef NET_TEST
-			printf("DLState - Connecting or WaitCallback or Error - delete\n");
-			#endif
 			bDelete = true;
-	}
+	};
+	
 
-	if (GetChatState() != MS_NONE) {
+	if (GetChatState() != MS_NONE){
 		bDelete = false;
-		#ifdef NET_TEST
-		printf("Disconnecting from ChatState %i\n",GetChatState());
-		#endif
 		theApp.amuledlg->chatwnd->chatselector->ConnectingResult(this,false);
 	}
-	if (socket) {
-		#ifdef NET_TEST
-		printf("Socket Exists - deleting\n");
-		#endif
+	
+	if (!bFromSocket && socket){
+		wxASSERT (theApp.listensocket->IsValidSocket(socket));
 		socket->Safe_Delete();
 	}
-	socket = NULL;
-	//printf("Socket %x set on client %x\n",socket, this);
-	if (m_iFileListRequested) {
-		theApp.amuledlg->AddDebugLogLine(false,_("Unable to retrieve shared files from '%s'"),GetUserName());
+	
+	socket = 0;
+	
+    if (m_iFileListRequested){
+		theApp.amuledlg->AddLogLine(true,CString("Failed to retrieve shared files from %s"),GetUserName());
 		m_iFileListRequested = 0;
 	}
 	if (m_Friend) {
 		theApp.friendlist->RefreshFriend(m_Friend);
 	}
-	if (bDelete) {
-		delete this;
-	} else {
+	//theApp.amuledlg->transferwnd->clientlistctrl.RefreshClient(this);
+
+	if (bDelete){
+		#ifdef __USE_DEBUG__
+		if (thePrefs.GetDebugClientTCPLevel() > 0) {
+			Debug("--- Deleted client            %s; Reason=%s\n", DbgGetClientInfo(true), strReason);
+		}
+		#endif
+		return true;
+	}
+	else{
+		#ifdef __USE_DEBUG__
+		if (thePrefs.GetDebugClientTCPLevel() > 0) {
+			Debug("--- Disconnected client       %s; Reason=%s\n", DbgGetClientInfo(true), strReason);
+		}
+		#endif
 		m_fHashsetRequesting = 0;
-		m_dwEnteredConnectedState = 0;
+		SetSentCancelTransfer(0);
 		m_bHelloAnswerPending = false;
+		return false;
 	}
 }
 
+//Returned bool is not if the TryToConnect is successful or not..
+//false means the client was deleted!
+//true means the client was not deleted!
 bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 {
-	#ifdef NET_TEST
-	printf("Trying to connect\n");
-	#endif
 	if (theApp.listensocket->TooManySockets() && !bIgnoreMaxCon )  {
 		if (!socket) { 
-			#ifdef NET_TEST
-			printf("Too many sockets\n");
-			#endif
-			Disconnected();
-			return false;
+			if(Disconnected("Too many connections")) {
+				delete this;
+				return false;
+			}
+			return true;			
 		} else if (!socket->IsConnected()) {
-			#ifdef NET_TEST
-			printf("Too many sockets\n");
-			#endif
-			Disconnected();
-			return false;			
+			if(Disconnected("Too many connections")) {
+				delete this;
+				return false;
+			}
+			return true;			
 		}
 	}
-	if ((theApp.serverconnect->GetClientID() < 16777216) && HasLowID()) {
-		#ifdef NET_TEST
-		printf("Has LOWID\n");
-		#endif
+	
+	#ifdef __USE_KAD__
+	if( GetKadState() == KS_QUEUED_FWCHECK ) {
+		SetKadState(KS_CONNECTING_FWCHECK);	
+	}
+	#endif
+	
+	#ifdef __USE_KAD__
+	if (HasLowID() && !theApp.DoCallback(this)) {
+	#else
+	if (HasLowID()) {
+	#endif
 		if (GetDownloadState() == DS_CONNECTING) {
 			SetDownloadState(DS_LOWTOLOWIP);
 		} else if (GetDownloadState() == DS_REQHASHSET) {
 			SetDownloadState(DS_ONQUEUE);
-			if (reqfile) {
-				reqfile->hashsetneeded = true;
-			}
+			reqfile->hashsetneeded = true;
 		}
 		if (GetUploadState() == US_CONNECTING) {
-			Disconnected();
-			return false;
+			if(Disconnected("LowID->LowID and US_CONNECTING")) {
+				delete this;
+				return false;
+			}
 		}
+		return true;
 	}
 
 	if (!socket) {
-		#ifdef NET_TEST
-		printf("No socket\n");
-		#endif
 		socket = new CClientReqSocket(theApp.glob_prefs,this);
 	//	printf("Socket %x set on client %x\n",socket, this);
-		#ifdef NET_TEST
-		printf("Creating Socket... ");
-		#endif
 		if (!socket->Create()) {
-			#ifdef NET_TEST
-			printf("Creating Socket Failed!\n");
-			#endif
 			socket->Safe_Delete();
 			return true;
-		} else {
-			#ifdef NET_TEST
-			printf("Creating Socket Done\n");
-			#endif
-		}
+		} 
 	} else if (!socket->IsConnected()) {
-		#ifdef NET_TEST
-		printf("Socket Not Connected\n");
-		#endif
 		socket->Safe_Delete();
 		socket = new CClientReqSocket(theApp.glob_prefs,this);
 	//	printf("Socket %x set on client %x\n",socket, this);
-		#ifdef NET_TEST
-		printf("Creating Socket... ");
-		#endif
 		if (!socket->Create()) {
-			#ifdef NET_TEST
-			printf("Creating Socket Failed!\n");
-			#endif
 			socket->Safe_Delete();
 			return true;
-		} else {
-			#ifdef NET_TEST
-			printf("Creating Socket Done\n");
-			#endif
 		}
 	} else {
-		#ifdef NET_TEST
-		printf("Connection OK\n");
-		#endif
 		ConnectionEstablished();
 		return true;
 	}
 	if (HasLowID()) {
-
-		#ifdef NET_TEST
-		printf("LOWID Client\n");
-		#endif
-
 		if (GetDownloadState() == DS_CONNECTING) {
-
-			#ifdef NET_TEST
-			printf("Download Connecting - WAITCALLBACK\n");
-			#endif
-
 			SetDownloadState(DS_WAITCALLBACK);
 		}
 		if (GetUploadState() == US_CONNECTING) {
-			#ifdef NET_TEST
-			printf("Upload Connecting - Disconnected\n");
-			#endif
-			Disconnected();
-			return false;
+			if(Disconnected("LowID and US_CONNECTING"))
+			{
+				delete this;
+				return false;
+			}
+			return true;
 		}
 
 		if (theApp.serverconnect->IsLocalServer(m_dwServerIP,m_nServerPort)) {
-			#ifdef NET_TEST
-			printf("Client on local server\n");
-			#endif
 			CMemFile data;
 			data.Write(m_nUserID);
 			Packet* packet = new Packet(&data);
@@ -1236,79 +1236,64 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 			theApp.uploadqueue->AddUpDataOverheadServer(packet->size);
 			theApp.serverconnect->SendPacket(packet);
 		} else {
-			#ifdef NET_TEST
-			printf("Client on non-local server\n");
-			#endif
 			if (GetUploadState() == US_NONE && (!GetRemoteQueueRank() || m_bReaskPending)) {
-				#ifdef NET_TEST
-				printf("Not uploading && (No remote queue rank || ReaskPending)\n");
-				#endif
 				theApp.downloadqueue->RemoveSource(this);
-				Disconnected();
-				return false;
+				if(Disconnected("LowID and US_NONE and QR=0"))
+				{
+					delete this;
+					return false;
+				}
+				return true;
 			} else {
-				#ifdef NET_TEST
-				printf("NOT (Not uploading && (No remote queue rank || ReaskPending))\n");
-				#endif
 				if (GetDownloadState() == DS_WAITCALLBACK) {
-					#ifdef NET_TEST
-					printf("On WAITCALLBACK\n");
-					#endif
 					m_bReaskPending = true;
 					SetDownloadState(DS_ONQUEUE);
 				}
 			}
 		}
 	} else {
-		#ifdef NET_TEST
-		printf("HIGHID Client\n");
-		#endif
 		amuleIPV4Address tmp;
 		tmp.Hostname(GetFullIP());
 		tmp.Service(GetUserPort());
-		#ifdef NET_TEST
-		printf("Connecting socket\n");
-		#endif
 		socket->Connect(tmp,FALSE);
 		// socket->Connect(GetFullIP(),GetUserPort());
-		SendHelloPacket();
+		if (!SendHelloPacket()) {
+			return false; // client was deleted!
+		}
 	}
 	return true;
 }
 
 void CUpDownClient::ConnectionEstablished()
 {
-	m_cFailed = 0;
+
+	#ifdef __USE_KAD__
+	switch(GetKadState())
+	{
+		case KS_CONNECTING_FWCHECK:
+            SetKadState(KS_CONNECTED_FWCHECK);
+			break;
+		case KS_QUEUED_BUDDY:
+			SetKadState(KS_CONNECTED_BUDDY);
+			break;
+	}
+	#endif	
+	
 	// ok we have a connection, lets see if we want anything from this client
-	#ifdef NET_TEST
-	printf("Connection established\n");
-	#endif
 	if (GetChatState() == MS_CONNECTING) {
-		#ifdef NET_TEST
-		printf("Chat connecting OK\n");
-		#endif
 		theApp.amuledlg->chatwnd->chatselector->ConnectingResult(this,true);
 	}
 
 	switch(GetDownloadState()) {
 		case DS_CONNECTING:
 		case DS_WAITCALLBACK:
-			#ifdef NET_TEST
-			printf("Download Source Connected\n");
-			#endif
 			m_bReaskPending = false;
 			SetDownloadState(DS_CONNECTED);
 			SendFileRequest();
 	}
 	if (m_bReaskPending){
-		#ifdef NET_TEST
-		printf("Reasking OK\n");
-		#endif
 		m_bReaskPending = false;
 		if (GetDownloadState() != DS_NONE && GetDownloadState() != DS_DOWNLOADING) {
-			#ifdef NET_TEST
-			printf("Client not downloading neither doing nothing - Connected\n");
-			#endif
 			SetDownloadState(DS_CONNECTED);
 			SendFileRequest();
 		}
@@ -1316,9 +1301,6 @@ void CUpDownClient::ConnectionEstablished()
 	switch(GetUploadState()){
 		case US_CONNECTING:
 		case US_WAITCALLBACK:
-			#ifdef NET_TEST
-			printf("Upload connecting or WaitCallback\n");
-			#endif
 			if (theApp.uploadqueue->IsDownloading(this)) {
 				SetUploadState(US_UPLOADING);
 				Packet* packet = new Packet(OP_ACCEPTUPLOADREQ,0);
@@ -1327,9 +1309,6 @@ void CUpDownClient::ConnectionEstablished()
 			}
 	}
 	if (m_iFileListRequested == 1) {
-		#ifdef NET_TEST
-		printf("Sending FileList\n");
-		#endif
 		Packet* packet = new Packet(m_fSharedDirectories ? OP_ASKSHAREDDIRS : OP_ASKSHAREDFILES,0);
 		theApp.uploadqueue->AddUpDataOverheadOther(packet->size);
 		socket->SendPacket(packet,true,true);
@@ -1395,6 +1374,7 @@ void CUpDownClient::ReGetClientSoft()
 				m_clientVerString = _("Old MlDonkey");
 				break;
 			case SO_NEW_MLDONKEY:
+			case SO_NEW2_MLDONKEY:
 				m_clientVerString = _("New MlDonkey");
 				break;		
 			case SO_LPHANT:
@@ -1411,7 +1391,10 @@ void CUpDownClient::ReGetClientSoft()
 				}
 				else if (m_byCompatibleClient != 0){
 					m_clientSoft = SO_COMPAT_UNK;
-					m_clientVerString = _("eMule Compat");
+					#ifdef __DEBUG__
+					printf("Compatible client found with ET_COMPATIBLECLIENT of 0x%x\n",m_byCompatibleClient);
+					#endif
+					m_clientVerString = wxString::Format(_("eMule Compat(0x%x)"),m_byCompatibleClient);
 				}
 				else {
 					// If we step here, it might mean 2 things:
@@ -1425,10 +1408,10 @@ void CUpDownClient::ReGetClientSoft()
 		m_SoftLen = m_clientVerString.Length();
 		
 		if (m_byEmuleVersion == 0){
-			m_nClientVersion = 0;
+			m_nClientVersion = MAKE_CLIENT_VERSION(0,0,0);
 		} else if (m_byEmuleVersion != 0x99) {		
 			UINT nClientMinVersion = (m_byEmuleVersion >> 4)*10 + (m_byEmuleVersion & 0x0f);
-			m_nClientVersion = nClientMinVersion*100*10;
+			m_nClientVersion = MAKE_CLIENT_VERSION(0,nClientMinVersion,0);
 			if (m_clientSoft == SO_AMULE) {
 				m_clientVerString += wxString::Format(" 1.x (based on eMule v0.%u)", nClientMinVersion);
 			} else {
@@ -1439,14 +1422,18 @@ void CUpDownClient::ReGetClientSoft()
 			UINT nClientMinVersion = (m_nClientVersion >> 10) & 0x7f;
 			UINT nClientUpVersion  = (m_nClientVersion >>  7) & 0x07;
 			
-			m_nClientVersion = nClientMajVersion*100*10*100 + nClientMinVersion*100*10 + nClientUpVersion*100;
+			m_nClientVersion = MAKE_CLIENT_VERSION(nClientMajVersion, nClientMinVersion, nClientUpVersion);
+
 			if (m_clientSoft == SO_AMULE) {
 				if (nClientMajVersion >= 0x0f) {
+					m_nClientVersion = MAKE_CLIENT_VERSION(nClientMajVersion & 0x0f, nClientMinVersion, nClientUpVersion);
 					m_clientVerString +=  wxString::Format(" v%u.%u.%u CVS", nClientMajVersion & 0x0f, nClientMinVersion, nClientUpVersion);						;
 				} else {
+					m_nClientVersion = MAKE_CLIENT_VERSION(nClientMajVersion, nClientMinVersion, nClientUpVersion);
 					m_clientVerString +=  wxString::Format(" v%u.%u.%u", nClientMajVersion, nClientMinVersion, nClientUpVersion);						
 				}
 			} else {
+				m_nClientVersion = MAKE_CLIENT_VERSION(nClientMajVersion, nClientMinVersion, nClientUpVersion);
 				m_clientVerString +=  wxString::Format(" v%u.%u%c", nClientMajVersion, nClientMinVersion, 'a' + nClientUpVersion);
 			}			
 		}
@@ -1493,7 +1480,7 @@ void CUpDownClient::ReGetClientSoft()
 			nClientMinVersion = m_nClientVersion;
 			nClientUpVersion = 0;
 		}
-		m_nClientVersion = nClientMajVersion*100*10*100 + nClientMinVersion*100*10 + nClientUpVersion*100;
+		m_nClientVersion = MAKE_CLIENT_VERSION(nClientMajVersion, nClientMinVersion, nClientUpVersion);
 
 		m_clientVerString = "eDonkeyHybrid";
 
@@ -1511,7 +1498,7 @@ void CUpDownClient::ReGetClientSoft()
 	if (m_bIsML || (iHashType == SO_MLDONKEY)){
 		m_clientSoft = SO_MLDONKEY;
 		UINT nClientMinVersion = m_nClientVersion;
-		m_nClientVersion = nClientMinVersion*100*10;
+		m_nClientVersion = MAKE_CLIENT_VERSION(0, nClientMinVersion, 0);
 		m_clientVerString = "MLdonkey";
 		m_SoftLen = m_clientVerString.Length();
 		m_clientVerString += wxString::Format(" v0.%u", nClientMinVersion);
@@ -1522,7 +1509,7 @@ void CUpDownClient::ReGetClientSoft()
 	if (iHashType == SO_OLDEMULE){
 		m_clientSoft = SO_OLDEMULE;
 		UINT nClientMinVersion = m_nClientVersion;
-		m_nClientVersion = nClientMinVersion*100*10;
+		m_nClientVersion = MAKE_CLIENT_VERSION(0, nClientMinVersion, 0);
 		m_clientVerString = "Old eMule";
 		m_SoftLen = m_clientVerString.Length();
 		m_clientVerString += wxString::Format(" v0.%u", nClientMinVersion);		
@@ -1531,7 +1518,7 @@ void CUpDownClient::ReGetClientSoft()
 
 	m_clientSoft = SO_EDONKEY;
 	UINT nClientMinVersion = m_nClientVersion;
-	m_nClientVersion = nClientMinVersion*100*10;
+	m_nClientVersion = MAKE_CLIENT_VERSION(0, nClientMinVersion, 0);
 	m_clientVerString = "eDonkey";
 	m_SoftLen = m_clientVerString.Length();
 	m_clientVerString += wxString::Format(" v0.%u", nClientMinVersion);
@@ -1546,9 +1533,7 @@ void CUpDownClient::SetUserName(char* pszNewName)
 	}
 	if( pszNewName ) {
 		m_pszUsername = nstrdup(pszNewName);
-	} else {
-		m_pszUsername = NULL;
-	}
+	} 
 }
 
 void CUpDownClient::RequestSharedFileList()
@@ -1582,7 +1567,7 @@ void CUpDownClient::ResetFileStatusInfo()
 	m_bCompleteSource = false;
 	m_dwLastAskedTime = 0;
 	m_iRate=0;
-	m_strComment="";
+	m_strComment.Empty();
 }
 
 wxString CUpDownClient::GetUploadFileInfo()
@@ -1607,6 +1592,8 @@ wxString CUpDownClient::GetUploadFileInfo()
 	return "";
 }
 
+// Kry - I don't this there's need for this 
+#if 0
 void CUpDownClient::Destroy()
 {
 	if (socket) {
@@ -1615,6 +1602,7 @@ void CUpDownClient::Destroy()
 		socket = NULL;
 	}
 }
+#endif
 
 // sends a packet, if needed it will establish a connection before
 // options used: ignore max connections, control packet, delete packet
@@ -1903,4 +1891,11 @@ bool CUpDownClient::CheckHandshakeFinished(UINT protocol, UINT opcode) const
 	}
 
 	return true;
+}
+
+void CUpDownClient::CheckForGPLEvilDoer(){
+	// check for known major gpl breaker 
+	if (m_strModVersion.Trim().MakeUpper().Find("LH") == 0 || m_strModVersion.Trim().MakeUpper().Find("LIO") == 0){
+		m_bGPLEvildoer = true;
+	}
 }

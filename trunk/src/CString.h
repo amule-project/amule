@@ -77,6 +77,19 @@ public:
 		Append((wxChar*)a);
 		return *this;
 	}
+
+	CString& operator+(const char a[]) {
+		Append((wxChar*)a);
+		return *this;
+	}
+
+	CString& operator+(wxString src) {
+		if(this!=&src) {
+			Append(src.GetData());
+		}
+		return *this;
+	}
+	
 };
 
 #define CStringA CString
@@ -109,4 +122,3 @@ public:
 };
 
 #endif // CSTRING_H
-

@@ -116,7 +116,10 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd){
 			if ((::GetTickCount() - cur_client->GetLastUpRequest() > MAX_PURGEQUEUETIME) || !theApp.sharedfiles->GetFileByID(cur_client->GetUploadFileID()) ) {
 				RemoveFromWaitingQueue(pos2,true);	
 				if (!cur_client->socket) {
-					cur_client->Disconnected();
+					if(cur_client->Disconnected("AddUpNextClient - purged")) {
+						delete cur_client;
+						cur_client = NULL;
+					}
 				}
 				continue;
 			} 
@@ -396,7 +399,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
 		// Well, all that issues finish in the same: don't allow to add to the queue
 		return;
 	}
-			
+	
 	if (client->IsBanned()) {
 		if (::GetTickCount() - client->GetBanTime() > 18000000) {
 			client->UnBan();
@@ -434,7 +437,9 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
 			theApp.amuledlg->AddDebugLogLine(false,CString(_("Client '%s' and '%s' have the same userhash or IP - removed '%s'")),client->GetUserName(),cur_client->GetUserName(),cur_client->GetUserName() );
 			RemoveFromWaitingQueue(pos,true);	
 			if (!cur_client->socket) {
-				cur_client->Disconnected();
+				if(cur_client->Disconnected("AddClientToQueue - same userhash 1")) {
+					delete cur_client;
+				}				
 			}
 			return;
 		}

@@ -92,7 +92,13 @@ public:
 	virtual off_t  ReadRaw(void* buf,off_t length);
 	virtual size_t WriteRaw(const void* buf,size_t length);
 	
-	
+	off_t ReadHash16(uchar* hash_to_read) {
+		return ReadRaw(hash_to_read,16);
+	}
+
+	size_t WriteHash16(uchar* hash_to_write) {
+		return WriteRaw(hash_to_write,16);
+	}	
 
 protected:
 	virtual off_t  Read(void* buf,off_t length);

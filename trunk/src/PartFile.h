@@ -164,7 +164,7 @@ public:
 	uint32	GetLastAnsweredTime()			{ return m_ClientSrcAnswered; }
 	void	SetLastAnsweredTime()			{ m_ClientSrcAnswered = ::GetTickCount(); }
 	void	SetLastAnsweredTimeTimeout()		{ m_ClientSrcAnswered = 2 * CONNECTION_LATENCY +
-											                        ::GetTickCount() - SOURCECLIENTREASK; }
+											                        ::GetTickCount() - SOURCECLIENTREASKS; }
 	uint64	GetLostDueToCorruption()		{return m_iLostDueToCorruption;}
 	uint64	GetGainDueToCompression()		{return m_iGainDueToCompression;}
 	uint32	TotalPacketsSavedDueToICH()		{return m_iTotalPacketsSavedDueToICH;}

@@ -175,15 +175,16 @@ bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, char
 				}
 				break;
 			}
-			case OP_REASKACK: {
+			case OP_REASKACK: {				
 				theApp.downloadqueue->AddDownDataOverheadFileRequest(size);
 				CUpDownClient* sender = theApp.downloadqueue->GetDownloadClientByIP(inet_addr(host));
 				if (sender) {
-					if (size != 2) {
-						break;
+					CSafeMemFile data_in((BYTE*)packet,size);
+					if ( sender->GetUDPVersion() > 3 ) {
+						sender->ProcessFileStatus(true, &data_in, sender->reqfile);
 					}
 					uint16 nRank;
-					memcpy(&nRank,packet,2);
+					data_in.Read(nRank);
 					sender->SetRemoteQueueFull(false);
 					sender->UDPReaskACK(nRank);
 					sender->AddAskedCountDown();
@@ -195,14 +196,13 @@ bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, char
 				theApp.downloadqueue->AddDownDataOverheadFileRequest(size);
 				CUpDownClient* sender = theApp.downloadqueue->GetDownloadClientByIP(inet_addr(host));
 				if (sender){
-					sender->UDPReaskFNF();
+					sender->UDPReaskFNF(); // may delete 'sender'!
+					sender = NULL;
 				}
-				/* else {
-					ASSERT (false); //Need to double check these asserts to make sure it's running well.
-				}*/
 				break;
 			}
 			default:
+				theApp.downloadqueue->AddDownDataOverheadOther(size);				
 				return false;
 		}
 		return true;
