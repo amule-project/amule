@@ -416,7 +416,7 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 
 	if (thePrefs::GetShowRatesOnTitle()) {
 		// This avoids a 5 seconds delay to show the title
-		theApp.amuledlg->SetTitle(theApp.m_FrameTitle + wxT(" -- Up: 0.0 | Down: 0.0"));
+		theApp.amuledlg->SetTitle(theApp.m_FrameTitle + _(" -- Up: 0.0 | Down: 0.0"));
 	} else {
 		// This resets the title
 		theApp.amuledlg->SetTitle(theApp.m_FrameTitle);

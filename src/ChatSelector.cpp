@@ -121,7 +121,7 @@ CChatSession* CChatSelector::StartSession(CUpDownClient* client, bool show)
 	chatsession->m_client = client;
 
 	wxString text;
-	text += wxString(wxT(" *** Chat-Session Startet: ")) + client->GetUserName() + wxT(" - ");
+	text += wxString(_(" *** Chat-Session Started: ")) + client->GetUserName() + wxT(" - ");
 	text += wxDateTime::Now().FormatDate() + wxT(" ") + wxDateTime::Now().FormatTime() + wxT("\n");
 	
 	chatsession->AddText( text, COLOR_RED );

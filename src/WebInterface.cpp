@@ -243,7 +243,7 @@ void CamulewebApp::OnInitCmdLine(wxCmdLineParser& amuleweb_parser)
 		wxT("Full access password for webserver"), 
 		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL);
 
-	amuleweb_parser.AddOption(wxT("gpw"), wxT("quest-pass"), 
+	amuleweb_parser.AddOption(wxT("gpw"), wxT("guest-pass"), 
 		wxT("Guest password for webserver"), 
 		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL);
 
@@ -274,7 +274,7 @@ bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 			return false;
 		}
 		m_AdminPass = MD5Sum(m_AdminPass).GetHash();
-		if ( !parser.Found(wxT("quest-pass"), &m_GuestPass) ) {
+		if ( !parser.Found(wxT("guest-pass"), &m_GuestPass) ) {
 			Show(_("Guest password not passed on command line and config file not used.\n"));
 			Show(_("Guest access disabled\n"));
 			

@@ -925,7 +925,7 @@ void CDownloadListCtrl::DrawFileItem(wxDC* dc, int nColumn, const wxRect& rect, 
 				{
 					wxString buffer;
 					if ( lpPartFile->lastseencomplete ) {
-						buffer = wxDateTime( lpPartFile->lastseencomplete ).Format( wxT("%y/%m/%d %H:%M:%S") );
+						buffer = wxDateTime( lpPartFile->lastseencomplete ).Format( _("%y/%m/%d %H:%M:%S") );
 					} else {
 						buffer = _("Unknown");
 					}
@@ -937,7 +937,7 @@ void CDownloadListCtrl::DrawFileItem(wxDC* dc, int nColumn, const wxRect& rect, 
 				{	
 					wxString buffer;
 					if ( lpPartFile->GetLastChangeDatetime() ) {
-						buffer = wxDateTime( lpPartFile->GetLastChangeDatetime() ).Format( wxT("%y/%m/%d %H:%M:%S") );
+						buffer = wxDateTime( lpPartFile->GetLastChangeDatetime() ).Format( _("%y/%m/%d %H:%M:%S") );
 					} else {
 						buffer = _("Unknown");
 					}
@@ -1150,7 +1150,7 @@ void CDownloadListCtrl::DrawSourceItem(wxDC * dc, int nColumn, const wxRect& rec
 							if( qrDiff < 0 ) dc->SetTextForeground(*wxBLUE);
 							if( qrDiff > 0 ) dc->SetTextForeground(*wxRED);
 							//if( qrDiff == 0 ) dc->SetTextForeground(*wxLIGHT_GREY);
-							buffer.Printf(wxT("QR: %u (%i)"), lpUpDownClient->GetRemoteQueueRank(), qrDiff);
+							buffer.Printf(_("QR: %u (%i)"), lpUpDownClient->GetRemoteQueueRank(), qrDiff);
 							dc->DrawText(buffer, rect.GetX(), rect.GetY());
 							dc->SetTextForeground(savedColour);
 						} 

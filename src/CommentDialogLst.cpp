@@ -69,10 +69,10 @@ void CCommentDialogLst::OnBnClickedRefresh(wxCommandEvent& WXUNUSED(evt))
 
 bool CCommentDialogLst::OnInitDialog()
 {
-	pmyListCtrl->InsertColumn(0, _("Username:"), LVCFMT_LEFT, 130);
+	pmyListCtrl->InsertColumn(0, _("Username"), LVCFMT_LEFT, 130);
 	pmyListCtrl->InsertColumn(1, _("File Name"), LVCFMT_LEFT, 130);
 	pmyListCtrl->InsertColumn(2, _("Rating"), LVCFMT_LEFT, 80);
-	pmyListCtrl->InsertColumn(3, _("Comment:"), LVCFMT_LEFT, 340);
+	pmyListCtrl->InsertColumn(3, _("Comment"), LVCFMT_LEFT, 340);
 	CompleteList();
 	return TRUE;
 }

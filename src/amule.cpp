@@ -1662,7 +1662,7 @@ wxString CamuleApp::GetLog(bool reset)
 		applog->Create(ConfigDir + wxFileName::GetPathSeparator() + wxT("logfile"),
 	                 true, wxFile::read_write);
 		if ( applog->IsOpened() ) {
-			AddLogLine(wxT("Log has been reset"));
+			AddLogLine(_("Log has been reset"));
 		} else {
 			delete applog;
 			applog = 0;
@@ -1690,7 +1690,7 @@ wxString CamuleApp::GetDebugLog(bool reset)
 void CamuleApp::AddServerMessageLine(wxString &msg)
 {
 	server_msg += msg + wxT("\n");
-	AddLogLine(wxT("ServerMessage: ") + msg);
+	AddLogLine(_("ServerMessage: ") + msg);
 }
 
 

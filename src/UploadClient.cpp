@@ -173,13 +173,13 @@ bool CUpDownClient::IsDifferentPartBlock() const // [Tarod 12/22/2002]
 		if ( last_done_part != next_requested_part)
 		{ 
 			different_part = true;
-			AddDebugLogLineM(false, _("Session ended due to new chunk."));
+			AddDebugLogLineM(false, wxT("Session ended due to new chunk."));
 		}
 	
 		if (md4cmp(last_done_block->FileID, next_requested_block->FileID) != 0)
 		{ 
 			different_part = true;
-			AddDebugLogLineM(false, _("Session ended due to different file."));
+			AddDebugLogLineM(false, wxT("Session ended due to different file."));
 		}
 	} 
 
@@ -285,7 +285,7 @@ bool CUpDownClient::CreateNextBlockPackage()
 		}
 	}
 	catch(wxString error){
-		AddDebugLogLineM(false,wxString::Format(_("Client '%s' caused error while creating package (%s) - disconnecting client"),GetUserName().c_str(), error.c_str()));
+		AddDebugLogLineM(false,wxString::Format(wxT("Client '%s' caused error while creating package (%s) - disconnecting client"),GetUserName().c_str(), error.c_str()));
 		theApp.uploadqueue->RemoveFromUploadQueue(this);
 		if (filedata)
 			delete[] filedata;
@@ -706,7 +706,7 @@ void CUpDownClient::Ban(){
 	theApp.clientlist->AddTrackClient(this);
 	theApp.clientlist->AddBannedClient( GetIP() );
 	
-	AddDebugLogLineM(false,wxString::Format(_("Client '%s' seems to be an aggressive client and is banned from the uploadqueue"), GetUserName().c_str()));
+	AddDebugLogLineM(false,wxString::Format(wxT("Client '%s' seems to be an aggressive client and is banned from the uploadqueue"), GetUserName().c_str()));
 	
 	SetUploadState(US_BANNED);
 	

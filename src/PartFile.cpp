@@ -978,9 +978,9 @@ bool CPartFile::SavePartFile(bool Initial)
 	CFile newpartmet;
 	if (newpartmet.Open(m_fullname)!=TRUE) {
 #ifdef AMULE_DAEMON
-		AddLogLineM(true, _("Unable to open ") + m_fullname + _("file - using ") + PARTMET_BAK_EXT + _(" file."));
+		AddLogLineM(true, _("Unable to open ") + m_fullname + _(" file - using ") + PARTMET_BAK_EXT + _(" file."));
 #else
-		wxMessageBox(_("Unable to open ") + m_fullname + _("file - using ") + PARTMET_BAK_EXT + _(" file.\n"));
+		wxMessageBox(_("Unable to open ") + m_fullname + _(" file - using ") + PARTMET_BAK_EXT + _(" file.\n"));
 #endif
 		FS_wxCopyFile(m_fullname + PARTMET_BAK_EXT, m_fullname);
 	} else {
@@ -3026,7 +3026,7 @@ Packet *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 		result->PackPacket();
 	}
 	//if (thePrefs.GetDebugSourceExchange()) {
-		AddDebugLogLineM( false, wxString::Format(_("Send:Source User(%s) File(%s) Count(%i)"), forClient->GetUserName().c_str(), GetFileName().c_str(), nCount ));
+		AddDebugLogLineM( false, wxString::Format(wxT("Send:Source User(%s) File(%s) Count(%i)"), forClient->GetUserName().c_str(), GetFileName().c_str(), nCount ));
 	//}
 	return result;
 }
@@ -3128,7 +3128,7 @@ uint32 CPartFile::WriteToBuffer(uint32 transize, BYTE *data, uint32 start, uint3
 
 	// Occasionally packets are duplicated, no point writing it twice
 	if (IsComplete(start, end)) {
-		AddDebugLogLineM(false, wxString::Format(_("File '%s' has already been written from %lu to %lu\n"), GetFileName().c_str(), (long)start, (long)end));
+		AddDebugLogLineM(false, wxString::Format(wxT("File '%s' has already been written from %lu to %lu\n"), GetFileName().c_str(), (long)start, (long)end));
 		return 0;
 	}
 
@@ -3330,7 +3330,7 @@ void CPartFile::FlushBuffer(bool forcewait, bool bForceICH, bool bNoAICH)
 					m_iLostDueToCorruption += (partRange + 1);
 				} else {
 					if (!hashsetneeded) {
-						AddDebugLogLineM(false, wxString::Format(_("Finished part %u of \"%s\""), partNumber, GetFileName().c_str()));
+						AddDebugLogLineM(false, wxString::Format(wxT("Finished part %u of \"%s\""), partNumber, GetFileName().c_str()));
 					}
 					
 					// if this part was successfully completed (although ICH is active), remove from corrupted list

@@ -146,7 +146,7 @@ CamuleLocker::~CamuleLocker()
 int CamuleDaemonApp::OnRun()
 {
 	const uint uLoop = 100;
-	AddDebugLogLineM(true, _("CamuleDaemonApp::OnRun()"));
+	AddDebugLogLineM(true, wxT("CamuleDaemonApp::OnRun()"));
 	// lfroen: this loop is instead core timer.
 	uint msWait = uLoop;
 	m_Exit = false;
@@ -200,7 +200,7 @@ int CamuleDaemonApp::OnExit()
 void CamuleDaemonApp::ShowAlert(wxString msg, wxString title, int flags)
 {
 	if ( flags | wxICON_ERROR ) {
-		title = wxT("ERROR:") + title;
+		title = _("ERROR:") + title;
 	}
 	AddLogLine(title + wxT(" ") + msg);
 }
@@ -213,13 +213,13 @@ void CamuleDaemonApp::NotifyEvent(GUIEvent event)
 		// it's daemon, so gui isn't here, but macros can be used as function calls
 		case SHOW_CONN_STATE:
 			if ( event.byte_value ) {
-				const wxString id = theApp.serverconnect->IsLowID() ? wxT("LOW") : wxT("HIGH");
-				AddLogLine(wxT("Connected to ") + event.string_value + wxT(" with ") + id + wxT(" ID"));
+				const wxString id = theApp.serverconnect->IsLowID() ? _("with LowID") : _("with HighID");
+				AddLogLine(_("Connected to ") + event.string_value + id);
 			} else {
 				if ( theApp.serverconnect->IsConnecting() ) {
-					AddLogLine(wxT("connecting to ") + event.string_value);
+					AddLogLine(_("Connecting to ") + event.string_value);
 				} else {
-					AddLogLine(wxT("disconnected\n"));
+					AddLogLine(_("Disconnected\n"));
 				}
 			}
 			break;

@@ -216,7 +216,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 	
 	// Client ID
 	{
-		wxString temp = wxT("ClientID: ");
+		wxString temp = _("ClientID: ");
 		
 		if (theApp.serverconnect->IsConnected()) {
 			unsigned long id = theApp.serverconnect->GetClientID();
@@ -254,7 +254,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 
 	// IP Address
 	{
-		wxString temp = wxT("IP: ");
+		wxString temp = _("IP: ");
 		if ( theApp.GetPublicIP() ) {
 			temp += Uint32toStringIP(theApp.GetPublicIP()); 
 		} else {
@@ -374,7 +374,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 		for ( int i = 0; i < 5; i++ ) {
 			unsigned int tempspeed = (unsigned int)((double)max_ul_speed / 5) * (5 - i);
 
-			wxString temp = wxString::Format(wxT("%u%s"), tempspeed, _(" kb/s"));
+			wxString temp = wxString::Format(wxT("%u%s "), tempspeed, _("kB/s"));
 
 			up_item=gtk_menu_item_new_with_label( StringToSystray( temp ));
 			gtk_container_add(GTK_CONTAINER(up_speed), up_item);
@@ -408,7 +408,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 		for ( int i = 0; i < 5; i++ ) {
 			unsigned int tempspeed = (unsigned int)((double)max_dl_speed / 5) * (5 - i);
 
-			wxString temp = wxString::Format(wxT("%d%s"), tempspeed, _(" kb/s"));
+			wxString temp = wxString::Format(wxT("%d%s "), tempspeed, _("kB/s"));
 		
 			dl_item=gtk_menu_item_new_with_label( StringToSystray( temp ) );
 			gtk_container_add (GTK_CONTAINER (down_speed), dl_item);

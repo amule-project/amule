@@ -168,7 +168,7 @@ bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, uint
 						theApp.uploadqueue->AddUpDataOverheadFileRequest(response->GetPacketSize());
 						theApp.clientudp->SendPacket(response, host, port);
 					} else {					
-						AddLogLineM(false, _("Client UDP socket; ReaskFilePing; reqfile does not match"));
+						AddDebugLogLineM(false, wxT("Client UDP socket; ReaskFilePing; reqfile does not match"));
 					}						
 				} else {
 					if (((uint32)theApp.uploadqueue->GetWaitingUserCount() + 50) > thePrefs::GetQueueSize()) {
@@ -219,7 +219,7 @@ bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, uint
 		return true;
 	}
 	catch(...) {
-		AddDebugLogLineM(false,_("Error while processing incoming UDP Packet (Most likely a misconfigured server)"));
+		AddDebugLogLineM(false, wxT("Error while processing incoming UDP Packet (Most likely a misconfigured server)"));
 	}
 	return false;
 }

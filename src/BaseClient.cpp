@@ -577,7 +577,7 @@ bool CUpDownClient::SendHelloPacket() {
 	amuleIPV4Address address;
 	m_socket->GetPeer(address);
 	if ( theApp.ipfilter->IsFiltered(StringIPtoUint32(address.IPAddress()))) {
-		AddDebugLogLineM(true,_("Filtered IP: ") +GetFullIP() + wxT("(") + theApp.ipfilter->GetLastHit() + wxT(")"));
+		AddDebugLogLineM(true, wxT("Filtered IP: ") +GetFullIP() + wxT("(") + theApp.ipfilter->GetLastHit() + wxT(")"));
 		theApp.stat_filteredclients++;
 		if (Disconnected(wxT("IPFilter"))) {
 			Safe_Delete();
@@ -595,7 +595,7 @@ bool CUpDownClient::SendHelloPacket() {
 	SendPacket(packet,true);
 	m_bHelloAnswerPending = true;
 	#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
-	AddDebugLogLineM(true,_("Local Client: OP_HELLO\n"));
+	AddDebugLogLineM(true, wxT("Local Client: OP_HELLO\n"));
 	#endif
 	return true;
 }
@@ -658,9 +658,9 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer) {
 		SendPacket(packet,true,true);
 		#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
 		if (!bAnswer) {
-			AddDebugLogLineM(true,_("Local Client: OP_EMULEINFO\n"));
+			AddDebugLogLineM(true, wxT("Local Client: OP_EMULEINFO\n"));
 		} else {
-			AddDebugLogLineM(true,_("Local Client: OP_EMULEINFOANSWER\n"));
+			AddDebugLogLineM(true, wxT("Local Client: OP_EMULEINFOANSWER\n"));
 		}
 		#endif
 	}
@@ -822,7 +822,7 @@ void CUpDownClient::SendHelloAnswer()
 	SendPacket(packet,true);
 
 	#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
-	AddDebugLogLineM(true,_("Local Client: OP_HELLOANSWER\n"));
+	AddDebugLogLineM(true, wxT("Local Client: OP_HELLOANSWER\n"));
 	#endif
 }
 
@@ -935,7 +935,7 @@ void CUpDownClient::ProcessMuleCommentPacket(const char *pachPacket, uint32 nSiz
 
 		m_iRate = data.ReadUInt8();
 		m_reqfile->SetHasRating(true);
-		AddDebugLogLineM(false,_("Rating for file '") + m_clientFilename + wxString::Format(_("' received: %i"),m_iRate));
+		AddDebugLogLineM(false, wxT("Rating for file '") + m_clientFilename + wxString::Format(wxT("' received: %i"), m_iRate));
 		
 		uint32 length = data.ReadUInt32();	
 
@@ -958,7 +958,7 @@ void CUpDownClient::ProcessMuleCommentPacket(const char *pachPacket, uint32 nSiz
 
 			m_strComment = char2unicode(desc);			
 			
-			AddDebugLogLineM(false, _("Description for file '") + m_clientFilename + _("' received: ") + m_strComment);
+			AddDebugLogLineM(false, wxT("Description for file '") + m_clientFilename + wxT("' received: ") + m_strComment);
 			
 			m_reqfile->SetHasComment(true);
 		}
@@ -1229,7 +1229,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 			theApp.uploadqueue->AddUpDataOverheadServer(packet->GetPacketSize());
 			theApp.serverconnect->SendPacket(packet);
 			#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
-			AddDebugLogLineM(true,_("Local Client: OP_CALLBACKREQUEST\n"));
+			AddDebugLogLineM(true, wxT("Local Client: OP_CALLBACKREQUEST\n"));
 			#endif
 		} else {
 			if (GetUploadState() == US_NONE && (!GetRemoteQueueRank() || m_bReaskPending)) {
@@ -1306,7 +1306,7 @@ void CUpDownClient::ConnectionEstablished()
 				theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->GetPacketSize());
 				SendPacket(packet,true);
 				#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
-				AddDebugLogLineM(true,_("Local Client: OP_ACCEPTUPLOADREQ\n"));
+				AddDebugLogLineM(true, wxT("Local Client: OP_ACCEPTUPLOADREQ\n"));
 				#endif
 			}
 	}
@@ -1316,9 +1316,9 @@ void CUpDownClient::ConnectionEstablished()
 		SendPacket(packet,true,true);
 		#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
 		if (m_fSharedDirectories) {
-			AddDebugLogLineM(true,_("Local Client: OP_ASKSHAREDDIRS\n"));
+			AddDebugLogLineM(true, wxT("Local Client: OP_ASKSHAREDDIRS\n"));
 		} else {
-			AddDebugLogLineM(true,_("Local Client: OP_ASKSHAREDFILES\n"));
+			AddDebugLogLineM(true, wxT("Local Client: OP_ASKSHAREDFILES\n"));
 		}
 		#endif
 	}
@@ -1576,11 +1576,11 @@ void CUpDownClient::ReGetClientSoft()
 void CUpDownClient::RequestSharedFileList()
 {
 	if (m_iFileListRequested == 0) {
-		AddDebugLogLineM(true,wxString(_("Requesting shared files from ")) + GetUserName());
+		AddDebugLogLineM(true,wxString(wxT("Requesting shared files from ")) + GetUserName());
 		m_iFileListRequested = 1;
 		TryToConnect(true);
 	} else {
-		AddDebugLogLineM(true,wxString(_("Requesting shared files from user ")) + GetUserName() + wxString::Format(_(" (%u) is already in progress"),GetUserID()));
+		AddDebugLogLineM(true,wxString(wxT("Requesting shared files from user ")) + GetUserName() + wxString::Format(wxT(" (%u) is already in progress"),GetUserID()));
 	}
 }
 
@@ -1670,7 +1670,7 @@ void CUpDownClient::SendPublicKeyPacket(){
 	SendPacket(packet,true,true);
 	m_SecureIdentState = IS_SIGNATURENEEDED;
 	#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
-	AddDebugLogLineM(true,_("Local Client: OP_PUBLICKEY\n"));
+	AddDebugLogLineM(true, wxT("Local Client: OP_PUBLICKEY\n"));
 	#endif
 }
 
@@ -1691,7 +1691,7 @@ void CUpDownClient::SendSignaturePacket(){
 	}
 	// do we have a challenge value recieved (actually we should if we are in this function)
 	if (credits->m_dwCryptRndChallengeFrom == 0){
-		AddDebugLogLineM(false, wxString(_("Want to send signature but challenge value is invalid - User ")) + GetUserName());
+		AddDebugLogLineM(false, wxString(wxT("Want to send signature but challenge value is invalid - User ")) + GetUserName());
 		return;
 	}
 	// v2
@@ -1736,7 +1736,7 @@ void CUpDownClient::SendSignaturePacket(){
 	SendPacket(packet,true,true);
 	m_SecureIdentState = IS_ALLREQUESTSSEND;
 	#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
-	AddDebugLogLineM(true,_("Local Client: OP_SIGNATURE\n"));
+	AddDebugLogLineM(true, wxT("Local Client: OP_SIGNATURE\n"));
 	#endif
 }
 
@@ -1761,11 +1761,11 @@ void CUpDownClient::ProcessPublicKeyPacket(const uchar* pachPacket, uint32 nSize
 		}
 		else if(m_SecureIdentState == IS_KEYANDSIGNEEDED){
 			// something is wrong
-			AddDebugLogLineM(false, _("Invalid State error: IS_KEYANDSIGNEEDED in ProcessPublicKeyPacket"));
+			AddDebugLogLineM(false, wxT("Invalid State error: IS_KEYANDSIGNEEDED in ProcessPublicKeyPacket"));
 		}
 	}
 	else{
-		AddDebugLogLineM(false, _("Failed to use new recieved public key"));
+		AddDebugLogLineM(false, wxT("Failed to use new recieved public key"));
 	}
 }
 
@@ -1793,17 +1793,17 @@ void CUpDownClient::ProcessSignaturePacket(const uchar* pachPacket, uint32 nSize
 	
 	// we accept only one signature per IP, to avoid floods which need a lot cpu time for cryptfunctions
 	if (m_dwLastSignatureIP == GetIP()){
-		AddDebugLogLineM(false, _("recieved multiple signatures from one client"));
+		AddDebugLogLineM(false, wxT("recieved multiple signatures from one client"));
 		return;
 	}
 	// also make sure this client has a public key
 	if (credits->GetSecIDKeyLen() == 0){
-		AddDebugLogLineM(false, _("recieved signature for client without public key"));
+		AddDebugLogLineM(false, wxT("recieved signature for client without public key"));
 		return;
 	}
 	// and one more check: did we ask for a signature and sent a challange packet?
 	if (credits->m_dwCryptRndChallengeFor == 0){
-		AddDebugLogLineM(false, _("recieved signature for client with invalid challenge value - User ") + GetUserName());
+		AddDebugLogLineM(false, wxT("recieved signature for client with invalid challenge value - User ") + GetUserName());
 		return;
 	}
 
@@ -1812,7 +1812,7 @@ void CUpDownClient::ProcessSignaturePacket(const uchar* pachPacket, uint32 nSize
 		//AddDebugLogLine(false, "'%s' has passed the secure identification, V2 State: %i", GetUserName(), byChaIPKind);
 	}
 	else {
-		AddDebugLogLineM(false,  GetUserName() + wxString::Format(_(" has failed the secure identification, V2 State: %i"), byChaIPKind));
+		AddDebugLogLineM(false,  GetUserName() + wxString::Format(wxT(" has failed the secure identification, V2 State: %i"), byChaIPKind));
 	}
 	m_dwLastSignatureIP = GetIP(); 
 }
@@ -1829,7 +1829,7 @@ void CUpDownClient::SendSecIdentStatePacket(){
 			}
 		}
 		if (nValue == 0){
-			AddDebugLogLineM(false, _("Not sending SecIdentState Packet, because State is Zero"));
+			AddDebugLogLineM(false, wxT("Not sending SecIdentState Packet, because State is Zero"));
 			return;
 		}
 		// crypt: send random data to sign
@@ -1845,7 +1845,7 @@ void CUpDownClient::SendSecIdentStatePacket(){
 		theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
 		SendPacket(packet,true,true);
 		#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
-		AddDebugLogLineM(true,_("Local Client: OP_SECIDENTSTATE\n"));
+		AddDebugLogLineM(true, wxT("Local Client: OP_SECIDENTSTATE\n"));
 		#endif
 	} else {
 		wxASSERT ( false );
@@ -1943,7 +1943,7 @@ void CUpDownClient::SendPublicIPRequest(){
 		SendPacket(packet,true);
 		m_fNeedOurPublicIP = true;
 		#ifdef DEBUG_LOCAL_CLIENT_PROTOCOL
-		AddDebugLogLineM(true,_("Local Client: OP_PUBLICIP_REQ\n"));
+		AddDebugLogLineM(true, wxT("Local Client: OP_PUBLICIP_REQ\n"));
 		#endif
 	}
 }

@@ -49,7 +49,7 @@ BEGIN_EVENT_TABLE(CFileDetailDialog,wxDialog)
 END_EVENT_TABLE()
 
 CFileDetailDialog::CFileDetailDialog(wxWindow* parent,CPartFile* file)
-: wxDialog(parent,9998,(wxT("File Details")),wxDefaultPosition,wxDefaultSize,wxDEFAULT_DIALOG_STYLE)
+: wxDialog(parent,9998,(_("File Details")),wxDefaultPosition,wxDefaultSize,wxDEFAULT_DIALOG_STYLE)
 {
 	m_file = file;
 	m_timer.SetOwner(this,ID_MY_TIMER);

@@ -397,7 +397,7 @@ bool CSearchList::AddToList(CSearchFile* toadd, bool bClientResponse)
 	}
 	
 	// If the result was not the type user wanted, drop it.
-	if (!bClientResponse && !(m_resultType == wxString(_("Any")) || GetFiletypeByName(toadd->GetFileName())==m_resultType)){
+	if (!bClientResponse && !(m_resultType == wxString(wxT("Any")) || GetFiletypeByName(toadd->GetFileName())==m_resultType)){
 		delete toadd;
 		return false;
 	}

@@ -79,7 +79,7 @@ bool CClientDetailDialog::OnInitDialog() {
 	} else {
 		CastChild(ID_DNAME,wxStaticText)->SetLabel(_("Unknown"));
 		CastChild(ID_DHASH,wxStaticText)->SetLabel(_("Unknown"));
-		CastChild(ID_DRATING,wxStaticText)->SetLabel(wxT("Unknown"));;
+		CastChild(ID_DRATING,wxStaticText)->SetLabel(_("Unknown"));;
 	}	
 
 	CastChild(ID_DSOFT,wxStaticText)->SetLabel(m_client->GetSoftStr());
@@ -98,11 +98,11 @@ bool CClientDetailDialog::OnInitDialog() {
 		if (cserver) {
 			CastChild(ID_DSNAME,wxStaticText)->SetLabel(cserver->GetListName());
 		} else {
-			CastChild(ID_DSNAME,wxStaticText)->SetLabel(wxT("Unknown"));
+			CastChild(ID_DSNAME,wxStaticText)->SetLabel(_("Unknown"));
 		}
 	} else {
-		CastChild(ID_DSIP,wxStaticText)->SetLabel(wxT("Unknown"));
-		CastChild(ID_DSNAME,wxStaticText)->SetLabel(wxT("Unknown"));
+		CastChild(ID_DSIP,wxStaticText)->SetLabel(_("Unknown"));
+		CastChild(ID_DSNAME,wxStaticText)->SetLabel(_("Unknown"));
 	}
 
 	CKnownFile* file = theApp.sharedfiles->GetFileByID(m_client->GetUploadFileID());
@@ -115,8 +115,8 @@ bool CClientDetailDialog::OnInitDialog() {
 
 	CastChild(ID_DDUP,wxStaticText)->SetLabel(CastItoXBytes(m_client->GetTransferedDown()));
 	CastChild(ID_DDOWN,wxStaticText)->SetLabel(CastItoXBytes(m_client->GetTransferedUp()));
-	CastChild(ID_DAVUR,wxStaticText)->SetLabel(wxString::Format(wxT("%.1f kB/s"),m_client->GetKBpsDown()));
-	CastChild(ID_DAVDR,wxStaticText)->SetLabel(wxString::Format(wxT("%.1f kB/s"),m_client->GetKBpsUp()));
+	CastChild(ID_DAVUR,wxStaticText)->SetLabel(wxString::Format(_("%.1f kB/s"),m_client->GetKBpsDown()));
+	CastChild(ID_DAVDR,wxStaticText)->SetLabel(wxString::Format(_("%.1f kB/s"),m_client->GetKBpsUp()));
 
 	if (m_client->Credits()) {
 		CastChild(ID_DUPTOTAL,wxStaticText)->SetLabel(CastItoXBytes(m_client->Credits()->GetDownloadedTotal()));		
@@ -126,30 +126,30 @@ bool CClientDetailDialog::OnInitDialog() {
 		if (theApp.clientcredits->CryptoAvailable()){
 			switch(m_client->Credits()->GetCurrentIdentState(m_client->GetIP())){
 				case IS_NOTAVAILABLE:
-					CastChild(IDC_CDIDENT,wxStaticText)->SetLabel(wxT("Not Supported"));
+					CastChild(IDC_CDIDENT,wxStaticText)->SetLabel(_("Not Supported"));
 					break;
 				case IS_IDFAILED:
-					CastChild(IDC_CDIDENT,wxStaticText)->SetLabel(wxT("Failed"));
+					CastChild(IDC_CDIDENT,wxStaticText)->SetLabel(_("Failed"));
 					break;
 				case IS_IDNEEDED:
-					CastChild(IDC_CDIDENT,wxStaticText)->SetLabel(wxT("Not complete"));
+					CastChild(IDC_CDIDENT,wxStaticText)->SetLabel(_("Not complete"));
 					break;
 				case IS_IDBADGUY:
-					CastChild(IDC_CDIDENT,wxStaticText)->SetLabel(wxT("Bad Guy"));
+					CastChild(IDC_CDIDENT,wxStaticText)->SetLabel(_("Bad Guy"));
 					break;
 				case IS_IDENTIFIED:
-					CastChild(IDC_CDIDENT,wxStaticText)->SetLabel(wxT("Verified - OK"));
+					CastChild(IDC_CDIDENT,wxStaticText)->SetLabel(_("Verified - OK"));
 					break;
 			}
 		} else {
-			CastChild(IDC_CDIDENT,wxStaticText)->SetLabel(wxT("Not Available"));
+			CastChild(IDC_CDIDENT,wxStaticText)->SetLabel(_("Not Available"));
 		}
 		
 		
 	} else {
-		CastChild(ID_DDOWNTOTAL,wxStaticText)->SetLabel(wxT("Unknown"));
-		CastChild(ID_DUPTOTAL,wxStaticText)->SetLabel(wxT("Unknown"));
-		CastChild(ID_DRATIO,wxStaticText)->SetLabel(wxT("Unknown"));
+		CastChild(ID_DDOWNTOTAL,wxStaticText)->SetLabel(_("Unknown"));
+		CastChild(ID_DUPTOTAL,wxStaticText)->SetLabel(_("Unknown"));
+		CastChild(ID_DRATIO,wxStaticText)->SetLabel(_("Unknown"));
 	}
 	
 	if (m_client->GetUploadState() != US_NONE) {
