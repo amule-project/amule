@@ -1404,7 +1404,7 @@ void CamuleApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 
 	if (msCur-msPrev10 > 10000) {  // every 10 seconds
 		msPrev10 = msCur;
-		downloadqueue->SortByPriority();
+		//downloadqueue->SortByPriority();
 	}	
 	
 	if (msCur-msPrevSave >= 60000) {
@@ -1412,10 +1412,10 @@ void CamuleApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 		wxString buffer;
 		
 		wxConfigBase* cfg = wxConfigBase::Get();
-		buffer.Printf(wxT("%llu"),theApp.statistics->GetSessionReceivedBytes() + thePrefs::GetTotalDownloaded());
+		buffer.Printf(wxT("%llu"),(long long unsigned int)(theApp.statistics->GetSessionReceivedBytes() + thePrefs::GetTotalDownloaded()));
 		cfg->Write(wxT("/Statistics/TotalDownloadedBytes"), buffer);
 
-		buffer.Printf(wxT("%llu"),theApp.statistics->GetSessionSentBytes()+thePrefs::GetTotalUploaded());
+		buffer.Printf(wxT("%llu"),(long long unsigned int)(theApp.statistics->GetSessionSentBytes()+thePrefs::GetTotalUploaded()));
 		cfg->Write(wxT("/Statistics/TotalUploadedBytes"), buffer);
 	}
 
