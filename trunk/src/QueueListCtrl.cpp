@@ -36,7 +36,7 @@
 #include "amule.h"			// Needed for theApp
 #include "color.h"		// Needed for SYSCOLOR
 #include "Preferences.h"
-
+#include "listbase.h"		//Needed for wxLC_OWNERDRAW
 #include <wx/menu.h>
 
 // CQueueListCtrl
