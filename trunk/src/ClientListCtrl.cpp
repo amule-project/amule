@@ -683,8 +683,9 @@ int CUploadingView::SortProc( long item1, long item2, long sortData )
 }
 
 
-void CUploadingView::DrawStatusBar( CUpDownClient* client, wxDC* dc, wxRect &rect )
+void CUploadingView::DrawStatusBar( CUpDownClient* client, wxDC* dc, const wxRect &rect1 )
 {
+	wxRect rect(rect1);
 	rect.y		+= 2;
 	rect.height	-= 2;
 
