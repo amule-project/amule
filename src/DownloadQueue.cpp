@@ -559,10 +559,11 @@ bool CDownloadQueue::RemoveSource(CUpDownClient* toremove, bool	WXUNUSED(updatew
 		
 		// Remove from source-list
 		if ( cur_file->m_SrcList.erase( toremove ) ) {
+#warning WARNING! EXPERIMENTAL FIX! PLEASE TEST AND/OR KILL ME IF IT BREAKS! -- Xaignar
+			cur_file->RemoveDownloadingSource(toremove);
 			cur_file->IsCountDirty = true;
 			removed = true;
 			if ( bDoStatsUpdate ) {
-				cur_file->RemoveDownloadingSource(toremove);
 				cur_file->UpdatePartsInfo();
 				cur_file->UpdateAvailablePartsCount();
 			}
