@@ -46,7 +46,6 @@ CEMSocket::CEMSocket(void)
 	pendingOnReceive = false;
 
 	// Download partial header
-	// memset(pendingHeader, 0, sizeof(pendingHeader));
 	pendingHeaderSize = 0;
 
 	// Download partial packet
@@ -63,8 +62,6 @@ CEMSocket::CEMSocket(void)
 }
 
 CEMSocket::~CEMSocket(){
-   //EMTrace("CEMSocket::~CEMSocket() on %d",(SOCKET)this);
-  //printf("CEMSocket::~CEMSocket() on %d\n",this);
 	#ifdef __DEBUG__
 	wxASSERT(from_destroy);
 	#endif	    
@@ -75,7 +72,6 @@ CEMSocket::~CEMSocket(){
 	ClearQueues();
 	OnClose(0);
 	
-  //AsyncSelect(0);
 }
 
 void CEMSocket::Destroy() {
@@ -93,7 +89,6 @@ void CEMSocket::Destroy() {
 }
 
 void CEMSocket::ClearQueues(){
-  //EMTrace("CEMSocket::ClearQueues on %d",(SOCKET)this);
 	for (POSITION pos = controlpacket_queue.GetHeadPosition();pos != 0;) {
 		delete controlpacket_queue.GetNext(pos);
 	}
@@ -108,7 +103,6 @@ void CEMSocket::ClearQueues(){
 	pendingOnReceive = false;
 
 	// Download partial header
-	// memset(pendingHeader, 0, sizeof(pendingHeader));
 	pendingHeaderSize = 0;
 
 	// Download partial packet
@@ -123,7 +117,6 @@ void CEMSocket::ClearQueues(){
 		sendbuffer = NULL;
 	}
 	
-	//sendbuffer = 0;
 	sendblen = 0;
 	sent = 0;
 	m_bLinkedPackets = false;
@@ -232,7 +225,6 @@ void CEMSocket::OnReceive(int nErrorCode){
 				case OP_EMULEPROT:
 					break;
 				default:
-					//("CEMSocket::OnReceive ERROR Wrong header");
 					delete pendingPacket;
 					pendingPacket = NULL;
 					OnError(ERR_WRONGHEADER);
@@ -309,11 +301,11 @@ bool CEMSocket::SendPacket(Packet* packet, bool delpacket, bool controlpacket) {
 	}			
 	if ( ( (!IsConnected()) || IsBusy() ) || ( m_bLinkedPackets && controlpacket ) ){
 		if (controlpacket){
-		  controlpacket_queue.AddTail(packet); //AddTail(packet);
+		  controlpacket_queue.AddTail(packet); 
 			return true;
 		}
 		else{
-		  standartpacket_queue.AddTail(packet); //AddTail(packet);
+		  standartpacket_queue.AddTail(packet); 
 			return true;
 		}
 	}
@@ -325,14 +317,6 @@ bool CEMSocket::SendPacket(Packet* packet, bool delpacket, bool controlpacket) {
 		m_bLinkedPackets = true;
 	}
 
-	/* This assert seem to make some troubles ... BigBob
-	} else if (m_bLinkedPackets) {
-		assert (false);
-	}
-	*/
-	//printf("Sending packet (%d,opcode=%x)\n",packet->GetRealPacketSize(),packet->opcode);
-	//assert(packet->GetRealPacketSize()!=1300);
-
 	Send(packet->DetachPacket(),packet->GetRealPacketSize());
 
 	delete packet;
@@ -342,7 +326,7 @@ bool CEMSocket::SendPacket(Packet* packet, bool delpacket, bool controlpacket) {
 }
 
 void CEMSocket::OnSend(int nErrorCode){
-  if (nErrorCode) { // || Error()){
+  if (nErrorCode) {
     OnError(nErrorCode);
     return;
   }
@@ -363,7 +347,6 @@ void CEMSocket::OnSend(int nErrorCode){
 
 	while (controlpacket_queue.GetHeadPosition() != 0 && (!IsBusy()) && IsConnected() && !m_bLinkedPackets) {
 		Packet* cur_packet = controlpacket_queue.GetHead();
-//		EMTrace("CEMSocket::OnSend sending control packet on %d, size=%u",(SOCKET)this, cur_packet->GetRealPacketSize());
 		Send(cur_packet->DetachPacket(),cur_packet->GetRealPacketSize());
 		controlpacket_queue.RemoveHead();
 		delete cur_packet;
@@ -376,12 +359,6 @@ void CEMSocket::OnSend(int nErrorCode){
 		} else if (cur_packet->IsSplitted()) {
 			m_bLinkedPackets = true;
 		}
-		/* This assert seem to make some troubles ... BigBob
-		} else if (m_bLinkedPackets) {
-			assert (false);
-		}
-		*/
-//		EMTrace("CEMSocket::OnSend sending standart packet on %d, size=%u",(SOCKET)this, cur_packet->GetRealPacketSize());
 		Send(cur_packet->DetachPacket(),cur_packet->GetRealPacketSize());
 		standartpacket_queue.RemoveHead();
 		delete cur_packet;
@@ -389,7 +366,6 @@ void CEMSocket::OnSend(int nErrorCode){
 
 	while (controlpacket_queue.GetHeadPosition() != 0 && (!IsBusy()) && IsConnected() && !m_bLinkedPackets) {
 		Packet* cur_packet = controlpacket_queue.GetHead();
-//		EMTrace("CEMSocket::OnSend sending control packet on %d, size=%u",(SOCKET)this, cur_packet->GetRealPacketSize());
 		Send(cur_packet->DetachPacket(),cur_packet->GetRealPacketSize());
 		controlpacket_queue.RemoveHead();
 		delete cur_packet;
@@ -419,9 +395,8 @@ int CEMSocket::Send(char* lpBuf,int nBufLen,int WXUNUSED(nFlags))
 		#endif
 		wxSocketBase::Write(sendbuffer+sent,tosend);
 		uint32 result=LastCount();
-		//if (result == (uint32)-1) {
 		if(Error()) {
-			uint32 error = LastError(); //GetLastError();
+			uint32 error = LastError(); 
 			if (error == wxSOCKET_WOULDBLOCK) {
 				break;
 			} else {
