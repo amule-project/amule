@@ -33,8 +33,6 @@
 	#include "otherfunctions.h"	// Needed for atoll, ED2KFT_*
 //#endif
 
-#include "resource.h"		// Needed by strings.en
-#include "strings.en"		// Strings
 #include "WebSocket.h"		// Needed for StopSockets()
 #include "otherstructs.h"	// Needed for TransferredData
 #include "GetTickCount.h"	// Needed for GetTickCount

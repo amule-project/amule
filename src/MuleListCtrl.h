@@ -23,7 +23,6 @@
 #include "Preferences.h"	// Needed for CPreferences
 #include "listctrl_gen.h"	// Needed for wxODListCtrl
 #include "types.h"		// Needed for LPCTSTR
-#include "resource.h"		// Needed for IDB_DOWN
 #include "color.h"		// Needed for COLORREF
 
 //////////////////////////////////
@@ -109,8 +108,7 @@ public:
 	//load from preferences
 	void LoadSettings();
 
-	enum ArrowType { arrowDown = IDB_DOWN, arrowUp = IDB_UP,
-		arrowDoubleDown = IDB_DOWN2X, arrowDoubleUp = IDB_UP2X };
+	enum ArrowType { arrowDown, arrowUp, arrowDoubleDown, arrowDoubleUp };
 	DECLARE_EVENT_TABLE()
 protected:
 	virtual bool ProcessEvent(wxEvent& evt);

@@ -343,7 +343,7 @@ void CUploadListCtrl::OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxRe
 {
 	/* Don't do any drawing if we not being watched. */
 	//if ((theApp.amuledlg->transferwnd->windowtransferstate) || (theApp.amuledlg->GetActiveDialog() != 2)) {
-	if (!theApp.amuledlg->SafeState() || (theApp.amuledlg->transferwnd->windowtransferstate) || (theApp.amuledlg->GetActiveDialog() != IDD_TRANSFER)) {
+	if (!theApp.amuledlg->SafeState() || (theApp.amuledlg->transferwnd->windowtransferstate) || (theApp.amuledlg->GetActiveDialog() != CamuleDlg::TransferWnd)) {
 		return;
 	}
 	if(highlighted) {

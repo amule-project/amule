@@ -26,7 +26,6 @@
 #include <wx/treebase.h>	// Needed for wxTreeItemId (HTREEITEM) and wxTreeCtrl
 
 #include "types.h"			// Needed for uint32 and uint64
-#include "resource.h"		// Needed for IDD_STATISTICS
 #include "OScopeCtrl.h"		// Needed for graphs
 #include "CTypedPtrList.h"	// Needed for CList
 #include "amule.h"			// Needed for theApp
@@ -51,7 +50,6 @@ class CStatisticsDlg : public wxPanel// CResizableDialog
 public:
 	CStatisticsDlg(wxWindow* pParent = NULL);   // standard constructor
 	~CStatisticsDlg();
-	enum { IDD = IDD_STATISTICS };
 
 	void Localize();
 	void UpdateStatGraphs(bool bStatsVisible);

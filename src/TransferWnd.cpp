@@ -59,7 +59,7 @@ END_EVENT_TABLE()
 
 //IMPLEMENT_DYNAMIC(CTransferWnd, CDialog)
 CTransferWnd::CTransferWnd(wxWindow* pParent /*=NULL*/)
-: wxPanel(pParent,CTransferWnd::IDD)
+: wxPanel(pParent, -1)
 {
 	wxSizer* content=transferDlg(this,TRUE);
 	content->Show(this,TRUE);
@@ -305,21 +305,6 @@ bool CTransferWnd::ProcessEvent(wxEvent& evt)
 
 		case MP_RESUME: {
 			theApp.downloadqueue->SetCatStatus(m_dlTab->GetSelection(),MP_RESUME);
-			break;
-		}
-		#if 0
-		case MP_RESUMENEXT:
-			theApp.downloadqueue->StartNextFile(m_dlTab->GetSelection());
-			break;
-		#endif
-		case IDC_UPLOAD_ICO: {
-			wxCommandEvent nullEvt;
-			SwitchUploadList(nullEvt);
-			break;
-		}
-		case IDC_QUEUE_REFRESH_BUTTON: {
-			#warning TODO: fix this
-			//OnBnClickedQueueRefreshButton();
 			break;
 		}
 		default: {

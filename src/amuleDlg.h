@@ -30,7 +30,6 @@
 #include <wx/imaglist.h>
 
 #include "types.h"			// Needed for uint32
-#include "resource.h"		// Needed for IDD_EMULE_DIALOG
 
 class CTransferWnd;
 class CServerWnd;
@@ -59,8 +58,6 @@ class CSysTray;
 class CamuleDlg : public wxFrame 
 {
 public:
-	enum { IDD = IDD_EMULE_DIALOG };
-	
 	CamuleDlg(wxWindow* pParent=NULL, wxString title=wxT(""),wxPoint where = wxDefaultPosition, wxSize dlg_size = wxSize(DEFAULT_SIZE_X,DEFAULT_SIZE_Y));
 	~CamuleDlg();
 
@@ -76,9 +73,10 @@ public:
 	
 	bool StatisticsWindowActive()	{return (activewnd == (wxWindow*)statisticswnd);}
 	
-	/* Returns the ID of the active dialog. Needed to check what to redraw. */
-	int GetActiveDialog()	{return m_nActiveDialog;}
-	void SetActiveDialog(wxWindow* dlg);
+	/* Returns the active dialog. Needed to check what to redraw. */
+	enum DialogType { TransferWnd, ServerWnd, SearchWnd, SharedWnd, ChatWnd, StatsWnd };
+	DialogType GetActiveDialog()	{return m_nActiveDialog;}
+	void SetActiveDialog(DialogType type, wxWindow* dlg);
 	
 	// Madcat - Toggles Fast ED2K Links Handler on/off.
 	void ToggleFastED2KLinksHandler();
@@ -142,7 +140,7 @@ private:
 	CSysTray*			m_wndTaskbarNotifier;
 #endif
 
-	int			m_nActiveDialog;
+	DialogType			m_nActiveDialog;
 
 	bool is_safe_state;
 

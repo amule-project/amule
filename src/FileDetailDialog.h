@@ -23,8 +23,6 @@
 #include <wx/dialog.h>		// Needed for wxDialog
 #include <wx/timer.h>		// Needed for wxTimer
 
-#include "resource.h"		// Needed for IDD_FILEDETAILS
-
 class CPartFile;
 
 // CFileDetailDialog dialog
@@ -38,8 +36,6 @@ public:
 	virtual ~CFileDetailDialog();
 	//virtual bool OnInitDialog();
 	void Localize();
-// Dialog Data
-	enum { IDD = IDD_FILEDETAILS };
 
 protected:
 	void OnTimer(wxTimerEvent& evt);

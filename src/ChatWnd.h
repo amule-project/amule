@@ -21,7 +21,6 @@
 #define CHATWND_H
 
 #include <wx/panel.h>		// Needed for wxPanel
-#include "resource.h"		// Needed for IDD_CHAT
 #include "types.h"
 
 class CFriend;
@@ -33,8 +32,6 @@ class CMD4Hash;
 class CChatWnd : public wxPanel 
 {
 public:
-	enum { IDD = IDD_CHAT };
-	
 	CChatWnd(wxWindow* pParent = NULL); 
 	~CChatWnd() {};
 

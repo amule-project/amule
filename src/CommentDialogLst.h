@@ -23,8 +23,6 @@
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/dialog.h>		// Needed for wxDialog
 
-#include "resource.h"		// Needed for IDD_COMMENTLST
-
 class CPartFile;
 class wxListCtrl;
 class wxCommandEvent;
@@ -43,8 +41,6 @@ public:
    //CHyperTextCtrl lstbox; 
    wxListCtrl* pmyListCtrl;
 
-// Dialog Data 
-   enum { IDD = IDD_COMMENTLST }; 
 protected: 
    //virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support 
    //DECLARE_MESSAGE_MAP() 

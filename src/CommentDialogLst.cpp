@@ -34,7 +34,7 @@
 
 //IMPLEMENT_DYNAMIC(CCommentDialogLst, CDialog)
 CCommentDialogLst::CCommentDialogLst(wxWindow*parent,CPartFile* file)
-: wxDialog(parent,CCommentDialogLst::IDD,_("File Comments"),
+: wxDialog(parent,-1,_("File Comments"),
 wxDefaultPosition,wxDefaultSize,wxDEFAULT_DIALOG_STYLE|wxSYSTEM_MENU)
 {
 	m_file = file;

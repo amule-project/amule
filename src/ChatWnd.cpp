@@ -55,7 +55,7 @@ END_EVENT_TABLE()
 
 
 CChatWnd::CChatWnd(wxWindow* pParent)
-: wxPanel(pParent, CChatWnd::IDD)
+: wxPanel(pParent, -1)
 {
 	wxSizer* content = messagePage(this, true);
 	content->Show(this, true);
@@ -71,7 +71,7 @@ CChatWnd::CChatWnd(wxWindow* pParent)
 void CChatWnd::StartSession(CUpDownClient* client)
 {
 	if ( !client->GetUserName().IsEmpty() ) {
-		theApp.amuledlg->SetActiveDialog(this);
+		theApp.amuledlg->SetActiveDialog(CamuleDlg::ChatWnd, this);
 		chatselector->StartSession(client, true);
 	}
 }

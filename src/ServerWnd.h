@@ -24,8 +24,6 @@
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/panel.h>		// Needed for wxPanel
 
-#include "resource.h"		// Needed for IDD_SERVER
-
 class CServerListCtrl;
 
 class CServerWnd : public wxPanel //CResizableDialog
@@ -41,7 +39,6 @@ public:
 	void UpdateServerMetFromURL(wxString strURL);
 	void UpdateMyInfo();
 
-	enum { IDD = IDD_SERVER };
 	CServerListCtrl* serverlistctrl;
 protected:
 	void OnSashPositionChanged(wxSplitterEvent& evt);

@@ -22,15 +22,11 @@
 
 #include <wx/dialog.h>		// Needed for wxDialog
 
-#include "resource.h"		// Needed for IDD_ADDFRIEND
-
-
 class CAddFriend : public wxDialog
 {
 public:
 	CAddFriend(wxWindow* parent);
 	~CAddFriend() {};
-	enum { IDD = IDD_ADDFRIEND };
 
 protected:
 	DECLARE_EVENT_TABLE()

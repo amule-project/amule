@@ -87,7 +87,7 @@ END_EVENT_TABLE()
 
 
 CSearchDlg::CSearchDlg(wxWindow* pParent)
-: wxPanel(pParent, CSearchDlg::IDD), m_timer(this, ID_SEARCHTIMER)
+: wxPanel(pParent, -1), m_timer(this, ID_SEARCHTIMER)
 {
 	last_search_time = 0;
 	

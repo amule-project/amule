@@ -55,7 +55,7 @@ BEGIN_EVENT_TABLE(CServerWnd,wxPanel)
 END_EVENT_TABLE()
 
 CServerWnd::CServerWnd(wxWindow* pParent /*=NULL*/)
-: wxPanel(pParent,CServerWnd::IDD)
+: wxPanel(pParent, -1)
 {
 	wxSizer* content=serverListDlg(this,TRUE);
 	content->Show(this,TRUE);
