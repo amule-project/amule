@@ -293,12 +293,13 @@ enum {
 	EC_OP_DLOAD_QUEUE,
 		
 		/*!
-		 * \brief Get upload queue.
+		 * \brief Get upload/waiting queue.
 		 *
 		 * \par Tags:
 		 *	::EC_TAG_UPDOWN_CLIENT (1+) info about client in queue
 		 */
 	EC_OP_ULOAD_QUEUE,
+	EC_OP_WAIT_QUEUE,
 
 		/*!
 		 * \brief Get shared files
