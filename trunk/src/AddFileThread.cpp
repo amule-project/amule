@@ -21,6 +21,7 @@
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/event.h>		// Needed for wxCommandEvent
 #include <wx/timer.h>		// Needed for wxStopWatch
+#include <wx/arrstr.h>		// Needed for wxArrayString
 #include <wx/filename.h>	// Needed for wxFileName::GetPathSeperator()
 #include <wx/utils.h>
 
