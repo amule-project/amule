@@ -39,7 +39,7 @@ class CKnownFileList {
 //	friend class CSharedFilesWnd;
 //	friend class CFileStatistic;
 public:
-	CKnownFileList(CString in_appdir);
+	CKnownFileList();
 	~CKnownFileList();
 	bool	SafeAddKFile(CKnownFile* toadd);
 	bool	Init();
@@ -56,7 +56,6 @@ private:
 	wxMutex	list_mut;
 
 	bool	Append(CKnownFile*);
-	CString	appdir;
 
 	CKnownFile* IsOnDuplicates(const char* filename,uint32 in_date,uint32 in_size);
 

@@ -47,132 +47,67 @@ WX_DEFINE_OBJARRAY(ArrayOfCategory_Struct);
 CPreferences::CPreferences()
 {
 	srand((uint32)time(0)); // we need random numbers sometimes
+	
 	prefs = new Preferences_Struct;	
 	memset(prefs,0,sizeof(Preferences_Struct));
 	prefsExt=new Preferences_Ext_Struct;
-	
 	memset(prefsExt,0,sizeof(Preferences_Ext_Struct));
-
-	//get application start directory
-	appdir = wxString::Format( wxT("%s/.") PACKAGE_NAME, getenv("HOME") );
-	
-	if (!wxFileName::DirExists( appdir )) {
-		wxFileName::Mkdir( appdir );
-	}
-	
-	appdir += wxT("/");
 
 	CreateUserHash();
 	md4cpy(&prefs->userhash,&userhash);
 	
 	// load preferences.dat or set standart values
-	CString fullpath = appdir + wxT("preferences.dat");
+	CString fullpath(theApp.ConfigDir + wxT("preferences.dat"));
+	
 	FILE* preffile = fopen(unicode2char(fullpath),"rb");
 
-	PrefsUnifiedDlg::BuildItemList(prefs, unicode2char(appdir));
-
-	LoadPreferences();
-	
 	if (!preffile) {
 		SetStandartValues();
-		//if (Ask4RegFix(true)) Ask4RegFix(false);
 	} else {
 		fread(prefsExt,sizeof(Preferences_Ext_Struct),1,preffile);
 		if (ferror(preffile)) {
 			SetStandartValues();
 		}
-		// import old pref-files
-		if (prefsExt->version<20) {
-			if (prefsExt->version>17) { // v0.20b+
-				prefsImport20b=new Preferences_Import20b_Struct;
-				memset(prefsImport20b,0,sizeof(Preferences_Import20b_Struct));
-				fseek(preffile,0,0);
-				fread(prefsImport20b,sizeof(Preferences_Import20b_Struct),1,preffile);
-				memcpy(&prefs->userhash,&prefsImport20b->userhash,16);
-				memcpy(&prefs->incomingdir,&prefsImport20b->incomingdir,510);
-				memcpy(&prefs->tempdir,&prefsImport20b->tempdir,510);
-				sprintf(prefs->nick,"%s", prefsImport20b->nick);
-				prefs->totalDownloadedBytes=prefsImport20b->totalDownloadedBytes;
-				prefs->totalUploadedBytes=prefsImport20b->totalUploadedBytes;
-			} else if (prefsExt->version>7) { // v0.20a
-				prefsImport20a=new Preferences_Import20a_Struct;
-				memset(prefsImport20a,0,sizeof(Preferences_Import20a_Struct));
-				fseek(preffile,0,0);
-				fread(prefsImport20a,sizeof(Preferences_Import20a_Struct),1,preffile);
-				memcpy(&prefs->userhash,&prefsImport20a->userhash,16);
-				memcpy(&prefs->incomingdir,&prefsImport20a->incomingdir,510);
-				memcpy(&prefs->tempdir,&prefsImport20a->tempdir,510);
-				sprintf(prefs->nick,"%s", prefsImport20a->nick);
-				prefs->totalDownloadedBytes=prefsImport20a->totalDownloaded;
-				prefs->totalUploadedBytes=prefsImport20a->totalUploaded;
-			} else { //v0.19c-
-				prefsImport19c=new Preferences_Import19c_Struct;
-				memset(prefsImport19c,0,sizeof(Preferences_Import19c_Struct));
-				fseek(preffile,0,0);
-				fread(prefsImport19c,sizeof(Preferences_Import19c_Struct),1,preffile);
-				if (prefsExt->version<3) {
-					CreateUserHash();
-					memcpy(&prefs->userhash,&userhash,16);
-				} else {
-					memcpy(&prefs->userhash,&prefsImport19c->userhash,16);
-				}
-				memcpy(&prefs->incomingdir,&prefsImport19c->incomingdir,510);memcpy(&prefs->tempdir,&prefsImport19c->tempdir,510);
-				sprintf(prefs->nick,"%s",prefsImport19c->nick);
-			}
- 		} else {
-			memcpy(&prefs->userhash,&prefsExt->userhash,16);
-			prefs->EmuleWindowPlacement=prefsExt->EmuleWindowPlacement;
-		}
+		memcpy(&prefs->userhash,&prefsExt->userhash,16);
+		prefs->EmuleWindowPlacement=prefsExt->EmuleWindowPlacement;
 		fclose(preffile);
 		memcpy(&userhash,&prefs->userhash,16);
 		prefs->smartidstate=0;
 	}
 
+	PrefsUnifiedDlg::BuildItemList(prefs, theApp.ConfigDir);	
+	
+	LoadPreferences();
+	
+	wxTextFile sdirfile;
+	
 	// shared directories
-	fullpath = appdir + wxT("shareddir.dat");
-	FILE* sdirfile=fopen(unicode2char(fullpath),"r");
-	if(sdirfile) {
-		char buffer[4096];
-		while(!feof(sdirfile)) {
-			memset(buffer,0,sizeof(buffer));
-			fgets(buffer,sizeof(buffer)-1,sdirfile);
-			char* ptr=strchr(buffer,'\n');
-			if(ptr) {
-				*ptr=0;
-			}
-			if(strlen(buffer)>1) {
-				shareddir_list.Add(char2unicode(buffer));//new CString(buffer));
-			}
-		}
-		fclose(sdirfile);
+	if(sdirfile.Open(theApp.ConfigDir + wxT("shareddir.dat"))) {
+		for (wxString str = sdirfile.GetFirstLine(); !sdirfile.Eof(); str = sdirfile.GetNextLine() ) {
+    			shareddir_list.Add(str);
+		}		
+		sdirfile.Close();
 	}
 
 	// serverlist adresses
-	fullpath = appdir + wxT("addresses.dat");
-	sdirfile=fopen(unicode2char(fullpath),"r");
-	if(sdirfile) {
-		char buffer[4096];
-		while(!feof(sdirfile)) {
-			memset(buffer,0,sizeof(buffer));
-			fgets(buffer,sizeof(buffer)-1,sdirfile);
-			char* ptr=strchr(buffer,'\n');
-			if(ptr) {
-				*ptr=0;
-			}
-			if(strlen(buffer)>1) {
-				adresses_list.Append(new CString(buffer));
-			}
+	if(sdirfile.Open(theApp.ConfigDir + wxT("addresses.dat"))) {
+		if (sdirfile.GetLineCount()) {
+			for (wxString str = sdirfile.GetFirstLine(); !sdirfile.Eof(); str = sdirfile.GetNextLine() ) {
+    				adresses_list.Append(new CString(str));
+			}		
 		}
-		fclose(sdirfile);
+		sdirfile.Close();
 	}
 
 	userhash[5] = 14;
 	userhash[14] = 111;
-	if (!wxFileName::DirExists(char2unicode(GetIncomingDir()))) {
-		wxFileName::Mkdir(char2unicode(GetIncomingDir()),0777);
+	
+	if (!::wxDirExists(char2unicode(GetIncomingDir()))) {
+		::wxMkdir(char2unicode(GetIncomingDir()),0777);
 	}
-	if (!wxFileName::DirExists(char2unicode(GetTempDir()))) {
-		wxFileName::Mkdir(char2unicode(GetTempDir()),0777);
+	
+	if (!::wxDirExists(char2unicode(GetTempDir()))) {
+		::wxMkdir(char2unicode(GetTempDir()),0777);
 	}
 
 	if (((int*)prefs->userhash)[0] == 0 && ((int*)prefs->userhash)[1] == 0 && ((int*)prefs->userhash)[2] == 0 && ((int*)prefs->userhash)[3] == 0) {
@@ -186,8 +121,10 @@ void CPreferences::SetStandartValues()
 	md4cpy(&prefs->userhash,&userhash);
 	WINDOWPLACEMENT defaultWPM;
 	defaultWPM.length = sizeof(WINDOWPLACEMENT);
-	defaultWPM.rcNormalPosition.left=10;defaultWPM.rcNormalPosition.top=10;
-	defaultWPM.rcNormalPosition.right=700;defaultWPM.rcNormalPosition.bottom=500;
+	defaultWPM.rcNormalPosition.left=10;
+	defaultWPM.rcNormalPosition.top=10;
+	defaultWPM.rcNormalPosition.right=700;
+	defaultWPM.rcNormalPosition.bottom=500;
 	defaultWPM.showCmd=0;
 	prefs->EmuleWindowPlacement=defaultWPM;
 	prefs->versioncheckLastAutomatic=0;
@@ -201,7 +138,7 @@ uint16 CPreferences::GetMaxDownload()
 
 bool CPreferences::Save()
 {
-	CString fullpath = appdir + wxT("preferences.dat");
+	CString fullpath(theApp.ConfigDir + wxT("preferences.dat"));
 
 	bool error = false;
 
@@ -220,14 +157,19 @@ bool CPreferences::Save()
 
 	SavePreferences();
 
-	fullpath = appdir + wxT("shareddir.dat");
-	FILE* sdirfile=fopen(unicode2char(fullpath),"w");
-	if(sdirfile) {
+	wxString shareddir(theApp.ConfigDir + wxT("shareddir.dat"));
+	
+	wxRemoveFile(shareddir);
+	
+	wxTextFile sdirfile(shareddir);
+	
+	if(sdirfile.Create()) {
 		for(unsigned int ii = 0; ii < shareddir_list.GetCount(); ++ii) {
-			fprintf(sdirfile,"%s\n",shareddir_list[ii].GetData());
+			sdirfile.AddLine(shareddir_list[ii]);
 		}
-		fclose(sdirfile);
-	} else {
+		sdirfile.Write(),
+		sdirfile.Close();
+	} else {		
 		error = true;
 	}
 

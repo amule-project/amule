@@ -159,7 +159,7 @@ void CDownloadQueue::Init()
 		wxFileName myFileName(fileName);
 		printf("Loading %s... ",unicode2char(myFileName.GetFullName()));
 		CPartFile* toadd = new CPartFile();
-		if (toadd->LoadPartFile(app_prefs->GetTempDir(),(char*)myFileName.GetFullName().GetData())) {
+		if (toadd->LoadPartFile(char2unicode(app_prefs->GetTempDir()),myFileName.GetFullName())) {
 			count++;
 			printf("Done.\n");
 			filelist.push_back(toadd); // to downloadqueue
@@ -405,7 +405,7 @@ void CDownloadQueue::Process()
 
 	// Check for new links once per second.
 	if ((::GetTickCount() - m_nLastED2KLinkCheck) >= 1000) {
-		wxString filename = filename.Format(wxT("%s/.aMule/ED2KLinks"), getenv("HOME"));
+		wxString filename = theApp.ConfigDir + wxT("ED2KLinks");
 		if (wxFile::Exists(filename)) {
 			AddLinksFromFile();
 		}
@@ -605,10 +605,8 @@ bool CDownloadQueue::RemoveSource(CUpDownClient* toremove, bool	updatewindow, bo
 
 	/* Creteil changes END */
 
-	if (updatewindow) {
-		toremove->SetDownloadState(DS_NONE);
-		theApp.amuledlg->transferwnd->downloadlistctrl->RemoveSource(toremove,0);
-	}
+	toremove->SetDownloadState(DS_NONE);
+	theApp.amuledlg->transferwnd->downloadlistctrl->RemoveSource(toremove,0);
 	toremove->ResetFileStatusInfo();
 	toremove->reqfile = 0;
 	return removed;
@@ -932,7 +930,7 @@ void CDownloadQueue::AddLinksFromFile()
 {
         wxString filename;
 	wxString link;
-	wxTextFile linksfile(wxString::Format(wxT("%s/.aMule/ED2KLinks"), getenv("HOME")));
+	wxTextFile linksfile(theApp.ConfigDir + wxT("ED2KLinks"));
 
 	if (linksfile.Open()) {
 		link = linksfile.GetFirstLine();
@@ -969,7 +967,7 @@ void CDownloadQueue::AddLinksFromFile()
 	}
 	// Save and Delete the file.
 	linksfile.Write();
-	wxRemoveFile(wxString::Format(wxT("%s/.aMule/ED2KLinks"), getenv("HOME")));
+	wxRemoveFile(theApp.ConfigDir +  wxT("ED2KLinks"));
 }
 
 /* Razor 1a - Modif by MikaelB
