@@ -105,7 +105,10 @@ enum wxProxyCommand {
 class wxProxyData
 {
 public:
+	wxProxyData();
 	void Empty();
+
+public:
 	wxString ProxyHostName;
 	unsigned short ProxyPort;
 	wxProxyType ProxyType;

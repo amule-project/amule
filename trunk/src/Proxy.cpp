@@ -60,7 +60,13 @@ void wxProxyEventHandler::m_ProxySocketHandler(wxSocketEvent& event)
 
 /******************************************************************************/
 
-void wxProxyData::Empty() {
+wxProxyData::wxProxyData()
+{
+	Empty();
+}
+
+void wxProxyData::Empty()
+{
 	ProxyHostName.Clear();
 	ProxyPort = 0;
 	ProxyType = wxPROXY_NONE;
@@ -117,6 +123,9 @@ bool wxSocketProxy::Start(wxIPaddress &address, enum wxProxyCommand cmd)
 			/* Call the proxy stuff routine */
 			switch(m_ProxyData.ProxyType)
 			{
+			case wxPROXY_NONE:
+				ok = false;
+				break;
 			case wxPROXY_SOCKS4:
 				ok = DoSocks4(address, cmd);
 				break;
