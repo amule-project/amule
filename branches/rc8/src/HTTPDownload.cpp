@@ -132,7 +132,7 @@ wxThread::ExitCode CHTTPDownloadThread::Entry()
 	FILE *outfile = fopen(unicode2char(m_tempfile), "w");
 	
 	if (outfile!=NULL) {
- 		if (!m_url) {
+		if ( m_url.IsEmpty() ) {
 			// Nowhere to download from!
 			fclose(outfile);
 			return NULL;
