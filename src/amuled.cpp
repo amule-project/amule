@@ -163,6 +163,8 @@ int CamuleDaemonApp::OnRun()
 		msRun = GetTickCount() - msRun;
 		msWait = uLoop - msRun;
 	}
+	clientudp->Delete();
+	clientudp = 0;
 	ShutDown();
 	return 0;
 }
