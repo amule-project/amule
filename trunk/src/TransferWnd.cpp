@@ -24,6 +24,8 @@
 #include <wx/splitter.h>
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/sizer.h>		// Needed for wxSizer
+#include <wx/menu.h>
+#include <wx/msgdlg.h>
 
 #include "TransferWnd.h"	// Interface declarations
 #include "amuleDlg.h"		// Needed for CamuleDlg

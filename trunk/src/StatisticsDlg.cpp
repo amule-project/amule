@@ -26,6 +26,8 @@
 
 #include <cmath>		// Needed for std::exp
 #include <wx/settings.h>
+#include <wx/stattext.h>
+#include <wx/sizer.h>
 
 #include "muuli_wdr.h"		// Needed for statsDlg
 #include "StatisticsDlg.h"	// Interface declarations
