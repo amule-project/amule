@@ -71,10 +71,12 @@ public:
 	virtual ~CPartFile();
 	
 	bool	IsASanePartFile() const;
+	bool	IsASaneFileClientCombination(
+			const CUpDownClient* cur_src, const CUpDownClient* forClient = 0) const;
 	void 	SetPartFileStatus(uint8 newstatus);
 	virtual bool CreateFromFile(
-		const wxString& WXUNUSED(directory), const wxString& WXUNUSED(filename), 
-		volatile int const* WXUNUSED(notify)) const { return false; } // not supported in this class
+			const wxString& WXUNUSED(directory), const wxString& WXUNUSED(filename), 
+			volatile int const* WXUNUSED(notify)) const { return false; } // not supported in this class
 	virtual bool LoadFromFile(const CFile* WXUNUSED(file)) const { return false; }
 	bool	WriteToFile(CFile* file) const	{ return false; }
 	bool	IsPartFile() const		{ return !(status == PS_COMPLETE); }

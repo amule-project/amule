@@ -114,16 +114,13 @@ CUpDownClient::CUpDownClient(uint16 in_port, uint32 in_userid,uint32 in_serverip
 	ReGetClientSoft();
 }
 
-#if defined( __DEBUG__ )
+#warning Dont forget to remove this and the magic numbers when the bug is gone.
 #define MAGIC_1 1234567890
-#define MAGIC_2 1357924680
-#endif // __DEBUG__
+#define MAGIC_2 1357902468
 void CUpDownClient::Init()
 {
-#if defined( __DEBUG__ )
 	MagicNumber1 = MAGIC_1;
 	MagicNumber2 = MAGIC_2;
-#endif // __DEBUG__
 
 	credits = 0;
 	//memset(reqfileid, 0, sizeof reqfileid);
@@ -224,14 +221,14 @@ void CUpDownClient::Init()
 #warning Dont forget to remove this and the magic numbers when the bug is gone.
 bool CUpDownClient::IsASaneUpDownClient(char *function, char *file, int line) const
 {
-	int sane;
+	bool sane;
 	
 	sane = 	this &&
 		MagicNumber1 == MAGIC_1 && 
 		MagicNumber2 == MAGIC_2;
 	if( !sane ) {
-		// scream loud!
 #if defined( __DEBUG__ )
+		// scream loud!
 		printf("Bogus pointer to UpDownClient detected in %s(%s:%d)!\n", function, file, line);
 		if(this) {
 			printf("MN1 = %u, MN2 = %u\n", MagicNumber1, MagicNumber2);

@@ -217,16 +217,13 @@ CPartFile::CPartFile(CED2KFileLink* fileLink)
 	InitializeFromLink(fileLink);
 }
 
-#if defined( __DEBUG__ )
+#warning Dont forget to remove this and the magic numbers when the bug is gone.
 #define MAGIC_1 1234567890
-#define MAGIC_2 1357924680
-#endif // __DEBUG__
+#define MAGIC_2 1357902468
 void CPartFile::Init()
 {
-#if defined( __DEBUG__ )
 	MagicNumber1 = MAGIC_1;
 	MagicNumber2 = MAGIC_2;
-#endif // __DEBUG__
 	m_nLastBufferFlushTime = 0;
 
 	newdate = true;
@@ -335,15 +332,16 @@ CPartFile::~CPartFile()
 
 #warning Dont forget to remove this and the magic numbers when the bug is gone.
 bool CPartFile::IsASanePartFile() const {
-	int sane;
-	
+	bool sane;
+	// The problem here is that if this is invalid, we are not even able to
+	// access the magic numbers without segfaulting.
 	sane = 	this &&
 		MagicNumber1 == MAGIC_1 && 
 		MagicNumber2 == MAGIC_2; 
 	if( !sane ) {
-		// scream loud!
 #if defined( __DEBUG__ )
-		printf("Bogus pointer to newfile detected!\n");
+		// scream loud!
+		printf("Bogus pointer to CPartFile detected!\n");
 		if(this) {
 			printf("MN1 = %u, MN2 = %u\n", MagicNumber1, MagicNumber2);
 		} else {
@@ -1920,17 +1918,21 @@ void CPartFile::UpdatePartsInfo() {
 	}
 	
 	CUpDownClient* cur_src;
-	
-		for (POSITION pos = m_SrcList.GetHeadPosition(); pos != 0; )	{
-			cur_src = m_SrcList.GetNext(pos);
-			for (uint16 i = 0; i < partcount; i++)	{
-				if (cur_src->IsPartAvailable(i)) {
-					m_SrcpartFrequency[i] +=1;
-				}
+
+	for (POSITION pos = m_SrcList.GetHeadPosition(); pos != 0; )	{
+		cur_src = m_SrcList.GetNext(pos);
+		for (uint16 i = 0; i < partcount; i++)	{
+			#warning Phoenix - hack to see the mixed sources problem - III
+			if(!IsASaneFileClientCombination(cur_src)) {
+				continue;
 			}
-			if ( flag) {
-				count.Add(cur_src->GetUpCompleteSourcesCount());
+			if (cur_src->IsPartAvailable(i)) {
+				m_SrcpartFrequency[i] +=1;
 			}
+		}
+		if (flag) {
+			count.Add(cur_src->GetUpCompleteSourcesCount());
+		}
 	}
 
 	if( flag ) {
@@ -3039,7 +3041,41 @@ void CPartFile::SetLastAnsweredTimeTimeout()
 }
 
 
-Packet*	CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
+bool CPartFile::IsASaneFileClientCombination(const CUpDownClient* cur_src, const CUpDownClient* forClient) const
+{
+	int n = GetPartCount();	
+	bool sane = (GetFileHash() == cur_src->reqfile->GetFileHash());
+	if (forClient) sane = sane && (GetFileHash() == forClient->reqfile->GetFileHash());
+#if defined( __DEBUG__ )
+	if (!sane) {
+		printf("Mismatching hashes!\n");
+		printf("\tthis   : %s\n", 	unicode2char(GetFileHash().Encode().c_str()));
+		printf("\tcur_src: %s\n", unicode2char(cur_src->reqfile->GetFileHash().Encode().c_str()));
+		if (forClient)
+			printf("\tfor_clt: %s\n", unicode2char(forClient->reqfile->GetFileHash().Encode().c_str()));
+		printf("Filenames are: \n");
+		printf("\tthis   : %s\n", unicode2char(GetFileName().c_str()));
+		printf("\tcur_src: %s\n", unicode2char(cur_src->reqfile->GetFileName().c_str()));
+		if (forClient)
+			printf("\tfor_clt: %s\n", unicode2char(forClient->reqfile->GetFileName().c_str()));
+#endif // __DEBUG__
+	} else {
+		sane = (n == cur_src->m_nPartCount);
+		if (forClient) sane = sane && (n == forClient->m_nPartCount);
+#if defined( __DEBUG__ )
+		if (!sane) {
+			printf("CPartFile->GetPartStatus() = %d\n", n);
+			printf("cur_src->m_nPartCount = %d\n", cur_src->m_nPartCount);
+			if (forClient)
+				printf("forClient->m_nPartCount = %d\n", forClient->m_nPartCount);
+		}
+#endif // __DEBUG__
+	}
+	
+	return sane;
+}
+
+Packet *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 {
 	if ( m_SrcList.IsEmpty() )
 		return NULL;
@@ -3064,34 +3100,7 @@ Packet*	CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 			if (reqstatus) {
 				// only send sources which have needed parts for this client
 				#warning Phoenix - hack to see the mixed sources problem - I
-				if ( md4cmp(cur_src->reqfile->GetFileHash(), forClient->reqfile->GetFileHash()) || md4cmp(cur_src->reqfile->GetFileHash(), GetFileHash() ) ) {
-#if defined( __DEBUG__ )
-					printf("Mismatching hashes!\n");
-					printf("\tthis   : %s\n", 	unicode2char(GetFileHash().Encode().c_str()));
-					printf("\tcur_src: %s\n", unicode2char(cur_src->reqfile->GetFileHash().Encode().c_str()));
-					printf("\tfor_clt: %s\n", unicode2char(forClient->reqfile->GetFileHash().Encode().c_str()));
-					printf("Filenames are: \n");
-					printf("\tthis   : %s\n", unicode2char(GetFileName().c_str()));
-					printf("\tcur_src: %s\n", unicode2char(cur_src->reqfile->GetFileName().c_str()));
-					printf("\tfor_clt: %s\n", unicode2char(forClient->reqfile->GetFileName().c_str()));
-#endif // __DEBUG__
-					continue;
-				}
-				if( n != cur_src->m_nPartCount ||
-					cur_src->m_nPartCount != forClient->m_nPartCount ) {
-#if defined( __DEBUG__ )
-					printf("\nCPartFile->GetPartStatus() = %d, cur_src->m_nPartCount = %d,  forClient->m_nPartCount = %d\n", n, cur_src->m_nPartCount, forClient->m_nPartCount);
-					if ( ( cur_src->reqfile->GetFileHash() != forClient->reqfile->GetFileHash() ) || ( cur_src->reqfile->GetFileHash() != GetFileHash() ) ) {
-						printf("Mismatching hashes!\n");
-						printf("\tthis   : %s\n", unicode2char(GetFileHash().Encode().c_str()));
-						printf("\tcur_src: %s\n", unicode2char(cur_src->reqfile->GetFileHash().Encode().c_str()));
-						printf("\tfor_clt: %s\n", unicode2char(forClient->reqfile->GetFileHash().Encode().c_str()));
-						printf("Filenames are: \n");
-						printf("\tthis   : %s\n", unicode2char(GetFileName().c_str()));
-						printf("\tcur_src: %s\n", unicode2char(cur_src->reqfile->GetFileName().c_str()));
-						printf("\tfor_clt: %s\n", unicode2char(forClient->reqfile->GetFileName().c_str()));
-					}
-#endif // __DEBUG__
+				if(!IsASaneFileClientCombination(cur_src, forClient)) {
 					continue;
 				}
 				for (int x = 0; x < n; x++) {
@@ -3101,33 +3110,11 @@ Packet*	CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 					}
 				}
 			} else {
-				// if we don't know the need parts for this client, return any source
-				// currently a client sends it's file status only after it has at least one complete part,
+				// if we don't know the need parts for this client, 
+				// return any source currently a client sends it's 
+				// file status only after it has at least one complete part
 				#warning Phoenix - hack to see the mixed sources problem - II
-				if ( md4cmp( cur_src->reqfile->GetFileHash(), cur_src->reqfile->GetFileHash() ) ) {
-#if defined( __DEBUG__ )
-					printf("Mismatching hashes!\n");
-					printf("\tthis: %s\n", unicode2char(GetFileHash().Encode().c_str()));
-					printf("\tcur_src: %s\n", unicode2char(cur_src->reqfile->GetFileHash().Encode().c_str()));
-					printf("Filenames are: \n");
-					printf("\tthis: %s\n", unicode2char(GetFileName().c_str()));
-					printf("\tcur_src: %s\n", unicode2char(cur_src->reqfile->GetFileName().c_str()));
-#endif // __DEBUG__
-					continue;
-				}
-				if( n != cur_src->m_nPartCount ) {
-#if defined( __DEBUG__ )
-					printf("\nCPartFile->GetPartStatus() = %d, cur_src->m_nPartCount = %d\n", n, cur_src->m_nPartCount);
-
-					if ( ( cur_src->reqfile->GetFileHash() != cur_src->reqfile->GetFileHash() ) ) {
-						printf("Mismatching hashes!\n");
-						printf("\tthis: %s\n", unicode2char(GetFileHash().Encode().c_str()));
-						printf("\tcur_src: %s\n", unicode2char(cur_src->reqfile->GetFileHash().Encode().c_str()));
-						printf("Filenames are: \n");
-						printf("\tthis: %s\n", unicode2char(GetFileName().c_str()));
-						printf("\tcur_src: %s\n", unicode2char(cur_src->reqfile->GetFileName().c_str()));
-					}
-#endif // __DEBUG__
+				if(!IsASaneFileClientCombination(cur_src)) {
 					continue;
 				}
 				for (int x = 0; x < GetPartCount(); x++){
