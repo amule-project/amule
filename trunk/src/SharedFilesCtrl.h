@@ -44,7 +44,6 @@ public:
 	void	UpdateItem(CKnownFile* toupdate);
 	void	Localize();
 	void	ShowFilesCount();
-	void	SetAICHHashing(uint32 nVal)				{ nAICHHashing = nVal; } 
 
 protected:
 	virtual bool AltSortAllowed( int column );
@@ -60,7 +59,6 @@ protected:
 	wxMenu		   m_PrioMenu;
 	wxMenu		   m_PermMenu;
 	CSharedFileList* sflist;
-	volatile uint32 nAICHHashing;
 
 	DECLARE_EVENT_TABLE()
 };
