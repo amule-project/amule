@@ -1145,11 +1145,13 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 		if (!client) {
 			throw wxString(wxT("Unknown clients sends extended protocol packet"));
 		}
+		/*
 		if (!client->CheckHandshakeFinished(OP_EMULEPROT, opcode)) {
 			// Here comes a extended packet without finishing the hanshake.
 			// IMHO, we should disconnect the client.
 			throw wxString(wxT("Client send extended packet before finishing handshake"));
 		}
+		*/
 		switch(opcode) {
 			case OP_MULTIPACKET: {
 				 // 0.42e
