@@ -37,7 +37,17 @@
 #include "wxcasframe.h"
 #include "onlinesig.h"
 
-#if defined(__WXGTK__) || defined(__WXMOTIF__) || wxUSE_XPM_IN_MSW
+#ifdef __WXMSW__
+    #define USE_XPM_BITMAPS 0
+#else
+    #define USE_XPM_BITMAPS 1
+#endif
+
+#if USE_XPM_BITMAPS && defined(__WXMSW__) && !wxUSE_XPM_IN_MSW
+    #error You need to enable XPM support to use XPM bitmaps with toolbar!
+#endif // USE_XPM_BITMAPS
+
+#if USE_XPM_BITMAPS
 #include "../pixmaps/wxcas.xpm"
 #include "../pixmaps/refresh.xpm"
 #include "../pixmaps/stop.xpm"
