@@ -73,7 +73,6 @@ public:
 	void	StopUDPRequests();
 	CServer*	cur_udpserver;
 	void	GetDownloadStats(uint32 results[]);
-	void	AddPartFilesToShare();
 	void	AddDownload(CPartFile* newfile, bool paused, uint8 category);
 	CUpDownClient* 	GetDownloadClientByIP(uint32 dwIP);
 	void	StartNextFile();

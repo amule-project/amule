@@ -86,20 +86,6 @@ CDownloadQueue::CDownloadQueue(CSharedFileList* in_sharedfilelist)
 }
 
 
-void CDownloadQueue::AddPartFilesToShare()
-{
-	do_not_sort_please = true;
-	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
-		CPartFile* cur_file = filelist[i];
-		if (cur_file->GetStatus(true) == PS_READY) {
-			printf("Adding file %s to shares\n",unicode2char(cur_file->GetFullName()));
-			sharedfilelist->SafeAddKFile(cur_file,true);
-		}
-	}
-	do_not_sort_please = false;
-}
-
-
 void CDownloadQueue::Init()
 {
 	// find all part files, read & hash them if needed and store into a list
