@@ -1059,6 +1059,19 @@ void CamuleApp::Localize_mule()
 {
 	int language;
 	
+	#define  wxLANGUAGE_CUSTOM 				wxLANGUAGE_USER_DEFINED+1
+	#define  wxLANGUAGE_ITALIAN_NAPOLITAN 	wxLANGUAGE_USER_DEFINED+2
+	
+	wxLanguageInfo CustomLanguage;
+	CustomLanguage.Language = wxLANGUAGE_ITALIAN_NAPOLITAN;
+	CustomLanguage.CanonicalName = "it_NA";
+	CustomLanguage.Description = "sNeo's Custom Napolitan Language";
+	wxLocale::AddLanguage(CustomLanguage);
+
+	CustomLanguage.Language = wxLANGUAGE_CUSTOM;
+	CustomLanguage.CanonicalName = "aMule_custom";
+	CustomLanguage.Description = "aMule's custom language";
+	
 	switch (glob_prefs->GetLanguageID()) {
 		case 0:		
 			language = wxLANGUAGE_DEFAULT;
@@ -1174,20 +1187,28 @@ void CamuleApp::Localize_mule()
 			break;
 		case 28:
 			//strcpy(newlang,"it_NA");
-			language = wxLANGUAGE_ITALIAN;
+			language = wxLANGUAGE_ITALIAN_NAPOLITAN;
 			break;
+		case 29:
+			//strcpy(newlang,"custom");
+			language = wxLANGUAGE_CUSTOM;
+			break;		
 		default:
 			language = wxLANGUAGE_DEFAULT;
 			break;
 
 	}
 
-	if ((!m_locale.Init(language)) && (language != wxLANGUAGE_DEFAULT)) {	
+	if ((!m_locale.Init(language)) && (language != wxLANGUAGE_DEFAULT) && (language != wxLANGUAGE_CUSTOM)) {	
 		QueueLogLine(false,"The selected locale seems not to be installed on your box. (Note: I'll try to set it anyway)");
 	}
-	
-	m_locale.AddCatalogLookupPathPrefix(LOCALEDIR);
-	m_locale.AddCatalog(PACKAGE);
+	if (language != wxLANGUAGE_CUSTOM) {
+		m_locale.AddCatalogLookupPathPrefix(LOCALEDIR);
+		m_locale.AddCatalog(PACKAGE);
+	} else {
+		m_locale.AddCatalogLookupPathPrefix(wxString::Format("%s/.aMule", getenv("HOME")));
+		m_locale.AddCatalog("custom");
+	}
 }
 
 
