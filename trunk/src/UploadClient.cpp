@@ -346,27 +346,32 @@ void CUpDownClient::CreateStandartPackets(const byte* data,uint32 togo, Requeste
 	//printf("entered in : CUpDownClient::CreateStandartPackets\n");
 	uint32 nPacketSize;
 
-	CMemFile memfile((BYTE*)data,togo);
-	if (togo > 10240) 
-		nPacketSize = togo/(uint32)(togo/10240);
-	else
-		nPacketSize = togo;
-	while (togo){
-		if (togo < nPacketSize*2)
+	try {
+		CMemFile memfile((BYTE*)data,togo);
+		if (togo > 10240) 
+			nPacketSize = togo/(uint32)(togo/10240);
+		else
 			nPacketSize = togo;
-		togo -= nPacketSize;
 
-		Packet* packet = new Packet(OP_SENDINGPART,nPacketSize+24);
-		packet->CopyToDataBuffer(0, (const char *)GetUploadFileID().GetHash(), 16);
-		uint32 statpos = ENDIAN_SWAP_32((currentblock->EndOffset - togo) - nPacketSize);	
-		packet->CopyToDataBuffer(16, (const char *)&statpos, 4);
-		uint32 endpos = ENDIAN_SWAP_32((currentblock->EndOffset - togo));	
-		packet->CopyToDataBuffer(20, (const char *)&endpos, 4);
-		char *tempbuf = new char[nPacketSize];
-		memfile.Read(tempbuf, nPacketSize);
-		packet->CopyToDataBuffer(24, tempbuf, nPacketSize);
-		delete [] tempbuf;
-		m_BlockSend_queue.AddTail(packet);
+		while (togo){
+			if (togo < nPacketSize*2)
+				nPacketSize = togo;
+			togo -= nPacketSize;
+
+			Packet* packet = new Packet(OP_SENDINGPART,nPacketSize+24);
+			packet->CopyToDataBuffer(0, (const char *)GetUploadFileID().GetHash(), 16);
+			uint32 statpos = ENDIAN_SWAP_32((currentblock->EndOffset - togo) - nPacketSize);	
+			packet->CopyToDataBuffer(16, (const char *)&statpos, 4);
+			uint32 endpos = ENDIAN_SWAP_32((currentblock->EndOffset - togo));	
+			packet->CopyToDataBuffer(20, (const char *)&endpos, 4);
+			char *tempbuf = new char[nPacketSize];
+			memfile.Read(tempbuf, nPacketSize);
+			packet->CopyToDataBuffer(24, tempbuf, nPacketSize);
+			delete [] tempbuf;
+			m_BlockSend_queue.AddTail(packet);
+		}
+	} catch (...) {
+		throw wxString(wxT("Caught exception in CUpDownClient::CreateStandartPackets!\n"));
 	}
 }
 
@@ -382,31 +387,36 @@ void CUpDownClient::CreatePackedPackets(const byte* data,uint32 togo, Requested_
 	}
 	m_bUsedComprUp = true;
 	
-	CMemFile memfile(output,newsize);
-	uint32 endiannewsize = ENDIAN_SWAP_32(newsize);	
-	togo = newsize;
-	uint32 nPacketSize;
-	if (togo > 10240) 
-		nPacketSize = togo/(uint32)(togo/10240);
-	else
-		nPacketSize = togo;
-	while (togo){
-		if (togo < nPacketSize*2)
+	try {
+		CMemFile memfile(output,newsize);
+		uint32 endiannewsize = ENDIAN_SWAP_32(newsize);	
+		togo = newsize;
+		uint32 nPacketSize;
+		if (togo > 10240) 
+			nPacketSize = togo/(uint32)(togo/10240);
+		else
 			nPacketSize = togo;
-		togo -= nPacketSize;
+			
+		while (togo){
+			if (togo < nPacketSize*2)
+				nPacketSize = togo;
+			togo -= nPacketSize;
 
-		Packet* packet = new Packet(OP_COMPRESSEDPART,nPacketSize+24,OP_EMULEPROT);
-		packet->CopyToDataBuffer(0, (const char *)GetUploadFileID().GetHash(), 16);
-		uint32 statpos = ENDIAN_SWAP_32(currentblock->StartOffset);
-		packet->CopyToDataBuffer(16, (const char *)&statpos, 4);
-		packet->CopyToDataBuffer(20, (const char *)&endiannewsize, 4);
-		char *tempbuf = new char[nPacketSize];
-		memfile.Read(tempbuf, nPacketSize);
-		packet->CopyToDataBuffer(24, tempbuf, nPacketSize);
-		delete [] tempbuf;
-		m_BlockSend_queue.AddTail(packet);
+			Packet* packet = new Packet(OP_COMPRESSEDPART,nPacketSize+24,OP_EMULEPROT);
+			packet->CopyToDataBuffer(0, (const char *)GetUploadFileID().GetHash(), 16);
+			uint32 statpos = ENDIAN_SWAP_32(currentblock->StartOffset);
+			packet->CopyToDataBuffer(16, (const char *)&statpos, 4);
+			packet->CopyToDataBuffer(20, (const char *)&endiannewsize, 4);
+			char *tempbuf = new char[nPacketSize];
+			memfile.Read(tempbuf, nPacketSize);
+			packet->CopyToDataBuffer(24, tempbuf, nPacketSize);
+			delete [] tempbuf;
+			m_BlockSend_queue.AddTail(packet);
+		}
+		delete[] output;
+	} catch (...) {
+		throw wxString(wxT("Caught exception in CUpDownClient::CreatePackedPackets!\n"));
 	}
-	delete[] output;
 }
 
 void CUpDownClient::ProcessExtendedInfo(const CSafeMemFile *data, CKnownFile *tempreqfile)

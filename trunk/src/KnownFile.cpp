@@ -531,72 +531,78 @@ bool CKnownFile::LoadHashsetFromFile(const CFile* file, bool checkhash){
 	}
 }
 
-bool CKnownFile::LoadTagsFromFile(const CFile* file){
-	uint32 tagcount;
-	file->Read(&tagcount,4);
-	ENDIAN_SWAP_I_32(tagcount);
-	for (uint32 j = 0; j != tagcount;j++){
-		CTag* newtag = new CTag(*file);
-		switch(newtag->tag.specialtag){
-			case FT_FILENAME:{
-				SetFileName(char2unicode(newtag->tag.stringvalue));
-				delete newtag;
-				break;
-			}
-			case FT_FILESIZE:{
-				SetFileSize(newtag->tag.intvalue);
-				m_AvailPartFrequency.Alloc(GetPartCount());
-				for (uint32 i = 0; i < GetPartCount();i++) {
-					m_AvailPartFrequency.Add(0);
+bool CKnownFile::LoadTagsFromFile(const CFile* file)
+{
+	try {
+		uint32 tagcount;
+		file->Read(&tagcount,4);
+		ENDIAN_SWAP_I_32(tagcount);
+		for (uint32 j = 0; j != tagcount;j++){
+			CTag* newtag = new CTag(*file);
+			switch(newtag->tag.specialtag){
+				case FT_FILENAME:{
+					SetFileName(char2unicode(newtag->tag.stringvalue));
+					delete newtag;
+					break;
 				}
-				delete newtag;
-				break;
-			}
-			case FT_ATTRANSFERED:{
-				statistic.alltimetransferred += newtag->tag.intvalue;
-				delete newtag;
-				break;
-			}
-			case FT_ATTRANSFEREDHI:{
-				statistic.alltimetransferred = (((uint64)newtag->tag.intvalue) << 32) + ((uint64)statistic.alltimetransferred);
-				delete newtag;
-				break;
-			}
-			case FT_ATREQUESTED:{
-				statistic.alltimerequested = newtag->tag.intvalue;
-				delete newtag;
-				break;
-			}
- 			case FT_ATACCEPTED:{
-				statistic.alltimeaccepted = newtag->tag.intvalue;
-				delete newtag;
-				break;
-			}
-			case FT_ULPRIORITY:{
-				m_iUpPriority = newtag->tag.intvalue;
-				if( m_iUpPriority == PR_AUTO ){
-					m_iUpPriority = PR_HIGH;
-					m_bAutoUpPriority = true;
+				case FT_FILESIZE:{
+					SetFileSize(newtag->tag.intvalue);
+					m_AvailPartFrequency.Alloc(GetPartCount());
+					for (uint32 i = 0; i < GetPartCount();i++) {
+						m_AvailPartFrequency.Add(0);
+					}
+					delete newtag;
+					break;
 				}
-				else {
-					if (m_iUpPriority != PR_VERYLOW && m_iUpPriority != PR_LOW && m_iUpPriority != PR_NORMAL && m_iUpPriority != PR_HIGH && m_iUpPriority != PR_VERYHIGH && m_iUpPriority != PR_POWERSHARE) {
-						m_iUpPriority = PR_NORMAL;
-					}					
-					m_bAutoUpPriority = false;
+				case FT_ATTRANSFERED:{
+					statistic.alltimetransferred += newtag->tag.intvalue;
+					delete newtag;
+					break;
 				}
-				delete newtag;
-				break;
-			}
-			case FT_PERMISSIONS:{
-				m_iPermissions = newtag->tag.intvalue;
-				delete newtag;
-				break;
-			}
-			default:
-				taglist.Add(newtag);
-		}	
+				case FT_ATTRANSFEREDHI:{
+					statistic.alltimetransferred = (((uint64)newtag->tag.intvalue) << 32) + ((uint64)statistic.alltimetransferred);
+					delete newtag;
+					break;
+				}
+				case FT_ATREQUESTED:{
+					statistic.alltimerequested = newtag->tag.intvalue;
+					delete newtag;
+					break;
+				}
+ 				case FT_ATACCEPTED:{
+					statistic.alltimeaccepted = newtag->tag.intvalue;
+					delete newtag;
+					break;
+				}
+				case FT_ULPRIORITY:{
+					m_iUpPriority = newtag->tag.intvalue;
+					if( m_iUpPriority == PR_AUTO ){
+						m_iUpPriority = PR_HIGH;
+						m_bAutoUpPriority = true;
+					}
+					else {
+						if (m_iUpPriority != PR_VERYLOW && m_iUpPriority != PR_LOW && m_iUpPriority != PR_NORMAL && m_iUpPriority != PR_HIGH && m_iUpPriority != PR_VERYHIGH && m_iUpPriority != PR_POWERSHARE) {
+							m_iUpPriority = PR_NORMAL;
+						}					
+						m_bAutoUpPriority = false;
+					}
+					delete newtag;
+					break;
+				}
+				case FT_PERMISSIONS:{
+					m_iPermissions = newtag->tag.intvalue;
+					delete newtag;
+					break;
+				}
+				default:
+					taglist.Add(newtag);
+			}	
+		}
+		return true;
+	} catch (...) {
+		printf("Caught exception in CKnownFile::LoadTagsFromFile!\n");
+		return false;
 	}
-	return true;
 }
 
 bool CKnownFile::LoadDateFromFile(const CFile* file){

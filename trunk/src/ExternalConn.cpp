@@ -504,11 +504,15 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 		if (item.Left(20) == wxT("TRANSFER ADDFILELINK")) {
 			wxString buffer= wxT("Bad Link");
 			if (item.Length() > 20) {
-				CED2KLink *pLink = CED2KLink::CreateLinkFromUrl(unicode2char(item.Mid(21)));
-				if (pLink->GetKind() == CED2KLink::kFile) {
-					// lfroen - using default category 0
-					theApp.downloadqueue->AddFileLinkToDownload(pLink->GetFileLink(), 0); 
-					buffer = wxT("Link Added");
+				try {
+					CED2KLink *pLink = CED2KLink::CreateLinkFromUrl(unicode2char(item.Mid(21)));
+					if (pLink->GetKind() == CED2KLink::kFile) {
+						// lfroen - using default category 0
+						theApp.downloadqueue->AddFileLinkToDownload(pLink->GetFileLink(), 0); 
+						buffer = wxT("Link Added");
+					}
+				} catch (...) {
+					buffer = wxT("Bad Link!");
 				}
 			}
 			return buffer;
@@ -1815,14 +1819,18 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			
 			if (item.Mid(9,11).Cmp(wxT("ADDFILELINK")) == 0) { //add file link to download
 				if (item.Length() > 20) {
-					CED2KLink* pLink = CED2KLink::CreateLinkFromUrl(unicode2char(item.Mid(21)));
-					if (pLink->GetKind() == CED2KLink::kFile) {
-						// lfroen - using default category 0
-						theApp.downloadqueue->AddFileLinkToDownload(pLink->GetFileLink(), 0); 
+					try {
+						CED2KLink* pLink = CED2KLink::CreateLinkFromUrl(unicode2char(item.Mid(21)));
+						if (pLink->GetKind() == CED2KLink::kFile) {
+							// lfroen - using default category 0
+							theApp.downloadqueue->AddFileLinkToDownload(pLink->GetFileLink(), 0); 
+							delete pLink;
+							return wxT("Link Added");
+						}
 						delete pLink;
-						return wxT("Link Added");
+					} catch (...) {
+						return wxT("Bad Link!");
 					}
-					delete pLink;
 				}
 				return wxT("Bad ADDFILELINK request");
 			}
