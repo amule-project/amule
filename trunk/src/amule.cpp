@@ -280,6 +280,7 @@ int CamuleApp::OnExit()
 	if (glob_prefs) {
 		delete glob_prefs;
 		glob_prefs = NULL;
+		CPreferences::EraseItemList();
 	}
 
 	if (localserver) {

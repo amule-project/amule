@@ -828,6 +828,21 @@ void CPreferences::BuildItemList( const wxString& appdir )  // gets called at in
 }
 
 
+void CPreferences::EraseItemList()
+{
+	while ( s_CfgList.begin() != s_CfgList.end() ) {
+		delete s_CfgList.begin()->second;
+		s_CfgList.erase( s_CfgList.begin() );
+	}
+	
+	CFGList::iterator it = s_MiscList.begin();
+	for ( ; it != s_MiscList.end();  ) {
+		delete *it;
+		it = s_MiscList.erase( it );
+	}
+}
+
+
 void CPreferences::LoadAllItems(wxConfigBase* cfg)
 {
 	// Connect the Cfgs with their widgets
