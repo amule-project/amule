@@ -132,10 +132,26 @@ class CEC_UpDownClient_Tag : public CECTag {
 		}
  		bool HaveFile() { return GetTagByName(EC_TAG_KNOWNFILE) != NULL; }
 
- 		wxString ClientName() { return GetTagByName(EC_TAG_CLIENT_NAME)->GetStringData(); }
- 		uint32 Speed() { return GetTagByName(EC_TAG_PARTFILE_SPEED)->GetInt32Data(); }
- 		uint32 XferUp() { return GetTagByName(EC_TAG_PARTFILE_SIZE_XFER_UP)->GetInt32Data(); };
- 		uint32 XferDown() { return GetTagByName(EC_TAG_PARTFILE_SIZE_XFER)->GetInt32Data(); }
+ 		wxString ClientName()
+		{
+			CECTag *tag =  GetTagByName(EC_TAG_CLIENT_NAME);
+			return tag ? tag->GetStringData() : wxString();
+		}
+ 		uint32 Speed()
+		{
+			CECTag *tag =  GetTagByName(EC_TAG_PARTFILE_SPEED);
+			return tag ? tag->GetInt32Data() : 0;
+		}
+ 		uint32 XferUp()
+		{
+			CECTag *tag =  GetTagByName(EC_TAG_PARTFILE_SIZE_XFER_UP);
+			return tag ? tag->GetInt32Data() : 0;
+		}
+ 		uint32 XferDown()
+		{
+			CECTag *tag =  GetTagByName(EC_TAG_PARTFILE_SIZE_XFER);
+			return tag ? tag->GetInt32Data() : 0;
+		}
 };
 
 class CEC_SearchFile_Tag : public CECTag {
