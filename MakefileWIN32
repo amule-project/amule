@@ -10,7 +10,7 @@ else
 endif
 
 PROJECT = amule
-CC = C:\MinGWStudio\MinGW_3.4\bin\g++.exe
+CC = C:\MinGWStudio\MinGW\bin\g++.exe
 
 WINDRES = $(COMPILER_BIN)windres.exe
 ifeq ($(CFG),Debug)
@@ -39,7 +39,7 @@ ifeq ($(CFG),Release)
   RC_PREPROC = --define __WIN32__ --define __WIN95__ --define __GNUWIN32__ 
   RCFLAGS = 
   LIB_DIRS = -L"C:/MinGWStudio/Lib" 
-  LIBS = -lstdc++ -lcryptopp -lcurl -lz -lws2_32 -lwxmsw -lregex -lpng -ljpeg -lzlib -ltiff -lstdc++ -lgcc -lodbc32 -lwsock32 -lwinspool -lwinmm -lshell32 -lcomctl32 -lctl3d32 -lodbc32 -ladvapi32 -lodbc32 -lwsock32 -lopengl32 -lglu32 -lole32 -loleaut32 -luuid 
+  LIBS = -lcryptopp -lcurl -lz -lws2_32 -lwxmsw -lregex -lpng -ljpeg -lzlib -ltiff -lstdc++ -lgcc -lodbc32 -lwsock32 -lwinspool -lwinmm -lshell32 -lcomctl32 -lctl3d32 -lodbc32 -ladvapi32 -lodbc32 -lwsock32 -lopengl32 -lglu32 -lole32 -loleaut32 -luuid 
   LDFLAGS = -pipe -s  -Wl,--subsystem,windows -mwindows
 endif
 
