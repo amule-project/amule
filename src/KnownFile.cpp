@@ -865,9 +865,13 @@ bool CKnownFile::WriteToFile(CFile* file){
 	// hashset
 	file->Write(&m_abyFileHash,16);
 	uint16 parts = hashlist.GetCount();
+	#ifdef __WXMAC__
 	theApp.amuledlg->AddLogLine(false,CString(_("Parts = %i")).GetData(), parts);
+	#endif
 	ENDIAN_SWAP_I_16(parts);
+	#ifdef __WXMAC__
 	theApp.amuledlg->AddLogLine(false,CString(_("Endian Parts = %i")).GetData(),parts);		
+	#endif
 	file->Write(&parts,2);
 	parts = hashlist.GetCount();
 	for (int i = 0; i < parts; i++)
@@ -889,9 +893,13 @@ bool CKnownFile::WriteToFile(CFile* file){
 			tagcount++;
 	}
 	// standard tags
-	theApp.amuledlg->AddLogLine(false,CString(_("tagcount = %i")).GetData(), parts);
+	#ifdef __WXMAC__
+	theApp.amuledlg->AddLogLine(false,CString(_("tagcount = %i")).GetData(), tagcount);
+	#endif
 	ENDIAN_SWAP_I_32(tagcount);
-	theApp.amuledlg->AddLogLine(false,CString(_("Endian tagcount = %i")).GetData(),parts);		
+	#ifdef __WXMAC__
+	theApp.amuledlg->AddLogLine(false,CString(_("Endian tagcount = %i")).GetData(),tagcount);		
+	#endif
 	
 	file->Write(&tagcount, 4);
 	
@@ -940,7 +948,7 @@ void CKnownFile::CreateHashFromInput(FILE* file,CFile* file2, int Length, uchar*
 	Hash[1] = 0xEFCDAB89;
 	Hash[2] = 0x98BADCFE;
 	Hash[3] = 0x10325476;
-	CMemFile* data = 0;
+	CMemFile* data = NULL;
 	if (in_string)
 		data = new CMemFile(in_string,Length);
 	uint32 Required = Length;
