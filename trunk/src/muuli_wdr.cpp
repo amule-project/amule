@@ -1869,7 +1869,7 @@ wxSizer *PreferencesConnectionTab( wxWindow *parent, bool call_fit, bool set_siz
 
     item2->Add( item3, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 
-    wxStaticBox *item16 = new wxStaticBox( parent, -1, _("Bandwith Limits") );
+    wxStaticBox *item16 = new wxStaticBox( parent, -1, _("Bandwidth Limits") );
     wxStaticBoxSizer *item15 = new wxStaticBoxSizer( item16, wxVERTICAL );
 
     wxBoxSizer *item17 = new wxBoxSizer( wxHORIZONTAL );
@@ -2017,7 +2017,7 @@ wxSizer *PreferencesConnectionTab( wxWindow *parent, bool call_fit, bool set_siz
     item60->SetValue( TRUE );
     item57->Add( item60, 0, wxALIGN_CENTER_VERTICAL, 10 );
 
-    wxCheckBox *item61 = new wxCheckBox( parent, IDC_SHOWOVERHEAD, _("Show overhead bandwith"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxCheckBox *item61 = new wxCheckBox( parent, IDC_SHOWOVERHEAD, _("Show overhead bandwidth"), wxDefaultPosition, wxDefaultSize, 0 );
     item61->SetValue( TRUE );
     item57->Add( item61, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
