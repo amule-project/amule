@@ -1768,38 +1768,17 @@ void CamuleApp::NotifyEvent(GUIEvent event)
 		// no need to check pointers: if event is here, gui must be running
 		
 		// search
-	        case SEARCH_LOCAL_REQ:
+	        case SEARCH_REQ:
 			uploadqueue->AddUpDataOverheadServer(((Packet *)event.ptr_value)->GetPacketSize());
 			serverconnect->SendPacket( (Packet *)event.ptr_value, 0 );
-			break;
-	        case SEARCH_GLOBAL_REQ:
-			serverconnect->SendUDPPacket((Packet *)event.ptr_value, (CServer *)event.ptr_aux_value, false);
+			if ( event.byte_value ) {
+				searchlist->searchpacket = (Packet *)event.ptr_value;
+			} else {
+				searchlist->searchpacket = 0;
+			}
 			break;
 	        case SEARCH_ADD_TO_DLOAD:
 			downloadqueue->AddSearchToDownload((CSearchFile *)event.ptr_value, event.byte_value);
-			break;
-	        case SEARCH_ADD_RESULT: {
-			CSearchFile* toadd = (CSearchFile *)event.ptr_value;
-			CSearchListCtrl* outputwnd = GetSearchListControl(toadd->GetSearchID());
-			if (outputwnd) {
-				outputwnd->AddResult(toadd);
-				// Update the result count
-				amuledlg->searchwnd->UpdateHitCount( outputwnd );
-			}
-			UngetSearchListControl(outputwnd);
-		}
-			break;
-	        case SEARCH_UPDATE_SOURCES: {
-			CSearchFile* toadd = (CSearchFile *)event.ptr_value;
-			CSearchFile* cur_file = (CSearchFile *)event.ptr_aux_value;
-			CSearchListCtrl* outputwnd = GetSearchListControl(toadd->GetSearchID());
-			if (outputwnd) {
-				outputwnd->UpdateSources(cur_file);
-				// Update the result count
-				amuledlg->searchwnd->UpdateHitCount( outputwnd );
-			}
-			UngetSearchListControl(outputwnd);
-		}
 			break;
 
 		// PartFile
@@ -1896,6 +1875,7 @@ void CamuleApp::NotifyEvent(GUIEvent event)
 			// FIXME - move code out of downloadlistctrl
 			//downloadqueue->SetCatStatus(event.long_value, event.short_value);
 			break;
+		
 		// CORE->GUI
 		// queue list
 		case QLIST_CTRL_ADD_CLIENT:
@@ -2098,7 +2078,39 @@ void CamuleApp::NotifyEvent(GUIEvent event)
 				amuledlg->searchwnd->LocalSearchEnd(event.long_value);
 			}
 			break;
-
+		case SEARCH_UPDATE_PROGRESS:
+			if ( amuledlg->searchwnd ) {
+				if ( event.long_value == 0xffff ) {
+					wxCommandEvent evt;
+					amuledlg->searchwnd->OnBnClickedCancels(evt);
+				} else {
+					amuledlg->searchwnd->progressbar->SetValue(event.long_value);
+				}
+			}
+			break;
+	        case SEARCH_UPDATE_SOURCES: {
+			CSearchFile* toadd = (CSearchFile *)event.ptr_value;
+			CSearchFile* cur_file = (CSearchFile *)event.ptr_aux_value;
+			CSearchListCtrl* outputwnd = GetSearchListControl(toadd->GetSearchID());
+			if (outputwnd) {
+				outputwnd->UpdateSources(cur_file);
+				// Update the result count
+				amuledlg->searchwnd->UpdateHitCount( outputwnd );
+			}
+			UngetSearchListControl(outputwnd);
+		}
+			break;
+	        case SEARCH_ADD_RESULT: {
+			CSearchFile* toadd = (CSearchFile *)event.ptr_value;
+			CSearchListCtrl* outputwnd = GetSearchListControl(toadd->GetSearchID());
+			if (outputwnd) {
+				outputwnd->AddResult(toadd);
+				// Update the result count
+				amuledlg->searchwnd->UpdateHitCount( outputwnd );
+			}
+			UngetSearchListControl(outputwnd);
+		}
+			break;
 		// chat window
 		case CHAT_REFRESH_FRIEND:
 			if ( amuledlg->chatwnd ) {

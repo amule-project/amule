@@ -68,6 +68,7 @@ public:
 	void		OnPopupCloseOthers(wxCommandEvent& evt);
 
 	CMuleNotebook*	notebook;
+	wxGauge*	progressbar;
 private:
 	// Event handlers
 	void		OnEditFieldsChange(wxCommandEvent& evt);
@@ -86,10 +87,9 @@ private:
 	void		DirectDownload(wxCommandEvent &event);
 
 	Packet*		searchpacket;
-	wxGauge*	progressbar;
+
 	bool		canceld;
 	bool		globalsearch;
-	wxTimer		m_timer;	
 
 	uint32	last_search_time;
 

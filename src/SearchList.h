@@ -35,16 +35,19 @@ class CMD4Hash;
 Packet *CreateSearchPacket(wxString &searchString, wxString& typeText,
 				wxString &extension, uint32 min, uint32 max, uint32 avaibility);
 class CServer;
+class CSearchList;
 // send next request packet each 2 sec to next server from the list
 // update gui (if present) on progress
 class CGlobalSearchThread : public wxThread {
 	// Used to keep track of the servers we have sent UDP packet to
 	std::set<CServer*> askedlist;
 	Packet *packet;
+	CSearchList *owner;
+	virtual void *Entry();
 public:
-	CGlobalSearchThread(Packet *packet);
-	void Cancel();
-	void Start();
+	CGlobalSearchThread(Packet *packet, CSearchList *owner);
+	~CGlobalSearchThread();
+	
 };
 
 class CSearchFile : public CAbstractFile {
@@ -152,6 +155,9 @@ public:
 	void	AddFileToDownloadByHash(const CMD4Hash& hash, uint8 cat = 0);
 	uint16	GetFoundFiles(long searchID);
 
+	void LocalSearchEnd();
+	Packet *searchpacket;
+	CGlobalSearchThread *searchthread;
 private:
 	bool AddToList(CSearchFile* toadd, bool bClientResponse = false);
 	CTypedPtrList<CPtrList, CSearchFile*> list;
@@ -161,6 +167,7 @@ private:
 	wxString resultType;
 	
 	long	m_nCurrentSearch;
+
 };
 
 #endif // SEARCHLIST_H
