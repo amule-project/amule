@@ -151,43 +151,60 @@ void CIPFilter::AddBannedIPRange(uint32 IPStart, uint32 IPEnd, uint16 AccessLeve
 			}
 
 			// Starts inside the current span or after the current span
-			else if ( IPStart > it->second->IPStart  && IPStart <= it->second->IPEnd + 1 ) {
-				// Covers only a slice of the current span
-				if ( IPEnd < it->second->IPEnd ) {
-					// Same AccessLevel, nothing to do
-					if ( AccessLevel == it->second->AccessLevel ) {
-						return;
-					} else {
-						// Remember the old end-position
+			else if ( IPStart > it->second->IPStart ) {
+				// Starts inside the current span
+				if ( IPStart < it->second->IPEnd ) {
+					// Ends inside the current span
+					if ( IPEnd < it->second->IPEnd ) {
+						// Adding a span with same AccessLevel inside a existing span is fruitless
+						if ( AccessLevel == it->second->AccessLevel ) {
+							return;
+						}
+					
+						// Split the currens span and stop
 						uint32 oldend = it->second->IPEnd;
 						// Resize the current span to fit before the new span
 						it->second->IPEnd = IPStart - 1;
 
 						// Create a new span to cover the second block
 						IPRange_Struct* item = new IPRange_Struct();
-						*item = *(it->second);
-
-						item->IPStart = IPEnd + 1;
-						item->IPEnd   = oldend;
+						*item = *it->second;
+						item->IPStart     = IPEnd + 1;
+						item->IPEnd       = oldend;
 						
 						// Insert the new span	
 						iplist[ item->IPStart ] = item;
+						
 						break;
-					}
-				} else {
-					// Completly covers a side of the span
-					if ( AccessLevel == it->second->AccessLevel ) {
-						// Same AccessLevel, delete old and update start position
-						IPStart = it->second->IPStart;
-
-						IPListMap::iterator tmp = it++;
-						iplist.erase( tmp );	
-						continue;
-
 					} else {
-						// Update old end
+						// If access-level is the same, then we remove the current and
+						// resize the new span
+						if ( AccessLevel == it->second->AccessLevel ) {
+							IPStart = it->second->IPStart;
+							
+							IPListMap::iterator tmp = it++;
+							iplist.erase( tmp );
+							continue;
+						} else {
+							// Continues past the end of the current span, resize current span
+							it->second->IPEnd = IPStart - 1;
+						}
+					}
+				} else if ( IPStart == it->second->IPEnd ) {
+					// If access-level is the same, then we remove the current and
+					// resize the new span
+					if ( AccessLevel == it->second->AccessLevel ) {
+						IPStart = it->second->IPStart;
+						
+						IPListMap::iterator tmp = it++;
+						iplist.erase( tmp );
+						continue;
+					} else {
+						// Continues past the end of the current span, resize current span
 						it->second->IPEnd = IPStart - 1;
 					}
+				} else {
+					// Starts after the current span, nothing to do
 				}
 			}
 
