@@ -20,6 +20,8 @@
 //
 
 
+#include <wx/listimpl.cpp>
+
 #include "ListenSocket.h"	// Interface declarations
 #include "otherfunctions.h"	// Needed for md4cpy
 #include "server.h"		// Needed for CServer
@@ -60,8 +62,8 @@ CClientReqSocket::CClientReqSocket(CPreferences* in_prefs,CUpDownClient* in_clie
 	}
 	theApp.listensocket->AddSocket(this);
 	ResetTimeOutTimer();
-	
-	deleted = false;
+	deletethis = false;
+	OnDestroy = false;
 
 	SetEventHandler(*theApp.amuledlg,ID_SOKETTI);
 	SetNotify(wxSOCKET_CONNECTION_FLAG|wxSOCKET_INPUT_FLAG|wxSOCKET_OUTPUT_FLAG|wxSOCKET_LOST_FLAG);
@@ -79,11 +81,8 @@ CClientReqSocket::~CClientReqSocket()
 		client->socket = 0;
 	}
 	client = 0;
-	
-	if (!deleted) {
-		theApp.listensocket->RemoveSocket(this);
-	}
-	
+	theApp.listensocket->RemoveSocket(this);
+
 	//DEBUG_ONLY (theApp.clientlist->Debug_SocketDeleted(this));
 }
 
@@ -113,12 +112,7 @@ void CClientReqSocket::Disconnect()
 {
 	byConnected = ES_DISCONNECTED;
 	if (!client) {
-		// Kry - No point on calling Safe_Delete - it only sets the deletethis flag		
-
-		theApp.listensocket->RemoveSocket(this);
-		deleted = true;
-		Destroy();
-
+		Safe_Delete();
 	} else {
 		client->Disconnected();
 	}
@@ -143,9 +137,8 @@ void CClientReqSocket::Safe_Delete()
 	//  ShutDown(2);
 	client = NULL;
 	byConnected = ES_DISCONNECTED;
-	theApp.listensocket->RemoveSocket(this);
-	deleted = true;
-	Destroy();
+	deletethis = true;
+	//Destroy();
 }
 
 bool CClientReqSocket::ProcessPacket(char* packet, uint32 size, uint8 opcode)
@@ -1107,9 +1100,17 @@ void CListenSocket::Process()
 		socket_list.GetNext(pos1);
 		CClientReqSocket* cur_sock = socket_list.GetAt(pos2);
 		opensockets++;
-		cur_sock->CheckTimeOut();
+
+		if (cur_sock->deletethis) {
+			if (!cur_sock->OnDestroy) {
+				cur_sock->Destroy();
+				cur_sock->OnDestroy= true;
+			}
+		} else {
+			cur_sock->CheckTimeOut();
+		}
 	}
-	if (!bListening && (GetOpenSockets()+5 < app_prefs->GetMaxConnections() || theApp.serverconnect->IsConnecting())) {
+	if ((GetOpenSockets()+5 < app_prefs->GetMaxConnections() || theApp.serverconnect->IsConnecting()) && !bListening) {
 		ReStartListening();
 	}
 }
