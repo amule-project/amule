@@ -18,6 +18,7 @@ Version 2.0.0rc8 - The "???????????" version.
 		* Added bitmap button wich pops-up the last status log line
 		  (useful when it doesn't fit the window).
 		* Merged Preview and Open File and enabled Open File.
+		* Fixed: Servers priority not working
 		* Fixed: Setting "A4AF to others" was broken.
 		* Moved "Always filter bad IPs" from Server to Security
 		  in Preferences
