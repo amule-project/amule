@@ -196,9 +196,11 @@ CamuleApp::CamuleApp()
 	stat_transferStarttime = 0;
 	stat_serverConnectTime = 0;
 	sTransferDelay = 0.0;
+	m_ilastMaxConnReached = 0;
 	
 	// Apprently needed for *BSD
 	SetResourceLimits();
+	InitStatsTree();
 
 }
 
@@ -1418,7 +1420,6 @@ void CamuleApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 		if (serverconnect->IsConnecting()) {
 			serverconnect->CheckForTimeout();
 		}
-		
 		theApp.listensocket->UpdateConnectionsStatus();
 		
 	}
@@ -1429,6 +1430,11 @@ void CamuleApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 		OnlineSig(); // Added By Bouc7
 		// Kry - Log lines flush
 		FlushQueuedLogLines();
+		// Stats tree is updated every 5 seconds. Maybe we should make it match prefs.
+		UpdateStatsTree();
+		#ifdef AMULE_DAEMON
+		//ShowStatsTree();
+		#endif
 	}
 
 	if (msCur-msPrevSave >= 60000) {
@@ -1754,6 +1760,571 @@ void CamuleApp::OnFinishedHTTPDownload(wxEvent& evt)
 	}
 }
 
+
+void CamuleApp::InitStatsTree() {
+	
+	StatsTreeNode root = statstree.append_child(statstree.begin(),_("Statistics"));
+
+	h_uptime = statstree.append_child(root,_("Waiting..."));
+	h_transfer = statstree.append_child(root,_("Transfer"));
+	tran0= statstree.append_child(h_transfer,_("Waiting..."));
+
+	h_upload = statstree.append_child(h_transfer,_("Uploads"));
+	up1= statstree.append_child(h_upload,_("Waiting..."));
+	up2= statstree.append_child(h_upload,_("Waiting..."));
+	up3= statstree.append_child(h_upload,_("Waiting..."));
+	up4= statstree.append_child(h_upload,_("Waiting..."));
+	up5= statstree.append_child(h_upload,_("Waiting..."));
+	up6= statstree.append_child(h_upload,_("Waiting..."));
+	up7= statstree.append_child(h_upload,_("Waiting..."));
+	up8= statstree.append_child(h_upload,_("Waiting..."));
+	up9= statstree.append_child(h_upload,_("Waiting..."));
+	up10= statstree.append_child(h_upload,_("Waiting..."));
+
+	h_download = statstree.append_child(h_transfer,_("Downloads"));
+	down1= statstree.append_child(h_download,_("Waiting..."));
+	down2= statstree.append_child(h_download,_("Waiting..."));
+	down3= statstree.append_child(h_download,_("Waiting..."));
+	down4= statstree.append_child(h_download,_("Waiting..."));
+	down5= statstree.append_child(h_download,_("Waiting..."));
+	down6= statstree.append_child(h_download,_("Waiting..."));
+	down7= statstree.append_child(h_download,_("Waiting..."));
+
+	h_connection = statstree.append_child(root,_("Connection"));
+	con1= statstree.append_child(h_connection,_("Waiting..."));
+	con2= statstree.append_child(h_connection,_("Waiting..."));
+	con12=statstree.append_child(h_connection,_("Waiting..."));
+	con13=statstree.append_child(h_connection,_("Waiting..."));
+	con3= statstree.append_child(h_connection,_("Waiting..."));
+	con4= statstree.append_child(h_connection,_("Waiting..."));
+	con5= statstree.append_child(h_connection,_("Waiting..."));
+	con6= statstree.append_child(h_connection,_("Waiting..."));
+	con7= statstree.append_child(h_connection,_("Waiting..."));
+	con8= statstree.append_child(h_connection,_("Waiting..."));
+	con9= statstree.append_child(h_connection,_("Waiting..."));
+
+	h_clients = statstree.append_child(root,_("Clients"));
+	cli15= statstree.append_child(h_clients,_("Waiting..."));
+	cli1= statstree.append_child(h_clients,_("Waiting...")); // eMule
+	cli_versions[0].active = false;
+	cli_versions[1].active = false;
+	cli_versions[2].active = false;
+	cli_versions[3].active = false;
+	cli10= statstree.append_child(h_clients,_("Waiting...")); // aMule
+	cli10_1= statstree.append_child(cli10,_("Version")); // aMule
+	cli10_2= statstree.append_child(cli10,_("Operative System")); // aMule
+	cli_versions[12].active = false;
+	cli_versions[13].active = false;
+	cli_versions[14].active = false;
+	cli_versions[15].active = false;	
+	cli8= statstree.append_child(h_clients,_("Waiting..."));  // (l/x)mule
+	cli2= statstree.append_child(h_clients,_("Waiting..."));  // eDonkey Hybrid
+	cli_versions[4].active = false;
+	cli_versions[5].active = false;
+	cli_versions[6].active = false;
+	cli_versions[7].active = false;	
+	cli3= statstree.append_child(h_clients,_("Waiting..."));  // eDonkey
+	cli_versions[8].active = false;
+	cli_versions[9].active = false;
+	cli_versions[10].active = false;
+	cli_versions[11].active = false;	
+	cli4= statstree.append_child(h_clients,_("Waiting..."));  // cDonkey
+	cli5= statstree.append_child(h_clients,_("Waiting..."));  // Old MLDonkey
+	cli9= statstree.append_child(h_clients,_("Waiting..."));   // New MLDonkey
+	cli16= statstree.append_child(h_clients,_("Waiting..."));  // Shareaza
+	cli12= statstree.append_child(h_clients,_("Waiting...")); // lphant
+	cli11= statstree.append_child(h_clients,_("Waiting...")); // Compatible
+	cli6= statstree.append_child(h_clients,_("Waiting..."));  // Unknown
+	cli13= statstree.append_child(h_clients,_("Waiting...")); // lowid
+	cli14= statstree.append_child(h_clients,_("Waiting...")); // Sec Ident
+#ifdef  __DEBUG__
+	cli17= statstree.append_child(h_clients,_("Waiting...")); // HasSocket
+#endif
+	cli7= statstree.append_child(h_clients,_("Waiting..."));
+
+
+	h_servers = statstree.append_child(root,_("Servers"));
+	srv1= statstree.append_child(h_servers,_("Waiting..."));
+	srv2= statstree.append_child(h_servers,_("Waiting..."));
+	srv3= statstree.append_child(h_servers,_("Waiting..."));
+	srv4= statstree.append_child(h_servers,_("Waiting..."));
+	srv5= statstree.append_child(h_servers,_("Waiting..."));
+	srv6= statstree.append_child(h_servers,_("Waiting..."));
+	srv7= statstree.append_child(h_servers,_("Waiting..."));
+	srv8= statstree.append_child(h_servers,_("Waiting..."));
+	srv9= statstree.append_child(h_servers,_("Waiting..."));
+
+	h_shared = statstree.append_child(root, _("Shared Files"));
+	shar1= statstree.append_child(h_shared,_("Waiting..."));
+	shar2= statstree.append_child(h_shared,_("Waiting..."));
+	shar3= statstree.append_child(h_shared,_("Waiting..."));
+}
+
+void CamuleApp::UpdateStatsTree() {
+	wxString cbuffer;
+	wxString cbuffer2;
+	bool resize;
+	DWORD running;
+	uint32 myStats[19];
+
+	resize=false;
+
+	if (theApp.Start_time>0) {
+		(*h_uptime) = _("Uptime: ") + CastSecondsToHM(theApp.GetUptimeSecs());
+	}
+
+	theApp.downloadqueue->GetDownloadStats(myStats);
+
+	#define a_brackets_b(a,b) a +wxT(" (") + b + wxT(")")
+	
+	uint64 DownOHTotal = theApp.downloadqueue->GetDownDataOverheadFileRequest() + theApp.downloadqueue->GetDownDataOverheadSourceExchange() + theApp.downloadqueue->GetDownDataOverheadServer() + theApp.downloadqueue->GetDownDataOverheadOther();
+	uint64 DownOHTotalPackets = theApp.downloadqueue->GetDownDataOverheadFileRequestPackets() + theApp.downloadqueue->GetDownDataOverheadSourceExchangePackets() + theApp.downloadqueue->GetDownDataOverheadServerPackets() + theApp.downloadqueue->GetDownDataOverheadOtherPackets();
+
+	(*down1) = _("Downloaded Data (Session (Total)): ") +
+										a_brackets_b(
+											CastItoXBytes( theApp.stat_sessionReceivedBytes),
+											CastItoXBytes( theApp.stat_sessionReceivedBytes+thePrefs::GetTotalDownloaded()));
+
+	(*down2) = _("Total Overhead (Packets): ") +
+										a_brackets_b(
+											CastItoXBytes(DownOHTotal), 
+											CastItoIShort(DownOHTotalPackets));
+
+	(*down3) = _("File Request Overhead (Packets): ") +
+										a_brackets_b(
+											CastItoXBytes(theApp.downloadqueue->GetDownDataOverheadFileRequest()),
+											CastItoIShort(theApp.downloadqueue->GetDownDataOverheadFileRequestPackets()));
+											
+	(*down4) = _("Source Exchange Overhead (Packets): ") +
+										a_brackets_b(
+											CastItoXBytes( theApp.downloadqueue->GetDownDataOverheadSourceExchange()),
+											CastItoIShort(theApp.downloadqueue->GetDownDataOverheadSourceExchangePackets()));	
+
+	(*down5) = _("Server Overhead (Packets): ") +
+										a_brackets_b(
+											CastItoXBytes( theApp.downloadqueue->GetDownDataOverheadServer()),
+											CastItoIShort(theApp.downloadqueue->GetDownDataOverheadServerPackets()));
+											
+	(*down6) = wxString::Format(_("Found Sources: %i"),myStats[0]);
+	
+	(*down7) = wxString::Format(_("Active Downloads (chunks): %i"),myStats[1]);
+	
+	(*up1) = _("Uploaded Data (Session (Total)): ") + 
+										a_brackets_b(
+											CastItoXBytes( theApp.stat_sessionSentBytes),
+											CastItoXBytes( theApp.stat_sessionSentBytes+thePrefs::GetTotalUploaded()));
+
+
+	uint64 UpOHTotal = theApp.uploadqueue->GetUpDataOverheadFileRequest() + theApp.uploadqueue->GetUpDataOverheadSourceExchange() + theApp.uploadqueue->GetUpDataOverheadServer() + theApp.uploadqueue->GetUpDataOverheadOther();
+	uint64 UpOHTotalPackets = theApp.uploadqueue->GetUpDataOverheadFileRequestPackets() + theApp.uploadqueue->GetUpDataOverheadSourceExchangePackets() + theApp.uploadqueue->GetUpDataOverheadServerPackets() + theApp.uploadqueue->GetUpDataOverheadOtherPackets();		
+
+	(*up2) = _("Total Overhead (Packets): ") + 
+										a_brackets_b(
+											CastItoXBytes( UpOHTotal), 
+											CastItoIShort(UpOHTotalPackets));
+
+	(*up3) = _("File Request Overhead (Packets): ") + 
+										a_brackets_b(
+											CastItoXBytes( theApp.uploadqueue->GetUpDataOverheadFileRequest()),
+											CastItoIShort(theApp.uploadqueue->GetUpDataOverheadFileRequestPackets()));
+											
+	(*up4) = _("Source Exchange Overhead (Packets): ") +
+										a_brackets_b(
+											CastItoXBytes( theApp.uploadqueue->GetUpDataOverheadSourceExchange()),
+											CastItoIShort(theApp.uploadqueue->GetUpDataOverheadSourceExchangePackets()));
+											
+	(*up5) = _("Server Overhead (Packets): ") +
+										a_brackets_b(
+											CastItoXBytes( theApp.uploadqueue->GetUpDataOverheadServer()),
+											CastItoIShort(theApp.uploadqueue->GetUpDataOverheadServerPackets()));
+											
+	(*up6) = wxString::Format(_("Active Uploads: %i"),theApp.uploadqueue->GetUploadQueueLength());
+	(*up7) = wxString::Format(_("Waiting Uploads: %i"),theApp.uploadqueue->GetWaitingUserCount());
+	(*up8) = wxString::Format(_("Total successful upload sessions: %i"),theApp.uploadqueue->GetSuccessfullUpCount());
+	(*up9) = wxString::Format(_("Total failed upload sessions: %i"),theApp.uploadqueue->GetFailedUpCount());
+	running=theApp.uploadqueue->GetAverageUpTime();
+	(*up10) = wxString::Format(_("Average upload time: ") + CastSecondsToHM(running));
+
+	if (theApp.stat_transferStarttime>0) {
+		#warning - move away from GUI.
+		/*
+		(*con1) = wxString::Format(_("Average Downloadrate (Session): %.2f kB/s"),kBpsDownSession);
+		(*con2) = wxString::Format(_("Average Uploadrate (Session): %.2f kB/s"),GetKBpsUpSession());
+		(*con12) = wxString::Format(_("Max Downloadrate Average (Session): %.2f kB/s"),maxDownavg);	
+		(*con13) = wxString::Format(_("Max Downloadrate (Session): %.2f kB/s"),maxDown);
+		*/
+	}
+
+	(*con3) = wxString::Format(_("Reconnects: %i"),
+										(theApp.stat_reconnects>0) ? theApp.stat_reconnects-1 : 0);	
+
+	if (theApp.stat_transferStarttime==0) {
+		(*con4) = _("waiting for transfer...");
+	} else {
+		(*con4) =  _("Time Since First Transfer: ") + CastSecondsToHM(theApp.GetTransferSecs());
+	}
+
+	if (theApp.stat_serverConnectTime==0) {
+		(*con5) = _("Waiting for connection...");
+	}	else {
+		(*con5) = _("Connected To Server Since: ") + CastSecondsToHM(theApp.GetServerSecs());
+	}
+
+	(*con6) = wxString::Format(wxT("%s: %i"),_("Active Connections (estimate)"), theApp.listensocket->GetActiveConnections());	
+	uint32 m_itemp = theApp.listensocket->GetMaxConnectionReached();
+	if( m_itemp != m_ilastMaxConnReached ) {
+		char osDate[60];
+
+		time_t mytime=time(NULL);
+		struct tm* now=localtime(&mytime);
+		strftime(osDate,sizeof(osDate)-1,"%d.%m.%Y %H:%M:%S",now);
+
+		(*con7) = wxString::Format(wxT("%s: %i : %s"),_("Max Connection Limit Reached"),m_itemp,osDate);
+		m_ilastMaxConnReached = m_itemp;
+	} else if( m_itemp == 0 ) {
+		(*con7) = wxString::Format(wxT("%s: %i"),_("Max Connection Limit Reached"),m_itemp);
+	}
+
+	if(theApp.serverconnect->IsConnected()) {
+		(*con8) = wxString::Format(wxT("%s: %f"),_("Average Connections (estimate)"),(theApp.listensocket->GetAverageConnections()));
+	} else {
+		(*con8) = _("waiting for connection...");
+	}
+	(*con9) = wxString::Format(wxT("%s: %i"),_("Peak Connections (estimate)"),theApp.listensocket->GetPeakConnections());
+
+		
+	if (theApp.stat_sessionReceivedBytes>0 && theApp.stat_sessionSentBytes>0 ) {
+		if (theApp.stat_sessionReceivedBytes<theApp.stat_sessionSentBytes) {
+			(*tran0) = _("Session UL:DL Ratio (Total): ") 
+						+  wxString::Format(wxT("%.2f : 1"),(float)theApp.stat_sessionSentBytes/theApp.stat_sessionReceivedBytes);
+		} else {
+			(*tran0) = _("Session UL:DL Ratio (Total): ")
+						+ wxString::Format(wxT("1 : %.2f"),(float)theApp.stat_sessionReceivedBytes/theApp.stat_sessionSentBytes);
+		}
+	} else {
+			(*tran0) = wxString(_("Session UL:DL Ratio (Total): ")) + _("Not available");
+	}
+
+
+	// shared files stats
+	uint32 file_count = theApp.sharedfiles->GetCount();
+	(*shar1) = wxString::Format(_("Number of Shared Files: %i"),file_count);
+
+	uint64 allsize=theApp.sharedfiles->GetDatasize();
+	(*shar2) = wxString::Format(_("Total size of Shared Files: ") + CastItoXBytes(allsize));
+	
+	if(file_count != 0) {
+		(*shar3) = _("Average filesize: ") +  CastItoXBytes((uint64)allsize/file_count);
+	} else {
+		(*shar3) = wxString(_("Average filesize: ")) + wxT("-");
+	}
+
+	// get clientversion-counts
+
+	// statsclientstatus : original idea and code by xrmb
+	
+	CClientList::ClientMap clientVersionEDonkey;
+	CClientList::ClientMap clientVersionEDonkeyHybrid;
+	CClientList::ClientMap clientVersionEMule;
+	CClientList::ClientMap clientVersionAMule;
+	uint32 totalclient;
+	aMuleOSInfoMap OSInfo;
+	theApp.clientlist->GetStatistics(totalclient, myStats, &clientVersionEDonkey, &clientVersionEDonkeyHybrid, &clientVersionEMule, &clientVersionAMule, &OSInfo);
+	totalclient -= myStats[0];
+	if( !totalclient ) {
+		totalclient = 1;
+	}
+	
+	(*cli15) = wxString::Format(_("Total: %i Known: %i"),totalclient + myStats[0],totalclient);
+	(*cli1) = wxString::Format(wxT("eMule: %i (%1.1f%%)"),myStats[2],(double)100*myStats[2]/totalclient);
+	(*cli10) = wxString::Format(wxT("aMule: %i (%1.1f%%)"),myStats[8],(double)100*myStats[8]/totalclient);
+	(*cli8) = wxString::Format(wxT("lMule/xMule: %i (%1.1f%%)"),myStats[6],(double)100*myStats[6]/totalclient);
+	(*cli2) = wxString::Format(wxT("eDonkeyHybrid: %i (%1.1f%%)"),myStats[4],(double)100*myStats[4]/totalclient);
+	(*cli3) = wxString::Format(wxT("eDonkey: %i (%1.1f%%)"),myStats[1],(double)100*myStats[1]/totalclient);
+	(*cli4) = wxString::Format(wxT("cDonkey: %i (%1.1f%%)"),myStats[5],(double)100*myStats[5]/totalclient);
+	(*cli5) = wxString::Format(_("Old MLDonkey: %i (%1.1f%%)"),myStats[3],(double)100*myStats[3]/totalclient);
+	(*cli9) = wxString::Format(_("New MLDonkey: %i (%1.1f%%)"),myStats[7],(double)100*myStats[7]/totalclient);
+	(*cli12) = wxString::Format(wxT("lphant: %i (%1.1f%%)"),myStats[10],(double)100*myStats[10]/totalclient);
+	(*cli16) = wxString::Format(wxT("Shareaza: %i (%1.1f%%)"),myStats[16],(double)100*myStats[16]/totalclient);
+	(*cli11) = wxString::Format(_("Compatible: %i (%1.1f%%)"),myStats[9],(double)100*myStats[9]/totalclient);
+	(*cli6) = wxString::Format(_("Unknown: %i"),myStats[0]);
+	(*cli7) = wxString::Format(_("Filtered: %i"),theApp.stat_filteredclients);
+	(*cli13) = wxString::Format(_("LowID: %u (%.2f%% Total %.2f%% Known)"),myStats[11] , ((totalclient + myStats[0])>0)?((double)100*myStats[11] /(totalclient + myStats[0])):0, (double)100*myStats[18]/totalclient);
+	(*cli14) = wxString::Format(_("SecIdent On/Off: %u (%.2f%%) : %u (%.2f%%)"), myStats[12] , ((myStats[2]+myStats[8])>0)?((double)100*myStats[12] / (myStats[2]+myStats[8])):0, myStats[13] , ((myStats[2]+myStats[8])>0)?((double)100*myStats[13] /(myStats[2]+myStats[8]) ):0);
+#ifdef __DEBUG__
+	(*cli17) = wxString::Format(_("HasSocket: %i (%1.1f%%)"),myStats[17],(double)100*myStats[17]/(totalclient + myStats[0]));
+#endif
+	
+	if(myStats[1] > 0) {
+
+		uint32 totcnt = myStats[1];
+
+		//--- find top 4 eDonkey client versions ---
+		uint32	currtop = 0;
+		uint32	lasttop = 0xFFFFFFFF;
+		for(uint32 i=0; i<4; ++i) {
+			CClientList::ClientMap::iterator it = clientVersionEDonkey.begin();
+			uint32 topver=0;
+			uint32 topcnt=0;
+			double topper=0;
+			for ( ; it != clientVersionEDonkey.end(); ++it ) {
+				uint32	ver = it->first;
+				uint32	cnt = it->second;
+				
+				if(currtop<ver && ver<lasttop && ver != 0x91) {
+					double percent = (double)cnt/totcnt;
+					if( lasttop == 0xFFFFFFFF && ((totcnt > 75 && ((cnt <= 2) || percent < 0.01)) || (totcnt > 50 && cnt <= 1))) {
+						continue;
+					}
+					topper=percent;
+					topver=ver;
+					topcnt=cnt;
+					currtop=ver;
+				}
+			}
+			lasttop=currtop;
+			currtop=0;
+			if(topcnt) {
+				UINT verMaj = topver/(100*10*100);
+				UINT verMin = (topver - (verMaj*100*10*100))/(100*10);
+				UINT verUp = (topver - (verMaj*100*10*100) - (verMin*100*10))/(100);
+				cbuffer.Printf(wxT("v%u.%u.%u: %i (%1.1f%%)"), verMaj, verMin, verUp, topcnt, topper*100);							
+			} else {
+				cbuffer=wxEmptyString;
+			}
+			if (cbuffer.IsEmpty()) {
+				if (cli_versions[i+8].active) {
+					statstree.erase(cli_versions[i+8].TreeItem);
+					cli_versions[i+8].active = false;
+				}
+			} else {
+				if (cli_versions[i+8].active) {
+					(*(cli_versions[i+8].TreeItem)) = cbuffer;
+				} else {
+					cli_versions[i+8].TreeItem = statstree.append_child(cli3,cbuffer);
+					cli_versions[i+8].active = true;
+				}
+			}
+		}
+	}
+
+	if(myStats[4] >0) {
+
+		uint32 totcnt = myStats[4];
+
+		//--- find top 4 eDonkey Hybrid client versions ---
+		uint32	currtop = 0;
+		uint32	lasttop = 0xFFFFFFFF;
+		for(uint32 i=0; i<4; ++i) {
+			CClientList::ClientMap::iterator it = clientVersionEDonkeyHybrid.begin();
+			uint32 topver=0;
+			uint32 topcnt=0;
+			double topper=0;
+			for ( ; it != clientVersionEDonkeyHybrid.end(); ++it ) {
+				uint32	ver = it->first;
+				uint32	cnt = it->second;
+				if(currtop<ver && ver<lasttop && ver != 0x91) {
+					double percent = (double)cnt/totcnt;
+					if( lasttop == 0xFFFFFFFF && ((totcnt > 75 && ((cnt <= 2) || percent < 0.01)) || (totcnt > 50 && cnt <= 1))) {
+						continue;
+					}
+					topper=percent;
+					topver=ver;
+					topcnt=cnt;
+					currtop=ver;
+				}
+			}
+			lasttop=currtop;
+			currtop=0;
+			if(topcnt) {
+				UINT verMaj = topver/(100*10*100);
+				UINT verMin = (topver - (verMaj*100*10*100))/(100*10);
+				UINT verUp = (topver - (verMaj*100*10*100) - (verMin*100*10))/(100);
+				cbuffer.Printf(wxT("v%u.%u.%u: %i (%1.1f%%)"), verMaj, verMin, verUp, topcnt, topper*100);
+			} else {
+				cbuffer= wxEmptyString;
+			}
+			if (cbuffer.IsEmpty()) {
+				if (cli_versions[i+4].active) {
+					statstree.erase(cli_versions[i+4].TreeItem);
+					cli_versions[i+4].active = false;
+				}
+			} else {
+				if (cli_versions[i+4].active) {
+					(*(cli_versions[i+4].TreeItem)) = cbuffer;
+				} else {
+					cli_versions[i+4].TreeItem = statstree.append_child(cli2,cbuffer);
+					cli_versions[i+4].active = true;
+				}
+			}
+		}
+	}
+
+	if(myStats[2] > 0) {
+		uint32 totcnt = myStats[2];
+
+		//--- find top 4 eMule client versions ---
+		uint32	currtop = 0;
+		uint32	lasttop = 0xFFFFFFFF;
+		for(uint32 i=0; i<4; ++i) {
+			CClientList::ClientMap::iterator it = clientVersionEMule.begin();
+			uint32 topver=0;
+			uint32 topcnt=0;
+			double topper=0;
+			for ( ; it != clientVersionEMule.end(); ++it ) {
+				uint32	ver = it->first;;
+				uint32	cnt = it->second;
+				if(currtop<ver && ver<lasttop )	{
+					double percent = (double)cnt/totcnt;
+					if( lasttop == 0xFFFFFFFF && ((totcnt > 75 && ((cnt <= 2) || percent < 0.01)) || (totcnt > 50 && cnt <= 1))) {
+						continue;
+					}
+					topper=percent;
+					topver=ver;
+					topcnt=cnt;
+					currtop=ver;
+				}
+			}
+			lasttop=currtop;
+			currtop=0;
+			if(topcnt) {
+				UINT verMaj = topver/(100*10*100);
+				UINT verMin = (topver - (verMaj*100*10*100))/(100*10);
+				UINT verUp = (topver - (verMaj*100*10*100) - (verMin*100*10))/(100);
+				cbuffer.Printf(wxT(" v%u.%u%c: %i (%1.1f%%)"),verMaj, verMin, 'a' + verUp, topcnt, topper*100);
+			} else {
+				cbuffer=wxEmptyString;
+			}
+			if (cbuffer.IsEmpty()) {
+				if (cli_versions[i].active) {
+					statstree.erase(cli_versions[i].TreeItem);
+					cli_versions[i].active = false;
+				}
+			} else {
+				if (cli_versions[i].active) {
+					(*(cli_versions[i].TreeItem)) = cbuffer;
+				} else {
+					cli_versions[i].TreeItem = statstree.append_child(cli1,cbuffer);
+					cli_versions[i].active = true;
+				}
+			}
+		}
+	}
+
+	if(myStats[8] > 0) {
+		uint32 totcnt = myStats[8];
+
+		//--- find top 4 aMule client versions ---
+		uint32	currtop = 0;
+		uint32	lasttop = 0xFFFFFFFF;
+		for(uint32 i=0; i<4; ++i) {
+			CClientList::ClientMap::iterator it = clientVersionAMule.begin();
+			uint32 topver=0;
+			uint32 topcnt=0;
+			double topper=0;
+			for ( ; it != clientVersionAMule.end(); ++it ) {
+				uint32	ver = it->first;
+				uint32	cnt = it->second;
+				if(currtop<ver && ver<lasttop )	{
+					double percent = (double)cnt/totcnt;
+					if( lasttop == 0xFFFFFFFF && ((totcnt > 75 && ((cnt <= 2) || percent < 0.01)) || (totcnt > 50 && cnt <= 1))) {
+						continue;
+					}
+					topper=percent;
+					topver=ver;
+					topcnt=cnt;
+					currtop=ver;
+				}
+			}
+			lasttop=currtop;
+			currtop=0;
+			if(topcnt) {
+				uint8 verMaj = topver/(100*10*100);
+				uint8 verMin = (topver - (verMaj*100*10*100))/(100*10);
+				uint8 verUp = (topver - (verMaj*100*10*100) - (verMin*100*10))/(100);
+				if ((verMaj == 0) && (verUp == 0)) {
+					cbuffer.Printf(wxT(" v1.x: %i (%1.1f%%)"), topcnt, topper*100);
+				} else {
+					cbuffer.Printf(wxT(" v%u.%u.%u: %i (%1.1f%%)"),verMaj, verMin, verUp, topcnt, topper*100);
+				}
+			} else {
+				cbuffer=wxEmptyString;
+			}
+			if (cbuffer.IsEmpty()) {
+				if (cli_versions[i+12].active) {
+					statstree.erase(cli_versions[i+12].TreeItem);
+					cli_versions[i+12].active = false;
+				}
+			} else {
+				if (cli_versions[i+12].active) {
+					(*(cli_versions[i+12].TreeItem)) = cbuffer;
+				} else {
+					cli_versions[i+12].TreeItem = statstree.append_child(cli10_1,cbuffer);
+					cli_versions[i+12].active = true;
+				}
+			}
+		}
+	}
+	
+	if(myStats[8]) {
+
+		statstree.erase_children(cli10_2);
+		
+		uint32 total = 0;
+		
+		for (aMuleOSInfoMap::iterator it = OSInfo.begin(); it != OSInfo.end(); ++it ) {
+			total += it->second;
+			statstree.append_child(cli10_2, it->first + wxString::Format(wxT(": %u (%1.1f%%)"),it->second, ((double)it->second / myStats[8]) * 100 ));
+		}
+		
+		wxASSERT(((int)myStats[8] - (int)total)>=0);
+		
+		uint32 not_rec = (myStats[8] - total);
+		
+		if (not_rec > 0 ) {
+			statstree.append_child(cli10_2, _("Not Received") + wxString::Format(wxT(": %u (%1.1f%%)"),not_rec, ((double)not_rec / myStats[8]) * 100 ));
+		}
+		
+	}
+	
+	// get serverstats
+	uint32 servtotal;
+	uint32 servfail;
+	uint32 servuser;
+	uint32 servfile;
+	uint32 servtuser;
+	uint32 servtfile;
+	float servocc;
+	theApp.serverlist->GetStatus( servtotal, servfail, servuser, servfile, servtuser, servtfile,servocc);
+	(*srv1) = wxString::Format(wxT("%s: %i"),_("Working Servers"),servtotal-servfail);
+	(*srv2) = wxString::Format(wxT("%s: %i"),_("Failed Servers"),servfail);
+	(*srv3) = wxString::Format(wxT("%s: %i"),_("Total"),servtotal);
+	(*srv4) = wxString::Format(wxT("%s: %i"),_("Deleted Servers"),theApp.serverlist->GetDeletedServerCount());
+	(*srv5) = wxString::Format(wxT("%s: %i"),_("Users on Working Servers"),servuser);
+	(*srv6) = wxString::Format(wxT("%s: %i"),_("Files on Working Servers"),servfile);
+	(*srv7) = wxString::Format(wxT("%s: %i"),_("Total Users"),servtuser);
+	(*srv8) = wxString::Format(wxT("%s: %i"),_("Total Files"),servtfile);
+	(*srv9) = wxString::Format(_("Server Occupation: %.2f%%"),servocc);
+	
+}
+
+void CamuleApp::ShowStatsTree() {
+	// Just clients
+	
+	if(h_clients!=statstree.end()) {
+	StatsTreeNode Node = statstree.begin(h_clients);
+	StatsTreeNode end = statstree.end(h_clients);
+	while(Node!=end) {
+		for(int i=0; i<statstree.depth(Node)-2; ++i) {
+			printf(" ");
+		}
+		printf("%s\n",unicode2char(*Node));
+		++Node;
+		}
+	}
+	printf("\n\n");
+	
+}
 
 DEFINE_EVENT_TYPE(wxEVT_NOTIFY_EVENT)
 DEFINE_EVENT_TYPE(wxEVT_AMULE_TIMER)
