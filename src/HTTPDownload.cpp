@@ -189,7 +189,9 @@ wxThread::ExitCode CHTTPDownloadThread::Entry()
 		#endif
 	}
 	
+#ifndef AMULE_DAEMON 
 	m_myDlg->StopAnimation();
+#endif	
 	
 	printf("HTTP download thread end\n");
 	
