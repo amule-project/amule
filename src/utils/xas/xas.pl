@@ -10,12 +10,13 @@ IRC::print "\0035 (#amule @ irc.freenode.net)\003";
 # command that we use
 IRC::add_command_handler("xas","xas");
 
-#16.6.2004 - niet      : added support for memory usage and binary name
-#05.5.2004 - Jacobo221 : fixed typos, sig 2 support, new outputs, crash detect 
-#29.4.2004 - niet      : renamed astats to xas (X-Chat Amule statistics)
-#22.4.2004 - citroklar : added smp support
-#     2004 - bootstrap : some hints on file opening
-#     2004 - niet      : used some of cheetah.pl script and so astats was born
+#12.10.2004 - bisley    : added session/total ratios
+#16.06.2004 - niet      : added support for memory usage and binary name
+#05.05.2004 - Jacobo221 : fixed typos, sig 2 support, new outputs, crash detect 
+#29.04.2004 - niet      : renamed astats to xas (X-Chat Amule statistics)
+#22.04.2004 - citroklar : added smp support
+#      2004 - bootstrap : some hints on file opening
+#      2004 - niet      : used some of cheetah.pl script and so astats was born
 
 # Five status currently: online, connecting, offline, closed, crashed
 sub xas
@@ -71,6 +72,10 @@ sub xas
 
 	# session upload traffic in Gb
 	my $sul = (sprintf("%.02f", $amulesigdata[14] / 1048576));
+
+	# ratio
+	my $totalratio = (sprintf("%0.1f",$tdl/$tul));
+	my $sessionratio = (sprintf("%0.1f",$sdl/$sul));
 	
 	# convert runtime from sec to string
 	my $seconds = $amulesigdata[15];
@@ -119,8 +124,8 @@ sub xas
 			IRC::command "/say on $cpu @ $mhz MHz up $uptime" };
 
 		IRC::command "/say Sharing $amulesigdata[8] files with $amulesigdata[7] clients in queue";
-		IRC::command "/say Total download traffic: $tdl Gb, total upload traffic: $tul Gb";
-		IRC::command "/say Session download traffic: $sdl Mb, session upload traffic: $sul Mb";
+		IRC::command "/say Total download traffic: $tdl Gb, total upload traffic: $tul Gb, Total Ratio: 1:$totalratio";
+		IRC::command "/say Session download traffic: $sdl Mb, session upload traffic: $sul Mb, Session Ratio: 1:$sessionratio";
 		IRC::command "/say Current DL speed: $amulesigdata[5] KB/s, current UL speed:  $amulesigdata[6] KB/s" };
 	return 1;
 	# that's it
