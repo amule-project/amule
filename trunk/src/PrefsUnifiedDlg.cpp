@@ -68,13 +68,13 @@
 BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	EVT_CHECKBOX( IDC_UDPDISABLE,		PrefsUnifiedDlg::OnCheckBoxChange )
 	EVT_CHECKBOX( IDC_CHECKDISKSPACE,	PrefsUnifiedDlg::OnCheckBoxChange )
-	EVT_CHECKBOX( IDC_USESKIN,			PrefsUnifiedDlg::OnCheckBoxChange )
+	EVT_CHECKBOX( IDC_USESKIN,		PrefsUnifiedDlg::OnCheckBoxChange )
 	EVT_CHECKBOX( IDC_ONLINESIG,		PrefsUnifiedDlg::OnCheckBoxChange )
 	EVT_CHECKBOX( IDC_REMOVEDEAD,		PrefsUnifiedDlg::OnCheckBoxChange )
 	EVT_CHECKBOX( IDC_ENABLE_AUTO_HQRS,	PrefsUnifiedDlg::OnCheckBoxChange )
 	EVT_CHECKBOX( IDC_AUTOSERVER,		PrefsUnifiedDlg::OnCheckBoxChange )
 	EVT_CHECKBOX( IDC_AUTOIPFILTER,		PrefsUnifiedDlg::OnCheckBoxChange )
-	EVT_CHECKBOX( IDC_MSGFILTER,			PrefsUnifiedDlg::OnCheckBoxChange )
+	EVT_CHECKBOX( IDC_MSGFILTER,		PrefsUnifiedDlg::OnCheckBoxChange )
 	EVT_CHECKBOX( IDC_MSGFILTER_ALL,	PrefsUnifiedDlg::OnCheckBoxChange )
 	EVT_CHECKBOX( IDC_MSGFILTER_WORD,	PrefsUnifiedDlg::OnCheckBoxChange )
 
@@ -106,15 +106,15 @@ BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 
 	EVT_INIT_DIALOG(PrefsUnifiedDlg::OnInitDialog)
 
-	EVT_COMMAND_SCROLL(IDC_SLIDER,			PrefsUnifiedDlg::OnScrollBarChange)
-	EVT_COMMAND_SCROLL(IDC_SLIDER3,			PrefsUnifiedDlg::OnScrollBarChange)
-	EVT_COMMAND_SCROLL(IDC_SLIDER4,			PrefsUnifiedDlg::OnScrollBarChange)
-	EVT_COMMAND_SCROLL(IDC_SLIDER2,			PrefsUnifiedDlg::OnScrollBarChange)
+	EVT_COMMAND_SCROLL(IDC_SLIDER,		PrefsUnifiedDlg::OnScrollBarChange)
+	EVT_COMMAND_SCROLL(IDC_SLIDER3,		PrefsUnifiedDlg::OnScrollBarChange)
+	EVT_COMMAND_SCROLL(IDC_SLIDER4,		PrefsUnifiedDlg::OnScrollBarChange)
+	EVT_COMMAND_SCROLL(IDC_SLIDER2,		PrefsUnifiedDlg::OnScrollBarChange)
 	EVT_COMMAND_SCROLL(IDC_FILEBUFFERSIZE,	PrefsUnifiedDlg::OnScrollBarChange)
-	EVT_COMMAND_SCROLL(IDC_QUEUESIZE,		PrefsUnifiedDlg::OnScrollBarChange)
+	EVT_COMMAND_SCROLL(IDC_QUEUESIZE,	PrefsUnifiedDlg::OnScrollBarChange)
 	EVT_COMMAND_SCROLL(IDC_SERVERKEEPALIVE,	PrefsUnifiedDlg::OnScrollBarChange)
 
-	EVT_SPINCTRL(IDC_MAXUP,					PrefsUnifiedDlg::OnRateLimitChanged)
+	EVT_SPINCTRL(IDC_MAXUP,				PrefsUnifiedDlg::OnRateLimitChanged)
 END_EVENT_TABLE()
 
 
@@ -142,6 +142,7 @@ PrefsPage pages[] =
     {
 		{ wxTRANSLATE("General"),		PreferencesGeneralTab,		13, NULL },
 		{ wxTRANSLATE("Connection"),		PreferencesConnectionTab,	14, NULL },
+		{ wxTRANSLATE("Proxy"),			PreferencesProxyTab,		23, NULL },
 		{ wxTRANSLATE("Message Filter"),	PreferencesMessagesTab,		23, NULL },
 		{ wxTRANSLATE("Remote Controls"),	PreferencesRemoteControlsTab,	11, NULL },
 		{ wxTRANSLATE("Online Signature"),	PreferencesOnlineSigTab,	21, NULL },
